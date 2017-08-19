@@ -52,7 +52,8 @@ namespace Pool
     static Object* pAllocate(eCN eClass);
     static void vFree(Object* pObject);
 
-    
+    static void vValidateTables(void);
+  
     void    vAddFree(FreeChunk* pFreeChunk);
     i8      iAllocCount(void);
     Object* pAllocObject(eCN eClass);

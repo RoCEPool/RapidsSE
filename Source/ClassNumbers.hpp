@@ -202,8 +202,8 @@ namespace Base
     /* 17 */ "VALSET"_Stz,
     /* 18 */ "VALWRK"_Stz,
     
-    /* 19  */ "ACCESSPATH"_Stz,
-    /* 20  */ "ACCUM"_Stz,
+    /* 19 */ "ACCESSPATH"_Stz,
+    /* 20 */ "ACCUM"_Stz,
     /* 21 */ "ACCUMVEC"_Stz,
     /* 22 */ "ARG"_Stz,
     /* 23 */ "ARGUMENTS"_Stz,
@@ -225,6 +225,7 @@ namespace Base
     /* 35 */ "ENTRY"_Stz,
     /* 36 */ "ENTRYBUFFER"_Stz,
     /* 37 */ "ENTRYVEC"_Stz,
+  
     /* 38 */ "FILE"_Stz,
     /* 39 */ "FREEBUFFER"_Stz,
     /* 40 */ "FREECHUNK"_Stz,

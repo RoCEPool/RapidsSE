@@ -77,7 +77,7 @@ args.regionSize nServerThreads constant N_SERVER_THREADS
 /*----------------------------------------------------------------------------*/
 /* create a task using given arguments and append to server task queue        */
 /*----------------------------------------------------------------------------*/
-: spawnServerTask ( ... nArgs sSeedWord pParentTask sTaskNm eTaskKind -- )
+: spawnServerTask ( ... nArgs sSeedWord pParentTask sTaskNm eTaskKind -- pTask )
 
   nullptr locals| pTask eTaskKind sTaskNm pParent sSeedWord nArgs |
 

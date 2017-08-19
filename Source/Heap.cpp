@@ -146,6 +146,68 @@ Object* Heap::pAllocate(eCN eAllocClass)
 }
 
 /*----------------------------------------------------------------------------*/
+/* validate tables                                                            */
+/*----------------------------------------------------------------------------*/
+void Heap::vValidateTables(void)
+{
+  // note: using i8 for iClassNo instead of eCN because you cannot
+  //       increment (++) an enum
+  
+  for (i8 iClassNo = CN_NONE; iClassNo < CN_ENUMS; iClassNo++) {
+    
+    eCN eClassNo = (eCN)iClassNo;
+    
+    eHT eHeap = geWhichHeap[eClassNo];
+    i8  iSize = giClassSize[eHeap];
+    
+    switch(eHeap) {
+      case HT_INVALID:
+        break;
+        
+      case HT_SMALL:
+        if (iSize >= C_SIZE_SMALL_OBJECT)
+          vFatal("Heap::vValidateTables: small class %lld %lls is too big\n"_Stz,
+                 eClassNo,aCN[eClassNo]);
+        //if (!iSize)
+        //  vWarn("Heap::vValidateTables: small class %lld %lls has 0 size\n"_Stz,
+        //         eClassNo,aCN[eClassNo]);
+        break;
+        
+      case HT_MEDIUM:
+        if (iSize >= C_SIZE_MEDIUM_OBJECT)
+          vFatal("Heap::vValidateTables: medium class %lld %lls is too big\n"_Stz,
+                 eClassNo,aCN[eClassNo]);
+        //if (!iSize)
+        // vWarn("Heap::vValidateTables: medium class %lld %lls has 0 size\n"_Stz,
+        //        eClassNo,aCN[eClassNo]);
+        break;
+        
+      case HT_LARGE:
+        if (iSize >= C_SIZE_LARGE_OBJECT)
+          vFatal("Heap::vValidateTables: large class %lld %lls is too big\n"_Stz,
+                 eClassNo,aCN[eClassNo]);
+        //if (!iSize)
+        // vWarn("Heap::vValidateTables: large class %lld %lls has 0 size\n"_Stz,
+        //        eClassNo,aCN[eClassNo]);
+        break;
+        
+      case HT_JUMBO:
+        if (iSize >= C_SIZE_JUMBO_OBJECT)
+          vFatal("Heap::vValidateTables: jumbo class %lld %lls is too big\n"_Stz,
+                 eClassNo,aCN[eClassNo]);
+        //if (!iSize)
+        //  vWarn("Heap::vValidateTables: jumbo class %lld %lls has 0 size\n"_Stz,
+        //        eClassNo,aCN[eClassNo]);
+        break;
+        
+      default:
+        vFatal("Heap::vValidateTables: Invalid which heap: eHeap %lld\n"_Stz,
+               eHeap);
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
