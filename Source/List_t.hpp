@@ -25,7 +25,6 @@ namespace Structures
     void    vAppend(OBJECT* mpNode);
     i8      iCount(void);
     void    vContentDump(Stz* aTitle, Stz* aTab);
-    void    vInsert(OBJECT* mpNode);
     OBJECT* npPop(void);
     void    vPush(OBJECT* mpNode);
     void    vRemove(OBJECT* mpNode);
@@ -136,32 +135,6 @@ void List_t<OBJECT>::vContentDump(Stz* aTitle, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert object at head of list                                              */
-/*----------------------------------------------------------------------------*/
-template <class OBJECT>
-void List_t<OBJECT>::vInsert(OBJECT* mpNode)
-{
-  _mp_(mpNode);
-  
-  ASSERT( ! mpNode->pPrevNode() );
-  ASSERT( ! mpNode->pNextNode() );
-  
-  m_zLock.vGrabWrite();
-  
-  if (m_pHead)
-    m_pTail->vNextNode(mpNode);
-  
-  mpNode->vPrevNode(nullptr);
-  mpNode->vNextNode(m_pHead);
-  
-  m_pHead = mpNode;
-  
-  m_nCount++;
-  
-  m_zLock.vDropWrite();
-}
-
-/*----------------------------------------------------------------------------*/
 /* pop object from head of list                                               */
 /*----------------------------------------------------------------------------*/
 template <class OBJECT>
@@ -210,11 +183,13 @@ void List_t<OBJECT>::vPush(OBJECT* mpNode)
   
   m_zLock.vGrabWrite();
   
-  if (m_pHead)
-    m_pHead->vPrev(mpNode);
-  
   mpNode->vPrevNode(nullptr);
   mpNode->vNextNode(m_pHead);
+  
+  if (m_pHead)
+    m_pHead->vPrev(mpNode);
+  else
+    m_pTail = mpNode;
   
   m_pHead = mpNode;
   
