@@ -770,9 +770,9 @@ tp: loadIndexes
   pSeitf seitf.index@ to pIndex
 
   // create a temporary index buffer for the results
-  "Creating a tempIndexBuffer" .
-  pIndex .
+  //"Creating a tempIndexBuffer" .
   iPartitionNo pIndex entryBuffer::create to tempEntryBuffer
+  tempEntryBuffer .
 
   // position in the first index buffer
   iPartitionNo pIndex index.positionFirst
@@ -790,7 +790,7 @@ tp: loadIndexes
     tempEntryBuffer entryBuffer.isLast!
 
     // return the empty tempEntryBuffer
-    //"Appending tempEntryBuffer to buffer queue" .
+    //"Appending last tempEntryBuffer to buffer queue" .
     tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
 
     exit
@@ -928,9 +928,9 @@ tp: selectIndex
   bSinglePartition if
 
     pSeitf seitf.partition@ locals| iPartition |
-    //args.metadata not if
-      iPartition "XXXPartition: %v\n" str.format .put
-    //then
+    args.metadata not if
+      iPartition "Partition: %v\n" str.format .put
+    then
 
     // create a selectTask to execute the key select on the index for the partition
     sExactKey sLowerKey sUpperKey pSeitf iPartition 5

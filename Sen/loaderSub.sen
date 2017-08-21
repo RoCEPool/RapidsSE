@@ -41,7 +41,7 @@
 /*----------------------------------------------------------------------------*/
 : loadAppendBuffer$ ( rowBuffer partitionNo "<tableNm>" -- true )
 
-"loadAppendBuffer$" .
+//"loadAppendBuffer$" .
 
 tp: loadAppendBuffer$
   0 locals| pTable sTableNm iPartitionNo pRowBuffer pLoaderSub |
@@ -82,7 +82,7 @@ tp: loadAppendBuffer$
 /*----------------------------------------------------------------------------*/
 : ~loadAppendBuffer ( -- )
 
-"~loadAppendBuffer" .
+//"~loadAppendBuffer" .
 
 tp: ~loadAppendBuffer
 

@@ -544,7 +544,7 @@ bool SEitf::bDecode(TokenVec& xTokenVec)
   
   for (i8 i_ReqNo = 0; SeRequests[i_ReqNo].aCommand; i_ReqNo++) {
     if (xTokenVec[0]->bSame((Stz*)SeRequests[i_ReqNo].aCommand)) {
-      vTrace("request: %s\n"_Stz,SeRequests[i_ReqNo].aRequest);
+      //vTrace("request: %s\n"_Stz,SeRequests[i_ReqNo].aRequest);
       return (this->*SeRequests[i_ReqNo].aFunc)(xTokenVec,i_ReqNo);
     }
   }
@@ -2024,7 +2024,7 @@ bool SEitf::bVisualizeIndex(TokenVec& xTokenVec, i8 iReqNo)
 bool SEitf::bInsertRow(Stz* aRow, i8 iLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-                              
+  
   // check for working buffer
   if (! m_pRowBuffer[m_iPartition]) {
     m_pRowBuffer[m_iPartition] = new EntryBuffer(m_pCurrentTable->pHiddenIndex(),
@@ -2035,7 +2035,7 @@ bool SEitf::bInsertRow(Stz* aRow, i8 iLength)
       return false;
     }
   }
-  
+
   // get working buffer for partition row hashed into
   EntryBuffer* pRowBuffer = m_pRowBuffer[m_iPartition];
 
@@ -2047,9 +2047,9 @@ bool SEitf::bInsertRow(Stz* aRow, i8 iLength)
   // insert row into working buffer
   if (pRowBuffer->bInsertEntry(m_pTxRef->iTxId(),aRow,iLength))
       return true;
-  
+
   bool bResult = bInsertBuffer(pRowBuffer, m_iPartition);
-      
+
   if (!bResult)
     return bResult;
   
@@ -2059,20 +2059,21 @@ bool SEitf::bInsertRow(Stz* aRow, i8 iLength)
     vSetLastError(eError);
     return false;
   }
-  
+
   // get a new working buffer
-  m_pRowBuffer[m_iPartition] = (EntryBuffer*)EntryBuffer::pNewEntryBuffer(CN_ENTRYBUFFER);
+  m_pRowBuffer[m_iPartition] = new EntryBuffer(m_pCurrentTable->pHiddenIndex(),
+                                               0, m_iPartition);
   if (! m_pRowBuffer[m_iPartition]) {
     vTrace("EntryBuffer allocation failed\n"_Stz);
     m_eErrorCode = EC_LOW_BUFFERS;
     return false;
   }
-  
+
   pRowBuffer = m_pRowBuffer[m_iPartition];
   
   // insert row into new working buffer
   //bool bInserted = pRowBuffer->bInsertRow(m_pTxRef,aRow,aRow->nSize());
-  
+
   if (pRowBuffer->bInsertEntry(m_pTxRef->iTxId(),aRow,iLength))
     return true;
   else

@@ -887,7 +887,7 @@ void Task::vAddConstants(void)
   vAddConstant("reclaimDronePrint"_Stz,   (i8)0);
   vAddConstant("receiverDronePrint"_Stz,  (i8)0);
   
-  vAddConstant("requestServerPrint"_Stz,  (i8)1);
+  vAddConstant("requestServerPrint"_Stz,  (i8)0);
   
   vAddConstant("senderWorkerPrint"_Stz,   (i8)0);
   
