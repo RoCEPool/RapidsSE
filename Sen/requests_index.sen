@@ -273,9 +273,9 @@ timer: pIdxSelectTimer
 /*----------------------------------------------------------------------------*/
 /* fetch rows using an index (this is request)                                */
 /*----------------------------------------------------------------------------*/
-: spawnFetch ( bGroupBy ^pPlanner -- <R> )
+: spawnFetch ( bSinglePartition bGroupBy ^pPlanner -- <R> )
 
-  locals| pPlanner bGroupBy |
+  locals| pPlanner bGroupBy bSinglePartition |
 
   pPlanner Planner.fetchTechnique@
 
@@ -288,7 +288,7 @@ timer: pIdxSelectTimer
     "0"  //upper
     "exactSelectIdxTask"
     pPlanner Planner.indexNm@
-    spawnSelectTask
+    bSinglePartition spawnSelectTask
   endof
 
   AT_LOWER of
@@ -298,7 +298,7 @@ timer: pIdxSelectTimer
     "0" //upper
     "lowerSelectIdxTask"
     pPlanner Planner.indexNm@
-    spawnSelectTask
+    bSinglePartition spawnSelectTask
   endof
 
   AT_UPPER of
@@ -308,7 +308,7 @@ timer: pIdxSelectTimer
     pPlanner Planner.highKey@
     "upperSelectIdxTask"
     pPlanner Planner.indexNm@
-    spawnSelectTask
+     bSinglePartition spawnSelectTask
   endof
 
   AT_RANGE of
@@ -325,7 +325,7 @@ timer: pIdxSelectTimer
       "case range" .
       "rangeSelectIdxTask"
       pPlanner Planner.indexNm@
-      spawnSelectTask
+      bSinglePartition spawnSelectTask
     then
   endof
 
@@ -336,7 +336,7 @@ timer: pIdxSelectTimer
     "0" //upper
     "scanSelectIdxTask"
     "hidden"
-    spawnSelectTask
+     bSinglePartition spawnSelectTask
     endof
   endcase
 
@@ -359,7 +359,7 @@ timer: pIdxSelectTimer
   CN_STRVAL assert::class_1
   CN_INTVAL assert::class_2
 
-  0 0 locals| pPlanner pTable sTableNm sWhere bGroupBy |
+  0 0 0 locals| bSinglePartition pPlanner pTable sTableNm sWhere bGroupBy |
 
   pIdxSelectTimer timer.start
 
@@ -400,9 +400,10 @@ timer: pIdxSelectTimer
 
   // assert we have a plan
   pPlanner assert
+  true to bSinglePartition
 
   // spawn select task for the fetch
-  bGroupBy pPlanner spawnFetch
+  bSinglePartition bGroupBy pPlanner spawnFetch
 
   <OK>
 ;

@@ -2021,7 +2021,7 @@ bool SEitf::bVisualizeIndex(TokenVec& xTokenVec, i8 iReqNo)
 /*----------------------------------------------------------------------------*/
 /* insert row into row buffer                                                 */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bInsertRow(Stz* aRow)
+bool SEitf::bInsertRow(Stz* aRow, i8 iLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
                               
@@ -2039,13 +2039,13 @@ bool SEitf::bInsertRow(Stz* aRow)
   // get working buffer for partition row hashed into
   EntryBuffer* pRowBuffer = m_pRowBuffer[m_iPartition];
 
-  i8 iLength;
-  s48K s;
-  bool bValid = RowData::bFormatData(m_pCurrentTable->pColumnVec(), aRow, StrLib::iSize(aRow->aChar()), s, iLength);
-  ASSERT(bValid);
+//  i8 iLength;
+//  s48K s;
+//  bool bValid = RowData::bFormatData(m_pCurrentTable->pColumnVec(), aRow, StrLib::iSize(aRow->aChar()), s, iLength);
+//  ASSERT(bValid);
  
   // insert row into working buffer
-  if (pRowBuffer->bInsertEntry(m_pTxRef->iTxId(),s,iLength))
+  if (pRowBuffer->bInsertEntry(m_pTxRef->iTxId(),aRow,iLength))
       return true;
   
   bool bResult = bInsertBuffer(pRowBuffer, m_iPartition);
@@ -2073,7 +2073,7 @@ bool SEitf::bInsertRow(Stz* aRow)
   // insert row into new working buffer
   //bool bInserted = pRowBuffer->bInsertRow(m_pTxRef,aRow,aRow->nSize());
   
-  if (pRowBuffer->bInsertEntry(m_pTxRef->iTxId(),s,iLength))
+  if (pRowBuffer->bInsertEntry(m_pTxRef->iTxId(),aRow,iLength))
     return true;
   else
     return false;

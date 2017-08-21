@@ -1886,7 +1886,7 @@ bool SePrompt::bInsertRow(void)
   }
   
   Stz* pRow = m_xTokenVec2[2]->aText();
-  bool bResult = m_pSEitf->bInsertRow(pRow);
+  bool bResult = false; //m_pSEitf->bInsertRow(pRow);
   
   if (!bResult) {
     m_pSEitf->vSetLastError(m_pSEitf->m_eErrorCode);
@@ -3459,7 +3459,7 @@ bool SePrompt::bCmd_InsertRow(void)
   }
   
   Stz* pRow = m_xTokenVec2[2]->aText();
-  bool bResult = m_pSEitf->bInsertRow(pRow);
+  bool bResult = false; //m_pSEitf->bInsertRow(pRow);
   
   if (!bResult) {
     m_pSEitf->vSetLastError(m_pSEitf->m_eErrorCode);

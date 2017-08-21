@@ -771,6 +771,7 @@ tp: loadIndexes
 
   // create a temporary index buffer for the results
   "Creating a tempIndexBuffer" .
+  pIndex .
   iPartitionNo pIndex entryBuffer::create to tempEntryBuffer
 
   // position in the first index buffer
@@ -877,7 +878,7 @@ tp: loadIndexes
 /* select using index (called by fetchRowsIndex_req)                          */
 /*----------------------------------------------------------------------------*/
 : spawnSelectTask ( "<sExactKey>" "<sLowerKey>" "<sUpperKey>"
-"<sSelectTaskSeed>" "<sIndexNm>" --  )
+"<sSelectTaskSeed>" "<sIndexNm>" <bSinglePartition> --  )
 
 tp: selectIndex
 
@@ -891,11 +892,13 @@ tp: selectIndex
   // execution context:
   //   this task will have a seitf
   //   and the seitf will have a table
+  //   and the seitf will have an index
+  //   and the seitf will have a bufferQueue
   //
   //assert::stack_5
 
   // save args
-  locals| sIndexNm sSelectTaskSeed sUpperKey sLowerKey sExactKey |
+  locals| bSinglePartition sIndexNm sSelectTaskSeed sUpperKey sLowerKey sExactKey |
 
   // local variables
   0 0 0 0 0 0 0 locals| pIndex iSlots pSeitf pSelectTask nRowCount pIndexBuffer pEntry |
@@ -922,21 +925,35 @@ tp: selectIndex
   // create the buffer queue in the seitf
   "selectTask.queue" queue::new pSeitf seitf.bufferQueue!
 
-  // for each slot
-  grid.slots to iSlots
-  iSlots 0
-  do
+  bSinglePartition if
 
-    args.metadata not if
-      I grid::toPartition "Partition: %v\n" str.format .put
-    then
+    pSeitf seitf.partition@ locals| iPartition |
+    //args.metadata not if
+      iPartition "XXXPartition: %v\n" str.format .put
+    //then
 
     // create a selectTask to execute the key select on the index for the partition
-    sExactKey sLowerKey sUpperKey pSeitf I 5
+    sExactKey sLowerKey sUpperKey pSeitf iPartition 5
     sSelectTaskSeed nullptr "selectTask" TK_SELECT_PART spawnServerTask
     to pSelectTask
 
-  loop
+  else
+    // for each slot
+    grid.slots to iSlots
+    iSlots 0
+    do
+
+      args.metadata not if
+        I grid::toPartition "Partition: %v\n" str.format .put
+      then
+
+      // create a selectTask to execute the key select on the index for the partition
+      sExactKey sLowerKey sUpperKey pSeitf I 5
+      sSelectTaskSeed nullptr "selectTask" TK_SELECT_PART spawnServerTask
+      to pSelectTask
+
+    loop
+  then
 ;
 
 

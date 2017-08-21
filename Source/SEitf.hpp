@@ -165,7 +165,7 @@ namespace Interface
     bool bGetTask(TokenVec& xTokenVec, i8 iReqNo);
     bool bRetTask(TokenVec& xTokenVec, i8 iReqNo);
   
-    bool bInsertRow(Stz* pRow);
+    bool bInsertRow(Stz* pRow, i8 iLength);
     bool bInsertBuffer(void);
     bool bInsertBuffer(EntryBuffer* pRowBuffer, i8 iPartition);
     

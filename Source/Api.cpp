@@ -730,12 +730,9 @@ eEC RapidsSE_FetchNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
     // get index buffer from seitf
     EntryBuffer* pEntryBuffer = pSEitf->m_pIndexBuffer;
     Entry* pEntry = nullptr;
-    vTrace("AA1\n"_Stz);
-    while (!pEntry) {
-      
-      bool bLastBuffer = pEntryBuffer ? pEntryBuffer->bIsLast() : false;
-      
-      if (!pEntryBuffer || !pEntryBuffer->bIsLast()) {
+
+    // if no entry buffer , pop one off the queue
+    if (!pEntryBuffer) {
 
         // get the buffer queue from the seitf
         Queue* pBufferQueue = pSEitf->pBufferQueue();
@@ -745,46 +742,35 @@ eEC RapidsSE_FetchNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
         while (!pBufferQueue->bPop(&xValWrk)) {
           PosixThread::vSleepMilli(1);
         }
-        
+    
         // get entry buffer
         PtrVal* pPtrVal = xValWrk.pNestedPtrVal();
         pEntryBuffer = (EntryBuffer*)(pPtrVal->pPtr());
-
+      
         // save the entry buffer in the SEitf
         pSEitf->m_pIndexBuffer = pEntryBuffer;
-        
+      
         // get first entry from buffer
         pEntry = pEntryBuffer->pFirstEntry();
-        
-        if (!pEntry) {
-          ASSERT(pEntryBuffer->bIsLast());
-          break;
-        }
-      }
-      else {
-        
-        ASSERT(pSEitf->m_pEntry);
-        
-        // get next entry from buffer
-        pEntry = pEntryBuffer->pNextEntry(pSEitf->m_pEntry);
-        
-        if (bLastBuffer && !pEntry)
-          break;
-      }
-    }
-
-    // save entry in SEitf
-    pSEitf->m_pEntry = pEntry;
-    
-    if (pEntry) {
-      RowData::vRowAsString(pSEitf->m_sResponse, (Stz*)pEntry->aRow(), pSEitf->m_pCurrentTable->pColumnVec());
-      *ppRow = (void*)pSEitf->m_sResponse.aChar();
+      
     }
     else {
-      // trace exit
-      TRACE_EXIT("ea"_Stz);
+      ASSERT(pSEitf->m_pEntry);
       
-      return EC_NONE;
+      // get next entry from buffer
+      pEntry = pEntryBuffer->pNextEntry(pSEitf->m_pEntry);
+    }
+    
+    if (!pEntry) {
+      ASSERT(pEntryBuffer->bIsLast());
+      *ppRow = nullptr;
+    }
+    else {
+      // save entry in SEitf
+      pSEitf->m_pEntry = pEntry;
+    
+      RowData::vRowAsString(pSEitf->m_sResponse, (Stz*)pEntry->aRow(), pSEitf->m_pCurrentTable->pColumnVec());
+      *ppRow = (void*)pSEitf->m_sResponse.aChar();
     }
     
     //TRACE_ROW();
@@ -1337,12 +1323,21 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel)
     // validate table
     VALIDATE_TABLE("c"_Stz);
     
-    bool bResult = pSEitf->bInsertRow(pRow);
+    s48K s;
+    i8 iRowLength;
+    bool bValid = RowData::bFormatData(pSEitf->m_pCurrentTable->pColumnVec(), pRow, StrLib::iSize(pRow->aChar()),
+                                       s, iRowLength);
+    ASSERT(bValid);
     
-    if (!bResult) {
-      pSEitf->vSetLastError(pSEitf->m_eErrorCode);
-      TRACE_ERROR("d"_Stz, pSEitf->m_eErrorCode);
-      return pSEitf->m_eErrorCode;
+    i8 iRowPartition = pSEitf->pCurrentTable()->iRowPartition(s);
+    if (pSEitf->m_iPartition == iRowPartition) {
+      bool bResult = pSEitf->bInsertRow(s, iRowLength);
+    
+      if (!bResult) {
+        pSEitf->vSetLastError(pSEitf->m_eErrorCode);
+        TRACE_ERROR("d"_Stz, pSEitf->m_eErrorCode);
+        return pSEitf->m_eErrorCode;
+      }
     }
     
     // validate table
