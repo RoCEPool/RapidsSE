@@ -10,7 +10,8 @@ extern BufferPool*  gpBufferPool;
 extern ThreadList*  gpThreadList;
 extern TaskList*    gpTaskList;
 
-extern ServerScheduler*   gpServerScheduler;
+extern ServerScheduler*    gpServerScheduler;
+extern PartitionScheduler* gpPartitionScheduler;
 
 extern NP_Task      gnpBootTask;
 
@@ -155,7 +156,7 @@ void* Thread::vEntry_Partition(void* pArg)
     vTrace("[[%s]] Thread::vEntry_Partition %p\n"_Stz,pThread->sName().aChar(),pThread);
   
   try {
-    pThread->vLoop_Partition();
+    pThread->vLoop_Partition2();
   }
   catch (Error* pError) {
     char wFileName[256];
@@ -479,6 +480,8 @@ void Thread::vLoop_Partition2(void)
   
   if (gbVerbose || gbProgress)
     vTrace("Thread %p: %s Partition\n"_Stz,this,m_sName.aChar());
+  
+  m_pScheduler = gpPartitionScheduler;
   
   m_pPosixThread->vSetOSThreadId();
   
