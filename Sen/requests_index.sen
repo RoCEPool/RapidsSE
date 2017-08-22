@@ -141,9 +141,13 @@ timer: pIdxSelectTimer
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // remove the index
+  // remove index from table
+  sIndexNm find execute dup index.table@ table.removeIndex
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // remove the index
   sIndexNm removeIndex ( ) assert::stack_0
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // restore path
@@ -251,6 +255,8 @@ timer: pIdxSelectTimer
 
   0 0 locals| pPlanner pAccessPath pTable sWhere |
 
+  sWhere "generatePlan" "%v %v" str.format .
+
   ( cdt_0 ) planner::new to pPlanner
   ( cdt_1 ) pTable pPlanner Planner.table!
 
@@ -276,6 +282,8 @@ timer: pIdxSelectTimer
 : spawnFetch ( bSinglePartition bGroupBy ^pPlanner -- <R> )
 
   locals| pPlanner bGroupBy bSinglePartition |
+
+  pPlanner Planner.indexNm@ .
 
   pPlanner Planner.fetchTechnique@
 

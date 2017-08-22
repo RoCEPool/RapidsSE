@@ -45,6 +45,7 @@ namespace DBobjects
     IndexData*  pIndexData(i8 iIndexNo);
     IndexData*  pHiddenIndexData(void);
     IdxDataVec* pIdxDataVec(void);
+    void        vRemoveIndex(i8 iIndexNo);
     void        vTidyUp(void);
     void        vTidyUpIndex(i8 iIndexNo);
     

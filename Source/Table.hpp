@@ -62,6 +62,7 @@ namespace DBobjects
     void vRefDec(void);
     void vRefInc(void);
     bool bRefOut(void);
+    void vRemoveIndex(Index* pIndex);
     i8   nRowBuffers(void);
     i8   nIndexBuffers(i8 iIndexNo);
     i8   iRowPartition(Stz* pRow);

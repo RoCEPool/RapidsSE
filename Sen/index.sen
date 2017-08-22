@@ -772,7 +772,6 @@ tp: loadIndexes
   // create a temporary index buffer for the results
   //"Creating a tempIndexBuffer" .
   iPartitionNo pIndex entryBuffer::create to tempEntryBuffer
-  tempEntryBuffer .
 
   // position in the first index buffer
   iPartitionNo pIndex index.positionFirst

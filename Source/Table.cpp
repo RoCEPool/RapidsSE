@@ -148,7 +148,7 @@ void Table::vFinalize(eCN eClass, Object* pObject)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* dump table                                                                 */
+/* add index to table                                                         */
 /*----------------------------------------------------------------------------*/
 void Table::vAddIndex(Index* pIndex)
 {
@@ -389,6 +389,23 @@ bool Table::bRefOut(void)
   u8 iRef = *m_zRefCount;
   
   return iRef ? true : false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove index from table                                                    */
+/*----------------------------------------------------------------------------*/
+void Table::vRemoveIndex(Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  // delete the IndexData of the index from each partition
+  for (i8 iPartition = 0; iPartition < gpGrid->m_nSlots; iPartition++) {
+    Partition* pPartition = this->pPartition(iPartition);
+    pPartition->vAddIndex(new IndexData(pIndex, iPartition));
+  }
+  
+  // remove index from the table
+  m_pIdxVec->vRemove(pIndex);
 }
 
 /*----------------------------------------------------------------------------*/
