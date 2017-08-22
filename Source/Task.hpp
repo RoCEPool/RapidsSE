@@ -738,9 +738,11 @@ namespace Tasks
     static void vLoaderSubInsertRow(MP_Task mpTask);
     static void vLoaderSubLoaderStore(MP_Task mpTask);
     static void vLoaderSubNew(MP_Task mpTask);
-    static void vLoaderSubPartition(MP_Task mpTask);
+    static void vLoaderSubNewRowBuffer(MP_Task mpTask);
+    static void vLoaderSubPartitionFetch(MP_Task mpTask);
     static void vLoaderSubPartitionStore(MP_Task mpTask);
-    static void vLoaderSubRowBuffer(MP_Task mpTask);
+    static void vLoaderSubRecordsFetched(MP_Task mpTask);
+    static void vLoaderSubRowBufferFetch(MP_Task mpTask);
     static void vLoaderSubRowBufferStore(MP_Task mpTask);
     static void vLoaderSubTable(MP_Task mpTask);
  

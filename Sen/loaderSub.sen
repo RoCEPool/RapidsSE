@@ -80,7 +80,7 @@ tp: loadAppendBuffer$
 /*----------------------------------------------------------------------------*/
 /* forward append of rowbuffer to participant for partition                   */
 /*----------------------------------------------------------------------------*/
-: ~loadAppendBuffer ( -- )
+: ~loadAppendBuffer ( pLoaderSub -- )
 
 //"~loadAppendBuffer" .
 
@@ -109,9 +109,9 @@ tp: ~loadAppendBuffer
   //
 
   <<
-    pLoaderSub loaderSub.rowBuffer           ( << rb )
+    pLoaderSub loaderSub.rowBuffer@          ( << rb )
     nullPtr pLoaderSub loaderSub.rowBuffer!  // set working row buffer to null
-    pLoaderSub loaderSub.partition           ( << rb ptn )
+    pLoaderSub loaderSub.partition@          ( << rb ptn )
     pLoaderSub loaderSub.table table.name    ( << rb ptn "<tableNm>" )
     "loadAppendBuffer$"                      ( << rb ptn "<tableNm>" "loadAppendBuffer$" )
 
@@ -206,10 +206,37 @@ tp: theIndirectResult
     I pLoaderSub loaderSub.partition!
 
     // test for a dangling row buffer for parition I
-    pLoaderSub loaderSub.rowBuffer
+    pLoaderSub loaderSub.rowBuffer@
     if
+      "DANGLING" .
+      // get the buffer
+      pLoaderSub loaderSub.rowBuffer@
+
+      // mark as last buffer
+      entryBuffer.isLast!
+
       // append row buffer to table/partition/strand
       pLoaderSub ~loadAppendBuffer
+
+    else
+
+      "NO DANGLING" .
+
+      // check if loader sub fetched any records
+      pLoaderSub loaderSub.recordsFetched if
+
+        // create a new row buffer
+        pLoaderSub loaderSub.newRowBuffer
+
+        // get the buffer
+        pLoaderSub loaderSub.rowBuffer@
+
+        // mark as last buffer
+        entryBuffer.isLast!
+
+        // append row buffer to table/partition/strand
+        pLoaderSub ~loadAppendBuffer
+      then
 
     then
 
@@ -233,7 +260,9 @@ tp: partitionAppendBuffer
 
   pRowBuffer iPartitionNo pTable table.appendBuffer ( )
 
-  "appended buffer" .
+  pRowBuffer entryBuffer.isLast@ if
+    iPartitionNo "appended last buffer for partition " "%v %v" str.format .
+  then
 ;
 
 /*============================================================================*/

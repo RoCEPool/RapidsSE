@@ -70,6 +70,7 @@ LoaderSub::LoaderSub(void)
   m_iPartition  = 0;
   m_bMoreChunks = false;
   m_pLoadChunk  = new LoadChunk;
+  m_iFetchedRecords = 0;
   
   for (i8 i_Partition = 0; i_Partition < C_MAX_PARTITIONS; i_Partition++)
     m_pEntryBuffer[i_Partition] = nullptr;
@@ -189,8 +190,10 @@ bool LoaderSub::bFetchRecord(void)
     if (aRawData) {
       // format the raw data into a record
       bValid = RowData::bFormatData(m_pTable->pColumnVec(), aRawData, iLength, m_aRecord.aStr(), m_iLength);
-      if (bValid)
+      if (bValid) {
+        m_iFetchedRecords++;
         return bValid;
+      }
       else
         continue;
     }
@@ -203,14 +206,27 @@ bool LoaderSub::bFetchRecord(void)
     // fetch first record from chunk just read
     aRawData = m_pLoadChunk->aNextRecord(iLength);
     if (aRawData) {
+      
       // format the raw data into a record
       bValid = RowData::bFormatData(m_pTable->pColumnVec(), aRawData, iLength, m_aRecord.aStr(), m_iLength);
-      if (bValid)
+      if (bValid) {
+        m_iFetchedRecords++;
         return bValid;
+      }
     }
   }
   
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get no of records fetched                                                  */
+/*----------------------------------------------------------------------------*/
+i8 LoaderSub::iFetchedRecords(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+  
+  return m_iFetchedRecords;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -259,6 +275,17 @@ void LoaderSub::vLoader(Loader* pLoader)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
 
   m_pLoader = pLoader;
+}
+
+/*----------------------------------------------------------------------------*/
+/* create a new rowBuffer                                                     */
+/*----------------------------------------------------------------------------*/
+void LoaderSub::vNewRowBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+  
+  m_pEntryBuffer[m_iPartition] = new EntryBuffer(m_pTable->pHiddenIndex(),
+                                                 0, m_iPartition);
 }
 
 /*----------------------------------------------------------------------------*/
