@@ -114,6 +114,9 @@ void Task::vEntryToDataRow(MP_Task mpTask)
   EntryBuffer* pEntryBuffer = reinterpret_cast<EntryBuffer*>
      (gpBufferPool->pToBuffer(nBufferNo));
   
+  ASSERT(pEntryBuffer);
+  ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
+  
   // form the hidden index key using the row id from the entry
   KeyWrk xKeyWrk;
   ValWrk xValWrk;

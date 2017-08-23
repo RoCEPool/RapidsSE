@@ -651,7 +651,7 @@ tp: loadIndexes
   0 0 locals| nRowCount pEntry pIndexBuffer pIndex iPartitionNo |
 
   // get the partitionNo
-  pIndexBuffer entryBuffer.partition to iPartitionNo
+  pIndexBuffer entryBuffer.partition@ to iPartitionNo
 
   // get the entry
   pIndexBuffer entryBuffer.firstEntry to pEntry
@@ -910,7 +910,7 @@ tp: selectIndex
   // push into indexes folder
   pushIndexes assert
 
-  // find the index andput it in the seitf
+  // find the index and put it in the seitf
   sIndexNm find execute to pIndex
   pIndex pSeitf seitf.index!
 

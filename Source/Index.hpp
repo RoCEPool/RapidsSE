@@ -24,7 +24,7 @@ namespace DBobjects
   {
   private:
     i8           m_iIndexNo;      //
-    s32          m_sIndexName;    //
+    s256         m_sIndexName;    //
     eIT          m_eIndexType;    //
     bool         m_bIsPrimaryKey; //
     bool         m_bIsUnique;     //
@@ -51,7 +51,7 @@ namespace DBobjects
     void   vCreateColumnVec(s32& sName, s48K& sDefinition);
     void   vDump(void);
     Stz*   aIndexName(void);
-    s32    sIndexName(void);
+    s256    sIndexName(void);
     void   vIndexNo(i8 iIndexNo);
     i8     iIndexNo(void);
     bool   bIsHidden(void);

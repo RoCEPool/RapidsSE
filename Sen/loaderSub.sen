@@ -39,12 +39,12 @@
 /*----------------------------------------------------------------------------*/
 /* append row buffer to partition of given named table                        */
 /*----------------------------------------------------------------------------*/
-: loadAppendBuffer$ ( rowBuffer partitionNo "<tableNm>" -- true )
+: loadAppendBuffer$ ( rowBuffer partitionNo "<indexNm>" "<tableNm>" -- true )
 
 //"loadAppendBuffer$" .
 
 tp: loadAppendBuffer$
-  0 locals| pTable sTableNm iPartitionNo pRowBuffer pLoaderSub |
+  0 0 locals| pIndex pTable sTableNm sIndexNm iPartitionNo pRowBuffer pLoaderSub |
 
   // why:
   //   loaderSub has forwarded a full rowBuffer which needs to be
@@ -63,9 +63,27 @@ tp: loadAppendBuffer$
     sTableNm "APPENDING ROWBUFFER " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
   then
 
+  pathDump
+
   // get ^table
   sTableNm find execute ( rb ptn table )
   to pTable
+
+  // push indexes folder
+  pushIndexes assert                               // ../tables/sTableNm/indexes
+
+  // get index
+  sIndexNm find execute
+  to pIndex
+
+  // restore path
+  popIndexes popTable assertInTables                                // ../tables
+
+  // set the index in the row buffer
+  pIndex pRowBuffer entryBuffer.index!
+
+  // set the partition in the row buffer
+  iPartitionNo pRowBuffer entryBuffer.partition!
 
   pRowBuffer iPartitionNo  pTable    ( rb ptn tablePtr )
 
@@ -86,7 +104,7 @@ tp: loadAppendBuffer$
 
 tp: ~loadAppendBuffer
 
-   locals| pLoaderSub |
+   0 locals| pRowBuffer pLoaderSub |
 
   // why:
   //   loaderSub has a full rowBuffer which needs to be sent to participant
@@ -108,12 +126,16 @@ tp: ~loadAppendBuffer
   // a) form the indirect call of loadAppendBuffer
   //
 
+  pLoaderSub loaderSub.rowBuffer@ to pRowBuffer
+  pRowBuffer entryBuffer.dump
+
   <<
-    pLoaderSub loaderSub.rowBuffer@          ( << rb )
+    pRowBuffer                                    ( << rb )
     nullPtr pLoaderSub loaderSub.rowBuffer!  // set working row buffer to null
-    pLoaderSub loaderSub.partition@          ( << rb ptn )
-    pLoaderSub loaderSub.table table.name    ( << rb ptn "<tableNm>" )
-    "loadAppendBuffer$"                      ( << rb ptn "<tableNm>" "loadAppendBuffer$" )
+    pLoaderSub loaderSub.partition@               ( << rb ptn )
+    pRowBuffer entryBuffer.index@ index.name@     ( << rb ptn "<tableNm>" )
+    pLoaderSub loaderSub.table table.name         ( << rb ptn "<tableNm>" )
+    "loadAppendBuffer$"                           ( << rb ptn "<tableNm>" "loadAppendBuffer$" )
 
 tp: theIndirectCall
 

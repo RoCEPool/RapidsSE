@@ -377,7 +377,18 @@ void Task::vSocketRecv(MP_Task mpTask)
       THROW("Unable to recvFrom socket: Errno %d!"_Stz, xSysCall.iError());
     
     pRowBuffer->vRowCount();
+    vTrace("%lld \n"_Stz, *(pRowBuffer->nBufferNo()));
     
+    // set the new row buffer in each entry of the row buffer
+    Id xId;
+    xId.vBuffer(*(pRowBuffer->nBufferNo()));
+    for (Entry* pEntry = pRowBuffer->pNextEntry(pRowBuffer->pHead()); pEntry != nullptr;
+         pEntry = pRowBuffer->pNextEntry(pEntry)) {
+      xId.vRow(pEntry->xId().iRow());
+               
+      pEntry->vId(xId);
+      
+    }
     //******************************************************************
     // set rowBuffer in valset
     //******************************************************************
