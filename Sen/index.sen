@@ -651,7 +651,7 @@ tp: loadIndexes
   0 0 locals| nRowCount pEntry pIndexBuffer pIndex iPartitionNo |
 
   // get the partitionNo
-  pIndexBuffer entryBuffer.partition to iPartitionNo
+  pIndexBuffer entryBuffer.partition@ to iPartitionNo
 
   // get the entry
   pIndexBuffer entryBuffer.firstEntry to pEntry
@@ -693,6 +693,21 @@ tp: loadIndexes
       //task.yield
       args.sleep thread.sleep_ms
   repeat
+;
+
+/*----------------------------------------------------------------------------*/
+/* populate the index with data                                               */
+/*----------------------------------------------------------------------------*/
+: populateIndex allParticipants 1 checkResult ( "<indexNm>" -- true n# true )
+
+  0 locals| pIndex sIndexNm |
+
+  // get index ptr
+  sIndexNm findInCurrent execute to pIndex
+
+  pIndex index.populate
+
+  true <SUCCESS_RESULT>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -772,7 +787,6 @@ tp: loadIndexes
   // create a temporary index buffer for the results
   //"Creating a tempIndexBuffer" .
   iPartitionNo pIndex entryBuffer::create to tempEntryBuffer
-  tempEntryBuffer .
 
   // position in the first index buffer
   iPartitionNo pIndex index.positionFirst
@@ -911,7 +925,7 @@ tp: selectIndex
   // push into indexes folder
   pushIndexes assert
 
-  // find the index andput it in the seitf
+  // find the index and put it in the seitf
   sIndexNm find execute to pIndex
   pIndex pSeitf seitf.index!
 

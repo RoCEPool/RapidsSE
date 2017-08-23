@@ -218,6 +218,27 @@ IdxDataVec* Partition::pIdxDataVec(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* remove an index                                                            */
+/*----------------------------------------------------------------------------*/
+void Partition::vRemoveIndex(i8 iIndexNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+  
+  IndexData* pIndexData = nullptr;
+  i8 nIndexes = m_pIdxDataVec->nItems();
+  
+  for (i8 i_Index=0; i_Index < nIndexes; i_Index++) {
+    pIndexData = m_pIdxDataVec->pGet(i_Index);
+    Index* pIndex = pIndexData->pIndex();
+    if (pIndex->iIndexNo() == iIndexNo) {
+      delete pIndexData;
+      break;
+    }
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* tidy up                                                                    */
 /*----------------------------------------------------------------------------*/
 void Partition::vTidyUp(void)

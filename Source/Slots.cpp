@@ -219,8 +219,13 @@ void Slots::vTidyUp(void)
   
   // run the finalize for the partitions
   for (i8 i_Slot = 0; i_Slot < gpGrid->iSlots(); i_Slot++) {
-    m_pPartitionVec->pGet(i_Slot)->vTidyUp();
+    //m_pPartitionVec->pGet(i_Slot)->vTidyUp();
+    delete m_pPartitionVec->pGet(i_Slot);
   }
+  m_pPartitionVec->vClear();
+  
+  // delete the partition vector
+  delete m_pPartitionVec;
   
   // Since the column is picked from the ColVec of table
   // we need to just remove it from the PtnColVec before deleting it

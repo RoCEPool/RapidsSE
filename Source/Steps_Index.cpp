@@ -45,6 +45,7 @@ void Task::vAddPrimitives_Index(void)
   vAddPrimitive("index.isPrimaryKey!"_Stz,   &vIndexIsPrimaryKeyStore,   false);
   vAddPrimitive("index.isUnique@"_Stz,       &vIndexIsUniqueFetch,   false);
   vAddPrimitive("index.isUnique!"_Stz,       &vIndexIsUniqueStore,   false);
+  vAddPrimitive("index.name@"_Stz,           &vIndexNameFetch,       false);
   vAddPrimitive("index.populate"_Stz,        &vIndexPopulate,        false);
   vAddPrimitive("index.position"_Stz,        &vIndexPosition,        false);
   vAddPrimitive("index.positionFirst"_Stz,   &vIndexPositionFirst,   false);
@@ -492,6 +493,28 @@ void Task::vIndexIsUniqueStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("index.isUnique!"_Stz);
   
   pIndex->vIsUnique(iIsUnique ? true : false);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index.name@ -- fetch index name                                            */
+/*----------------------------------------------------------------------------*/
+void Task::vIndexNameFetch(MP_Task mpTask)
+{
+  ENTRY("vIndexNameFetch"_Stz);
+  
+  Object* pPtrIndex = nullptr;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
+    THROW_INVALID_DSTACK("index.name@"_Stz);
+  
+  Index* pIndex = _pIndex(pPtrIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  s256 sIndexName = pIndex->sIndexName();
+  
+  mpTask->m_pDataStack->vPushS256(sIndexName);
   
   EXIT();
 }

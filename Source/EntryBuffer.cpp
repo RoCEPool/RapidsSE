@@ -87,15 +87,21 @@ EntryBuffer::EntryBuffer(i8 iDataBytes)
   m_xWsp.vUsed(iDataBytes);
   
   //m_pBitArray   = new BitArray;
-  m_pPrevBuffer = nullptr;
-  m_pNextBuffer = nullptr;
-  m_bIsLast     = false;
+  m_bIsLast       = false;
+  
+  m_pPrevBuffer   = nullptr;
+  m_pNextBuffer   = nullptr;
+  m_pHigherLevel  = nullptr;
+  m_pIndex        = nullptr;
+  m_nBufferLevel  = 0;
+  m_nPartitionNo  = -1;
   
   //m_xWsp
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
+
   _checkInitialised_(CN_ENTRYBUFFER);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -107,10 +113,15 @@ EntryBuffer::EntryBuffer(Index* pIndex, i8 nBufferLevel, i8 nPartitionNo)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   //m_pBitArray   = new BitArray;
+  m_bIsLast      = false;
+  m_nEntries     = 0;
+  
+  m_pPrevBuffer  = nullptr;
+  m_pNextBuffer  = nullptr;
+  m_pHigherLevel = nullptr;
   m_pIndex       = pIndex;
   m_nBufferLevel = nBufferLevel;
   m_nPartitionNo = nPartitionNo;
-  m_bIsLast     = false;
   
 #ifdef __DEBUG_CHECKS
   m_xWsp.vZero(CN_ENTRYBUFFER);
@@ -520,6 +531,16 @@ Entry* EntryBuffer::pNextRow(Entry* pCurr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set partition no                                                           */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vPartitionNo(i8 nPartitionNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  m_nPartitionNo = nPartitionNo;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get partition no                                                           */
 /*----------------------------------------------------------------------------*/
 i8 EntryBuffer::nPartitionNo(void)
@@ -569,6 +590,8 @@ i8 EntryBuffer::nUsedBytes(void)
 void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  vShow();
   
   if (m_pIndex->bIsHidden()) {
     
@@ -751,6 +774,16 @@ void EntryBuffer::vHigherLevel(EntryBuffer* pHigherLevel)
   //ASSERT( ! m_pHigherLevel);
   
   m_pHigherLevel = pHigherLevel;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the index of the index buffer                                          */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vIndex(Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  m_pIndex = pIndex;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1046,10 +1079,11 @@ void EntryBuffer::vShow(void)
   else
     sHigherLevel = "..."_Stz;
   
-  vTrace("EntryBuffer %p (buffer %lld): partition %lld level L%lld HigerLevel %p (L%s) "
+  vTrace("EntryBuffer %p (buffer %lld): index %s partition %lld level L%lld HigerLevel %p (L%s) "
          "entries %lld prevBuffer %p nextBuffer %p \n"_Stz,
          this,
          *nBufferNo(),
+         m_pIndex->aIndexName(),
          m_nPartitionNo,
          m_nBufferLevel,
          m_pHigherLevel,

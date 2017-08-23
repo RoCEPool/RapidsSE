@@ -41,9 +41,11 @@ void Task::vAddPrimitives_LoaderSub(void)
   vAddPrimitive("loaderSub.insertRow"_Stz,    &vLoaderSubInsertRow,     false);
   vAddPrimitive("loaderSub.loader!"_Stz,      &vLoaderSubLoaderStore,   false);
   vAddPrimitive("loaderSub::new"_Stz,         &vLoaderSubNew,           false);
-  vAddPrimitive("loaderSub.partition"_Stz,    &vLoaderSubPartition,     false);
+  vAddPrimitive("loaderSub.newRowBuffer"_Stz, &vLoaderSubNewRowBuffer,  false);
+  vAddPrimitive("loaderSub.partition@"_Stz,   &vLoaderSubPartitionFetch,false);
   vAddPrimitive("loaderSub.partition!"_Stz,   &vLoaderSubPartitionStore,false);
-  vAddPrimitive("loaderSub.rowBuffer"_Stz,    &vLoaderSubRowBuffer,     false);
+  vAddPrimitive("loaderSub.recordsFetched"_Stz, &vLoaderSubRecordsFetched, false);
+  vAddPrimitive("loaderSub.rowBuffer@"_Stz,   &vLoaderSubRowBufferFetch,false);
   vAddPrimitive("loaderSub.rowBuffer!"_Stz,   &vLoaderSubRowBufferStore,false);
   vAddPrimitive("loaderSub.table"_Stz,        &vLoaderSubTable,         false);
 }
@@ -133,27 +135,6 @@ void Task::vLoaderSubFetchRecord(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loaderSub.hashPartition -- hash partition & get node where partition lives */
-/*----------------------------------------------------------------------------*/
-void Task::vLoaderSubHashPartition(MP_Task mpTask)
-{
-  ENTRY("vLoaderSubHashRecord"_Stz);
-  
-  Object* pPtrLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
-    THROW_INVALID_DSTACK("loaderSub.hashPartition"_Stz);
-  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoader);
-
-  i8 iPartition = pLoaderSub->iPartition();
-
-  i8 iNode = Partition::iPartitionToNode(iPartition);
-  
-  mpTask->m_pDataStack->vPushInt(iNode);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* loaderSub.hashRecord -- hash record being loaded                           */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubHashRecord(MP_Task mpTask)
@@ -166,6 +147,28 @@ void Task::vLoaderSubHashRecord(MP_Task mpTask)
   LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoader);
   
   pLoaderSub->vHashRecord();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loaderSub.hashPartition -- hash partition & get node where partition lives */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderSubHashPartition(MP_Task mpTask)
+{
+  ENTRY("vLoaderSubHashRecord"_Stz);
+  
+  Object* pPtrLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
+    THROW_INVALID_DSTACK("loaderSub.hashPartition"_Stz);
+  
+  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoader);
+  
+  i8 iPartition = pLoaderSub->iPartition();
+  
+  i8 iNode = Partition::iPartitionToNode(iPartition);
+  
+  mpTask->m_pDataStack->vPushInt(iNode);
   
   EXIT();
 }
@@ -246,11 +249,29 @@ void Task::vLoaderSubNew(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* loaderSub.newRowBuffer -- create a new row buffer for given partition      */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderSubNewRowBuffer(MP_Task mpTask)
+{
+  ENTRY("vLoaderSubNewRowBuffer"_Stz);
+  
+  Object* pPtrLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
+    THROW_INVALID_DSTACK("loaderSub.newRowBuffer"_Stz);
+  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoader);
+  
+  ASSERT( ! pLoaderSub->pRowBuffer() );
+  pLoaderSub->vNewRowBuffer();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* loaderSub.partition@ -- get partition number derived from hash of record   */
 /*----------------------------------------------------------------------------*/
-void Task::vLoaderSubPartition(MP_Task mpTask)
+void Task::vLoaderSubPartitionFetch(MP_Task mpTask)
 {
-  ENTRY("vLoaderSubPartition"_Stz);
+  ENTRY("vLoaderSubPartitionFetch"_Stz);
   
   Object* pPtrLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
@@ -286,11 +307,28 @@ void Task::vLoaderSubPartitionStore(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* loaderSub.recordsFetched -- return no of records fetched by loader sub     */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderSubRecordsFetched(MP_Task mpTask)
+{
+  ENTRY("vLoaderSubRecordsFetched"_Stz);
+  
+  Object* pPtrLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
+    THROW_INVALID_DSTACK("loaderSub.recordsFetched"_Stz);
+  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoader);
+  
+  mpTask->m_pDataStack->vPushInt(pLoaderSub->iFetchedRecords());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* loaderSub.rowBuffer@ -- get row buffer of given partition                  */
 /*----------------------------------------------------------------------------*/
-void Task::vLoaderSubRowBuffer(MP_Task mpTask)
+void Task::vLoaderSubRowBufferFetch(MP_Task mpTask)
 {
-  ENTRY("vLoaderSubRowBuffer"_Stz);
+  ENTRY("vLoaderSubRowBufferFetch"_Stz);
   
   Object* pPtrLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )

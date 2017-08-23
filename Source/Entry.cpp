@@ -473,7 +473,7 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
   ValWrk xValWrk;
   
   // VCH cannot be > 256 bytes
-  s256 s;                                                       //ALKA_ROWFORMAT
+  s4K s;                                                       //ALKA_ROWFORMAT
   
   i8 nCols = pIdxColVec->nItems();
   for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
@@ -496,6 +496,7 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
       }
         
       case CT_CHAR: {
+        s = (Stz*)pDst;
         xValWrk = s;
         break;
       }
@@ -552,6 +553,7 @@ void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
       }
         
       case CT_VARCHAR: {
+        s = (Stz*)pDst;
         xValWrk = s;
         break;
       }

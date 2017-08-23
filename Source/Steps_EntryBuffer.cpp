@@ -34,14 +34,18 @@ void Task::vAddPrimitives_EntryBuffer(void)
 {
   vAddPrimitive("entryBuffer::create"_Stz,     &vEntryBufferCreate,      false);
   vAddPrimitive("entryBuffer.delete"_Stz,      &vEntryBufferDelete,      false);
+  vAddPrimitive("entryBuffer.dump"_Stz,        &vEntryBufferDump,        false);
   vAddPrimitive("entryBuffer.firstEntry"_Stz,  &vEntryBufferFirstEntry,  false);
+  vAddPrimitive("entryBuffer.index@"_Stz,      &vEntryBufferIndexFetch,  false);
+  vAddPrimitive("entryBuffer.index!"_Stz,      &vEntryBufferIndexStore,  false);
   vAddPrimitive("entryBuffer.insertRow"_Stz,   &vEntryBufferInsertRow,   false);
   vAddPrimitive("entryBuffer.isLast@"_Stz,     &vEntryBufferIsLastFetch, false);
   vAddPrimitive("entryBuffer.isLast!"_Stz,     &vEntryBufferIsLastStore, false);
   vAddPrimitive("entryBuffer.iterate"_Stz,     &vEntryBufferIterate,     false);
   vAddPrimitive("entryBuffer.nextEntry"_Stz,   &vEntryBufferNextEntry,   false);
   vAddPrimitive("entryBuffer.nextBuffer"_Stz,  &vEntryBufferNextBuffer,  false);
-  vAddPrimitive("entryBuffer.partition"_Stz,   &vEntryBufferPartition,   false);
+  vAddPrimitive("entryBuffer.partition@"_Stz,  &vEntryBufferPartitionFetch, false);
+  vAddPrimitive("entryBuffer.partition!"_Stz,  &vEntryBufferPartitionStore, false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -91,6 +95,26 @@ void Task::vEntryBufferDelete(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* entryBuffer.dump -- dump the index buffer                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vEntryBufferDump(MP_Task mpTask)
+{
+  ENTRY("vEntryBufferDump"_Stz);
+  
+  Object* pPtrIndexBuffer = nullptr;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
+    THROW_INVALID_DSTACK("entryBuffer.dump"_Stz);
+  
+  EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
+  ASSERT(CN_ENTRYBUFFER == pIndexBuffer->eClass());
+  
+  pIndexBuffer->vShow();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* entryBuffer.firstEntry -- get first entry from index buffer                */
 /*----------------------------------------------------------------------------*/
 void Task::vEntryBufferFirstEntry(MP_Task mpTask)
@@ -110,6 +134,54 @@ void Task::vEntryBufferFirstEntry(MP_Task mpTask)
     mpTask->m_pDataStack->vPushObject(pIndexBuffer->pNextEntry(pIndexBuffer->pHead()));
   else
     mpTask->m_pDataStack->vPushObject(nullptr);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* entryBuffer.index@ -- get index from entry buffer                          */
+/*----------------------------------------------------------------------------*/
+void Task::vEntryBufferIndexFetch(MP_Task mpTask)
+{
+  ENTRY("vEntryBufferIndexFetch"_Stz);
+  
+  Object* pPtrIndex;
+  Object* pPtrIndexBuffer;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
+    THROW_INVALID_DSTACK("entryBuffer.index@"_Stz);
+  
+  EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
+  ASSERT(CN_ENTRYBUFFER == pIndexBuffer->eClass());
+  
+  mpTask->m_pDataStack->vPushObject(pIndexBuffer->pIndex());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* entryBuffer.index! -- set index in entry buffer                            */
+/*----------------------------------------------------------------------------*/
+void Task::vEntryBufferIndexStore(MP_Task mpTask)
+{
+  ENTRY("vEntryBufferIndexStore"_Stz);
+  
+  Object* pPtrIndex;
+  Object* pPtrIndexBuffer;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
+    THROW_INVALID_DSTACK("entryBuffer.isLast!"_Stz);
+  
+  EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
+  ASSERT(nullptr == pIndexBuffer || CN_ENTRYBUFFER == pIndexBuffer->eClass());
+  
+  if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
+    THROW_INVALID_DSTACK("entryBuffer.index@"_Stz);
+  
+  Index* pIndex = _pIndex(pPtrIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  pIndexBuffer->vIndex(pIndex);
   
   EXIT();
 }
@@ -411,22 +483,47 @@ void Task::vEntryBufferNextEntry(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* entryBuffer.partition -- get partition no of this index buffer             */
+/* entryBuffer.partition@ -- get partition no of this index buffer            */
 /*----------------------------------------------------------------------------*/
-void Task::vEntryBufferPartition(MP_Task mpTask)
+void Task::vEntryBufferPartitionFetch(MP_Task mpTask)
 {
-  ENTRY("vEntryBufferPartition"_Stz);
+  ENTRY("vEntryBufferPartitionFetch"_Stz);
   
   Object* pPtrEntry = nullptr;
   Object* pPtrIndexBuffer;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
-    THROW_INVALID_DSTACK("entryBuffer.partition"_Stz);
+    THROW_INVALID_DSTACK("entryBuffer.partition@"_Stz);
   
   EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
   ASSERT(nullptr == pIndexBuffer || CN_ENTRYBUFFER == pIndexBuffer->eClass());
   
   mpTask->m_pDataStack->vPushInt(pIndexBuffer->nPartitionNo());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* entryBuffer.partition! -- set partition no of this index buffer            */
+/*----------------------------------------------------------------------------*/
+void Task::vEntryBufferPartitionStore(MP_Task mpTask)
+{
+  ENTRY("vEntryBufferPartitionStore"_Stz);
+  
+  Object* pPtrEntry = nullptr;
+  Object* pPtrIndexBuffer;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
+    THROW_INVALID_DSTACK("entryBuffer.partition!"_Stz);
+  
+  EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
+  ASSERT(nullptr == pIndexBuffer || CN_ENTRYBUFFER == pIndexBuffer->eClass());
+  
+  i8 iPartitionNo;
+  if ( ! mpTask->m_pDataStack->bPop(iPartitionNo) )
+    THROW_INVALID_DSTACK("entryBuffer.partition!"_Stz);
+  
+  pIndexBuffer->vPartitionNo(iPartitionNo);
   
   EXIT();
 }

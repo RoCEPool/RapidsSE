@@ -93,6 +93,7 @@ namespace DBobjects
     void       vIsLast(bool bIsLast);
     bool       bIsLast(void);
     Entry*     pNextRow(Entry* pCurrRow);
+    void       vPartitionNo(i8 nPartitionNo);
     i8         nPartitionNo(void);
     void       vRowCount(void);
     i8         nUsedBytes(void);
@@ -110,6 +111,7 @@ namespace DBobjects
     Entry*       pHead(void);
     void         vHigherLevel(EntryBuffer* pHigherLevel);
     EntryBuffer* pHigherLevel(void);
+    void         vIndex(Index* pIndex);
     Index*       pIndex(void);
     bool         bInsertEntry(i8 iTxId, Stz* pRow, i8 iLength);
     Entry*       pInsert(EntWrk& xEntWrk);

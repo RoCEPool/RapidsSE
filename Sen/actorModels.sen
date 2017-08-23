@@ -46,7 +46,7 @@ int:  queryCount
 
     snooze spawnListerDrone
     snooze spawnMonitorDrone
-    snooze spawnReclaimDrone
+    //snooze spawnReclaimDrone
 
     snooze spawnAnswerDrone
 

@@ -591,14 +591,18 @@ namespace Tasks
     // entry buffer
     static void vEntryBufferCreate(MP_Task mpTask);
     static void vEntryBufferDelete(MP_Task mpTask);
-    static void vEntryBufferFirstEntry(MP_Task mpTask);    
+    static void vEntryBufferDump(MP_Task mpTask);
+    static void vEntryBufferFirstEntry(MP_Task mpTask);
+    static void vEntryBufferIndexFetch(MP_Task mpTask);
+    static void vEntryBufferIndexStore(MP_Task mpTask);
     static void vEntryBufferInsertRow(MP_Task mpTask);
     static void vEntryBufferIsLastFetch(MP_Task mpTask);
     static void vEntryBufferIsLastStore(MP_Task mpTask);
     static void vEntryBufferIterate(MP_Task mpTask);
     static void vEntryBufferNextBuffer(MP_Task mpTask);
     static void vEntryBufferNextEntry(MP_Task mpTask);
-    static void vEntryBufferPartition(MP_Task mpTask);
+    static void vEntryBufferPartitionFetch(MP_Task mpTask);
+    static void vEntryBufferPartitionStore(MP_Task mpTask);
     
     // env
     static void vEnvGet(MP_Task mpTask);
@@ -677,6 +681,7 @@ namespace Tasks
     static void vIndexIsPrimaryKeyStore(MP_Task mpTask);
     static void vIndexIsUniqueFetch(MP_Task mpTask);
     static void vIndexIsUniqueStore(MP_Task mpTask);
+    static void vIndexNameFetch(MP_Task mpTask);
     static void vIndexPopulate(MP_Task mpTask);
     static void vIndexPosition(MP_Task mpTask);
     static void vIndexPositionFirst(MP_Task mpTask);
@@ -738,9 +743,11 @@ namespace Tasks
     static void vLoaderSubInsertRow(MP_Task mpTask);
     static void vLoaderSubLoaderStore(MP_Task mpTask);
     static void vLoaderSubNew(MP_Task mpTask);
-    static void vLoaderSubPartition(MP_Task mpTask);
+    static void vLoaderSubNewRowBuffer(MP_Task mpTask);
+    static void vLoaderSubPartitionFetch(MP_Task mpTask);
     static void vLoaderSubPartitionStore(MP_Task mpTask);
-    static void vLoaderSubRowBuffer(MP_Task mpTask);
+    static void vLoaderSubRecordsFetched(MP_Task mpTask);
+    static void vLoaderSubRowBufferFetch(MP_Task mpTask);
     static void vLoaderSubRowBufferStore(MP_Task mpTask);
     static void vLoaderSubTable(MP_Task mpTask);
  
@@ -1116,6 +1123,7 @@ namespace Tasks
     static void vTableList(MP_Task mpTask);
     static void vTableName(MP_Task mpTask);
     static void vTableRef(MP_Task mpTask);
+    static void vTableRemoveIndex(MP_Task mpTask);
     static void vTableShowColumnVec(MP_Task mpTask);
     static void vTableSlots(MP_Task mpTask);
     static void vTableSpace(MP_Task mpTask);
