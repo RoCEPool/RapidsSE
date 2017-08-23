@@ -3965,7 +3965,7 @@ bool SePrompt::bMakeTable()
   if (!bExecuteRequest()) {
     vTrace("SePrompt::bCreateTable : cf FAILED!!!\n"_Stz);
     bool bRemove = bRemoveTable(m_xTokenVec2[2]->aText());
-    ASSERT(bRemove);
+    //ASSERT(bRemove);
     return false;
   }
   

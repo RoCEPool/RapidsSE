@@ -225,9 +225,8 @@ timer: pIdxSelectTimer
   sIndexNm columnVecIndex
 
   // now populate the index
-  sIndexNm find execute ( ^index )
-  index.populate                                    // ../tables/tableNm/indexes
-
+  sIndexNm populateIndex
+                                                    // ../tables/tableNm/indexes
   // pop indexes folder temporarily
   popIndexes                                                // ../tables/tableNm
 

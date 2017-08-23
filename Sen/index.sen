@@ -696,6 +696,21 @@ tp: loadIndexes
 ;
 
 /*----------------------------------------------------------------------------*/
+/* populate the index with data                                               */
+/*----------------------------------------------------------------------------*/
+: populateIndex allParticipants 1 checkResult ( "<indexNm>" -- true n# true )
+
+  0 locals| pIndex sIndexNm |
+
+  // get index ptr
+  sIndexNm findInCurrent execute to pIndex
+
+  pIndex index.populate
+
+  true <SUCCESS_RESULT>
+;
+
+/*----------------------------------------------------------------------------*/
 /* fetch rows from buffers from teh buffer queue of the seitf                 */
 /*----------------------------------------------------------------------------*/
 : fetchQueueBufferRows ( -- )
