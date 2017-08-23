@@ -79,6 +79,8 @@ i8 Entry::nBytesRequired(EntWrk& xEntWrk)
 {
   i8 nOffsets = xEntWrk.nOffsets();
   
+  //# ASSERT(nOffsets >= 1);
+  
   i8 nKeyBytes = xEntWrk.nKeySize();
   
   i8 nDataBytes = xEntWrk.nDataSize();
@@ -94,6 +96,8 @@ i8 Entry::nBytesRequired(EntWrk& xEntWrk)
 i8 Entry::nBytesRequired(i8 nOffsets, i8 nKeyBytes, i8 nDataBytes)
 {
   i8 nOffsetBytes = RightVec::nBytesRequired(nOffsets);
+
+  //# ASSERT(nOffsets >= 1);
   
   i8 nBytes = sizeof(Entry)
                + nOffsetBytes

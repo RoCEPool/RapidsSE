@@ -306,7 +306,7 @@ Entry* EntryBuffer::pAllotEntry(i8 nBytes)
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   // nBytes takes care of data, offsets and key
-  i8 nBytesRequired = Entry::nBytesRequired(0,0,nBytes);
+  i8 nBytesRequired = Entry::nBytesRequired(0,0,nBytes);            //# 1 offset
   
   // test  sufficient freespace
   if (nFreeBytes() < nBytesRequired) {
@@ -329,6 +329,8 @@ Entry* EntryBuffer::pAllotEntry(i8 nBytes)
 Entry* EntryBuffer::pAllotEntry(i8 nOffsets, i8 nKeyBytes, i8 nDataBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  //# ASSERT(nOffsets >= 1);
   
   i8 nBytesRequired = Entry::nBytesRequired(nOffsets,nKeyBytes,nDataBytes);
   
@@ -910,7 +912,7 @@ Entry* EntryBuffer::pInsert(EntWrk& xEntWrk)
   bool bIsEqual = false;
   Entry* pAfterEntry = pPosition(xEntWrk.aKey(), JC_AFTER, &xPriorVec, bIsEqual);
     
-  if (m_pIndex->bIsUnique() and bIsEqual) {
+  if (m_pIndex->bIsUnique() and bIsEqual) {                 //# note the and !!!
     vTrace("Warning: Duplicate key in unique index %s "_Stz, m_pIndex->aIndexName());
     xEntWrk.aKey()->vShow(m_pIndex->pIdxColVec());
     vTrace("\n"_Stz);
@@ -1455,6 +1457,8 @@ void EntryBuffer::vAdjustOffsets(Entry* pEntry, i8 nAdjustAmount)
 Entry* EntryBuffer::pAllotEntry(i8 nBytes, i8 nOffsets, Entry* aAfterEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  //# ASSERT(nOffsets >= 1);
   
   // there should be enough space for the new entry
   if (m_xWsp.nFree() < nBytes)

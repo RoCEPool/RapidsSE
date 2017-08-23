@@ -89,7 +89,7 @@ void RightVec::vOffset(on nOffsetNo, i8 iOffset)
 /*----------------------------------------------------------------------------*/
 i8 RightVec::nBytesRequired(i8 nOffsets)
 {
-  ASSERT(nOffsets >= 0 && nOffsets <= gnIndexOffsets);
+  ASSERT(nOffsets >= 0 && nOffsets <= gnIndexOffsets);         //# nOffsets >= 1
   
   i8 nBytes = nOffsets * sizeof(u8);
   
