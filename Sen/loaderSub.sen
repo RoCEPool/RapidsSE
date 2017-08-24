@@ -63,8 +63,6 @@ tp: loadAppendBuffer$
     sTableNm "APPENDING ROWBUFFER " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
   then
 
-  pathDump
-
   // get ^table
   sTableNm find execute ( rb ptn table )
   to pTable

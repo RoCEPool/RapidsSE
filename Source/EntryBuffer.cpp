@@ -593,8 +593,6 @@ void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iE
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  vShow();
-  
   if (m_pIndex->bIsHidden()) {
     
     ASSERT(m_nBufferLevel == 0);
