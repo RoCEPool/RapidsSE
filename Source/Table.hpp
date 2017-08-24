@@ -77,6 +77,9 @@ namespace DBobjects
     void vTruncateIndex(i8 iIndexNo);
   
     Footer* aFooter(void);
+  
+  
+    void vNewIndexLoad(void);
   };
   
   Table* _pTable(void* aAddr);

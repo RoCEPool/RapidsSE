@@ -247,6 +247,11 @@ void Table::vAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
   IdxDataVec* pIdxDataVec = pPartition->pIdxDataVec();
   i8 nIndexes = pIdxDataVec->nItems();
   
+  
+  // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
+  vNewIndexLoad();
+  // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
+  
   Entry* pEntry = pEntryBuffer->pFirstRow();
   while( (pEntry = pEntryBuffer->pNextRow(pEntry)) ) {
     
@@ -621,6 +626,22 @@ Footer* Table::aFooter(void)
   
   return &m_xFooter;
 }
+
+
+
+/*----------------------------------------------------------------------------*/
+/*-- New Index Loader --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* new index load technique                                                   */
+/*----------------------------------------------------------------------------*/
+void Table::vNewIndexLoad(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+}
+
+
 
 /*============================================================================*/
 /* end                                                                        */
