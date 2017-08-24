@@ -82,7 +82,8 @@ namespace DBobjects
     Footer* aFooter(void);
   
   
-    void vNewIndexLoad(i8 iPartition);
+    void vNewIndexLoad(i8 iPartition, IndexData* pIndexData, IndexData* pHiddenIndexData);
+    i8 iHiddenEntryCount(EntryBuffer* pFirstL0Buffer);
   };
   
   Table* _pTable(void* aAddr);

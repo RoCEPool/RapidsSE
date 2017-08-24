@@ -239,8 +239,8 @@ void Table::vAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
   
   // first append buffer to the hidden index
   Partition* pPartition = this->pPartition(iPartition);
-  IndexData* pIndexData = pPartition->pHiddenIndexData();
-  pIndexData->vAppendBuffer(pEntryBuffer);
+  IndexData* pHiddenIndexData = pPartition->pHiddenIndexData();
+  pHiddenIndexData->vAppendBuffer(pEntryBuffer);
   
   // now iterate thru the buffer and insert entries in all other indexes
   
@@ -248,25 +248,48 @@ void Table::vAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
   IdxDataVec* pIdxDataVec = pPartition->pIdxDataVec();
   i8 nIndexes = pIdxDataVec->nItems();
   
-  
-  // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
-  vNewIndexLoad(0);
-  // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
-  
   Entry* pEntry = pEntryBuffer->pFirstRow();
   while( (pEntry = pEntryBuffer->pNextRow(pEntry)) ) {
     
     // insert an entry for the row in all the indexes of this table
-    for (i8 i_Index=0; i_Index < nIndexes; i_Index++) {
-      
+    for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
+
+      // get index
       IndexData* pIndexData = pIdxDataVec->pGet(i_Index);
-      Index* pIndex = pIndexData->pIndex();
       
       // skip the hidden index, as already inserted row in it
-      if ( ! pIndex->bIsHidden())
-        pIndexData->vInsertEntry(pEntry);
+      Index* pIndex = pIndexData->pIndex();
+      if (pIndex->bIsHidden())
+        continue;
+      
+      // insert entry
+      pIndexData->vInsertEntry(pEntry);
     }
   }
+  
+  // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
+  // the new index load technique
+  
+  // we build the other indexes when we detect the last buffer being inserted
+  if ( ! pEntryBuffer->bIsLast() )
+    return;
+  
+  // iterate all indexes to be built
+  for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
+    
+    // get index
+    IndexData* pIndexData = pIdxDataVec->pGet(i_Index);
+    
+    // skip the hidden index
+    Index* pIndex = pIndexData->pIndex();
+    if (pIndex->bIsHidden())
+      continue;
+  
+    // load from hidden index into index being built
+    vNewIndexLoad(iPartition,pIndexData,pHiddenIndexData);
+  }
+  
+  // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
 }
 
 /*----------------------------------------------------------------------------*/
@@ -637,7 +660,7 @@ Footer* Table::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* new index load technique                                                   */
 /*----------------------------------------------------------------------------*/
-void Table::vNewIndexLoad(i8 iPartition)
+void Table::vNewIndexLoad(i8 iPartition, IndexData* pIndexData, IndexData* pHiddenIndexData)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 
@@ -709,16 +732,40 @@ void Table::vNewIndexLoad(i8 iPartition)
   int iDebug = 0;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compute the number of entries in hidden index (wrong place)
+  
+  iDebug = 2;
+  i8 nHiddenEntries = iHiddenEntryCount(pHiddenIndexData->pRoot());
+  if (gxArguments.m_bVerbose) {
+    vTrace("Hidden index has %lld entries\n"_Stz,
+           nHiddenEntries);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // destroy the sort region for given partition
   
   bResult = Shm::bClose(iFD,xSysCall);
   bResult = Shm::bUnmap((void*)C_SORT_REGION_ADDR,C_SORT_REGION_SIZE,xSysCall);
   bResult = Shm::bUnlink(sRegionName,xSysCall);
  
-  iDebug = 1;
+  iDebug = 2;
 }
 
-
+/*----------------------------------------------------------------------------*/
+/* compute the number of entries in the hidden index                          */
+/*----------------------------------------------------------------------------*/
+i8 Table::iHiddenEntryCount(EntryBuffer* pFirstL0Buffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  ASSERT(0 == pFirstL0Buffer->nBufferLevel());
+  
+  i8 nEntries = 0;
+  for (EntryBuffer* pEB = pFirstL0Buffer; pEB; pEB = pEB->pNextBuffer())
+    nEntries += pEB->nEntries();
+  
+  return nEntries;
+}
 
 /*============================================================================*/
 /* end                                                                        */

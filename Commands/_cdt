@@ -46,7 +46,7 @@ fetch jCdt "jA 5 >=" ;
 
 //docol epochDump;
 
-drop table jCdt;
+//drop table jCdt;
 
 /*============================================================================*/
 /* end                                                                        */
