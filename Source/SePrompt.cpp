@@ -822,20 +822,12 @@ bool SePrompt::bBeginInsert(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  i8 i_Token;
-  i8 iNumTokens;
-  
   ASSERT(m_xTokenVec[0]->bSame("begin"_Stz));
   ASSERT(m_xTokenVec[1]->bSame("insert"_Stz));
   
-  for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if (! m_xTokenVec[i_Token]->bHasText())
-      break;
-    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
-    m_xTokenVec[i_Token]->vCopy(""_Stz);
-  }
-  
-  iNumTokens = i_Token;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy tokens from m_xTokenVec to m_xTokenVec2
+  i8 iNumTokens = iCopyTokens(m_xTokenVec, m_xTokenVec2);
   
   // - - - - - - - - - - - - - - - - - - - - -
   // there should be 3 tokens
@@ -928,8 +920,6 @@ bool SePrompt::bCreateCatalog(void)
   
   ASSERT(m_xTokenVec[0]->bSame("create"_Stz));
   ASSERT(m_xTokenVec[1]->bSame("catalog"_Stz));
-  
-  i8 i_Token;
   
   // copy tokens from m_xTokenVec to m_xTokenVec2
   i8 iNumTokens = iCopyTokens(m_xTokenVec, m_xTokenVec2);
@@ -1191,18 +1181,9 @@ bool SePrompt::bCreateSchema(void)
   ASSERT(m_xTokenVec[0]->bSame("create"_Stz));
   ASSERT(m_xTokenVec[1]->bSame("schema"_Stz));
   
-  i8 i_Token;
-  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy tokens from m_xTokenVec to m_xTokenVec2
-  // while doing that also validate the create statament
-  for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if (! m_xTokenVec[i_Token]->bHasText())
-      break;
-    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
-    m_xTokenVec[i_Token]->vCopy(""_Stz);
-  }
-  
-  i8 iNumTokens = i_Token;
+  i8 iNumTokens = iCopyTokens(m_xTokenVec, m_xTokenVec2);
   
   // - - - - - - - - - - - - - - - - - - - - -
   // there should be 3 tokens
@@ -1232,18 +1213,9 @@ bool SePrompt::bCreateTenant(void)
   ASSERT(m_xTokenVec[0]->bSame("create"_Stz));
   ASSERT(m_xTokenVec[1]->bSame("tenant"_Stz));
   
-  i8 i_Token;
-  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy tokens from m_xTokenVec to m_xTokenVec2
-  // while doing that also validate the create statament
-  for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if (! m_xTokenVec[i_Token]->bHasText())
-      break;
-    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
-    m_xTokenVec[i_Token]->vCopy(""_Stz);
-  }
-  
-  i8 iNumTokens = i_Token;
+  i8 iNumTokens = iCopyTokens(m_xTokenVec, m_xTokenVec2);
   
   // - - - - - - - - - - - - - - - - - - - - -
   // there should be 3 tokens
@@ -1273,18 +1245,9 @@ bool SePrompt::bCreateTable(void)
   ASSERT(m_xTokenVec[0]->bSame("create"_Stz));
   ASSERT(m_xTokenVec[1]->bSame("table"_Stz));
   
-  i8 i_Token;
-  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy tokens from m_xTokenVec to m_xTokenVec2
-  // while doing that also validate the create statament
-  for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if ( ! m_xTokenVec[i_Token]->bHasText())
-      break;
-    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
-    m_xTokenVec[i_Token]->vCopy(""_Stz);
-  }
-  
-  i8 iNumTokens = i_Token;
+  i8 iNumTokens = iCopyTokens(m_xTokenVec, m_xTokenVec2);
   
   // some validations
   // - - - - - - - - - - - - - - - - - - - - -
@@ -1386,20 +1349,12 @@ bool SePrompt::bDropCatalog(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  i8 i_Token;
-  i8 iNumTokens;
-  
   ASSERT(m_xTokenVec[0]->bSame("drop"_Stz));
   ASSERT(m_xTokenVec[1]->bSame("catalog"_Stz));
   
-  for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if (! m_xTokenVec[i_Token]->bHasText())
-      break;
-    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
-    m_xTokenVec[i_Token]->vCopy(""_Stz);
-  }
-  
-  iNumTokens = i_Token;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy tokens from m_xTokenVec to m_xTokenVec2
+  i8 iNumTokens = iCopyTokens(m_xTokenVec, m_xTokenVec2);
   
   // - - - - - - - - - - - - - - - - - - - - -
   // there should be 3 tokens
@@ -1425,20 +1380,12 @@ bool SePrompt::bDropIndex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  i8 i_Token;
-  i8 iNumTokens;
-  
   ASSERT(m_xTokenVec[0]->bSame("drop"_Stz));
   ASSERT(m_xTokenVec[1]->bSame("index"_Stz));
   
-  for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if (! m_xTokenVec[i_Token]->bHasText())
-      break;
-    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
-    m_xTokenVec[i_Token]->vCopy(""_Stz);
-  }
-  
-  iNumTokens = i_Token;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy tokens from m_xTokenVec to m_xTokenVec2
+  i8 iNumTokens = iCopyTokens(m_xTokenVec, m_xTokenVec2);
   
   // - - - - - - - - - - - - - - - - - - - - -
   // there should be 5 tokens
@@ -1471,20 +1418,12 @@ bool SePrompt::bDropSchema(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  i8 i_Token;
-  i8 iNumTokens;
-  
   ASSERT(m_xTokenVec[0]->bSame("drop"_Stz));
   ASSERT(m_xTokenVec[1]->bSame("schema"_Stz));
   
-  for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if (! m_xTokenVec[i_Token]->bHasText())
-      break;
-    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
-    m_xTokenVec[i_Token]->vCopy(""_Stz);
-  }
-  
-  iNumTokens = i_Token;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy tokens from m_xTokenVec to m_xTokenVec2
+  i8 iNumTokens = iCopyTokens(m_xTokenVec, m_xTokenVec2);
   
   // - - - - - - - - - - - - - - - - - - - - -
   // there should be 3 tokens
@@ -1510,20 +1449,12 @@ bool SePrompt::bDropTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  i8 i_Token;
-  i8 iNumTokens;
-  
   ASSERT(m_xTokenVec[0]->bSame("drop"_Stz));
   ASSERT(m_xTokenVec[1]->bSame("table"_Stz));
   
-  for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if (! m_xTokenVec[i_Token]->bHasText())
-      break;
-    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
-    m_xTokenVec[i_Token]->vCopy(""_Stz);
-  }
-  
-  iNumTokens = i_Token;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy tokens from m_xTokenVec to m_xTokenVec2
+  i8 iNumTokens = iCopyTokens(m_xTokenVec, m_xTokenVec2);
   
   // - - - - - - - - - - - - - - - - - - - - -
   // there should be 3 tokens
@@ -1549,20 +1480,12 @@ bool SePrompt::bDropTenant(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  i8 i_Token;
-  i8 iNumTokens;
-  
   ASSERT(m_xTokenVec[0]->bSame("drop"_Stz));
   ASSERT(m_xTokenVec[1]->bSame("tenant"_Stz));
   
-  for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if (! m_xTokenVec[i_Token]->bHasText())
-      break;
-    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
-    m_xTokenVec[i_Token]->vCopy(""_Stz);
-  }
-  
-  iNumTokens = i_Token;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy tokens from m_xTokenVec to m_xTokenVec2
+  i8 iNumTokens = iCopyTokens(m_xTokenVec, m_xTokenVec2);
   
   // - - - - - - - - - - - - - - - - - - - - -
   // there should be 3 tokens
@@ -1590,20 +1513,12 @@ bool SePrompt::bEndInsert(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  i8 i_Token;
-  i8 iNumTokens;
-  
   ASSERT(m_xTokenVec[0]->bSame("end"_Stz));
   ASSERT(m_xTokenVec[1]->bSame("insert"_Stz));
   
-  for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if (! m_xTokenVec[i_Token]->bHasText())
-      break;
-    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
-    m_xTokenVec[i_Token]->vCopy(""_Stz);
-  }
-  
-  iNumTokens = i_Token;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy tokens from m_xTokenVec to m_xTokenVec2
+  i8 iNumTokens = iCopyTokens(m_xTokenVec, m_xTokenVec2);
   
   // - - - - - - - - - - - - - - - - - - - - -
   // there should be 2 tokens
@@ -1661,17 +1576,10 @@ bool SePrompt::bFetchRows(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   ASSERT(m_xTokenVec[0]->bSame("fetch"_Stz));
-  i8 i_Token;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy tokens from m_xTokenVec to m_xTokenVec2
-  for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if ( ! m_xTokenVec[i_Token]->bHasText())
-      break;
-    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
-    m_xTokenVec[i_Token]->vCopy(""_Stz);
-  }
-  
-  i8 iNumTokens = i_Token;
+  i8 iNumTokens = iCopyTokens(m_xTokenVec, m_xTokenVec2);
   
   // some validations
   // - - - - - - - - - - - - - - - - - - - - -
@@ -1814,20 +1722,12 @@ bool SePrompt::bInsertRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  i8 i_Token;
-  i8 iNumTokens;
-  
   ASSERT(m_xTokenVec[0]->bSame("insert"_Stz));
   ASSERT(m_xTokenVec[1]->bSame("row"_Stz));
   
-  for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if (! m_xTokenVec[i_Token]->bHasText())
-      break;
-    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
-    m_xTokenVec[i_Token]->vCopy(""_Stz);
-  }
-  
-  iNumTokens = i_Token;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy tokens from m_xTokenVec to m_xTokenVec2
+  i8 iNumTokens = iCopyTokens(m_xTokenVec, m_xTokenVec2);
   
   // - - - - - - - - - - - - - - - - - - - - -
   // there should be 3 tokens
@@ -2039,20 +1939,12 @@ bool SePrompt::bUseSchema(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  i8 i_Token;
-  i8 iNumTokens;
-  
   ASSERT(m_xTokenVec[0]->bSame("use"_Stz));
   ASSERT(m_xTokenVec[1]->bSame("schema"_Stz));
   
-  for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if (! m_xTokenVec[i_Token]->bHasText())
-      break;
-    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
-    m_xTokenVec[i_Token]->vCopy(""_Stz);
-  }
-  
-  iNumTokens = i_Token;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy tokens from m_xTokenVec to m_xTokenVec2
+  i8 iNumTokens = iCopyTokens(m_xTokenVec, m_xTokenVec2);
   
   // - - - - - - - - - - - - - - - - - - - - -
   // there should be 3 tokens
@@ -2127,10 +2019,6 @@ Footer* SePrompt::aFooter(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
 /*-- Intercepted Commands ----------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -2156,20 +2044,12 @@ bool SePrompt::bCmd_BeginInsert(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  i8 i_Token;
-  i8 iNumTokens;
-  
   ASSERT(m_xTokenVec[0]->bSame("begin"_Stz));
   ASSERT(m_xTokenVec[1]->bSame("insert"_Stz));
   
-  for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if (! m_xTokenVec[i_Token]->bHasText())
-      break;
-    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
-    m_xTokenVec[i_Token]->vCopy(""_Stz);
-  }
-  
-  iNumTokens = i_Token;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy tokens from m_xTokenVec to m_xTokenVec2
+  i8 iNumTokens = iCopyTokens(m_xTokenVec, m_xTokenVec2);
   
   // - - - - - - - - - - - - - - - - - - - - -
   // there should be 3 tokens
@@ -2247,18 +2127,9 @@ bool SePrompt::bCmd_CreateCatalog(void)
   ASSERT(m_xTokenVec[0]->bSame("create"_Stz));
   ASSERT(m_xTokenVec[1]->bSame("catalog"_Stz));
   
-  i8 i_Token;
-  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy tokens from m_xTokenVec to m_xTokenVec2
-  // while doing that also validate the create statament
-  for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if (! m_xTokenVec[i_Token]->bHasText())
-      break;
-    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
-    m_xTokenVec[i_Token]->vCopy(""_Stz);
-  }
-  
-  i8 iNumTokens = i_Token;
+  i8 iNumTokens = iCopyTokens(m_xTokenVec, m_xTokenVec2);
   
   // - - - - - - - - - - - - - - - - - - - - -
   // there should be 3 tokens
@@ -3577,6 +3448,10 @@ bool SePrompt::bCmd_UseSchema(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
