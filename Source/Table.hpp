@@ -84,6 +84,7 @@ namespace DBobjects
   
     void vNewIndexLoad(i8 iPartition, IndexData* pIndexData, IndexData* pHiddenIndexData);
     i8 iHiddenEntryCount(EntryBuffer* pFirstL0Buffer);
+    void vPopulateSortArray(char* aSortArray, IndexData* pIndexData, EntryBuffer* pFirstL0Buffer);
   };
   
   Table* _pTable(void* aAddr);

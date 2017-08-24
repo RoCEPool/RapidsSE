@@ -767,6 +767,42 @@ i8 Table::iHiddenEntryCount(EntryBuffer* pFirstL0Buffer)
   return nEntries;
 }
 
+/*----------------------------------------------------------------------------*/
+/* populate the sort array for the given index from the hidden index          */
+/*----------------------------------------------------------------------------*/
+void Table::vPopulateSortArray(char* aSortArray, IndexData* pIndexData, EntryBuffer* pFirstL0Buffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  ASSERT(0 == pFirstL0Buffer->nBufferLevel());
+  ASSERT(sizeof(i8) == sizeof(Id));
+  
+  Index* pIndex = pIndexData->pIndex();
+  
+  i8 iSortElmSize = sizeof(Id) + pIndex->iSortKeyDatum();
+  ASSERT(2*sizeof(i8) == iSortElmSize);
+  
+  char* aSortElm = aSortArray;
+  
+  KeyWrk xKeyWrk;
+  for (EntryBuffer* pEB = pFirstL0Buffer; pEB; pEB = pEB->pNextBuffer()) {
+    for (Entry* pRow = pEB->pFirstRow(); pRow; pRow = pEB->pNextRow(pRow)) {
+      
+      // get the key datum for this index
+      pRow->vExtractKey(xKeyWrk,pIndex->pIdxColVec());
+      ASSERT(sizeof(i8) == xKeyWrk.nWspUsed());
+      
+      // set the id into the sort element
+      *((Id*)aSortElm) = pRow->xId();
+      aSortElm = pAdd<char*>(aSortElm,sizeof(Id));
+      
+      // copy the key datum into the sort element
+      MemLib::vCopy(aSortElm,xKeyWrk.aWspArea(),xKeyWrk.nWspUsed(),CN_TABLE);
+      aSortElm = pAdd<char*>(aSortElm,xKeyWrk.nWspUsed());
+    }
+  }
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
