@@ -61,6 +61,7 @@ namespace DBobjects
     bool   bIsUnique(void);
     void   vIsUnique(bool bUnique);
     void   vShowColumnVec(void);
+    i8     iSortKeyDatum(void);
     Dic*   pSubDic(void);
     void   vTable(Table* pTable);
     Table* pTable(void);
