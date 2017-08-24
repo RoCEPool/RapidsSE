@@ -290,6 +290,31 @@ ddlLock::grabRead
 ;
 
 /*----------------------------------------------------------------------------*/
+/* get a table ref                                                            */
+/*----------------------------------------------------------------------------*/
+: getTableNew_req ( "<tableNm>" -- <R> )
+
+  // should be in the tables folder
+  checkInTables       not if <NIP+ERROR> exit then
+
+  // there should be a table folder
+  dup checkIsTableFolder not if <NIP+ERROR> exit then
+
+  // push table dictionary
+  dup pushTable assert
+
+  // check it is a table
+  checkIsTable       not if <NIP+ERROR> exit then
+
+  getTableRef not if <NIP+ERROR> exit then
+
+  // pop table dictionary
+  popTable
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
 /* get list of tables                                                         */
 /*----------------------------------------------------------------------------*/
 : listTables_req ( -- <R> )

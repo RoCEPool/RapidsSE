@@ -45,6 +45,7 @@ ReqTable SeRequests[] =
  { "getInUseSpace"_Stz,  &SEitf::bGetInUseSpace,        "getInUseSpace"_Stz       },
  { "getidx"_Stz,         &SEitf::bGetIndex,             "getIndex_req"_Stz        },
  { "gettbl"_Stz,         &SEitf::bGetTable,             "getTable_req"_Stz        },
+ { "gettblNew"_Stz,      &SEitf::bGetTableNew,          "getTableNew_req"_Stz     },
  { "gettsk"_Stz,         &SEitf::bGetTask,              "getTask_req"_Stz         },
  { "getTotalSpace"_Stz,  &SEitf::bGetTotalSpace,        "getTotalSpace"_Stz       },
  { "TblInUse"_Stz,       &SEitf::bInUseTable,           "tableInuse_req"_Stz      },
@@ -1742,6 +1743,30 @@ bool SEitf::bGetIndex(TokenVec& xTokenVec, i8 iReqNo)
 /* get address/reference of a table                                           */
 /*----------------------------------------------------------------------------*/
 bool SEitf::bGetTable(TokenVec& xTokenVec, i8 iReqNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  if (xTokenVec.nTokens() != 2) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  sRequest.vCopy("\""_Stz);
+  sRequest.vConcat(xTokenVec[1]->aText());
+  sRequest.vConcat("\""_Stz);
+  
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address/reference of a table                                           */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bGetTableNew(TokenVec& xTokenVec, i8 iReqNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   

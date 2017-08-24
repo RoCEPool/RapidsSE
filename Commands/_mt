@@ -138,69 +138,6 @@ drop tenant t;
 
 docol epochDump ;
 
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-List of command that need to be tested:
-mkten   createTenant_req
-lsten   listTenants_req
-rmten   dropTenant_req
-
-Catalog Requests:
-
-mkcat   createCatalog_req
-lscat   listCatalogs_req
-rmcat   dropCatalog_req
-
-Schema Requests:
-
-mksch   createSchema_req
-lssch   listSchemas_req
-rmsch   dropSchema_req
-usesch  useSchema_req
-
-Table Requests:
-
-antbl   analyzeTable_req
-dantbl  danalyzeTable_req
-gettbl  getTable_req
-mktbl   createTable_req
-lstbl   listTables_req
-add     addColumn_req
-addidx  addIdxColumn_req
-lscol   listColumns_req
-ld      loadTable_req
-tblInUse  tableInuse_req
-tableSizes sizeTables_req
-dump    dumpTable_req
-cp      copyTable_req
-dex     distExport_table
-ex      exportTable_req
-sz      sizeTable_req
-tr      truncateTable_req
-rettbl  returnTable_req
-rmtbl   dropTable_req
-
-Index Requests:
-
-anidx   analyzeIndex_req
-mkidx   createIndex_req
-lsidx   listIndexes_req
-dumpidx dumpIndex_req
-lsidxcol listIndexColumns_req
-rmidx   dropIndex_req
-tridx   truncateIndex_req
-visidx  visualizeIndex_req
-
-Dictionary Requests:
-
-cf      cf ..
-cf ~
-cf
-pwf     pwf
-lf      lf
-rf      remove_folder
-
-* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

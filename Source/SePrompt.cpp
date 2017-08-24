@@ -968,34 +968,16 @@ bool SePrompt::bCreateIndex(bool bUnique)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // some validations
   bool bValid = bValidateCreateIndex(iNumTokens, iIfUnique);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // change folder to table
-  m_xTokenVec[0]->vCopy("cf"_Stz);
-  m_xTokenVec[1]->vCopy(m_xTokenVec2[4 + iIfUnique]);
-  
-  if (!bExecuteRequest()) {
-    ASSERT(m_pSEitf->m_eErrorCode == EC_NO_SUCH_FOLDER);
-    m_pSEitf->vSetLastError(EC_NO_SUCH_TABLE);
-    return false;
-  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get reference to pTable
-  m_xTokenVec[0]->vCopy("gettbl"_Stz);
+  m_xTokenVec[0]->vCopy("gettblNew"_Stz);
   m_xTokenVec[1]->vCopy(m_xTokenVec2[4 + iIfUnique]);
   
   if (!bExecuteRequest()) {
     vTrace("SePrompt::bCreateIndex : gettbl FAILED!!!\n"_Stz);
     return false;
   }
-  
-  // change folder back to tables
-  m_xTokenVec[0]->vCopy("cf"_Stz);
-  m_xTokenVec[1]->vCopy(".."_Stz);
-  
-  if (!bExecuteRequest())
-    return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the index
