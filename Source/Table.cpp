@@ -802,6 +802,24 @@ void Table::vPopulateSortArray(char* aSortArray, IndexData* pIndexData, EntryBuf
     }
   }
 }
+/*----------------------------------------------------------------------------*/
+/* the qsort compare function                                                 */
+/*----------------------------------------------------------------------------*/
+int DBobjects::iQsortCompare(const void* aArg1, const void* aArg2)
+{
+  return 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* qsort the sort array for the given index                                   */
+/*----------------------------------------------------------------------------*/
+void Table::vSortTheArray(char* aSortArray, IndexData* pIndexData,
+                          i8 nElements, i8 nElmSize)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  qsort(aSortArray,nElements,nElmSize,iQsortCompare);
+}
 
 /*============================================================================*/
 /* end                                                                        */
