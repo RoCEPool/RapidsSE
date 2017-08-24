@@ -82,7 +82,7 @@ namespace DBobjects
     Footer* aFooter(void);
   
   
-    void vNewIndexLoad(void);
+    void vNewIndexLoad(i8 iPartition);
   };
   
   Table* _pTable(void* aAddr);

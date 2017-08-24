@@ -250,7 +250,7 @@ void Table::vAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
   
   
   // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
-  vNewIndexLoad();
+  vNewIndexLoad(0);
   // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
   
   Entry* pEntry = pEntryBuffer->pFirstRow();
@@ -637,31 +637,40 @@ Footer* Table::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* new index load technique                                                   */
 /*----------------------------------------------------------------------------*/
-void Table::vNewIndexLoad(void)
+void Table::vNewIndexLoad(i8 iPartition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 
   int iFD;
-  SysCall xSysCall;
-  s32 sSize;
   s256 sRegionName;
+  s32 sRegionMagnitude;
+  bool bResult;
+  SysCall xSysCall;
   
-  sRegionName.vSprint("%s_PTN%lld"_Stz,gxArguments.m_sRegionName.aChar(),0);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // form the name of the sort region for given partition
+
+  sRegionName.vSprint("%s_PTN%lld"_Stz,
+                      gxArguments.m_sRegionName.aChar(),
+                      iPartition);
   
-  Magnitudes::vMagnitude(C_SORT_REGION_SIZE, sSize);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the sort region for given partition
   
-  if (gxArguments.m_bVerbose)
-    vInfo("Creating sort region %s; size %s (%lldB)...\n"_Stz,
-          sRegionName.aChar(),
-          sSize.aChar(),
-          C_SORT_REGION_SIZE);
+  if (gxArguments.m_bVerbose) {
+    Magnitudes::vMagnitude(C_SORT_REGION_SIZE, sRegionMagnitude);
+    vTrace("Creating sort region %s; size %s (%lldB)...\n"_Stz,
+           sRegionName.aChar(),
+           sRegionMagnitude.aChar(),
+           C_SORT_REGION_SIZE);
+  }
   
   // open a new shm region
-  bool bResult = Shm::bCreate(sRegionName,
-                              C_SORT_REGION_SIZE,
-                              iFD,
-                              true,
-                              xSysCall);
+  bResult = Shm::bCreate(sRegionName,
+                         C_SORT_REGION_SIZE,
+                         iFD,
+                         true,
+                         xSysCall);
   
   if (gxArguments.m_bVerbose) {
     if (bResult) {
@@ -688,7 +697,7 @@ void Table::vNewIndexLoad(void)
       vTrace("Mapped region %s address %p size %s\n"_Stz,
              sRegionName.aChar(),
              C_SORT_REGION_ADDR,
-             sSize.aChar());
+             sRegionMagnitude.aChar());
     }
     else {
       Shm::bClose(iFD,xSysCall);
@@ -698,6 +707,15 @@ void Table::vNewIndexLoad(void)
   }
   
   int iDebug = 0;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // destroy the sort region for given partition
+  
+  bResult = Shm::bClose(iFD,xSysCall);
+  bResult = Shm::bUnmap((void*)C_SORT_REGION_ADDR,C_SORT_REGION_SIZE,xSysCall);
+  bResult = Shm::bUnlink(sRegionName,xSysCall);
+ 
+  iDebug = 1;
 }
 
 
