@@ -384,14 +384,13 @@ tp: makingTable
 
   sTableNm makeTableDic
 
-  sTableNm
-  find execute pathPush
+  sTableNm pushTable assert
 
   sTableNm "makeIndexes" find execute
 
   sTableNm "makePartitions" find execute
 
-  sTableNm :table ( ^table )
+  sTableNm :table ( ^table ) drop
 
   // make partition columns
   sTableNm "makePartitionColumns" find execute
@@ -405,7 +404,7 @@ tp: makingTable
   // make the index as hidden
   "indexes" find execute pathPush
   "hidden" findInCurrent execute to indexPtr
-  indexPtr index.isHidden!
+  true indexPtr index.isHidden!
 
   // now add a column to the hidden index
   "hidden_column" "hidden"

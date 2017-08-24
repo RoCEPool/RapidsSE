@@ -10,7 +10,7 @@
 : connectCluster_req
 
   setStartNode
-  spawnConnectorDrone
+  spawnConnectorDrone assert
 
   <OK>
 ;

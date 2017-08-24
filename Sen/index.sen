@@ -264,7 +264,7 @@
 
   0 0 locals| indexPtr tablePtr indexNm tableNm |
 
-  pushIndexes
+  pushIndexes assert
 
   // create the index
   indexNm ( "<indexNm>" )
@@ -311,8 +311,8 @@ tp: makingIndex
   "MAKING INDEX " indexNm str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
   then
 
-  tableNm ( "<tableNm>" )
-  find execute pathPush
+  tableNm
+  pushTable assert
 
   tableNm indexNm make_index
 

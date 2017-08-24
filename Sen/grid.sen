@@ -123,7 +123,7 @@ tp: printResult
           "\n" str.cat
         else
           grid.node node.name  ( " " s nodeName )
-          "%v: %v" str.format
+          "%v: %v\n" str.format
         then
         str.cat
     loop

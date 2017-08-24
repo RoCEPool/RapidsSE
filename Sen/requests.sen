@@ -63,6 +63,7 @@ dex     distExport_table
 dump    dumpTable_req
 ex      exportTable_req
 gettbl  getTable_req
+gettblNew getTableNew_req
 ld      loadTable_req
 lstbl   listTables_req
 mktbl   createTable_req
@@ -123,12 +124,6 @@ mon        getMonitor_req
 object     object_req
 ping       ping_req
 seitf      seitfCount_req
-
------------------
-Grid Request:
------------------
-lfG     lf on grid
-pRB     print a row buffer on each node
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 

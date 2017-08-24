@@ -82,7 +82,7 @@ int: nConnections
 
     1 == if               ( connection# )
       grid.thisNode@ grid.startNode@ != if
-        spawnConnectorDrone
+        spawnConnectorDrone assert
       then
     then
       

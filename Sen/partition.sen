@@ -16,7 +16,6 @@
   then
 
   tableNm find execute ( dic )
-  dup ( dic dic )
   "partitions" ( dic "partitions" )
   swap         ( "partitions" dic )
   :folder      ( )
