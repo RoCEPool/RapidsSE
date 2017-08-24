@@ -9,13 +9,9 @@
 /*----------------------------------------------------------------------------*/
 : connectCluster_req
 
-"tp:1" .
   setStartNode
-stk
-"tp:2" .
   spawnConnectorDrone assert
-"tp:3" .
-stk
+
   <OK>
 ;
 
