@@ -175,8 +175,6 @@
 
   // pop the index sub folder
   popIndexSub
-
-  true <SUCCESS_RESULT>
 ;
 
 
