@@ -10,6 +10,7 @@
 extern BufferPool*  gpBufferPool;
 extern bool  gbMetadata;
 extern Grid* gpGrid;
+extern Arguments gxArguments;
 
 
 /*----------------------------------------------------------------------------*/
@@ -639,6 +640,64 @@ Footer* Table::aFooter(void)
 void Table::vNewIndexLoad(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+
+  int iFD;
+  SysCall xSysCall;
+  s32 sSize;
+  s256 sRegionName;
+  
+  sRegionName.vSprint("%s_PTN%lld"_Stz,gxArguments.m_sRegionName.aChar(),0);
+  
+  Magnitudes::vMagnitude(C_SORT_REGION_SIZE, sSize);
+  
+  if (gxArguments.m_bVerbose)
+    vInfo("Creating sort region %s; size %s (%lldB)...\n"_Stz,
+          sRegionName.aChar(),
+          sSize.aChar(),
+          C_SORT_REGION_SIZE);
+  
+  // open a new shm region
+  bool bResult = Shm::bCreate(sRegionName,
+                              C_SORT_REGION_SIZE,
+                              iFD,
+                              true,
+                              xSysCall);
+  
+  if (gxArguments.m_bVerbose) {
+    if (bResult) {
+      vTrace("Created region %s\n"_Stz,
+             sRegionName.aChar());
+    }
+    else {
+     vFatal("Table::vNewIndexLoad: failed to create region %s\n"_Stz,
+            sRegionName.aChar());
+     NEVER_REACH;
+    }
+  }
+  
+  // allocate memory for the shm region
+  void* aSortRegion = Shm::pMap(iFD,
+                                (void*)C_SORT_REGION_ADDR,
+                                C_SORT_REGION_SIZE,
+                                true,
+                                false,
+                                xSysCall);
+  
+  if (gxArguments.m_bVerbose) {
+    if (aSortRegion)  {
+      vTrace("Mapped region %s address %p size %s\n"_Stz,
+             sRegionName.aChar(),
+             C_SORT_REGION_ADDR,
+             sSize.aChar());
+    }
+    else {
+      Shm::bClose(iFD,xSysCall);
+      vFatal("Table::vNewIndexLoad: failed to map sort region\n"_Stz);
+      NEVER_REACH;
+    }
+  }
+  
+  int iDebug = 0;
 }
 
 

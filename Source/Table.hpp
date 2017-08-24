@@ -17,6 +17,9 @@ namespace DBobjects
     /* 1 */ "NORMAL"_Stz
   };
   
+  static const i8 C_SORT_REGION_SIZE = C_1GB;
+  static const void* C_SORT_REGION_ADDR = (void*)0x409600000000;
+
   typedef Vector<CN_IDXVEC,Index,CN_INDEX,C_INDEXES_PER_TABLE,u8> IdxVec;
   
   class Table : public Object
