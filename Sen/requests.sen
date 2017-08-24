@@ -124,12 +124,6 @@ object     object_req
 ping       ping_req
 seitf      seitfCount_req
 
------------------
-Grid Request:
------------------
-lfG     lf on grid
-pRB     print a row buffer on each node
-
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /*============================================================================*/

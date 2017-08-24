@@ -158,12 +158,14 @@ public:
 private:
   bool bAddTableColumns(i8& i_Token, i8 iNumTokens);
   bool bAddPartitionColumn(Stz* pTable, Stz* pColumn);
+  i8   iCopyTokens(TokenVec& xFromTokenVec, TokenVec& xToTokenVec);
   bool bDropReturnTable(Stz* aTableName);
   bool bEndMakeTable(void);
   bool bMakeTable(void);
   bool bPartitionTable(i8 i_Token, i8 iNumTokens);
   bool bPartitionTable(Stz* pColumnName);
   bool bRemoveTable(Stz* pTableName);
+  bool bValidateCreateIndex(i8 iNumTokens, i8 iIfUnique);
   
 };
 

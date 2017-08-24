@@ -932,15 +932,7 @@ bool SePrompt::bCreateCatalog(void)
   i8 i_Token;
   
   // copy tokens from m_xTokenVec to m_xTokenVec2
-  // while doing that also validate the create statament
-  for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if (! m_xTokenVec[i_Token]->bHasText())
-      break;
-    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
-    m_xTokenVec[i_Token]->vCopy(""_Stz);
-  }
-  
-  i8 iNumTokens = i_Token;
+  i8 iNumTokens = iCopyTokens(m_xTokenVec, m_xTokenVec2);
   
   // - - - - - - - - - - - - - - - - - - - - -
   // there should be 3 tokens
@@ -975,47 +967,19 @@ bool SePrompt::bCreateIndex(bool bUnique)
              m_xTokenVec[2]->bSame("index"_Stz) )
          ||
          (! bUnique && m_xTokenVec[1]->bSame("index"_Stz))
-         );
+  );
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy tokens from m_xTokenVec to m_xTokenVec2
-  i8 i_Token;
-  for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if (! m_xTokenVec[i_Token]->bHasText())
-      break;
-    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
-    m_xTokenVec[i_Token]->vCopy(""_Stz);
-  }
+  i8 iNumTokens = iCopyTokens(m_xTokenVec, m_xTokenVec2);
   
   i8 iValue;
-  i8 iNumTokens = i_Token;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // some validations
-  
-  // there should be a minumum of 8 tokens
-  if (iNumTokens < 8 + iIfUnique) {
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return false;
-  }
-  
-  // token[3] should be 'on'
-  if (!m_xTokenVec2[3 + iIfUnique]->bSame("on"_Stz)) {
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return false;
-  }
-  
-  // token[5] should be '('
-  if (!m_xTokenVec2[5 + iIfUnique]->bSame("("_Stz)) {
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return false;
-  }
-  
-  // last-1 token should be ')'
-  if (!m_xTokenVec2[iNumTokens - 1]->bSame(")"_Stz)) {
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return false;
-  }
-  
+  bool bValid = bValidateCreateIndex(iNumTokens, iIfUnique);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // change folder to table
   m_xTokenVec[0]->vCopy("cf"_Stz);
   m_xTokenVec[1]->vCopy(m_xTokenVec2[4 + iIfUnique]);
@@ -3852,6 +3816,26 @@ bool SePrompt::bAddTableColumns(i8& i_Token, i8 iNumTokens)
 }
 
 /*----------------------------------------------------------------------------*/
+/* copy tokens from a token vector to another                                 */
+/*----------------------------------------------------------------------------*/
+i8 SePrompt::iCopyTokens(TokenVec& xFromTokenVec, TokenVec& xToTokenVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  // copy tokens from m_xTokenVec to m_xTokenVec2
+  // while doing that also validate the create statament
+  i8 i_Token;
+  for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
+    if (! xFromTokenVec[i_Token]->bHasText())
+      break;
+    xToTokenVec[i_Token]->vCopy(xFromTokenVec[i_Token]);
+    xFromTokenVec[i_Token]->vCopy(""_Stz);
+  }
+  
+  return i_Token;
+}
+
+/*----------------------------------------------------------------------------*/
 /* drop return table                                                          */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bDropReturnTable(Stz* aTableName)
@@ -4168,6 +4152,40 @@ bool SePrompt::bRemoveTable(Stz* pTableName)
   m_xTokenVec[2]->vCopy(""_Stz);
   
   if (!bExecuteRequest()) {
+    return false;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* validate a create index request                                            */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bValidateCreateIndex(i8 iNumTokens, i8 iIfUnique)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  // there should be a minumum of 8 tokens
+  if (iNumTokens < 8 + iIfUnique) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+
+  // token[3] should be 'on'
+  if (!m_xTokenVec2[3 + iIfUnique]->bSame("on"_Stz)) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+
+  // token[5] should be '('
+  if (!m_xTokenVec2[5 + iIfUnique]->bSame("("_Stz)) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+
+  // last-1 token should be ')'
+  if (!m_xTokenVec2[iNumTokens - 1]->bSame(")"_Stz)) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
