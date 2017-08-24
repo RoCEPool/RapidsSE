@@ -306,7 +306,7 @@ Entry* EntryBuffer::pAllotEntry(i8 nBytes)
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   // nBytes takes care of data, offsets and key
-  i8 nBytesRequired = Entry::nBytesRequired(0,0,nBytes);            //# 1 offset
+  i8 nBytesRequired = Entry::nBytesRequired(0,0,nBytes); //# change to 1 offset
   
   // test  sufficient freespace
   if (nFreeBytes() < nBytesRequired) {
@@ -457,7 +457,7 @@ bool EntryBuffer::bInsertRow(EntWrk& xRowWrk, Entry** ppRow)
 /*----------------------------------------------------------------------------*/
 /* insert row into this buffer                                                */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bInsertRow(Entry* pOldRow, Entry** ppRow)
+bool EntryBuffer::bInsertRow(Entry* pOldRow, Entry** ppRow)         //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -474,13 +474,13 @@ bool EntryBuffer::bInsertRow(Entry* pOldRow, Entry** ppRow)
   // form the key
   xValWrk = nRowNo;
   
-  KeyWrk xKeyWrk;
+  KeyWrk xKeyWrk; //# i don't think xKeyWrk gets used?
   Column* pColumn = m_pIndex->pIdxColVec()->pGet(0);
   ASSERT(pColumn->iColumnNo() == -1);
   ASSERT(pColumn->eColumnType() == CT_INTEGER);
   xKeyWrk.vAddDatum(xValWrk, pColumn);
   
-  Entry* pRowEntry = pAllotEntry(pOldRow->nRowSize() + sizeof(i8));
+  Entry* pRowEntry = pAllotEntry(pOldRow->nRowSize() + sizeof(i8)); //# why + sizeof(i8) ?
   if ( ! pRowEntry )
     return false;
   
@@ -843,7 +843,7 @@ void EntryBuffer::vBufferCount(i8& nBuffers)
 /*----------------------------------------------------------------------------*/
 /* insert an entry for {key,id} into an index buffer at given level           */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bInsertEntry(i8 iTxId, Stz* pRow, i8 iLength)
+bool EntryBuffer::bInsertEntry(i8 iTxId, Stz* pRow, i8 iLength)     //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -895,7 +895,7 @@ bool EntryBuffer::bInsertEntry(i8 iTxId, Stz* pRow, i8 iLength)
 /*----------------------------------------------------------------------------*/
 /* insert new entry into this index buffer                                    */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pInsert(EntWrk& xEntWrk)
+Entry* EntryBuffer::pInsert(EntWrk& xEntWrk)                        //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -910,7 +910,7 @@ Entry* EntryBuffer::pInsert(EntWrk& xEntWrk)
   bool bIsEqual = false;
   Entry* pAfterEntry = pPosition(xEntWrk.aKey(), JC_AFTER, &xPriorVec, bIsEqual);
     
-  if (m_pIndex->bIsUnique() and bIsEqual) {                 //# note the and !!!
+  if (m_pIndex->bIsUnique() and bIsEqual) { //# note the and !!!
     vTrace("Warning: Duplicate key in unique index %s "_Stz, m_pIndex->aIndexName());
     xEntWrk.aKey()->vShow(m_pIndex->pIdxColVec());
     vTrace("\n"_Stz);
@@ -1030,7 +1030,7 @@ Entry* EntryBuffer::pPosition(KeyWrk& xKeyWrk, eJC eJuxtaCompare)
 /*----------------------------------------------------------------------------*/
 /* position at an index buffer at level iLevel starting from this buffer      */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* EntryBuffer::pPositionLevel(KeyWrk& xKeyWrk, eJC eJuxtaCompare, i8 iLevel)
+EntryBuffer* EntryBuffer::pPositionLevel(KeyWrk& xKeyWrk, eJC eJuxtaCompare, i8 iLevel)  //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1106,7 +1106,7 @@ void EntryBuffer::vShow(void)
 /*----------------------------------------------------------------------------*/
 #define NEW_SPLIT
 #ifndef NEW_SPLIT
-EntryBuffer* EntryBuffer::pSplitBuffer(void)
+EntryBuffer* EntryBuffer::pSplitBuffer(void)                        //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1270,7 +1270,7 @@ EntryBuffer* EntryBuffer::pSplitBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* verify                                                                     */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bVerify(void)
+bool EntryBuffer::bVerify(void)                                     //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1431,7 +1431,7 @@ void EntryBuffer::vTruncate(void)
 /*----------------------------------------------------------------------------*/
 /* adjust the  entry offsets                                                  */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vAdjustOffsets(Entry* pEntry, i8 nAdjustAmount)
+void EntryBuffer::vAdjustOffsets(Entry* pEntry, i8 nAdjustAmount)   //# critical
 {
   for (on nOffsetNo; nOffsetNo < pEntry->nOffsets(); nOffsetNo++) {
     
@@ -1452,7 +1452,7 @@ void EntryBuffer::vAdjustOffsets(Entry* pEntry, i8 nAdjustAmount)
 /*----------------------------------------------------------------------------*/
 /* allot new entry after given entry (return null if insufficient space)      */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pAllotEntry(i8 nBytes, i8 nOffsets, Entry* aAfterEntry)
+Entry* EntryBuffer::pAllotEntry(i8 nBytes, i8 nOffsets, Entry* aAfterEntry)  //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1519,7 +1519,7 @@ void EntryBuffer::vAllotHead(void)
 /*----------------------------------------------------------------------------*/
 /* copy entries from fromBuffer starting at fromEntry to this buffer          */
 /*----------------------------------------------------------------------------*/
-i8 EntryBuffer::iCopyEntries(EntryBuffer* pFromBuffer, Entry* aFromEntry)
+i8 EntryBuffer::iCopyEntries(EntryBuffer* pFromBuffer, Entry* aFromEntry)  //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1614,7 +1614,7 @@ void EntryBuffer::vDumpPrior(Entry* xPriorVec[])
 /*----------------------------------------------------------------------------*/
 /* fix the higher level                                                       */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vFixHigherLevel(Entry* aNewEntry)
+void EntryBuffer::vFixHigherLevel(Entry* aNewEntry)                 //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1694,7 +1694,7 @@ void EntryBuffer::vFixHigherLevel(Entry* aNewEntry)
 /*----------------------------------------------------------------------------*/
 /* replace old key with new key in the index buffer                           */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vReplace(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk)
+void EntryBuffer::vReplace(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk)  //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1721,7 +1721,7 @@ void EntryBuffer::vReplace(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk)
 /*----------------------------------------------------------------------------*/
 /* replace old key with new key of same size in the index buffer              */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vReplaceEqualKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk)
+void EntryBuffer::vReplaceEqualKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk) //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1755,7 +1755,7 @@ void EntryBuffer::vReplaceEqualKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk)
 /*----------------------------------------------------------------------------*/
 /* replace old key with new key in the index buffer                           */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vReplaceLargerKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk)
+void EntryBuffer::vReplaceLargerKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk) //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1834,7 +1834,7 @@ void EntryBuffer::vReplaceLargerKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk)
 /*----------------------------------------------------------------------------*/
 /* replace old key with new key in the index buffer                           */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vReplaceSmallereKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk)
+void EntryBuffer::vReplaceSmallereKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk) //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1907,7 +1907,7 @@ void EntryBuffer::vReplaceSmallereKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk)
 /*----------------------------------------------------------------------------*/
 /* fix offsets of the entries in the prior vector to account for new entry    */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vFixPriorOffset(EntryVec* pPriorVec, Entry* aNewEntry)
+void EntryBuffer::vFixPriorOffset(EntryVec* pPriorVec, Entry* aNewEntry) //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1975,7 +1975,7 @@ Entry* EntryBuffer::pGetEntry(i8 iEntryNo)
 /*----------------------------------------------------------------------------*/
 /* move subset of entries left (thereby removing an entry)                    */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vMoveLeft(void* aDst, i8 nBytes)
+void EntryBuffer::vMoveLeft(void* aDst, i8 nBytes)                  //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -2024,7 +2024,7 @@ void EntryBuffer::vMoveLeft(void* aDst, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* move subset of entries right (thereby making room for a new entry)         */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vMoveRight(void* aSrc, i8 nBytes)
+void EntryBuffer::vMoveRight(void* aSrc, i8 nBytes)                 //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -2079,7 +2079,7 @@ void EntryBuffer::vMoveRight(void* aSrc, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* scan thru skip list and positition to entry (optionally set prior vector)  */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pPosition(Key* aGivenKey, eJC eJuxtaCompare, EntryVec* pPriorVec, bool& bIsEqual)
+Entry* EntryBuffer::pPosition(Key* aGivenKey, eJC eJuxtaCompare, EntryVec* pPriorVec, bool& bIsEqual) //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -2161,7 +2161,7 @@ Entry* EntryBuffer::pPosition(Key* aGivenKey, eJC eJuxtaCompare, EntryVec* pPrio
 /*----------------------------------------------------------------------------*/
 /* get the prior vector of given entry                                        */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vPriorVec(Entry* pEntry, EntryVec* pPriorVec)
+void EntryBuffer::vPriorVec(Entry* pEntry, EntryVec* pPriorVec)     //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -2193,7 +2193,7 @@ void EntryBuffer::vPriorVec(Entry* pEntry, EntryVec* pPriorVec)
 /*----------------------------------------------------------------------------*/
 /* get right entry at given level (returns null if no right)                  */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pRightEntry(Entry* pEntry, ln nLevelNo)
+Entry* EntryBuffer::pRightEntry(Entry* pEntry, ln nLevelNo)         //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
