@@ -327,7 +327,7 @@ Entry* IndexData::pInsertEntry(i8 iTxId, Stz* pRow, i8 iLength)
 /* insert an entry for given row into this index at level 0                   */
 /*----------------------------------------------------------------------------*/
 void IndexData::vInsertEntry(Entry* pRow)
-{
+{ //# indexTuning
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
   m_zLock.vGrabWrite();
@@ -505,7 +505,7 @@ bool IndexData::bVerify(void)
 /* insert an entry for {key,id} into an index buffer at given level           */
 /*----------------------------------------------------------------------------*/
 void IndexData::vInsertEntry(EntryBuffer* pHigher, KeyWrk& xKeyWrk, Id xId, i8 iLevel)
-{
+{ //# indexTuning
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
   // initialize the entry wsp

@@ -40,37 +40,37 @@ create table lineitem (
   L_COMMENT       VARCHAR(44) NOT NULL
 );
 
-print "creating index idx1..." ;
-create index idx1 on lineitem (L_ORDERKEY);
+//print "creating index idx1..." ;
+//create index idx1 on lineitem (L_ORDERKEY);
 
 print "loading lineitem.tbl..." ;
 //docol stepsReset;
 //docol memoryReset;
 //docol schedulerReset;
 ld lineitem "/tpch/lineitem.tbl" ;
-sleep 20 ;
+//sleep 20 ;
 space;
 //docol schedulerList;
 //docol memoryList;
 //docol stepsList;
 
 //print "epoch take..." ;
-docol epochTake;
+//docol epochTake;
 //print "fetching..." ;
 
-docol stepsReset;
-docol memoryReset;
-docol schedulerReset;
-fetch lineitem "L_ORDERKEY 0 >= L_ORDERKEY 5900000 <= and" groupBy;
-docol schedulerList;
-docol memoryList;
-docol stepsList;
+//docol stepsReset;
+//docol memoryReset;
+//docol schedulerReset;
+//fetch lineitem "L_ORDERKEY 0 >= L_ORDERKEY 5900000 <= and" groupBy;
+//docol schedulerList;
+//docol memoryList;
+//docol stepsList;
 
 //print "epoch dump..." ;
-docol epochDump;
+//docol epochDump;
 
 visidx lineitem hidden;
-visidx lineitem idx1;
+//visidx lineitem idx1;
 
 /*============================================================================*/
 /* end                                                                        */
