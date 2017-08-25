@@ -856,6 +856,8 @@ void Table::vPopulateSortArray(char* aSortArray, i8 nElements, i8 iSortElmSize,
     }
   }
   
+  xTimer.vUpdate();
+  
   s32 sTimeMagnitude;
   Magnitudes::vTimeMag(xTimer.iNanoseconds(),sTimeMagnitude);
   
@@ -940,6 +942,9 @@ void Table::vBuildNewIndex(char* aSortArray, i8 nElements, i8 nElmSize,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
+  Timer xTimer;
+  xTimer.vStart();
+  
   char* aSortElm = aSortArray;
   
   vTrace("-- Build New Index --------------\n"_Stz);
@@ -961,6 +966,15 @@ void Table::vBuildNewIndex(char* aSortArray, i8 nElements, i8 nElmSize,
   }
 
   vTrace("---------------------------------\n"_Stz);
+  
+  xTimer.vUpdate();
+  
+  s32 sTimeMagnitude;
+  Magnitudes::vTimeMag(xTimer.iNanoseconds(),sTimeMagnitude);
+  
+  if (gxArguments.m_bVerbose)
+    vTrace("vBuildNewIndex took %s\n"_Stz,
+           sTimeMagnitude.aChar());
 }
 
 /*============================================================================*/
