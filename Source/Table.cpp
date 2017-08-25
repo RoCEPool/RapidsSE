@@ -885,8 +885,11 @@ void Table::vSortTheArray(char* aSortArray, i8 nElements, i8 nElmSize,
   
   xTimer.vUpdate();
   
-  vTrace("qsort took %lldus\n"_Stz,
-         xTimer.iMicroseconds());
+  s32 sTimeMagnitude;
+  Magnitudes::vTimeMag(xTimer.iNanoseconds(),sTimeMagnitude);
+  
+  vTrace("qsort took %s\n"_Stz,
+         sTimeMagnitude.aChar());
 }
 
 /*----------------------------------------------------------------------------*/
