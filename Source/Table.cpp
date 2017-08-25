@@ -692,18 +692,24 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pIndexData, IndexData* pHidd
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compute the size of the sort region
+  
+  // the size is no. entries * element size + some fudge
+  i8 nSortRegionSize = nHiddenEntries * iSortElmSize + C_16KB;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compute the address of the sort region
+  
+  char* aSortRegionAddr = pAdd<char*>((void*)C_SORT_REGION_BASE,
+                                      iPartition * C_SORT_REGION_DELTA);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the name of the sort region for given partition
 
   sRegionName.vSprint("%s_%s_PTN%lld"_Stz,
                       gxArguments.m_sRegionName.aChar(),
                       pIndexData->pIndex()->sIndexName().aChar(),
                       iPartition);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // compute the size of the sort region
-  
-  // the size if no. entries * element size + some fudge
-  i8 nSortRegionSize = nHiddenEntries * iSortElmSize + C_16KB;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the sort region for given partition
@@ -725,11 +731,11 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pIndexData, IndexData* pHidd
   
   if (gxArguments.m_bVerbose) {
     if (bResult) {
-      vTrace("Created region %s\n"_Stz,
+      vTrace("Created sort region %s\n"_Stz,
              sRegionName.aChar());
     }
     else {
-     vFatal("Table::vNewIndexLoad: failed to create region %s\n"_Stz,
+     vFatal("Table::vNewIndexLoad: failed to create sort region %s\n"_Stz,
             sRegionName.aChar());
      NEVER_REACH;
     }
@@ -737,7 +743,7 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pIndexData, IndexData* pHidd
   
   // allocate memory for the shm region
   void* aSortRegion = Shm::pMap(iFD,
-                                (void*)C_SORT_REGION_ADDR,
+                                aSortRegionAddr,
                                 nSortRegionSize,
                                 true,
                                 false,
@@ -745,9 +751,9 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pIndexData, IndexData* pHidd
   
   if (gxArguments.m_bVerbose) {
     if (aSortRegion)  {
-      vTrace("Mapped region %s address %p size %s\n"_Stz,
+      vTrace("Mapped sort region %s address %p size %s\n"_Stz,
              sRegionName.aChar(),
-             C_SORT_REGION_ADDR,
+             aSortRegionAddr,
              sRegionMagnitude.aChar());
     }
     else {
@@ -760,29 +766,29 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pIndexData, IndexData* pHidd
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // populate the sort array
   
-  vPopulateSortArray((char*)C_SORT_REGION_ADDR,nHiddenEntries,iSortElmSize,
+  vPopulateSortArray(aSortRegionAddr,nHiddenEntries,iSortElmSize,
                      pIndexData,pHiddenIndexData->pRoot());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the unsorted array
   
-  vDumpSortArray((char*)C_SORT_REGION_ADDR,nHiddenEntries,iSortElmSize,pIndexData);
+  vDumpSortArray(aSortRegionAddr,nHiddenEntries,iSortElmSize,pIndexData);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sort the array
   
-  vSortTheArray((char*)C_SORT_REGION_ADDR,nHiddenEntries,iSortElmSize,pIndexData);
+  vSortTheArray(aSortRegionAddr,nHiddenEntries,iSortElmSize,pIndexData);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the sorted array
   
-  vDumpSortArray((char*)C_SORT_REGION_ADDR,nHiddenEntries,iSortElmSize,pIndexData);
+  vDumpSortArray(aSortRegionAddr,nHiddenEntries,iSortElmSize,pIndexData);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // destroy the sort region for given partition
   
   bResult = Shm::bClose(iFD,xSysCall);
-  bResult = Shm::bUnmap((void*)C_SORT_REGION_ADDR,nSortRegionSize,xSysCall);
+  bResult = Shm::bUnmap(aSortRegionAddr,nSortRegionSize,xSysCall);
   bResult = Shm::bUnlink(sRegionName,xSysCall);
  
   iDebug = 2;
