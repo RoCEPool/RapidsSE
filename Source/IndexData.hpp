@@ -38,6 +38,7 @@ namespace DBobjects
   
     Stz*         pAnalyze(void);
     void         vAppendBuffer(EntryBuffer* pEntryBuffer);
+    void         vAppendEntry(KeyWrk& xKeyWrk, Entry* pRow);
     void         vDump(bool bSameLevel);
     EntryBuffer* pFirstBuffer();
     Index*       pIndex(void);
@@ -54,6 +55,7 @@ namespace DBobjects
     Footer*      aFooter(void);
     
   private:
+    EntryBuffer* pAppendEntry(EntryBuffer* pRoot,KeyWrk& xKeyWrk, Id xId, i8 iLevel);
     void         vFixHigherBuffer(EntryBuffer* pIndexBuffer, i8 iLevel);
     void         vInsertEntry(EntryBuffer* pRoot,KeyWrk& xKeyWrk, Id xId, i8 iLevel);
     void         vInsertFirstEntry(EntryBuffer* pToBuffer, EntryBuffer* pFromBuffer);

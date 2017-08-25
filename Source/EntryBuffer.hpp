@@ -102,6 +102,7 @@ namespace DBobjects
     // what was IndexBuffer
   
     void         vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries);
+    Entry*       pAppendEntry(EntWrk& xEntWrk);
     i8           nBufferLevel(void);
     void         vBufferCount(i8& nBufferCount);
     i8           iDecile(void);
@@ -115,6 +116,7 @@ namespace DBobjects
     Index*       pIndex(void);
     bool         bInsertEntry(i8 iTxId, Stz* pRow, i8 iLength);
     Entry*       pInsert(EntWrk& xEntWrk);
+    EntryBuffer* pNewNextBuffer(void);
     Entry*       pNextEntry(Entry* pEntry);
     EntryBuffer* pPositionLevel(KeyWrk& xKeyWrk, eJC eJuxtaCompare, i8 iLevel);
     Entry*       pPosition(KeyWrk& xKeyWrk, eJC eJuxtaCompare);
@@ -127,6 +129,7 @@ namespace DBobjects
     private:
     void         vAdjustOffsets(Entry* pEntry, i8 nAdjustAmount);
     Entry*       pAllotEntry(i8 nBytes, i8 nLevels, Entry* aAfterEntry);
+    Entry*       pAllotEntryBytes(i8 nBytes);
     void         vAllotHead(void);
     i8           iCopyEntries(EntryBuffer* pFromBuffer, Entry* aFromEntry);
     void         vDumpPrior(Entry* aPriorVec[]);

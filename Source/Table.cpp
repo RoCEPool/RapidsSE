@@ -247,25 +247,25 @@ void Table::vAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
   // get no of indexes of the table
   IdxDataVec* pIdxDataVec = pPartition->pIdxDataVec();
   i8 nIndexes = pIdxDataVec->nItems();
-  
-  Entry* pEntry = pEntryBuffer->pFirstRow();
-  while( (pEntry = pEntryBuffer->pNextRow(pEntry)) ) {
-    
-    // insert an entry for the row in all the indexes of this table
-    for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
-
-      // get index
-      IndexData* pIndexData = pIdxDataVec->pGet(i_Index);
-      
-      // skip the hidden index, as already inserted row in it
-      Index* pIndex = pIndexData->pIndex();
-      if (pIndex->bIsHidden())
-        continue;
-      
-      // insert entry
-      pIndexData->vInsertEntry(pEntry);
-    }
-  }
+//  
+//  Entry* pEntry = pEntryBuffer->pFirstRow();
+//  while( (pEntry = pEntryBuffer->pNextRow(pEntry)) ) {
+//    
+//    // insert an entry for the row in all the indexes of this table
+//    for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
+//
+//      // get index
+//      IndexData* pIndexData = pIdxDataVec->pGet(i_Index);
+//      
+//      // skip the hidden index, as already inserted row in it
+//      Index* pIndex = pIndexData->pIndex();
+//      if (pIndex->bIsHidden())
+//        continue;
+//      
+//      // insert entry
+//      pIndexData->vInsertEntry(pEntry);
+//    }
+//  }
   
   // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
   // the new index load technique
@@ -777,7 +777,7 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pNewIndexData,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the unsorted array
   
-  vDumpSortArray(aSortRegionAddr,nHiddenEntries,iSortElmSize,pNewIndexData);
+  //vDumpSortArray(aSortRegionAddr,nHiddenEntries,iSortElmSize,pNewIndexData);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sort the array
@@ -787,7 +787,7 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pNewIndexData,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the sorted array
   
-  vDumpSortArray(aSortRegionAddr,nHiddenEntries,iSortElmSize,pNewIndexData);
+  //vDumpSortArray(aSortRegionAddr,nHiddenEntries,iSortElmSize,pNewIndexData);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // build the new index
@@ -956,23 +956,31 @@ void Table::vBuildNewIndex(char* aSortArray, i8 nElements, i8 nElmSize,
   xTimer.vStart();
   
   char* aSortElm = aSortArray;
+  char* aKeyElm;
+  char* aRowElm;
   
   vTrace("-- Build New Index --------------\n"_Stz);
   
+  IdxColVec* pIdxColVec = pNewIndexData->pIndex()->pIdxColVec();
+  
   for (i8 i_Elm = 0; i_Elm < nElements; i_Elm++) {
     
-    // skip over key datum
+    // get key datum
+    aKeyElm = aSortElm;
     aSortElm = pAdd<char*>(aSortElm,sizeof(i8));
     
-    // get row pointer
     Entry* pRow = *((Entry**)aSortElm);
     aSortElm = pAdd<char*>(aSortElm,sizeof(Entry*));
     
-    vTrace("[%lld] %p\n"_Stz,
-           i_Elm,
-           pRow);
+//    if (i_Elm % 10000 == 0) {
+//      vTrace("[%lld] %p\n"_Stz,
+//           i_Elm,
+//           pRow);
+//    }
 
     // to be completed
+    KeyWrk xKeyWrk((Key*)aKeyElm, pIdxColVec);
+    pNewIndexData->vAppendEntry(xKeyWrk, pRow);
   }
 
   vTrace("---------------------------------\n"_Stz);

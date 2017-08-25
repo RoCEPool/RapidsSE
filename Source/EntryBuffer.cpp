@@ -324,6 +324,28 @@ Entry* EntryBuffer::pAllotEntry(i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
+/* allot an entry for a row in this buffer   //TEMPORARY!!!                   */
+/*----------------------------------------------------------------------------*/
+Entry* EntryBuffer::pAllotEntryBytes(i8 nBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  // test  sufficient freespace
+  if (nFreeBytes() < nBytes) {
+    return nullptr;
+  }
+  
+  Entry* pRow = reinterpret_cast<Entry*>(m_xWsp.aAllot(nBytes));
+  new(pRow) Entry(CN_ROW,nBytes,0);
+  
+  m_nEntries++;
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  return pRow;
+}
+
+/*----------------------------------------------------------------------------*/
 /* allot an entry for a row in this buffer                                    */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pAllotEntry(i8 nOffsets, i8 nKeyBytes, i8 nDataBytes)
@@ -991,6 +1013,101 @@ Entry* EntryBuffer::pInsert(EntWrk& xEntWrk)                        //# critical
 }
 
 /*----------------------------------------------------------------------------*/
+/* append new entry into this index buffer                                    */
+/*----------------------------------------------------------------------------*/
+Entry* EntryBuffer::pAppendEntry(EntWrk& xEntWrk)                        //# critical
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  //vTrace("Inserting key:\n"_Stz);
+  //xKeyWrk.vShow();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // insert a new entry into the skip list
+/*
+  // find the entry after which the new entry.key will be inserted
+  EntryVec xPriorVec;
+  bool bIsEqual = false;
+  Entry* pAfterEntry = pPosition(xEntWrk.aKey(), JC_AFTER, &xPriorVec, bIsEqual);
+  
+  if (m_pIndex->bIsUnique() and bIsEqual) { //# note the and !!!
+    vTrace("Warning: Duplicate key in unique index %s "_Stz, m_pIndex->aIndexName());
+    xEntWrk.aKey()->vShow(m_pIndex->pIdxColVec());
+    vTrace("\n"_Stz);
+  }
+  
+  // create a new entry after the prior entry and set it
+  //EntWrk xEntWrk(xId,xKeyWrk);
+  i8 nEntryBytes = Entry::nBytesRequired(xEntWrk);
+  Entry* pNewEntry = pAllotEntry(nEntryBytes, xEntWrk.nOffsets(), pAfterEntry);
+  pNewEntry->vSetEntry(xEntWrk);
+  
+  //vTrace("\n\n---------INDEX BUFFER AFTER MOVING --------------\n"_Stz);
+  //vShow();
+  //vTrace("-----------------------\n\n"_Stz);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // revise the offsets of the prior entries from the prior vector
+  
+  // fix the prior vector after the move
+  vFixPriorOffset(&xPriorVec, pNewEntry);
+  
+  // get the absolute offset of the new entry
+  i8 iNewEntryOffsetAbs = iToOffsetAbs(pNewEntry);
+  
+  //pNewEntry->vShow(pNewEntry->nOffsets(), m_pIndex);
+  
+  // step thru each offset to be revised
+  for (on n_OffsetNo = pNewEntry->nHighestOffset(); n_OffsetNo.bInRange(); n_OffsetNo--) {
+    
+    // get prior entry being revised
+    ln nLevelNo = n_OffsetNo.nToLevelNo();
+    Entry* aPriorEntry = xPriorVec[nLevelNo];
+    
+    i8 iPriorsRightOffsetAbs = iToRightOffsetAbs(aPriorEntry,n_OffsetNo);
+    
+    // is the prior's right offset after new entry : [PURPLE] (grey)-> [GREEN]
+    if (iPriorsRightOffsetAbs > iNewEntryOffsetAbs) {
+      
+      // get post entry : [GREEN]
+      Entry* aPostEntry = pRightEntry(aPriorEntry,nLevelNo);
+      
+      // calculate new's right offset : [RED ARROW]
+      i8 iNewRightOffset = uOffsetBetween(pNewEntry,aPostEntry);
+      
+      // set right offset on new : [RED.hasoffset]
+      pNewEntry->vRightOffset(n_OffsetNo,iNewRightOffset);
+      
+      // calculate prior's revised offset : [PURPLE ARROW]
+      i8 iPriorRightOffset = uOffsetBetween(aPriorEntry,pNewEntry);
+      
+      aPriorEntry->vRightOffset(n_OffsetNo,iPriorRightOffset);
+    }
+    else {
+      
+      // this is the case where the prior entry now needs to point to the new
+      // prior was at C_NIL_OFFSET and now needs to point to the newEntry
+      ASSERT(aPriorEntry->iRightOffset(n_OffsetNo) == C_NIL_OFFSET);
+      ASSERT(pNewEntry->iRightOffset(n_OffsetNo) == C_NIL_OFFSET);
+      
+      // calculate new right offset
+      i8 iNewRightOffset = uOffsetBetween(pNewEntry,aPriorEntry);
+      
+      // set the right offset in the prior entry to offset of new entry
+      aPriorEntry->vRightOffset(n_OffsetNo, iNewRightOffset);
+    }
+    
+  } // for
+  */
+  
+  i8 nEntryBytes = Entry::nBytesRequired(xEntWrk);
+  Entry* pNewEntry = pAllotEntryBytes(nEntryBytes);
+  pNewEntry->vSetEntry(xEntWrk);
+  
+  return pNewEntry;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get next entry (eq to right L0) after given entry (null if no next)        */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pNextEntry(Entry* pEntry)                           //! tune
@@ -1099,6 +1216,22 @@ void EntryBuffer::vShow(void)
   
   vTrace("\n"_Stz);
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* create a next buffer                                                       */
+/*----------------------------------------------------------------------------*/
+EntryBuffer* EntryBuffer::pNewNextBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+
+  // create new buffer at the same index level and link the two buffers
+  EntryBuffer* pNewBuffer = new EntryBuffer(m_pIndex, m_nBufferLevel, m_nPartitionNo);
+  pNewBuffer->m_pNextBuffer = pNextBuffer();
+  pNewBuffer->m_pPrevBuffer = this;
+  m_pNextBuffer = pNewBuffer;
+  
+  return pNewBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
