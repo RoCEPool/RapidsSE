@@ -918,7 +918,27 @@ void Table::vBuildNewIndex(char* aSortArray, i8 nElements, i8 nElmSize,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  // to be completed
+  char* aSortElm = aSortArray;
+  
+  vTrace("-- Build New Index --------------\n"_Stz);
+  
+  for (i8 i_Elm = 0; i_Elm < nElements; i_Elm++) {
+    
+    // skip over key datum
+    aSortElm = pAdd<char*>(aSortElm,sizeof(i8));
+    
+    // get row pointer
+    Entry* pRow = *((Entry**)aSortElm);
+    aSortElm = pAdd<char*>(aSortElm,sizeof(Entry*));
+    
+    vTrace("[%lld] %p\n"_Stz,
+           i_Elm,
+           pRow);
+
+    // to be completed
+  }
+
+  vTrace("---------------------------------\n"_Stz);
 }
 
 /*============================================================================*/
