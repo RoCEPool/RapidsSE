@@ -82,8 +82,9 @@ namespace DBobjects
     Footer* aFooter(void);
   
   
-    void vNewIndexLoad(i8 iPartition, IndexData* pIndexData, IndexData* pHiddenIndexData);
-    i8 iHiddenEntryCount(EntryBuffer* pFirstL0Buffer);
+    void vNewIndexLoad(i8 iPartition, IndexData* pIndexData,
+                       IndexData* pHiddenIndexData, i8 nHiddenEntries);
+    i8 nHiddenEntryCount(EntryBuffer* pFirstL0Buffer);
     void vPopulateSortArray(char* aSortArray, i8 nElements, i8 nElmSize,
                             IndexData* pIndexData, EntryBuffer* pFirstL0Buffer);
     void vSortTheArray(char* aSortArray, i8 nElements, i8 nElmSize,

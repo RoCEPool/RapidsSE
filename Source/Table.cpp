@@ -274,6 +274,13 @@ void Table::vAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
   if ( ! pEntryBuffer->bIsLast() )
     return;
   
+  // compute the number of entries in hidden index
+  i8 nHiddenEntries = nHiddenEntryCount(pHiddenIndexData->pRoot());
+  if (gxArguments.m_bVerbose) {
+    vTrace("Hidden index has %lld entries\n"_Stz,
+           nHiddenEntries);
+  }
+  
   // iterate all indexes to be built
   for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
     
@@ -286,7 +293,7 @@ void Table::vAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
       continue;
   
     // load from hidden index into index being built
-    vNewIndexLoad(iPartition,pIndexData,pHiddenIndexData);
+    vNewIndexLoad(iPartition,pIndexData,pHiddenIndexData,nHiddenEntries);
   }
   
   // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
@@ -660,7 +667,8 @@ Footer* Table::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* new index load technique                                                   */
 /*----------------------------------------------------------------------------*/
-void Table::vNewIndexLoad(i8 iPartition, IndexData* pIndexData, IndexData* pHiddenIndexData)
+void Table::vNewIndexLoad(i8 iPartition, IndexData* pIndexData,
+                          IndexData* pHiddenIndexData, i8 nHiddenEntries)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 
@@ -670,15 +678,6 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pIndexData, IndexData* pHidd
   bool bResult;
   SysCall xSysCall;
   i8 iDebug;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // compute the number of entries in hidden index (wrong place)
-  
-  i8 nHiddenEntries = iHiddenEntryCount(pHiddenIndexData->pRoot());
-  if (gxArguments.m_bVerbose) {
-    vTrace("Hidden index has %lld entries\n"_Stz,
-           nHiddenEntries);
-  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute the size of the sort element
@@ -797,7 +796,7 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pIndexData, IndexData* pHidd
 /*----------------------------------------------------------------------------*/
 /* compute the number of entries in the hidden index                          */
 /*----------------------------------------------------------------------------*/
-i8 Table::iHiddenEntryCount(EntryBuffer* pFirstL0Buffer)
+i8 Table::nHiddenEntryCount(EntryBuffer* pFirstL0Buffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
