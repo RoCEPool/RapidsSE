@@ -48,7 +48,7 @@ print "loading lineitem.tbl..." ;
 //docol memoryReset;
 //docol schedulerReset;
 ld lineitem "/tpch/lineitem.tbl" ;
-//sleep 20 ;
+sleep 20 ;
 space;
 //docol schedulerList;
 //docol memoryList;
@@ -70,7 +70,7 @@ space;
 //docol epochDump;
 
 visidx lineitem hidden;
-//visidx lineitem idx1;
+visidx lineitem idx1;
 
 /*============================================================================*/
 /* end                                                                        */

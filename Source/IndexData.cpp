@@ -516,67 +516,69 @@ bool IndexData::bVerify(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* append an entry for {key,id} into an L0 index buffer                       */
+/* check current L0 index buffer for space and append an entry for {key,id}   */
 /*----------------------------------------------------------------------------*/
 EntryBuffer* IndexData::pAppendL0Entry(EntryBuffer* pEntryBuffer,
                                        KeyWrk& xKeyWrk, Id xId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
-  // current working buffer should be a 0 level buffer
+  // current working buffer should be a L0 buffer
   ASSERT(pEntryBuffer == nullptr || pEntryBuffer->nBufferLevel() == 0);
   
-  // initialize the entry wsp
+  // initialize the entry wsp (generates randon number of offsets)
   EntWrk xEntWrk(xId,xKeyWrk);
-  
-  // check if index buffer has enough space
+
+  // get the space required for this new entry
   i8 nEntryBytes = Entry::nBytesRequired(xEntWrk);
   
-  if ( ! pEntryBuffer || ! pEntryBuffer->bHasSpace(nEntryBytes) ) {
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // attempt to append into current L0 buffer
   
-    EntryBuffer* pHigherLevel = nullptr;
+  // check if index buffer has enough space
+  if ( pEntryBuffer && pEntryBuffer->bHasSpace(nEntryBytes) ) {
     
-    if ( ! pEntryBuffer )
-      pEntryBuffer = new EntryBuffer(m_pIndex, 0, m_nPartitionNo);
-    else {
-      
-      // get the next level buffer
-      pHigherLevel = pEntryBuffer->pHigherLevel();
-      ASSERT(pHigherLevel);
-      
-      // not enough space, create a new entry buffer
-      pEntryBuffer = pEntryBuffer->pNewNextBuffer();
-      pEntryBuffer->vHigherLevel(pHigherLevel);
-    }
-    
-    // create a next level buffer if it does not exist
-    if ( ! pHigherLevel ) {
-      i8 nHigherLevel = pEntryBuffer->nBufferLevel() + 1;
-      pHigherLevel = new EntryBuffer(m_pIndex, nHigherLevel, m_nPartitionNo);
-      if ( ! m_pRoot )
-        m_pRoot = pHigherLevel;
-      pEntryBuffer->vHigherLevel(pHigherLevel);
-      
-    }
-    
-    // insert entry into index buffer
+    // append entry into L0 index buffer
     Entry* pEntry = pEntryBuffer->pAppendEntry(xEntWrk);
-    
-    // insert first entry in new root from buffer we split
-    vInsertFirstEntry(pHigherLevel, pEntryBuffer);
-    
-  }
-  else {
-    // insert entry into index buffer
-    Entry* pEntry = pEntryBuffer->pAppendEntry(xEntWrk);
-    
     ASSERT(pEntry);
-  }
 
-  // assert we have a buffer
-  ASSERT(pEntryBuffer);
+    return pEntryBuffer;
+  }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create a new L0 buffer and append entry to it
   
+  EntryBuffer* pHigherLevel = nullptr;
+  
+  if ( ! pEntryBuffer )
+    pEntryBuffer = new EntryBuffer(m_pIndex, 0, m_nPartitionNo);
+  else {
+    
+    // get the next level buffer
+    pHigherLevel = pEntryBuffer->pHigherLevel();
+    ASSERT(pHigherLevel);
+    
+    // not enough space, create a new entry buffer
+    pEntryBuffer = pEntryBuffer->pNewNextBuffer();
+    pEntryBuffer->vHigherLevel(pHigherLevel);
+  }
+  
+  // create a next level buffer if it does not exist
+  if ( ! pHigherLevel ) {
+    i8 nHigherLevel = pEntryBuffer->nBufferLevel() + 1;
+    pHigherLevel = new EntryBuffer(m_pIndex, nHigherLevel, m_nPartitionNo);
+    if ( ! m_pRoot )
+      m_pRoot = pHigherLevel;
+    pEntryBuffer->vHigherLevel(pHigherLevel);
+    
+  }
+  
+  // insert entry into index buffer
+  Entry* pEntry = pEntryBuffer->pAppendEntry(xEntWrk);
+  
+  // insert first entry in new root from buffer we split
+  vInsertFirstEntry(pHigherLevel, pEntryBuffer);
+    
   return pEntryBuffer;
 }
 
