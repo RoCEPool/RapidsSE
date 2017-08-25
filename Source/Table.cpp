@@ -667,7 +667,7 @@ Footer* Table::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* new index load technique                                                   */
 /*----------------------------------------------------------------------------*/
-void Table::vNewIndexLoad(i8 iPartition, IndexData* pIndexData,
+void Table::vNewIndexLoad(i8 iPartition, IndexData* pNewIndexData,
                           IndexData* pHiddenIndexData, i8 nHiddenEntries)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
@@ -682,8 +682,8 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pIndexData,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute the size of the sort element
   
-  Index* pIndex = pIndexData->pIndex();
-  i8 iSortElmSize = sizeof(Id) + pIndex->iSortKeyDatum();
+  Index* pNewIndex = pNewIndexData->pIndex();
+  i8 iSortElmSize = sizeof(Id) + pNewIndex->iSortKeyDatum();
   ASSERT(2*sizeof(i8) == iSortElmSize);
   if (gxArguments.m_bVerbose) {
     vTrace("Sort element size %lldB\n"_Stz,
@@ -707,7 +707,7 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pIndexData,
 
   sRegionName.vSprint("%s_%s_PTN%lld"_Stz,
                       gxArguments.m_sRegionName.aChar(),
-                      pIndexData->pIndex()->sIndexName().aChar(),
+                      pNewIndexData->pIndex()->sIndexName().aChar(),
                       iPartition);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -766,27 +766,27 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pIndexData,
   // populate the sort array
   
   vPopulateSortArray(aSortRegionAddr,nHiddenEntries,iSortElmSize,
-                     pIndexData,pHiddenIndexData->pRoot());
+                     pNewIndexData,pHiddenIndexData->pRoot());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the unsorted array
   
-  vDumpSortArray(aSortRegionAddr,nHiddenEntries,iSortElmSize,pIndexData);
+  vDumpSortArray(aSortRegionAddr,nHiddenEntries,iSortElmSize,pNewIndexData);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sort the array
   
-  vSortTheArray(aSortRegionAddr,nHiddenEntries,iSortElmSize,pIndexData);
+  vSortTheArray(aSortRegionAddr,nHiddenEntries,iSortElmSize,pNewIndexData);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the sorted array
   
-  vDumpSortArray(aSortRegionAddr,nHiddenEntries,iSortElmSize,pIndexData);
+  vDumpSortArray(aSortRegionAddr,nHiddenEntries,iSortElmSize,pNewIndexData);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // build the new index
   
-  vBuildNewIndex(aSortRegionAddr,nHiddenEntries,iSortElmSize,pIndexData);
+  vBuildNewIndex(aSortRegionAddr,nHiddenEntries,iSortElmSize,pNewIndexData);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // destroy the sort region
@@ -818,14 +818,14 @@ i8 Table::nHiddenEntryCount(EntryBuffer* pFirstL0Buffer)
 /* populate the sort array for the given index from the hidden index          */
 /*----------------------------------------------------------------------------*/
 void Table::vPopulateSortArray(char* aSortArray, i8 nElements, i8 iSortElmSize,
-                               IndexData* pIndexData, EntryBuffer* pFirstL0Buffer)
+                               IndexData* pNewIndexData, EntryBuffer* pFirstL0Buffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   ASSERT(0 == pFirstL0Buffer->nBufferLevel());
   ASSERT(sizeof(i8) == sizeof(Id));
   
-  Index* pIndex = pIndexData->pIndex();
+  Index* pIndex = pNewIndexData->pIndex();
   IdxColVec* pIdxColVec = pIndex->pIdxColVec();
   
   char* aSortElm = aSortArray;
@@ -874,7 +874,7 @@ int DBobjects::iQsort_i8(const void* aArg1, const void* aArg2)
 /* qsort the sort array for the given index                                   */
 /*----------------------------------------------------------------------------*/
 void Table::vSortTheArray(char* aSortArray, i8 nElements, i8 nElmSize,
-                          IndexData* pIndexData)
+                          IndexData* pNewIndexData)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
@@ -885,7 +885,7 @@ void Table::vSortTheArray(char* aSortArray, i8 nElements, i8 nElmSize,
 /* dump the sort array                                                        */
 /*----------------------------------------------------------------------------*/
 void Table::vDumpSortArray(char* aSortArray, i8 nElements, i8 nElmSize,
-                           IndexData* pIndexData)
+                           IndexData* pNewIndexData)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
@@ -914,7 +914,7 @@ void Table::vDumpSortArray(char* aSortArray, i8 nElements, i8 nElmSize,
 /* build the new index                                                        */
 /*----------------------------------------------------------------------------*/
 void Table::vBuildNewIndex(char* aSortArray, i8 nElements, i8 nElmSize,
-                           IndexData* pIndexData)
+                           IndexData* pNewIndexData)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
