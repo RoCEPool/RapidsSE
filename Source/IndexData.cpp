@@ -238,7 +238,7 @@ void IndexData::vAppendEntry(KeyWrk& xKeyWrk, Id xId)
   
   m_zLock.vGrabWrite();
   
-  m_pCurrentBuffer = pAppendEntry(m_pCurrentBuffer,xKeyWrk,xId,0);
+  m_pCurrentBuffer = pAppendL0Entry(m_pCurrentBuffer,xKeyWrk,xId);
   
   m_zLock.vDropWrite();
 }
@@ -516,17 +516,18 @@ bool IndexData::bVerify(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* append an entry for {key,id} into an index buffer at given level           */
+/* append an entry for {key,id} into an L0 index buffer                       */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* IndexData::pAppendEntry(EntryBuffer* pEntryBuffer, KeyWrk& xKeyWrk, Id xId, i8 iLevel)
-{ //# indexTuning
+EntryBuffer* IndexData::pAppendL0Entry(EntryBuffer* pEntryBuffer,
+                                       KeyWrk& xKeyWrk, Id xId)
+{
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  
+  // current working buffer should be a 0 level buffer
+  ASSERT(pEntryBuffer == nullptr || pEntryBuffer->nBufferLevel() == 0);
   
   // initialize the entry wsp
   EntWrk xEntWrk(xId,xKeyWrk);
-  
-  // should be a 0 level buffer
-  ASSERT(pEntryBuffer == nullptr || pEntryBuffer->nBufferLevel() == 0);
   
   // check if index buffer has enough space
   i8 nEntryBytes = Entry::nBytesRequired(xEntWrk);
