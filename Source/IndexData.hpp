@@ -38,7 +38,7 @@ namespace DBobjects
   
     Stz*         pAnalyze(void);
     void         vAppendBuffer(EntryBuffer* pEntryBuffer);
-    void         vAppendEntry(KeyWrk& xKeyWrk, Entry* pRow);
+    void         vAppendEntry(KeyWrk& xKeyWrk, Id xId);
     void         vDump(bool bSameLevel);
     EntryBuffer* pFirstBuffer();
     Index*       pIndex(void);

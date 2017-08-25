@@ -230,23 +230,17 @@ void IndexData::vAppendBuffer(EntryBuffer* pEntryBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append an entry for given row into this index at level 0                   */
+/* append an entry into this index at level 0                                 */
 /*----------------------------------------------------------------------------*/
-void IndexData::vAppendEntry(KeyWrk& xKeyWrk, Entry* pRow)
-{ //# indexTuning
+void IndexData::vAppendEntry(KeyWrk& xKeyWrk, Id xId)
+{
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
   m_zLock.vGrabWrite();
-
-  //xKeyWrk.vShow();
   
-  //if ( ! m_pRoot )
-  //  m_pRoot = new EntryBuffer(m_pIndex, 0, m_nPartitionNo);
-  
-  m_pCurrentBuffer = pAppendEntry(m_pCurrentBuffer, xKeyWrk, pRow->xId(), 0);
+  m_pCurrentBuffer = pAppendEntry(m_pCurrentBuffer,xKeyWrk,xId,0);
   
   m_zLock.vDropWrite();
-  
 }
 
 /*----------------------------------------------------------------------------*/

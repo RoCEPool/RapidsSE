@@ -1002,10 +1002,10 @@ void Table::vBuildNewIndex(char* aSortArray, i8 nElements, i8 nElmSize,
 //    }
 
     // put key datum into a keywrk                    //# do we need to do this?
-    KeyWrk xKeyWrk((Key*)aKeyElm, pIdxColVec);
+    KeyWrk xKeyWrk((Key*)aKeyElm,pIdxColVec);
     
     // append an entry into index structure
-    pNewIndexData->vAppendEntry(xKeyWrk, pRow);
+    pNewIndexData->vAppendEntry(xKeyWrk,pRow->xId());
   }
 
   if (gxArguments.m_bVerbose)
