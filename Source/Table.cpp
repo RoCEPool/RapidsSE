@@ -669,6 +669,27 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pIndexData, IndexData* pHidd
   s32 sRegionMagnitude;
   bool bResult;
   SysCall xSysCall;
+  i8 iDebug;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compute the number of entries in hidden index (wrong place)
+  
+  i8 nHiddenEntries = iHiddenEntryCount(pHiddenIndexData->pRoot());
+  if (gxArguments.m_bVerbose) {
+    vTrace("Hidden index has %lld entries\n"_Stz,
+           nHiddenEntries);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compute the size of the sort element
+  
+  Index* pIndex = pIndexData->pIndex();
+  i8 iSortElmSize = sizeof(Id) + pIndex->iSortKeyDatum();
+  ASSERT(2*sizeof(i8) == iSortElmSize);
+  if (gxArguments.m_bVerbose) {
+    vTrace("Sort element size %lldB\n"_Stz,
+           iSortElmSize);
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the name of the sort region for given partition
@@ -679,6 +700,12 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pIndexData, IndexData* pHidd
                       iPartition);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compute the size of the sort region
+  
+  // the size if no. entries * element size + some fudge
+  i8 nSortRegionSize = nHiddenEntries * iSortElmSize + C_16KB;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the sort region for given partition
   
   if (gxArguments.m_bVerbose) {
@@ -686,7 +713,7 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pIndexData, IndexData* pHidd
     vTrace("Creating sort region %s; size %s (%lldB)...\n"_Stz,
            sRegionName.aChar(),
            sRegionMagnitude.aChar(),
-           C_SORT_REGION_SIZE);
+           nSortRegionSize);
   }
   
   // open a new shm region
@@ -711,7 +738,7 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pIndexData, IndexData* pHidd
   // allocate memory for the shm region
   void* aSortRegion = Shm::pMap(iFD,
                                 (void*)C_SORT_REGION_ADDR,
-                                C_SORT_REGION_SIZE,
+                                nSortRegionSize,
                                 true,
                                 false,
                                 xSysCall);
@@ -730,29 +757,6 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pIndexData, IndexData* pHidd
     }
   }
   
-  int iDebug = 0;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // compute the number of entries in hidden index (wrong place)
-  
-  iDebug = 2;
-  i8 nHiddenEntries = iHiddenEntryCount(pHiddenIndexData->pRoot());
-  if (gxArguments.m_bVerbose) {
-    vTrace("Hidden index has %lld entries\n"_Stz,
-           nHiddenEntries);
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // compute the size of the sort element
-  
-  Index* pIndex = pIndexData->pIndex();
-  i8 iSortElmSize = sizeof(Id) + pIndex->iSortKeyDatum();
-  ASSERT(2*sizeof(i8) == iSortElmSize);
-  if (gxArguments.m_bVerbose) {
-    vTrace("Sort element size %lldB\n"_Stz,
-           iSortElmSize);
-  }
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // populate the sort array
   
@@ -778,7 +782,7 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pIndexData, IndexData* pHidd
   // destroy the sort region for given partition
   
   bResult = Shm::bClose(iFD,xSysCall);
-  bResult = Shm::bUnmap((void*)C_SORT_REGION_ADDR,C_SORT_REGION_SIZE,xSysCall);
+  bResult = Shm::bUnmap((void*)C_SORT_REGION_ADDR,nSortRegionSize,xSysCall);
   bResult = Shm::bUnlink(sRegionName,xSysCall);
  
   iDebug = 2;
