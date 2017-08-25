@@ -837,13 +837,14 @@ void Table::vPopulateSortArray(char* aSortArray, i8 nElements, i8 iSortElmSize,
       pRow->vExtractKey(xKeyWrk,pIdxColVec);
       ASSERT(sizeof(i8) == xKeyWrk.nWspUsed());
       
+      // copy the key datum into the sort element
+      MemLib::vCopy(aSortElm,xKeyWrk.aWspArea(),xKeyWrk.nWspUsed(),CN_TABLE);
+      aSortElm = pAdd<char*>(aSortElm,xKeyWrk.nWspUsed());
+      
       // set the row address into the sort element
       *((Entry**)aSortElm) = pRow;
       aSortElm = pAdd<char*>(aSortElm,sizeof(Entry*));
       
-      // copy the key datum into the sort element
-      MemLib::vCopy(aSortElm,xKeyWrk.aWspArea(),xKeyWrk.nWspUsed(),CN_TABLE);
-      aSortElm = pAdd<char*>(aSortElm,xKeyWrk.nWspUsed());
     }
   }
 }
@@ -853,10 +854,7 @@ void Table::vPopulateSortArray(char* aSortArray, i8 nElements, i8 iSortElmSize,
 /*----------------------------------------------------------------------------*/
 int DBobjects::iQsort_i8(const void* aArg1, const void* aArg2)
 {
-  i8* pArg1 = pAdd<i8*>((void*)aArg1,sizeof(Entry*));
-  i8* pArg2 = pAdd<i8*>((void*)aArg2,sizeof(Entry*));
-  
-  i8 iCmp = *pArg1 - *pArg2;
+  i8 iCmp = *((i8*)aArg1) - *((i8*)aArg2);
   
   if (iCmp > 0)
     return 1;
@@ -892,16 +890,16 @@ void Table::vDumpSortArray(char* aSortArray, i8 nElements, i8 nElmSize,
          
   for (i8 i_Elm = 0; i_Elm < nElements; i_Elm++) {
     
-    Entry* pRow = *((Entry**)aSortElm);
-    aSortElm = pAdd<char*>(aSortElm,sizeof(Entry*));
-    
     i8 iKeyDatum = *((i8*)aSortElm);
     aSortElm = pAdd<char*>(aSortElm,sizeof(i8));
     
-    vTrace("[%lld] %p : %lld\n"_Stz,
+    Entry* pRow = *((Entry**)aSortElm);
+    aSortElm = pAdd<char*>(aSortElm,sizeof(Entry*));
+    
+    vTrace("[%lld] %lld : %p\n"_Stz,
            i_Elm,
-           pRow,
-           iKeyDatum);
+           iKeyDatum,
+           pRow);
   }
   
   vTrace("---------------------------------\n"_Stz);
