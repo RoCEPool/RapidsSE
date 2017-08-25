@@ -285,15 +285,15 @@ void Table::vAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
   for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
     
     // get index
-    IndexData* pIndexData = pIdxDataVec->pGet(i_Index);
+    IndexData* pNewIndexData = pIdxDataVec->pGet(i_Index);
     
     // skip the hidden index
-    Index* pIndex = pIndexData->pIndex();
+    Index* pIndex = pNewIndexData->pIndex();
     if (pIndex->bIsHidden())
       continue;
   
     // load from hidden index into index being built
-    vNewIndexLoad(iPartition,pIndexData,pHiddenIndexData,nHiddenEntries);
+    vNewIndexLoad(iPartition,pNewIndexData,pHiddenIndexData,nHiddenEntries);
   }
   
   // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
@@ -665,7 +665,7 @@ Footer* Table::aFooter(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* new index load technique                                                   */
+/* load the given new index from the hidden index using the sort technique    */
 /*----------------------------------------------------------------------------*/
 void Table::vNewIndexLoad(i8 iPartition, IndexData* pNewIndexData,
                           IndexData* pHiddenIndexData, i8 nHiddenEntries)
@@ -688,7 +688,7 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pNewIndexData,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute the size of the sort element
   
-  i8 iSortElmSize = sizeof(Id) + pNewIndex->iSortKeyDatum();
+  i8 iSortElmSize = pNewIndex->iSortKeyDatum() + sizeof(Entry*);
   ASSERT(2*sizeof(i8) == iSortElmSize);
   if (gxArguments.m_bVerbose) {
     vTrace("Sort element size %lldB\n"_Stz,
@@ -710,6 +710,7 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pNewIndexData,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the name of the sort region for given partition
 
+  //# add table name
   sRegionName.vSprint("%s_%s_PTN%lld"_Stz,
                       gxArguments.m_sRegionName.aChar(),
                       pNewIndexData->pIndex()->sIndexName().aChar(),
