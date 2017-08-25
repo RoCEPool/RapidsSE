@@ -878,7 +878,15 @@ void Table::vSortTheArray(char* aSortArray, i8 nElements, i8 nElmSize,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
+  Timer xTimer;
+  xTimer.vStart();
+
   qsort(aSortArray,nElements,nElmSize,iQsort_i8);
+  
+  xTimer.vUpdate();
+  
+  vTrace("qsort took %lldus\n"_Stz,
+         xTimer.iMicroseconds());
 }
 
 /*----------------------------------------------------------------------------*/
