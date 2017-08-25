@@ -673,9 +673,9 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pIndexData, IndexData* pHidd
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the name of the sort region for given partition
 
-  //# add table name
-  sRegionName.vSprint("%s_PTN%lld"_Stz,
+  sRegionName.vSprint("%s_%s_PTN%lld"_Stz,
                       gxArguments.m_sRegionName.aChar(),
+                      pIndexData->pIndex()->sIndexName().aChar(),
                       iPartition);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
