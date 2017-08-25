@@ -274,6 +274,13 @@ void Table::vAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
   if ( ! pEntryBuffer->bIsLast() )
     return;
   
+  // decrement no of subLoaders that have appended last buffer
+  m_iSubLoaders[iPartition]--;
+  
+  // check if any sub loaders still have more buffers
+  if (m_iSubLoaders[iPartition])
+    return;
+  
   // compute the number of entries in hidden index
   i8 nHiddenEntries = nHiddenEntryCount(pHiddenIndexData->pRoot());
   if (gxArguments.m_bVerbose) {
@@ -590,6 +597,19 @@ Dic* Table::pSubDic(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set subloaders                                                             */
+/*----------------------------------------------------------------------------*/
+void Table::vSubLoaders(i8 iSubLoaders)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  for (i8 i_Slot = 0; i_Slot < C_SLOTS_PER_NODE; i_Slot++)
+    m_iSubLoaders[i_Slot] = iSubLoaders;
+  vTrace("Subloaders: %lld\n"_Stz, iSubLoaders);
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the table name                                                         */
 /*----------------------------------------------------------------------------*/
 Stz* Table::aTableName(void)
@@ -802,6 +822,7 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pNewIndexData,
   bResult = Shm::bUnlink(sRegionName,xSysCall);
  
   iDebug = 2;
+  vTrace("vNewIndexLoad: DONE\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

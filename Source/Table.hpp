@@ -35,6 +35,7 @@ namespace DBobjects
     
     IdxVec*    m_pIdxVec;    // index vector
     ColumnVec* m_pColumnVec; // colummn vector
+    i8         m_iSubLoaders[C_SLOTS_PER_NODE];  // subloader count
     
     // must be last
     Footer m_xFooter;
@@ -72,6 +73,7 @@ namespace DBobjects
 
     void vShowColumnVec(void);
     Dic* pSubDic(void);
+    void vSubLoaders(i8 iSubLoaders);
     Slots* pSlots(void);
     Stz* aTableName(void);
     void vTidyUp(void);

@@ -243,7 +243,7 @@ tp: theIndirectResult
       "NO DANGLING" .
 
       // check if loader sub fetched any records
-      pLoaderSub loaderSub.recordsFetched if
+      //pLoaderSub loaderSub.recordsFetched if
 
         // create a new row buffer
         pLoaderSub loaderSub.newRowBuffer
@@ -256,7 +256,7 @@ tp: theIndirectResult
 
         // append row buffer to table/partition/strand
         pLoaderSub ~loadAppendBuffer
-      then
+      //then
 
     then
 

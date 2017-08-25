@@ -50,6 +50,7 @@ void Task::vAddPrimitives_Table(void)
   vAddPrimitive("table.slots"_Stz,              &vTableSlots,            false);
   vAddPrimitive("table.space"_Stz,              &vTableSpace,            false);
   vAddPrimitive("table.subDic"_Stz,             &vTableSubDic,           false);
+  vAddPrimitive("table.subLoaders"_Stz,         &vTableSubLoaders,       false);
   vAddPrimitive("table.truncate"_Stz,           &vTableTruncate,         false);
 }
 
@@ -480,6 +481,29 @@ void Task::vTableSubDic(MP_Task mpTask)
   Dic* pDic = pTable->pSubDic();
   
   mpTask->m_pDataStack->vPushObject(pDic);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.subLoaders -- set table sub loaders                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vTableSubLoaders(MP_Task mpTask)
+{
+  ENTRY("vTableSubDic"_Stz);
+  
+  Object* pPtrTable;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+    THROW_INVALID_DSTACK("table.subLoaders"_Stz);
+  
+  Table* pTable = _pTable(pPtrTable);
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  i8 iSubLoaders;
+  if ( ! mpTask->m_pDataStack->bPop(iSubLoaders) )
+    THROW_INVALID_DSTACK("table.subLoaders"_Stz);
+  
+  pTable->vSubLoaders(iSubLoaders);
   
   EXIT();
 }

@@ -1128,6 +1128,7 @@ namespace Tasks
     static void vTableSlots(MP_Task mpTask);
     static void vTableSpace(MP_Task mpTask);
     static void vTableSubDic(MP_Task mpTask);
+    static void vTableSubLoaders(MP_Task mpTask);
     static void vTableTruncate(MP_Task mpTask);
   
     // task

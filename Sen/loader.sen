@@ -73,6 +73,9 @@ timer: loadTimer
   // hold task mutex while we create sub loaders
   //task::this grabMutex
 
+  // set no of subloaders in table
+  N_SERVER_THREADS tablePtr table.subLoaders
+
   N_SERVER_THREADS setAcks
 
   N_SERVER_THREADS 0 do
