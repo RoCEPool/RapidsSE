@@ -680,9 +680,14 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pNewIndexData,
   i8 iDebug;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // compute the size of the sort element
   
   Index* pNewIndex = pNewIndexData->pIndex();
+  vTrace("Loading index %s\n"_Stz,
+         pNewIndex->aIndexName());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compute the size of the sort element
+  
   i8 iSortElmSize = sizeof(Id) + pNewIndex->iSortKeyDatum();
   ASSERT(2*sizeof(i8) == iSortElmSize);
   if (gxArguments.m_bVerbose) {
@@ -862,7 +867,8 @@ void Table::vPopulateSortArray(char* aSortArray, i8 nElements, i8 iSortElmSize,
   Magnitudes::vTimeMag(xTimer.iNanoseconds(),sTimeMagnitude);
   
   if (gxArguments.m_bVerbose)
-    vTrace("vPopulateSortArray took %s\n"_Stz,
+    vTrace("vPopulateSortArray for index %s took %s\n"_Stz,
+           pIndex->aIndexName(),
            sTimeMagnitude.aChar());
 }
 
@@ -900,9 +906,12 @@ void Table::vSortTheArray(char* aSortArray, i8 nElements, i8 nElmSize,
   s32 sTimeMagnitude;
   Magnitudes::vTimeMag(xTimer.iNanoseconds(),sTimeMagnitude);
   
-  if (gxArguments.m_bVerbose)
-    vTrace("qsort took %s\n"_Stz,
+  if (gxArguments.m_bVerbose) {
+    Index* pIndex = pNewIndexData->pIndex();
+    vTrace("qsort for index %s took %s\n"_Stz,
+           pIndex->aIndexName(),
            sTimeMagnitude.aChar());
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -972,9 +981,12 @@ void Table::vBuildNewIndex(char* aSortArray, i8 nElements, i8 nElmSize,
   s32 sTimeMagnitude;
   Magnitudes::vTimeMag(xTimer.iNanoseconds(),sTimeMagnitude);
   
-  if (gxArguments.m_bVerbose)
-    vTrace("vBuildNewIndex took %s\n"_Stz,
+  if (gxArguments.m_bVerbose) {
+    Index* pIndex = pNewIndexData->pIndex();
+    vTrace("vBuildNewIndex for index %s took %s\n"_Stz,
+           pIndex->aIndexName(),
            sTimeMagnitude.aChar());
+  }
 }
 
 /*============================================================================*/
