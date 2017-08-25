@@ -84,7 +84,8 @@ namespace DBobjects
   
     void vNewIndexLoad(i8 iPartition, IndexData* pIndexData, IndexData* pHiddenIndexData);
     i8 iHiddenEntryCount(EntryBuffer* pFirstL0Buffer);
-    void vPopulateSortArray(char* aSortArray, IndexData* pIndexData, EntryBuffer* pFirstL0Buffer);
+    void vPopulateSortArray(char* aSortArray, i8 iSortElmSize,
+                            IndexData* pIndexData, EntryBuffer* pFirstL0Buffer);
     void vSortTheArray(char* aSortArray, IndexData* pIndexData,
                        i8 nElements, i8 nElmSize);
     void vDumpSortArray(char* aSortArray,IndexData* pIndexData,

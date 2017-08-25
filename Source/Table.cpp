@@ -673,6 +673,7 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pIndexData, IndexData* pHidd
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the name of the sort region for given partition
 
+  //# add table name
   sRegionName.vSprint("%s_PTN%lld"_Stz,
                       gxArguments.m_sRegionName.aChar(),
                       iPartition);
@@ -742,6 +743,38 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pIndexData, IndexData* pHidd
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compute the size of the sort element
+  
+  Index* pIndex = pIndexData->pIndex();
+  i8 iSortElmSize = sizeof(Id) + pIndex->iSortKeyDatum();
+  ASSERT(2*sizeof(i8) == iSortElmSize);
+  if (gxArguments.m_bVerbose) {
+    vTrace("Sort element size %lldB\n"_Stz,
+           iSortElmSize);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // populate the sort array
+  
+  vPopulateSortArray((char*)C_SORT_REGION_ADDR,iSortElmSize,
+                     pIndexData,pHiddenIndexData->pRoot());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // dump the unsorted array
+  
+  vDumpSortArray((char*)C_SORT_REGION_ADDR,pIndexData,nHiddenEntries,iSortElmSize);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // sort the array
+  
+  vSortTheArray((char*)C_SORT_REGION_ADDR,pIndexData,nHiddenEntries,iSortElmSize);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // dump the sorted array
+  
+  vDumpSortArray((char*)C_SORT_REGION_ADDR,pIndexData,nHiddenEntries,iSortElmSize);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // destroy the sort region for given partition
   
   bResult = Shm::bClose(iFD,xSysCall);
@@ -762,7 +795,7 @@ i8 Table::iHiddenEntryCount(EntryBuffer* pFirstL0Buffer)
   
   i8 nEntries = 0;
   for (EntryBuffer* pEB = pFirstL0Buffer; pEB; pEB = pEB->pNextBuffer())
-    nEntries += pEB->nEntries();
+    nEntries += pEB->nEntries() - 1;
   
   return nEntries;
 }
@@ -770,7 +803,8 @@ i8 Table::iHiddenEntryCount(EntryBuffer* pFirstL0Buffer)
 /*----------------------------------------------------------------------------*/
 /* populate the sort array for the given index from the hidden index          */
 /*----------------------------------------------------------------------------*/
-void Table::vPopulateSortArray(char* aSortArray, IndexData* pIndexData, EntryBuffer* pFirstL0Buffer)
+void Table::vPopulateSortArray(char* aSortArray, i8 iSortElmSize,
+                               IndexData* pIndexData, EntryBuffer* pFirstL0Buffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
@@ -778,18 +812,20 @@ void Table::vPopulateSortArray(char* aSortArray, IndexData* pIndexData, EntryBuf
   ASSERT(sizeof(i8) == sizeof(Id));
   
   Index* pIndex = pIndexData->pIndex();
-  
-  i8 iSortElmSize = sizeof(Id) + pIndex->iSortKeyDatum();
-  ASSERT(2*sizeof(i8) == iSortElmSize);
+  IdxColVec* pIdxColVec = pIndex->pIdxColVec();
   
   char* aSortElm = aSortArray;
   
   KeyWrk xKeyWrk;
   for (EntryBuffer* pEB = pFirstL0Buffer; pEB; pEB = pEB->pNextBuffer()) {
-    for (Entry* pRow = pEB->pFirstRow(); pRow; pRow = pEB->pNextRow(pRow)) {
+    
+    Entry* pRow = pEB->pFirstRow();
+    pRow = pEB->pNextRow(pRow);
+    for ( ; pRow; pRow = pEB->pNextRow(pRow)) {
       
       // get the key datum for this index
-      pRow->vExtractKey(xKeyWrk,pIndex->pIdxColVec());
+      xKeyWrk.vReset();
+      pRow->vExtractKey(xKeyWrk,pIdxColVec);
       ASSERT(sizeof(i8) == xKeyWrk.nWspUsed());
       
       // set the id into the sort element
@@ -843,6 +879,8 @@ void Table::vDumpSortArray(char* aSortArray, IndexData* pIndexData,
   
   char* aSortElm = aSortArray;
   
+  vTrace("-- Sort Array -------------------\n"_Stz);
+         
   for (i8 i_Elm = 0; i_Elm < nElements; i_Elm++) {
     
     Id xId = *((Id*)aSortElm);
@@ -858,6 +896,7 @@ void Table::vDumpSortArray(char* aSortArray, IndexData* pIndexData,
            iKeyDatum);
   }
   
+  vTrace("---------------------------------\n"_Stz);
 }
 
 /*============================================================================*/
