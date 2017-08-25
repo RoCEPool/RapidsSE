@@ -709,7 +709,7 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pIndexData, IndexData* pHidd
   // create the sort region for given partition
   
   if (gxArguments.m_bVerbose) {
-    Magnitudes::vMagnitude(C_SORT_REGION_SIZE, sRegionMagnitude);
+    Magnitudes::vMagnitude(nSortRegionSize, sRegionMagnitude);
     vTrace("Creating sort region %s; size %s (%lldB)...\n"_Stz,
            sRegionName.aChar(),
            sRegionMagnitude.aChar(),
@@ -718,7 +718,7 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pIndexData, IndexData* pHidd
   
   // open a new shm region
   bResult = Shm::bCreate(sRegionName,
-                         C_SORT_REGION_SIZE,
+                         nSortRegionSize,
                          iFD,
                          true,
                          xSysCall);
