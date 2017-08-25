@@ -91,6 +91,8 @@ namespace DBobjects
                        IndexData* pIndexData);
     void vDumpSortArray(char* aSortArray, i8 nElements, i8 nElmSize,
                         IndexData* pIndexData);
+    void vBuildNewIndex(char* aSortArray, i8 nElements, i8 nElmSize,
+                        IndexData* pIndexData);
   };
   
   Table* _pTable(void* aAddr);

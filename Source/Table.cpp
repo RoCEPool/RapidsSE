@@ -784,7 +784,12 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pIndexData,
   vDumpSortArray(aSortRegionAddr,nHiddenEntries,iSortElmSize,pIndexData);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // destroy the sort region for given partition
+  // build the new index
+  
+  vBuildNewIndex(aSortRegionAddr,nHiddenEntries,iSortElmSize,pIndexData);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // destroy the sort region
   
   bResult = Shm::bClose(iFD,xSysCall);
   bResult = Shm::bUnmap(aSortRegionAddr,nSortRegionSize,xSysCall);
@@ -903,6 +908,17 @@ void Table::vDumpSortArray(char* aSortArray, i8 nElements, i8 nElmSize,
   }
   
   vTrace("---------------------------------\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* build the new index                                                        */
+/*----------------------------------------------------------------------------*/
+void Table::vBuildNewIndex(char* aSortArray, i8 nElements, i8 nElmSize,
+                           IndexData* pIndexData)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  // to be completed
 }
 
 /*============================================================================*/
