@@ -822,6 +822,9 @@ void Table::vPopulateSortArray(char* aSortArray, i8 nElements, i8 iSortElmSize,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
+  Timer xTimer;
+  xTimer.vStart();
+  
   ASSERT(0 == pFirstL0Buffer->nBufferLevel());
   ASSERT(sizeof(i8) == sizeof(Id));
   
@@ -852,6 +855,13 @@ void Table::vPopulateSortArray(char* aSortArray, i8 nElements, i8 iSortElmSize,
       
     }
   }
+  
+  s32 sTimeMagnitude;
+  Magnitudes::vTimeMag(xTimer.iNanoseconds(),sTimeMagnitude);
+  
+  if (gxArguments.m_bVerbose)
+    vTrace("vPopulateSortArray took %s\n"_Stz,
+           sTimeMagnitude.aChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -888,8 +898,9 @@ void Table::vSortTheArray(char* aSortArray, i8 nElements, i8 nElmSize,
   s32 sTimeMagnitude;
   Magnitudes::vTimeMag(xTimer.iNanoseconds(),sTimeMagnitude);
   
-  vTrace("qsort took %s\n"_Stz,
-         sTimeMagnitude.aChar());
+  if (gxArguments.m_bVerbose)
+    vTrace("qsort took %s\n"_Stz,
+           sTimeMagnitude.aChar());
 }
 
 /*----------------------------------------------------------------------------*/
