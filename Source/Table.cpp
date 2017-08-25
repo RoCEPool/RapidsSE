@@ -946,7 +946,8 @@ void Table::vDumpSortArray(char* aSortArray, i8 nElements, i8 nElmSize,
   
   char* aSortElm = aSortArray;
   
-  vTrace("-- Sort Array -------------------\n"_Stz);
+  if (gxArguments.m_bVerbose)
+    vTrace("-- Sort Array -------------------\n"_Stz);
          
   for (i8 i_Elm = 0; i_Elm < nElements; i_Elm++) {
     
@@ -956,10 +957,11 @@ void Table::vDumpSortArray(char* aSortArray, i8 nElements, i8 nElmSize,
     Entry* pRow = *((Entry**)aSortElm);
     aSortElm = pAdd<char*>(aSortElm,sizeof(Entry*));
     
-    vTrace("[%lld] %lld : %p\n"_Stz,
-           i_Elm,
-           iKeyDatum,
-           pRow);
+    if (gxArguments.m_bVerbose)
+      vTrace("[%lld] %lld : %p\n"_Stz,
+             i_Elm,
+             iKeyDatum,
+             pRow);
   }
   
   vTrace("---------------------------------\n"_Stz);
@@ -976,20 +978,20 @@ void Table::vBuildNewIndex(char* aSortArray, i8 nElements, i8 nElmSize,
   Timer xTimer;
   xTimer.vStart();
   
-  char* aSortElm = aSortArray;
-  char* aKeyElm;
-  char* aRowElm;
-  
-  vTrace("-- Build New Index --------------\n"_Stz);
+  if (gxArguments.m_bVerbose)
+    vTrace("-- Build New Index --------------\n"_Stz);
   
   IdxColVec* pIdxColVec = pNewIndexData->pIndex()->pIdxColVec();
   
+  // step thru each element in the sort array
+  char* aSortElm = aSortArray;
   for (i8 i_Elm = 0; i_Elm < nElements; i_Elm++) {
     
     // get key datum
-    aKeyElm = aSortElm;
+    char* aKeyElm = aSortElm;
     aSortElm = pAdd<char*>(aSortElm,sizeof(i8));
     
+    // get row pointer
     Entry* pRow = *((Entry**)aSortElm);
     aSortElm = pAdd<char*>(aSortElm,sizeof(Entry*));
     
@@ -999,12 +1001,15 @@ void Table::vBuildNewIndex(char* aSortArray, i8 nElements, i8 nElmSize,
 //           pRow);
 //    }
 
-    // to be completed
+    // put key datum into a keywrk                    //# do we need to do this?
     KeyWrk xKeyWrk((Key*)aKeyElm, pIdxColVec);
+    
+    // append an entry into index structure
     pNewIndexData->vAppendEntry(xKeyWrk, pRow);
   }
 
-  vTrace("---------------------------------\n"_Stz);
+  if (gxArguments.m_bVerbose)
+    vTrace("---------------------------------\n"_Stz);
   
   xTimer.vUpdate();
   
