@@ -756,23 +756,23 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pIndexData, IndexData* pHidd
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // populate the sort array
   
-  vPopulateSortArray((char*)C_SORT_REGION_ADDR,iSortElmSize,
+  vPopulateSortArray((char*)C_SORT_REGION_ADDR,nHiddenEntries,iSortElmSize,
                      pIndexData,pHiddenIndexData->pRoot());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the unsorted array
   
-  vDumpSortArray((char*)C_SORT_REGION_ADDR,pIndexData,nHiddenEntries,iSortElmSize);
+  vDumpSortArray((char*)C_SORT_REGION_ADDR,nHiddenEntries,iSortElmSize,pIndexData);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sort the array
   
-  vSortTheArray((char*)C_SORT_REGION_ADDR,pIndexData,nHiddenEntries,iSortElmSize);
+  vSortTheArray((char*)C_SORT_REGION_ADDR,nHiddenEntries,iSortElmSize,pIndexData);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the sorted array
   
-  vDumpSortArray((char*)C_SORT_REGION_ADDR,pIndexData,nHiddenEntries,iSortElmSize);
+  vDumpSortArray((char*)C_SORT_REGION_ADDR,nHiddenEntries,iSortElmSize,pIndexData);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // destroy the sort region for given partition
@@ -803,7 +803,7 @@ i8 Table::iHiddenEntryCount(EntryBuffer* pFirstL0Buffer)
 /*----------------------------------------------------------------------------*/
 /* populate the sort array for the given index from the hidden index          */
 /*----------------------------------------------------------------------------*/
-void Table::vPopulateSortArray(char* aSortArray, i8 iSortElmSize,
+void Table::vPopulateSortArray(char* aSortArray, i8 nElements, i8 iSortElmSize,
                                IndexData* pIndexData, EntryBuffer* pFirstL0Buffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
@@ -861,8 +861,8 @@ int DBobjects::iQsort_i8(const void* aArg1, const void* aArg2)
 /*----------------------------------------------------------------------------*/
 /* qsort the sort array for the given index                                   */
 /*----------------------------------------------------------------------------*/
-void Table::vSortTheArray(char* aSortArray, IndexData* pIndexData,
-                          i8 nElements, i8 nElmSize)
+void Table::vSortTheArray(char* aSortArray, i8 nElements, i8 nElmSize,
+                          IndexData* pIndexData)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
@@ -872,8 +872,8 @@ void Table::vSortTheArray(char* aSortArray, IndexData* pIndexData,
 /*----------------------------------------------------------------------------*/
 /* dump the sort array                                                        */
 /*----------------------------------------------------------------------------*/
-void Table::vDumpSortArray(char* aSortArray, IndexData* pIndexData,
-                          i8 nElements, i8 nElmSize)
+void Table::vDumpSortArray(char* aSortArray, i8 nElements, i8 nElmSize,
+                           IndexData* pIndexData)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
