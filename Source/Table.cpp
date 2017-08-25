@@ -833,6 +833,33 @@ void Table::vSortTheArray(char* aSortArray, IndexData* pIndexData,
   qsort(aSortArray,nElements,nElmSize,iQsort_i8);
 }
 
+/*----------------------------------------------------------------------------*/
+/* dump the sort array                                                        */
+/*----------------------------------------------------------------------------*/
+void Table::vDumpSortArray(char* aSortArray, IndexData* pIndexData,
+                          i8 nElements, i8 nElmSize)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  char* aSortElm = aSortArray;
+  
+  for (i8 i_Elm = 0; i_Elm < nElements; i_Elm++) {
+    
+    Id xId = *((Id*)aSortElm);
+    aSortElm = pAdd<char*>(aSortElm,sizeof(Id));
+    
+    i8 iKeyDatum = *((i8*)aSortElm);
+    aSortElm = pAdd<char*>(aSortElm,sizeof(i8));
+    
+    vTrace("[%lld] %lld.%lld : %lld\n"_Stz,
+           i_Elm,
+           xId.iBuffer(),
+           xId.iRow(),
+           iKeyDatum);
+  }
+  
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

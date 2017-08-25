@@ -87,6 +87,8 @@ namespace DBobjects
     void vPopulateSortArray(char* aSortArray, IndexData* pIndexData, EntryBuffer* pFirstL0Buffer);
     void vSortTheArray(char* aSortArray, IndexData* pIndexData,
                        i8 nElements, i8 nElmSize);
+    void vDumpSortArray(char* aSortArray,IndexData* pIndexData,
+                        i8 nElements, i8 nElmSize);
   };
   
   Table* _pTable(void* aAddr);
