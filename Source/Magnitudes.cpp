@@ -5,7 +5,7 @@
 #include "System.h"
 
 /*----------------------------------------------------------------------------*/
-/* pMagnitue -- convert bytes to its magnitude equivalent                     */
+/* convert bytes to its magnitude equivalent                                  */
 /*----------------------------------------------------------------------------*/
 void Magnitudes::vMagnitude(i8 iValue, Stz* psBuf)
 {
@@ -18,7 +18,7 @@ void Magnitudes::vMagnitude(i8 iValue, Stz* psBuf)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pMagnitue -- convert bytes to its magnitude equivalent upto n decimals     */
+/* convert bytes to its magnitude equivalent upto n decimals                  */
 /*----------------------------------------------------------------------------*/
 void Magnitudes::vMagnitude(i8 iValue, i8 iDecimals, Stz* psBuf)
 {
@@ -36,7 +36,7 @@ void Magnitudes::vMagnitude(i8 iValue, i8 iDecimals, Stz* psBuf)
 }
 
 /*----------------------------------------------------------------------------*/
-/* iBytes -- convert magnitude to equivalent bytes                            */
+/* convert magnitude to equivalent bytes                                      */
 /*----------------------------------------------------------------------------*/
 bool Magnitudes::bBytes(Stz* psBuf, i8& iBytes)
 {
@@ -94,6 +94,17 @@ bool Magnitudes::bBytes(Stz* psBuf, i8& iBytes)
   }
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert timer nanoseconds to its magnitude equivalent (ns, us, ms, s)      */
+/*----------------------------------------------------------------------------*/
+void Magnitudes::vTimeMag(i8 iNanosecs, Stz* psBuf)
+{
+       if (iNanosecs < C_1K) psBuf->vSprint("%lldns"_Stz,iNanosecs);
+  else if (iNanosecs < C_1M) psBuf->vSprint("%lldus"_Stz,iNanosecs/C_1K);
+  else if (iNanosecs < C_1B) psBuf->vSprint("%lldms"_Stz,iNanosecs/C_1M);
+  else                       psBuf->vSprint("%llds"_Stz, iNanosecs/C_1B);
 }
 
 /*============================================================================*/
