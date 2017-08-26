@@ -1100,9 +1100,37 @@ Entry* EntryBuffer::pAppendEntry(EntWrk& xEntWrk,EntryVec& xPriorVec)
   } // for
   */
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append the entry
+  
+  // determine the number of bytes required for entry
   i8 nEntryBytes = Entry::nBytesRequired(xEntWrk);
+  
+  // allot space for entry at end of buffer
   Entry* pNewEntry = pAllotEntryBytes(nEntryBytes);
+  
+  // set the entry
   pNewEntry->vSetEntry(xEntWrk);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // revise prior offsets
+  
+  // step thru the offsets of the new entry
+  for (on n_OffsetNo = pNewEntry->nHighestOffset();
+       n_OffsetNo.bInRange();
+       n_OffsetNo--) {
+    
+    // get prior entry for offset level
+    ln nLevelNo = n_OffsetNo.nToLevelNo();
+    Entry* aPriorEntry = xPriorVec[nLevelNo];
+  
+    // calculate and set offset from prior entry to new entry
+    i8 iOffset = uOffsetBetween(pNewEntry,aPriorEntry);
+    aPriorEntry->vRightOffset(n_OffsetNo,iOffset);
+    
+    // revise the prior vector for level
+    xPriorVec[nLevelNo] = pNewEntry;
+  }
   
   return pNewEntry;
 }

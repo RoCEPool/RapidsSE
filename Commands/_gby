@@ -62,6 +62,7 @@ space;
 //docol memoryReset;
 //docol schedulerReset;
 //fetch lineitem "L_ORDERKEY 0 >= L_ORDERKEY 5900000 <= and" groupBy;
+//fetch lineitem "L_ORDERKEY 5900000 ==" ;
 //docol schedulerList;
 //docol memoryList;
 //docol stepsList;
