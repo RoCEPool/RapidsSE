@@ -102,7 +102,7 @@ namespace DBobjects
     // what was IndexBuffer
   
     void         vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries);
-    Entry*       pAppendEntry(EntWrk& xEntWrk);
+    Entry*       pAppendEntry(EntWrk& xEntWrk,EntryVec& xPriorVec);
     i8           nBufferLevel(void);
     void         vBufferCount(i8& nBufferCount);
     i8           iDecile(void);

@@ -1015,7 +1015,7 @@ Entry* EntryBuffer::pInsert(EntWrk& xEntWrk)                        //# critical
 /*----------------------------------------------------------------------------*/
 /* append new entry into this index buffer                                    */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pAppendEntry(EntWrk& xEntWrk)                        //# critical
+Entry* EntryBuffer::pAppendEntry(EntWrk& xEntWrk,EntryVec& xPriorVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   

@@ -981,6 +981,7 @@ void Table::vBuildNewIndex(char* aSortArray, i8 nElements, i8 nElmSize,
   if (gxArguments.m_bVerbose)
     vTrace("-- Build New Index --------------\n"_Stz);
   
+  EntryVec xPriorVec;
   IdxColVec* pIdxColVec = pNewIndexData->pIndex()->pIdxColVec();
   
   // step thru each element in the sort array
@@ -1005,7 +1006,7 @@ void Table::vBuildNewIndex(char* aSortArray, i8 nElements, i8 nElmSize,
     KeyWrk xKeyWrk((Key*)aKeyElm,pIdxColVec);
     
     // append an entry into index structure
-    pNewIndexData->vAppendEntry(xKeyWrk,pRow->xId());
+    pNewIndexData->vAppendEntry(xKeyWrk,pRow->xId(),xPriorVec);
   }
 
   if (gxArguments.m_bVerbose)

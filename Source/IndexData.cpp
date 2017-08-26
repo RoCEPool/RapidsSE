@@ -232,13 +232,13 @@ void IndexData::vAppendBuffer(EntryBuffer* pEntryBuffer)
 /*----------------------------------------------------------------------------*/
 /* append an entry into this index at level 0                                 */
 /*----------------------------------------------------------------------------*/
-void IndexData::vAppendEntry(KeyWrk& xKeyWrk, Id xId)
+void IndexData::vAppendEntry(KeyWrk& xKeyWrk, Id xId, EntryVec& xPriorVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
   m_zLock.vGrabWrite();
   
-  m_pCurrentBuffer = pAppendL0Entry(m_pCurrentBuffer,xKeyWrk,xId);
+  m_pCurrentBuffer = pAppendL0Entry(m_pCurrentBuffer,xKeyWrk,xId,xPriorVec);
   
   m_zLock.vDropWrite();
 }
@@ -519,7 +519,8 @@ bool IndexData::bVerify(void)
 /* check current L0 index buffer for space and append an entry for {key,id}   */
 /*----------------------------------------------------------------------------*/
 EntryBuffer* IndexData::pAppendL0Entry(EntryBuffer* pEntryBuffer,
-                                       KeyWrk& xKeyWrk, Id xId)
+                                       KeyWrk& xKeyWrk, Id xId,
+                                       EntryVec& xPriorVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
@@ -539,7 +540,7 @@ EntryBuffer* IndexData::pAppendL0Entry(EntryBuffer* pEntryBuffer,
   if (pEntryBuffer && pEntryBuffer->bHasSpace(nEntryBytes)) {
     
     // append entry into L0 index buffer
-    Entry* pEntry = pEntryBuffer->pAppendEntry(xEntWrk);
+    Entry* pEntry = pEntryBuffer->pAppendEntry(xEntWrk,xPriorVec);
     ASSERT(pEntry);
 
     return pEntryBuffer;
@@ -561,7 +562,7 @@ EntryBuffer* IndexData::pAppendL0Entry(EntryBuffer* pEntryBuffer,
     pEntryBuffer->vHigherLevel(pHigherLevel);
     
     // append entry into subsequent L0 buffer
-    Entry* pEntry = pEntryBuffer->pAppendEntry(xEntWrk);
+    Entry* pEntry = pEntryBuffer->pAppendEntry(xEntWrk,xPriorVec);
     
     // insert the first entry of L0 entry buffer into L1 higher level buffer
     vInsertFirstEntry(pHigherLevel,pEntryBuffer);
@@ -583,14 +584,13 @@ EntryBuffer* IndexData::pAppendL0Entry(EntryBuffer* pEntryBuffer,
   pEntryBuffer->vHigherLevel(pHigherLevel);
   
   // append entry into first L0 buffer
-  Entry* pEntry = pEntryBuffer->pAppendEntry(xEntWrk);
+  Entry* pEntry = pEntryBuffer->pAppendEntry(xEntWrk,xPriorVec);
   
   // insert the first entry of L0 entry buffer into L1 higher level buffer
   vInsertFirstEntry(pHigherLevel,pEntryBuffer);
   
   return pEntryBuffer;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* insert an entry for {key,id} into an index buffer at given level           */
