@@ -708,7 +708,7 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pNewIndexData,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute the size of the sort element
   
-  i8 iSortElmSize = pNewIndex->iSortKeyDatum() + sizeof(Entry*);
+  i8 iSortElmSize = pNewIndex->iSortKeyDatum() + sizeof(Id);
   ASSERT(2*sizeof(i8) == iSortElmSize);
   if (gxArguments.m_bVerbose) {
     vTrace("Sort element size %lldB\n"_Stz,
@@ -876,9 +876,9 @@ void Table::vPopulateSortArray(char* aSortArray, i8 nElements, i8 iSortElmSize,
       MemLib::vCopy(aSortElm,xKeyWrk.aWspArea(),xKeyWrk.nWspUsed(),CN_TABLE);
       aSortElm = pAdd<char*>(aSortElm,xKeyWrk.nWspUsed());
       
-      // set the row address into the sort element
-      *((Entry**)aSortElm) = pRow;
-      aSortElm = pAdd<char*>(aSortElm,sizeof(Entry*));
+      // set the id into the sort element
+      *((Id*)aSortElm) = pRow->xId();
+      aSortElm = pAdd<char*>(aSortElm,sizeof(Id));
       
     }
   }
@@ -954,14 +954,15 @@ void Table::vDumpSortArray(char* aSortArray, i8 nElements, i8 nElmSize,
     i8 iKeyDatum = *((i8*)aSortElm);
     aSortElm = pAdd<char*>(aSortElm,sizeof(i8));
     
-    Entry* pRow = *((Entry**)aSortElm);
-    aSortElm = pAdd<char*>(aSortElm,sizeof(Entry*));
+    Id xId = *((Id*)aSortElm);
+    aSortElm = pAdd<char*>(aSortElm,sizeof(Id));
     
     if (gxArguments.m_bVerbose)
-      vTrace("[%lld] %lld : %p\n"_Stz,
+      vTrace("[%lld] %lld.%lld : %lld\n"_Stz,
              i_Elm,
-             iKeyDatum,
-             pRow);
+             xId.iBuffer(),
+             xId.iRow(),
+             iKeyDatum);
   }
   
   vTrace("---------------------------------\n"_Stz);
@@ -992,9 +993,9 @@ void Table::vBuildNewIndex(char* aSortArray, i8 nElements, i8 nElmSize,
     char* aKeyElm = aSortElm;
     aSortElm = pAdd<char*>(aSortElm,sizeof(i8));
     
-    // get row pointer
-    Entry* pRow = *((Entry**)aSortElm);
-    aSortElm = pAdd<char*>(aSortElm,sizeof(Entry*));
+    // get id
+    Id xId = *((Id*)aSortElm);
+    aSortElm = pAdd<char*>(aSortElm,sizeof(Id));
     
 //    if (i_Elm % 10000 == 0) {
 //      vTrace("[%lld] %p\n"_Stz,
@@ -1006,7 +1007,7 @@ void Table::vBuildNewIndex(char* aSortArray, i8 nElements, i8 nElmSize,
     KeyWrk xKeyWrk((Key*)aKeyElm,pIdxColVec);
     
     // append an entry into index structure
-    pNewIndexData->vAppendEntry(xKeyWrk,pRow->xId(),xPriorVec);
+    pNewIndexData->vAppendEntry(xKeyWrk,xId,xPriorVec);
   }
 
   if (gxArguments.m_bVerbose)
