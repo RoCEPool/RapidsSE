@@ -561,6 +561,9 @@ EntryBuffer* IndexData::pAppendL0Entry(EntryBuffer* pEntryBuffer,
     pEntryBuffer = pEntryBuffer->pNewNextBuffer();
     pEntryBuffer->vHigherLevel(pHigherLevel);
     
+    // set the prior vector to be the head entry of L0 buffer
+    pEntryBuffer->vPriorVecHead(xPriorVec);
+    
     // append entry into subsequent L0 buffer
     Entry* pEntry = pEntryBuffer->pAppendEntry(xEntWrk,xPriorVec);
     
@@ -582,6 +585,9 @@ EntryBuffer* IndexData::pAppendL0Entry(EntryBuffer* pEntryBuffer,
   // create very first L0 buffer and set its higher level buffer
   pEntryBuffer = new EntryBuffer(m_pIndex,0,m_nPartitionNo);
   pEntryBuffer->vHigherLevel(pHigherLevel);
+  
+  // set the prior vector to be the head entry of L0 buffer
+  pEntryBuffer->vPriorVecHead(xPriorVec);
   
   // append entry into first L0 buffer
   Entry* pEntry = pEntryBuffer->pAppendEntry(xEntWrk,xPriorVec);

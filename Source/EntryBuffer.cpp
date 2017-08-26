@@ -2324,6 +2324,18 @@ void EntryBuffer::vPriorVec(Entry* pEntry, EntryVec* pPriorVec)     //# critical
 }
 
 /*----------------------------------------------------------------------------*/
+/* set the prior vector to the head entry                                     */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vPriorVecHead(EntryVec& xPriorVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  ln nLevel;
+  for (nLevel = 0_on; *nLevel < gnIndexLevels; nLevel++)
+    xPriorVec[nLevel] = pHead();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get right entry at given level (returns null if no right)                  */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pRightEntry(Entry* pEntry, ln nLevelNo)         //# critical

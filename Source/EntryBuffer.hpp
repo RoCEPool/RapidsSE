@@ -120,6 +120,7 @@ namespace DBobjects
     Entry*       pNextEntry(Entry* pEntry);
     EntryBuffer* pPositionLevel(KeyWrk& xKeyWrk, eJC eJuxtaCompare, i8 iLevel);
     Entry*       pPosition(KeyWrk& xKeyWrk, eJC eJuxtaCompare);
+    void         vPriorVecHead(EntryVec& xPriorVec);
     bool         bRemove(Key* aKey);
     void         vShow(void);
     EntryBuffer* pSplitBuffer(void);
