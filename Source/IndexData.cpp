@@ -533,10 +533,10 @@ EntryBuffer* IndexData::pAppendL0Entry(EntryBuffer* pEntryBuffer,
   i8 nEntryBytes = Entry::nBytesRequired(xEntWrk);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // attempt to append into current L0 buffer
+  // case where we append into an existing L0 entry buffer
   
-  // check if index buffer has enough space
-  if ( pEntryBuffer && pEntryBuffer->bHasSpace(nEntryBytes) ) {
+  // check for a current L0 buffer and that it has enough space
+  if (pEntryBuffer && pEntryBuffer->bHasSpace(nEntryBytes)) {
     
     // append entry into L0 index buffer
     Entry* pEntry = pEntryBuffer->pAppendEntry(xEntWrk);
@@ -546,39 +546,48 @@ EntryBuffer* IndexData::pAppendL0Entry(EntryBuffer* pEntryBuffer,
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create a new L0 buffer and append entry to it
+  // case where existing L0 entry buffer is full
   
   EntryBuffer* pHigherLevel = nullptr;
   
-  if ( ! pEntryBuffer )
-    pEntryBuffer = new EntryBuffer(m_pIndex, 0, m_nPartitionNo);
-  else {
+  if (pEntryBuffer) {
     
-    // get the next level buffer
+    // get the L1 higher level buffer
     pHigherLevel = pEntryBuffer->pHigherLevel();
     ASSERT(pHigherLevel);
     
-    // not enough space, create a new entry buffer
+    // create a subsequent L0 entry buffer and set its higher level buffer
     pEntryBuffer = pEntryBuffer->pNewNextBuffer();
     pEntryBuffer->vHigherLevel(pHigherLevel);
-  }
-  
-  // create a next level buffer if it does not exist
-  if ( ! pHigherLevel ) {
-    i8 nHigherLevel = pEntryBuffer->nBufferLevel() + 1;
-    pHigherLevel = new EntryBuffer(m_pIndex, nHigherLevel, m_nPartitionNo);
-    if ( ! m_pRoot )
-      m_pRoot = pHigherLevel;
-    pEntryBuffer->vHigherLevel(pHigherLevel);
     
+    // append entry into subsequent L0 buffer
+    Entry* pEntry = pEntryBuffer->pAppendEntry(xEntWrk);
+    
+    // insert the first entry of L0 entry buffer into L1 higher level buffer
+    vInsertFirstEntry(pHigherLevel,pEntryBuffer);
+    
+    return pEntryBuffer;
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // case where there is no existing L0 entry buffer
   
-  // insert entry into index buffer
+  ASSERT(! m_pRoot);
+  
+  // create very first L1 buffer and set it as root
+  pHigherLevel = new EntryBuffer(m_pIndex,1,m_nPartitionNo);
+  m_pRoot = pHigherLevel;
+  
+  // create very first L0 buffer and set its higher level buffer
+  pEntryBuffer = new EntryBuffer(m_pIndex,0,m_nPartitionNo);
+  pEntryBuffer->vHigherLevel(pHigherLevel);
+  
+  // append entry into first L0 buffer
   Entry* pEntry = pEntryBuffer->pAppendEntry(xEntWrk);
   
-  // insert first entry in new root from buffer we split
-  vInsertFirstEntry(pHigherLevel, pEntryBuffer);
-    
+  // insert the first entry of L0 entry buffer into L1 higher level buffer
+  vInsertFirstEntry(pHigherLevel,pEntryBuffer);
+  
   return pEntryBuffer;
 }
 

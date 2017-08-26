@@ -48,7 +48,7 @@ print "loading lineitem.tbl..." ;
 //docol memoryReset;
 //docol schedulerReset;
 ld lineitem "/tpch/lineitem.tbl" ;
-sleep 20 ;
+sleep 10 ;
 space;
 //docol schedulerList;
 //docol memoryList;
