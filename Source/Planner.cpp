@@ -308,10 +308,10 @@ void Planner::vMatchPaths(void)
     eAT eAccess = mpAccPath->eAccess();
     
     if (AT_EXACT == eAccess) {
-      PredicateVec* npUprPredVec = mpAccPath->pLowerPredicates();
-      vMatchPredicates(npUprPredVec,AT_EXACT);
+      PredicateVec* npLwrPredVec = mpAccPath->pLowerPredicates();
+      vMatchPredicates(npLwrPredVec,AT_EXACT);
       
-      if (npUprPredVec->bFullyMatched())
+      if (npLwrPredVec->bFullyMatched())
         mpAccPath->vIsCandidate(true);
     }
     else
@@ -360,7 +360,7 @@ void Planner::vMatchPredicates(PredicateVec* mpPathPredVec, eAT eAccess)
   s256 sOpDatum_Where;
   eRO eRelOp_Where;
   
-  // ste thru each predicate in path
+  // step thru each predicate in path
   for (i8 i_PathPred = 0; i_PathPred < mpPathPredVec->nItems(); i_PathPred++) {
 
     // get path predicate
