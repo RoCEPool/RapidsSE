@@ -229,7 +229,7 @@ bool File::bExists(Stz* psFileName)
   }
   
   m_xSysCall.vError(errno);
-  vWarn("File::bExists: stat() error; errno=%d"_Stz,errno);
+  vWarn("File::bExists: %s stat() error; errno=%d"_Stz, psFileName->aChar(), errno);
   
   return false;
 }
