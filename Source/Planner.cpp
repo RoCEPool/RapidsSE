@@ -131,6 +131,36 @@ AccessPath* Planner::pChosenPath(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* generate the set of all paths for given table                              */
+/*----------------------------------------------------------------------------*/
+void Planner::vGenPaths(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  m_pPathVec = new PathVec;
+  
+  IdxVec* pIdxVec = m_pTable->pIdxVec();
+  
+  for (i8 i_Idx = 0; i_Idx < pIdxVec->nItems(); i_Idx++) {
+    
+    Index* mpIndex = pIdxVec->pGet(i_Idx);
+    
+    if (mpIndex->sIndexName().bSame("hidden"_Stz)) {
+      AccessPath* mpAccessPath = new AccessPath(AT_SCAN);
+      mpAccessPath->vIndex(mpIndex);
+      mpAccessPath->vIsCandidate(true);
+      m_pPathVec->vAdd(mpAccessPath);
+      continue;
+    }
+    
+    vGenPaths(mpIndex, AT_EXACT);
+    vGenPaths(mpIndex, AT_LOWER);
+    vGenPaths(mpIndex, AT_UPPER);
+    vGenPaths(mpIndex, AT_RANGE);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* generate the set of all paths for given index and access technique         */
 /*----------------------------------------------------------------------------*/
 void Planner::vGenPaths(Index* pIndex, eAT eAccess)
@@ -159,7 +189,7 @@ void Planner::vGenPaths(Index* pIndex, eAT eAccess)
       PredicateVec* pLowerPredicateVec = new PredicateVec;
       pAccessPath->vLowerPredicates(pLowerPredicateVec);
       
-      // step thru predicates of the lower bound predicate vector
+      // create predicates of the lower bound predicate vector
       for (i8 i_IdxCol = 0; i_IdxCol < nCols; i_IdxCol++) {
         
         // create a lower bound predicate
@@ -181,7 +211,7 @@ void Planner::vGenPaths(Index* pIndex, eAT eAccess)
       PredicateVec* pUpperPredicateVec = new PredicateVec;
       pAccessPath->vUpperPredicates(pUpperPredicateVec);
       
-      // step thru predicates of the upper bound predicate vector
+      // create predicates of the upper bound predicate vector
       for (i8 i_IdxCol = 0; i_IdxCol < nCols; i_IdxCol++) {
         
         // create an upper bound predicate
@@ -196,34 +226,6 @@ void Planner::vGenPaths(Index* pIndex, eAT eAccess)
         pUpperPredicate->vArg1(pColumnArg);
       }
     }
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* generate the set of all paths for given table                              */
-/*----------------------------------------------------------------------------*/
-void Planner::vGenPaths(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
-  
-  m_pPathVec = new PathVec;
-  
-  IdxVec* pIdxVec = m_pTable->pIdxVec();
-  
-  for (i8 i_Idx = 0; i_Idx < pIdxVec->nItems(); i_Idx++) {
-    Index* mpIndex = pIdxVec->pGet(i_Idx);
-    
-    if (mpIndex->sIndexName().bSame("hidden"_Stz)) {
-      AccessPath* mpAccessPath = new AccessPath(AT_SCAN);
-      mpAccessPath->vIndex(mpIndex);
-      mpAccessPath->vIsCandidate(true);
-      m_pPathVec->vAdd(mpAccessPath);
-    }
-    
-    vGenPaths(mpIndex, AT_EXACT);
-    vGenPaths(mpIndex, AT_LOWER);
-    vGenPaths(mpIndex, AT_UPPER);
-    vGenPaths(mpIndex, AT_RANGE);
   }
 }
 
