@@ -184,6 +184,9 @@ tp: theIndirectResult
   //   read first chunk
   pLoaderSub loaderSub.begin
 
+
+
+/*
   // load each record
   begin
 
@@ -214,6 +217,25 @@ tp: theIndirectResult
       then // if buffer full
 
   repeat // for all records in chunked file
+*/
+
+  pLoaderSub loaderSub.fetchRecord
+
+  if 
+    // fill a buffer
+    begin
+
+      pLoaderSub loaderSub.loadData
+
+      while
+
+       // append row buffer to table/partition/strand
+       pLoaderSub ~loadAppendBuffer
+
+       // insert row into new working buffer
+       pLoaderSub loaderSub.insertRow assert
+     repeat
+  then
 
   // calculate total partitions in the cluster
   grid.slots grid.nodes *
