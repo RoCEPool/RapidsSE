@@ -624,13 +624,13 @@ void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iE
       ASSERT(pNextBuffer->nBufferLevel() == 0);
       
       iBuffers++;
-      iEntries += (pNextBuffer->m_nEntries - 1);
+      iEntries += (pNextBuffer->m_nEntries);
       
       if (bDetailed)
       sAnalysis.vCatSprint("     buffer %5lld (L%lld) : %lld entries\n"_Stz,
                            iBuffers,
                            pNextBuffer->m_nBufferLevel,
-                           pNextBuffer->m_nEntries - 1);
+                           pNextBuffer->m_nEntries);
 
       EntryBuffer* pThisBuffer = pNextBuffer;
       pNextBuffer = pNextBuffer->pNextBuffer();
@@ -640,13 +640,13 @@ void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iE
   }
 
   iBuffers++;
-  iEntries += (m_nEntries - 1);
+  iEntries += m_nEntries;
   
   if (bDetailed)
     sAnalysis.vCatSprint("     buffer %5lld (L%lld) : %lld entries\n"_Stz,
                          iBuffers,
                          m_nBufferLevel,
-                         m_nEntries - 1);
+                         m_nEntries);
   
   // recursively dump the lower level buffers
   if (m_nBufferLevel != 0) {
