@@ -260,7 +260,7 @@ bool LoaderSub::bInsertRow(void)
   EntryBuffer* pEntryBuffer = m_pEntryBuffer[m_iPartition];
   
   // insert row into working buffer
-  bool b = pEntryBuffer->bInsertEntry(m_pTxRef->iTxId(),m_aRecord,m_iLength);
+  bool b = pEntryBuffer->bAppendEntry(m_pTxRef->iTxId(),m_aRecord,m_iLength);
   
   //pEntryBuffer->vShow();
   

@@ -103,6 +103,7 @@ namespace DBobjects
   
     void         vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries);
     Entry*       pAppendEntry(EntWrk& xEntWrk,EntryVec& xPriorVec);
+    bool         bAppendEntry(i8 iTxId, Stz* pRow, i8 iLength);
     i8           nBufferLevel(void);
     void         vBufferCount(i8& nBufferCount);
     i8           iDecile(void);
