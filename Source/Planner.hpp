@@ -10,10 +10,11 @@ namespace Plans
   private:
     static const i8 C_MAX_CANDIDATES = 128;
   
-    Table*    m_pTable;       // table being accessed
-    TokenVec* m_pWhereTknVec; // tokenised where
-    PathVec*  m_pPathVec;     // vector of possible paths
-    i8        m_i_Chosen;     // path chosen
+    Table*    m_pTable;        // table being accessed
+    TokenVec* m_pWhereTknVec;  // tokenised where
+    TokenVec* m_pPhraseTknVec; // tokens of a phrase
+    PathVec*  m_pPathVec;      // vector of possible paths
+    i8        m_i_Chosen;      // path chosen
 
     // must be last
     Footer m_xFooter;

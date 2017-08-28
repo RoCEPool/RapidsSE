@@ -53,6 +53,7 @@ Planner::Planner(void)
   m_pTable = nullptr;
   //m_sWhereClause
   m_pWhereTknVec = nullptr;
+  m_pPhraseTknVec = nullptr;
   m_pPathVec = nullptr;
   m_i_Chosen = -1;
   
@@ -67,6 +68,8 @@ Planner::Planner(void)
 Planner::~Planner(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  delete m_pPhraseTknVec;
   
   m_pWhereTknVec->vSetAllTokens();
   delete m_pWhereTknVec;
@@ -414,6 +417,11 @@ void Planner::vParseWhere(s48K& sWhereClause)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
   m_pWhereTknVec = Tokeniser::pTokenise(sWhereClause);
+  
+  // for the moment just make the phrase vector a copy of the where vector
+  m_pPhraseTknVec = new TokenVec;
+  for (i8 i_Token = 0; i_Token < m_pWhereTknVec->nTokens(); i_Token++)
+    m_pPhraseTknVec->vAddToken(m_pWhereTknVec->pGet(i_Token)->aText());
 }
 
 /*----------------------------------------------------------------------------*/
