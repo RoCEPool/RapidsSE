@@ -25,7 +25,6 @@ dumpidx jCdt jCdt_idx1;
 //print "\nSelecting rows with key <= 7 using idx1 ...\n" ;
 fetch jCdt "jA 7 <=";
 
-/*
 fetch jCdt "jA 1 >=" ;
 
 // upper bound
@@ -46,7 +45,6 @@ fetch jCdt "jA 5 >=" ;
 //fetch jCdt "jA 8 <= jA 1 >= and" ;
 
 //docol epochDump;
-*/
 
 drop table jCdt;
 

@@ -69,6 +69,7 @@ Planner::~Planner(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
+  m_pPhraseTknVec->vSetAllTokens();
   delete m_pPhraseTknVec;
   
   m_pWhereTknVec->vSetAllTokens();
@@ -377,17 +378,17 @@ void Planner::vMatchPredicates(PredicateVec* mpPathPredVec, eAT eAccess)
       
       // get next columnNm token from where clause
       pColNmTkn_Where =
-        m_pWhereTknVec->pFindToken(sColumnNm_Path,i_ColumnTkn_Where);
+        m_pPhraseTknVec->pFindToken(sColumnNm_Path,i_ColumnTkn_Where);
       
       // unable to find a matching column
       if ( ! pColNmTkn_Where )
         return;
       
       // get the associated literal token
-      mpLitTkn_Where = m_pWhereTknVec->pGet(i_ColumnTkn_Where+1);
+      mpLitTkn_Where = m_pPhraseTknVec->pGet(i_ColumnTkn_Where+1);
       
       // get the associated op token
-      mpOpTkn_Where = m_pWhereTknVec->pGet(i_ColumnTkn_Where+2);
+      mpOpTkn_Where = m_pPhraseTknVec->pGet(i_ColumnTkn_Where+2);
       sOpDatum_Where = mpOpTkn_Where->aText();
       eRelOp_Where = Op::eDecode(sOpDatum_Where.aStr());
       
