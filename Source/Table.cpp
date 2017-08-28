@@ -89,9 +89,9 @@ Table::Table(void)
   m_pColumnVec->vAdd(pColumn);
   
   for (i8 i_Slot = 0; i_Slot < C_SLOTS_PER_NODE; i_Slot++)
-    m_iSubLoaders[i_Slot] = 0;
+    m_ziSubLoaders[i_Slot] = 0;
   
-  m_iIndexesLoaded = -1;
+  m_ziIndexesLoaded = -1;
   
   _checkInitialised_(CN_TABLE);
   
@@ -281,10 +281,10 @@ void Table::vAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
     return;
   
   // decrement no of subLoaders that have appended last buffer
-  --m_iSubLoaders[iPartition];
+  --m_ziSubLoaders[iPartition];
   
   // check if any sub loaders still have more buffers
-  if ( *m_iSubLoaders[iPartition] != 0 )
+  if ( *m_ziSubLoaders[iPartition] != 0 )
     return;
   
   // compute the number of entries in hidden index
@@ -310,7 +310,7 @@ void Table::vAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
   }
   
   // mark indexes being loaded
-  --m_iIndexesLoaded;
+  --m_ziIndexesLoaded;
  
   // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
 }
@@ -505,7 +505,7 @@ i8 Table::iIndexesLoaded(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  return *m_iIndexesLoaded;
+  return *m_ziIndexesLoaded;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -515,7 +515,7 @@ void Table::vIndexesLoaded(i8 iIndexesLoaded)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  m_iIndexesLoaded = iIndexesLoaded;
+  m_ziIndexesLoaded = iIndexesLoaded;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -633,7 +633,7 @@ void Table::vSubLoaders(i8 iSubLoaders)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   for (i8 i_Slot = 0; i_Slot < C_SLOTS_PER_NODE; i_Slot++)
-    m_iSubLoaders[i_Slot] = iSubLoaders;
+    m_ziSubLoaders[i_Slot] = iSubLoaders;
   vTrace("Subloaders: %lld\n"_Stz, iSubLoaders);
   
 }

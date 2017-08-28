@@ -113,10 +113,7 @@ timer: loadTimer
     1 thread.sleep_s
   repeat
 
-  " tables loaded" .
-
-  // reset indexesLoaded for next load
-  false tablePtr table.indexesLoaded!
+  "table and its indexes loaded" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tidy up
