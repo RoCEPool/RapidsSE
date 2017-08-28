@@ -216,6 +216,8 @@ void IndexData::vAppendBuffer(EntryBuffer* pEntryBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
+  m_zLock.vGrabWrite();
+  
   if (m_pRoot == nullptr) {
     ASSERT( ! m_pCurrentBuffer )
     m_pRoot = pEntryBuffer;
@@ -227,6 +229,8 @@ void IndexData::vAppendBuffer(EntryBuffer* pEntryBuffer)
   }
   
   m_pCurrentBuffer = pEntryBuffer;
+  
+   m_zLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -290,7 +294,7 @@ Entry* IndexData::pInsertEntry(i8 iTxId, Stz* pRow, i8 iLength)
   if ( ! m_pCurrentBuffer->bHasSpace(nEntryBytes) ) {
     
     //----------------------------------------------------------------------------
-    // create a new wntry buffer and link with current buffer
+    // create a new entry buffer and link with current buffer
     EntryBuffer* pNewBuffer = new EntryBuffer(m_pIndex, 0, m_nPartitionNo);
     pNewBuffer->vNextBuffer(m_pCurrentBuffer->pNextBuffer());
     pNewBuffer->vPrevBuffer(m_pCurrentBuffer);

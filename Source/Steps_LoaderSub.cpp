@@ -211,7 +211,7 @@ void Task::vLoaderSubInsertRow(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loaderSub.loaderData -- load data                                          */
+/* loaderSub.loadData -- load data                                            */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubLoadData(MP_Task mpTask)
 {
@@ -219,7 +219,7 @@ void Task::vLoaderSubLoadData(MP_Task mpTask)
   
   Object* pPtrLoaderSub;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoaderSub) )
-    THROW_INVALID_DSTACK("loaderSub.loaderData"_Stz);
+    THROW_INVALID_DSTACK("loaderSub.loadData"_Stz);
   
   LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoaderSub);
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
