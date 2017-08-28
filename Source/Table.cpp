@@ -76,6 +76,7 @@ Table::Table(void)
   
   m_zIndexNo.vCheckInit();
   m_zRefCount.vCheckInit();
+  m_pHiddenIndex = nullptr;
   
   m_pIdxVec = new IdxVec;
   
@@ -86,6 +87,11 @@ Table::Table(void)
   pColumn->vColumnNo(-1);
   pColumn->vColumnType(CT_INTEGER);
   m_pColumnVec->vAdd(pColumn);
+  
+  for (i8 i_Slot = 0; i_Slot < C_SLOTS_PER_NODE; i_Slot++)
+    m_iSubLoaders[i_Slot] = 0;
+  
+  m_iIndexesLoaded = -1;
   
   _checkInitialised_(CN_TABLE);
   
@@ -275,10 +281,10 @@ void Table::vAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
     return;
   
   // decrement no of subLoaders that have appended last buffer
-  m_iSubLoaders[iPartition]--;
+  --m_iSubLoaders[iPartition];
   
   // check if any sub loaders still have more buffers
-  if (m_iSubLoaders[iPartition])
+  if ( *m_iSubLoaders[iPartition] != 0 )
     return;
   
   // compute the number of entries in hidden index
@@ -303,6 +309,9 @@ void Table::vAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
     vNewIndexLoad(iPartition,pNewIndexData,pHiddenIndexData,nHiddenEntries);
   }
   
+  // mark indexes being loaded
+  --m_iIndexesLoaded;
+ 
   // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
 }
 
@@ -487,6 +496,26 @@ i8 Table::nIndexBuffers(i8 iIndexNo)
   }
   
   return iBuffers;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get indexes loaded or not                                                  */
+/*----------------------------------------------------------------------------*/
+i8 Table::iIndexesLoaded(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  return *m_iIndexesLoaded;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set ndexes loaded                                                          */
+/*----------------------------------------------------------------------------*/
+void Table::vIndexesLoaded(i8 iIndexesLoaded)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  m_iIndexesLoaded = iIndexesLoaded;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -234,7 +234,6 @@ void Task::vLoaderSubLoadData(MP_Task mpTask)
     
     // check if buffer was full
     if ( ! bInserted) {
-      bool bInserted = pLoaderSub->bInsertRow();
       
       // buffer was full
       // return to loaderSub to append buffer to the table/partition

@@ -35,7 +35,8 @@ namespace DBobjects
     
     IdxVec*    m_pIdxVec;    // index vector
     ColumnVec* m_pColumnVec; // colummn vector
-    i8         m_iSubLoaders[C_SLOTS_PER_NODE];  // subloader count
+    Atomic     m_iSubLoaders[C_SLOTS_PER_NODE];  // subloader count
+    Atomic     m_iIndexesLoaded; // have all indexes been loaded
     
     // must be last
     Footer m_xFooter;
@@ -61,6 +62,8 @@ namespace DBobjects
     Index* pHiddenIndex(void);
     void vHiddenIndex(Index* pHiddenIndex);
     IdxVec* pIdxVec(void);
+    i8   iIndexesLoaded(void);
+    void vIndexesLoaded(i8 iIndexesLoaded);
     Partition* pPartition(i8 iSlot);
     void vPopulateIndex(i8 iIndexNo);
     void vRefDec(void);

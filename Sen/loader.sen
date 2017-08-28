@@ -64,6 +64,8 @@ timer: loadTimer
   tablePtr tblLoader loader.table!
   sPath tblLoader loader.path!
 
+  grid.slots tablePtr table.indexesLoaded!
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create sub loaders
 
@@ -103,6 +105,18 @@ timer: loadTimer
 
   // drop mutex
   //task::this dropMutex
+
+  // wait for other indexes to complete load
+  begin
+    tablePtr table.indexesLoaded@
+    while
+    1 thread.sleep_s
+  repeat
+
+  " tables loaded" .
+
+  // reset indexesLoaded for next load
+  false tablePtr table.indexesLoaded!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tidy up
