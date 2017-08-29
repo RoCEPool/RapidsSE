@@ -300,11 +300,11 @@ tp: theIndirectResult
 tp: partitionAppendBuffer
   locals| pTable iPartitionNo pRowBuffer |
 
-  pRowBuffer iPartitionNo pTable table.appendBuffer ( )
-
   pRowBuffer entryBuffer.isLast@ if
-    iPartitionNo "appended last buffer for partition " "%v %v" str.format .
+    iPartitionNo "appending last buffer for partition " "%v %v" str.format .
   then
+
+  pRowBuffer iPartitionNo pTable table.appendBuffer ( )
 ;
 
 /*============================================================================*/

@@ -246,38 +246,24 @@ void Table::vAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
   // first append buffer to the hidden index
   Partition* pPartition = this->pPartition(iPartition);
   IndexData* pHiddenIndexData = pPartition->pHiddenIndexData();
-  pHiddenIndexData->vAppendBuffer(pEntryBuffer);
   
-  // now iterate thru the buffer and insert entries in all other indexes
+  // is this the last buffer
+  bool bLastBuffer = pEntryBuffer->bIsLast();
   
-  // get no of indexes of the table
-  IdxDataVec* pIdxDataVec = pPartition->pIdxDataVec();
-  i8 nIndexes = pIdxDataVec->nItems();
-//  
-//  Entry* pEntry = pEntryBuffer->pFirstRow();
-//  while( (pEntry = pEntryBuffer->pNextRow(pEntry)) ) {
-//    
-//    // insert an entry for the row in all the indexes of this table
-//    for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
-//
-//      // get index
-//      IndexData* pIndexData = pIdxDataVec->pGet(i_Index);
-//      
-//      // skip the hidden index, as already inserted row in it
-//      Index* pIndex = pIndexData->pIndex();
-//      if (pIndex->bIsHidden())
-//        continue;
-//      
-//      // insert entry
-//      pIndexData->vInsertEntry(pEntry);
-//    }
-//  }
+  // do not insert empty buffers
+  if (pEntryBuffer->nEntries() == 1) {
+    delete pEntryBuffer;
+  }
+  else {
+    // append the buffer to the hidden index
+    pHiddenIndexData->vAppendBuffer(pEntryBuffer);
+  }
   
   // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
   // the new index load technique
   
   // we build the other indexes when we detect the last buffer being inserted
-  if ( ! pEntryBuffer->bIsLast() )
+  if ( ! bLastBuffer )
     return;
   
   // decrement no of subLoaders that have appended last buffer
@@ -294,6 +280,10 @@ void Table::vAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
            nHiddenEntries);
   }
   
+  // get no of indexes of the table
+  IdxDataVec* pIdxDataVec = pPartition->pIdxDataVec();
+  i8 nIndexes = pIdxDataVec->nItems();
+
   // iterate all indexes to be built
   for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
     
