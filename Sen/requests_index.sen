@@ -276,13 +276,15 @@ timer: pIdxSelectTimer
 ;
 
 /*----------------------------------------------------------------------------*/
-/* fetch rows using an index (this is request)                                */
+/* fetch rows using an index for given phrase (this is request)               */
 /*----------------------------------------------------------------------------*/
-: spawnFetch ( bSinglePartition bGroupBy ^pPlanner -- <R> )
+: spawnFetch ( bSinglePartition bGroupBy i_Phrase pPlanner -- <R> )
 
-  locals| pPlanner bGroupBy bSinglePartition |
+assert::stack_4
 
-  0 locals| i_Phrase |
+  locals| pPlanner i_Phrase bGroupBy bSinglePartition |
+
+//0 locals| i_Phrase |
 
   i_Phrase pPlanner Planner.indexNm@ .
 
@@ -415,7 +417,8 @@ timer: pIdxSelectTimer
   true to bSinglePartition
 
   // spawn select task for the fetch
-  bSinglePartition bGroupBy pPlanner spawnFetch
+  0 locals| i_Phrase |
+  bSinglePartition bGroupBy i_Phrase pPlanner spawnFetch
 
   <OK>
 ;
@@ -484,7 +487,8 @@ timer: pIdxSelectTimer
   pPlanner assert
 
   // spawn select task for the fetch
-  bGroupBy pPlanner spawnFetch
+  0 locals| i_Phrase |
+  false bGroupBy i_Phrase pPlanner spawnFetch
 
   // fetch rows from the buffers in the buffer queue
   bGroupBy if
