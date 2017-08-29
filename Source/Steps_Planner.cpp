@@ -71,28 +71,31 @@ void Task::vPlannerChoosePaths(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* planner.chosenPath -- push chosen access path                              */
+/* planner.chosenPath -- push chosen access path for given phrase             */
 /*----------------------------------------------------------------------------*/
 void Task::vPlannerChosenPath(MP_Task mpTask)
 {
   ENTRY((Stz*)__func__);                         //! needs to be tested on Linux
   
   Object* mpPtrPlanner;
-  
   if ( ! mpTask->m_pDataStack->bPop(mpPtrPlanner) )
     THROW_INVALID_DSTACK("planner.chosenPath"_Stz);
-  
   Planner* mpPlanner = _pPlanner(mpPtrPlanner);
   
-  AccessPath* pChosenPlan = mpPlanner->pChosenPath(0);
+  i8 i_Phrase;
+  if ( ! mpTask->m_pDataStack->bPop(i_Phrase) )
+    THROW_INVALID_DSTACK("planner.chosenPath"_Stz);
+  
+  AccessPath* pChosenPlan = mpPlanner->pChosenPath(i_Phrase);
   
   mpTask->m_pDataStack->vPushObject(pChosenPlan);
   
   
   EXIT();
 }
+
 /*----------------------------------------------------------------------------*/
-/* planner.delete -- delete an access path ( accessPath -- )                  */
+/* planner.delete -- delete the plan ( planner -- )                           */
 /*----------------------------------------------------------------------------*/
 void Task::vPlannerDelete(MP_Task mpTask)
 {
