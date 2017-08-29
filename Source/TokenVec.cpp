@@ -75,6 +75,19 @@ void TokenVec::vAddToken(Stz* aStr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append given token vector to this token vector                             */
+/*----------------------------------------------------------------------------*/
+void TokenVec::vAppendVector(TokenVec* pTokenVec)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  for (i8 i_Token = 0; i_Token < pTokenVec->nTokens(); i_Token++) {
+    Token* pToken = pTokenVec->pGet(i_Token);
+    vAddToken(pToken->aText());
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* find token given text                                                      */
 /*----------------------------------------------------------------------------*/
 Token* TokenVec::pFindToken(Stz* aText, i8& i_Cursor)

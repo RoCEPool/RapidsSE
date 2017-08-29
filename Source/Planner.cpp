@@ -465,11 +465,25 @@ void Planner::vParsePhrases(s48K& sWhereClause)
 //  
 //  bool bCopy1 = true;
 //  for (i8 i_Token = 0; i_Token < m_pWhereTknVec->nTokens(); i_Token++) {
+//    
 //    Token* pToken = m_pWhereTknVec->pGet(i_Token);
+//    
 //    if (bCopy1)
 //      pWorkTknVec1->vAddToken(pToken->aText());
 //    else
 //      pWorkTknVec2->vAddToken(pToken->aText());
+//
+//    if (bIsRelationalOp(pToken)) {
+//      bCopy1 = false;
+//      continue;
+//    }
+//    
+//    if (pToken->bSame("and"_Stz)) {
+//      
+//    }
+////
+////    if (pToken->bSame("or"_Stz))
+////      bCopy1 = false;
 //  }
 //  
 //  delete pWorkTknVec1;

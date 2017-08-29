@@ -22,6 +22,7 @@ namespace Parsing
     static TokenVec* _pTokenSet(void* aAddr);
   
     void vAddToken(Stz* aStr);
+    void vAppendVector(TokenVec* pTokenVec);
     Token* pFindToken(Stz* aText, i8& i_Token);
     i8   nTokens(void);
     void vIncTokens(void);
