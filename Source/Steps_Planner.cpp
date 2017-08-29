@@ -90,7 +90,6 @@ void Task::vPlannerChosenPath(MP_Task mpTask)
   
   mpTask->m_pDataStack->vPushObject(pChosenPlan);
   
-  
   EXIT();
 }
 
@@ -102,10 +101,8 @@ void Task::vPlannerDelete(MP_Task mpTask)
 ENTRY("vPlannerDelete"_Stz);
   
   Object* pPtrPlanner;
-  
   if ( ! mpTask->m_pDataStack->bPop(pPtrPlanner) )
     THROW_INVALID_DSTACK("planner.delete"_Stz);
-  
   Planner* pPlanner = _pPlanner(pPtrPlanner);
 
   delete pPlanner;
@@ -114,7 +111,7 @@ ENTRY("vPlannerDelete"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* planner.fetchTechnique@ -- fetch the fetch technique ( -- )                */
+/* planner.fetchTechnique@ -- fetch the fetch technique for given phrase( -- )*/
 /*----------------------------------------------------------------------------*/
 void Task::vPlannerFetchTechniqueFetch(MP_Task mpTask)
 {
@@ -125,7 +122,11 @@ void Task::vPlannerFetchTechniqueFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("planner.fetchTechnique@"_Stz);
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
-  eAT eFetchTechnique = mpPlanner->pChosenPath(0)->eAccess();
+  i8 i_Phrase;
+  if ( ! mpTask->m_pDataStack->bPop(i_Phrase) )
+    THROW_INVALID_DSTACK("planner.chosenPath"_Stz);
+  
+  eAT eFetchTechnique = mpPlanner->pChosenPath(i_Phrase)->eAccess();
   
   mpTask->m_pDataStack->vPushInt(eFetchTechnique);
   

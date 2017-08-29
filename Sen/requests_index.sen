@@ -284,7 +284,9 @@ timer: pIdxSelectTimer
 
   pPlanner Planner.indexNm@ .
 
-  pPlanner Planner.fetchTechnique@
+  0 locals| i_Phrase |
+
+  i_Phrase pPlanner Planner.fetchTechnique@
 
   // execute a lower bound select using index
   case
