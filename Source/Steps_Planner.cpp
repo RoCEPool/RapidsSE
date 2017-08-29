@@ -63,7 +63,7 @@ void Task::vPlannerChoosePath(MP_Task mpTask)
   
   Planner* mpPlanner = _pPlanner(mpPtrPlanner);
   
-  mpPlanner->vChoosePath();
+  mpPlanner->vChoosePath(0);
   
   EXIT();
 }
@@ -82,7 +82,7 @@ void Task::vPlannerChosenPath(MP_Task mpTask)
   
   Planner* mpPlanner = _pPlanner(mpPtrPlanner);
   
-  AccessPath* pChosenPlan = mpPlanner->pChosenPath();
+  AccessPath* pChosenPlan = mpPlanner->pChosenPath(0);
   
   mpTask->m_pDataStack->vPushObject(pChosenPlan);
   
@@ -120,7 +120,7 @@ void Task::vPlannerFetchTechniqueFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("planner.fetchTechnique@"_Stz);
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
-  eAT eFetchTechnique = mpPlanner->pChosenPath()->eAccess();
+  eAT eFetchTechnique = mpPlanner->pChosenPath(0)->eAccess();
   
   mpTask->m_pDataStack->vPushInt(eFetchTechnique);
   
@@ -158,7 +158,7 @@ void Task::vPlannerHighKeyFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("planner.highKey@"_Stz);
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
-  AccessPath* mpChosenPath = mpPlanner->pChosenPath();
+  AccessPath* mpChosenPath = mpPlanner->pChosenPath(0);
   PredicateVec* mpUpperPredicates = mpChosenPath->pUpperPredicates();
   Predicate* mpUpperPredicate = mpUpperPredicates->pGet(0);
   s256 sHighKey = mpUpperPredicate->pArg2()->sArgVal();
@@ -180,7 +180,7 @@ void Task::vPlannerIndexNmFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("planner.indexNm@"_Stz);
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
-  AccessPath* mpChosenPath = mpPlanner->pChosenPath();
+  AccessPath* mpChosenPath = mpPlanner->pChosenPath(0);
   Index* pChosenIndex = mpChosenPath->pIndex();
   
   s32 sIndexNm = pChosenIndex->aIndexName();
@@ -201,7 +201,7 @@ void Task::vPlannerKeyFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("planner.key@"_Stz);
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
-  AccessPath* mpChosenPath = mpPlanner->pChosenPath();
+  AccessPath* mpChosenPath = mpPlanner->pChosenPath(0);
   PredicateVec* mpLowerPredicates = mpChosenPath->pLowerPredicates();
   Predicate* mpLowerPredicate = mpLowerPredicates->pGet(0);
   s256 sEqlKey = mpLowerPredicate->pArg2()->sArgVal();
@@ -223,7 +223,7 @@ void Task::vPlannerLowKeyFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("planner.lowKey@"_Stz);
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
-  AccessPath* mpChosenPath = mpPlanner->pChosenPath();
+  AccessPath* mpChosenPath = mpPlanner->pChosenPath(0);
   PredicateVec* mpLowerPredicates = mpChosenPath->pLowerPredicates();
   Predicate* mpLowerPredicate = mpLowerPredicates->pGet(0);
   s256 sLowKey = mpLowerPredicate->pArg2()->sArgVal();

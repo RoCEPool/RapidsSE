@@ -9,12 +9,15 @@ namespace Plans
   {
   private:
     static const i8 C_MAX_CANDIDATES = 128;
+    static const i8 C_MAX_PHRASES = 128;
   
     Table*    m_pTable;        // table being accessed
-    TokenVec* m_pWhereTknVec;  // tokenised where
-    TokenVec* m_pPhraseTknVec; // tokens of a phrase
     PathVec*  m_pPathVec;      // vector of possible paths
-    i8        m_i_Chosen;      // path chosen
+    TokenVec* m_pWhereTknVec;  // tokenised where
+  
+    TokenVec* m_pPhraseTknVec[C_MAX_PHRASES]; // array of phrases
+    i8        m_i_Chosen[C_MAX_PHRASES];      // path chosen
+    i8        m_nPhrases;
 
     // must be last
     Footer m_xFooter;
@@ -27,8 +30,8 @@ namespace Plans
     Planner(void);
     ~Planner(void);
   
-    void vChoosePath(void);
-    AccessPath* pChosenPath(void);
+    void vChoosePath(i8 i_Phrase);
+    AccessPath* pChosenPath(i8 i_Phrase);
     void vGenPaths(void);
     void vGenPaths(Index* pIndex, eAT eAccess);
     bool bIsExactOp(eRO eRelOp);

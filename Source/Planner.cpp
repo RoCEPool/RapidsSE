@@ -51,11 +51,14 @@ Planner::Planner(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
   m_pTable = nullptr;
-  //m_sWhereClause
-  m_pWhereTknVec = nullptr;
-  m_pPhraseTknVec = nullptr;
   m_pPathVec = nullptr;
-  m_i_Chosen = -1;
+  m_pWhereTknVec = nullptr;
+  
+  for (i8 i_Phrase = 0; i_Phrase < C_MAX_PHRASES; i_Phrase++) {
+    m_pPhraseTknVec[i_Phrase] = nullptr;
+    m_i_Chosen[i_Phrase] = -1;
+  }
+  m_nPhrases = 0;
   
   _checkInitialised_(CN_PLANNER);
   
@@ -69,8 +72,11 @@ Planner::~Planner(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
-  m_pPhraseTknVec->vSetAllTokens();
-  delete m_pPhraseTknVec;
+  for (i8 i_Vec = 0; i_Vec < C_MAX_PHRASES; i_Vec++)
+    if (m_pPhraseTknVec[i_Vec]) {
+      m_pPhraseTknVec[i_Vec]->vSetAllTokens();
+      delete m_pPhraseTknVec[i_Vec];
+    }
   
   m_pWhereTknVec->vSetAllTokens();
   delete m_pWhereTknVec;
@@ -85,16 +91,18 @@ Planner::~Planner(void)
 /*----------------------------------------------------------------------------*/
 /* choose best path based on score                                            */
 /*----------------------------------------------------------------------------*/
-void Planner::vChoosePath(void)
+void Planner::vChoosePath(i8 i_Phrase)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
 
   AccessPath* npChosenAccessPath = nullptr;
   
   // step thru path vector and find first candidate
-  for (m_i_Chosen = 0; m_i_Chosen < m_pPathVec->nItems(); m_i_Chosen++) {
+  for (m_i_Chosen[i_Phrase] = 0;
+       m_i_Chosen[i_Phrase] < m_pPathVec->nItems();
+       m_i_Chosen[i_Phrase]++) {
     
-    AccessPath* mpAccPath = m_pPathVec->pGet(m_i_Chosen);
+    AccessPath* mpAccPath = m_pPathVec->pGet(m_i_Chosen[i_Phrase]);
     
     if ( ! mpAccPath->bIsCandidate() )
       continue;
@@ -106,7 +114,9 @@ void Planner::vChoosePath(void)
   ASSERT(npChosenAccessPath);
   
   // step thru remaining paths attempting to find a better candidate
-  for (i8 i_Test = m_i_Chosen + 1; i_Test < m_pPathVec->nItems(); i_Test++) {
+  for (i8 i_Test = m_i_Chosen[i_Phrase] + 1;
+       i_Test < m_pPathVec->nItems();
+       i_Test++) {
     
     AccessPath* mpTestAccPath = m_pPathVec->pGet(i_Test);
     
@@ -114,7 +124,7 @@ void Planner::vChoosePath(void)
       continue;
     
     if ( mpTestAccPath->iPathScore() < npChosenAccessPath->iPathScore() ) {
-      m_i_Chosen = i_Test;
+      m_i_Chosen[i_Phrase] = i_Test;
       npChosenAccessPath = mpTestAccPath;
     }
   }
@@ -125,11 +135,11 @@ void Planner::vChoosePath(void)
 /*----------------------------------------------------------------------------*/
 /* get chosen path                                                            */
 /*----------------------------------------------------------------------------*/
-AccessPath* Planner::pChosenPath(void)
+AccessPath* Planner::pChosenPath(i8 i_Phrase)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
-  AccessPath* pChosenPath = m_pPathVec->pGet(m_i_Chosen);
+  AccessPath* pChosenPath = m_pPathVec->pGet(m_i_Chosen[i_Phrase]);
   
   return pChosenPath;
 }
@@ -378,17 +388,17 @@ void Planner::vMatchPredicates(PredicateVec* mpPathPredVec, eAT eAccess)
       
       // get next columnNm token from where clause
       pColNmTkn_Where =
-        m_pPhraseTknVec->pFindToken(sColumnNm_Path,i_ColumnTkn_Where);
+        m_pPhraseTknVec[0]->pFindToken(sColumnNm_Path,i_ColumnTkn_Where);
       
       // unable to find a matching column
       if ( ! pColNmTkn_Where )
         return;
       
       // get the associated literal token
-      mpLitTkn_Where = m_pPhraseTknVec->pGet(i_ColumnTkn_Where+1);
+      mpLitTkn_Where = m_pPhraseTknVec[0]->pGet(i_ColumnTkn_Where+1);
       
       // get the associated op token
-      mpOpTkn_Where = m_pPhraseTknVec->pGet(i_ColumnTkn_Where+2);
+      mpOpTkn_Where = m_pPhraseTknVec[0]->pGet(i_ColumnTkn_Where+2);
       sOpDatum_Where = mpOpTkn_Where->aText();
       eRelOp_Where = Op::eDecode(sOpDatum_Where.aStr());
       
@@ -420,9 +430,11 @@ void Planner::vParseWhere(s48K& sWhereClause)
   m_pWhereTknVec = Tokeniser::pTokenise(sWhereClause);
   
   // for the moment just make the phrase vector a copy of the where vector
-  m_pPhraseTknVec = new TokenVec;
+  m_pPhraseTknVec[0] = new TokenVec;
   for (i8 i_Token = 0; i_Token < m_pWhereTknVec->nTokens(); i_Token++)
-    m_pPhraseTknVec->vAddToken(m_pWhereTknVec->pGet(i_Token)->aText());
+    m_pPhraseTknVec[0]->vAddToken(m_pWhereTknVec->pGet(i_Token)->aText());
+  
+  m_nPhrases = 1;
 }
 
 /*----------------------------------------------------------------------------*/
