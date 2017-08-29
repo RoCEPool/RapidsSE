@@ -417,9 +417,12 @@ assert::stack_4
   true to bSinglePartition
 
   // spawn select task for the fetch
-  0 locals| i_Phrase |
-  bSinglePartition bGroupBy i_Phrase pPlanner spawnFetch
+  //0 locals| i_Phrase |
 
+  pPlanner planner.phrases@ 0
+  do
+    bSinglePartition bGroupBy I pPlanner spawnFetch
+  loop
   <OK>
 ;
 
@@ -487,8 +490,11 @@ assert::stack_4
   pPlanner assert
 
   // spawn select task for the fetch
-  0 locals| i_Phrase |
-  false bGroupBy i_Phrase pPlanner spawnFetch
+  //0 locals| i_Phrase |
+  pPlanner planner.phrases@ 0
+  do
+    false bGroupBy I pPlanner spawnFetch
+  loop
 
   // fetch rows from the buffers in the buffer queue
   bGroupBy if
