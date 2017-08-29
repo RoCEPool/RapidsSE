@@ -37,13 +37,16 @@ namespace Plans
     bool bIsExactOp(eRO eRelOp);
     bool bIsLowerOp(eRO eRelOp);
     bool bIsMatchingOp(eAT eAccess, eRO eRelOp);
+    bool bIsRelationalOp(Token* pToken);
     bool bIsUpperOp(eRO eRelOp);
     void vMatchPaths(void);
     void vMatchPredicates(PredicateVec* mpAccPath, eAT eAccess);
+    void vParsePhrases(s48K& sWhereClause);
     void vParseWhere(s48K& sWhereClause);
     i8   nPhrases(void);
     void vScorePaths(void);
     void vShowPaths(void);
+    void vShowPhrases(void);
     void   vTable(Table* pTable);
     Table* pTable(void);
   

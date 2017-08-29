@@ -298,6 +298,22 @@ bool Planner::bIsMatchingOp(eAT eAccess, eRO eRelOp)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is token a relational op?                                                  */
+/*----------------------------------------------------------------------------*/
+bool Planner::bIsRelationalOp(Token* pToken)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  if (pToken->bSame("<"_Stz)  ||
+      pToken->bSame("<="_Stz) ||
+      pToken->bSame(">="_Stz) ||
+      pToken->bSame(">"_Stz)  )
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is given relational op an upper op?                                        */
 /*----------------------------------------------------------------------------*/
 bool Planner::bIsUpperOp(eRO eRelOp)
@@ -425,6 +441,44 @@ void Planner::vMatchPredicates(PredicateVec* mpPathPredVec, eAT eAccess)
 }
 
 /*----------------------------------------------------------------------------*/
+/* parse phrases                                                              */
+/*----------------------------------------------------------------------------*/
+void Planner::vParsePhrases(s48K& sWhereClause)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  // for the moment just make the phrase vector a copy of the where vector
+  m_pPhraseTknVec[0] = new TokenVec;
+  for (i8 i_Token = 0; i_Token < m_pWhereTknVec->nTokens(); i_Token++)
+    m_pPhraseTknVec[0]->vAddToken(m_pWhereTknVec->pGet(i_Token)->aText());
+  
+  m_nPhrases = 1;
+  
+  vShowPhrases();
+}
+//void Planner::vParsePhrases(s48K& sWhereClause)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+//  
+//  TokenVec* pWorkTknVec1 = new TokenVec;
+//  TokenVec* pWorkTknVec2 = new TokenVec;
+//  
+//  bool bCopy1 = true;
+//  for (i8 i_Token = 0; i_Token < m_pWhereTknVec->nTokens(); i_Token++) {
+//    Token* pToken = m_pWhereTknVec->pGet(i_Token);
+//    if (bCopy1)
+//      pWorkTknVec1->vAddToken(pToken->aText());
+//    else
+//      pWorkTknVec2->vAddToken(pToken->aText());
+//  }
+//  
+//  delete pWorkTknVec1;
+//  delete pWorkTknVec2;
+//
+//  vShowPhrases();
+//}
+
+/*----------------------------------------------------------------------------*/
 /* parse where clause                                                         */
 /*----------------------------------------------------------------------------*/
 void Planner::vParseWhere(s48K& sWhereClause)
@@ -433,12 +487,6 @@ void Planner::vParseWhere(s48K& sWhereClause)
   
   m_pWhereTknVec = Tokeniser::pTokenise(sWhereClause);
   
-  // for the moment just make the phrase vector a copy of the where vector
-  m_pPhraseTknVec[0] = new TokenVec;
-  for (i8 i_Token = 0; i_Token < m_pWhereTknVec->nTokens(); i_Token++)
-    m_pPhraseTknVec[0]->vAddToken(m_pWhereTknVec->pGet(i_Token)->aText());
-  
-  m_nPhrases = 1;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -513,6 +561,27 @@ void Planner::vShowPaths(void)
     AccessPath* pAccessPath = m_pPathVec->pGet(i_Path);
     pAccessPath->vShow();
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* show all phrases extracted from the where clause                           */
+/*----------------------------------------------------------------------------*/
+void Planner::vShowPhrases(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  vTrace("-- Phrases -------------------\n"_Stz);
+  for (i8 i_Phrase = 0; i_Phrase < m_nPhrases; i_Phrase++) {
+    vTrace("[%lld] "_Stz,i_Phrase);
+    for (i8 i_Token = 0;
+         i_Token < m_pPhraseTknVec[i_Phrase]->nTokens();
+         i_Token++) {
+      Token* pToken = m_pPhraseTknVec[i_Phrase]->pGet(i_Token);
+      vTrace("%s "_Stz,pToken->aText());
+    }
+    vTrace("\n"_Stz);
+  }
+  vTrace("------------------------------\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
