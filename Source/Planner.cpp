@@ -438,6 +438,16 @@ void Planner::vParseWhere(s48K& sWhereClause)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the number of phrases                                                  */
+/*----------------------------------------------------------------------------*/
+i8 Planner::nPhrases(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  return m_nPhrases;
+}
+
+/*----------------------------------------------------------------------------*/
 /* score the set of all paths (lower is better)                               */
 /*----------------------------------------------------------------------------*/
 void Planner::vScorePaths(void)

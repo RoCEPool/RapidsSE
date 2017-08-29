@@ -41,6 +41,7 @@ namespace Plans
     void vMatchPaths(void);
     void vMatchPredicates(PredicateVec* mpAccPath, eAT eAccess);
     void vParseWhere(s48K& sWhereClause);
+    i8   nPhrases(void);
     void vScorePaths(void);
     void vShowPaths(void);
     void   vTable(Table* pTable);

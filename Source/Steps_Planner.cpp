@@ -41,6 +41,7 @@ void Task::vAddPrimitives_Planner(void)
   vAddPrimitive("planner.key@"_Stz,           &vPlannerKeyFetch,       false);
   vAddPrimitive("planner.lowkey@"_Stz,        &vPlannerLowKeyFetch,    false);
   vAddPrimitive("planner.matchPaths"_Stz,     &vPlannerMatchPaths,     false);
+  vAddPrimitive("planner.phrases@"_Stz,       &vPlannerKeyFetch,       false);
   vAddPrimitive("planner::new"_Stz,           &vPlannerNew,            false);
   vAddPrimitive("planner.parseWhere"_Stz,     &vPlannerParseWhere,     false);
   vAddPrimitive("planner.scorePaths"_Stz,     &vPlannerScorePaths,     false);
@@ -287,6 +288,24 @@ void Task::vPlannerParseWhere(MP_Task mpTask)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* planner.phrases@ -- fetch number of phrases ( -- nPhrases )                */
+/*----------------------------------------------------------------------------*/
+void Task::vPlannerPhrasesFetch(MP_Task mpTask)
+{
+  ENTRY("vPlannerPhrasesFetch"_Stz);
+  
+  Object* pPtrPlanner;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrPlanner) )
+    THROW_INVALID_DSTACK("planner.key@"_Stz);
+  Planner* mpPlanner = _pPlanner(pPtrPlanner);
+  
+  i8 nPhrases = mpPlanner->nPhrases();
+  
+  mpTask->m_pDataStack->vPushInt(nPhrases);
+  
+  EXIT();
+}
 /*----------------------------------------------------------------------------*/
 /* planner.scorePaths -- score the generated set of paths                     */
 /*----------------------------------------------------------------------------*/

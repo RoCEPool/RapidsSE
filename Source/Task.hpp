@@ -863,6 +863,7 @@ namespace Tasks
     static void vPlannerMatchPaths(MP_Task mpTask);
     static void vPlannerNew(MP_Task mpTask);
     static void vPlannerParseWhere(MP_Task mpTask);
+    static void vPlannerPhrasesFetch(MP_Task mpTask);
     static void vPlannerScorePaths(MP_Task mpTask);
     static void vPlannerShowPaths(MP_Task mpTask);
     static void vPlannerTableFetch(MP_Task mpTask);
