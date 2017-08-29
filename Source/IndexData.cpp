@@ -534,6 +534,8 @@ EntryBuffer* IndexData::pAppendL0Entry(EntryBuffer* pEntryBuffer,
   // initialize the entry wsp (generates randon number of offsets)
   EntWrk xEntWrk(xId,xKeyWrk);
 
+  //xKeyWrk.vShow();
+  
   // get the space required for this new entry
   i8 nEntryBytes = Entry::nBytesRequired(xEntWrk);
   
@@ -573,6 +575,12 @@ EntryBuffer* IndexData::pAppendL0Entry(EntryBuffer* pEntryBuffer,
     
     // insert the first entry of L0 entry buffer into L1 higher level buffer
     vInsertFirstEntry(pHigherLevel,pEntryBuffer);
+    
+    //---------------------------------------------------------
+    // fix the index buffer's higher level buffer
+    vFixHigherBuffer(pEntryBuffer, pHigherLevel->nBufferLevel());
+
+    //pEntryBuffer->vDump();
     
     return pEntryBuffer;
   }
@@ -623,6 +631,10 @@ void IndexData::vInsertEntry(EntryBuffer* pHigher, KeyWrk& xKeyWrk, Id xId, i8 i
     // not enough space, so split the index buffer
     pIndexBuffer = pSplitBuffer(pIndexBuffer);
     
+    //vTrace("-----------------------\n"_Stz);
+    //m_pRoot->vDump();
+    //vTrace("-----------------------\n"_Stz);
+    
     // find position again
     bool bEqual;
     pIndexBuffer = pIndexBuffer->pHigherLevel()->pPositionLevel(xKeyWrk, JC_AFTER, iLevel);
@@ -634,6 +646,8 @@ void IndexData::vInsertEntry(EntryBuffer* pHigher, KeyWrk& xKeyWrk, Id xId, i8 i
   // insert entry into index buffer
   Entry* pEntry = pIndexBuffer->pInsert(xEntWrk);
   //pEntry->vShow(0, m_pIndex);
+  
+  //pIndexBuffer->vShow();
   
   ASSERT(pEntry);
 }

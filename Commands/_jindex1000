@@ -24,6 +24,15 @@ print "loading j1000.tbl..." ;
 create index idx on j1000 (j1000_key);
 ld j1000 "../JTEST/j1000.csv" ;
 
+fetch j1000 "j1000_key 0 =";
+fetch j1000 "j1000_key 111 =";
+fetch j1000 "j1000_key 256 =";
+fetch j1000 "j1000_key 789 =";
+fetch j1000 "j1000_key 989 =";
+fetch j1000 "j1000_key 125 =";
+fetch j1000 "j1000_key 678 =";
+fetch j1000 "j1000_key 345 =";
+fetch j1000 "j1000_key 999 =";
 
 /*============================================================================*/
 /* end                                                                        */
