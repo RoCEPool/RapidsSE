@@ -41,7 +41,7 @@ void Task::vAddPrimitives_Planner(void)
   vAddPrimitive("planner.key@"_Stz,           &vPlannerKeyFetch,       false);
   vAddPrimitive("planner.lowkey@"_Stz,        &vPlannerLowKeyFetch,    false);
   vAddPrimitive("planner.matchPaths"_Stz,     &vPlannerMatchPaths,     false);
-  vAddPrimitive("planner.phrases@"_Stz,       &vPlannerKeyFetch,       false);
+  vAddPrimitive("planner.phrases@"_Stz,       &vPlannerPhrasesFetch,   false);
   vAddPrimitive("planner::new"_Stz,           &vPlannerNew,            false);
   vAddPrimitive("planner.parseWhere"_Stz,     &vPlannerParseWhere,     false);
   vAddPrimitive("planner.scorePaths"_Stz,     &vPlannerScorePaths,     false);
@@ -85,7 +85,6 @@ void Task::vPlannerChosenPath(MP_Task mpTask)
   i8 i_Phrase;
   if ( ! mpTask->m_pDataStack->bPop(i_Phrase) )
     THROW_INVALID_DSTACK("planner.chosenPath"_Stz);
-  
   AccessPath* pChosenPlan = mpPlanner->pChosenPath(i_Phrase);
   
   mpTask->m_pDataStack->vPushObject(pChosenPlan);
@@ -124,8 +123,7 @@ void Task::vPlannerFetchTechniqueFetch(MP_Task mpTask)
   
   i8 i_Phrase;
   if ( ! mpTask->m_pDataStack->bPop(i_Phrase) )
-    THROW_INVALID_DSTACK("planner.chosenPath"_Stz);
-  
+    THROW_INVALID_DSTACK("planner.fetchTechnique@"_Stz);
   eAT eFetchTechnique = mpPlanner->pChosenPath(i_Phrase)->eAccess();
   
   mpTask->m_pDataStack->vPushInt(eFetchTechnique);
@@ -167,7 +165,6 @@ void Task::vPlannerHighKeyFetch(MP_Task mpTask)
   i8 i_Phrase;
   if ( ! mpTask->m_pDataStack->bPop(i_Phrase) )
     THROW_INVALID_DSTACK("planner.highKey@"_Stz);
-  
   AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
   
   PredicateVec* mpUpperPredicates = mpChosenPath->pUpperPredicates();
@@ -194,8 +191,8 @@ void Task::vPlannerIndexNmFetch(MP_Task mpTask)
   i8 i_Phrase;
   if ( ! mpTask->m_pDataStack->bPop(i_Phrase) )
     THROW_INVALID_DSTACK("planner.indexNm@"_Stz);
-  
   AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
+  
   Index* pChosenIndex = mpChosenPath->pIndex();
   
   s32 sIndexNm = pChosenIndex->aIndexName();
@@ -205,7 +202,7 @@ void Task::vPlannerIndexNmFetch(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* planner.key@ -- fetch key ( -- )                                           */
+/* planner.key@ -- fetch key for given phrase ( -- )                          */
 /*----------------------------------------------------------------------------*/
 void Task::vPlannerKeyFetch(MP_Task mpTask)
 {
@@ -216,7 +213,11 @@ void Task::vPlannerKeyFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("planner.key@"_Stz);
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
-  AccessPath* mpChosenPath = mpPlanner->pChosenPath(0);
+  i8 i_Phrase;
+  if ( ! mpTask->m_pDataStack->bPop(i_Phrase) )
+    THROW_INVALID_DSTACK("planner.key@"_Stz);
+  AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
+  
   PredicateVec* mpLowerPredicates = mpChosenPath->pLowerPredicates();
   Predicate* mpLowerPredicate = mpLowerPredicates->pGet(0);
   s256 sEqlKey = mpLowerPredicate->pArg2()->sArgVal();
@@ -241,8 +242,8 @@ void Task::vPlannerLowKeyFetch(MP_Task mpTask)
   i8 i_Phrase;
   if ( ! mpTask->m_pDataStack->bPop(i_Phrase) )
     THROW_INVALID_DSTACK("planner.lowKey@"_Stz);
-  
   AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
+  
   PredicateVec* mpLowerPredicates = mpChosenPath->pLowerPredicates();
   Predicate* mpLowerPredicate = mpLowerPredicates->pGet(0);
   s256 sLowKey = mpLowerPredicate->pArg2()->sArgVal();
@@ -315,7 +316,7 @@ void Task::vPlannerPhrasesFetch(MP_Task mpTask)
   
   Object* pPtrPlanner;
   if ( ! mpTask->m_pDataStack->bPop(pPtrPlanner) )
-    THROW_INVALID_DSTACK("planner.key@"_Stz);
+    THROW_INVALID_DSTACK("planner.phrases@"_Stz);
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
   i8 nPhrases = mpPlanner->nPhrases();
