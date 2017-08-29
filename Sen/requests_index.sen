@@ -303,7 +303,7 @@ timer: pIdxSelectTimer
   AT_LOWER of
     "case lower" .
     "0" //key
-    pPlanner Planner.lowKey@
+    i_Phrase pPlanner Planner.lowKey@
     "0" //upper
     "lowerSelectIdxTask"
     pPlanner Planner.indexNm@
@@ -314,7 +314,7 @@ timer: pIdxSelectTimer
     "case upper" .
     "0" //key
     "0" //lower
-    pPlanner Planner.highKey@
+    i_Phrase pPlanner Planner.highKey@
     "upperSelectIdxTask"
     pPlanner Planner.indexNm@
      bSinglePartition spawnSelectTask
@@ -323,8 +323,8 @@ timer: pIdxSelectTimer
   AT_RANGE of
 
     "0" //key
-    pPlanner Planner.lowKey@
-    pPlanner Planner.highKey@
+    i_Phrase pPlanner Planner.lowKey@
+    i_Phrase pPlanner Planner.highKey@
     bGroupBy if
       "case groupBy" .
       "groupByIdxTask_RH"

@@ -153,7 +153,7 @@ void Task::vPlannerGenPaths(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* planner.highKey@ -- fetch high key ( -- )                                  */
+/* planner.highKey@ -- fetch high key for given phrase ( -- )                 */
 /*----------------------------------------------------------------------------*/
 void Task::vPlannerHighKeyFetch(MP_Task mpTask)
 {
@@ -164,7 +164,12 @@ void Task::vPlannerHighKeyFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("planner.highKey@"_Stz);
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
-  AccessPath* mpChosenPath = mpPlanner->pChosenPath(0);
+  i8 i_Phrase;
+  if ( ! mpTask->m_pDataStack->bPop(i_Phrase) )
+    THROW_INVALID_DSTACK("planner.highKey@"_Stz);
+  
+  AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
+  
   PredicateVec* mpUpperPredicates = mpChosenPath->pUpperPredicates();
   Predicate* mpUpperPredicate = mpUpperPredicates->pGet(0);
   s256 sHighKey = mpUpperPredicate->pArg2()->sArgVal();
@@ -218,7 +223,7 @@ void Task::vPlannerKeyFetch(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* planner.lowKey@ -- fetch low key ( -- )                                    */
+/* planner.lowKey@ -- fetch low key for given phrase ( -- )                   */
 /*----------------------------------------------------------------------------*/
 void Task::vPlannerLowKeyFetch(MP_Task mpTask)
 {
@@ -229,7 +234,11 @@ void Task::vPlannerLowKeyFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("planner.lowKey@"_Stz);
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
-  AccessPath* mpChosenPath = mpPlanner->pChosenPath(0);
+  i8 i_Phrase;
+  if ( ! mpTask->m_pDataStack->bPop(i_Phrase) )
+    THROW_INVALID_DSTACK("planner.lowKey@"_Stz);
+  
+  AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
   PredicateVec* mpLowerPredicates = mpChosenPath->pLowerPredicates();
   Predicate* mpLowerPredicate = mpLowerPredicates->pGet(0);
   s256 sLowKey = mpLowerPredicate->pArg2()->sArgVal();
