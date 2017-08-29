@@ -282,47 +282,51 @@ timer: pIdxSelectTimer
 
   locals| pPlanner bGroupBy bSinglePartition |
 
-  pPlanner Planner.indexNm@ .
+  0 locals| i_Phrase |
 
-  pPlanner Planner.fetchTechnique@
+  i_Phrase pPlanner Planner.indexNm@ .
 
-  // execute a lower bound select using index
+  i_Phrase pPlanner Planner.fetchTechnique@
   case
-    AT_EXACT of
+
+  // an exact select using index
+  AT_EXACT of
     "case equal" .
-    pPlanner Planner.key@
+    i_Phrase pPlanner Planner.key@
     "0"  //lower
     "0"  //upper
     "exactSelectIdxTask"
-    pPlanner Planner.indexNm@
+    i_Phrase pPlanner Planner.indexNm@
     bSinglePartition spawnSelectTask
   endof
 
+  // a lower bound select using index
   AT_LOWER of
     "case lower" .
     "0" //key
-    pPlanner Planner.lowKey@
+    i_Phrase pPlanner Planner.lowKey@
     "0" //upper
     "lowerSelectIdxTask"
-    pPlanner Planner.indexNm@
+    i_Phrase pPlanner Planner.indexNm@
     bSinglePartition spawnSelectTask
   endof
 
+  // an upper bound select using index
   AT_UPPER of
     "case upper" .
     "0" //key
     "0" //lower
-    pPlanner Planner.highKey@
+    i_Phrase pPlanner Planner.highKey@
     "upperSelectIdxTask"
-    pPlanner Planner.indexNm@
-     bSinglePartition spawnSelectTask
+    i_Phrase pPlanner Planner.indexNm@
+    bSinglePartition spawnSelectTask
   endof
 
+  // a range select using index
   AT_RANGE of
-
     "0" //key
-    pPlanner Planner.lowKey@
-    pPlanner Planner.highKey@
+    i_Phrase pPlanner Planner.lowKey@
+    i_Phrase pPlanner Planner.highKey@
     bGroupBy if
       "case groupBy" .
       "groupByIdxTask_RH"
@@ -331,11 +335,12 @@ timer: pIdxSelectTimer
     else
       "case range" .
       "rangeSelectIdxTask"
-      pPlanner Planner.indexNm@
+      i_Phrase pPlanner Planner.indexNm@
       bSinglePartition spawnSelectTask
     then
   endof
 
+  // full scan (no index)
   AT_SCAN of
     "case scan" .
     "0" //key
