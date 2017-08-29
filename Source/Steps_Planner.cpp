@@ -31,7 +31,7 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Planner(void)
 {
-  vAddPrimitive("planner.choosePath"_Stz,     &vPlannerChoosePath,     false);
+  vAddPrimitive("planner.choosePaths"_Stz,    &vPlannerChoosePaths,    false);
   vAddPrimitive("planner.chosenPath"_Stz,     &vPlannerChosenPath,     false);
   vAddPrimitive("planner.delete"_Stz,         &vPlannerDelete,         false);
   vAddPrimitive("planner.fetchTechnique@"_Stz,&vPlannerFetchTechniqueFetch, false);
@@ -51,9 +51,9 @@ void Task::vAddPrimitives_Planner(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* planner.choosePath -- choose an access path                                */
+/* planner.choosePaths -- choose an access path for each phrase               */
 /*----------------------------------------------------------------------------*/
-void Task::vPlannerChoosePath(MP_Task mpTask)
+void Task::vPlannerChoosePaths(MP_Task mpTask)
 {
   ENTRY((Stz*)__func__);                         //! needs to be tested on Linux
   
@@ -64,7 +64,8 @@ void Task::vPlannerChoosePath(MP_Task mpTask)
   
   Planner* mpPlanner = _pPlanner(mpPtrPlanner);
   
-  mpPlanner->vChoosePath(0);
+  for (i8 i_Phrase = 0; i_Phrase < mpPlanner->nPhrases(); i_Phrase++)
+    mpPlanner->vChoosePath(i_Phrase);
   
   EXIT();
 }

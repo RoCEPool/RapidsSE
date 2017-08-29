@@ -851,7 +851,7 @@ namespace Tasks
     static void vPlanListShow(MP_Task mpTask);
     
     // planner
-    static void vPlannerChoosePath(MP_Task mpTask);
+    static void vPlannerChoosePaths(MP_Task mpTask);
     static void vPlannerChosenPath(MP_Task mpTask);
     static void vPlannerDelete(MP_Task mpTask);
     static void vPlannerFetchTechniqueFetch(MP_Task mpTask);

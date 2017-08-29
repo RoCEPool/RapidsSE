@@ -269,7 +269,7 @@ timer: pIdxSelectTimer
   ( cdt_7 ) pPlanner Planner.matchPaths         //"matchPaths" .
   //( cdt_8 ) pPlanner Planner.showPaths
 
-  ( cdt_9 ) pPlanner Planner.choosePath         //"choosePaths" .
+  ( cdt_9 ) pPlanner Planner.choosePaths        //"choosePaths" .
 
   // return planner
   pPlanner
