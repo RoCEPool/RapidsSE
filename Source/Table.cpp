@@ -877,9 +877,9 @@ void Table::vPopulateSortArray(char* aSortArray, i8 nElements, i8 iSortElmSize,
   Index* pIndex = pNewIndexData->pIndex();
   IdxColVec* pIdxColVec = pIndex->pIdxColVec();
   
-  if (gxArguments.m_bVerbose)
-    vTrace("vPopulateSortArray for index %s\n"_Stz,
-           pIndex->aIndexName());
+  //if (gxArguments.m_bVerbose)
+  //  vTrace("vPopulateSortArray for index %s\n"_Stz,
+  //         pIndex->aIndexName());
   
   char* aSortElm = aSortArray;
   
@@ -889,8 +889,8 @@ void Table::vPopulateSortArray(char* aSortArray, i8 nElements, i8 iSortElmSize,
     Entry* pRow = pEB->pFirstRow();
     pRow = pEB->pNextRow(pRow);
     
-    if (gxArguments.m_bVerbose)
-      vTrace("vPopulateSortArray for buffer %p\n"_Stz, pEB);
+    //if (gxArguments.m_bVerbose)
+    //  vTrace("vPopulateSortArray for buffer %p\n"_Stz, pEB);
     
     for ( ; pRow; pRow = pEB->pNextRow(pRow)) {
       
