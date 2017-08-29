@@ -180,7 +180,7 @@ void Task::vPlannerHighKeyFetch(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* planner.indexNm@ -- fetch index name ( -- )                                */
+/* planner.indexNm@ -- fetch index name for given phrase ( -- )               */
 /*----------------------------------------------------------------------------*/
 void Task::vPlannerIndexNmFetch(MP_Task mpTask)
 {
@@ -191,7 +191,11 @@ void Task::vPlannerIndexNmFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("planner.indexNm@"_Stz);
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
-  AccessPath* mpChosenPath = mpPlanner->pChosenPath(0);
+  i8 i_Phrase;
+  if ( ! mpTask->m_pDataStack->bPop(i_Phrase) )
+    THROW_INVALID_DSTACK("planner.indexNm@"_Stz);
+  
+  AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
   Index* pChosenIndex = mpChosenPath->pIndex();
   
   s32 sIndexNm = pChosenIndex->aIndexName();

@@ -282,9 +282,9 @@ timer: pIdxSelectTimer
 
   locals| pPlanner bGroupBy bSinglePartition |
 
-  pPlanner Planner.indexNm@ .
-
   0 locals| i_Phrase |
+
+  i_Phrase pPlanner Planner.indexNm@ .
 
   i_Phrase pPlanner Planner.fetchTechnique@
 
@@ -296,7 +296,7 @@ timer: pIdxSelectTimer
     "0"  //lower
     "0"  //upper
     "exactSelectIdxTask"
-    pPlanner Planner.indexNm@
+    i_Phrase pPlanner Planner.indexNm@
     bSinglePartition spawnSelectTask
   endof
 
@@ -306,7 +306,7 @@ timer: pIdxSelectTimer
     i_Phrase pPlanner Planner.lowKey@
     "0" //upper
     "lowerSelectIdxTask"
-    pPlanner Planner.indexNm@
+    i_Phrase pPlanner Planner.indexNm@
     bSinglePartition spawnSelectTask
   endof
 
@@ -316,12 +316,11 @@ timer: pIdxSelectTimer
     "0" //lower
     i_Phrase pPlanner Planner.highKey@
     "upperSelectIdxTask"
-    pPlanner Planner.indexNm@
-     bSinglePartition spawnSelectTask
+    i_Phrase pPlanner Planner.indexNm@
+    bSinglePartition spawnSelectTask
   endof
 
   AT_RANGE of
-
     "0" //key
     i_Phrase pPlanner Planner.lowKey@
     i_Phrase pPlanner Planner.highKey@
@@ -333,7 +332,7 @@ timer: pIdxSelectTimer
     else
       "case range" .
       "rangeSelectIdxTask"
-      pPlanner Planner.indexNm@
+      i_Phrase pPlanner Planner.indexNm@
       bSinglePartition spawnSelectTask
     then
   endof
