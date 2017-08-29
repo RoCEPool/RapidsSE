@@ -35,6 +35,7 @@ namespace DBobjects
     
     IdxVec*    m_pIdxVec;    // index vector
     ColumnVec* m_pColumnVec; // colummn vector
+
     Atomic     m_ziSubLoaders[C_SLOTS_PER_NODE];  // subloader*slot count
     Atomic     m_ziIndexesLoaded; // have all indexes been loaded
     
