@@ -840,47 +840,6 @@ bool SePrompt::bBeginInsert(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bye                                                                        */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bBye(void)
-{
-  if ( ! bTokenCheck(1) )
-    return false;
-  
-  m_bContinue = false;
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* change working directory                                                   */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bChangeWorkingDir(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  s256 sDir;
-  Dir xDir;
-  
-  ASSERT(m_xTokenVec[0]->bSame("cd"_Stz));
-  
-  sDir = m_xTokenVec[1]->aText();
-  
-  i8 i_Token;
-  for (i_Token = 2; i_Token < C_TOKENS; i_Token++) {
-    if (! m_xTokenVec[i_Token]->bHasText())
-      break;
-    sDir.vConcat(m_xTokenVec[i_Token]->aText());
-  }
-  
-  if ( ! xDir.bChangeCurrent(sDir) ) {
-    m_pSEitf->vSetLastError(EC_NO_SUCH_DIRECTORY);
-    return false;
-  }
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* connect the cluster                                                        */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bConnectCluster(void)
@@ -892,68 +851,6 @@ bool SePrompt::bConnectCluster(void)
   if (!bExecuteRequest()) {
     return false;
   }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* end insert                                                                 */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bEndInsert(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  ASSERT(m_xTokenVec[0]->bSame("end"_Stz));
-  ASSERT(m_xTokenVec[1]->bSame("insert"_Stz));
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // copy tokens from m_xTokenVec to m_xTokenVec2
-  i8 iNumTokens = iCopyTokens(m_xTokenVec, m_xTokenVec2);
-  
-  // - - - - - - - - - - - - - - - - - - - - -
-  // there should be 2 tokens
-  if (iNumTokens != 2) {
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return false;
-  }
-  
-  // clear the last error
-  m_pSEitf->vClearLastError();
-  
-  bool bResult = m_pSEitf->bInsertBuffer();
-  
-  // if rowBuffer request was appended to requestQ, then wait for resonse
-  if (bResult) {
-    // get response from se
-    eEC eResult = eGetResponse(m_pSEitf);
-    
-    if (eResult != EC_NONE) {
-      m_pSEitf->vSetLastError(eResult);
-      return eResult;
-    }
-  }
-  
-  // now return the table
-  bResult = bReturnTable();
-  if (!bResult)
-    return false;
-  
-  //eEC eResult = eExecuteRequest(m_pSEitf, "rettbl"_Stz);
-  //if (EC_NONE != eResult) {
-  //  vTrace("SePrompt::bEndInsert : rettbl FAILED!!!\n"_Stz);
-  //  return eResult;
-  //}
-  
-  // get response
-  //eResult = eGetResponse(m_pSEitf);
-  //if (EC_NONE != eResult) {
-  //  return eResult;
-  //}
-  
-  //m_pSEitf->vCurrentTable(nullptr);
-  
-  m_pSEitf->vCommitTx();
-  m_pSEitf->vEndTx();
   
   return true;
 }
@@ -1047,19 +944,6 @@ bool SePrompt::bGetNextRow(void)
     m_pSEitf->m_aRowPtr = pStr;
     return true;
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* print history                                                              */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bHistory(void)
-{
-  if ( ! bTokenCheck(1) )
-    return false;
-  
-  m_xHistory.vPrint();
-  
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/

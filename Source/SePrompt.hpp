@@ -63,8 +63,6 @@ private:
   void vSetExpect(void);
   void vClearExpect(void);
   
-  bool bBye(void);
-  bool bHistory(void);
   bool bRunFile(void);
   bool bRecallCommand(void);
   
@@ -75,7 +73,6 @@ private:
   void vPushFile(Stz* aPath);
   
   bool bBeginInsert(void);
-  bool bChangeWorkingDir(void);
 
   bool bDocol(void);
   
@@ -83,7 +80,6 @@ private:
   
   bool bIndexReturnTable(Stz* aTableName, Stz* aIndexName);
   
-  bool bEndInsert(void);
   bool bInsertRow(void);
 
   bool bListDir(void);
