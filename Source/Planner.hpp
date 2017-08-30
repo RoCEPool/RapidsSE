@@ -42,7 +42,7 @@ namespace Plans
     bool bIsUpperOp(eRO eRelOp);
     void vMatchPaths(void);
     void vMatchPredicates(PredicateVec* mpAccPath, eAT eAccess);
-    void vParsePhrases(s48K& sWhereClause);
+    void vParsePhrases(void);
     void vParseWhere(s48K& sWhereClause);
     i8   nPhrases(void);
     void vScorePaths(void);

@@ -303,7 +303,7 @@ void Task::vPlannerParseWhere(MP_Task mpTask)
     THROW_INVALID_DSTACK("planner.parseWhere"_Stz);
   
   pPlanner->vParseWhere(sWhere);
-  pPlanner->vParsePhrases(sWhere);
+  pPlanner->vParsePhrases();
   
   EXIT();
 }

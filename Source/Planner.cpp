@@ -457,7 +457,7 @@ void Planner::vMatchPredicates(PredicateVec* mpPathPredVec, eAT eAccess)
 /*----------------------------------------------------------------------------*/
 /* parse phrases                                                              */
 /*----------------------------------------------------------------------------*/
-void Planner::vParsePhrases(s48K& sWhereClause)
+void Planner::vParsePhrases(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
@@ -470,7 +470,7 @@ void Planner::vParsePhrases(s48K& sWhereClause)
   
   vShowPhrases();
 }
-//void Planner::vParsePhrases(s48K& sWhereClause)
+//void Planner::vParsePhrases(void)
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
 //  
