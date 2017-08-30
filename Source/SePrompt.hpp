@@ -79,18 +79,10 @@ private:
   bool bConnectCluster(void);
   
   bool bIndexReturnTable(Stz* aTableName, Stz* aIndexName);
-  
-  bool bInsertRow(void);
 
-  bool bListDir(void);
-  bool bNodeStatus(void);
   bool bObject(void);
-  bool bPoolSpace(void);
   bool bPartitionTable(void);
-  bool bPrintWorkingDir(void);
   bool bReturnTable(void);
-
-  bool bUseSchema(void);
   
   bool bFetchRows(void);
   

@@ -947,96 +947,6 @@ bool SePrompt::bGetNextRow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert a row                                                               */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bInsertRow(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  ASSERT(m_xTokenVec[0]->bSame("insert"_Stz));
-  ASSERT(m_xTokenVec[1]->bSame("row"_Stz));
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // copy tokens from m_xTokenVec to m_xTokenVec2
-  i8 iNumTokens = iCopyTokens(m_xTokenVec, m_xTokenVec2);
-  
-  // - - - - - - - - - - - - - - - - - - - - -
-  // there should be 3 tokens
-  if (iNumTokens != 3) {
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return false;
-  }
-  
-  // clear the last error
-  m_pSEitf->vClearLastError();
-  
-  //if (!pRow) {
-  //  m_pSEitf->vSetLastError(EC_INVALID_PARAMETER);
-  //  return EC_INVALID_PARAMETER;
-  //}
-  
-  if (!m_pSEitf->pCurrentTable()) {
-    m_pSEitf->vSetLastError(EC_NO_SUCH_TABLE);
-    return EC_NO_SUCH_TABLE;
-  }
-  
-  Stz* pRow = m_xTokenVec2[2]->aText();
-  bool bResult = false; //m_pSEitf->bInsertRow(pRow);
-  
-  if (!bResult) {
-    m_pSEitf->vSetLastError(m_pSEitf->m_eErrorCode);
-    return bResult;
-  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* list directory                                                             */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bListDir(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  Dir  xDir;
-  s256 sDir;
-  s256 sDirEntry;
-  i8 iEntryType;
-  
-  ASSERT(m_xTokenVec[0]->bSame("ls"_Stz));
-  
-  if ( ! bTokenCheck(1) )
-    return false;
-  
-  // get the current directory
-  if (!xDir.bGetCurrent(sDir)) {
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return false;
-  }
-  
-  // open the current directory
-  if (!xDir.bOpen()) {
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return false;
-  }
-  
-  // read the current directory
-  while (xDir.bRead()) {
-    sDirEntry = xDir.sEntryName();
-    iEntryType = xDir.iEntryType();
-    vTrace("%c %s\n"_Stz, iEntryType == DT_DIR ? 'd' : 'f', sDirEntry.aChar());
-  }
-  
-  // close the current directory
-  xDir.vClose();
-  
-  // clear the response
-  m_sResponse = ""_Stz;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* send object (temp)                                                         */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bObject(void)
@@ -1044,38 +954,6 @@ bool SePrompt::bObject(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   ASSERT(m_xTokenVec[0]->bSame("object"_Stz));
-  
-  if (!bExecuteRequest()) {
-    return false;
-  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print pool space                                                           */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bPoolSpace(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  ASSERT(m_xTokenVec[0]->bSame("space"_Stz));
-  
-  if (!bExecuteRequest()) {
-    return false;
-  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print node status                                                          */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bNodeStatus(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  ASSERT(m_xTokenVec[0]->bSame("status"_Stz));
   
   if (!bExecuteRequest()) {
     return false;
@@ -1137,62 +1015,6 @@ bool SePrompt::bSleep(void)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* print working directory                                                    */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bPrintWorkingDir(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  Dir xDir;
-  s256 sDir;
-  
-  ASSERT(m_xTokenVec[0]->bSame("pwd"_Stz));
-  
-  if ( ! bTokenCheck(1) )
-    return false;
-  
-  if (xDir.bGetCurrent(sDir)) {
-    vTrace("%s"_Stz, sDir.aChar());
-  }
-  
-  // clear the respnse
-  m_sResponse = ""_Stz;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* use schema                                                                 */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bUseSchema(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  ASSERT(m_xTokenVec[0]->bSame("use"_Stz));
-  ASSERT(m_xTokenVec[1]->bSame("schema"_Stz));
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // copy tokens from m_xTokenVec to m_xTokenVec2
-  i8 iNumTokens = iCopyTokens(m_xTokenVec, m_xTokenVec2);
-  
-  // - - - - - - - - - - - - - - - - - - - - -
-  // there should be 3 tokens
-  if (iNumTokens != 3) {
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return false;
-  }
-  
-  // drop a schema
-  m_xTokenVec[0]->vCopy("usesch"_Stz);
-  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]);
-  if (!bExecuteRequest())
-    return false;
-  
-  //vTrace("Schema changed: %s\n"_Stz, m_xTokenVec2[2]);
-  return true;
-}
 
 /*----------------------------------------------------------------------------*/
 /* check for a specific number of tokens                                      */
