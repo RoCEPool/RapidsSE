@@ -89,6 +89,20 @@ Planner::~Planner(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* add a new phrase using given token vector                                  */
+/*----------------------------------------------------------------------------*/
+void Planner::vAddPhrase(TokenVec* pTokenVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  m_pPhraseTknVec[m_nPhrases] = new TokenVec;
+  for (i8 i_Token = 0; i_Token < pTokenVec->nTokens(); i_Token++)
+    m_pPhraseTknVec[m_nPhrases]->vAddToken(pTokenVec->pGet(i_Token)->aText());
+  
+  m_nPhrases++;
+}
+
+/*----------------------------------------------------------------------------*/
 /* choose best path based on score                                            */
 /*----------------------------------------------------------------------------*/
 void Planner::vChoosePath(i8 i_Phrase)
@@ -479,7 +493,8 @@ void Planner::vParsePhrases(s48K& sWhereClause)
 //    }
 //    
 //    if (pToken->bSame("and"_Stz)) {
-//      
+//      pWorkTknVec1->vAppendVector(pWorkTknVec2);
+//      pWorkTknVec2->vReset();
 //    }
 ////
 ////    if (pToken->bSame("or"_Stz))

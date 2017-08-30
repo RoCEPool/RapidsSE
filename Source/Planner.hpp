@@ -30,6 +30,7 @@ namespace Plans
     Planner(void);
     ~Planner(void);
   
+    void vAddPhrase(TokenVec* pTokenVec);
     void vChoosePath(i8 i_Phrase);
     AccessPath* pChosenPath(i8 i_Phrase);
     void vGenPaths(void);
