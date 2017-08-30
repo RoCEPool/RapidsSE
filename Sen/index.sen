@@ -979,9 +979,8 @@ tp: selectIndex
   tp: removeIndex
   locals| indexNm |
 
-  indexNm dup .
   // forward reference :-(
-  "indexTidyUp" find execute
+  indexNm "indexTidyUp" find execute
 
   indexNm :forget
 

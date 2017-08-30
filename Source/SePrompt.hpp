@@ -76,14 +76,7 @@ private:
   
   bool bBeginInsert(void);
   bool bChangeWorkingDir(void);
-  
-  bool bCreateCatalog(void);
-  bool bCreateIndex(bool bUnique);
-  bool bCreateIndex(void);
-  bool bCreateSchema(void);
-  bool bCreateTable(void);
-  bool bCreateTenant(void);
-  
+
   bool bDocol(void);
   
   bool bConnectCluster(void);
