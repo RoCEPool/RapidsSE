@@ -27,11 +27,27 @@
 
   locals| sTableNm sIndexNm sColumnNm  |
 
+  assertInTables
+
+  // push table dictionary
+  sTableNm pushTable assert
+
+  // push indexes folder
+  pushIndexes assert
+
   sColumnNm sIndexNm sTableNm
-  checkAddIndexColumn not if <NIP+ERROR> exit then
+  checkAddIndexColumn not if <NIP+ERROR> popIndexes popTable exit then
 
   sColumnNm sIndexNm
   addIndexColumn ( ) assert::stack_0
+
+  // pop indexs folder
+  popIndexes
+
+  // pop table folder
+  popTable
+
+  assertInTables
 
   <OK>
 ;

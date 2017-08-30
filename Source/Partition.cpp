@@ -232,6 +232,7 @@ void Partition::vRemoveIndex(i8 iIndexNo)
     Index* pIndex = pIndexData->pIndex();
     if (pIndex->iIndexNo() == iIndexNo) {
       delete pIndexData;
+      m_pIdxDataVec->vRemove(pIndexData);
       break;
     }
   }

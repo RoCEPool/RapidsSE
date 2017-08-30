@@ -47,7 +47,6 @@ void Task::vAddPrimitives_Table(void)
   vAddPrimitive("table.insert"_Stz,             &vTableInsert,           false);
   vAddPrimitive("table.name"_Stz,               &vTableName,             false);
   vAddPrimitive("table.ref"_Stz,                &vTableRef,              false);
-  vAddPrimitive("table.removeIndex"_Stz,        &vTableRemoveIndex,      false);
   vAddPrimitive("table.showColumnVec"_Stz,      &vTableShowColumnVec,    false);
   vAddPrimitive("table.slots"_Stz,              &vTableSlots,            false);
   vAddPrimitive("table.space"_Stz,              &vTableSpace,            false);
@@ -459,33 +458,6 @@ void Task::vTableRef(MP_Task mpTask)
   bool bRef = pTable->bRefOut();
   
   mpTask->m_pDataStack->vPushInt(bRef);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.removeIndex -- remove index to the table                             */
-/*----------------------------------------------------------------------------*/
-void Task::vTableRemoveIndex(MP_Task mpTask)
-{
-  ENTRY("vTableAddIndex"_Stz);
-  
-  Object* pPtrTable;
-  Object* pPtrIndex;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.removeIndex"_Stz);
-  
-  Table* pTable = _pTable(pPtrTable);
-  ASSERT(CN_TABLE == pTable->eClass());
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("table.removeIndex"_Stz);
-  
-  Index* pIndex = _pIndex(pPtrIndex);
-  ASSERT(CN_INDEX == pIndex->eClass());
-  
-  pTable->vRemoveIndex(pIndex);
   
   EXIT();
 }

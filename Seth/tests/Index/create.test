@@ -45,7 +45,6 @@ success
 create index Idx on T1 (key);
 affected: 0
 
-
 // check existence of index
 lsidx T1;
 rows:
@@ -142,6 +141,9 @@ lsidxcol T1 Idx3;
 rows:
  ('key', 'INTEGER')
  ('name', 'VARCHAR')
+
+drop table T1;
+success
 
 CLEANUP {
   

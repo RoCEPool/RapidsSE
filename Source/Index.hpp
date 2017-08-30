@@ -51,7 +51,7 @@ namespace DBobjects
     void   vCreateColumnVec(s32& sName, s48K& sDefinition);
     void   vDump(void);
     Stz*   aIndexName(void);
-    s256    sIndexName(void);
+    s256   sIndexName(void);
     void   vIndexNo(i8 iIndexNo);
     i8     iIndexNo(void);
     bool   bIsHidden(void);

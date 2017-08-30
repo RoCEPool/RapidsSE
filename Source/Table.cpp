@@ -443,7 +443,7 @@ void Table::vRemoveIndex(Index* pIndex)
   // delete the IndexData of the index from each partition
   for (i8 iPartition = 0; iPartition < gpGrid->m_nSlots; iPartition++) {
     Partition* pPartition = this->pPartition(iPartition);
-    pPartition->vAddIndex(new IndexData(pIndex, iPartition));
+    pPartition->vRemoveIndex(pIndex->iIndexNo());
   }
   
   // remove index from the table

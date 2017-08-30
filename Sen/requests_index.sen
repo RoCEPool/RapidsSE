@@ -116,6 +116,8 @@ timer: pIdxSelectTimer
 
   locals| sTableNm sIndexNm |
 
+  assertInTables
+
   ddlLock::grabWrite
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -141,18 +143,15 @@ timer: pIdxSelectTimer
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // remove index from table
-  sIndexNm find execute dup index.table@ table.removeIndex
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the index
   sIndexNm removeIndex ( ) assert::stack_0
-
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // restore path
 
   popIndexes popTable assertInTables                                // ../tables
+
+  assertInTables
 
   tp: droppedIndex
 
@@ -207,12 +206,20 @@ timer: pIdxSelectTimer
 /* end of create index sequence                                               */
 /*----------------------------------------------------------------------------*/
 : endCreateIndex_req ( "<sIndexNm>" "<sTableNm>" -- <R> )
-                                                    // ../tables/tableNm/indexes
+                                                    // ../tables
   locals| sTableNm sIndexNm |
 
   tp: endCreateIndex_req
 
+  assertInTables
+
   ddlLock::grabWrite
+
+  // push table dictionary
+  sTableNm pushTable assert
+
+  // push indexes folder
+  pushIndexes assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // checks
@@ -227,20 +234,17 @@ timer: pIdxSelectTimer
   // now populate the index
   sIndexNm populateIndex
                                                     // ../tables/tableNm/indexes
-  // pop indexes folder temporarily
+  // pop indexes
   popIndexes                                                // ../tables/tableNm
 
   // return the table reference
-  returnTableRef not if <NIP+ERROR> exit then
+  returnTableRef not if <NIP+ERROR> popTable exit then
   task::this task.seitf@ seitf.table@ not assert
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // restore path
+  // pop table folder
+  popTable
 
-  // push back the indexes folder
-  pushIndexes assert                                // ../tables/tableNm/indexes
-
-  assertInIndexes
+  assertInTables
 
   assert::stack_0
 
@@ -584,10 +588,18 @@ assert::stack_4
 /* set unique property of an index                                            */
 /*----------------------------------------------------------------------------*/
 : indexSetUnique_req ( true/false "<sIndexNm>" "<sTableNm>" -- <R> )
-                                                   // ../tables/sTableNm/indexes
+                                                   // ../tables
   assert::stack_3
 
+  assertInTables
+
   locals| sTableNm sIndexNm bIsUnique |
+
+  // push table dictionary
+  sTableNm pushTable assert
+
+  // push indexes folder
+  pushIndexes assert
 
   tp: indexSetUnique_req
 
@@ -595,11 +607,19 @@ assert::stack_4
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // checks
-  checkInIndexes not if <NIP+ERROR> exit then
+  checkInIndexes not if <NIP+ERROR> popIndexes popTable exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // uniqueness
   bIsUnique sIndexNm setIndexIsUnique ( ) assert::stack_0
+
+  // pop indexs folder
+  popIndexes
+
+  // pop table folder
+  popTable
+
+  assertInTables
 
   <OK>
 ;
