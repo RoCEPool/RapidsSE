@@ -71,7 +71,6 @@ private:
   bool bExecuteRequest(void);
   bool bGetFirstRow(void);
   bool bGetNextRow(void);
-  bool bHelp(void);
   bool bTestFile(Stz* aPath);
   void vPushFile(Stz* aPath);
   
@@ -89,17 +88,11 @@ private:
   
   bool bConnectCluster(void);
   
-  bool bDropCatalog(void);
-  bool bDropIndex(void);
-  bool bDropSchema(void);
-  bool bDropTable(void);
   bool bIndexReturnTable(Stz* aTableName, Stz* aIndexName);
-  bool bDropTenant(void);
   
   bool bEndInsert(void);
   bool bInsertRow(void);
-  bool bAnalyzeTable(void);
-  bool bDanalyzeTable(void);
+
   bool bListDir(void);
   bool bNodeStatus(void);
   bool bObject(void);
