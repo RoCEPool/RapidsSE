@@ -684,6 +684,30 @@ void Table::vTruncateIndex(i8 iIndexNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* verify index                                                               */
+/*----------------------------------------------------------------------------*/
+bool Table::bVerifyIndex(Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  for (i8 iSlot = 0; iSlot < gpGrid->m_nSlots; iSlot++) {
+    
+    bool bVerify = true;
+
+    i8 iPartition = Partition::iSlotToPartition(iSlot);
+    
+    EntryBuffer *pIndexBuffer = pPartition(iSlot)->pIndexData(pIndex->iIndexNo())->pRoot();
+    
+    if (pIndexBuffer)
+      bVerify = pIndexBuffer->bVerify();
+    if ( ! bVerify )
+      break;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

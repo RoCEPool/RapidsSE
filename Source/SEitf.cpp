@@ -91,6 +91,7 @@ ReqTable SeRequests[] =
  { "mon"_Stz,            &SEitf::bGetMonitor,           "getMonitor_req"_Stz      },
  { "print"_Stz,          &SEitf::bPrint,                nullptr                   },
  { "seitf"_Stz,          &SEitf::bSeitfCount,           "seitfCount_req"_Stz      },
+ { "vfyidx"_Stz,         &SEitf::bVerifyIndex,          "verifyIndex_req"_Stz     },
  { "version"_Stz,        &SEitf::bGetVersion,           "getVersion_req"_Stz      },
  { "visidx"_Stz,         &SEitf::bVisualizeIndex,       "visualizeIndex_req"_Stz  },
  { nullptr,              nullptr,                       nullptr }
@@ -2282,6 +2283,34 @@ bool SEitf::bGetTotalSpace(TokenVec& xTokenVec, i8 iReqNo)
   ASSERT(xTokenVec[0]->bSame("getTotalSpace"_Stz));
   
   sRequest = SeRequests[iReqNo].aRequest;
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* verify an index                                                            */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bVerifyIndex(TokenVec& xTokenVec, i8 iReqNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  if (xTokenVec.nTokens() != 3) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  sRequest.vCopy("\""_Stz);
+  sRequest.vConcat(xTokenVec[2]->aText());
+  sRequest.vConcat("\""_Stz);
+  
+  sRequest.vConcat("\""_Stz);
+  sRequest.vConcat(xTokenVec[1]->aText());
+  sRequest.vConcat("\""_Stz);
+  
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
 }

@@ -41,8 +41,8 @@ void Task::vAddPrimitives_Index(void)
   vAddPrimitive("index.init"_Stz,            &vIndexInit,            false);
   vAddPrimitive("index.isHidden@"_Stz,       &vIndexIsHiddenFetch,   false);
   vAddPrimitive("index.isHidden!"_Stz,       &vIndexIsHiddenStore,   false);
-  vAddPrimitive("index.isPrimaryKey@"_Stz,   &vIndexIsPrimaryKeyFetch,   false);
-  vAddPrimitive("index.isPrimaryKey!"_Stz,   &vIndexIsPrimaryKeyStore,   false);
+  vAddPrimitive("index.isPrimaryKey@"_Stz,   &vIndexIsPrimaryKeyFetch, false);
+  vAddPrimitive("index.isPrimaryKey!"_Stz,   &vIndexIsPrimaryKeyStore, false);
   vAddPrimitive("index.isUnique@"_Stz,       &vIndexIsUniqueFetch,   false);
   vAddPrimitive("index.isUnique!"_Stz,       &vIndexIsUniqueStore,   false);
   vAddPrimitive("index.name@"_Stz,           &vIndexNameFetch,       false);
@@ -56,6 +56,7 @@ void Task::vAddPrimitives_Index(void)
   vAddPrimitive("index.table!"_Stz,          &vIndexTableStore,      false);
   vAddPrimitive("index.truncate"_Stz,        &vIndexTruncate,        false);
   vAddPrimitive("index.upper"_Stz,           &vIndexUpper,           false);
+  vAddPrimitive("index.verify"_Stz,          &vIndexVerify,         false);
   vAddPrimitive("index.visualize"_Stz,       &vIndexVisualize,       false);
 }
 
@@ -728,6 +729,29 @@ void Task::vIndexUpper(MP_Task mpTask)
   bool bBefore = pEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrk.aKey(), pIndex->pIdxColVec(), bIsEqual);
   
   mpTask->m_pDataStack->vPushInt(bBefore ? 1 : 0);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index.verify -- verify index                                               */
+/*----------------------------------------------------------------------------*/
+void Task::vIndexVerify(MP_Task mpTask)
+{
+  ENTRY("vIndexVerify"_Stz);
+  
+  Object* pPtrIndex;
+  i8 iDetailed;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
+    THROW_INVALID_DSTACK("index.verify"_Stz);
+  
+  Index* pIndex = _pIndex(pPtrIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  bool bVerified = pIndex->pTable()->bVerifyIndex(pIndex);
+  s256 s = bVerified ? "Valid"_Stz : "Invalid"_Stz;
+  mpTask->m_pDataStack->vPushS256(s);
   
   EXIT();
 }

@@ -89,6 +89,7 @@ setidxunique indexSetUnique_req
 spnFetch  spawnFetchRows_apiReq
 szidx     sizeIndex_req
 tridx     truncateIndex_req
+vfyidx    verifyIndex_req
  
 -----------------
 Column Requests:

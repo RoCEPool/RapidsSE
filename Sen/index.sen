@@ -1086,6 +1086,19 @@ tp: selectIndex
   tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
 ;
 
+/*----------------------------------------------------------------------------*/
+/* verify an index of a table                                                 */
+/*----------------------------------------------------------------------------*/
+: verifyIndex allParticipants 1 returnResult ( "<indexNm>" -- true n# true )
+
+  tp: verifyIndex
+
+  find execute
+  index.verify
+
+  <SUCCESS_RESULT>
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

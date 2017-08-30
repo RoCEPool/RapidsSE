@@ -142,6 +142,7 @@ namespace Interface
     bool bRetIndex(TokenVec& xTokenVec, i8 iReqNo);
     bool bSizeIndex(TokenVec& xTokenVec, i8 iReqNo);
     bool bTruncateIndex(TokenVec& xTokenVec, i8 iReqNo);
+    bool bVerifyIndex(TokenVec& xTokenVec, i8 iReqNo);
 
     bool bAnalyzeTable(TokenVec& xTokenVec, i8 iReqNo);
     bool bCopyTable(TokenVec& xTokenVec, i8 iReqNo);

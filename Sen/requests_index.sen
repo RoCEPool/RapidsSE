@@ -701,6 +701,67 @@ assert::stack_4
 ;
 
 /*----------------------------------------------------------------------------*/
+/* verify an index of a table                                                 */
+/*----------------------------------------------------------------------------*/
+: verifyIdx ( "<sIndexNm>" "<sTableNm>" -- <R> )
+  // ../tables
+  tp: verifyIdx
+
+  locals| sTableNm sIndexNm |
+
+  ddlLock::grabWrite
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // checks
+
+  // should be in the tables folder
+  checkInTables       not if <NIP+ERROR> exit then
+
+  // there should be a table folder
+  sTableNm checkIsTableFolder not if <NIP+ERROR> assertInTables exit then
+
+  // push table dictionary
+  sTableNm pushTable assert                                // ../tables/sTableNm
+
+  // push indexes folder
+  pushIndexes assert                               // ../tables/sTableNm/indexes
+
+  sIndexNm checkIsIndex not if
+  popIndexes popTable                                            // ../tables
+  assertInTables <NIP+ERROR> exit
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // verify the index
+  args.metadata if
+  "(nodeName VARCHAR, partition INTEGER, buffers INTEGER, entries INTEGER)"
+  metadata!
+  then
+
+  sIndexNm verifyIndex ( )
+
+  // set no of rows processed equal to total no of partitions
+  grid.partitions task::this task.seitf@ seitf.rowsProcessed
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // restore path
+
+  popIndexes popTable assertInTables                                // ../tables
+
+  tp: verifiedIndex
+
+  not if <NIP+ERROR> else <SUCCESS> then
+;
+
+
+/*----------------------------------------------------------------------------*/
+/* verify an index of a table                                                 */
+/*----------------------------------------------------------------------------*/
+: verifyIndex_req ( "<sIndexNm>" "<sTableNm>" -- <R> )
+   verifyIdx
+;
+
+/*----------------------------------------------------------------------------*/
 /* visualize index                                                            */
 /*----------------------------------------------------------------------------*/
 : visualizeIndex_req ( "<sIndexNm>" "<sTableNm" -- <R> )

@@ -692,6 +692,7 @@ namespace Tasks
     static void vIndexTableStore(MP_Task mpTask);
     static void vIndexTruncate(MP_Task mpTask);
     static void vIndexUpper(MP_Task mpTask);
+    static void vIndexVerify(MP_Task mpTask);
     static void vIndexVisualize(MP_Task mpTask);
 
     // input

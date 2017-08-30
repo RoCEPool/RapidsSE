@@ -30,7 +30,9 @@ pwf ;
 lf ;
 dumpidx j10 hidden;
 
-sel j10 ;
+fetch j10 ;
+
+vfyidx j10 hidden;
 
 //dex j10 "/tmp/j10.csv" ;
 
