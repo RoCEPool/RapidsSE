@@ -67,12 +67,8 @@ private:
   bool bRecallCommand(void);
   
   bool bExecuteRequest(void);
-  bool bGetFirstRow(void);
-  bool bGetNextRow(void);
   bool bTestFile(Stz* aPath);
   void vPushFile(Stz* aPath);
-  
-  bool bBeginInsert(void);
 
   bool bDocol(void);
   

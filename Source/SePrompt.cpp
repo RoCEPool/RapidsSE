@@ -801,45 +801,6 @@ bool SePrompt::bTestFile(Stz* aFileName)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* begin insert                                                               */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bBeginInsert(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  ASSERT(m_xTokenVec[0]->bSame("begin"_Stz));
-  ASSERT(m_xTokenVec[1]->bSame("insert"_Stz));
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // copy tokens from m_xTokenVec to m_xTokenVec2
-  i8 iNumTokens = iCopyTokens(m_xTokenVec, m_xTokenVec2);
-  
-  // - - - - - - - - - - - - - - - - - - - - -
-  // there should be 3 tokens
-  if (iNumTokens != 3) {
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return false;
-  }
-  
-  // get table pointer
-  m_xTokenVec[0]->vCopy("gettbl"_Stz);
-  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]);
-  if (!bExecuteRequest()) {
-    vTrace("SePrompt::bBeginInsert : gettbl FAILED!!!\n"_Stz);
-    return false;
-  }
-  
-  bool bResult = m_pSEitf->bBeginTx();
-  
-  if (!bResult) {
-    m_pSEitf->vSetLastError(EC_BEGIN_TX_FAILED);
-    return false;
-  }
-  
-  return bResult;
-}
-
-/*----------------------------------------------------------------------------*/
 /* connect the cluster                                                        */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bConnectCluster(void)
@@ -885,65 +846,6 @@ bool SePrompt::bFetchRows(void)
     return false;
   
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the first row                                                          */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bGetFirstRow(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  i8 iAddress = m_sResponse.iToI8();
-  
-  SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
-  ASSERT(CN_SELCURSOR == pSelCursor->eClass());
-  
-  pSelCursor->vBegin(m_iPartition);
-  pSelCursor->vFirst();
-  Stz* pStr = pSelCursor->aRowAsStr();
-  
-  if (pStr == nullptr) {
-    pSelCursor->vEnd();
-    delete pSelCursor;
-    m_pSEitf->m_aRowPtr = nullptr;
-    return false;
-  }
-  else {
-    m_pSEitf->m_aRowPtr = pStr;
-    return true;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the next row                                                           */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bGetNextRow(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  i8 iAddress = m_sResponse.iToI8();
-  
-  SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
-  ASSERT(CN_SELCURSOR == pSelCursor->eClass());
-  
-  pSelCursor->vNext();
-  Stz* pStr = pSelCursor->aRowAsStr();
-  
-  if (pStr == nullptr) {
-    pSelCursor->vEnd();
-    delete pSelCursor;
-    m_pSEitf->m_aRowPtr = nullptr;
-    
-    // now return the table
-    bool bResult = bReturnTable();
-    ASSERT(bResult);
-    return false;
-  }
-  else {
-    m_pSEitf->m_aRowPtr = pStr;
-    return true;
-  }
 }
 
 /*----------------------------------------------------------------------------*/
