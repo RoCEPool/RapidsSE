@@ -6,7 +6,7 @@
 -- Examples of other miscellaneous commands you can give to seth.
 --
 
--- Logging a message
+// Logging a message
 LOG 'Running supplierLoop test with varying indexEntries per buffer.';
 
 setAttachMap AM_INDEXSPACE 0;
