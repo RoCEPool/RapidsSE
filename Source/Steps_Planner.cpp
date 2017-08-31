@@ -321,7 +321,6 @@ void Task::vPlannerPhrasesFetch(MP_Task mpTask)
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
   i8 nPhrases = mpPlanner->nPhrases();
-  ASSERT(1 == nPhrases);
   
   mpTask->m_pDataStack->vPushInt(nPhrases);
   

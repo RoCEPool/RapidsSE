@@ -109,7 +109,6 @@ void Planner::vChoosePath(i8 i_Phrase)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
 
-  ASSERT(0 == i_Phrase);
   
   AccessPath* npChosenAccessPath = nullptr;
   
@@ -154,9 +153,7 @@ void Planner::vChoosePath(i8 i_Phrase)
 AccessPath* Planner::pChosenPath(i8 i_Phrase)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
-  
-  ASSERT(0 == i_Phrase);
-  
+    
   AccessPath* pChosenPath = m_pPathVec->pGet(m_i_Chosen[i_Phrase]);
   
   return pChosenPath;
