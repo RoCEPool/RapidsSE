@@ -484,6 +484,8 @@ void Planner::vParsePhrases(void)
     
     if (pToken->bSame("or"_Stz)) {
       
+      // we have identified two phrases ( phrase1 phrase2 or )
+      
       m_pPhraseTknVec[m_nPhrases] = new TokenVec;
       m_pPhraseTknVec[m_nPhrases]->vAppendVector(pPhrase1);
       m_nPhrases++;
@@ -498,16 +500,20 @@ void Planner::vParsePhrases(void)
       continue;
     }
 
+    // add token to phrase1 or phrase2
     if (bAdd1)
       pPhrase1->vAddToken(pToken->aText());
     else
       pPhrase2->vAddToken(pToken->aText());
 
+    // if we see <, <=, >=, > then switch to phrase2
     if (bIsRelationalOp(pToken)) {
       bAdd1 = false;
       continue;
     }
     
+    // if we see an and then the tokens in phrase2 are predicates of phrase1
+    //   (predicateA predicateB and)
     if (pToken->bSame("and"_Stz)) {
       pPhrase1->vAppendVector(pPhrase2);
       pPhrase2->vReset();
@@ -516,7 +522,10 @@ void Planner::vParsePhrases(void)
 
   }
   
+  // if there are tokens in phrase1 then we have one and only one phrase
+  
   if (pPhrase1->nTokens()) {
+    ASSERT(0 == m_nPhrases);
     m_pPhraseTknVec[m_nPhrases] = new TokenVec;
     m_pPhraseTknVec[m_nPhrases]->vAppendVector(pPhrase1);
     m_nPhrases++;    
