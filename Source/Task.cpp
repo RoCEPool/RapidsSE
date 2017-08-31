@@ -478,6 +478,8 @@ void Task::vAddConstants(void)
   vAddConstant("C_64KB"_Stz,  C_64KB);
   vAddConstant("C_256KB"_Stz, C_256KB);
   
+  vAddConstant("C_INDEXES_PER_TABLE"_Stz, C_INDEXES_PER_TABLE);
+  
   // AC_ : actor models
   /*  0 */ vAddConstant("AC_NONE"_Stz,         AC_NONE);
   /*  1 */ vAddConstant("AC_DRONE"_Stz,        AC_DRONE);

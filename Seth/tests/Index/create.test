@@ -225,9 +225,8 @@ rows:
 ('name', 'VARCHAR')
 
 // create another index with two columns
-create index Idx4 on T1 (key, name);
-success
-
+create index Idx9 on T1 (key, name);
+failure: 'max allowed indexes already created'
 
 drop table T1;
 success

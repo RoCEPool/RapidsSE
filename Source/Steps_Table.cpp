@@ -41,6 +41,7 @@ void Task::vAddPrimitives_Table(void)
   vAddPrimitive("table.getColumns"_Stz,         &vTableGetColumns,       false);
   vAddPrimitive("table.hiddenIndex@"_Stz,       &vTableHiddenIndexFetch, false);
   vAddPrimitive("table.hiddenIndex!"_Stz,       &vTableHiddenIndexStore, false);
+  vAddPrimitive("table.indexCount"_Stz,         &vTableIndexCount,       false);
   vAddPrimitive("table.indexesLoaded@"_Stz,     &vTableIndexesLoadedFetch, false);
   vAddPrimitive("table.indexesLoaded!"_Stz,     &vTableIndexesLoadedStore, false);
   vAddPrimitive("table.init"_Stz,               &vTableInit,             false);
@@ -313,6 +314,25 @@ void Task::vTableHiddenIndexStore(MP_Task mpTask)
   ASSERT(CN_INDEX == pHiddenIndex->eClass());
   
   pTable->vHiddenIndex(pHiddenIndex);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.indexCount -- get the no of indexes in the table                     */
+/*----------------------------------------------------------------------------*/
+void Task::vTableIndexCount(MP_Task mpTask)
+{
+  ENTRY("vTableIndexCount"_Stz);
+  
+  Object* pPtrTable;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+    THROW_INVALID_DSTACK("table.indexCount@"_Stz);
+  
+  Table* pTable = _pTable(pPtrTable);
+  ASSERT(CN_TABLE == pTable->eClass())
+  
+  mpTask->m_pDataStack->vPushInt(pTable->pIdxVec()->nItems());
   
   EXIT();
 }

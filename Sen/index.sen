@@ -169,6 +169,10 @@
   tableNm checkIsTableFolder not if false exit then
 
   tableNm pushTable assert
+
+  tableNm find execute table.indexCount
+  C_INDEXES_PER_TABLE == if EC_MAX_INDEXES popTable assertInTables false exit then
+
   pushIndexes assert
 
   indexNm checkIsNotIndex not if popIndexes popTable assertInTables false exit then
