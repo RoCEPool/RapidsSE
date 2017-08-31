@@ -35,8 +35,8 @@ rows:
   ('S_SUPPKEY', 'INTEGER')
 
 // keysel
-keyselidx supplier idx 10;
-rows: 1
+fetch supplier "S_SUPPKEY 10 =";
+affected: 1
 
 // drop the index keyIdx;
 drop index supplier.idx;

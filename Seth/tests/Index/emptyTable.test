@@ -28,19 +28,19 @@ szidx createT1 keyidx;
 rows: 1
 
 // lwrsel
-lwrselidx createT1 keyIdx 10;
+fetch createT1 "key 10 >=";
 affected: 0
 
 // uprsel
-uprselidx createT1 keyIdx 10;
+fetch createT1 "key 10 <=";
 affected: 0
 
 // keysel
-keyselidx createT1 keyIdx 10;
+fetch createT1 "key 10 =";
 affected: 0
 
 // rgesel
-rgeselidx createT1 keyIdx 10 20;
+fetch createT1 "key 10 >= key 20 <= AND";
 affected: 0
 
 // drop the index keyIdx;
