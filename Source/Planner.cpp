@@ -51,11 +51,11 @@ Planner::Planner(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
   m_pTable = nullptr;
-  m_pPathVec = nullptr;
   m_pWhereTknVec = nullptr;
   
   for (i8 i_Phrase = 0; i_Phrase < C_MAX_PHRASES; i_Phrase++) {
     m_pPhraseTknVec[i_Phrase] = nullptr;
+    m_pPathVec[i_Phrase] = nullptr;
     m_i_Chosen[i_Phrase] = -1;
   }
   m_nPhrases = 0;
@@ -72,16 +72,18 @@ Planner::~Planner(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
-  for (i8 i_Vec = 0; i_Vec < C_MAX_PHRASES; i_Vec++)
-    if (m_pPhraseTknVec[i_Vec]) {
-      m_pPhraseTknVec[i_Vec]->vSetAllTokens();
-      delete m_pPhraseTknVec[i_Vec];
+  for (i8 i_Phrase = 0; i_Phrase < C_MAX_PHRASES; i_Phrase++) {
+    if (m_pPhraseTknVec[i_Phrase]) {
+      m_pPhraseTknVec[i_Phrase]->vSetAllTokens();
+      delete m_pPhraseTknVec[i_Phrase];
     }
+    if (m_pPathVec[i_Phrase]) {
+      delete m_pPathVec[i_Phrase];
+    }
+  }
   
   m_pWhereTknVec->vSetAllTokens();
   delete m_pWhereTknVec;
-  
-  delete m_pPathVec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -114,10 +116,10 @@ void Planner::vChoosePath(i8 i_Phrase)
   
   // step thru path vector and find first candidate
   for (m_i_Chosen[i_Phrase] = 0;
-       m_i_Chosen[i_Phrase] < m_pPathVec->nItems();
+       m_i_Chosen[i_Phrase] < m_pPathVec[i_Phrase]->nItems();
        m_i_Chosen[i_Phrase]++) {
     
-    AccessPath* mpAccPath = m_pPathVec->pGet(m_i_Chosen[i_Phrase]);
+    AccessPath* mpAccPath = m_pPathVec[i_Phrase]->pGet(m_i_Chosen[i_Phrase]);
     
     if ( ! mpAccPath->bIsCandidate() )
       continue;
@@ -130,10 +132,10 @@ void Planner::vChoosePath(i8 i_Phrase)
   
   // step thru remaining paths attempting to find a better candidate
   for (i8 i_Test = m_i_Chosen[i_Phrase] + 1;
-       i_Test < m_pPathVec->nItems();
+       i_Test < m_pPathVec[i_Phrase]->nItems();
        i_Test++) {
     
-    AccessPath* mpTestAccPath = m_pPathVec->pGet(i_Test);
+    AccessPath* mpTestAccPath = m_pPathVec[i_Phrase]->pGet(i_Test);
     
     if ( ! mpTestAccPath->bIsCandidate() )
       continue;
@@ -154,7 +156,7 @@ AccessPath* Planner::pChosenPath(i8 i_Phrase)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
     
-  AccessPath* pChosenPath = m_pPathVec->pGet(m_i_Chosen[i_Phrase]);
+  AccessPath* pChosenPath = m_pPathVec[i_Phrase]->pGet(m_i_Chosen[i_Phrase]);
   
   return pChosenPath;
 }
@@ -166,33 +168,36 @@ void Planner::vGenPaths(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
-  m_pPathVec = new PathVec;
+  m_pPathVec[0] = new PathVec;
   
   IdxVec* pIdxVec = m_pTable->pIdxVec();
   
-  for (i8 i_Idx = 0; i_Idx < pIdxVec->nItems(); i_Idx++) {
+  for (i8 i_Phrase = 0; i_Phrase < m_nPhrases; i_Phrase++) {
     
-    Index* mpIndex = pIdxVec->pGet(i_Idx);
-    
-    if (mpIndex->sIndexName().bSame("hidden"_Stz)) {
-      AccessPath* mpAccessPath = new AccessPath(AT_SCAN);
-      mpAccessPath->vIndex(mpIndex);
-      mpAccessPath->vIsCandidate(true);
-      m_pPathVec->vAdd(mpAccessPath);
-      continue;
+    for (i8 i_Idx = 0; i_Idx < pIdxVec->nItems(); i_Idx++) {
+      
+      Index* mpIndex = pIdxVec->pGet(i_Idx);
+      
+      if (mpIndex->sIndexName().bSame("hidden"_Stz)) {
+        AccessPath* mpAccessPath = new AccessPath(AT_SCAN);
+        mpAccessPath->vIndex(mpIndex);
+        mpAccessPath->vIsCandidate(true);
+        m_pPathVec[0]->vAdd(mpAccessPath);
+        continue;
+      }
+      
+      vGenPaths(i_Phrase,mpIndex,AT_EXACT);
+      vGenPaths(i_Phrase,mpIndex,AT_LOWER);
+      vGenPaths(i_Phrase,mpIndex,AT_UPPER);
+      vGenPaths(i_Phrase,mpIndex,AT_RANGE);
     }
-    
-    vGenPaths(mpIndex, AT_EXACT);
-    vGenPaths(mpIndex, AT_LOWER);
-    vGenPaths(mpIndex, AT_UPPER);
-    vGenPaths(mpIndex, AT_RANGE);
   }
 }
 
 /*----------------------------------------------------------------------------*/
-/* generate the set of all paths for given index and access technique         */
+/* generate the set of all paths for given phrase, index and access technique */
 /*----------------------------------------------------------------------------*/
-void Planner::vGenPaths(Index* pIndex, eAT eAccess)
+void Planner::vGenPaths(i8 i_Phrase, Index* pIndex, eAT eAccess)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
@@ -207,7 +212,7 @@ void Planner::vGenPaths(Index* pIndex, eAT eAccess)
     
     // first, create an access path for this combo
     AccessPath* pAccessPath = new AccessPath(eAccess);
-    m_pPathVec->vAdd(pAccessPath);
+    m_pPathVec[i_Phrase]->vAdd(pAccessPath);
     
     // set the index in path
     pAccessPath->vIndex(pIndex);
@@ -345,10 +350,10 @@ void Planner::vMatchPaths(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
   // step thru all generated access paths
-  for (i8 i_Path = 0; i_Path < m_pPathVec->nItems(); i_Path++) {
+  for (i8 i_Path = 0; i_Path < m_pPathVec[0]->nItems(); i_Path++) {
     
     // get access path
-    AccessPath* mpAccPath = m_pPathVec->pGet(i_Path);
+    AccessPath* mpAccPath = m_pPathVec[0]->pGet(i_Path);
     
     eAT eAccess = mpAccPath->eAccess();
     
@@ -565,10 +570,10 @@ void Planner::vScorePaths(void)
   i8 iScore;
   
   // step thru paths and score them
-  for (i8 i_Path = 0; i_Path < m_pPathVec->nItems(); i_Path++) {
+  for (i8 i_Path = 0; i_Path < m_pPathVec[0]->nItems(); i_Path++) {
     
     // get access path
-    AccessPath* pAccessPath = m_pPathVec->pGet(i_Path);
+    AccessPath* pAccessPath = m_pPathVec[0]->pGet(i_Path);
     
     // get index of access path
     Index* pIndex = pAccessPath->pIndex();
@@ -613,8 +618,8 @@ void Planner::vShowPaths(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
  
-  for (i8 i_Path = 0; i_Path < m_pPathVec->nItems(); i_Path++) {
-    AccessPath* pAccessPath = m_pPathVec->pGet(i_Path);
+  for (i8 i_Path = 0; i_Path < m_pPathVec[0]->nItems(); i_Path++) {
+    AccessPath* pAccessPath = m_pPathVec[0]->pGet(i_Path);
     pAccessPath->vShow();
   }
 }

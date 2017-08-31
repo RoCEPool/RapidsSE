@@ -16,8 +16,8 @@ namespace Plans
     TokenVec* m_pPhraseTknVec[C_MAX_PHRASES]; // array of phrases
     i8        m_nPhrases; // number of phrases
   
-    PathVec*  m_pPathVec; // vector of possible paths
-    i8        m_i_Chosen[C_MAX_PHRASES];      // path chosen
+    PathVec*  m_pPathVec[C_MAX_PHRASES]; // array of possible path vectors
+    i8        m_i_Chosen[C_MAX_PHRASES]; // path chosen
 
     // must be last
     Footer m_xFooter;
@@ -34,7 +34,7 @@ namespace Plans
     void vChoosePath(i8 i_Phrase);
     AccessPath* pChosenPath(i8 i_Phrase);
     void vGenPaths(void);
-    void vGenPaths(Index* pIndex, eAT eAccess);
+    void vGenPaths(i8 i_Phrase, Index* pIndex, eAT eAccess);
     bool bIsExactOp(eRO eRelOp);
     bool bIsLowerOp(eRO eRelOp);
     bool bIsMatchingOp(eAT eAccess, eRO eRelOp);
