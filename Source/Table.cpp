@@ -440,12 +440,6 @@ void Table::vRemoveIndex(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  // delete the IndexData of the index from each partition
-  for (i8 iPartition = 0; iPartition < gpGrid->m_nSlots; iPartition++) {
-    Partition* pPartition = this->pPartition(iPartition);
-    pPartition->vRemoveIndex(pIndex->iIndexNo());
-  }
-  
   // remove index from the table
   m_pIdxVec->vRemove(pIndex);
 }

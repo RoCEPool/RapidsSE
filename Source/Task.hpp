@@ -1128,6 +1128,7 @@ namespace Tasks
     static void vTableList(MP_Task mpTask);
     static void vTableName(MP_Task mpTask);
     static void vTableRef(MP_Task mpTask);
+    static void vTableRemoveIndex(MP_Task mpTask);
     static void vTableShowColumnVec(MP_Task mpTask);
     static void vTableSlots(MP_Task mpTask);
     static void vTableSpace(MP_Task mpTask);

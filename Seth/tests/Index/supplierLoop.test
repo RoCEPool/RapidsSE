@@ -2,7 +2,7 @@
 -- create index in a loop tests
 --------------------------------------------------------------------------------
 
--- create a table
+// create a table
 create table supplier (
 S_SUPPKEY       INTEGER NOT NULL,
 S_NAME          VARCHAR(25) NOT NULL,
@@ -14,46 +14,42 @@ S_COMMENT       VARCHAR(101) NOT NULL
 );
 success
 
--- load the table
+// load the table
 ld supplier "/tpch/supplier.tbl";
 success
 
 LOOP 2  {
 
--- create an index
+// create an index
 create index idx on supplier (S_SUPPKEY);
 affected: 0
 
--- check existence of index
+// check existence of index
 lsidx supplier;
 rows:
-  ('idx')
+  ('idx',false,false)
 
--- check columns of index
+// check columns of index
 lsidxcol supplier idx;
 rows:
   ('S_SUPPKEY', 'INTEGER')
 
--- keysel
+// keysel
 keyselidx supplier idx 10;
 rows: 1
 
--- drop the index keyIdx;
+// drop the index keyIdx;
 drop index supplier.idx;
 success
 
-} -- end of loop
+} // end of loop
 
--- now drop the table
+// now drop the table
 drop table supplier;
 success
 
 CLEANUP {
-  -- Commands in the cleanup section always run, and do so at the end
-  -- of a test (whether successful or not). 
 
-  -- Ensure that table  ('supplier') is dropped.
-  -- We can set the expected result to mute if we don't want to see any warnings.
   drop table supplier;
   mute
 

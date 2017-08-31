@@ -6,25 +6,25 @@
 -- Examples of other miscellaneous commands you can give to seth.
 --
 
--- Logging a message
+// Logging a message
 LOG 'Running supplierLoop test with varying indexEntries per buffer.';
 
-set AM_INDEXSPACE 0;
+setAttachMap AM_INDEXSPACE 0;
 affected: 0
 
-set AM_INDEXENTRIES 100;
+setAttachMap AM_INDEXENTRIES 100;
 affected: 0
 
 LOG 'Entries per buffer: 100';
 INCLUDE 'supplierLoop.test';
 
-set AM_INDEXENTRIES 500;
+setAttachMap AM_INDEXENTRIES 500;
 affected: 0
 
 LOG 'Entries per buffer: 500';
 INCLUDE 'supplierLoop.test';
 
-set AM_INDEXENTRIES 1000;
+setAttachMap AM_INDEXENTRIES 1000;
 affected: 0
 
 LOG 'Entries per buffer: 1000';

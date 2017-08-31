@@ -204,7 +204,8 @@ i8 IndexData::nIndexBuffers(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
   i8 nBufferCount = 0;
-  m_pRoot->vBufferCount(nBufferCount);
+  if (m_pRoot)
+    m_pRoot->vBufferCount(nBufferCount);
   
   return nBufferCount;
 }
