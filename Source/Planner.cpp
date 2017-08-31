@@ -91,27 +91,12 @@ Planner::~Planner(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add a new phrase using given token vector                                  */
-/*----------------------------------------------------------------------------*/
-void Planner::vAddPhrase(TokenVec* pTokenVec)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
-  
-  m_pPhraseTknVec[m_nPhrases] = new TokenVec;
-  for (i8 i_Token = 0; i_Token < pTokenVec->nTokens(); i_Token++)
-    m_pPhraseTknVec[m_nPhrases]->vAddToken(pTokenVec->pGet(i_Token)->aText());
-  
-  m_nPhrases++;
-}
-
-/*----------------------------------------------------------------------------*/
 /* choose best path based on score                                            */
 /*----------------------------------------------------------------------------*/
 void Planner::vChoosePath(i8 i_Phrase)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
 
-  
   AccessPath* npChosenAccessPath = nullptr;
   
   // step thru path vector and find first candidate
@@ -182,7 +167,7 @@ void Planner::vGenPaths(void)
         AccessPath* mpAccessPath = new AccessPath(AT_SCAN);
         mpAccessPath->vIndex(mpIndex);
         mpAccessPath->vIsCandidate(true);
-        m_pPathVec[0]->vAdd(mpAccessPath);
+        m_pPathVec[i_Phrase]->vAdd(mpAccessPath);
         continue;
       }
       
@@ -618,9 +603,11 @@ void Planner::vShowPaths(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
  
-  for (i8 i_Path = 0; i_Path < m_pPathVec[0]->nItems(); i_Path++) {
-    AccessPath* pAccessPath = m_pPathVec[0]->pGet(i_Path);
-    pAccessPath->vShow();
+  for (i8 i_Phrase = 0; i_Phrase < m_nPhrases; i_Phrase++) {
+    for (i8 i_Path = 0; i_Path < m_pPathVec[i_Phrase]->nItems(); i_Path++) {
+      AccessPath* pAccessPath = m_pPathVec[i_Phrase]->pGet(i_Path);
+      pAccessPath->vShow();
+    }
   }
 }
 
@@ -656,7 +643,7 @@ Table* Planner::pTable(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* score the set of all paths                                                 */
+/* set the table being accessed                                               */
 /*----------------------------------------------------------------------------*/
 void Planner::vTable(Table* pTable)
 {
