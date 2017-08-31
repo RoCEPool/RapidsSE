@@ -347,7 +347,7 @@ void Planner::vMatchPaths(void)
       
       if (AT_EXACT == eAccess) {
         PredicateVec* npLwrPredVec = mpAccPath->pLowerPredicates();
-        vMatchPredicates(npLwrPredVec,AT_EXACT);
+        vMatchPredicates(i_Phrase,npLwrPredVec,AT_EXACT);
         
         if (npLwrPredVec->bFullyMatched())
           mpAccPath->vIsCandidate(true);
@@ -355,7 +355,7 @@ void Planner::vMatchPaths(void)
       else
       if (AT_LOWER == eAccess) {
         PredicateVec* npLwrPredVec = mpAccPath->pLowerPredicates();
-        vMatchPredicates(npLwrPredVec,AT_LOWER);
+        vMatchPredicates(i_Phrase,npLwrPredVec,AT_LOWER);
         
         if (npLwrPredVec->bFullyMatched())
           mpAccPath->vIsCandidate(true);
@@ -363,7 +363,7 @@ void Planner::vMatchPaths(void)
       else
       if (AT_UPPER == eAccess) {
         PredicateVec* npUprPredVec = mpAccPath->pUpperPredicates();
-        vMatchPredicates(npUprPredVec,AT_UPPER);
+        vMatchPredicates(i_Phrase,npUprPredVec,AT_UPPER);
         
         if (npUprPredVec->bFullyMatched())
           mpAccPath->vIsCandidate(true);
@@ -371,10 +371,10 @@ void Planner::vMatchPaths(void)
       else
       if (AT_RANGE == eAccess) {
         PredicateVec* npLwrPredVec = mpAccPath->pLowerPredicates();
-        vMatchPredicates(npLwrPredVec,AT_LOWER);
+        vMatchPredicates(i_Phrase,npLwrPredVec,AT_LOWER);
         
         PredicateVec* npUprPredVec = mpAccPath->pUpperPredicates();
-        vMatchPredicates(npUprPredVec,AT_UPPER);
+        vMatchPredicates(i_Phrase,npUprPredVec,AT_UPPER);
         
         if (npLwrPredVec->bFullyMatched() && npUprPredVec->bFullyMatched())
           mpAccPath->vIsCandidate(true);
@@ -389,7 +389,7 @@ void Planner::vMatchPaths(void)
 /*----------------------------------------------------------------------------*/
 /* attempt to match path columns to where columns                             */
 /*----------------------------------------------------------------------------*/
-void Planner::vMatchPredicates(PredicateVec* mpPathPredVec, eAT eAccess)
+void Planner::vMatchPredicates(i8 i_Phrase, PredicateVec* mpPathPredVec, eAT eAccess)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
@@ -413,17 +413,17 @@ void Planner::vMatchPredicates(PredicateVec* mpPathPredVec, eAT eAccess)
       
       // get next columnNm token from where clause
       pColNmTkn_Where =
-        m_pPhraseTknVec[0]->pFindToken(sColumnNm_Path,i_ColumnTkn_Where);
+        m_pPhraseTknVec[i_Phrase]->pFindToken(sColumnNm_Path,i_ColumnTkn_Where);
       
       // unable to find a matching column
       if ( ! pColNmTkn_Where )
         return;
       
       // get the associated literal token
-      mpLitTkn_Where = m_pPhraseTknVec[0]->pGet(i_ColumnTkn_Where+1);
+      mpLitTkn_Where = m_pPhraseTknVec[i_Phrase]->pGet(i_ColumnTkn_Where+1);
       
       // get the associated op token
-      mpOpTkn_Where = m_pPhraseTknVec[0]->pGet(i_ColumnTkn_Where+2);
+      mpOpTkn_Where = m_pPhraseTknVec[i_Phrase]->pGet(i_ColumnTkn_Where+2);
       sOpDatum_Where = mpOpTkn_Where->aText();
       eRelOp_Where = Op::eDecode(sOpDatum_Where.aStr());
       
