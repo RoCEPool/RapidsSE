@@ -40,7 +40,7 @@ namespace Plans
     bool bIsRelationalOp(Token* pToken);
     bool bIsUpperOp(eRO eRelOp);
     void vMatchPaths(void);
-    void vMatchPredicates(PredicateVec* mpAccPath, eAT eAccess);
+    void vMatchPredicates(i8 i_Phrase, PredicateVec* mpAccPath, eAT eAccess);
     void vParsePhrases(void);
     void vParseWhere(s48K& sWhereClause);
     i8   nPhrases(void);

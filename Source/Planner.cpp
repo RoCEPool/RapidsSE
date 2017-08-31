@@ -153,11 +153,11 @@ void Planner::vGenPaths(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
-  m_pPathVec[0] = new PathVec;
-  
   IdxVec* pIdxVec = m_pTable->pIdxVec();
   
   for (i8 i_Phrase = 0; i_Phrase < m_nPhrases; i_Phrase++) {
+    
+    m_pPathVec[i_Phrase] = new PathVec;
     
     for (i8 i_Idx = 0; i_Idx < pIdxVec->nItems(); i_Idx++) {
       
@@ -347,7 +347,7 @@ void Planner::vMatchPaths(void)
       
       if (AT_EXACT == eAccess) {
         PredicateVec* npLwrPredVec = mpAccPath->pLowerPredicates();
-        vMatchPredicates(npLwrPredVec,AT_EXACT);
+        vMatchPredicates(i_Phrase,npLwrPredVec,AT_EXACT);
         
         if (npLwrPredVec->bFullyMatched())
           mpAccPath->vIsCandidate(true);
@@ -355,7 +355,7 @@ void Planner::vMatchPaths(void)
       else
       if (AT_LOWER == eAccess) {
         PredicateVec* npLwrPredVec = mpAccPath->pLowerPredicates();
-        vMatchPredicates(npLwrPredVec,AT_LOWER);
+        vMatchPredicates(i_Phrase,npLwrPredVec,AT_LOWER);
         
         if (npLwrPredVec->bFullyMatched())
           mpAccPath->vIsCandidate(true);
@@ -363,7 +363,7 @@ void Planner::vMatchPaths(void)
       else
       if (AT_UPPER == eAccess) {
         PredicateVec* npUprPredVec = mpAccPath->pUpperPredicates();
-        vMatchPredicates(npUprPredVec,AT_UPPER);
+        vMatchPredicates(i_Phrase,npUprPredVec,AT_UPPER);
         
         if (npUprPredVec->bFullyMatched())
           mpAccPath->vIsCandidate(true);
@@ -371,10 +371,10 @@ void Planner::vMatchPaths(void)
       else
       if (AT_RANGE == eAccess) {
         PredicateVec* npLwrPredVec = mpAccPath->pLowerPredicates();
-        vMatchPredicates(npLwrPredVec,AT_LOWER);
+        vMatchPredicates(i_Phrase,npLwrPredVec,AT_LOWER);
         
         PredicateVec* npUprPredVec = mpAccPath->pUpperPredicates();
-        vMatchPredicates(npUprPredVec,AT_UPPER);
+        vMatchPredicates(i_Phrase,npUprPredVec,AT_UPPER);
         
         if (npLwrPredVec->bFullyMatched() && npUprPredVec->bFullyMatched())
           mpAccPath->vIsCandidate(true);
@@ -389,7 +389,7 @@ void Planner::vMatchPaths(void)
 /*----------------------------------------------------------------------------*/
 /* attempt to match path columns to where columns                             */
 /*----------------------------------------------------------------------------*/
-void Planner::vMatchPredicates(PredicateVec* mpPathPredVec, eAT eAccess)
+void Planner::vMatchPredicates(i8 i_Phrase, PredicateVec* mpPathPredVec, eAT eAccess)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
@@ -413,17 +413,17 @@ void Planner::vMatchPredicates(PredicateVec* mpPathPredVec, eAT eAccess)
       
       // get next columnNm token from where clause
       pColNmTkn_Where =
-        m_pPhraseTknVec[0]->pFindToken(sColumnNm_Path,i_ColumnTkn_Where);
+        m_pPhraseTknVec[i_Phrase]->pFindToken(sColumnNm_Path,i_ColumnTkn_Where);
       
       // unable to find a matching column
       if ( ! pColNmTkn_Where )
         return;
       
       // get the associated literal token
-      mpLitTkn_Where = m_pPhraseTknVec[0]->pGet(i_ColumnTkn_Where+1);
+      mpLitTkn_Where = m_pPhraseTknVec[i_Phrase]->pGet(i_ColumnTkn_Where+1);
       
       // get the associated op token
-      mpOpTkn_Where = m_pPhraseTknVec[0]->pGet(i_ColumnTkn_Where+2);
+      mpOpTkn_Where = m_pPhraseTknVec[i_Phrase]->pGet(i_ColumnTkn_Where+2);
       sOpDatum_Where = mpOpTkn_Where->aText();
       eRelOp_Where = Op::eDecode(sOpDatum_Where.aStr());
       
@@ -549,7 +549,7 @@ i8 Planner::nPhrases(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* score the set of all paths (lower is better)                               */
+/* score the vector array of all paths (lower is better)                      */
 /*----------------------------------------------------------------------------*/
 void Planner::vScorePaths(void)
 {
@@ -557,45 +557,48 @@ void Planner::vScorePaths(void)
   
   i8 iScore;
   
-  // step thru paths and score them
-  for (i8 i_Path = 0; i_Path < m_pPathVec[0]->nItems(); i_Path++) {
+  for (i8 i_Phrase = 0; i_Phrase < m_nPhrases; i_Phrase++) {
     
-    // get access path
-    AccessPath* pAccessPath = m_pPathVec[0]->pGet(i_Path);
-    
-    // get index of access path
-    Index* pIndex = pAccessPath->pIndex();
-    
-    // initially just a simple scoring method
-    switch (pAccessPath->eAccess()) {
-    
-      case AT_EXACT:
-        iScore = 100 + (pIndex->bIsUnique() ? 0 : 50)
-                     + pAccessPath->pLowerPredicates()->nItems();
-        break;
-        
-      case AT_RANGE:
-        iScore = 200 + (pIndex->bIsUnique() ? 0 : 50)
-                     + pAccessPath->pLowerPredicates()->nItems()
-                     + pAccessPath->pUpperPredicates()->nItems();
-        break;
-        
-      case AT_LOWER:
-        iScore = 300 + (pIndex->bIsUnique() ? 0 : 50)
-                     + pAccessPath->pLowerPredicates()->nItems();
-        break;
-        
-      case AT_UPPER:
-        iScore = 300 + (pIndex->bIsUnique() ? 0 : 50)
-                     + pAccessPath->pUpperPredicates()->nItems();
-        break;
-        
-      default:
-        ASSERT(AT_SCAN == pAccessPath->eAccess());
-        iScore = 400;
+    // step thru paths and score them
+    for (i8 i_Path = 0; i_Path < m_pPathVec[i_Phrase]->nItems(); i_Path++) {
+      
+      // get access path
+      AccessPath* pAccessPath = m_pPathVec[i_Phrase]->pGet(i_Path);
+      
+      // get index of access path
+      Index* pIndex = pAccessPath->pIndex();
+      
+      // initially just a simple scoring method
+      switch (pAccessPath->eAccess()) {
+      
+        case AT_EXACT:
+          iScore = 100 + (pIndex->bIsUnique() ? 0 : 50)
+                       + pAccessPath->pLowerPredicates()->nItems();
+          break;
+          
+        case AT_RANGE:
+          iScore = 200 + (pIndex->bIsUnique() ? 0 : 50)
+                       + pAccessPath->pLowerPredicates()->nItems()
+                       + pAccessPath->pUpperPredicates()->nItems();
+          break;
+          
+        case AT_LOWER:
+          iScore = 300 + (pIndex->bIsUnique() ? 0 : 50)
+                       + pAccessPath->pLowerPredicates()->nItems();
+          break;
+          
+        case AT_UPPER:
+          iScore = 300 + (pIndex->bIsUnique() ? 0 : 50)
+                       + pAccessPath->pUpperPredicates()->nItems();
+          break;
+          
+        default:
+          ASSERT(AT_SCAN == pAccessPath->eAccess());
+          iScore = 400;
+      }
+      
+      pAccessPath->vPathScore(iScore);
     }
-    
-    pAccessPath->vPathScore(iScore);
   }
 }
 

@@ -136,11 +136,98 @@ rows:
  ('Idx3',false,false)
  ('Idx4',false,false)
 
-// check columns of Idx3
-lsidxcol T1 Idx3;
+// check columns of Idx4
+lsidxcol T1 Idx4;
 rows:
  ('key', 'INTEGER')
  ('name', 'VARCHAR')
+
+// create another index with two columns
+create index Idx5 on T1 (key, name);
+success
+
+// check existence of index
+lsidx T1;
+rows:
+('Idx1',false,false)
+('Idx2',false,false)
+('Idx3',false,false)
+('Idx4',false,false)
+('Idx5',false,false)
+
+// check columns of Idx5
+lsidxcol T1 Idx5;
+rows:
+('key', 'INTEGER')
+('name', 'VARCHAR')
+
+// create another index with two columns
+create index Idx6 on T1 (key, name);
+success
+
+// check existence of index
+lsidx T1;
+rows:
+('Idx1',false,false)
+('Idx2',false,false)
+('Idx3',false,false)
+('Idx4',false,false)
+('Idx5',false,false)
+('Idx6',false,false)
+
+// check columns of Idx4
+lsidxcol T1 Idx6;
+rows:
+('key', 'INTEGER')
+('name', 'VARCHAR')
+
+// create another index with two columns
+create index Idx7 on T1 (key, name);
+success
+
+// check existence of index
+lsidx T1;
+rows:
+('Idx1',false,false)
+('Idx2',false,false)
+('Idx3',false,false)
+('Idx4',false,false)
+('Idx5',false,false)
+('Idx6',false,false)
+('Idx7',false,false)
+
+// check columns of Idx7
+lsidxcol T1 Idx7;
+rows:
+('key', 'INTEGER')
+('name', 'VARCHAR')
+
+// create another index with two columns
+create index Idx8 on T1 (key, name);
+success
+
+// check existence of index
+lsidx T1;
+rows:
+('Idx1',false,false)
+('Idx2',false,false)
+('Idx3',false,false)
+('Idx4',false,false)
+('Idx5',false,false)
+('Idx6',false,false)
+('Idx7',false,false)
+('Idx8',false,false)
+
+// check columns of Idx8
+lsidxcol T1 Idx8;
+rows:
+('key', 'INTEGER')
+('name', 'VARCHAR')
+
+// create another index with two columns
+create index Idx4 on T1 (key, name);
+success
+
 
 drop table T1;
 success

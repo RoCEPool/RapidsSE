@@ -238,7 +238,7 @@ i8 Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::nItems(void)
 {
   _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   
-  ASSERT(m_nItems >= 0 && m_nItems < MAX_ITEMS);
+  ASSERT(m_nItems >= 0 && m_nItems <= MAX_ITEMS);
   
   return m_nItems;
 }
