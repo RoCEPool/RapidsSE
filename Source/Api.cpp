@@ -222,6 +222,9 @@ eEC RapidsSE_BeginInsert(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable
       return EC_BEGIN_TX_FAILED;
     }
     
+    // set subLoaders in table as 1
+    pSEitf->pCurrentTable()->vSubLoaders((i8)1);
+    
     TRACE_EXIT("ea"_Stz);
     
     return EC_NONE;
@@ -673,8 +676,8 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf, i8 iTraceLevel)
     // validate we have a table
     VALIDATE_TABLE("b"_Stz);
     
-    bool bResult = pSEitf->bInsertBuffer();
-    
+    bool bResult = pSEitf->bInsertLastBuffer();
+      
     // if rowBuffer request was appended to requestQ, then wait for resonse
     if (bResult) {
       CHECK_RESPONSE("c"_Stz);

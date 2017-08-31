@@ -2034,6 +2034,31 @@ bool SEitf::bInsertRow(Stz* aRow, i8 iLength)
 /*----------------------------------------------------------------------------*/
 /* insert rowbuffer into current table                                        */
 /*----------------------------------------------------------------------------*/
+bool SEitf::bInsertLastBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  //vTrace("inserting ...\n");
+  
+  if (! m_pRowBuffer[m_iPartition] ) {
+     m_pRowBuffer[m_iPartition] = new EntryBuffer(m_pCurrentTable->pHiddenIndex(),
+                                                     0, m_iPartition);
+  }
+  
+  // mark buffer as last
+  m_pRowBuffer[m_iPartition]->vIsLast(true);
+  
+  bool bResult =  bInsertBuffer(m_pRowBuffer[m_iPartition],m_iPartition);
+  
+  // null the rowBuffer
+  m_pRowBuffer[m_iPartition] = nullptr;
+  
+  return bResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert rowbuffer into current table                                        */
+/*----------------------------------------------------------------------------*/
 bool SEitf::bInsertBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
