@@ -143,6 +143,11 @@ timer: pIdxSelectTimer
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // remove the index from the table
+  sIndexNm find execute
+  sTableNm find execute table.removeIndex
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the index
   sIndexNm removeIndex ( ) assert::stack_0
 
