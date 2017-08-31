@@ -27,7 +27,7 @@ affected: 0
 -- check existence of index
 lsidx supplier;
 rows:
-  ('idx')
+  ('idx',false,false)
 
 -- check columns of index
 lsidxcol supplier idx;

@@ -16,7 +16,7 @@ affected: 0
 -- check existence of index
 lsidx createT1;
 rows:
-  ('keyIdx')
+  ('keyIdx',false,false)
 
 -- check columns of index
 lsidxcol createT1 keyIdx;
