@@ -335,49 +335,53 @@ void Planner::vMatchPaths(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
   // step thru all generated access paths
-  for (i8 i_Path = 0; i_Path < m_pPathVec[0]->nItems(); i_Path++) {
+  
+  for (i8 i_Phrase = 0; i_Phrase < m_nPhrases; i_Phrase++) {
     
-    // get access path
-    AccessPath* mpAccPath = m_pPathVec[0]->pGet(i_Path);
-    
-    eAT eAccess = mpAccPath->eAccess();
-    
-    if (AT_EXACT == eAccess) {
-      PredicateVec* npLwrPredVec = mpAccPath->pLowerPredicates();
-      vMatchPredicates(npLwrPredVec,AT_EXACT);
+    for (i8 i_Path = 0; i_Path < m_pPathVec[i_Phrase]->nItems(); i_Path++) {
       
-      if (npLwrPredVec->bFullyMatched())
-        mpAccPath->vIsCandidate(true);
-    }
-    else
-    if (AT_LOWER == eAccess) {
-      PredicateVec* npLwrPredVec = mpAccPath->pLowerPredicates();
-      vMatchPredicates(npLwrPredVec,AT_LOWER);
+      // get access path
+      AccessPath* mpAccPath = m_pPathVec[i_Phrase]->pGet(i_Path);
       
-      if (npLwrPredVec->bFullyMatched())
-        mpAccPath->vIsCandidate(true);
-    }
-    else
-    if (AT_UPPER == eAccess) {
-      PredicateVec* npUprPredVec = mpAccPath->pUpperPredicates();
-      vMatchPredicates(npUprPredVec,AT_UPPER);
+      eAT eAccess = mpAccPath->eAccess();
       
-      if (npUprPredVec->bFullyMatched())
-        mpAccPath->vIsCandidate(true);
-    }
-    else
-    if (AT_RANGE == eAccess) {
-      PredicateVec* npLwrPredVec = mpAccPath->pLowerPredicates();
-      vMatchPredicates(npLwrPredVec,AT_LOWER);
-      
-      PredicateVec* npUprPredVec = mpAccPath->pUpperPredicates();
-      vMatchPredicates(npUprPredVec,AT_UPPER);
-      
-      if (npLwrPredVec->bFullyMatched() && npUprPredVec->bFullyMatched())
-        mpAccPath->vIsCandidate(true);
-    }
-    else {
-      ASSERT(AT_SCAN == eAccess);
+      if (AT_EXACT == eAccess) {
+        PredicateVec* npLwrPredVec = mpAccPath->pLowerPredicates();
+        vMatchPredicates(npLwrPredVec,AT_EXACT);
+        
+        if (npLwrPredVec->bFullyMatched())
+          mpAccPath->vIsCandidate(true);
+      }
+      else
+      if (AT_LOWER == eAccess) {
+        PredicateVec* npLwrPredVec = mpAccPath->pLowerPredicates();
+        vMatchPredicates(npLwrPredVec,AT_LOWER);
+        
+        if (npLwrPredVec->bFullyMatched())
+          mpAccPath->vIsCandidate(true);
+      }
+      else
+      if (AT_UPPER == eAccess) {
+        PredicateVec* npUprPredVec = mpAccPath->pUpperPredicates();
+        vMatchPredicates(npUprPredVec,AT_UPPER);
+        
+        if (npUprPredVec->bFullyMatched())
+          mpAccPath->vIsCandidate(true);
+      }
+      else
+      if (AT_RANGE == eAccess) {
+        PredicateVec* npLwrPredVec = mpAccPath->pLowerPredicates();
+        vMatchPredicates(npLwrPredVec,AT_LOWER);
+        
+        PredicateVec* npUprPredVec = mpAccPath->pUpperPredicates();
+        vMatchPredicates(npUprPredVec,AT_UPPER);
+        
+        if (npLwrPredVec->bFullyMatched() && npUprPredVec->bFullyMatched())
+          mpAccPath->vIsCandidate(true);
+      }
+      else {
+        ASSERT(AT_SCAN == eAccess);
+      }
     }
   }
 }
@@ -532,7 +536,6 @@ void Planner::vParseWhere(s48K& sWhereClause)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   
   m_pWhereTknVec = Tokeniser::pTokenise(sWhereClause);
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -597,7 +600,7 @@ void Planner::vScorePaths(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* show the generated set of paths                                            */
+/* show the generated set of paths for each phrase                            */
 /*----------------------------------------------------------------------------*/
 void Planner::vShowPaths(void)
 {
