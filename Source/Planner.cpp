@@ -457,55 +457,76 @@ void Planner::vMatchPredicates(PredicateVec* mpPathPredVec, eAT eAccess)
 /*----------------------------------------------------------------------------*/
 /* parse phrases                                                              */
 /*----------------------------------------------------------------------------*/
-void Planner::vParsePhrases(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
-  
-  // for the moment just make the phrase vector a copy of the where vector
-  m_pPhraseTknVec[0] = new TokenVec;
-  for (i8 i_Token = 0; i_Token < m_pWhereTknVec->nTokens(); i_Token++)
-    m_pPhraseTknVec[0]->vAddToken(m_pWhereTknVec->pGet(i_Token)->aText());
-  
-  m_nPhrases = 1;
-  
-  vShowPhrases();
-}
 //void Planner::vParsePhrases(void)
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
 //  
-//  TokenVec* pWorkTknVec1 = new TokenVec;
-//  TokenVec* pWorkTknVec2 = new TokenVec;
+//  // for the moment just make the phrase vector a copy of the where vector
+//  m_pPhraseTknVec[0] = new TokenVec;
+//  for (i8 i_Token = 0; i_Token < m_pWhereTknVec->nTokens(); i_Token++)
+//    m_pPhraseTknVec[0]->vAddToken(m_pWhereTknVec->pGet(i_Token)->aText());
 //  
-//  bool bCopy1 = true;
-//  for (i8 i_Token = 0; i_Token < m_pWhereTknVec->nTokens(); i_Token++) {
-//    
-//    Token* pToken = m_pWhereTknVec->pGet(i_Token);
-//    
-//    if (bCopy1)
-//      pWorkTknVec1->vAddToken(pToken->aText());
-//    else
-//      pWorkTknVec2->vAddToken(pToken->aText());
-//
-//    if (bIsRelationalOp(pToken)) {
-//      bCopy1 = false;
-//      continue;
-//    }
-//    
-//    if (pToken->bSame("and"_Stz)) {
-//      pWorkTknVec1->vAppendVector(pWorkTknVec2);
-//      pWorkTknVec2->vReset();
-//    }
-////
-////    if (pToken->bSame("or"_Stz))
-////      bCopy1 = false;
-//  }
+//  m_nPhrases = 1;
 //  
-//  delete pWorkTknVec1;
-//  delete pWorkTknVec2;
-//
 //  vShowPhrases();
 //}
+void Planner::vParsePhrases(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  TokenVec* pPhrase1 = new TokenVec;
+  TokenVec* pPhrase2 = new TokenVec;
+  
+  bool bAdd1 = true;
+  for (i8 i_Token = 0; i_Token < m_pWhereTknVec->nTokens(); i_Token++) {
+    
+    Token* pToken = m_pWhereTknVec->pGet(i_Token);
+    
+    if (pToken->bSame("or"_Stz)) {
+      
+      m_pPhraseTknVec[m_nPhrases] = new TokenVec;
+      m_pPhraseTknVec[m_nPhrases]->vAppendVector(pPhrase1);
+      m_nPhrases++;
+      pPhrase1->vReset();
+      
+      m_pPhraseTknVec[m_nPhrases] = new TokenVec;
+      m_pPhraseTknVec[m_nPhrases]->vAppendVector(pPhrase2);
+      m_nPhrases++;
+      pPhrase2->vReset();
+      
+      bAdd1 = true;
+      continue;
+    }
+
+    if (bAdd1)
+      pPhrase1->vAddToken(pToken->aText());
+    else
+      pPhrase2->vAddToken(pToken->aText());
+
+    if (bIsRelationalOp(pToken)) {
+      bAdd1 = false;
+      continue;
+    }
+    
+    if (pToken->bSame("and"_Stz)) {
+      pPhrase1->vAppendVector(pPhrase2);
+      pPhrase2->vReset();
+      continue;
+    }
+
+  }
+  
+  if (pPhrase1->nTokens()) {
+    m_pPhraseTknVec[m_nPhrases] = new TokenVec;
+    m_pPhraseTknVec[m_nPhrases]->vAppendVector(pPhrase1);
+    m_nPhrases++;    
+  }
+  
+  delete pPhrase1;
+  delete pPhrase2;
+
+  vShowPhrases();
+}
 
 /*----------------------------------------------------------------------------*/
 /* parse where clause                                                         */
