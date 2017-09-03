@@ -283,18 +283,6 @@ eEC eGetResponse(SEitf* pSEitf);
   }
 
 /*----------------------------------------------------------------------------*/
-/* change folder to a table                                                   */
-/*----------------------------------------------------------------------------*/
-#define CF_TABLE(aMarker) \
-  { \
-    eResult = eChangeFolderTable(pSEitf, pCatalog, pSchema, pTable, aApiCall, iTraceLevel); \
-    if (EC_NONE != eResult) { \
-      TRACE_ERROR(aMarker,eResult); \
-      return eResult; \
-    } \
-  }
-
-/*----------------------------------------------------------------------------*/
 /* clear last error                                                           */
 /*----------------------------------------------------------------------------*/
 #define CLEAR_LASTERROR()  pSEitf->vClearLastError();
@@ -317,7 +305,6 @@ eEC eGetResponse(SEitf* pSEitf);
       return EC_VALIDATION_FAILURE; \
     } \
   }
-
 
 /*----------------------------------------------------------------------------*/
 /* trace API call entry                                                       */
