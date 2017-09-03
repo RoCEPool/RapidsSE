@@ -2407,24 +2407,6 @@ bool SePrompt::bPartitionTable(i8 i_Token, i8 iNumTokens)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // change folder to partition
-  m_xTokenVec[0]->vCopy("cf"_Stz);
-  m_xTokenVec[1]->vCopy("partitions"_Stz);
-  
-  if (!bExecuteRequest()) {
-    vTrace("SePrompt::bPartitionTable : cf FAILED!!!\n"_Stz);
-    // save error returned by addColumn
-    eEC eError = m_pSEitf->eGetLastError();
-    
-    bool bDrop = bDropReturnTable(m_xTokenVec2[2]->aText());
-    ASSERT(bDrop);
-    
-    // return error returned by addColumn
-    m_pSEitf->vSetLastError(eError);
-    return false;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the partition columns
   i_Token = iCurrentToken;
   i8 iPartKeys = 0;
@@ -2432,13 +2414,6 @@ bool SePrompt::bPartitionTable(i8 i_Token, i8 iNumTokens)
     
     if ( (iCurrentToken != i_Token) &&
         !m_xTokenVec2[iCurrentToken++]->bSame(","_Stz)) {
-      // change folder to table
-      m_xTokenVec[0]->vCopy("cf"_Stz);
-      m_xTokenVec[1]->vCopy(".."_Stz);
-      
-      if (!bExecuteRequest()) {
-        return false;
-      }
       
       bool bDrop = bDropReturnTable(m_xTokenVec2[2]->aText());
       ASSERT(bDrop);
@@ -2456,43 +2431,11 @@ bool SePrompt::bPartitionTable(i8 i_Token, i8 iNumTokens)
   }
   
   if ( ! iPartKeys ) {
-    // change folder to table
-    m_xTokenVec[0]->vCopy("cf"_Stz);
-    m_xTokenVec[1]->vCopy(".."_Stz);
-    
-    if (!bExecuteRequest()) {
-      return false;
-    }
     
     bool bDrop = bDropReturnTable(m_xTokenVec2[2]->aText());
     ASSERT(bDrop);
     
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return false;
-  }
-  
-  // change folder back to tables
-  m_xTokenVec[0]->vCopy("cf"_Stz);
-  m_xTokenVec[1]->vCopy(".."_Stz);
-  
-  if (!bExecuteRequest()) {
-    vTrace("SePrompt::bPartitionTable : cf FAILED!!!\n"_Stz);
-    // save error returned by addColumn
-    eEC eError = m_pSEitf->eGetLastError();
-    
-    // change folder to table
-    m_xTokenVec[0]->vCopy("cf"_Stz);
-    m_xTokenVec[1]->vCopy(".."_Stz);
-    
-    if (!bExecuteRequest()) {
-      return false;
-    }
-    
-    bool bDrop = bDropReturnTable(m_xTokenVec2[2]->aText());
-    ASSERT(bDrop);
-    
-    // return error returned by addColumn
-    m_pSEitf->vSetLastError(eError);
     return false;
   }
   

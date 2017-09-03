@@ -1,7 +1,8 @@
---------------------------------------------------------------------------------
--- create partition key tests
---------------------------------------------------------------------------------
--- create a table
+/*----------------------------------------------------------------------------*/
+/* create partition key tests                                                 */
+/*----------------------------------------------------------------------------*/
+
+// create a table
 create table boolTable (
   key   BOOLEAN NOT NULL,
   value INTEGER,
@@ -9,24 +10,24 @@ create table boolTable (
 );
 success
 
--- check columns of partition key
+// check columns of partition key
 lspartcol boolTable;
 rows:
   ('key')
 
--- load data into the table
+// load data into the table
 ld boolTable "../Seth/tests/partitionKey/bool.csv";
 success
 
--- analyze table
+// analyze table
 antbl boolTable;
 rows:
  (*,*,*,0)
- (*,*,*,5)
+ (*,*,*,6)
  (*,*,*,0)
- (*,*,*,5)
+ (*,*,*,6)
 
--- drop the table
+// drop the table
 drop table boolTable;
 success
 
