@@ -889,7 +889,7 @@ void Table::vPopulateSortArray(char* aSortArray, i8 nElements, i8 iSortElmSize,
   Timer xTimer;
   xTimer.vStart();
   
-  ASSERT(0 == pFirstL0Buffer->nBufferLevel());
+  ASSERT(pFirstL0Buffer == nullptr || 0 == pFirstL0Buffer->nBufferLevel());
   ASSERT(sizeof(i8) == sizeof(Id));
   
   Index* pIndex = pNewIndexData->pIndex();

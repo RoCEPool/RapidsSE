@@ -19,7 +19,6 @@ rows:
 lstbl;
 rows: 0
 
-
 -- Example where we expect the command to not fail, but we don't care whether
 -- it returns rows or not.
 create table j10 (
@@ -33,7 +32,6 @@ success
 lstbl;
 rows: 1
 
-
 lstbl;
 rows:
   ('j10')
@@ -45,11 +43,9 @@ rows:
 create index keyIdx on j10 (key);
 affected: 0
 
-
 lsidx j10;
 rows:
-  ('keyIdx')
-
+  ('keyIdx',false,false)
 
 -- Example of a row with multiple columns being expected.
 lsidxcol j10 keyIdx;
@@ -57,7 +53,7 @@ rows:
   ('key', 'INTEGER')
 
 
-ld j10 "../JTEST/j10.csv";
+ld j10 "../Seth/tests/examples/j10.csv";
 success
 
 
@@ -73,7 +69,8 @@ unordered rows:
 -- Example of expecting an set of rows in a particular order.
 -- Expected rows can be ordered or unordered. Unless explicitly specified,
 -- expected rows are unordered by default.
-sel j10;
+/*
+fetch j10;
 ordered rows:
   (0, '2|two|')
   (0, '3|three|')
@@ -85,15 +82,15 @@ ordered rows:
   (3, '5|five|')
   (3, '6|six|')
   (3, '9|nine|')
+*/
 
 
-
--- Example of expecting a failure. 
+// Example of expecting a failure.
 drop index j10.badIndex;
 failure: 'no such index'
 
 
--- Example of expecting a failure and only matching the leading substring.
+// Example of expecting a failure and only matching the leading substring.
 drop index j10.badIndex;
 failure: 'no such'
 

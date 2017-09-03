@@ -31,7 +31,7 @@ rows:
 
 lsidx foo;
 rows:
-  ('fooIdx')
+  ('fooIdx',false,false)
 
 lsidxcol foo fooIdx;
 rows:
