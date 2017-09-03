@@ -55,12 +55,12 @@ usesch  useSchema_req
 -----------------
 Table Requests:
 -----------------
-add     addColumn_req
 antbl   analyzeTable_req
 cp      copyTable_req
 dantbl  danalyzeTable_req
 dex     distExport_table
 dump    dumpTable_req
+endmktbl endCreateTable_req
 ex      exportTable_req
 gettbl  getTable_req
 gettblNew getTableNew_req
@@ -94,7 +94,7 @@ vfyidx    verifyIndex_req
 -----------------
 Column Requests:
 -----------------
-add         addColumn_req
+addcol      addColumn_req
 addidxcol   addIdxColumn_req
 addpartcol  addPartColumn_req
 lscol       listColumns_req

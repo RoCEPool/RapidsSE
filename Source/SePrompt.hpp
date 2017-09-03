@@ -135,8 +135,8 @@ private:
   bool bPartitionTable(i8 i_Token, i8 iNumTokens);
   bool bPartitionTable(Stz* pColumnName);
   bool bRemoveTable(Stz* pTableName);
-  bool bValidateCreateIndex(i8 iNumTokens, i8 iIfUnique);
-  
+  bool bValidateCreateIndex(i8 iNumTokens);
+  bool bValidateCreateTable(i8 iNumTokens);  
 };
 
 //------------------------------------------------------------------------------

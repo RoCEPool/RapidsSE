@@ -209,9 +209,6 @@ ddlLock::grabWrite
 
 ddlLock::grabRead
 
-  // should be in the tables folder
-  checkInTables       not if <NIP+ERROR> exit then
-
   // there should be a table folder
   dup checkIsTableFolder not if <NIP+ERROR> exit then
 
@@ -238,9 +235,17 @@ tp: endCreateTable_req
 
 ddlLock::grabWrite
 
-  dup
-  checkInTable not if <NIP+ERROR> exit then
-  checkIsTable not if <NIP+ERROR> exit then
+  // should be in the tables folder
+  checkInTables not if <NIP+ERROR> exit then
+
+  // there should be a table folder
+  dup checkIsTableFolder not if <NIP+ERROR> exit then
+
+  // push table dictionary
+  dup pushTable assert
+
+  // check it is a table
+  checkIsTable  not if <NIP+ERROR> popTable exit then
 
   //"endCreateTable_req" .
 
@@ -248,6 +253,11 @@ ddlLock::grabWrite
   columnVecTable
 
   assert::stack_0
+
+  // pop table dictionary
+  popTable
+
+  assertInTables
 
   <OK>
 ;

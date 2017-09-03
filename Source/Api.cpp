@@ -202,11 +202,8 @@ eEC RapidsSE_BeginInsert(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable
     VALIDATE_PARAM("c"_Stz, pSchema);
     VALIDATE_PARAM("d"_Stz, pTable);
     
-    // change folder to table
-    CF_TABLE("e"_Stz);
-    
     // get a reference to the table
-    eResult = eExecuteRequest(pSEitf, "gettbl"_Stz, pTable);
+    eResult = eExecuteRequest(pSEitf, "gettblNew"_Stz, pTable);
     CHECK_RESULT("f"_Stz);
     CHECK_RESPONSE("g"_Stz);
     
@@ -308,11 +305,8 @@ eEC RapidsSE_CreateIndex(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable
     VALIDATE_PARAM("e"_Stz, pTable);
     VALIDATE_PARAM("f"_Stz, pIndex);
     
-    // change folder to table
-    CF_TABLE("g"_Stz);
-    
     // get pTable
-    eResult = eExecuteRequest(pSEitf, "gettbl"_Stz, pTable);
+    eResult = eExecuteRequest(pSEitf, "gettblNew"_Stz, pTable);
     CHECK_RESPONSE("h"_Stz);
     VALIDATE_TABLE("i"_Stz);
     
@@ -387,12 +381,7 @@ eEC RapidsSE_CreateTable(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable
     CHECK_RESULT("f"_Stz);
     CHECK_RESPONSE("g"_Stz);
     
-    // change directory to table
-    eEC eResult = eExecuteRequest(pSEitf, "cf"_Stz, (Stz*)pTable);
-    CHECK_RESULT("h"_Stz);
-    CHECK_RESPONSE("i"_Stz);
-    
-    eEC eGetResult = eExecuteRequest(pSEitf, "gettbl"_Stz, (Stz*)pTable);
+    eEC eGetResult = eExecuteRequest(pSEitf, "gettblNew"_Stz, (Stz*)pTable);
 
     if (EC_NONE != eGetResult) {
       

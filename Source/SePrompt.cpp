@@ -674,16 +674,16 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
   
    for (i8 i_Cmd = 0; SePromptCommands[i_Cmd].aCommand; i_Cmd++) {
    
-   if ( ! bCmdIs((Stz*)SePromptCommands[i_Cmd].aCommand))
-   continue;
-   
-   if (! SePromptCommands[i_Cmd].aAlternate)
-   return (this->*SePromptCommands[i_Cmd].aFunc)();
-   
-   if (bOneIs((Stz*)SePromptCommands[i_Cmd].aAlternate))
-   return (this->*SePromptCommands[i_Cmd].aFunc)();
+     if ( ! bCmdIs((Stz*)SePromptCommands[i_Cmd].aCommand))
+       continue;
+     
+     if (! SePromptCommands[i_Cmd].aAlternate)
+       return (this->*SePromptCommands[i_Cmd].aFunc)();
+     
+     if (bOneIs((Stz*)SePromptCommands[i_Cmd].aAlternate)) {
+       return (this->*SePromptCommands[i_Cmd].aFunc)();
+     }
    }
-  
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append to history
@@ -1014,7 +1014,7 @@ bool SePrompt::bCmd_BeginInsert(void)
   }
   
   // get table pointer
-  m_xTokenVec[0]->vCopy("gettbl"_Stz);
+  m_xTokenVec[0]->vCopy("gettblNew"_Stz);
   m_xTokenVec[1]->vCopy(m_xTokenVec2[2]);
   if (!bExecuteRequest()) {
     vTrace("SePrompt::bBeginInsert : gettbl FAILED!!!\n"_Stz);
@@ -1115,26 +1115,19 @@ bool SePrompt::bCmd_CreateIndex(void)
   
   ASSERT(m_xTokenVec[0]->bSame("create"_Stz));
   
-  if (m_xTokenVec[1]->bSame("unique"_Stz))
-    iIfUnique = 1;
-  
-  ASSERT(   (  iIfUnique &&
-             m_xTokenVec[1]->bSame("unique"_Stz) &&
-             m_xTokenVec[2]->bSame("index"_Stz) )
-         ||
-         (! iIfUnique && m_xTokenVec[1]->bSame("index"_Stz))
-         );
-  
   // copy tokens from m_xTokenVec to m_xTokenVec2
   i8 iNumTokens = iCopyTokens(m_xTokenVec, m_xTokenVec2);
   i8 iValue;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // some validations
-  bool bValid = bValidateCreateIndex(iNumTokens, iIfUnique);
+  bool bValid = bValidateCreateIndex(iNumTokens);
   if ( ! bValid )
     return false;
   
+  if (m_xTokenVec2[1]->bSame("unique"_Stz))
+    iIfUnique = 1;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get reference to pTable
   m_xTokenVec[0]->vCopy("gettblNew"_Stz);
@@ -1305,44 +1298,27 @@ bool SePrompt::bCmd_CreateTable(void)
   
   i8 i_Token;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy tokens from m_xTokenVec to m_xTokenVec2
-  // while doing that also validate the create statament
-  for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if ( ! m_xTokenVec[i_Token]->bHasText())
-      break;
-    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
-    m_xTokenVec[i_Token]->vCopy(""_Stz);
-  }
+  i8 iNumTokens = iCopyTokens(m_xTokenVec, m_xTokenVec2);
   
-  i8 iNumTokens = i_Token;
-  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // some validations
-  // - - - - - - - - - - - - - - - - - - - - -
-  // there should be a minumum of 7 tokens
-  if (iNumTokens < 7) {
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+  bool bValid = bValidateCreateTable(iNumTokens);
+  if ( ! bValid )
     return false;
-  }
   
-  // token[3] should be '('
-  if ( ! m_xTokenVec2[3]->bSame("("_Stz)) {
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return false;
-  }
-  
-  // last-1 token should be ')'
-  if ( ! m_xTokenVec2[iNumTokens-1]->bSame(")"_Stz)) {
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return false;
-  }
-  
+  // make the table
   if ( ! bMakeTable() )
     return false;
   
+  // mark current toen
   i8 iCurrentToken = 4;
+  
   // save current token as the first column of the table
   Stz* pFirstColumn = m_xTokenVec2[iCurrentToken]->aText();
   
+  // add columns to the table
   if ( ! bAddTableColumns(iCurrentToken, iNumTokens) )
     return false;
   
@@ -1369,15 +1345,6 @@ bool SePrompt::bCmd_CreateTable(void)
   
   if ( ! bEndMakeTable() )
     return false;
-  
-  // change folder to back to tables
-  m_xTokenVec[0]->vCopy("cf"_Stz);
-  m_xTokenVec[1]->vCopy(".."_Stz);
-  
-  if (!bExecuteRequest()) {
-    vTrace("SePrompt::bCreateTable : cf .. FAILED!!!\n"_Stz);
-    return false;
-  }
   
   //vTrace("Table created: %s\n"_Stz, m_xTokenVec2[2]);
   return true;
@@ -1431,252 +1398,10 @@ bool SePrompt::bCmd_CreateUnique(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  bool bUnique = true;
-  i8 iIfUnique = bUnique ? 1 : 0;
-  
   ASSERT(m_xTokenVec[0]->bSame("create"_Stz));
-  ASSERT(   (  bUnique &&
-             m_xTokenVec[1]->bSame("unique"_Stz) &&
-             m_xTokenVec[2]->bSame("index"_Stz) )
-         ||
-         (! bUnique && m_xTokenVec[1]->bSame("index"_Stz))
-         );
+  ASSERT(m_xTokenVec[1]->bSame("unique"_Stz));
   
-  // copy tokens from m_xTokenVec to m_xTokenVec2
-  i8 i_Token;
-  for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if (! m_xTokenVec[i_Token]->bHasText())
-      break;
-    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
-    m_xTokenVec[i_Token]->vCopy(""_Stz);
-  }
-  
-  i8 iValue;
-  i8 iNumTokens = i_Token;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // some validations
-  
-  // there should be a minumum of 7 tokens
-  if (iNumTokens < 7 + iIfUnique) {
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return false;
-  }
-  
-  // token[3] should be 'on'
-  if (!m_xTokenVec2[3 + iIfUnique]->bSame("on"_Stz)) {
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return false;
-  }
-  
-  // token[5] should be '('
-  if (!m_xTokenVec2[5 + iIfUnique]->bSame("("_Stz)) {
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return false;
-  }
-  
-  // last-1 token should be ')'
-  if (!m_xTokenVec2[iNumTokens - 1]->bSame(")"_Stz)) {
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return false;
-  }
-  
-  // change folder to table
-  m_xTokenVec[0]->vCopy("cf"_Stz);
-  m_xTokenVec[1]->vCopy(m_xTokenVec2[4 + iIfUnique]);
-  
-  if (!bExecuteRequest())
-    return false;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get reference to pTable
-  m_xTokenVec[0]->vCopy("gettbl"_Stz);
-  m_xTokenVec[1]->vCopy(m_xTokenVec2[4 + iIfUnique]);
-  
-  if (!bExecuteRequest()) {
-    vTrace("SePrompt::bCreateIndex : gettbl FAILED!!!\n"_Stz);
-    return false;
-  }
-  
-  // change folder back to tables
-  m_xTokenVec[0]->vCopy("cf"_Stz);
-  m_xTokenVec[1]->vCopy(".."_Stz);
-  
-  if (!bExecuteRequest())
-    return false;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create the index
-  
-  m_xTokenVec[0]->vCopy("mkidx"_Stz);
-  m_xTokenVec[1]->vCopy(m_xTokenVec2[4 + iIfUnique]);
-  m_xTokenVec[2]->vCopy(m_xTokenVec2[2 + iIfUnique]);
-  
-  if (!bExecuteRequest())
-    return false;
-  
-  // change folder to table
-  m_xTokenVec[0]->vCopy("cf"_Stz);
-  m_xTokenVec[1]->vCopy(m_xTokenVec2[4 + iIfUnique]);
-  
-  if (!bExecuteRequest()) {
-    vTrace("SePrompt::bCreateIndex : cf FAILED!!!\n"_Stz);
-    
-    // create the table
-    m_xTokenVec[0]->vCopy("rmidx"_Stz);
-    m_xTokenVec[1]->vCopy(m_xTokenVec2[2 + iIfUnique]);
-    
-    if (!bExecuteRequest()) {
-      return false;
-    }
-    
-    return false;
-  }
-  
-  // change folder to indexes
-  m_xTokenVec[0]->vCopy("cf"_Stz);
-  m_xTokenVec[1]->vCopy("indexes"_Stz);
-  
-  if (!bExecuteRequest()) {
-    vTrace("SePrompt::bCreateIndex : cf FAILED!!!\n"_Stz);
-    
-    // create the table
-    m_xTokenVec[0]->vCopy("rmidx"_Stz);
-    m_xTokenVec[1]->vCopy(m_xTokenVec2[2 + iIfUnique]);
-    
-    if (!bExecuteRequest()) {
-      return false;
-    }
-    
-    return false;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create the index columns
-  
-  // now collect the column names and their types
-  i8 iCurrentToken = 6 + iIfUnique;
-  while (iCurrentToken < iNumTokens - 1) {
-    
-    if (iCurrentToken != 6 + iIfUnique && !m_xTokenVec2[iCurrentToken++]->bSame(","_Stz)) {
-      bIndexReturnTable(m_xTokenVec2[4 + iIfUnique]->aText(),
-                        m_xTokenVec2[2 + iIfUnique]->aText());
-      m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-      return false;
-    }
-    
-    // add columns to the table
-    i8 j = 0;
-    m_xTokenVec[j++]->vCopy("addidxcol"_Stz);
-    m_xTokenVec[j++]->vCopy(m_xTokenVec2[4 + iIfUnique]);
-    m_xTokenVec[j++]->vCopy(m_xTokenVec2[2 + iIfUnique]);
-    m_xTokenVec[j++]->vCopy(m_xTokenVec2[iCurrentToken++]);
-    
-    // add the column
-    if (!bExecuteRequest()) {
-      
-      // save error returned by addColumn
-      eEC eError = m_pSEitf->eGetLastError();
-      
-      // drop the table that was created
-      bIndexReturnTable(m_xTokenVec2[4 + iIfUnique]->aText(),
-                        m_xTokenVec2[2 + iIfUnique]->aText());
-      
-      // return error returned by addColumn
-      m_pSEitf->vSetLastError(eError);
-      return false;
-    }
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // uniqueness
-  
-  if (bUnique) {
-    
-    m_xTokenVec[0]->vCopy("setidxunique"_Stz);
-    m_xTokenVec[1]->vCopy(m_xTokenVec2[4 + iIfUnique]);
-    m_xTokenVec[2]->vCopy(m_xTokenVec2[2 + iIfUnique]);
-    m_xTokenVec[3]->vCopy("true"_Stz);
-    m_xTokenVec[4]->vCopy(""_Stz);
-    
-    if (!bExecuteRequest()) {
-      vTrace("SePrompt::bCreateIndex : setidxunique FAILED!!!\n"_Stz);
-      // save error returned by addColumn
-      eEC eError = m_pSEitf->eGetLastError();
-      
-      // drop the table that was created
-      bIndexReturnTable(m_xTokenVec2[4 + iIfUnique]->aText(),
-                        m_xTokenVec2[2 + iIfUnique]->aText());
-      
-      // return error returned by addColumn
-      m_pSEitf->vSetLastError(eError);
-      return false;
-    }
-    
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // end of make index
-  
-  m_xTokenVec[0]->vCopy("endmkidx"_Stz);
-  m_xTokenVec[1]->vCopy(m_xTokenVec2[4 + iIfUnique]);
-  m_xTokenVec[2]->vCopy(m_xTokenVec2[2 + iIfUnique]);
-  m_xTokenVec[3]->vCopy(""_Stz);
-  
-  if (!bExecuteRequest()) {
-    vTrace("SePrompt::bCreateIndex : endmkidx FAILED!!!\n"_Stz);
-    // save error returned by addColumn
-    eEC eError = m_pSEitf->eGetLastError();
-    
-    // drop the table that was created
-    bIndexReturnTable(m_xTokenVec2[4 + iIfUnique]->aText(),
-                      m_xTokenVec2[2 + iIfUnique]->aText());
-    
-    // return error returned by addColumn
-    m_pSEitf->vSetLastError(eError);
-    return false;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // restore path
-  
-  // change folder to tables
-  m_xTokenVec[0]->vCopy("cf"_Stz);
-  m_xTokenVec[1]->vCopy(".."_Stz);
-  
-  if (!bExecuteRequest()) {
-    vTrace("SePrompt::bCreateIndex : cf FAILED!!!\n"_Stz);
-    
-    // create the table
-    m_xTokenVec[0]->vCopy("rmidx"_Stz);
-    m_xTokenVec[1]->vCopy(m_xTokenVec2[2 + iIfUnique]);
-    
-    if (!bExecuteRequest()) {
-      return false;
-    }
-    
-    return false;
-  }
-  
-  // change folder to tables
-  m_xTokenVec[0]->vCopy("cf"_Stz);
-  m_xTokenVec[1]->vCopy(".."_Stz);
-  
-  if (!bExecuteRequest()) {
-    vTrace("SePrompt::bCreateIndex : cf FAILED!!!\n"_Stz);
-    
-    // create the table
-    m_xTokenVec[0]->vCopy("rmidx"_Stz);
-    m_xTokenVec[1]->vCopy(m_xTokenVec2[2 + iIfUnique]);
-    
-    if (!bExecuteRequest()) {
-      return false;
-    }
-    
-    return false;
-  }
-  
-  return true;
+  return bCmd_CreateIndex();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2321,14 +2046,6 @@ bool SePrompt::bAddPartitionColumn(Stz* pTable, Stz* pColumn)
     // save error returned by addColumn
     eEC eError = m_pSEitf->eGetLastError();
     
-    // change folder to table
-    m_xTokenVec[0]->vCopy("cf"_Stz);
-    m_xTokenVec[1]->vCopy(".."_Stz);
-    
-    if (!bExecuteRequest()) {
-      return false;
-    }
-    
     vTrace("SePrompt::bAddPartitionColumn : addpartcol FAILED!!!\n"_Stz);
     bool bDrop = bDropReturnTable(m_xTokenVec2[2]->aText());
     ASSERT(bDrop);
@@ -2352,14 +2069,6 @@ bool SePrompt::bAddTableColumns(i8& i_Token, i8 iNumTokens)
   
   // now collect the column names and their types
   i8 iCurrentToken = i_Token;
-  
-  //  while (iCurrentToken < iNumTokens - 2) {
-  //
-  //    if (iCurrentToken != i_Token && !m_xTokenVec2[iCurrentToken++]->bSame(","_Stz)) {
-  //      bDropReturnTable(m_xTokenVec2[2]);
-  //      m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-  //      return false;
-  //    }
   
   while ( ! m_xTokenVec2[iCurrentToken]->bSame(")"_Stz)) {
     
@@ -2569,14 +2278,6 @@ bool SePrompt::bDropReturnTable(Stz* aTableName)
   bool bResult = bReturnTable();
   ASSERT(bResult);
   
-  // change folder to table
-  m_xTokenVec[0]->vCopy("cf"_Stz);
-  m_xTokenVec[1]->vCopy(".."_Stz);
-  
-  if (!bExecuteRequest()) {
-    return false;
-  }
-  
   bool bRemove = bRemoveTable(aTableName);
   ASSERT(bRemove);
   
@@ -2650,24 +2351,26 @@ bool SePrompt::bMakeTable()
     return false;
   
   // change folder to table
-  m_xTokenVec[0]->vCopy("cf"_Stz);
-  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]);
-  
-  if (!bExecuteRequest()) {
-    vTrace("SePrompt::bCreateTable : cf FAILED!!!\n"_Stz);
-    bool bRemove = bRemoveTable(m_xTokenVec2[2]->aText());
-    //ASSERT(bRemove);
-    return false;
-  }
+//  m_xTokenVec[0]->vCopy("cf"_Stz);
+//  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]);
+//  
+//  if (!bExecuteRequest()) {
+//    vTrace("SePrompt::bCreateTable : cf FAILED!!!\n"_Stz);
+//    bool bRemove = bRemoveTable(m_xTokenVec2[2]->aText());
+//    //ASSERT(bRemove);
+//    return false;
+//  }
   
   // get reference to pTable
-  m_xTokenVec[0]->vCopy("gettbl"_Stz);
+  m_xTokenVec[0]->vCopy("gettblNew"_Stz);
   m_xTokenVec[1]->vCopy(m_xTokenVec2[2]);
   
   if (!bExecuteRequest()) {
     vTrace("SePrompt::bCreateTable : gettbl FAILED!!!\n"_Stz);
     bool bRemove = bRemoveTable(m_xTokenVec2[2]->aText());
-    ASSERT(bRemove);
+    
+    if ( ! bRemove )
+      vTrace("SePrompt::bCreateTable : remtbl FAILED!!!\n"_Stz);
     
     return false;
   }
@@ -2803,45 +2506,10 @@ bool SePrompt::bPartitionTable(Stz* pColumnName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // change folder to partition
-  m_xTokenVec[0]->vCopy("cf"_Stz);
-  m_xTokenVec[1]->vCopy("partitions"_Stz);
-  
-  if (!bExecuteRequest()) {
-    vTrace("SePrompt::bPartitionTable : cf FAILED!!!\n"_Stz);
-    // save error returned by addColumn
-    eEC eError = m_pSEitf->eGetLastError();
-    
-    bool bDrop = bDropReturnTable(m_xTokenVec2[2]->aText());
-    ASSERT(bDrop);
-    
-    // return error returned by addColumn
-    m_pSEitf->vSetLastError(eError);
-    return false;
-  }
-  
   // add columns to the table
   bool bAdd = bAddPartitionColumn(m_xTokenVec2[2]->aText(), pColumnName);
   if ( ! bAdd)
     return false;
-  
-  // change folder back to tables
-  m_xTokenVec[0]->vCopy("cf"_Stz);
-  m_xTokenVec[1]->vCopy(".."_Stz);
-  
-  if (!bExecuteRequest()) {
-    vTrace("SePrompt::bPartitionTable : cf FAILED!!!\n"_Stz);
-    // save error returned by addColumn
-    eEC eError = m_pSEitf->eGetLastError();
-    
-    bool bDrop = bDropReturnTable(m_xTokenVec2[2]->aText());
-    ASSERT(bDrop);
-    
-    // return error returned by addColumn
-    m_pSEitf->vSetLastError(eError);
-    return false;
-  }
   
   return true;
 }
@@ -2868,9 +2536,25 @@ bool SePrompt::bRemoveTable(Stz* pTableName)
 /*----------------------------------------------------------------------------*/
 /* validate a create index request                                            */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bValidateCreateIndex(i8 iNumTokens, i8 iIfUnique)
+bool SePrompt::bValidateCreateIndex(i8 iNumTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  i8 iIfUnique = 0;
+  
+  if (m_xTokenVec2[1]->bSame("unique"_Stz)) {
+    iIfUnique = 1;
+    if ( ! m_xTokenVec2[2]->bSame("index"_Stz)) {
+      m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+      return false;
+    }
+  }
+  else {
+    if ( ! m_xTokenVec2[1]->bSame("index"_Stz)) {
+      m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+      return false;
+    }
+  }
   
   // there should be a minumum of 8 tokens
   if (iNumTokens < 8 + iIfUnique) {
@@ -2892,6 +2576,34 @@ bool SePrompt::bValidateCreateIndex(i8 iNumTokens, i8 iIfUnique)
 
   // last-1 token should be ')'
   if (!m_xTokenVec2[iNumTokens - 1]->bSame(")"_Stz)) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* validate a create table request                                            */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bValidateCreateTable(i8 iNumTokens)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  // there should be a minumum of 7 tokens
+  if (iNumTokens < 7) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+
+  // token[3] should be '('
+  if ( ! m_xTokenVec2[3]->bSame("("_Stz)) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  // last-1 token should be ')'
+  if ( ! m_xTokenVec2[iNumTokens-1]->bSame(")"_Stz)) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }

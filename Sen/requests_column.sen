@@ -11,11 +11,21 @@
 
   locals| sTableNm sColumnNm |
 
+  assertInTables
+
+  // push table folder
+  sTableNm pushTable assert
+
   sColumnNm sTableNm
-  checkAddColumn not if <NIP+ERROR> exit then
+  checkAddColumn not if <NIP+ERROR> popTable exit then
 
   sColumnNm sTableNm
   addColumn ( ) assert::stack_0
+
+  // pop table folder
+  popTable
+
+  assertInTables
 
   <OK>
 ;
@@ -29,7 +39,7 @@
 
   assertInTables
 
-  // push table dictionary
+  // push table folder
   sTableNm pushTable assert
 
   // push indexes folder
@@ -59,11 +69,27 @@
 
   locals| sTableNm sColumnNm  |
 
+  assertInTables
+
+  // push table folder
+  sTableNm pushTable assert
+
+  // push partitions folder
+  pushPartitions
+
   sColumnNm sTableNm
-  checkAddPartitionColumn not if <NIP+ERROR> exit then
+  checkAddPartitionColumn not if <NIP+ERROR> popPartitions popTable exit then
 
   sColumnNm sTableNm
   addPartitionColumn ( ) assert::stack_0
+
+  // pop partitions folder
+  popPartitions
+
+  // pop table folder
+  popTable
+
+  assertInTables
 
   <OK>
 ;

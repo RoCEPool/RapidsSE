@@ -1,0 +1,248 @@
+/*----------------------------------------------------------------------------*/
+/* create unqiue index tests                                                  */
+/*----------------------------------------------------------------------------*/
+
+// (1) create an index (syntax error)
+create unqiue index on T1 (key);
+failure: 'invalid command'
+
+// (2) create an index (syntax error)
+create unique index idx T1 (key);
+failure: 'invalid command'
+
+// (3) create an index (syntax error)
+create unique index idx on (key);
+failure: 'invalid command'
+
+// (4) create an index (syntax error)
+create unique idx on T1 (key);
+failure: 'invalid command'
+
+// (5) create an index (syntax error)
+create unique index idx on T1;
+failure: 'invalid command'
+
+// (6) create an index (syntax error)
+create unique index idx on T1(;
+failure: 'invalid command'
+
+// (7) create an index (syntax error)
+create unique index idx on T1();
+failure: 'invalid command'
+
+// (8) create an index (syntax error)
+create unique index idx on T1(key) junk;
+failure: 'invalid command'
+
+// create a table
+create table T1 (
+  key   INTEGER NOT NULL, 
+  name  VARCHAR(32) NOT NULL
+);
+success
+
+// create a unqique index
+create unique index Idx on T1 (key);
+affected: 0
+
+// check existence of index
+lsidx T1;
+rows:
+  ('Idx', true, false)
+
+// check columns of index
+lsidxcol T1 Idx;
+rows:
+  ('key', 'INTEGER')
+
+// drop the index
+drop index T1.Idx;
+success
+
+// check existence of index
+lsidx T1;
+rows: 0
+
+// create index where table does not exist
+create unique index Idx on noTable (key);
+failure: 'no such table'
+
+pwf;
+rows:
+  ('/tenants/boray/catalogs/rapidsse/schemas/public/tables/')
+
+// check existence of index
+lsidx T1;
+rows: 0
+
+// create index where key does not exist
+create unique index Idx on T1 (noKey);
+failure: 'invalid column'
+
+pwf;
+rows:
+  ('/tenants/boray/catalogs/rapidsse/schemas/public/tables/')
+
+// check existence of index
+lsidx T1;
+rows: 0
+
+// create index once
+create unique index Idx1 on T1 (key);
+affected: 0
+
+// check existence of index
+lsidx T1;
+rows:
+('Idx1', true, false)
+
+// create same index again
+create unique index Idx1 on T1 (key);
+failure: 'index exists'
+
+// check existence of index
+lsidx T1;
+rows:
+ ('Idx1', true, false)
+
+// create another index with same column
+create unique index Idx2 on T1 (key);
+success
+
+// check existence of index
+lsidx T1;
+rows:
+ ('Idx1',true,false)
+ ('Idx2',true,false)
+
+// create index with two columns
+create unique index Idx3 on T1 (key, name);
+success
+
+// check existence of index
+lsidx T1;
+rows: 3
+
+// check columns of Idx3
+lsidxcol T1 Idx3;
+rows:
+ ('key', 'INTEGER')
+ ('name', 'VARCHAR')
+
+// create another index with two columns
+create unique index Idx4 on T1 (key, name);
+success
+
+// check existence of index
+lsidx T1;
+rows:
+ ('Idx1',true,false)
+ ('Idx2',true,false)
+ ('Idx3',true,false)
+ ('Idx4',true,false)
+
+// check columns of Idx4
+lsidxcol T1 Idx4;
+rows:
+ ('key', 'INTEGER')
+ ('name', 'VARCHAR')
+
+// create another index with two columns
+create unique index Idx5 on T1 (key, name);
+success
+
+// check existence of index
+lsidx T1;
+rows:
+('Idx1',true,false)
+('Idx2',true,false)
+('Idx3',true,false)
+('Idx4',true,false)
+('Idx5',true,false)
+
+// check columns of Idx5
+lsidxcol T1 Idx5;
+rows:
+('key', 'INTEGER')
+('name', 'VARCHAR')
+
+// create another index with two columns
+create unique index Idx6 on T1 (key, name);
+success
+
+// check existence of index
+lsidx T1;
+rows:
+('Idx1',true,false)
+('Idx2',true,false)
+('Idx3',true,false)
+('Idx4',true,false)
+('Idx5',true,false)
+('Idx6',true,false)
+
+// check columns of Idx4
+lsidxcol T1 Idx6;
+rows:
+('key', 'INTEGER')
+('name', 'VARCHAR')
+
+// create another index with two columns
+create unique index Idx7 on T1 (key, name);
+success
+
+// check existence of index
+lsidx T1;
+rows:
+('Idx1',true,false)
+('Idx2',true,false)
+('Idx3',true,false)
+('Idx4',true,false)
+('Idx5',true,false)
+('Idx6',true,false)
+('Idx7',true,false)
+
+// check columns of Idx7
+lsidxcol T1 Idx7;
+rows:
+('key', 'INTEGER')
+('name', 'VARCHAR')
+
+// create another index with two columns
+create unique index Idx8 on T1 (key, name);
+success
+
+// check existence of index
+lsidx T1;
+rows:
+('Idx1',true,false)
+('Idx2',true,false)
+('Idx3',true,false)
+('Idx4',true,false)
+('Idx5',true,false)
+('Idx6',true,false)
+('Idx7',true,false)
+('Idx8',true,false)
+
+// check columns of Idx8
+lsidxcol T1 Idx8;
+rows:
+('key', 'INTEGER')
+('name', 'VARCHAR')
+
+// create another index with two columns
+create unique index Idx9 on T1 (key, name);
+failure: 'max allowed indexes already created'
+
+drop table T1;
+success
+
+CLEANUP {
+  
+  // drop the table
+  drop table T1;
+  mute
+
+  bye;
+  mute
+}
+

@@ -264,12 +264,13 @@
   dup checkIsWord not if EC_NO_SUCH_TABLE false exit then ( "<tableNm>" )
   drop
 
-  // push table dictionary
+  // push table folder
   dup pushTable assert
 
   checkIsTable not if popTable false exit then ( "<tableNm>" )
   dup tableInUse if popTable EC_TABLE_IN_USE false exit then ( "<tableNm>" )
 
+  // opo table folder
   popTable
 
   true ( "<tableNm>" true )
