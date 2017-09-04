@@ -489,7 +489,6 @@ namespace Tasks
     static void vDicFrozenGet(MP_Task mpTask);
     static void vDicFrozenSet(MP_Task mpTask);
     static void vDicInit(MP_Task mpTask);
-    static void vDicIsCompiled(MP_Task mpTask);
     static void vDicKindGet(MP_Task mpTask);
     static void vDicKindSet(MP_Task mpTask);
     static void vDicLastWord(MP_Task mpTask);

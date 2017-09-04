@@ -34,7 +34,6 @@ void Task::vAddPrimitives_Dic(void)
   vAddPrimitive("dic.frozen@"_Stz,     &vDicFrozenGet,     false);
   vAddPrimitive("dic.frozen!"_Stz,     &vDicFrozenSet,     false);
   vAddPrimitive("dic.init"_Stz,        &vDicInit,          false);
-  vAddPrimitive("dic.isCompiled"_Stz,  &vDicIsCompiled,    false);
   vAddPrimitive("dic.kind@"_Stz,       &vDicKindGet,       false);
   vAddPrimitive("dic.kind!"_Stz,       &vDicKindSet,       false);
   vAddPrimitive("dic.lastWord"_Stz,    &vDicLastWord,      false);
@@ -103,22 +102,6 @@ ENTRY("vDicInit"_Stz);
   
   // this is because of GlobalDictionary (ugh)
   pDic->vInit();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* dic.isCompiled -- has main dictionary been fully compiled?                 */
-/*----------------------------------------------------------------------------*/
-void Task::vDicIsCompiled(MP_Task mpTask)
-{
-  ENTRY("vDicIsCompiled"_Stz);
-  
-  Word* pWord = gpMainDic->pFindWord("__compiled__"_Stz);
-  
-  i8 bIsCompiled = pWord ? true : false;
-  
-  mpTask->m_pDataStack->vPushInt(bIsCompiled);
   
   EXIT();
 }
