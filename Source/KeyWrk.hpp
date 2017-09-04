@@ -22,7 +22,6 @@ namespace DBobjects
     ~KeyWrk(void);
   
     void vShow(void);
-    void vShow(eDM eDatum, ...);
 
     void vAddDatum(ValWrk& xValWrk, Column* pCol);
     void vAddDatum(StrVal* pValStr, Column* pCol);

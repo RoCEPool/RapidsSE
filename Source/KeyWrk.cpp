@@ -113,48 +113,6 @@ void KeyWrk::vShow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* decode show of KeyWrk contents                                             */
-/*----------------------------------------------------------------------------*/
-void KeyWrk::vShow(eDM eDatum, ...)
-{
-  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
-  
-  va_list xVarArgs;
-  
-  va_start(xVarArgs,eDatum);
-  
-  vTrace("KeyWrk %p: bytesUsed %lld "_Stz,
-         this,
-         nWspUsed()
-         );
-  
-  i8 nBytesTaken;
-  s48K sSprintBuffer;
-  
-  // first element
-  DtmLib::vSprint(eDatum,sSprintBuffer.aStr(), (Stz*)m_xWsp.aArea(), nullptr);
-  vTrace("%s|"_Stz,sSprintBuffer.aChar());
-  
-  // subsequent elements
-  i8 iOffset = nBytesTaken;
-  while (eDM eDatum = (eDM)va_arg(xVarArgs,int)) {
-    
-    DtmLib::vSprint(eDatum,
-                    sSprintBuffer.aStr(),
-                    (Stz*)m_xWsp.aArea() + iOffset,
-                    nullptr);
-    
-    vTrace("%s|"_Stz,sSprintBuffer.aChar());
-    
-    iOffset += nBytesTaken;
-  }
-
-  va_end(xVarArgs);
-
-  vTrace("\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
 /* add element to key                                                         */
 /*----------------------------------------------------------------------------*/
 void KeyWrk::vAddDatum(Values::StrVal* pStrVal, Column* pCol)
