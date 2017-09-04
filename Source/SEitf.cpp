@@ -177,7 +177,7 @@ SEitf::SEitf(i8 iPartition)
   m_iCurrentRequestId = 0;
   m_iNextRequestId    = -1;
   m_iRowPartition     = -1;
-  
+  m_nLastBuffers    = 0;
   SEitf* pSEitf = this;
   gpSEitfList->vAppend(pSEitf);
   
@@ -377,6 +377,7 @@ i8 SEitf::iPartition(void)
   
   return m_iPartition;
 }
+
 /*----------------------------------------------------------------------------*/
 /* which slot                                                                 */
 /*----------------------------------------------------------------------------*/
@@ -425,6 +426,26 @@ void SEitf::vResponseQueue(Queue* pResponseQueue)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   m_pResponseQueue = pResponseQueue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of last buffers                                                 */
+/*----------------------------------------------------------------------------*/
+i8 SEitf::nLastBuffers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  return m_nLastBuffers;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set number of last buffers                                                 */
+/*----------------------------------------------------------------------------*/
+void SEitf::vLastBuffers(i8 nLastBuffers)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  m_nLastBuffers = nLastBuffers;
 }
 
 /*----------------------------------------------------------------------------*/

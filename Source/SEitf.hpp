@@ -43,7 +43,9 @@ namespace Interface
     i8     m_iCurrentRequestId;
     i8     m_iNextRequestId;
     i8     m_iRowPartition;
-    
+  
+  i8     m_nLastBuffers; // number of last buffers for fetch
+  
     EntryBuffer* m_pRowBuffer[C_SLOTS_PER_NODE]; // working row buffers
     GroupBy*     m_pGroupBy[C_SLOTS_PER_NODE];   // working group by
     
@@ -75,6 +77,8 @@ namespace Interface
     void   vInit(void);
     i8     iPartition(void);
     i8     iSlot(void);
+    i8     nLastBuffers(void);
+    void   vLastBuffers(i8 nLastBuffer);
   
     void   vRequestQueue(Queue* pRequestQueue);
     Queue* pRequestQueue(void);
