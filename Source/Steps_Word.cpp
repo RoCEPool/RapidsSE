@@ -39,6 +39,7 @@ void Task::vAddPrimitives_Word(void)
   vAddPrimitive("compile,"_Stz,        &vCompileComma,     false);
   vAddPrimitive("create"_Stz,          &vCreate,           false);
   vAddPrimitive(">create"_Stz,         &vCreateFrom,       false);
+  vAddPrimitive(">createInMain"_Stz,   &vCreateFromInMain, false);
   vAddPrimitive("dic?"_Stz,            &vDicWhich,         false);
   vAddPrimitive("does>"_Stz,           &vDoes,             true );
   vAddPrimitive("does_rt"_Stz,         &vDoes_RT,          false);
@@ -251,6 +252,27 @@ ENTRY("vCreateFrom"_Stz);
     pDic = mpTask->m_xPathStack.pTop();
   else
     pDic = gpMainDic;
+  
+  //vTrace(": %s\n"_Stz,sName.aChar());
+  Word* pNewWord = new(pDic) Word(sName);
+  
+  mpTask->m_pCurrentWord = pNewWord;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >createInMain -- create word in main dictionary using string on stack      */
+/*----------------------------------------------------------------------------*/
+void Task::vCreateFromInMain(MP_Task mpTask)
+{
+  ENTRY("vCreateFrom"_Stz);
+  
+  s32 sName;
+  if ( ! mpTask->m_pDataStack->bPop(sName) )
+    THROW_INVALID_DSTACK(">create"_Stz);
+  
+  Dic* pDic = gpMainDic;
   
   //vTrace(": %s\n"_Stz,sName.aChar());
   Word* pNewWord = new(pDic) Word(sName);

@@ -22,7 +22,7 @@
 
 : :thread
 
-  >create
+  >createInMain
   WT_OBJECT word.this word.type!
   sizeof_thread allot
   word.this >body object.magic!
