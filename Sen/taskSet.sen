@@ -22,7 +22,7 @@
 
 : :taskSet
 
-  >create
+  >createInMain
   WT_OBJECT word.this word.type!
   sizeof_taskset allot
   word.this >body object.magic!

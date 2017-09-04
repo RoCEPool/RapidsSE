@@ -2302,7 +2302,7 @@ bool SePrompt::bEndMakeTable()
   if (!bExecuteRequest()) {
     vTrace("SePrompt::bCreateTable : endmktbl FAILED!!!\n"_Stz);
     bool bRemove = bRemoveTable(m_xTokenVec2[2]->aText());
-    ASSERT(bRemove);
+    //ASSERT(bRemove);
     return false;
   }
   

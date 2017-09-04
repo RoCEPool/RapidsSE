@@ -21,7 +21,7 @@
 
 : :queue
 
-  >create
+  >createInMain
   WT_OBJECT word.this word.type!
   sizeof_queue allot
   word.this >body object.magic!
