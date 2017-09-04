@@ -945,13 +945,16 @@ tp: selectIndex
 
   bSinglePartition if
 
-    pSeitf seitf.partition@ locals| iPartition |
-    args.metadata not if
-      iPartition "Partition: %v\n" str.format .put
-    then
+    0 0 locals| iSlot iPartition |
+    pSeitf seitf.slot@ to iSlot
+    pSeitf seitf.partition@ to iPartition
+
+    //args.metadata not if
+    //  iPartition "Partition: %v\n" str.format .put
+    //then
 
     // create a selectTask to execute the key select on the index for the partition
-    sExactKey sLowerKey sUpperKey pSeitf iPartition 5
+    sExactKey sLowerKey sUpperKey pSeitf iSlot 5
     sSelectTaskSeed nullptr "selectTask" TK_SELECT_PART spawnServerTask
     to pSelectTask
 
@@ -961,9 +964,9 @@ tp: selectIndex
     iSlots 0
     do
 
-      args.metadata not if
-        I grid::toPartition "Partition: %v\n" str.format .put
-      then
+      //args.metadata not if
+      //  I grid::toPartition "Partition: %v\n" str.format .put
+      //then
 
       // create a selectTask to execute the key select on the index for the partition
       sExactKey sLowerKey sUpperKey pSeitf I 5

@@ -60,6 +60,7 @@ void Task::vAddPrimitives_SEitf(void)
   vAddPrimitive("seitf.rsp@"_Stz,             &vSEitfRspFetch,         false);
   vAddPrimitive("seitf.rsp!"_Stz,             &vSEitfRspStore,         false);
   vAddPrimitive("seitf.responseQueue"_Stz,    &vSEitfResponseQueue,    false);
+  vAddPrimitive("seitf.slot@"_Stz,            &vSEitfSlotFetch,        false);
   vAddPrimitive("seitf.table@"_Stz,           &vSEitfTableFetch,       false);
   vAddPrimitive("seitf.tableRef"_Stz,         &vSEitfTableRef,         false);
   vAddPrimitive("seitf.tableDeref"_Stz,       &vSEitfTableDeref,       false);
@@ -700,6 +701,25 @@ void Task::vSEitfResponseQueue(MP_Task mpTask)
   ASSERT(CN_SEITF == pSEitf->eClass());
   
   mpTask->m_pDataStack->vPushObject(pSEitf->pResponseQueue());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* seitf.slot@ -- fetch slot of SE interface                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfSlotFetch(MP_Task mpTask)
+{
+  ENTRY("vSEitfSlotFetch"_Stz);
+  
+  Object* pPtrSEitf;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
+    THROW_INVALID_DSTACK("seitf.slot@"_Stz);
+  
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  ASSERT(CN_SEITF == pSEitf->eClass());
+  
+  mpTask->m_pDataStack->vPushInt(pSEitf->iSlot());
   
   EXIT();
 }

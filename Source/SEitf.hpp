@@ -74,6 +74,7 @@ namespace Interface
     
     void   vInit(void);
     i8     iPartition(void);
+    i8     iSlot(void);
   
     void   vRequestQueue(Queue* pRequestQueue);
     Queue* pRequestQueue(void);

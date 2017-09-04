@@ -1027,6 +1027,7 @@ namespace Tasks
     static void vSEitfRspFetch(MP_Task mpTask);
     static void vSEitfRspStore(MP_Task mpTask);
     static void vSEitfResponseQueue(MP_Task mpTask);
+    static void vSEitfSlotFetch(MP_Task mpTask);
     static void vSEitfTableFetch(MP_Task mpTask);
     static void vSEitfTableRef(MP_Task mpTask);
     static void vSEitfTableDeref(MP_Task mpTask);

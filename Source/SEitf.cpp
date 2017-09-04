@@ -295,12 +295,13 @@ void SEitf::vDump(eCN eClass, Object* pObject, Stz* aTab)
   
   SEitf* pSEitf = reinterpret_cast<SEitf*>(pObject);
   
-  vTrace("pid %lld %s partitions %lld partition %lld"_Stz
+  vTrace("pid %lld %s partitions %lld partition %lld slot %lld"_Stz
          " requestQ %p responseQ %p response '%s'\n"_Stz,
          pSEitf->m_iPid,
          Process::bTestPid(pSEitf->m_iPid) ? "exists"_Stz : "non-existant"_Stz,
          pSEitf->m_iSlots,
          pSEitf->m_iPartition,
+         pSEitf->iSlot(),
          pSEitf->m_pRequestQueue,
          pSEitf->m_pResponseQueue,
          pSEitf->m_sResponse.aChar());
@@ -375,6 +376,15 @@ i8 SEitf::iPartition(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   return m_iPartition;
+}
+/*----------------------------------------------------------------------------*/
+/* which slot                                                                 */
+/*----------------------------------------------------------------------------*/
+i8 SEitf::iSlot(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  return Partition::iPartitionToSlot(m_iPartition);
 }
 
 /*----------------------------------------------------------------------------*/
