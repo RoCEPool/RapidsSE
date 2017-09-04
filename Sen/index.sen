@@ -730,11 +730,12 @@ tp: loadIndexes
   // get slots
   grid.slots to iSlots
 
-  1
+  // loop thru buffers
+  true
   begin
   while
 
-    // attempt to pop buffer off the tasks buffer queue
+    // pop a buffer off the seitf buffer queue
     pSeitf seitf.bufferQueue@ popBuffer to pIndexBuffer
 
     // print the rows from the index buffer
@@ -743,22 +744,21 @@ tp: loadIndexes
     // check if last buffer
     pIndexBuffer entryBuffer.isLast@ if
 
-    //"Reached last buffer" .
-    iSlots 1 - to iSlots
+      //"Reached last buffer" .
+      iSlots 1 - to iSlots
       0 iSlots == if
-        0
+        false
       else
-        1
+        true
       then
     else
-      1  // no more entries, move to next buffer
+      true  // no more entries, move to next buffer
     then
 
     pIndexBuffer entryBuffer.delete
     //"Deleted buffer" .
 
   repeat
-
 
   // delete the buffer queue from the seitf
   pSeitf seitf.bufferQueue@ queue.delete
