@@ -49,6 +49,7 @@ void Task::vAddPrimitives_SEitf(void)
   vAddPrimitive("seitf.indexBuffer!"_Stz,     &vSEitfIndexBufferStore, false);
   vAddPrimitive("seitf.index!"_Stz,           &vSEitfIndexStore,       false);
   vAddPrimitive("seitf.index@"_Stz,           &vSEitfIndexFetch,       false);
+  vAddPrimitive("seitf.lastBuffers@"_Stz,     &vSEitfLastBuffersFetch, false);
   vAddPrimitive("seitf.metadata@"_Stz,        &vSEitfMetadataFetch,    false);
   vAddPrimitive("seitf.metadata!"_Stz,        &vSEitfMetadataStore,    false);
   vAddPrimitive("seitf.partition@"_Stz,       &vSEitfPartitionFetch,   false);
@@ -457,6 +458,27 @@ void Task::vSEitfIndexStore(MP_Task mpTask)
   ASSERT(pIndex == nullptr || CN_INDEX == pIndex->eClass());
   
   pSEitf->vCurrentIndex(pIndex);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* seitf.lastBuffers@ -- fetch the number of last buffers for a fetch         */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfLastBuffersFetch(MP_Task mpTask)
+{
+  ENTRY("vSEitfLastBuffersFetch"_Stz);
+  
+  Object* pPtrSEitf;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
+  THROW_INVALID_DSTACK("seitf.indexBuffer@"_Stz);
+  
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  ASSERT(CN_SEITF == pSEitf->eClass());
+  
+  i8 nLastBuffers = pSEitf->nLastBuffers();
+  
+  mpTask->m_pDataStack->vPushInt(nLastBuffers);
   
   EXIT();
 }

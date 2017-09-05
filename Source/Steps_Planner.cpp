@@ -23,6 +23,7 @@ extern NP_Task         gnpBootTask;
 extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
 extern SEitfList*      gpSEitfList;
+extern Arguments       gxArguments;
 
 // accessPath: /////////////////////////////////////////////////////////////////
 
@@ -304,6 +305,10 @@ void Task::vPlannerParseWhere(MP_Task mpTask)
   
   pPlanner->vParseWhere(sWhere);
   pPlanner->vParsePhrases();
+  
+  i8 nLastBuffers = pPlanner->nPhrases() * gxArguments.m_nSlots;
+  
+  mpTask->m_pSEitf->vLastBuffers(nLastBuffers);
   
   EXIT();
 }
