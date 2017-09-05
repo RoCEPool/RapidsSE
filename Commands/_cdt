@@ -45,7 +45,7 @@ fetch jCdt "jA 7 <=";
 //fetch jCdt "jA 1 >= jA 8 <= and" ;
 //fetch jCdt "jA 8 <= jA 1 >= and" ;
  
-//fetch jCdt "jA 1 >= jA 8 <= or" ;
+fetch jCdt "jA 1 >= jA 8 <= or" ;
 //fetch jCdt "jA 8 <=" ;
 
 //docol epochDump;

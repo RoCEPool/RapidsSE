@@ -719,7 +719,7 @@ tp: loadIndexes
 /*----------------------------------------------------------------------------*/
 : fetchQueueBufferRows ( -- )
 
-  0 0 0 0 0 locals| iSlots nRowCount pIndex pIndexBuffer pSeitf |
+  0 0 0 0 0 locals| nLastBuffers nRowCount pIndex pIndexBuffer pSeitf |
 
   // get the seitf of the task
   task::this task.seitf@ to pSeitf
@@ -727,8 +727,8 @@ tp: loadIndexes
   // get index
   pSeitf seitf.index@ to pIndex
 
-  // get slots
-  grid.slots to iSlots
+  // get number of last buffers
+  pSeitf seitf.lastbuffers@ to nLastBuffers
 
   // loop thru buffers
   true
@@ -744,9 +744,9 @@ tp: loadIndexes
     // check if last buffer
     pIndexBuffer entryBuffer.isLast@ if
 
-      //"Reached last buffer" .
-      iSlots 1 - to iSlots
-      0 iSlots == if
+      //"Reached a last buffer" .
+      nLastBuffers 1 - to nLastBuffers
+      0 nLastBuffers == if
         false
       else
         true
