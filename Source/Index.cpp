@@ -178,6 +178,36 @@ void Index::vDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* compute the index form                                                     */
+/*----------------------------------------------------------------------------*/
+eIF Index::eIndexForm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+
+  Column* pColumn0;
+  Column* pColumn1;
+  
+  if (1 == m_pIdxColVec->nItems()) {
+    pColumn0 = m_pIdxColVec->pGet(0);
+    if (DM_INT == pColumn0->eDatumType())
+      return IF_I8;
+    if (DM_VCH == pColumn0->eDatumType())
+      return IF_STZ;
+    return IF_COMPLEX;
+  }
+  
+  if (2 == m_pIdxColVec->nItems()) {
+    pColumn0 = m_pIdxColVec->pGet(0);
+    pColumn1 = m_pIdxColVec->pGet(1);
+    if (DM_INT == pColumn0->eDatumType() && DM_INT == pColumn1->eDatumType() )
+      return IF_I8_I8;
+    return IF_COMPLEX;
+  }
+  
+  return IF_COMPLEX;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the index name                                                         */
 /*----------------------------------------------------------------------------*/
 Stz* Index::aIndexName(void)
