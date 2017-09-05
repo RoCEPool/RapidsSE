@@ -115,6 +115,7 @@ System Requests:
 ---------------------
 space   poolSpace_req
 status  nodeStatus_req
+sanity  sanity_req
  
 -----------------
 Misc Requests:

@@ -156,6 +156,7 @@ namespace Interface
     bool bGetTableNew(TokenVec& xTokenVec, i8 iReqNo);
     bool bInUseTable(TokenVec& xTokenVec, i8 iReqNo);
     bool bRetTable(TokenVec& xTokenVec, i8 iReqNo);
+    bool bNodeSanity(TokenVec& xTokenVec, i8 iReqNo);
     bool bNodeStatus(TokenVec& xTokenVec, i8 iReqNo);
     bool bPoolSpace(TokenVec& xTokenVec, i8 iReqNo);
     bool bSizeTable(TokenVec& xTokenVec, i8 iReqNo);

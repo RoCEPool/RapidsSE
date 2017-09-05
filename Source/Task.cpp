@@ -642,6 +642,8 @@ void Task::vAddConstants(void)
   /*  2 */ vAddConstant("EC_BEGIN_TX_FAILED"_Stz,    EC_BEGIN_TX_FAILED);
   /*  3 */ vAddConstant("EC_CATALOG_EXISTS"_Stz,     EC_CATALOG_EXISTS);
   /*  4 */ vAddConstant("EC_CLUSTER_NOT_STARTED"_Stz,EC_CLUSTER_NOT_STARTED);
+  /*    */ vAddConstant("EC_CLUSTER_PARTITIONS_MISMATCH"_Stz,EC_CLUSTER_PARTITIONS_MISMATCH);
+  /*    */ vAddConstant("EC_CLUSTER_SIZE_MISMATCH"_Stz,      EC_CLUSTER_SIZE_MISMATCH);
   /*  5 */ vAddConstant("EC_DUPLICATE_COLUMN"_Stz,   EC_DUPLICATE_COLUMN);
   /*  6 */ vAddConstant("EC_FOLDER_IN_USE"_Stz,      EC_FOLDER_IN_USE);
   /*  7 */ vAddConstant("EC_FOLDER_NOT_EMPTY"_Stz,   EC_FOLDER_NOT_EMPTY);

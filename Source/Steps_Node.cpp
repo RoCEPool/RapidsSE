@@ -37,9 +37,11 @@ void Task::vAddPrimitives_Node(void)
   vAddPrimitive("node.init"_Stz,       &vNodeInit,         false);
   vAddPrimitive("node.IP"_Stz,         &vNodeIP,           false);
   vAddPrimitive("node.name"_Stz,       &vNodeName,         false);
-  vAddPrimitive("node::new"_Stz,        &vNodeNew,          false);
+  vAddPrimitive("node::new"_Stz,       &vNodeNew,          false);
   vAddPrimitive("node.no"_Stz,         &vNodeNo,           false);
+  vAddPrimitive("node.partitions"_Stz, &vNodePartitions,   false);
   vAddPrimitive("node.port"_Stz,       &vNodePort,         false);
+  vAddPrimitive("node.size"_Stz,       &vNodeSize,         false);
   vAddPrimitive("node.status"_Stz,     &vNodeStatus,       false);
 }
 
@@ -151,6 +153,18 @@ ENTRY("vNodeNo"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
+/* node.partitions -- get no of partitions of this node (of a grid)           */
+/*----------------------------------------------------------------------------*/
+void Task::vNodePartitions(MP_Task mpTask)
+{
+  ENTRY("vNodePartitions"_Stz);
+  
+  mpTask->m_pDataStack->vPushInt(gpGrid->m_nSlots);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* node.port -- push port number of node (of a grid)                          */
 /*----------------------------------------------------------------------------*/
 void Task::vNodePort(MP_Task mpTask)
@@ -166,6 +180,18 @@ void Task::vNodePort(MP_Task mpTask)
   ASSERT(CN_NODE == pNode->eClass());
   
   mpTask->m_pDataStack->vPushInt(pNode->iNodePortNo());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* node.size -- get size of this node (of a grid)                             */
+/*----------------------------------------------------------------------------*/
+void Task::vNodeSize(MP_Task mpTask)
+{
+  ENTRY("vNodeSize"_Stz);
+  
+  mpTask->m_pDataStack->vPushInt(gpAttachMap->m_iRegionSize);
   
   EXIT();
 }

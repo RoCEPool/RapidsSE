@@ -11,7 +11,10 @@ namespace Debugging
   /*  1 */ EC_ASSERT,
   /*  2 */ EC_BEGIN_TX_FAILED,
   /*  3 */ EC_CATALOG_EXISTS,
+  
   /*  4 */ EC_CLUSTER_NOT_STARTED,
+  /*    */ EC_CLUSTER_PARTITIONS_MISMATCH,
+  /*    */ EC_CLUSTER_SIZE_MISMATCH,
   
   /*  5 */ EC_DUPLICATE_COLUMN,
   /*  6 */ EC_FOLDER_IN_USE,
@@ -86,6 +89,8 @@ namespace Debugging
   /*  2 */ "begin transaction failed"_Stz,
   /*  3 */ "catalog exists"_Stz,
   /*  4 */ "cluster not started"_Stz,
+  /*    */ "cluster partitions per node mismatch"_Stz,
+  /*    */ "cluster node size mismatch"_Stz,
   
   /*  5 */ "duplicate column"_Stz,
   /*  6 */ "folder in use"_Stz,

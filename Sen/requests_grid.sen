@@ -21,6 +21,47 @@ tp: gettingStatus
 ;
 
 /*----------------------------------------------------------------------------*/
+/* get partitions of nodes in the grid (run by participant)                   */
+/*----------------------------------------------------------------------------*/
+: check_sanity allParticipants 2 returnResult ( size partitions -- true n# true )
+
+tp: gettingPartitions
+
+  locals| iPartitions iSize |
+
+  args.tracepoint if
+    "GETTING PARTITIONS on NODE " grid.thisNode@ >str str.cat .
+  then
+
+  iPartitions node.partitions == not if
+    EC_CLUSTER_PARTITIONS_MISMATCH <FAILURE_RESULT>
+  else
+
+    args.tracepoint if
+      "GETTING SIZE on NODE "grid.thisNode@ >str str.cat .
+    then
+
+    iSize node.size == not if
+      EC_CLUSTER_SIZE_MISMATCH <FAILURE_RESULT>
+    else
+      grid.thisNode@ >str "NODE %v: sanity check passed" str.format
+      <SUCCESS_RESULT>
+    then
+    
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/* check sanity of the nodes                                                  */
+/*----------------------------------------------------------------------------*/
+: nodeSanity_req ( -- <R> )
+
+  node.size node.partitions check_sanity ( bool )
+
+  not if <NIP+ERROR> else <SUCCESS> then
+;
+
+/*----------------------------------------------------------------------------*/
 /* get status of the nodes                                                    */
 /*----------------------------------------------------------------------------*/
 : nodeStatus_req ( -- <R> )
@@ -31,7 +72,7 @@ tp: gettingStatus
 
   get_status ( str )
 
-  not if <NIP+ERROR> else <SUCCESS> then
+  <OK>
 ;
 
 /*============================================================================*/

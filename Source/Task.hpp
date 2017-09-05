@@ -793,7 +793,9 @@ namespace Tasks
     static void vNodeName(MP_Task mpTask);
     static void vNodeNew(MP_Task mpTask);
     static void vNodeNo(MP_Task mpTask);
+    static void vNodePartitions(MP_Task mpTask);
     static void vNodePort(MP_Task mpTask);
+    static void vNodeSize(MP_Task mpTask);
     static void vNodeStatus(MP_Task mpTask);
     
     // nodeCursor
