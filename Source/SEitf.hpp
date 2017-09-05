@@ -176,7 +176,7 @@ namespace Interface
     bool bInsertRow(Stz* pRow, i8 iLength);
     bool bInsertBuffer(void);
     bool bInsertLastBuffer(void);
-    bool bInsertBuffer(EntryBuffer* pRowBuffer, i8 iPartition);
+    bool bAppendBuffer(EntryBuffer* pRowBuffer, i8 iPartition);
     
     bool bChangeFolder(TokenVec& xTokenVec, i8 iReqNo);
     bool bPrintWorkingFolder(TokenVec& xTokenVec, i8 iReqNo);

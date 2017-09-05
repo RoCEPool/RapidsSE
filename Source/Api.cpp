@@ -665,14 +665,13 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf, i8 iTraceLevel)
     // validate we have a table
     VALIDATE_TABLE("b"_Stz);
     
-    bool bResult = pSEitf->bInsertLastBuffer();
+    bool bResult = pSEitf->bInsertBuffer();
       
     // if rowBuffer request was appended to requestQ, then wait for resonse
     if (bResult) {
       CHECK_RESPONSE("c"_Stz);
     }
     
-    Table* pTable = pSEitf->pCurrentTable();
     eResult = eExecuteRequest(pSEitf, "rettbl"_Stz);
     CHECK_RESULT("d"_Stz);
     CHECK_RESPONSE("e"_Stz);
@@ -1331,14 +1330,21 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel)
     
     s48K s;
     i8 iRowLength;
+    
+    // format the record into row format
     bool bValid = RowData::bFormatData(pSEitf->m_pCurrentTable->pColumnVec(), pRow, StrLib::iSize(pRow->aChar()),
                                        s, iRowLength);
     ASSERT(bValid);
  
+    // get the partition this row hashes to
     i8 iRowPartition = pSEitf->pCurrentTable()->iRowPartition(s);
     
+    // is this row for this seitf partition ?
     if (pSEitf->m_iPartition == iRowPartition) {
+      
       //RowData::vShow(s, pSEitf->m_pCurrentTable->pColumnVec());
+      
+      // insert the row in this partition
       bool bResult = pSEitf->bInsertRow(s, iRowLength);
      
       if (!bResult) {

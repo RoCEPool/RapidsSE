@@ -2028,11 +2028,14 @@ bool SEitf::bInsertRow(Stz* aRow, i8 iLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
+  // convert the seitf partition to node slot
+  i8 iSlot = Partition::iPartitionToSlot(m_iPartition);
+  
   // check for working buffer
-  if (! m_pRowBuffer[m_iPartition]) {
-    m_pRowBuffer[m_iPartition] = new EntryBuffer(m_pCurrentTable->pHiddenIndex(),
+  if (! m_pRowBuffer[iSlot]) {
+    m_pRowBuffer[iSlot] = new EntryBuffer(m_pCurrentTable->pHiddenIndex(),
                                                  0, m_iPartition);
-    if (! m_pRowBuffer[m_iPartition]) {
+    if (! m_pRowBuffer[iSlot]) {
       vTrace("EntryBuffer allocation failed\n"_Stz);
       m_eErrorCode = EC_LOW_BUFFERS;
       return false;
@@ -2040,19 +2043,16 @@ bool SEitf::bInsertRow(Stz* aRow, i8 iLength)
   }
 
   // get working buffer for partition row hashed into
-  EntryBuffer* pRowBuffer = m_pRowBuffer[m_iPartition];
-
-//  i8 iLength;
-//  s48K s;
-//  bool bValid = RowData::bFormatData(m_pCurrentTable->pColumnVec(), aRow, StrLib::iSize(aRow->aChar()), s, iLength);
-//  ASSERT(bValid);
+  EntryBuffer* pRowBuffer = m_pRowBuffer[iSlot];
  
   // insert row into working buffer
   if (pRowBuffer->bInsertEntry(m_pTxRef->iTxId(),aRow,iLength))
       return true;
 
-  bool bResult = bInsertBuffer(pRowBuffer, m_iPartition);
+  // buffer is full, copy buffer into table
+  bool bResult = bAppendBuffer(pRowBuffer, iSlot);
 
+  // copy successful ?
   if (!bResult)
     return bResult;
   
@@ -2064,19 +2064,18 @@ bool SEitf::bInsertRow(Stz* aRow, i8 iLength)
   }
 
   // get a new working buffer
-  m_pRowBuffer[m_iPartition] = new EntryBuffer(m_pCurrentTable->pHiddenIndex(),
+  m_pRowBuffer[iSlot] = new EntryBuffer(m_pCurrentTable->pHiddenIndex(),
                                                0, m_iPartition);
-  if (! m_pRowBuffer[m_iPartition]) {
+  if (! m_pRowBuffer[iSlot]) {
     vTrace("EntryBuffer allocation failed\n"_Stz);
     m_eErrorCode = EC_LOW_BUFFERS;
     return false;
   }
 
-  pRowBuffer = m_pRowBuffer[m_iPartition];
+  
+  pRowBuffer = m_pRowBuffer[iSlot];
   
   // insert row into new working buffer
-  //bool bInserted = pRowBuffer->bInsertRow(m_pTxRef,aRow,aRow->nSize());
-
   if (pRowBuffer->bInsertEntry(m_pTxRef->iTxId(),aRow,iLength))
     return true;
   else
@@ -2100,7 +2099,7 @@ bool SEitf::bInsertLastBuffer(void)
   // mark buffer as last
   m_pRowBuffer[m_iPartition]->vIsLast(true);
   
-  bool bResult =  bInsertBuffer(m_pRowBuffer[m_iPartition],m_iPartition);
+  bool bResult =  bAppendBuffer(m_pRowBuffer[m_iPartition],m_iPartition);
   
   // null the rowBuffer
   m_pRowBuffer[m_iPartition] = nullptr;
@@ -2121,7 +2120,7 @@ bool SEitf::bInsertBuffer(void)
     return false;
   }
   
-  bool bResult =  bInsertBuffer(m_pRowBuffer[m_iPartition],m_iPartition);
+  bool bResult =  bAppendBuffer(m_pRowBuffer[m_iPartition],m_iPartition);
   
   // null the rowBuffer
   m_pRowBuffer[m_iPartition] = nullptr;
@@ -2130,9 +2129,9 @@ bool SEitf::bInsertBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert rowbuffer into current table                                        */
+/* append rowbuffer into current table                                        */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bInsertBuffer(EntryBuffer* pRowBuffer, i8 iPartition)
+bool SEitf::bAppendBuffer(EntryBuffer* pRowBuffer, i8 iPartition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
