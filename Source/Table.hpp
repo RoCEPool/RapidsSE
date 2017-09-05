@@ -104,6 +104,7 @@ namespace DBobjects
   
   Table* _pTable(void* aAddr);
   int iQsort_i8(const void* aArg1, const void* aArg2);
+  int iQsort_i8i8(const void* aArg1, const void* aArg2);
 
 }
 

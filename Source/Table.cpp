@@ -956,6 +956,36 @@ int DBobjects::iQsort_i8(const void* aArg1, const void* aArg2)
 }
 
 /*----------------------------------------------------------------------------*/
+/* the qsort compare function for an {i8,i8} key datum                        */
+/*----------------------------------------------------------------------------*/
+int DBobjects::iQsort_i8i8(const void* aArg1, const void* aArg2)
+{
+  i8* pArg1a = (i8*)aArg1;
+  i8* pArg2a = (i8*)aArg2;
+  
+  i8 iCmpA = *pArg1a - *pArg2a;
+  
+  if (iCmpA > 0)
+    return 1;
+  
+  if (iCmpA < 0)
+    return -1;
+  
+  i8* pArg1b = pArg1a + 1;
+  i8* pArg2b = pArg2a + 1;
+
+  i8 iCmpB = *pArg1b - *pArg2b;
+  
+  if (iCmpB > 0)
+    return 1;
+  
+  if (iCmpB < 0)
+    return -1;
+  
+  return 0;
+}
+
+/*----------------------------------------------------------------------------*/
 /* qsort the sort array for the given index                                   */
 /*----------------------------------------------------------------------------*/
 void Table::vSortTheArray(char* aSortArray, i8 nElements, i8 nElmSize,
