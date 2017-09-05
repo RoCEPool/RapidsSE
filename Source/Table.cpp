@@ -746,7 +746,6 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pNewIndexData,
   // compute the size of the sort element
   
   i8 iSortElmSize = pNewIndex->iSortKeyDatum() + sizeof(Id);
-  ASSERT(2*sizeof(i8) == iSortElmSize);
   if (gxArguments.m_bVerbose) {
     vTrace("Sort element size %lldB\n"_Stz,
            iSortElmSize);
@@ -915,7 +914,6 @@ void Table::vPopulateSortArray(char* aSortArray, i8 nElements, i8 iSortElmSize,
       // get the key datum for this index
       xKeyWrk.vReset();
       pRow->vExtractKey(xKeyWrk,pIdxColVec);
-      ASSERT(sizeof(i8) == xKeyWrk.nWspUsed());
       
       // copy the key datum into the sort element
       MemLib::vCopy(aSortElm,xKeyWrk.aWspArea(),xKeyWrk.nWspUsed(),CN_TABLE);

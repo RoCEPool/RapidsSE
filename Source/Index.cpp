@@ -354,8 +354,13 @@ i8 Index::iSortKeyDatum(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
-                                                        // needs to be completed
-  return sizeof(i8);
+  i8 nKeyDatumSize = 0;
+  for (i8 i_IdxCol = 0; i_IdxCol < m_pIdxColVec->nItems(); i_IdxCol++) {
+    Column* pColumn = m_pIdxColVec->pGet(i_IdxCol);
+    nKeyDatumSize += sizeof(i8);
+  }
+  
+  return nKeyDatumSize;
 }
 
 /*----------------------------------------------------------------------------*/
