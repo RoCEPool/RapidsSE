@@ -979,10 +979,12 @@ Footer* SePrompt::aFooter(void)
 
 /*----------------------------------------------------------------------------*/
 /* analyze table                                                              */
-/*----------------------------------------------------------------------------*/
+/*---------------------------------------------
+  -------------------------------*/
 bool SePrompt::bCmd_AnalyzeTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
   
   s256 sDir;
   Dir xDir;
@@ -1028,6 +1030,8 @@ bool SePrompt::bCmd_BeginInsert(void)
     return false;
   }
   
+  m_sResponse = "<ok>"_Stz;
+  
   return bResult;
 }
 
@@ -1040,6 +1044,8 @@ bool SePrompt::bCmd_Bye(void)
     return false;
   
   m_bContinue = false;
+  
+  m_sResponse = "<ok>"_Stz;
   
   return true;
 }
@@ -1069,6 +1075,9 @@ bool SePrompt::bCmd_ChangeDir(void)
     m_pSEitf->vSetLastError(EC_NO_SUCH_DIRECTORY);
     return false;
   }
+  
+  m_sResponse = "<ok>"_Stz;
+  
   return true;
 }
 
@@ -1689,6 +1698,8 @@ bool SePrompt::bCmd_EndInsert(void)
   m_pSEitf->vCommitTx();
   m_pSEitf->vEndTx();
   
+  m_sResponse = "<ok>"_Stz;
+  
   return true;
 }
 
@@ -1712,10 +1723,12 @@ bool SePrompt::bCmd_GetFirstRow(void)
     pSelCursor->vEnd();
     delete pSelCursor;
     m_pSEitf->m_aRowPtr = nullptr;
+    m_sResponse = "<ok>"_Stz;
     return false;
   }
   else {
     m_pSEitf->m_aRowPtr = pStr;
+    m_sResponse = "<ok>"_Stz;
     return true;
   }
 }
@@ -1743,10 +1756,12 @@ bool SePrompt::bCmd_GetNextRow(void)
     // now return the table
     bool bResult = bReturnTable();
     ASSERT(bResult);
+    m_sResponse = "<ok>"_Stz;
     return false;
   }
   else {
     m_pSEitf->m_aRowPtr = pStr;
+    m_sResponse = "<ok>"_Stz;
     return true;
   }
 }
@@ -1808,6 +1823,8 @@ bool SePrompt::bCmd_History(void)
     return false;
   
   m_xHistory.vPrint();
+  
+  m_sResponse = "<ok>"_Stz;
   
   return true;
 }
@@ -1877,6 +1894,8 @@ bool SePrompt::bCmd_InsertRow(void)
     return bResult;
   }
   
+  m_sResponse = "<ok>"_Stz;
+  
   return true;
 }
 
@@ -1920,7 +1939,7 @@ bool SePrompt::bCmd_ListDir(void)
   xDir.vClose();
   
   // clear the response
-  m_sResponse = ""_Stz;
+  m_sResponse = "<ok>"_Stz;
   
   return true;
 }
@@ -1945,7 +1964,7 @@ bool SePrompt::bCmd_PrintDir(void)
   }
   
   // clear the respnse
-  m_sResponse = ""_Stz;
+  m_sResponse = "<ok>"_Stz;
   
   return true;
 }
@@ -1979,6 +1998,8 @@ bool SePrompt::bCmd_Sleep(void)
   i8 nSeconds = m_xTokenVec[1]->iToI8();
   
   PosixThread::vSleepSec(nSeconds);
+  
+  m_sResponse = "<ok>"_Stz;
   
   return true;
 }
