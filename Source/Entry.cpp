@@ -468,7 +468,7 @@ void Entry::vContentDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract a key into KeyWrk from this row using given index columns          */
+/* extract an index key into KeyWrk from this row using given index columns   */
 /*----------------------------------------------------------------------------*/
 void Entry::vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
 {
@@ -564,6 +564,111 @@ void Entry::vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
         
       default:
         NEVER_REACH;
+    }
+    
+    // add the column value to the key
+    xKeyWrk.vAddDatum(xValWrk, pColumn);
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract a sort key into KeyWrk from this row using given index columns     */
+/*----------------------------------------------------------------------------*/
+void Entry::vExtractSortKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
+  
+  ValWrk xValWrk;
+  
+  // VCH cannot be > 256 bytes
+  s4K s;                                                       //ALKA_ROWFORMAT
+  
+  i8 nCols = pIdxColVec->nItems();
+  for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
+    
+    // get the column from the index column vector
+    Column* pColumn = pIdxColVec->pGet(i_Column);
+    
+    // get the column number of the column
+    i8 iColumnNo = pColumn->iColumnNo();
+    
+    // get the column value from the row for the iColumnNo
+    char* pDst = (char*)RowData::pColumn(aRow(), iColumnNo);
+    
+    switch(pColumn->eColumnType()) {
+      
+      case CT_BOOLEAN: {
+        Bol xBol = *((Bol*)pDst);
+        xValWrk = xBol;
+        break;
+      }
+      
+      case CT_CHAR: {
+        s = (Stz*)pDst;
+        xValWrk = s;
+        break;
+      }
+      
+      case CT_DATE: {
+        Dte xDte = *((Dte*)pDst);
+        xValWrk = xDte;
+        break;
+      }
+      
+      case CT_DECIMAL: {
+        Bcd xBcd = *((Bcd*)pDst);
+        xValWrk = xBcd;
+        break;
+      }
+      
+      case CT_FLOAT: {
+        Flt xFlt = *((Flt*)pDst);
+        xValWrk = xFlt.dAsD8();
+        break;
+      }
+      
+      case CT_INTEGER: {
+        Int xInt = *((Int*)pDst);
+        xValWrk = xInt.iAsI8();
+        break;
+      }
+      
+      case CT_INTERVAL: {
+        Ivl xIvl = *((Ivl*)pDst);
+        xValWrk = xIvl;
+        break;
+      }
+      
+      case CT_TIME: {
+        Tme xTme = *((Tme*)pDst);
+        //bool b = Tme::bExtract(pDst,&xTme,iLength,pColumn);
+        //ASSERT(b);
+        xValWrk = xTme;
+        break;
+      }
+      
+      case CT_TIMESTAMP: {
+        Tsp xTsp = *((Tsp*)pDst);
+        //bool b = Tsp::bExtract(pDst,&xTsp,iLength,pColumn);
+        //ASSERT(b);
+        xValWrk = xTsp;
+        break;
+      }
+      
+      case CT_VARBINARY: {
+        NEVER_REACH;
+        break;
+      }
+      
+      case CT_VARCHAR: {
+        s = (Stz*)pDst;
+        xValWrk = s;
+        break;
+      }
+      
+      default:
+      NEVER_REACH;
     }
     
     // add the column value to the key
