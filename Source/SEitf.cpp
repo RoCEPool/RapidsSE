@@ -2099,7 +2099,7 @@ bool SEitf::bInsertBuffer(void)
   m_pRowBuffer[iSlot]->vDump();
   
   // now append the entries from this temporary buffer into the table
-  bool bResult = bAppendEntriesToTable(m_pRowBuffer[iSlot],iSlot);
+  bool bResult = bInsertEntriesTable(m_pRowBuffer[iSlot],iSlot);
   
   // null the buffer
   m_pRowBuffer[iSlot] = nullptr;
@@ -2110,7 +2110,7 @@ bool SEitf::bInsertBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* append rowbuffer entries into current table                                */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bAppendEntriesToTable(EntryBuffer* pRowBuffer, i8 iPartition)
+bool SEitf::bInsertEntriesTable(EntryBuffer* pRowBuffer, i8 iPartition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -2134,7 +2134,7 @@ bool SEitf::bAppendEntriesToTable(EntryBuffer* pRowBuffer, i8 iPartition)
   sRequest.vConcat(sBuffer);
   sRequest.vConcat("\""_Stz);
   
-  sRequest.vConcat(" appendTableEntries_req"_Stz);
+  sRequest.vConcat(" insertTableEntries_req"_Stz);
   
   return bAppendRequest(sRequest);
 }

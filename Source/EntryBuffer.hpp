@@ -131,6 +131,7 @@ namespace DBobjects
     bool         bVerify(void);
     
     private:
+    
     void         vAdjustOffsets(Entry* pEntry, i8 nAdjustAmount);
     Entry*       pAllotEntry(i8 nBytes, i8 nLevels, Entry* aAfterEntry);
     Entry*       pAllotEntryBytes(i8 nBytes);

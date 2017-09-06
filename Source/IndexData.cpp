@@ -211,11 +211,14 @@ i8 IndexData::nEntryBuffers(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert an entry for {key,id} into an index buffer at given level           */
+/* append a buffer into the indexData (should be hidden index indexdata)      */
 /*----------------------------------------------------------------------------*/
 void IndexData::vAppendBuffer(EntryBuffer* pEntryBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  
+  // we should be appending buffers only for hidden index
+  ASSERT(m_pIndex->bIsHidden());
   
   m_zLock.vGrabWrite();
   
@@ -231,7 +234,7 @@ void IndexData::vAppendBuffer(EntryBuffer* pEntryBuffer)
   
   m_pCurrentBuffer = pEntryBuffer;
   
-   m_zLock.vDropWrite();
+  m_zLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -297,6 +300,9 @@ void IndexData::vAppendEntries(EntryBuffer* pEntryBuffer, EntryBuffer** ppFirstB
 void IndexData::vAppendEntry(KeyWrk& xKeyWrk, Id xId, EntryVec& xPriorVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  
+  // this is invoked during ld while building non-hidden indexes
+  ASSERT( ! m_pIndex->bIsHidden() );
   
   m_zLock.vGrabWrite();
   

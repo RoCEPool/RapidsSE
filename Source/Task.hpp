@@ -1115,7 +1115,6 @@ namespace Tasks
     // table
     static void vTableAddIndex(MP_Task mpTask);
     static void vTableAnalyze(MP_Task mpTask);
-    static void vTableAppendEntries(MP_Task mpTask);
     static void vTableAppendBuffer(MP_Task mpTask);
     static void vTableCreateColumnVec(MP_Task mpTask);
     static void vTableDrop(MP_Task mpTask);
@@ -1129,6 +1128,7 @@ namespace Tasks
     static void vTableIndexesLoadedStore(MP_Task mpTask);
     static void vTableInit(MP_Task mpTask);
     static void vTableInsert(MP_Task mpTask);
+    static void vTableInsertEntries(MP_Task mpTask);
     static void vTableList(MP_Task mpTask);
     static void vTableName(MP_Task mpTask);
     static void vTableRef(MP_Task mpTask);

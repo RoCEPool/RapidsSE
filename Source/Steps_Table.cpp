@@ -33,7 +33,6 @@ void Task::vAddPrimitives_Table(void)
 {
   vAddPrimitive("table.addIndex"_Stz,           &vTableAddIndex,         false);
   vAddPrimitive("table.analyze"_Stz,            &vTableAnalyze,          false);
-  vAddPrimitive("table.appendEntries"_Stz,      &vTableAppendEntries,    false);
   vAddPrimitive("table.appendBuffer"_Stz,       &vTableAppendBuffer,     false);
   vAddPrimitive("table.createColumnVec"_Stz,    &vTableCreateColumnVec,  false);
   vAddPrimitive("table.drop"_Stz,               &vTableDrop,             false);
@@ -46,6 +45,7 @@ void Task::vAddPrimitives_Table(void)
   vAddPrimitive("table.indexesLoaded!"_Stz,     &vTableIndexesLoadedStore, false);
   vAddPrimitive("table.init"_Stz,               &vTableInit,             false);
   vAddPrimitive("table.insert"_Stz,             &vTableInsert,           false);
+  vAddPrimitive("table.insertEntries"_Stz,      &vTableInsertEntries,    false);
   vAddPrimitive("table.name"_Stz,               &vTableName,             false);
   vAddPrimitive("table.ref"_Stz,                &vTableRef,              false);
   vAddPrimitive("table.removeIndex"_Stz,        &vTableRemoveIndex,      false);
@@ -112,31 +112,31 @@ void Task::vTableAnalyze(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table.appendEntries -- append buffer entries into table (from seitf)       */
+/* table.insertEntries -- insert entries from buffer into table (from seitf)  */
 /*----------------------------------------------------------------------------*/
-void Task::vTableAppendEntries(MP_Task mpTask)
+void Task::vTableInsertEntries(MP_Task mpTask)
 {
-  ENTRY("vTableAppend"_Stz);
+  ENTRY("vTableInsertEntries"_Stz);
   i8 iPartition;
   s48K sString;
   
   if ( ! mpTask->m_pDataStack->bPop(sString) )
-    THROW_INVALID_DSTACK("table.appendEntries"_Stz);
+    THROW_INVALID_DSTACK("table.insertEntries"_Stz);
   
   Table* pTable = reinterpret_cast<Table*>(sString.iToI8());
   ASSERT(CN_TABLE == pTable->eClass());
   
   if ( ! mpTask->m_pDataStack->bPop(sString) )
-    THROW_INVALID_DSTACK("table.appendEntries"_Stz);
+    THROW_INVALID_DSTACK("table.insertEntries"_Stz);
   
   EntryBuffer* pRowBuffer = reinterpret_cast<EntryBuffer*>(sString.iToI8());
   ASSERT(CN_ENTRYBUFFER == pRowBuffer->eClass());
   
   if ( ! mpTask->m_pDataStack->bPop(sString) )
-    THROW_INVALID_DSTACK("table.appendEntries"_Stz);
+    THROW_INVALID_DSTACK("table.insertEntries"_Stz);
   
   iPartition = sString.iToI8();
-  pTable->vAppendEntries(iPartition,pRowBuffer);
+  pTable->vInsertEntries(iPartition,pRowBuffer);
   
   // now delete the temporary buffer
   delete pRowBuffer;

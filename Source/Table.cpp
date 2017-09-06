@@ -306,9 +306,9 @@ void Table::vAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append entries from a row buffer                                           */
+/* insert entries from a row buffer into the table (hidden and other indexes) */
 /*----------------------------------------------------------------------------*/
-void Table::vAppendEntries(i8 iPartition, EntryBuffer* pEntryBuffer)
+void Table::vInsertEntries(i8 iPartition, EntryBuffer* pEntryBuffer)
 { //# indexTuning
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
@@ -324,7 +324,7 @@ void Table::vAppendEntries(i8 iPartition, EntryBuffer* pEntryBuffer)
   // buffer should have some entries
   ASSERT(pEntryBuffer->nEntries() > 1);
   
-  // append the buffer entries to the hidden index
+  // (1) append the buffer entries into the hidden index
   EntryBuffer* pFirstBuffer;
   Entry* pFirstEntry;
   pHiddenIndexData->vAppendEntries(pEntryBuffer, &pFirstBuffer, &pFirstEntry);
@@ -333,7 +333,7 @@ void Table::vAppendEntries(i8 iPartition, EntryBuffer* pEntryBuffer)
   IdxDataVec* pIdxDataVec = pPartition->pIdxDataVec();
   i8 nIndexes = pIdxDataVec->nItems();
   
-  // iterate all indexes to be built
+  // iterate all indexes of the table
   for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
     
     // get index
@@ -350,7 +350,8 @@ void Table::vAppendEntries(i8 iPartition, EntryBuffer* pEntryBuffer)
     //pHiddenEntryBuffer->vDump();
     
     while (pHiddenEntryBuffer) {
-      // insert entries from entryBuffer into index
+      
+      // (2) insert entries from hidden index entryBuffer starting at pEntry into index
       pNewIndexData->vInsertEntries(pHiddenEntryBuffer, pEntry);
       pHiddenEntryBuffer = pHiddenEntryBuffer->pNextBuffer();
       
@@ -358,7 +359,6 @@ void Table::vAppendEntries(i8 iPartition, EntryBuffer* pEntryBuffer)
         pEntry = pHiddenEntryBuffer->pFirstRow();
     }
   }
-  
 }
 
 /*----------------------------------------------------------------------------*/
