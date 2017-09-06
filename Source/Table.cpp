@@ -979,7 +979,7 @@ void Table::vPopulateSortArray(char* aSortArray, i8 nElements, i8 iSortElmSize,
       
       // get the key datum for this index
       xKeyWrk.vReset();
-      pRow->vExtractKey(xKeyWrk,pIdxColVec);
+      pRow->vExtractIndexKey(xKeyWrk,pIdxColVec);
       
       // copy the key datum into the sort element
       MemLib::vCopy(aSortElm,xKeyWrk.aWspArea(),xKeyWrk.nWspUsed(),CN_TABLE);

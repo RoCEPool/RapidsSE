@@ -431,7 +431,7 @@ void IndexData::vInsertEntry(Entry* pRow)
   m_zLock.vGrabWrite();
   
   KeyWrk xKeyWrk;
-  pRow->vExtractKey(xKeyWrk, m_pIndex->pIdxColVec());
+  pRow->vExtractIndexKey(xKeyWrk, m_pIndex->pIdxColVec());
   
   //xKeyWrk.vShow();
   

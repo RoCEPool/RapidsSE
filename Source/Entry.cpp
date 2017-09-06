@@ -470,7 +470,7 @@ void Entry::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 /* extract a key into KeyWrk from this row using given index columns          */
 /*----------------------------------------------------------------------------*/
-void Entry::vExtractKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
+void Entry::vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
   
