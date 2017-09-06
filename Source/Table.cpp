@@ -532,7 +532,7 @@ i8 Table::nIndexBuffers(i8 iIndexNo)
   for (i8 iPartition = 0; iPartition < gpGrid->m_nSlots; iPartition++) {
     IndexData* pIndexData = pPartition(iPartition)->pIndexData(iIndexNo);
 
-    iBuffers += pIndexData->nIndexBuffers();
+    iBuffers += pIndexData->nEntryBuffers();
   }
   
   return iBuffers;

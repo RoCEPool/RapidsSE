@@ -165,21 +165,21 @@ EntryBuffer* IndexData::pFirstBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
-  EntryBuffer* pIndexBuffer = m_pRoot;
+  EntryBuffer* pEntryBuffer = m_pRoot;
   
-  if ( ! pIndexBuffer )
+  if ( ! pEntryBuffer )
     return nullptr;
   
-  if (pIndexBuffer->nBufferLevel() == 0)
-    return pIndexBuffer;
+  if (pEntryBuffer->nBufferLevel() == 0)
+    return pEntryBuffer;
   
-  while (pIndexBuffer) {
+  while (pEntryBuffer) {
     
-    Entry* pFirstEntry = pIndexBuffer->pNextEntry(pIndexBuffer->pHead());
-    pIndexBuffer = pFirstEntry->pEntryBuffer();
+    Entry* pFirstEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHead());
+    pEntryBuffer = pFirstEntry->pEntryBuffer();
     
-    if (pIndexBuffer->nBufferLevel() == 0) {
-      return pIndexBuffer;
+    if (pEntryBuffer->nBufferLevel() == 0) {
+      return pEntryBuffer;
     }
   }
   
@@ -199,7 +199,7 @@ Index* IndexData::pIndex(void)
 /*----------------------------------------------------------------------------*/
 /* get the index buffers used                                                 */
 /*----------------------------------------------------------------------------*/
-i8 IndexData::nIndexBuffers(void)
+i8 IndexData::nEntryBuffers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
@@ -526,27 +526,27 @@ bool IndexData::bVerify(void)
 
   
   // start with the root buffer  L2
-  EntryBuffer* pIndexBuffer = m_pRoot;
+  EntryBuffer* pEntryBuffer = m_pRoot;
   
-  while (pIndexBuffer) {
+  while (pEntryBuffer) {
     
     // first just run verify on the entries of the bufer
     // ka < kl < .....
-    bool bVerify = pIndexBuffer->bVerify();
+    bool bVerify = pEntryBuffer->bVerify();
     if ( ! bVerify ) {
       return false;
     }
     
     // if we are at level 0 , get the next buffer at the same level
-    if (pIndexBuffer->nBufferLevel() == 0) {
+    if (pEntryBuffer->nBufferLevel() == 0) {
       // if at B1 get B2
-      pIndexBuffer = (EntryBuffer*)pIndexBuffer->pNextBuffer();
+      pEntryBuffer = (EntryBuffer*)pEntryBuffer->pNextBuffer();
       continue;
     }
     
     // higher level buffer ( L1, L2...) get first entry
     // if at L2 , we are in B5 , we get entry ka
-    Entry* aEntryLN = pIndexBuffer->pFirstEntry();
+    Entry* aEntryLN = pEntryBuffer->pFirstEntry();
     
     // iterate through each entry and ensure correct order
     while (aEntryLN) {
@@ -555,7 +555,7 @@ bool IndexData::bVerify(void)
       // each entry points to another index buffer
       // get buffer first entry points to
       // if k1 we get B1
-      EntryBuffer* pIndexBufferN_1 = aEntryLN->pEntryBuffer();
+      EntryBuffer* pEntryBufferN_1 = aEntryLN->pEntryBuffer();
       
       // get the key of the first entry
       // if ka get ka
@@ -563,7 +563,7 @@ bool IndexData::bVerify(void)
       
       // now get the first entry from the lower buffer
       // bet B1's first entry ka
-      Entry* aEntryLN_1 = pIndexBufferN_1->pFirstEntry();
+      Entry* aEntryLN_1 = pEntryBufferN_1->pFirstEntry();
       
       // get the key of the first entry of the lower buffer
       // we get ka from B1
@@ -578,11 +578,11 @@ bool IndexData::bVerify(void)
       }
       
       // get the next entry at the level we are at
-      aEntryLN = pIndexBuffer->pNextEntry(aEntryLN);
+      aEntryLN = pEntryBuffer->pNextEntry(aEntryLN);
     }
   
     // move to the next buffer at the same level
-    pIndexBuffer = (EntryBuffer*)pIndexBuffer->pNextBuffer();
+    pEntryBuffer = (EntryBuffer*)pEntryBuffer->pNextBuffer();
   }
   
   
@@ -696,14 +696,14 @@ void IndexData::vInsertEntry(EntryBuffer* pHigher, KeyWrk& xKeyWrk, Id xId, i8 i
   
   // find index buffer which contains the entry after which the new entry will
   // be inserted into, starting with given higher
-  EntryBuffer* pIndexBuffer = pHigher->pPositionLevel(xKeyWrk, JC_AFTER, iLevel);
+  EntryBuffer* pEntryBuffer = pHigher->pPositionLevel(xKeyWrk, JC_AFTER, iLevel);
   
   // check if found index buffer has enough space
   i8 nEntryBytes = Entry::nBytesRequired(xEntWrk);
-  if ( ! pIndexBuffer->bHasSpace(nEntryBytes) ) {
+  if ( ! pEntryBuffer->bHasSpace(nEntryBytes) ) {
     
     // not enough space, so split the index buffer
-    pIndexBuffer = pSplitBuffer(pIndexBuffer);
+    pEntryBuffer = pSplitBuffer(pEntryBuffer);
     
     //vTrace("-----------------------\n"_Stz);
     //m_pRoot->vDump();
@@ -711,17 +711,17 @@ void IndexData::vInsertEntry(EntryBuffer* pHigher, KeyWrk& xKeyWrk, Id xId, i8 i
     
     // find position again
     bool bEqual;
-    pIndexBuffer = pIndexBuffer->pHigherLevel()->pPositionLevel(xKeyWrk, JC_AFTER, iLevel);
+    pEntryBuffer = pEntryBuffer->pHigherLevel()->pPositionLevel(xKeyWrk, JC_AFTER, iLevel);
   }
   
   // assert we have a buffer
-  ASSERT(pIndexBuffer);
+  ASSERT(pEntryBuffer);
   
   // insert entry into index buffer
-  Entry* pEntry = pIndexBuffer->pInsert(xEntWrk);
+  Entry* pEntry = pEntryBuffer->pInsert(xEntWrk);
   //pEntry->vShow(0, m_pIndex);
   
-  //pIndexBuffer->vShow();
+  //pEntryBuffer->vShow();
   
   ASSERT(pEntry);
 }
@@ -758,7 +758,7 @@ void IndexData::vInsertFirstEntry(EntryBuffer* pToBuffer, EntryBuffer* pFromBuff
 /*----------------------------------------------------------------------------*/
 /* fix the higher level buffer in the given index buffer                      */
 /*----------------------------------------------------------------------------*/
-void IndexData::vFixHigherBuffer(EntryBuffer* pIndexBuffer, i8 iLevel)
+void IndexData::vFixHigherBuffer(EntryBuffer* pEntryBuffer, i8 iLevel)
 {
    _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
@@ -766,14 +766,14 @@ void IndexData::vFixHigherBuffer(EntryBuffer* pIndexBuffer, i8 iLevel)
   EntryBuffer* pRoot;
   
   // get first entry KeyWrk from first buffer
-  Entry* aFirstEntry = pIndexBuffer->pNextEntry(pIndexBuffer->pHead());
+  Entry* aFirstEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHead());
 
   // form a KeyWrk from the key
   xKeyWrk.vAddKey(aFirstEntry->aKey(), m_pIndex->pIdxColVec());
   
   pRoot = m_pRoot->pPositionLevel(xKeyWrk, JC_AFTER, iLevel);
 
-  pIndexBuffer->vHigherLevel(pRoot);
+  pEntryBuffer->vHigherLevel(pRoot);
 }
 
 /*----------------------------------------------------------------------------*/

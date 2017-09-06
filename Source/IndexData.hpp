@@ -43,7 +43,7 @@ namespace DBobjects
     void         vDump(bool bSameLevel);
     EntryBuffer* pFirstBuffer();
     Index*       pIndex(void);
-    i8           nIndexBuffers(void);
+    i8           nEntryBuffers(void);
     Entry*       pInsertEntry(i8 iTxId, Stz* pRow, i8 iLength);
     void         vInsertEntry(Entry* pRow);
     void         vInsertEntries(EntryBuffer* pEntryBuffer, Entry* pRowEntry);
