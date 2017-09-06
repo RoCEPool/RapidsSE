@@ -330,7 +330,7 @@ tp: makingIndex
 /*----------------------------------------------------------------------------*/
 : exactSelectIdxTask ( <"key>" "<lower>" "<upper>" pSeitf iPartitionNo -- )
 
-  0 0 0 0 locals| entry tempEntryBuffer indexBuffer pIndex iPartitionNo pSeitf upper lower key |
+  0 0 0 0 locals| entry pTempEntryBuffer pEntryBuffer pIndex iPartitionNo pSeitf upper lower key |
 
   tp: keySelectIdx
 
@@ -342,17 +342,17 @@ tp: makingIndex
   pSeitf seitf.index@ to pIndex
 
   // create a temporary index buffer for the results
-  //"Creating a tempIndexBuffer" .
-  iPartitionNo pIndex entryBuffer::create to tempEntryBuffer
+  //"Creating a tempEntryBuffer" .
+  iPartitionNo pIndex entryBuffer::create to pTempEntryBuffer
 
-  // get the indexBuffer looking for the key
-  key iPartitionNo pIndex index.buffer ( indexBuffer )
-  to indexBuffer
+  // get the entryBuffer looking for the key
+  key iPartitionNo pIndex index.buffer ( pEntryBuffer )
+  to pEntryBuffer
 
   // did we get an index buffer ?
-  indexBuffer if
+  pEntryBuffer if
     // position in the index buffer at the key
-    key indexBuffer pIndex index.position
+    key pEntryBuffer pIndex index.position
     to entry
   then
 
@@ -361,11 +361,11 @@ tp: makingIndex
 
     // mark this buffer as the last buffer
     //"Marking tempEntryBuffer as last buffer" .
-    tempEntryBuffer entryBuffer.isLast!
+    pTempEntryBuffer entryBuffer.isLast!
 
     // return the empty tempEntryBuffer
     //"Appending tempEntryBuffer to buffer queue" .
-    tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
+    pTempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
 
     exit
   then
@@ -380,34 +380,34 @@ tp: makingIndex
 
       // insert row from entry in tempEntryBuffer
       //"Inserting row into tempEntryBuffer" .
-      pIndex entry entry.toDataRow tempEntryBuffer entryBuffer.insertRow
+      pIndex entry entry.toDataRow pTempEntryBuffer entryBuffer.insertRow
 
       // check if we managed to insert the entry
       not if
         // buffer must be full
         // put this tempEntryBuffer in seitf bufferQueue
         //"Inserting row into tempEntryBuffer" .
-        tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
+        pTempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
 
         // create another temporary index buffer for the results
-        //"Creating a tempIndexBuffer" .
-        iPartitionNo pIndex entryBuffer::create to tempEntryBuffer
+        //"Creating a tempEntryBuffer" .
+        iPartitionNo pIndex entryBuffer::create to pTempEntryBuffer
 
         // insert row from entry in temporary buffer
         //"Inserting row into tempEntryBuffer" .
-        pIndex entry entry.toDataRow tempEntryBuffer entryBuffer.insertRow
+        pIndex entry entry.toDataRow pTempEntryBuffer entryBuffer.insertRow
         assert
       then
 
       // move to next entry in the buffer
-      entry indexBuffer entryBuffer.nextEntry to entry
+      entry pEntryBuffer entryBuffer.nextEntry to entry
 
       entry not if
-        // get next buffer from the current indexBuffer
-        indexBuffer entryBuffer.nextBuffer to indexBuffer
+        // get next buffer from the current entryBuffer
+        pEntryBuffer entryBuffer.nextBuffer to pEntryBuffer
 
-        indexBuffer if
-          entry indexBuffer entryBuffer.nextEntry to entry
+        pEntryBuffer if
+          entry pEntryBuffer entryBuffer.nextEntry to entry
         then
       then
     else
@@ -418,11 +418,11 @@ tp: makingIndex
 
   //"Marking tempEntryBuffer as last buffer" .
   // mark this buffer as the last buffer
-  tempEntryBuffer entryBuffer.isLast!
+  pTempEntryBuffer entryBuffer.isLast!
 
   // put the buffer in the seitf bufferQueue
   //"Appending tempEntryBuffer to buffer queue" .
-  tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
+  pTempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
 ;
 
 /*----------------------------------------------------------------------------*/
