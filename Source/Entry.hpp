@@ -30,7 +30,7 @@ namespace DBobjects
     // entry proper
     Id&  xId(void);
     void vId(Id xId);
-    EntryBuffer* pIndexBuffer(void);
+    EntryBuffer* pEntryBuffer(void);
     i8   nSizeEntry(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

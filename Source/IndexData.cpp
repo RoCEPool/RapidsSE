@@ -176,7 +176,7 @@ EntryBuffer* IndexData::pFirstBuffer(void)
   while (pIndexBuffer) {
     
     Entry* pFirstEntry = pIndexBuffer->pNextEntry(pIndexBuffer->pHead());
-    pIndexBuffer = pFirstEntry->pIndexBuffer();
+    pIndexBuffer = pFirstEntry->pEntryBuffer();
     
     if (pIndexBuffer->nBufferLevel() == 0) {
       return pIndexBuffer;
@@ -555,7 +555,7 @@ bool IndexData::bVerify(void)
       // each entry points to another index buffer
       // get buffer first entry points to
       // if k1 we get B1
-      EntryBuffer* pIndexBufferN_1 = aEntryLN->pIndexBuffer();
+      EntryBuffer* pIndexBufferN_1 = aEntryLN->pEntryBuffer();
       
       // get the key of the first entry
       // if ka get ka
@@ -838,7 +838,7 @@ void IndexData::vDumpLevel(EntryBuffer* pIndexBuffer)
   while (pEntry) {
     
     // get the index buffer the first enetry poinst to
-    EntryBuffer* pEntryIndexBuffer = pEntry->pIndexBuffer();
+    EntryBuffer* pEntryIndexBuffer = pEntry->pEntryBuffer();
     
     // print the decile of the buffer
     vTrace("%lld"_Stz, pEntryIndexBuffer->iDecile());
@@ -912,7 +912,7 @@ void IndexData::vVisualize(void)
       Entry* pEntry = pIndexBuffer->pFirstEntry();
       
       // get the index buffer this entry points to
-      pIndexBuffer = pEntry->pIndexBuffer();
+      pIndexBuffer = pEntry->pEntryBuffer();
     }
   }
   

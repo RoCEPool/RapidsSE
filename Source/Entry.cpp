@@ -135,15 +135,15 @@ void Entry::vId(Id xId)
 /*----------------------------------------------------------------------------*/
 /* get the index buffer that this entry references                            */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* Entry::pIndexBuffer(void)
+EntryBuffer* Entry::pEntryBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
   bn nBufferNo = m_xId.iBuffer();
-  EntryBuffer* pIndexBuffer =
-  reinterpret_cast<EntryBuffer*>(gpBufferPool->pToBuffer(nBufferNo));
+  EntryBuffer* pEntryBuffer =
+    reinterpret_cast<EntryBuffer*>(gpBufferPool->pToBuffer(nBufferNo));
   
-  return pIndexBuffer;
+  return pEntryBuffer;
 }
 
 /*----------------------------------------------------------------------------*/

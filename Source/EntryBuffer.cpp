@@ -655,7 +655,7 @@ void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iE
          pEntry = pNextEntry(pEntry)) {
       
       // get the index buffer from the entry
-      EntryBuffer* pEntryBuffer = pEntry->pIndexBuffer();;
+      EntryBuffer* pEntryBuffer = pEntry->pEntryBuffer();;
       
       ASSERT(pEntryBuffer);
       ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
@@ -710,7 +710,7 @@ void EntryBuffer::vDump(void)
          pEntry = pNextEntry(pEntry)) {
       
       // get the index buffer from the entry
-      EntryBuffer* pEntryBuffer = pEntry->pIndexBuffer();;
+      EntryBuffer* pEntryBuffer = pEntry->pEntryBuffer();;
       
       ASSERT(pEntryBuffer);
       ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
@@ -850,7 +850,7 @@ void EntryBuffer::vBufferCount(i8& nBuffers)
            pEntry = pNextEntry(pEntry)) {
         
         // get the index buffer from the entry
-        pNextBuffer = pEntry->pIndexBuffer();;
+        pNextBuffer = pEntry->pEntryBuffer();;
         
         ASSERT(pNextBuffer);
         ASSERT(pNextBuffer->eClass() == CN_ENTRYBUFFER);
@@ -1378,7 +1378,7 @@ EntryBuffer* EntryBuffer::pPositionLevel(KeyWrk& xKeyWrk, eJC eJuxtaCompare, i8 
     ASSERT(pEntry);
     
     // get the index buffer of the entry
-    pEntryBuffer = pEntry->pIndexBuffer();
+    pEntryBuffer = pEntry->pEntryBuffer();
     ASSERT(pEntryBuffer);
     ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
   }
@@ -1756,7 +1756,7 @@ void EntryBuffer::vTruncate(void)
            pEntry = pNextEntry(pEntry)) {
         
         // get the index buffer from the entry
-        pNextBuffer = pEntry->pIndexBuffer();;
+        pNextBuffer = pEntry->pEntryBuffer();;
         
         ASSERT(pNextBuffer);
         ASSERT(pNextBuffer->eClass() == CN_ENTRYBUFFER);
@@ -1925,7 +1925,7 @@ i8 EntryBuffer::iCopyEntries(EntryBuffer* pFromBuffer, Entry* aFromEntry)  //# c
        //----------------------------------------------------------------------*/
       
       // get the lower level buffer the entry is pointing to
-      EntryBuffer* pEntryBuffer = pEntry->pIndexBuffer();
+      EntryBuffer* pEntryBuffer = pEntry->pEntryBuffer();
       
       // this index buffer should be at a level lower than nBufferLevel
       ASSERT(pEntryBuffer->nBufferLevel() < nBufferLevel);
