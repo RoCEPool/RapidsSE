@@ -306,6 +306,49 @@ void Table::vAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append entries from a row buffer                                           */
+/*----------------------------------------------------------------------------*/
+void Table::vAppendEntries(i8 iPartition, EntryBuffer* pEntryBuffer)
+{ //# indexTuning
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  ASSERT(iPartition < gpGrid->m_nSlots);
+  
+  // buffer should be temporary
+  ASSERT(pEntryBuffer->eDurability() == BD_TEMPORARY);
+  
+  // first append entries from buffer to the hidden index
+  Partition* pPartition = this->pPartition(iPartition);
+  IndexData* pHiddenIndexData = pPartition->pHiddenIndexData();
+  
+  // buffer should have some entries
+  ASSERT(pEntryBuffer->nEntries() > 1);
+  
+  // append the buffer entries to the hidden index
+  pHiddenIndexData->vAppendEntries(pEntryBuffer);
+  
+  // get no of indexes of the table
+  IdxDataVec* pIdxDataVec = pPartition->pIdxDataVec();
+  i8 nIndexes = pIdxDataVec->nItems();
+  
+  // iterate all indexes to be built
+  for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
+    
+    // get index
+    IndexData* pNewIndexData = pIdxDataVec->pGet(i_Index);
+    
+    // skip the hidden index
+    Index* pIndex = pNewIndexData->pIndex();
+    if (pIndex->bIsHidden())
+      continue;
+    
+    // insert entries from entryBuffer into index
+    pNewIndexData->vInsertEntries(pEntryBuffer);
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* get ColumnVec                                                              */
 /*----------------------------------------------------------------------------*/
 ColumnVec* Table::pColumnVec(void)

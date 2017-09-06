@@ -56,7 +56,8 @@ namespace DBobjects
     
     void vAddIndex(Index* pIndex);
     Stz* pAnalyzeIndex(Index* pIndex, bool bDetailed);
-    void vAppendBuffer(i8 iPartition, EntryBuffer* pRowBuffer);    
+    void vAppendBuffer(i8 iPartition, EntryBuffer* pRowBuffer);
+    void vAppendEntries(i8 iPartition, EntryBuffer* pRowBuffer);
     ColumnVec* pColumnVec(void);
     void vContentDump(void);
     void vCreateColumnVec(s32& sName, s48K& sDefinition);

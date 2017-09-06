@@ -91,11 +91,11 @@ ddlLock::grabWrite
 /*----------------------------------------------------------------------------*/
 /* append row buffer into table                                               */
 /*----------------------------------------------------------------------------*/
-: appendTable_req ( "table", "buffer", "partition" -- <R> )
+: appendTableEntries_req ( "table", "buffer", "partition" -- <R> )
 
 ddlLock::grabRead
 
-  table.append
+  table.appendEntries
 
   <OK>
 ;

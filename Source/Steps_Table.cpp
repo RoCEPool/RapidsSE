@@ -33,7 +33,7 @@ void Task::vAddPrimitives_Table(void)
 {
   vAddPrimitive("table.addIndex"_Stz,           &vTableAddIndex,         false);
   vAddPrimitive("table.analyze"_Stz,            &vTableAnalyze,          false);
-  vAddPrimitive("table.append"_Stz,             &vTableAppend,           false);
+  vAddPrimitive("table.appendEntries"_Stz,      &vTableAppendEntries,    false);
   vAddPrimitive("table.appendBuffer"_Stz,       &vTableAppendBuffer,     false);
   vAddPrimitive("table.createColumnVec"_Stz,    &vTableCreateColumnVec,  false);
   vAddPrimitive("table.drop"_Stz,               &vTableDrop,             false);
@@ -112,31 +112,34 @@ void Task::vTableAnalyze(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table.append -- append buffer into table (from seitf)                      */
+/* table.appendEntries -- append buffer entries into table (from seitf)       */
 /*----------------------------------------------------------------------------*/
-void Task::vTableAppend(MP_Task mpTask)
+void Task::vTableAppendEntries(MP_Task mpTask)
 {
   ENTRY("vTableAppend"_Stz);
   i8 iPartition;
   s48K sString;
   
   if ( ! mpTask->m_pDataStack->bPop(sString) )
-    THROW_INVALID_DSTACK("table.append"_Stz);
+    THROW_INVALID_DSTACK("table.appendEntries"_Stz);
   
   Table* pTable = reinterpret_cast<Table*>(sString.iToI8());
   ASSERT(CN_TABLE == pTable->eClass());
   
   if ( ! mpTask->m_pDataStack->bPop(sString) )
-    THROW_INVALID_DSTACK("table.append"_Stz);
+    THROW_INVALID_DSTACK("table.appendEntries"_Stz);
   
   EntryBuffer* pRowBuffer = reinterpret_cast<EntryBuffer*>(sString.iToI8());
   ASSERT(CN_ENTRYBUFFER == pRowBuffer->eClass());
   
   if ( ! mpTask->m_pDataStack->bPop(sString) )
-    THROW_INVALID_DSTACK("table.append"_Stz);
+    THROW_INVALID_DSTACK("table.appendEntries"_Stz);
   
   iPartition = sString.iToI8();
-  pTable->vAppendBuffer(iPartition,pRowBuffer);
+  pTable->vAppendEntries(iPartition,pRowBuffer);
+  
+  // now delete the temporary buffer
+  delete pRowBuffer;
   
   EXIT();
 }
@@ -151,6 +154,7 @@ void Task::vTableAppendBuffer(MP_Task mpTask)
   Object* pPtrTable;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
     THROW_INVALID_DSTACK("table.appendBuffer"_Stz);
+  
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
@@ -161,6 +165,7 @@ void Task::vTableAppendBuffer(MP_Task mpTask)
   Object* pPtrRowBuffer;
   if ( ! mpTask->m_pDataStack->bPop(pPtrRowBuffer) )
     THROW_INVALID_DSTACK("table.appendBuffer"_Stz);
+  
   EntryBuffer* pRowBuffer = (EntryBuffer*)_pEntryBuffer(pPtrRowBuffer);
   ASSERT(CN_ENTRYBUFFER == pRowBuffer->eClass());
   

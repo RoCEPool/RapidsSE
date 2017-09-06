@@ -1,0 +1,25 @@
+/*============================================================================*/
+/* _test -- test                                                              */
+/*============================================================================*/
+
+create table tbl (
+  col0   integer not null,
+  col1   varchar(32) not null);
+
+begin insert tbl;
+insert row "1|abcdef|";
+insert row "2|abcdef|";
+insert row "3|abcdef|";
+insert row "4|abcdef|";
+insert row "5|abcdef|";
+insert row "6|abcdef|";
+insert row "7|abcdef|";
+insert row "8|abcdef|";
+insert row "9|abcdef|";
+insert row "10|abcdef|";
+end insert;
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

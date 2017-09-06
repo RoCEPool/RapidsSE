@@ -1684,19 +1684,7 @@ bool SePrompt::bCmd_EndInsert(void)
   if (!bResult)
     return false;
   
-  //eEC eResult = eExecuteRequest(m_pSEitf, "rettbl"_Stz);
-  //if (EC_NONE != eResult) {
-  //  vTrace("SePrompt::bEndInsert : rettbl FAILED!!!\n"_Stz);
-  //  return eResult;
-  //}
-  
-  // get response
-  //eResult = eGetResponse(m_pSEitf);
-  //if (EC_NONE != eResult) {
-  //  return eResult;
-  //}
-  
-  //m_pSEitf->vCurrentTable(nullptr);
+  ASSERT(m_pSEitf->m_pCurrentTable == nullptr);
   
   m_pSEitf->vCommitTx();
   m_pSEitf->vEndTx();
@@ -1867,7 +1855,22 @@ bool SePrompt::bCmd_InsertRow(void)
   }
   
   Stz* pRow = m_xTokenVec2[2]->aText();
-  bool bResult = false; //m_pSEitf->bInsertRow(pRow);
+  s48K s;
+  i8 iRowLength;
+  
+  // format the record into row format
+  bool bValid = RowData::bFormatData(
+                  m_pSEitf->m_pCurrentTable->pColumnVec(), pRow,
+                  StrLib::iSize(pRow->aChar()), s, iRowLength);
+  ASSERT(bValid);
+  
+  // get the partition this row hashes to
+  i8 iRowPartition = m_pSEitf->pCurrentTable()->iRowPartition(s);
+  
+  // set the partition in seitf
+  m_pSEitf->m_iPartition = iRowPartition;
+  
+  bool bResult = m_pSEitf->bInsertRow(s, iRowLength);
   
   if (!bResult) {
     m_pSEitf->vSetLastError(m_pSEitf->m_eErrorCode);

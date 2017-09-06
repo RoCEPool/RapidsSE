@@ -863,7 +863,67 @@ void EntryBuffer::vBufferCount(i8& nBuffers)
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert an entry for {key,id} into an index buffer at given level           */
+/* append a row into an index buffer                                          */
+/*----------------------------------------------------------------------------*/
+bool EntryBuffer::bAppendRow(i8 iTxId, Stz* pRow, i8 iLength)     //# critical
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  Entry* pEntry;
+  
+  ASSERT(nBufferLevel() == 0);
+  
+  KeyWrk xKeyWrk;
+  ValWrk xValWrk;
+  
+  //----------------------------------------------------------------------------
+  // form the rowId
+  bn nBufferNo = m_nBufferNo;
+  i8 nRowNo = nEntries();
+  Id rowId(*nBufferNo, nRowNo);
+  
+  //----------------------------------------------------------------------------
+  // form the key
+  xValWrk = nRowNo;
+  Column* pColumn = m_pIndex->pIdxColVec()->pGet(0);
+  ASSERT(pColumn->iColumnNo() == -1);
+  xKeyWrk.vAddDatum(xValWrk, pColumn);
+  
+  //----------------------------------------------------------------------------
+  // add the id and key to EntWrk
+  EntWrk xEntWrk(rowId, xKeyWrk);
+  
+  //----------------------------------------------------------------------------
+  // add the row data to the EntWrk
+  xEntWrk.vData(pRow, iLength);
+  //xEntWrk.vShow(m_pIndex->pIdxColVec());
+  
+  //----------------------------------------------------------------------------
+  // check if current index buffer has enough space
+  i8 nEntryBytes = Entry::nBytesRequired(xEntWrk);
+  
+  if ( ! bHasSpace(nEntryBytes) ) {
+    return false;
+  }
+  else {
+    
+    // insert entry into current index buffer
+    //pEntry = pInsert(xEntWrk);
+    
+    Entry* pEntry = pAllotEntryBytes(nEntryBytes); //# why + sizeof(i8) ?
+    ASSERT(pEntry)
+    
+    //----------------------------------------------------------------------------
+    // add the id and key to EntWrk
+    pEntry->vSetEntry(xEntWrk);
+  }
+  
+  //pEntry->vShow(pEntry->nOffsets(), m_pIndex);
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert an entry for {key,id} into an index buffer                          */
 /*----------------------------------------------------------------------------*/
 bool EntryBuffer::bInsertEntry(i8 iTxId, Stz* pRow, i8 iLength)     //# critical
 {
@@ -948,6 +1008,68 @@ bool EntryBuffer::bAppendEntry(i8 iTxId, Stz* pRow, i8 iLength)     //# critical
   //----------------------------------------------------------------------------
   // add the row data to the EntWrk
   xEntWrk.vData(pRow, iLength);
+  //xEntWrk.vShow(m_pIndex->pIdxColVec());
+  
+  //----------------------------------------------------------------------------
+  // check if current index buffer has enough space
+  i8 nEntryBytes = Entry::nBytesRequired(xEntWrk);
+  
+  if ( ! bHasSpace(nEntryBytes) ) {
+    return false;
+  }
+  else {
+    
+    // insert entry into current index buffer
+    //pEntry = pInsert(xEntWrk);
+    
+    Entry* pEntry = pAllotEntryBytes(nEntryBytes); //# why + sizeof(i8) ?
+    ASSERT(pEntry)
+    
+    //----------------------------------------------------------------------------
+    // add the id and key to EntWrk
+    pEntry->vSetEntry(xEntWrk);
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* append an entry for {key,id} into an index buffer at level 0               */
+/*----------------------------------------------------------------------------*/
+bool EntryBuffer::bAppendEntry(Entry* pRowEntry)     //# critical
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  Entry* pEntry;
+  
+  ASSERT(nBufferLevel() == 0);
+  
+  KeyWrk xKeyWrk;
+  ValWrk xValWrk;
+  
+  //----------------------------------------------------------------------------
+  // form the rowId
+  bn nBufferNo = m_nBufferNo;
+  i8 nRowNo = nEntries();
+  Id rowId(*nBufferNo, nRowNo);
+  
+  //----------------------------------------------------------------------------
+  // form the key
+  xValWrk = nRowNo;
+  Column* pColumn = m_pIndex->pIdxColVec()->pGet(0);
+  ASSERT(pColumn->iColumnNo() == -1);
+  xKeyWrk.vAddDatum(xValWrk, pColumn);
+  
+  //----------------------------------------------------------------------------
+  // add the id and key to EntWrk
+  EntWrk xEntWrk(rowId, xKeyWrk);
+  
+  //----------------------------------------------------------------------------
+  // add the row data to the EntWrk
+  char* pRow = pRowEntry->aRow();
+  i8 iLength = pRowEntry->nRowSize();
+  
+  xEntWrk.vData((Stz*)pRow, iLength);
   //xEntWrk.vShow(m_pIndex->pIdxColVec());
   
   //----------------------------------------------------------------------------

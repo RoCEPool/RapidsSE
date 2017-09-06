@@ -235,6 +235,51 @@ void IndexData::vAppendBuffer(EntryBuffer* pEntryBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
+/* insert an entry for {key,id} into an index buffer at given level           */
+/*----------------------------------------------------------------------------*/
+void IndexData::vAppendEntries(EntryBuffer* pEntryBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  
+  EntryVec xPriorVec;
+  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  
+  m_zLock.vGrabWrite();
+  
+  Entry* pRow = pEntryBuffer->pFirstRow();
+
+  if (m_pRoot == nullptr) {
+    ASSERT( ! m_pCurrentBuffer )
+    m_pRoot = new EntryBuffer(m_pIndex, 0, m_nPartitionNo);
+    m_pCurrentBuffer = m_pRoot;
+  }
+  
+  for ( pRow = pEntryBuffer->pNextRow(pRow) ; pRow;
+       pRow = pEntryBuffer->pNextRow(pRow)) {
+    
+    i8 nEntryBytes = pRow->nSizeEntry();
+    if ( ! m_pCurrentBuffer->bHasSpace(nEntryBytes) ) {
+      
+      //----------------------------------------------------------------------------
+      // create a new entry buffer and link with current buffer
+      EntryBuffer* pNewBuffer = new EntryBuffer(m_pIndex, 0, m_nPartitionNo);
+      pNewBuffer->vNextBuffer(m_pCurrentBuffer->pNextBuffer());
+      pNewBuffer->vPrevBuffer(m_pCurrentBuffer);
+      m_pCurrentBuffer->vNextBuffer(pNewBuffer);
+      
+      //----------------------------------------------------------------------------
+      // toggle to the new buffer
+      m_pCurrentBuffer = pNewBuffer;
+    }
+    
+    bool bInserted = m_pCurrentBuffer->bAppendEntry(pRow);
+    ASSERT(bInserted);
+  }
+ 
+  m_zLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
 /* append an entry into this index at level 0                                 */
 /*----------------------------------------------------------------------------*/
 void IndexData::vAppendEntry(KeyWrk& xKeyWrk, Id xId, EntryVec& xPriorVec)
@@ -340,6 +385,25 @@ Entry* IndexData::pInsertEntry(i8 iTxId, Stz* pRow, i8 iLength)
   m_zLock.vDropWrite();
   
   return pEntry;
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert entries from entryBuffer into this index at level 0                 */
+/*----------------------------------------------------------------------------*/
+void IndexData::vInsertEntries(EntryBuffer* pEntryBuffer)
+{ //# indexTuning
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  
+  m_zLock.vGrabWrite();
+  
+  Entry* pRow = pEntryBuffer->pFirstRow();
+  
+  for ( pRow = pEntryBuffer->pNextRow(pRow) ; pRow;
+       pRow = pEntryBuffer->pNextRow(pRow)) {
+    vInsertEntry(pRow);
+  }
+  
+  m_zLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
