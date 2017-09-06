@@ -26,6 +26,7 @@ namespace DBobjects
     void vAddDatum(ValWrk& xValWrk, Column* pCol);
     void vAddDatum(StrVal* pValStr, Column* pCol);
     void vAddKey(Key* aKey, IdxColVec* pColVec);
+    void vAddWord(w8 wWord);
   
     void  vReset(void);
   

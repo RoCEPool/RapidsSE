@@ -173,6 +173,20 @@ void KeyWrk::vAddDatum(ValWrk& xValWrk, Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add word to key workspace                                                  */
+/*----------------------------------------------------------------------------*/
+void KeyWrk::vAddWord(w8 wWord)
+{
+  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
+  
+  char* aDst = m_xWsp.aLatter();
+  
+  MemLib::vCopy(aDst, &wWord, sizeof(w8), CN_KEYWRK);
+  
+  m_xWsp.vTake(sizeof(w8));
+}
+
+/*----------------------------------------------------------------------------*/
 /* get wsp area as key                                                        */
 /*----------------------------------------------------------------------------*/
 Key* KeyWrk::aKey(void)

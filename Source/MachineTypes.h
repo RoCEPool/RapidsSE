@@ -23,6 +23,9 @@ namespace Base
   typedef unsigned long long b8;  // 8 byte boolean
   
   typedef unsigned char      byte; // a byte
+
+  typedef long long          w4;  // 4 byte word
+  typedef long long          w8;  // 8 byte word
 }
 
 /*============================================================================*/
