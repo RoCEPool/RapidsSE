@@ -994,7 +994,13 @@ void Table::vSortTheArray(char* aSortArray, i8 nElements, i8 nElmSize,
   Timer xTimer;
   xTimer.vStart();
 
-  qsort(aSortArray,nElements,nElmSize,iQsort_i8);
+  Index* pIndex = pNewIndexData->pIndex();
+  eIF eIndexForm = pIndex->eIndexForm();
+  
+  if (IF_I8 == eIndexForm)
+    qsort(aSortArray,nElements,nElmSize,iQsort_i8);
+  else
+    qsort(aSortArray,nElements,nElmSize,iQsort_i8i8);
   
   xTimer.vUpdate();
   
