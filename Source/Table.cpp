@@ -1086,7 +1086,7 @@ void Table::vBuildNewIndex(char* aSortArray, i8 nElements, i8 nElmSize,
     
     // get key datum
     char* aKeyElm = aSortElm;
-    aSortElm = pAdd<char*>(aSortElm,sizeof(i8));
+    aSortElm = pAdd<char*>(aSortElm,nElmSize - sizeof(i8));
     
     // get id
     Id xId = *((Id*)aSortElm);
