@@ -938,6 +938,39 @@ void Table::vPopulateSortArray(char* aSortArray, i8 nElements, i8 iSortElmSize,
 }
 
 /*----------------------------------------------------------------------------*/
+/* the qsort compare function for a complex key datum                         */
+/*----------------------------------------------------------------------------*/
+int DBobjects::iQsort_complex(void* aIndexData, const void* aArg1, const void* aArg2)
+{
+  IndexData* pIndexData = _pIndexData(aIndexData);
+  Index* pIndex = pIndexData->pIndex();
+  IdxColVec* pIdxColVec = pIndex->pIdxColVec();
+  
+  int iCmp = 0;
+  
+  char* aCursorThis = (char*)aArg1;
+  char* aCursorThat = (char*)aArg2;
+  
+  for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
+    
+    Column* pColumn = pIdxColVec->pGet(i_Column);
+    
+    i8 nBytesThis;
+    i8 nBytesThat;
+    
+    char* aDatumThis = Key::aEachDatum(pColumn,nBytesThis,&aCursorThis);
+    char* aDatumThat = Key::aEachDatum(pColumn,nBytesThat,&aCursorThat);
+    
+    iCmp = (int)pColumn->iCmp(aDatumThis,nBytesThis,
+                              aDatumThat,nBytesThat);
+    if (iCmp)
+      break;
+  }
+  
+  return iCmp;
+}
+
+/*----------------------------------------------------------------------------*/
 /* the qsort compare function for an {i8} key datum                           */
 /*----------------------------------------------------------------------------*/
 int DBobjects::iQsort_i8(const void* aArg1, const void* aArg2)
@@ -1000,7 +1033,10 @@ void Table::vSortTheArray(char* aSortArray, i8 nElements, i8 nElmSize,
   if (IF_I8 == eIndexForm)
     qsort(aSortArray,nElements,nElmSize,iQsort_i8);
   else
+  if (IF_I8_I8 == eIndexForm)
     qsort(aSortArray,nElements,nElmSize,iQsort_i8i8);
+  else
+    qsort_r(aSortArray,nElements,nElmSize,(void*)pNewIndexData,iQsort_complex);
   
   xTimer.vUpdate();
   
