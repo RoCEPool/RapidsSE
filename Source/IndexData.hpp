@@ -59,11 +59,11 @@ namespace DBobjects
   private:
     EntryBuffer* pAppendL0Entry(EntryBuffer* pRoot,KeyWrk& xKeyWrk, Id xId,
                                 EntryVec& xPriorVec);
-    void         vFixHigherBuffer(EntryBuffer* pIndexBuffer, i8 iLevel);
+    void         vFixHigherBuffer(EntryBuffer* pEntryBuffer, i8 iLevel);
     void         vInsertEntry(EntryBuffer* pRoot,KeyWrk& xKeyWrk, Id xId, i8 iLevel);
     void         vInsertFirstEntry(EntryBuffer* pToBuffer, EntryBuffer* pFromBuffer);
-    EntryBuffer* pSplitBuffer(EntryBuffer* pIndexBuffer);
-    void         vDumpLevel(EntryBuffer* pIndexBuffer);
+    EntryBuffer* pSplitBuffer(EntryBuffer* pEntryBuffer);
+    void         vDumpLevel(EntryBuffer* pEntryBuffer);
   };
   
   IndexData* _pIndexData(void* pAddr);

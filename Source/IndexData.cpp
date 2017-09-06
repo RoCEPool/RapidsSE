@@ -779,7 +779,7 @@ void IndexData::vFixHigherBuffer(EntryBuffer* pEntryBuffer, i8 iLevel)
 /*----------------------------------------------------------------------------*/
 /* split a buffer                                                             */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* IndexData::pSplitBuffer(EntryBuffer* pIndexBuffer)
+EntryBuffer* IndexData::pSplitBuffer(EntryBuffer* pEntryBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
@@ -790,19 +790,19 @@ EntryBuffer* IndexData::pSplitBuffer(EntryBuffer* pIndexBuffer)
   KeyWrk xFirstKeyWrk2;
   
   // split the index buffer
-  EntryBuffer* pIndexBufferNew = pIndexBuffer->pSplitBuffer();
+  EntryBuffer* pEntryBufferNew = pEntryBuffer->pSplitBuffer();
   
   // get the next level buffer
-  EntryBuffer* pHigherLevel = pIndexBuffer->pHigherLevel();
+  EntryBuffer* pHigherLevel = pEntryBuffer->pHigherLevel();
   
   // create a next level buffer if it does not exist
   if ( ! pHigherLevel ) {
     
-    i8 nHigherLevel = pIndexBuffer->nBufferLevel() + 1;
+    i8 nHigherLevel = pEntryBuffer->nBufferLevel() + 1;
     pRoot = new EntryBuffer(m_pIndex, nHigherLevel, m_nPartitionNo);
     
     // insert first entry in new root from buffer we split
-    vInsertFirstEntry(pRoot, pIndexBuffer);
+    vInsertFirstEntry(pRoot, pEntryBuffer);
     
     // root now points to the new higher level
     m_pRoot = pRoot;
@@ -812,49 +812,49 @@ EntryBuffer* IndexData::pSplitBuffer(EntryBuffer* pIndexBuffer)
   }
   
   //---------------------------------------------------------
-  // insert the first entry in root buffer from the new IndexBuffer
-  vInsertFirstEntry(pRoot, pIndexBufferNew);
+  // insert the first entry in root buffer from the new EntryBuffer
+  vInsertFirstEntry(pRoot, pEntryBufferNew);
   
   //---------------------------------------------------------
   // fix the first index buffer's higher level buffer
-  vFixHigherBuffer(pIndexBuffer, pRoot->nBufferLevel());
+  vFixHigherBuffer(pEntryBuffer, pRoot->nBufferLevel());
   
   //---------------------------------------------------------
   // fix the second index buffer's higher level buffer
-  vFixHigherBuffer(pIndexBufferNew, pRoot->nBufferLevel());
+  vFixHigherBuffer(pEntryBufferNew, pRoot->nBufferLevel());
   
-  return pIndexBuffer;
+  return pEntryBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
 /* visualize the index                                                        */
 /*----------------------------------------------------------------------------*/
-void IndexData::vDumpLevel(EntryBuffer* pIndexBuffer)
+void IndexData::vDumpLevel(EntryBuffer* pEntryBuffer)
 {
   
   // get the first entry
-  Entry* pEntry = pIndexBuffer->pFirstEntry();
+  Entry* pEntry = pEntryBuffer->pFirstEntry();
   
   while (pEntry) {
     
     // get the index buffer the first enetry poinst to
-    EntryBuffer* pEntryIndexBuffer = pEntry->pEntryBuffer();
+    EntryBuffer* pEntryEntryBuffer = pEntry->pEntryBuffer();
     
     // print the decile of the buffer
-    vTrace("%lld"_Stz, pEntryIndexBuffer->iDecile());
+    vTrace("%lld"_Stz, pEntryEntryBuffer->iDecile());
     
     // insert spaces for no of entries in buffer
-    if (pEntryIndexBuffer->nBufferLevel() > 0) {
+    if (pEntryEntryBuffer->nBufferLevel() > 0) {
       
       // exclude the head entry
-      i8 iEntries = pEntryIndexBuffer->nEntries() - 1;
+      i8 iEntries = pEntryEntryBuffer->nEntries() - 1;
       
       while (iEntries--)
         vTrace(" "_Stz);
     }
     
     // move to the next entry
-    pEntry = pIndexBuffer->pNextEntry(pEntry);
+    pEntry = pEntryBuffer->pNextEntry(pEntry);
   }
 }
 
@@ -866,28 +866,28 @@ void IndexData::vVisualize(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
   // start with the root buffer
-  EntryBuffer* pIndexBuffer = m_pRoot;
+  EntryBuffer* pEntryBuffer = m_pRoot;
   
   // hidden index has all level 0 buffers
   if (m_pIndex->bIsHidden()) {
     
     do {
-      ASSERT(pIndexBuffer->nBufferLevel() == 0);
+      ASSERT(pEntryBuffer->nBufferLevel() == 0);
       // print the decile of pNextBuffer
-      vTrace("%lld"_Stz, pIndexBuffer->iDecile());
+      vTrace("%lld"_Stz, pEntryBuffer->iDecile());
       
-      pIndexBuffer = pIndexBuffer->pNextBuffer();
+      pEntryBuffer = pEntryBuffer->pNextBuffer();
       
-    } while (pIndexBuffer);
+    } while (pEntryBuffer);
     
     vTrace("\n"_Stz);
     return;
   }
 
   // print the decile of the root buffer
-  vTrace("%lld\n"_Stz, pIndexBuffer->iDecile());
+  vTrace("%lld\n"_Stz, pEntryBuffer->iDecile());
   
-  i8 iBufferLevel = pIndexBuffer->nBufferLevel();
+  i8 iBufferLevel = pEntryBuffer->nBufferLevel();
   
   // if there is only one buffer i.e root is at level 0, we are done
   if (iBufferLevel == 0) {
@@ -896,23 +896,23 @@ void IndexData::vVisualize(void)
   }
   
   // iterate through the buffers
-  while (pIndexBuffer) {
+  while (pEntryBuffer) {
     
     // dump this buffer
-    vDumpLevel(pIndexBuffer);
+    vDumpLevel(pEntryBuffer);
 
     // if we are at level 1, iterate thru next buffers
-    if (pIndexBuffer->nBufferLevel() == 1) {
-      pIndexBuffer = (EntryBuffer*)pIndexBuffer->pNextBuffer();
+    if (pEntryBuffer->nBufferLevel() == 1) {
+      pEntryBuffer = (EntryBuffer*)pEntryBuffer->pNextBuffer();
     }
     else {
       vTrace("\n"_Stz);
       
       // get the first entry of the buffer
-      Entry* pEntry = pIndexBuffer->pFirstEntry();
+      Entry* pEntry = pEntryBuffer->pFirstEntry();
       
       // get the index buffer this entry points to
-      pIndexBuffer = pEntry->pEntryBuffer();
+      pEntryBuffer = pEntry->pEntryBuffer();
     }
   }
   
