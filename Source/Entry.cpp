@@ -573,16 +573,13 @@ void Entry::vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract a sort key into KeyWrk from this row using given index columns     */
+/* extract a sort key into keyWrk from this row using given index columns     */
 /*----------------------------------------------------------------------------*/
 void Entry::vExtractSortKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
   
-  ValWrk xValWrk;
-  
-  // VCH cannot be > 256 bytes
-  s4K s;                                                       //ALKA_ROWFORMAT
+  w8 wColumnWord;
   
   i8 nCols = pIdxColVec->nItems();
   for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
@@ -593,86 +590,62 @@ void Entry::vExtractSortKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
     // get the column number of the column
     i8 iColumnNo = pColumn->iColumnNo();
     
-    // get the column datum from the row for the iColumnNo
+    // get address of the column datum from the row for the iColumnNo
     char* aColumnDatum = RowData::aColumnDatum(aRow(),iColumnNo);
     
+    // convert column datum into column word
     switch (pColumn->eColumnType()) {
       
-      case CT_BOOLEAN: {
-        Bol xBol = *((Bol*)aColumnDatum);
-        xValWrk = xBol;
+      case CT_BOOLEAN:
+        wColumnWord = (*((Bol*)aColumnDatum)).iAsI8();
         break;
-      }
       
-      case CT_CHAR: {
-        s = (Stz*)aColumnDatum;
-        xValWrk = s;
+      case CT_CHAR:
+        wColumnWord = (w8)aColumnDatum;
         break;
-      }
       
-      case CT_DATE: {
-        Dte xDte = *((Dte*)aColumnDatum);
-        xValWrk = xDte;
+      case CT_DATE:
+        wColumnWord = (*((Dte*)aColumnDatum)).iAsI8();
         break;
-      }
       
-      case CT_DECIMAL: {
-        Bcd xBcd = *((Bcd*)aColumnDatum);
-        xValWrk = xBcd;
+      case CT_DECIMAL:
+        wColumnWord = (*((Bcd*)aColumnDatum)).iAsI8();
         break;
-      }
       
-      case CT_FLOAT: {
-        Flt xFlt = *((Flt*)aColumnDatum);
-        xValWrk = xFlt.dAsD8();
+      case CT_FLOAT:
+        MemLib::vCopy(&wColumnWord,aColumnDatum,sizeof(w8),CN_ENTRY);
         break;
-      }
       
-      case CT_INTEGER: {
-        Int xInt = *((Int*)aColumnDatum);
-        xValWrk = xInt.iAsI8();
+      case CT_INTEGER:
+        wColumnWord = (*((Int*)aColumnDatum)).iAsI8();
         break;
-      }
       
-      case CT_INTERVAL: {
-        Ivl xIvl = *((Ivl*)aColumnDatum);
-        xValWrk = xIvl;
+      case CT_INTERVAL:
+        wColumnWord = (*((Ivl*)aColumnDatum)).iAsI8();
         break;
-      }
       
-      case CT_TIME: {
-        Tme xTme = *((Tme*)aColumnDatum);
-        //bool b = Tme::bExtract(pDst,&xTme,iLength,pColumn);
-        //ASSERT(b);
-        xValWrk = xTme;
+      case CT_TIME:
+        wColumnWord = (*((Tme*)aColumnDatum)).iAsI8();
         break;
-      }
       
-      case CT_TIMESTAMP: {
-        Tsp xTsp = *((Tsp*)aColumnDatum);
-        //bool b = Tsp::bExtract(pDst,&xTsp,iLength,pColumn);
-        //ASSERT(b);
-        xValWrk = xTsp;
+      case CT_TIMESTAMP:
+        wColumnWord = (*((Tsp*)aColumnDatum)).iAsI8();
         break;
-      }
       
-      case CT_VARBINARY: {
+      case CT_VARBINARY:
         NEVER_REACH;
         break;
-      }
       
-      case CT_VARCHAR: {
-        s = (Stz*)aColumnDatum;
-        xValWrk = s;
+      case CT_VARCHAR:
+        wColumnWord = (w8)aColumnDatum;
         break;
-      }
       
       default:
       NEVER_REACH;
     }
     
-    // add the column value to the key
-    xKeyWrk.vAddDatum(xValWrk, pColumn);
+    // add the column word to the key
+    xKeyWrk.vAddWord(wColumnWord);
   }
   
 }
