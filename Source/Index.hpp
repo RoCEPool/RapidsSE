@@ -17,6 +17,24 @@ namespace DBobjects
     /* 1 */ "SKIP_LIST"_Stz
   };
 
+  enum eIF // Index Form
+  {
+    /* 0 */ IF_NONE=0,
+    /* 1 */ IF_I8,
+    /* 2 */ IF_I8_I8,
+    /* 3 */ IF_STZ,
+    /* 4 */ IF_COMPLEX
+  };
+
+  static Stz* aIF[]
+  {
+  /* 0 */ "NONE"_Stz,
+  /* 1 */ "I8"_Stz,
+  /* 2 */ "I8_I8"_Stz,
+  /* 3 */ "STZ"_Stz,
+  /* 4 */ "COMPLEX"_Stz,
+  };
+  
   class Table;
   class Partition;
   
@@ -50,6 +68,7 @@ namespace DBobjects
     Stz*   pAnalyze(void);
     void   vCreateColumnVec(s32& sName, s48K& sDefinition);
     void   vDump(void);
+    eIF    eIndexForm(void);
     Stz*   aIndexName(void);
     s256   sIndexName(void);
     void   vIndexNo(i8 iIndexNo);

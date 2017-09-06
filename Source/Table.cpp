@@ -789,7 +789,6 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pNewIndexData,
   // compute the size of the sort element
   
   i8 iSortElmSize = pNewIndex->iSortKeyDatum() + sizeof(Id);
-  ASSERT(2*sizeof(i8) == iSortElmSize);
   if (gxArguments.m_bVerbose) {
     vTrace("Sort element size %lldB\n"_Stz,
            iSortElmSize);
@@ -958,7 +957,6 @@ void Table::vPopulateSortArray(char* aSortArray, i8 nElements, i8 iSortElmSize,
       // get the key datum for this index
       xKeyWrk.vReset();
       pRow->vExtractKey(xKeyWrk,pIdxColVec);
-      ASSERT(sizeof(i8) == xKeyWrk.nWspUsed());
       
       // copy the key datum into the sort element
       MemLib::vCopy(aSortElm,xKeyWrk.aWspArea(),xKeyWrk.nWspUsed(),CN_TABLE);
@@ -983,6 +981,39 @@ void Table::vPopulateSortArray(char* aSortArray, i8 nElements, i8 iSortElmSize,
 }
 
 /*----------------------------------------------------------------------------*/
+/* the qsort compare function for a complex key datum                         */
+/*----------------------------------------------------------------------------*/
+int DBobjects::iQsort_complex(void* aIndexData, const void* aArg1, const void* aArg2)
+{
+  IndexData* pIndexData = _pIndexData(aIndexData);
+  Index* pIndex = pIndexData->pIndex();
+  IdxColVec* pIdxColVec = pIndex->pIdxColVec();
+  
+  int iCmp = 0;
+  
+  char* aCursorThis = (char*)aArg1;
+  char* aCursorThat = (char*)aArg2;
+  
+  for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
+    
+    Column* pColumn = pIdxColVec->pGet(i_Column);
+    
+    i8 nBytesThis;
+    i8 nBytesThat;
+    
+    char* aDatumThis = Key::aEachDatum(pColumn,nBytesThis,&aCursorThis);
+    char* aDatumThat = Key::aEachDatum(pColumn,nBytesThat,&aCursorThat);
+    
+    iCmp = (int)pColumn->iCmp(aDatumThis,nBytesThis,
+                              aDatumThat,nBytesThat);
+    if (iCmp)
+      break;
+  }
+  
+  return iCmp;
+}
+
+/*----------------------------------------------------------------------------*/
 /* the qsort compare function for an {i8} key datum                           */
 /*----------------------------------------------------------------------------*/
 int DBobjects::iQsort_i8(const void* aArg1, const void* aArg2)
@@ -999,6 +1030,36 @@ int DBobjects::iQsort_i8(const void* aArg1, const void* aArg2)
 }
 
 /*----------------------------------------------------------------------------*/
+/* the qsort compare function for an {i8,i8} key datum                        */
+/*----------------------------------------------------------------------------*/
+int DBobjects::iQsort_i8i8(const void* aArg1, const void* aArg2)
+{
+  i8* pArg1a = (i8*)aArg1;
+  i8* pArg2a = (i8*)aArg2;
+  
+  i8 iCmpA = *pArg1a - *pArg2a;
+  
+  if (iCmpA > 0)
+    return 1;
+  
+  if (iCmpA < 0)
+    return -1;
+  
+  i8* pArg1b = pArg1a + 1;
+  i8* pArg2b = pArg2a + 1;
+
+  i8 iCmpB = *pArg1b - *pArg2b;
+  
+  if (iCmpB > 0)
+    return 1;
+  
+  if (iCmpB < 0)
+    return -1;
+  
+  return 0;
+}
+
+/*----------------------------------------------------------------------------*/
 /* qsort the sort array for the given index                                   */
 /*----------------------------------------------------------------------------*/
 void Table::vSortTheArray(char* aSortArray, i8 nElements, i8 nElmSize,
@@ -1009,7 +1070,16 @@ void Table::vSortTheArray(char* aSortArray, i8 nElements, i8 nElmSize,
   Timer xTimer;
   xTimer.vStart();
 
-  qsort(aSortArray,nElements,nElmSize,iQsort_i8);
+  Index* pIndex = pNewIndexData->pIndex();
+  eIF eIndexForm = pIndex->eIndexForm();
+  
+  if (IF_I8 == eIndexForm)
+    qsort(aSortArray,nElements,nElmSize,iQsort_i8);
+  else
+  if (IF_I8_I8 == eIndexForm)
+    qsort(aSortArray,nElements,nElmSize,iQsort_i8i8);
+  else
+    qsort_r(aSortArray,nElements,nElmSize,(void*)pNewIndexData,iQsort_complex);
   
   xTimer.vUpdate();
   
@@ -1032,25 +1102,47 @@ void Table::vDumpSortArray(char* aSortArray, i8 nElements, i8 nElmSize,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
+  Index* pIndex = pNewIndexData->pIndex();
+  eIF eIndexForm = pIndex->eIndexForm();
   char* aSortElm = aSortArray;
   
-  if (gxArguments.m_bVerbose)
-    vTrace("-- Sort Array -------------------\n"_Stz);
+  i8 iKeyDatum0;
+  i8 iKeyDatum1;
+  
+  vTrace("-- Sort Array -------------------\n"_Stz);
          
   for (i8 i_Elm = 0; i_Elm < nElements; i_Elm++) {
     
-    i8 iKeyDatum = *((i8*)aSortElm);
-    aSortElm = pAdd<char*>(aSortElm,sizeof(i8));
+    if (IF_I8 == eIndexForm) {
+      iKeyDatum0 = *((i8*)aSortElm);
+      aSortElm = pAdd<char*>(aSortElm,sizeof(i8));
     
-    Id xId = *((Id*)aSortElm);
-    aSortElm = pAdd<char*>(aSortElm,sizeof(Id));
+      Id xId = *((Id*)aSortElm);
+      aSortElm = pAdd<char*>(aSortElm,sizeof(Id));
     
-    if (gxArguments.m_bVerbose)
       vTrace("[%lld] %lld.%lld : %lld\n"_Stz,
              i_Elm,
              xId.iBuffer(),
              xId.iRow(),
-             iKeyDatum);
+             iKeyDatum0);
+    }
+    else
+    if (IF_I8_I8 == eIndexForm) {
+      iKeyDatum0 = *((i8*)aSortElm);
+      aSortElm = pAdd<char*>(aSortElm,sizeof(i8));
+      iKeyDatum1 = *((i8*)aSortElm);
+      aSortElm = pAdd<char*>(aSortElm,sizeof(i8));
+      
+      Id xId = *((Id*)aSortElm);
+      aSortElm = pAdd<char*>(aSortElm,sizeof(Id));
+      
+      vTrace("[%lld] %lld.%lld : %lld,%lld\n"_Stz,
+             i_Elm,
+             xId.iBuffer(),
+             xId.iRow(),
+             iKeyDatum0,
+             iKeyDatum1);
+    }
   }
   
   vTrace("---------------------------------\n"_Stz);
@@ -1079,7 +1171,7 @@ void Table::vBuildNewIndex(char* aSortArray, i8 nElements, i8 nElmSize,
     
     // get key datum
     char* aKeyElm = aSortElm;
-    aSortElm = pAdd<char*>(aSortElm,sizeof(i8));
+    aSortElm = pAdd<char*>(aSortElm,nElmSize - sizeof(i8));
     
     // get id
     Id xId = *((Id*)aSortElm);

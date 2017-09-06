@@ -48,7 +48,7 @@ namespace DBobjects
   
     i8    nKeySize(IdxColVec* pIdxColVec);
     
-    char* aEachDatum(Column* pColumn, i8& nBytes, char** aaCursor);
+    static char* aEachDatum(Column* pColumn, i8& nBytes, char** aaCursor);
   
     bool bLessThan(Key* pKey, IdxColVec* pColVec);
     bool bLessEqual(Key* pKey, IdxColVec* pColVec);

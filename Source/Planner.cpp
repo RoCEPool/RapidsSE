@@ -155,6 +155,29 @@ void Planner::vGenPaths(void)
   
   IdxVec* pIdxVec = m_pTable->pIdxVec();
   
+  // handle case of no phrases
+  if ( ! m_nPhrases ) {
+
+    m_pPathVec[0] = new PathVec;
+    m_nPhrases = 1;
+    
+    // search for hidden index
+    for (i8 i_Idx = 0; i_Idx < pIdxVec->nItems(); i_Idx++) {
+      
+      Index* mpIndex = pIdxVec->pGet(i_Idx);
+      if ( ! mpIndex->sIndexName().bSame("hidden"_Stz))
+        continue;
+      
+      AccessPath* mpAccessPath = new AccessPath(AT_SCAN);
+      mpAccessPath->vIndex(mpIndex);
+      mpAccessPath->vIsCandidate(true);
+      m_pPathVec[0]->vAdd(mpAccessPath);
+      break;
+    }
+    
+    return;
+  }
+  
   for (i8 i_Phrase = 0; i_Phrase < m_nPhrases; i_Phrase++) {
     
     m_pPathVec[i_Phrase] = new PathVec;

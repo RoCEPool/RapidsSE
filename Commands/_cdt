@@ -3,24 +3,33 @@
 /*============================================================================*/
 
 create table jCdt (
-  jA   INTEGER,
-  jB   INTEGER,
-  jC   INTEGER,
-  jD   INTEGER
+  jA  INTEGER,
+  jB  INTEGER,
+  jC  INTEGER,
+  jD  INTEGER,
+  jE  VARCHAR(32)
 );
 
 create index jCdt_idx1 on jCdt (jA);
-//create index jCdt_idx2 on jCdt (jA,jB);
-//create index jCdt_idx3 on jCdt (jA,jB,jC);
-//create index jCdt_idx4 on jCdt (jA,jB,jC,jD);
+create index jCdt_idx2 on jCdt (jA,jB);
+create index jCdt_idx3 on jCdt (jA,jB,jC);
+create index jCdt_idx4 on jCdt (jA,jB,jC,jD);
 
-docol stepsReset;
+//docol stepsReset;
 ld jCdt "../JTEST/jCdt.csv";
-docol stepsList;
+//docol stepsList;
 
-print "dumping hidden index\n" ;
-
+print "dumping jCdt_idx1 index\n" ;
 dumpidx jCdt jCdt_idx1;
+
+print "dumping jCdt_idx2 index\n" ;
+dumpidx jCdt jCdt_idx2;
+
+print "dumping jCdt_idx3 index\n" ;
+dumpidx jCdt jCdt_idx3;
+
+print "dumping jCdt_idx4 index\n" ;
+dumpidx jCdt jCdt_idx4;
 
 //print "\nSelecting rows with key <= 7 using idx1 ...\n" ;
 //fetch jCdt "jA 7 <=";
@@ -45,8 +54,14 @@ dumpidx jCdt jCdt_idx1;
 //fetch jCdt "jA 1 >= jA 8 <= and" ;
 //fetch jCdt "jA 8 <= jA 1 >= and" ;
  
-fetch jCdt "jA 1 >= jA 8 <= or" ;
+//fetch jCdt "jA 1 >= jA 8 <= or" ;
 //fetch jCdt "jA 8 <=" ;
+
+//fetch jCdt ;
+
+//fetch jCdt "jA 1 >= jB 2 >= and" ;
+
+print "fetched\n" ;
 
 //docol epochDump;
 
