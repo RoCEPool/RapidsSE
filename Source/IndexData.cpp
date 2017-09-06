@@ -237,12 +237,16 @@ void IndexData::vAppendBuffer(EntryBuffer* pEntryBuffer)
 /*----------------------------------------------------------------------------*/
 /* insert an entry for {key,id} into an index buffer at given level           */
 /*----------------------------------------------------------------------------*/
-void IndexData::vAppendEntries(EntryBuffer* pEntryBuffer)
+void IndexData::vAppendEntries(EntryBuffer* pEntryBuffer, EntryBuffer** ppFirstBuffer, Entry** ppFirstEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
   EntryVec xPriorVec;
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  Entry* pNewEntry;
+  
+  *ppFirstBuffer = nullptr;
+  *ppFirstEntry = nullptr;
   
   m_zLock.vGrabWrite();
   
@@ -258,6 +262,7 @@ void IndexData::vAppendEntries(EntryBuffer* pEntryBuffer)
        pRow = pEntryBuffer->pNextRow(pRow)) {
     
     i8 nEntryBytes = pRow->nSizeEntry();
+    
     if ( ! m_pCurrentBuffer->bHasSpace(nEntryBytes) ) {
       
       //----------------------------------------------------------------------------
@@ -272,10 +277,17 @@ void IndexData::vAppendEntries(EntryBuffer* pEntryBuffer)
       m_pCurrentBuffer = pNewBuffer;
     }
     
-    bool bInserted = m_pCurrentBuffer->bAppendEntry(pRow);
+    bool bInserted = m_pCurrentBuffer->bAppendEntry(pRow, &pNewEntry);
     ASSERT(bInserted);
+    
+    if ( ! *ppFirstBuffer )
+      *ppFirstBuffer = m_pCurrentBuffer;
+    
+    if ( ! *ppFirstEntry )
+      *ppFirstEntry = pNewEntry;
+    
   }
- 
+  
   m_zLock.vDropWrite();
 }
 
@@ -390,20 +402,17 @@ Entry* IndexData::pInsertEntry(i8 iTxId, Stz* pRow, i8 iLength)
 /*----------------------------------------------------------------------------*/
 /* insert entries from entryBuffer into this index at level 0                 */
 /*----------------------------------------------------------------------------*/
-void IndexData::vInsertEntries(EntryBuffer* pEntryBuffer)
+void IndexData::vInsertEntries(EntryBuffer* pEntryBuffer, Entry* pRowEntry)
 { //# indexTuning
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
-  m_zLock.vGrabWrite();
+  //m_zLock.vGrabWrite();
   
-  Entry* pRow = pEntryBuffer->pFirstRow();
-  
-  for ( pRow = pEntryBuffer->pNextRow(pRow) ; pRow;
-       pRow = pEntryBuffer->pNextRow(pRow)) {
-    vInsertEntry(pRow);
+  for ( pRowEntry ; pRowEntry; pRowEntry = pEntryBuffer->pNextRow(pRowEntry)) {
+    vInsertEntry(pRowEntry);
   }
   
-  m_zLock.vDropWrite();
+  //m_zLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/

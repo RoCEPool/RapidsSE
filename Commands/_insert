@@ -6,6 +6,8 @@ create table tbl (
   col0   integer not null,
   col1   varchar(32) not null);
 
+create index idx on tbl (col0);
+
 begin insert tbl;
 insert row "1|abcdef|";
 insert row "2|abcdef|";
@@ -16,8 +18,23 @@ insert row "6|abcdef|";
 insert row "7|abcdef|";
 insert row "8|abcdef|";
 insert row "9|abcdef|";
+insert row "12|abcdef|";
+end insert;
+
+dumpidx tbl hidden;
+dumpidx tbl idx;
+
+print "INSERING 2 more rows";
+
+begin insert tbl;
+insert row "11|abcdef|";
 insert row "10|abcdef|";
 end insert;
+
+print "ALL DONE";
+
+dumpidx tbl hidden;
+dumpidx tbl idx;
 
 
 /*============================================================================*/

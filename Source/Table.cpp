@@ -325,7 +325,9 @@ void Table::vAppendEntries(i8 iPartition, EntryBuffer* pEntryBuffer)
   ASSERT(pEntryBuffer->nEntries() > 1);
   
   // append the buffer entries to the hidden index
-  pHiddenIndexData->vAppendEntries(pEntryBuffer);
+  EntryBuffer* pFirstBuffer;
+  Entry* pFirstEntry;
+  pHiddenIndexData->vAppendEntries(pEntryBuffer, &pFirstBuffer, &pFirstEntry);
   
   // get no of indexes of the table
   IdxDataVec* pIdxDataVec = pPartition->pIdxDataVec();
@@ -342,8 +344,19 @@ void Table::vAppendEntries(i8 iPartition, EntryBuffer* pEntryBuffer)
     if (pIndex->bIsHidden())
       continue;
     
-    // insert entries from entryBuffer into index
-    pNewIndexData->vInsertEntries(pEntryBuffer);
+    EntryBuffer* pHiddenEntryBuffer = pFirstBuffer;
+    Entry* pEntry = pFirstEntry;
+    
+    //pHiddenEntryBuffer->vDump();
+    
+    while (pHiddenEntryBuffer) {
+      // insert entries from entryBuffer into index
+      pNewIndexData->vInsertEntries(pHiddenEntryBuffer, pEntry);
+      pHiddenEntryBuffer = pHiddenEntryBuffer->pNextBuffer();
+      
+      if (pHiddenEntryBuffer)
+        pEntry = pHiddenEntryBuffer->pFirstRow();
+    }
   }
   
 }

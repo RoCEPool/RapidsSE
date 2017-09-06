@@ -1036,7 +1036,7 @@ bool EntryBuffer::bAppendEntry(i8 iTxId, Stz* pRow, i8 iLength)     //# critical
 /*----------------------------------------------------------------------------*/
 /* append an entry for {key,id} into an index buffer at level 0               */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bAppendEntry(Entry* pRowEntry)     //# critical
+bool EntryBuffer::bAppendEntry(Entry* pRowEntry, Entry** ppEntry)     //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1090,6 +1090,8 @@ bool EntryBuffer::bAppendEntry(Entry* pRowEntry)     //# critical
     //----------------------------------------------------------------------------
     // add the id and key to EntWrk
     pEntry->vSetEntry(xEntWrk);
+    
+    *ppEntry = pEntry;
   }
   
   return true;
