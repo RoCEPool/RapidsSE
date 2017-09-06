@@ -589,7 +589,7 @@ i8 Table::iRowPartition(Stz* pRow)
     i8 iColumnNo = pColumn->iColumnNo();
     
     // get the column value
-    char* sCursor = RowData::pColumn(pRow->aChar(), iColumnNo);
+    char* sCursor = RowData::aColumnDatum(pRow->aChar(), iColumnNo);
     
     // hash the column value
     DtmLib::vHash(pColumn->eDatumType(),iHash,(Stz*)sCursor,pColumn);

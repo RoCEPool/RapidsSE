@@ -489,7 +489,7 @@ void Entry::vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
     i8 iColumnNo = pColumn->iColumnNo();
     
     // get the column value from the row for the iColumnNo
-    char* pDst = (char*)RowData::pColumn(aRow(), iColumnNo);
+    char* pDst = (char*)RowData::aColumnDatum(aRow(), iColumnNo);
     
     switch(pColumn->eColumnType()) {
         
@@ -593,55 +593,55 @@ void Entry::vExtractSortKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
     // get the column number of the column
     i8 iColumnNo = pColumn->iColumnNo();
     
-    // get the column value from the row for the iColumnNo
-    char* pDst = (char*)RowData::pColumn(aRow(), iColumnNo);
+    // get the column datum from the row for the iColumnNo
+    char* aColumnDatum = RowData::aColumnDatum(aRow(),iColumnNo);
     
-    switch(pColumn->eColumnType()) {
+    switch (pColumn->eColumnType()) {
       
       case CT_BOOLEAN: {
-        Bol xBol = *((Bol*)pDst);
+        Bol xBol = *((Bol*)aColumnDatum);
         xValWrk = xBol;
         break;
       }
       
       case CT_CHAR: {
-        s = (Stz*)pDst;
+        s = (Stz*)aColumnDatum;
         xValWrk = s;
         break;
       }
       
       case CT_DATE: {
-        Dte xDte = *((Dte*)pDst);
+        Dte xDte = *((Dte*)aColumnDatum);
         xValWrk = xDte;
         break;
       }
       
       case CT_DECIMAL: {
-        Bcd xBcd = *((Bcd*)pDst);
+        Bcd xBcd = *((Bcd*)aColumnDatum);
         xValWrk = xBcd;
         break;
       }
       
       case CT_FLOAT: {
-        Flt xFlt = *((Flt*)pDst);
+        Flt xFlt = *((Flt*)aColumnDatum);
         xValWrk = xFlt.dAsD8();
         break;
       }
       
       case CT_INTEGER: {
-        Int xInt = *((Int*)pDst);
+        Int xInt = *((Int*)aColumnDatum);
         xValWrk = xInt.iAsI8();
         break;
       }
       
       case CT_INTERVAL: {
-        Ivl xIvl = *((Ivl*)pDst);
+        Ivl xIvl = *((Ivl*)aColumnDatum);
         xValWrk = xIvl;
         break;
       }
       
       case CT_TIME: {
-        Tme xTme = *((Tme*)pDst);
+        Tme xTme = *((Tme*)aColumnDatum);
         //bool b = Tme::bExtract(pDst,&xTme,iLength,pColumn);
         //ASSERT(b);
         xValWrk = xTme;
@@ -649,7 +649,7 @@ void Entry::vExtractSortKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
       }
       
       case CT_TIMESTAMP: {
-        Tsp xTsp = *((Tsp*)pDst);
+        Tsp xTsp = *((Tsp*)aColumnDatum);
         //bool b = Tsp::bExtract(pDst,&xTsp,iLength,pColumn);
         //ASSERT(b);
         xValWrk = xTsp;
@@ -662,7 +662,7 @@ void Entry::vExtractSortKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
       }
       
       case CT_VARCHAR: {
-        s = (Stz*)pDst;
+        s = (Stz*)aColumnDatum;
         xValWrk = s;
         break;
       }

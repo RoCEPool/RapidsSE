@@ -111,20 +111,19 @@ bool RowData::bFormatData(ColumnVec* pColVec, Stz* aRawData, i8 iRawLength, Stz*
 }
 
 /*----------------------------------------------------------------------------*/
-/* get pointer to where column starts                                         */
+/* get address to where column datum starts                                   */
 /*----------------------------------------------------------------------------*/
-char* RowData::pColumn(char* aRowData, i8 iColumnNo)
+char* RowData::aColumnDatum(char* aRowData, i8 iColumnNo)
 {
-
   i8 iCurrentColumn = 0;
   
-  char* pOffset = (char*)(aRowData) + iColumnNo*C_COLUMN_OFFSET_SIZE;
-  unsigned char iOffset = *(pOffset);
+  char* aOffset = (char*)(aRowData) + iColumnNo*C_COLUMN_OFFSET_SIZE;
+  unsigned char iOffset = *(aOffset);
   
   // move to offset
-  char* sCursor = aRowData + iOffset;
+  char* aCursor = aRowData + iOffset;
 
-  return sCursor;
+  return aCursor;
 }
 
 /*----------------------------------------------------------------------------*/

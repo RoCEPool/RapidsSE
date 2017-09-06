@@ -97,11 +97,11 @@ void GroupBy::vApplyBuffer(EntryBuffer* pEntryBuffer)
     //    vTrace("\n"_Stz);
     
     // extract the order key (its the first field)
-    char* aCursor = RowData::pColumn(pEntry->aRow(), 0);
+    char* aCursor = RowData::aColumnDatum(pEntry->aRow(), 0);
     i8 iOrderKey = *((i8*)aCursor);
     
     // extract the quantity (its after the fifth '|')
-    aCursor = RowData::pColumn(pEntry->aRow(), 5);
+    aCursor = RowData::aColumnDatum(pEntry->aRow(), 5);
     i8 iQuantity = *((i8*)aCursor);
     
     // compute which group
@@ -135,11 +135,11 @@ void GroupBy::vApplyEntry(Entry* pLineItemEntry)
   //    vTrace("\n"_Stz);
   
   // extract the order key (its the first field)
-  char* aCursor = RowData::pColumn(pLineItemEntry->aRow(), 0);
+  char* aCursor = RowData::aColumnDatum(pLineItemEntry->aRow(), 0);
   i8 iOrderKey = *((i8*)aCursor);
   
   // extract the quantity (its after the fifth '|')
-  aCursor = RowData::pColumn(pLineItemEntry->aRow(), 5);
+  aCursor = RowData::aColumnDatum(pLineItemEntry->aRow(), 5);
   i8 iQuantity = *((i8*)aCursor);
   
   // compute which group
