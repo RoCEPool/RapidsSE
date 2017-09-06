@@ -408,8 +408,8 @@ void IndexData::vInsertEntries(EntryBuffer* pEntryBuffer, Entry* pRowEntry)
   
   //m_zLock.vGrabWrite();
   
-  for ( pRowEntry ; pRowEntry; pRowEntry = pEntryBuffer->pNextRow(pRowEntry)) {
-    vInsertEntry(pRowEntry);
+  for ( Entry* pEntry = pRowEntry ; pEntry; pEntry = pEntryBuffer->pNextRow(pEntry)) {
+    vInsertEntry(pEntry);
   }
   
   //m_zLock.vDropWrite();
