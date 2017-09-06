@@ -722,7 +722,7 @@ eEC RapidsSE_FetchNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
     VALIDATE_REFPOINTER("b"_Stz, ppRow);
     
     // get index buffer from seitf
-    EntryBuffer* pEntryBuffer = pSEitf->m_pIndexBuffer;
+    EntryBuffer* pEntryBuffer = pSEitf->m_pEntryBuffer;
     Entry* pEntry = nullptr;
 
     while (true) {
@@ -744,7 +744,7 @@ eEC RapidsSE_FetchNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
           pEntryBuffer = (EntryBuffer*)(pPtrVal->pPtr());
         
           // save the entry buffer in the SEitf
-          pSEitf->m_pIndexBuffer = pEntryBuffer;
+          pSEitf->m_pEntryBuffer = pEntryBuffer;
         
           // get first entry from buffer
           pEntry = pEntryBuffer->pFirstEntry();

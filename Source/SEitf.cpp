@@ -166,7 +166,7 @@ SEitf::SEitf(i8 iPartition)
   m_sErrorMsg       = aEC[m_eErrorCode];
   m_sResponse       = ""_Stz;
   m_aRowPtr         = nullptr;
-  m_pIndexBuffer    = nullptr;
+  m_pEntryBuffer    = nullptr;
   m_pAccessPath     = nullptr;
   m_pEntry          = nullptr;
   m_pCurrentTable   = nullptr;

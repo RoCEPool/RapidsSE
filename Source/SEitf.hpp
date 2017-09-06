@@ -30,7 +30,7 @@ namespace Interface
     Table*       m_pCurrentTable;
     Index*       m_pCurrentIndex;
     Stz*         m_aRowPtr;
-    EntryBuffer* m_pIndexBuffer;
+    EntryBuffer* m_pEntryBuffer;
     AccessPath*  m_pAccessPath;
   
     Entry* m_pEntry;

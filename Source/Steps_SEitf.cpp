@@ -385,7 +385,7 @@ void Task::vSEitfIndexBufferFetch(MP_Task mpTask)
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
-  mpTask->m_pDataStack->vPushObject(pSEitf->m_pIndexBuffer);
+  mpTask->m_pDataStack->vPushObject(pSEitf->m_pEntryBuffer);
   
   EXIT();
 }
@@ -404,14 +404,14 @@ void Task::vSEitfIndexBufferStore(MP_Task mpTask)
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
-  Object* pPtrIndexBuffer;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
+  Object* pPtrEntryBuffer;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrEntryBuffer) )
     THROW_INVALID_DSTACK("seitf.indexBuffer!"_Stz);
   
-  EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
-  ASSERT(nullptr == pIndexBuffer || CN_ENTRYBUFFER == pIndexBuffer->eClass());
+  EntryBuffer* pEntryBuffer = _pEntryBuffer(pPtrEntryBuffer);
+  ASSERT(nullptr == pEntryBuffer || CN_ENTRYBUFFER == pEntryBuffer->eClass());
   
-  pSEitf->m_pIndexBuffer = pIndexBuffer;
+  pSEitf->m_pEntryBuffer = pEntryBuffer;
   
   EXIT();
 }
