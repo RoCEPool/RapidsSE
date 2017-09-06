@@ -312,22 +312,30 @@ void Table::vInsertEntries(i8 iPartition, EntryBuffer* pEntryBuffer)
 { //# indexTuning
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
+  //----------------------------------------------------------------------------
+  // This function sis invokef when we insert rows into a table via a
+  // begin/insert/end and via the API's insert-select
+  
   ASSERT(iPartition < gpGrid->m_nSlots);
   
   // buffer should be temporary
   ASSERT(pEntryBuffer->eDurability() == BD_TEMPORARY);
   
-  // first append entries from buffer to the hidden index
-  Partition* pPartition = this->pPartition(iPartition);
-  IndexData* pHiddenIndexData = pPartition->pHiddenIndexData();
-  
   // buffer should have some entries
   ASSERT(pEntryBuffer->nEntries() > 1);
   
+  //----------------------------------------------------------------------------
   // (1) append the buffer entries into the hidden index
+  Partition* pPartition = this->pPartition(iPartition);
+  IndexData* pHiddenIndexData = pPartition->pHiddenIndexData();
+  
   EntryBuffer* pFirstBuffer;
   Entry* pFirstEntry;
   pHiddenIndexData->vAppendEntries(pEntryBuffer, &pFirstBuffer, &pFirstEntry);
+  
+  //----------------------------------------------------------------------------
+  // (2) insert entries from hidden index pFirstBuffer starting atpFirstEntry
+  // into all other indexes of the table
   
   // get no of indexes of the table
   IdxDataVec* pIdxDataVec = pPartition->pIdxDataVec();
@@ -349,12 +357,14 @@ void Table::vInsertEntries(i8 iPartition, EntryBuffer* pEntryBuffer)
     
     //pHiddenEntryBuffer->vDump();
     
+    // iterate through all the buffers of the hidden index starting from pFirstEntry
+    // in pFirstBuffer and insert corresponding entries in other indexes
     while (pHiddenEntryBuffer) {
       
-      // (2) insert entries from hidden index entryBuffer starting at pEntry into index
       pNewIndexData->vInsertEntries(pHiddenEntryBuffer, pEntry);
       pHiddenEntryBuffer = pHiddenEntryBuffer->pNextBuffer();
       
+      // get the next buffer and first entry in it
       if (pHiddenEntryBuffer)
         pEntry = pHiddenEntryBuffer->pFirstRow();
     }
