@@ -72,7 +72,7 @@ tp: gettingPartitions
 
   get_status ( str )
 
-  <OK>
+  not if <NIP+ERROR> else <SUCCESS> then
 ;
 
 /*============================================================================*/

@@ -27,6 +27,7 @@ create table part (
 	 P_RETAILPRICE       DECIMAL(15,2) NOT NULL,
 	 P_COMMENT           VARCHAR(23) NOT NULL
 );
+//CREATE INDEX part_idx1 ON part(p_brand);
 
 print "loading part.tbl..." ;
 ld part     "/tpch/part.tbl" ;

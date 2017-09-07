@@ -25,6 +25,7 @@ create table orders (
 	 O_SHIPPRIORITY    INTEGER NOT NULL,
 	 O_COMMENT         VARCHAR(79) NOT NULL
 );
+CREATE INDEX orders_idx1 ON orders(o_orderdate);
 
 print "loading orders.tbl..." ;
 ld orders   "/tpch/orders.tbl" ;

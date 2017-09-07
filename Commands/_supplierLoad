@@ -23,6 +23,8 @@ create table supplier (
 	 S_ACCTBAL       DECIMAL(15,2) NOT NULL,
 	 S_COMMENT       VARCHAR(101) NOT NULL
 );
+CREATE INDEX supplier_idx1 ON supplier(s_suppkey);
+CREATE INDEX supplier_idx2 ON supplier(s_nationkey);
 
 print "loading supplier.tbl..." ;
 
