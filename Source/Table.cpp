@@ -1238,6 +1238,7 @@ void Table::vBuildNewIndex(char* aSortArray, i8 nElements, i8 nElmSize,
   if (gxArguments.m_bVerbose)
     vTrace("-- Build New Index --------------\n"_Stz);
   
+  KeyWrk xKeyWrk;
   EntryVec xPriorVec;
   IdxColVec* pIdxColVec = pNewIndexData->pIndex()->pIdxColVec();
   
@@ -1262,12 +1263,9 @@ void Table::vBuildNewIndex(char* aSortArray, i8 nElements, i8 nElmSize,
 //           pRow);
 //    }
     
-//    for (i8 i_SortDatum = 0; i_SortDatum < nDatums; i_SortDatum++) {
-//      
-//    }
-
     // put key datum into a keywrk                    //# do we need to do this?
-    KeyWrk xKeyWrk((Key*)aSortKey,pIdxColVec);
+    //KeyWrk xKeyWrk((Key*)aSortKey,pIdxColVec);
+    vBuildKeyWrk(aSortKey,pIdxColVec,xKeyWrk);
     
     // append an entry into index structure
     pNewIndexData->vAppendEntry(xKeyWrk,xId,xPriorVec);
@@ -1286,6 +1284,34 @@ void Table::vBuildNewIndex(char* aSortArray, i8 nElements, i8 nElmSize,
     vTrace("vBuildNewIndex for index %s took %s\n"_Stz,
            pIndex->aIndexName(),
            sTimeMagnitude.aChar());
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* build a new key work from given sort key                                   */
+/*----------------------------------------------------------------------------*/
+void Table::vBuildKeyWrk(Key* aSortKey, IdxColVec* pIdxColVec, KeyWrk& rKeyWrk)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  rKeyWrk.vReset();
+  
+  char* aSortElm = (char*)aSortKey;
+  for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
+    
+    Column* pColumn = pIdxColVec->pGet(i_Column);
+    eDM eDatum = pColumn->eDatumType();
+    
+    if (DM_VCH == eDatum) {
+      Stz* aDatum = *(Stz**)aSortElm;
+      rKeyWrk.vAddStz(aDatum);
+    }
+    else {
+      w8 wDatum = *(w8*)aSortElm;
+      rKeyWrk.vAddWord(wDatum);
+    }
+    
+    aSortElm = pAdd<char*>(aSortElm,8);
   }
 }
 
