@@ -173,6 +173,22 @@ void KeyWrk::vAddDatum(ValWrk& xValWrk, Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add element to key                                                         */
+/*----------------------------------------------------------------------------*/
+void KeyWrk::vAddStz(Stz* aStz)
+{
+  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
+  
+  char* aDst = m_xWsp.aLatter();
+  char* aSrc = (char*)aStz;
+  i8 nSize = StrLib::iSize(aSrc);
+  
+  MemLib::vCopy(aDst,aSrc,nSize,CN_KEYWRK);
+  
+  m_xWsp.vTake(nSize);
+}
+
+/*----------------------------------------------------------------------------*/
 /* add word to key workspace                                                  */
 /*----------------------------------------------------------------------------*/
 void KeyWrk::vAddWord(w8 wWord)

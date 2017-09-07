@@ -101,6 +101,7 @@ namespace DBobjects
                         IndexData* pIndexData);
     void vBuildNewIndex(char* aSortArray, i8 nElements, i8 nElmSize,
                         IndexData* pIndexData);
+    void vBuildKeyWrk(Key* aSortElm, IdxColVec* pIdxColVec, KeyWrk& xKeyWrk);
   };
   
   Table* _pTable(void* aAddr);
