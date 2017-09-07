@@ -899,7 +899,7 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pNewIndexData,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the unsorted array
   
-  //vDumpSortArray(aSortRegionAddr,nHiddenEntries,iSortElmSize,pNewIndexData);
+  vDumpSortArray(aSortRegionAddr,nHiddenEntries,iSortElmSize,pNewIndexData);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sort the array
@@ -909,7 +909,7 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pNewIndexData,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the sorted array
   
-  //vDumpSortArray(aSortRegionAddr,nHiddenEntries,iSortElmSize,pNewIndexData);
+  vDumpSortArray(aSortRegionAddr,nHiddenEntries,iSortElmSize,pNewIndexData);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // build the new index
@@ -1120,87 +1120,94 @@ void Table::vSortTheArray(char* aSortArray, i8 nElements, i8 nElmSize,
 /*----------------------------------------------------------------------------*/
 /* dump the sort array                                                        */
 /*----------------------------------------------------------------------------*/
-void Table::vDumpSortArray(char* aSortArray, i8 nElements, i8 nElmSize,
-                           IndexData* pNewIndexData)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  Index* pIndex = pNewIndexData->pIndex();
-  eIF eIndexForm = pIndex->eIndexForm();
-  char* aSortElm = aSortArray;
-  
-  i8 iKeyDatum0;
-  i8 iKeyDatum1;
-  
-  vTrace("-- Sort Array -------------------\n"_Stz);
-         
-  for (i8 i_Elm = 0; i_Elm < nElements; i_Elm++) {
-    
-    if (IF_I8 == eIndexForm) {
-      iKeyDatum0 = *((i8*)aSortElm);
-      aSortElm = pAdd<char*>(aSortElm,sizeof(i8));
-    
-      Id xId = *((Id*)aSortElm);
-      aSortElm = pAdd<char*>(aSortElm,sizeof(Id));
-    
-      vTrace("[%lld] %lld.%lld : %lld\n"_Stz,
-             i_Elm,
-             xId.iBuffer(),
-             xId.iRow(),
-             iKeyDatum0);
-    }
-    else
-    if (IF_I8_I8 == eIndexForm) {
-      iKeyDatum0 = *((i8*)aSortElm);
-      aSortElm = pAdd<char*>(aSortElm,sizeof(i8));
-      iKeyDatum1 = *((i8*)aSortElm);
-      aSortElm = pAdd<char*>(aSortElm,sizeof(i8));
-      
-      Id xId = *((Id*)aSortElm);
-      aSortElm = pAdd<char*>(aSortElm,sizeof(Id));
-      
-      vTrace("[%lld] %lld.%lld : %lld,%lld\n"_Stz,
-             i_Elm,
-             xId.iBuffer(),
-             xId.iRow(),
-             iKeyDatum0,
-             iKeyDatum1);
-    }
-  }
-  
-  vTrace("---------------------------------\n"_Stz);
-}
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //void Table::vDumpSortArray(char* aSortArray, i8 nElements, i8 nElmSize,
 //                           IndexData* pNewIndexData)
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 //  
 //  Index* pIndex = pNewIndexData->pIndex();
-//  IdxColVec* pIdxColVec = pIndex->pIdxColVec();
 //  eIF eIndexForm = pIndex->eIndexForm();
 //  char* aSortElm = aSortArray;
 //  
-//  char* aSortKey;
-//  Id xId;
-//  s48K sSortKey;
-//  
-//  i8 nDatums = (nElmSize - sizeof(Id)) / sizeof(w8);
-//  ASSERT(pIdxColVec->nItems() == nDatums);
+//  i8 iKeyDatum0;
+//  i8 iKeyDatum1;
 //  
 //  vTrace("-- Sort Array -------------------\n"_Stz);
-//  
+//         
 //  for (i8 i_Elm = 0; i_Elm < nElements; i_Elm++) {
 //    
-//    vTrace("[%lld] %lld.%lld : %s\n"_Stz,
-//           i_Elm,
-//           xId.iBuffer(),
-//           xId.iRow(),
-//           sSortKey.aChar());
+//    if (IF_I8 == eIndexForm) {
+//      iKeyDatum0 = *((i8*)aSortElm);
+//      aSortElm = pAdd<char*>(aSortElm,sizeof(i8));
+//    
+//      Id xId = *((Id*)aSortElm);
+//      aSortElm = pAdd<char*>(aSortElm,sizeof(Id));
+//    
+//      vTrace("[%lld] %lld.%lld : %lld\n"_Stz,
+//             i_Elm,
+//             xId.iBuffer(),
+//             xId.iRow(),
+//             iKeyDatum0);
+//    }
+//    else
+//    if (IF_I8_I8 == eIndexForm) {
+//      iKeyDatum0 = *((i8*)aSortElm);
+//      aSortElm = pAdd<char*>(aSortElm,sizeof(i8));
+//      iKeyDatum1 = *((i8*)aSortElm);
+//      aSortElm = pAdd<char*>(aSortElm,sizeof(i8));
+//      
+//      Id xId = *((Id*)aSortElm);
+//      aSortElm = pAdd<char*>(aSortElm,sizeof(Id));
+//      
+//      vTrace("[%lld] %lld.%lld : %lld,%lld\n"_Stz,
+//             i_Elm,
+//             xId.iBuffer(),
+//             xId.iRow(),
+//             iKeyDatum0,
+//             iKeyDatum1);
+//    }
 //  }
 //  
 //  vTrace("---------------------------------\n"_Stz);
 //}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void Table::vDumpSortArray(char* aSortArray, i8 nElements, i8 nElmSize,
+                           IndexData* pNewIndexData)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  Index* pIndex = pNewIndexData->pIndex();
+  IdxColVec* pIdxColVec = pIndex->pIdxColVec();
+  eIF eIndexForm = pIndex->eIndexForm();
+  char* aSortElm = aSortArray;
+  
+  Id xId;
+  s48K sSortKey;
+  
+  i8 nDatums = (nElmSize - sizeof(Id)) / sizeof(w8);
+  ASSERT(pIdxColVec->nItems() == nDatums);
+  
+  vTrace("-- Sort Array -------------------\n"_Stz);
+  
+  for (i8 i_Elm = 0; i_Elm < nElements; i_Elm++) {
+    
+    Key* aSortKey = (Key*)aSortElm;
+    aSortElm = pAdd<char*>(aSortElm,nElmSize - sizeof(Id));
+    
+    Id xId = *((Id*)aSortElm);
+    aSortElm = pAdd<char*>(aSortElm,sizeof(Id));
+    
+    aSortKey->vSprintSortKey(sSortKey,pIdxColVec);
+    
+    vTrace("[%lld] %lld.%lld : %s\n"_Stz,
+           i_Elm,
+           xId.iBuffer(),
+           xId.iRow(),
+           sSortKey.aChar());
+  }
+  
+  vTrace("---------------------------------\n"_Stz);
+}
 
 /*----------------------------------------------------------------------------*/
 /* build the new index                                                        */

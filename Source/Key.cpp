@@ -604,9 +604,13 @@ void Key::vSprintSortKey(s48K& sVar, IdxColVec* pIdxColVec)
   char* aWspCursor = aWspArea();
 
   sVar = ""_Stz;
-  Stz* aStrCursor = sVar.aStr();
+  
+  char aLiteral[64];
   
   for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
+    
+    if (i_Column)
+      sVar.vAppend(',');
     
     Column* pColumn = pIdxColVec->pGet(i_Column);
     eDM eDatum = pColumn->eDatumType();
@@ -617,8 +621,10 @@ void Key::vSprintSortKey(s48K& sVar, IdxColVec* pIdxColVec)
     if (DM_VCH == eDatum)
       aDatum = *((char**)aDatum);
     
-    DtmLib::vSprint(eDatum,aStrCursor,(Stz*)aDatum,pColumn);
+    DtmLib::vSprint(eDatum,(Stz*)aLiteral,(Stz*)aDatum,pColumn);
+    sVar.vConcat((Stz*)aLiteral);
   }
+  
 }
 
 /*----------------------------------------------------------------------------*/
