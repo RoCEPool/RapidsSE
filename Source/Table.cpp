@@ -1016,16 +1016,31 @@ int DBobjects::iQsort_complex(void* aIndexData, const void* aArg1, const void* a
   
   char* aCursorThis = (char*)aArg1;
   char* aCursorThat = (char*)aArg2;
+
+  char* aDatumThis;
+  char* aDatumThat;
+
+  i8 nBytesThis;
+  i8 nBytesThat;
   
   for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
     
     Column* pColumn = pIdxColVec->pGet(i_Column);
+    eDM eDatum = pColumn->eDatumType();
     
-    i8 nBytesThis;
-    i8 nBytesThat;
-    
-    char* aDatumThis = Key::aEachDatum(pColumn,nBytesThis,&aCursorThis);
-    char* aDatumThat = Key::aEachDatum(pColumn,nBytesThat,&aCursorThat);
+    if (DM_VCH == eDatum) {
+      aDatumThis = *(char**)aCursorThis;
+      aCursorThis = pAdd<char*>(aCursorThis,8);
+      nBytesThis = StrLib::iSize(aDatumThis);
+      
+      aDatumThat = *(char**)aCursorThat;
+      aCursorThat = pAdd<char*>(aCursorThat,8);
+      nBytesThat = StrLib::iSize(aDatumThat);
+    }
+    else {
+      aDatumThis = Key::aEachDatum(pColumn,nBytesThis,&aCursorThis);
+      aDatumThat = Key::aEachDatum(pColumn,nBytesThat,&aCursorThat);
+    }
     
     iCmp = (int)pColumn->iCmp(aDatumThis,nBytesThis,
                               aDatumThat,nBytesThat);
@@ -1226,12 +1241,15 @@ void Table::vBuildNewIndex(char* aSortArray, i8 nElements, i8 nElmSize,
   EntryVec xPriorVec;
   IdxColVec* pIdxColVec = pNewIndexData->pIndex()->pIdxColVec();
   
+  i8 nDatums = (nElmSize - sizeof(Id)) / sizeof(w8);
+  ASSERT(pIdxColVec->nItems() == nDatums);
+  
   // step thru each element in the sort array
   char* aSortElm = aSortArray;
   for (i8 i_Elm = 0; i_Elm < nElements; i_Elm++) {
     
-    // get key datum
-    char* aKeyElm = aSortElm;
+    // get sort key
+    Key* aSortKey = (Key*)aSortElm;
     aSortElm = pAdd<char*>(aSortElm,nElmSize - sizeof(i8));
     
     // get id
@@ -1243,9 +1261,13 @@ void Table::vBuildNewIndex(char* aSortArray, i8 nElements, i8 nElmSize,
 //           i_Elm,
 //           pRow);
 //    }
+    
+//    for (i8 i_SortDatum = 0; i_SortDatum < nDatums; i_SortDatum++) {
+//      
+//    }
 
     // put key datum into a keywrk                    //# do we need to do this?
-    KeyWrk xKeyWrk((Key*)aKeyElm,pIdxColVec);
+    KeyWrk xKeyWrk((Key*)aSortKey,pIdxColVec);
     
     // append an entry into index structure
     pNewIndexData->vAppendEntry(xKeyWrk,xId,xPriorVec);
