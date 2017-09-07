@@ -2045,7 +2045,7 @@ bool SEitf::bInsertRow(Stz* aRow, i8 iLength)
   // get working buffer for partition row hashed into
   EntryBuffer* pRowBuffer = m_pRowBuffer[iSlot];
  
-  // insert row into working buffer
+  // append row into working buffer
   if (pRowBuffer->bAppendRow(m_pTxRef->iTxId(),aRow,iLength))
       return true;
 

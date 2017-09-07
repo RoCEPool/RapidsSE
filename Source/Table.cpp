@@ -313,7 +313,7 @@ void Table::vInsertEntries(i8 iPartition, EntryBuffer* pEntryBuffer)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   //----------------------------------------------------------------------------
-  // This function sis invokef when we insert rows into a table via a
+  // This function is invoked when we insert rows into a table via a
   // begin/insert/end and via the API's insert-select
   
   ASSERT(iPartition < gpGrid->m_nSlots);

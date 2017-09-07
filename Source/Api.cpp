@@ -131,7 +131,6 @@ eEC RapidsSE_BeginFetch(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable,
     
     vTrace("Table: %s Range: %s\n"_Stz, pTable, pRange);
     
-    vTrace("BeginFetch:%p\n"_Stz,pSEitf);
     // trace entry
     TRACE_ENTRY_P3(pCatalog, pSchema, pTable);
     
@@ -150,8 +149,6 @@ eEC RapidsSE_BeginFetch(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable,
     CF_TABLES("e"_Stz);
     
     // select * from pTable
-    vTrace("Spawning fetch\n"_Stz);
-    
     eResult = eExecuteRequest(pSEitf, "spnFetch"_Stz, pTable, pRange);
     CHECK_RESULT("f"_Stz);
     CHECK_RESPONSE("g"_Stz);
@@ -202,8 +199,11 @@ eEC RapidsSE_BeginInsert(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable
     VALIDATE_PARAM("c"_Stz, pSchema);
     VALIDATE_PARAM("d"_Stz, pTable);
     
+    // change directory to tables
+    CF_TABLES("e"_Stz);
+    
     // get a reference to the table
-    eResult = eExecuteRequest(pSEitf, "gettblNew"_Stz, pTable);
+    eResult = eExecuteRequest(pSEitf, "gettblNew"_Stz, (Stz*)pTable);
     CHECK_RESULT("f"_Stz);
     CHECK_RESPONSE("g"_Stz);
     
@@ -302,37 +302,36 @@ eEC RapidsSE_CreateIndex(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable
     VALIDATE_PARAM("b"_Stz, pCatalog);
     VALIDATE_PARAM("c"_Stz, pSchema);
     VALIDATE_PARAM("d"_Stz, pTable);
-    VALIDATE_PARAM("e"_Stz, pTable);
-    VALIDATE_PARAM("f"_Stz, pIndex);
+    VALIDATE_PARAM("e"_Stz, pIndex);
+    
+    // change directory to table
+    CF_TABLES("f"_Stz);
     
     // get pTable
     eResult = eExecuteRequest(pSEitf, "gettblNew"_Stz, pTable);
-    CHECK_RESPONSE("h"_Stz);
-    VALIDATE_TABLE("i"_Stz);
-    
-    // change folder to tables
-    CF_TABLES("j"_Stz);
+    CHECK_RESPONSE("g"_Stz);
+    VALIDATE_TABLE("h"_Stz);
     
     // create an index
     eResult = eExecuteRequest(pSEitf, "mkidx"_Stz, pTable, pIndex);
-    CHECK_RESULT("k"_Stz);
-    CHECK_RESPONSE("l"_Stz);
+    CHECK_RESULT("j"_Stz);
+    CHECK_RESPONSE("k"_Stz);
     
     // change folder to indexes
-    CF_INDEXES("m"_Stz);
+    CF_INDEXES("l"_Stz);
     
     eResult = eExecuteRequest(pSEitf, "getidx"_Stz, pIndex);
-    CHECK_RESULT("n"_Stz);
-    CHECK_RESPONSE("o"_Stz);
+    CHECK_RESULT("m"_Stz);
+    CHECK_RESPONSE("n"_Stz);
 
     if (bIsUnique) {
       // set unique index
       eResult = eExecuteRequest(pSEitf, "setidxunique"_Stz, pTable, pIndex, "true"_Stz);
-      CHECK_RESULT("q"_Stz);
-      CHECK_RESPONSE("r"_Stz);
+      CHECK_RESULT("o"_Stz);
+      CHECK_RESPONSE("p"_Stz);
     }
     
-    VALIDATE_TABLE("ff"_Stz);
+    VALIDATE_TABLE("q"_Stz);
     
     TRACE_EXIT("ea"_Stz);
     
