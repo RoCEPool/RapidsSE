@@ -132,6 +132,13 @@ void KeyWrk::vAddDatum(Values::StrVal* pStrVal, Column* pCol)
       nBytes = Bol::nCopy((char*)pDst,(char*)pSrc);
       break;
       
+    case CT_DATE: {
+      Dte xDate;
+      bool b = Dte::bExtract(&pSrc,&xDate,nullptr);
+      nBytes = Dte::nCopy((char*)pDst,(char*)&xDate);
+      break;
+    }
+      
     case CT_INTEGER:
       iValue = StrLib::iToI8(pSrc);
       nBytes = Int::nCopy(pDst,(void*)&iValue);

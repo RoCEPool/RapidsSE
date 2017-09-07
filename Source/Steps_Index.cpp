@@ -118,8 +118,10 @@ void Task::vIndexBuffer(MP_Task mpTask)
   KeyWrk xKeyWrk;
   
   StrVal* pStrVal = _pStrVal(xValWrk.pNestedValueSelf());
+  vTrace("Datum: %s\n"_Stz,pStrVal->aChar());
   
-  xKeyWrk.vAddDatum(pStrVal, pIndex->pIdxColVec()->pGet(0));
+  Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
+  xKeyWrk.vAddDatum(pStrVal,pColumn0);
   //xKeyWrk.vShow();
   
   EntryBuffer* pIndexBuffer = pIndexData->pPositionLevel(xKeyWrk, JC_AFTER, 0);

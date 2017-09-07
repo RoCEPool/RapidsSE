@@ -899,7 +899,7 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pNewIndexData,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the unsorted array
   
-  vDumpSortArray(aSortRegionAddr,nHiddenEntries,iSortElmSize,pNewIndexData);
+  //vDumpSortArray(aSortRegionAddr,nHiddenEntries,iSortElmSize,pNewIndexData);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sort the array
@@ -909,7 +909,7 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pNewIndexData,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the sorted array
   
-  vDumpSortArray(aSortRegionAddr,nHiddenEntries,iSortElmSize,pNewIndexData);
+  //vDumpSortArray(aSortRegionAddr,nHiddenEntries,iSortElmSize,pNewIndexData);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // build the new index
