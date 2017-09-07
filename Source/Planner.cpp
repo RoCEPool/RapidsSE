@@ -330,6 +330,7 @@ bool Planner::bIsRelationalOp(Token* pToken)
   
   if (pToken->bSame("<"_Stz)  ||
       pToken->bSame("<="_Stz) ||
+      pToken->bSame("=="_Stz) ||
       pToken->bSame(">="_Stz) ||
       pToken->bSame(">"_Stz)  )
     return true;
