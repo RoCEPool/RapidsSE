@@ -723,7 +723,7 @@ eEC RapidsSE_FetchNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
     // get index buffer from seitf
     EntryBuffer* pEntryBuffer = pSEitf->m_pEntryBuffer;
     Entry* pEntry = nullptr;
-
+    
     while (true) {
       
       // if no entry buffer , pop one off the queue
@@ -748,6 +748,12 @@ eEC RapidsSE_FetchNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
           // get first entry from buffer
           pEntry = pEntryBuffer->pFirstEntry();
         
+        if (pEntryBuffer->bIsLast()) {
+            pSEitf->m_nLastBuffersScanned++;
+            //vTrace("m_nLastBuffersScanned: %lld\n"_Stz, pSEitf->m_nLastBuffersScanned );
+        }
+        
+        
       }
       else {
         ASSERT(pSEitf->m_pEntry);
@@ -757,10 +763,10 @@ eEC RapidsSE_FetchNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
       }
       
       // if found an entry break or last buffer break out of loop
-      if (pEntry || (!pEntry && pEntryBuffer->bIsLast()))
+      if (pEntry || (!pEntry && pSEitf->m_nLastBuffersScanned == pSEitf->m_nLastBuffers))
         break;
       
-      // of no entry in buffer, get next buffer
+      // if no entry, get next buffer
       if (!pEntry)
         pEntryBuffer = nullptr;
     }

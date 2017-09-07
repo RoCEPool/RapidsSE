@@ -44,7 +44,8 @@ namespace Interface
     i8     m_iNextRequestId;
     i8     m_iRowPartition;
   
-  i8     m_nLastBuffers; // number of last buffers for fetch
+    i8     m_nLastBuffers;     // number of last buffers for fetch
+    i8     m_nLastBuffersScanned; // number of last buffers scanned
   
     EntryBuffer* m_pRowBuffer[C_SLOTS_PER_NODE]; // working row buffers
     GroupBy*     m_pGroupBy[C_SLOTS_PER_NODE];   // working group by

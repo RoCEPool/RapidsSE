@@ -178,7 +178,9 @@ SEitf::SEitf(i8 iPartition)
   m_iCurrentRequestId = 0;
   m_iNextRequestId    = -1;
   m_iRowPartition     = -1;
-  m_nLastBuffers    = 0;
+  m_nLastBuffers      = 0;
+  m_nLastBuffersScanned = 0;
+  
   SEitf* pSEitf = this;
   gpSEitfList->vAppend(pSEitf);
   

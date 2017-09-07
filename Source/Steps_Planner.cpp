@@ -306,15 +306,15 @@ void Task::vPlannerParseWhere(MP_Task mpTask)
   pPlanner->vParseWhere(sWhere);
   pPlanner->vParsePhrases();
   
-  i8 nLastBuffers;
-  
-  i8 nPhrases = pPlanner->nPhrases();
-  if (nPhrases)
-    nLastBuffers = pPlanner->nPhrases() * gxArguments.m_nSlots;
-  else
-    nLastBuffers = gxArguments.m_nSlots;
-  
-  mpTask->m_pSEitf->vLastBuffers(nLastBuffers);
+//  i8 nLastBuffers;
+//  
+//  i8 nPhrases = pPlanner->nPhrases();
+//  if (nPhrases)
+//    nLastBuffers = pPlanner->nPhrases() * gxArguments.m_nSlots;
+//  else
+//    nLastBuffers = gxArguments.m_nSlots;
+//  
+//  mpTask->m_pSEitf->vLastBuffers(nLastBuffers);
   
   EXIT();
 }

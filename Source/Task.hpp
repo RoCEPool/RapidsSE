@@ -1019,6 +1019,7 @@ namespace Tasks
     static void vSEitfIndexFetch(MP_Task mpTask);
     static void vSEitfIndexStore(MP_Task mpTask);
     static void vSEitfLastBuffersFetch(MP_Task mpTask);
+    static void vSEitfLastBuffersStore(MP_Task mpTask);
     static void vSEitfMetadataFetch(MP_Task mpTask);
     static void vSEitfMetadataStore(MP_Task mpTask);
     static void vSEitfPartitionFetch(MP_Task mpTask);

@@ -386,7 +386,7 @@ assert::stack_4
   CN_STRVAL assert::class_1
   CN_INTVAL assert::class_2
 
-  0 0 0 locals| bSinglePartition pPlanner pTable sTableNm sWhere bGroupBy |
+  0 0 0 0 locals| pSeitf bSinglePartition pPlanner pTable sTableNm sWhere bGroupBy |
 
   pIdxSelectTimer timer.start
 
@@ -398,6 +398,9 @@ assert::stack_4
   //
   // task will have an seitf and a dicStack path, but seitf has no table
   //
+
+  // get the seitf
+  task::this task.seitf@ to pSeitf
 
   // assert no seitf.table
   task::this task.seitf@ seitf.table@ not assert
@@ -429,8 +432,13 @@ assert::stack_4
   pPlanner assert
   true to bSinglePartition
 
+  // set the no of last buffers to no pf phrases in plan
+  pPlanner planner.phrases@ pSeitf seitf.lastBuffers!
+
   // spawn select task for the fetch
   //0 locals| i_Phrase |
+
+  pPlanner planner.phrases@ .
 
   pPlanner planner.phrases@ 0
   do
@@ -501,6 +509,9 @@ assert::stack_4
 
   // assert we have a plan
   pPlanner assert
+
+  // set the no of last buffers to no pf phrases in plan
+  pPlanner planner.phrases@ grid.slots * pSeitf seitf.lastBuffers!
 
   // spawn select task for the fetch
   //0 locals| i_Phrase |
