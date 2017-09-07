@@ -596,6 +596,32 @@ void Key::vShow(IdxColVec* pIdxColVec)
 }
 
 /*----------------------------------------------------------------------------*/
+/* sprint sort key into given string variable                                 */
+/*----------------------------------------------------------------------------*/
+void Key::vSprintSortKey(s48K& sVar, IdxColVec* pIdxColVec)
+{
+  i8 nBytes;
+  char* aWspCursor = aWspArea();
+
+  sVar = ""_Stz;
+  Stz* aStrCursor = sVar.aStr();
+  
+  for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
+    
+    Column* pColumn = pIdxColVec->pGet(i_Column);
+    eDM eDatum = pColumn->eDatumType();
+    
+    char* aDatum = aWspCursor;
+    aWspCursor = pAdd<char*>(aWspCursor,sizeof(w8));
+    
+    if (DM_VCH == eDatum)
+      aDatum = *((char**)aDatum);
+    
+    DtmLib::vSprint(eDatum,aStrCursor,(Stz*)aDatum,pColumn);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get wsp area                                                               */
 /*----------------------------------------------------------------------------*/
 char* Key::aWspArea(void)

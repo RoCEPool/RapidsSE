@@ -1170,6 +1170,37 @@ void Table::vDumpSortArray(char* aSortArray, i8 nElements, i8 nElmSize,
   
   vTrace("---------------------------------\n"_Stz);
 }
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//void Table::vDumpSortArray(char* aSortArray, i8 nElements, i8 nElmSize,
+//                           IndexData* pNewIndexData)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+//  
+//  Index* pIndex = pNewIndexData->pIndex();
+//  IdxColVec* pIdxColVec = pIndex->pIdxColVec();
+//  eIF eIndexForm = pIndex->eIndexForm();
+//  char* aSortElm = aSortArray;
+//  
+//  char* aSortKey;
+//  Id xId;
+//  s48K sSortKey;
+//  
+//  i8 nDatums = (nElmSize - sizeof(Id)) / sizeof(w8);
+//  ASSERT(pIdxColVec->nItems() == nDatums);
+//  
+//  vTrace("-- Sort Array -------------------\n"_Stz);
+//  
+//  for (i8 i_Elm = 0; i_Elm < nElements; i_Elm++) {
+//    
+//    vTrace("[%lld] %lld.%lld : %s\n"_Stz,
+//           i_Elm,
+//           xId.iBuffer(),
+//           xId.iRow(),
+//           sSortKey.aChar());
+//  }
+//  
+//  vTrace("---------------------------------\n"_Stz);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* build the new index                                                        */

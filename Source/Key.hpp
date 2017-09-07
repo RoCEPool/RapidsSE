@@ -66,6 +66,8 @@ namespace DBobjects
     bool bJuxtaSame(Key* pKey, IdxColVec* pColVec, bool& bIsEqual);
     bool bJuxtaAfter(Key* pKey, IdxColVec* pColVec, bool& bIsEqual);
   
+    void vSprintSortKey(s48K& sBuff, IdxColVec* pColVec);
+  
     char* aWspArea(void);
     Stz*  aWspStr(void);
   };
