@@ -1013,6 +1013,7 @@ int DBobjects::iQsort_complex(void* aIndexData, const void* aArg1, const void* a
   IdxColVec* pIdxColVec = pIndex->pIdxColVec();
   
   int iCmp = 0;
+  i8 iCompare = 0;
   
   char* aCursorThis = (char*)aArg1;
   char* aCursorThat = (char*)aArg2;
@@ -1042,8 +1043,21 @@ int DBobjects::iQsort_complex(void* aIndexData, const void* aArg1, const void* a
       aDatumThat = Key::aEachDatum(pColumn,nBytesThat,&aCursorThat);
     }
     
-    iCmp = (int)pColumn->iCmp(aDatumThis,nBytesThis,
+    i8 iCompare = pColumn->iCmp(aDatumThis,nBytesThis,
                               aDatumThat,nBytesThat);
+    
+    if (iCompare < 0)
+      iCmp = -1;
+    else if (iCompare > 0)
+      iCmp = 1;
+    else
+      iCmp = 0;
+    
+    //s256 s1,s2;
+    //Dte::vSprint(s1, (Stz*)aDatumThis);
+    //Dte::vSprint(s2, (Stz*)aDatumThat);
+    //vTrace("%lld %s %lld %s %lld %d\n"_Stz, aDatumThis, s1.aChar(), aDatumThat, s2.aChar(),iCompare, iCmp);
+    
     if (iCmp)
       break;
   }
