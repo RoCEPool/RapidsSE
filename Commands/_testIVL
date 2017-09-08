@@ -20,6 +20,9 @@ ld jidxIvl "../JTEST/jidxIvl.csv" ;
 //anidx jidxIvl idx_ivl ;
 dumpidx jidxIvl idx_ivl ;
 
+fetch jidxIvl "jidx_ivl 80.0 >=";
+
+
 /*
 print "\nSelecting rows with key >= 3 using idx1 ...\n" ;
 lwrselidx jidx idx1 3 ;
