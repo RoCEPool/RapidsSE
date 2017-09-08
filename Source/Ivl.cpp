@@ -399,9 +399,13 @@ i8 Ivl::iCmp(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   i8 iA = *(i8*)aArgA;
   i8 iB = *(i8*)aArgB;
   
-  i8 iCmp = iA - iB;
+  if (iA > iB)
+    return 1;
   
-  return iCmp;
+  if (iA < iB)
+    return -1;
+  
+  return 0;
 }
 
 /*============================================================================*/

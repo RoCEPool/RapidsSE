@@ -11,11 +11,11 @@ namespace Datums
   
   protected:
     struct {
-      u8 m_uSecond : 54 ; // 0..1.8E16
       u8 m_uMilli  : 10 ; // 0..1023
-      //           ---
-      //            64
-      //           ===
+      u8 m_uSecond : 54 ; // 0..1.8E16
+      //            ---
+      //             64
+      //            ===
     } x;
   
   public:

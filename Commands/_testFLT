@@ -22,6 +22,8 @@ ld jidxFlt "../JTEST/jidxFlt.csv" ;
 //anidx jidxFlt idx_flt ;
 dumpidx jidxFlt idx_flt ;
 
+fetch jidxFlt "jidx_flt 1080.0 >=";
+
 /*
 print "\nSelecting rows with key >= 3 using idx1 ...\n" ;
 lwrselidx jidx idx1 3 ;

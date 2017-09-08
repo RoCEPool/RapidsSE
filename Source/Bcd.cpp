@@ -214,15 +214,28 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect trailing portion (after '.')
   
+//  if ('.' == **aaSrc) {
+//    (*aaSrc)++; // skip '.'
+//    i8 iPrecision = pColumn ? pColumn->iColumnPrecision() : 15;
+//    while (**aaSrc && '|' != **aaSrc && ',' != **aaSrc
+//           && StrLib::bIsDigit(**aaSrc) && iPrecision--) {
+//      iResult = iResult * 10 + StrLib::iDigitToI8(**aaSrc);
+//      (*aaSrc)++;
+//    }
+//  }
+
+  i8 iPrecision = pColumn->iColumnPrecision();
   if ('.' == **aaSrc) {
     (*aaSrc)++; // skip '.'
-    i8 iPrecision = pColumn ? pColumn->iColumnPrecision() : 15;
     while (**aaSrc && '|' != **aaSrc && ',' != **aaSrc
            && StrLib::bIsDigit(**aaSrc) && iPrecision--) {
       iResult = iResult * 10 + StrLib::iDigitToI8(**aaSrc);
       (*aaSrc)++;
     }
   }
+  
+  while (iPrecision--)
+    iResult = iResult * 10 + 0;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute final result
