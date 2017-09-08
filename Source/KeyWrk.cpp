@@ -144,6 +144,13 @@ void KeyWrk::vAddDatum(Values::StrVal* pStrVal, Column* pCol)
       nBytes = Int::nCopy(pDst,(void*)&iValue);
       break;
       
+    case DM_FLT: {
+      Flt xFloat;
+      bool b = Flt::bExtract(&pSrc,&xFloat,nullptr);
+      nBytes = Flt::nCopy(pDst,(void*)&xFloat);
+      break;
+    }
+      
     case DM_TME: {
       Tme xTime;
       bool b = Tme::bExtract(&pSrc,&xTime,nullptr);
