@@ -144,6 +144,13 @@ void KeyWrk::vAddDatum(Values::StrVal* pStrVal, Column* pCol)
       nBytes = Int::nCopy(pDst,(void*)&iValue);
       break;
       
+    case CT_TIMESTAMP: {
+      Tsp xTimestamp;
+      bool b = Tsp::bExtract(&pSrc,&xTimestamp,nullptr);
+      nBytes = Tsp::nCopy((char*)pDst,(char*)&xTimestamp);
+      break;
+    }
+      
     case CT_VARCHAR:
       nBytes = Vch::nCopy(pDst,pSrc);
       break;
