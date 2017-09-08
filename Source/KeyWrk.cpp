@@ -125,7 +125,7 @@ void KeyWrk::vAddDatum(Values::StrVal* pStrVal, Column* pCol)
   char* pSrc = (char*)pStrVal->aStr();
   i8 iValue;
   
-  switch(pCol->eColumnType()) {
+  switch(pCol->eDatumType()) {
       
     case DM_BOL:
       iValue = StrLib::iToI8(pSrc);
