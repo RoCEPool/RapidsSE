@@ -58,7 +58,7 @@ void Task::vAddPrimitives_Word(void)
   vAddPrimitive("see"_Stz,             &vSee,              false);
   vAddPrimitive(";"_Stz,               &vSemicolon,        true );
   vAddPrimitive("subDic"_Stz,          &vSubDic,           true );
-  vAddPrimitive("'"_Stz,               &vTick,             true );
+  vAddPrimitive("tick"_Stz,            &vTick,             true );
   vAddPrimitive("word.dump"_Stz,       &vWordDump,         false);
   vAddPrimitive("word.forget"_Stz,     &vWordForget,       false);
   vAddPrimitive("word.immediate@"_Stz, &vWordImmediateGet, false);

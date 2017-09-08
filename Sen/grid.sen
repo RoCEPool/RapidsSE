@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : grid ;
 
-: isGrid word.kind@ ' grid eql ;
+: isGrid word.kind@ tick grid eql ;
 
 : <SUCCESS_RESULT> grid.thisNode@ true ( v n# true ) ;
 
@@ -202,7 +202,7 @@ tp: printResult
   word.this >body object.magic!
   CN_GRID word.this >body object.class!
   word.this >body grid.init
-  ' grid word.this word.kind!
+  tick grid word.this word.kind!
   true word.this >body object.wordbody!
   does>
 ;
@@ -218,7 +218,7 @@ tp: printResult
   word.this >body object.magic!
   CN_GRID word.this >body object.class!
   word.this >body grid.init
-  ' grid word.this word.kind!
+  tick grid word.this word.kind!
   true word.this >body object.wordbody!
   word.this
   does>

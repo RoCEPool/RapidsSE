@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _testTSP -- test for yimestamp                                             */
+/* _testTSP -- test for timestamp                                             */
 /*============================================================================*/
 
 create table jidxTsp (
@@ -24,7 +24,7 @@ ld jidxTsp "../JTEST/jidxTsp.csv" ;
 //anidx jidxTsp idx_tsp ;
 dumpidx jidxTsp idx_tsp ;
 
-fetch jidxTsp "jidx_tsp '1989-01-01T00:00:00' >=";
+fetch jidxTsp "jidx_tsp '1989-01-01 00:00:00' >=";
 
 /*
 print "\nSelecting rows with key >= 3 using idx1 ...\n" ;

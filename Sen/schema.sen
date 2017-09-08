@@ -6,13 +6,13 @@
 
 : schema ;
 
-//: makeSchemas pathPush "schemas" :dic ' folder swap execute dic.kind! pathDrop ;
+//: makeSchemas pathPush "schemas" :dic tick folder swap execute dic.kind! pathDrop ;
 
 
 : :schema
     :dic
-         //dup ' schema swap word.kind!
-         dup ' schema swap execute dic.kind!
+         //dup tick schema swap word.kind!
+         dup tick schema swap execute dic.kind!
 ;
 
 : withinSchemas
@@ -26,8 +26,8 @@
 
 : checkIsSchema ( word )
 
-    dup word.kind@ ' folder eql not if EC_NOT_A_FOLDER false exit then
-    dup execute dic.kind@ ' schema eql if true exit then
+    dup word.kind@ tick folder eql not if EC_NOT_A_FOLDER false exit then
+    dup execute dic.kind@ tick schema eql if true exit then
     EC_NOT_A_SCHEMA false
 ;
 

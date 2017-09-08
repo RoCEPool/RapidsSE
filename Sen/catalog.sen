@@ -8,8 +8,8 @@
 
 : :catalog
     :dic
-         //dup ' catalog swap word.kind!
-         dup ' catalog swap execute dic.kind!
+         //dup tick catalog swap word.kind!
+         dup tick catalog swap execute dic.kind!
 ;
 
 : withinCatalogs
@@ -23,8 +23,8 @@
 
 : checkIsCatalog ( word )
 
-    dup word.kind@ ' folder eql not if EC_NOT_A_FOLDER false exit then
-    dup execute dic.kind@ ' catalog eql if true exit then
+    dup word.kind@ tick folder eql not if EC_NOT_A_FOLDER false exit then
+    dup execute dic.kind@ tick catalog eql if true exit then
     EC_NOT_A_CATALOG false
 ;
 

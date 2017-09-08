@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : folder ;
 
-: isFolder word.kind@ ' folder eql ;
+: isFolder word.kind@ tick folder eql ;
 
 /*----------------------------------------------------------------------------*/
 /* create a dictionary using name from input stream (doesnt leave dic on stk) */
@@ -22,7 +22,7 @@ diclock.grabwrite
   sizeof_dic allot
   word.this >body object.magic!
   CN_DIC word.this >body object.class!
-  ' folder word.this word.kind!
+  tick folder word.this word.kind!
   word.this >body dic.init
   true word.this >body object.wordbody!
 diclock.dropwrite
@@ -40,7 +40,7 @@ diclock.grabwrite
   sizeof_dic allot
   word.this >body object.magic!
   CN_DIC word.this >body object.class!
-  ' folder word.this word.kind!
+  tick folder word.this word.kind!
   word.this >body dic.init
   true word.this >body object.wordbody!
   word.this
@@ -51,7 +51,7 @@ diclock.dropwrite
 : checkIsDic ( word )
 
   dup not if drop EC_NO_SUCH_FOLDER false exit then
-  dup word.kind@ ' folder eql if true exit then
+  dup word.kind@ tick folder eql if true exit then
   drop
   EC_NOT_A_FOLDER false
 ;

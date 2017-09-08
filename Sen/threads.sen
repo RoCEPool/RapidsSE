@@ -11,7 +11,7 @@
 
 ( tasklist will already exist )
 
-( threadList holds all thread's )
+( threadList holds all threads )
 threadList: threadList
 "threadlist" find execute threadlist.global!
 

@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : file ;
 
-: isFile word.kind@ ' file eql ;
+: isFile word.kind@ tick file eql ;
 
 /*----------------------------------------------------------------------------*/
 /* create a file using name from input stream (doesnt leave file on stk)      */
@@ -21,7 +21,7 @@
   sizeof_file allot
   word.this >body object.magic!
   CN_FILE word.this >body object.class!
-  ' file word.this word.kind!
+  tick file word.this word.kind!
   word.this >body file.init
   true word.this >body object.wordbody!
   does>
@@ -37,7 +37,7 @@
   sizeof_file allot
   word.this >body object.magic!
   CN_FILE word.this >body object.class!
-  ' file word.this word.kind!
+  tick file word.this word.kind!
   word.this >body file.init
   true word.this >body object.wordbody!
   word.this

@@ -14,7 +14,7 @@
 /*----------------------------------------------------------------------------*/
 : operator immediate
 
-  ' opKind word.this word.kind!
+  tick opKind word.this word.kind!
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -33,9 +33,9 @@
   // append the name of the word as a pushValue in the symbolic arg
   encodePushValue
 
-  ' find compile,
-  ' execute compile,
-  ' exit compile,
+  tick find compile,
+  tick execute compile,
+  tick exit compile,
 ;
 
 /*----------------------------------------------------------------------------*/

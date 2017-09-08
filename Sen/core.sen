@@ -13,7 +13,7 @@
 
   encodePushValue
 
-  ' tracepoint compile,
+  tick tracepoint compile,
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -25,7 +25,7 @@
 
   encodePushValue
 
-  ' tracepoint compile,
+  tick tracepoint compile,
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -33,12 +33,12 @@
 /*----------------------------------------------------------------------------*/
 : snap0: immediate
 
-  ' reg.push compile,
-  ' bp::snapshot compile,
+  tick reg.push compile,
+  tick bp::snapshot compile,
 
-  ' >valset compile,
+  tick >valset compile,
 
-  ' >reg0 compile,
+  tick >reg0 compile,
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -46,15 +46,15 @@
 /*----------------------------------------------------------------------------*/
 : snap1: immediate
 
-  ' bp::snapshot compile,
+  tick bp::snapshot compile,
 
-  ' >valset compile,
+  tick >valset compile,
 
-  ' >reg1 compile,
-  ' reg1 compile,
-  ' reg0 compile,
-  ' vector.diff compile,
-  ' reg.pop compile,
+  tick >reg1 compile,
+  tick reg1 compile,
+  tick reg0 compile,
+  tick vector.diff compile,
+  tick reg.pop compile,
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -184,7 +184,7 @@
 /* initialise OFs counter                                                     */
 /*----------------------------------------------------------------------------*/
 0 CONSTANT CASE
-true ' CASE word.immediate!
+true tick CASE word.immediate!
 
 /*----------------------------------------------------------------------------*/
 /* OF block                                                                   */

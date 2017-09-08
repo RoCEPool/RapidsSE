@@ -803,11 +803,16 @@ eTN Tokeniser::eParseSpecialString(char* wToken)
   
   ASSERT(bStartSpecialString());
   
-  // skip the leading '"'
+  char cStartQuote = m_cParsedChar;
+  
+  // skip the leading '"' or '\''
   vGetNext();
   
   // collect the chars in the string
-  while ( ! bEndSpecialString() ) {
+  //while ( ! bEndSpecialString() ) {
+  while ( m_cParsedChar != cStartQuote ) {
+  
+    //vTrace(">>%c<<\n"_Stz,m_cParsedChar);
     
 /*
     // test for \n
@@ -982,7 +987,7 @@ bool Tokeniser::bStartSpecialString(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  if ('"' == m_cParsedChar)
+  if ('"' == m_cParsedChar || '\'' == m_cParsedChar)
     return true;
   
   return false;
@@ -995,7 +1000,7 @@ bool Tokeniser::bEndSpecialString(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  if ('"' == m_cParsedChar)
+  if ('"' == m_cParsedChar || '\'' == m_cParsedChar)
     return true;
   
   return false;

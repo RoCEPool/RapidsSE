@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : node ;
 
-: isNode word.kind@ ' node eql ;
+: isNode word.kind@ tick node eql ;
 
 /*----------------------------------------------------------------------------*/
 /* create a node using name from input stream                                 */
@@ -22,7 +22,7 @@
   word.this >body object.magic!
   CN_NODE word.this >body object.class!
   word.this >body node.init
-  ' node word.this word.kind!
+  tick node word.this word.kind!
   true word.this >body object.wordbody!
   does>
 ;
@@ -38,7 +38,7 @@
   word.this >body object.magic!
   CN_NODE word.this >body object.class!
   word.this >body node.init
-  ' node word.this word.kind!
+  tick node word.this word.kind!
   true word.this >body object.wordbody!
   word.this
   does>

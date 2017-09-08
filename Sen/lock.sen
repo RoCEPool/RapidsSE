@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : lock ;
 
-: isLock word.kind@ ' lock eql ;
+: isLock word.kind@ tick lock eql ;
 
 /*----------------------------------------------------------------------------*/
 /* create a lock using name from input stream (doesnt leave lock on stk)      */
@@ -21,7 +21,7 @@
   sizeof_lock allot
   word.this >body object.magic!
   CN_LOCK word.this >body object.class!
-  ' lock word.this word.kind!
+  tick lock word.this word.kind!
   word.this >body lock.init
   true word.this >body object.wordbody!
   does>
@@ -37,7 +37,7 @@
   sizeof_lock allot
   word.this >body object.magic!
   CN_LOCK word.this >body object.class!
-  ' lock word.this word.kind!
+  tick lock word.this word.kind!
   word.this >body lock.init
   true word.this >body object.wordbody!
   word.this

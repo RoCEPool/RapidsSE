@@ -13,7 +13,7 @@
   sizeof_queue allot
   word.this >body object.magic!
   CN_QUEUE word.this >body object.class!
-  ' queue word.this word.kind!
+  tick queue word.this word.kind!
   word.this >body queue.init
   true word.this >body object.wordbody!
   does> 
@@ -26,7 +26,7 @@
   sizeof_queue allot
   word.this >body object.magic!
   CN_QUEUE word.this >body object.class!
-  ' queue word.this word.kind!
+  tick queue word.this word.kind!
   word.this >body queue.init
   true word.this >body object.wordbody!
   word.this

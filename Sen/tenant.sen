@@ -8,8 +8,8 @@
 
 : :tenant
     :dic
-         //dup ' tenant swap word.kind!
-         dup ' tenant swap execute dic.kind!
+         //dup tick tenant swap word.kind!
+         dup tick tenant swap execute dic.kind!
 ;
 
 : withinTenants
@@ -23,8 +23,8 @@
 /*
 : checkIsTenant ( word )
 
-    dup word.kind@ ' folder eql if true exit then
-    dup execute dic.kind@ ' tenant eql if true exit then
+    dup word.kind@ tick folder eql if true exit then
+    dup execute dic.kind@ tick tenant eql if true exit then
     drop
     EC_NOT_A_TENANT false
 ;
@@ -35,8 +35,8 @@
 /*----------------------------------------------------------------------------*/
 : checkIsTenant ( word )
 
-  dup word.kind@ ' folder eql not if EC_NOT_A_FOLDER false exit then
-  dup execute dic.kind@ ' tenant eql if true exit then
+  dup word.kind@ tick folder eql not if EC_NOT_A_FOLDER false exit then
+  dup execute dic.kind@ tick tenant eql if true exit then
   EC_NOT_A_TENANT false
 ;
 

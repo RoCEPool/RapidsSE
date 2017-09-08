@@ -9,10 +9,10 @@
 "txMap.sen" include
 "txRef.sen" include
 
-( txMap map tx id's to tx's )
+// txMap map tx id's to tx's
 txMap: txMap
 
-( txCollection hold all tx's )
+// txCollection hold all tx's 
 txCollection: txCollection
 
 /*============================================================================*/

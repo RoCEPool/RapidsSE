@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : table ;
 
-//: makeTables pathPush "tables" :dic ' folder swap execute dic.kind! pathDrop ;
+//: makeTables pathPush "tables" :dic tick folder swap execute dic.kind! pathDrop ;
 
 /*----------------------------------------------------------------------------*/
 /* make a tables folder under given named schema                              */
@@ -40,7 +40,7 @@
 ;
 
 
-: isTable word.kind@ ' table eql ;
+: isTable word.kind@ tick table eql ;
 
 /*----------------------------------------------------------------------------*/
 /* create a table using name from input stream (doesnt leave table on stk)    */
@@ -54,7 +54,7 @@
   CN_TABLE word.this >body object.class!
   word.this >body table.init
   true word.this >body object.wordbody!
-  ' table word.this word.kind!
+  tick table word.this word.kind!
   does>
 ;
 
@@ -70,7 +70,7 @@
   CN_TABLE word.this >body object.class!
   word.this >body table.init
   true word.this >body object.wordbody!
-  ' table word.this word.kind!
+  tick table word.this word.kind!
   word.this
   does>
 ;
@@ -146,7 +146,7 @@
   dup ( "<tableNm>" ^w:table ^w:table )
 
   word.kind@ ( "<tableNm>" ^w:table ^word )
-  ' table ( "<tableNm>" ^w:table ^word ^word )
+  tick table ( "<tableNm>" ^w:table ^word ^word )
   eql ( "<tableNm>" ^w:table bool )
   if
     drop ( "<tableNm>" )
