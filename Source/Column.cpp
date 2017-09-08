@@ -292,7 +292,7 @@ void Column::vSet(Stz* aDefinition)
   }
   else if (StrLib::bSame(aBuffer,"char")) {
     m_eColumnType = CT_CHAR;
-    m_eDatumType = DM_CHR;
+    m_eDatumType = DM_VCH;
   }
   else if (StrLib::bSame(aBuffer,"date")) {
     m_eColumnType = CT_DATE;
@@ -384,45 +384,45 @@ char* Column::aValue(i8& nBytes, char** aaCursor)
   Stz* aElem;
   char* aValue = *aaCursor;
   
-  switch (m_eColumnType) {
+  switch (m_eDatumType) {
       
-    case CT_BOOLEAN:
+    case DM_BOL:
       nBytes = sizeof(i8);
       break;
       
-    case CT_DATE:
+    case DM_DTE:
       nBytes = sizeof(i8);
       break;
       
-    case CT_DECIMAL:
+    case DM_BCD:
       nBytes = sizeof(i8);
       break;
       
-    case CT_FLOAT:
+    case DM_FLT:
       nBytes = sizeof(d8);
       break;
       
-    case CT_INTEGER:
+    case DM_INT:
       nBytes = sizeof(i8);
       break;
       
-    case CT_INTERVAL:
+    case DM_IVL:
       nBytes = sizeof(i8);
       break;
       
-    case CT_TIME:
+    case DM_TME:
       nBytes = sizeof(i8);
       break;
       
-    case CT_TIMESTAMP:
+    case DM_TSP:
       nBytes = sizeof(i8);
       break;
       
-    case CT_VARBINARY:
+    case DM_VBN:
       NEVER_REACH;
       break;
-      
-    case CT_VARCHAR:
+    
+    case DM_VCH:
       aElem = (Stz*)aValue;
       nBytes = 0;
       

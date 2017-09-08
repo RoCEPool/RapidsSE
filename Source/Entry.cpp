@@ -491,51 +491,45 @@ void Entry::vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
     // get the column value from the row for the iColumnNo
     char* pDst = (char*)RowData::aColumnDatum(aRow(), iColumnNo);
     
-    switch(pColumn->eColumnType()) {
+    switch(pColumn->eDatumType()) {
         
-      case CT_BOOLEAN: {
+      case DM_BOL: {
         Bol xBol = *((Bol*)pDst);
         xValWrk = xBol;
         break;
       }
         
-      case CT_CHAR: {
-        s = (Stz*)pDst;
-        xValWrk = s;
-        break;
-      }
-        
-      case CT_DATE: {
+      case DM_DTE: {
         Dte xDte = *((Dte*)pDst);
         xValWrk = xDte;
         break;
       }
         
-      case CT_DECIMAL: {
+      case DM_BCD: {
         Bcd xBcd = *((Bcd*)pDst);
         xValWrk = xBcd;
         break;
       }
         
-      case CT_FLOAT: {
+      case DM_FLT: {
         Flt xFlt = *((Flt*)pDst);
         xValWrk = xFlt.dAsD8();
         break;
       }
         
-      case CT_INTEGER: {
+      case DM_INT: {
         Int xInt = *((Int*)pDst);
         xValWrk = xInt.iAsI8();
         break;
       }
         
-      case CT_INTERVAL: {
+      case DM_IVL: {
         Ivl xIvl = *((Ivl*)pDst);
         xValWrk = xIvl;
         break;
       }
         
-      case CT_TIME: {
+      case DM_TME: {
         Tme xTme = *((Tme*)pDst);
         //bool b = Tme::bExtract(pDst,&xTme,iLength,pColumn);
         //ASSERT(b);
@@ -543,7 +537,7 @@ void Entry::vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
         break;
       }
         
-      case CT_TIMESTAMP: {
+      case DM_TSP: {
         Tsp xTsp = *((Tsp*)pDst);
         //bool b = Tsp::bExtract(pDst,&xTsp,iLength,pColumn);
         //ASSERT(b);
@@ -551,12 +545,12 @@ void Entry::vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
         break;
       }
         
-      case CT_VARBINARY: {
+      case DM_VBN: {
         NEVER_REACH;
         break;
       }
         
-      case CT_VARCHAR: {
+      case DM_VCH: {
         s = (Stz*)pDst;
         xValWrk = s;
         break;
@@ -594,49 +588,45 @@ void Entry::vExtractSortKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
     char* aColumnDatum = RowData::aColumnDatum(aRow(),iColumnNo);
     
     // convert column datum into column word
-    switch (pColumn->eColumnType()) {
+    switch (pColumn->eDatumType()) {
       
-      case CT_BOOLEAN:
+      case Datums::DM_BOL:
         wColumnWord = (*((Bol*)aColumnDatum)).iAsI8();
         break;
       
-      case CT_CHAR:
-        wColumnWord = (w8)aColumnDatum;
-        break;
-      
-      case CT_DATE:
+      case Datums::DM_DTE:
         wColumnWord = (*((Dte*)aColumnDatum)).iAsI8();
         break;
       
-      case CT_DECIMAL:
+      case Datums::DM_BCD:
         wColumnWord = (*((Bcd*)aColumnDatum)).iAsI8();
         break;
       
-      case CT_FLOAT:
+      case Datums::DM_FLT:
         MemLib::vCopy(&wColumnWord,aColumnDatum,sizeof(w8),CN_ENTRY);
         break;
       
-      case CT_INTEGER:
+      case Datums::DM_INT:
         wColumnWord = (*((Int*)aColumnDatum)).iAsI8();
         break;
       
-      case CT_INTERVAL:
+      case Datums::DM_IVL:
         wColumnWord = (*((Ivl*)aColumnDatum)).iAsI8();
         break;
       
-      case CT_TIME:
+      case Datums::DM_TME:
         wColumnWord = (*((Tme*)aColumnDatum)).iAsI8();
         break;
       
-      case CT_TIMESTAMP:
+      case Datums::DM_TSP:
         wColumnWord = (*((Tsp*)aColumnDatum)).iAsI8();
         break;
       
-      case CT_VARBINARY:
+      case Datums::DM_VBN:
         NEVER_REACH;
         break;
       
-      case CT_VARCHAR:
+      case Datums::DM_VCH:
         wColumnWord = (w8)aColumnDatum;
         break;
       

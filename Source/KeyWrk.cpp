@@ -125,33 +125,33 @@ void KeyWrk::vAddDatum(Values::StrVal* pStrVal, Column* pCol)
   char* pSrc = (char*)pStrVal->aStr();
   i8 iValue;
   
-  switch(pCol->eColumnType()) {
+  switch(pCol->eDatumType()) {
       
-    case CT_BOOLEAN:
+    case DM_BOL:
       iValue = StrLib::iToI8(pSrc);
       nBytes = Bol::nCopy((char*)pDst,(char*)pSrc);
       break;
       
-    case CT_DATE: {
+    case DM_DTE: {
       Dte xDate;
       bool b = Dte::bExtract(&pSrc,&xDate,nullptr);
       nBytes = Dte::nCopy((char*)pDst,(char*)&xDate);
       break;
     }
       
-    case CT_INTEGER:
+    case DM_INT:
       iValue = StrLib::iToI8(pSrc);
       nBytes = Int::nCopy(pDst,(void*)&iValue);
       break;
       
-    case CT_TIMESTAMP: {
+    case DM_TSP: {
       Tsp xTimestamp;
       bool b = Tsp::bExtract(&pSrc,&xTimestamp,nullptr);
       nBytes = Tsp::nCopy((char*)pDst,(char*)&xTimestamp);
       break;
     }
       
-    case CT_VARCHAR:
+    case DM_VCH:
       nBytes = Vch::nCopy(pDst,pSrc);
       break;
       
