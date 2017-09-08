@@ -125,7 +125,7 @@ void KeyWrk::vAddDatum(Values::StrVal* pStrVal, Column* pCol)
   char* pSrc = (char*)pStrVal->aStr();
   i8 iValue;
   
-  switch(pCol->eDatumType()) {
+  switch(pCol->eColumnType()) {
       
     case DM_BOL:
       iValue = StrLib::iToI8(pSrc);
@@ -143,6 +143,13 @@ void KeyWrk::vAddDatum(Values::StrVal* pStrVal, Column* pCol)
       iValue = StrLib::iToI8(pSrc);
       nBytes = Int::nCopy(pDst,(void*)&iValue);
       break;
+      
+    case DM_TME: {
+      Tme xTime;
+      bool b = Tme::bExtract(&pSrc,&xTime,nullptr);
+      nBytes = Tme::nCopy((char*)pDst,(char*)&xTime);
+      break;
+    }
       
     case DM_TSP: {
       Tsp xTimestamp;

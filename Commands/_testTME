@@ -28,6 +28,8 @@ ld jidxTme "../JTEST/jidxTme.csv" ;
 //anidx jidxTme idx_tme ;
 dumpidx jidxTme idx_tme ;
 
+fetch jidxTme "jidx_tme '08:00:00' >=";
+
 /*
 print "\nSelecting rows with key >= 3 using idx1 ...\n" ;
 lwrselidx jidx idx1 3 ;
