@@ -279,11 +279,12 @@
 /*----------------------------------------------------------------------------*/
 /* get size of table                                                          */
 /*----------------------------------------------------------------------------*/
-: sizeTable ( "<tableNm>" -- "<size>" )
+: sizeTable ( -- "<size>" )
 
-  find execute ( table )
+  "indexes" find execute pathPush
+  "hidden" "sizeIndex" find execute  >str
+  pathDrop
 
-  table.space >str
 ;
 
 ////////////////////////////////////////////////////////////////////////////////

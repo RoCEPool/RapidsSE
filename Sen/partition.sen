@@ -69,6 +69,7 @@
 /*----------------------------------------------------------------------------*/
 /* check table can be partitioned                                             */
 /*----------------------------------------------------------------------------*/
+/*
 : checkPartitionTable ( "<tableNm>" --  true | errorCode false )
 
   locals| sTableNm |
@@ -88,6 +89,7 @@ tp: checkPartitionTable4
 tp: checkPartitionTable1
   true
 ;
+*/
 
 /*----------------------------------------------------------------------------*/
 /* assert top of task dictionary stack is partitions                          */

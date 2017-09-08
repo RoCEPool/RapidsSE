@@ -441,6 +441,7 @@ ddlLock::grabWrite
 
   // check it is a table
   checkIsTable  not if <NIP+ERROR> exit then
+  drop
 
   sizeTable ( "<size>" )
 

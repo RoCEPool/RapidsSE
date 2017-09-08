@@ -46,7 +46,7 @@ ld lineitem "/tpch/lineitem.tbl" ;
 docol locksList;
 docol stepsList;
 
-fetch lineitem "l_shipdate '1998-09-01' >=";
+//fetch lineitem "l_shipdate '1998-09-01' >=";
 
 pwf ;
 lf ;
