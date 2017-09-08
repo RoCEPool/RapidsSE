@@ -583,7 +583,6 @@ void Key::vShow(IdxColVec* pIdxColVec)
   for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
     
     Column* pColumn = pIdxColVec->pGet(i_Column);
-    eCT eColumnType = pColumn->eColumnType();
     
     char* aDatum = this->aEachDatum(pColumn,nBytes,&aCursor);
   
