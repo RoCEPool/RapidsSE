@@ -134,10 +134,12 @@ void KeyWrk::vAddDatum(Values::StrVal* pStrVal, Column* pCol)
       break;
     }
       
-    case DM_BOL:
-      iValue = StrLib::iToI8(pSrc);
-      nBytes = Bol::nCopy((char*)pDst,(char*)pSrc);
+    case DM_BOL: {
+      Bol xBoolean;
+      bool b = Bol::bExtract(&pSrc,&xBoolean,pCol);
+      nBytes = Bol::nCopy((char*)pDst,(char*)&xBoolean);
       break;
+    }
       
     case DM_DTE: {
       Dte xDate;
