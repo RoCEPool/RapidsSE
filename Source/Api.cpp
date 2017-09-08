@@ -304,6 +304,7 @@ eEC RapidsSE_CreateIndex(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable
     VALIDATE_PARAM("d"_Stz, pTable);
     VALIDATE_PARAM("e"_Stz, pIndex);
     
+    
     // change directory to table
     CF_TABLES("f"_Stz);
     
@@ -317,10 +318,7 @@ eEC RapidsSE_CreateIndex(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable
     CHECK_RESULT("j"_Stz);
     CHECK_RESPONSE("k"_Stz);
     
-    // change folder to indexes
-    CF_INDEXES("l"_Stz);
-    
-    eResult = eExecuteRequest(pSEitf, "getidx"_Stz, pIndex);
+    eResult = eExecuteRequest(pSEitf, "getidx"_Stz, pTable, pIndex);
     CHECK_RESULT("m"_Stz);
     CHECK_RESPONSE("n"_Stz);
 

@@ -1684,12 +1684,16 @@ bool SEitf::bGetIndex(TokenVec& xTokenVec, i8 iReqNo)
   
   s256 sRequest;
   
-  if (xTokenVec.nTokens() != 2) {
+  if (xTokenVec.nTokens() != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   
   sRequest.vCopy("\""_Stz);
+  sRequest.vConcat(xTokenVec[2]->aText());
+  sRequest.vConcat("\""_Stz);
+  
+  sRequest.vConcat("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   

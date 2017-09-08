@@ -239,14 +239,29 @@
 /*----------------------------------------------------------------------------*/
 /* get index pointer and put into task.seitf.currentIndex                     */
 /*----------------------------------------------------------------------------*/
-: getIndex ( "<indexNm>" -- <R> )
+: getIndex ( "<indexNm>" "<tableNm>" -- <R> )
 
-  checkInIndexes not if drop false exit then
+  locals| sTableNm sIndexNm |
+
+pathDump
+  assertInTables
+
+  // push table folder
+  sTableNm pushTable assert
+
+  // push indexes folder
+  pushIndexes assert
 
   // get index ptr
-  findInCurrent execute
+  sIndexNm findInCurrent execute
 
   task::this task.seitf@ seitf.index!
+
+  // pop indexes folder
+  popIndexes
+
+  // pop table folder
+  popTable
 
   true
 ;

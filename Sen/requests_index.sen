@@ -553,7 +553,7 @@ assert::stack_4
 /*----------------------------------------------------------------------------*/
 /* get an index                                                               */
 /*----------------------------------------------------------------------------*/
-: getIndex_req ( "<indexNm>" -- <R> )
+: getIndex_req ( "<indexNm>" "<tableNm>"-- <R> )
 
   getIndex not if <NIP+ERROR> exit then
 

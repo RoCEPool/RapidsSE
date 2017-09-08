@@ -259,18 +259,6 @@ eEC eGetResponse(SEitf* pSEitf);
   }
 
 /*----------------------------------------------------------------------------*/
-/* change folder to indexes                                                   */
-/*----------------------------------------------------------------------------*/
-#define CF_INDEXES(aMarker) \
-  { \
-    eResult = eChangeFolderIndexes(pSEitf, pCatalog, pSchema, pTable, aApiCall, iTraceLevel); \
-    if (EC_NONE != eResult) { \
-      TRACE_ERROR(aMarker,eResult); \
-      return eResult; \
-    } \
-  }
-
-/*----------------------------------------------------------------------------*/
 /* change folder to tables                                                    */
 /*----------------------------------------------------------------------------*/
 #define CF_TABLES(aMarker) \
