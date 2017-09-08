@@ -511,26 +511,6 @@ void Table::vRemoveIndex(Index* pIndex)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of row buffers in this table                                    */
-/*----------------------------------------------------------------------------*/
-i8 Table::nRowBuffers(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  i8 iBuffers = 0;
-  
-//  for (i8 iPartition = 0; iPartition < gpGrid->m_nSlots; iPartition++) {
-//    EbStrand *pStrand = pPartition(iPartition)->pData()->pHeadStrand();
-//    while (pStrand) {
-//      iBuffers += pStrand->nEntryBuffers();
-//      pStrand = pStrand->pNextStrand();
-//    }
-//  }
-  
-  return iBuffers;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get number of index buffers in this table                                  */
 /*----------------------------------------------------------------------------*/
 i8 Table::nIndexBuffers(i8 iIndexNo)

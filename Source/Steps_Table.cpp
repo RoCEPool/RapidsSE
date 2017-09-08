@@ -51,7 +51,6 @@ void Task::vAddPrimitives_Table(void)
   vAddPrimitive("table.removeIndex"_Stz,        &vTableRemoveIndex,      false);
   vAddPrimitive("table.showColumnVec"_Stz,      &vTableShowColumnVec,    false);
   vAddPrimitive("table.slots"_Stz,              &vTableSlots,            false);
-  vAddPrimitive("table.space"_Stz,              &vTableSpace,            false);
   vAddPrimitive("table.subDic"_Stz,             &vTableSubDic,           false);
   vAddPrimitive("table.subLoaders"_Stz,         &vTableSubLoaders,       false);
   vAddPrimitive("table.truncate"_Stz,           &vTableTruncate,         false);
@@ -590,28 +589,6 @@ void Task::vTableSlots(MP_Task mpTask)
   ASSERT(CN_TABLE == pTable->eClass());
   
   mpTask->m_pDataStack->vPushObject(pTable->pSlots());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.space -- push the buffer space used bytable on data stack            */
-/*----------------------------------------------------------------------------*/
-void Task::vTableSpace(MP_Task mpTask)
-{
-ENTRY("vTableSpace"_Stz);
-  
-  Object* pPtrTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.space"_Stz);
-  
-  Table* pTable = _pTable(pPtrTable);
-  ASSERT(CN_TABLE == pTable->eClass());
-  
-  i8 nBuffers = pTable->nRowBuffers();
-  i8 iSpace   = nBuffers * C_SIZE_POOL_BUFFER;
-  
-  mpTask->m_pDataStack->vPushInt(iSpace);
   
   EXIT();
 }
