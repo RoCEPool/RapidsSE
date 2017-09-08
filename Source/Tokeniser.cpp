@@ -103,6 +103,17 @@ TokenVec* Tokeniser::pTokenise(StrVal& sString)
 }
 
 /*----------------------------------------------------------------------------*/
+/* strip any leading/trailing single quotes from all tokens                   */
+/*----------------------------------------------------------------------------*/
+void Tokeniser::vStripSingleQuotes(TokenVec* pTokenVec)
+{
+  for (i8 i_Token = 0; i_Token < pTokenVec->nTokens(); i_Token++) {
+    Token* pToken = pTokenVec->pGet(i_Token);
+    pToken->vStripSingleQuotes();
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump tokeniser                                                             */
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vDump(eCN eClass, Object* pObject, Stz* aTab)

@@ -61,6 +61,8 @@ namespace Parsing
     void vCopy(Token*);
     bool bIsNumeric(void);
   
+    void vStripSingleQuotes(void);
+  
     Footer* aFooter(void);
   };
 }

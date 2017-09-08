@@ -102,7 +102,7 @@ namespace Base
     static void  vSprint(char* sDst, va_list args, const char* sFormat);
     static void  vSprintCat(char* sDst, const char* sFormat, ...);
     static void  vSprintCat(char* sDst, va_list args, const char* sFormat);
-    static void  vStrip(char* s, char c);
+    static void  vStrip(char* s, char cTrailing);
 
     static bool  bToBool(const char* s);
     static char  cToHex(i8 i);

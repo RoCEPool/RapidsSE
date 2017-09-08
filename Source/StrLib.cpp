@@ -1302,7 +1302,7 @@ void StrLib::vSprintCat(char* sDst, va_list args, const char* sFormat)
 /*----------------------------------------------------------------------------*/
 /* vStrip: test last char and remove                                          */
 /*----------------------------------------------------------------------------*/
-void StrLib::vStrip(char* s, char c)
+void StrLib::vStrip(char* s, char cTrailing)
 {
   i8 nBytes = strlen(s);
   
@@ -1311,7 +1311,7 @@ void StrLib::vStrip(char* s, char c)
   
   i8 iOffset = nBytes - 1;
   
-  if (s[iOffset] == c)
+  if (s[iOffset] == cTrailing)
     s[iOffset] = '\0';
 }
   

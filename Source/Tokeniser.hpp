@@ -30,6 +30,7 @@ namespace Parsing
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
     static TokenVec* pTokenise(StrVal& sString);
+    static void vStripSingleQuotes(TokenVec* pTokenVec);
   
     void vPush(void);
     bool bPop(void);
