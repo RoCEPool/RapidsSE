@@ -489,21 +489,28 @@ ddlLock::grabWrite
     // check it is a table
     object@ word.name
     checkIsTable  not if <NIP+ERROR> exit then
+    drop
 
-    find execute
-    table.space bytes.magnitude str.cat
-    "')" str.cat
+    // push indexes folder
+    pushIndexes assert
 
-    // pop table dictionary
+    //get size of hidden index
+    "hidden" sizeIndex str.cat
+
+    // pop indexes folder
+    popIndexes
+
+    // pop table folder
     popTable
 
-    "\n" str.cat
+    "')\n" str.cat
 
     object@ word.prev object!
 
     next
     iCount task::this task.seitf@ seitf.rowsProcessed
   else
+
     ""
     0 pathPick dic.lastWord dup iterate
 
@@ -521,14 +528,21 @@ ddlLock::grabWrite
       // check it is a table
       object@ word.name
       checkIsTable  not if <NIP+ERROR> exit then
+      drop
 
-      find execute
-      table.space bytes.magnitude str.cat
+      // push indexes folder
+      pushIndexes assert
 
-      ")" str.cat
+      // get size if hidden index
+      "hidden" sizeIndex str.cat
+
+      // pop indexes folder
+      popIndexes
 
       // pop table dictionary
       popTable
+
+      ")" str.cat
 
       object@ word.prev object!
 
