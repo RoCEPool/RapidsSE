@@ -95,31 +95,26 @@ bool DtmLib::bExtract(eDM eDatum, Stz* aDst, char** aaSrc, DBobjects::Column* pC
 /*----------------------------------------------------------------------------*/
 void DtmLib::vHash(eDM eDatum, i8& iHash, Stz* aScr, DBobjects::Column* pColumn)
 {
-  switch (pColumn->eColumnType()) {
+  switch (pColumn->eDatumType()) {
       
-    case CT_BOOLEAN: {
+    case DM_BOL: {
       Bol xBol = *((Bol*)aScr);
       iHash += XXH32(&xBol,sizeof(Bol),0);
       break;
     }
       
-    case CT_CHAR: {
-      iHash += XXH32((char*)aScr,StrLib::iSize((char*)aScr),0);
-      break;
-    }
-      
-    case CT_DATE: {
+    case DM_DTE: {
       Dte xDte = *((Dte*)aScr);
       iHash += XXH32(&xDte,sizeof(Dte),0);
       break;
     }
       
-    case CT_DECIMAL: {
+    case DM_BCD: {
       NEVER_REACH;
       break;
     }
       
-    case CT_FLOAT: {
+    case DM_FLT: {
       Flt xFlt = *((Flt*)aScr);
       //bool b = Flt::bExtract((char*)aScr,&xFlt,iLength,pColumn);
       //ASSERT(b);
@@ -127,36 +122,36 @@ void DtmLib::vHash(eDM eDatum, i8& iHash, Stz* aScr, DBobjects::Column* pColumn)
       break;
     }
       
-    case CT_INTEGER: {
+    case DM_INT: {
       Int xInt = *((Int*)aScr);
       iHash += XXH32(&xInt,sizeof(Int),0);
       break;
     }
       
-    case CT_INTERVAL: {
+    case DM_IVL: {
       Ivl xIvl = *((Ivl*)aScr);
       iHash += XXH32(&xIvl,sizeof(Ivl),0);
       break;
     }
       
-    case CT_TIME: {
+    case DM_TME: {
       Tme xTme = *((Tme*)aScr);
       iHash += XXH32(&xTme,sizeof(Tme),0);
       break;
     }
       
-    case CT_TIMESTAMP: {
+    case DM_TSP: {
       Tsp xTsp = *((Tsp*)aScr);
       iHash += XXH32(&xTsp,sizeof(Tsp),0);
       break;
     }
       
-    case CT_VARBINARY: {
+    case DM_VBN: {
       NEVER_REACH;
       break;
     }
       
-    case CT_VARCHAR: {
+    case DM_VCH: {
       iHash += XXH32((char*)aScr,StrLib::iSize((char*)aScr),0);
       break;
     }
