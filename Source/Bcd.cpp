@@ -259,6 +259,9 @@ void Bcd::vSprint(Stz* aDst, Stz* aSrc, DBobjects::Column* pColumn)
   i8 iBcd_Whole = iBcd / iDigits;
   i8 iBcd_Fraction = iBcd % iDigits;
   
+  if (iBcd_Fraction < 0)
+    iBcd_Fraction = iBcd_Fraction * -1;
+  
   StrLib::vSprint(aDst,"%lld.%lld%c"_Stz,iBcd_Whole,iBcd_Fraction,'\0');
 }
 

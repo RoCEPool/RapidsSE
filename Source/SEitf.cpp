@@ -181,6 +181,9 @@ SEitf::SEitf(i8 iPartition)
   m_nLastBuffers      = 0;
   m_nLastBuffersScanned = 0;
   
+  m_ziFetchTasks      = 0;
+  m_bSeitfExiting     = false;
+  
   SEitf* pSEitf = this;
   gpSEitfList->vAppend(pSEitf);
   
@@ -449,6 +452,7 @@ void SEitf::vLastBuffers(i8 nLastBuffers)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   m_nLastBuffers = nLastBuffers;
+  m_ziFetchTasks = nLastBuffers;
 }
 
 /*----------------------------------------------------------------------------*/

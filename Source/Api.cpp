@@ -148,6 +148,12 @@ eEC RapidsSE_BeginFetch(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable,
     // change directory to table
     CF_TABLES("e"_Stz);
     
+    // set expected last buffers to 1, so that the FetchNextRow waits
+    // and does not come out expecting 0 last buffers
+    // by the time the first buffer comes in, expected last buffers
+    // should have the correct value.
+    //pSEitf->m_nLastBuffers = 1;
+    
     // select * from pTable
     eResult = eExecuteRequest(pSEitf, "spnFetch"_Stz, pTable, pRange);
     CHECK_RESULT("f"_Stz);
@@ -590,6 +596,7 @@ eEC RapidsSE_EndFetch(SEitf* pSEitf, i8 iTraceLevel)
   eEC eResponse;
   
   Stz* aApiCall = "RapidsSE_EndFetch"_Stz;
+  vTrace("EndFetch %s\n"_Stz, pSEitf->pCurrentTable()->aTableName());
   
   try {
     
@@ -607,6 +614,14 @@ eEC RapidsSE_EndFetch(SEitf* pSEitf, i8 iTraceLevel)
     
     // validate index
     VALIDATE_INDEX("c"_Stz);
+    
+    // mark that seitf is exiting
+    pSEitf->m_bSeitfExiting = true;
+    
+    // wait till all fetch tasks have ended
+    while (*pSEitf->m_ziFetchTasks != 0)
+      ;
+    vTrace("All fetch tasks have ended %s"_Stz, pSEitf->pCurrentTable()->aTableName());
     
     // reset the index
     pSEitf->vCurrentIndex(nullptr);
@@ -748,7 +763,7 @@ eEC RapidsSE_FetchNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
         
         if (pEntryBuffer->bIsLast()) {
             pSEitf->m_nLastBuffersScanned++;
-            //vTrace("m_nLastBuffersScanned: %lld\n"_Stz, pSEitf->m_nLastBuffersScanned );
+            vTrace("m_nLastBuffersScanned: %lld\n"_Stz, pSEitf->m_nLastBuffersScanned );
         }
         
         

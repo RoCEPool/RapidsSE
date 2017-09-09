@@ -438,6 +438,10 @@ tp: makingIndex
   // put the buffer in the seitf bufferQueue
   //"Appending tempEntryBuffer to buffer queue" .
   pTempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
+
+  // acknowledge that a fetch task has ended
+  pIndex index.table@ table.name .
+  pSeitf seitf.fetchTaskEnded
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -562,6 +566,10 @@ tp: loadIndexes
   // put the buffer in the seitf bufferQueue
   //"Appending tempEntryBuffer to buffer queue" .
   tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
+
+  // acknowledge that a fetch task has ended
+  pIndex index.table@ table.name .
+  pSeitf seitf.fetchTaskEnded
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -660,6 +668,10 @@ tp: loadIndexes
 
   // put the result buffer in the seitf buffer queue
   pResultBuffer pSeitf seitf.bufferQueue@ queue.append
+
+  // acknowledge that a fetch task has ended
+  pIndex index.table@ table.name .
+  pSeitf seitf.fetchTaskEnded
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -864,6 +876,12 @@ tp: loadIndexes
         indexBuffer if
           entry indexBuffer entryBuffer.nextEntry to entry
         then
+      else
+        // there is an entry
+        // check if seitf exiting
+        pSeitf seitf.isExiting if
+          0 to entry
+        then
       then
     repeat
 
@@ -874,6 +892,10 @@ tp: loadIndexes
   // put the buffer in the seitf bufferQueue
   //"Appending tempEntryBuffer to buffer queue" .
   tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
+
+  // acknowledge that a fetch task has ended
+  pIndex index.table@ table.name .
+  pSeitf seitf.fetchTaskEnded
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -1105,6 +1127,10 @@ tp: selectIndex
   // put the buffer in the seitf bufferQueue
   //"Appending tempEntryBuffer to buffer queue" .
   tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
+
+  // acknowledge that a fetch task has ended
+  pIndex index.table@ table.name .
+  pSeitf seitf.fetchTaskEnded
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -1012,12 +1012,14 @@ namespace Tasks
     static void vSEitfDump(MP_Task mpTask);
     static void vSEitfEntryFetch(MP_Task mpTask);
     static void vSEitfEntryStore(MP_Task mpTask);
+    static void vSEitfFetchTaskEnded(MP_Task mpTask);
     static void vSEitfGroupByFetch(MP_Task mpTask);
     static void vSEitfGroupByStore(MP_Task mpTask);
     static void vSEitfIndexBufferFetch(MP_Task mpTask);
     static void vSEitfIndexBufferStore(MP_Task mpTask);
     static void vSEitfIndexFetch(MP_Task mpTask);
     static void vSEitfIndexStore(MP_Task mpTask);
+    static void vSEitfIsExiting(MP_Task mpTask);
     static void vSEitfLastBuffersFetch(MP_Task mpTask);
     static void vSEitfLastBuffersStore(MP_Task mpTask);
     static void vSEitfMetadataFetch(MP_Task mpTask);

@@ -433,7 +433,7 @@ assert::stack_4
   pPlanner assert
   true to bSinglePartition
 
-  // set the no of last buffers to no pf phrases in plan
+  // set the no of last buffers to no of phrases in plan
   pPlanner planner.phrases@ pSeitf seitf.lastBuffers!
 
   // spawn select task for the fetch

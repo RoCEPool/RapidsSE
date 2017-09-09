@@ -43,12 +43,14 @@ void Task::vAddPrimitives_SEitf(void)
   vAddPrimitive("seitf.dump"_Stz,             &vSEitfDump,             false);
   vAddPrimitive("seitf.entry@"_Stz,           &vSEitfEntryFetch,       false);
   vAddPrimitive("seitf.entry!"_Stz,           &vSEitfEntryStore,       false);
+  vAddPrimitive("seitf.fetchTaskEnded"_Stz,   &vSEitfFetchTaskEnded,   false);
   vAddPrimitive("seitf.groupBy@"_Stz,         &vSEitfGroupByFetch,     false);
   vAddPrimitive("seitf.groupBy!"_Stz,         &vSEitfGroupByStore,     false);
   vAddPrimitive("seitf.indexBuffer@"_Stz,     &vSEitfIndexBufferFetch, false);
   vAddPrimitive("seitf.indexBuffer!"_Stz,     &vSEitfIndexBufferStore, false);
   vAddPrimitive("seitf.index!"_Stz,           &vSEitfIndexStore,       false);
   vAddPrimitive("seitf.index@"_Stz,           &vSEitfIndexFetch,       false);
+  vAddPrimitive("seitf.isExiting"_Stz,        &vSEitfIsExiting,        false);
   vAddPrimitive("seitf.lastBuffers@"_Stz,     &vSEitfLastBuffersFetch, false);
   vAddPrimitive("seitf.lastBuffers!"_Stz,     &vSEitfLastBuffersStore, false);
   vAddPrimitive("seitf.metadata@"_Stz,        &vSEitfMetadataFetch,    false);
@@ -319,6 +321,26 @@ void Task::vSEitfEntryStore(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* seitf.fetchTaskEnded -- fetch task has eneded                              */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfFetchTaskEnded(MP_Task mpTask)
+{
+  ENTRY("vSEitfFetchTaskEnded"_Stz);
+  
+  Object* pPtrSEitf;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
+    THROW_INVALID_DSTACK("seitf.fetchTaskEnded"_Stz);
+  
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  ASSERT(CN_SEITF == pSEitf->eClass());
+  
+  --pSEitf->m_ziFetchTasks;
+  vTrace("Fetch task ended\n"_Stz);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* seitf.groupBy! -- store groupBy for slot                                   */
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfGroupByStore(MP_Task mpTask)
@@ -459,6 +481,25 @@ void Task::vSEitfIndexStore(MP_Task mpTask)
   ASSERT(pIndex == nullptr || CN_INDEX == pIndex->eClass());
   
   pSEitf->vCurrentIndex(pIndex);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* seitf.isExiting -- is seitf exiting                                        */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfIsExiting(MP_Task mpTask)
+{
+  ENTRY("vSEitfIsExiting"_Stz);
+  
+  Object* pPtrSEitf;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
+    THROW_INVALID_DSTACK("seitf.isExiting"_Stz);
+  
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  ASSERT(CN_SEITF == pSEitf->eClass());
+  
+  mpTask->m_pDataStack->vPushInt(pSEitf->m_bSeitfExiting);
   
   EXIT();
 }
