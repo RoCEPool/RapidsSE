@@ -986,7 +986,11 @@ void Table::vPopulateSortArray(char* aSortArray, i8 nElements, i8 iSortElmSize,
 /*----------------------------------------------------------------------------*/
 /* the qsort compare function for a complex key datum                         */
 /*----------------------------------------------------------------------------*/
+#ifdef __APPLE__
 int DBobjects::iQsort_complex(void* aIndexData, const void* aArg1, const void* aArg2)
+#else
+int DBobjects::iQsort_complex(const void* aArg1, const void* aArg2, void* aIndexData)
+#endif
 {
   IndexData* pIndexData = _pIndexData(aIndexData);
   Index* pIndex = pIndexData->pIndex();
@@ -1111,8 +1115,11 @@ void Table::vSortTheArray(char* aSortArray, i8 nElements, i8 nElmSize,
   if (IF_I8_I8 == eIndexForm)
     qsort(aSortArray,nElements,nElmSize,iQsort_i8i8);
   else
+#ifdef __APPLE__
     qsort_r(aSortArray,nElements,nElmSize,(void*)pNewIndexData,iQsort_complex);
-  
+#else
+    qsort_r(aSortArray,nElements,nElmSize,iQsort_complex,(void*)pNewIndexData);
+#endif
   xTimer.vUpdate();
   
   s32 sTimeMagnitude;
