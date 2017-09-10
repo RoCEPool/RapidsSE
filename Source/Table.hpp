@@ -107,7 +107,7 @@ namespace DBobjects
 #ifdef __APPLE__
   int iQsort_complex(void* aIndexData, const void* aArg1, const void* aArg2);
 #else
-  int iQsort_complex(const void* aArg1, const void* aArg2, void* aIndexData;
+  int iQsort_complex(const void* aArg1, const void* aArg2, void* aIndexData);
 #endif
   int iQsort_i8(const void* aArg1, const void* aArg2);
   int iQsort_i8i8(const void* aArg1, const void* aArg2);
