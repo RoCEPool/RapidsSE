@@ -8,7 +8,7 @@ create table j10 (
 );
 
 create index idx1 on j10 (j10_key);
-
+/*
 print "loading j10.tbl..." ;
 ld j10 "../JTEST/j10.csv" ;
 
@@ -21,7 +21,7 @@ fetch j10 "j10_name 'f' >=";
 
 fetch j10 "j10_key 6 == j10_name 'six' == and";
 fetch j10 "j10_key 6 == j10_name 'seven' == and";
-
+*/
 
 //fetch j10 "J10_KEY 6 == J10_KEY 7 == OR";
 

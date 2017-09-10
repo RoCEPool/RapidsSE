@@ -31,7 +31,7 @@ timer: loadTimer
 : tableLoader ( "<path>" "<tableNm>" -- t|f )
 
   assert::stack_2 ( "<path>" "<tableNm>" )
-  0 locals| pSubTask stableNm sPath |
+  0 locals| pSubTask sTableNm sPath |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if path file exists                                 //! refactor this
@@ -76,7 +76,8 @@ timer: loadTimer
   //task::this grabMutex
 
   // set no of subloaders in table
-  N_SERVER_THREADS tablePtr table.subLoaders
+  //N_SERVER_THREADS tablePtr table.subLoaders
+  N_SERVER_THREADS sTableNm setSubLoaders
 
   N_SERVER_THREADS setAcks
 

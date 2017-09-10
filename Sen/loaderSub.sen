@@ -39,12 +39,12 @@
 /*----------------------------------------------------------------------------*/
 /* append row buffer to partition of given named table                        */
 /*----------------------------------------------------------------------------*/
-: loadAppendBuffer$ ( rowBuffer partitionNo "<indexNm>" "<tableNm>" -- true )
+: loadAppendBuffer$ ( rowBuffer isLast partitionNo "<indexNm>" "<tableNm>" -- true )
 
 //"loadAppendBuffer$" .
 
 tp: loadAppendBuffer$
-  0 0 locals| pIndex pTable sTableNm sIndexNm iPartitionNo pRowBuffer pLoaderSub |
+  0 0 locals| pIndex pTable sTableNm sIndexNm iPartitionNo bIsLast pRowBuffer |
 
   // why:
   //   loaderSub has forwarded a full rowBuffer which needs to be
@@ -82,6 +82,10 @@ tp: loadAppendBuffer$
 
   // set the partition in the row buffer
   iPartitionNo pRowBuffer entryBuffer.partition!
+
+  bIsLast if
+   pRowBuffer entryBuffer.isLast!
+  then
 
   pRowBuffer iPartitionNo  pTable    ( rb ptn tablePtr )
 
@@ -129,6 +133,7 @@ tp: ~loadAppendBuffer
 
   <<
     pRowBuffer                                    ( << rb )
+    pRowBuffer entryBuffer.isLast@
     nullPtr pLoaderSub loaderSub.rowBuffer!  // set working row buffer to null
     pLoaderSub loaderSub.partition@               ( << rb ptn )
     pRowBuffer entryBuffer.index@ index.name@     ( << rb ptn "<tableNm>" )
@@ -143,6 +148,9 @@ tp: theIndirectCall
   // b) <<loadAppendBuffer$>> to be forwarded to one participant
   //    via sendParticipant in the coordinatoor
   //
+
+  "buffer sent to node" .
+  pLoaderSub loaderSub.hashPartition .
 
   // to which node/participant
   pLoaderSub loaderSub.hashPartition  ( <<loadAppendBuffer$>> node )

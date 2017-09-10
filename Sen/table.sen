@@ -505,6 +505,23 @@ tp: removeTable
   true <SUCCESS_RESULT>
 ;
 
+/*----------------------------------------------------------------------------*/
+/* set no of subloaders in table on each participant                          */
+/*----------------------------------------------------------------------------*/
+: setSubLoaders allParticipants 2 checkResult ( "<tableNm" subLoaders -- true n# true )
+
+  locals| sTableNm iSubLoaders |
+
+  sTableNm .
+  iSubLoaders .
+
+  iSubLoaders
+  sTableNm find execute
+  table.subLoaders
+
+  true <SUCCESS_RESULT>
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
