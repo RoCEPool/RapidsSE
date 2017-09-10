@@ -521,10 +521,10 @@ tp: loadIndexes
     tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
 
     // mark that a fetch task has ended
-    seitf.fetchTaskEnded
+    pSeitf seitf.fetchTaskEnded
 
    // mark that a fetch task has ended
-   seitf.fetchTaskEnded
+   pSeitf seitf.fetchTaskEnded
 
     exit
   then
@@ -628,7 +628,7 @@ tp: loadIndexes
     pResultBuffer pSeitf seitf.bufferQueue@ queue.append
 
     // mark that a fetch task has ended
-    seitf.fetchTaskEnded
+    pSeitf seitf.fetchTaskEnded
 
     exit
   then
@@ -850,7 +850,7 @@ tp: loadIndexes
     tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
 
     // mark that a fetch task has ended
-    seitf.fetchTaskEnded
+    pSeitf seitf.fetchTaskEnded
 
     exit
   then
@@ -1084,7 +1084,7 @@ tp: selectIndex
     tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
 
     // mark that a fetch task has ended
-    seitf.fetchTaskEnded
+    pSeitf seitf.fetchTaskEnded
 
     exit
   then
