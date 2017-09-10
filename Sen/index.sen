@@ -349,6 +349,8 @@ tp: makingIndex
 
   tp: keySelectIdx
 
+  "fetchTask started" .
+
   // task is a select participant running on server thread
   task::this task.kind@ TK_SELECT_PART == assert
   task::this task.thread thread.actorModel@ AC_SERVER == assert
@@ -381,6 +383,9 @@ tp: makingIndex
     // return the empty tempEntryBuffer
     //"Appending tempEntryBuffer to buffer queue" .
     pTempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
+
+    // mark that a fetch task has ended
+    pSeitf seitf.fetchTaskEnded
 
     exit
   then
@@ -439,8 +444,7 @@ tp: makingIndex
   //"Appending tempEntryBuffer to buffer queue" .
   pTempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
 
-  // acknowledge that a fetch task has ended
-  pIndex index.table@ table.name .
+  // mark that a fetch task has ended
   pSeitf seitf.fetchTaskEnded
 ;
 
@@ -516,6 +520,12 @@ tp: loadIndexes
     //"Appending tempEntryBuffer to buffer queue" .
     tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
 
+    // mark that a fetch task has ended
+    seitf.fetchTaskEnded
+
+   // mark that a fetch task has ended
+   seitf.fetchTaskEnded
+
     exit
   then
 
@@ -567,8 +577,7 @@ tp: loadIndexes
   //"Appending tempEntryBuffer to buffer queue" .
   tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
 
-  // acknowledge that a fetch task has ended
-  pIndex index.table@ table.name .
+  // mark that a fetch task has ended
   pSeitf seitf.fetchTaskEnded
 ;
 
@@ -617,6 +626,9 @@ tp: loadIndexes
 
     // return the empty result buffer
     pResultBuffer pSeitf seitf.bufferQueue@ queue.append
+
+    // mark that a fetch task has ended
+    seitf.fetchTaskEnded
 
     exit
   then
@@ -669,8 +681,7 @@ tp: loadIndexes
   // put the result buffer in the seitf buffer queue
   pResultBuffer pSeitf seitf.bufferQueue@ queue.append
 
-  // acknowledge that a fetch task has ended
-  pIndex index.table@ table.name .
+  // mark that a fetch task has ended
   pSeitf seitf.fetchTaskEnded
 ;
 
@@ -838,6 +849,9 @@ tp: loadIndexes
     //"Appending last tempEntryBuffer to buffer queue" .
     tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
 
+    // mark that a fetch task has ended
+    seitf.fetchTaskEnded
+
     exit
   then
 
@@ -893,8 +907,7 @@ tp: loadIndexes
   //"Appending tempEntryBuffer to buffer queue" .
   tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
 
-  // acknowledge that a fetch task has ended
-  pIndex index.table@ table.name .
+  // mark that a fetch task has ended
   pSeitf seitf.fetchTaskEnded
 ;
 
@@ -1070,6 +1083,9 @@ tp: selectIndex
     //"Appending tempEntryBuffer to buffer queue" .
     tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
 
+    // mark that a fetch task has ended
+    seitf.fetchTaskEnded
+
     exit
   then
 
@@ -1128,8 +1144,7 @@ tp: selectIndex
   //"Appending tempEntryBuffer to buffer queue" .
   tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
 
-  // acknowledge that a fetch task has ended
-  pIndex index.table@ table.name .
+  // mark that a fetch task has ended
   pSeitf seitf.fetchTaskEnded
 ;
 

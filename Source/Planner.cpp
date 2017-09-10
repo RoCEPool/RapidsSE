@@ -550,7 +550,7 @@ void Planner::vParsePhrases(void)
   delete pPhrase1;
   delete pPhrase2;
 
-  vShowPhrases();
+  //vShowPhrases();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -25,15 +25,31 @@ create index idx on j1000 (j1000_key);
 ld j1000 "../JTEST/j1000.csv" ;
 
 fetch j1000 "j1000_key 0 =";
+print "\n";
 fetch j1000 "j1000_key 111 =";
-fetch j1000 "j1000_key 256 =";
-fetch j1000 "j1000_key 789 =";
-fetch j1000 "j1000_key 989 =";
-fetch j1000 "j1000_key 125 =";
-fetch j1000 "j1000_key 678 =";
-fetch j1000 "j1000_key 345 =";
-fetch j1000 "j1000_key 999 =";
+print "\n";
 
+fetch j1000 "j1000_key 256 =";
+print "\n";
+
+fetch j1000 "j1000_key 789 =";
+print "\n";
+/*
+fetch j1000 "j1000_key 989 =";
+print "\n";
+fetch j1000 "j1000_key 125 =";
+print "\n";
+fetch j1000 "j1000_key 678 =";
+print "\n";
+fetch j1000 "j1000_key 345 =";
+print "\n";
+fetch j1000 "j1000_key 999 =";
+print "\n";
+fetch j1000 "j1000_key 999 =";
+print "\n";
+fetch j1000 "j1000_key 990 >= j1000_key <= 995 and";
+print "\n";
+*/
 vfyidx j1000 idx;
 vfyidx j1000 hidden;
 
