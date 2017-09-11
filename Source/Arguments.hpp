@@ -55,6 +55,8 @@ namespace StorageEngine
     bool  m_bDontFree;  // dont actually free objects back to heap
     bool  m_bFreeRB;    // but free RowBuffers back to heap
   
+    bool  m_bStrictMode;// are we in strict (or relaxed mode)?
+  
     // working
     i8   m_nJumboBuffers; // number of jumbo buffers
     i8   m_nJumboTook;    // number of pool buffers taken by jumbo buffers
