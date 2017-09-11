@@ -2,6 +2,8 @@
 /* _tpch -- tpch creation and load etc                                        */
 /*============================================================================*/
 
+print "Creating tables...";
+
 // create tables
 create table customer (
 	C_CUSTKEY       INTEGER NOT NULL,
@@ -88,6 +90,8 @@ create table supplier (
 	 S_COMMENT       VARCHAR(101) NOT NULL
 );
 
+
+print "Creating indexs on tables...";
 CREATE INDEX customer_idx1 ON customer(c_custkey);
 CREATE INDEX supplier_idx1 ON supplier(s_suppkey);
 CREATE INDEX orders_idx1 ON orders(o_orderdate);
@@ -99,14 +103,33 @@ CREATE INDEX part_idx1 ON part(p_brand);
 CREATE INDEX customer_idx2 ON customer(c_nationkey);
 CREATE INDEX supplier_idx2 ON supplier(s_nationkey);
 
+
+
+print "Loading nation ...";
 ld nation   "/mnt/ssd/tpch/tpch_sf10/nation.tbl" ;
+
+print "Loading orders ...";
 ld orders   "/mnt/ssd/tpch/tpch_sf10/orders.tbl" ;
+
+print "Loading supplier ...";
 ld supplier "/mnt/ssd/tpch/tpch_sf10/supplier.tbl" ;
+
+print "Loading region ...";
 ld region   "/mnt/ssd/tpch/tpch_sf10/region.tbl" ;
+
+print "Loading lineitem ...";
 ld lineitem "/mnt/ssd/tpch/tpch_sf10/lineitem.tbl" ;
+
+print "Loading part ...";
 ld part     "/mnt/ssd/tpch/tpch_sf10/part.tbl" ;
+
+print "Loading partsupp ...";
 ld partsupp "/mnt/ssd/tpch/tpch_sf10/partsupp.tbl" ;
+
+print "Loading custome ...";
 ld customer "/mnt/ssd/tpch/tpch_sf10/customer.tbl" ;
+
+print "ALL DONE";
 
 pwf ;
 lf ;
