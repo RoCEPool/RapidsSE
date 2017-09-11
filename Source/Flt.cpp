@@ -388,9 +388,13 @@ i8 Flt::iCmp(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   d8 dA = *(d8*)aArgA;
   d8 dB = *(d8*)aArgB;
   
-  i8 iCmp = dA - dB;
+  if (dA > dB)
+    return 1;
   
-  return iCmp;
+  if (dA < dB)
+    return -1;
+  
+  return 0;
 }
 
 /*============================================================================*/
