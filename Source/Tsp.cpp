@@ -123,6 +123,7 @@ void Tsp::vInitZero(void)
   x.m_uMinute = 0;
   x.m_uSecond = 0;
   x.m_uMilli  = 0;
+  x.m_uSpare  = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -492,13 +493,13 @@ i8 Tsp::iCmp(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   
   i8 iA = *(i8*)aArgA;
   i8 iB = *(i8*)aArgB;
-  
+ 
   if (iA > iB)
     return 1;
   
   if (iA < iB)
     return -1;
-  
+    
   return 0;
 }
 

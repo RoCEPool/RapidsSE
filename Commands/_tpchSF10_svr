@@ -27,9 +27,9 @@ create table lineitem (
 	 L_TAX           DECIMAL(15,2) NOT NULL,
 	 L_RETURNFLAG    CHAR(1) NOT NULL,
 	 L_LINESTATUS    CHAR(1) NOT NULL,
-	 L_SHIPDATE      DATE NOT NULL,
-	 L_COMMITDATE    DATE NOT NULL,
-	 L_RECEIPTDATE   DATE NOT NULL,
+	 L_SHIPDATE      TIMESTAMP NOT NULL,
+	 L_COMMITDATE    TIMESTAMP NOT NULL,
+	 L_RECEIPTDATE   TIMESTAMP NOT NULL,
 	 L_SHIPINSTRUCT  CHAR(25) NOT NULL,
 	 L_SHIPMODE      CHAR(10) NOT NULL,
 	 L_COMMENT       VARCHAR(44) NOT NULL
@@ -47,7 +47,7 @@ create table orders (
 	 O_CUSTKEY         INTEGER NOT NULL,
 	 O_ORDERSTATUS     CHAR(1) NOT NULL,
 	 O_TOTALPRICE      DECIMAL(15,2) NOT NULL,
-	 O_ORDERDATE       DATE NOT NULL,
+	 O_ORDERDATE       TIMESTAMP NOT NULL,
 	 O_ORDERPRIORITY   CHAR(15) NOT NULL,  
 	 O_CLERK           CHAR(15) NOT NULL,
 	 O_SHIPPRIORITY    INTEGER NOT NULL,
@@ -91,7 +91,7 @@ create table supplier (
 );
 
 
-print "Creating indexs on tables...";
+print "Creating indexes on tables...";
 CREATE INDEX customer_idx1 ON customer(c_custkey);
 CREATE INDEX supplier_idx1 ON supplier(s_suppkey);
 CREATE INDEX orders_idx1 ON orders(o_orderdate);
