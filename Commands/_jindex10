@@ -14,7 +14,7 @@ ld j10 "../JTEST/j10.csv" ;
 
 dumpidx j10 idx1;
 
-fetch j10 "j10_key 6 ==";
+fetch j10 "j10_key 1 ==";
 
 fetch j10 "j10_key 6 >=";
 

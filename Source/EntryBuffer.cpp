@@ -2358,6 +2358,9 @@ Entry* EntryBuffer::pPosition(Key* aGivenKey, eJC eJuxtaCompare, EntryVec* pPrio
   
   ASSERT(JC_SAME == eJuxtaCompare || JC_AFTER == eJuxtaCompare);
   
+  if (bIsQuery)
+    int iDebug = 1;
+  
   bool bIsJuxta;
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
@@ -2397,8 +2400,12 @@ Entry* EntryBuffer::pPosition(Key* aGivenKey, eJC eJuxtaCompare, EntryVec* pPrio
       //vTrace(" %s\n"_Stz,bAfter ? "after" : "before");
       
       // have we found to key during a query?
-      if (bIsQuery && bIsEqual)
-        return pNextEntry_sl;
+      if (bIsQuery && bIsEqual) {
+        if (0 == nScanLevel)
+          return pNextEntry_sl;
+        else
+          break;
+      }
       
       // if given key is not same/after next key then break to outer loop
       if (! bIsJuxta)
