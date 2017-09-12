@@ -444,7 +444,7 @@ timer: pIdxSelectTimer
 
   // create the buffer queue in the seitf
   "selectTask.queue" queue::new to pBufferQueue
-  pBufferQueue >str "BufferQueue %v" str.format .
+  //pBufferQueue >str "BufferQueue %v" str.format .
 
   pPlanner planner.phrases@ 0
   do
@@ -521,7 +521,7 @@ timer: pIdxSelectTimer
 
   // create the buffer queue in the seitf
   "selectTask.queue" queue::new to pBufferQueue
-  pBufferQueue >str "BufferQueue %v" str.format .
+  //pBufferQueue >str "BufferQueue %v" str.format .
 
   // spawn select task for the fetch
   //0 locals| i_Phrase |
