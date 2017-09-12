@@ -207,21 +207,37 @@ ddlLock::grabWrite
 /*----------------------------------------------------------------------------*/
 : dumpTable_req ( "<tableNm>" -- <R> )
 
-ddlLock::grabRead
+  locals| sTableNm |
+
+  ddlLock::grabRead
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // checks
+
+  // should be in the tables folder
+  checkInTables not if <NIP+ERROR> exit then
 
   // there should be a table folder
-  dup checkIsTableFolder not if <NIP+ERROR> exit then
+  sTableNm checkIsTableFolder not if <NIP+ERROR> exit then
 
   // push table dictionary
-  dup pushTable assert
+  sTableNm pushTable assert                                // ../tables/sTableNm
 
-  // check it is a table
-  checkIsTable       not if <NIP+ERROR> exit then
+  // push indexes folder
+  pushIndexes assert                               // ../tables/sTableNm/indexes
 
-  dumpTable
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // dump index
 
-  // pop table dictionary
-  popTable
+  "hidden" find execute
+  index.dump
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // restore path
+
+  popIndexes popTable assertInTables                                // ../tables
+
+  tp: dumpedTable
 
   <OK>
 ;
