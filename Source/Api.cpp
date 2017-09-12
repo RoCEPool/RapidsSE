@@ -148,12 +148,6 @@ eEC RapidsSE_BeginFetch(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable,
     // change directory to table
     CF_TABLES("e"_Stz);
     
-    // set expected last buffers to 1, so that the FetchNextRow waits
-    // and does not come out expecting 0 last buffers
-    // by the time the first buffer comes in, expected last buffers
-    // should have the correct value.
-    //pSEitf->m_nLastBuffers = 1;
-    
     // select * from pTable
     eResult = eExecuteRequest(pSEitf, "spnFetch"_Stz, pTable, pRange);
     CHECK_RESULT("f"_Stz);
@@ -761,11 +755,10 @@ eEC RapidsSE_FetchNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
           // get first entry from buffer
           pEntry = pEntryBuffer->pFirstEntry();
         
-        if (pEntryBuffer->bIsLast()) {
-            pSEitf->m_nLastBuffersScanned++;
-            vTrace("m_nLastBuffersScanned: %lld\n"_Stz, pSEitf->m_nLastBuffersScanned );
-        }
-        
+          if (pEntryBuffer->bIsLast()) {
+            pSEitf->m_ziLastBuffersScanned++;
+            vTrace("m_ziLastBuffersScanned: %lld\n"_Stz, pSEitf->m_ziLastBuffersScanned );
+          }
         
       }
       else {
@@ -776,7 +769,7 @@ eEC RapidsSE_FetchNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
       }
       
       // if found an entry break or last buffer break out of loop
-      if (pEntry || (!pEntry && pSEitf->m_nLastBuffersScanned == pSEitf->m_nLastBuffers))
+      if (pEntry || (!pEntry && pSEitf->m_ziLastBuffersScanned == pSEitf->m_ziLastBuffers))
         break;
       
       // if no entry, get next buffer

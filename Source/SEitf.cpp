@@ -178,8 +178,8 @@ SEitf::SEitf(i8 iPartition)
   m_iCurrentRequestId = 0;
   m_iNextRequestId    = -1;
   m_iRowPartition     = -1;
-  m_nLastBuffers      = 0;
-  m_nLastBuffersScanned = 0;
+  m_ziLastBuffers      = 0;
+  m_ziLastBuffersScanned = 0;
   
   m_ziFetchTasks      = 0;
   m_bSeitfExiting     = false;
@@ -441,7 +441,7 @@ i8 SEitf::nLastBuffers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
-  return m_nLastBuffers;
+  return m_ziLastBuffers;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -451,8 +451,10 @@ void SEitf::vLastBuffers(i8 nLastBuffers)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
-  m_nLastBuffers = nLastBuffers;
-  m_ziFetchTasks = nLastBuffers;
+  m_ziLastBuffers = nLastBuffers;
+  
+  //vTrace("No of fetchTasks set to %lld\n"_Stz, nLastBuffers);
+  m_ziFetchTasks = m_ziLastBuffers;
 }
 
 /*----------------------------------------------------------------------------*/

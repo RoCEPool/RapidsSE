@@ -256,7 +256,7 @@ tp: theIndirectResult
     // test for a dangling row buffer for parition I
     pLoaderSub loaderSub.rowBuffer@
     if
-      "DANGLING" .
+      //"DANGLING" .
       // get the buffer
       pLoaderSub loaderSub.rowBuffer@
 
@@ -268,7 +268,7 @@ tp: theIndirectResult
 
     else
 
-      "NO DANGLING" .
+      //"NO DANGLING" .
 
       // check if loader sub fetched any records
       //pLoaderSub loaderSub.recordsFetched if
@@ -294,7 +294,7 @@ tp: theIndirectResult
   pLoaderSub loaderSub.end
 
   // this sub has completed, ack the parent loader
-  task::this task.name@ "%v acking parent" str.format .
+  //task::this task.name@ "%v acking parent" str.format .
   task.parent@ ack
 ;
 
@@ -306,9 +306,9 @@ tp: theIndirectResult
 tp: partitionAppendBuffer
   locals| pTable iPartitionNo pRowBuffer |
 
-  pRowBuffer entryBuffer.isLast@ if
-    iPartitionNo "appending last buffer for partition " "%v %v" str.format .
-  then
+  //pRowBuffer entryBuffer.isLast@ if
+  //  iPartitionNo "appending last buffer for partition " "%v %v" str.format .
+  //then
 
   pRowBuffer iPartitionNo pTable table.appendBuffer ( )
 ;

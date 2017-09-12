@@ -114,7 +114,7 @@ timer: loadTimer
     1 thread.sleep_s
   repeat
 
-  "table and its indexes loaded" .
+  sTableNm "Table %v and its indexes loaded" str.format .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tidy up

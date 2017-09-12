@@ -286,15 +286,16 @@ timer: pIdxSelectTimer
 /*----------------------------------------------------------------------------*/
 /* fetch rows using an index for given phrase (this is request)               */
 /*----------------------------------------------------------------------------*/
-: spawnFetch ( bSinglePartition bGroupBy i_Phrase pPlanner -- <R> )
+: spawnFetch ( pBufferQueue bSinglePartition bGroupBy i_Phrase pPlanner -- <R> )
 
-assert::stack_4
+  //assert::stack_5
 
-  locals| pPlanner i_Phrase bGroupBy bSinglePartition |
+  locals| pPlanner i_Phrase bGroupBy bSinglePartition pBufferQueue |
 
 //0 locals| i_Phrase |
 
   "Phrase " i_Phrase >str str.cat .
+  pBufferQueue .
 
   i_Phrase pPlanner Planner.indexNm@ .
 
@@ -309,7 +310,7 @@ assert::stack_4
     "0"  //upper
     "exactSelectIdxTask"
     i_Phrase pPlanner Planner.indexNm@
-    bSinglePartition spawnSelectTask
+    pBufferQueue bSinglePartition spawnSelectTask
   endof
 
   // a lower bound select using index
@@ -320,7 +321,7 @@ assert::stack_4
     "0" //upper
     "lowerSelectIdxTask"
     i_Phrase pPlanner Planner.indexNm@
-    bSinglePartition spawnSelectTask
+    pBufferQueue bSinglePartition spawnSelectTask
   endof
 
   // an upper bound select using index
@@ -331,7 +332,7 @@ assert::stack_4
     i_Phrase pPlanner Planner.highKey@
     "upperSelectIdxTask"
     i_Phrase pPlanner Planner.indexNm@
-    bSinglePartition spawnSelectTask
+    pBufferQueue bSinglePartition spawnSelectTask
   endof
 
   // a range select using index
@@ -348,7 +349,7 @@ assert::stack_4
       "case range" .
       "rangeSelectIdxTask"
       i_Phrase pPlanner Planner.indexNm@
-      bSinglePartition spawnSelectTask
+      pBufferQueue bSinglePartition spawnSelectTask
     then
   endof
 
@@ -360,7 +361,7 @@ assert::stack_4
     "0" //upper
     "scanSelectIdxTask"
     "hidden"
-     bSinglePartition spawnSelectTask
+     pBufferQueue bSinglePartition spawnSelectTask
     endof
   endcase
 
@@ -387,7 +388,7 @@ assert::stack_4
   CN_STRVAL assert::class_1
   CN_INTVAL assert::class_2
 
-  0 0 0 0 locals| pSeitf bSinglePartition pPlanner pTable sTableNm sWhere bGroupBy |
+  0 0 0 0 0 locals| pBufferQueue pSeitf bSinglePartition pPlanner pTable sTableNm sWhere bGroupBy |
 
   pIdxSelectTimer timer.start
 
@@ -441,9 +442,13 @@ assert::stack_4
 
   pPlanner planner.phrases@ .
 
+  // create the buffer queue in the seitf
+  "selectTask.queue" queue::new to pBufferQueue
+  pBufferQueue >str "BufferQueue %v" str.format .
+
   pPlanner planner.phrases@ 0
   do
-    bSinglePartition bGroupBy I pPlanner spawnFetch
+    pBufferQueue bSinglePartition bGroupBy I pPlanner spawnFetch
   loop
   <OK>
 ;
@@ -463,7 +468,7 @@ assert::stack_4
   CN_STRVAL assert::class_1
   CN_INTVAL assert::class_2
 
-  0 0 0 locals| pSeitf pPlanner pTable sTableNm sWhere bGroupBy |
+  0 0 0 0 locals| pBufferQueue pSeitf pPlanner pTable sTableNm sWhere bGroupBy |
 
   pIdxSelectTimer timer.start
 
@@ -514,11 +519,15 @@ assert::stack_4
   // set the no of last buffers to no pf phrases in plan
   pPlanner planner.phrases@ grid.slots * pSeitf seitf.lastBuffers!
 
+  // create the buffer queue in the seitf
+  "selectTask.queue" queue::new to pBufferQueue
+  pBufferQueue >str "BufferQueue %v" str.format .
+
   // spawn select task for the fetch
   //0 locals| i_Phrase |
   pPlanner planner.phrases@ 0
   do
-    false bGroupBy I pPlanner spawnFetch
+    pBufferQueue false bGroupBy I pPlanner spawnFetch
   loop
 
   // fetch rows from the buffers in the buffer queue

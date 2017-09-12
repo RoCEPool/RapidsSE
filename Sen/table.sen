@@ -512,9 +512,6 @@ tp: removeTable
 
   locals| sTableNm iSubLoaders |
 
-  sTableNm .
-  iSubLoaders .
-
   iSubLoaders
   sTableNm find execute
   table.subLoaders

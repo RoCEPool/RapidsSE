@@ -349,8 +349,8 @@ tp: makingIndex
 
   tp: keySelectIdx
 
-  "fetchTask started" .
-
+  //"fetchTask started" .
+  
   // task is a select participant running on server thread
   task::this task.kind@ TK_SELECT_PART == assert
   task::this task.thread thread.actorModel@ AC_SERVER == assert
@@ -381,7 +381,6 @@ tp: makingIndex
     pTempEntryBuffer entryBuffer.isLast!
 
     // return the empty tempEntryBuffer
-    //"Appending tempEntryBuffer to buffer queue" .
     pTempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
 
     // mark that a fetch task has ended
@@ -406,7 +405,6 @@ tp: makingIndex
       not if
         // buffer must be full
         // put this tempEntryBuffer in seitf bufferQueue
-        //"Inserting row into tempEntryBuffer" .
         pTempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
 
         // create another temporary index buffer for the results
@@ -441,7 +439,6 @@ tp: makingIndex
   pTempEntryBuffer entryBuffer.isLast!
 
   // put the buffer in the seitf bufferQueue
-  //"Appending tempEntryBuffer to buffer queue" .
   pTempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
 
   // mark that a fetch task has ended
@@ -729,6 +726,7 @@ tp: loadIndexes
 
   begin
     pBufferQueue queue.pop ( value true | false )
+
     // try again if no value
     not while
       //REQUST_LOOP2
@@ -782,7 +780,6 @@ tp: loadIndexes
     // check if last buffer
     pIndexBuffer entryBuffer.isLast@ if
 
-      //"Reached a last buffer" .
       nLastBuffers 1 - to nLastBuffers
       0 nLastBuffers == if
         false
@@ -946,7 +943,7 @@ tp: loadIndexes
 /* select using index (called by fetchRowsIndex_req)                          */
 /*----------------------------------------------------------------------------*/
 : spawnSelectTask ( "<sExactKey>" "<sLowerKey>" "<sUpperKey>"
-"<sSelectTaskSeed>" "<sIndexNm>" <bSinglePartition> --  )
+"<sSelectTaskSeed>" "<sIndexNm>" pBufferQueue <bSinglePartition> --  )
 
 tp: selectIndex
 
@@ -966,7 +963,7 @@ tp: selectIndex
   //assert::stack_5
 
   // save args
-  locals| bSinglePartition sIndexNm sSelectTaskSeed sUpperKey sLowerKey sExactKey |
+  locals| bSinglePartition pBufferQueue sIndexNm sSelectTaskSeed sUpperKey sLowerKey sExactKey |
 
   // local variables
   0 0 0 0 0 0 0 locals| pIndex iSlots pSeitf pSelectTask nRowCount pIndexBuffer pEntry |
@@ -991,7 +988,10 @@ tp: selectIndex
   then
 
   // create the buffer queue in the seitf
-  "selectTask.queue" queue::new pSeitf seitf.bufferQueue!
+  //"selectTask.queue" queue::new pSeitf seitf.bufferQueue!
+
+  // set the queue in the seitf
+  pBufferQueue pSeitf seitf.bufferQueue!
 
   bSinglePartition if
 

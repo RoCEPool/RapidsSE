@@ -335,8 +335,8 @@ void Task::vSEitfFetchTaskEnded(MP_Task mpTask)
   ASSERT(CN_SEITF == pSEitf->eClass());
   
   --pSEitf->m_ziFetchTasks;
-  vTrace("Fetch task ended %s %lld\n"_Stz,
-         pSEitf->m_pCurrentTable->aTableName(), *pSEitf->m_ziFetchTasks);
+  //vTrace("Fetch task ended %s %lld\n"_Stz,
+  //       pSEitf->m_pCurrentTable->aTableName(), *pSEitf->m_ziFetchTasks);
   
   EXIT();
 }

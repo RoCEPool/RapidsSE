@@ -44,8 +44,8 @@ namespace Interface
     i8     m_iNextRequestId;
     i8     m_iRowPartition;
   
-    i8     m_nLastBuffers;     // number of last buffers for fetch
-    i8     m_nLastBuffersScanned; // number of last buffers scanned
+    i8     m_ziLastBuffers;     // number of last buffers for fetch
+    i8     m_ziLastBuffersScanned; // number of last buffers scanned
     
     Atomic m_ziFetchTasks;
     bool   m_bSeitfExiting;

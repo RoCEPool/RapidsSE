@@ -785,8 +785,8 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pNewIndexData,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Index* pNewIndex = pNewIndexData->pIndex();
-  vTrace("Loading index %s\n"_Stz,
-         pNewIndex->aIndexName());
+  vTrace("Loading index %s on partition %lld\n"_Stz,
+         pNewIndex->aIndexName(), iPartition);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute the size of the sort element
@@ -904,7 +904,7 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pNewIndexData,
   bResult = Shm::bUnlink(sRegionName,xSysCall);
  
   iDebug = 2;
-  vTrace("vNewIndexLoad: DONE\n"_Stz);
+  //vTrace("vNewIndexLoad: DONE\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
