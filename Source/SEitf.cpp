@@ -1373,8 +1373,6 @@ bool SEitf::bListIndexColumns(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(" "_Stz);
   sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
-  vTrace("bListIndexColumns: %s\n"_Stz, sRequest.aChar());
-  
   return bAppendRequest(sRequest);
 }
 
