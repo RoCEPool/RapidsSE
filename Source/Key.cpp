@@ -412,6 +412,8 @@ bool Key::bJuxtaBefore(Key* pKeyThat, IdxColVec* pIdxColVec, bool& bIsEqual)
    *      the above three examples hold even if there are more elements
    */
   
+  bIsEqual = false;
+  
   char* aCursorThis = aWspArea();
   char* aCursorThat = pKeyThat->aWspArea();
   
@@ -464,6 +466,8 @@ bool Key::bJuxtaSame(Key* pKeyThat, IdxColVec* pIdxColVec, bool& bIsEqual)
    *         thisElement[1] == thatElement[1] &&
    *         thisElement[2] == thatElement[2]
    */
+  
+  bIsEqual = false;
   
   char* aCursorThis = aWspArea();
   char* aCursorThat = pKeyThat->aWspArea();
@@ -528,6 +532,8 @@ bool Key::bJuxtaAfter(Key* pKeyThat, IdxColVec* pIdxColVec, bool& bIsEqual)
    *
    *      the above three examples hold even if there are more elements
    */
+  
+  bIsEqual = false;
   
   char* aCursorThis = aWspArea();
   char* aCursorThat = pKeyThat->aWspArea();

@@ -145,7 +145,8 @@ namespace DBobjects
     void         vMoveLeft(void* aDst, i8 nBytes);
     void         vMoveRight(void* aSrc, i8 nBytes);
     u8           uOffsetBetween(Entry* pEntryA, Entry* pEntryB);
-    Entry*       pPosition(Key* aGivenKey, eJC eJuxtaCompare, EntryVec* pPriorVec, bool& bIsEqual);
+    Entry*       pPosition(Key* aGivenKey, eJC eJuxtaCompare, EntryVec* pPriorVec,
+                           bool& bIsEqual, bool bIsQuery);
     void         vPriorVec(Entry* pEntry, EntryVec* pPriorVec);
     void         vReplace(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
     void         vReplaceEqualKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);

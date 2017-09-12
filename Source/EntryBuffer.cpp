@@ -1113,7 +1113,7 @@ Entry* EntryBuffer::pInsert(EntWrk& xEntWrk)                        //# critical
   // find the entry after which the new entry.key will be inserted
   EntryVec xPriorVec;
   bool bIsEqual = false;
-  Entry* pAfterEntry = pPosition(xEntWrk.aKey(), JC_AFTER, &xPriorVec, bIsEqual);
+  Entry* pAfterEntry = pPosition(xEntWrk.aKey(), JC_AFTER, &xPriorVec, bIsEqual, false);
     
   if (m_pIndex->bIsUnique() and bIsEqual) { //# note the and !!!
     vTrace("Warning: Duplicate key in unique index %s "_Stz, m_pIndex->aIndexName());
@@ -1266,7 +1266,9 @@ Entry* EntryBuffer::pPosition(KeyWrk& xKeyWrk, eJC eJuxtaCompare)
   Entry* pEntry;
   bool bIsEqual = false;
   
-  pEntry = pPosition(xKeyWrk.aKey(), eJuxtaCompare, nullptr, bIsEqual);
+  Key* aKey = xKeyWrk.aKey();
+  
+  pEntry = pPosition(aKey, eJuxtaCompare, nullptr, bIsEqual, true);
   
   if (pEntry == pHead())
     pEntry = pNextEntry(pEntry);
@@ -2342,7 +2344,8 @@ void EntryBuffer::vMoveRight(void* aSrc, i8 nBytes)                 //# critical
 /*----------------------------------------------------------------------------*/
 /* scan thru skip list and positition to entry (optionally set prior vector)  */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pPosition(Key* aGivenKey, eJC eJuxtaCompare, EntryVec* pPriorVec, bool& bIsEqual) //# critical
+Entry* EntryBuffer::pPosition(Key* aGivenKey, eJC eJuxtaCompare, EntryVec* pPriorVec,
+                              bool& bIsEqual, bool bIsQuery) //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -2392,6 +2395,10 @@ Entry* EntryBuffer::pPosition(Key* aGivenKey, eJC eJuxtaCompare, EntryVec* pPrio
       bIsJuxta = aGivenKey->bJuxtaCompare(eJuxtaCompare,aNextKey,pIdxColVec, bIsEqual);
       
       //vTrace(" %s\n"_Stz,bAfter ? "after" : "before");
+      
+      // have we found to key during a query?
+      if (bIsQuery && bIsEqual)
+        return pNextEntry_sl;
       
       // if given key is not same/after next key then break to outer loop
       if (! bIsJuxta)
