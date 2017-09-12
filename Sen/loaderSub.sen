@@ -149,8 +149,8 @@ tp: theIndirectCall
   //    via sendParticipant in the coordinatoor
   //
 
-  "buffer sent to node" .
-  pLoaderSub loaderSub.hashPartition .
+  //"buffer sent to node" .
+  //pLoaderSub loaderSub.hashPartition .
 
   // to which node/participant
   pLoaderSub loaderSub.hashPartition  ( <<loadAppendBuffer$>> node )

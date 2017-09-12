@@ -2,18 +2,6 @@
 /* _supplierLoad - create and load TPC-H Supllier table for SF1               */
 /*============================================================================*/
 
-cf ~ ;
-cf tenants ;
-cf boray ;
-cf catalogs ;
-cf rapidsse ;
-cf schemas ;
-
-create schema tpchSchema;
-
-cf tpchSchema ;
-cf tables ;
-
 create table supplier (
 	 S_SUPPKEY       INTEGER NOT NULL,
 	 S_NAME          CHAR(25) NOT NULL,

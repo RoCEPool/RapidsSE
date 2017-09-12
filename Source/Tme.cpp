@@ -120,6 +120,7 @@ void Tme::vInitZero(void)
   x.m_uMinute = 0;
   x.m_uSecond = 0;
   x.m_uMilli  = 0;
+  x.m_uSpare  = 0;
 }
 
 /*----------------------------------------------------------------------------*/

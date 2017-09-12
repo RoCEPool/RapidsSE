@@ -4,18 +4,6 @@
 
 status ;
 
-cf ~ ;
-cf tenants ;
-cf boray ;
-cf catalogs ;
-cf rapidsse ;
-cf schemas ;
-
-create schema tpchSchema;
-
-cf tpchSchema ;
-cf tables ;
-
 create table part (
 	 P_PARTKEY           INTEGER NOT NULL,
 	 P_NAME              VARCHAR(55) NOT NULL,

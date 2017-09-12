@@ -2,18 +2,6 @@
 /* _partsuppLoad -- create and load TPC-H PartSupp table for SF1              */
 /*============================================================================*/
 
-cf ~ ;
-cf tenants ;
-cf boray ;
-cf catalogs ;
-cf rapidsse ;
-cf schemas ;
-
-create schema tpchSchema;
-
-cf tpchSchema ;
-cf tables ;
-
 create table partsupp (
 	PS_PARTKEY      INTEGER NOT NULL,
 	PS_SUPPKEY      INTEGER NOT NULL,

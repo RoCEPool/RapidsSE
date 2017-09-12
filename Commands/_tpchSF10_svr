@@ -1,20 +1,8 @@
 /*============================================================================*/
-/* _tpch -- tpc h creation and load etc                                       */
+/* _tpch -- tpch creation and load etc                                        */
 /*============================================================================*/
 
-cf tenants ;
-create tenant boray;
-
-cf boray ;
-cf catalogs ;
-create catalog borayCatalog;
-
-cf borayCatalog ;
-cf schemas ;
-create schema boraySchema;
-
-cf boraySchema ;
-cf tables ;
+print "Creating tables...";
 
 // create tables
 create table customer (
@@ -39,15 +27,15 @@ create table lineitem (
 	 L_TAX           DECIMAL(15,2) NOT NULL,
 	 L_RETURNFLAG    CHAR(1) NOT NULL,
 	 L_LINESTATUS    CHAR(1) NOT NULL,
-	 L_SHIPDATE      DATE NOT NULL,
-	 L_COMMITDATE    DATE NOT NULL,
-	 L_RECEIPTDATE   DATE NOT NULL,
+	 L_SHIPDATE      TIMESTAMP NOT NULL,
+	 L_COMMITDATE    TIMESTAMP NOT NULL,
+	 L_RECEIPTDATE   TIMESTAMP NOT NULL,
 	 L_SHIPINSTRUCT  CHAR(25) NOT NULL,
 	 L_SHIPMODE      CHAR(10) NOT NULL,
 	 L_COMMENT       VARCHAR(44) NOT NULL
 );
 
-create table nation2 (
+create table nation (
 	 N_NATIONKEY       INTEGER NOT NULL,
 	 N_NAME            CHAR(25) NOT NULL,
 	 N_REGIONKEY       INTEGER NOT NULL,
@@ -59,14 +47,14 @@ create table orders (
 	 O_CUSTKEY         INTEGER NOT NULL,
 	 O_ORDERSTATUS     CHAR(1) NOT NULL,
 	 O_TOTALPRICE      DECIMAL(15,2) NOT NULL,
-	 O_ORDERDATE       DATE NOT NULL,
+	 O_ORDERDATE       TIMESTAMP NOT NULL,
 	 O_ORDERPRIORITY   CHAR(15) NOT NULL,  
 	 O_CLERK           CHAR(15) NOT NULL,
 	 O_SHIPPRIORITY    INTEGER NOT NULL,
 	 O_COMMENT         VARCHAR(79) NOT NULL
 );
 
-create table part2 (
+create table part (
 	 P_PARTKEY           INTEGER NOT NULL,
 	 P_NAME              VARCHAR(55) NOT NULL,
 	 P_MFGR              CHAR(25) NOT NULL,
@@ -78,7 +66,7 @@ create table part2 (
 	 P_COMMENT           VARCHAR(23) NOT NULL
 );
 
-create table partsupp2 (
+create table partsupp (
 	PS_PARTKEY      INTEGER NOT NULL,
 	PS_SUPPKEY      INTEGER NOT NULL,
 	PS_AVAILQTY     INTEGER NOT NULL,
@@ -102,6 +90,8 @@ create table supplier (
 	 S_COMMENT       VARCHAR(101) NOT NULL
 );
 
+
+print "Creating indexes on tables...";
 CREATE INDEX customer_idx1 ON customer(c_custkey);
 CREATE INDEX supplier_idx1 ON supplier(s_suppkey);
 CREATE INDEX orders_idx1 ON orders(o_orderdate);
@@ -112,6 +102,34 @@ CREATE INDEX partsupp_idx1 ON partsupp(ps_suppkey);
 CREATE INDEX part_idx1 ON part(p_brand);
 CREATE INDEX customer_idx2 ON customer(c_nationkey);
 CREATE INDEX supplier_idx2 ON supplier(s_nationkey);
+
+
+
+print "Loading nation ...";
+ld nation   "/mnt/ssd/tpch/tpch_sf10/nation.tbl" ;
+
+print "Loading orders ...";
+ld orders   "/mnt/ssd/tpch/tpch_sf10/orders.tbl" ;
+
+print "Loading supplier ...";
+ld supplier "/mnt/ssd/tpch/tpch_sf10/supplier.tbl" ;
+
+print "Loading region ...";
+ld region   "/mnt/ssd/tpch/tpch_sf10/region.tbl" ;
+
+print "Loading lineitem ...";
+ld lineitem "/mnt/ssd/tpch/tpch_sf10/lineitem.tbl" ;
+
+print "Loading part ...";
+ld part     "/mnt/ssd/tpch/tpch_sf10/part.tbl" ;
+
+print "Loading partsupp ...";
+ld partsupp "/mnt/ssd/tpch/tpch_sf10/partsupp.tbl" ;
+
+print "Loading custome ...";
+ld customer "/mnt/ssd/tpch/tpch_sf10/customer.tbl" ;
+
+print "ALL DONE";
 
 pwf ;
 lf ;
