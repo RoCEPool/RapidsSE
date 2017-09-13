@@ -63,7 +63,7 @@ index   index1 on idxkey
 );
 success
 
--- check existence of table
+// check existence of table
 select * from rapids.system.tables where catalog_name = 'RAPIDSSE';
 rows:
 ('RAPIDSSE', 'PUBLIC', 'T1', true)

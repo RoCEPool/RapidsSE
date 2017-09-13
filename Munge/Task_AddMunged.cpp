@@ -11876,7 +11876,6 @@ void Task::vAddMunged(MP_Task mpTask)
     "//0 locals| i_Phrase |\n"
     "\n"
     "  \\\"Phrase \\\" i_Phrase >str str.cat .\n"
-    "  pBufferQueue .\n"
     "\n"
     "  i_Phrase pPlanner Planner.indexNm@ .\n"
     "\n"
