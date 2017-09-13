@@ -295,7 +295,6 @@ timer: pIdxSelectTimer
 //0 locals| i_Phrase |
 
   "Phrase " i_Phrase >str str.cat .
-  pBufferQueue .
 
   i_Phrase pPlanner Planner.indexNm@ .
 
