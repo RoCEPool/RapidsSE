@@ -216,7 +216,8 @@ bool Bol::bExtract(char** aaSrc, Bol* aBoolean, Column* pColumn)
 /*----------------------------------------------------------------------------*/
 void Bol::vSprint(Stz* aDst, Stz* aSrc)
 {
-  StrLib::vSprint(aDst,"%lld%c"_Stz,*(i8*)aSrc,'\0');
+  i8 iValue = *(i8*)aSrc;
+  StrLib::vSprint(aDst,"%s%c"_Stz,iValue ? "true" : "false",'\0');
 }
 
 /*----------------------------------------------------------------------------*/

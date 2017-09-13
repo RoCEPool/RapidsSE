@@ -100,7 +100,9 @@ rows: 37967
 // Query 11
 select ps_partkey, sum(ps_supplycost * ps_availqty) as value from PARTSUPP, SUPPLIER, NATION
   where ps_suppkey = s_suppkey and s_nationkey = n_nationkey and n_name = 'GERMANY'
-  group by ps_partkey having sum(ps_supplycost * ps_availqty) > ( select sum(ps_supplycost * ps_availqty) * 0.0000010000 from PARTSUPP, SUPPLIER, NATION where ps_suppkey = s_suppkey and s_nationkey = n_nationkey and n_name = 'GERMANY' ) order by value desc ;
+  group by ps_partkey having sum(ps_supplycost * ps_availqty) > ( select sum(ps_supplycost * ps_availqty) *
+  0.0000010000 from PARTSUPP, SUPPLIER, NATION where ps_suppkey = s_suppkey and
+  s_nationkey = n_nationkey and n_name = 'GERMANY' ) order by value desc ;
 rows: 28574
 
 // Query 12
@@ -125,7 +127,7 @@ select 100.00 * sum(case when p_type like 'PROMO%' then l_extendedprice*(1-l_dis
 rows: 1
 
 // Query 15
-// HAS VIEWS NOT SUPPORTED
+// HAS VIEWS WHICH ARE NOT SUPPORTED
 
 // Query 16
 select p_brand, p_type, p_size, count(distinct ps_suppkey) as supplier_cnt from PARTSUPP, PART
@@ -142,7 +144,7 @@ select sum(l_extendedprice) / 7.0 as avg_yearly from PART, LINEITEM where p_part
 rows: 1
 
 // Query 18
-stats all select c_name, c_custkey, o_orderkey, o_orderdate, o_totalprice, sum(l_quantity) from ORDERS,
+select c_name, c_custkey, o_orderkey, o_orderdate, o_totalprice, sum(l_quantity) from ORDERS,
   LINEITEM, CUSTOMER where o_orderkey in ( select l_orderkey from LINEITEM
   group by l_orderkey having sum(l_quantity) > 100 ) and o_orderkey = l_orderkey and
   c_custkey = o_custkey group by c_name, c_custkey, o_orderkey, o_orderdate, o_totalprice
