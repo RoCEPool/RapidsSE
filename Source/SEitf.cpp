@@ -2041,7 +2041,7 @@ bool SEitf::bInsertRow(Stz* aRow, i8 iLength)
   // convert the seitf partition to node slot
   i8 iSlot = Partition::iPartitionToSlot(m_iPartition);
   
-  vTrace("Inserting into slot %lld partition %lld\n"_Stz, iSlot, m_iPartition);
+  //vTrace("Inserting into slot %lld partition %lld\n"_Stz, iSlot, m_iPartition);
   
   // check for working buffer
   if (! m_pRowBuffer[iSlot]) {
