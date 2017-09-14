@@ -124,7 +124,6 @@ void DtmLib::vHash(eDM eDatum, i8& iHash, Stz* aScr, DBobjects::Column* pColumn)
       
     case DM_INT: {
       Int xInt = *((Int*)aScr);
-      vTrace("Hashing %lld "_Stz, xInt.m_iInt);
       iHash += XXH32(&xInt,sizeof(Int),0);
       break;
     }
