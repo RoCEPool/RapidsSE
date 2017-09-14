@@ -2044,7 +2044,7 @@ bool SEitf::bInsertRow(Stz* aRow, i8 iLength)
   // check for working buffer
   if (! m_pRowBuffer[iSlot]) {
     m_pRowBuffer[iSlot] = new EntryBuffer(m_pCurrentTable->pHiddenIndex(),
-                                                 0, iSlot);
+                                                 0, m_iPartition);
     if (! m_pRowBuffer[iSlot]) {
       vTrace("EntryBuffer allocation failed\n"_Stz);
       m_eErrorCode = EC_LOW_BUFFERS;
