@@ -2098,7 +2098,7 @@ bool SEitf::bInsertBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
-  vTrace("inserting entries from row buffer into table...\n"_Stz);
+  //vTrace("inserting entries from row buffer into table...\n"_Stz);
 
   i8 iSlot = Partition::iPartitionToSlot(m_iPartition);
   
@@ -2106,7 +2106,7 @@ bool SEitf::bInsertBuffer(void)
     return false;
   }
   
-  m_pRowBuffer[iSlot]->vDump();
+  //m_pRowBuffer[iSlot]->vDump();
   
   // now append the entries from this temporary buffer into the table
   bool bResult = bInsertEntriesTable(m_pRowBuffer[iSlot],iSlot);

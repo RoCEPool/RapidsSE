@@ -116,7 +116,7 @@ void Task::vTableAnalyze(MP_Task mpTask)
 void Task::vTableInsertEntries(MP_Task mpTask)
 {
   ENTRY("vTableInsertEntries"_Stz);
-  i8 iPartition;
+  i8 iSlot;
   s48K sString;
   
   if ( ! mpTask->m_pDataStack->bPop(sString) )
@@ -134,8 +134,8 @@ void Task::vTableInsertEntries(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(sString) )
     THROW_INVALID_DSTACK("table.insertEntries"_Stz);
   
-  iPartition = sString.iToI8();
-  pTable->vInsertEntries(iPartition,pRowBuffer);
+  iSlot = sString.iToI8();
+  pTable->vInsertEntries(iSlot,pRowBuffer);
   
   // now delete the temporary buffer
   delete pRowBuffer;

@@ -7,7 +7,8 @@
 #define TL_ENTRY  1
 #define TL_ERROR  2
 #define TL_EXIT   4
-#define TL_POOL   8
+#define TL_INSERT 8
+#define TL_POOL   16
 
 // external SE API calls
 extern "C" eEC RapidsSE_AddIndexColumn(SEitf* pSEitf, Stz* pTableName, Stz* pIndexName, Stz* pColumnName, i8 iTraceLevel);
@@ -104,6 +105,16 @@ eEC eGetResponse(SEitf* pSEitf);
   if ( (iTraceLevel & TL_ENTRY) == TL_ENTRY) \
     vTrace("<%s: %p(%lld) %s %s %s %s\n"_Stz,  \
       aApiCall, pSEitf, pSEitf ? pSEitf->iPartition() : -1, p1, p2, p3, p4); \
+}
+
+/*----------------------------------------------------------------------------*/
+/* trace API insert                                                           */
+/*----------------------------------------------------------------------------*/
+#define TRACE_INSERT(aMarker, sRow) \
+{  \
+  if ( (iTraceLevel & TL_INSERT) == TL_INSERT) \
+    vTrace("%s(%s): %p(%lld) inserting row %s\n"_Stz,  \
+      aApiCall, aMarker, pSEitf, pSEitf ? pSEitf->iPartition() : -1, sRow); \
 }
 
 /*----------------------------------------------------------------------------*/

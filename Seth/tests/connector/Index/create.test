@@ -15,10 +15,10 @@ index   index1 on idxkey
 failure
 
 select * from rapids.system.tables where catalog_name = 'RAPIDSSE';
-affected: -1
+rows: 0
 
 select * from rapids.system.indexes;
-affected: -1
+rows: 0
 
 
 
@@ -31,10 +31,10 @@ index   index1 on xyz
 failure
 
 select * from rapids.system.tables where catalog_name = 'RAPIDSSE';
-affected: -1
+rows: 0
 
 select * from rapids.system.indexes;
-affected: -1
+rows: 0
 
 
 
@@ -47,10 +47,10 @@ index   index1 on idxkey, xyz
 failure
 
 select * from rapids.system.tables where catalog_name = 'RAPIDSSE';
-affected: -1
+rows: 0
 
 select * from rapids.system.indexes;
-affected: -1
+rows: 0
 
 
 
@@ -90,11 +90,11 @@ failure
 
 -- check existence of table
 select * from rapids.system.tables where catalog_name = 'RAPIDSSE';
-affected: -1
+rows: 0
 
 -- check existence of index
 select * from rapids.system.indexes;
-affected: -1
+rows: 0
 
 
 

@@ -1354,20 +1354,21 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel)
     if (pSEitf->m_iPartition == iRowPartition) {
       
       //RowData::vShow(s, pSEitf->m_pCurrentTable->pColumnVec());
+      TRACE_INSERT("d"_Stz, pRow);
       
       // insert the row in this partition
       bool bResult = pSEitf->bInsertRow(s, iRowLength);
      
       if (!bResult) {
         pSEitf->vSetLastError(pSEitf->m_eErrorCode);
-        TRACE_ERROR("d"_Stz, pSEitf->m_eErrorCode);
+        TRACE_ERROR("e"_Stz, pSEitf->m_eErrorCode);
         return pSEitf->m_eErrorCode;
       }
      
     }
     
     // validate table
-    VALIDATE_TABLE("e"_Stz);
+    VALIDATE_TABLE("f"_Stz);
 
     // trace exit
     TRACE_EXIT("ea"_Stz);
