@@ -615,7 +615,7 @@ eEC RapidsSE_EndFetch(SEitf* pSEitf, i8 iTraceLevel)
     // wait till all fetch tasks have ended
     while (*pSEitf->m_ziFetchTasks != 0)
       ;
-    vTrace("All fetch tasks have ended %s"_Stz, pSEitf->pCurrentTable()->aTableName());
+    //vTrace("All fetch tasks have ended %s"_Stz, pSEitf->pCurrentTable()->aTableName());
     
     // reset the index
     pSEitf->vCurrentIndex(nullptr);
@@ -623,6 +623,11 @@ eEC RapidsSE_EndFetch(SEitf* pSEitf, i8 iTraceLevel)
     // validate no index
     VALIDATE_NOINDEX("d"_Stz);
     
+    // now delete the buffer queue from this seitf
+    //vTrace("Deleting %p(%lld) %p\n"_Stz, pSEitf,pSEitf->m_iPartition, pSEitf->m_pBufferQueue);
+    pSEitf->m_pBufferQueue->vFinalize();
+    delete pSEitf->m_pBufferQueue;
+
     // return the table
     Table* pTable = pSEitf->pCurrentTable();
     eResult = eExecuteRequest(pSEitf, "rettbl"_Stz);
@@ -768,17 +773,23 @@ eEC RapidsSE_FetchNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
         pEntry = pEntryBuffer->pNextEntry(pSEitf->m_pEntry);
       }
       
+      // if no entry, get next buffer
+      if (!pEntry) {
+        
+        // if we had an entry buffer delete it
+        if (pEntryBuffer)
+          delete pEntryBuffer;
+        
+        // null the buffer and get the next
+        pEntryBuffer = nullptr;
+      }
+      
       // if found an entry break or last buffer break out of loop
       if (pEntry || (!pEntry && pSEitf->m_ziLastBuffersScanned == pSEitf->m_ziLastBuffers))
         break;
-      
-      // if no entry, get next buffer
-      if (!pEntry)
-        pEntryBuffer = nullptr;
     }
     
     if (!pEntry) {
-      ASSERT(pEntryBuffer->bIsLast());
       *ppRow = nullptr;
     }
     else {
