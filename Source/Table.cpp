@@ -308,7 +308,7 @@ void Table::vAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
 /*----------------------------------------------------------------------------*/
 /* insert entries from a row buffer into the table (hidden and other indexes) */
 /*----------------------------------------------------------------------------*/
-void Table::vInsertEntries(i8 iPartition, EntryBuffer* pEntryBuffer)
+void Table::vInsertEntries(i8 iSlot, EntryBuffer* pEntryBuffer)
 { //# indexTuning
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
@@ -316,7 +316,7 @@ void Table::vInsertEntries(i8 iPartition, EntryBuffer* pEntryBuffer)
   // This function is invoked when we insert rows into a table via a
   // begin/insert/end and via the API's insert-select
   
-  ASSERT(iPartition < gpGrid->m_nSlots);
+  ASSERT(iSlot < gpGrid->m_nSlots);
   
   // buffer should be temporary
   ASSERT(pEntryBuffer->eDurability() == BD_TEMPORARY);
@@ -326,7 +326,7 @@ void Table::vInsertEntries(i8 iPartition, EntryBuffer* pEntryBuffer)
   
   //----------------------------------------------------------------------------
   // (1) append the buffer entries into the hidden index
-  Partition* pPartition = this->pPartition(iPartition);
+  Partition* pPartition = this->pPartition(iSlot);
   IndexData* pHiddenIndexData = pPartition->pHiddenIndexData();
   
   EntryBuffer* pFirstBuffer;
