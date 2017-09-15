@@ -126,7 +126,7 @@ ld part     "/mnt/ssd/tpch/tpch_sf1/part.tbl" ;
 print "Loading partsupp ...";
 ld partsupp "/mnt/ssd/tpch/tpch_sf1/partsupp.tbl" ;
 
-print "Loading custome ...";
+print "Loading customer ...";
 ld customer "/mnt/ssd/tpch/tpch_sf1/customer.tbl" ;
 
 print "ALL DONE";

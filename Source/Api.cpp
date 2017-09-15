@@ -1093,6 +1093,7 @@ eEC RapidsSE_GetPartitions(SEitf* pSEitf, void** ppPartitions, void** ppCount, i
     VALIDATE_REFPOINTER("b"_Stz, ppPartitions);
     VALIDATE_REFPOINTER("c"_Stz, ppCount);
 
+    vTrace("PART: %lld SLOTS: %lld\n"_Stz, gpGrid->m_iPartition, gpGrid->m_nSlots);
     *ppCount = &gpGrid->m_nSlots;
     *ppPartitions = &gpGrid->m_iPartition;
     
