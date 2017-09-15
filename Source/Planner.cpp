@@ -547,7 +547,10 @@ void Planner::vParsePhrases(void)
     m_nPhrases++;    
   }
   
+  pPhrase1->vSetAllTokens();
   delete pPhrase1;
+  
+  pPhrase2->vSetAllTokens();
   delete pPhrase2;
 
   //vShowPhrases();
