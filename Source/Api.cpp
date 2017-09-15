@@ -64,6 +64,55 @@ eEC RapidsSE_AddIndexColumn(SEitf* pSEitf, Stz* pTableName, Stz* pIndexName, Stz
 }
 
 /*----------------------------------------------------------------------------*/
+/* add a partitionBy column to a table                                        */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_AddPartitionByColumn(SEitf* pSEitf, Stz* pTableName, Stz* pColumnName, i8 iTraceLevel)
+{
+  eEC eResult;
+  eEC eResponse;
+  
+  Stz* aApiCall = "RapidsSE_AddPartitionByColumn"_Stz;
+  
+  try {
+    TRACE_ENTRY_P2(pTableName, pColumnName);
+    
+    // validate the SEitf
+    VALIDATE_SEITF("a"_Stz);
+    
+    // clear the last error
+    CLEAR_LASTERROR();
+    
+    // validate parameters
+    VALIDATE_PARAM("b"_Stz, pTableName);
+    VALIDATE_PARAM("b"_Stz, pColumnName);
+    
+    // validate that we have a current table
+    VALIDATE_TABLE("d"_Stz);
+    
+    // add a column
+    eResult = eExecuteRequest(pSEitf, "addpartcol"_Stz,
+                              pTableName,
+                              pColumnName);
+    
+    CHECK_RESULT("d"_Stz);
+    CHECK_RESPONSE("e"_Stz);
+    
+    TRACE_EXIT("ea"_Stz);
+    
+    return EC_NONE;
+  }
+  catch (Error* pError) {
+    RapidsSE::vErrorHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
+    return pError->eErrorCode();
+  }
+  catch (...) {
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
+    return EC_SE_UNKNOWN_ERROR;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* add a column to a table                                                    */
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_AddTableColumn(SEitf* pSEitf, Stz* pTableName, Stz* pColumnName, Stz* pColumnType, i8 iTraceLevel)
@@ -83,14 +132,12 @@ eEC RapidsSE_AddTableColumn(SEitf* pSEitf, Stz* pTableName, Stz* pColumnName, St
     CLEAR_LASTERROR();
     
     // validate parameters
+    VALIDATE_PARAM("b"_Stz, pTableName);
     VALIDATE_PARAM("b"_Stz, pColumnName);
     VALIDATE_PARAM("c"_Stz, pColumnType);
     
     // validate that we have a current table
     VALIDATE_TABLE("d"_Stz);
-    
-    // get the current table
-    Table* pTable = pSEitf->pCurrentTable();
     
     // add a column
     eResult = eExecuteRequest(pSEitf, "addcol"_Stz,
@@ -552,14 +599,6 @@ eEC RapidsSE_EndCreateTable(SEitf* pSEitf, Stz* pTable, i8 iTraceLevel)
     
     // did we manage to create the table
     if (pTablePtr) {
-      
-      // add partition column as first column if no partition by clause
-      if (pTablePtr->pSlots()->pPtnColVec()->nItems() == 0) {
-        eEC eResult = eExecuteRequest(pSEitf, "addpartcol"_Stz, pTable,
-                      pTablePtr->pColumnVec()->pGet(0)->sColumnName());
-        CHECK_RESULT("b"_Stz);
-        CHECK_RESPONSE("c"_Stz);
-      }
       
       // endmktbl
       eResult = eExecuteRequest(pSEitf, "endmktbl"_Stz, pTable);

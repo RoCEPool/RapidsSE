@@ -12,6 +12,7 @@
 
 // external SE API calls
 extern "C" eEC RapidsSE_AddIndexColumn(SEitf* pSEitf, Stz* pTableName, Stz* pIndexName, Stz* pColumnName, i8 iTraceLevel);
+extern "C" eEC RapidsSE_AddPartitionByColumn(SEitf* pSEitf, Stz* pTableName,Stz* pColumnName, i8 iTraceLevel);
 extern "C" eEC RapidsSE_AddTableColumn(SEitf* pSEitf, Stz* pTableName, Stz* pColumnName, Stz* pColumnType,
                                        i8 iTraceLevel);
 extern "C" eEC RapidsSE_BeginFetch(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable, Stz* pRange, i8 iTraceLevel);
