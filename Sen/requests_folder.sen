@@ -175,11 +175,9 @@
       then
 
       object@ word.prev object!
-
-    next
-    iCount if
       ")" str.cat
-    then
+    next
+
   then
 
   <SUCCESS>
