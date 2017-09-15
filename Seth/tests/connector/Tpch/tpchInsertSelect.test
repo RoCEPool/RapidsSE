@@ -114,41 +114,62 @@ success;
 refresh;
 success
 
-// insert into tpch2 from tpch
-insert into customer2 select * from customer;
-insert into lineitem2 select * from lineitem;
-insert into nation2 select * from nation;
-insert into orders2 select * from orders;
-insert into part2 select * from part;
-insert into partsupp2 select * from partsupp;
+// insert-select into region2
 insert into region2 select * from region;
-insert into supplier2 select * from supplier;
 
-// select counts from tpch2
-select count(*) from customer2;
-rows: 150000
-
-select count(*) from lineitem2;
-rows: 6001215
-
-select count(*) from nation2;
-rows: 250
-
-select count(*) from orders2;
-rows: 1500000
-
-select count(*) from part2;
-rows: 200000
-
-select count(*) from partsupp2;
-rows: 800000
-
+// select count from region2
 select count(*) from region2;
 rows: 5
 
+// insert-select into nation2
+insert into nation2 select * from nation;
+
+// select count from nation2
+select count(*) from nation2;
+rows: 250
+
+// insert-select into supplier2
+insert into supplier2 select * from supplier;
+
+// select count from supplier2
 select count(*) from supplier2;
 rows: 10000
 
+// insert-select into customer2
+insert into customer2 select * from customer;
+
+// select count from customer2
+select count(*) from customer2;
+rows: 150000
+
+// insert-select into part2
+insert into part2 select * from part;
+
+// select count from part2
+select count(*) from part2;
+rows: 200000
+
+// insert-select into partsupp2
+insert into partsupp2 select * from partsupp;
+
+// select count from partsupp2
+select count(*) from partsupp2;
+rows: 800000
+
+// insert-select into orders2
+insert into orders2 select * from orders;
+
+// select count from orders2
+select count(*) from orders2;
+rows: 1500000
+
+// insert-select into lineitem2
+insert into lineitem2 select * from lineitem;
+
+// select count from lineitem2
+select count(*) from lineitem2;
+rows: 6001215
+/*
 // Query 1
 select l_returnflag, l_linestatus, sum(l_quantity) as sum_qty,
   sum(l_extendedprice) as sum_base_price,
@@ -334,6 +355,7 @@ select cntrycode, count(*) as numcust, sum(c_acctbal) as totacctbal from
   not exists ( select * from ORDERS where o_custkey = c_custkey ) ) as custsale
   group by cntrycode order by cntrycode ;
 rows: 7
+*/
 
 CLEANUP {
 
