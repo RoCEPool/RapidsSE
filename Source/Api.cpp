@@ -590,7 +590,7 @@ eEC RapidsSE_EndFetch(SEitf* pSEitf, i8 iTraceLevel)
   eEC eResponse;
   
   Stz* aApiCall = "RapidsSE_EndFetch"_Stz;
-  vTrace("EndFetch %s\n"_Stz, pSEitf->pCurrentTable()->aTableName());
+  //vTrace("EndFetch %s\n"_Stz, pSEitf->pCurrentTable()->aTableName());
   
   try {
     
@@ -1361,11 +1361,15 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel)
     // get the partition this row hashes to
     i8 iRowPartition = pSEitf->pCurrentTable()->iRowPartition(s);
     
+    vTrace("%p(%lld) got row %s\n"_Stz,  \
+           pSEitf, pSEitf ? pSEitf->iPartition() : -1, pRow);
+    
     // is this row for this seitf partition ?
     if (pSEitf->m_iPartition == iRowPartition) {
       
       //RowData::vShow(s, pSEitf->m_pCurrentTable->pColumnVec());
-      TRACE_INSERT("d"_Stz, pRow);
+      //TRACE_INSERT("d"_Stz, pRow);
+       TRACE_INSERT("d"_Stz, pRow);
       
       // insert the row in this partition
       bool bResult = pSEitf->bInsertRow(s, iRowLength);
