@@ -16,6 +16,19 @@ jidx_100   INTEGER NOT NULL,
 jidx_10    INTEGER NOT NULL
 );
 
+docol epochTake;
+fetch jidx;
+
+docol epochdump;
+
+/*
+create table jidx (
+jidx_key   INTEGER NOT NULL,
+jidx_name  VARCHAR(32) NOT NULL,
+jidx_100   INTEGER NOT NULL,
+jidx_10    INTEGER NOT NULL
+);
+
 create unique index idx1 on jidx (jidx_key);
 lsidx jidx;
 lsidxcol jidx idx1;
@@ -81,6 +94,7 @@ print "\nSelecting rows with key <= 7 using idx1 ...\n" ;
 fetch jidx "jidx_key 7 <=";
 
 lspartcol jidx;
+*/
 
 /*============================================================================*/
 /* end                                                                        */

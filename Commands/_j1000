@@ -4,19 +4,7 @@
 
 ping ;
 
-cf tenants ;
-mkten boray ;
-
-cf boray ;
-cf catalogs ;
-mkcat borayCatalog ;
-
-cf borayCatalog ;
-cf schemas ;
-mksch boraySchema ;
-
-cf boraySchema ;
-cf tables ;
+docol epochTake;
 
 create table j1000 (
   j1000_key   INTEGER NOT NULL,
@@ -31,14 +19,22 @@ ld j1000 "../JTEST/j1000.csv" ;
 pwf ;
 lf ;
 
-sel j1000 ;
 
+
+//fetch j1000 ;
+//drop table j1000;
+//docol epochDump;
+
+/*
 create table j1000_ (
 j1000_key   INTEGER NOT NULL,
 j1000_name  VARCHAR(32) NOT NULL,
 j1000_j100  INTEGER NOT NULL,
 j1000_j10   INTEGER NOT NULL
 );
+*/
+
+
 
 /*============================================================================*/
 /* end                                                                        */
