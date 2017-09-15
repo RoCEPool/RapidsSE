@@ -2,6 +2,8 @@
 /* _cdt -- candidate path testing                                             */
 /*============================================================================*/
 
+docol epochTake;
+
 create table jCdt (
   jA  INTEGER,
   jB  INTEGER,
@@ -21,11 +23,11 @@ create index jCdt_idx6 on jCdt (jE,jA);
 ld jCdt "../JTEST/jCdt.csv";
 //docol stepsList;
 
-print "dumping jCdt_idx1 index\n" ;
-dumpidx jCdt jCdt_idx1;
+//print "dumping jCdt_idx1 index\n" ;
+//dumpidx jCdt jCdt_idx1;
 
-print "dumping jCdt_idx2 index\n" ;
-dumpidx jCdt jCdt_idx2;
+//print "dumping jCdt_idx2 index\n" ;
+//dumpidx jCdt jCdt_idx2;
 
 //print "dumping jCdt_idx3 index\n" ;
 //dumpidx jCdt jCdt_idx3;
@@ -39,42 +41,39 @@ dumpidx jCdt jCdt_idx5;
 print "dumping jCdt_idx6 index\n" ;
 dumpidx jCdt jCdt_idx6;
 
-//print "\nSelecting rows with key <= 7 using idx1 ...\n" ;
-//fetch jCdt "jA 7 <=";
+print "\nSelecting rows with key <= 7 using idx1 ...\n" ;
+fetch jCdt "jA 7 <=";
 
-//fetch jCdt "jA 1 >=" ;
+fetch jCdt "jA 1 >=" ;
 
 // upper bound
-//fetch jCdt "jA 5 <=" ;
+fetch jCdt "jA 5 <=" ;
 
 // full table
-//fetch jCdt "jB 1 >=" ;
-
-//docol epochTake;
+fetch jCdt "jB 1 >=" ;
 
 // exact bound
-//fetch jCdt "jA 5 ==" ;
+fetch jCdt "jA 5 ==" ;
 
 // lower bound
-//fetch jCdt "jA 5 >=" ;
+fetch jCdt "jA 5 >=" ;
 
 // range bound
-//fetch jCdt "jA 1 >= jA 8 <= and" ;
-//fetch jCdt "jA 8 <= jA 1 >= and" ;
+fetch jCdt "jA 1 >= jA 8 <= and" ;
+fetch jCdt "jA 8 <= jA 1 >= and" ;
  
-//fetch jCdt "jA 1 >= jA 8 <= or" ;
-//fetch jCdt "jA 8 <=" ;
+fetch jCdt "jA 1 >= jA 8 <= or" ;
+fetch jCdt "jA 8 <=" ;
 
-//fetch jCdt ;
+fetch jCdt ;
 
-//fetch jCdt "jA 1 >= jB 2 >= and" ;
+fetch jCdt "jA 1 >= jB 2 >= and" ;
 
 print "fetched\n" ;
 
-//docol epochDump;
-
 drop table jCdt;
 
+docol epochDump;
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

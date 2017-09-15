@@ -1620,6 +1620,8 @@ eEC eExecuteRequest(SEitf* pSEitf, Stz* aCommand)
   
   bResult = pSEitf->bDecode(xTokenVec);
   
+  xTokenVec.vSetAllTokens();
+  
   return pSEitf->eGetLastError();
 }
 
@@ -1640,6 +1642,8 @@ eEC eExecuteRequest(SEitf* pSEitf, Stz* aCommand, Stz* aParameter)
   xTokenVec[2]->vReset();
   
   bResult = pSEitf->bDecode(xTokenVec);
+  
+  xTokenVec.vSetAllTokens();
   
   return pSEitf->eGetLastError();
 }
@@ -1664,6 +1668,8 @@ eEC eExecuteRequest(SEitf* pSEitf, Stz* aCommand, Stz* aParameter1,
   
   bResult = pSEitf->bDecode(xTokenVec);
   
+  xTokenVec.vSetAllTokens();
+  
   return pSEitf->eGetLastError();
 }
 
@@ -1686,6 +1692,8 @@ eEC eExecuteRequest(SEitf* pSEitf, Stz* aCommand, Stz* aParameter1,
   xTokenVec[4]->vReset();
 
   bResult = pSEitf->bDecode(xTokenVec);
+  
+  xTokenVec.vSetAllTokens();
   
   return pSEitf->eGetLastError();
 }
