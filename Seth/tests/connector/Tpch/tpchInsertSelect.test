@@ -126,7 +126,7 @@ insert into nation2 select * from nation;
 
 // select count from nation2
 select * from nation2;
-rows: 250
+rows: 25
 
 // insert-select into supplier2
 insert into supplier2 select * from supplier;
