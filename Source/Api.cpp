@@ -129,7 +129,7 @@ eEC RapidsSE_BeginFetch(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable,
   
   try {
     
-    vTrace("Table: %s Range: %s\n"_Stz, pTable, pRange);
+    //vTrace("Table: %s Range: %s\n"_Stz, pTable, pRange);
     
     // trace entry
     TRACE_ENTRY_P3(pCatalog, pSchema, pTable);
@@ -548,18 +548,28 @@ eEC RapidsSE_EndCreateTable(SEitf* pSEitf, Stz* pTable, i8 iTraceLevel)
     // clear the last error
     CLEAR_LASTERROR();
     
-    // endmktbl only if we managed to create the table
-    if (pSEitf->pCurrentTable()) {
-      eEC eResult = eExecuteRequest(pSEitf, "endmktbl"_Stz, pTable);
-      CHECK_RESULT("b"_Stz);
-      CHECK_RESPONSE("c"_Stz);
-    }
-
-    // rettbl only if we managed to create the table
-    if (pSEitf->pCurrentTable()) {
-      eResult = eExecuteRequest(pSEitf, "rettbl"_Stz);
+    Table* pTablePtr = pSEitf->pCurrentTable();
+    
+    // did we manage to create the table
+    if (pTablePtr) {
+      
+      // add partition column as first column if no partition by clause
+      if (pTablePtr->pSlots()->pPtnColVec()->nItems() == 0) {
+        eEC eResult = eExecuteRequest(pSEitf, "addpartcol"_Stz, pTable,
+                      pTablePtr->pColumnVec()->pGet(0)->sColumnName());
+        CHECK_RESULT("b"_Stz);
+        CHECK_RESPONSE("c"_Stz);
+      }
+      
+      // endmktbl
+      eResult = eExecuteRequest(pSEitf, "endmktbl"_Stz, pTable);
       CHECK_RESULT("d"_Stz);
       CHECK_RESPONSE("e"_Stz);
+      
+      // rettbl
+      eResult = eExecuteRequest(pSEitf, "rettbl"_Stz);
+      CHECK_RESULT("f"_Stz);
+      CHECK_RESPONSE("g"_Stz);
     }
     
     // should not have a table
@@ -762,7 +772,7 @@ eEC RapidsSE_FetchNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
         
           if (pEntryBuffer->bIsLast()) {
             pSEitf->m_ziLastBuffersScanned++;
-            vTrace("m_ziLastBuffersScanned: %lld\n"_Stz, pSEitf->m_ziLastBuffersScanned );
+            //vTrace("m_ziLastBuffersScanned: %lld\n"_Stz, pSEitf->m_ziLastBuffersScanned );
           }
         
       }
@@ -1093,7 +1103,7 @@ eEC RapidsSE_GetPartitions(SEitf* pSEitf, void** ppPartitions, void** ppCount, i
     VALIDATE_REFPOINTER("b"_Stz, ppPartitions);
     VALIDATE_REFPOINTER("c"_Stz, ppCount);
 
-    vTrace("PART: %lld SLOTS: %lld\n"_Stz, gpGrid->m_iPartition, gpGrid->m_nSlots);
+    //vTrace("PART: %lld SLOTS: %lld\n"_Stz, gpGrid->m_iPartition, gpGrid->m_nSlots);
     *ppCount = &gpGrid->m_nSlots;
     *ppPartitions = &gpGrid->m_iPartition;
     
@@ -1362,15 +1372,14 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel)
     // get the partition this row hashes to
     i8 iRowPartition = pSEitf->pCurrentTable()->iRowPartition(s);
     
-    vTrace("%p(%lld) got row %s\n"_Stz,  \
-           pSEitf, pSEitf ? pSEitf->iPartition() : -1, pRow);
+    //vTrace("%p(%lld) got row %s\n"_Stz,  \
+    //       pSEitf, pSEitf ? pSEitf->iPartition() : -1, pRow);
     
     // is this row for this seitf partition ?
     if (pSEitf->m_iPartition == iRowPartition) {
       
       //RowData::vShow(s, pSEitf->m_pCurrentTable->pColumnVec());
-      //TRACE_INSERT("d"_Stz, pRow);
-       TRACE_INSERT("d"_Stz, pRow);
+      TRACE_INSERT("d"_Stz, pRow);
       
       // insert the row in this partition
       bool bResult = pSEitf->bInsertRow(s, iRowLength);
