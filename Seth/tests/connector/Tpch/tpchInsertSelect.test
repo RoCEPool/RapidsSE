@@ -365,6 +365,7 @@ drop table  part2;
 drop table  partsupp2;
 drop table  region2;
 drop table  lineitem2;
+drop table  nation2;
 } // end of loop
 
 CLEANUP {
