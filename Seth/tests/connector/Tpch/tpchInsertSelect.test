@@ -357,11 +357,14 @@ select cntrycode, count(*) as numcust, sum(c_acctbal) as totacctbal from
   group by cntrycode order by cntrycode ;
 rows: 7
  */
-drop table customer2;
+drop table  customer2;
 drop table  supplier2;
 drop table  orders2;
 drop table  partsupp2;
 drop table  part2;
+drop table  partsupp2;
+drop table  region2;
+drop table  lineitem2;
 } // end of loop
 
 CLEANUP {
