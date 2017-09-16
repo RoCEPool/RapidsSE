@@ -2,6 +2,7 @@
 -- tpch insert-select tests (SF1)
 -------------------------------------------------------------------------------
 
+LOOP 100 {
 -- refresh metadata
 refresh;
 success
@@ -118,57 +119,57 @@ success
 insert into region2 select * from region;
 
 // select count from region2
-select * from region2;
-rows: 5
+//select * from region2;
+//rows: 5
 
 // insert-select into nation2
 insert into nation2 select * from nation;
 
 // select count from nation2
-select * from nation2;
-rows: 25
+//select * from nation2;
+//rows: 25
 
 // insert-select into supplier2
 insert into supplier2 select * from supplier;
 
 // select count from supplier2
-select * from supplier2;
-rows: 10000
+//select * from supplier2;
+//rows: 10000
 
 // insert-select into customer2
 insert into customer2 select * from customer;
 
 // select count from customer2
-select * from customer2;
-rows: 150000
+//select * from customer2;
+//rows: 150000
 
 // insert-select into part2
 insert into part2 select * from part;
 
 // select count from part2
-select * from part2;
-rows: 200000
+//select * from part2;
+//rows: 200000
 
 // insert-select into partsupp2
-insert into partsupp2 select * from partsupp;
+//insert into partsupp2 select * from partsupp;
 
 // select count from partsupp2
-select * from partsupp2;
-rows: 800000
+//select * from partsupp2;
+//rows: 800000
 
 // insert-select into orders2
-insert into orders2 select * from orders;
+//insert into orders2 select * from orders;
 
 // select count from orders2
-select * from orders2;
-rows: 1500000
+//select * from orders2;
+//rows: 1500000
 
 // insert-select into lineitem2
-insert into lineitem2 select * from lineitem;
+//insert into lineitem2 select * from lineitem;
 
 // select count from lineitem2
-select * from lineitem2;
-rows: 6001215
+//select * from lineitem2;
+//rows: 6001215
 /*
 // Query 1
 select l_returnflag, l_linestatus, sum(l_quantity) as sum_qty,
@@ -355,10 +356,20 @@ select cntrycode, count(*) as numcust, sum(c_acctbal) as totacctbal from
   not exists ( select * from ORDERS where o_custkey = c_custkey ) ) as custsale
   group by cntrycode order by cntrycode ;
 rows: 7
-*/
+ */
+drop table customer2;
+drop table  supplier2;
+drop table  orders2;
+drop table  partsupp2;
+drop table  part2;
+} // end of loop
 
 CLEANUP {
-
+  drop table customer2;
+  drop table  supplier2;
+  drop table  orders2;
+  drop table  partsupp2;
+  drop table  part2;
 }
 
 
