@@ -2,9 +2,11 @@
 -- tpch insert-select tests (SF1)
 -------------------------------------------------------------------------------
 
+LOOP 20 {
+  
 // create the schema
 INCLUDE 'tpchSchema2.test';
-
+  
 // refresh again
 refresh;
 success
