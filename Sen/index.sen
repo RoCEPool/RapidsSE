@@ -243,7 +243,6 @@
 
   locals| sTableNm sIndexNm |
 
-pathDump
   assertInTables
 
   // push table folder

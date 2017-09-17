@@ -329,6 +329,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   if (! m_pFreeHead ) {
     if (! bExtendHeap()) {
       // error: we have run out of space
+      vTrace("RUNNING OUT OF MEMORY!!!\n"_Stz);
       vWarn("Heap::pAllocObject: unable to extend heap\n"_Stz);
       m_zLock.vDropWrite();
       return nullptr;

@@ -2,7 +2,7 @@
 -- tpch insert-select tests (SF1)
 -------------------------------------------------------------------------------
 
-LOOP 100 {
+LOOP 2 {
 -- refresh metadata
 refresh;
 success
@@ -362,7 +362,6 @@ drop table  supplier2;
 drop table  orders2;
 drop table  partsupp2;
 drop table  part2;
-drop table  partsupp2;
 drop table  region2;
 drop table  lineitem2;
 drop table  nation2;

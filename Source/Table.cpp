@@ -664,7 +664,6 @@ void Table::vSubLoaders(i8 iSubLoaders)
   
   for (i8 i_Slot = 0; i_Slot < C_SLOTS_PER_NODE; i_Slot++)
     m_ziSubLoaders[i_Slot] = iSubLoaders;
-  vTrace("Subloaders: %lld\n"_Stz, iSubLoaders);
   
 }
 

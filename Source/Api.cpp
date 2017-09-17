@@ -266,9 +266,6 @@ eEC RapidsSE_BeginInsert(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable
       return EC_BEGIN_TX_FAILED;
     }
     
-    // set subLoaders in table as 1
-    pSEitf->pCurrentTable()->vSubLoaders((i8)1);
-    
     TRACE_EXIT("ea"_Stz);
     
     return EC_NONE;
