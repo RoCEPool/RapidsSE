@@ -6,6 +6,8 @@
 refresh;
 success
 
+Loop 100 {
+  
 // Query 1
 select l_returnflag, l_linestatus, sum(l_quantity) as sum_qty,
   sum(l_extendedprice) as sum_base_price,
@@ -191,6 +193,8 @@ select cntrycode, count(*) as numcust, sum(c_acctbal) as totacctbal from
   not exists ( select * from ORDERS where o_custkey = c_custkey ) ) as custsale
   group by cntrycode order by cntrycode ;
 rows: 7
+
+} // end of loop
 
 CLEANUP {
 
