@@ -6,7 +6,7 @@
 refresh;
 success
 
-Loop 100 {
+Loop 3 {
   
 // Query 1
 select l_returnflag, l_linestatus, sum(l_quantity) as sum_qty,
