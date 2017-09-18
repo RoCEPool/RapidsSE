@@ -177,12 +177,13 @@ Stz* SelCursor::aRowAsStr(void)
   if (! m_pRow)
     return nullptr;
   
+  s48K sRow;
+  ColumnVec* pColVec = m_pTable->pColumnVec();
+  RowData::vRowAsString(sRow, (Stz*)m_pRow->aRow(), pColVec);
+  
   StrVal* pStrVal = reinterpret_cast<StrVal*>(m_pRow->aRow());
   
-  if (pStrVal)
-    return pStrVal->aStr();
-  else
-    return nullptr;
+  return sRow;
 }
 
 /*----------------------------------------------------------------------------*/
