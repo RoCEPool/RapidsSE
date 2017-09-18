@@ -80,7 +80,7 @@ void RapidsSE::vExecuteCmdLine(void)
   gxDdlLock.vInitLock(LK_DDL);
   gxDicLock.vInitLock(LK_DIC);
   
-  gpBitMap = new BitMap;
+  //gpBitMap = new BitMap;
   
   try {
     if (gxArguments.m_bCommand) {
