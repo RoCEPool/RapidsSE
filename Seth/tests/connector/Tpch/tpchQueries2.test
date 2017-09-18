@@ -105,7 +105,7 @@ select ps_partkey, sum(ps_supplycost * ps_availqty) as value from PARTSUPP2, SUP
   group by ps_partkey having sum(ps_supplycost * ps_availqty) > ( select sum(ps_supplycost * ps_availqty) *
   0.0000010000 from PARTSUPP2, SUPPLIER2, nation2 where ps_suppkey = s_suppkey and
   s_nationkey = n_nationkey and n_name = 'GERMANY' ) order by value desc ;
-rows: 28574
+rows: 28575
 
 // Query 12
 select l_shipmode, sum(case when o_orderpriority ='1-URGENT' or o_orderpriority ='2-HIGH'
