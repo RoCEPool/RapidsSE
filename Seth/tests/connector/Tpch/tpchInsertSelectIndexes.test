@@ -1,0 +1,98 @@
+--------------------------------------------------------------------------------
+-- tpch insert-select tests (SF1)
+-------------------------------------------------------------------------------
+
+LOOP 20 {
+  
+// create the schema
+INCLUDE 'tpchSchemaIndexes2.test';
+  
+// refresh again
+refresh;
+success
+
+// insert-select into region2
+insert into region2 select * from region;
+rows: 0
+
+// insert-select into nation2
+insert into nation2 select * from nation;
+rows: 0
+
+// insert-select into supplier2
+insert into supplier2 select * from supplier;
+rows: 0
+
+// insert-select into customer2
+insert into customer2 select * from customer;
+rows: 0
+
+// insert-select into part2
+insert into part2 select * from part;
+rows: 0
+
+// insert-select into partsupp2
+//insert into partsupp2 select * from partsupp;
+//rows: 0
+
+// insert-select into orders2
+//insert into orders2 select * from orders;
+//rows: 0
+
+// insert-select into lineitem2
+//insert into lineitem2 select * from lineitem;
+//rows: 0
+
+drop table customer2;
+success
+
+drop table supplier2;
+success
+
+drop table orders2;
+success
+
+drop table partsupp2;
+success
+
+drop table part2;
+success
+
+drop table region2;
+success
+
+drop table lineitem2;
+success
+
+drop table nation2;
+success
+
+} // end of loop
+
+CLEANUP {
+  drop table customer2;
+  mute
+  
+  drop table supplier2;
+  mute
+  
+  drop table orders2;
+  mute
+  
+  drop table partsupp2;
+  mute
+  
+  drop table part2;
+  mute
+    
+  drop table region2;
+  mute
+  
+  drop table lineitem2;
+  mute
+  
+  drop table nation2;
+  mute
+}
+
+

@@ -110,8 +110,6 @@ index supplier_idx2 on s_nationkey
 );
 success;
 
-}
-
 CLEANUP {
 
 }

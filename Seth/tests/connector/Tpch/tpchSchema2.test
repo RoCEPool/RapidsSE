@@ -100,8 +100,6 @@ S_COMMENT       VARCHAR(101)
 );
 success;
 
-} // end of loop
-
 CLEANUP {
 
 }

@@ -86,13 +86,16 @@ common/ write nStreams    /
 /*----------------------------------------------------------------------------*/
 /* write row buffer to file                                                   */
 /*----------------------------------------------------------------------------*/
-: writeToFile subDic write ( rowBuffer -- )
+: writeToFile subDic write ( rowBuffer pTable -- )
 
   // declare rowCrs variable
-  rowCursor::new locals| rowCrs |
+  rowCursor::new locals| rowCrs pTable rowBuffer |
+
+  // set the table in the cursor
+  pTable rowCrs rowCursor.table!
 
   // set row buffer in cursor
-  rowCrs rowCursor.rowBuffer!
+  rowBuffer rowCrs rowCursor.rowBuffer!
 
   // iterate the row buffer
   rowCrs rowCursor.first
@@ -110,10 +113,55 @@ common/ write nStreams    /
 : writeRb subDic write
 
   // record the plan and profile
-  locals| thePlan profile |
+  0 locals| pTablePtr thePlan profile |
+
+  "tenants" 1 dicPath.set
+
+  // [0] push thePlan's dictionary onto path stack
+  thePlan plan.dic pathPush
 
   // push the op frame for this writeOp
   profile thePlan plan.opFrame? opFrame.push
+
+  //----------------------------------------------------------------------------
+  // get to the table dic and find the table
+  // need to set the table in the rowCusror so we can convert
+  // rows to strings using the columns from the table
+  // Note: the entryBuffers that we move across the custer do NOT
+  //       have an index pointer
+  $$tableNm   locals| tableNm   |
+  $$schemaNm  locals| schemaNm  |
+  $$catalogNm locals| catalogNm |
+
+  "boray" find execute
+  pathPush
+
+  "catalogs"  find execute
+  pathPush
+
+  // push tableNm folder on the dictionary path
+  catalogNm find execute
+  pathPush
+
+  // push tableNm folder on the dictionary path
+  "schemas" find execute
+  pathPush
+
+  // push tableNm folder on the dictionary path
+  schemaNm find execute
+  pathPush
+
+  // push tableNm folder on the dictionary path
+  "tables" find execute
+  pathPush
+
+  // push tableNm on the dictionary path
+  tableNm find execute pathPush
+  tableNm find execute to pTablePtr
+
+  pathDrop pathDrop pathDrop pathDrop pathDrop pathDrop
+
+  //----------------------------------------------------------------------------
 
   // open the file
   thePlan writeOpenFile ( plan [ rowBuffer ] )
@@ -136,7 +184,8 @@ common/ write nStreams    /
 
     // write or close file & sink plan?
     if ( [ rowBuffer ] )
-      writeToFile
+
+     pTablePtr  writeToFile
     else
       writeCloseFile
       if

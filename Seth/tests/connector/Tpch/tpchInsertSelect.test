@@ -44,28 +44,28 @@ rows: 0
 //rows: 0
 
 drop table customer2;
-sucsess
+success
 
 drop table supplier2;
-sucsess;
+success
 
 drop table orders2;
-sucsess
+success
 
 drop table partsupp2;
-sucsess
+success
 
 drop table part2;
-sucsess
+success
 
 drop table region2;
-sucsess
+success
 
 drop table lineitem2;
-sucsess
+success
 
 drop table nation2;
-sucsess
+success
 
 } // end of loop
 
