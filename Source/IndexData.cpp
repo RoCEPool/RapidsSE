@@ -264,10 +264,8 @@ void IndexData::vAppendEntries(EntryBuffer* pEntryBuffer, EntryBuffer** ppFirstB
   for ( pRow = pEntryBuffer->pNextRow(pRow) ; pRow;
        pRow = pEntryBuffer->pNextRow(pRow)) {
     
-    i8 nEntryBytes = pRow->nSizeEntry();
-    
-    if ( ! m_pCurrentBuffer->bHasSpace(nEntryBytes) ) {
-      
+    bool bInserted = m_pCurrentBuffer->bAppendEntry(pRow, &pNewEntry);
+    if ( !bInserted ) {
       //----------------------------------------------------------------------------
       // create a new entry buffer and link with current buffer
       EntryBuffer* pNewBuffer = new EntryBuffer(m_pIndex, 0, m_nPartitionNo);
@@ -278,10 +276,11 @@ void IndexData::vAppendEntries(EntryBuffer* pEntryBuffer, EntryBuffer** ppFirstB
       //----------------------------------------------------------------------------
       // toggle to the new buffer
       m_pCurrentBuffer = pNewBuffer;
+      
+      // now insert into new buffer
+      bInserted = m_pCurrentBuffer->bAppendEntry(pRow, &pNewEntry);
+      ASSERT(bInserted);
     }
-    
-    bool bInserted = m_pCurrentBuffer->bAppendEntry(pRow, &pNewEntry);
-    ASSERT(bInserted);
     
     if ( ! *ppFirstBuffer )
       *ppFirstBuffer = m_pCurrentBuffer;
