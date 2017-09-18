@@ -36,22 +36,22 @@ insert into part2 select * from part;
 rows: 0
 
 // insert-select into partsupp2
-insert into partsupp2 select * from partsupp;
-rows: 0
+//insert into partsupp2 select * from partsupp;
+//rows: 0
 
 // insert-select into orders2
-insert into orders2 select * from orders;
-rows: 0
+//insert into orders2 select * from orders;
+//rows: 0
 
 // insert-select into lineitem2
-insert into lineitem2 select * from lineitem;
-rows: 0
+//insert into lineitem2 select * from lineitem;
+//rows: 0
 
 // tests counts
 INCLUDE 'tpchCount2.test';
 
 // tests tpch queries
-INCLUDE 'tpchQueries2.test';
+INCLUDE 'tpchQueries.test';
 
 // drop the schema2
 INCLUDE 'tpchSchemaDrop2.test';

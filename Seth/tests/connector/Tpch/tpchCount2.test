@@ -21,14 +21,14 @@ rows: 149998
 select * from part2;
 rows: 200000
 
-select * from partsupp2;
-rows: 800000
+//select * from partsupp2;
+//rows: 800000
 
-select * from orders2;
-rows: 1500000
+//select * from orders2;
+//rows: 1500000
 
-select * from lineitem2;
-rows: 6001215
+//select * from lineitem2;
+//rows: 6001215
 
 CLEANUP {
 

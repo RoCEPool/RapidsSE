@@ -2,7 +2,7 @@
 /* _cdt -- candidate path testing                                             */
 /*============================================================================*/
 
-docol epochTake;
+//docol epochTake;
 
 create table jCdt (
   jA  INTEGER,
@@ -71,9 +71,10 @@ fetch jCdt "jA 1 >= jB 2 >= and" ;
 
 print "fetched\n" ;
 
-drop table jCdt;
+//drop table jCdt;
+fetch jCdt "JA 1 >= JB 22 < JA 22 <= AND OR";
 
-docol epochDump;
+//docol epochDump;
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
