@@ -13,7 +13,7 @@ timer: selectTimer
 
 tp: analyzeTable
 
-ddlLock::grabWrite
+ddlLock::grabRead
 
   // should be in the tables folder
   checkInTables       not if <NIP+ERROR> exit then
@@ -59,7 +59,7 @@ ddlLock::grabWrite
 
   tp: danalyzeTable_req
 
-  ddlLock::grabWrite
+  ddlLock::grabRead
 
   // should be in the tables folder
   checkInTables       not if <NIP+ERROR> exit then
@@ -444,7 +444,7 @@ snap1:
 /*----------------------------------------------------------------------------*/
 : sizeTable_req ( "<tableNm>" -- <R> )
 
-ddlLock::grabWrite
+ddlLock::grabRead
 
   // should be in the tables folder
   checkInTables       not if <NIP+ERROR> exit then
@@ -483,7 +483,7 @@ ddlLock::grabWrite
 
   0 locals| iCount |
 
-  ddlLock::grabWrite
+  ddlLock::grabRead
 
   // should be in the tables folder
   checkInTables       not if <NIP+ERROR> exit then

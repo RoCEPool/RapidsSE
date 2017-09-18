@@ -15,7 +15,7 @@ timer: pIdxSelectTimer
 
   locals| bDetailed sTableNm sIndexNm |
 
-  ddlLock::grabWrite
+  ddlLock::grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // checks
@@ -660,7 +660,7 @@ timer: pIdxSelectTimer
                                                                     // ../tables
   locals| sTableNm sIndexNm |
 
-  ddlLock::grabWrite
+  ddlLock::grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // checks
@@ -758,7 +758,7 @@ timer: pIdxSelectTimer
 
   locals| sTableNm sIndexNm |
 
-  ddlLock::grabWrite
+  ddlLock::grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // checks

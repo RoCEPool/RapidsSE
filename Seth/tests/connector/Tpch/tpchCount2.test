@@ -16,7 +16,7 @@ select * from supplier2;
 rows: 10000
 
 select * from customer2;
-rows: 149998
+rows: 150000
 
 select * from part2;
 rows: 200000
