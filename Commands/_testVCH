@@ -10,10 +10,11 @@
 //dumpidx j10 idx1
 
 create table jidxVch (
-jidx_key   INTEGER NOT NULL,
-jidx_name  VARCHAR(9)  NOT NULL,
-jidx_100   VARCHAR,
-jidx_10    INTEGER NOT NULL
+jidx_key     INTEGER NOT NULL,
+jidx_name    VARCHAR(9)  NOT NULL,
+jidx_100     VARCHAR(32),
+jidx_10      INTEGER NOT NULL,
+jidx_address VARCHAR NOT NULL
 );
 
 create index idx1 on jidxVch (jidx_key);

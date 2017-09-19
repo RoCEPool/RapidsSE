@@ -205,7 +205,7 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn)
   char* aChar = (char*)aVch;
   
   // test for null
-  if ( ! **aaSrc || '|' == **aaSrc ) {
+  if ( ! **aaSrc || '|' == **aaSrc || '\n' == **aaSrc ) {
     
     if ( !pColumn->bIsNullable() )
       return false;
@@ -217,11 +217,12 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn)
   // collect the csv
   i8 iLength = 0;
   i8 iColumnLength = pColumn->iColumnLength();
-  while ('|' != **aaSrc)
+  while ('|' != **aaSrc && '\n' != **aaSrc) {
     if (iLength++ < iColumnLength)
       *aChar++ = *(*aaSrc)++;
     else
       (*aaSrc)++;
+  }
   
   *aChar++ = '\0';
   

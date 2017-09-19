@@ -203,7 +203,7 @@ bool Int::bExtract(char** aaSrc, Int* aInteger, Column* pColumn)
     (*aaSrc)++;
   
   // test for null
-  if ( ! **aaSrc || '|' == **aaSrc ) {
+  if ( ! **aaSrc || '|' == **aaSrc || '\n' == **aaSrc ) {
     aInteger->vSetNull();
     return true;
   }

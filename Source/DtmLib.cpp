@@ -77,8 +77,9 @@ bool DtmLib::bExtract(eDM eDatum, Stz* aDst, char** aaSrc, DBobjects::Column* pC
              eDatum);
   }
   
-  // move aSrc to after the |
-  (*aaSrc)++;
+  // move aSrc to after the | but not past the \n
+  if ( *(*aaSrc) == '|' )
+    (*aaSrc)++;
   
   if (!b)
     return b;
