@@ -323,12 +323,14 @@ void Column::vSet(Stz* aDefinition)
     m_eDatumType = DM_TSP;
   }
   else if (StrLib::bSame(aBuffer,"varbinary")) {
-    m_eColumnType = CT_VARBINARY;
-    m_eDatumType = DM_VBN;
+    m_eColumnType   = CT_VARBINARY;
+    m_eDatumType    = DM_VBN;
+    m_iColumnLength = C_64K;
   }
   else if (StrLib::bSame(aBuffer,"varchar")) {
     m_eColumnType = CT_VARCHAR;
     m_eDatumType = DM_VCH;
+    m_iColumnLength = C_64K;
   }
   else {
     m_eColumnType = CT_INTEGER;

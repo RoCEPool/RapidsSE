@@ -2146,6 +2146,7 @@ bool SePrompt::bAddTableColumns(i8& i_Token, i8 iNumTokens)
         m_xTokenVec[j]->vConcat(m_xTokenVec2[iCurrentToken++]->aText());
         
       }
+      
     }
     else if (m_xTokenVec2[iCurrentToken]->bSame("decimal"_Stz)) {
       
@@ -2324,7 +2325,7 @@ bool SePrompt::bEndMakeTable()
   m_xTokenVec[2]->vCopy(""_Stz);
   
   if (!bExecuteRequest()) {
-    vTrace("SePrompt::bCreateTable : endmktbl FAILED!!!\n"_Stz);
+    vTrace("SePrompt::bEndMakeTable : endmktbl FAILED!!!\n"_Stz);
     bool bRemove = bRemoveTable(m_xTokenVec2[2]->aText());
     //ASSERT(bRemove);
     return false;

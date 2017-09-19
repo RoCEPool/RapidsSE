@@ -206,8 +206,11 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn)
   
   // test for null
   if ( ! **aaSrc || '|' == **aaSrc ) {
+    
+    if ( !pColumn->bIsNullable() )
+      return false;
+    
     aVch->vSetNull();
-    //vTrace("%lld\n"_Stz,*((i8*)aVch));
     return true;
   }
   
