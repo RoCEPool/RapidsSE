@@ -217,11 +217,34 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn)
   // collect the csv
   i8 iLength = 0;
   i8 iColumnLength = pColumn->iColumnLength();
-  while ('|' != **aaSrc && '\n' != **aaSrc) {
-    if (iLength++ < iColumnLength)
-      *aChar++ = *(*aaSrc)++;
-    else
-      (*aaSrc)++;
+  bool bInQuotes = false;
+  
+  if ('"' == **aaSrc) {
+    bInQuotes = true;
+    (*aaSrc)++;
+  }
+  
+  if (bInQuotes) {
+    while ('"' != **aaSrc && '\n' != **aaSrc) {
+      
+      if (iLength++ < iColumnLength)
+        *aChar++ = *(*aaSrc)++;
+      else
+        (*aaSrc)++;
+    }
+    
+    // did we see an end quote ?
+    if ('"' != **aaSrc)
+      return false;
+  }
+  else {
+    while ('|' != **aaSrc && '\n' != **aaSrc) {
+      
+      if (iLength++ < iColumnLength)
+        *aChar++ = *(*aaSrc)++;
+      else
+        (*aaSrc)++;
+    }
   }
   
   *aChar++ = '\0';
