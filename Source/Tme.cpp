@@ -226,7 +226,7 @@ bool Tme::bExtract(char** aaSrc, Tme* aTime, Column* pColumn)
     (*aaSrc)++;
   
   // test for null
-  if ( ! **aaSrc || '|' == **aaSrc ) {
+  if ( ! **aaSrc || C_FIELD_SEPARATOR == **aaSrc ) {
     aTime->vSetNull();
     return true;
   }

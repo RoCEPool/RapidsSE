@@ -9,6 +9,8 @@
 
 namespace Datums
 {
+  static const char C_FIELD_SEPARATOR = '|';
+  
   enum eDM // Datum Type
   {
   /*  0 */ DM_NONE=0,

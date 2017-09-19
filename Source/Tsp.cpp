@@ -255,7 +255,7 @@ bool Tsp::bExtract(char** aaSrc, Tsp* aTimestamp, Column* pColumn)
     (*aaSrc)++;
   
   // test for null
-  if ( ! **aaSrc || '|' == **aaSrc ) {
+  if ( ! **aaSrc || C_FIELD_SEPARATOR == **aaSrc ) {
     aTimestamp->vSetNull();
     return true;
   }

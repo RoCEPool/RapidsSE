@@ -216,7 +216,7 @@ bool Ivl::bExtract(char** aaSrc, Ivl* aInterval, Column* pColumn)
     (*aaSrc)++;
   
   // test for null
-  if ( ! **aaSrc || '|' == **aaSrc ) {
+  if ( ! **aaSrc || C_FIELD_SEPARATOR == **aaSrc ) {
     aInterval->vSetNull();
     return true;
   }

@@ -217,7 +217,7 @@ bool Dte::bExtract(char** aaSrc, Dte* aDate, Column* pColumn)
     (*aaSrc)++;
   
   // test for null
-  if ( ! **aaSrc || '|' == **aaSrc ) {
+  if ( ! **aaSrc || C_FIELD_SEPARATOR == **aaSrc ) {
     aDate->vSetNull();
     return true;
   }

@@ -605,7 +605,7 @@ i8 Table::iRowPartition(Stz* pRow)
     // get the column value from the row for the iColumnNo
     i8 iCol = -1;
     do {
-      bool bFindPipe = StrLib::bExtractItem(&aCursor, pDst, '|');
+      bool bFindPipe = StrLib::bExtractItem(&aCursor, pDst, C_FIELD_SEPARATOR);
       ASSERT(bFindPipe);
       iCol++;
       aCursor++;
