@@ -9,7 +9,7 @@
 
 namespace Datums
 {
-  static const char C_FIELD_SEPARATOR = '|';
+  static const char C_FIELD_SEPARATOR = ',';
   
   enum eDM // Datum Type
   {
