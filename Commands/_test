@@ -2,13 +2,30 @@
 /* _test -- test                                                              */
 /*============================================================================*/
 
+
+create table TABLE1 (
+pcol1   integer,
+tcol1   integer,
+cola1   integer,
+colb1   varchar(20),
+colc1   timestamp,
+cold1   float,
+cole1   decimal(16,12),
+colf1   integer,
+colg1   integer,
+ucol    integer,
+ucolvc  varchar(5)
+);
+
+ld TABLE1 "../JTEST/table1.csv";
+
 //_j100 ;
 //print "\nSelecting rows with first column >= 4 ...\n" ;
 //lwrsel j100 4 ;
 
 //_jindex10 ;
 //dumpidx j10 idx1 ;
-
+/*
 create table jidx (
 jidx_key   INTEGER NOT NULL,
 jidx_name  VARCHAR(32) NOT NULL,
@@ -21,7 +38,7 @@ fetch jidx;
 
 docol epochdump;
 
-/*
+
 create table jidx (
 jidx_key   INTEGER NOT NULL,
 jidx_name  VARCHAR(32) NOT NULL,
