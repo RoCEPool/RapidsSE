@@ -398,7 +398,7 @@ i8 DtmLib::iSize(eDM eDatum, char* aSrc)
     case DM_TME: return sizeof(Tme); break;
     case DM_TSP: return sizeof(Tsp); break;
     case DM_VBN: NEVER_REACH; break;
-    case DM_VCH: return StrLib::iSize(aSrc); break;
+    case DM_VCH: return Vch::iSize(aSrc); break;
       
     default:
       THROW("DtmLib::iCmp: Invalid eDatum %lld"_Stz,eDatum);

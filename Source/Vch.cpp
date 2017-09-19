@@ -151,8 +151,10 @@ void Vch::vInitZero(void)
 /* test if null                                                               */
 /*----------------------------------------------------------------------------*/
 bool Vch::bIsNull(void)
-{
-  if (C_NULL_VCH== *(i8*)this)
+{  
+  //vTrace("%lld\n"_Stz,*((i8*)this));
+  
+  if (C_NULL_VCH == *(i8*)this)
     return true;
   else
     return false;
@@ -164,6 +166,7 @@ bool Vch::bIsNull(void)
 void Vch::vSetNull(void)
 {
   *(i8*)this = C_NULL_VCH;
+  //vTrace("%lld\n"_Stz,*((i8*)this));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -204,15 +207,36 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn)
   // test for null
   if ( ! **aaSrc || '|' == **aaSrc ) {
     aVch->vSetNull();
+    //vTrace("%lld\n"_Stz,*((i8*)aVch));
     return true;
   }
   
   // collect the csv
+  i8 iLength = 0;
+  i8 iColumnLength = pColumn->iColumnLength();
   while ('|' != **aaSrc)
-    *aChar++ = *(*aaSrc)++;
+    if (iLength++ < iColumnLength)
+      *aChar++ = *(*aaSrc)++;
+    else
+      (*aaSrc)++;
+  
   *aChar++ = '\0';
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* ssize if datum                                                             */
+/*----------------------------------------------------------------------------*/
+i8 Vch::iSize(char* aSrc)
+{
+  Vch* aVch = (Vch*)aSrc;
+  //vTrace("%lld\n"_Stz,*((i8*)aVch));
+  
+  if (aVch->bIsNull())
+    return sizeof(i8);
+  else
+    return StrLib::iSize(aSrc);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -220,7 +244,14 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn)
 /*----------------------------------------------------------------------------*/
 void Vch::vSprint(Stz* aDst, Stz* aSrc)
 {
-  StrLib::vSprint(aDst,"\"%s\"%c"_Stz,
+  Vch* aVch = (Vch*)aSrc;
+  //vTrace("%lld\n"_Stz,*((i8*)aVch));
+  
+  if (aVch->bIsNull())
+    StrLib::vSprint(aDst,"null%c"_Stz,
+                    '\0');
+  else
+    StrLib::vSprint(aDst,"\"%s\"%c"_Stz,
                   aSrc->aChar(),
                   '\0');
   

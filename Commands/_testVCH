@@ -11,7 +11,7 @@
 
 create table jidxVch (
 jidx_key   INTEGER NOT NULL,
-jidx_name  VARCHAR(32) NOT NULL,
+jidx_name  VARCHAR(9)  NOT NULL,
 jidx_100   VARCHAR(32) NOT NULL,
 jidx_10    INTEGER NOT NULL
 );
@@ -20,7 +20,7 @@ create index idx1 on jidxVch (jidx_key);
 create index idx2 on jidxVch (jidx_100);
 create index idx3 on jidxVch (jidx_name);
 
-ld jidxVch "../JTEST/jidx.csv" ;
+ld jidxVch "../JTEST/jidxVch.csv" ;
 
 //anidx jidxVch idx ;
 dumpidx jidxVch idx3 ;
@@ -39,6 +39,8 @@ lwrselidx jidxVch idx2 "152" ;
 
 print "\nSelecting rows with key >= 'nine two' using idx3 ...\n" ;
 lwrselidx jidxVch idx3 "nine two" ;
+
+dumpidx jidxVCH hidden;
 
 /*============================================================================*/
 /* end                                                                        */
