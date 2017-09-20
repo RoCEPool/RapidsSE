@@ -1,37 +1,59 @@
-/*============================================================================*/
-/* _testINT -- test                                                           */
-/*============================================================================*/
+/*----------------------------------------------------------------------------*/
+/* varchar.test -- VARCHAR DATUM tests                                        */
+/*----------------------------------------------------------------------------*/
 
-create table jidxInt (
-jidx_key   INTEGER NOT NULL,
-jidx_name  VARCHAR(32)  NOT NULL,
-jidx_100   VARCHAR(32) NOT NULL,
-jidx_10    INTEGER NOT NULL
+// (1) create a table
+create table IntTbl (
+  int_col1  INTEGER NOT NULL,
+  vch_col2  VARCHAR(32) NOT NULL,
+  vch_col3  VARCHAR(32) NOT NULL,
+  int_col4  INTEGER
 );
 
-create index idx1 on jidxInt (jidx_key);
-create index idx2 on jidxInt (jidx_100);
-create index idx3 on jidxInt (jidx_name);
+create index int_idx1 on IntTbl (int_col1);
+create index int_idx2 on IntTbl (int_col4);
 
-ld jidxInt "../JTEST/jidxInt.csv" ;
+// check existence of index
+lsidx IntTbl;
+rows:
+  ('int_idx1', false, false)
+  ('int_idx2', false, false)
 
-//anidx jidxVch idx ;
-dumpidx jidxInt idx3 ;
+// check columns of index
+lsidxcol IntTbl int_idx1;
+rows:
+  ('int_col1', 'INTEGER')
 
-print "\nSelecting rows with key >= 1 using idx1 ...\n" ;
-lwrselidx jidxInt idx1 1 ;
+// check columns of index
+lsidxcol IntTbl int_idx2;
+rows:
+  ('int_col4', 'INTEGER')
 
-print "\nSelecting rows with key >= 28 using idx1 ...\n" ;
-lwrselidx jidxInt idx1 28 ;
+ld IntTbl "../Seth/tests/Datums/integer.csv" ;
+success
 
-print "\nSelecting rows with key >= 102 using idx2 ...\n" ;
-lwrselidx jidxInt idx2 "102" ;
+// check no of rows
+fetch IntTbl;
+affected: 101
 
-print "\nSelecting rows with key >= 152 using idx2 ...\n" ;
-lwrselidx jidxInt idx2 "152" ;
+// drop the table
+drop table IntTbl;
+success
 
-print "\nSelecting rows with key >= 'nine two' using idx3 ...\n" ;
-lwrselidx jidxInt idx3 "nine two" ;
+// check existence of table
+lstbl;
+rows: 0
+
+CLEANUP {
+  
+  // drop the table
+  drop table IntTbl;
+  mute
+  
+  bye;
+  mute
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

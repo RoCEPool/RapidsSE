@@ -236,12 +236,34 @@ bool Int::bExtract(char** aaSrc, Int* aInteger, Column* pColumn)
   while (**aaSrc
          && C_FS != **aaSrc
          && C_NL != **aaSrc
-         && C_CR != **aaSrc) {
-    if ( ! StrLib::bIsDigit(**aaSrc) )
-      return false;
-    iResult = iResult * 10 + StrLib::iDigitToI8(**aaSrc);
+         && C_CR != **aaSrc
+         && StrLib::bIsDigit(**aaSrc) ) {
+      iResult = iResult * 10 + StrLib::iDigitToI8(**aaSrc);
     (*aaSrc)++;
   }
+
+ // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ // ignore trailing portion (after '.')
+
+  if ('.' == **aaSrc) {
+    
+    // skip the .
+    (*aaSrc)++;
+    
+    while (**aaSrc
+           && C_FS != **aaSrc
+           && C_NL != **aaSrc
+           && C_CR != **aaSrc) {
+      
+      if (!StrLib::bIsDigit(**aaSrc))
+        return false;
+      
+      (*aaSrc)++;
+    }
+  }
+  
+  if (C_FS != **aaSrc && C_NL != **aaSrc && C_CR != **aaSrc)
+    return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute final result

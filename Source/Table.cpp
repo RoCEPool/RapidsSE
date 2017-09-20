@@ -1053,6 +1053,14 @@ int DBobjects::iQsort_complex(const void* aArg1, const void* aArg2, void* aIndex
 /*----------------------------------------------------------------------------*/
 int DBobjects::iQsort_i8(const void* aArg1, const void* aArg2)
 {
+  
+  // check for nulls first
+  if (((Int*)aArg1)->bIsNull())
+    return -1;
+  
+  if (((Int*)aArg2)->bIsNull())
+    return 1;
+  
   i8 iCmp = *((i8*)aArg1) - *((i8*)aArg2);
   
   if (iCmp > 0)

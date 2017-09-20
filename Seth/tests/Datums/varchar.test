@@ -2,58 +2,69 @@
 /* varchar.test -- VARCHAR DATUM tests                                        */
 /*----------------------------------------------------------------------------*/
 
-// (1) create an index (syntax error)
-create table VchT (
-  vch_key     INTEGER NOT NULL,
-  vch_name    VARCHAR(10)  NOT NULL,
-  vch_100     VARCHAR(32),
-  vch_10      INTEGER NOT NULL,
-  vch_address VARCHAR NOT NULL
+// (1) create a table
+create table VchTbl (
+  int_col1  INTEGER NOT NULL,
+  vch_col2  VARCHAR(10)  NOT NULL,
+  vch_col3  VARCHAR(32),
+  int_col4  INTEGER NOT NULL,
+  vch_col5  VARCHAR NOT NULL
 );
 success
 
-// create index
-create index idx1 on VchT (vch_100);
+// create index on vch_col2
+create index vch_idx1 on VchTbl (vch_col2);
 affected: 0
 
-create index idx2 on VchT (vch_name);
+// create index on vch_col3
+create index vch_idx2 on VchTbl (vch_col3);
 affected: 0
 
-create index idx3 on VchT (vch_address);
+// create index on vch_col5
+create index vch_idx3 on VchTbl (vch_col5);
 affected: 0
 
 // check existence of index
-lsidx VchT;
+lsidx VchTbl;
 rows:
-  ('idx1', false, false)
-  ('idx2', false, false)
-  ('idx3', false, false)
+  ('vch_idx1', false, false)
+  ('vch_idx2', false, false)
+  ('vch_idx3', false, false)
 
 // check columns of index
-lsidxcol VchT Idx1;
+lsidxcol VchTbl vch_idx1;
 rows:
-  ('vch_100', 'VARCHAR')
+  ('vch_col2', 'VARCHAR')
 
-ld VchT "../Seth/tests/Datums/vch.csv" ;
+// check columns of index
+lsidxcol VchTbl vch_idx2;
+rows:
+  ('vch_col3', 'VARCHAR')
+
+// check columns of index
+lsidxcol VchTbl vch_idx3;
+rows:
+  ('vch_col5', 'VARCHAR')
+
+ld VchTbl "../Seth/tests/Datums/varchar.csv" ;
 success
 
 // check no of rows
-fetch VchT;
-affected: 100
+fetch VchTbl;
+affected: 101
 
 // drop the table
-drop table VchT;
+drop table VchTbl;
 success
 
 // check existence of table
 lstbl;
 rows: 0
 
-
 CLEANUP {
   
   // drop the table
-  drop table VchT;
+  drop table VchTbl;
   mute
 
   bye;
