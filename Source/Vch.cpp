@@ -410,6 +410,13 @@ bool Vch::bGreaterThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 i8 Vch::iCmp(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 {
+  
+  if (((Vch*)aArgA)->bIsNull())
+    return -1;
+  
+  if (((Vch*)aArgA)->bIsNull())
+    return 1;
+    
   ASSERT(StrLib::iSize(aArgA) == nBytesA);
   ASSERT(StrLib::iSize(aArgB) == nBytesB);
   

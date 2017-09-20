@@ -11,7 +11,7 @@ namespace Datums
 {
   static const char C_FS = ',';
   static const char C_NL = '\n';
-  static const char C_CR = ',';
+  static const char C_CR = '\r';
   
   enum eDM // Datum Type
   {

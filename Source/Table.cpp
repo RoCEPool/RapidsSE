@@ -878,7 +878,7 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pNewIndexData,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the unsorted array
   
-  //vDumpSortArray(aSortRegionAddr,nHiddenEntries,iSortElmSize,pNewIndexData);
+  vDumpSortArray(aSortRegionAddr,nHiddenEntries,iSortElmSize,pNewIndexData);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sort the array
@@ -888,7 +888,7 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pNewIndexData,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the sorted array
   
-  //vDumpSortArray(aSortRegionAddr,nHiddenEntries,iSortElmSize,pNewIndexData);
+  vDumpSortArray(aSortRegionAddr,nHiddenEntries,iSortElmSize,pNewIndexData);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // build the new index
@@ -1015,11 +1015,11 @@ int DBobjects::iQsort_complex(const void* aArg1, const void* aArg2, void* aIndex
     if (DM_VCH == eDatum) {
       aDatumThis = *(char**)aCursorThis;
       aCursorThis = pAdd<char*>(aCursorThis,8);
-      nBytesThis = StrLib::iSize(aDatumThis);
+      nBytesThis = Vch::iSize(aDatumThis);
       
       aDatumThat = *(char**)aCursorThat;
       aCursorThat = pAdd<char*>(aCursorThat,8);
-      nBytesThat = StrLib::iSize(aDatumThat);
+      nBytesThat = Vch::iSize(aDatumThat);
     }
     else {
       aDatumThis = Key::aEachDatum(pColumn,nBytesThis,&aCursorThis);
@@ -1304,7 +1304,10 @@ void Table::vBuildKeyWrk(Key* aSortKey, IdxColVec* pIdxColVec, KeyWrk& rKeyWrk)
     
     if (DM_VCH == eDatum) {
       Stz* aDatum = *(Stz**)aSortElm;
-      rKeyWrk.vAddStz(aDatum);
+      if (((Vch*)aDatum)->bIsNull())
+        rKeyWrk.vAddWord(C_NULL_VCH);
+      else
+        rKeyWrk.vAddStz(aDatum);
     }
     else {
       w8 wDatum = *(w8*)aSortElm;
