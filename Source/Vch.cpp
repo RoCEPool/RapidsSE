@@ -217,6 +217,7 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn)
     return true;
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect the csv
   i8 iLength = 0;
   i8 iColumnLength = pColumn->iColumnLength();
@@ -280,7 +281,6 @@ i8 Vch::iSize(char* aSrc)
 void Vch::vSprint(Stz* aDst, Stz* aSrc)
 {
   Vch* aVch = (Vch*)aSrc;
-  //vTrace("%lld\n"_Stz,*((i8*)aVch));
   
   if (aVch->bIsNull())
     StrLib::vSprint(aDst,"null%c"_Stz,
@@ -303,13 +303,22 @@ bool Vch::bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 {
   bool bLessThan;
 
-  ASSERT(StrLib::iSize(aArgA) == nBytesA);
-  ASSERT(StrLib::iSize(aArgB) == nBytesB);
-  
-  if (StrLib::iCompare(aArgA, aArgB) < 0)
+  if (((Vch*)aArgA)->bIsNull())
     bLessThan = true;
-  else
+  
+  else if (((Vch*)aArgB)->bIsNull())
     bLessThan = false;
+  
+  else {
+    
+    ASSERT(StrLib::iSize(aArgA) == nBytesA);
+    ASSERT(StrLib::iSize(aArgB) == nBytesB);
+    
+    if (StrLib::iCompare(aArgA, aArgB) < 0)
+      bLessThan = true;
+    else
+      bLessThan = false;
+  }
   
   return bLessThan;
 }
@@ -321,13 +330,22 @@ bool Vch::bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 {
   bool bLessEqual;
   
-  ASSERT(StrLib::iSize(aArgA) == nBytesA);
-  ASSERT(StrLib::iSize(aArgB) == nBytesB);
-  
-  if (StrLib::iCompare(aArgA, aArgB) <= 0)
+  if (((Vch*)aArgA)->bIsNull())
     bLessEqual = true;
-  else
+  
+  else if (((Vch*)aArgB)->bIsNull())
     bLessEqual = false;
+  
+  else {
+    
+    ASSERT(StrLib::iSize(aArgA) == nBytesA);
+    ASSERT(StrLib::iSize(aArgB) == nBytesB);
+    
+    if (StrLib::iCompare(aArgA, aArgB) <= 0)
+      bLessEqual = true;
+    else
+      bLessEqual = false;
+  }
   
   return bLessEqual;
 }
@@ -339,13 +357,22 @@ bool Vch::bEqualTo(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 {
   bool bEqualTo;
   
-  ASSERT(StrLib::iSize(aArgA) == nBytesA);
-  ASSERT(StrLib::iSize(aArgB) == nBytesB);
-  
-  if (StrLib::iCompare(aArgA, aArgB) == 0)
-    bEqualTo = true;
-  else
+  if (((Vch*)aArgA)->bIsNull())
     bEqualTo = false;
+  
+  else if (((Vch*)aArgB)->bIsNull())
+    bEqualTo = false;
+  
+  else {
+    
+    ASSERT(StrLib::iSize(aArgA) == nBytesA);
+    ASSERT(StrLib::iSize(aArgB) == nBytesB);
+    
+    if (StrLib::iCompare(aArgA, aArgB) == 0)
+      bEqualTo = true;
+    else
+      bEqualTo = false;
+  }
   
   return bEqualTo;
 }
@@ -357,13 +384,22 @@ bool Vch::bNotEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 {
   bool bNotEqual;
   
-  ASSERT(StrLib::iSize(aArgA) == nBytesA);
-  ASSERT(StrLib::iSize(aArgB) == nBytesB);
-  
-  if (StrLib::iCompare(aArgA, aArgB) != 0)
+  if (((Vch*)aArgA)->bIsNull())
     bNotEqual = true;
-  else
-    bNotEqual = false;
+  
+  else if (((Vch*)aArgB)->bIsNull())
+    bNotEqual = true;
+  
+  else {
+
+    ASSERT(StrLib::iSize(aArgA) == nBytesA);
+    ASSERT(StrLib::iSize(aArgB) == nBytesB);
+    
+    if (StrLib::iCompare(aArgA, aArgB) != 0)
+      bNotEqual = true;
+    else
+      bNotEqual = false;
+  }
   
   return bNotEqual;
 }
@@ -375,13 +411,21 @@ bool Vch::bGreaterEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 {
   bool bGreaterEqual;
   
-  ASSERT(StrLib::iSize(aArgA) == nBytesA);
-  ASSERT(StrLib::iSize(aArgB) == nBytesB);
-  
-  if (StrLib::iCompare(aArgA, aArgB) >= 0)
-    bGreaterEqual = true;
-  else
+  if (((Vch*)aArgA)->bIsNull())
     bGreaterEqual = false;
+  
+  else if (((Vch*)aArgB)->bIsNull())
+    bGreaterEqual = true;
+  
+  else {
+    ASSERT(StrLib::iSize(aArgA) == nBytesA);
+    ASSERT(StrLib::iSize(aArgB) == nBytesB);
+    
+    if (StrLib::iCompare(aArgA, aArgB) >= 0)
+      bGreaterEqual = true;
+    else
+      bGreaterEqual = false;
+  }
   
   return bGreaterEqual;
 }
@@ -393,13 +437,21 @@ bool Vch::bGreaterThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 {
   bool bGreaterThan;
   
-  ASSERT(StrLib::iSize(aArgA) == nBytesA);
-  ASSERT(StrLib::iSize(aArgB) == nBytesB);
-  
-  if (StrLib::iCompare(aArgA, aArgB) > 0)
-    bGreaterThan = true;
-  else
+  if (((Vch*)aArgA)->bIsNull())
     bGreaterThan = false;
+  
+  else if (((Vch*)aArgB)->bIsNull())
+    bGreaterThan = true;
+  
+  else {
+    ASSERT(StrLib::iSize(aArgA) == nBytesA);
+    ASSERT(StrLib::iSize(aArgB) == nBytesB);
+    
+    if (StrLib::iCompare(aArgA, aArgB) > 0)
+      bGreaterThan = true;
+    else
+      bGreaterThan = false;
+  }
   
   return bGreaterThan;
 
@@ -414,7 +466,7 @@ i8 Vch::iCmp(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   if (((Vch*)aArgA)->bIsNull())
     return -1;
   
-  if (((Vch*)aArgA)->bIsNull())
+  if (((Vch*)aArgB)->bIsNull())
     return 1;
     
   ASSERT(StrLib::iSize(aArgA) == nBytesA);

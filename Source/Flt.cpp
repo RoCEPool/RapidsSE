@@ -209,7 +209,8 @@ bool Flt::bExtract(char** aaSrc, Flt* aFloat, Column* pColumn)
   while (**aaSrc
          && C_FS != **aaSrc
          && C_NL != **aaSrc
-         && C_CR != **aaSrc) {
+         && C_CR != **aaSrc
+         && StrLib::bIsDigit(**aaSrc)) {
     *aChar++ = *(*aaSrc)++;
   }
   
@@ -217,7 +218,7 @@ bool Flt::bExtract(char** aaSrc, Flt* aFloat, Column* pColumn)
   // collect trailing portion (after '.')
   
   if ('.' == **aaSrc) {
-    (*aaSrc)++; // skip '.'
+    *aChar++ = *(*aaSrc)++;
     while (**aaSrc
            && C_FS != **aaSrc
            && C_NL != **aaSrc

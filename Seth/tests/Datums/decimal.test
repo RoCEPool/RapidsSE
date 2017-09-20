@@ -1,0 +1,26 @@
+/*============================================================================*/
+/* _testBcd -- test for decimal                                               */
+/*============================================================================*/
+
+create table jidxBcd (
+  jidx_key   INTEGER     NOT NULL,
+  jidx_name  VARCHAR(32) NOT NULL,
+  jidx_100   INTEGER     NOT NULL,
+  jidx_10    INTEGER     NOT NULL,
+  jidx_ivl   INTERVAL    NOT NULL,
+  jidx_bcd   DECIMAL(10,3) NOT NULL,
+  jidx_tsp   TIMESTAMP   NOT NULL,
+  jidx_bol   BOOLEAN     NOT NULL
+);
+
+create index idx_bcd on jidxBcd (jidx_bcd);
+
+ld jidxBcd "../JTEST/jidxBcd.csv" ;
+
+dumpidx jidxBcd idx_bcd ;
+
+fetch jidxBcd "jidx_bcd 1080.0 >=";
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

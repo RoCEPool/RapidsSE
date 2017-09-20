@@ -205,7 +205,10 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect leading portion (till '.')
   
-  while (**aaSrc && C_FS != **aaSrc
+  while (**aaSrc
+         && C_FS != **aaSrc
+         && C_NL != **aaSrc
+         && C_CR != **aaSrc
          && StrLib::bIsDigit(**aaSrc)) {
     iResult = iResult * 10 + StrLib::iDigitToI8(**aaSrc);
     (*aaSrc)++;
