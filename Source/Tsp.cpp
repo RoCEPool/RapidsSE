@@ -255,15 +255,15 @@ bool Tsp::bExtract(char** aaSrc, Tsp* aTimestamp, Column* pColumn)
     (*aaSrc)++;
   
   // test for null
-  if ( ! **aaSrc || C_FIELD_SEPARATOR == **aaSrc ) {
+  if ( ! **aaSrc
+       || C_FS == **aaSrc
+       || C_NL == **aaSrc
+       || C_CR == **aaSrc ) {
     aTimestamp->vSetNull();
     return true;
   }
   
   aTimestamp->vInitZero();
-  
-  if ( ! *aaSrc )
-    return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - -
   // date portion

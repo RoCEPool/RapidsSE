@@ -216,15 +216,15 @@ bool Ivl::bExtract(char** aaSrc, Ivl* aInterval, Column* pColumn)
     (*aaSrc)++;
   
   // test for null
-  if ( ! **aaSrc || C_FIELD_SEPARATOR == **aaSrc ) {
+  if ( ! **aaSrc
+      || C_FS == **aaSrc
+      || C_NL == **aaSrc
+      || C_CR == **aaSrc) {
     aInterval->vSetNull();
     return true;
   }
   
   aInterval->vInitZero();
-  
-  if ( ! *aaSrc )
-    return false;
   
   // extract second
   if ( ! StrLib::bExtractU8(aaSrc,&uField) )

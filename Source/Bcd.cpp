@@ -189,7 +189,7 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn)
     (*aaSrc)++;
   
   // test for null
-  if ( ! **aaSrc || C_FIELD_SEPARATOR == **aaSrc ) {
+  if ( ! **aaSrc || C_FS == **aaSrc ) {
     aDecimal->vSetNull();
     return true;
   }
@@ -205,7 +205,7 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect leading portion (till '.')
   
-  while (**aaSrc && C_FIELD_SEPARATOR != **aaSrc
+  while (**aaSrc && C_FS != **aaSrc
          && StrLib::bIsDigit(**aaSrc)) {
     iResult = iResult * 10 + StrLib::iDigitToI8(**aaSrc);
     (*aaSrc)++;
@@ -217,7 +217,7 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn)
 //  if ('.' == **aaSrc) {
 //    (*aaSrc)++; // skip '.'
 //    i8 iPrecision = pColumn ? pColumn->iColumnPrecision() : 15;
-//    while (**aaSrc && C_FIELD_SEPARATOR != **aaSrc
+//    while (**aaSrc && C_FS != **aaSrc
 //           && StrLib::bIsDigit(**aaSrc) && iPrecision--) {
 //      iResult = iResult * 10 + StrLib::iDigitToI8(**aaSrc);
 //      (*aaSrc)++;
@@ -227,7 +227,7 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn)
   i8 iPrecision = pColumn->iColumnPrecision();
   if ('.' == **aaSrc) {
     (*aaSrc)++; // skip '.'
-    while (**aaSrc && C_FIELD_SEPARATOR != **aaSrc
+    while (**aaSrc && C_FS != **aaSrc
            && StrLib::bIsDigit(**aaSrc) && iPrecision--) {
       iResult = iResult * 10 + StrLib::iDigitToI8(**aaSrc);
       (*aaSrc)++;

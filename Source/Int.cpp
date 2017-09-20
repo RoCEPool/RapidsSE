@@ -203,7 +203,10 @@ bool Int::bExtract(char** aaSrc, Int* aInteger, Column* pColumn)
     (*aaSrc)++;
   
   // test for null
-  if ( ! **aaSrc || C_FIELD_SEPARATOR == **aaSrc || '\n' == **aaSrc ) {
+  if ( ! **aaSrc
+      || C_FS == **aaSrc
+      || C_NL == **aaSrc
+      || C_CR == **aaSrc) {
     aInteger->vSetNull();
     return true;
   }
@@ -219,8 +222,10 @@ bool Int::bExtract(char** aaSrc, Int* aInteger, Column* pColumn)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect the csv
   
-  while (**aaSrc && '\n' != **aaSrc && '\r' != **aaSrc
-           && C_FIELD_SEPARATOR != **aaSrc) {
+  while (**aaSrc
+         && C_FS != **aaSrc
+         && C_NL != **aaSrc
+         && C_CR != **aaSrc) {
     if ( ! StrLib::bIsDigit(**aaSrc) )
       return false;
     iResult = iResult * 10 + StrLib::iDigitToI8(**aaSrc);

@@ -191,7 +191,7 @@ bool Flt::bExtract(char** aaSrc, Flt* aFloat, Column* pColumn)
     (*aaSrc)++;
   
   // test for null
-  if ( ! **aaSrc || C_FIELD_SEPARATOR == **aaSrc ) {
+  if ( ! **aaSrc || C_FS == **aaSrc ) {
     aFloat->vSetNull();
     return true;
   }
@@ -206,17 +206,22 @@ bool Flt::bExtract(char** aaSrc, Flt* aFloat, Column* pColumn)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect leading portion (till '.')
-  while (**aaSrc && '\n' != **aaSrc && '\r' != **aaSrc
-         && C_FIELD_SEPARATOR != **aaSrc && ',' != **aaSrc)
+  while (**aaSrc
+         && C_FS != **aaSrc
+         && C_NL != **aaSrc
+         && C_CR != **aaSrc) {
     *aChar++ = *(*aaSrc)++;
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect trailing portion (after '.')
   
   if ('.' == **aaSrc) {
     (*aaSrc)++; // skip '.'
-    while (**aaSrc && C_FIELD_SEPARATOR != **aaSrc
-           && '\n' != **aaSrc && '\r' != **aaSrc
+    while (**aaSrc
+           && C_FS != **aaSrc
+           && C_NL != **aaSrc
+           && C_CR != **aaSrc
            && StrLib::bIsDigit(**aaSrc)) {
       *aChar++ = *(*aaSrc)++;
     }

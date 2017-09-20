@@ -217,15 +217,15 @@ bool Dte::bExtract(char** aaSrc, Dte* aDate, Column* pColumn)
     (*aaSrc)++;
   
   // test for null
-  if ( ! **aaSrc || C_FIELD_SEPARATOR == **aaSrc ) {
+  if ( ! **aaSrc
+      || C_FS == **aaSrc
+      || C_NL == **aaSrc
+      || C_CR == **aaSrc) {
     aDate->vSetNull();
     return true;
   }
   
   aDate->vInitZero();
-  
-  if ( ! *aaSrc )
-    return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - -
   // date portion

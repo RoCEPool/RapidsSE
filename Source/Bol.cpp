@@ -188,7 +188,10 @@ bool Bol::bExtract(char** aaSrc, Bol* aBoolean, Column* pColumn)
     (*aaSrc)++;
   
   // test for null
-  if ( ! **aaSrc || C_FIELD_SEPARATOR == **aaSrc ) {
+  if ( ! **aaSrc
+      || C_FS == **aaSrc
+      || C_NL == **aaSrc
+      || C_CR == **aaSrc) {
     aBoolean->vSetNull();
     return true;
   }
@@ -201,8 +204,10 @@ bool Bol::bExtract(char** aaSrc, Bol* aBoolean, Column* pColumn)
       '1' == *(*aaSrc))
     bResult = true;
   
-  while (**aaSrc && C_FIELD_SEPARATOR != **aaSrc
-         && '\n' != **aaSrc && '\r' != **aaSrc) {
+  while (**aaSrc
+         && C_FS != **aaSrc
+         && C_NL != **aaSrc
+         && C_CR != **aaSrc) {
     (*aaSrc)++;
   }
   

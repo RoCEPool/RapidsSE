@@ -77,8 +77,8 @@ bool DtmLib::bExtract(eDM eDatum, Stz* aDst, char** aaSrc, DBobjects::Column* pC
              eDatum);
   }
   
-  // move aSrc to after the | but not past the \n
-  if ( *(*aaSrc) == C_FIELD_SEPARATOR )
+  // move aSrc to after the C_FS but not past the C_NL or C_CR
+  if ( *(*aaSrc) == C_FS )
     (*aaSrc)++;
   
   if (!b)

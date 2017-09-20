@@ -205,7 +205,10 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn)
   char* aChar = (char*)aVch;
   
   // test for null
-  if ( ! **aaSrc || C_FIELD_SEPARATOR == **aaSrc || '\n' == **aaSrc ) {
+  if ( ! **aaSrc
+      || C_FS == **aaSrc
+      || C_NL == **aaSrc
+      || C_CR == **aaSrc) {
     
     if ( !pColumn->bIsNullable() )
       return false;
@@ -225,7 +228,9 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn)
   }
   
   if (bInQuotes) {
-    while ('"' != **aaSrc && '\n' != **aaSrc) {
+    while ('"' != **aaSrc
+           && C_NL != **aaSrc
+           && C_CR != **aaSrc) {
       
       if (iLength++ < iColumnLength)
         *aChar++ = *(*aaSrc)++;
@@ -238,7 +243,10 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn)
       return false;
   }
   else {
-    while (C_FIELD_SEPARATOR != **aaSrc && '\n' != **aaSrc) {
+    while (**aaSrc
+            && C_FS != **aaSrc
+            && C_NL != **aaSrc
+            && C_CR != **aaSrc) {
       
       if (iLength++ < iColumnLength)
         *aChar++ = *(*aaSrc)++;
