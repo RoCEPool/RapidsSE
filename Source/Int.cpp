@@ -355,8 +355,7 @@ bool Int::bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   else if (((Vch*)aArgB)->bIsNull())
     bLessThan = false;
   
-  else {
-    
+  else {    
     i8 iA = *(i8*)aArgA;
     i8 iB = *(i8*)aArgB;
     
@@ -386,7 +385,6 @@ bool Int::bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
     bLessEqual = false;
   
   else {
-    
     i8 iA = *(i8*)aArgA;
     i8 iB = *(i8*)aArgB;
     
@@ -416,7 +414,6 @@ bool Int::bEqualTo(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
     bEqualTo = false;
   
   else {
-    
     i8 iA = *(i8*)aArgA;
     i8 iB = *(i8*)aArgB;
     
@@ -446,7 +443,6 @@ bool Int::bNotEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
     bNotEqual = true;
   
   else {
-    
     i8 iA = *(i8*)aArgA;
     i8 iB = *(i8*)aArgB;
     
@@ -476,7 +472,6 @@ bool Int::bGreaterEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
     bGreaterEqual = true;
   
   else {
-    
     i8 iA = *(i8*)aArgA;
     i8 iB = *(i8*)aArgB;
     
@@ -506,7 +501,6 @@ bool Int::bGreaterThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
     bGreaterThan = true;
   
   else {
-    
     i8 iA = *(i8*)aArgA;
     i8 iB = *(i8*)aArgB;
     

@@ -259,6 +259,10 @@ bool Tsp::bExtract(char** aaSrc, Tsp* aTimestamp, Column* pColumn)
        || C_FS == **aaSrc
        || C_NL == **aaSrc
        || C_CR == **aaSrc ) {
+    
+    if ( !pColumn->bIsNullable() )
+      return false;
+    
     aTimestamp->vSetNull();
     return true;
   }
@@ -342,15 +346,19 @@ void Tsp::vSprint(Stz* aDst, Stz* aSrc)
 {
   Tsp* aTsp = (Tsp*)aSrc;
   
-  StrLib::vSprint(aDst,"%02lld-%02lld-%02lld %02lld:%02lld:%02lld.%03lld%c"_Stz,
-                  (i8)aTsp->x.m_uYear,
-                  (i8)aTsp->x.m_uMonth,
-                  (i8)aTsp->x.m_uDay,
-                  (i8)aTsp->x.m_uHour,
-                  (i8)aTsp->x.m_uMinute,
-                  (i8)aTsp->x.m_uSecond,
-                  (i8)aTsp->x.m_uMilli,
-                  '\0');
+  if (aTsp->bIsNull())
+    StrLib::vSprint(aDst,"null%c"_Stz,
+                    '\0');
+  else
+    StrLib::vSprint(aDst,"%02lld-%02lld-%02lld %02lld:%02lld:%02lld.%03lld%c"_Stz,
+                    (i8)aTsp->x.m_uYear,
+                    (i8)aTsp->x.m_uMonth,
+                    (i8)aTsp->x.m_uDay,
+                    (i8)aTsp->x.m_uHour,
+                    (i8)aTsp->x.m_uMinute,
+                    (i8)aTsp->x.m_uSecond,
+                    (i8)aTsp->x.m_uMilli,
+                    '\0');
 }
 
 /*----------------------------------------------------------------------------*/
@@ -367,13 +375,21 @@ bool Tsp::bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  i8 iA = *(i8*)aArgA;
-  i8 iB = *(i8*)aArgB;
-  
-  if (iA < iB)
+  if (((Vch*)aArgA)->bIsNull())
     bLessThan = true;
-  else
+  
+  else if (((Vch*)aArgB)->bIsNull())
     bLessThan = false;
+  
+  else {
+    i8 iA = *(i8*)aArgA;
+    i8 iB = *(i8*)aArgB;
+    
+    if (iA < iB)
+      bLessThan = true;
+    else
+      bLessThan = false;
+  }
   
   return bLessThan;
 }
@@ -388,13 +404,21 @@ bool Tsp::bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  i8 iA = *(i8*)aArgA;
-  i8 iB = *(i8*)aArgB;
-  
-  if (iA <= iB)
+  if (((Vch*)aArgA)->bIsNull())
     bLessEqual = true;
-  else
+  
+  else if (((Vch*)aArgB)->bIsNull())
     bLessEqual = false;
+  
+  else {
+    i8 iA = *(i8*)aArgA;
+    i8 iB = *(i8*)aArgB;
+    
+    if (iA <= iB)
+      bLessEqual = true;
+    else
+      bLessEqual = false;
+  }
   
   return bLessEqual;
 }
@@ -409,13 +433,21 @@ bool Tsp::bEqualTo(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  i8 iA = *(i8*)aArgA;
-  i8 iB = *(i8*)aArgB;
-  
-  if (iA == iB)
+  if (((Vch*)aArgA)->bIsNull())
     bEqualTo = true;
-  else
+  
+  else if (((Vch*)aArgB)->bIsNull())
     bEqualTo = false;
+  
+  else {
+    i8 iA = *(i8*)aArgA;
+    i8 iB = *(i8*)aArgB;
+    
+    if (iA == iB)
+      bEqualTo = true;
+    else
+      bEqualTo = false;
+  }
   
   return bEqualTo;
 }
@@ -430,13 +462,21 @@ bool Tsp::bNotEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  i8 iA = *(i8*)aArgA;
-  i8 iB = *(i8*)aArgB;
-  
-  if (iA != iB)
+  if (((Vch*)aArgA)->bIsNull())
     bNotEqual = true;
-  else
+  
+  else if (((Vch*)aArgB)->bIsNull())
     bNotEqual = false;
+  
+  else {
+    i8 iA = *(i8*)aArgA;
+    i8 iB = *(i8*)aArgB;
+    
+    if (iA != iB)
+      bNotEqual = true;
+    else
+      bNotEqual = false;
+  }
   
   return bNotEqual;
 }
@@ -451,13 +491,21 @@ bool Tsp::bGreaterEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  i8 iA = *(i8*)aArgA;
-  i8 iB = *(i8*)aArgB;
-  
-  if (iA >= iB)
+  if (((Vch*)aArgA)->bIsNull())
     bGreaterEqual = true;
-  else
+  
+  else if (((Vch*)aArgB)->bIsNull())
     bGreaterEqual = false;
+  
+  else {
+    i8 iA = *(i8*)aArgA;
+    i8 iB = *(i8*)aArgB;
+    
+    if (iA >= iB)
+      bGreaterEqual = true;
+    else
+      bGreaterEqual = false;
+  }
   
   return bGreaterEqual;
 }
@@ -472,13 +520,21 @@ bool Tsp::bGreaterThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  i8 iA = *(i8*)aArgA;
-  i8 iB = *(i8*)aArgB;
-  
-  if (iA > iB)
+  if (((Vch*)aArgA)->bIsNull())
     bGreaterThan = true;
-  else
+  
+  else if (((Vch*)aArgB)->bIsNull())
     bGreaterThan = false;
+  
+  else {
+    i8 iA = *(i8*)aArgA;
+    i8 iB = *(i8*)aArgB;
+    
+    if (iA > iB)
+      bGreaterThan = true;
+    else
+      bGreaterThan = false;
+  }
   
   return bGreaterThan;
 }
@@ -490,6 +546,12 @@ i8 Tsp::iCmp(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 {
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
+  
+  if (((Int*)aArgA)->bIsNull())
+    return -1;
+  
+  if (((Int*)aArgB)->bIsNull())
+    return 1;
   
   i8 iA = *(i8*)aArgA;
   i8 iB = *(i8*)aArgB;
