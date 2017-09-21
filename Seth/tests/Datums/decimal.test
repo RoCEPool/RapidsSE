@@ -1,26 +1,67 @@
-/*============================================================================*/
-/* _testBcd -- test for decimal                                               */
-/*============================================================================*/
+/*----------------------------------------------------------------------------*/
+/* decimal.test -- DECIMAL DATUM tests                                        */
+/*----------------------------------------------------------------------------*/
 
-create table jidxBcd (
-  jidx_key   INTEGER     NOT NULL,
-  jidx_name  VARCHAR(32) NOT NULL,
-  jidx_100   INTEGER     NOT NULL,
-  jidx_10    INTEGER     NOT NULL,
-  jidx_ivl   INTERVAL    NOT NULL,
-  jidx_bcd   DECIMAL(10,3) NOT NULL,
-  jidx_tsp   TIMESTAMP   NOT NULL,
-  jidx_bol   BOOLEAN     NOT NULL
+// (1) create a table
+create table decTbl (
+  dec_col1  DECIMAL(10,3) NOT NULL,
+  vch_col2  VARCHAR(32) NOT NULL,
+  int_col3  INTEGER     NOT NULL,
+  int_col4  INTEGER     NOT NULL,
+  ivl_col5  INTERVAL    NOT NULL,
+  dec_col6  DECIMAL(10,3),
+  tsp_col7  TIMESTAMP   NOT NULL,
+  bol_col8  BOOLEAN     NOT NULL
 );
 
-create index idx_bcd on jidxBcd (jidx_bcd);
+// create indexes
+create index dec_idx1 on decTbl (dec_col1);
+success
 
-ld jidxBcd "../JTEST/jidxBcd.csv" ;
+create index dec_idx2 on decTbl (dec_col6);
+success
 
-dumpidx jidxBcd idx_bcd ;
+// check existence of index
+lsidx decTbl;
+rows:
+('dec_idx1', false, false)
+('dec_idx2', false, false)
 
-fetch jidxBcd "jidx_bcd 1080.0 >=";
+// check columns of index
+lsidxcol decTbl dec_idx1;
+rows:
+('dec_col1', 'DECIMAL')
 
-/*============================================================================*/
+// check columns of index
+lsidxcol decTbl dec_idx2;
+rows:
+('dec_col6', 'DECIMAL')
+
+ld decTbl "../Seth/tests/Datums/decimal.csv" ;
+success
+
+// check no of rows
+fetch decTbl;
+affected: 101
+
+// drop the table
+//drop table decTbl;
+//success
+
+// check existence of table
+lstbl;
+rows: 0
+
+CLEANUP {
+
+  // drop the table
+  //drop table decTbl;
+  //mute
+
+  bye;
+  mute
+}
+
+/*----------------------------------------------------------------------------*/
 /* end                                                                        */
-/*============================================================================*/
+/*----------------------------------------------------------------------------*/
