@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* varchar.test -- VARCHAR DATUM tests                                        */
+/* integer.test -- INTEGER DATUM tests                                        */
 /*----------------------------------------------------------------------------*/
 
 // (1) create a table
@@ -9,9 +9,14 @@ create table IntTbl (
   vch_col3  VARCHAR(32) NOT NULL,
   int_col4  INTEGER
 );
+success
 
+// create inexes
 create index int_idx1 on IntTbl (int_col1);
+success
+
 create index int_idx2 on IntTbl (int_col4);
+success
 
 // check existence of index
 lsidx IntTbl;
@@ -54,7 +59,6 @@ CLEANUP {
   mute
 }
 
-
-/*============================================================================*/
+/*----------------------------------------------------------------------------*/
 /* end                                                                        */
-/*============================================================================*/
+/*----------------------------------------------------------------------------*/

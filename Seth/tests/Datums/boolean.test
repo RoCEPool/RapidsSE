@@ -1,25 +1,65 @@
-/*============================================================================*/
-/* _testBol -- test for boolean                                               */
-/*============================================================================*/
+/*----------------------------------------------------------------------------*/
+/* boolean.test -- BOOLEAN DATUM tests                                        */
+/*----------------------------------------------------------------------------*/
 
-create table jidxBol (
-  jidx_key   INTEGER     NOT NULL,
-  jidx_name  VARCHAR(32) NOT NULL,
-  jidx_100   INTEGER     NOT NULL,
-  jidx_10    INTEGER     NOT NULL,
-  jidx_ivl   INTERVAL    NOT NULL,
-  jidx_flt   FLOAT       NOT NULL,
-  jidx_tsp   TIMESTAMP   NOT NULL,
-  jidx_bol   BOOLEAN     NOT NULL
+// (1) create a table
+create table bolTbl (
+  bol_col1   BOOLEAN     NOT NULL,
+  vch_col2   VARCHAR(32) NOT NULL,
+  int_col3   INTEGER     NOT NULL,
+  int_col4   INTEGER     NOT NULL,
+  ivl_col5   INTERVAL    NOT NULL,
+  flt_col6   FLOAT       NOT NULL,
+  tsp_col7   TIMESTAMP   NOT NULL,
+  bol_col8   BOOLEAN
 );
 
-create index idx_bol on jidxBol (jidx_bol);
+// create indexes
+create index bol_idx1 on bolTbl (bol_col1);
+success
 
-ld jidxBol "../JTEST/jidxBol.csv" ;
+// create indexes
+create index bol_idx2 on bolTbl (bol_col8);
+success
 
-dumpidx jidxBol idx_bol ;
-fetch jidxBol "jidx_bol false >=";
+// check existence of index
+lsidx bolTbl;
+rows:
+  ('bol_idx1', false, false)
+  ('bol_idx2', false, false)
 
-/*============================================================================*/
-/* end                                                                        */
-/*============================================================================*/
+// check columns of index
+lsidxcol bolTbl bol_idx1;
+rows:
+  ('bol_col1', 'BOOLEAN')
+
+// check columns of index
+lsidxcol bolTbl bol_idx2;
+rows:
+  ('bol_col8', 'BOOLEAN')
+
+ld bolTbl "../Seth/tests/Datums/boolean.csv" ;
+success
+
+// check no of rows
+fetch bolTbl;
+affected: 101
+
+// drop the table
+//drop table bolTbl;
+//success
+
+// check existence of table
+lstbl;
+rows: 0
+
+CLEANUP {
+  
+  // drop the table
+  //drop table bolTbl;
+  //mute
+  
+  bye;
+  mute
+}
+

@@ -46,12 +46,17 @@ Vch::~Vch(void)
 /*----------------------------------------------------------------------------*/
 bool Vch::operator < (Vch& xVch)
 {                                                             //! to be reviewed
+  
+  // NEED TO CHECK FOR NULLS
+  
   bool bLessThan;
   
   if (StrLib::iCompare((char*)this,(char*)&xVch) < 0)
     bLessThan = true;
   else
     bLessThan = false;
+  
+  ASSERT(0);
   
   return bLessThan;
 }
@@ -61,12 +66,17 @@ bool Vch::operator < (Vch& xVch)
 /*----------------------------------------------------------------------------*/
 bool Vch::operator <= (Vch& xVch)
 {                                                             //! to be reviewed
+  
+  // NEED TO CHECK FOR NULLS
+  
   bool bLessEqual;
   
   if (StrLib::iCompare((char*)this,(char*)&xVch) <= 0)
     bLessEqual = true;
   else
     bLessEqual = false;
+  
+  ASSERT(0);
   
   return bLessEqual;
 }
@@ -76,12 +86,17 @@ bool Vch::operator <= (Vch& xVch)
 /*----------------------------------------------------------------------------*/
 bool Vch::operator == (Vch& xVch)
 {                                                             //! to be reviewed
+  
+  // NEED TO CHECK FOR NULLS
+  
   bool bEqualTo;
   
   if (StrLib::iCompare((char*)this,(char*)&xVch) == 0)
     bEqualTo = true;
   else
     bEqualTo = false;
+  
+  ASSERT(0);
   
   return bEqualTo;
 }
@@ -91,12 +106,17 @@ bool Vch::operator == (Vch& xVch)
 /*----------------------------------------------------------------------------*/
 bool Vch::operator != (Vch& xVch)
 {                                                             //! to be reviewed
+  
+  // NEED TO CHECK FOR NULLS
+  
   bool bNotEqual;
   
   if (StrLib::iCompare((char*)this,(char*)&xVch) != 0)
     bNotEqual = true;
   else
     bNotEqual = false;
+  
+  ASSERT(0);
   
   return bNotEqual;
 }
@@ -106,12 +126,17 @@ bool Vch::operator != (Vch& xVch)
 /*----------------------------------------------------------------------------*/
 bool Vch::operator >= (Vch& xVch)
 {                                                             //! to be reviewed
+  
+  // NEED TO CHECK FOR NULLS
+  
   bool bGreaterEqual;
   
   if (StrLib::iCompare((char*)this,(char*)&xVch) >= 0)
     bGreaterEqual = true;
   else
     bGreaterEqual = false;
+  
+  ASSERT(0);
   
   return bGreaterEqual;
 }
@@ -121,12 +146,17 @@ bool Vch::operator >= (Vch& xVch)
 /*----------------------------------------------------------------------------*/
 bool Vch::operator > (Vch& xVch)
 {                                                             //! to be reviewed
+  
+  // NEED TO CHECK FOR NULLS
+  
   bool bGreaterThan;
   
   if (StrLib::iCompare((char*)this,(char*)&xVch) > 0)
     bGreaterThan = true;
   else
     bGreaterThan = false;
+  
+  ASSERT(0);
   
   return bGreaterThan;
 }

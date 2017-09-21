@@ -46,10 +46,18 @@ Bol::~Bol(void)
 /*----------------------------------------------------------------------------*/
 bool Bol::operator < (Bol& xBol)
 {
+  // NEED TO CHECK FOR NULLS
+  
+  bool bLessThan;
+  
   if (m_bBol < xBol.m_bBol)
-    return true;
+    bLessThan = true;
   else
-    return false;
+    bLessThan = false;
+  
+  ASSERT(0);
+  
+  return bLessThan;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -57,10 +65,18 @@ bool Bol::operator < (Bol& xBol)
 /*----------------------------------------------------------------------------*/
 bool Bol::operator <= (Bol& xBol)
 {
+  // NEED TO CHECK FOR NULLS
+  
+  bool bLessEqual;
+  
   if (m_bBol <= xBol.m_bBol)
-    return true;
+    bLessEqual = true;
   else
-    return false;
+    bLessEqual = false;
+  
+  ASSERT(0);
+  
+  return bLessEqual;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -68,10 +84,18 @@ bool Bol::operator <= (Bol& xBol)
 /*----------------------------------------------------------------------------*/
 bool Bol::operator == (Bol& xBol)
 {
+  // NEED TO CHECK FOR NULLS
+  
+  bool bEqualTo;
+  
   if (m_bBol == xBol.m_bBol)
-    return true;
+    bEqualTo = true;
   else
-    return false;
+    bEqualTo = false;
+  
+  ASSERT(0);
+  
+  return bEqualTo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -79,10 +103,18 @@ bool Bol::operator == (Bol& xBol)
 /*----------------------------------------------------------------------------*/
 bool Bol::operator != (Bol& xBol)
 {
+  // NEED TO CHECK FOR NULLS
+  
+  bool bNotEqual;
+  
   if (m_bBol != xBol.m_bBol)
-    return true;
+    bNotEqual = true;
   else
-    return false;
+    bNotEqual = false;
+  
+  ASSERT(0);
+  
+  return bNotEqual;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -90,10 +122,18 @@ bool Bol::operator != (Bol& xBol)
 /*----------------------------------------------------------------------------*/
 bool Bol::operator >= (Bol& xBol)
 {
+  // NEED TO CHECK FOR NULLS
+  
+  bool bGreaterEqual;
+  
   if (m_bBol >= xBol.m_bBol)
-    return true;
+    bGreaterEqual = true;
   else
-    return false;
+    bGreaterEqual = false;
+  
+  ASSERT(0);
+  
+  return bGreaterEqual;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -101,10 +141,18 @@ bool Bol::operator >= (Bol& xBol)
 /*----------------------------------------------------------------------------*/
 bool Bol::operator > (Bol& xBol)
 {
+  // NEED TO CHECK FOR NULLS
+  
+  bool bGreaterThan;
+  
   if (m_bBol > xBol.m_bBol)
-    return true;
+    bGreaterThan = true;
   else
-    return false;
+    bGreaterThan = false;
+  
+  ASSERT(0);
+  
+  return bGreaterThan;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -192,6 +240,10 @@ bool Bol::bExtract(char** aaSrc, Bol* aBoolean, Column* pColumn)
       || C_FS == **aaSrc
       || C_NL == **aaSrc
       || C_CR == **aaSrc) {
+    
+    if ( !pColumn->bIsNullable() )
+      return false;
+    
     aBoolean->vSetNull();
     return true;
   }
@@ -221,8 +273,13 @@ bool Bol::bExtract(char** aaSrc, Bol* aBoolean, Column* pColumn)
 /*----------------------------------------------------------------------------*/
 void Bol::vSprint(Stz* aDst, Stz* aSrc)
 {
-  i8 iValue = *(i8*)aSrc;
-  StrLib::vSprint(aDst,"%s%c"_Stz,iValue ? "true" : "false",'\0');
+  Bol* aBol = (Bol*)aSrc;
+  
+  if (aBol->bIsNull())
+    StrLib::vSprint(aDst,"null%c"_Stz,
+                    '\0');
+  else
+    StrLib::vSprint(aDst,"%s%c"_Stz,*(i8*)aSrc ? "true" : "false",'\0');
 }
 
 /*----------------------------------------------------------------------------*/
@@ -362,6 +419,12 @@ i8 Bol::iCmp(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 {
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
+  
+  if (((Int*)aArgA)->bIsNull())
+    return -1;
+  
+  if (((Int*)aArgB)->bIsNull())
+    return 1;
   
   i8 iA = *(i8*)aArgA;
   i8 iB = *(i8*)aArgB;

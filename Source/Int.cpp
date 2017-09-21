@@ -46,10 +46,18 @@ Int::~Int(void)
 /*----------------------------------------------------------------------------*/
 bool Int::operator < (Int& xInt)
 {
+  // NEED TO CHECK FOR NULLS
+  
+  bool bLessThan;
+  
   if (m_iInt < xInt.m_iInt)
-    return true;
+    bLessThan = true;
   else
-    return false;
+    bLessThan = false;
+  
+  ASSERT(0);
+  
+  return bLessThan;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -57,10 +65,18 @@ bool Int::operator < (Int& xInt)
 /*----------------------------------------------------------------------------*/
 bool Int::operator <= (Int& xInt)
 {
+  // NEED TO CHECK FOR NULLS
+  
+  bool bLessEqual;
+  
   if (m_iInt <= xInt.m_iInt)
-    return true;
+    bLessEqual = true;
   else
-    return false;
+    bLessEqual = false;
+  
+  ASSERT(0);
+  
+  return bLessEqual;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -68,10 +84,18 @@ bool Int::operator <= (Int& xInt)
 /*----------------------------------------------------------------------------*/
 bool Int::operator == (Int& xInt)
 {
+  // NEED TO CHECK FOR NULLS
+  
+  bool bEqualTo;
+  
   if (m_iInt == xInt.m_iInt)
-    return true;
+    bEqualTo = true;
   else
-    return false;
+    bEqualTo = false;
+  
+  ASSERT(0);
+  
+  return bEqualTo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -79,10 +103,18 @@ bool Int::operator == (Int& xInt)
 /*----------------------------------------------------------------------------*/
 bool Int::operator != (Int& xInt)
 {
+  // NEED TO CHECK FOR NULLS
+  
+  bool bNotEqual;
+  
   if (m_iInt != xInt.m_iInt)
-    return true;
+    bNotEqual = true;
   else
-    return false;
+    bNotEqual = false;
+  
+  ASSERT(0);
+  
+  return bNotEqual;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -90,10 +122,18 @@ bool Int::operator != (Int& xInt)
 /*----------------------------------------------------------------------------*/
 bool Int::operator >= (Int& xInt)
 {
+  // NEED TO CHECK FOR NULLS
+  
+  bool bGreaterEqual;
+  
   if (m_iInt >= xInt.m_iInt)
-    return true;
+    bGreaterEqual = true;
   else
-    return false;
+    bGreaterEqual = false;
+  
+  ASSERT(0);
+  
+  return bGreaterEqual;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -101,10 +141,18 @@ bool Int::operator >= (Int& xInt)
 /*----------------------------------------------------------------------------*/
 bool Int::operator > (Int& xInt)
 {
+  // NEED TO CHECK FOR NULLS
+  
+  bool bGreaterThan;
+  
   if (m_iInt > xInt.m_iInt)
-    return true;
+    bGreaterThan = true;
   else
-    return false;
+    bGreaterThan = false;
+  
+  ASSERT(0);
+  
+  return bGreaterThan;
 }
 
 /*----------------------------------------------------------------------------*/
