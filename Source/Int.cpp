@@ -349,10 +349,10 @@ bool Int::bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  if (((Vch*)aArgA)->bIsNull())
+  if (((Int*)aArgA)->bIsNull())
     bLessThan = true;
   
-  else if (((Vch*)aArgB)->bIsNull())
+  else if (((Int*)aArgB)->bIsNull())
     bLessThan = false;
   
   else {
@@ -378,10 +378,10 @@ bool Int::bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  if (((Vch*)aArgA)->bIsNull())
+  if (((Int*)aArgA)->bIsNull())
     bLessEqual = true;
   
-  else if (((Vch*)aArgB)->bIsNull())
+  else if (((Int*)aArgB)->bIsNull())
     bLessEqual = false;
   
   else {
@@ -407,10 +407,10 @@ bool Int::bEqualTo(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  if (((Vch*)aArgA)->bIsNull())
+  if (((Int*)aArgA)->bIsNull())
     bEqualTo = false;
   
-  else if (((Vch*)aArgB)->bIsNull())
+  else if (((Int*)aArgB)->bIsNull())
     bEqualTo = false;
   
   else {
@@ -436,10 +436,10 @@ bool Int::bNotEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  if (((Vch*)aArgA)->bIsNull())
+  if (((Int*)aArgA)->bIsNull())
     bNotEqual = true;
   
-  else if (((Vch*)aArgB)->bIsNull())
+  else if (((Int*)aArgB)->bIsNull())
     bNotEqual = true;
   
   else {
@@ -465,10 +465,10 @@ bool Int::bGreaterEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  if (((Vch*)aArgA)->bIsNull())
+  if (((Int*)aArgA)->bIsNull())
     bGreaterEqual = false;
   
-  else if (((Vch*)aArgB)->bIsNull())
+  else if (((Int*)aArgB)->bIsNull())
     bGreaterEqual = true;
   
   else {
@@ -494,10 +494,10 @@ bool Int::bGreaterThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  if (((Vch*)aArgA)->bIsNull())
+  if (((Int*)aArgA)->bIsNull())
     bGreaterThan = false;
   
-  else if (((Vch*)aArgB)->bIsNull())
+  else if (((Int*)aArgB)->bIsNull())
     bGreaterThan = true;
   
   else {

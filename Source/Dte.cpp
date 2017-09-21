@@ -295,10 +295,10 @@ bool Dte::bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  if (((Vch*)aArgA)->bIsNull())
+  if (((Dte*)aArgA)->bIsNull())
     bLessThan = true;
   
-  else if (((Vch*)aArgB)->bIsNull())
+  else if (((Dte*)aArgB)->bIsNull())
     bLessThan = false;
   
   else {
@@ -325,10 +325,10 @@ bool Dte::bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  if (((Vch*)aArgA)->bIsNull())
+  if (((Dte*)aArgA)->bIsNull())
     bLessEqual = true;
   
-  else if (((Vch*)aArgB)->bIsNull())
+  else if (((Dte*)aArgB)->bIsNull())
     bLessEqual = false;
   
   else {
@@ -355,10 +355,10 @@ bool Dte::bEqualTo(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  if (((Vch*)aArgA)->bIsNull())
+  if (((Dte*)aArgA)->bIsNull())
     bEqualTo = false;
   
-  else if (((Vch*)aArgB)->bIsNull())
+  else if (((Dte*)aArgB)->bIsNull())
     bEqualTo = false;
   
   else {
@@ -385,10 +385,10 @@ bool Dte::bNotEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  if (((Vch*)aArgA)->bIsNull())
+  if (((Dte*)aArgA)->bIsNull())
     bNotEqual = true;
   
-  else if (((Vch*)aArgB)->bIsNull())
+  else if (((Dte*)aArgB)->bIsNull())
     bNotEqual = true;
   
   else {
@@ -415,10 +415,10 @@ bool Dte::bGreaterEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  if (((Vch*)aArgA)->bIsNull())
+  if (((Dte*)aArgA)->bIsNull())
     bGreaterEqual = false;
   
-  else if (((Vch*)aArgB)->bIsNull())
+  else if (((Dte*)aArgB)->bIsNull())
     bGreaterEqual = true;
   
   else {
@@ -445,10 +445,10 @@ bool Dte::bGreaterThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  if (((Vch*)aArgA)->bIsNull())
+  if (((Dte*)aArgA)->bIsNull())
     bGreaterThan = false;
   
-  else if (((Vch*)aArgB)->bIsNull())
+  else if (((Dte*)aArgB)->bIsNull())
     bGreaterThan = true;
   
   else {
@@ -473,10 +473,10 @@ i8 Dte::iCmp(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  if (((Int*)aArgA)->bIsNull())
+  if (((Dte*)aArgA)->bIsNull())
     return -1;
   
-  if (((Int*)aArgB)->bIsNull())
+  if (((Dte*)aArgB)->bIsNull())
     return 1;
   
   i8 iA = *(i8*)aArgA;

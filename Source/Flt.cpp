@@ -457,10 +457,10 @@ i8 Flt::iCmp(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(d8) == nBytesA);
   ASSERT(sizeof(d8) == nBytesB);
   
-  if (((Int*)aArgA)->bIsNull())
+  if (((Flt*)aArgA)->bIsNull())
     return -1;
   
-  if (((Int*)aArgB)->bIsNull())
+  if (((Flt*)aArgB)->bIsNull())
     return 1;
   
   d8 dA = *(d8*)aArgA;

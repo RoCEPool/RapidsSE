@@ -307,10 +307,10 @@ bool Tme::bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  if (((Vch*)aArgA)->bIsNull())
+  if (((Tme*)aArgA)->bIsNull())
     bLessThan = true;
   
-  else if (((Vch*)aArgB)->bIsNull())
+  else if (((Tme*)aArgB)->bIsNull())
     bLessThan = false;
   
   else {
@@ -335,10 +335,10 @@ bool Tme::bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  if (((Vch*)aArgA)->bIsNull())
+  if (((Tme*)aArgA)->bIsNull())
     bLessEqual = true;
   
-  else if (((Vch*)aArgB)->bIsNull())
+  else if (((Tme*)aArgB)->bIsNull())
     bLessEqual = false;
   
   else {
@@ -364,10 +364,10 @@ bool Tme::bEqualTo(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  if (((Vch*)aArgA)->bIsNull())
+  if (((Tme*)aArgA)->bIsNull())
     bEqualTo = true;
   
-  else if (((Vch*)aArgB)->bIsNull())
+  else if (((Tme*)aArgB)->bIsNull())
     bEqualTo = false;
   
   else {
@@ -393,10 +393,10 @@ bool Tme::bNotEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  if (((Vch*)aArgA)->bIsNull())
+  if (((Tme*)aArgA)->bIsNull())
     bNotEqual = true;
   
-  else if (((Vch*)aArgB)->bIsNull())
+  else if (((Tme*)aArgB)->bIsNull())
     bNotEqual = false;
   
   else {
@@ -471,10 +471,10 @@ bool Tme::bGreaterThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  if (((Vch*)aArgA)->bIsNull())
+  if (((Tme*)aArgA)->bIsNull())
     bGreaterThan = true;
   
-  else if (((Vch*)aArgB)->bIsNull())
+  else if (((Tme*)aArgB)->bIsNull())
     bGreaterThan = false;
   
   else {
@@ -498,10 +498,10 @@ i8 Tme::iCmp(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  if (((Int*)aArgA)->bIsNull())
+  if (((Tme*)aArgA)->bIsNull())
     return -1;
   
-  if (((Int*)aArgB)->bIsNull())
+  if (((Tme*)aArgB)->bIsNull())
     return 1;
 
   i8 iA = *(i8*)aArgA;

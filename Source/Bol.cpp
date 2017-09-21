@@ -296,13 +296,21 @@ bool Bol::bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  i8 iA = *(i8*)aArgA;
-  i8 iB = *(i8*)aArgB;
-  
-  if (iA < iB)
-    bLessThan = true;
-  else
+  if (((Bol*)aArgA)->bIsNull())
     bLessThan = false;
+  
+  else if (((Bol*)aArgB)->bIsNull())
+    bLessThan = true;
+  
+  else {
+    i8 iA = *(i8*)aArgA;
+    i8 iB = *(i8*)aArgB;
+    
+    if (iA < iB)
+      bLessThan = true;
+    else
+      bLessThan = false;
+  }
   
   return bLessThan;
 }
@@ -317,13 +325,21 @@ bool Bol::bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  i8 iA = *(i8*)aArgA;
-  i8 iB = *(i8*)aArgB;
-  
-  if (iA <= iB)
-    bLessEqual = true;
-  else
+  if (((Bol*)aArgA)->bIsNull())
     bLessEqual = false;
+  
+  else if (((Bol*)aArgB)->bIsNull())
+    bLessEqual = true;
+  
+  else {
+    i8 iA = *(i8*)aArgA;
+    i8 iB = *(i8*)aArgB;
+    
+    if (iA <= iB)
+      bLessEqual = true;
+    else
+      bLessEqual = false;
+  }
   
   return bLessEqual;
 }
@@ -338,13 +354,21 @@ bool Bol::bEqualTo(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  i8 iA = *(i8*)aArgA;
-  i8 iB = *(i8*)aArgB;
-  
-  if (iA == iB)
-    bEqualTo = true;
-  else
+  if (((Bol*)aArgA)->bIsNull())
     bEqualTo = false;
+  
+  else if (((Bol*)aArgB)->bIsNull())
+    bEqualTo = true;
+  
+  else {
+    i8 iA = *(i8*)aArgA;
+    i8 iB = *(i8*)aArgB;
+    
+    if (iA == iB)
+      bEqualTo = true;
+    else
+      bEqualTo = false;
+  }
   
   return bEqualTo;
 }
@@ -359,13 +383,21 @@ bool Bol::bNotEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  i8 iA = *(i8*)aArgA;
-  i8 iB = *(i8*)aArgB;
-  
-  if (iA != iB)
-    bNotEqual = true;
-  else
+  if (((Bol*)aArgA)->bIsNull())
     bNotEqual = false;
+  
+  else if (((Bol*)aArgB)->bIsNull())
+    bNotEqual = true;
+  
+  else {
+    i8 iA = *(i8*)aArgA;
+    i8 iB = *(i8*)aArgB;
+    
+    if (iA != iB)
+      bNotEqual = true;
+    else
+      bNotEqual = false;
+  }
   
   return bNotEqual;
 }
@@ -380,13 +412,21 @@ bool Bol::bGreaterEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  i8 iA = *(i8*)aArgA;
-  i8 iB = *(i8*)aArgB;
-  
-  if (iA >= iB)
-    bGreaterEqual = true;
-  else
+  if (((Bol*)aArgA)->bIsNull())
     bGreaterEqual = false;
+  
+  else if (((Bol*)aArgB)->bIsNull())
+    bGreaterEqual = true;
+  
+  else {
+    i8 iA = *(i8*)aArgA;
+    i8 iB = *(i8*)aArgB;
+    
+    if (iA >= iB)
+      bGreaterEqual = true;
+    else
+      bGreaterEqual = false;
+  }
   
   return bGreaterEqual;
 }
@@ -401,13 +441,21 @@ bool Bol::bGreaterThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  i8 iA = *(i8*)aArgA;
-  i8 iB = *(i8*)aArgB;
-  
-  if (iA > iB)
-    bGreaterThan = true;
-  else
+  if (((Bol*)aArgA)->bIsNull())
     bGreaterThan = false;
+  
+  else if (((Bol*)aArgB)->bIsNull())
+    bGreaterThan = true;
+  
+  else {
+    i8 iA = *(i8*)aArgA;
+    i8 iB = *(i8*)aArgB;
+    
+    if (iA > iB)
+      bGreaterThan = true;
+    else
+      bGreaterThan = false;
+  }
   
   return bGreaterThan;
 }
@@ -420,10 +468,10 @@ i8 Bol::iCmp(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  if (((Int*)aArgA)->bIsNull())
+  if (((Bol*)aArgA)->bIsNull())
     return -1;
   
-  if (((Int*)aArgB)->bIsNull())
+  if (((Bol*)aArgB)->bIsNull())
     return 1;
   
   i8 iA = *(i8*)aArgA;

@@ -375,10 +375,10 @@ bool Tsp::bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  if (((Vch*)aArgA)->bIsNull())
+  if (((Tsp*)aArgA)->bIsNull())
     bLessThan = true;
   
-  else if (((Vch*)aArgB)->bIsNull())
+  else if (((Tsp*)aArgB)->bIsNull())
     bLessThan = false;
   
   else {
@@ -404,10 +404,10 @@ bool Tsp::bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  if (((Vch*)aArgA)->bIsNull())
+  if (((Tsp*)aArgA)->bIsNull())
     bLessEqual = true;
   
-  else if (((Vch*)aArgB)->bIsNull())
+  else if (((Tsp*)aArgB)->bIsNull())
     bLessEqual = false;
   
   else {
@@ -433,10 +433,10 @@ bool Tsp::bEqualTo(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  if (((Vch*)aArgA)->bIsNull())
+  if (((Tsp*)aArgA)->bIsNull())
     bEqualTo = true;
   
-  else if (((Vch*)aArgB)->bIsNull())
+  else if (((Tsp*)aArgB)->bIsNull())
     bEqualTo = false;
   
   else {
@@ -462,10 +462,10 @@ bool Tsp::bNotEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  if (((Vch*)aArgA)->bIsNull())
+  if (((Tsp*)aArgA)->bIsNull())
     bNotEqual = true;
   
-  else if (((Vch*)aArgB)->bIsNull())
+  else if (((Tsp*)aArgB)->bIsNull())
     bNotEqual = false;
   
   else {
@@ -491,10 +491,10 @@ bool Tsp::bGreaterEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  if (((Vch*)aArgA)->bIsNull())
+  if (((Tsp*)aArgA)->bIsNull())
     bGreaterEqual = true;
   
-  else if (((Vch*)aArgB)->bIsNull())
+  else if (((Tsp*)aArgB)->bIsNull())
     bGreaterEqual = false;
   
   else {
@@ -520,10 +520,10 @@ bool Tsp::bGreaterThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  if (((Vch*)aArgA)->bIsNull())
+  if (((Tsp*)aArgA)->bIsNull())
     bGreaterThan = true;
   
-  else if (((Vch*)aArgB)->bIsNull())
+  else if (((Tsp*)aArgB)->bIsNull())
     bGreaterThan = false;
   
   else {
@@ -547,10 +547,10 @@ i8 Tsp::iCmp(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  if (((Int*)aArgA)->bIsNull())
+  if (((Tsp*)aArgA)->bIsNull())
     return -1;
   
-  if (((Int*)aArgB)->bIsNull())
+  if (((Tsp*)aArgB)->bIsNull())
     return 1;
   
   i8 iA = *(i8*)aArgA;
