@@ -2,62 +2,21 @@
 /* _test2 -- test index with 2 columns                                        */
 /*============================================================================*/
 
-create table jTest2 (
-  jidx_key   INTEGER NOT NULL,
-  jidx_name  VARCHAR(32) NOT NULL,
-  jidx_100   INTEGER NOT NULL,
-  jidx_10    INTEGER NOT NULL,
-  jidx_mod   INTEGER NOT NULL
+
+create table TABLE9 (
+pcol9   INTEGER NOT NULL,
+scol9   INTEGER NOT NULL,
+tcol9   INTEGER NOT NULL,
+colb9   VARCHAR(20),
+cold9   FLOAT,
+cole9   DECIMAL,
+colf9   INTEGER,
+colg9   INTEGER,
+ucol    INTEGER,
+ucolvc  VARCHAR(5)
 );
 
-create index idx1 on jTest2 (jidx_mod,jidx_10);
-//create index idx2 on jidx2 (jidx_100);
-//create index idx3 on jidx2 (jidx_name);
-
-ld jTest2 "../JTEST/jidx2.csv" ;
-
-//anidx jTest2 idx ;
-dumpidx jTest2 idx1 ;
-
-lwrselidx jTest2 idx1 0 ;
-rgeselidx jTest2 idx1 3 7 ;
-uprselidx jTest2 idx1 7 ;
-
-/*
-print "\nSelecting rows with key >= 3 using idx1 ...\n" ;
-lwrselidx jTest2 idx1 3 ;
-
-print "\nSelecting rows with key >= 1 using idx1 ...\n" ;
-lwrselidx jTest2 idx1 1 ;
-
-print "\nSelecting rows with key >= 28 using idx1 ...\n" ;
-lwrselidx jTest2 idx1 28 ;
-
-print "\nSelecting rows with key >= 40 using idx1 ...\n" ;
-lwrselidx jTest2 idx1 40 ;
-
-print "\nSelecting rows with key >= 45 using idx1 ...\n" ;
-lwrselidx jTest2 idx1 45 ;
-
-print "\nSelecting rows with key >= 67 using idx1 ...\n" ;
-lwrselidx jTest2 idx1 67 ;
-
-print "\nSelecting rows with key >= 99 using idx1 ...\n" ;
-lwrselidx jTest2 idx1 99 ;
-
-print "\nSelecting rows with key >= 72 using idx1 ...\n" ;
-lwrselidx jTest2 idx1 72 ;
-
-print "\nSelecting rows with key >= 180 using idx2 ...\n" ;
-lwrselidx jTest2 idx2 180 ;
-
-print "\nSelecting rows with key >= 3 and key <= 7 using idx1 ...\n" ;
-rgeselidx jTest2 idx1 3 7 ;
-
-print "\nSelecting rows with key <= 7 using idx1 ...\n" ;
-uprselidx jTest2 idx1 7 ;
-*/
-
+ld TABLE9 "/Users/alkayamarti/regressionData/data/tbl9data.csv";
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

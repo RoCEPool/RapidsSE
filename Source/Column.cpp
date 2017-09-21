@@ -54,7 +54,7 @@ Column::Column(void)
   m_sColumnName = "<notSet>"_Stz;
   m_eColumnType = CT_NONE;
   m_iColumnLength = 0;
-  m_iColumnPrecision = 0;
+  m_iColumnScale  = 0;
   m_eDatumType  = DM_NONE;
   m_bIsNullable = true;
   
@@ -75,7 +75,7 @@ Column::Column(Stz* aName)
   m_sColumnName = aName;
   m_eColumnType = CT_INTEGER;
   m_iColumnLength = 0;
-  m_iColumnPrecision = 0;
+  m_iColumnScale  = 0;
   m_eDatumType  = DM_INT;
   m_bIsNullable = true;
   
@@ -96,7 +96,7 @@ Column::Column(Stz* aName, Stz* aDefinition)
   m_sColumnName = aName;
   m_eColumnType = CT_NONE;
   m_iColumnLength = 0;
-  m_iColumnPrecision = 0;
+  m_iColumnScale  = 0;
   m_eDatumType  = DM_NONE;
   m_bIsNullable = true;
   
@@ -162,21 +162,21 @@ void Column::vColumnLength(i8 iColumnLength)
 /*----------------------------------------------------------------------------*/
 /* get column precision                                                       */
 /*----------------------------------------------------------------------------*/
-i8 Column::iColumnPrecision(void)
+i8 Column::iColumnScale(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
-  return m_iColumnPrecision;
+  return m_iColumnScale;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set column precision                                                       */
 /*----------------------------------------------------------------------------*/
-void Column::vColumnPrecision(i8 iColumnPrecision)
+void Column::vColumnScale(i8 iColumnScale)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
-  m_iColumnPrecision = iColumnPrecision;
+  m_iColumnScale = iColumnScale;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -301,6 +301,8 @@ void Column::vSet(Stz* aDefinition)
   else if (StrLib::bSame(aBuffer,"decimal")) {
     m_eColumnType = CT_DECIMAL;
     m_eDatumType = DM_BCD;
+    m_iColumnLength = 18;
+    m_iColumnScale = 0;
   }
   else if (StrLib::bSame(aBuffer,"float")) {
     m_eColumnType = CT_FLOAT;
@@ -348,7 +350,7 @@ void Column::vSet(Stz* aDefinition)
     if (',' == *aCursor) {
       aCursor++;
       StrLib::vSkipWhite(&aCursor);
-      b = StrLib::bExtractI8(&aCursor,&m_iColumnPrecision);
+      b = StrLib::bExtractI8(&aCursor,&m_iColumnScale);
     }
     StrLib::vSkipWhite(&aCursor);
     aCursor++;
@@ -366,12 +368,12 @@ void Column::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
-  vTrace("Column %02lld %s type %s length %lld precision %lld datum %s %s\n"_Stz,
+  vTrace("Column %02lld %s type %s length %lld scale %lld datum %s %s\n"_Stz,
          m_iColumnNo,
          m_sColumnName.aStr(),
          aCT[m_eColumnType],
          m_iColumnLength,
-         m_iColumnPrecision,
+         m_iColumnScale,
          aDM[m_eDatumType],
          m_bIsNullable ? "nullable"_Stz : "not null"_Stz);
 }

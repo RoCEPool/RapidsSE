@@ -218,15 +218,20 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect leading portion (till '.')
-  
+  i8 iPrecision = pColumn->iColumnLength() - pColumn->iColumnScale();
   while (**aaSrc
          && C_FS != **aaSrc
          && C_NL != **aaSrc
          && C_CR != **aaSrc
-         && StrLib::bIsDigit(**aaSrc)) {
+         && StrLib::bIsDigit(**aaSrc)
+         && iPrecision--) {
+    
     iResult = iResult * 10 + StrLib::iDigitToI8(**aaSrc);
     (*aaSrc)++;
   }
+  
+  if (iPrecision < 0)
+    return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect trailing portion (after '.')
@@ -241,7 +246,7 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn)
 //    }
 //  }
 
-  i8 iPrecision = pColumn->iColumnPrecision();
+  i8 iScale = pColumn->iColumnScale();
   if ('.' == **aaSrc) {
     (*aaSrc)++; // skip '.'
     
@@ -249,14 +254,48 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn)
            && C_FS != **aaSrc
            && C_NL != **aaSrc
            && C_CR != **aaSrc
-           && StrLib::bIsDigit(**aaSrc) && iPrecision--) {
+           && StrLib::bIsDigit(**aaSrc) && iScale) {
       iResult = iResult * 10 + StrLib::iDigitToI8(**aaSrc);
+      iScale--;
       (*aaSrc)++;
     }
   }
   
-  while (iPrecision--)
+  while (iScale--) {
     iResult = iResult * 10 + 0;
+  }
+  
+  // round up if there any more digits after decimal
+  if (**aaSrc
+      && C_FS != **aaSrc
+      && C_NL != **aaSrc
+      && C_CR != **aaSrc
+      && StrLib::bIsDigit(**aaSrc) && iScale)
+    if (StrLib::iDigitToI8(**aaSrc) > 5)
+      iResult += 1;
+  
+  // skip trailing digits
+  while (**aaSrc
+         && C_FS != **aaSrc
+         && C_NL != **aaSrc
+         && C_CR != **aaSrc
+         && StrLib::bIsDigit(**aaSrc))
+    (*aaSrc)++;
+  
+  // skip trailing whitespace
+  while (' ' == **aaSrc)
+    (*aaSrc)++;
+  
+  // if any non-digit return false
+  while (**aaSrc
+         && C_FS != **aaSrc
+         && C_NL != **aaSrc
+         && C_CR != **aaSrc) {
+    
+    if (!StrLib::bIsDigit(**aaSrc))
+           return false;
+    (*aaSrc)++;
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute final result
@@ -278,9 +317,9 @@ void Bcd::vSprint(Stz* aDst, Stz* aSrc, DBobjects::Column* pColumn)
     StrLib::vSprint(aDst,"null%c"_Stz,
                     '\0');
   else {
-     i8 iBcd = *(i8*)aSrc;
+    i8 iBcd = *(i8*)aSrc;
     i8 iDigits = 1;
-    for (i8 i_Digit = 0; i_Digit < pColumn->iColumnPrecision(); i_Digit++)
+    for (i8 i_Digit = 0; i_Digit < pColumn->iColumnScale(); i_Digit++)
       iDigits *= 10;
     
     i8 iBcd_Whole = iBcd / iDigits;
@@ -289,7 +328,13 @@ void Bcd::vSprint(Stz* aDst, Stz* aSrc, DBobjects::Column* pColumn)
     if (iBcd_Fraction < 0)
       iBcd_Fraction = iBcd_Fraction * -1;
     
-    StrLib::vSprint(aDst,"%lld.%lld%c"_Stz,iBcd_Whole,iBcd_Fraction,'\0');
+    if (pColumn->iColumnScale())
+      StrLib::vSprint(aDst,"%lld.%.*lld%c"_Stz,
+                      iBcd_Whole,
+                      pColumn->iColumnScale(),
+                      iBcd_Fraction,'\0');
+    else
+      StrLib::vSprint(aDst,"%lld%c"_Stz, iBcd_Whole, '\0');
   }
 }
 

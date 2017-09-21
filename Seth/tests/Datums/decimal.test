@@ -45,8 +45,8 @@ fetch decTbl;
 affected: 101
 
 // drop the table
-//drop table decTbl;
-//success
+drop table decTbl;
+success
 
 // check existence of table
 lstbl;
@@ -55,8 +55,8 @@ rows: 0
 CLEANUP {
 
   // drop the table
-  //drop table decTbl;
-  //mute
+  drop table decTbl;
+  mute
 
   bye;
   mute

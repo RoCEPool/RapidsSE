@@ -46,7 +46,7 @@ namespace DBobjects
     s32   m_sColumnName;
     eCT   m_eColumnType;
     i8    m_iColumnLength;
-    i8    m_iColumnPrecision;
+    i8    m_iColumnScale;
     eDM   m_eDatumType;
     bool  m_bIsNullable;
   
@@ -66,8 +66,8 @@ namespace DBobjects
     i8   iColumnLength(void);
     void vColumnLength(i8 iColumnLength);
   
-    i8   iColumnPrecision(void);
-    void vColumnPrecision(i8 iColumnPrecision);
+    i8   iColumnScale(void);
+    void vColumnScale(i8 iColumnScale);
   
     i8   iColumnNo(void);
     void vColumnNo(i8 iColumnNo);
