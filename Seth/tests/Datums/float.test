@@ -1,58 +1,65 @@
-/*============================================================================*/
-/* _testFLT -- test for float                                                 */
-/*============================================================================*/
+/*----------------------------------------------------------------------------*/
+/* decimal.test -- DECIMAL DATUM tests                                        */
+/*----------------------------------------------------------------------------*/
 
-create table jidxFlt (
-  jidx_key   INTEGER     NOT NULL,
-  jidx_name  VARCHAR(32) NOT NULL,
-  jidx_100   INTEGER     NOT NULL,
-  jidx_10    INTEGER     NOT NULL,
-  jidx_ivl   INTERVAL    NOT NULL,
-  jidx_flt   FLOAT       NOT NULL
+// (1) create a table
+create table fltTbl (
+  flt_col1  FLOAT       NOT NULL,
+  vch_col1  VARCHAR(32) NOT NULL,
+  int_col3  INTEGER     NOT NULL,
+  int_col4  INTEGER     NOT NULL,
+  ivl_col5  INTERVAL    NOT NULL,
+  flt_col6  FLOAT
 );
 
-create index idx_flt on jidxFlt (jidx_flt);
-//create index idx_ivl on jidxFlt (jidx_ivl);
-//create index idx1 on jidxFlt (jidx_key);
-//create index idx2 on jidxFlt (jidx_100);
-//create index idx3 on jidxFlt (jidx_name);
+// create indexes
+create index flt_idx1 on fltTbl (flt_col1);
+success
 
-ld jidxFlt "../JTEST/jidxFlt.csv" ;
+create index flt_idx2 on fltTbl (flt_col6);
+success
 
-//anidx jidxFlt idx_flt ;
-dumpidx jidxFlt idx_flt ;
+// check existence of index
+lsidx fltTbl;
+rows:
+('flt_idx1', false, false)
+('flt_idx2', false, false)
 
-fetch jidxFlt "jidx_flt 1080.0 >=";
+// check columns of index
+lsidxcol fltTbl flt_idx1;
+rows:
+('flt_col1', 'FLOAT')
 
-/*
-print "\nSelecting rows with key >= 3 using idx1 ...\n" ;
-lwrselidx jidx idx1 3 ;
+// check columns of index
+lsidxcol fltTbl flt_idx2;
+rows:
+('flt_col6', 'FLOAT')
 
-print "\nSelecting rows with key >= 1 using idx1 ...\n" ;
-lwrselidx jidx idx1 1 ;
+ld fltTbl "../Seth/tests/Datums/float.csv" ;
+success
 
-print "\nSelecting rows with key >= 28 using idx1 ...\n" ;
-lwrselidx jidx idx1 28 ;
+// check no of rows
+fetch fltTbl;
+affected: 101
 
-print "\nSelecting rows with key >= 40 using idx1 ...\n" ;
-lwrselidx jidx idx1 40 ;
+// drop the table
+drop table fltTbl;
+success
 
-print "\nSelecting rows with key >= 45 using idx1 ...\n" ;
-lwrselidx jidx idx1 45 ;
+// check existence of table
+lstbl;
+rows: 0
 
-print "\nSelecting rows with key >= 67 using idx1 ...\n" ;
-lwrselidx jidx idx1 67 ;
+CLEANUP {
+  
+  // drop the table
+  drop table fltTbl;
+  mute
+  
+  bye;
+  mute
+}
 
-print "\nSelecting rows with key >= 99 using idx1 ...\n" ;
-lwrselidx jidx idx1 99 ;
-
-print "\nSelecting rows with key >= 72 using idx1 ...\n" ;
-lwrselidx jidx idx1 72 ;
-
-print "\nSelecting rows with key >= 180 using idx2 ...\n" ;
-lwrselidx jidx idx2 180 ;
-*/
-
-/*============================================================================*/
+/*----------------------------------------------------------------------------*/
 /* end                                                                        */
-/*============================================================================*/
+/*----------------------------------------------------------------------------*/

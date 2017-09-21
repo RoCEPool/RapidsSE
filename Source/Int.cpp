@@ -306,12 +306,16 @@ bool Int::bExtract(char** aaSrc, Int* aInteger, Column* pColumn)
       if (!StrLib::bIsDigit(**aaSrc))
         return false;
       
+      if (!StrLib::bIsDigit(**aaSrc))
+        return false;
+      
       (*aaSrc)++;
     }
   }
   
-  if (C_FS != **aaSrc && C_NL != **aaSrc && C_CR != **aaSrc)
-    return false;
+  // skip trailing whitespace
+  while (' ' == **aaSrc)
+    (*aaSrc)++;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute final result

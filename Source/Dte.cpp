@@ -260,6 +260,10 @@ bool Dte::bExtract(char** aaSrc, Dte* aDate, Column* pColumn)
   if ('Z' == **aaSrc)
     (*aaSrc)++;
   
+  // skip trailing whitespace
+  while (' ' == **aaSrc)
+    (*aaSrc)++;
+  
   return true;
 }
 

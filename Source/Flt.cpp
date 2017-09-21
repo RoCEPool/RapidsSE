@@ -245,6 +245,21 @@ bool Flt::bExtract(char** aaSrc, Flt* aFloat, Column* pColumn)
   // terminate
   *aChar++ = '\0';
   
+  // skip trailing whitespace
+  while (' ' == **aaSrc)
+    (*aaSrc)++;
+  
+  // if any non-digit return false
+  while (**aaSrc
+         && C_FS != **aaSrc
+         && C_NL != **aaSrc
+         && C_CR != **aaSrc) {
+    
+    if (!StrLib::bIsDigit(**aaSrc))
+      return false;
+    (*aaSrc)++;
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute final result
   

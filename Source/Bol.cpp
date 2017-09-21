@@ -263,6 +263,10 @@ bool Bol::bExtract(char** aaSrc, Bol* aBoolean, Column* pColumn)
     (*aaSrc)++;
   }
   
+  // skip trailing whitespace
+  while (' ' == **aaSrc)
+    (*aaSrc)++;
+  
   aBoolean->m_bBol = bResult;
   
   return true;

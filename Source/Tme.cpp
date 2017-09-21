@@ -270,6 +270,10 @@ bool Tme::bExtract(char** aaSrc, Tme* aTime, Column* pColumn)
   if ('Z' == **aaSrc)
     (*aaSrc)++;
   
+  // skip trailing whitespace
+  while (' ' == **aaSrc)
+    (*aaSrc)++;
+  
   return true;
 }
 

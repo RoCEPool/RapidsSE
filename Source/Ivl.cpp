@@ -242,6 +242,10 @@ bool Ivl::bExtract(char** aaSrc, Ivl* aInterval, Column* pColumn)
       aInterval->x.m_uMilli = uField;
   }
   
+  // skip trailing whitespace
+  while (' ' == **aaSrc)
+    (*aaSrc)++;
+  
   return true;
 }
 

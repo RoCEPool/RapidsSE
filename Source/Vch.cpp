@@ -288,6 +288,10 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn)
   
   *aChar++ = '\0';
   
+  // skip trailing whitespace
+  while (' ' == **aaSrc)
+    (*aaSrc)++;
+    
   return true;
 }
 
