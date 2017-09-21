@@ -11,7 +11,7 @@ create table IntTbl (
 );
 success
 
-// create inexes
+// create indexes
 create index int_idx1 on IntTbl (int_col1);
 success
 

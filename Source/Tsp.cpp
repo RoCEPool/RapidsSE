@@ -304,25 +304,25 @@ bool Tsp::bExtract(char** aaSrc, Tsp* aTimestamp, Column* pColumn)
   
   // extract hour
   if ( ! StrLib::bExtractU8(aaSrc,&uField) )
-    return true;
+    return false;
   aTimestamp->x.m_uHour = uField;
   
   // skip : separator
   if (':' != *(*aaSrc)++)
-    return true;
+    return false;
   
   // extract minute
   if ( ! StrLib::bExtractU8(aaSrc,&uField) )
-    return true;
+    return false;
   aTimestamp->x.m_uMinute = uField;
   
   // skip : separator
   if (':' != *(*aaSrc)++)
-    return true;
+    return false;
   
   // extract second
   if ( ! StrLib::bExtractU8(aaSrc,&uField) )
-    return true;
+    return false;
   aTimestamp->x.m_uSecond = uField;
   
   // extract fraction (assuming milliseconds)
@@ -336,6 +336,10 @@ bool Tsp::bExtract(char** aaSrc, Tsp* aTimestamp, Column* pColumn)
   if ('Z' == **aaSrc)
     (*aaSrc)++;
   
+  // skip trailing whitespace
+  while (' ' == **aaSrc)
+    (*aaSrc)++;
+
   return true;
 }
 
