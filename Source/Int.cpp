@@ -355,7 +355,7 @@ bool Int::bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   else if (((Vch*)aArgB)->bIsNull())
     bLessThan = false;
   
-  else {    
+  else {
     i8 iA = *(i8*)aArgA;
     i8 iB = *(i8*)aArgB;
     
