@@ -46,8 +46,8 @@ fetch bolTbl;
 affected: 101
 
 // drop the table
-//drop table bolTbl;
-//success
+drop table bolTbl;
+success
 
 // check existence of table
 lstbl;
@@ -56,8 +56,8 @@ rows: 0
 CLEANUP {
   
   // drop the table
-  //drop table bolTbl;
-  //mute
+  drop table bolTbl;
+  mute
   
   bye;
   mute
