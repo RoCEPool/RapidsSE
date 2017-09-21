@@ -280,12 +280,17 @@ void Tme::vSprint(Stz* aDst, Stz* aSrc)
 {
   Tme* aTme = (Tme*)aSrc;
   
-  StrLib::vSprint(aDst,"%02lld:%02lld:%02lld.%03lld%c"_Stz,
-                  aTme->x.m_uHour,
-                  aTme->x.m_uMinute,
-                  aTme->x.m_uSecond,
-                  aTme->x.m_uMilli,
-                  '\0');
+  if (aTme->bIsNull())
+    StrLib::vSprint(aDst,"null%c"_Stz,
+                    '\0');
+  else
+    
+    StrLib::vSprint(aDst,"%02lld:%02lld:%02lld.%03lld%c"_Stz,
+                    aTme->x.m_uHour,
+                    aTme->x.m_uMinute,
+                    aTme->x.m_uSecond,
+                    aTme->x.m_uMilli,
+                    '\0');
 }
 
 /*----------------------------------------------------------------------------*/
@@ -302,14 +307,21 @@ bool Tme::bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  i8 iA = *(i8*)aArgA;
-  i8 iB = *(i8*)aArgB;
-  
-  if (iA < iB)
+  if (((Vch*)aArgA)->bIsNull())
     bLessThan = true;
-  else
+  
+  else if (((Vch*)aArgB)->bIsNull())
     bLessThan = false;
   
+  else {
+    i8 iA = *(i8*)aArgA;
+    i8 iB = *(i8*)aArgB;
+    
+    if (iA < iB)
+      bLessThan = true;
+    else
+      bLessThan = false;
+  }
   return bLessThan;
 }
 
@@ -323,14 +335,22 @@ bool Tme::bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  i8 iA = *(i8*)aArgA;
-  i8 iB = *(i8*)aArgB;
-  
-  if (iA <= iB)
+  if (((Vch*)aArgA)->bIsNull())
     bLessEqual = true;
-  else
+  
+  else if (((Vch*)aArgB)->bIsNull())
     bLessEqual = false;
   
+  else {
+    
+    i8 iA = *(i8*)aArgA;
+    i8 iB = *(i8*)aArgB;
+    
+    if (iA <= iB)
+      bLessEqual = true;
+    else
+      bLessEqual = false;
+  }
   return bLessEqual;
 }
 
@@ -344,14 +364,22 @@ bool Tme::bEqualTo(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  i8 iA = *(i8*)aArgA;
-  i8 iB = *(i8*)aArgB;
-  
-  if (iA == iB)
+  if (((Vch*)aArgA)->bIsNull())
     bEqualTo = true;
-  else
+  
+  else if (((Vch*)aArgB)->bIsNull())
     bEqualTo = false;
   
+  else {
+    
+    i8 iA = *(i8*)aArgA;
+    i8 iB = *(i8*)aArgB;
+    
+    if (iA == iB)
+      bEqualTo = true;
+    else
+      bEqualTo = false;
+  }
   return bEqualTo;
 }
 
@@ -365,14 +393,22 @@ bool Tme::bNotEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  i8 iA = *(i8*)aArgA;
-  i8 iB = *(i8*)aArgB;
-  
-  if (iA != iB)
+  if (((Vch*)aArgA)->bIsNull())
     bNotEqual = true;
-  else
+  
+  else if (((Vch*)aArgB)->bIsNull())
     bNotEqual = false;
   
+  else {
+    
+    i8 iA = *(i8*)aArgA;
+    i8 iB = *(i8*)aArgB;
+    
+    if (iA != iB)
+      bNotEqual = true;
+    else
+      bNotEqual = false;
+  }
   return bNotEqual;
 }
 
@@ -386,34 +422,42 @@ bool Tme::bGreaterEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  i8 iA = *(i8*)aArgA;
-  i8 iB = *(i8*)aArgB;
-  
-  if (iA >= iB)
+  if (((Vch*)aArgA)->bIsNull())
     bGreaterEqual = true;
-  else
+  
+  else if (((Vch*)aArgB)->bIsNull())
     bGreaterEqual = false;
   
-  Tme xTmeA;
-  Tme xTmeB;
-  
-  *(i8*)&xTmeA.x = iA;
-  *(i8*)&xTmeB.x = iB;
-  
-  vTrace("%d:%d:%d.%d >= %d:%d:%d.%d %s\n"_Stz,
-         xTmeA.iHour(),
-         xTmeA.iMinute(),
-         xTmeA.iSecond(),
-         xTmeA.iMilli(),
-
-         xTmeB.iHour(),
-         xTmeB.iMinute(),
-         xTmeB.iSecond(),
-         xTmeB.iMilli(),
-         
-         bGreaterEqual ? "true" : "false"
-         );
-  
+  else {
+    
+    i8 iA = *(i8*)aArgA;
+    i8 iB = *(i8*)aArgB;
+    
+    if (iA >= iB)
+      bGreaterEqual = true;
+    else
+      bGreaterEqual = false;
+    
+//    Tme xTmeA;
+//    Tme xTmeB;
+//    
+//    *(i8*)&xTmeA.x = iA;
+//    *(i8*)&xTmeB.x = iB;
+//    
+//    vTrace("%d:%d:%d.%d >= %d:%d:%d.%d %s\n"_Stz,
+//           xTmeA.iHour(),
+//           xTmeA.iMinute(),
+//           xTmeA.iSecond(),
+//           xTmeA.iMilli(),
+//
+//           xTmeB.iHour(),
+//           xTmeB.iMinute(),
+//           xTmeB.iSecond(),
+//           xTmeB.iMilli(),
+//           
+//           bGreaterEqual ? "true" : "false"
+//           );
+  }
   return bGreaterEqual;
 }
 
@@ -427,14 +471,22 @@ bool Tme::bGreaterThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  i8 iA = *(i8*)aArgA;
-  i8 iB = *(i8*)aArgB;
-  
-  if (iA > iB)
+  if (((Vch*)aArgA)->bIsNull())
     bGreaterThan = true;
-  else
+  
+  else if (((Vch*)aArgB)->bIsNull())
     bGreaterThan = false;
   
+  else {
+    
+    i8 iA = *(i8*)aArgA;
+    i8 iB = *(i8*)aArgB;
+    
+    if (iA > iB)
+      bGreaterThan = true;
+    else
+      bGreaterThan = false;
+  }
   return bGreaterThan;
 }
 
@@ -446,6 +498,12 @@ i8 Tme::iCmp(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
+  if (((Int*)aArgA)->bIsNull())
+    return -1;
+  
+  if (((Int*)aArgB)->bIsNull())
+    return 1;
+
   i8 iA = *(i8*)aArgA;
   i8 iB = *(i8*)aArgB;
   
