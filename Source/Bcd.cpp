@@ -189,7 +189,14 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn)
     (*aaSrc)++;
   
   // test for null
-  if ( ! **aaSrc || C_FS == **aaSrc ) {
+  if ( ! **aaSrc
+      || C_FS == **aaSrc
+      || C_NL == **aaSrc
+      || C_CR == **aaSrc) {
+    
+    if ( !pColumn->bIsNullable() )
+      return false;
+    
     aDecimal->vSetNull();
     return true;
   }
@@ -199,6 +206,13 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn)
   
   if (**aaSrc && '-' == **aaSrc ) {
     bNegative = true;
+    (*aaSrc)++;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for positive
+  
+  if (**aaSrc && '+' == **aaSrc ) {
     (*aaSrc)++;
   }
   
@@ -230,7 +244,11 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn)
   i8 iPrecision = pColumn->iColumnPrecision();
   if ('.' == **aaSrc) {
     (*aaSrc)++; // skip '.'
-    while (**aaSrc && C_FS != **aaSrc
+    
+    while (**aaSrc
+           && C_FS != **aaSrc
+           && C_NL != **aaSrc
+           && C_CR != **aaSrc
            && StrLib::bIsDigit(**aaSrc) && iPrecision--) {
       iResult = iResult * 10 + StrLib::iDigitToI8(**aaSrc);
       (*aaSrc)++;
@@ -253,19 +271,26 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn)
 /*----------------------------------------------------------------------------*/
 void Bcd::vSprint(Stz* aDst, Stz* aSrc, DBobjects::Column* pColumn)
 {
-  i8 iBcd = *(i8*)aSrc;
+ 
+  Bcd* aBcd = (Bcd*)aSrc;
   
-  i8 iDigits = 1;
-  for (i8 i_Digit = 0; i_Digit < pColumn->iColumnPrecision(); i_Digit++)
-    iDigits *= 10;
-  
-  i8 iBcd_Whole = iBcd / iDigits;
-  i8 iBcd_Fraction = iBcd % iDigits;
-  
-  if (iBcd_Fraction < 0)
-    iBcd_Fraction = iBcd_Fraction * -1;
-  
-  StrLib::vSprint(aDst,"%lld.%lld%c"_Stz,iBcd_Whole,iBcd_Fraction,'\0');
+  if (aBcd->bIsNull())
+    StrLib::vSprint(aDst,"null%c"_Stz,
+                    '\0');
+  else {
+     i8 iBcd = *(i8*)aSrc;
+    i8 iDigits = 1;
+    for (i8 i_Digit = 0; i_Digit < pColumn->iColumnPrecision(); i_Digit++)
+      iDigits *= 10;
+    
+    i8 iBcd_Whole = iBcd / iDigits;
+    i8 iBcd_Fraction = iBcd % iDigits;
+    
+    if (iBcd_Fraction < 0)
+      iBcd_Fraction = iBcd_Fraction * -1;
+    
+    StrLib::vSprint(aDst,"%lld.%lld%c"_Stz,iBcd_Whole,iBcd_Fraction,'\0');
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -282,13 +307,21 @@ bool Bcd::bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  i8 iA = *(i8*)aArgA;
-  i8 iB = *(i8*)aArgB;
-  
-  if (iA < iB)
+  if (((Bcd*)aArgA)->bIsNull())
     bLessThan = true;
-  else
+  
+  else if (((Bcd*)aArgB)->bIsNull())
     bLessThan = false;
+  
+  else {
+    i8 iA = *(i8*)aArgA;
+    i8 iB = *(i8*)aArgB;
+    
+    if (iA < iB)
+      bLessThan = true;
+    else
+      bLessThan = false;
+  }
   
   return bLessThan;
 }
@@ -303,13 +336,21 @@ bool Bcd::bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  i8 iA = *(i8*)aArgA;
-  i8 iB = *(i8*)aArgB;
-  
-  if (iA <= iB)
+  if (((Bcd*)aArgA)->bIsNull())
     bLessEqual = true;
-  else
+  
+  else if (((Bcd*)aArgB)->bIsNull())
     bLessEqual = false;
+  
+  else {
+    i8 iA = *(i8*)aArgA;
+    i8 iB = *(i8*)aArgB;
+    
+    if (iA <= iB)
+      bLessEqual = true;
+    else
+      bLessEqual = false;
+  }
   
   return bLessEqual;
 }
@@ -324,13 +365,21 @@ bool Bcd::bEqualTo(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  i8 iA = *(i8*)aArgA;
-  i8 iB = *(i8*)aArgB;
-  
-  if (iA == iB)
+  if (((Bcd*)aArgA)->bIsNull())
     bEqualTo = true;
-  else
+  
+  else if (((Bcd*)aArgB)->bIsNull())
     bEqualTo = false;
+  
+  else {
+    i8 iA = *(i8*)aArgA;
+    i8 iB = *(i8*)aArgB;
+    
+    if (iA == iB)
+      bEqualTo = true;
+    else
+      bEqualTo = false;
+  }
   
   return bEqualTo;
 }
@@ -345,13 +394,21 @@ bool Bcd::bNotEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  i8 iA = *(i8*)aArgA;
-  i8 iB = *(i8*)aArgB;
-  
-  if (iA != iB)
+  if (((Bcd*)aArgA)->bIsNull())
     bNotEqual = true;
-  else
+  
+  else if (((Bcd*)aArgB)->bIsNull())
     bNotEqual = false;
+  
+  else {
+    i8 iA = *(i8*)aArgA;
+    i8 iB = *(i8*)aArgB;
+    
+    if (iA != iB)
+      bNotEqual = true;
+    else
+      bNotEqual = false;
+  }
   
   return bNotEqual;
 }
@@ -366,13 +423,21 @@ bool Bcd::bGreaterEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  i8 iA = *(i8*)aArgA;
-  i8 iB = *(i8*)aArgB;
-  
-  if (iA >= iB)
+  if (((Bcd*)aArgA)->bIsNull())
     bGreaterEqual = true;
-  else
+  
+  else if (((Bcd*)aArgB)->bIsNull())
     bGreaterEqual = false;
+  
+  else {
+    i8 iA = *(i8*)aArgA;
+    i8 iB = *(i8*)aArgB;
+    
+    if (iA >= iB)
+      bGreaterEqual = true;
+    else
+      bGreaterEqual = false;
+  }
   
   return bGreaterEqual;
 }
@@ -387,13 +452,21 @@ bool Bcd::bGreaterThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
-  i8 iA = *(i8*)aArgA;
-  i8 iB = *(i8*)aArgB;
-  
-  if (iA > iB)
+  if (((Bcd*)aArgA)->bIsNull())
     bGreaterThan = true;
-  else
+  
+  else if (((Bcd*)aArgB)->bIsNull())
     bGreaterThan = false;
+  
+  else {
+    i8 iA = *(i8*)aArgA;
+    i8 iB = *(i8*)aArgB;
+    
+    if (iA > iB)
+      bGreaterThan = true;
+    else
+      bGreaterThan = false;
+  }
   
   return bGreaterThan;
 }
@@ -405,6 +478,12 @@ i8 Bcd::iCmp(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 {
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
+  
+  if (((Bcd*)aArgA)->bIsNull())
+    return -1;
+  
+  if (((Bcd*)aArgB)->bIsNull())
+    return 1;
   
   i8 iA = *(i8*)aArgA;
   i8 iB = *(i8*)aArgB;
