@@ -293,6 +293,7 @@ void Column::vSet(Stz* aDefinition)
   else if (StrLib::bSame(aBuffer,"char")) {
     m_eColumnType = CT_CHAR;
     m_eDatumType = DM_VCH;
+    m_iColumnLength = C_64K;
   }
   else if (StrLib::bSame(aBuffer,"date")) {
     m_eColumnType = CT_DATE;
@@ -307,10 +308,12 @@ void Column::vSet(Stz* aDefinition)
   else if (StrLib::bSame(aBuffer,"float")) {
     m_eColumnType = CT_FLOAT;
     m_eDatumType = DM_FLT;
+    m_iColumnLength = 53;
   }
   else if (StrLib::bSame(aBuffer,"integer")) {
     m_eColumnType = CT_INTEGER;
     m_eDatumType = DM_INT;
+    m_iColumnLength = 18;
   }
   else if (StrLib::bSame(aBuffer,"interval")) {
     m_eColumnType = CT_INTERVAL;
