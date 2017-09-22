@@ -943,13 +943,71 @@ eEC RapidsSE_GetColumns(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema,
     
     // change folder to table
     CF_TABLES("e"_Stz);
-  
+
+/*
     // list all the columns of pTable
     eResult = eExecuteRequest(pSEitf, "lscol"_Stz, (Stz*)pTable);
     CHECK_RESULT("f"_Stz);
     CHECK_RESPONSE("g"_Stz);
     
     // return the list of columns of pTable
+    *ppColumns = pSEitf->m_sResponse.aChar();
+ */
+    // get a reference to the table
+    eResult = eExecuteRequest(pSEitf, "gettblNew"_Stz, (Stz*)pTable);
+    CHECK_RESULT("f"_Stz);
+    CHECK_RESPONSE("g"_Stz);
+    
+    // validate we have a table
+    VALIDATE_TABLE("h"_Stz);
+    
+    // iterate through columns of the table and for a string
+    ColumnVec* pColumnVec = pSEitf->m_pCurrentTable->pColumnVec();
+    i8 iColumns = pColumnVec->nItems();
+    
+    s48K sColumns;
+    
+    sColumns.vCopy(""_Stz);
+    s32 sValue;
+    
+    // skip the hidden column
+    for (i8 i = 0; i < iColumns - 1; i++) {
+      if (i > 0)
+        sColumns.vConcat(", "_Stz);
+      
+      Column* pColumn = pColumnVec->pGet(i);
+      sColumns.vConcat(pColumn->sColumnName());
+      sColumns.vConcat(" "_Stz);
+      sColumns.vConcat(aCT[pColumn->eColumnType()]);
+      
+      sColumns.vConcat("("_Stz);
+      i8 iPrecision = pColumn->iColumnLength() - pColumn->iColumnScale();
+      StrLib::wToString(iPrecision, sValue.aChar());
+      sColumns.vConcat(sValue);
+      
+      if (  pColumn->eColumnType() == CT_FLOAT
+          ||pColumn->eColumnType() == CT_DECIMAL) {
+        sColumns.vConcat(","_Stz);
+        StrLib::wToString(pColumn->iColumnScale(), sValue.aChar());
+        sColumns.vConcat(sValue);
+      }
+      sColumns.vConcat(")"_Stz);
+      sColumns.vConcat(pColumn->bIsNullable() ?
+                                    " "_Stz : " NOT NULL "_Stz);
+    }
+    
+    vTrace("%s\n"_Stz, sColumns.aChar());
+    
+    // return reference to the table
+    eResult = eExecuteRequest(pSEitf, "rettbl"_Stz);
+    CHECK_RESULT("i"_Stz);
+    CHECK_RESPONSE("j"_Stz);
+    
+    // validate we have a table
+    VALIDATE_NOTABLE("k"_Stz);
+    
+    pSEitf->m_sResponse.vCopy(sColumns);
+    
     *ppColumns = pSEitf->m_sResponse.aChar();
     
     // trace exit
