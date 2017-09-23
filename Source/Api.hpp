@@ -40,6 +40,7 @@ extern "C" eEC RapidsSE_GetEngineVersion(SEitf* pSEitf, void** ppVersion, i8 iTr
 extern "C" eEC RapidsSE_GetTables(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, void** ppTables, i8 iTraceLevel);
 extern "C" eEC RapidsSE_HashRowPartition(SEitf* pSEitf, Stz* pRow, void** ppPartition, i8 iTraceLevel);
 extern "C" eEC RapidsSE_InsertRow(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel);
+extern "C" eEC RapidsSE_LoadData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath, i8 iTraceLevel);
 extern "C" eEC RapidsSE_PoolOpen(Stz* pInstanceName, void** ppInstance, i8 iTraceLevel);
 extern "C" eEC RapidsSE_SEitfDelete(SEitf* pSEitf, i8 iTraceLevel);
 extern "C" eEC RapidsSE_SEitfNew(void** ppSEitf, i8 iPartition, i8 iTraceLevel);

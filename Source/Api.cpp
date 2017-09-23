@@ -348,7 +348,6 @@ eEC RapidsSE_CreateIndex(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable
     VALIDATE_PARAM("d"_Stz, pTable);
     VALIDATE_PARAM("e"_Stz, pIndex);
     
-    
     // change directory to table
     CF_TABLES("f"_Stz);
     
@@ -1492,6 +1491,57 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel)
     // trace exit
     TRACE_EXIT("ea"_Stz);
 
+    return EC_NONE;
+    
+  }
+  catch (Error* pError) {
+    RapidsSE::vErrorHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
+    return pError->eErrorCode();
+  }
+  catch (...) {
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
+    return EC_SE_UNKNOWN_ERROR;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* load data from file into the table                                         */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_LoadData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath, i8 iTraceLevel)
+{
+  
+  eEC eResult;
+  eEC eResponse;
+  
+  Stz* aApiCall = "RapidsSE_LoadData"_Stz;
+  
+  try {
+    
+    // trace entry
+    TRACE_ENTRY_P2(pTable, pFilePath);
+    
+    // validate the SEitf
+    VALIDATE_SEITF("a"_Stz);
+    
+    // clear the last error
+    CLEAR_LASTERROR();
+    
+    // validate parameters
+    VALIDATE_PARAM("b"_Stz, pTable);
+    VALIDATE_PARAM("c"_Stz, pFilePath);
+    
+    // add a column
+    eResult = eExecuteRequest(pSEitf, "ld"_Stz,
+                              pTable,
+                              pFilePath);
+    
+    CHECK_RESULT("d"_Stz);
+    CHECK_RESPONSE("e"_Stz);
+    
+    // trace exit
+    TRACE_EXIT("ea"_Stz);
+    
     return EC_NONE;
     
   }
