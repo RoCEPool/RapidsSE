@@ -49,6 +49,7 @@ namespace DBobjects
     i8    m_iColumnScale;
     eDM   m_eDatumType;
     bool  m_bIsNullable;
+    bool  m_bIsPartitionKey;
   
     // must be last
     Footer m_xFooter;
@@ -86,6 +87,9 @@ namespace DBobjects
     bool bIsNullable(void);
     void vIsNullable(bool bIsNullable);
   
+    bool bIsPartitionKey(void);
+    void vIsPartitionKey(bool bIsNullable);
+
     void vSet(Stz* aDefinition);
     void vShow(void);
     

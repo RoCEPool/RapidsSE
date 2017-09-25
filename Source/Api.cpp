@@ -991,8 +991,15 @@ eEC RapidsSE_GetColumns(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema,
         sColumns.vConcat(sValue);
       }
       sColumns.vConcat(")"_Stz);
+      
+      // check for NULLABLE
       sColumns.vConcat(pColumn->bIsNullable() ?
                                     " "_Stz : " NOT NULL "_Stz);
+      
+      // check if partition key
+      if (pColumn->bIsPartitionKey())
+        sColumns.vConcat(pColumn->bIsNullable() ?
+                         " "_Stz : " PARTITION_KEY "_Stz);
     }
     
     vTrace("%s\n"_Stz, sColumns.aChar());

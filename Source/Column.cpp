@@ -270,6 +270,25 @@ void Column::vIsNullable(bool bIsNullable)
   
   m_bIsNullable = bIsNullable;
 }
+/*----------------------------------------------------------------------------*/
+/* get is partition key?                                                      */
+/*----------------------------------------------------------------------------*/
+bool Column::bIsPartitionKey(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  
+  return m_bIsPartitionKey;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set is partition key?                                                      */
+/*----------------------------------------------------------------------------*/
+void Column::vIsPartitionKey(bool bIsPartitionKey)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  
+  m_bIsPartitionKey = bIsPartitionKey;
+}
 
 /*----------------------------------------------------------------------------*/
 /* parse definition and set                                                   */

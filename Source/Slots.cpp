@@ -137,6 +137,9 @@ void Slots::vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn)
   }
   ASSERT(bFound);
   
+  // mark teh column as a partion key column
+  pColumn->vIsPartitionKey(true);
+  
   m_pPtnColVec->vInsert(pColumn);
 }
 
