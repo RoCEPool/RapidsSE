@@ -4,10 +4,12 @@
 
 // create a table
 create table boolTable (
-  key   BOOLEAN NOT NULL,
+  key1   BOOLEAN NOT NULL,
   value INTEGER,
-  name  VARCHAR(32) NOT NULL
-);
+  name  VARCHAR(32) NOT NULL,
+  PRIMARY KEY(key1),
+  index idx1 on (key1,value)
+) partition by (key1);
 success
 
 // check columns of partition key

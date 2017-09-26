@@ -980,12 +980,11 @@ eEC RapidsSE_GetColumns(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema,
       sColumns.vConcat(aCT[pColumn->eColumnType()]);
       
       sColumns.vConcat("("_Stz);
-      i8 iPrecision = pColumn->iColumnLength() - pColumn->iColumnScale();
+      i8 iPrecision = pColumn->iColumnLength();
       StrLib::wToString(iPrecision, sValue.aChar());
       sColumns.vConcat(sValue);
       
-      if (  pColumn->eColumnType() == CT_FLOAT
-          ||pColumn->eColumnType() == CT_DECIMAL) {
+      if (pColumn->eColumnType() == CT_DECIMAL) {
         sColumns.vConcat(","_Stz);
         StrLib::wToString(pColumn->iColumnScale(), sValue.aChar());
         sColumns.vConcat(sValue);

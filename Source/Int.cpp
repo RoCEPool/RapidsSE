@@ -256,8 +256,10 @@ bool Int::bExtract(char** aaSrc, Int* aInteger, Column* pColumn)
       || C_NL == **aaSrc
       || C_CR == **aaSrc) {
     
-    if ( !pColumn->bIsNullable() )
+    if ( !pColumn->bIsNullable() ) {
+      vTrace("Found null in not nullable field\n"_Stz);
       return false;
+    }
 
     aInteger->vSetNull();
     return true;
@@ -311,6 +313,14 @@ bool Int::bExtract(char** aaSrc, Int* aInteger, Column* pColumn)
       
       (*aaSrc)++;
     }
+  }
+  else {
+    if (**aaSrc
+        && C_FS != **aaSrc
+        && C_NL != **aaSrc
+        && C_CR != **aaSrc
+        && !StrLib::bIsDigit(**aaSrc))
+      return false;
   }
   
   // skip trailing whitespace

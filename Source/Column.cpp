@@ -57,6 +57,7 @@ Column::Column(void)
   m_iColumnScale  = 0;
   m_eDatumType  = DM_NONE;
   m_bIsNullable = true;
+  m_bIsPartitionKey = false;
   
   _checkInitialised_(CN_COLUMN);
   
@@ -78,7 +79,8 @@ Column::Column(Stz* aName)
   m_iColumnScale  = 0;
   m_eDatumType  = DM_INT;
   m_bIsNullable = true;
-  
+  m_bIsPartitionKey = false;
+
   _checkInitialised_(CN_COLUMN);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
@@ -99,7 +101,8 @@ Column::Column(Stz* aName, Stz* aDefinition)
   m_iColumnScale  = 0;
   m_eDatumType  = DM_NONE;
   m_bIsNullable = true;
-  
+  m_bIsPartitionKey = false;
+
   vSet(aDefinition);
   
   _checkInitialised_(CN_COLUMN);
@@ -327,12 +330,12 @@ void Column::vSet(Stz* aDefinition)
   else if (StrLib::bSame(aBuffer,"float")) {
     m_eColumnType = CT_FLOAT;
     m_eDatumType = DM_FLT;
-    m_iColumnLength = 53;
+    m_iColumnLength = 16;
   }
   else if (StrLib::bSame(aBuffer,"integer")) {
     m_eColumnType = CT_INTEGER;
     m_eDatumType = DM_INT;
-    m_iColumnLength = 18;
+    m_iColumnLength = 19;
   }
   else if (StrLib::bSame(aBuffer,"interval")) {
     m_eColumnType = CT_INTERVAL;

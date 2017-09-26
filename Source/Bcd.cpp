@@ -270,8 +270,8 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn)
       && C_FS != **aaSrc
       && C_NL != **aaSrc
       && C_CR != **aaSrc
-      && StrLib::bIsDigit(**aaSrc) && iScale)
-    if (StrLib::iDigitToI8(**aaSrc) > 5)
+      && StrLib::bIsDigit(**aaSrc))
+    if (StrLib::iDigitToI8(**aaSrc) >= 5)
       iResult += 1;
   
   // skip trailing digits
