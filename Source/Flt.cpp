@@ -281,7 +281,7 @@ void Flt::vSprint(Stz* aDst, Stz* aSrc)
     StrLib::vSprint(aDst,"null%c"_Stz,
                     '\0');
   else
-    StrLib::vSprint(aDst,"%.3llf%c"_Stz,
+    StrLib::vSprint(aDst,"%.3f%c"_Stz,
                     aFlt->m_dFlt,
                     '\0');
   vTrace("%f %s\n"_Stz, aFlt->m_dFlt, aDst);
