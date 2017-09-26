@@ -6,7 +6,157 @@
 refresh;
 success
 
-Loop 3 {
+// create tables
+create table customer (
+C_CUSTKEY       INTEGER NOT NULL,
+C_NAME          VARCHAR(25) NOT NULL,
+C_ADDRESS       VARCHAR(40) NOT NULL,
+C_NATIONKEY     INTEGER NOT NULL,
+C_PHONE         CHAR(15) NOT NULL,
+C_ACCTBAL       DECIMAL(15,2) NOT NULL,
+C_MKTSEGMENT    CHAR(10) NOT NULL,
+C_COMMENT       VARCHAR(117) NOT NULL
+);
+success
+
+create table lineitem (
+L_ORDERKEY      INTEGER NOT NULL,
+L_PARTKEY       INTEGER NOT NULL,
+L_SUPPKEY       INTEGER NOT NULL,
+L_LINENUMBER    INTEGER NOT NULL,
+L_QUANTITY      DECIMAL(15,2) NOT NULL,
+L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,
+L_DISCOUNT      DECIMAL(15,2) NOT NULL,
+L_TAX           DECIMAL(15,2) NOT NULL,
+L_RETURNFLAG    CHAR(1) NOT NULL,
+L_LINESTATUS    CHAR(1) NOT NULL,
+L_SHIPDATE      TIMESTAMP NOT NULL,
+L_COMMITDATE    TIMESTAMP NOT NULL,
+L_RECEIPTDATE   TIMESTAMP NOT NULL,
+L_SHIPINSTRUCT  CHAR(25) NOT NULL,
+L_SHIPMODE      CHAR(10) NOT NULL,
+L_COMMENT       VARCHAR(44) NOT NULL
+);
+success
+
+create table nation (
+N_NATIONKEY       INTEGER NOT NULL,
+N_NAME            CHAR(25) NOT NULL,
+N_REGIONKEY       INTEGER NOT NULL,
+N_COMMENT         VARCHAR(152)
+);
+success
+
+create table orders (
+O_ORDERKEY        INTEGER NOT NULL,
+O_CUSTKEY         INTEGER NOT NULL,
+O_ORDERSTATUS     CHAR(1) NOT NULL,
+O_TOTALPRICE      DECIMAL(15,2) NOT NULL,
+O_ORDERDATE       TIMESTAMP NOT NULL,
+O_ORDERPRIORITY   CHAR(15) NOT NULL,
+O_CLERK           CHAR(15) NOT NULL,
+O_SHIPPRIORITY    INTEGER NOT NULL,
+O_COMMENT         VARCHAR(79) NOT NULL
+);
+success
+
+create table part (
+P_PARTKEY           INTEGER NOT NULL,
+P_NAME              VARCHAR(55) NOT NULL,
+P_MFGR              CHAR(25) NOT NULL,
+P_BRAND             CHAR(10) NOT NULL,
+P_TYPE              VARCHAR(25) NOT NULL,
+P_SIZE              INTEGER NOT NULL,
+P_CONTAINER         CHAR(10) NOT NULL,
+P_RETAILPRICE       DECIMAL(15,2) NOT NULL,
+P_COMMENT           VARCHAR(23) NOT NULL
+);
+success
+
+create table partsupp (
+PS_PARTKEY      INTEGER NOT NULL,
+PS_SUPPKEY      INTEGER NOT NULL,
+PS_AVAILQTY     INTEGER NOT NULL,
+PS_SUPPLYCOST   DECIMAL(15,2) NOT NULL,
+PS_COMMENT      VARCHAR(199) NOT NULL
+);
+success
+
+create table region (
+R_REGIONKEY       INTEGER NOT NULL,
+R_NAME            CHAR(25) NOT NULL,
+R_COMMENT         VARCHAR(152)
+);
+success
+
+create table supplier (
+S_SUPPKEY       INTEGER NOT NULL,
+S_NAME          CHAR(25) NOT NULL,
+S_ADDRESS       VARCHAR(40) NOT NULL,
+S_NATIONKEY     INTEGER NOT NULL,
+S_PHONE         CHAR(15) NOT NULL,
+S_ACCTBAL       DECIMAL(15,2) NOT NULL,
+S_COMMENT       VARCHAR(101) NOT NULL
+);
+success
+
+CREATE INDEX customer_idx1 ON customer(c_custkey);
+success
+
+CREATE INDEX supplier_idx1 ON supplier(s_suppkey);
+success
+
+CREATE INDEX orders_idx1 ON orders(o_orderdate);
+success
+
+CREATE INDEX lineitem_idx1 ON lineitem(l_partkey);
+success
+
+CREATE INDEX lineitem_idx2 ON lineitem(l_shipdate);
+success
+
+CREATE INDEX lineitem_idx3 ON lineitem(l_suppkey);
+success
+
+CREATE INDEX partsupp_idx1 ON partsupp(ps_suppkey);
+success
+
+CREATE INDEX part_idx1 ON part(p_brand);
+success
+
+CREATE INDEX customer_idx2 ON customer(c_nationkey);
+success
+
+CREATE INDEX supplier_idx2 ON supplier(s_nationkey);
+success
+
+ESCAPE CONNECTOR se 'ld TABLE1 /Users/alkayamarti/regressionData/data/tbl1data.csv' WITH node = 'Node1' ;
+
+ESCAPE CONNECTOR se 'ld nation /mnt/ssd/tpch/tpch_sf1/nation.tbl' WITH node = 'Node1' ;
+success
+
+ESCAPE CONNECTOR se 'ld orders /mnt/ssd/tpch/tpch_sf1/orders.tbl' WITH node = 'Node1' ;
+success
+
+ESCAPE CONNECTOR se 'ld supplier /mnt/ssd/tpch/tpch_sf1/supplier.tbl' WITH node = 'Node1' ;
+success
+
+ESCAPE CONNECTOR se 'ld region /mnt/ssd/tpch/tpch_sf1/region.tbl' WITH node = 'Node1' ;
+success
+
+ESCAPE CONNECTOR se 'ld lineitem /mnt/ssd/tpch/tpch_sf1/lineitem.tbl' WITH node = 'Node1' ;
+success
+
+ESCAPE CONNECTOR se 'ld part /mnt/ssd/tpch/tpch_sf1/part.tbl' WITH node = 'Node1' ;
+success
+
+ESCAPE CONNECTOR se 'ld partsupp /mnt/ssd/tpch/tpch_sf1/partsupp.tbl' WITH node = 'Node1' ;
+success
+
+ESCAPE CONNECTOR se 'ld customer /mnt/ssd/tpch/tpch_sf1/customer.tbl' WITH node = 'Node1' ;
+success
+
+//Loop 3 {
   
 // Query 1
 select l_returnflag, l_linestatus, sum(l_quantity) as sum_qty,
@@ -194,7 +344,7 @@ select cntrycode, count(*) as numcust, sum(c_acctbal) as totacctbal from
   group by cntrycode order by cntrycode ;
 rows: 7
 
-} // end of loop
+//} // end of loop
 
 CLEANUP {
 
