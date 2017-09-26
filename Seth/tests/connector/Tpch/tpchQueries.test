@@ -126,7 +126,7 @@ success
 
 CREATE INDEX customer_idx2 ON customer(c_nationkey);
 success
-sed -i 's/,/:/g'
+
 CREATE INDEX supplier_idx2 ON supplier(s_nationkey);
 success
 
