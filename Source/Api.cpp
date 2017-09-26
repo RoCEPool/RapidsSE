@@ -1001,7 +1001,7 @@ eEC RapidsSE_GetColumns(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema,
                          " "_Stz : " PARTITION_KEY "_Stz);
     }
     
-    vTrace("%s\n"_Stz, sColumns.aChar());
+    //vTrace("%s\n"_Stz, sColumns.aChar());
     
     // return reference to the table
     eResult = eExecuteRequest(pSEitf, "rettbl"_Stz);
