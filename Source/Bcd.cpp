@@ -306,6 +306,13 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn)
   while (' ' == **aaSrc)
     (*aaSrc)++;
   
+  // should see a FS, NL or CR
+  if (**aaSrc
+      && C_FS != **aaSrc
+      && C_NL != **aaSrc
+      && C_CR != **aaSrc)
+    return false;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute final result
   uResult = bNegative ? - uResult : uResult;

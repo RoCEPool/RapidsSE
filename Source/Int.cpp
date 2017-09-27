@@ -313,25 +313,38 @@ bool Int::bExtract(char** aaSrc, Int* aInteger, Column* pColumn)
       if (!StrLib::bIsDigit(**aaSrc))
         return false;
       
-      if (!StrLib::bIsDigit(**aaSrc))
-        return false;
-      
       (*aaSrc)++;
     }
   }
-  else {
-    if (**aaSrc
-        && C_FS != **aaSrc
-        && C_NL != **aaSrc
-        && C_CR != **aaSrc
-        && !StrLib::bIsDigit(**aaSrc))
-      return false;
+  
+  // if any non-digit return false
+  while (**aaSrc
+         && C_FS != **aaSrc
+         && C_NL != **aaSrc
+         && C_CR != **aaSrc) {
+    
+    if (' ' == **aaSrc) {
+      (*aaSrc)++;
+      break;
+    }
+    
+    if (!StrLib::bIsDigit(**aaSrc))
+    return false;
+    (*aaSrc)++;
   }
+
   
   // skip trailing whitespace
   while (' ' == **aaSrc)
     (*aaSrc)++;
   
+  // should see a FS, NL or CR
+  if (**aaSrc
+      && C_FS != **aaSrc
+      && C_NL != **aaSrc
+      && C_CR != **aaSrc)
+    return false;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute final result
   
