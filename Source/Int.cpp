@@ -547,6 +547,8 @@ i8 Int::iCmp(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   ASSERT(sizeof(i8) == nBytesA);
   ASSERT(sizeof(i8) == nBytesB);
   
+  //----------------------------------------------------------------------------
+  // check for nulls first
   if (((Int*)aArgA)->bIsNull())
     return -1;
   
@@ -556,6 +558,19 @@ i8 Int::iCmp(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   i8 iA = *(i8*)aArgA;
   i8 iB = *(i8*)aArgB;
 
+  //----------------------------------------------------------------------------
+  // check for min
+  if (iA == C_I8_MIN) {
+    if (iB == C_I8_MIN)
+    return 0;
+    else
+    return -1;
+  }
+  
+  if (iB == C_I8_MIN) {
+    return 1;
+  }
+  
   if (iA > iB)
     return 1;
   
