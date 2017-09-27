@@ -74,6 +74,9 @@ print "fetched\n" ;
 //drop table jCdt;
 fetch jCdt "JA 1 >= JB 22 < JA 22 <= AND OR";
 
+print "dumping jCdt_idx2 index\n" ;
+dumpidx jCdt jCdt_idx2;
+
 //docol epochDump;
 /*============================================================================*/
 /* end                                                                        */
