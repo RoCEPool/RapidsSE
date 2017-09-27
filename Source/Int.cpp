@@ -243,7 +243,7 @@ void Int::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 bool Int::bExtract(char** aaSrc, Int* aInteger, Column* pColumn)
 {
-  i8 iResult = 0;
+  u8 uResult = 0;
   bool bNegative = false;
   
   // skip leading whitespace
@@ -288,7 +288,12 @@ bool Int::bExtract(char** aaSrc, Int* aInteger, Column* pColumn)
          && C_NL != **aaSrc
          && C_CR != **aaSrc
          && StrLib::bIsDigit(**aaSrc) ) {
-      iResult = iResult * 10 + StrLib::iDigitToI8(**aaSrc);
+      uResult = uResult * 10 + StrLib::iDigitToI8(**aaSrc);
+    
+    // have we exceeded the max ?
+    if (uResult > (u8)C_I8_MAX)
+      return false;
+    
     (*aaSrc)++;
   }
 
@@ -330,7 +335,13 @@ bool Int::bExtract(char** aaSrc, Int* aInteger, Column* pColumn)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute final result
   
-  aInteger->m_iInt = bNegative ? - iResult : iResult;
+  uResult = bNegative ? - uResult : uResult;
+  
+  // have we gone beyond the min ?
+  if (bNegative && (uResult < (u8)C_I8_MIN))
+    return false;
+  
+  aInteger->m_iInt = uResult;;
   
   return true;
 }
