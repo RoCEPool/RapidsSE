@@ -181,7 +181,7 @@ void Bcd::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn)
 {
-  i8 iResult = 0;
+  u8 uResult = 0;
   bool bNegative = false;
   
   // skip leading whitespace
@@ -226,7 +226,7 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn)
          && StrLib::bIsDigit(**aaSrc)
          && iPrecision--) {
     
-    iResult = iResult * 10 + StrLib::iDigitToI8(**aaSrc);
+    uResult = uResult * 10 + StrLib::iDigitToI8(**aaSrc);
     (*aaSrc)++;
   }
   
@@ -255,15 +255,19 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn)
            && C_NL != **aaSrc
            && C_CR != **aaSrc
            && StrLib::bIsDigit(**aaSrc) && iScale) {
-      iResult = iResult * 10 + StrLib::iDigitToI8(**aaSrc);
+      uResult = uResult * 10 + StrLib::iDigitToI8(**aaSrc);
       iScale--;
       (*aaSrc)++;
     }
   }
   
   while (iScale--) {
-    iResult = iResult * 10 + 0;
+    uResult = uResult * 10 + 0;
   }
+  
+  // have we exceeded the max ?
+  if (uResult > (u8)C_I8_MAX)
+    return false;
   
   // round up if there any more digits after decimal
   if (**aaSrc
@@ -272,7 +276,7 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn)
       && C_CR != **aaSrc
       && StrLib::bIsDigit(**aaSrc))
     if (StrLib::iDigitToI8(**aaSrc) >= 5)
-      iResult += 1;
+      uResult += 1;
   
   // skip trailing digits
   while (**aaSrc
@@ -282,25 +286,35 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn)
          && StrLib::bIsDigit(**aaSrc))
     (*aaSrc)++;
   
-  // skip trailing whitespace
-  while (' ' == **aaSrc)
-    (*aaSrc)++;
-  
   // if any non-digit return false
   while (**aaSrc
          && C_FS != **aaSrc
          && C_NL != **aaSrc
          && C_CR != **aaSrc) {
     
+    if (' ' == **aaSrc) {
+      (*aaSrc)++;
+      break;
+    }
+    
     if (!StrLib::bIsDigit(**aaSrc))
            return false;
     (*aaSrc)++;
   }
   
+  // skip trailing whitespace
+  while (' ' == **aaSrc)
+    (*aaSrc)++;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute final result
+  uResult = bNegative ? - uResult : uResult;
   
-  aDecimal->m_iBcd = bNegative ? - iResult : iResult;
+  // have we gone beyond the min ?
+  if (bNegative && (uResult < (u8)C_I8_MIN))
+    return false;
+
+  aDecimal->m_iBcd = uResult;
   
   return true;
 }

@@ -9,7 +9,7 @@ create table decTbl (
   int_col3  INTEGER     NOT NULL,
   int_col4  INTEGER     NOT NULL,
   ivl_col5  INTERVAL    NOT NULL,
-  dec_col6  DECIMAL(10,0),
+  dec_col6  DECIMAL,
   tsp_col7  TIMESTAMP   NOT NULL,
   bol_col8  BOOLEAN     NOT NULL
 );
@@ -43,6 +43,14 @@ success
 // check no of rows
 fetch decTbl;
 affected: 101
+
+// dump dec_idx1
+dumpidx decTbl dec_idx1;
+success
+
+// dump dec_idx2
+dumpidx decTbl dec_idx2;
+success
 
 // drop the table
 drop table decTbl;

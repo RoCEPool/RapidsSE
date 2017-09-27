@@ -324,7 +324,7 @@ void Column::vSet(Stz* aDefinition)
   else if (StrLib::bSame(aBuffer,"decimal")) {
     m_eColumnType = CT_DECIMAL;
     m_eDatumType = DM_BCD;
-    m_iColumnLength = 18;
+    m_iColumnLength = 19;
     m_iColumnScale = 0;
   }
   else if (StrLib::bSame(aBuffer,"float")) {
