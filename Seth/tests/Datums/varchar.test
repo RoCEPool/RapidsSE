@@ -53,6 +53,15 @@ success
 fetch VchTbl;
 affected: 101
 
+// dump index vch_idx1
+dumpidx vchTbl vch_idx1;
+
+// dump index vch_idx2
+dumpidx vchTbl vch_idx2;
+
+// dump index vch_idx3
+dumpidx vchTbl vch_idx3;
+
 // drop the table
 drop table VchTbl;
 success
