@@ -1054,12 +1054,26 @@ int DBobjects::iQsort_complex(const void* aArg1, const void* aArg2, void* aIndex
 int DBobjects::iQsort_i8(const void* aArg1, const void* aArg2)
 {
   
+  //vTrace("%lld, %lld\n"_Stz, *((i8*)aArg1), *((i8*)aArg2));
+  
   // check for nulls first
   if (((Int*)aArg1)->bIsNull())
     return -1;
   
   if (((Int*)aArg2)->bIsNull())
     return 1;
+  
+  // check for min
+  if (*((i8*)aArg1) == C_I8_MIN) {
+    if (*((i8*)aArg2) == C_I8_MIN)
+      return 0;
+    else
+      return -1;
+  }
+  
+  if (*((i8*)aArg2) == C_I8_MIN) {
+    return 1;
+  }
   
   i8 iCmp = *((i8*)aArg1) - *((i8*)aArg2);
   
@@ -1080,6 +1094,29 @@ int DBobjects::iQsort_i8i8(const void* aArg1, const void* aArg2)
   i8* pArg1a = (i8*)aArg1;
   i8* pArg2a = (i8*)aArg2;
   
+  //----------------------------------------------------------------------------
+  // check for nulls first
+  if (((Int*)pArg1a)->bIsNull())
+  return -1;
+  
+  if (((Int*)pArg2a)->bIsNull())
+  return 1;
+  
+  //----------------------------------------------------------------------------
+  // check for min
+  if (*pArg1a == C_I8_MIN) {
+    if (*pArg2a == C_I8_MIN)
+      return 0;
+    else
+      return -1;
+  }
+  
+  if (*pArg2a == C_I8_MIN) {
+    return 1;
+  }
+
+  //----------------------------------------------------------------------------
+  // now compare the integers
   i8 iCmpA = *pArg1a - *pArg2a;
   
   if (iCmpA > 0)
@@ -1088,9 +1125,34 @@ int DBobjects::iQsort_i8i8(const void* aArg1, const void* aArg2)
   if (iCmpA < 0)
     return -1;
   
+  //----------------------------------------------------------------------------
+  // move to next integer
+  
   i8* pArg1b = pArg1a + 1;
   i8* pArg2b = pArg2a + 1;
 
+  //----------------------------------------------------------------------------
+  // check for nulls first
+  if (((Int*)pArg1a)->bIsNull())
+  return -1;
+  
+  if (((Int*)pArg2a)->bIsNull())
+  return 1;
+  
+  //----------------------------------------------------------------------------
+  // check for min
+  if (*pArg1a == C_I8_MIN) {
+    if (*pArg2a == C_I8_MIN)
+    return 0;
+    else
+    return -1;
+  }
+  
+  if (*pArg2a == C_I8_MIN) {
+    return 1;
+  }
+  
+  //----------------------------------------------------------------------------
   i8 iCmpB = *pArg1b - *pArg2b;
   
   if (iCmpB > 0)

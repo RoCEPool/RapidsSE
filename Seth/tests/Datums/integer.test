@@ -41,6 +41,14 @@ success
 fetch IntTbl;
 affected: 101
 
+// dump index int_idx1
+dumpidx IntTbl int_idx1;
+success
+
+// dump index int_idx2
+dumpidx IntTbl int_idx2;
+success
+
 // drop the table
 drop table IntTbl;
 success
