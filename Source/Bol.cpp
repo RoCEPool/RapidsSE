@@ -223,7 +223,13 @@ void Bol::vCopy(void* aDst, void* aSrc)
 {
   *(i8*)aDst = *(i8*)aSrc;
 }
-
+/*
+ TRUE,one,101,1,1.001,1001.001,1901-01-01 00:00:00,
+ ,zero,100,0,0.000,1000.000,1900-01-01 00:00:00,true
+ x,zero,100,0,0.000,1000.000,1900-01-01 00:00:00,true
+ txyz,zero,100,0,0.000,1000.000,1900-01-01 00:00:00,true
+ 12ab,zero,100,0,0.000,1000.000,1900-01-01 00:00:00,true
+ */
 /*----------------------------------------------------------------------------*/
 /* extract a boolean from substr                                              */
 /*----------------------------------------------------------------------------*/
@@ -248,25 +254,115 @@ bool Bol::bExtract(char** aaSrc, Bol* aBoolean, Column* pColumn)
     return true;
   }
   
-  // test for true
-  if ('t' == *(*aaSrc) ||
-      'T' == *(*aaSrc) ||
-      'y' == *(*aaSrc) ||
-      'Y' == *(*aaSrc) ||
-      '1' == *(*aaSrc))
-    bResult = true;
-  
-  while (**aaSrc
-         && C_FS != **aaSrc
-         && C_NL != **aaSrc
-         && C_CR != **aaSrc) {
-    (*aaSrc)++;
+  // check for numeric
+  if (StrLib::bIsDigit(**aaSrc)) {
+    i8 iResult = 0;
+    // collect all numeric digits
+    while (**aaSrc
+           && C_FS != **aaSrc
+           && C_NL != **aaSrc
+           && C_CR != **aaSrc
+           && StrLib::bIsDigit(**aaSrc)) {
+      iResult = iResult * 10 + StrLib::iDigitToI8(**aaSrc);
+      (*aaSrc)++;
+    }
+    if (**aaSrc
+        && C_FS != **aaSrc
+        && C_NL != **aaSrc
+        && C_CR != **aaSrc
+        && ' '  != **aaSrc)
+      return false;
+    
+    if (iResult > 0)
+      bResult = true;
+  }
+  else {
+    StrLib::vToLower(*aaSrc);
+    
+    // test for true
+    if ('t' ==  **aaSrc) {
+      (*aaSrc)++;
+      
+      if (**aaSrc &&
+          ( C_FS == **aaSrc
+          || C_NL == **aaSrc
+          || C_CR == **aaSrc
+          || ' '  == **aaSrc) ) {
+        bResult = true;
+        
+      }
+      else {
+        // next 3 characters should be rue to make true
+        
+        StrLib::vToLower(*aaSrc);
+        if ('r' != **aaSrc)
+          return false;
+        (*aaSrc)++;
+        
+        StrLib::vToLower(*aaSrc);
+        if ('u' != **aaSrc)
+          return false;
+        (*aaSrc)++;
+        
+        StrLib::vToLower(*aaSrc);
+        if ('e' != **aaSrc)
+          return false;
+        (*aaSrc)++;
+        
+        bResult = true;
+       
+      }
+ 
+    }
+    else if ('f' == *(*aaSrc)) {
+      (*aaSrc)++;
+      
+      if (**aaSrc &&
+          ( C_FS == **aaSrc
+           || C_NL == **aaSrc
+           || C_CR == **aaSrc
+           || ' '  == **aaSrc) ) {
+            bResult = false;
+            
+          }
+      else {
+        // next 3 characters should be rue to make true
+        
+        StrLib::vToLower(*aaSrc);
+        if ('a' != **aaSrc)
+          return false;
+        (*aaSrc)++;
+        
+        StrLib::vToLower(*aaSrc);
+        if ('l' != **aaSrc)
+          return false;
+        (*aaSrc)++;
+        
+        StrLib::vToLower(*aaSrc);
+        if ('s' != **aaSrc)
+          return false;
+        (*aaSrc)++;
+        
+        StrLib::vToLower(*aaSrc);
+        if ('e' != **aaSrc)
+          return false;
+        (*aaSrc)++;
+        
+        bResult = false;
+      }
+    }
   }
   
   // skip trailing whitespace
   while (' ' == **aaSrc)
     (*aaSrc)++;
   
+  if (**aaSrc
+      && C_FS != **aaSrc
+      && C_NL != **aaSrc
+      && C_CR != **aaSrc)
+    return false;
+      
   aBoolean->m_bBol = bResult;
   
   return true;

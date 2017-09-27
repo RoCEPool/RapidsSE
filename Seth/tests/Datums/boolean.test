@@ -45,6 +45,12 @@ success
 fetch bolTbl;
 affected: 101
 
+// dump index bol_idx1
+dumpidx bolTbl bol_idx1;
+
+// dump index bol_idx2
+dumpidx bolTbl bol_idx2;
+
 // drop the table
 drop table bolTbl;
 success
