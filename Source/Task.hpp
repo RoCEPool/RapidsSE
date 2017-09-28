@@ -680,6 +680,7 @@ namespace Tasks
     static void vIndexIsPrimaryKeyStore(MP_Task mpTask);
     static void vIndexIsUniqueFetch(MP_Task mpTask);
     static void vIndexIsUniqueStore(MP_Task mpTask);
+    static void vIndexIsValidUniqueIndex(MP_Task mpTask);
     static void vIndexNameFetch(MP_Task mpTask);
     static void vIndexPopulate(MP_Task mpTask);
     static void vIndexPosition(MP_Task mpTask);

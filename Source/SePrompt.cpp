@@ -1238,7 +1238,7 @@ bool SePrompt::bCmd_CreateIndex(void)
   m_xTokenVec[3]->vCopy(""_Stz);
   
   if (!bExecuteRequest()) {
-    vTrace("SePrompt::bCreateIndex : endmkidx FAILED!!!\n"_Stz);
+    //vTrace("SePrompt::bCreateIndex : endmkidx FAILED!!!\n"_Stz);
     // save error returned by addColumn
     eEC eError = m_pSEitf->eGetLastError();
     

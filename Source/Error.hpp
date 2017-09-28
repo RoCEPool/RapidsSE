@@ -24,6 +24,7 @@ namespace Debugging
     
   /*  9 */ EC_INVALID_CLASS,
   /* 10 */ EC_INVALID_COLUMN,
+  /*    */ EC_INVALID_COLUMNS_UNIQUE_INDEX,
   /* 11 */ EC_INVALID_COMMAND,
   /* 12 */ EC_INVALID_FILE,
   /* 13 */ EC_INVALID_INTERFACE,
@@ -100,6 +101,7 @@ namespace Debugging
     
   /*  9 */ "invalid class"_Stz,
   /* 10 */ "invalid column"_Stz,
+  /*    */ "invalid columns for unique index (include all partitioning columns)"_Stz,
   /* 11 */ "invalid command"_Stz,
   /* 12 */ "invalid file"_Stz,
   /* 13 */ "invalid interface"_Stz,

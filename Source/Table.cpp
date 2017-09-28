@@ -539,13 +539,23 @@ i8 Table::iIndexesLoaded(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set ndexes loaded                                                          */
+/* set indexes loaded                                                         */
 /*----------------------------------------------------------------------------*/
 void Table::vIndexesLoaded(i8 iIndexesLoaded)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   m_ziIndexesLoaded = iIndexesLoaded;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get partition column vector                                                */
+/*----------------------------------------------------------------------------*/
+PtnColVec*  Table::pPtnColVec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  return m_xSlots.pPtnColVec();
 }
 
 /*----------------------------------------------------------------------------*/

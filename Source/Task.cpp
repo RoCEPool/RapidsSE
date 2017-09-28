@@ -652,6 +652,8 @@ void Task::vAddConstants(void)
   /* 10 */ vAddConstant("EC_INVALID_CLASS"_Stz,      EC_INVALID_CLASS);
   /* 11 */ vAddConstant("EC_INVALID_COLUMN"_Stz,     EC_INVALID_COLUMN);
   /* 12 */ vAddConstant("EC_INVALID_COMMAND"_Stz,    EC_INVALID_COMMAND);
+  /*    */ vAddConstant("EC_INVALID_COLUMNS_UNIQUE_INDEX"_Stz,EC_INVALID_COLUMNS_UNIQUE_INDEX);
+  /* 12 */ vAddConstant("EC_INVALID_COMMAND"_Stz,    EC_INVALID_COMMAND);
   /* 13 */ vAddConstant("EC_INVALID_FILE"_Stz,       EC_INVALID_FILE);
   /* 14 */ vAddConstant("EC_INVALID_INTERFACE"_Stz,  EC_INVALID_INTERFACE);
   /* 15 */ vAddConstant("EC_INVALID_PARAMETER"_Stz,  EC_INVALID_PARAMETER);

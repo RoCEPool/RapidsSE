@@ -212,7 +212,7 @@ timer: pIdxSelectTimer
 /*----------------------------------------------------------------------------*/
 : endCreateIndex_req ( "<sIndexNm>" "<sTableNm>" -- <R> )
                                                     // ../tables
-  locals| sTableNm sIndexNm |
+  0 locals| pIndexPtr sTableNm sIndexNm |
 
   tp: endCreateIndex_req
 
@@ -235,6 +235,14 @@ timer: pIdxSelectTimer
 
   // create the column vector of the index
   sIndexNm columnVecIndex
+
+  // validate the unqiue index columns are a subset of the partition keys
+  sIndexNm findInCurrent execute to pIndexPtr
+  pIndexPtr index.isUnique@ if
+    pIndexPtr index.isValidUniqueIndex
+      not if EC_INVALID_COLUMNS_UNIQUE_INDEX <NIP+ERROR> popIndexes popTable
+        exit then
+  then
 
   // now populate the index
   sIndexNm populateIndex

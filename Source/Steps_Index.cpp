@@ -45,6 +45,7 @@ void Task::vAddPrimitives_Index(void)
   vAddPrimitive("index.isPrimaryKey!"_Stz,   &vIndexIsPrimaryKeyStore, false);
   vAddPrimitive("index.isUnique@"_Stz,       &vIndexIsUniqueFetch,   false);
   vAddPrimitive("index.isUnique!"_Stz,       &vIndexIsUniqueStore,   false);
+  vAddPrimitive("index.isValidUniqueIndex"_Stz,&vIndexIsValidUniqueIndex,false);
   vAddPrimitive("index.name@"_Stz,           &vIndexNameFetch,       false);
   vAddPrimitive("index.populate"_Stz,        &vIndexPopulate,        false);
   vAddPrimitive("index.position"_Stz,        &vIndexPosition,        false);
@@ -477,7 +478,7 @@ void Task::vIndexIsUniqueFetch(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* index.isUnque! -- store isUnique into index                                */
+/* index.isUnique! -- store isUnique into index                               */
 /*----------------------------------------------------------------------------*/
 void Task::vIndexIsUniqueStore(MP_Task mpTask)
 {
@@ -496,6 +497,45 @@ void Task::vIndexIsUniqueStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("index.isUnique!"_Stz);
   
   pIndex->vIsUnique(iIsUnique ? true : false);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index.isValidUniqueIndex -- is it a valid unqiue index                     */
+/*----------------------------------------------------------------------------*/
+void Task::vIndexIsValidUniqueIndex(MP_Task mpTask)
+{
+  ENTRY("vIndexIsValidUniqueIndex"_Stz);
+  
+  Object* pPtrIndex = nullptr;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
+    THROW_INVALID_DSTACK("index.isValidUniqueIndex"_Stz);
+  
+  Index* pIndex = _pIndex(pPtrIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  // get the table partition column vector
+  PtnColVec* pPtnColVec = pIndex->pTable()->pPtnColVec();
+  
+  // get the index column vector
+  IdxColVec* pIdxColVec = pIndex->pIdxColVec();
+  
+  bool bValid = true;
+  
+  // a unique index must include all columns in the partitioning keys
+  i8 nPtnColumns = pPtnColVec->nItems();
+  for (i8 i = 0; i < nPtnColumns; i++)
+  {
+    Column* pColumn = pPtnColVec->pGet(i);
+    if ( ! pIdxColVec->bContains(pColumn)) {
+      bValid = false;
+      break;
+    }
+  }
+  
+  mpTask->m_pDataStack->vPushInt(bValid ? 1 : 0);
   
   EXIT();
 }
