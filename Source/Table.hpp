@@ -67,7 +67,7 @@ namespace DBobjects
     i8   iIndexesLoaded(void);
     void vIndexesLoaded(i8 iIndexesLoaded);
     Partition* pPartition(i8 iSlot);
-    void vPopulateIndex(i8 iIndexNo);
+    bool bPopulateIndex(i8 iIndexNo);
     void vRefDec(void);
     void vRefInc(void);
     bool bRefOut(void);

@@ -645,6 +645,7 @@ void Task::vAddConstants(void)
   /*    */ vAddConstant("EC_CLUSTER_PARTITIONS_MISMATCH"_Stz,EC_CLUSTER_PARTITIONS_MISMATCH);
   /*    */ vAddConstant("EC_CLUSTER_SIZE_MISMATCH"_Stz,      EC_CLUSTER_SIZE_MISMATCH);
   /*  5 */ vAddConstant("EC_DUPLICATE_COLUMN"_Stz,   EC_DUPLICATE_COLUMN);
+  /*    */ vAddConstant("EC_DUPLICATE_KEY"_Stz,      EC_DUPLICATE_KEY);
   /*  6 */ vAddConstant("EC_FOLDER_IN_USE"_Stz,      EC_FOLDER_IN_USE);
   /*  7 */ vAddConstant("EC_FOLDER_NOT_EMPTY"_Stz,   EC_FOLDER_NOT_EMPTY);
   /*  8 */ vAddConstant("EC_INDEX_EXISTS"_Stz,       EC_INDEX_EXISTS);
@@ -1780,11 +1781,11 @@ void Task::vStackContents(Stack* pStack, StrVal& sStackContents)
                                     pPtr,
                                     ((Word*)pPtr)->sName().aChar());
         else if (CN_QUEUE == ePtrClass) {
-          Word* pWord = Word::pToWord(pPtr);
+          Queue* pQueue = _pQueue(pPtr);
           sStackContents.vCatSprint("^%s=%p:%s"_Stz,
                                     aCN[ePtrClass],
                                     pPtr,
-                                    pWord->sName().aChar());
+                                    "queue"_Stz);
         }
         else if (CN_TASK == ePtrClass) {
           Task* pTask = _pTask(pPtr);

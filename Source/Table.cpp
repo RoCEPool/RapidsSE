@@ -460,11 +460,11 @@ Partition* Table::pPartition(i8 iSlot)
 /*----------------------------------------------------------------------------*/
 /* populate the index                                                         */
 /*----------------------------------------------------------------------------*/
-void Table::vPopulateIndex(i8 iIndexNo)
+bool Table::bPopulateIndex(i8 iIndexNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  m_xSlots.vPopulateIndex(iIndexNo);
+  return m_xSlots.bPopulateIndex(iIndexNo);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -29,7 +29,7 @@ namespace DBobjects
     
     void       vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn);
     Partition* pPartition(i8 iSlot);
-    void       vPopulateIndex(i8 iIndexNo);
+    bool       bPopulateIndex(i8 iIndexNo);
     PtnColVec* pPtnColVec(void);
     void       vShowColumnVec(void);
     Dic*       pSubDic(void);

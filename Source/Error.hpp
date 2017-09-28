@@ -17,6 +17,7 @@ namespace Debugging
   /*    */ EC_CLUSTER_SIZE_MISMATCH,
   
   /*  5 */ EC_DUPLICATE_COLUMN,
+  /*    */ EC_DUPLICATE_KEY,
   /*  6 */ EC_FOLDER_IN_USE,
   /*  7 */ EC_FOLDER_NOT_EMPTY,
   
@@ -94,6 +95,7 @@ namespace Debugging
   /*    */ "cluster node size mismatch"_Stz,
   
   /*  5 */ "duplicate column"_Stz,
+  /*    */ "duplicate key"_Stz,
   /*  6 */ "folder in use"_Stz,
   /*  7 */ "folder not empty"_Stz,
   

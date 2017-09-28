@@ -158,12 +158,18 @@ Partition* Slots::pPartition(i8 iSlot)
 /*----------------------------------------------------------------------------*/
 /* populate index of all partitions                                           */
 /*----------------------------------------------------------------------------*/
-void Slots::vPopulateIndex(i8 iIndexNo)
+bool Slots::bPopulateIndex(i8 iIndexNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   
-  for (i8 i_Partn = 0; i_Partn < gpGrid->iSlots(); i_Partn++)
-    m_pPartitionVec->pGet(i_Partn)->vPopulateIndex(iIndexNo);
+  for (i8 i_Partn = 0; i_Partn < gpGrid->iSlots(); i_Partn++) {
+    bool bPopulated = m_pPartitionVec->pGet(i_Partn)->bPopulateIndex(iIndexNo);
+    
+    if (! bPopulated)
+      return false;
+  }
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

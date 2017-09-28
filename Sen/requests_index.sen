@@ -246,6 +246,8 @@ timer: pIdxSelectTimer
 
   // now populate the index
   sIndexNm populateIndex
+     not if <NIP+ERROR> popIndexes popTable
+        exit then
                                                     // ../tables/tableNm/indexes
   // pop indexes
   popIndexes                                                // ../tables/tableNm

@@ -147,7 +147,7 @@ void Partition::vPartitionId(i8 iPartitionId)
 /*----------------------------------------------------------------------------*/
 /* insert entries into given index for all rows in this partition             */
 /*----------------------------------------------------------------------------*/
-void Partition::vPopulateIndex(i8 iIndexNo)
+bool Partition::bPopulateIndex(i8 iIndexNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
@@ -163,7 +163,8 @@ void Partition::vPopulateIndex(i8 iIndexNo)
     while (pEntry) {
       
       // insert entry
-      pIndexData->vInsertEntry(pEntry);
+      if ( ! pIndexData->bInsertEntry(pEntry))
+        return false;
       
       // get next entry
       pEntry = pEntryBuffer->pNextEntry(pEntry);
@@ -171,6 +172,8 @@ void Partition::vPopulateIndex(i8 iIndexNo)
    
     pEntryBuffer = pEntryBuffer->pNextBuffer();
   }
+  
+  return true;
 }
 
 

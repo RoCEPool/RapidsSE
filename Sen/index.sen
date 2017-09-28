@@ -737,7 +737,9 @@ tp: loadIndexes
 /*----------------------------------------------------------------------------*/
 /* populate the index with data                                               */
 /*----------------------------------------------------------------------------*/
-: populateIndex allParticipants 1 checkResult ( "<indexNm>" -- true n# true )
+: populateIndex allParticipants 1 returnFinalResult ( "<indexNm>" -- true n# true )
+
+tp: populateIndex
 
   0 locals| pIndex sIndexNm |
 
@@ -746,7 +748,12 @@ tp: loadIndexes
 
   pIndex index.populate
 
-  true <SUCCESS_RESULT>
+  if
+    true <SUCCESS_RESULT>
+  else
+    // return final result returns error code
+    EC_DUPLICATE_KEY <FAILURE_RESULT>
+  then
 ;
 
 /*----------------------------------------------------------------------------*/

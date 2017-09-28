@@ -582,8 +582,11 @@ void Task::vIndexPopulate(MP_Task mpTask)
   
   // not to poulate hidden index
   ASSERT( ! pIndex->bIsHidden())
-  pTable->vPopulateIndex(iIndexNo);
+  
+  bool bPopulated = pTable->bPopulateIndex(iIndexNo);
  
+  mpTask->m_pDataStack->vPushInt(bPopulated ? 1 : 0);
+  
   EXIT();
 }
 

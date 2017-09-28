@@ -968,7 +968,9 @@ bool EntryBuffer::bInsertEntry(i8 iTxId, Stz* pRow, i8 iLength)     //# critical
   else {
     
     // insert entry into current index buffer
-    pEntry = pInsert(xEntWrk);
+    bool bInserted = bInsert(xEntWrk);
+    ASSERT(bInserted);
+    
   }
   //pEntry->vShow(pEntry->nOffsets(), m_pIndex);
   return true;
@@ -1100,7 +1102,7 @@ bool EntryBuffer::bAppendEntry(Entry* pRowEntry, Entry** ppEntry)     //# critic
 /*----------------------------------------------------------------------------*/
 /* insert new entry into this index buffer                                    */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pInsert(EntWrk& xEntWrk)                        //# critical
+bool EntryBuffer::bInsert(EntWrk& xEntWrk)                        //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1119,6 +1121,7 @@ Entry* EntryBuffer::pInsert(EntWrk& xEntWrk)                        //# critical
     vTrace("Warning: Duplicate key in unique index %s "_Stz, m_pIndex->aIndexName());
     xEntWrk.aKey()->vShow(m_pIndex->pIdxColVec());
     vTrace("\n"_Stz);
+    return false;
   }
   
   // create a new entry after the prior entry and set it
@@ -1192,7 +1195,7 @@ Entry* EntryBuffer::pInsert(EntWrk& xEntWrk)                        //# critical
   
   //pNewEntry->vShow(pNewEntry->nOffsets(), m_pIndex);
   
-  return pNewEntry;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1802,7 +1805,8 @@ i8 EntryBuffer::iCopyEntries(EntryBuffer* pFromBuffer, Entry* aFromEntry)  //# c
     EntWrk xEntWrk(pEntry->xId(), xKeyWrk);
     
     // insert entry into this buffer
-    pInsert(xEntWrk);
+    bool bInserted = bInsert(xEntWrk);
+    ASSERT(bInserted);
     
     // if this buffer is a higher level buffer,
     // set this buffer as the higher level buffer

@@ -118,7 +118,7 @@ namespace DBobjects
     void         vIndex(Index* pIndex);
     Index*       pIndex(void);
     bool         bInsertEntry(i8 iTxId, Stz* pRow, i8 iLength);
-    Entry*       pInsert(EntWrk& xEntWrk);
+    bool         bInsert(EntWrk& xEntWrk);
     EntryBuffer* pNewNextBuffer(void);
     Entry*       pNextEntry(Entry* pEntry);
     EntryBuffer* pPositionLevel(KeyWrk& xKeyWrk, eJC eJuxtaCompare, i8 iLevel);

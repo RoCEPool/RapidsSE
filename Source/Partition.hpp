@@ -39,7 +39,7 @@ namespace DBobjects
     
     i8      iPartitionId(void);
     void    vPartitionId(i8 iPartitionId);
-    void    vPopulateIndex(i8 iIndexNo);
+    bool    bPopulateIndex(i8 iIndexNo);
     //Data*   pData(void);
     
     IndexData*  pIndexData(i8 iIndexNo);

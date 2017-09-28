@@ -150,6 +150,46 @@ tp: printResult
   then
 ;
 
+/*----------------------------------------------------------------------------*/
+/* return final grid result                                                   */
+/*----------------------------------------------------------------------------*/
+: returnFinalResult ( s n# t | ec n# f .... nn t/f )
+
+  tp: returnFinalResult
+
+  0 0 0 0 locals| iNodeNumber iErrorCode results seitf |
+
+  // get this tasks seitf
+  task::this task.seitf@ to seitf
+
+  // was the final result true ?
+  true == if ( s n# t | ec n# f .... nn )
+
+     // drop the rest of the result
+     depth dropN ( )
+     true
+  else
+
+    // lets see which node failed
+    0 do  ( s n# t | ec n# f .... )
+
+    false == if ( s n# t | ec n# )
+
+      to iNodeNumber
+      to iErrorCode
+      iErrorCode error.msg
+      iNodeNumber grid.node node.name
+      "error: %v %v" str.format .
+      iErrorCode false
+    else
+      drop drop
+    then
+
+    loop
+
+  then
+;
+
 
 /*----------------------------------------------------------------------------*/
 /* print grid result                                                          */
