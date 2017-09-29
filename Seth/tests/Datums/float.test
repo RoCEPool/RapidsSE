@@ -42,6 +42,12 @@ success
 fetch fltTbl;
 affected: 101
 
+// dump index flt_idx1
+dumpidx fltTbl flt_idx1;
+
+// dump index flt_idx2
+dumpidx fltTbl flt_idx2;
+
 // drop the table
 drop table fltTbl;
 success

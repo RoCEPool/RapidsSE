@@ -534,25 +534,23 @@ eEC RapidsSE_EndCreateIndex(SEitf* pSEitf, Stz* pTable, Stz* pIndex, i8 iTraceLe
     // endmkidx only if we managed to getidx
     if (pSEitf->pCurrentIndex()) {
       eEC eResult = eExecuteRequest(pSEitf, "endmkidx"_Stz, pTable, pIndex);
-      CHECK_RESULT("c"_Stz);
-      CHECK_RESPONSE("d"_Stz);
-      
-      VALIDATE_NOTABLE("e"_Stz);
+      CHECK_RESULT_RETURNTABLE("c"_Stz);
+      CHECK_RESPONSE_RETURNTABLE("d"_Stz);
       
       // return the index
       eResult = eExecuteRequest(pSEitf, "retidx"_Stz);
-      CHECK_RESULT("f"_Stz);
-      CHECK_RESPONSE("g"_Stz);
-      
+      CHECK_RESULT_RETURNTABLE("e"_Stz);
+      CHECK_RESPONSE_RETURNTABLE("f"_Stz);
+    
     } else {
       // rettbl
       eResult = eExecuteRequest(pSEitf, "rettbl"_Stz);
-      CHECK_RESULT("d"_Stz);
-      CHECK_RESPONSE("e"_Stz);
+      CHECK_RESULT("g"_Stz);
+      CHECK_RESPONSE("h"_Stz);
     }
     
     // should not have a table
-    VALIDATE_NOTABLE("h"_Stz);
+    VALIDATE_NOTABLE("i"_Stz);
     
     TRACE_EXIT("ea"_Stz);
     
@@ -598,8 +596,8 @@ eEC RapidsSE_EndCreateTable(SEitf* pSEitf, Stz* pTable, i8 iTraceLevel)
       
       // endmktbl
       eResult = eExecuteRequest(pSEitf, "endmktbl"_Stz, pTable);
-      CHECK_RESULT("d"_Stz);
-      CHECK_RESPONSE("e"_Stz);
+      CHECK_RESULT_RETURNTABLE("d"_Stz);
+      CHECK_RESPONSE_RETURNTABLE("e"_Stz);
       
       // rettbl
       eResult = eExecuteRequest(pSEitf, "rettbl"_Stz);
@@ -725,7 +723,7 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf, i8 iTraceLevel)
       
     // if rowBuffer request was appended to requestQ, then wait for resonse
     if (bResult) {
-      CHECK_RESPONSE("c"_Stz);
+      CHECK_RESPONSE_RETURNTABLE("c"_Stz);
     }
     
     eResult = eExecuteRequest(pSEitf, "rettbl"_Stz);

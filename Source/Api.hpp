@@ -236,6 +236,21 @@ eEC eGetResponse(SEitf* pSEitf);
   }
 
 /*----------------------------------------------------------------------------*/
+/* check result of a request that was sent and return table if failed         */
+/*----------------------------------------------------------------------------*/
+#define CHECK_RESULT_RETURNTABLE(aMarker) \
+  { \
+    if (EC_NONE != eResult) { \
+      TRACE_ERROR(aMarker,eResult); \
+      eEC eReturnTable = eExecuteRequest(pSEitf, "rettbl"_Stz); \
+      if (EC_NONE == eReturnTable) {  \
+        eReturnTable = eGetResponse(pSEitf);  \
+      }  \
+      return eResult; \
+    } \
+  }
+
+/*----------------------------------------------------------------------------*/
 /* check response of a request that was executed                              */
 /*----------------------------------------------------------------------------*/
 #define CHECK_RESPONSE(aMarker) \
@@ -246,6 +261,22 @@ eEC eGetResponse(SEitf* pSEitf);
       return eResult; \
     } \
  }
+
+/*----------------------------------------------------------------------------*/
+/* check response of a request that was executed                              */
+/*----------------------------------------------------------------------------*/
+#define CHECK_RESPONSE_RETURNTABLE(aMarker) \
+  { \
+    eResult = eGetResponse(pSEitf); \
+    if (EC_NONE != eResult) { \
+      TRACE_ERROR(aMarker,eResult); \
+      eEC eReturnTable = eExecuteRequest(pSEitf, "rettbl"_Stz); \
+      if (EC_NONE == eReturnTable) {  \
+      eReturnTable = eGetResponse(pSEitf);  \
+      }  \
+      return eResult; \
+    } \
+  }
 
 /*----------------------------------------------------------------------------*/
 /* change folder to schemas                                                   */

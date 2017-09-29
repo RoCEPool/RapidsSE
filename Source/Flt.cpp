@@ -241,6 +241,31 @@ bool Flt::bExtract(char** aaSrc, Flt* aFloat, Column* pColumn)
       *aChar++ = *(*aaSrc)++;
     }
   }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for exponent
+  
+  if (**aaSrc && ('e' == **aaSrc || 'E' == **aaSrc) ) {
+    *aChar++ = *(*aaSrc)++;
+    
+    // test for -
+    if (**aaSrc && '-' == **aaSrc ) {
+      *aChar++ = *(*aaSrc)++;
+    }
+    
+    // test for +
+    if (**aaSrc && '+' == **aaSrc ) {
+      *aChar++ = *(*aaSrc)++;
+    }
+    
+    // collect exponent digits
+    while (**aaSrc
+           && C_FS != **aaSrc
+           && C_NL != **aaSrc
+           && C_CR != **aaSrc
+           && StrLib::bIsDigit(**aaSrc)) {
+      *aChar++ = *(*aaSrc)++;
+    }
+  }
   
   // terminate
   *aChar++ = '\0';
@@ -281,7 +306,7 @@ void Flt::vSprint(Stz* aDst, Stz* aSrc)
     StrLib::vSprint(aDst,"null%c"_Stz,
                     '\0');
   else
-    StrLib::vSprint(aDst,"%.2f%c"_Stz,
+    StrLib::vSprint(aDst,"%.20f%c"_Stz,
                     aFlt->m_dFlt,
                     '\0');
   //vTrace("%f %s\n"_Stz, aFlt->m_dFlt, aDst);
