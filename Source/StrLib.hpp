@@ -55,6 +55,7 @@ namespace Base
     static bool  bExtractPort(char** ps, u2* pPort);
     static bool  bExtractString(char** ps, char* pString);
     static bool  bExtractU8(char** ps, u8* u);
+    static bool  bExtractU8(char** ps, u8* u, i8 iDigits);
     static bool  bExtractWord(char** ps, char* pWord);
     static bool  bExtractWordString(char** ps, char* pWord);
     

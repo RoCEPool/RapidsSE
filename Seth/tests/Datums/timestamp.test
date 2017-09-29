@@ -44,9 +44,15 @@ success
 fetch tspTbl;
 affected: 101
 
+// dump index tsp_idx1
+dumpidx tspTbl tsp_idx1;
+
+// dump index tsp_idx2
+dumpidx tspTbl tsp_idx2;
+
 // drop the table
-//drop table tspTbl;
-//success
+drop table tspTbl;
+success
 
 // check existence of table
 lstbl;
@@ -56,8 +62,8 @@ rows: 0
 CLEANUP {
   
   // drop the table
-  //drop table tspTbl;
-  //mute
+  drop table tspTbl;
+  mute
   
   bye;
   mute

@@ -704,6 +704,42 @@ bool StrLib::bExtractU8(char** ps, u8* aU8)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bExtractU8: extract an unsigned integer from substr                        */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bExtractU8(char** ps, u8* aU8, i8 iDigits)
+{
+  char *s = *ps;
+  
+  if ( ! *s )
+    return false;
+  
+  bool bOnce = false;
+  if (*s && isdigit(*s))
+    bOnce = true;
+  
+  u8 v = 0;
+  for ( ; *s && iDigits > 0; s++)
+  {
+    char c = *s;
+    
+    // decrement no of digits extracted
+    iDigits--;
+    
+    //    if ( ! isdigit(c) )
+    if ( c < '0' || c > '9' )
+      break;
+    
+    v = (v * 10) + c - '0';
+  }
+  
+  *aU8 = v;
+  
+  *ps = s;
+  
+  return bOnce;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bExtractWord: extract a word from substr                                   */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bExtractWord(char** ps, char* pWord)

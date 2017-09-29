@@ -249,6 +249,8 @@ bool Tsp::bExtract(char** aaSrc, Tsp* aTimestamp, Column* pColumn)
   // refer: http://en.wikipedia.org/wiki/ISO_8601
   
   u8 uField;
+  u8 iDaysPerMonth[12]     = { 31,28,31,30,31,30,31,31,30,31,30,31};
+  u8 iDaysPerMonthLeap[12] = { 31,29,31,30,31,30,31,31,30,31,30,31};
   
   // skip leading whitespace
   while (' ' == **aaSrc)
@@ -273,16 +275,26 @@ bool Tsp::bExtract(char** aaSrc, Tsp* aTimestamp, Column* pColumn)
   // date portion
   
   // extract year
-  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
+  if ( ! StrLib::bExtractU8(aaSrc,&uField, 4) )
     return false;
-  aTimestamp->x.m_uYear = uField;
   
+  bool bLeapYear = true;
+  if (uField % 4 == 0) {
+    if ((uField % 100) == 0 && (uField % 400) != 0) {
+      // Not a leap year
+      bLeapYear = false;
+    }
+  }
+  aTimestamp->x.m_uYear = uField;
+
   // skip - separator
   if ('-' != *(*aaSrc)++)
     return false;
   
   // extract month
-  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
+  if ( ! StrLib::bExtractU8(aaSrc,&uField,2) )
+    return false;
+  if (uField < 1 || uField > 12)
     return false;
   aTimestamp->x.m_uMonth = uField;
   
@@ -290,8 +302,16 @@ bool Tsp::bExtract(char** aaSrc, Tsp* aTimestamp, Column* pColumn)
   if ('-' != *(*aaSrc)++) return false;
   
   // extract day
-  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
+  if ( ! StrLib::bExtractU8(aaSrc,&uField,2) )
     return false;
+  if (bLeapYear) {
+    if (uField > iDaysPerMonthLeap[aTimestamp->x.m_uMonth-1])
+      return false;
+  }
+  else {
+    if (uField > iDaysPerMonth[aTimestamp->x.m_uMonth-1])
+      return false;
+  }
   aTimestamp->x.m_uDay = uField;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -303,7 +323,9 @@ bool Tsp::bExtract(char** aaSrc, Tsp* aTimestamp, Column* pColumn)
   (*aaSrc)++;
   
   // extract hour
-  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
+  if ( ! StrLib::bExtractU8(aaSrc,&uField,2) )
+    return false;
+  if (uField > 23)
     return false;
   aTimestamp->x.m_uHour = uField;
   
@@ -312,7 +334,9 @@ bool Tsp::bExtract(char** aaSrc, Tsp* aTimestamp, Column* pColumn)
     return false;
   
   // extract minute
-  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
+  if ( ! StrLib::bExtractU8(aaSrc,&uField,2) )
+    return false;
+  if (uField > 59)
     return false;
   aTimestamp->x.m_uMinute = uField;
   
@@ -321,14 +345,18 @@ bool Tsp::bExtract(char** aaSrc, Tsp* aTimestamp, Column* pColumn)
     return false;
   
   // extract second
-  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
+  if ( ! StrLib::bExtractU8(aaSrc,&uField,2) )
+    return false;
+  if (uField > 59)
     return false;
   aTimestamp->x.m_uSecond = uField;
   
   // extract fraction (assuming milliseconds)
   if ('.' == **aaSrc) {
     (*aaSrc)++;
-    if ( StrLib::bExtractU8(aaSrc,&uField) )
+    if (uField > 999)
+      return false;
+    if ( StrLib::bExtractU8(aaSrc,&uField,3) )
       aTimestamp->x.m_uMilli = uField;
   }
   
