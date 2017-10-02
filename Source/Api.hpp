@@ -26,6 +26,7 @@ extern "C" eEC RapidsSE_EndCreateIndex(SEitf* pSEitf, Stz* pTable, Stz* pIndexi8
 extern "C" eEC RapidsSE_EndCreateTable(SEitf* pSEitf, Stz* pTable, i8 iTraceLevel);
 extern "C" eEC RapidsSE_EndFetch(SEitf* pSEitf, i8 iTraceLevel);
 extern "C" eEC RapidsSE_EndInsert(SEitf* pSEitf, i8 iTraceLevel);
+extern "C" eEC RapidsSE_ExportData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath, i8 iTraceLevel);
 extern "C" eEC RapidsSE_FetchNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel);
 extern "C" eEC RapidsSE_GetCatalogs(SEitf* pSEitf, void** ppCatalog, i8 iTraceLevel);
 extern "C" eEC RapidsSE_GetColumns(SEitf* pSEitf, Stz* pCatalog,  Stz* pSchema,

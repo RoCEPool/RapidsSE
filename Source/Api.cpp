@@ -805,6 +805,57 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf, i8 iTraceLevel)
 }
 
 /*----------------------------------------------------------------------------*/
+/* export data from table into the file                                       */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_ExportData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath, i8 iTraceLevel)
+{
+  
+  eEC eResult;
+  eEC eResponse;
+  
+  Stz* aApiCall = "RapidsSE_ExportData"_Stz;
+  
+  try {
+    
+    // trace entry
+    TRACE_ENTRY_P2(pTable, pFilePath);
+    
+    // validate the SEitf
+    VALIDATE_SEITF("a"_Stz);
+    
+    // clear the last error
+    CLEAR_LASTERROR();
+    
+    // validate parameters
+    VALIDATE_PARAM("b"_Stz, pTable);
+    VALIDATE_PARAM("c"_Stz, pFilePath);
+    
+    // add a column
+    eResult = eExecuteRequest(pSEitf, "dex"_Stz,
+                              pTable,
+                              pFilePath);
+    
+    CHECK_RESULT("d"_Stz);
+    CHECK_RESPONSE("e"_Stz);
+    
+    // trace exit
+    TRACE_EXIT("ea"_Stz);
+    
+    return EC_NONE;
+    
+  }
+  catch (Error* pError) {
+    RapidsSE::vErrorHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
+    return pError->eErrorCode();
+  }
+  catch (...) {
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
+    return EC_SE_UNKNOWN_ERROR;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* fetch next row                                                             */
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_FetchNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
