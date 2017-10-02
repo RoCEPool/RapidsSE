@@ -298,7 +298,7 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn)
     }
     
     if (!StrLib::bIsDigit(**aaSrc))
-           return false;
+    return false;
     (*aaSrc)++;
   }
   
@@ -318,7 +318,7 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn)
   uResult = bNegative ? - uResult : uResult;
   
   // have we gone beyond the min ?
-  if (bNegative && (uResult < (u8)C_I8_MIN))
+  if (uResult != 0 && bNegative && (uResult < (u8)C_I8_MIN))
     return false;
 
   aDecimal->m_iBcd = uResult;
