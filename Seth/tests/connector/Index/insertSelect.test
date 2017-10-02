@@ -33,16 +33,16 @@ rows:
 
 -- insert data into T1000
 insert into T1000 values(0,'zero',0,0);
-success;
+success
 
 insert into T1000 values(1,'one',1,1);
 success;
 
 insert into T1000 values(2,'two',2,2);
-success;
+success
 
 insert into T1000 values(3,'three',3,3);
-success;
+success
 
 -- create another table with an index
 create table R1000 (

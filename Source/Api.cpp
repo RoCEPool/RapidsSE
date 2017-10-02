@@ -973,6 +973,8 @@ eEC RapidsSE_GetColumns(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema,
         sColumns.vConcat(", "_Stz);
       
       Column* pColumn = pColumnVec->pGet(i);
+      //pColumn->vShow();
+      
       sColumns.vConcat(pColumn->sColumnName());
       sColumns.vConcat(" "_Stz);
       sColumns.vConcat(aCT[pColumn->eColumnType()]);
@@ -995,8 +997,8 @@ eEC RapidsSE_GetColumns(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema,
       
       // check if partition key
       if (pColumn->bIsPartitionKey())
-        sColumns.vConcat(pColumn->bIsNullable() ?
-                         " "_Stz : " PARTITION_KEY "_Stz);
+        sColumns.vConcat(pColumn->bIsPartitionKey() ?
+                         " PARTITION_KEY "_Stz : " "_Stz);
     }
     
     //vTrace("%s\n"_Stz, sColumns.aChar());
@@ -1464,7 +1466,11 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel)
     // format the record into row format
     bool bValid = RowData::bFormatData(pSEitf->m_pCurrentTable->pColumnVec(), pRow, StrLib::iSize(pRow->aChar()),
                                        s, iRowLength);
-    ASSERT(bValid);
+    if (! bValid) {
+      pSEitf->vSetLastError(EC_INVALID_COLUMN);
+      TRACE_ERROR("d"_Stz, pSEitf->m_eErrorCode);
+      return pSEitf->m_eErrorCode;
+    }
  
     // get the partition this row hashes to
     i8 iRowPartition = pSEitf->pCurrentTable()->iRowPartition(s);
@@ -1476,14 +1482,14 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel)
     if (pSEitf->m_iPartition == iRowPartition) {
       
       //RowData::vShow(s, pSEitf->m_pCurrentTable->pColumnVec());
-      TRACE_INSERT("d"_Stz, pRow);
+      TRACE_INSERT("e"_Stz, pRow);
       
       // insert the row in this partition
       bool bResult = pSEitf->bInsertRow(s, iRowLength);
      
       if (!bResult) {
         pSEitf->vSetLastError(pSEitf->m_eErrorCode);
-        TRACE_ERROR("e"_Stz, pSEitf->m_eErrorCode);
+        TRACE_ERROR("f"_Stz, pSEitf->m_eErrorCode);
         return pSEitf->m_eErrorCode;
       }
      

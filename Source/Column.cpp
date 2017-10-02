@@ -393,14 +393,15 @@ void Column::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
-  vTrace("Column %02lld %s type %s length %lld scale %lld datum %s %s\n"_Stz,
+  vTrace("Column %02lld %s type %s length %lld scale %lld datum %s %s %s\n"_Stz,
          m_iColumnNo,
          m_sColumnName.aStr(),
          aCT[m_eColumnType],
          m_iColumnLength,
          m_iColumnScale,
          aDM[m_eDatumType],
-         m_bIsNullable ? "nullable"_Stz : "not null"_Stz);
+         m_bIsNullable ? "nullable"_Stz : "not null"_Stz,
+         m_bIsPartitionKey? "partitionKey"_Stz : ""_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
