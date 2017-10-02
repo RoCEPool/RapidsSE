@@ -459,6 +459,58 @@ eEC RapidsSE_CreateTable(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable
 }
 
 /*----------------------------------------------------------------------------*/
+/* drop index                                                                 */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_DropIndex(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable,
+                       Stz* pIndex, i8 iTraceLevel)
+{
+  eEC eResult;
+  eEC eResponse;
+  
+  Stz* aApiCall = "RapidsSE_DropIndex"_Stz;
+  
+  try {
+    
+    // trace entry
+    TRACE_ENTRY_P3(pCatalog, pSchema, pTable);
+    
+    // validate the SEitf
+    VALIDATE_SEITF("a"_Stz);
+    
+    // clear the last error
+    CLEAR_LASTERROR();
+    
+    // validate parameters
+    VALIDATE_PARAM("b"_Stz, pCatalog);
+    VALIDATE_PARAM("c"_Stz, pSchema);
+    VALIDATE_PARAM("d"_Stz, pTable);
+    VALIDATE_PARAM("d"_Stz, pIndex);
+    
+    // change folder to tables
+    CF_TABLES("e"_Stz);
+    
+    // drop the index
+    eResult = eExecuteRequest(pSEitf, "rmidx"_Stz, pTable, (pIndex));
+    CHECK_RESULT("f"_Stz);
+    CHECK_RESPONSE("g"_Stz);
+    
+    // trace exit
+    TRACE_EXIT("ea"_Stz);
+    
+    return EC_NONE;
+  }
+  catch (Error* pError) {
+    RapidsSE::vErrorHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
+    return pError->eErrorCode();
+  }
+  catch (...) {
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
+    return EC_SE_UNKNOWN_ERROR;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* drop table                                                                 */
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_DropTable(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable, i8 iTraceLevel)

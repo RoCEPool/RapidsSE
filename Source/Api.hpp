@@ -20,6 +20,7 @@ extern "C" eEC RapidsSE_BeginInsert(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, 
 extern "C" eEC RapidsSE_CheckLibraryVersion(Stz* pVersion, i8 iTraceLevel);
 extern "C" eEC RapidsSE_CreateIndex(SEitf* seitf, Stz* catalog, Stz* pSchema, Stz* table, Stz* pIndex, bool bIsUnique, i8 iTraceLevel);
 extern "C" eEC RapidsSE_CreateTable(SEitf* seitf, Stz* catalog, Stz* pSchema, Stz* table, i8 iTraceLevel);
+extern "C" eEC RapidsSE_DropIndex(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable, Stz* pIndex, i8 iTraceLevel);
 extern "C" eEC RapidsSE_DropTable(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable, i8 iTraceLevel);
 extern "C" eEC RapidsSE_EndCreateIndex(SEitf* pSEitf, Stz* pTable, Stz* pIndexi8, i8 iTraceLevel);
 extern "C" eEC RapidsSE_EndCreateTable(SEitf* pSEitf, Stz* pTable, i8 iTraceLevel);
