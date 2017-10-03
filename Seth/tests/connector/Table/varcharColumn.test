@@ -24,6 +24,11 @@ select data_type, is_partition_key, is_nullable, precision from rapids.system.co
 rows:
   ('VARCHAR', false, true, 64000)
 
+// check partition key is first column
+select column_name from rapids.system.columns where table_name = 'T1' and is_partition_key = true;
+rows:
+  ('ID')
+
 // insert rows in the table
 insert into T1 values (10, 'abcdefghijklmnopqrstuvwxyz');
 success
