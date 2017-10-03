@@ -19,10 +19,10 @@ select * from rapids.system.indexes;
 rows: 0
 
 // check metadata
-select data_type, is_partition_key, is_nullable, precision from rapids.system.columns where
+select data_type, is_partition_key, is_nullable, precision, scale from rapids.system.columns where
   table_name = 'T1' and column_name = 'STATUS';
 rows:
-  ('BOOLEAN', false, true, 0)
+  ('BOOLEAN', false, true, 0, 0)
 
 // check partition key is first column
 select column_name from rapids.system.columns where table_name = 'T1' and is_partition_key = true;
