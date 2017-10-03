@@ -4,8 +4,9 @@
 
 -- refresh metadata
 refresh;
-success;
+success
 
+Loop 10 {
 -- create a table with an index
 create table T1 (
 idxkey  integer,
@@ -19,7 +20,6 @@ rows: 0
 
 select * from rapids.system.indexes;
 rows: 0
-
 
 
 -- create a table with an index
@@ -77,8 +77,6 @@ rows:
 drop table T1;
 
 
-
-
 -- create a table with an index
 create table T1 (
 idxkey  integer,
@@ -95,8 +93,6 @@ rows: 0
 -- check existence of index
 select * from rapids.system.indexes;
 rows: 0
-
-
 
 
 -- create a table with an index
@@ -121,10 +117,48 @@ rows:
 
 -- drop table
 drop table T1;
+success
 
+-- create a table with an index
+create table T1 (
+T1000_key   INTEGER ,
+T1000_name  VARCHAR(32),
+T1000_100   INTEGER,
+T1000_10    INTEGER,
+unique index index1 on T1000_key,
+index index2 on T1000_100,
+index index3 on T1000_name
+);
+success
 
+ESCAPE connector se 'Load T1 /Users/alkayamarti/rapidsSE/rapidsse/Seth/tests/Connector/index/T1000.csv' WITH node='NODE1';
+success
 
+-- check existence of indexes
+select * from rapids.system.indexes;
+rows: 3
 
+-- drop index
+drop index index1 on T1;
+success
+
+-- drop index
+drop index index2 on T1;
+success
+
+-- drop index
+drop index index3 on T1;
+success
+
+-- check non-existence of index
+select * from rapids.system.indexes;
+rows: 0
+
+// drop table
+drop table T1;
+success
+
+}
 
 CLEANUP {
 -- Commands in the cleanup section always run, and do so at the end
@@ -135,4 +169,3 @@ CLEANUP {
 drop table T1;
 mute
 }
-
