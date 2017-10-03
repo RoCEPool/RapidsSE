@@ -12,7 +12,6 @@ extern bool  gbMetadata;
 extern Grid* gpGrid;
 extern Arguments gxArguments;
 
-
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -298,6 +297,8 @@ void Table::vAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
     // load from hidden index into index being built
     vNewIndexLoad(iPartition,pNewIndexData,pHiddenIndexData,nHiddenEntries);
   }
+  
+  //vTrace("MARKING %lld %lld\n"_Stz, gpGrid->m_iThisNode, *m_ziIndexesLoaded);
   
   // mark indexes being loaded
   --m_ziIndexesLoaded;
@@ -1321,12 +1322,15 @@ void Table::vBuildNewIndex(char* aSortArray, i8 nElements, i8 nElmSize,
   KeyWrk xKeyWrk;
   EntryVec xPriorVec;
   IdxColVec* pIdxColVec = pNewIndexData->pIndex()->pIdxColVec();
+  bool bUniqueIndex = pNewIndexData->pIndex()->bIsUnique();
   
   i8 nDatums = (nElmSize - sizeof(Id)) / sizeof(w8);
   ASSERT(pIdxColVec->nItems() == nDatums);
   
   // step thru each element in the sort array
   char* aSortElm = aSortArray;
+  Key* aPrevKey = nullptr;
+  
   for (i8 i_Elm = 0; i_Elm < nElements; i_Elm++) {
     
     // get sort key
@@ -1347,6 +1351,16 @@ void Table::vBuildNewIndex(char* aSortArray, i8 nElements, i8 nElmSize,
     //KeyWrk xKeyWrk((Key*)aSortKey,pIdxColVec);
     vBuildKeyWrk(aSortKey,pIdxColVec,xKeyWrk);
     
+    if (bUniqueIndex) {
+      if (aPrevKey) {
+        
+        if (aPrevKey->bEqualTo(aSortKey, pIdxColVec)) {
+          vTrace("Found duplicate\n"_Stz);
+          
+        }
+      }
+      aPrevKey = aSortKey;
+    }
     // append an entry into index structure
     pNewIndexData->vAppendEntry(xKeyWrk,xId,xPriorVec);
   }
