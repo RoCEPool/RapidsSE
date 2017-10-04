@@ -113,9 +113,6 @@ success
 insert into T1 values ('abc',-9223372036854775807);
 success
 
-create table t(col0 integer, col1 integer, primary key (col1));
-failure
-
 // null
 //insert into T1 (name) values ('abc');
 //failure
@@ -136,7 +133,6 @@ rows:
 ('abc',0)
 ('abc',10)
 ('abc',+9223372036854775807)
-
 
 // drop table
 drop table T1;

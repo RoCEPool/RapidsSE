@@ -39,25 +39,9 @@ success
 insert into T1 values (30,16);
 success
 
-//max
-insert into T1 values (40,+9223372036854775807);
-success
-
-// min
-insert into T1 values (50,-9223372036854775807);
-success
-
 // null
-insert into T1 (id) values (60);
+insert into T1 (id) values (40);
 success
-
-// insert larger than max integer
-insert into T1 values (60,9223372036854775808.34);
-failure
-
-// insert smaller than min integer
-insert into T1 values (60,-9223372036854775808.0);
-failure
 
 // select from T1
 select * from T1;
@@ -65,19 +49,17 @@ rows:
   (10,13)
   (20,13)
   (30,16)
-  (40,9223372036854775807)
-  (50,-9223372036854775807)
-  (60,null)
+  (40,null)
 
 // drop table
 drop table T1;
 success
-/*
+
 // create a table , no size in varchar
 create table T1 (
-  name    varchar,
-  id      integer(10) NOT NULL
-) partition by (id);
+  id      integer,
+  value   decimal(10,2) NOT NULL
+) partition by (value);
 success
 
 // table should have gotten created
@@ -90,27 +72,19 @@ select * from rapids.system.indexes;
   rows: 0
 
 // check metadata
-select data_type, is_partition_key, is_nullable, precision from rapids.system.columns where
-table_name = 'T1'  and column_name = 'ID';
+select data_type, is_partition_key, is_nullable, precision, scale from rapids.system.columns where
+table_name = 'T1'  and column_name = 'VALUE';
 rows:
-  ('INTEGER', true, false, 19)
+  ('DECIMAL', true, false, 10, 2)
 
 // insert rows in the table
-insert into T1 values ('abc',10);
+insert into T1 values (10, 12.788);
 success
 
-insert into T1 values ('abc',-20);
+insert into T1 values (20, 13.02);
 success
 
-insert into T1 values ('abc',0);
-success
-
-//max
-insert into T1 values ('abc',+9223372036854775807);
-success
-
-// min
-insert into T1 values ('abc',-9223372036854775807);
+insert into T1 values (30,16.4);
 success
 
 // null
@@ -118,28 +92,27 @@ success
 //failure
 
 // insert larger than max integer
-insert into T1 values ('abc',9223372036854775808);
-failure
+//insert into T1 values (60,9223372036854775808.34);
+//failure
 
 // insert smaller than min integer
-insert into T1 values ('abc',-9223372036854775808);
-failure
+//insert into T1 values (60,-9223372036854775808.0);
+//failure
 
 // select from T1
 select * from T1;
 rows:
-//('abc',null)
-('abc',-9223372036854775807)
-('abc',-20)
-('abc',0)
-('abc',10)
-('abc',+9223372036854775807)
-
+(10,12.79)
+(20,13.02)
+(30,16.40)
+//(40,9223372036854775807)
+//(50,-9223372036854775807)
+//(60,null)
 
 // drop table
 drop table T1;
 success
-*/
+
 CLEANUP {
   drop table T1;
   mute
