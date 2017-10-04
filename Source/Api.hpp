@@ -244,10 +244,12 @@ eEC eGetResponse(SEitf* pSEitf);
   { \
     if (EC_NONE != eResult) { \
       TRACE_ERROR(aMarker,eResult); \
+      CLEAR_LASTERROR();  \
       eEC eReturnTable = eExecuteRequest(pSEitf, "rettbl"_Stz); \
       if (EC_NONE == eReturnTable) {  \
         eReturnTable = eGetResponse(pSEitf);  \
       }  \
+      SET_LASTERROR(eResult); \
       return eResult; \
     } \
   }
@@ -272,10 +274,12 @@ eEC eGetResponse(SEitf* pSEitf);
     eResult = eGetResponse(pSEitf); \
     if (EC_NONE != eResult) { \
       TRACE_ERROR(aMarker,eResult); \
+      CLEAR_LASTERROR();  \
       eEC eReturnTable = eExecuteRequest(pSEitf, "rettbl"_Stz); \
       if (EC_NONE == eReturnTable) {  \
-      eReturnTable = eGetResponse(pSEitf);  \
+        eReturnTable = eGetResponse(pSEitf);  \
       }  \
+      SET_LASTERROR(eResult);  \
       return eResult; \
     } \
   }
@@ -320,6 +324,11 @@ eEC eGetResponse(SEitf* pSEitf);
 /* clear last error                                                           */
 /*----------------------------------------------------------------------------*/
 #define CLEAR_LASTERROR()  pSEitf->vClearLastError();
+
+/*----------------------------------------------------------------------------*/
+/* clear last error                                                           */
+/*----------------------------------------------------------------------------*/
+#define SET_LASTERROR(eErrorCode)  pSEitf->vSetLastError(eErrorCode);
 
 /*----------------------------------------------------------------------------*/
 /* verify buffer pool boundaries                                              */
