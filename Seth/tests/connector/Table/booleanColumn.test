@@ -49,7 +49,7 @@ insert into T1 values (60,0);
 success
 
 // null
-insert into T1 (status) values (70);
+insert into T1 (id) values (70);
 success
 
 // select from T1
@@ -61,7 +61,7 @@ rows:
   (40,false)
   (50,false)
   (60,false)
-  (null,true)
+  (70,null)
 
 // drop table
 drop table T1;
@@ -84,10 +84,10 @@ select * from rapids.system.indexes;
   rows: 0
 
 // check metadata
-select data_type, is_partition_key, is_nullable, precision from rapids.system.columns where
+select data_type, is_partition_key, is_nullable, precision, scale from rapids.system.columns where
 table_name = 'T1'  and column_name = 'STATUS';
 rows:
-  ('BOOLEAN', true, false, 0)
+  ('BOOLEAN', true, false, 0, 0)
 
 // insert rows in the table
 insert into T1 values (10,true);
@@ -109,15 +109,14 @@ insert into T1 values (60,0);
 success
 
 // null
-//insert into T1 (id) values (70);
-//failure
+insert into T1 (id) values (70);
 
 // insert invalid boolean values
-insert into T1 values (120,TR);
+insert into T1 values (120,'TR');
 failure
 
 // insert invalid boolean values
-insert into T1 values (110,XY);
+insert into T1 values (110,'XY');
 failure
 
 // select from T1

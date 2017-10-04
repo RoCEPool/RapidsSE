@@ -56,8 +56,8 @@ insert into T1 values (60,9223372036854775808.34);
 failure
 
 // insert smaller than min integer
-//insert into T1 values (60,-9223372036854775808.0);
-//failure
+insert into T1 values (60,-9223372036854775808.0);
+failure
 
 // select from T1
 select * from T1;

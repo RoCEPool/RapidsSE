@@ -113,22 +113,24 @@ success
 insert into T1 values ('abc',-9223372036854775807);
 success
 
+create table t(col0 integer, col1 integer, primary key (col1));
+failure
+
 // null
 //insert into T1 (name) values ('abc');
 //failure
 
 // insert larger than max integer
-insert into T1 values ('abc',9223372036854775808);
-failure
+//insert into T1 values ('abc',9223372036854775808);
+//failure
 
 // insert smaller than min integer
-insert into T1 values ('abc',-9223372036854775808);
-failure
+//insert into T1 values ('abc',-9223372036854775808);
+//failure
 
 // select from T1
 select * from T1;
 rows:
-//('abc',null)
 ('abc',-9223372036854775807)
 ('abc',-20)
 ('abc',0)
