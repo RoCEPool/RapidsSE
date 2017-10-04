@@ -1570,7 +1570,7 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel)
     bool bValid = RowData::bFormatData(pSEitf->m_pCurrentTable->pColumnVec(), pRow, StrLib::iSize(pRow->aChar()),
                                        s, iRowLength);
     if (! bValid) {
-      pSEitf->vSetLastError(EC_INVALID_COLUMN);
+      pSEitf->vSetLastError(EC_INVALID_VALUE);
       TRACE_ERROR("d"_Stz, pSEitf->m_eErrorCode);
       return pSEitf->m_eErrorCode;
     }

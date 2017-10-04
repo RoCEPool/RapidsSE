@@ -660,6 +660,8 @@ void Task::vAddConstants(void)
   /* 16 */ vAddConstant("EC_INVALID_PARAMETERS"_Stz, EC_INVALID_PARAMETERS);
   /* 17 */ vAddConstant("EC_INVALID_INSTANCE"_Stz,   EC_INVALID_INSTANCE);
   /* 18 */ vAddConstant("EC_INVALID_SYNTAX"_Stz,     EC_INVALID_SYNTAX);
+  /*    */ vAddConstant("EC_INVALID_VALUE"_Stz,      EC_INVALID_VALUE);
+                        
   /* 19 */ vAddConstant("EC_LOW_BUFFERS"_Stz,        EC_LOW_BUFFERS);
   /*    */ vAddConstant("EC_MAX_INDEXES"_Stz,        EC_MAX_INDEXES);
   /* 20 */ vAddConstant("EC_NO_COLUMNS_DIC"_Stz,     EC_NO_COLUMNS_DIC);

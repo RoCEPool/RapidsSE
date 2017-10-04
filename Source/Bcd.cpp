@@ -331,7 +331,7 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn)
 /*----------------------------------------------------------------------------*/
 void Bcd::vSprint(Stz* aDst, Stz* aSrc, DBobjects::Column* pColumn)
 {
- 
+  bool bNegative = false;
   Bcd* aBcd = (Bcd*)aSrc;
   
   if (aBcd->bIsNull())
@@ -346,16 +346,20 @@ void Bcd::vSprint(Stz* aDst, Stz* aSrc, DBobjects::Column* pColumn)
     i8 iBcd_Whole = iBcd / iDigits;
     i8 iBcd_Fraction = iBcd % iDigits;
     
-    if (iBcd_Fraction < 0)
+    if (iBcd_Fraction < 0 || iBcd_Whole < 0) {
+      bNegative = true;
       iBcd_Fraction = iBcd_Fraction * -1;
+      iBcd_Whole = iBcd_Whole * -1;
+    }
     
     if (pColumn->iColumnScale())
-      StrLib::vSprint(aDst,"%lld.%.*lld%c"_Stz,
+      StrLib::vSprint(aDst,"%s%lld.%.*lld%c"_Stz,
+                      bNegative ? "-" : "",
                       iBcd_Whole,
                       pColumn->iColumnScale(),
                       iBcd_Fraction,'\0');
     else
-      StrLib::vSprint(aDst,"%lld%c"_Stz, iBcd_Whole, '\0');
+      StrLib::vSprint(aDst,"%s%lld%c"_Stz, bNegative ? "-" : "",iBcd_Whole, '\0');
   }
 }
 

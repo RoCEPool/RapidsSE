@@ -111,7 +111,7 @@ void DtmLib::vHash(eDM eDatum, i8& iHash, Stz* aScr, DBobjects::Column* pColumn)
     }
       
     case DM_BCD: {
-      Bcd xBcd;
+      Bcd xBcd = *((Bcd*)aScr);;
       iHash += XXH32(&xBcd,sizeof(Bcd),0);
       break;
     }
