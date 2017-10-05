@@ -240,38 +240,6 @@ void SePrompt::vLoop(void)
       continue;
     }
     
-    /*
-    if (bProcessResult) {
-      if ( ! m_bExpect ) {
-        if ( !m_sResponse.bEqual("<ok>"_Stz) ) {
-          if (gbMetadata) {
-            vTrace("metadata: %s\n"_Stz, m_pSEitf->m_sMetadata.aStr());
-            vTrace("%s"_Stz,m_sResponse.aChar());
-            vTrace("success: %lld rows affected\n"_Stz, m_pSEitf->m_iRowsProcessed);
-            
-            // reset counters
-            m_pSEitf->m_iRowsProcessed = 0;
-            m_pSEitf->m_sMetadata      = ""_Stz;
-          }
-          else {
-            vTrace("%s\n"_Stz,m_sResponse.aChar());
-          }
-        }
-        else {
-          if (gbMetadata) {
-            vTrace("success: %lld rows affected\n"_Stz, m_pSEitf->m_iRowsProcessed);
-            m_pSEitf->m_iRowsProcessed = 0;
-          }
-        }
-      }
-    }
-    else {
-      if (m_pSEitf->eGetLastError() != EC_NONE)
-        if ( ! m_bExpect )
-         vTrace("error: %s\n"_Stz,m_pSEitf->pGetLastError());
-    }
-    */
-    
     if (bProcessResult) {
       if (gbMetadata) {
         vMetaFormat();
@@ -706,6 +674,7 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
   
   if ( bCmdIs("fetch"_Stz)) {
     vIterateBuffers();
+    return false;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2395,7 +2364,10 @@ void SePrompt::vIterateBuffers(void)
       vTrace("row: (%s)\n"_Stz, m_pSEitf->m_sResponse.aChar());
     }
   }
-  if (!gbMetadata) {
+  if (gbMetadata) {
+    vTrace("success: %lld rows affected\n"_Stz, m_pSEitf->m_iRowsProcessed);
+  }
+  else {
     vTrace("rows selected %lld\n"_Stz, m_pSEitf->m_iRowsProcessed);
   }
   

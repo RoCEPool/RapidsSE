@@ -8,7 +8,7 @@ S_SUPPKEY       INTEGER NOT NULL,
 S_NAME          VARCHAR(25) NOT NULL,
 S_ADDRESS       VARCHAR(40) NOT NULL,
 S_NATIONKEY     INTEGER NOT NULL,
-S_PHONE         CHAR(15) NOT NULL,
+S_PHONE         VARCHAR(15) NOT NULL,
 S_ACCTBAL       DECIMAL(15,2) NOT NULL,
 S_COMMENT       VARCHAR(101) NOT NULL
 );
@@ -18,7 +18,7 @@ success
 ld supplier "/tpch/supplier.tbl";
 success
 
-LOOP 2  {
+//LOOP 2  {
 
 // create an index
 create index idx on supplier (S_SUPPKEY);
@@ -36,13 +36,13 @@ rows:
 
 // keysel
 fetch supplier "S_SUPPKEY 10 =";
-affected: 1
+rows: (0, 10,"Supplier#000000010","Saygah3gYWMp72i PY",24,"34-852-489-8585",3891.91,"ing waters. regular requests ar")
 
 // drop the index keyIdx;
 drop index supplier.idx;
 success
 
-} // end of loop
+//} // end of loop
 
 // now drop the table
 drop table supplier;
