@@ -21,9 +21,13 @@ ld dataTable "../Seth/tests/partitionKey/data.csv";
 success
 
 // select rows from the table
+fetch dataTable;
+rows:
+1000
 
 // drop the table
-
+drop table dataTable;
+success
 
 CLEANUP {
 

@@ -198,9 +198,14 @@ namespace Interface
     bool bPrint(TokenVec& xTokenVec, i8 iReqNo);
     
     //--------------------------------------------------------------------------
+    void vEndFetch(void);
+    bool bNextRow(void);
+    
+    //--------------------------------------------------------------------------
     bool bAppendRequest(StrVal& sRequest);
     
     eEC  eGetResponse(void);
+    
     bool bPopResponse(eEC& eResult, StrVal& sResponse);
     
     //--------------------------------------------------------------------------

@@ -704,6 +704,10 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
   if (! bPostProcess)
     return true;
   
+  if ( bCmdIs("fetch"_Stz)) {
+    vIterateBuffers();
+  }
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // the following never return
   
@@ -2359,6 +2363,46 @@ bool SePrompt::bIndexReturnTable(Stz* aTableName, Stz* aIndexName)
     return false;
   }
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* iterate entry buffers frim the seitf queue                                 */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vIterateBuffers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  m_pSEitf->m_iRowsProcessed = 0;
+  
+  if (gbMetadata) {
+    vTrace("metadata: %s\n"_Stz, m_pSEitf->m_sMetadata.aStr());
+  }
+  
+  while (m_pSEitf->bNextRow()) {
+    
+    m_pSEitf->m_iRowsProcessed++;
+    
+    // get the partition from the entry buffer
+    i8 iPartition = m_pSEitf->m_pEntryBuffer->nPartitionNo();
+    
+    Entry* pEntry = m_pSEitf->m_pEntry;
+    RowData::vRowAsString(m_pSEitf->m_sResponse, (Stz*)pEntry->aRow(),
+                          m_pSEitf->m_pCurrentTable->pColumnVec());
+    if (gbMetadata) {
+      vTrace("row: (%lld, %s)\n"_Stz, iPartition, m_pSEitf->m_sResponse.aChar());
+    }
+    else {
+      vTrace("row: (%s)\n"_Stz, m_pSEitf->m_sResponse.aChar());
+    }
+  }
+  if (!gbMetadata) {
+    vTrace("rows selected %lld\n"_Stz, m_pSEitf->m_iRowsProcessed);
+  }
+  
+  m_pSEitf->vEndFetch();
+  
+  bReturnTable();
+  
 }
 
 /*----------------------------------------------------------------------------*/

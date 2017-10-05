@@ -75,7 +75,8 @@ private:
   bool bConnectCluster(void);
   
   bool bIndexReturnTable(Stz* aTableName, Stz* aIndexName);
-
+  void vIterateBuffers(void);
+  
   bool bObject(void);
   bool bPartitionTable(void);
   bool bReturnTable(void);

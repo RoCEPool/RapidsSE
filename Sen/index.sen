@@ -989,9 +989,9 @@ tp: selectIndex
   // pop indexes
   popIndexes
 
-  args.metadata if
-    metadata@ "metadata: %v\n" str.format .put
-  then
+  //args.metadata if
+  //  metadata@ "metadata: %v\n" str.format .put
+  //then
 
   // create the buffer queue in the seitf
   //"selectTask.queue" queue::new pSeitf seitf.bufferQueue!

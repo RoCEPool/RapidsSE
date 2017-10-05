@@ -538,7 +538,7 @@ timer: pIdxSelectTimer
   do
     pBufferQueue false bGroupBy I pPlanner spawnFetch
   loop
-
+/*
   // fetch rows from the buffers in the buffer queue
   bGroupBy if
     groupByQueueBufferRows
@@ -564,6 +564,9 @@ timer: pIdxSelectTimer
     "select time " .put
     pIdxSelectTimer timer.millisecs .put "ms" .put .\n
   then
+
+*/
+  popTable assertInTables
 
   <OK>
 ;
