@@ -2,7 +2,7 @@
 // create table with TIMESTAMP column tests
 //----------------------------------------------------------------------------//
 
-// create a table , no size in varchar
+// create a table
 create table T1 (
   id    integer,
   tsp   timestamp
@@ -19,10 +19,10 @@ select * from rapids.system.indexes;
 rows: 0
 
 // check metadata
-select data_type, is_partition_key, is_nullable, precision from rapids.system.columns where
-  table_name = 'T1' and column_name = 'TSP';
-rows:
-  ('TIMESTAMP', false, true, 0)
+//select data_type, is_partition_key, is_nullable, precision, scale from rapids.system.columns where
+//  table_name = 'T1' and column_name = 'TSP';
+//rows:
+//  ('TIMESTAMP', false, true, 0, 0)
 
 // check partition key is first column
 select column_name from rapids.system.columns where table_name = 'T1' and is_partition_key = true;
@@ -43,11 +43,10 @@ success
 insert into T1 (id) values (40);
 success
 
-
 // select from T1
 select * from T1;
 rows:
-  //(40,null)
+  (40,null)
   (10, '1900-10-08 10:30:30.555')
   (20, '1901-10-08 10:30:30.0')
   (30, '1908-12-31 10:59:59.999')
@@ -55,13 +54,13 @@ rows:
 // drop table
 drop table T1;
 success
-/*
-// create a table , no size in varchar
+
+//------------------------------------------------------------------------------
+// create a table
 create table T1 (
   id    integer,
-  tsp   timestamp not null,
-  partition by (tsp)
-);
+  tsp   timestamp NOT NULL
+) partition by (tsp);
 success
 
 // table should have gotten created
@@ -74,65 +73,45 @@ select * from rapids.system.indexes;
 rows: 0
 
 // check metadata
-select data_type, is_partition_key, is_nullable, precision from rapids.system.columns where
-table_name = 'T1' and column_name = 'TSP';
-rows:
-('TIMESTAMP', true, true, 0)
+//select data_type, is_partition_key, is_nullable, precision, scale from rapids.system.columns where
+//table_name = 'T1' and column_name = 'TSP';
+//rows:
+//('TIMESTAMP', true, false, 0, 0)
 
 // check partition key is first column
 select column_name from rapids.system.columns where table_name = 'T1' and is_partition_key = true;
 rows:
- ('TSP')
+('TSP')
+
+insert into T1 values (10, TIMESTAMP '1907-03-31 10:58:06.999');
+success
 
 // insert rows in the table
-insert into T1 values (10, '1900-10-08 10:30:30.555');
+insert into T1 values (20, TIMESTAMP '1900-10-31 10:30:30.000');
 success
 
-insert into T1 values (20, '1901-10-08 10:30:30');
+insert into T1 values (30, TIMESTAMP '1908-02-29 00:00:00');
 success
 
-//insert into T1 values (30, '1908-12-31 10:59:59.999');
-//success
+insert into T1 values (40, TIMESTAMP '2018-12-31 10:59:59.230');
+success
 
 // null
-//insert into T1 (name) values (40);
-//success
-
-// select from T1
-select * from T1;
-rows:
-(40,null)
-(10, '1900-10-08 10:30:30.555')
-(20, '1901-10-08 10:30:30')
-(30, '1908-12-31 10:59:59.999')
-
-// null
-//insert into T1 (name) values ('abc');
+//insert into T1 (id) values (40);
 //failure
 
-// insert larger than max integer
-insert into T1 values ('abc',9223372036854775808);
-failure
-
-// insert smaller than min integer
-insert into T1 values ('abc',-9223372036854775808);
-failure
-
 // select from T1
 select * from T1;
 rows:
-//('abc',null)
-('abc',-9223372036854775807)
-('abc',-20)
-('abc',0)
-('abc',10)
-('abc',+9223372036854775807)
-
+(10, '1907-03-31 10:58:06.999')
+(20, '1900-10-31 10:30:30.0')
+(30, '1908-02-29 00:00:00.0')
+(40, '2018-12-31 10:59:59.023')
 
 // drop table
 drop table T1;
 success
-*/
+
 CLEANUP {
   drop table T1;
   mute

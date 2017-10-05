@@ -336,6 +336,7 @@ bool Tsp::bExtract(char** aaSrc, Tsp* aTimestamp, Column* pColumn)
   // extract minute
   if ( ! StrLib::bExtractU8(aaSrc,&uField,2) )
     return false;
+  
   if (uField > 59)
     return false;
   aTimestamp->x.m_uMinute = uField;
@@ -354,10 +355,12 @@ bool Tsp::bExtract(char** aaSrc, Tsp* aTimestamp, Column* pColumn)
   // extract fraction (assuming milliseconds)
   if ('.' == **aaSrc) {
     (*aaSrc)++;
-    if (uField > 999)
-      return false;
+    
     if ( StrLib::bExtractU8(aaSrc,&uField,3) )
       aTimestamp->x.m_uMilli = uField;
+    
+    if (uField > 999)
+      return false;
   }
   
   // skip Z separator
