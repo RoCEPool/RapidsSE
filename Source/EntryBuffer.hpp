@@ -15,7 +15,7 @@ namespace DBobjects
   /* 3 */ BD_ENUMS
   };
   
-  static Stz* aRD[]
+  static Stz* aBD[]
   {
   /* 0 */ "NONE"_Stz,
   /* 1 */ "TEMPORARY"_Stz,
@@ -31,7 +31,7 @@ namespace DBobjects
   {
   protected:
   
-    BitArray m_xBitArray;
+    //BitArray m_xBitArray;
   
     eBD   m_eDurability; // buffer durability
     bool  m_bIsLast;
@@ -61,8 +61,6 @@ namespace DBobjects
     ~EntryBuffer(void);
   
     static EntryBuffer* pNewEntryBuffer(eCN eClassNo);
-  
-    BitArray* pBitArray(void);
   
     eBD  eDurability(void);
     void vDurability(eBD eDurability);
