@@ -29,19 +29,19 @@ rows: 1
 
 // lwrsel
 fetch createT1 "key 10 >=";
-affected: 0
+rows: 0
 
 // uprsel
 fetch createT1 "key 10 <=";
-affected: 0
+rows: 0
 
 // keysel
 fetch createT1 "key 10 =";
-affected: 0
+rows: 0
 
 // rgesel
 fetch createT1 "key 10 >= key 20 <= AND";
-affected: 0
+rows: 0
 
 // drop the index keyIdx;
 drop index createT1.keyIdx;

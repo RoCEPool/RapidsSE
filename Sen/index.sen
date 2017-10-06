@@ -519,9 +519,6 @@ tp: loadIndexes
     // mark that a fetch task has ended
     pSeitf seitf.fetchTaskEnded
 
-   // mark that a fetch task has ended
-   pSeitf seitf.fetchTaskEnded
-
     exit
   then
 
