@@ -757,63 +757,6 @@ tp: populateIndex
 ;
 
 /*----------------------------------------------------------------------------*/
-/* fetch rows from buffers from teh buffer queue of the seitf                 */
-/*----------------------------------------------------------------------------*/
-: fetchQueueBufferRows ( -- )
-
-  0 0 0 0 0 locals| nLastBuffers nRowCount pIndex pIndexBuffer pSeitf |
-
-  // get the seitf of the task
-  task::this task.seitf@ to pSeitf
-
-  // get index
-  pSeitf seitf.index@ to pIndex
-
-  // get number of last buffers
-  pSeitf seitf.lastbuffers@ to nLastBuffers
-
-  // loop thru buffers
-  true
-  begin
-  while
-
-    // pop a buffer off the seitf buffer queue
-    pSeitf seitf.bufferQueue@ popBuffer to pIndexBuffer
-
-    // print the rows from the index buffer
-    pIndex pIndexBuffer printRows nRowCount + to nRowCount
-
-    // check if last buffer
-    pIndexBuffer entryBuffer.isLast@ if
-
-      nLastBuffers 1 - to nLastBuffers
-      0 nLastBuffers == if
-        false
-      else
-        true
-      then
-    else
-      true  // no more entries, move to next buffer
-    then
-
-    pIndexBuffer entryBuffer.delete
-    //"Deleted buffer" .
-
-  repeat
-
-  // delete the buffer queue from the seitf
-  pSeitf seitf.bufferQueue@ queue.delete
-  0 pSeitf seitf.bufferQueue!
-
-  args.metadata if
-    nRowCount pSeitf seitf.rowsProcessed
-  else
-    "rows selected"  nRowCount "%v %v\n" str.format .put
-  then
-
-;
-
-/*----------------------------------------------------------------------------*/
 /* position key select cursor for table (called by selectIndex request)       */
 /*----------------------------------------------------------------------------*/
 : scanSelectIdxTask ( <"key>" "<lower>" "<upper>" pSeitf iPartitionNo -- )

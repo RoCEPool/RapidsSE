@@ -538,34 +538,7 @@ timer: pIdxSelectTimer
   do
     pBufferQueue false bGroupBy I pPlanner spawnFetch
   loop
-/*
-  // fetch rows from the buffers in the buffer queue
-  bGroupBy if
-    groupByQueueBufferRows
-  else
-    fetchQueueBufferRows
-  then
 
-  // clear index in seitf
-  nullptr pSeitf seitf.index!
-
-  // dec and return table reference and clear task.seitf.currentTable
-  returnTableRef not if <NIP+ERROR> exit then
-
-  // assert no seitf.table
-  task::this task.seitf@ seitf.table@ not assert
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // restore path
-  popTable assertInTables                                           // ../tables
-
-  args.metadata not if
-    pIdxSelectTimer timer.update
-    "select time " .put
-    pIdxSelectTimer timer.millisecs .put "ms" .put .\n
-  then
-
-*/
   popTable assertInTables
 
   <OK>
