@@ -238,7 +238,7 @@ void Heap::vFree(Object* pObject)
   
   if (gpBufferPool->bDontFree()) {
     
-    if (CN_ROWBUFFER != eAllocClass) {
+    if (CN_ENTRYBUFFER != eAllocClass) {
       pObject->vSetClass(CN_FREEDNOT);
       return;
     }

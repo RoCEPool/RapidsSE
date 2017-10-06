@@ -955,13 +955,13 @@ namespace Tasks
     static void vRowCursorBegin(MP_Task mpTask);
     static void vRowCursorDelete(MP_Task mpTask);
     static void vRowCursorEnd(MP_Task mpTask);
+    static void vRowCursorEntryBufferFetch(MP_Task mpTask);
+    static void vRowCursorEntryBufferStore(MP_Task mpTask);
     static void vRowCursorFirst(MP_Task mpTask);
     static void vRowCursorInit(MP_Task mpTask);
     static void vRowCursorNew(MP_Task mpTask);
     static void vRowCursorNext(MP_Task mpTask);
     static void vRowCursorRow(MP_Task mpTask);
-    static void vRowCursorRowBufferFetch(MP_Task mpTask);
-    static void vRowCursorRowBufferStore(MP_Task mpTask);
     static void vRowCursorTableFetch(MP_Task mpTask);
     static void vRowCursorTableStore(MP_Task mpTask);
     

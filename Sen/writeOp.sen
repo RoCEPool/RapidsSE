@@ -95,7 +95,7 @@ common/ write nStreams    /
   pTable rowCrs rowCursor.table!
 
   // set row buffer in cursor
-  rowBuffer rowCrs rowCursor.rowBuffer!
+  rowBuffer rowCrs rowCursor.entryBuffer!
 
   // iterate the row buffer
   rowCrs rowCursor.first

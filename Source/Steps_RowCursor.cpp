@@ -31,18 +31,18 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_RowCursor(void)
 {
-  vAddPrimitive("rowCursor.begin"_Stz,      &vRowCursorBegin,           false);
-  vAddPrimitive("rowCursor.delete"_Stz,     &vRowCursorDelete,          false);
-  vAddPrimitive("rowCursor.end"_Stz,        &vRowCursorEnd,             false);
-  vAddPrimitive("rowCursor.first"_Stz,      &vRowCursorFirst,           false);
-  vAddPrimitive("rowCursor.init"_Stz,       &vRowCursorInit,            false);
-  vAddPrimitive("rowCursor::new"_Stz,        &vRowCursorNew,             false);
-  vAddPrimitive("rowCursor.next"_Stz,       &vRowCursorNext,            false);
-  vAddPrimitive("rowCursor.row"_Stz,        &vRowCursorRow,             false);
-  vAddPrimitive("rowCursor.rowBuffer@"_Stz, &vRowCursorRowBufferFetch,  false);
-  vAddPrimitive("rowCursor.rowBuffer!"_Stz, &vRowCursorRowBufferStore,  false);
-  vAddPrimitive("rowCursor.table@"_Stz,     &vRowCursorTableFetch,      false);
-  vAddPrimitive("rowCursor.table!"_Stz,     &vRowCursorTableStore,      false);
+  vAddPrimitive("rowCursor.begin"_Stz,        &vRowCursorBegin,           false);
+  vAddPrimitive("rowCursor.delete"_Stz,       &vRowCursorDelete,          false);
+  vAddPrimitive("rowCursor.end"_Stz,          &vRowCursorEnd,             false);
+  vAddPrimitive("rowCursor.entryBuffer@"_Stz, &vRowCursorEntryBufferFetch,false);
+  vAddPrimitive("rowCursor.entryBuffer!"_Stz, &vRowCursorEntryBufferStore,false);
+  vAddPrimitive("rowCursor.first"_Stz,        &vRowCursorFirst,           false);
+  vAddPrimitive("rowCursor.init"_Stz,         &vRowCursorInit,            false);
+  vAddPrimitive("rowCursor::new"_Stz,         &vRowCursorNew,             false);
+  vAddPrimitive("rowCursor.next"_Stz,         &vRowCursorNext,            false);
+  vAddPrimitive("rowCursor.row"_Stz,          &vRowCursorRow,             false);
+  vAddPrimitive("rowCursor.table@"_Stz,       &vRowCursorTableFetch,      false);
+  vAddPrimitive("rowCursor.table!"_Stz,       &vRowCursorTableStore,      false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -212,15 +212,15 @@ void Task::vRowCursorRow(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* rowCursor.rowBuffer@ -- fetch rowBuffer                                    */
+/* rowCursor.entryBuffer@ -- fetch entryBuffer                                */
 /*----------------------------------------------------------------------------*/
-void Task::vRowCursorRowBufferFetch(MP_Task mpTask)
+void Task::vRowCursorEntryBufferFetch(MP_Task mpTask)
 {
-  ENTRY("vRowCursorRowBufferFetch"_Stz);
+  ENTRY("vRowCursorEntryBufferFetch"_Stz);
   
   Object* pPtrRpwCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrRpwCursor) )
-  THROW_INVALID_DSTACK("rowCursor.rowBuffer@"_Stz);
+  THROW_INVALID_DSTACK("rowCursor.entryBuffer@"_Stz);
   
   RowCursor* pRowCursor = _pRowCursor(pPtrRpwCursor);
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
@@ -234,22 +234,22 @@ void Task::vRowCursorRowBufferFetch(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* rowCursor.rowBuffer! -- store rowBuffer                                    */
+/* rowCursor.entryBuffer! -- store entryBuffer                                */
 /*----------------------------------------------------------------------------*/
-void Task::vRowCursorRowBufferStore(MP_Task mpTask)
+void Task::vRowCursorEntryBufferStore(MP_Task mpTask)
 {
-  ENTRY("vRowCursorRowBufferStore"_Stz);
+  ENTRY("vRowCursorEntryBufferStore"_Stz);
   
   Object* pPtrRpwCursor;
   if ( ! mpTask->m_pDataStack->bPop(pPtrRpwCursor) )
-    THROW_INVALID_DSTACK("rowCursor.rowBuffer!"_Stz);
+    THROW_INVALID_DSTACK("rowCursor.entryBuffer!"_Stz);
   
   RowCursor* pRowCursor = _pRowCursor(pPtrRpwCursor);
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
   
   Object* pPtrRowBuffer;
   if ( ! mpTask->m_pDataStack->bPop(pPtrRowBuffer) )
-    THROW_INVALID_DSTACK("rowCursor.rowBuffer!"_Stz);
+    THROW_INVALID_DSTACK("rowCursor.entryBuffer!"_Stz);
   
   EntryBuffer* pRowBuffer = (EntryBuffer*)_pEntryBuffer(pPtrRowBuffer);
   //ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
