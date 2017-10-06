@@ -342,28 +342,6 @@ void EntryBuffer::vAppendBuffer(EntryBuffer* pSrcBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy given buffer                                                          */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vCopyBuffer(EntryBuffer* pSrcBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  // how many bytes to be copied from src buffer
-  i8 nBytes  = pSrcBuffer->nUsedBytes();
-  byte* aSrc = pSrcBuffer->aDataArea();
-  
-  // reset and allot space in this buffer
-  m_xWsp.vUsed(0);
-  void* pDst = m_xWsp.aAllot(nBytes);
-  
-  // copy from rows into this buffer
-  MemLib::vCopy(pDst,aSrc,nBytes,CN_ENTRYBUFFER);
-  
-  // set the number of rows in this buffer
-  m_nEntries = pSrcBuffer->nEntries();
-}
-
-/*----------------------------------------------------------------------------*/
 /* get address of data area                                                   */
 /*----------------------------------------------------------------------------*/
 byte* EntryBuffer::aDataArea(void)

@@ -79,7 +79,6 @@ namespace DBobjects
     
     Entry*     pAllotEntry(i8 nBytes);
     void       vAppendBuffer(EntryBuffer* pSrcBuffer);
-    void       vCopyBuffer(EntryBuffer* pSrcBuffer);
     byte*      aDataArea(void);
     Entry*     pFirstRow(void);
     i8         nFreeBytes(void);
