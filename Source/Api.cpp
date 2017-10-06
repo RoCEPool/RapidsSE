@@ -707,22 +707,13 @@ eEC RapidsSE_EndFetch(SEitf* pSEitf, i8 iTraceLevel)
     // mark that seitf is exiting
     pSEitf->m_bSeitfExiting = true;
     
-    // wait till all fetch tasks have ended
-    while (*pSEitf->m_ziFetchTasks != 0)
-      ;
-    //vTrace("All fetch tasks have ended %s"_Stz, pSEitf->pCurrentTable()->aTableName());
-    
-    // reset the index
-    pSEitf->vCurrentIndex(nullptr);
+    // End the fetch by waiting for all fetch tasks to finish
+    // and then clean up the buffer queue etc
+    pSEitf->vEndFetch();
     
     // validate no index
     VALIDATE_NOINDEX("d"_Stz);
     
-    // now delete the buffer queue from this seitf
-    //vTrace("Deleting %p(%lld) %p\n"_Stz, pSEitf,pSEitf->m_iPartition, pSEitf->m_pBufferQueue);
-    pSEitf->m_pBufferQueue->vFinalize();
-    delete pSEitf->m_pBufferQueue;
-
     // return the table
     Table* pTable = pSEitf->pCurrentTable();
     eResult = eExecuteRequest(pSEitf, "rettbl"_Stz);
@@ -882,68 +873,15 @@ eEC RapidsSE_FetchNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
     EntryBuffer* pEntryBuffer = pSEitf->m_pEntryBuffer;
     Entry* pEntry = nullptr;
     
-    while (true) {
-      
-      // if no entry buffer , pop one off the queue
-      if (!pEntryBuffer) {
-
-          // get the buffer queue from the seitf
-          Queue* pBufferQueue = pSEitf->pBufferQueue();
-        
-          // pop buffer off the buffer queue
-          ValWrk xValWrk;
-          while (!pBufferQueue->bPop(&xValWrk)) {
-            PosixThread::vSleepMilli(1);
-          }
-      
-          // get entry buffer
-          PtrVal* pPtrVal = xValWrk.pNestedPtrVal();
-          pEntryBuffer = (EntryBuffer*)(pPtrVal->pPtr());
-        
-          // save the entry buffer in the SEitf
-          pSEitf->m_pEntryBuffer = pEntryBuffer;
-        
-          // get first entry from buffer
-          pEntry = pEntryBuffer->pFirstEntry();
-        
-          if (pEntryBuffer->bIsLast()) {
-            pSEitf->m_ziLastBuffersScanned++;
-            //vTrace("m_ziLastBuffersScanned: %lld\n"_Stz, pSEitf->m_ziLastBuffersScanned );
-          }
-        
-      }
-      else {
-        ASSERT(pSEitf->m_pEntry);
-        
-        // get next entry from buffer
-        pEntry = pEntryBuffer->pNextEntry(pSEitf->m_pEntry);
-      }
-      
-      // if no entry, get next buffer
-      if (!pEntry) {
-        
-        // if we had an entry buffer delete it
-        if (pEntryBuffer)
-          delete pEntryBuffer;
-        
-        // null the buffer and get the next
-        pEntryBuffer = nullptr;
-      }
-      
-      // if found an entry break or last buffer break out of loop
-      if (pEntry || (!pEntry && pSEitf->m_ziLastBuffersScanned == pSEitf->m_ziLastBuffers))
-        break;
-    }
+    bool bNextRow = pSEitf->bNextRow();
     
-    if (!pEntry) {
-      *ppRow = nullptr;
-    }
-    else {
-      // save entry in SEitf
-      pSEitf->m_pEntry = pEntry;
-    
+    if (bNextRow) {
+      Entry* pEntry = pSEitf->m_pEntry;
       RowData::vRowAsString(pSEitf->m_sResponse, (Stz*)pEntry->aRow(), pSEitf->m_pCurrentTable->pColumnVec());
       *ppRow = (void*)pSEitf->m_sResponse.aChar();
+    }
+    else {
+      *ppRow = nullptr;
     }
     
     //TRACE_ROW();
