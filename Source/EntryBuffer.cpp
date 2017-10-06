@@ -65,10 +65,18 @@ EntryBuffer::EntryBuffer(void)
 : Buffer(CN_ENTRYBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  //m_pBitArray   = new BitArray;
+  
+  m_eDurability  = BD_TEMPORARY;
+  m_bIsLast       = false;
+  m_nEntries      = 0;
+  
   m_pPrevBuffer = nullptr;
   m_pNextBuffer = nullptr;
-  m_bIsLast     = false;
+  m_pHigherLevel  = nullptr;
+  m_pIndex        = nullptr;
+  m_nBufferLevel  = 0;
+  m_nPartitionNo  = -1;
+  
   //m_xWsp
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
@@ -86,8 +94,9 @@ EntryBuffer::EntryBuffer(i8 iDataBytes)
   
   m_xWsp.vUsed(iDataBytes);
   
-  //m_pBitArray   = new BitArray;
+  m_eDurability  = BD_TEMPORARY;
   m_bIsLast       = false;
+  m_nEntries      = 0;
   
   m_pPrevBuffer   = nullptr;
   m_pNextBuffer   = nullptr;
@@ -108,11 +117,11 @@ EntryBuffer::EntryBuffer(i8 iDataBytes)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 EntryBuffer::EntryBuffer(Index* pIndex, i8 nBufferLevel, i8 nPartitionNo)
-: EntryBuffer(CN_ENTRYBUFFER)
+: Buffer(CN_ENTRYBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  //m_pBitArray   = new BitArray;
+  m_eDurability  = BD_TEMPORARY;
   m_bIsLast      = false;
   m_nEntries     = 0;
   
@@ -134,32 +143,6 @@ EntryBuffer::EntryBuffer(Index* pIndex, i8 nBufferLevel, i8 nPartitionNo)
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-EntryBuffer::EntryBuffer(eCN eClassNo)
-: Buffer(eClassNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
-  
-  //m_pBitArray   = new BitArray;
-  m_eDurability = BD_TEMPORARY;
-  m_nEntries    = 0;
-  m_bIsLast     = false;
-  
-  m_pPrevBuffer  = nullptr;
-  m_pNextBuffer  = nullptr;
-  m_pHigherLevel = nullptr;
-  
-  m_nBufferLevel = 0;
-  m_nPartitionNo = -1;
-  m_pIndex       = nullptr;
-  
-  _checkInitialised_(eClassNo);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -194,12 +177,12 @@ EntryBuffer* EntryBuffer::pNewEntryBuffer(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 /* get bit array                                                              */
 /*----------------------------------------------------------------------------*/
-BitArray* EntryBuffer::pBitArray(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  return &m_xBitArray;
-}
+//BitArray* EntryBuffer::pBitArray(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+//  
+//  return &m_xBitArray;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get durability                                                             */
