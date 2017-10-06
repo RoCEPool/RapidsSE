@@ -31,10 +31,10 @@ namespace DBobjects
   {
   protected:
   
-    //BitArray m_xBitArray;
+    BitArray m_xBitArray;
   
     eBD   m_eDurability; // buffer durability
-    bool  m_bIsLast;     // is it the last buffer in a queue
+    bool  m_bIsLast;
     i8    m_nEntries;    // number of entries in this buffer
   
     EntryBuffer* m_pPrevBuffer;  // prev buffer
@@ -54,7 +54,9 @@ namespace DBobjects
     void  operator delete(void*);
   
     EntryBuffer(void);
-    EntryBuffer(i8 iDataBytes);  
+    EntryBuffer(i8 iDataBytes);
+  
+    EntryBuffer(eCN eClassNo);
     EntryBuffer(Index* pIndex, i8 nLevel, i8 nPartitionNo);
     ~EntryBuffer(void);
   
