@@ -78,7 +78,6 @@ namespace DBobjects
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     Entry*     pAllotEntry(i8 nBytes);
-    Entry*     pAllotEntry(i8 nOffsets, i8 nKeyBytes, i8 nDataBytes);
     void       vAppendBuffer(EntryBuffer* pSrcBuffer);
     void       vCopyBuffer(EntryBuffer* pSrcBuffer);
     byte*      aDataArea(void);

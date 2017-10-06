@@ -320,32 +320,6 @@ Entry* EntryBuffer::pAllotEntryBytes(i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* allot an entry for a row in this buffer                                    */
-/*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pAllotEntry(i8 nOffsets, i8 nKeyBytes, i8 nDataBytes)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-  
-  //# ASSERT(nOffsets >= 1);
-  
-  i8 nBytesRequired = Entry::nBytesRequired(nOffsets,nKeyBytes,nDataBytes);
-  
-  // test  sufficient freespace
-  if (nFreeBytes() < nBytesRequired) {
-    return nullptr;
-  }
-  
-  Entry* pRow = reinterpret_cast<Entry*>(m_xWsp.aAllot(nBytesRequired));
-  new(pRow) Entry(CN_ROW,nBytesRequired,0);
-  
-  m_nEntries++;
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  return pRow;
-}
-
-/*----------------------------------------------------------------------------*/
 /* append rows of arg buffer into this buffer                                 */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vAppendBuffer(EntryBuffer* pSrcBuffer)
