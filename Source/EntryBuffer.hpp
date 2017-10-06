@@ -59,8 +59,7 @@ namespace DBobjects
     EntryBuffer(eCN eClassNo);
     EntryBuffer(Index* pIndex, i8 nLevel, i8 nPartitionNo);
     ~EntryBuffer(void);
-  
-    static EntryBuffer* pNewEntryBuffer(eCN eClassNo);
+
   
     eBD  eDurability(void);
     void vDurability(eBD eDurability);

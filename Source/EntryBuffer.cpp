@@ -176,25 +176,6 @@ EntryBuffer::~EntryBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* row buffer factory                                                         */
-/*----------------------------------------------------------------------------*/
-EntryBuffer* EntryBuffer::pNewEntryBuffer(eCN eClassNo)
-{
-  if (gpBufferPool->iFreeCount() <= C_BUFFER_THRESHOLD)
-    return nullptr;
-  
-  EntryBuffer* pEntryBuffer =
-    reinterpret_cast<EntryBuffer*>(Heap::pAllocate(CN_ENTRYBUFFER));
-  
-  if (! pEntryBuffer)
-    return nullptr;
-  
-  new(pEntryBuffer) EntryBuffer(eClassNo);
-  
-  return pEntryBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get durability                                                             */
 /*----------------------------------------------------------------------------*/
 eBD EntryBuffer::eDurability(void)
