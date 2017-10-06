@@ -88,16 +88,16 @@ insert into T1 values (30,16.4);
 success
 
 // null
-//insert into T1 (name) values ('abc');
-//failure
+insert into T1 (name) values ('abc');
+failure
 
 // insert larger than max integer
-//insert into T1 values (60,9223372036854775808.34);
-//failure
+insert into T1 values (60,9223372036854775808.34);
+failure
 
 // insert smaller than min integer
-//insert into T1 values (60,-9223372036854775808.0);
-//failure
+insert into T1 values (60,-9223372036854775808.0);
+failure
 
 // select from T1
 select * from T1;
@@ -105,9 +105,6 @@ rows:
 (10,12.79)
 (20,13.02)
 (30,16.40)
-//(40,9223372036854775807)
-//(50,-9223372036854775807)
-//(60,null)
 
 // drop table
 drop table T1;

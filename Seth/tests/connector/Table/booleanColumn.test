@@ -110,6 +110,7 @@ success
 
 // null
 insert into T1 (id) values (70);
+failure
 
 // insert invalid boolean values
 insert into T1 values (120,'TR');

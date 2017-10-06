@@ -97,8 +97,8 @@ insert into T1 values (40, TIMESTAMP '2018-12-31 10:59:59.230');
 success
 
 // null
-//insert into T1 (id) values (40);
-//failure
+insert into T1 (id) values (40);
+failure
 
 // select from T1
 select * from T1;

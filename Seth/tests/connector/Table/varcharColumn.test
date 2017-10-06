@@ -100,8 +100,8 @@ success
 insert into T1 values (50, 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz');
 success
 
-//insert into T1 (id) values (60);
-//failure: 'Subsystem exception: '
+insert into T1 (id) values (60);
+failure: 'Subsystem exception: '
 
 // select from T1
 select * from T1;
