@@ -22,7 +22,7 @@ rows: 0
 select data_type, is_partition_key, is_nullable, precision, scale from rapids.system.columns where
   table_name = 'T1' and column_name = 'STATUS';
 rows:
-  ('BOOLEAN', false, true, 0, 0)
+  ('BOOLEAN', false, true, 0, null)
 
 // check partition key is first column
 select column_name from rapids.system.columns where table_name = 'T1' and is_partition_key = true;
@@ -87,7 +87,7 @@ select * from rapids.system.indexes;
 select data_type, is_partition_key, is_nullable, precision, scale from rapids.system.columns where
 table_name = 'T1'  and column_name = 'STATUS';
 rows:
-  ('BOOLEAN', true, false, 0, 0)
+  ('BOOLEAN', true, false, 0, null)
 
 // insert rows in the table
 insert into T1 values (10,true);

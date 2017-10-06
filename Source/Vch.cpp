@@ -320,7 +320,7 @@ void Vch::vSprint(Stz* aDst, Stz* aSrc)
     StrLib::vSprint(aDst,"null%c"_Stz,
                     '\0');
   else
-    StrLib::vSprint(aDst,"\"%s\"%c"_Stz,
+    StrLib::vSprint(aDst,"\'%s\'%c"_Stz,
                   aSrc->aChar(),
                   '\0');
   

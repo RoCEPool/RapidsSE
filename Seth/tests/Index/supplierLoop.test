@@ -36,7 +36,8 @@ rows:
 
 // keysel
 fetch supplier "S_SUPPKEY 10 =";
-rows: (0, 10,"Supplier#000000010","Saygah3gYWMp72i PY",24,"34-852-489-8585",3891.91,"ing waters. regular requests ar")
+//rows: (0, 10,'Supplier#000000010','Saygah3gYWMp72i PY',24,'34-852-489-8585',3891.91,'ing waters. regular requests ar')
+rows: (*, 10,'Supplier#000000010',...)
 
 // drop the index keyIdx;
 drop index supplier.idx;

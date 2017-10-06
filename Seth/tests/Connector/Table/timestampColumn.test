@@ -19,10 +19,10 @@ select * from rapids.system.indexes;
 rows: 0
 
 // check metadata
-//select data_type, is_partition_key, is_nullable, precision, scale from rapids.system.columns where
-//  table_name = 'T1' and column_name = 'TSP';
-//rows:
-//  ('TIMESTAMP', false, true, 0, 0)
+select data_type, is_partition_key, is_nullable, precision, scale from rapids.system.columns where
+  table_name = 'T1' and column_name = 'TSP';
+rows:
+  ('TIMESTAMP', false, true, 0, null)
 
 // check partition key is first column
 select column_name from rapids.system.columns where table_name = 'T1' and is_partition_key = true;
@@ -108,9 +108,6 @@ rows:
 (30, '1908-02-29 00:00:00.0')
 (40, '2018-12-31 10:59:59.023')
 
-// drop table
-drop table T1;
-success
 
 CLEANUP {
   drop table T1;
