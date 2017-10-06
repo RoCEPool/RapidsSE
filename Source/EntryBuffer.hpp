@@ -25,7 +25,7 @@ namespace DBobjects
   
   static const i8 C_BUFFER_THRESHOLD = 100;
   
-  static const EntryBuffer* C_ROWBUFFER_MARKER = (EntryBuffer*)0xFFFFFFFFFFFFFFFF;
+  static const EntryBuffer* C_ENTRYBUFFER_MARKER = (EntryBuffer*)0xFFFFFFFFFFFFFFFF;
   
   class EntryBuffer : public Buffer
   {

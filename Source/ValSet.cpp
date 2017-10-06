@@ -89,11 +89,11 @@ void ValSet::vAppend(Stz*& pCursor, Value* pValue)
       m_pRowBuffer = (EntryBuffer*)pPtrVal->pPtr();
       m_iRowBufferBytes = m_pRowBuffer->nUsedBytes();
       
-      //xValWrk = (Object*)C_ROWBUFFER_MARKER;
+      //xValWrk = (Object*)C_ENTRYBUFFER_MARKER;
       PtrVal xPtrVal;
-      xPtrVal = (Object*)C_ROWBUFFER_MARKER;
+      xPtrVal = (Object*)C_ENTRYBUFFER_MARKER;
       MemLib::vCopy(pCursor,&xPtrVal,sizeof(xPtrVal),CN_VALSET);
-      //vTrace("APPEND C_ROWBUFFER_MARKER\n"_Stz);
+      //vTrace("APPEND C_ENTRYBUFFER_MARKER\n"_Stz);
     }
     else {
       MemLib::vCopy(pCursor,pValue,iSize,CN_VALSET);
@@ -133,8 +133,8 @@ bool ValSet::bExtractValue(Stz*& pCursor, Value*& pValue)
   if (CN_PTRVAL == pValue->eClass()) {
     //vTrace("EXTRACT CN_PTRVAL\n"_Stz);
     
-    if ((i8)C_ROWBUFFER_MARKER == _pPtrVal(pValue)->iAsInt()) {
-      //vTrace("EXTRACT C_ROWBUFFER_MARKER\n"_Stz);
+    if ((i8)C_ENTRYBUFFER_MARKER == _pPtrVal(pValue)->iAsInt()) {
+      //vTrace("EXTRACT C_ENTRYBUFFER_MARKER\n"_Stz);
       *_pPtrVal(pValue) = m_pRowBuffer;
     }
   }
@@ -174,7 +174,7 @@ bool ValSet::bExtractValue(Stz*& pCursor, eCN& eClassNo, Value*& pValue)
   // test for a rowbuffer pointer
   if (CN_PTRVAL == pValue->eClass()) {
     
-    if ((i8)C_ROWBUFFER_MARKER == _pPtrVal(pValue)->iAsInt()) {
+    if ((i8)C_ENTRYBUFFER_MARKER == _pPtrVal(pValue)->iAsInt()) {
       eClassNo = CN_ENTRYBUFFER;
       return true;
     }
