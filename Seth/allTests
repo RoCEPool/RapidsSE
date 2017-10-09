@@ -1,0 +1,2 @@
+seth.sh -f tests/Datums/datumsList
+seth.sh -f tests/Index/indexList
