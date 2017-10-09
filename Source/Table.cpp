@@ -1154,9 +1154,9 @@ int DBobjects::iQsort_i8i8(const void* aArg1, const void* aArg2)
   // check for min
   if (*pArg1a == C_I8_MIN) {
     if (*pArg2a == C_I8_MIN)
-    return 0;
+      return 0;
     else
-    return -1;
+      return -1;
   }
   
   if (*pArg2a == C_I8_MIN) {
