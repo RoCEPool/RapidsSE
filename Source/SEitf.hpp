@@ -31,6 +31,7 @@ namespace Interface
     Index*       m_pCurrentIndex;
     Stz*         m_aRowPtr;
     EntryBuffer* m_pEntryBuffer;
+    Planner*     m_pPlanner;
     AccessPath*  m_pAccessPath;
   
     Entry* m_pEntry;

@@ -167,6 +167,7 @@ SEitf::SEitf(i8 iPartition)
   m_sResponse       = ""_Stz;
   m_aRowPtr         = nullptr;
   m_pEntryBuffer    = nullptr;
+  m_pPlanner        = nullptr;
   m_pAccessPath     = nullptr;
   m_pEntry          = nullptr;
   m_pCurrentTable   = nullptr;
@@ -2495,11 +2496,15 @@ void SEitf::vEndFetch(void)
   // reset the index
   m_pCurrentIndex = nullptr;
 
+  // delete the planner
+  delete m_pPlanner;
+  m_pPlanner = nullptr;
+  
   // now delete the buffer queue from this seitf
   m_pBufferQueue->vFinalize();
   delete m_pBufferQueue;
-  
   m_pBufferQueue = nullptr;
+  
 }
 
 /*----------------------------------------------------------------------------*/

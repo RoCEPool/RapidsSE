@@ -308,6 +308,9 @@ timer: pIdxSelectTimer
 
   //i_Phrase pPlanner Planner.indexNm@ .
 
+  // put the planner in the seitf
+  pPlanner task::this task.seitf@ seitf.planner!
+
   i_Phrase pPlanner Planner.fetchTechnique@
   case
 
@@ -376,10 +379,10 @@ timer: pIdxSelectTimer
 
   // delete the planner
 
-  i_Phrase 1 + pPlanner planner.phrases@ ==
-  if
-    pPlanner planner.delete
-  then
+  //i_Phrase 1 + pPlanner planner.phrases@ ==
+  //if
+  //  pPlanner planner.delete
+  //then
 ;
 
 /*----------------------------------------------------------------------------*/
