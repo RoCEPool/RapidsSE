@@ -39,7 +39,7 @@ success
 
 // check no of rows
 fetch IntTbl;
-affected: 101
+rows: 101
 
 // dump index int_idx1
 dumpidx IntTbl int_idx1;

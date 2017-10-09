@@ -7,7 +7,7 @@ create table tspTbl (
   vch_col2   VARCHAR(32) NOT NULL,
   int_col3   INTEGER     NOT NULL,
   int_col4   INTEGER     NOT NULL,
-  ivl_col5   INTERVAL    NOT NULL,
+  ivl_col5   DECIMAL(10,2) NOT NULL,
   flt_col6   FLOAT       NOT NULL,
   tsp_col7   TIMESTAMP
 );
@@ -42,7 +42,7 @@ success
 
 // check no of rows
 fetch tspTbl;
-affected: 101
+rows: 101
 
 // dump index tsp_idx1
 dumpidx tspTbl tsp_idx1;

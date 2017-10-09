@@ -8,7 +8,7 @@ create table fltTbl (
   vch_col1  VARCHAR(32) NOT NULL,
   int_col3  INTEGER     NOT NULL,
   int_col4  INTEGER     NOT NULL,
-  ivl_col5  INTERVAL    NOT NULL,
+  ivl_col5  DECIMAL(10,2) NOT NULL,
   flt_col6  FLOAT
 );
 
@@ -40,7 +40,7 @@ success
 
 // check no of rows
 fetch fltTbl;
-affected: 101
+rows: 101
 
 // dump index flt_idx1
 dumpidx fltTbl flt_idx1;
