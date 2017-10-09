@@ -192,41 +192,6 @@ tp: theIndirectResult
   //   read first chunk
   pLoaderSub loaderSub.begin
 
-
-
-/*
-  // load each record
-  begin
-
-    // attempt to fetch next record from file
-    pLoaderSub loaderSub.fetchRecord
-
-    // process record
-    while
-
-      // hash the record to get partition
-      pLoaderSub loaderSub.hashRecord
-
-      // attempt to insert record as row into working buffer for partition
-      pLoaderSub loaderSub.insertRow
-
-      // was buffer full?
-      not if
-
-      //"BUFFER FULL" .
-      tp: bufferFull
-
-        // append row buffer to table/partition/strand
-        pLoaderSub ~loadAppendBuffer
-
-        // insert row into new working buffer
-        pLoaderSub loaderSub.insertRow assert
-
-      then // if buffer full
-
-  repeat // for all records in chunked file
-*/
-
   pLoaderSub loaderSub.fetchRecord
 
   if 

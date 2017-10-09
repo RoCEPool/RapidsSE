@@ -38,7 +38,6 @@ void Task::vAddPrimitives_LoaderSub(void)
   vAddPrimitive("loaderSub.hashPartition"_Stz,&vLoaderSubHashPartition, false);
   vAddPrimitive("loaderSub.hashRecord"_Stz,   &vLoaderSubHashRecord,    false);
   vAddPrimitive("loaderSub.init"_Stz,         &vLoaderSubInit,          false);
-  vAddPrimitive("loaderSub.insertRow"_Stz,    &vLoaderSubInsertRow,     false);
   vAddPrimitive("loaderSub.loader!"_Stz,      &vLoaderSubLoaderStore,   false);
   vAddPrimitive("loaderSub.loadData"_Stz,     &vLoaderSubLoadData,      false);
   vAddPrimitive("loaderSub::new"_Stz,         &vLoaderSubNew,           false);
@@ -187,25 +186,6 @@ void Task::vLoaderSubInit(MP_Task mpTask)
   LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoader);
   
   new(pLoaderSub) LoaderSub;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* loaderSub.insertRow -- insert row into buffer                              */
-/*----------------------------------------------------------------------------*/
-void Task::vLoaderSubInsertRow(MP_Task mpTask)
-{
-  ENTRY("vLoaderSubInsertRow"_Stz);
-  
-  Object* pPtrLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
-    THROW_INVALID_DSTACK("loaderSub.insertRow"_Stz);
-  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoader);
-  
-  bool bInserted = pLoaderSub->bInsertRow();
-  
-  mpTask->m_pDataStack->vPushInt(bInserted);
   
   EXIT();
 }
