@@ -87,12 +87,6 @@ IndexData::IndexData(Index* pIndex, i8 nPartitionNo)
   m_zLock.vInitLock(LK_INDEX_DATA);
   m_pIndex = pIndex;
   
-  // start with a root buffer at L0
-  //m_pRoot = new EntryBuffer(pIndex, 0);
-  
-  /// set current buffer
-  //m_pCurrentBuffer = m_pRoot;
-  
   m_pRoot = nullptr;
   m_pCurrentBuffer = nullptr;
   m_nPartitionNo = nPartitionNo;
@@ -240,7 +234,7 @@ void IndexData::vAppendBuffer(EntryBuffer* pEntryBuffer)
 /*----------------------------------------------------------------------------*/
 /* insert an entry for {key,id} into an index buffer at given level           */
 /*----------------------------------------------------------------------------*/
-void IndexData::vAppendEntries(EntryBuffer* pEntryBuffer, EntryBuffer** ppFirstBuffer, Entry** ppFirstEntry)
+void IndexData::vAppendEntriesFromBuffer(EntryBuffer* pEntryBuffer, EntryBuffer** ppFirstBuffer, Entry** ppFirstEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
@@ -409,7 +403,7 @@ Entry* IndexData::pInsertEntry(i8 iTxId, Stz* pRow, i8 iLength)
 /*----------------------------------------------------------------------------*/
 /* insert entries from entryBuffer into this index at level 0                 */
 /*----------------------------------------------------------------------------*/
-void IndexData::vInsertEntries(EntryBuffer* pEntryBuffer, Entry* pRowEntry)
+void IndexData::vInsertEntriesFromBuffer(EntryBuffer* pEntryBuffer, Entry* pRowEntry)
 { //# indexTuning
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   

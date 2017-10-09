@@ -37,7 +37,7 @@ namespace DBobjects
     ~IndexData(void);
   
     Stz*         pAnalyze(void);
-    void         vAppendEntries(EntryBuffer* pEntryBuffer,EntryBuffer** ppFirstBuffer, Entry** ppFirstEntry);
+    void         vAppendEntriesFromBuffer(EntryBuffer* pEntryBuffer,EntryBuffer** ppFirstBuffer, Entry** ppFirstEntry);
     void         vAppendBuffer(EntryBuffer* pEntryBuffer);
     void         vAppendEntry(KeyWrk& xKeyWrk, Id xId, EntryVec& xPriorVec);
     void         vDump(bool bSameLevel);
@@ -46,7 +46,7 @@ namespace DBobjects
     i8           nEntryBuffers(void);
     Entry*       pInsertEntry(i8 iTxId, Stz* pRow, i8 iLength);
     bool         bInsertEntry(Entry* pRow);
-    void         vInsertEntries(EntryBuffer* pEntryBuffer, Entry* pRowEntry);
+    void         vInsertEntriesFromBuffer(EntryBuffer* pEntryBuffer, Entry* pRowEntry);
     EntryBuffer* pPositionLevel(KeyWrk& xKeyWrk, eJC eJuxtaCompare, i8 iLevel);
     EntryBuffer* pRoot(void);
     void         vTidyUp(void);

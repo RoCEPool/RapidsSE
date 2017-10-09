@@ -332,7 +332,7 @@ void Table::vInsertEntries(i8 iSlot, EntryBuffer* pEntryBuffer)
   
   EntryBuffer* pFirstBuffer;
   Entry* pFirstEntry;
-  pHiddenIndexData->vAppendEntries(pEntryBuffer, &pFirstBuffer, &pFirstEntry);
+  pHiddenIndexData->vAppendEntriesFromBuffer(pEntryBuffer, &pFirstBuffer, &pFirstEntry);
   
   //----------------------------------------------------------------------------
   // (2) insert entries from hidden index pFirstBuffer starting atpFirstEntry
@@ -362,7 +362,7 @@ void Table::vInsertEntries(i8 iSlot, EntryBuffer* pEntryBuffer)
     // in pFirstBuffer and insert corresponding entries in other indexes
     while (pHiddenEntryBuffer) {
       
-      pNewIndexData->vInsertEntries(pHiddenEntryBuffer, pEntry);
+      pNewIndexData->vInsertEntriesFromBuffer(pHiddenEntryBuffer, pEntry);
       pHiddenEntryBuffer = pHiddenEntryBuffer->pNextBuffer();
       
       // get the next buffer and first entry in it
