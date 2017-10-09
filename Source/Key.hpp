@@ -61,8 +61,8 @@ namespace DBobjects
     
     bool bMatches(Key* pKey, IdxColVec* pColVec, RelOpAry* pOpAry);
 
-    bool bJuxtaCompare(eJC eJuxtaCompare, Key* pKey, IdxColVec* pColVec, bool& bIsEqual);
-    bool bJuxtaBefore(Key* pKey, IdxColVec* pColVec, bool& bIsEqual);
+    bool bJuxtaCompare(eJC eJuxtaCompare, Key* pKey, IdxColVec* pColVec, bool& bIsEqual, eRO eRelnOp=RO_NONE);
+    bool bJuxtaBefore(Key* pKey, IdxColVec* pColVec, bool& bIsEqual, eRO eRelnOp=RO_NONE);
     bool bJuxtaSame(Key* pKey, IdxColVec* pColVec, bool& bIsEqual);
     bool bJuxtaAfter(Key* pKey, IdxColVec* pColVec, bool& bIsEqual);
   

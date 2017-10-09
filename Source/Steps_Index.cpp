@@ -770,8 +770,22 @@ void Task::vIndexUpper(MP_Task mpTask)
   
   xKeyWrk.vAddDatum(pStrVal, pIndex->pIdxColVec()->pGet(0));
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the relation operator for the first predicate
+  
+  SEitf* pSEitf = mpTask->m_pSEitf;
+  Planner* pPlanner = pSEitf->m_pPlanner;
+  AccessPath* pChosenPath = pPlanner->pChosenPath(0);
+  PredicateVec* pUpperPredicates = pChosenPath->pUpperPredicates();
+  Predicate* pPredicate = pUpperPredicates->pGet(0);
+  Op* pOp = pPredicate->pOp();
+  eRO eRelnOp = pOp->eOpKind();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   bool bIsEqual = false;
-  bool bBefore = pEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrk.aKey(), pIndex->pIdxColVec(), bIsEqual);
+  bool bBefore = pEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrk.aKey(),
+                                               pIndex->pIdxColVec(), bIsEqual,
+                                               eRelnOp);
   
   mpTask->m_pDataStack->vPushInt(bBefore ? 1 : 0);
   

@@ -365,14 +365,23 @@ bool Key::bMatches(Key* pKeyThat, IdxColVec* pIdxColVec, RelOpAry* pRelOpAry)
 /*----------------------------------------------------------------------------*/
 /* juxta-compare this key with given key                                      */
 /*----------------------------------------------------------------------------*/
-bool Key::bJuxtaCompare(eJC eJuxtaCompare, Key* pKeyThat, IdxColVec* pIdxColVec, bool& bIsEqual)
+bool Key::bJuxtaCompare(eJC eJuxtaCompare, Key* pKeyThat, IdxColVec* pIdxColVec, bool& bIsEqual, eRO eRelnOp)
 {
   bool bJuxtaCompare = false;
   
   switch (eJuxtaCompare) {
-    case JC_BEFORE: bJuxtaCompare = bJuxtaBefore(pKeyThat,pIdxColVec, bIsEqual); break;
-    case JC_SAME:   bJuxtaCompare = bJuxtaSame(pKeyThat,pIdxColVec, bIsEqual);   break;
-    case JC_AFTER:  bJuxtaCompare = bJuxtaAfter(pKeyThat,pIdxColVec, bIsEqual);  break;
+      
+    case JC_BEFORE:
+      bJuxtaCompare = bJuxtaBefore(pKeyThat,pIdxColVec,bIsEqual,eRelnOp);
+      break;
+      
+    case JC_SAME:
+      bJuxtaCompare = bJuxtaSame(pKeyThat,pIdxColVec,bIsEqual);
+      break;
+      
+    case JC_AFTER:
+      bJuxtaCompare = bJuxtaAfter(pKeyThat,pIdxColVec,bIsEqual);
+      break;
       
     default:
       NEVER_REACH;
@@ -384,7 +393,7 @@ bool Key::bJuxtaCompare(eJC eJuxtaCompare, Key* pKeyThat, IdxColVec* pIdxColVec,
 /*----------------------------------------------------------------------------*/
 /* is this key juxta-before given key?                                        */
 /*----------------------------------------------------------------------------*/
-bool Key::bJuxtaBefore(Key* pKeyThat, IdxColVec* pIdxColVec, bool& bIsEqual)
+bool Key::bJuxtaBefore(Key* pKeyThat, IdxColVec* pIdxColVec, bool& bIsEqual, eRO eRelnOp)
 {
   /*
    * a multi-part key is said to be juxta-before some other key if:
@@ -442,6 +451,8 @@ bool Key::bJuxtaBefore(Key* pKeyThat, IdxColVec* pIdxColVec, bool& bIsEqual)
       return false;
     
     // so far the elements are equal
+    if (RO_LESS_THAN == eRelnOp)
+      return false;
   }
   
   // all elements are the same

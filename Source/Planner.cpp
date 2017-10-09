@@ -579,6 +579,18 @@ i8 Planner::nPhrases(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get token vector for phrase                                                */
+/*----------------------------------------------------------------------------*/
+TokenVec* Planner::pPhraseTknVec(i8 i_Phrase)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  TokenVec* pPhraseTknVec = m_pPhraseTknVec[i_Phrase];
+  
+  return pPhraseTknVec;
+}
+
+/*----------------------------------------------------------------------------*/
 /* score the vector array of all paths (lower is better)                      */
 /*----------------------------------------------------------------------------*/
 void Planner::vScorePaths(void)

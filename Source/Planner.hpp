@@ -44,6 +44,7 @@ namespace Plans
     void vParsePhrases(void);
     void vParseWhere(s48K& sWhereClause);
     i8   nPhrases(void);
+    TokenVec* pPhraseTknVec(i8 i_Phrase);
     void vScorePaths(void);
     void vShowPaths(void);
     void vShowPhrases(void);
