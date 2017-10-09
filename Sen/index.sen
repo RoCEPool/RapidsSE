@@ -342,9 +342,9 @@ tp: makingIndex
 /*----------------------------------------------------------------------------*/
 /* position key select cursor for table (called by keySelectIndex request)    */
 /*----------------------------------------------------------------------------*/
-: exactSelectIdxTask ( <"key>" "<lower>" "<upper>" pSeitf iPartitionNo -- )
+: exactSelectIdxTask ( i_Phrase <"key>" "<lower>" "<upper>" pSeitf iPartitionNo -- )
 
-  0 0 0 0 locals| entry pTempEntryBuffer pEntryBuffer pIndex iPartitionNo pSeitf upper lower key |
+  0 0 0 0 locals| entry pTempEntryBuffer pEntryBuffer pIndex iPartitionNo pSeitf upper lower key i_Phrase |
 
   tp: keySelectIdx
 
@@ -477,9 +477,9 @@ tp: loadIndexes
 /*----------------------------------------------------------------------------*/
 /* position key select cursor for table (called by selectIndex request)       */
 /*----------------------------------------------------------------------------*/
-: lowerSelectIdxTask ( <"key>" "<lower>" "<upper>" pSeitf partition -- )
+: lowerSelectIdxTask ( i_Phrase <"key>" "<lower>" "<upper>" pSeitf partition -- )
 
-  0 0 0 0 locals| pIndex entry tempEntryBuffer indexBuffer iPartitionNo pSeitf upper lower key |
+  0 0 0 0 locals| pIndex entry tempEntryBuffer indexBuffer iPartitionNo pSeitf upper lower key i_Phrase |
 
   tp: lowerSelectIdxTask
 
@@ -577,12 +577,12 @@ tp: loadIndexes
 /*----------------------------------------------------------------------------*/
 /* position key select cursor for table (called by selectIndex request)       */
 /*----------------------------------------------------------------------------*/
-: rangeSelectIdxTask ( <"key>" "<lower>" "<upper>" pSeitf iPartitionNo -- )
+: rangeSelectIdxTask ( i_Phrase <"key>" "<lower>" "<upper>" pSeitf iPartitionNo -- )
 
 //"rangeSelectIdxTask" .
 
   // save args
-  locals| iPartitionNo pSeitf sUpper sLower sKey |
+  locals| iPartitionNo pSeitf sUpper sLower sKey i_Phrase |
 
   // local variables
   0 0 0 0 0 locals| pIndex pUpperEntry pIndexEntry pIndexBuffer pResultBuffer |
@@ -756,9 +756,9 @@ tp: populateIndex
 /*----------------------------------------------------------------------------*/
 /* position key select cursor for table (called by selectIndex request)       */
 /*----------------------------------------------------------------------------*/
-: scanSelectIdxTask ( <"key>" "<lower>" "<upper>" pSeitf iPartitionNo -- )
+: scanSelectIdxTask ( i_Phrase <"key>" "<lower>" "<upper>" pSeitf iPartitionNo -- )
 
-  0 0 0 0 locals| pIndex entry tempEntryBuffer indexBuffer iPartitionNo pSeitf upper lower key |
+  0 0 0 0 locals| pIndex entry tempEntryBuffer indexBuffer iPartitionNo pSeitf upper lower key i_Phrase |
 
   tp: scanSelectIdxTask
 
@@ -888,7 +888,7 @@ tp: populateIndex
 /*----------------------------------------------------------------------------*/
 /* select using index (called by fetchRowsIndex_req)                          */
 /*----------------------------------------------------------------------------*/
-: spawnSelectTask ( "<sExactKey>" "<sLowerKey>" "<sUpperKey>"
+: spawnSelectTask ( i_Phrase "<sExactKey>" "<sLowerKey>" "<sUpperKey>"
 "<sSelectTaskSeed>" "<sIndexNm>" pBufferQueue <bSinglePartition> --  )
 
 tp: selectIndex
@@ -909,7 +909,7 @@ tp: selectIndex
   //assert::stack_5
 
   // save args
-  locals| bSinglePartition pBufferQueue sIndexNm sSelectTaskSeed sUpperKey sLowerKey sExactKey |
+  locals| bSinglePartition pBufferQueue sIndexNm sSelectTaskSeed sUpperKey sLowerKey sExactKey i_Phrase |
 
   // local variables
   0 0 0 0 0 0 0 locals| pIndex iSlots pSeitf pSelectTask nRowCount pIndexBuffer pEntry |
@@ -950,7 +950,7 @@ tp: selectIndex
     //then
 
     // create a selectTask to execute the key select on the index for the partition
-    sExactKey sLowerKey sUpperKey pSeitf iSlot 5
+    i_Phrase sExactKey sLowerKey sUpperKey pSeitf iSlot 6
     sSelectTaskSeed nullptr "selectTask" TK_SELECT_PART spawnServerTask
     to pSelectTask
 
@@ -965,7 +965,7 @@ tp: selectIndex
       //then
 
       // create a selectTask to execute the key select on the index for the partition
-      sExactKey sLowerKey sUpperKey pSeitf I 5
+      i_Phrase sExactKey sLowerKey sUpperKey pSeitf I 6
       sSelectTaskSeed nullptr "selectTask" TK_SELECT_PART spawnServerTask
       to pSelectTask
 
@@ -993,9 +993,9 @@ tp: selectIndex
 /*----------------------------------------------------------------------------*/
 /* position key select cursor for table (called by selectIndex request)       */
 /*----------------------------------------------------------------------------*/
-: upperSelectIdxTask ( <"key>" "<lower>" "<upper>" pSeitf partition -- )
+: upperSelectIdxTask ( i_Phrase <"key>" "<lower>" "<upper>" pSeitf partition -- )
 
-  0 0 0 0 0 locals| pIndex upperEntry entry tempEntryBuffer indexBuffer iPartitionNo pSeitf upper lower key |
+  0 0 0 0 0 locals| pIndex upperEntry entry tempEntryBuffer indexBuffer iPartitionNo pSeitf upper lower key i_Phrase |
 
   tp: upperSelectIdxTask
 
@@ -1263,10 +1263,10 @@ tp: selectIndex
 /*----------------------------------------------------------------------------*/
 /* position key select cursor for table (called by selectIndex request)       */
 /*----------------------------------------------------------------------------*/
-: groupByIdxTask_RH ( <"key>" "<lower>" "<upper>" pSeitf iPartitionNo -- )
+: groupByIdxTask_RH ( i_Phrase <"key>" "<lower>" "<upper>" pSeitf iPartitionNo -- )
 
   // save args
-  locals| iPartitionNo pSeitf sUpper sLower sKey |
+  locals| iPartitionNo pSeitf sUpper sLower sKey i_Phrase |
 
   // local variables
   0 0 0 0 0 locals| pIndex pUpperEntry pIndexEntry pIndexBuffer pResultBuffer |
