@@ -2371,6 +2371,8 @@ void SePrompt::vIterateBuffers(void)
     vTrace("rows selected %lld\n"_Stz, m_pSEitf->m_iRowsProcessed);
   }
   
+  m_pSEitf->m_iRowsProcessed = 0;
+  
   m_pSEitf->vEndFetch();
   
   bReturnTable();

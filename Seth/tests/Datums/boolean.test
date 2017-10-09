@@ -43,7 +43,7 @@ success
 
 // check no of rows
 fetch bolTbl;
-affected: 101
+rows: 101
 
 // dump index bol_idx1
 dumpidx bolTbl bol_idx1;

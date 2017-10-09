@@ -51,7 +51,7 @@ success
 
 // check no of rows
 fetch VchTbl;
-affected: 101
+rows: 101
 
 // dump index vch_idx1
 dumpidx vchTbl vch_idx1;
