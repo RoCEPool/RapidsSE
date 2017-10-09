@@ -259,8 +259,9 @@ void EntryBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
   
   EntryBuffer* pRowBuffer = reinterpret_cast<EntryBuffer*>(pObject);
   
-  vTrace("partition %lld rows %lld used %lld free %lld prevBuffer %p nextBuffer %p\n"_Stz,
+  vTrace("durability %s partition %lld rows %lld used %lld free %lld prevBuffer %p nextBuffer %p\n"_Stz,
          pRowBuffer->m_nPartitionNo,
+         aBD[pRowBuffer->m_eDurability],
          pRowBuffer->m_nEntries,
          pRowBuffer->m_xWsp.nUsed(),
          pRowBuffer->m_xWsp.nFree(),
@@ -320,26 +321,26 @@ Entry* EntryBuffer::pAllotEntryBytes(i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append rows of arg buffer into this buffer                                 */
+/* append entries of arg buffer into this buffer                              */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vAppendBuffer(EntryBuffer* pSrcBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  // how many bytes to be copied from arg buffer
-  i8 nBytes  = pSrcBuffer->nUsedBytes();
-  byte* aSrc = pSrcBuffer->aDataArea();
-  
-  // allot space in this buffer
-  void* pDst = m_xWsp.aAllot(nBytes);
-  
-  // copy arg rows into this buffer
-  MemLib::vCopy(pDst,aSrc,nBytes,CN_ENTRYBUFFER);
-  
-  // inc the number of rows in this buffer
-  i8 nSrcRows = pSrcBuffer->m_nEntries;
-  m_nEntries += nSrcRows;
-}
+//void EntryBuffer::vAppendEntriesFromBuffer(EntryBuffer* pSrcBuffer)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+//  
+//  // how many bytes to be copied from arg buffer
+//  i8 nBytes  = pSrcBuffer->nUsedBytes();
+//  byte* aSrc = pSrcBuffer->aDataArea();
+//  
+//  // allot space in this buffer
+//  void* pDst = m_xWsp.aAllot(nBytes);
+//  
+//  // copy arg rows into this buffer
+//  MemLib::vCopy(pDst,aSrc,nBytes,CN_ENTRYBUFFER);
+//  
+//  // inc the number of rows in this buffer
+//  i8 nSrcRows = pSrcBuffer->m_nEntries;
+//  m_nEntries += nSrcRows;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get address of data area                                                   */
@@ -381,7 +382,7 @@ i8 EntryBuffer::nFreeBytes(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert row into this buffer                                                */
+/* insert row into this buffer     (invoked from rowBuffer.appendRecord/append*/
 /*----------------------------------------------------------------------------*/
 bool EntryBuffer::bInsertRow(EntWrk& xRowWrk, Entry** ppRow)
 {
@@ -403,7 +404,7 @@ bool EntryBuffer::bInsertRow(EntWrk& xRowWrk, Entry** ppRow)
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert row into this buffer                                                */
+/* insert row into this buffer (invoked from entryBuffer.insertRow)           */
 /*----------------------------------------------------------------------------*/
 bool EntryBuffer::bInsertRow(Entry* pOldRow, Entry** ppRow)         //# critical
 {

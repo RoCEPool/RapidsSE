@@ -189,63 +189,6 @@ void Task::vEntryBufferIndexStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* entryBuffer.insertRow -- insert a row entry into the index buffer          */
 /*----------------------------------------------------------------------------*/
-//#define ENTWRK_APPEND
-#ifdef ENTWRK_APPEND
-void Task::vEntryBufferInsertRow(MP_Task mpTask)
-{
-  ENTRY("vEntryBufferInsertRow"_Stz);
- 
-  Object* pPtrEntry = nullptr;
-  Object* pPtrIndexBuffer;
-  s256 sRow;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
-    THROW_INVALID_DSTACK("entryBuffer.insertRow"_Stz);
-  
-  EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
-  ASSERT(nullptr == pIndexBuffer || CN_ENTRYBUFFER == pIndexBuffer->eClass());
-  
-  if ( ! mpTask->m_pDataStack->bPop(sRow) )
-    THROW_INVALID_DSTACK("entryBuffer.insertRow"_Stz);
-
-  // create working row
-  ValWrk xValWrk;
-  
-  //----------------------------------------------------------------------------
-  // form the rowId
-  bn nBufferNo = pIndexBuffer->nBufferNo();
-  i8 nRowNo = pIndexBuffer->nEntries();
-  Id rowId(*nBufferNo, nRowNo);
-  
-  //----------------------------------------------------------------------------
-  // form the key
-  xValWrk = nRowNo;
-  
-  KeyWrk xKeyWrk;
-  Column* pColumn = pIndexBuffer->pIndex()->pIdxColVec()->pGet(0);
-  ASSERT(pColumn->iColumnNo() == -1);
-  xKeyWrk.vAddDatum(xValWrk, pColumn);
-  
-  //----------------------------------------------------------------------------
-  // add the id and key to EntWrk
-  EntWrk xRowWrk(rowId, xKeyWrk);
-  
-  xRowWrk.vData(sRow.aStr(), sRow.iLength());
-  //xRowWrk.vShow(pIndexBuffer->pIndex()->pIdxColVec());
-  
-  Entry* pRow;
-  
-  if (pIndexBuffer->bInsertRow(xRowWrk, &pRow))
-    mpTask->m_pDataStack->vPushInt(1);
-  else
-    mpTask->m_pDataStack->vPushInt(0);
-  
-  ASSERT( ! pRow->nOffsets() );
-  
-  EXIT();
-}
-#else
-
 void Task::vEntryBufferInsertRow(MP_Task mpTask)
 {
   ENTRY("vEntryBufferInsertRow"_Stz);
@@ -277,7 +220,6 @@ void Task::vEntryBufferInsertRow(MP_Task mpTask)
   EXIT();
 }
 
-#endif
 /*----------------------------------------------------------------------------*/
 /* entryBuffer.isLast@ -- get if buffer is last                               */
 /*----------------------------------------------------------------------------*/
