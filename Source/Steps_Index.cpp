@@ -267,6 +267,10 @@ void Task::vIndexPosition(MP_Task mpTask)
   Object* pPtrIndex = nullptr;
   Object* pPtrIndexBuffer = nullptr;
   ValWrk xValWrk;
+  i8 i_Phrase;
+  
+  if ( ! mpTask->m_pDataStack->bPop(i_Phrase) )
+    THROW_INVALID_DSTACK("index.upper"_Stz);
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
     THROW_INVALID_DSTACK("index.position"_Stz);
@@ -298,13 +302,29 @@ void Task::vIndexPosition(MP_Task mpTask)
   Entry* pIndexEntry = pIndexBuffer->pPosition(xKeyWrk, JC_AFTER);
   //pIndexEntry->aKey()->vShow(pIndex->pIdxColVec());
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the relation operator for the first predicate
+  
+  SEitf* pSEitf = mpTask->m_pSEitf;
+  Planner* pPlanner = pSEitf->m_pPlanner;
+  AccessPath* pChosenPath = pPlanner->pChosenPath(i_Phrase);
+  PredicateVec* pLowerPredicates = pChosenPath->pLowerPredicates();
+  Predicate* pPredicate = pLowerPredicates->pGet(0);
+  Op* pOp = pPredicate->pOp();
+  eRO eRelnOp = pOp->eOpKind();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  bool bAfter;
   if (pIndexEntry) {
-    bool bIsEqual = false;
-    bool bAfter = pIndexEntry->aKey()->bJuxtaCompare(JC_AFTER, xKeyWrk.aKey(),
-                                                     pIndex->pIdxColVec(), bIsEqual);
-    if ( ! bAfter) {
-      pIndexEntry = pIndexBuffer->pNextEntry(pIndexEntry);
-    }
+    do {
+      bool bIsEqual = false;
+      bAfter = pIndexEntry->aKey()->bJuxtaCompare(JC_AFTER, xKeyWrk.aKey(),
+                                                  pIndex->pIdxColVec(), bIsEqual,
+                                                  eRelnOp);
+      if (! bAfter) {
+        pIndexEntry = pIndexBuffer->pNextEntry(pIndexEntry);
+      }
+    } while (pIndexEntry && ! bAfter);
   }
   
   mpTask->m_pDataStack->vPushObject(pIndexEntry);
@@ -736,6 +756,10 @@ void Task::vIndexUpper(MP_Task mpTask)
 
   ValWrk xValWrk;
   i8 iPartition;
+  i8 i_Phrase;
+  
+  if ( ! mpTask->m_pDataStack->bPop(i_Phrase) )
+    THROW_INVALID_DSTACK("index.upper"_Stz);
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
     THROW_INVALID_DSTACK("index.upper"_Stz);
@@ -775,7 +799,7 @@ void Task::vIndexUpper(MP_Task mpTask)
   
   SEitf* pSEitf = mpTask->m_pSEitf;
   Planner* pPlanner = pSEitf->m_pPlanner;
-  AccessPath* pChosenPath = pPlanner->pChosenPath(0);
+  AccessPath* pChosenPath = pPlanner->pChosenPath(i_Phrase);
   PredicateVec* pUpperPredicates = pChosenPath->pUpperPredicates();
   Predicate* pPredicate = pUpperPredicates->pGet(0);
   Op* pOp = pPredicate->pOp();

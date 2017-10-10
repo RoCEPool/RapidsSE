@@ -380,7 +380,7 @@ bool Key::bJuxtaCompare(eJC eJuxtaCompare, Key* pKeyThat, IdxColVec* pIdxColVec,
       break;
       
     case JC_AFTER:
-      bJuxtaCompare = bJuxtaAfter(pKeyThat,pIdxColVec,bIsEqual);
+      bJuxtaCompare = bJuxtaAfter(pKeyThat,pIdxColVec,bIsEqual,eRelnOp);
       break;
       
     default:
@@ -393,7 +393,8 @@ bool Key::bJuxtaCompare(eJC eJuxtaCompare, Key* pKeyThat, IdxColVec* pIdxColVec,
 /*----------------------------------------------------------------------------*/
 /* is this key juxta-before given key?                                        */
 /*----------------------------------------------------------------------------*/
-bool Key::bJuxtaBefore(Key* pKeyThat, IdxColVec* pIdxColVec, bool& bIsEqual, eRO eRelnOp)
+bool Key::bJuxtaBefore(Key* pKeyThat, IdxColVec* pIdxColVec, bool& bIsEqual,
+                       eRO eRelnOp)
 {
   /*
    * a multi-part key is said to be juxta-before some other key if:
@@ -451,6 +452,7 @@ bool Key::bJuxtaBefore(Key* pKeyThat, IdxColVec* pIdxColVec, bool& bIsEqual, eRO
       return false;
     
     // so far the elements are equal
+    
     if (RO_LESS_THAN == eRelnOp)
       return false;
   }
@@ -516,7 +518,8 @@ bool Key::bJuxtaSame(Key* pKeyThat, IdxColVec* pIdxColVec, bool& bIsEqual)
 /*----------------------------------------------------------------------------*/
 /* is this key juxta-after given key?                                         */
 /*----------------------------------------------------------------------------*/
-bool Key::bJuxtaAfter(Key* pKeyThat, IdxColVec* pIdxColVec, bool& bIsEqual)
+bool Key::bJuxtaAfter(Key* pKeyThat, IdxColVec* pIdxColVec, bool& bIsEqual,
+                      eRO eRelnOp)
 {
   /*
    * a multi-part key is said to be juxta-after some other key if:
@@ -574,6 +577,9 @@ bool Key::bJuxtaAfter(Key* pKeyThat, IdxColVec* pIdxColVec, bool& bIsEqual)
       return false;
     
     // so far the elements are equal
+    
+    if (RO_GREATER_THAN == eRelnOp)
+      return false;
   }
   
   // all elements are the same
