@@ -60,10 +60,10 @@ success
 -- Example of multiple rows with multiple columns expected to be returned.
 antbl j10;
 unordered rows:
-  ('NODE1', 0, 1, 1, 2)
-  ('NODE1', 1, 1, 1, 1)
-  ('NODE1', 2, 1, 1, 4)
-  ('NODE1', 3, 1, 1, 3)
+  ('NODE1', 0, *)
+  ('NODE1', 1, *)
+  ('NODE1', 2, *)
+  ('NODE1', 3, *)
 
 
 -- Example of expecting an set of rows in a particular order.
