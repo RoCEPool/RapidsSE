@@ -1,0 +1,140 @@
+//----------------------------------------------------------------------------//
+// create table with BOOLEAN column tests
+//----------------------------------------------------------------------------//
+
+// create a table with a boolean column
+create table T1 (
+  id      integer,
+  status  boolean
+);
+success
+
+// table should have gotten created
+select table_name from rapids.system.tables where catalog_name = 'RAPIDSSE';
+rows:
+  ('T1')
+
+// there should be no indexes on it
+select * from rapids.system.indexes;
+rows: 0
+
+// check metadata
+select data_type, is_partition_key, is_nullable, precision, scale from rapids.system.columns where
+  table_name = 'T1' and column_name = 'STATUS';
+rows:
+  ('BOOLEAN', false, true, 0, null)
+
+// check partition key is first column
+select column_name from rapids.system.columns where table_name = 'T1' and is_partition_key = true;
+rows:
+  ('ID')
+
+// insert rows in the table
+insert into T1 values (10,true);
+success
+
+insert into T1 values (20,TRUE);
+success
+
+insert into T1 values (30,10);
+success
+
+insert into T1 values (40,false);
+success
+
+insert into T1 values (50,FALSE);
+success
+
+insert into T1 values (60,0);
+success
+
+// null
+insert into T1 (id) values (70);
+success
+
+// select from T1
+select * from T1;
+rows:
+  (10,true)
+  (20,true)
+  (30,true)
+  (40,false)
+  (50,false)
+  (60,false)
+  (70,null)
+
+// drop table
+drop table T1;
+success
+
+// create a table , no size in varchar
+create table T1 (
+  id      integer,
+  status  boolean NOT NULL
+) partition by (status);
+success
+
+// table should have gotten created
+select table_name from rapids.system.tables where catalog_name = 'RAPIDSSE';
+rows:
+  ('T1')
+
+// there should be no indexes on it
+select * from rapids.system.indexes;
+  rows: 0
+
+// check metadata
+select data_type, is_partition_key, is_nullable, precision, scale from rapids.system.columns where
+table_name = 'T1'  and column_name = 'STATUS';
+rows:
+  ('BOOLEAN', true, false, 0, null)
+
+// insert rows in the table
+insert into T1 values (10,true);
+success
+
+insert into T1 values (20,TRUE);
+success
+
+insert into T1 values (30,10);
+success
+
+insert into T1 values (40,false);
+success
+
+insert into T1 values (50,FALSE);
+success
+
+insert into T1 values (60,0);
+success
+
+// null
+insert into T1 (id) values (70);
+failure
+
+// insert invalid boolean values
+insert into T1 values (120,'TR');
+failure
+
+// insert invalid boolean values
+insert into T1 values (110,'XY');
+failure
+
+// select from T1
+select * from T1;
+rows:
+  (10,true)
+  (20,true)
+  (30,true)
+  (40,false)
+  (50,false)
+  (60,false)
+
+// drop table
+drop table T1;
+success
+
+CLEANUP {
+  drop table T1;
+  mute
+}

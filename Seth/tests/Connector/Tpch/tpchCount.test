@@ -1,0 +1,41 @@
+--------------------------------------------------------------------------------
+-- tpch insert-select tests (SF1)
+-------------------------------------------------------------------------------
+  
+-- refresh metadata
+refresh;
+success
+
+loop 50 {
+select * from region;
+rows: 5
+
+select * from nation;
+rows: 25
+
+select * from supplier;
+rows: 10000
+
+select * from customer;
+rows: 150000
+
+select * from part;
+rows: 200000
+
+select * from partsupp;
+rows: 800000
+
+select * from orders;
+rows: 1500000
+
+select * from lineitem;
+rows: 6001215
+}
+
+} // end of loop
+
+CLEANUP {
+
+}
+
+

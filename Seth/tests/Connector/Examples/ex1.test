@@ -1,0 +1,20 @@
+-- Example test file for running commands against RapidsDB.
+
+reresh;
+success
+
+SELECT * FROM rapids.system.tables;
+rows:
+  ('RAPIDS', 'SYSTEM', 'NODES',           false)
+  ('RAPIDS', 'SYSTEM', 'FEDERATIONS',     false)
+  ('RAPIDS', 'SYSTEM', 'CONNECTORS',      false)
+  ('RAPIDS', 'SYSTEM', 'TABLE_PROVIDERS', false)
+  ('RAPIDS', 'SYSTEM', 'TABLES',          false)
+  ('RAPIDS', 'SYSTEM', 'SCHEMAS',         false)
+  ('RAPIDS', 'SYSTEM', 'COLUMNS',         false)
+  ('RAPIDS', 'SYSTEM', 'INDEXES',         false)
+  ('RAPIDS', 'SYSTEM', 'CATALOGS',        false)
+
+CLEANUP {
+
+}

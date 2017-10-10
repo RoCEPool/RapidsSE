@@ -1,0 +1,144 @@
+//----------------------------------------------------------------------------//
+// create table with INTEGER column tests
+//----------------------------------------------------------------------------//
+
+// create a table , no size in varchar
+create table T1 (
+  name    varchar,
+  id      integer
+);
+success
+
+// table should have gotten created
+select table_name from rapids.system.tables where catalog_name = 'RAPIDSSE';
+rows:
+  ('T1')
+
+// there should be no indexes on it
+select * from rapids.system.indexes;
+rows: 0
+
+// check metadata
+select data_type, is_partition_key, is_nullable, precision from rapids.system.columns where
+  table_name = 'T1' and column_name = 'ID';
+rows:
+  ('INTEGER', false, true, 19)
+
+// check partition key is first column
+select column_name from rapids.system.columns where table_name = 'T1' and is_partition_key = true;
+rows:
+  ('NAME')
+
+// insert rows in the table
+insert into T1 values ('abc',10);
+success
+
+insert into T1 values ('abc',-20);
+success
+
+insert into T1 values ('abc',0);
+success
+
+//max
+insert into T1 values ('abc',+9223372036854775807);
+success
+
+// min
+insert into T1 values ('abc',-9223372036854775807);
+success
+
+// null
+insert into T1 (name) values ('abc');
+success
+
+// insert larger than max integer
+insert into T1 values ('abc',9223372036854775808);
+failure
+
+// insert smaller than min integer
+insert into T1 values ('abc',-9223372036854775808);
+failure
+
+// select from T1
+select * from T1;
+rows:
+  ('abc',null)
+  ('abc',-9223372036854775807)
+  ('abc',-20)
+  ('abc',0)
+  ('abc',10)
+  ('abc',+9223372036854775807)
+
+// drop table
+drop table T1;
+success
+
+// create a table , no size in varchar
+create table T1 (
+  name    varchar,
+  id      integer(10) NOT NULL
+) partition by (id);
+success
+
+// table should have gotten created
+select table_name from rapids.system.tables where catalog_name = 'RAPIDSSE';
+rows:
+  ('T1')
+
+// there should be no indexes on it
+select * from rapids.system.indexes;
+  rows: 0
+
+// check metadata
+select data_type, is_partition_key, is_nullable, precision from rapids.system.columns where
+table_name = 'T1'  and column_name = 'ID';
+rows:
+  ('INTEGER', true, false, 19)
+
+// insert rows in the table
+insert into T1 values ('abc',10);
+success
+
+insert into T1 values ('abc',-20);
+success
+
+insert into T1 values ('abc',0);
+success
+
+//max
+insert into T1 values ('abc',+9223372036854775807);
+success
+
+// min
+insert into T1 values ('abc',-9223372036854775807);
+success
+
+// null
+insert into T1 (name) values ('abc');
+failure
+
+// insert larger than max integer
+insert into T1 values ('abc',9223372036854775808);
+failure
+
+// insert smaller than min integer
+insert into T1 values ('abc',-9223372036854775808);
+failure
+
+// select from T1
+select * from T1;
+rows:
+('abc',-9223372036854775807)
+('abc',-20)
+('abc',0)
+('abc',10)
+('abc',+9223372036854775807)
+
+// drop table
+drop table T1;
+success
+
+CLEANUP {
+  drop table T1;
+  mute
+}
