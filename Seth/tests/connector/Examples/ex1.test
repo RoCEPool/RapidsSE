@@ -1,5 +1,8 @@
 -- Example test file for running commands against RapidsDB.
 
+reresh;
+success
+
 SELECT * FROM rapids.system.tables;
 rows:
   ('RAPIDS', 'SYSTEM', 'NODES',           false)

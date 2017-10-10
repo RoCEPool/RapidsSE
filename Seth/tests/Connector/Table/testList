@@ -1,0 +1,5 @@
+booleanColumn.test
+decimalColumn.test
+integerColumn.test
+timestampColumn.test
+varcharColumn.test

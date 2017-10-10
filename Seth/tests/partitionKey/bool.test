@@ -6,16 +6,18 @@
 create table boolTable (
   key1   BOOLEAN NOT NULL,
   value INTEGER,
-  name  VARCHAR(32) NOT NULL,
-  PRIMARY KEY(key1),
-  index idx1 on (key1,value)
+  name  VARCHAR(32) NOT NULL
 ) partition by (key1);
 success
 
 // check columns of partition key
 lspartcol boolTable;
 rows:
-  ('key')
+  ('key1')
+
+// create an index
+create index idx1 on boolTable (key1);
+success;
 
 // load data into the table
 ld boolTable "../Seth/tests/partitionKey/bool.csv";

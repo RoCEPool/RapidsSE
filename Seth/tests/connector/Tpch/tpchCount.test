@@ -22,14 +22,14 @@ rows: 150000
 select * from part;
 rows: 200000
 
-//select * from partsupp;
-//rows: 800000
+select * from partsupp;
+rows: 800000
 
-//select * from orders;
-//rows: 1500000
+select * from orders;
+rows: 1500000
 
-//select * from lineitem;
-//rows: 6001215
+select * from lineitem;
+rows: 6001215
 }
 
 } // end of loop

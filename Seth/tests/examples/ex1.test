@@ -69,7 +69,7 @@ unordered rows:
 -- Example of expecting an set of rows in a particular order.
 -- Expected rows can be ordered or unordered. Unless explicitly specified,
 -- expected rows are unordered by default.
-/*
+
 fetch j10;
 ordered rows:
   (0, '2|two|')
@@ -82,7 +82,6 @@ ordered rows:
   (3, '5|five|')
   (3, '6|six|')
   (3, '9|nine|')
-*/
 
 
 // Example of expecting a failure.

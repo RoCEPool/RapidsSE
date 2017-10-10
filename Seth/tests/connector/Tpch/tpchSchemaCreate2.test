@@ -15,7 +15,9 @@ C_NATIONKEY     INTEGER,
 C_PHONE         VARCHAR(15),
 C_ACCTBAL       DECIMAL(15,2),
 C_MKTSEGMENT    VARCHAR(10),
-C_COMMENT       VARCHAR(117)
+C_COMMENT       VARCHAR(117),
+index customer_idx1 on c_custkey,
+index customer_idx2 on c_nationkey
 );
 success;
 
@@ -35,7 +37,10 @@ L_COMMITDATE    TIMESTAMP,
 L_RECEIPTDATE   TIMESTAMP,
 L_SHIPINSTRUCT  VARCHAR(25),
 L_SHIPMODE      VARCHAR(10),
-L_COMMENT       VARCHAR(44)
+L_COMMENT       VARCHAR(44),
+index lineitem_idx1 on l_partkey,
+index lineitem_idx2 on l_shipdate,
+index lineitem_idx3 on l_suppkey
 );
 success;
 
@@ -56,7 +61,8 @@ O_ORDERDATE       TIMESTAMP,
 O_ORDERPRIORITY   VARCHAR(15),
 O_CLERK           VARCHAR(15),
 O_SHIPPRIORITY    INTEGER,
-O_COMMENT         VARCHAR(79)
+O_COMMENT         VARCHAR(79),
+index orders_idx1 on o_orderdate
 );
 success;
 
@@ -69,7 +75,8 @@ P_TYPE              VARCHAR(25),
 P_SIZE              INTEGER,
 P_CONTAINER         VARCHAR(10),
 P_RETAILPRICE       DECIMAL(15,2),
-P_COMMENT           VARCHAR(23)
+P_COMMENT           VARCHAR(23),
+index part_idx1 on p_brand
 );
 success;
 
@@ -78,7 +85,8 @@ PS_PARTKEY      INTEGER,
 PS_SUPPKEY      INTEGER,
 PS_AVAILQTY     INTEGER,
 PS_SUPPLYCOST   DECIMAL(15,2),
-PS_COMMENT      VARCHAR(199)
+PS_COMMENT      VARCHAR(199),
+index partsupp_idx1 on ps_suppkey
 );
 success;
 
@@ -96,7 +104,9 @@ S_ADDRESS       VARCHAR(40),
 S_NATIONKEY     INTEGER,
 S_PHONE         VARCHAR(15),
 S_ACCTBAL       DECIMAL(15,2),
-S_COMMENT       VARCHAR(101)
+S_COMMENT       VARCHAR(101),
+index supplier_idx1 on s_suppkey,
+index supplier_idx2 on s_nationkey
 );
 success;
 

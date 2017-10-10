@@ -1,0 +1,37 @@
+--------------------------------------------------------------------------------
+-- tpch drop schema tables (SF1)
+-------------------------------------------------------------------------------
+  
+-- refresh metadata
+refresh;
+success
+
+drop table customer;
+success
+
+drop table supplier;
+success
+
+drop table orders;
+success
+
+drop table partsupp;
+success
+
+drop table part;
+success
+
+drop table region;
+success
+
+drop table lineitem;
+success
+
+drop table nation;
+success
+
+CLEANUP {
+
+}
+
+

@@ -2,10 +2,10 @@
 -- tpch insert-select tests (SF1)
 -------------------------------------------------------------------------------
 
-LOOP 20 {
-  
+//LOOP 2 {
+
 // create the schema
-INCLUDE 'tpchSchema2.test';
+INCLUDE 'tpchSchemaCreate2.test';
   
 // refresh again
 refresh;
@@ -43,55 +43,14 @@ rows: 0
 //insert into lineitem2 select * from lineitem;
 //rows: 0
 
-drop table customer2;
-success
+INCLUDE tpchCount2.test
 
-drop table supplier2;
-success
+//INCLUDE tpchQueries2.test
 
-drop table orders2;
-success
-
-drop table partsupp2;
-success
-
-drop table part2;
-success
-
-drop table region2;
-success
-
-drop table lineitem2;
-success
-
-drop table nation2;
-success
-
-} // end of loop
+//} // end of loop
 
 CLEANUP {
-  drop table customer2;
-  mute
-  
-  drop table supplier2;
-  mute
-  
-  drop table orders2;
-  mute
-  
-  drop table partsupp2;
-  mute
-  
-  drop table part2;
-  mute
-    
-  drop table region2;
-  mute
-  
-  drop table lineitem2;
-  mute
-  
-  drop table nation2;
+  bye;
   mute
 }
 
