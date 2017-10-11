@@ -59,7 +59,7 @@ namespace DBobjects
     // index
     void vSetEntry(EntWrk& xEntWrk);
     void vSetEntry(Id xId, i8 iKey, Entry* pOldEntry);
-    void vShow(i8 iBase, Index* pIndex);
+    void vShow(i8 iBase, Index* pIndex, bool bShowKey);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // row

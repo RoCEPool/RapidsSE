@@ -387,7 +387,7 @@ void Entry::vSetEntry(Id xId, i8 iKey, Entry* pOldEntry)
 /*----------------------------------------------------------------------------*/
 /* show content                                                               */
 /*----------------------------------------------------------------------------*/
-void Entry::vShow(i8 iBase, Index* pIndex)
+void Entry::vShow(i8 iBase, Index* pIndex, bool bShowKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
   
@@ -413,7 +413,8 @@ void Entry::vShow(i8 iBase, Index* pIndex)
          m_xId.iRow()
          );
   
-  aKey->vShow(pIndex->pIdxColVec());
+  if (bShowKey)
+    aKey->vShow(pIndex->pIdxColVec());
 
   if (pIndex->bIsHidden()) {
     char* pRow = aRow();

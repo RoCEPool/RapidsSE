@@ -1272,9 +1272,12 @@ void EntryBuffer::vShow(void)
          m_pPrevBuffer,
          m_pNextBuffer);
   
-  for (Entry* pEntry = pHead(); pEntry != nullptr; pEntry = pNextEntry(pEntry)) {
+  Entry* pHeadEntry = pHead();
+  pHeadEntry->vShow(iToOffsetAbs(pHeadEntry), m_pIndex, false);
+  
+  for (Entry* pEntry = pFirstEntry(); pEntry != nullptr; pEntry = pNextEntry(pEntry)) {
     vTrace("%8lld: "_Stz, nSub(pEntry, m_xWsp.aArea()));
-    pEntry->vShow(iToOffsetAbs(pEntry), m_pIndex);
+    pEntry->vShow(iToOffsetAbs(pEntry), m_pIndex, true);
   }
   
   vTrace("\n"_Stz);
