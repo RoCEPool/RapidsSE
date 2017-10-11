@@ -1,15 +1,14 @@
---
--- An example showing looping of commands.
---
+/*----------------------------------------------------------------------------*/
+/* An example showing looping of commands.                                    */
+/*----------------------------------------------------------------------------*/
 
-
--- First, ensure that the table foo does not exist.
+// First, ensure that the table foo does not exist.
 drop table foo;
 mute
 
 
--- Loop for a period of time, executing all the commands in 
--- the enclosing block below
+// Loop for a period of time, executing all the commands in
+// the enclosing block below
 LOOP FOR 5 SECONDS {
 
   -- We also accept HOURS, MINUTES, and MILLISECONDS.

@@ -30,9 +30,6 @@ rows: 1500000
 
 select * from lineitem;
 rows: 6001215
-}
-
-} // end of loop
 
 CLEANUP {
 
