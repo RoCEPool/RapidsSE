@@ -1,0 +1,65 @@
+--------------------------------------------------------------------------------
+-- tpch insert-select tests (SF1)
+-------------------------------------------------------------------------------
+
+loop 1 {
+create table part1 (
+P_PARTKEY           INTEGER NOT NULL,
+P_NAME              VARCHAR(55) NOT NULL,
+P_MFGR              VARCHAR(25) NOT NULL,
+P_BRAND             VARCHAR(10) NOT NULL,
+P_TYPE              VARCHAR(25) NOT NULL,
+P_SIZE              INTEGER NOT NULL,
+P_CONTAINER         VARCHAR(10) NOT NULL,
+P_RETAILPRICE       DECIMAL(15,2) NOT NULL,
+P_COMMENT           VARCHAR(23) NOT NULL
+);
+success
+
+CREATE INDEX part_idx1 ON part1(p_brand);
+success
+
+ESCAPE CONNECTOR se 'load part1 /tpch/part.tbl' WITH node = 'Node1' ;
+success
+
+create table part2 (
+P_PARTKEY           INTEGER NOT NULL,
+P_NAME              VARCHAR(55) NOT NULL,
+P_MFGR              VARCHAR(25) NOT NULL,
+P_BRAND             VARCHAR(10) NOT NULL,
+P_TYPE              VARCHAR(25) NOT NULL,
+P_SIZE              INTEGER NOT NULL,
+P_CONTAINER         VARCHAR(10) NOT NULL,
+P_RETAILPRICE       DECIMAL(15,2) NOT NULL,
+P_COMMENT           VARCHAR(23) NOT NULL
+);
+success
+
+
+insert into part2 select * from part1;
+success
+
+select * from part2;
+rows: 200000
+
+drop table part1;
+success
+
+drop table part2;
+success
+
+}
+
+CLEANUP {
+  
+  drop table part1;
+  mute
+  
+  drop table part2;
+  mute
+  
+  bye;
+  mute
+}
+
+

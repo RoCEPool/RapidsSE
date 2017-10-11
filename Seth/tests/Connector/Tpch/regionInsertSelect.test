@@ -1,0 +1,51 @@
+--------------------------------------------------------------------------------
+-- tpch insert-select tests (SF1)
+-------------------------------------------------------------------------------
+
+loop 1 {
+create table region1 (
+R_REGIONKEY       INTEGER NOT NULL,
+R_NAME            VARCHAR(25) NOT NULL,
+R_COMMENT         VARCHAR(152)
+);
+
+success
+
+ESCAPE CONNECTOR se 'load region1 /tpch/region.tbl' WITH node = 'Node1' ;
+success
+
+create table region2 (
+R_REGIONKEY       INTEGER NOT NULL,
+R_NAME            VARCHAR(25) NOT NULL,
+R_COMMENT         VARCHAR(152)
+);
+success
+
+
+insert into region2 select * from region1;
+success
+
+select * from region2;
+rows: 5
+
+drop table region1;
+success
+
+drop table region2;
+success
+
+}
+
+CLEANUP {
+  
+  drop table region1;
+  mute
+  
+  drop table region2;
+  mute
+  
+  bye;
+  mute
+}
+
+

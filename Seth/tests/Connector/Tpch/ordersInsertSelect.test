@@ -1,0 +1,66 @@
+--------------------------------------------------------------------------------
+-- tpch insert-select tests (SF1)
+-------------------------------------------------------------------------------
+
+loop 1 {
+create table orders1 (
+O_ORDERKEY        INTEGER NOT NULL,
+O_CUSTKEY         INTEGER NOT NULL,
+O_ORDERSTATUS     VARCHAR(1) NOT NULL,
+O_TOTALPRICE      DECIMAL(15,2) NOT NULL,
+O_ORDERDATE       TIMESTAMP NOT NULL,
+O_ORDERPRIORITY   VARCHAR(15) NOT NULL,
+O_CLERK           VARCHAR(15) NOT NULL,
+O_SHIPPRIORITY    INTEGER NOT NULL,
+O_COMMENT         VARCHAR(79) NOT NULL
+);
+success
+
+CREATE INDEX orders_idx1 ON orders1(o_orderdate);success
+
+ESCAPE CONNECTOR se 'load orders1 /tpch/orders.tbl' WITH node = 'Node1' ;
+success
+
+create table orders2 (
+O_ORDERKEY        INTEGER NOT NULL,
+O_CUSTKEY         INTEGER NOT NULL,
+O_ORDERSTATUS     VARCHAR(1) NOT NULL,
+O_TOTALPRICE      DECIMAL(15,2) NOT NULL,
+O_ORDERDATE       TIMESTAMP NOT NULL,
+O_ORDERPRIORITY   VARCHAR(15) NOT NULL,
+O_CLERK           VARCHAR(15) NOT NULL,
+O_SHIPPRIORITY    INTEGER NOT NULL,
+O_COMMENT         VARCHAR(79) NOT NULL
+);
+success
+
+CREATE INDEX orders_idx1 ON orders2(o_orderdate);
+success
+
+insert into orders2 select * from orders1;
+success
+
+select * from orders2;
+rows: 1500000
+
+drop table orders1;
+success
+
+drop table orders2;
+success
+
+}
+
+CLEANUP {
+  
+  drop table orders1;
+  mute
+  
+  drop table orders2;
+  mute
+  
+  bye;
+  mute
+}
+
+
