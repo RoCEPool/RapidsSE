@@ -1635,22 +1635,19 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel)
     //vTrace("%p(%lld) got row %s\n"_Stz,  \
     //       pSEitf, pSEitf ? pSEitf->iPartition() : -1, pRow);
     
-    // is this row for this seitf partition ?
-    if (pSEitf->m_iPartition == iRowPartition) {
-      
-      //RowData::vShow(s, pSEitf->m_pCurrentTable->pColumnVec());
-      TRACE_INSERT("e"_Stz, pRow);
-      
-      // insert the row in this partition
-      bool bResult = pSEitf->bInsertRow(s, iRowLength);
-     
-      if (!bResult) {
-        pSEitf->vSetLastError(pSEitf->m_eErrorCode);
-        TRACE_ERROR("f"_Stz, pSEitf->m_eErrorCode);
-        return pSEitf->m_eErrorCode;
-      }
-     
+    
+    //RowData::vShow(s, pSEitf->m_pCurrentTable->pColumnVec());
+    TRACE_INSERT("e"_Stz, pRow);
+    
+    // insert the row in this partition
+    bool bResult = pSEitf->bInsertRow(s, iRowLength, iRowPartition);
+   
+    if (!bResult) {
+      pSEitf->vSetLastError(pSEitf->m_eErrorCode);
+      TRACE_ERROR("f"_Stz, pSEitf->m_eErrorCode);
+      return pSEitf->m_eErrorCode;
     }
+    
     
     // validate table
     VALIDATE_TABLE("f"_Stz);

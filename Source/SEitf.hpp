@@ -180,8 +180,11 @@ namespace Interface
     bool bRetTask(TokenVec& xTokenVec, i8 iReqNo);
   
     bool bInsertRow(Stz* pRow, i8 iLength);
+    bool bInsertRow(Stz* pRow, i8 iLength, i8 iPartition);
     bool bInsertBuffer(void);
+    bool bInsertBuffer(i8 iPartition);
     bool bInsertEntriesTable(EntryBuffer* pRowBuffer, i8 iPartition);
+    bool bInsertEntriesTableSlot(EntryBuffer* pRowBuffer, i8 iSlot);
     
     bool bChangeFolder(TokenVec& xTokenVec, i8 iReqNo);
     bool bPrintWorkingFolder(TokenVec& xTokenVec, i8 iReqNo);

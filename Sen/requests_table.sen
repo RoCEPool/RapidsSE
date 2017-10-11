@@ -91,7 +91,19 @@ ddlLock::grabRead
 /*----------------------------------------------------------------------------*/
 /* insert entries from row buffer into table                                  */
 /*----------------------------------------------------------------------------*/
-: insertTableEntries_req ( "table", "buffer", "partition" -- <R> )
+: insertTableEntriesSlot_req ( tablePtr, bufferPtr, slot -- <R> )
+
+ddlLock::grabRead
+
+table.insertEntries
+
+<OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* insert entries from row buffer into table                                  */
+/*----------------------------------------------------------------------------*/
+: insertTableEntries_req ( "table", "bufferPtr", "partition" -- <R> )
 
 ddlLock::grabRead
 
