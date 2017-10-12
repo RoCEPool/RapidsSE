@@ -681,6 +681,7 @@ void Thread::vLoop_Server(void)
     // when task yields, task is put into task set
     
     if (TS_YIELDED == m_npTask->eState()) {
+      vTrace("Thread %p: Task %p has yielded\n"_Stz,this,*m_npTask);
       m_npTask->vThread(nullptr);
       MP_Task mpTask = *m_npTask;
       vAppend(mpTask);

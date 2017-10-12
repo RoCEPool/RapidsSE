@@ -70,7 +70,7 @@ Atomic        gzPlanId;
 BitMap*       gpBitMap;
 
 /*----------------------------------------------------------------------------*/
-/* execute arguments                                                          */
+/* execute command line                                                       */
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vExecuteCmdLine(void)
 {

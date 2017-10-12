@@ -209,7 +209,7 @@ void Task::vLoaderSubLoadData(MP_Task mpTask)
     // hash the record
     pLoaderSub->vHashRecord();
     
-    // attenpt to insert the record
+    // attempt to insert the record
     bool bInserted = pLoaderSub->bInsertRow();
     
     // check if buffer was full
