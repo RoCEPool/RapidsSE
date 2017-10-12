@@ -107,7 +107,8 @@ void ServerScheduler::vEnqueueTask_Mutex(Task* mpTask)
 
   // no available threads, so queue the task
   m_xTaskQueue.vAppend(mpTask);
- 
+  //vTrace("Queueing as no threads...%lld\n"_Stz, m_xTaskQueue.iCount());
+  
   giSchEnqueueTaskWait++;
   
   // allow another thread to continue

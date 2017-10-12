@@ -795,6 +795,8 @@ tp: populateIndex
     // mark that a fetch task has ended
     pSeitf seitf.fetchTaskEnded
 
+    //"select ended...B" .
+
     exit
   then
 
@@ -840,6 +842,10 @@ tp: populateIndex
           0 to entry
         then
       then
+
+      // yield
+      task.yield
+
     repeat
 
   // mark this buffer as the last buffer
@@ -852,6 +858,9 @@ tp: populateIndex
 
   // mark that a fetch task has ended
   pSeitf seitf.fetchTaskEnded
+
+  //"select ended...A" .
+
 ;
 
 /*----------------------------------------------------------------------------*/

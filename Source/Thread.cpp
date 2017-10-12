@@ -657,7 +657,8 @@ void Thread::vLoop_Server(void)
     }
     
     ASSERT(m_npTask->eActorModel() == AC_SERVER);
-    
+    //vTrace("Thread %p: Task %p is executing Que:%lld\n"_Stz,this,*m_npTask, m_pTaskSet->iCount());
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // set up this thread to run task
     
@@ -681,10 +682,11 @@ void Thread::vLoop_Server(void)
     // when task yields, task is put into task set
     
     if (TS_YIELDED == m_npTask->eState()) {
-      vTrace("Thread %p: Task %p has yielded\n"_Stz,this,*m_npTask);
+      //vTrace("Thread %p: Task %p has yielded\n"_Stz,this,*m_npTask);
       m_npTask->vThread(nullptr);
       MP_Task mpTask = *m_npTask;
-      vAppend(mpTask);
+      //vAppend(mpTask);
+      ((ServerScheduler*)m_pScheduler)->vEnqueueTask_Mutex(*mpTask);
       m_npTask = nullptr;
       continue;
     }

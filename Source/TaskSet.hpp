@@ -6,7 +6,7 @@
 namespace Tasks
 {
   class TaskSet : public Object,
-                  List_t<Task>
+                  public List_t<Task>
   {
   private:
     Lock    m_xLock;

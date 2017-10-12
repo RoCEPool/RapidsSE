@@ -320,7 +320,7 @@ void Table::vInsertEntries(i8 iSlot, EntryBuffer* pEntryBuffer)
   ASSERT(iSlot < gpGrid->m_nSlots);
   
   // buffer should be temporary
-  ASSERT(pEntryBuffer->eDurability() == BD_TEMPORARY);
+  //ASSERT(pEntryBuffer->eDurability() == BD_TEMPORARY);
   
   // buffer should have some entries
   ASSERT(pEntryBuffer->nEntries() > 1);

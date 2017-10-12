@@ -5,7 +5,7 @@
 
 namespace Dictionaries
 {
-  static const i8 C_VALREGS = 16;
+  static const i8 C_VALREGS = 32;
   
   class RegFrame : public Buffer
   {
