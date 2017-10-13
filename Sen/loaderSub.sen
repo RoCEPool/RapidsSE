@@ -100,13 +100,13 @@ tp: loadAppendBuffer$
 /*----------------------------------------------------------------------------*/
 /* forward append of rowbuffer to participant for partition                   */
 /*----------------------------------------------------------------------------*/
-: ~loadAppendBuffer ( pLoaderSub -- )
+: ~loadAppendBuffer ( pLoaderSEitf pLoaderSub -- )
 
 //"~loadAppendBuffer" .
 
 tp: ~loadAppendBuffer
 
-   0 locals| pRowBuffer pLoaderSub |
+   0 locals| pRowBuffer pLoaderSub pLoaderSEitf |
 
   // why:
   //   loaderSub has a full rowBuffer which needs to be sent to participant
@@ -131,7 +131,12 @@ tp: ~loadAppendBuffer
   pLoaderSub loaderSub.rowBuffer@ to pRowBuffer
   //pRowBuffer entryBuffer.dump
 
+  "~loadAppendBuffer" .
+  pLoaderSEitf .
+  grid.thisNode@ .
   <<
+//    task::this task.seitf@
+//    grid.thisNode@
     pRowBuffer                                    ( << rb )
     pRowBuffer entryBuffer.isLast@
     nullPtr pLoaderSub loaderSub.rowBuffer!  // set working row buffer to null
@@ -175,7 +180,7 @@ tp: theIndirectResult
 
   // first set the taskset in this task
   // needed when being resumed by coordinator
-  0 0 0 locals| iPartitionNo ploaderSub iTotalPartitions |
+  0 0 0 0 locals| iPartitionNo ploaderSub iTotalPartitions pLoaderSEitf |
 
   task::this task.thread thread.taskset@
   task::this task.taskset!
@@ -186,6 +191,11 @@ tp: theIndirectResult
   // expand args valset
   valset> drop
   to pLoaderSub
+
+  to pLoaderSEitf
+
+  "loadSub pLoaderSEitf ..." .
+  pLoaderSEitf .
 
   // get table, tx and load map from parent loader
   //   open the chunked file
@@ -203,7 +213,7 @@ tp: theIndirectResult
       while
 
        // append row buffer to table/partition/strand
-       pLoaderSub ~loadAppendBuffer
+       pLoaderSEitf pLoaderSub ~loadAppendBuffer
 
      repeat
   then
@@ -229,7 +239,7 @@ tp: theIndirectResult
       entryBuffer.isLast!
 
       // append row buffer to table/partition/strand
-      pLoaderSub ~loadAppendBuffer
+      pLoaderSEitf pLoaderSub ~loadAppendBuffer
 
     else
 
@@ -248,7 +258,7 @@ tp: theIndirectResult
         entryBuffer.isLast!
 
         // append row buffer to table/partition/strand
-        pLoaderSub ~loadAppendBuffer
+        pLoaderSEitf pLoaderSub ~loadAppendBuffer
       //then
 
     then

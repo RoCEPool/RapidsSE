@@ -33,6 +33,9 @@ timer: loadTimer
   assert::stack_2 ( "<path>" "<tableNm>" )
   0 locals| pSubTask sTableNm sPath |
 
+  "TableLoader seitf..." .
+  task::this task.seitf@ .
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if path file exists                                 //! refactor this
 
@@ -83,7 +86,7 @@ timer: loadTimer
 
   N_SERVER_THREADS 0 do
 
-    << tblLoader loader.newSub >>
+    << task::this task.seitf@ tblLoader loader.newSub >>
 
     pathGet >>
 
