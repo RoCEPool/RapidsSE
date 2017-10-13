@@ -39,12 +39,17 @@
 /*----------------------------------------------------------------------------*/
 /* append row buffer to partition of given named table                        */
 /*----------------------------------------------------------------------------*/
-: loadAppendBuffer$ ( rowBuffer isLast partitionNo "<indexNm>" "<tableNm>" -- true )
+: loadAppendBuffer$ ( pLoaderSEitf iLoaderNode rowBuffer isLast partitionNo "<indexNm>" "<tableNm>" -- true )
 
 //"loadAppendBuffer$" .
 
 tp: loadAppendBuffer$
-  0 0 locals| pIndex pTable sTableNm sIndexNm iPartitionNo bIsLast pRowBuffer |
+  0 0 locals| pIndex pTable sTableNm sIndexNm iPartitionNo bIsLast pRowBuffer
+              iLoaderNode pLoaderSEitf |
+
+  "loadAppendBuffer$..." .
+  pLoaderSEitf .
+  iLoaderNode .
 
   // why:
   //   loaderSub has forwarded a full rowBuffer which needs to be
@@ -87,9 +92,9 @@ tp: loadAppendBuffer$
    pRowBuffer entryBuffer.isLast!
   then
 
-  pRowBuffer iPartitionNo  pTable    ( rb ptn tablePtr )
+  pLoaderSEitf iLoaderNode pRowBuffer iPartitionNo  pTable    ( rb ptn tablePtr )
 
-  3 "partitionAppendBuffer" iPartitionNo grid::toSlot dup >partitionTaskNm
+  5 "partitionAppendBuffer" iPartitionNo grid::toSlot dup >partitionTaskNm
   TK_LOADSUB_PART
 
   spawnPartitionTask
@@ -135,8 +140,8 @@ tp: ~loadAppendBuffer
   pLoaderSEitf .
   grid.thisNode@ .
   <<
-//    task::this task.seitf@
-//    grid.thisNode@
+    pLoaderSEitf
+    grid.thisNode@
     pRowBuffer                                    ( << rb )
     pRowBuffer entryBuffer.isLast@
     nullPtr pLoaderSub loaderSub.rowBuffer!  // set working row buffer to null
@@ -276,10 +281,13 @@ tp: theIndirectResult
 /*----------------------------------------------------------------------------*/
 /* partition task appends the row buffer to the table                         */
 /*----------------------------------------------------------------------------*/
-: partitionAppendBuffer ( rowBuffer partitionNo table^ -- )
+: partitionAppendBuffer ( pLoaderSEitf iLoaderNode rowBuffer partitionNo table^ -- )
 
 tp: partitionAppendBuffer
-  locals| pTable iPartitionNo pRowBuffer |
+  locals| pTable iPartitionNo pRowBuffer iLoaderNode pLoaderSEitf |
+
+  "partitionAppendBuffer pLoaderSEitf ..." .
+  pLoaderSEitf .
 
   //pRowBuffer entryBuffer.isLast@ if
   //  iPartitionNo "appending last buffer for partition " "%v %v" str.format .
