@@ -295,7 +295,43 @@ tp: partitionAppendBuffer
 
   pRowBuffer iPartitionNo pTable table.appendBuffer ( )
 
-  discard
+  //not if exit then
+  exit
+
+  "sending got..." .
+
+  <<
+  pLoaderSEitf  ( << pLoaderSEitf )
+  "ackSEitf$"   ( << pLoaderSEitf "ackSEitf$" )
+
+  tp: theIndirectCall
+
+  >>            ( <<ackSEitf$>> )
+
+
+  // to which node/participant
+  iLoaderNode  ( <<ackSEitf$>> node )
+
+  "forwarding ackSEitf$ to coordinator..." .
+  // forward to coordinator and wait
+  >>oneParticipant> ( bool )
+  "did get reply from ackSEitf$..." .
+
+  checkResult
+;
+
+/*----------------------------------------------------------------------------*/
+/* ackSEitf$                                                                  */
+/*----------------------------------------------------------------------------*/
+: ackSEitf$ ( pLoaderSEitf )
+
+  locals| pLoaderSEitf |
+
+  "ackSEitf$ got..." .
+
+  pLoaderSEitf .
+
+  <OK> //true <SUCCESS_RESULT>
 ;
 
 /*============================================================================*/
