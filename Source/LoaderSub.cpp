@@ -120,7 +120,7 @@ void LoaderSub::vAppendBuffer(void)
   m_pEntryBuffer[m_iPartition] = nullptr;
   
   // append working buffer into table
-  m_pTable->vAppendBuffer(m_iPartition,pEntryBuffer);
+  bool bIndexesLoaded = m_pTable->bAppendBuffer(m_iPartition,pEntryBuffer);
 }
 
 /*----------------------------------------------------------------------------*/

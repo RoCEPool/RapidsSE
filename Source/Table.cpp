@@ -231,9 +231,9 @@ Stz* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append row buffer                                                          */
+/* append row buffer; return true if all indexes were also loaded             */
 /*----------------------------------------------------------------------------*/
-void Table::vAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
+bool Table::bAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
 { //# indexTuning
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
@@ -263,14 +263,14 @@ void Table::vAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
   
   // we build the other indexes when we detect the last buffer being inserted
   if ( ! bLastBuffer )
-    return;
+    return false;
   
   // decrement no of subLoaders that have appended last buffer
   --m_ziSubLoaders[iPartition];
   
   // check if any sub loaders still have more buffers
   if ( *m_ziSubLoaders[iPartition] != 0 )
-    return;
+    return false;
   
   // compute the number of entries in hidden index
   i8 nHiddenEntries = nHiddenEntryCount(pHiddenIndexData->pRoot());
@@ -302,6 +302,8 @@ void Table::vAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
   
   // mark indexes being loaded
   --m_ziIndexesLoaded;
+  
+  return true;
  
   // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
 }

@@ -276,6 +276,8 @@ tp: partitionAppendBuffer
   //then
 
   pRowBuffer iPartitionNo pTable table.appendBuffer ( )
+
+  discard
 ;
 
 /*============================================================================*/

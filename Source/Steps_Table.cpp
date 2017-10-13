@@ -170,7 +170,9 @@ void Task::vTableAppendBuffer(MP_Task mpTask)
   
   i8 iSlot = Partition::iPartitionToSlot(iPartition);
   
-  pTable->vAppendBuffer(iSlot,pRowBuffer);
+  bool bIndexesLoaded = pTable->bAppendBuffer(iSlot,pRowBuffer);
+  
+  mpTask->m_pDataStack->vPushInt(bIndexesLoaded ? 1 : 0);
   
   EXIT();
 }
