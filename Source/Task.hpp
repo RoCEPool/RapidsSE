@@ -1151,6 +1151,7 @@ namespace Tasks
     static void vTaskAcksStore(MP_Task mpTask);
     static void vTaskActorModelFetch(MP_Task mpTask);
     static void vTaskActorModelStore(MP_Task mpTask);
+    static void vTaskBreakPoint(MP_Task mpTask);
     static void vTaskCommentFetch(MP_Task mpTask);
     static void vTaskCommentStore(MP_Task mpTask);
     static void vTaskDelete(MP_Task mpTask);

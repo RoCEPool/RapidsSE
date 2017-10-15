@@ -295,8 +295,12 @@ tp: partitionAppendBuffer
 
   pRowBuffer iPartitionNo pTable table.appendBuffer ( )
 
+  //iPartitionNo task::this task.thread thread.partitionNo == assert
+  //task::breakPoint
+
   //not if exit then
-  exit
+  drop exit
+
 
   "sending got..." .
 

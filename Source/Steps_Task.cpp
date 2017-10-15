@@ -24,6 +24,7 @@ extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
 extern SEitfList*      gpSEitfList;
 extern ServerScheduler*      gpServerScheduler;
+extern PartitionScheduler*   gpPartitionScheduler;
 
 extern bool            gbTracepoint;
 
@@ -39,6 +40,7 @@ void Task::vAddPrimitives_Task(void)
   vAddPrimitive("task.acks!"_Stz,     &vTaskAcksStore,     false);
   vAddPrimitive("task.actorModel@"_Stz, &vTaskActorModelFetch, false);
   vAddPrimitive("task.actorModel!"_Stz, &vTaskActorModelStore, false);
+  vAddPrimitive("task::breakPoint"_Stz, &vTaskBreakPoint,  false);
   vAddPrimitive("task.comment@"_Stz,  &vTaskCommentFetch,  false);
   vAddPrimitive("task.comment!"_Stz,  &vTaskCommentStore,  false);
   vAddPrimitive("task.delete"_Stz,    &vTaskDelete,        false);
@@ -106,6 +108,9 @@ void Task::vTaskAck(MP_Task mpTask)
     if (pThatTask->eActorModel() == AC_SERVER) {
       gpServerScheduler->vEnqueueTask_Mutex(pThatTask);
     }
+    //else if (pThatTask->eActorModel() == AC_PARTITION) {
+    //  gpPartitionScheduler->vEnqueueTask_Mutex(pThatTask);
+    //}
     else {
       Thread* pThread = pThatTask->pThread();
       pThread->m_pTaskSet->vAppend(pThatTask);
@@ -205,6 +210,16 @@ void Task::vTaskActorModelStore(MP_Task mpTask)
   
   pGivenTask->m_eActorModel = (eAC)eActorModel;
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.breakPoint -- break point so we can examine task & thread state       */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskBreakPoint(MP_Task mpTask)
+{
+  ENTRY("vTaskBreakPoint"_Stz);
+    
   EXIT();
 }
 
