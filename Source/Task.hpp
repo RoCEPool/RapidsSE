@@ -121,6 +121,7 @@ namespace Tasks
     i8      m_iTaskNo;     // task
     eTK     m_eTaskKind;   // task kind
     eAC     m_eActorModel; // actor model
+    i8      m_iPartition;  // which partition if a partition task
     s32     m_sName;       // task name
     s32     m_sComment;    // comment
     eTS     m_eState;      // state (running, sleeping, ...)
@@ -1168,6 +1169,7 @@ namespace Tasks
     static void vTaskThis(MP_Task mpTask);
     static void vTaskParentFetch(MP_Task mpTask);
     static void vTaskParentStore(MP_Task mpTask);
+    static void vTaskPartition(MP_Task mpTask);
     static void vTaskPlanFetch(MP_Task mpTask);
     static void vTaskPlanStore(MP_Task mpTask);
     static void vTaskRequest(MP_Task mpTask);

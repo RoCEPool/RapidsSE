@@ -56,6 +56,7 @@ void Task::vAddPrimitives_Task(void)
   vAddPrimitive("task::new"_Stz,      &vTaskNew,           false);
   vAddPrimitive("task.parent@"_Stz,   &vTaskParentFetch,   false);
   vAddPrimitive("task.parent!"_Stz,   &vTaskParentStore,   false);
+  vAddPrimitive("task.partition"_Stz, &vTaskPartition,     false);
   vAddPrimitive("task.plan@"_Stz,     &vTaskPlanFetch,     false);
   vAddPrimitive("task.plan!"_Stz,     &vTaskPlanStore,     false);
   vAddPrimitive("task.request"_Stz,   &vTaskRequest,       false);
@@ -561,6 +562,18 @@ void Task::vTaskParentStore(MP_Task mpTask)
   ASSERT( ! pParentTask || CN_TASK == pParentTask->eClass());
   
   mpTask->m_pParentTask = pParentTask;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.partition -- fetch partition of task                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskPartition(MP_Task mpTask)
+{
+  ENTRY("vTaskPartition"_Stz);
+  
+  mpTask->m_pDataStack->vPushInt(mpTask->m_iPartition);
   
   EXIT();
 }

@@ -71,6 +71,8 @@ void Task::vPartitionSchedulerEnqueueTask(MP_Task mpTask)
     THROW_INVALID_DSTACK("PartitionScheduler.enqueueTask"_Stz);
   Task* pTask = _pTask(pObject);
   
+  pTask->m_iPartition = iPtnNo;
+  
   pPartitionScheduler->vEnqueueTask_Mutex(iPtnNo,pTask);
   
   EXIT();

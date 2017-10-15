@@ -223,6 +223,7 @@ void Task::vInit(Stz* aLambda)
   m_iTaskNo     = iTaskNo++;
   m_eTaskKind   = TK_NONE;
   m_eActorModel = AC_NONE;
+  m_iPartition  = -1;
   m_sName       = "<no task name>"_Stz;
   m_eState      = TS_NONE;
   m_iTxId       = -1;
