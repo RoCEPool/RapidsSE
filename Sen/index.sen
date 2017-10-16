@@ -431,6 +431,10 @@ tp: makingIndex
       // entry did not match the key, null the entry and break from loop
       0  to entry
     then
+
+    // yield
+    task.yield
+
   repeat
 
   //"Marking tempEntryBuffer as last buffer" .
@@ -560,6 +564,9 @@ tp: loadIndexes
       then
     then
 
+    // yield
+    task.yield
+
   repeat
 
   //"Marking tempEntryBuffer as last buffer" .
@@ -666,6 +673,10 @@ tp: loadIndexes
       // entry beyond upper, null the entry and break from loop
       0  to pIndexEntry
     then
+
+   // yield
+   task.yield
+
   repeat
 
   // mark this result buffer as the last buffer
@@ -1089,6 +1100,10 @@ tp: selectIndex
       // entry beyond upper, null the entry and break from loop
       0  to entry
     then
+
+    // yield
+    task.yield
+
   repeat
 
   //"Marking tempEntryBuffer as last buffer" .
