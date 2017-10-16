@@ -50,7 +50,9 @@ namespace Interface
     
     Atomic m_ziFetchTasks;
     bool   m_bSeitfExiting;
-    
+
+    Atomic m_ziAcksRemaining;
+
   
     EntryBuffer* m_pRowBuffer[C_SLOTS_PER_NODE]; // working row buffers
     GroupBy*     m_pGroupBy[C_SLOTS_PER_NODE];   // working group by
@@ -91,6 +93,11 @@ namespace Interface
     
     void   vResponseQueue(Queue* pResponseQueue);
     Queue* pResponseQueue(void);
+  
+    void   vSetAcksRemaining(i8 iAcksRemaining);
+    i8     iGetAcksRemaining(void);
+    void   vDecAcksRemaining(void);
+  
 
     //--------------------------------------------------------------------------
     

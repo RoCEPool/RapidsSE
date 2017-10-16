@@ -1004,6 +1004,9 @@ namespace Tasks
     // seitf
     static void vSEitfAccessPathFetch(MP_Task mpTask);
     static void vSEitfAccessPathStore(MP_Task mpTask);
+    static void vSEitfAcksRemainingDec(MP_Task mpTask);
+    static void vSEitfAcksRemainingFetch(MP_Task mpTask);
+    static void vSEitfAcksRemainingStore(MP_Task mpTask);
     static void vSEitfBufferQueueFetch(MP_Task mpTask);
     static void vSEitfBufferQueueStore(MP_Task mpTask);
     static void vSEitfCount(MP_Task mpTask);

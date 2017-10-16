@@ -335,7 +335,9 @@ tp: partitionAppendBuffer
 
   pLoaderSEitf .
 
-  <OK> //true <SUCCESS_RESULT>
+  pLoaderSEitf SEitf.acksRemainingDec
+
+  true <SUCCESS_RESULT>
 ;
 
 /*============================================================================*/

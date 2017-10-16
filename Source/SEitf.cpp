@@ -184,6 +184,8 @@ SEitf::SEitf(i8 iPartition)
   
   m_ziFetchTasks      = 0;
   m_bSeitfExiting     = false;
+
+  m_ziAcksRemaining = 0;
   
   SEitf* pSEitf = this;
   gpSEitfList->vAppend(pSEitf);
@@ -456,6 +458,38 @@ void SEitf::vLastBuffers(i8 nLastBuffers)
   
   //vTrace("No of fetchTasks set to %lld\n"_Stz, nLastBuffers);
   m_ziFetchTasks = m_ziLastBuffers;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get acks remaining                                                         */
+/*----------------------------------------------------------------------------*/
+i8 SEitf::iGetAcksRemaining(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  i8 iAcksRemaining = *m_ziAcksRemaining;
+  
+  return iAcksRemaining;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set acks remaining                                                         */
+/*----------------------------------------------------------------------------*/
+void SEitf::vSetAcksRemaining(i8 iAcksRemaining)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  m_ziAcksRemaining = iAcksRemaining;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dec acks remaining                                                         */
+/*----------------------------------------------------------------------------*/
+void SEitf::vDecAcksRemaining(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  --m_ziAcksRemaining;
 }
 
 /*----------------------------------------------------------------------------*/

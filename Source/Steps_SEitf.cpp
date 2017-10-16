@@ -33,6 +33,9 @@ void Task::vAddPrimitives_SEitf(void)
 {
   vAddPrimitive("seitf.accessPath@"_Stz,      &vSEitfAccessPathFetch,  false);
   vAddPrimitive("seitf.accessPath!"_Stz,      &vSEitfAccessPathStore,  false);
+  vAddPrimitive("seitf.acksRemainingDec"_Stz, &vSEitfAcksRemainingDec, false);
+  vAddPrimitive("seitf.acksRemaining@"_Stz,   &vSEitfAcksRemainingFetch, false);
+  vAddPrimitive("seitf.acksRemaining!"_Stz,   &vSEitfAcksRemainingStore, false);
   vAddPrimitive("seitf.bufferQueue@"_Stz,     &vSEitfBufferQueueFetch, false);
   vAddPrimitive("seitf.bufferQueue!"_Stz,     &vSEitfBufferQueueStore, false);
   vAddPrimitive("seitf.count"_Stz,            &vSEitfCount,            false);
@@ -112,6 +115,68 @@ void Task::vSEitfAccessPathStore(MP_Task mpTask)
   AccessPath* pAccessPath = _pAccessPath(pPtrAccessPath);
   
   pSEitf->m_pAccessPath = pAccessPath;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* seitf.acksRemainingDec -- decrement acks remaining                         */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfAcksRemainingDec(MP_Task mpTask)
+{
+  ENTRY("vSEitfAcksRemainingDec"_Stz);
+  
+  Object* pPtrSEitf;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
+    THROW_INVALID_DSTACK("seitf.acksRemainingDec"_Stz);
+  
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  ASSERT(CN_SEITF == pSEitf->eClass());
+  
+  pSEitf->vDecAcksRemaining();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* seitf.acksRemainingFetch -- fetch acks remaining                           */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfAcksRemainingFetch(MP_Task mpTask)
+{
+  ENTRY("vSEitfacksRemainingFetch"_Stz);
+  
+  Object* pPtrSEitf;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
+    THROW_INVALID_DSTACK("seitf.acksRemaining@"_Stz);
+  
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  ASSERT(CN_SEITF == pSEitf->eClass());
+  
+  i8 iAcksRemaining = pSEitf->iGetAcksRemaining();
+  mpTask->m_pDataStack->vPushInt(iAcksRemaining);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* seitf.acksRemainingStore -- store acks remaining                           */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfAcksRemainingStore(MP_Task mpTask)
+{
+  ENTRY("vSEitfAcksRemainingStore"_Stz);
+  
+  Object* pPtrSEitf;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
+    THROW_INVALID_DSTACK("seitf.acksRemaining!"_Stz);
+  
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  ASSERT(CN_SEITF == pSEitf->eClass());
+  
+  i8 iAcksRemaining;
+  if ( ! mpTask->m_pDataStack->bPop(iAcksRemaining) )
+    THROW_INVALID_DSTACK("seitf.AcksRemaining!"_Stz);
+  
+  pSEitf->vSetAcksRemaining(iAcksRemaining);
   
   EXIT();
 }

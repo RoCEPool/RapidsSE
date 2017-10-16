@@ -33,8 +33,7 @@ timer: loadTimer
   assert::stack_2 ( "<path>" "<tableNm>" )
   0 locals| pSubTask sTableNm sPath |
 
-  "TableLoader seitf..." .
-  task::this task.seitf@ .
+  task::this task.seitf@ locals| pSEitf |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if path file exists                                 //! refactor this
@@ -84,9 +83,12 @@ timer: loadTimer
 
   N_SERVER_THREADS setAcks
 
+  // set acks remaining to be (server_threads * no partitions)
+  grid.slots grid.nodes * pSEitf seitf.acksRemaining!
+
   N_SERVER_THREADS 0 do
 
-    << task::this task.seitf@ tblLoader loader.newSub >>
+    << pSEitf tblLoader loader.newSub >>
 
     pathGet >>
 
@@ -118,6 +120,14 @@ timer: loadTimer
   repeat
 
   sTableNm "Table %v and its indexes loaded" str.format .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // wait for all dist subloaders to finish : partitionAppendBuffer
+  begin
+    pSEitf seitf.acksRemaining@
+    while
+      1 thread.sleep_s
+  repeat
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tidy up
