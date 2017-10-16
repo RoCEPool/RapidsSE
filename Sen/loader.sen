@@ -83,7 +83,7 @@ timer: loadTimer
 
   N_SERVER_THREADS setAcks
 
-  // set acks remaining to be (server_threads * no partitions)
+  // set acks remaining to be (no partitions)
   grid.slots grid.nodes * pSEitf seitf.acksRemaining!
 
   N_SERVER_THREADS 0 do

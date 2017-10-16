@@ -280,9 +280,7 @@
 
   dicPath.clear
 
-  dup not if stk drop stk "We are exiting dicpath.set" . exit then
-
-  "We are in dicpath.set" .
+  dup not if drop exit then
 
   0 do
 
