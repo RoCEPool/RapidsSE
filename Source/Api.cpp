@@ -289,7 +289,7 @@ eEC RapidsSE_BeginInsertPartition(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, St
   eEC eResult;
   eEC eResponse;
   
-  Stz* aApiCall = "RapidsSE_BeginInsert"_Stz;
+  Stz* aApiCall = "RapidsSE_BeginInsertPartition"_Stz;
   
   try {
     TRACE_ENTRY_P3(pCatalog, pSchema, pTable);
@@ -821,11 +821,28 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf, i8 iTraceLevel)
     // validate we have a table
     VALIDATE_TABLE("b"_Stz);
     
-    bool bResult = pSEitf->bInsertBuffer();
+    // before sending buffers set no of remaining acks to no of partitons
+    pSEitf->m_ziAcksRemaining = gpGrid->iSlots() * gpGrid->iNodes();
+    
+    //vTrace("%lld %lld\n"_Stz, *pSEitf->m_ziAcksRemaining, gpGrid->m_nPartitions);
+    
+    for (i8 iPartition = 0; iPartition < gpGrid->m_nPartitions; iPartition++) {
+      bool bResult = pSEitf->bInsertLastBuffer(iPartition);
       
-    // if rowBuffer request was appended to requestQ, then wait for resonse
-    if (bResult) {
-      CHECK_RESPONSE_RETURNTABLE("c"_Stz);
+      //vTrace("bInsertLastBuffer returned %lld %lld\n"_Stz, iPartition, bResult);
+      
+      // if rowBuffer request was appended to requestQ, then wait for resonse
+      if (bResult) {
+        CHECK_RESPONSE_RETURNTABLE("c"_Stz);
+      }
+      //vTrace("done for loop\n"_Stz);
+    }
+    
+    // now wait till acks from all partitions have been received
+    //vTrace("*pSEitf->m_ziAcksRemaining %lld\n"_Stz, *pSEitf->m_ziAcksRemaining);
+    while (*pSEitf->m_ziAcksRemaining != 0) {
+      //vTrace("*pSEitf->m_ziAcksRemaining %lld ...\n"_Stz, *pSEitf->m_ziAcksRemaining);
+      ;
     }
     
     eResult = eExecuteRequest(pSEitf, "rettbl"_Stz);
@@ -862,7 +879,7 @@ eEC RapidsSE_EndInsertPartition(SEitf* pSEitf, i8 iTraceLevel)
   eEC eResult;
   eEC eResponse;
   
-  Stz* aApiCall = "RapidsSE_EndInsert"_Stz;
+  Stz* aApiCall = "RapidsSE_EndInsertPartition"_Stz;
   
   try {
     
@@ -1678,7 +1695,7 @@ eEC RapidsSE_InsertRowPartition(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel)
   eEC eResult;
   eEC eResponse;
   
-  Stz* aApiCall = "RapidsSE_InsertRow"_Stz;
+  Stz* aApiCall = "RapidsSE_InsertRowPartition"_Stz;
   
   try {
     

@@ -2157,6 +2157,7 @@ bool SEitf::bInsertRow(Stz* aRow, i8 iLength, i8 iPartition)
     return true;
   
   // buffer is full, copy buffer into table
+  //vTrace("Buffer full\n"_Stz);
   bool bResult = bInsertBuffer(iPartition);
   
   // copy successful ?
@@ -2170,9 +2171,10 @@ bool SEitf::bInsertRow(Stz* aRow, i8 iLength, i8 iPartition)
     return false;
   }
   
+  //vTrace("creating new buffer\n"_Stz);
   // get a new working buffer
   m_pRowBuffer[iPartition] = new EntryBuffer(m_pCurrentTable->pHiddenIndex(),
-                                        0, m_iPartition);
+                                        0, iPartition);
   if (! m_pRowBuffer[iPartition]) {
     vTrace("EntryBuffer allocation failed\n"_Stz);
     m_eErrorCode = EC_LOW_BUFFERS;
@@ -2221,21 +2223,64 @@ bool SEitf::bInsertBuffer(i8 iPartition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
-  //vTrace("inserting entries from row buffer into table...\n"_Stz);
+  //vTrace("inserting entries from row buffer into table..%lld.\n"_Stz, iPartition);
   
   if (! m_pRowBuffer[iPartition]) {
     return false;
   }
   
+  //vTrace("inserting ..%lld.\n"_Stz, iPartition);
+
   //m_pRowBuffer[iSlot]->vDump();
   
   // now insert the entries from this temporary buffer into the table
+  m_pEntryBuffer = m_pRowBuffer[iPartition];
   bool bResult = bInsertEntriesTable(m_pRowBuffer[iPartition],iPartition);
+  
+  // wait for response
+  //eEC eResult = eGetResponse();
+  //ASSERT(eResult == EC_NONE);
   
   // null the buffer
   m_pRowBuffer[iPartition] = nullptr;
   
   return bResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert last rowbuffer into current table                                   */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bInsertLastBuffer(i8 iPartition)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  //vTrace("%p inserting entries from row buffer into table..%lld.\n"_Stz, this, iPartition);
+      
+  if (! m_pRowBuffer[iPartition]) {
+    m_pRowBuffer[iPartition] = new EntryBuffer(m_pCurrentTable->pHiddenIndex(),
+                                               0, m_iPartition);
+  }
+
+  //vTrace("inserting %p ..%lld.\n"_Stz, m_pRowBuffer[iPartition], iPartition);
+  
+  //m_pRowBuffer[iSlot]->vDump();
+
+  // mark this buffer as the last buffer
+  m_pRowBuffer[iPartition]->vIsLast(true);
+  
+  // now insert the entries from this temporary buffer into the table
+  bool bResult = bInsertEntriesTable(m_pRowBuffer[iPartition],iPartition);
+
+  // wait for response
+  //eEC eResult = eGetResponse();
+  //ASSERT(eResult == EC_NONE);
+  
+  // null the buffer
+  m_pRowBuffer[iPartition] = nullptr;
+  
+  //vTrace("bInsertLastBuffer\n"_Stz);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2294,6 +2339,8 @@ bool SEitf::bInsertEntriesTable(EntryBuffer* pRowBuffer, i8 iPartition)
   sRequest.vConcat("\""_Stz);
   
   sRequest.vConcat(" insertTableEntries_req"_Stz);
+  
+  //vTrace("%s\n"_Stz, sRequest.aChar());
   
   return bAppendRequest(sRequest);
 }

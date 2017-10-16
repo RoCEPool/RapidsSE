@@ -93,21 +93,147 @@ ddlLock::grabRead
 /*----------------------------------------------------------------------------*/
 : insertTableEntriesSlot_req ( tablePtr, bufferPtr, slot -- <R> )
 
-ddlLock::grabRead
+  ddlLock::grabRead
 
-table.insertEntries
+  table.insertEntries
 
-<OK>
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* insert buffer entries to partition of given named table                    */
+/*----------------------------------------------------------------------------*/
+: insertBufferEntries$ ( pSEitf iNode  entryBuffer partitionNo "<tableNm>" -- true )
+
+tp: insertBufferEntries$
+  0 locals| pTable sTableNm iPartitionNo pEntryBuffer iNode pSEitf |
+
+  // why:
+  //   we have forwarded a full entryBuffer whose entries need to be
+  //   inserted to partition of table
+
+  // where:
+  //   in participant task running pLoop on participant thread;
+
+  // what:
+  //   find named table to get pointer to table
+  //   then append row buffer to partition of table
+
+  //1 task::this task.thread thread.name@ str.left "p" str.equal assert
+
+  args.tracepoint if
+    sTableNm "INSERTING ENTRYBUFFER ENTRIES" swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
+  then
+
+  //"insertBufferEntries$" .
+  //pEntryBuffer .
+
+  // get ^table
+  sTableNm pushTable assert
+  sTableNm find execute ( rb ptn table )
+  to pTable
+  popTable
+
+  // set the partition in the row buffer
+  iPartitionNo pEntryBuffer entryBuffer.partition!
+
+  pSEitf iNode pEntryBuffer iPartitionNo pTable    ( rb ptn tablePtr )
+
+  5 "partitionInsertBufferEntries" iPartitionNo grid::toSlot dup >partitionTaskNm
+  TK_LOADSUB_PART
+
+  spawnPartitionTask
+
+  true <SUCCESS_RESULT>
+;
+
+/*----------------------------------------------------------------------------*/
+/* partition task inserts the entry buffer entries to the table               */
+/*----------------------------------------------------------------------------*/
+: partitionInsertBufferEntries ( pSEitf iNode entryBuffer partitionNo table^ -- )
+
+  tp: partitionInsertBufferEntries
+  0 locals| bIsLast pTable iPartitionNo pEntryBuffer iNode pSEitf |
+
+  //"partitionInsertBufferEntries" .
+  //pEntryBuffer .
+
+  pEntryBuffer entryBuffer.isLast@ to bIsLast
+
+  iPartitionNo >str pEntryBuffer >str pTable >str table.insertEntries ( )
+
+  bIsLast not if exit then
+  //drop exit
+
+
+  //"sending got..." .
+
+  <<
+  pSEitf        ( << pSEitf )
+  "ackSEitf$"   ( << pSEitf "ackSEitf$" )
+
+  tp: theIndirectCall
+
+  >>            ( <<ackSEitf$>> )
+
+
+  // to which node/participant
+  iNode  ( <<ackSEitf$>> node )
+
+  //"forwarding ackSEitf$ to coordinator..." .
+  // forward to coordinator and wait
+  >>oneParticipant> ( bool )
+  //"got reply from ackSEitf$..." .
+
+  checkResult
+
 ;
 
 /*----------------------------------------------------------------------------*/
 /* insert entries from row buffer into table                                  */
 /*----------------------------------------------------------------------------*/
-: insertTableEntries_req ( "table", "bufferPtr", "partition" -- <R> )
+: insertTableEntries_req ( partition, entryBuffer, tableName -- <R> )
 
-ddlLock::grabRead
+  0 0 locals| pEntryBuffer iPartitionNo pTableName sEntryBuffer sPartitionNo |
 
-  table.insertEntries
+tp: insertTableEntries_req
+
+  sPartitionNo str.tailInt assert to iPartitionNo
+
+  sEntryBuffer EntryBuffer::toEntryBuffer to pEntryBuffer
+
+  //"insertTableEntries_req" .
+  //iPartitionNo .
+  //pEntryBuffer .
+
+  <<
+  task::this task.seitf@ 
+  grid.thisNode@
+
+      ( << rb )
+  pEntryBuffer
+  iPartitionNo                       ( << rb ptn )
+  pTableName                         ( << rb ptn "<tableNm>" )
+  "insertBufferEntries$"             ( << rb ptn "<tableNm>" "insertBufferEntries$" )
+
+  tp: theIndirectCall
+
+  >>                       ( <<insertBufferEntries$>> )
+
+  //
+  // b) <<insertBufferEntries$>> to be forwarded to one participant
+  //    via sendParticipant in the coordinatoor
+  //
+
+  // to which node/participant
+  iPartitionNo grid::toNode  ( <<insertBufferEntries$>> node )
+
+  // forward to coordinator and wait
+  >>oneParticipant> ( bool )
+
+  tp: theIndirectResult
+
+  checkResult
 
   <OK>
 ;

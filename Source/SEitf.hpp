@@ -190,6 +190,8 @@ namespace Interface
     bool bInsertRow(Stz* pRow, i8 iLength, i8 iPartition);
     bool bInsertBuffer(void);
     bool bInsertBuffer(i8 iPartition);
+    bool bInsertLastBuffer(i8 iPartition);
+
     bool bInsertEntriesTable(EntryBuffer* pRowBuffer, i8 iPartition);
     bool bInsertEntriesTableSlot(EntryBuffer* pRowBuffer, i8 iSlot);
     
