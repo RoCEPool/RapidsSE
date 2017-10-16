@@ -298,8 +298,8 @@ tp: partitionAppendBuffer
   //iPartitionNo task::this task.thread thread.partitionNo == assert
   //task::breakPoint
 
-  //not if exit then
-  drop exit
+  not if exit then
+  //drop exit
 
 
   "sending got..." .

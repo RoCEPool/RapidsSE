@@ -109,9 +109,9 @@ void Task::vTaskAck(MP_Task mpTask)
     if (pThatTask->eActorModel() == AC_SERVER) {
       gpServerScheduler->vEnqueueTask_Mutex(pThatTask);
     }
-    //else if (pThatTask->eActorModel() == AC_PARTITION) {
-    //  gpPartitionScheduler->vEnqueueTask_Mutex(pThatTask);
-    //}
+    else if (pThatTask->eActorModel() == AC_PARTITION) {
+      gpPartitionScheduler->vEnqueueTask_Mutex(pThatTask->m_iPartition,pThatTask);
+    }
     else {
       Thread* pThread = pThatTask->pThread();
       pThread->m_pTaskSet->vAppend(pThatTask);
