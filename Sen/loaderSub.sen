@@ -319,7 +319,7 @@ tp: partitionAppendBuffer
   //"forwarding ackSEitf$ to coordinator..." .
   // forward to coordinator and wait
   >>oneParticipant> ( bool )
-  "got reply from ackSEitf$..." .
+  //"got reply from ackSEitf$..." .
 
   checkResult
 ;
@@ -327,15 +327,15 @@ tp: partitionAppendBuffer
 /*----------------------------------------------------------------------------*/
 /* ackSEitf$                                                                  */
 /*----------------------------------------------------------------------------*/
-: ackSEitf$ ( pLoaderSEitf )
+: ackSEitf$ ( pSEitf )
 
-  locals| pLoaderSEitf |
+  locals| pSEitf |
 
   //"ackSEitf$ got..." .
 
-  //pLoaderSEitf .
+  //pSEitf .
 
-  pLoaderSEitf SEitf.acksRemainingDec
+  pSEitf SEitf.acksRemainingDec
 
   true <SUCCESS_RESULT>
 ;
