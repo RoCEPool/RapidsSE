@@ -1036,6 +1036,61 @@ eEC RapidsSE_FetchNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
 }
 
 /*----------------------------------------------------------------------------*/
+/* fetch next row                                                             */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_FetchNextRow2(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
+{
+  eEC eResult;
+  eEC eResponse;
+  
+  Stz* aApiCall = "RapidsSE_FetchNextRow"_Stz;
+  
+  try {
+    // trace entry
+    TRACE_ENTRY_P0();
+    
+    // validate the SEitf
+    VALIDATE_SEITF("a"_Stz);
+    
+    // clear the last error
+    CLEAR_LASTERROR();
+    
+    // validate the reference pointer
+    VALIDATE_REFPOINTER("b"_Stz, ppRow);
+    
+    // get index buffer from seitf
+    EntryBuffer* pEntryBuffer = pSEitf->m_pEntryBuffer;
+    Entry* pEntry = nullptr;
+    
+    bool bNextRow = pSEitf->bNextRow();
+    
+    if (bNextRow) {
+      Entry* pEntry = pSEitf->m_pEntry;
+      *ppRow = (void*)pEntry->aRow();
+    }
+    else {
+      *ppRow = nullptr;
+    }
+    
+    //TRACE_ROW();
+    
+    // trace exit
+    TRACE_EXIT("eb"_Stz);
+    
+    return EC_NONE;
+  }
+  catch (Error* pError) {
+    RapidsSE::vErrorHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
+    return pError->eErrorCode();
+  }
+  catch (...) {
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
+    return EC_SE_UNKNOWN_ERROR;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get list of catalogs                                                       */
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_GetCatalogs(SEitf* pSEitf, void** ppCatalogs, i8 iTraceLevel)
