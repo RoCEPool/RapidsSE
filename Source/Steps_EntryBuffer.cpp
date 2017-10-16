@@ -46,6 +46,7 @@ void Task::vAddPrimitives_EntryBuffer(void)
   vAddPrimitive("entryBuffer.nextBuffer"_Stz,  &vEntryBufferNextBuffer,  false);
   vAddPrimitive("entryBuffer.partition@"_Stz,  &vEntryBufferPartitionFetch, false);
   vAddPrimitive("entryBuffer.partition!"_Stz,  &vEntryBufferPartitionStore, false);
+  vAddPrimitive("entryBuffer::toEntryBuffer"_Stz,&vEntryBufferToEntryBuffer,false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -466,6 +467,26 @@ void Task::vEntryBufferPartitionStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("entryBuffer.partition!"_Stz);
   
   pIndexBuffer->vPartitionNo(iPartitionNo);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* entryBuffer::toEntryBuffer -- convert string to entry buffer pointer       */
+/*----------------------------------------------------------------------------*/
+void Task::vEntryBufferToEntryBuffer(MP_Task mpTask)
+{
+  ENTRY("vEntryBufferToEntryBuffer"_Stz);
+  
+  s48K sString;
+  
+  if ( ! mpTask->m_pDataStack->bPop(sString) )
+    THROW_INVALID_DSTACK("entryBuffer::toEntryBuffer"_Stz);
+  
+  EntryBuffer* pEntryBuffer = reinterpret_cast<EntryBuffer*>(sString.iToI8());
+  RASSERT(CN_ENTRYBUFFER == pEntryBuffer->eClass());
+  
+  mpTask->m_pDataStack->vPushObject(pEntryBuffer);
   
   EXIT();
 }

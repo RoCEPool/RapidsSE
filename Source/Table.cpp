@@ -337,7 +337,7 @@ void Table::vInsertEntries(i8 iSlot, EntryBuffer* pEntryBuffer)
   pHiddenIndexData->vAppendEntriesFromBuffer(pEntryBuffer, &pFirstBuffer, &pFirstEntry);
   
   //----------------------------------------------------------------------------
-  // (2) insert entries from hidden index pFirstBuffer starting atpFirstEntry
+  // (2) insert entries from hidden index pFirstBuffer starting at pFirstEntry
   // into all other indexes of the table
   
   // get no of indexes of the table

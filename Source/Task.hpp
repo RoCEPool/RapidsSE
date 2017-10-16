@@ -603,6 +603,7 @@ namespace Tasks
     static void vEntryBufferNextEntry(MP_Task mpTask);
     static void vEntryBufferPartitionFetch(MP_Task mpTask);
     static void vEntryBufferPartitionStore(MP_Task mpTask);
+    static void vEntryBufferToEntryBuffer(MP_Task mpTask);
     
     // env
     static void vEnvGet(MP_Task mpTask);
