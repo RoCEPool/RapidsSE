@@ -26,6 +26,8 @@ namespace DBobjects
     
     void operator =(Id& xId); // assignment
   
+    i8    iAsI8(void);
+  
     void  vContentDump(void);
     
     i8    iBuffer(void);
