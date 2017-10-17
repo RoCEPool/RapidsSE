@@ -490,7 +490,7 @@ void SEitf::vDecAcksRemaining(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   --m_ziAcksRemaining;
-  vTrace("acksRemaining %lld\n"_Stz, *m_ziAcksRemaining);
+  //vTrace("acksRemaining %lld\n"_Stz, *m_ziAcksRemaining);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2262,7 +2262,7 @@ bool SEitf::bInsertLastBuffer(i8 iPartition)
                                                0, m_iPartition);
   }
 
-  vTrace("inserting %p ..%lld.\n"_Stz, m_pRowBuffer[iPartition], iPartition);
+  //vTrace("inserting %p ..%lld.\n"_Stz, m_pRowBuffer[iPartition], iPartition);
   
   //m_pRowBuffer[iSlot]->vDump();
 
@@ -2279,7 +2279,7 @@ bool SEitf::bInsertLastBuffer(i8 iPartition)
   // null the buffer
   m_pRowBuffer[iPartition] = nullptr;
   
-  vTrace("bInsertLastBuffer\n"_Stz);
+  //vTrace("bInsertLastBuffer\n"_Stz);
   
   return true;
 }
