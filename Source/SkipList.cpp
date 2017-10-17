@@ -443,7 +443,6 @@ Footer* SkipList::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /*-- Test --------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-bool bI8Compare(void* pObjectInsert, void* pObjectScan, bool& bMatch);
 bool bI8Compare(void* pObjectInsert, void* pObjectScan, bool& bMatch)
 {
   i8 iInsertEntry = (i8)pObjectInsert;

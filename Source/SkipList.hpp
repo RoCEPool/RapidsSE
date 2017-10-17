@@ -51,6 +51,7 @@ namespace Structures
   void vSkipListTest(void);
   void vSkipListDump(SkipList* pSkipList);
 }
+bool bI8Compare(void* pObjectInsert, void* pObjectScan, bool& bMatch);
 
 /*============================================================================*/
 /* end                                                                        */
