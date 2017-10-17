@@ -58,6 +58,7 @@ int main(int argc, const char* argv[])
   
   vSetSignalHandlers();
   
+  
   //vTest1();
   //vTest2();
   //vTest3();
@@ -78,6 +79,8 @@ int main(int argc, const char* argv[])
   
   RapidsSE::vExecuteCmdLine();
 
+  vSkipListTest();
+  
   vUnitTests();
 
   vRunPrompt();
