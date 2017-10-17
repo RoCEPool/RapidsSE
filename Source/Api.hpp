@@ -34,6 +34,7 @@ extern "C" eEC RapidsSE_FetchNextRow2(SEitf* pSEitf, void** ppRow, i8 iTraceLeve
 extern "C" eEC RapidsSE_GetCatalogs(SEitf* pSEitf, void** ppCatalog, i8 iTraceLevel);
 extern "C" eEC RapidsSE_GetColumns(SEitf* pSEitf, Stz* pCatalog,  Stz* pSchema,
                                    Stz* pTable, void** ppColumns, i8 iTraceLevel);
+extern "C" eEC RapidsSE_GetColumnFromRow(SEitf* pSEitf, i8 iColumnNo, void** ppRow, void** ppValue, i8 iTraceLevel);
 extern "C" eEC RapidsSE_GetIndexes(SEitf* pSEitf, Stz* pCatalog,  Stz* pSchema,
                                    Stz* pTable, void** ppIndexes, i8 iTraceLevel);
 extern "C" eEC RapidsSE_GetIndexColumns(SEitf* pSEitf, Stz* pCatalog,  Stz* pSchema,

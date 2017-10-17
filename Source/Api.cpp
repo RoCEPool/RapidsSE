@@ -1091,6 +1091,104 @@ eEC RapidsSE_FetchNextRow2(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
 }
 
 /*----------------------------------------------------------------------------*/
+/* fetch next row                                                             */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_GetColumnFromRow(SEitf* pSEitf, i8 iColumnNo, void** ppRow, void** ppValue, i8 iTraceLevel)
+{
+  eEC eResult;
+  eEC eResponse;
+  
+  Stz* aApiCall = "RapidsSE_GetColumnFromRow"_Stz;
+  
+  try {
+    // trace entry
+    TRACE_ENTRY_P0();
+    
+    // validate the SEitf
+    VALIDATE_SEITF("a"_Stz);
+    
+    // clear the last error
+    CLEAR_LASTERROR();
+    
+    // validate the reference pointer
+    VALIDATE_REFPOINTER("b"_Stz, ppRow);
+    VALIDATE_REFPOINTER("c"_Stz, ppValue);
+    
+    char* pRow = (char*)(*ppRow);
+    //RowData::vRowAsString(pSEitf->m_sResponse, (Stz*)pRow, pSEitf->m_pCurrentTable->pColumnVec());
+    //vTrace("Row: %s\n"_Stz, pSEitf->m_sResponse.aChar());
+    
+    // get the column from the index column vector
+    ColumnVec* pColumnVec = pSEitf->m_pCurrentTable->pColumnVec();
+    
+    Column* pColumn = pColumnVec->pGet(iColumnNo);
+    
+    // get the column value from the row for the iColumnNo
+    char* pSrc = (char*)RowData::aColumnDatum(pRow, iColumnNo);
+    
+    switch(pColumn->eDatumType()) {
+        
+      case DM_BOL: {
+        Bol xBol = *((Bol*)pSrc);
+        *((i8*)ppValue) = xBol.iAsI8();
+        break;
+      }
+        
+      case DM_BCD: {
+        Bcd::vSprint(pSEitf->m_sResponse, (Stz*)pSrc, pColumn);
+        *ppValue = pSEitf->m_sResponse.aChar();
+        break;
+      }
+        
+      case DM_FLT: {
+        Flt xFlt = *((Flt*)pSrc);
+        *(ppValue) = pSrc;
+        break;
+      }
+        
+      case DM_INT: {
+        Int xInt = *((Int*)pSrc);
+        *(ppValue) = pSrc;
+        break;
+      }
+        
+      case DM_TSP: {
+        Tsp::vSprintNonSQL(pSEitf->m_sResponse, (Stz*)pSrc);
+        //bool b = Tsp::bExtract(pDst,&xTsp,iLength,pColumn);
+        //ASSERT(b);
+        *ppValue = pSEitf->m_sResponse.aChar();
+        break;
+      }
+        
+      case DM_VCH: {
+        *ppValue = pSrc;
+        break;
+      }
+        
+      default:
+        NEVER_REACH;
+    }
+
+    
+    //TRACE_ROW();
+    
+    // trace exit
+    TRACE_EXIT("eb"_Stz);
+    
+    return EC_NONE;
+  }
+  catch (Error* pError) {
+    RapidsSE::vErrorHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
+    return pError->eErrorCode();
+  }
+  catch (...) {
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
+    return EC_SE_UNKNOWN_ERROR;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get list of catalogs                                                       */
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_GetCatalogs(SEitf* pSEitf, void** ppCatalogs, i8 iTraceLevel)
