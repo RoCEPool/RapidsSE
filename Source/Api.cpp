@@ -829,7 +829,7 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf, i8 iTraceLevel)
     for (i8 iPartition = 0; iPartition < gpGrid->m_nPartitions; iPartition++) {
       bool bResult = pSEitf->bInsertLastBuffer(iPartition);
       
-      //vTrace("bInsertLastBuffer returned %lld %lld\n"_Stz, iPartition, bResult);
+      vTrace("bInsertLastBuffer returned %lld %lld\n"_Stz, iPartition, bResult);
       
       // if rowBuffer request was appended to requestQ, then wait for resonse
       if (bResult) {

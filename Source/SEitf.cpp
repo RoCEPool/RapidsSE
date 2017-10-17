@@ -2279,7 +2279,7 @@ bool SEitf::bInsertLastBuffer(i8 iPartition)
   // null the buffer
   m_pRowBuffer[iPartition] = nullptr;
   
-  //vTrace("bInsertLastBuffer\n"_Stz);
+  vTrace("bInsertLastBuffer\n"_Stz);
   
   return true;
 }
