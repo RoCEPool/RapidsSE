@@ -79,7 +79,7 @@ int main(int argc, const char* argv[])
   
   RapidsSE::vExecuteCmdLine();
 
-  vSkipListTest();
+  //vSkipListTest();
   
   vUnitTests();
 
