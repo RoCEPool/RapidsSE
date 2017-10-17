@@ -103,10 +103,10 @@ ddlLock::grabRead
 /*----------------------------------------------------------------------------*/
 /* insert buffer entries to partition of given named table                    */
 /*----------------------------------------------------------------------------*/
-: insertBufferEntries$ ( pSEitf iNode  entryBuffer partitionNo "<tableNm>" -- true )
+: insertBufferEntries$ ( pSEitf iNode entryBuffer bIsLast partitionNo "<tableNm>" -- true )
 
 tp: insertBufferEntries$
-  0 locals| pTable sTableNm iPartitionNo pEntryBuffer iNode pSEitf |
+  0 locals| pTable sTableNm iPartitionNo bIsLast pEntryBuffer iNode pSEitf |
 
   // why:
   //   we have forwarded a full entryBuffer whose entries need to be
@@ -133,6 +133,11 @@ tp: insertBufferEntries$
   sTableNm find execute ( rb ptn table )
   to pTable
   popTable
+
+  // is it the last buffer ?
+  bIsLast if
+    pEntryBuffer entryBuffer.isLast!
+  then
 
   // set the partition in the row buffer
   iPartitionNo pEntryBuffer entryBuffer.partition!
@@ -213,6 +218,7 @@ tp: insertTableEntries_req
 
       ( << rb )
   pEntryBuffer
+  pEntryBuffer entryBuffer.bIsLast@
   iPartitionNo                       ( << rb ptn )
   pTableName                         ( << rb ptn "<tableNm>" )
   "insertBufferEntries$"             ( << rb ptn "<tableNm>" "insertBufferEntries$" )
