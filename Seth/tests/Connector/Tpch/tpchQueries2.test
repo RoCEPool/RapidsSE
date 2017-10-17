@@ -320,21 +320,21 @@ success;
 
 // insert-select into partsupp
 insert into partsupp select * from partsupp2;
-rows: 0
+affected: -1
 
 drop table partsupp2;
 success;
 
 // insert-select into orders
 insert into orders select * from orders2;
-rows: 0
+affected: -1
 
 drop table orders2;
 success;
 
 // insert-select into lineitem
 insert into lineitem select * from lineitem2;
-rows: 0
+affected: -1
 
 drop table lineitem2;
 success;
