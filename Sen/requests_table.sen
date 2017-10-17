@@ -160,14 +160,14 @@ tp: insertBufferEntries$
 
   pEntryBuffer entryBuffer.isLast@ to bIsLast
 
-  iPartitionNo >str pEntryBuffer >str pTable >str table.insertEntries ( )
+  iPartitionNo grid::toSlot >str pEntryBuffer >str pTable >str table.insertEntries ( )
 
   bIsLast not if exit then
   //drop exit
 
 
   "sending got for last buffer..." .
-  iPartitionNo .
+  iPartitionNo grid::toSlot .
 
   <<
   pSEitf        ( << pSEitf )
