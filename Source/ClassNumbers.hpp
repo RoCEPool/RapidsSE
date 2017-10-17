@@ -122,6 +122,7 @@ namespace Base
     /* 89 */ CN_ROW,
     /* 90 */ CN_ROWBUFFER,
     /* 91 */ CN_ROWCURSOR,
+    /*    */ CN_ROWONCE,
   
     /* 92 */ CN_SCANBUFFER,
     /* 93 */ CN_SCRATCH,
@@ -136,6 +137,8 @@ namespace Base
     /*102 */ CN_SKIPCURSOR,
     /*103 */ CN_SKIPLIST,
     /*104 */ CN_SKIPNODE,
+    /*    */ CN_SLAB,
+    /*    */ CN_SLABALLOCATOR,
     /*105 */ CN_SLOTS,
     /*106 */ CN_SMALLHEAP,
     /*107 */ CN_SOCKET,
@@ -292,6 +295,7 @@ namespace Base
     /* 89 */ "ROW"_Stz,
     /* 90 */ "ROWBUFFER"_Stz,
     /* 91 */ "ROWCURSOR"_Stz,
+    /*    */ "ROWONCE"_Stz,
   
     /* 92 */ "SCANBUFFER"_Stz,
     /* 93 */ "SCRATCH"_Stz,
@@ -306,6 +310,8 @@ namespace Base
     /*102 */ "SKIPCURSOR"_Stz,
     /*103 */ "SKIPLIST"_Stz,
     /*104 */ "SKIPNODE"_Stz,
+    /*    */ "SLAB"_Stz,
+    /*    */ "SLABALLOCATOR"_Stz,
     /*105 */ "SLOTS"_Stz,
     /*106 */ "SMALLHEAP"_Stz,
     /*107 */ "SOCKET"_Stz,

@@ -124,6 +124,7 @@ pDUMPFUN *gpDump[]
   /* 89 */ &Dump::vUndefined,       // CN_ROW
   /* 90 */ &Dump::vUndefined,       // CN_ROWBUFFER
   /* 91 */ &Dump::vUndefined,       // CN_ROWCURSOR
+  /*    */ &Dump::vUndefined,       // CN_ROWONCE
   
   /* 92 */ &Dump::vUndefined,       // CN_SCANBUFFER
   /* 93 */ &Dump::vUndefined,       // CN_SCRATCH
@@ -138,6 +139,8 @@ pDUMPFUN *gpDump[]
   /*102 */ &Dump::vUndefined,       // CN_SKIPCURSOR
   /*103 */ &Dump::vUndefined,       // CN_SKIPLIST
   /*104 */ &Dump::vUndefined,       // CN_SKIPNODE
+  /*    */ &Dump::vUndefined,       // CN_SLAB
+  /*    */ &Dump::vUndefined,       // CN_SLABALLOCATOR
   /*105 */ &Slots::vDump,           // CN_SLOTS
   /*106 */ &Heap::vDump,            // CN_SMALLHEAP
   /*107 */ &Socket::vDump,          // CN_SOCKET
@@ -293,6 +296,7 @@ i8 giClassSize[]
   /* 89 */ sizeof(Entry),              // CN_ROW
   /* 90 */ 0,                          // CN_ROWBUFFER
   /* 91 */ sizeof(RowCursor),          // CN_ROWCURSOR
+  /*    */ 0,                          // CN_ROWONCE
   
   /* 92 */ sizeof(ScanBuffer),         // CN_SCANBUFFER
   /* 93 */ sizeof(Scratch),            // CN_SCRATCH
@@ -307,6 +311,8 @@ i8 giClassSize[]
   /*102 */ sizeof(SkipCursor),         // CN_SKIPCURSOR
   /*103 */ sizeof(SkipList),           // CN_SKIPLIST
   /*104 */ sizeof(SkipNode),           // CN_SKIPNODE
+  /*    */ 0,                          // CN_SLAB
+  /*    */ 0,                          // CN_SLABALLOCATOR
   /*105 */ sizeof(Slots),              // CN_SLOTS
   /*106 */ sizeof(Heap), // correct    // CN_SMALLHEAP
   /*107 */ sizeof(Socket),             // CN_SOCKET
@@ -462,6 +468,7 @@ eHT geWhichHeap[]
   /* 89 */ HT_INVALID, // CN_ROW
   /* 90 */ HT_LARGE,   // CN_ROWBUFFER
   /* 91 */ HT_SMALL,   // CN_ROWCURSOR
+  /*    */ HT_SMALL,   // CN_ROWONCE
   
   /* 92 */ HT_LARGE,   // CN_SCANBUFFER
   /* 93 */ HT_LARGE,   // CN_SCRATCH
@@ -476,6 +483,8 @@ eHT geWhichHeap[]
   /*102 */ HT_INVALID, // CN_SKIPCURSOR
   /*103 */ HT_SMALL,   // CN_SKIPLIST
   /*104 */ HT_SMALL,   // CN_SKIPNODE
+  /*    */ HT_LARGE,   // CN_SLAB
+  /*    */ HT_SMALL,   // CN_SLABALLOCATOR
   /*105 */ HT_INVALID, // CN_SLOTS
   /*106 */ HT_INVALID, // CN_SMALLHEAP
   /*107 */ HT_SMALL,   // CN_SOCKET
