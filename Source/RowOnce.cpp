@@ -76,11 +76,18 @@ bool RowOnce::bRowSeen(Id xRowId)
 }
 
 /*----------------------------------------------------------------------------*/
-/* has row been seen?                                                         */
+/* has row been seen? (complete implementation)                               */
 /*----------------------------------------------------------------------------*/
 bool RowOnce::bRowSeen2(Id xRowId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWONCE,_FOOTER_);
+  
+  i8 iRowId = xRowId.iAsI8();
+  
+  if (m_pSkipList->pFind((void*)iRowId))
+    return true;
+  
+  m_pSkipList->bInsert((void*)iRowId);
   
   return false;
 }
