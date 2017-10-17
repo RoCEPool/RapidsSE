@@ -324,8 +324,11 @@ void Table::vInsertEntries(i8 iSlot, EntryBuffer* pEntryBuffer)
   // buffer should be temporary
   //ASSERT(pEntryBuffer->eDurability() == BD_TEMPORARY);
   
-  // buffer should have some entries
-  ASSERT(pEntryBuffer->nEntries() > 1);
+  // if buffer has 0 entries (only head) then should be last buffer
+  if (pEntryBuffer->nEntries() == 1) {
+    ASSERT(pEntryBuffer->bIsLast());
+    return;
+  }
   
   //----------------------------------------------------------------------------
   // (1) append the buffer entries into the hidden index
