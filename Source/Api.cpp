@@ -841,7 +841,7 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf, i8 iTraceLevel)
     // now wait till acks from all partitions have been received
     //vTrace("*pSEitf->m_ziAcksRemaining %lld\n"_Stz, *pSEitf->m_ziAcksRemaining);
     while (*pSEitf->m_ziAcksRemaining != 0) {
-      vTrace("*pSEitf->m_ziAcksRemaining %lld ...\n"_Stz, *pSEitf->m_ziAcksRemaining);
+      //vTrace("*pSEitf->m_ziAcksRemaining %lld ...\n"_Stz, *pSEitf->m_ziAcksRemaining);
       ;
     }
     

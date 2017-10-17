@@ -490,6 +490,7 @@ void SEitf::vDecAcksRemaining(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   --m_ziAcksRemaining;
+  vTrace("acksRemaining %lld\n"_Stz, *m_ziAcksRemaining);
 }
 
 /*----------------------------------------------------------------------------*/
