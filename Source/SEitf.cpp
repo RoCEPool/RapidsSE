@@ -2262,7 +2262,7 @@ bool SEitf::bInsertLastBuffer(i8 iPartition)
                                                0, m_iPartition);
   }
 
-  //vTrace("inserting %p ..%lld.\n"_Stz, m_pRowBuffer[iPartition], iPartition);
+  vTrace("inserting %p ..%lld.\n"_Stz, m_pRowBuffer[iPartition], iPartition);
   
   //m_pRowBuffer[iSlot]->vDump();
 
