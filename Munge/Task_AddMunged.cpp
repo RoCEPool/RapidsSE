@@ -13181,7 +13181,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "\n"
     "      ( << rb )\n"
     "  pEntryBuffer\n"
-    "  pEntryBuffer entryBuffer.bIsLast@\n"
+    "  pEntryBuffer entryBuffer.isLast@\n"
     "  iPartitionNo                       ( << rb ptn )\n"
     "  pTableName                         ( << rb ptn \\\"<tableNm>\\\" )\n"
     "  \\\"insertBufferEntries$\\\"             ( << rb ptn \\\"<tableNm>\\\" \\\"insertBufferEntries$\\\" )\n"

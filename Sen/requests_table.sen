@@ -218,7 +218,7 @@ tp: insertTableEntries_req
 
       ( << rb )
   pEntryBuffer
-  pEntryBuffer entryBuffer.bIsLast@
+  pEntryBuffer entryBuffer.isLast@
   iPartitionNo                       ( << rb ptn )
   pTableName                         ( << rb ptn "<tableNm>" )
   "insertBufferEntries$"             ( << rb ptn "<tableNm>" "insertBufferEntries$" )
