@@ -73,6 +73,7 @@ typedef Vector<CN_KEYVEC,KeyVal,CN_KEYVAL,1024,u8> KeyVec;
 #include "RbCursor.hpp"
 #include "SelCursor.hpp"
 #include "RowCursor.hpp"
+#include "RowOnce.hpp"
 
 #include "RowData.hpp"
 
