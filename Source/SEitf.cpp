@@ -195,6 +195,8 @@ SEitf::SEitf(i8 iPartition)
     m_pGroupBy[i_Partition] = nullptr;
   }
   
+  m_pRowOnce = nullptr;
+  
   _checkInitialised_(CN_SEITF);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
@@ -213,6 +215,9 @@ SEitf::~SEitf(void)
   delete m_pResponseQueue;
   
   gpSEitfList->vRemove(pSEitf);
+  
+  if (m_pRowOnce)
+    delete m_pRowOnce;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -491,6 +496,32 @@ void SEitf::vDecAcksRemaining(void)
   
   --m_ziAcksRemaining;
   //vTrace("acksRemaining %lld\n"_Stz, *m_ziAcksRemaining);
+}
+
+/*----------------------------------------------------------------------------*/
+/* create row once object                                                     */
+/*----------------------------------------------------------------------------*/
+void SEitf::vCreateRowOnce(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+
+  ASSERT(! m_pRowOnce);
+  
+  m_pRowOnce = new RowOnce;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test if row has been seen so far                                           */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bRowSeen(Id xRowId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  ASSERT(! m_pRowOnce);
+  
+  bool bSeen = m_pRowOnce->bRowSeen(xRowId);
+  
+  return bSeen;
 }
 
 /*----------------------------------------------------------------------------*/

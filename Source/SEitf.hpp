@@ -53,10 +53,11 @@ namespace Interface
 
     Atomic m_ziAcksRemaining;
 
-  
     EntryBuffer* m_pRowBuffer[C_SLOTS_PER_NODE]; // working row buffers
     GroupBy*     m_pGroupBy[C_SLOTS_PER_NODE];   // working group by
-    
+  
+    RowOnce* m_pRowOnce; // has row been seen before?
+  
     // must be last
     Footer m_xFooter;
     
@@ -98,6 +99,9 @@ namespace Interface
     i8     iGetAcksRemaining(void);
     void   vDecAcksRemaining(void);
   
+    void   vCreateRowOnce(void);
+    bool   bRowSeen(Id xRowId);
+ 
 
     //--------------------------------------------------------------------------
     
