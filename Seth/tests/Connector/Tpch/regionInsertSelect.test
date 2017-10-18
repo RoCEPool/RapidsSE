@@ -10,6 +10,7 @@ R_COMMENT         VARCHAR(152)
 );
 
 success
+create index idx1 on region1(R_REGIONKEY);
 
 ESCAPE CONNECTOR se 'load region1 /tpch/region.tbl' WITH node = 'Node1' ;
 success
@@ -21,6 +22,7 @@ R_COMMENT         VARCHAR(152)
 );
 success
 
+create index idx1 on region2(R_REGIONKEY);
 
 insert into region2 select * from region1;
 success
@@ -28,22 +30,13 @@ success
 select * from region2;
 rows: 5
 
-drop table region1;
-success
 
-drop table region2;
-success
 
 }
 
 CLEANUP {
   
-  drop table region1;
-  mute
-  
-  drop table region2;
-  mute
-  
+
   bye;
   mute
 }

@@ -43,11 +43,11 @@ success
 //select * from orders2;
 //rows: 1500000
 
-drop table orders1;
-success
+//drop table orders1;
+//success
 
-drop table orders2;
-success
+//drop table orders2;
+//success
 
 }
 
