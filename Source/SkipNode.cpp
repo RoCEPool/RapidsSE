@@ -30,7 +30,15 @@ void* SkipNode::operator new(size_t iSize, i4 iLevel, SlabAllocator* pSlabAlloca
   vTrace("SkipNode iMaxSize %lld\n"_Stz,nMaxBytes);
   
   //SkipNode* pSkipNode = (SkipNode*)gpSmallHeap->pAllocObject(CN_SKIPNODE,nMaxBytes);
-  SkipNode* pSkipNode = (SkipNode*)Heap::pAllocate(CN_SKIPNODE);
+  
+  SkipNode* pSkipNode;
+  
+  if (pSlabAllocator) {
+    pSkipNode = (SkipNode*)pSlabAllocator->aAllotBytes(sizeof(SkipNode));
+  }
+  else {
+    pSkipNode = (SkipNode*)Heap::pAllocate(CN_SKIPNODE);
+  }
   
   pSkipNode->m_nRight = iLevel;
   

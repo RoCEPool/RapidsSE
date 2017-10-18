@@ -15,6 +15,9 @@ namespace Pool
 
   public:
     
+  void* operator new(size_t);
+  void  operator delete(void*);
+  
     SlabAllocator(void);
     ~SlabAllocator(void);
         
