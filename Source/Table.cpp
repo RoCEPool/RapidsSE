@@ -372,7 +372,7 @@ void Table::vInsertEntries(i8 iSlot, EntryBuffer* pEntryBuffer)
       
       // get the next buffer and first entry in it
       if (pHiddenEntryBuffer)
-        pEntry = pHiddenEntryBuffer->pFirstRow();
+        pEntry = pHiddenEntryBuffer->pFirstEntry();
     }
   }
 }
