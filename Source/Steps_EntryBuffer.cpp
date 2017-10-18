@@ -209,6 +209,14 @@ void Task::vEntryBufferInsertRow(MP_Task mpTask)
   Entry* pOldEntry = _pEntry(pPtrOldEntry);
   ASSERT(CN_ENTRY == pOldEntry->eClass());
   
+  Id xId = pOldEntry->xId();
+  SEitf* pSEitf = mpTask->m_pSEitf;
+  
+  if (pSEitf->bRowSeen(xId)) {
+    mpTask->m_pDataStack->vPushInt(1);
+    return;
+  }
+  
   Entry* pRow;
   
   if (pIndexBuffer->bInsertRow(pOldEntry, &pRow)) {

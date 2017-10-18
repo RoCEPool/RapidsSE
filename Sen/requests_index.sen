@@ -308,8 +308,8 @@ timer: pIdxSelectTimer
 
   //i_Phrase pPlanner Planner.indexNm@ .
 
-  // put the planner in the seitf
-  pPlanner task::this task.seitf@ seitf.planner!
+  // put the planner in the seitf (moved to req)
+  //pPlanner task::this task.seitf@ seitf.planner!
 
   i_Phrase pPlanner Planner.fetchTechnique@
   case
@@ -463,6 +463,9 @@ timer: pIdxSelectTimer
   "selectTask.queue" queue::new to pBufferQueue
   //pBufferQueue >str "BufferQueue %v" str.format .
 
+  // set planner in seitf
+  pPlanner task::this task.seitf@ seitf.planner!
+
   pPlanner planner.phrases@ 0
   do
     pBufferQueue bSinglePartition bGroupBy I pPlanner spawnFetch
@@ -539,6 +542,9 @@ timer: pIdxSelectTimer
   // create the buffer queue in the seitf
   "selectTask.queue" queue::new to pBufferQueue
   //pBufferQueue >str "BufferQueue %v" str.format .
+
+  // set planner in seitf
+  pPlanner task::this task.seitf@ seitf.planner!
 
   // spawn select task for the fetch
   //0 locals| i_Phrase |

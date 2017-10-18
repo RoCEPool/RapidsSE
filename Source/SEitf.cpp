@@ -2728,6 +2728,9 @@ void SEitf::vEndFetch(void)
   delete m_pPlanner;
   m_pPlanner = nullptr;
   
+  delete m_pRowOnce;
+  m_pRowOnce = nullptr;
+  
   // now delete the buffer queue from this seitf
   m_pBufferQueue->vFinalize();
   delete m_pBufferQueue;
