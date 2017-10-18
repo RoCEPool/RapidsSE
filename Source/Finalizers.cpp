@@ -123,6 +123,7 @@ pFINALIZE *gpFinalize[]
   /* 89 */ &Finalize::vUndefined,         // CN_ROW
   /* 90 */ &Finalize::vUndefined,         // CN_ROWBUFFER
   /* 91 */ &Finalize::vUndefined,         // CN_ROWCURSOR
+  /*    */ &Finalize::vUndefined,         // CN_ROWONCE
   
   /* 92 */ &Finalize::vUndefined,         // CN_SCANBUFFER
   /* 93 */ &Finalize::vUndefined,         // CN_SCRATCH
@@ -137,6 +138,8 @@ pFINALIZE *gpFinalize[]
   /*102 */ &Finalize::vUndefined,         // CN_SKIPCURSOR
   /*103 */ &Finalize::vUndefined,         // CN_SKIPLIST
   /*104 */ &Finalize::vUndefined,         // CN_SKIPNODE
+  /*    */ &Finalize::vUndefined,         // CN_SLAB
+  /*    */ &Finalize::vUndefined,         // CN_SLABALLOCATOR
   /*105 */ &Slots::vFinalize,             // CN_SLOTS
   /*106 */ &Finalize::vUndefined,         // CN_SMALLHEAP
   /*107 */ &Finalize::vUndefined,         // CN_SOCKET
