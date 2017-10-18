@@ -15,7 +15,9 @@ namespace Structures
     cmpFun    m_fCompare;   // compare function
     i8        m_nObjects;   // number of objects in the list
     i8        m_iHeight;    // current max level in the list
-    
+  
+    SlabAllocator* m_pSlabAllocator; // optional slab allocator
+  
     // must be last
     Footer m_xFooter;
     
@@ -24,7 +26,7 @@ namespace Structures
     void* operator new(size_t, SkipList* pSkipList);
     void  operator delete(void*);
     
-    SkipList(bool bUniqueKey, cmpFun fCompare);
+    SkipList(bool bUniqueKey, cmpFun fCompare, bool bSlabAllocator=false);
    ~SkipList(void);
     
     void  vCheck(void);

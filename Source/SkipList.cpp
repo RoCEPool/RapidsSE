@@ -55,7 +55,7 @@ void SkipList::operator delete(void* pSkipListAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SkipList::SkipList(bool bUniqueKey, cmpFun fCompare)
+SkipList::SkipList(bool bUniqueKey, cmpFun fCompare, bool bSlabAllocator)
 : Object(CN_SKIPLIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
@@ -65,6 +65,8 @@ SkipList::SkipList(bool bUniqueKey, cmpFun fCompare)
   m_fCompare   = fCompare;
   m_nObjects   = 0;
   m_iHeight    = 0;
+  
+  m_pSlabAllocator = bSlabAllocator ? new SlabAllocator : nullptr;
   
   for (i8 i_Level = 0; i_Level < C_SKIPLIST_LEVELS; i_Level++)
     m_pHead->m_pRight[i_Level] = nullptr;
@@ -82,6 +84,9 @@ SkipList::~SkipList(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
 
   ASSERT( ! m_nObjects ); // logic check
+
+  if (m_pSlabAllocator)
+    delete m_pSlabAllocator;
 }
 
 /*----------------------------------------------------------------------------*/
