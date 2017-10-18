@@ -83,7 +83,7 @@ SkipList::~SkipList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
 
-  ASSERT( ! m_nObjects ); // logic check
+  //ASSERT( ! m_nObjects ); // logic check
 
   if (m_pSlabAllocator)
     delete m_pSlabAllocator;
@@ -353,7 +353,7 @@ SkipNode* SkipList::pNext(SkipNode* pPrev, i8 iLevel)
 #define goDownLevel(iLevel) iLevel--;
 SkipNode* SkipList::pPosition(void* pObjectInsert, bool& bEqualTo, SkipNode** aPriorVec)
 {
-  vTrace("Adding %lld\n"_Stz,(i8)pObjectInsert);
+  //vTrace("Adding %lld\n"_Stz,(i8)pObjectInsert);
   
   // start from head at known highest level
   SkipNode* pCurrentNode = m_pHead;
@@ -372,16 +372,16 @@ SkipNode* SkipList::pPosition(void* pObjectInsert, bool& bEqualTo, SkipNode** aP
       
       if (bGreaterEqual) {
         // pObjectInsert is >= pObjectNext
-        vTrace("  %lld after %lld (level %lld)\n"_Stz,
-               (i8)pObjectInsert,(i8)pNextNode->m_pObject,iCurrentLevel);
+        //vTrace("  %lld after %lld (level %lld)\n"_Stz,
+        //      (i8)pObjectInsert,(i8)pNextNode->m_pObject,iCurrentLevel);
         
         // go right one node
         goRightNode(iCurrentLevel,pCurrentNode);
       }
       else {
         // pObjectInsert is < pObjectNext or pObjectNext is null
-        vTrace("  %lld before %lld (level %lld)\n"_Stz,
-               (i8)pObjectInsert,(i8)pNextNode->m_pObject,iCurrentLevel);
+        //vTrace("  %lld before %lld (level %lld)\n"_Stz,
+        //       (i8)pObjectInsert,(i8)pNextNode->m_pObject,iCurrentLevel);
         
         break;
       }
