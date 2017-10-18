@@ -8,6 +8,7 @@ namespace Pool
   class Slab : public Buffer
   {
   private:
+    Slab* m_pNextSlab; // next slab in slab chain
   
     // must be last
     Footer m_xFooter;
@@ -18,7 +19,10 @@ namespace Pool
     
     Slab(void);
     ~Slab(void);
-        
+  
+    Slab* pNextSlab(void);
+    void  vNextSlab(Slab* pNextSlab);
+  
     Footer* aFooter(void);
   };
 }

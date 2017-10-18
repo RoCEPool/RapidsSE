@@ -37,6 +37,8 @@ Slab::Slab(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLAB);
   
+  m_pNextSlab = nullptr;
+  
   _checkInitialisedSize_(sizeof(Slab));
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SLAB,_FOOTER_);
@@ -47,7 +49,27 @@ Slab::Slab(void)
 /*----------------------------------------------------------------------------*/
 Slab::~Slab(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SLAB,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next slab                                                              */
+/*----------------------------------------------------------------------------*/
+Slab* Slab::pNextSlab(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SLAB,_FOOTER_);
+  
+  return m_pNextSlab;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set next slab                                                              */
+/*----------------------------------------------------------------------------*/
+void Slab::vNextSlab(Slab* pNextSlab)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SLAB,_FOOTER_);
+  
+  m_pNextSlab = pNextSlab;
 }
 
 /*----------------------------------------------------------------------------*/
