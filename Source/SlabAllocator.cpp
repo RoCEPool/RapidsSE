@@ -46,6 +46,15 @@ char* SlabAllocator::aAllotBytes(i8 nBytes)
     m_pFirstSlab = new Slab;
   
   char* aBytes = m_pFirstSlab->aAllotBytes(nBytes);
+  if (aBytes)
+    return aBytes;
+  
+  Slab* pNewFirstSlab = new Slab;
+  pNewFirstSlab->vNextSlab(m_pFirstSlab);
+  m_pFirstSlab = pNewFirstSlab;
+  
+  aBytes = m_pFirstSlab->aAllotBytes(nBytes);
+  ASSERT(aBytes);
   
   return aBytes;
 }
