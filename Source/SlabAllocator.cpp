@@ -52,7 +52,6 @@ SlabAllocator::~SlabAllocator(void)
     pSlabTbd = pSlabNxt;
   }
   
-  delete m_pFirstSlab;
   m_pFirstSlab = nullptr;
 }
 
