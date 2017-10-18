@@ -517,7 +517,8 @@ bool SEitf::bRowSeen(Id xRowId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
-  ASSERT(! m_pRowOnce);
+  if (! m_pRowOnce)
+    return false;
   
   bool bSeen = m_pRowOnce->bRowSeen(xRowId);
   

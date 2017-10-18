@@ -764,6 +764,10 @@ void Task::vSEitfPlannerStore(MP_Task mpTask)
   
   pSEitf->m_pPlanner = pPlanner;
   
+  // if we have or phrases we'll need a RowOnce object
+  if (pPlanner->nPhrases() > 1)
+    pSEitf->vCreateRowOnce();
+  
   EXIT();
 }
 
