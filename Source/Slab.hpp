@@ -20,6 +20,8 @@ namespace Pool
     Slab(void);
     ~Slab(void);
   
+    char* aAllotBytes(i8 nBytes);
+
     Slab* pNextSlab(void);
     void  vNextSlab(Slab* pNextSlab);
   

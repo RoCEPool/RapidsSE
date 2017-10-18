@@ -18,6 +18,8 @@ namespace Pool
     SlabAllocator(void);
     ~SlabAllocator(void);
         
+    char* aAllotBytes(i8 nBytes);
+  
     Footer* aFooter(void);
   };
 };

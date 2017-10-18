@@ -36,6 +36,21 @@ SlabAllocator::~SlabAllocator(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* allot given number of bytes                                                */
+/*----------------------------------------------------------------------------*/
+char* SlabAllocator::aAllotBytes(i8 nBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SLABALLOCATOR,_FOOTER_);
+  
+  if (! m_pFirstSlab)
+    m_pFirstSlab = new Slab;
+  
+  char* aBytes = m_pFirstSlab->aAllotBytes(nBytes);
+  
+  return aBytes;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -44,7 +59,7 @@ SlabAllocator::~SlabAllocator(void)
 /*----------------------------------------------------------------------------*/
 Footer* SlabAllocator::aFooter(void)
 {
-  _precondition_(_MAGIC_,CN_SLABALLOCATOR);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SLABALLOCATOR);
   return &m_xFooter;
 }
 
