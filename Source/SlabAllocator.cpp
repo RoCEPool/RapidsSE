@@ -12,6 +12,8 @@ SlabAllocator::SlabAllocator(void)
 {
   _magic_();
   
+  m_pFirstSlab = nullptr;
+  
   _checkInitialised_(CN_SLABALLOCATOR);
 }
 
@@ -22,6 +24,8 @@ SlabAllocator::~SlabAllocator(void)
 {
   _magic_();
   
+  delete m_pFirstSlab;
+  m_pFirstSlab = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
