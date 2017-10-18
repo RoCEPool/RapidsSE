@@ -34,6 +34,7 @@ static const i8 C_SIZE_JUMBO_OBJECT  = C_SIZE_POOL_BUFFER * C_JUMBO_RATIO;
 #include "FreeChunk.hpp"
 #include "HeapBuffer.hpp"
 #include "Heap.hpp"
+#include "Slab.hpp"
 #include "SlabAllocator.hpp"
 
 extern BufferPool* gpBufferPool;
