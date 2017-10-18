@@ -59,7 +59,12 @@ char* Slab::aAllotBytes(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLAB,_FOOTER_);
   
-  char* aBytes = nullptr;
+  // test sufficient freespace
+  if (m_xWsp.nFree() < nBytes)
+    return nullptr;
+  
+  // allot bytes in the wsp
+  char* aBytes = m_xWsp.aAllot(nBytes);
   
   return aBytes;
 }
