@@ -60,13 +60,14 @@ SkipList::SkipList(bool bUniqueKey, cmpFun fCompare, bool bSlabAllocator)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
   
+  m_pSlabAllocator = bSlabAllocator ? new SlabAllocator : nullptr;
+  
   m_pHead      = new(C_SKIPLIST_LEVELS,m_pSlabAllocator) SkipNode(nullptr);
   m_bUniqueKey = bUniqueKey;
   m_fCompare   = fCompare;
   m_nObjects   = 0;
   m_iHeight    = 0;
   
-  m_pSlabAllocator = bSlabAllocator ? new SlabAllocator : nullptr;
   
   for (i8 i_Level = 0; i_Level < C_SKIPLIST_LEVELS; i_Level++)
     m_pHead->m_pRight[i_Level] = nullptr;

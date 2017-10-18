@@ -5,6 +5,27 @@
 #include "Pool.h"
 
 /*----------------------------------------------------------------------------*/
+/* fetch a new buffer from buffer pool                                        */
+/*----------------------------------------------------------------------------*/
+void* SlabAllocator::operator new(size_t iSize)
+{
+  RASSERT(iSize);
+  Buffer* pBuffer = (Buffer*)Heap::pAllocate(CN_SLABALLOCATOR);
+  
+  return pBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return a row buffer to the buffer pool                                     */
+/*----------------------------------------------------------------------------*/
+void SlabAllocator::operator delete(void* pRowBufferAddress)
+{
+  Buffer* pBuffer = static_cast<Buffer*>(pRowBufferAddress);
+  
+  Heap::vFree(pBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SlabAllocator::SlabAllocator(void)
@@ -31,7 +52,6 @@ SlabAllocator::~SlabAllocator(void)
     pSlabTbd = pSlabNxt;
   }
   
-  delete m_pFirstSlab;
   m_pFirstSlab = nullptr;
 }
 
