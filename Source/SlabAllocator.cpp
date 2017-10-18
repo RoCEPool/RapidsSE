@@ -24,6 +24,13 @@ SlabAllocator::~SlabAllocator(void)
 {
   _magic_();
   
+  Slab* pSlabTbd = m_pFirstSlab;
+  while (pSlabTbd) {
+    Slab* pSlabNxt = pSlabTbd->pNextSlab();
+    delete pSlabTbd;
+    pSlabTbd = pSlabNxt;
+  }
+  
   delete m_pFirstSlab;
   m_pFirstSlab = nullptr;
 }
