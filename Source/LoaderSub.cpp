@@ -254,6 +254,7 @@ bool LoaderSub::bInsertRow(void)
       vTrace("EntryBuffer allocation failed\n"_Stz);
       return false;
     }
+    m_pEntryBuffer[m_iPartition]->vDurability(BD_TEMPORARY);
   }
   
   // get working buffer
@@ -286,6 +287,7 @@ void LoaderSub::vNewRowBuffer(void)
   
   m_pEntryBuffer[m_iPartition] = new EntryBuffer(m_pTable->pHiddenIndex(),
                                                  0, m_iPartition);
+  m_pEntryBuffer[m_iPartition]->vDurability(BD_TEMPORARY);
 }
 
 /*----------------------------------------------------------------------------*/
