@@ -2120,6 +2120,7 @@ bool SEitf::bInsertRow(Stz* aRow, i8 iLength)
       m_eErrorCode = EC_LOW_BUFFERS;
       return false;
     }
+    m_pRowBuffer[iSlot]->vDurability(BD_TEMPORARY);
   }
 
   // get working buffer for partition row hashed into
@@ -2151,6 +2152,7 @@ bool SEitf::bInsertRow(Stz* aRow, i8 iLength)
     m_eErrorCode = EC_LOW_BUFFERS;
     return false;
   }
+  m_pRowBuffer[iSlot]->vDurability(BD_TEMPORARY);
   
   pRowBuffer = m_pRowBuffer[iSlot];
   
@@ -2180,6 +2182,7 @@ bool SEitf::bInsertRow(Stz* aRow, i8 iLength, i8 iPartition)
       m_eErrorCode = EC_LOW_BUFFERS;
       return false;
     }
+    m_pRowBuffer[iPartition]->vDurability(BD_TEMPORARY);
   }
   
   // get working buffer for partition row hashed into
@@ -2213,6 +2216,7 @@ bool SEitf::bInsertRow(Stz* aRow, i8 iLength, i8 iPartition)
     m_eErrorCode = EC_LOW_BUFFERS;
     return false;
   }
+  m_pRowBuffer[iPartition]->vDurability(BD_TEMPORARY);
   
   pRowBuffer = m_pRowBuffer[iPartition];
   
