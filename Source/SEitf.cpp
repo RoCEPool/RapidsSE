@@ -2265,6 +2265,7 @@ bool SEitf::bInsertBuffer(i8 iPartition)
   if (! m_pRowBuffer[iPartition]) {
     return false;
   }
+  ASSERT(m_pRowBuffer[iPartition]->eDurability() == BD_TEMPORARY);
   
   //vTrace("inserting ..%lld.\n"_Stz, iPartition);
 
@@ -2296,8 +2297,10 @@ bool SEitf::bInsertLastBuffer(i8 iPartition)
   if (! m_pRowBuffer[iPartition]) {
     m_pRowBuffer[iPartition] = new EntryBuffer(m_pCurrentTable->pHiddenIndex(),
                                                0, m_iPartition);
+    m_pRowBuffer[iPartition]->vDurability(BD_TEMPORARY);
   }
-
+  ASSERT(m_pRowBuffer[iPartition]->eDurability() == BD_TEMPORARY);
+  
   //vTrace("inserting %p ..%lld.\n"_Stz, m_pRowBuffer[iPartition], iPartition);
   
   //m_pRowBuffer[iSlot]->vDump();
