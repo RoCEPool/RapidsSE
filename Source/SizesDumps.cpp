@@ -162,7 +162,7 @@ pDUMPFUN *gpDump[]
   /*122 */ &Dump::vUndefined,       // CN_THREADQUEUE
   /*123 */ &Dump::vUndefined,       // CN_TIME
   /*124 */ &Dump::vInvalid,         // CN_TIMER
-  /*125 */ &Dump::vInvalid,         // CN_TOKEN
+  /*125 */ &Token::vDump,           // CN_TOKEN
   /*126 */ &Tokeniser::vDump,       // CN_TOKENISER
   /*127 */ &Dump::vInvalid,         // CN_TOKENARY
   /*128 */ &Dump::vInvalid,         // CN_TOKENVEC

@@ -40,6 +40,21 @@ void Token::operator delete(void* pTokenAddress)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump tokeniser                                                             */
+/*----------------------------------------------------------------------------*/
+void Token::vDump(eCN eClass, Object* pObject, Stz* aTab)
+{
+  ASSERT(eClass == CN_TOKEN);
+  ASSERT(pObject->eClass() == CN_TOKEN);
+  
+  Token* pToken = reinterpret_cast<Token*>(pObject);
+  
+  vTrace("token %s %s\n"_Stz,
+         aTN[pToken->m_eToken],
+         pToken->m_sText.aChar());
+}
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Token::Token(void)
