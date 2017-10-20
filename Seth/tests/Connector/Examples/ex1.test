@@ -1,6 +1,6 @@
 -- Example test file for running commands against RapidsDB.
 
-refesh;
+refresh;
 success
 
 SELECT * FROM rapids.system.tables;

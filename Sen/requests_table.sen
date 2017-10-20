@@ -172,7 +172,7 @@ tp: insertBufferEntries$
 
 
   //"sending got for last buffer..." .
-  iPartitionNo grid::toSlot .
+  //iPartitionNo grid::toSlot .
 
   <<
   pSEitf        ( << pSEitf )
