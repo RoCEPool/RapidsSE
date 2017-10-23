@@ -723,10 +723,16 @@ eTN Tokeniser::eParseSpecialInteger(char* wToken)
   i8 iNoDigits = 0;
   char *z = wToken;
   
-  // we have seen a digit
+  // we have seen a minus or a digit
   ASSERT(bStartSpecialInteger());
   
   // - start parsing an integer
+  
+  // collect leading minus
+  if (bIsMinus()) {
+    *z++ = m_cParsedChar;
+    vGetNextStripped();
+  }
   
   // collect initial digits
   while (bIsDigit()) {
@@ -746,6 +752,12 @@ eTN Tokeniser::eParseSpecialInteger(char* wToken)
       *z++ = m_cParsedChar;
       vGetNextStripped();
     }
+  }
+  
+  // - handle minus only
+  if (! iNoDigits) {
+    eTN eToken = eParseSpecialName(z);
+    return eToken;    
   }
   
   // - handle the case where we have a name like 1_ugh
@@ -775,7 +787,7 @@ eTN Tokeniser::eParseSpecialName(char* wToken)
   
   char *z = wToken;
   
-  ASSERT(bStartSpecialName());
+  //ASSERT(bStartSpecialName());
   
   // collect the characters of the name
   while ( m_cParsedChar && !bIsWhite() && !bStartSpecialString() ) {
@@ -961,7 +973,7 @@ bool Tokeniser::bStartSpecialInteger(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  if (StrLib::bIsDigit(m_cParsedChar))
+  if (bIsMinus() || StrLib::bIsDigit(m_cParsedChar))
     return true;
   
   return false;

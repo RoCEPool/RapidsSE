@@ -955,6 +955,9 @@ bool StrLib::bIsDigit(const char c)
 /*----------------------------------------------------------------------------*/
 bool StrLib::bIsNumeric(char* ps)
 {
+  if ('-' == *ps)
+    (ps)++;
+  
   for ( ; *ps; (ps)++)
     if (!isdigit(*ps))
       return false;
@@ -1390,6 +1393,12 @@ i8 StrLib::iToI8(const char* s)
   //return i;
   
   i8 i = 0;
+  bool bNegative = false;
+  
+  if (*s && '-' == *s) {
+    bNegative = true;
+    s++;
+  }
   
   // skip leading 0's
   while (*s && '0' == *s)
@@ -1408,6 +1417,9 @@ i8 StrLib::iToI8(const char* s)
       i = i * 10 + j;
     }
   }
+  
+  if (bNegative)
+    i *= -1;
   
   return i;
 }
