@@ -95,6 +95,7 @@ namespace Parsing
     bool bIsHex(void);
     bool bIsLessThan(void);
     bool bIsGreaterThan(void);
+    bool bIsMinus(void);
     bool bIsX(void);
     bool bIsWhite(void);
 
