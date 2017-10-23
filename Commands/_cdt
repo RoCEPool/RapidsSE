@@ -42,7 +42,9 @@ dumpidx jCdt jCdt_idx5;
 print "dumping jCdt_idx6 index\n" ;
 dumpidx jCdt jCdt_idx6;
 
-fetch jCdt "JA 1 >= jA 22 <= OR";
+//fetch jCdt "JA 1 >= jA 22 <= OR";
+
+fetch jCdt "JA -10 ==";
 
 /*
 print "\nSelecting rows with key <= 7 using idx1 ...\n" ;
