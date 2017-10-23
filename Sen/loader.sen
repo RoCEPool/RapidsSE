@@ -140,8 +140,8 @@ timer: loadTimer
 
   // print timing
   loadTimer timer.update
-  "Load time " .put
-  loadTimer timer.millisecs .put "ms" .put .\n
+
+  "ms\n" loadTimer timer.millisecs "Load time" "%v %v %v" str.format .verbose
 
   true
 ;
