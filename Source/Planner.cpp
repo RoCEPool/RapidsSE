@@ -131,7 +131,7 @@ void Planner::vChoosePath(i8 i_Phrase)
     }
   }
   
-  //vTrace("Chosen: %lld\n"_Stz,m_i_Chosen);
+  //vTrace("Chosen Index: %s\n"_Stz,npChosenAccessPath->pIndex()->aIndexName());
 }
 
 /*----------------------------------------------------------------------------*/
