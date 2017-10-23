@@ -3,4 +3,4 @@ decimalColumn.test
 integerColumn.test
 timestampColumn.test
 varcharColumn.test
-createTable1000.test
+

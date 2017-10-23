@@ -2,15 +2,15 @@
 -- tpch insert-select tests (SF1)
 -------------------------------------------------------------------------------
 
-loop 1 {
 create table region1 (
 R_REGIONKEY       INTEGER NOT NULL,
 R_NAME            VARCHAR(25) NOT NULL,
 R_COMMENT         VARCHAR(152)
 );
-
 success
+
 create index idx1 on region1(R_REGIONKEY);
+success
 
 ESCAPE CONNECTOR se 'load region1 /tpch/region.tbl' WITH node = 'Node1' ;
 success
@@ -23,6 +23,7 @@ R_COMMENT         VARCHAR(152)
 success
 
 create index idx1 on region2(R_REGIONKEY);
+success
 
 insert into region2 select * from region1;
 success
@@ -30,13 +31,7 @@ success
 select * from region2;
 rows: 5
 
-
-
-}
-
 CLEANUP {
-  
-
   bye;
   mute
 }

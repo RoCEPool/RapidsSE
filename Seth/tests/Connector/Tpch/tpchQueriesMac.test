@@ -3,8 +3,8 @@
 -------------------------------------------------------------------------------
 
 -- refresh metadata
-refresh;
-success
+//refresh;
+//success
 
 // create tables
 create table customer (
@@ -201,7 +201,7 @@ select n_name, sum(l_extendedprice * (1 - l_discount)) as revenue from ORDERS,
   and r_name = 'ASIA' and o_orderdate >= date '1994-01-01' and o_orderdate < date '1995-01-01'
   group by n_name order by revenue;
 rows: 5
-
+/*
 // Query 6
 select sum(l_extendedprice*l_discount) as revenue from LINEITEM where l_shipdate >= date '1994-01-01' and
   l_shipdate < date '1995-01-01' and l_discount between 0.06 - 0.01 and 0.06 + 0.01 and l_quantity < 24 ;
@@ -341,7 +341,7 @@ select cntrycode, count(*) as numcust, sum(c_acctbal) as totacctbal from
   not exists ( select * from ORDERS where o_custkey = c_custkey ) ) as custsale
   group by cntrycode order by cntrycode ;
 rows: 7
-
+*/
 //} // end of loop
 
 CLEANUP {

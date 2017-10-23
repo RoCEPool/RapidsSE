@@ -42,12 +42,6 @@ success
 select * from part2;
 rows: 200000
 
-drop table part1;
-success
-
-drop table part2;
-success
-
 }
 
 CLEANUP {
