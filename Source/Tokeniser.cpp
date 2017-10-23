@@ -1085,6 +1085,19 @@ bool Tokeniser::bIsGreaterThan(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test for a minus sign                                                      */
+/*----------------------------------------------------------------------------*/
+bool Tokeniser::bIsMinus(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  if ('-' == m_cParsedChar)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* test for an 'x' or 'X'                                                     */
 /*----------------------------------------------------------------------------*/
 bool Tokeniser::bIsX(void)
