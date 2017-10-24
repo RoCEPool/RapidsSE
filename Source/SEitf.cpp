@@ -87,6 +87,9 @@ ReqTable SeRequests[] =
  { "tableSizes"_Stz,     &SEitf::bSizeTables,           "sizeTables_req"_Stz      },
  { "tr"_Stz,             &SEitf::bTruncateTable,        "truncateTable_req"_Stz   },
  { "tridx"_Stz,          &SEitf::bTruncateIndex,        "truncateIndex_req"_Stz   },
+ { "txBeg"_Stz,          &SEitf::bTxBegin,              "txBegin_req"_Stz         },
+ { "txCmt"_Stz,          &SEitf::bTxCommit,             "txCommit_req"_Stz        },
+ { "txRbk"_Stz,          &SEitf::bTxRollback,           "txRollback_req"_Stz      },
  { "usesch"_Stz,         &SEitf::bUseSchema,            "useSchema_req"_Stz       },
  { "ping"_Stz,           &SEitf::bPing,                 "ping_req"_Stz            },
  { "mon"_Stz,            &SEitf::bGetMonitor,           "getMonitor_req"_Stz      },
@@ -2387,6 +2390,66 @@ bool SEitf::bTruncateTable(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
+  
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* begin transaction                                                          */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bTxBegin(TokenVec& xTokenVec, i8 iReqNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  if (xTokenVec.nTokens() != 1) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* commit transaction                                                         */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bTxCommit(TokenVec& xTokenVec, i8 iReqNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  if (xTokenVec.nTokens() != 1) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* rollback transaction                                                       */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bTxRollback(TokenVec& xTokenVec, i8 iReqNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  if (xTokenVec.nTokens() != 1) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
   
   sRequest.vConcat(" "_Stz);
   sRequest.vConcat(SeRequests[iReqNo].aRequest);

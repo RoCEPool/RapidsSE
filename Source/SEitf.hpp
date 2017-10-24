@@ -213,7 +213,11 @@ namespace Interface
     bool bPing(TokenVec& xTokenVec, i8 iReqNo);
 
     bool bPrint(TokenVec& xTokenVec, i8 iReqNo);
-    
+ 
+    bool bTxBegin(TokenVec& xTokenVec, i8 iReqNo);
+    bool bTxCommit(TokenVec& xTokenVec, i8 iReqNo);
+    bool bTxRollback(TokenVec& xTokenVec, i8 iReqNo);
+  
     //--------------------------------------------------------------------------
     void vEndFetch(void);
     bool bNextRow(void);
