@@ -102,7 +102,9 @@ namespace Interface
     void   vCreateRowOnce(void);
     bool   bRowSeen(Id xRowId);
  
-
+    TxRef* pTxRef(void);
+    void   vTxRef(TxRef* pTxRef);
+  
     //--------------------------------------------------------------------------
     
     bool bBeginTx(void);
