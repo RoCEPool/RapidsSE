@@ -65,15 +65,15 @@ void Task::vTxDump(MP_Task mpTask)
 {
 ENTRY("vTxDump"_Stz);
   
-  Object* pPtrTx;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTx) )
-    THROW_INVALID_DSTACK("tx.delete"_Stz);
-  
-  Tx* pTx = _pTx(pPtrTx);
-  ASSERT(CN_TX == pTx->eClass());
-
-  pTx->vContentDump();
+//  Object* pPtrTx;
+//  
+//  if ( ! mpTask->m_pDataStack->bPop(pPtrTx) )
+//    THROW_INVALID_DSTACK("tx.delete"_Stz);
+//  
+//  Tx* pTx = _pTx(pPtrTx);
+//  ASSERT(CN_TX == pTx->eClass());
+//
+//  pTx->vContentDump();
   
   EXIT();
 }

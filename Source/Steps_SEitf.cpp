@@ -1000,6 +1000,40 @@ void Task::vSEitfTableRef(MP_Task mpTask)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* seitf.txref@ -- fetch txref of SE interface                                */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfTxRefFetch(MP_Task mpTask)
+{
+  ENTRY("vSEitfTxRefFetch"_Stz);
+  
+  Object* pPtrSEitf;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
+    THROW_INVALID_DSTACK("seitf.partition@"_Stz);
+  
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  ASSERT(CN_SEITF == pSEitf->eClass());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* seitf.txref! -- store txref of SE interface                                */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfTxRefStore(MP_Task mpTask)
+{
+  ENTRY("vSEitfTxRefStore"_Stz);
+  
+  Object* pPtrSEitf;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
+    THROW_INVALID_DSTACK("seitf.partition!"_Stz);
+  
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  ASSERT(CN_SEITF == pSEitf->eClass());
+  
+  EXIT();
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

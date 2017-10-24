@@ -1045,6 +1045,8 @@ namespace Tasks
     static void vSEitfTableFetch(MP_Task mpTask);
     static void vSEitfTableRef(MP_Task mpTask);
     static void vSEitfTableDeref(MP_Task mpTask);
+    static void vSEitfTxRefFetch(MP_Task mpTask);
+    static void vSEitfTxRefStore(MP_Task mpTask);
 
     // seitfCursor
     static void vSEitfCursorBegin(MP_Task mpTask);
