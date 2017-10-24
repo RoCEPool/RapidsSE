@@ -19,6 +19,7 @@
 "requests_rowBuffer.sen"  include
 "requests_misc.sen"       include
 "requests_task.sen"       include
+"requests_tx.sen"         include
 
 // create /tenants/boray/catalogs/rapidsse/schemas/public
 createDefaultFolders
