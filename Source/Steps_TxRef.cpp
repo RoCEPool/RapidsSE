@@ -70,9 +70,7 @@ ENTRY("vTxRefCommit"_Stz);
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrTxRef) )
     THROW_INVALID_DSTACK("txRef.commit"_Stz);
-  
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
-  ASSERT(CN_TXREF == pTxRef->eClass());
   
   bool bCommitted = pTxRef->bCommitTx();
   

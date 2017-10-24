@@ -30,6 +30,10 @@
 
   "commit transaction" .
 
+  task::this task.seitf@ seitf.txRef@ locals| pTxRef |
+
+  pTxRef txRef.commit assert
+
   <OK>
   exit
 ;
