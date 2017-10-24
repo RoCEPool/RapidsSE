@@ -1329,14 +1329,15 @@ namespace Tasks
     
     // txMap
     static void vTxMapInit(MP_Task mpTask);
-    static void vTxRefBegin(MP_Task mpTask);
-    static void vTxRefCommit(MP_Task mpTask);
-    static void vTxRefRollback(MP_Task mpTask);
-    static void vTxRefEnd(MP_Task mpTask);
 
     // txRef
+    static void vTxRefBegin(MP_Task mpTask);
+    static void vTxRefCommit(MP_Task mpTask);
+    static void vTxRefEnd(MP_Task mpTask);
     static void vTxRefInit(MP_Task mpTask);
-    
+    static void vTxRefNew(MP_Task mpTask);
+    static void vTxRefRollback(MP_Task mpTask);
+  
     // utility
     static void vUtilityPrefetch(MP_Task mpTask);
   

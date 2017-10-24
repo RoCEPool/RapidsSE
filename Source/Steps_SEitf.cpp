@@ -73,6 +73,8 @@ void Task::vAddPrimitives_SEitf(void)
   vAddPrimitive("seitf.table@"_Stz,           &vSEitfTableFetch,       false);
   vAddPrimitive("seitf.tableRef"_Stz,         &vSEitfTableRef,         false);
   vAddPrimitive("seitf.tableDeref"_Stz,       &vSEitfTableDeref,       false);
+  vAddPrimitive("seitf.txRef@"_Stz,           &vSEitfTxRefFetch,       false);
+  vAddPrimitive("seitf.txRef!"_Stz,           &vSEitfTxRefStore,       false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1009,11 +1011,13 @@ void Task::vSEitfTxRefFetch(MP_Task mpTask)
   
   Object* pPtrSEitf;
   if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.partition@"_Stz);
-  
+    THROW_INVALID_DSTACK("seitf.txRef@"_Stz);
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(CN_SEITF == pSEitf->eClass());
   
+  TxRef* pTxRef = pSEitf->pTxRef();
+  
+  mpTask->m_pDataStack->vPushObject(pTxRef);
+
   EXIT();
 }
 
@@ -1026,10 +1030,15 @@ void Task::vSEitfTxRefStore(MP_Task mpTask)
   
   Object* pPtrSEitf;
   if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.partition!"_Stz);
-  
+    THROW_INVALID_DSTACK("seitf.txRef!"_Stz);
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(CN_SEITF == pSEitf->eClass());
+  
+  Object* pPtrTxRef;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTxRef) )
+    THROW_INVALID_DSTACK("seitf.txRef!"_Stz);
+  TxRef* pTxRef = _pTxRef(pPtrTxRef);
+  
+  pSEitf->vTxRef(pTxRef);
   
   EXIT();
 }

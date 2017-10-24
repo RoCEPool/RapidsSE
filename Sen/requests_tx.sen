@@ -13,6 +13,12 @@
 
   "begin transaction" .
 
+  txRef::new locals| pTxRef |
+
+  pTxRef task::this task.seitf@ seitf.txRef!
+
+  pTxRef txRef.begin assert
+
   <OK>
   exit
 ;
