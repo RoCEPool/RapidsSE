@@ -44,9 +44,6 @@ public:
   static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
   void vLoop(void);
-  bool bExecuteString(StrVal& sCommand, eEC& eErrorCode);
-  bool bExecuteString(StrVal& sCommand, eEC& eErrorCode, StrVal& sResponse);
-  bool bExecuteString(StrVal& sCommand, eEC& eErrorCode, Stz** ppRowPtr);
 
 private:
   void vGetCommand(void);
