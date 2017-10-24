@@ -56,6 +56,10 @@
 
   "rollback transaction" .
 
+  task::this task.seitf@ seitf.txRef@ locals| pTxRef |
+
+  pTxRef txRef.rollback assert
+
   <OK>
   exit
 ;

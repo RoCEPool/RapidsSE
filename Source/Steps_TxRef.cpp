@@ -144,10 +144,8 @@ ENTRY("vTxRefRollback"_Stz);
   Object* pPtrTxRef;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrTxRef) )
-    THROW_INVALID_DSTACK("txRef.rollback"_Stz);
-  
+    THROW_INVALID_DSTACK("txRef.rollback"_Stz);  
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
-  ASSERT(CN_TXREF == pTxRef->eClass());
   
   bool bRolledBack = pTxRef->bRollbackTx();
   
