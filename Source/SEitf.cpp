@@ -89,6 +89,7 @@ ReqTable SeRequests[] =
  { "tridx"_Stz,          &SEitf::bTruncateIndex,        "truncateIndex_req"_Stz   },
  { "txBeg"_Stz,          &SEitf::bTxBegin,              "txBegin_req"_Stz         },
  { "txCmt"_Stz,          &SEitf::bTxCommit,             "txCommit_req"_Stz        },
+ { "txDmp"_Stz,          &SEitf::bTxDump,               "txDump_req"_Stz          },
  { "txRbk"_Stz,          &SEitf::bTxRollback,           "txRollback_req"_Stz      },
  { "usesch"_Stz,         &SEitf::bUseSchema,            "useSchema_req"_Stz       },
  { "ping"_Stz,           &SEitf::bPing,                 "ping_req"_Stz            },
@@ -2421,6 +2422,26 @@ bool SEitf::bTxBegin(TokenVec& xTokenVec, i8 iReqNo)
 /* commit transaction                                                         */
 /*----------------------------------------------------------------------------*/
 bool SEitf::bTxCommit(TokenVec& xTokenVec, i8 iReqNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  if (xTokenVec.nTokens() != 1) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump all transactions                                                      */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bTxDump(TokenVec& xTokenVec, i8 iReqNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
