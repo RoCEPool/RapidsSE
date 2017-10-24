@@ -107,10 +107,6 @@ void RapidsSE::vExecuteCmdLine(void)
         ASSERT(gpBufferPool);
         return;
       }
-      else if (gxArguments.m_bUnitTests) {
-        ASSERT(gpBufferPool);
-        return;
-      }
       else
         vWaitFlag();
     }

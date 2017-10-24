@@ -63,7 +63,6 @@ Arguments::Arguments(void)
   m_bRestart       = true;
   m_bTouch         = false;
   m_bTracing       = false;
-  m_bUnitTests     = false;
   m_bVerbose       = false;
   m_bWelcome       = true;
   m_iSleep         = 1;
@@ -414,11 +413,6 @@ bool Arguments::bParse(int argc, Stz* argv[])
     
     if (argv[i_Arg]->bSame("--tracing"_Stz)) {
       m_bTracing = true;
-      continue;
-    }
-    
-    if (argv[i_Arg]->bSame("--unittests"_Stz)) {
-      m_bUnitTests = true;
       continue;
     }
     

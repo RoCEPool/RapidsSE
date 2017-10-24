@@ -453,7 +453,6 @@ void Task::vAddConstants(void)
   vAddConstant("args.touch"_Stz,             gxArguments.m_bTouch);
   vAddConstant("args.tracepoint"_Stz,        gxArguments.m_bTracepoint);
   vAddConstant("args.tracing"_Stz,           gxArguments.m_bTracing);
-  vAddConstant("args.unitTests"_Stz,         gxArguments.m_bUnitTests);
   vAddConstant("args.unlink"_Stz,            gxArguments.m_bUnlink);
   vAddConstant("args.verbose"_Stz,           gxArguments.m_bVerbose);
   vAddConstant("args.welcome"_Stz,           gxArguments.m_bWelcome);

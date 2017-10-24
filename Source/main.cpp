@@ -4,7 +4,6 @@
 
 #include "StorageEngine.h"
 #include "SePrompt.hpp"
-#include "UnitTests.h"
 #include "ShmUtility.hpp"
 
 extern Arguments gxArguments;
@@ -32,7 +31,6 @@ void vPrintSizes(void);
 void vPrintWelcome(void);
 void vRunPrompt(void);
 void vSetGlobals(void);
-void vUnitTests(void);
 void vWriteRegionName(void);
 
 /*----------------------------------------------------------------------------*/
@@ -80,8 +78,6 @@ int main(int argc, const char* argv[])
   RapidsSE::vExecuteCmdLine();
 
   //vSkipListTest();
-  
-  vUnitTests();
 
   vRunPrompt();
   
@@ -254,20 +250,6 @@ void vSetGlobals(void)
   gbTracepoint = gxArguments.m_bTracepoint;
   gbProgress   = gxArguments.m_bProgress;
   gbMetadata   = gxArguments.m_bMetadata;
-}
-
-/*----------------------------------------------------------------------------*/
-/* unit tests                                                                 */
-/*----------------------------------------------------------------------------*/
-void vUnitTests(void)
-{
-  // unit tests ?
-  if (gxArguments.m_bUnitTests) {
-    if (gxArguments.m_bVerbose)
-      vInfo("\n*\n* Unit Tests\n*\n"_Stz);
-    RunTests* pRunTests = new RunTests();
-    pRunTests->vRunTests();
-  }
 }
 
 /*----------------------------------------------------------------------------*/

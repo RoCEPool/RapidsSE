@@ -45,7 +45,6 @@ namespace StorageEngine
     bool m_bRestart;    // restart if system already started
     bool m_bTouch;      // touch all shm pages during region create 
     bool m_bTracing;    // tracing
-    bool m_bUnitTests;  // run unit tests
     bool m_bVerbose;    // print extra stuff
     bool m_bWelcome;    // print banner
     i8   m_iSleep;      // sleep period for yield (temporary)
