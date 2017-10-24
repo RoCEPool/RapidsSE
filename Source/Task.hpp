@@ -1303,9 +1303,14 @@ namespace Tasks
     static void vTraceOn(MP_Task mpTask);
     static void vTracePoint(MP_Task mpTask);
     static void vTraceSet(MP_Task mpTask);
+  
     // tx
+    static void vTxBegin(MP_Task mpTask);
+    static void vTxCommit(MP_Task mpTask);
     static void vTxDump(MP_Task mpTask);
-    
+    static void vTxDumpAll(MP_Task mpTask);
+    static void vTxRollback(MP_Task mpTask);
+  
     // txCollection
     static void vTxCollectionDump(MP_Task mpTask);
     static void vTxCollectionInit(MP_Task mpTask);
