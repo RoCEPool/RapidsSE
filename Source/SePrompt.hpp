@@ -61,7 +61,6 @@ private:
   void vClearExpect(void);
   
   bool bRunFile(void);
-  bool bRecallCommand(void);
   
   bool bExecuteRequest(void);
   bool bTestFile(Stz* aPath);
@@ -69,18 +68,11 @@ private:
 
   bool bDocol(void);
   
-  bool bConnectCluster(void);
-  
   bool bIndexReturnTable(Stz* aTableName, Stz* aIndexName);
   void vIterateBuffers(void);
   
-  bool bObject(void);
   bool bPartitionTable(void);
   bool bReturnTable(void);
-  
-  bool bFetchRows(void);
-  
-  bool bSleep(void);
   
   //----------------------------------------------------------------------------
   void vClipTokens(i8 i_FromToken);

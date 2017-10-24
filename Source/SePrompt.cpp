@@ -586,6 +586,23 @@ void SePrompt::vPushFile(Stz* aFileName)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return table                                                               */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bReturnTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  m_xTokenVec[0]->vCopy("rettbl"_Stz);
+  m_xTokenVec[1]->vCopy(""_Stz);
+  
+  if (!bExecuteRequest()) {
+    vTrace("bReturnTable: (%s) Return Table FAILED!!! : %s\n"_Stz, m_sResponse.aChar());
+    return false;
+  }
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set file to run                                                            */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bRunFile(void)
@@ -636,132 +653,6 @@ bool SePrompt::bTestFile(Stz* aFileName)
   else
     return false;
 }
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- To Be Deleted -----------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* connect the cluster                                                        */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bConnectCluster(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  ASSERT(m_xTokenVec[0]->bSame("connectCluster"_Stz));
-  
-  if (!bExecuteRequest()) {
-    return false;
-  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* fetch rows from table                                                      */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bFetchRows(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  ASSERT(m_xTokenVec[0]->bSame("fetch"_Stz));
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // copy tokens from m_xTokenVec to m_xTokenVec2
-  i8 iNumTokens = iCopyTokens(m_xTokenVec, m_xTokenVec2);
-  
-  // some validations
-  // - - - - - - - - - - - - - - - - - - - - -
-  // there should be a 3 tokens
-  if (iNumTokens != 3) {
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return false;
-  }
-  
-  m_xTokenVec[0]->vCopy("fetch"_Stz);
-  m_xTokenVec[1]->vCopy(m_xTokenVec2[1]);
-  m_xTokenVec[2]->vCopy(m_xTokenVec2[2]);
-  //m_xTokenVec[3]->vCopy(m_xTokenVec2[3]);
-  
-  if ( !bExecuteRequest() )
-    return false;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* send object (temp)                                                         */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bObject(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  ASSERT(m_xTokenVec[0]->bSame("object"_Stz));
-  
-  if (!bExecuteRequest()) {
-    return false;
-  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* recall command                                                             */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bRecallCommand(void)
-{
-  if ( ! bTokenCheck(1) )
-    return false;
-  
-  if (! m_xHistory.bRecall(m_xTokenVec))
-    return true;
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* return table                                                               */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bReturnTable(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  m_xTokenVec[0]->vCopy("rettbl"_Stz);
-  m_xTokenVec[1]->vCopy(""_Stz);
-  
-  if (!bExecuteRequest()) {
-    vTrace("bReturnTable: (%s) Return Table FAILED!!! : %s\n"_Stz, m_sResponse.aChar());
-    return false;
-  }
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* sleep n seconds                                                            */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bSleep(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  ASSERT(m_xTokenVec[0]->bSame("sleep"_Stz));
-  
-  if ( ! bTokenCheck(2) )
-    return false;
-  
-  i8 nSeconds = m_xTokenVec[1]->iToI8();
-  
-  PosixThread::vSleepSec(nSeconds);
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* check for a specific number of tokens                                      */
