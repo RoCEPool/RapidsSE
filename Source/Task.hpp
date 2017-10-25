@@ -1336,6 +1336,7 @@ namespace Tasks
     static void vTxRefCommit(MP_Task mpTask);
     static void vTxRefDump(MP_Task mpTask);
     static void vTxRefEnd(MP_Task mpTask);
+    static void vTxRefId(MP_Task mpTask);
     static void vTxRefInit(MP_Task mpTask);
     static void vTxRefNew(MP_Task mpTask);
     static void vTxRefRollback(MP_Task mpTask);

@@ -35,6 +35,7 @@ void Task::vAddPrimitives_TxRef(void)
   vAddPrimitive("txRef.commit"_Stz,    &vTxRefCommit,      false);
   vAddPrimitive("txRef.dump"_Stz,      &vTxRefDump,        false);
   vAddPrimitive("txRef.end"_Stz,       &vTxRefEnd,         false);
+  vAddPrimitive("txRef.id"_Stz,        &vTxRefId,          false);
   vAddPrimitive("txRef.init"_Stz,      &vTxRefInit,        false);
   vAddPrimitive("txRef::new"_Stz,      &vTxRefNew,         false);
   vAddPrimitive("txRef.rollback"_Stz,  &vTxRefRollback,    false);
@@ -116,6 +117,25 @@ void Task::vTxRefEnd(MP_Task mpTask)
   bool bEnded = pTxRef->bEndTx();
   
   mpTask->m_pDataStack->vPushInt(bEnded);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* txRef.id -- get tx id from txref on data stack                             */
+/*----------------------------------------------------------------------------*/
+void Task::vTxRefId(MP_Task mpTask)
+{
+  ENTRY("vTxRefId"_Stz);
+  
+  Object* pPtrTxRef;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTxRef) )
+    THROW_INVALID_DSTACK("txRef.init"_Stz);
+  TxRef* pTxRef = _pTxRef(pPtrTxRef);
+  
+  i8 iTxId = pTxRef->iTxId();
+  
+  mpTask->m_pDataStack->vPushInt(iTxId);
   
   EXIT();
 }
