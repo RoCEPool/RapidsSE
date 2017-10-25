@@ -22,14 +22,14 @@ namespace Transactions
   static Stz* pTP[]
   {
     /* 0 */ "FREE"_Stz,
-    /* 1 */ "ALLOCATED"_Stz,
-    /* 2 */ "EXECUTING"_Stz,
-    /* 3 */ "COMMITTING"_Stz,
-    /* 4 */ "COMMITTED"_Stz,
-    /* 5 */ "PREPARING"_Stz,
-    /* 6 */ "PREPARED"_Stz,
-    /* 7 */ "ROLLINGBACK"_Stz,
-    /* 8 */ "ROLLEDBACK"_Stz,
+    /* 1 */ "EXECUTING"_Stz,
+    /* 2 */ "COMMITTING"_Stz,
+    /* 3 */ "COMMITTED"_Stz,
+    /* 4 */ "PREPARING"_Stz,
+    /* 5 */ "PREPARED"_Stz,
+    /* 6 */ "ROLLINGBACK"_Stz,
+    /* 7 */ "ROLLEDBACK"_Stz,
+    /* 8 */ "FREE"_Stz,
     /* 9 */ "ENUMS"_Stz
   };
   

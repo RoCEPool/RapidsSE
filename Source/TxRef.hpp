@@ -27,6 +27,7 @@ namespace Transactions
   
     bool bBeginTx(void);
     bool bCommitTx(void);
+    void vDump(void);
     bool bEndTx(void);
     bool bRollbackTx(void);
     

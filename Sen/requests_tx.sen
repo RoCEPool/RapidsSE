@@ -32,18 +32,39 @@
 
   task::this task.seitf@ seitf.txRef@ locals| pTxRef |
 
-  pTxRef txRef.commit assert
+  pTxRef txRef.end assert
 
   <OK>
   exit
 ;
 
 /*----------------------------------------------------------------------------*/
-/* dump all transactions                                                      */
+/* end a transaction                                                          */
+/*----------------------------------------------------------------------------*/
+: txEnd_req ( -- R )
+
+  "commit transaction" .
+
+  task::this task.seitf@ seitf.txRef@ locals| pTxRef |
+
+  pTxRef txRef.end assert
+
+  nullPtr task::this task.seitf@ seitf.txRef!
+
+  <OK>
+  exit
+;
+
+/*----------------------------------------------------------------------------*/
+/* dump transaction                                                           */
 /*----------------------------------------------------------------------------*/
 : txDump_req ( -- R )
 
-  "dump transactions" .
+  "dump transaction" .
+
+  task::this task.seitf@ seitf.txRef@ locals| pTxRef |
+
+  pTxRef txRef.dump
 
   <OK>
   exit

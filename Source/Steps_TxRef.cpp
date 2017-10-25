@@ -33,6 +33,7 @@ void Task::vAddPrimitives_TxRef(void)
 {
   vAddPrimitive("txRef.begin"_Stz,     &vTxRefBegin,       false);
   vAddPrimitive("txRef.commit"_Stz,    &vTxRefCommit,      false);
+  vAddPrimitive("txRef.dump"_Stz,      &vTxRefDump,        false);
   vAddPrimitive("txRef.end"_Stz,       &vTxRefEnd,         false);
   vAddPrimitive("txRef.init"_Stz,      &vTxRefInit,        false);
   vAddPrimitive("txRef::new"_Stz,      &vTxRefNew,         false);
@@ -76,6 +77,24 @@ ENTRY("vTxRefCommit"_Stz);
   
   mpTask->m_pDataStack->vPushInt(bCommitted);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* txRef.dump -- dump a tx (via a txRef on stack)                             */
+/*----------------------------------------------------------------------------*/
+void Task::vTxRefDump(MP_Task mpTask)
+{
+  ENTRY("vTxRefDump"_Stz);
+  
+  Object* pPtrTxRef;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTxRef) )
+    THROW_INVALID_DSTACK("txRef.dump"_Stz);
+  TxRef* pTxRef = _pTxRef(pPtrTxRef);
+  
+  pTxRef->vDump();
+    
   EXIT();
 }
 
