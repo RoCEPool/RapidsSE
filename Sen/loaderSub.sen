@@ -196,7 +196,6 @@ tp: theIndirectResult
   // expand args valset
   valset> drop
   to pLoaderSub
-  to iTxId
   to pLoaderSEitf
 
   //"loadSub pLoaderSEitf ..." .
