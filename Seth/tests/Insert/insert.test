@@ -1,0 +1,60 @@
+/*----------------------------------------------------------------------------*/
+/* insert.test -- insert tests                                                */
+/*----------------------------------------------------------------------------*/
+
+// (1) create a table
+create table T1 (
+  col0   integer not null,
+  col1   varchar(32) not null
+);
+success
+
+// (2) create an index on the table
+create index idx on T1 (col0);
+success
+
+// check existence of index
+lsidx T1;
+rows:
+  ('idx', false, false)
+
+// check columns of index
+lsidxcol T1 idx;
+rows:
+  ('col0', 'INTEGER')
+
+// (3) now load some data into the table
+//ld T1 "../Seth/tests/Insert/insert.csv" ;
+//success
+
+// check no of rows
+//fetch T1;
+//rows: 12
+
+// (4) insert some rows into the table
+begin insert T1;
+  insert row "1,abcdef";
+  insert row "2,ghijk";
+  insert row "3,lmno";
+  insert row "4,pqr";
+  insert row "5,stuvw";
+  insert row "6,xyz";
+  insert row "7,abc";
+  insert row "8,defgh";
+  insert row "9,ijk";
+  insert row "10,lmn";
+end insert;
+
+// check no of rows
+fetch T1;
+rows: 22
+
+CLEANUP {
+
+  //drop table T1;
+  //mute
+
+  bye;
+  mute
+}
+
