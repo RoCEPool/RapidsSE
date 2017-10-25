@@ -9,6 +9,9 @@ namespace Transactions
   {
   private:
     
+    SkipList* m_pLocalTxList; // skip list of local transactions
+    SkipList* m_pDistTxList;  // skip list of distributed transactions
+  
     // must be last
     Footer m_xFooter;
     

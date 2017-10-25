@@ -49,6 +49,9 @@ TxSet::TxSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
   
+  m_pLocalTxList = nullptr;
+  m_pDistTxList  = nullptr;
+  
   _checkInitialised_(CN_TXSET);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
