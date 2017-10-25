@@ -413,9 +413,6 @@ void RapidsSE::vSystemInit(void)
   // create the plan list here
   gpPlanList = new PlanList;
   
-  // create the tx sets
-  gpTxSet = new TxSet;
-  
   // tasklist is new'd here as the exception-to-the-rule
   // so as to be boot the system
   gpTaskList = new TaskList;
@@ -437,6 +434,9 @@ void RapidsSE::vSystemInit(void)
   
   // initialize the plan number
   gzPlanId =  gpGrid->iThisNode() << 48;
+  
+  // create the tx sets
+  gpTxSet = new TxSet(gpGrid->iThisNode());
   
   // get the trace file
   Word* pTraceFileWord = gpMainDic->pFindWord("trace_file"_Stz);

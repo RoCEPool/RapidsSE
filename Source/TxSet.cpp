@@ -88,12 +88,14 @@ void TxSet::operator delete(void* pBufferAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-TxSet::TxSet(void)
+TxSet::TxSet(i8 iNodeNo)
 : Object(CN_TXSET)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
   
   m_xLock.vInitLock(LK_TX_MAP);
+  m_iNodeNo = iNodeNo;
+  m_iNextTxId = iNodeNo << 48;
   m_pLocalTxList = new SkipList(true,bTxSetCompareLocal);
   m_pDistTxList  = new SkipList(true,bTxSetCompareDist);
   

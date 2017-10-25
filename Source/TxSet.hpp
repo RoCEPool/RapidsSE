@@ -10,6 +10,8 @@ namespace Transactions
   private:
     
     Lock      m_xLock;        // lock for the set
+    i8        m_iNodeNo;      // this node no
+    i8        m_iNextTxId;    // next tx id
     SkipList* m_pLocalTxList; // skip list of local transactions
     SkipList* m_pDistTxList;  // skip list of distributed transactions
   
@@ -20,7 +22,7 @@ namespace Transactions
     void* operator new(size_t);
     void  operator delete(void*);
     
-    TxSet(void);
+    TxSet(i8 iNodeNo);
     ~TxSet(void);
   
     Footer* aFooter(void);
