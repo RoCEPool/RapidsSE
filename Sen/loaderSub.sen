@@ -92,9 +92,9 @@ tp: loadAppendBuffer$
    pRowBuffer entryBuffer.isLast!
   then
 
-  pLoaderSEitf iLoaderNode pRowBuffer iPartitionNo  pTable    ( rb ptn tablePtr )
+  pLoaderSEitf iLoaderNode  pRowBuffer iDistTxId iPartitionNo  pTable    ( rb ptn tablePtr )
 
-  5 "partitionAppendBuffer" iPartitionNo grid::toSlot dup >partitionTaskNm
+  6 "partitionAppendBuffer" iPartitionNo grid::toSlot dup >partitionTaskNm
   TK_LOADSUB_PART
 
   spawnPartitionTask
@@ -285,10 +285,10 @@ tp: theIndirectResult
 /*----------------------------------------------------------------------------*/
 /* partition task appends the row buffer to the table                         */
 /*----------------------------------------------------------------------------*/
-: partitionAppendBuffer ( pLoaderSEitf iLoaderNode rowBuffer partitionNo table^ -- )
+: partitionAppendBuffer ( pLoaderSEitf iLoaderNode iDistTxId rowBuffer iDistTxId partitionNo table^ -- )
 
 tp: partitionAppendBuffer
-  locals| pTable iPartitionNo pRowBuffer iLoaderNode pLoaderSEitf |
+  locals| pTable iPartitionNo iDistTxId pRowBuffer iLoaderNode pLoaderSEitf |
 
   //"partitionAppendBuffer pLoaderSEitf ..." .
   //pLoaderSEitf .
