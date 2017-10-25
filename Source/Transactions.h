@@ -22,6 +22,7 @@ using namespace Transactions;
 #include "TxArray.hpp"
 #include "TxMap.hpp"
 #include "TxRef.hpp"
+#include "TxSet.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
