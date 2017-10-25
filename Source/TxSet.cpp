@@ -49,6 +49,7 @@ TxSet::TxSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
   
+  m_xLock.vInitLock(LK_TX_MAP);
   m_pLocalTxList = nullptr;
   m_pDistTxList  = nullptr;
   

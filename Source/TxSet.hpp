@@ -9,6 +9,7 @@ namespace Transactions
   {
   private:
     
+    Lock      m_xLock;        // lock for the set
     SkipList* m_pLocalTxList; // skip list of local transactions
     SkipList* m_pDistTxList;  // skip list of distributed transactions
   
