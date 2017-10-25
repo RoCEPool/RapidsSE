@@ -185,7 +185,7 @@ tp: theIndirectResult
 
   // first set the taskset in this task
   // needed when being resumed by coordinator
-  0 0 0 0 locals| iPartitionNo ploaderSub iTotalPartitions pLoaderSEitf |
+  0 0 0 0 0 locals| iPartitionNo ploaderSub iTotalPartitions pLoaderSEitf iTxId |
 
   task::this task.thread thread.taskset@
   task::this task.taskset!
@@ -196,7 +196,7 @@ tp: theIndirectResult
   // expand args valset
   valset> drop
   to pLoaderSub
-
+  to iTxId
   to pLoaderSEitf
 
   //"loadSub pLoaderSEitf ..." .

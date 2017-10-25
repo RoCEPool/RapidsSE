@@ -89,7 +89,7 @@ timer: loadTimer
 
   N_SERVER_THREADS 0 do
 
-    << pSEitf tblLoader loader.newSub >>
+    << pSEitf iTxId tblLoader loader.newSub >>
 
     pathGet >>
 
