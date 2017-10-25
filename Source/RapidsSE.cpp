@@ -21,6 +21,7 @@ PlanList*     gpPlanList     = nullptr;
 ThreadList*   gpThreadList   = nullptr;
 TxCollection* gpTxCollection = nullptr;
 TxMap*        gpTxMap        = nullptr;
+TxSet*        gpTxSet        = nullptr;
 SEitfList*    gpSEitfList    = nullptr;
 PartitionScheduler*    gpPartitionScheduler = nullptr;
 ServerScheduler*    gpServerScheduler    = nullptr;
@@ -411,6 +412,9 @@ void RapidsSE::vSystemInit(void)
   
   // create the plan list here
   gpPlanList = new PlanList;
+  
+  // create the tx sets
+  gpTxSet = new TxSet;
   
   // tasklist is new'd here as the exception-to-the-rule
   // so as to be boot the system
