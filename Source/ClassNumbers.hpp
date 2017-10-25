@@ -170,6 +170,7 @@ namespace Base
     /*132 */ CN_TXCURSOR,
     /*133 */ CN_TXMAP,
     /*134 */ CN_TXREF,
+    /*    */ CN_TXSET,
   
     /*135 */ CN_WORD,
     
@@ -343,6 +344,7 @@ namespace Base
     /*132 */ "TXCURSOR"_Stz,
     /*133 */ "TXMAP"_Stz,
     /*134 */ "TXREF"_Stz,
+    /*    */ "TXSET"_Stz,
     
     /*135 */ "WORD"_Stz,
     

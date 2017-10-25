@@ -172,6 +172,7 @@ pDUMPFUN *gpDump[]
   /*132 */ &Dump::vUndefined,       // CN_TXCURSOR
   /*133 */ &Dump::vUndefined,       // CN_TXMAP
   /*134 */ &Dump::vUndefined,       // CN_TXREF
+  /*    */ &Dump::vUndefined,       // CN_TXSET
 
   /*135 */ &Word::vDump,            // CN_WORD
   
@@ -344,6 +345,7 @@ i8 giClassSize[]
   /*132 */ sizeof(TxCursor),           // CN_TXCURSOR
   /*133 */ sizeof(TxMap),              // CN_TXMAP
   /*134 */ sizeof(TxRef),              // CN_TXREF
+  /*    */ 0,                          // CN_TXSET
 
   /*135 */ sizeof(Word),               // CN_WORD
 
@@ -516,6 +518,7 @@ eHT geWhichHeap[]
   /*132 */ HT_SMALL,   // CN_TXCURSOR
   /*133 */ HT_INVALID, // CN_TXMAP
   /*134 */ HT_SMALL,   // CN_TXREF
+  /*    */ HT_SMALL,   // CN_TXSET
   
   /*135 */ HT_MEDIUM,  // CN_WORD
   
