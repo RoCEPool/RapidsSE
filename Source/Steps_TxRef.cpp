@@ -32,6 +32,7 @@ extern SEitfList*      gpSEitfList;
 void Task::vAddPrimitives_TxRef(void)
 {
   vAddPrimitive("txRef.begin"_Stz,     &vTxRefBegin,       false);
+  vAddPrimitive("txRef::checkDistId"_Stz, &vTxRefCheckDistId, false);
   vAddPrimitive("txRef.commit"_Stz,    &vTxRefCommit,      false);
   vAddPrimitive("txRef.dump"_Stz,      &vTxRefDump,        false);
   vAddPrimitive("txRef.end"_Stz,       &vTxRefEnd,         false);
@@ -57,6 +58,23 @@ ENTRY("vTxRefBegin"_Stz);
   bool bBegun = pTxRef->bBeginTx();
   
   mpTask->m_pDataStack->vPushInt(bBegun);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* txRef.checkDistId -- check existance of distributed tx id                  */
+/*----------------------------------------------------------------------------*/
+void Task::vTxRefCheckDistId(MP_Task mpTask)
+{
+  ENTRY("vTxRefCheckDistId"_Stz);
+  
+  i8 iDistTxId;
+  
+  if ( ! mpTask->m_pDataStack->bPop(iDistTxId) )
+    THROW_INVALID_DSTACK("txRef.checkDistId"_Stz);
+  
+  vTrace("Checking distributed id %lld\n"_Stz,iDistTxId);
   
   EXIT();
 }
