@@ -38,6 +38,7 @@ void Task::vAddPrimitives_LoaderSub(void)
   vAddPrimitive("loaderSub.hashPartition"_Stz,&vLoaderSubHashPartition, false);
   vAddPrimitive("loaderSub.hashRecord"_Stz,   &vLoaderSubHashRecord,    false);
   vAddPrimitive("loaderSub.init"_Stz,         &vLoaderSubInit,          false);
+  vAddPrimitive("loaderSub.loader@"_Stz,      &vLoaderSubLoaderFetch,   false);
   vAddPrimitive("loaderSub.loader!"_Stz,      &vLoaderSubLoaderStore,   false);
   vAddPrimitive("loaderSub.loadData"_Stz,     &vLoaderSubLoadData,      false);
   vAddPrimitive("loaderSub::new"_Stz,         &vLoaderSubNew,           false);
@@ -224,6 +225,25 @@ void Task::vLoaderSubLoadData(MP_Task mpTask)
   } while (pLoaderSub->bFetchRecord());
   
   mpTask->m_pDataStack->vPushInt(false);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loaderSub.loader@ -- fetch loader                                          */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderSubLoaderFetch(MP_Task mpTask)
+{
+  ENTRY("vLoaderSubLoaderFetch"_Stz);
+  
+  Object* pPtrLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
+    THROW_INVALID_DSTACK("loaderSub.partition@"_Stz);
+  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoader);
+  
+  Loader* pLoader = pLoaderSub->pLoader();
+  
+  mpTask->m_pDataStack->vPushObject(pLoader);
   
   EXIT();
 }

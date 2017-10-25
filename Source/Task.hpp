@@ -746,6 +746,7 @@ namespace Tasks
     static void vLoaderSubInit(MP_Task mpTask);
     static void vLoaderSubInsertRow(MP_Task mpTask);
     static void vLoaderSubLoadData(MP_Task mpTask);
+    static void vLoaderSubLoaderFetch(MP_Task mpTask);
     static void vLoaderSubLoaderStore(MP_Task mpTask);
     static void vLoaderSubNew(MP_Task mpTask);
     static void vLoaderSubNewRowBuffer(MP_Task mpTask);
