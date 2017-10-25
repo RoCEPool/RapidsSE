@@ -46,6 +46,7 @@ namespace DBobjects
     i8   iFetchedRecords(void);
     void vHashRecord(void);
     bool bInsertRow(void);
+    Loader* pLoader(void);
     void vLoader(Loader* pLoader);
     void vNewRowBuffer(void);
     i8   iPartition(void);
