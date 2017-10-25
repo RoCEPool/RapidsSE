@@ -38,6 +38,7 @@ void Task::vAddPrimitives_Loader(void)
   vAddPrimitive("loader.newSub"_Stz,      &vLoaderNewSub,      false);
   vAddPrimitive("loader.path!"_Stz,       &vLoaderPathStore,   false);
   vAddPrimitive("loader.table!"_Stz,      &vLoaderTableStore,  false);
+  vAddPrimitive("loader.txref@"_Stz,      &vLoaderTxRefFetch,  false);
   vAddPrimitive("loader.txref!"_Stz,      &vLoaderTxRefStore,  false);
 }
 
@@ -182,6 +183,25 @@ void Task::vLoaderTableStore(MP_Task mpTask)
   ASSERT(CN_TABLE == pTable->eClass());
   
   pLoader->vTable(pTable);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loader.txref@ -- fetch txref from loader                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderTxRefFetch(MP_Task mpTask)
+{
+  ENTRY("vLoaderTxRefFetch"_Stz);
+  
+  Object* pPtrLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
+    THROW_INVALID_DSTACK("loader.txref@"_Stz);
+  Loader* pLoader = _pLoader(pPtrLoader);
+  
+  TxRef* pTxRef = pLoader->pTxRef();
+  
+  mpTask->m_pDataStack->vPushObject(pTxRef);
   
   EXIT();
 }
