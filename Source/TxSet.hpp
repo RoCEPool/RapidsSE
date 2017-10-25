@@ -29,6 +29,9 @@ namespace Transactions
   TxSet* _pTxSet(void* aAddr);
 }
 
+bool bTxSetCompareLocal(void* pObjectInsert, void* pObjectScan, bool& bMatch);
+bool bTxSetCompareDist(void* pObjectInsert, void* pObjectScan, bool& bMatch);
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

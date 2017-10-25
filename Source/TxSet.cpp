@@ -7,6 +7,50 @@
 extern Heap* gpSmallHeap;
 
 /*----------------------------------------------------------------------------*/
+/* compare two local tx's                                                     */
+/*----------------------------------------------------------------------------*/
+bool bTxSetCompareLocal(void* pObjectInsert, void* pObjectScan, bool& bMatch)
+{
+  Tx* pInsertEntry = _pTx(pObjectInsert);
+  Tx* pScanEntry   = _pTx(pObjectScan);
+  
+  if ( ! pObjectScan )
+    return false;
+  
+  if (pInsertEntry->iTxId() == pScanEntry->iTxId())
+    bMatch = true;
+  else
+    bMatch = false;
+  
+  if (pInsertEntry->iTxId() > pScanEntry->iTxId())
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* compare two distributed tx's                                               */
+/*----------------------------------------------------------------------------*/
+bool bTxSetCompareDist(void* pObjectInsert, void* pObjectScan, bool& bMatch)
+{
+  Tx* pInsertEntry = _pTx(pObjectInsert);
+  Tx* pScanEntry   = _pTx(pObjectScan);
+  
+  if ( ! pObjectScan )
+    return false;
+  
+  if (pInsertEntry->iDistTxId() == pScanEntry->iDistTxId())
+    bMatch = true;
+  else
+    bMatch = false;
+  
+  if (pInsertEntry->iDistTxId() > pScanEntry->iDistTxId())
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
 TxSet* Transactions::_pTxSet(void* aAddr)
