@@ -58,9 +58,10 @@ Tx::Tx(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
 
-  m_iTxSlot = -1;
-  m_iTxId   = -1;
-  m_ePhase  = TP_NONE;
+  m_iTxSlot   = -1;
+  m_iTxId     = -1;
+  m_iDistTxId = -1;
+  m_ePhase    = TP_NONE;
   
   _checkInitialised_(CN_TX);
 
@@ -105,6 +106,26 @@ void Tx::vTxId(i8 iTxId)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
   
   m_iTxId = iTxId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get dist tx id                                                             */
+/*----------------------------------------------------------------------------*/
+i8 Tx::iDistTxId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
+  
+  return m_iDistTxId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set dist tx id                                                             */
+/*----------------------------------------------------------------------------*/
+void Tx::vDistTxId(i8 iDistTxId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
+  
+  m_iDistTxId = iDistTxId;
 }
 
 /*----------------------------------------------------------------------------*/

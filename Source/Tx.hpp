@@ -37,10 +37,11 @@ namespace Transactions
              public CollectionNode_t<Tx>
   {
   private:
-    Lock  m_xLock;    // lock
-    i8    m_iTxSlot;  // transaction slot (0..C_TX_ARRAY-1)
-    i8    m_iTxId;    // transaction id
-    eTP   m_ePhase;   // phase (executing, committing, ...)
+    Lock  m_xLock;     // lock
+    i8    m_iTxSlot;   // transaction slot (0..C_TX_ARRAY-1)
+    i8    m_iTxId;     // transaction id
+    i8    m_iDistTxId; // distributed transaction id
+    eTP   m_ePhase;    // phase (executing, committing, ...)
 
     // must be last
     Footer m_xFooter;
@@ -60,6 +61,9 @@ namespace Transactions
     i8 iTxId(void);
     void vTxId(i8 iTxId);
 
+    i8 iDistTxId(void);
+    void vDistTxId(i8 iTxId);
+  
     eTP ePhase(void);
     void vPhase(eTP ePhase);
     
