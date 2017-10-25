@@ -94,8 +94,8 @@ TxSet::TxSet(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
   
   m_xLock.vInitLock(LK_TX_MAP);
-  m_pLocalTxList = nullptr;
-  m_pDistTxList  = nullptr;
+  m_pLocalTxList = new SkipList(true,bTxSetCompareLocal);
+  m_pDistTxList  = new SkipList(true,bTxSetCompareDist);
   
   _checkInitialised_(CN_TXSET);
   
