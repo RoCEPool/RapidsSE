@@ -24,35 +24,75 @@ rows:
   ('col0', 'INTEGER')
 
 // (3) now load some data into the table
-//ld T1 "../Seth/tests/Insert/insert.csv" ;
-//success
+ld T1 "../Seth/tests/Insert/insert.csv" ;
+success
 
 // check no of rows
-//fetch T1;
-//rows: 12
+fetch T1;
+rows: 12
 
 // (4) insert some rows into the table
 begin insert T1;
-  insert row "1,abcdef";
-  insert row "2,ghijk";
-  insert row "3,lmno";
-  insert row "4,pqr";
-  insert row "5,stuvw";
-  insert row "6,xyz";
-  insert row "7,abc";
-  insert row "8,defgh";
-  insert row "9,ijk";
-  insert row "10,lmn";
+success
+
+insert row "1,abcdef";
+success
+
+insert row "2,ghijk";
+success
+
+insert row "3,lmno";
+success
+
+insert row "4,pqr";
+success
+
+insert row "5,stuvw";
+success
+
+insert row "6,xyz";
+success
+
+insert row "7,abc";
+success
+
+insert row "8,defgh";
+success
+
+insert row "9,ijk";
+success
+
+insert row "10,lmn";
+success
+
 end insert;
+success
 
 // check no of rows
 fetch T1;
 rows: 22
 
+// (5) insert some invalid row
+begin insert T1;
+success
+
+insert row "21,";
+failure: 'invalid value'
+
+insert row "22,ghijk";
+success
+
+end insert;
+success
+
+// check no of rows
+fetch T1;
+rows: 23
+
 CLEANUP {
 
-  //drop table T1;
-  //mute
+  drop table T1;
+  mute
 
   bye;
   mute

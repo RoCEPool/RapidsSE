@@ -1410,21 +1410,37 @@ bool SePrompt::bCmd_EndInsert(void)
   // clear the last error
   m_pSEitf->vClearLastError();
   
-  bool bResult = m_pSEitf->bInsertBuffer();
+  // before sending buffers set no of remaining acks to no of partitons
+  m_pSEitf->m_ziAcksRemaining = gpGrid->iSlots() * gpGrid->iNodes();
   
-  // if rowBuffer request was appended to requestQ, then wait for resonse
-  if (bResult) {
-    // get response from se
-    eEC eResult = eGetResponse(m_pSEitf);
+  for (i8 iPartition = 0; iPartition < gpGrid->m_nPartitions; iPartition++) {
+    bool bResult = m_pSEitf->bInsertLastBuffer(iPartition);
     
-    if (eResult != EC_NONE) {
-      m_pSEitf->vSetLastError(eResult);
-      return eResult;
+    //vTrace("bInsertLastBuffer returned %lld %lld\n"_Stz, iPartition, bResult);
+    
+    // if rowBuffer request was appended to requestQ, then wait for resonse
+    if (bResult) {
+      // get response from se
+      eEC eResult = eGetResponse(m_pSEitf);
+      
+      if (eResult != EC_NONE) {
+        m_pSEitf->vSetLastError(eResult);
+        bResult = bReturnTable();
+        if (!bResult)
+          return false;
+      }
     }
+  }
+
+  // now wait till acks from all partitions have been received
+  //vTrace("*pSEitf->m_ziAcksRemaining %lld\n"_Stz, *pSEitf->m_ziAcksRemaining);
+  while (*m_pSEitf->m_ziAcksRemaining != 0) {
+    //vTrace("*pSEitf->m_ziAcksRemaining %lld ...\n"_Stz, *pSEitf->m_ziAcksRemaining);
+    ;
   }
   
   // now return the table
-  bResult = bReturnTable();
+  bool bResult = bReturnTable();
   if (!bResult)
     return false;
   
@@ -1596,14 +1612,9 @@ bool SePrompt::bCmd_InsertRow(void)
   // clear the last error
   m_pSEitf->vClearLastError();
   
-  //if (!pRow) {
-  //  m_pSEitf->vSetLastError(EC_INVALID_PARAMETER);
-  //  return EC_INVALID_PARAMETER;
-  //}
-  
   if (!m_pSEitf->pCurrentTable()) {
     m_pSEitf->vSetLastError(EC_NO_SUCH_TABLE);
-    return EC_NO_SUCH_TABLE;
+    return false;
   }
   
   Stz* pRow = m_xTokenVec2[2]->aText();
@@ -1614,15 +1625,16 @@ bool SePrompt::bCmd_InsertRow(void)
   bool bValid = RowData::bFormatData(
                   m_pSEitf->m_pCurrentTable->pColumnVec(), pRow,
                   StrLib::iSize(pRow->aChar()), s, iRowLength);
-  ASSERT(bValid);
+  
+  if (! bValid) {
+    m_pSEitf->vSetLastError(EC_INVALID_VALUE);
+    return false;
+  }
   
   // get the partition this row hashes to
   i8 iRowPartition = m_pSEitf->pCurrentTable()->iRowPartition(s);
   
-  // set the partition in seitf
-  m_pSEitf->m_iPartition = iRowPartition;
-  
-  bool bResult = m_pSEitf->bInsertRow(s, iRowLength);
+  bool bResult = m_pSEitf->bInsertRow(s, iRowLength, iRowPartition);
   
   if (!bResult) {
     m_pSEitf->vSetLastError(m_pSEitf->m_eErrorCode);
