@@ -39,13 +39,13 @@
 /*----------------------------------------------------------------------------*/
 /* append row buffer to partition of given named table                        */
 /*----------------------------------------------------------------------------*/
-: loadAppendBuffer$ ( pLoaderSEitf iLoaderNode rowBuffer isLast partitionNo "<indexNm>" "<tableNm>" -- true )
+: loadAppendBuffer$ ( pLoaderSEitf iLoaderNode iDistTxId rowBuffer isLast partitionNo "<indexNm>" "<tableNm>" -- true )
 
 //"loadAppendBuffer$" .
 
 tp: loadAppendBuffer$
   0 0 locals| pIndex pTable sTableNm sIndexNm iPartitionNo bIsLast pRowBuffer
-              iLoaderNode pLoaderSEitf |
+              iDistTxId iLoaderNode pLoaderSEitf |
 
   //"loadAppendBuffer$..." .
   //pLoaderSEitf .
@@ -139,9 +139,14 @@ tp: ~loadAppendBuffer
   //"~loadAppendBuffer" .
   //pLoaderSEitf .
   //grid.thisNode@ .
+
+  // get tx id from loader
+  pLoaderSub loaderSub.loader@ loader.txRef@ txRef.id locals| iDistTxId |
+
   <<
     pLoaderSEitf
     grid.thisNode@
+    iDistTxId
     pRowBuffer                                    ( << rb )
     pRowBuffer entryBuffer.isLast@
     nullPtr pLoaderSub loaderSub.rowBuffer!  // set working row buffer to null
