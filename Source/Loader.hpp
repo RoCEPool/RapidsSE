@@ -10,7 +10,8 @@ namespace DBobjects
   private:
     Table*   m_pTable;   // table being load
     s256     m_sPath;    // file being loaded
-    TxRef*   m_pTxRef;   // tx
+    Tx*      m_pTx;      // tx
+    TxRef*   m_pTxRef;   // tx ref
     LoadMap* m_pLoadMap; // load map
     
     // must be last
@@ -29,11 +30,13 @@ namespace DBobjects
 
     bool     bFindChunk(void);
     LoadMap* pLoadMap(void);
-    StrVal&       sPath(void);
+    StrVal&  sPath(void);
     void     vPath(StrVal& sPath);
     Table*   pTable(void);
     void     vTable(Table* pTable);
     void     vTidyUp(void);
+    Tx*      pTx(void);
+    void     vTx(Tx* pTx);
     TxRef*   pTxRef(void);
     void     vTxRef(TxRef* pTxRef);
     

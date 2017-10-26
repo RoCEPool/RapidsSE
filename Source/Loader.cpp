@@ -61,6 +61,7 @@ Loader::Loader(void)
   
   m_sPath    = "<none>"_Stz;
   m_pTable   = nullptr;
+  m_pTx      = nullptr;
   m_pTxRef   = nullptr;
   m_pLoadMap = new LoadMap;
   
@@ -183,6 +184,26 @@ void Loader::vTidyUp(void)
   
   delete m_pLoadMap;
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* get txr                                                                    */
+/*----------------------------------------------------------------------------*/
+Tx* Loader::pTx(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  
+  return m_pTx;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set tx                                                                     */
+/*----------------------------------------------------------------------------*/
+void Loader::vTx(Tx* pTx)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  
+  m_pTx = pTx;
 }
 
 /*----------------------------------------------------------------------------*/
