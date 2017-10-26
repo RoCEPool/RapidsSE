@@ -18,6 +18,7 @@ extern StepArray*      gpStepArray;
 extern ThreadList*     gpThreadList;
 extern TaskList*       gpTaskList;
 extern TxCollection*   gpTxCollection;
+extern TxSet*          gpTxSet;
 
 extern NP_Task         gnpBootTask;
 extern Lock            gxDdlLock;
@@ -45,6 +46,10 @@ void Task::vTxBegin(MP_Task mpTask)
 {
   ENTRY("vTxBegin"_Stz);
   
+  Tx* pTx = gpTxSet->pAllocLocalTx();
+  
+  mpTask->m_pDataStack->vPushObject(pTx);
+  
   EXIT();
 }
 
@@ -54,6 +59,13 @@ void Task::vTxBegin(MP_Task mpTask)
 void Task::vTxCommit(MP_Task mpTask)
 {
   ENTRY("vTxCommit"_Stz);
+  
+  Object* pPtrTx;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTx) )
+    THROW_INVALID_DSTACK("tx.commit"_Stz);
+  Tx* pTx = _pTx(pPtrTx);
+  
+  pTx->vPhase(TP_COMMITTED);
   
   EXIT();
 }
@@ -65,15 +77,13 @@ void Task::vTxDump(MP_Task mpTask)
 {
 ENTRY("vTxDump"_Stz);
   
-//  Object* pPtrTx;
-//  
-//  if ( ! mpTask->m_pDataStack->bPop(pPtrTx) )
-//    THROW_INVALID_DSTACK("tx.delete"_Stz);
-//  
-//  Tx* pTx = _pTx(pPtrTx);
-//  ASSERT(CN_TX == pTx->eClass());
-//
-//  pTx->vContentDump();
+  Object* pPtrTx;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTx) )
+    THROW_INVALID_DSTACK("tx.dump"_Stz);
+  Tx* pTx = _pTx(pPtrTx);
+  
+  pTx->vContentDump();
   
   EXIT();
 }
@@ -94,6 +104,13 @@ void Task::vTxDumpAll(MP_Task mpTask)
 void Task::vTxRollback(MP_Task mpTask)
 {
   ENTRY("vTxRollback"_Stz);
+  
+  Object* pPtrTx;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTx) )
+    THROW_INVALID_DSTACK("tx.rollback"_Stz);
+  Tx* pTx = _pTx(pPtrTx);
+  
+  pTx->vPhase(TP_ROLLEDBACK);
   
   EXIT();
 }
