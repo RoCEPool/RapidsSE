@@ -38,10 +38,12 @@ namespace Transactions
   {
   private:
     Lock  m_xLock;     // lock
-    i8    m_iTxSlot;   // transaction slot (0..C_TX_ARRAY-1)
     i8    m_iTxId;     // transaction id
     i8    m_iDistTxId; // distributed transaction id
     eTP   m_ePhase;    // phase (executing, committing, ...)
+
+    // to be deleted
+    i8    m_iTxSlot;   // transaction slot (0..C_TX_ARRAY-1)
 
     // must be last
     Footer m_xFooter;

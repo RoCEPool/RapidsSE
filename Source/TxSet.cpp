@@ -7,7 +7,7 @@
 extern Heap* gpSmallHeap;
 
 /*----------------------------------------------------------------------------*/
-/* compare two local tx's                                                     */
+/* compare two tx's by their local tx id's                                    */
 /*----------------------------------------------------------------------------*/
 bool bTxSetCompareLocal(void* pObjectInsert, void* pObjectScan, bool& bMatch)
 {
@@ -29,7 +29,7 @@ bool bTxSetCompareLocal(void* pObjectInsert, void* pObjectScan, bool& bMatch)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compare two distributed tx's                                               */
+/* compare two tx's by their distributed tx id's                              */
 /*----------------------------------------------------------------------------*/
 bool bTxSetCompareDist(void* pObjectInsert, void* pObjectScan, bool& bMatch)
 {
@@ -80,6 +80,7 @@ void* TxSet::operator new(size_t iSize)
 void TxSet::operator delete(void* pBufferAddress)
 {
   RASSERT(pBufferAddress);
+  
   vFatal("fatal: gpTxSet class cannot be deleted"_Stz);
   
   NEVER_REACH;
@@ -158,7 +159,7 @@ Tx* TxSet::pFindTx(i8 iTxId)
 }
 
 /*----------------------------------------------------------------------------*/
-/* try and find a tx by dist tx id, create if not there                       */
+/* attempt to find a tx by dist tx id, create if not found                    */
 /*----------------------------------------------------------------------------*/
 Tx* TxSet::pTestDistTx(i8 iDistTxId)
 {
@@ -194,7 +195,7 @@ Tx* TxSet::pTestDistTx(i8 iDistTxId)
 }
 
 /*----------------------------------------------------------------------------*/
-/* free a tx                                                                  */
+/* free given tx                                                              */
 /*----------------------------------------------------------------------------*/
 void TxSet::vFreeTx(Tx* pTx)
 {
