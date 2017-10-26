@@ -25,6 +25,12 @@ namespace Transactions
     TxSet(i8 iNodeNo);
     ~TxSet(void);
   
+    Tx*  pAllocLocalTx(void);
+    Tx*  pFindTx(i8 iTxId);
+    Tx*  pTestDistTx(i8 iDistTxId);
+  
+    void vFreeTx(Tx* pTx);
+  
     Footer* aFooter(void);
   };
   
