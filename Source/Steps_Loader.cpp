@@ -34,10 +34,12 @@ void Task::vAddPrimitives_Loader(void)
   vAddPrimitive("loader.delete"_Stz,      &vLoaderDelete,      false);
   vAddPrimitive("loader.findChunk"_Stz,   &vLoaderFindChunk,   false);
   vAddPrimitive("loader.init"_Stz,        &vLoaderInit,        false);
-  vAddPrimitive("loader::new"_Stz,         &vLoaderNew,         false);
+  vAddPrimitive("loader::new"_Stz,        &vLoaderNew,         false);
   vAddPrimitive("loader.newSub"_Stz,      &vLoaderNewSub,      false);
   vAddPrimitive("loader.path!"_Stz,       &vLoaderPathStore,   false);
   vAddPrimitive("loader.table!"_Stz,      &vLoaderTableStore,  false);
+  vAddPrimitive("loader.tx@"_Stz,         &vLoaderTxFetch,     false);
+  vAddPrimitive("loader.tx!"_Stz,         &vLoaderTxStore,     false);
   vAddPrimitive("loader.txref@"_Stz,      &vLoaderTxRefFetch,  false);
   vAddPrimitive("loader.txref!"_Stz,      &vLoaderTxRefStore,  false);
 }
@@ -183,6 +185,46 @@ void Task::vLoaderTableStore(MP_Task mpTask)
   ASSERT(CN_TABLE == pTable->eClass());
   
   pLoader->vTable(pTable);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loader.tx@ -- fetch tx from loader                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderTxFetch(MP_Task mpTask)
+{
+  ENTRY("vLoaderTxFetch"_Stz);
+  
+  Object* pPtrLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
+    THROW_INVALID_DSTACK("loader.txref@"_Stz);
+  Loader* pLoader = _pLoader(pPtrLoader);
+  
+  Tx* pTx = pLoader->pTx();
+  
+  mpTask->m_pDataStack->vPushObject(pTx);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loader.tx! -- store tx into loader                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderTxStore(MP_Task mpTask)
+{
+  ENTRY("vLoaderTxStore"_Stz);
+  
+  Object* pPtrLoader;
+  Object* pPtrTx;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader,pPtrTx) )
+    THROW_INVALID_DSTACK("loader.txref!"_Stz);
+  
+  Loader* pLoader = _pLoader(pPtrLoader);
+  
+  Tx* pTx = _pTx(pPtrTx);
+  
+  pLoader->vTx(pTx);
   
   EXIT();
 }
