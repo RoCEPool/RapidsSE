@@ -1026,6 +1026,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_TxCollection();
   vAddPrimitives_TxMap();
   vAddPrimitives_TxRef();
+  vAddPrimitives_TxSet();
   
   vAddPrimitives_Utility();
   
