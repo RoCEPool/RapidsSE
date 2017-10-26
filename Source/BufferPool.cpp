@@ -90,6 +90,8 @@ Buffer* BufferPool::pAllocBuffer(void)
   // test for empty free chain
   if (bn::nNil() == m_nFreeHead) {
     ASSERT( ! m_iFreeCount );
+    vTrace("RUNNING OUT OF MEMORY!!!\n"_Stz);
+    vWarn("BufferPool::pAllocBuffer: zero free buffers\n"_Stz);
     m_zFreeLock.vDropWrite();
     return nullptr;
   }
