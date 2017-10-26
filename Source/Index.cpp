@@ -186,6 +186,7 @@ eIF Index::eIndexForm(void)
 
   Column* pColumn0;
   Column* pColumn1;
+  Column* pColumn2;
   
   if (1 == m_pIdxColVec->nItems()) {
     pColumn0 = m_pIdxColVec->pGet(0);
@@ -204,6 +205,17 @@ eIF Index::eIndexForm(void)
     return IF_COMPLEX;
   }
   
+  if (3 == m_pIdxColVec->nItems()) {
+    pColumn0 = m_pIdxColVec->pGet(0);
+    pColumn1 = m_pIdxColVec->pGet(1);
+    pColumn2 = m_pIdxColVec->pGet(2);
+    if (DM_INT == pColumn0->eDatumType() &&
+        DM_INT == pColumn1->eDatumType() &&
+        DM_INT == pColumn2->eDatumType())
+      return IF_I8_I8_I8;
+    return IF_COMPLEX;
+  }
+
   return IF_COMPLEX;
 }
 

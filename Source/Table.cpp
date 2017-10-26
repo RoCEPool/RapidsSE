@@ -1151,11 +1151,52 @@ int DBobjects::iQsort_i8i8(const void* aArg1, const void* aArg2)
 
   //----------------------------------------------------------------------------
   // check for nulls first
-  if (((Int*)pArg1a)->bIsNull())
+  if (((Int*)pArg1b)->bIsNull())
   return -1;
   
-  if (((Int*)pArg2a)->bIsNull())
+  if (((Int*)pArg2b)->bIsNull())
   return 1;
+  
+  //----------------------------------------------------------------------------
+  // check for min
+  if (*pArg1b == C_I8_MIN) {
+    if (*pArg2b == C_I8_MIN)
+      return 0;
+    else
+      return -1;
+  }
+  
+  if (*pArg2b == C_I8_MIN) {
+    return 1;
+  }
+  
+  //----------------------------------------------------------------------------
+  i8 iCmpB = *pArg1b - *pArg2b;
+  
+  if (iCmpB > 0)
+    return 1;
+  
+  if (iCmpB < 0)
+    return -1;
+  
+  return 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* the qsort compare function for an {i8,i8,i8} key datum                     */
+/*----------------------------------------------------------------------------*/
+int DBobjects::iQsort_i8i8i8(const void* aArg1, const void* aArg2)
+{
+  i8* pArg1a = (i8*)aArg1;
+  i8* pArg2a = (i8*)aArg2;
+  
+  //----------------------------------------------------------------------------
+  // check for nulls first
+  if (((Int*)pArg1a)->bIsNull())
+    return -1;
+  
+  if (((Int*)pArg2a)->bIsNull())
+    return 1;
   
   //----------------------------------------------------------------------------
   // check for min
@@ -1171,6 +1212,43 @@ int DBobjects::iQsort_i8i8(const void* aArg1, const void* aArg2)
   }
   
   //----------------------------------------------------------------------------
+  // now compare the integers
+  i8 iCmpA = *pArg1a - *pArg2a;
+  
+  if (iCmpA > 0)
+    return 1;
+  
+  if (iCmpA < 0)
+    return -1;
+  
+  //----------------------------------------------------------------------------
+  // move to next integer
+  
+  i8* pArg1b = pArg1a + 1;
+  i8* pArg2b = pArg2a + 1;
+  
+  //----------------------------------------------------------------------------
+  // check for nulls first
+  if (((Int*)pArg1b)->bIsNull())
+    return -1;
+  
+  if (((Int*)pArg2b)->bIsNull())
+    return 1;
+  
+  //----------------------------------------------------------------------------
+  // check for min
+  if (*pArg1b == C_I8_MIN) {
+    if (*pArg2b == C_I8_MIN)
+      return 0;
+    else
+      return -1;
+  }
+  
+  if (*pArg2b == C_I8_MIN) {
+    return 1;
+  }
+  
+  //----------------------------------------------------------------------------
   i8 iCmpB = *pArg1b - *pArg2b;
   
   if (iCmpB > 0)
@@ -1179,6 +1257,42 @@ int DBobjects::iQsort_i8i8(const void* aArg1, const void* aArg2)
   if (iCmpB < 0)
     return -1;
   
+  //----------------------------------------------------------------------------
+  // move to next integer
+  
+  i8* pArg1c = pArg1b + 1;
+  i8* pArg2c = pArg2b + 1;
+  
+  //----------------------------------------------------------------------------
+  // check for nulls first
+  if (((Int*)pArg1c)->bIsNull())
+    return -1;
+  
+  if (((Int*)pArg2c)->bIsNull())
+    return 1;
+  
+  //----------------------------------------------------------------------------
+  // check for min
+  if (*pArg1c == C_I8_MIN) {
+    if (*pArg2c == C_I8_MIN)
+      return 0;
+    else
+      return -1;
+  }
+  
+  if (*pArg2c == C_I8_MIN) {
+    return 1;
+  }
+  
+  //----------------------------------------------------------------------------
+  i8 iCmpC = *pArg1c - *pArg2c;
+  
+  if (iCmpC > 0)
+    return 1;
+  
+  if (iCmpC < 0)
+    return -1;
+
   return 0;
 }
 
@@ -1202,6 +1316,9 @@ void Table::vSortTheArray(char* aSortArray, i8 nElements, i8 nElmSize,
   if (IF_I8_I8 == eIndexForm)
     qsort(aSortArray,nElements,nElmSize,iQsort_i8i8);
   else
+  if (IF_I8_I8_I8 == eIndexForm)
+    qsort(aSortArray,nElements,nElmSize,iQsort_i8i8i8);
+  
 #ifdef __APPLE__
     qsort_r(aSortArray,nElements,nElmSize,(void*)pNewIndexData,iQsort_complex);
 #else

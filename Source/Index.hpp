@@ -22,6 +22,7 @@ namespace DBobjects
     /* 0 */ IF_NONE=0,
     /* 1 */ IF_I8,
     /* 2 */ IF_I8_I8,
+    /*   */ IF_I8_I8_I8,
     /* 3 */ IF_STZ,
     /* 4 */ IF_COMPLEX
   };
