@@ -4,6 +4,7 @@
 
 "transactions.sen" .verbose
 
+"tx.sen" include
 "txCollection.sen" include
 "txCursor.sen" include
 "txMap.sen" include
