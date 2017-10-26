@@ -20,9 +20,6 @@ private:
 
   bool      m_bEcho;      // echo response?
   
-  bool      m_bExpect;    // is there an expected response?
-  s48K       m_sExpect;    // the expected response;
-  
   s48K       m_sResponse;  // response from seitf
   SeHistory m_xHistory;   // command history
   
@@ -57,8 +54,6 @@ private:
   
   void vSetEcho(void);
   void vClearEcho(void);
-  void vSetExpect(void);
-  void vClearExpect(void);
   
   bool bRunFile(void);
   

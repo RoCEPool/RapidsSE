@@ -136,10 +136,7 @@ SePrompt::SePrompt(void)
                     );
   
   m_bEcho   = false;
-  
-  m_bExpect = false;
-  m_sExpect = ""_Stz;
-  
+    
   m_sResponse  = ""_Stz;
   //m_xHistory
   
@@ -222,13 +219,6 @@ void SePrompt::vLoop(void)
     
     bool bProcessResult = bProcessCommand();
     
-    if (m_bExpect) {
-      if ( ! m_sExpect.bSame(m_sResponse) ) {
-        vTrace("Expected \"%s\" : Got \"%s\"\n"_Stz,m_sExpect.aChar(),m_sResponse.aChar());
-        PosixThread::vSleepSec(10000);
-      }
-    }
-    
     if (m_bEcho) {
       vTrace("cmd: "_Stz);
       for (i8 i_Token = 0; i_Token < C_TOKENS; i_Token++) {
@@ -245,17 +235,14 @@ void SePrompt::vLoop(void)
         vMetaFormat();
       }
       else {
-        if ( ! m_bExpect ) {
-          if ( !m_sResponse.bEqual("<ok>"_Stz) ) {
-              vTrace("%s\n"_Stz,m_sResponse.aChar());
-          }
+        if ( !m_sResponse.bEqual("<ok>"_Stz) ) {
+          vTrace("%s\n"_Stz,m_sResponse.aChar());
         }
       }
     }
     else {
       if (m_pSEitf->eGetLastError() != EC_NONE)
-        if ( ! m_bExpect )
-          vTrace("error: %s\n"_Stz,m_pSEitf->pGetLastError());
+        vTrace("error: %s\n"_Stz,m_pSEitf->pGetLastError());
     }
     
     // clear the response
@@ -278,16 +265,6 @@ void SePrompt::vLoop(void)
 void SePrompt::vClearEcho(void)
 {
   m_bEcho = false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* clear expected result                                                      */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vClearExpect(void)
-{
-  m_sExpect = ""_Stz;
-  
-  m_bExpect = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -468,21 +445,14 @@ void SePrompt::vGetCommandInput(void)
 void SePrompt::vMetaFormat(void)
 {
   
-  if ( ! m_bExpect ) {
-    if ( !m_sResponse.bEqual("<ok>"_Stz) ) {
-      if ( ! m_pSEitf->m_sMetadata.bEqual( ""_Stz))
-        vTrace("metadata: %s\n"_Stz, m_pSEitf->m_sMetadata.aStr());
-      vTrace("%s"_Stz,m_sResponse.aChar());
-      vTrace("success: %lld rows affected\n"_Stz, m_pSEitf->m_iRowsProcessed);
-    }
-    else {
-      vTrace("success: %lld rows affected\n"_Stz, m_pSEitf->m_iRowsProcessed);
-    }
+  if ( !m_sResponse.bEqual("<ok>"_Stz) ) {
+    if ( ! m_pSEitf->m_sMetadata.bEqual( ""_Stz))
+      vTrace("metadata: %s\n"_Stz, m_pSEitf->m_sMetadata.aStr());
+    vTrace("%s"_Stz,m_sResponse.aChar());
+    vTrace("success: %lld rows affected\n"_Stz, m_pSEitf->m_iRowsProcessed);
   }
   else {
-    if (m_pSEitf->eGetLastError() != EC_NONE)
-      if ( ! m_bExpect )
-        vTrace("error: %s\n"_Stz,m_pSEitf->pGetLastError());
+    vTrace("success: %lld rows affected\n"_Stz, m_pSEitf->m_iRowsProcessed);
   }
   
   // reset counters
@@ -503,12 +473,6 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
     vSetEcho();
   else
     vClearEcho();
-  
-  // test for expect prefix
-  if (bCmdIs("expect"_Stz))
-    vSetExpect();
-  else
-    vClearExpect();
   
   //vTrace("command: %s\n"_Stz,m_xTokenVec[0]->sText().aChar());
   
@@ -625,18 +589,6 @@ void SePrompt::vSetEcho(void)
   m_bEcho = true;
   
   vClipTokens(1);
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect and set expected result                                            */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vSetExpect(void)
-{
-  m_sExpect = m_xTokenVec[1]->aText();
-  
-  m_bExpect = true;
-  
-  vClipTokens(2);
 }
 
 /*----------------------------------------------------------------------------*/
