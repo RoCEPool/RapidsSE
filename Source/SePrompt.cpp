@@ -123,6 +123,7 @@ SePrompt::SePrompt(void)
   ASSERT(EC_NONE == eResult);
   
   m_bContinue = true;
+  m_bEcho   = false;
   
   m_sPrompt.vSprint("[N%lld %lld] se %s%c> "_Stz,
                     gpGrid->iThisNode(),
@@ -135,12 +136,10 @@ SePrompt::SePrompt(void)
     #endif
                     );
   
-  m_bEcho   = false;
+  
     
   m_sResponse  = ""_Stz;
   //m_xHistory
-  
-  //m_wWorkarea
   
   //----
   m_pTokeniser = new Tokeniser;

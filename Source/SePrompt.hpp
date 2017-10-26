@@ -12,20 +12,15 @@ using namespace CorrectnessAlgebra;
 class SePrompt : public Buffer
 {
 private:
-  i8        m_iPartition; // which partition
-  SEitf*    m_pSEitf;     // interface into rapidsse
-  bool      m_bContinue;  // continue processing commands?
-  s32       m_sPrompt;    // prompt
-  bool      m_bUseString; // use string
-
-  bool      m_bEcho;      // echo response?
-  
+  i8         m_iPartition; // which partition
+  SEitf*     m_pSEitf;     // interface into rapidsse
+  bool       m_bContinue;  // continue processing commands?
+  bool       m_bEcho;      // echo response?
+  s32        m_sPrompt;    // prompt
   s48K       m_sResponse;  // response from seitf
-  SeHistory m_xHistory;   // command history
-  
-  TokenVec   m_xTokenVec;
-  TokenVec   m_xTokenVec2;
-  
+  SeHistory  m_xHistory;   // command history
+  TokenVec   m_xTokenVec;  // token vector
+  TokenVec   m_xTokenVec2; // another token vector
   Tokeniser* m_pTokeniser; // input stream tokeniser
   
   // must be last
@@ -105,8 +100,6 @@ public:
   bool bCmd_RecallCommand(void);
   bool bCmd_Sleep(void);
   bool bCmd_UseSchema(void);
-  
-  
   
   Footer* aFooter(void);
   
