@@ -200,8 +200,16 @@ void TxSet::vFreeTx(Tx* pTx)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXCOLLECTION,_FOOTER_);
   
-  // ..tbd..
+  bool bRemoved;
   
+  m_xLock.vGrabWrite();
+ 
+  bRemoved = m_pLocalTxList->bRemove(pTx);
+
+  bRemoved = m_pDistTxList->bRemove(pTx);
+  
+  m_xLock.vDropWrite();
+ 
   delete pTx;
 }
 
