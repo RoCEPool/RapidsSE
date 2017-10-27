@@ -940,6 +940,7 @@ i8 Table::nHiddenEntryCount(EntryBuffer* pFirstL0Buffer)
   return nEntries;
 }
 
+//#define _COPY_DIRECT
 /*----------------------------------------------------------------------------*/
 /* populate the sort array for the given index from the hidden index          */
 /*----------------------------------------------------------------------------*/
@@ -972,8 +973,22 @@ void Table::vPopulateSortArray(char* aSortArray, i8 nElements, i8 iSortElmSize,
     //if (gxArguments.m_bVerbose)
     //  vTrace("vPopulateSortArray for buffer %p\n"_Stz, pEB);
     
+#ifdef _COPY_DIRECT
     for ( ; pRow; pRow = pEB->pNextRow(pRow)) {
       
+      // get the key datum for this index
+      aSortElm = pRow->pExtractSortKey(aSortElm,pIdxColVec);
+      
+      // set the id into the sort element
+      *((Id*)aSortElm) = pRow->xId();
+      aSortElm = pAdd<char*>(aSortElm,sizeof(Id));
+      
+    }
+  }
+
+#else
+    for ( ; pRow; pRow = pEB->pNextRow(pRow)) {
+
       // get the key datum for this index
       xKeyWrk.vReset();
       pRow->vExtractSortKey(xKeyWrk,pIdxColVec);
@@ -988,6 +1003,7 @@ void Table::vPopulateSortArray(char* aSortArray, i8 nElements, i8 iSortElmSize,
       
     }
   }
+#endif
   
   xTimer.vUpdate();
   
