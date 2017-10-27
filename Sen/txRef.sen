@@ -32,13 +32,13 @@
   execute
 ;
 
-: beginTransaction  ( -- txref )
+: beginTxRef  ( -- txref )
   ::txRef
   txRef.begin drop
   ::txref
 ;
 
-: commitTransaction
+: commitTxRef
   ::txRef
   dup
   txRef.commit drop
@@ -46,7 +46,7 @@
   "txRef" find word.forget
 ;
 
-: rollbackTransaction
+: rollbackTxRef
   ::txRef
   dup
   txRef.rollback drop

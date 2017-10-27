@@ -72,7 +72,7 @@ timer: loadTimer
   // create sub loaders
 
   // begin a transaction
-  beginTransaction pTblLoader loader.txref!
+  beginTxRef pTblLoader loader.txref!
 
   // hold task mutex while we create sub loaders
   //task::this grabMutex
@@ -135,7 +135,7 @@ timer: loadTimer
   // tidy up
 
   // commit the transaction
-  commitTransaction
+  commitTxRef
 
   // destroy Loader
   "__table_loader" find word.forget
@@ -165,7 +165,7 @@ timer: loadTimer
   >reg1                  // reg1 - table
   >reg2                  // reg2 - path
   rowBuffer::new >reg3    // reg3 - rowbuffer
-  beginTransaction >reg4 // reg4 - txref
+  beginTxRef >reg4 // reg4 - txref
   0 >regF                // regF - counter
 
   reg2 reg0 file.path!
@@ -223,7 +223,7 @@ timer: loadTimer
   >reg1                  // reg1 - table
   >reg2                  // reg2 - path
   rowBuffer::new >reg3    // reg3 - rowbuffer
-  beginTransaction >reg4 // reg4 - txref
+  beginTxRef >reg4 // reg4 - txref
   0 >regF                // regF - counter
 
   reg2 reg0 file.path!

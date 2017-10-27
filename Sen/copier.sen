@@ -27,7 +27,7 @@
 
   r2 r0 selCursor.table!
 
-  beginTransaction >r
+  beginTxRef >r
   // r0 ^txRefCursor
   // r1 ^selCursor
   // r2 ^toTable
@@ -54,7 +54,7 @@
     r3 selCursor.end
   loop
 
-  commitTransaction
+  commitTxRef
 
   // r0 ^txRefCursor
   // r1 ^selCursor
