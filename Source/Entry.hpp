@@ -66,6 +66,7 @@ namespace DBobjects
     void vContentDump(void);
     void vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec);
     void vExtractSortKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec);
+    char* pExtractSortKey(char *aElement, IdxColVec* pIdxColVec);
     i8   iTxId(void);
     void vTxId(i8 iTxId);
   

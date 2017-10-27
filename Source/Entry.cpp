@@ -642,6 +642,82 @@ void Entry::vExtractSortKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
 }
 
 /*----------------------------------------------------------------------------*/
+/* extract a sort key into keyWrk from this row using given index columns     */
+/*----------------------------------------------------------------------------*/
+char* Entry::pExtractSortKey(char* aElement, IdxColVec* pIdxColVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
+  
+  w8 wColumnWord;
+  
+  i8 nCols = pIdxColVec->nItems();
+  for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
+    
+    // get the column from the index column vector
+    Column* pColumn = pIdxColVec->pGet(i_Column);
+    
+    // get the column number of the column
+    i8 iColumnNo = pColumn->iColumnNo();
+    
+    // get address of the column datum from the row for the iColumnNo
+    char* aColumnDatum = RowData::aColumnDatum(aRow(),iColumnNo);
+    
+    // convert column datum into column word
+    switch (pColumn->eDatumType()) {
+        
+      case Datums::DM_BOL:
+        wColumnWord = (*((Bol*)aColumnDatum)).iAsI8();
+        break;
+        
+      case Datums::DM_DTE:
+        wColumnWord = (*((Dte*)aColumnDatum)).iAsI8();
+        break;
+        
+      case Datums::DM_BCD:
+        wColumnWord = (*((Bcd*)aColumnDatum)).iAsI8();
+        break;
+        
+      case Datums::DM_FLT:
+        MemLib::vCopy(&wColumnWord,aColumnDatum,sizeof(w8),CN_ENTRY);
+        break;
+        
+      case Datums::DM_INT:
+        wColumnWord = (*((Int*)aColumnDatum)).iAsI8();
+        break;
+        
+      case Datums::DM_IVL:
+        wColumnWord = (*((Ivl*)aColumnDatum)).iAsI8();
+        break;
+        
+      case Datums::DM_TME:
+        wColumnWord = (*((Tme*)aColumnDatum)).iAsI8();
+        break;
+        
+      case Datums::DM_TSP:
+        wColumnWord = (*((Tsp*)aColumnDatum)).iAsI8();
+        break;
+        
+      case Datums::DM_VBN:
+        NEVER_REACH;
+        break;
+        
+      case Datums::DM_VCH:
+        wColumnWord = (w8)aColumnDatum;
+        break;
+        
+      default:
+        NEVER_REACH;
+    }
+    
+    // add the column word to the element
+    MemLib::vCopy(aElement, &wColumnWord, sizeof(w8), CN_TABLE);
+    aElement = pAdd<char*>(aElement,sizeof(w8));
+  }
+  
+  return aElement;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get tx id                                                                  */
 /*----------------------------------------------------------------------------*/
 i8 Entry::iTxId(void)
