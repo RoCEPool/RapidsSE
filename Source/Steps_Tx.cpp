@@ -37,6 +37,7 @@ void Task::vAddPrimitives_Tx(void)
   vAddPrimitive("tx.dump"_Stz,      &vTxDump,         false);
   vAddPrimitive("tx::dumpAll"_Stz,  &vTxDumpAll,      false);
   vAddPrimitive("tx.rollback"_Stz,  &vTxRollback,     false);
+  vAddPrimitive("tx::testDist"_Stz, &vTxTestDist,     false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -111,6 +112,24 @@ void Task::vTxRollback(MP_Task mpTask)
   Tx* pTx = _pTx(pPtrTx);
   
   pTx->vPhase(TP_ROLLEDBACK);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* tx::testDist -- test for a distributed tx and create if it doesnt exist    */
+/*----------------------------------------------------------------------------*/
+void Task::vTxTestDist(MP_Task mpTask)
+{
+  ENTRY("vTxTestDist"_Stz);
+  
+  i8 iDistTxId;
+  if ( ! mpTask->m_pDataStack->bPop(iDistTxId) )
+    THROW_INVALID_DSTACK("tx.rollback"_Stz);
+  
+  Tx* pTx = gpTxSet->pTestDistTx(iDistTxId);
+  
+  mpTask->m_pDataStack->vPushObject(pTx);
   
   EXIT();
 }

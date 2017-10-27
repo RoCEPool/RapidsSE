@@ -1317,6 +1317,7 @@ namespace Tasks
     static void vTxDump(MP_Task mpTask);
     static void vTxDumpAll(MP_Task mpTask);
     static void vTxRollback(MP_Task mpTask);
+    static void vTxTestDist(MP_Task mpTask);
   
     // txCollection
     static void vTxCollectionDump(MP_Task mpTask);
