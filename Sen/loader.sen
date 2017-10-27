@@ -31,7 +31,7 @@ timer: loadTimer
 : tableLoader ( "<path>" "<tableNm>" -- t|f )
 
   assert::stack_2 ( "<path>" "<tableNm>" )
-  0 locals| pSubTask sTableNm sPath |
+  locals| sTableNm sPath |
 
   task::this task.seitf@ locals| pSEitf |
 
@@ -59,26 +59,26 @@ timer: loadTimer
     drop
     "__table_loader" :loader
   then
-  execute locals| tblLoader | assert::stack_0
+  execute locals| pTblLoader | assert::stack_0
 
   // initialise table loader
-  sTableNm find execute locals| tablePtr |
-  tablePtr tblLoader loader.table!
-  sPath tblLoader loader.path!
+  sTableNm find execute locals| pTable |
+  pTable pTblLoader loader.table!
+  sPath pTblLoader loader.path!
 
-  grid.slots tablePtr table.indexesLoaded!
+  grid.slots pTable table.indexesLoaded!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create sub loaders
 
   // begin a transaction
-  beginTransaction tblLoader loader.txref!
+  beginTransaction pTblLoader loader.txref!
 
   // hold task mutex while we create sub loaders
   //task::this grabMutex
 
   // set no of subloaders in table
-  //N_SERVER_THREADS tablePtr table.subLoaders
+  //N_SERVER_THREADS pTable table.subLoaders
   N_SERVER_THREADS sTableNm setSubLoaders
 
   N_SERVER_THREADS setAcks
@@ -86,9 +86,11 @@ timer: loadTimer
   // set acks remaining to be (no partitions)
   grid.slots grid.nodes * pSEitf seitf.acksRemaining!
 
+  0 locals| pSubTask |
+
   N_SERVER_THREADS 0 do
 
-    << pSEitf tblLoader loader.newSub >>
+    << pSEitf pTblLoader loader.newSub >>
 
     pathGet >>
 
@@ -100,7 +102,7 @@ timer: loadTimer
   // break file into chunks (this causes sub loaders to load them)
 
   // using table loader scan thru the file and find chunks for sub loaders
-  begin tblLoader loader.findChunk while repeat
+  begin pTblLoader loader.findChunk while repeat
 
   "Load file has been chunked" .verbose
 
@@ -114,7 +116,7 @@ timer: loadTimer
 
   // wait for other indexes to complete load
   begin
-    tablePtr table.indexesLoaded@
+    pTable table.indexesLoaded@
     while
     1 thread.sleep_s
   repeat
