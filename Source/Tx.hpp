@@ -37,10 +37,11 @@ namespace Transactions
              public CollectionNode_t<Tx>
   {
   private:
-    Lock  m_xLock;     // lock
-    i8    m_iTxId;     // transaction id
-    i8    m_iDistTxId; // distributed transaction id
-    eTP   m_ePhase;    // phase (executing, committing, ...)
+    Lock   m_xLock;     // lock
+    i8     m_iTxId;     // transaction id
+    i8     m_iDistTxId; // distributed transaction id
+    eTP    m_ePhase;    // phase (executing, committing, ...)
+    Atomic m_zCounter;  // general purpose counter
 
     // to be deleted
     i8    m_iTxSlot;   // transaction slot (0..C_TX_ARRAY-1)
@@ -70,7 +71,10 @@ namespace Transactions
     void vPhase(eTP ePhase);
     
     void vContentDump(void);
-    
+  
+    i8   iCounterDec(void);
+    void vCounterSet(i8 iCounter);
+  
     Footer* aFooter(void);
   };
     

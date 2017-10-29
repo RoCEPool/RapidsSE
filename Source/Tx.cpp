@@ -62,6 +62,7 @@ Tx::Tx(void)
   m_iTxId     = -1;
   m_iDistTxId = -1;
   m_ePhase    = TP_NONE;
+  ASSERT(0 == *m_zCounter);
   
   _checkInitialised_(CN_TX);
 
@@ -86,6 +87,28 @@ void Tx::vTxSlot(i8 iTxSlot)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
   
   m_iTxSlot = iTxSlot;
+}
+
+/*----------------------------------------------------------------------------*/
+/* decrement atmoic counter                                                   */
+/*----------------------------------------------------------------------------*/
+i8 Tx::iCounterDec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
+  
+  i8 iCounter = --m_zCounter;
+  
+  return iCounter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set atomic counter                                                         */
+/*----------------------------------------------------------------------------*/
+void Tx::vCounterSet(i8 iCounter)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
+  
+  m_zCounter = iCounter;
 }
 
 /*----------------------------------------------------------------------------*/

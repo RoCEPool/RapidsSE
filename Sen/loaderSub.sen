@@ -141,8 +141,8 @@ tp: ~loadAppendBuffer
   //grid.thisNode@ .
 
   // get tx id from loader
-  pLoaderSub loaderSub.loader@ loader.txRef@ txRef.id locals| iDistTxId |
-  //pLoaderSub loaderSub.loader@ loader.tx@ tx.id locals| iDistTxId |
+  //pLoaderSub loaderSub.loader@ loader.txRef@ txRef.id locals| iDistTxId |
+  pLoaderSub loaderSub.loader@ loader.tx@ tx.id locals| iDistTxId |
 
   <<
     pLoaderSEitf
@@ -298,7 +298,8 @@ tp: partitionAppendBuffer
   //  iPartitionNo "appending last buffer for partition " "%v %v" str.format .
   //then
 
-  iDistTxId txRef::checkDistId
+//iDistTxId txRef::checkDistId
+  iDistTxId txRef::testDist
 
   pRowBuffer iPartitionNo pTable table.appendBuffer ( )
 
