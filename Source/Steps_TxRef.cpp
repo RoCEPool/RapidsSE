@@ -148,7 +148,7 @@ void Task::vTxRefId(MP_Task mpTask)
   
   Object* pPtrTxRef;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTxRef) )
-    THROW_INVALID_DSTACK("txRef.init"_Stz);
+    THROW_INVALID_DSTACK("txRef.id"_Stz);
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
   
   i8 iTxId = pTxRef->iTxId();

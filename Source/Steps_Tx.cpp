@@ -36,6 +36,7 @@ void Task::vAddPrimitives_Tx(void)
   vAddPrimitive("tx.commit"_Stz,    &vTxCommit,       false);
   vAddPrimitive("tx.dump"_Stz,      &vTxDump,         false);
   vAddPrimitive("tx::dumpAll"_Stz,  &vTxDumpAll,      false);
+  vAddPrimitive("tx.id"_Stz,        &vTxId,           false);
   vAddPrimitive("tx.rollback"_Stz,  &vTxRollback,     false);
   vAddPrimitive("tx::testDist"_Stz, &vTxTestDist,     false);
 }
@@ -97,6 +98,25 @@ ENTRY("vTxDump"_Stz);
 void Task::vTxDumpAll(MP_Task mpTask)
 {
   ENTRY("vTxDumpAll"_Stz);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* tx.id -- get tx id from tx on data stack                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vTxId(MP_Task mpTask)
+{
+  ENTRY("vTxId"_Stz);
+  
+  Object* pPtrTx;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTx) )
+    THROW_INVALID_DSTACK("tx.id"_Stz);
+  Tx* pTx = _pTx(pPtrTx);
+  
+  i8 iTxId = pTx->iTxId();
+  
+  mpTask->m_pDataStack->vPushInt(iTxId);
   
   EXIT();
 }
