@@ -49,6 +49,8 @@ void Task::vTxBegin(MP_Task mpTask)
   
   Tx* pTx = gpTxSet->pAllocLocalTx();
   
+  pTx->vPhase(TP_EXECUTING);
+  
   mpTask->m_pDataStack->vPushObject(pTx);
   
   EXIT();
