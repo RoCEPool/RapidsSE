@@ -73,6 +73,7 @@ timer: loadTimer
 
   // begin a transaction
   beginTxRef pTblLoader loader.txref!
+  beginTx pTblLoader loader.tx!
 
   // hold task mutex while we create sub loaders
   //task::this grabMutex

@@ -110,7 +110,7 @@ TxSet::TxSet(i8 iNodeNo)
 /*----------------------------------------------------------------------------*/
 Tx* TxSet::pAllocLocalTx(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TXCOLLECTION,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
   
   m_xLock.vGrabWrite();
   
@@ -134,7 +134,7 @@ Tx* TxSet::pAllocLocalTx(void)
 /*----------------------------------------------------------------------------*/
 Tx* TxSet::pFindTx(i8 iTxId)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TXCOLLECTION,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
   
   Tx xTxFind;
   
@@ -163,7 +163,7 @@ Tx* TxSet::pFindTx(i8 iTxId)
 /*----------------------------------------------------------------------------*/
 Tx* TxSet::pTestDistTx(i8 iDistTxId)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TXCOLLECTION,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
   
   Tx* pDistTx = nullptr;
   
@@ -199,7 +199,7 @@ Tx* TxSet::pTestDistTx(i8 iDistTxId)
 /*----------------------------------------------------------------------------*/
 void TxSet::vFreeTx(Tx* pTx)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TXCOLLECTION,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
   
   bool bRemoved;
   
