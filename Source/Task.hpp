@@ -1314,6 +1314,9 @@ namespace Tasks
     // tx
     static void vTxBegin(MP_Task mpTask);
     static void vTxCommit(MP_Task mpTask);
+    static void vTxCounterDec(MP_Task mpTask);
+    static void vTxCounterFetch(MP_Task mpTask);
+    static void vTxCounterStore(MP_Task mpTask);
     static void vTxDump(MP_Task mpTask);
     static void vTxDumpAll(MP_Task mpTask);
     static void vTxId(MP_Task mpTask);

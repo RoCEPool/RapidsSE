@@ -32,13 +32,16 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Tx(void)
 {
-  vAddPrimitive("tx::begin"_Stz,    &vTxBegin,        false);
-  vAddPrimitive("tx.commit"_Stz,    &vTxCommit,       false);
-  vAddPrimitive("tx.dump"_Stz,      &vTxDump,         false);
-  vAddPrimitive("tx::dumpAll"_Stz,  &vTxDumpAll,      false);
-  vAddPrimitive("tx.id"_Stz,        &vTxId,           false);
-  vAddPrimitive("tx.rollback"_Stz,  &vTxRollback,     false);
-  vAddPrimitive("tx::testDist"_Stz, &vTxTestDist,     false);
+  vAddPrimitive("tx::begin"_Stz,        &vTxBegin,        false);
+  vAddPrimitive("tx.commit"_Stz,        &vTxCommit,       false);
+  vAddPrimitive("tx.counterDec"_Stz,    &vTxCounterDec,   false);
+  vAddPrimitive("tx.counter@"_Stz,      &vTxCounterFetch, false);
+  vAddPrimitive("tx.counter!"_Stz,      &vTxCounterStore, false);
+  vAddPrimitive("tx.dump"_Stz,          &vTxDump,         false);
+  vAddPrimitive("tx::dumpAll"_Stz,      &vTxDumpAll,      false);
+  vAddPrimitive("tx.id"_Stz,            &vTxId,           false);
+  vAddPrimitive("tx.rollback"_Stz,      &vTxRollback,     false);
+  vAddPrimitive("tx::testDist"_Stz,     &vTxTestDist,     false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -70,6 +73,65 @@ void Task::vTxCommit(MP_Task mpTask)
   Tx* pTx = _pTx(pPtrTx);
   
   pTx->vPhase(TP_COMMITTED);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* tx.counterDec -- decrement tx general counter                              */
+/*----------------------------------------------------------------------------*/
+void Task::vTxCounterDec(MP_Task mpTask)
+{
+  ENTRY("vTxCounterDec"_Stz);
+  
+  Object* pPtrTx;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTx) )
+    THROW_INVALID_DSTACK("tx.counter@"_Stz);
+  Tx* pTx = _pTx(pPtrTx);
+  
+  i8 iCounter = pTx->iCounterDec();
+  
+  mpTask->m_pDataStack->vPushInt(iCounter);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* tx.counter@ -- fetch tx general counter                                    */
+/*----------------------------------------------------------------------------*/
+void Task::vTxCounterFetch(MP_Task mpTask)
+{
+  ENTRY("vTxCounterFetch"_Stz);
+  
+  Object* pPtrTx;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTx) )
+    THROW_INVALID_DSTACK("tx.counter@"_Stz);
+  Tx* pTx = _pTx(pPtrTx);
+  
+  i8 iCounter = pTx->iCounterGet();
+  
+  mpTask->m_pDataStack->vPushInt(iCounter);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* tx.counter! -- store tx general counter                                    */
+/*----------------------------------------------------------------------------*/
+void Task::vTxCounterStore(MP_Task mpTask)
+{
+  ENTRY("vTxCounterStore"_Stz);
+  
+  Object* pPtrTx;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTx) )
+    THROW_INVALID_DSTACK("tx.counter@"_Stz);
+  Tx* pTx = _pTx(pPtrTx);
+  
+  i8 iCounter;
+  if ( ! mpTask->m_pDataStack->bPop(iCounter) )
+    THROW_INVALID_DSTACK("thread.actorModel!"_Stz);
+  
+  pTx->vCounterSet(iCounter);
   
   EXIT();
 }
