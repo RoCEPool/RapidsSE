@@ -2,9 +2,10 @@
 /* Tx.cpp - Transaction                                                       */
 /*============================================================================*/
 
-#include "Transactions.h"
+#include "StorageEngine.h"
 
 extern TxCollection*  gpTxCollection;
+extern Arguments      gxArguments;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -62,7 +63,7 @@ Tx::Tx(void)
   m_iTxId     = -1;
   m_iDistTxId = -1;
   m_ePhase    = TP_NONE;
-  ASSERT(0 == *m_zCounter);
+  m_zCounter  = gxArguments.m_nSlots;
   
   _checkInitialised_(CN_TX);
 
@@ -201,9 +202,10 @@ void Tx::vDump(eCN eClass, Object* pObject, Stz* aTab)
   
   Tx* pTx = reinterpret_cast<Tx*>(pObject);
   
-  vTrace("id %lld phase %s\n"_Stz,
+  vTrace("id %lld phase %s counter %lld\n"_Stz,
          pTx->m_iTxId,
-         pTP[pTx->m_ePhase]);
+         pTP[pTx->m_ePhase],
+         pTx->iCounterGet());
 }
 
 /*----------------------------------------------------------------------------*/
