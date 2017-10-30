@@ -178,18 +178,18 @@ Tx* TxSet::pTestDistTx(i8 iDistTxId)
   
   if (pTxFound) {
     m_xLock.vDropWrite();
-    return pDistTx;
+    return pTxFound;
   }
   
-  Tx* pTx = new Tx;
+  pDistTx = new Tx;
   
   i8 iTxId = m_iNextTxId++;
   
-  pTx->vTxId(iTxId);
-  pTx->vDistTxId(iDistTxId);
+  pDistTx->vTxId(iTxId);
+  pDistTx->vDistTxId(iDistTxId);
   
-  m_pLocalTxList->bInsert(pTx);
-  m_pDistTxList->bInsert(pTx);
+  m_pLocalTxList->bInsert(pDistTx);
+  m_pDistTxList->bInsert(pDistTx);
   
   m_xLock.vDropWrite();
   
