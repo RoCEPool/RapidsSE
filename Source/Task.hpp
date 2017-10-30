@@ -438,6 +438,8 @@ namespace Tasks
     static void vBpDump(MP_Task mpTask);
     static void vBpEpochDump(MP_Task mpTask);
     static void vBpEpochTake(MP_Task mpTask);
+    static void vBpReadBufferPool(MP_Task mpTask);
+    static void vBpWriteBufferPool(MP_Task mpTask);
     static void vFreeBuffers(MP_Task mpTask);
     static void vFreePercent(MP_Task mpTask);
     static void vFreeSpace(MP_Task mpTask);

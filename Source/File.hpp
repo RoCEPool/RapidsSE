@@ -80,6 +80,7 @@ namespace System
     i8   iTraceLevel(void);
     void vTraceLevel(i8 iTraceLevel);
     void vUngetChar(char cChar);
+    bool bWriteBytes(void* pBuffer, i8 nSize);
     void vZero(void);
   
     Footer* aFooter(void);

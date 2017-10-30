@@ -375,6 +375,29 @@ void BPA::vPoolDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* read all the buffer pool buffers from file                                 */
+/*----------------------------------------------------------------------------*/
+void BPA::vReadBuffers(Stz* sFilePath)
+{
+  _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
+  
+  File* pFile = new File();
+  pFile->bOpen(sFilePath, C_OPEN_READ);
+  
+  Buffer* pBuffer = new Buffer(CN_HEAPBUFFER);
+  
+  while (true) {
+    i8 iBytes = pFile->iReadChunk(pBuffer, C_SIZE_POOL_BUFFER);
+    if (iBytes != C_SIZE_POOL_BUFFER)
+      break;
+    
+    vBufferDump(pBuffer);
+  }
+  
+  _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* report on shm region                                                       */
 /*----------------------------------------------------------------------------*/
 void BPA::vRegionSummary()
@@ -474,6 +497,29 @@ void BPA::vWordList(i8 iEpoch)
   if (pSmallHeap)
     vHeapDump(reinterpret_cast<Heap*>(pSmallHeap), iEpoch);
   
+  _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* write all the buffer pool buffers to file                                  */
+/*----------------------------------------------------------------------------*/
+void BPA::vWriteBuffers(Stz* sFilePath)
+{
+  _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
+  
+  File* pFile = new File();
+  pFile->bOpen(sFilePath, C_OPEN_WRITE);
+  
+  bn nBufferCount = gpBufferPool->m_nBuffers - 1;
+  for (bn nBuffer = gpBufferPool->nBufferFirst();
+       nBuffer <= nBufferCount;
+       nBuffer++) {
+    
+    Buffer* pBuffer = gpBufferPool->pToBuffer(nBuffer);
+    bool bResult = pFile->bWriteBytes((void*)pBuffer,C_SIZE_POOL_BUFFER);
+    ASSERT(bResult);
+    
+  }
   _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
 }
 

@@ -27,9 +27,11 @@ namespace Pool
     void vObjectSnapshot(i8* pCountObjects);
     void vPoolAnalyze(void);
     void vPoolDump(void);
+    void vReadBuffers(Stz* sFilePath);
     void vRegionSummary(void);
     void vResourceSummary(void);
     void vWordList(i8 iEpoch);
+    void vWriteBuffers(Stz* sFilePath);
     
     Footer* aFooter(void);
   };

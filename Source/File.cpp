@@ -866,6 +866,26 @@ void File::vUngetChar(char cChar)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set trace level                                                            */
+/*----------------------------------------------------------------------------*/
+bool File::bWriteBytes(void* pBuffer, i8 nSize)
+{
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+  
+  m_xSysCall.vClear();
+  
+  i8 iResult = fwrite(pBuffer , 1, nSize, m_aFilePtr);
+  if (iResult != nSize) {
+    vWarn("File::vWriteBytes: fwrite(%p) error; errno=%d\n"_Stz,
+          m_sFilePath.aChar(),errno);
+    m_xSysCall.vError(errno);
+    return false;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* zero this structure -- used only in special/nesting cases                  */
 /*----------------------------------------------------------------------------*/
 void File::vZero(void)

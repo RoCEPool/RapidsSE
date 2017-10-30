@@ -43,11 +43,15 @@ void Task::vAddPrimitives_Bp(void)
   vAddPrimitive("bp::freePercent"_Stz, &vFreePercent,      false);
   vAddPrimitive("bp::freeSpace"_Stz,   &vFreeSpace,        false);
   vAddPrimitive("bp::inUseSpace"_Stz,  &vInUseSpace,       false);
+  vAddPrimitive("bp::readBufferPool"_Stz,&vBpReadBufferPool,false);
   vAddPrimitive("bp::snapshot"_Stz,    &vSnapshot,         false);
   vAddPrimitive("bp::totalSpace"_Stz,  &vTotalSpace,       false);
+  vAddPrimitive("bp::writeBufferPool"_Stz,&vBpWriteBufferPool,false);
 
   vAddPrimitive("bpa"_Stz,             &vBpAnalyze,        false);
   vAddPrimitive("bpd"_Stz,             &vBpDump,           false);
+  vAddPrimitive("bpr"_Stz,             &vBpReadBufferPool, false);
+  vAddPrimitive("bpw"_Stz,             &vBpWriteBufferPool,false);
  
   vAddPrimitive("epochDump"_Stz,       &vBpEpochDump,      false);
   vAddPrimitive("epochTake"_Stz,       &vBpEpochTake,      false);
@@ -84,7 +88,6 @@ void Task::vBpDump(MP_Task mpTask)
   
   EXIT();
 }
-
 /*----------------------------------------------------------------------------*/
 /* epochDump -- dump an epoch                                                 */
 /*----------------------------------------------------------------------------*/
@@ -108,6 +111,38 @@ void Task::vBpEpochDump(MP_Task mpTask)
       vTrace("%s  %12s %-6lld \n"_Stz, aSingleTab(), aCN[iIndex],
              iCountObjects[iIndex] - giCountObjects[iIndex]);
   }
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* bp.readBufferPool -- read the buffers from the file                        */
+/*----------------------------------------------------------------------------*/
+void Task::vBpReadBufferPool(MP_Task mpTask)
+{
+  ENTRY("vBpReadBufferPool"_Stz);
+  
+  BPA* pBPA = new BPA;
+  
+  pBPA->vReadBuffers("/tmp/buffers.dmp"_Stz);
+  
+  delete pBPA;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* bp.writeBufferPool -- write the buffer pool buffers to a file              */
+/*----------------------------------------------------------------------------*/
+void Task::vBpWriteBufferPool(MP_Task mpTask)
+{
+  ENTRY("vBpDumpBuffers"_Stz);
+  
+  BPA* pBPA = new BPA;
+  
+  pBPA->vWriteBuffers("/tmp/buffers.dmp"_Stz);
+  
+  delete pBPA;
+  
   EXIT();
 }
 
