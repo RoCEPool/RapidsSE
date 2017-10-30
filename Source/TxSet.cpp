@@ -167,12 +167,14 @@ Tx* TxSet::pTestDistTx(i8 iDistTxId)
   
   Tx* pDistTx = nullptr;
   
-  Tx xTxFind;
-  xTxFind.vDistTxId(iDistTxId);
+  Tx* pTxFind = new Tx;
+  pTxFind->vDistTxId(iDistTxId);
   
   m_xLock.vGrabWrite();
   
-  Tx* pTxFound = _pTx(m_pDistTxList->pFind(&xTxFind));
+  Tx* pTxFound = _pTx(m_pDistTxList->pFind(pTxFind));
+  
+  delete pTxFind;
   
   if (pTxFound) {
     m_xLock.vDropWrite();

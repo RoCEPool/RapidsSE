@@ -298,8 +298,8 @@ tp: partitionAppendBuffer
   //  iPartitionNo "appending last buffer for partition " "%v %v" str.format .
   //then
 
-iDistTxId txRef::checkDistId
-//  iDistTxId txRef::testDist
+  iDistTxId txRef::checkDistId
+//iDistTxId tx::testDist
 
   pRowBuffer iPartitionNo pTable table.appendBuffer ( )
 
