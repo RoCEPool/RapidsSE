@@ -84,7 +84,7 @@ i8 TxRef::iTxId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXREF,_FOOTER_);
   
-  i8 iTxId = m_pTx->iTxId();
+  i8 iTxId = m_pTx->iLocalTxId();
   
   return iTxId;
 }

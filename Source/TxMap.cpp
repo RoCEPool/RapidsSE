@@ -161,7 +161,7 @@ void TxMap::vTakeSlot(Tx* pTx)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXMAP,_FOOTER_);
   
   pTx->vTxSlot(m_iSlot);
-  pTx->vTxId(m_iId);
+  pTx->vLocalTxId(m_iId);
 
   m_pTxArray->m_pTx[m_iSlot] = pTx;
 }

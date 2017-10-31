@@ -17,12 +17,12 @@ bool bTxSetCompareLocal(void* pObjectInsert, void* pObjectScan, bool& bMatch)
   if ( ! pObjectScan )
     return false;
   
-  if (pInsertEntry->iTxId() == pScanEntry->iTxId())
+  if (pInsertEntry->iLocalTxId() == pScanEntry->iLocalTxId())
     bMatch = true;
   else
     bMatch = false;
   
-  if (pInsertEntry->iTxId() > pScanEntry->iTxId())
+  if (pInsertEntry->iLocalTxId() > pScanEntry->iLocalTxId())
     return true;
   else
     return false;
@@ -118,7 +118,7 @@ Tx* TxSet::pAllocLocalTx(void)
   
   i8 iTxId = m_iNextTxId++;
   
-  pTx->vTxId(iTxId);
+  pTx->vLocalTxId(iTxId);
   pTx->vDistTxId(iTxId);
   
   m_pLocalTxList->bInsert(pTx);
@@ -145,7 +145,7 @@ Tx* TxSet::pFindTx(i8 iTxId)
   Tx* pTxFound = nullptr;
   
   if (iNodeNo == m_iNodeNo) {
-    xTxFind.vTxId(iTxId);
+    xTxFind.vLocalTxId(iTxId);
     pTxFound = _pTx(m_pLocalTxList->pFind(&xTxFind));
   }
   else {
@@ -185,7 +185,7 @@ Tx* TxSet::pTestDistTx(i8 iDistTxId)
   
   i8 iTxId = m_iNextTxId++;
   
-  pDistTx->vTxId(iTxId);
+  pDistTx->vLocalTxId(iTxId);
   pDistTx->vDistTxId(iDistTxId);
   
   m_pLocalTxList->bInsert(pDistTx);

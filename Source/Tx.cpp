@@ -59,11 +59,11 @@ Tx::Tx(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
 
-  m_iTxSlot   = -1;
-  m_iTxId     = -1;
-  m_iDistTxId = -1;
-  m_ePhase    = TP_NONE;
-  m_zCounter  = gxArguments.m_nSlots;
+  m_iTxSlot    = -1;
+  m_iLocalTxId = -1;
+  m_iDistTxId  = -1;
+  m_ePhase     = TP_NONE;
+  m_zCounter   = gxArguments.m_nSlots;
   
   _checkInitialised_(CN_TX);
 
@@ -123,23 +123,23 @@ void Tx::vCounterSet(i8 iCounter)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get tx id                                                                  */
+/* get local tx id                                                            */
 /*----------------------------------------------------------------------------*/
-i8 Tx::iTxId(void)
+i8 Tx::iLocalTxId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
   
-  return m_iTxId;
+  return m_iLocalTxId;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set tx id                                                                  */
+/* set local tx id                                                            */
 /*----------------------------------------------------------------------------*/
-void Tx::vTxId(i8 iTxId)
+void Tx::vLocalTxId(i8 iLocalTxId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
   
-  m_iTxId = iTxId;
+  m_iLocalTxId = iLocalTxId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -202,8 +202,9 @@ void Tx::vDump(eCN eClass, Object* pObject, Stz* aTab)
   
   Tx* pTx = reinterpret_cast<Tx*>(pObject);
   
-  vTrace("id %lld phase %s counter %lld\n"_Stz,
-         pTx->m_iTxId,
+  vTrace("tx: %lld-%lld phase %s counter %lld\n"_Stz,
+         pTx->m_iLocalTxId,
+         pTx->m_iDistTxId,
          pTP[pTx->m_ePhase],
          pTx->iCounterGet());
 }
