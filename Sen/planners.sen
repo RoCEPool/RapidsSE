@@ -5,6 +5,7 @@
 "planners.sen" .verbose
 
 "dexPlanner.sen" include
+"dfetchPlanner.sen" include
 
 /*============================================================================*/
 /* end                                                                        */

@@ -4,6 +4,7 @@
 
 "dbObjects.sen" .verbose
 
+"distFetch.sen" include
 "selCursor.sen" include
 "table.sen" include
 "partition.sen" include
