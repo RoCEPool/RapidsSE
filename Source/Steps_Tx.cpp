@@ -170,12 +170,12 @@ void Task::vTxDumpAll(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTxFree(MP_Task mpTask)
 {
-  ENTRY("vTxDelete"_Stz);
+  ENTRY("vTxFree"_Stz);
   
   Object* pPtrTx;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrTx) )
-    THROW_INVALID_DSTACK("tx.dump"_Stz);
+    THROW_INVALID_DSTACK("tx.free"_Stz);
   Tx* pTx = _pTx(pPtrTx);
   
   gpTxSet->vFreeTx(pTx);
@@ -228,7 +228,7 @@ void Task::vTxTestDist(MP_Task mpTask)
   
   i8 iDistTxId;
   if ( ! mpTask->m_pDataStack->bPop(iDistTxId) )
-    THROW_INVALID_DSTACK("tx.rollback"_Stz);
+    THROW_INVALID_DSTACK("tx.testDist"_Stz);
   
   Tx* pTx = gpTxSet->pTestDistTx(iDistTxId);
   

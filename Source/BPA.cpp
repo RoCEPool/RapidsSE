@@ -532,7 +532,7 @@ void BPA::vWriteBuffers(Stz* sFilePath)
   
   i8 iMilli = iTicks * C_1K / iTicksPerSecond;
   
-  vTrace("Writing %lld buffers took %lld ms\n"_Stz, *nBufferCount, iMilli)
+  vTrace("Writing %lld buffers took %lld ms\n"_Stz, *nBufferCount, iMilli);
          
   _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
 }

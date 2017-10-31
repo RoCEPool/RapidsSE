@@ -299,7 +299,7 @@ tp: partitionAppendBuffer
   //then
 
   iDistTxId txRef::checkDistId
-//iDistTxId tx::testDist locals| pDistTx |
+//  iDistTxId tx::testDist locals| pDistTx |
 
   pRowBuffer iPartitionNo pTable table.appendBuffer ( )
 
@@ -309,10 +309,11 @@ tp: partitionAppendBuffer
   not if exit then
   //drop exit
 
-//  pDistTx tx.counterDec not if
-//    "tidying up distTx..." .
-//    pDistTx tx.commit
-//  then
+//pDistTx tx.counterDec not if
+//  "tidying up distTx..." .
+//  pDistTx tx.commit
+//  pDistTx tx.free
+//then
 
   //"sending got..." .
 
