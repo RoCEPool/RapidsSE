@@ -300,6 +300,16 @@ void Plan::vShow(void)
          m_iPlanId >> 48,
          m_iPlanId & 0x00FFFFFFFFFFFFFF,
          m_sName.aChar());
+  
+  RegFrame* pRegFrame = m_pRegList;
+  
+  while(pRegFrame) {
+    vTrace("%s"_Stz, pRegFrame->m_sName.aChar());
+    pRegFrame = pRegFrame->m_pNext;
+    if (pRegFrame)
+      vTrace("<-"_Stz);
+  }
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

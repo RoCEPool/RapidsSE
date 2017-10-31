@@ -31,6 +31,8 @@
   reverse  ( "<catalogNm>" "<schemaNm>" "<tableNm>" "<fileNm>" )
   dexPlanner to dexPlan
 
+  dexPlan plan.show
+
   //swap dexPlanner to dexPlan
 
   // set this task as the executing task in the plan
