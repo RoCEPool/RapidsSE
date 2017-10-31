@@ -76,6 +76,10 @@ namespace Transactions
     i8   iCounterGet(void);
     void vCounterSet(i8 iCounter);
   
+    bool bLocalTx(void);
+    bool bDistTx(void);
+    Stz* aDecode(void);
+  
     Footer* aFooter(void);
   };
     

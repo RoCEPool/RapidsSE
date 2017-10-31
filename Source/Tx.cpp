@@ -210,6 +210,45 @@ void Tx::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this a local tx?                                                        */
+/*----------------------------------------------------------------------------*/
+bool Tx::bLocalTx(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
+  
+  if (m_iDistTxId == m_iLocalTxId)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a distributed tx?                                                  */
+/*----------------------------------------------------------------------------*/
+bool Tx::bDistTx(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
+  
+  if (m_iDistTxId != m_iLocalTxId)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* decode whether this is a local or distributed transaction                  */
+/*----------------------------------------------------------------------------*/
+Stz* Tx::aDecode(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
+  
+  if (bLocalTx())
+    return "local"_Stz;
+  else
+    return "dist"_Stz;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
