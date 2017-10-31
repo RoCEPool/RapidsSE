@@ -510,8 +510,11 @@ void BPA::vWriteBuffers(Stz* sFilePath)
   File* pFile = new File();
   pFile->bOpen(sFilePath, C_OPEN_WRITE);
   
+  i8 iStart  = Synch::iTicks();
+  bn nBuffer;
+  
   bn nBufferCount = gpBufferPool->m_nBuffers - 1;
-  for (bn nBuffer = gpBufferPool->nBufferFirst();
+  for (nBuffer = gpBufferPool->nBufferFirst();
        nBuffer <= nBufferCount;
        nBuffer++) {
     
@@ -520,6 +523,17 @@ void BPA::vWriteBuffers(Stz* sFilePath)
     ASSERT(bResult);
     
   }
+  ASSERT(*nBufferCount == *nBuffer);
+  
+  i8 iUpdate = Synch::iTicks();
+  
+  i8 iTicks = (iUpdate - iStart);
+  i8 iTicksPerSecond = Synch::iTickFrequency();
+  
+  i8 iMilli = iTicks * C_1K / iTicksPerSecond;
+  
+  vTrace("Writing %lld buffers took %lld ms\n"_Stz, *nBufferCount, iMilli)
+         
   _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
 }
 
