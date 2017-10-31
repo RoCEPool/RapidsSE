@@ -173,6 +173,7 @@ namespace Interface
     bool bExportTable(TokenVec& xTokenVec, i8 iReqNo);
     bool bDanalyzeTable(TokenVec& xTokenVec, i8 iReqNo);
     bool bDistExportTable(TokenVec& xTokenVec, i8 iReqNo);
+    bool bDistFetchRowsIndex(TokenVec& xTokenVec, i8 iReqNo);
     bool bLoadTable(TokenVec& xTokenVec, i8 iReqNo);
     bool bLoadTableStream(TokenVec& xTokenVec, i8 iReqNo);
     bool bGetTable(TokenVec& xTokenVec, i8 iReqNo);

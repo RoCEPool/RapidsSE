@@ -31,6 +31,7 @@ ReqTable SeRequests[] =
  { "danidx"_Stz,         &SEitf::bDanalyzeIndex,        "danalyzeIndex_req"_Stz   },
  { "dantbl"_Stz,         &SEitf::bDanalyzeTable,        "danalyzeTable_req"_Stz   },
  { "dex"_Stz,            &SEitf::bDistExportTable,      "distExport_table"_Stz    },
+ { "dfetch"_Stz,         &SEitf::bDistFetchRowsIndex,   "DistFetchRowsIndex_req"_Stz},
  { "docol"_Stz,          &SEitf::bDocol,                "docol_req"_Stz           },
  { "displayOff"_Stz,     &SEitf::bDisplayOff,           "displayOff_req"_Stz      },
  { "displayOn"_Stz,      &SEitf::bDisplayOn,            "displayOn_req"_Stz       },
@@ -1966,6 +1967,36 @@ bool SEitf::bDistExportTable(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[2]->aText());
   sRequest.vConcat("\""_Stz);
+  
+  sRequest.vConcat(" \""_Stz);
+  sRequest.vConcat(xTokenVec[1]->aText());
+  sRequest.vConcat("\""_Stz);
+  
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* distributed fetch of an index                                              */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bDistFetchRowsIndex(TokenVec& xTokenVec, i8 iReqNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  if (xTokenVec.nTokens() != 2 && xTokenVec.nTokens() != 3 ) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  if (xTokenVec.nTokens() == 3) {
+    sRequest.vCopy("\""_Stz);
+    sRequest.vConcat(xTokenVec[2]->aText());
+    sRequest.vConcat("\""_Stz);
+  }
   
   sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());

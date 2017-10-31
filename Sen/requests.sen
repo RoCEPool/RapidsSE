@@ -81,6 +81,7 @@ Index Requests:
 anidx     analyzeIndex_req
 dumpidx   dumpIndex_req
 fetch     fetchRowsIndex_req
+dfetch    DistFetchRowsIndex_req
 getidx    getIndex_req
 mkidx     createIndex_req
 lsidx     listIndexes_req

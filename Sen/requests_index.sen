@@ -108,6 +108,45 @@ timer: pIdxSelectTimer
 ;
 
 /*----------------------------------------------------------------------------*/
+/* distributed export of a table                                              */
+/*----------------------------------------------------------------------------*/
+: distFetchRowsIndex_req ( "<sWhere>" "<sTableNm>" -- <R> )
+
+  locals| sTableNm sWhere |
+  ddlLock::grabRead
+
+  sWhere 0 == if
+    sTableNm "Executing a distributed fetch of table %v" str.format .
+  else
+    sWhere sTableNm "Executing a distributed fetch of table %v where %v" str.format .
+  then
+
+  // should be in the tables folder
+  checkInTables not if <NIP+ERROR> exit then
+
+  // there should be a table folder
+  sTableNm checkIsTableFolder not if <NIP+ERROR> exit then
+
+  // push table dictionary
+  sTableNm pushTable assert
+
+  // check it is a table
+  sTableNm checkIsTable not if <NIP+ERROR> exit then
+
+  // call the distributed exporter
+  //distFetchRowsIndex not if <NIP+ERROR> exit then
+  drop
+
+  // pop table dictionary
+  popTable
+
+  // assert we are still in tables folder
+  assertInTables
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
 /* drop an index                                                              */
 /*----------------------------------------------------------------------------*/
 : dropIndex_req ( "<sIndexNm>" "<sTableNm>" -- <R> )
