@@ -56,6 +56,8 @@ void Task::vTxBegin(MP_Task mpTask)
   
   pTx->vPhase(TP_EXECUTING);
   
+  vTrace("Begun tx: %lld-%lld"_Stz,pTx->iTxId(),pTx->iDistTxId());
+  
   mpTask->m_pDataStack->vPushObject(pTx);
   
   EXIT();
@@ -74,6 +76,8 @@ void Task::vTxCommit(MP_Task mpTask)
   Tx* pTx = _pTx(pPtrTx);
   
   pTx->vPhase(TP_COMMITTED);
+
+  vTrace("Committed tx: %lld-%lld"_Stz,pTx->iTxId(),pTx->iDistTxId());
   
   EXIT();
 }
@@ -178,6 +182,8 @@ void Task::vTxFree(MP_Task mpTask)
     THROW_INVALID_DSTACK("tx.free"_Stz);
   Tx* pTx = _pTx(pPtrTx);
   
+  vTrace("Freeing tx: %lld-%lld"_Stz,pTx->iTxId(),pTx->iDistTxId());
+  
   gpTxSet->vFreeTx(pTx);
   
   EXIT();
@@ -216,6 +222,8 @@ void Task::vTxRollback(MP_Task mpTask)
   
   pTx->vPhase(TP_ROLLEDBACK);
   
+  vTrace("Rolledback tx: %lld-%lld"_Stz,pTx->iTxId(),pTx->iDistTxId());
+  
   EXIT();
 }
 
@@ -231,6 +239,8 @@ void Task::vTxTestDist(MP_Task mpTask)
     THROW_INVALID_DSTACK("tx.testDist"_Stz);
   
   Tx* pTx = gpTxSet->pTestDistTx(iDistTxId);
+
+  vTrace("Testing dist tx: %lld-%lld"_Stz,pTx->iTxId(),pTx->iDistTxId());
   
   mpTask->m_pDataStack->vPushObject(pTx);
   
