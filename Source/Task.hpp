@@ -1321,6 +1321,7 @@ namespace Tasks
     static void vTxCounterStore(MP_Task mpTask);
     static void vTxDump(MP_Task mpTask);
     static void vTxDumpAll(MP_Task mpTask);
+    static void vTxFree(MP_Task mpTask);
     static void vTxId(MP_Task mpTask);
     static void vTxRollback(MP_Task mpTask);
     static void vTxTestDist(MP_Task mpTask);

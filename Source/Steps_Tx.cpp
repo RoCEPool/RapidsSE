@@ -39,6 +39,7 @@ void Task::vAddPrimitives_Tx(void)
   vAddPrimitive("tx.counter!"_Stz,      &vTxCounterStore, false);
   vAddPrimitive("tx.dump"_Stz,          &vTxDump,         false);
   vAddPrimitive("tx::dumpAll"_Stz,      &vTxDumpAll,      false);
+  vAddPrimitive("tx.free"_Stz,          &vTxFree,         false);
   vAddPrimitive("tx.id"_Stz,            &vTxId,           false);
   vAddPrimitive("tx.rollback"_Stz,      &vTxRollback,     false);
   vAddPrimitive("tx::testDist"_Stz,     &vTxTestDist,     false);
@@ -160,6 +161,24 @@ ENTRY("vTxDump"_Stz);
 void Task::vTxDumpAll(MP_Task mpTask)
 {
   ENTRY("vTxDumpAll"_Stz);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* tx.free -- free a tx                                                       */
+/*----------------------------------------------------------------------------*/
+void Task::vTxFree(MP_Task mpTask)
+{
+  ENTRY("vTxDelete"_Stz);
+  
+  Object* pPtrTx;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTx) )
+    THROW_INVALID_DSTACK("tx.dump"_Stz);
+  Tx* pTx = _pTx(pPtrTx);
+  
+  gpTxSet->vFreeTx(pTx);
   
   EXIT();
 }
