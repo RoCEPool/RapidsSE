@@ -56,7 +56,8 @@ void Task::vTxBegin(MP_Task mpTask)
   
   pTx->vPhase(TP_EXECUTING);
   
-  vTrace("Begun tx: %lld-%lld\n"_Stz,pTx->iLocalTxId(),pTx->iDistTxId());
+  vTrace("Begun tx: %lld-%lld(%s)\n"_Stz,
+         pTx->iLocalTxId(),pTx->iDistTxId(),pTx->aDecode());
   
   mpTask->m_pDataStack->vPushObject(pTx);
   
@@ -77,7 +78,8 @@ void Task::vTxCommit(MP_Task mpTask)
   
   pTx->vPhase(TP_COMMITTED);
 
-  vTrace("Committed tx: %lld-%lld\n"_Stz,pTx->iLocalTxId(),pTx->iDistTxId());
+  vTrace("Committed tx: %lld-%lld(%s)\n"_Stz,
+         pTx->iLocalTxId(),pTx->iDistTxId(),pTx->aDecode());
   
   EXIT();
 }
@@ -96,8 +98,8 @@ void Task::vTxCounterDec(MP_Task mpTask)
   
   i8 iCounter = pTx->iCounterDec();
   
-  vTrace("Dec counter tx: %lld-%lld now %lld\n"_Stz,
-         pTx->iLocalTxId(),pTx->iDistTxId(),iCounter);
+  vTrace("Dec counter tx: %lld-%lld(%s) now %lld\n"_Stz,
+         pTx->iLocalTxId(),pTx->iDistTxId(),pTx->aDecode(),iCounter);
   
   mpTask->m_pDataStack->vPushInt(iCounter);
   
@@ -185,7 +187,8 @@ void Task::vTxFree(MP_Task mpTask)
     THROW_INVALID_DSTACK("tx.free"_Stz);
   Tx* pTx = _pTx(pPtrTx);
   
-  vTrace("Freeing tx: %lld-%lld\n"_Stz,pTx->iLocalTxId(),pTx->iDistTxId());
+  vTrace("Freeing tx: %lld-%lld(%s)\n"_Stz,
+         pTx->iLocalTxId(),pTx->iDistTxId(),pTx->aDecode());
   
   gpTxSet->vFreeTx(pTx);
   
@@ -225,7 +228,8 @@ void Task::vTxRollback(MP_Task mpTask)
   
   pTx->vPhase(TP_ROLLEDBACK);
   
-  vTrace("Rolledback tx: %lld-%lld\n"_Stz,pTx->iLocalTxId(),pTx->iDistTxId());
+  vTrace("Rolledback tx: %lld-%lld(%s)\n"_Stz,
+         pTx->iLocalTxId(),pTx->iDistTxId(),pTx->aDecode());
   
   EXIT();
 }
@@ -243,7 +247,8 @@ void Task::vTxTestDist(MP_Task mpTask)
   
   Tx* pTx = gpTxSet->pTestDistTx(iDistTxId);
 
-  vTrace("Testing dist tx: %lld-%lld\n"_Stz,pTx->iLocalTxId(),pTx->iDistTxId());
+  vTrace("Testing dist tx: %lld-%lld(%s)\n"_Stz,
+         pTx->iLocalTxId(),pTx->iDistTxId(),pTx->aDecode());
   
   mpTask->m_pDataStack->vPushObject(pTx);
   
