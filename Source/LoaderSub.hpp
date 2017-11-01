@@ -5,10 +5,6 @@
 
 namespace DBobjects
 {
-  static const i8 C_MAX_NODES = 32;
-  static const i8 C_MAX_PARTITIONS = C_SLOTS_PER_NODE * C_MAX_NODES;
-  static const i8 C_DATA_LENGTH = C_256K;
-  
   class LoaderSub : public Object
   {
   private:
