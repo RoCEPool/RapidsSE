@@ -160,6 +160,8 @@ void Task::vTxDistMemberFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("tx.distMember@"_Stz);
   Tx* pTx = _pTx(pPtrTx);
   
+  ASSERT(pTx->bLocalTx());
+  
   i8 i_Node;
   if ( ! mpTask->m_pDataStack->bPop(i_Node) )
     THROW_INVALID_DSTACK("tx.distMember@"_Stz);
@@ -182,6 +184,8 @@ void Task::vTxDistMemberStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pPtrTx) )
     THROW_INVALID_DSTACK("tx.distMember!"_Stz);
   Tx* pTx = _pTx(pPtrTx);
+  
+  ASSERT(pTx->bLocalTx());
   
   i8 i_Node;
   if ( ! mpTask->m_pDataStack->bPop(i_Node) )
