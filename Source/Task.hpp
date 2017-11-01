@@ -1319,6 +1319,8 @@ namespace Tasks
     static void vTxCounterDec(MP_Task mpTask);
     static void vTxCounterFetch(MP_Task mpTask);
     static void vTxCounterStore(MP_Task mpTask);
+    static void vTxDistMemberFetch(MP_Task mpTask);
+    static void vTxDistMemberStore(MP_Task mpTask);
     static void vTxDump(MP_Task mpTask);
     static void vTxDumpAll(MP_Task mpTask);
     static void vTxFree(MP_Task mpTask);

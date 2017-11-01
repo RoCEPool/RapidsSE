@@ -32,17 +32,19 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Tx(void)
 {
-  vAddPrimitive("tx::begin"_Stz,        &vTxBegin,        false);
-  vAddPrimitive("tx.commit"_Stz,        &vTxCommit,       false);
-  vAddPrimitive("tx.counterDec"_Stz,    &vTxCounterDec,   false);
-  vAddPrimitive("tx.counter@"_Stz,      &vTxCounterFetch, false);
-  vAddPrimitive("tx.counter!"_Stz,      &vTxCounterStore, false);
-  vAddPrimitive("tx.dump"_Stz,          &vTxDump,         false);
-  vAddPrimitive("tx::dumpAll"_Stz,      &vTxDumpAll,      false);
-  vAddPrimitive("tx.free"_Stz,          &vTxFree,         false);
-  vAddPrimitive("tx.id"_Stz,            &vTxId,           false);
-  vAddPrimitive("tx.rollback"_Stz,      &vTxRollback,     false);
-  vAddPrimitive("tx::testDist"_Stz,     &vTxTestDist,     false);
+  vAddPrimitive("tx::begin"_Stz,      &vTxBegin,           false);
+  vAddPrimitive("tx.commit"_Stz,      &vTxCommit,          false);
+  vAddPrimitive("tx.counterDec"_Stz,  &vTxCounterDec,      false);
+  vAddPrimitive("tx.counter@"_Stz,    &vTxCounterFetch,    false);
+  vAddPrimitive("tx.counter!"_Stz,    &vTxCounterStore,    false);
+  vAddPrimitive("tx.distMember@"_Stz, &vTxDistMemberFetch, false);
+  vAddPrimitive("tx.distMember!"_Stz, &vTxDistMemberStore, false);
+  vAddPrimitive("tx.dump"_Stz,        &vTxDump,            false);
+  vAddPrimitive("tx::dumpAll"_Stz,    &vTxDumpAll,         false);
+  vAddPrimitive("tx.free"_Stz,        &vTxFree,            false);
+  vAddPrimitive("tx.id"_Stz,          &vTxId,              false);
+  vAddPrimitive("tx.rollback"_Stz,    &vTxRollback,        false);
+  vAddPrimitive("tx::testDist"_Stz,   &vTxTestDist,        false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -93,7 +95,7 @@ void Task::vTxCounterDec(MP_Task mpTask)
   
   Object* pPtrTx;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTx) )
-    THROW_INVALID_DSTACK("tx.counter@"_Stz);
+    THROW_INVALID_DSTACK("tx.counterDec"_Stz);
   Tx* pTx = _pTx(pPtrTx);
   
   i8 iCounter = pTx->iCounterDec();
@@ -134,14 +136,62 @@ void Task::vTxCounterStore(MP_Task mpTask)
   
   Object* pPtrTx;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTx) )
-    THROW_INVALID_DSTACK("tx.counter@"_Stz);
+    THROW_INVALID_DSTACK("tx.counter!"_Stz);
   Tx* pTx = _pTx(pPtrTx);
   
   i8 iCounter;
   if ( ! mpTask->m_pDataStack->bPop(iCounter) )
-    THROW_INVALID_DSTACK("thread.actorModel!"_Stz);
+    THROW_INVALID_DSTACK("tx.counter!"_Stz);
   
   pTx->vCounterSet(iCounter);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* tx.distMember@ -- fetch if given node is a distributed member of tx        */
+/*----------------------------------------------------------------------------*/
+void Task::vTxDistMemberFetch(MP_Task mpTask)
+{
+  ENTRY("vTxDistMemberFetch"_Stz);
+  
+  Object* pPtrTx;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTx) )
+    THROW_INVALID_DSTACK("tx.distMember@"_Stz);
+  Tx* pTx = _pTx(pPtrTx);
+  
+  i8 i_Node;
+  if ( ! mpTask->m_pDataStack->bPop(i_Node) )
+    THROW_INVALID_DSTACK("tx.distMember@"_Stz);
+  
+  bool bDistMember = pTx->bDistMember(i_Node);
+  
+  mpTask->m_pDataStack->vPushInt(bDistMember);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* tx.distMember! -- store if given node is a distributed member of tx        */
+/*----------------------------------------------------------------------------*/
+void Task::vTxDistMemberStore(MP_Task mpTask)
+{
+  ENTRY("vTxDistMemberStore"_Stz);
+  
+  Object* pPtrTx;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTx) )
+    THROW_INVALID_DSTACK("tx.distMember!"_Stz);
+  Tx* pTx = _pTx(pPtrTx);
+  
+  i8 i_Node;
+  if ( ! mpTask->m_pDataStack->bPop(i_Node) )
+    THROW_INVALID_DSTACK("tx.distMember!"_Stz);
+
+  i8 iDistMember;
+  if ( ! mpTask->m_pDataStack->bPop(iDistMember) )
+    THROW_INVALID_DSTACK("tx.distMember!"_Stz);
+  
+  pTx->vDistMember(i_Node,iDistMember);
   
   EXIT();
 }
