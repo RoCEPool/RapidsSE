@@ -65,6 +65,9 @@ Tx::Tx(void)
   m_ePhase     = TP_NONE;
   m_zCounter   = gxArguments.m_nSlots;
   
+  for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++)
+    m_xNode[i_Node].m_bDistMember = false;
+  
   _checkInitialised_(CN_TX);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
@@ -246,6 +249,28 @@ Stz* Tx::aDecode(void)
     return "local"_Stz;
   else
     return "dist"_Stz;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get if distributed tx member                                               */
+/*----------------------------------------------------------------------------*/
+bool Tx::bDistMember(i8 i_Node)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
+  
+  bool bDistMember = m_xNode[i_Node].m_bDistMember;
+  
+  return bDistMember;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set if distributed tx member                                               */
+/*----------------------------------------------------------------------------*/
+void Tx::vDistMember(i8 i_Node, bool bDistMember)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
+  
+  m_xNode[i_Node].m_bDistMember = bDistMember;
 }
 
 /*----------------------------------------------------------------------------*/

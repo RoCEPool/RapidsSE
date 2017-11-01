@@ -43,6 +43,10 @@ namespace Transactions
     eTP    m_ePhase;     // phase (executing, committing, ...)
     Atomic m_zCounter;   // general counter
 
+    struct {
+      bool m_bDistMember; // true if part of distributed tx
+    } m_xNode[C_MAX_NODES];
+  
     // to be deleted
     i8    m_iTxSlot;   // transaction slot (0..C_TX_ARRAY-1)
 
@@ -79,6 +83,9 @@ namespace Transactions
     bool bLocalTx(void);
     bool bDistTx(void);
     Stz* aDecode(void);
+  
+    bool bDistMember(i8 i_Node);
+    void vDistMember(i8 i_Node, bool bDistMember);
   
     Footer* aFooter(void);
   };
