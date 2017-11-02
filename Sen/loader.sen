@@ -138,6 +138,11 @@ timer: loadTimer
   // commit the transaction
   commitTxRef
 
+  pTblLoader loader.tx@ tx.id
+    dup "dist commit of " . .
+  txDistCommit assert::stack_0
+
+
   // destroy Loader
   "__table_loader" find word.forget
 

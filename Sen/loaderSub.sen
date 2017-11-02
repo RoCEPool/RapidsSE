@@ -299,7 +299,7 @@ tp: partitionAppendBuffer
   //then
 
   iDistTxId txRef::checkDistId
-//iDistTxId tx::testDist locals| pDistTx |
+  iDistTxId tx::testDist locals| pDistTx |
 
   pRowBuffer iPartitionNo pTable table.appendBuffer ( )
 
@@ -356,7 +356,7 @@ tp: partitionAppendBuffer
 /*----------------------------------------------------------------------------*/
 /* commit (and free) the dist tx on this node                                 */
 /*----------------------------------------------------------------------------*/
-: txDistCommit$ ( iDistTxId -- )
+: txDistCommit allParticipants 1 checkResult ( iDistTxId -- true n# true )
 
   locals| iDistTxId |
 
@@ -366,8 +366,13 @@ tp: partitionAppendBuffer
 
   iDistTxId tx::testDist locals| pDistTx |
 
+  pDistTx not if
+    "dist tx does not exist on this node" .
+    true <SUCCESS_RESULT>
+    exit
+  then
+
   "tidying up distTx..." .
-  pDistTx assert
   pDistTx tx.dump
   pDistTx tx.commit
   pDistTx tx.free
