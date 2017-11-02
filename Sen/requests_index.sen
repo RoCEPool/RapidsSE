@@ -132,10 +132,10 @@ timer: pIdxSelectTimer
 
   // check it is a table
   sTableNm checkIsTable not if <NIP+ERROR> exit then
-
-  // call the distributed exporter
-  //distFetchRowsIndex not if <NIP+ERROR> exit then
   drop
+
+  // call the distributed fetch
+  sWhere sTableNm distFetchRowsIndex not if <NIP+ERROR> exit then
 
   // pop table dictionary
   popTable

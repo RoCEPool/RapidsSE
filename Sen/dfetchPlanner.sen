@@ -21,6 +21,7 @@
   sTableNm   dfetchPlan  ##: $$tableNm
   sSchemaNm  dfetchPlan  ##: $$schemaNm
   sCatalogNm dfetchPlan  ##: $$catalogNm
+
   // nb: the above could have been a frame level, but left it as an example
 
   //schemaNm .
@@ -34,13 +35,13 @@
     // frame-level symbolic arguments for scanOp#I
     partitionid "scanOp#%v" str.format dfetchPlan plan.opFrame++ drop
       partitionid    dfetchPlan ##: $$partition   // partition
-      "writeOp.task" dfetchPlan ##: $$nextOp      // next op is writeOp
-      "writeOp#"     dfetchPlan ##: $$nextProfile // next profile is writeOp#
+      //sWhere         dfetchPlan ##: $$where       // where clause
+      "printOp.task" dfetchPlan ##: $$nextOp      // next op is printOp
+      "printOp#"     dfetchPlan ##: $$nextProfile // next profile is printOp#
   loop
 
-  "writeOp#" dfetchPlan plan.opFrame++ drop
+  "printOp#" dfetchPlan plan.opFrame++ drop
     // frame-level symbolic arguments
-    sWhere            dfetchPlan ##: $$sWhere      // where clause
     grid.partitions   dfetchPlan ##: $$nStreams    // number of streams in pipeline
     "responseOp.task" dfetchPlan ##: $$nextOp      // pipe to next operator
     "responseOp#"     dfetchPlan ##: $$nextProfile // pipe to next profile

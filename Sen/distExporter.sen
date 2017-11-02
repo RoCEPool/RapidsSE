@@ -64,6 +64,56 @@
   true
 ;
 
+/*----------------------------------------------------------------------------*/
+/* distributed fetch                                                          */
+/*----------------------------------------------------------------------------*/
+: distFetchRowsIndex ( "<sWhere>" "<tableNm>" )
+
+  0 locals| dfetchPlan sTableNm sWhere |
+
+  sTableNm sWhere "distFetchRowsIndex %v %v" str.format .
+
+  // push catalog name
+  4 pathPick dic.name  ( "<catalogNm>" "<schemaNm>" )
+
+  // push schema name
+  2 pathPick dic.name  ( "<schemaNm>" "<schemaNm>" )
+
+  sTableNm sWhere ( "<schemaNm>" "<schemaNm>" "<tableNm>" "<sWhere>" )
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // prepare plan
+  dfetchPlanner to dfetchPlan
+
+  dfetchPlan plan.show
+
+  // set this task as the executing task in the plan
+  task::this dfetchPlan plan.executingTask!
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // distribute (and compile) the plan
+  dfetchPlan distributePlan
+
+  // this task to wait for 1 ack
+  1 setAcks
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // execute the plan
+  dfetchPlan executePlan
+
+  //"PlanTest waiting for ack" .
+
+  // this task waits till ack'd by the responseOp
+  ackWait
+
+  //"PlanTest got ack" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // reap the plan
+  //dexPlan reapPlan
+
+  true
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

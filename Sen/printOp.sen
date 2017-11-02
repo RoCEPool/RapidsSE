@@ -1,0 +1,136 @@
+/*============================================================================*/
+/* printOp.sen -- print rows on console                                       */
+/*============================================================================*/
+
+"printOp.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* frame common variables for write                                           */
+/*----------------------------------------------------------------------------*/
+common/ write nStreams    /
+
+
+
+/*----------------------------------------------------------------------------*/
+/* print rows from row buffer                                                 */
+/*----------------------------------------------------------------------------*/
+: printRows subDic write ( rowBuffer pTable -- )
+
+  // declare rowCrs variable
+  rowCursor::new locals| rowCrs pTable rowBuffer |
+
+  // set the table in the cursor
+  pTable rowCrs rowCursor.table!
+
+  // set row buffer in cursor
+  rowBuffer rowCrs rowCursor.entryBuffer!
+
+  // iterate the row buffer
+  rowCrs rowCursor.first
+  begin while
+    rowCrs rowCursor.row .
+    "\n" .
+    rowCrs rowCursor.next
+  repeat
+;
+
+/*----------------------------------------------------------------------------*/
+/* print rows from row buffer                                                 */
+/*----------------------------------------------------------------------------*/
+: printRb subDic write
+
+  // record the plan and profile
+  0 locals| pTablePtr thePlan profile |
+tp: 20
+  "tenants" 1 dicPath.set
+
+  // [0] push thePlan's dictionary onto path stack
+  thePlan plan.dic pathPush
+
+  // push the op frame for this writeOp
+  profile thePlan plan.opFrame? opFrame.push
+
+  //----------------------------------------------------------------------------
+  // get to the table dic and find the table
+  // need to set the table in the rowCusror so we can convert
+  // rows to strings using the columns from the table
+  // Note: the entryBuffers that we move across the custer do NOT
+  //       have an index pointer
+  $$tableNm   locals| tableNm   |
+  $$schemaNm  locals| schemaNm  |
+  $$catalogNm locals| catalogNm |
+
+  "boray" find execute
+  pathPush
+
+  "catalogs"  find execute
+  pathPush
+
+  // push tableNm folder on the dictionary path
+  catalogNm find execute
+  pathPush
+
+  // push tableNm folder on the dictionary path
+  "schemas" find execute
+  pathPush
+
+  // push tableNm folder on the dictionary path
+  schemaNm find execute
+  pathPush
+
+  // push tableNm folder on the dictionary path
+  "tables" find execute
+  pathPush
+
+  // push tableNm on the dictionary path
+  tableNm find execute pathPush
+  tableNm find execute to pTablePtr
+
+  pathDrop pathDrop pathDrop pathDrop pathDrop pathDrop pathDrop
+
+  //----------------------------------------------------------------------------
+
+  ( [ rowBuffer ] )
+
+  // write or close file & sink plan?
+  if ( [ rowBuffer ] )
+
+     pTablePtr  printRows
+  else
+    // << $$nextProfile thePlan >> -->> $$nextOp
+    << $$nextProfile thePlan plan.id@ $$nextOp >>jobqueue
+  then
+
+  opFrame.drop
+  dicPath.clear
+;
+
+/*----------------------------------------------------------------------------*/
+/* print operator loop                                                        */
+/*----------------------------------------------------------------------------*/
+: printOp operator ( -- NEVER )
+
+  begin
+
+    depth 0 != if "stack of task has grown" . debug::trap then
+
+    // wait for next job
+    jobQueue> ( valset )
+
+    // unpack it
+    valset> ( profile planId nValues )
+    drop ( profile planId )
+
+    // find plan using planId
+    planList::findPlan ( profile plan true )
+    assert ( profile plan )
+    
+    // print row buffer rows
+    printRb ( )
+
+  again
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
