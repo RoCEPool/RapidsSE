@@ -128,15 +128,19 @@ void Debugging::vReport(i8 iLevel, Stz* aFormat, va_list xArgs)
   char* s = gaReportBuffer;
   *s = '\0';
   
+  time_t tNow = time(0);
+  char* sTime = ctime(&tNow);
+  sTime[ strlen(sTime) - 1 ] = '\0';
+
   assert(iLevel != 0);
   vsnprintf(s,sizeof(gaReportBuffer)-iLen-3,aFormat->aChar(),xArgs);
   
   // print to file
-  fprintf(stderr,"%s",gaReportBuffer);
+  fprintf(stderr,"%s: %s", sTime, gaReportBuffer);
   fflush(stderr);
   
   if (gpTraceFile) {
-    gpTraceFile->vPrint("%s"_Stz,gaReportBuffer);
+    gpTraceFile->vPrint("%s: %s"_Stz, sTime, gaReportBuffer);
     gpTraceFile->vFlush();
   }
 }

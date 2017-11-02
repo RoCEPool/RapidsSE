@@ -159,7 +159,7 @@ common/ write nStreams    /
   tableNm find execute pathPush
   tableNm find execute to pTablePtr
 
-  pathDrop pathDrop pathDrop pathDrop pathDrop pathDrop
+  pathDrop pathDrop pathDrop pathDrop pathDrop pathDrop pathDrop
 
   //----------------------------------------------------------------------------
 
@@ -197,6 +197,8 @@ common/ write nStreams    /
   then
 
   opFrame.drop
+
+  dicPath.clear
 ;
 
 /*----------------------------------------------------------------------------*/
