@@ -11,6 +11,7 @@ extern SEitfList* gpSEitfList;
 extern AttachMap* gpAttachMap;
 extern Grid*      gpGrid;
 extern ServerScheduler* gpServerScheduler;
+extern TxSet*     gpTxSet;
 
 struct ReqTable {
   Stz* aCommand;
@@ -905,6 +906,9 @@ bool SEitf::bBeginTx()
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
+  m_pTx = gpTxSet->pAllocLocalTx();
+  m_pTx->vPhase(TP_EXECUTING);
+  
   m_pTxRef = new TxRef();
   
   //vTrace("txref: %x\n"_Stz, m_pTxRef);
@@ -919,6 +923,8 @@ void SEitf::vCommitTx()
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
+  m_pTx->vPhase(TP_COMMITTED);
+  
   bool bResult = m_pTxRef->bCommitTx();
   ASSERT(bResult);
 }
@@ -929,6 +935,9 @@ void SEitf::vCommitTx()
 void SEitf::vEndTx()
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  gpTxSet->vFreeTx(m_pTx);
+  m_pTx = nullptr;
   
   bool bResult = m_pTxRef->bEndTx();
   ASSERT(bResult);
