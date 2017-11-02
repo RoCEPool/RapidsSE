@@ -40,8 +40,6 @@ void Task::vAddPrimitives_Loader(void)
   vAddPrimitive("loader.table!"_Stz,      &vLoaderTableStore,  false);
   vAddPrimitive("loader.tx@"_Stz,         &vLoaderTxFetch,     false);
   vAddPrimitive("loader.tx!"_Stz,         &vLoaderTxStore,     false);
-  vAddPrimitive("loader.txref@"_Stz,      &vLoaderTxRefFetch,  false);
-  vAddPrimitive("loader.txref!"_Stz,      &vLoaderTxRefStore,  false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -225,48 +223,6 @@ void Task::vLoaderTxStore(MP_Task mpTask)
   Tx* pTx = _pTx(pPtrTx);
   
   pLoader->vTx(pTx);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* loader.txref@ -- fetch txref from loader                                   */
-/*----------------------------------------------------------------------------*/
-void Task::vLoaderTxRefFetch(MP_Task mpTask)
-{
-  ENTRY("vLoaderTxRefFetch"_Stz);
-  
-  Object* pPtrLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
-    THROW_INVALID_DSTACK("loader.txref@"_Stz);
-  Loader* pLoader = _pLoader(pPtrLoader);
-  
-  TxRef* pTxRef = pLoader->pTxRef();
-  
-  mpTask->m_pDataStack->vPushObject(pTxRef);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* loader.txref! -- store txref into loader                                   */
-/*----------------------------------------------------------------------------*/
-void Task::vLoaderTxRefStore(MP_Task mpTask)
-{
-  ENTRY("vLoaderTxRefStore"_Stz);
-  
-  Object* pPtrLoader;
-  Object* pPtrTxRef;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader,pPtrTxRef) )
-    THROW_INVALID_DSTACK("loader.txref!"_Stz);
-  
-  Loader* pLoader = _pLoader(pPtrLoader);
-  ASSERT(CN_LOADER == pLoader->eClass());
-  
-  TxRef* pTxRef = _pTxRef(pPtrTxRef);
-  ASSERT(CN_TXREF == pTxRef->eClass());
-  
-  pLoader->vTxRef(pTxRef);
   
   EXIT();
 }

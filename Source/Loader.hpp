@@ -11,7 +11,6 @@ namespace DBobjects
     Table*   m_pTable;   // table being load
     s256     m_sPath;    // file being loaded
     Tx*      m_pTx;      // tx
-    TxRef*   m_pTxRef;   // tx ref
     LoadMap* m_pLoadMap; // load map
     
     // must be last
@@ -37,8 +36,6 @@ namespace DBobjects
     void     vTidyUp(void);
     Tx*      pTx(void);
     void     vTx(Tx* pTx);
-    TxRef*   pTxRef(void);
-    void     vTxRef(TxRef* pTxRef);
     
     Footer* aFooter(void);
   };

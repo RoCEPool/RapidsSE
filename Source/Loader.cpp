@@ -62,7 +62,6 @@ Loader::Loader(void)
   m_sPath    = "<none>"_Stz;
   m_pTable   = nullptr;
   m_pTx      = nullptr;
-  m_pTxRef   = nullptr;
   m_pLoadMap = new LoadMap;
   
   _checkInitialised_(CN_LOADER);
@@ -204,28 +203,6 @@ void Loader::vTx(Tx* pTx)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   
   m_pTx = pTx;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get txref                                                                  */
-/*----------------------------------------------------------------------------*/
-TxRef* Loader::pTxRef(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-  
-  return m_pTxRef;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set txref                                                                  */
-/*----------------------------------------------------------------------------*/
-void Loader::vTxRef(TxRef* pTxRef)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-
-  m_pTxRef = pTxRef;
-  
-  //vTrace("TxId %lld\n"_Stz,pTxRef->iTxId());
 }
 
 /*----------------------------------------------------------------------------*/

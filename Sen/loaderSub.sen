@@ -141,7 +141,6 @@ tp: ~loadAppendBuffer
   //grid.thisNode@ .
 
   // get tx id from loader
-  //pLoaderSub loaderSub.loader@ loader.txRef@ txRef.id locals| iDistTxId |
   pLoaderSub loaderSub.loader@ loader.tx@ tx.id locals| iDistTxId |
 
   <<

@@ -134,7 +134,6 @@ void LoaderSub::vBegin(void)
   
   // get table, tx and load map
   m_pTable   = m_pLoader->pTable();
-  m_pTxRef   = m_pLoader->pTxRef();
   m_pLoadMap = m_pLoader->pLoadMap();
   
   sPath = m_pLoader->sPath();
