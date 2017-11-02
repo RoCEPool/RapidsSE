@@ -63,7 +63,6 @@ LoaderSub::LoaderSub(void)
 
   m_pLoader  = nullptr;
   m_pTable   = nullptr;
-  m_pTxRef   = nullptr;
   m_pLoadMap = nullptr;
   //m_aRecord
   m_iLength  = 0;

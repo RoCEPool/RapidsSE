@@ -10,7 +10,6 @@ namespace DBobjects
   private:
     Loader*  m_pLoader;    // loader parent
     Table*   m_pTable;     // table being load
-    TxRef*   m_pTxRef;     // tx
     LoadMap* m_pLoadMap;   // load map
     s256     m_aRecord;    // formatted row
     i8       m_iLength;    // length of record
