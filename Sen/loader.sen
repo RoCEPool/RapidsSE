@@ -167,11 +167,11 @@ timer: loadTimer
 
   reg.push
 
-  file::new >reg0         // reg0 - file
+  file::new >reg0        // reg0 - file
   >reg1                  // reg1 - table
   >reg2                  // reg2 - path
-  rowBuffer::new >reg3    // reg3 - rowbuffer
-  beginTxRef >reg4 // reg4 - txref
+  rowBuffer::new >reg3   // reg3 - rowbuffer
+  beginTx >reg4          // reg4 - txref
   0 >regF                // regF - counter
 
   reg2 reg0 file.path!

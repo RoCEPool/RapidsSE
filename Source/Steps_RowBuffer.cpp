@@ -52,11 +52,10 @@ ENTRY("vRowBufferAppend"_Stz);
   EntryBuffer* pRowBuffer = (EntryBuffer*)_pEntryBuffer(pPtrRowBuffer);
   ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
 
-  Object* pPtrTxRef;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTxRef) )
+  Object* pPtrTx;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTx) )
     THROW_INVALID_DSTACK("rowbuffer.append"_Stz);
-  TxRef* pTxRef = _pTxRef(pPtrTxRef);
-  ASSERT(CN_TXREF == pTxRef->eClass());
+  Tx* pTx = _pTx(pPtrTx);
   
   s48K sRecord;
   if ( ! mpTask->m_pDataStack->bPop(sRecord) )
@@ -66,7 +65,7 @@ ENTRY("vRowBufferAppend"_Stz);
   
   // create working row
   EntWrk xRowWrk;
-  xRowWrk.vTxId(pTxRef->iTxId());
+  xRowWrk.vTxId(pTx->iDistTxId());
   xRowWrk.vData(sRecord, iLength);
   
   bool b = pRowBuffer->bInsertRow(xRowWrk,&pRow);
