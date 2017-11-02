@@ -178,6 +178,7 @@ SEitf::SEitf(i8 iPartition)
   m_pCurrentTable   = nullptr;
   m_pCurrentIndex   = nullptr;
   m_pTxRef          = nullptr;
+  m_pTx             = nullptr;
   m_sMetadata       = ""_Stz;
   m_bDisplay        = true;
   m_iRowsProcessed    = 0;
@@ -871,6 +872,26 @@ void SEitf::vTxRef(TxRef* pTxRef)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   m_pTxRef = pTxRef;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get tx                                                                     */
+/*----------------------------------------------------------------------------*/
+Tx* SEitf::pTx(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  return m_pTx;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set tx                                                                     */
+/*----------------------------------------------------------------------------*/
+void SEitf::vTx(Tx* pTx)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  m_pTx = pTx;
 }
 
 /*----------------------------------------------------------------------------*/

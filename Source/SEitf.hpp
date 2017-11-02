@@ -36,7 +36,8 @@ namespace Interface
   
     Entry* m_pEntry;
     TxRef* m_pTxRef;
-    
+    Tx*    m_pTx;
+  
     bool   m_bDisplay;
     
     s4K    m_sMetadata;
@@ -104,6 +105,9 @@ namespace Interface
  
     TxRef* pTxRef(void);
     void   vTxRef(TxRef* pTxRef);
+  
+    Tx*    pTx(void);
+    void   vTx(Tx* pTx);
   
     //--------------------------------------------------------------------------
     
