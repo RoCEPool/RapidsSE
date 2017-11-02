@@ -260,8 +260,11 @@ bool LoaderSub::bInsertRow(void)
   // get working buffer
   EntryBuffer* pEntryBuffer = m_pEntryBuffer[m_iPartition];
   
+  // get the tx id
+  i8 iDistTxId = m_pLoader->pTx()->iDistTxId();
+  
   // insert row into working buffer
-  bool b = pEntryBuffer->bAppendEntry(m_pTxRef->iTxId(),m_aRecord,m_iLength);
+  bool b = pEntryBuffer->bAppendEntry(iDistTxId,m_aRecord,m_iLength);
   
   //pEntryBuffer->vShow();
   
