@@ -340,7 +340,7 @@ tp: partitionAppendBuffer
 /*----------------------------------------------------------------------------*/
 /* ackSEitf$                                                                  */
 /*----------------------------------------------------------------------------*/
-: ackSEitf$ ( pSEitf )
+: ackSEitf$ ( pSEitf -- true )
 
   locals| pSEitf |
 
@@ -349,6 +349,28 @@ tp: partitionAppendBuffer
   //pSEitf .
 
   pSEitf SEitf.acksRemainingDec
+
+  true <SUCCESS_RESULT>
+;
+
+/*----------------------------------------------------------------------------*/
+/* commit (and free) the dist tx on this node                                 */
+/*----------------------------------------------------------------------------*/
+: txDistCommit$ ( iDistTxId -- )
+
+  locals| iDistTxId |
+
+  "txDistCommit$ got..." .
+
+  iDistTxId .
+
+  iDistTxId tx::testDist locals| pDistTx |
+
+  "tidying up distTx..." .
+  pDistTx assert
+  pDistTx tx.dump
+  pDistTx tx.commit
+  pDistTx tx.free
 
   true <SUCCESS_RESULT>
 ;
