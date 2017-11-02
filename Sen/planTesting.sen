@@ -27,7 +27,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // execute the plan
-  dexPlan executePlan
+  "scanOp" dexPlan executePlan
 
   //"PlanTest waiting for ack" .
 

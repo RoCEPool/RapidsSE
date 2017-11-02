@@ -147,16 +147,16 @@ tp: >>jobQueue_otherNode
 /*----------------------------------------------------------------------------*/
 /* execute the plan                                                           */
 /*----------------------------------------------------------------------------*/
-: executePlan ( plan -- )
+: executePlan ( nextOp plan -- )
 
   // record the plan and profile
-  locals| thePlan profile |
+  locals| thePlan sNextOp |
 
   // trigger triggerOp by piping the plan to it
   //<< "triggerOp" thePlan >>
   //"triggerOp.task" find execute >jobQueue
 
-  << "triggerOp" thePlan plan.id@ "triggerOp.task" >>jobQueue
+  << sNextOp "triggerOp" thePlan plan.id@ "triggerOp.task" >>jobQueue
 ;
 
 /*----------------------------------------------------------------------------*/

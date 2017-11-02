@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 "triggerOp.sen" .verbose
-
+common/ trigger rbCrs /
 /*----------------------------------------------------------------------------*/
 /* trigger                                                                    */
 /*----------------------------------------------------------------------------*/
@@ -28,10 +28,10 @@
 /*----------------------------------------------------------------------------*/
 /* triggerPlan_distributed                                                    */
 /*----------------------------------------------------------------------------*/
-: triggerPlan_distributed ( profile plan -- )
+: triggerPlan_distributed subDic trigger ( nextOp profile plan -- )
 
   // record the plan and profile
-  locals| thePlan profile |
+  locals| thePlan profile sNextOp |
 
   //thePlan plan.id@ "Triggering plan: %v" str.format .
 
@@ -39,7 +39,8 @@
   grid.partitions 0 do
 
   // << profile plan >> -->> nextOp
-  << I "scanOp#%v" str.format thePlan plan.id@ "scanOp.task" >>jobQueue
+  << I sNextOp "%v#%v" str.format thePlan plan.id@ sNextOp "%v.task" str.format >>jobQueue
+  //<< I "rangeOp#%v" str.format thePlan plan.id@ "rangeOp.task" >>jobQueue
   loop
 ;
 
@@ -56,12 +57,11 @@
     jobQueue> ( valset )
 
     // unpack it
-    valset> ( profile planId nValues )
-    drop ( profile planId )
-
+    valset> ( nextOp profile planId nValues )
+    drop ( nextOp profile planId )
     // find plan using planId
-    planList::findPlan ( profile plan true )
-    assert ( profile plan )
+    planList::findPlan ( nextOp profile plan true )
+    assert ( nextOp profile plan )
 
     // trigger the plan
     triggerPlan_distributed ( )

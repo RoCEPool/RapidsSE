@@ -5,10 +5,143 @@
 "rangeOp.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* frame-level variables for range                                            */
+/*----------------------------------------------------------------------------*/
+common/ range rbCrs /
+
+/*----------------------------------------------------------------------------*/
+/* scan partition of a table                                                  */
+/*----------------------------------------------------------------------------*/
+: rangePartition subDic range ( profile plan -- )
+
+  // record the plan and profile
+  locals| thePlan profile |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set path (hardcoded for the moment)
+
+  //"tables" "tpchSchema" "schemas" "rapidsse" "catalogs" "boray" "tenants" 7 dicPath.set
+  "tenants" 1 dicPath.set
+
+  // [0] push thePlan's dictionary onto path stack
+  thePlan plan.dic pathPush
+
+  // [1] find and push opFrame (along with its dictionary onto path stack)
+  profile thePlan plan.opFrame? opFrame.push // [1]
+  //pathDump
+
+  $$tableNm   locals| tableNm   |
+  $$schemaNm  locals| schemaNm  |
+  $$catalogNm locals| catalogNm |
+  $$where     locals| sWhere |
+
+  sWhere .
+
+  // drop the dictionary path
+  pathDrop
+
+  // now create the dictionary path again with the catalog and schemaNm
+  "catalogs" "boray" "tenants" 3 dicPath.set
+
+  // push tableNm folder on the dictionary path
+  catalogNm find execute
+  pathPush
+
+  // push tableNm folder on the dictionary path
+  "schemas" find execute
+  pathPush
+
+  // push tableNm folder on the dictionary path
+  schemaNm find execute
+  pathPush
+
+  // push tableNm folder on the dictionary path
+  "tables" find execute
+  pathPush
+
+  // push tableNm on the dictionary path
+  tableNm find execute
+  pathPush
+
+  //pathDump
+
+  // [0] push thePlan's dictionary onto path stack
+  thePlan plan.dic pathPush
+
+  // [1] find and push opFrame (along with its dictionary onto path stack)
+  profile thePlan plan.opFrame? opFrame.push // [1]
+
+  // [2] create a new rowCursor and record in opFrame.rbCrs
+  rbCursor::new toCommon rbCrs
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set up table in rowCursor
+  $$tableNm find execute rbCrs rbCursor.table!
+
+  // begin scan of partition
+  $$partition grid::toSlot rbCrs rbCursor.begin
+
+  // get first rowBuffer of partition
+  rbCrs rbCursor.first
+
+  // pipe all rb's of partition
+  begin while
+
+  // << rb true profile plan profile >> -->> nextOp
+  << rbCrs rbCursor.get true $$nextProfile thePlan plan.id@ $$nextOp >>jobQueue
+
+  // next rowBuffer in partition
+  rbCrs rbCursor.next
+
+  repeat
+
+  // end cursored iteration
+  rbCrs rbCursor.end
+
+  // pipe EOD to writeOp
+  // << false plan >> -->> nextOp
+  << false $$nextProfile thePlan plan.Id@ $$nextOp >>jobQueue
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // [2] delete cursor
+  rbCrs rbCursor.delete
+  0 toCommon rbCrs
+
+  // [1] discard opFrame (and dictionary)
+  opFrame.drop
+
+  // [0] discard thePlan's dictionary from path stack
+  pathDrop
+;
+
+/*----------------------------------------------------------------------------*/
 /* table range select                                                         */
 /*----------------------------------------------------------------------------*/
 : rangeOp operator
 
+  begin
+
+  depth 0 != if "stack of task has grown" . debug::trap then
+
+  grid.thisNode@ "RANGEOP: NODE %V" str.format .
+
+  // wait for next job
+  jobQueue> ( valset )
+
+  grid.thisNode@ "RANGEOP: NODE %V" str.format .
+
+  // unpack it
+  valset> ( profile planId nValues )
+  drop ( profile planId )
+
+  // find plan using planId
+  planList::findPlan ( profile plan true )
+  assert ( profile plan )
+
+  // scan the table partition and pipe to write
+  rangePartition ( )
+
+  again
 ;
 
 /*============================================================================*/

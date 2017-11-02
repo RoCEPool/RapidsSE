@@ -21,6 +21,7 @@
   sTableNm   dfetchPlan  ##: $$tableNm
   sSchemaNm  dfetchPlan  ##: $$schemaNm
   sCatalogNm dfetchPlan  ##: $$catalogNm
+  sWhere     dfetchPlan  ##: $$where
 
   // nb: the above could have been a frame level, but left it as an example
 
@@ -33,9 +34,9 @@
     I to partitionid
 
     // frame-level symbolic arguments for scanOp#I
-    partitionid "scanOp#%v" str.format dfetchPlan plan.opFrame++ drop
+    partitionid "rangeOp#%v" str.format dfetchPlan plan.opFrame++ drop
       partitionid    dfetchPlan ##: $$partition   // partition
-      //sWhere         dfetchPlan ##: $$where       // where clause
+      sWhere         dfetchPlan ##: $$where       // where clause
       "printOp.task" dfetchPlan ##: $$nextOp      // next op is printOp
       "printOp#"     dfetchPlan ##: $$nextProfile // next profile is printOp#
   loop

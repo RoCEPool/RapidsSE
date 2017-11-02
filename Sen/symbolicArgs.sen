@@ -12,6 +12,7 @@ symArg: $$partition
 symArg: $$tableNm
 symArg: $$schemaNm
 symArg: $$catalogNm
+symArg: $$where
 
 symArg: $$nextOp
 symArg: $$nextProfile
