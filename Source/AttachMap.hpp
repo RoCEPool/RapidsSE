@@ -45,6 +45,7 @@ namespace StorageEngine
     Dic           m_xMainDic;
     TxCollection* m_pTxCollection;
     TxMap*        m_pTxMap;
+    TxSet*        m_pTxSet;
     Grid*         m_pGrid;
     PartitionScheduler* m_pPartitionScheduler;
     ServerScheduler*    m_pServerScheduler;
