@@ -72,7 +72,7 @@ timer: loadTimer
   // create sub loaders
 
   // begin a transaction
-  beginTxRef pTblLoader loader.txref!
+  //beginTxRef pTblLoader loader.txref!
   beginTx pTblLoader loader.tx!
 
   // hold task mutex while we create sub loaders
@@ -136,7 +136,7 @@ timer: loadTimer
   // tidy up
 
   // commit the transaction
-  commitTxRef
+  //commitTxRef
 
   pTblLoader loader.tx@ tx.id
     dup "dist commit of " . .
