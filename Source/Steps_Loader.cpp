@@ -216,7 +216,7 @@ void Task::vLoaderTxStore(MP_Task mpTask)
   Object* pPtrLoader;
   Object* pPtrTx;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader,pPtrTx) )
-    THROW_INVALID_DSTACK("loader.txref!"_Stz);
+    THROW_INVALID_DSTACK("loader.tx!"_Stz);
   
   Loader* pLoader = _pLoader(pPtrLoader);
   

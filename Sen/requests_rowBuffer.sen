@@ -37,7 +37,7 @@ tp: pRB
   reg.push
 
   rowBuffer::new >reg0    // reg0 - rowbuffer
-  beginTxRef >reg1 // reg1 - txref
+  beginTx >reg1 // reg1 - tx
 
 /*
   0 countRows !
@@ -57,7 +57,7 @@ tp: pRB
   loop
 
   // commit the transaction
-  commitTxRef
+  commitTx
 
   drop
 

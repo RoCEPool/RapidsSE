@@ -72,7 +72,6 @@ timer: loadTimer
   // create sub loaders
 
   // begin a transaction
-  //beginTxRef pTblLoader loader.txref!
   beginTx pTblLoader loader.tx!
 
   // hold task mutex while we create sub loaders
@@ -136,8 +135,6 @@ timer: loadTimer
   // tidy up
 
   // commit the transaction
-  //commitTxRef
-
   pTblLoader loader.tx@ tx.id
     dup "dist commit of " . .
   txDistCommit assert::stack_0
@@ -171,7 +168,7 @@ timer: loadTimer
   >reg1                  // reg1 - table
   >reg2                  // reg2 - path
   rowBuffer::new >reg3   // reg3 - rowbuffer
-  beginTx >reg4          // reg4 - txref
+  beginTx >reg4          // reg4 - tx
   0 >regF                // regF - counter
 
   reg2 reg0 file.path!
@@ -225,11 +222,11 @@ timer: loadTimer
 
   reg.push
 
-  file::new >reg0         // reg0 - file
+  file::new >reg0        // reg0 - file
   >reg1                  // reg1 - table
   >reg2                  // reg2 - path
-  rowBuffer::new >reg3    // reg3 - rowbuffer
-  beginTxRef >reg4 // reg4 - txref
+  rowBuffer::new >reg3   // reg3 - rowbuffer
+  beginTx >reg4          // reg4 - tx
   0 >regF                // regF - counter
 
   reg2 reg0 file.path!
