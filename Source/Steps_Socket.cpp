@@ -182,8 +182,14 @@ void Task::vSocketListen(MP_Task mpTask)
   pSocket = new Socket;
   bool bResult = pSocket->bCreateServer((int)iPort, xSysCall);
   
-  if ( ! bResult )
-    THROW("Unable to listen for connections: Errno %d!"_Stz, xSysCall.iError());
+  if ( ! bResult ) {
+    if (xSysCall.iError() == EADDRINUSE) {
+      THROW("Address in use (port: %lld). Check if another instance of RAPIDSSE is running!"_Stz,
+      iPort);
+    }
+    else
+      THROW("Unable to listen for connections: Errno %d!"_Stz, xSysCall.iError());
+  }
   
   // return new socket
   Object* pPtrSocket = pSocket;
