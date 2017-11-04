@@ -178,7 +178,6 @@ SEitf::SEitf(i8 iPartition)
   m_pEntry          = nullptr;
   m_pCurrentTable   = nullptr;
   m_pCurrentIndex   = nullptr;
-  m_pTxRef          = nullptr;
   m_pTx             = nullptr;
   m_sMetadata       = ""_Stz;
   m_bDisplay        = true;
@@ -862,26 +861,6 @@ bool SEitf::bRowSeen(Id xRowId)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get tx ref                                                                 */
-/*----------------------------------------------------------------------------*/
-TxRef* SEitf::pTxRef(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  return m_pTxRef;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set tx ref                                                                 */
-/*----------------------------------------------------------------------------*/
-void SEitf::vTxRef(TxRef* pTxRef)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  m_pTxRef = pTxRef;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get tx                                                                     */
 /*----------------------------------------------------------------------------*/
 Tx* SEitf::pTx(void)
@@ -915,11 +894,7 @@ bool SEitf::bBeginTx()
   m_pTx = gpTxSet->pAllocLocalTx();
   m_pTx->vPhase(TP_EXECUTING);
   
-  m_pTxRef = new TxRef();
-  
-  //vTrace("txref: %x\n"_Stz, m_pTxRef);
-  bool bResult = m_pTxRef->bBeginTx();
-  return bResult;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -930,9 +905,6 @@ void SEitf::vCommitTx()
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   m_pTx->vPhase(TP_COMMITTED);
-  
-  bool bResult = m_pTxRef->bCommitTx();
-  ASSERT(bResult);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -944,11 +916,6 @@ void SEitf::vEndTx()
   
   gpTxSet->vFreeTx(m_pTx);
   m_pTx = nullptr;
-  
-  bool bResult = m_pTxRef->bEndTx();
-  ASSERT(bResult);
-  delete m_pTxRef;
-  m_pTxRef = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

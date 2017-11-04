@@ -75,8 +75,6 @@ void Task::vAddPrimitives_SEitf(void)
   vAddPrimitive("seitf.tableDeref"_Stz,       &vSEitfTableDeref,       false);
   vAddPrimitive("seitf.tx@"_Stz,              &vSEitfTxFetch,          false);
   vAddPrimitive("seitf.tx!"_Stz,              &vSEitfTxStore,          false);
-  vAddPrimitive("seitf.txRef@"_Stz,           &vSEitfTxRefFetch,       false);
-  vAddPrimitive("seitf.txRef!"_Stz,           &vSEitfTxRefStore,       false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1041,47 +1039,6 @@ void Task::vSEitfTxStore(MP_Task mpTask)
   Tx* pTx = _pTx(pPtrTx);
   
   pSEitf->vTx(pTx);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* seitf.txref@ -- fetch txref of SE interface                                */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfTxRefFetch(MP_Task mpTask)
-{
-  ENTRY("vSEitfTxRefFetch"_Stz);
-  
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.txRef@"_Stz);
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  
-  TxRef* pTxRef = pSEitf->pTxRef();
-  
-  mpTask->m_pDataStack->vPushObject(pTxRef);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* seitf.txref! -- store txref of SE interface                                */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfTxRefStore(MP_Task mpTask)
-{
-  ENTRY("vSEitfTxRefStore"_Stz);
-  
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.txRef!"_Stz);
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  
-  Object* pPtrTxRef;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTxRef) )
-    THROW_INVALID_DSTACK("seitf.txRef!"_Stz);
-  TxRef* pTxRef = _pTxRef(pPtrTxRef);
-  
-  pSEitf->vTxRef(pTxRef);
   
   EXIT();
 }

@@ -35,7 +35,6 @@ namespace Interface
     AccessPath*  m_pAccessPath;
   
     Entry* m_pEntry;
-    TxRef* m_pTxRef;
     Tx*    m_pTx;
   
     bool   m_bDisplay;
@@ -102,10 +101,7 @@ namespace Interface
   
     void   vCreateRowOnce(void);
     bool   bRowSeen(Id xRowId);
- 
-    TxRef* pTxRef(void);
-    void   vTxRef(TxRef* pTxRef);
-  
+   
     Tx*    pTx(void);
     void   vTx(Tx* pTx);
   

@@ -13,14 +13,6 @@
 
   "begin transaction" .
 
-  txRef::new locals| pTxRef |
-
-  pTxRef task::this task.seitf@ seitf.txRef!
-
-  pTxRef txRef.begin assert
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   tx::begin locals | pTx |
 
   pTx task::this task.seitf@ seitf.tx!
@@ -36,12 +28,6 @@
 
   "commit transaction" .
 
-  task::this task.seitf@ seitf.txRef@ locals| pTxRef |
-
-  pTxRef txRef.end assert
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   task::this task.seitf@ seitf.tx@ locals| pTx |
 
   pTx tx.commit
@@ -55,15 +41,7 @@
 /*----------------------------------------------------------------------------*/
 : txEnd_req ( -- R )
 
-  "commit transaction" .
-
-  task::this task.seitf@ seitf.txRef@ locals| pTxRef |
-
-  pTxRef txRef.end assert
-
-  nullPtr task::this task.seitf@ seitf.txRef!
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  "end transaction" .
 
   task::this task.seitf@ seitf.tx@ locals| pTx |
 
@@ -82,12 +60,6 @@
 
   "dump transaction" .
 
-  task::this task.seitf@ seitf.txRef@ locals| pTxRef |
-
-  pTxRef txRef.dump
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   task::this task.seitf@ seitf.tx@ locals| pTx |
 
   pTx tx.dump
@@ -100,14 +72,6 @@
 /* rollback a transaction                                                     */
 /*----------------------------------------------------------------------------*/
 : txRollback_req ( -- R )
-
-  "rollback transaction" .
-
-  task::this task.seitf@ seitf.txRef@ locals| pTxRef |
-
-  pTxRef txRef.rollback assert
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   task::this task.seitf@ seitf.tx@ locals| pTx |
 
