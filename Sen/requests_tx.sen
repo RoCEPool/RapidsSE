@@ -19,6 +19,12 @@
 
   pTxRef txRef.begin assert
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  tx::begin locals | pTx |
+
+  pTx task::this task.seitf@ seitf.tx!
+
   <OK>
   exit
 ;
@@ -33,6 +39,12 @@
   task::this task.seitf@ seitf.txRef@ locals| pTxRef |
 
   pTxRef txRef.end assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  task::this task.seitf@ seitf.tx@ locals| pTx |
+
+  pTx tx.commit
 
   <OK>
   exit
@@ -51,6 +63,14 @@
 
   nullPtr task::this task.seitf@ seitf.txRef!
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  task::this task.seitf@ seitf.tx@ locals| pTx |
+
+  pTx tx.free
+
+  nullPtr task::this task.seitf@ seitf.tx!
+
   <OK>
   exit
 ;
@@ -66,6 +86,12 @@
 
   pTxRef txRef.dump
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  task::this task.seitf@ seitf.tx@ locals| pTx |
+
+  pTx tx.dump
+
   <OK>
   exit
 ;
@@ -80,6 +106,12 @@
   task::this task.seitf@ seitf.txRef@ locals| pTxRef |
 
   pTxRef txRef.rollback assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  task::this task.seitf@ seitf.tx@ locals| pTx |
+
+  pTx tx.rollback
 
   <OK>
   exit
