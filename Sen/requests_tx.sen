@@ -13,7 +13,7 @@
 
   "begin transaction" .
 
-  tx::begin locals | pTx |
+  tx::begin locals| pTx |
 
   pTx task::this task.seitf@ seitf.tx!
 

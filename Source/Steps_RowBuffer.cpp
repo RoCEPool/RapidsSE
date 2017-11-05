@@ -96,11 +96,10 @@ void Task::vRowBufferAppendRecord(MP_Task mpTask)
   EntryBuffer* pRowBuffer = (EntryBuffer*)_pEntryBuffer(pPtrRowBuffer);
   ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
   
-  Object* pPtrTxRef;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTxRef) )
+  Object* pPtrTx;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTx) )
     THROW_INVALID_DSTACK("rowBuffer.appendRecord"_Stz);
-  TxRef* pTxRef = _pTxRef(pPtrTxRef);
-  ASSERT(CN_TXREF == pTxRef->eClass());
+  Tx* pTx = _pTx(pPtrTx);
   
   Object* pPtrFile;
   if ( ! mpTask->m_pDataStack->bPop(pPtrFile) )
@@ -114,7 +113,7 @@ void Task::vRowBufferAppendRecord(MP_Task mpTask)
   
   // create working row
   EntWrk xRowWrk;
-  xRowWrk.vTxId(pTxRef->iTxId());
+  xRowWrk.vTxId(pTx->iDistTxId());
   xRowWrk.vData(aRecord, iLength);
   
   bool b = pRowBuffer->bInsertRow(xRowWrk,&pRow);

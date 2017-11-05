@@ -412,12 +412,12 @@ void Task::vTableInsert(MP_Task mpTask)
 ENTRY("vTableInsert"_Stz);
  
   Object* pPtrTable;
-  Object* pPtrTxRef;
+  Object* pPtrTx;
   ValWrk xRow;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
     THROW_INVALID_DSTACK("table.insert"_Stz);
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTxRef) )
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTx) )
     THROW_INVALID_DSTACK("table.insert"_Stz);
   if ( ! mpTask->m_pDataStack->bPop(xRow) )
     THROW_INVALID_DSTACK("table.insert"_Stz);
@@ -427,17 +427,15 @@ ENTRY("vTableInsert"_Stz);
     THROW_INVALID_DSTACK("table.insert"_Stz);
   
   Table* pTable = _pTable(pPtrTable);
-  ASSERT(CN_TABLE == pTable->eClass());
 
-  TxRef* pTxRef = _pTxRef(pPtrTxRef);
-  ASSERT(CN_TXREF == pTxRef->eClass());
+  Tx* pTx = _pTx(pPtrTx);
   
   // invoked by copy...
   NEVER_REACH;
   
   /*
   pTable->vInsertRow(iPartition,
-                     pTxRef,
+                     pTx,
                      _pStrVal(&xRow)->aStr(),
                      _pStrVal(&xRow)->nAreaSize());
    */
