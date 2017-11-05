@@ -21,7 +21,6 @@ extern Grid*           gpGrid;
 extern StepArray*      gpStepArray;
 extern ThreadList*     gpThreadList;
 extern TaskList*       gpTaskList;
-extern TxCollection*   gpTxCollection;
 
 extern NP_Task         gnpBootTask;
 extern Lock            gxDdlLock;
@@ -814,11 +813,6 @@ void Task::vAddConstants(void)
   /* 66 */ vAddConstant("SIZEOF_TIMER"_Stz,        sizeof(Timer));
   /* 67 */ vAddConstant("SIZEOF_TOKENISER"_Stz,    sizeof(Tokeniser));
   /* 68 */ vAddConstant("SIZEOF_TX"_Stz,           sizeof(Tx));
-  /* 69 */ vAddConstant("SIZEOF_TXARRAY"_Stz,      sizeof(TxArray));
-  /* 70 */ vAddConstant("SIZEOF_TXCOLLECTION"_Stz, sizeof(TxCollection));
-  /* 71 */ vAddConstant("SIZEOF_TXCURSOR"_Stz,     sizeof(TxCursor));
-  /* 72 */ vAddConstant("SIZEOF_TXMAP"_Stz,        sizeof(TxMap));
-  /* 73 */ vAddConstant("SIZEOF_TXREF"_Stz,        sizeof(TxRef));
   /* 74 */ vAddConstant("SIZEOF_WORD"_Stz,         sizeof(Word));
 
   /*  0 */ vAddConstant("SIZEOF_S32"_Stz,          sizeof(s32));
@@ -1022,10 +1016,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_To();
   vAddPrimitives_Trace();
   vAddPrimitives_Tx();
-  vAddPrimitives_TxCursor();
-  vAddPrimitives_TxCollection();
-  vAddPrimitives_TxMap();
-  vAddPrimitives_TxRef();
   vAddPrimitives_TxSet();
   
   vAddPrimitives_Utility();

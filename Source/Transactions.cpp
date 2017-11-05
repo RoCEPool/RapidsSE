@@ -10,9 +10,7 @@
 void Transactions::vCheckAssumptions(void)
 {
   ASSERT(sizeof(Tx)           < C_SIZE_SMALL_OBJECT);
-  ASSERT(sizeof(TxArray)      < C_SIZE_POOL_BUFFER);
-  ASSERT(sizeof(TxCollection) < C_SIZE_SMALL_OBJECT);
-  ASSERT(sizeof(TxMap)        < C_SIZE_SMALL_OBJECT);
+  ASSERT(sizeof(TxSet)        < C_SIZE_SMALL_OBJECT);
 }
 
 /*============================================================================*/

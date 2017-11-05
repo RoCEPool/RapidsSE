@@ -21,11 +21,6 @@ using namespace Transactions;
 //-----------------------------------------------------------------------------
 
 #include "Tx.hpp"
-#include "TxCollection.hpp"
-#include "TxCursor.hpp"
-#include "TxArray.hpp"
-#include "TxMap.hpp"
-#include "TxRef.hpp"
 #include "TxSet.hpp"
 
 /*============================================================================*/

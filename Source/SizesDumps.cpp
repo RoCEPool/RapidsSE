@@ -167,7 +167,7 @@ pDUMPFUN *gpDump[]
   /*127 */ &Dump::vInvalid,         // CN_TOKENARY
   /*128 */ &Dump::vInvalid,         // CN_TOKENVEC
   /*129 */ &Tx::vDump,              // CN_TX
-  /*130 */ &TxArray::vDump,         // CN_TXARRAY
+  /*130 */ &Dump::vUndefined,       // spare
   /*131 */ &Dump::vUndefined,       // CN_TXCOLLECTION
   /*132 */ &Dump::vUndefined,       // CN_TXCURSOR
   /*133 */ &Dump::vUndefined,       // CN_TXMAP
@@ -340,11 +340,11 @@ i8 giClassSize[]
   /*127 */ sizeof(TokenAry),           // CN_TOKENARY
   /*128 */ sizeof(TokenVec),           // CN_TOKENVEC
   /*129 */ sizeof(Tx),                 // CN_TX
-  /*130 */ sizeof(TxArray),            // CN_TXARRAY
-  /*131 */ sizeof(TxCollection),       // CN_TXCOLLECTION
-  /*132 */ sizeof(TxCursor),           // CN_TXCURSOR
-  /*133 */ sizeof(TxMap),              // CN_TXMAP
-  /*134 */ sizeof(TxRef),              // CN_TXREF
+  /*130 */ 0,                          // spare
+  /*131 */ 0,                          // spare
+  /*132 */ 0,                          // spare
+  /*133 */ 0,                          // spare
+  /*134 */ 0,                          // spare
   /*    */ 0,                          // CN_TXSET
 
   /*135 */ sizeof(Word),               // CN_WORD

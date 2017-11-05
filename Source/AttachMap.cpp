@@ -11,8 +11,6 @@ extern Heap*        gpMediumHeap;
 extern Heap*        gpSmallHeap;
 extern Dic*         gpMainDic;
 
-extern TxCollection* gpTxCollection;
-extern TxMap*        gpTxMap;
 extern TxSet*        gpTxSet;
 extern Grid*         gpGrid;
 extern PartitionScheduler*    gpPartitionScheduler;
@@ -91,8 +89,6 @@ void AttachMap::vGetGlobals(void)
   gpMediumHeap  = m_pMediumHeap;
   gpSmallHeap   = m_pSmallHeap;
   gpMainDic     = &m_xMainDic;
-  gpTxCollection = m_pTxCollection;
-  gpTxMap        = m_pTxMap;
   gpTxSet        = m_pTxSet;
   gpGrid         = m_pGrid;
   gpPartitionScheduler = m_pPartitionScheduler;
@@ -138,8 +134,6 @@ void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize, i8 iJumboSize)
   m_pMediumHeap = gpMediumHeap;
   m_pSmallHeap  = gpSmallHeap;
   
-  m_pTxCollection = gpTxCollection;
-  m_pTxMap        = gpTxMap;
   m_pTxSet        = gpTxSet;
   m_pGrid         = gpGrid;
   m_pPartitionScheduler = gpPartitionScheduler;

@@ -4,7 +4,6 @@
 
 #include "StorageEngine.h"
 
-extern TxCollection*  gpTxCollection;
 extern Arguments      gxArguments;
 
 /*----------------------------------------------------------------------------*/
@@ -25,11 +24,10 @@ Tx* Transactions::_pTx(void* aAddr)
 void* Tx::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  ASSERT(gpTxCollection);
   
-  Tx* pTx = gpTxCollection->pAllocTx();
-  
-  return pTx;
+  void* pObject = Heap::pAllocate(CN_TXSET);
+
+  return pObject;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -48,7 +46,7 @@ void Tx::operator delete(void* pTxAddress)
 {
   Tx* pTx = reinterpret_cast<Tx*>(pTxAddress);
   
-  gpTxCollection->vFreeTx(pTx);
+  Heap::vFree(pTx);
 }
 
 /*----------------------------------------------------------------------------*/

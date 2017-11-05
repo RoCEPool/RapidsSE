@@ -19,7 +19,6 @@ extern Grid*           gpGrid;
 extern StepArray*      gpStepArray;
 extern ThreadList*     gpThreadList;
 extern TaskList*       gpTaskList;
-extern TxCollection*   gpTxCollection;
 
 extern NP_Task         gnpBootTask;
 extern Lock            gxDdlLock;

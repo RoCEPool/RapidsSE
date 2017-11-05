@@ -170,7 +170,7 @@ pFINALIZE *gpFinalize[]
   /*131 */ &Finalize::vUndefined,         // CN_TXCOLLECTION
   /*132 */ &Finalize::vUndefined,         // CN_TXCURSOR
   /*133 */ &Finalize::vUndefined,         // CN_TXMAP
-  /*134 */ &TxRef::vFinalize,             // CN_TXREF
+  /*134 */ &Finalize::vUndefined,         // CN_TXREF
   /*    */ &Finalize::vUndefined,         // CN_TXSET
   
   /*135 */ &Finalize::vUndefined,         // CN_WORD

@@ -5,16 +5,6 @@
 "transactions.sen" .verbose
 
 "tx.sen" include
-"txCollection.sen" include
-"txCursor.sen" include
-"txMap.sen" include
-"txRef.sen" include
-
-// txMap map tx id's to tx's
-txMap: txMap
-
-// txCollection hold all tx's 
-txCollection: txCollection
 
 /*============================================================================*/
 /* end                                                                        */
