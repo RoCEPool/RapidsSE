@@ -27,8 +27,8 @@
 
   r2 r0 selCursor.table!
 
-  beginTxRef >r
-  // r0 ^txRefCursor
+  beginTx >r
+  // r0 ^txCursor
   // r1 ^selCursor
   // r2 ^toTable
   // r3 ^fromTable
@@ -37,7 +37,7 @@
   do
     // r0 partition
     // r1 partitions
-    // r2 ^txRefCursor
+    // r2 ^txCursor
     // r3 ^selCursor
     // r4 ^toTable
     // r5 ^fromTable
@@ -54,9 +54,9 @@
     r3 selCursor.end
   loop
 
-  commitTxRef
+  commitTx
 
-  // r0 ^txRefCursor
+  // r0 ^txCursor
   // r1 ^selCursor
   // r2 ^toTable
   // r3 ^fromTable
