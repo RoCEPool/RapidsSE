@@ -166,11 +166,6 @@ pFINALIZE *gpFinalize[]
   /*127 */ &Finalize::vUndefined,         // CN_TOKENARY
   /*128 */ &Finalize::vUndefined,         // CN_TOKENVEC
   /*129 */ &Finalize::vUndefined,         // CN_TX
-  /*130 */ &Finalize::vUndefined,         // CN_TXARRAY
-  /*131 */ &Finalize::vUndefined,         // CN_TXCOLLECTION
-  /*132 */ &Finalize::vUndefined,         // CN_TXCURSOR
-  /*133 */ &Finalize::vUndefined,         // CN_TXMAP
-  /*134 */ &Finalize::vUndefined,         // CN_TXREF
   /*    */ &Finalize::vUndefined,         // CN_TXSET
   
   /*135 */ &Finalize::vUndefined,         // CN_WORD

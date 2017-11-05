@@ -167,11 +167,6 @@ pDUMPFUN *gpDump[]
   /*127 */ &Dump::vInvalid,         // CN_TOKENARY
   /*128 */ &Dump::vInvalid,         // CN_TOKENVEC
   /*129 */ &Tx::vDump,              // CN_TX
-  /*130 */ &Dump::vUndefined,       // spare
-  /*131 */ &Dump::vUndefined,       // CN_TXCOLLECTION
-  /*132 */ &Dump::vUndefined,       // CN_TXCURSOR
-  /*133 */ &Dump::vUndefined,       // CN_TXMAP
-  /*134 */ &Dump::vUndefined,       // CN_TXREF
   /*    */ &Dump::vUndefined,       // CN_TXSET
 
   /*135 */ &Word::vDump,            // CN_WORD
@@ -340,11 +335,6 @@ i8 giClassSize[]
   /*127 */ sizeof(TokenAry),           // CN_TOKENARY
   /*128 */ sizeof(TokenVec),           // CN_TOKENVEC
   /*129 */ sizeof(Tx),                 // CN_TX
-  /*130 */ 0,                          // spare
-  /*131 */ 0,                          // spare
-  /*132 */ 0,                          // spare
-  /*133 */ 0,                          // spare
-  /*134 */ 0,                          // spare
   /*    */ 0,                          // CN_TXSET
 
   /*135 */ sizeof(Word),               // CN_WORD
@@ -513,11 +503,6 @@ eHT geWhichHeap[]
   /*127 */ HT_INVALID, // CN_TOKENARY
   /*128 */ HT_SMALL,   // CN_TOKENVEC
   /*129 */ HT_SMALL,   // CN_TX
-  /*130 */ HT_LARGE,   // CN_TXARRAY
-  /*131 */ HT_INVALID, // CN_TXCOLLECTION
-  /*132 */ HT_SMALL,   // CN_TXCURSOR
-  /*133 */ HT_INVALID, // CN_TXMAP
-  /*134 */ HT_SMALL,   // CN_TXREF
   /*    */ HT_SMALL,   // CN_TXSET
   
   /*135 */ HT_MEDIUM,  // CN_WORD

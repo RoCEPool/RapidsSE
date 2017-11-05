@@ -601,11 +601,7 @@ void Task::vAddConstants(void)
   /* 80 */ vAddConstant("CN_TIMER"_Stz,        CN_TIMER);
   /* 81 */ vAddConstant("CN_TOKENISER"_Stz,    CN_TOKENISER);
   /* 82 */ vAddConstant("CN_TX"_Stz,           CN_TX);
-  /* 83 */ vAddConstant("CN_TXARRAY"_Stz,      CN_TXARRAY);
-  /* 84 */ vAddConstant("CN_TXCOLLECTION"_Stz, CN_TXCOLLECTION);
-  /* 85 */ vAddConstant("CN_TXCURSOR"_Stz,     CN_TXCURSOR);
-  /* 86 */ vAddConstant("CN_TXMAP"_Stz,        CN_TXMAP);
-  /* 87 */ vAddConstant("CN_TXREF"_Stz,        CN_TXREF);
+  /* 87 */ vAddConstant("CN_TXSET"_Stz,        CN_TXSET);
   
   /* 88 */ vAddConstant("CN_WORD"_Stz,         CN_WORD);
 

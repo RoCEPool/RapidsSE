@@ -165,11 +165,6 @@ namespace Base
     /*127 */ CN_TOKENARY,
     /*128 */ CN_TOKENVEC,
     /*129 */ CN_TX,
-    /*130 */ CN_TXARRAY,
-    /*131 */ CN_TXCOLLECTION,
-    /*132 */ CN_TXCURSOR,
-    /*133 */ CN_TXMAP,
-    /*134 */ CN_TXREF,
     /*    */ CN_TXSET,
   
     /*135 */ CN_WORD,
@@ -339,11 +334,6 @@ namespace Base
     /*127 */ "TOKENARY"_Stz,
     /*128 */ "TOKENVEC"_Stz,
     /*129 */ "TX"_Stz,
-    /*130 */ "TXARRAY"_Stz,
-    /*131 */ "TXCOLLECTION"_Stz,
-    /*132 */ "TXCURSOR"_Stz,
-    /*133 */ "TXMAP"_Stz,
-    /*134 */ "TXREF"_Stz,
     /*    */ "TXSET"_Stz,
     
     /*135 */ "WORD"_Stz,
