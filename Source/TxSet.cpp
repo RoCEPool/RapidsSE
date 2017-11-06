@@ -157,11 +157,25 @@ Tx* TxSet::pFindTx(i8 iTxId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
   
+  m_xLock.vGrabRead();
+  
+  Tx* pTxFound = pFindTx_NL(iTxId);
+  
+  m_xLock.vDropRead();
+  
+  return pTxFound;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find a tx by tx id                                                         */
+/*----------------------------------------------------------------------------*/
+Tx* TxSet::pFindTx_NL(i8 iTxId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
+  
   Tx xTxFind;
   
   i8 iNodeNo = iTxId >> 48;
-  
-  m_xLock.vGrabRead();
   
   Tx* pTxFound = nullptr;
   
@@ -173,8 +187,6 @@ Tx* TxSet::pFindTx(i8 iTxId)
     xTxFind.vDistTxId(iTxId);
     pTxFound = _pTx(m_pDistTxList->pFind(&xTxFind));
   }
-  
-  m_xLock.vDropRead();
   
   return pTxFound;
 }

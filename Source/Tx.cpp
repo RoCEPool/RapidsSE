@@ -4,7 +4,8 @@
 
 #include "StorageEngine.h"
 
-extern Arguments      gxArguments;
+extern Arguments gxArguments;
+extern TxSet*    gpTxSet;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
