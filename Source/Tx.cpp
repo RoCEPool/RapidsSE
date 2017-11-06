@@ -57,7 +57,6 @@ Tx::Tx(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
 
-  m_iTxSlot    = -1;
   m_iLocalTxId = -1;
   m_iDistTxId  = -1;
   m_ePhase     = TP_NONE;
@@ -69,26 +68,6 @@ Tx::Tx(void)
   _checkInitialised_(CN_TX);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get tx array slot                                                          */
-/*----------------------------------------------------------------------------*/
-i8 Tx::iTxSlot(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
-  
-  return m_iTxSlot;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set tx array slot                                                          */
-/*----------------------------------------------------------------------------*/
-void Tx::vTxSlot(i8 iTxSlot)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
-  
-  m_iTxSlot = iTxSlot;
 }
 
 /*----------------------------------------------------------------------------*/
