@@ -106,6 +106,27 @@ TxSet::TxSet(i8 iNodeNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add given tx                                                               */
+/*----------------------------------------------------------------------------*/
+void TxSet::vAddTx(Tx* pTx)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
+  
+  m_xLock.vGrabWrite();
+  
+  i8 iTxId = m_iNextTxId++;
+  
+  pTx->vLocalTxId(iTxId);
+  pTx->vDistTxId(iTxId);
+  
+  m_pLocalTxList->bInsert(pTx);
+  m_pDistTxList->bInsert(pTx);
+  
+  m_xLock.vDropWrite();
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* allocate a local tx                                                        */
 /*----------------------------------------------------------------------------*/
 Tx* TxSet::pAllocLocalTx(void)
@@ -156,6 +177,24 @@ Tx* TxSet::pFindTx(i8 iTxId)
   m_xLock.vDropRead();
   
   return pTxFound;
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove given tx                                                            */
+/*----------------------------------------------------------------------------*/
+void TxSet::vRemoveTx(Tx* pTx)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
+  
+  bool bRemoved;
+  
+  m_xLock.vGrabWrite();
+  
+  bRemoved = m_pLocalTxList->bRemove(pTx);
+  
+  bRemoved = m_pDistTxList->bRemove(pTx);
+  
+  m_xLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
