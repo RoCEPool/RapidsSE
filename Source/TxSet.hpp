@@ -33,6 +33,9 @@ namespace Transactions
   
     void vFreeTx(Tx* pTx);
   
+    void vGrabWrite(void);
+    void vDropWrite(void);
+  
     Footer* aFooter(void);
   };
   
