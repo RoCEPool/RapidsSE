@@ -26,6 +26,7 @@ namespace Transactions
     ~TxSet(void);
   
     void vAddTx(Tx* pTx);
+    void vAddDistTx_NL(Tx* pTx, i8 iDistTxId);
     Tx*  pAllocLocalTx(void);
     Tx*  pFindTx(i8 iTxId);
     Tx*  pFindTx_NL(i8 iTxId);

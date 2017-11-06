@@ -127,6 +127,24 @@ void TxSet::vAddTx(Tx* pTx)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add given distributed tx (no locking)                                      */
+/*----------------------------------------------------------------------------*/
+void TxSet::vAddDistTx_NL(Tx* pTx, i8 iDistTxId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
+  
+  ASSERT(m_xLock.bIsLocked());
+  
+  i8 iLocalTxId = m_iNextTxId++;
+  
+  pTx->vLocalTxId(iLocalTxId);
+  pTx->vDistTxId(iDistTxId);
+  
+  m_pLocalTxList->bInsert(pTx);
+  m_pDistTxList->bInsert(pTx);
+}
+
+/*----------------------------------------------------------------------------*/
 /* allocate a local tx                                                        */
 /*----------------------------------------------------------------------------*/
 Tx* TxSet::pAllocLocalTx(void)
@@ -167,11 +185,13 @@ Tx* TxSet::pFindTx(i8 iTxId)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find a tx by tx id                                                         */
+/* find a tx by tx id (no locking)                                            */
 /*----------------------------------------------------------------------------*/
 Tx* TxSet::pFindTx_NL(i8 iTxId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
+  
+  ASSERT(m_xLock.bIsLocked());
   
   Tx xTxFind;
   
