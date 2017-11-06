@@ -77,16 +77,20 @@ void RapidsSE::vCheckPort(void)
   Socket* pSocket;
   i8      iPort;
   
-  iPort = gxArguments.m_xNodes[0].m_iPortNo;
+  // nothing to check if not starting SE
+  if ( ! gxArguments.m_bStart)
+    return;
+  
+  iPort = gxArguments.m_xNodes[gxArguments.m_iThisNode].m_iPortNo;
   if (gxArguments.m_bVerbose)
-    vInfo("Looking for listeneres on port %lld\n"_Stz, iPort);
+    vInfo("Looking for listeners on port %lld\n"_Stz, iPort);
   
   pSocket = new Socket;
   bool bResult = pSocket->bCreateServer((int)iPort, xSysCall);
   
   if ( ! bResult ) {
     if (xSysCall.iError() == EADDRINUSE) {
-      vError("Address in use (port: %lld). Check if another instance of RAPIDSSE is running!\n"_Stz,
+      vError("Address in use (port: %lld). CHECK IF ANOTHER INSTANCE OF RAPIDSSE IS RUNNING!\n"_Stz,
             iPort);
       
     }
@@ -94,7 +98,7 @@ void RapidsSE::vCheckPort(void)
       vError("Unable to listen for connections (port: %lld): Errno %d!\n"_Stz,
              iPort, xSysCall.iError());
     }
-    RapidsSE::vSystemStop();
+    //RapidsSE::vSystemStop();
     exit(EXIT_FAILURE);
   }
   
