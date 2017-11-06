@@ -69,6 +69,39 @@ Atomic        gzPlanId;
 BitMap*       gpBitMap;
 
 /*----------------------------------------------------------------------------*/
+/* check and see if the port has other listeneters                            */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vCheckPort(void)
+{
+  SysCall xSysCall;
+  Socket* pSocket;
+  i8      iPort;
+  
+  iPort = gxArguments.m_xNodes[0].m_iPortNo;
+  if (gxArguments.m_bVerbose)
+    vInfo("Looking for listeneres on port %lld\n"_Stz, iPort);
+  
+  pSocket = new Socket;
+  bool bResult = pSocket->bCreateServer((int)iPort, xSysCall);
+  
+  if ( ! bResult ) {
+    if (xSysCall.iError() == EADDRINUSE) {
+      vError("Address in use (port: %lld). Check if another instance of RAPIDSSE is running!\n"_Stz,
+            iPort);
+      
+    }
+    else {
+      vError("Unable to listen for connections (port: %lld): Errno %d!\n"_Stz,
+             iPort, xSysCall.iError());
+    }
+    RapidsSE::vSystemStop();
+    exit(EXIT_FAILURE);
+  }
+  
+  pSocket->bClose(xSysCall);
+}
+
+/*----------------------------------------------------------------------------*/
 /* execute command line                                                       */
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vExecuteCmdLine(void)
