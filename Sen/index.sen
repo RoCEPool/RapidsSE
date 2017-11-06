@@ -342,11 +342,12 @@ tp: makingIndex
 /*----------------------------------------------------------------------------*/
 /* position key select cursor for table (called by keySelectIndex request)    */
 /*----------------------------------------------------------------------------*/
-: exactSelectIdxTask ( i_Phrase <"key>" "<lower>" "<upper>" pSeitf iPartitionNo -- )
-
-  0 0 0 0 locals| entry pTempEntryBuffer pEntryBuffer pIndex iPartitionNo pSeitf upper lower key i_Phrase |
+: exactSelectIdxTask ( i_Phrase <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf iPartitionNo -- )
 
   tp: keySelectIdx
+
+  locals| iPartitionNo pSeitf pIndex pBufferQueue upper lower key i_Phrase |
+  0 0 0 locals| entry pTempEntryBuffer pEntryBuffer |
 
   //"fetchTask started" .
   
@@ -355,7 +356,7 @@ tp: makingIndex
   task::this task.thread thread.actorModel@ AC_SERVER == assert
 
   pSeitf task::this task.seitf!
-  pSeitf seitf.index@ to pIndex
+  //pSeitf seitf.index@ to pIndex
 
   // create a temporary index buffer for the results
   //"Creating a tempEntryBuffer" .
@@ -380,7 +381,7 @@ tp: makingIndex
     pTempEntryBuffer entryBuffer.isLast!
 
     // return the empty tempEntryBuffer
-    pTempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
+    pTempEntryBuffer pBufferQueue queue.append
 
     // mark that a fetch task has ended
     pSeitf seitf.fetchTaskEnded
@@ -404,7 +405,7 @@ tp: makingIndex
       not if
         // buffer must be full
         // put this tempEntryBuffer in seitf bufferQueue
-        pTempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
+        pTempEntryBuffer pBufferQueue queue.append
 
         // create another temporary index buffer for the results
         //"Creating a tempEntryBuffer" .
@@ -442,7 +443,7 @@ tp: makingIndex
   pTempEntryBuffer entryBuffer.isLast!
 
   // put the buffer in the seitf bufferQueue
-  pTempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
+  pTempEntryBuffer pBufferQueue queue.append
 
   // mark that a fetch task has ended
   pSeitf seitf.fetchTaskEnded
@@ -481,18 +482,19 @@ tp: loadIndexes
 /*----------------------------------------------------------------------------*/
 /* position key select cursor for table (called by selectIndex request)       */
 /*----------------------------------------------------------------------------*/
-: lowerSelectIdxTask ( i_Phrase <"key>" "<lower>" "<upper>" pSeitf partition -- )
+: lowerSelectIdxTask ( i_Phrase <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf partition -- )
 
-  0 0 0 0 locals| pIndex entry tempEntryBuffer indexBuffer iPartitionNo pSeitf upper lower key i_Phrase |
+tp: lowerSelectIdxTask
 
-  tp: lowerSelectIdxTask
+  locals| iPartitionNo pSeitf pIndex pBufferQueue upper lower key i_Phrase |
+  0 0 0 locals| entry tempEntryBuffer indexBuffer |
 
   // task is a select participant running on server thread
   task::this task.kind@ TK_SELECT_PART == assert
   task::this task.thread thread.actorModel@ AC_SERVER == assert
 
   pSeitf task::this task.seitf!
-  pSeitf seitf.index@ to pIndex
+  //pSeitf seitf.index@ to pIndex
 
   // create a temporary index buffer for the results
   //"Creating a tempIndexBuffer" .
@@ -518,7 +520,8 @@ tp: loadIndexes
 
     // return the empty tempEntryBuffer
     //"Appending tempEntryBuffer to buffer queue" .
-    tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
+    //tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
+    tempEntryBuffer pBufferQueue queue.append
 
     // mark that a fetch task has ended
     pSeitf seitf.fetchTaskEnded
@@ -540,7 +543,8 @@ tp: loadIndexes
       // buffer must be full
       // put this tempEntryBuffer in seitf bufferQueue
       //"Inserting row into tempEntryBuffer" .
-      tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
+      //tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
+      tempEntryBuffer pBufferQueue queue.append
 
       // create another temporary index buffer for the results
       //"Creating a tempIndexBuffer" .
@@ -575,7 +579,8 @@ tp: loadIndexes
 
   // put the buffer in the seitf bufferQueue
   //"Appending tempEntryBuffer to buffer queue" .
-  tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
+  //tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
+  tempEntryBuffer pBufferQueue queue.append
 
   // mark that a fetch task has ended
   pSeitf seitf.fetchTaskEnded
@@ -584,15 +589,15 @@ tp: loadIndexes
 /*----------------------------------------------------------------------------*/
 /* position key select cursor for table (called by selectIndex request)       */
 /*----------------------------------------------------------------------------*/
-: rangeSelectIdxTask ( i_Phrase <"key>" "<lower>" "<upper>" pSeitf iPartitionNo -- )
+: rangeSelectIdxTask ( i_Phrase <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf iPartitionNo -- )
 
 //"rangeSelectIdxTask" .
 
   // save args
-  locals| iPartitionNo pSeitf sUpper sLower sKey i_Phrase |
+  locals| iPartitionNo pSeitf pIndex pBufferQueue sUpper sLower sKey i_Phrase |
 
   // local variables
-  0 0 0 0 0 locals| pIndex pUpperEntry pIndexEntry pIndexBuffer pResultBuffer |
+  0 0 0 0 locals| pUpperEntry pIndexEntry pIndexBuffer pResultBuffer |
 
   tp: rangeSelectIdxTask
 
@@ -604,7 +609,7 @@ tp: loadIndexes
 
   // save seitf into this task
   pSeitf task::this task.seitf!
-  pSeitf seitf.index@ to pIndex
+  //pSeitf seitf.index@ to pIndex
 
   // create a temporary buffer for the results
   iPartitionNo pIndex entryBuffer::create to pResultBuffer
@@ -625,7 +630,7 @@ tp: loadIndexes
     pResultBuffer entryBuffer.isLast!
 
     // return the empty result buffer
-    pResultBuffer pSeitf seitf.bufferQueue@ queue.append
+    pResultBuffer pBufferQueue queue.append
 
     // mark that a fetch task has ended
     pSeitf seitf.fetchTaskEnded
@@ -648,7 +653,7 @@ tp: loadIndexes
       not if
         // buffer must be full
         // put this result buffer in seitf buffer queue
-        pResultBuffer pSeitf seitf.bufferQueue@ queue.append
+        pResultBuffer pBufferQueue queue.append
 
         // create another result buffer
         iPartitionNo pIndex entryBuffer::create to pResultBuffer
@@ -683,7 +688,7 @@ tp: loadIndexes
   pResultBuffer entryBuffer.isLast!
 
   // put the result buffer in the seitf buffer queue
-  pResultBuffer pSeitf seitf.bufferQueue@ queue.append
+  pResultBuffer pBufferQueue queue.append
 
   // mark that a fetch task has ended
   pSeitf seitf.fetchTaskEnded
@@ -767,9 +772,10 @@ tp: populateIndex
 /*----------------------------------------------------------------------------*/
 /* position key select cursor for table (called by selectIndex request)       */
 /*----------------------------------------------------------------------------*/
-: scanSelectIdxTask ( i_Phrase <"key>" "<lower>" "<upper>" pSeitf iPartitionNo -- )
+: scanSelectIdxTask ( i_Phrase <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf iPartitionNo -- )
 
-  0 0 0 0 locals| pIndex entry tempEntryBuffer indexBuffer iPartitionNo pSeitf upper lower key i_Phrase |
+  locals| iPartitionNo pSeitf pIndex pBufferQueue upper lower key i_Phrase |
+  0 0 0 locals| entry tempEntryBuffer indexBuffer |
 
   tp: scanSelectIdxTask
 
@@ -778,7 +784,7 @@ tp: populateIndex
   task::this task.thread thread.actorModel@ AC_SERVER == assert
 
   pSeitf task::this task.seitf!
-  pSeitf seitf.index@ to pIndex
+  //pSeitf seitf.index@ to pIndex
 
   // create a temporary index buffer for the results
   //"Creating a tempIndexBuffer" .
@@ -801,7 +807,7 @@ tp: populateIndex
 
     // return the empty tempEntryBuffer
     //"Appending last tempEntryBuffer to buffer queue" .
-    tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
+    tempEntryBuffer pBufferQueue queue.append
 
     // mark that a fetch task has ended
     pSeitf seitf.fetchTaskEnded
@@ -824,7 +830,7 @@ tp: populateIndex
         // buffer must be full
         // put this tempEntryBuffer in seitf bufferQueue
         //"Inserting row into tempEntryBuffer" .
-        tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
+        tempEntryBuffer pBufferQueue queue.append
 
         // create another temporary index buffer for the results
         //"Creating a tempIndexBuffer" .
@@ -865,7 +871,7 @@ tp: populateIndex
 
   // put the buffer in the seitf bufferQueue
   //"Appending tempEntryBuffer to buffer queue" .
-  tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
+  tempEntryBuffer pBufferQueue queue.append
 
   // mark that a fetch task has ended
   pSeitf seitf.fetchTaskEnded
@@ -970,7 +976,7 @@ tp: selectIndex
     //then
 
     // create a selectTask to execute the key select on the index for the partition
-    i_Phrase sExactKey sLowerKey sUpperKey pSeitf iSlot 6
+    i_Phrase sExactKey sLowerKey sUpperKey pBufferQueue pIndex pSeitf iSlot 8
     sSelectTaskSeed nullptr "selectTask" TK_SELECT_PART spawnServerTask
     to pSelectTask
 
@@ -985,7 +991,7 @@ tp: selectIndex
       //then
 
       // create a selectTask to execute the key select on the index for the partition
-      i_Phrase sExactKey sLowerKey sUpperKey pSeitf I 6
+      i_Phrase sExactKey sLowerKey sUpperKey pBufferQueue pIndex pSeitf I 8
       sSelectTaskSeed nullptr "selectTask" TK_SELECT_PART spawnServerTask
       to pSelectTask
 
@@ -1013,9 +1019,10 @@ tp: selectIndex
 /*----------------------------------------------------------------------------*/
 /* position key select cursor for table (called by selectIndex request)       */
 /*----------------------------------------------------------------------------*/
-: upperSelectIdxTask ( i_Phrase <"key>" "<lower>" "<upper>" pSeitf partition -- )
+: upperSelectIdxTask ( i_Phrase <"key>" "<lower>" "<upper>" pIndex pBufferQueue pSeitf partition -- )
 
-  0 0 0 0 0 locals| pIndex upperEntry entry tempEntryBuffer indexBuffer iPartitionNo pSeitf upper lower key i_Phrase |
+  locals| iPartitionNo pSeitf pIndex pBufferQueue upper lower key i_Phrase |
+  0 0 0 0 locals| upperEntry entry tempEntryBuffer indexBuffer |
 
   tp: upperSelectIdxTask
 
@@ -1024,7 +1031,7 @@ tp: selectIndex
   task::this task.thread thread.actorModel@ AC_SERVER == assert
 
   pSeitf task::this task.seitf!
-  pSeitf seitf.index@ to pIndex
+  //pSeitf seitf.index@ to pIndex
 
   // create a temporary index buffer for the results
   //"Creating a tempIndexBuffer" .
@@ -1047,7 +1054,7 @@ tp: selectIndex
 
     // return the empty tempEntryBuffer
     //"Appending tempEntryBuffer to buffer queue" .
-    tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
+    tempEntryBuffer pBufferQueue queue.append
 
     // mark that a fetch task has ended
     pSeitf seitf.fetchTaskEnded
@@ -1073,7 +1080,7 @@ tp: selectIndex
         // buffer must be full
         // put this tempEntryBuffer in seitf bufferQueue
         //"Inserting row into tempEntryBuffer" .
-        tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
+        tempEntryBuffer pBufferQueue queue.append
 
         // create another temporary index buffer for the results
         //"Creating a tempIndexBuffer" .
@@ -1112,7 +1119,7 @@ tp: selectIndex
 
   // put the buffer in the seitf bufferQueue
   //"Appending tempEntryBuffer to buffer queue" .
-  tempEntryBuffer pSeitf seitf.bufferQueue@ queue.append
+  tempEntryBuffer pBufferQueue queue.append
 
   // mark that a fetch task has ended
   pSeitf seitf.fetchTaskEnded
@@ -1287,13 +1294,13 @@ tp: selectIndex
 /*----------------------------------------------------------------------------*/
 /* position key select cursor for table (called by selectIndex request)       */
 /*----------------------------------------------------------------------------*/
-: groupByIdxTask_RH ( i_Phrase <"key>" "<lower>" "<upper>" pSeitf iPartitionNo -- )
+: groupByIdxTask_RH ( i_Phrase <"key>" "<lower>" "<upper>" pIndex pBufferQueue pSeitf iPartitionNo -- )
 
   // save args
-  locals| iPartitionNo pSeitf sUpper sLower sKey i_Phrase |
+  locals| iPartitionNo pSeitf pIndex pBufferQueue sUpper sLower sKey i_Phrase |
 
   // local variables
-  0 0 0 0 0 locals| pIndex pUpperEntry pIndexEntry pIndexBuffer pResultBuffer |
+  0 0 0 0 locals| pUpperEntry pIndexEntry pIndexBuffer pResultBuffer |
 
   tp: rangeSelectIdxTask
 
@@ -1305,7 +1312,7 @@ tp: selectIndex
 
   // save seitf into this task
   pSeitf task::this task.seitf!
-  pSeitf seitf.index@ to pIndex
+  //pSeitf seitf.index@ to pIndex
 
   // start groupBy operator for this partition
   iPartitionNo pSeitf seitf.groupBy@ locals| pGroupBy |
@@ -1323,7 +1330,7 @@ tp: selectIndex
     // mark this result buffer as the last buffer
     pResultBuffer entryBuffer.isLast!
 
-    pResultBuffer pSeitf seitf.bufferQueue@ queue.append
+    pResultBuffer pBufferQueue queue.append
 
     exit
   then
@@ -1332,6 +1339,6 @@ tp: selectIndex
 
   // mark this result buffer as the last buffer
   pResultBuffer entryBuffer.isLast!
-  pResultBuffer pSeitf seitf.bufferQueue@ queue.append
+  pResultBuffer pBufferQueue queue.append
 ;
 
