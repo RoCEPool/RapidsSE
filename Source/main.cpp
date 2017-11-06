@@ -76,7 +76,8 @@ int main(int argc, const char* argv[])
   vKillPrev();
   
   RapidsSE::vPoolOpen();
-  
+  RapidsSE::vCheckPort();
+
   RapidsSE::vExecuteCmdLine();
 
   //vSkipListTest();

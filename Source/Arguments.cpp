@@ -29,6 +29,7 @@ Arguments::Arguments(void)
   m_nSlots      = 4;
   m_sNodeName   = "node"_Stz;
   m_nNodes      = 0;
+  m_iThisNode   = -1;
   m_bTracepoint = false;
   
 #ifdef __APPLE__
@@ -496,6 +497,7 @@ bool Arguments::bParse(int argc, Stz* argv[])
     for (i8 i_Index = 0; i_Index < m_nNodes; i_Index++) {
       if (m_xNodes[i_Index].m_sNodeName.bSame(m_sNodeName)) {
         bFound = true;
+        m_iThisNode = i_Index;
         break;
       }
     }
@@ -507,10 +509,15 @@ bool Arguments::bParse(int argc, Stz* argv[])
     
   } else {
     // add a single node
-    m_nNodes = 1;
-    m_xNodes[0].m_sNodeName = m_sNodeName;
-    m_xNodes[0].m_sIPAddress = ""_Stz;
-    m_xNodes[0].m_iPortNo =  -1;
+    // m_nNodes = 1;
+    // m_xNodes[0].m_sNodeName = m_sNodeName;
+    // m_xNodes[0].m_sIPAddress = ""_Stz;
+    // m_xNodes[0].m_iPortNo =  -1;
+    if ( m_bStart ) {
+      vError("Add argument '--node name ip-address port' for this node %s definition\n"_Stz, m_sNodeName.aChar());
+      return false;
+    }
+
   }
 
   // if no regionName then form region name using regionPrefix and node name
