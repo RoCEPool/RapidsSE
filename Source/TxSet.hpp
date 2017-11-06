@@ -25,15 +25,12 @@ namespace Transactions
     TxSet(i8 iNodeNo);
     ~TxSet(void);
   
-    void vAddTx(Tx* pTx);
-    void vAddDistTx_NL(Tx* pTx, i8 iDistTxId);
-    Tx*  pAllocLocalTx(void);
+    void vAddLocalTx(Tx* pTx);
+    void vAddDistTx_NL(Tx* pTx);
     Tx*  pFindTx(i8 iTxId);
     Tx*  pFindTx_NL(i8 iTxId);
     void vRemoveTx(Tx* pTx);
-    Tx*  pTestDistTx(i8 iDistTxId);
-  
-    void vFreeTx(Tx* pTx);
+    void vRemoveTx_NL(Tx* pTx);
   
     void vGrabWrite(void);
     void vDropWrite(void);

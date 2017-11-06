@@ -28,10 +28,9 @@ namespace System
   /* 13 */ LK_STEP_ARRAY,
   /* 14 */ LK_TASK,
   /* 15 */ LK_TASK_SET,
-  /* 16 */ LK_TX_MAP,
-  /* 17 */ LK_TX_SET,
-  /* 18 */ LK_UNKNOWN,
-  /* 19 */ LK_ENUMS
+  /* 16 */ LK_TX_SET,
+  /* 17 */ LK_UNKNOWN,
+  /* 18 */ LK_ENUMS
   };
   
   static Stz* aLK[]
@@ -52,10 +51,9 @@ namespace System
   /* 13 */ "STEP_ARRAY"_Stz,
   /* 14 */ "TASK"_Stz,
   /* 15 */ "TASK_SET"_Stz,
-  /* 16 */ "TX_MAP"_Stz,
-  /* 17 */ "TX_SET"_Stz,
-  /* 18 */ "UNKNOWN"_Stz,
-  /* 19 */ "ENUMS"_Stz
+  /* 16 */ "TX_SET"_Stz,
+  /* 17 */ "UNKNOWN"_Stz,
+  /* 18 */ "ENUMS"_Stz
   };
 
   class Lock : public Object

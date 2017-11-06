@@ -94,7 +94,7 @@ TxSet::TxSet(i8 iNodeNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
   
-  m_xLock.vInitLock(LK_TX_MAP);
+  m_xLock.vInitLock(LK_TX_SET);
   m_iNodeNo = iNodeNo;
   m_iNextTxId = iNodeNo << 48;
   m_pLocalTxList = new SkipList(true,bTxSetCompareLocal);
@@ -106,9 +106,9 @@ TxSet::TxSet(i8 iNodeNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add given tx                                                               */
+/* add given local tx                                                         */
 /*----------------------------------------------------------------------------*/
-void TxSet::vAddTx(Tx* pTx)
+void TxSet::vAddLocalTx(Tx* pTx)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
   
@@ -123,49 +123,21 @@ void TxSet::vAddTx(Tx* pTx)
   m_pDistTxList->bInsert(pTx);
   
   m_xLock.vDropWrite();
-  
 }
 
 /*----------------------------------------------------------------------------*/
-/* add given distributed tx (no locking)                                      */
+/* add given distributed tx (non-locking)                                     */
 /*----------------------------------------------------------------------------*/
-void TxSet::vAddDistTx_NL(Tx* pTx, i8 iDistTxId)
+void TxSet::vAddDistTx_NL(Tx* pTx)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
-  
-  ASSERT(m_xLock.bIsLocked());
   
   i8 iLocalTxId = m_iNextTxId++;
   
   pTx->vLocalTxId(iLocalTxId);
-  pTx->vDistTxId(iDistTxId);
   
   m_pLocalTxList->bInsert(pTx);
   m_pDistTxList->bInsert(pTx);
-}
-
-/*----------------------------------------------------------------------------*/
-/* allocate a local tx                                                        */
-/*----------------------------------------------------------------------------*/
-Tx* TxSet::pAllocLocalTx(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
-  
-  m_xLock.vGrabWrite();
-  
-  Tx* pTx = new Tx;
-  
-  i8 iTxId = m_iNextTxId++;
-  
-  pTx->vLocalTxId(iTxId);
-  pTx->vDistTxId(iTxId);
-  
-  m_pLocalTxList->bInsert(pTx);
-  m_pDistTxList->bInsert(pTx);
-
-  m_xLock.vDropWrite();
-  
-  return pTx;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -193,20 +165,23 @@ Tx* TxSet::pFindTx_NL(i8 iTxId)
   
   ASSERT(m_xLock.bIsLocked());
   
-  Tx xTxFind;
+  Tx* pTxFind = new Tx(false);
   
   i8 iNodeNo = iTxId >> 48;
   
   Tx* pTxFound = nullptr;
   
   if (iNodeNo == m_iNodeNo) {
-    xTxFind.vLocalTxId(iTxId);
-    pTxFound = _pTx(m_pLocalTxList->pFind(&xTxFind));
+    pTxFind->vLocalTxId(iTxId);
+    pTxFound = _pTx(m_pLocalTxList->pFind(pTxFind));
   }
   else {
-    xTxFind.vDistTxId(iTxId);
-    pTxFound = _pTx(m_pDistTxList->pFind(&xTxFind));
+    pTxFind->vDistTxId(iTxId);
+    pTxFound = _pTx(m_pDistTxList->pFind(pTxFind));
   }
+  
+  pTxFind->vLocalTxId(-1);
+  delete pTxFind;
   
   return pTxFound;
 }
@@ -230,62 +205,20 @@ void TxSet::vRemoveTx(Tx* pTx)
 }
 
 /*----------------------------------------------------------------------------*/
-/* attempt to find a tx by dist tx id, create if not found                    */
+/* remove given tx                                                            */
 /*----------------------------------------------------------------------------*/
-Tx* TxSet::pTestDistTx(i8 iDistTxId)
+void TxSet::vRemoveTx_NL(Tx* pTx)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
   
-  Tx* pDistTx = nullptr;
-  
-  Tx* pTxFind = new Tx;
-  pTxFind->vDistTxId(iDistTxId);
-  
-  m_xLock.vGrabWrite();
-  
-  Tx* pTxFound = _pTx(m_pDistTxList->pFind(pTxFind));
-  
-  delete pTxFind;
-  
-  if (pTxFound) {
-    m_xLock.vDropWrite();
-    return pTxFound;
-  }
-  
-  pDistTx = new Tx;
-  
-  i8 iTxId = m_iNextTxId++;
-  
-  pDistTx->vLocalTxId(iTxId);
-  pDistTx->vDistTxId(iDistTxId);
-  
-  m_pLocalTxList->bInsert(pDistTx);
-  m_pDistTxList->bInsert(pDistTx);
-  
-  m_xLock.vDropWrite();
-  
-  return pDistTx;
-}
-
-/*----------------------------------------------------------------------------*/
-/* free given tx                                                              */
-/*----------------------------------------------------------------------------*/
-void TxSet::vFreeTx(Tx* pTx)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
+  ASSERT(m_xLock.bIsLocked());
   
   bool bRemoved;
   
-  m_xLock.vGrabWrite();
- 
   bRemoved = m_pLocalTxList->bRemove(pTx);
-
-  bRemoved = m_pDistTxList->bRemove(pTx);
   
-  m_xLock.vDropWrite();
- 
-  delete pTx;
-}
+  bRemoved = m_pDistTxList->bRemove(pTx);
+  }
 
 /*----------------------------------------------------------------------------*/
 /* grab lock for write                                                        */

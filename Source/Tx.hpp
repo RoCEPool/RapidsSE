@@ -55,10 +55,13 @@ namespace Transactions
     void* operator new(size_t, Tx* pTx);
     void  operator delete(void*);
     
-    Tx(void);
-    
+    Tx(bool bAddToSet = true);
+    Tx(i8 iDistTxId);
+    ~Tx(void);
+  
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    
+    static Tx*  pTestDistTx(i8 iDistTxId);
+  
     i8 iLocalTxId(void);
     void vLocalTxId(i8 iTxId);
 

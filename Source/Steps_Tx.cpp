@@ -53,9 +53,7 @@ void Task::vTxBegin(MP_Task mpTask)
 {
   ENTRY("vTxBegin"_Stz);
   
-  Tx* pTx = gpTxSet->pAllocLocalTx();
-  
-  pTx->vPhase(TP_EXECUTING);
+  Tx* pTx = new Tx;
   
   vTrace("Begun tx: %lld-%lld(%s)\n"_Stz,
          pTx->iLocalTxId(),pTx->iDistTxId(),pTx->aDecode());
@@ -243,7 +241,7 @@ void Task::vTxFree(MP_Task mpTask)
   vTrace("Freeing tx: %lld-%lld(%s)\n"_Stz,
          pTx->iLocalTxId(),pTx->iDistTxId(),pTx->aDecode());
   
-  gpTxSet->vFreeTx(pTx);
+  delete pTx;
   
   EXIT();
 }
@@ -298,7 +296,7 @@ void Task::vTxTestDist(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(iDistTxId) )
     THROW_INVALID_DSTACK("tx.testDist"_Stz);
   
-  Tx* pTx = gpTxSet->pTestDistTx(iDistTxId);
+  Tx* pTx = Tx::pTestDistTx(iDistTxId);
 
   vTrace("Testing dist tx: %lld-%lld(%s)\n"_Stz,
          pTx->iLocalTxId(),pTx->iDistTxId(),pTx->aDecode());

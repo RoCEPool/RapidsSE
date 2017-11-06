@@ -53,14 +53,14 @@ void Tx::operator delete(void* pTxAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Tx::Tx(void)
+Tx::Tx(bool bAddToSet)
 : Object(CN_TX)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
 
   m_iLocalTxId = -1;
   m_iDistTxId  = -1;
-  m_ePhase     = TP_NONE;
+  m_ePhase     = TP_EXECUTING;
   m_zCounter   = gxArguments.m_nSlots;
   
   for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++)
@@ -68,8 +68,76 @@ Tx::Tx(void)
   
   _checkInitialised_(CN_TX);
 
+  if (bAddToSet)
+    gpTxSet->vAddLocalTx(this);
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
 }
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Tx::Tx(i8 iDistTxId)
+: Object(CN_TX)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
+  
+  m_iLocalTxId = -1;
+  m_iDistTxId  = iDistTxId;
+  m_ePhase     = TP_EXECUTING;
+  m_zCounter   = gxArguments.m_nSlots;
+  
+  for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++)
+    m_xNode[i_Node].m_bDistMember = false;
+  
+  _checkInitialised_(CN_TX);
+  
+  gpTxSet->vAddDistTx_NL(this);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+Tx::~Tx(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
+  
+  if (-1 != m_iLocalTxId)
+    gpTxSet->vRemoveTx(this);
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* attempt to find a tx by dist tx id, create if not found                    */
+/*----------------------------------------------------------------------------*/
+Tx* Tx::pTestDistTx(i8 iDistTxId)
+{
+  Tx* pDistTx = nullptr;
+  
+  gpTxSet->vGrabWrite();
+  
+  Tx* pTxFound = gpTxSet->pFindTx_NL(iDistTxId);
+  
+  if (pTxFound) {
+    gpTxSet->vDropWrite();
+    return pTxFound;
+  }
+  
+  pDistTx = new Tx(iDistTxId);
+  
+  gpTxSet->vDropWrite();
+  
+  return pDistTx;
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* decrement atmoic counter                                                   */

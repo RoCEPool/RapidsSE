@@ -891,8 +891,7 @@ bool SEitf::bBeginTx()
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
-  m_pTx = gpTxSet->pAllocLocalTx();
-  m_pTx->vPhase(TP_EXECUTING);
+  m_pTx = new Tx;
   
   return true;
 }
@@ -914,7 +913,8 @@ void SEitf::vEndTx()
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
-  gpTxSet->vFreeTx(m_pTx);
+  delete m_pTx;
+  
   m_pTx = nullptr;
 }
 
