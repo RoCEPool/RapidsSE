@@ -335,11 +335,11 @@ timer: pIdxSelectTimer
 /*----------------------------------------------------------------------------*/
 /* fetch rows using an index for given phrase (this is request)               */
 /*----------------------------------------------------------------------------*/
-: spawnFetch ( pBufferQueue bSinglePartition bGroupBy i_Phrase pPlanner -- <R> )
+: spawnFetch ( pBufferQueue iSlot bGroupBy i_Phrase pPlanner -- <R> )
 
   //assert::stack_5
 
-  locals| pPlanner i_Phrase bGroupBy bSinglePartition pBufferQueue |
+  locals| pPlanner i_Phrase bGroupBy iSlot pBufferQueue |
 
 //0 locals| i_Phrase |
 
@@ -362,7 +362,7 @@ timer: pIdxSelectTimer
     "0"  //upper
     "exactSelectIdxTask"
     i_Phrase pPlanner Planner.indexNm@
-    pBufferQueue bSinglePartition spawnSelectTask
+    pBufferQueue iSlot spawnSelectTask
   endof
 
   // a lower bound select using index
@@ -374,7 +374,7 @@ timer: pIdxSelectTimer
     "0" //upper
     "lowerSelectIdxTask"
     i_Phrase pPlanner Planner.indexNm@
-    pBufferQueue bSinglePartition spawnSelectTask
+    pBufferQueue iSlot spawnSelectTask
   endof
 
   // an upper bound select using index
@@ -386,7 +386,7 @@ timer: pIdxSelectTimer
     i_Phrase pPlanner Planner.highKey@
     "upperSelectIdxTask"
     i_Phrase pPlanner Planner.indexNm@
-    pBufferQueue bSinglePartition spawnSelectTask
+    pBufferQueue iSlot spawnSelectTask
   endof
 
   // a range select using index
@@ -404,7 +404,7 @@ timer: pIdxSelectTimer
       //"case range" .
       "rangeSelectIdxTask"
       i_Phrase pPlanner Planner.indexNm@
-      pBufferQueue bSinglePartition spawnSelectTask
+      pBufferQueue iSlot spawnSelectTask
     then
   endof
 
@@ -417,7 +417,7 @@ timer: pIdxSelectTimer
     "0" //upper
     "scanSelectIdxTask"
     "hidden"
-     pBufferQueue bSinglePartition spawnSelectTask
+     pBufferQueue iSlot spawnSelectTask
     endof
   endcase
 
@@ -444,7 +444,7 @@ timer: pIdxSelectTimer
   CN_STRVAL assert::class_1
   CN_INTVAL assert::class_2
 
-  0 0 0 0 0 locals| pBufferQueue pSeitf bSinglePartition pPlanner pTable sTableNm sWhere bGroupBy |
+  0 0 0 0 0 locals| pBufferQueue pSeitf iSlot pPlanner pTable sTableNm sWhere bGroupBy |
 
   pIdxSelectTimer timer.start
 
@@ -488,7 +488,6 @@ timer: pIdxSelectTimer
 
   // assert we have a plan
   pPlanner assert
-  true to bSinglePartition
 
   // set the no of last buffers to no of phrases in plan
   pPlanner planner.phrases@ pSeitf seitf.lastBuffers!
@@ -505,11 +504,29 @@ timer: pIdxSelectTimer
   // set planner in seitf
   pPlanner task::this task.seitf@ seitf.planner!
 
+  // get the slot no from the seitf
+  pSeitf seitf.slot@ to iSlot
+
   pPlanner planner.phrases@ 0
   do
-    pBufferQueue bSinglePartition bGroupBy I pPlanner spawnFetch
+    pBufferQueue iSlot bGroupBy I pPlanner spawnFetch
   loop
   <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* spawn a fetcg task for each slot                                           */
+/*----------------------------------------------------------------------------*/
+: spawnFetchForEachSlot ( iPhrase pBufferQueue bGroupBy pPlanner )
+
+  0 locals| iSlots pPlanner bGroupBy pBufferQueue iPhrase |
+
+  // for each slot
+  grid.slots to iSlots
+  iSlots 0
+  do
+    pBufferQueue I bGroupBy iPhrase pPlanner spawnFetch
+  loop
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -589,7 +606,7 @@ timer: pIdxSelectTimer
   //0 locals| i_Phrase |
   pPlanner planner.phrases@ 0
   do
-    pBufferQueue false bGroupBy I pPlanner spawnFetch
+    I pBufferQueue bGroupBy pPlanner spawnFetchForEachSlot
   loop
 
   popTable assertInTables

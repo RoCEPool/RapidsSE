@@ -915,7 +915,7 @@ tp: populateIndex
 /* select using index (called by fetchRowsIndex_req)                          */
 /*----------------------------------------------------------------------------*/
 : spawnSelectTask ( i_Phrase "<sExactKey>" "<sLowerKey>" "<sUpperKey>"
-"<sSelectTaskSeed>" "<sIndexNm>" pBufferQueue <bSinglePartition> --  )
+"<sSelectTaskSeed>" "<sIndexNm>" pBufferQueue iSlot --  )
 
 tp: selectIndex
 
@@ -935,7 +935,7 @@ tp: selectIndex
   //assert::stack_5
 
   // save args
-  locals| bSinglePartition pBufferQueue sIndexNm sSelectTaskSeed sUpperKey sLowerKey sExactKey i_Phrase |
+  locals| iSlot pBufferQueue sIndexNm sSelectTaskSeed sUpperKey sLowerKey sExactKey i_Phrase |
 
   // local variables
   0 0 0 0 0 0 0 locals| pIndex iSlots pSeitf pSelectTask nRowCount pIndexBuffer pEntry |
@@ -965,38 +965,10 @@ tp: selectIndex
   // set the queue in the seitf
   pBufferQueue pSeitf seitf.bufferQueue!
 
-  bSinglePartition if
-
-    0 0 locals| iSlot iPartition |
-    pSeitf seitf.slot@ to iSlot
-    pSeitf seitf.partition@ to iPartition
-
-    //args.metadata not if
-    //  iPartition "Partition: %v\n" str.format .put
-    //then
-
-    // create a selectTask to execute the key select on the index for the partition
-    i_Phrase sExactKey sLowerKey sUpperKey pBufferQueue pIndex pSeitf iSlot 8
-    sSelectTaskSeed nullptr "selectTask" TK_SELECT_PART spawnServerTask
-    to pSelectTask
-
-  else
-    // for each slot
-    grid.slots to iSlots
-    iSlots 0
-    do
-
-      //args.metadata not if
-      //  I grid::toPartition "Partition: %v\n" str.format .put
-      //then
-
-      // create a selectTask to execute the key select on the index for the partition
-      i_Phrase sExactKey sLowerKey sUpperKey pBufferQueue pIndex pSeitf I 8
-      sSelectTaskSeed nullptr "selectTask" TK_SELECT_PART spawnServerTask
-      to pSelectTask
-
-    loop
-  then
+  // create a selectTask to execute the key select on the index for the partition
+  i_Phrase sExactKey sLowerKey sUpperKey pBufferQueue pIndex pSeitf iSlot 8
+  sSelectTaskSeed nullptr "selectTask" TK_SELECT_PART spawnServerTask
+  to pSelectTask
 ;
 
 
