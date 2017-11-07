@@ -27,6 +27,7 @@ namespace Transactions
   
     void vAddLocalTx(Tx* pTx);
     void vAddDistTx_NL(Tx* pTx);
+    void vDumpAll(void);
     Tx*  pFindTx(i8 iTxId);
     Tx*  pFindTx_NL(i8 iTxId);
     void vRemoveTx(Tx* pTx);

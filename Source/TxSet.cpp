@@ -141,6 +141,25 @@ void TxSet::vAddDistTx_NL(Tx* pTx)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump all tx's                                                              */
+/*----------------------------------------------------------------------------*/
+void TxSet::vDumpAll(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
+  
+  bool bRemoved;
+  
+  m_xLock.vGrabRead();
+  
+  SkipCursor* pCursor = nullptr;
+  
+  while ( Tx* pTx = _pTx(m_pLocalTxList->pEach(pCursor)) )
+    pTx->vContentDump();
+  
+  m_xLock.vDropRead();
+}
+
+/*----------------------------------------------------------------------------*/
 /* find a tx by tx id                                                         */
 /*----------------------------------------------------------------------------*/
 Tx* TxSet::pFindTx(i8 iTxId)
