@@ -38,7 +38,7 @@ void Task::vAddPrimitives_PlanList(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* planList.addPlan -- add a plan to plan list ( plan -- )                    */
+/* planList::addPlan -- add a plan to plan list ( plan -- )                    */
 /*----------------------------------------------------------------------------*/
 void Task::vPlanListAddPlan(MP_Task mpTask)
 {
@@ -57,7 +57,7 @@ void Task::vPlanListAddPlan(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* planList.findPlan -- find plan in list ( planId -- plan true | false )     */
+/* planList::findPlan -- find plan in list ( planId -- plan true | false )     */
 /*----------------------------------------------------------------------------*/
 void Task::vPlanListFindPlan(MP_Task mpTask)
 {
@@ -82,7 +82,7 @@ void Task::vPlanListFindPlan(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* planList.removePlan -- remove a plan from plan list ( plan -- )            */
+/* planList::removePlan -- remove a plan from plan list ( plan -- )            */
 /*----------------------------------------------------------------------------*/
 void Task::vPlanListRemovePlan(MP_Task mpTask)
 {
@@ -101,7 +101,7 @@ void Task::vPlanListRemovePlan(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* planList.show -- show plan list ( plan -- )                                */
+/* planList::show -- show plan list ( plan -- )                                */
 /*----------------------------------------------------------------------------*/
 void Task::vPlanListShow(MP_Task mpTask)
 {

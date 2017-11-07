@@ -115,11 +115,11 @@ timer: pIdxSelectTimer
   locals| sTableNm sWhere |
   ddlLock::grabRead
 
-  sWhere 0 == if
-    sTableNm "Executing a distributed fetch of table %v" str.format .
-  else
+  //sWhere 0 == if
+  //  sTableNm "Executing a distributed fetch of table %v" str.format .
+  //else
     sWhere sTableNm "Executing a distributed fetch of table %v where %v" str.format .
-  then
+  //then
 
   // should be in the tables folder
   checkInTables not if <NIP+ERROR> exit then

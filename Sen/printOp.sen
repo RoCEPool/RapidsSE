@@ -7,14 +7,12 @@
 /*----------------------------------------------------------------------------*/
 /* frame common variables for write                                           */
 /*----------------------------------------------------------------------------*/
-common/ write nStreams    /
-
-
+common/ print nFetchTasks /
 
 /*----------------------------------------------------------------------------*/
 /* print rows from row buffer                                                 */
 /*----------------------------------------------------------------------------*/
-: printRows subDic write ( rowBuffer pTable -- )
+: printRows subDic print ( rowBuffer pTable -- )
 
   // declare rowCrs variable
   rowCursor::new locals| rowCrs pTable rowBuffer |
@@ -37,11 +35,11 @@ common/ write nStreams    /
 /*----------------------------------------------------------------------------*/
 /* print rows from row buffer                                                 */
 /*----------------------------------------------------------------------------*/
-: printRb subDic write
+: printRb subDic print
 
   // record the plan and profile
-  0 locals| pTablePtr thePlan profile |
-tp: 20
+  0 locals| pTablePtr bFetchStarted thePlan profile |
+
   "tenants" 1 dicPath.set
 
   // [0] push thePlan's dictionary onto path stack
@@ -90,6 +88,15 @@ tp: 20
 
   //----------------------------------------------------------------------------
 
+  // has fetch just started ?
+  bFetchStarted not if
+    // set the no of fetch tasks in nFetchTasks
+    $$nStreams toCommon nFetchTasks
+
+    // mark fetch as started
+    1 to bFetchStarted
+  then
+
   ( [ rowBuffer ] )
 
   // write or close file & sink plan?
@@ -97,18 +104,32 @@ tp: 20
 
      pTablePtr  printRows
   else
-    // << $$nextProfile thePlan >> -->> $$nextOp
-    << $$nextProfile thePlan plan.id@ $$nextOp >>jobqueue
+     // didn't get a rowBuffer, this fetch task has ended
+     nFetchTasks 1- toCommon nFetchTasks
+
+     // have all the fetch tasks ended ?
+     nFetchTasks 0 == if
+       // << $$nextProfile thePlan >> -->> $$nextOp
+       << $$nextProfile thePlan plan.id@ $$nextOp >>jobqueue
+
+       // mark fetch as not started so next fetch can execute
+       0 to bFetchStarted
+    then
   then
 
   opFrame.drop
   dicPath.clear
+
+  // return fetch started
+  bFetchStarted
 ;
 
 /*----------------------------------------------------------------------------*/
 /* print operator loop                                                        */
 /*----------------------------------------------------------------------------*/
 : printOp operator ( -- NEVER )
+
+  0 locals| bFetchStarted |
 
   begin
 
@@ -123,10 +144,15 @@ tp: 20
 
     // find plan using planId
     planList::findPlan ( profile plan true )
+
     assert ( profile plan )
-    
+
     // print row buffer rows
-    printRb ( )
+    bFetchStarted ( profile plan bFetchStarted )
+    printRb ( bFetchStarted )
+
+    // set fetch started
+    to bFetchStarted
 
   again
 ;
