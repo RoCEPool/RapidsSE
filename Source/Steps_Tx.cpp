@@ -222,6 +222,8 @@ void Task::vTxDumpAll(MP_Task mpTask)
 {
   ENTRY("vTxDumpAll"_Stz);
   
+  gpTxSet->vDumpAll();
+  
   EXIT();
 }
 

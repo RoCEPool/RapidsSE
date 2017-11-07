@@ -147,8 +147,6 @@ void TxSet::vDumpAll(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
   
-  bool bRemoved;
-  
   m_xLock.vGrabRead();
   
   SkipCursor* pCursor = nullptr;
