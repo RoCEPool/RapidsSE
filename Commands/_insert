@@ -13,6 +13,7 @@ create index idx on T1 (col0);
 
 // (3) insert some rows into the table
 begin insert T1;
+docol dumpalltx;
 insert row "1,abcdef";
 insert row "2,ghijk";
 insert row "3,lmno";
@@ -24,6 +25,7 @@ insert row "8,defgh";
 insert row "9,ijk";
 insert row "10,lmn";
 end insert;
+docol dumpalltx;
 
 // (4) check rows
 fetch T1;

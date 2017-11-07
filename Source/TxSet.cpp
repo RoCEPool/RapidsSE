@@ -149,10 +149,20 @@ void TxSet::vDumpAll(void)
   
   m_xLock.vGrabRead();
   
-  SkipCursor* pCursor = nullptr;
-  
-  while ( Tx* pTx = _pTx(m_pLocalTxList->pEach(pCursor)) )
+//  SkipCursor xCursor;
+//  
+//  vTrace("All tx's:\n"_Stz);
+//  while ( Tx* pTx = _pTx(m_pLocalTxList->pEach(&xCursor)) )
+//    pTx->vContentDump();
+
+  vTrace("All tx's:\n"_Stz);
+  for (SkipNode* pNode = m_pLocalTxList->pFirst(0);
+       pNode;
+       pNode = m_pLocalTxList->pNext(pNode,0)) {
+       
+    Tx* pTx = _pTx(pNode->m_pObject);
     pTx->vContentDump();
+  }
   
   m_xLock.vDropRead();
 }

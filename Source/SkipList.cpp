@@ -355,7 +355,7 @@ SkipNode* SkipList::pNext(SkipNode* pPrev, i8 iLevel)
 SkipNode* SkipList::pPosition(void* pObjectInsert, bool& bEqualTo, SkipNode** aPriorVec)
 {
   //vTrace("Adding %lld\n"_Stz,(i8)pObjectInsert);
-  
+  bEqualTo = false;
   // start from head at known highest level
   SkipNode* pCurrentNode = m_pHead;
   i8 iCurrentLevel = m_iHeight;
