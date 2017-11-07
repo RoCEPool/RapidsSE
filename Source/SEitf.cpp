@@ -91,7 +91,7 @@ ReqTable SeRequests[] =
  { "tridx"_Stz,          &SEitf::bTruncateIndex,        "truncateIndex_req"_Stz   },
  { "txBeg"_Stz,          &SEitf::bTxBegin,              "txBegin_req"_Stz         },
  { "txCmt"_Stz,          &SEitf::bTxCommit,             "txCommit_req"_Stz        },
- { "txDmp"_Stz,          &SEitf::bTxDump,               "txDump_req"_Stz          },
+ { "txDmp"_Stz,          &SEitf::bTxDumpAll,            "txDumpAll_req"_Stz       },
  { "txRbk"_Stz,          &SEitf::bTxRollback,           "txRollback_req"_Stz      },
  { "usesch"_Stz,         &SEitf::bUseSchema,            "useSchema_req"_Stz       },
  { "ping"_Stz,           &SEitf::bPing,                 "ping_req"_Stz            },
@@ -2495,7 +2495,7 @@ bool SEitf::bTxCommit(TokenVec& xTokenVec, i8 iReqNo)
 /*----------------------------------------------------------------------------*/
 /* dump all transactions                                                      */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bTxDump(TokenVec& xTokenVec, i8 iReqNo)
+bool SEitf::bTxDumpAll(TokenVec& xTokenVec, i8 iReqNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   

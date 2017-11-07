@@ -119,6 +119,12 @@ space   poolSpace_req
 status  nodeStatus_req
 sanity  sanity_req
  
+ 
+---------------------
+Transaction Requests:
+---------------------
+txDmp  txDumpAll_req
+ 
 -----------------
 Misc Requests:
 -----------------
