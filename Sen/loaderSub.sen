@@ -288,6 +288,10 @@ tp: theIndirectResult
 : partitionAppendBuffer ( pLoaderSEitf iLoaderNode iDistTxId rowBuffer iDistTxId partitionNo table^ -- )
 
 tp: partitionAppendBuffer
+
+  "partitionAppendBuffer..." .
+
+
   locals| pTable iPartitionNo iDistTxId pRowBuffer iLoaderNode pLoaderSEitf |
 
   //"partitionAppendBuffer pLoaderSEitf ..." .

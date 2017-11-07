@@ -24,6 +24,7 @@ insert row "7,abc";
 insert row "8,defgh";
 insert row "9,ijk";
 insert row "10,lmn";
+txdmp;
 end insert;
 txdmp;
 

@@ -135,6 +135,7 @@ timer: loadTimer
   // tidy up
 
   // commit the transaction
+  tx::dumpAll
   pTblLoader loader.tx@ tx.id
     dup "dist commit of " . .
   txDistCommit assert::stack_0
