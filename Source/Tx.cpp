@@ -182,6 +182,35 @@ i8 Tx::iLocalTxId(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get local tx no                                                            */
+/*----------------------------------------------------------------------------*/
+i8 Tx::iLocalTxNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
+  
+  i8 iMaskOffUpper16Bits = 0x0000FFFFFFFFFFFF;
+  
+  i8 iTxNo = m_iLocalTxId & iMaskOffUpper16Bits;
+  
+  return iTxNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get local tx node no                                                       */
+/*----------------------------------------------------------------------------*/
+i8 Tx::iLocalTxNode(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
+  
+  i8 iMaskOffLower48Bits = 0xFFFF000000000000;
+  
+  i8 iTxNode = m_iLocalTxId & iMaskOffLower48Bits;
+  iTxNode >>= 48;
+  
+  return iTxNode;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set local tx id                                                            */
 /*----------------------------------------------------------------------------*/
 void Tx::vLocalTxId(i8 iLocalTxId)
@@ -199,6 +228,35 @@ i8 Tx::iDistTxId(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
   
   return m_iDistTxId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get dist tx no                                                             */
+/*----------------------------------------------------------------------------*/
+i8 Tx::iDistTxNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
+  
+  i8 iMaskOffUpper16Bits = 0x0000FFFFFFFFFFFF;
+  
+  i8 iTxNo = m_iDistTxId & iMaskOffUpper16Bits;
+  
+  return iTxNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get dist tx node no                                                        */
+/*----------------------------------------------------------------------------*/
+i8 Tx::iDistTxNode(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
+  
+  i8 iMaskOffLower48Bits = 0xFFFF000000000000;
+  
+  i8 iTxNode = m_iDistTxId & iMaskOffLower48Bits;
+  iTxNode >>= 48;
+  
+  return iTxNode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -251,9 +309,9 @@ void Tx::vDump(eCN eClass, Object* pObject, Stz* aTab)
   
   Tx* pTx = reinterpret_cast<Tx*>(pObject);
   
-  vTrace("tx: %lld-%lld phase %s counter %lld\n"_Stz,
-         pTx->m_iLocalTxId,
-         pTx->m_iDistTxId,
+  vTrace("tx: %lld.%lld-%lld.%lld phase %s counter %lld\n"_Stz,
+         pTx->iLocalTxNo(), pTx->iLocalTxNode(),
+         pTx->iDistTxNo(),  pTx->iDistTxNode(),
          pTP[pTx->m_ePhase],
          pTx->iCounterGet());
 }

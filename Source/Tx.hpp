@@ -63,9 +63,13 @@ namespace Transactions
     static Tx*  pTestDistTx(i8 iDistTxId);
   
     i8 iLocalTxId(void);
+    i8 iLocalTxNo(void);
+    i8 iLocalTxNode(void);
     void vLocalTxId(i8 iTxId);
 
     i8 iDistTxId(void);
+    i8 iDistTxNo(void);
+    i8 iDistTxNode(void);
     void vDistTxId(i8 iTxId);
   
     eTP ePhase(void);
