@@ -817,8 +817,8 @@ bool EntryBuffer::bAppendRow(i8 iTxId, Stz* pRow, i8 iLength)     //# critical
   xKeyWrk.vAddDatum(xValWrk, pColumn);
   
   //----------------------------------------------------------------------------
-  // add the id and key to EntWrk
-  EntWrk xEntWrk(rowId, xKeyWrk);
+  // add the id, txId and key to EntWrk
+  EntWrk xEntWrk(rowId, iTxId, xKeyWrk);
   
   //----------------------------------------------------------------------------
   // add the row data to the EntWrk
@@ -878,8 +878,8 @@ bool EntryBuffer::bInsertEntry(i8 iTxId, Stz* pRow, i8 iLength)     //# critical
   xKeyWrk.vAddDatum(xValWrk, pColumn);
   
   //----------------------------------------------------------------------------
-  // add the id and key to EntWrk
-  EntWrk xEntWrk(rowId, xKeyWrk);
+  // add the id, txId and key to EntWrk
+  EntWrk xEntWrk(rowId, iTxId, xKeyWrk);
   
   //----------------------------------------------------------------------------
   // add the row data to the EntWrk
@@ -932,8 +932,8 @@ bool EntryBuffer::bAppendEntry(i8 iTxId, Stz* pRow, i8 iLength)     //# critical
   xKeyWrk.vAddDatum(xValWrk, pColumn);
   
   //----------------------------------------------------------------------------
-  // add the id and key to EntWrk
-  EntWrk xEntWrk(rowId, xKeyWrk);
+  // add the id, txId and key to EntWrk
+  EntWrk xEntWrk(rowId, iTxId, xKeyWrk);
   
   //----------------------------------------------------------------------------
   // add the row data to the EntWrk
@@ -991,8 +991,9 @@ bool EntryBuffer::bAppendEntry(Entry* pRowEntry, Entry** ppEntry)     //# critic
   xKeyWrk.vAddDatum(xValWrk, pColumn);
   
   //----------------------------------------------------------------------------
-  // add the id and key to EntWrk
-  EntWrk xEntWrk(rowId, xKeyWrk);
+  // add the id, txId and key to EntWrk
+  i8 iTxId = pRowEntry->iTxId();
+  EntWrk xEntWrk(rowId, iTxId, xKeyWrk);
   
   //----------------------------------------------------------------------------
   // add the row data to the EntWrk
@@ -1651,7 +1652,8 @@ i8 EntryBuffer::iCopyEntries(EntryBuffer* pFromBuffer, Entry* aFromEntry)  //# c
     KeyWrk xKeyWrk(pEntry->aKey(), m_pIndex->pIdxColVec());
     
     // form the EntWrk from the entry
-    EntWrk xEntWrk(pEntry->xId(), xKeyWrk);
+    i8 iTxId = pEntry->iTxId();
+    EntWrk xEntWrk(pEntry->xId(), iTxId, xKeyWrk);
     
     // insert entry into this buffer
     bool bInserted = bInsert(xEntWrk);

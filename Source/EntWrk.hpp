@@ -46,7 +46,7 @@ namespace DBobjects
     EntWrk(void);
     EntWrk(i8 nOffsets);
     EntWrk(Entry* pEntry);
-    EntWrk(Id& xId, KeyWrk& xKeyWrk);
+    EntWrk(Id& xId, i8 iTxId, KeyWrk& xKeyWrk);
     ~EntWrk(void);
   
     void   vAddKey(KeyWrk& xKeyWrk);

@@ -610,7 +610,8 @@ EntryBuffer* IndexData::pAppendL0Entry(EntryBuffer* pEntryBuffer,
   ASSERT(pEntryBuffer == nullptr || pEntryBuffer->nBufferLevel() == 0);
   
   // initialize the entry wsp (generates randon number of offsets)
-  EntWrk xEntWrk(xId,xKeyWrk);
+  i8 iTxId = -1;                                                   //! not right
+  EntWrk xEntWrk(xId,iTxId,xKeyWrk);
 
   //xKeyWrk.vShow();
   
@@ -696,7 +697,8 @@ bool IndexData::bInsertEntry(EntryBuffer* pHigher, KeyWrk& xKeyWrk, Id xId, i8 i
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
   // initialize the entry wsp
-  EntWrk xEntWrk(xId,xKeyWrk);
+  i8 iTxId = -1;                                                   //! not right
+  EntWrk xEntWrk(xId,iTxId,xKeyWrk);
   
   // find index buffer which contains the entry after which the new entry will
   // be inserted into, starting with given higher

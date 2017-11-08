@@ -127,12 +127,14 @@ EntWrk::EntWrk(Entry* pEntry)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-EntWrk::EntWrk(Id& xId, KeyWrk& xKeyWrk)
+EntWrk::EntWrk(Id& xId, i8 iTxId, KeyWrk& xKeyWrk)
 : EntWrk()
 {
   _precondition_(_MAGIC_,CN_ENTWRK);
 
   vForm(xId,xKeyWrk);
+  
+  m_iTxId = iTxId;
 }
 
 /*----------------------------------------------------------------------------*/

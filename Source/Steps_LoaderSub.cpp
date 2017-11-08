@@ -202,7 +202,6 @@ void Task::vLoaderSubLoadData(MP_Task mpTask)
     THROW_INVALID_DSTACK("loaderSub.loadData"_Stz);
   
   LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoaderSub);
-  ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
   
   do  {
     
