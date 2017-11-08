@@ -413,6 +413,10 @@ void Entry::vShow(i8 iBase, Index* pIndex, bool bShowKey)
          m_xId.iRow()
          );
   
+  vTrace("Tx %lld "_Stz,
+         m_iTxId
+         );
+  
   if (bShowKey)
     aKey->vShow(pIndex->pIdxColVec());
 
