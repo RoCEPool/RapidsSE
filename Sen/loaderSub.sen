@@ -366,6 +366,8 @@ tp: partitionAppendBuffer
 
   iDistTxId .
 
+  tx::dumpAll
+
   iDistTxId tx::testDist locals| pDistTx |
 
   pDistTx not if
