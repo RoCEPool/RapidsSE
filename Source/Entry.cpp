@@ -356,6 +356,7 @@ void Entry::vSetEntry(EntWrk& xEntWrk)
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
 }
+
 /*----------------------------------------------------------------------------*/
 /* set entry given eanother entry                                             */
 /*----------------------------------------------------------------------------*/
@@ -367,6 +368,9 @@ void Entry::vSetEntry(Id xId, i8 iKey, Entry* pOldEntry)
   
   // set RowId
   m_xId  = xId;
+  
+  // copy TxId
+  m_iTxId = pOldEntry->m_iTxId;
   
   // copy Key
   i8 nKeyBytes = 8;
