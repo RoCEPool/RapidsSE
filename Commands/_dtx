@@ -2,11 +2,11 @@
 /* _dtx -- distributed transaction test                                       */
 /*============================================================================*/
 
-_startCluster
+//_startCluster
 
-sleep 10 ;
+//sleep 10 ;
 
-print "continuing...\n" ;
+//print "continuing...\n" ;
 
 create table j10 (
   j10_key   INTEGER NOT NULL,

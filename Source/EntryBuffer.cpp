@@ -823,6 +823,7 @@ bool EntryBuffer::bAppendRow(i8 iTxId, Stz* pRow, i8 iLength)     //# critical
   //----------------------------------------------------------------------------
   // add the row data to the EntWrk
   xEntWrk.vData(pRow, iLength);
+  xEntWrk.vTxId(iTxId);
   //xEntWrk.vShow(m_pIndex->pIdxColVec());
   
   //----------------------------------------------------------------------------

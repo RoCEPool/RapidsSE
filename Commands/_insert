@@ -26,6 +26,9 @@ insert row "9,ijk";
 insert row "10,lmn";
 txdmp;
 end insert;
+
+dump T1 ;
+
 txdmp;
 
 // (4) check rows

@@ -315,10 +315,13 @@ void Entry::vSetEntry(EntWrk& xEntWrk)
   ASSERT(m_nThisBytes);
   
   // set RowId
-  m_xId  = xEntWrk.xId();
+  m_xId = xEntWrk.xId();
   
   // set Offsets
   m_nOffsets = xEntWrk.nOffsets();
+  
+  // set Transaction Id
+  m_iTxId = xEntWrk.iTxId();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
