@@ -377,8 +377,8 @@ tp: partitionAppendBuffer
   then
 
   "tidying up distTx..." .
-  pDistTx tx.dump
   pDistTx tx.commit
+  pDistTx tx.dump
   pDistTx tx.free
 
   true <SUCCESS_RESULT>
@@ -406,8 +406,8 @@ tp: partitionAppendBuffer
   then
 
   "preparing distTx..." .
-  pDistTx tx.dump
   pDistTx tx.prepare
+  pDistTx tx.dump
 
   true <SUCCESS_RESULT>
 ;
