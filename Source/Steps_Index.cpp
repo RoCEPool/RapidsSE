@@ -264,9 +264,16 @@ void Task::vIndexPosition(MP_Task mpTask)
 {
   ENTRY("vIndexPosition"_Stz);
   Object* pPtrIndex = nullptr;
+  Object* pPtrPlanner = nullptr;
   Object* pPtrIndexBuffer = nullptr;
   ValWrk xValWrk;
   i8 i_Phrase;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pPtrPlanner) )
+    THROW_INVALID_DSTACK("index.upper"_Stz);
+  
+  Planner* pPlanner = _pPlanner(pPtrPlanner);
+  ASSERT(CN_PLANNER == pPlanner->eClass());
   
   if ( ! mpTask->m_pDataStack->bPop(i_Phrase) )
     THROW_INVALID_DSTACK("index.upper"_Stz);
@@ -286,8 +293,8 @@ void Task::vIndexPosition(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
     THROW_INVALID_DSTACK("index.position"_Stz);
   
-  i8 iIndexNo = pIndex->iIndexNo();
-  Table* pTable = pIndex->pTable();
+  //i8 iIndexNo = pIndex->iIndexNo();
+  //Table* pTable = pIndex->pTable();
   
   KeyWrk xKeyWrk;
   
@@ -304,8 +311,8 @@ void Task::vIndexPosition(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the relation operator for the first predicate
   
-  SEitf* pSEitf = mpTask->m_pSEitf;
-  Planner* pPlanner = pSEitf->m_pPlanner;
+  //SEitf* pSEitf = mpTask->m_pSEitf;
+  //Planner* pPlanner = pSEitf->m_pPlanner;
   AccessPath* pChosenPath = pPlanner->pChosenPath(i_Phrase);
   PredicateVec* pLowerPredicates = pChosenPath->pLowerPredicates();
   Predicate* pPredicate = pLowerPredicates->pGet(0);

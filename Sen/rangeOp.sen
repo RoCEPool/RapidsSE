@@ -15,7 +15,7 @@ common/ range rbCrs /
 : rangePartition subDic range ( profile plan -- )
 
   // record the plan and profile
-  locals| thePlan profile |
+  0 0 0 0 locals| pTable pBufferQueue bSinglePartition pPlanner thePlan profile |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set path (hardcoded for the moment)
@@ -70,11 +70,12 @@ common/ range rbCrs /
 
   // [1] find and push opFrame (along with its dictionary onto path stack)
   profile thePlan plan.opFrame? opFrame.push // [1]
-
+/*
   // [2] create a new rowCursor and record in opFrame.rbCrs
   rbCursor::new toCommon rbCrs
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // set up table in rowCursor
   $$tableNm find execute rbCrs rbCursor.table!
 
@@ -106,6 +107,45 @@ common/ range rbCrs /
   // [2] delete cursor
   rbCrs rbCursor.delete
   0 toCommon rbCrs
+  */
+
+  ddlLock::grabRead
+
+  tableNm find execute to pTable
+
+  // get and inc table reference and put into task.seitf.currentTable
+  //getTableRef not if <NIP+ERROR> exit then
+  //task::this task.seitf@ seitf.table@ assert
+
+  // generate plan for the fetch
+  sWhere pTable "generatePlan" find execute to pPlanner
+
+  pPlanner planner.phrases@ .
+
+  // assert we have a plan
+  pPlanner assert
+  true to bSinglePartition
+
+  // set the no of last buffers to no of phrases in plan
+  //pPlanner planner.phrases@ pSeitf seitf.lastBuffers!
+
+  // create the buffer queue in the seitf
+  "selectTask.queue" queue::new to pBufferQueue
+
+  $$partition grid::toSlot 0 locals| iSlot bGroupBy |
+
+  pPlanner planner.phrases@ 0
+  do
+    pBufferQueue iSlot bGroupBy I pPlanner "spawnFetch" find execute
+  loop
+
+  ddlLock::dropRead
+
+  // wait for all fetch tasks to end
+  5 thread.sleep_s
+
+  // << false plan >> -->> nextOp
+  << false $$nextProfile thePlan plan.Id@ $$nextOp >>jobQueue
 
   // [1] discard opFrame (and dictionary)
   opFrame.drop

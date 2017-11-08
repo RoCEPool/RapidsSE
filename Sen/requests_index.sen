@@ -357,6 +357,7 @@ timer: pIdxSelectTimer
   AT_EXACT of
     //"case equal" .
     i_Phrase
+    pPlanner
     i_Phrase pPlanner Planner.key@
     "0"  //lower
     "0"  //upper
@@ -369,6 +370,7 @@ timer: pIdxSelectTimer
   AT_LOWER of
     //"case lower" .
     i_Phrase
+    pPlanner
     "0" //key
     i_Phrase pPlanner Planner.lowKey@
     "0" //upper
@@ -381,6 +383,7 @@ timer: pIdxSelectTimer
   AT_UPPER of
     //"case upper" .
     i_Phrase
+    pPlanner
     "0" //key
     "0" //lower
     i_Phrase pPlanner Planner.highKey@
@@ -392,6 +395,7 @@ timer: pIdxSelectTimer
   // a range select using index
   AT_RANGE of
     i_Phrase
+    pPlanner
     "0" //key
     i_Phrase pPlanner Planner.lowKey@
     i_Phrase pPlanner Planner.highKey@
@@ -412,6 +416,7 @@ timer: pIdxSelectTimer
   AT_SCAN of
     //"case scan" .
     i_Phrase
+    pPlanner
     "0" //key
     "0" //lower
     "0" //upper

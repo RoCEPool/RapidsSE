@@ -342,18 +342,16 @@ tp: makingIndex
 /*----------------------------------------------------------------------------*/
 /* position key select cursor for table (called by keySelectIndex request)    */
 /*----------------------------------------------------------------------------*/
-: exactSelectIdxTask ( i_Phrase <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf iPartitionNo -- )
+: exactSelectIdxTask ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf iPartitionNo -- )
 
   tp: keySelectIdx
 
-  locals| iPartitionNo pSeitf pIndex pBufferQueue upper lower key i_Phrase |
+  locals| iPartitionNo pSeitf pIndex pBufferQueue upper lower key pPlanner i_Phrase |
   0 0 0 locals| entry pTempEntryBuffer pEntryBuffer |
-
-  //"fetchTask started" .
   
   // task is a select participant running on server thread
-  task::this task.kind@ TK_SELECT_PART == assert
-  task::this task.thread thread.actorModel@ AC_SERVER == assert
+  //task::this task.kind@ TK_SELECT_PART == assert
+  //task::this task.thread thread.actorModel@ AC_SERVER == assert
 
   pSeitf task::this task.seitf!
   //pSeitf seitf.index@ to pIndex
@@ -369,7 +367,7 @@ tp: makingIndex
   // did we get an index buffer ?
   pEntryBuffer if
     // position in the index buffer at the key
-    key pEntryBuffer pIndex i_Phrase index.position
+    key pEntryBuffer pIndex i_Phrase pPlanner index.position
     to entry
   then
 
@@ -384,7 +382,9 @@ tp: makingIndex
     pTempEntryBuffer pBufferQueue queue.append
 
     // mark that a fetch task has ended
-    pSeitf seitf.fetchTaskEnded
+    pSeitf if
+      pSeitf seitf.fetchTaskEnded
+    then
 
     exit
   then
@@ -396,6 +396,7 @@ tp: makingIndex
 
     // check if exact key match
     key pIndex entry entry.matches if
+
 
       // insert row from entry in tempEntryBuffer
       //"Inserting row into tempEntryBuffer" .
@@ -446,7 +447,9 @@ tp: makingIndex
   pTempEntryBuffer pBufferQueue queue.append
 
   // mark that a fetch task has ended
-  pSeitf seitf.fetchTaskEnded
+  pSeitf if
+    pSeitf seitf.fetchTaskEnded
+  then
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -482,11 +485,11 @@ tp: loadIndexes
 /*----------------------------------------------------------------------------*/
 /* position key select cursor for table (called by selectIndex request)       */
 /*----------------------------------------------------------------------------*/
-: lowerSelectIdxTask ( i_Phrase <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf partition -- )
+: lowerSelectIdxTask ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf partition -- )
 
 tp: lowerSelectIdxTask
 
-  locals| iPartitionNo pSeitf pIndex pBufferQueue upper lower key i_Phrase |
+  locals| iPartitionNo pSeitf pIndex pBufferQueue upper lower key pPlanner i_Phrase |
   0 0 0 locals| entry tempEntryBuffer indexBuffer |
 
   // task is a select participant running on server thread
@@ -507,7 +510,7 @@ tp: lowerSelectIdxTask
   // did we get an index buffer ?
   indexBuffer if
     // position in the index buffer at the lower key
-    lower indexBuffer pIndex i_Phrase index.position
+    lower indexBuffer pIndex i_Phrase pPlanner index.position
     to entry
   then
 
@@ -524,7 +527,9 @@ tp: lowerSelectIdxTask
     tempEntryBuffer pBufferQueue queue.append
 
     // mark that a fetch task has ended
-    pSeitf seitf.fetchTaskEnded
+    pSeitf if
+      pSeitf seitf.fetchTaskEnded
+    then
 
     exit
   then
@@ -583,18 +588,20 @@ tp: lowerSelectIdxTask
   tempEntryBuffer pBufferQueue queue.append
 
   // mark that a fetch task has ended
-  pSeitf seitf.fetchTaskEnded
+  pSeitf if
+    pSeitf seitf.fetchTaskEnded
+  then
 ;
 
 /*----------------------------------------------------------------------------*/
 /* position key select cursor for table (called by selectIndex request)       */
 /*----------------------------------------------------------------------------*/
-: rangeSelectIdxTask ( i_Phrase <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf iPartitionNo -- )
+: rangeSelectIdxTask ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf iPartitionNo -- )
 
 //"rangeSelectIdxTask" .
 
   // save args
-  locals| iPartitionNo pSeitf pIndex pBufferQueue sUpper sLower sKey i_Phrase |
+  locals| iPartitionNo pSeitf pIndex pBufferQueue sUpper sLower sKey pPlanner i_Phrase |
 
   // local variables
   0 0 0 0 locals| pUpperEntry pIndexEntry pIndexBuffer pResultBuffer |
@@ -620,7 +627,7 @@ tp: lowerSelectIdxTask
   // did we get an index buffer ?
   pIndexBuffer if
     // position in the index buffer at the lower key
-    sLower pIndexBuffer pIndex i_Phrase index.position to pIndexEntry
+    sLower pIndexBuffer pIndex i_Phrase pPlanner index.position to pIndexEntry
   then
 
   // did we find an entry ?
@@ -633,7 +640,9 @@ tp: lowerSelectIdxTask
     pResultBuffer pBufferQueue queue.append
 
     // mark that a fetch task has ended
-    pSeitf seitf.fetchTaskEnded
+    pSeitf if
+      pSeitf seitf.fetchTaskEnded
+    then
 
     exit
   then
@@ -691,7 +700,9 @@ tp: lowerSelectIdxTask
   pResultBuffer pBufferQueue queue.append
 
   // mark that a fetch task has ended
-  pSeitf seitf.fetchTaskEnded
+  pSeitf if
+    pSeitf seitf.fetchTaskEnded
+  then
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -772,9 +783,9 @@ tp: populateIndex
 /*----------------------------------------------------------------------------*/
 /* position key select cursor for table (called by selectIndex request)       */
 /*----------------------------------------------------------------------------*/
-: scanSelectIdxTask ( i_Phrase <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf iPartitionNo -- )
+: scanSelectIdxTask ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf iPartitionNo -- )
 
-  locals| iPartitionNo pSeitf pIndex pBufferQueue upper lower key i_Phrase |
+  locals| iPartitionNo pSeitf pIndex pBufferQueue upper lower key pPlanner i_Phrase |
   0 0 0 locals| entry tempEntryBuffer indexBuffer |
 
   tp: scanSelectIdxTask
@@ -810,7 +821,9 @@ tp: populateIndex
     tempEntryBuffer pBufferQueue queue.append
 
     // mark that a fetch task has ended
-    pSeitf seitf.fetchTaskEnded
+    pSeitf if
+      pSeitf seitf.fetchTaskEnded
+    then
 
     //"select ended...B" .
 
@@ -874,7 +887,9 @@ tp: populateIndex
   tempEntryBuffer pBufferQueue queue.append
 
   // mark that a fetch task has ended
-  pSeitf seitf.fetchTaskEnded
+  pSeitf if
+    pSeitf seitf.fetchTaskEnded
+  then
 
   //"select ended...A" .
 
@@ -914,16 +929,14 @@ tp: populateIndex
 /*----------------------------------------------------------------------------*/
 /* select using index (called by fetchRowsIndex_req)                          */
 /*----------------------------------------------------------------------------*/
-: spawnSelectTask ( i_Phrase "<sExactKey>" "<sLowerKey>" "<sUpperKey>"
+: spawnSelectTask ( i_Phrase pPlanner "<sExactKey>" "<sLowerKey>" "<sUpperKey>"
 "<sSelectTaskSeed>" "<sIndexNm>" pBufferQueue iSlot --  )
-
-tp: selectIndex
 
   //debug::trap
 
   // task is a request server
-  task::this task.kind@ TK_REQUEST_SERVER == assert
-  task::this task.thread thread.actorModel@ AC_SERVER == assert
+  //task::this task.kind@ TK_REQUEST_SERVER == assert
+  //task::this task.thread thread.actorModel@ AC_SERVER == assert
 
   //
   // execution context:
@@ -935,7 +948,7 @@ tp: selectIndex
   //assert::stack_5
 
   // save args
-  locals| iSlot pBufferQueue sIndexNm sSelectTaskSeed sUpperKey sLowerKey sExactKey i_Phrase |
+  locals| iSlot pBufferQueue sIndexNm sSelectTaskSeed sUpperKey sLowerKey sExactKey pPlanner i_Phrase |
 
   // local variables
   0 0 0 0 0 0 0 locals| pIndex iSlots pSeitf pSelectTask nRowCount pIndexBuffer pEntry |
@@ -950,7 +963,9 @@ tp: selectIndex
 
   // find the index and put it in the seitf
   sIndexNm find execute to pIndex
-  pIndex pSeitf seitf.index!
+  pSeitf if
+    pIndex pSeitf seitf.index!
+  then
 
   // pop indexes
   popIndexes
@@ -963,14 +978,15 @@ tp: selectIndex
   //"selectTask.queue" queue::new pSeitf seitf.bufferQueue!
 
   // set the queue in the seitf
-  pBufferQueue pSeitf seitf.bufferQueue!
+  pSeitf if
+    pBufferQueue pSeitf seitf.bufferQueue!
+  then
 
   // create a selectTask to execute the key select on the index for the partition
-  i_Phrase sExactKey sLowerKey sUpperKey pBufferQueue pIndex pSeitf iSlot 8
+  i_Phrase pPlanner sExactKey sLowerKey sUpperKey pBufferQueue pIndex pSeitf iSlot 9
   sSelectTaskSeed nullptr "selectTask" TK_SELECT_PART spawnServerTask
   to pSelectTask
 ;
-
 
 /*----------------------------------------------------------------------------*/
 /* remove an index                                                            */
@@ -991,9 +1007,9 @@ tp: selectIndex
 /*----------------------------------------------------------------------------*/
 /* position key select cursor for table (called by selectIndex request)       */
 /*----------------------------------------------------------------------------*/
-: upperSelectIdxTask ( i_Phrase <"key>" "<lower>" "<upper>" pIndex pBufferQueue pSeitf partition -- )
+: upperSelectIdxTask ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pIndex pBufferQueue pSeitf partition -- )
 
-  locals| iPartitionNo pSeitf pIndex pBufferQueue upper lower key i_Phrase |
+  locals| iPartitionNo pSeitf pIndex pBufferQueue upper lower key pPlanner i_Phrase |
   0 0 0 0 locals| upperEntry entry tempEntryBuffer indexBuffer |
 
   tp: upperSelectIdxTask
@@ -1029,7 +1045,9 @@ tp: selectIndex
     tempEntryBuffer pBufferQueue queue.append
 
     // mark that a fetch task has ended
-    pSeitf seitf.fetchTaskEnded
+    pSeitf if
+      pSeitf seitf.fetchTaskEnded
+    then
 
     exit
   then
@@ -1094,7 +1112,9 @@ tp: selectIndex
   tempEntryBuffer pBufferQueue queue.append
 
   // mark that a fetch task has ended
-  pSeitf seitf.fetchTaskEnded
+  pSeitf if
+    pSeitf seitf.fetchTaskEnded
+  then
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -1266,10 +1286,10 @@ tp: selectIndex
 /*----------------------------------------------------------------------------*/
 /* position key select cursor for table (called by selectIndex request)       */
 /*----------------------------------------------------------------------------*/
-: groupByIdxTask_RH ( i_Phrase <"key>" "<lower>" "<upper>" pIndex pBufferQueue pSeitf iPartitionNo -- )
+: groupByIdxTask_RH ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pIndex pBufferQueue pSeitf iPartitionNo -- )
 
   // save args
-  locals| iPartitionNo pSeitf pIndex pBufferQueue sUpper sLower sKey i_Phrase |
+  locals| iPartitionNo pSeitf pIndex pBufferQueue sUpper sLower sKey pPlanner i_Phrase |
 
   // local variables
   0 0 0 0 locals| pUpperEntry pIndexEntry pIndexBuffer pResultBuffer |
