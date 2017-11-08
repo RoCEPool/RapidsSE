@@ -320,8 +320,8 @@ void Tx::vDump(eCN eClass, Object* pObject, Stz* aTab)
   }
   
   vTrace("tx: %lld.%lld-%lld.%lld phase %s counter %lld %s\n"_Stz,
-         pTx->iLocalTxNo(), pTx->iLocalTxNode(),
-         pTx->iDistTxNo(),  pTx->iDistTxNode(),
+         pTx->iLocalTxNode(), pTx->iLocalTxNo(),
+         pTx->iDistTxNode(), pTx->iDistTxNo(),  
          pTP[pTx->m_ePhase],
          pTx->iCounterGet(),
          cMembers);
