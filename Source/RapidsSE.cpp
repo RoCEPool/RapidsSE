@@ -463,15 +463,15 @@ void RapidsSE::vSystemInit(void)
   
   vDicCompile(gnpBootTask);
   
+  // create the tx sets
+  gpTxSet = new TxSet(gpGrid->iThisNode());
+  
   gpAttachMap->vRecordGlobals(gxArguments.m_sRegionName,
                               gxArguments.m_iRegionSize,
                               gxArguments.m_iJumboSize);
   
   // initialize the plan number
   gzPlanId =  gpGrid->iThisNode() << 48;
-  
-  // create the tx sets
-  gpTxSet = new TxSet(gpGrid->iThisNode());
   
   // get the trace file
   Word* pTraceFileWord = gpMainDic->pFindWord("trace_file"_Stz);
