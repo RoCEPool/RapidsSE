@@ -42,6 +42,7 @@ void Task::vAddPrimitives_Tx(void)
   vAddPrimitive("tx::dumpAll"_Stz,    &vTxDumpAll,         false);
   vAddPrimitive("tx.free"_Stz,        &vTxFree,            false);
   vAddPrimitive("tx.id"_Stz,          &vTxId,              false);
+  vAddPrimitive("tx.prepare"_Stz,     &vTxPrepare,         false);
   vAddPrimitive("tx.rollback"_Stz,    &vTxRollback,        false);
   vAddPrimitive("tx::testDist"_Stz,   &vTxTestDist,        false);
 }
@@ -272,6 +273,28 @@ void Task::vTxId(MP_Task mpTask)
   i8 iTxId = pTx->iLocalTxId();
   
   mpTask->m_pDataStack->vPushInt(iTxId);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* tx.prepare -- prepare a tx                                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vTxPrepare(MP_Task mpTask)
+{
+  ENTRY("vTxPrepare"_Stz);
+  
+  Object* pPtrTx;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTx) )
+    THROW_INVALID_DSTACK("tx.prepare"_Stz);
+  Tx* pTx = _pTx(pPtrTx);
+  
+  pTx->vPhase(TP_PREPARED);
+  
+  vTrace("Prepared tx: %lld.%lld-%lld.%lld(%s)\n"_Stz,
+         pTx->iLocalTxNode(), pTx->iLocalTxNo(),
+         pTx->iDistTxNode(), pTx->iDistTxNo(),
+         pTx->aDecode());
   
   EXIT();
 }

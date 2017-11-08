@@ -356,7 +356,7 @@ tp: partitionAppendBuffer
 ;
 
 /*----------------------------------------------------------------------------*/
-/* commit (and free) the dist tx on this node                                 */
+/* commit (and free) the given dist tx on this node                           */
 /*----------------------------------------------------------------------------*/
 : txDistCommit allParticipants 1 checkResult ( iDistTxId -- true n# true )
 
@@ -380,6 +380,34 @@ tp: partitionAppendBuffer
   pDistTx tx.dump
   pDistTx tx.commit
   pDistTx tx.free
+
+  true <SUCCESS_RESULT>
+;
+
+/*----------------------------------------------------------------------------*/
+/* prepare the dist tx on this node                                           */
+/*----------------------------------------------------------------------------*/
+: txDistPrepare allParticipants 1 checkResult ( iDistTxId -- true n# true )
+
+  locals| iDistTxId |
+
+  "txDistPrepare$ got..." .
+
+  iDistTxId .
+
+  tx::dumpAll
+
+  iDistTxId tx::testDist locals| pDistTx |
+
+  pDistTx not if
+    "dist tx does not exist on this node" .
+    true <SUCCESS_RESULT>
+    exit
+  then
+
+  "preparing distTx..." .
+  pDistTx tx.dump
+  pDistTx tx.prepare
 
   true <SUCCESS_RESULT>
 ;
