@@ -300,7 +300,7 @@ void Tx::vContentDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump dictionary                                                            */
+/* dump transaction                                                           */
 /*----------------------------------------------------------------------------*/
 void Tx::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
@@ -309,11 +309,22 @@ void Tx::vDump(eCN eClass, Object* pObject, Stz* aTab)
   
   Tx* pTx = reinterpret_cast<Tx*>(pObject);
   
-  vTrace("tx: %lld.%lld-%lld.%lld phase %s counter %lld\n"_Stz,
+  // get string of the distributed members of this transaction
+  char cMembers[C_64KB] = "";
+  if (pTx->bLocalTx()) {
+    StrLib::vConcat(cMembers,"{");
+    for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++)
+      if (pTx->bDistMember(i_Node))
+        StrLib::vSprintCat(cMembers," %lld",i_Node);
+    StrLib::vConcat(cMembers," }");
+  }
+  
+  vTrace("tx: %lld.%lld-%lld.%lld phase %s counter %lld %s\n"_Stz,
          pTx->iLocalTxNo(), pTx->iLocalTxNode(),
          pTx->iDistTxNo(),  pTx->iDistTxNode(),
          pTP[pTx->m_ePhase],
-         pTx->iCounterGet());
+         pTx->iCounterGet(),
+         cMembers);
 }
 
 /*----------------------------------------------------------------------------*/
