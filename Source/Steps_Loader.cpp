@@ -36,6 +36,8 @@ void Task::vAddPrimitives_Loader(void)
   vAddPrimitive("loader::new"_Stz,        &vLoaderNew,         false);
   vAddPrimitive("loader.newSub"_Stz,      &vLoaderNewSub,      false);
   vAddPrimitive("loader.path!"_Stz,       &vLoaderPathStore,   false);
+  vAddPrimitive("loader.seitf@"_Stz,      &vLoaderSEitfFetch,  false);
+  vAddPrimitive("loader.seitf!"_Stz,      &vLoaderSEitfStore,  false);
   vAddPrimitive("loader.table!"_Stz,      &vLoaderTableStore,  false);
   vAddPrimitive("loader.tx@"_Stz,         &vLoaderTxFetch,     false);
   vAddPrimitive("loader.tx!"_Stz,         &vLoaderTxStore,     false);
@@ -158,6 +160,46 @@ void Task::vLoaderPathStore(MP_Task mpTask)
   sPath = _pStrVal(xWspPath.pNestedValueSelf());
   
   pLoader->vPath(sPath);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loader.seitf@ -- fetch seitf from loader                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderSEitfFetch(MP_Task mpTask)
+{
+  ENTRY("vLoaderSEitfFetch"_Stz);
+  
+  Object* pPtrLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
+    THROW_INVALID_DSTACK("loader.seitf@"_Stz);
+  Loader* pLoader = _pLoader(pPtrLoader);
+  
+  SEitf* pSEitf = pLoader->pSEitf();
+  
+  mpTask->m_pDataStack->vPushObject(pSEitf);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loader.seitf! -- store seitf into loader                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderSEitfStore(MP_Task mpTask)
+{
+  ENTRY("vLoaderSEitfStore"_Stz);
+  
+  Object* pPtrLoader;
+  Object* pPtrSEitf;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader,pPtrSEitf) )
+    THROW_INVALID_DSTACK("loader.seitf!"_Stz);
+  
+  Loader* pLoader = _pLoader(pPtrLoader);
+  
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  
+  pLoader->vSEitf(pSEitf);
   
   EXIT();
 }
