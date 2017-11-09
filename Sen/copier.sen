@@ -27,7 +27,7 @@
 
   r2 r0 selCursor.table!
 
-  beginTx >r
+  tx::begin >r
   // r0 ^txCursor
   // r1 ^selCursor
   // r2 ^toTable
@@ -54,7 +54,7 @@
     r3 selCursor.end
   loop
 
-  commitTx
+  tx.commit
 
   // r0 ^txCursor
   // r1 ^selCursor
