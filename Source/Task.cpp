@@ -854,8 +854,7 @@ void Task::vAddConstants(void)
   /*  5 */ vAddConstant("TP_PREPARED"_Stz,    TP_PREPARED);
   /*  6 */ vAddConstant("TP_ROLLINGBACK"_Stz, TP_ROLLINGBACK);
   /*  7 */ vAddConstant("TP_ROLLEDBACK"_Stz,  TP_ROLLEDBACK);
-  /*  8 */ vAddConstant("TP_FREE"_Stz,        TP_FREE);
-  /*  9 */ vAddConstant("TP_ENUMS"_Stz,       TP_ENUMS);
+  /*  8 */ vAddConstant("TP_ENUMS"_Stz,       TP_ENUMS);
 
   // WT_ : word type
   /*  0 */ vAddConstant("WT_NONE"_Stz,      WT_NONE);

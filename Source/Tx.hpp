@@ -15,8 +15,7 @@ namespace Transactions
     /* 5 */ TP_PREPARED,
     /* 6 */ TP_ROLLINGBACK,
     /* 7 */ TP_ROLLEDBACK,
-    /* 8 */ TP_FREE,
-    /* 9 */ TP_ENUMS
+    /* 8 */ TP_ENUMS
   };
   
   static Stz* pTP[]
@@ -29,8 +28,7 @@ namespace Transactions
     /* 5 */ "PREPARED"_Stz,
     /* 6 */ "ROLLINGBACK"_Stz,
     /* 7 */ "ROLLEDBACK"_Stz,
-    /* 8 */ "FREE"_Stz,
-    /* 9 */ "ENUMS"_Stz
+    /* 8 */ "ENUMS"_Stz
   };
   
   class Tx : public Object,
