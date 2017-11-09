@@ -3,11 +3,18 @@
 /*============================================================================*/
 #pragma once
 
+namespace Interface
+{
+  class SEitf;
+}
+
 namespace DBobjects
 {
   class Loader : public Object
   {
   private:
+    Interface::SEitf* m_pSEitf; // SE interface
+  
     Table*   m_pTable;   // table being load
     s256     m_sPath;    // file being loaded
     Tx*      m_pTx;      // tx
@@ -31,6 +38,8 @@ namespace DBobjects
     LoadMap* pLoadMap(void);
     StrVal&  sPath(void);
     void     vPath(StrVal& sPath);
+    Interface::SEitf* pSEitf(void);
+    void     vSEitf(Interface::SEitf* pSEitf);
     Table*   pTable(void);
     void     vTable(Table* pTable);
     void     vTidyUp(void);

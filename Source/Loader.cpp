@@ -59,6 +59,7 @@ Loader::Loader(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   
+  m_pSEitf   = nullptr;
   m_sPath    = "<none>"_Stz;
   m_pTable   = nullptr;
   m_pTx      = nullptr;
@@ -152,6 +153,26 @@ void Loader::vPath(StrVal& sPath)
   m_sPath = sPath;
     
   m_pLoadMap->vFilePath(sPath);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get SEitf                                                                  */
+/*----------------------------------------------------------------------------*/
+Interface::SEitf* Loader::pSEitf(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  
+  return m_pSEitf;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set SEitf                                                                  */
+/*----------------------------------------------------------------------------*/
+void Loader::vSEitf(Interface::SEitf* pSEitf)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  
+  m_pSEitf = pSEitf;
 }
 
 /*----------------------------------------------------------------------------*/
