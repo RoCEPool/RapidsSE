@@ -21,7 +21,7 @@ namespace Transactions
   
   static Stz* pTP[]
   {
-    /* 0 */ "FREE"_Stz,
+    /* 0 */ "NONE"_Stz,
     /* 1 */ "EXECUTING"_Stz,
     /* 2 */ "COMMITTING"_Stz,
     /* 3 */ "COMMITTED"_Stz,
@@ -87,6 +87,8 @@ namespace Transactions
   
     bool bDistMember(i8 i_Node);
     void vDistMember(i8 i_Node, bool bDistMember);
+  
+    bool bIsActive(void);
   
     Footer* aFooter(void);
   };

@@ -30,6 +30,7 @@ namespace Transactions
     void vDumpAll(void);
     Tx*  pFindTx(i8 iTxId);
     Tx*  pFindTx_NL(i8 iTxId);
+    i8   iOldestActiveId(void);
     void vRemoveTx(Tx* pTx);
     void vRemoveTx_NL(Tx* pTx);
   

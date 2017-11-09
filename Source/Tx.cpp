@@ -389,6 +389,22 @@ void Tx::vDistMember(i8 i_Node, bool bDistMember)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this an active transaction?                                             */
+/*----------------------------------------------------------------------------*/
+bool Tx::bIsActive(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
+  
+  if (TP_EXECUTING   == m_ePhase ||
+      TP_COMMITTING  == m_ePhase ||
+      TP_PREPARING   == m_ePhase ||
+      TP_ROLLINGBACK == m_ePhase)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

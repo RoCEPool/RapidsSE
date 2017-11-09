@@ -232,7 +232,35 @@ void TxSet::vRemoveTx(Tx* pTx)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove given tx                                                            */
+/* find oldest active local tx id                                             */
+/*----------------------------------------------------------------------------*/
+i8 TxSet::iOldestActiveId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
+  
+  i8 iOldestActiveId = -1;
+  
+  m_xLock.vGrabRead();
+  
+  for (SkipNode* pNode = m_pLocalTxList->pFirst(0);
+       pNode;
+       pNode = m_pLocalTxList->pNext(pNode,0)) {
+    
+    Tx* pTx = _pTx(pNode->m_pObject);
+    
+    if (pTx->bIsActive()) {
+      iOldestActiveId = pTx->iLocalTxId();
+      break;
+    }
+  }
+  
+  m_xLock.vDropRead();
+  
+  return iOldestActiveId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove given tx (non-locking)                                              */
 /*----------------------------------------------------------------------------*/
 void TxSet::vRemoveTx_NL(Tx* pTx)
 {
@@ -245,7 +273,7 @@ void TxSet::vRemoveTx_NL(Tx* pTx)
   bRemoved = m_pLocalTxList->bRemove(pTx);
   
   bRemoved = m_pDistTxList->bRemove(pTx);
-  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* grab lock for write                                                        */
