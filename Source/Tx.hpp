@@ -59,7 +59,10 @@ namespace Transactions
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static Tx*  pTestDistTx(i8 iDistTxId);
-  
+
+    static i8 iTxNo(i8 iTxId);
+    static i8 iTxNode(i8 iTxId);
+
     i8 iLocalTxId(void);
     i8 iLocalTxNo(void);
     i8 iLocalTxNode(void);

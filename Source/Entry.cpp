@@ -415,13 +415,14 @@ void Entry::vShow(i8 iBase, Index* pIndex, bool bShowKey)
          m_nOffsets
          );
   
-  vTrace("Id %3lli.%3lli "_Stz,
+  vTrace("Id %3lli.%03lli "_Stz,
          m_xId.iBuffer(),
          m_xId.iRow()
          );
   
-  vTrace("Tx %lld "_Stz,
-         m_iTxId
+  vTrace("Tx %lld.%03lld "_Stz,
+         Tx::iTxNo(m_iTxId),
+         Tx::iTxNode(m_iTxId)
          );
   
   if (bShowKey)
@@ -439,7 +440,8 @@ void Entry::vShow(i8 iBase, Index* pIndex, bool bShowKey)
            *nRight,
            iRightOffset(nRight) == C_NIL_OFFSET ?
            C_NIL_OFFSET :
-           iBase + iRightOffset(nRight) + nSizeEntry());
+           iBase + iRightOffset(nRight) + nSizeEntry()
+           );
   }
   
   vTrace("\n"_Stz);
