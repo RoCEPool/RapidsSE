@@ -259,7 +259,8 @@ bool LoaderSub::bInsertRow(void)
   EntryBuffer* pEntryBuffer = m_pEntryBuffer[m_iPartition];
   
   // get the tx id
-  Tx* pTx = m_pLoader->pTx();
+  SEitf* pSEitf = m_pLoader->pSEitf();
+  Tx* pTx = pSEitf->pTx();
   i8 iDistTxId = pTx->iDistTxId();
   
   // insert row into working buffer

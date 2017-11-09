@@ -734,8 +734,6 @@ namespace Tasks
     static void vLoaderSEitfFetch(MP_Task mpTask);
     static void vLoaderSEitfStore(MP_Task mpTask);
     static void vLoaderTableStore(MP_Task mpTask);
-    static void vLoaderTxFetch(MP_Task mpTask);
-    static void vLoaderTxStore(MP_Task mpTask);
     
     // loader sub
     static void vLoaderSubBegin(MP_Task mpTask);
