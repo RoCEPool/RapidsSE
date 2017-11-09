@@ -13,6 +13,7 @@ create table bolTbl (
   tsp_col7   TIMESTAMP   NOT NULL,
   bol_col8   BOOLEAN
 );
+success
 
 // create indexes
 create index bol_idx1 on bolTbl (bol_col1);

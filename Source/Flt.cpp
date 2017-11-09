@@ -189,12 +189,44 @@ bool Flt::bExtract(char** aaSrc, Flt* aFloat, Column* pColumn)
   // skip leading whitespace
   while (' ' == **aaSrc)
     (*aaSrc)++;
-  
+  /*
   // test for null
   if ( ! **aaSrc
       || C_FS == **aaSrc
       || C_NL == **aaSrc
       || C_CR == **aaSrc) {
+    
+    if ( !pColumn->bIsNullable() )
+      return false;
+    
+    aFloat->vSetNull();
+    return true;
+  }
+  */
+  
+  // is there data ?
+  if ( ! **aaSrc
+      || C_FS == **aaSrc
+      || C_NL == **aaSrc
+      || C_CR == **aaSrc) {
+    
+    return false;
+  }
+  
+  // test for null
+  if (StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) == 0) {
+    
+    *aaSrc = (*aaSrc) + 4;
+    
+    // skip trailing whitespace
+    while (' ' == **aaSrc)
+      (*aaSrc)++;
+    
+    if (**aaSrc
+        && C_FS != **aaSrc
+        && C_NL != **aaSrc
+        && C_CR != **aaSrc)
+      return false;
     
     if ( !pColumn->bIsNullable() )
       return false;

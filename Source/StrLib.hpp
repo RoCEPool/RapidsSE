@@ -26,6 +26,7 @@ namespace Base
     static bool  bBackward(const char** ps, char* pBegin, const char c);
 
     static i8    iCompare(const char* pArg1, const char* pArg2);
+    static bool  iCompare(const char* pArg1, const char* pArg2, i8 nBytes, i8 iCase);
     static bool  iCompare(const char* pArg1, const char* pArg2, i8 iCase);
     static void  vConcat(char* pWS, char cChar);
     static void  vConcat(char* psDst, const char* psArg);

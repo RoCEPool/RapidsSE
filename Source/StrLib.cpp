@@ -155,6 +155,21 @@ i8 StrLib::iCompare(const char* pArg1, const char* pArg2)
 /*----------------------------------------------------------------------------*/
 /* iCompare: standard case-insensitive compare of the two args                */
 /*----------------------------------------------------------------------------*/
+bool StrLib::iCompare(const char* pArg1, const char* pArg2, i8 nBytes, i8 iCase)
+{
+  i8 iDiff;
+  
+  if (C_NO_CASE == iCase)
+    iDiff = strncasecmp(pArg1,pArg2,nBytes);
+  else
+    iDiff = strncmp(pArg1,pArg2,nBytes);
+  
+  return iDiff;
+}
+
+/*----------------------------------------------------------------------------*/
+/* iCompare: standard case-insensitive compare of the two args                */
+/*----------------------------------------------------------------------------*/
 bool StrLib::iCompare(const char* pArg1, const char* pArg2, i8 iCase)
 {
   i8 iDiff;
