@@ -838,7 +838,7 @@ bool EntryBuffer::bAppendRow(i8 iTxId, Stz* pRow, i8 iLength)     //# critical
     // insert entry into current index buffer
     //pEntry = pInsert(xEntWrk);
     
-    Entry* pEntry = pAllotEntryBytes(nEntryBytes); //# why + sizeof(i8) ?
+    pEntry = pAllotEntryBytes(nEntryBytes); //# why + sizeof(i8) ?
     ASSERT(pEntry)
     
     //----------------------------------------------------------------------------
@@ -1015,7 +1015,7 @@ bool EntryBuffer::bAppendEntry(Entry* pRowEntry, Entry** ppEntry)     //# critic
     // insert entry into current index buffer
     //pEntry = pInsert(xEntWrk);
     
-    Entry* pEntry = pAllotEntryBytes(nEntryBytes); //# why + sizeof(i8) ?
+    pEntry = pAllotEntryBytes(nEntryBytes); //# why + sizeof(i8) ?
     ASSERT(pEntry)
     
     //----------------------------------------------------------------------------

@@ -421,8 +421,8 @@ void Entry::vShow(i8 iBase, Index* pIndex, bool bShowKey)
          );
   
   vTrace("Tx %lld.%03lld "_Stz,
-         Tx::iTxNo(m_iTxId),
-         Tx::iTxNode(m_iTxId)
+         Tx::iTxNode(m_iTxId),
+         Tx::iTxNo(m_iTxId)
          );
   
   if (bShowKey)
@@ -737,7 +737,7 @@ i8 Entry::iTxId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
   
-  return -1; //m_iTxId;
+  return m_iTxId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -747,7 +747,7 @@ void Entry::vTxId(i8 iTxId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); _class2_(CN_ENTRY,CN_ROW);
   
-  //m_iTxId = iTxId;
+  m_iTxId = iTxId;
 }
 
 /*----------------------------------------------------------------------------*/
