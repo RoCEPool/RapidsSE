@@ -9,6 +9,7 @@
 extern AttachMap*      gpAttachMap;
 extern BufferPool*     gpBufferPool;
 extern Heap*           gpMediumHeap;
+extern Heap*           gpSmallHeap;
 extern Heap*           gpJumboHeap;
 
 extern BPA*            gpBPA;

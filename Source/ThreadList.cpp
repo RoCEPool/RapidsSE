@@ -4,7 +4,6 @@
 
 #include "Threads.h"
 
-extern Heap*        gpSmallHeap;
 extern ThreadList*  gpThreadList;
 
 /*----------------------------------------------------------------------------*/

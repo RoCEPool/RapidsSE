@@ -5,7 +5,6 @@
 #include "Dictionaries.h"
 
 extern Heap*       gpMediumHeap;
-extern Heap*       gpSmallHeap;
 extern BufferPool* gpBufferPool;
 
 /*----------------------------------------------------------------------------*/

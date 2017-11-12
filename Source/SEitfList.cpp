@@ -4,7 +4,6 @@
 
 #include "Interface.h"
 
-extern Heap*        gpSmallHeap;
 extern SEitfList*   gpSEitfList;
 
 /*----------------------------------------------------------------------------*/

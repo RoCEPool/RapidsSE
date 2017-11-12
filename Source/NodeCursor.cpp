@@ -4,8 +4,6 @@
 
 #include "GridModel.h"
 
-extern Heap*   gpSmallHeap;
-
 extern Grid*   gpGrid;
 
 /*----------------------------------------------------------------------------*/

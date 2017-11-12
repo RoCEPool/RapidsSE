@@ -6,8 +6,6 @@
 
 #include "Pool.h"
 
-extern Heap*  gpSmallHeap;
-
 Atomic gzFileOpenCount;
 
 /*----------------------------------------------------------------------------*/
