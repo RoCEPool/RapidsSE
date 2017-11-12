@@ -6,7 +6,6 @@
 
 #include "StorageEngine.h"
 
-extern Heap* gpJumboHeap;
 extern bool gbProgress;
 extern Locks gxLocks;
 
