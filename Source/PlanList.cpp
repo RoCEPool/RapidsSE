@@ -4,7 +4,6 @@
 
 #include "Plans.h"
 
-extern Heap*        gpMediumHeap;
 extern PlanList*    gpPlanList;
 
 /*----------------------------------------------------------------------------*/

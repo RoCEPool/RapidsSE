@@ -4,7 +4,6 @@
 
 #include "Tasks.h"
 
-extern Heap*        gpMediumHeap;
 extern TaskList*    gpTaskList;
 
 /*----------------------------------------------------------------------------*/

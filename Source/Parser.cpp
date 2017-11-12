@@ -6,8 +6,6 @@
 
 #include "StorageEngine.h"
 
-extern Heap* gpMediumHeap;
-
 #include "Arguments.hpp"
 
 extern bool gbTracepoint;

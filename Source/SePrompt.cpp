@@ -5,7 +5,6 @@
 #include "SePrompt.hpp"
 
 extern BufferPool*  gpBufferPool;
-extern Heap*        gpMediumHeap;
 extern Arguments    gxArguments;
 extern AttachMap*   gpAttachMap;
 extern Grid*        gpGrid;

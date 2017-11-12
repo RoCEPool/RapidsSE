@@ -5,7 +5,6 @@
 #include "Interface.h"
 #include "StorageEngine.h"
 
-extern Heap*      gpMediumHeap;
 extern Dic*       gpMainDic;
 extern SEitfList* gpSEitfList;
 extern AttachMap* gpAttachMap;
