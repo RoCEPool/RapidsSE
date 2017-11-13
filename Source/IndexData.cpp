@@ -6,7 +6,6 @@
 #include "DBobjects.h"
 #include "StorageEngine.h"
 
-extern BufferPool*  gpBufferPool;
 extern Grid*        gpGrid;
 
 /*----------------------------------------------------------------------------*/

@@ -4,8 +4,6 @@
 
 #include "Tasks.h"
 
-extern BufferPool* gpBufferPool;
-
 extern StepArray* gpStepArray ;
 
 /*----------------------------------------------------------------------------*/

@@ -7,7 +7,6 @@
 #include "SePrompt.hpp"
 
 extern AttachMap*      gpAttachMap;
-extern BufferPool*     gpBufferPool;
 extern BPA*            gpBPA;
 extern Dic*            gpMainDic;
 extern Word*           gpWord;

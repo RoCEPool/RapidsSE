@@ -4,8 +4,6 @@
 
 #include "Schedulers.h"
 
-extern BufferPool*  gpBufferPool;
-
 #include "Thread.hpp"
 
 extern i8 giSchEnqueueTask;

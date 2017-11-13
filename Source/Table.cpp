@@ -7,7 +7,6 @@
 //#include "Word.hpp"
 #include "StorageEngine.h"
 
-extern BufferPool*  gpBufferPool;
 extern bool  gbMetadata;
 extern Grid* gpGrid;
 extern Arguments gxArguments;

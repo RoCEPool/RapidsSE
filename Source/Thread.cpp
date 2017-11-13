@@ -6,7 +6,6 @@
 
 #include "StorageEngine.h"
 
-extern BufferPool*  gpBufferPool;
 extern ThreadList*  gpThreadList;
 extern TaskList*    gpTaskList;
 

@@ -8,7 +8,6 @@
 
 #include "StorageEngine.h"
 
-extern BufferPool* gpBufferPool;
 extern Dic*        gpMainDic;
 extern Word*       gpWord;
 
