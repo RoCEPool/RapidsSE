@@ -6,7 +6,6 @@
 #include "Schedulers.h"
 #include "SePrompt.hpp"
 
-extern AttachMap*      gpAttachMap;
 extern Dic*            gpMainDic;
 extern Word*           gpWord;
 

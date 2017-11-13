@@ -6,7 +6,6 @@
 
 extern BufferPool*  gpBufferPool;
 extern Arguments    gxArguments;
-extern AttachMap*   gpAttachMap;
 extern Grid*        gpGrid;
 extern bool         gbMetadata;
 

@@ -10,7 +10,6 @@
 
 extern Arguments       gxArguments;
 
-extern AttachMap*      gpAttachMap;
 extern Dic*            gpMainDic;
 extern Word*           gpWord;
 
