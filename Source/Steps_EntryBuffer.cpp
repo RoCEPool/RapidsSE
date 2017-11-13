@@ -8,7 +8,6 @@
 
 extern BufferPool*     gpBufferPool;
 extern Dic*            gpMainDic;
-extern Word*           gpWord;
 
 extern Grid*           gpGrid;
 extern StepArray*      gpStepArray;

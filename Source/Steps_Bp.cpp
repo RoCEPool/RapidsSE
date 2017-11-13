@@ -13,7 +13,6 @@ extern Heap*           gpSmallHeap;
 extern Heap*           gpJumboHeap;
 
 extern Dic*            gpMainDic;
-extern Word*           gpWord;
 
 extern Grid*           gpGrid;
 extern StepArray*      gpStepArray;
