@@ -12,7 +12,6 @@ extern Heap*           gpMediumHeap;
 extern Heap*           gpSmallHeap;
 extern Heap*           gpJumboHeap;
 
-extern BPA*            gpBPA;
 extern Dic*            gpMainDic;
 extern Word*           gpWord;
 

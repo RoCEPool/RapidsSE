@@ -5,7 +5,6 @@
 #include "StorageEngine.h"
 
 extern AttachMap*      gpAttachMap;
-extern BPA*            gpBPA;
 extern Dic*            gpMainDic;
 extern Word*           gpWord;
 

@@ -26,8 +26,6 @@ ServerScheduler*    gpServerScheduler    = nullptr;
 
 File*         gpTraceFile    = nullptr;
 
-BPA*          gpBPA          = nullptr;
-
 NP_Task       gnpBootTask    = nullptr;
 
 void*         mpRegion       = nullptr;
