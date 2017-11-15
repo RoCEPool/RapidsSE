@@ -10,12 +10,57 @@
 common/ range rbCrs /
 
 /*----------------------------------------------------------------------------*/
+/* send rows from buffers from teh buffer queue of the seitf                  */
+/*----------------------------------------------------------------------------*/
+: sendQueueBuffers ( pBufferQueue nLastBuffers pSeitf sProfile planId sNextOp )
+
+  0 0 locals| nRowCount pIndexBuffer sNextOp planId sProfile pSeitf nLastBuffers pBufferQueue |
+
+"sendingBuffers" .
+
+  // loop thru buffers
+  true
+  begin
+    while
+    // pop a buffer off the buffer queue
+    pBufferQueue popBuffer to pIndexBuffer
+
+    // send the index buffer to next printOp
+"sending a buffer" .
+    <<   pIndexBuffer true pSeitf sNextOp planId sProfile >>jobQueue
+"sent a buffer" .
+    // check if last buffer
+    pIndexBuffer entryBuffer.isLast@ if
+
+      nLastBuffers 1 - to nLastBuffers
+        0 nLastBuffers == if
+          false
+        else
+          true
+        then
+    else
+      true  // no more entries, move to next buffer
+    then
+    //pIndexBuffer entryBuffer.delete
+    //"Deleted buffer" .
+
+  repeat
+
+"no more buffers to send" .
+  <<  false pSeitf sNextOp planId sProfile >>jobQueue
+
+  // delete the buffer queue
+  pBufferQueue queue.delete
+
+;
+
+/*----------------------------------------------------------------------------*/
 /* scan partition of a table                                                  */
 /*----------------------------------------------------------------------------*/
 : rangePartition subDic range ( pSeitf profile plan -- )
 
   // record the plan and profile
-  0 0 0 0 locals| pTable pBufferQueue bSinglePartition pPlanner thePlan profile pSeitf |
+  0 0 0 0 0 locals| nLastBuffers pTable pBufferQueue bSinglePartition pPlanner thePlan profile pSeitf |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set path (hardcoded for the moment)
@@ -117,10 +162,11 @@ common/ range rbCrs /
   //getTableRef not if <NIP+ERROR> exit then
   //task::this task.seitf@ seitf.table@ assert
 
+"generating plan" .
   // generate plan for the fetch
   sWhere pTable "generatePlan" find execute to pPlanner
 
-  pPlanner planner.phrases@ .
+  pPlanner planner.phrases@ to nLastBuffers
 
   // assert we have a plan
   pPlanner assert
@@ -129,13 +175,16 @@ common/ range rbCrs /
   // set the no of last buffers to no of phrases in plan
   //pPlanner planner.phrases@ pSeitf seitf.lastBuffers!
 
+"creating bufferQ" .
+
   // create the buffer queue in the seitf
-  "selectTask.queue" queue::new to pBufferQueue
+  "rangeTask.queue" queue::new to pBufferQueue
 
   $$partition grid::toSlot 0 locals| iSlot bGroupBy |
 
   pPlanner planner.phrases@ 0
   do
+"spawning fetch task" .
     pBufferQueue iSlot bGroupBy I pPlanner "spawnFetch" find execute
   loop
 
@@ -144,8 +193,11 @@ common/ range rbCrs /
   // wait for all fetch tasks to end
   5 thread.sleep_s
 
+  pBufferQueue nLastBuffers pSeitf $$nextOp thePlan plan.Id@ $$nextProfile
+  sendQueueBuffers
+
   // << false plan >> -->> nextOp
-  << false pSeitf $$nextProfile thePlan plan.Id@ $$nextOp >>jobQueue
+  //<< false pSeitf $$nextProfile thePlan plan.Id@ $$nextOp >>jobQueue
 
   // [1] discard opFrame (and dictionary)
   opFrame.drop

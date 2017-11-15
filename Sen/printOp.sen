@@ -38,7 +38,9 @@ common/ print nFetchTasks /
 : printRb subDic print
 
   // record the plan and profile
-  0 locals| pTablePtr bFetchStarted thePlan profile |
+  0 locals| pTablePtr bFetchStarted thePlan profile pSeitf |
+
+"printRb" .
 
   "tenants" 1 dicPath.set
 
@@ -148,7 +150,7 @@ common/ print nFetchTasks /
     assert ( profile plan )
 
     // print row buffer rows
-    bFetchStarted ( profile plan bFetchStarted )
+    bFetchStarted ( pSeitf profile plan bFetchStarted )
     printRb ( bFetchStarted )
 
     // set fetch started
