@@ -80,7 +80,7 @@ tp: >>jobQueue_otherNode
 /*----------------------------------------------------------------------------*/
 /* network aware pipe                                                         */
 /*----------------------------------------------------------------------------*/
-: >>jobQueue ( << [ rb true | false ] profile planId op.task -- )
+: >>jobQueue ( << [ rb true | false ] pSeitf profile planId op.task -- )
 
   // << false profile plan op.task
 
@@ -150,13 +150,14 @@ tp: >>jobQueue_otherNode
 : executeDexPlan ( nextOp plan -- )
 
   // record the plan and profile
-  locals| thePlan sNextOp |
+  0 locals| pSeitf thePlan sNextOp |
 
   // trigger triggerOp by piping the plan to it
   //<< "triggerOp" thePlan >>
   //"triggerOp.task" find execute >jobQueue
 
-  << "triggerScanOp" thePlan plan.id@ "triggerScanOp.task" >>jobQueue
+  task::this task.seitf@ to pSeitf
+  << pSeitf "triggerScanOp" thePlan plan.id@ "triggerScanOp.task" >>jobQueue
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -167,13 +168,14 @@ tp: >>jobQueue_otherNode
 "tp: executeDfetchPlan" .
 
   // record the plan and profile
-  locals| thePlan sNextOp |
+  0 locals| pSeitf thePlan sNextOp |
 
   // trigger triggerOp by piping the plan to it
   //<< "triggerOp" thePlan >>
   //"triggerOp.task" find execute >jobQueue
 
-  << "triggerRangeOp" thePlan plan.id@ "triggerRangeOp.task" >>jobQueue
+  task::this task.seitf@ to pSeitf
+  << pSeitf "triggerRangeOp" thePlan plan.id@ "triggerRangeOp.task" >>jobQueue
 ;
 
 /*----------------------------------------------------------------------------*/

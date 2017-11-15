@@ -12,10 +12,10 @@ common/ scan rbCrs /
 /*----------------------------------------------------------------------------*/
 /* scan partition of a table                                                  */
 /*----------------------------------------------------------------------------*/
-: scanPartition subDic scan ( profile plan -- )
+: scanPartition subDic scan ( pSeitf profile plan -- )
 
   // record the plan and profile
-  locals| thePlan profile |
+  locals| thePlan profile pSeitf |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set path (hardcoded for the moment)
@@ -85,7 +85,7 @@ common/ scan rbCrs /
   begin while
       
     // << rb true profile plan profile >> -->> nextOp
-    << rbCrs rbCursor.get true $$nextProfile thePlan plan.id@ $$nextOp >>jobQueue
+    << rbCrs rbCursor.get true pSeitf $$nextProfile thePlan plan.id@ $$nextOp >>jobQueue
 
     // next rowBuffer in partition
     rbCrs rbCursor.next
@@ -97,7 +97,7 @@ common/ scan rbCrs /
 
   // pipe EOD to writeOp
   // << false plan >> -->> nextOp
-  << false $$nextProfile thePlan plan.Id@ $$nextOp >>jobQueue
+  << false pSeitf $$nextProfile thePlan plan.Id@ $$nextOp >>jobQueue
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // [2] delete cursor
@@ -130,8 +130,8 @@ common/ scan rbCrs /
     drop ( profile planId )
 
     // find plan using planId
-    planList::findPlan ( profile plan true )
-    assert ( profile plan )
+    planList::findPlan ( pSeitf profile plan true )
+    assert ( pSeitf profile plan )
 
     // scan the table partition and pipe to write
     scanPartition ( )

@@ -113,7 +113,7 @@ common/ write nStreams    /
 : writeRb subDic write
 
   // record the plan and profile
-  0 locals| pTablePtr thePlan profile |
+  0 locals| pTablePtr thePlan profile pSeitf |
 
   "tenants" 1 dicPath.set
 
@@ -175,7 +175,7 @@ common/ write nStreams    /
       drop
     else
       //thePlan writePipeSink
-      << $$nextProfile thePlan plan.id@ $$nextOp >>jobqueue
+      << pSeitf $$nextProfile thePlan plan.id@ $$nextOp >>jobqueue
     then
 
   else
@@ -190,7 +190,7 @@ common/ write nStreams    /
       writeCloseFile
       if
         // << $$nextProfile thePlan >> -->> $$nextOp
-        << $$nextProfile thePlan plan.id@ $$nextOp >>jobqueue
+        << pSeitf $$nextProfile thePlan plan.id@ $$nextOp >>jobqueue
       then
     then
 
@@ -217,8 +217,8 @@ common/ write nStreams    /
     drop ( profile planId )
 
     // find plan using planId
-    planList::findPlan ( profile plan true )
-    assert ( profile plan )
+    planList::findPlan ( pSeitf profile plan true )
+    assert ( pSeitf profile plan )
 
     // write row buffer to file
     writeRb ( )

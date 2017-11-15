@@ -7,10 +7,10 @@
 /*----------------------------------------------------------------------------*/
 /* respond                                                                    */
 /*----------------------------------------------------------------------------*/
-: respondSEitf ( plan -- )
+: respondSEitf ( pSeitf profile plan -- )
 
   // record the plan and profile
-  locals| thePlan profile |
+  locals| thePlan profile pSeitf |
 
   // push the op frame for this writeOp
   profile thePlan plan.opFrame? opFrame.push
@@ -18,7 +18,7 @@
   //"DONE" .
 
   // << profile plan >> -->> nextOp
-  << $$nextProfile thePlan plan.id@ $$nextOp >>jobqueue
+  << pSeitf $$nextProfile thePlan plan.id@ $$nextOp >>jobqueue
 
   opFrame.drop
 
@@ -45,8 +45,8 @@
     drop ( profile planId )
 
     // find plan using planId
-    planList::findPlan ( profile plan true )
-    assert ( profile plan )
+    planList::findPlan ( pSeitf profile plan true )
+    assert ( pSeitf profile plan )
 
     // respond to seitf
     respondSEitf ( )
