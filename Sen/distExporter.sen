@@ -47,7 +47,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // execute the plan
-  "scanOp" dexPlan executePlan
+  dexPlan executeDexPlan
 
   //"PlanTest waiting for ack" .
 
@@ -98,7 +98,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // execute the plan
-  "rangeOp" dfetchPlan executePlan
+  dfetchPlan executeDfetchPlan
 
   //"PlanTest waiting for ack" .
 

@@ -31,7 +31,8 @@
 "sinkOp.sen" include
 "sortOp.sen" include
 "teeOp.sen" include
-"triggerOp.sen" include
+"triggerRangeOp.sen" include
+"triggerScanOp.sen" include
 "writeOp.sen" include
 
 /*----------------------------------------------------------------------------*/
@@ -41,13 +42,14 @@
 
   // "createOpActors" .
 
-  0 "printOp"    dup :createWorkerActor spawnWorkerActor
-  0 "responseOp" dup :createWorkerActor spawnWorkerActor
-  0 "rangeOp"    dup :createWorkerActor spawnWorkerActor
-  0 "scanOp"     dup :createWorkerActor spawnWorkerActor
-  0 "sinkOp"     dup :createWorkerActor spawnWorkerActor
-  0 "triggerOp"  dup :createWorkerActor spawnWorkerActor
-  0 "writeOp"    dup :createWorkerActor spawnWorkerActor
+  0 "printOp"        dup :createWorkerActor spawnWorkerActor
+  0 "responseOp"     dup :createWorkerActor spawnWorkerActor
+  0 "rangeOp"        dup :createWorkerActor spawnWorkerActor
+  0 "scanOp"         dup :createWorkerActor spawnWorkerActor
+  0 "sinkOp"         dup :createWorkerActor spawnWorkerActor
+  0 "triggerRangeOp" dup :createWorkerActor spawnWorkerActor
+  0 "triggerScanOp"  dup :createWorkerActor spawnWorkerActor
+  0 "writeOp"        dup :createWorkerActor spawnWorkerActor
 ;
 
 ////////////////////////////////////////////////////////////////////////////////

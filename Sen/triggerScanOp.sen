@@ -7,7 +7,7 @@ common/ trigger rbCrs /
 /*----------------------------------------------------------------------------*/
 /* trigger                                                                    */
 /*----------------------------------------------------------------------------*/
-: triggerPlan ( profile plan -- )
+: triggerScanPlan ( profile plan -- )
 
   // record the plan and profile
   locals| thePlan profile |
@@ -28,7 +28,7 @@ common/ trigger rbCrs /
 /*----------------------------------------------------------------------------*/
 /* triggerPlan_distributed                                                    */
 /*----------------------------------------------------------------------------*/
-: triggerPlan_distributed subDic trigger ( nextOp profile plan -- )
+: triggerScanPlan_distributed subDic trigger ( profile plan -- )
 
   // record the plan and profile
   locals| thePlan profile sNextOp |
@@ -39,7 +39,7 @@ common/ trigger rbCrs /
   grid.partitions 0 do
 
   // << profile plan >> -->> nextOp
-  << I sNextOp "%v#%v" str.format thePlan plan.id@ sNextOp "%v.task" str.format >>jobQueue
+  << I "scanOp#%v" str.format thePlan plan.id@ "scanOp.task" >>jobQueue
   //<< I "rangeOp#%v" str.format thePlan plan.id@ "rangeOp.task" >>jobQueue
   loop
 ;
@@ -47,7 +47,9 @@ common/ trigger rbCrs /
 /*----------------------------------------------------------------------------*/
 /* flow trigger operator loop                                                 */
 /*----------------------------------------------------------------------------*/
-: triggerOp operator ( -- NEVER )
+: triggerScanOp operator ( -- NEVER )
+
+"tp: triggerScanOp" .
 
   begin
 
@@ -60,11 +62,11 @@ common/ trigger rbCrs /
     valset> ( nextOp profile planId nValues )
     drop ( nextOp profile planId )
     // find plan using planId
-    planList::findPlan ( nextOp profile plan true )
-    assert ( nextOp profile plan )
+    planList::findPlan ( profile plan true )
+    assert ( profile plan )
 
     // trigger the plan
-    triggerPlan_distributed ( )
+    triggerScanPlan_distributed ( )
 
   again
 ;
