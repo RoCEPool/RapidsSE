@@ -1,9 +1,9 @@
 /*============================================================================*/
-/* triggerOp.sen -- flow trigger operator                                     */
+/* triggerRangeOp.sen -- flow trigger operator                                */
 /*============================================================================*/
 
-"triggerOp.sen" .verbose
-common/ trigger rbCrs /
+"triggerRangeOp.sen" .verbose
+common/ triggerRange rbCrs /
 /*----------------------------------------------------------------------------*/
 /* trigger                                                                    */
 /*----------------------------------------------------------------------------*/
@@ -21,14 +21,14 @@ common/ trigger rbCrs /
     I grid::toPartition to partitionid
 
     // << profile plan >> -->> nextOp
-    << partitionid "scanOp#%v" str.format thePlan plan.id@ "scanOp.task" >>jobQueue
+    << partitionid "rangeOp#%v" str.format thePlan plan.id@ "rangeOp.task" >>jobQueue
   loop
 ;
 
 /*----------------------------------------------------------------------------*/
 /* triggerPlan_distributed                                                    */
 /*----------------------------------------------------------------------------*/
-: triggerRangePlan_distributed subDic trigger ( profile plan -- )
+: triggerRangePlan_distributed subDic triggerRange ( profile plan -- )
 
   // record the plan and profile
   locals| thePlan profile sNextOp |
@@ -64,7 +64,7 @@ common/ trigger rbCrs /
     assert ( profile plan )
 
     // trigger the plan
-    triggerRanglePlan_distributed ( )
+    triggerRangePlan_distributed ( )
 
   again
 ;

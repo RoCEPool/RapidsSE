@@ -1,9 +1,9 @@
 /*============================================================================*/
-/* triggerOp.sen -- flow trigger operator                                     */
+/* triggerScanOp.sen -- flow trigger operator                                 */
 /*============================================================================*/
 
-"triggerOp.sen" .verbose
-common/ trigger rbCrs /
+"triggerScanOp.sen" .verbose
+common/ triggerScan rbCrs /
 /*----------------------------------------------------------------------------*/
 /* trigger                                                                    */
 /*----------------------------------------------------------------------------*/
@@ -28,7 +28,7 @@ common/ trigger rbCrs /
 /*----------------------------------------------------------------------------*/
 /* triggerPlan_distributed                                                    */
 /*----------------------------------------------------------------------------*/
-: triggerScanPlan_distributed subDic trigger ( profile plan -- )
+: triggerScanPlan_distributed subDic triggerScan ( profile plan -- )
 
   // record the plan and profile
   locals| thePlan profile sNextOp |

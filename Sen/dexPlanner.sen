@@ -23,7 +23,7 @@
   catalogNm dexPlan ##: $$catalogNm
   // nb: the above could have been a frame level, but left it as an example
 
-  "triggerOp" str.format dexPlan plan.opFrame++ drop
+  "triggerScanOp" str.format dexPlan plan.opFrame++ drop
 
   // create the named opFrames in plan and any fame-level symbolic arguments
   grid.slots 0 do
@@ -77,7 +77,7 @@
   // nb: the above could have been a frame level, but left it as an example
 
   //schemaNm .
-  "triggerOp" str.format dexPlan plan.opFrame++ drop
+  "triggerScanOp" str.format dexPlan plan.opFrame++ drop
 
   // create the named opFrames in plan and any fame-level symbolic arguments
   grid.Partitions 0 do

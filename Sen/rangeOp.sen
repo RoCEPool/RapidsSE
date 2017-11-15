@@ -12,10 +12,10 @@ common/ range rbCrs /
 /*----------------------------------------------------------------------------*/
 /* scan partition of a table                                                  */
 /*----------------------------------------------------------------------------*/
-: rangePartition subDic range ( profile plan -- )
+: rangePartition subDic range ( pSeitf profile plan -- )
 
   // record the plan and profile
-  0 0 0 0 locals| pTable pBufferQueue bSinglePartition pPlanner thePlan profile |
+  0 0 0 0 locals| pTable pBufferQueue bSinglePartition pPlanner thePlan profile pSeitf |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set path (hardcoded for the moment)
@@ -145,7 +145,7 @@ common/ range rbCrs /
   5 thread.sleep_s
 
   // << false plan >> -->> nextOp
-  << false $$nextProfile thePlan plan.Id@ $$nextOp >>jobQueue
+  << false pSeitf $$nextProfile thePlan plan.Id@ $$nextOp >>jobQueue
 
   // [1] discard opFrame (and dictionary)
   opFrame.drop
@@ -175,8 +175,8 @@ common/ range rbCrs /
   drop ( profile planId )
 
   // find plan using planId
-  planList::findPlan ( profile plan true )
-  assert ( profile plan )
+  planList::findPlan ( pSeitf profile plan true )
+  assert ( pSeitf profile plan )
 
   // scan the table partition and pipe to write
   rangePartition ( )

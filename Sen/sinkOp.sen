@@ -7,10 +7,10 @@
 /*----------------------------------------------------------------------------*/
 /* sink the plan                                                              */
 /*----------------------------------------------------------------------------*/
-: sinkPlan ( profile plan -- )
+: sinkPlan ( pSeitf profile plan -- )
 
   // record the plan and profile
-  locals| thePlan profile |
+  locals| thePlan profile pSeitf |
 
   thePlan planList::removePlan
 
@@ -37,8 +37,8 @@
     drop ( profile planId )
 
     // find plan using planId
-    planList::findPlan ( profile plan true )
-    assert ( profile plan )
+    planList::findPlan ( pSeitf profile plan true )
+    assert ( pSeitf profile plan )
 
     // sink the plan
     sinkPlan ( )

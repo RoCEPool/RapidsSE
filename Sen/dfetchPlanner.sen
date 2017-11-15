@@ -26,7 +26,7 @@
   // nb: the above could have been a frame level, but left it as an example
 
   //schemaNm .
-  "triggerOp" str.format dfetchPlan plan.opFrame++ drop
+  "triggerRangeOp" str.format dfetchPlan plan.opFrame++ drop
 
   // create the named opFrames in plan and any fame-level symbolic arguments
   grid.Partitions 0 do
