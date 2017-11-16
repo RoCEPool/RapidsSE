@@ -7,10 +7,10 @@ common/ triggerScan rbCrs /
 /*----------------------------------------------------------------------------*/
 /* trigger                                                                    */
 /*----------------------------------------------------------------------------*/
-: triggerScanPlan ( profile plan -- )
+: triggerScanPlan ( pSeitf profile plan -- )
 
   // record the plan and profile
-  locals| thePlan profile |
+  locals| thePlan profile pSeitf |
   0 locals| partitionId |
 
   //thePlan plan.id@ "Triggering plan: %v" str.format .
@@ -21,17 +21,17 @@ common/ triggerScan rbCrs /
     I grid::toPartition to partitionid
 
     // << profile plan >> -->> nextOp
-    << partitionid "scanOp#%v" str.format thePlan plan.id@ "scanOp.task" >>jobQueue
+    << pSeitf partitionid "scanOp#%v" str.format thePlan plan.id@ "scanOp.task" >>jobQueue
   loop
 ;
 
 /*----------------------------------------------------------------------------*/
 /* triggerPlan_distributed                                                    */
 /*----------------------------------------------------------------------------*/
-: triggerScanPlan_distributed subDic triggerScan ( profile plan -- )
+: triggerScanPlan_distributed subDic triggerScan ( pSeitf profile plan -- )
 
   // record the plan and profile
-  locals| thePlan profile sNextOp |
+  locals| thePlan profile pSeitf |
 
   //thePlan plan.id@ "Triggering plan: %v" str.format .
 
@@ -39,7 +39,7 @@ common/ triggerScan rbCrs /
   grid.partitions 0 do
 
   // << profile plan >> -->> nextOp
-  << I "scanOp#%v" str.format thePlan plan.id@ "scanOp.task" >>jobQueue
+  << pSeitf I "scanOp#%v" str.format thePlan plan.id@ "scanOp.task" >>jobQueue
   //<< I "rangeOp#%v" str.format thePlan plan.id@ "rangeOp.task" >>jobQueue
   loop
 ;
@@ -62,8 +62,8 @@ common/ triggerScan rbCrs /
     valset> ( nextOp profile planId nValues )
     drop ( nextOp profile planId )
     // find plan using planId
-    planList::findPlan ( profile plan true )
-    assert ( profile plan )
+    planList::findPlan ( pSeitf profile plan true )
+    assert ( pSeitf profile plan )
 
     // trigger the plan
     triggerScanPlan_distributed ( )
