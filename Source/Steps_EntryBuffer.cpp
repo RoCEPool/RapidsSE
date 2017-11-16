@@ -417,7 +417,7 @@ void Task::vEntryBufferNextEntry(MP_Task mpTask)
   Entry *pNextEntry;
   
   if ( pPtrEntry ) {
-    ASSERT(CN_ENTRY == pEntry->eClass() || CN_ROW == pEntry->eClass());
+    ASSERT(CN_ENTRY == pEntry->eClass());
     pNextEntry = pIndexBuffer->pNextEntry(pEntry);
   } else {
     pNextEntry = pIndexBuffer->pNextEntry(pIndexBuffer->pHead());

@@ -289,7 +289,7 @@ Entry* EntryBuffer::pAllotEntry(i8 nBytes)
   }
   
   Entry* pRow = reinterpret_cast<Entry*>(m_xWsp.aAllot(nBytesRequired));
-  new(pRow) Entry(CN_ROW,nBytesRequired,0);
+  new(pRow) Entry(CN_ENTRY,nBytesRequired,0);
   
   m_nEntries++;
   

@@ -86,7 +86,7 @@ void Task::vEntryToDataRow(MP_Task mpTask)
     THROW_INVALID_DSTACK("entry.toDataRow"_Stz);
   
   Entry* pEntry = _pEntry(pPtrEntry);
-  ASSERT(CN_ENTRY == pEntry->eClass() || CN_ROW == pEntry->eClass());
+  ASSERT(CN_ENTRY == pEntry->eClass());
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
     THROW_INVALID_DSTACK("entry.toDataRow"_Stz);
@@ -150,7 +150,7 @@ void Task::vEntryEmbeddedRow(MP_Task mpTask)
     THROW_INVALID_DSTACK("entry.embeddedRow"_Stz);
   
   Entry* pEntry = _pEntry(pPtrEntry);
-  ASSERT(CN_ENTRY == pEntry->eClass() || CN_ROW == pEntry->eClass());
+  ASSERT(CN_ENTRY == pEntry->eClass());
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
     THROW_INVALID_DSTACK("entry.embeddedRow"_Stz);
