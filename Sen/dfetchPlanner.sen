@@ -43,7 +43,7 @@
 
   "printOp#" dfetchPlan plan.opFrame++ drop
     // frame-level symbolic arguments
-    grid.partitions   dfetchPlan ##: $$nStreams    // number of streams in pipeline
+    grid.partitions   dfetchPlan ##: $$nPartitions // number of partitions in pipeline
     "responseOp.task" dfetchPlan ##: $$nextOp      // pipe to next operator
     "responseOp#"     dfetchPlan ##: $$nextProfile // pipe to next profile
 

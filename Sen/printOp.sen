@@ -7,30 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* frame common variables for write                                           */
 /*----------------------------------------------------------------------------*/
-common/ print nFetchTasks /
-
-/*----------------------------------------------------------------------------*/
-/* print rows from row buffer                                                 */
-/*----------------------------------------------------------------------------*/
-: printRows subDic print ( rowBuffer pTable -- )
-
-  // declare rowCrs variable
-  rowCursor::new locals| rowCrs pTable rowBuffer |
-
-  // set the table in the cursor
-  pTable rowCrs rowCursor.table!
-
-  // set row buffer in cursor
-  rowBuffer rowCrs rowCursor.entryBuffer!
-
-  // iterate the row buffer
-  rowCrs rowCursor.first
-  begin while
-    rowCrs rowCursor.row .
-    "\n" .
-    rowCrs rowCursor.next
-  repeat
-;
+common/ print nFetchPartitions /
 
 /*----------------------------------------------------------------------------*/
 /* print rows from row buffer                                                 */
@@ -38,7 +15,7 @@ common/ print nFetchTasks /
 : printRb subDic print
 
   // record the plan and profile
-  0 locals| pTablePtr bFetchStarted thePlan profile pSeitf |
+  0 0 locals| pIndexBuffer pBufferQueue bFetchStarted thePlan profile pSeitf |
 
 "printRb" .
 
@@ -51,52 +28,25 @@ common/ print nFetchTasks /
   profile thePlan plan.opFrame? opFrame.push
 
   //----------------------------------------------------------------------------
-  // get to the table dic and find the table
-  // need to set the table in the rowCusror so we can convert
-  // rows to strings using the columns from the table
-  // Note: the entryBuffers that we move across the custer do NOT
-  //       have an index pointer
-  $$tableNm   locals| tableNm   |
-  $$schemaNm  locals| schemaNm  |
-  $$catalogNm locals| catalogNm |
-
-  "boray" find execute
-  pathPush
-
-  "catalogs"  find execute
-  pathPush
-
-  // push tableNm folder on the dictionary path
-  catalogNm find execute
-  pathPush
-
-  // push tableNm folder on the dictionary path
-  "schemas" find execute
-  pathPush
-
-  // push tableNm folder on the dictionary path
-  schemaNm find execute
-  pathPush
-
-  // push tableNm folder on the dictionary path
-  "tables" find execute
-  pathPush
-
-  // push tableNm on the dictionary path
-  tableNm find execute pathPush
-  tableNm find execute to pTablePtr
-
-  pathDrop pathDrop pathDrop pathDrop pathDrop pathDrop pathDrop
-
-  //----------------------------------------------------------------------------
-
   // has fetch just started ?
   bFetchStarted not if
-    // set the no of fetch tasks in nFetchTasks
-    $$nStreams toCommon nFetchTasks
+"creating queue in seitf" .
+    // create the buffer queue in the seitf
+    "selectTask.queue" queue::new to pBufferQueue
+
+    pBufferQueue pSeitf seitf.bufferQueue!
+    pBufferQueue >str "bufferQ %v" str.format .
+
+    // set the no of fetch tasks in nFetchPartitions
+    $$nPartitions toCommon nFetchPartitions
+    nFetchPartitions "setting nFetchPartitions %v" str.format .
+
+    "marking fetchStarted" .
 
     // mark fetch as started
     1 to bFetchStarted
+  else
+    pSeitf seitf.bufferQueue@ to pBufferQueue
   then
 
   ( [ rowBuffer ] )
@@ -104,15 +54,28 @@ common/ print nFetchTasks /
   // write or close file & sink plan?
   if ( [ rowBuffer ] )
 
-     pTablePtr  printRows
+     to pIndexBuffer
+
+     if ( bIsLast )
+        pIndexBuffer entryBuffer.isLast!
+     then
+
+     "appending rowBuffer to seitf queue" .
+     pIndexBuffer pBufferQueue queue.append
+
   else
-     // didn't get a rowBuffer, this fetch task has ended
-     nFetchTasks 1- toCommon nFetchTasks
+     // didn't get a rowBuffer, this fetch partition has ended
+     nFetchPartitions 1- toCommon nFetchPartitions
+    "done with a fetch from a partition" .
 
      // have all the fetch tasks ended ?
-     nFetchTasks 0 == if
+     nFetchPartitions 0 == if
+
+"fetchPartitions done" .
+// put 0 in fetchTasks
+pSeitf seitf.fetchTaskEnded
        // << $$nextProfile thePlan >> -->> $$nextOp
-       << $$nextProfile thePlan plan.id@ $$nextOp >>jobqueue
+       << pSeitf $$nextProfile thePlan plan.id@ $$nextOp >>jobqueue
 
        // mark fetch as not started so next fetch can execute
        0 to bFetchStarted

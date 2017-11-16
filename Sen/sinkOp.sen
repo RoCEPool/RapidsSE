@@ -9,6 +9,8 @@
 /*----------------------------------------------------------------------------*/
 : sinkPlan ( pSeitf profile plan -- )
 
+"tp: sinkOp" .
+
   // record the plan and profile
   locals| thePlan profile pSeitf |
 

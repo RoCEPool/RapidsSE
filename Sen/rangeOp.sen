@@ -14,28 +14,34 @@ common/ range rbCrs /
 /*----------------------------------------------------------------------------*/
 : sendQueueBuffers ( pBufferQueue nLastBuffers pSeitf sProfile planId sNextOp )
 
-  0 0 locals| nRowCount pIndexBuffer sNextOp planId sProfile pSeitf nLastBuffers pBufferQueue |
+  0 0 0 locals| bIsLast nRowCount pIndexBuffer sNextOp planId sProfile pSeitf nLastBuffers pBufferQueue |
 
 "sendingBuffers" .
+pSeitf >str "seitf %v" str.format .
 
   // loop thru buffers
   true
   begin
+
     while
     // pop a buffer off the buffer queue
     pBufferQueue popBuffer to pIndexBuffer
 
-    // send the index buffer to next printOp
-"sending a buffer" .
-    <<   pIndexBuffer true pSeitf sNextOp planId sProfile >>jobQueue
-"sent a buffer" .
+    // is it a last buffer
+    pIndexBuffer entryBuffer.isLast@ to bIsLast
+
     // check if last buffer
-    pIndexBuffer entryBuffer.isLast@ if
+    bIsLast if
 
       nLastBuffers 1 - to nLastBuffers
         0 nLastBuffers == if
+          // send the index buffer to next printOp indicating last buffer
+          "sent a last buffer" .
+          <<   1 pIndexBuffer true pSeitf sNextOp planId sProfile >>jobQueue
           false
         else
+          // send the index buffer to next printOp
+          <<   0 pIndexBuffer true pSeitf sNextOp planId sProfile >>jobQueue
           true
         then
     else
@@ -46,7 +52,6 @@ common/ range rbCrs /
 
   repeat
 
-"no more buffers to send" .
   <<  false pSeitf sNextOp planId sProfile >>jobQueue
 
   // delete the buffer queue
@@ -55,12 +60,15 @@ common/ range rbCrs /
 ;
 
 /*----------------------------------------------------------------------------*/
-/* scan partition of a table                                                  */
+/* range select for a partition of a table                                    */
 /*----------------------------------------------------------------------------*/
 : rangePartition subDic range ( pSeitf profile plan -- )
 
-  // record the plan and profile
-  0 0 0 0 0 locals| nLastBuffers pTable pBufferQueue bSinglePartition pPlanner thePlan profile pSeitf |
+tp: rangePartition
+
+  // record the plan, profile and the seitf
+  locals| thePlan profile pSeitf |
+  0 0 0 0 locals| nLastBuffers pTable pBufferQueue pPlanner |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set path (hardcoded for the moment)
@@ -79,8 +87,6 @@ common/ range rbCrs /
   $$schemaNm  locals| schemaNm  |
   $$catalogNm locals| catalogNm |
   $$where     locals| sWhere |
-
-  sWhere .
 
   // drop the dictionary path
   pathDrop
@@ -115,44 +121,6 @@ common/ range rbCrs /
 
   // [1] find and push opFrame (along with its dictionary onto path stack)
   profile thePlan plan.opFrame? opFrame.push // [1]
-/*
-  // [2] create a new rowCursor and record in opFrame.rbCrs
-  rbCursor::new toCommon rbCrs
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // set up table in rowCursor
-  $$tableNm find execute rbCrs rbCursor.table!
-
-  // begin scan of partition
-  $$partition grid::toSlot rbCrs rbCursor.begin
-
-  // get first rowBuffer of partition
-  rbCrs rbCursor.first
-
-  // pipe all rb's of partition
-  begin while
-
-  // << rb true profile plan profile >> -->> nextOp
-  << rbCrs rbCursor.get true $$nextProfile thePlan plan.id@ $$nextOp >>jobQueue
-
-  // next rowBuffer in partition
-  rbCrs rbCursor.next
-
-  repeat
-
-  // end cursored iteration
-  rbCrs rbCursor.end
-
-  // pipe EOD to writeOp
-  // << false plan >> -->> nextOp
-  << false $$nextProfile thePlan plan.Id@ $$nextOp >>jobQueue
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // [2] delete cursor
-  rbCrs rbCursor.delete
-  0 toCommon rbCrs
-  */
 
   ddlLock::grabRead
 
@@ -162,7 +130,8 @@ common/ range rbCrs /
   //getTableRef not if <NIP+ERROR> exit then
   //task::this task.seitf@ seitf.table@ assert
 
-"generating plan" .
+  sWhere $$partition "generating plan for partition %v ( %v )" str.format .
+
   // generate plan for the fetch
   sWhere pTable "generatePlan" find execute to pPlanner
 
@@ -170,28 +139,22 @@ common/ range rbCrs /
 
   // assert we have a plan
   pPlanner assert
-  true to bSinglePartition
 
   // set the no of last buffers to no of phrases in plan
   //pPlanner planner.phrases@ pSeitf seitf.lastBuffers!
-
-"creating bufferQ" .
 
   // create the buffer queue in the seitf
   "rangeTask.queue" queue::new to pBufferQueue
 
   $$partition grid::toSlot 0 locals| iSlot bGroupBy |
 
+  pPlanner planner.phrases@ "spawning %v fetch tasks" str.format .
   pPlanner planner.phrases@ 0
   do
-"spawning fetch task" .
     pBufferQueue iSlot bGroupBy I pPlanner "spawnFetch" find execute
   loop
 
   ddlLock::dropRead
-
-  // wait for all fetch tasks to end
-  5 thread.sleep_s
 
   pBufferQueue nLastBuffers pSeitf $$nextOp thePlan plan.Id@ $$nextProfile
   sendQueueBuffers
@@ -215,12 +178,8 @@ common/ range rbCrs /
 
   depth 0 != if "stack of task has grown" . debug::trap then
 
-  grid.thisNode@ "RANGEOP: NODE %V" str.format .
-
   // wait for next job
   jobQueue> ( valset )
-
-  grid.thisNode@ "RANGEOP: NODE %V" str.format .
 
   // unpack it
   valset> ( profile planId nValues )

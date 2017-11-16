@@ -8,6 +8,7 @@
 
 symArg: $$fileNm  
 symArg: $$nStreams
+symArg: $$nPartitions
 symArg: $$partition
 symArg: $$tableNm
 symArg: $$schemaNm

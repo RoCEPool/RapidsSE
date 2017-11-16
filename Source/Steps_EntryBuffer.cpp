@@ -207,7 +207,7 @@ void Task::vEntryBufferInsertRow(MP_Task mpTask)
   Id xId = pOldEntry->xId();
   SEitf* pSEitf = mpTask->m_pSEitf;
   
-  if (pSEitf->bRowSeen(xId)) {
+  if (pSEitf && pSEitf->bRowSeen(xId)) {
     mpTask->m_pDataStack->vPushInt(1);
     return;
   }
