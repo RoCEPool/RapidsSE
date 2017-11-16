@@ -165,7 +165,7 @@ tp: >>jobQueue_otherNode
 /*----------------------------------------------------------------------------*/
 : executeDfetchPlan ( nextOp plan -- )
 
-"tp: executeDfetchPlan" .
+tp: executeDfetchPlan
 
   // record the plan and profile
   0 locals| pSeitf thePlan sNextOp |
@@ -175,9 +175,9 @@ tp: >>jobQueue_otherNode
   //"triggerOp.task" find execute >jobQueue
 
   task::this task.seitf@ to pSeitf
-  pSeitf >str "seitf %v" str.format .
+  pSeitf >str "dfetch request tasks seitf : %v" str.format .
 
-  grid.Partitions >str "setting nLastBuffers to %v" str.format .
+  //grid.Partitions >str "setting nLastBuffers to %v" str.format .
   grid.Partitions pSeitf seitf.lastBuffers!
 
   << pSeitf "triggerRangeOp" thePlan plan.id@ "triggerRangeOp.task" >>jobQueue

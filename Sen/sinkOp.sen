@@ -9,13 +9,12 @@
 /*----------------------------------------------------------------------------*/
 : sinkPlan ( pSeitf profile plan -- )
 
-"tp: sinkOp" .
-
   // record the plan and profile
   locals| thePlan profile pSeitf |
 
   thePlan planList::removePlan
 
+  "sinking plan" .
   thePlan plan.delete
 
   //"removed & deleted plan" .

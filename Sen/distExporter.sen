@@ -71,7 +71,7 @@
 
   0 locals| dfetchPlan sTableNm sWhere |
 
-  sTableNm sWhere "distFetchRowsIndex %v %v" str.format .
+  //sTableNm sWhere "distFetchRowsIndex %v %v" str.format .
 
   // push catalog name
   4 pathPick dic.name  ( "<catalogNm>" "<schemaNm>" )

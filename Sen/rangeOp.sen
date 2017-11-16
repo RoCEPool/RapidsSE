@@ -16,8 +16,7 @@ common/ range rbCrs /
 
   0 0 0 locals| bIsLast nRowCount pIndexBuffer sNextOp planId sProfile pSeitf nLastBuffers pBufferQueue |
 
-"sendingBuffers" .
-pSeitf >str "seitf %v" str.format .
+  //"sendingBuffers ..." .
 
   // loop thru buffers
   true
@@ -36,7 +35,7 @@ pSeitf >str "seitf %v" str.format .
       nLastBuffers 1 - to nLastBuffers
         0 nLastBuffers == if
           // send the index buffer to next printOp indicating last buffer
-          "sent a last buffer" .
+          
           <<   1 pIndexBuffer true pSeitf sNextOp planId sProfile >>jobQueue
           false
         else
@@ -130,7 +129,7 @@ tp: rangePartition
   //getTableRef not if <NIP+ERROR> exit then
   //task::this task.seitf@ seitf.table@ assert
 
-  sWhere $$partition "generating plan for partition %v ( %v )" str.format .
+  sWhere $$partition "Generating plan for partition %v ( %v )..." str.format .
 
   // generate plan for the fetch
   sWhere pTable "generatePlan" find execute to pPlanner
@@ -146,9 +145,11 @@ tp: rangePartition
   // create the buffer queue in the seitf
   "rangeTask.queue" queue::new to pBufferQueue
 
-  $$partition grid::toSlot 0 locals| iSlot bGroupBy |
+  0 0 locals| iSlot bGroupBy |
 
-  pPlanner planner.phrases@ "spawning %v fetch tasks" str.format .
+  $$partition grid::toSlot to iSlot
+
+  pPlanner planner.phrases@ "Spawning %v fetch tasks..." str.format .
   pPlanner planner.phrases@ 0
   do
     pBufferQueue iSlot bGroupBy I pPlanner "spawnFetch" find execute

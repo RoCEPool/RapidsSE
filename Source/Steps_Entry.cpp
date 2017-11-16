@@ -63,8 +63,8 @@ void Task::vEntryMatches(MP_Task mpTask)
   StrVal* pStrVal = _pStrVal(xValWrk.pNestedValueSelf());
   
   xKeyWrk.vAddDatum(pStrVal, pIndex->pIdxColVec()->pGet(0));
-  
-  //pEntry->vShow(0, pIndex->pIdxColVec());
+
+  //pEntry->vShow(0, pIndex,true);
   bool bIsEqual = false;
   bool bSame = pEntry->aKey()->bJuxtaCompare(JC_SAME, xKeyWrk.aKey(), pIndex->pIdxColVec(), bIsEqual);
 

@@ -348,7 +348,7 @@ tp: makingIndex
 
   locals| iPartitionNo pSeitf pIndex pBufferQueue upper lower key pPlanner i_Phrase |
   0 0 0 locals| entry pTempEntryBuffer pEntryBuffer |
-  
+
   // task is a select participant running on server thread
   //task::this task.kind@ TK_SELECT_PART == assert
   //task::this task.thread thread.actorModel@ AC_SERVER == assert
@@ -375,7 +375,7 @@ tp: makingIndex
   entry not if
 
     // mark this buffer as the last buffer
-    //"Marking tempEntryBuffer as last buffer" .
+    //"NO ENTRY Marking tempEntryBuffer as last buffer" .
     pTempEntryBuffer entryBuffer.isLast!
 
     // return the empty tempEntryBuffer

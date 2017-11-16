@@ -49,8 +49,6 @@ common/ triggerScan rbCrs /
 /*----------------------------------------------------------------------------*/
 : triggerScanOp operator ( -- NEVER )
 
-"tp: triggerScanOp" .
-
   begin
 
     depth 0 != if "stack of task has grown" . debug::trap then
