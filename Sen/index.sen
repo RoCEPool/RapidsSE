@@ -653,7 +653,7 @@ tp: lowerSelectIdxTask
   while
 
     // check against upper bound
-    sUpper pIndexEntry iPartitionNo pIndex i_Phrase index.upper if
+    sUpper pIndexEntry iPartitionNo pIndex i_Phrase pPlanner index.upper if
       
       // look up data row and insert row into result buffer
       pIndex pIndexEntry entry.toDataRow pResultBuffer entryBuffer.insertRow
@@ -1059,7 +1059,7 @@ tp: populateIndex
 
     // check against upper entry
     //upperEntry entry entry.same not if
-    upper entry iPartitionNo pIndex i_Phrase index.upper if
+    upper entry iPartitionNo pIndex i_Phrase pPlanner index.upper if
       
       // insert row from entry in tempEntryBuffer
       //"Inserting row into tempEntryBuffer" .
