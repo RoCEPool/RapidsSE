@@ -505,7 +505,7 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
   if (! bPostProcess)
     return true;
   
-  if ( bCmdIs("fetch"_Stz)) {
+  if ( bCmdIs("fetch"_Stz) || bCmdIs("dfetch"_Stz)) {
     vIterateBuffers();
     return false;
   }
