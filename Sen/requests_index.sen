@@ -132,7 +132,9 @@ timer: pIdxSelectTimer
 
   // check it is a table
   sTableNm checkIsTable not if <NIP+ERROR> exit then
-  drop
+
+  getTableRef not if <NIP+ERROR> exit then
+  task::this task.seitf@ seitf.table@ assert
 
   // call the distributed fetch
   sWhere sTableNm distFetchRowsIndex not if <NIP+ERROR> exit then
