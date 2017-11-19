@@ -5,7 +5,7 @@
 
 namespace Datums
 {
-  const i8 C_NULL_FLT = DBL_MIN;
+  const i8 C_NULL_FLT = -DBL_MAX;
   
   class Flt
   {
