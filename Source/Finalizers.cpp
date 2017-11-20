@@ -84,6 +84,7 @@ pFINALIZE *gpFinalize[]
   /* 57 */ &Finalize::vUndefined,         // CN_KEYVEC
   /* 58 */ &Finalize::vUndefined,         // CN_KEYWRK
   
+  /*    */ &Finalize::vUndefined,         // CN_LARGEHEAP
   /* 59 */ &Finalize::vUndefined,         // CN_LINEITEM
   /* 60 */ &Finalize::vUndefined,         // CN_LOADCHUNK
   /* 61 */ &Loader::vFinalize,            // CN_LOADER

@@ -9,6 +9,7 @@ Arguments     gxArguments;
 BufferPool*   gpBufferPool   = nullptr;
 AttachMap *   gpAttachMap    = nullptr;
 Heap*         gpJumboHeap    = nullptr;
+Heap*         gpLargeHeap    = nullptr;
 Heap*         gpMediumHeap   = nullptr;
 Heap*         gpSmallHeap    = nullptr;
 Dic*          gpMainDic      = nullptr;
@@ -316,9 +317,12 @@ void RapidsSE::vCreateObjects(void)
 {
   // create global objects
   gpAttachMap  = new AttachMap;
+  
   gpJumboHeap  = new Heap(CN_JUMBOHEAP,  C_SIZE_JUMBO_OBJECT);
+  gpLargeHeap  = new Heap(CN_LARGEHEAP,  C_SIZE_LARGE_OBJECT);
   gpMediumHeap = new Heap(CN_MEDIUMHEAP, C_SIZE_MEDIUM_OBJECT);
   gpSmallHeap  = new Heap(CN_SMALLHEAP,  C_SIZE_SMALL_OBJECT);
+  
   gpMainDic    = &gpAttachMap->m_xMainDic;
   
   vInitJumboHeap();

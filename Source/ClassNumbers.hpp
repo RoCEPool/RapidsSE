@@ -83,6 +83,7 @@ namespace Base
     /* 57 */ CN_KEYVEC,
     /* 58 */ CN_KEYWRK,
   
+    /*    */ CN_LARGEHEAP,
     /* 59 */ CN_LINEITEM,
     /* 60 */ CN_LOADCHUNK,
     /* 61 */ CN_LOADER,
@@ -250,6 +251,7 @@ namespace Base
     /* 57 */ "KEYVEC"_Stz,
     /* 58 */ "KEYWRK"_Stz,
   
+    /*    */ "LARGEHEAP"_Stz,
     /* 59 */ "LINEITEM"_Stz,
     /* 60 */ "LOADCHUNK"_Stz,
     /* 61 */ "LOADER"_Stz,
