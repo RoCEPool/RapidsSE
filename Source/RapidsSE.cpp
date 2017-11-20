@@ -159,7 +159,7 @@ void RapidsSE::vCheckPort(void)
   Socket* pSocket;
   i8      iPort;
   
-  iPort = gxArguments.m_xNodes[0].m_iPortNo;
+  iPort = gxArguments.m_xNodes[gxArguments.m_iThisNode].m_iPortNo;
   if (gxArguments.m_bVerbose)
     vInfo("Looking for listeners on port %lld\n"_Stz, iPort);
   
