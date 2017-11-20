@@ -14,7 +14,7 @@ namespace Dictionaries
 
 namespace Structures
 {
-  static const i8 C_STACK_LENGTH = C_SIZE_POOL_BUFFER - C_1KB;
+  static const i8 C_STACK_LENGTH = C_SIZE_LARGE_OBJECT - C_1KB;
   
   class Stack : public Buffer
   {
