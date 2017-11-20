@@ -141,7 +141,7 @@ void StorageEngine::vCheckAssumptions(void)
         assert(giClassSize[eClass] < C_SIZE_MEDIUM_OBJECT);
         continue;
         
-      case HT_LARGE:
+      case HT_LARGE_BUFFER:
         assert(giClassSize[eClass] < C_SIZE_LARGE_OBJECT);
         continue;
         

@@ -10,9 +10,10 @@ namespace Pool
     /*  0 */ HT_INVALID=0,
     /*  1 */ HT_SMALL,
     /*  2 */ HT_MEDIUM,
-    /*  3 */ HT_LARGE,
-    /*  4 */ HT_JUMBO,
-    /*  5 */ HT_ENUMS
+    /*  3 */ HT_LARGE_BUFFER,
+    /*  4 */ HT_LARGE_ALT,
+    /*  5 */ HT_JUMBO,
+    /*  6 */ HT_ENUMS
   };
   
   static Stz* aHT[]
@@ -20,9 +21,10 @@ namespace Pool
     /*  0 */ "INVALID"_Stz,
     /*  1 */ "SMALL"_Stz,
     /*  2 */ "MEDIUM"_Stz,
-    /*  3 */ "LARGE"_Stz,
-    /*  4 */ "JUMBO"_Stz,
-    /*  5 */ "ENUMS"_Stz
+    /*  3 */ "LARGE_BUFFER"_Stz,
+    /*  4 */ "LARGE_ALT"_Stz,
+    /*  5 */ "JUMBO"_Stz,
+    /*  6 */ "ENUMS"_Stz
   };
   
   class Heap : public Buffer

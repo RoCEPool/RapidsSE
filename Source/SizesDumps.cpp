@@ -376,10 +376,10 @@ eHT geWhichHeap[]
   /* 22 */ HT_SMALL,   // CN_ARG
   /* 23 */ HT_INVALID, // CN_ARGUMENTS
   /* 24 */ HT_INVALID, // CN_ATOMIC
-  /* 25 */ HT_LARGE,   // CN_ATTACHMAP
+  /* 25 */ HT_LARGE_BUFFER,   // CN_ATTACHMAP
   
   /* 26 */ HT_SMALL,   // CN_BITARRAY
-  /* 27 */ HT_LARGE,   // CN_BITMAP
+  /* 27 */ HT_LARGE_BUFFER,   // CN_BITMAP
   /* 28 */ HT_INVALID, // CN_BUFFERPOOL
   /* 29 */ HT_INVALID, // CN_BPA
 
@@ -391,7 +391,7 @@ eHT geWhichHeap[]
   /* 34 */ HT_SMALL,   // CN_DIR
 
   /* 35 */ HT_INVALID, // CN_ENTRY
-  /* 36 */ HT_LARGE,   // CN_ENTRYBUFFER
+  /* 36 */ HT_LARGE_BUFFER,   // CN_ENTRYBUFFER
   /* 37 */ HT_INVALID, // CN_ENTRYVEC
   
   /* 38 */ HT_SMALL,   // CN_FILE
@@ -405,7 +405,7 @@ eHT geWhichHeap[]
   /* 45 */ HT_INVALID, // CN_GRID
   /* 46 */ HT_SMALL,   // CN_GROUPBY
 
-  /* 47 */ HT_LARGE,   // CN_HEAPBUFFER
+  /* 47 */ HT_LARGE_BUFFER,   // CN_HEAPBUFFER
   
   /* 48 */ HT_INVALID, // CN_INDEX
   /* 49 */ HT_SMALL,   // CN_INDEXDATA
@@ -423,7 +423,7 @@ eHT geWhichHeap[]
 
   /*  */   HT_INVALID, // CN_LARGEHEAP
   /* 59 */ HT_INVALID, // CN_LINEITEM
-  /* 60 */ HT_LARGE,   // CN_LOADCHUNK
+  /* 60 */ HT_LARGE_BUFFER,   // CN_LOADCHUNK
   /* 61 */ HT_MEDIUM,  // CN_LOADER
   /* 62 */ HT_MEDIUM,  // CN_LOADERSUB
   /* 63 */ HT_JUMBO,   // CN_LOADMAP
@@ -452,37 +452,37 @@ eHT geWhichHeap[]
   /* 82 */ HT_MEDIUM,  // CN_PTNCOLVEC
 
   /* 83 */ HT_SMALL,   // CN_QUEUE
-  /* 84 */ HT_LARGE,   // CN_QUEUEBUFFER
+  /* 84 */ HT_LARGE_BUFFER,   // CN_QUEUEBUFFER
   
   /* 85 */ HT_SMALL,   // CN_RBCURSOR
-  /* 86 */ HT_LARGE,   // CN_REGFRAME
+  /* 86 */ HT_LARGE_BUFFER,   // CN_REGFRAME
   /* 87 */ HT_INVALID, // CN_RING
   /* 88 */ HT_MEDIUM,  // CN_ROARRAY
-  /* 89 */ HT_LARGE,   // CN_ROWBUFFER
+  /* 89 */ HT_LARGE_BUFFER,   // CN_ROWBUFFER
   /* 90 */ HT_SMALL,   // CN_ROWCURSOR
   /* 91 */ HT_SMALL,   // CN_ROWONCE
   
-  /* 92 */ HT_LARGE,   // CN_SCANBUFFER
-  /* 93 */ HT_LARGE,   // CN_SCRATCH
+  /* 92 */ HT_LARGE_BUFFER,   // CN_SCANBUFFER
+  /* 93 */ HT_LARGE_BUFFER,   // CN_SCRATCH
   /* 94 */ HT_INVALID, // CN_SEHISTORY
   /* 95 */ HT_MEDIUM,  // CN_SEITF
   /* 96 */ HT_SMALL,   // CN_SEITFCURSOR
   /* 97 */ HT_INVALID, // CN_SEITFLIST
   /* 98 */ HT_SMALL,   // CN_SELCURSOR
   /* 99 */ HT_SMALL,   // CN_SEMAPHORE
-  /*100 */ HT_LARGE,   // CN_SEPROMPT
+  /*100 */ HT_LARGE_BUFFER,   // CN_SEPROMPT
   /*101 */ HT_INVALID, // CN_SINCE
   /*102 */ HT_INVALID, // CN_SKIPCURSOR
   /*103 */ HT_SMALL,   // CN_SKIPLIST
   /*104 */ HT_SMALL,   // CN_SKIPNODE
-  /*105 */ HT_LARGE,   // CN_SLAB
+  /*105 */ HT_LARGE_BUFFER,   // CN_SLAB
   /*106 */ HT_SMALL,   // CN_SLABALLOCATOR
   /*107 */ HT_INVALID, // CN_SLOTS
   /*108 */ HT_INVALID, // CN_SMALLHEAP
   /*109 */ HT_SMALL,   // CN_SOCKET
-  /*110 */ HT_LARGE,   // CN_STACK
+  /*110 */ HT_LARGE_BUFFER,   // CN_STACK
   /*111 */ HT_INVALID, // CN_STEPACCUM
-  /*112 */ HT_LARGE,   // CN_STEPARRAY
+  /*112 */ HT_LARGE_BUFFER,   // CN_STEPARRAY
   /*113 */ HT_INVALID, // CN_SYSCALL
   
   /*114 */ HT_INVALID, // CN_TABLE
