@@ -1005,7 +1005,7 @@ tp: selectIndex
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the index from the table
   sIndexNm find execute to pIndexPtr
-  pIndexPtr index.table@ table.removeIndex
+  pIndexPtr pIndexPtr index.table@ table.removeIndex
 
   // forward reference :-(
   sIndexNm "indexTidyUp" find execute

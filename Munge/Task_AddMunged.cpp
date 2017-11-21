@@ -5971,7 +5971,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // remove the index from the table\n"
     "  sIndexNm find execute to pIndexPtr\n"
-    "  pIndexPtr index.table@ table.removeIndex\n"
+    "  pIndexPtr pIndexPtr index.table@ table.removeIndex\n"
     "\n"
     "  // forward reference :-(\n"
     "  sIndexNm \\\"indexTidyUp\\\" find execute\n"
