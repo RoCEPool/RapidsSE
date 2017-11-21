@@ -12,6 +12,7 @@ extern eHT geWhichHeap[];
 extern BufferPool* gpBufferPool;
 extern Heap*       gpSmallHeap;
 extern Heap*       gpMediumHeap;
+extern Heap*       gpLargeHeap;
 extern Heap*       gpJumboHeap;
 
 bool gbAddrAllocated = false;
@@ -135,6 +136,10 @@ Object* Heap::pAllocate(eCN eAllocClass)
       pObject = gpBufferPool->pAllocBuffer();
       return pObject;
       
+    case HT_LARGE_ALT:
+      pObject = gpLargeHeap->pAllocObject(eAllocClass);
+      return pObject;
+      
     case HT_JUMBO:
       pObject = gpJumboHeap->pAllocObject(eAllocClass);
       return pObject;
@@ -185,6 +190,15 @@ void Heap::vValidateTables(void)
         break;
         
       case HT_LARGE_BUFFER:
+        if (iSize >= C_SIZE_LARGE_OBJECT)
+          vFatal("Heap::vValidateTables: large class %lld %lls is too big\n"_Stz,
+                 eClassNo,aCN[eClassNo]);
+        //if (!iSize)
+        // vWarn("Heap::vValidateTables: large class %lld %lls has 0 size\n"_Stz,
+        //        eClassNo,aCN[eClassNo]);
+        break;
+        
+      case HT_LARGE_ALT:
         if (iSize >= C_SIZE_LARGE_OBJECT)
           vFatal("Heap::vValidateTables: large class %lld %lls is too big\n"_Stz,
                  eClassNo,aCN[eClassNo]);
@@ -269,6 +283,10 @@ void Heap::vFree(Object* pObject)
       
     case HT_LARGE_BUFFER:
       gpBufferPool->vFree((Buffer*)pObject);
+      return;
+      
+    case HT_LARGE_ALT:
+      gpLargeHeap->vFreeObject(pObject);
       return;
       
     case HT_JUMBO:

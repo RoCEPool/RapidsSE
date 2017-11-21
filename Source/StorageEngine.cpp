@@ -145,6 +145,10 @@ void StorageEngine::vCheckAssumptions(void)
         assert(giClassSize[eClass] < C_SIZE_LARGE_OBJECT);
         continue;
         
+      case HT_LARGE_ALT:
+        assert(giClassSize[eClass] < C_SIZE_LARGE_OBJECT);
+        continue;
+        
       case HT_JUMBO:
         assert(giClassSize[eClass] < C_SIZE_JUMBO_OBJECT);
         continue;

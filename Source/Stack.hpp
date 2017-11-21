@@ -16,7 +16,7 @@ namespace Structures
 {
   static const i8 C_STACK_LENGTH = C_SIZE_LARGE_OBJECT - C_1KB;
   
-  class Stack : public Buffer
+  class Stack: public Object
   {
   friend Tasks::Task;
   

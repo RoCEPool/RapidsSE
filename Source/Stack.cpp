@@ -45,7 +45,7 @@ void Stack::operator delete(void* pBufferAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Stack::Stack(void)
-: Buffer(CN_STACK)
+: Object(CN_STACK)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
