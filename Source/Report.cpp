@@ -109,6 +109,9 @@ void Debugging::vError(Stz* aFormat, ...)
 /*---------------------------------------------------------------------------*/
 __attribute__((noreturn)) void Debugging::vFatal(Stz* aFormat, ...)
 {
+  
+  vStackDump();
+  
   va_list xArgs;
   
   va_start(xArgs,aFormat);
@@ -116,7 +119,7 @@ __attribute__((noreturn)) void Debugging::vFatal(Stz* aFormat, ...)
   vReport(C_REPORT_FATAL,aFormat,xArgs);
   
   va_end(xArgs);
-  vStackDump();
+  
   
   exit(EXIT_FAILURE);
 }

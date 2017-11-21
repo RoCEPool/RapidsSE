@@ -256,7 +256,8 @@ void Heap::vFree(Object* pObject)
   
   switch(eHeap) {
     case HT_INVALID:
-      vFatal("Heap::vFree: Invalid heap free: class %lld %lls\n"_Stz,
+      MemLib::vWordDump(pObject,256,0);
+      vFatal("Heap::vFree: Invalid heap free: class %lld %s\n"_Stz,
              eAllocClass,aCN[eAllocClass]);
       
     case HT_SMALL:
