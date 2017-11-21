@@ -278,7 +278,7 @@ void Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::vRemove(ITEM* pItem)
   }
 
   // item should be there
-  ASSERT(m_pItem[nItemNo] );
+  ASSERT(pItem == m_pItem[nItemNo] );
   
   // reduce no of items
   m_nItems--;
