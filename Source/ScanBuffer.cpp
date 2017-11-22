@@ -30,7 +30,7 @@ void ScanBuffer::operator delete(void* aBufferAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ScanBuffer::ScanBuffer(void)
-: Buffer(CN_SCANBUFFER)
+: Object(CN_SCANBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
 
@@ -351,6 +351,20 @@ void ScanBuffer::vWipe(Stz* aFrom)
   MemLib::vSet(aFrom,0xEF,nBytes,CN_SCANBUFFER);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* ScanBuffer::aFooter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER);
+  
+  return &m_xFooter;
 }
 
 /*============================================================================*/

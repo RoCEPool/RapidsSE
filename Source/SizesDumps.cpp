@@ -462,7 +462,7 @@ eHT geWhichHeap[]
   /* 90 */ HT_SMALL,   // CN_ROWCURSOR
   /* 91 */ HT_SMALL,   // CN_ROWONCE
   
-  /* 92 */ HT_LARGE_BUFFER,   // CN_SCANBUFFER
+  /* 92 */ HT_LARGE_ALT,   // CN_SCANBUFFER
   /* 93 */ HT_LARGE_BUFFER,   // CN_SCRATCH
   /* 94 */ HT_INVALID, // CN_SEHISTORY
   /* 95 */ HT_MEDIUM,  // CN_SEITF

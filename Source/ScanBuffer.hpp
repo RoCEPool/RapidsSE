@@ -5,12 +5,15 @@
 
 namespace Structures
 {
-  class ScanBuffer : public Buffer
+  class ScanBuffer : public Object
   {
   private:
     Stz* m_aNextMsg;  // address where next message starts
     Stz* m_aEndData;  // address where data ends
     WspFxd<C_1M> m_xWsp; // note this is 1M not 1MB
+  
+    // must be last
+    Footer m_xFooter;
   
   public:
     void* operator new(size_t);
@@ -31,6 +34,8 @@ namespace Structures
     void vReset(void);
     void vWipe(void);
     void vWipe(Stz* aFrom);
+  
+    Footer* aFooter(void);
   };
 }
 
