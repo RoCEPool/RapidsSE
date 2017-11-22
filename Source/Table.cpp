@@ -183,12 +183,17 @@ Stz* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed)
   i8 nBuffersTotal = 0;
   s48K sAnalysis;
   
-  if ( ! gbMetadata || bDetailed )
-    sAnalysis.vCatSprint("N%lld: Analysis of Index %s of table %s \n"_Stz,
-                       gpGrid->iThisNode(),
-                       pIndex->aIndexName()->aChar(),
-                       m_sTableName.aChar());
-  
+  if ( ! gbMetadata || bDetailed ) {
+    if (pIndex->bIsHidden())
+      sAnalysis.vCatSprint("N%lld: Analysis of table %s \n"_Stz,
+                         gpGrid->iThisNode(),
+                         m_sTableName.aChar());
+    else
+      sAnalysis.vCatSprint("N%lld: Analysis of Index %s of table %s \n"_Stz,
+                           gpGrid->iThisNode(),
+                           pIndex->aIndexName()->aChar(),
+                           m_sTableName.aChar());
+  }
   for (i8 iSlot = 0; iSlot < gpGrid->m_nSlots; iSlot++) {
     
     i8 iPartition = Partition::iSlotToPartition(iSlot);

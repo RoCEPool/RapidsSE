@@ -121,10 +121,15 @@ Stz* IndexData::pAnalyze(void)
   i8 nStrandsTotal = 0;
   s48K sAnalysis;
   
-  sAnalysis.vCatSprint("N%lld: Analysis of Index %s of table %s\n"_Stz,
-                       gpGrid->iThisNode(),
-                       m_pIndex->aIndexName()->aChar(),
-                       m_pIndex->pTable()->aTableName());
+  if (m_pIndex->bIsHidden())
+      sAnalysis.vCatSprint("N%lld: Analysis of table %s\n"_Stz,
+                           gpGrid->iThisNode(),
+                           m_pIndex->pTable()->aTableName());
+  else
+    sAnalysis.vCatSprint("N%lld: Analysis of Index %s of table %s\n"_Stz,
+                         gpGrid->iThisNode(),
+                         m_pIndex->aIndexName()->aChar(),
+                         m_pIndex->pTable()->aTableName());
   
   return sAnalysis;
 }
