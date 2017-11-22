@@ -14,9 +14,9 @@
 void* Slab::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  Buffer* pBuffer = gpBufferPool->pAllocBuffer();
+  Slab* pSlab = (Slab*)Heap::pAllocate(CN_SLAB);
   
-  return pPoolCheck<void*>(pBuffer);
+  return pPoolCheck<void*>(pSlab);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -24,9 +24,9 @@ void* Slab::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 void Slab::operator delete(void* pSlabAddress)
 {
-  Buffer* pBuffer = static_cast<Buffer*>(pSlabAddress);
+  Slab* pSlab = static_cast<Slab*>(pSlabAddress);
   
-  gpBufferPool->vFree(pBuffer);
+  Heap::vFree(pSlab);
 }
 
 /*----------------------------------------------------------------------------*/
