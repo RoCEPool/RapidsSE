@@ -233,7 +233,7 @@ void Vch::vCopy(void* pDst, void* pSrc)
 bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn)
 {
   char* aChar = (char*)aVch;
-  
+ /*
   // test for null
   if ( ! **aaSrc
       || C_FS == **aaSrc
@@ -245,6 +245,37 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn)
     
     aVch->vSetNull();
     return true;
+  }
+ */
+  
+  // is there data ?
+  if ( ! **aaSrc
+      || C_FS == **aaSrc
+      || C_NL == **aaSrc
+      || C_CR == **aaSrc) {
+    
+    // empty string
+    *aChar++ = '\0';
+    return true;
+  }
+  
+  // test for null
+  if (StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) == 0) {
+    
+    char* aPtr = (*aaSrc) + 4;
+    
+    if (!*aPtr
+        || C_FS == *aPtr
+        || C_NL == *aPtr
+        || C_CR == *aPtr) {
+      
+      if ( !pColumn->bIsNullable() )
+        return false;
+      
+      aVch->vSetNull();
+      *aaSrc = aPtr;
+      return true;
+    }
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

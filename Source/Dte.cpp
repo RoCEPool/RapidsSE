@@ -215,7 +215,8 @@ bool Dte::bExtract(char** aaSrc, Dte* aDate, Column* pColumn)
   // skip leading whitespace
   while (' ' == **aaSrc)
     (*aaSrc)++;
-  
+ 
+  /*
   // test for null
   if ( ! **aaSrc
       || C_FS == **aaSrc
@@ -226,6 +227,37 @@ bool Dte::bExtract(char** aaSrc, Dte* aDate, Column* pColumn)
     if ( !pColumn->bIsNullable() )
       return false;
     
+    return true;
+  }
+  */
+  // is there data ?
+  if ( ! **aaSrc
+      || C_FS == **aaSrc
+      || C_NL == **aaSrc
+      || C_CR == **aaSrc) {
+    
+    return false;
+  }
+  
+  // test for null
+  if (StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) == 0) {
+    
+    *aaSrc = (*aaSrc) + 4;
+    
+    // skip trailing whitespace
+    while (' ' == **aaSrc)
+      (*aaSrc)++;
+    
+    if (**aaSrc
+        && C_FS != **aaSrc
+        && C_NL != **aaSrc
+        && C_CR != **aaSrc)
+      return false;
+    
+    if ( !pColumn->bIsNullable() )
+      return false;
+    
+    aDate->vSetNull();
     return true;
   }
   
