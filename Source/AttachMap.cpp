@@ -37,19 +37,19 @@ void* AttachMap::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  Buffer* pBuffer = (Buffer*)Heap::pAllocate(CN_ATTACHMAP);
+  AttachMap* pAttachMap = (AttachMap*)Heap::pAllocate(CN_ATTACHMAP);
   
-  return pPoolCheck<void*>(pBuffer);
+  return pPoolCheck<void*>(pAttachMap);
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void AttachMap::operator delete(void* pBufferAddress)
+void AttachMap::operator delete(void* pAttachMapAddress)
 {
-  Buffer* pBuffer = static_cast<Buffer*>(pBufferAddress);
+  AttachMap* pAttachMap = static_cast<AttachMap*>(pAttachMapAddress);
   
-  Heap::vFree(pBuffer);
+  Heap::vFree(pAttachMap);
 }
 
 /*----------------------------------------------------------------------------*/
