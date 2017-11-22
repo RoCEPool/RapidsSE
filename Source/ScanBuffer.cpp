@@ -11,19 +11,19 @@ void* ScanBuffer::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  Buffer* pBuffer = (Buffer*)Heap::pAllocate(CN_SCANBUFFER);
+  ScanBuffer* pScanBuffer = (ScanBuffer*)Heap::pAllocate(CN_SCANBUFFER);
   
-  return pPoolCheck<void*>(pBuffer);
+  return pPoolCheck<void*>(pScanBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void ScanBuffer::operator delete(void* aBufferAddress)
+void ScanBuffer::operator delete(void* pScanBufferAddress)
 {
-  Buffer* pBuffer = static_cast<Buffer*>(aBufferAddress);
+  ScanBuffer* pScanBuffer = static_cast<ScanBuffer*>(pScanBufferAddress);
   
-  Heap::vFree(pBuffer);
+  Heap::vFree(pScanBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
