@@ -109,6 +109,8 @@ void Debugging::vError(Stz* aFormat, ...)
 /*---------------------------------------------------------------------------*/
 __attribute__((noreturn)) void Debugging::vFatal(Stz* aFormat, ...)
 {
+  vStackDump();
+
   va_list xArgs;
   
   va_start(xArgs,aFormat);

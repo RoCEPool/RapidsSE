@@ -121,7 +121,7 @@ Object* Heap::pAllocate(eCN eAllocClass)
   
   switch(eHeap) {
     case HT_INVALID:
-      vFatal("Heap::pAllocate: Invalid heap allocation: class %lld %lls\n"_Stz,
+      vFatal("Heap::pAllocate: Invalid heap allocation: class %lld %s\n"_Stz,
              eAllocClass,aCN[eAllocClass]);
     
     case HT_SMALL:
@@ -173,7 +173,7 @@ void Heap::vValidateTables(void)
         
       case HT_SMALL:
         if (iSize >= C_SIZE_SMALL_OBJECT)
-          vFatal("Heap::vValidateTables: small class %lld %lls is too big\n"_Stz,
+          vFatal("Heap::vValidateTables: small class %lld %s is too big\n"_Stz,
                  eClassNo,aCN[eClassNo]);
         //if (!iSize)
         //  vWarn("Heap::vValidateTables: small class %lld %lls has 0 size\n"_Stz,
@@ -182,7 +182,7 @@ void Heap::vValidateTables(void)
         
       case HT_MEDIUM:
         if (iSize >= C_SIZE_MEDIUM_OBJECT)
-          vFatal("Heap::vValidateTables: medium class %lld %lls is too big\n"_Stz,
+          vFatal("Heap::vValidateTables: medium class %lld %s is too big\n"_Stz,
                  eClassNo,aCN[eClassNo]);
         //if (!iSize)
         // vWarn("Heap::vValidateTables: medium class %lld %lls has 0 size\n"_Stz,
@@ -191,7 +191,7 @@ void Heap::vValidateTables(void)
         
       case HT_LARGE_BUFFER:
         if (iSize >= C_SIZE_LARGE_OBJECT)
-          vFatal("Heap::vValidateTables: large class %lld %lls is too big\n"_Stz,
+          vFatal("Heap::vValidateTables: large class %lld %s is too big\n"_Stz,
                  eClassNo,aCN[eClassNo]);
         //if (!iSize)
         // vWarn("Heap::vValidateTables: large class %lld %lls has 0 size\n"_Stz,
@@ -200,7 +200,7 @@ void Heap::vValidateTables(void)
         
       case HT_LARGE_ALT:
         if (iSize >= C_SIZE_LARGE_OBJECT)
-          vFatal("Heap::vValidateTables: large class %lld %lls is too big\n"_Stz,
+          vFatal("Heap::vValidateTables: large class %lld %s is too big\n"_Stz,
                  eClassNo,aCN[eClassNo]);
         //if (!iSize)
         // vWarn("Heap::vValidateTables: large class %lld %lls has 0 size\n"_Stz,
@@ -209,7 +209,7 @@ void Heap::vValidateTables(void)
         
       case HT_JUMBO:
         if (iSize >= C_SIZE_JUMBO_OBJECT)
-          vFatal("Heap::vValidateTables: jumbo class %lld %lls is too big\n"_Stz,
+          vFatal("Heap::vValidateTables: jumbo class %lld %s is too big\n"_Stz,
                  eClassNo,aCN[eClassNo]);
         //if (!iSize)
         //  vWarn("Heap::vValidateTables: jumbo class %lld %lls has 0 size\n"_Stz,
@@ -270,7 +270,8 @@ void Heap::vFree(Object* pObject)
   
   switch(eHeap) {
     case HT_INVALID:
-      vFatal("Heap::vFree: Invalid heap free: class %lld %lls\n"_Stz,
+      MemLib::vWordDump(pObject,256,0);
+      vFatal("Heap::vFree: Invalid heap free: class %lld %s\n"_Stz,
              eAllocClass,aCN[eAllocClass]);
       
     case HT_SMALL:
