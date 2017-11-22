@@ -994,12 +994,17 @@ tp: populateIndex
 : removeIndex allParticipants 1 checkResult ( "<indexNm>" -- true n# true )
 
   tp: removeIndex
-  locals| indexNm |
+  0 locals| pIndexPtr sIndexNm |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // remove the index from the table
+  sIndexNm find execute to pIndexPtr
+  pIndexPtr pIndexPtr index.table@ table.removeIndex
 
   // forward reference :-(
-  indexNm "indexTidyUp" find execute
+  sIndexNm "indexTidyUp" find execute
 
-  indexNm :forget
+  sIndexNm :forget
 
   true <SUCCESS_RESULT>
 ;
