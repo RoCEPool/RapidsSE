@@ -33,7 +33,7 @@ void Slab::operator delete(void* pSlabAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Slab::Slab(void)
-: Buffer(CN_SLAB)
+: Object(CN_SLAB)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLAB);
   

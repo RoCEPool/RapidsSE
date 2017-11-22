@@ -5,7 +5,7 @@
 
 namespace Pool
 {
-  class Slab : public Buffer
+  class Slab : public Object
   {
   private:
     Slab* m_pNextSlab; // next slab in slab chain
