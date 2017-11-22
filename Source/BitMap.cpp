@@ -30,7 +30,7 @@ void BitMap::operator delete(void* pAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 BitMap::BitMap(void)
-: Buffer(CN_BITMAP)
+: Object(CN_BITMAP)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BITMAP);
   

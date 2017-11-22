@@ -5,7 +5,7 @@
 
 namespace Structures
 {
-  class BitMap : public Buffer
+  class BitMap : public Object
   {
   static const i8 C_BIT_ARRAYS = 120000;
   

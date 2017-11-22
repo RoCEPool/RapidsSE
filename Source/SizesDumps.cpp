@@ -379,7 +379,7 @@ eHT geWhichHeap[]
   /* 25 */ HT_LARGE_BUFFER,   // CN_ATTACHMAP
   
   /* 26 */ HT_SMALL,   // CN_BITARRAY
-  /* 27 */ HT_LARGE_BUFFER,   // CN_BITMAP
+  /* 27 */ HT_LARGE_ALT,   // CN_BITMAP
   /* 28 */ HT_INVALID, // CN_BUFFERPOOL
   /* 29 */ HT_INVALID, // CN_BPA
 
