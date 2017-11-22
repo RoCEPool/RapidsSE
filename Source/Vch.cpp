@@ -284,13 +284,15 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn)
   i8 iColumnLength = pColumn->iColumnLength();
   bool bInQuotes = false;
   
-  if ('"' == **aaSrc) {
+  if ('"' == **aaSrc ||
+      '\'' == **aaSrc) {
     bInQuotes = true;
     (*aaSrc)++;
   }
   
   if (bInQuotes) {
     while ('"' != **aaSrc
+           && '\'' != **aaSrc
            && C_NL != **aaSrc
            && C_CR != **aaSrc) {
       
@@ -301,8 +303,11 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn)
     }
     
     // did we see an end quote ?
-    if ('"' != **aaSrc)
+    if ('"' != **aaSrc &&
+        '\'' != **aaSrc)
       return false;
+    
+    (*aaSrc)++;
   }
   else {
     while (**aaSrc
