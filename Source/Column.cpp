@@ -382,6 +382,8 @@ void Column::vSet(Stz* aDefinition)
     StrLib::vSkipWhite(&aCursor);
   }
   
+  vValidateColumn();
+  
   if (StrLib::bSame(aCursor,"not null"))
     m_bIsNullable = false;
 }
@@ -404,6 +406,53 @@ void Column::vShow(void)
          m_bIsPartitionKey? "partitionKey"_Stz : ""_Stz);
 }
 
+/*----------------------------------------------------------------------------*/
+/* validate column defintion                                                  */
+/*----------------------------------------------------------------------------*/
+void Column::vValidateColumn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  
+  switch (m_eDatumType) {
+      
+    case DM_BOL:
+    case DM_DTE:
+    case DM_IVL:
+    case DM_TME:
+    case DM_TSP:
+      return;
+      
+    case DM_BCD:
+      if (m_iColumnLength > 19)
+        m_iColumnLength = 19;
+      if (m_iColumnScale > 19)
+        m_iColumnScale = 19;
+      break;
+      
+    case DM_FLT:
+      if (m_iColumnLength > 16)
+        m_iColumnLength = 16;
+      break;
+      
+    case DM_INT:
+      if (m_iColumnLength > 19)
+        m_iColumnLength = 19;
+      break;
+      
+    case DM_VBN:
+      if (m_iColumnLength > C_64K)
+        m_iColumnLength = C_64K;
+      break;
+      
+    case DM_VCH:
+      if (m_iColumnLength > C_64K)
+        m_iColumnLength = C_64K;
+      break;
+      
+    default:
+      NEVER_REACH;
+  }
+}
 /*----------------------------------------------------------------------------*/
 /* column value                                                               */
 /*----------------------------------------------------------------------------*/
