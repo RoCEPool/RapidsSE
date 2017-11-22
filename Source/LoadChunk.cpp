@@ -10,19 +10,19 @@
 void* LoadChunk::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  Buffer* pBuffer = (Buffer*)Heap::pAllocate(CN_LOADCHUNK);
+  LoadChunk* pLoadChunk = (LoadChunk*)Heap::pAllocate(CN_LOADCHUNK);
   
-  return pPoolCheck<void*>(pBuffer);
+  return pPoolCheck<void*>(pLoadChunk);
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void LoadChunk::operator delete(void* pBufferAddress)
+void LoadChunk::operator delete(void* pLoadChunkAddress)
 {
-  Buffer* pBuffer = static_cast<Buffer*>(pBufferAddress);
+  LoadChunk* pLoadChunk = static_cast<LoadChunk*>(pLoadChunkAddress);
   
-  Heap::vFree(pBuffer);
+  Heap::vFree(pLoadChunk);
 }
 
 /*----------------------------------------------------------------------------*/
