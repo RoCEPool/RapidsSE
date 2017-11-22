@@ -92,9 +92,9 @@ CmdTable SePromptCommands[] =
 void* SePrompt::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  SePrompt* pSePrompt = (SePrompt*)gpBufferPool->pAllocBuffer();
+  SePrompt* pSePrompt = (SePrompt*)Heap::pAllocate(CN_SEPROMPT);
   
-  return pSePrompt;
+  return pPoolCheck<void*>(pSePrompt);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -102,9 +102,9 @@ void* SePrompt::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 void SePrompt::operator delete(void* pSePromptAddress)
 {
-  Buffer* pBuffer = reinterpret_cast<Buffer*>(pSePromptAddress);
+  SePrompt* pSePrompt = static_cast<SePrompt*>(pSePromptAddress);
   
-  gpBufferPool->vFree(pBuffer);
+  Heap::vFree(pSePrompt);
 }
 
 /*----------------------------------------------------------------------------*/
