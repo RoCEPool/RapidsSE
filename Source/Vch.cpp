@@ -307,6 +307,9 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn)
     if ('"' != **aaSrc &&
        '\'' != **aaSrc)
       return false;
+    
+    (*aaSrc)++;
+    
   }
   else {
     while (**aaSrc
