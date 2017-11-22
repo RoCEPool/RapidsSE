@@ -423,7 +423,7 @@ eHT geWhichHeap[]
 
   /*  */   HT_INVALID, // CN_LARGEHEAP
   /* 59 */ HT_INVALID, // CN_LINEITEM
-  /* 60 */ HT_LARGE_BUFFER,   // CN_LOADCHUNK
+  /* 60 */ HT_LARGE_ALT,   // CN_LOADCHUNK
   /* 61 */ HT_MEDIUM,  // CN_LOADER
   /* 62 */ HT_MEDIUM,  // CN_LOADERSUB
   /* 63 */ HT_JUMBO,   // CN_LOADMAP

@@ -29,7 +29,7 @@ void LoadChunk::operator delete(void* pLoadChunkAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 LoadChunk::LoadChunk(void)
-: Buffer(CN_LOADCHUNK)
+: Object(CN_LOADCHUNK)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK,_FOOTER_);
 
@@ -166,6 +166,20 @@ void LoadChunk::vReset(void)
   
   m_aEndChunk   = nullptr;
   m_aNextRecord = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* LoadChunk::aFooter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK);
+  
+  return &m_xFooter;
 }
 
 /*============================================================================*/
