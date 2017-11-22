@@ -23,7 +23,7 @@ void* StepArray::operator new(size_t iSize)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 StepArray::StepArray(void)
-: Buffer(CN_STEPARRAY)
+: Object(CN_STEPARRAY)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STEPARRAY,_FOOTER_);
   

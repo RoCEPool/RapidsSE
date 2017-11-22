@@ -7,7 +7,7 @@ namespace Tasks
 {
   static const i8 C_STEPS = 1024;
   
-  class StepArray : public Buffer
+  class StepArray : public Object
   {
   public:
     Lock      m_zLock;
