@@ -67,12 +67,13 @@ int main(int argc, const char* argv[])
   //vTest9();
 
   StorageEngine::vCheckAllAssumptions();
-  vSetGlobals();
+  
   vWriteRegionName();
   vChangeDirectory();
   vKillPrev();
   
   RapidsSE::vPoolOpen();
+  vSetGlobals();
   RapidsSE::vCheckPort();
   
   RapidsSE::vExecuteCmdLine();
