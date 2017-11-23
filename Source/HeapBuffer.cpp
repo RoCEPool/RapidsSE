@@ -11,9 +11,9 @@ void* HeapBuffer::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  Buffer* pBuffer = (Buffer*)Heap::pAllocate(CN_HEAPBUFFER);
+  HeapBuffer* pHeapBuffer = (HeapBuffer*)gpBufferPool->pAllocBuffer();
   
-  return pPoolCheck<void*>(pBuffer);
+  return pPoolCheck<void*>(pHeapBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -21,9 +21,9 @@ void* HeapBuffer::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 void HeapBuffer::operator delete(void* pHeapBufferAddress)
 {
-  Buffer* pBuffer = static_cast<Buffer*>(pHeapBufferAddress);
+  HeapBuffer* pHeapBuffer = static_cast<HeapBuffer*>(pHeapBufferAddress);
   
-  Heap::vFree(pBuffer);
+  gpBufferPool->vFree((Buffer*)pHeapBuffer);
 }
 
 /*----------------------------------------------------------------------------*/

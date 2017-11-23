@@ -376,7 +376,7 @@ eHT geWhichHeap[]
   /* 22 */ HT_SMALL,   // CN_ARG
   /* 23 */ HT_INVALID, // CN_ARGUMENTS
   /* 24 */ HT_INVALID, // CN_ATOMIC
-  /* 25 */ HT_LARGE_BUFFER,   // CN_ATTACHMAP
+  /* 25 */ HT_INVALID, // CN_ATTACHMAP
   
   /* 26 */ HT_SMALL,   // CN_BITARRAY
   /* 27 */ HT_LARGE_ALT,   // CN_BITMAP
@@ -405,7 +405,7 @@ eHT geWhichHeap[]
   /* 45 */ HT_INVALID, // CN_GRID
   /* 46 */ HT_SMALL,   // CN_GROUPBY
 
-  /* 47 */ HT_LARGE_BUFFER,   // CN_HEAPBUFFER
+  /* 47 */ HT_INVALID, // CN_HEAPBUFFER
   
   /* 48 */ HT_INVALID, // CN_INDEX
   /* 49 */ HT_SMALL,   // CN_INDEXDATA
