@@ -8,7 +8,7 @@
 
 extern Dic*            gpMainDic;
 
-extern Grid*           gpGrid;
+extern AttachMap*      gpAttachMap;
 extern StepArray*      gpStepArray;
 extern ThreadList*     gpThreadList;
 extern TaskList*       gpTaskList;
@@ -89,7 +89,7 @@ void Task::vTaskAck(MP_Task mpTask)
     //           pThatTask,pThatTask->m_sName.aChar());
     if (gbTracepoint)
       vTrace("[N%lld:%8s\\%lld %-11s] ack resumes %s\\%lld\n"_Stz,
-             gpGrid->iThisNode(),
+             gpAttachMap->m_pGrid->iThisNode(),
              mpTask->m_sName.aChar(),
              *mpTask->m_zAcks,
              mpTask->m_sComment.aChar(),
@@ -117,7 +117,7 @@ void Task::vTaskAck(MP_Task mpTask)
     //           *mpTask,mpTask->m_sName.aChar(),
     //           pThatTask,iMore,pThatTask->m_sName.aChar());
 //    vTrace("[N%lld:%8s\\%lld %-11s] ack'd %s\\%lld\n"_Stz,
-//           gpGrid->iThisNode(),
+//           gpAttachMap->m_pGrid->iThisNode(),
 //           mpTask->m_sName.aChar(),
 //           *mpTask->m_zAcks,
 //           mpTask->m_sComment.aChar(),

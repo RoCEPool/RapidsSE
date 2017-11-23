@@ -6,11 +6,11 @@
 //#include "Tasks.h"
 #include "SePrompt.hpp"
 
+extern AttachMap*      gpAttachMap;
 extern Arguments       gxArguments;
 
 extern Dic*            gpMainDic;
 
-extern Grid*           gpGrid;
 extern StepArray*      gpStepArray;
 extern ThreadList*     gpThreadList;
 extern TaskList*       gpTaskList;
@@ -53,13 +53,13 @@ void Task::vGridAppendNodes(MP_Task mpTask)
 {
   ENTRY("vGridAppendNodes"_Stz);
   
-  for (i8 iNode = 0; iNode < gpGrid->m_nNodes; iNode++) {
+  for (i8 iNode = 0; iNode < gpAttachMap->m_pGrid->m_nNodes; iNode++) {
     Node* pNode = new Node(iNode,
                            gxArguments.m_xNodes[iNode].m_sNodeName,
                            gxArguments.m_xNodes[iNode].m_sIPAddress,
                            gxArguments.m_xNodes[iNode].m_iPortNo);
     ASSERT(CN_NODE == pNode->eClass());
-    gpGrid->vAppend(pNode);
+    gpAttachMap->m_pGrid->vAppend(pNode);
   }
   EXIT();
 }
@@ -76,7 +76,7 @@ void Task::vGridFindNode(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(sPtrNodeName) )
     THROW_INVALID_DSTACK("grid.find"_Stz);
   
-  Node* pNode = gpGrid->pFindNode(sPtrNodeName);
+  Node* pNode = gpAttachMap->m_pGrid->pFindNode(sPtrNodeName);
   
   mpTask->m_pDataStack->vPushObject(pNode);
   
@@ -115,7 +115,7 @@ void Task::vGridNode(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(iNode) )
     THROW_INVALID_DSTACK("grid.node"_Stz);
   
-  mpTask->m_pDataStack->vPushObject(gpGrid->pFindNode(iNode));
+  mpTask->m_pDataStack->vPushObject(gpAttachMap->m_pGrid->pFindNode(iNode));
   
   EXIT();
 }
@@ -127,7 +127,7 @@ void Task::vGridNodes(MP_Task mpTask)
 {
   ENTRY("vGridNode"_Stz);
 
-  mpTask->m_pDataStack->vPushInt(gpGrid->m_nNodes);
+  mpTask->m_pDataStack->vPushInt(gpAttachMap->m_pGrid->m_nNodes);
   
   EXIT();
 }
@@ -139,7 +139,7 @@ void Task::vGridPartitions(MP_Task mpTask)
 {
   ENTRY("vGridNode"_Stz);
   
-  mpTask->m_pDataStack->vPushInt(gpGrid->m_nPartitions);
+  mpTask->m_pDataStack->vPushInt(gpAttachMap->m_pGrid->m_nPartitions);
   
   EXIT();
 }
@@ -151,7 +151,7 @@ void Task::vGridSlots(MP_Task mpTask)
 {
   ENTRY("vGridNode"_Stz);
   
-  mpTask->m_pDataStack->vPushInt(gpGrid->m_nSlots);
+  mpTask->m_pDataStack->vPushInt(gpAttachMap->m_pGrid->m_nSlots);
   
   EXIT();
 }
@@ -166,7 +166,7 @@ void Task::vGridThisNodeStore(MP_Task mpTask)
   s256 sPtrNodeName;
   i8 iNode;
   
-  Node* pThisNode = gpGrid->pFindNode(gxArguments.m_sNodeName);
+  Node* pThisNode = gpAttachMap->m_pGrid->pFindNode(gxArguments.m_sNodeName);
   if ( ! pThisNode ) {
     THROW("Cannot fine Node %s in the cluster"_Stz,
           gxArguments.m_sNodeName.aChar());
@@ -174,7 +174,7 @@ void Task::vGridThisNodeStore(MP_Task mpTask)
   
   i8 iNodeNo = pThisNode->iNodeNo();
   
-  gpGrid->vThisNode(iNodeNo);
+  gpAttachMap->m_pGrid->vThisNode(iNodeNo);
   
   EXIT();
 }
@@ -188,7 +188,7 @@ void Task::vGridThisNodeFetch(MP_Task mpTask)
   
   Object* pPtrGrid;
   
-  i8 iNodeNo = gpGrid->iThisNode();
+  i8 iNodeNo = gpAttachMap->m_pGrid->iThisNode();
   
   mpTask->m_pDataStack->vPushInt(iNodeNo);
   
@@ -203,7 +203,7 @@ void Task::vGridThisNodeNameFetch(MP_Task mpTask)
   ENTRY("vGridThisNodeNameFetch"_Stz);
   
   s256 sName;
-  sName = gpGrid->pThisNode()->aNodeName();
+  sName = gpAttachMap->m_pGrid->pThisNode()->aNodeName();
   
   mpTask->m_pDataStack->vPushS256(sName);
   
@@ -222,7 +222,7 @@ void Task::vGridStartedStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(iStarted) )
     THROW_INVALID_DSTACK("grid.started!"_Stz);
   
-  gpGrid->vHasStarted(iStarted == 1 ? true : false);
+  gpAttachMap->m_pGrid->vHasStarted(iStarted == 1 ? true : false);
   
   EXIT();
 }
@@ -234,7 +234,7 @@ void Task::vGridStartNodeFetch(MP_Task mpTask)
 {
   ENTRY("vGridGetStarted"_Stz);
   
-  mpTask->m_pDataStack->vPushInt(gpGrid->iStartNode());
+  mpTask->m_pDataStack->vPushInt(gpAttachMap->m_pGrid->iStartNode());
   
   EXIT();
 }
@@ -251,7 +251,7 @@ void Task::vGridStartNodeStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(iStartNode) )
     THROW_INVALID_DSTACK("grid.startNode!"_Stz);
   
-  gpGrid->vStartNode(iStartNode);
+  gpAttachMap->m_pGrid->vStartNode(iStartNode);
   
   EXIT();
 }
@@ -263,7 +263,7 @@ void Task::vGridStartedFetch(MP_Task mpTask)
 {
   ENTRY("vGridGetStarted"_Stz);
   
-  mpTask->m_pDataStack->vPushInt(gpGrid->bHasStarted());
+  mpTask->m_pDataStack->vPushInt(gpAttachMap->m_pGrid->bHasStarted());
   
   EXIT();
 }

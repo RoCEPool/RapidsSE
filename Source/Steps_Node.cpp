@@ -11,7 +11,6 @@ extern Arguments       gxArguments;
 extern AttachMap*      gpAttachMap;
 extern Dic*            gpMainDic;
 
-extern Grid*           gpGrid;
 extern StepArray*      gpStepArray;
 extern ThreadList*     gpThreadList;
 extern TaskList*       gpTaskList;
@@ -154,7 +153,7 @@ void Task::vNodePartitions(MP_Task mpTask)
 {
   ENTRY("vNodePartitions"_Stz);
   
-  mpTask->m_pDataStack->vPushInt(gpGrid->m_nSlots);
+  mpTask->m_pDataStack->vPushInt(gpAttachMap->m_pGrid->m_nSlots);
   
   EXIT();
 }
@@ -200,14 +199,16 @@ void Task::vNodeStatus(MP_Task mpTask)
 
   s256 s;
   
+  Grid* pGrid = gpAttachMap->m_pGrid;
+  
   if (gbMetadata) {
     if (Region::bTest(gxArguments.m_sRegionName))
       s.vSprint("row: ('%s', '%s', 'running')"_Stz,
-              gpGrid->pThisNode()->aNodeName(),
+              pGrid->pThisNode()->aNodeName(),
               gxArguments.m_sRegionName.aChar());
     else
       s.vSprint("row: ('%s', '%s', 'not running')"_Stz,
-              gpGrid->pThisNode()->aNodeName(),
+              pGrid->pThisNode()->aNodeName(),
               gxArguments.m_sRegionName.aChar());
   }
   else {

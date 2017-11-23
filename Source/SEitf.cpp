@@ -8,7 +8,6 @@
 extern Dic*       gpMainDic;
 extern SEitfList* gpSEitfList;
 extern AttachMap* gpAttachMap;
-extern Grid*      gpGrid;
 extern ServerScheduler* gpServerScheduler;
 extern TxSet*     gpTxSet;
 
@@ -160,7 +159,7 @@ SEitf::SEitf(i8 iPartition)
   // pid
   m_iPid = Process::iGetPid();
 
-  m_iSlots = gpGrid->iSlots();
+  m_iSlots = gpAttachMap->m_pGrid->iSlots();
   m_iPartition  = iPartition;
   
   //m_xPathStack;

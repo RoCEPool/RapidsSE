@@ -6,9 +6,9 @@
 //#include "Tasks.h"
 #include "SePrompt.hpp"
 
+extern AttachMap*      gpAttachMap;
 extern Dic*            gpMainDic;
 
-extern Grid*           gpGrid;
 extern StepArray*      gpStepArray;
 extern ThreadList*     gpThreadList;
 extern TaskList*       gpTaskList;
@@ -329,7 +329,7 @@ void Task::vSocketRecv(MP_Task mpTask)
   
   if (gbTracepoint)
     vTrace("[N%lld:%8s\\%lld %-11s] receiving on %lld\n"_Stz,
-           gpGrid->iThisNode(),
+           gpAttachMap->m_pGrid->iThisNode(),
            mpTask->m_sName.aChar(),
            *mpTask->m_zAcks,
            mpTask->m_sComment.aChar(),

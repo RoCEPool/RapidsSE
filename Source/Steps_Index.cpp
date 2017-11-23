@@ -6,9 +6,9 @@
 //#include "Tasks.h"
 #include "SePrompt.hpp"
 
+extern AttachMap*      gpAttachMap;
 extern Dic*            gpMainDic;
 
-extern Grid*           gpGrid;
 extern StepArray*      gpStepArray;
 extern ThreadList*     gpThreadList;
 extern TaskList*       gpTaskList;
@@ -238,7 +238,7 @@ void Task::vIndexDump(MP_Task mpTask)
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
   
-  for (i8 iPartition = 0; iPartition < gpGrid->m_nSlots; iPartition++) {
+  for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nSlots; iPartition++) {
     Partition* pPartition = pTable->pPartition(iPartition);
     IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
     vTrace("Partition %lld\n"_Stz, iPartition);
@@ -864,7 +864,7 @@ void Task::vIndexVisualize(MP_Task mpTask)
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
   
-  for (i8 iPartition = 0; iPartition < gpGrid->m_nSlots; iPartition++) {
+  for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nSlots; iPartition++) {
     Partition* pPartition = pTable->pPartition(iPartition);
     IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
     vTrace("Partition %lld\n"_Stz, iPartition);

@@ -6,7 +6,7 @@
 
 #include "StorageEngine.h"
 
-extern Grid* gpGrid;
+extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -48,7 +48,7 @@ Grid::Grid(i8 nNodes, i8 nSlots)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  gpGrid = this;
+  gpAttachMap->m_pGrid = this;
   
   vInit(nNodes, nSlots);
   

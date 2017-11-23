@@ -7,7 +7,6 @@
 
 extern BufferPool* gpBufferPool;
 extern AttachMap*  gpAttachMap;
-extern Grid*       gpGrid;
 
 /*----------------------------------------------------------------------------*/
 /* add a column to an index                                                    */
@@ -821,12 +820,14 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf, i8 iTraceLevel)
     // validate we have a table
     VALIDATE_TABLE("b"_Stz);
     
+    Grid* pGrid = gpAttachMap->m_pGrid;
+    
     // before sending buffers set no of remaining acks to no of partitons
-    pSEitf->m_ziAcksRemaining = gpGrid->iSlots() * gpGrid->iNodes();
+    pSEitf->m_ziAcksRemaining = pGrid->iSlots() * pGrid->iNodes();
     
-    //vTrace("%lld %lld\n"_Stz, *pSEitf->m_ziAcksRemaining, gpGrid->m_nPartitions);
+    //vTrace("%lld %lld\n"_Stz, *pSEitf->m_ziAcksRemaining, gpAttachMap->m_pGrid->m_nPartitions);
     
-    for (i8 iPartition = 0; iPartition < gpGrid->m_nPartitions; iPartition++) {
+    for (i8 iPartition = 0; iPartition < pGrid->m_nPartitions; iPartition++) {
       bool bResult = pSEitf->bInsertLastBuffer(iPartition);
       
       //vTrace("bInsertLastBuffer returned %lld %lld\n"_Stz, iPartition, bResult);
@@ -1529,9 +1530,8 @@ eEC RapidsSE_GetPartitions(SEitf* pSEitf, void** ppPartitions, void** ppCount, i
     VALIDATE_REFPOINTER("b"_Stz, ppPartitions);
     VALIDATE_REFPOINTER("c"_Stz, ppCount);
 
-    //vTrace("PART: %lld SLOTS: %lld\n"_Stz, gpGrid->m_iPartition, gpGrid->m_nSlots);
-    *ppCount = &gpGrid->m_nSlots;
-    *ppPartitions = &gpGrid->m_iPartition;
+    *ppCount = &gpAttachMap->m_pGrid->m_nSlots;
+    *ppPartitions = &gpAttachMap->m_pGrid->m_iPartition;
     
     // trace exit
     TRACE_EXIT("ea"_Stz);

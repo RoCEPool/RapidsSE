@@ -6,7 +6,6 @@
 
 #include "StorageEngine.h"
 
-extern Grid*  gpGrid;
 extern bool   gbProgress;
 
 /*----------------------------------------------------------------------------*/

@@ -6,9 +6,9 @@
 //#include "Tasks.h"
 #include "SePrompt.hpp"
 
+extern AttachMap*      gpAttachMap;
 extern Dic*            gpMainDic;
 
-extern Grid*           gpGrid;
 extern StepArray*      gpStepArray;
 extern ThreadList*     gpThreadList;
 extern TaskList*       gpTaskList;
@@ -149,7 +149,7 @@ ENTRY("vNodeCursorInit"_Stz);
   NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
   
-  new(pNodeCursor) NodeCursor(gpGrid);
+  new(pNodeCursor) NodeCursor(gpAttachMap->m_pGrid);
   
   EXIT();
 }
@@ -161,7 +161,7 @@ void Task::vNodeCursorNew(MP_Task mpTask)
 {
 ENTRY("vNodeCursorNew"_Stz);
   
-  NodeCursor* pNodeCursor = new NodeCursor(gpGrid);
+  NodeCursor* pNodeCursor = new NodeCursor(gpAttachMap->m_pGrid);
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
   
   mpTask->m_pDataStack->vPushObject(pNodeCursor);

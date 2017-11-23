@@ -8,12 +8,12 @@
 #include "SePrompt.hpp"
 #include "Schedulers.h"
 
+extern AttachMap*      gpAttachMap;
 extern Arguments       gxArguments;
 
 extern Dic*            gpMainDic;
 extern Word*           gpWord;
 
-extern Grid*           gpGrid;
 extern StepArray*      gpStepArray;
 extern ThreadList*     gpThreadList;
 extern TaskList*       gpTaskList;
@@ -22,8 +22,9 @@ extern NP_Task         gnpBootTask;
 extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
 extern SEitfList*      gpSEitfList;
-extern ServerScheduler*      gpServerScheduler;
-extern bool            gbVerbose;
+
+extern ServerScheduler* gpServerScheduler;
+extern bool             gbVerbose;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -1902,8 +1903,8 @@ void Task::vTracePoint(Stz* aMark)
   i8 iReturnValues = m_pReturnStack->iValues();
   vTrace("[%s(N%d):%8s\\%lld %-11s] %-16s %-16s : a%2lld="_Stz,
          
-         gpGrid->pThisNode()->aNodeName(),
-         gpGrid->iThisNode(),
+         gpAttachMap->m_pGrid->pThisNode()->aNodeName(),
+         gpAttachMap->m_pGrid->iThisNode(),
          m_sName.aChar(),
          *m_zAcks,
          m_sComment.aChar(),

@@ -6,7 +6,7 @@
 
 #include "StorageEngine.h"
 
-extern Grid*        gpGrid;
+extern AttachMap*  gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
@@ -31,7 +31,7 @@ void Partition::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 i8 Partition::iPartitionToNode(i8 iPartition)
 {
-  i8 iNode = iPartition % gpGrid->iNodes();
+  i8 iNode = iPartition % gpAttachMap->m_pGrid->iNodes();
   
   return iNode;
 }
@@ -41,7 +41,7 @@ i8 Partition::iPartitionToNode(i8 iPartition)
 /*----------------------------------------------------------------------------*/
 i8 Partition::iPartitionToSlot(i8 iPartition)
 {
-  i8 iSlot = iPartition / gpGrid->iNodes();
+  i8 iSlot = iPartition / gpAttachMap->m_pGrid->iNodes();
   
   return iSlot;
 }
@@ -51,8 +51,7 @@ i8 Partition::iPartitionToSlot(i8 iPartition)
 /*----------------------------------------------------------------------------*/
 i8 Partition::iSlotToPartition(i8 iSlot)
 {
-  i8 iPartition = (iSlot * gpGrid->iNodes()) + gpGrid->iThisNode();
-  
+  i8 iPartition = (iSlot * gpAttachMap->m_pGrid->iNodes()) + gpAttachMap->m_pGrid->iThisNode();
   return iPartition;
 }
 

@@ -7,9 +7,9 @@
 //#include "Word.hpp"
 #include "StorageEngine.h"
 
-extern bool  gbMetadata;
-extern Grid* gpGrid;
-extern Arguments gxArguments;
+extern AttachMap* gpAttachMap;
+extern bool       gbMetadata;
+extern Arguments  gxArguments;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -166,7 +166,7 @@ void Table::vAddIndex(Index* pIndex)
   m_pIdxVec->vAdd(pIndex);
   
   // create an IndexData for the index in each partition
-  for (i8 iPartition = 0; iPartition < gpGrid->m_nSlots; iPartition++) {
+  for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nSlots; iPartition++) {
     Partition* pPartition = this->pPartition(iPartition);
     pPartition->vAddIndex(new IndexData(pIndex, iPartition));
   }
@@ -186,15 +186,15 @@ Stz* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed)
   if ( ! gbMetadata || bDetailed ) {
     if (pIndex->bIsHidden())
       sAnalysis.vCatSprint("N%lld: Analysis of table %s \n"_Stz,
-                         gpGrid->iThisNode(),
+                         gpAttachMap->m_pGrid->iThisNode(),
                          m_sTableName.aChar());
     else
       sAnalysis.vCatSprint("N%lld: Analysis of Index %s of table %s \n"_Stz,
-                           gpGrid->iThisNode(),
+                           gpAttachMap->m_pGrid->iThisNode(),
                            pIndex->aIndexName()->aChar(),
                            m_sTableName.aChar());
   }
-  for (i8 iSlot = 0; iSlot < gpGrid->m_nSlots; iSlot++) {
+  for (i8 iSlot = 0; iSlot < gpAttachMap->m_pGrid->m_nSlots; iSlot++) {
     
     i8 iPartition = Partition::iSlotToPartition(iSlot);
     
@@ -216,7 +216,7 @@ Stz* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed)
                            nEntries);
     } else {
       sAnalysis.vCatSprint("row: ('%s',%lld,%lld,%lld)\n"_Stz,
-                           gpGrid->pThisNode()->aNodeName(),
+                           gpAttachMap->m_pGrid->pThisNode()->aNodeName(),
                            iPartition,
                            nBuffers,
                            nEntries);
@@ -241,7 +241,7 @@ bool Table::bAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
 { //# indexTuning
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  ASSERT(iPartition < gpGrid->m_nSlots);
+  ASSERT(iPartition < gpAttachMap->m_pGrid->m_nSlots);
   
   // mark buffer as permanent
   pEntryBuffer->vDurability(BD_PERMANENT);
@@ -302,7 +302,7 @@ bool Table::bAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
     vNewIndexLoad(iPartition,pNewIndexData,pHiddenIndexData,nHiddenEntries);
   }
   
-  //vTrace("MARKING %lld %lld\n"_Stz, gpGrid->m_iThisNode, *m_ziIndexesLoaded);
+  //vTrace("MARKING %lld %lld\n"_Stz, gpAttachMap->m_pGrid->m_iThisNode, *m_ziIndexesLoaded);
   
   // mark indexes being loaded
   --m_ziIndexesLoaded;
@@ -323,7 +323,7 @@ void Table::vInsertEntries(i8 iSlot, EntryBuffer* pEntryBuffer)
   // This function is invoked when we insert rows into a table via a
   // begin/insert/end and via the API's insert-select
   
-  ASSERT(iSlot < gpGrid->m_nSlots);
+  ASSERT(iSlot < gpAttachMap->m_pGrid->m_nSlots);
   
   // buffer should be temporary
   //ASSERT(pEntryBuffer->eDurability() == BD_TEMPORARY);
@@ -529,7 +529,7 @@ i8 Table::nIndexBuffers(i8 iIndexNo)
   
   i8 iBuffers = 0;
   
-  for (i8 iPartition = 0; iPartition < gpGrid->m_nSlots; iPartition++) {
+  for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nSlots; iPartition++) {
     IndexData* pIndexData = pPartition(iPartition)->pIndexData(iIndexNo);
 
     iBuffers += pIndexData->nEntryBuffers();
@@ -596,7 +596,7 @@ i8 Table::iRowPartition(Stz* pRow)
   }
   
   // modulo to get partition number
-  i8 iPartition = iHash % (gpGrid->m_nSlots * gpGrid->iNodes());
+  i8 iPartition = iHash % (gpAttachMap->m_pGrid->m_nSlots * gpAttachMap->m_pGrid->iNodes());
   //vTrace("Hashed to Partition: %lld\n"_Stz,iPartition);
   
   return iPartition;
@@ -635,7 +635,7 @@ i8 Table::iRowPartition(Stz* pRow)
   }
   
   // modulo to get partition number
-  i8 iPartition = iHash % (gpGrid->m_nSlots * gpGrid->iNodes());
+  i8 iPartition = iHash % (gpAttachMap->m_pGrid;->m_nSlots * gpAttachMap->m_pGrid;->iNodes());
   
   //vTrace("Partition: %lld\n"_Stz,m_iPartition);
   return iPartition;
@@ -749,7 +749,7 @@ bool Table::bVerifyIndex(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  for (i8 iSlot = 0; iSlot < gpGrid->m_nSlots; iSlot++) {
+  for (i8 iSlot = 0; iSlot < gpAttachMap->m_pGrid->m_nSlots; iSlot++) {
     
     bool bVerify = true;
 

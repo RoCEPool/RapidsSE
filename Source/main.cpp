@@ -7,7 +7,6 @@
 #include "ShmUtility.hpp"
 
 extern Arguments gxArguments;
-extern Grid*     gpGrid;
 extern bool      gbVerbose;
 extern bool      gbTracepoint;
 extern bool      gbProgress;
@@ -113,10 +112,6 @@ void vKillPrev(void)
 {
   if (gxArguments.m_bVerbose)
     vInfo("\n*\n* Kill Previous Occurences\n*\n"_Stz);
-  
-  // only node0 does this when starting
-  //if ( ! (0 == gpGrid->iThisNode() && gxArguments.m_bStart) )
-  //  return;
   
   if ( ! gxArguments.m_bKillPrev)
     return;

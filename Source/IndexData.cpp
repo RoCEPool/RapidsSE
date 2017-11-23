@@ -6,7 +6,7 @@
 #include "DBobjects.h"
 #include "StorageEngine.h"
 
-extern Grid*        gpGrid;
+extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
@@ -123,11 +123,11 @@ Stz* IndexData::pAnalyze(void)
   
   if (m_pIndex->bIsHidden())
       sAnalysis.vCatSprint("N%lld: Analysis of table %s\n"_Stz,
-                           gpGrid->iThisNode(),
+                           gpAttachMap->m_pGrid->iThisNode(),
                            m_pIndex->pTable()->aTableName());
   else
     sAnalysis.vCatSprint("N%lld: Analysis of Index %s of table %s\n"_Stz,
-                         gpGrid->iThisNode(),
+                         gpAttachMap->m_pGrid->iThisNode(),
                          m_pIndex->aIndexName()->aChar(),
                          m_pIndex->pTable()->aTableName());
   

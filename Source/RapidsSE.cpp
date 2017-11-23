@@ -15,7 +15,6 @@ Heap*         gpSmallHeap    = nullptr;
 Dic*          gpMainDic      = nullptr;
 Word*         gpWord         = nullptr;
 
-Grid*         gpGrid         = nullptr;
 StepArray*    gpStepArray    = nullptr;
 TaskList*     gpTaskList     = nullptr;
 PlanList*     gpPlanList     = nullptr;
@@ -130,7 +129,7 @@ void RapidsSE::vExecuteCmdLine(void)
       vStartActors();
       if (gxArguments.m_bVerbose) {
         vInfo("RapidsSE instance %s started\n"_Stz,gxArguments.m_sRegionName.aChar());
-        gpGrid->vDumpPartitioning();
+        gpAttachMap->m_pGrid->vDumpPartitioning();
       }
       
       //vSkipListTest();
@@ -466,14 +465,14 @@ void RapidsSE::vSystemInit(void)
   vDicCompile(gnpBootTask);
   
   // create the tx sets
-  gpTxSet = new TxSet(gpGrid->iThisNode());
+  gpTxSet = new TxSet(gpAttachMap->m_pGrid->iThisNode());
   
   gpAttachMap->vRecordGlobals(gxArguments.m_sRegionName,
                               gxArguments.m_iRegionSize,
                               gxArguments.m_iJumboSize);
   
   // initialize the plan number
-  gzPlanId =  gpGrid->iThisNode() << 48;
+  gzPlanId = gpAttachMap->m_pGrid->iThisNode() << 48;
   
   // get the trace file
   Word* pTraceFileWord = gpMainDic->pFindWord("trace_file"_Stz);

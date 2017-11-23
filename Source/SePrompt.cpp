@@ -4,9 +4,9 @@
 
 #include "SePrompt.hpp"
 
+extern AttachMap*   gpAttachMap;
 extern BufferPool*  gpBufferPool;
 extern Arguments    gxArguments;
-extern Grid*        gpGrid;
 extern bool         gbMetadata;
 
 //
@@ -124,7 +124,7 @@ SePrompt::SePrompt(void)
   m_bEcho   = false;
   
   m_sPrompt.vSprint("[N%lld %lld] se %s%c> "_Stz,
-                    gpGrid->iThisNode(),
+                    gpAttachMap->m_pGrid->iThisNode(),
                     Process::iGetPid(),
                     RAPIDSSE_VERSION_STRING,
     #ifdef _DEBUG
@@ -1359,10 +1359,12 @@ bool SePrompt::bCmd_EndInsert(void)
   // clear the last error
   m_pSEitf->vClearLastError();
   
-  // before sending buffers set no of remaining acks to no of partitons
-  m_pSEitf->m_ziAcksRemaining = gpGrid->iSlots() * gpGrid->iNodes();
+  Grid* pGrid = gpAttachMap->m_pGrid;
   
-  for (i8 iPartition = 0; iPartition < gpGrid->m_nPartitions; iPartition++) {
+  // before sending buffers set no of remaining acks to no of partitons
+  m_pSEitf->m_ziAcksRemaining = pGrid->iSlots() * pGrid->iNodes();
+  
+  for (i8 iPartition = 0; iPartition < pGrid->m_nPartitions; iPartition++) {
     bool bResult = m_pSEitf->bInsertLastBuffer(iPartition);
     
     //vTrace("bInsertLastBuffer returned %lld %lld\n"_Stz, iPartition, bResult);

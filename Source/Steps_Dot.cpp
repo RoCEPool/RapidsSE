@@ -8,7 +8,6 @@
 
 extern Dic*            gpMainDic;
 
-extern Grid*           gpGrid;
 extern StepArray*      gpStepArray;
 extern ThreadList*     gpThreadList;
 extern TaskList*       gpTaskList;
@@ -49,7 +48,7 @@ void Task::vDot(MP_Task mpTask)
   /*
   vTrace("[N%lld:%8s\\%lld %-11s] %s\n"_Stz,
          
-         gpGrid->iNode(),
+         gpAttachMap->m_pGrid->iNode(),
          mpTask->m_sName.aChar(),
          *mpTask->m_zAcks,
          mpTask->m_sComment.aChar(),
