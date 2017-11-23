@@ -81,7 +81,7 @@ bool Region::bAttach(StrVal& sRegionName, bool bWecome)
   // overlay buffer pool onto 1st buffer (buffer #0)
   gpBufferPool = reinterpret_cast<BufferPool*>(mpRegion);
   
-  if (gpAttachMap->m_bVerbose)
+  if (gxArguments.m_bVerbose)
     vTrace("Shm mapped at %p\n"_Stz,mpRegion);
   
   return true;
