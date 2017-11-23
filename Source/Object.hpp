@@ -3,6 +3,11 @@
 /*============================================================================*/
 #pragma once
 
+namespace Pool
+{
+  class bn;
+}
+
 namespace CorrectnessAlgebra
 {
   class Object :public Magic,
@@ -14,6 +19,8 @@ namespace CorrectnessAlgebra
   
   public:
     Object(eCN eClass);
+  
+    Pool::bn nBufferNo(void);
   
     bool bWordBody(void);
     void vWordBody(bool bIsWordBody);

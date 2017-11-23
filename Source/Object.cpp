@@ -19,6 +19,19 @@ Object::Object(eCN eClassNo)
   _precondition_(_MAGIC_,eClassNo);
 }
 
+/*----------------------------------------------------------------------------*/
+/* get the buffer no of the buffer that the object is within                  */
+/*----------------------------------------------------------------------------*/
+Pool::bn Object::nBufferNo(void)
+{
+  _precondition_(_MAGIC_);
+  
+  Buffer* pBuffer = Buffer::pToBuffer(this);
+  
+  bn nBufferNo = pBuffer->nBufferNo();
+  
+  return nBufferNo;
+}
 
 /*----------------------------------------------------------------------------*/
 /* set is word body                                                           */
