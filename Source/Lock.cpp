@@ -154,13 +154,19 @@ void Lock::vGrabRead(void)
     xTimer.vUpdate();
     if (xTimer.iMilliseconds() > 100 && ! bReported) {
       bReported = true;
-      vTrace("Lock::vGrabRead -- Unable to grab read lock %p %s\n"_Stz,
+      vTrace("Lock::vGrabRead -- Unable to grab read lock %p %s %p\n"_Stz,
              this,
-             aLK[m_eLockKind]);
+             aLK[m_eLockKind],
+             m_uLockWord);
     }
     
     rCode = Synch::iLockGrabRead(&m_uLockWord);
   } while ( ! rCode );
+  
+  if (bReported) {
+    vTrace("Lock::vGrabRead -- Able to grab read lock %p %p\n"_Stz,
+           this, m_uLockWord);
+  }
   
   vCheckRead();
 }
