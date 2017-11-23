@@ -19,7 +19,9 @@ namespace Pool
 
     Buffer(eCN eClass);
     ~Buffer(void);
-    
+  
+    static Buffer* pToBuffer(Object* pObject);
+  
     bn    nBufferNo(void);
     void  vBufferNo(bn nBufferNo);
     Stz*  aLastUsableByte(void);
