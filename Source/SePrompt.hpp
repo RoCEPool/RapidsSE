@@ -9,7 +9,7 @@
 
 using namespace CorrectnessAlgebra;
 
-class SePrompt : public Buffer
+class SePrompt : public Object
 {
 private:
   i8         m_iPartition; // which partition
