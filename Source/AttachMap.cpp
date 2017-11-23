@@ -13,7 +13,6 @@ extern Heap*        gpLargeHeap;
 extern Dic*         gpMainDic;
 
 extern TxSet*        gpTxSet;
-extern ServerScheduler*    gpServerScheduler;
 
 extern TaskList*    gpTaskList;
 extern PlanList*    gpPlanList;
@@ -90,7 +89,6 @@ void AttachMap::vGetGlobals(void)
   gpSmallHeap   = m_pSmallHeap;
   gpMainDic     = &m_xMainDic;
   gpTxSet        = m_pTxSet;
-  gpServerScheduler    = m_pServerScheduler;
   gpTaskList     = m_pTaskList;
   gpPlanList     = m_pPlanList;
   gpSEitfList    = m_pSEitfList;
@@ -137,8 +135,8 @@ void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize, i8 iJumboSize)
   
   ASSERT(m_pGrid );
   ASSERT(m_pPartitionScheduler);
+  ASSERT(m_pServerScheduler);
   
-  m_pServerScheduler    = gpServerScheduler;
   m_pTaskList     = gpTaskList;
   m_pPlanList     = gpPlanList;
   m_pSEitfList    = gpSEitfList;

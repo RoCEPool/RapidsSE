@@ -22,9 +22,7 @@ extern NP_Task         gnpBootTask;
 extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
 extern SEitfList*      gpSEitfList;
-
-extern ServerScheduler* gpServerScheduler;
-extern bool             gbVerbose;
+extern bool            gbVerbose;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -888,7 +886,7 @@ void Task::vAddConstants(void)
   vAddConstant("senderWorkerPrint"_Stz,   (i8)0);
   
   // c++ objects
-  vAddConstant("scheduler"_Stz, (i8)gpServerScheduler);
+  vAddConstant("scheduler"_Stz, (i8)gpAttachMap->m_pServerScheduler);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -10,7 +10,6 @@ extern AttachMap*   gpAttachMap;
 extern ThreadList*  gpThreadList;
 extern TaskList*    gpTaskList;
 
-extern ServerScheduler*    gpServerScheduler;
 extern NP_Task      gnpBootTask;
 
 extern bool         gbVerbose;
@@ -74,7 +73,7 @@ Thread::Thread(void)
   m_iPartition   = -1;
   m_pPosixThread = new PosixThread;
   m_pSemaphore   = new Semaphore;
-  m_pScheduler   = gpServerScheduler;
+  m_pScheduler   = gpAttachMap->m_pServerScheduler;
   m_pTaskQueue   = nullptr;
   m_pTaskSet     = nullptr;
   m_npTask       = nullptr;

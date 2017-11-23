@@ -17,8 +17,6 @@ extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
 extern SEitfList*      gpSEitfList;
 
-extern ServerScheduler* gpServerScheduler;
-
 // ParritionScheduler: /////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/

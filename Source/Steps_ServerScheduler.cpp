@@ -16,7 +16,6 @@ extern NP_Task         gnpBootTask;
 extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
 extern SEitfList*      gpSEitfList;
-extern ServerScheduler* gpServerScheduler;
 
 extern i8 giSchEnqueueTask;
 extern i8 giSchEnqueueTaskWait;

@@ -21,7 +21,6 @@ PlanList*     gpPlanList     = nullptr;
 ThreadList*   gpThreadList   = nullptr;
 TxSet*        gpTxSet        = nullptr;
 SEitfList*    gpSEitfList    = nullptr;
-ServerScheduler*    gpServerScheduler    = nullptr;
 
 File*         gpTraceFile    = nullptr;
 
@@ -396,7 +395,7 @@ void RapidsSE::vRunCommand(void)
   
   // append root task onto root thread's task set
   // root thread will pop the root task and run it
-  gpServerScheduler->vEnqueueTask_Mutex(*gnpBootTask);
+  gpAttachMap->m_pServerScheduler->vEnqueueTask_Mutex(*gnpBootTask);
   
   // the docol interpreter is now running the commandf in root task on root thread
 }
@@ -413,7 +412,7 @@ void RapidsSE::vRunDocol(void)
   
   // append root task onto root thread's task set
   // root thread will pop the root task and run it
-  gpServerScheduler->vEnqueueTask_Mutex(*gnpBootTask);
+  gpAttachMap->m_pServerScheduler->vEnqueueTask_Mutex(*gnpBootTask);
   
   // the docol interpreter is now running in root task on root thread
 }
@@ -459,7 +458,7 @@ void RapidsSE::vSystemInit(void)
   gnpBootTask->vActorModel(AC_SERVER);
   
   gpAttachMap->m_pPartitionScheduler = new PartitionScheduler;
-  gpServerScheduler = new ServerScheduler;
+  gpAttachMap->m_pServerScheduler = new ServerScheduler;
   
   vDicCompile(gnpBootTask);
   
@@ -497,7 +496,7 @@ void RapidsSE::vStartActors(void)
            gnpBootTask->sName().aChar(),
            *gnpBootTask);
   
-  //gpServerScheduler->vEnqueueTask_Mutex(*gnpBootTask);
+  //gpAttachMap->m_pServerScheduler->vEnqueueTask_Mutex(*gnpBootTask);
   
   // the primary thread waits here till root task exits
   //while (TS_EXITED != gnpBootTask->eState())
