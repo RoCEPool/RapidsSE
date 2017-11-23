@@ -32,6 +32,14 @@
 #define MOD(a,b) (b ? (a % b) : 0)    // checked modulo
 #define NIL(a,b) (a ? a : b)          // null replacement
 
+#define BITWISE_AND(a,b) (a & b)      // bitwise and
+#define BITWISE_NOT(a)   ( ~a )       // bitwise not
+#define BITWISE_OR(a,b)  (a | b)      // bitwise or
+#define BITWISE_XOR(a,b) (a ^ b)      // bitwise xor
+
+#define BITWISE_SHIFT_LEFT(word,nbits)  (word << nBits) // bitwise shift left
+#define BITWISE_SHIFT_RIGHT(word,nbits) (word >> nBits) // bitwise shift right
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
