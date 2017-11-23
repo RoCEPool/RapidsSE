@@ -16,7 +16,7 @@ extern NP_Task         gnpBootTask;
 extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
 extern SEitfList*      gpSEitfList;
-extern PartitionScheduler* gpPartitionScheduler;
+
 extern ServerScheduler* gpServerScheduler;
 
 // ParritionScheduler: /////////////////////////////////////////////////////////

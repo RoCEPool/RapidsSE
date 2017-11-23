@@ -6,12 +6,11 @@
 
 #include "StorageEngine.h"
 
+extern AttachMap*   gpAttachMap;
 extern ThreadList*  gpThreadList;
 extern TaskList*    gpTaskList;
 
 extern ServerScheduler*    gpServerScheduler;
-extern PartitionScheduler* gpPartitionScheduler;
-
 extern NP_Task      gnpBootTask;
 
 extern bool         gbVerbose;
@@ -480,7 +479,7 @@ void Thread::vLoop_Partition2(void)
   if (gbVerbose || gbProgress)
     vTrace("Thread %p: %s Partition\n"_Stz,this,m_sName.aChar());
   
-  m_pScheduler = gpPartitionScheduler;
+  m_pScheduler = gpAttachMap->m_pPartitionScheduler;
   
   m_pPosixThread->vSetOSThreadId();
   

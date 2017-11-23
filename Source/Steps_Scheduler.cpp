@@ -6,6 +6,7 @@
 #include "Schedulers.h"
 #include "SePrompt.hpp"
 
+extern AttachMap*      gpAttachMap;
 extern Dic*            gpMainDic;
 
 extern StepArray*      gpStepArray;
@@ -16,7 +17,6 @@ extern NP_Task         gnpBootTask;
 extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
 extern SEitfList*      gpSEitfList;
-extern PartitionScheduler* gpPartitionScheduler;
 extern ServerScheduler* gpServerScheduler;
 
 extern i8 giSchEnqueueTask;
@@ -61,7 +61,7 @@ void Task::vSchedulerPartition(MP_Task mpTask)
 {
   ENTRY("vSchedulerPartition"_Stz);
   
-  mpTask->m_pDataStack->vPushObject(gpPartitionScheduler);
+  mpTask->m_pDataStack->vPushObject(gpAttachMap->m_pPartitionScheduler);
   
   EXIT();
 }

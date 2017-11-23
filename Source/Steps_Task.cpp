@@ -18,7 +18,6 @@ extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
 extern SEitfList*      gpSEitfList;
 extern ServerScheduler*      gpServerScheduler;
-extern PartitionScheduler*   gpPartitionScheduler;
 
 extern bool            gbTracepoint;
 
@@ -104,7 +103,7 @@ void Task::vTaskAck(MP_Task mpTask)
       gpServerScheduler->vEnqueueTask_Mutex(pThatTask);
     }
     else if (pThatTask->eActorModel() == AC_PARTITION) {
-      gpPartitionScheduler->vEnqueueTask_Mutex(pThatTask->m_iPartition,pThatTask);
+      gpAttachMap->m_pPartitionScheduler->vEnqueueTask_Mutex(pThatTask->m_iPartition,pThatTask);
     }
     else {
       Thread* pThread = pThatTask->pThread();
