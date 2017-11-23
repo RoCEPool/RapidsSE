@@ -6,7 +6,7 @@
 
 #include "StorageEngine.h"
 
-extern bool   gbProgress;
+extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -350,7 +350,7 @@ bool LoaderSub::bReadChunk(void)
     //vTrace("Waiting for map\n"_Stz);
   }
   
-  if (gbProgress) {
+  if (gpAttachMap->m_bProgress) {
     if (0 == iChunk % 100) {
       vInfo("read chunk %lld of %lld        \r"_Stz,iChunk,nChunks);
       fflush(stdout);

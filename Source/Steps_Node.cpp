@@ -19,7 +19,6 @@ extern NP_Task         gnpBootTask;
 extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
 extern SEitfList*      gpSEitfList;
-extern bool            gbMetadata;
 
 // node: ///////////////////////////////////////////////////////////////////////
 
@@ -201,7 +200,7 @@ void Task::vNodeStatus(MP_Task mpTask)
   
   Grid* pGrid = gpAttachMap->m_pGrid;
   
-  if (gbMetadata) {
+  if (gpAttachMap->m_bMetadata ) {
     if (Region::bTest(gxArguments.m_sRegionName))
       s.vSprint("row: ('%s', '%s', 'running')"_Stz,
               pGrid->pThisNode()->aNodeName(),

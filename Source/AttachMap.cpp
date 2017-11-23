@@ -18,11 +18,6 @@ extern TaskList*    gpTaskList;
 extern PlanList*    gpPlanList;
 extern SEitfList*   gpSEitfList;
 
-extern bool         gbVerbose;
-extern bool         gbTracepoint;
-extern bool         gbProgress;
-extern bool         gbMetadata;
-
 extern bool         gbIndexSpace;
 extern i8           gnIndexEntries;
 extern i8           gnIndexLevels;
@@ -92,10 +87,6 @@ void AttachMap::vGetGlobals(void)
   gpTaskList     = m_pTaskList;
   gpPlanList     = m_pPlanList;
   gpSEitfList    = m_pSEitfList;
-  gbVerbose      = m_bVerbose;
-  gbTracepoint   = m_bTracepoint;
-  gbProgress     = m_bProgress;
-  gbMetadata     = m_bMetadata;
   
   gbIndexSpace   = m_bIndexSpace;
   gnIndexEntries = m_nIndexEntries;
@@ -110,7 +101,7 @@ void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize, i8 iJumboSize)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
 
-  if (gbVerbose)
+  if (m_bVerbose)
     vTrace("[[mainThread]] Recording globals...\n"_Stz);
   
   m_iPid = Process::iGetPid();
@@ -130,8 +121,7 @@ void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize, i8 iJumboSize)
   m_pMediumHeap = gpMediumHeap;
   m_pLargeHeap  = gpLargeHeap;
   m_pSmallHeap  = gpSmallHeap;
-  
-  m_pTxSet        = gpTxSet;
+  m_pTxSet      = gpTxSet;
   
   ASSERT(m_pGrid );
   ASSERT(m_pPartitionScheduler);
@@ -140,9 +130,6 @@ void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize, i8 iJumboSize)
   m_pTaskList     = gpTaskList;
   m_pPlanList     = gpPlanList;
   m_pSEitfList    = gpSEitfList;
-  m_bVerbose      = gbVerbose;
-  m_bProgress     = gbProgress;
-  m_bMetadata     = gbMetadata;
   
   m_bIndexSpace   = true;
   m_nIndexEntries = -1;

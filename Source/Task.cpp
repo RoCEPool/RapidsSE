@@ -22,7 +22,6 @@ extern NP_Task         gnpBootTask;
 extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
 extern SEitfList*      gpSEitfList;
-extern bool            gbVerbose;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -391,7 +390,7 @@ void Task::vAddConstants(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if (gbVerbose)
+  if (gpAttachMap->m_bVerbose)
     vTrace("[[mainThread]] Adding constants...\n"_Stz);
   
 #ifdef _DEBUG
@@ -896,7 +895,7 @@ void Task::vAddPrimitives(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if (gbVerbose)
+  if (gpAttachMap->m_bVerbose)
     vTrace("[[mainThread]] Adding primitives...\n"_Stz);
   
   vAddPrimitive("word"_Stz,            &vWord,             false);
@@ -1024,7 +1023,7 @@ void Task::vAddRoutines(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if (gbVerbose)
+  if (gpAttachMap->m_bVerbose)
     vTrace("[[mainThread]] Adding routines...\n"_Stz);
   
   s48K sDefinition;
@@ -1656,7 +1655,7 @@ void Task::vSeedDicCompileSen(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if (gbVerbose)
+  if (gpAttachMap->m_bVerbose)
     vTrace("[[mainThread]] Seeding Dic Compile...\n"_Stz);
   
   Word* pBootSen = gpMainDic->pFindWord("::dicCompile"_Stz);

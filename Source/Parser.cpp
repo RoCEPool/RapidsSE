@@ -8,8 +8,8 @@
 
 #include "Arguments.hpp"
 
-extern bool gbTracepoint;
-extern Arguments gxArguments;
+extern AttachMap* gpAttachMap;
+extern Arguments  gxArguments;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -830,7 +830,7 @@ void Parser::vReadLineStdin(void)
   
   m_pRawChar = m_sRawLine.aChar();
   
-  if (gbTracepoint)
+  if (gpAttachMap->m_bTracepoint)
     PosixThread::vSleepMilli(300);
   
   if ( ! gxArguments.m_bScript ) {

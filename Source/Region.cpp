@@ -7,7 +7,6 @@
 extern AttachMap* gpAttachMap;
 extern void*      mpRegion;
 
-extern bool      gbVerbose;
 extern Arguments gxArguments;
 
 extern void* C_ADDR_POOL;
@@ -82,7 +81,7 @@ bool Region::bAttach(StrVal& sRegionName, bool bWecome)
   // overlay buffer pool onto 1st buffer (buffer #0)
   gpBufferPool = reinterpret_cast<BufferPool*>(mpRegion);
   
-  if (gbVerbose)
+  if (gpAttachMap->m_bVerbose)
     vTrace("Shm mapped at %p\n"_Stz,mpRegion);
   
   return true;
@@ -107,7 +106,7 @@ void Region::vCreate(StrVal& sRegionName, i8 iRegionSize, i8 iJumboTook,
            sSize.aChar(),
            iRegionSize);
   
-  if (gbVerbose)
+  if (gxArguments.m_bVerbose)
     vTrace("Region::vCreate A\n"_Stz);
   
   // open a new shm region
@@ -117,7 +116,7 @@ void Region::vCreate(StrVal& sRegionName, i8 iRegionSize, i8 iJumboTook,
                               bRestart,
                               xSysCall);
 
-  if (gbVerbose)
+  if (gxArguments.m_bVerbose)
     vTrace("Region::vCreate B\n"_Stz);
   
   if ( ! bResult ) {
@@ -134,7 +133,7 @@ void Region::vCreate(StrVal& sRegionName, i8 iRegionSize, i8 iJumboTook,
                        false,
                        xSysCall);
   
-  if (gbVerbose)
+  if (gxArguments.m_bVerbose)
     vTrace("Region::vCreate C; mpRegion=%p\n"_Stz,mpRegion);
   
   if ( ! mpRegion )  {
@@ -143,7 +142,7 @@ void Region::vCreate(StrVal& sRegionName, i8 iRegionSize, i8 iJumboTook,
     NEVER_REACH;
   }
   
-  if (gbVerbose)
+  if (gxArguments.m_bVerbose)
     vTrace("Region::vCreate D\n"_Stz);
   
   //vInfo("sleeping... \n"_Stz);
@@ -152,10 +151,10 @@ void Region::vCreate(StrVal& sRegionName, i8 iRegionSize, i8 iJumboTook,
   gpBufferPool = new(mpRegion) BufferPool(sRegionName, iRegionSize,
                                           iJumboTook, bTouch, bDontFree, bFreeRB);
 
-  if (gbVerbose)
+  if (gxArguments.m_bVerbose)
     vTrace("Region::vCreate E\n"_Stz);
   
-  if (gbVerbose)
+  if (gxArguments.m_bVerbose)
     vTrace("Shm mapped at %p\n"_Stz,mpRegion);
   
   // lock the shared memory in
@@ -175,7 +174,7 @@ void Region::vCreate(StrVal& sRegionName, i8 iRegionSize, i8 iJumboTook,
     }
   }
   
-  if (gbVerbose)
+  if (gxArguments.m_bVerbose)
     vTrace("Shm pages locked in memory\n"_Stz);
 }
 

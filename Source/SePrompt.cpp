@@ -7,7 +7,6 @@
 extern AttachMap*   gpAttachMap;
 extern BufferPool*  gpBufferPool;
 extern Arguments    gxArguments;
-extern bool         gbMetadata;
 
 //
 // list of commands which need intercept processing by SePrompt
@@ -228,7 +227,7 @@ void SePrompt::vLoop(void)
     }
     
     if (bProcessResult) {
-      if (gbMetadata) {
+      if (gpAttachMap->m_bMetadata ) {
         vMetaFormat();
       }
       else {
@@ -2068,7 +2067,7 @@ void SePrompt::vIterateBuffers(void)
   
   m_pSEitf->m_iRowsProcessed = 0;
   
-  if (gbMetadata) {
+  if (gpAttachMap->m_bMetadata ) {
     vTrace("metadata: %s\n"_Stz, m_pSEitf->m_sMetadata.aStr());
   }
   
@@ -2082,14 +2081,14 @@ void SePrompt::vIterateBuffers(void)
     Entry* pEntry = m_pSEitf->m_pEntry;
     RowData::vRowAsString(m_pSEitf->m_sResponse, (Stz*)pEntry->aRow(),
                           m_pSEitf->m_pCurrentTable->pColumnVec());
-    if (gbMetadata) {
+    if (gpAttachMap->m_bMetadata ) {
       vTrace("row: (%lld, %s)\n"_Stz, iPartition, m_pSEitf->m_sResponse.aChar());
     }
     else {
       vTrace("row: (%s)\n"_Stz, m_pSEitf->m_sResponse.aChar());
     }
   }
-  if (gbMetadata) {
+  if (gpAttachMap->m_bMetadata ) {
     vTrace("success: %lld rows affected\n"_Stz, m_pSEitf->m_iRowsProcessed);
   }
   else {

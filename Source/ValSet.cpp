@@ -6,7 +6,7 @@
 
 #include "StorageEngine.h"
 
-extern bool gbTracepoint;
+extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -237,7 +237,7 @@ bool ValSet::bHasRowBuffer(void)
   while (bExtractValue(pCursor, eClassNo, pValue)) {
     
     if (CN_ENTRYBUFFER == eClassNo) {
-      if (gbTracepoint)
+      if (gpAttachMap->m_bTracepoint)
         vTrace("HAS ROW BUFFER\n"_Stz);
       return true;
     }

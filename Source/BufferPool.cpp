@@ -8,7 +8,7 @@
 
 extern AttachMap*  gpAttachMap;
 extern BufferPool* gpBufferPool;
-extern bool        gbProgress;
+extern Arguments   gxArguments;
 
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
@@ -345,7 +345,7 @@ void BufferPool::vInitialise(bool bTouch)
   bn nBuffer = nBufferFirst();
   while (bn::nNil() != nBuffer) {
     
-    if (gbProgress) {
+    if (gxArguments.m_bProgress) {
       iBufferMod = *nBuffer % 1000;
       if (! iBufferMod) {
         fflush(stdout);
@@ -382,7 +382,7 @@ void BufferPool::vInitialise(bool bTouch)
   pLastBuffer->vNextFree(bn::nNil());
 
   
-  if (gbProgress)
+  if (gxArguments.m_bProgress)
     vInfo("\n"_Stz);
   
   //vDump();

@@ -18,8 +18,6 @@ extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
 extern SEitfList*      gpSEitfList;
 
-extern bool            gbTracepoint;
-
 // task: ///////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
@@ -85,7 +83,7 @@ void Task::vTaskAck(MP_Task mpTask)
     //    vTrace("Task::vTaskSignal: task %p %s resuming task %p %s\n"_Stz,
     //           *mpTask,mpTask->m_sName.aChar(),
     //           pThatTask,pThatTask->m_sName.aChar());
-    if (gbTracepoint)
+    if (gpAttachMap->m_bTracepoint)
       vTrace("[N%lld:%8s\\%lld %-11s] ack resumes %s\\%lld\n"_Stz,
              gpAttachMap->m_pGrid->iThisNode(),
              mpTask->m_sName.aChar(),

@@ -183,7 +183,7 @@ Stz* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed)
   i8 nBuffersTotal = 0;
   s48K sAnalysis;
   
-  if ( ! gbMetadata || bDetailed ) {
+  if ( ! gpAttachMap->m_bMetadata  || bDetailed ) {
     if (pIndex->bIsHidden())
       sAnalysis.vCatSprint("N%lld: Analysis of table %s \n"_Stz,
                          gpAttachMap->m_pGrid->iThisNode(),
@@ -209,7 +209,7 @@ Stz* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed)
     nEntriesTotal += nEntries;
     nBuffersTotal += nBuffers;
     
-    if ( !gbMetadata || bDetailed ) {
+    if ( !gpAttachMap->m_bMetadata  || bDetailed ) {
       sAnalysis.vCatSprint("partition %lld:  %3lld buffers; %5lld entries\n\n"_Stz,
                            iPartition,
                            nBuffers,
@@ -225,7 +225,7 @@ Stz* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed)
     
   }
   
-  if ( ! gbMetadata  || bDetailed)
+  if ( ! gpAttachMap->m_bMetadata   || bDetailed)
     sAnalysis.vCatSprint(
                          "        total: %3lld buffers; %5lld entries\n"_Stz,
                          nBuffersTotal,

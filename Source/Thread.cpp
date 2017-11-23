@@ -12,9 +12,6 @@ extern TaskList*    gpTaskList;
 
 extern NP_Task      gnpBootTask;
 
-extern bool         gbVerbose;
-extern bool         gbProgress;
-
 extern pthread_key_t  giTLS_TaskKey;
 extern pthread_key_t  giTLS_ThreadKey;
 
@@ -108,7 +105,7 @@ void* Thread::vEntry_Drone(void* pArg)
 {
   Thread* pThread = static_cast<Thread*>(pArg);
   
-  if (gbVerbose)
+  if (gpAttachMap->m_bVerbose)
     vTrace("[[%s]] Thread::vEntry_Drone %p\n"_Stz,pThread->sName().aChar(),pThread);
   
   try {
@@ -134,7 +131,7 @@ void* Thread::vEntry_Drone(void* pArg)
   }
   
   
-  if (gbVerbose)
+  if (gpAttachMap->m_bVerbose)
     vTrace("[[%s]] Thread::vEntry_Drone %p exiting\n"_Stz,pThread->sName().aChar(),pThread);
   
   delete pThread;
@@ -149,7 +146,7 @@ void* Thread::vEntry_Partition(void* pArg)
 {
   Thread* pThread = static_cast<Thread*>(pArg);
   
-  if (gbVerbose)
+  if (gpAttachMap->m_bVerbose)
     vTrace("[[%s]] Thread::vEntry_Partition %p\n"_Stz,pThread->sName().aChar(),pThread);
   
   try {
@@ -175,7 +172,7 @@ void* Thread::vEntry_Partition(void* pArg)
   }
 
 
-  if (gbVerbose)
+  if (gpAttachMap->m_bVerbose)
     vTrace("[[%s]] Thread::vEntry_Partition %p exiting\n"_Stz,pThread->sName().aChar(),pThread);
   
   delete pThread;
@@ -190,7 +187,7 @@ void* Thread::vEntry_Server(void* pArg)
 {
   Thread* pThread = static_cast<Thread*>(pArg);
   
-  if (gbVerbose || gbProgress)
+  if (gpAttachMap->m_bVerbose || gpAttachMap->m_bProgress)
     vTrace("[[%s]] Thread::vEntry_Server %p\n"_Stz,pThread->sName().aChar(),pThread);
   
   try {
@@ -216,7 +213,7 @@ void* Thread::vEntry_Server(void* pArg)
   }
   
   
-  if (gbVerbose)
+  if (gpAttachMap->m_bVerbose)
     vTrace("[[%s]] Thread::vEntry_Server %p exiting\n"_Stz,pThread->sName().aChar(),pThread);
   
   delete pThread;
@@ -231,7 +228,7 @@ void* Thread::vEntry_Worker(void* pArg)
 {
   Thread* pThread = static_cast<Thread*>(pArg);
   
-  if (gbVerbose)
+  if (gpAttachMap->m_bVerbose)
     vTrace("[[%s]] Thread::vEntry_Worker %p\n"_Stz,pThread->sName().aChar(),pThread);
     
     try {
@@ -257,7 +254,7 @@ void* Thread::vEntry_Worker(void* pArg)
   }
   
   
-  if (gbVerbose)
+  if (gpAttachMap->m_bVerbose)
     vTrace("[[%s]] Thread::vEntry_Worker %p exiting\n"_Stz,pThread->sName().aChar(),pThread);
     
     delete pThread;
@@ -344,7 +341,7 @@ void Thread::vLoop_Drone(void)
   
   ASSERT(m_eActorModel == AC_DRONE);
   
-  if (gbVerbose || gbProgress)
+  if (gpAttachMap->m_bVerbose || gpAttachMap->m_bProgress)
     vTrace("Thread %p: %s loop\n"_Stz,this,m_sName.aChar());
   
   m_pPosixThread->vSetOSThreadId();
@@ -405,7 +402,7 @@ void Thread::vLoop_Partition(void)
   
   ASSERT(m_eActorModel == AC_PARTITION);
   
-  if (gbVerbose || gbProgress)
+  if (gpAttachMap->m_bVerbose || gpAttachMap->m_bProgress)
     vTrace("Thread %p: %s loop\n"_Stz,this,m_sName.aChar());
   
   m_pPosixThread->vSetOSThreadId();
@@ -475,7 +472,7 @@ void Thread::vLoop_Partition2(void)
   
   ASSERT(m_eActorModel == AC_PARTITION);
   
-  if (gbVerbose || gbProgress)
+  if (gpAttachMap->m_bVerbose || gpAttachMap->m_bProgress)
     vTrace("Thread %p: %s Partition\n"_Stz,this,m_sName.aChar());
   
   m_pScheduler = gpAttachMap->m_pPartitionScheduler;
@@ -596,7 +593,7 @@ void Thread::vLoop_Server(void)
   
   ASSERT(m_eActorModel == AC_SERVER);
   
-  if (gbVerbose || gbProgress)
+  if (gpAttachMap->m_bVerbose || gpAttachMap->m_bProgress)
     vTrace("Thread %p: %s Server\n"_Stz,this,m_sName.aChar());
   
   m_pPosixThread->vSetOSThreadId();
@@ -724,7 +721,7 @@ void Thread::vLoop_Worker(void)
   
   ASSERT(m_eActorModel == AC_WORKER);
 
-  if (gbVerbose || gbProgress)
+  if (gpAttachMap->m_bVerbose || gpAttachMap->m_bProgress)
     vTrace("Thread %p: %s loop\n"_Stz,this,m_sName.aChar());
   
   m_pPosixThread->vSetOSThreadId();

@@ -6,11 +6,8 @@
 #include "SePrompt.hpp"
 #include "ShmUtility.hpp"
 
+extern AttachMap* gpAttachMap;
 extern Arguments gxArguments;
-extern bool      gbVerbose;
-extern bool      gbTracepoint;
-extern bool      gbProgress;
-extern bool      gbMetadata;
 
 extern bool gbSHM;
 
@@ -243,10 +240,10 @@ void vSetGlobals(void)
     vInfo("\n*\n* Set Globals From Arguments\n*\n"_Stz);
   
   // set globals from gxArguments
-  gbVerbose    = gxArguments.m_bVerbose;
-  gbTracepoint = gxArguments.m_bTracepoint;
-  gbProgress   = gxArguments.m_bProgress;
-  gbMetadata   = gxArguments.m_bMetadata;
+  gpAttachMap->m_bVerbose    = gxArguments.m_bVerbose;
+  gpAttachMap->m_bTracepoint = gxArguments.m_bTracepoint;
+  gpAttachMap->m_bProgress   = gxArguments.m_bProgress;
+  gpAttachMap->m_bMetadata   = gxArguments.m_bMetadata;
 }
 
 /*----------------------------------------------------------------------------*/

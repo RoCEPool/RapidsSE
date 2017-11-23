@@ -6,7 +6,7 @@
 
 #include "StorageEngine.h"
 
-extern bool gbProgress;
+extern AttachMap* gpAttachMap;
 extern Locks gxLocks;
 
 /*----------------------------------------------------------------------------*/
@@ -165,7 +165,7 @@ void LoadMap::vChunkTest(void)
   
   while (bNextChunk(iSeek,nBytes,iChunk,nChunks)) {
     
-    if (gbProgress) {
+    if (gpAttachMap->m_bProgress) {
       if (0 == iChunk % 1000) {
         vInfo("chunk %lld of %lld        \r"_Stz,iChunk,nChunks);
         fflush(stdout);

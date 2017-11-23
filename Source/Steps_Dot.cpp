@@ -6,6 +6,7 @@
 //#include "Tasks.h"
 #include "SePrompt.hpp"
 
+extern AttachMap*      gpAttachMap;
 extern Dic*            gpMainDic;
 
 extern StepArray*      gpStepArray;
@@ -16,7 +17,6 @@ extern NP_Task         gnpBootTask;
 extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
 extern SEitfList*      gpSEitfList;
-extern bool            gbVerbose;
 
 // dot: ////////////////////////////////////////////////////////////////////////
 
@@ -113,7 +113,7 @@ void Task::vDotVerbose(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
     THROW_INVALID_DSTACK(".verbose"_Stz);
   
-  if (gbVerbose) {
+  if (gpAttachMap->m_bVerbose) {
     ValLib::vToString(xValWrk.pNestedValueSelf(),sWorkspace);
     vTrace("[%p %s] %s\n"_Stz,*mpTask,mpTask->m_sName.aChar(),sWorkspace.aChar());
   }

@@ -28,10 +28,6 @@ NP_Task       gnpBootTask    = nullptr;
 
 void*         mpRegion       = nullptr;
 
-bool          gbVerbose      = false;
-bool          gbTracepoint   = false;
-bool          gbProgress     = false;
-bool          gbMetadata     = false;
 bool          gbSHM          = false;
 
 bool          gbIndexSpace   = true;
@@ -303,7 +299,7 @@ void RapidsSE::vAttachObjects(void)
   // get pointers to global objects from attach map
   gpAttachMap->vGetGlobals();
   
-  if (gbVerbose)
+  if (gpAttachMap->m_bVerbose)
     AttachMap::vDump(CN_ATTACHMAP, gpAttachMap, aSingleTab());
 }
 
@@ -330,17 +326,17 @@ void RapidsSE::vCreateObjects(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vDicCompile(NP_Task npBootTask)
 {
-  if (gbVerbose)
+  if (gpAttachMap->m_bVerbose)
     vTrace("[[mainThread]] Initialise Main Dictionary...\n"_Stz);
   
   npBootTask->vInitialiseMain();
   
-  if (gbVerbose)
+  if (gpAttachMap->m_bVerbose)
     vTrace("[[mainThread]] DicCompile...\n"_Stz);
   
   npBootTask->vSeedDicCompileSen();
   
-  if (gbVerbose)
+  if (gpAttachMap->m_bVerbose)
     vTrace("[[mainThread]] RapidsSE::vDicCompile running [%s] %p\n"_Stz,
            npBootTask->sName().aChar(),
            *npBootTask);
@@ -476,7 +472,7 @@ void RapidsSE::vSystemInit(void)
   Word* pTraceFileWord = gpMainDic->pFindWord("trace_file"_Stz);
   gpTraceFile = reinterpret_cast<File*>(pTraceFileWord->aBodyArea());
     
-  if (gbVerbose)
+  if (gpAttachMap->m_bVerbose)
     vTrace("Shm region initialised at: %s\n"_Stz,gpAttachMap->m_sUTC.aChar());
 }
 
@@ -491,7 +487,7 @@ void RapidsSE::vStartActors(void)
   // seed root task to start the system
   gnpBootTask->vSeedWord("startActors"_Stz);
   
-  if (gbVerbose)
+  if (gpAttachMap->m_bVerbose)
     vTrace("[[mainThread]] RapidsSE::vStartActors launching: task %s %p\n"_Stz,
            gnpBootTask->sName().aChar(),
            *gnpBootTask);
@@ -554,7 +550,7 @@ void RapidsSE::vSystemStop(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vWaitFlag(void)
 {
-  if (gbVerbose)
+  if (gpAttachMap->m_bVerbose)
     vTrace("[[mainThread]] Waiting on stop %s\n"_Stz,"..."_Stz);
 
   // this primary thread waits for flag indicationg systems is to stop
