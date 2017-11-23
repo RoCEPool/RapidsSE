@@ -18,11 +18,6 @@ extern TaskList*    gpTaskList;
 extern PlanList*    gpPlanList;
 extern SEitfList*   gpSEitfList;
 
-extern bool         gbIndexSpace;
-extern i8           gnIndexEntries;
-extern i8           gnIndexLevels;
-extern i8           gnIndexOffsets;
-
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
@@ -87,11 +82,6 @@ void AttachMap::vGetGlobals(void)
   gpTaskList     = m_pTaskList;
   gpPlanList     = m_pPlanList;
   gpSEitfList    = m_pSEitfList;
-  
-  gbIndexSpace   = m_bIndexSpace;
-  gnIndexEntries = m_nIndexEntries;
-  gnIndexLevels  = m_nIndexLevels;
-  gnIndexOffsets = gnIndexLevels - 1;
 }
 
 /*----------------------------------------------------------------------------*/

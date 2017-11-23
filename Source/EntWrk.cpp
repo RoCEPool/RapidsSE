@@ -3,11 +3,12 @@
 /*============================================================================*/
 
 #include "DBobjects.h"
+#include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
+extern AttachMap* gpAttachMap;
 extern i8 gnIndexOffsets;
 
 /*----------------------------------------------------------------------------*/
@@ -44,12 +45,12 @@ EntWrk::EntWrk(void)
   m_bHasData = false;
   
   // generate logarithmic level for this entry
-  m_iOffsets = Random::iLogLevel(gnIndexOffsets+1, C_FLAT_FREQ);
-  ASSERT(m_iOffsets >= 0 && m_iOffsets <= gnIndexOffsets);
+  m_iOffsets = Random::iLogLevel(gpAttachMap->m_nIndexOffsets+1, C_FLAT_FREQ);
+  ASSERT(m_iOffsets >= 0 && m_iOffsets <= gpAttachMap->m_nIndexOffsets);
   
   // set all right offsets to nil
   on nOffsetNo;
-  for (nOffsetNo = 0_on; nOffsetNo < gnIndexOffsets; nOffsetNo++)
+  for (nOffsetNo = 0_on; nOffsetNo < gpAttachMap->m_nIndexOffsets; nOffsetNo++)
     m_iOffset[*nOffsetNo] = C_NIL_OFFSET;
   
   // m_xDataWrk
@@ -73,13 +74,13 @@ EntWrk::EntWrk(i8 nOffsets)
   
   // set no of offsets
   m_iOffsets = nOffsets;
-  ASSERT(m_iOffsets >= 0 && m_iOffsets <= gnIndexOffsets);
+  ASSERT(m_iOffsets >= 0 && m_iOffsets <= gpAttachMap->m_nIndexOffsets);
   
   m_bHasData = false;
   
   // set all right offsets to nil
   on nOffsetNo;
-  for (nOffsetNo = 0_on; nOffsetNo < gnIndexOffsets; nOffsetNo++)
+  for (nOffsetNo = 0_on; nOffsetNo < gpAttachMap->m_nIndexOffsets; nOffsetNo++)
     m_iOffset[*nOffsetNo] = C_NIL_OFFSET;
   
   // m_xDataWrk
@@ -109,7 +110,7 @@ EntWrk::EntWrk(Entry* pEntry)
   // set the idx
   vId(pEntry->xId());
   
-  ASSERT(m_iOffsets >= 0 && m_iOffsets <= gnIndexOffsets);
+  ASSERT(m_iOffsets >= 0 && m_iOffsets <= gpAttachMap->m_nIndexOffsets);
   
   // set all right offsets to nil
   for (on nOffsetNo; nOffsetNo < m_iOffsets; nOffsetNo++) {
@@ -233,7 +234,7 @@ void EntWrk::vShow(ColumnVec* pColVec)
 /*----------------------------------------------------------------------------*/
 i8 EntWrk::nOffsets(void)
 {
-  ASSERT(m_iOffsets >= 0 && m_iOffsets <= gnIndexOffsets);
+  ASSERT(m_iOffsets >= 0 && m_iOffsets <= gpAttachMap->m_nIndexOffsets);
   
   return m_iOffsets;
 }
@@ -243,7 +244,7 @@ i8 EntWrk::nOffsets(void)
 /*----------------------------------------------------------------------------*/
 i8 EntWrk::iRightOffset(on nOffsetNo)
 {
-  ASSERT(nOffsetNo >= 0_on && nOffsetNo <= gnIndexOffsets);
+  ASSERT(nOffsetNo >= 0_on && nOffsetNo <= gpAttachMap->m_nIndexOffsets);
   
   return m_iOffset[*nOffsetNo];
 }
@@ -253,7 +254,7 @@ i8 EntWrk::iRightOffset(on nOffsetNo)
 /*----------------------------------------------------------------------------*/
 void EntWrk::vRightOffset(on nOffsetNo, u8 uRightOffset)
 {
-  ASSERT(nOffsetNo >= 0_on && nOffsetNo <= gnIndexOffsets);
+  ASSERT(nOffsetNo >= 0_on && nOffsetNo <= gpAttachMap->m_nIndexOffsets);
   
   m_iOffset[*nOffsetNo] = uRightOffset;
 }
@@ -263,7 +264,7 @@ void EntWrk::vRightOffset(on nOffsetNo, u8 uRightOffset)
 /*----------------------------------------------------------------------------*/
 i8 EntWrk::nRightSize(void)
 {
-  ASSERT(m_iOffsets >= 0 && m_iOffsets <= gnIndexOffsets);
+  ASSERT(m_iOffsets >= 0 && m_iOffsets <= gpAttachMap->m_nIndexOffsets);
   
   i8 nBytes = RightVec::nBytesRequired(m_iOffsets);
   

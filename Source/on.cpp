@@ -4,7 +4,9 @@
 
 #include "DBobjects.h"
 
-extern i8 gnIndexOffsets;
+#include "StorageEngine.h"
+
+extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -19,7 +21,7 @@ on::on(void)
 /*----------------------------------------------------------------------------*/
 on::on(i8 i)
 {
-  ASSERT( (C_NIL_OFFSET == i) || (i >= 0 && i < gnIndexOffsets) );
+  ASSERT( (C_NIL_OFFSET == i) || (i >= 0 && i < gpAttachMap->m_nIndexOffsets) );
   
   m_iOffsetNo = i;
 }
@@ -241,7 +243,7 @@ on DBobjects::operator "" _on(unsigned long long u)
 /*----------------------------------------------------------------------------*/
 bool on::bInRange(void)
 {
-  if (m_iOffsetNo >= 0 && m_iOffsetNo < gnIndexOffsets)
+  if (m_iOffsetNo >= 0 && m_iOffsetNo < gpAttachMap->m_nIndexOffsets)
     return true;
   else
     return false;

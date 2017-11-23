@@ -4,7 +4,9 @@
 
 #include "DBobjects.h"
 
-extern i8 gnIndexOffsets;
+#include "StorageEngine.h"
+
+extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -215,7 +217,7 @@ on Entry::nHighestOffset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_); 
   
-  ASSERT(m_nOffsets >= 0 && m_nOffsets <= gnIndexOffsets);
+  ASSERT(m_nOffsets >= 0 && m_nOffsets <= gpAttachMap->m_nIndexOffsets);
   
   on nHighest(m_nOffsets - 1);
   
@@ -239,7 +241,7 @@ i8 Entry::iRightOffset(on nOffsetNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_); 
   
-  ASSERT(nOffsetNo >= 0_on && nOffsetNo < gnIndexOffsets);
+  ASSERT(nOffsetNo >= 0_on && nOffsetNo < gpAttachMap->m_nIndexOffsets);
   
   if (nOffsetNo >= m_nOffsets)
     return C_NIL_OFFSET;
@@ -256,7 +258,7 @@ void Entry::vRightOffset(on nOffsetNo, i8 iRightOffset)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_); 
   
-  ASSERT(nOffsetNo >= 0_on && nOffsetNo < gnIndexOffsets);
+  ASSERT(nOffsetNo >= 0_on && nOffsetNo < gpAttachMap->m_nIndexOffsets);
   
   aRightVec()->vOffset(nOffsetNo,iRightOffset);
   

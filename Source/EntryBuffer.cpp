@@ -6,10 +6,7 @@
 
 #include "StorageEngine.h"
 
-extern bool gbIndexSpace;
-extern i8   gnIndexEntries;
-extern i8   gnIndexLevels;
-extern i8   gnIndexOffsets;
+extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -611,10 +608,10 @@ i8 EntryBuffer::iDecile(void)
   
   i8 iDecile;
   
-  if (gbIndexSpace)
+  if (gpAttachMap->m_bIndexSpace)
     iDecile = IntLib::iDecile(m_xWsp.nUsed(), C_SIZE_POOL_BUFFER);
   else
-    iDecile = IntLib::iDecile(m_nEntries, gnIndexEntries);
+    iDecile = IntLib::iDecile(m_nEntries, gpAttachMap->m_nIndexEntries);
   
   
   return iDecile;
@@ -675,12 +672,12 @@ bool EntryBuffer::bHasSpace(i8 nBytes)
   i8 iFree = m_xWsp.nFree();
   
   // free space calculation based on no of enteries
-  if (gbIndexSpace) {
+  if (gpAttachMap->m_bIndexSpace) {
     if (iFree < nBytes)
       return false;
   }
   else {
-    if (m_nEntries > gnIndexEntries)
+    if (m_nEntries > gpAttachMap->m_nIndexEntries)
       return false;
   }
   
@@ -1442,7 +1439,7 @@ bool EntryBuffer::bVerify(void)                                     //# critical
   ln nLevelNo;
   
   // start at the highest level in the index buffer's skip list (L2)
-  nLevelNo = gnIndexLevels - 1;
+  nLevelNo = gpAttachMap->m_nIndexLevels - 1;
   
   do {
     
@@ -1623,11 +1620,11 @@ void EntryBuffer::vAllotHead(void)
   ASSERT( ! m_nEntries );
   
   // how many bytes are required
-  i8 nBytes = Entry::nBytesRequired(gnIndexOffsets,0,0);
+  i8 nBytes = Entry::nBytesRequired(gpAttachMap->m_nIndexOffsets,0,0);
   
   // allot the head
   
-  Entry* pHead = pAllotEntry(nBytes,gnIndexOffsets,nullptr);
+  Entry* pHead = pAllotEntry(nBytes,gpAttachMap->m_nIndexOffsets,nullptr);
   
   // initialize the head
   for (on nOffsetNo; nOffsetNo.bInRange(); nOffsetNo++)
@@ -2221,7 +2218,7 @@ Entry* EntryBuffer::pPosition(Key* aGivenKey, eJC eJuxtaCompare, EntryVec* pPrio
   
   // start scanning from head entry and topmost level
   ln nScanLevel;
-  nScanLevel = gnIndexLevels - 1;
+  nScanLevel = gpAttachMap->m_nIndexLevels - 1;
   
   //aGivenKey->vShow(m_pIndex->pIdxColVec());
   //vTrace("\n"_Stz);
@@ -2301,7 +2298,7 @@ void EntryBuffer::vPriorVec(Entry* pEntry, EntryVec* pPriorVec)     //# critical
   
   // set all entries to null
   Entry* pHeadEntry = pHead();
-  for (nLevel = 0_on; *nLevel < gnIndexLevels; nLevel++)
+  for (nLevel = 0_on; *nLevel < gpAttachMap->m_nIndexLevels; nLevel++)
     (*pPriorVec)[nLevel] = nullptr;
   
   // scan till we find the entry
@@ -2330,7 +2327,7 @@ void EntryBuffer::vPriorVecHead(EntryVec& xPriorVec)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   ln nLevel;
-  for (nLevel = 0_on; *nLevel < gnIndexLevels; nLevel++)
+  for (nLevel = 0_on; *nLevel < gpAttachMap->m_nIndexLevels; nLevel++)
     xPriorVec[nLevel] = pHead();
 }
 
@@ -2357,7 +2354,7 @@ Entry* EntryBuffer::pRightEntry(Entry* pEntry, ln nLevelNo)         //# critical
    */
   
   // the caller must request a valid right entry of pEntry
-  ASSERT(nLevelNo >= 0_ln && *nLevelNo < gnIndexLevels);
+  ASSERT(nLevelNo >= 0_ln && *nLevelNo < gpAttachMap->m_nIndexLevels);
   
   if (nLevelNo == 0_ln) {
     // for level 0, the right entry is the next entry

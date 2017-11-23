@@ -30,11 +30,6 @@ void*         mpRegion       = nullptr;
 
 bool          gbSHM          = false;
 
-bool          gbIndexSpace   = true;
-i8            gnIndexEntries = 100;
-i8            gnIndexLevels  = 3;
-i8            gnIndexOffsets = gnIndexLevels - 1;
-
 Lock          gxDdlLock;
 Lock          gxDicLock;
 Locks         gxLocks;

@@ -6,6 +6,7 @@
 //#include "Tasks.h"
 #include "SePrompt.hpp"
 
+extern AttachMap*      gpAttachMap;
 extern Dic*            gpMainDic;
 
 extern StepArray*      gpStepArray;
@@ -16,11 +17,6 @@ extern NP_Task         gnpBootTask;
 extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
 extern SEitfList*      gpSEitfList;
-
-extern bool         gbIndexSpace;
-extern i8           gnIndexEntries;
-extern i8           gnIndexLevels;
-extern i8           gnIndexOffsets;
 
 // table: //////////////////////////////////////////////////////////////////////
 
@@ -50,13 +46,13 @@ void Task::vAttachMapFetch(MP_Task mpTask)
   
   switch (eAttachMap) {
     case AM_INDEXENTRIES:
-      mpTask->m_pDataStack->vPushInt(gnIndexEntries);
+      mpTask->m_pDataStack->vPushInt(gpAttachMap->m_nIndexEntries);
       break;
     case AM_INDEXLEVELS:
-      mpTask->m_pDataStack->vPushInt(gnIndexLevels);
+      mpTask->m_pDataStack->vPushInt(gpAttachMap->m_nIndexLevels);
       break;
     case AM_INDEXSPACE:
-      mpTask->m_pDataStack->vPushInt(gbIndexSpace ? 1 : 0);
+      mpTask->m_pDataStack->vPushInt(gpAttachMap->m_bIndexSpace ? 1 : 0);
       break;
     default:
       THROW_INVALID_DSTACK("attachmap::attachmap@"_Stz);
@@ -86,7 +82,7 @@ void Task::vAttachMapStore(MP_Task mpTask)
     case AM_INDEXENTRIES:
       if ( ! mpTask->m_pDataStack->bPop(sValue) )
         THROW_INVALID_DSTACK("attachmap::attachmap!"_Stz);
-      gnIndexEntries = StrLib::iToI8(sValue.aChar());
+      gpAttachMap->m_nIndexEntries = StrLib::iToI8(sValue.aChar());
       break;
       
     case AM_INDEXLEVELS:
@@ -96,8 +92,8 @@ void Task::vAttachMapStore(MP_Task mpTask)
       iIndexLevels = StrLib::iToI8(sValue.aChar());
       if (iIndexLevels >= C_FLAT_LEVELS_MAX)
         THROW("IndexLevel should be < %lldattachmap::attachmap!"_Stz, C_FLAT_LEVELS_MAX);
-      gnIndexLevels = iIndexLevels;
-      gnIndexOffsets = gnIndexLevels - 1;
+      gpAttachMap->m_nIndexLevels = iIndexLevels;
+      gpAttachMap->m_nIndexOffsets = gpAttachMap->m_nIndexLevels - 1;
       break;
   
     case AM_INDEXSPACE:
@@ -105,7 +101,7 @@ void Task::vAttachMapStore(MP_Task mpTask)
       if ( ! mpTask->m_pDataStack->bPop(sValue) )
         THROW_INVALID_DSTACK("attachmap::attachmap!"_Stz);
       iIndexSpace = StrLib::iToI8(sValue.aChar());
-      gbIndexSpace = (iIndexSpace == 1 ? true : false);
+      gpAttachMap->m_bIndexSpace = (iIndexSpace == 1 ? true : false);
       break;
     
         default:

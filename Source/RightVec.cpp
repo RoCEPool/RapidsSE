@@ -4,11 +4,12 @@
 
 #include "DBobjects.h"
 
+#include "StorageEngine.h"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-extern i8 gnIndexOffsets;
+extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -63,7 +64,7 @@ RightVec::~RightVec(void)
 /*----------------------------------------------------------------------------*/
 i8 RightVec::iOffset(on nOffsetNo)
 {
-  ASSERT(nOffsetNo >= 0_on && nOffsetNo < gnIndexOffsets);
+  ASSERT(nOffsetNo >= 0_on && nOffsetNo < gpAttachMap->m_nIndexOffsets);
   
   u8 uOffset = m_nOffset[*nOffsetNo];
   
@@ -75,7 +76,7 @@ i8 RightVec::iOffset(on nOffsetNo)
 /*----------------------------------------------------------------------------*/
 void RightVec::vOffset(on nOffsetNo, i8 iOffset)
 {
-  ASSERT(nOffsetNo >= 0_on && nOffsetNo < gnIndexOffsets);
+  ASSERT(nOffsetNo >= 0_on && nOffsetNo < gpAttachMap->m_nIndexOffsets);
   
   m_nOffset[*nOffsetNo] = iOffset;
 }
@@ -89,7 +90,7 @@ void RightVec::vOffset(on nOffsetNo, i8 iOffset)
 /*----------------------------------------------------------------------------*/
 i8 RightVec::nBytesRequired(i8 nOffsets)
 {
-  ASSERT(nOffsets >= 0 && nOffsets <= gnIndexOffsets);         //# nOffsets >= 1
+  ASSERT(nOffsets >= 0 && nOffsets <= gpAttachMap->m_nIndexOffsets);         //# nOffsets >= 1
   
   i8 nBytes = nOffsets * sizeof(u8);
   
