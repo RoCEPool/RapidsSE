@@ -257,21 +257,21 @@ void Task::vSocketSend(MP_Task mpTask)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get rowBuffer if any in valset
-  EntryBuffer* pRowBuffer = xValSet.pGetRowBuffer();
+  // get entryBuffer if any in valset
+  EntryBuffer* pEntryBuffer = xValSet.pGetRowBuffer();
   
-  if (pRowBuffer) {
+  if (pEntryBuffer) {
     
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-    // send rowBuffer size
-    i8 iBytes = pRowBuffer->nUsedBytes();
+    // send entryBuffer size
+    i8 iBytes = pEntryBuffer->nUsedBytes();
     bResult = pSocket->bSendTo(sizeof(iBytes), &iBytes, xSysCall);
     
     if ( ! bResult ) {
       
       // delete the rowbuffer if its temporary
-      if (BD_TEMPORARY == pRowBuffer->eDurability())
-        delete pRowBuffer;
+      if (BD_TEMPORARY == pEntryBuffer->eDurability())
+        delete pEntryBuffer;
       
       //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
       mpTask->m_pDataStack->vPushInt((i8)0);
@@ -281,13 +281,13 @@ void Task::vSocketSend(MP_Task mpTask)
     }
     
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-    // send rowBuffer itself
-    bResult = pSocket->bSendTo(iBytes, pRowBuffer->aDataArea(), xSysCall);
+    // send entryBuffer itself
+    bResult = pSocket->bSendTo(iBytes, pEntryBuffer->aDataArea(), xSysCall);
     
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // delete the rowbuffer if its temporary
-    if (BD_TEMPORARY == pRowBuffer->eDurability())
-      delete pRowBuffer;
+    if (BD_TEMPORARY == pEntryBuffer->eDurability())
+      delete pEntryBuffer;
     
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // test send result
@@ -351,14 +351,14 @@ void Task::vSocketRecv(MP_Task mpTask)
     THROW("Unable to recvFrom socket: Errno %d!"_Stz, xSysCall.iError());
   
   //******************************************************************
-  // Check if valset has a row buffer
+  // Check if valset has a entry buffer
   //******************************************************************
-  bool bHasRowBuffer = xValSet.bHasRowBuffer();
+  bool bHasEntryBuffer = xValSet.bHasRowBuffer();
   
-  if (bHasRowBuffer) {
+  if (bHasEntryBuffer) {
     
     //******************************************************************
-    // receive rowBuffer size
+    // receive entryBuffer size
     //******************************************************************
     bResult = pSocket->bRecvBytes(sizeof(iBytes), reinterpret_cast<void*>(&iBytes), xSysCall);
     
@@ -366,31 +366,31 @@ void Task::vSocketRecv(MP_Task mpTask)
       THROW("Unable to recvFrom socket: Errno %d!"_Stz, xSysCall.iError());
     
     //******************************************************************
-    // receive rowBuffer
+    // receive entryBuffer
     //******************************************************************
-    EntryBuffer* pRowBuffer = (EntryBuffer*)new EntryBuffer(iBytes);
-    bResult = pSocket->bRecvBytes(iBytes, reinterpret_cast<void*>(pRowBuffer->aDataArea()), xSysCall);
+    EntryBuffer* pEntryBuffer = (EntryBuffer*)new EntryBuffer(iBytes);
+    bResult = pSocket->bRecvBytes(iBytes, reinterpret_cast<void*>(pEntryBuffer->aDataArea()), xSysCall);
     
     if ( ! bResult )
       THROW("Unable to recvFrom socket: Errno %d!"_Stz, xSysCall.iError());
     
-    pRowBuffer->vRowCount();
-    //vTrace("%lld \n"_Stz, *(pRowBuffer->nBufferNo()));
+    pEntryBuffer->vRowCount();
+    //vTrace("%lld \n"_Stz, *(pEntryBuffer->nBufferNo()));
     
-    // set the new row buffer in each entry of the row buffer
+    // set the new entry buffer in each entry of the entry buffer
     Id xId;
-    xId.vBuffer(*(pRowBuffer->nBufferNo()));
-    for (Entry* pEntry = pRowBuffer->pNextEntry(pRowBuffer->pHead()); pEntry != nullptr;
-         pEntry = pRowBuffer->pNextEntry(pEntry)) {
+    xId.vBuffer(*(pEntryBuffer->nBufferNo()));
+    for (Entry* pEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHead()); pEntry != nullptr;
+         pEntry = pEntryBuffer->pNextEntry(pEntry)) {
       xId.vRow(pEntry->xId().iRow());
                
       pEntry->vId(xId);
       
     }
     //******************************************************************
-    // set rowBuffer in valset
+    // set entryBuffer in valset
     //******************************************************************
-    bool bSet = xValSet.bSetRowBuffer(pRowBuffer);
+    bool bSet = xValSet.bSetRowBuffer(pEntryBuffer);
     ASSERT(bSet);
   }
   
