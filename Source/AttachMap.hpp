@@ -41,6 +41,7 @@ namespace StorageEngine
     BufferPool*   m_pBufferPool;
     Heap*         m_pJumboHeap;
     Heap*         m_pMediumHeap;
+    Heap*         m_pLargeHeap;
     Heap*         m_pSmallHeap;
     Dic           m_xMainDic;
     TxSet*        m_pTxSet;

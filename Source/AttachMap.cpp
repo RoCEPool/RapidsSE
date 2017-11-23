@@ -9,6 +9,7 @@ extern BufferPool*  gpBufferPool;
 extern Heap*        gpJumboHeap;
 extern Heap*        gpMediumHeap;
 extern Heap*        gpSmallHeap;
+extern Heap*        gpLargeHeap;
 extern Dic*         gpMainDic;
 
 extern TxSet*        gpTxSet;
@@ -87,6 +88,7 @@ void AttachMap::vGetGlobals(void)
 
   gpJumboHeap   = m_pJumboHeap;
   gpMediumHeap  = m_pMediumHeap;
+  gpLargeHeap   = m_pLargeHeap;
   gpSmallHeap   = m_pSmallHeap;
   gpMainDic     = &m_xMainDic;
   gpTxSet        = m_pTxSet;
@@ -132,6 +134,7 @@ void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize, i8 iJumboSize)
   
   m_pJumboHeap  = gpJumboHeap;
   m_pMediumHeap = gpMediumHeap;
+  m_pLargeHeap  = gpLargeHeap;
   m_pSmallHeap  = gpSmallHeap;
   
   m_pTxSet        = gpTxSet;
