@@ -234,7 +234,7 @@ void BPA::vObjectSummary(void)
   gpAttachMap->m_pTransientSmallHeap->vAnalyse(iCountObjects);
   
   vTrace("\n"_Stz);
-  vTrace("  SmallHeap Object Summary:\n"_Stz);
+  vTrace("  Transient SmallHeap Object Summary:\n"_Stz);
   for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
     eCN eClass = (eCN)i_Index;
     
@@ -247,7 +247,7 @@ void BPA::vObjectSummary(void)
   gpAttachMap->m_pTransientMediumHeap->vAnalyse(iCountObjects);
   
   vTrace("\n"_Stz);
-  vTrace("  MediumHeap Object Summary:\n"_Stz);
+  vTrace("  Transient MediumHeap Object Summary:\n"_Stz);
   for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
     eCN eClass = (eCN)i_Index;
     
@@ -257,21 +257,74 @@ void BPA::vObjectSummary(void)
     vTrace("  %12s %-6lld \n"_Stz, aCN[eClass], iCountObjects[eClass]);
   }
   
-  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++)
-    iCountObjects[i_Index] = 0;
+  gpAttachMap->m_pTransientLargeHeap->vAnalyse(iCountObjects);
   
+  vTrace("\n"_Stz);
+  vTrace("  Transient LargeHeap Object Summary:\n"_Stz);
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+    eCN eClass = (eCN)i_Index;
+    
+    if (iCountObjects[eClass] == 0)
+      continue;
+    
+    vTrace("  %12s %-6lld \n"_Stz, aCN[eClass], iCountObjects[eClass]);
+  }
+  
+  
+//  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++)
+//    iCountObjects[i_Index] = 0;
+//
 //  gpAttachMap->m_pTransientJumboHeap->vAnalyse(iCountObjects);
-//  
+//
 //  vTrace("\n"_Stz);
-//  vTrace("  JumboHeap Object s:\n"_Stz);
-//  for (i8 i_Index = 0; index < CN_ENUMS; i_Index++) {
+//  vTrace("  Transient JumboHeap Object s:\n"_Stz);
+//  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
 //    eCN eClass = (eCN)i_Index;
-//    
+//
 //    if (iCountObjects[eClass] == 0)
 //      continue;
-//    
+//
 //    vTrace("  %12s %-6lld \n"_Stz, aCN[eClass], iCountObjects[eClass]);
 //  }
+  
+  gpAttachMap->m_pPersistentSmallHeap->vAnalyse(iCountObjects);
+  
+  vTrace("\n"_Stz);
+  vTrace("  Persistent SmallHeap Object Summary:\n"_Stz);
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+    eCN eClass = (eCN)i_Index;
+    
+    if (iCountObjects[eClass] == 0)
+      continue;
+    
+    vTrace("  %12s %-6lld \n"_Stz, aCN[eClass], iCountObjects[eClass]);
+  }
+  
+  gpAttachMap->m_pPersistentMediumHeap->vAnalyse(iCountObjects);
+  
+  vTrace("\n"_Stz);
+  vTrace("  Persistent MediumHeap Object Summary:\n"_Stz);
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+    eCN eClass = (eCN)i_Index;
+    
+    if (iCountObjects[eClass] == 0)
+      continue;
+    
+    vTrace("  %12s %-6lld \n"_Stz, aCN[eClass], iCountObjects[eClass]);
+  }
+  
+  gpAttachMap->m_pPersistentLargeHeap->vAnalyse(iCountObjects);
+  
+  vTrace("\n"_Stz);
+  vTrace("  Persistent LargeHeap Object Summary:\n"_Stz);
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+    eCN eClass = (eCN)i_Index;
+    
+    if (iCountObjects[eClass] == 0)
+      continue;
+    
+    vTrace("  %12s %-6lld \n"_Stz, aCN[eClass], iCountObjects[eClass]);
+  }
   
   _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
 }
@@ -459,7 +512,7 @@ void BPA::vRegionSummary()
          gpAttachMap->m_pPersistentMediumHeap->iAllocCount(),
          gpAttachMap->m_pPersistentMediumHeap->iFreeCount());
   
-  vTrace("   Transitent LargeHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+  vTrace("   Persistent LargeHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagJumbo.aChar(),
          gpAttachMap->m_pPersistentLargeHeap->iBufferCount(),
          gpAttachMap->m_pPersistentLargeHeap->iAllocCount(),
