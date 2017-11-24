@@ -96,10 +96,15 @@ void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize, i8 iJumboSize)
   
   m_pBufferPool = gpBufferPool;
   
-  ASSERT(m_pJumboHeap);
-  ASSERT(m_pMediumHeap);
-  ASSERT(m_pLargeHeap);
-  ASSERT(m_pSmallHeap);
+  ASSERT(m_pTransientJumboHeap);
+  ASSERT(m_pTransientMediumHeap);
+  ASSERT(m_pTransientLargeHeap);
+  ASSERT(m_pTransientSmallHeap);
+  
+  ASSERT(m_pPersistentJumboHeap);
+  ASSERT(m_pPersistentMediumHeap);
+  ASSERT(m_pPersistentLargeHeap);
+  ASSERT(m_pPersistentSmallHeap);
   
   m_pTxSet      = gpTxSet;
   

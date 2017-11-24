@@ -39,13 +39,21 @@ namespace StorageEngine
     i8            m_iEpoch;
     
     BufferPool*   m_pBufferPool;
-    Heap*         m_pJumboHeap;
-    Heap*         m_pMediumHeap;
-    Heap*         m_pLargeHeap;
-    Heap*         m_pSmallHeap;
+    
+    Heap*         m_pTransientJumboHeap;
+    Heap*         m_pTransientMediumHeap;
+    Heap*         m_pTransientLargeHeap;
+    Heap*         m_pTransientSmallHeap;
+    
+    Heap*         m_pPersistentJumboHeap;
+    Heap*         m_pPersistentMediumHeap;
+    Heap*         m_pPersistentLargeHeap;
+    Heap*         m_pPersistentSmallHeap;
+    
     Dic           m_xMainDic;
     TxSet*        m_pTxSet;
     Grid*         m_pGrid;
+    
     PartitionScheduler* m_pPartitionScheduler;
     ServerScheduler*    m_pServerScheduler;
   

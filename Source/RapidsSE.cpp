@@ -301,10 +301,17 @@ void RapidsSE::vCreateObjects(void)
   // create global objects
   gpAttachMap  = new AttachMap;
   
-  gpAttachMap->m_pJumboHeap  = new Heap(CN_JUMBOHEAP,  C_SIZE_JUMBO_OBJECT);
-  gpAttachMap->m_pLargeHeap  = new Heap(CN_LARGEHEAP,  C_SIZE_LARGE_OBJECT);
-  gpAttachMap->m_pMediumHeap = new Heap(CN_MEDIUMHEAP, C_SIZE_MEDIUM_OBJECT);
-  gpAttachMap->m_pSmallHeap  = new Heap(CN_SMALLHEAP,  C_SIZE_SMALL_OBJECT);
+  // create the transient heaps
+  gpAttachMap->m_pTransientJumboHeap  = new Heap(CN_JUMBOHEAP,  C_SIZE_JUMBO_OBJECT);
+  gpAttachMap->m_pTransientLargeHeap  = new Heap(CN_LARGEHEAP,  C_SIZE_LARGE_OBJECT);
+  gpAttachMap->m_pTransientMediumHeap = new Heap(CN_MEDIUMHEAP, C_SIZE_MEDIUM_OBJECT);
+  gpAttachMap->m_pTransientSmallHeap  = new Heap(CN_SMALLHEAP,  C_SIZE_SMALL_OBJECT);
+  
+  // craete the persistent heaps
+  gpAttachMap->m_pPersistentJumboHeap  = new Heap(CN_JUMBOHEAP,  C_SIZE_JUMBO_OBJECT);
+  gpAttachMap->m_pPersistentLargeHeap  = new Heap(CN_LARGEHEAP,  C_SIZE_LARGE_OBJECT);
+  gpAttachMap->m_pPersistentMediumHeap = new Heap(CN_MEDIUMHEAP, C_SIZE_MEDIUM_OBJECT);
+  gpAttachMap->m_pPersistentSmallHeap  = new Heap(CN_SMALLHEAP,  C_SIZE_SMALL_OBJECT);
   
   vInitJumboHeap();
 }
@@ -357,7 +364,7 @@ void RapidsSE::vErrorHandler(Error* pError)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vInitJumboHeap(void)
 {
-  gpAttachMap->m_pJumboHeap->vFixedHeap(true);
+  gpAttachMap->m_pTransientJumboHeap->vFixedHeap(true);
   
   Buffer* pJumbo = nullptr;
   while ( (pJumbo = gpBufferPool->pNextJumbo(pJumbo)) ) {
@@ -365,8 +372,9 @@ void RapidsSE::vInitJumboHeap(void)
     pJumbo->vSetMagic();
     pJumbo->vSetClass(CN_FREECHUNK);
 
-    gpAttachMap->m_pJumboHeap->vAddFree((FreeChunk*)pJumbo);
+    gpAttachMap->m_pTransientJumboHeap->vAddFree((FreeChunk*)pJumbo);
   }
+  
 }
 
 /*----------------------------------------------------------------------------*/

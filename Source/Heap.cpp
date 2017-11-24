@@ -123,19 +123,19 @@ Object* Heap::pAllocate(eCN eAllocClass)
              eAllocClass,aCN[eAllocClass]);
     
     case HT_SMALL:
-      pObject = gpAttachMap->m_pSmallHeap->pAllocObject(eAllocClass);
+      pObject = gpAttachMap->m_pTransientSmallHeap->pAllocObject(eAllocClass);
       return pObject;
       
     case HT_MEDIUM:
-      pObject = gpAttachMap->m_pMediumHeap->pAllocObject(eAllocClass);
+      pObject = gpAttachMap->m_pTransientMediumHeap->pAllocObject(eAllocClass);
       return pObject;
 
     case HT_LARGE:
-      pObject = gpAttachMap->m_pLargeHeap->pAllocObject(eAllocClass);
+      pObject = gpAttachMap->m_pTransientLargeHeap->pAllocObject(eAllocClass);
       return pObject;
       
     case HT_JUMBO:
-      pObject = gpAttachMap->m_pJumboHeap->pAllocObject(eAllocClass);
+      pObject = gpAttachMap->m_pTransientJumboHeap->pAllocObject(eAllocClass);
       return pObject;
       
     default:
@@ -214,7 +214,7 @@ void Heap::vValidateTables(void)
 void Heap::vSearchFree(void)
 {
   if (gbAddrAllocated) {
-    for (FreeChunk* pTestChunk = gpAttachMap->m_pMediumHeap->m_pFreeHead;
+    for (FreeChunk* pTestChunk = gpAttachMap->m_pTransientMediumHeap->m_pFreeHead;
          pTestChunk;
          pTestChunk = pTestChunk->pNextFree())
       if ((void*)pTestChunk >= (void*)0x204828fc0038 &&
@@ -260,19 +260,19 @@ void Heap::vFree(Object* pObject)
              eAllocClass,aCN[eAllocClass]);
       
     case HT_SMALL:
-      gpAttachMap->m_pSmallHeap->vFreeObject(pObject);
+      gpAttachMap->m_pTransientSmallHeap->vFreeObject(pObject);
       return;
       
     case HT_MEDIUM:
-      gpAttachMap->m_pMediumHeap->vFreeObject(pObject);
+      gpAttachMap->m_pTransientMediumHeap->vFreeObject(pObject);
       return;
       
     case HT_LARGE:
-      gpAttachMap->m_pLargeHeap->vFreeObject(pObject);
+      gpAttachMap->m_pTransientLargeHeap->vFreeObject(pObject);
       return;
       
     case HT_JUMBO:
-      gpAttachMap->m_pJumboHeap->vFreeObject(pObject);
+      gpAttachMap->m_pTransientJumboHeap->vFreeObject(pObject);
       return;
       
     default:
