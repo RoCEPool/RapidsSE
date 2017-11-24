@@ -63,7 +63,7 @@ Buffer::~Buffer(void)
 /*----------------------------------------------------------------------------*/
 /* get buffer that an object is within                                        */
 /*----------------------------------------------------------------------------*/
-Buffer* Buffer::pToBuffer(Object* pObject)
+Buffer* Buffer::pGetBuffer(Object* pObject)
 {
   Buffer* pBuffer =
     reinterpret_cast<Buffer*>(BITWISE_AND((u8)pObject,C_OBJECT_TO_BUFFER_MASK));

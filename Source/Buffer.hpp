@@ -20,7 +20,7 @@ namespace Pool
     Buffer(eCN eClass);
     ~Buffer(void);
   
-    static Buffer* pToBuffer(Object* pObject);
+    static Buffer* pGetBuffer(Object* pObject);
   
     bn    nBufferNo(void);
     void  vBufferNo(bn nBufferNo);

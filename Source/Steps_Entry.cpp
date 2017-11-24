@@ -102,9 +102,11 @@ void Task::vEntryToDataRow(MP_Task mpTask)
   Id xId = pEntry->xId();
   
   // find the buffer from the buffer pool given the buffer no
-  bn nBufferNo = xId.iBuffer();
-  EntryBuffer* pEntryBuffer = reinterpret_cast<EntryBuffer*>
-     (gpBufferPool->pToBuffer(nBufferNo));
+  //bn nBufferNo = xId.iBuffer();
+  //EntryBuffer* pEntryBuffer = reinterpret_cast<EntryBuffer*>
+  //   (gpBufferPool->pToBuffer(nBufferNo));
+  
+  EntryBuffer* pEntryBuffer = pEntry->pEntryBuffer();
   
   ASSERT(pEntryBuffer);
   ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);

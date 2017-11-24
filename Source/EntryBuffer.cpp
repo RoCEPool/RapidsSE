@@ -630,11 +630,12 @@ void EntryBuffer::vDump(void)
   // recursively dump the lower level buffers
   if (m_nBufferLevel != 0) {
     
-    for (Entry* pEntry = pNextEntry(pHead()); pEntry != nullptr;
+    for (Entry* pEntry = pNextEntry(pHead());
+         pEntry != nullptr;
          pEntry = pNextEntry(pEntry)) {
       
       // get the index buffer from the entry
-      EntryBuffer* pEntryBuffer = pEntry->pEntryBuffer();;
+      EntryBuffer* pEntryBuffer = pEntry->pEntryBuffer();
       
       ASSERT(pEntryBuffer);
       ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);

@@ -26,7 +26,7 @@ Pool::bn Object::nBufferNo(void)
 {
   _precondition_(_MAGIC_);
   
-  Buffer* pBuffer = Buffer::pToBuffer(this);
+  Buffer* pBuffer = Buffer::pGetBuffer(this);
   
   bn nBufferNo = pBuffer->nBufferNo();
   
