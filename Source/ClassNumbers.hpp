@@ -76,14 +76,17 @@ namespace Base
     /* 52 */ CN_IDXVEC,
     /* 53 */ CN_INDEXLEVELS,
   
-    /* 54 */ CN_JUMBOHEAP,
+    /*    */ CN_JUMBOPERSISTENT,
+    /*    */ CN_JUMBOTRANSIENT,
   
     /* 55 */ CN_KEY,
     /* 56 */ CN_KEYVAL,
     /* 57 */ CN_KEYVEC,
     /* 58 */ CN_KEYWRK,
   
-    /*    */ CN_LARGEHEAP,
+    /*    */ CN_LARGEPERSISTENT,
+    /*    */ CN_LARGETRANSIENT,
+    
     /* 59 */ CN_LINEITEM,
     /* 60 */ CN_LOADCHUNK,
     /* 61 */ CN_LOADER,
@@ -91,7 +94,8 @@ namespace Base
     /* 63 */ CN_LOADMAP,
     /* 64 */ CN_LOCK,
     
-    /* 65 */ CN_MEDIUMHEAP,
+    /*    */ CN_MEDIUMPERSISTENT,
+    /*    */ CN_MEDIUMTRANSIENT,
 
     /* 66 */ CN_NODE,
     /* 67 */ CN_NODECURSOR,
@@ -140,7 +144,10 @@ namespace Base
     /*105 */ CN_SLAB,
     /*106 */ CN_SLABALLOCATOR,
     /*107 */ CN_SLOTS,
-    /*108 */ CN_SMALLHEAP,
+    
+    /*    */ CN_SMALLPERSISTENT,
+    /*    */ CN_SMALLTRANSIENT,
+    
     /*109 */ CN_SOCKET,
     /*110 */ CN_STACK,
     /*111 */ CN_STEPACCUM,
@@ -244,14 +251,17 @@ namespace Base
     /* 52 */ "IDXVEC"_Stz,
     /* 53 */ "INDEXLEVELS"_Stz,
 
-    /* 54 */ "JUMBOHEAP"_Stz,
+    /*    */ "JUMBOPERSISTENT"_Stz,
+    /*    */ "JUMBOTRANSIENT"_Stz,
     
     /* 55 */ "KEY"_Stz,
     /* 56 */ "KEYVAL"_Stz,
     /* 57 */ "KEYVEC"_Stz,
     /* 58 */ "KEYWRK"_Stz,
   
-    /*    */ "LARGEHEAP"_Stz,
+    /*    */ "LARGEPERSISTENT"_Stz,
+    /*    */ "LARGETRANSIENT"_Stz,
+    
     /* 59 */ "LINEITEM"_Stz,
     /* 60 */ "LOADCHUNK"_Stz,
     /* 61 */ "LOADER"_Stz,
@@ -259,7 +269,8 @@ namespace Base
     /* 63 */ "LOADMAP"_Stz,
     /* 64 */ "LOCK"_Stz,
 
-    /* 65 */ "MEDIUMHEAP"_Stz,
+    /*    */ "MEDIUMPERSISTENT"_Stz,
+    /*    */ "MEDIUMTRANSIENT"_Stz,
     
     /* 66 */ "NODE"_Stz,
     /* 67 */ "NODECURSOR"_Stz,
@@ -308,7 +319,8 @@ namespace Base
     /*105 */ "SLAB"_Stz,
     /*106 */ "SLABALLOCATOR"_Stz,
     /*107 */ "SLOTS"_Stz,
-    /*108 */ "SMALLHEAP"_Stz,
+    /*    */ "SMALLPERSISTENT"_Stz,
+    /*    */ "SMALLTRANSIENT"_Stz,
     /*109 */ "SOCKET"_Stz,
     /*110 */ "STACK"_Stz,
     /*111 */ "STEPACCUM"_Stz,

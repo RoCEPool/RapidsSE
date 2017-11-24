@@ -77,14 +77,17 @@ pFINALIZE *gpFinalize[]
   /* 52 */ &Finalize::vUndefined,         // CN_IDXVEC
   /* 53 */ &Finalize::vUndefined,         // CN_INDEXLEVELS
   
-  /* 54 */ &Finalize::vUndefined,         // CN_JUMBOHEAP
+  /*    */ &Finalize::vUndefined,         // CN_JUMBOPERSISTENT
+  /* 54 */ &Finalize::vUndefined,         // CN_JUMBOTRANSIENT
   
   /* 55 */ &Finalize::vUndefined,         // CN_KEY
   /* 56 */ &Finalize::vUndefined,         // CN_KEYVAL
   /* 57 */ &Finalize::vUndefined,         // CN_KEYVEC
   /* 58 */ &Finalize::vUndefined,         // CN_KEYWRK
   
-  /*    */ &Finalize::vUndefined,         // CN_LARGEHEAP
+  /*    */ &Finalize::vUndefined,         // CN_LARGEPERSISTENT
+  /*    */ &Finalize::vUndefined,         // CN_LARGETRANSIENT
+  
   /* 59 */ &Finalize::vUndefined,         // CN_LINEITEM
   /* 60 */ &Finalize::vUndefined,         // CN_LOADCHUNK
   /* 61 */ &Loader::vFinalize,            // CN_LOADER
@@ -92,7 +95,8 @@ pFINALIZE *gpFinalize[]
   /* 63 */ &Finalize::vUndefined,         // CN_LOADMAP
   /* 64 */ &Finalize::vUndefined,         // CN_LOCK
   
-  /* 65 */ &Finalize::vUndefined,         // CN_MEDIUMHEAP
+  /*    */ &Finalize::vUndefined,         // CN_MEDIUMPERSISTENT
+  /*    */ &Finalize::vUndefined,         // CN_MEDIUMTRANSIENT
   
   /* 66 */ &Finalize::vUndefined,         // CN_NODE
   /* 67 */ &Finalize::vUndefined,         // CN_NODECURSOR
@@ -141,7 +145,8 @@ pFINALIZE *gpFinalize[]
   /*105 */ &Finalize::vUndefined,         // CN_SLAB
   /*106 */ &Finalize::vUndefined,         // CN_SLABALLOCATOR
   /*107 */ &Slots::vFinalize,             // CN_SLOTS
-  /*108 */ &Finalize::vUndefined,         // CN_SMALLHEAP
+  /*    */ &Finalize::vUndefined,         // SN_SMALLPERSISTENT
+  /*108 */ &Finalize::vUndefined,         // SN_SMALLTRANSIENT
   /*109 */ &Finalize::vUndefined,         // CN_SOCKET
   /*110 */ &Finalize::vUndefined,         // CN_STACK
   /*111 */ &Finalize::vUndefined,         // CN_STEPACCUM

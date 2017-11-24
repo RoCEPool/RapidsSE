@@ -302,16 +302,16 @@ void RapidsSE::vCreateObjects(void)
   gpAttachMap  = new AttachMap;
   
   // create the transient heaps
-  gpAttachMap->m_pTransientJumboHeap  = new Heap(CN_JUMBOHEAP,  C_SIZE_JUMBO_OBJECT);
-  gpAttachMap->m_pTransientLargeHeap  = new Heap(CN_LARGEHEAP,  C_SIZE_LARGE_OBJECT);
-  gpAttachMap->m_pTransientMediumHeap = new Heap(CN_MEDIUMHEAP, C_SIZE_MEDIUM_OBJECT);
-  gpAttachMap->m_pTransientSmallHeap  = new Heap(CN_SMALLHEAP,  C_SIZE_SMALL_OBJECT);
+  gpAttachMap->m_pTransientJumboHeap  = new Heap(CN_JUMBOTRANSIENT,  C_SIZE_JUMBO_OBJECT);
+  gpAttachMap->m_pTransientLargeHeap  = new Heap(CN_LARGETRANSIENT,  C_SIZE_LARGE_OBJECT);
+  gpAttachMap->m_pTransientMediumHeap = new Heap(CN_MEDIUMTRANSIENT, C_SIZE_MEDIUM_OBJECT);
+  gpAttachMap->m_pTransientSmallHeap  = new Heap(CN_SMALLTRANSIENT,  C_SIZE_SMALL_OBJECT);
   
   // craete the persistent heaps
-  gpAttachMap->m_pPersistentJumboHeap  = new Heap(CN_JUMBOHEAP,  C_SIZE_JUMBO_OBJECT);
-  gpAttachMap->m_pPersistentLargeHeap  = new Heap(CN_LARGEHEAP,  C_SIZE_LARGE_OBJECT);
-  gpAttachMap->m_pPersistentMediumHeap = new Heap(CN_MEDIUMHEAP, C_SIZE_MEDIUM_OBJECT);
-  gpAttachMap->m_pPersistentSmallHeap  = new Heap(CN_SMALLHEAP,  C_SIZE_SMALL_OBJECT);
+  gpAttachMap->m_pPersistentJumboHeap  = new Heap(CN_JUMBOPERSISTENT,  C_SIZE_JUMBO_OBJECT);
+  gpAttachMap->m_pPersistentLargeHeap  = new Heap(CN_LARGEPERSISTENT,  C_SIZE_LARGE_OBJECT);
+  gpAttachMap->m_pPersistentMediumHeap = new Heap(CN_MEDIUMPERSISTENT, C_SIZE_MEDIUM_OBJECT);
+  gpAttachMap->m_pPersistentSmallHeap  = new Heap(CN_SMALLPERSISTENT,  C_SIZE_SMALL_OBJECT);
   
   vInitJumboHeap();
 }

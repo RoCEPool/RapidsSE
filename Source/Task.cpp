@@ -526,8 +526,9 @@ void Task::vAddConstants(void)
   /* 28 */ vAddConstant("CN_INDEX"_Stz,        CN_INDEX);
   /*    */ //vAddConstant("CN_INDEXDEFN"_Stz,    CN_INDEXDEFN);
 
-  /* 29 */ vAddConstant("CN_JUMBOHEAP"_Stz,    CN_JUMBOHEAP);
-
+  /*    */ vAddConstant("CN_JUMBOPERSISTENT"_Stz, CN_JUMBOPERSISTENT);
+  /*    */ vAddConstant("CN_JUMBOTRANSIENT"_Stz,  CN_JUMBOTRANSIENT);
+  
   /* 31 */ vAddConstant("CN_KEYWRK"_Stz,       CN_KEYWRK);
   
   /* 32 */ vAddConstant("CN_LOADCHUNK"_Stz,    CN_LOADCHUNK);
@@ -536,7 +537,8 @@ void Task::vAddConstants(void)
   /* 35 */ vAddConstant("CN_LOADMAP"_Stz,      CN_LOADMAP);
   /* 36 */ vAddConstant("CN_LOCK"_Stz,         CN_LOCK);
   
-  /* 37 */ vAddConstant("CN_MEDIUMHEAP"_Stz,   CN_MEDIUMHEAP);
+  /*    */ vAddConstant("CN_MEDIUMPERSISTENT"_Stz, CN_MEDIUMPERSISTENT);
+  /*    */ vAddConstant("CN_MEDIUMTRANSIENT"_Stz,  CN_MEDIUMTRANSIENT);
   
   /* 38 */ vAddConstant("CN_NODE"_Stz,         CN_NODE);
   /* 39 */ vAddConstant("CN_NODECURSOR"_Stz,   CN_NODECURSOR);
@@ -572,7 +574,8 @@ void Task::vAddConstants(void)
   /* 63 */ vAddConstant("CN_SKIPLIST"_Stz,     CN_SKIPLIST);
   /* 64 */ vAddConstant("CN_SKIPNODE"_Stz,     CN_SKIPNODE);
   /*    */ vAddConstant("CN_SLOTS"_Stz,        CN_SLOTS);
-  /* 65 */ vAddConstant("CN_SMALLHEAP"_Stz,    CN_SMALLHEAP);
+  /*    */ vAddConstant("CN_SMALLPERSISTENT"_Stz, CN_SMALLPERSISTENT);
+  /* 65 */ vAddConstant("CN_SMALLTRANSIENT"_Stz, CN_SMALLTRANSIENT);
   /* 66 */ vAddConstant("CN_SOCKET"_Stz,       CN_SOCKET);
   /* 67 */ vAddConstant("CN_STACK"_Stz,        CN_STACK);
   /* 68 */ vAddConstant("CN_STEPACCUM"_Stz,    CN_STEPACCUM);

@@ -78,14 +78,17 @@ pDUMPFUN *gpDump[]
   /* 52 */ &Dump::vDummy,           // CN_IDXVEC
   /* 53 */ &Dump::vDummy,           // CN_INDEXLEVELS
 
-  /* 54 */ &Dump::vDummy,           // CN_JUMBOHEAP
-
+  /*    */ &Dump::vDummy,           // CN_JUMBOPERSISTENT
+  /* 54 */ &Dump::vDummy,           // CN_JUMBOTRANSIENT
+  
   /* 55 */ &Dump::vDummy,           // CN_KEY
   /* 56 */ &Dump::vDummy,           // CN_KEYVAL
   /* 57 */ &Dump::vDummy,           // CN_KEYVEC
   /* 58 */ &Dump::vInvalid,         // CN_KEYWRK
   
-  /*    */ &Dump::vDummy,           // CN_LARGEHEAP
+  /*    */ &Dump::vDummy,           // CN_LARGEPERSISTENT
+  /*    */ &Dump::vDummy,           // CN_LARGETRANSIENT
+  
   /* 59 */ &LoadChunk::vDump,       // CN_LINEITEM
   /* 60 */ &LoadChunk::vDump,       // CN_LOADCHUNK
   /* 61 */ &Loader::vDump,          // CN_LOADER
@@ -93,7 +96,8 @@ pDUMPFUN *gpDump[]
   /* 63 */ &LoadMap::vDump,         // CN_LOADMAP
   /* 64 */ &Dump::vInvalid,         // CN_LOCK
   
-  /* 65 */ &Heap::vDump,            // CN_MEDIUMHEAP
+  /*    */ &Heap::vDump,            // CN_MEDIUMPERSISTENT
+  /*    */ &Heap::vDump,            // CN_MEDIUMTRANSIENT
   
   /* 66 */ &Node::vDump,            // CN_NODE
   /* 67 */ &NodeCursor::vDump,      // CN_NODECURSOR
@@ -142,7 +146,8 @@ pDUMPFUN *gpDump[]
   /*105 */ &Dump::vUndefined,       // CN_SLAB
   /*106 */ &Dump::vUndefined,       // CN_SLABALLOCATOR
   /*107 */ &Slots::vDump,           // CN_SLOTS
-  /*108 */ &Heap::vDump,            // CN_SMALLHEAP
+  /*108 */ &Heap::vDump,            // SN_SMALLPERSISTENT
+  /*    */ &Heap::vDump,            // SN_SMALLTRANSIENT
   /*109 */ &Socket::vDump,          // CN_SOCKET
   /*110 */ &Stack::vDump,           // CN_STACK
   /*111 */ &Dump::vInvalid,         // CN_STEPACCUM
@@ -246,14 +251,17 @@ i8 giClassSize[]
   /* 52 */ sizeof(IdxVec),             // CN_IDXVEC
   /* 53 */ 0,                          // CN_INDEXLEVELS
   
-  /* 54 */ sizeof(Heap), // correct    // CN_JUMBOHEAP
+  /*    */ sizeof(Heap), // correct    // CN_JUMBOPERSISTENT
+  /* 54 */ sizeof(Heap), // correct    // CN_JUMBOTRANSIENT
   
   /* 55 */ 0,                          // CN_KEY
   /* 56 */ sizeof(KeyVal),             // CN_KEYVAL
   /* 57 */ 0,                          // CN_KEYVEC
   /* 58 */ sizeof(KeyWrk),             // CN_KEYWRK
   
-  /*    */ sizeof(Heap), // correct    // CN_LARGEHEAP
+  /*    */ sizeof(Heap), // correct    // CN_LARGEPERSISTENT
+  /*    */ sizeof(Heap), // correct    // CN_LARGETRANSIENT
+  
   /* 59 */ sizeof(LineItem),           // CN_LINEITEM
   /* 60 */ sizeof(LoadChunk),          // CN_LOADCHUNK
   /* 61 */ sizeof(Loader),             // CN_LOADER
@@ -261,7 +269,8 @@ i8 giClassSize[]
   /* 63 */ sizeof(LoadMap),            // CN_LOADMAP
   /* 64 */ sizeof(Lock),               // CN_LOCK
   
-  /* 65 */ sizeof(Heap), // correct    // CN_MEDIUMHEAP
+  /*    */ sizeof(Heap), // correct    // CN_MEDIUMPERSISTENT
+  /*    */ sizeof(Heap), // correct    // CN_MEDIUMTRANSIENT
   
   /* 66 */ sizeof(Node),               // CN_NODE
   /* 67 */ sizeof(NodeCursor),         // CN_NODECURSOR
@@ -310,7 +319,8 @@ i8 giClassSize[]
   /*105 */ 0,                          // CN_SLAB
   /*106 */ 0,                          // CN_SLABALLOCATOR
   /*107 */ sizeof(Slots),              // CN_SLOTS
-  /*108 */ sizeof(Heap), // correct    // CN_SMALLHEAP
+  /*108 */ sizeof(Heap), // correct    // SN_SMALLPERSISTENT
+  /*    */ sizeof(Heap), // correct    // SN_SMALLTRANSIENT
   /*109 */ sizeof(Socket),             // CN_SOCKET
   /*110 */ sizeof(Stack),              // CN_STACK
   /*111 */ sizeof(StepAccum),          // CN_STEPACCUM
@@ -414,14 +424,17 @@ eHT geWhichHeap[]
   /* 52 */ HT_TRANSIENT_SMALL,   // CN_IDXVEC
   /* 53 */ HT_TRANSIENT_MEDIUM,  // CN_INDEXLEVELS
 
-  /* 54 */ HT_INVALID, // CN_JUMBOHEAP
+  /*    */ HT_INVALID, // CN_JUMBOPERSISTENT
+  /* 54 */ HT_INVALID, // CN_JUMBOTRANSIENT
   
   /* 55 */ HT_INVALID, // CN_KEY
   /* 56 */ HT_TRANSIENT_SMALL,   // CN_KEYVAL
   /* 57 */ HT_TRANSIENT_MEDIUM,  // CN_KEYVEC
   /* 58 */ HT_INVALID, // CN_KEYWRK
 
-  /*  */   HT_INVALID, // CN_LARGEHEAP
+  /*  */   HT_INVALID, // CN_LARGEPERSISTENT
+  /*  */   HT_INVALID, // CN_LARGETRANSIENT
+  
   /* 59 */ HT_INVALID, // CN_LINEITEM
   /* 60 */ HT_TRANSIENT_LARGE,   // CN_LOADCHUNK
   /* 61 */ HT_TRANSIENT_MEDIUM,  // CN_LOADER
@@ -429,7 +442,8 @@ eHT geWhichHeap[]
   /* 63 */ HT_TRANSIENT_JUMBO,   // CN_LOADMAP
   /* 64 */ HT_INVALID, // CN_LOCK
   
-  /* 65 */ HT_INVALID, // CN_MEDIUMHEAP
+  /*    */ HT_INVALID, // CN_MEDIUMPERSISTENT
+  /*    */ HT_INVALID, // CN_MEDIUMTRANSIENT
   
   /* 66 */ HT_TRANSIENT_SMALL,   // CN_NODE
   /* 67 */ HT_TRANSIENT_SMALL,   // CN_NODECURSOR
@@ -478,7 +492,8 @@ eHT geWhichHeap[]
   /*105 */ HT_TRANSIENT_LARGE,   // CN_SLAB
   /*106 */ HT_TRANSIENT_SMALL,   // CN_SLABALLOCATOR
   /*107 */ HT_INVALID, // CN_SLOTS
-  /*108 */ HT_INVALID, // CN_SMALLHEAP
+  /*    */ HT_INVALID, // SN_SMALLPERSISTENT
+  /*108 */ HT_INVALID, // SN_SMALLTRANSIENT
   /*109 */ HT_TRANSIENT_SMALL,   // CN_SOCKET
   /*110 */ HT_TRANSIENT_LARGE,   // CN_STACK
   /*111 */ HT_INVALID, // CN_STEPACCUM

@@ -80,8 +80,8 @@ Heap::~Heap(void)
 /*----------------------------------------------------------------------------*/
 void Heap::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  ASSERT(eClass == CN_SMALLHEAP || eClass == CN_MEDIUMHEAP);
-  ASSERT(pObject->eClass() == CN_SMALLHEAP || pObject->eClass() == CN_MEDIUMHEAP);
+  ASSERT(eClass == CN_SMALLTRANSIENT || eClass == CN_MEDIUMTRANSIENT);
+  ASSERT(pObject->eClass() == CN_SMALLTRANSIENT || pObject->eClass() == CN_MEDIUMTRANSIENT);
   
   Heap* pHeap = reinterpret_cast<Heap*>(pObject);
   

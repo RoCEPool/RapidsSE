@@ -56,7 +56,7 @@ void BPA::vBufferDump(Buffer* pBuffer)
   (pDumpFun)(pBuffer->eClass(), pBuffer, aSingleTab());
   
 //  if (pBuffer->eClass() == CN_MEDIUMHEAP ||
-//      pBuffer->eClass() == CN_SMALLHEAP ) {
+//      pBuffer->eClass() == SN_SMALLTRANSIENT ) {
 //    vHeapDump(reinterpret_cast<Heap*>(pBuffer));
 //  }
 }
@@ -170,8 +170,8 @@ void BPA::vObjectList(void)
   vTrace("\n"_Stz);
   vTrace("%sObjects in Buffer Pool:\n"_Stz,aSingleTab());
   
-  Buffer* pMediumHeap = nullptr;
-  Buffer* pSmallHeap  = nullptr;
+  Buffer* pMediumTransient = nullptr;
+  Buffer* pSmallTransient  = nullptr;
   
   bn nBufferCount = gpBufferPool->m_nBuffers - 1;
   for (bn nBuffer = gpBufferPool->nBufferFirst();
@@ -180,20 +180,20 @@ void BPA::vObjectList(void)
     
     Buffer* pBuffer = gpBufferPool->pToBuffer(nBuffer);
     
-    if (CN_MEDIUMHEAP == pBuffer->eClass())
-      pMediumHeap = pBuffer;
+    if (CN_MEDIUMTRANSIENT == pBuffer->eClass())
+      pMediumTransient = pBuffer;
     
-    if (CN_SMALLHEAP == pBuffer->eClass())
-      pSmallHeap = pBuffer;
+    if (CN_SMALLTRANSIENT == pBuffer->eClass())
+      pSmallTransient = pBuffer;
     
     vBufferDump(pBuffer);
   }
   
-  if (pMediumHeap)
-    vHeapDump(reinterpret_cast<Heap*>(pMediumHeap));
+  if (pMediumTransient)
+    vHeapDump(reinterpret_cast<Heap*>(pMediumTransient));
   
-  if (pSmallHeap)
-    vHeapDump(reinterpret_cast<Heap*>(pSmallHeap));
+  if (pSmallTransient)
+    vHeapDump(reinterpret_cast<Heap*>(pSmallTransient));
   
   _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
 }
@@ -554,8 +554,8 @@ void BPA::vWordList(i8 iEpoch)
 {
   _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
   
-  Buffer* pMediumHeap = nullptr;
-  Buffer* pSmallHeap  = nullptr;
+  Buffer* pMediumTransient = nullptr;
+  Buffer* pSmallTransient  = nullptr;
   
   bn nBufferCount = gpBufferPool->m_nBuffers - 1;
   for (bn nBuffer = gpBufferPool->nBufferFirst();
@@ -564,18 +564,18 @@ void BPA::vWordList(i8 iEpoch)
     
     Buffer* pBuffer = gpBufferPool->pToBuffer(nBuffer);
     
-    if (CN_MEDIUMHEAP == pBuffer->eClass())
-    pMediumHeap = pBuffer;
+    if (CN_MEDIUMTRANSIENT == pBuffer->eClass())
+    pMediumTransient = pBuffer;
     
-    if (CN_SMALLHEAP == pBuffer->eClass())
-    pSmallHeap = pBuffer;
+    if (CN_SMALLTRANSIENT == pBuffer->eClass())
+    pSmallTransient = pBuffer;
   }
   
-  if (pMediumHeap)
-    vHeapDump(reinterpret_cast<Heap*>(pMediumHeap), iEpoch);
+  if (pMediumTransient)
+    vHeapDump(reinterpret_cast<Heap*>(pMediumTransient), iEpoch);
   
-  if (pSmallHeap)
-    vHeapDump(reinterpret_cast<Heap*>(pSmallHeap), iEpoch);
+  if (pSmallTransient)
+    vHeapDump(reinterpret_cast<Heap*>(pSmallTransient), iEpoch);
   
   _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
 }
