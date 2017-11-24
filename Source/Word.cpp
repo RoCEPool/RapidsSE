@@ -8,8 +8,6 @@
 
 #include "StorageEngine.h"
 
-extern Word*       gpWord;
-
 extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +58,7 @@ Word::Word(Stz* sName)
   m_eWordType     = WT_ROUTINE;
   m_eDistributed  = DT_NOPARTICIPANT;
   //m_pDic        = pDic;
-  m_pKind         = gpWord ? gpWord : this;
+  m_pKind         = gpAttachMap->m_pWord ? gpAttachMap->m_pWord : this;
   m_iEpoch        = gpAttachMap->m_iEpoch;
   m_pParticipant  = nullptr;
   m_bIndirect     = false;

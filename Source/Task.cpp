@@ -11,8 +11,6 @@
 extern AttachMap*      gpAttachMap;
 extern Arguments       gxArguments;
 
-extern Word*           gpWord;
-
 extern StepArray*      gpStepArray;
 extern ThreadList*     gpThreadList;
 extern TaskList*       gpTaskList;
@@ -901,7 +899,7 @@ void Task::vAddPrimitives(void)
     vTrace("[[mainThread]] Adding primitives...\n"_Stz);
   
   vAddPrimitive("word"_Stz,            &vWord,             false);
-  gpWord = gpAttachMap->m_xMainDic.pFindWord("word"_Stz);
+  gpAttachMap->m_pWord = gpAttachMap->m_xMainDic.pFindWord("word"_Stz);
 
   vAddPrimitives_AccessPath();
   vAddPrimitives_Accum();

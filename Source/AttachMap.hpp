@@ -54,6 +54,8 @@ namespace StorageEngine
     TxSet*        m_pTxSet;
     Grid*         m_pGrid;
     
+    Word*         m_pWord;
+    
     PartitionScheduler* m_pPartitionScheduler;
     ServerScheduler*    m_pServerScheduler;
   

@@ -8,7 +8,6 @@ Arguments     gxArguments;
 
 BufferPool*   gpBufferPool   = nullptr;
 AttachMap *   gpAttachMap    = nullptr;
-Word*         gpWord         = nullptr;
 
 StepArray*    gpStepArray    = nullptr;
 TaskList*     gpTaskList     = nullptr;
