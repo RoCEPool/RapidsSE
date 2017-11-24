@@ -39,6 +39,8 @@ Slab::Slab(void)
   
   m_pNextSlab = nullptr;
   
+  m_xWsp.vFill(0xEF,CN_SLAB);
+  
   _checkInitialisedSize_(sizeof(Slab));
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SLAB,_FOOTER_);
