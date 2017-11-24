@@ -391,7 +391,7 @@ eHT geWhichHeap[]
   /* 34 */ HT_SMALL,   // CN_DIR
 
   /* 35 */ HT_INVALID, // CN_ENTRY
-  /* 36 */ HT_LARGE_BUFFER,   // CN_ENTRYBUFFER
+  /* 36 */ HT_LARGE_ALT,   // CN_ENTRYBUFFER
   /* 37 */ HT_INVALID, // CN_ENTRYVEC
   
   /* 38 */ HT_SMALL,   // CN_FILE

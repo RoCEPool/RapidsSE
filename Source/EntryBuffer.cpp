@@ -59,7 +59,7 @@ void EntryBuffer::operator delete(void* pRowBufferAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 EntryBuffer::EntryBuffer(void)
-: Buffer(CN_ENTRYBUFFER)
+: Object(CN_ENTRYBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -84,7 +84,7 @@ EntryBuffer::EntryBuffer(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 EntryBuffer::EntryBuffer(i8 iDataBytes)
-: Buffer(CN_ENTRYBUFFER)
+: Object(CN_ENTRYBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -143,7 +143,7 @@ EntryBuffer::EntryBuffer(Index* pIndex, i8 nBufferLevel, i8 nPartitionNo)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 EntryBuffer::EntryBuffer(eCN eClassNo)
-: Buffer(eClassNo)
+: Object(eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
   
@@ -412,7 +412,7 @@ bool EntryBuffer::bInsertRow(Entry* pOldRow, Entry** ppRow)         //# critical
   
   //----------------------------------------------------------------------------
   // form the rowId
-  bn nBufferNo = m_nBufferNo;
+  bn nBufferNo = this->nBufferNo();
   i8 nRowNo = nEntries();
   Id rowId(*nBufferNo, nRowNo);
   
@@ -802,7 +802,7 @@ bool EntryBuffer::bAppendRow(i8 iTxId, Stz* pRow, i8 iLength)     //# critical
   
   //----------------------------------------------------------------------------
   // form the rowId
-  bn nBufferNo = m_nBufferNo;
+  bn nBufferNo = this->nBufferNo();
   i8 nRowNo = nEntries();
   Id rowId(*nBufferNo, nRowNo);
   
@@ -863,7 +863,7 @@ bool EntryBuffer::bInsertEntry(i8 iTxId, Stz* pRow, i8 iLength)     //# critical
   
   //----------------------------------------------------------------------------
   // form the rowId
-  bn nBufferNo = m_nBufferNo;
+  bn nBufferNo = this->nBufferNo();
   i8 nRowNo = nEntries();
   Id rowId(*nBufferNo, nRowNo);
   
@@ -917,7 +917,7 @@ bool EntryBuffer::bAppendEntry(i8 iTxId, Stz* pRow, i8 iLength)     //# critical
   
   //----------------------------------------------------------------------------
   // form the rowId
-  bn nBufferNo = m_nBufferNo;
+  bn nBufferNo = this->nBufferNo();
   i8 nRowNo = nEntries();
   Id rowId(*nBufferNo, nRowNo);
   
@@ -976,7 +976,7 @@ bool EntryBuffer::bAppendEntry(Entry* pRowEntry, Entry** ppEntry)     //# critic
   
   //----------------------------------------------------------------------------
   // form the rowId
-  bn nBufferNo = m_nBufferNo;
+  bn nBufferNo = this->nBufferNo();
   i8 nRowNo = nEntries();
   Id rowId(*nBufferNo, nRowNo);
   
@@ -2449,6 +2449,20 @@ u8 EntryBuffer::uOffsetBetween(Entry* pEntryA, Entry* pEntryB)
     uOffset = uEntryOffsetA - uEntryEndOffsetB;
   
   return uOffset;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* EntryBuffer::aFooter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER);
+  
+  return &m_xFooter;
 }
 
 /*============================================================================*/

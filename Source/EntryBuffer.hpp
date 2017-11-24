@@ -27,7 +27,7 @@ namespace DBobjects
   
   static const EntryBuffer* C_ENTRYBUFFER_MARKER = (EntryBuffer*)0xFFFFFFFFFFFFFFFF;
   
-  class EntryBuffer : public Buffer
+  class EntryBuffer : public Object
   {
   protected:
   
@@ -47,6 +47,9 @@ namespace DBobjects
     i8           m_nPartitionNo; // partition no this buffer belongs to
   
     WspFxd<C_SIZE_LARGE_OBJECT - C_1KB*4> m_xWsp;
+  
+    // must be last
+    Footer m_xFooter;
   
   public:
     void* operator new(size_t);
@@ -151,6 +154,7 @@ namespace DBobjects
     i8           iToOffsetAbs(Entry* pEntry);
     i8           iToRightOffsetAbs(Entry* pEntry, on nOffsetNo);
   
+    Footer* aFooter(void);
   };
   
   EntryBuffer* _pEntryBuffer(void* aAddr);
