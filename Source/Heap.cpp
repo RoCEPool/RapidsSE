@@ -132,10 +132,6 @@ Object* Heap::pAllocate(eCN eAllocClass)
       pObject = gpMediumHeap->pAllocObject(eAllocClass);
       return pObject;
 
-    case HT_LARGE_BUFFER:
-      pObject = gpBufferPool->pAllocBuffer();
-      return pObject;
-      
     case HT_LARGE_ALT:
       pObject = gpLargeHeap->pAllocObject(eAllocClass);
       return pObject;
@@ -186,15 +182,6 @@ void Heap::vValidateTables(void)
                  eClassNo,aCN[eClassNo]);
         //if (!iSize)
         // vWarn("Heap::vValidateTables: medium class %lld %lls has 0 size\n"_Stz,
-        //        eClassNo,aCN[eClassNo]);
-        break;
-        
-      case HT_LARGE_BUFFER:
-        if (iSize >= C_SIZE_LARGE_OBJECT)
-          vFatal("Heap::vValidateTables: large class %lld %s is too big\n"_Stz,
-                 eClassNo,aCN[eClassNo]);
-        //if (!iSize)
-        // vWarn("Heap::vValidateTables: large class %lld %lls has 0 size\n"_Stz,
         //        eClassNo,aCN[eClassNo]);
         break;
         
@@ -280,10 +267,6 @@ void Heap::vFree(Object* pObject)
       
     case HT_MEDIUM:
       gpMediumHeap->vFreeObject(pObject);
-      return;
-      
-    case HT_LARGE_BUFFER:
-      gpBufferPool->vFree((Buffer*)pObject);
       return;
       
     case HT_LARGE_ALT:
