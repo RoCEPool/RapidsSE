@@ -8,10 +8,6 @@ Arguments     gxArguments;
 
 BufferPool*   gpBufferPool   = nullptr;
 AttachMap *   gpAttachMap    = nullptr;
-Heap*         gpJumboHeap    = nullptr;
-Heap*         gpLargeHeap    = nullptr;
-Heap*         gpMediumHeap   = nullptr;
-Heap*         gpSmallHeap    = nullptr;
 Word*         gpWord         = nullptr;
 
 StepArray*    gpStepArray    = nullptr;
@@ -305,10 +301,10 @@ void RapidsSE::vCreateObjects(void)
   // create global objects
   gpAttachMap  = new AttachMap;
   
-  gpJumboHeap  = new Heap(CN_JUMBOHEAP,  C_SIZE_JUMBO_OBJECT);
-  gpLargeHeap  = new Heap(CN_LARGEHEAP,  C_SIZE_LARGE_OBJECT);
-  gpMediumHeap = new Heap(CN_MEDIUMHEAP, C_SIZE_MEDIUM_OBJECT);
-  gpSmallHeap  = new Heap(CN_SMALLHEAP,  C_SIZE_SMALL_OBJECT);
+  gpAttachMap->m_pJumboHeap  = new Heap(CN_JUMBOHEAP,  C_SIZE_JUMBO_OBJECT);
+  gpAttachMap->m_pLargeHeap  = new Heap(CN_LARGEHEAP,  C_SIZE_LARGE_OBJECT);
+  gpAttachMap->m_pMediumHeap = new Heap(CN_MEDIUMHEAP, C_SIZE_MEDIUM_OBJECT);
+  gpAttachMap->m_pSmallHeap  = new Heap(CN_SMALLHEAP,  C_SIZE_SMALL_OBJECT);
   
   vInitJumboHeap();
 }
@@ -361,7 +357,7 @@ void RapidsSE::vErrorHandler(Error* pError)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vInitJumboHeap(void)
 {
-  gpJumboHeap->vFixedHeap(true);
+  gpAttachMap->m_pJumboHeap->vFixedHeap(true);
   
   Buffer* pJumbo = nullptr;
   while ( (pJumbo = gpBufferPool->pNextJumbo(pJumbo)) ) {
@@ -369,7 +365,7 @@ void RapidsSE::vInitJumboHeap(void)
     pJumbo->vSetMagic();
     pJumbo->vSetClass(CN_FREECHUNK);
 
-    gpJumboHeap->vAddFree((FreeChunk*)pJumbo);
+    gpAttachMap->m_pJumboHeap->vAddFree((FreeChunk*)pJumbo);
   }
 }
 

@@ -8,9 +8,6 @@
 
 extern AttachMap*      gpAttachMap;
 extern BufferPool*     gpBufferPool;
-extern Heap*           gpMediumHeap;
-extern Heap*           gpSmallHeap;
-extern Heap*           gpJumboHeap;
 
 extern StepArray*      gpStepArray;
 extern ThreadList*     gpThreadList;
@@ -237,9 +234,9 @@ void Task::vSnapshot(MP_Task mpTask)
     iCountObjects[pBuffer->eClass()]++;
   }
   
-  gpSmallHeap->vAnalyse(iCountObjects);
-  gpMediumHeap->vAnalyse(iCountObjects);
-  gpJumboHeap->vAnalyse(iCountObjects);
+  gpAttachMap->m_pSmallHeap->vAnalyse(iCountObjects);
+  gpAttachMap->m_pMediumHeap->vAnalyse(iCountObjects);
+  gpAttachMap->m_pJumboHeap->vAnalyse(iCountObjects);
 
   for (i8 index = 0; index < CN_ENUMS; index++)
     mpTask->m_pDataStack->vPushInt(iCountObjects[index]);

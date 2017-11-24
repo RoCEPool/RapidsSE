@@ -5,9 +5,6 @@
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
-extern Heap* gpMediumHeap;
-extern Heap* gpSmallHeap;
-extern Heap* gpJumboHeap;
 
 extern Atomic gzDirOpenCount;
 extern Atomic gzFileOpenCount;
@@ -234,7 +231,7 @@ void BPA::vObjectSummary(void)
     vTrace("  %12s %-6lld \n"_Stz, aCN[eClass], iCountObjects[eClass]);
   }
   
-  gpSmallHeap->vAnalyse(iCountObjects);
+  gpAttachMap->m_pSmallHeap->vAnalyse(iCountObjects);
   
   vTrace("\n"_Stz);
   vTrace("  SmallHeap Object Summary:\n"_Stz);
@@ -247,7 +244,7 @@ void BPA::vObjectSummary(void)
     vTrace("  %12s %-6lld \n"_Stz, aCN[eClass], iCountObjects[eClass]);
   }
   
-  gpMediumHeap->vAnalyse(iCountObjects);
+  gpAttachMap->m_pMediumHeap->vAnalyse(iCountObjects);
   
   vTrace("\n"_Stz);
   vTrace("  MediumHeap Object Summary:\n"_Stz);
@@ -263,7 +260,7 @@ void BPA::vObjectSummary(void)
   for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++)
     iCountObjects[i_Index] = 0;
   
-//  gpJumboHeap->vAnalyse(iCountObjects);
+//  gpAttachMap->m_pJumboHeap->vAnalyse(iCountObjects);
 //  
 //  vTrace("\n"_Stz);
 //  vTrace("  JumboHeap Object s:\n"_Stz);
@@ -302,7 +299,7 @@ void BPA::vObjectSnapshot(i8* pCountObjects)
     pCountObjects[pBuffer->eClass()]++;
   }
   
-  gpSmallHeap->vAnalyse(iCountObjects);
+  gpAttachMap->m_pSmallHeap->vAnalyse(iCountObjects);
   for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
     eCN eClass = (eCN)i_Index;
     
@@ -312,7 +309,7 @@ void BPA::vObjectSnapshot(i8* pCountObjects)
     pCountObjects[eClass] += iCountObjects[eClass];
   }
   
-  gpMediumHeap->vAnalyse(iCountObjects);
+  gpAttachMap->m_pMediumHeap->vAnalyse(iCountObjects);
   for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
     eCN eClass = (eCN)i_Index;
     
@@ -428,21 +425,21 @@ void BPA::vRegionSummary()
   
   vTrace("   SmallHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagSmall.aChar(),
-         gpSmallHeap->iBufferCount(),
-         gpSmallHeap->iAllocCount(),
-         gpSmallHeap->iFreeCount());
+         gpAttachMap->m_pSmallHeap->iBufferCount(),
+         gpAttachMap->m_pSmallHeap->iAllocCount(),
+         gpAttachMap->m_pSmallHeap->iFreeCount());
   
   vTrace("  MediumHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagMedium.aChar(),
-         gpMediumHeap->iBufferCount(),
-         gpMediumHeap->iAllocCount(),
-         gpMediumHeap->iFreeCount());
+         gpAttachMap->m_pMediumHeap->iBufferCount(),
+         gpAttachMap->m_pMediumHeap->iAllocCount(),
+         gpAttachMap->m_pMediumHeap->iFreeCount());
   
   vTrace("   JumboHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagJumbo.aChar(),
-         gpJumboHeap->iBufferCount(),
-         gpJumboHeap->iAllocCount(),
-         gpJumboHeap->iFreeCount());
+         gpAttachMap->m_pJumboHeap->iBufferCount(),
+         gpAttachMap->m_pJumboHeap->iAllocCount(),
+         gpAttachMap->m_pJumboHeap->iFreeCount());
   
   _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
 }

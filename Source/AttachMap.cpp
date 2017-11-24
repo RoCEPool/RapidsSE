@@ -6,11 +6,6 @@
 
 extern BufferPool*  gpBufferPool;
 
-extern Heap*        gpJumboHeap;
-extern Heap*        gpMediumHeap;
-extern Heap*        gpSmallHeap;
-extern Heap*        gpLargeHeap;
-
 extern TxSet*        gpTxSet;
 
 extern TaskList*    gpTaskList;
@@ -72,10 +67,6 @@ void AttachMap::vGetGlobals(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
 
-  gpJumboHeap   = m_pJumboHeap;
-  gpMediumHeap  = m_pMediumHeap;
-  gpLargeHeap   = m_pLargeHeap;
-  gpSmallHeap   = m_pSmallHeap;
   gpTxSet        = m_pTxSet;
   gpTaskList     = m_pTaskList;
   gpPlanList     = m_pPlanList;
@@ -105,10 +96,11 @@ void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize, i8 iJumboSize)
   
   m_pBufferPool = gpBufferPool;
   
-  m_pJumboHeap  = gpJumboHeap;
-  m_pMediumHeap = gpMediumHeap;
-  m_pLargeHeap  = gpLargeHeap;
-  m_pSmallHeap  = gpSmallHeap;
+  ASSERT(m_pJumboHeap);
+  ASSERT(m_pMediumHeap);
+  ASSERT(m_pLargeHeap);
+  ASSERT(m_pSmallHeap);
+  
   m_pTxSet      = gpTxSet;
   
   ASSERT(m_pGrid );

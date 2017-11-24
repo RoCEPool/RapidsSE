@@ -2,18 +2,16 @@
 /* Heap.cpp -- Heap Allocator                                                 */
 /*============================================================================*/
 
+#include "StorageEngine.h"
 #include "Pool.h"
 
+extern AttachMap*  gpAttachMap;
 extern BufferPool* gpBufferPool;
 
 extern i8  giClassSize[];
 extern eHT geWhichHeap[];
 
 extern BufferPool* gpBufferPool;
-extern Heap*       gpSmallHeap;
-extern Heap*       gpMediumHeap;
-extern Heap*       gpLargeHeap;
-extern Heap*       gpJumboHeap;
 
 bool gbAddrAllocated = false;
 
@@ -125,19 +123,19 @@ Object* Heap::pAllocate(eCN eAllocClass)
              eAllocClass,aCN[eAllocClass]);
     
     case HT_SMALL:
-      pObject = gpSmallHeap->pAllocObject(eAllocClass);
+      pObject = gpAttachMap->m_pSmallHeap->pAllocObject(eAllocClass);
       return pObject;
       
     case HT_MEDIUM:
-      pObject = gpMediumHeap->pAllocObject(eAllocClass);
+      pObject = gpAttachMap->m_pMediumHeap->pAllocObject(eAllocClass);
       return pObject;
 
     case HT_LARGE:
-      pObject = gpLargeHeap->pAllocObject(eAllocClass);
+      pObject = gpAttachMap->m_pLargeHeap->pAllocObject(eAllocClass);
       return pObject;
       
     case HT_JUMBO:
-      pObject = gpJumboHeap->pAllocObject(eAllocClass);
+      pObject = gpAttachMap->m_pJumboHeap->pAllocObject(eAllocClass);
       return pObject;
       
     default:
@@ -216,7 +214,7 @@ void Heap::vValidateTables(void)
 void Heap::vSearchFree(void)
 {
   if (gbAddrAllocated) {
-    for (FreeChunk* pTestChunk = gpMediumHeap->m_pFreeHead;
+    for (FreeChunk* pTestChunk = gpAttachMap->m_pMediumHeap->m_pFreeHead;
          pTestChunk;
          pTestChunk = pTestChunk->pNextFree())
       if ((void*)pTestChunk >= (void*)0x204828fc0038 &&
@@ -262,19 +260,19 @@ void Heap::vFree(Object* pObject)
              eAllocClass,aCN[eAllocClass]);
       
     case HT_SMALL:
-      gpSmallHeap->vFreeObject(pObject);
+      gpAttachMap->m_pSmallHeap->vFreeObject(pObject);
       return;
       
     case HT_MEDIUM:
-      gpMediumHeap->vFreeObject(pObject);
+      gpAttachMap->m_pMediumHeap->vFreeObject(pObject);
       return;
       
     case HT_LARGE:
-      gpLargeHeap->vFreeObject(pObject);
+      gpAttachMap->m_pLargeHeap->vFreeObject(pObject);
       return;
       
     case HT_JUMBO:
-      gpJumboHeap->vFreeObject(pObject);
+      gpAttachMap->m_pJumboHeap->vFreeObject(pObject);
       return;
       
     default:
