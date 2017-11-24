@@ -452,7 +452,7 @@ eHT geWhichHeap[]
   /* 82 */ HT_MEDIUM,  // CN_PTNCOLVEC
 
   /* 83 */ HT_SMALL,   // CN_QUEUE
-  /* 84 */ HT_LARGE_BUFFER,   // CN_QUEUEBUFFER
+  /* 84 */ HT_INVALID,   // CN_QUEUEBUFFER
   
   /* 85 */ HT_SMALL,   // CN_RBCURSOR
   /* 86 */ HT_LARGE_ALT,   // CN_REGFRAME

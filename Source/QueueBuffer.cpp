@@ -10,19 +10,19 @@
 void* QueueBuffer::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  Buffer* pBuffer = (Buffer*)Heap::pAllocate(CN_QUEUEBUFFER);
+  QueueBuffer* pQueueBuffer = (QueueBuffer*)gpBufferPool->pAllocBuffer();
   
-  return pPoolCheck<void*>(pBuffer);
+  return pPoolCheck<void*>(pQueueBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void QueueBuffer::operator delete(void* pBufferAddress)
+void QueueBuffer::operator delete(void* pQueueBufferAddress)
 {
-  Buffer* pBuffer = static_cast<Buffer*>(pBufferAddress);
+  QueueBuffer* pQueueBuffer = static_cast<QueueBuffer*>(pQueueBufferAddress);
   
-  Heap::vFree(pBuffer);
+  gpBufferPool->vFree((Buffer*)pQueueBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
