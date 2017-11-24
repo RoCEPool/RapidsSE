@@ -10,7 +10,7 @@ namespace Pool
     /*  0 */ HT_INVALID=0,
     /*  1 */ HT_SMALL,
     /*  2 */ HT_MEDIUM,
-    /*  3 */ HT_LARGE_ALT,
+    /*  3 */ HT_LARGE,
     /*  4 */ HT_JUMBO,
     /*  5 */ HT_ENUMS
   };
