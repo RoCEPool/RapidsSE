@@ -73,8 +73,15 @@ void BPA::vHeapDump(Heap* pHeap)
   vTrace("\n"_Stz);
   vTrace("%sObjects in %s Heap:\n"_Stz,
          aSingleTab(),
-         pHeap->iObjectSize() == C_SIZE_SMALL_OBJECT ? "Small"_Stz : "Medium"_Stz);
-  
+         pHeap->eClass() == CN_SMALLTRANSIENT ? "Small Transient"_Stz :
+         pHeap->eClass() == CN_MEDIUMTRANSIENT ? "Medium Transient"_Stz :
+         pHeap->eClass() == CN_LARGETRANSIENT ? "Large Transient"_Stz :
+         pHeap->eClass() == CN_JUMBOTRANSIENT ? "Jumbo Transient"_Stz :
+         pHeap->eClass() == CN_SMALLPERSISTENT ? "Small Persistent"_Stz :
+         pHeap->eClass() == CN_MEDIUMPERSISTENT ? "Medium Persistent"_Stz :
+         pHeap->eClass() == CN_LARGEPERSISTENT ? "Large Persistent"_Stz :
+         pHeap->eClass() == CN_JUMBOPERSISTENT ? "Jumbo Persistent"_Stz : "unknown"_Stz);
+         
   pHeap->vGrabLock();
   
   for (pHeapBuffer = pHeap->pFirstBuffer();
@@ -170,8 +177,15 @@ void BPA::vObjectList(void)
   vTrace("\n"_Stz);
   vTrace("%sObjects in Buffer Pool:\n"_Stz,aSingleTab());
   
-  Buffer* pMediumTransient = nullptr;
   Buffer* pSmallTransient  = nullptr;
+  Buffer* pMediumTransient = nullptr;
+  Buffer* pLargeTransient  = nullptr;
+  Buffer* pJumboTransient  = nullptr;
+  
+  Buffer* pSmallPersistent  = nullptr;
+  Buffer* pMediumPersistent = nullptr;
+  Buffer* pLargePersistent  = nullptr;
+  Buffer* pJumboPersistent  = nullptr;
   
   bn nBufferCount = gpBufferPool->m_nBuffers - 1;
   for (bn nBuffer = gpBufferPool->nBufferFirst();
@@ -180,20 +194,56 @@ void BPA::vObjectList(void)
     
     Buffer* pBuffer = gpBufferPool->pToBuffer(nBuffer);
     
+    if (CN_SMALLTRANSIENT == pBuffer->eClass())
+      pSmallTransient = pBuffer;
+    
     if (CN_MEDIUMTRANSIENT == pBuffer->eClass())
       pMediumTransient = pBuffer;
     
-    if (CN_SMALLTRANSIENT == pBuffer->eClass())
-      pSmallTransient = pBuffer;
+    if (CN_LARGETRANSIENT == pBuffer->eClass())
+      pLargeTransient = pBuffer;
+    
+    if (CN_JUMBOTRANSIENT == pBuffer->eClass())
+      pJumboTransient = pBuffer;
+    
+    if (CN_SMALLPERSISTENT == pBuffer->eClass())
+      pSmallPersistent = pBuffer;
+    
+    if (CN_MEDIUMPERSISTENT  == pBuffer->eClass())
+      pMediumPersistent = pBuffer;
+    
+    if (CN_LARGEPERSISTENT  == pBuffer->eClass())
+      pLargePersistent = pBuffer;
+    
+    if (CN_JUMBOPERSISTENT  == pBuffer->eClass())
+      pJumboPersistent = pBuffer;
     
     vBufferDump(pBuffer);
   }
   
+  if (pSmallTransient)
+    vHeapDump(reinterpret_cast<Heap*>(pSmallTransient));
+  
   if (pMediumTransient)
     vHeapDump(reinterpret_cast<Heap*>(pMediumTransient));
   
-  if (pSmallTransient)
-    vHeapDump(reinterpret_cast<Heap*>(pSmallTransient));
+  if (pLargeTransient)
+    vHeapDump(reinterpret_cast<Heap*>(pLargeTransient));
+  
+  if (pJumboTransient)
+    vHeapDump(reinterpret_cast<Heap*>(pJumboTransient));
+  
+  if (pSmallPersistent)
+    vHeapDump(reinterpret_cast<Heap*>(pSmallPersistent));
+  
+  if (pMediumTransient)
+    vHeapDump(reinterpret_cast<Heap*>(pMediumPersistent));
+  
+  if (pLargePersistent)
+    vHeapDump(reinterpret_cast<Heap*>(pLargePersistent));
+  
+  if (pJumboPersistent)
+    vHeapDump(reinterpret_cast<Heap*>(pJumboPersistent));
   
   _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
 }

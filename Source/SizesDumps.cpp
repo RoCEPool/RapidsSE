@@ -78,16 +78,16 @@ pDUMPFUN *gpDump[]
   /* 52 */ &Dump::vDummy,           // CN_IDXVEC
   /* 53 */ &Dump::vDummy,           // CN_INDEXLEVELS
 
-  /*    */ &Dump::vDummy,           // CN_JUMBOPERSISTENT
-  /* 54 */ &Dump::vDummy,           // CN_JUMBOTRANSIENT
+  /*    */ &Heap::vDump,            // CN_JUMBOPERSISTENT
+  /* 54 */ &Heap::vDump,            // CN_JUMBOTRANSIENT
   
   /* 55 */ &Dump::vDummy,           // CN_KEY
   /* 56 */ &Dump::vDummy,           // CN_KEYVAL
   /* 57 */ &Dump::vDummy,           // CN_KEYVEC
   /* 58 */ &Dump::vInvalid,         // CN_KEYWRK
   
-  /*    */ &Dump::vDummy,           // CN_LARGEPERSISTENT
-  /*    */ &Dump::vDummy,           // CN_LARGETRANSIENT
+  /*    */ &Heap::vDump,            // CN_LARGEPERSISTENT
+  /*    */ &Heap::vDump,            // CN_LARGETRANSIENT
   
   /* 59 */ &LoadChunk::vDump,       // CN_LINEITEM
   /* 60 */ &LoadChunk::vDump,       // CN_LOADCHUNK
