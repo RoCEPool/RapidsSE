@@ -103,6 +103,7 @@ void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize, i8 iJumboSize)
   
   m_pTxSet      = gpTxSet;
   
+  ASSERT( ! m_pTraceFile || m_pTraceFile->eClass() == CN_FILE);
   ASSERT(m_pGrid );
   ASSERT(m_pPartitionScheduler);
   ASSERT(m_pServerScheduler);

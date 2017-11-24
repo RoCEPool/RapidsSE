@@ -13,8 +13,6 @@ StepArray*    gpStepArray    = nullptr;
 TxSet*        gpTxSet        = nullptr;
 SEitfList*    gpSEitfList    = nullptr;
 
-File*         gpTraceFile    = nullptr;
-
 NP_Task       gnpBootTask    = nullptr;
 
 void*         mpRegion       = nullptr;
@@ -462,7 +460,7 @@ void RapidsSE::vSystemInit(void)
   
   // get the trace file
   Word* pTraceFileWord = gpAttachMap->m_xMainDic.pFindWord("trace_file"_Stz);
-  gpTraceFile = reinterpret_cast<File*>(pTraceFileWord->aBodyArea());
+  gpAttachMap->m_pTraceFile = reinterpret_cast<File*>(pTraceFileWord->aBodyArea());
     
   if (gpAttachMap->m_bVerbose)
     vTrace("Shm region initialised at: %s\n"_Stz,gpAttachMap->m_sUTC.aChar());
