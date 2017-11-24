@@ -8,7 +8,6 @@
 
 #include "StorageEngine.h"
 
-extern Dic*        gpMainDic;
 extern Word*       gpWord;
 
 extern AttachMap* gpAttachMap;
@@ -111,7 +110,7 @@ Word::~Word(void)
 //
 //  char* aAddress = pAdd<char*>(pFirstCell(),m_iDataBytes);
 //  
-//  //gpMainDic->vExtendLinear(iBytes);
+//  //gpAttachMap->m_xMainDic.vExtendLinear(iBytes);
 //  
 //  m_iDataBytes += iBytes;
 //
@@ -244,7 +243,7 @@ void Word::vContentDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  Word* pStepWord = gpMainDic->pFindStep(m_pEntryStep);
+  Word* pStepWord = gpAttachMap->m_xMainDic.pFindStep(m_pEntryStep);
   
   vTrace("Word %p: %s %s Kind %s Indirect %d Immediate %d DataBytes %lld "_Stz
          "Step %p %s ..Data.. %p\n"_Stz,
@@ -436,7 +435,7 @@ void Word::vEncode(Stz* aWord)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  Word* pCalledWord = gpMainDic->pFindWord(aWord);
+  Word* pCalledWord = gpAttachMap->m_xMainDic.pFindWord(aWord);
   ASSERT(pCalledWord);
   
   

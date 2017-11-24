@@ -4,8 +4,6 @@
 
 #include "StorageEngine.h"
 
-extern Dic*            gpMainDic;
-
 extern StepArray*      gpStepArray;
 extern ThreadList*     gpThreadList;
 extern TaskList*       gpTaskList;

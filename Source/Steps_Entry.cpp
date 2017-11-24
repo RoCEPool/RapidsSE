@@ -7,8 +7,6 @@
 #include "SePrompt.hpp"
 
 extern BufferPool*     gpBufferPool;
-extern Dic*            gpMainDic;
-
 extern StepArray*      gpStepArray;
 extern ThreadList*     gpThreadList;
 extern TaskList*       gpTaskList;

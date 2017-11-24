@@ -6,8 +6,7 @@
 //#include "Tasks.h"
 #include "SePrompt.hpp"
 
-extern Dic*            gpMainDic;
-
+extern AttachMap*      gpAttachMap;
 extern StepArray*      gpStepArray;
 extern ThreadList*     gpThreadList;
 extern TaskList*       gpTaskList;
@@ -106,7 +105,7 @@ ENTRY("vCommonSlash"_Stz);
     }
     else {
       // create a common dictionary      
-      pWordDic = new(gpMainDic) Word(sDicName);
+      pWordDic = new(&gpAttachMap->m_xMainDic) Word(sDicName);
       pWordDic->vWordType(WT_OBJECT);
       pWordDic->pAllot(sizeof(Dic));
       

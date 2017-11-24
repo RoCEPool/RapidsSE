@@ -9,8 +9,6 @@
 extern AttachMap*      gpAttachMap;
 extern Arguments       gxArguments;
 
-extern Dic*            gpMainDic;
-
 extern StepArray*      gpStepArray;
 extern ThreadList*     gpThreadList;
 extern TaskList*       gpTaskList;

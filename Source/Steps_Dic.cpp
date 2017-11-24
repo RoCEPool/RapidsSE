@@ -6,8 +6,7 @@
 //#include "Tasks.h"
 #include "SePrompt.hpp"
 
-extern Dic*            gpMainDic;
-
+extern AttachMap*      gpAttachMap;
 extern StepArray*      gpStepArray;
 extern ThreadList*     gpThreadList;
 extern TaskList*       gpTaskList;
@@ -171,7 +170,7 @@ void Task::vDicMain(MP_Task mpTask)
 {
 ENTRY("vDicMain"_Stz);
   
-  mpTask->m_pDataStack->vPushObject(gpMainDic);
+  mpTask->m_pDataStack->vPushObject(&gpAttachMap->m_xMainDic);
   
   EXIT();
 }

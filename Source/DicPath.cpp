@@ -3,8 +3,9 @@
 /*============================================================================*/
 
 #include "Dictionaries.h"
+#include "StorageEngine.h"
 
-extern Dic* gpMainDic;
+extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -166,7 +167,7 @@ Word* DicPath::pFindWord(Stz* aName)
       return pWord;
   }
   
-  if ( (pWord = gpMainDic->pFindWord((Stz*)aName)) )
+  if ( (pWord = gpAttachMap->m_xMainDic.pFindWord((Stz*)aName)) )
     return pWord;
   
   return nullptr;
@@ -203,7 +204,7 @@ Word* DicPath::pFindStep(TaskStep pStep)
       if (WT_PRIMITIVE == pWord->eWordType() && pStep == pWord->pEntryStep())
         return pWord;
 
-  for (pWord = gpMainDic->pLastWord(); pWord; pWord = pWord->pPrevWord())
+  for (pWord = gpAttachMap->m_xMainDic.pLastWord(); pWord; pWord = pWord->pPrevWord())
     if (WT_PRIMITIVE == pWord->eWordType() && pStep == pWord->pEntryStep())
       return pWord;
   
@@ -221,7 +222,7 @@ bool DicPath::bForget(StrVal& sName)
     if (m_pDic[i_Dic]->bForget(sName))
       return true;
 
-  if (gpMainDic->bForget(sName))
+  if (gpAttachMap->m_xMainDic.bForget(sName))
     return true;
   
   return false;
@@ -241,7 +242,7 @@ Word* DicPath::pLocate(Cell* pCell)
       if (pWord->bHasCell(pCell))
         return pWord;
 
-  for (pWord = gpMainDic->pLastWord(); pWord; pWord = pWord->pPrevWord())
+  for (pWord = gpAttachMap->m_xMainDic.pLastWord(); pWord; pWord = pWord->pPrevWord())
     if (pWord->bHasCell(pCell))
       return pWord;
   

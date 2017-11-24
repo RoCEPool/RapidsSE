@@ -12,7 +12,6 @@ Heap*         gpJumboHeap    = nullptr;
 Heap*         gpLargeHeap    = nullptr;
 Heap*         gpMediumHeap   = nullptr;
 Heap*         gpSmallHeap    = nullptr;
-Dic*          gpMainDic      = nullptr;
 Word*         gpWord         = nullptr;
 
 StepArray*    gpStepArray    = nullptr;
@@ -311,8 +310,6 @@ void RapidsSE::vCreateObjects(void)
   gpMediumHeap = new Heap(CN_MEDIUMHEAP, C_SIZE_MEDIUM_OBJECT);
   gpSmallHeap  = new Heap(CN_SMALLHEAP,  C_SIZE_SMALL_OBJECT);
   
-  gpMainDic    = &gpAttachMap->m_xMainDic;
-  
   vInitJumboHeap();
 }
 
@@ -428,7 +425,7 @@ void RapidsSE::vSystemInit(void)
   if (gxArguments.m_bVerbose)
     vInfo("\n*\n* System Init\n*\n"_Stz);
 
-  ASSERT( ! gpMainDic->bHasWords() );
+  ASSERT( ! gpAttachMap->m_xMainDic.bHasWords() );
   
   // init the tls keys
   TlsKeys::vInit();
@@ -464,7 +461,7 @@ void RapidsSE::vSystemInit(void)
   gzPlanId = gpAttachMap->m_pGrid->iThisNode() << 48;
   
   // get the trace file
-  Word* pTraceFileWord = gpMainDic->pFindWord("trace_file"_Stz);
+  Word* pTraceFileWord = gpAttachMap->m_xMainDic.pFindWord("trace_file"_Stz);
   gpTraceFile = reinterpret_cast<File*>(pTraceFileWord->aBodyArea());
     
   if (gpAttachMap->m_bVerbose)

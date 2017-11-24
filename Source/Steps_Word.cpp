@@ -6,7 +6,7 @@
 //#include "Tasks.h"
 #include "SePrompt.hpp"
 
-extern Dic*            gpMainDic;
+extern AttachMap*      gpAttachMap;
 
 extern StepArray*      gpStepArray;
 extern ThreadList*     gpThreadList;
@@ -154,7 +154,7 @@ void Task::vColon(MP_Task mpTask)
   if (mpTask->m_xPathStack.iCount())
     pDic = mpTask->m_xPathStack.pTop();
   else
-    pDic = gpMainDic;
+    pDic = &gpAttachMap->m_xMainDic;
   
   //vTrace(": %s\n"_Stz,sName.aChar());
   
@@ -218,7 +218,7 @@ ENTRY("vCreate"_Stz);
   if (mpTask->m_xPathStack.iCount())
     pDic = mpTask->m_xPathStack.pTop();
   else
-    pDic = gpMainDic;
+    pDic = &gpAttachMap->m_xMainDic;
   
   //vTrace(": %s\n"_Stz,mpTask->m_pTokeniser->sToken().aChar());
 
@@ -244,7 +244,7 @@ ENTRY("vCreateFrom"_Stz);
   if (mpTask->m_xPathStack.iCount())
     pDic = mpTask->m_xPathStack.pTop();
   else
-    pDic = gpMainDic;
+    pDic = &gpAttachMap->m_xMainDic;
   
   //vTrace(": %s\n"_Stz,sName.aChar());
   Word* pNewWord = new(pDic) Word(sName);
@@ -265,7 +265,7 @@ void Task::vCreateFromInMain(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(sName) )
     THROW_INVALID_DSTACK(">create"_Stz);
   
-  Dic* pDic = gpMainDic;
+  Dic* pDic = &gpAttachMap->m_xMainDic;
   
   //vTrace(": %s\n"_Stz,sName.aChar());
   Word* pNewWord = new(pDic) Word(sName);
@@ -805,7 +805,7 @@ void Task::vSemicolon(MP_Task mpTask)
     if (mpTask->m_xPathStack.iCount())
       pDic = mpTask->m_xPathStack.pTop();
     else
-      pDic = gpMainDic;
+      pDic = &gpAttachMap->m_xMainDic;
     Word* pWordTilde = new(pDic) Word(sTildeName);
     // ** do not set as current word **
     

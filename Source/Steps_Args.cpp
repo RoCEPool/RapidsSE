@@ -6,13 +6,9 @@
 #include "SePrompt.hpp"
 
 extern Arguments       gxArguments;
-
-extern Dic*            gpMainDic;
-
 extern StepArray*      gpStepArray;
 extern ThreadList*     gpThreadList;
 extern TaskList*       gpTaskList;
-
 extern NP_Task         gnpBootTask;
 extern Lock            gxDdlLock;
 extern Lock            gxDicLock;

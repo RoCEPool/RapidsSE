@@ -5,8 +5,6 @@
 #include "StorageEngine.h"
 #include "SePrompt.hpp"
 
-extern Dic*            gpMainDic;
-
 extern StepArray*      gpStepArray;
 extern ThreadList*     gpThreadList;
 extern TaskList*       gpTaskList;

@@ -5,7 +5,6 @@
 #include "Interface.h"
 #include "StorageEngine.h"
 
-extern Dic*       gpMainDic;
 extern SEitfList* gpSEitfList;
 extern AttachMap* gpAttachMap;
 extern TxSet*     gpTxSet;
@@ -394,7 +393,7 @@ void SEitf::vInit(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   // request queue
-  Word* pReqQueWord = gpMainDic->pFindWord("requestQueue"_Stz);
+  Word* pReqQueWord = gpAttachMap->m_xMainDic.pFindWord("requestQueue"_Stz);
   ASSERT(pReqQueWord);
   m_pRequestQueue = reinterpret_cast<Queue*>(pReqQueWord->aBodyArea());
   
@@ -404,7 +403,7 @@ void SEitf::vInit(void)
   // set up initial default path
   
   // /tenants
-  Word* pTenants = gpMainDic->pFindWord("tenants"_Stz);
+  Word* pTenants = gpAttachMap->m_xMainDic.pFindWord("tenants"_Stz);
   ASSERT(pTenants);
   Cell* pCell = pTenants->pFirstCell();
   m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));

@@ -12,8 +12,6 @@ extern Heap*           gpMediumHeap;
 extern Heap*           gpSmallHeap;
 extern Heap*           gpJumboHeap;
 
-extern Dic*            gpMainDic;
-
 extern StepArray*      gpStepArray;
 extern ThreadList*     gpThreadList;
 extern TaskList*       gpTaskList;

@@ -7,10 +7,7 @@
 #include "SePrompt.hpp"
 
 extern Arguments       gxArguments;
-
 extern AttachMap*      gpAttachMap;
-extern Dic*            gpMainDic;
-
 extern StepArray*      gpStepArray;
 extern ThreadList*     gpThreadList;
 extern TaskList*       gpTaskList;

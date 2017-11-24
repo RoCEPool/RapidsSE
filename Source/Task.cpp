@@ -11,7 +11,6 @@
 extern AttachMap*      gpAttachMap;
 extern Arguments       gxArguments;
 
-extern Dic*            gpMainDic;
 extern Word*           gpWord;
 
 extern StepArray*      gpStepArray;
@@ -320,7 +319,7 @@ void Task::vAddConstant(Stz* aName, i8 iVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
-  Word* pNewWord = new(gpMainDic) Word(aName);
+  Word* pNewWord = new(&gpAttachMap->m_xMainDic) Word(aName);
   
   IntVal xIntVal;
   xIntVal = iVal;
@@ -336,7 +335,7 @@ void Task::vAddConstant(Stz* aName, Stz* aValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Word* pNewWord = new(gpMainDic) Word(aName);
+  Word* pNewWord = new(&gpAttachMap->m_xMainDic) Word(aName);
   
   ValWrk xWspStr;
   xWspStr = aValue;
@@ -352,7 +351,7 @@ void Task::vAddPrimitive(Stz* aName, TaskStep pStep, bool bImmediate)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
     
-  Word* pNewWord = new(gpMainDic) Word(aName);
+  Word* pNewWord = new(&gpAttachMap->m_xMainDic) Word(aName);
   
   m_pCurrentWord = pNewWord;
   
@@ -899,7 +898,7 @@ void Task::vAddPrimitives(void)
     vTrace("[[mainThread]] Adding primitives...\n"_Stz);
   
   vAddPrimitive("word"_Stz,            &vWord,             false);
-  gpWord = gpMainDic->pFindWord("word"_Stz);
+  gpWord = gpAttachMap->m_xMainDic.pFindWord("word"_Stz);
 
   vAddPrimitives_AccessPath();
   vAddPrimitives_Accum();
@@ -1242,7 +1241,7 @@ Word* Task::pCompileColon(StrVal& sDefinition)
   if (m_xPathStack.iCount())
     pDic = m_xPathStack.pTop();
   else
-    pDic = gpMainDic;
+    pDic = &gpAttachMap->m_xMainDic;
 
   pNewWord = new(pDic) Word(m_pTokeniser->sToken());
   
@@ -1658,7 +1657,7 @@ void Task::vSeedDicCompileSen(void)
   if (gpAttachMap->m_bVerbose)
     vTrace("[[mainThread]] Seeding Dic Compile...\n"_Stz);
   
-  Word* pBootSen = gpMainDic->pFindWord("::dicCompile"_Stz);
+  Word* pBootSen = gpAttachMap->m_xMainDic.pFindWord("::dicCompile"_Stz);
   ASSERT(pBootSen);
   
   IP.m_pCell = pBootSen->pFirstCell();
@@ -1680,7 +1679,7 @@ void Task::vSeedWord(Stz* aLambda)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Word* pShellEnter = gpMainDic->pFindWord("::docmd"_Stz);
+  Word* pShellEnter = gpAttachMap->m_xMainDic.pFindWord("::docmd"_Stz);
   
   IP.m_pCell = pShellEnter->pFirstCell();
   
@@ -1703,7 +1702,7 @@ void Task::vSeedDocol(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Word* pShellEnter = gpMainDic->pFindWord("::enter"_Stz);
+  Word* pShellEnter = gpAttachMap->m_xMainDic.pFindWord("::enter"_Stz);
   
   IP.m_pCell = pShellEnter->pFirstCell();
   

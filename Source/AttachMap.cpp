@@ -10,7 +10,6 @@ extern Heap*        gpJumboHeap;
 extern Heap*        gpMediumHeap;
 extern Heap*        gpSmallHeap;
 extern Heap*        gpLargeHeap;
-extern Dic*         gpMainDic;
 
 extern TxSet*        gpTxSet;
 
@@ -77,7 +76,6 @@ void AttachMap::vGetGlobals(void)
   gpMediumHeap  = m_pMediumHeap;
   gpLargeHeap   = m_pLargeHeap;
   gpSmallHeap   = m_pSmallHeap;
-  gpMainDic     = &m_xMainDic;
   gpTxSet        = m_pTxSet;
   gpTaskList     = m_pTaskList;
   gpPlanList     = m_pPlanList;

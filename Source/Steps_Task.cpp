@@ -6,8 +6,6 @@
 //#include "Tasks.h"
 #include "SePrompt.hpp"
 
-extern Dic*            gpMainDic;
-
 extern AttachMap*      gpAttachMap;
 extern StepArray*      gpStepArray;
 extern ThreadList*     gpThreadList;
