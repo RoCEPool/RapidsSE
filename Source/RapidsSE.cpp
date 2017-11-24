@@ -10,8 +10,6 @@ BufferPool*   gpBufferPool   = nullptr;
 AttachMap *   gpAttachMap    = nullptr;
 
 StepArray*    gpStepArray    = nullptr;
-TaskList*     gpTaskList     = nullptr;
-ThreadList*   gpThreadList   = nullptr;
 TxSet*        gpTxSet        = nullptr;
 SEitfList*    gpSEitfList    = nullptr;
 
@@ -439,7 +437,7 @@ void RapidsSE::vSystemInit(void)
   
   // tasklist is new'd here as the exception-to-the-rule
   // so as to be boot the system
-  gpTaskList = new TaskList;
+  gpAttachMap->m_pTaskList = new TaskList;
   
   gnpBootTask = new Task;
   s32 sName;

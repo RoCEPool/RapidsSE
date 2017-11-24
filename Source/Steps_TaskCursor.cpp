@@ -6,10 +6,8 @@
 //#include "Tasks.h"
 #include "SePrompt.hpp"
 
+extern AttachMap*      gpAttachMap;
 extern StepArray*      gpStepArray;
-extern ThreadList*     gpThreadList;
-extern TaskList*       gpTaskList;
-
 extern NP_Task         gnpBootTask;
 extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
@@ -152,7 +150,7 @@ ENTRY("vTaskCursorInit"_Stz);
   TaskCursor* pTaskCursor = _pTaskCursor(pPtrTaskCursor);
   ASSERT(CN_TASKCURSOR == pTaskCursor->eClass());
   
-  new(pTaskCursor) TaskCursor(gpTaskList);
+  new(pTaskCursor) TaskCursor(gpAttachMap->m_pTaskList);
   
   EXIT();
 }

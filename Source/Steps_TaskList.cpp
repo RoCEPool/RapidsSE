@@ -6,10 +6,8 @@
 //#include "Tasks.h"
 #include "SePrompt.hpp"
 
+extern AttachMap*      gpAttachMap;
 extern StepArray*      gpStepArray;
-extern ThreadList*     gpThreadList;
-extern TaskList*       gpTaskList;
-
 extern NP_Task         gnpBootTask;
 extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
@@ -35,7 +33,7 @@ void Task::vTaskList(MP_Task mpTask)
 {
 ENTRY("vTaskList"_Stz);
   
-  mpTask->m_pDataStack->vPushObject(gpTaskList);
+  mpTask->m_pDataStack->vPushObject(gpAttachMap->m_pTaskList);
   
   EXIT();
 }

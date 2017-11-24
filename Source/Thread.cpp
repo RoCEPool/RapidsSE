@@ -7,9 +7,6 @@
 #include "StorageEngine.h"
 
 extern AttachMap*   gpAttachMap;
-extern ThreadList*  gpThreadList;
-extern TaskList*    gpTaskList;
-
 extern NP_Task      gnpBootTask;
 
 extern pthread_key_t  giTLS_TaskKey;
@@ -59,7 +56,7 @@ Thread::Thread(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
 
-  ASSERT( gpThreadList );
+  ASSERT( gpAttachMap->m_pThreadList );
   
   static Atomic zThreadNo;
   
@@ -76,7 +73,7 @@ Thread::Thread(void)
   m_npTask       = nullptr;
 
   Thread* pThread = this;
-  //gpThreadList->vAppend(pThread);
+  //gpAttachMap->m_pThreadList->vAppend(pThread);
   
   _checkInitialised_(CN_THREAD);
   

@@ -8,7 +8,7 @@
 
   create
   WT_OBJECT word.this word.type!
-  ( this should be a @ to gpTaskList )
+  ( this should be a @ to gpAttachMap->m_pTaskList )
   sizeof_tasklist allot
   word.this >body object.magic!
   CN_TASKLIST word.this >body object.class!
@@ -21,7 +21,7 @@
 
   >create
   WT_OBJECT word.this word.type!
-  ( this should be a @ to gpTaskList )
+  ( this should be a @ to gpAttachMap->m_pTaskList )
   sizeof_tasklist allot
   word.this >body object.magic!
   CN_TASKLIST word.this >body object.class!

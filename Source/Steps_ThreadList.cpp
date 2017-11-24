@@ -6,10 +6,8 @@
 //#include "Tasks.h"
 #include "SePrompt.hpp"
 
+extern AttachMap*      gpAttachMap;
 extern StepArray*      gpStepArray;
-extern ThreadList*     gpThreadList;
-extern TaskList*       gpTaskList;
-
 extern NP_Task         gnpBootTask;
 extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
@@ -47,7 +45,7 @@ ENTRY("vThreadListDump"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* threadlist.global! -- store gpThreadList                                   */
+/* threadlist.global! -- store gpAttachMap->m_pThreadList                     */
 /*----------------------------------------------------------------------------*/
 void Task::vThreadListGlobalStore(MP_Task mpTask)
 {
@@ -60,7 +58,7 @@ void Task::vThreadListGlobalStore(MP_Task mpTask)
   ThreadList* pThreadList = _pThreadList(pPtrThreadList);
   ASSERT(CN_THREADLIST == pThreadList->eClass());
   
-  gpThreadList = pThreadList;
+  gpAttachMap->m_pThreadList = pThreadList;
   
   EXIT();
 }

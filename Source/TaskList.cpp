@@ -2,10 +2,10 @@
 /* TaskList.cpp - task List                                                   */
 /*============================================================================*/
 
+#include "StorageEngine.h"
 #include "Tasks.h"
 
-extern TaskList*    gpTaskList;
-
+extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
@@ -69,9 +69,9 @@ TaskList::~TaskList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
   
-  ASSERT( ! gpTaskList );
+  ASSERT( ! gpAttachMap->m_pTaskList );
   
-  gpTaskList = this;
+  gpAttachMap->m_pTaskList = this;
 }
 
 /*----------------------------------------------------------------------------*/

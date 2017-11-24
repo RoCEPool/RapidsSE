@@ -7,8 +7,6 @@
 #include "SePrompt.hpp"
 
 extern StepArray*      gpStepArray;
-extern ThreadList*     gpThreadList;
-extern TaskList*       gpTaskList;
 extern TxSet*          gpTxSet;
 
 extern NP_Task         gnpBootTask;

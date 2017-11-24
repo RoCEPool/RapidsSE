@@ -12,9 +12,6 @@ extern AttachMap*      gpAttachMap;
 extern Arguments       gxArguments;
 
 extern StepArray*      gpStepArray;
-extern ThreadList*     gpThreadList;
-extern TaskList*       gpTaskList;
-
 extern NP_Task         gnpBootTask;
 extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
@@ -50,7 +47,7 @@ Task* Tasks::_pTask(i8 iAddr)
 void* Task::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  ASSERT(gpTaskList);
+  ASSERT(gpAttachMap->m_pTaskList);
   
   Task* pTask = reinterpret_cast<Task*>(Heap::pAllocate(CN_TASK));
   
@@ -63,7 +60,7 @@ void* Task::operator new(size_t iSize)
 void* Task::operator new(size_t iSize, Task* pTask)
 {
   RASSERT(iSize);
-  ASSERT(gpTaskList);
+  ASSERT(gpAttachMap->m_pTaskList);
   
   return pTask;
 }
@@ -86,15 +83,15 @@ Task::Task(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
-  ASSERT(gpTaskList);
+  ASSERT(gpAttachMap->m_pTaskList);
   
   vInit(""_Stz);
     
   _checkInitialised_(CN_TASK);
   
   Task* pTask = this;
-  //  gpTaskList->vAppend(pTask);
-//  gpTaskList->vDump();
+  //  gpAttachMap->m_pTaskList->vAppend(pTask);
+//  gpAttachMap->m_pTaskList->vDump();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 }
@@ -108,15 +105,15 @@ Task::Task(MP_Task mpTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   ASSERT(*mpTask);
-  ASSERT(gpTaskList);
+  ASSERT(gpAttachMap->m_pTaskList);
   
   vInit(""_Stz);
   
   _checkInitialised_(CN_TASK);
   
   Task* pTask = this;
-  //  gpTaskList->vAppend(pTask);
-//  gpTaskList->vDump();
+  //  gpAttachMap->m_pTaskList->vAppend(pTask);
+//  gpAttachMap->m_pTaskList->vDump();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 }
@@ -129,7 +126,7 @@ Task::Task(Value* pRequest)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  ASSERT(gpTaskList);
+  ASSERT(gpAttachMap->m_pTaskList);
   
   vInit(""_Stz);
   
@@ -147,8 +144,8 @@ Task::Task(Value* pRequest)
   _checkInitialised_(CN_TASK);
   
   Task* pTask = this;
-  //  gpTaskList->vAppend(pTask);
-  //  gpTaskList->vDump();
+  //  gpAttachMap->m_pTaskList->vAppend(pTask);
+  //  gpAttachMap->m_pTaskList->vDump();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 }
@@ -161,7 +158,7 @@ Task::Task(Stz* aLambdaInput)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  ASSERT(gpTaskList);
+  ASSERT(gpAttachMap->m_pTaskList);
 
   _class_(CN_TASK);
   
@@ -170,8 +167,8 @@ Task::Task(Stz* aLambdaInput)
   _checkInitialised_(CN_TASK);
   
   Task* pTask = this;
-  //  gpTaskList->vAppend(pTask);
-//  gpTaskList->vDump();
+  //  gpAttachMap->m_pTaskList->vAppend(pTask);
+  //  gpAttachMap->m_pTaskList->vDump();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 }
@@ -194,8 +191,8 @@ Task::~Task(void)
     delete m_pRequest;
   
   //  Task* pTask = this;
-  //  gpTaskList->vRemove(pTask);
-//  gpTaskList->vDump();
+  //  gpAttachMap->m_pTaskList->vRemove(pTask);
+  //  gpAttachMap->m_pTaskList->vDump();
 }
 
 /*----------------------------------------------------------------------------*/

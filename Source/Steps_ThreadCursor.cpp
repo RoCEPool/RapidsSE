@@ -6,9 +6,8 @@
 //#include "Tasks.h"
 #include "SePrompt.hpp"
 
+extern AttachMap*      gpAttachMap;
 extern StepArray*      gpStepArray;
-extern ThreadList*     gpThreadList;
-extern TaskList*       gpTaskList;
 
 extern NP_Task         gnpBootTask;
 extern Lock            gxDdlLock;
@@ -147,7 +146,7 @@ ENTRY("vThreadCursorInit"_Stz);
   ThreadCursor* pThreadCursor = _pThreadCursor(pPtrThreadCursor);
   ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());
   
-  new(pThreadCursor) ThreadCursor(gpThreadList);
+  new(pThreadCursor) ThreadCursor(gpAttachMap->m_pThreadList);
   
   EXIT();
 }
@@ -159,7 +158,7 @@ void Task::vThreadCursorNew(MP_Task mpTask)
 {
 ENTRY("vThreadCursorNew"_Stz);
   
-  ThreadCursor* pThreadCursor = new ThreadCursor(gpThreadList);
+  ThreadCursor* pThreadCursor = new ThreadCursor(gpAttachMap->m_pThreadList);
   ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());
   
   mpTask->m_pDataStack->vPushObject(pThreadCursor);

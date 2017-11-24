@@ -2,9 +2,10 @@
 /* ThreadList.cpp -- Thread List                                              */
 /*============================================================================*/
 
+#include "StorageEngine.h"
 #include "Threads.h"
 
-extern ThreadList*  gpThreadList;
+extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -46,9 +47,9 @@ ThreadList::ThreadList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREADLIST,_FOOTER_);
   
-  ASSERT( ! gpThreadList );
+  ASSERT( ! gpAttachMap->m_pThreadList );
   
-  //gpThreadList = this;
+  //gpAttachMap->m_pThreadList = this;
   
   _checkInitialised_(CN_THREADLIST);
   

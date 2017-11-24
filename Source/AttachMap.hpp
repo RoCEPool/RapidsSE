@@ -60,6 +60,7 @@ namespace StorageEngine
     ServerScheduler*    m_pServerScheduler;
   
     TaskList*        m_pTaskList;
+    ThreadList*      m_pThreadList;
     Plans::PlanList* m_pPlanList;
     SEitfList*       m_pSEitfList;
     

@@ -8,8 +8,6 @@
 
 extern AttachMap*      gpAttachMap;
 extern StepArray*      gpStepArray;
-extern ThreadList*     gpThreadList;
-extern TaskList*       gpTaskList;
 
 extern NP_Task         gnpBootTask;
 extern Lock            gxDdlLock;
