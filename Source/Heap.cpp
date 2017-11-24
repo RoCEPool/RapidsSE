@@ -122,19 +122,35 @@ Object* Heap::pAllocate(eCN eAllocClass)
       vFatal("Heap::pAllocate: Invalid heap allocation: class %lld %s\n"_Stz,
              eAllocClass,aCN[eAllocClass]);
     
-    case HT_SMALL:
+    case HT_PERSISTENT_SMALL:
+      pObject = gpAttachMap->m_pPersistentSmallHeap->pAllocObject(eAllocClass);
+      return pObject;
+      
+    case HT_PERSISTENT_MEDIUM:
+      pObject = gpAttachMap->m_pPersistentMediumHeap->pAllocObject(eAllocClass);
+      return pObject;
+      
+    case HT_PERSISTENT_LARGE:
+      pObject = gpAttachMap->m_pPersistentLargeHeap->pAllocObject(eAllocClass);
+      return pObject;
+      
+    case HT_PERSISTENT_JUMBO:
+      pObject = gpAttachMap->m_pPersistentJumboHeap->pAllocObject(eAllocClass);
+      return pObject;
+      
+    case HT_TRANSIENT_SMALL:
       pObject = gpAttachMap->m_pTransientSmallHeap->pAllocObject(eAllocClass);
       return pObject;
       
-    case HT_MEDIUM:
+    case HT_TRANSIENT_MEDIUM:
       pObject = gpAttachMap->m_pTransientMediumHeap->pAllocObject(eAllocClass);
       return pObject;
 
-    case HT_LARGE:
+    case HT_TRANSIENT_LARGE:
       pObject = gpAttachMap->m_pTransientLargeHeap->pAllocObject(eAllocClass);
       return pObject;
       
-    case HT_JUMBO:
+    case HT_TRANSIENT_JUMBO:
       pObject = gpAttachMap->m_pTransientJumboHeap->pAllocObject(eAllocClass);
       return pObject;
       
@@ -165,36 +181,72 @@ void Heap::vValidateTables(void)
       case HT_INVALID:
         break;
         
-      case HT_SMALL:
+      case HT_TRANSIENT_SMALL:
         if (iSize >= C_SIZE_SMALL_OBJECT)
-          vFatal("Heap::vValidateTables: small class %lld %s is too big\n"_Stz,
+          vFatal("Heap::vValidateTables: transient small class %lld %s is too big\n"_Stz,
                  eClassNo,aCN[eClassNo]);
         //if (!iSize)
         //  vWarn("Heap::vValidateTables: small class %lld %lls has 0 size\n"_Stz,
         //         eClassNo,aCN[eClassNo]);
         break;
         
-      case HT_MEDIUM:
+      case HT_TRANSIENT_MEDIUM:
         if (iSize >= C_SIZE_MEDIUM_OBJECT)
-          vFatal("Heap::vValidateTables: medium class %lld %s is too big\n"_Stz,
+          vFatal("Heap::vValidateTables: transient medium class %lld %s is too big\n"_Stz,
                  eClassNo,aCN[eClassNo]);
         //if (!iSize)
         // vWarn("Heap::vValidateTables: medium class %lld %lls has 0 size\n"_Stz,
         //        eClassNo,aCN[eClassNo]);
         break;
         
-      case HT_LARGE:
+      case HT_TRANSIENT_LARGE:
         if (iSize >= C_SIZE_LARGE_OBJECT)
-          vFatal("Heap::vValidateTables: large class %lld %s is too big\n"_Stz,
+          vFatal("Heap::vValidateTables: transient large class %lld %s is too big\n"_Stz,
                  eClassNo,aCN[eClassNo]);
         //if (!iSize)
         // vWarn("Heap::vValidateTables: large class %lld %lls has 0 size\n"_Stz,
         //        eClassNo,aCN[eClassNo]);
         break;
         
-      case HT_JUMBO:
+      case HT_TRANSIENT_JUMBO:
         if (iSize >= C_SIZE_JUMBO_OBJECT)
-          vFatal("Heap::vValidateTables: jumbo class %lld %s is too big\n"_Stz,
+          vFatal("Heap::vValidateTables: transient jumbo class %lld %s is too big\n"_Stz,
+                 eClassNo,aCN[eClassNo]);
+        //if (!iSize)
+        //  vWarn("Heap::vValidateTables: jumbo class %lld %lls has 0 size\n"_Stz,
+        //        eClassNo,aCN[eClassNo]);
+        break;
+        
+      case HT_PERSISTENT_SMALL:
+        if (iSize >= C_SIZE_SMALL_OBJECT)
+          vFatal("Heap::vValidateTables: persistent small class %lld %s is too big\n"_Stz,
+                 eClassNo,aCN[eClassNo]);
+        //if (!iSize)
+        //  vWarn("Heap::vValidateTables: small class %lld %lls has 0 size\n"_Stz,
+        //         eClassNo,aCN[eClassNo]);
+        break;
+        
+      case HT_PERSISTENT_MEDIUM:
+        if (iSize >= C_SIZE_MEDIUM_OBJECT)
+          vFatal("Heap::vValidateTables: persistent medium class %lld %s is too big\n"_Stz,
+                 eClassNo,aCN[eClassNo]);
+        //if (!iSize)
+        // vWarn("Heap::vValidateTables: medium class %lld %lls has 0 size\n"_Stz,
+        //        eClassNo,aCN[eClassNo]);
+        break;
+        
+      case HT_PERSISTENT_LARGE:
+        if (iSize >= C_SIZE_LARGE_OBJECT)
+          vFatal("Heap::vValidateTables: persistent large class %lld %s is too big\n"_Stz,
+                 eClassNo,aCN[eClassNo]);
+        //if (!iSize)
+        // vWarn("Heap::vValidateTables: large class %lld %lls has 0 size\n"_Stz,
+        //        eClassNo,aCN[eClassNo]);
+        break;
+        
+      case HT_PERSISTENT_JUMBO:
+        if (iSize >= C_SIZE_JUMBO_OBJECT)
+          vFatal("Heap::vValidateTables: persistent jumbo class %lld %s is too big\n"_Stz,
                  eClassNo,aCN[eClassNo]);
         //if (!iSize)
         //  vWarn("Heap::vValidateTables: jumbo class %lld %lls has 0 size\n"_Stz,
@@ -259,19 +311,35 @@ void Heap::vFree(Object* pObject)
       vFatal("Heap::vFree: Invalid heap free: class %lld %s\n"_Stz,
              eAllocClass,aCN[eAllocClass]);
       
-    case HT_SMALL:
+    case HT_TRANSIENT_SMALL:
       gpAttachMap->m_pTransientSmallHeap->vFreeObject(pObject);
       return;
       
-    case HT_MEDIUM:
+    case HT_TRANSIENT_MEDIUM:
       gpAttachMap->m_pTransientMediumHeap->vFreeObject(pObject);
       return;
       
-    case HT_LARGE:
+    case HT_TRANSIENT_LARGE:
       gpAttachMap->m_pTransientLargeHeap->vFreeObject(pObject);
       return;
       
-    case HT_JUMBO:
+    case HT_TRANSIENT_JUMBO:
+      gpAttachMap->m_pTransientJumboHeap->vFreeObject(pObject);
+      return;
+      
+    case HT_PERSISTENT_SMALL:
+      gpAttachMap->m_pTransientSmallHeap->vFreeObject(pObject);
+      return;
+      
+    case HT_PERSISTENT_MEDIUM:
+      gpAttachMap->m_pTransientMediumHeap->vFreeObject(pObject);
+      return;
+      
+    case HT_PERSISTENT_LARGE:
+      gpAttachMap->m_pTransientLargeHeap->vFreeObject(pObject);
+      return;
+      
+    case HT_PERSISTENT_JUMBO:
       gpAttachMap->m_pTransientJumboHeap->vFreeObject(pObject);
       return;
       

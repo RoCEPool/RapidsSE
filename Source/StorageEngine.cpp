@@ -132,20 +132,24 @@ void StorageEngine::vCheckAssumptions(void)
         
       case HT_INVALID:
         continue;
-        
-      case HT_SMALL:
+       
+      case HT_PERSISTENT_SMALL:
+      case HT_TRANSIENT_SMALL:
         assert(giClassSize[eClass] < C_SIZE_SMALL_OBJECT);
         continue;
         
-      case HT_MEDIUM:
+      case HT_PERSISTENT_MEDIUM:
+      case HT_TRANSIENT_MEDIUM:
         assert(giClassSize[eClass] < C_SIZE_MEDIUM_OBJECT);
         continue;
         
-      case HT_LARGE:
+      case HT_PERSISTENT_LARGE:
+      case HT_TRANSIENT_LARGE:
         assert(giClassSize[eClass] < C_SIZE_LARGE_OBJECT);
         continue;
         
-      case HT_JUMBO:
+      case HT_PERSISTENT_JUMBO:
+      case HT_TRANSIENT_JUMBO:
         assert(giClassSize[eClass] < C_SIZE_JUMBO_OBJECT);
         continue;
         
