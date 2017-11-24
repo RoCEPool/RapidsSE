@@ -2,10 +2,11 @@
 /* Plan.cpp - plan                                                            */
 /*============================================================================*/
 
+#include "StorageEngine.h"
 #include "Plans.h"
 
-extern PlanList* gpPlanList;
-extern Atomic    gzPlanId;
+extern AttachMap* gpAttachMap;
+extern Atomic     gzPlanId;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -37,7 +38,7 @@ Plan* Plans::_pPlan(i8 iAddr)
 void* Plan::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  ASSERT(gpPlanList);
+  ASSERT(gpAttachMap->m_pPlanList);
   
   Plan* pPlan = reinterpret_cast<Plan*>(Heap::pAllocate(CN_PLAN));
   
@@ -50,7 +51,7 @@ void* Plan::operator new(size_t iSize)
 void* Plan::operator new(size_t iSize, Plan* pPlan)
 {
   RASSERT(iSize);
-  ASSERT(gpPlanList);
+  ASSERT(gpAttachMap->m_pPlanList);
   
   return pPlan;
 }
@@ -73,16 +74,16 @@ Plan::Plan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLAN,_FOOTER_);
 
-  ASSERT(gpPlanList);
+  ASSERT(gpAttachMap->m_pPlanList);
   
   vInit();
     
   _checkInitialised_(CN_PLAN);
   
 //  Plan* pPlan = this;
-//  gpPlanList->vAppend(pPlan);
+//  gpAttachMap->m_pPlanList->vAppend(pPlan);
 
-  //gpPlanList->vDump();
+  //gpAttachMap->m_pPlanList->vDump();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PLAN,_FOOTER_);
 }
@@ -112,7 +113,7 @@ Plan::~Plan(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLAN,_FOOTER_);
   
   Plan* pPlan = this;
-  gpPlanList->vRemove(pPlan);
+  gpAttachMap->m_pPlanList->vRemove(pPlan);
 }
 
 /*----------------------------------------------------------------------------*/

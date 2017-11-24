@@ -4,7 +4,8 @@
 
 #include "Plans.h"
 
-extern PlanList*    gpPlanList;
+#include "StorageEngine.h"
+extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -69,9 +70,9 @@ PlanList::~PlanList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANLIST,_FOOTER_);
   
-  ASSERT( ! gpPlanList );
+  //ASSERT( ! gpAttachMap->m_pPlanList );
   
-  gpPlanList = this;
+  //gpPlanList = this;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -6,6 +6,7 @@
 //#include "Tasks.h"
 #include "SePrompt.hpp"
 
+extern AttachMap*      gpAttachMap;
 extern StepArray*      gpStepArray;
 extern ThreadList*     gpThreadList;
 extern TaskList*       gpTaskList;
@@ -14,7 +15,6 @@ extern NP_Task         gnpBootTask;
 extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
 extern SEitfList*      gpSEitfList;
-extern PlanList*       gpPlanList;
 
 // plan list: //////////////////////////////////////////////////////////////////
 
@@ -43,7 +43,7 @@ void Task::vPlanListAddPlan(MP_Task mpTask)
   
   Plan* pPlan = _pPlan(pPtrPlan);
   
-  gpPlanList->vAppend(pPlan);
+  gpAttachMap->m_pPlanList->vAppend(pPlan);
 
   EXIT();
 }
@@ -60,7 +60,7 @@ void Task::vPlanListFindPlan(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(iPlanId) )
     THROW_INVALID_DSTACK("planList.findPlan"_Stz);
   
-  Plan* pPlan = gpPlanList->pFind((u8)iPlanId);
+  Plan* pPlan = gpAttachMap->m_pPlanList->pFind((u8)iPlanId);
   
   if (pPlan) {
     mpTask->m_pDataStack->vPushObject(pPlan);
@@ -87,7 +87,7 @@ void Task::vPlanListRemovePlan(MP_Task mpTask)
   
   Plan* pPlan = _pPlan(pPtrPlan);
   
-  gpPlanList->vRemove(pPlan);
+  gpAttachMap->m_pPlanList->vRemove(pPlan);
   
   EXIT();
 }
@@ -99,7 +99,7 @@ void Task::vPlanListShow(MP_Task mpTask)
 {
   ENTRY("vPlanListShow"_Stz);
   
-  gpPlanList->vShow();
+  gpAttachMap->m_pPlanList->vShow();
   
   EXIT();
 }

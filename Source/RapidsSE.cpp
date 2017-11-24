@@ -11,7 +11,6 @@ AttachMap *   gpAttachMap    = nullptr;
 
 StepArray*    gpStepArray    = nullptr;
 TaskList*     gpTaskList     = nullptr;
-PlanList*     gpPlanList     = nullptr;
 ThreadList*   gpThreadList   = nullptr;
 TxSet*        gpTxSet        = nullptr;
 SEitfList*    gpSEitfList    = nullptr;
@@ -436,7 +435,7 @@ void RapidsSE::vSystemInit(void)
   new StepArray;
   
   // create the plan list here
-  gpPlanList = new PlanList;
+  gpAttachMap->m_pPlanList = new PlanList;
   
   // tasklist is new'd here as the exception-to-the-rule
   // so as to be boot the system
