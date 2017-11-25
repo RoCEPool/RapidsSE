@@ -2,16 +2,15 @@
 /* Report.cpp - message reporter                                             */
 /*===========================================================================*/
 
-#include "StorageEngine.h"
 #include "Debugging.h"
 
 #include "System.h"
 
+extern File* gpTraceFile;
+
 char gaReportBuffer[C_1MB] = {'\0'};
   
 bool mbReportTimestamp = true;
-
-extern AttachMap* gpAttachMap;
 
 /*---------------------------------------------------------------------------*/
 /* set reporting behavior                                                    */
@@ -58,9 +57,9 @@ void Debugging::vPrint(i8 iLevel, Stz* aFormat, va_list xArgs)
   fprintf(stdout,"%s",gaReportBuffer);
   fflush(stdout);
   
-  if (gpAttachMap && gpAttachMap->m_pTraceFile) {
-    gpAttachMap->m_pTraceFile->vPrint("%s"_Stz,gaReportBuffer);
-    gpAttachMap->m_pTraceFile->vFlush();
+  if (gpTraceFile) {
+    gpTraceFile->vPrint("%s"_Stz,gaReportBuffer);
+    gpTraceFile->vFlush();
   }
 }
 /*---------------------------------------------------------------------------*/
@@ -142,9 +141,9 @@ void Debugging::vReport(i8 iLevel, Stz* aFormat, va_list xArgs)
   fprintf(stderr,"%s: %s", sTime, gaReportBuffer);
   fflush(stderr);
   
-  if (gpAttachMap && gpAttachMap->m_pTraceFile) {
-    gpAttachMap->m_pTraceFile->vPrint("%s: %s"_Stz, sTime, gaReportBuffer);
-    gpAttachMap->m_pTraceFile->vFlush();
+  if (gpTraceFile) {
+    gpTraceFile->vPrint("%s: %s"_Stz, sTime, gaReportBuffer);
+    gpTraceFile->vFlush();
   }
 }
 

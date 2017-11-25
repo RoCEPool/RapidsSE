@@ -68,8 +68,7 @@ namespace StorageEngine
     bool          m_bTracepoint;
     bool          m_bProgress;
     bool          m_bMetadata;
-    File*         m_pTraceFile;
-    
+   
     bool          m_bIndexSpace;    // index buffer space based on space
     i8            m_nIndexEntries;  // no of entries per buffer
     i8            m_nIndexLevels;   // no of levels per index buffer entry
