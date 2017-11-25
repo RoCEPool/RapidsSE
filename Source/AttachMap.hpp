@@ -64,6 +64,8 @@ namespace StorageEngine
     Plans::PlanList* m_pPlanList;
     SEitfList*       m_pSEitfList;
     
+    StepArray*    m_pStepArray;
+    
     bool          m_bVerbose;
     bool          m_bTracepoint;
     bool          m_bProgress;

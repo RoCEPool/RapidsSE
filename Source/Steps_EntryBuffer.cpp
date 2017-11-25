@@ -7,11 +7,10 @@
 #include "SePrompt.hpp"
 
 extern BufferPool*     gpBufferPool;
-extern StepArray*      gpStepArray;
+extern AttachMap*      gpAttachMap;
 extern NP_Task         gnpBootTask;
 extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
-extern SEitfList*      gpSEitfList;
 extern BitMap*         gpBitMap;
 
 // indexbuffer: ////////////////////////////////////////////////////////////////

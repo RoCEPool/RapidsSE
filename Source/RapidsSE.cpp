@@ -9,9 +9,7 @@ Arguments     gxArguments;
 BufferPool*   gpBufferPool   = nullptr;
 AttachMap *   gpAttachMap    = nullptr;
 
-StepArray*    gpStepArray    = nullptr;
 TxSet*        gpTxSet        = nullptr;
-SEitfList*    gpSEitfList    = nullptr;
 
 File*         gpTraceFile    = nullptr;
 

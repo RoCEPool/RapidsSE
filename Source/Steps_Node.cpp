@@ -8,12 +8,10 @@
 
 extern Arguments       gxArguments;
 extern AttachMap*      gpAttachMap;
-extern StepArray*      gpStepArray;
 
 extern NP_Task         gnpBootTask;
 extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
-extern SEitfList*      gpSEitfList;
 
 // node: ///////////////////////////////////////////////////////////////////////
 

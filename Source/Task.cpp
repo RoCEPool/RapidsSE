@@ -11,11 +11,9 @@
 extern AttachMap*      gpAttachMap;
 extern Arguments       gxArguments;
 
-extern StepArray*      gpStepArray;
 extern NP_Task         gnpBootTask;
 extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
-extern SEitfList*      gpSEitfList;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */

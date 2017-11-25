@@ -9,11 +9,9 @@
 extern AttachMap*      gpAttachMap;
 extern BufferPool*     gpBufferPool;
 
-extern StepArray*      gpStepArray;
 extern NP_Task         gnpBootTask;
 extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
-extern SEitfList*      gpSEitfList;
 
 i8 giCountObjects[CN_ENUMS];
 

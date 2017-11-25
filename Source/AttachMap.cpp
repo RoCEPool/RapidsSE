@@ -7,7 +7,6 @@
 extern BufferPool* gpBufferPool;
 
 extern TxSet*      gpTxSet;
-extern SEitfList*  gpSEitfList;
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
@@ -64,8 +63,7 @@ void AttachMap::vGetGlobals(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
 
-  gpTxSet        = m_pTxSet;
-  gpSEitfList    = m_pSEitfList;
+  gpTxSet  = m_pTxSet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -109,9 +107,9 @@ void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize, i8 iJumboSize)
   ASSERT(m_pWord);
   ASSERT(m_pTaskList);
   ASSERT(m_pThreadList);
-  ASSERT(m_pPlanList);
-  
-  m_pSEitfList    = gpSEitfList;
+  ASSERT(m_pPlanList);  
+  ASSERT(m_pStepArray);
+  ASSERT(m_pSEitfList);
   
   m_bIndexSpace   = true;
   m_nIndexEntries = -1;

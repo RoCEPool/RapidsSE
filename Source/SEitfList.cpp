@@ -2,9 +2,10 @@
 /* SEitfList.cpp - SEitf List                                                 */
 /*============================================================================*/
 
+#include "StorageEngine.h"
 #include "Interface.h"
 
-extern SEitfList*   gpSEitfList;
+extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -46,9 +47,9 @@ SEitfList::SEitfList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITFLIST,_FOOTER_);
   
-  ASSERT( ! gpSEitfList );
+  ASSERT( ! gpAttachMap->m_pSEitfList );
   
-  gpSEitfList = this;
+  gpAttachMap->m_pSEitfList = this;
   
   _checkInitialised_(CN_SEITFLIST);
   

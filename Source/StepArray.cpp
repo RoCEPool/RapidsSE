@@ -2,9 +2,10 @@
 /* StepAccum.cpp -- Step Accumulator                                          */
 /*============================================================================*/
 
+#include "StorageEngine.h"
 #include "Tasks.h"
 
-extern StepArray* gpStepArray ;
+extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
@@ -12,11 +13,11 @@ extern StepArray* gpStepArray ;
 void* StepArray::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  RASSERT(! gpStepArray);
+  RASSERT(! gpAttachMap->m_pStepArray);
   
-  gpStepArray = (StepArray*)Heap::pAllocate(CN_STEPARRAY);
+  gpAttachMap->m_pStepArray = (StepArray*)Heap::pAllocate(CN_STEPARRAY);
   
-  return gpStepArray;
+  return gpAttachMap->m_pStepArray;
 }
 
 /*----------------------------------------------------------------------------*/

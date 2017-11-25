@@ -5,7 +5,6 @@
 #include "Interface.h"
 #include "StorageEngine.h"
 
-extern SEitfList* gpSEitfList;
 extern AttachMap* gpAttachMap;
 extern TxSet*     gpTxSet;
 
@@ -190,7 +189,7 @@ SEitf::SEitf(i8 iPartition)
   m_ziAcksRemaining = 0;
   
   SEitf* pSEitf = this;
-  gpSEitfList->vAppend(pSEitf);
+  gpAttachMap->m_pSEitfList->vAppend(pSEitf);
   
   for (i8 i_Partition = 0; i_Partition < C_SLOTS_PER_NODE; i_Partition++) {
     m_pRowBuffer[i_Partition] = nullptr;
@@ -216,7 +215,7 @@ SEitf::~SEitf(void)
   m_pResponseQueue->vFinalize();
   delete m_pResponseQueue;
   
-  gpSEitfList->vRemove(pSEitf);
+  gpAttachMap->m_pSEitfList->vRemove(pSEitf);
   
   if (m_pRowOnce)
     delete m_pRowOnce;

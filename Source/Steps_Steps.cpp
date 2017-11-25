@@ -6,11 +6,11 @@
 //#include "Tasks.h"
 #include "SePrompt.hpp"
 
-extern StepArray*      gpStepArray;
+extern AttachMap*      gpAttachMap;
+
 extern NP_Task         gnpBootTask;
 extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
-extern SEitfList*      gpSEitfList;
 
 // steps: //////////////////////////////////////////////////////////////////////
 
@@ -33,7 +33,7 @@ ENTRY("vStepsList"_Stz);
   File xFile;
   xFile.bOpen("steps.csv"_Stz, C_OPEN_WRITE);
   
-  gpStepArray->vList(xFile);
+  gpAttachMap->m_pStepArray->vList(xFile);
   
   xFile.vClose();
   
@@ -47,7 +47,7 @@ void Task::vStepsReset(MP_Task mpTask)
 {
   ENTRY("vStepsReset"_Stz);
   
-  gpStepArray->vReset();
+  gpAttachMap->m_pStepArray->vReset();
   
   EXIT();
 }

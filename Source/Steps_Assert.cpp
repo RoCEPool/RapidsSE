@@ -5,11 +5,10 @@
 #include "StorageEngine.h"
 #include "SePrompt.hpp"
 
-extern StepArray*      gpStepArray;
+extern AttachMap*      gpAttachMap;
 extern NP_Task         gnpBootTask;
 extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
-extern SEitfList*      gpSEitfList;
 
 // assert: /////////////////////////////////////////////////////////////////////
 

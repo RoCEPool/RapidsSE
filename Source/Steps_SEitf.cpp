@@ -6,11 +6,11 @@
 //#include "Tasks.h"
 #include "SePrompt.hpp"
 
-extern StepArray*      gpStepArray;
+extern AttachMap*      gpAttachMap;
+
 extern NP_Task         gnpBootTask;
 extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
-extern SEitfList*      gpSEitfList;
 
 // seitf: //////////////////////////////////////////////////////////////////////
 
@@ -227,7 +227,7 @@ void Task::vSEitfCount(MP_Task mpTask)
   
   Object* pPtrSEitf;
   
-  mpTask->m_pDataStack->vPushInt(gpSEitfList->iCount());
+  mpTask->m_pDataStack->vPushInt(gpAttachMap->m_pSEitfList->iCount());
   
   EXIT();
 }
