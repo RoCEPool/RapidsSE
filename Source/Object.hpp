@@ -10,8 +10,8 @@ namespace Pool
 
 namespace CorrectnessAlgebra
 {
-  class Object :public Magic,
-                public Class
+  class Object : public Magic,
+                 public Class
   {
   private:
     bool m_bWordBody;
