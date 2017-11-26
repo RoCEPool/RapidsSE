@@ -122,11 +122,21 @@ void Heap::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* allocate an object from a heap                                             */
 /*----------------------------------------------------------------------------*/
-Object* Heap::pAllocate(eCN eAllocClass)
+Object* Heap::pAllocate(eCN eAllocClass, bool bPersistent)
 {
   eHT eHeap = geWhichHeap[eAllocClass];
   
   Object* pObject;
+  
+  if (bPersistent) {
+    switch(eHeap) {
+      case HT_TRANSIENT_SMALL:  eHeap = HT_PERSISTENT_SMALL;  break;
+      case HT_TRANSIENT_MEDIUM: eHeap = HT_PERSISTENT_MEDIUM; break;
+      case HT_TRANSIENT_LARGE:  eHeap = HT_PERSISTENT_LARGE;  break;
+      case HT_TRANSIENT_JUMBO:  eHeap = HT_PERSISTENT_JUMBO;  break;
+      default: break;
+    }
+  }
   
   switch(eHeap) {
     case HT_INVALID:
@@ -294,7 +304,7 @@ void Heap::vSearchFree(void)
 /*----------------------------------------------------------------------------*/
 /* free an object back to heap                                                */
 /*----------------------------------------------------------------------------*/
-void Heap::vFree(Object* pObject)
+void Heap::vFree(Object* pObject, bool bPersistent)
 {
   eCN eAllocClass = pObject->eClass();
   
@@ -315,6 +325,16 @@ void Heap::vFree(Object* pObject)
   ASSERT(!pObject->bWordBody());
   
   eHT eHeap = geWhichHeap[eAllocClass];
+  
+  if (bPersistent) {
+    switch(eHeap) {
+      case HT_TRANSIENT_SMALL:  eHeap = HT_PERSISTENT_SMALL;  break;
+      case HT_TRANSIENT_MEDIUM: eHeap = HT_PERSISTENT_MEDIUM; break;
+      case HT_TRANSIENT_LARGE:  eHeap = HT_PERSISTENT_LARGE;  break;
+      case HT_TRANSIENT_JUMBO:  eHeap = HT_PERSISTENT_JUMBO;  break;
+      default: break;
+    }
+  }
   
   switch(eHeap) {
     case HT_INVALID:
