@@ -28,6 +28,8 @@ void Task::vAddPrimitives_Word(void)
   vAddPrimitive("create"_Stz,          &vCreate,           false);
   vAddPrimitive(">create"_Stz,         &vCreateFrom,       false);
   vAddPrimitive(">createInMain"_Stz,   &vCreateFromInMain, false);
+  vAddPrimitive(">createPersistent"_Stz, &vCreateFromPersistent, false);
+  vAddPrimitive("createPersistent"_Stz,&vCreatePersistent, false);
   vAddPrimitive("dic?"_Stz,            &vDicWhich,         false);
   vAddPrimitive("does>"_Stz,           &vDoes,             true );
   vAddPrimitive("does_rt"_Stz,         &vDoes_RT,          false);
@@ -225,6 +227,30 @@ ENTRY("vCreate"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
+/* createPersistent -- create word in dictionary (persistent heap)            */
+/*----------------------------------------------------------------------------*/
+void Task::vCreatePersistent(MP_Task mpTask)
+{
+  ENTRY("vCreate"_Stz);
+  
+  mpTask->m_pTokeniser->vNextToken();
+  
+  Dic* pDic;
+  if (mpTask->m_xPathStack.iCount())
+    pDic = mpTask->m_xPathStack.pTop();
+  else
+    pDic = &gpAttachMap->m_xMainDic;
+  
+  //vTrace(": %s\n"_Stz,mpTask->m_pTokeniser->sToken().aChar());
+  
+  Word* pNewWord = new(pDic,true) Word(mpTask->m_pTokeniser->sToken());
+  
+  mpTask->m_pCurrentWord = pNewWord;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* >create -- create word in dictionary using string on stack                 */
 /*----------------------------------------------------------------------------*/
 void Task::vCreateFrom(MP_Task mpTask)
@@ -243,6 +269,31 @@ ENTRY("vCreateFrom"_Stz);
   
   //vTrace(": %s\n"_Stz,sName.aChar());
   Word* pNewWord = new(pDic) Word(sName);
+  
+  mpTask->m_pCurrentWord = pNewWord;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >createPersistent -- create word in dic using string on stack (persistent) */
+/*----------------------------------------------------------------------------*/
+void Task::vCreateFromPersistent(MP_Task mpTask)
+{
+  ENTRY("vCreateFrom"_Stz);
+  
+  s32 sName;
+  if ( ! mpTask->m_pDataStack->bPop(sName) )
+    THROW_INVALID_DSTACK(">create"_Stz);
+  
+  Dic* pDic;
+  if (mpTask->m_xPathStack.iCount())
+    pDic = mpTask->m_xPathStack.pTop();
+  else
+    pDic = &gpAttachMap->m_xMainDic;
+  
+  //vTrace(": %s\n"_Stz,sName.aChar());
+  Word* pNewWord = new(pDic,true) Word(sName);
   
   mpTask->m_pCurrentWord = pNewWord;
   

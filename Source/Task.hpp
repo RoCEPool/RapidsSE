@@ -1367,6 +1367,8 @@ namespace Tasks
     static void vCreate(MP_Task mpTask);
     static void vCreateFrom(MP_Task mpTask);
     static void vCreateFromInMain(MP_Task mpTask);
+    static void vCreateFromPersistent(MP_Task mpTask);
+    static void vCreatePersistent(MP_Task mpTask);
     static void vDicWhich(MP_Task mpTask);
     static void vDoes(MP_Task mpTask);
     static void vDoes_RT(MP_Task mpTask);
