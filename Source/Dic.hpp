@@ -38,7 +38,7 @@ namespace Dictionaries
     void  vDicKind(Word* pDicKind);
     Word* pFindWord(Stz* aName);
     Word* pFindStep(TaskStep pStep);
-    bool  bForget(StrVal& sName);
+    Word* pRemoveWord(StrVal& sName);
     bool  bFrozen(void);
     void  vFrozen(bool bFrozen);
     bool  bHasWords(void);

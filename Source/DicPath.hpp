@@ -35,7 +35,7 @@ namespace Dictionaries
     Word* pFindWord(Stz* aName);
     Word* pFindInCurrent(Stz* aName);
     Word* pFindStep(TaskStep pStep);
-    bool  bForget(StrVal& sName);
+    Word* pRemoveWord(StrVal& sName);
     Word* pLocate(Cell* pCell);
     Dic* pPick(i8 iDic);
     void vPush(Dic* pDic);

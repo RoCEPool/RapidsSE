@@ -390,8 +390,10 @@ ENTRY("vForget"_Stz);
   if ( ! pWord )
     THROW("No such word: %s"_Stz,mpTask->m_pTokeniser->sToken().aChar());
   
-  bool bResult = mpTask->m_xPathStack.bForget(mpTask->m_pTokeniser->sToken());
-  ASSERT(bResult);
+  Word* pRemovedWord = mpTask->m_xPathStack.pRemoveWord(mpTask->m_pTokeniser->sToken());
+  ASSERT(pRemovedWord);
+  
+  delete pRemovedWord;
   
   EXIT();
 }
@@ -924,8 +926,10 @@ ENTRY("vWordForget"_Stz);
     THROW_INVALID_DSTACK("vWordForget"_Stz);
   Word* pWord = _pWord(pWordObject);
   
-  bool bResult = mpTask->m_xPathStack.bForget(pWord->sName());
-  ASSERT(bResult);
+  Word* pRemovedWord = mpTask->m_xPathStack.pRemoveWord(pWord->sName());
+  ASSERT(pRemovedWord);
+  
+  delete pRemovedWord;
   
   EXIT();
 }

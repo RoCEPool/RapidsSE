@@ -212,23 +212,6 @@ Word* DicPath::pFindStep(TaskStep pStep)
 }
 
 /*----------------------------------------------------------------------------*/
-/* forget word in stack of dictionaries                                       */
-/*----------------------------------------------------------------------------*/
-bool DicPath::bForget(StrVal& sName)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
-  
-  for (i8 i_Dic = m_iTop; i_Dic >= 0; i_Dic--)
-    if (m_pDic[i_Dic]->bForget(sName))
-      return true;
-
-  if (gpAttachMap->m_xMainDic.bForget(sName))
-    return true;
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* locate word in stack of dictionaries                                       */
 /*----------------------------------------------------------------------------*/
 Word* DicPath::pLocate(Cell* pCell)
@@ -279,6 +262,25 @@ void DicPath::vPush(Dic* pDic)
   m_iTop++;
   
   m_pDic[m_iTop] = pDic;
+}
+
+/*----------------------------------------------------------------------------*/
+/* forget word in stack of dictionaries                                       */
+/*----------------------------------------------------------------------------*/
+Word* DicPath::pRemoveWord(StrVal& sName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
+  
+  Word* pRemovedWord = nullptr;
+  
+  for (i8 i_Dic = m_iTop; i_Dic >= 0; i_Dic--)
+    if ( (pRemovedWord = m_pDic[i_Dic]->pRemoveWord(sName)) )
+      return pRemovedWord;
+  
+  if ( (pRemovedWord = gpAttachMap->m_xMainDic.pRemoveWord(sName)) )
+    return pRemovedWord;
+  
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

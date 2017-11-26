@@ -85,7 +85,7 @@ namespace Dictionaries
    public:
     void* operator new(size_t, Dic* pDic);
     void  operator delete(void* pWordAddress);
-    
+  
     Word(Stz* sName);
     ~Word(void);
     

@@ -209,55 +209,6 @@ Word* Dic::pFindStep(TaskStep pStep)
 }
 
 /*----------------------------------------------------------------------------*/
-/* forget a word given name                                                   */
-/*----------------------------------------------------------------------------*/
-bool Dic::bForget(StrVal& sName)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
-
-  Word* pWordDelete = nullptr;
-  
-  m_xLock.vGrabWrite();
-  
-  if (m_pLastWord->bIsName(sName)) {
-    pWordDelete = m_pLastWord;
-    m_pLastWord = m_pLastWord->pPrevWord();
-    delete pWordDelete;
-    m_nWords--;
-    m_xLock.vDropWrite();
-    return true;
-  }
-  
-  for (Word* pWord = m_pLastWord; pWord; pWord = pWord->pPrevWord()) {
-    
-    Word* pPrevWord = pWord->pPrevWord();
-    
-    if (!pPrevWord) {
-      m_xLock.vDropWrite();
-      return false;
-    }
-    
-    if (!pPrevWord->bIsName(sName))
-      continue;
-
-    pWordDelete = pPrevWord;
-    
-    pWord->vPrevWord(pPrevWord->pPrevWord());
-
-    delete pWordDelete;
-    m_nWords--;
-
-    m_xLock.vDropWrite();
-    
-    return true;
-  }
-  
-  m_xLock.vDropWrite();
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is dictionary frozen?                                                      */
 /*----------------------------------------------------------------------------*/
 bool Dic::bFrozen(void)
@@ -387,6 +338,55 @@ bool Dic::bRefOut(void)
   u8 iRef = *m_zRefCount;
   
   return iRef ? true : false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* forget a word given name                                                   */
+/*----------------------------------------------------------------------------*/
+Word* Dic::pRemoveWord(StrVal& sName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  
+  Word* pWordDelete = nullptr;
+  
+  m_xLock.vGrabWrite();
+  
+  if (m_pLastWord->bIsName(sName)) {
+    pWordDelete = m_pLastWord;
+    m_pLastWord = m_pLastWord->pPrevWord();
+    //delete pWordDelete;
+    m_nWords--;
+    m_xLock.vDropWrite();
+    return pWordDelete;
+  }
+  
+  for (Word* pWord = m_pLastWord; pWord; pWord = pWord->pPrevWord()) {
+    
+    Word* pPrevWord = pWord->pPrevWord();
+    
+    if (!pPrevWord) {
+      m_xLock.vDropWrite();
+      return nullptr;
+    }
+    
+    if (!pPrevWord->bIsName(sName))
+      continue;
+    
+    pWordDelete = pPrevWord;
+    
+    pWord->vPrevWord(pPrevWord->pPrevWord());
+    
+    //delete pWordDelete;
+    m_nWords--;
+    
+    m_xLock.vDropWrite();
+    
+    return pWordDelete;
+  }
+  
+  m_xLock.vDropWrite();
+  
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
