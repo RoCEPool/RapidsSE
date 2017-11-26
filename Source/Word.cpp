@@ -39,10 +39,37 @@ void* Word::operator new(size_t iSize, Dic* pDic)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
+void* Word::operator new(size_t iSize, Dic* pDic, bool bPersistent)
+{
+  RASSERT(iSize);
+  RASSERT(bPersistent || ! bPersistent);
+  
+  Word* pWord = (Word*)(Heap::pAllocate(CN_WORD));
+  
+  pWord->m_pDic = pDic;
+  
+  return pWord;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator delete                                                            */
+/*----------------------------------------------------------------------------*/
 void Word::operator delete(void* pWordAddress)
 {
   Word* pWord = reinterpret_cast<Word*>(pWordAddress);
  
+  Heap::vFree(pWord);
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator delete                                                            */
+/*----------------------------------------------------------------------------*/
+void Word::operator delete(void* pWordAddress, bool bPersistent)
+{
+  RASSERT(bPersistent || ! bPersistent);
+  
+  Word* pWord = reinterpret_cast<Word*>(pWordAddress);
+  
   Heap::vFree(pWord);
 }
 
