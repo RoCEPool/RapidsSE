@@ -17,6 +17,7 @@
 : dic:
 
 diclock.grabwrite
+
   create
   WT_OBJECT word.this word.type!
   sizeof_dic allot
@@ -32,12 +33,35 @@ diclock.dropwrite
   does>
 ;
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+: dicPersistent:
+
+diclock.grabwrite
+
+  createPersistent
+  WT_OBJECT word.this word.type!
+  sizeof_dic allot
+  word.this >body object.magic!
+  CN_DIC word.this >body object.class!
+  tick folder word.this word.kind!
+  word.this >body dic.init
+  true word.this >body object.wordbody!
+
+  word.this word.name "  dic: %v" str.format .
+
+diclock.dropwrite
+
+  does>
+;
+
 /*----------------------------------------------------------------------------*/
 /* create a dictionary using name on the stack (leaves dic on stack)          */
 /*----------------------------------------------------------------------------*/
 : :dic
 
 diclock.grabwrite
+
   >create
   WT_OBJECT word.this word.type!
   sizeof_dic allot
@@ -54,6 +78,30 @@ diclock.dropwrite
   does>
 ;
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+: :dicPersistent
+
+diclock.grabwrite
+
+  >createPersistent
+  WT_OBJECT word.this word.type!
+  sizeof_dic allot
+  word.this >body object.magic!
+  CN_DIC word.this >body object.class!
+  tick folder word.this word.kind!
+  word.this >body dic.init
+  true word.this >body object.wordbody!
+  word.this
+
+  word.this word.name "  :dic %v" str.format .
+
+diclock.dropwrite
+  does>
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 : checkIsDic ( word )
 
   dup not if drop EC_NO_SUCH_FOLDER false exit then
@@ -62,6 +110,8 @@ diclock.dropwrite
   EC_NOT_A_FOLDER false
 ;
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 : dicHasRef ( word )
 
   dup execute dic.ref
