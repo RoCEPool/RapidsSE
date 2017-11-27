@@ -11,12 +11,6 @@ extern AttachMap* gpAttachMap;
 
 extern i8 giClassSize[];
 
-extern i8 gxMemCopy[CN_ENUMS];
-extern i8 gxMemMove[CN_ENUMS];
-extern i8 gxMemScribble[CN_ENUMS];
-extern i8 gxMemSet[CN_ENUMS];
-extern i8 gxMemZero[CN_ENUMS];
-
 /*----------------------------------------------------------------------------*/
 /* map a new an anonymous region of memory (private or shared)                */
 /*----------------------------------------------------------------------------*/
@@ -79,7 +73,7 @@ void MemLib::vCopy(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo)
   
   if (gpAttachMap) {
     gpAttachMap->m_iMemCopyBytes += nBytes;
-    gxMemCopy[eClassNo] += nBytes;
+    gpAttachMap->m_xMemCopy[eClassNo] += nBytes;
   }
 }
 
@@ -185,7 +179,7 @@ void MemLib::vMove(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo)
   
   if (gpAttachMap) {
     gpAttachMap->m_iMemMoveBytes += nBytes;
-    gxMemMove[eClassNo] += nBytes;
+    gpAttachMap->m_xMemMove[eClassNo] += nBytes;
   }
 }
 
@@ -202,7 +196,7 @@ void MemLib::vScribble(void* aAddress, i8 nBytes, eCN eClassNo)
   
   if (gpAttachMap) {
     gpAttachMap->m_iMemScribbleBytes += nBytes;
-    gxMemScribble[eClassNo] += nBytes;
+    gpAttachMap->m_xMemScribble[eClassNo] += nBytes;
   }
 }
 
@@ -215,7 +209,7 @@ void MemLib::vSet(void* pDst, char iByte, i8 nBytes, eCN eClassNo)
   
   if (gpAttachMap) {
     gpAttachMap->m_iMemSetBytes += nBytes;
-    gxMemSet[eClassNo] += nBytes;
+    gpAttachMap->m_xMemSet[eClassNo] += nBytes;
   }
 }
 
@@ -337,7 +331,7 @@ void MemLib::vZero(void* pDst, i8 nBytes, eCN eClassNo)
   
   if (gpAttachMap) {
     gpAttachMap->m_iMemZeroBytes += nBytes;
-    gxMemZero[eClassNo] += nBytes;
+    gpAttachMap->m_xMemZero[eClassNo] += nBytes;
   }
 }
 

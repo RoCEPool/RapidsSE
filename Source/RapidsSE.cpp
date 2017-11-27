@@ -20,12 +20,6 @@ bool          gbSHM          = false;
 Lock          gxDdlLock;
 Lock          gxDicLock;
 
-i8            gxMemCopy[CN_ENUMS];
-i8            gxMemMove[CN_ENUMS];
-i8            gxMemScribble[CN_ENUMS];
-i8            gxMemSet[CN_ENUMS];
-i8            gxMemZero[CN_ENUMS];
-
 /*----------------------------------------------------------------------------*/
 /* check and see if the port has other listeneters                            */
 /*----------------------------------------------------------------------------*/
