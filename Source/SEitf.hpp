@@ -223,6 +223,7 @@ namespace Interface
     bool bTxBegin(TokenVec& xTokenVec, i8 iReqNo);
     bool bTxCommit(TokenVec& xTokenVec, i8 iReqNo);
     bool bTxDumpAll(TokenVec& xTokenVec, i8 iReqNo);
+    bool bTxEnd(TokenVec& xTokenVec, i8 iReqNo);
     bool bTxRollback(TokenVec& xTokenVec, i8 iReqNo);
   
     //--------------------------------------------------------------------------

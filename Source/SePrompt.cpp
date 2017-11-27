@@ -706,16 +706,18 @@ bool SePrompt::bCmd_BeginInsert(void)
     return false;
   }
   
-  bool bResult = m_pSEitf->bBeginTx();
-  
-  if (!bResult) {
-    m_pSEitf->vSetLastError(EC_BEGIN_TX_FAILED);
+  // begin a transaction
+  m_xTokenVec[0]->vCopy("txBeg"_Stz);
+  m_xTokenVec[1]->vCopy(""_Stz);
+  if (!bExecuteRequest()) {
+     vTrace("SePrompt::bBeginInsert : txBegin FAILED!!!\n"_Stz);
+     m_pSEitf->vSetLastError(EC_BEGIN_TX_FAILED);
     return false;
   }
   
   m_sResponse = "<ok>"_Stz;
   
-  return bResult;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1396,8 +1398,21 @@ bool SePrompt::bCmd_EndInsert(void)
   
   ASSERT(m_pSEitf->m_pCurrentTable == nullptr);
   
-  m_pSEitf->vCommitTx();
-  m_pSEitf->vEndTx();
+  // commit a transaction
+  m_xTokenVec[0]->vCopy("txCmt"_Stz);
+  if (!bExecuteRequest()) {
+    vTrace("SePrompt::EndInsert : txCmt FAILED!!!\n"_Stz);
+    //m_pSEitf->vSetLastError(EC_COMMIT_TX_FAILED);
+    return false;
+  }
+  
+  // begin a transaction
+  m_xTokenVec[0]->vCopy("txEnd"_Stz);
+  if (!bExecuteRequest()) {
+    vTrace("SePrompt::EndInsert : txEnd FAILED!!!\n"_Stz);
+    //m_pSEitf->vSetLastError(EC_END_TX_FAILED);
+    return false;
+  }
   
   m_sResponse = "<ok>"_Stz;
   

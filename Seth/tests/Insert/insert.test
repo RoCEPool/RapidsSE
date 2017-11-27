@@ -76,7 +76,7 @@ rows: 22
 begin insert T1;
 success
 
-insert row "21,";
+insert row "21,null";
 failure: 'invalid value'
 
 insert row "22,ghijk";
