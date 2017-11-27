@@ -301,6 +301,7 @@ namespace Tasks
     void vAddPrimitives_Object(void);
     void vAddPrimitives_OpFrame(void);
     void vAddPrimitives_PartitionScheduler(void);
+    void vAddPrimitives_Persistence(void);
     void vAddPrimitives_Plan(void);
     void vAddPrimitives_PlanList(void);
     void vAddPrimitives_Planner(void);
@@ -831,6 +832,9 @@ namespace Tasks
     static void vPartitionSchedulerTaskQueueStore(MP_Task mpTask);
     static void vPartitionSchedulerThreadQueueStore(MP_Task mpTask);
   
+    // persistence
+    static void vPersistenceCheckpoint(MP_Task mpTask);
+    
     // plan
     static void vPlanCompile(MP_Task mpTask);
     static void vPlanDelete(MP_Task mpTask);
