@@ -2,14 +2,12 @@
 /* PartitionScheduler.cpp - schedule tasks to server threads                  */
 /*============================================================================*/
 
+#include "StorageEngine.h"
 #include "Schedulers.h"
 
 #include "Thread.hpp"
 
-extern i8 giSchEnqueueTask;
-extern i8 giSchEnqueueTaskWait;
-extern i8 giSchGetTask;
-extern i8 giSchGetTaskWait;
+extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -120,7 +118,7 @@ void PartitionScheduler::vEnqueueTask_Mutex(i8 i_PtnNo, Task* mpTask)
   // no other thread can be running the enqueue or get functions
   m_xSlots[i_PtnNo].m_pSemaphore->vMutexLock();
   
-  giSchEnqueueTask++;
+  gpAttachMap->m_iSchEnqueueTask++;
   
   //
   // **there will be no threads in bGetTask()**
@@ -142,7 +140,7 @@ void PartitionScheduler::vEnqueueTask_Mutex(i8 i_PtnNo, Task* mpTask)
   // no available threads, so queue the task
   m_xSlots[i_PtnNo].m_pTaskQueue->vAppend(mpTask);
  
-  giSchEnqueueTaskWait++;
+  gpAttachMap->m_iSchEnqueueTaskWait++;
   
   // allow another thread to continue
   m_xSlots[i_PtnNo].m_pSemaphore->vMutexUnlock();
@@ -162,7 +160,7 @@ bool PartitionScheduler::bGetTask_Mutex(i8 i_PtnNo, Threads::Thread* mpThread, b
   // lock semaphore so only this thread is running
   // no other thread can be running the enqueue or get functions
   m_xSlots[i_PtnNo].m_pSemaphore->vMutexLock();
-  giSchGetTask++;
+  gpAttachMap->m_iSchGetTask++;
   //
   // **there will be no threads in vEnqueueTask()**
   //
@@ -180,7 +178,7 @@ bool PartitionScheduler::bGetTask_Mutex(i8 i_PtnNo, Threads::Thread* mpThread, b
   
   // when the thread is prepared to wait, put thread into queue
   if (bWait) {
-    giSchGetTaskWait++;
+    gpAttachMap->m_iSchGetTaskWait++;
     m_xSlots[i_PtnNo].m_pThreadQueue->vAppend(mpThread);
     do {
       m_xSlots[i_PtnNo].m_pSemaphore->vCondWait_Mutex();

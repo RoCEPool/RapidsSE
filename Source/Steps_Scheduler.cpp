@@ -12,11 +12,6 @@ extern NP_Task         gnpBootTask;
 extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
 
-extern i8 giSchEnqueueTask;
-extern i8 giSchEnqueueTaskWait;
-extern i8 giSchGetTask;
-extern i8 giSchGetTaskWait;
-
 // Scheduler: ////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
@@ -39,10 +34,10 @@ void Task::vSchedulerList(MP_Task mpTask)
 {
   ENTRY("vSchedulerList"_Stz);
   
-  vTrace("SchEnqueueTask %lld\n"_Stz,giSchEnqueueTask);
-  vTrace("SchEnqueueTaskWait %lld\n"_Stz,giSchEnqueueTaskWait);
-  vTrace("SchGetTask %lld\n"_Stz,giSchGetTask);
-  vTrace("SchGetTaskWait %lld\n"_Stz,giSchGetTaskWait);
+  vTrace("SchEnqueueTask %lld\n"_Stz,gpAttachMap->m_iSchEnqueueTask);
+  vTrace("SchEnqueueTaskWait %lld\n"_Stz,gpAttachMap->m_iSchEnqueueTaskWait);
+  vTrace("SchGetTask %lld\n"_Stz,gpAttachMap->m_iSchGetTask);
+  vTrace("SchGetTaskWait %lld\n"_Stz,gpAttachMap->m_iSchGetTaskWait);
   
   EXIT();
 }
@@ -93,10 +88,10 @@ void Task::vSchedulerReset(MP_Task mpTask)
 {
   ENTRY("vSchedulerReset"_Stz);
   
-  giSchEnqueueTask = 0;
-  giSchEnqueueTaskWait = 0;
-  giSchGetTask = 0;
-  giSchGetTaskWait = 0;
+  gpAttachMap->m_iSchEnqueueTask = 0;
+  gpAttachMap->m_iSchEnqueueTaskWait = 0;
+  gpAttachMap->m_iSchGetTask = 0;
+  gpAttachMap->m_iSchGetTaskWait = 0;
   
   EXIT();
 }

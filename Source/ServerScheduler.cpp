@@ -2,14 +2,12 @@
 /* ServerScheduler.cpp - schedule tasks to server threads                    */
 /*============================================================================*/
 
+#include "StorageEngine.h"
 #include "Schedulers.h"
 
 #include "Thread.hpp"
 
-extern i8 giSchEnqueueTask;
-extern i8 giSchEnqueueTaskWait;
-extern i8 giSchGetTask;
-extern i8 giSchGetTaskWait;
+extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -84,7 +82,7 @@ void ServerScheduler::vEnqueueTask_Mutex(Task* mpTask)
   // no other thread can be running the enqueue or get functions
   m_xSemaphore.vMutexLock();
   
-  giSchEnqueueTask++;
+  gpAttachMap->m_iSchEnqueueTask++;
   
   //
   // **there will be no threads in bGetTask()**
@@ -107,7 +105,7 @@ void ServerScheduler::vEnqueueTask_Mutex(Task* mpTask)
   m_xTaskQueue.vAppend(mpTask);
   //vTrace("Queueing as no threads...%lld\n"_Stz, m_xTaskQueue.iCount());
   
-  giSchEnqueueTaskWait++;
+  gpAttachMap->m_iSchEnqueueTaskWait++;
   
   // allow another thread to continue
   m_xSemaphore.vMutexUnlock();
@@ -127,7 +125,7 @@ bool ServerScheduler::bGetTask_Mutex(Threads::Thread* mpThread, bool bWait)
   // lock semaphore so only this thread is running
   // no other thread can be running the enqueue or get functions
   m_xSemaphore.vMutexLock();
-  giSchGetTask++;
+  gpAttachMap->m_iSchGetTask++;
   //
   // **there will be no threads in vEnqueueTask()**
   //
@@ -145,7 +143,7 @@ bool ServerScheduler::bGetTask_Mutex(Threads::Thread* mpThread, bool bWait)
   
   // when the thread is prepared to wait, put thread into queue
   if (bWait) {
-    giSchGetTaskWait++;
+    gpAttachMap->m_iSchGetTaskWait++;
     m_xThreadQueue.vAppend(mpThread);
     do {
       m_xSemaphore.vCondWait_Mutex();

@@ -87,7 +87,6 @@ namespace StorageEngine
     // statistics counters
 
     i8            m_iSchEnqueueTask;
-
     i8            m_iSchEnqueueTaskWait;
     i8            m_iSchGetTask;
     i8            m_iSchGetTaskWait;

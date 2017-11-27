@@ -12,11 +12,6 @@ extern NP_Task         gnpBootTask;
 extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
 
-extern i8 giSchEnqueueTask;
-extern i8 giSchEnqueueTaskWait;
-extern i8 giSchGetTask;
-extern i8 giSchGetTaskWait;
-
 // Scheduler: ////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
