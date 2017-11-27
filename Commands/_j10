@@ -24,7 +24,9 @@ vfyidx j10 hidden;
 
 docol bpa ;
 
-docol bpw ;
+//docol bpw ;
+
+checkpoint "/tmp/checkpoint.dmp" ;
 
 /*============================================================================*/
 /* end                                                                        */
