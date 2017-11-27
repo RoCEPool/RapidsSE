@@ -97,11 +97,14 @@ void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize, i8 iJumboSize)
   ASSERT(m_pPersistentLargeHeap);
   ASSERT(m_pPersistentSmallHeap);
   
-  ASSERT(m_pTxSet);
+  // create the tx sets
+  m_pTxSet = new TxSet(gpAttachMap->m_pGrid->iThisNode());
   
   ASSERT(m_pGrid );
-  ASSERT(m_pPartitionScheduler);
-  ASSERT(m_pServerScheduler);
+  
+  m_pPartitionScheduler = new PartitionScheduler;
+  m_pServerScheduler = new ServerScheduler;
+  
   ASSERT(m_pWord);
   ASSERT(m_pTaskList);
   ASSERT(m_pThreadList);

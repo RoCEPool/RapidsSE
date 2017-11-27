@@ -438,13 +438,7 @@ void RapidsSE::vSystemInit(void)
   gnpBootTask->vName(sName);
   gnpBootTask->vActorModel(AC_SERVER);
   
-  gpAttachMap->m_pPartitionScheduler = new PartitionScheduler;
-  gpAttachMap->m_pServerScheduler = new ServerScheduler;
-  
   vDicCompile(gnpBootTask);
-  
-  // create the tx sets
-  gpAttachMap->m_pTxSet = new TxSet(gpAttachMap->m_pGrid->iThisNode());
   
   gpAttachMap->vRecordGlobals(gxArguments.m_sRegionName,
                               gxArguments.m_iRegionSize,
