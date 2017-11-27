@@ -8,9 +8,11 @@
 /* create the parts                                                           */
 /*----------------------------------------------------------------------------*/
 
+// create the request queue
 queue: requestQueue
 
-dic:   tenants
+// create the root /tenants dictionary
+dic: tenants
 
 /*----------------------------------------------------------------------------*/
 /* copy dictionary path from seitf to this request task                       */
