@@ -84,6 +84,26 @@ namespace StorageEngine
     
     Atomic        m_zPlanId;
     
+    // statistics counters
+
+    i8            m_iSchEnqueueTask;
+
+    i8            m_iSchEnqueueTaskWait;
+    i8            m_iSchGetTask;
+    i8            m_iSchGetTaskWait;
+
+    i8            m_iMemCopyBytes;
+    i8            m_iMemMoveBytes;
+    i8            m_iMemScribbleBytes;
+    i8            m_iMemSetBytes;
+    i8            m_iMemZeroBytes;
+    
+    i8            m_xMemCopy[CN_ENUMS];
+    i8            m_xMemMove[CN_ENUMS];
+    i8            m_xMemScribble[CN_ENUMS];
+    i8            m_xMemSet[CN_ENUMS];
+    i8            m_xMemZero[CN_ENUMS];
+  
     // must be last
     Footer m_xFooter;
     

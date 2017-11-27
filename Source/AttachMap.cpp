@@ -126,7 +126,25 @@ void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize, i8 iJumboSize)
   //m_pBitMap = new BitMap;
   
   // initialize the plan number
-  m_zPlanId = m_pGrid->iThisNode() << 48;  
+  m_zPlanId = m_pGrid->iThisNode() << 48;
+
+  ASSERT( ! m_iSchEnqueueTask );
+  ASSERT( ! m_iSchEnqueueTaskWait );
+  ASSERT( ! m_iSchGetTask );
+  ASSERT( ! m_iSchGetTaskWait );
+  
+  ASSERT( ! m_iMemCopyBytes );
+  ASSERT( ! m_iMemMoveBytes );
+  ASSERT( ! m_iMemScribbleBytes );
+  ASSERT( ! m_iMemSetBytes );
+  ASSERT( ! m_iMemZeroBytes );
+
+  //m_xMemCopy[CN_ENUMS];
+  //m_xMemMove[CN_ENUMS];
+  //m_xMemScribbl/e[CN_ENUMS];
+  //m_xMemSet[CN_ENUMS];
+  //m_xMemZero[CN_ENUMS];
+  
 }
 
 /*----------------------------------------------------------------------------*/
