@@ -4,9 +4,8 @@
 
 #include "StorageEngine.h"
 
+extern AttachMap*  gpAttachMap;
 extern BufferPool* gpBufferPool;
-
-extern TxSet*      gpTxSet;
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
@@ -63,7 +62,6 @@ void AttachMap::vGetGlobals(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
 
-  gpTxSet  = m_pTxSet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -99,7 +97,7 @@ void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize, i8 iJumboSize)
   ASSERT(m_pPersistentLargeHeap);
   ASSERT(m_pPersistentSmallHeap);
   
-  m_pTxSet      = gpTxSet;
+  ASSERT(m_pTxSet);
   
   ASSERT(m_pGrid );
   ASSERT(m_pPartitionScheduler);

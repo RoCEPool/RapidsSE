@@ -79,7 +79,7 @@ void TxSet::operator delete(void* pBufferAddress)
 {
   RASSERT(pBufferAddress);
   
-  vFatal("fatal: gpTxSet class cannot be deleted"_Stz);
+  vFatal("fatal: TxSet class cannot be deleted"_Stz);
   
   NEVER_REACH;
 }

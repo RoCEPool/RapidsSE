@@ -9,8 +9,6 @@ Arguments     gxArguments;
 BufferPool*   gpBufferPool   = nullptr;
 AttachMap *   gpAttachMap    = nullptr;
 
-TxSet*        gpTxSet        = nullptr;
-
 File*         gpTraceFile    = nullptr;
 
 NP_Task       gnpBootTask    = nullptr;
@@ -449,7 +447,7 @@ void RapidsSE::vSystemInit(void)
   vDicCompile(gnpBootTask);
   
   // create the tx sets
-  gpTxSet = new TxSet(gpAttachMap->m_pGrid->iThisNode());
+  gpAttachMap->m_pTxSet = new TxSet(gpAttachMap->m_pGrid->iThisNode());
   
   gpAttachMap->vRecordGlobals(gxArguments.m_sRegionName,
                               gxArguments.m_iRegionSize,

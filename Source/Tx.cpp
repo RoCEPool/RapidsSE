@@ -4,8 +4,8 @@
 
 #include "StorageEngine.h"
 
-extern Arguments gxArguments;
-extern TxSet*    gpTxSet;
+extern AttachMap* gpAttachMap;
+extern Arguments  gxArguments;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -69,7 +69,7 @@ Tx::Tx(bool bAddToSet)
   _checkInitialised_(CN_TX);
 
   if (bAddToSet)
-    gpTxSet->vAddLocalTx(this);
+    gpAttachMap->m_pTxSet->vAddLocalTx(this);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
 }
@@ -92,7 +92,7 @@ Tx::Tx(i8 iDistTxId)
   
   _checkInitialised_(CN_TX);
   
-  gpTxSet->vAddDistTx_NL(this);
+  gpAttachMap->m_pTxSet->vAddDistTx_NL(this);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
 }
@@ -105,7 +105,7 @@ Tx::~Tx(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
   
   if (-1 != m_iLocalTxId)
-    gpTxSet->vRemoveTx(this);
+    gpAttachMap->m_pTxSet->vRemoveTx(this);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -119,18 +119,20 @@ Tx* Tx::pTestDistTx(i8 iDistTxId)
 {
   Tx* pDistTx = nullptr;
   
-  gpTxSet->vGrabWrite();
+  TxSet* pTxSet = gpAttachMap->m_pTxSet;
   
-  Tx* pTxFound = gpTxSet->pFindTx_NL(iDistTxId);
+  pTxSet->vGrabWrite();
+  
+  Tx* pTxFound = pTxSet->pFindTx_NL(iDistTxId);
   
   if (pTxFound) {
-    gpTxSet->vDropWrite();
+    pTxSet->vDropWrite();
     return pTxFound;
   }
   
   pDistTx = new Tx(iDistTxId);
   
-  gpTxSet->vDropWrite();
+  pTxSet->vDropWrite();
   
   return pDistTx;
 }

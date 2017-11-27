@@ -7,7 +7,6 @@
 #include "SePrompt.hpp"
 
 extern AttachMap*      gpAttachMap;
-extern TxSet*          gpTxSet;
 
 extern NP_Task         gnpBootTask;
 extern Lock            gxDdlLock;
@@ -219,7 +218,7 @@ void Task::vTxDumpAll(MP_Task mpTask)
 {
   ENTRY("vTxDumpAll"_Stz);
   
-  gpTxSet->vDumpAll();
+  gpAttachMap->m_pTxSet->vDumpAll();
   
   EXIT();
 }

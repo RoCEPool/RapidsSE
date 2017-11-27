@@ -6,7 +6,6 @@
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
-extern TxSet*     gpTxSet;
 
 struct ReqTable {
   Stz* aCommand;
