@@ -31,6 +31,7 @@ void* Word::operator new(size_t iSize, Dic* pDic)
 
   Word* pWord = (Word*)(Heap::pAllocate(CN_WORD));
   
+  pWord->m_bPersistent = false;
   pWord->m_pDic = pDic;
   
   return pWord;
@@ -44,8 +45,9 @@ void* Word::operator new(size_t iSize, Dic* pDic, bool bPersistent)
   RASSERT(iSize);
   RASSERT(bPersistent || ! bPersistent);
   
-  Word* pWord = (Word*)(Heap::pAllocate(CN_WORD));
+  Word* pWord = (Word*)(Heap::pAllocate(CN_WORD,bPersistent));
   
+  pWord->m_bPersistent = bPersistent;
   pWord->m_pDic = pDic;
   
   return pWord;
@@ -58,7 +60,7 @@ void Word::operator delete(void* pWordAddress)
 {
   Word* pWord = reinterpret_cast<Word*>(pWordAddress);
  
-  Heap::vFree(pWord);
+  Heap::vFree(pWord,pWord->m_bPersistent);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -70,7 +72,7 @@ void Word::operator delete(void* pWordAddress, bool bPersistent)
   
   Word* pWord = reinterpret_cast<Word*>(pWordAddress);
   
-  Heap::vFree(pWord);
+  Heap::vFree(pWord,bPersistent);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -83,6 +85,7 @@ Word::Word(Stz* sName)
   
   m_sName         = sName;
   m_eWordType     = WT_ROUTINE;
+  //m_bPersistent   = false;
   m_eDistributed  = DT_NOPARTICIPANT;
   //m_pDic        = pDic;
   m_pKind         = gpAttachMap->m_pWord ? gpAttachMap->m_pWord : this;

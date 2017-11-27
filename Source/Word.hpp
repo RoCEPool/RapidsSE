@@ -57,6 +57,7 @@ namespace Dictionaries
   private:
     s32      m_sName;        // the name of this word
     eWT      m_eWordType;    // type of word
+    bool     m_bPersistent;  // is on persistent heap
     eDT      m_eDistributed; // distributed
     i8       m_iEpoch;       // epoch no. used by bp analyzer
     Dic*     m_pDic;         // which dictionary this word in
@@ -86,6 +87,8 @@ namespace Dictionaries
     void* operator new(size_t, Dic* pDic);
     void* operator new(size_t, Dic* pDic, bool bPersistent);
     void  operator delete(void* pWordAddress);
+  
+    // to be delete after discussion with Alka
     void  operator delete(void* pWordAddress, bool bPersistent);
   
     Word(Stz* sName);
