@@ -72,6 +72,7 @@ Arguments::Arguments(void)
   m_bKillPrev      = false;
   m_bDontFree      = false;
   m_bFreeRB        = false;
+  m_bReload        = false;
   
   m_bStrictMode    = false;
   
@@ -460,6 +461,11 @@ bool Arguments::bParse(int argc, Stz* argv[])
     
     if (argv[i_Arg]->bSame("--freeRB"_Stz)) {
       m_bFreeRB = true;
+      continue;
+    }
+    
+    if (argv[i_Arg]->bSame("--reload"_Stz)) {
+      m_bReload = true;
       continue;
     }
     
