@@ -6,8 +6,6 @@
 
 extern AttachMap*      gpAttachMap;
 
-// tx: /////////////////////////////////////////////////////////////////////////
-
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
@@ -27,8 +25,13 @@ void Task::vPersistenceCheckpoint(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(sFilePath) )
     THROW_INVALID_DSTACK("persistence::checkpoint"_Stz);
   
-  // take a checkpoint
   vTrace("Taking checkpoint into file : %s\n"_Stz, sFilePath.aChar());
+
+  BPA* pBPA = new BPA;
+  
+  pBPA->vWritePersistentHeaps(sFilePath);
+  
+  delete pBPA;
   
   EXIT();
 }
