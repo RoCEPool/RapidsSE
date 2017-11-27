@@ -260,9 +260,9 @@ eEC RapidsSE_BeginInsert(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable
     bool bResult = pSEitf->bBeginTx();
     
     if (!bResult) {
-      pSEitf->vSetLastError(EC_BEGIN_TX_FAILED);
-      TRACE_ERROR("i",EC_BEGIN_TX_FAILED);
-      return EC_BEGIN_TX_FAILED;
+      pSEitf->vSetLastError(EC_TX_BEGIN_FAILED);
+      TRACE_ERROR("i",EC_TX_BEGIN_FAILED);
+      return EC_TX_BEGIN_FAILED;
     }
     
     TRACE_EXIT("ea"_Stz);
@@ -319,9 +319,9 @@ eEC RapidsSE_BeginInsertPartition(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, St
     bool bResult = pSEitf->bBeginTx();
     
     if (!bResult) {
-      pSEitf->vSetLastError(EC_BEGIN_TX_FAILED);
-      TRACE_ERROR("i",EC_BEGIN_TX_FAILED);
-      return EC_BEGIN_TX_FAILED;
+      pSEitf->vSetLastError(EC_TX_BEGIN_FAILED);
+      TRACE_ERROR("i",EC_TX_BEGIN_FAILED);
+      return EC_TX_BEGIN_FAILED;
     }
     
     TRACE_EXIT("ea"_Stz);

@@ -9,8 +9,8 @@ namespace Debugging
   {
   /*  0 */ EC_NONE=0,
   /*  1 */ EC_ASSERT,
-  /*  2 */ EC_BEGIN_TX_FAILED,
-  /*  3 */ EC_CATALOG_EXISTS,
+  
+  /*    */ EC_CATALOG_EXISTS,
   
   /*  4 */ EC_CLUSTER_NOT_STARTED,
   /*  5 */ EC_CLUSTER_PARTITIONS_MISMATCH,
@@ -80,6 +80,11 @@ namespace Debugging
   /* 57 */ EC_TABLE_IN_USE,
   /* 58 */ EC_TENANT_EXISTS,
   
+  /*    */ EC_TX_BEGIN_FAILED,
+  /*    */ EC_TX_COMMIT_FAILED,
+  /*    */ EC_TX_END_FAILED,
+  /*    */ EC_TX_ROLLBACK_FAILED,
+    
   /* 59 */ EC_VALIDATION_FAILURE,
   /* 60 */ EC_VERSION_MISMATCH,
   /* 61 */ EC_ENUMS
@@ -89,8 +94,7 @@ namespace Debugging
   {
   /*  0 */ "none"_Stz,
   /*  1 */ "assert"_Stz,
-  /*  2 */ "begin transaction failed"_Stz,
-  /*  3 */ "catalog exists"_Stz,
+  /*    */ "catalog exists"_Stz,
   /*  4 */ "cluster not started"_Stz,
   /*  5 */ "cluster partitions per node mismatch"_Stz,
   /*  6 */ "cluster node size mismatch"_Stz,
@@ -157,6 +161,12 @@ namespace Debugging
   /* 56 */ "table not empty"_Stz,
   /* 57 */ "table in use"_Stz,
   /* 58 */ "tenant exists"_Stz,
+    
+  /*    */ "begin transaction failed"_Stz,
+  /*    */ "commit transaction failed"_Stz,
+  /*    */ "end transaction failed"_Stz,
+  /*    */ "rollback transaction failed"_Stz,
+    
   /* 59 */ "validation failure"_Stz,
   /* 60 */ "version mismatch"_Stz,
 

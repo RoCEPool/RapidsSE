@@ -623,8 +623,8 @@ void Task::vAddConstants(void)
   // EC_ : error codes
   /*  0 */ vAddConstant("EC_NONE"_Stz,               EC_NONE);
   /*  1 */ vAddConstant("EC_ASSERT"_Stz,             EC_ASSERT);
-  /*  2 */ vAddConstant("EC_BEGIN_TX_FAILED"_Stz,    EC_BEGIN_TX_FAILED);
-  /*  3 */ vAddConstant("EC_CATALOG_EXISTS"_Stz,     EC_CATALOG_EXISTS);
+  
+  /*    */ vAddConstant("EC_CATALOG_EXISTS"_Stz,     EC_CATALOG_EXISTS);
   /*  4 */ vAddConstant("EC_CLUSTER_NOT_STARTED"_Stz,EC_CLUSTER_NOT_STARTED);
   /*  5 */ vAddConstant("EC_CLUSTER_PARTITIONS_MISMATCH"_Stz,EC_CLUSTER_PARTITIONS_MISMATCH);
   /*  6 */ vAddConstant("EC_CLUSTER_SIZE_MISMATCH"_Stz,      EC_CLUSTER_SIZE_MISMATCH);
@@ -685,6 +685,12 @@ void Task::vAddConstants(void)
   /* 56 */ vAddConstant("EC_TABLE_IN_USE"_Stz,       EC_TABLE_IN_USE);
   /* 57 */ vAddConstant("EC_TABLE_NOT_EMPTY"_Stz,    EC_TABLE_NOT_EMPTY);
   /* 58 */ vAddConstant("EC_TENANT_EXISTS"_Stz,      EC_TENANT_EXISTS);
+  
+  /*    */ vAddConstant("EC_TX_BEGIN_FAILED"_Stz,    EC_TX_BEGIN_FAILED);
+  /*    */ vAddConstant("EC_TX_COMMIT_FAILED"_Stz,   EC_TX_COMMIT_FAILED);
+  /*    */ vAddConstant("EC_TX_END_FAILED"_Stz,      EC_TX_END_FAILED);
+  /*    */ vAddConstant("EC_TX_ROLLBACK_FAILED"_Stz, EC_TX_ROLLBACK_FAILED);
+  
   /* 59 */ vAddConstant("EC_VALIDATION_FAILURE"_Stz, EC_VALIDATION_FAILURE);
   /* 60 */ vAddConstant("EC_VERSION_MISMATCH"_Stz,   EC_VERSION_MISMATCH);
   /* 61 */ vAddConstant("EC_ENUMS"_Stz,              EC_ENUMS);

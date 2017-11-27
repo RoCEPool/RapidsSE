@@ -711,7 +711,7 @@ bool SePrompt::bCmd_BeginInsert(void)
   m_xTokenVec[1]->vCopy(""_Stz);
   if (!bExecuteRequest()) {
      vTrace("SePrompt::bBeginInsert : txBegin FAILED!!!\n"_Stz);
-     m_pSEitf->vSetLastError(EC_BEGIN_TX_FAILED);
+     m_pSEitf->vSetLastError(EC_TX_BEGIN_FAILED);
     return false;
   }
   
@@ -1402,7 +1402,7 @@ bool SePrompt::bCmd_EndInsert(void)
   m_xTokenVec[0]->vCopy("txCmt"_Stz);
   if (!bExecuteRequest()) {
     vTrace("SePrompt::EndInsert : txCmt FAILED!!!\n"_Stz);
-    //m_pSEitf->vSetLastError(EC_COMMIT_TX_FAILED);
+    m_pSEitf->vSetLastError(EC_TX_COMMIT_FAILED);
     return false;
   }
   
@@ -1410,7 +1410,7 @@ bool SePrompt::bCmd_EndInsert(void)
   m_xTokenVec[0]->vCopy("txEnd"_Stz);
   if (!bExecuteRequest()) {
     vTrace("SePrompt::EndInsert : txEnd FAILED!!!\n"_Stz);
-    //m_pSEitf->vSetLastError(EC_END_TX_FAILED);
+    m_pSEitf->vSetLastError(EC_TX_END_FAILED);
     return false;
   }
   
