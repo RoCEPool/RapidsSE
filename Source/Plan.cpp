@@ -6,7 +6,6 @@
 #include "Plans.h"
 
 extern AttachMap* gpAttachMap;
-extern Atomic     gzPlanId;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -95,7 +94,7 @@ void Plan::vInit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLAN,_FOOTER_);
   
-  m_iPlanId = ++gzPlanId;
+  m_iPlanId = ++gpAttachMap->m_zPlanId;
   
   //m_sName
   //m_xDic

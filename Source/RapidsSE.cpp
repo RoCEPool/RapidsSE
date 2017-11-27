@@ -37,8 +37,6 @@ i8            gxMemScribble[CN_ENUMS];
 i8            gxMemSet[CN_ENUMS];
 i8            gxMemZero[CN_ENUMS];
 
-Atomic        gzPlanId;
-
 BitMap*       gpBitMap;
 
 /*----------------------------------------------------------------------------*/
@@ -451,9 +449,6 @@ void RapidsSE::vSystemInit(void)
   gpAttachMap->vRecordGlobals(gxArguments.m_sRegionName,
                               gxArguments.m_iRegionSize,
                               gxArguments.m_iJumboSize);
-  
-  // initialize the plan number
-  gzPlanId = gpAttachMap->m_pGrid->iThisNode() << 48;
   
   // get the trace file
   Word* pTraceFileWord = gpAttachMap->m_xMainDic.pFindWord("trace_file"_Stz);

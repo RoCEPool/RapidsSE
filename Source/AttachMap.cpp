@@ -116,6 +116,11 @@ void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize, i8 iJumboSize)
   
   m_iStop       = 0;
   m_iQuit       = 0;
+  
+  //m_xLocks
+  
+  // initialize the plan number
+  m_zPlanId = m_pGrid->iThisNode() << 48;  
 }
 
 /*----------------------------------------------------------------------------*/

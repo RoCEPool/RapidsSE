@@ -81,6 +81,8 @@ namespace StorageEngine
     
     Locks         m_xLocks;
     
+    Atomic        m_zPlanId;
+    
     // must be last
     Footer m_xFooter;
     
