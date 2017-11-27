@@ -126,8 +126,10 @@ void Task::vBpWriteBufferPool(MP_Task mpTask)
   
   BPA* pBPA = new BPA;
   
-  pBPA->vWriteBuffers("/tmp/buffers.dmp"_Stz);
-  
+  //pBPA->vWriteBuffers("/tmp/buffers.dmp"_Stz);
+
+  pBPA->vWritePersistentHeaps("/tmp/persistentHeaps.dmp"_Stz);
+
   delete pBPA;
   
   EXIT();

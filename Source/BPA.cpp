@@ -668,6 +668,60 @@ void BPA::vWriteBuffers(Stz* sFilePath)
 }
 
 /*----------------------------------------------------------------------------*/
+/* write given heap to file                                                   */
+/*----------------------------------------------------------------------------*/
+void BPA::vWriteHeap(Heap* pHeap, File* pFile)
+{
+  _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
+  
+  Timer xTimer;
+  xTimer.vStart();
+  
+  pHeap->vGrabLock();
+  
+  bool bResult = pFile->bWriteBytes(pHeap,C_SIZE_POOL_BUFFER);
+  ASSERT(bResult);
+  
+  for (HeapBuffer* pHeapBuffer = pHeap->pFirstBuffer();
+       pHeapBuffer;
+       pHeapBuffer = pHeap->pNextBuffer(pHeapBuffer)) {
+    
+    bResult = pFile->bWriteBytes(pHeapBuffer,C_SIZE_POOL_BUFFER);
+    ASSERT(bResult);
+  }
+  
+  pHeap->vDropLock();
+  
+  xTimer.vUpdate();
+  vTrace("duration %lldms\n"_Stz,xTimer.iMilliseconds());
+}
+
+/*----------------------------------------------------------------------------*/
+/* write all the heaps to given file                                          */
+/*----------------------------------------------------------------------------*/
+void BPA::vWritePersistentHeaps(Stz* sFilePath)
+{
+  _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
+  
+  File* pFile = new File();
+  pFile->bOpen(sFilePath, C_OPEN_WRITE);
+  
+  vTrace("Writing persistent small heap\n"_Stz);
+  vWriteHeap(gpAttachMap->m_pPersistentSmallHeap,pFile);
+  
+  vTrace("Writing persistent medium heap\n"_Stz);
+  vWriteHeap(gpAttachMap->m_pPersistentMediumHeap,pFile);
+  
+  vTrace("Writing persistent large heap\n"_Stz);
+  vWriteHeap(gpAttachMap->m_pPersistentLargeHeap,pFile);
+
+  pFile->vClose();
+  delete pFile;
+  
+  _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
