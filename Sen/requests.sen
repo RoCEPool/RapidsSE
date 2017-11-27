@@ -23,6 +23,12 @@
 "requests_persistence.sen" include
 
 // create /tenants/boray/catalogs/rapidsse/schemas/public
+
+// create the default folder hierarchy if not reloading
+// args.reload not if
+//   createDefaultFolders
+// then
+
 createDefaultFolders
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
