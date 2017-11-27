@@ -122,7 +122,7 @@ void Task::vBpReadBufferPool(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vBpWriteBufferPool(MP_Task mpTask)
 {
-  ENTRY("vBpDumpBuffers"_Stz);
+  ENTRY("vBpWriteBufferPool"_Stz);
   
   BPA* pBPA = new BPA;
   

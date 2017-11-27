@@ -653,7 +653,7 @@ void BPA::vWriteBuffers(Stz* sFilePath)
     ASSERT(bResult);
     
   }
-  ASSERT(*nBufferCount == *nBuffer);
+  ASSERT(*nBufferCount + 1 == *nBuffer);
   
   i8 iUpdate = Synch::iTicks();
   
