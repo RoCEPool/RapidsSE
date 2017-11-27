@@ -79,6 +79,8 @@ namespace StorageEngine
     i8            m_iQuit;
     i8            m_iStop;
     
+    Locks         m_xLocks;
+    
     // must be last
     Footer m_xFooter;
     

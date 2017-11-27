@@ -14,7 +14,7 @@ void* AttachMap::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  AttachMap* pAttachMap = (AttachMap*)gpBufferPool->pAllocBuffer();
+  AttachMap* pAttachMap = (AttachMap*)gpBufferPool->pAllocAttachMapBuffer();
   
   return pPoolCheck<void*>(pAttachMap);
 }

@@ -2,10 +2,11 @@
 /* Lock.cpp -- Shared Read / Exclusive Write Lock                             */
 /*============================================================================*/
 
+#include "StorageEngine.h"
 #include "System.h"
 #include "Pool.h"
 
-extern Locks gxLocks;
+extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -111,7 +112,7 @@ bool Lock::bGrabRead(void)
   ASSERT(m_eLockKind);
   
   ++m_zReadGrabs;
-  ++gxLocks.m_zReadGrabs[m_eLockKind];
+  ++gpAttachMap->m_xLocks.m_zReadGrabs[m_eLockKind];
   
   i8 rCode = Synch::iLockGrabRead(&m_uLockWord);
   if (rCode) {
@@ -120,7 +121,7 @@ bool Lock::bGrabRead(void)
   }
   
   ++m_zReadCollisions;
-  ++gxLocks.m_zReadCollisions[m_eLockKind];
+  ++gpAttachMap->m_xLocks.m_zReadCollisions[m_eLockKind];
   
   return false;
 }
@@ -135,7 +136,7 @@ void Lock::vGrabRead(void)
   ASSERT(m_eLockKind);
   
   ++m_zReadGrabs;
-  ++gxLocks.m_zReadGrabs[m_eLockKind];
+  ++gpAttachMap->m_xLocks.m_zReadGrabs[m_eLockKind];
   
   i8 rCode = Synch::iLockGrabRead(&m_uLockWord);
   if (rCode) {
@@ -144,7 +145,7 @@ void Lock::vGrabRead(void)
   }
   
   ++m_zReadCollisions;
-  ++gxLocks.m_zReadCollisions[m_eLockKind];
+  ++gpAttachMap->m_xLocks.m_zReadCollisions[m_eLockKind];
   
   Timer xTimer;
   xTimer.vStart();
@@ -229,7 +230,7 @@ bool Lock::bGrabWrite(void)
   ASSERT(m_eLockKind);
 
   ++m_zWriteGrabs;
-  ++gxLocks.m_zWriteGrabs[m_eLockKind];
+  ++gpAttachMap->m_xLocks.m_zWriteGrabs[m_eLockKind];
 
   i8 rCode = Synch::iLockGrabWrite(&m_uLockWord);
   if (rCode) {
@@ -238,7 +239,7 @@ bool Lock::bGrabWrite(void)
   }
   
   ++m_zWriteCollisions;
-  ++gxLocks.m_zWriteCollisions[m_eLockKind];
+  ++gpAttachMap->m_xLocks.m_zWriteCollisions[m_eLockKind];
   
   return false;
 }
@@ -257,7 +258,7 @@ void Lock::vGrabWrite(void)
 //         m_aName ? m_aName : "<noName>"_Stz);
 
   ++m_zWriteGrabs;
-  ++gxLocks.m_zWriteGrabs[m_eLockKind];
+  ++gpAttachMap->m_xLocks.m_zWriteGrabs[m_eLockKind];
   
   i8 rCode = Synch::iLockGrabWrite(&m_uLockWord);
   if (rCode) {
@@ -266,7 +267,7 @@ void Lock::vGrabWrite(void)
   }
   
   ++m_zWriteCollisions;
-  ++gxLocks.m_zWriteCollisions[m_eLockKind];
+  ++gpAttachMap->m_xLocks.m_zWriteCollisions[m_eLockKind];
   
   Timer xTimer;
   xTimer.vStart();

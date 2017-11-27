@@ -19,7 +19,6 @@ bool          gbSHM          = false;
 
 Lock          gxDdlLock;
 Lock          gxDicLock;
-Locks         gxLocks;
 
 i8            giSchEnqueueTask = 0;
 i8            giSchEnqueueTaskWait = 0;

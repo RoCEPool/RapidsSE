@@ -12,8 +12,6 @@ extern NP_Task         gnpBootTask;
 extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
 
-extern Locks           gxLocks;
-
 // steps: //////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
@@ -35,7 +33,7 @@ ENTRY("vLocksList"_Stz);
   File xFile;
   xFile.bOpen("locks.csv"_Stz, C_OPEN_WRITE);
   
-  gxLocks.vList(xFile);
+  gpAttachMap->m_xLocks.vList(xFile);
   
   xFile.vClose();
   
@@ -49,7 +47,7 @@ void Task::vLocksReset(MP_Task mpTask)
 {
   ENTRY("vLocksReset"_Stz);
   
-  gxLocks.vReset();
+  gpAttachMap->m_xLocks.vReset();
   
   EXIT();
 }

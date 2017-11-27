@@ -40,6 +40,7 @@ namespace Pool
     ~BufferPool(void);
     
     Buffer* pAllocBuffer(void);
+    Buffer* pAllocAttachMapBuffer(void);
     i8   nBuffers(void);
     bn   nBufferFirst(void);
     bn   nBufferLast(void);

@@ -77,6 +77,29 @@ BufferPool::~BufferPool(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* allocate the attachMap buffer from free chain in pool                      */
+/*----------------------------------------------------------------------------*/
+Buffer* BufferPool::pAllocAttachMapBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+  
+  // allocate buffer by popping head off free chain
+  FreeBuffer* pAllocatedBuffer = pToFreeBuffer(m_nFreeHead);
+  m_nFreeHead = pAllocatedBuffer->nNextFree();
+  
+  // must have free buffers at this stage
+  ASSERT(bn::nNil() != m_nFreeHead);
+  
+  // adjust counts
+  m_iFreeCount--;
+  m_iAllocCount++;
+  
+  //vVerifyPool();
+  
+  return pPoolCheck<FreeBuffer*>(pAllocatedBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
 /* allocate a buffer from free chain in pool                                  */
 /*----------------------------------------------------------------------------*/
 Buffer* BufferPool::pAllocBuffer(void)

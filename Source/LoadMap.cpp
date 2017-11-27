@@ -7,7 +7,6 @@
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
-extern Locks gxLocks;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -205,7 +204,7 @@ void LoadMap::vEolOffset(i8 iEolOffset)
 
   m_zLock.vGrabWrite();
   
-  ++gxLocks.m_zWorkUnits[LK_LOAD_MAP];
+  ++gpAttachMap->m_xLocks.m_zWorkUnits[LK_LOAD_MAP];
   
   m_iEolOffset[m_iEntries++] = iEolOffset;
 
