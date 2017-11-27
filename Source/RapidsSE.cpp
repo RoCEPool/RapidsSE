@@ -37,8 +37,6 @@ i8            gxMemScribble[CN_ENUMS];
 i8            gxMemSet[CN_ENUMS];
 i8            gxMemZero[CN_ENUMS];
 
-BitMap*       gpBitMap;
-
 /*----------------------------------------------------------------------------*/
 /* check and see if the port has other listeneters                            */
 /*----------------------------------------------------------------------------*/
@@ -86,8 +84,6 @@ void RapidsSE::vExecuteCmdLine(void)
   
   gxDdlLock.vInitLock(LK_DDL);
   gxDicLock.vInitLock(LK_DIC);
-  
-  //gpBitMap = new BitMap;
   
   try {
     if (gxArguments.m_bCommand) {

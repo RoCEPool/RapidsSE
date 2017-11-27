@@ -80,6 +80,7 @@ namespace StorageEngine
     i8            m_iStop;
     
     Locks         m_xLocks;
+    BitMap*       m_pBitMap;
     
     Atomic        m_zPlanId;
     

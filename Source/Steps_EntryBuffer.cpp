@@ -318,7 +318,7 @@ void Task::vEntryBufferIterate(MP_Task mpTask)
 //    ASSERT(pBitArray);
 //    pBitArray->vSetOn(iRow);
 
-    //gpBitMap->vSetOn(*nBufferNo,iRow);
+    //gpAttachMap->m_pBitMap->vSetOn(*nBufferNo,iRow);
     
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
 

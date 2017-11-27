@@ -122,6 +122,9 @@ void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize, i8 iJumboSize)
   
   //m_xLocks
   
+  // not used yet
+  //m_pBitMap = new BitMap;
+  
   // initialize the plan number
   m_zPlanId = m_pGrid->iThisNode() << 48;  
 }
