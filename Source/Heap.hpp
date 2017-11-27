@@ -22,11 +22,15 @@ namespace Pool
   static Stz* aHT[]
   {
     /*  0 */ "INVALID"_Stz,
-    /*  1 */ "SMALL"_Stz,
-    /*  2 */ "MEDIUM"_Stz,
-    /*  3 */ "LARGE_ALT"_Stz,
-    /*  4 */ "JUMBO"_Stz,
-    /*  5 */ "ENUMS"_Stz
+    /*  1 */ "PERSISTENT_SMALL"_Stz,
+    /*  2 */ "PERSISTENT_MEDIUM"_Stz,
+    /*  3 */ "PERSISTENT_LARGE"_Stz,
+    /*  4 */ "PERSISTENT_JUMBO"_Stz,
+    /*  5 */ "TRANSIENT_SMALL"_Stz,
+    /*  6 */ "TRANSIENT_MEDIUM"_Stz,
+    /*  7 */ "TRANSIENT_LARGE"_Stz,
+    /*  8 */ "TRANSIENT_JUMBO"_Stz,
+    /*  9 */ "ENUMS"_Stz
   };
   
   class Heap : public Buffer

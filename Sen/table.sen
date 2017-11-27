@@ -47,7 +47,7 @@
 /*----------------------------------------------------------------------------*/
 : table:
 
-  create
+  createPersistent
   WT_OBJECT word.this word.type!
   sizeof_table allot
   word.this >body object.magic!
@@ -63,7 +63,7 @@
 /*----------------------------------------------------------------------------*/
 : :table
 
-  >create
+  >createPersistent
   WT_OBJECT word.this word.type!
   sizeof_table allot
   word.this >body object.magic!
@@ -373,7 +373,7 @@ tp: analyzeTable
 
 
 /*----------------------------------------------------------------------------*/
-/* make a table (run by participant)                                          */
+/* make a table (run by all participants)                                     */
 /*----------------------------------------------------------------------------*/
 : makeTable allParticipants 1 checkResult ( "<tableNm>" -- true n# true )
 
