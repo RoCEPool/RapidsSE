@@ -4,22 +4,23 @@
 
 "requests.sen" .verbose
 
-"requests_basics.sen"     include
-"requests_connection.sen" include
-"requests_tenant.sen"     include
-"requests_catalog.sen"    include
-"requests_schema.sen"     include
-"requests_table.sen"      include
-"requests_index.sen"      include
+"requests_basics.sen"      include
+"requests_connection.sen"  include
+"requests_tenant.sen"      include
+"requests_catalog.sen"     include
+"requests_schema.sen"      include
+"requests_table.sen"       include
+"requests_index.sen"       include
 
-"requests_column.sen"     include
-"requests_folder.sen"     include
-"requests_space.sen"      include
-"requests_grid.sen"       include
-"requests_rowBuffer.sen"  include
-"requests_misc.sen"       include
-"requests_task.sen"       include
-"requests_tx.sen"         include
+"requests_column.sen"      include
+"requests_folder.sen"      include
+"requests_space.sen"       include
+"requests_grid.sen"        include
+"requests_rowBuffer.sen"   include
+"requests_misc.sen"        include
+"requests_task.sen"        include
+"requests_tx.sen"          include
+"requests_persistence.sen" include
 
 // create /tenants/boray/catalogs/rapidsse/schemas/public
 createDefaultFolders
@@ -112,6 +113,11 @@ pwf     pwf_req
 lf      lf_req
 rf      remove_folder
 
+-----------------------
+Persistence Requests:
+-----------------------
+checkpoint checkpoint_req
+ 
 ---------------------
 System Requests:
 ---------------------

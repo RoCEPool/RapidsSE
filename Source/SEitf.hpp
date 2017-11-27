@@ -113,6 +113,8 @@ namespace Interface
     
     bool bDecode(TokenVec& xTokenVec);
     
+    bool bCheckpoint(TokenVec& xTokenVec, i8 iReqNo);
+    
     bool bConnect(TokenVec& xTokenVec, i8 iReqNo);
     bool bConnectCluster(TokenVec& xTokenVec, i8 iReqNo);
     bool bDisconnect(TokenVec& xTokenVec, i8 iReqNo);

@@ -21,6 +21,7 @@ ReqTable SeRequests[] =
  { "addidxcol"_Stz,      &SEitf::bAddIndexColumn,       "addIdxColumn_req"_Stz    },
  { "addpartcol"_Stz,     &SEitf::bAddPartitionColumn,   "addPartColumn_req"_Stz   },
  { "cf"_Stz,             &SEitf::bChangeFolder,         "cf_req"_Stz              },
+ { "checkpoint"_Stz,     &SEitf::bCheckpoint,           "checkpoint_req"_Stz      },
  { "connectCluster"_Stz, &SEitf::bConnectCluster,       "connectCluster_req"_Stz  },
  { "cp"_Stz,             &SEitf::bCopyTable,            "copyTable_req"_Stz       },
  { "danidx"_Stz,         &SEitf::bDanalyzeIndex,        "danalyzeIndex_req"_Stz   },
@@ -946,6 +947,30 @@ bool SEitf::bConnect(TokenVec& xTokenVec, i8 iReqNo)
   
   sRequest = SeRequests[iReqNo].aRequest;
 
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* take a checkpoint                                                          */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bCheckpoint(TokenVec& xTokenVec, i8 iReqNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  if (xTokenVec.nTokens() != 2) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  sRequest.vCopy("\""_Stz);
+  sRequest.vConcat(xTokenVec[1]->aText());
+  sRequest.vConcat("\""_Stz);
+  
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
+  
   return bAppendRequest(sRequest);
 }
 
