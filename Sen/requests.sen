@@ -117,6 +117,7 @@ rf      remove_folder
 Persistence Requests:
 -----------------------
 checkpoint checkpoint_req
+reload     reload_req
  
 ---------------------
 System Requests:

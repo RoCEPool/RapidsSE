@@ -122,6 +122,7 @@ namespace Interface
     bool bGetAttachMap(TokenVec& xTokenVec, i8 iReqNo);
     bool bSetAttachMap(TokenVec& xTokenVec, i8 iReqNo);
     
+    bool bReload(TokenVec& xTokenVec, i8 iReqNo);
     bool bRemoveFolder(TokenVec& xTokenVec, i8 iReqNo);
     
     bool bCreateTenant(TokenVec& xTokenVec, i8 iReqNo);

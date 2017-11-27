@@ -834,6 +834,7 @@ namespace Tasks
   
     // persistence
     static void vPersistenceCheckpoint(MP_Task mpTask);
+    static void vPersistenceReload(MP_Task mpTask);
     
     // plan
     static void vPlanCompile(MP_Task mpTask);

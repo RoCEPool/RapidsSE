@@ -63,6 +63,7 @@ ReqTable SeRequests[] =
  { "mktbl"_Stz,          &SEitf::bCreateTable,          "createTable_req"_Stz     },
  { "mkten"_Stz,          &SEitf::bCreateTenant,         "createTenant_req"_Stz    },
  { "pwf"_Stz,            &SEitf::bPrintWorkingFolder,   "pwf_req"_Stz             },
+ { "reload"_Stz,         &SEitf::bReload,               "reload_req"_Stz          },
  { "retidx"_Stz,         &SEitf::bRetIndex,             "returnIndex_req"_Stz     },
  { "rettbl"_Stz,         &SEitf::bRetTable,             "returnTable_req"_Stz     },
  { "rettsk"_Stz,         &SEitf::bRetTask,              "returnTask_req"_Stz      },
@@ -1052,6 +1053,30 @@ bool SEitf::bSetAttachMap(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[2]->aText());
   sRequest.vConcat("\""_Stz);
 
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* reload                                                                     */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bReload(TokenVec& xTokenVec, i8 iReqNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  if (xTokenVec.nTokens() != 2) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  sRequest.vCopy("\""_Stz);
+  sRequest.vConcat(xTokenVec[1]->aText());
+  sRequest.vConcat("\""_Stz);
+  
   sRequest.vConcat(" "_Stz);
   sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
