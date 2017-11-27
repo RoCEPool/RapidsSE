@@ -133,11 +133,11 @@ void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize, i8 iJumboSize)
   ASSERT( ! m_iSchGetTask );
   ASSERT( ! m_iSchGetTaskWait );
   
-  ASSERT( ! m_iMemCopyBytes );
-  ASSERT( ! m_iMemMoveBytes );
-  ASSERT( ! m_iMemScribbleBytes );
-  ASSERT( ! m_iMemSetBytes );
-  ASSERT( ! m_iMemZeroBytes );
+  //m_iMemCopyBytes );
+  //m_iMemMoveBytes );
+  //m_iMemScribbleBytes );
+  //m_iMemSetBytes );
+  //m_iMemZeroBytes );
 
   //m_xMemCopy[CN_ENUMS];
   //m_xMemMove[CN_ENUMS];

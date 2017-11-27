@@ -12,12 +12,6 @@ extern NP_Task         gnpBootTask;
 extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
 
-extern i8 giMemCopyBytes;
-extern i8 giMemMoveBytes;
-extern i8 giMemScribbleBytes;
-extern i8 giMemSetBytes;
-extern i8 giMemZeroBytes;
-
 extern i8 gxMemCopy[CN_ENUMS];
 extern i8 gxMemMove[CN_ENUMS];
 extern i8 gxMemScribble[CN_ENUMS];
@@ -66,11 +60,11 @@ void Task::vMemoryReset(MP_Task mpTask)
 {
   ENTRY("vMemoryReset"_Stz);
   
-  giMemCopyBytes = 0;
-  giMemMoveBytes = 0;
-  giMemScribbleBytes = 0;
-  giMemSetBytes  = 0;
-  giMemZeroBytes = 0;
+  gpAttachMap->m_iMemCopyBytes = 0;
+  gpAttachMap->m_iMemMoveBytes = 0;
+  gpAttachMap->m_iMemScribbleBytes = 0;
+  gpAttachMap->m_iMemSetBytes  = 0;
+  gpAttachMap->m_iMemZeroBytes = 0;
   
   for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
     gxMemCopy[i_Class] = 0;
@@ -92,7 +86,7 @@ void Task::vMemoryList(MP_Task mpTask)
 
   s32 sMagnitude;
   
-  Magnitudes::vMagnitude(giMemCopyBytes, sMagnitude);
+  Magnitudes::vMagnitude(gpAttachMap->m_iMemCopyBytes, sMagnitude);
   vTrace("MemCopyBytes %s\n"_Stz,sMagnitude.aStr());
   for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
     if (gxMemCopy[i_Class]) {
@@ -101,7 +95,7 @@ void Task::vMemoryList(MP_Task mpTask)
     }
   }
   
-  Magnitudes::vMagnitude(giMemMoveBytes, sMagnitude);
+  Magnitudes::vMagnitude(gpAttachMap->m_iMemMoveBytes, sMagnitude);
   vTrace("MemMoveBytes %s\n"_Stz,sMagnitude.aStr());
   for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
     if (gxMemMove[i_Class]) {
@@ -110,7 +104,7 @@ void Task::vMemoryList(MP_Task mpTask)
     }
   }
 
-  Magnitudes::vMagnitude(giMemScribbleBytes, sMagnitude);
+  Magnitudes::vMagnitude(gpAttachMap->m_iMemScribbleBytes, sMagnitude);
   vTrace("MemScribbleBytes %s\n"_Stz,sMagnitude.aStr());
   for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
     if (gxMemScribble[i_Class]) {
@@ -119,7 +113,7 @@ void Task::vMemoryList(MP_Task mpTask)
     }
   }
   
-  Magnitudes::vMagnitude(giMemSetBytes, sMagnitude);
+  Magnitudes::vMagnitude(gpAttachMap->m_iMemSetBytes, sMagnitude);
   vTrace("MemSetBytes %s\n"_Stz,sMagnitude.aStr());
   for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
     if (gxMemSet[i_Class]) {
@@ -128,7 +122,7 @@ void Task::vMemoryList(MP_Task mpTask)
     }
   }
   
-  Magnitudes::vMagnitude(giMemZeroBytes, sMagnitude);
+  Magnitudes::vMagnitude(gpAttachMap->m_iMemZeroBytes, sMagnitude);
   vTrace("MemZeroBytes %s\n"_Stz,sMagnitude.aStr());
   for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
     if (gxMemZero[i_Class]) {

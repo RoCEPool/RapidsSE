@@ -2,17 +2,14 @@
 /* MemLib.cpp -- Memory Library                                               */
 /*============================================================================*/
 
+#include "StorageEngine.h"
 #include "Base.h"
 
 #include "Debugging.h"
 
-extern i8 giClassSize[];
+extern AttachMap* gpAttachMap;
 
-extern i8 giMemCopyBytes;
-extern i8 giMemMoveBytes;
-extern i8 giMemScribbleBytes;
-extern i8 giMemSetBytes;
-extern i8 giMemZeroBytes;
+extern i8 giClassSize[];
 
 extern i8 gxMemCopy[CN_ENUMS];
 extern i8 gxMemMove[CN_ENUMS];
@@ -80,8 +77,10 @@ void MemLib::vCopy(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo)
 {
   memcpy(pDst,pSrc,nBytes);
   
-  giMemCopyBytes += nBytes;
-  gxMemCopy[eClassNo] += nBytes;
+  if (gpAttachMap) {
+    gpAttachMap->m_iMemCopyBytes += nBytes;
+    gxMemCopy[eClassNo] += nBytes;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -184,8 +183,10 @@ void MemLib::vMove(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo)
 {
   memmove(pDst,pSrc,nBytes);
   
-  giMemMoveBytes += nBytes;
-  gxMemMove[eClassNo] += nBytes;
+  if (gpAttachMap) {
+    gpAttachMap->m_iMemMoveBytes += nBytes;
+    gxMemMove[eClassNo] += nBytes;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -199,8 +200,10 @@ void MemLib::vScribble(void* aAddress, i8 nBytes, eCN eClassNo)
   for (i8 i_Word = 0; i_Word < nWords; i_Word++)
     *pMchWord++ = C_SCRIBBLE_PATTERN;
   
-  giMemScribbleBytes += nBytes;
-  gxMemScribble[eClassNo] += nBytes;
+  if (gpAttachMap) {
+    gpAttachMap->m_iMemScribbleBytes += nBytes;
+    gxMemScribble[eClassNo] += nBytes;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -210,8 +213,10 @@ void MemLib::vSet(void* pDst, char iByte, i8 nBytes, eCN eClassNo)
 {
   memset(pDst,iByte,nBytes);
   
-  giMemSetBytes += nBytes;
-  gxMemSet[eClassNo] += nBytes;
+  if (gpAttachMap) {
+    gpAttachMap->m_iMemSetBytes += nBytes;
+    gxMemSet[eClassNo] += nBytes;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -330,8 +335,10 @@ void MemLib::vZero(void* pDst, i8 nBytes, eCN eClassNo)
 {
   vSet(pDst,(char)0,nBytes,eClassNo);
   
-  giMemZeroBytes += nBytes;
-  gxMemZero[eClassNo] += nBytes;
+  if (gpAttachMap) {
+    gpAttachMap->m_iMemZeroBytes += nBytes;
+    gxMemZero[eClassNo] += nBytes;
+  }
 }
 
 /*============================================================================*/
