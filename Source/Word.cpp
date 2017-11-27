@@ -64,18 +64,6 @@ void Word::operator delete(void* pWordAddress)
 }
 
 /*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void Word::operator delete(void* pWordAddress, bool bPersistent)
-{
-  RASSERT(bPersistent || ! bPersistent);
-  
-  Word* pWord = reinterpret_cast<Word*>(pWordAddress);
-  
-  Heap::vFree(pWord,bPersistent);
-}
-
-/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Word::Word(Stz* sName)

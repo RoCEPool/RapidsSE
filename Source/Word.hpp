@@ -88,9 +88,6 @@ namespace Dictionaries
     void* operator new(size_t, Dic* pDic, bool bPersistent);
     void  operator delete(void* pWordAddress);
   
-    // to be delete after discussion with Alka
-    void  operator delete(void* pWordAddress, bool bPersistent);
-  
     Word(Stz* sName);
     ~Word(void);
     
