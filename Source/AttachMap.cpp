@@ -92,10 +92,10 @@ void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize, i8 iJumboSize)
   ASSERT(m_pTransientLargeHeap);
   ASSERT(m_pTransientSmallHeap);
   
-  ASSERT(m_pPersistentJumboHeap);
-  ASSERT(m_pPersistentMediumHeap);
-  ASSERT(m_pPersistentLargeHeap);
-  ASSERT(m_pPersistentSmallHeap);
+  ASSERT(m_pCarryOver->m_pPersistentJumboHeap);
+  ASSERT(m_pCarryOver->m_pPersistentMediumHeap);
+  ASSERT(m_pCarryOver->m_pPersistentLargeHeap);
+  ASSERT(m_pCarryOver->m_pPersistentSmallHeap);
   
   // create the tx sets
   m_pTxSet = new TxSet(gpAttachMap->m_pGrid->iThisNode());

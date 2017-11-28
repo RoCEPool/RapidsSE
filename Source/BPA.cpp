@@ -337,7 +337,7 @@ void BPA::vObjectSummary(void)
 //    vTrace("  %12s %-6lld \n"_Stz, aCN[eClass], iCountObjects[eClass]);
 //  }
   
-  gpAttachMap->m_pPersistentSmallHeap->vAnalyse(iCountObjects);
+  gpAttachMap->m_pCarryOver->m_pPersistentSmallHeap->vAnalyse(iCountObjects);
   
   vTrace("\n"_Stz);
   vTrace("  Persistent SmallHeap Object Summary:\n"_Stz);
@@ -350,7 +350,7 @@ void BPA::vObjectSummary(void)
     vTrace("  %12s %-6lld \n"_Stz, aCN[eClass], iCountObjects[eClass]);
   }
   
-  gpAttachMap->m_pPersistentMediumHeap->vAnalyse(iCountObjects);
+  gpAttachMap->m_pCarryOver->m_pPersistentMediumHeap->vAnalyse(iCountObjects);
   
   vTrace("\n"_Stz);
   vTrace("  Persistent MediumHeap Object Summary:\n"_Stz);
@@ -363,7 +363,7 @@ void BPA::vObjectSummary(void)
     vTrace("  %12s %-6lld \n"_Stz, aCN[eClass], iCountObjects[eClass]);
   }
   
-  gpAttachMap->m_pPersistentLargeHeap->vAnalyse(iCountObjects);
+  gpAttachMap->m_pCarryOver->m_pPersistentLargeHeap->vAnalyse(iCountObjects);
   
   vTrace("\n"_Stz);
   vTrace("  Persistent LargeHeap Object Summary:\n"_Stz);
@@ -552,27 +552,27 @@ void BPA::vRegionSummary()
   
   vTrace("   Persistent SmallHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagSmall.aChar(),
-         gpAttachMap->m_pPersistentSmallHeap->iBufferCount(),
-         gpAttachMap->m_pPersistentSmallHeap->iAllocCount(),
-         gpAttachMap->m_pPersistentSmallHeap->iFreeCount());
+         gpAttachMap->m_pCarryOver->m_pPersistentSmallHeap->iBufferCount(),
+         gpAttachMap->m_pCarryOver->m_pPersistentSmallHeap->iAllocCount(),
+         gpAttachMap->m_pCarryOver->m_pPersistentSmallHeap->iFreeCount());
   
   vTrace("  Persistent MediumHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagMedium.aChar(),
-         gpAttachMap->m_pPersistentMediumHeap->iBufferCount(),
-         gpAttachMap->m_pPersistentMediumHeap->iAllocCount(),
-         gpAttachMap->m_pPersistentMediumHeap->iFreeCount());
+         gpAttachMap->m_pCarryOver->m_pPersistentMediumHeap->iBufferCount(),
+         gpAttachMap->m_pCarryOver->m_pPersistentMediumHeap->iAllocCount(),
+         gpAttachMap->m_pCarryOver->m_pPersistentMediumHeap->iFreeCount());
   
   vTrace("   Persistent LargeHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagJumbo.aChar(),
-         gpAttachMap->m_pPersistentLargeHeap->iBufferCount(),
-         gpAttachMap->m_pPersistentLargeHeap->iAllocCount(),
-         gpAttachMap->m_pPersistentLargeHeap->iFreeCount());
+         gpAttachMap->m_pCarryOver->m_pPersistentLargeHeap->iBufferCount(),
+         gpAttachMap->m_pCarryOver->m_pPersistentLargeHeap->iAllocCount(),
+         gpAttachMap->m_pCarryOver->m_pPersistentLargeHeap->iFreeCount());
   
   vTrace("   Persistent JumboHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagJumbo.aChar(),
-         gpAttachMap->m_pPersistentJumboHeap->iBufferCount(),
-         gpAttachMap->m_pPersistentJumboHeap->iAllocCount(),
-         gpAttachMap->m_pPersistentJumboHeap->iFreeCount());
+         gpAttachMap->m_pCarryOver->m_pPersistentJumboHeap->iBufferCount(),
+         gpAttachMap->m_pCarryOver->m_pPersistentJumboHeap->iAllocCount(),
+         gpAttachMap->m_pCarryOver->m_pPersistentJumboHeap->iFreeCount());
   
   _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
 }
@@ -707,13 +707,13 @@ void BPA::vWritePersistentHeaps(Stz* sFilePath)
   pFile->bOpen(sFilePath, C_OPEN_WRITE);
   
   vTrace("Writing persistent small heap\n"_Stz);
-  vWriteHeap(gpAttachMap->m_pPersistentSmallHeap,pFile);
+  vWriteHeap(gpAttachMap->m_pCarryOver->m_pPersistentSmallHeap,pFile);
   
   vTrace("Writing persistent medium heap\n"_Stz);
-  vWriteHeap(gpAttachMap->m_pPersistentMediumHeap,pFile);
+  vWriteHeap(gpAttachMap->m_pCarryOver->m_pPersistentMediumHeap,pFile);
   
   vTrace("Writing persistent large heap\n"_Stz);
-  vWriteHeap(gpAttachMap->m_pPersistentLargeHeap,pFile);
+  vWriteHeap(gpAttachMap->m_pCarryOver->m_pPersistentLargeHeap,pFile);
 
   pFile->vClose();
   delete pFile;

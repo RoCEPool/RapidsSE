@@ -46,12 +46,7 @@ namespace StorageEngine
     Heap*         m_pTransientMediumHeap;
     Heap*         m_pTransientLargeHeap;
     Heap*         m_pTransientSmallHeap;
-    
-    Heap*         m_pPersistentJumboHeap;
-    Heap*         m_pPersistentMediumHeap;
-    Heap*         m_pPersistentLargeHeap;
-    Heap*         m_pPersistentSmallHeap;
-    
+  
     Dic           m_xMainDic;
     TxSet*        m_pTxSet;
     Grid*         m_pGrid;

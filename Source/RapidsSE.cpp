@@ -276,13 +276,13 @@ void RapidsSE::vCreateObjects(void)
     new Heap(CN_SMALLTRANSIENT,  C_SIZE_SMALL_OBJECT);
   
   // craete the persistent heaps
-  gpAttachMap->m_pPersistentJumboHeap  =
+  gpAttachMap->m_pCarryOver->m_pPersistentJumboHeap  =
     new Heap(CN_JUMBOPERSISTENT,  C_SIZE_JUMBO_OBJECT);
-  gpAttachMap->m_pPersistentLargeHeap  =
+  gpAttachMap->m_pCarryOver->m_pPersistentLargeHeap  =
     new Heap(CN_LARGEPERSISTENT,  C_SIZE_LARGE_OBJECT);
-  gpAttachMap->m_pPersistentMediumHeap =
+  gpAttachMap->m_pCarryOver->m_pPersistentMediumHeap =
     new Heap(CN_MEDIUMPERSISTENT, C_SIZE_MEDIUM_OBJECT);
-  gpAttachMap->m_pPersistentSmallHeap  =
+  gpAttachMap->m_pCarryOver->m_pPersistentSmallHeap  =
     new Heap(CN_SMALLPERSISTENT,  C_SIZE_SMALL_OBJECT);
   
   vInitJumboHeap();
