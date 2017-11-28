@@ -15,8 +15,9 @@ extern NP_Task         gnpBootTask;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_AttachMap(void)
 {
-  vAddPrimitive("attachmap::attachmap@"_Stz,   &vAttachMapFetch,  false);
-  vAddPrimitive("attachmap::attachmap!"_Stz,   &vAttachMapStore,  false);
+  vAddPrimitive("attachmap::attachmap@"_Stz,   &vAttachMapFetch,         false);
+  vAddPrimitive("attachmap::attachmap!"_Stz,   &vAttachMapStore,         false);
+  vAddPrimitive("attachmap::tenants@"_Stz,     &vAttachMapTenantsFetch,  false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -99,6 +100,16 @@ void Task::vAttachMapStore(MP_Task mpTask)
   }
   
   EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* attachmap::tenants@ -- fetch word tenants from attachmap                   */
+/*----------------------------------------------------------------------------*/
+void Task::vAttachMapTenantsFetch(MP_Task mpTask)
+{
+  ENTRY("vAttachMapTenantsFetch"_Stz);
+  
+  mpTask->m_pDataStack->vPushObject(gpAttachMap->m_pTenants);
 }
 
 /*============================================================================*/

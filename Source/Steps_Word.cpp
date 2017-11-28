@@ -23,6 +23,7 @@ void Task::vAddPrimitives_Word(void)
   vAddPrimitive(","_Stz,               &vComma,            false);
   vAddPrimitive("compile,"_Stz,        &vCompileComma,     false);
   vAddPrimitive("create"_Stz,          &vCreate,           false);
+  vAddPrimitive("createTenants"_Stz,   &vCreateTenants,    false);
   vAddPrimitive(">create"_Stz,         &vCreateFrom,       false);
   vAddPrimitive(">createInMain"_Stz,   &vCreateFromInMain, false);
   vAddPrimitive(">createPersistent"_Stz, &vCreateFromPersistent, false);
@@ -314,6 +315,32 @@ void Task::vCreateFromInMain(MP_Task mpTask)
   Word* pNewWord = new(pDic) Word(sName);
   
   mpTask->m_pCurrentWord = pNewWord;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* createTenants -- create tenant word in dictionary                          */
+/*----------------------------------------------------------------------------*/
+void Task::vCreateTenants(MP_Task mpTask)
+{
+  ENTRY("vCreateTenant"_Stz);
+  
+  mpTask->m_pTokeniser->vNextToken();
+  
+//  Dic* pDic;
+//  if (mpTask->m_xPathStack.iCount())
+//    pDic = mpTask->m_xPathStack.pTop();
+//  else
+//    pDic = &gpAttachMap->m_xMainDic;
+  
+  //vTrace(": %s\n"_Stz,mpTask->m_pTokeniser->sToken().aChar());
+  
+  Word* pNewWord = new(nullptr) Word(mpTask->m_pTokeniser->sToken());
+  
+  mpTask->m_pCurrentWord = pNewWord;
+  
+  gpAttachMap->m_pTenants = pNewWord;
   
   EXIT();
 }

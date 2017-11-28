@@ -14,7 +14,7 @@
 /*----------------------------------------------------------------------------*/
 /* create the tenant dictionary using name from input(doesnt leave dic on stk)*/
 /*----------------------------------------------------------------------------*/
-: dicTenant:
+: dicTenants:
 
 diclock.grabwrite
 

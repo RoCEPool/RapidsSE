@@ -54,9 +54,9 @@
   sFolderNm "tenants" str.equal if
     //begin 0 pathPick dic.name "<main>" str.equal not while pathDrop repeat
     pathDropAll
-    sFolderNm checkIsWord not if <NIP+ERROR> exit then
+    //sFolderNm checkIsWord not if <NIP+ERROR> exit then
     //execute pathPush
-    drop attachmap::tenants@ execute pathPush
+    attachmap::tenants@ execute pathPush
     //"After cf tenants" . PATHDUMP
    <OK>
     exit
@@ -244,7 +244,8 @@
   assert::stack_0
 
   // push tenants folder
-  "tenants" find execute
+  //"tenants" find execute
+  attachmap::tenants@ execute
   pathPush
 
     // create tenant boray (and catalogs sub-folder)

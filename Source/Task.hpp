@@ -429,6 +429,7 @@ namespace Tasks
     // attachmap
     static void vAttachMapFetch(MP_Task mpTask);
     static void vAttachMapStore(MP_Task mpTask);
+    static void vAttachMapTenantsFetch(MP_Task mpTask);
     
     // bp
     static void vBpAnalyze(MP_Task mpTask);
@@ -1374,6 +1375,7 @@ namespace Tasks
     static void vCreateFromInMain(MP_Task mpTask);
     static void vCreateFromPersistent(MP_Task mpTask);
     static void vCreatePersistent(MP_Task mpTask);
+    static void vCreateTenants(MP_Task mpTask);
     static void vDicWhich(MP_Task mpTask);
     static void vDoes(MP_Task mpTask);
     static void vDoes_RT(MP_Task mpTask);

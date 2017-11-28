@@ -294,9 +294,13 @@
         drop
       else
 
-        find
-        execute
-        pathPush
+        dup "tenants" str.equal if
+          drop attachmap::tenants@ execute pathPush
+        else
+          find
+          execute
+          pathPush
+        then
       then
 
     then

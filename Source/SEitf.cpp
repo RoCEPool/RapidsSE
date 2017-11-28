@@ -404,7 +404,8 @@ void SEitf::vInit(void)
   // set up initial default path
   
   // /tenants
-  Word* pTenants = gpAttachMap->m_xMainDic.pFindWord("tenants"_Stz);
+  //Word* pTenants = gpAttachMap->m_xMainDic.pFindWord("tenants"_Stz);
+  Word* pTenants = gpAttachMap->m_pTenants;
   ASSERT(pTenants);
   Cell* pCell = pTenants->pFirstCell();
   m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));

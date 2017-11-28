@@ -96,7 +96,8 @@ Word::Word(Stz* sName)
 
   _checkInitialised_(CN_WORD);
   
-  m_pDic->vAddWord(this);
+  if (m_pDic)
+    m_pDic->vAddWord(this);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 }
