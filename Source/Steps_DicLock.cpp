@@ -8,10 +8,6 @@
 
 extern AttachMap*      gpAttachMap;
 
-extern NP_Task         gnpBootTask;
-extern Lock            gxDdlLock;
-extern Lock            gxDicLock;
-
 // diclock: ////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
@@ -30,7 +26,7 @@ void Task::vDicLockDropWrite(MP_Task mpTask)
 {
   ENTRY("vDicLockDropWrite"_Stz);
   
-  gxDicLock.vDropWrite();
+  gpAttachMap->m_xDicLock.vDropWrite();
   
   
   EXIT();
@@ -43,7 +39,7 @@ void Task::vDicLockGrabWrite(MP_Task mpTask)
 {
   ENTRY("vDicLockGrabWrite"_Stz);
   
-  gxDicLock.vGrabWrite();
+  gpAttachMap->m_xDicLock.vGrabWrite();
     
   EXIT();
 }

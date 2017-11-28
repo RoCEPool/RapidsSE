@@ -10,8 +10,6 @@ extern AttachMap*      gpAttachMap;
 extern BufferPool*     gpBufferPool;
 
 extern NP_Task         gnpBootTask;
-extern Lock            gxDdlLock;
-extern Lock            gxDicLock;
 
 i8 giCountObjects[CN_ENUMS];
 

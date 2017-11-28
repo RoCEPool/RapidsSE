@@ -7,11 +7,7 @@
 #include "SePrompt.hpp"
 
 extern AttachMap*      gpAttachMap;
-
 extern NP_Task         gnpBootTask;
-extern Lock            gxDdlLock;
-extern Lock            gxDicLock;
-
 
 // plan list: //////////////////////////////////////////////////////////////////
 

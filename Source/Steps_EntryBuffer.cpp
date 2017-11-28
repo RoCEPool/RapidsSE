@@ -9,9 +9,6 @@
 extern BufferPool*     gpBufferPool;
 extern AttachMap*      gpAttachMap;
 extern NP_Task         gnpBootTask;
-extern Lock            gxDdlLock;
-extern Lock            gxDicLock;
-extern BitMap*         gpBitMap;
 
 // indexbuffer: ////////////////////////////////////////////////////////////////
 

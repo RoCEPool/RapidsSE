@@ -8,17 +8,11 @@ Arguments     gxArguments;
 
 BufferPool*   gpBufferPool   = nullptr;
 AttachMap *   gpAttachMap    = nullptr;
-
 File*         gpTraceFile    = nullptr;
 
 NP_Task       gnpBootTask    = nullptr;
-
 void*         mpRegion       = nullptr;
-
 bool          gbSHM          = false;
-
-Lock          gxDdlLock;
-Lock          gxDicLock;
 
 /*----------------------------------------------------------------------------*/
 /* check and see if the port has other listeneters                            */
@@ -65,8 +59,8 @@ void RapidsSE::vExecuteCmdLine(void)
   if (gxArguments.m_bVerbose)
     vInfo("\n*\n* Execute Command Line\n*\n"_Stz);
   
-  gxDdlLock.vInitLock(LK_DDL);
-  gxDicLock.vInitLock(LK_DIC);
+//  gpAttachMap->m_xDdlLock.vInitLock(LK_DDL);
+//  gpAttachMap->m_xDicLock.vInitLock(LK_DIC);
   
   try {
     if (gxArguments.m_bCommand) {
@@ -424,6 +418,9 @@ void RapidsSE::vSystemInit(void)
   sName = "bootTask"_Stz;
   gnpBootTask->vName(sName);
   gnpBootTask->vActorModel(AC_SERVER);
+  
+  gpAttachMap->m_xDdlLock.vInitLock(LK_DDL);
+  gpAttachMap->m_xDicLock.vInitLock(LK_DIC);
   
   vDicCompile(gnpBootTask);
   

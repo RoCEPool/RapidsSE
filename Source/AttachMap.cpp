@@ -122,6 +122,9 @@ void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize, i8 iJumboSize)
   
   //m_xLocks
   
+  //m_xDdlLock.vInitLock(LK_DDL);
+  //m_xDicLock.vInitLock(LK_DIC);
+  
   // not used yet
   //m_pBitMap = new BitMap;
   

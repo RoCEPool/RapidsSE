@@ -7,10 +7,7 @@
 #include "SePrompt.hpp"
 
 extern AttachMap*      gpAttachMap;
-
 extern NP_Task         gnpBootTask;
-extern Lock            gxDdlLock;
-extern Lock            gxDicLock;
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -39,7 +36,7 @@ void Task::vDdlLockDropRead(MP_Task mpTask)
   
   ASSERT(C_HAVE_READ_LOCK == mpTask->m_iDdlLocked);
   
-  gxDdlLock.vDropRead();
+  gpAttachMap->m_xDdlLock.vDropRead();
   
   mpTask->m_iDdlLocked = 0;
   
@@ -55,7 +52,7 @@ void Task::vDdlLockDropWrite(MP_Task mpTask)
   
   ASSERT(C_HAVE_WRITE_LOCK == mpTask->m_iDdlLocked);
   
-  gxDdlLock.vDropWrite();
+  gpAttachMap->m_xDdlLock.vDropWrite();
   
   mpTask->m_iDdlLocked = 0;
   
@@ -71,7 +68,7 @@ void Task::vDdlLockGrabRead(MP_Task mpTask)
   
   ASSERT(! mpTask->m_iDdlLocked);
   
-  gxDdlLock.vGrabRead();
+  gpAttachMap->m_xDdlLock.vGrabRead();
   
   mpTask->m_iDdlLocked = C_HAVE_READ_LOCK;
   
@@ -87,7 +84,7 @@ void Task::vDdlLockGrabWrite(MP_Task mpTask)
   
   ASSERT(! mpTask->m_iDdlLocked);
 
-  gxDdlLock.vGrabWrite();
+  gpAttachMap->m_xDdlLock.vGrabWrite();
   
   mpTask->m_iDdlLocked = C_HAVE_WRITE_LOCK;
   
@@ -102,12 +99,12 @@ void Task::vDdlLockTestDrop(MP_Task mpTask)
   ENTRY("vDdlLockTestDrop"_Stz);
   
   if (C_HAVE_READ_LOCK == mpTask->m_iDdlLocked) {
-    gxDdlLock.vDropRead();
+    gpAttachMap->m_xDdlLock.vDropRead();
     mpTask->m_iDdlLocked = 0;
   }
   else
   if (C_HAVE_WRITE_LOCK == mpTask->m_iDdlLocked) {
-    gxDdlLock.vDropWrite();
+    gpAttachMap->m_xDdlLock.vDropWrite();
     mpTask->m_iDdlLocked = 0;
   }
   
