@@ -39,7 +39,9 @@ namespace StorageEngine
     i8            m_iEpoch;
     
     BufferPool*   m_pBufferPool;
-    
+  
+    CarryOver*    m_pCarryOver;
+  
     Heap*         m_pTransientJumboHeap;
     Heap*         m_pTransientMediumHeap;
     Heap*         m_pTransientLargeHeap;

@@ -259,8 +259,11 @@ void RapidsSE::vAttachObjects(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vCreateObjects(void)
 {
-  // create global objects
-  gpAttachMap  = new AttachMap;
+  // create the attach map (which records global pointers)
+  gpAttachMap = new AttachMap;
+  
+  // create the carry over (which records global pointers restored on restart)
+  gpAttachMap->m_pCarryOver = new CarryOver;
   
   // create the transient heaps
   gpAttachMap->m_pTransientJumboHeap  =

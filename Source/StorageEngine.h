@@ -20,6 +20,7 @@ using namespace StorageEngine;
 //-----------------------------------------------------------------------------
 
 #include "Arguments.hpp"
+#include "CarryOver.hpp"
 #include "AttachMap.hpp"
 #include "Region.hpp"
 #include "SizesDumps.hpp"
