@@ -46,6 +46,7 @@ pFINALIZE *gpFinalize[]
   /* 28 */ &Finalize::vUndefined,         // CN_BUFFERPOOL
   /* 29 */ &Finalize::vUndefined,         // CN_BPA
   
+  /*    */ &Finalize::vUndefined,         // CN_CARRYOVER
   /* 30 */ &Finalize::vUndefined,         // CN_COLUMN
   /* 31 */ &Finalize::vUndefined,         // CN_COLUMNVEC
   

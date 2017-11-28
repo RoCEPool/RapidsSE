@@ -45,6 +45,7 @@ namespace Base
     /* 28 */ CN_BUFFERPOOL,
     /* 29 */ CN_BPA,
   
+    /*    */ CN_CARRYOVER,
     /* 30 */ CN_COLUMN,
     /* 31 */ CN_COLUMNVEC,
   
@@ -220,6 +221,7 @@ namespace Base
     /* 28 */ "BUFFERPOOL"_Stz,
     /* 29 */ "BPA"_Stz,
   
+    /*    */ "CARRYOVER"_Stz,
     /* 30 */ "COLUMN"_Stz,
     /* 31 */ "COLUMNVEC"_Stz,
     
