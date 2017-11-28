@@ -428,6 +428,7 @@ void Task::vAddConstants(void)
   vAddConstant("args.regionName"_Stz,        gxArguments.m_sRegionName);
   vAddConstant("args.regionSize"_Stz,        gxArguments.m_iRegionSize
                                                - gxArguments.m_iJumboSize);
+  vAddConstant("args.reload"_Stz,            gxArguments.m_bReload);
   vAddConstant("args.restart"_Stz,           gxArguments.m_bRestart);
   vAddConstant("args.sen"_Stz,               gxArguments.m_sSen);
   vAddConstant("args.sleep"_Stz,             gxArguments.m_iSleep);
