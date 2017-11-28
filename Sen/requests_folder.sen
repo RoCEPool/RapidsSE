@@ -55,7 +55,8 @@
     //begin 0 pathPick dic.name "<main>" str.equal not while pathDrop repeat
     pathDropAll
     sFolderNm checkIsWord not if <NIP+ERROR> exit then
-    execute pathPush
+    //execute pathPush
+    drop attachmap::tenants@ execute pathPush
     //"After cf tenants" . PATHDUMP
    <OK>
     exit

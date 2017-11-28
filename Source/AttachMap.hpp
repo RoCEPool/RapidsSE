@@ -55,6 +55,7 @@ namespace StorageEngine
     Grid*         m_pGrid;
     
     Word*         m_pWord;
+    Word*         m_pTenants;
     
     PartitionScheduler* m_pPartitionScheduler;
     ServerScheduler*    m_pServerScheduler;
@@ -88,8 +89,8 @@ namespace StorageEngine
     
     Atomic        m_zPlanId;
     
+    
     // statistics counters
-
     i8            m_iSchEnqueueTask;
     i8            m_iSchEnqueueTaskWait;
     i8            m_iSchGetTask;

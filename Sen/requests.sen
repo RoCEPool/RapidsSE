@@ -23,7 +23,7 @@
 "requests_persistence.sen" include
 
 // create the root /tenants dictionary
-dic: tenants
+dicTenant: tenants
 
 // create /tenants/boray/catalogs/rapidsse/schemas/public
 
