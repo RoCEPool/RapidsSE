@@ -12,7 +12,7 @@
 queue: requestQueue
 
 // create the root /tenants dictionary
-dic: tenants
+//dic: tenants
 
 /*----------------------------------------------------------------------------*/
 /* copy dictionary path from seitf to this request task                       */

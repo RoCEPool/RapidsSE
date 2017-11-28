@@ -22,6 +22,9 @@
 "requests_tx.sen"          include
 "requests_persistence.sen" include
 
+// create the root /tenants dictionary
+dic: tenants
+
 // create /tenants/boray/catalogs/rapidsse/schemas/public
 
 // create the default folder hierarchy if not reloading
