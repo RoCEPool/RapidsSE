@@ -1,0 +1,37 @@
+/*----------------------------------------------------------------------------*/
+/* range query tests                                                          */
+/*----------------------------------------------------------------------------*/
+
+// (1) create table t1
+create table T1 (
+  jA  INTEGER NOT NULL,
+  jB  INTEGER NOT NULL,
+  jC  VARCHAR(10) NOT NULL,
+  jD  VARCHAR(10) NOT NULL
+);
+success
+
+create index T1_idx1 on T1 (jA, jC);
+success
+
+ld T1 "../Seth/tests/Select/rangeCombo.csv";
+success
+
+fetch T1;
+rows: 5
+
+//fetch T1 "jA 2 <=" ;
+//rows: 5
+
+fetch T1 "jA 4 = c ddd = and";
+rows:
+  (*,4,14,'ddd',' mood')
+
+CLEANUP {
+
+  //drop table T1;
+  //mute
+
+  bye;
+  mute
+}
