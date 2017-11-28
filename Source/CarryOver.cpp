@@ -39,6 +39,11 @@ CarryOver::CarryOver(void)
   // carry over must always be the second buffer in the buffer pool
   ASSERT(nBufferNo() == 2_bn);
   
+  m_pPersistentJumboHeap  = nullptr;
+  m_pPersistentMediumHeap = nullptr;
+  m_pPersistentLargeHeap  = nullptr;
+  m_pPersistentSmallHeap  = nullptr;
+  
   _checkInitialised_(CN_CARRYOVER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARRYOVER,_FOOTER_);

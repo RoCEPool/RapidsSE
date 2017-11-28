@@ -9,6 +9,11 @@ namespace StorageEngine
   {
   public:
   
+    Heap* m_pPersistentJumboHeap;
+    Heap* m_pPersistentMediumHeap;
+    Heap* m_pPersistentLargeHeap;
+    Heap* m_pPersistentSmallHeap;
+  
     // must be last
     Footer m_xFooter;
     
