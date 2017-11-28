@@ -8,7 +8,6 @@
 
 extern BufferPool*     gpBufferPool;
 extern AttachMap*      gpAttachMap;
-extern NP_Task         gnpBootTask;
 
 // indexbuffer: ////////////////////////////////////////////////////////////////
 

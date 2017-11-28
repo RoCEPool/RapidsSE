@@ -7,7 +7,6 @@
 #include "StorageEngine.h"
 
 extern AttachMap*   gpAttachMap;
-extern NP_Task      gnpBootTask;
 
 extern pthread_key_t  giTLS_TaskKey;
 extern pthread_key_t  giTLS_ThreadKey;
@@ -382,7 +381,7 @@ void Thread::vLoop_Drone(void)
   ASSERT(TS_EXITED == m_npTask->eState());
   
   MP_Task mpTask = *m_npTask;
-  if ( (*gnpBootTask != *m_npTask)  && (!mpTask->bWordBody()) ) {
+  if ( (*gpAttachMap->m_npBootTask != *m_npTask)  && (!mpTask->bWordBody()) ) {
     delete *m_npTask;
     m_npTask = nullptr;
   }
@@ -452,7 +451,7 @@ void Thread::vLoop_Partition(void)
     }
     else if (TS_EXITED == m_npTask->eState()) {
       MP_Task mpTask = *m_npTask;
-      if ( (*gnpBootTask != *m_npTask)  && (!mpTask->bWordBody()) ) {
+      if ( (*gpAttachMap->m_npBootTask != *m_npTask)  && (!mpTask->bWordBody()) ) {
         delete *m_npTask;
         m_npTask = nullptr;
       }
@@ -569,7 +568,7 @@ void Thread::vLoop_Partition2(void)
     if (TS_EXITED == m_npTask->eState()) {
       m_npTask->vThread(nullptr);
       MP_Task mpTask = *m_npTask;
-      if ( (*gnpBootTask != *m_npTask)  && (!mpTask->bWordBody()) ) {
+      if ( (*gpAttachMap->m_npBootTask != *m_npTask)  && (!mpTask->bWordBody()) ) {
         delete *m_npTask;
       }
       m_npTask = nullptr;
@@ -697,7 +696,7 @@ void Thread::vLoop_Server(void)
     if (TS_EXITED == m_npTask->eState()) {
       m_npTask->vThread(nullptr);
       MP_Task mpTask = *m_npTask;
-      if ( (*gnpBootTask != *m_npTask)  && (!mpTask->bWordBody()) ) {
+      if ( (*gpAttachMap->m_npBootTask != *m_npTask)  && (!mpTask->bWordBody()) ) {
         delete *m_npTask;
       }
       m_npTask = nullptr;
@@ -774,7 +773,7 @@ void Thread::vLoop_Worker(void)
     }
     else if (TS_EXITED == m_npTask->eState()) {
       MP_Task mpTask = *m_npTask;
-      if ( (*gnpBootTask != *m_npTask)  && (!mpTask->bWordBody()) ) {
+      if ( (*gpAttachMap->m_npBootTask != *m_npTask)  && (!mpTask->bWordBody()) ) {
         delete *m_npTask;
         m_npTask = nullptr;
       }

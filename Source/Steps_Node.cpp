@@ -8,7 +8,6 @@
 
 extern Arguments       gxArguments;
 extern AttachMap*      gpAttachMap;
-extern NP_Task         gnpBootTask;
 
 // node: ///////////////////////////////////////////////////////////////////////
 

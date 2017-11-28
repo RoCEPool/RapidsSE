@@ -11,8 +11,6 @@
 extern AttachMap*      gpAttachMap;
 extern Arguments       gxArguments;
 
-extern NP_Task         gnpBootTask;
-
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/

@@ -6,9 +6,7 @@
 #include "SePrompt.hpp"
 
 extern AttachMap*      gpAttachMap;
-
 extern Arguments       gxArguments;
-extern NP_Task         gnpBootTask;
 
 // args: ///////////////////////////////////////////////////////////////////////
 

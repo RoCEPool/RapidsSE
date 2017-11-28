@@ -5,7 +5,6 @@
 #include "StorageEngine.h"
 
 extern AttachMap*      gpAttachMap;
-extern NP_Task         gnpBootTask;
 
 // accum: //////////////////////////////////////////////////////////////////////
 

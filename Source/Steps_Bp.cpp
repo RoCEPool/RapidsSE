@@ -9,8 +9,6 @@
 extern AttachMap*      gpAttachMap;
 extern BufferPool*     gpBufferPool;
 
-extern NP_Task         gnpBootTask;
-
 i8 giCountObjects[CN_ENUMS];
 
 // bp: /////////////////////////////////////////////////////////////////////////

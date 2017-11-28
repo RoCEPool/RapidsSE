@@ -56,6 +56,7 @@ namespace StorageEngine
     
     Word*         m_pWord;
     Word*         m_pTenants;
+    NP_Task       m_npBootTask;
     
     PartitionScheduler* m_pPartitionScheduler;
     ServerScheduler*    m_pServerScheduler;
