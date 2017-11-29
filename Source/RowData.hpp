@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Structures
+namespace DBobjects
 {
   const i8 C_COLUMN_OFFSET_SIZE = 1;
 
