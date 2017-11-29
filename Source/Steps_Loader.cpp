@@ -15,15 +15,19 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Loader(void)
 {
-  vAddPrimitive("loader.delete"_Stz,      &vLoaderDelete,      false);
-  vAddPrimitive("loader.findChunk"_Stz,   &vLoaderFindChunk,   false);
-  vAddPrimitive("loader.init"_Stz,        &vLoaderInit,        false);
-  vAddPrimitive("loader::new"_Stz,        &vLoaderNew,         false);
-  vAddPrimitive("loader.newSub"_Stz,      &vLoaderNewSub,      false);
-  vAddPrimitive("loader.path!"_Stz,       &vLoaderPathStore,   false);
-  vAddPrimitive("loader.seitf@"_Stz,      &vLoaderSEitfFetch,  false);
-  vAddPrimitive("loader.seitf!"_Stz,      &vLoaderSEitfStore,  false);
-  vAddPrimitive("loader.table!"_Stz,      &vLoaderTableStore,  false);
+  vAddPrimitive("loader.delete"_Stz,            &vLoaderDelete,          false);
+  vAddPrimitive("loader.enclosedBy!"_Stz,       &vLoaderEncloseByStore,  false);
+  vAddPrimitive("loader.escaoeChar!"_Stz,       &vLoaderEscapeCharStore, false);
+  vAddPrimitive("loader.fieldSeparator!"_Stz,   &vLoaderFieldSeparatorStore,false);
+  vAddPrimitive("loader.findChunk"_Stz,         &vLoaderFindChunk,       false);
+  vAddPrimitive("loader.init"_Stz,              &vLoaderInit,            false);
+  vAddPrimitive("loader::new"_Stz,              &vLoaderNew,             false);
+  vAddPrimitive("loader.newSub"_Stz,            &vLoaderNewSub,          false);
+  vAddPrimitive("loader.path!"_Stz,             &vLoaderPathStore,       false);
+  vAddPrimitive("loader.recordTerminator!"_Stz, &vLoaderRecordTerminatorStore,false);
+  vAddPrimitive("loader.seitf@"_Stz,            &vLoaderSEitfFetch,      false);
+  vAddPrimitive("loader.seitf!"_Stz,            &vLoaderSEitfStore,      false);
+  vAddPrimitive("loader.table!"_Stz,            &vLoaderTableStore,      false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -41,6 +45,75 @@ void Task::vLoaderDelete(MP_Task mpTask)
   ASSERT(CN_LOADER == pLoader->eClass());
   
   delete pLoader;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loader.enclosedBy! -- store file enclosed by char into loader               */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderEncloseByStore(MP_Task mpTask)
+{
+  ENTRY("vLoaderEncloseByStore"_Stz);
+  
+  ValWrk xWspPath;
+  Object* pPtrLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader,xWspPath) )
+    THROW_INVALID_DSTACK("loader.enclosedBy!"_Stz);
+  
+  Loader* pLoader = _pLoader(pPtrLoader);
+  ASSERT(CN_LOADER == pLoader->eClass());
+  
+  s32 sEnclosedBy;
+  sEnclosedBy = _pStrVal(xWspPath.pNestedValueSelf());
+  
+  pLoader->vEnclosedBy(sEnclosedBy);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loader.escaoeChar! -- store escape char into loader                        */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderEscapeCharStore(MP_Task mpTask)
+{
+  ENTRY("vLoaderEscapeCharStore"_Stz);
+  
+  ValWrk xWspPath;
+  Object* pPtrLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader,xWspPath) )
+    THROW_INVALID_DSTACK("loader.escaoeChar!"_Stz);
+  
+  Loader* pLoader = _pLoader(pPtrLoader);
+  ASSERT(CN_LOADER == pLoader->eClass());
+  
+  s32 sEscapeChar;
+  sEscapeChar = _pStrVal(xWspPath.pNestedValueSelf());
+  
+  pLoader->vEscapeChar(sEscapeChar);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loader.fieldSeparator! -- store field separator into loader                */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderFieldSeparatorStore(MP_Task mpTask)
+{
+  ENTRY("vLoaderFieldSeparatorStore"_Stz);
+  
+  ValWrk xWspPath;
+  Object* pPtrLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader,xWspPath) )
+    THROW_INVALID_DSTACK("loader.fieldSeparator!"_Stz);
+  
+  Loader* pLoader = _pLoader(pPtrLoader);
+  ASSERT(CN_LOADER == pLoader->eClass());
+  
+  s32 sFieldSeparator;
+  sFieldSeparator = _pStrVal(xWspPath.pNestedValueSelf());
+  
+  pLoader->vFieldSeparator(sFieldSeparator);
   
   EXIT();
 }
@@ -143,6 +216,29 @@ void Task::vLoaderPathStore(MP_Task mpTask)
   sPath = _pStrVal(xWspPath.pNestedValueSelf());
   
   pLoader->vPath(sPath);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loader.recordTerminator! -- store file record terminator into loader       */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderRecordTerminatorStore(MP_Task mpTask)
+{
+  ENTRY("vLoaderRecordTerminatorStore"_Stz);
+  
+  ValWrk xWspPath;
+  Object* pPtrLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader,xWspPath) )
+    THROW_INVALID_DSTACK("loader.recordTerminator!"_Stz);
+  
+  Loader* pLoader = _pLoader(pPtrLoader);
+  ASSERT(CN_LOADER == pLoader->eClass());
+  
+  s32 sRecordTerminator;
+  sRecordTerminator = _pStrVal(xWspPath.pNestedValueSelf());
+  
+  pLoader->vRecordTerminator(sRecordTerminator);
   
   EXIT();
 }

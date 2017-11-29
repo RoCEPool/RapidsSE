@@ -16,6 +16,11 @@ namespace DBobjects
     i8       m_iPartition; // partition of record
     i8       m_iFetchedRecords; // fetched records
     
+    s32      m_sEnclosedBy;       // enclosed by
+    s32      m_sEscapeChar;       // escape char
+    s32      m_sFieldSeparator;   // field separator
+    s32      m_sRecordTerminator; // record terminator
+    
     bool     m_bMoreChunks;  // continue while there are more chunks
     LoadChunk* m_pLoadChunk; // chunk loading buffer
     

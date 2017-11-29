@@ -134,6 +134,12 @@ void LoaderSub::vBegin(void)
   m_pTable   = m_pLoader->pTable();
   m_pLoadMap = m_pLoader->pLoadMap();
   
+  // get the separators etc
+  m_sEnclosedBy        = m_pLoader->sEnclosedBy();
+  m_sEscapeChar        = m_pLoader->sEscapeChar();
+  m_sFieldSeparator    = m_pLoader->sFieldSeparator();
+  m_sRecordTerminator  = m_pLoader->sRecordTerminator();
+  
   sPath = m_pLoader->sPath();
   
   // open the chunked file
@@ -141,6 +147,11 @@ void LoaderSub::vBegin(void)
   
   // read first chunk
   m_bMoreChunks = bReadChunk();
+  
+  vTrace("LoaderSub: m_sEnclosedBy = '%s'\n"_Stz, m_sEnclosedBy.aChar());
+  vTrace("LoaderSub: m_sEscapeChar = '%s'\n"_Stz, m_sEscapeChar.aChar());
+  vTrace("LoaderSub: m_sFieldSeparator = '%s'\n"_Stz, m_sFieldSeparator.aChar());
+  vTrace("LoaderSub: m_sRecordTerminator = '%s'\n"_Stz, m_sRecordTerminator.aChar());
 }
 
 /*----------------------------------------------------------------------------*/

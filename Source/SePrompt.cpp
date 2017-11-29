@@ -26,6 +26,7 @@ const Stz* C_CMD_END     = "end"_Stz;
 const Stz* C_CMD_FIRST   = "first"_Stz;
 const Stz* C_CMD_HISTORY = "history"_Stz;
 const Stz* C_CMD_INSERT  = "insert"_Stz;
+const Stz* C_CMD_LOAD    = "ld"_Stz;
 const Stz* C_CMD_LS      = "ls"_Stz;
 const Stz* C_CMD_NEXT    = "next"_Stz;
 const Stz* C_CMD_PWD     = "pwd"_Stz;
@@ -72,6 +73,7 @@ CmdTable SePromptCommands[] =
   { C_CMD_HELP2,   nullptr,       &SePrompt::bCmd_Help          },
   { C_CMD_HISTORY, nullptr,       &SePrompt::bCmd_History       },
   { C_CMD_INSERT,  C_ONE_ROW,     &SePrompt::bCmd_InsertRow     },
+  { C_CMD_LOAD,    nullptr,       &SePrompt::bCmd_LoadTable     },
   { C_CMD_LS,      nullptr,       &SePrompt::bCmd_ListDir       },
   { C_CMD_NEXT,    nullptr,       &SePrompt::bCmd_GetNextRow    },
   { C_CMD_PWD,     nullptr,       &SePrompt::bCmd_PrintDir      },
@@ -1607,6 +1609,97 @@ bool SePrompt::bCmd_InsertRow(void)
   }
   
   m_sResponse = "<ok>"_Stz;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* load a table from a file                                                   */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bCmd_LoadTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  i8 i_Token;
+  s32 sRecordTerminator;
+  s32 sSeparator;
+  s32 sEnclosedBy;
+  s32 sEscapeChar;
+  
+  ASSERT(m_xTokenVec[0]->bSame("ld"_Stz));
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy tokens from m_xTokenVec to m_xTokenVec2
+  i8 iNumTokens = iCopyTokens(m_xTokenVec, m_xTokenVec2);
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // there should be at least 3 tokens
+  if (iNumTokens < 3) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  i8 iIndex = 0;
+  m_xTokenVec[iIndex++]->vCopy(m_xTokenVec2[0]);
+  m_xTokenVec[iIndex++]->vCopy(m_xTokenVec2[1]);
+  m_xTokenVec[iIndex++]->vCopy(m_xTokenVec2[2]);
+  
+  
+  // set defaults
+  sRecordTerminator.vCopy(";"_Stz);
+  sSeparator.vCopy(","_Stz);
+  sEnclosedBy.vCopy("'"_Stz);
+  sEscapeChar.vCopy("^"_Stz);
+  
+  i8 iCurrentIndex = 3;
+  
+  if (iNumTokens > iCurrentIndex) {
+    
+    while (iNumTokens > iCurrentIndex) {
+      
+      if (iNumTokens < iCurrentIndex + 2) {
+        m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+        return false;
+      }
+      
+      if (m_xTokenVec2[iCurrentIndex]->bSame("record_terminator"_Stz)) {
+        sRecordTerminator.vCopy(m_xTokenVec2[++iCurrentIndex]->sText());
+      }
+      else if (m_xTokenVec2[iCurrentIndex]->bSame("separator"_Stz)) {
+        sSeparator.vCopy(m_xTokenVec2[++iCurrentIndex]->sText());
+      }
+      else if (m_xTokenVec2[iCurrentIndex]->bSame("enclosed_by"_Stz)) {
+        sEnclosedBy.vCopy(m_xTokenVec2[++iCurrentIndex]->sText());
+      }
+      else if (m_xTokenVec2[iCurrentIndex]->bSame("escape_char"_Stz)) {
+        sEscapeChar.vCopy(m_xTokenVec2[++iCurrentIndex]->sText());
+      }
+      else {
+        return false;
+      }
+      iCurrentIndex++;
+    }
+    
+  }
+  
+  // record terminator
+  m_xTokenVec[iIndex++]->vCopy(sRecordTerminator);
+  
+  // separator
+  m_xTokenVec[iIndex++]->vCopy(sSeparator);
+  
+  // enclosed by
+  m_xTokenVec[iIndex++]->vCopy(sEnclosedBy);
+  
+  // escape char
+  m_xTokenVec[iIndex++]->vCopy(sEscapeChar);
+  
+  //
+  // clear the last error
+  m_pSEitf->vClearLastError();
+
+  if (!bExecuteRequest())
+    return false;
   
   return true;
 }

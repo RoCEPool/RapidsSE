@@ -94,6 +94,7 @@ public:
   bool bCmd_Help(void);
   bool bCmd_History(void);
   bool bCmd_InsertRow(void);
+  bool bCmd_LoadTable(void);
   bool bCmd_ListDir(void);
   bool bCmd_GetNextRow(void);
   bool bCmd_PrintDir(void);

@@ -728,11 +728,15 @@ namespace Tasks
     
     // loader
     static void vLoaderDelete(MP_Task mpTask);
+    static void vLoaderEncloseByStore(MP_Task mpTask);
+    static void vLoaderEscapeCharStore(MP_Task mpTask);
+    static void vLoaderFieldSeparatorStore(MP_Task mpTask);
     static void vLoaderFindChunk(MP_Task mpTask);
     static void vLoaderInit(MP_Task mpTask);
     static void vLoaderNew(MP_Task mpTask);
     static void vLoaderNewSub(MP_Task mpTask);
     static void vLoaderPathStore(MP_Task mpTask);
+    static void vLoaderRecordTerminatorStore(MP_Task mpTask);
     static void vLoaderSEitfFetch(MP_Task mpTask);
     static void vLoaderSEitfStore(MP_Task mpTask);
     static void vLoaderTableStore(MP_Task mpTask);

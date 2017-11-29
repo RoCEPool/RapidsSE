@@ -502,29 +502,37 @@ ddlLock::grabRead
 /*----------------------------------------------------------------------------*/
 /* load a table                                                               */
 /*----------------------------------------------------------------------------*/
-: loadTable_req ( "<fileNm>" "<tableNm>" -- <R> )
+: loadTable_req ( "<esc>" "<enc>" "<fs>" "<rt>" "<fileNm>" "<tableNm>" -- <R> )
 
 ddlLock::grabRead
+
+  locals| sTableNm sFileNm sRT sFS sENC sESC |
+
+  sRT "record terminator %v" str.format .
+  sFS "field separator %v" str.format .
+  sENC "enclosed by %v" str.format .
+  sESC "escape character %v" str.format .
 
   // should be in the tables folder
   checkInTables       not if <NIP+ERROR> exit then
 
   // there should be a table folder
-  dup checkIsTableFolder not if <NIP+ERROR> exit then
+  sTableNm checkIsTableFolder not if <NIP+ERROR> exit then
 
   // push table dictionary
-  dup pushTable assert
+  sTableNm pushTable assert
 
   // check it is a table
-  checkIsTable  not if <NIP+ERROR> exit then
+  sTableNm checkIsTable  not if <NIP+ERROR> exit then
+  drop
 
   //bp::freeSpace .
 
 snap0:
-
-  tableLoader   not if popTable <NIP+ERROR> exit then
+stk
+  sESC sENC sFS sRT sFileNm sTableNm tableLoader not if popTable <NIP+ERROR> exit then
   //loadIndexes
-
+stk
   //bp::freeSpace .
 
   // pop table dictionary
