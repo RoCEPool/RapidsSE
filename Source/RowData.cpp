@@ -58,28 +58,29 @@ void RowData::vDump(Stz* aRowData, ColumnVec* pColVec)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* fetch next record from buffer, read next chunk if necessary                */
+/* extract row from given raw record                                          */
 /*----------------------------------------------------------------------------*/
-bool RowData::bFormatData(ColumnVec* pColVec, Stz* aRawData, i8 iRawLength, Stz* aRowData, i8& iRowLength)
+bool RowData::bFormatData(ColumnVec* pColVec,
+                          Stz* aRawData, i8 iRawLength,
+                          Stz* aRowData, i8& iRowLength)
 {
-  char* aSrc = (char*)aRawData->aChar();
+  char* aSrc = aRawData->aChar();
+  
   i8 nColumns = pColVec->nItems() - 1;
   
   Stz* pOffset = aRowData;
   Stz* aDst = pOffset + C_COLUMN_OFFSET_SIZE * nColumns;
   iRowLength = C_COLUMN_OFFSET_SIZE * nColumns;
   
-  
-  i8 iColumnLength = 0;
-  
   for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
+    
     Column* pColumn = pColVec->pGet(i_Column);
     
     // extract datum type
     bool bValid = DtmLib::bExtract(pColumn->eDatumType(), aDst, &aSrc, pColumn);
     
     // is the datum valid ?
-    if (!bValid) {
+    if ( ! bValid ) {
       vTrace("Skipping row - invalid field %s in record: "_Stz,
              pColumn->sColumnName().aChar());
       for (char* a = (char*)aRawData; *a && '\n' != *a; a++)
@@ -91,7 +92,7 @@ bool RowData::bFormatData(ColumnVec* pColVec, Stz* aRawData, i8 iRawLength, Stz*
     // save offset
     *(pOffset->aChar()) = iRowLength;
     
-    iColumnLength = DtmLib::iSize(pColumn->eDatumType(), aDst->aChar());
+    i8 iColumnLength = DtmLib::iSize(pColumn->eDatumType(), aDst->aChar());
     
     // move to next offset location
     pOffset += C_COLUMN_OFFSET_SIZE;
