@@ -1,0 +1,71 @@
+/*============================================================================*/
+/* Formatters.hpp -- set of formatting characters                             */
+/*============================================================================*/
+
+#include "DBobjects.h"
+
+/*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+void* Formatters::operator new(size_t iSize)
+{
+  RASSERT(iSize);
+  
+  Formatters* pFormatters = (Formatters*)gpBufferPool->pAllocBuffer();
+  
+  return pPoolCheck<void*>(pFormatters);
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator delete                                                            */
+/*----------------------------------------------------------------------------*/
+void Formatters::operator delete(void* pFormattersAddress)
+{
+  Formatters* pFormatters = static_cast<Formatters*>(pFormattersAddress);
+  
+  gpBufferPool->vFree((Buffer*)pFormatters);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Formatters::Formatters(void)
+: Object(CN_FORMATTERS)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMATTERS);
+
+  m_cEnclosedBy = '\'';
+  m_cEscapeChar = '^';
+  m_cFieldSeparator = ',';
+  m_cRecordTerminator = ';';
+  
+  _checkInitialised_(CN_FORMATTERS);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_FORMATTERS,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+Formatters::~Formatters(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMATTERS,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* Formatters::aFooter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMATTERS);
+  
+  return &m_xFooter;
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
