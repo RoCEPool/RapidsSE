@@ -60,6 +60,7 @@ pDUMPFUN *gpDump[]
   /* 37 */ &Dump::vInvalid,         // CN_ENTRYVEC
   
   /* 38 */ &Dump::vInvalid,         // CN_FILE
+  /*    */ &Dump::vDummy,           // CN_FORMATTERS
   /* 39 */ &Dump::vDummy,           // CN_FREEBUFFER
   /* 40 */ &Dump::vDummy,           // CN_FREECHUNK
   /* 41 */ &Dump::vDummy,           // CN_FREEDNOT
@@ -221,7 +222,7 @@ i8 giClassSize[]
   /* 28 */ sizeof(BufferPool),         // CN_BUFFERPOOL
   /* 29 */ sizeof(BPA),                // CN_BPA
 
-  /*    */ 0,                          // CN_CARRYOVER
+  /*    */ sizeof(CarryOver),          // CN_CARRYOVER
   /* 30 */ sizeof(Column),             // CN_COLUMN
   /* 31 */ sizeof(ColumnVec),          // CN_COLUMNVEC
   
@@ -234,6 +235,7 @@ i8 giClassSize[]
   /* 37 */ sizeof(EntryVec),           // CN_ENTRYVEC
   
   /* 38 */ sizeof(File),               // CN_FILE
+  /*    */ 0,                          // CN_FORMATTERS
   /* 39 */ sizeof(Buffer),             // CN_FREEBUFFER
   /* 40 */ sizeof(FreeChunk),          // CN_FREECHUNK
   /* 41 */ 0,                          // CN_FREEDNOT
@@ -408,6 +410,7 @@ eHT geWhichHeap[]
   /* 37 */ HT_INVALID, // CN_ENTRYVEC
   
   /* 38 */ HT_TRANSIENT_SMALL,   // CN_FILE
+  /*    */ HT_TRANSIENT_SMALL,   // CN_FORMATTERS
   /* 39 */ HT_INVALID, // CN_FREEBUFFER
   /* 40 */ HT_INVALID, // CN_FREECHUNK
   /* 41 */ HT_INVALID, // CN_FREEDNOT

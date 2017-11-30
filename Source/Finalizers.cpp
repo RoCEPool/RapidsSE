@@ -41,7 +41,7 @@ pFINALIZE *gpFinalize[]
   /* 24 */ &Finalize::vUndefined,         // CN_ATOMIC
   /* 25 */ &Finalize::vUndefined,         // CN_ATTACHMAP
   
-  /* 26  */ &Finalize::vUndefined,         // CN_BITARRAY
+  /* 26 */ &Finalize::vUndefined,         // CN_BITARRAY
   /* 27 */ &Finalize::vUndefined,         // CN_BITMAP
   /* 28 */ &Finalize::vUndefined,         // CN_BUFFERPOOL
   /* 29 */ &Finalize::vUndefined,         // CN_BPA
@@ -55,10 +55,11 @@ pFINALIZE *gpFinalize[]
   /* 34 */ &Finalize::vUndefined,         // CN_DIR
   
   /* 35 */ &Finalize::vUndefined,         // CN_ENTRY
-  /* 36 */ &Finalize::vUndefined,         // CN_EntryBUFFER
+  /* 36 */ &Finalize::vUndefined,         // CN_ENTRYBUFFER
   /* 37 */ &Finalize::vUndefined,         // CN_ENTRYVEC
 
   /* 38 */ &Finalize::vUndefined,         // CN_FILE
+  /*    */ &Finalize::vUndefined,         // CN_FORMATTERS
   /* 39 */ &Finalize::vUndefined,         // CN_FREEBUFFER
   /* 40 */ &Finalize::vUndefined,         // CN_FREECHUNK
   /* 41 */ &Finalize::vUndefined,         // CN_FREEDNOT

@@ -58,6 +58,7 @@ namespace Base
     /* 37 */ CN_ENTRYVEC,
     
     /* 38 */ CN_FILE,
+    /*    */ CN_FORMATTERS,
     /* 39 */ CN_FREEBUFFER,
     /* 40 */ CN_FREECHUNK,
     /* 41 */ CN_FREEDNOT,
@@ -234,6 +235,7 @@ namespace Base
     /* 37 */ "ENTRYVEC"_Stz,
   
     /* 38 */ "FILE"_Stz,
+    /*    */ "FORMATTERS"_Stz,
     /* 39 */ "FREEBUFFER"_Stz,
     /* 40 */ "FREECHUNK"_Stz,
     /* 41 */ "FREEDNOT"_Stz,
