@@ -61,6 +61,7 @@ void RowData::vDump(Stz* aRowData, ColumnVec* pColVec)
 /* extract row from given raw record                                          */
 /*----------------------------------------------------------------------------*/
 bool RowData::bFormatData(ColumnVec* pColVec,
+                          Formatters* pFormatters,
                           Stz* aRawData, i8 iRawLength,
                           Stz* aRowData, i8& iRowLength)
 {

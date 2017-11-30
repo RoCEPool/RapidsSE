@@ -1590,8 +1590,10 @@ bool SePrompt::bCmd_InsertRow(void)
   
   // format the record into row format
   bool bValid = RowData::bFormatData(
-                  m_pSEitf->m_pCurrentTable->pColumnVec(), pRow,
-                  StrLib::iSize(pRow->aChar()), s, iRowLength);
+                  m_pSEitf->m_pCurrentTable->pColumnVec(),
+                  &m_pSEitf->m_xFormatters,
+                  pRow, StrLib::iSize(pRow->aChar()),
+                  s, iRowLength);
   
   if (! bValid) {
     m_pSEitf->vSetLastError(EC_INVALID_VALUE);

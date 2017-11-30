@@ -15,7 +15,7 @@ namespace DBobjects
 
     static char* aColumnDatum(char* aRowData, i8 iColumnNo);
     static void vDump(Stz* aRowData, ColumnVec* pColVec);
-    static bool bFormatData(ColumnVec* pColVec,
+    static bool bFormatData(ColumnVec* pColVec, Formatters* pFormatters,
                             Stz* aRawData, i8 iRawLength,
                             Stz* aRowData, i8& iRowLength);
     static void vRowAsString(s48K& sDataString, Stz* aRowData, ColumnVec* pColVec);
