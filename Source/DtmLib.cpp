@@ -57,7 +57,8 @@ void DtmLib::vCopy(eDM eDatum, void* aDst, void* aSrc, DBobjects::Column* pColum
 /*----------------------------------------------------------------------------*/
 /* extract                                                                    */
 /*----------------------------------------------------------------------------*/
-bool DtmLib::bExtract(eDM eDatum, Stz* aDst, char** aaSrc, DBobjects::Column* pColumn)
+bool DtmLib::bExtract(eDM eDatum, Stz* aDst, char** aaSrc,
+                      DBobjects::Column* pColumn, Formatters* pFormatters)
 {
   bool b = false;
   

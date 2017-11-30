@@ -78,7 +78,8 @@ bool RowData::bFormatData(ColumnVec* pColVec,
     Column* pColumn = pColVec->pGet(i_Column);
     
     // extract datum type
-    bool bValid = DtmLib::bExtract(pColumn->eDatumType(), aDst, &aSrc, pColumn);
+    bool bValid = DtmLib::bExtract(pColumn->eDatumType(), aDst, &aSrc,
+                                   pColumn, pFormatters);
     
     // is the datum valid ?
     if ( ! bValid ) {

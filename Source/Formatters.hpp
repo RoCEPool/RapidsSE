@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace DBobjects
+namespace Datums
 {
   class Formatters : public Object
   {
