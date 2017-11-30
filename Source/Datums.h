@@ -54,6 +54,8 @@ using namespace Datums;
 
 //-----------------------------------------------------------------------------
 
+#include "Formatters.hpp"
+
 #include "Bcd.hpp"
 #include "Bol.hpp"
 #include "Dte.hpp"
