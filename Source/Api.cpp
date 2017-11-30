@@ -257,13 +257,9 @@ eEC RapidsSE_BeginInsert(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable
     VALIDATE_TABLE("h"_Stz);
     
     // begin a tnx
-    bool bResult = pSEitf->bBeginTx();
-    
-    if (!bResult) {
-      pSEitf->vSetLastError(EC_TX_BEGIN_FAILED);
-      TRACE_ERROR("i",EC_TX_BEGIN_FAILED);
-      return EC_TX_BEGIN_FAILED;
-    }
+    eResult = eExecuteRequest(pSEitf, "txBeg"_Stz);
+    CHECK_RESULT("i"_Stz);
+    CHECK_RESPONSE("j"_Stz);
     
     TRACE_EXIT("ea"_Stz);
     
@@ -853,8 +849,13 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf, i8 iTraceLevel)
     // validate if no table
     VALIDATE_NOTABLE("f"_Stz);
     
-    pSEitf->vCommitTx();
-    pSEitf->vEndTx();
+    eResult = eExecuteRequest(pSEitf, "txCmt"_Stz);
+    CHECK_RESULT("g"_Stz);
+    CHECK_RESPONSE("h"_Stz);
+    
+    eResult = eExecuteRequest(pSEitf, "txEnd"_Stz);
+    CHECK_RESULT("i"_Stz);
+    CHECK_RESPONSE("j"_Stz);
     
     TRACE_EXIT("ea"_Stz);
     
