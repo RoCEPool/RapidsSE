@@ -313,6 +313,9 @@ bool SkipList::bRemove(void* pObjectRemove)
   // one less object in the list
   m_nObjects--;
 
+  // delete the node
+  delete pNodeRemove;
+  
   return true;
 }
 
