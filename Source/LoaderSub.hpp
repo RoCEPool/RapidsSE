@@ -9,7 +9,7 @@ namespace DBobjects
   {
   private:
     Loader*  m_pLoader;    // loader parent
-    Table*   m_pTable;     // table being load
+    Table*   m_pTable;     // table being loaded
     LoadMap* m_pLoadMap;   // load map
     s256     m_aRecord;    // formatted row
     i8       m_iLength;    // length of record
@@ -20,9 +20,10 @@ namespace DBobjects
     s32      m_sEscapeChar;       // escape char
     s32      m_sFieldSeparator;   // field separator
     s32      m_sRecordTerminator; // record terminator
-    
-    bool     m_bMoreChunks;  // continue while there are more chunks
-    LoadChunk* m_pLoadChunk; // chunk loading buffer
+  
+    Formatters m_xFormatters; // record formatters
+    bool       m_bMoreChunks; // continue while there are more chunks
+    LoadChunk* m_pLoadChunk;  // chunk loading buffer
     
     EntryBuffer* m_pEntryBuffer[C_MAX_PARTITIONS]; // working row buffers
     
