@@ -47,7 +47,10 @@ extern "C" eEC RapidsSE_GetTables(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, vo
 extern "C" eEC RapidsSE_HashRowPartition(SEitf* pSEitf, Stz* pRow, void** ppPartition, i8 iTraceLevel);
 extern "C" eEC RapidsSE_InsertRow(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel);
 extern "C" eEC RapidsSE_InsertRowPartition(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel);
-extern "C" eEC RapidsSE_LoadData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath, i8 iTraceLevel);
+extern "C" eEC RapidsSE_LoadData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath,
+                                 Stz* pRecordTerminator, Stz* pSeparator,
+                                 Stz* pEnclosedBy, Stz* pEscapeChar,
+                                 i8 iTraceLevel);
 extern "C" eEC RapidsSE_PoolOpen(Stz* pInstanceName, void** ppInstance, i8 iTraceLevel);
 extern "C" eEC RapidsSE_SEitfDelete(SEitf* pSEitf, i8 iTraceLevel);
 extern "C" eEC RapidsSE_SEitfNew(void** ppSEitf, i8 iPartition, i8 iTraceLevel);
@@ -62,7 +65,10 @@ eEC eExecuteRequest(SEitf* pSEitf, Stz* aCommand, Stz* aParameter1,
                     Stz* aParameter2);
 eEC eExecuteRequest(SEitf* pSEitf, Stz* aCommand, Stz* aParameter1,
                     Stz* aParameter2, Stz* aParameter3);
-
+eEC eExecuteRequest(SEitf* pSEitf, Stz* aCommand,
+                    Stz* aParameter1, Stz* aParameter2,
+                    Stz* aParameter3, Stz* aParameter4,
+                    Stz* aParameter5, Stz* aParameter6);
 bool bExecuteRequest(SEitf* pSEitf, TokenVec& xTokenVec);
 eEC eGetResponse(SEitf* pSEitf);
 

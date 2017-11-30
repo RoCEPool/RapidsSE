@@ -1927,7 +1927,10 @@ eEC RapidsSE_InsertRowPartition(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* load data from file into the table                                         */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_LoadData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath, i8 iTraceLevel)
+eEC RapidsSE_LoadData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath,
+                      Stz* pRecordTerminator, Stz* pSeparator,
+                      Stz* pEnclosedBy, Stz* pEscapeChar,
+                      i8 iTraceLevel)
 {
   
   eEC eResult;
@@ -1953,7 +1956,11 @@ eEC RapidsSE_LoadData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath, i8 iTraceLevel
     // add a column
     eResult = eExecuteRequest(pSEitf, "ld"_Stz,
                               pTable,
-                              pFilePath);
+                              pFilePath,
+                              pRecordTerminator,
+                              pSeparator,
+                              pEnclosedBy,
+                              pEscapeChar);
     
     CHECK_RESULT("d"_Stz);
     CHECK_RESPONSE("e"_Stz);
@@ -2268,6 +2275,36 @@ eEC eExecuteRequest(SEitf* pSEitf, Stz* aCommand, Stz* aParameter1,
   xTokenVec.vAddToken(aParameter3);
   xTokenVec[4]->vReset();
 
+  bResult = pSEitf->bDecode(xTokenVec);
+  
+  xTokenVec.vSetAllTokens();
+  
+  return pSEitf->eGetLastError();
+}
+
+/*----------------------------------------------------------------------------*/
+/* execute command                                                           */
+/*----------------------------------------------------------------------------*/
+eEC eExecuteRequest(SEitf* pSEitf, Stz* aCommand,
+                    Stz* aParameter1, Stz* aParameter2,
+                    Stz* aParameter3, Stz* aParameter4,
+                    Stz* aParameter5, Stz* aParameter6)
+{
+  // clear the last error
+  pSEitf->vClearLastError();
+  
+  bool bResult;
+  TokenVec xTokenVec;
+  
+  xTokenVec.vAddToken(aCommand);
+  xTokenVec.vAddToken(aParameter1);
+  xTokenVec.vAddToken(aParameter2);
+  xTokenVec.vAddToken(aParameter3);
+  xTokenVec.vAddToken(aParameter4);
+  xTokenVec.vAddToken(aParameter5);
+  xTokenVec.vAddToken(aParameter6);
+  xTokenVec[7]->vReset();
+  
   bResult = pSEitf->bDecode(xTokenVec);
   
   xTokenVec.vSetAllTokens();
