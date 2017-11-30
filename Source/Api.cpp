@@ -635,10 +635,11 @@ eEC RapidsSE_EndCreateIndex(SEitf* pSEitf, Stz* pTable, Stz* pIndex, i8 iTraceLe
     // clear the last error
     CLEAR_LASTERROR();
     
-    VALIDATE_TABLE("b"_Stz);
-    
     // endmkidx only if we managed to getidx
     if (pSEitf->pCurrentIndex()) {
+      
+      VALIDATE_TABLE("b"_Stz);
+      
       eEC eResult = eExecuteRequest(pSEitf, "endmkidx"_Stz, pTable, pIndex);
       CHECK_RESULT_RETURNTABLE("c"_Stz);
       CHECK_RESPONSE_RETURNTABLE("d"_Stz);
@@ -650,9 +651,11 @@ eEC RapidsSE_EndCreateIndex(SEitf* pSEitf, Stz* pTable, Stz* pIndex, i8 iTraceLe
     
     } else {
       // rettbl
-      eResult = eExecuteRequest(pSEitf, "rettbl"_Stz);
-      CHECK_RESULT("g"_Stz);
-      CHECK_RESPONSE("h"_Stz);
+      if (pSEitf->pCurrentTable()) {
+        eResult = eExecuteRequest(pSEitf, "rettbl"_Stz);
+        CHECK_RESULT("g"_Stz);
+        CHECK_RESPONSE("h"_Stz);
+      }
     }
     
     // should not have a table
