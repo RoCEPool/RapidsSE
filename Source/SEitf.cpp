@@ -200,6 +200,8 @@ SEitf::SEitf(i8 iPartition)
   
   m_pRowOnce = nullptr;
   
+  //m_xFormatters
+  
   _checkInitialised_(CN_SEITF);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);

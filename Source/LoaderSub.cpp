@@ -66,6 +66,7 @@ LoaderSub::LoaderSub(void)
   //m_aRecord
   m_iLength  = 0;
   m_iPartition  = 0;
+  //m_xFormatters
   m_bMoreChunks = false;
   m_pLoadChunk  = new LoadChunk;
   m_iFetchedRecords = 0;

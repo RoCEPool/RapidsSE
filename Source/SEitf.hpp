@@ -58,6 +58,8 @@ namespace Interface
   
     RowOnce* m_pRowOnce; // has row been seen before?
   
+    Formatters m_xFormatters; // record formatters
+  
     // must be last
     Footer m_xFooter;
     
