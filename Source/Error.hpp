@@ -32,6 +32,7 @@ namespace Debugging
   /* 18 */ EC_INVALID_PARAMETER,
   /* 19 */ EC_INVALID_PARAMETERS,
   /* 20 */ EC_INVALID_INSTANCE,
+  /*    */ EC_INVALID_SIZE,
   /* 21 */ EC_INVALID_SYNTAX,
   /* 22 */ EC_INVALID_VALUE,
   
@@ -115,6 +116,7 @@ namespace Debugging
   /* 18 */ "invalid parameter"_Stz,
   /* 19 */ "invalid parameters"_Stz,
   /* 20 */ "invalid instance"_Stz,
+  /*    */ "invalid size"_Stz,
   /* 21 */ "invalid syntax"_Stz,
   /* 22 */ "invalid value"_Stz,
   

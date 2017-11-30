@@ -5,6 +5,7 @@
 
 namespace Datums
 {
+  const i8 C_MAX_SIZE_VCH = C_64K;
   const i8 C_NULL_VCH = LLONG_MIN;
   
   class Vch
@@ -33,6 +34,7 @@ namespace Datums
     static void vCopy(void* aDst, void* aSrc);
     static i8   iSize(char* aSrc);
     static void vSprint(Stz* aDst, Stz* aSrc);
+    static bool bIsValidSize(i8 iSize);
     
     static bool bExtract(char** aaSrc, Vch* aVch, DBobjects::Column* pColumn);
     static bool bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);

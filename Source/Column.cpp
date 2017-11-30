@@ -324,18 +324,18 @@ void Column::vSet(Stz* aDefinition)
   else if (StrLib::bSame(aBuffer,"decimal")) {
     m_eColumnType = CT_DECIMAL;
     m_eDatumType = DM_BCD;
-    m_iColumnLength = 19;
+    m_iColumnLength = C_MAX_PRECISION_BCD;
     m_iColumnScale = 0;
   }
   else if (StrLib::bSame(aBuffer,"float")) {
     m_eColumnType = CT_FLOAT;
     m_eDatumType = DM_FLT;
-    m_iColumnLength = 16;
+    m_iColumnLength = C_MAX_PRECISION_FLT;
   }
   else if (StrLib::bSame(aBuffer,"integer")) {
     m_eColumnType = CT_INTEGER;
     m_eDatumType = DM_INT;
-    m_iColumnLength = 19;
+    m_iColumnLength = C_MAX_PRECISION_INT;
   }
   else if (StrLib::bSame(aBuffer,"interval")) {
     m_eColumnType = CT_INTERVAL;
@@ -357,7 +357,7 @@ void Column::vSet(Stz* aDefinition)
   else if (StrLib::bSame(aBuffer,"varchar")) {
     m_eColumnType = CT_VARCHAR;
     m_eDatumType = DM_VCH;
-    m_iColumnLength = C_64K;
+    m_iColumnLength = C_MAX_SIZE_VCH;
   }
   else {
     m_eColumnType = CT_INTEGER;
@@ -382,8 +382,6 @@ void Column::vSet(Stz* aDefinition)
     StrLib::vSkipWhite(&aCursor);
   }
   
-  vValidateColumn();
-  
   if (StrLib::bSame(aCursor,"not null"))
     m_bIsNullable = false;
 }
@@ -406,53 +404,6 @@ void Column::vShow(void)
          m_bIsPartitionKey? "partitionKey"_Stz : ""_Stz);
 }
 
-/*----------------------------------------------------------------------------*/
-/* validate column defintion                                                  */
-/*----------------------------------------------------------------------------*/
-void Column::vValidateColumn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
-  switch (m_eDatumType) {
-      
-    case DM_BOL:
-    case DM_DTE:
-    case DM_IVL:
-    case DM_TME:
-    case DM_TSP:
-      return;
-      
-    case DM_BCD:
-      if (m_iColumnLength > 19)
-        m_iColumnLength = 19;
-      if (m_iColumnScale > 19)
-        m_iColumnScale = 19;
-      break;
-      
-    case DM_FLT:
-      if (m_iColumnLength > 16)
-        m_iColumnLength = 16;
-      break;
-      
-    case DM_INT:
-      if (m_iColumnLength > 19)
-        m_iColumnLength = 19;
-      break;
-      
-    case DM_VBN:
-      if (m_iColumnLength > C_64K)
-        m_iColumnLength = C_64K;
-      break;
-      
-    case DM_VCH:
-      if (m_iColumnLength > C_64K)
-        m_iColumnLength = C_64K;
-      break;
-      
-    default:
-      NEVER_REACH;
-  }
-}
 /*----------------------------------------------------------------------------*/
 /* column value                                                               */
 /*----------------------------------------------------------------------------*/

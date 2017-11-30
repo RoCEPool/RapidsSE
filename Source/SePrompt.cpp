@@ -1913,15 +1913,14 @@ bool SePrompt::bAddTableColumns(i8& i_Token, i8 iNumTokens)
     m_xTokenVec[j++]->vCopy(m_xTokenVec2[2]);
     m_xTokenVec[j++]->vCopy(m_xTokenVec2[iCurrentToken++]);
     
-    if (m_xTokenVec2[iCurrentToken]->bSame("integer"_Stz) ||
-        m_xTokenVec2[iCurrentToken]->bSame("varchar"_Stz) ||
+    if (m_xTokenVec2[iCurrentToken]->bSame("varchar"_Stz) ||
         m_xTokenVec2[iCurrentToken]->bSame("varbinary"_Stz) ||
-        m_xTokenVec2[iCurrentToken]->bSame("char"_Stz) ||
-        m_xTokenVec2[iCurrentToken]->bSame("float"_Stz)) {
+        m_xTokenVec2[iCurrentToken]->bSame("char"_Stz)) {
+      
+      i8 iSize;
       
       // copy varchar/char
       m_xTokenVec[j]->vCopy(m_xTokenVec2[iCurrentToken++]);
-      
       if (m_xTokenVec2[iCurrentToken]->bSame("("_Stz)) {
         
         // str.cat '('
@@ -1931,12 +1930,14 @@ bool SePrompt::bAddTableColumns(i8& i_Token, i8 iNumTokens)
         m_xTokenVec[j]->vConcat(m_xTokenVec2[iCurrentToken]->aText());
         
         // check if it was numeric
-        if ( ! m_xTokenVec2[iCurrentToken++]->bIsNumeric() ) {
+        if ( ! m_xTokenVec2[iCurrentToken]->bIsNumeric() ) {
           // drop the table
           bDrop = bDropReturnTable(m_xTokenVec2[2]->aText());
           ASSERT(bDrop);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
+        } else {
+          iSize = m_xTokenVec2[iCurrentToken++]->iToI8();
         }
         
         if (!m_xTokenVec2[iCurrentToken]->bSame(")"_Stz)) {
@@ -1950,14 +1951,20 @@ bool SePrompt::bAddTableColumns(i8& i_Token, i8 iNumTokens)
         // str.cat ')'
         m_xTokenVec[j]->vConcat(m_xTokenVec2[iCurrentToken++]->aText());
         
+        if (!Vch::bIsValidSize(iSize)) {
+          bDropReturnTable(m_xTokenVec2[2]->aText());
+          m_pSEitf->vSetLastError(EC_INVALID_SIZE);
+          return false;
+        }
       }
       
     }
-    else if (m_xTokenVec2[iCurrentToken]->bSame("decimal"_Stz)) {
+    else if (m_xTokenVec2[iCurrentToken]->bSame("float"_Stz)) {
+      
+      i8 iSize;
       
       // copy varchar/char
       m_xTokenVec[j]->vCopy(m_xTokenVec2[iCurrentToken++]);
-      
       if (m_xTokenVec2[iCurrentToken]->bSame("("_Stz)) {
         
         // str.cat '('
@@ -1967,10 +1974,58 @@ bool SePrompt::bAddTableColumns(i8& i_Token, i8 iNumTokens)
         m_xTokenVec[j]->vConcat(m_xTokenVec2[iCurrentToken]->aText());
         
         // check if it was numeric
-        if ( ! m_xTokenVec2[iCurrentToken++]->bIsNumeric() ) {
+        if ( ! m_xTokenVec2[iCurrentToken]->bIsNumeric() ) {
+          // drop the table
+          bDrop = bDropReturnTable(m_xTokenVec2[2]->aText());
+          ASSERT(bDrop);
+          m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+          return false;
+        } else {
+          iSize = m_xTokenVec2[iCurrentToken++]->iToI8();
+        }
+        
+        if (!m_xTokenVec2[iCurrentToken]->bSame(")"_Stz)) {
+          // drop the table
+          bDrop = bDropReturnTable(m_xTokenVec2[2]->aText());
+          ASSERT(bDrop);
+          m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+          return false;
+        }
+        
+        // str.cat ')'
+        m_xTokenVec[j]->vConcat(m_xTokenVec2[iCurrentToken++]->aText());
+        
+        if (!Flt::bIsValidSize(iSize)) {
+          bDropReturnTable(m_xTokenVec2[2]->aText());
+          m_pSEitf->vSetLastError(EC_INVALID_SIZE);
+          return false;
+        }
+      }
+      
+    }
+    else if (m_xTokenVec2[iCurrentToken]->bSame("decimal"_Stz)) {
+      
+      i8 iPrecision;
+      i8 iScale;
+      
+      // copy varchar/char
+      m_xTokenVec[j]->vCopy(m_xTokenVec2[iCurrentToken++]);
+      
+      if (m_xTokenVec2[iCurrentToken]->bSame("("_Stz)) {
+        
+        // str.cat '('
+        m_xTokenVec[j]->vConcat(m_xTokenVec2[iCurrentToken++]->aText());
+        
+        // str.cat the precision
+        m_xTokenVec[j]->vConcat(m_xTokenVec2[iCurrentToken]->aText());
+        
+        // check if it was numeric
+        if ( ! m_xTokenVec2[iCurrentToken]->bIsNumeric() ) {
           bDropReturnTable(m_xTokenVec2[2]->aText());
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
+        } else {
+          iPrecision = m_xTokenVec2[iCurrentToken++]->iToI8();
         }
         
         if (!m_xTokenVec2[iCurrentToken]->bSame(","_Stz)) {
@@ -1986,10 +2041,12 @@ bool SePrompt::bAddTableColumns(i8& i_Token, i8 iNumTokens)
         m_xTokenVec[j]->vConcat(m_xTokenVec2[iCurrentToken]->aText());
         
         // check if it was numeric
-        if ( ! m_xTokenVec2[iCurrentToken++]->bIsNumeric() ) {
+        if ( ! m_xTokenVec2[iCurrentToken]->bIsNumeric() ) {
           bDropReturnTable(m_xTokenVec2[2]->aText());
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
+        } else {
+          iScale = m_xTokenVec2[iCurrentToken++]->iToI8();
         }
         
         if (!m_xTokenVec2[iCurrentToken]->bSame(")"_Stz)) {
@@ -2000,9 +2057,16 @@ bool SePrompt::bAddTableColumns(i8& i_Token, i8 iNumTokens)
         
         // str.cat ')'
         m_xTokenVec[j]->vConcat(m_xTokenVec2[iCurrentToken++]->aText());
+        
+        if (!Bcd::bIsValidSize(iPrecision, iScale)) {
+          bDropReturnTable(m_xTokenVec2[2]->aText());
+          m_pSEitf->vSetLastError(EC_INVALID_SIZE);
+          return false;
+        }
       }
     }
-    else if (m_xTokenVec2[iCurrentToken]->bSame("date"_Stz) ||
+    else if (m_xTokenVec2[iCurrentToken]->bSame("integer"_Stz) ||
+             m_xTokenVec2[iCurrentToken]->bSame("date"_Stz) ||
              m_xTokenVec2[iCurrentToken]->bSame("time"_Stz) ||
              m_xTokenVec2[iCurrentToken]->bSame("timestamp"_Stz) ||
              m_xTokenVec2[iCurrentToken]->bSame("interval"_Stz) ||
@@ -2054,8 +2118,7 @@ bool SePrompt::bAddTableColumns(i8& i_Token, i8 iNumTokens)
     }
     
     
-    // now we should see a column type
-    // validate it
+    // now we should see a column
     m_xTokenVec[j]->aText()->vToLower();
     
     // add the column

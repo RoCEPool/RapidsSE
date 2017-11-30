@@ -6,11 +6,12 @@
 namespace Datums
 {
   const i8 C_NULL_FLT = -DBL_MAX;
+  const i8 C_MAX_PRECISION_FLT = 19;
   
   class Flt
   {
   friend class DtmLib;
-  
+    
   protected:
     d8 m_dFlt;
   
@@ -35,7 +36,9 @@ namespace Datums
     static i8   nCopy(void* aDst, void* aSrc);
     static void vCopy(void* aDst, void* aSrc);
     static bool bExtract(char** aaSrc, Flt* aFlt, DBobjects::Column* pColumn);
-    static void vSprint(Stz* aDst, Stz* aSrc);    
+    static void vSprint(Stz* aDst, Stz* aSrc);
+    static bool bIsValidSize(i8 iPrecision);
+    
     static bool bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
     static bool bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
     static bool bEqualTo(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);

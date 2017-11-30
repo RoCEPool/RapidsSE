@@ -10,8 +10,11 @@ namespace DBobjects
 
 namespace Datums
 {
+  static const i8 C_MAX_PRECISION_BCD = 19;
+  
   class Bcd
-  {  
+  {
+    
   protected:
     i8 m_iBcd;
   
@@ -37,9 +40,9 @@ namespace Datums
     static void vCopy(void* aDst, void* aSrc);
 
     static bool bExtract(char** aaSrc, Bcd* aBcd, DBobjects::Column* pColumn);
-
     static void vSprint(Stz* aDst, Stz* aSrc, DBobjects::Column* pColumn);
-
+    static bool bIsValidSize(i8 iPrecision, i8 iScale);
+    
     static bool bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
     static bool bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
     static bool bEqualTo(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
