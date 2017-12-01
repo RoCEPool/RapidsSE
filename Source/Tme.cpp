@@ -219,6 +219,8 @@ void Tme::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 bool Tme::bExtract(char** aaSrc, Tme* aTme, Column* pColumn, Formatters* pFormatters)
 {
+  // refer: http://en.wikipedia.org/wiki/ISO_8601
+  
   u8 uField;
   
   // skip leading spaces
@@ -293,7 +295,7 @@ bool Tme::bExtract(char** aaSrc, Tme* aTme, Column* pColumn, Formatters* pFormat
       aTme->x.m_uMilli = uField;
   }
   
-  // skip Z separator
+  // skip optional Z (UTC zone designator)
   if ('Z' == **aaSrc)
     (*aaSrc)++;
   

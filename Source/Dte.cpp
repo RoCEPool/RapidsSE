@@ -210,6 +210,8 @@ void Dte::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 bool Dte::bExtract(char** aaSrc, Dte* aDte, Column* pColumn, Formatters* pFormatters)
 {
+  // refer: http://en.wikipedia.org/wiki/ISO_8601
+  
   u8 uField;
   
   // skip leading spaces
@@ -277,7 +279,7 @@ bool Dte::bExtract(char** aaSrc, Dte* aDte, Column* pColumn, Formatters* pFormat
     return false;
   aDte->x.m_uDay = uField;
   
-  // skip Z separator
+  // skip optional Z (UTC zone designator)
   if ('Z' == **aaSrc)
     (*aaSrc)++;
   

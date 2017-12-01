@@ -384,7 +384,7 @@ bool Tsp::bExtract(char** aaSrc, Tsp* aTsp, Column* pColumn, Formatters* pFormat
       return false;
   }
   
-  // skip Z separator
+  // skip optional Z (UTC zone designator)
   if ('Z' == **aaSrc)
     (*aaSrc)++;
   
