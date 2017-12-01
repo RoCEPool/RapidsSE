@@ -219,7 +219,9 @@ bool Dte::bExtract(char** aaSrc, Dte* aDate, Column* pColumn, Formatters* pForma
   if ( ! DtmLib::bIsThereData(**aaSrc,pFormatters) )
     return false;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for null
+  
   if (StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) == 0) {
     
     *aaSrc = (*aaSrc) + 4;
@@ -240,10 +242,17 @@ bool Dte::bExtract(char** aaSrc, Dte* aDate, Column* pColumn, Formatters* pForma
     aDate->vSetNull();
     return true;
   }
+//  bool bValidNull;
+//  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
+//    if ( ! bValidNull )
+//      return false;
+//    aDate->vSetNull();
+//    return true;
+//  }
   
   aDate->vInitZero();
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // date portion
   
   // extract year

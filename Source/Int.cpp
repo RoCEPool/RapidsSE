@@ -253,7 +253,9 @@ bool Int::bExtract(char** aaSrc, Int* aInteger, Column* pColumn, Formatters* pFo
   if ( ! DtmLib::bIsThereData(**aaSrc,pFormatters) )
     return false;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for null
+  
   if (StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) == 0) {
     
     *aaSrc = (*aaSrc) + 4;
@@ -274,6 +276,13 @@ bool Int::bExtract(char** aaSrc, Int* aInteger, Column* pColumn, Formatters* pFo
     aInteger->vSetNull();
     return true;
   }
+//  bool bValidNull;
+//  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
+//    if ( ! bValidNull )
+//      return false;
+//    aInteger->vSetNull();
+//    return true;
+//  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for negative

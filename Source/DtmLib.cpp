@@ -455,7 +455,6 @@ bool DtmLib::bTestForNull(char** aaSrc, DBobjects::Column* pColumn,
     bValid = false;
     return true;
   }
-  
 
   bValid = true;
   return true;

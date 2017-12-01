@@ -244,7 +244,9 @@ bool Bol::bExtract(char** aaSrc, Bol* aBoolean, Column* pColumn, Formatters* pFo
   if ( ! DtmLib::bIsThereData(**aaSrc,pFormatters) )
     return false;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for null
+  
   if (StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) == 0) {
     
     *aaSrc = (*aaSrc) + 4;
@@ -265,7 +267,15 @@ bool Bol::bExtract(char** aaSrc, Bol* aBoolean, Column* pColumn, Formatters* pFo
     aBoolean->vSetNull();
     return true;
   }
+//  bool bValidNull;
+//  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
+//    if ( ! bValidNull )
+//      return false;
+//    aBoolean->vSetNull();
+//    return true;
+//  }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check for numeric
   if (StrLib::bIsDigit(**aaSrc)) {
     i8 iResult = 0;

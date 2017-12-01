@@ -259,7 +259,9 @@ bool Tsp::bExtract(char** aaSrc, Tsp* aTimestamp, Column* pColumn, Formatters* p
   if ( ! DtmLib::bIsThereData(**aaSrc,pFormatters) )
     return false;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for null
+  
   if (StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) == 0) {
     
     *aaSrc = (*aaSrc) + 4;
@@ -280,10 +282,17 @@ bool Tsp::bExtract(char** aaSrc, Tsp* aTimestamp, Column* pColumn, Formatters* p
     aTimestamp->vSetNull();
     return true;
   }
+//  bool bValidNull;
+//  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
+//    if ( ! bValidNull )
+//      return false;
+//    aTimestamp->vSetNull();
+//    return true;
+//  }
   
   aTimestamp->vInitZero();
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // date portion
   
   // extract year
@@ -326,7 +335,7 @@ bool Tsp::bExtract(char** aaSrc, Tsp* aTimestamp, Column* pColumn, Formatters* p
   }
   aTimestamp->x.m_uDay = uField;
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // time portion
   
   // skip T or space separator

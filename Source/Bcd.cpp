@@ -191,7 +191,9 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn, Form
   if ( ! DtmLib::bIsThereData(**aaSrc,pFormatters) )
     return false;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for null
+  
   if (StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) == 0) {
     
     *aaSrc = (*aaSrc) + 4;
@@ -212,9 +214,9 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn, Form
     aDecimal->vSetNull();
     return true;
   }
-//  bool bValid;
-//  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValid)) {
-//    if ( ! bValid )
+//  bool bValidNull;
+//  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
+//    if ( ! bValidNull )
 //      return false;
 //    aDecimal->vSetNull();
 //    return true;
