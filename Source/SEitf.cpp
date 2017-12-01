@@ -2161,8 +2161,6 @@ bool SEitf::bLoadTable(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(" "_Stz);
   sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
-  vTrace("%s\n"_Stz,sRequest.aChar());
-  
   return bAppendRequest(sRequest);
 }
 

@@ -508,10 +508,10 @@ ddlLock::grabRead
 
   locals| sTableNm sFileNm sRT sFS sENC sESC |
 
-  sRT "record terminator %v" str.format .
-  sFS "field separator %v" str.format .
-  sENC "enclosed by %v" str.format .
-  sESC "escape character %v" str.format .
+  //sRT "record terminator %v" str.format .
+  //sFS "field separator %v" str.format .
+  //sENC "enclosed by %v" str.format .
+  //sESC "escape character %v" str.format .
 
   // should be in the tables folder
   checkInTables       not if <NIP+ERROR> exit then
