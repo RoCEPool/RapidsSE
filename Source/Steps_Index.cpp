@@ -106,7 +106,10 @@ void Task::vIndexBuffer(MP_Task mpTask)
   //vTrace("Datum: %s\n"_Stz,pStrVal->aChar());
   
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
-  xKeyWrk.vAddDatum(pStrVal,pColumn0);
+  
+  Formatters* pFormatters = &mpTask->m_pSEitf->m_xFormatters;
+  
+  xKeyWrk.vAddDatum(pStrVal,pColumn0,pFormatters);
   //xKeyWrk.vShow();
   
   EntryBuffer* pIndexBuffer = pIndexData->pPositionLevel(xKeyWrk, JC_AFTER, 0);
@@ -287,7 +290,9 @@ void Task::vIndexPosition(MP_Task mpTask)
   
   Column* pColumn = pIndex->pIdxColVec()->pGet(0);
   
-  xKeyWrk.vAddDatum(pStrVal, pColumn);
+  Formatters* pFormatters = &mpTask->m_pSEitf->m_xFormatters;
+  
+  xKeyWrk.vAddDatum(pStrVal, pColumn, pFormatters);
   //xKeyWrk.aKey()->vShow(pIndex->pIdxColVec());
 
   Entry* pIndexEntry = pIndexBuffer->pPosition(xKeyWrk, JC_AFTER);
@@ -790,7 +795,9 @@ void Task::vIndexUpper(MP_Task mpTask)
   
   StrVal* pStrVal = _pStrVal(xValWrk.pNestedValueSelf());
   
-  xKeyWrk.vAddDatum(pStrVal, pIndex->pIdxColVec()->pGet(0));
+  Formatters* pFormatters = &mpTask->m_pSEitf->m_xFormatters;
+  
+  xKeyWrk.vAddDatum(pStrVal, pIndex->pIdxColVec()->pGet(0),pFormatters);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the relation operator for the first predicate

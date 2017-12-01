@@ -208,7 +208,7 @@ void Dte::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract a date from substr                                     yyyy-mo-ddZ */
 /*----------------------------------------------------------------------------*/
-bool Dte::bExtract(char** aaSrc, Dte* aDate, Column* pColumn)
+bool Dte::bExtract(char** aaSrc, Dte* aDate, Column* pColumn, Formatters* pFormatters)
 {
   u8 uField;
   

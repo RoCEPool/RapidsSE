@@ -39,7 +39,8 @@ namespace Datums
     static i8   nCopy(void* aDst, void* aSrc);
     static void vCopy(void* aDst, void* aSrc);
 
-    static bool bExtract(char** aaSrc, Bcd* aBcd, DBobjects::Column* pColumn);
+    static bool bExtract(char** aaSrc, Bcd* aBcd,
+                         DBobjects::Column* pColumn, Formatters* pFormatters);
     static void vSprint(Stz* aDst, Stz* aSrc, DBobjects::Column* pColumn);
     static bool bIsValidSize(i8 iPrecision, i8 iScale);
     

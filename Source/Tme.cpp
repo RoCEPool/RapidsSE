@@ -217,7 +217,7 @@ void Tme::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract a time from substr                                   hh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-bool Tme::bExtract(char** aaSrc, Tme* aTime, Column* pColumn)
+bool Tme::bExtract(char** aaSrc, Tme* aTime, Column* pColumn, Formatters* pFormatters)
 {
   u8 uField;
   

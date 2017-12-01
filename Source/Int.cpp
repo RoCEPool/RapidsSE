@@ -241,7 +241,7 @@ void Int::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract an integer from substr                                             */
 /*----------------------------------------------------------------------------*/
-bool Int::bExtract(char** aaSrc, Int* aInteger, Column* pColumn)
+bool Int::bExtract(char** aaSrc, Int* aInteger, Column* pColumn, Formatters* pFormatter)
 {
   u8 uResult = 0;
   bool bNegative = false;

@@ -179,7 +179,7 @@ void Flt::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract a float from substr                                                */
 /*----------------------------------------------------------------------------*/
-bool Flt::bExtract(char** aaSrc, Flt* aFloat, Column* pColumn)
+bool Flt::bExtract(char** aaSrc, Flt* aFloat, Column* pColumn, Formatters* pFormatters)
 {
   d8 dResult = 0.0;
   bool bNegative = false;

@@ -207,7 +207,7 @@ void Ivl::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract an interval from substr                                            */
 /*----------------------------------------------------------------------------*/
-bool Ivl::bExtract(char** aaSrc, Ivl* aInterval, Column* pColumn)
+bool Ivl::bExtract(char** aaSrc, Ivl* aInterval, Column* pColumn, Formatters* pFormatters)
 {
   u8 uField;
   

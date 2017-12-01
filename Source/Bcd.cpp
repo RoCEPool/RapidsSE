@@ -179,7 +179,7 @@ void Bcd::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract a decimal from substr                                              */
 /*----------------------------------------------------------------------------*/
-bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn)
+bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn, Formatters* pFormatters)
 {
   u8 uResult = 0;
   bool bNegative = false;

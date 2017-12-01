@@ -230,7 +230,7 @@ void Vch::vCopy(void* pDst, void* pSrc)
 /*----------------------------------------------------------------------------*/
 /* extract an varchar from substr                                             */
 /*----------------------------------------------------------------------------*/
-bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn)
+bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn, Formatters* pFormatters)
 {
   char* aChar = (char*)aVch;
  /*

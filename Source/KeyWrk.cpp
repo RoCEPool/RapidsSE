@@ -115,7 +115,7 @@ void KeyWrk::vShow(void)
 /*----------------------------------------------------------------------------*/
 /* add element to key                                                         */
 /*----------------------------------------------------------------------------*/
-void KeyWrk::vAddDatum(Values::StrVal* pStrVal, Column* pCol)
+void KeyWrk::vAddDatum(Values::StrVal* pStrVal, Column* pCol, Formatters* pFormatters)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
@@ -129,21 +129,21 @@ void KeyWrk::vAddDatum(Values::StrVal* pStrVal, Column* pCol)
       
     case DM_BCD: {
       Bcd xBcd;
-      bool b = Bcd::bExtract(&pSrc,&xBcd,pCol);
+      bool b = Bcd::bExtract(&pSrc,&xBcd,pCol,pFormatters);
       nBytes = Bcd::nCopy((char*)pDst,(char*)&xBcd);
       break;
     }
       
     case DM_BOL: {
       Bol xBoolean;
-      bool b = Bol::bExtract(&pSrc,&xBoolean,pCol);
+      bool b = Bol::bExtract(&pSrc,&xBoolean,pCol,pFormatters);
       nBytes = Bol::nCopy((char*)pDst,(char*)&xBoolean);
       break;
     }
       
     case DM_DTE: {
       Dte xDate;
-      bool b = Dte::bExtract(&pSrc,&xDate,pCol);
+      bool b = Dte::bExtract(&pSrc,&xDate,pCol,pFormatters);
       nBytes = Dte::nCopy((char*)pDst,(char*)&xDate);
       break;
     }
@@ -155,28 +155,28 @@ void KeyWrk::vAddDatum(Values::StrVal* pStrVal, Column* pCol)
       
     case DM_IVL: {
       Ivl xInterval;
-      bool b = Ivl::bExtract(&pSrc,&xInterval,pCol);
+      bool b = Ivl::bExtract(&pSrc,&xInterval,pCol,pFormatters);
       nBytes = Ivl::nCopy(pDst,(void*)&xInterval);
       break;
     }
       
     case DM_FLT: {
       Flt xFloat;
-      bool b = Flt::bExtract(&pSrc,&xFloat,pCol);
+      bool b = Flt::bExtract(&pSrc,&xFloat,pCol,pFormatters);
       nBytes = Flt::nCopy(pDst,(void*)&xFloat);
       break;
     }
       
     case DM_TME: {
       Tme xTime;
-      bool b = Tme::bExtract(&pSrc,&xTime,pCol);
+      bool b = Tme::bExtract(&pSrc,&xTime,pCol,pFormatters);
       nBytes = Tme::nCopy((char*)pDst,(char*)&xTime);
       break;
     }
       
     case DM_TSP: {
       Tsp xTimestamp;
-      bool b = Tsp::bExtract(&pSrc,&xTimestamp,pCol);
+      bool b = Tsp::bExtract(&pSrc,&xTimestamp,pCol,pFormatters);
       nBytes = Tsp::nCopy((char*)pDst,(char*)&xTimestamp);
       break;
     }

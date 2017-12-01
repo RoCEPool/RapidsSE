@@ -233,7 +233,7 @@ void Bol::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract a boolean from substr                                              */
 /*----------------------------------------------------------------------------*/
-bool Bol::bExtract(char** aaSrc, Bol* aBoolean, Column* pColumn)
+bool Bol::bExtract(char** aaSrc, Bol* aBoolean, Column* pColumn, Formatters* pFormatters)
 {
   bool bResult = false;
   
