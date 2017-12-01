@@ -2,10 +2,31 @@
 // create table with DECIMAL column tests
 //----------------------------------------------------------------------------//
 
+// create a table , precision > 19
+create table T1 (
+  id      integer,
+  val   decimal(20,10)
+);
+failure
+
+// create a table , scale > precision
+create table T1 (
+  id      integer,
+  val   decimal(3,10)
+);
+failure
+
+// create a table , scale > 19
+create table T1 (
+  id      integer,
+  val   decimal(19,20)
+);
+failure
+
 // create a table , no size in varchar
 create table T1 (
   id      integer,
-  value   decimal
+  val     decimal
 );
 success
 
@@ -20,7 +41,7 @@ rows: 0
 
 // check metadata
 select data_type, is_partition_key, is_nullable, precision, scale from rapids.system.columns where
-  table_name = 'T1' and column_name = 'VALUE';
+  table_name = 'T1' and column_name = 'VAL';
 rows:
   ('DECIMAL', false, true, 19, 0)
 
@@ -58,8 +79,8 @@ success
 // create a table , no size in varchar
 create table T1 (
   id      integer,
-  value   decimal(10,2) NOT NULL
-) partition by (value);
+  val   decimal(10,2) NOT NULL
+) partition by (val);
 success
 
 // table should have gotten created
@@ -73,7 +94,7 @@ select * from rapids.system.indexes;
 
 // check metadata
 select data_type, is_partition_key, is_nullable, precision, scale from rapids.system.columns where
-table_name = 'T1'  and column_name = 'VALUE';
+table_name = 'T1'  and column_name = 'VAL';
 rows:
   ('DECIMAL', true, false, 10, 2)
 

@@ -2,10 +2,42 @@
 // create table with INTEGER column tests
 //----------------------------------------------------------------------------//
 
-// create a table , no size in varchar
+// create a table , float size > 16
 create table T1 (
   name    varchar,
-  id      integer
+  id      float(17)
+);
+failure
+
+// create a table , no size in float
+create table T1 (
+  name    varchar,
+  id      float(5)
+);
+success
+// table should have gotten created
+select table_name from rapids.system.tables where catalog_name = 'RAPIDSSE';
+rows:
+('T1')
+
+// there should be no indexes on it
+select * from rapids.system.indexes;
+rows: 0
+
+// check metadata
+select data_type, is_partition_key, is_nullable, precision from rapids.system.columns where
+table_name = 'T1' and column_name = 'ID';
+rows:
+('INTEGER', false, true, 16)
+
+// drop the table
+drop table T1;
+success
+
+// create a table , no size in float
+create table T1 (
+  name    varchar,
+  id      float
 );
 success
 
@@ -22,7 +54,7 @@ rows: 0
 select data_type, is_partition_key, is_nullable, precision from rapids.system.columns where
   table_name = 'T1' and column_name = 'ID';
 rows:
-  ('INTEGER', false, true, 19)
+  ('INTEGER', false, true, 16)
 
 // check partition key is first column
 select column_name from rapids.system.columns where table_name = 'T1' and is_partition_key = true;
@@ -30,13 +62,13 @@ rows:
   ('NAME')
 
 // insert rows in the table
-insert into T1 values ('abc',10);
+insert into T1 values ('abc',10.5);
 success
 
-insert into T1 values ('abc',-20);
+insert into T1 values ('abc',-20.6);
 success
 
-insert into T1 values ('abc',0);
+insert into T1 values ('abc',0.0);
 success
 
 //max
@@ -64,9 +96,9 @@ select * from T1;
 rows:
   ('abc',null)
   ('abc',-9223372036854775807)
-  ('abc',-20)
-  ('abc',0)
-  ('abc',10)
+  ('abc',-20.6)
+  ('abc',0.0)
+  ('abc',10.5)
   ('abc',+9223372036854775807)
 
 // drop table

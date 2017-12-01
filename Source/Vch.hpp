@@ -5,7 +5,7 @@
 
 namespace Datums
 {
-  const i8 C_MAX_SIZE_VCH = C_64K;
+  const i8 C_MAX_SIZE_VCH = C_64KB;
   const i8 C_NULL_VCH = LLONG_MIN;
   
   class Vch

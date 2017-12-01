@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : txBegin_req ( -- R )
 
-  "begin transaction" .
+  //"begin transaction" .
 
   tx::begin locals| pTx |
 
@@ -23,7 +23,7 @@
 /*----------------------------------------------------------------------------*/
 : txCommit_req ( -- R )
 
-  "commit transaction" .
+  //"commit transaction" .
 
   task::this task.seitf@ seitf.tx@ locals| pTx |
 
@@ -37,7 +37,7 @@
 /*----------------------------------------------------------------------------*/
 : txEnd_req ( -- R )
 
-  "end transaction" .
+  //"end transaction" .
 
   task::this task.seitf@ seitf.tx@ locals| pTx |
 

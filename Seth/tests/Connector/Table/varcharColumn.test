@@ -2,6 +2,39 @@
 // create table with VARCHAR column tests
 //----------------------------------------------------------------------------//
 
+// create a table , size in varchar > 64K
+create table T1 (
+  id      integer,
+  name    varchar(65540)
+);
+failure
+
+// create a table , size in varchar = 64K
+create table T1 (
+  id      integer,
+  name    varchar(65536)
+);
+success
+
+// table should have gotten created
+select table_name from rapids.system.tables where catalog_name = 'RAPIDSSE';
+rows:
+('T1')
+
+// there should be no indexes on it
+select * from rapids.system.indexes;
+rows: 0
+
+// check metadata
+select data_type, is_partition_key, is_nullable, precision from rapids.system.columns where
+table_name = 'T1' and column_name = 'NAME';
+rows:
+('VARCHAR', false, true, 65536)
+
+// drop the table
+drop table T1;
+success
+
 // create a table , no size in varchar
 create table T1 (
   id      integer,
@@ -22,7 +55,7 @@ rows: 0
 select data_type, is_partition_key, is_nullable, precision from rapids.system.columns where
   table_name = 'T1' and column_name = 'NAME';
 rows:
-  ('VARCHAR', false, true, 64000)
+  ('VARCHAR', false, true, 65536)
 
 // check partition key is first column
 select column_name from rapids.system.columns where table_name = 'T1' and is_partition_key = true;
@@ -136,7 +169,7 @@ rows: 0
 select data_type, is_partition_key, is_nullable, precision from rapids.system.columns where
 table_name = 'T1' and column_name = 'NAME';
 rows:
-('VARCHAR', true, true, 64000)
+('VARCHAR', true, true, 65536)
 
 // insert rows in the table
 insert into T1 values (10, 'a');
