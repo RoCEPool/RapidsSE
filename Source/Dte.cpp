@@ -212,10 +212,9 @@ bool Dte::bExtract(char** aaSrc, Dte* aDate, Column* pColumn, Formatters* pForma
 {
   u8 uField;
   
-  // skip leading whitespace
-  while (' ' == **aaSrc)
-    (*aaSrc)++;
- 
+  // skip leading spaces
+  StrLib::vSkipSpaces(aaSrc);
+   
   /*
   // test for null
   if ( ! **aaSrc

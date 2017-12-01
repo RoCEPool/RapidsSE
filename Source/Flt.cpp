@@ -186,10 +186,9 @@ bool Flt::bExtract(char** aaSrc, Flt* aFloat, Column* pColumn, Formatters* pForm
   char xBuffer[256];
   char* aChar = xBuffer;
   
-  // skip leading whitespace
-  while (' ' == **aaSrc)
-    (*aaSrc)++;
- 
+  // skip leading spaces
+  StrLib::vSkipSpaces(aaSrc);
+  
   /*
   // test for null
   if ( ! **aaSrc

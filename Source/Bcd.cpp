@@ -184,9 +184,9 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn, Form
   u8 uResult = 0;
   bool bNegative = false;
   
-  // skip leading whitespace
-  while (' ' == **aaSrc)
-    (*aaSrc)++;
+  // skip leading spaces
+  StrLib::vSkipSpaces(aaSrc);
+
   /*
   // test for null
   if ( ! **aaSrc

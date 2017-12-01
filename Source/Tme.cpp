@@ -221,10 +221,9 @@ bool Tme::bExtract(char** aaSrc, Tme* aTime, Column* pColumn, Formatters* pForma
 {
   u8 uField;
   
-  // skip leading whitespace
-  while (' ' == **aaSrc)
-    (*aaSrc)++;
- 
+  // skip leading spaces
+  StrLib::vSkipSpaces(aaSrc);
+  
   /*
   // test for null
   if ( ! **aaSrc

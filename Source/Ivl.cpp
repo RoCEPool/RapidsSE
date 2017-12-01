@@ -211,9 +211,8 @@ bool Ivl::bExtract(char** aaSrc, Ivl* aInterval, Column* pColumn, Formatters* pF
 {
   u8 uField;
   
-  // skip leading whitespace
-  while (' ' == **aaSrc)
-    (*aaSrc)++;
+  // skip leading spaces
+  StrLib::vSkipSpaces(aaSrc);
   
   /*
   // test for null

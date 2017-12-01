@@ -246,9 +246,8 @@ bool Int::bExtract(char** aaSrc, Int* aInteger, Column* pColumn, Formatters* pFo
   u8 uResult = 0;
   bool bNegative = false;
   
-  // skip leading whitespace
-  while (' ' == **aaSrc)
-    (*aaSrc)++;
+  // skip leading spaces
+  StrLib::vSkipSpaces(aaSrc);
   
   /*
   // test for null

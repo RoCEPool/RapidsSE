@@ -237,9 +237,9 @@ bool Bol::bExtract(char** aaSrc, Bol* aBoolean, Column* pColumn, Formatters* pFo
 {
   bool bResult = false;
   
-  // skip leading whitespace
-  while (' ' == **aaSrc)
-    (*aaSrc)++;
+  // skip leading spaces
+  StrLib::vSkipSpaces(aaSrc);
+  
 /*
   // test for null
   if ( ! **aaSrc

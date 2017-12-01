@@ -252,9 +252,8 @@ bool Tsp::bExtract(char** aaSrc, Tsp* aTimestamp, Column* pColumn, Formatters* p
   u8 iDaysPerMonth[12]     = { 31,28,31,30,31,30,31,31,30,31,30,31};
   u8 iDaysPerMonthLeap[12] = { 31,29,31,30,31,30,31,31,30,31,30,31};
   
-  // skip leading whitespace
-  while (' ' == **aaSrc)
-    (*aaSrc)++;
+  // skip leading spaces
+  StrLib::vSkipSpaces(aaSrc);
   
   /*
   // test for null
