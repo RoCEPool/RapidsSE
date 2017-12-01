@@ -246,10 +246,13 @@ bool Int::bExtract(char** aaSrc, Int* aInt, Column* pColumn, Formatters* pFormat
   u8 uResult = 0;
   bool bNegative = false;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // head processing
+  
   // skip leading spaces
   StrLib::vSkipSpaces(aaSrc);
     
-  // is there data ?
+  // is there any data ?
   if ( ! DtmLib::bIsThereData(**aaSrc,pFormatters) )
     return false;
   
@@ -349,6 +352,9 @@ bool Int::bExtract(char** aaSrc, Int* aInt, Column* pColumn, Formatters* pFormat
     (*aaSrc)++;
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
+  
   // skip trailing spaces
   StrLib::vSkipSpaces(aaSrc);
   

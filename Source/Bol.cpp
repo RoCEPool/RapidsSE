@@ -237,10 +237,13 @@ bool Bol::bExtract(char** aaSrc, Bol* aBol, Column* pColumn, Formatters* pFormat
 {
   bool bResult = false;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // head processing
+  
   // skip leading spaces
   StrLib::vSkipSpaces(aaSrc);
   
-  // is there data ?
+  // is there any data ?
   if ( ! DtmLib::bIsThereData(**aaSrc,pFormatters) )
     return false;
   
@@ -375,6 +378,9 @@ bool Bol::bExtract(char** aaSrc, Bol* aBol, Column* pColumn, Formatters* pFormat
       }
     }
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
   
   // skip trailing spaces
   StrLib::vSkipSpaces(aaSrc);

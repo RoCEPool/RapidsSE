@@ -184,10 +184,13 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aBcd, DBobjects::Column* pColumn, Formatte
   u8 uResult = 0;
   bool bNegative = false;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // head processing
+  
   // skip leading spaces
   StrLib::vSkipSpaces(aaSrc);
 
-  // is there data ?
+  // is there any data ?
   if ( ! DtmLib::bIsThereData(**aaSrc,pFormatters) )
     return false;
   
@@ -319,6 +322,9 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aBcd, DBobjects::Column* pColumn, Formatte
     return false;
     (*aaSrc)++;
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
   
   // skip trailing spaces
   StrLib::vSkipSpaces(aaSrc);

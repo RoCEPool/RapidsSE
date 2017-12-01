@@ -223,10 +223,13 @@ bool Tme::bExtract(char** aaSrc, Tme* aTme, Column* pColumn, Formatters* pFormat
   
   u8 uField;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // head processing
+  
   // skip leading spaces
   StrLib::vSkipSpaces(aaSrc);
   
-  // is there data ?
+  // is there any data ?
   if ( ! DtmLib::bIsThereData(**aaSrc,pFormatters) )
     return false;
   
@@ -298,6 +301,9 @@ bool Tme::bExtract(char** aaSrc, Tme* aTme, Column* pColumn, Formatters* pFormat
   // skip optional Z (UTC zone designator)
   if ('Z' == **aaSrc)
     (*aaSrc)++;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
   
   // skip trailing spaces
   StrLib::vSkipSpaces(aaSrc);

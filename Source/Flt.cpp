@@ -186,10 +186,13 @@ bool Flt::bExtract(char** aaSrc, Flt* aFlt, Column* pColumn, Formatters* pFormat
   char xBuffer[256];
   char* aChar = xBuffer;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // head processing
+  
   // skip leading spaces
   StrLib::vSkipSpaces(aaSrc);
   
-  // is there data ?
+  // is there any data ?
   if ( ! DtmLib::bIsThereData(**aaSrc,pFormatters) )
     return false;
   
@@ -288,6 +291,9 @@ bool Flt::bExtract(char** aaSrc, Flt* aFlt, Column* pColumn, Formatters* pFormat
   
   // terminate
   *aChar++ = '\0';
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
   
   // skip trailing spaces
   StrLib::vSkipSpaces(aaSrc);
