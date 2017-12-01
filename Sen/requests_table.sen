@@ -529,10 +529,10 @@ ddlLock::grabRead
   //bp::freeSpace .
 
 snap0:
-stk
+
   sESC sENC sFS sRT sFileNm sTableNm tableLoader not if popTable <NIP+ERROR> exit then
   //loadIndexes
-stk
+
   //bp::freeSpace .
 
   // pop table dictionary

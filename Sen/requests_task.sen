@@ -28,10 +28,8 @@
 /*----------------------------------------------------------------------------*/
 : returnTask_req ( "<taskAddr>" -- <R> )
 
-  stk
   >int >ptr
   CN_TASK assert::class
-  stk
 
   task.delete
 
