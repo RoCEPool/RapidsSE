@@ -40,10 +40,10 @@ void Task::vTxBegin(MP_Task mpTask)
   
   Tx* pTx = new Tx;
   
-  vTrace("Begun tx: %lld.%lld-%lld.%lld(%s)\n"_Stz,
-         pTx->iLocalTxNode(), pTx->iLocalTxNo(),
-         pTx->iDistTxNode(), pTx->iDistTxNo(),
-         pTx->aDecode());
+//  vTrace("Begun tx: %lld.%lld-%lld.%lld(%s)\n"_Stz,
+//         pTx->iLocalTxNode(), pTx->iLocalTxNo(),
+//         pTx->iDistTxNode(), pTx->iDistTxNo(),
+//         pTx->aDecode());
   
   mpTask->m_pDataStack->vPushObject(pTx);
   
@@ -64,10 +64,10 @@ void Task::vTxCommit(MP_Task mpTask)
   
   pTx->vPhase(TP_COMMITTED);
 
-  vTrace("Committed tx: %lld.%lld-%lld.%lld(%s)\n"_Stz,
-         pTx->iLocalTxNode(), pTx->iLocalTxNo(),
-         pTx->iDistTxNode(), pTx->iDistTxNo(),
-         pTx->aDecode());
+//  vTrace("Committed tx: %lld.%lld-%lld.%lld(%s)\n"_Stz,
+//         pTx->iLocalTxNode(), pTx->iLocalTxNo(),
+//         pTx->iDistTxNode(), pTx->iDistTxNo(),
+//         pTx->aDecode());
   
   EXIT();
 }
@@ -86,11 +86,11 @@ void Task::vTxCounterDec(MP_Task mpTask)
   
   i8 iCounter = pTx->iCounterDec();
   
-  vTrace("Dec counter tx: %lld.%lld-%lld.%lld(%s) now %lld\n"_Stz,
-         pTx->iLocalTxNode(), pTx->iLocalTxNo(),
-         pTx->iDistTxNode(), pTx->iDistTxNo(),
-         pTx->aDecode(),
-         iCounter);
+//  vTrace("Dec counter tx: %lld.%lld-%lld.%lld(%s) now %lld\n"_Stz,
+//         pTx->iLocalTxNode(), pTx->iLocalTxNo(),
+//         pTx->iDistTxNode(), pTx->iDistTxNo(),
+//         pTx->aDecode(),
+//         iCounter);
   
   mpTask->m_pDataStack->vPushInt(iCounter);
   
@@ -232,10 +232,10 @@ void Task::vTxFree(MP_Task mpTask)
     THROW_INVALID_DSTACK("tx.free"_Stz);
   Tx* pTx = _pTx(pPtrTx);
   
-  vTrace("Freeing tx: %lld.%lld-%lld.%lld(%s)\n"_Stz,
-         pTx->iLocalTxNode(), pTx->iLocalTxNo(),
-         pTx->iDistTxNode(), pTx->iDistTxNo(),
-         pTx->aDecode());
+//  vTrace("Freeing tx: %lld.%lld-%lld.%lld(%s)\n"_Stz,
+//         pTx->iLocalTxNode(), pTx->iLocalTxNo(),
+//         pTx->iDistTxNode(), pTx->iDistTxNo(),
+//         pTx->aDecode());
   
   delete pTx;
   
@@ -275,10 +275,10 @@ void Task::vTxPrepare(MP_Task mpTask)
   
   pTx->vPhase(TP_PREPARED);
   
-  vTrace("Prepared tx: %lld.%lld-%lld.%lld(%s)\n"_Stz,
-         pTx->iLocalTxNode(), pTx->iLocalTxNo(),
-         pTx->iDistTxNode(), pTx->iDistTxNo(),
-         pTx->aDecode());
+//  vTrace("Prepared tx: %lld.%lld-%lld.%lld(%s)\n"_Stz,
+//         pTx->iLocalTxNode(), pTx->iLocalTxNo(),
+//         pTx->iDistTxNode(), pTx->iDistTxNo(),
+//         pTx->aDecode());
   
   EXIT();
 }
@@ -297,10 +297,10 @@ void Task::vTxRollback(MP_Task mpTask)
   
   pTx->vPhase(TP_ROLLEDBACK);
   
-  vTrace("Rolledback tx: %lld.%lld-%lld.%lld(%s)\n"_Stz,
-         pTx->iLocalTxNode(), pTx->iLocalTxNo(),
-         pTx->iDistTxNode(), pTx->iDistTxNo(),
-         pTx->aDecode());
+//  vTrace("Rolledback tx: %lld.%lld-%lld.%lld(%s)\n"_Stz,
+//         pTx->iLocalTxNode(), pTx->iLocalTxNo(),
+//         pTx->iDistTxNode(), pTx->iDistTxNo(),
+//         pTx->aDecode());
   
   EXIT();
 }

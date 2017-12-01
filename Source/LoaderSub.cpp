@@ -149,10 +149,10 @@ void LoaderSub::vBegin(void)
   // read first chunk
   m_bMoreChunks = bReadChunk();
   
-  vTrace("LoaderSub: m_sEnclosedBy = '%s'\n"_Stz, m_sEnclosedBy.aChar());
-  vTrace("LoaderSub: m_sEscapeChar = '%s'\n"_Stz, m_sEscapeChar.aChar());
-  vTrace("LoaderSub: m_sFieldSeparator = '%s'\n"_Stz, m_sFieldSeparator.aChar());
-  vTrace("LoaderSub: m_sRecordTerminator = '%s'\n"_Stz, m_sRecordTerminator.aChar());
+//  vTrace("LoaderSub: m_sEnclosedBy = '%s'\n"_Stz, m_sEnclosedBy.aChar());
+//  vTrace("LoaderSub: m_sEscapeChar = '%s'\n"_Stz, m_sEscapeChar.aChar());
+//  vTrace("LoaderSub: m_sFieldSeparator = '%s'\n"_Stz, m_sFieldSeparator.aChar());
+//  vTrace("LoaderSub: m_sRecordTerminator = '%s'\n"_Stz, m_sRecordTerminator.aChar());
 }
 
 /*----------------------------------------------------------------------------*/

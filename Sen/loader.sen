@@ -142,7 +142,7 @@ timer: loadTimer
   // tidy up
 
   // commit the transaction
-  pSEitf seitf.tx@ tx.id "dist commit of " . .
+  //pSEitf seitf.tx@ tx.id "dist commit of " . .
 
   pSEitf seitf.tx@ tx.id txDistPrepare assert::stack_0
 
