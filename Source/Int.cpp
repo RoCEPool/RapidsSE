@@ -241,7 +241,7 @@ void Int::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract an integer from substr                                             */
 /*----------------------------------------------------------------------------*/
-bool Int::bExtract(char** aaSrc, Int* aInteger, Column* pColumn, Formatters* pFormatter)
+bool Int::bExtract(char** aaSrc, Int* aInteger, Column* pColumn, Formatters* pFormatters)
 {
   u8 uResult = 0;
   bool bNegative = false;
@@ -250,13 +250,8 @@ bool Int::bExtract(char** aaSrc, Int* aInteger, Column* pColumn, Formatters* pFo
   StrLib::vSkipSpaces(aaSrc);
     
   // is there data ?
-  if ( ! **aaSrc
-      || C_FS == **aaSrc
-      || C_NL == **aaSrc
-      || C_CR == **aaSrc) {
-    
+  if ( ! DtmLib::bIsThereData(**aaSrc,pFormatters) )
     return false;
-  }
   
   // test for null
   if (StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) == 0) {

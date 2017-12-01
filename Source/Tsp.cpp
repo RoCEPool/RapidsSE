@@ -256,13 +256,8 @@ bool Tsp::bExtract(char** aaSrc, Tsp* aTimestamp, Column* pColumn, Formatters* p
   StrLib::vSkipSpaces(aaSrc);
     
   // is there data ?
-  if ( ! **aaSrc
-      || C_FS == **aaSrc
-      || C_NL == **aaSrc
-      || C_CR == **aaSrc) {
-    
+  if ( ! DtmLib::bIsThereData(**aaSrc,pFormatters) )
     return false;
-  }
   
   // test for null
   if (StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) == 0) {

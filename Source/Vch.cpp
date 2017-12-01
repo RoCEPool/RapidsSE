@@ -235,11 +235,7 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn, Formatters* pFormat
   char* aChar = (char*)aVch;
   
   // is there data ?
-  if ( ! **aaSrc
-      || C_FS == **aaSrc
-      || C_NL == **aaSrc
-      || C_CR == **aaSrc) {
-    
+  if ( ! DtmLib::bIsThereData(**aaSrc,pFormatters) ) {
     // empty string
     *aChar++ = '\0';
     return true;
