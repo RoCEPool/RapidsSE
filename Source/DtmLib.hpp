@@ -31,6 +31,7 @@ namespace Datums
     static i8 iSize(eDM eDatum, char* pSrc);
   
     static bool bIsThereData(char cSrc, Formatters* pFormatters);
+    static bool bTestForNull(char** aaSrc, DBobjects::Column* pColumn, Formatters* pFormatters, bool& bValid);
   };
 }
 

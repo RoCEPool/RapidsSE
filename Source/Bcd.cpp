@@ -212,6 +212,13 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn, Form
     aDecimal->vSetNull();
     return true;
   }
+//  bool bValid;
+//  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValid)) {
+//    if ( ! bValid )
+//      return false;
+//    aDecimal->vSetNull();
+//    return true;
+//  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for negative

@@ -425,6 +425,42 @@ bool DtmLib::bIsThereData(char cSrc, Formatters* pFormatters)
     return true;
 }
 
+/*----------------------------------------------------------------------------*/
+/* test for null                                                              */
+/*----------------------------------------------------------------------------*/
+bool DtmLib::bTestForNull(char** aaSrc, DBobjects::Column* pColumn,
+                          Formatters* pFormatters, bool& bValid)
+{
+  // do we see the token null
+  if ( StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) != 0 )
+    return false;
+  
+  // skip over token null
+  *aaSrc = (*aaSrc) + 4;
+  
+  // skip trailing spaces
+  StrLib::vSkipSpaces(aaSrc);
+  
+  // check it was "null" only
+  if (**aaSrc
+      && **aaSrc != pFormatters->m_cFieldSeparator
+      && **aaSrc != C_NL
+      && **aaSrc != C_CR) {
+    bValid = false;
+    return true;
+  }
+  
+  // check the column is nullable
+  if ( ! pColumn->bIsNullable() ) {
+    bValid = false;
+    return true;
+  }
+  
+
+  bValid = true;
+  return true;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
