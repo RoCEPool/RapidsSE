@@ -233,7 +233,7 @@ void Bol::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract a boolean from substr                                              */
 /*----------------------------------------------------------------------------*/
-bool Bol::bExtract(char** aaSrc, Bol* aBoolean, Column* pColumn, Formatters* pFormatters)
+bool Bol::bExtract(char** aaSrc, Bol* aBol, Column* pColumn, Formatters* pFormatters)
 {
   bool bResult = false;
   
@@ -264,19 +264,20 @@ bool Bol::bExtract(char** aaSrc, Bol* aBoolean, Column* pColumn, Formatters* pFo
     if ( !pColumn->bIsNullable() )
       return false;
     
-    aBoolean->vSetNull();
+    aBol->vSetNull();
     return true;
   }
 //  bool bValidNull;
 //  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
 //    if ( ! bValidNull )
 //      return false;
-//    aBoolean->vSetNull();
+//    aBol->vSetNull();
 //    return true;
 //  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check for numeric
+  
   if (StrLib::bIsDigit(**aaSrc)) {
     i8 iResult = 0;
     // collect all numeric digits
@@ -384,7 +385,7 @@ bool Bol::bExtract(char** aaSrc, Bol* aBoolean, Column* pColumn, Formatters* pFo
       && C_CR != **aaSrc)
     return false;
       
-  aBoolean->m_bBol = bResult;
+  aBol->m_bBol = bResult;
   
   return true;
 }

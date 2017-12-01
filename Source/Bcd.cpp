@@ -179,7 +179,7 @@ void Bcd::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract a decimal from substr                                              */
 /*----------------------------------------------------------------------------*/
-bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn, Formatters* pFormatters)
+bool Bcd::bExtract(char** aaSrc, Bcd* aBcd, DBobjects::Column* pColumn, Formatters* pFormatters)
 {
   u8 uResult = 0;
   bool bNegative = false;
@@ -211,14 +211,14 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn, Form
     if ( !pColumn->bIsNullable() )
       return false;
     
-    aDecimal->vSetNull();
+    aBcd->vSetNull();
     return true;
   }
 //  bool bValidNull;
 //  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
 //    if ( ! bValidNull )
 //      return false;
-//    aDecimal->vSetNull();
+//    aBcd->vSetNull();
 //    return true;
 //  }
   
@@ -335,13 +335,14 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn, Form
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute final result
+  
   uResult = bNegative ? - uResult : uResult;
   
   // have we gone beyond the min ?
   if (uResult != 0 && bNegative && (uResult < (u8)C_I8_MIN))
     return false;
 
-  aDecimal->m_iBcd = uResult;
+  aBcd->m_iBcd = uResult;
   
   return true;
 }

@@ -179,7 +179,7 @@ void Flt::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract a float from substr                                                */
 /*----------------------------------------------------------------------------*/
-bool Flt::bExtract(char** aaSrc, Flt* aFloat, Column* pColumn, Formatters* pFormatters)
+bool Flt::bExtract(char** aaSrc, Flt* aFlt, Column* pColumn, Formatters* pFormatters)
 {
   d8 dResult = 0.0;
   bool bNegative = false;
@@ -213,7 +213,7 @@ bool Flt::bExtract(char** aaSrc, Flt* aFloat, Column* pColumn, Formatters* pForm
     if ( !pColumn->bIsNullable() )
       return false;
     
-    aFloat->vSetNull();
+    aFlt->vSetNull();
     return true;
   }
 //  bool bValidNull;
@@ -241,6 +241,7 @@ bool Flt::bExtract(char** aaSrc, Flt* aFloat, Column* pColumn, Formatters* pForm
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect leading portion (till '.')
+  
   while (**aaSrc
          && C_FS != **aaSrc
          && C_NL != **aaSrc
@@ -310,7 +311,7 @@ bool Flt::bExtract(char** aaSrc, Flt* aFloat, Column* pColumn, Formatters* pForm
   
   dResult = atof(xBuffer);
   
-  aFloat->m_dFlt = bNegative ? - dResult : dResult;
+  aFlt->m_dFlt = bNegative ? - dResult : dResult;
   
   return true;
 }

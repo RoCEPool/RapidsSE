@@ -241,7 +241,7 @@ void Int::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract an integer from substr                                             */
 /*----------------------------------------------------------------------------*/
-bool Int::bExtract(char** aaSrc, Int* aInteger, Column* pColumn, Formatters* pFormatters)
+bool Int::bExtract(char** aaSrc, Int* aInt, Column* pColumn, Formatters* pFormatters)
 {
   u8 uResult = 0;
   bool bNegative = false;
@@ -273,7 +273,7 @@ bool Int::bExtract(char** aaSrc, Int* aInteger, Column* pColumn, Formatters* pFo
     if ( !pColumn->bIsNullable() )
       return false;
     
-    aInteger->vSetNull();
+    aInt->vSetNull();
     return true;
   }
 //  bool bValidNull;
@@ -371,7 +371,7 @@ bool Int::bExtract(char** aaSrc, Int* aInteger, Column* pColumn, Formatters* pFo
   if (bNegative && (uResult < (u8)C_I8_MIN))
     return false;
   
-  aInteger->m_iInt = uResult;;
+  aInt->m_iInt = uResult;;
   
   return true;
 }

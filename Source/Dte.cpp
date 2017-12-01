@@ -208,7 +208,7 @@ void Dte::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract a date from substr                                     yyyy-mo-ddZ */
 /*----------------------------------------------------------------------------*/
-bool Dte::bExtract(char** aaSrc, Dte* aDate, Column* pColumn, Formatters* pFormatters)
+bool Dte::bExtract(char** aaSrc, Dte* aDte, Column* pColumn, Formatters* pFormatters)
 {
   u8 uField;
   
@@ -239,18 +239,18 @@ bool Dte::bExtract(char** aaSrc, Dte* aDate, Column* pColumn, Formatters* pForma
     if ( !pColumn->bIsNullable() )
       return false;
     
-    aDate->vSetNull();
+    aDte->vSetNull();
     return true;
   }
 //  bool bValidNull;
 //  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
 //    if ( ! bValidNull )
 //      return false;
-//    aDate->vSetNull();
+//    aDte->vSetNull();
 //    return true;
 //  }
   
-  aDate->vInitZero();
+  aDte->vInitZero();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // date portion
@@ -258,7 +258,7 @@ bool Dte::bExtract(char** aaSrc, Dte* aDate, Column* pColumn, Formatters* pForma
   // extract year
   if ( ! StrLib::bExtractU8(aaSrc,&uField) )
     return false;
-  aDate->x.m_uYear = uField;
+  aDte->x.m_uYear = uField;
   
   // skip - separator
   if ('-' != *(*aaSrc)++)
@@ -267,7 +267,7 @@ bool Dte::bExtract(char** aaSrc, Dte* aDate, Column* pColumn, Formatters* pForma
   // extract month
   if ( ! StrLib::bExtractU8(aaSrc,&uField) )
     return false;
-  aDate->x.m_uMonth = uField;
+  aDte->x.m_uMonth = uField;
   
   // skip - separator
   if ('-' != *(*aaSrc)++) return false;
@@ -275,7 +275,7 @@ bool Dte::bExtract(char** aaSrc, Dte* aDate, Column* pColumn, Formatters* pForma
   // extract day
   if ( ! StrLib::bExtractU8(aaSrc,&uField) )
     return false;
-  aDate->x.m_uDay = uField;
+  aDte->x.m_uDay = uField;
   
   // skip Z separator
   if ('Z' == **aaSrc)

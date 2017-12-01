@@ -217,7 +217,7 @@ void Tme::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract a time from substr                                   hh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-bool Tme::bExtract(char** aaSrc, Tme* aTime, Column* pColumn, Formatters* pFormatters)
+bool Tme::bExtract(char** aaSrc, Tme* aTme, Column* pColumn, Formatters* pFormatters)
 {
   u8 uField;
   
@@ -248,25 +248,25 @@ bool Tme::bExtract(char** aaSrc, Tme* aTime, Column* pColumn, Formatters* pForma
     if ( !pColumn->bIsNullable() )
       return false;
     
-    aTime->vSetNull();
+    aTme->vSetNull();
     return true;
   }
 //  bool bValidNull;
 //  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
 //    if ( ! bValidNull )
 //      return false;
-//    aTime->vSetNull();
+//    aTme->vSetNull();
 //    return true;
 //  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  aTime->vInitZero();
+  aTme->vInitZero();
   
   // extract hour
   if ( ! StrLib::bExtractU8(aaSrc,&uField) )
     return true;
-  aTime->x.m_uHour = uField;
+  aTme->x.m_uHour = uField;
   
   // skip : separator
   if (':' != *(*aaSrc)++)
@@ -275,7 +275,7 @@ bool Tme::bExtract(char** aaSrc, Tme* aTime, Column* pColumn, Formatters* pForma
   // extract minute
   if ( ! StrLib::bExtractU8(aaSrc,&uField) )
     return true;
-  aTime->x.m_uMinute = uField;
+  aTme->x.m_uMinute = uField;
   
   // skip : separator
   if (':' != *(*aaSrc)++)
@@ -284,13 +284,13 @@ bool Tme::bExtract(char** aaSrc, Tme* aTime, Column* pColumn, Formatters* pForma
   // extract second
   if ( ! StrLib::bExtractU8(aaSrc,&uField) )
     return true;
-  aTime->x.m_uSecond = uField;
+  aTme->x.m_uSecond = uField;
   
   // extract fraction (assuming milliseconds)
   if ('.' == **aaSrc) {
     (*aaSrc)++;
     if ( StrLib::bExtractU8(aaSrc,&uField) )
-      aTime->x.m_uMilli = uField;
+      aTme->x.m_uMilli = uField;
   }
   
   // skip Z separator

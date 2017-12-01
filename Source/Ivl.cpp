@@ -207,7 +207,7 @@ void Ivl::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract an interval from substr                                            */
 /*----------------------------------------------------------------------------*/
-bool Ivl::bExtract(char** aaSrc, Ivl* aInterval, Column* pColumn, Formatters* pFormatters)
+bool Ivl::bExtract(char** aaSrc, Ivl* aIvl, Column* pColumn, Formatters* pFormatters)
 {
   u8 uField;
   
@@ -238,25 +238,25 @@ bool Ivl::bExtract(char** aaSrc, Ivl* aInterval, Column* pColumn, Formatters* pF
     if ( !pColumn->bIsNullable() )
       return false;
     
-    aInterval->vSetNull();
+    aIvl->vSetNull();
     return true;
   }
 //  bool bValidNull;
 //  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
 //    if ( ! bValidNull )
 //      return false;
-//    aInterval->vSetNull();
+//    aIvl->vSetNull();
 //    return true;
 //  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  aInterval->vInitZero();
+  aIvl->vInitZero();
   
   // extract second
   if ( ! StrLib::bExtractU8(aaSrc,&uField) )
     return true;
-  aInterval->x.m_uSecond = uField;
+  aIvl->x.m_uSecond = uField;
   
   //  // skip . separator
   //  if ('.' != *(*aaSrc)++)
@@ -266,7 +266,7 @@ bool Ivl::bExtract(char** aaSrc, Ivl* aInterval, Column* pColumn, Formatters* pF
   if ('.' == **aaSrc) {
     (*aaSrc)++;
     if ( StrLib::bExtractU8(aaSrc,&uField) )
-      aInterval->x.m_uMilli = uField;
+      aIvl->x.m_uMilli = uField;
   }
   
   // skip trailing spaces
