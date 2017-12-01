@@ -318,10 +318,10 @@ void Task::vTxTestDist(MP_Task mpTask)
   
   Tx* pTx = Tx::pTestDistTx(iDistTxId);
 
-  vTrace("Testing dist tx: %lld.%lld-%lld.%lld(%s)\n"_Stz,
-         pTx->iLocalTxNode(), pTx->iLocalTxNo(),
-         pTx->iDistTxNode(), pTx->iDistTxNo(),
-         pTx->aDecode());
+//  vTrace("Testing dist tx: %lld.%lld-%lld.%lld(%s)\n"_Stz,
+//         pTx->iLocalTxNode(), pTx->iLocalTxNo(),
+//         pTx->iDistTxNode(), pTx->iDistTxNo(),
+//         pTx->aDecode());
   
   mpTask->m_pDataStack->vPushObject(pTx);
   

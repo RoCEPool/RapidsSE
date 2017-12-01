@@ -289,7 +289,7 @@ tp: theIndirectResult
 
 tp: partitionAppendBuffer
 
-  "partitionAppendBuffer..." .
+  //"partitionAppendBuffer..." .
 
 
   locals| pTable iPartitionNo iDistTxId pRowBuffer iLoaderNode pLoaderSEitf |

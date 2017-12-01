@@ -27,7 +27,7 @@ diclock.grabwrite
   word.this >body dic.init
   true word.this >body object.wordbody!
 
-  word.this word.name "  dic: %v" str.format .
+  //word.this word.name "  dic: %v" str.format .
 
 diclock.dropwrite
   does>
@@ -50,7 +50,7 @@ diclock.grabwrite
   word.this >body dic.init
   true word.this >body object.wordbody!
 
-  word.this word.name "  dic: %v" str.format .
+  //word.this word.name "  dic: %v" str.format .
 
 diclock.dropwrite
   does>
@@ -71,7 +71,7 @@ diclock.grabwrite
   word.this >body dic.init
   true word.this >body object.wordbody!
 
-  word.this word.name "  dic: %v" str.format .
+  //word.this word.name "  dic: %v" str.format .
 
 diclock.dropwrite
 
@@ -95,7 +95,7 @@ diclock.grabwrite
   true word.this >body object.wordbody!
   word.this
 
-  word.this word.name "  :dic %v" str.format .
+  //word.this word.name "  :dic %v" str.format .
 
 diclock.dropwrite
   does>
@@ -117,7 +117,7 @@ diclock.grabwrite
   true word.this >body object.wordbody!
   word.this
 
-  word.this word.name "  :dic %v" str.format .
+  //word.this word.name "  :dic %v" str.format .
 
 diclock.dropwrite
   does>
