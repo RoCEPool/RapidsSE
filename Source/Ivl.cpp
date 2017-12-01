@@ -213,18 +213,7 @@ bool Ivl::bExtract(char** aaSrc, Ivl* aInterval, Column* pColumn, Formatters* pF
   
   // skip leading spaces
   StrLib::vSkipSpaces(aaSrc);
-  
-  /*
-  // test for null
-  if ( ! **aaSrc
-      || C_FS == **aaSrc
-      || C_NL == **aaSrc
-      || C_CR == **aaSrc) {
-    aInterval->vSetNull();
-    return true;
-  }
-  */
-  
+    
   // is there data ?
   if ( ! **aaSrc
       || C_FS == **aaSrc

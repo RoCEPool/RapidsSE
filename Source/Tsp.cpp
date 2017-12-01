@@ -254,22 +254,7 @@ bool Tsp::bExtract(char** aaSrc, Tsp* aTimestamp, Column* pColumn, Formatters* p
   
   // skip leading spaces
   StrLib::vSkipSpaces(aaSrc);
-  
-  /*
-  // test for null
-  if ( ! **aaSrc
-       || C_FS == **aaSrc
-       || C_NL == **aaSrc
-       || C_CR == **aaSrc ) {
     
-    if ( !pColumn->bIsNullable() )
-      return false;
-    
-    aTimestamp->vSetNull();
-    return true;
-  }
-  */
-  
   // is there data ?
   if ( ! **aaSrc
       || C_FS == **aaSrc

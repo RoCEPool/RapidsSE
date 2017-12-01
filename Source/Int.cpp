@@ -248,24 +248,7 @@ bool Int::bExtract(char** aaSrc, Int* aInteger, Column* pColumn, Formatters* pFo
   
   // skip leading spaces
   StrLib::vSkipSpaces(aaSrc);
-  
-  /*
-  // test for null
-  if ( ! **aaSrc
-      || C_FS == **aaSrc
-      || C_NL == **aaSrc
-      || C_CR == **aaSrc) {
     
-    if ( !pColumn->bIsNullable() ) {
-      vTrace("Found null in not nullable field\n"_Stz);
-      return false;
-    }
-
-    aInteger->vSetNull();
-    return true;
-  }
-  */
-  
   // is there data ?
   if ( ! **aaSrc
       || C_FS == **aaSrc

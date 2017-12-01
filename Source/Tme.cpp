@@ -224,17 +224,6 @@ bool Tme::bExtract(char** aaSrc, Tme* aTime, Column* pColumn, Formatters* pForma
   // skip leading spaces
   StrLib::vSkipSpaces(aaSrc);
   
-  /*
-  // test for null
-  if ( ! **aaSrc
-      || C_FS == **aaSrc
-      || C_NL == **aaSrc
-      || C_CR == **aaSrc) {
-    aTime->vSetNull();
-    return true;
-  }
-  */
-  
   // is there data ?
   if ( ! **aaSrc
       || C_FS == **aaSrc

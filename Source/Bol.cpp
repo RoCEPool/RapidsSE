@@ -240,20 +240,6 @@ bool Bol::bExtract(char** aaSrc, Bol* aBoolean, Column* pColumn, Formatters* pFo
   // skip leading spaces
   StrLib::vSkipSpaces(aaSrc);
   
-/*
-  // test for null
-  if ( ! **aaSrc
-      || C_FS == **aaSrc
-      || C_NL == **aaSrc
-      || C_CR == **aaSrc) {
-    
-    if ( !pColumn->bIsNullable() )
-      return false;
-    
-    aBoolean->vSetNull();
-    return true;
-  }
- */
   // is there data ?
   if ( ! **aaSrc
       || C_FS == **aaSrc

@@ -187,21 +187,6 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn, Form
   // skip leading spaces
   StrLib::vSkipSpaces(aaSrc);
 
-  /*
-  // test for null
-  if ( ! **aaSrc
-      || C_FS == **aaSrc
-      || C_NL == **aaSrc
-      || C_CR == **aaSrc) {
-    
-    if ( !pColumn->bIsNullable() )
-      return false;
-    
-    aDecimal->vSetNull();
-    return true;
-  }
-  */
-  
   // is there data ?
   if ( ! **aaSrc
       || C_FS == **aaSrc

@@ -215,20 +215,6 @@ bool Dte::bExtract(char** aaSrc, Dte* aDate, Column* pColumn, Formatters* pForma
   // skip leading spaces
   StrLib::vSkipSpaces(aaSrc);
    
-  /*
-  // test for null
-  if ( ! **aaSrc
-      || C_FS == **aaSrc
-      || C_NL == **aaSrc
-      || C_CR == **aaSrc) {
-    aDate->vSetNull();
-    
-    if ( !pColumn->bIsNullable() )
-      return false;
-    
-    return true;
-  }
-  */
   // is there data ?
   if ( ! **aaSrc
       || C_FS == **aaSrc

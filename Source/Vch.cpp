@@ -233,20 +233,6 @@ void Vch::vCopy(void* pDst, void* pSrc)
 bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn, Formatters* pFormatters)
 {
   char* aChar = (char*)aVch;
- /*
-  // test for null
-  if ( ! **aaSrc
-      || C_FS == **aaSrc
-      || C_NL == **aaSrc
-      || C_CR == **aaSrc) {
-    
-    if ( !pColumn->bIsNullable() )
-      return false;
-    
-    aVch->vSetNull();
-    return true;
-  }
- */
   
   // is there data ?
   if ( ! **aaSrc
