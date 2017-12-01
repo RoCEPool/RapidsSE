@@ -29,6 +29,8 @@ namespace Datums
     
     static i8 iCmp(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
     static i8 iSize(eDM eDatum, char* pSrc);
+  
+    static bool bIsThereData(char cSrc, Formatters* pFormatters);
   };
 }
 
