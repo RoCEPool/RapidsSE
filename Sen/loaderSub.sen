@@ -362,11 +362,11 @@ tp: partitionAppendBuffer
 
   locals| iDistTxId |
 
-  "txDistCommit$ got..." .
+  //"txDistCommit$ got..." .
 
   iDistTxId .
 
-  tx::dumpAll
+  //tx::dumpAll
 
   iDistTxId tx::testDist locals| pDistTx |
 
@@ -376,9 +376,9 @@ tp: partitionAppendBuffer
     exit
   then
 
-  "tidying up distTx..." .
+  //"tidying up distTx..." .
   pDistTx tx.commit
-  pDistTx tx.dump
+  //pDistTx tx.dump
   pDistTx tx.free
 
   true <SUCCESS_RESULT>
@@ -391,11 +391,11 @@ tp: partitionAppendBuffer
 
   locals| iDistTxId |
 
-  "txDistPrepare$ got..." .
+  //"txDistPrepare$ got..." .
 
   iDistTxId .
 
-  tx::dumpAll
+  //tx::dumpAll
 
   iDistTxId tx::testDist locals| pDistTx |
 
@@ -405,9 +405,9 @@ tp: partitionAppendBuffer
     exit
   then
 
-  "preparing distTx..." .
+  //"preparing distTx..." .
   pDistTx tx.prepare
-  pDistTx tx.dump
+  //pDistTx tx.dump
 
   true <SUCCESS_RESULT>
 ;
