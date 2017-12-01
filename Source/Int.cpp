@@ -343,10 +343,8 @@ bool Int::bExtract(char** aaSrc, Int* aInteger, Column* pColumn, Formatters* pFo
     (*aaSrc)++;
   }
 
-  
-  // skip trailing whitespace
-  while (' ' == **aaSrc)
-    (*aaSrc)++;
+  // skip trailing spaces
+  StrLib::vSkipSpaces(aaSrc);
   
   // should see a FS, NL or CR
   if (**aaSrc

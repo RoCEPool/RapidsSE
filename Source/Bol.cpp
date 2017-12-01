@@ -365,9 +365,8 @@ bool Bol::bExtract(char** aaSrc, Bol* aBoolean, Column* pColumn, Formatters* pFo
     }
   }
   
-  // skip trailing whitespace
-  while (' ' == **aaSrc)
-    (*aaSrc)++;
+  // skip trailing spaces
+  StrLib::vSkipSpaces(aaSrc);
   
   if (**aaSrc
       && C_FS != **aaSrc

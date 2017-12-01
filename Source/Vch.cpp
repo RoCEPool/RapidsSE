@@ -306,9 +306,8 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn, Formatters* pFormat
   
   *aChar++ = '\0';
   
-  // skip trailing whitespace
-  while (' ' == **aaSrc)
-    (*aaSrc)++;
+  // skip trailing spaces
+  StrLib::vSkipSpaces(aaSrc);
     
   return true;
 }

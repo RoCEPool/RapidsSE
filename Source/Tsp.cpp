@@ -379,9 +379,8 @@ bool Tsp::bExtract(char** aaSrc, Tsp* aTimestamp, Column* pColumn, Formatters* p
   if ('Z' == **aaSrc)
     (*aaSrc)++;
   
-  // skip trailing whitespace
-  while (' ' == **aaSrc)
-    (*aaSrc)++;
+  // skip trailing spaces
+  StrLib::vSkipSpaces(aaSrc);
 
   return true;
 }

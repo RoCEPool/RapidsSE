@@ -272,9 +272,8 @@ bool Dte::bExtract(char** aaSrc, Dte* aDate, Column* pColumn, Formatters* pForma
   if ('Z' == **aaSrc)
     (*aaSrc)++;
   
-  // skip trailing whitespace
-  while (' ' == **aaSrc)
-    (*aaSrc)++;
+  // skip trailing spaces
+  StrLib::vSkipSpaces(aaSrc);
   
   return true;
 }

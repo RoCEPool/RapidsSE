@@ -314,9 +314,8 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn, Form
     (*aaSrc)++;
   }
   
-  // skip trailing whitespace
-  while (' ' == **aaSrc)
-    (*aaSrc)++;
+  // skip trailing spaces
+  StrLib::vSkipSpaces(aaSrc);
   
   // should see a FS, NL or CR
   if (**aaSrc

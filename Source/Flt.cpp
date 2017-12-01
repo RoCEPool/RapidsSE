@@ -282,9 +282,8 @@ bool Flt::bExtract(char** aaSrc, Flt* aFloat, Column* pColumn, Formatters* pForm
   // terminate
   *aChar++ = '\0';
   
-  // skip trailing whitespace
-  while (' ' == **aaSrc)
-    (*aaSrc)++;
+  // skip trailing spaces
+  StrLib::vSkipSpaces(aaSrc);
   
   // if any non-digit return false
   while (**aaSrc

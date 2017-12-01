@@ -258,9 +258,8 @@ bool Ivl::bExtract(char** aaSrc, Ivl* aInterval, Column* pColumn, Formatters* pF
       aInterval->x.m_uMilli = uField;
   }
   
-  // skip trailing whitespace
-  while (' ' == **aaSrc)
-    (*aaSrc)++;
+  // skip trailing spaces
+  StrLib::vSkipSpaces(aaSrc);
   
   return true;
 }
