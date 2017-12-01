@@ -223,16 +223,13 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aBcd, DBobjects::Column* pColumn, Formatte
 //  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for negative
+  // test for negative or positive sign
   
   if (**aaSrc && '-' == **aaSrc ) {
     bNegative = true;
     (*aaSrc)++;
   }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for positive
-  
+  else
   if (**aaSrc && '+' == **aaSrc ) {
     (*aaSrc)++;
   }

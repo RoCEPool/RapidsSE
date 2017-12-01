@@ -285,16 +285,13 @@ bool Int::bExtract(char** aaSrc, Int* aInt, Column* pColumn, Formatters* pFormat
 //  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for negative
+  // test for negative or positive sign
   
   if (**aaSrc && '-' == **aaSrc ) {
     bNegative = true;
     (*aaSrc)++;
   }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for positive
-  
+  else
   if (**aaSrc && '+' == **aaSrc ) {
     (*aaSrc)++;
   }
