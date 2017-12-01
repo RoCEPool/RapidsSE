@@ -279,9 +279,11 @@ bool Bol::bExtract(char** aaSrc, Bol* aBol, Column* pColumn, Formatters* pFormat
 //  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check for numeric
+  // boolean processing
   
   if (StrLib::bIsDigit(**aaSrc)) {
+    // - numeric processing
+    
     i8 iResult = 0;
     // collect all numeric digits
     while (**aaSrc
@@ -303,10 +305,14 @@ bool Bol::bExtract(char** aaSrc, Bol* aBol, Column* pColumn, Formatters* pFormat
       bResult = true;
   }
   else {
+    // - true or false processing
+    
     StrLib::vToLower(*aaSrc);
     
-    // test for true
+    // test for true or false
     if ('t' ==  **aaSrc) {
+      // - true processing
+      
       (*aaSrc)++;
       
       if (**aaSrc &&
@@ -315,7 +321,6 @@ bool Bol::bExtract(char** aaSrc, Bol* aBol, Column* pColumn, Formatters* pFormat
           || C_CR == **aaSrc
           || ' '  == **aaSrc) ) {
         bResult = true;
-        
       }
       else {
         // next 3 characters should be rue to make true
@@ -336,11 +341,12 @@ bool Bol::bExtract(char** aaSrc, Bol* aBol, Column* pColumn, Formatters* pFormat
         (*aaSrc)++;
         
         bResult = true;
-       
       }
  
     }
     else if ('f' == *(*aaSrc)) {
+      // - false processing
+      
       (*aaSrc)++;
       
       if (**aaSrc &&
@@ -348,11 +354,10 @@ bool Bol::bExtract(char** aaSrc, Bol* aBol, Column* pColumn, Formatters* pFormat
            || C_NL == **aaSrc
            || C_CR == **aaSrc
            || ' '  == **aaSrc) ) {
-            bResult = false;
-            
-          }
+        bResult = false;
+      }
       else {
-        // next 3 characters should be rue to make true
+        // next 4 characters should be alse to make false
         
         StrLib::vToLower(*aaSrc);
         if ('a' != **aaSrc)
