@@ -244,7 +244,6 @@ void Int::vCopy(void* aDst, void* aSrc)
 bool Int::bExtract(char** aaSrc, Int* aInt, Column* pColumn, Formatters* pFormatters)
 {
   u8 uResult = 0;
-  bool bNegative = false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
@@ -290,6 +289,7 @@ bool Int::bExtract(char** aaSrc, Int* aInt, Column* pColumn, Formatters* pFormat
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for negative or positive sign
   
+  bool bNegative = false;
   if (**aaSrc && '-' == **aaSrc ) {
     bNegative = true;
     (*aaSrc)++;

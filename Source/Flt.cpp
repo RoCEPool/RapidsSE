@@ -182,7 +182,6 @@ void Flt::vCopy(void* aDst, void* aSrc)
 bool Flt::bExtract(char** aaSrc, Flt* aFlt, Column* pColumn, Formatters* pFormatters)
 {
   d8 dResult = 0.0;
-  bool bNegative = false;
   char xBuffer[256];
   char* aChar = xBuffer;
   
@@ -230,6 +229,7 @@ bool Flt::bExtract(char** aaSrc, Flt* aFlt, Column* pColumn, Formatters* pFormat
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for negative or positive sign
   
+  bool bNegative = false;
   if (**aaSrc && '-' == **aaSrc ) {
     bNegative = true;
     (*aaSrc)++;

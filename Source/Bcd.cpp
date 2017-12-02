@@ -182,7 +182,6 @@ void Bcd::vCopy(void* aDst, void* aSrc)
 bool Bcd::bExtract(char** aaSrc, Bcd* aBcd, DBobjects::Column* pColumn, Formatters* pFormatters)
 {
   u8 uResult = 0;
-  bool bNegative = false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
@@ -228,6 +227,7 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aBcd, DBobjects::Column* pColumn, Formatte
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for negative or positive sign
   
+  bool bNegative = false;
   if (**aaSrc && '-' == **aaSrc ) {
     bNegative = true;
     (*aaSrc)++;
