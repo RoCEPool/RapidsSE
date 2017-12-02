@@ -500,17 +500,22 @@ void Planner::vParsePhrases(void)
     
     if (pToken->bSame("or"_Stz)) {
       
-      // we have identified two phrases ( phrase1 phrase2 or )
+      // we have identified either:
+      //   ( phrase1 phrase2 OR )
+      //   ( phrase3+ OR )
       
+      ASSERT(pPhrase1->nTokens());
       m_pPhraseTknVec[m_nPhrases] = new TokenVec;
       m_pPhraseTknVec[m_nPhrases]->vAppendVector(pPhrase1);
       m_nPhrases++;
       pPhrase1->vReset();
       
-      m_pPhraseTknVec[m_nPhrases] = new TokenVec;
-      m_pPhraseTknVec[m_nPhrases]->vAppendVector(pPhrase2);
-      m_nPhrases++;
-      pPhrase2->vReset();
+      if (pPhrase2->nTokens()) {
+        m_pPhraseTknVec[m_nPhrases] = new TokenVec;
+        m_pPhraseTknVec[m_nPhrases]->vAppendVector(pPhrase2);
+        m_nPhrases++;
+        pPhrase2->vReset();
+      }
       
       bAdd1 = true;
       continue;
