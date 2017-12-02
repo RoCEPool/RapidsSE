@@ -179,19 +179,21 @@ void Bcd::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract a decimal from substr                                              */
 /*----------------------------------------------------------------------------*/
-bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn, Formatters* pFormatters)
+bool Bcd::bExtract(char** aaSrc, Bcd* aBcd, DBobjects::Column* pColumn, Formatters* pFormatters)
 {
-  u8 uResult = 0;
-  bool bNegative = false;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // head processing
   
   // skip leading spaces
   StrLib::vSkipSpaces(aaSrc);
 
-  // is there data ?
+  // is there any data ?
   if ( ! DtmLib::bIsThereData(**aaSrc,pFormatters) )
     return false;
   
-  // test for null
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // null processing
+  
   if (StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) == 0) {
     
     *aaSrc = (*aaSrc) + 4;
@@ -209,34 +211,34 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn, Form
     if ( !pColumn->bIsNullable() )
       return false;
     
-    aDecimal->vSetNull();
+    aBcd->vSetNull();
     return true;
   }
-//  bool bValid;
-//  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValid)) {
-//    if ( ! bValid )
+//  bool bValidNull;
+//  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
+//    if ( ! bValidNull )
 //      return false;
-//    aDecimal->vSetNull();
+//    aBcd->vSetNull();
 //    return true;
 //  }
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for negative
+  // decimal field processing
   
+  u8 uUnsignedResult = 0;
+  
+  // test for negative or positive sign
+  bool bNegative = false;
   if (**aaSrc && '-' == **aaSrc ) {
     bNegative = true;
     (*aaSrc)++;
   }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for positive
-  
+  else
   if (**aaSrc && '+' == **aaSrc ) {
     (*aaSrc)++;
   }
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // collect leading portion (till '.')
+  // collect leading digits (till '.')
   i8 iPrecision = pColumn->iColumnLength() - pColumn->iColumnScale();
   while (**aaSrc
          && C_FS != **aaSrc
@@ -245,16 +247,15 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn, Form
          && StrLib::bIsDigit(**aaSrc)
          && iPrecision--) {
     
-    uResult = uResult * 10 + StrLib::iDigitToI8(**aaSrc);
+    uUnsignedResult = uUnsignedResult * 10 + StrLib::iDigitToI8(**aaSrc);
     (*aaSrc)++;
   }
   
+  // have we exceeded maximum precision digits?
   if (iPrecision < 0)
     return false;
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // collect trailing portion (after '.')
-  
+  // collect trailing digits (after '.')
 //  if ('.' == **aaSrc) {
 //    (*aaSrc)++; // skip '.'
 //    i8 iPrecision = pColumn ? pColumn->iColumnPrecision() : 15;
@@ -274,18 +275,17 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn, Form
            && C_NL != **aaSrc
            && C_CR != **aaSrc
            && StrLib::bIsDigit(**aaSrc) && iScale) {
-      uResult = uResult * 10 + StrLib::iDigitToI8(**aaSrc);
+      uUnsignedResult = uUnsignedResult * 10 + StrLib::iDigitToI8(**aaSrc);
       iScale--;
       (*aaSrc)++;
     }
   }
   
-  while (iScale--) {
-    uResult = uResult * 10 + 0;
-  }
+  while (iScale--)
+    uUnsignedResult = uUnsignedResult * 10 + 0;
   
   // have we exceeded the max ?
-  if (uResult > (u8)C_I8_MAX)
+  if (uUnsignedResult > (u8)C_I8_MAX)
     return false;
   
   // round up if there any more digits after decimal
@@ -295,7 +295,7 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn, Form
       && C_CR != **aaSrc
       && StrLib::bIsDigit(**aaSrc))
     if (StrLib::iDigitToI8(**aaSrc) >= 5)
-      uResult += 1;
+      uUnsignedResult += 1;
   
   // skip trailing digits
   while (**aaSrc
@@ -321,6 +321,18 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn, Form
     (*aaSrc)++;
   }
   
+  // compute final result
+  uUnsignedResult = bNegative ? - uUnsignedResult : uUnsignedResult;
+  
+  // have we gone beyond the min ?
+  if (uUnsignedResult != 0 && bNegative && (uUnsignedResult < (u8)C_I8_MIN))
+    return false;
+  
+  aBcd->m_iBcd = uUnsignedResult;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
+  
   // skip trailing spaces
   StrLib::vSkipSpaces(aaSrc);
   
@@ -330,16 +342,6 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aDecimal, DBobjects::Column* pColumn, Form
       && C_NL != **aaSrc
       && C_CR != **aaSrc)
     return false;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // compute final result
-  uResult = bNegative ? - uResult : uResult;
-  
-  // have we gone beyond the min ?
-  if (uResult != 0 && bNegative && (uResult < (u8)C_I8_MIN))
-    return false;
-
-  aDecimal->m_iBcd = uResult;
   
   return true;
 }

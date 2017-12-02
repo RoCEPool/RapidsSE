@@ -208,18 +208,23 @@ void Dte::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract a date from substr                                     yyyy-mo-ddZ */
 /*----------------------------------------------------------------------------*/
-bool Dte::bExtract(char** aaSrc, Dte* aDate, Column* pColumn, Formatters* pFormatters)
+bool Dte::bExtract(char** aaSrc, Dte* aDte, Column* pColumn, Formatters* pFormatters)
 {
-  u8 uField;
+  // refer: http://en.wikipedia.org/wiki/ISO_8601
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // head processing
   
   // skip leading spaces
   StrLib::vSkipSpaces(aaSrc);
    
-  // is there data ?
+  // is there any data ?
   if ( ! DtmLib::bIsThereData(**aaSrc,pFormatters) )
     return false;
   
-  // test for null
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // null processing
+  
   if (StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) == 0) {
     
     *aaSrc = (*aaSrc) + 4;
@@ -237,40 +242,53 @@ bool Dte::bExtract(char** aaSrc, Dte* aDate, Column* pColumn, Formatters* pForma
     if ( !pColumn->bIsNullable() )
       return false;
     
-    aDate->vSetNull();
+    aDte->vSetNull();
     return true;
   }
+//  bool bValidNull;
+//  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
+//    if ( ! bValidNull )
+//      return false;
+//    aDte->vSetNull();
+//    return true;
+//  }
   
-  aDate->vInitZero();
+  aDte->vInitZero();
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - -
-  // date portion
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // date field processing
+  
+  u8 uSubField;
   
   // extract year
-  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
+  if ( ! StrLib::bExtractU8(aaSrc,&uSubField) )
     return false;
-  aDate->x.m_uYear = uField;
+  aDte->x.m_uYear = uSubField;
   
   // skip - separator
   if ('-' != *(*aaSrc)++)
     return false;
   
   // extract month
-  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
+  if ( ! StrLib::bExtractU8(aaSrc,&uSubField) )
     return false;
-  aDate->x.m_uMonth = uField;
+  aDte->x.m_uMonth = uSubField;
   
   // skip - separator
-  if ('-' != *(*aaSrc)++) return false;
+  if ('-' != *(*aaSrc)++)
+    return false;
   
   // extract day
-  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
+  if ( ! StrLib::bExtractU8(aaSrc,&uSubField) )
     return false;
-  aDate->x.m_uDay = uField;
+  aDte->x.m_uDay = uSubField;
   
-  // skip Z separator
+  // skip optional Z (UTC zone designator)
   if ('Z' == **aaSrc)
     (*aaSrc)++;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
   
   // skip trailing spaces
   StrLib::vSkipSpaces(aaSrc);

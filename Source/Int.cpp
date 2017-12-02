@@ -241,19 +241,21 @@ void Int::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract an integer from substr                                             */
 /*----------------------------------------------------------------------------*/
-bool Int::bExtract(char** aaSrc, Int* aInteger, Column* pColumn, Formatters* pFormatters)
+bool Int::bExtract(char** aaSrc, Int* aInt, Column* pColumn, Formatters* pFormatters)
 {
-  u8 uResult = 0;
-  bool bNegative = false;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // head processing
   
   // skip leading spaces
   StrLib::vSkipSpaces(aaSrc);
     
-  // is there data ?
+  // is there any data ?
   if ( ! DtmLib::bIsThereData(**aaSrc,pFormatters) )
     return false;
   
-  // test for null
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // null processing
+  
   if (StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) == 0) {
     
     *aaSrc = (*aaSrc) + 4;
@@ -271,44 +273,50 @@ bool Int::bExtract(char** aaSrc, Int* aInteger, Column* pColumn, Formatters* pFo
     if ( !pColumn->bIsNullable() )
       return false;
     
-    aInteger->vSetNull();
+    aInt->vSetNull();
     return true;
   }
+//  bool bValidNull;
+//  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
+//    if ( ! bValidNull )
+//      return false;
+//    aInteger->vSetNull();
+//    return true;
+//  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for negative
+  // integer field processing
   
+  u8 uUnsignedResult = 0;
+  
+  // test for negative or positive sign
+  bool bNegative = false;
   if (**aaSrc && '-' == **aaSrc ) {
     bNegative = true;
     (*aaSrc)++;
   }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for positive
-  
+  else
   if (**aaSrc && '+' == **aaSrc ) {
     (*aaSrc)++;
   }
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // collect the csv
-  
+  // collect the digits
   while (**aaSrc
          && C_FS != **aaSrc
          && C_NL != **aaSrc
          && C_CR != **aaSrc
          && StrLib::bIsDigit(**aaSrc) ) {
-      uResult = uResult * 10 + StrLib::iDigitToI8(**aaSrc);
+      uUnsignedResult = uUnsignedResult * 10 + StrLib::iDigitToI8(**aaSrc);
     
     // have we exceeded the max ?
-    if (uResult > (u8)C_I8_MAX)
+    if (uUnsignedResult > (u8)C_I8_MAX)
       return false;
     
     (*aaSrc)++;
   }
 
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
- // ignore trailing portion (after '.')
+ // ignore any trailing digits (after '.')
 
   if ('.' == **aaSrc) {
     
@@ -343,6 +351,18 @@ bool Int::bExtract(char** aaSrc, Int* aInteger, Column* pColumn, Formatters* pFo
     (*aaSrc)++;
   }
 
+  // compute final result
+  uUnsignedResult = bNegative ? - uUnsignedResult : uUnsignedResult;
+  
+  // have we gone beyond the min ?
+  if (bNegative && (uUnsignedResult < (u8)C_I8_MIN))
+    return false;
+  
+  aInt->m_iInt = uUnsignedResult;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
+  
   // skip trailing spaces
   StrLib::vSkipSpaces(aaSrc);
   
@@ -353,17 +373,6 @@ bool Int::bExtract(char** aaSrc, Int* aInteger, Column* pColumn, Formatters* pFo
       && C_CR != **aaSrc)
     return false;
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // compute final result
-  
-  uResult = bNegative ? - uResult : uResult;
-  
-  // have we gone beyond the min ?
-  if (bNegative && (uResult < (u8)C_I8_MIN))
-    return false;
-  
-  aInteger->m_iInt = uResult;;
-  
   return true;
 }
 

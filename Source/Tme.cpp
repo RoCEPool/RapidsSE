@@ -217,18 +217,23 @@ void Tme::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract a time from substr                                   hh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-bool Tme::bExtract(char** aaSrc, Tme* aTime, Column* pColumn, Formatters* pFormatters)
+bool Tme::bExtract(char** aaSrc, Tme* aTme, Column* pColumn, Formatters* pFormatters)
 {
-  u8 uField;
+  // refer: http://en.wikipedia.org/wiki/ISO_8601
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // head processing
   
   // skip leading spaces
   StrLib::vSkipSpaces(aaSrc);
   
-  // is there data ?
+  // is there any data ?
   if ( ! DtmLib::bIsThereData(**aaSrc,pFormatters) )
     return false;
   
-  // test for null
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // null processing
+  
   if (StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) == 0) {
     
     *aaSrc = (*aaSrc) + 4;
@@ -246,45 +251,60 @@ bool Tme::bExtract(char** aaSrc, Tme* aTime, Column* pColumn, Formatters* pForma
     if ( !pColumn->bIsNullable() )
       return false;
     
-    aTime->vSetNull();
+    aTme->vSetNull();
     return true;
   }
+//  bool bValidNull;
+//  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
+//    if ( ! bValidNull )
+//      return false;
+//    aTme->vSetNull();
+//    return true;
+//  }
   
-  aTime->vInitZero();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // time filed processing
+  
+  u8 uSubField;
+  
+  aTme->vInitZero();
   
   // extract hour
-  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
+  if ( ! StrLib::bExtractU8(aaSrc,&uSubField) )
     return true;
-  aTime->x.m_uHour = uField;
+  aTme->x.m_uHour = uSubField;
   
   // skip : separator
   if (':' != *(*aaSrc)++)
     return true;
   
   // extract minute
-  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
+  if ( ! StrLib::bExtractU8(aaSrc,&uSubField) )
     return true;
-  aTime->x.m_uMinute = uField;
+  aTme->x.m_uMinute = uSubField;
   
   // skip : separator
   if (':' != *(*aaSrc)++)
     return true;
   
   // extract second
-  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
+  if ( ! StrLib::bExtractU8(aaSrc,&uSubField) )
     return true;
-  aTime->x.m_uSecond = uField;
+  aTme->x.m_uSecond = uSubField;
   
   // extract fraction (assuming milliseconds)
   if ('.' == **aaSrc) {
     (*aaSrc)++;
-    if ( StrLib::bExtractU8(aaSrc,&uField) )
-      aTime->x.m_uMilli = uField;
+    if ( StrLib::bExtractU8(aaSrc,&uSubField) )
+      aTme->x.m_uMilli = uSubField;
   }
   
-  // skip Z separator
+  // skip optional Z (UTC zone designator)
   if ('Z' == **aaSrc)
     (*aaSrc)++;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
   
   // skip trailing spaces
   StrLib::vSkipSpaces(aaSrc);

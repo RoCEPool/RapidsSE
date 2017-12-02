@@ -179,21 +179,21 @@ void Flt::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract a float from substr                                                */
 /*----------------------------------------------------------------------------*/
-bool Flt::bExtract(char** aaSrc, Flt* aFloat, Column* pColumn, Formatters* pFormatters)
+bool Flt::bExtract(char** aaSrc, Flt* aFlt, Column* pColumn, Formatters* pFormatters)
 {
-  d8 dResult = 0.0;
-  bool bNegative = false;
-  char xBuffer[256];
-  char* aChar = xBuffer;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // head processing
   
   // skip leading spaces
   StrLib::vSkipSpaces(aaSrc);
   
-  // is there data ?
+  // is there any data ?
   if ( ! DtmLib::bIsThereData(**aaSrc,pFormatters) )
     return false;
   
-  // test for null
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // null processing
+  
   if (StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) == 0) {
     
     *aaSrc = (*aaSrc) + 4;
@@ -211,26 +211,35 @@ bool Flt::bExtract(char** aaSrc, Flt* aFloat, Column* pColumn, Formatters* pForm
     if ( !pColumn->bIsNullable() )
       return false;
     
-    aFloat->vSetNull();
+    aFlt->vSetNull();
     return true;
   }
+//  bool bValidNull;
+//  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
+//    if ( ! bValidNull )
+//      return false;
+//    aFloat->vSetNull();
+//    return true;
+//  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for negative
+  // float field processing
   
+  d8 dUnsignedResult = 0.0;
+  char xBuffer[256];
+  char* aChar = xBuffer;
+  
+  // test for negative or positive sign
+  bool bNegative = false;
   if (**aaSrc && '-' == **aaSrc ) {
     bNegative = true;
     (*aaSrc)++;
   }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for positive
-  
+  else
   if (**aaSrc && '+' == **aaSrc ) {
     (*aaSrc)++;
   }
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect leading portion (till '.')
   while (**aaSrc
          && C_FS != **aaSrc
@@ -240,9 +249,7 @@ bool Flt::bExtract(char** aaSrc, Flt* aFloat, Column* pColumn, Formatters* pForm
     *aChar++ = *(*aaSrc)++;
   }
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect trailing portion (after '.')
-  
   if ('.' == **aaSrc) {
     *aChar++ = *(*aaSrc)++;
     while (**aaSrc
@@ -253,9 +260,8 @@ bool Flt::bExtract(char** aaSrc, Flt* aFloat, Column* pColumn, Formatters* pForm
       *aChar++ = *(*aaSrc)++;
     }
   }
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for exponent
   
+  // test for exponent  
   if (**aaSrc && ('e' == **aaSrc || 'E' == **aaSrc) ) {
     *aChar++ = *(*aaSrc)++;
     
@@ -282,6 +288,13 @@ bool Flt::bExtract(char** aaSrc, Flt* aFloat, Column* pColumn, Formatters* pForm
   // terminate
   *aChar++ = '\0';
   
+  // compute final result
+  dUnsignedResult = atof(xBuffer);
+  aFlt->m_dFlt = bNegative ? - dUnsignedResult : dUnsignedResult;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
+  
   // skip trailing spaces
   StrLib::vSkipSpaces(aaSrc);
   
@@ -296,13 +309,6 @@ bool Flt::bExtract(char** aaSrc, Flt* aFloat, Column* pColumn, Formatters* pForm
     (*aaSrc)++;
   }
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // compute final result
-  
-  dResult = atof(xBuffer);
-  
-  aFloat->m_dFlt = bNegative ? - dResult : dResult;
-  
   return true;
 }
 

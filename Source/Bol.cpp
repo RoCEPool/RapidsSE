@@ -233,18 +233,21 @@ void Bol::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract a boolean from substr                                              */
 /*----------------------------------------------------------------------------*/
-bool Bol::bExtract(char** aaSrc, Bol* aBoolean, Column* pColumn, Formatters* pFormatters)
+bool Bol::bExtract(char** aaSrc, Bol* aBol, Column* pColumn, Formatters* pFormatters)
 {
-  bool bResult = false;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // head processing
   
   // skip leading spaces
   StrLib::vSkipSpaces(aaSrc);
   
-  // is there data ?
+  // is there any data ?
   if ( ! DtmLib::bIsThereData(**aaSrc,pFormatters) )
     return false;
   
-  // test for null
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // null processing
+  
   if (StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) == 0) {
     
     *aaSrc = (*aaSrc) + 4;
@@ -262,12 +265,25 @@ bool Bol::bExtract(char** aaSrc, Bol* aBoolean, Column* pColumn, Formatters* pFo
     if ( !pColumn->bIsNullable() )
       return false;
     
-    aBoolean->vSetNull();
+    aBol->vSetNull();
     return true;
   }
+//  bool bValidNull;
+//  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
+//    if ( ! bValidNull )
+//      return false;
+//    aBol->vSetNull();
+//    return true;
+//  }
   
-  // check for numeric
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // boolean field processing
+  
+  aBol->m_bBol = false;
+  
   if (StrLib::bIsDigit(**aaSrc)) {
+    // - numeric processing
+    
     i8 iResult = 0;
     // collect all numeric digits
     while (**aaSrc
@@ -286,13 +302,17 @@ bool Bol::bExtract(char** aaSrc, Bol* aBoolean, Column* pColumn, Formatters* pFo
       return false;
     
     if (iResult > 0)
-      bResult = true;
+      aBol->m_bBol = true;
   }
   else {
+    // - true or false processing
+    
     StrLib::vToLower(*aaSrc);
     
-    // test for true
+    // test for true or false
     if ('t' ==  **aaSrc) {
+      // - true processing
+      
       (*aaSrc)++;
       
       if (**aaSrc &&
@@ -300,8 +320,7 @@ bool Bol::bExtract(char** aaSrc, Bol* aBoolean, Column* pColumn, Formatters* pFo
           || C_NL == **aaSrc
           || C_CR == **aaSrc
           || ' '  == **aaSrc) ) {
-        bResult = true;
-        
+        aBol->m_bBol = true;
       }
       else {
         // next 3 characters should be rue to make true
@@ -321,12 +340,13 @@ bool Bol::bExtract(char** aaSrc, Bol* aBoolean, Column* pColumn, Formatters* pFo
           return false;
         (*aaSrc)++;
         
-        bResult = true;
-       
+        aBol->m_bBol = true;
       }
  
     }
     else if ('f' == *(*aaSrc)) {
+      // - false processing
+      
       (*aaSrc)++;
       
       if (**aaSrc &&
@@ -334,11 +354,10 @@ bool Bol::bExtract(char** aaSrc, Bol* aBoolean, Column* pColumn, Formatters* pFo
            || C_NL == **aaSrc
            || C_CR == **aaSrc
            || ' '  == **aaSrc) ) {
-            bResult = false;
-            
-          }
+        aBol->m_bBol = false;
+      }
       else {
-        // next 3 characters should be rue to make true
+        // next 4 characters should be alse to make false
         
         StrLib::vToLower(*aaSrc);
         if ('a' != **aaSrc)
@@ -360,10 +379,13 @@ bool Bol::bExtract(char** aaSrc, Bol* aBoolean, Column* pColumn, Formatters* pFo
           return false;
         (*aaSrc)++;
         
-        bResult = false;
+        aBol->m_bBol = false;
       }
     }
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
   
   // skip trailing spaces
   StrLib::vSkipSpaces(aaSrc);
@@ -374,8 +396,6 @@ bool Bol::bExtract(char** aaSrc, Bol* aBoolean, Column* pColumn, Formatters* pFo
       && C_CR != **aaSrc)
     return false;
       
-  aBoolean->m_bBol = bResult;
-  
   return true;
 }
 

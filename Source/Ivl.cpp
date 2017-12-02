@@ -207,18 +207,21 @@ void Ivl::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract an interval from substr                                            */
 /*----------------------------------------------------------------------------*/
-bool Ivl::bExtract(char** aaSrc, Ivl* aInterval, Column* pColumn, Formatters* pFormatters)
+bool Ivl::bExtract(char** aaSrc, Ivl* aIvl, Column* pColumn, Formatters* pFormatters)
 {
-  u8 uField;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // head processing
   
   // skip leading spaces
   StrLib::vSkipSpaces(aaSrc);
     
-  // is there data ?
+  // is there any data ?
   if ( ! DtmLib::bIsThereData(**aaSrc,pFormatters) )
     return false;
   
-  // test for null
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // null processing
+  
   if (StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) == 0) {
     
     *aaSrc = (*aaSrc) + 4;
@@ -236,16 +239,28 @@ bool Ivl::bExtract(char** aaSrc, Ivl* aInterval, Column* pColumn, Formatters* pF
     if ( !pColumn->bIsNullable() )
       return false;
     
-    aInterval->vSetNull();
+    aIvl->vSetNull();
     return true;
   }
+//  bool bValidNull;
+//  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
+//    if ( ! bValidNull )
+//      return false;
+//    aIvl->vSetNull();
+//    return true;
+//  }
   
-  aInterval->vInitZero();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // interval field processing
+  
+  u8 uSubField;
+  
+  aIvl->vInitZero();
   
   // extract second
-  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
+  if ( ! StrLib::bExtractU8(aaSrc,&uSubField) )
     return true;
-  aInterval->x.m_uSecond = uField;
+  aIvl->x.m_uSecond = uSubField;
   
   //  // skip . separator
   //  if ('.' != *(*aaSrc)++)
@@ -254,9 +269,12 @@ bool Ivl::bExtract(char** aaSrc, Ivl* aInterval, Column* pColumn, Formatters* pF
   // extract fraction (assuming milliseconds)
   if ('.' == **aaSrc) {
     (*aaSrc)++;
-    if ( StrLib::bExtractU8(aaSrc,&uField) )
-      aInterval->x.m_uMilli = uField;
+    if ( StrLib::bExtractU8(aaSrc,&uSubField) )
+      aIvl->x.m_uMilli = uSubField;
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
   
   // skip trailing spaces
   StrLib::vSkipSpaces(aaSrc);
