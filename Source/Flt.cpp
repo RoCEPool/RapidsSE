@@ -196,7 +196,7 @@ bool Flt::bExtract(char** aaSrc, Flt* aFlt, Column* pColumn, Formatters* pFormat
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for null
+  // null processing
   
   if (StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) == 0) {
     
@@ -227,8 +227,9 @@ bool Flt::bExtract(char** aaSrc, Flt* aFlt, Column* pColumn, Formatters* pFormat
 //  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for negative or positive sign
+  // float field processing
   
+  // test for negative or positive sign
   bool bNegative = false;
   if (**aaSrc && '-' == **aaSrc ) {
     bNegative = true;
@@ -239,9 +240,7 @@ bool Flt::bExtract(char** aaSrc, Flt* aFlt, Column* pColumn, Formatters* pFormat
     (*aaSrc)++;
   }
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect leading portion (till '.')
-  
   while (**aaSrc
          && C_FS != **aaSrc
          && C_NL != **aaSrc
@@ -250,9 +249,7 @@ bool Flt::bExtract(char** aaSrc, Flt* aFlt, Column* pColumn, Formatters* pFormat
     *aChar++ = *(*aaSrc)++;
   }
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect trailing portion (after '.')
-  
   if ('.' == **aaSrc) {
     *aChar++ = *(*aaSrc)++;
     while (**aaSrc
@@ -263,9 +260,8 @@ bool Flt::bExtract(char** aaSrc, Flt* aFlt, Column* pColumn, Formatters* pFormat
       *aChar++ = *(*aaSrc)++;
     }
   }
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for exponent
   
+  // test for exponent  
   if (**aaSrc && ('e' == **aaSrc || 'E' == **aaSrc) ) {
     *aChar++ = *(*aaSrc)++;
     
@@ -292,6 +288,10 @@ bool Flt::bExtract(char** aaSrc, Flt* aFlt, Column* pColumn, Formatters* pFormat
   // terminate
   *aChar++ = '\0';
   
+  // compute final result
+  dResult = atof(xBuffer);
+  aFlt->m_dFlt = bNegative ? - dResult : dResult;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
   
@@ -309,13 +309,6 @@ bool Flt::bExtract(char** aaSrc, Flt* aFlt, Column* pColumn, Formatters* pFormat
     (*aaSrc)++;
   }
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // compute final result
-  
-  dResult = atof(xBuffer);
-  
-  aFlt->m_dFlt = bNegative ? - dResult : dResult;
-  
   return true;
 }
 

@@ -263,7 +263,7 @@ bool Tsp::bExtract(char** aaSrc, Tsp* aTsp, Column* pColumn, Formatters* pFormat
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for null
+  // null processing
   
   if (StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) == 0) {
     
@@ -296,7 +296,9 @@ bool Tsp::bExtract(char** aaSrc, Tsp* aTsp, Column* pColumn, Formatters* pFormat
   aTsp->vInitZero();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // date portion
+  // timestamp field processing
+  
+  // - date portion
   
   // extract year
   if ( ! StrLib::bExtractU8(aaSrc,&uField, 4) )
@@ -338,9 +340,8 @@ bool Tsp::bExtract(char** aaSrc, Tsp* aTsp, Column* pColumn, Formatters* pFormat
   }
   aTsp->x.m_uDay = uField;
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // time portion
-  
+  // - time portion
+
   // skip T or space separator
   if ( ! ('T' == **aaSrc || ' ' == **aaSrc) )
     return true;

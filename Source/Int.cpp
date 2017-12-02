@@ -256,7 +256,7 @@ bool Int::bExtract(char** aaSrc, Int* aInt, Column* pColumn, Formatters* pFormat
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for null
+  // null processing
   
   if (StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) == 0) {
     
@@ -287,8 +287,9 @@ bool Int::bExtract(char** aaSrc, Int* aInt, Column* pColumn, Formatters* pFormat
 //  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for negative or positive sign
+  // integer field processing
   
+  // test for negative or positive sign
   bool bNegative = false;
   if (**aaSrc && '-' == **aaSrc ) {
     bNegative = true;
@@ -299,9 +300,7 @@ bool Int::bExtract(char** aaSrc, Int* aInt, Column* pColumn, Formatters* pFormat
     (*aaSrc)++;
   }
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // collect the csv
-  
+  // collect the digits
   while (**aaSrc
          && C_FS != **aaSrc
          && C_NL != **aaSrc
@@ -317,7 +316,7 @@ bool Int::bExtract(char** aaSrc, Int* aInt, Column* pColumn, Formatters* pFormat
   }
 
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
- // ignore trailing portion (after '.')
+ // ignore any trailing digits (after '.')
 
   if ('.' == **aaSrc) {
     
@@ -352,6 +351,15 @@ bool Int::bExtract(char** aaSrc, Int* aInt, Column* pColumn, Formatters* pFormat
     (*aaSrc)++;
   }
 
+  // compute final result
+  uResult = bNegative ? - uResult : uResult;
+  
+  // have we gone beyond the min ?
+  if (bNegative && (uResult < (u8)C_I8_MIN))
+    return false;
+  
+  aInt->m_iInt = uResult;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
   
@@ -365,17 +373,6 @@ bool Int::bExtract(char** aaSrc, Int* aInt, Column* pColumn, Formatters* pFormat
       && C_CR != **aaSrc)
     return false;
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // compute final result
-  
-  uResult = bNegative ? - uResult : uResult;
-  
-  // have we gone beyond the min ?
-  if (bNegative && (uResult < (u8)C_I8_MIN))
-    return false;
-  
-  aInt->m_iInt = uResult;;
-  
   return true;
 }
 

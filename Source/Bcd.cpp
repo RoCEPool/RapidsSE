@@ -194,7 +194,7 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aBcd, DBobjects::Column* pColumn, Formatte
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for null
+  // null processing
   
   if (StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) == 0) {
     
@@ -223,10 +223,11 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aBcd, DBobjects::Column* pColumn, Formatte
 //    aBcd->vSetNull();
 //    return true;
 //  }
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for negative or positive sign
+  // decimal field processing
   
+  // test for negative or positive sign
   bool bNegative = false;
   if (**aaSrc && '-' == **aaSrc ) {
     bNegative = true;
@@ -237,8 +238,7 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aBcd, DBobjects::Column* pColumn, Formatte
     (*aaSrc)++;
   }
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // collect leading portion (till '.')
+  // collect leading digits (till '.')
   i8 iPrecision = pColumn->iColumnLength() - pColumn->iColumnScale();
   while (**aaSrc
          && C_FS != **aaSrc
@@ -254,9 +254,7 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aBcd, DBobjects::Column* pColumn, Formatte
   if (iPrecision < 0)
     return false;
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // collect trailing portion (after '.')
-  
+  // collect trailing digits (after '.')
 //  if ('.' == **aaSrc) {
 //    (*aaSrc)++; // skip '.'
 //    i8 iPrecision = pColumn ? pColumn->iColumnPrecision() : 15;
@@ -323,6 +321,15 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aBcd, DBobjects::Column* pColumn, Formatte
     (*aaSrc)++;
   }
   
+  // compute final result
+  uResult = bNegative ? - uResult : uResult;
+  
+  // have we gone beyond the min ?
+  if (uResult != 0 && bNegative && (uResult < (u8)C_I8_MIN))
+    return false;
+  
+  aBcd->m_iBcd = uResult;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
   
@@ -335,17 +342,6 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aBcd, DBobjects::Column* pColumn, Formatte
       && C_NL != **aaSrc
       && C_CR != **aaSrc)
     return false;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // compute final result
-  
-  uResult = bNegative ? - uResult : uResult;
-  
-  // have we gone beyond the min ?
-  if (uResult != 0 && bNegative && (uResult < (u8)C_I8_MIN))
-    return false;
-
-  aBcd->m_iBcd = uResult;
   
   return true;
 }

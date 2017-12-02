@@ -234,7 +234,7 @@ bool Tme::bExtract(char** aaSrc, Tme* aTme, Column* pColumn, Formatters* pFormat
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for null
+  // null processing
   
   if (StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) == 0) {
     
@@ -265,6 +265,7 @@ bool Tme::bExtract(char** aaSrc, Tme* aTme, Column* pColumn, Formatters* pFormat
 //  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // time filed processing
   
   aTme->vInitZero();
   

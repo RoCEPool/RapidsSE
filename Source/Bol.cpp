@@ -246,7 +246,7 @@ bool Bol::bExtract(char** aaSrc, Bol* aBol, Column* pColumn, Formatters* pFormat
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for null
+  // null processing
   
   if (StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) == 0) {
     
@@ -277,7 +277,7 @@ bool Bol::bExtract(char** aaSrc, Bol* aBol, Column* pColumn, Formatters* pFormat
 //  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // boolean processing
+  // boolean field processing
   
   aBol->m_bBol = false;
   
