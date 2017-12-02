@@ -12692,7 +12692,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "\n"
     "  0 0 locals| pPlanner pAccessPath pTable sWhere |\n"
     "\n"
-    "  //sWhere \\\"generatePlan\\\" \\\"%v %v\\\" str.format .\n"
+    "  sWhere \\\"generatePlan\\\" \\\"%v %v\\\" str.format .\n"
     "\n"
     "  ( cdt_0 ) planner::new to pPlanner\n"
     "  ( cdt_1 ) pTable pPlanner Planner.table!\n"
