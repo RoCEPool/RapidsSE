@@ -212,8 +212,6 @@ bool Dte::bExtract(char** aaSrc, Dte* aDte, Column* pColumn, Formatters* pFormat
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
   
-  u8 uField;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
@@ -260,27 +258,29 @@ bool Dte::bExtract(char** aaSrc, Dte* aDte, Column* pColumn, Formatters* pFormat
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // date field processing
   
+  u8 uSubField;
+  
   // extract year
-  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
+  if ( ! StrLib::bExtractU8(aaSrc,&uSubField) )
     return false;
-  aDte->x.m_uYear = uField;
+  aDte->x.m_uYear = uSubField;
   
   // skip - separator
   if ('-' != *(*aaSrc)++)
     return false;
   
   // extract month
-  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
+  if ( ! StrLib::bExtractU8(aaSrc,&uSubField) )
     return false;
-  aDte->x.m_uMonth = uField;
+  aDte->x.m_uMonth = uSubField;
   
   // skip - separator
   if ('-' != *(*aaSrc)++) return false;
   
   // extract day
-  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
+  if ( ! StrLib::bExtractU8(aaSrc,&uSubField) )
     return false;
-  aDte->x.m_uDay = uField;
+  aDte->x.m_uDay = uSubField;
   
   // skip optional Z (UTC zone designator)
   if ('Z' == **aaSrc)

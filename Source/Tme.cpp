@@ -221,8 +221,6 @@ bool Tme::bExtract(char** aaSrc, Tme* aTme, Column* pColumn, Formatters* pFormat
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
   
-  u8 uField;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
@@ -267,36 +265,38 @@ bool Tme::bExtract(char** aaSrc, Tme* aTme, Column* pColumn, Formatters* pFormat
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // time filed processing
   
+  u8 uSubField;
+  
   aTme->vInitZero();
   
   // extract hour
-  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
+  if ( ! StrLib::bExtractU8(aaSrc,&uSubField) )
     return true;
-  aTme->x.m_uHour = uField;
+  aTme->x.m_uHour = uSubField;
   
   // skip : separator
   if (':' != *(*aaSrc)++)
     return true;
   
   // extract minute
-  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
+  if ( ! StrLib::bExtractU8(aaSrc,&uSubField) )
     return true;
-  aTme->x.m_uMinute = uField;
+  aTme->x.m_uMinute = uSubField;
   
   // skip : separator
   if (':' != *(*aaSrc)++)
     return true;
   
   // extract second
-  if ( ! StrLib::bExtractU8(aaSrc,&uField) )
+  if ( ! StrLib::bExtractU8(aaSrc,&uSubField) )
     return true;
-  aTme->x.m_uSecond = uField;
+  aTme->x.m_uSecond = uSubField;
   
   // extract fraction (assuming milliseconds)
   if ('.' == **aaSrc) {
     (*aaSrc)++;
-    if ( StrLib::bExtractU8(aaSrc,&uField) )
-      aTme->x.m_uMilli = uField;
+    if ( StrLib::bExtractU8(aaSrc,&uSubField) )
+      aTme->x.m_uMilli = uSubField;
   }
   
   // skip optional Z (UTC zone designator)

@@ -181,10 +181,6 @@ void Flt::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 bool Flt::bExtract(char** aaSrc, Flt* aFlt, Column* pColumn, Formatters* pFormatters)
 {
-  d8 dResult = 0.0;
-  char xBuffer[256];
-  char* aChar = xBuffer;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
@@ -228,6 +224,10 @@ bool Flt::bExtract(char** aaSrc, Flt* aFlt, Column* pColumn, Formatters* pFormat
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // float field processing
+  
+  d8 dUnsignedResult = 0.0;
+  char xBuffer[256];
+  char* aChar = xBuffer;
   
   // test for negative or positive sign
   bool bNegative = false;
@@ -289,8 +289,8 @@ bool Flt::bExtract(char** aaSrc, Flt* aFlt, Column* pColumn, Formatters* pFormat
   *aChar++ = '\0';
   
   // compute final result
-  dResult = atof(xBuffer);
-  aFlt->m_dFlt = bNegative ? - dResult : dResult;
+  dUnsignedResult = atof(xBuffer);
+  aFlt->m_dFlt = bNegative ? - dUnsignedResult : dUnsignedResult;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing

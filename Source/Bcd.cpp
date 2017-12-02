@@ -181,8 +181,6 @@ void Bcd::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 bool Bcd::bExtract(char** aaSrc, Bcd* aBcd, DBobjects::Column* pColumn, Formatters* pFormatters)
 {
-  u8 uResult = 0;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
@@ -227,6 +225,8 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aBcd, DBobjects::Column* pColumn, Formatte
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // decimal field processing
   
+  u8 uUnsignedResult = 0;
+  
   // test for negative or positive sign
   bool bNegative = false;
   if (**aaSrc && '-' == **aaSrc ) {
@@ -247,7 +247,7 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aBcd, DBobjects::Column* pColumn, Formatte
          && StrLib::bIsDigit(**aaSrc)
          && iPrecision--) {
     
-    uResult = uResult * 10 + StrLib::iDigitToI8(**aaSrc);
+    uUnsignedResult = uUnsignedResult * 10 + StrLib::iDigitToI8(**aaSrc);
     (*aaSrc)++;
   }
   
@@ -274,18 +274,18 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aBcd, DBobjects::Column* pColumn, Formatte
            && C_NL != **aaSrc
            && C_CR != **aaSrc
            && StrLib::bIsDigit(**aaSrc) && iScale) {
-      uResult = uResult * 10 + StrLib::iDigitToI8(**aaSrc);
+      uUnsignedResult = uUnsignedResult * 10 + StrLib::iDigitToI8(**aaSrc);
       iScale--;
       (*aaSrc)++;
     }
   }
   
   while (iScale--) {
-    uResult = uResult * 10 + 0;
+    uUnsignedResult = uUnsignedResult * 10 + 0;
   }
   
   // have we exceeded the max ?
-  if (uResult > (u8)C_I8_MAX)
+  if (uUnsignedResult > (u8)C_I8_MAX)
     return false;
   
   // round up if there any more digits after decimal
@@ -295,7 +295,7 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aBcd, DBobjects::Column* pColumn, Formatte
       && C_CR != **aaSrc
       && StrLib::bIsDigit(**aaSrc))
     if (StrLib::iDigitToI8(**aaSrc) >= 5)
-      uResult += 1;
+      uUnsignedResult += 1;
   
   // skip trailing digits
   while (**aaSrc
@@ -322,13 +322,13 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aBcd, DBobjects::Column* pColumn, Formatte
   }
   
   // compute final result
-  uResult = bNegative ? - uResult : uResult;
+  uUnsignedResult = bNegative ? - uUnsignedResult : uUnsignedResult;
   
   // have we gone beyond the min ?
-  if (uResult != 0 && bNegative && (uResult < (u8)C_I8_MIN))
+  if (uUnsignedResult != 0 && bNegative && (uUnsignedResult < (u8)C_I8_MIN))
     return false;
   
-  aBcd->m_iBcd = uResult;
+  aBcd->m_iBcd = uUnsignedResult;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing

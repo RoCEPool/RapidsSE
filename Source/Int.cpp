@@ -243,8 +243,6 @@ void Int::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 bool Int::bExtract(char** aaSrc, Int* aInt, Column* pColumn, Formatters* pFormatters)
 {
-  u8 uResult = 0;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
@@ -289,6 +287,8 @@ bool Int::bExtract(char** aaSrc, Int* aInt, Column* pColumn, Formatters* pFormat
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // integer field processing
   
+  u8 uUnsignedResult = 0;
+  
   // test for negative or positive sign
   bool bNegative = false;
   if (**aaSrc && '-' == **aaSrc ) {
@@ -306,10 +306,10 @@ bool Int::bExtract(char** aaSrc, Int* aInt, Column* pColumn, Formatters* pFormat
          && C_NL != **aaSrc
          && C_CR != **aaSrc
          && StrLib::bIsDigit(**aaSrc) ) {
-      uResult = uResult * 10 + StrLib::iDigitToI8(**aaSrc);
+      uUnsignedResult = uUnsignedResult * 10 + StrLib::iDigitToI8(**aaSrc);
     
     // have we exceeded the max ?
-    if (uResult > (u8)C_I8_MAX)
+    if (uUnsignedResult > (u8)C_I8_MAX)
       return false;
     
     (*aaSrc)++;
@@ -352,13 +352,13 @@ bool Int::bExtract(char** aaSrc, Int* aInt, Column* pColumn, Formatters* pFormat
   }
 
   // compute final result
-  uResult = bNegative ? - uResult : uResult;
+  uUnsignedResult = bNegative ? - uUnsignedResult : uUnsignedResult;
   
   // have we gone beyond the min ?
-  if (bNegative && (uResult < (u8)C_I8_MIN))
+  if (bNegative && (uUnsignedResult < (u8)C_I8_MIN))
     return false;
   
-  aInt->m_iInt = uResult;
+  aInt->m_iInt = uUnsignedResult;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing

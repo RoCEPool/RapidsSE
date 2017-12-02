@@ -248,10 +248,6 @@ bool Tsp::bExtract(char** aaSrc, Tsp* aTsp, Column* pColumn, Formatters* pFormat
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
   
-  u8 uField;
-  u8 iDaysPerMonth[12]     = { 31,28,31,30,31,30,31,31,30,31,30,31};
-  u8 iDaysPerMonthLeap[12] = { 31,29,31,30,31,30,31,31,30,31,30,31};
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
@@ -298,47 +294,51 @@ bool Tsp::bExtract(char** aaSrc, Tsp* aTsp, Column* pColumn, Formatters* pFormat
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // timestamp field processing
   
+  u8 uSubField;
+  u8 iDaysPerMonth[12]     = { 31,28,31,30,31,30,31,31,30,31,30,31};
+  u8 iDaysPerMonthLeap[12] = { 31,29,31,30,31,30,31,31,30,31,30,31};
+  
   // - date portion
   
   // extract year
-  if ( ! StrLib::bExtractU8(aaSrc,&uField, 4) )
+  if ( ! StrLib::bExtractU8(aaSrc,&uSubField, 4) )
     return false;
   
   bool bLeapYear = true;
-  if (uField % 4 == 0) {
-    if ((uField % 100) == 0 && (uField % 400) != 0) {
+  if (uSubField % 4 == 0) {
+    if ((uSubField % 100) == 0 && (uSubField % 400) != 0) {
       // Not a leap year
       bLeapYear = false;
     }
   }
-  aTsp->x.m_uYear = uField;
+  aTsp->x.m_uYear = uSubField;
 
   // skip - separator
   if ('-' != *(*aaSrc)++)
     return false;
   
   // extract month
-  if ( ! StrLib::bExtractU8(aaSrc,&uField,2) )
+  if ( ! StrLib::bExtractU8(aaSrc,&uSubField,2) )
     return false;
-  if (uField < 1 || uField > 12)
+  if (uSubField < 1 || uSubField > 12)
     return false;
-  aTsp->x.m_uMonth = uField;
+  aTsp->x.m_uMonth = uSubField;
   
   // skip - separator
   if ('-' != *(*aaSrc)++) return false;
   
   // extract day
-  if ( ! StrLib::bExtractU8(aaSrc,&uField,2) )
+  if ( ! StrLib::bExtractU8(aaSrc,&uSubField,2) )
     return false;
   if (bLeapYear) {
-    if (uField > iDaysPerMonthLeap[aTsp->x.m_uMonth-1])
+    if (uSubField > iDaysPerMonthLeap[aTsp->x.m_uMonth-1])
       return false;
   }
   else {
-    if (uField > iDaysPerMonth[aTsp->x.m_uMonth-1])
+    if (uSubField > iDaysPerMonth[aTsp->x.m_uMonth-1])
       return false;
   }
-  aTsp->x.m_uDay = uField;
+  aTsp->x.m_uDay = uSubField;
   
   // - time portion
 
@@ -348,43 +348,43 @@ bool Tsp::bExtract(char** aaSrc, Tsp* aTsp, Column* pColumn, Formatters* pFormat
   (*aaSrc)++;
   
   // extract hour
-  if ( ! StrLib::bExtractU8(aaSrc,&uField,2) )
+  if ( ! StrLib::bExtractU8(aaSrc,&uSubField,2) )
     return false;
-  if (uField > 23)
+  if (uSubField > 23)
     return false;
-  aTsp->x.m_uHour = uField;
+  aTsp->x.m_uHour = uSubField;
   
   // skip : separator
   if (':' != *(*aaSrc)++)
     return false;
   
   // extract minute
-  if ( ! StrLib::bExtractU8(aaSrc,&uField,2) )
+  if ( ! StrLib::bExtractU8(aaSrc,&uSubField,2) )
     return false;
   
-  if (uField > 59)
+  if (uSubField > 59)
     return false;
-  aTsp->x.m_uMinute = uField;
+  aTsp->x.m_uMinute = uSubField;
   
   // skip : separator
   if (':' != *(*aaSrc)++)
     return false;
   
   // extract second
-  if ( ! StrLib::bExtractU8(aaSrc,&uField,2) )
+  if ( ! StrLib::bExtractU8(aaSrc,&uSubField,2) )
     return false;
-  if (uField > 59)
+  if (uSubField > 59)
     return false;
-  aTsp->x.m_uSecond = uField;
+  aTsp->x.m_uSecond = uSubField;
   
   // extract fraction (assuming milliseconds)
   if ('.' == **aaSrc) {
     (*aaSrc)++;
     
-    if ( StrLib::bExtractU8(aaSrc,&uField,3) )
-      aTsp->x.m_uMilli = uField;
+    if ( StrLib::bExtractU8(aaSrc,&uSubField,3) )
+      aTsp->x.m_uMilli = uSubField;
     
-    if (uField > 999)
+    if (uSubField > 999)
       return false;
   }
   
