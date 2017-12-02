@@ -46,6 +46,7 @@ RowOnce::RowOnce(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWONCE,_FOOTER_);
   
+  m_xLock.vInitLock(LK_LIST);
   m_pSkipList = new SkipList(true,bI8Compare,true);
   
   _checkInitialised_(CN_ROWONCE);
@@ -82,10 +83,16 @@ bool RowOnce::bRowSeen2(Id xRowId)
   
   i8 iRowId = xRowId.iAsI8();
   
-  if (m_pSkipList->pFind((void*)iRowId))
+  m_xLock.vGrabWrite();
+  
+  if (m_pSkipList->pFind((void*)iRowId)) {
+    m_xLock.vDropWrite();
     return true;
+  }
   
   m_pSkipList->bInsert((void*)iRowId);
+  
+  m_xLock.vDropWrite();
   
   return false;
 }

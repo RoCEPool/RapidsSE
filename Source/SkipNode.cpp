@@ -60,7 +60,9 @@ SkipNode::SkipNode(void* pObject)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPNODE);
   
   m_pObject = pObject;
-  //m_nForward
+  //m_nRight
+  ASSERT(m_nRight >= 0 && m_nRight <= C_SKIPLIST_LEVELS);
+  
   for (i8 iForward = 0; iForward < m_nRight; iForward++)
     m_pRight[iForward] = nullptr;
   
