@@ -275,7 +275,8 @@ bool Dte::bExtract(char** aaSrc, Dte* aDte, Column* pColumn, Formatters* pFormat
   aDte->x.m_uMonth = uSubField;
   
   // skip - separator
-  if ('-' != *(*aaSrc)++) return false;
+  if ('-' != *(*aaSrc)++)
+    return false;
   
   // extract day
   if ( ! StrLib::bExtractU8(aaSrc,&uSubField) )

@@ -251,6 +251,7 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aBcd, DBobjects::Column* pColumn, Formatte
     (*aaSrc)++;
   }
   
+  // have we exceeded maximum precision digits?
   if (iPrecision < 0)
     return false;
   
@@ -280,9 +281,8 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aBcd, DBobjects::Column* pColumn, Formatte
     }
   }
   
-  while (iScale--) {
+  while (iScale--)
     uUnsignedResult = uUnsignedResult * 10 + 0;
-  }
   
   // have we exceeded the max ?
   if (uUnsignedResult > (u8)C_I8_MAX)
