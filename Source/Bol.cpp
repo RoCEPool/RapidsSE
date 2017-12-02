@@ -235,8 +235,6 @@ void Bol::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 bool Bol::bExtract(char** aaSrc, Bol* aBol, Column* pColumn, Formatters* pFormatters)
 {
-  bool bResult = false;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
@@ -281,6 +279,8 @@ bool Bol::bExtract(char** aaSrc, Bol* aBol, Column* pColumn, Formatters* pFormat
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // boolean processing
   
+  aBol->m_bBol = false;
+  
   if (StrLib::bIsDigit(**aaSrc)) {
     // - numeric processing
     
@@ -302,7 +302,7 @@ bool Bol::bExtract(char** aaSrc, Bol* aBol, Column* pColumn, Formatters* pFormat
       return false;
     
     if (iResult > 0)
-      bResult = true;
+      aBol->m_bBol = true;
   }
   else {
     // - true or false processing
@@ -320,7 +320,7 @@ bool Bol::bExtract(char** aaSrc, Bol* aBol, Column* pColumn, Formatters* pFormat
           || C_NL == **aaSrc
           || C_CR == **aaSrc
           || ' '  == **aaSrc) ) {
-        bResult = true;
+        aBol->m_bBol = true;
       }
       else {
         // next 3 characters should be rue to make true
@@ -340,7 +340,7 @@ bool Bol::bExtract(char** aaSrc, Bol* aBol, Column* pColumn, Formatters* pFormat
           return false;
         (*aaSrc)++;
         
-        bResult = true;
+        aBol->m_bBol = true;
       }
  
     }
@@ -354,7 +354,7 @@ bool Bol::bExtract(char** aaSrc, Bol* aBol, Column* pColumn, Formatters* pFormat
            || C_NL == **aaSrc
            || C_CR == **aaSrc
            || ' '  == **aaSrc) ) {
-        bResult = false;
+        aBol->m_bBol = false;
       }
       else {
         // next 4 characters should be alse to make false
@@ -379,7 +379,7 @@ bool Bol::bExtract(char** aaSrc, Bol* aBol, Column* pColumn, Formatters* pFormat
           return false;
         (*aaSrc)++;
         
-        bResult = false;
+        aBol->m_bBol = false;
       }
     }
   }
@@ -396,8 +396,6 @@ bool Bol::bExtract(char** aaSrc, Bol* aBol, Column* pColumn, Formatters* pFormat
       && C_CR != **aaSrc)
     return false;
       
-  aBol->m_bBol = bResult;
-  
   return true;
 }
 
