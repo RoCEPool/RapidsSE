@@ -822,9 +822,7 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf, i8 iTraceLevel)
     Grid* pGrid = gpAttachMap->m_pGrid;
     
     // before sending buffers set no of remaining acks to no of partitons
-    pSEitf->m_ziAcksRemaining = pGrid->iSlots() * pGrid->iNodes();
-    
-    //vTrace("%lld %lld\n"_Stz, *pSEitf->m_ziAcksRemaining, gpAttachMap->m_pGrid->m_nPartitions);
+    pSEitf->vSetAcksRemaining(pGrid->iSlots() * pGrid->iNodes());
     
     for (i8 iPartition = 0; iPartition < pGrid->m_nPartitions; iPartition++) {
       bool bResult = pSEitf->bInsertLastBuffer(iPartition);
@@ -839,7 +837,6 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf, i8 iTraceLevel)
     }
     
     // now wait till acks from all partitions have been received
-    //vTrace("*pSEitf->m_ziAcksRemaining %lld\n"_Stz, *pSEitf->m_ziAcksRemaining);
     while (*pSEitf->m_ziAcksRemaining != 0) {
       //vTrace("*pSEitf->m_ziAcksRemaining %lld ...\n"_Stz, *pSEitf->m_ziAcksRemaining);
       ;

@@ -1365,7 +1365,7 @@ bool SePrompt::bCmd_EndInsert(void)
   Grid* pGrid = gpAttachMap->m_pGrid;
   
   // before sending buffers set no of remaining acks to no of partitons
-  m_pSEitf->m_ziAcksRemaining = pGrid->iSlots() * pGrid->iNodes();
+  m_pSEitf->vSetAcksRemaining(pGrid->iSlots() * pGrid->iNodes());
   
   for (i8 iPartition = 0; iPartition < pGrid->m_nPartitions; iPartition++) {
     bool bResult = m_pSEitf->bInsertLastBuffer(iPartition);
@@ -1387,7 +1387,6 @@ bool SePrompt::bCmd_EndInsert(void)
   }
 
   // now wait till acks from all partitions have been received
-  //vTrace("*pSEitf->m_ziAcksRemaining %lld\n"_Stz, *pSEitf->m_ziAcksRemaining);
   while (*m_pSEitf->m_ziAcksRemaining != 0) {
     //vTrace("*pSEitf->m_ziAcksRemaining %lld ...\n"_Stz, *pSEitf->m_ziAcksRemaining);
     ;

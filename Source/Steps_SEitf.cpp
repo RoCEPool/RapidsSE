@@ -145,7 +145,7 @@ void Task::vSEitfAcksRemainingFetch(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* seitf.acksRemainingStore -- store acks remaining                           */
+/* seitf.acksRemaining! -- store acks remaining                               */
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfAcksRemainingStore(MP_Task mpTask)
 {

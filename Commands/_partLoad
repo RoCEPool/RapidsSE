@@ -22,7 +22,7 @@ ld part     "/tpch/part.tbl" ;
 
 pwf ;
 lf ;
-
+//fetch part "p_brand 'Brand#12' = p_brand 'Brand#34' = p_brand 'Brand#23' = OR OR";
 space ;
 
 //docol pathDump
