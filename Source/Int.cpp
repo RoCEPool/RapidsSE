@@ -339,23 +339,26 @@ bool Int::bExtract(char** aaSrc, Int* aInt, Column* pColumn, Formatters* pFormat
     
     StrLib::vSkipDigits(aaSrc);
   }
-  
-  // if any non-digit return false
-  while (**aaSrc
-         && C_FS != **aaSrc
-         && C_NL != **aaSrc
-         && C_CR != **aaSrc) {
-    
-    if (' ' == **aaSrc) {
-      (*aaSrc)++;
-      break;
-    }
-    
-    if (!StrLib::bIsDigit(**aaSrc))
-      return false;
-    (*aaSrc)++;
-  }
 
+//! I dont think this is necessary. this is catered for by the
+//! should see a FS, NL or CR code block below
+//  // if any non-digit return false
+//  while (**aaSrc
+//         && C_FS != **aaSrc
+//         && C_NL != **aaSrc
+//         && C_CR != **aaSrc) {
+//    
+//    if (' ' == **aaSrc) {
+//      (*aaSrc)++;
+//      break;
+//    }
+//    
+//    if (!StrLib::bIsDigit(**aaSrc))
+//      return false;
+//    (*aaSrc)++;
+//  }
+//!
+  
   // compute final result
   uUnsignedResult = bNegative ? - uUnsignedResult : uUnsignedResult;
   
