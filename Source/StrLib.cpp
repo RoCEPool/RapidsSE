@@ -688,32 +688,35 @@ bool StrLib::bExtractString(char** ps, char* pString)
 /*----------------------------------------------------------------------------*/
 /* bExtractU8: extract an unsigned integer from substr                        */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractU8(char** ps, u8* aU8)
+bool StrLib::bExtractU8(char** aaSrc, u8* aU8)
 {
-  char *s = *ps;
+  char *aSrc = *aaSrc;
   
-  if ( ! *s )
+  if ( ! *aSrc )
     return false;
   
   bool bOnce = false;
-  if (*s && isdigit(*s))
+  if (*aSrc && isdigit(*aSrc))
     bOnce = true;
   
-  u8 v = 0;
-  for ( ; *s; s++)
-    {
-    char c = *s;
+  u8 uUnsignedResult = 0;
+  for ( ; *aSrc; aSrc++) {
     
-    //    if ( ! isdigit(c) )
-    if ( c < '0' || c > '9' )
+    char cChar = *aSrc;
+    
+    if (cChar < '0' || cChar > '9')
       break;
     
-    v = (v * 10) + c - '0';
-    }
+    uUnsignedResult = (uUnsignedResult * 10) + cChar - '0';
+    
+    // have we exceeded the max ?
+    if (uUnsignedResult > (u8)C_I8_MAX)
+      return false;
+  }
   
-  *aU8 = v;
+  *aU8 = uUnsignedResult;
   
-  *ps = s;
+  *aaSrc = aSrc;
   
   return bOnce;
 }
@@ -1239,6 +1242,25 @@ i8 StrLib::iSize(const char* s)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bSkipDigits: skip digit sequence in substr                                 */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bSkipNonDigit(char** ps)
+{
+  char *s = *ps;
+  
+  for ( ; *s; s++)
+    if (isdigit(*s))
+      break;
+  
+  *ps = s;
+  
+  if (*s)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bSkipEOL: skip till end of line                                            */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bSkipEOL(char** ps)
@@ -1269,22 +1291,17 @@ bool StrLib::bSkipNonAlnum(char** ps)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bSkipNonDigit: skip non digit sequence in substr                           */
+/* bSkipDigits: skip non digit sequence in substr                             */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bSkipNonDigit(char** ps)
+void StrLib::vSkipDigits(char** aaSrc)
 {
-  char *s = *ps;
+  char *aSrc = *aaSrc;
   
-  for ( ; *s; s++)
-    if (isdigit(*s))
+  for ( ; *aSrc; aSrc++)
+    if ( ! isdigit(*aSrc) )
       break;
 
-  *ps = s;
-  
-  if (*s)
-    return true;
-  else
-    return false;
+  *aaSrc = aSrc;
 }
 
 /*----------------------------------------------------------------------------*/

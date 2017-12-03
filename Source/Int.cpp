@@ -301,20 +301,23 @@ bool Int::bExtract(char** aaSrc, Int* aInt, Column* pColumn, Formatters* pFormat
   }
   
   // collect the digits
-  while (**aaSrc
-         && C_FS != **aaSrc
-         && C_NL != **aaSrc
-         && C_CR != **aaSrc
-         && StrLib::bIsDigit(**aaSrc) ) {
-      uUnsignedResult = uUnsignedResult * 10 + StrLib::iDigitToI8(**aaSrc);
-    
-    // have we exceeded the max ?
-    if (uUnsignedResult > (u8)C_I8_MAX)
-      return false;
-    
-    (*aaSrc)++;
-  }
+//  while (**aaSrc
+//         && C_FS != **aaSrc
+//         && C_NL != **aaSrc
+//         && C_CR != **aaSrc
+//         && StrLib::bIsDigit(**aaSrc) ) {
+//      uUnsignedResult = uUnsignedResult * 10 + StrLib::iDigitToI8(**aaSrc);
+//    
+//    // have we exceeded the max ?
+//    if (uUnsignedResult > (u8)C_I8_MAX)
+//      return false;
+//    
+//    (*aaSrc)++;
+//  }
 
+  if ( ! StrLib::bExtractU8(aaSrc,&uUnsignedResult) )
+    return false;
+  
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  // ignore any trailing digits (after '.')
 
@@ -323,16 +326,18 @@ bool Int::bExtract(char** aaSrc, Int* aInt, Column* pColumn, Formatters* pFormat
     // skip the .
     (*aaSrc)++;
     
-    while (**aaSrc
-           && C_FS != **aaSrc
-           && C_NL != **aaSrc
-           && C_CR != **aaSrc) {
-      
-      if (!StrLib::bIsDigit(**aaSrc))
-        return false;
-      
-      (*aaSrc)++;
-    }
+//    while (**aaSrc
+//           && C_FS != **aaSrc
+//           && C_NL != **aaSrc
+//           && C_CR != **aaSrc) {
+//      
+//      if (!StrLib::bIsDigit(**aaSrc))
+//        return false;
+//      
+//      (*aaSrc)++;
+//    }
+    
+    StrLib::vSkipDigits(aaSrc);
   }
   
   // if any non-digit return false
@@ -347,7 +352,7 @@ bool Int::bExtract(char** aaSrc, Int* aInt, Column* pColumn, Formatters* pFormat
     }
     
     if (!StrLib::bIsDigit(**aaSrc))
-    return false;
+      return false;
     (*aaSrc)++;
   }
 

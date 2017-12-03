@@ -95,6 +95,7 @@ namespace Base
 
     static bool  bSame(const char* s1, const char* s2);
     static i8    iSize(const char* s);
+    static void  vSkipDigits(char** ps);
     static bool  bSkipEOL(char** ps);
     static bool  bSkipNonAlnum(char** ps);
     static bool  bSkipNonDigit(char** ps);
