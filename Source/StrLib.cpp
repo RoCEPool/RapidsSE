@@ -550,7 +550,7 @@ bool StrLib::bExtractI8(char** aaSrc, i8* aI8, bool bWithSign)
   if (*aSrc && isdigit(*aSrc))
     bOnce = true;
   
-  i8 iUnsignedResult = 0;
+  u8 uUnsignedResult = 0;
   for ( ; *aSrc; aSrc++) {
     
     char c = *aSrc;
@@ -558,13 +558,17 @@ bool StrLib::bExtractI8(char** aaSrc, i8* aI8, bool bWithSign)
     if ( c < '0' || c > '9' )
       break;
     
-    iUnsignedResult = (iUnsignedResult * 10) + (c - '0');
+    uUnsignedResult = (uUnsignedResult * 10) + (c - '0');
+    
+    // have we exceeded the max ?
+    if (uUnsignedResult > (u8)C_I8_MAX)
+      return false;
   }
   
   if (bNegative)
-    *aI8 = - iUnsignedResult;
+    *aI8 = - uUnsignedResult;
   else
-    *aI8 = iUnsignedResult;
+    *aI8 = uUnsignedResult;
   
   *aaSrc = aSrc;
   

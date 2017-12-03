@@ -287,18 +287,18 @@ bool Int::bExtract(char** aaSrc, Int* aInt, Column* pColumn, Formatters* pFormat
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // integer field processing
   
-  u8 uUnsignedResult = 0;
-  
-  // test for negative or positive sign
-  bool bNegative = false;
-  if (**aaSrc && '-' == **aaSrc ) {
-    bNegative = true;
-    (*aaSrc)++;
-  }
-  else
-  if (**aaSrc && '+' == **aaSrc ) {
-    (*aaSrc)++;
-  }
+//  u8 uUnsignedResult = 0;
+//  
+//  // test for negative or positive sign
+//  bool bNegative = false;
+//  if (**aaSrc && '-' == **aaSrc ) {
+//    bNegative = true;
+//    (*aaSrc)++;
+//  }
+//  else
+//  if (**aaSrc && '+' == **aaSrc ) {
+//    (*aaSrc)++;
+//  }
   
   // collect the digits
 //  while (**aaSrc
@@ -315,7 +315,7 @@ bool Int::bExtract(char** aaSrc, Int* aInt, Column* pColumn, Formatters* pFormat
 //    (*aaSrc)++;
 //  }
 
-  if ( ! StrLib::bExtractU8(aaSrc,&uUnsignedResult) )
+  if ( ! StrLib::bExtractI8(aaSrc,&aInt->m_iInt,true/*bWithSign*/) )
     return false;
   
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -359,14 +359,14 @@ bool Int::bExtract(char** aaSrc, Int* aInt, Column* pColumn, Formatters* pFormat
 //  }
 //!
   
-  // compute final result
-  uUnsignedResult = bNegative ? - uUnsignedResult : uUnsignedResult;
-  
-  // have we gone beyond the min ?
-  if (bNegative && (uUnsignedResult < (u8)C_I8_MIN))
-    return false;
-  
-  aInt->m_iInt = uUnsignedResult;
+//  // compute final result
+//  uUnsignedResult = bNegative ? - uUnsignedResult : uUnsignedResult;
+//  
+//  // have we gone beyond the min ?
+//  if (bNegative && (uUnsignedResult < (u8)C_I8_MIN))
+//    return false;
+//  
+//  aInt->m_iInt = uUnsignedResult;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
