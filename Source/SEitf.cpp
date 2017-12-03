@@ -221,7 +221,7 @@ SEitf::~SEitf(void)
   
   gpAttachMap->m_pSEitfList->vRemove(pSEitf);
   
-  ASSERT(*m_ziAcksRemaining == 0);
+  RASSERT(*m_ziAcksRemaining == 0);
   
   if (m_pRowOnce)
     delete m_pRowOnce;
@@ -844,7 +844,7 @@ void SEitf::vSetAcksRemaining(i8 iAcksRemaining)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
-  ASSERT(*m_ziAcksRemaining == 0);
+  RASSERT(*m_ziAcksRemaining == 0);
   m_ziAcksRemaining = iAcksRemaining;
 }
 

@@ -270,10 +270,10 @@ bool Table::bAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
     return false;
   
   // decrement no of subLoaders that have appended last buffer
-  --m_ziSubLoaders[iPartition];
+  //--m_ziSubLoaders[iPartition];
   
   // check if any sub loaders still have more buffers
-  if ( *m_ziSubLoaders[iPartition] != 0 )
+  if ( --m_ziSubLoaders[iPartition] != 0 )
     return false;
   
   // compute the number of entries in hidden index
