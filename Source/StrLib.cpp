@@ -526,32 +526,47 @@ bool StrLib::bExtractArg(char** ps, char* pArg)
 /*----------------------------------------------------------------------------*/
 /* bExtractI8: extract an integer from substr                                 */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractI8(char** ps, i8* aI8)
+bool StrLib::bExtractI8(char** aaSrc, i8* aI8, bool bWithSign)
 {
-  char *s = *ps;
+  char *aSrc = *aaSrc;
   
-  if ( ! *s )
+  if ( ! *aSrc )
     return false;
+ 
+  // test for negative or positive sign
+  bool bNegative = false;
+  if (bWithSign) {
+    if (*aSrc && '-' == *aSrc) {
+      bNegative = true;
+      aSrc++;
+    }
+    else
+    if (*aSrc && '+' == *aSrc) {
+      aSrc++;
+    }
+  }
   
   bool bOnce = false;
-  if (*s && isdigit(*s))
+  if (*aSrc && isdigit(*aSrc))
     bOnce = true;
   
-  i8 v = 0;
-  for ( ; *s; s++)
-  {
-    char c = *s;
+  i8 iUnsignedResult = 0;
+  for ( ; *aSrc; aSrc++) {
     
-//    if ( ! isdigit(c) )
+    char c = *aSrc;
+    
     if ( c < '0' || c > '9' )
       break;
     
-    v = (v * 10) + c - '0';
+    iUnsignedResult = (iUnsignedResult * 10) + (c - '0');
   }
   
-  *aI8 = v;
+  if (bNegative)
+    *aI8 = - iUnsignedResult;
+  else
+    *aI8 = iUnsignedResult;
   
-  *ps = s;
+  *aaSrc = aSrc;
   
   return bOnce;
 }
