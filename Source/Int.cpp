@@ -256,33 +256,33 @@ bool Int::bExtract(char** aaSrc, Int* aInt, Column* pColumn, Formatters* pFormat
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // null processing
   
-  if (StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) == 0) {
-    
-    *aaSrc = (*aaSrc) + 4;
-    
-    // skip trailing whitespace
-    while (' ' == **aaSrc)
-      (*aaSrc)++;
-    
-    if (**aaSrc
-        && C_FS != **aaSrc
-        && C_NL != **aaSrc
-        && C_CR != **aaSrc)
+//  if (StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) == 0) {
+//    
+//    *aaSrc = (*aaSrc) + 4;
+//    
+//    // skip trailing whitespace
+//    while (' ' == **aaSrc)
+//      (*aaSrc)++;
+//    
+//    if (**aaSrc
+//        && C_FS != **aaSrc
+//        && C_NL != **aaSrc
+//        && C_CR != **aaSrc)
+//      return false;
+//    
+//    if ( !pColumn->bIsNullable() )
+//      return false;
+//    
+//    aInt->vSetNull();
+//    return true;
+//  }
+  bool bValidNull;
+  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
+    if ( ! bValidNull )
       return false;
-    
-    if ( !pColumn->bIsNullable() )
-      return false;
-    
     aInt->vSetNull();
     return true;
   }
-//  bool bValidNull;
-//  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
-//    if ( ! bValidNull )
-//      return false;
-//    aInteger->vSetNull();
-//    return true;
-//  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // integer field processing
