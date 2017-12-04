@@ -528,6 +528,8 @@ bool StrLib::bExtractArg(char** ps, char* pArg)
 /*----------------------------------------------------------------------------*/
 bool StrLib::bExtractDate(char** aaSrc, i8& iYear, i8& iMonth, i8& iDay)
 {
+  // refer: http://en.wikipedia.org/wiki/ISO_8601
+  
   u8 uSubField;
   
   u8 iDaysPerMonth[12]     = { 31,28,31,30,31,30,31,31,30,31,30,31};
@@ -756,6 +758,61 @@ bool StrLib::bExtractString(char** ps, char* pString)
   }
   
   *a = '\0';
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bExtractTime: extract a time from substr                                   */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bExtractTime(char** aaSrc, i8& iHour, i8& iMinute, i8& iSecond, i8& iMilli)
+{
+  // refer: http://en.wikipedia.org/wiki/ISO_8601
+  
+  u8 uSubField;
+  
+  iHour = iMinute = iSecond = iMilli = 0;
+  
+  // extract hour
+  if ( ! StrLib::bExtractU8(aaSrc,&uSubField,2) )
+    return false;
+  if (uSubField > 23)
+    return false;
+  iHour = uSubField;
+  
+  // skip : separator
+  if (':' != *(*aaSrc)++)
+    return false;
+  
+  // extract minute
+  if ( ! StrLib::bExtractU8(aaSrc,&uSubField,2) )
+    return false;
+  
+  if (uSubField > 59)
+    return false;
+  iMinute = uSubField;
+  
+  // skip : separator
+  if (':' != *(*aaSrc)++)
+    return false;
+  
+  // extract second
+  if ( ! StrLib::bExtractU8(aaSrc,&uSubField,2) )
+    return false;
+  if (uSubField > 59)
+    return false;
+  iSecond = uSubField;
+  
+  // extract fraction (assuming milliseconds)
+  if ('.' == **aaSrc) {
+    (*aaSrc)++;
+    
+    if ( StrLib::bExtractU8(aaSrc,&uSubField,3) )
+      iMilli = uSubField;
+    
+    if (uSubField > 999)
+      return false;
+  }
   
   return true;
 }
