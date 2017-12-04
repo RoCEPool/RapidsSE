@@ -823,7 +823,7 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf, i8 iTraceLevel)
     
     // before sending buffers set no of remaining acks to no of partitons
     pSEitf->vSetAcksRemaining(pGrid->iSlots() * pGrid->iNodes());
-    vTrace("Seitf:%p Setting acksRemaining : %lld"_Stz, pSEitf, *pSEitf->m_ziAcksRemaining);
+    vTrace("Seitf:%p Setting acksRemaining : %lld\n"_Stz, pSEitf, *pSEitf->m_ziAcksRemaining);
     
     for (i8 iPartition = 0; iPartition < pGrid->m_nPartitions; iPartition++) {
       bool bResult = pSEitf->bInsertLastBuffer(iPartition);
