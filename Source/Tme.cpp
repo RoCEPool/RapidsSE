@@ -215,7 +215,7 @@ void Tme::vCopy(void* aDst, void* aSrc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract a time from substr                                   hh:mi:ss.fffZ */
+/* extract a time field from csv substr                         hh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
 bool Tme::bExtract(char** aaSrc, Tme* aTme, Column* pColumn, Formatters* pFormatters)
 {
@@ -234,36 +234,16 @@ bool Tme::bExtract(char** aaSrc, Tme* aTme, Column* pColumn, Formatters* pFormat
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // null processing
   
-  if (StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) == 0) {
-    
-    *aaSrc = (*aaSrc) + 4;
-    
-    // skip trailing whitespace
-    while (' ' == **aaSrc)
-      (*aaSrc)++;
-    
-    if (**aaSrc
-        && C_FS != **aaSrc
-        && C_NL != **aaSrc
-        && C_CR != **aaSrc)
+  bool bValidNull;
+  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
+    if ( ! bValidNull )
       return false;
-    
-    if ( !pColumn->bIsNullable() )
-      return false;
-    
     aTme->vSetNull();
     return true;
   }
-//  bool bValidNull;
-//  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
-//    if ( ! bValidNull )
-//      return false;
-//    aTme->vSetNull();
-//    return true;
-//  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // time filed processing
+  // time field processing
   
   u8 uSubField;
   
@@ -308,6 +288,10 @@ bool Tme::bExtract(char** aaSrc, Tme* aTme, Column* pColumn, Formatters* pFormat
   
   // skip trailing spaces
   StrLib::vSkipSpaces(aaSrc);
+  
+  // should see a FS, NL or CR
+  if ( ! DtmLib::bValidFieldEnd(aaSrc,pFormatters) )
+    return false;
   
   return true;
 }
