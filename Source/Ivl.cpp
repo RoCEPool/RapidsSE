@@ -205,7 +205,7 @@ void Ivl::vCopy(void* aDst, void* aSrc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract an interval from substr                                            */
+/* extract an interval field from csv substr                                  */
 /*----------------------------------------------------------------------------*/
 bool Ivl::bExtract(char** aaSrc, Ivl* aIvl, Column* pColumn, Formatters* pFormatters)
 {
@@ -222,33 +222,13 @@ bool Ivl::bExtract(char** aaSrc, Ivl* aIvl, Column* pColumn, Formatters* pFormat
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // null processing
   
-  if (StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) == 0) {
-    
-    *aaSrc = (*aaSrc) + 4;
-    
-    // skip trailing whitespace
-    while (' ' == **aaSrc)
-      (*aaSrc)++;
-    
-    if (**aaSrc
-        && C_FS != **aaSrc
-        && C_NL != **aaSrc
-        && C_CR != **aaSrc)
+  bool bValidNull;
+  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
+    if ( ! bValidNull )
       return false;
-    
-    if ( !pColumn->bIsNullable() )
-      return false;
-    
     aIvl->vSetNull();
     return true;
   }
-//  bool bValidNull;
-//  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
-//    if ( ! bValidNull )
-//      return false;
-//    aIvl->vSetNull();
-//    return true;
-//  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // interval field processing
@@ -278,6 +258,10 @@ bool Ivl::bExtract(char** aaSrc, Ivl* aIvl, Column* pColumn, Formatters* pFormat
   
   // skip trailing spaces
   StrLib::vSkipSpaces(aaSrc);
+  
+  // should see a FS, NL or CR
+  if ( ! DtmLib::bValidFieldEnd(aaSrc,pFormatters) )
+    return false;
   
   return true;
 }
