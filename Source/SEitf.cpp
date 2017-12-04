@@ -108,6 +108,9 @@ SEitf* Interface::_pSEitf(void* aAddr)
 {
   SEitf* pSEitf = reinterpret_cast<SEitf*>(aAddr);
   
+  if (pSEitf && CN_SEITF != pSEitf->eClass())
+    vTrace("INVALID SEITF %p\n"_Stz, pSEitf);
+  
   RASSERT( !pSEitf || CN_SEITF == pSEitf->eClass() );
   
   return pSEitf;
@@ -119,6 +122,9 @@ SEitf* Interface::_pSEitf(void* aAddr)
 SEitf* Interface::_pSEitf(i8 iAddr)
 {
   SEitf* pSEitf = reinterpret_cast<SEitf*>(iAddr);
+  
+  if (pSEitf && CN_SEITF != pSEitf->eClass())
+    vTrace("INVALID SEITF %p\n"_Stz, pSEitf);
   
   RASSERT( !pSEitf || CN_SEITF == pSEitf->eClass() );
   
