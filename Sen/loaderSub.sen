@@ -364,7 +364,7 @@ tp: partitionAppendBuffer
 
   //"txDistCommit$ got..." .
 
-  iDistTxId .
+  //iDistTxId .
 
   //tx::dumpAll
 
@@ -393,7 +393,7 @@ tp: partitionAppendBuffer
 
   //"txDistPrepare$ got..." .
 
-  iDistTxId .
+  //iDistTxId .
 
   //tx::dumpAll
 
