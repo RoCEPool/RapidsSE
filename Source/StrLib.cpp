@@ -524,6 +524,62 @@ bool StrLib::bExtractArg(char** ps, char* pArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bExtractDate: extract a date from substr                                   */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bExtractDate(char** aaSrc, i8& iYear, i8& iMonth, i8& iDay)
+{
+  u8 uSubField;
+  
+  u8 iDaysPerMonth[12]     = { 31,28,31,30,31,30,31,31,30,31,30,31};
+  u8 iDaysPerMonthLeap[12] = { 31,29,31,30,31,30,31,31,30,31,30,31};
+  
+  iYear = iMonth = iDay = 0;
+  
+  // extract year
+  if ( ! StrLib::bExtractU8(aaSrc,&uSubField, 4) )
+    return false;
+  
+  // assume a leap year
+  bool bLeapYear = true;
+  if (uSubField % 4 == 0) {
+    if ((uSubField % 100) == 0 && (uSubField % 400) != 0) {
+      // not a leap year
+      bLeapYear = false;
+    }
+  }
+  iYear = uSubField;
+  
+  // skip - separator
+  if ('-' != *(*aaSrc)++)
+    return false;
+  
+  // extract month
+  if ( ! StrLib::bExtractU8(aaSrc,&uSubField,2) )
+    return false;
+  if (uSubField < 1 || uSubField > 12)
+    return false;
+  iMonth = uSubField;
+  
+  // skip - separator
+  if ('-' != *(*aaSrc)++) return false;
+  
+  // extract day
+  if ( ! StrLib::bExtractU8(aaSrc,&uSubField,2) )
+    return false;
+  if (bLeapYear) {
+    if (uSubField > iDaysPerMonthLeap[iMonth-1])
+      return false;
+  }
+  else {
+    if (uSubField > iDaysPerMonth[iMonth-1])
+      return false;
+  }
+  iDay = uSubField;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bExtractI8: extract an integer from substr                                 */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bExtractI8(char** aaSrc, i8* aI8, bool bWithSign)
