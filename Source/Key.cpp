@@ -365,22 +365,24 @@ bool Key::bMatches(Key* pKeyThat, IdxColVec* pIdxColVec, RelOpAry* pRelOpAry)
 /*----------------------------------------------------------------------------*/
 /* juxta-compare this key with given key                                      */
 /*----------------------------------------------------------------------------*/
-bool Key::bJuxtaCompare(eJC eJuxtaCompare, Key* pKeyThat, IdxColVec* pIdxColVec, bool& bIsEqual, eRO eRelnOp)
+bool Key::bJuxtaCompare(eJC eJuxtaCompare, Key* pKeyThat,
+                        IdxColVec* pIdxColVec, i8 nSearchKeyCols,
+                        bool& bIsEqual, eRO eRelnOp)
 {
   bool bJuxtaCompare = false;
   
   switch (eJuxtaCompare) {
       
     case JC_BEFORE:
-      bJuxtaCompare = bJuxtaBefore(pKeyThat,pIdxColVec,bIsEqual,eRelnOp);
+      bJuxtaCompare = bJuxtaBefore(pKeyThat,pIdxColVec,nSearchKeyCols,bIsEqual,eRelnOp);
       break;
       
     case JC_SAME:
-      bJuxtaCompare = bJuxtaSame(pKeyThat,pIdxColVec,bIsEqual);
+      bJuxtaCompare = bJuxtaSame(pKeyThat,pIdxColVec,nSearchKeyCols,bIsEqual);
       break;
       
     case JC_AFTER:
-      bJuxtaCompare = bJuxtaAfter(pKeyThat,pIdxColVec,bIsEqual,eRelnOp);
+      bJuxtaCompare = bJuxtaAfter(pKeyThat,pIdxColVec,nSearchKeyCols,bIsEqual,eRelnOp);
       break;
       
     default:
@@ -391,10 +393,10 @@ bool Key::bJuxtaCompare(eJC eJuxtaCompare, Key* pKeyThat, IdxColVec* pIdxColVec,
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this key juxta-before given key?                                        */
+/* is this key juxta-before given search key?                                 */
 /*----------------------------------------------------------------------------*/
-bool Key::bJuxtaBefore(Key* pKeyThat, IdxColVec* pIdxColVec, bool& bIsEqual,
-                       eRO eRelnOp)
+bool Key::bJuxtaBefore(Key* pSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
+                       bool& bIsEqual,  eRO eRelnOp)
 {
   /*
    * a multi-part key is said to be juxta-before some other key if:
@@ -425,11 +427,14 @@ bool Key::bJuxtaBefore(Key* pKeyThat, IdxColVec* pIdxColVec, bool& bIsEqual,
   bIsEqual = false;
   
   char* aCursorThis = aWspArea();
-  char* aCursorThat = pKeyThat->aWspArea();
+  char* aCursorThat = pSearchKey->aWspArea();
   
   i8 iCmp = 0;
   
   for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
+    
+    if (i_Column >= nSearchKeyCols)
+      break;
     
     Column* pColumn = pIdxColVec->pGet(i_Column);
     
@@ -467,9 +472,10 @@ bool Key::bJuxtaBefore(Key* pKeyThat, IdxColVec* pIdxColVec, bool& bIsEqual,
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this key juxta-same as given key?                                       */
+/* is this key juxta-same as given search key?                                */
 /*----------------------------------------------------------------------------*/
-bool Key::bJuxtaSame(Key* pKeyThat, IdxColVec* pIdxColVec, bool& bIsEqual)
+bool Key::bJuxtaSame(Key* pSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
+                     bool& bIsEqual)
 {
   /*
    * a multi-part key is juxta-same as some other key if:
@@ -483,11 +489,14 @@ bool Key::bJuxtaSame(Key* pKeyThat, IdxColVec* pIdxColVec, bool& bIsEqual)
   bIsEqual = false;
   
   char* aCursorThis = aWspArea();
-  char* aCursorThat = pKeyThat->aWspArea();
+  char* aCursorThat = pSearchKey->aWspArea();
   
   i8 iCmp = 0;
   
   for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
+    
+    if (i_Column >= nSearchKeyCols)
+      break;
     
     Column* pColumn = pIdxColVec->pGet(i_Column);
     
@@ -516,10 +525,10 @@ bool Key::bJuxtaSame(Key* pKeyThat, IdxColVec* pIdxColVec, bool& bIsEqual)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this key juxta-after given key?                                         */
+/* is this key juxta-after given search key?                                  */
 /*----------------------------------------------------------------------------*/
-bool Key::bJuxtaAfter(Key* pKeyThat, IdxColVec* pIdxColVec, bool& bIsEqual,
-                      eRO eRelnOp)
+bool Key::bJuxtaAfter(Key* pSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
+                      bool& bIsEqual, eRO eRelnOp)
 {
   /*
    * a multi-part key is said to be juxta-after some other key if:
@@ -550,11 +559,14 @@ bool Key::bJuxtaAfter(Key* pKeyThat, IdxColVec* pIdxColVec, bool& bIsEqual,
   bIsEqual = false;
   
   char* aCursorThis = aWspArea();
-  char* aCursorThat = pKeyThat->aWspArea();
+  char* aCursorThat = pSearchKey->aWspArea();
   
   i8 iCmp = 0;
   
   for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
+    
+    if (i_Column >= nSearchKeyCols)
+      break;
     
     Column* pColumn = pIdxColVec->pGet(i_Column);
     

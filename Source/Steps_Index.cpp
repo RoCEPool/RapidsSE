@@ -112,7 +112,7 @@ void Task::vIndexBuffer(MP_Task mpTask)
   xKeyWrk.vAddDatum(pStrVal,pColumn0,pFormatters);
   //xKeyWrk.vShow();
   
-  EntryBuffer* pIndexBuffer = pIndexData->pPositionLevel(xKeyWrk, JC_AFTER, 0);
+  EntryBuffer* pIndexBuffer = pIndexData->pPositionLevel(xKeyWrk, 1, JC_AFTER, 0);
   
   mpTask->m_pDataStack->vPushObject(pIndexBuffer);
   
@@ -258,13 +258,13 @@ void Task::vIndexPosition(MP_Task mpTask)
   i8 i_Phrase;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrPlanner) )
-    THROW_INVALID_DSTACK("index.upper"_Stz);
+    THROW_INVALID_DSTACK("index.position"_Stz);
   
   Planner* pPlanner = _pPlanner(pPtrPlanner);
   ASSERT(CN_PLANNER == pPlanner->eClass());
   
   if ( ! mpTask->m_pDataStack->bPop(i_Phrase) )
-    THROW_INVALID_DSTACK("index.upper"_Stz);
+    THROW_INVALID_DSTACK("index.position"_Stz);
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
     THROW_INVALID_DSTACK("index.position"_Stz);
@@ -295,7 +295,7 @@ void Task::vIndexPosition(MP_Task mpTask)
   xKeyWrk.vAddDatum(pStrVal, pColumn, pFormatters);
   //xKeyWrk.aKey()->vShow(pIndex->pIdxColVec());
 
-  Entry* pIndexEntry = pIndexBuffer->pPosition(xKeyWrk, JC_AFTER);
+  Entry* pIndexEntry = pIndexBuffer->pPosition(xKeyWrk, 1, JC_AFTER);
   //pIndexEntry->aKey()->vShow(pIndex->pIdxColVec());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -315,8 +315,8 @@ void Task::vIndexPosition(MP_Task mpTask)
     do {
       bool bIsEqual = false;
       bAfter = pIndexEntry->aKey()->bJuxtaCompare(JC_AFTER, xKeyWrk.aKey(),
-                                                  pIndex->pIdxColVec(), bIsEqual,
-                                                  eRelnOp);
+                                                  pIndex->pIdxColVec(), 1,
+                                                  bIsEqual, eRelnOp);
       if (! bAfter) {
         pIndexEntry = pIndexBuffer->pNextEntry(pIndexEntry);
       }
@@ -813,8 +813,8 @@ void Task::vIndexUpper(MP_Task mpTask)
   
   bool bIsEqual = false;
   bool bBefore = pEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrk.aKey(),
-                                               pIndex->pIdxColVec(), bIsEqual,
-                                               eRelnOp);
+                                               pIndex->pIdxColVec(), 1,
+                                               bIsEqual, eRelnOp);
   
   mpTask->m_pDataStack->vPushInt(bBefore ? 1 : 0);
   

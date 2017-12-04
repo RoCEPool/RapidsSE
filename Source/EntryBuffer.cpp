@@ -1042,7 +1042,8 @@ bool EntryBuffer::bInsert(EntWrk& xEntWrk)                        //# critical
   // find the entry after which the new entry.key will be inserted
   EntryVec xPriorVec;
   bool bIsEqual = false;
-  Entry* pAfterEntry = pPosition(xEntWrk.aKey(), JC_AFTER, &xPriorVec, bIsEqual, false);
+  i8 nKeyCols = m_pIndex->pIdxColVec()->nItems();
+  Entry* pAfterEntry = pPosition(xEntWrk.aKey(), nKeyCols, JC_AFTER, &xPriorVec, bIsEqual, false);
     
   if (m_pIndex->bIsUnique() and bIsEqual) { //# note the and !!!
     vTrace("Warning: Duplicate key in unique index %s "_Stz, m_pIndex->aIndexName());
@@ -1189,7 +1190,7 @@ Entry* EntryBuffer::pNextEntry(Entry* pEntry)                           //! tune
 /*----------------------------------------------------------------------------*/
 /* position at entry with lower bound at key                                  */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pPosition(KeyWrk& xKeyWrk, eJC eJuxtaCompare)
+Entry* EntryBuffer::pPosition(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1198,7 +1199,7 @@ Entry* EntryBuffer::pPosition(KeyWrk& xKeyWrk, eJC eJuxtaCompare)
   
   Key* aKey = xKeyWrk.aKey();
   
-  pEntry = pPosition(aKey, eJuxtaCompare, nullptr, bIsEqual, true);
+  pEntry = pPosition(aKey, nKeyCols, eJuxtaCompare, nullptr, bIsEqual, true);
   
   if (pEntry == pHead())
     pEntry = pNextEntry(pEntry);
@@ -1209,7 +1210,7 @@ Entry* EntryBuffer::pPosition(KeyWrk& xKeyWrk, eJC eJuxtaCompare)
 /*----------------------------------------------------------------------------*/
 /* position at an index buffer at level iLevel starting from this buffer      */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* EntryBuffer::pPositionLevel(KeyWrk& xKeyWrk, eJC eJuxtaCompare, i8 iLevel)  //# critical
+EntryBuffer* EntryBuffer::pPositionLevel(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare, i8 iLevel)  //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1225,7 +1226,7 @@ EntryBuffer* EntryBuffer::pPositionLevel(KeyWrk& xKeyWrk, eJC eJuxtaCompare, i8 
       break;
     
     // get the entry
-    pEntry = pEntryBuffer->pPosition(xKeyWrk, eJuxtaCompare);
+    pEntry = pEntryBuffer->pPosition(xKeyWrk, nKeyCols, eJuxtaCompare);
     ASSERT(pEntry);
     
     // get the index buffer of the entry
@@ -1478,7 +1479,10 @@ bool EntryBuffer::bVerify(void)                                     //# critical
         
         // KeyB should should be after keyA
         bool bIsEqual = false;
-        bool bAfter = pKeyB->bJuxtaAfter(pKeyA, m_pIndex->pIdxColVec(), bIsEqual);
+        bool bAfter = pKeyB->bJuxtaAfter(pKeyA,
+                                         m_pIndex->pIdxColVec(),
+                                         m_pIndex->pIdxColVec()->nItems(),
+                                         bIsEqual);
         
         // if keyB is not after keyA , we have a problem
         if ( ! bAfter )
@@ -1854,14 +1858,19 @@ void EntryBuffer::vReplaceEqualKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk) //# c
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
   
   // find the oldEntry in the higher level buffer
-  Entry* pOldEntry = pPosition(xOldKeyWrk, JC_SAME);
+  i8 nKeyCols = m_pIndex->pIdxColVec()->nItems();
+  Entry* pOldEntry = pPosition(xOldKeyWrk, nKeyCols, JC_SAME);
   
   // assert that we found one
   ASSERT(pOldEntry);
   
   // assert the key of the higher level entry and the old entry match
   bool bIsEqual = false;
-  ASSERT(pOldEntry->aKey()->bJuxtaCompare(JC_SAME, xOldKeyWrk.aKey(), m_pIndex->pIdxColVec(), bIsEqual));
+  ASSERT(pOldEntry->aKey()->bJuxtaCompare(JC_SAME,
+                                          xOldKeyWrk.aKey(),
+                                          m_pIndex->pIdxColVec(),
+                                          nKeyCols,
+                                          bIsEqual));
   
   EntWrk xEntWrk(pOldEntry);
   xEntWrk.vAddKey(xNewKeyWrk);
@@ -1889,14 +1898,19 @@ void EntryBuffer::vReplaceLargerKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk) //# 
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
   
   // find the oldEntry in the higher level buffer
-  Entry* pOldEntry = pPosition(xOldKeyWrk, JC_SAME);
+  i8 nKeyCols = m_pIndex->pIdxColVec()->nItems();
+  Entry* pOldEntry = pPosition(xOldKeyWrk,nKeyCols,JC_SAME);
   
   // assert that we found the old key
   ASSERT(pOldEntry);
   
   // assert the key of the higher level entry and the old entry match
   bool bIsEqual = false;
-  ASSERT(pOldEntry->aKey()->bJuxtaCompare(JC_SAME, xOldKeyWrk.aKey(), m_pIndex->pIdxColVec(), bIsEqual));
+  ASSERT(pOldEntry->aKey()->bJuxtaCompare(JC_SAME,
+                                          xOldKeyWrk.aKey(),
+                                          m_pIndex->pIdxColVec(),
+                                          nKeyCols,
+                                          bIsEqual));
   
   // create a newEntry at the same location as the pOldEntry
   Entry* pNewEntry = _pEntry(pOldEntry);
@@ -1968,14 +1982,19 @@ void EntryBuffer::vReplaceSmallereKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk) //
    */
   
   // find the oldEntry in the higher level buffer
-  Entry* pOldEntry = pPosition(xOldKeyWrk, JC_SAME);
+  i8 nKeyCols = m_pIndex->pIdxColVec()->nItems();
+  Entry* pOldEntry = pPosition(xOldKeyWrk,nKeyCols,JC_SAME);
   
   // assert that we found one
   ASSERT(pOldEntry);
   
   // assert the key of the higher level entry and the old entry match
   bool bIsEqual = false;
-  ASSERT(pOldEntry->aKey()->bJuxtaCompare(JC_SAME, xOldKeyWrk.aKey(), m_pIndex->pIdxColVec(), bIsEqual));
+  ASSERT(pOldEntry->aKey()->bJuxtaCompare(JC_SAME,
+                                          xOldKeyWrk.aKey(),
+                                          m_pIndex->pIdxColVec(),
+                                          nKeyCols,
+                                          bIsEqual));
   
   // create a newEntry at the same location as the foundEntry
   Entry* pNewEntry = _pEntry(pOldEntry);
@@ -2197,7 +2216,8 @@ void EntryBuffer::vMoveRight(void* aSrc, i8 nBytes)                 //# critical
 /*----------------------------------------------------------------------------*/
 /* scan thru skip list and positition to entry (optionally set prior vector)  */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pPosition(Key* aGivenKey, eJC eJuxtaCompare, EntryVec* pPriorVec,
+Entry* EntryBuffer::pPosition(Key* aGivenKey, i8 nKeyCols,
+                              eJC eJuxtaCompare, EntryVec* pPriorVec,
                               bool& bIsEqual, bool bIsQuery) //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
@@ -2248,7 +2268,8 @@ Entry* EntryBuffer::pPosition(Key* aGivenKey, eJC eJuxtaCompare, EntryVec* pPrio
       //aNextKey->vShow(m_pIndex->pIdxColVec());
       
       // juxta-compare given key with next key at this level
-      bIsJuxta = aGivenKey->bJuxtaCompare(eJuxtaCompare,aNextKey,pIdxColVec, bIsEqual);
+      bIsJuxta = aGivenKey->bJuxtaCompare(eJuxtaCompare,aNextKey,
+                                          pIdxColVec,nKeyCols,bIsEqual);
       
       //vTrace(" %s\n"_Stz,bAfter ? "after" : "before");
       

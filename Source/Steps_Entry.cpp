@@ -57,7 +57,8 @@ void Task::vEntryMatches(MP_Task mpTask)
 
   //pEntry->vShow(0, pIndex,true);
   bool bIsEqual = false;
-  bool bSame = pEntry->aKey()->bJuxtaCompare(JC_SAME, xKeyWrk.aKey(), pIndex->pIdxColVec(), bIsEqual);
+  bool bSame = pEntry->aKey()->bJuxtaCompare(JC_SAME, xKeyWrk.aKey(),
+                                             pIndex->pIdxColVec(), 1, bIsEqual);
 
   mpTask->m_pDataStack->vPushInt(bSame ? 1 : 0);
   EXIT();
@@ -122,7 +123,7 @@ void Task::vEntryToDataRow(MP_Task mpTask)
   xKeyWrk.vAddDatum(xValWrk, pColumn);
 
   // position in the entry buffer at the row id key
-  Entry* pRowEntry = pEntryBuffer->pPosition(xKeyWrk, JC_AFTER);
+  Entry* pRowEntry = pEntryBuffer->pPosition(xKeyWrk,1,JC_AFTER);
   
   // return the row entry
   mpTask->m_pDataStack->vPushObject(pRowEntry);

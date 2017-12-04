@@ -455,12 +455,12 @@ bool IndexData::bInsertEntry(Entry* pRow)
 /*----------------------------------------------------------------------------*/
 /* position the indexData at a particular level of index buffer               */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* IndexData::pPositionLevel(KeyWrk& xKeyWrk, eJC eJuxtaCompare, i8 iLevel)
+EntryBuffer* IndexData::pPositionLevel(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare, i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
   if (m_pRoot)
-    return m_pRoot->pPositionLevel(xKeyWrk, eJuxtaCompare, iLevel);
+    return m_pRoot->pPositionLevel(xKeyWrk, nKeyCols, eJuxtaCompare, iLevel);
   else
     return nullptr;
 }
@@ -580,7 +580,11 @@ bool IndexData::bVerify(void)
       // pKeyLN should be the same as pKeyLN_1
       // ka of B1 and ka of B3 should be the same
       bool bIsEqual = false;
-      bool bSame = pKeyLN->bJuxtaCompare(JC_SAME, aEntryLN_1->aKey(), m_pIndex->pIdxColVec(), bIsEqual);
+      bool bSame = pKeyLN->bJuxtaCompare(JC_SAME,
+                                         aEntryLN_1->aKey(),
+                                         m_pIndex->pIdxColVec(),
+                                         m_pIndex->pIdxColVec()->nItems(),
+                                         bIsEqual);
       if ( ! bSame ) {
         return false;
       }
@@ -706,7 +710,8 @@ bool IndexData::bInsertEntry(EntryBuffer* pHigher, KeyWrk& xKeyWrk, Id xId, i8 i
   
   // find index buffer which contains the entry after which the new entry will
   // be inserted into, starting with given higher
-  EntryBuffer* pEntryBuffer = pHigher->pPositionLevel(xKeyWrk, JC_AFTER, iLevel);
+  i8 nKeyCols = pHigher->pIndex()->pIdxColVec()->nItems();
+  EntryBuffer* pEntryBuffer = pHigher->pPositionLevel(xKeyWrk,nKeyCols, JC_AFTER, iLevel);
   
   // check if found index buffer has enough space
   i8 nEntryBytes = Entry::nBytesRequired(xEntWrk);
@@ -721,7 +726,7 @@ bool IndexData::bInsertEntry(EntryBuffer* pHigher, KeyWrk& xKeyWrk, Id xId, i8 i
     
     // find position again
     bool bEqual;
-    pEntryBuffer = pEntryBuffer->pHigherLevel()->pPositionLevel(xKeyWrk, JC_AFTER, iLevel);
+    pEntryBuffer = pEntryBuffer->pHigherLevel()->pPositionLevel(xKeyWrk,nKeyCols, JC_AFTER, iLevel);
   }
   
   // assert we have a buffer
@@ -782,7 +787,8 @@ void IndexData::vFixHigherBuffer(EntryBuffer* pEntryBuffer, i8 iLevel)
   // form a KeyWrk from the key
   xKeyWrk.vAddKey(aFirstEntry->aKey(), m_pIndex->pIdxColVec());
   
-  pRoot = m_pRoot->pPositionLevel(xKeyWrk, JC_AFTER, iLevel);
+  pRoot = m_pRoot->pPositionLevel(xKeyWrk, m_pIndex->pIdxColVec()->nItems(),
+                                  JC_AFTER, iLevel);
 
   pEntryBuffer->vHigherLevel(pRoot);
 }
