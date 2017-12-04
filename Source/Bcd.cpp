@@ -177,7 +177,7 @@ void Bcd::vCopy(void* aDst, void* aSrc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract a decimal from substr                                              */
+/* extract a decimal field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
 bool Bcd::bExtract(char** aaSrc, Bcd* aBcd, DBobjects::Column* pColumn, Formatters* pFormatters)
 {
@@ -194,33 +194,13 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aBcd, DBobjects::Column* pColumn, Formatte
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // null processing
   
-  if (StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) == 0) {
-    
-    *aaSrc = (*aaSrc) + 4;
-    
-    // skip trailing whitespace
-    while (' ' == **aaSrc)
-      (*aaSrc)++;
-    
-    if (**aaSrc
-        && C_FS != **aaSrc
-        && C_NL != **aaSrc
-        && C_CR != **aaSrc)
+  bool bValidNull;
+  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
+    if ( ! bValidNull )
       return false;
-    
-    if ( !pColumn->bIsNullable() )
-      return false;
-    
     aBcd->vSetNull();
     return true;
   }
-//  bool bValidNull;
-//  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
-//    if ( ! bValidNull )
-//      return false;
-//    aBcd->vSetNull();
-//    return true;
-//  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // decimal field processing
@@ -337,10 +317,7 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aBcd, DBobjects::Column* pColumn, Formatte
   StrLib::vSkipSpaces(aaSrc);
   
   // should see a FS, NL or CR
-  if (**aaSrc
-      && C_FS != **aaSrc
-      && C_NL != **aaSrc
-      && C_CR != **aaSrc)
+  if ( ! DtmLib::bValidFieldEnd(aaSrc,pFormatters) )
     return false;
   
   return true;
