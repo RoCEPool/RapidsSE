@@ -393,7 +393,7 @@ tp: partitionAppendBuffer
 
   //"txDistPrepare$ got..." .
 
-  //iDistTxId .
+   //iDistTxId .
 
   //tx::dumpAll
 

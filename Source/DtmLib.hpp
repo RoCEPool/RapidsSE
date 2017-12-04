@@ -32,6 +32,7 @@ namespace Datums
   
     static bool bIsThereData(char cSrc, Formatters* pFormatters);
     static bool bTestForNull(char** aaSrc, DBobjects::Column* pColumn, Formatters* pFormatters, bool& bValid);
+    static bool bValidFieldEnd(char** aaSrc, Formatters* pFormatters);
   };
 }
 

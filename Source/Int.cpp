@@ -239,7 +239,7 @@ void Int::vCopy(void* aDst, void* aSrc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract an integer from substr                                             */
+/* extract an integer field from csv substr                                   */
 /*----------------------------------------------------------------------------*/
 bool Int::bExtract(char** aaSrc, Int* aInt, Column* pColumn, Formatters* pFormatters)
 {
@@ -285,10 +285,7 @@ bool Int::bExtract(char** aaSrc, Int* aInt, Column* pColumn, Formatters* pFormat
   StrLib::vSkipSpaces(aaSrc);
   
   // should see a FS, NL or CR
-  if (**aaSrc
-      && C_FS != **aaSrc
-      && C_NL != **aaSrc
-      && C_CR != **aaSrc)
+  if ( ! DtmLib::bValidFieldEnd(aaSrc,pFormatters) )
     return false;
 
   return true;

@@ -426,13 +426,13 @@ bool DtmLib::bIsThereData(char cSrc, Formatters* pFormatters)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test for null                                                              */
+/* test for null token                                                        */
 /*----------------------------------------------------------------------------*/
 bool DtmLib::bTestForNull(char** aaSrc, DBobjects::Column* pColumn,
                           Formatters* pFormatters, bool& bValid)
 {
   // do we see the token null
-  if ( StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) != 0 )
+  if (0 != StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE))
     return false;
   
   // skip over token null
@@ -458,6 +458,21 @@ bool DtmLib::bTestForNull(char** aaSrc, DBobjects::Column* pColumn,
 
   bValid = true;
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for valid field end                                                   */
+/*----------------------------------------------------------------------------*/
+bool DtmLib::bValidFieldEnd(char** aaSrc, Formatters* pFormatters)
+{
+  // should see a FS, NL or CR
+  if (**aaSrc
+      && **aaSrc != pFormatters->m_cFieldSeparator
+      && **aaSrc != C_NL
+      && **aaSrc != C_CR)
+    return false;
+  else
+    return true;
 }
 
 /*============================================================================*/
