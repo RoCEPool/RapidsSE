@@ -242,7 +242,7 @@ void Tsp::vCopy(void* aDst, void* aSrc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract a timestamp from substr                   yyyy-mo-ddThh:mi:ss.fffZ */
+/* extract a timestamp field from csv substr         yyyy-mo-ddThh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
 bool Tsp::bExtract(char** aaSrc, Tsp* aTsp, Column* pColumn, Formatters* pFormatters)
 {
@@ -261,35 +261,13 @@ bool Tsp::bExtract(char** aaSrc, Tsp* aTsp, Column* pColumn, Formatters* pFormat
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // null processing
   
-  if (StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) == 0) {
-    
-    *aaSrc = (*aaSrc) + 4;
-    
-    // skip trailing whitespace
-    while (' ' == **aaSrc)
-      (*aaSrc)++;
-    
-    if (**aaSrc
-        && C_FS != **aaSrc
-        && C_NL != **aaSrc
-        && C_CR != **aaSrc)
+  bool bValidNull;
+  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
+    if ( ! bValidNull )
       return false;
-    
-    if ( !pColumn->bIsNullable() )
-      return false;
-    
     aTsp->vSetNull();
     return true;
   }
-//  bool bValidNull;
-//  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
-//    if ( ! bValidNull )
-//      return false;
-//    aTsp->vSetNull();
-//    return true;
-//  }
-  
-  aTsp->vInitZero();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // timestamp field processing
@@ -297,6 +275,8 @@ bool Tsp::bExtract(char** aaSrc, Tsp* aTsp, Column* pColumn, Formatters* pFormat
   u8 uSubField;
   u8 iDaysPerMonth[12]     = { 31,28,31,30,31,30,31,31,30,31,30,31};
   u8 iDaysPerMonthLeap[12] = { 31,29,31,30,31,30,31,31,30,31,30,31};
+  
+  aTsp->vInitZero();
   
   // - date portion
   
@@ -398,6 +378,10 @@ bool Tsp::bExtract(char** aaSrc, Tsp* aTsp, Column* pColumn, Formatters* pFormat
   // skip trailing spaces
   StrLib::vSkipSpaces(aaSrc);
 
+  // should see a FS, NL or CR
+  if ( ! DtmLib::bValidFieldEnd(aaSrc,pFormatters) )
+    return false;
+  
   return true;
 }
 
