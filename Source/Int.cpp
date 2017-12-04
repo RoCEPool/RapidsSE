@@ -256,26 +256,6 @@ bool Int::bExtract(char** aaSrc, Int* aInt, Column* pColumn, Formatters* pFormat
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // null processing
   
-//  if (StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) == 0) {
-//    
-//    *aaSrc = (*aaSrc) + 4;
-//    
-//    // skip trailing whitespace
-//    while (' ' == **aaSrc)
-//      (*aaSrc)++;
-//    
-//    if (**aaSrc
-//        && C_FS != **aaSrc
-//        && C_NL != **aaSrc
-//        && C_CR != **aaSrc)
-//      return false;
-//    
-//    if ( !pColumn->bIsNullable() )
-//      return false;
-//    
-//    aInt->vSetNull();
-//    return true;
-//  }
   bool bValidNull;
   if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
     if ( ! bValidNull )
@@ -287,86 +267,16 @@ bool Int::bExtract(char** aaSrc, Int* aInt, Column* pColumn, Formatters* pFormat
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // integer field processing
   
-//  u8 uUnsignedResult = 0;
-//  
-//  // test for negative or positive sign
-//  bool bNegative = false;
-//  if (**aaSrc && '-' == **aaSrc ) {
-//    bNegative = true;
-//    (*aaSrc)++;
-//  }
-//  else
-//  if (**aaSrc && '+' == **aaSrc ) {
-//    (*aaSrc)++;
-//  }
-  
-  // collect the digits
-//  while (**aaSrc
-//         && C_FS != **aaSrc
-//         && C_NL != **aaSrc
-//         && C_CR != **aaSrc
-//         && StrLib::bIsDigit(**aaSrc) ) {
-//      uUnsignedResult = uUnsignedResult * 10 + StrLib::iDigitToI8(**aaSrc);
-//    
-//    // have we exceeded the max ?
-//    if (uUnsignedResult > (u8)C_I8_MAX)
-//      return false;
-//    
-//    (*aaSrc)++;
-//  }
-
   if ( ! StrLib::bExtractI8(aaSrc,&aInt->m_iInt,true/*bWithSign*/) )
     return false;
   
- // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
- // ignore any trailing digits (after '.')
-
+  // ignore any trailing digits (after optional '.')
   if ('.' == **aaSrc) {
     
-    // skip the .
+    // skip the '.' and any digits
     (*aaSrc)++;
-    
-//    while (**aaSrc
-//           && C_FS != **aaSrc
-//           && C_NL != **aaSrc
-//           && C_CR != **aaSrc) {
-//      
-//      if (!StrLib::bIsDigit(**aaSrc))
-//        return false;
-//      
-//      (*aaSrc)++;
-//    }
-    
     StrLib::vSkipDigits(aaSrc);
   }
-
-//! I dont think this is necessary. this is catered for by the
-//! should see a FS, NL or CR code block below
-//  // if any non-digit return false
-//  while (**aaSrc
-//         && C_FS != **aaSrc
-//         && C_NL != **aaSrc
-//         && C_CR != **aaSrc) {
-//    
-//    if (' ' == **aaSrc) {
-//      (*aaSrc)++;
-//      break;
-//    }
-//    
-//    if (!StrLib::bIsDigit(**aaSrc))
-//      return false;
-//    (*aaSrc)++;
-//  }
-//!
-  
-//  // compute final result
-//  uUnsignedResult = bNegative ? - uUnsignedResult : uUnsignedResult;
-//  
-//  // have we gone beyond the min ?
-//  if (bNegative && (uUnsignedResult < (u8)C_I8_MIN))
-//    return false;
-//  
-//  aInt->m_iInt = uUnsignedResult;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
