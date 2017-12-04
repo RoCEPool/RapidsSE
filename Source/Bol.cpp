@@ -230,8 +230,9 @@ void Bol::vCopy(void* aDst, void* aSrc)
  txyz,zero,100,0,0.000,1000.000,1900-01-01 00:00:00,true
  12ab,zero,100,0,0.000,1000.000,1900-01-01 00:00:00,true
  */
+
 /*----------------------------------------------------------------------------*/
-/* extract a boolean from substr                                              */
+/* extract a boolean field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
 bool Bol::bExtract(char** aaSrc, Bol* aBol, Column* pColumn, Formatters* pFormatters)
 {
@@ -248,33 +249,13 @@ bool Bol::bExtract(char** aaSrc, Bol* aBol, Column* pColumn, Formatters* pFormat
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // null processing
   
-  if (StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) == 0) {
-    
-    *aaSrc = (*aaSrc) + 4;
-    
-    // skip trailing whitespace
-    while (' ' == **aaSrc)
-      (*aaSrc)++;
-    
-    if (**aaSrc
-        && C_FS != **aaSrc
-        && C_NL != **aaSrc
-        && C_CR != **aaSrc)
+  bool bValidNull;
+  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
+    if ( ! bValidNull )
       return false;
-    
-    if ( !pColumn->bIsNullable() )
-      return false;
-    
     aBol->vSetNull();
     return true;
   }
-//  bool bValidNull;
-//  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
-//    if ( ! bValidNull )
-//      return false;
-//    aBol->vSetNull();
-//    return true;
-//  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // boolean field processing
@@ -390,10 +371,8 @@ bool Bol::bExtract(char** aaSrc, Bol* aBol, Column* pColumn, Formatters* pFormat
   // skip trailing spaces
   StrLib::vSkipSpaces(aaSrc);
   
-  if (**aaSrc
-      && C_FS != **aaSrc
-      && C_NL != **aaSrc
-      && C_CR != **aaSrc)
+  // should see a FS, NL or CR
+  if ( ! DtmLib::bValidFieldEnd(aaSrc,pFormatters) )
     return false;
       
   return true;
