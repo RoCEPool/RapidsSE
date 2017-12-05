@@ -320,7 +320,9 @@ tp: partitionAppendBuffer
   //"sending got..." .
 
   <<
+  23
   pLoaderSEitf  ( << pLoaderSEitf )
+  grid.thisNode@
   "ackSEitf$"   ( << pLoaderSEitf "ackSEitf$" )
 
   tp: theIndirectCall
@@ -342,14 +344,14 @@ tp: partitionAppendBuffer
 /*----------------------------------------------------------------------------*/
 /* ackSEitf$                                                                  */
 /*----------------------------------------------------------------------------*/
-: ackSEitf$ ( pSEitf -- true )
+: ackSEitf$ ( iNo pSEitf iNode -- true )
 
-  locals| pSEitf |
+  locals| iNode pSEitf iNo |
 
   //"ackSEitf$ got..." .
 
   //pSEitf .
-  pSEitf >str "ackSEitf$: %v" str.format .
+  iNo iNode pSEitf >str "ackSEitf$: %v %v %v" str.format .
 
   pSEitf SEitf.acksRemainingDec
 

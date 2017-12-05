@@ -164,7 +164,7 @@ tp: insertBufferEntries$
 
   //"partitionInsertBufferEntries" .
   //pEntryBuffer .
-  pSEitf >str "partitionInsertBufferEntries: %v" str.format .
+  grid.thisNode@ iNode pSEitf >str "partitionInsertBufferEntries: %v %v this:%v" str.format .
 
   pEntryBuffer entryBuffer.isLast@ to bIsLast
 
@@ -178,7 +178,9 @@ tp: insertBufferEntries$
   //iPartitionNo grid::toSlot .
 
   <<
+  13
   pSEitf        ( << pSEitf )
+  grid.thisNode@
   "ackSEitf$"   ( << pSEitf "ackSEitf$" )
 
   tp: theIndirectCall
