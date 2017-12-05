@@ -205,73 +205,76 @@ bool Flt::bExtract(char** aaSrc, Flt* aFlt, Column* pColumn, Formatters* pFormat
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // float field processing
   
-  d8 dUnsignedResult = 0.0;
-  char xBuffer[256];
-  char* aChar = xBuffer;
-  
-  // test for negative or positive sign
-  bool bNegative = false;
-  if (**aaSrc && '-' == **aaSrc ) {
-    bNegative = true;
-    (*aaSrc)++;
-  }
-  else
-  if (**aaSrc && '+' == **aaSrc ) {
-    (*aaSrc)++;
-  }
-  
-  // collect leading portion (till '.')
-  while (**aaSrc
-         && C_FS != **aaSrc
-         && C_NL != **aaSrc
-         && C_CR != **aaSrc
-         && StrLib::bIsDigit(**aaSrc)) {
-    *aChar++ = *(*aaSrc)++;
-  }
-  
-  // collect trailing portion (after '.')
-  if ('.' == **aaSrc) {
-    *aChar++ = *(*aaSrc)++;
-    while (**aaSrc
-           && C_FS != **aaSrc
-           && C_NL != **aaSrc
-           && C_CR != **aaSrc
-           && StrLib::bIsDigit(**aaSrc)) {
-      *aChar++ = *(*aaSrc)++;
-    }
-  }
-  
-  // test for exponent  
-  if (**aaSrc && ('e' == **aaSrc || 'E' == **aaSrc) ) {
-    *aChar++ = *(*aaSrc)++;
-    
-    // test for -
-    if (**aaSrc && '-' == **aaSrc ) {
-      *aChar++ = *(*aaSrc)++;
-    }
-    
-    // test for +
-    if (**aaSrc && '+' == **aaSrc ) {
-      *aChar++ = *(*aaSrc)++;
-    }
-    
-    // collect exponent digits
-    while (**aaSrc
-           && C_FS != **aaSrc
-           && C_NL != **aaSrc
-           && C_CR != **aaSrc
-           && StrLib::bIsDigit(**aaSrc)) {
-      *aChar++ = *(*aaSrc)++;
-    }
-  }
-  
-  // terminate
-  *aChar++ = '\0';
-  
-  // compute final result
-  dUnsignedResult = atof(xBuffer);
-  aFlt->m_dFlt = bNegative ? - dUnsignedResult : dUnsignedResult;
-  
+//  d8 dUnsignedResult = 0.0;
+//  char xBuffer[256];
+//  char* aChar = xBuffer;
+//  
+//  // test for negative or positive sign
+//  bool bNegative = false;
+//  if (**aaSrc && '-' == **aaSrc ) {
+//    bNegative = true;
+//    (*aaSrc)++;
+//  }
+//  else
+//  if (**aaSrc && '+' == **aaSrc ) {
+//    (*aaSrc)++;
+//  }
+//  
+//  // collect leading portion (till '.')
+//  while (**aaSrc
+//         && C_FS != **aaSrc
+//         && C_NL != **aaSrc
+//         && C_CR != **aaSrc
+//         && StrLib::bIsDigit(**aaSrc)) {
+//    *aChar++ = *(*aaSrc)++;
+//  }
+//  
+//  // collect trailing portion (after '.')
+//  if ('.' == **aaSrc) {
+//    *aChar++ = *(*aaSrc)++;
+//    while (**aaSrc
+//           && C_FS != **aaSrc
+//           && C_NL != **aaSrc
+//           && C_CR != **aaSrc
+//           && StrLib::bIsDigit(**aaSrc)) {
+//      *aChar++ = *(*aaSrc)++;
+//    }
+//  }
+//  
+//  // test for exponent  
+//  if (**aaSrc && ('e' == **aaSrc || 'E' == **aaSrc) ) {
+//    *aChar++ = *(*aaSrc)++;
+//    
+//    // test for -
+//    if (**aaSrc && '-' == **aaSrc ) {
+//      *aChar++ = *(*aaSrc)++;
+//    }
+//    
+//    // test for +
+//    if (**aaSrc && '+' == **aaSrc ) {
+//      *aChar++ = *(*aaSrc)++;
+//    }
+//    
+//    // collect exponent digits
+//    while (**aaSrc
+//           && C_FS != **aaSrc
+//           && C_NL != **aaSrc
+//           && C_CR != **aaSrc
+//           && StrLib::bIsDigit(**aaSrc)) {
+//      *aChar++ = *(*aaSrc)++;
+//    }
+//  }
+//  
+//  // terminate
+//  *aChar++ = '\0';
+//  
+//  // compute final result
+//  dUnsignedResult = atof(xBuffer);
+//  aFlt->m_dFlt = bNegative ? - dUnsignedResult : dUnsignedResult;
+
+  if ( ! StrLib::bExtractFloat(aaSrc,aFlt->m_dFlt) )
+    return false;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
   
