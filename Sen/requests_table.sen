@@ -181,7 +181,7 @@ tp: insertBufferEntries$
 
   <<
   13
-  pSEitf        ( << pSEitf )
+  pSEitf >str       ( << pSEitf )
   grid.thisNode@
   "ackSEitf$"   ( << pSEitf "ackSEitf$" )
 

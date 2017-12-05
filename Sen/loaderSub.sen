@@ -321,7 +321,7 @@ tp: partitionAppendBuffer
 
   <<
   23
-  pLoaderSEitf  ( << pLoaderSEitf )
+  pLoaderSEitf  >str ( << pLoaderSEitf )
   grid.thisNode@
   "ackSEitf$"   ( << pLoaderSEitf "ackSEitf$" )
 
@@ -351,9 +351,9 @@ tp: partitionAppendBuffer
   //"ackSEitf$ got..." .
 
   //pSEitf .
-  iNo iNode pSEitf >str "ackSEitf$: %v %v %v" str.format .
+  iNo iNode pSEitf "ackSEitf$: %v %v %v" str.format .
 
-  pSEitf SEitf.acksRemainingDec
+  pSEitf >int >ptr SEitf.acksRemainingDec
 
   true <SUCCESS_RESULT>
 ;
