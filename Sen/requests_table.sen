@@ -121,8 +121,6 @@ tp: insertBufferEntries$
 
   //1 task::this task.thread thread.name@ str.left "p" str.equal assert
 
-  pSEitf >str "insertBufferEntries$: %v" str.format .
-
   args.tracepoint if
     sTableNm "INSERTING ENTRYBUFFER ENTRIES" swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
   then
@@ -164,7 +162,6 @@ tp: insertBufferEntries$
 
   //"partitionInsertBufferEntries" .
   //pEntryBuffer .
-  grid.thisNode@ iNode pSEitf >str "partitionInsertBufferEntries: %v %v this:%v" str.format .
 
   pEntryBuffer entryBuffer.isLast@ to bIsLast
 
@@ -176,8 +173,6 @@ tp: insertBufferEntries$
 
   //"sending got for last buffer..." .
   //iPartitionNo grid::toSlot .
-
-  grid.thisNode@ iNode pSEitf >str "partitionInsertBufferEntries2: %v %v this:%v" str.format .
 
   <<
   13
@@ -218,8 +213,6 @@ tp: insertTableEntries_req
   //"insertTableEntries_req" .
   //iPartitionNo .
   //pEntryBuffer .
-
-  task::this task.seitf@ >str "insertTableEntries_req: %v" str.format .
 
   <<
   task::this task.seitf@ 
