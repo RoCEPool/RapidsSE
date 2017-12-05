@@ -236,37 +236,46 @@ bool Dte::bExtract(char** aaSrc, Dte* aDte, Column* pColumn, Formatters* pFormat
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // date field processing
   
-  u8 uSubField;
+//  u8 uSubField;
+//  
+//  aDte->vInitZero();
+//  
+//  // extract year
+//  if ( ! StrLib::bExtractU8(aaSrc,&uSubField) )
+//    return false;
+//  aDte->x.m_uYear = uSubField;
+//  
+//  // skip - separator
+//  if ('-' != *(*aaSrc)++)
+//    return false;
+//  
+//  // extract month
+//  if ( ! StrLib::bExtractU8(aaSrc,&uSubField) )
+//    return false;
+//  aDte->x.m_uMonth = uSubField;
+//  
+//  // skip - separator
+//  if ('-' != *(*aaSrc)++)
+//    return false;
+//  
+//  // extract day
+//  if ( ! StrLib::bExtractU8(aaSrc,&uSubField) )
+//    return false;
+//  aDte->x.m_uDay = uSubField;
+//  
+//  // skip optional Z (UTC zone designator)
+//  if ('Z' == **aaSrc)
+//    (*aaSrc)++;
+
+  i8 iYear, iMonth, iDay;
   
-  aDte->vInitZero();
-  
-  // extract year
-  if ( ! StrLib::bExtractU8(aaSrc,&uSubField) )
+  if ( ! StrLib::bExtractDate(aaSrc, iYear, iMonth, iDay) )
     return false;
-  aDte->x.m_uYear = uSubField;
   
-  // skip - separator
-  if ('-' != *(*aaSrc)++)
-    return false;
-  
-  // extract month
-  if ( ! StrLib::bExtractU8(aaSrc,&uSubField) )
-    return false;
-  aDte->x.m_uMonth = uSubField;
-  
-  // skip - separator
-  if ('-' != *(*aaSrc)++)
-    return false;
-  
-  // extract day
-  if ( ! StrLib::bExtractU8(aaSrc,&uSubField) )
-    return false;
-  aDte->x.m_uDay = uSubField;
-  
-  // skip optional Z (UTC zone designator)
-  if ('Z' == **aaSrc)
-    (*aaSrc)++;
-  
+  aDte->x.m_uYear   = iYear;
+  aDte->x.m_uMonth  = iMonth;
+  aDte->x.m_uDay    = iDay;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
   
