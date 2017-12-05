@@ -251,6 +251,7 @@ void Task::vSocketSend(MP_Task mpTask)
   EntryBuffer* pEntryBuffer = xValSet.pGetRowBuffer();
   
   if (pEntryBuffer) {
+    //vTrace("Sending EntryBuffer: %p\n"_Stz,pEntryBuffer);
     
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // send entryBuffer size
@@ -359,6 +360,7 @@ void Task::vSocketRecv(MP_Task mpTask)
     // receive entryBuffer
     //******************************************************************
     EntryBuffer* pEntryBuffer = (EntryBuffer*)new EntryBuffer(iBytes);
+    //vTrace("Recvd EntryBuffer: %p\n"_Stz,pEntryBuffer);
     bResult = pSocket->bRecvBytes(iBytes, reinterpret_cast<void*>(pEntryBuffer->aDataArea()), xSysCall);
     
     if ( ! bResult )

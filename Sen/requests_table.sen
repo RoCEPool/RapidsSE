@@ -175,7 +175,9 @@ tp: insertBufferEntries$
   //iPartitionNo grid::toSlot .
 
   <<
-  pSEitf        ( << pSEitf )
+  13
+  pSEitf >str       ( << pSEitf )
+  grid.thisNode@
   "ackSEitf$"   ( << pSEitf "ackSEitf$" )
 
   tp: theIndirectCall

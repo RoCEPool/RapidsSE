@@ -351,6 +351,7 @@ bool Socket::bRecvBytes(i8 nBytes, void* pWS, SysCall& SysCall)
     nSoFar += nRecv;
     nMore -= nRecv;
     
+    //vTrace("Bytes received: (%lld) %lld\n"_Stz, nBytes, nSoFar);
   }
   
   SysCall.vSuccess();
