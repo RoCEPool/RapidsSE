@@ -524,6 +524,82 @@ bool StrLib::bExtractArg(char** ps, char* pArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bExtractBoolean: extract a boolean from substr                             */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bExtractBoolean(char** aaSrc, i8& iBoolean)
+{
+  // assume the boolean is false
+  iBoolean = false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // numeric processing
+
+  // test for number
+  if (StrLib::bIsDigit(**aaSrc)) {
+    
+    // - numeric processing
+    
+    // collect all numeric digits
+    i8 iResult = 0;
+    while (StrLib::bIsDigit(**aaSrc)) {
+      iResult = iResult * 10 + StrLib::iDigitToI8(**aaSrc);
+      (*aaSrc)++;
+    }
+
+    // a non-zero number is true
+    if (iResult > 0)
+      iBoolean = true;
+    
+    // saw a valid boolean
+    return true;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // true or false processing
+  
+  // test for possible true
+  if ('t' ==  **aaSrc || 'T' == **aaSrc) {
+
+    // - true processing
+    
+    iBoolean = true;
+    
+    // next 3 characters could be rue to make true
+    (*aaSrc)++;
+    if ('r' !=  **aaSrc && 'R' != **aaSrc) return true;  // saw only t
+    (*aaSrc)++;
+    if ('u' !=  **aaSrc && 'U' != **aaSrc) return false; // saw only tr
+    (*aaSrc)++;
+    if ('e' !=  **aaSrc && 'E' != **aaSrc) return false; // saw only tru
+    
+    return true; // saw true
+  }
+  
+  // test for possible false
+  if ('f' ==  **aaSrc || 'F' == **aaSrc) {
+    
+    // - false processing
+    
+    // next 3 characters could be rue to make true
+    (*aaSrc)++;
+    if ('a' !=  **aaSrc && 'A' != **aaSrc) return true;  // saw only f
+    (*aaSrc)++;
+    if ('l' !=  **aaSrc && 'L' != **aaSrc) return false; // saw only fa
+    (*aaSrc)++;
+    if ('s' !=  **aaSrc && 'S' != **aaSrc) return false; // saw only fal
+    (*aaSrc)++;
+    if ('e' !=  **aaSrc && 'E' != **aaSrc) return false; // saw only fals
+    
+    return true; // saw false
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // saw nothing that could be recognised as a boolean
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bExtractDate: extract a date from substr                                   */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bExtractDate(char** aaSrc, i8& iYear, i8& iMonth, i8& iDay)
