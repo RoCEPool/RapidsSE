@@ -660,6 +660,65 @@ bool StrLib::bExtractDate(char** aaSrc, i8& iYear, i8& iMonth, i8& iDay)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bExtractFloat: extract a float from substr                                 */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bExtractFloat(char** aaSrc, d8& dFloat)
+{
+  d8 dUnsignedResult = 0.0;
+  char xBuffer[256];
+  char* aChar = xBuffer;
+  
+  // test for negative or positive sign
+  bool bNegative = false;
+  if (**aaSrc && '-' == **aaSrc ) {
+    bNegative = true;
+    (*aaSrc)++;
+  }
+  else
+    if (**aaSrc && '+' == **aaSrc ) {
+      (*aaSrc)++;
+    }
+  
+  // collect leading portion (till '.')
+  while (StrLib::bIsDigit(**aaSrc))
+    *aChar++ = *(*aaSrc)++;
+  
+  // collect trailing portion (after '.')
+  if ('.' == **aaSrc) {
+    *aChar++ = *(*aaSrc)++;
+    while (StrLib::bIsDigit(**aaSrc))
+      *aChar++ = *(*aaSrc)++;
+  }
+  
+  // test for exponent
+  if (**aaSrc && ('e' == **aaSrc || 'E' == **aaSrc) ) {
+    
+    *aChar++ = *(*aaSrc)++;
+    
+    // test for -
+    if (**aaSrc && '-' == **aaSrc )
+      *aChar++ = *(*aaSrc)++;
+    else
+    // test for +
+    if (**aaSrc && '+' == **aaSrc )
+      *aChar++ = *(*aaSrc)++;
+    
+    // collect exponent digits
+    while (StrLib::bIsDigit(**aaSrc))
+      *aChar++ = *(*aaSrc)++;
+  }
+  
+  // terminate
+  *aChar++ = '\0';
+  
+  // compute final result
+  dUnsignedResult = atof(xBuffer);
+  dFloat = bNegative ? - dUnsignedResult : dUnsignedResult;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bExtractI8: extract an integer from substr                                 */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bExtractI8(char** aaSrc, i8* aI8, bool bWithSign)
