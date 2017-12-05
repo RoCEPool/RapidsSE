@@ -260,110 +260,113 @@ bool Bol::bExtract(char** aaSrc, Bol* aBol, Column* pColumn, Formatters* pFormat
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // boolean field processing
   
-  aBol->m_bBol = false;
+//  aBol->m_bBol = false;
+//  
+//  if (StrLib::bIsDigit(**aaSrc)) {
+//    // - numeric processing
+//    
+//    i8 iResult = 0;
+//    // collect all numeric digits
+//    while (**aaSrc
+//           && C_FS != **aaSrc
+//           && C_NL != **aaSrc
+//           && C_CR != **aaSrc
+//           && StrLib::bIsDigit(**aaSrc)) {
+//      iResult = iResult * 10 + StrLib::iDigitToI8(**aaSrc);
+//      (*aaSrc)++;
+//    }
+//    if (**aaSrc
+//        && C_FS != **aaSrc
+//        && C_NL != **aaSrc
+//        && C_CR != **aaSrc
+//        && ' '  != **aaSrc)
+//      return false;
+//    
+//    if (iResult > 0)
+//      aBol->m_bBol = true;
+//  }
+//  else {
+//    // - true or false processing
+//    
+//    StrLib::vToLower(*aaSrc);
+//    
+//    // test for true or false
+//    if ('t' ==  **aaSrc) {
+//      // - true processing
+//      
+//      (*aaSrc)++;
+//      
+//      if (**aaSrc &&
+//          ( C_FS == **aaSrc
+//          || C_NL == **aaSrc
+//          || C_CR == **aaSrc
+//          || ' '  == **aaSrc) ) {
+//        aBol->m_bBol = true;
+//      }
+//      else {
+//        // next 3 characters should be rue to make true
+//        
+//        StrLib::vToLower(*aaSrc);
+//        if ('r' != **aaSrc)
+//          return false;
+//        (*aaSrc)++;
+//        
+//        StrLib::vToLower(*aaSrc);
+//        if ('u' != **aaSrc)
+//          return false;
+//        (*aaSrc)++;
+//        
+//        StrLib::vToLower(*aaSrc);
+//        if ('e' != **aaSrc)
+//          return false;
+//        (*aaSrc)++;
+//        
+//        aBol->m_bBol = true;
+//      }
+// 
+//    }
+//    else if ('f' == *(*aaSrc)) {
+//      // - false processing
+//      
+//      (*aaSrc)++;
+//      
+//      if (**aaSrc &&
+//          ( C_FS == **aaSrc
+//           || C_NL == **aaSrc
+//           || C_CR == **aaSrc
+//           || ' '  == **aaSrc) ) {
+//        aBol->m_bBol = false;
+//      }
+//      else {
+//        // next 4 characters should be alse to make false
+//        
+//        StrLib::vToLower(*aaSrc);
+//        if ('a' != **aaSrc)
+//          return false;
+//        (*aaSrc)++;
+//        
+//        StrLib::vToLower(*aaSrc);
+//        if ('l' != **aaSrc)
+//          return false;
+//        (*aaSrc)++;
+//        
+//        StrLib::vToLower(*aaSrc);
+//        if ('s' != **aaSrc)
+//          return false;
+//        (*aaSrc)++;
+//        
+//        StrLib::vToLower(*aaSrc);
+//        if ('e' != **aaSrc)
+//          return false;
+//        (*aaSrc)++;
+//        
+//        aBol->m_bBol = false;
+//      }
+//    }
+//  }
   
-  if (StrLib::bIsDigit(**aaSrc)) {
-    // - numeric processing
-    
-    i8 iResult = 0;
-    // collect all numeric digits
-    while (**aaSrc
-           && C_FS != **aaSrc
-           && C_NL != **aaSrc
-           && C_CR != **aaSrc
-           && StrLib::bIsDigit(**aaSrc)) {
-      iResult = iResult * 10 + StrLib::iDigitToI8(**aaSrc);
-      (*aaSrc)++;
-    }
-    if (**aaSrc
-        && C_FS != **aaSrc
-        && C_NL != **aaSrc
-        && C_CR != **aaSrc
-        && ' '  != **aaSrc)
-      return false;
-    
-    if (iResult > 0)
-      aBol->m_bBol = true;
-  }
-  else {
-    // - true or false processing
-    
-    StrLib::vToLower(*aaSrc);
-    
-    // test for true or false
-    if ('t' ==  **aaSrc) {
-      // - true processing
-      
-      (*aaSrc)++;
-      
-      if (**aaSrc &&
-          ( C_FS == **aaSrc
-          || C_NL == **aaSrc
-          || C_CR == **aaSrc
-          || ' '  == **aaSrc) ) {
-        aBol->m_bBol = true;
-      }
-      else {
-        // next 3 characters should be rue to make true
-        
-        StrLib::vToLower(*aaSrc);
-        if ('r' != **aaSrc)
-          return false;
-        (*aaSrc)++;
-        
-        StrLib::vToLower(*aaSrc);
-        if ('u' != **aaSrc)
-          return false;
-        (*aaSrc)++;
-        
-        StrLib::vToLower(*aaSrc);
-        if ('e' != **aaSrc)
-          return false;
-        (*aaSrc)++;
-        
-        aBol->m_bBol = true;
-      }
- 
-    }
-    else if ('f' == *(*aaSrc)) {
-      // - false processing
-      
-      (*aaSrc)++;
-      
-      if (**aaSrc &&
-          ( C_FS == **aaSrc
-           || C_NL == **aaSrc
-           || C_CR == **aaSrc
-           || ' '  == **aaSrc) ) {
-        aBol->m_bBol = false;
-      }
-      else {
-        // next 4 characters should be alse to make false
-        
-        StrLib::vToLower(*aaSrc);
-        if ('a' != **aaSrc)
-          return false;
-        (*aaSrc)++;
-        
-        StrLib::vToLower(*aaSrc);
-        if ('l' != **aaSrc)
-          return false;
-        (*aaSrc)++;
-        
-        StrLib::vToLower(*aaSrc);
-        if ('s' != **aaSrc)
-          return false;
-        (*aaSrc)++;
-        
-        StrLib::vToLower(*aaSrc);
-        if ('e' != **aaSrc)
-          return false;
-        (*aaSrc)++;
-        
-        aBol->m_bBol = false;
-      }
-    }
-  }
+  if ( ! StrLib::bExtractBoolean(aaSrc,aBol->m_bBol) )
+    return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing

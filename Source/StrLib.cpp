@@ -571,6 +571,7 @@ bool StrLib::bExtractBoolean(char** aaSrc, i8& iBoolean)
     if ('u' !=  **aaSrc && 'U' != **aaSrc) return false; // saw only tr
     (*aaSrc)++;
     if ('e' !=  **aaSrc && 'E' != **aaSrc) return false; // saw only tru
+    (*aaSrc)++;
     
     return true; // saw true
   }
@@ -580,7 +581,7 @@ bool StrLib::bExtractBoolean(char** aaSrc, i8& iBoolean)
     
     // - false processing
     
-    // next 3 characters could be rue to make true
+    // next 4 characters could be alse to make alse
     (*aaSrc)++;
     if ('a' !=  **aaSrc && 'A' != **aaSrc) return true;  // saw only f
     (*aaSrc)++;
@@ -589,6 +590,7 @@ bool StrLib::bExtractBoolean(char** aaSrc, i8& iBoolean)
     if ('s' !=  **aaSrc && 'S' != **aaSrc) return false; // saw only fal
     (*aaSrc)++;
     if ('e' !=  **aaSrc && 'E' != **aaSrc) return false; // saw only fals
+    (*aaSrc)++;
     
     return true; // saw false
   }
