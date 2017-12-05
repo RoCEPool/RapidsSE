@@ -352,6 +352,8 @@ bool Socket::bRecvBytes(i8 nBytes, void* pWS, SysCall& SysCall)
     nMore -= nRecv;
     
     vTrace("Bytes received: (%lld) %lld\n"_Stz, nBytes, nSoFar);
+    if ( (nBytes != 219) && (nBytes != 449))
+      MemLib::vHexDump(pWS, nBytes);
   }
   
   SysCall.vSuccess();
