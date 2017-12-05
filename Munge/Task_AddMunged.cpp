@@ -13990,6 +13990,8 @@ void Task::vAddMunged(MP_Task mpTask)
     "  //\\\"sending got for last buffer...\\\" .\n"
     "  //iPartitionNo grid::toSlot .\n"
     "\n"
+    "  grid.thisNode@ iNode pSEitf >str \\\"partitionInsertBufferEntries2: %v %v this:%v\\\" str.format .\n"
+    "\n"
     "  <<\n"
     "  13\n"
     "  pSEitf        ( << pSEitf )\n"

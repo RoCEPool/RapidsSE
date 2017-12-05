@@ -177,6 +177,8 @@ tp: insertBufferEntries$
   //"sending got for last buffer..." .
   //iPartitionNo grid::toSlot .
 
+  grid.thisNode@ iNode pSEitf >str "partitionInsertBufferEntries2: %v %v this:%v" str.format .
+
   <<
   13
   pSEitf        ( << pSEitf )
