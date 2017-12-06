@@ -9,6 +9,10 @@ namespace Base
   static const int C_NO_CASE = 0;
   static const int C_CASE    = 1;
   
+  static const char C_FS = ',';
+  static const char C_NL = '\n';
+  static const char C_CR = '\r';
+  
   class StrLib
   {
   private:
@@ -65,6 +69,7 @@ namespace Base
                                    i8& iHour, i8& iMinute, i8& iSecond, i8& iMilli);
     static bool  bExtractU8(char** ps, u8* u);
     static bool  bExtractU8(char** ps, u8* u, i8 iDigits);
+    static bool  bExtractVarchar(char** ps, char* aVarchar, i8 iMaxLength);
     static bool  bExtractWord(char** ps, char* pWord);
     static bool  bExtractWordString(char** ps, char* pWord);
     

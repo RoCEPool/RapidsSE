@@ -324,12 +324,10 @@ void Vch::vCopy(void* pDst, void* pSrc)
 
 bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn, Formatters* pFormatters)
 {
-  char* aChar = (char*)aVch;
-  
   // is there data ?
   if ( ! DtmLib::bIsThereData(**aaSrc,pFormatters) ) {
     // empty string
-    *aChar++ = '\0';
+    *(char*)aVch = '\0';
     return true;
   }
   
@@ -349,50 +347,56 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn, Formatters* pFormat
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect the csv
   
-  i8 iLength = 0;
+//  i8 iLength = 0;
+//  i8 iColumnLength = pColumn->iColumnLength();
+//  bool bInQuotes = false;
+//  
+//  char* aChar = (char*)aVch;
+//  
+//  if ('"' == **aaSrc ||
+//      '\'' == **aaSrc) {
+//    bInQuotes = true;
+//    (*aaSrc)++;
+//  }
+//  
+//  if (bInQuotes) {
+//    while ('"' != **aaSrc
+//           && '\'' != **aaSrc
+//           && C_NL != **aaSrc
+//           && C_CR != **aaSrc) {
+//      
+//      if (iLength++ < iColumnLength)
+//        *aChar++ = *(*aaSrc)++;
+//      else
+//        (*aaSrc)++;
+//    }
+//    
+//    // did we see an end quote ?
+//    if ('"' != **aaSrc &&
+//        '\'' != **aaSrc)
+//      return false;
+//    
+//    (*aaSrc)++;
+//  }
+//  else {
+//    while (**aaSrc
+//           && C_FS != **aaSrc
+//           && C_NL != **aaSrc
+//           && C_CR != **aaSrc) {
+//      
+//      if (iLength++ < iColumnLength)
+//        *aChar++ = *(*aaSrc)++;
+//      else
+//        (*aaSrc)++;
+//    }
+//  }
+//  
+//  *aChar++ = '\0';
+
   i8 iColumnLength = pColumn->iColumnLength();
-  bool bInQuotes = false;
-  
-  if ('"' == **aaSrc ||
-      '\'' == **aaSrc) {
-    bInQuotes = true;
-    (*aaSrc)++;
-  }
-  
-  if (bInQuotes) {
-    while ('"' != **aaSrc
-           && '\'' != **aaSrc
-           && C_NL != **aaSrc
-           && C_CR != **aaSrc) {
-      
-      if (iLength++ < iColumnLength)
-        *aChar++ = *(*aaSrc)++;
-      else
-        (*aaSrc)++;
-    }
-    
-    // did we see an end quote ?
-    if ('"' != **aaSrc &&
-        '\'' != **aaSrc)
-      return false;
-    
-    (*aaSrc)++;
-  }
-  else {
-    while (**aaSrc
-           && C_FS != **aaSrc
-           && C_NL != **aaSrc
-           && C_CR != **aaSrc) {
-      
-      if (iLength++ < iColumnLength)
-        *aChar++ = *(*aaSrc)++;
-      else
-        (*aaSrc)++;
-    }
-  }
-  
-  *aChar++ = '\0';
-  
+  if ( ! StrLib::bExtractVarchar(aaSrc,(char*)aVch,iColumnLength) )
+    return false;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
   

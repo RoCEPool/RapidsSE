@@ -1238,6 +1238,59 @@ bool StrLib::bExtractU8(char** ps, u8* aU8, i8 iDigits)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bExtractVarchar: extract a varchar from substr                             */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength)
+{
+  i8 iLength = 0;
+  bool bInQuotes = false;
+  
+  char* aChar = (char*)aVarChar;
+  
+  if ('"' == **aaSrc ||
+      '\'' == **aaSrc) {
+    bInQuotes = true;
+    (*aaSrc)++;
+  }
+  
+  if (bInQuotes) {
+    while ('"' != **aaSrc
+           && '\'' != **aaSrc
+           && C_NL != **aaSrc
+           && C_CR != **aaSrc) {
+      
+      if (iLength++ < iMaxLength)
+        *aChar++ = *(*aaSrc)++;
+      else
+        (*aaSrc)++;
+    }
+    
+    // did we see an end quote ?
+    if ('"' != **aaSrc &&
+        '\'' != **aaSrc)
+      return false;
+    
+    (*aaSrc)++;
+  }
+  else {
+    while (**aaSrc
+           && C_FS != **aaSrc
+           && C_NL != **aaSrc
+           && C_CR != **aaSrc) {
+      
+      if (iLength++ < iMaxLength)
+        *aChar++ = *(*aaSrc)++;
+      else
+        (*aaSrc)++;
+    }
+  }
+  
+  *aChar++ = '\0';
+    
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bExtractWord: extract a word from substr                                   */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bExtractWord(char** ps, char* pWord)
