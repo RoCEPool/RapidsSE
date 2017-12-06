@@ -233,26 +233,34 @@ bool Ivl::bExtract(char** aaSrc, Ivl* aIvl, Column* pColumn, Formatters* pFormat
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // interval field processing
   
-  u8 uSubField;
+//  u8 uSubField;
+//  
+//  aIvl->vInitZero();
+//  
+//  // extract second
+//  if ( ! StrLib::bExtractU8(aaSrc,&uSubField) )
+//    return false;
+//  
+//  aIvl->x.m_uSecond = uSubField;
+//  
+//  //  // skip . separator
+//  //  if ('.' != *(*aaSrc)++)
+//  //    return true;
+//  
+//  // extract fraction (assuming milliseconds)
+//  if ('.' == **aaSrc) {
+//    (*aaSrc)++;
+//    if ( StrLib::bExtractU8(aaSrc,&uSubField) )
+//      aIvl->x.m_uMilli = uSubField;
+//  }
   
-  aIvl->vInitZero();
+  i8 iSecond, iMilli;
   
-  // extract second
-  if ( ! StrLib::bExtractU8(aaSrc,&uSubField) )
+  if ( ! StrLib::bExtractInterval(aaSrc, iSecond, iMilli) )
     return false;
   
-  aIvl->x.m_uSecond = uSubField;
-  
-  //  // skip . separator
-  //  if ('.' != *(*aaSrc)++)
-  //    return true;
-  
-  // extract fraction (assuming milliseconds)
-  if ('.' == **aaSrc) {
-    (*aaSrc)++;
-    if ( StrLib::bExtractU8(aaSrc,&uSubField) )
-      aIvl->x.m_uMilli = uSubField;
-  }
+  aIvl->x.m_uSecond = iSecond;
+  aIvl->x.m_uMilli  = iMilli;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
