@@ -205,110 +205,114 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aBcd, DBobjects::Column* pColumn, Formatte
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // decimal field processing
   
-  u8 uUnsignedResult = 0;
-  
-  // test for negative or positive sign
-  bool bNegative = false;
-  if (**aaSrc && '-' == **aaSrc ) {
-    bNegative = true;
-    (*aaSrc)++;
-  }
-  else
-  if (**aaSrc && '+' == **aaSrc ) {
-    (*aaSrc)++;
-  }
-  
-  // collect leading digits (till '.')
-  i8 iPrecision = pColumn->iColumnLength() - pColumn->iColumnScale();
-  while (**aaSrc
-         && C_FS != **aaSrc
-         && C_NL != **aaSrc
-         && C_CR != **aaSrc
-         && StrLib::bIsDigit(**aaSrc)
-         && iPrecision--) {
-    
-    uUnsignedResult = uUnsignedResult * 10 + StrLib::iDigitToI8(**aaSrc);
-    (*aaSrc)++;
-  }
-  
-  // have we exceeded maximum precision digits?
-  if (iPrecision < 0)
-    return false;
-  
-  // collect trailing digits (after '.')
+//  u8 uUnsignedResult = 0;
+//  
+//  // test for negative or positive sign
+//  bool bNegative = false;
+//  if (**aaSrc && '-' == **aaSrc ) {
+//    bNegative = true;
+//    (*aaSrc)++;
+//  }
+//  else
+//  if (**aaSrc && '+' == **aaSrc ) {
+//    (*aaSrc)++;
+//  }
+//  
+//  // collect leading digits (till '.')
+//  i8 iPrecision = pColumn->iColumnLength() - pColumn->iColumnScale();
+//  while (**aaSrc
+//         && C_FS != **aaSrc
+//         && C_NL != **aaSrc
+//         && C_CR != **aaSrc
+//         && StrLib::bIsDigit(**aaSrc)
+//         && iPrecision--) {
+//    
+//    uUnsignedResult = uUnsignedResult * 10 + StrLib::iDigitToI8(**aaSrc);
+//    (*aaSrc)++;
+//  }
+//  
+//  // have we exceeded maximum precision digits?
+//  if (iPrecision < 0)
+//    return false;
+//  
+//  // collect trailing digits (after '.')
+////  if ('.' == **aaSrc) {
+////    (*aaSrc)++; // skip '.'
+////    i8 iPrecision = pColumn ? pColumn->iColumnPrecision() : 15;
+////    while (**aaSrc && C_FS != **aaSrc
+////           && StrLib::bIsDigit(**aaSrc) && iPrecision--) {
+////      iResult = iResult * 10 + StrLib::iDigitToI8(**aaSrc);
+////      (*aaSrc)++;
+////    }
+////  }
+//
+//  i8 iScale = pColumn->iColumnScale();
 //  if ('.' == **aaSrc) {
 //    (*aaSrc)++; // skip '.'
-//    i8 iPrecision = pColumn ? pColumn->iColumnPrecision() : 15;
-//    while (**aaSrc && C_FS != **aaSrc
-//           && StrLib::bIsDigit(**aaSrc) && iPrecision--) {
-//      iResult = iResult * 10 + StrLib::iDigitToI8(**aaSrc);
+//    
+//    while (**aaSrc
+//           && C_FS != **aaSrc
+//           && C_NL != **aaSrc
+//           && C_CR != **aaSrc
+//           && StrLib::bIsDigit(**aaSrc) && iScale) {
+//      uUnsignedResult = uUnsignedResult * 10 + StrLib::iDigitToI8(**aaSrc);
+//      iScale--;
 //      (*aaSrc)++;
 //    }
 //  }
-
-  i8 iScale = pColumn->iColumnScale();
-  if ('.' == **aaSrc) {
-    (*aaSrc)++; // skip '.'
-    
-    while (**aaSrc
-           && C_FS != **aaSrc
-           && C_NL != **aaSrc
-           && C_CR != **aaSrc
-           && StrLib::bIsDigit(**aaSrc) && iScale) {
-      uUnsignedResult = uUnsignedResult * 10 + StrLib::iDigitToI8(**aaSrc);
-      iScale--;
-      (*aaSrc)++;
-    }
-  }
+//  
+//  while (iScale--)
+//    uUnsignedResult = uUnsignedResult * 10 + 0;
+//  
+//  // have we exceeded the max ?
+//  if (uUnsignedResult > (u8)C_I8_MAX)
+//    return false;
+//  
+//  // round up if there any more digits after decimal
+//  if (**aaSrc
+//      && C_FS != **aaSrc
+//      && C_NL != **aaSrc
+//      && C_CR != **aaSrc
+//      && StrLib::bIsDigit(**aaSrc))
+//    if (StrLib::iDigitToI8(**aaSrc) >= 5)
+//      uUnsignedResult += 1;
+//  
+//  // skip trailing digits
+//  while (**aaSrc
+//         && C_FS != **aaSrc
+//         && C_NL != **aaSrc
+//         && C_CR != **aaSrc
+//         && StrLib::bIsDigit(**aaSrc))
+//    (*aaSrc)++;
+//  
+//  // if any non-digit return false
+//  while (**aaSrc
+//         && C_FS != **aaSrc
+//         && C_NL != **aaSrc
+//         && C_CR != **aaSrc) {
+//    
+//    if (' ' == **aaSrc) {
+//      (*aaSrc)++;
+//      break;
+//    }
+//    
+//    if (!StrLib::bIsDigit(**aaSrc))
+//    return false;
+//    (*aaSrc)++;
+//  }
+//  
+//  // compute final result
+//  uUnsignedResult = bNegative ? - uUnsignedResult : uUnsignedResult;
+//  
+//  // have we gone beyond the min ?
+//  if (uUnsignedResult != 0 && bNegative && (uUnsignedResult < (u8)C_I8_MIN))
+//    return false;
+//  
+//  aBcd->m_iBcd = uUnsignedResult;
   
-  while (iScale--)
-    uUnsignedResult = uUnsignedResult * 10 + 0;
-  
-  // have we exceeded the max ?
-  if (uUnsignedResult > (u8)C_I8_MAX)
+  if ( ! StrLib::bExtractDecimal(aaSrc,aBcd->m_iBcd,
+                                 pColumn->iColumnLength(),pColumn->iColumnScale()) )
     return false;
-  
-  // round up if there any more digits after decimal
-  if (**aaSrc
-      && C_FS != **aaSrc
-      && C_NL != **aaSrc
-      && C_CR != **aaSrc
-      && StrLib::bIsDigit(**aaSrc))
-    if (StrLib::iDigitToI8(**aaSrc) >= 5)
-      uUnsignedResult += 1;
-  
-  // skip trailing digits
-  while (**aaSrc
-         && C_FS != **aaSrc
-         && C_NL != **aaSrc
-         && C_CR != **aaSrc
-         && StrLib::bIsDigit(**aaSrc))
-    (*aaSrc)++;
-  
-  // if any non-digit return false
-  while (**aaSrc
-         && C_FS != **aaSrc
-         && C_NL != **aaSrc
-         && C_CR != **aaSrc) {
-    
-    if (' ' == **aaSrc) {
-      (*aaSrc)++;
-      break;
-    }
-    
-    if (!StrLib::bIsDigit(**aaSrc))
-    return false;
-    (*aaSrc)++;
-  }
-  
-  // compute final result
-  uUnsignedResult = bNegative ? - uUnsignedResult : uUnsignedResult;
-  
-  // have we gone beyond the min ?
-  if (uUnsignedResult != 0 && bNegative && (uUnsignedResult < (u8)C_I8_MIN))
-    return false;
-  
-  aBcd->m_iBcd = uUnsignedResult;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing

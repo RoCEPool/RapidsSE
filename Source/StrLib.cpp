@@ -660,6 +660,75 @@ bool StrLib::bExtractDate(char** aaSrc, i8& iYear, i8& iMonth, i8& iDay)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bExtractDecimal: extract a decimal from substr                             */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bExtractDecimal(char** aaSrc, i8& iDecimal, i8 iLength, i8 iScale)
+{
+  i8 iPrecision = iLength - iScale;
+  
+  u8 uUnsignedResult = 0;
+  
+  // test for negative or positive sign
+  bool bNegative = false;
+  if (**aaSrc && '-' == **aaSrc ) {
+    bNegative = true;
+    (*aaSrc)++;
+  }
+  else
+    if (**aaSrc && '+' == **aaSrc ) {
+      (*aaSrc)++;
+    }
+  
+  // collect leading digits (till '.')
+  while (StrLib::bIsDigit(**aaSrc)) {
+    uUnsignedResult = uUnsignedResult * 10 + StrLib::iDigitToI8(**aaSrc);
+    (*aaSrc)++;
+    iPrecision--;
+  }
+  
+  // have we exceeded maximum precision digits?
+  if (iPrecision < 0)
+    return false;
+  
+  if ('.' == **aaSrc) {
+    
+    (*aaSrc)++; // skip '.'
+    
+    while (StrLib::bIsDigit(**aaSrc) && iScale) {
+      uUnsignedResult = uUnsignedResult * 10 + StrLib::iDigitToI8(**aaSrc);
+      (*aaSrc)++;
+      iScale--;
+    }
+  }
+  
+  while (iScale--)
+    uUnsignedResult = uUnsignedResult * 10 + 0;
+  
+  // have we exceeded the max ?
+  if (uUnsignedResult > (u8)C_I8_MAX)
+    return false;
+  
+  // round up if there any more digits after decimal
+  if (StrLib::bIsDigit(**aaSrc)) {
+    if (StrLib::iDigitToI8(**aaSrc) >= 5)
+      uUnsignedResult += 1;
+    while (StrLib::bIsDigit(**aaSrc))
+      (*aaSrc)++;
+  }
+  
+  // compute final result
+  uUnsignedResult = bNegative ? - uUnsignedResult : uUnsignedResult;
+  
+  // have we gone beyond the min ?
+  if (uUnsignedResult != 0 && bNegative && (uUnsignedResult < (u8)C_I8_MIN))
+    return false;
+  
+  iDecimal = uUnsignedResult;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bExtractFloat: extract a float from substr                                 */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bExtractFloat(char** aaSrc, d8& dFloat)

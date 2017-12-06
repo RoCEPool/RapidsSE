@@ -51,6 +51,7 @@ namespace Base
     static bool  bExtractArg(char** ps, char* pPath);
     static bool  bExtractBoolean(char** ps, i8& iBoolean);
     static bool  bExtractDate(char** ps, i8& iYear, i8& iMonth, i8& iDay);
+    static bool  bExtractDecimal(char** ps, i8& iDecimal, i8 iLength, i8 iScale);
     static bool  bExtractFloat(char** ps, d8& dFloat);
     static bool  bExtractInteger(char** ps, i8* i, bool bWithSign=false);
     static bool  bExtractInterval(char** ps, i8& iSecond, i8& iMilli);
