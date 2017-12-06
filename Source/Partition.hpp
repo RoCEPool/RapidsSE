@@ -9,7 +9,7 @@ namespace DBobjects
   class EntWrk;
   
   // allow for maximum 8 indexes per table
-  static const i8 C_INDEXES_PER_TABLE = 9;
+  static const i8 C_INDEXES_PER_TABLE = 1025;
 
   typedef Vector<CN_IDXDATAVEC,IndexData,CN_INDEXDATA,C_INDEXES_PER_TABLE,u8> IdxDataVec;
   

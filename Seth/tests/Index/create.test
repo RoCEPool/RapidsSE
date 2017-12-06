@@ -226,7 +226,7 @@ rows:
 
 // create another index with two columns
 create index Idx9 on T1 (key, name);
-failure: 'max allowed indexes already created'
+success
 
 drop table T1;
 success
