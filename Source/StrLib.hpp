@@ -69,7 +69,11 @@ namespace Base
                                    i8& iHour, i8& iMinute, i8& iSecond, i8& iMilli);
     static bool  bExtractU8(char** ps, u8* u);
     static bool  bExtractU8(char** ps, u8* u, i8 iDigits);
-    static bool  bExtractVarchar(char** ps, char* aVarchar, i8 iMaxLength);
+    static bool  bExtractVarchar(char** ps, char* aVarchar, i8 iMaxLength,
+                                 char cEnclosedBy,
+                                 char cEscapeChar,
+                                 char cFieldSeparator,
+                                 char cRecordTerminator);
     static bool  bExtractWord(char** ps, char* pWord);
     static bool  bExtractWordString(char** ps, char* pWord);
     

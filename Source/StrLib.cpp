@@ -1240,7 +1240,11 @@ bool StrLib::bExtractU8(char** ps, u8* aU8, i8 iDigits)
 /*----------------------------------------------------------------------------*/
 /* bExtractVarchar: extract a varchar from substr                             */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength)
+bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength,
+                             char cEnclosedBy,
+                             char cEscapeChar,
+                             char cFieldSeparator,
+                             char cRecordTerminator)
 {
   i8 iLength = 0;
   bool bInQuotes = false;

@@ -394,7 +394,12 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn, Formatters* pFormat
 //  *aChar++ = '\0';
 
   i8 iColumnLength = pColumn->iColumnLength();
-  if ( ! StrLib::bExtractVarchar(aaSrc,(char*)aVch,iColumnLength) )
+  if ( ! StrLib::bExtractVarchar(aaSrc,(char*)aVch,iColumnLength,
+                                 pFormatters->m_cEnclosedBy,
+                                 pFormatters->m_cEscapeChar,
+                                 pFormatters->m_cFieldSeparator,
+                                 pFormatters->m_cRecordTerminator
+                                 ) )
     return false;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
