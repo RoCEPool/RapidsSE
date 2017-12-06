@@ -155,7 +155,7 @@ void Lock::vGrabRead(void)
     xTimer.vUpdate();
     if (xTimer.iMilliseconds() > 100 && ! bReported) {
       bReported = true;
-      vTrace("Lock::vGrabRead -- Unable to grab read lock %p %s %p\n"_Stz,
+      vWarn("Lock::vGrabRead -- Unable to grab read lock %p %s %p\n"_Stz,
              this,
              aLK[m_eLockKind],
              m_uLockWord);
@@ -165,7 +165,7 @@ void Lock::vGrabRead(void)
   } while ( ! rCode );
   
   if (bReported) {
-    vTrace("Lock::vGrabRead -- Able to grab read lock %p %p\n"_Stz,
+    vWarn("Lock::vGrabRead -- Able to grab read lock %p %p\n"_Stz,
            this, m_uLockWord);
   }
   
@@ -277,7 +277,7 @@ void Lock::vGrabWrite(void)
     xTimer.vUpdate();
     if (xTimer.iMilliseconds() > 100 && ! bReported) {
       bReported = true;
-      vTrace("Lock::vGrabWrite -- Unable to grab write lock %p %s %p\n"_Stz,
+      vWarn("Lock::vGrabWrite -- Unable to grab write lock %p %s %p\n"_Stz,
              this,
               aLK[m_eLockKind],
              m_uLockWord);
@@ -287,7 +287,7 @@ void Lock::vGrabWrite(void)
   } while ( ! rCode );
   
   if (bReported) {
-    vTrace("Lock::vGrabWrite -- Able to grab write lock %p %p\n"_Stz,
+    vWarn("Lock::vGrabWrite -- Able to grab write lock %p %p\n"_Stz,
            this, m_uLockWord);
   }
 
