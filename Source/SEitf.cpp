@@ -670,8 +670,6 @@ bool SEitf::bInsertLastBuffer(i8 iPartition)
   
   //m_pRowBuffer[iSlot]->vDump();
   //vTrace("No of entries %lld %lld\n"_Stz, iPartition, m_pRowBuffer[iPartition]->nEntries());
-  if (m_pRowBuffer[iPartition]->nEntries() > 1)
-    m_pCurrentTable->vDataLoaded(true);
   
   // mark this buffer as the last buffer
   m_pRowBuffer[iPartition]->vIsLast(true);

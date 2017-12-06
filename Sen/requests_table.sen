@@ -170,6 +170,7 @@ tp: insertBufferEntries$
   bIsLast not if exit then
   //drop exit
 
+  1 pTable table.dataLoaded!
 
   //"sending got for last buffer..." .
   //iPartitionNo grid::toSlot .

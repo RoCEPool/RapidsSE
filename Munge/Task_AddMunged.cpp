@@ -13989,6 +13989,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "  bIsLast not if exit then\n"
     "  //drop exit\n"
     "\n"
+    "  1 pTable table.dataLoaded!\n"
     "\n"
     "  //\\\"sending got for last buffer...\\\" .\n"
     "  //iPartitionNo grid::toSlot .\n"
