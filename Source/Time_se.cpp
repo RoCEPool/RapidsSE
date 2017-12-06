@@ -136,17 +136,17 @@ bool Time::bExtractUTC(char** ps)
   
   i8 v;
   
-  if ( ! StrLib::bExtractI8(ps,&v) ) return false;
+  if ( ! StrLib::bExtractInteger(ps,&v) ) return false;
   m_iYear = (unsigned int)v - 1900;
   
   if ('-' != *(*ps)++) return false;
   
-  if ( ! StrLib::bExtractI8(ps,&v) ) return false;
+  if ( ! StrLib::bExtractInteger(ps,&v) ) return false;
   m_iMonth = (unsigned int)v;
   
   if ('-' != *(*ps)++) return false;
   
-  if ( ! StrLib::bExtractI8(ps,&v) ) return false;
+  if ( ! StrLib::bExtractInteger(ps,&v) ) return false;
   m_iDay = (unsigned int)v;
   
   // - - -
@@ -155,23 +155,23 @@ bool Time::bExtractUTC(char** ps)
   
   (*ps)++;
   
-  if ( ! StrLib::bExtractI8(ps,&v) ) return true;
+  if ( ! StrLib::bExtractInteger(ps,&v) ) return true;
   m_iHour = (unsigned int)v;
   
   if (':' != *(*ps)++) return true;
   
-  if ( ! StrLib::bExtractI8(ps,&v) ) return true;
+  if ( ! StrLib::bExtractInteger(ps,&v) ) return true;
   m_iMinute = (unsigned int)v;
   
   if (':' != *(*ps)++) return true;
   
-  if ( ! StrLib::bExtractI8(ps,&v) ) return true;
+  if ( ! StrLib::bExtractInteger(ps,&v) ) return true;
   m_iSecond = (unsigned int)v;
   
   if ('.' == **ps)
   {
     (*ps)++;
-    if ( StrLib::bExtractI8(ps,&v) )
+    if ( StrLib::bExtractInteger(ps,&v) )
       m_iMicro  = (unsigned int)(v*1000);
   }
   

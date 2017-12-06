@@ -86,7 +86,7 @@ bool Magnitudes::bBytes(Stz* psBuf, i8& iBytes)
     return false;
   }
   
-  if (StrLib::bExtractI8(&ps, &iVal)) {
+  if (StrLib::bExtractInteger(&ps, &iVal)) {
     iBytes = iVal*iMagnitude;
   }
   else {

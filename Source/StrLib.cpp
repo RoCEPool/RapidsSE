@@ -719,9 +719,9 @@ bool StrLib::bExtractFloat(char** aaSrc, d8& dFloat)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bExtractI8: extract an integer from substr                                 */
+/* bExtractInteger: extract an integer from substr                            */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractI8(char** aaSrc, i8* aI8, bool bWithSign)
+bool StrLib::bExtractInteger(char** aaSrc, i8* aI8, bool bWithSign)
 {
   char *aSrc = *aaSrc;
   

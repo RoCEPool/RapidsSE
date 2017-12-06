@@ -267,7 +267,7 @@ bool Int::bExtract(char** aaSrc, Int* aInt, Column* pColumn, Formatters* pFormat
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // integer field processing
   
-  if ( ! StrLib::bExtractI8(aaSrc,&aInt->m_iInt,true/*bWithSign*/) )
+  if ( ! StrLib::bExtractInteger(aaSrc,&aInt->m_iInt,true/*bWithSign*/) )
     return false;
   
   // ignore any trailing digits (after optional '.')

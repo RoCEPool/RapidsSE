@@ -369,13 +369,13 @@ void Column::vSet(Stz* aDefinition)
   if ('(' == *aCursor) {
     aCursor++;
     StrLib::vSkipWhite(&aCursor);
-    b = StrLib::bExtractI8(&aCursor,&m_iColumnLength);
+    b = StrLib::bExtractInteger(&aCursor,&m_iColumnLength);
     
     StrLib::vSkipWhite(&aCursor);
     if (',' == *aCursor) {
       aCursor++;
       StrLib::vSkipWhite(&aCursor);
-      b = StrLib::bExtractI8(&aCursor,&m_iColumnScale);
+      b = StrLib::bExtractInteger(&aCursor,&m_iColumnScale);
     }
     StrLib::vSkipWhite(&aCursor);
     aCursor++;
