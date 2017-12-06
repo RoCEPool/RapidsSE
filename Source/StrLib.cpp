@@ -1251,17 +1251,15 @@ bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength,
   
   char* aChar = (char*)aVarChar;
   
-  if ('"' == **aaSrc ||
-      '\'' == **aaSrc) {
+  if (cEnclosedBy== **aaSrc) {
     bInQuotes = true;
     (*aaSrc)++;
   }
   
   if (bInQuotes) {
-    while ('"' != **aaSrc
-           && '\'' != **aaSrc
-           && C_NL != **aaSrc
-           && C_CR != **aaSrc) {
+    while (cEnclosedBy != **aaSrc
+           && C_NL     != **aaSrc
+           && C_CR     != **aaSrc) {
       
       if (iLength++ < iMaxLength)
         *aChar++ = *(*aaSrc)++;
@@ -1270,8 +1268,7 @@ bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength,
     }
     
     // did we see an end quote ?
-    if ('"' != **aaSrc &&
-        '\'' != **aaSrc)
+    if (cEnclosedBy != **aaSrc)
       return false;
     
     (*aaSrc)++;
