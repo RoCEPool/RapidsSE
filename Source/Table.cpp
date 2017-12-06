@@ -91,6 +91,8 @@ Table::Table(void)
   
   m_ziIndexesLoaded = -1;
   
+  m_bDataLoaded = false;
+  
   _checkInitialised_(CN_TABLE);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
@@ -310,6 +312,26 @@ bool Table::bAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
   return true;
  
   // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
+}
+
+/*----------------------------------------------------------------------------*/
+/* is data loaded ?                                                             */
+/*----------------------------------------------------------------------------*/
+bool Table::bDataLoaded(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  return m_bDataLoaded;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set data loaded                                                            */
+/*----------------------------------------------------------------------------*/
+void Table::vDataLoaded(bool bDataLoaded)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  m_bDataLoaded = bDataLoaded;
 }
 
 /*----------------------------------------------------------------------------*/

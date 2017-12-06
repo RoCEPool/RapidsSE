@@ -66,6 +66,10 @@ timer: loadTimer
 
   // initialise table loader
   sTableNm find execute locals| pTable |
+
+  // check if data is already loaded
+  pTable table.dataLoaded@ if EC_TABLE_ALREADY_LOADED false exit then
+
   pTable pTblLoader loader.table!
   sPath  pTblLoader loader.path!
   sRT    pTblLoader loader.recordTerminator!
@@ -137,6 +141,9 @@ timer: loadTimer
     while
       1 thread.sleep_s
   repeat
+
+  // mark data as being loaded in the table
+  1 pTable table.dataLoaded!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tidy up

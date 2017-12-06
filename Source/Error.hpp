@@ -76,6 +76,7 @@ namespace Debugging
   /* 53 */ EC_SE_UNKNOWN_ERROR,
   /* 54 */ EC_SEND_FAILURE,
   
+  /*    */ EC_TABLE_ALREADY_LOADED,
   /* 55 */ EC_TABLE_EXISTS,
   /* 56 */ EC_TABLE_NOT_EMPTY,
   /* 57 */ EC_TABLE_IN_USE,
@@ -159,6 +160,7 @@ namespace Debugging
   /* 52 */ "SE is not running"_Stz,
   /* 53 */ "SE unknown error"_Stz,
   /* 54 */ "send failure"_Stz,
+  /*    */ "table already loaded"_Stz,
   /* 55 */ "table exists"_Stz,
   /* 56 */ "table not empty"_Stz,
   /* 57 */ "table in use"_Stz,
