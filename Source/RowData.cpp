@@ -83,7 +83,7 @@ bool RowData::bFormatData(ColumnVec* pColVec,
     
     // is the datum valid ?
     if ( ! bValid ) {
-      vTrace("Skipping row - invalid field %s in record: "_Stz,
+      vWarn("Skipping row - invalid field %s in record: "_Stz,
              pColumn->sColumnName().aChar());
       for (char* a = (char*)aRawData; *a && '\n' != *a; a++)
         vTrace("%c"_Stz,*a);
