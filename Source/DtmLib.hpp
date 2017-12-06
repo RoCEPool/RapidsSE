@@ -31,7 +31,11 @@ namespace Datums
     static i8 iSize(eDM eDatum, char* pSrc);
   
     static bool bIsThereData(char cSrc, Formatters* pFormatters);
-    static bool bTestForNull(char** aaSrc, DBobjects::Column* pColumn, Formatters* pFormatters, bool& bValid);
+    static bool bTestForNull(char** aaSrc,
+                             DBobjects::Column* pColumn,
+                             Formatters* pFormatters,
+                             bool& bValid,
+                             bool bSkipTrailingSpaces=true);
     static bool bValidFieldEnd(char** aaSrc, Formatters* pFormatters);
   };
 }

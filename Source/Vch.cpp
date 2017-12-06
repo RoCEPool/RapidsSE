@@ -230,6 +230,98 @@ void Vch::vCopy(void* pDst, void* pSrc)
 /*----------------------------------------------------------------------------*/
 /* extract an varchar from substr                                             */
 /*----------------------------------------------------------------------------*/
+//bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn, Formatters* pFormatters)
+//{
+//  char* aChar = (char*)aVch;
+//  
+//  // is there data ?
+//  if ( ! DtmLib::bIsThereData(**aaSrc,pFormatters) ) {
+//    // empty string
+//    *aChar++ = '\0';
+//    return true;
+//  }
+//  
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // test for null               THIS IS DIFFERENT TO OTHERS.  DISCUSS WITH ALKA
+//  
+//  if (StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) == 0) {
+//    
+//    char* aPtr = (*aaSrc) + 4;
+//    
+//    if (!*aPtr
+//        || C_FS == *aPtr
+//        || C_NL == *aPtr
+//        || C_CR == *aPtr) {
+//      
+//      if ( !pColumn->bIsNullable() )
+//        return false;
+//      
+//      aVch->vSetNull();
+//      *aaSrc = aPtr;
+//      return true;
+//    }
+//  }
+////  bool bValidNull;
+////  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
+////    if ( ! bValidNull )
+////      return false;
+////    aVch->vSetNull();
+////    return true;
+////  }
+//  
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // collect the csv
+//  
+//  i8 iLength = 0;
+//  i8 iColumnLength = pColumn->iColumnLength();
+//  bool bInQuotes = false;
+//  
+//  if ('"' == **aaSrc ||
+//      '\'' == **aaSrc) {
+//    bInQuotes = true;
+//    (*aaSrc)++;
+//  }
+//  
+//  if (bInQuotes) {
+//    while ('"' != **aaSrc
+//           && '\'' != **aaSrc
+//           && C_NL != **aaSrc
+//           && C_CR != **aaSrc) {
+//      
+//      if (iLength++ < iColumnLength)
+//        *aChar++ = *(*aaSrc)++;
+//      else
+//        (*aaSrc)++;
+//    }
+//    
+//    // did we see an end quote ?
+//    if ('"' != **aaSrc &&
+//        '\'' != **aaSrc)
+//      return false;
+//    
+//    (*aaSrc)++;
+//  }
+//  else {
+//    while (**aaSrc
+//            && C_FS != **aaSrc
+//            && C_NL != **aaSrc
+//            && C_CR != **aaSrc) {
+//      
+//      if (iLength++ < iColumnLength)
+//        *aChar++ = *(*aaSrc)++;
+//      else
+//        (*aaSrc)++;
+//    }
+//  }
+//  
+//  *aChar++ = '\0';
+//  
+//  // skip trailing spaces
+//  StrLib::vSkipSpaces(aaSrc);
+//    
+//  return true;
+//}
+
 bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn, Formatters* pFormatters)
 {
   char* aChar = (char*)aVch;
@@ -244,30 +336,33 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn, Formatters* pFormat
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for null               THIS IS DIFFERENT TO OTHERS.  DISCUSS WITH ALKA
   
-  if (StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) == 0) {
-    
-    char* aPtr = (*aaSrc) + 4;
-    
-    if (!*aPtr
-        || C_FS == *aPtr
-        || C_NL == *aPtr
-        || C_CR == *aPtr) {
-      
-      if ( !pColumn->bIsNullable() )
-        return false;
-      
-      aVch->vSetNull();
-      *aaSrc = aPtr;
-      return true;
-    }
-  }
-//  bool bValidNull;
-//  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
-//    if ( ! bValidNull )
-//      return false;
-//    aVch->vSetNull();
-//    return true;
+//  if (StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) == 0) {
+//    
+//    char* aPtr = (*aaSrc) + 4;
+//    
+//    if (!*aPtr
+//        || C_FS == *aPtr
+//        || C_NL == *aPtr
+//        || C_CR == *aPtr) {
+//      
+//      if ( !pColumn->bIsNullable() )
+//        return false;
+//      
+//      aVch->vSetNull();
+//      *aaSrc = aPtr;
+//      return true;
+//    }
 //  }
+  
+  char** aaStart = aaSrc;
+  bool bValidNull;
+  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull,false)) {
+    if ( ! bValidNull )
+      return false;
+    aVch->vSetNull();
+    return true;
+  }
+  aaSrc = aaStart;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect the csv
@@ -303,9 +398,9 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn, Formatters* pFormat
   }
   else {
     while (**aaSrc
-            && C_FS != **aaSrc
-            && C_NL != **aaSrc
-            && C_CR != **aaSrc) {
+           && C_FS != **aaSrc
+           && C_NL != **aaSrc
+           && C_CR != **aaSrc) {
       
       if (iLength++ < iColumnLength)
         *aChar++ = *(*aaSrc)++;
@@ -318,7 +413,7 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn, Formatters* pFormat
   
   // skip trailing spaces
   StrLib::vSkipSpaces(aaSrc);
-    
+  
   return true;
 }
 
