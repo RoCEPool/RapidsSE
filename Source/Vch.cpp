@@ -334,25 +334,7 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn, Formatters* pFormat
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for null               THIS IS DIFFERENT TO OTHERS.  DISCUSS WITH ALKA
-  
-//  if (StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) == 0) {
-//    
-//    char* aPtr = (*aaSrc) + 4;
-//    
-//    if (!*aPtr
-//        || C_FS == *aPtr
-//        || C_NL == *aPtr
-//        || C_CR == *aPtr) {
-//      
-//      if ( !pColumn->bIsNullable() )
-//        return false;
-//      
-//      aVch->vSetNull();
-//      *aaSrc = aPtr;
-//      return true;
-//    }
-//  }
+  // test for null
   
   char** aaStart = aaSrc;
   bool bValidNull;
@@ -411,8 +393,15 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn, Formatters* pFormat
   
   *aChar++ = '\0';
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
+  
   // skip trailing spaces
   StrLib::vSkipSpaces(aaSrc);
+  
+  // should see a FS, NL or CR
+  if ( ! DtmLib::bValidFieldEnd(aaSrc,pFormatters) )
+    return false;
   
   return true;
 }
