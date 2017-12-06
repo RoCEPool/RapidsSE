@@ -771,6 +771,31 @@ bool StrLib::bExtractI8(char** aaSrc, i8* aI8, bool bWithSign)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bExtractInterval: extract an interval from substr                          */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bExtractInterval(char** aaSrc, i8& iSecond, i8& iMilli)
+{
+  u8 uSubField;
+  
+  iSecond = iMilli = 0;
+  
+  // extract second
+  if ( ! StrLib::bExtractU8(aaSrc,&uSubField) )
+    return false;
+  
+  iSecond = uSubField;
+  
+  // extract fraction (assuming milliseconds)
+  if ('.' == **aaSrc) {
+    (*aaSrc)++;
+    if ( StrLib::bExtractU8(aaSrc,&uSubField) )
+      iMilli = uSubField;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bExtractItem: extract an item from substr                                  */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bExtractItem(char** ps, char* pItem)

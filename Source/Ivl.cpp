@@ -239,7 +239,8 @@ bool Ivl::bExtract(char** aaSrc, Ivl* aIvl, Column* pColumn, Formatters* pFormat
   
   // extract second
   if ( ! StrLib::bExtractU8(aaSrc,&uSubField) )
-    return true;
+    return false;
+  
   aIvl->x.m_uSecond = uSubField;
   
   //  // skip . separator
