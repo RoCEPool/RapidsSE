@@ -1312,6 +1312,7 @@ bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength,
         
          // skip escape character
         (*aaSrc)++;
+        
         // must have some non-zero character
         if ( ! **aaSrc )
           return false;
