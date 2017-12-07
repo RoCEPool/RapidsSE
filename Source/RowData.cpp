@@ -73,6 +73,18 @@ bool RowData::bFormatData(ColumnVec* pColVec,
   Stz* aDst = pOffset + C_COLUMN_OFFSET_SIZE * nColumns;
   iRowLength = C_COLUMN_OFFSET_SIZE * nColumns;
   
+  char* aStart = aSrc;
+  
+  // skip leading spaces
+  StrLib::vSkipSpaces(&aSrc);
+  
+  // skip blank lines
+  if (! DtmLib::bIsThereData(*aSrc,pFormatters) )
+      return false;
+  
+  // reset back to start
+  aSrc = aStart;
+  
   for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
     
     Column* pColumn = pColVec->pGet(i_Column);
