@@ -473,6 +473,21 @@ void StrLib::vEscape(const char* sArg, char* sEscaped)
 }
 
 /*----------------------------------------------------------------------------*/
+/* cEscapeConvert: convert an escaped character to its actual character       */
+/*----------------------------------------------------------------------------*/
+char StrLib::cEscapeConvert(const char cArg)
+{
+  if ('\b' == cArg) return '\b';
+  if ('\f' == cArg) return '\f';
+  if ('\n' == cArg) return '\n';
+  if ('\r' == cArg) return '\r';
+  if ('\t' == cArg) return '\t';
+  if ('Z' == cArg)  return 26;
+  
+  return cArg;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bEqualTo: test if the two args match                                       */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bEqualTo(const char* s1, const char* s2)
@@ -1295,6 +1310,13 @@ bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength,
         // must have some non-zero character
         if ( ! **aaSrc )
           return false;
+
+        if (iLength++ < iMaxLength)
+          *aChar++ = *(*aaSrc)++;
+        else
+          (*aaSrc)++;
+        
+        continue;
       }
       
       if (iLength++ < iMaxLength)
