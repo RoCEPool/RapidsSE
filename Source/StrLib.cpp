@@ -488,6 +488,30 @@ char StrLib::cEscapeConvert(const char cArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* escape character processing                                                */
+/*----------------------------------------------------------------------------*/
+char StrLib::cEscapeProcessing(char** aaSrc, char cEscapeChar)
+{
+  // test for escape
+  if (cEscapeChar != **aaSrc) {
+    // not escaped, return char, advance pointer
+    return *(*aaSrc)++;
+  }
+  
+  // skip escape character
+  (*aaSrc)++;
+  
+  // must have some non-zero character
+  if ( ! **aaSrc )
+    return '\0';
+  
+  // convert the char, advance pointer
+  char cConverted = StrLib::cEscapeConvert(*(*aaSrc)++);
+  
+  return cConverted;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bEqualTo: test if the two args match                                       */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bEqualTo(const char* s1, const char* s2)

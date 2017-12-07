@@ -51,30 +51,6 @@ void DtmLib::vCopy(eDM eDatum, void* aDst, void* aSrc, DBobjects::Column* pColum
 }
 
 /*----------------------------------------------------------------------------*/
-/* escape character processing                                                */
-/*----------------------------------------------------------------------------*/
-char DtmLib::cEscapeProcessing(char** aaSrc, char cEscapeChar)
-{
-  // test for escape
-  if (cEscapeChar != **aaSrc) {
-    // not escaped, return char, advance pointer
-    return *(*aaSrc)++;
-  }
-    
-  // skip escape character
-  (*aaSrc)++;
-  
-  // must have some non-zero character
-  if ( ! **aaSrc )
-    return '\0';
-  
-  // convert the char, advance pointer
-  char cConverted = StrLib::cEscapeConvert(*(*aaSrc)++);
-
-  return cConverted;
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Extract -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
