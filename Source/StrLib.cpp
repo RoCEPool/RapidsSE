@@ -1314,12 +1314,32 @@ bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength,
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // non-enclosed processing
+  // non-enclosed processing, no record terminator
+  
+  if ( ! cRecordTerminator ) {
+    
+    while (**aaSrc
+           && C_FS != **aaSrc
+           && C_NL != **aaSrc
+           && C_CR != **aaSrc) {
+      
+      if (iLength++ < iMaxLength)
+        *aChar++ = *(*aaSrc)++;
+      else
+        (*aaSrc)++;
+    }
+  
+    *aChar++ = '\0';
+    
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // non-enclosed processing, with record terminator
   
   while (**aaSrc
-         && C_FS != **aaSrc
-         && C_NL != **aaSrc
-         && C_CR != **aaSrc) {
+         && cRecordTerminator != **aaSrc
+         && C_FS != **aaSrc) {
     
     if (iLength++ < iMaxLength)
       *aChar++ = *(*aaSrc)++;
@@ -1328,7 +1348,7 @@ bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength,
   }
   
   *aChar++ = '\0';
-    
+  
   return true;
 }
 

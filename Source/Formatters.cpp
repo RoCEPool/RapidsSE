@@ -37,7 +37,7 @@ Formatters::Formatters(void)
   m_cEnclosedBy = '\'';
   m_cEscapeChar = '^';
   m_cFieldSeparator = ',';
-  m_cRecordTerminator = ';';
+  m_cRecordTerminator = '\0';
   
   _checkInitialised_(CN_FORMATTERS);
   
