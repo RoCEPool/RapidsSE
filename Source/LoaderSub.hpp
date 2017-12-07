@@ -14,7 +14,8 @@ namespace DBobjects
     s256     m_aRecord;    // formatted row
     i8       m_iLength;    // length of record
     i8       m_iPartition; // partition of record
-    i8       m_iFetchedRecords; // fetched records
+    i8       m_iValidRecords;   // valid records
+    i8       m_iInvalidRecords; // invalid records
     
     bool       m_bMoreChunks; // continue while there are more chunks
     LoadChunk* m_pLoadChunk;  // chunk loading buffer
@@ -38,9 +39,9 @@ namespace DBobjects
     void vBegin(void);
     void vEnd(void);
     bool bFetchRecord(void);
-    i8   iFetchedRecords(void);
     void vHashRecord(void);
     bool bInsertRow(void);
+    i8   iInvalidRecords(void);
     Loader* pLoader(void);
     void vLoader(Loader* pLoader);
     void vNewRowBuffer(void);
@@ -50,6 +51,7 @@ namespace DBobjects
     EntryBuffer* pRowBuffer(void);
     void vRowBuffer(EntryBuffer* pRowBuffer);
     Table* pTable(void);
+    i8   iValidRecords(void);
   
     //void vTruncateRecord(i8 iField);
   

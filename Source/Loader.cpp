@@ -61,6 +61,8 @@ Loader::Loader(void)
   m_sPath    = "<none>"_Stz;
   m_pTable   = nullptr;
   m_pLoadMap = new LoadMap;
+  m_ziInvalidRecords = 0;
+  m_ziValidRecords   = 0;
   
   _checkInitialised_(CN_LOADER);
   
@@ -108,7 +110,25 @@ void Loader::vFinalize(eCN eClass, Object* pObject)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* add invalid records                                                        */
+/*----------------------------------------------------------------------------*/
+void Loader::vAddInvalidRecords(i8 iInvalidRecords)
+{
+   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  
+  m_ziInvalidRecords.iAdd(iInvalidRecords);
+}
 
+/*----------------------------------------------------------------------------*/
+/* add valid records                                                          */
+/*----------------------------------------------------------------------------*/
+void Loader::vAddValidRecords(i8 iValidRecords)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  
+  m_ziValidRecords.iAdd(iValidRecords);
+}
 
 /*----------------------------------------------------------------------------*/
 /* find next chunk in file being loaded                                       */
@@ -120,6 +140,16 @@ bool Loader::bFindChunk(void)
   bool b = m_pLoadMap->bFindChunk();
   
   return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get invalid records                                                        */
+/*----------------------------------------------------------------------------*/
+i8 Loader::iInvalidRecords(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  
+  return *m_ziInvalidRecords;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -203,6 +233,16 @@ void Loader::vTidyUp(void)
   
   delete m_pLoadMap;
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* get valid records                                                          */
+/*----------------------------------------------------------------------------*/
+i8 Loader::iValidRecords(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  
+  return *m_ziValidRecords;
 }
 
 /*----------------------------------------------------------------------------*/

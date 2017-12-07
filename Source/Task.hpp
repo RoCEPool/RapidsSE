@@ -727,12 +727,16 @@ namespace Tasks
     static void vIntSubtract(MP_Task mpTask);
     
     // loader
+    static void vLoaderAddRecordsInvalid(MP_Task mpTask);
+    static void vLoaderAddRecordsValid(MP_Task mpTask);
     static void vLoaderDelete(MP_Task mpTask);
     static void vLoaderFindChunk(MP_Task mpTask);
     static void vLoaderInit(MP_Task mpTask);
     static void vLoaderNew(MP_Task mpTask);
     static void vLoaderNewSub(MP_Task mpTask);
     static void vLoaderPathStore(MP_Task mpTask);
+    static void vLoaderRecordsInvalid(MP_Task mpTask);
+    static void vLoaderRecordsValid(MP_Task mpTask);
     static void vLoaderSEitfFetch(MP_Task mpTask);
     static void vLoaderSEitfStore(MP_Task mpTask);
     static void vLoaderTableStore(MP_Task mpTask);
@@ -753,7 +757,8 @@ namespace Tasks
     static void vLoaderSubNewRowBuffer(MP_Task mpTask);
     static void vLoaderSubPartitionFetch(MP_Task mpTask);
     static void vLoaderSubPartitionStore(MP_Task mpTask);
-    static void vLoaderSubRecordsFetched(MP_Task mpTask);
+    static void vLoaderSubRecordsInvalid(MP_Task mpTask);
+    static void vLoaderSubRecordsValid(MP_Task mpTask);
     static void vLoaderSubRowBufferFetch(MP_Task mpTask);
     static void vLoaderSubRowBufferStore(MP_Task mpTask);
     static void vLoaderSubTable(MP_Task mpTask);

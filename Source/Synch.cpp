@@ -7,6 +7,25 @@
 //const u8 C_WRITELOCK = 0x8000000000000000;
 
 /*----------------------------------------------------------------------------*/
+/* atomically add word                                                        */
+/*----------------------------------------------------------------------------*/
+u8 Synch::uAtomicAdd(i8* pWord, i8 iValue)
+{
+#ifdef __APPLE__
+  u8 uResult = OSAtomicAdd64(iValue, pWord);
+  
+#elif __LINUX__
+  u8 uResult = __sync_add_and_fetch((u8*)pWord, iValue);
+  
+#else
+  RASSERT(0);
+  
+#endif
+  
+  return uResult;
+}
+
+/*----------------------------------------------------------------------------*/
 /* atomically decrement word                                                  */
 /*----------------------------------------------------------------------------*/
 u8 Synch::uAtomicDec(i8* pWord)

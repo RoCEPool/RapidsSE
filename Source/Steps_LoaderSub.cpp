@@ -29,7 +29,8 @@ void Task::vAddPrimitives_LoaderSub(void)
   vAddPrimitive("loaderSub.newRowBuffer"_Stz, &vLoaderSubNewRowBuffer,  false);
   vAddPrimitive("loaderSub.partition@"_Stz,   &vLoaderSubPartitionFetch,false);
   vAddPrimitive("loaderSub.partition!"_Stz,   &vLoaderSubPartitionStore,false);
-  vAddPrimitive("loaderSub.recordsFetched"_Stz, &vLoaderSubRecordsFetched, false);
+  vAddPrimitive("loaderSub.recordsInvalid"_Stz, &vLoaderSubRecordsInvalid, false);
+  vAddPrimitive("loaderSub.recordsValid"_Stz, &vLoaderSubRecordsValid,  false);
   vAddPrimitive("loaderSub.rowBuffer@"_Stz,   &vLoaderSubRowBufferFetch,false);
   vAddPrimitive("loaderSub.rowBuffer!"_Stz,   &vLoaderSubRowBufferStore,false);
   vAddPrimitive("loaderSub.table"_Stz,        &vLoaderSubTable,         false);
@@ -329,18 +330,35 @@ void Task::vLoaderSubPartitionStore(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loaderSub.recordsFetched -- return no of records fetched by loader sub     */
+/* loaderSub.recordsInvalid -- return no of invalid records fetched by sub    */
 /*----------------------------------------------------------------------------*/
-void Task::vLoaderSubRecordsFetched(MP_Task mpTask)
+void Task::vLoaderSubRecordsInvalid(MP_Task mpTask)
 {
-  ENTRY("vLoaderSubRecordsFetched"_Stz);
+  ENTRY("vLoaderSubRecordsInvalid"_Stz);
   
   Object* pPtrLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
-    THROW_INVALID_DSTACK("loaderSub.recordsFetched"_Stz);
+    THROW_INVALID_DSTACK("loaderSub.recordsInvalid"_Stz);
   LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoader);
   
-  mpTask->m_pDataStack->vPushInt(pLoaderSub->iFetchedRecords());
+  mpTask->m_pDataStack->vPushInt(pLoaderSub->iInvalidRecords());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loaderSub.recordsValid -- return no of valid records fetched by sub        */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderSubRecordsValid(MP_Task mpTask)
+{
+  ENTRY("vLoaderSubRecordsValid"_Stz);
+  
+  Object* pPtrLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
+    THROW_INVALID_DSTACK("loaderSub.recordsValid"_Stz);
+  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoader);
+  
+  mpTask->m_pDataStack->vPushInt(pLoaderSub->iValidRecords());
   
   EXIT();
 }

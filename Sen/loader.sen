@@ -157,6 +157,8 @@ timer: loadTimer
   // print timing
   loadTimer timer.update
 
+  pTblLoader loader.recordsInvalid pTblLoader loader.recordsValid "loaded %v rows (%v invalid)" str.format .
+
   "ms\n" loadTimer timer.millisecs "Load time" "%v %v %v" str.format .verbose
 
   true

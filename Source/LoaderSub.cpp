@@ -68,7 +68,8 @@ LoaderSub::LoaderSub(void)
   m_iPartition  = 0;
   m_bMoreChunks = false;
   m_pLoadChunk  = new LoadChunk;
-  m_iFetchedRecords = 0;
+  m_iValidRecords = 0;
+  m_iInvalidRecords = 0;
   
   for (i8 i_Partition = 0; i_Partition < C_MAX_PARTITIONS; i_Partition++)
     m_pEntryBuffer[i_Partition] = nullptr;
@@ -192,11 +193,13 @@ bool LoaderSub::bFetchRecord(void)
                                     aRawData, iLength,
                                     m_aRecord.aStr(), m_iLength);
       if (bValid) {
-        m_iFetchedRecords++;
+        m_iValidRecords++;
         return bValid;
       }
-      else
+      else {
+        m_iInvalidRecords++;
         continue;
+      }
     }
     
     // read next chunk
@@ -214,23 +217,15 @@ bool LoaderSub::bFetchRecord(void)
                                     aRawData, iLength,
                                     m_aRecord.aStr(), m_iLength);
       if (bValid) {
-        m_iFetchedRecords++;
+        m_iValidRecords++;
         return bValid;
       }
+      else
+        m_iInvalidRecords++;
     }
   }
   
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get no of records fetched                                                  */
-/*----------------------------------------------------------------------------*/
-i8 LoaderSub::iFetchedRecords(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
-  
-  return m_iFetchedRecords;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -275,6 +270,16 @@ bool LoaderSub::bInsertRow(void)
   //pEntryBuffer->vShow();
   
   return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get no of invalid records fetched                                          */
+/*----------------------------------------------------------------------------*/
+i8 LoaderSub::iInvalidRecords(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+  
+  return m_iInvalidRecords;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -403,6 +408,16 @@ Table* LoaderSub::pTable(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
   
   return m_pTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get no of valid records fetched                                            */
+/*----------------------------------------------------------------------------*/
+i8 LoaderSub::iValidRecords(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+  
+  return m_iValidRecords;
 }
 
 /*----------------------------------------------------------------------------*/

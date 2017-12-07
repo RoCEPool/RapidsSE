@@ -274,6 +274,10 @@ tp: theIndirectResult
 
   loop
 
+  // add the valid/invalid records to loader
+  pLoaderSub loaderSub.recordsValid pLoaderSub loaderSub.loader@ loader.addRecordsValid
+  pLoaderSub loaderSub.recordsInvalid pLoaderSub loaderSub.loader@ loader.addRecordsInvalid
+
   // close the file
   pLoaderSub loaderSub.end
 
