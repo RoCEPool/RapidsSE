@@ -477,12 +477,12 @@ void StrLib::vEscape(const char* sArg, char* sEscaped)
 /*----------------------------------------------------------------------------*/
 char StrLib::cEscapeConvert(const char cArg)
 {
-  if ('\b' == cArg) return '\b';
-  if ('\f' == cArg) return '\f';
-  if ('\n' == cArg) return '\n';
-  if ('\r' == cArg) return '\r';
-  if ('\t' == cArg) return '\t';
-  if ('Z' == cArg)  return 26;
+  if ('b' == cArg) return '\b';
+  if ('f' == cArg) return '\f';
+  if ('n' == cArg) return '\n';
+  if ('r' == cArg) return '\r';
+  if ('t' == cArg) return '\t';
+  if ('Z' == cArg) return 26;
   
   return cArg;
 }
@@ -1263,6 +1263,9 @@ bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength,
 {
   i8 iLength = 0;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // is this an enclosed varchar?
+  
   char *aChar = (char*)aVarChar;
   char **aaStart = aaSrc;
   
@@ -1282,6 +1285,7 @@ bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // enclosed processing
+  //   (processing terminated by the second enclosedBy)
   
   if (bIsEnclosed) {
     
@@ -1338,14 +1342,17 @@ bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // non-enclosed processing, no record terminator
+  //   (processing terminated by field separator, new line or carriage return)
   
   if ( ! cRecordTerminator ) {
     
+    // collect the characters of the varchar
     while (**aaSrc
-           && C_FS != **aaSrc
+           && cFieldSeparator != **aaSrc
            && C_NL != **aaSrc
            && C_CR != **aaSrc) {
       
+      // test for an escaped character
       if (cEscapeChar == **aaSrc) {
         
         // skip escape character
@@ -1375,11 +1382,13 @@ bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // non-enclosed processing, with record terminator
+  //   (processing terminated by field separator or record terminator)
   
   while (**aaSrc
-         && cRecordTerminator != **aaSrc
-         && C_FS != **aaSrc) {
+         && cFieldSeparator   != **aaSrc
+         && cRecordTerminator != **aaSrc) {
     
+    // test for escape character
     if (cEscapeChar == **aaSrc) {
       
       // skip escape character

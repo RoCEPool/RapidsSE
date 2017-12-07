@@ -476,8 +476,7 @@ bool DtmLib::bTestForNull(char** aaSrc, DBobjects::Column* pColumn,
     // skip over token null
     *aaSrc = (*aaSrc) + 4;
   }
-  else if (**aaSrc == pFormatters->m_cEscapeChar &&
-           *(*aaSrc+1) == 'N') {
+  else if (**aaSrc == pFormatters->m_cEscapeChar && *(*aaSrc+1) == 'N') {
     // skip over \N
     *aaSrc = (*aaSrc) + 2;
   }
