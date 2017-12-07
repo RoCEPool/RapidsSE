@@ -1936,8 +1936,9 @@ eEC RapidsSE_InsertRowPartition(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel)
 /* load data from file into the table                                         */
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_LoadData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath,
-                      Stz* pRecordTerminator, Stz* pSeparator,
+                      Stz* pRecordTerminator, Stz* pFieldSeparator,
                       Stz* pEnclosedBy, Stz* pEscapeChar,
+                      void** ppValidRows, void** ppInvalidRows,
                       i8 iTraceLevel)
 {
   
@@ -1961,17 +1962,23 @@ eEC RapidsSE_LoadData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath,
     VALIDATE_PARAM("b"_Stz, pTable);
     VALIDATE_PARAM("c"_Stz, pFilePath);
     
+    // set the formatters
+//    pSEitf->m_xFormatters.m_cEnclosedBy     = *(pRecordTerminator->aChar());
+//    pSEitf->m_xFormatters.m_cFieldSeparator = *(pFieldSeparator->aChar());
+//    pSEitf->m_xFormatters.m_cEnclosedBy     = *(pEnclosedBy->aChar());
+//    pSEitf->m_xFormatters.m_cEscapeChar     = *(pEscapeChar->aChar());
+    
     // add a column
     eResult = eExecuteRequest(pSEitf, "ld"_Stz,
                               pTable,
-                              pFilePath,
-                              pRecordTerminator,
-                              pSeparator,
-                              pEnclosedBy,
-                              pEscapeChar);
+                              pFilePath);
     
     CHECK_RESULT("d"_Stz);
     CHECK_RESPONSE("e"_Stz);
+    
+    // return the vlaid/invalid rows
+    *ppInvalidRows = &pSEitf->m_iRowsInvalid;
+    *ppValidRows = &pSEitf->m_iRowsValid;
     
     // trace exit
     TRACE_EXIT("ea"_Stz);
@@ -2283,36 +2290,6 @@ eEC eExecuteRequest(SEitf* pSEitf, Stz* aCommand, Stz* aParameter1,
   xTokenVec.vAddToken(aParameter3);
   xTokenVec[4]->vReset();
 
-  bResult = pSEitf->bDecode(xTokenVec);
-  
-  xTokenVec.vSetAllTokens();
-  
-  return pSEitf->eGetLastError();
-}
-
-/*----------------------------------------------------------------------------*/
-/* execute command                                                           */
-/*----------------------------------------------------------------------------*/
-eEC eExecuteRequest(SEitf* pSEitf, Stz* aCommand,
-                    Stz* aParameter1, Stz* aParameter2,
-                    Stz* aParameter3, Stz* aParameter4,
-                    Stz* aParameter5, Stz* aParameter6)
-{
-  // clear the last error
-  pSEitf->vClearLastError();
-  
-  bool bResult;
-  TokenVec xTokenVec;
-  
-  xTokenVec.vAddToken(aCommand);
-  xTokenVec.vAddToken(aParameter1);
-  xTokenVec.vAddToken(aParameter2);
-  xTokenVec.vAddToken(aParameter3);
-  xTokenVec.vAddToken(aParameter4);
-  xTokenVec.vAddToken(aParameter5);
-  xTokenVec.vAddToken(aParameter6);
-  xTokenVec[7]->vReset();
-  
   bResult = pSEitf->bDecode(xTokenVec);
   
   xTokenVec.vSetAllTokens();

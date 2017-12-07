@@ -53,6 +53,9 @@ namespace Interface
 
     Atomic m_ziAcksRemaining;
 
+    i8     m_iRowsInvalid;
+    i8     m_iRowsValid;
+    
     EntryBuffer* m_pRowBuffer[C_SLOTS_PER_NODE]; // working row buffers
     GroupBy*     m_pGroupBy[C_SLOTS_PER_NODE];   // working group by
   

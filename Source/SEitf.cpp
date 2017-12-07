@@ -190,6 +190,8 @@ SEitf::SEitf(i8 iPartition)
   m_iRowPartition     = -1;
   m_ziLastBuffers      = 0;
   m_ziLastBuffersScanned = 0;
+  m_iRowsInvalid         = 0;
+  m_iRowsValid           = 0;
   
   m_ziFetchTasks      = 0;
   m_bSeitfExiting     = false;

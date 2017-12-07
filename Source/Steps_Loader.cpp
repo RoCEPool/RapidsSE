@@ -23,8 +23,8 @@ void Task::vAddPrimitives_Loader(void)
   vAddPrimitive("loader::new"_Stz,              &vLoaderNew,             false);
   vAddPrimitive("loader.newSub"_Stz,            &vLoaderNewSub,          false);
   vAddPrimitive("loader.path!"_Stz,             &vLoaderPathStore,       false);
-  vAddPrimitive("loader.recordsInvalid"_Stz,    &vLoaderRecordsInvalid,  false);
-  vAddPrimitive("loader.recordsValid"_Stz,      &vLoaderRecordsValid,  false);
+  vAddPrimitive("loader.recordsInvalid@"_Stz,   &vLoaderRecordsInvalidFetch, false);
+  vAddPrimitive("loader.recordsValid@"_Stz,     &vLoaderRecordsValidFetch,   false);
   vAddPrimitive("loader.seitf@"_Stz,            &vLoaderSEitfFetch,      false);
   vAddPrimitive("loader.seitf!"_Stz,            &vLoaderSEitfStore,      false);
   vAddPrimitive("loader.table!"_Stz,            &vLoaderTableStore,      false);
@@ -196,15 +196,15 @@ void Task::vLoaderPathStore(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loader.recordsInvalid -- get recordsInvalid                                */
+/* loader.recordsInvalid@ -- fetch recordsInvalid                             */
 /*----------------------------------------------------------------------------*/
-void Task::vLoaderRecordsInvalid(MP_Task mpTask)
+void Task::vLoaderRecordsInvalidFetch(MP_Task mpTask)
 {
-  ENTRY("vLoaderRecordsInvalid"_Stz);
+  ENTRY("vLoaderRecordsInvalidFetch"_Stz);
   
   Object* pPtrLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
-    THROW_INVALID_DSTACK("loader.recordsInvalid"_Stz);
+    THROW_INVALID_DSTACK("loader.recordsInvalid@"_Stz);
   
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
@@ -215,15 +215,15 @@ void Task::vLoaderRecordsInvalid(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loader.recordsValid -- get recordsValid                                    */
+/* loader.recordsValid@ -- fetch recordsValid                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vLoaderRecordsValid(MP_Task mpTask)
+void Task::vLoaderRecordsValidFetch(MP_Task mpTask)
 {
-  ENTRY("vLoaderRecordsValid"_Stz);
+  ENTRY("vLoaderRecordsValidFetch"_Stz);
   
   Object* pPtrLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
-    THROW_INVALID_DSTACK("loader.recordsValid"_Stz);
+    THROW_INVALID_DSTACK("loader.recordsValid@"_Stz);
   
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());

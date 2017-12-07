@@ -49,7 +49,9 @@ void Task::vAddPrimitives_SEitf(void)
   vAddPrimitive("seitf.planner!"_Stz,         &vSEitfPlannerStore,     false);
   vAddPrimitive("seitf.req@"_Stz,             &vSEitfReqFetch,         false);
   vAddPrimitive("seitf.req!"_Stz,             &vSEitfReqStore,         false);
+  vAddPrimitive("seitf.rowsInvalid!"_Stz,     &vSEitfRowsInvalidStore, false);
   vAddPrimitive("seitf.rowsProcessed"_Stz,    &vSEitfRowsProcessed,    false);
+  vAddPrimitive("seitf.rowsValid!"_Stz,       &vSEitfRowsValidStore,   false);
   vAddPrimitive("seitf.rsp@"_Stz,             &vSEitfRspFetch,         false);
   vAddPrimitive("seitf.rsp!"_Stz,             &vSEitfRspStore,         false);
   vAddPrimitive("seitf.responseQueue"_Stz,    &vSEitfResponseQueue,    false);
@@ -806,6 +808,29 @@ ENTRY("vSEitfReqStore"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
+/* seitf.rowsInvalid! -- store rows invalid in SE interface                   */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfRowsInvalidStore(MP_Task mpTask)
+{
+  ENTRY("vSEitfRowsInvalid"_Stz);
+  
+  Object* pPtrSEitf;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
+    THROW_INVALID_DSTACK("seitf.rowsInvalid!"_Stz);
+  
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  ASSERT(CN_SEITF == pSEitf->eClass());
+  
+  i8 iRowsInvalid;
+  if ( ! mpTask->m_pDataStack->bPop(iRowsInvalid) )
+    THROW_INVALID_DSTACK("seitf.rowsInvalid!"_Stz);
+  
+  pSEitf->m_iRowsInvalid = iRowsInvalid;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* seitf.rowsProcessed -- store rows processed in SE interface                */
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfRowsProcessed(MP_Task mpTask)
@@ -824,6 +849,29 @@ void Task::vSEitfRowsProcessed(MP_Task mpTask)
     THROW_INVALID_DSTACK("seitf.rowsProcessed"_Stz);
   
   pSEitf->m_iRowsProcessed = iRowsProcessed;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* seitf.rowsValid! -- store rows valid in SE interface                       */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfRowsValidStore(MP_Task mpTask)
+{
+  ENTRY("vSEitfRowsVvalid"_Stz);
+  
+  Object* pPtrSEitf;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
+    THROW_INVALID_DSTACK("seitf.rowsValid!"_Stz);
+  
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  ASSERT(CN_SEITF == pSEitf->eClass());
+  
+  i8 iRowsInvalid;
+  if ( ! mpTask->m_pDataStack->bPop(iRowsInvalid) )
+    THROW_INVALID_DSTACK("seitf.rowsInvalid!"_Stz);
+  
+  pSEitf->m_iRowsInvalid = iRowsInvalid;
   
   EXIT();
 }

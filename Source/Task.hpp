@@ -735,8 +735,8 @@ namespace Tasks
     static void vLoaderNew(MP_Task mpTask);
     static void vLoaderNewSub(MP_Task mpTask);
     static void vLoaderPathStore(MP_Task mpTask);
-    static void vLoaderRecordsInvalid(MP_Task mpTask);
-    static void vLoaderRecordsValid(MP_Task mpTask);
+    static void vLoaderRecordsInvalidFetch(MP_Task mpTask);
+    static void vLoaderRecordsValidFetch(MP_Task mpTask);
     static void vLoaderSEitfFetch(MP_Task mpTask);
     static void vLoaderSEitfStore(MP_Task mpTask);
     static void vLoaderTableStore(MP_Task mpTask);
@@ -1049,7 +1049,9 @@ namespace Tasks
     static void vSEitfPlannerStore(MP_Task mpTask);
     static void vSEitfReqFetch(MP_Task mpTask);
     static void vSEitfReqStore(MP_Task mpTask);
+    static void vSEitfRowsInvalidStore(MP_Task mpTask);
     static void vSEitfRowsProcessed(MP_Task mpTask);
+    static void vSEitfRowsValidStore(MP_Task mpTask);
     static void vSEitfRspFetch(MP_Task mpTask);
     static void vSEitfRspStore(MP_Task mpTask);
     static void vSEitfResponseQueue(MP_Task mpTask);
