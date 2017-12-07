@@ -1291,7 +1291,7 @@ bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength,
   // is this an enclosed varchar?
   
   char *aChar = (char*)aVarChar;
-  char **aaStart = aaSrc;
+  char *aStart = *aaSrc;
   
   // find first non-space character
   while (' ' == **aaSrc)
@@ -1304,7 +1304,7 @@ bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength,
     (*aaSrc)++;
   }
   else {
-    aaSrc = aaStart;
+    *(aaSrc) = aStart;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
