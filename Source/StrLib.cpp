@@ -1270,11 +1270,24 @@ bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength,
   
   if (bIsEnclosed) {
     
-    while (**aaSrc
-           && cEnclosedBy != **aaSrc
-           && C_NL != **aaSrc
-           && C_CR != **aaSrc) {
+    while (**aaSrc) {
       
+      // test for the ending enclosedBy
+      if (cEnclosedBy == **aaSrc) {
+        
+        // skip over the enclosedBy
+        (*aaSrc)++;
+        
+        // if its not another enclosedBy go back to the enclosedBy char
+        // and break so as to terminate the enclosed varchar
+        if (cEnclosedBy != **aaSrc) {
+          (*aaSrc)--;
+          break;
+        }
+        // fall thru here to process the
+        // escaped enclosedBy as ordinary char
+      }
+      else
       // test for escape character
       if (cEscapeChar == **aaSrc) {
          // skip escape character
