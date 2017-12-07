@@ -108,65 +108,7 @@ void Loader::vFinalize(eCN eClass, Object* pObject)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* get enclosed by char                                                       */
-/*----------------------------------------------------------------------------*/
-StrVal& Loader::sEnclosedBy(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-  
-  return m_sEnclosedBy;
-}
 
-/*----------------------------------------------------------------------------*/
-/* set enclosed by char                                                       */
-/*----------------------------------------------------------------------------*/
-void Loader::vEnclosedBy(StrVal& sEnclosedBy)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-  
-  m_sEnclosedBy = sEnclosedBy;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get escape char                                                            */
-/*----------------------------------------------------------------------------*/
-StrVal& Loader::sEscapeChar(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-  
-  return m_sEscapeChar;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set escape char                                                            */
-/*----------------------------------------------------------------------------*/
-void Loader::vEscapeChar(StrVal& sEscapeChar)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-  
-  m_sEscapeChar = sEscapeChar;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get field separator                                                        */
-/*----------------------------------------------------------------------------*/
-StrVal& Loader::sFieldSeparator(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-  
-  return m_sFieldSeparator;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set field separator                                                        */
-/*----------------------------------------------------------------------------*/
-void Loader::vFieldSeparator(StrVal& sFieldSeparator)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-  
-  m_sFieldSeparator = sFieldSeparator;
-}
 
 /*----------------------------------------------------------------------------*/
 /* find next chunk in file being loaded                                       */
@@ -210,26 +152,6 @@ void Loader::vPath(StrVal& sPath)
   m_sPath = sPath;
     
   m_pLoadMap->vFilePath(sPath);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get record separator                                                       */
-/*----------------------------------------------------------------------------*/
-StrVal& Loader::sRecordTerminator(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-  
-  return m_sRecordTerminator;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set path                                                                   */
-/*----------------------------------------------------------------------------*/
-void Loader::vRecordTerminator(StrVal& sRecordTerminator)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-  
-  m_sRecordTerminator = sRecordTerminator;
 }
 
 /*----------------------------------------------------------------------------*/

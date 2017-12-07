@@ -15,13 +15,9 @@ namespace DBobjects
   private:
     Interface::SEitf* m_pSEitf; // SE interface
   
-    Table*   m_pTable;   // table being load
-    s256     m_sPath;    // file being loaded
-    s32      m_sEnclosedBy;      // enclosed by
-    s32      m_sEscapeChar;       // escape char
-    s32      m_sFieldSeparator;   // field separator
-    s32      m_sRecordTerminator; // record terminator
-    LoadMap* m_pLoadMap;          // load map
+    Table*     m_pTable;       // table being load
+    s256       m_sPath;        // file being loaded
+    LoadMap*   m_pLoadMap;     // load map
     
     // must be last
     Footer m_xFooter;
@@ -37,18 +33,10 @@ namespace DBobjects
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static void vFinalize(eCN eClass, Object* pObject);
 
-    StrVal&  sEnclosedBy(void);
-    void     vEnclosedBy(StrVal& sPath);
-    StrVal&  sEscapeChar(void);
-    void     vEscapeChar(StrVal& sPath);
-    StrVal&  sFieldSeparator(void);
-    void     vFieldSeparator(StrVal& sPath);
     bool     bFindChunk(void);
     LoadMap* pLoadMap(void);
     StrVal&  sPath(void);
     void     vPath(StrVal& sPath);
-    StrVal&  sRecordTerminator(void);
-    void     vRecordTerminator(StrVal& sPath);
     Interface::SEitf* pSEitf(void);
     void     vSEitf(Interface::SEitf* pSEitf);
     Table*   pTable(void);

@@ -1645,13 +1645,6 @@ bool SePrompt::bCmd_LoadTable(void)
   m_xTokenVec[iIndex++]->vCopy(m_xTokenVec2[1]);
   m_xTokenVec[iIndex++]->vCopy(m_xTokenVec2[2]);
   
-  
-  // set defaults
-  sRecordTerminator.vCopy(";"_Stz);
-  sSeparator.vCopy(","_Stz);
-  sEnclosedBy.vCopy("'"_Stz);
-  sEscapeChar.vCopy("^"_Stz);
-  
   i8 iCurrentIndex = 3;
   
   if (iNumTokens > iCurrentIndex) {
@@ -1664,36 +1657,30 @@ bool SePrompt::bCmd_LoadTable(void)
       }
       
       if (m_xTokenVec2[iCurrentIndex]->bSame("record_terminator"_Stz)) {
-        sRecordTerminator.vCopy(m_xTokenVec2[++iCurrentIndex]->sText());
+        
+        m_pSEitf->m_xFormatters.m_cRecordTerminator = *m_xTokenVec2[iCurrentIndex+2]->sText().aChar();
+        iCurrentIndex += 4;
       }
       else if (m_xTokenVec2[iCurrentIndex]->bSame("separator"_Stz)) {
-        sSeparator.vCopy(m_xTokenVec2[++iCurrentIndex]->sText());
+        m_pSEitf->m_xFormatters.m_cFieldSeparator = *m_xTokenVec2[++iCurrentIndex+2]->sText().aChar();
+        iCurrentIndex += 4;
       }
       else if (m_xTokenVec2[iCurrentIndex]->bSame("enclosed_by"_Stz)) {
-        sEnclosedBy.vCopy(m_xTokenVec2[++iCurrentIndex]->sText());
+        m_pSEitf->m_xFormatters.m_cEnclosedBy = *m_xTokenVec2[++iCurrentIndex+2]->sText().aChar();
+        iCurrentIndex += 4;
       }
       else if (m_xTokenVec2[iCurrentIndex]->bSame("escape_char"_Stz)) {
-        sEscapeChar.vCopy(m_xTokenVec2[++iCurrentIndex]->sText());
+        m_pSEitf->m_xFormatters.m_cEscapeChar = *m_xTokenVec2[++iCurrentIndex+2]->sText().aChar();
+        iCurrentIndex += 4;
       }
       else {
+        m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
         return false;
       }
-      iCurrentIndex++;
+
     }
     
   }
-  
-  // record terminator
-  m_xTokenVec[iIndex++]->vCopy(sRecordTerminator);
-  
-  // separator
-  m_xTokenVec[iIndex++]->vCopy(sSeparator);
-  
-  // enclosed by
-  m_xTokenVec[iIndex++]->vCopy(sEnclosedBy);
-  
-  // escape char
-  m_xTokenVec[iIndex++]->vCopy(sEscapeChar);
   
   //
   // clear the last error

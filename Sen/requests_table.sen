@@ -505,11 +505,11 @@ ddlLock::grabRead
 /*----------------------------------------------------------------------------*/
 /* load a table                                                               */
 /*----------------------------------------------------------------------------*/
-: loadTable_req ( "<esc>" "<enc>" "<fs>" "<rt>" "<fileNm>" "<tableNm>" -- <R> )
+: loadTable_req ( "<fileNm>" "<tableNm>" -- <R> )
 
 ddlLock::grabRead
 
-  locals| sTableNm sFileNm sRT sFS sENC sESC |
+  locals| sTableNm sFileNm |
 
   //sRT "record terminator %v" str.format .
   //sFS "field separator %v" str.format .
@@ -533,7 +533,7 @@ ddlLock::grabRead
 
 snap0:
 
-  sESC sENC sFS sRT sFileNm sTableNm tableLoader not if popTable <NIP+ERROR> exit then
+   sFileNm sTableNm tableLoader not if popTable <NIP+ERROR> exit then
   //loadIndexes
 
   //bp::freeSpace .

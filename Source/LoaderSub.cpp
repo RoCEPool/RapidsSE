@@ -66,7 +66,6 @@ LoaderSub::LoaderSub(void)
   //m_aRecord
   m_iLength  = 0;
   m_iPartition  = 0;
-  //m_xFormatters
   m_bMoreChunks = false;
   m_pLoadChunk  = new LoadChunk;
   m_iFetchedRecords = 0;
@@ -135,12 +134,6 @@ void LoaderSub::vBegin(void)
   m_pTable   = m_pLoader->pTable();
   m_pLoadMap = m_pLoader->pLoadMap();
   
-  // get the separators etc
-  m_sEnclosedBy        = m_pLoader->sEnclosedBy();
-  m_sEscapeChar        = m_pLoader->sEscapeChar();
-  m_sFieldSeparator    = m_pLoader->sFieldSeparator();
-  m_sRecordTerminator  = m_pLoader->sRecordTerminator();
-  
   sPath = m_pLoader->sPath();
   
   // open the chunked file
@@ -148,11 +141,6 @@ void LoaderSub::vBegin(void)
   
   // read first chunk
   m_bMoreChunks = bReadChunk();
-  
-//  vTrace("LoaderSub: m_sEnclosedBy = '%s'\n"_Stz, m_sEnclosedBy.aChar());
-//  vTrace("LoaderSub: m_sEscapeChar = '%s'\n"_Stz, m_sEscapeChar.aChar());
-//  vTrace("LoaderSub: m_sFieldSeparator = '%s'\n"_Stz, m_sFieldSeparator.aChar());
-//  vTrace("LoaderSub: m_sRecordTerminator = '%s'\n"_Stz, m_sRecordTerminator.aChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -188,6 +176,7 @@ bool LoaderSub::bFetchRecord(void)
   Stz* aRawData;
   i8 iLength;
   bool bValid = false;
+  Interface::SEitf* pSEitf = m_pLoader->pSEitf();
   
   if (! m_bMoreChunks)
     return false;
@@ -199,7 +188,7 @@ bool LoaderSub::bFetchRecord(void)
     if (aRawData) {
       // format the raw data into a record
       bValid = RowData::bFormatData(m_pTable->pColumnVec(),
-                                    &m_xFormatters,
+                                    &pSEitf->m_xFormatters,
                                     aRawData, iLength,
                                     m_aRecord.aStr(), m_iLength);
       if (bValid) {
@@ -221,7 +210,7 @@ bool LoaderSub::bFetchRecord(void)
       
       // format the raw data into a record
       bValid = RowData::bFormatData(m_pTable->pColumnVec(),
-                                    &m_xFormatters,
+                                    &pSEitf->m_xFormatters,
                                     aRawData, iLength,
                                     m_aRecord.aStr(), m_iLength);
       if (bValid) {
