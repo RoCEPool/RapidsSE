@@ -1247,19 +1247,33 @@ bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength,
                              char cRecordTerminator)
 {
   i8 iLength = 0;
-  bool bInQuotes = false;
   
-  char* aChar = (char*)aVarChar;
+  char *aChar = (char*)aVarChar;
+  char **aaStart = aaSrc;
   
-  if (cEnclosedBy== **aaSrc) {
-    bInQuotes = true;
+  // find first non-space character
+  while (' ' == **aaSrc)
+    (*aaSrc)++;
+
+  // is it an enclosed varchar?
+  bool bIsEnclosed = false;
+  if (cEnclosedBy == **aaSrc) {
+    bIsEnclosed = true;
     (*aaSrc)++;
   }
+  else {
+    aaSrc = aaStart;
+  }
   
-  if (bInQuotes) {
-    while (cEnclosedBy != **aaSrc
-           && C_NL     != **aaSrc
-           && C_CR     != **aaSrc) {
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // enclosed processing
+  
+  if (bIsEnclosed) {
+    
+    while (**aaSrc
+           && cEnclosedBy != **aaSrc
+           && C_NL != **aaSrc
+           && C_CR != **aaSrc) {
       
       if (iLength++ < iMaxLength)
         *aChar++ = *(*aaSrc)++;
@@ -1272,18 +1286,23 @@ bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength,
       return false;
     
     (*aaSrc)++;
+    *aChar++ = '\0';
+
+    return true;
   }
-  else {
-    while (**aaSrc
-           && C_FS != **aaSrc
-           && C_NL != **aaSrc
-           && C_CR != **aaSrc) {
-      
-      if (iLength++ < iMaxLength)
-        *aChar++ = *(*aaSrc)++;
-      else
-        (*aaSrc)++;
-    }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // non-enclosed processing
+  
+  while (**aaSrc
+         && C_FS != **aaSrc
+         && C_NL != **aaSrc
+         && C_CR != **aaSrc) {
+    
+    if (iLength++ < iMaxLength)
+      *aChar++ = *(*aaSrc)++;
+    else
+      (*aaSrc)++;
   }
   
   *aChar++ = '\0';
