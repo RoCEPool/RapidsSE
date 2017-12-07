@@ -428,16 +428,62 @@ bool DtmLib::bIsThereData(char cSrc, Formatters* pFormatters)
 /*----------------------------------------------------------------------------*/
 /* test for null token                                                        */
 /*----------------------------------------------------------------------------*/
+//bool DtmLib::bTestForNull(char** aaSrc, DBobjects::Column* pColumn,
+//                          Formatters* pFormatters, bool& bValid,
+//                          bool bSkipTrailingSpaces)
+//{
+//  // do we see the token null
+//  if (0 != StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE)) {
+//    return false;
+//  }
+//  
+//  // skip over token null
+//  *aaSrc = (*aaSrc) + 4;
+//  
+//  // skip trailing spaces
+//  if (bSkipTrailingSpaces)
+//    StrLib::vSkipSpaces(aaSrc);
+//  
+//  // check it was "null" only
+//  if (**aaSrc
+//      && **aaSrc != pFormatters->m_cFieldSeparator
+//      && **aaSrc != C_NL
+//      && **aaSrc != C_CR) {
+//    bValid = false;
+//    
+//    if ( bSkipTrailingSpaces )
+//      return true;
+//    else
+//      return false;
+//  }
+//  
+//  // check the column is nullable
+//  if ( ! pColumn->bIsNullable() ) {
+//    bValid = false;
+//    return true;
+//  }
+//
+//  bValid = true;
+//  return true;
+//}
+
 bool DtmLib::bTestForNull(char** aaSrc, DBobjects::Column* pColumn,
                           Formatters* pFormatters, bool& bValid,
                           bool bSkipTrailingSpaces)
 {
   // do we see the token null
-  if (0 != StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE))
+  if ( ! StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) ) {
+    // skip over token null
+    *aaSrc = (*aaSrc) + 4;
+  }
+  else if (**aaSrc == pFormatters->m_cEscapeChar &&
+           *(*aaSrc+1) == 'N') {
+    // skip over \N
+    *aaSrc = (*aaSrc) + 2;
+  }
+  else {
     return false;
-  
-  // skip over token null
-  *aaSrc = (*aaSrc) + 4;
+  }
   
   // skip trailing spaces
   if (bSkipTrailingSpaces)
@@ -461,7 +507,7 @@ bool DtmLib::bTestForNull(char** aaSrc, DBobjects::Column* pColumn,
     bValid = false;
     return true;
   }
-
+  
   bValid = true;
   return true;
 }
