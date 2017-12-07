@@ -1346,6 +1346,22 @@ bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength,
            && C_NL != **aaSrc
            && C_CR != **aaSrc) {
       
+      if (cEscapeChar == **aaSrc) {
+        
+        // skip escape character
+        (*aaSrc)++;
+        // must have some non-zero character
+        if ( ! **aaSrc )
+          return false;
+        
+        if (iLength++ < iMaxLength)
+          *aChar++ = StrLib::cEscapeConvert(*(*aaSrc)++);
+        else
+          (*aaSrc)++;
+        
+        continue;
+      }
+      
       if (iLength++ < iMaxLength)
         *aChar++ = *(*aaSrc)++;
       else
@@ -1363,6 +1379,22 @@ bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength,
   while (**aaSrc
          && cRecordTerminator != **aaSrc
          && C_FS != **aaSrc) {
+    
+    if (cEscapeChar == **aaSrc) {
+      
+      // skip escape character
+      (*aaSrc)++;
+      // must have some non-zero character
+      if ( ! **aaSrc )
+        return false;
+      
+      if (iLength++ < iMaxLength)
+        *aChar++ = StrLib::cEscapeConvert(*(*aaSrc)++);
+      else
+        (*aaSrc)++;
+      
+      continue;
+    }
     
     if (iLength++ < iMaxLength)
       *aChar++ = *(*aaSrc)++;
