@@ -28,10 +28,10 @@ timer: loadTimer
 /*----------------------------------------------------------------------------*/
 /* parallel loading of file into table                                        */
 /*----------------------------------------------------------------------------*/
-: tableLoader ( "<esc>" "<enc>" "<fs>" "<rt>" "<path>" "<tableNm>" -- t|f )
+: tableLoader ( "<path>" "<tableNm>" -- t|f )
 
-  //assert::stack_2 ( "<path>" "<tableNm>" )
-  locals| sTableNm sPath sRT sFS sENC sESC |
+  assert::stack_2 ( "<path>" "<tableNm>" )
+  locals| sTableNm sPath |
 
   task::this task.seitf@ locals| pSEitf |
 
@@ -72,10 +72,6 @@ timer: loadTimer
 
   pTable pTblLoader loader.table!
   sPath  pTblLoader loader.path!
-  sRT    pTblLoader loader.recordTerminator!
-  sFS    pTblLoader loader.fieldSeparator!
-  sENC   pTblLoader loader.enclosedBy!
-  sESC   pTblLoader loader.escaoeChar!
 
   grid.slots pTable table.indexesLoaded!
 

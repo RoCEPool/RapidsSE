@@ -2139,26 +2139,10 @@ bool SEitf::bLoadTable(TokenVec& xTokenVec, i8 iReqNo)
   
   s256 sRequest;
   
-  if (xTokenVec.nTokens() != 7) {
+  if (xTokenVec.nTokens() != 3) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
-  
-  sRequest.vCopy("\""_Stz);
-  sRequest.vConcat(xTokenVec[6]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" \""_Stz);
-  sRequest.vConcat(xTokenVec[5]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" \""_Stz);
-  sRequest.vConcat(xTokenVec[4]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" \""_Stz);
-  sRequest.vConcat(xTokenVec[3]->aText());
-  sRequest.vConcat("\""_Stz);
   
   sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(xTokenVec[2]->aText());
