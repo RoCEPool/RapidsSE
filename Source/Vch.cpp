@@ -334,7 +334,7 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn, Formatters* pFormat
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for null
   
-  char** aaStart = aaSrc;
+  char* aStart = *aaSrc;
   bool bValidNull;
   if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull,false)) {
     if ( ! bValidNull )
@@ -342,7 +342,7 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn, Formatters* pFormat
     aVch->vSetNull();
     return true;
   }
-  aaSrc = aaStart;
+  *(aaSrc) = aStart;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect the csv
