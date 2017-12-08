@@ -401,6 +401,8 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn, Formatters* pFormat
                                  pFormatters->m_cRecordTerminator
                                  ) )
     return false;
+  
+  vTrace("vch: ]%s[\n"_Stz,aVch);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
