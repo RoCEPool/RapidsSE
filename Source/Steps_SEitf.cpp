@@ -867,11 +867,11 @@ void Task::vSEitfRowsValidStore(MP_Task mpTask)
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
-  i8 iRowsInvalid;
-  if ( ! mpTask->m_pDataStack->bPop(iRowsInvalid) )
+  i8 iRowsValid;
+  if ( ! mpTask->m_pDataStack->bPop(iRowsValid) )
     THROW_INVALID_DSTACK("seitf.rowsInvalid!"_Stz);
   
-  pSEitf->m_iRowsInvalid = iRowsInvalid;
+  pSEitf->m_iRowsValid = iRowsValid;
   
   EXIT();
 }

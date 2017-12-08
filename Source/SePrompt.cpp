@@ -1621,7 +1621,6 @@ bool SePrompt::bCmd_LoadTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  i8 i_Token;
   s32 sRecordTerminator;
   s32 sSeparator;
   s32 sEnclosedBy;
@@ -1632,7 +1631,7 @@ bool SePrompt::bCmd_LoadTable(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy tokens from m_xTokenVec to m_xTokenVec2
   i8 iNumTokens = iCopyTokens(m_xTokenVec, m_xTokenVec2);
-  
+
   // - - - - - - - - - - - - - - - - - - - - -
   // there should be at least 3 tokens
   if (iNumTokens < 3) {
@@ -1646,40 +1645,39 @@ bool SePrompt::bCmd_LoadTable(void)
   m_xTokenVec[iIndex++]->vCopy(m_xTokenVec2[2]);
   
   i8 iCurrentIndex = 3;
-  
-  if (iNumTokens > iCurrentIndex) {
     
-    while (iNumTokens > iCurrentIndex) {
-      
-      if (iNumTokens < iCurrentIndex + 2) {
-        m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-        return false;
-      }
-      
-      if (m_xTokenVec2[iCurrentIndex]->bSame("record_terminator"_Stz)) {
-        
-        m_pSEitf->m_xFormatters.m_cRecordTerminator = *m_xTokenVec2[iCurrentIndex+2]->sText().aChar();
-        iCurrentIndex += 4;
-      }
-      else if (m_xTokenVec2[iCurrentIndex]->bSame("separator"_Stz)) {
-        m_pSEitf->m_xFormatters.m_cFieldSeparator = *m_xTokenVec2[++iCurrentIndex+2]->sText().aChar();
-        iCurrentIndex += 4;
-      }
-      else if (m_xTokenVec2[iCurrentIndex]->bSame("enclosed_by"_Stz)) {
-        m_pSEitf->m_xFormatters.m_cEnclosedBy = *m_xTokenVec2[++iCurrentIndex+2]->sText().aChar();
-        iCurrentIndex += 4;
-      }
-      else if (m_xTokenVec2[iCurrentIndex]->bSame("escape_char"_Stz)) {
-        m_pSEitf->m_xFormatters.m_cEscapeChar = *m_xTokenVec2[++iCurrentIndex+2]->sText().aChar();
-        iCurrentIndex += 4;
-      }
-      else {
-        m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-        return false;
-      }
-
+  while (iNumTokens > iCurrentIndex) {
+    
+    if (iNumTokens < iCurrentIndex + 2) {
+      m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+      return false;
     }
     
+    if (m_xTokenVec2[iCurrentIndex]->bSame("record_terminator"_Stz)) {
+      m_pSEitf->m_xFormatters.m_cRecordTerminator = *m_xTokenVec2[++iCurrentIndex]->sText().aChar();
+      if (m_pSEitf->m_xFormatters.m_cRecordTerminator == '0')
+        m_pSEitf->m_xFormatters.m_cRecordTerminator = '\0';
+    }
+    else if (m_xTokenVec2[iCurrentIndex]->bSame("separator"_Stz)) {
+      m_pSEitf->m_xFormatters.m_cFieldSeparator = *m_xTokenVec2[++iCurrentIndex]->sText().aChar();
+      if (m_pSEitf->m_xFormatters.m_cFieldSeparator == '0')
+        m_pSEitf->m_xFormatters.m_cFieldSeparator = '\0';
+    }
+    else if (m_xTokenVec2[iCurrentIndex]->bSame("enclosed_by"_Stz)) {
+      m_pSEitf->m_xFormatters.m_cEnclosedBy = *m_xTokenVec2[++iCurrentIndex]->sText().aChar();
+      if (m_pSEitf->m_xFormatters.m_cEnclosedBy == '0')
+        m_pSEitf->m_xFormatters.m_cEnclosedBy = '\0';
+    }
+    else if (m_xTokenVec2[iCurrentIndex]->bSame("escape_char"_Stz)) {
+      m_pSEitf->m_xFormatters.m_cEscapeChar = *m_xTokenVec2[++iCurrentIndex]->sText().aChar();
+      if (m_pSEitf->m_xFormatters.m_cEscapeChar == '0')
+        m_pSEitf->m_xFormatters.m_cEscapeChar = '\0';
+    }
+    else {
+      m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+      return false;
+    }
+    iCurrentIndex++;
   }
   
   //
