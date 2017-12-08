@@ -471,18 +471,40 @@ bool DtmLib::bTestForNull(char** aaSrc, DBobjects::Column* pColumn,
                           Formatters* pFormatters, bool& bValid,
                           bool bSkipTrailingSpaces)
 {
-  // do we see the token null
-  if ( ! StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) ) {
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for null, \N or '\N'
+  
+  if ( 0 == StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) ) {
     // skip over token null
     *aaSrc = (*aaSrc) + 4;
   }
-  else if (**aaSrc == pFormatters->m_cEscapeChar && *(*aaSrc+1) == 'N') {
+  else if (**aaSrc     == pFormatters->m_cEscapeChar &&
+           *(*aaSrc+1) == 'N') {
     // skip over \N
     *aaSrc = (*aaSrc) + 2;
   }
+  else if (**aaSrc     == pFormatters->m_cEnclosedBy &&
+           *(*aaSrc+1) == pFormatters->m_cEscapeChar &&
+           *(*aaSrc+2) == 'N'                        &&
+           *(*aaSrc+3) == pFormatters->m_cEnclosedBy) {
+    // skip over '\N'
+    *aaSrc = (*aaSrc) + 4;
+  }
   else {
+    // no form of null
     return false;
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check the column is nullable
+  
+  if ( ! pColumn->bIsNullable() ) {
+    bValid = false;
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
   
   // skip trailing spaces
   if (bSkipTrailingSpaces)
@@ -499,12 +521,6 @@ bool DtmLib::bTestForNull(char** aaSrc, DBobjects::Column* pColumn,
       return true;
     else
       return false;
-  }
-  
-  // check the column is nullable
-  if ( ! pColumn->bIsNullable() ) {
-    bValid = false;
-    return true;
   }
   
   bValid = true;
