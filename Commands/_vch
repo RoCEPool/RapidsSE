@@ -4,17 +4,55 @@
 
 ping ;
 
+print "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" ;
+print "Default formatters\n" ;
+
 create table vch (
-  vch_key     INTEGER     NOT NULL,
-  vch_text    VARCHAR(32),
+  vch_testno  INTEGER     NOT NULL,
+  vch_field   VARCHAR(32),
   vch_comment VARCHAR(64) NOT NULL
 );
 
 print "loading table vch..." ;
-
 ld vch "../JTEST/vch.csv" ;
 
 fetch vch;
+drop table vch;
+
+print "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" ;
+print "Formatters with: no enclosed_by no escape_char\n" ;
+
+create table vch (
+  vch_testno  INTEGER     NOT NULL,
+  vch_field   VARCHAR(32),
+  vch_comment VARCHAR(64) NOT NULL
+);
+
+print "loading table vch..." ;
+ld vch "../JTEST/vch_no_enclosed_no_escape.csv" enclosed_by '' ;
+
+fetch vch;
+drop table vch;
+
+print "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" ;
+print "Formatters with: no escape_char\n" ;
+
+create table vch (
+  vch_testno  INTEGER     NOT NULL,
+  vch_field   VARCHAR(32),
+  vch_comment VARCHAR(64) NOT NULL
+);
+
+print "loading table vch..." ;
+ld vch "../JTEST/vch_no_escape.csv" escape_char '' ;
+
+fetch vch;
+drop table vch;
+
+// record_terminator
+// escape_char
+// enclosed_by
+// separator
 
 /*============================================================================*/
 /* end                                                                        */
