@@ -79,7 +79,8 @@ bool DtmLib::bExtract(eDM eDatum, Stz* aDst, char** aaSrc,
   }
   
   // move aSrc to after the C_FS but not past the C_NL or C_CR
-  if ( *(*aaSrc) == C_FS )
+  if ( pFormatters->m_cFieldSeparator &&
+       *(*aaSrc) == pFormatters->m_cFieldSeparator )
     (*aaSrc)++;
   
   if (!b)
@@ -535,6 +536,7 @@ bool DtmLib::bValidFieldEnd(char** aaSrc, Formatters* pFormatters)
   // should see a FS, NL or CR
   if (**aaSrc
       && **aaSrc != pFormatters->m_cFieldSeparator
+      && **aaSrc != pFormatters->m_cRecordTerminator
       && **aaSrc != C_NL
       && **aaSrc != C_CR)
     return false;
