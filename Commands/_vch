@@ -51,26 +51,26 @@ ld vch "../JTEST/vch_no_enclosed_no_escape.csv"
 fetch vch;
 drop table vch;
 
-//print "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" ;
-//print "400 Formatters with: no escape_char\n" ;
-//
-//create table vch (
-//  vch_testno  INTEGER     NOT NULL,
-//  vch_field   VARCHAR(32),
-//  vch_comment VARCHAR(64) NOT NULL
-//);
-//
-//print "loading table vch..." ;
-//ld vch "../JTEST/vch_no_escape.csv"
-//  escape_char "\0" ;
-//
-//fetch vch;
-//drop table vch;
-//
-//
-//
-//
-//
+print "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" ;
+print "400 Formatters with: no escape_char\n" ;
+
+create table vch (
+  vch_testno  INTEGER     NOT NULL,
+  vch_field   VARCHAR(32),
+  vch_comment VARCHAR(64) NOT NULL
+);
+
+print "loading table vch..." ;
+ld vch "../JTEST/vch_no_escape.csv"
+  escape_char "\0" ;
+
+fetch vch;
+drop table vch;
+
+
+
+
+
 //print "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" ;
 //print "500 Default formatters with: terminated\n" ;
 //
