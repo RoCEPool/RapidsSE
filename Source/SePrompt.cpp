@@ -310,11 +310,13 @@ void SePrompt::vCollectStatement(void)
   // get tokens delimited by ';'
   for ( ; i_Token < C_TOKENS; i_Token++) {
     
-    eTN eToken = m_pTokeniser->eNextToken((char*)m_xTokenVec[i_Token]->aText());
+    Token* pToken = m_xTokenVec[i_Token];
+    eTN eToken = m_pTokeniser->eNextToken((char*)pToken->aText());
     ASSERT(TN_NONE != eToken);
+    pToken->vToken(eToken);
     
     // look for terminal
-    if (m_xTokenVec[i_Token]->bSame(";"_Stz))
+    if (TN_OTHER == eToken && pToken->bSame(";"_Stz))
       break;
   }
   
@@ -416,10 +418,20 @@ void SePrompt::vGetCommandInput(void)
     m_xTokenVec.vReset();
     m_xTokenVec2.vReset();
     
-    while (TN_NONE !=
-           m_pTokeniser->eNextToken((char*)m_xTokenVec[m_xTokenVec.nTokens()]->aText())) {
+    for (;;) {
+
+      Token* pToken = m_xTokenVec[m_xTokenVec.nTokens()];
+    
+      eTN eToken = m_pTokeniser->eNextToken((char*)pToken->aText());
       
-      //vTrace("vGetCommand : [%lld] %s\n"_Stz,i_Token,m_xTokenVec[i_Token]);
+      if (TN_NONE == eToken)
+        break;
+
+      pToken->vToken(eToken);
+                     
+//      vTrace("vGetCommand : token %lld ]%s[\n"_Stz,
+//             m_xTokenVec.nTokens(),
+//             m_xTokenVec[m_xTokenVec.nTokens()]->aText());
       
       m_xTokenVec.vIncTokens();
       ASSERT(m_xTokenVec.nTokens() < C_TOKENS);

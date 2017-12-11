@@ -82,7 +82,7 @@ create table vch (
 
 print "loading table vch..." ;
 ld vch "../JTEST/vch_term_defaults.csv"
-  record_terminator "|" ;
+  record_terminator ";" ;
 
 fetch vch;
 drop table vch;
@@ -98,7 +98,7 @@ create table vch (
 
 print "loading table vch..." ;
 ld vch "../JTEST/vch_term_no_enclosed.csv"
-  record_terminator "|" enclosed_by "\0" ;
+  record_terminator ";" enclosed_by "\0" ;
 
 fetch vch;
 drop table vch;
@@ -114,7 +114,7 @@ create table vch (
 
 print "loading table vch..." ;
 ld vch "../JTEST/vch_term_no_enclosed_no_escape.csv"
-  record_terminator "|" enclosed_by "\0" escape_char "\0" ;
+  record_terminator ";" enclosed_by "\0" escape_char "\0" ;
 
 fetch vch;
 drop table vch;
@@ -130,7 +130,7 @@ create table vch (
 
 print "loading table vch..." ;
 ld vch "../JTEST/vch_term_no_escape.csv"
-  record_terminator "|" escape_char "\0" ;
+  record_terminator ";" escape_char "\0" ;
 
 fetch vch;
 drop table vch;

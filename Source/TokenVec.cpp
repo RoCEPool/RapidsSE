@@ -171,8 +171,9 @@ void TokenVec::vStripSemicolon(void)
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
   for (i8 i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if (m_pItem[i_Token]->bSame(";"_Stz)) {
-      m_pItem[i_Token]->vReset();
+    Token* pToken = m_pItem[i_Token];
+    if (TN_OTHER == pToken->eToken() && pToken->bSame(";"_Stz)) {
+      pToken->vReset();
       break;
     }
   }
