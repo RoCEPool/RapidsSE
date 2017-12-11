@@ -21,90 +21,84 @@ success
 //fetch vch;
 //rows: 18
 
-fetch vch "vch_testno 101 =";
+fetch vch "vch_testno 101 ==";
 rows:
-  (*, 101, 'quick brown fox', *);
+ (*, 101, 'quick brown fox', *)
 
-/*
-fetch vch "vch_testno 101 =";
-rows:
- (*, 101, 'quick brown fox', *);
- 
 fetch vch "vch_testno 102 =";
 rows:
-  (102, 'quick, brown fox', *);
+  (*, 102, 'quick, brown fox', *)
 
-//fetch vch "vch_testno 103 =";
+//fetch vch "vch_testno 103 ="
 //rows:
-//  (103, 'quick brown fox\'s', *);
+//  (*, 103, 'quick brown fox\'s', *)
 
 //fetch vch "vch_testno 104 =";
 //rows:
-//  (104, 'quick brown fox's', *);
+//  (*, 104, 'quick brown fox\'s', *)
 
 fetch vch "vch_testno 105 =";
 rows:
-  (105, 'quick brown\n fox', *);
+  (*, 105, 'quick brow\n foxs', *)
 
-fetch vch "vch_testno 106 =";
-rows:
-  (106, 'quick brown fox
-s', *);
+//fetch vch "vch_testno 106 =";
+//rows:
+//  (*, 106, 'quick brown fox
+//s', *)
 
 fetch vch "vch_testno 107 =";
 rows:
-  (107, 'quick brown fox', *);
+  (*, 107, 'quick brown fox', *)
 
 fetch vch "vch_testno 108 =";
 rows:
-  (108, 'quick brown fox', *);
+  (*, 108, 'quick brown fox', *)
 
 fetch vch "vch_testno 109 =";
 rows:
-  (109, '', *);
+  (*, 109, '', *)
 
 fetch vch "vch_testno 110 =";
 rows:
-  (110, 'null', *);
+  (*, 110, 'null', *)
 
 fetch vch "vch_testno 111 =";
 rows:
-  (111, null, *);
+  (*, 111, null, *)
 
 fetch vch "vch_testno 112 =";
 rows:
-  (112, 'quick brown fox', *);
+  (*, 112, 'quick brown fox', *)
 
 fetch vch "vch_testno 113 =";
 rows:
-  (113, '   quick brown fox   ', *);
+  (*, 113, '   quick brown fox   ', *)
 
 //fetch vch "vch_testno 114 =";
 //rows:
-//  (114, 'quick brown fox's', *);
+//  (*, 114, 'quick brown fox's', *)
 
 fetch vch "vch_testno 115 =";
 rows:
-  (115, '', *);
+(*, 115, '', *)
 
 fetch vch "vch_testno 116 =";
 rows:
-  (116, null, *);
+  (*, 116, null, *)
 
 fetch vch "vch_testno 117 =";
 rows:
-  (117, null, *);
+  (*, 117, null, *)
 
-fetch vch "vch_testno 118 =";
-rows:
-  (118, ''quick brown fox
-s', *);
-*/
+//fetch vch "vch_testno 118 =";
+//rows:
+//  (*, 118, ''quick brown fox
+//s', *)
 
 CLEANUP {
   
-  //drop table vch;
-  //mute
+  drop table vch;
+  mute
 
   bye;
   mute
