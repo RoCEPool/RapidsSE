@@ -16,89 +16,88 @@ success;
 
 // load data into the table with default formatter settings
 escape connector se 'load vch ../JTEST/vch_defaults.csv' with node='NODE1';
-success
 
 select * from vch;
 rows: 18
 
-select * from vch where vch_testno = 101;
+select vch_field from vch where vch_testno = 101;
 rows:
- (*, 101, 'quick brown fox', *)
+ ('quick brown fox')
 
-select * from vch where vch_testno = 102;
+select vch_field from vch where vch_testno = 102;
 rows:
-  (*, 102, 'quick, brown fox', *)
+  ('quick, brown fox')
 
-//select * from vch where vch_testno = 103;
+//select vch_field from vch where vch_testno = 103;
 //rows:
-//  (*, 103, 'quick brown fox\'s', *)
+//  ('quick brown fox\'s')
 
-//select * from vch where vch_testno = 104;
+//select vch_field from vch where vch_testno = 104;
 //rows:
-//  (*, 104, 'quick brown fox\'s', *)
+//  ('quick brown fox\'s')
 
-select * from vch where vch_testno = 105;
+select vch_field from vch where vch_testno = 105;
 rows:
-  (*, 105, 'quick brow\n foxs', *)
+  ('quick brow\n foxs')
 
-//select * from vch where vch_testno = 106;
+//select vch_field from vch where vch_testno = 106;
 //rows:
-//  (*, 106, 'quick brown fox
-//s', *)
+//  ('quick brown fox
+//s')
 
-select * from vch where vch_testno = 107;
+select vch_field from vch where vch_testno = 107;
 rows:
-  (*, 107, 'quick brown fox', *)
+  ('quick brown fox')
 
-select * from vch where vch_testno = 108;
+select vch_field from vch where vch_testno = 108;
 rows:
-  (*, 108, 'quick brown fox', *)
+  ('quick brown fox')
 
-select * from vch where vch_testno = 109;
+select vch_field from vch where vch_testno = 109;
 rows:
-  (*, 109, '', *)
+  ('')
 
-select * from vch where vch_testno = 110;
+select vch_field from vch where vch_testno = 110;
 rows:
-  (*, 110, 'null', *)
+  ('null')
 
-select * from vch where vch_testno = 111;
+select vch_field from vch where vch_testno = 111;
 rows:
-  (*, 111, null, *)
+  (null)
 
-select * from vch where vch_testno = 112;
+select vch_field from vch where vch_testno = 112;
 rows:
-  (*, 112, 'quick brown fox', *)
+  ('quick brown fox')
 
-select * from vch where vch_testno = 113;
+select vch_field from vch where vch_testno = 113;
 rows:
-  (*, 113, '   quick brown fox   ', *)
+  ('   quick brown fox   ')
 
-//select * from vch where vch_testno = 114;
+//select vch_field from vch where vch_testno = 114;
 //rows:
-//  (*, 114, 'quick brown fox's', *)
+//  ('quick brown fox's')
 
-select * from vch where vch_testno = 115;
+select vch_field from vch where vch_testno = 115;
 rows:
-(*, 115, '', *)
+('')
 
-select * from vch where vch_testno = 116;
+select vch_field from vch where vch_testno = 116;
 rows:
-  (*, 116, null, *)
+  (null)
 
-select * from vch where vch_testno = 117;
+select vch_field from vch where vch_testno = 117;
 rows:
-  (*, 117, null, *)
+  (null)
 
 //select * from vch where vch_testno = 118;
 //rows:
-//  (*, 118, ''quick brown fox
-//s', *)
+//  (''quick brown fox
+//s')
 
 CLEANUP {
   
-  drop table vch;
-  mute
+  //drop table vch;
+  //mute
 
   bye;
   mute
