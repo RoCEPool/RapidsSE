@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* regressionData -- Regression data load tests                               */
+/* vch_no_enclosed -- varchar with no enclosed by                             */
 /*----------------------------------------------------------------------------*/
 
 // create the tables
@@ -12,18 +12,18 @@ success
 
 // create an index
 create index idx on vch (vch_testno);
-success;
+success
 
 // load data into the table with default formatter settings
-ld vch "../JTEST/vch_no_enclosed.csv";
+ld vch "../JTEST/vch_no_enclosed.csv" enclosed_by "\0";
 success
 
 //fetch vch;
 //rows: 17
 
-fetch vch "vch_testno 201 ==";
-rows:
-  (*, 201, 'quick brown fox', *)
+//fetch vch "vch_testno 201 =";
+//rows:
+//  (*, 201, 'quick brown fox', *)
 
 //fetch vch "vch_testno 202 =";
 //rows:
@@ -95,8 +95,8 @@ rows:
 
 CLEANUP {
   
-  //drop table vch;
-  //mute
+  drop table vch;
+  mute
 
   bye;
   mute

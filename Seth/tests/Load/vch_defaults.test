@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* regressionData -- Regression data load tests                               */
+/* vch_defaults -- varchar with deafult formatters                            */
 /*----------------------------------------------------------------------------*/
 
 // create the tables
