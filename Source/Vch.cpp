@@ -6,6 +6,8 @@
 
 #include "StorageEngine.h"
 
+extern AttachMap*  gpAttachMap;
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -432,20 +434,64 @@ i8 Vch::iSize(char* aSrc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* sprint tsp datum                                                           */
+/* sprint vch datum                                                           */
 /*----------------------------------------------------------------------------*/
+//void Vch::vSprint(Stz* aDst, Stz* aSrc)
+//{
+//  Vch* aVch = (Vch*)aSrc;
+//  
+//  if (aVch->bIsNull())
+//    StrLib::vSprint(aDst,"null%c"_Stz,
+//                    '\0');
+//  else
+//    StrLib::vSprint(aDst,"\'%s\'%c"_Stz,
+//                  aSrc->aChar(),
+//                  '\0');
+//  
+//}
+
 void Vch::vSprint(Stz* aDst, Stz* aSrc)
 {
+  // test for null
   Vch* aVch = (Vch*)aSrc;
+  if (aVch->bIsNull()) {
+    StrLib::vSprint(aDst,"null%c"_Stz,'\0');
+    return;
+  }
   
-  if (aVch->bIsNull())
-    StrLib::vSprint(aDst,"null%c"_Stz,
-                    '\0');
-  else
-    StrLib::vSprint(aDst,"\'%s\'%c"_Stz,
-                  aSrc->aChar(),
-                  '\0');
+  // get the formatters
+  char cEnclosedBy = gpAttachMap->m_xFormatters.m_cEnclosedBy;
+  char cEscapeChar = gpAttachMap->m_xFormatters.m_cEscapeChar;
   
+  char* aDstChar = (char*)aDst;
+  char* aSrcChar = (char*)aSrc;
+  
+  // put leading enclosing quote/char
+  *aDstChar++ = cEnclosedBy;
+  
+  // copy from src to dst
+  while (*aSrcChar) {
+    
+    if (cEscapeChar == *aSrcChar) {
+      // escape an escape character
+      *aDstChar++ = cEscapeChar;
+      *aDstChar++ = *aSrcChar++;
+    }
+    else
+    if (cEnclosedBy == *aSrcChar) {
+      // escape an enclosing quote/char
+      *aDstChar++ = cEscapeChar;
+      *aDstChar++ = *aSrcChar++;
+    }
+    else {
+      // copy an oridinary char
+      *aDstChar++ = *aSrcChar++;
+    }
+  }
+  
+  // put trailing enclosing quote/char and \0 terminate
+  *aDstChar++ = cEnclosedBy;
+  *aDstChar = '\0';
 }
 
 /*----------------------------------------------------------------------------*/
