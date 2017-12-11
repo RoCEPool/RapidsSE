@@ -53,6 +53,7 @@ namespace Base
     static bool  bEnds(const char* sArg, const char* sEnd);
     static void  vEscape(const char* sArg, char* sEscaped);
     static char  cEscapeConvert(const char cArg);
+    static char  cEscapeInverse(const char cArg);
     static char  cEscapeProcessing(char** aaSrc, char cEscapeChar);
     static bool  bExtractArg(char** ps, char* pPath);
     static bool  bExtractBoolean(char** ps, i8& iBoolean);

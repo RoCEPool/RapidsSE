@@ -488,6 +488,21 @@ char StrLib::cEscapeConvert(const char cArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* cEscapeInsert: convert a character to escaped character form               */
+/*----------------------------------------------------------------------------*/
+char StrLib::cEscapeInverse(const char cArg)
+{
+  if ('\b' == cArg) return 'b';
+  if ('\f' == cArg) return 'f';
+  if ('\n' == cArg) return 'n';
+  if ('\r' == cArg) return 'r';
+  if ('\t' == cArg) return 't';
+  if ((char)26 == cArg) return 'Z';
+  
+  return cArg;
+}
+
+/*----------------------------------------------------------------------------*/
 /* escape character processing                                                */
 /*----------------------------------------------------------------------------*/
 char StrLib::cEscapeProcessing(char** aaSrc, char cEscapeChar)
