@@ -87,7 +87,8 @@ namespace StorageEngine
     
     Atomic        m_zPlanId;
     
-    
+    Formatters    m_xFormatters; // record formatters
+  
     // statistics counters
     i8            m_iSchEnqueueTask;
     i8            m_iSchEnqueueTaskWait;
