@@ -55,6 +55,7 @@ namespace Base
     static char  cEscapeConvert(const char cArg);
     static char  cEscapeInverse(const char cArg);
     static char  cEscapeProcessing(char** aaSrc, char cEscapeChar);
+    static bool  bEscapedSpecial(const char cArg);
     static bool  bExtractArg(char** ps, char* pPath);
     static bool  bExtractBoolean(char** ps, i8& iBoolean);
     static bool  bExtractDate(char** ps, i8& iYear, i8& iMonth, i8& iDay);

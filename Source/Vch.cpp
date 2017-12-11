@@ -484,7 +484,7 @@ void Vch::vSprint(Stz* aDst, Stz* aSrc)
       *aDstChar++ = *aSrcChar++;
     }
     else {
-      // copy an oridinary char
+      // copy an ordinary char, converting special back to escaped for
       *aDstChar++ = *aSrcChar++;
     }
   }

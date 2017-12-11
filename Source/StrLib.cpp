@@ -473,7 +473,7 @@ void StrLib::vEscape(const char* sArg, char* sEscaped)
 }
 
 /*----------------------------------------------------------------------------*/
-/* cEscapeConvert: convert an escaped character to its actual character       */
+/* cEscapeConvert: convert an escaped character to actual special character   */
 /*----------------------------------------------------------------------------*/
 char StrLib::cEscapeConvert(const char cArg)
 {
@@ -488,7 +488,7 @@ char StrLib::cEscapeConvert(const char cArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* cEscapeInsert: convert a character to escaped character form               */
+/* cEscapeInsert: convert a special character to escaped character form       */
 /*----------------------------------------------------------------------------*/
 char StrLib::cEscapeInverse(const char cArg)
 {
@@ -524,6 +524,21 @@ char StrLib::cEscapeProcessing(char** aaSrc, char cEscapeChar)
   char cConverted = StrLib::cEscapeConvert(*(*aaSrc)++);
   
   return cConverted;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bEscapedSpecial: test for special character which should be escaped        */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bEscapedSpecial(const char cArg)
+{
+  if ('\b' == cArg) return true;
+  if ('\f' == cArg) return true;
+  if ('\n' == cArg) return true;
+  if ('\r' == cArg) return true;
+  if ('\t' == cArg) return true;
+  if ((char)26 == cArg) return true;
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
