@@ -483,8 +483,14 @@ void Vch::vSprint(Stz* aDst, Stz* aSrc)
       *aDstChar++ = cEscapeChar;
       *aDstChar++ = *aSrcChar++;
     }
+    else
+      if (StrLib::bEscapedSpecial(*aSrcChar)) {
+      // convert special character back to escaped form
+      *aDstChar++ = cEscapeChar;
+      *aDstChar++ = StrLib::cEscapeInverse(*aSrcChar++);
+    }
     else {
-      // copy an ordinary char, converting special back to escaped for
+      // copy an ordinary char
       *aDstChar++ = *aSrcChar++;
     }
   }
