@@ -1,0 +1,110 @@
+/*----------------------------------------------------------------------------*/
+/* varchar -- varchar with deafult formatters                                 */
+/*----------------------------------------------------------------------------*/
+
+// create the tables
+create table vch (
+  vch_testno  INTEGER     NOT NULL,
+  vch_field   VARCHAR(32),
+  vch_comment VARCHAR(64) NOT NULL
+);
+success
+
+// create an index
+create index idx on vch (vch_testno);
+success;
+
+// load data into the table with default formatter settings
+escape connector se 'load vch ../JTEST/vch_defaults.csv' with node='NODE1';
+success
+
+select * from vch;
+rows: 18
+
+select * from vch where vch_testno = 101;
+rows:
+ (*, 101, 'quick brown fox', *)
+
+select * from vch where vch_testno = 102;
+rows:
+  (*, 102, 'quick, brown fox', *)
+
+//select * from vch where vch_testno = 103;
+//rows:
+//  (*, 103, 'quick brown fox\'s', *)
+
+//select * from vch where vch_testno = 104;
+//rows:
+//  (*, 104, 'quick brown fox\'s', *)
+
+select * from vch where vch_testno = 105;
+rows:
+  (*, 105, 'quick brow\n foxs', *)
+
+//select * from vch where vch_testno = 106;
+//rows:
+//  (*, 106, 'quick brown fox
+//s', *)
+
+select * from vch where vch_testno = 107;
+rows:
+  (*, 107, 'quick brown fox', *)
+
+select * from vch where vch_testno = 108;
+rows:
+  (*, 108, 'quick brown fox', *)
+
+select * from vch where vch_testno = 109;
+rows:
+  (*, 109, '', *)
+
+select * from vch where vch_testno = 110;
+rows:
+  (*, 110, 'null', *)
+
+select * from vch where vch_testno = 111;
+rows:
+  (*, 111, null, *)
+
+select * from vch where vch_testno = 112;
+rows:
+  (*, 112, 'quick brown fox', *)
+
+select * from vch where vch_testno = 113;
+rows:
+  (*, 113, '   quick brown fox   ', *)
+
+//select * from vch where vch_testno = 114;
+//rows:
+//  (*, 114, 'quick brown fox's', *)
+
+select * from vch where vch_testno = 115;
+rows:
+(*, 115, '', *)
+
+select * from vch where vch_testno = 116;
+rows:
+  (*, 116, null, *)
+
+select * from vch where vch_testno = 117;
+rows:
+  (*, 117, null, *)
+
+//select * from vch where vch_testno = 118;
+//rows:
+//  (*, 118, ''quick brown fox
+//s', *)
+
+CLEANUP {
+  
+  drop table vch;
+  mute
+
+  bye;
+  mute
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* end                                                                        */
+/*----------------------------------------------------------------------------*/
