@@ -21,30 +21,30 @@ success
 //fetch vch;
 //rows: 17
 
-//fetch vch "vch_testno 201 =";
-//rows:
-//  (*, 201, 'quick brown fox', *)
+fetch vch "vch_testno 201 =";
+rows:
+  (*, 201, 'quick brown fox', *)
 
-//fetch vch "vch_testno 202 =";
-//rows:
-//  (*, 202, 'quick, brown fox\', *)
+fetch vch "vch_testno 202 =";
+rows:
+  (*, 202, 'quick, brown fox\', *)
 
-//fetch vch "vch_testno 203 ="
-//rows:
-//  (*, 203, 'quick brown fox's', *)
+fetch vch "vch_testno 203 ="
+rows:
+  (*, 203, 'quick brown fox's', *)
 
-//fetch vch "vch_testno 204 =";
-//rows:
-//  (*, 204, 'quick brown foxs', *)
+fetch vch "vch_testno 204 =";
+rows:
+  (*, 204, 'quick brown foxs', *)
 
-//fetch vch "vch_testno 205 =";
-//rows:
-//  (*, 205, 'quick brow\n foxs', *)
+fetch vch "vch_testno 205 =";
+rows:
+  (*, 205, 'quick brow\n foxs', *)
 
-//fetch vch "vch_testno 206 =";
-//rows:
-//  (*, 206, 'quick brown fox
-//s', *)
+fetch vch "vch_testno 206 =";
+rows:
+  (*, 206, 'quick brown fox
+s', *)
 
 fetch vch "vch_testno 207 =";
 rows:

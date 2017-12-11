@@ -27,72 +27,72 @@ rows:
  
 fetch vch "vch_testno 402 =";
 rows:
-  (402, 'quick, brown fox', *);
+  (*, 402, 'quick, brown fox', *);
 
 fetch vch "vch_testno 403 =";
 rows:
- (403, 'quick brown fox\'s', *);
+ (*, 403, 'quick brown fox\'s', *);
 
 fetch vch "vch_testno 404 =";
 rows:
-  (404, 'quick brown fox's', *);
+  (*, 404, 'quick brown fox's', *);
 
 fetch vch "vch_testno 405 =";
 rows:
-  (405, 'quick brown\n fox', *);
+  (*, 405, 'quick brown\n fox', *);
 
 fetch vch "vch_testno 406 =";
 rows:
-  (406, 'quick brown fox
+  (*, 406, 'quick brown fox
 s', *);
 
 fetch vch "vch_testno 407 =";
 rows:
-  (407, 'quick brown fox', *);
+  (*, 407, 'quick brown fox', *);
 
 fetch vch "vch_testno 408 =";
 rows:
-  (408, 'quick brown fox', *);
+  (*, 408, 'quick brown fox', *);
 
 fetch vch "vch_testno 409 =";
 rows:
-  (409, '', *);
+  (*, 409, '', *);
 
 fetch vch "vch_testno 410 =";
 rows:
-  (410, 'null', *);
+  (*, 410, 'null', *);
 
 fetch vch "vch_testno 411 =";
 rows:
-  (411, null, *);
+  (*, 411, null, *);
 
 fetch vch "vch_testno 412 =";
 rows:
-  (412, 'quick brown fox', *);
+  (*, 412, 'quick brown fox', *);
 
 fetch vch "vch_testno 413 =";
 rows:
-  (413, '   quick brown fox   ', *);
+  (*, 413, '   quick brown fox   ', *);
 
 fetch vch "vch_testno 414 =";
 rows:
-  (414, 'quick brown fox's', *);
+  (*, 414, 'quick brown fox's', *);
 
 fetch vch "vch_testno 415 =";
 rows:
-  (415, '', *);
+  (*, 415, '', *);
 
 fetch vch "vch_testno 416 =";
 rows:
-  (416, null, *);
+  (*, 416, null, *);
 
 fetch vch "vch_testno 417 =";
 rows:
-  (417, null, *);
+  (*, 417, null, *);
 
 fetch vch "vch_testno 418 =";
 rows:
-  (418, ''quick brown fox
+  (*, 418, ''quick brown fox
 s', *);
 
 CLEANUP {
