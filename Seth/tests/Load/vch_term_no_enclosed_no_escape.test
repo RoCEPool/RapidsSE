@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* regressionData -- Regression data load tests                               */
+/* vch_no_term_no_enclosed_no_escape -- varchar term no escape no enclosed    */
 /*----------------------------------------------------------------------------*/
 
 // create the tables
@@ -15,91 +15,77 @@ create index idx on vch (vch_testno);
 success;
 
 // load data into the table with default formatter settings
-ld vch "../JTEST/vch_defaults.csv";
+ld vch "../JTEST/vch_defaults.csv" record_terminator ";" enclosed_by "\0" escape_char "\0" ;
 success
 
 //fetch vch;
-//rows: 18
+//rows: 16
 
-fetch vch "vch_testno 101 =";
+fetch vch "vch_testno 701 =";
 rows:
-  (*, 101, 'quick brown fox', *);
+  (*, 701, 'quick brown fox', *);
 
-/*
-fetch vch "vch_testno 101 =";
+fetch vch "vch_testno 702 =";
 rows:
- (*, 101, 'quick brown fox', *);
- 
-fetch vch "vch_testno 102 =";
+  (*, 702, 'quick, brown fox', *);
+
+fetch vch "vch_testno 703 =";
 rows:
-  (102, 'quick, brown fox', *);
+  (*, 703, 'quick brown fox\'s', *);
 
-//fetch vch "vch_testno 103 =";
-//rows:
-//  (103, 'quick brown fox\'s', *);
-
-//fetch vch "vch_testno 104 =";
-//rows:
-//  (104, 'quick brown fox's', *);
-
-fetch vch "vch_testno 105 =";
+fetch vch "vch_testno 704 =";
 rows:
-  (105, 'quick brown\n fox', *);
+  (*, 704, 'quick brown fox's', *);
 
-fetch vch "vch_testno 106 =";
+fetch vch "vch_testno 705 =";
 rows:
-  (106, 'quick brown fox
+  (*, 705, 'quick brown\n fox', *);
+
+fetch vch "vch_testno 706 =";
+rows:
+  (*, 706, 'quick brown fox
 s', *);
 
-fetch vch "vch_testno 107 =";
+fetch vch "vch_testno 707 =";
 rows:
-  (107, 'quick brown fox', *);
+  (*, 707, 'quick brown fox', *);
 
-fetch vch "vch_testno 108 =";
+fetch vch "vch_testno 708 =";
 rows:
-  (108, 'quick brown fox', *);
+  (*, 708, 'quick brown fox', *);
 
-fetch vch "vch_testno 109 =";
+fetch vch "vch_testno 709 =";
 rows:
-  (109, '', *);
+  (*, 709, '', *);
 
-fetch vch "vch_testno 110 =";
+fetch vch "vch_testno 710 =";
 rows:
-  (110, 'null', *);
+  (*, 710, 'null', *);
 
-fetch vch "vch_testno 111 =";
+fetch vch "vch_testno 711 =";
 rows:
-  (111, null, *);
+  (*, 711, null, *);
 
-fetch vch "vch_testno 112 =";
+fetch vch "vch_testno 712 =";
 rows:
-  (112, 'quick brown fox', *);
+  (*, 712, 'quick brown fox', *);
 
-fetch vch "vch_testno 113 =";
+fetch vch "vch_testno 713 =";
 rows:
-  (113, '   quick brown fox   ', *);
+  (*, 713, '   quick brown fox   ', *);
 
-//fetch vch "vch_testno 114 =";
-//rows:
-//  (114, 'quick brown fox's', *);
-
-fetch vch "vch_testno 115 =";
+fetch vch "vch_testno 714 =";
 rows:
-  (115, '', *);
+  (*, 714, 'quick brown fox's', *);
 
-fetch vch "vch_testno 116 =";
+fetch vch "vch_testno 715 =";
 rows:
-  (116, null, *);
+  (*, 715, '', *);
 
-fetch vch "vch_testno 117 =";
+fetch vch "vch_testno 716 =";
 rows:
-  (117, null, *);
+  (*, 716, null, *);
 
-fetch vch "vch_testno 118 =";
-rows:
-  (118, ''quick brown fox
-s', *);
-*/
 
 CLEANUP {
   
