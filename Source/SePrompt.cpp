@@ -68,14 +68,12 @@ CmdTable SePromptCommands[] =
   { C_CMD_DROP,    C_ONE_TABLE,   &SePrompt::bCmd_DropTable     },
   { C_CMD_DROP,    C_ONE_TENANT,  &SePrompt::bCmd_DropTenant    },
   { C_CMD_END,     C_ONE_INSERT,  &SePrompt::bCmd_EndInsert     },
-  { C_CMD_FIRST,   nullptr,       &SePrompt::bCmd_GetFirstRow   },
   { C_CMD_HELP1,   nullptr,       &SePrompt::bCmd_Help          },
   { C_CMD_HELP2,   nullptr,       &SePrompt::bCmd_Help          },
   { C_CMD_HISTORY, nullptr,       &SePrompt::bCmd_History       },
   { C_CMD_INSERT,  C_ONE_ROW,     &SePrompt::bCmd_InsertRow     },
   { C_CMD_LOAD,    nullptr,       &SePrompt::bCmd_LoadTable     },
   { C_CMD_LS,      nullptr,       &SePrompt::bCmd_ListDir       },
-  { C_CMD_NEXT,    nullptr,       &SePrompt::bCmd_GetNextRow    },
   { C_CMD_PWD,     nullptr,       &SePrompt::bCmd_PrintDir      },
   { C_CMD_RECALL,  nullptr,       &SePrompt::bCmd_RecallCommand },
   { C_CMD_SLEEP,   nullptr,       &SePrompt::bCmd_Sleep         },
@@ -1430,69 +1428,6 @@ bool SePrompt::bCmd_EndInsert(void)
   m_sResponse = "<ok>"_Stz;
   
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the first row                                                          */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bCmd_GetFirstRow(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  i8 iAddress = m_sResponse.iToI8();
-  
-  SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
-  ASSERT(CN_SELCURSOR == pSelCursor->eClass());
-  
-  pSelCursor->vBegin(m_iPartition);
-  pSelCursor->vFirst();
-  Stz* pStr = pSelCursor->aRowAsStr();
-  
-  if (pStr == nullptr) {
-    pSelCursor->vEnd();
-    delete pSelCursor;
-    m_pSEitf->m_aRowPtr = nullptr;
-    m_sResponse = "<ok>"_Stz;
-    return false;
-  }
-  else {
-    m_pSEitf->m_aRowPtr = pStr;
-    m_sResponse = "<ok>"_Stz;
-    return true;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the next row                                                           */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bCmd_GetNextRow(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  i8 iAddress = m_sResponse.iToI8();
-  
-  SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
-  ASSERT(CN_SELCURSOR == pSelCursor->eClass());
-  
-  pSelCursor->vNext();
-  Stz* pStr = pSelCursor->aRowAsStr();
-  
-  if (pStr == nullptr) {
-    pSelCursor->vEnd();
-    delete pSelCursor;
-    m_pSEitf->m_aRowPtr = nullptr;
-    
-    // now return the table
-    bool bResult = bReturnTable();
-    ASSERT(bResult);
-    m_sResponse = "<ok>"_Stz;
-    return false;
-  }
-  else {
-    m_pSEitf->m_aRowPtr = pStr;
-    m_sResponse = "<ok>"_Stz;
-    return true;
-  }
 }
 
 /*----------------------------------------------------------------------------*/

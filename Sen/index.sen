@@ -710,6 +710,7 @@ tp: lowerSelectIdxTask
 /*----------------------------------------------------------------------------*/
 : printRows ( ^pIndex ^pIndexBuffer --  )
 
+/*
   0 0 locals| nRowCount pEntry pIndexBuffer pIndex iPartitionNo |
 
   // get the partitionNo
@@ -738,6 +739,7 @@ tp: lowerSelectIdxTask
 
     // return nRowCount
     nRowCount
+*/
 ;
 
 /*----------------------------------------------------------------------------*/
