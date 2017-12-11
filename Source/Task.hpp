@@ -584,7 +584,6 @@ namespace Tasks
     static void vEnterRoutine(MP_Task mpTask);
     
     // entry
-    static void vEntryEmbeddedRow(MP_Task mpTask);
     static void vEntryMatches(MP_Task mpTask);
     static void vEntrySame(MP_Task mpTask);
     static void vEntryToDataRow(MP_Task mpTask);

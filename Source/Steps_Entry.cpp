@@ -18,7 +18,6 @@ void Task::vAddPrimitives_Entry(void)
 {
   vAddPrimitive("entry.matches"_Stz,      &vEntryMatches,     false);
   vAddPrimitive("entry.toDataRow"_Stz,    &vEntryToDataRow,   false);
-  vAddPrimitive("entry.embeddedRow"_Stz,  &vEntryEmbeddedRow, false);
   vAddPrimitive("entry.same"_Stz,         &vEntrySame,        false);
 }
 
@@ -127,36 +126,6 @@ void Task::vEntryToDataRow(MP_Task mpTask)
   
   // return the row entry
   mpTask->m_pDataStack->vPushObject(pRowEntry);
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* entry.embeddedRow -- return row from entry                                 */
-/*----------------------------------------------------------------------------*/
-void Task::vEntryEmbeddedRow(MP_Task mpTask)
-{
-  ENTRY("vEntryEmbeddedRow"_Stz);
-  
-  Object* pPtrEntry = nullptr;
-  Object* pPtrIndex = nullptr;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrEntry) )
-    THROW_INVALID_DSTACK("entry.embeddedRow"_Stz);
-  
-  Entry* pEntry = _pEntry(pPtrEntry);
-  ASSERT(CN_ENTRY == pEntry->eClass());
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("entry.embeddedRow"_Stz);
-  
-  Index* pIndex = _pIndex(pPtrIndex);
-  ASSERT(CN_INDEX == pIndex->eClass() || CN_INDEX == pIndex->eClass());
-  
-  s48K sRow;
-  RowData::vRowAsString(sRow, (Stz*)pEntry->aRow(), pIndex->pTable()->pColumnVec());
-  
-  // return the row entry
-  mpTask->m_pDataStack->vPushS48K(sRow);
   EXIT();
 }
 
