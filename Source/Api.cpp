@@ -1962,11 +1962,16 @@ eEC RapidsSE_LoadData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath,
     VALIDATE_PARAM("b"_Stz, pTable);
     VALIDATE_PARAM("c"_Stz, pFilePath);
     
+//    vTrace("rt = %s\n"_Stz, pRecordTerminator->aChar());
+//    vTrace("fs = %s\n"_Stz, pFieldSeparator->aChar());
+//    vTrace("eb = %s\n"_Stz, pEnclosedBy->aChar());
+//    vTrace("ec = %s\n"_Stz, pEscapeChar->aChar());
+    
     // set the formatters
-//    pSEitf->m_xFormatters.m_cEnclosedBy     = *(pRecordTerminator->aChar());
-//    pSEitf->m_xFormatters.m_cFieldSeparator = *(pFieldSeparator->aChar());
-//    pSEitf->m_xFormatters.m_cEnclosedBy     = *(pEnclosedBy->aChar());
-//    pSEitf->m_xFormatters.m_cEscapeChar     = *(pEscapeChar->aChar());
+    pSEitf->m_xFormatters.m_cRecordTerminator = *(pRecordTerminator->aChar());
+    pSEitf->m_xFormatters.m_cFieldSeparator   = *(pFieldSeparator->aChar());
+    pSEitf->m_xFormatters.m_cEnclosedBy       = *(pEnclosedBy->aChar());
+    pSEitf->m_xFormatters.m_cEscapeChar       = *(pEscapeChar->aChar());
     
     // add a column
     eResult = eExecuteRequest(pSEitf, "ld"_Stz,
