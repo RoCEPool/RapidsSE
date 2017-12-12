@@ -1502,6 +1502,7 @@ bool SePrompt::bCmd_InsertRow(void)
   
   i8 i_Token;
   i8 iNumTokens;
+  bool bBlankLine = false;
   
   ASSERT(m_xTokenVec[0]->bSame("insert"_Stz));
   ASSERT(m_xTokenVec[1]->bSame("row"_Stz));
@@ -1539,7 +1540,7 @@ bool SePrompt::bCmd_InsertRow(void)
                   m_pSEitf->m_pCurrentTable->pColumnVec(),
                   &m_pSEitf->m_xFormatters,
                   pRow, StrLib::iSize(pRow->aChar()),
-                  s, iRowLength);
+                  s, iRowLength, bBlankLine);
   
   if (! bValid) {
     m_pSEitf->vSetLastError(EC_INVALID_VALUE);

@@ -414,12 +414,26 @@ i8 DtmLib::iSize(eDM eDatum, char* aSrc)
 /*----------------------------------------------------------------------------*/
 /* is there data?                                                             */
 /*----------------------------------------------------------------------------*/
-bool DtmLib::bIsThereData(char cSrc, Formatters* pFormatters)
+bool DtmLib::bIsThereFieldData(char cSrc, Formatters* pFormatters)
 {
   if ( ! cSrc
        || cSrc == pFormatters->m_cFieldSeparator
        || cSrc == C_NL
        || cSrc == C_CR
+      )
+    return false;
+  else
+    return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is there data?                                                             */
+/*----------------------------------------------------------------------------*/
+bool DtmLib::bIsThereLineData(char cSrc, Formatters* pFormatters)
+{
+  if ( ! cSrc
+      || cSrc == C_NL
+      || cSrc == C_CR
       )
     return false;
   else

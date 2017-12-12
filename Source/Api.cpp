@@ -1793,12 +1793,13 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel)
     
     s48K s;
     i8 iRowLength;
+    bool bBlankLine;
     
     // format the record into row format
     bool bValid = RowData::bFormatData(pSEitf->m_pCurrentTable->pColumnVec(),
                                        &pSEitf->m_xFormatters,
                                        pRow, StrLib::iSize(pRow->aChar()),
-                                       s, iRowLength);
+                                       s, iRowLength, bBlankLine);
     if (! bValid) {
       pSEitf->vSetLastError(EC_INVALID_VALUE);
       TRACE_ERROR("d"_Stz, pSEitf->m_eErrorCode);
@@ -1877,12 +1878,13 @@ eEC RapidsSE_InsertRowPartition(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel)
     
     s48K s;
     i8 iRowLength;
+    bool bBlankLine;
     
     // format the record into row format
     bool bValid = RowData::bFormatData(pSEitf->m_pCurrentTable->pColumnVec(),
                                        &pSEitf->m_xFormatters,
                                        pRow, StrLib::iSize(pRow->aChar()),
-                                       s, iRowLength);
+                                       s, iRowLength, bBlankLine);
     if (! bValid) {
       pSEitf->vSetLastError(EC_INVALID_VALUE);
       TRACE_ERROR("d"_Stz, pSEitf->m_eErrorCode);
@@ -1962,10 +1964,10 @@ eEC RapidsSE_LoadData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath,
     VALIDATE_PARAM("b"_Stz, pTable);
     VALIDATE_PARAM("c"_Stz, pFilePath);
     
-//    vTrace("rt = %s\n"_Stz, pRecordTerminator->aChar());
-//    vTrace("fs = %s\n"_Stz, pFieldSeparator->aChar());
-//    vTrace("eb = %s\n"_Stz, pEnclosedBy->aChar());
-//    vTrace("ec = %s\n"_Stz, pEscapeChar->aChar());
+    vTrace("rt = %s\n"_Stz, pRecordTerminator->aChar());
+    vTrace("fs = %s\n"_Stz, pFieldSeparator->aChar());
+    vTrace("eb = %s\n"_Stz, pEnclosedBy->aChar());
+    vTrace("ec = %s\n"_Stz, pEscapeChar->aChar());
     
     // set the formatters
     pSEitf->m_xFormatters.m_cRecordTerminator = *(pRecordTerminator->aChar());
