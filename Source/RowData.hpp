@@ -17,7 +17,8 @@ namespace DBobjects
     static void vDump(Stz* aRowData, ColumnVec* pColVec);
     static bool bFormatData(ColumnVec* pColVec, Formatters* pFormatters,
                             Stz* aRawData, i8 iRawLength,
-                            Stz* aRowData, i8& iRowLength);
+                            Stz* aRowData, i8& iRowLength,
+                            bool& bBlankLine);
     static void vRowAsString(s48K& sDataString, Stz* aRowData, ColumnVec* pColVec);
     static void vShow(Stz* aRowData, ColumnVec* pColVec);
   };

@@ -219,7 +219,7 @@ bool Dte::bExtract(char** aaSrc, Dte* aDte, Column* pColumn, Formatters* pFormat
   StrLib::vSkipSpaces(aaSrc);
    
   // is there any data ?
-  if ( ! DtmLib::bIsThereData(**aaSrc,pFormatters) )
+  if ( ! DtmLib::bIsThereFieldData(**aaSrc,pFormatters) )
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

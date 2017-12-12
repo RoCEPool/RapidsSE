@@ -177,6 +177,7 @@ bool LoaderSub::bFetchRecord(void)
   Stz* aRawData;
   i8 iLength;
   bool bValid = false;
+  bool bBlankLine;
   Interface::SEitf* pSEitf = m_pLoader->pSEitf();
   
   if (! m_bMoreChunks)
@@ -191,13 +192,15 @@ bool LoaderSub::bFetchRecord(void)
       bValid = RowData::bFormatData(m_pTable->pColumnVec(),
                                     &pSEitf->m_xFormatters,
                                     aRawData, iLength,
-                                    m_aRecord.aStr(), m_iLength);
+                                    m_aRecord.aStr(), m_iLength,
+                                    bBlankLine);
       if (bValid) {
         m_iValidRecords++;
         return bValid;
       }
       else {
-        m_iInvalidRecords++;
+        if ( ! bBlankLine )
+          m_iInvalidRecords++;
         continue;
       }
     }
@@ -215,13 +218,16 @@ bool LoaderSub::bFetchRecord(void)
       bValid = RowData::bFormatData(m_pTable->pColumnVec(),
                                     &pSEitf->m_xFormatters,
                                     aRawData, iLength,
-                                    m_aRecord.aStr(), m_iLength);
+                                    m_aRecord.aStr(), m_iLength,
+                                    bBlankLine);
       if (bValid) {
         m_iValidRecords++;
         return bValid;
       }
-      else
-        m_iInvalidRecords++;
+      else {
+        if ( ! bBlankLine )
+          m_iInvalidRecords++;
+      }
     }
   }
   

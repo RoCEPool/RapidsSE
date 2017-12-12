@@ -63,10 +63,11 @@ void RowData::vDump(Stz* aRowData, ColumnVec* pColVec)
 bool RowData::bFormatData(ColumnVec* pColVec,
                           Formatters* pFormatters,
                           Stz* aRawData, i8 iRawLength,
-                          Stz* aRowData, i8& iRowLength)
+                          Stz* aRowData, i8& iRowLength,
+                          bool &bBlankLine)
 {
   char* aSrc = aRawData->aChar();
-  
+  bBlankLine = false;
   i8 nColumns = pColVec->nItems() - 1;
   
   Stz* pOffset = aRowData;
@@ -79,8 +80,10 @@ bool RowData::bFormatData(ColumnVec* pColVec,
   StrLib::vSkipSpaces(&aSrc);
   
   // skip blank lines
-  if (! DtmLib::bIsThereData(*aSrc,pFormatters) )
-      return false;
+  if (! DtmLib::bIsThereLineData(*aSrc,pFormatters) ) {
+    bBlankLine = true;
+    return false;
+  }
   
   // reset back to start
   aSrc = aStart;

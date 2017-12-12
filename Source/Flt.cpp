@@ -188,7 +188,7 @@ bool Flt::bExtract(char** aaSrc, Flt* aFlt, Column* pColumn, Formatters* pFormat
   StrLib::vSkipSpaces(aaSrc);
   
   // is there any data ?
-  if ( ! DtmLib::bIsThereData(**aaSrc,pFormatters) )
+  if ( ! DtmLib::bIsThereFieldData(**aaSrc,pFormatters) )
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -243,7 +243,7 @@ bool Bol::bExtract(char** aaSrc, Bol* aBol, Column* pColumn, Formatters* pFormat
   StrLib::vSkipSpaces(aaSrc);
   
   // is there any data ?
-  if ( ! DtmLib::bIsThereData(**aaSrc,pFormatters) )
+  if ( ! DtmLib::bIsThereFieldData(**aaSrc,pFormatters) )
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

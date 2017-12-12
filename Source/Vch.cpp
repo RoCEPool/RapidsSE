@@ -237,7 +237,7 @@ void Vch::vCopy(void* pDst, void* pSrc)
 //  char* aChar = (char*)aVch;
 //  
 //  // is there data ?
-//  if ( ! DtmLib::bIsThereData(**aaSrc,pFormatters) ) {
+//  if ( ! DtmLib::bIsThereFieldData(**aaSrc,pFormatters) ) {
 //    // empty string
 //    *aChar++ = '\0';
 //    return true;
@@ -327,7 +327,7 @@ void Vch::vCopy(void* pDst, void* pSrc)
 bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn, Formatters* pFormatters)
 {
   // is there data ?
-  if ( ! DtmLib::bIsThereData(**aaSrc,pFormatters) ) {
+  if ( ! DtmLib::bIsThereFieldData(**aaSrc,pFormatters) ) {
     // empty string
     *(char*)aVch = '\0';
     return true;
