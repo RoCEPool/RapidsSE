@@ -23,7 +23,9 @@ namespace Datums
     
     Formatters(void);
     ~Formatters(void);
-        
+  
+    void vReset(Formatters* pDefaults);
+  
     Footer* aFooter(void);
   };
 }

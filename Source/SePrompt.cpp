@@ -1577,6 +1577,11 @@ bool SePrompt::bCmd_LoadTable(void)
   ASSERT(m_xTokenVec[0]->bSame("ld"_Stz));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // reset seitf formatters
+  
+  m_pSEitf->m_xFormatters.vReset(&gpAttachMap->m_xFormatters);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy tokens from m_xTokenVec to m_xTokenVec2
   i8 iNumTokens = iCopyTokens(m_xTokenVec, m_xTokenVec2);
 

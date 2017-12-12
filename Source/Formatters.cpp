@@ -53,6 +53,19 @@ Formatters::~Formatters(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* reset the formatters to given set of defaults                              */
+/*----------------------------------------------------------------------------*/
+void Formatters::vReset(Formatters* pDefaults)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMATTERS);
+  
+  m_cEnclosedBy       = pDefaults->m_cEnclosedBy;
+  m_cEscapeChar       = pDefaults->m_cEscapeChar;
+  m_cFieldSeparator   = pDefaults->m_cFieldSeparator;
+  m_cRecordTerminator = pDefaults->m_cRecordTerminator;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
