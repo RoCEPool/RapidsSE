@@ -23,40 +23,39 @@ success
 
 fetch vch "vch_testno 201 =";
 rows:
-  (*, 201, 'quick brown fox', *)
+  (*, 201, '\'quick brown fox\'', *)
 
 fetch vch "vch_testno 202 =";
 rows:
-  (*, 202, 'quick, brown fox\', *)
+  (*, 202, '\'quick, brown fox\'s', *)
 
 fetch vch "vch_testno 203 ="
 rows:
-  (*, 203, 'quick brown fox's', *)
+  (*, 203, '\'quick brown fox\'\'s\'', *)
 
 fetch vch "vch_testno 204 =";
 rows:
-  (*, 204, 'quick brown foxs', *)
+  (*, 204, '\'quick brow\\n foxs\'', *)
 
 fetch vch "vch_testno 205 =";
 rows:
-  (*, 205, 'quick brow\n foxs', *)
+  (*, 205, '\'quick brown fox\ns\'', *)
 
 fetch vch "vch_testno 206 =";
 rows:
-  (*, 206, 'quick brown fox
-s', *)
+  (*, 206, '\'quick brown fox\'', *)
 
 fetch vch "vch_testno 207 =";
 rows:
-  (*, 207, 'quick brown fox', *)
+  (*, 207, '   \'quick brown fox\'   ', *)
 
 fetch vch "vch_testno 208 =";
 rows:
-  (*, 208, '', *)
+  (*, 208, '\'\'', *)
 
 fetch vch "vch_testno 209 =";
 rows:
-  (*, 209, 'null', *)
+  (*, 209, '\'null'\ s', *)
 
 
 // ???????
@@ -95,8 +94,8 @@ rows:
 
 CLEANUP {
   
-  drop table vch;
-  mute
+  //drop table vch;
+  //mute
 
   bye;
   mute
