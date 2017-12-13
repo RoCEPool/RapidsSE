@@ -1606,22 +1606,22 @@ bool SePrompt::bCmd_LoadTable(void)
       return false;
     }
     
-    if (m_xTokenVec2[iCurrentIndex]->bSame("record_terminator"_Stz)) {
+    if (m_xTokenVec2[iCurrentIndex]->bSame(C_RECORD_TERMINATOR)) {
       m_pSEitf->m_xFormatters.m_cRecordTerminator = *m_xTokenVec2[++iCurrentIndex]->sText().aChar();
       if (m_pSEitf->m_xFormatters.m_cRecordTerminator == '0')
         m_pSEitf->m_xFormatters.m_cRecordTerminator = '\0';
     }
-    else if (m_xTokenVec2[iCurrentIndex]->bSame("separator"_Stz)) {
+    else if (m_xTokenVec2[iCurrentIndex]->bSame(C_SEPARATOR)) {
       m_pSEitf->m_xFormatters.m_cFieldSeparator = *m_xTokenVec2[++iCurrentIndex]->sText().aChar();
       if (m_pSEitf->m_xFormatters.m_cFieldSeparator == '0')
         m_pSEitf->m_xFormatters.m_cFieldSeparator = '\0';
     }
-    else if (m_xTokenVec2[iCurrentIndex]->bSame("enclosed_by"_Stz)) {
+    else if (m_xTokenVec2[iCurrentIndex]->bSame(C_ENCLOSED_BY)) {
       m_pSEitf->m_xFormatters.m_cEnclosedBy = *m_xTokenVec2[++iCurrentIndex]->sText().aChar();
       if (m_pSEitf->m_xFormatters.m_cEnclosedBy == '0')
         m_pSEitf->m_xFormatters.m_cEnclosedBy = '\0';
     }
-    else if (m_xTokenVec2[iCurrentIndex]->bSame("escape_char"_Stz)) {
+    else if (m_xTokenVec2[iCurrentIndex]->bSame(C_ESCAPE_CHAR)) {
       m_pSEitf->m_xFormatters.m_cEscapeChar = *m_xTokenVec2[++iCurrentIndex]->sText().aChar();
       if (m_pSEitf->m_xFormatters.m_cEscapeChar == '0')
         m_pSEitf->m_xFormatters.m_cEscapeChar = '\0';

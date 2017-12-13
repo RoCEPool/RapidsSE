@@ -9,6 +9,11 @@
 
 using namespace CorrectnessAlgebra;
 
+static Stz* C_RECORD_TERMINATOR = "record_terminator"_Stz;
+static Stz* C_SEPARATOR         = "separator"_Stz;
+static Stz* C_ENCLOSED_BY       = "enclosed_by"_Stz;
+static Stz* C_ESCAPE_CHAR       = "escape_char"_Stz;
+
 class SePrompt : public Object
 {
 private:
