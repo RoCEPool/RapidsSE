@@ -472,23 +472,23 @@ void Vch::vSprint(Stz* aDst, Stz* aSrc)
   // copy from src to dst
   while (*aSrcChar) {
     
-    if (cEscapeChar == *aSrcChar) {
-      // escape an escape character
-      *aDstChar++ = cEscapeChar;
-      *aDstChar++ = *aSrcChar++;
-    }
-    else
+//    if (cEscapeChar == *aSrcChar) {
+//      // escape an escape character
+//      *aDstChar++ = cEscapeChar;
+//      *aDstChar++ = *aSrcChar++;
+//    }
+//    else
     if (cEnclosedBy == *aSrcChar) {
       // escape an enclosing quote/char
-      *aDstChar++ = cEscapeChar;
+      *aDstChar++ = cEnclosedBy;
       *aDstChar++ = *aSrcChar++;
     }
-    else
-      if (StrLib::bEscapedSpecial(*aSrcChar)) {
-      // convert special character back to escaped form
-      *aDstChar++ = cEscapeChar;
-      *aDstChar++ = StrLib::cEscapeInverse(*aSrcChar++);
-    }
+//    else
+//    if (StrLib::bEscapedSpecial(*aSrcChar)) {
+//      // convert special character back to escaped form
+//      *aDstChar++ = cEscapeChar;
+//      *aDstChar++ = StrLib::cEscapeInverse(*aSrcChar++);
+//    }
     else {
       // copy an ordinary char
       *aDstChar++ = *aSrcChar++;
