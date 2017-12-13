@@ -404,7 +404,8 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn, Formatters* pFormat
                                  ) )
     return false;
   
-//  vTrace("vch: ]%s[\n"_Stz,aVch);
+//    if (1 == pColumn->iColumnNo())
+//     vTrace("vch: ]%s[\n"_Stz,aVch);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing

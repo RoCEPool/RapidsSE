@@ -1382,7 +1382,7 @@ bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength,
       // test for escape character
       if (cEscapeChar == **aaSrc) {
         
-//      if (StrLib::bEscapeConvert( *((*aaSrc)+1), cEnclosedBy, cEscapeChar )) {
+        if (StrLib::bEscapeConvert( *((*aaSrc)+1), cEnclosedBy, cEscapeChar )) {
         
            // skip escape character
           (*aaSrc)++;
@@ -1397,7 +1397,7 @@ bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength,
             (*aaSrc)++;
           
           continue;
-//      }
+        }
       }
       
       if (iLength++ < iMaxLength)
