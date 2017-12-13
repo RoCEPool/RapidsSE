@@ -452,7 +452,7 @@ bool StrLib::bEnds(const char* sArg, const char* sEnd)
 }
 
 /*----------------------------------------------------------------------------*/
-/* vEscape: put a '\' before and '"'                                          */
+/* vEscape: put a '\' before an '"'                                           */
 /*----------------------------------------------------------------------------*/
 void StrLib::vEscape(const char* sArg, char* sEscaped)
 {
@@ -470,6 +470,21 @@ void StrLib::vEscape(const char* sArg, char* sEscaped)
   }
   
   *aDst = '\0';
+}
+
+/*----------------------------------------------------------------------------*/
+/* bEscapeConvert: test if cArg is an escape character                        */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bEscapeConvert(const char cArg)
+{
+  if ('b' == cArg) return true;
+  if ('f' == cArg) return true;
+  if ('n' == cArg) return true;
+  if ('r' == cArg) return true;
+  if ('t' == cArg) return true;
+  if ((char)26 == cArg) return true;
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
