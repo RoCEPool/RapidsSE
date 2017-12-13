@@ -52,7 +52,7 @@ namespace Base
     static bool  bEnds(const char* sArg, const char cEnd);
     static bool  bEnds(const char* sArg, const char* sEnd);
     static void  vEscape(const char* sArg, char* sEscaped);
-    static bool  bEscapeConvert(const char cArg, char cEnclosedBy);
+    static bool  bEscapeConvert(const char cArg, char cEnclosedBy, char cEscapeChar);
     static char  cEscapeConvert(const char cArg);
     static char  cEscapeInverse(const char cArg);
     static char  cEscapeProcessing(char** aaSrc, char cEscapeChar);

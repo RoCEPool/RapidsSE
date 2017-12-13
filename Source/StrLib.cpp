@@ -475,9 +475,10 @@ void StrLib::vEscape(const char* sArg, char* sEscaped)
 /*----------------------------------------------------------------------------*/
 /* bEscapeConvert: test if cArg is an escape character                        */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bEscapeConvert(const char cArg, char cEnclosedBy)
+bool StrLib::bEscapeConvert(const char cArg, char cEnclosedBy, char cEscapeChar)
 {
   if (cEnclosedBy == cArg) return true;
+  if (cEscapeChar == cArg) return true;
   
   if ('b' == cArg) return true;
   if ('f' == cArg) return true;
@@ -1381,7 +1382,7 @@ bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength,
       // test for escape character
       if (cEscapeChar == **aaSrc) {
         
-//      if (StrLib::bEscapeConvert( *((*aaSrc)+1)) ) {
+//      if (StrLib::bEscapeConvert( *((*aaSrc)+1), cEnclosedBy, cEscapeChar )) {
         
            // skip escape character
           (*aaSrc)++;
