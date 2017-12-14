@@ -18,8 +18,8 @@ success;
 ld vch "../JTEST/vch_defaults.csv";
 success
 
-//fetch vch;
-//rows: 18
+fetch vch;
+rows: 21
 
 fetch vch "vch_testno 101 ==";
 rows:
@@ -29,22 +29,22 @@ fetch vch "vch_testno 102 =";
 rows:
   (*, 102, 'quick, brown fox', *)
 
-//fetch vch "vch_testno 103 =";
-//rows:
-//  (*, 103, 'quick brown fox''s', *)
+fetch vch "vch_testno 103 =";
+rows:
+  (*, 103, 'quick brown fox''s', *)
 
-//fetch vch "vch_testno 104 =";
-//rows:
-//  (*, 104, 'quick brown fox\'s', *)
+fetch vch "vch_testno 104 =";
+rows:
+  (*, 104, 'quick brown fox''s', *)
 
 fetch vch "vch_testno 105 =";
 rows:
-  (*, 105, 'quick brow\\n foxs', *)
+  (*, 105, 'quick brow\n foxs', *)
 
-//fetch vch "vch_testno 106 =";
-//rows:
-//  (*, 106, 'quick brown fox
-//s', *)
+fetch vch "vch_testno 106 =";
+rows:
+  (*, 106, 'quick brown fox
+s', *)
 
 fetch vch "vch_testno 107 =";
 rows:
@@ -68,23 +68,23 @@ rows:
 
 fetch vch "vch_testno 112 =";
 rows:
-  (*, 112, 'quick brown fox', *)
+  (*, 112, 'quick brown \N fox', *)
 
 fetch vch "vch_testno 113 =";
 rows:
-  (*, 113, '   quick brown fox   ', *)
+  (*, 113, 'quick brown fox', *)
 
-//fetch vch "vch_testno 114 =";
-//rows:
-//  (*, 114, 'quick brown fox\'s', *)
+fetch vch "vch_testno 114 =";
+rows:
+  (*, 114, '   quick brown fox   ', *)
 
 fetch vch "vch_testno 115 =";
 rows:
-(*, 115, '', *)
+(*, 115, 'quick brown fox''s', *)
 
 fetch vch "vch_testno 116 =";
 rows:
-  (*, 116, null, *)
+  (*, 116, '', *)
 
 fetch vch "vch_testno 117 =";
 rows:
