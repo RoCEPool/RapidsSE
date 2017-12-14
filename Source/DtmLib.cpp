@@ -511,14 +511,6 @@ bool DtmLib::bTestForNull(char** aaSrc, DBobjects::Column* pColumn,
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check the column is nullable
-  
-  if ( ! pColumn->bIsNullable() ) {
-    bValid = false;
-    return true;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
   
   // skip trailing spaces
@@ -531,11 +523,15 @@ bool DtmLib::bTestForNull(char** aaSrc, DBobjects::Column* pColumn,
       && **aaSrc != C_NL
       && **aaSrc != C_CR) {
     bValid = false;
-    
-    if ( bSkipTrailingSpaces )
-      return true;
-    else
-      return false;
+    return false;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check the column is nullable
+  
+  if ( ! pColumn->bIsNullable() ) {
+    bValid = false;
+    return true;
   }
   
   bValid = true;
