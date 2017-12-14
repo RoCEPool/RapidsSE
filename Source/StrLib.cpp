@@ -1431,18 +1431,22 @@ bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength,
       // test for an escaped character
       if (cEscapeChar == **aaSrc) {
         
-        // skip escape character
-        (*aaSrc)++;
-        // must have some non-zero character
-        if ( ! **aaSrc )
-          return false;
-        
-        if (iLength++ < iMaxLength)
-          *aChar++ = StrLib::cEscapeConvert(*(*aaSrc)++);
-        else
+        if (StrLib::bEscapeConvert( *((*aaSrc)+1), cEnclosedBy, cEscapeChar )) {
+          
+          // skip escape character
           (*aaSrc)++;
-        
-        continue;
+          
+          // must have some non-zero character
+          if ( ! **aaSrc )
+            return false;
+          
+          if (iLength++ < iMaxLength)
+            *aChar++ = StrLib::cEscapeConvert(*(*aaSrc)++);
+          else
+            (*aaSrc)++;
+          
+          continue;
+        }
       }
       
       if (iLength++ < iMaxLength)
@@ -1467,18 +1471,22 @@ bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength,
     // test for escape character
     if (cEscapeChar == **aaSrc) {
       
-      // skip escape character
-      (*aaSrc)++;
-      // must have some non-zero character
-      if ( ! **aaSrc )
-        return false;
-      
-      if (iLength++ < iMaxLength)
-        *aChar++ = StrLib::cEscapeConvert(*(*aaSrc)++);
-      else
+      if (StrLib::bEscapeConvert( *((*aaSrc)+1), cEnclosedBy, cEscapeChar )) {
+        
+        // skip escape character
         (*aaSrc)++;
-      
-      continue;
+        
+        // must have some non-zero character
+        if ( ! **aaSrc )
+          return false;
+        
+        if (iLength++ < iMaxLength)
+          *aChar++ = StrLib::cEscapeConvert(*(*aaSrc)++);
+        else
+          (*aaSrc)++;
+        
+        continue;
+      }
     }
     
     if (iLength++ < iMaxLength)
