@@ -2,13 +2,6 @@
 // create table with INTEGER column tests
 //----------------------------------------------------------------------------//
 
-// create a table , float size > 16
-create table T1 (
-  name    varchar,
-  id      float(17)
-);
-failure
-
 // create a table , no size in float
 create table T1 (
   name    varchar,
@@ -25,10 +18,10 @@ select * from rapids.system.indexes;
 rows: 0
 
 // check metadata
-select data_type, is_partition_key, is_nullable, precision from rapids.system.columns where
-table_name = 'T1' and column_name = 'ID';
-rows:
-('INTEGER', false, true, 16)
+//select data_type, is_partition_key, is_nullable, precision from rapids.system.columns where
+//table_name = 'T1' and column_name = 'ID';
+//rows:
+//('FLOAT', false, true, 16)
 
 // drop the table
 drop table T1;
@@ -54,7 +47,7 @@ rows: 0
 select data_type, is_partition_key, is_nullable, precision from rapids.system.columns where
   table_name = 'T1' and column_name = 'ID';
 rows:
-  ('INTEGER', false, true, 16)
+  ('FLOAT', false, true, 16)
 
 // check partition key is first column
 select column_name from rapids.system.columns where table_name = 'T1' and is_partition_key = true;
@@ -100,15 +93,15 @@ rows:
   ('abc',0.0)
   ('abc',10.5)
   ('abc',+9223372036854775807)
-
+/*
 // drop table
 drop table T1;
 success
 
-// create a table , no size in varchar
+// create a table 
 create table T1 (
   name    varchar,
-  id      integer(10) NOT NULL
+  id      float NOT NULL
 ) partition by (id);
 success
 
@@ -125,7 +118,7 @@ select * from rapids.system.indexes;
 select data_type, is_partition_key, is_nullable, precision from rapids.system.columns where
 table_name = 'T1'  and column_name = 'ID';
 rows:
-  ('INTEGER', true, false, 19)
+  ('FLOAT', true, false, 19)
 
 // insert rows in the table
 insert into T1 values ('abc',10);
@@ -171,8 +164,8 @@ rows:
 // drop table
 drop table T1;
 success
-
+*/
 CLEANUP {
-  drop table T1;
-  mute
+  //drop table T1;
+  //mute
 }

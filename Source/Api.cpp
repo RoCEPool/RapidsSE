@@ -990,7 +990,6 @@ eEC RapidsSE_ExportData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath, i8 iTraceLev
 eEC RapidsSE_FetchNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
 {
   eEC eResult;
-  eEC eResponse;
   
   Stz* aApiCall = "RapidsSE_FetchNextRow"_Stz;
   
@@ -1007,16 +1006,17 @@ eEC RapidsSE_FetchNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
     // validate the reference pointer
     VALIDATE_REFPOINTER("b"_Stz, ppRow);
     
-    // get index buffer from seitf
-    EntryBuffer* pEntryBuffer = pSEitf->m_pEntryBuffer;
     Entry* pEntry = nullptr;
     
     bool bNextRow = pSEitf->bNextRow();
     
     if (bNextRow) {
       Entry* pEntry = pSEitf->m_pEntry;
-      RowData::vRowAsString(pSEitf->m_sResponse, (Stz*)pEntry->aRow(), pSEitf->m_pCurrentTable->pColumnVec());
-      *ppRow = (void*)pSEitf->m_sResponse.aChar();
+//    RowData::vRowAsString(pSEitf->m_sResponse, (Stz*)pEntry->aRow(), pSEitf->m_pCurrentTable->pColumnVec());
+//    *ppRow = (void*)pSEitf->m_sResponse.aChar();
+      
+      // return back row
+      *ppRow = (void*)(Stz*)pEntry->aRow();
     }
     else {
       *ppRow = nullptr;
