@@ -443,49 +443,25 @@ bool DtmLib::bIsThereLineData(char cSrc, Formatters* pFormatters)
 /*----------------------------------------------------------------------------*/
 /* test for null token                                                        */
 /*----------------------------------------------------------------------------*/
-//bool DtmLib::bTestForNull(char** aaSrc, DBobjects::Column* pColumn,
-//                          Formatters* pFormatters, bool& bValid,
-//                          bool bSkipTrailingSpaces)
-//{
-//  // do we see the token null
-//  if (0 != StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE)) {
-//    return false;
-//  }
-//  
-//  // skip over token null
-//  *aaSrc = (*aaSrc) + 4;
-//  
-//  // skip trailing spaces
-//  if (bSkipTrailingSpaces)
-//    StrLib::vSkipSpaces(aaSrc);
-//  
-//  // check it was "null" only
-//  if (**aaSrc
-//      && **aaSrc != pFormatters->m_cFieldSeparator
-//      && **aaSrc != C_NL
-//      && **aaSrc != C_CR) {
-//    bValid = false;
-//    
-//    if ( bSkipTrailingSpaces )
-//      return true;
-//    else
-//      return false;
-//  }
-//  
-//  // check the column is nullable
-//  if ( ! pColumn->bIsNullable() ) {
-//    bValid = false;
-//    return true;
-//  }
-//
-//  bValid = true;
-//  return true;
-//}
-
 bool DtmLib::bTestForNull(char** aaSrc, DBobjects::Column* pColumn,
-                          Formatters* pFormatters, bool& bValid,
+                          Formatters* pFormatters, bool& bValidNull,
                           bool bSkipTrailingSpaces)
 {
+  /*
+   * This function scans aaSrc and attempts to identify the text form of a null. 
+   * There are three text forms of null: null, \N or '\N'.
+   * If a null (and only a null) is detected and 
+   *  a) the column is nullable, then bValidNull is set to true and the
+   *     function returns true; or
+   *  b) the column is not nullable, then bValidNull is set to false and the
+   *     function returns true.
+   * If no form of null is detected then bValidNull is set to false and the
+   * function returns false.
+   * Importantly a valid null is one of the three forms of null -- there can be
+   * no further characters after it. Eg: "nulla" or "null a" are not
+   * correct forms of null.
+   */
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for null, \N or '\N'
   
@@ -506,14 +482,15 @@ bool DtmLib::bTestForNull(char** aaSrc, DBobjects::Column* pColumn,
     *aaSrc = (*aaSrc) + 4;
   }
   else {
-    // no form of null
+    // no null detected
+    bValidNull = false; // no null, so neither valid or invalid
     return false;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
   
-  // skip trailing spaces
+  // optionally skip trailing spaces
   if (bSkipTrailingSpaces)
     StrLib::vSkipSpaces(aaSrc);
   
@@ -522,7 +499,8 @@ bool DtmLib::bTestForNull(char** aaSrc, DBobjects::Column* pColumn,
       && **aaSrc != pFormatters->m_cFieldSeparator
       && **aaSrc != C_NL
       && **aaSrc != C_CR) {
-    bValid = false;
+    // no null detected
+    bValidNull = false; // no null, so neither valid or invalid
     return false;
   }
   
@@ -530,11 +508,13 @@ bool DtmLib::bTestForNull(char** aaSrc, DBobjects::Column* pColumn,
   // check the column is nullable
   
   if ( ! pColumn->bIsNullable() ) {
-    bValid = false;
+    // a null was detected in a non-nullable column
+    bValidNull = false;
     return true;
   }
   
-  bValid = true;
+  // a null was detected in a nullable column
+  bValidNull = true;
   return true;
 }
 

@@ -37,7 +37,7 @@ namespace Datums
     static bool bTestForNull(char** aaSrc,
                              DBobjects::Column* pColumn,
                              Formatters* pFormatters,
-                             bool& bValid,
+                             bool& bValidNull,
                              bool bSkipTrailingSpaces=true);
     static bool bValidFieldEnd(char** aaSrc, Formatters* pFormatters);
   };
