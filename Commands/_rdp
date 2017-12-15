@@ -9,6 +9,9 @@ create table RDP (
   rdp_bol_NN   BOOLEAN     NOT NULL,
   rdp_bol      BOOLEAN     ,
 
+  rdp_bcd_NN   DECIMAL       NOT NULL,
+  rdp_bcd      DECIMAL       ,
+
   rdp_flt_NN   FLOAT       NOT NULL,
   rdp_flt      FLOAT       ,
 
