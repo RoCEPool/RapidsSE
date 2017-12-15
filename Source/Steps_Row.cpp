@@ -15,8 +15,8 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Row(void)
 {
-  vAddPrimitive("row.asString"_Stz,  &vRowString, false);
-  vAddPrimitive("row.asEscapedString"_Stz,  &vRowString, false);
+  vAddPrimitive("row.asString"_Stz,         &vRowString,        false);
+  vAddPrimitive("row.asEscapedString"_Stz,  &vRowEscapedString, false);
 }
 
 /*----------------------------------------------------------------------------*/
