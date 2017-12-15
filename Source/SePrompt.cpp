@@ -2189,7 +2189,7 @@ void SePrompt::vIterateBuffers(void)
     i8 iPartition = m_pSEitf->m_pEntryBuffer->nPartitionNo();
     
     Entry* pEntry = m_pSEitf->m_pEntry;
-    RowData::vRowAsString(m_pSEitf->m_sResponse, (Stz*)pEntry->aRow(),
+    RowData::vRowAsBinaryString(m_pSEitf->m_sResponse, (Stz*)pEntry->aRow(),
                           m_pSEitf->m_pCurrentTable->pColumnVec());
     if (gpAttachMap->m_bMetadata ) {
       vTrace("row: (%lld, %s)\n"_Stz, iPartition, m_pSEitf->m_sResponse.aChar());
