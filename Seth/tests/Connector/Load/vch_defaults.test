@@ -18,7 +18,7 @@ success;
 escape connector se 'load vch ../JTEST/vch_defaults.csv' with node='NODE1';
 
 select * from vch;
-rows: 18
+rows: 21
 
 select vch_field from vch where vch_testno = 101;
 rows:
@@ -28,22 +28,22 @@ select vch_field from vch where vch_testno = 102;
 rows:
   ('quick, brown fox')
 
-//select vch_field from vch where vch_testno = 103;
-//rows:
-//  ('quick brown fox\'s')
+select vch_field from vch where vch_testno = 103;
+rows:
+  ('quick brown fox''s')
 
-//select vch_field from vch where vch_testno = 104;
-//rows:
-//  ('quick brown fox\'s')
+select vch_field from vch where vch_testno = 104;
+rows:
+  ('quick brown fox''s')
 
 select vch_field from vch where vch_testno = 105;
 rows:
   ('quick brow\n foxs')
 
-//select vch_field from vch where vch_testno = 106;
-//rows:
-//  ('quick brown fox
-//s')
+select vch_field from vch where vch_testno = 106;
+rows:
+  ('quick brown fox
+s')
 
 select vch_field from vch where vch_testno = 107;
 rows:
@@ -67,32 +67,45 @@ rows:
 
 select vch_field from vch where vch_testno = 112;
 rows:
-  ('quick brown fox')
+  ('quick brown \N fox')
 
 select vch_field from vch where vch_testno = 113;
 rows:
-  ('   quick brown fox   ')
+  ('quick brown fox')
 
-//select vch_field from vch where vch_testno = 114;
-//rows:
-//  ('quick brown fox's')
+select vch_field from vch where vch_testno = 114;
+rows:
+  ('   quick brown fox   ')
 
 select vch_field from vch where vch_testno = 115;
 rows:
-('')
+  ('quick brown fox''s')
 
 select vch_field from vch where vch_testno = 116;
 rows:
-  (null)
+  ('')
 
 select vch_field from vch where vch_testno = 117;
 rows:
   (null)
 
-//select * from vch where vch_testno = 118;
-//rows:
-//  (''quick brown fox
-//s')
+select vch_field from vch where vch_testno = 118;
+rows:
+  ('nulla')
+
+select vch_field from vch where vch_testno = 119;
+rows:
+  ('null a')
+
+select vch_field from vch where vch_testno = 120;
+rows:
+  (null)
+
+select vch_field from vch where vch_testno = 121;
+rows:
+  ('quick brown fox
+s')
+
 
 CLEANUP {
   

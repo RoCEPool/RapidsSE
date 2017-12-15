@@ -15,7 +15,8 @@ create index idx on vch (vch_testno);
 success;
 
 // load data into the table with default formatter settings
-ld vch "../JTEST/vch_defaults.csv";
+//ld vch "../JTEST/vch_defaults.csv";
+ld vch "/tmp/vch.csv";
 success
 
 fetch vch;
@@ -90,15 +91,27 @@ fetch vch "vch_testno 117 =";
 rows:
   (*, 117, null, *)
 
-//fetch vch "vch_testno 118 =";
-//rows:
-//  (*, 118, ''quick brown fox
-//s', *)
+fetch vch "vch_testno 118 =";
+rows:
+  (*, 118, 'nulla', *)
+
+fetch vch "vch_testno 119 =";
+rows:
+  (*, 119, 'null a', *)
+
+fetch vch "vch_testno 120 =";
+rows:
+(*, 120, null, *)
+
+fetch vch "vch_testno 121 =";
+rows:
+  (*, 121, 'quick brown fox
+s', *)
 
 CLEANUP {
   
-  drop table vch;
-  mute
+ // drop table vch;
+ // mute
 
   bye;
   mute
