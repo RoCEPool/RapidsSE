@@ -174,7 +174,7 @@ ENTRY("vRowCursorNext"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* rowCursor.get -- get current row                                           */
+/* rowCursor.row -- get current row                                           */
 /*----------------------------------------------------------------------------*/
 void Task::vRowCursorRow(MP_Task mpTask)
 {
@@ -187,10 +187,7 @@ void Task::vRowCursorRow(MP_Task mpTask)
   RowCursor* pRowCursor = _pRowCursor(pPtrRpwCursor);
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
   
-  s48K xRow;
-  xRow = (Stz*)pRowCursor->aRowAsStr();
-  
-  mpTask->m_pDataStack->vPushS48K(xRow);
+  mpTask->m_pDataStack->vPushObject(pRowCursor->pRow());
   
   EXIT();
 }

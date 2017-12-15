@@ -160,7 +160,7 @@ void RowData::vRowAsString(s48K& sDataString, Stz* aRowData, ColumnVec* pColVec)
     if (i_Column != 0)
       sDataString.vConcat(","_Stz);
       
-    char* pOffset = (char*)(aRowData) + i_Column*C_COLUMN_OFFSET_SIZE;
+    unsigned char* pOffset = (unsigned char*)(aRowData) + i_Column*C_COLUMN_OFFSET_SIZE;
     unsigned char iOffset = *(pOffset);
     
     // move to offset

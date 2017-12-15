@@ -17,6 +17,9 @@ print "loading table vch..." ;
 ld vch "../JTEST/vch_defaults.csv" ;
 
 fetch vch;
+dex vch "/tmp/vch.csv";
+
+/*
 drop table vch;
 
 print "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" ;
@@ -134,7 +137,7 @@ ld vch "../JTEST/vch_term_no_escape.csv"
 
 fetch vch;
 drop table vch;
-
+*/
 // enclosed_by
 // escape_char
 // record_terminator

@@ -15,24 +15,65 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Row(void)
 {
-  vAddPrimitive("row.string"_Stz,  &vRowString, false);
+  vAddPrimitive("row.asString"_Stz,  &vRowString, false);
+  vAddPrimitive("row.asEscapedString"_Stz,  &vRowString, false);
 }
 
+/*----------------------------------------------------------------------------*/
+/* return row as a string                                                     */
+/*----------------------------------------------------------------------------*/
 void Task::vRowString(MP_Task mpTask)
 {
   ENTRY("vRowString"_Stz);
   
   Object* pPtrRow;
+  Object* pPtrTable;
   if ( ! mpTask->m_pDataStack->bPop(pPtrRow) )
-    THROW_INVALID_DSTACK("row.string"_Stz);
+    THROW_INVALID_DSTACK("row.asString"_Stz);
+  
+  Entry* pRow = _pEntry(pPtrRow);
+  ASSERT(CN_ENTRY == pRow->eClass());
+         
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+     THROW_INVALID_DSTACK("row.asString"_Stz);
+ 
+  Table* pTable = _pTable(pPtrTable);
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  s48K sRow;
+  RowData::vRowAsString(sRow, (Stz*)pRow->aRow(), pTable->pColumnVec());
+  
+  mpTask->m_pDataStack->vPushS48K(sRow);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* rows.asEscapedString return row as an escaped string                       */
+/*----------------------------------------------------------------------------*/
+void Task::vRowEscapedString(MP_Task mpTask)
+{
+  ENTRY("vRowEscapedString"_Stz);
+  
+  Object* pPtrRow;
+  Object* pPtrTable;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrRow) )
+    THROW_INVALID_DSTACK("rows.asEscapedString"_Stz);
   
   Entry* pRow = _pEntry(pPtrRow);
   ASSERT(CN_ENTRY == pRow->eClass());
   
-  StrVal* pStrVal = reinterpret_cast<StrVal*>(pRow->aRow());
-  s256 sRow = pStrVal->aStr();
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+    THROW_INVALID_DSTACK("rows.asEscapedString"_Stz);
   
-  mpTask->m_pDataStack->vPushS256(sRow);
+  Table* pTable = _pTable(pPtrTable);
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  s48K sRow;
+  //RowData::vRowAsEscapedString(sRow, (Stz*)pRow->aRow(), pTable->pColumnVec());
+  
+  mpTask->m_pDataStack->vPushS48K(sRow);
+  
   EXIT();
 }
 
