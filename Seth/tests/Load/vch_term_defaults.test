@@ -15,11 +15,11 @@ create index idx on vch (vch_testno);
 success;
 
 // load data into the table with default formatter settings
-ld vch "../JTEST/vch_term_defaults.csv" record_terminator ";";
+ld vch "../JTEST/vch_term_defaults.csv" terminator ";";
 success
 
-//fetch vch;
-//rows: 18
+fetch vch;
+rows: 18
 
 fetch vch "vch_testno 501 ==";
 rows:
@@ -29,13 +29,13 @@ fetch vch "vch_testno 502 =";
 rows:
   (*, 502, 'quick, brown fox', *)
 
-fetch vch "vch_testno 503 ="
+fetch vch "vch_testno 503 =";
 rows:
-  (*, 503, 'quick brown fox\'s', *)
+  (*, 503, 'quick brown fox''s', *)
 
 fetch vch "vch_testno 504 =";
 rows:
-  (*, 504, 'quick brown fox\'s', *)
+  (*, 504, 'quick brown fox''s', *)
 
 fetch vch "vch_testno 505 =";
 rows:
@@ -76,7 +76,7 @@ rows:
 
 fetch vch "vch_testno 514 =";
 rows:
-  (*, 514, 'quick brown fox's', *)
+  (*, 514, 'quick brown fox''s', *)
 
 fetch vch "vch_testno 515 =";
 rows:
@@ -92,7 +92,7 @@ rows:
 
 fetch vch "vch_testno 518 =";
 rows:
-  (*, 518, ''quick brown fox
+  (*, 518, 'quick brown fox
 s', *)
 
 CLEANUP {

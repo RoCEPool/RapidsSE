@@ -15,8 +15,7 @@ create index idx on vch (vch_testno);
 success;
 
 // load data into the table with default formatter settings
-//ld vch "../JTEST/vch_defaults.csv";
-ld vch "/tmp/vch.csv";
+ld vch "../JTEST/vch_defaults.csv";
 success
 
 fetch vch;
@@ -110,8 +109,8 @@ s', *)
 
 CLEANUP {
   
- // drop table vch;
- // mute
+  drop table vch;
+  mute
 
   bye;
   mute
