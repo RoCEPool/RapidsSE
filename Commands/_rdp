@@ -1,0 +1,34 @@
+/*============================================================================*/
+/* _RDP -- test for RDP                                                       */
+/*============================================================================*/
+
+create table RDP (
+
+  rdp_testno   INTEGER     NOT NULL,
+
+  rdp_bol_NN   BOOLEAN     NOT NULL,
+  rdp_bol      BOOLEAN     ,
+
+  rdp_flt_NN   FLOAT       NOT NULL,
+  rdp_flt      FLOAT       ,
+
+  rdp_int_NN   INTEGER     NOT NULL,
+  rdp_int      INTEGER     ,
+
+  rdp_tsp_NN   TIMESTAMP   NOT NULL,
+  rdp_tsp      TIMESTAMP   ,
+
+  rdp_vch_NN   VARCHAR(32) NOT NULL,
+  rdp_vch      VARCHAR(32) ,
+
+  rdp_comment  VARCHAR(64) NOT NULL
+
+);
+
+ld rdp "../JTEST/rdp.csv" ;
+
+fetch rdp;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
