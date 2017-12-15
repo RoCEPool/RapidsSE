@@ -70,7 +70,7 @@ void Task::vRowEscapedString(MP_Task mpTask)
   ASSERT(CN_TABLE == pTable->eClass());
   
   s48K sRow;
-  //RowData::vRowAsEscapedString(sRow, (Stz*)pRow->aRow(), pTable->pColumnVec());
+  RowData::vRowAsEscapedString(sRow, (Stz*)pRow->aRow(), pTable->pColumnVec());
   
   mpTask->m_pDataStack->vPushS48K(sRow);
   

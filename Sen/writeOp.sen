@@ -101,7 +101,7 @@ common/ write nStreams    /
   rowCrs rowCursor.first
   begin while
     rowCrs rowCursor.row
-    pTable swap row.asString
+    pTable swap row.asEscapedString
     filePointer file.write
     "\n" filePointer file.write
     rowCrs rowCursor.next
