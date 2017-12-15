@@ -1611,7 +1611,7 @@ bool SePrompt::bCmd_LoadTable(void)
       if (m_pSEitf->m_xFormatters.m_cRecordTerminator == '0')
         m_pSEitf->m_xFormatters.m_cRecordTerminator = '\0';
     }
-    else if (m_xTokenVec2[iCurrentIndex]->bSame(C_SEPARATOR)) {
+    else if (m_xTokenVec2[iCurrentIndex]->bSame(C_FIELD_SEPARATOR)) {
       m_pSEitf->m_xFormatters.m_cFieldSeparator = *m_xTokenVec2[++iCurrentIndex]->sText().aChar();
       if (m_pSEitf->m_xFormatters.m_cFieldSeparator == '0')
         m_pSEitf->m_xFormatters.m_cFieldSeparator = '\0';

@@ -17,9 +17,7 @@ print "loading table vch..." ;
 ld vch "../JTEST/vch_defaults.csv" ;
 
 fetch vch;
-dex vch "/tmp/vch.csv";
 
-/*
 drop table vch;
 
 print "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" ;
@@ -71,9 +69,6 @@ fetch vch;
 drop table vch;
 
 
-
-
-
 print "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" ;
 print "500 Default formatters with: terminated\n" ;
 
@@ -85,7 +80,7 @@ create table vch (
 
 print "loading table vch..." ;
 ld vch "../JTEST/vch_term_defaults.csv"
-  record_terminator ";" ;
+  terminator ";" ;
 
 fetch vch;
 drop table vch;
@@ -101,7 +96,7 @@ create table vch (
 
 print "loading table vch..." ;
 ld vch "../JTEST/vch_term_no_enclosed.csv"
-  record_terminator ";" enclosed_by "\0" ;
+  terminator ";" enclosed_by "\0" ;
 
 fetch vch;
 drop table vch;
@@ -117,7 +112,7 @@ create table vch (
 
 print "loading table vch..." ;
 ld vch "../JTEST/vch_term_no_enclosed_no_escape.csv"
-  record_terminator ";" enclosed_by "\0" escape_char "\0" ;
+  terminator ";" enclosed_by "\0" escape_char "\0" ;
 
 fetch vch;
 drop table vch;
@@ -133,11 +128,27 @@ create table vch (
 
 print "loading table vch..." ;
 ld vch "../JTEST/vch_term_no_escape.csv"
-  record_terminator ";" escape_char "\0" ;
+  terminator ";" escape_char "\0" ;
 
 fetch vch;
 drop table vch;
-*/
+
+print "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" ;
+print "800 Formatters with: delimiter\n" ;
+
+create table vch (
+vch_testno  INTEGER     NOT NULL,
+vch_field   VARCHAR(32),
+vch_comment VARCHAR(64) NOT NULL
+);
+
+print "loading table vch..." ;
+ld vch "../JTEST/vch_delimiter.csv"
+  delimiter "|";
+
+fetch vch;
+drop table vch;
+
 // enclosed_by
 // escape_char
 // record_terminator
