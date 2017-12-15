@@ -230,100 +230,8 @@ void Vch::vCopy(void* pDst, void* pSrc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract an varchar from substr                                             */
+/* extract a varchar field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
-//bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn, Formatters* pFormatters)
-//{
-//  char* aChar = (char*)aVch;
-//  
-//  // is there data ?
-//  if ( ! DtmLib::bIsThereFieldData(**aaSrc,pFormatters) ) {
-//    // empty string
-//    *aChar++ = '\0';
-//    return true;
-//  }
-//  
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // test for null               THIS IS DIFFERENT TO OTHERS.  DISCUSS WITH ALKA
-//  
-//  if (StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) == 0) {
-//    
-//    char* aPtr = (*aaSrc) + 4;
-//    
-//    if (!*aPtr
-//        || C_FS == *aPtr
-//        || C_NL == *aPtr
-//        || C_CR == *aPtr) {
-//      
-//      if ( !pColumn->bIsNullable() )
-//        return false;
-//      
-//      aVch->vSetNull();
-//      *aaSrc = aPtr;
-//      return true;
-//    }
-//  }
-////  bool bValidNull;
-////  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
-////    if ( ! bValidNull )
-////      return false;
-////    aVch->vSetNull();
-////    return true;
-////  }
-//  
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // collect the csv
-//  
-//  i8 iLength = 0;
-//  i8 iColumnLength = pColumn->iColumnLength();
-//  bool bInQuotes = false;
-//  
-//  if ('"' == **aaSrc ||
-//      '\'' == **aaSrc) {
-//    bInQuotes = true;
-//    (*aaSrc)++;
-//  }
-//  
-//  if (bInQuotes) {
-//    while ('"' != **aaSrc
-//           && '\'' != **aaSrc
-//           && C_NL != **aaSrc
-//           && C_CR != **aaSrc) {
-//      
-//      if (iLength++ < iColumnLength)
-//        *aChar++ = *(*aaSrc)++;
-//      else
-//        (*aaSrc)++;
-//    }
-//    
-//    // did we see an end quote ?
-//    if ('"' != **aaSrc &&
-//        '\'' != **aaSrc)
-//      return false;
-//    
-//    (*aaSrc)++;
-//  }
-//  else {
-//    while (**aaSrc
-//            && C_FS != **aaSrc
-//            && C_NL != **aaSrc
-//            && C_CR != **aaSrc) {
-//      
-//      if (iLength++ < iColumnLength)
-//        *aChar++ = *(*aaSrc)++;
-//      else
-//        (*aaSrc)++;
-//    }
-//  }
-//  
-//  *aChar++ = '\0';
-//  
-//  // skip trailing spaces
-//  StrLib::vSkipSpaces(aaSrc);
-//    
-//  return true;
-//}
-
 bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn, Formatters* pFormatters)
 {
   // is there data ?
@@ -349,52 +257,6 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn, Formatters* pFormat
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect the csv
   
-//  i8 iLength = 0;
-//  i8 iColumnLength = pColumn->iColumnLength();
-//  bool bInQuotes = false;
-//  
-//  char* aChar = (char*)aVch;
-//  
-//  if ('"' == **aaSrc ||
-//      '\'' == **aaSrc) {
-//    bInQuotes = true;
-//    (*aaSrc)++;
-//  }
-//  
-//  if (bInQuotes) {
-//    while ('"' != **aaSrc
-//           && '\'' != **aaSrc
-//           && C_NL != **aaSrc
-//           && C_CR != **aaSrc) {
-//      
-//      if (iLength++ < iColumnLength)
-//        *aChar++ = *(*aaSrc)++;
-//      else
-//        (*aaSrc)++;
-//    }
-//    
-//    // did we see an end quote ?
-//    if ('"' != **aaSrc &&
-//        '\'' != **aaSrc)
-//      return false;
-//    
-//    (*aaSrc)++;
-//  }
-//  else {
-//    while (**aaSrc
-//           && C_FS != **aaSrc
-//           && C_NL != **aaSrc
-//           && C_CR != **aaSrc) {
-//      
-//      if (iLength++ < iColumnLength)
-//        *aChar++ = *(*aaSrc)++;
-//      else
-//        (*aaSrc)++;
-//    }
-//  }
-//  
-//  *aChar++ = '\0';
-
   i8 iColumnLength = pColumn->iColumnLength();
   if ( ! StrLib::bExtractVarchar(aaSrc,(char*)aVch,iColumnLength,
                                  pFormatters->m_cEnclosedBy,
@@ -437,20 +299,6 @@ i8 Vch::iSize(char* aSrc)
 /*----------------------------------------------------------------------------*/
 /* sprint vch datum                                                           */
 /*----------------------------------------------------------------------------*/
-//void Vch::vSprint(Stz* aDst, Stz* aSrc)
-//{
-//  Vch* aVch = (Vch*)aSrc;
-//  
-//  if (aVch->bIsNull())
-//    StrLib::vSprint(aDst,"null%c"_Stz,
-//                    '\0');
-//  else
-//    StrLib::vSprint(aDst,"\'%s\'%c"_Stz,
-//                  aSrc->aChar(),
-//                  '\0');
-//  
-//}
-
 void Vch::vSprint(Stz* aDst, Stz* aSrc)
 {
   // test for null
@@ -473,23 +321,11 @@ void Vch::vSprint(Stz* aDst, Stz* aSrc)
   // copy from src to dst
   while (*aSrcChar) {
     
-//    if (cEscapeChar == *aSrcChar) {
-//      // escape an escape character
-//      *aDstChar++ = cEscapeChar;
-//      *aDstChar++ = *aSrcChar++;
-//    }
-//    else
     if (cEnclosedBy == *aSrcChar) {
       // escape an enclosing quote/char
       *aDstChar++ = cEnclosedBy;
       *aDstChar++ = *aSrcChar++;
     }
-//    else
-//    if (StrLib::bEscapedSpecial(*aSrcChar)) {
-//      // convert special character back to escaped form
-//      *aDstChar++ = cEscapeChar;
-//      *aDstChar++ = StrLib::cEscapeInverse(*aSrcChar++);
-//    }
     else {
       // copy an ordinary char
       *aDstChar++ = *aSrcChar++;
