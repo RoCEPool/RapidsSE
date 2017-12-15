@@ -201,7 +201,7 @@ void RowData::vRowAsEscapedString(s48K& sDataString, Stz* aRowData, ColumnVec* p
     aData = aRowData + iOffset;
     
     s256 s;
-    DtmLib::vSprint(pColumn->eDatumType(), s, aData, pColumn);
+    DtmLib::vSprintEscaped(pColumn->eDatumType(), s, aData, pColumn);
     if (i_Column == 0)
       sDataString.vCopy(s);
     else

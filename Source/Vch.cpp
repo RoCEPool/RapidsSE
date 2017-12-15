@@ -338,6 +338,47 @@ void Vch::vSprint(Stz* aDst, Stz* aSrc)
 }
 
 /*----------------------------------------------------------------------------*/
+/* sprint vch datum in escaped form                                           */
+/*----------------------------------------------------------------------------*/
+void Vch::vSprintEscaped(Stz* aDst, Stz* aSrc)
+{
+  // test for null
+  Vch* aVch = (Vch*)aSrc;
+  if (aVch->bIsNull()) {
+    StrLib::vSprint(aDst,"null%c"_Stz,'\0');
+    return;
+  }
+  
+  // get the formatters
+  char cEnclosedBy = gpAttachMap->m_xFormatters.m_cEnclosedBy;
+  char cEscapeChar = gpAttachMap->m_xFormatters.m_cEscapeChar;
+  
+  char* aDstChar = (char*)aDst;
+  char* aSrcChar = (char*)aSrc;
+  
+  // put leading enclosing quote/char
+  *aDstChar++ = cEnclosedBy;
+  
+  // copy from src to dst
+  while (*aSrcChar) {
+    
+    if (cEnclosedBy == *aSrcChar) {
+      // escape an enclosing quote/char
+      *aDstChar++ = cEnclosedBy;
+      *aDstChar++ = *aSrcChar++;
+    }
+    else {
+      // copy an ordinary char
+      *aDstChar++ = *aSrcChar++;
+    }
+  }
+  
+  // put trailing enclosing quote/char and \0 terminate
+  *aDstChar++ = cEnclosedBy;
+  *aDstChar = '\0';
+}
+
+/*----------------------------------------------------------------------------*/
 /* is the size valid ?                                                        */
 /*----------------------------------------------------------------------------*/
 bool Vch::bIsValidSize(i8 iSize)
