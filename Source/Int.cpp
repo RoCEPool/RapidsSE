@@ -270,6 +270,9 @@ bool Int::bExtract(char** aaSrc, Int* aInt, Column* pColumn, Formatters* pFormat
   if ( ! StrLib::bExtractInteger(aaSrc,&aInt->m_iInt,true/*bWithSign*/) )
     return false;
   
+  if (0 == pColumn->iColumnNo())
+    vTrace("int: ]%lld[\n"_Stz,aInt->m_iInt);
+  
   // ignore any trailing digits (after optional '.')
   if ('.' == **aaSrc) {
     

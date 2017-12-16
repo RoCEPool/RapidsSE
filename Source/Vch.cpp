@@ -250,6 +250,8 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn, Formatters* pFormat
     if ( ! bValidNull )
       return false;
     aVch->vSetNull();
+    if (13 == pColumn->iColumnNo())
+      vTrace("vch: null\n"_Stz);
     return true;
   }
   *(aaSrc) = aStart;
@@ -266,7 +268,7 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn, Formatters* pFormat
                                  ) )
     return false;
   
-    if (1 == pColumn->iColumnNo())
+    if (13 == pColumn->iColumnNo())
      vTrace("vch: ]%s[\n"_Stz,aVch);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
