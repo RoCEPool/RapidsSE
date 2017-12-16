@@ -5,6 +5,7 @@
 create table RDP (
 
   rdp_testno   INTEGER       NOT NULL,
+  rdp_comment  VARCHAR(64)   NOT NULL,
 
   rdp_bol_NN   BOOLEAN       NOT NULL,
   rdp_bol      BOOLEAN       ,
@@ -22,10 +23,7 @@ create table RDP (
   rdp_tsp      TIMESTAMP     ,
 
   rdp_vch_NN   VARCHAR(32)   NOT NULL,
-  rdp_vch      VARCHAR(32)   ,
-
-  rdp_comment  VARCHAR(64)   NOT NULL
-
+  rdp_vch      VARCHAR(32)
 );
 
 ld rdp "../JTEST/rdp.csv" ;
