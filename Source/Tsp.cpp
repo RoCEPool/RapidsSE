@@ -423,6 +423,28 @@ void Tsp::vSprint(Stz* aDst, Stz* aSrc)
 }
 
 /*----------------------------------------------------------------------------*/
+/* sprint tsp datum in escaped form                                           */
+/*----------------------------------------------------------------------------*/
+void Tsp::vSprintEscaped(Stz* aDst, Stz* aSrc)
+{
+  Tsp* aTsp = (Tsp*)aSrc;
+  
+  if (aTsp->bIsNull())
+    StrLib::vSprint(aDst,"null%c"_Stz,
+                    '\0');
+  else
+    StrLib::vSprint(aDst,"%02lld-%02lld-%02lld %02lld:%02lld:%02lld.%03lld%c"_Stz,
+                    (i8)aTsp->x.m_uYear,
+                    (i8)aTsp->x.m_uMonth,
+                    (i8)aTsp->x.m_uDay,
+                    (i8)aTsp->x.m_uHour,
+                    (i8)aTsp->x.m_uMinute,
+                    (i8)aTsp->x.m_uSecond,
+                    (i8)aTsp->x.m_uMilli,
+                    '\0');
+}
+
+/*----------------------------------------------------------------------------*/
 /* sprint tsp datum                                                           */
 /*----------------------------------------------------------------------------*/
 void Tsp::vSprintNonSQL(Stz* aDst, Stz* aSrc)

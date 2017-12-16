@@ -1363,10 +1363,10 @@ bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength,
     
     while (**aaSrc) {
       
-      // test for the ending enclosedBy
+      // test for the enclosedBy
       if (cEnclosedBy == **aaSrc) {
         
-        // skip over the enclosedBy
+        // skip over the second enclosedBy
         (*aaSrc)++;
         
         // if its not another enclosedBy go back to the enclosedBy char

@@ -208,7 +208,7 @@ void DtmLib::vSprintEscaped(eDM eDatum, Stz* aDst, Stz* aSrc,
     case DM_INT: Int::vSprint(aDst,aSrc); break;
     case DM_IVL: Ivl::vSprint(aDst,aSrc); break;
     case DM_TME: Tme::vSprint(aDst,aSrc); break;
-    case DM_TSP: Tsp::vSprint(aDst,aSrc); break;
+    case DM_TSP: Tsp::vSprintEscaped(aDst,aSrc); break;
     case DM_VCH: Vch::vSprintEscaped(aDst,aSrc); break;
     default:
       vFatal("DtmLib::vSprint: Invalid aDatum argument: %lld\n"_Stz,

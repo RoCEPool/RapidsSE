@@ -88,12 +88,18 @@ bool RowData::bFormatData(ColumnVec* pColVec,
   // reset back to start
   aSrc = aStart;
   
+  //vTrace("RawData: ]%256s[\n"_Stz,aRawData);
+  
+  //MemLib::vHexDump(aRawData,256);
   for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
     
     Column* pColumn = pColVec->pGet(i_Column);
+    if (13 == pColumn->iColumnNo())
+      int iDebug = 1;
     
     // extract datum type
-    bool bValid = DtmLib::bExtract(pColumn->eDatumType(), aDst, &aSrc,
+    eDM eDatumType = pColumn->eDatumType();
+    bool bValid = DtmLib::bExtract(eDatumType, aDst, &aSrc,
                                    pColumn, pFormatters);
     
     // is the datum valid ?
@@ -109,7 +115,7 @@ bool RowData::bFormatData(ColumnVec* pColVec,
     // save offset
     *(pOffset->aChar()) = iRowLength;
     
-    i8 iColumnLength = DtmLib::iSize(pColumn->eDatumType(), aDst->aChar());
+    i8 iColumnLength = DtmLib::iSize(eDatumType, aDst->aChar());
     
     // move to next offset location
     pOffset += C_COLUMN_OFFSET_SIZE;
@@ -121,7 +127,7 @@ bool RowData::bFormatData(ColumnVec* pColVec,
     aDst += iColumnLength;
   }
   
-  //vDump(aRowData, pColVec);
+  //vDump(aRowData, pColVec); // keep as debug
   
   return true;
 }
