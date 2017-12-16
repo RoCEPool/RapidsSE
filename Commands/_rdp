@@ -4,27 +4,27 @@
 
 create table RDP (
 
-  rdp_testno   INTEGER     NOT NULL,
+  rdp_testno   INTEGER       NOT NULL,
 
-  rdp_bol_NN   BOOLEAN     NOT NULL,
-  rdp_bol      BOOLEAN     ,
+  rdp_bol_NN   BOOLEAN       NOT NULL,
+  rdp_bol      BOOLEAN       ,
 
-  rdp_bcd_NN   DECIMAL       NOT NULL,
-  rdp_bcd      DECIMAL       ,
+  rdp_bcd_NN   DECIMAL(19,2) NOT NULL,
+  rdp_bcd      DECIMAL(19,2) ,
 
-  rdp_flt_NN   FLOAT       NOT NULL,
-  rdp_flt      FLOAT       ,
+  rdp_flt_NN   FLOAT         NOT NULL,
+  rdp_flt      FLOAT         ,
 
-  rdp_int_NN   INTEGER     NOT NULL,
-  rdp_int      INTEGER     ,
+  rdp_int_NN   INTEGER       NOT NULL,
+  rdp_int      INTEGER       ,
 
-  rdp_tsp_NN   TIMESTAMP   NOT NULL,
-  rdp_tsp      TIMESTAMP   ,
+  rdp_tsp_NN   TIMESTAMP     NOT NULL,
+  rdp_tsp      TIMESTAMP     ,
 
-  rdp_vch_NN   VARCHAR(32) NOT NULL,
-  rdp_vch      VARCHAR(32) ,
+  rdp_vch_NN   VARCHAR(32)   NOT NULL,
+  rdp_vch      VARCHAR(32)   ,
 
-  rdp_comment  VARCHAR(64) NOT NULL
+  rdp_comment  VARCHAR(64)   NOT NULL
 
 );
 
