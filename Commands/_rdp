@@ -4,26 +4,27 @@
 
 create table RDP (
 
-  rdp_testno   INTEGER       NOT NULL,
-  rdp_comment  VARCHAR(64)   NOT NULL,
+  rdp_testno   INTEGER       NOT NULL, // col 0
+  rdp_comment  VARCHAR(64)   NOT NULL, // col 1
 
-  rdp_bol_NN   BOOLEAN       NOT NULL,
-  rdp_bol      BOOLEAN       ,
+  rdp_bol_NN   BOOLEAN       NOT NULL, // col 2
+  rdp_bol      BOOLEAN       ,         // col 3
 
-  rdp_bcd_NN   DECIMAL(19,2) NOT NULL,
-  rdp_bcd      DECIMAL(19,2) ,
+  rdp_bcd_NN   DECIMAL(19,2) NOT NULL, // col 4
+  rdp_bcd      DECIMAL(19,2) ,         // col 5
 
-  rdp_flt_NN   FLOAT         NOT NULL,
-  rdp_flt      FLOAT         ,
+  rdp_flt_NN   FLOAT         NOT NULL, // col 6
+  rdp_flt      FLOAT         ,         // col 7
 
-  rdp_int_NN   INTEGER       NOT NULL,
-  rdp_int      INTEGER       ,
+  rdp_int_NN   INTEGER       NOT NULL, // col 8
+  rdp_int      INTEGER       ,         // col 9
 
-  rdp_tsp_NN   TIMESTAMP     NOT NULL,
-  rdp_tsp      TIMESTAMP     ,
+  rdp_tsp_NN   TIMESTAMP     NOT NULL, // col 10
+  rdp_tsp      TIMESTAMP     ,         // col 11
 
-  rdp_vch_NN   VARCHAR(32)   NOT NULL,
-  rdp_vch      VARCHAR(32)
+  rdp_vch_NN   VARCHAR(32)   NOT NULL, // col 12
+  rdp_vch      VARCHAR(32)             // col 13
+
 );
 
 ld rdp "../JTEST/rdp.csv" ;
