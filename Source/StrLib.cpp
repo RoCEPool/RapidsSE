@@ -485,7 +485,7 @@ bool StrLib::bEscapeConvert(const char cArg, char cEnclosedBy, char cEscapeChar)
   if ('n' == cArg) return true;
   if ('r' == cArg) return true;
   if ('t' == cArg) return true;
-  if ((char)26 == cArg) return true;
+  if ('Z' == cArg) return true;
   
   return false;
 }
