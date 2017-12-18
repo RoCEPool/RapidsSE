@@ -47,10 +47,10 @@ rows:
 (4)
 
 CLEANUP {
-  //drop table T1000;
-  //mute
-  //drop table R1000;
-  //mute
+  drop table T1000;
+  mute
+  drop table R1000;
+  mute
 }
 
 
