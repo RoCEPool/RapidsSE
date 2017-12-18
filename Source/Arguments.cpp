@@ -536,7 +536,7 @@ bool Arguments::bParse(int argc, Stz* argv[])
 /*----------------------------------------------------------------------------*/
 /* print arguments                                                            */
 /*----------------------------------------------------------------------------*/
-void Arguments::vPrint(void)
+void Arguments::vPrintStartupInfo(void)
 {
   _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
   
@@ -556,7 +556,7 @@ void Arguments::vPrint(void)
 #endif
   
   vTrace("  --name %s\n"_Stz,m_sNodeName.aChar());
-  vTrace("  --regionPrefix %s\n"_Stz,m_sRegionPrefix.aChar());
+  vTrace("  --region %s\n"_Stz,m_sRegionName.aChar());
   
 #ifdef __DEBUG
   vTrace("  --address %p\n"_Stz,m_aRegionAddr);

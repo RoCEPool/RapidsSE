@@ -27,7 +27,7 @@ void Task::vArgsPrint(MP_Task mpTask)
 {
 ENTRY("vArgsPrint"_Stz);
   
-  gxArguments.vPrint();
+  gxArguments.vPrintStartupInfo();
   
   EXIT();
 }

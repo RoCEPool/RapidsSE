@@ -122,6 +122,8 @@ namespace StorageEngine
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
+    void vPrintStartupInfo(void);
+    
     Footer* aFooter(void);
   };
 }

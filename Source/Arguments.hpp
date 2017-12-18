@@ -80,7 +80,7 @@ namespace StorageEngine
     
     bool bParse(int argc, Stz* argv[]);
   
-    void vPrint(void);
+    void vPrintStartupInfo(void);
     
     void vPrintHelp(void);
   

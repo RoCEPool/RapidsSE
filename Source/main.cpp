@@ -44,8 +44,8 @@ int main(int argc, const char* argv[])
   
   vPrintWelcome();
   
-  if (gxArguments.m_bWelcome)
-    gxArguments.vPrint();
+  if (gxArguments.m_bWelcome && gxArguments.m_bStart)
+    gxArguments.vPrintStartupInfo();
   
   if (gxArguments.m_bVerbose)
     vPrintSizes();
@@ -73,6 +73,9 @@ int main(int argc, const char* argv[])
   vSetGlobals();
   RapidsSE::vCheckPort();
   
+  if (gxArguments.m_bPrompt && !gxArguments.m_bStart)
+    gpAttachMap->vPrintStartupInfo();
+    
   RapidsSE::vExecuteCmdLine();
 
   //vSkipListTest();
@@ -99,7 +102,7 @@ void vChangeDirectory(void)
   Dir xDir;
   s256 sCurrent;
   bool bResult = xDir.bChangeCurrent(gxArguments.m_sCommands);
-  if (xDir.bGetCurrent(sCurrent) && gxArguments.m_bWelcome)
+  if (xDir.bGetCurrent(sCurrent) && gxArguments.m_bVerbose)
     vInfo("CURRENT WORKING DIRECTORY: %s\n"_Stz,sCurrent.aStr());
 }
 

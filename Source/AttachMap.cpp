@@ -166,6 +166,22 @@ void AttachMap::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print arguments                                                            */
+/*----------------------------------------------------------------------------*/
+void AttachMap::vPrintStartupInfo(void)
+{
+  _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+  
+  vTrace("Args:\n"_Stz);
+  
+  vTrace("  --name %s\n"_Stz,m_pGrid->pThisNode()->aNodeName()->aChar());
+  vTrace("  --region %s\n"_Stz,m_sRegionName.aChar());
+  vTrace("  --size %lld\n"_Stz,m_iRegionSize);
+  vTrace("  --partitionsPerNode %lld\n"_Stz,m_pGrid->m_nSlots);
+
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
