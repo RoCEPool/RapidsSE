@@ -18481,6 +18481,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "  rowCrs rowCursor.first\n"
     "  begin while\n"
     "    rowCrs rowCursor.row\n"
+    "    pTable swap row.asEscapedString\n"
     "    filePointer file.write\n"
     "    \\\"\\\\n\\\" filePointer file.write\n"
     "    rowCrs rowCursor.next\n"
