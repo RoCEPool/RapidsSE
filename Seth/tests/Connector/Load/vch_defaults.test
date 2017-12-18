@@ -16,6 +16,7 @@ success;
 
 // load data into the table with default formatter settings
 escape connector se 'load vch ../JTEST/vch_defaults.csv' with node='NODE1';
+failure;
 
 select * from vch;
 rows: 21
@@ -109,8 +110,8 @@ s')
 
 CLEANUP {
   
-  //drop table vch;
-  //mute
+  drop table vch;
+  mute
 
   bye;
   mute

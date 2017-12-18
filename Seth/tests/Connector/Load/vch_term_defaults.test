@@ -15,8 +15,8 @@ create index idx on vch (vch_testno);
 success;
 
 // load data into the table with default formatter settings
-escape connector se 'load vch ../JTEST/vch_term_defaults.csv record_terminator ;' with node='NODE1';
-success
+escape connector se 'load vch ../JTEST/vch_term_defaults.csv terminator ;' with node='NODE1';
+failure
 
 select * from vch;
 rows: 18
@@ -31,11 +31,11 @@ rows:
 
 select vch_field from vch where vch_testno = 503;
 rows:
-  ('quick brown fox\'s')
+  ('quick brown fox''s')
 
 select vch_field from vch where vch_testno = 504;
 rows:
-  ('quick brown fox\'s')
+  ('quick brown fox''s')
 
 select vch_field from vch where vch_testno = 505;
 rows:
@@ -76,7 +76,7 @@ rows:
 
 select vch_field from vch where vch_testno = 514;
 rows:
-  ('quick brown fox's')
+  ('quick brown fox''s')
 
 select vch_field from vch where vch_testno = 515;
 rows:
@@ -92,7 +92,7 @@ rows:
 
 select vch_field from vch where vch_testno = 518;
 rows:
-  (''quick brown fox
+  ('quick brown fox
 s')
 
 CLEANUP {

@@ -1,2 +1,4 @@
-regressionData.test
 rdp.test
+regressionData.test
+vch_defaults.test
+vch_term_defaults.test
