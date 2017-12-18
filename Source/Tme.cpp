@@ -245,44 +245,6 @@ bool Tme::bExtract(char** aaSrc, Tme* aTme, Column* pColumn, Formatters* pFormat
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // time field processing
   
-//  u8 uSubField;
-//  
-//  aTme->vInitZero();
-//  
-//  // extract hour
-//  if ( ! StrLib::bExtractU8(aaSrc,&uSubField) )
-//    return true;
-//  aTme->x.m_uHour = uSubField;
-//  
-//  // skip : separator
-//  if (':' != *(*aaSrc)++)
-//    return true;
-//  
-//  // extract minute
-//  if ( ! StrLib::bExtractU8(aaSrc,&uSubField) )
-//    return true;
-//  aTme->x.m_uMinute = uSubField;
-//  
-//  // skip : separator
-//  if (':' != *(*aaSrc)++)
-//    return true;
-//  
-//  // extract second
-//  if ( ! StrLib::bExtractU8(aaSrc,&uSubField) )
-//    return true;
-//  aTme->x.m_uSecond = uSubField;
-//  
-//  // extract fraction (assuming milliseconds)
-//  if ('.' == **aaSrc) {
-//    (*aaSrc)++;
-//    if ( StrLib::bExtractU8(aaSrc,&uSubField) )
-//      aTme->x.m_uMilli = uSubField;
-//  }
-//  
-//  // skip optional Z (UTC zone designator)
-//  if ('Z' == **aaSrc)
-//    (*aaSrc)++;
-  
   i8 iHour, iMinute, iSecond, iMilli;
   
   if ( ! StrLib::bExtractTime(aaSrc, iHour, iMinute, iSecond, iMilli) )
