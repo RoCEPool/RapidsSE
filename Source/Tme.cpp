@@ -289,6 +289,26 @@ void Tme::vSprint(Stz* aDst, Stz* aSrc)
 }
 
 /*----------------------------------------------------------------------------*/
+/* sprint tme datum                                                           */
+/*----------------------------------------------------------------------------*/
+void Tme::vSprintEscaped(Stz* aDst, Stz* aSrc)
+{
+  Tme* aTme = (Tme*)aSrc;
+  
+  if (aTme->bIsNull())
+    StrLib::vSprint(aDst,"null%c"_Stz,
+                    '\0');
+  else
+    
+    StrLib::vSprint(aDst,"%02lld:%02lld:%02lld.%03lld%c"_Stz,
+                    aTme->x.m_uHour,
+                    aTme->x.m_uMinute,
+                    aTme->x.m_uSecond,
+                    aTme->x.m_uMilli,
+                    '\0');
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Embedded Comparators ----------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
