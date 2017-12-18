@@ -31,7 +31,7 @@
   reverse  ( "<catalogNm>" "<schemaNm>" "<tableNm>" "<fileNm>" )
   dexPlanner to dexPlan
 
-  dexPlan plan.show
+  //dexPlan plan.show
 
   //swap dexPlanner to dexPlan
 

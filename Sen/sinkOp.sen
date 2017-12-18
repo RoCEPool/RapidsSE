@@ -14,7 +14,7 @@
 
   thePlan planList::removePlan
 
-  "sinking plan" .
+  //"sinking plan" .
   thePlan plan.delete
 
   //"removed & deleted plan" .
