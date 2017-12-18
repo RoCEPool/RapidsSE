@@ -10,7 +10,10 @@
 : respondSEitf ( pSeitf profile plan -- )
 
   // record the plan and profile
-  locals| thePlan profile pSeitf |
+  0 locals| pTask thePlan profile pSeitf |
+
+  // get the executing task
+  thePlan plan.executingTask@ to pTask
 
   // push the op frame for this writeOp
   profile thePlan plan.opFrame? opFrame.push
@@ -25,7 +28,7 @@
   //"ResponseOP acking the plan's executing task" .
 
   // ack the plan's executing task
-  thePlan plan.executingTask@ ack
+  pTask ack
 ;
 
 /*----------------------------------------------------------------------------*/
