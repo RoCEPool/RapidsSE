@@ -1,7 +1,7 @@
 //regressionData.test
-vch_defaults.test
-vch_term_defaults.test
-//vch_no_enclosed.test
+//vch_defaults.test
+//vch_term_defaults.test
+vch_no_enclosed.test
 //vch_no_enclosed_no_escape.test
 //vch_no_escape.test
 //vch_term_defaults.test
