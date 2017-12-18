@@ -14,8 +14,12 @@ void Datums::vCheckAssumptions(void)
   vTrace("LLONG_MIN = %lld\n"_Stz,LLONG_MIN);
   vTrace("LLONG_MIN = %p\n"_Stz,LLONG_MIN);
 
-  vTrace("DBL_MAX = %e\n"_Stz,DBL_MAX);
-  vTrace("DBL_MIN = %e\n"_Stz,DBL_MIN);
+  vTrace("DBL_MAX %%e = %e\n"_Stz,DBL_MAX);
+  vTrace("DBL_MIN %%e = %e\n"_Stz,DBL_MIN);
+  vTrace("DBL_MAX %%f = %f\n"_Stz,DBL_MAX);
+  vTrace("DBL_MIN %%f = %f\n"_Stz,DBL_MIN);
+  vTrace("DBL_MAX %%g = %g\n"_Stz,DBL_MAX);
+  vTrace("DBL_MIN %%g = %g\n"_Stz,DBL_MIN);
   
   vTrace("C_I8_MAX = %lld\n"_Stz,C_I8_MAX);
   vTrace("(u8)C_I8_MAX = %llu\n"_Stz,(u8)C_I8_MAX);
