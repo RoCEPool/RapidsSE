@@ -14,8 +14,10 @@ void Pool::vCheckAssumptions(void)
   
   Heap::vValidateTables();
   
+#ifdef _DEBUG
   vTrace("C_SIZE_POOL_BUFFER %llx\n"_Stz,C_SIZE_POOL_BUFFER);
   vTrace("C_OBJECT_TO_BUFFER_MASK %llx\n"_Stz,C_OBJECT_TO_BUFFER_MASK);
+#endif
 }
 
 /*============================================================================*/

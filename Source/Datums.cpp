@@ -9,6 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void Datums::vCheckAssumptions(void)
 {
+#ifdef _DEBUG
   vTrace("LLONG_MAX = %lld\n"_Stz,LLONG_MAX);
   vTrace("LLONG_MAX = %p\n"_Stz,LLONG_MAX);
   vTrace("LLONG_MIN = %lld\n"_Stz,LLONG_MIN);
@@ -27,6 +28,7 @@ void Datums::vCheckAssumptions(void)
   vInfo("C_NULL_FLT %e\n"_Stz,  C_NULL_FLT);
   vInfo("C_NULL_INT %lld\n"_Stz,C_NULL_INT);
   vInfo("C_NULL_VCH %lld\n"_Stz,C_NULL_VCH);
+#endif
 }
 
 /*============================================================================*/

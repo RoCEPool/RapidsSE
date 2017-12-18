@@ -542,6 +542,7 @@ void Arguments::vPrint(void)
   
   vTrace("Args:\n"_Stz);
   
+#ifdef __DEBUG
   if (m_bCommand)  vTrace("  --command\n"_Stz);
   if (m_bDocol)    vTrace("  --docol\n"_Stz);
   if (m_bHelp)     vTrace("  --help\n"_Stz);
@@ -552,10 +553,15 @@ void Arguments::vPrint(void)
   if (m_bStatus)   vTrace("  --status\n"_Stz);
   if (m_bStop)     vTrace("  --stop\n"_Stz);
   if (m_bVerbose)  vTrace("  --verbose\n"_Stz);
-
+#endif
+  
   vTrace("  --name %s\n"_Stz,m_sNodeName.aChar());
   vTrace("  --regionPrefix %s\n"_Stz,m_sRegionPrefix.aChar());
+  
+#ifdef __DEBUG
   vTrace("  --address %p\n"_Stz,m_aRegionAddr);
+#endif
+  
   vTrace("  --size %lld\n"_Stz,m_iRegionSize);
   
   for (i8 i_Index = 0; i_Index < m_nNodes; i_Index++) {
@@ -566,12 +572,12 @@ void Arguments::vPrint(void)
   }
   
   vTrace("  --partitionsPerNode %lld\n"_Stz,m_nSlots);
+#ifdef _DEBUG
   vTrace("  --commands %s\n"_Stz,m_sCommands.aChar());
-//#ifdef _DEBUG
   vTrace("  --sen %s\n"_Stz,m_sSen.aChar());
-//#endif
   if (m_bMunged) vTrace("  --munged\n"_Stz);
   if (m_bMetadata) vTrace("  --metadata\n"_Stz);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
