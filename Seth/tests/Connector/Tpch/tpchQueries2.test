@@ -260,28 +260,28 @@ success
 
 
 ESCAPE CONNECTOR se 'load nation2 /mnt/ssd/tpch/tpch_sf1/nation.tbl' WITH node = 'Node1' ;
-success
+failure
 
 ESCAPE CONNECTOR se 'load orders2 /mnt/ssd/tpch/tpch_sf1/orders.tbl' WITH node = 'Node1' ;
-success
+failure
 
 ESCAPE CONNECTOR se 'load supplier2 /mnt/ssd/tpch/tpch_sf1/supplier.tbl' WITH node = 'Node1' ;
-success
+failure
 
 ESCAPE CONNECTOR se 'load region2 /mnt/ssd/tpch/tpch_sf1/region.tbl' WITH node = 'Node1' ;
-success
+failure
 
 ESCAPE CONNECTOR se 'load lineitem2 /mnt/ssd/tpch/tpch_sf1/lineitem.tbl' WITH node = 'Node1' ;
-success
+failure
 
 ESCAPE CONNECTOR se 'load part2 /mnt/ssd/tpch/tpch_sf1/part.tbl' WITH node = 'Node1' ;
-success
+failure
 
 ESCAPE CONNECTOR se 'load partsupp2 /mnt/ssd/tpch/tpch_sf1/partsupp.tbl' WITH node = 'Node1' ;
-success
+failure
 
 ESCAPE CONNECTOR se 'load customer2 /mnt/ssd/tpch/tpch_sf1/customer.tbl' WITH node = 'Node1' ;
-success
+failure
 
 // insert-select into region
 insert into region select * from region2;
