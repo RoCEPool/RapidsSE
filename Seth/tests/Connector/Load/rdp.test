@@ -6,7 +6,7 @@
 
 create table RDP (
 
-rdp_testno =  INTEGER       NOT NULL, // col 0
+rdp_testno   INTEGER       NOT NULL, // col 0
 rdp_comment  VARCHAR(64)   NOT NULL, // col 1
 
 rdp_bol_NN   BOOLEAN       NOT NULL, // col 2
