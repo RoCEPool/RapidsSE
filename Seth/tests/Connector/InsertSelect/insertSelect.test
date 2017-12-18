@@ -6,13 +6,25 @@
 refresh;
 success
 
--- create a table with an index
+-- create a table with a unique index
 create table T1000 (
   T1000_key   INTEGER ,
   T1000_name  VARCHAR(32),
   T1000_100   INTEGER,
   T1000_10    INTEGER,
   unique index index1 on T1000_key,
+  index index2 on T1000_100,
+  index index3 on T1000_name
+);
+failure
+
+-- create a table with an index
+create table T1000 (
+  T1000_key   INTEGER ,
+  T1000_name  VARCHAR(32),
+  T1000_100   INTEGER,
+  T1000_10    INTEGER,
+  index index1 on T1000_key,
   index index2 on T1000_100,
   index index3 on T1000_name
 );
@@ -26,7 +38,7 @@ rows:
 -- check existence of index
 select * from rapids.system.indexes;
 rows:
-('RAPIDSSE', 'PUBLIC', 'T1000', 'INDEX1', true,  false, 'SKIPLIST', 1, 'T1000_KEY')
+('RAPIDSSE', 'PUBLIC', 'T1000', 'INDEX1', false,  false, 'SKIPLIST', 1, 'T1000_KEY')
 ('RAPIDSSE', 'PUBLIC', 'T1000', 'INDEX2', false, false, 'SKIPLIST', 1, 'T1000_100')
 ('RAPIDSSE', 'PUBLIC', 'T1000', 'INDEX3', false, false, 'SKIPLIST', 1, 'T1000_NAME')
 
@@ -50,7 +62,7 @@ create table R1000 (
   R1000_name  VARCHAR(32),
   R1000_100   INTEGER,
   R1000_10    INTEGER,
-  unique index index1 on R1000_key,
+  index index1 on R1000_key,
   index index2 on R1000_100,
   index index3 on R1000_name
 );
@@ -65,10 +77,10 @@ rows:
 -- check existence of index
 select * from rapids.system.indexes;
 rows:
-('RAPIDSSE', 'PUBLIC', 'T1000', 'INDEX1', true,  false, 'SKIPLIST', 1, 'T1000_KEY')
+('RAPIDSSE', 'PUBLIC', 'T1000', 'INDEX1', false,  false, 'SKIPLIST', 1, 'T1000_KEY')
 ('RAPIDSSE', 'PUBLIC', 'T1000', 'INDEX2', false, false, 'SKIPLIST', 1, 'T1000_100')
 ('RAPIDSSE', 'PUBLIC', 'T1000', 'INDEX3', false, false, 'SKIPLIST', 1, 'T1000_NAME')
-('RAPIDSSE', 'PUBLIC', 'R1000', 'INDEX1', true,  false, 'SKIPLIST', 1, 'R1000_KEY')
+('RAPIDSSE', 'PUBLIC', 'R1000', 'INDEX1', false,  false, 'SKIPLIST', 1, 'R1000_KEY')
 ('RAPIDSSE', 'PUBLIC', 'R1000', 'INDEX2', false, false, 'SKIPLIST', 1, 'R1000_100')
 ('RAPIDSSE', 'PUBLIC', 'R1000', 'INDEX3', false, false, 'SKIPLIST', 1, 'R1000_NAME')
 

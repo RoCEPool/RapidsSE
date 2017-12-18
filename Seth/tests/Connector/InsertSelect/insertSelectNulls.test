@@ -33,7 +33,7 @@ create table R1000 (
   R1000_key   INTEGER,
   R1000_name  VARCHAR(32),
   R1000_100   INTEGER,
-  R1000_10    INTEGER NOT NULL
+  R1000_10    INTEGER
 );
 success
 
@@ -45,6 +45,10 @@ success
 select count(*) from R1000;
 rows:
 (4)
+
+select * from R1000 where T1000_key = 1;
+rows:
+  (1,'one',1,null);
 
 CLEANUP {
   drop table T1000;
