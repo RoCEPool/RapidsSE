@@ -264,74 +264,74 @@ success
 
 // load data into the tables
 ESCAPE CONNECTOR se 'load TABLE1 ../Seth/tests/Load/tbl1data.csv' WITH node = 'Node1' ;
-success
+failure
 
 ESCAPE CONNECTOR se 'load TABLE2 ../Seth/tests/Load/tbl2data.csv' WITH node = 'Node1' ;
-success
+failure
 
 ESCAPE CONNECTOR se 'load TABLE3 ../Seth/tests/Load/tbl3data.csv' WITH node = 'Node1' ;
-success
+failure
 
 ESCAPE CONNECTOR se 'load TABLE4 ../Seth/tests/Load/tbl4data.csv' WITH node = 'Node1' ;
-success
+failure
 
 ESCAPE CONNECTOR se 'load TABLE5 ../Seth/tests/Load/tbl5data.csv' WITH node = 'Node1' ;
-success
+failure
 
 ESCAPE CONNECTOR se 'load TABLE6 ../Seth/tests/Load/tbl6data.csv' WITH node = 'Node1' ;
-success
+failure
 
 ESCAPE CONNECTOR se 'load TABLE7 ../Seth/tests/Load/tbl7data.csv' WITH node = 'Node1' ;
-success
+failure
 
 ESCAPE CONNECTOR se 'load TABLE8 ../Seth/tests/Load/tbl8data.csv' WITH node = 'Node1' ;
-success
+failure
 
 ESCAPE CONNECTOR se 'load TABLE9 ../Seth/tests/Load/tbl9data.csv' WITH node = 'Node1' ;
-success
+failure
 
 ESCAPE CONNECTOR se 'load ORDERS ../Seth/tests/Load/orders.csv' WITH node = 'Node1' ;
-success
+failure
 
 ESCAPE CONNECTOR se 'load LINEITEM ../Seth/tests/Load/lineitem.csv' WITH node = 'Node1' ;
-success
+failure
 
 ESCAPE CONNECTOR se 'load CUSTOMERH ../Seth/tests/Load/customer.csv' WITH node = 'Node1' ;
-success
+failure
 
 ESCAPE CONNECTOR se 'load PARTSUPP ../Seth/tests/Load/partsupp.csv' WITH node = 'Node1' ;
-success
+failure
 
 ESCAPE CONNECTOR se 'load PART ../Seth/tests/Load/part.csv' WITH node = 'Node1' ;
-success
+failure
 
 ESCAPE CONNECTOR se 'load SHIPPING ../Seth/tests/Load/shipping.csv' WITH node = 'Node1' ;
-success
+failure
 
 ESCAPE CONNECTOR se 'load SHIPADDRESS ../Seth/tests/Load/shipaddr.csv' WITH node = 'Node1' ;
-success
+failure
 
 ESCAPE CONNECTOR se 'load SUPPLIER ../Seth/tests/Load/supplier.csv' WITH node = 'Node1' ;
-success
+failure
 
 ESCAPE CONNECTOR se 'load MANUFACTURER ../Seth/tests/Load/manufacturer.csv 'WITH node = 'Node1' ;
-success
+failure
 
 ESCAPE CONNECTOR se 'load NATION ../Seth/tests/Load/nation.csv 'WITH node = 'Node1' ;
-success
+failure
 
 ESCAPE CONNECTOR se 'load REGION ../Seth/tests/Load/region.csv' WITH node = 'Node1' ;
-success
+failure
 
 ESCAPE CONNECTOR se 'load RETURNS ../Seth/tests/Load/returns.csv 'WITH node = 'Node1' ;
-success
+failure
 
 // check existence of table
 select * from tables where catalog_name = 'RAPIDSSE';
 rows: 21
 
 CLEANUP {
-  
+/*
   drop table table1;
   mute
 
@@ -394,7 +394,7 @@ CLEANUP {
   
   drop table returns;
   mute
-
+*/
   bye;
   mute
 }
