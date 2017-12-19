@@ -46,12 +46,11 @@ void Task::vDot(MP_Task mpTask)
          sWorkspace.aChar()
          );
   */
-  vTrace("[%8s\\%lld %-11s %p] %s\n"_Stz,
+  vTrace("[%8s\\%lld %-11s] %s\n"_Stz,
          
          mpTask->m_sName.aChar(),
          *mpTask->m_zAcks,
          mpTask->m_sComment.aChar(),
-         mpTask,
          sWorkspace.aChar()
          );
 

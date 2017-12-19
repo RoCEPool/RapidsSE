@@ -720,6 +720,7 @@ namespace Tasks
     static void vIntGreater(MP_Task mpTask);
     static void vIntGreaterEqual(MP_Task mpTask);
     static void vIntHash(MP_Task mpTask);
+    static void vIntHo16(MP_Task mpTask);
     static void vIntLess(MP_Task mpTask);
     static void vIntLessEqual(MP_Task mpTask);
     static void vIntModulo(MP_Task mpTask);
