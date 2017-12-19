@@ -184,6 +184,9 @@ Task::~Task(void)
   if (m_pRequest)
     delete m_pRequest;
   
+  if (m_bDestructorTrace)
+    vTrace("task being deleted: %p\n"_Stz, this);
+  
   //  Task* pTask = this;
   //  gpAttachMap->m_pTaskList->vRemove(pTask);
   //  gpAttachMap->m_pTaskList->vDump();
@@ -255,6 +258,8 @@ void Task::vInit(Stz* aLambda)
   m_pPlan    = nullptr;
   
   m_iDdlLocked = 0;
+  
+  m_bDestructorTrace = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1383,6 +1388,28 @@ void Task::vContentDump(void)
          m_sName.aChar(),
          aTS[m_eState]->aChar(),
          m_iTxId);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set destructor trace                                                       */
+/*----------------------------------------------------------------------------*/
+void Task::vDestructorTrace(bool bDestructorTrace)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  vTrace("task being traced: %p\n"_Stz, this);
+  
+  m_bDestructorTrace = bDestructorTrace;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get destructor trace                                                       */
+/*----------------------------------------------------------------------------*/
+bool Task::bDestructorTrace(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  return m_bDestructorTrace;
 }
 
 /*----------------------------------------------------------------------------*/

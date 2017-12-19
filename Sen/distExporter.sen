@@ -31,9 +31,11 @@
   reverse  ( "<catalogNm>" "<schemaNm>" "<tableNm>" "<fileNm>" )
   dexPlanner to dexPlan
 
-  //dexPlan plan.show
+  dexPlan plan.show
 
   //swap dexPlanner to dexPlan
+
+  true task::this task.destructorTrace!
 
   // set this task as the executing task in the plan
   task::this dexPlan plan.executingTask!
@@ -54,7 +56,7 @@
   // this task waits till ack'd by the responseOp
   ackWait
 
-  //"PlanTest got ack" .
+  "PlanTask got ack" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // reap the plan
