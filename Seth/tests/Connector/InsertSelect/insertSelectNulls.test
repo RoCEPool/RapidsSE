@@ -42,9 +42,8 @@ insert into R1000 select * from T1000;
 success
 
 -- check data
-select count(*) from R1000;
-rows:
-(4)
+select * from R1000;
+rows: 4
 
 select * from R1000 where T1000_key = 1;
 rows:
