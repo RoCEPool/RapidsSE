@@ -3,8 +3,13 @@
 /*============================================================================*/
 
 create table j10 (
-  j10_key   INTEGER NOT NULL,
+  j10_key   INTEGER,
   j10_name  VARCHAR(32) NOT NULL
+);
+
+create table j10_ (
+j10_key   INTEGER,
+j10_name  VARCHAR(32) NOT NULL
 );
 
 create index idx1 on j10 (j10_key);
@@ -12,8 +17,22 @@ create index idx1 on j10 (j10_key);
 
 print "loading j10.tbl..." ;
 ld j10 "../JTEST/j10.csv" ;
+//dex j10 "/tmp/j10.csv";
 
-fetch j10 "j10_key 2 = j10_key 3 = OR j10_key 4 = OR";
+//escape connector se 'load vch /Users/alkayamarti/rapidsse/rapidsSE/JTEST/vch_defaults.csv ' with node='NODE1' ;
+//escape connector se 'load vch /Users/alkayamarti/rapidsse/rapidsSE/JTEST/vch_delimiter.csv delimiter | ' with node='NODE1' ;
+//escape connector se 'load vch /Users/alkayamarti/rapidsse/rapidsSE/JTEST/vch_no_enclosed.csv enclosed_by none ' with node='NODE1' ;
+//escape connector se 'load vch /Users/alkayamarti/rapidsse/rapidsSE/JTEST/vch_no_enclosed_no_escape.csv escape_char none enclosed_by none ' with node='NODE1' ;
+//escape connector se 'load vch /Users/alkayamarti/rapidsse/rapidsSE/JTEST/vch_no_escape.csv escape_char none' with node='NODE1' ;
+//escape connector se 'load vch /Users/alkayamarti/rapidsse/rapidsSE/JTEST/vch_term_defaults.csv terminator ; ' with node='NODE1' ;
+//escape connector se 'load vch /Users/alkayamarti/rapidsse/rapidsSE/JTEST/vch_term_no_enclosed.csv terminator ; enclosed_by none ' with node='NODE1' ;
+//escape connector se 'load vch /Users/alkayamarti/rapidsse/rapidsSE/JTEST/vch_term_no_escape.csv terminator ; escape_char none ' with node='NODE1' ;
+
+//escape connector se 'load vch /Users/alkayamarti/rapidsse/rapidsSE/JTEST/vch_term_no_enclosed_no_escape.csv terminator ; escape_char none enclosed_by none' with node='NODE1' ;
+
+
+//fetch j10 "j10_key 2 = j10_key 3 = OR j10_key 4 = OR";
+//escape connector se 'load vch3 /tmp/vch.csv escape_char \\ terminator none  enclosed_by \'  delimiter , ' with node='NODE1' ;
 
 /*
 fetch j10 "j10_name '\\' =";
