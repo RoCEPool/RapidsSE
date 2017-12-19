@@ -90,8 +90,12 @@ tp: >>jobQueue_otherNode
   // partition
   0 0 "" locals| profile partitionId nodeNo |
 
+
   // the profile contains partition information
   over to profile
+
+  //dup >str "PLANID %v" str.format .
+  dup locals| planId |
 
   profile str.tailInt
   if
@@ -109,12 +113,13 @@ tp: >>jobQueue_otherNode
       op.task nodeNo >>jobQueue_otherNode
     then
 
-    else
+  else
     // profile is # only
 
     //profile "Profile %v: on originating node" str.format .
-
-    grid.thisNode@ 0==
+    planId ho16 to nodeNo
+    //nodeNo >str "node %v" str.format .
+    grid.thisNode@ nodeNo ==
     if
       op.task >>jobQueue_sameNode
     else

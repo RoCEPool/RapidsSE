@@ -28,6 +28,7 @@
   //"ResponseOP acking the plan's executing task" .
 
   // ack the plan's executing task
+  //pTask >str "acking task %v" str.format .
   pTask ack
 ;
 

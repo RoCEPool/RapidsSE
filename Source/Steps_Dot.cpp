@@ -51,7 +51,6 @@ void Task::vDot(MP_Task mpTask)
          mpTask->m_sName.aChar(),
          *mpTask->m_zAcks,
          mpTask->m_sComment.aChar(),
-         
          sWorkspace.aChar()
          );
 

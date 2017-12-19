@@ -16,7 +16,7 @@ namespace Plans
     s48K   m_sLambda;  // generated text of words
     
     RegFrame* m_pRegList; // set of register frames for use by operators
-    Tasks::Task* m_pExecutingTask; // task executing the plan
+    Tasks::Task* m_pExecutingTask; // task on the originating node executing the plan
     
     // always last
     Footer m_xFooter;

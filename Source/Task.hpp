@@ -177,6 +177,7 @@ namespace Tasks
     Plan*   m_pPlan;            // the plan associated with task
     
     i8  m_iDdlLocked;
+    bool m_bDestructorTrace;
     
     // always last
     Footer m_xFooter;
@@ -210,6 +211,8 @@ namespace Tasks
     void  vCompileConstant(StrVal& sDefinition);
     static void vDebug(void);
     void vContentDump(void);
+    void vDestructorTrace(bool bDestructorTrace);
+    bool bDestructorTrace(void);
     void vException(StrVal& sFile, StrVal& eException);
     void vInitialiseMain(void);
     bool  bIsName(StrVal& sName);
@@ -717,6 +720,7 @@ namespace Tasks
     static void vIntGreater(MP_Task mpTask);
     static void vIntGreaterEqual(MP_Task mpTask);
     static void vIntHash(MP_Task mpTask);
+    static void vIntHo16(MP_Task mpTask);
     static void vIntLess(MP_Task mpTask);
     static void vIntLessEqual(MP_Task mpTask);
     static void vIntModulo(MP_Task mpTask);
@@ -1178,6 +1182,8 @@ namespace Tasks
     static void vTaskCommentFetch(MP_Task mpTask);
     static void vTaskCommentStore(MP_Task mpTask);
     static void vTaskDelete(MP_Task mpTask);
+    static void vTaskDestructorTraceFetch(MP_Task mpTask);
+    static void vTaskDestructorTraceStore(MP_Task mpTask);
     static void vTaskDicStack(MP_Task mpTask);
     static void vTaskDump(MP_Task mpTask);
     static void vTaskInit(MP_Task mpTask);

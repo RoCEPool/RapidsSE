@@ -21,6 +21,7 @@ void Task::vAddPrimitives_Int(void)
   vAddPrimitive(">"_Stz,               &vIntGreater,       false);
   vAddPrimitive(">="_Stz,              &vIntGreaterEqual,  false);
   vAddPrimitive("hash"_Stz,            &vIntHash,          false);
+  vAddPrimitive("ho16"_Stz,            &vIntHo16,          false);
   vAddPrimitive("<"_Stz,               &vIntLess,          false);
   vAddPrimitive("<="_Stz,              &vIntLessEqual,     false);
   vAddPrimitive("%"_Stz,               &vIntModulo,        false);
@@ -154,6 +155,22 @@ void Task::vIntHash(MP_Task mpTask)
   i8 iHash = XXH32(sString.aChar(),iLength,0);
   
   mpTask->m_pDataStack->vPushInt(iHash);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* ho16 -- get high order 16 bits of int                                      */
+/*----------------------------------------------------------------------------*/
+void Task::vIntHo16(MP_Task mpTask)
+{
+  ENTRY("vIntHash"_Stz);
+  
+  i8 i;
+  if ( ! mpTask->m_pDataStack->bPop(i) )
+    THROW_INVALID_DSTACK(">="_Stz);
+  
+  mpTask->m_pDataStack->vPushInt(i >> 48);
   
   EXIT();
 }
