@@ -68,7 +68,7 @@ rows:
 
 select vch_field from vch where vch_testno = 512;
 rows:
-  ('quick brown fox')
+('quick ;brown fox')
 
 select vch_field from vch where vch_testno = 513;
 rows:
