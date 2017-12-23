@@ -258,7 +258,11 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn, Formatters* pFormat
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect the csv
-  
+//  if (13 == pColumn->iColumnNo()) {
+//    int iDebug = 0;
+//    MemLib::vHexDump(*aaSrc,64);
+//  }
+    
   i8 iColumnLength = pColumn->iColumnLength();
   if ( ! StrLib::bExtractVarchar(aaSrc,(char*)aVch,iColumnLength,
                                  pFormatters->m_cEnclosedBy,

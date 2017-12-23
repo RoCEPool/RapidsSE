@@ -147,8 +147,13 @@ void LoadChunk::vReadChunk(i8 iSeek, i8 nBytes)
   
   m_xFile.vSeek(iSeek);
   
+  //MemLib::vHexDump(m_xWsp.aStr(),nBytes+16);
   i8 iBytesRead = m_xFile.iReadChunk(m_xWsp.aArea(),nBytes);
 
+  //MemLib::vHexDump(m_xWsp.aStr(), iBytesRead+16);
+  ((char*)m_xWsp.aStr())[iBytesRead] = '\0';                       //! show Alka
+  //MemLib::vHexDump(m_xWsp.aStr(), iBytesRead+16);
+  
   m_aEndChunk   = &m_xWsp.aStr()[iBytesRead - 1];
   m_aNextRecord = m_xWsp.aStr();
 }

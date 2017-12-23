@@ -103,10 +103,57 @@ void LoadMap::vFilePath(StrVal& sPath)
 /*----------------------------------------------------------------------------*/
 /* fetch next chunk from file                                                 */
 /*----------------------------------------------------------------------------*/
+//bool LoadMap::bFindChunk(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP,_FOOTER_);
+//  
+//  if (! m_xChunkFile.bIsOpen()) {
+//    bool b = m_xChunkFile.bOpen(C_OPEN_READ);
+//    if (! b)
+//      return false;
+//    
+//    m_xChunkFile.vSeekEnd();
+//    m_iChunkTell = m_xChunkFile.iTell();
+//  }
+//  
+//  if (m_iChunkNext >= m_iChunkTell) {
+//    vDone(true);
+//    //vChunkTest();
+//    m_xChunkFile.vClose();
+//    return false;
+//  }
+//  
+//  i8 iTestSeek = m_iChunkNext + C_LOADCHUNK_LENGTH - C_LOADMAP_BLOCK;
+//  
+//  if (iTestSeek > m_iChunkTell) {
+//    iTestSeek = m_iChunkTell - 1;
+//  }
+//  
+//  m_xChunkFile.vSeek(iTestSeek);
+//  
+//  i8 iBytesRead = m_xChunkFile.iReadChunk(m_xBlockTest,C_LOADMAP_BLOCK);
+//  
+//  const char *z = &m_xBlockTest[iBytesRead - 1];
+//  
+//  bool bFoundEol = StrLib::bBackward(&z,m_xBlockTest,'\n');
+//  RASSERT(bFoundEol);
+//  
+//  i8 nBytes = Base::nSub((void*)z,m_xBlockTest) + 1;
+//  
+//  i8 iEolOffset = iTestSeek + nBytes - 1;
+//  //vTrace("EolOffset %lld\n"_Stz,iEolOffset);
+//  vEolOffset(iEolOffset);
+//  
+//  m_iChunkNext = iEolOffset + 1;
+//  
+//  return true;
+//}
+
 bool LoadMap::bFindChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP,_FOOTER_);
   
+  // open the file 
   if (! m_xChunkFile.bIsOpen()) {
     bool b = m_xChunkFile.bOpen(C_OPEN_READ);
     if (! b)
@@ -127,6 +174,10 @@ bool LoadMap::bFindChunk(void)
   
   if (iTestSeek > m_iChunkTell) {
     iTestSeek = m_iChunkTell - 1;
+    vEolOffset(iTestSeek);
+    vDone(true);
+    m_xChunkFile.vClose();
+    return false;
   }
   
   m_xChunkFile.vSeek(iTestSeek);
@@ -148,7 +199,6 @@ bool LoadMap::bFindChunk(void)
   
   return true;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* test if we chunked correctly                                               */
