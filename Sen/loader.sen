@@ -161,7 +161,7 @@ timer: loadTimer
   pTblLoader loader.recordsInvalid@ pSEitf seitf.rowsInvalid!
   pTblLoader loader.recordsValid@ pSEitf seitf.rowsValid!
 
-  pTblLoader loader.recordsInvalid@ pTblLoader loader.recordsValid@ "loaded %v rows (%v invalid)" str.format .
+  pTblLoader loader.recordsInvalid@ pTblLoader loader.recordsValid@ "loaded %v rows (%v invalid)" str.format .verbose
 
   "ms\n" loadTimer timer.millisecs "Load time" "%v %v %v" str.format .verbose
 
