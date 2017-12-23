@@ -7583,7 +7583,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "  pTblLoader loader.recordsInvalid@ pSEitf seitf.rowsInvalid!\n"
     "  pTblLoader loader.recordsValid@ pSEitf seitf.rowsValid!\n"
     "\n"
-    "  pTblLoader loader.recordsInvalid@ pTblLoader loader.recordsValid@ \\\"loaded %v rows (%v invalid)\\\" str.format .\n"
+    "  pTblLoader loader.recordsInvalid@ pTblLoader loader.recordsValid@ \\\"loaded %v rows (%v invalid)\\\" str.format .verbose\n"
     "\n"
     "  \\\"ms\\\\n\\\" loadTimer timer.millisecs \\\"Load time\\\" \\\"%v %v %v\\\" str.format .verbose\n"
     "\n"
