@@ -106,7 +106,8 @@ Stz* LoadChunk::aNextRecord(i8& iRecordBytes)
   Stz* pRecord = m_aNextRecord;
   
   // find end of next record
-  while ('\n' != *((char*)m_aNextRecord))
+  while ('\n' != *((char*)m_aNextRecord) &&
+         '\r' != *((char*)m_aNextRecord))
     m_aNextRecord++;
   //*m_aNextRecord = '\0';
   
