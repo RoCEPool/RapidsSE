@@ -12,7 +12,7 @@ create table terminator_cr (
 success
 
 // load data into the table with default formatter settings
-ld terminator_cr "../JTEST/terminator_cr.csv" ;
+ld terminator_cr "../JTEST/terminatorLarge_cr.csv" ;
 success
 
 // create index
@@ -25,9 +25,8 @@ rows:
   (*, 1, 'This is terminatoed by <CR>');
 
 // fetch
-fetch terminator_cr "c1 2 =";
-rows:
-(*, 2, 'Also terminatoed by <CR>');
+fetch terminator_cr;
+rows: 6895
 
 CLEANUP {
   
