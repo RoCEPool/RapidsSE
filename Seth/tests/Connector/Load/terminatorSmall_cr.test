@@ -1,0 +1,42 @@
+/*----------------------------------------------------------------------------*/
+/* terminatorSmall_cr -- cr terminator with < 1mb file                        */
+/*----------------------------------------------------------------------------*/
+
+// create the table
+
+create table terminator_cr (
+  c1 integer,
+  c2 varchar,
+  c3 varchar
+);
+success
+
+// load data into the table with default formatter settings
+ld terminator_cr "../Seth/tests/Load/terminatorSmall_cr.csv" ;
+success
+
+// create index
+create index idx on terminator_cr(c1);
+success
+
+// fetch
+fetch terminator_cr "c1 1 =";
+rows: 2534
+
+// fetch
+fetch terminator_cr;
+rows: 2534
+
+CLEANUP {
+  
+  drop table terminator_cr;
+  mute
+
+  bye;
+  mute
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* end                                                                        */
+/*----------------------------------------------------------------------------*/

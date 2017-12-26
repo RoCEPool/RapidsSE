@@ -1,4 +1,8 @@
 rdpSVR.test
-regressionDataSVR.test
+regressionData.test
+terminator_cr.test
+terminatorLarge_cr.test
+terminatorSmall_cr.test
+terminatorSmallNull_cr.test
 vch_defaultsSVR.test
 vch_term_defaultsSVR.test
