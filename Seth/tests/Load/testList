@@ -9,3 +9,6 @@ vch_no_enclosed.test
 //vch_term_no_enclosed_no_escape.test
 //vch_term_no_escape.test
 rdp.test
+terminatorLarge_cr.test
+terminatorSmall_cr.test
+terminatorSmallNull_cr.test

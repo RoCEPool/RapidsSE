@@ -21,8 +21,7 @@ success
 
 // fetch
 fetch terminator_cr "c1 1 =";
-rows:
-  (*, 1, 'This is terminatoed by <CR>');
+rows: 2534
 
 // fetch
 fetch terminator_cr;

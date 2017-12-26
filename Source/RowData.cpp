@@ -106,7 +106,7 @@ bool RowData::bFormatData(ColumnVec* pColVec,
     if ( ! bValid ) {
       vWarn("Skipping row - invalid field %s in record: "_Stz,
              pColumn->sColumnName().aChar());
-      for (char* a = (char*)aRawData; *a && '\n' != *a; a++)
+      for (char* a = (char*)aRawData; *a && '\n' != *a && '\r' != *a; a++)
         vTrace("%c"_Stz,*a);
       vTrace("\n"_Stz);
       return false;
