@@ -187,6 +187,9 @@ bool LoadMap::bFindChunk(void)
   const char *z = &m_xBlockTest[iBytesRead - 1];
   
   bool bFoundEol = StrLib::bBackward(&z,m_xBlockTest,'\n');
+  if (!bFoundEol)
+    bFoundEol = StrLib::bBackward(&z,m_xBlockTest,'\r');
+  
   RASSERT(bFoundEol);
   
   i8 nBytes = Base::nSub((void*)z,m_xBlockTest) + 1;
