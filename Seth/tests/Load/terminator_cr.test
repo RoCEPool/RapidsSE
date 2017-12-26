@@ -1,0 +1,44 @@
+/*----------------------------------------------------------------------------*/
+/* vch_defaults -- varchar with deafult formatters                            */
+/*----------------------------------------------------------------------------*/
+
+// create the table
+
+create table terminator_cr (
+  c1 integer,
+  c2 varchar,
+  c3 varchar
+);
+success
+
+// load data into the table with default formatter settings
+ld terminator_cr "../JTEST/terminator_cr.csv" ;
+success
+
+// create index
+create index idx on terminator_cr(c1);
+success
+
+// fetch
+fetch terminator_cr "c1 1 =";
+rows:
+  (*, 1, 'This is terminatoed by <CR>');
+
+// fetch
+fetch terminator_cr "c1 2 =";
+rows:
+(*, 2, 'Also terminatoed by <CR>');
+
+CLEANUP {
+  
+  drop table terminator_cr;
+  mute
+
+  bye;
+  mute
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* end                                                                        */
+/*----------------------------------------------------------------------------*/

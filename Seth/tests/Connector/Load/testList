@@ -1,4 +1,5 @@
 rdp.test
 regressionData.test
+terminator_cr.test
 vch_defaults.test
 vch_term_defaults.test

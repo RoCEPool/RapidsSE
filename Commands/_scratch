@@ -2,7 +2,10 @@
 /* _scratch -- scratch test                                                   */
 /*============================================================================*/
 
-
+create table test(c1 integer, c2 varchar, c3 varchar);
+ld test "../JTEST/terminator_cr.csv" ;
+/*
+ 
 docol epochTake;
 create table jidx (
 jidx_key   INTEGER NOT NULL,
@@ -18,7 +21,7 @@ ld jidx "../JTEST/test.csv" ;
 drop table jidx;
 docol epochDump;
 
-
+*/
 
 
 /*

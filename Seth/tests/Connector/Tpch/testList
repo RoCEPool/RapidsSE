@@ -1,5 +1,1 @@
-tpchQueries.test
-tpchCount.test
-tpchInsertSelect.test
-tpchSchemaDrop2.test
-tpchSchemaDrop.test
+tpchQueries2.test
