@@ -1,0 +1,47 @@
+/*----------------------------------------------------------------------------*/
+/* terminator_cr -- cr terminator file                                        */
+/*----------------------------------------------------------------------------*/
+
+// create the table
+create table terminator_cr (
+  c1 integer,
+  c2 varchar,
+  c3 varchar
+);
+success
+
+// load data into the table with default formatter settings
+ld terminator_cr "../JTEST/terminator_cr.csv" ;
+success
+
+// create index
+create index idx on terminator_cr(c1);
+success
+
+// fetch
+fetch terminator_cr "c1 1 =";
+rows:
+  (*, 1, 'A', 'This is terminated by <CR>')
+
+// fetch
+fetch terminator_cr "c1 2 =";
+rows:
+  (*, 2, 'A', 'Also terminated by <CR>')
+
+// fetch
+fetch terminator_cr;
+rows: 2
+
+CLEANUP {
+  
+  drop table terminator_cr;
+  mute
+
+  bye;
+  mute
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* end                                                                        */
+/*----------------------------------------------------------------------------*/
