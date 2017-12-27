@@ -12,7 +12,7 @@ create table terminator_cr (
 success
 
 // load data into the table with default formatter settings
-ESCAPE CONNECTOR se 'load terminator_cr '../Seth/tests/Load/terminatorSmall_cr.csv' with node='NODE1' ;
+ESCAPE CONNECTOR se 'load terminator_cr ../Seth/tests/Load/terminatorSmall_cr.csv' with node='NODE1' ;
 success
 
 // create index
