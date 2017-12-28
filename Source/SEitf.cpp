@@ -715,6 +715,38 @@ void SEitf::vLastBuffers(i8 nLastBuffers)
 }
 
 /*----------------------------------------------------------------------------*/
+/* iterate entry buffers from the buffer queue                                */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bNextBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+    
+  // if we had an entry buffer delete it
+  if (m_pEntryBuffer)
+    delete m_pEntryBuffer;
+  
+  if (m_ziLastBuffersScanned == m_ziLastBuffers)
+    return false;
+  
+  // pop an entryBuffer off the queue
+  ValWrk xValWrk;
+  while (!m_pBufferQueue->bPop(&xValWrk)) {
+    PosixThread::vSleepMilli(1);
+  }
+  
+  // get entry buffer
+  PtrVal* pPtrVal = xValWrk.pNestedPtrVal();
+  m_pEntryBuffer = (EntryBuffer*)(pPtrVal->pPtr());
+  
+  if (m_pEntryBuffer->bIsLast()) {
+    m_ziLastBuffersScanned++;
+    //vTrace("m_ziLastBuffersScanned: %lld\n"_Stz, pSEitf->m_ziLastBuffersScanned );
+  }
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* iterate entry buffers from the buffer queue (rows in response buffer)      */
 /*----------------------------------------------------------------------------*/
 bool SEitf::bNextRow(void)
@@ -754,6 +786,7 @@ bool SEitf::bNextRow(void)
       // seitf should have an entry
       ASSERT(m_pEntry);
       
+      //vTrace("sizeof entry %lld %lld\n"_Stz, sizeof(Entry), sizeof(Class));
       // get next entry from buffer
       pEntry = m_pEntryBuffer->pNextEntry(m_pEntry);
     }

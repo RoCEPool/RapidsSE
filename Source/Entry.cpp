@@ -480,15 +480,14 @@ void Entry::vContentDump(void)
 //         pStr->s()
 //         );
   
-  StrVal* pStrVal = reinterpret_cast<StrVal*>(aRow());
+  //StrVal* pStrVal = reinterpret_cast<StrVal*>(aRow());
   
-  vTrace("Entry %p: ThisBytes %lld %s (%lld bytes) %s\n"_Stz,
+  vTrace("Entry %p: ThisBytes %lld %p (%lld bytes) \n"_Stz,
          this,
          //m_iTxId,
          m_nThisBytes,
          aRow(),
-         nRowSize(),
-         pStrVal->aStr()
+         nRowSize()
          );
 }
 

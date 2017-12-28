@@ -985,6 +985,63 @@ eEC RapidsSE_ExportData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath, i8 iTraceLev
 }
 
 /*----------------------------------------------------------------------------*/
+/* fetch next buffer                                                          */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_FetchNextBuffer(SEitf* pSEitf, void** ppEntryBuffer, void** ppFirstEntry, void** ppEntries, i8 iTraceLevel)
+{
+  eEC eResult;
+  
+  Stz* aApiCall = "RapidsSE_FetchNextBuffer"_Stz;
+  
+  try {
+    // trace entry
+    TRACE_ENTRY_P0();
+    
+    // validate the SEitf
+    VALIDATE_SEITF("a"_Stz);
+    
+    // clear the last error
+    CLEAR_LASTERROR();
+    
+    // validate the reference pointers
+    VALIDATE_REFPOINTER("b"_Stz, ppEntryBuffer);
+    VALIDATE_REFPOINTER("b"_Stz, ppFirstEntry);
+    VALIDATE_REFPOINTER("b"_Stz, ppEntries);
+    
+    bool bNextBuffer = pSEitf->bNextBuffer();
+    
+    if (bNextBuffer) {
+      *ppEntryBuffer = pSEitf->m_pEntryBuffer;
+      *ppFirstEntry = pSEitf->m_pEntryBuffer->pFirstRow();
+      pSEitf->m_iRowsProcessed = pSEitf->m_pEntryBuffer->nEntries() - 1;
+      *ppEntries = &pSEitf->m_iRowsProcessed;
+      //pSEitf->m_pEntryBuffer->pFirstRow()->vContentDump();
+    }
+    else {
+      *ppEntryBuffer = nullptr;
+      *ppFirstEntry = nullptr;
+      pSEitf->m_iRowsProcessed = 0;
+      *ppEntries = &pSEitf->m_iRowsProcessed;
+    }
+    //vTrace("Buffer %p FirstRow %p Entries %lld\n"_Stz, *ppEntryBuffer, *ppFirstEntry, *ppEntries);
+    
+    // trace exit
+    TRACE_EXIT("ea"_Stz);
+    
+    return EC_NONE;
+  }
+  catch (Error* pError) {
+    RapidsSE::vErrorHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
+    return pError->eErrorCode();
+  }
+  catch (...) {
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
+    return EC_SE_UNKNOWN_ERROR;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* fetch next row                                                             */
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_FetchNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
