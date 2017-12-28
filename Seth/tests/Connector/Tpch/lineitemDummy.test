@@ -27,7 +27,7 @@ ESCAPE CONNECTOR se 'load lineitemDummy /tmp/lineitemDummy.tbl' WITH node = 'Nod
 failure
 
 select count(*) from lineitemDummy;
-rows: 6001215
+rows: 1
 
 select * from x;
 failure

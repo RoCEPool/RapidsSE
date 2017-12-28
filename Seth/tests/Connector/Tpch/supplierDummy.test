@@ -18,7 +18,7 @@ ESCAPE CONNECTOR se 'load supplierDummy /tmp/supplierDummy.tbl' WITH node = 'Nod
 failure
 
 select count(*) from supplierDummy;
-rows: 10000
+rows: 1
 
 select * from x;
 failure

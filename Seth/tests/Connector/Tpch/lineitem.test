@@ -23,11 +23,11 @@ L_COMMENT       VARCHAR(44) NOT NULL
 );
 success
 
-ESCAPE CONNECTOR se 'load lineitem /mnt/ssd/tpch/lineitem.tbl' WITH node = 'Node1' ;
+ESCAPE CONNECTOR se 'load lineitem /mnt/ssd/tpch/tpch_sf1/lineitem.tbl' WITH node = 'Node1' ;
 failure
 
 select count(*) from lineitem;
-rows: 6001215
+rows: 1
 
 select * from x;
 failure
