@@ -1,0 +1,43 @@
+--------------------------------------------------------------------------------
+-- tpch insert-select tests (SF1)
+-------------------------------------------------------------------------------
+
+loop 1 {
+create table lineitemDummy (
+  L_ORDERKEY      INTEGER NOT NULL,
+  L_PARTKEY       INTEGER NOT NULL,
+  L_SUPPKEY       INTEGER NOT NULL,
+  L_LINENUMBER    INTEGER NOT NULL,
+  L_QUANTITY      INTEGER NOT NULL,
+  L_EXTENDEDPRICE INTEGER NOT NULL,
+  L_DISCOUNT      INTEGER NOT NULL,
+  L_TAX           INTEGER NOT NULL,
+  L_RETURNFLAG    INTEGER NOT NULL,
+  L_LINESTATUS    INTEGER NOT NULL,
+  L_SHIPDATE      INTEGER NOT NULL,
+  L_COMMITDATE    INTEGER NOT NULL,
+  L_RECEIPTDATE   INTEGER NOT NULL,
+  L_SHIPINSTRUCT  INTEGER NOT NULL,
+  L_SHIPMODE      INTEGER NOT NULL,
+  L_COMMENT       INTEGER NOT NULL
+);
+success
+
+ESCAPE CONNECTOR se 'load lineitemDummy /tmp/lineitemDummy.tbl' WITH node = 'Node1' ;
+success
+
+select count(*) from lineitemDummy;
+rows: 6001215
+
+select * from x;
+failure
+
+}
+
+CLEANUP {
+  
+  bye;
+  mute
+}
+
+

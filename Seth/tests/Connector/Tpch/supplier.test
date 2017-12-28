@@ -1,0 +1,34 @@
+--------------------------------------------------------------------------------
+-- tpch supplier tests (SF1)
+-------------------------------------------------------------------------------
+
+loop 1 {
+create table supplier (
+  S_SUPPKEY       INTEGER NOT NULL,
+  S_NAME          VARCHAR(25) NOT NULL,
+  S_ADDRESS       VARCHAR(40) NOT NULL,
+  S_NATIONKEY     INTEGER NOT NULL,
+  S_PHONE         VARCHAR(15) NOT NULL,
+  S_ACCTBAL       DECIMAL(15,2) NOT NULL,
+  S_COMMENT       VARCHAR(101) NOT NULL
+);
+success
+
+ESCAPE CONNECTOR se 'load supplier /mnt/ssd/tpch/supplier.tbl' WITH node = 'Node1' ;
+success
+
+select count(*) from supplier;
+rows: 10000
+
+select * from x;
+failure
+
+}
+
+CLEANUP {
+  
+  bye;
+  mute
+}
+
+

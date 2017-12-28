@@ -1,0 +1,43 @@
+--------------------------------------------------------------------------------
+-- tpch insert-select tests (SF1)
+-------------------------------------------------------------------------------
+
+loop 1 {
+create table lineitem (
+L_ORDERKEY      INTEGER NOT NULL,
+L_PARTKEY       INTEGER NOT NULL,
+L_SUPPKEY       INTEGER NOT NULL,
+L_LINENUMBER    INTEGER NOT NULL,
+L_QUANTITY      DECIMAL(15,2) NOT NULL,
+L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,
+L_DISCOUNT      DECIMAL(15,2) NOT NULL,
+L_TAX           DECIMAL(15,2) NOT NULL,
+L_RETURNFLAG    VARCHAR(1) NOT NULL,
+L_LINESTATUS    VARCHAR(1) NOT NULL,
+L_SHIPDATE      TIMESTAMP NOT NULL,
+L_COMMITDATE    TIMESTAMP NOT NULL,
+L_RECEIPTDATE   TIMESTAMP NOT NULL,
+L_SHIPINSTRUCT  VARCHAR(25) NOT NULL,
+L_SHIPMODE      VARCHAR(10) NOT NULL,
+L_COMMENT       VARCHAR(44) NOT NULL
+);
+success
+
+ESCAPE CONNECTOR se 'load lineitem /mnt/ssd/tpch/lineitem.tbl' WITH node = 'Node1' ;
+success
+
+select count(*) from lineitem;
+rows: 6001215
+
+select * from x;
+failure
+
+}
+
+CLEANUP {
+  
+  bye;
+  mute
+}
+
+

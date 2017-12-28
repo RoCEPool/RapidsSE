@@ -54,9 +54,66 @@ timer: fileGenTimer
 //traceoff
 ;
 
-: gli
+//: gli
 
-  "/tmp/lineitem.tbl" C_1MB 100 * 8 120 fileGen
+//  "/tmp/lineitem.tbl" C_1MB 100 * 8 120 fileGen
+//;
+
+: fileGenRows ( "<path>" rows columns )
+//traceon
+
+  0 0 locals| size file columns rows path |
+  path .
+  rows .
+  // create a file
+  "__file_gen" find dup if else
+  drop
+  "__file_gen" :file
+  then
+  execute to file
+
+  path file file.path!
+  open_write file file.open
+
+  fileGenTimer timer.start
+  0 0 locals| count columnCount |
+  begin
+    count >str
+    1 columnCount + to columnCount
+    begin
+      "," str.cat
+      count >str str.cat
+      1 columnCount + to columnCount
+    columnCount columns < while
+    repeat
+   0 to columnCount
+  "\n" str.cat
+  //dup str.length reg5 + >reg5
+  file file.write
+  1 count + to count
+  count rows < while
+  repeat
+
+  fileGenTimer timer.update
+
+  "file gen time " .put
+  fileGenTimer timer.millisecs .put "ms" .put .\n
+
+  file file.close
+
+  // destroy file
+  "__file_gen" find word.forget
+
+
+  //traceoff
+;
+
+: gsu
+  "/tmp/supplierDummy.tbl" 10000 7 fileGenRows
+;
+
+: gli
+  "/tmp/lineitemDummy.tbl" 6001215 16 fileGenRows
 ;
 
 /*============================================================================*/
