@@ -24,7 +24,7 @@ create table lineitemDummy (
 success
 
 ESCAPE CONNECTOR se 'load lineitemDummy /tmp/lineitemDummy.tbl' WITH node = 'Node1' ;
-success
+failure
 
 select count(*) from lineitemDummy;
 rows: 6001215
