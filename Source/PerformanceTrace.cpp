@@ -114,15 +114,32 @@ void PerformanceTrace::vPrint(void)
       xTimerElapsed.vSet(iTicksStart,iTicksUpdate);
       xTimerDelta.vSet(0,iEntryTicks);
 
-      vTrace("Performance Entry: %lld %lld %s %s\n"_Stz,
-             xTimerElapsed.iNanoseconds(),
-             xTimerDelta.iNanoseconds(),
+      vTrace("Performance Entry: %lldus %lldus %s %s\n"_Stz,
+             xTimerElapsed.iMicroseconds(),
+             xTimerDelta.iMicroseconds(),
              pEntry->aWord(),
              pEntry->aNote()
              );
     }
     
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset performance tracing                                                  */
+/*----------------------------------------------------------------------------*/
+void PerformanceTrace::vReset(void)
+{
+  EntryBuffer* pEntryBuffer = m_pFirstBuffer;
+
+  while (pEntryBuffer) {
+    EntryBuffer* pNextEntryBuffer = pEntryBuffer->pNextBuffer();
+    delete pEntryBuffer;
+    pEntryBuffer = pNextEntryBuffer;
+  }
+  
+  m_pFirstBuffer = nullptr;
+  m_pCurrentBuffer = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -135,6 +152,8 @@ PerformanceEntry* PerformanceTrace::newPerformanceEntry(void)
   if ( ! m_pCurrentBuffer ) {
     m_pFirstBuffer = new EntryBuffer(CN_ENTRYBUFFER);                    //! fix
     m_pCurrentBuffer = m_pFirstBuffer;
+    m_xTimer.vInit();
+    m_xTimer.vStart();
   }
   
   pPerformanceEntry =

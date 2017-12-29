@@ -1980,6 +1980,8 @@ void Task::vPerformancePrint(void)
     return;
   
   pPerformanceTrace->vPrint();
+  
+  pPerformanceTrace->vReset();
 }
 
 /*----------------------------------------------------------------------------*/
