@@ -223,6 +223,7 @@ namespace Tasks
     void vName(StrVal& sName);
     void vNextInSet(NP_Task npNext);
     void vPerformancePoint(Stz* aWordName, Stz* aPointNote);
+    void vPerformancePrint(void);
     bool bPopInt(i8& iInt);
     bool bPopObject(Object*& pObject);
     bool bPopStr(s48K& sStr);
@@ -1330,6 +1331,7 @@ namespace Tasks
     static void vTraceSet(MP_Task mpTask);
 
     static void vPerformancePoint(MP_Task mpTask);  //! wrong place
+    static void vPerformancePrint(MP_Task mpTask);  //! wrong place
 
     // tx
     static void vTxBegin(MP_Task mpTask);

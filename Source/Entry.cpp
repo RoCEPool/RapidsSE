@@ -162,7 +162,7 @@ EntryBuffer* Entry::pEntryBuffer(void)
 /*----------------------------------------------------------------------------*/
 i8 Entry::nSizeEntry(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_); 
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); 
   
   return m_nThisBytes;
 }
@@ -797,7 +797,7 @@ RightVec* Entry::aRightVec(void)
 /*----------------------------------------------------------------------------*/
 Footer* Entry::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   i8 iFooterOffset = m_nThisBytes - sizeof(Footer);
   

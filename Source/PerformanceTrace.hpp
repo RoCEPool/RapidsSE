@@ -26,6 +26,7 @@ namespace Utilities
     ~PerformanceTrace(void);
   
     void vAdd(Stz* aWord, Stz* aNote);
+  void vPrint(void);
   
     PerformanceEntry* newPerformanceEntry(void);
   

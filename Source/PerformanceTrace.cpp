@@ -80,6 +80,49 @@ void PerformanceTrace::vAdd(Stz* aWord, Stz* aNote)
   m_xTimer.vUpdate();
   i8 iTickDelta = m_xTimer.iTicks();
   pPerformanceEntry->vSet(iTickDelta,aWord,aNote);
+  
+  vTrace("Performance Entry: %lld %s %s\n"_Stz,
+         m_xTimer.iNanoseconds(),
+         pPerformanceEntry->aWord(),
+         pPerformanceEntry->aNote()
+         );
+}
+
+/*----------------------------------------------------------------------------*/
+/* print performance entries                                                  */
+/*----------------------------------------------------------------------------*/
+void PerformanceTrace::vPrint(void)
+{
+  Timer xTimerElapsed;
+  Timer xTimerDelta;
+  
+  i8 iTicksStart  = m_xTimer.iStart();
+  i8 iTicksUpdate = iTicksStart;
+  
+  for (EntryBuffer* pEntryBuffer = m_pFirstBuffer;
+       pEntryBuffer;
+       pEntryBuffer = pEntryBuffer->pNextBuffer()) {
+
+    for (PerformanceEntry* pEntry =
+           static_cast<PerformanceEntry*>(pEntryBuffer->pFirstEntryActual());
+         pEntry;
+         pEntry =
+           static_cast<PerformanceEntry*>(pEntryBuffer->pNextEntry(pEntry))) {
+      
+      i8 iEntryTicks = pEntry->iTicks();
+      iTicksUpdate += iEntryTicks;
+      xTimerElapsed.vSet(iTicksStart,iTicksUpdate);
+      xTimerDelta.vSet(0,iEntryTicks);
+
+      vTrace("Performance Entry: %lld %lld %s %s\n"_Stz,
+             xTimerElapsed.iNanoseconds(),
+             xTimerDelta.iNanoseconds(),
+             pEntry->aWord(),
+             pEntry->aNote()
+             );
+    }
+    
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -96,10 +139,12 @@ PerformanceEntry* PerformanceTrace::newPerformanceEntry(void)
   
   pPerformanceEntry =
     static_cast<PerformanceEntry*>(
-      m_pCurrentBuffer->pAllotEntry(sizeof(PerformanceEntry)));
+      m_pCurrentBuffer->pAllotEntryBytes(sizeof(PerformanceEntry)));
   
-  if (pPerformanceEntry)
+  if (pPerformanceEntry) {
+    new(pPerformanceEntry) PerformanceEntry;
     return pPerformanceEntry;
+  }
   
   EntryBuffer* pNewBuffer = new EntryBuffer(CN_ENTRYBUFFER);             //! fix
   
@@ -109,7 +154,9 @@ PerformanceEntry* PerformanceTrace::newPerformanceEntry(void)
   
   pPerformanceEntry =
     static_cast<PerformanceEntry*>(
-      m_pCurrentBuffer->pAllotEntry(sizeof(PerformanceEntry)));
+      m_pCurrentBuffer->pAllotEntryBytes(sizeof(PerformanceEntry)));
+  
+  new(pPerformanceEntry) PerformanceEntry;
   
   return pPerformanceEntry;
 }

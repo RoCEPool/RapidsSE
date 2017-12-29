@@ -46,8 +46,12 @@
 : ppTest
 
   "before" .
-  pp: firstPP
+  pp: first
+  pp: second
+  pp: third
   "after" .
+
+  performancePrint
 ;
 
 /*----------------------------------------------------------------------------*/

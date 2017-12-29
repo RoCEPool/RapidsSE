@@ -94,6 +94,17 @@ void Timer::vStart(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set                                                                        */
+/*----------------------------------------------------------------------------*/
+void Timer::vSet(i8 iStart, i8 iUpdate)
+{
+  _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
+  
+  m_iStart  = iStart;
+  m_iUpdate = iUpdate;
+}
+
+/*----------------------------------------------------------------------------*/
 /* update                                                                     */
 /*----------------------------------------------------------------------------*/
 void Timer::vUpdate(void)
@@ -111,7 +122,7 @@ i8 Timer::iNanoseconds(void)
 {
   _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
   
-  ASSERT(m_iStart);
+  //ASSERT(m_iStart);
   ASSERT(m_iUpdate);
   
   i8 iTicks = (m_iUpdate - m_iStart);
@@ -129,7 +140,7 @@ i8 Timer::iMicroseconds(void)
 {
   _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
   
-  ASSERT(m_iStart);
+  //ASSERT(m_iStart);
   ASSERT(m_iUpdate);
   
   i8 iTicks = (m_iUpdate - m_iStart);
@@ -147,7 +158,7 @@ i8 Timer::iMilliseconds(void)
 {
   _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
   
-  ASSERT(m_iStart);
+  //ASSERT(m_iStart);
   ASSERT(m_iUpdate);
   
   i8 iTicks = (m_iUpdate - m_iStart);
@@ -165,7 +176,7 @@ i8 Timer::iSeconds(void)
 {
   _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
   
-  ASSERT(m_iStart);
+  //ASSERT(m_iStart);
   ASSERT(m_iUpdate);
   
   i8 iTicks = (m_iUpdate - m_iStart);
@@ -183,12 +194,32 @@ i8 Timer::iTicks(void)
 {
   _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
   
-  ASSERT(m_iStart);
+  //ASSERT(m_iStart);
   ASSERT(m_iUpdate);
 
   i8 iTicks = (m_iUpdate - m_iStart);
   
   return iTicks;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get start                                                                  */
+/*----------------------------------------------------------------------------*/
+i8 Timer::iStart(void)
+{
+  _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
+  
+  return m_iStart;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get update                                                                  */
+/*----------------------------------------------------------------------------*/
+i8 Timer::iUpdate(void)
+{
+  _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
+  
+  return m_iUpdate;
 }
 
 /*----------------------------------------------------------------------------*/

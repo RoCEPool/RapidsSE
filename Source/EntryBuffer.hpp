@@ -108,6 +108,7 @@ namespace DBobjects
     i8           iDecile(void);
     void         vDump(void);
     Entry*       pFirstEntry(void);
+    Entry*       pFirstEntryActual(void);
     bool         bHasSpace(i8 nBytes);
     Entry*       pHead(void);
     void         vHigherLevel(EntryBuffer* pHigherLevel);
@@ -127,11 +128,12 @@ namespace DBobjects
     void         vTruncate(void);
     bool         bVerify(void);
     
+    Entry*       pAllotEntryBytes(i8 nBytes);
+  
     private:
     
     void         vAdjustOffsets(Entry* pEntry, i8 nAdjustAmount);
     Entry*       pAllotEntry(i8 nBytes, i8 nLevels, Entry* aAfterEntry);
-    Entry*       pAllotEntryBytes(i8 nBytes);
     void         vAllotHead(void);
     i8           iCopyEntries(EntryBuffer* pFromBuffer, Entry* aFromEntry);
     void         vDumpPrior(Entry* aPriorVec[]);

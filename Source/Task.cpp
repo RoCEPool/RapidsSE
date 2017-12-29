@@ -1971,6 +1971,18 @@ void Task::vPerformancePoint(Stz* aWordName, Stz* aPointNote)
 }
 
 /*----------------------------------------------------------------------------*/
+/* trace performance print                                                    */
+/*----------------------------------------------------------------------------*/
+void Task::vPerformancePrint(void)
+{
+  PerformanceTrace* pPerformanceTrace = m_pSEitf->pPerformanceTrace();
+  if ( ! pPerformanceTrace )
+    return;
+  
+  pPerformanceTrace->vPrint();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get transaction id                                                         */
 /*----------------------------------------------------------------------------*/
 i8 Task::iTxId(void)

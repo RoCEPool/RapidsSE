@@ -21,6 +21,7 @@ void Task::vAddPrimitives_Trace(void)
   vAddPrimitive("trace!"_Stz,           &vTraceSet,         false);
 
   vAddPrimitive("performancePoint"_Stz, &vPerformancePoint, false);
+  vAddPrimitive("performancePrint"_Stz, &vPerformancePrint, false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -99,6 +100,18 @@ void Task::vPerformancePoint(MP_Task mpTask)
     
   //if (gpAttachMap->m_bPerformancepoint)
     mpTask->vPerformancePoint(sWordName,sPointNote);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* performance print                                                          */
+/*----------------------------------------------------------------------------*/
+void Task::vPerformancePrint(MP_Task mpTask)
+{
+  ENTRY("vPerformancePrint"_Stz);
+  
+  mpTask->vPerformancePrint();
   
   EXIT();
 }

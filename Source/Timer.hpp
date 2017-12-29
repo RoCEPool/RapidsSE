@@ -25,6 +25,7 @@ namespace System
     
     void vInit(void);
     void vReset(void);
+    void vSet(i8 iStart, i8 iUpdate);
     void vStart(void);
     void vUpdate(void);
     
@@ -33,6 +34,9 @@ namespace System
     i8 iMilliseconds(void);
     i8 iSeconds(void);
     i8 iTicks(void);
+  
+    i8 iStart(void);
+    i8 iUpdate(void);
 
     Footer* aFooter(void);
   };

@@ -29,6 +29,8 @@ void* PerformanceEntry::operator new(size_t iSize)
   
   void* pObject = Heap::pAllocate(CN_PERFORMANCEENTRY);
   
+  MemLib::vZero(pObject, sizeof(PerformanceEntry),CN_PERFORMANCEENTRY);
+  
   return pObject;
 }
 
@@ -38,6 +40,8 @@ void* PerformanceEntry::operator new(size_t iSize)
 void* PerformanceEntry::operator new(size_t iSize, PerformanceEntry* pPeformanceEntry)
 {
   RASSERT(iSize);
+
+  MemLib::vZero(pPeformanceEntry,sizeof(PerformanceEntry),CN_PERFORMANCEENTRY);
   return pPeformanceEntry;
 }
 
