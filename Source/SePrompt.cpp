@@ -2191,11 +2191,13 @@ void SePrompt::vIterateBuffers(void)
     Entry* pEntry = m_pSEitf->m_pEntry;
     RowData::vRowAsBinaryString(m_pSEitf->m_sResponse, (Stz*)pEntry->aRow(),
                           m_pSEitf->m_pCurrentTable->pColumnVec());
-    if (gpAttachMap->m_bMetadata ) {
-      vTrace("row: (%lld, %s)\n"_Stz, iPartition, m_pSEitf->m_sResponse.aChar());
-    }
-    else {
-      vTrace("row: (%s)\n"_Stz, m_pSEitf->m_sResponse.aChar());
+    if (m_pSEitf->m_bDisplay) {
+      if (gpAttachMap->m_bMetadata ) {
+        vTrace("row: (%lld, %s)\n"_Stz, iPartition, m_pSEitf->m_sResponse.aChar());
+      }
+      else {
+        vTrace("row: (%s)\n"_Stz, m_pSEitf->m_sResponse.aChar());
+      }
     }
   }
   if (gpAttachMap->m_bMetadata ) {
