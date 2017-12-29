@@ -85,6 +85,28 @@ PerformanceEntry* PerformanceTrace::newPerformanceEntry(void)
 {
   PerformanceEntry* pPerformanceEntry = nullptr;
   
+  if ( ! m_pCurrentBuffer ) {
+    m_pFirstBuffer = new EntryBuffer(CN_ENTRYBUFFER);                    //! fix
+    m_pCurrentBuffer = m_pFirstBuffer;
+  }
+  
+  pPerformanceEntry =
+    static_cast<PerformanceEntry*>(
+      m_pCurrentBuffer->pAllotEntry(sizeof(PerformanceEntry)));
+  
+  if (pPerformanceEntry)
+    return pPerformanceEntry;
+  
+  EntryBuffer* pNewBuffer = new EntryBuffer(CN_ENTRYBUFFER);             //! fix
+  
+  m_pCurrentBuffer->vNextBuffer(pNewBuffer);
+  pNewBuffer->vPrevBuffer(m_pCurrentBuffer);
+  m_pCurrentBuffer = pNewBuffer;
+  
+  pPerformanceEntry =
+    static_cast<PerformanceEntry*>(
+      m_pCurrentBuffer->pAllotEntry(sizeof(PerformanceEntry)));
+  
   return pPerformanceEntry;
 }
 
