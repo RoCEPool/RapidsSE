@@ -123,7 +123,7 @@ i8 Timer::iNanoseconds(void)
   _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
   
   //ASSERT(m_iStart);
-  ASSERT(m_iUpdate);
+  //ASSERT(m_iUpdate);
   
   i8 iTicks = (m_iUpdate - m_iStart);
   i8 iTicksPerSecond = Synch::iTickFrequency();
@@ -141,7 +141,7 @@ i8 Timer::iMicroseconds(void)
   _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
   
   //ASSERT(m_iStart);
-  ASSERT(m_iUpdate);
+  //ASSERT(m_iUpdate);
   
   i8 iTicks = (m_iUpdate - m_iStart);
   i8 iTicksPerSecond = Synch::iTickFrequency();
@@ -159,7 +159,7 @@ i8 Timer::iMilliseconds(void)
   _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
   
   //ASSERT(m_iStart);
-  ASSERT(m_iUpdate);
+  //ASSERT(m_iUpdate);
   
   i8 iTicks = (m_iUpdate - m_iStart);
   i8 iTicksPerSecond = Synch::iTickFrequency();
@@ -177,7 +177,7 @@ i8 Timer::iSeconds(void)
   _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
   
   //ASSERT(m_iStart);
-  ASSERT(m_iUpdate);
+  //ASSERT(m_iUpdate);
   
   i8 iTicks = (m_iUpdate - m_iStart);
   i8 iTicksPerSecond = Synch::iTickFrequency();
@@ -195,7 +195,7 @@ i8 Timer::iTicks(void)
   _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
   
   //ASSERT(m_iStart);
-  ASSERT(m_iUpdate);
+  //ASSERT(m_iUpdate);
 
   i8 iTicks = (m_iUpdate - m_iStart);
   

@@ -81,11 +81,11 @@ void PerformanceTrace::vAdd(Stz* aWord, Stz* aNote)
   i8 iTickDelta = m_xTimer.iTicks();
   pPerformanceEntry->vSet(iTickDelta,aWord,aNote);
   
-  vTrace("Performance Entry: %lld %s %s\n"_Stz,
-         m_xTimer.iNanoseconds(),
-         pPerformanceEntry->aWord(),
-         pPerformanceEntry->aNote()
-         );
+//  vTrace("Performance Entry: %lld %s %s\n"_Stz,
+//         m_xTimer.iNanoseconds(),
+//         pPerformanceEntry->aWord(),
+//         pPerformanceEntry->aNote()
+//         );
 }
 
 /*----------------------------------------------------------------------------*/
