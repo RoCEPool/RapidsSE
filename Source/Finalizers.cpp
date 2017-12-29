@@ -110,6 +110,7 @@ pFINALIZE *gpFinalize[]
   /* 71 */ &Finalize::vUndefined,         // CN_PARTITIONSCHEDULER
   /* 72 */ &Finalize::vUndefined,         // CN_PARTITIONVEC
   /* 73 */ &Finalize::vUndefined,         // CN_PATHVEC
+  /*    */ &Finalize::vUndefined,         // CN_PERFORMANCEENTRY
   /*    */ &Finalize::vUndefined,         // CN_PERFORMANCETRACE
   /* 74 */ &Finalize::vUndefined,         // CN_PLAN
   /* 75 */ &Finalize::vUndefined,         // CN_PLANNER
