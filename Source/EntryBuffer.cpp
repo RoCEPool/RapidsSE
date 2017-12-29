@@ -285,14 +285,14 @@ Entry* EntryBuffer::pAllotEntry(i8 nBytes)
     return nullptr;
   }
   
-  Entry* pRow = reinterpret_cast<Entry*>(m_xWsp.aAllot(nBytesRequired));
-  new(pRow) Entry(CN_ENTRY,nBytesRequired,0);
+  Entry* pEntry = reinterpret_cast<Entry*>(m_xWsp.aAllot(nBytesRequired));
+  new(pEntry) Entry(CN_ENTRY,nBytesRequired,0);
   
   m_nEntries++;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  return pRow;
+  return pEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -307,14 +307,14 @@ Entry* EntryBuffer::pAllotEntryBytes(i8 nBytes)
     return nullptr;
   }
   
-  Entry* pRow = reinterpret_cast<Entry*>(m_xWsp.aAllot(nBytes));
-  new(pRow) Entry(CN_ENTRY,nBytes,0);
+  Entry* pEntry = reinterpret_cast<Entry*>(m_xWsp.aAllot(nBytes));
+  new(pEntry) Entry(CN_ENTRY,nBytes,0);
   
   m_nEntries++;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  return pRow;
+  return pEntry;
 }
 
 /*----------------------------------------------------------------------------*/
