@@ -11,8 +11,8 @@ namespace Utilities
   
     Timer  m_xTimer; // timer to compute time delta's
   
-    EntryBuffer* m_pFirstBuffer;  // first buffer in trace sequence
-    EntryBuffer* m_pLastBuffer;   // last buffer in trace sequence
+    EntryBuffer* m_pFirstBuffer;  // first buffer of performance entries in trace sequence
+    EntryBuffer* m_pCurrentBuffer;// last buffer of performance entries in trace sequence
   
     // must be last
     Footer m_xFooter;
@@ -24,6 +24,10 @@ namespace Utilities
     
     PerformanceTrace(void);
     ~PerformanceTrace(void);
+  
+    void vAdd(i8 iTicks, Stz* aWord, Stz* aNote);
+  
+    PerformanceEntry* newPerformanceEntry(void);
   
     Footer* aFooter(void);
   };

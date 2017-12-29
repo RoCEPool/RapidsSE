@@ -52,8 +52,8 @@ PerformanceTrace::PerformanceTrace(void)
   
   //m_xTimer
   
-  m_pFirstBuffer = nullptr;
-  m_pLastBuffer  = nullptr;
+  m_pFirstBuffer   = nullptr;
+  m_pCurrentBuffer = nullptr;
   
   _checkInitialised_(CN_PERFORMANCETRACE);
   
@@ -66,6 +66,26 @@ PerformanceTrace::PerformanceTrace(void)
 PerformanceTrace::~PerformanceTrace(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PERFORMANCETRACE,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add performance entry                                                      */
+/*----------------------------------------------------------------------------*/
+void PerformanceTrace::vAdd(i8 iTicks, Stz* aWord, Stz* aNote)
+{
+  PerformanceEntry* pPerformanceEntry = newPerformanceEntry();
+  
+  pPerformanceEntry->vSet(iTicks,aWord,aNote);
+}
+
+/*----------------------------------------------------------------------------*/
+/* create a new performance entry                                             */
+/*----------------------------------------------------------------------------*/
+PerformanceEntry* PerformanceTrace::newPerformanceEntry(void)
+{
+  PerformanceEntry* pPerformanceEntry = nullptr;
+  
+  return pPerformanceEntry;
 }
 
 /*----------------------------------------------------------------------------*/

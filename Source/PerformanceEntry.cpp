@@ -78,10 +78,11 @@ PerformanceEntry::~PerformanceEntry(void)
 /*----------------------------------------------------------------------------*/
 /* set performance entry                                                      */
 /*----------------------------------------------------------------------------*/
-void PerformanceEntry::vSet(i8 iTicks, Stz* aNote)
+void PerformanceEntry::vSet(i8 iTicks, Stz* aWord, Stz* aNote)
 {
   m_iTicks = iTicks;
-  m_sNote = aNote;
+  m_sWord  = aWord;
+  m_sNote  = aNote;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -90,6 +91,14 @@ void PerformanceEntry::vSet(i8 iTicks, Stz* aNote)
 i8 PerformanceEntry::iTicks(void)
 {
   return m_iTicks;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return word name                                                           */
+/*----------------------------------------------------------------------------*/
+Stz* PerformanceEntry::aWord(void)
+{
+  return (Stz*)m_sWord.aStr();
 }
 
 /*----------------------------------------------------------------------------*/
