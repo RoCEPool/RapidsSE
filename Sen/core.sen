@@ -33,6 +33,21 @@
 /*----------------------------------------------------------------------------*/
 : pp: immediate
 
+  token:
+  encodePushValue
+  //tick . compile,
+
+  word.this encodePushValue
+  tick word.name compile,
+  //tick . compile,
+  tick performancepoint compile,
+;
+
+: ppTest
+
+  "before" .
+  pp: firstPP
+  "after" .
 ;
 
 /*----------------------------------------------------------------------------*/

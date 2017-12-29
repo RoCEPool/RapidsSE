@@ -1951,6 +1951,26 @@ void Task::vTracePoint(Stz* aMark)
 }
 
 /*----------------------------------------------------------------------------*/
+/* trace performance point                                                    */
+/*----------------------------------------------------------------------------*/
+void Task::vPerformancePoint(Stz* aWordName, Stz* aPointNote)
+{
+  if ( ! m_pSEitf ) {
+    vWarn("No SEitf for Performance Point: %s %s\n"_Stz,aWordName,aPointNote);
+    return;
+  }
+  
+  PerformanceTrace* pPerformanceTrace = m_pSEitf->pPerformanceTrace();
+  
+  if ( ! pPerformanceTrace ) {
+    pPerformanceTrace = new PerformanceTrace;
+    m_pSEitf->vPerformanceTrace(pPerformanceTrace);
+  }
+  
+  pPerformanceTrace->vAdd(0,aWordName,aPointNote);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get transaction id                                                         */
 /*----------------------------------------------------------------------------*/
 i8 Task::iTxId(void)

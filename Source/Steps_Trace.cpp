@@ -15,10 +15,12 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Trace(void)
 {
-  vAddPrimitive("traceOff"_Stz,        &vTraceOff,         false);
-  vAddPrimitive("traceOn"_Stz,         &vTraceOn,          false);
-  vAddPrimitive("tracePoint"_Stz,      &vTracePoint,       false);
-  vAddPrimitive("trace!"_Stz,          &vTraceSet,         false);
+  vAddPrimitive("traceOff"_Stz,         &vTraceOff,         false);
+  vAddPrimitive("traceOn"_Stz,          &vTraceOn,          false);
+  vAddPrimitive("tracePoint"_Stz,       &vTracePoint,       false);
+  vAddPrimitive("trace!"_Stz,           &vTraceSet,         false);
+
+  vAddPrimitive("performancePoint"_Stz, &vPerformancePoint, false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -76,6 +78,27 @@ void Task::vTraceSet(MP_Task mpTask)
     THROW_INVALID_DSTACK("trace!"_Stz);
   
   mpTask->m_iTracing = iTrace;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* performance point                                                          */
+/*----------------------------------------------------------------------------*/
+void Task::vPerformancePoint(MP_Task mpTask)
+{
+  ENTRY("vPerformancePoint"_Stz);
+  
+  s256 sWordName;
+  if ( ! mpTask->m_pDataStack->bPop(sWordName) )
+    THROW_INVALID_DSTACK("performancePoint"_Stz);
+  
+  s256 sPointNote;
+  if ( ! mpTask->m_pDataStack->bPop(sPointNote) )
+    THROW_INVALID_DSTACK("performancePoint"_Stz);
+    
+  //if (gpAttachMap->m_bPerformancepoint)
+  //  mpTask->vPerformancePoint(sWordName,sPointNote);
   
   EXIT();
 }
