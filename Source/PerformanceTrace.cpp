@@ -37,7 +37,8 @@ void* PerformanceTrace::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 void PerformanceTrace::operator delete(void* pAddress)
 {
-  PerformanceTrace* pPerformanceTrace = reinterpret_cast<PerformanceTrace*>(pAddress);
+  PerformanceTrace* pPerformanceTrace =
+    reinterpret_cast<PerformanceTrace*>(pAddress);
   
   Heap::vFree(pPerformanceTrace);
 }
@@ -50,7 +51,8 @@ PerformanceTrace::PerformanceTrace(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PERFORMANCETRACE,_FOOTER_);
   
-  //m_xTimer
+  m_xTimer.vInit();
+  m_xTimer.vStart();
   
   m_pFirstBuffer   = nullptr;
   m_pCurrentBuffer = nullptr;
@@ -71,11 +73,13 @@ PerformanceTrace::~PerformanceTrace(void)
 /*----------------------------------------------------------------------------*/
 /* add performance entry                                                      */
 /*----------------------------------------------------------------------------*/
-void PerformanceTrace::vAdd(i8 iTicks, Stz* aWord, Stz* aNote)
+void PerformanceTrace::vAdd(Stz* aWord, Stz* aNote)
 {
   PerformanceEntry* pPerformanceEntry = newPerformanceEntry();
-  
-  pPerformanceEntry->vSet(iTicks,aWord,aNote);
+
+  m_xTimer.vUpdate();
+  i8 iTickDelta = m_xTimer.iTicks();
+  pPerformanceEntry->vSet(iTickDelta,aWord,aNote);
 }
 
 /*----------------------------------------------------------------------------*/

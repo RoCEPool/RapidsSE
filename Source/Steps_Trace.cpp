@@ -98,7 +98,7 @@ void Task::vPerformancePoint(MP_Task mpTask)
     THROW_INVALID_DSTACK("performancePoint"_Stz);
     
   //if (gpAttachMap->m_bPerformancepoint)
-  //  mpTask->vPerformancePoint(sWordName,sPointNote);
+    mpTask->vPerformancePoint(sWordName,sPointNote);
   
   EXIT();
 }

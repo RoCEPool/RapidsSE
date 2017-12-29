@@ -1967,7 +1967,7 @@ void Task::vPerformancePoint(Stz* aWordName, Stz* aPointNote)
     m_pSEitf->vPerformanceTrace(pPerformanceTrace);
   }
   
-  pPerformanceTrace->vAdd(0,aWordName,aPointNote);
+  pPerformanceTrace->vAdd(aWordName,aPointNote);
 }
 
 /*----------------------------------------------------------------------------*/

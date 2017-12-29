@@ -25,7 +25,7 @@ namespace Utilities
     PerformanceTrace(void);
     ~PerformanceTrace(void);
   
-    void vAdd(i8 iTicks, Stz* aWord, Stz* aNote);
+    void vAdd(Stz* aWord, Stz* aNote);
   
     PerformanceEntry* newPerformanceEntry(void);
   
