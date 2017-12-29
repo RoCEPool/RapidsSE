@@ -210,6 +210,8 @@ SEitf::SEitf(i8 iPartition)
   
   //m_xFormatters
   
+  m_pPerformanceTrace = nullptr;
+  
   _checkInitialised_(CN_SEITF);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
@@ -827,6 +829,26 @@ i8 SEitf::iPartition(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   return m_iPartition;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get performance trace                                                      */
+/*----------------------------------------------------------------------------*/
+PerformanceTrace* SEitf::pPerformanceTrace(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  return m_pPerformanceTrace;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set performance trace                                                      */
+/*----------------------------------------------------------------------------*/
+void SEitf::vPerformanceTrace(PerformanceTrace* pPerformanceTrace)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  m_pPerformanceTrace = pPerformanceTrace;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -63,6 +63,8 @@ namespace Interface
   
     Formatters m_xFormatters; // record formatters
   
+    PerformanceTrace* m_pPerformanceTrace;
+  
     // must be last
     Footer m_xFooter;
     
@@ -109,6 +111,9 @@ namespace Interface
    
     Tx*    pTx(void);
     void   vTx(Tx* pTx);
+  
+    PerformanceTrace* pPerformanceTrace(void);
+    void   vPerformanceTrace(PerformanceTrace* pPerformanceTrace);
   
     //--------------------------------------------------------------------------
     
