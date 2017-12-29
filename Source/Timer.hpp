@@ -10,8 +10,8 @@ namespace System
   public:
   
   private:
-    i8      m_iStart;
-    i8      m_iUpdate;
+    i8 m_iStart;
+    i8 m_iUpdate;
     
     // must be last
     Footer m_xFooter;
@@ -28,11 +28,11 @@ namespace System
     void vStart(void);
     void vUpdate(void);
     
-    i8   iNanoseconds(void);
-    i8   iMicroseconds(void);
-    i8   iMilliseconds(void);
-    i8   iSeconds(void);
-    i8   iTicks(void);
+    i8 iNanoseconds(void);
+    i8 iMicroseconds(void);
+    i8 iMilliseconds(void);
+    i8 iSeconds(void);
+    i8 iTicks(void);
 
     Footer* aFooter(void);
   };

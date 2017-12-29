@@ -33,6 +33,15 @@ void* PerformanceEntry::operator new(size_t iSize)
 }
 
 /*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+void* PerformanceEntry::operator new(size_t iSize, PerformanceEntry* pPeformanceEntry)
+{
+  RASSERT(iSize);
+  return pPeformanceEntry;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
 void PerformanceEntry::operator delete(void* pAddress)
@@ -49,6 +58,9 @@ PerformanceEntry::PerformanceEntry(void)
 : Entry(CN_PERFORMANCEENTRY,sizeof(PerformanceEntry),0)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PERFORMANCEENTRY,_FOOTER_);
+  
+  m_iTicks = 0;
+  //m_sNote
     
   _checkInitialised_(CN_PERFORMANCEENTRY);
   
@@ -61,6 +73,31 @@ PerformanceEntry::PerformanceEntry(void)
 PerformanceEntry::~PerformanceEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PERFORMANCEENTRY,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set performance entry                                                      */
+/*----------------------------------------------------------------------------*/
+void PerformanceEntry::vSet(i8 iTicks, Stz* aNote)
+{
+  m_iTicks = iTicks;
+  m_sNote = aNote;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return tick count                                                          */
+/*----------------------------------------------------------------------------*/
+i8 PerformanceEntry::iTicks(void)
+{
+  return m_iTicks;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return entry note                                                          */
+/*----------------------------------------------------------------------------*/
+Stz* PerformanceEntry::aNote(void)
+{
+  return (Stz*)m_sNote.aStr();
 }
 
 /*----------------------------------------------------------------------------*/
