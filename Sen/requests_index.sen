@@ -538,7 +538,7 @@ timer: pIdxSelectTimer
                                                                     // ../tables
 //"fetchRowsIndex_req" .
 
-  pp: beginning
+  //pp: beginning
 
   // task is a request server
   task::this task.kind@ TK_REQUEST_SERVER == assert
@@ -615,9 +615,9 @@ timer: pIdxSelectTimer
 
   popTable assertInTables
 
-  pp: end
+  //pp: end
 
-  performancePrint
+  //performancePrint
 
   <OK>
 ;

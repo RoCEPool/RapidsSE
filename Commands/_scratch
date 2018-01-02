@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 create table test(c1 integer, c2 varchar, c3 varchar);
-ld test "../JTEST/terminatorLarge_cr.csv" ;
+ld test "../JTEST/terminator.csv" terminator "|";
 /*
  
 docol epochTake;
