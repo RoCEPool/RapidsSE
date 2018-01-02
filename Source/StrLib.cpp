@@ -1471,7 +1471,9 @@ bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength,
   
   while (**aaSrc
          && cFieldSeparator   != **aaSrc
-         && cRecordTerminator != **aaSrc) {
+         && cRecordTerminator != **aaSrc
+         && C_NL != **aaSrc
+         && C_CR != **aaSrc) {
     
     // test for escape character
     if (cEscapeChar == **aaSrc) {
