@@ -777,7 +777,7 @@ bool StrLib::bExtractDecimal(char** aaSrc, i8& iDecimal, i8 iLength, i8 iScale)
   }
   
   // have we exceeded maximum precision digits?
-  if (iPrecision < 0)
+  if (iPrecision < 0 && (uUnsignedResult != 0))
     return false;
   
   if ('.' == **aaSrc) {
