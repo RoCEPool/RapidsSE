@@ -769,6 +769,11 @@ bool StrLib::bExtractDecimal(char** aaSrc, i8& iDecimal, i8 iLength, i8 iScale)
       (*aaSrc)++;
     }
   
+  // ignore leading 0's
+  while (StrLib::bIsDigit(**aaSrc) && StrLib::iDigitToI8(**aaSrc) == 0) {
+    (*aaSrc)++;
+  }
+  
   // collect leading digits (till '.')
   while (StrLib::bIsDigit(**aaSrc)) {
     uUnsignedResult = uUnsignedResult * 10 + StrLib::iDigitToI8(**aaSrc);
@@ -777,7 +782,7 @@ bool StrLib::bExtractDecimal(char** aaSrc, i8& iDecimal, i8 iLength, i8 iScale)
   }
   
   // have we exceeded maximum precision digits?
-  if (iPrecision < 0 && (uUnsignedResult != 0))
+  if (iPrecision < 0)
     return false;
   
   if ('.' == **aaSrc) {
