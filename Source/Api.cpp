@@ -2029,6 +2029,10 @@ eEC RapidsSE_LoadData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath,
     // set the formatters
     pSEitf->m_xFormatters.m_cRecordTerminator = *(pRecordTerminator->aChar());
     pSEitf->m_xFormatters.m_cFieldSeparator   = *(pFieldSeparator->aChar());
+    
+    if (pFieldSeparator->bEqual("\\t"_Stz))
+      pSEitf->m_xFormatters.m_cFieldSeparator   = '\t';
+    
     pSEitf->m_xFormatters.m_cEnclosedBy       = *(pEnclosedBy->aChar());
     pSEitf->m_xFormatters.m_cEscapeChar       = *(pEscapeChar->aChar());
     
