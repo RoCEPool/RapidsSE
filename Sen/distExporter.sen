@@ -62,6 +62,7 @@
   // reap the plan
   //dexPlan reapPlan
 
+  dexPlan plan.delete
 
   true
 ;
