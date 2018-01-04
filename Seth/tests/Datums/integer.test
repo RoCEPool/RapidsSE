@@ -49,13 +49,16 @@ success
 dumpidx IntTbl int_idx2;
 success
 
-// drop the table
-drop table IntTbl;
-success
+// fetch
+fetch intTbl "int_col1 13 =";
+rows:
+ (*, 13,'one three',113,null)
 
-// check existence of table
-lstbl;
-rows: 0
+// fetch
+fetch intTbl "int_col1 14 =";
+rows:
+  (*, 14,'one four',114,null)
+
 
 CLEANUP {
   

@@ -62,6 +62,15 @@ dumpidx vchTbl vch_idx2;
 // dump index vch_idx3
 dumpidx vchTbl vch_idx3;
 
+// fetch
+fetch vchTbl "vch_col2 'nine' =";
+rows:
+  (*,9,'nine','109',9,null)
+
+fetch vchTbl "vch_col2 'one zero' =";
+rows:
+  (*,10,'one zero','110',0,null)
+
 // drop the table
 drop table VchTbl;
 success

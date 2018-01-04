@@ -50,20 +50,25 @@ dumpidx tspTbl tsp_idx1;
 // dump index tsp_idx2
 dumpidx tspTbl tsp_idx2;
 
+// fetch
+//
+//rows:
+//  (*,'1904-01-01 00:00:00',four,104,4,4.004,1004.004,null)
+
 // drop the table
-drop table tspTbl;
-success
+//drop table tspTbl;
+//success
 
 // check existence of table
-lstbl;
-rows: 0
+//lstbl;
+//rows: 0
 
 
 CLEANUP {
   
   // drop the table
-  drop table tspTbl;
-  mute
+  //drop table tspTbl;
+  //mute
   
   bye;
   mute
