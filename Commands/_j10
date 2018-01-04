@@ -2,6 +2,7 @@
 /* _j10 -- jtest creation and load etc                                        */
 /*============================================================================*/
 
+docol epochTake;
 ping ;
 
 create table j10 (
@@ -11,6 +12,11 @@ create table j10 (
 
 print "loading j10.tbl..." ;
 ld j10 "../JTEST/j10.csv" ;
+//escape connector se 'load j10' with file = '/Users/alkayamarti/rapidsSE/rapidsse/JTEST/x.csv', delimiter = '\t', node='node1';
+//escape connector se 'load j10' with file = '/Users/alkayamarti/rapidsSE/rapidsse/JTEST/j10.csv', delimiter = ',', node='node1';
+//escape connector se 'export j10' with file='/tmp/p' , node='node1';
+//ld j10 "../JTEST/x.csv" delimiter "\t";
+
 
 pwf ;
 lf ;
@@ -20,18 +26,19 @@ dumpidx j10 hidden;
 
 vfyidx j10 hidden;
 
-//dex j10 "/tmp/j10.csv" ;
+dex j10 "/tmp/j10.csv" ;
 
 docol bpa ;
 
 //docol bpw ;
 
-checkpoint "/tmp/checkpoint.dmp" ;
-reload "/tmp/checkpoint.dmp" ;
+//checkpoint "/tmp/checkpoint.dmp" ;
+//reload "/tmp/checkpoint.dmp" ;
 
 displayOff;
 fetch j10;
-
+drop table j10;
+docol epochDump;
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

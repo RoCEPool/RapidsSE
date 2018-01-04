@@ -78,6 +78,10 @@ common/ print nFetchPartitions /
   then
 
   opFrame.drop
+
+  // first pop the plan dic as plan may have gotten deleted
+  dicPath.pop
+
   dicPath.clear
 
   // return fetch started

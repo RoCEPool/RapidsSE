@@ -19,6 +19,7 @@ void Task::vAddPrimitives_DicStack(void)
   vAddPrimitive("dicPath.drop"_Stz,     &vDicPathDrop,     false);
   vAddPrimitive("dicPath.dump"_Stz,     &vDicPathDump,     false);
   vAddPrimitive("dicPath.pick"_Stz,     &vDicPathPick,     false);
+  vAddPrimitive("dicPath.pop"_Stz,      &vDicPathPop,      false);
   vAddPrimitive("dicPath.push"_Stz,     &vDicPathPush,     false);
 }
 
@@ -102,6 +103,25 @@ void Task::vDicPathPick(MP_Task mpTask)
   Object* pPtrDic = pDicPath->pPick(iDic);
 
   mpTask->m_pDataStack->vPushObject(pPtrDic);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dicPath.pop -- pop top of dictionary stack                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vDicPathPop(MP_Task mpTask)
+{
+  ENTRY("vDicPathPop"_Stz);
+  
+  Object* pPtrDicStack;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrDicStack) )
+    THROW_INVALID_DSTACK("dicPath.pop"_Stz);
+  
+  DicPath* pDicPath = (DicPath*)(pPtrDicStack);
+  ASSERT(CN_DICPATH == pDicPath->eClass());
+  
+  pDicPath->vPop();
   
   EXIT();
 }

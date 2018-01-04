@@ -246,6 +246,22 @@ Dic* DicPath::pPick(i8 iPick)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop top dictionary                                                         */
+/*----------------------------------------------------------------------------*/
+void DicPath::vPop(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
+  
+  ASSERT(m_iTop >= 0);
+  ASSERT(m_iTop <  C_DICTIONARY_STACK);
+  
+  // just pop the top
+  m_pDic[m_iTop] = nullptr;
+  
+  m_iTop--;
+}
+
+/*----------------------------------------------------------------------------*/
 /* push dictionary onto stack                                                 */
 /*----------------------------------------------------------------------------*/
 void DicPath::vPush(Dic* pDic)

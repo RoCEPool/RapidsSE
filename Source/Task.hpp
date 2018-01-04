@@ -509,6 +509,7 @@ namespace Tasks
     static void vDicPathDrop(MP_Task mpTask);
     static void vDicPathDump(MP_Task mpTask);
     static void vDicPathPick(MP_Task mpTask);
+    static void vDicPathPop(MP_Task mpTask);
     static void vDicPathPush(MP_Task mpTask);
 
     // dir

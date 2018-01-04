@@ -199,6 +199,8 @@ common/ write nStreams    /
 
   then
   opFrame.drop
+  // first pop the plan dic as plan may have gotten deleted
+  pathPop
 
   dicPath.clear
 ;

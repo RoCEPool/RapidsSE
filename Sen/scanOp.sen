@@ -106,7 +106,10 @@ common/ scan rbCrs /
   opFrame.drop
 
   // [0] discard thePlan's dictionary from path stack
-  //pathDrop
+  // pop the plan dic as plan may have gotten deleted
+  pathPop
+
+  dicPath.clear
 ;
 
 /*----------------------------------------------------------------------------*/

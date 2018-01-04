@@ -38,6 +38,7 @@ namespace Dictionaries
     Word* pRemoveWord(StrVal& sName);
     Word* pLocate(Cell* pCell);
     Dic* pPick(i8 iDic);
+    void vPop(void);
     void vPush(Dic* pDic);
     Dic* pTop(void);
     
