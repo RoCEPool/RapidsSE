@@ -60,8 +60,6 @@ common/ scan rbCrs /
   tableNm find execute
   pathPush
 
-  //pathDump
-
   // [0] push thePlan's dictionary onto path stack
   thePlan plan.dic pathPush
 
@@ -83,7 +81,7 @@ common/ scan rbCrs /
 
   // pipe all rb's of partition
   begin while
-      
+
     // << rb true profile plan profile >> -->> nextOp
     << rbCrs rbCursor.get true pSeitf $$nextProfile thePlan plan.id@ $$nextOp >>jobQueue
 
@@ -108,7 +106,7 @@ common/ scan rbCrs /
   opFrame.drop
 
   // [0] discard thePlan's dictionary from path stack
-  pathDrop
+  //pathDrop
 ;
 
 /*----------------------------------------------------------------------------*/
