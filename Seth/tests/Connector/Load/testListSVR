@@ -1,4 +1,5 @@
 rdpSVR.test
+rdpLoadSVR.test
 regressionData.test
 terminator_cr.test
 terminatorLarge_cr.test

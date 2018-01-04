@@ -23,7 +23,7 @@ create table lineitemDummy (
 );
 success
 
-ESCAPE CONNECTOR se 'load lineitemDummy /tmp/lineitemDummy.tbl' WITH node = 'Node1' ;
+ESCAPE CONNECTOR se 'load lineitemDummy' with file='/tmp/lineitemDummy.tbl' , node = 'Node1' ;
 failure
 
 select count(*) from lineitemDummy;

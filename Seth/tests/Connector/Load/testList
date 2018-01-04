@@ -1,4 +1,5 @@
 rdp.test
+rdpLoad.test
 regressionData.test
 terminator_cr.test
 terminatorLarge_cr.test

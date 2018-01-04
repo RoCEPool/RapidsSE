@@ -35,7 +35,7 @@ create index rdp_idx_0 on rdp(rdp_testno);
 success
 
 // load data into the table with default formatter settings
-escape connector se 'load rdp ../JTEST/rdp.csv' with node='node1';
+escape connector se 'load rdp' with file='../JTEST/rdp.csv', node='node1';
 failure
 
 
@@ -255,7 +255,7 @@ rows:
 
 
 // export rdp data
-escape connector se 'export rdp /tmp/rdp.csv' with node='node1';
+escape connector se 'export rdp' with file='/tmp/rdp.csv' , node='node1';
 success
 
 drop table rdp;
@@ -292,7 +292,7 @@ create index rdp_idx_0 on rdp(rdp_testno);
 success
 
 // load data into the table with default formatter settings from exported file
-escape connector se 'load rdp /tmp/rdp.csv' with node='node1';
+escape connector se 'load rdp' with file='/tmp/rdp.csv' , node='node1';
 failure
 
 

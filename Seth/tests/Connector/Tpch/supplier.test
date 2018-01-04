@@ -14,7 +14,7 @@ create table supplier (
 );
 success
 
-ESCAPE CONNECTOR se 'load supplier /mnt/ssd/tpch/tpch_sf1/supplier.tbl' WITH node = 'Node1' ;
+ESCAPE CONNECTOR se 'load supplier' with file='/mnt/ssd/tpch/tpch_sf1/supplier.tbl' , node = 'Node1' ;
 failure
 
 select count(*) from supplier;

@@ -12,11 +12,11 @@ success
 
 // create an index
 create index idx on vch (vch_testno);
-success;
+success
 
 // load data into the table with default formatter settings
-escape connector se 'load vch ../JTEST/vch_defaults.csv' with node='NODE1';
-failure;
+escape connector se 'load vch' with file='../JTEST/vch_defaults.csv' , node='NODE1';
+failure
 
 select * from vch;
 rows: 21

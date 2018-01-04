@@ -15,7 +15,7 @@ S_COMMENT       VARCHAR(101) NOT NULL
 
 success
 
-ESCAPE CONNECTOR se 'load supplier1 /tpch/supplier.tbl' WITH node = 'Node1' ;
+ESCAPE CONNECTOR se 'load supplier1' with file='/tpch/supplier.tbl' , node = 'Node1' ;
 success
 
 create table supplier2 (

@@ -14,7 +14,7 @@ create table supplierDummy (
 );
 success
 
-ESCAPE CONNECTOR se 'load supplierDummy /tmp/supplierDummy.tbl' WITH node = 'Node1' ;
+ESCAPE CONNECTOR se 'load supplierDummy' with file='/tmp/supplierDummy.tbl' , node = 'Node1' ;
 failure
 
 select count(*) from supplierDummy;

@@ -12,19 +12,19 @@ create table terminator_cr (
 success
 
 // load data into the table with default formatter settings
-ESCAPE CONNECTOR se 'load terminator_cr ../Seth/tests/Load/terminatorSmallNull_cr.csv' with node='NODE1' ;
-success
+ESCAPE CONNECTOR se 'load terminator_cr' with file='../Seth/tests/Load/terminatorSmallNull_cr.csv' , node='NODE1' ;
+failure
 
 // create index
 create index idx on terminator_cr(c1);
 success
 
 // fetch
-fetch terminator_cr "c1 1 =";
+select * from terminator_cr where c1 = 1;
 rows: 2533
 
 // fetch
-fetch terminator_cr;
+select * from terminator_cr ;
 rows: 2533
 
 CLEANUP {

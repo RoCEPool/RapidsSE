@@ -12,10 +12,10 @@ success
 
 // create an index
 create index idx on vch (vch_testno);
-success;
+success
 
 // load data into the table with default formatter settings
-escape connector se 'load vch /home/alka/master/rapidsse/JTEST/vch_defaults.csv' with node='NODE1';
+escape connector se 'load vch' with file='/home/alka/master/rapidsse/JTEST/vch_defaults.csv' , node='NODE1';
 failure
 
 select * from vch;

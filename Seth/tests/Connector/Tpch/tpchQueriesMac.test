@@ -130,28 +130,28 @@ success
 CREATE INDEX supplier_idx2 ON supplier(s_nationkey);
 success
 
-ESCAPE CONNECTOR se 'load nation /tpch/nation.tbl' WITH node = 'Node1' ;
+ESCAPE CONNECTOR se 'load nation' with file='/tpch/nation.tbl' , node = 'Node1' ;
 success
 
-ESCAPE CONNECTOR se 'load orders /tpch/orders.tbl' WITH node = 'Node1' ;
+ESCAPE CONNECTOR se 'load orders' with file='/tpch/orders.tbl' , node = 'Node1' ;
 success
 
-ESCAPE CONNECTOR se 'load supplier /tpch/supplier.tbl' WITH node = 'Node1' ;
+ESCAPE CONNECTOR se 'load supplier' with file='/tpch/supplier.tbl' , node = 'Node1' ;
 success
 
-ESCAPE CONNECTOR se 'load region /tpch/region.tbl' WITH node = 'Node1' ;
+ESCAPE CONNECTOR se 'load region' with file='/tpch/region.tbl' , node = 'Node1' ;
 success
 
-ESCAPE CONNECTOR se 'load lineitem /tpch/lineitem.tbl' WITH node = 'Node1' ;
+ESCAPE CONNECTOR se 'load lineitem' with file='/tpch/lineitem.tbl' , node = 'Node1' ;
 success
 
-ESCAPE CONNECTOR se 'load part /tpch/part.tbl' WITH node = 'Node1' ;
+ESCAPE CONNECTOR se 'load part' with file='/tpch/part.tbl' , node = 'Node1' ;
 success
 
-ESCAPE CONNECTOR se 'load partsupp /tpch/partsupp.tbl' WITH node = 'Node1' ;
+ESCAPE CONNECTOR se 'load partsupp' with file='/tpch/partsupp.tbl' , node = 'Node1' ;
 success
 
-ESCAPE CONNECTOR se 'load customer /tpch/customer.tbl' WITH node = 'Node1' ;
+ESCAPE CONNECTOR se 'load customer' with file='/tpch/customer.tbl' , node = 'Node1' ;
 success
 
 //Loop 3 {

@@ -32,7 +32,7 @@ success
 CREATE INDEX lineitem_idx3 ON lineitem1(l_suppkey);
 success
 
-ESCAPE CONNECTOR se 'load lineitem1 /tpch/lineitem.tbl' WITH node = 'Node1' ;
+ESCAPE CONNECTOR se 'load lineitem1' with file='/tpch/lineitem.tbl' , node = 'Node1' ;
 success
 
 create table lineitem2 (
