@@ -67,8 +67,8 @@ dumpidx tspTbl tsp_idx2;
 CLEANUP {
   
   // drop the table
-  //drop table tspTbl;
-  //mute
+  drop table tspTbl;
+  mute
   
   bye;
   mute

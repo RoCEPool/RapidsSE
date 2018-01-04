@@ -148,7 +148,7 @@ rows:
 
 fetch rdp "rdp_testno 2000 =";
 rows:
-  (*, 2000,'test 2000', false,false, 0,0, 0.0e0,0.0e0, 0,0, TIMESTAMP '1900-01-01 00:00:00',TIMESTAMP '1900-01-01 00:00:00', 'quick brown fox','quick brown fox')
+  (*, 2000,'test 2000', false,false, 0,0, 0.0e0,0.0e0, 0,0, TIMESTAMP '1900-01-01 00:00:00',TIMESTAMP '1900-01-01 00:00:00', 'quick brown \yfox','quick brown fox')
 
 fetch rdp "rdp_testno 2001 =";
 rows:

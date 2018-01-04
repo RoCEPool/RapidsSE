@@ -204,8 +204,8 @@ rows:
 
 CLEANUP {
 
-  ///drop table jCdt;
-  //mute
+  drop table jCdt;
+  mute
 
   bye;
   mute
