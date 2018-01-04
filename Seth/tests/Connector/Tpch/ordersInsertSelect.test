@@ -19,7 +19,7 @@ success
 CREATE INDEX orders_idx1 ON orders1(o_orderdate);success
 
 ESCAPE CONNECTOR se 'load orders1' with file='/tpch/orders.tbl' , node = 'Node1' ;
-success
+failure contains: 'Success'
 
 create table orders2 (
 O_ORDERKEY        INTEGER NOT NULL,

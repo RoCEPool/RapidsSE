@@ -131,28 +131,28 @@ CREATE INDEX supplier_idx2 ON supplier(s_nationkey);
 success
 
 ESCAPE CONNECTOR se 'load nation' with file='/tpch/nation.tbl' , node = 'Node1' ;
-success
+failure contains: 'Success'
 
 ESCAPE CONNECTOR se 'load orders' with file='/tpch/orders.tbl' , node = 'Node1' ;
-success
+failure contains: 'Success'
 
 ESCAPE CONNECTOR se 'load supplier' with file='/tpch/supplier.tbl' , node = 'Node1' ;
-success
+failure contains: 'Success'
 
 ESCAPE CONNECTOR se 'load region' with file='/tpch/region.tbl' , node = 'Node1' ;
-success
+failure contains: 'Success'
 
 ESCAPE CONNECTOR se 'load lineitem' with file='/tpch/lineitem.tbl' , node = 'Node1' ;
-success
+failure contains: 'Success'
 
 ESCAPE CONNECTOR se 'load part' with file='/tpch/part.tbl' , node = 'Node1' ;
-success
+failure contains: 'Success'
 
 ESCAPE CONNECTOR se 'load partsupp' with file='/tpch/partsupp.tbl' , node = 'Node1' ;
-success
+failure contains: 'Success'
 
 ESCAPE CONNECTOR se 'load customer' with file='/tpch/customer.tbl' , node = 'Node1' ;
-success
+failure contains: 'Success'
 
 //Loop 3 {
   

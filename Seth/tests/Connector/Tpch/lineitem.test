@@ -24,7 +24,7 @@ L_COMMENT       VARCHAR(44) NOT NULL
 success
 
 ESCAPE CONNECTOR se 'load lineitem' with file='/mnt/ssd/tpch/tpch_sf1/lineitem.tbl' , node = 'Node1' ;
-failure
+failure contains: 'Success'
 
 select count(*) from lineitem;
 rows: 1

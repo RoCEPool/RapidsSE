@@ -13,7 +13,7 @@ create index idx1 on region1(R_REGIONKEY);
 success
 
 ESCAPE CONNECTOR se 'load region1' with file='/tpch/region.tbl' , node = 'Node1' ;
-success
+failure contains: 'Success'
 
 create table region2 (
 R_REGIONKEY       INTEGER NOT NULL,

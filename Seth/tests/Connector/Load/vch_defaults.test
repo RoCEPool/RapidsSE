@@ -16,7 +16,7 @@ success
 
 // load data into the table with default formatter settings
 escape connector se 'load vch' with file='../JTEST/vch_defaults.csv' , node='NODE1';
-failure
+failure contains: 'Success'
 
 select * from vch;
 rows: 21

@@ -15,7 +15,7 @@ create table supplier (
 success
 
 ESCAPE CONNECTOR se 'load supplier' with file='/mnt/ssd/tpch/tpch_sf1/supplier.tbl' , node = 'Node1' ;
-failure
+failure contains: 'Success'
 
 select count(*) from supplier;
 rows: 1

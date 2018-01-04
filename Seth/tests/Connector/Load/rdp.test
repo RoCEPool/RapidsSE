@@ -36,7 +36,7 @@ success
 
 // load data into the table with default formatter settings
 escape connector se 'load rdp' with file='../JTEST/rdp.csv', node='node1';
-failure
+failure contains: 'Success'
 
 
 // unable to select 3000 because of min/max's
@@ -293,7 +293,7 @@ success
 
 // load data into the table with default formatter settings from exported file
 escape connector se 'load rdp' with file='/tmp/rdp.csv' , node='node1';
-failure
+failure contains: 'Success'
 
 
 // unable to select 3000 because of min/max's

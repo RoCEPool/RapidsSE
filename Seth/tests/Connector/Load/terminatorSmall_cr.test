@@ -13,7 +13,7 @@ success
 
 // load data into the table with default formatter settings
 ESCAPE CONNECTOR se 'load terminator_cr' with file='../Seth/tests/Load/terminatorSmall_cr.csv' , node='NODE1' ;
-failure
+failure contains: 'Success'
 
 // create index
 create index idx on terminator_cr(c1);

@@ -16,7 +16,7 @@ S_COMMENT       VARCHAR(101) NOT NULL
 success
 
 ESCAPE CONNECTOR se 'load supplier1' with file='/tpch/supplier.tbl' , node = 'Node1' ;
-success
+failure contains: 'Success'
 
 create table supplier2 (
 S_SUPPKEY       INTEGER NOT NULL,

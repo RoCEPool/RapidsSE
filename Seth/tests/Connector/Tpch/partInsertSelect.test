@@ -20,7 +20,7 @@ CREATE INDEX part_idx1 ON part1(p_brand);
 success
 
 ESCAPE CONNECTOR se 'load part1' with file='/tpch/part.tbl' , node = 'Node1' ;
-success
+failure contains: 'Success'
 
 create table part2 (
 P_PARTKEY           INTEGER NOT NULL,

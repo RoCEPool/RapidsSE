@@ -15,7 +15,7 @@ create table supplierDummy (
 success
 
 ESCAPE CONNECTOR se 'load supplierDummy' with file='/tmp/supplierDummy.tbl' , node = 'Node1' ;
-failure
+failure contains: 'Success'
 
 select count(*) from supplierDummy;
 rows: 1
