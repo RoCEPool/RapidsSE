@@ -106,6 +106,8 @@ common/ write nStreams    /
     "\n" filePointer file.write
     rowCrs rowCursor.next
   repeat
+
+  rowCrs rowCursor.delete
 ;
 
 /*----------------------------------------------------------------------------*/
