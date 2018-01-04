@@ -250,8 +250,8 @@ bool Int::bExtract(char** aaSrc, Int* aInt, Column* pColumn, Formatters* pFormat
   StrLib::vSkipSpaces(aaSrc);
     
   // is there any data ?
-  if ( ! DtmLib::bIsThereFieldData(**aaSrc,pFormatters) )
-    return false;
+  //if ( ! DtmLib::bIsThereFieldData(**aaSrc,pFormatters) )
+  //  return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // null processing

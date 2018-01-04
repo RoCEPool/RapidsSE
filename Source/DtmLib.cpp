@@ -486,6 +486,19 @@ bool DtmLib::bTestForNull(char** aaSrc, DBobjects::Column* pColumn,
    */
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test if there is any field data
+  if ( ! DtmLib::bIsThereFieldData(**aaSrc, pFormatters)) {
+    if ( ! pColumn->bIsNullable() ) {
+      // a null was detected in a non-nullable column
+      bValidNull = false;
+      return true;
+    }
+    // a null was detected in a nullable column
+    bValidNull = true;
+    return true;
+  }
+      
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for null, \N or '\N'
   
   if ( 0 == StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) ) {

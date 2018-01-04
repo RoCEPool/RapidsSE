@@ -188,8 +188,8 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aBcd, DBobjects::Column* pColumn, Formatte
   StrLib::vSkipSpaces(aaSrc);
 
   // is there any data ?
-  if ( ! DtmLib::bIsThereFieldData(**aaSrc,pFormatters) )
-    return false;
+  //if ( ! DtmLib::bIsThereFieldData(**aaSrc,pFormatters) )
+  //  return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // null processing
