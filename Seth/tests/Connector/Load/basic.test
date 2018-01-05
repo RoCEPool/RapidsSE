@@ -1,0 +1,128 @@
+/*----------------------------------------------------------------------------*/
+/* basic -- basic load formatter tests                                        */
+/*----------------------------------------------------------------------------*/
+
+///////////////////////////////
+// BASIC1
+///////////////////////////////
+// create the table
+create table table1 (c1 integer, c2 varchar(100));
+success
+
+// create an index
+create index idx_0 on table1(c1);
+success
+
+// load data into the table with default formatter settings
+ESCAPE CONNECTOR se 'load table1' WITH file = '/Users/alkayamarti/rapidsSE/rapidsse/JTEST/basic1.csv',node = 'node1';
+failure contains: 'Success'
+
+Select * from table1;
+rows:
+ (1,    'A')
+ (2,    'A,B')
+ (3 ,   'A')
+ (4 ,   'A''')
+ (5,    '')
+ (NULL, NULL)
+
+drop table table1;
+success
+
+///////////////////////////////
+// BASIC2
+///////////////////////////////
+create table table1 (c1 integer, c2 varchar(100));
+success
+
+// create an index
+create index idx_0 on table1(c1);
+success
+
+// load data into the table with default formatter settings
+ ESCAPE CONNECTOR se 'load table1' WITH file = '/Users/alkayamarti/rapidsSE/rapidsse/JTEST/basic2.csv', terminator = '\r\n', node = 'node1';
+failure contains: 'Success'
+
+Select * from table1;
+rows:
+  (1,    'A')
+  (2,    'A,B')
+  (3 ,   'A')
+  (4 ,   'A''')
+  (5,    '')
+  (NULL, NULL)
+
+Select char_length(c2) from table1 where c1 = 5;
+rows:
+ (0)
+
+drop table table1;
+success
+
+///////////////////////////////
+// BASIC3
+///////////////////////////////
+create table table1 (c1 integer, c2 varchar(100));
+success
+
+// create an index
+create index idx_0 on table1(c1);
+success
+
+// load data into the table with default formatter settings
+ESCAPE CONNECTOR se 'load table1' WITH file = '/Users/alkayamarti/rapidsSE/rapidsse/JTEST/basic3.csv', delimiter = '\t',
+  terminator = '|\r\n',
+  enclosed_by = '"',
+  escape_char = '^',
+  node = 'node1';
+failure contains: 'Success'
+
+Select * from table1;
+rows:
+(1,    'A')
+(2,    'A,B')
+(3 ,   'A')
+(4 ,   'A"')
+(5,    '')
+(NULL, NULL)
+
+Select char_length(c2) from table1 where c1 = 5;
+rows:
+  (0)
+
+drop table table1;
+success
+
+///////////////////////////////
+// BASIC4
+///////////////////////////////
+create table table1 (c1 integer not null, c2 varchar(100));
+success
+
+// create an index
+create index idx_0 on table1(c1);
+success
+
+// load data into the table with default formatter settings
+ESCAPE CONNECTOR se 'load table1' WITH file = '/Users/alkayamarti/rapidsSE/rapidsse/JTEST/basic4.csv', node = 'node1';
+failure contains: 'Warning'
+
+Select * from table1;
+rows: 0
+
+drop table table1;
+success
+
+CLEANUP {
+  
+  drop table table1;
+  mute
+
+  bye;
+  mute
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* end                                                                        */
+/*----------------------------------------------------------------------------*/
