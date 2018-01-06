@@ -311,7 +311,7 @@ void Tsp::vSprint(Stz* aDst, Stz* aSrc)
     StrLib::vSprint(aDst,"null%c"_Stz,
                     '\0');
   else
-    StrLib::vSprint(aDst,"TIMESTAMP '%02lld-%02lld-%02lld %02lld:%02lld:%02lld.%03lld'%c"_Stz,
+    StrLib::vSprint(aDst,"TIMESTAMP '%02lld-%02lld-%02lld %02lld:%02lld:%02lld.%lld'%c"_Stz,
                     (i8)aTsp->x.m_uYear,
                     (i8)aTsp->x.m_uMonth,
                     (i8)aTsp->x.m_uDay,
