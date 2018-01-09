@@ -435,7 +435,7 @@ tp: makingIndex
     then
 
     // yield
-    task.yield
+    //task.yield
 
   repeat
 
@@ -574,7 +574,7 @@ tp: lowerSelectIdxTask
     then
 
     // yield
-    task.yield
+    //task.yield
 
   repeat
 
@@ -689,7 +689,7 @@ tp: lowerSelectIdxTask
     then
 
    // yield
-   task.yield
+   //task.yield
 
   repeat
 
@@ -882,7 +882,7 @@ tp: populateIndex
 
       // yield
       //pp: yieldScanSelectTask
-      task.yield
+      //task.yield
       //pp: yieldDoneScanSelectTask
     repeat
 
@@ -1114,7 +1114,7 @@ tp: populateIndex
     then
 
     // yield
-    task.yield
+    //task.yield
 
   repeat
 
