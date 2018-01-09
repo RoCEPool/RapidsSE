@@ -81,8 +81,8 @@ void PerformanceTrace::vAdd(Stz* aWord, Stz* aNote)
   i8 iTickDelta = m_xTimer.iTicks();
   pPerformanceEntry->vSet(iTickDelta,aWord,aNote);
   
-//  vTrace("Performance Entry: %lld %s %s\n"_Stz,
-//         m_xTimer.iNanoseconds(),
+//  vTrace("Performance Add: %lld %s %s\n"_Stz,
+//         m_xTimer.iMicroseconds(),
 //         pPerformanceEntry->aWord(),
 //         pPerformanceEntry->aNote()
 //         );
@@ -91,38 +91,82 @@ void PerformanceTrace::vAdd(Stz* aWord, Stz* aNote)
 /*----------------------------------------------------------------------------*/
 /* print performance entries                                                  */
 /*----------------------------------------------------------------------------*/
+//void PerformanceTrace::vPrint(void)
+//{
+//  Timer xTimerElapsed;
+//  Timer xTimerDelta;
+//  
+//  i8 iTicksStart  = m_xTimer.iStart();
+//  i8 iTicksUpdate = iTicksStart;
+//  
+//  for (EntryBuffer* pEntryBuffer = m_pFirstBuffer;
+//       pEntryBuffer;
+//       pEntryBuffer = pEntryBuffer->pNextBuffer()) {
+//
+//    for (PerformanceEntry* pEntry =
+//           static_cast<PerformanceEntry*>(pEntryBuffer->pFirstEntryActual());
+//         pEntry;
+//         pEntry =
+//           static_cast<PerformanceEntry*>(pEntryBuffer->pNextEntry(pEntry))) {
+//      
+//      i8 iEntryTicks = pEntry->iTicks();
+//      iTicksUpdate += iEntryTicks;
+//      xTimerElapsed.vSet(iTicksStart,iTicksUpdate);
+//      xTimerDelta.vSet(0,iEntryTicks);
+//
+//      vTrace("Performance Entry: %lldus %lldus %s %s\n"_Stz,
+//             xTimerElapsed.iMicroseconds(),
+//             xTimerDelta.iMicroseconds(),
+//             pEntry->aWord(),
+//             pEntry->aNote()
+//             );
+//    }
+//    
+//  }
+//}
+
 void PerformanceTrace::vPrint(void)
 {
-  Timer xTimerElapsed;
   Timer xTimerDelta;
+  Timer xTimerElapsed;
+  PerformanceEntry* pPrevEntry  = nullptr;
+  PerformanceEntry* pFirstEntry = nullptr;
   
-  i8 iTicksStart  = m_xTimer.iStart();
-  i8 iTicksUpdate = iTicksStart;
+  i8 iEntryNumber = 0;
   
   for (EntryBuffer* pEntryBuffer = m_pFirstBuffer;
        pEntryBuffer;
        pEntryBuffer = pEntryBuffer->pNextBuffer()) {
-
+    
     for (PerformanceEntry* pEntry =
-           static_cast<PerformanceEntry*>(pEntryBuffer->pFirstEntryActual());
+         static_cast<PerformanceEntry*>(pEntryBuffer->pFirstEntryActual());
          pEntry;
          pEntry =
-           static_cast<PerformanceEntry*>(pEntryBuffer->pNextEntry(pEntry))) {
-      
+         static_cast<PerformanceEntry*>(pEntryBuffer->pNextEntry(pEntry))) {
+  
       i8 iEntryTicks = pEntry->iTicks();
-      iTicksUpdate += iEntryTicks;
-      xTimerElapsed.vSet(iTicksStart,iTicksUpdate);
-      xTimerDelta.vSet(0,iEntryTicks);
-
-      vTrace("Performance Entry: %lldus %lldus %s %s\n"_Stz,
+      xTimerElapsed.vSet(0,iEntryTicks);
+      
+      if (pPrevEntry) {
+        i8 iPrevEntryTicks = pPrevEntry->iTicks();
+        xTimerDelta.vSet(iPrevEntryTicks,iEntryTicks);
+      }
+      else {
+        xTimerDelta.vSet(0,iEntryTicks);
+      }
+      
+      vTrace("Performance Entry[%lld]: %lldus %lldus %s %s\n"_Stz,
+             iEntryNumber++,
              xTimerElapsed.iMicroseconds(),
              xTimerDelta.iMicroseconds(),
              pEntry->aWord(),
              pEntry->aNote()
              );
+      
+      pPrevEntry = pEntry;
     }
-    
   }
+  
 }
 
 /*----------------------------------------------------------------------------*/
