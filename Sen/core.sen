@@ -29,32 +29,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* named performance point                                                    */
-/*----------------------------------------------------------------------------*/
-: pp: immediate
-
-  token:
-  encodePushValue
-  //tick . compile,
-
-  word.this encodePushValue
-  tick word.name compile,
-  //tick . compile,
-  tick performancepoint compile,
-;
-
-: ppTest
-
-  "before" .
-  pp: first
-  pp: second
-  pp: third
-  "after" .
-
-  performancePrint
-;
-
-/*----------------------------------------------------------------------------*/
 /* first snapshot                                                             */
 /*----------------------------------------------------------------------------*/
 : snap0: immediate
@@ -582,6 +556,46 @@ tp: g
 "useful.sen" include
 "dicPath.sen" include
 "var.sen" include
+
+/*----------------------------------------------------------------------------*/
+/* named performance point                                                    */
+/*----------------------------------------------------------------------------*/
+: pp: immediate
+
+  token:
+  encodePushValue
+  //tick . compile,
+
+  word.this encodePushValue
+  tick word.name compile,
+  //tick . compile,
+  tick performancepoint compile,
+;
+
+: ppTest
+
+  "before" .
+  pp: first
+  pp: second
+  pp: third
+  "after" .
+;
+
+: ppLoops
+
+  20000000 0 do
+    pp: ppLoops
+
+    I 1000000 % 0 == if
+      I .
+    then
+
+  loop
+;
+
+: performancePrint
+
+;
 
 /*============================================================================*/
 /* end                                                                        */
