@@ -52,9 +52,23 @@
 /*----------------------------------------------------------------------------*/
 : ping_req ( -- <R> )
 
-  "pong"
+  //"pong"
 
+  //<SUCCESS>
+
+  0 100000 locals| loopCount i |
+
+  begin
+    i 1 + to i
+    pp: count
+    i loopCount < while
+  repeat
+
+  performancePrint
+
+  "pong"
   <SUCCESS>
+
 ;
 
 /*----------------------------------------------------------------------------*/

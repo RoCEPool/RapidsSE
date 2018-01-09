@@ -161,7 +161,7 @@ PerformanceEntry* PerformanceTrace::newPerformanceEntry(void)
       m_pCurrentBuffer->pAllotEntryBytes(sizeof(PerformanceEntry)));
   
   if (pPerformanceEntry) {
-    //new(pPerformanceEntry) PerformanceEntry;
+    new(pPerformanceEntry) PerformanceEntry;
     return pPerformanceEntry;
   }
   
@@ -175,7 +175,7 @@ PerformanceEntry* PerformanceTrace::newPerformanceEntry(void)
     static_cast<PerformanceEntry*>(
       m_pCurrentBuffer->pAllotEntryBytes(sizeof(PerformanceEntry)));
   
-  //new(pPerformanceEntry) PerformanceEntry;
+  new(pPerformanceEntry) PerformanceEntry;
   
   return pPerformanceEntry;
 }

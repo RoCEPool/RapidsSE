@@ -29,7 +29,7 @@ void* PerformanceEntry::operator new(size_t iSize)
   
   void* pObject = Heap::pAllocate(CN_PERFORMANCEENTRY);
   
-  MemLib::vZero(pObject, sizeof(PerformanceEntry),CN_PERFORMANCEENTRY);
+  //MemLib::vZero(pObject, sizeof(PerformanceEntry),CN_PERFORMANCEENTRY);
   
   return pObject;
 }
@@ -41,7 +41,7 @@ void* PerformanceEntry::operator new(size_t iSize, PerformanceEntry* pPeformance
 {
   RASSERT(iSize);
 
-  MemLib::vZero(pPeformanceEntry,sizeof(PerformanceEntry),CN_PERFORMANCEENTRY);
+  //MemLib::vZero(pPeformanceEntry,sizeof(PerformanceEntry),CN_PERFORMANCEENTRY);
   return pPeformanceEntry;
 }
 
@@ -64,8 +64,9 @@ PerformanceEntry::PerformanceEntry(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PERFORMANCEENTRY,_FOOTER_);
   
   m_iTicks = 0;
-  //m_sNote
-    
+  m_sWord = ""_Stz;
+  m_sNote = ""_Stz;
+  
   _checkInitialised_(CN_PERFORMANCEENTRY);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PERFORMANCEENTRY,_FOOTER_);
