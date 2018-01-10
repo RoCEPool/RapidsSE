@@ -27,6 +27,7 @@ private:
   TokenVec   m_xTokenVec;  // token vector
   TokenVec   m_xTokenVec2; // another token vector
   Tokeniser* m_pTokeniser; // input stream tokeniser
+  Timer      m_xTimer;     // timer
   
   // must be last
   Footer m_xFooter;
@@ -104,6 +105,8 @@ public:
   bool bCmd_RecallCommand(void);
   bool bCmd_Sleep(void);
   bool bCmd_UseSchema(void);
+  bool bCmd_TimerStart(void);
+  bool bCmd_TimerEnd(void);
   
   Footer* aFooter(void);
   

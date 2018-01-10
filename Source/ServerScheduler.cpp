@@ -96,14 +96,23 @@ void ServerScheduler::vEnqueueTask_Mutex(Task* mpTask)
     Thread* mpThread = m_xThreadQueue.npPop();
     ASSERT(mpThread);
     mpThread->m_npTask = mpTask;
+    
+    vTrace("Popped thread %p:%lld handed task %p\n"_Stz,
+           mpThread,
+           mpThread->iThreadNo(),
+           mpTask
+           );
+    
     m_xSemaphore.vCondBroadcast();
     m_xSemaphore.vMutexUnlock();
     return;
   }
 
   // no available threads, so queue the task
+  vTrace("Queueing task %p as no threads...%lld\n"_Stz,
+         mpTask,
+         m_xTaskQueue.iCount());
   m_xTaskQueue.vAppend(mpTask);
-  //vTrace("Queueing as no threads...%lld\n"_Stz, m_xTaskQueue.iCount());
   
   gpAttachMap->m_iSchEnqueueTaskWait++;
   
@@ -136,6 +145,11 @@ bool ServerScheduler::bGetTask_Mutex(Threads::Thread* mpThread, bool bWait)
   if (nTasksInQueue) {
     mpTask = m_xTaskQueue.npPop();
     ASSERT(mpTask);
+    vTrace("Available thread %p:%lld handed task %p\n"_Stz,
+           mpThread,
+           mpThread->iThreadNo(),
+           mpTask
+           );
     mpThread->m_npTask = mpTask;
     m_xSemaphore.vMutexUnlock();
     return true;
@@ -144,6 +158,9 @@ bool ServerScheduler::bGetTask_Mutex(Threads::Thread* mpThread, bool bWait)
   // when the thread is prepared to wait, put thread into queue
   if (bWait) {
     gpAttachMap->m_iSchGetTaskWait++;
+    vTrace("Queueing thread %p:%lld\n"_Stz,
+           mpThread,
+           mpThread->iThreadNo());
     m_xThreadQueue.vAppend(mpThread);
     do {
       m_xSemaphore.vCondWait_Mutex();

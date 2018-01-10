@@ -11,27 +11,29 @@ extern Arguments    gxArguments;
 //
 // list of commands which need intercept processing by SePrompt
 //
-const Stz* C_CMD_HELP1   = "?"_Stz;
-const Stz* C_CMD_HELP2   = "help"_Stz;
-const Stz* C_CMD_RECALL  = "!!"_Stz;
-const Stz* C_CMD_ANTBL   = "antbl"_Stz;
-const Stz* C_CMD_BEGIN   = "begin"_Stz;
-const Stz* C_CMD_BYE     = "bye"_Stz;
-const Stz* C_CMD_CD      = "cd"_Stz;
-const Stz* C_CMD_CREATE  = "create"_Stz;
-const Stz* C_CMD_DANTBL  = "dantbl"_Stz;
-const Stz* C_CMD_DOCOL   = "docol"_Stz;
-const Stz* C_CMD_DROP    = "drop"_Stz;
-const Stz* C_CMD_END     = "end"_Stz;
-const Stz* C_CMD_FIRST   = "first"_Stz;
-const Stz* C_CMD_HISTORY = "history"_Stz;
-const Stz* C_CMD_INSERT  = "insert"_Stz;
-const Stz* C_CMD_LOAD    = "ld"_Stz;
-const Stz* C_CMD_LS      = "ls"_Stz;
-const Stz* C_CMD_NEXT    = "next"_Stz;
-const Stz* C_CMD_PWD     = "pwd"_Stz;
-const Stz* C_CMD_SLEEP   = "sleep"_Stz;
-const Stz* C_CMD_USE     = "use"_Stz;
+const Stz* C_CMD_HELP1      = "?"_Stz;
+const Stz* C_CMD_HELP2      = "help"_Stz;
+const Stz* C_CMD_RECALL     = "!!"_Stz;
+const Stz* C_CMD_ANTBL      = "antbl"_Stz;
+const Stz* C_CMD_BEGIN      = "begin"_Stz;
+const Stz* C_CMD_BYE        = "bye"_Stz;
+const Stz* C_CMD_CD         = "cd"_Stz;
+const Stz* C_CMD_CREATE     = "create"_Stz;
+const Stz* C_CMD_DANTBL     = "dantbl"_Stz;
+const Stz* C_CMD_DOCOL      = "docol"_Stz;
+const Stz* C_CMD_DROP       = "drop"_Stz;
+const Stz* C_CMD_END        = "end"_Stz;
+const Stz* C_CMD_FIRST      = "first"_Stz;
+const Stz* C_CMD_HISTORY    = "history"_Stz;
+const Stz* C_CMD_INSERT     = "insert"_Stz;
+const Stz* C_CMD_LOAD       = "ld"_Stz;
+const Stz* C_CMD_LS         = "ls"_Stz;
+const Stz* C_CMD_NEXT       = "next"_Stz;
+const Stz* C_CMD_PWD        = "pwd"_Stz;
+const Stz* C_CMD_SLEEP      = "sleep"_Stz;
+const Stz* C_CMD_USE        = "use"_Stz;
+const Stz* C_CMD_TIMERSTART = "timerStart"_Stz;
+const Stz* C_CMD_TIMEREND   = "timerEnd"_Stz;
 
 const Stz* C_ONE_CATALOG = "catalog"_Stz;
 const Stz* C_ONE_INDEX   = "index"_Stz;
@@ -50,35 +52,37 @@ struct CmdTable {
 
 CmdTable SePromptCommands[] =
 {
-  { C_CMD_ANTBL,   nullptr,       &SePrompt::bCmd_AnalyzeTable  },
-  { C_CMD_BEGIN,   C_ONE_INSERT,  &SePrompt::bCmd_BeginInsert   },
-  { C_CMD_BYE,     nullptr,       &SePrompt::bCmd_Bye           },
-  { C_CMD_CD,      nullptr,       &SePrompt::bCmd_ChangeDir     },
-  { C_CMD_CREATE,  C_ONE_CATALOG, &SePrompt::bCmd_CreateCatalog },
-  { C_CMD_CREATE,  C_ONE_INDEX,   &SePrompt::bCmd_CreateIndex   },
-  { C_CMD_CREATE,  C_ONE_SCHEMA,  &SePrompt::bCmd_CreateSchema  },
-  { C_CMD_CREATE,  C_ONE_TABLE,   &SePrompt::bCmd_CreateTable   },
-  { C_CMD_CREATE,  C_ONE_TENANT,  &SePrompt::bCmd_CreateTenant  },
-  { C_CMD_CREATE,  C_ONE_UNIQUE,  &SePrompt::bCmd_CreateUnique  },
-  { C_CMD_DANTBL,  nullptr,       &SePrompt::bCmd_DanalyzeTable },
-  { C_CMD_DOCOL,   nullptr,       &SePrompt::bCmd_Docol         },
-  { C_CMD_DROP,    C_ONE_CATALOG, &SePrompt::bCmd_DropCatalog   },
-  { C_CMD_DROP,    C_ONE_INDEX,   &SePrompt::bCmd_DropIndex     },
-  { C_CMD_DROP,    C_ONE_SCHEMA,  &SePrompt::bCmd_DropSchema    },
-  { C_CMD_DROP,    C_ONE_TABLE,   &SePrompt::bCmd_DropTable     },
-  { C_CMD_DROP,    C_ONE_TENANT,  &SePrompt::bCmd_DropTenant    },
-  { C_CMD_END,     C_ONE_INSERT,  &SePrompt::bCmd_EndInsert     },
-  { C_CMD_HELP1,   nullptr,       &SePrompt::bCmd_Help          },
-  { C_CMD_HELP2,   nullptr,       &SePrompt::bCmd_Help          },
-  { C_CMD_HISTORY, nullptr,       &SePrompt::bCmd_History       },
-  { C_CMD_INSERT,  C_ONE_ROW,     &SePrompt::bCmd_InsertRow     },
-  { C_CMD_LOAD,    nullptr,       &SePrompt::bCmd_LoadTable     },
-  { C_CMD_LS,      nullptr,       &SePrompt::bCmd_ListDir       },
-  { C_CMD_PWD,     nullptr,       &SePrompt::bCmd_PrintDir      },
-  { C_CMD_RECALL,  nullptr,       &SePrompt::bCmd_RecallCommand },
-  { C_CMD_SLEEP,   nullptr,       &SePrompt::bCmd_Sleep         },
-  { C_CMD_USE,     nullptr,       &SePrompt::bCmd_UseSchema     },
-  { nullptr,       nullptr,       nullptr                       }
+  { C_CMD_ANTBL,      nullptr,       &SePrompt::bCmd_AnalyzeTable  },
+  { C_CMD_BEGIN,      C_ONE_INSERT,  &SePrompt::bCmd_BeginInsert   },
+  { C_CMD_BYE,        nullptr,       &SePrompt::bCmd_Bye           },
+  { C_CMD_CD,         nullptr,       &SePrompt::bCmd_ChangeDir     },
+  { C_CMD_CREATE,     C_ONE_CATALOG, &SePrompt::bCmd_CreateCatalog },
+  { C_CMD_CREATE,     C_ONE_INDEX,   &SePrompt::bCmd_CreateIndex   },
+  { C_CMD_CREATE,     C_ONE_SCHEMA,  &SePrompt::bCmd_CreateSchema  },
+  { C_CMD_CREATE,     C_ONE_TABLE,   &SePrompt::bCmd_CreateTable   },
+  { C_CMD_CREATE,     C_ONE_TENANT,  &SePrompt::bCmd_CreateTenant  },
+  { C_CMD_CREATE,     C_ONE_UNIQUE,  &SePrompt::bCmd_CreateUnique  },
+  { C_CMD_DANTBL,     nullptr,       &SePrompt::bCmd_DanalyzeTable },
+  { C_CMD_DOCOL,      nullptr,       &SePrompt::bCmd_Docol         },
+  { C_CMD_DROP,       C_ONE_CATALOG, &SePrompt::bCmd_DropCatalog   },
+  { C_CMD_DROP,       C_ONE_INDEX,   &SePrompt::bCmd_DropIndex     },
+  { C_CMD_DROP,       C_ONE_SCHEMA,  &SePrompt::bCmd_DropSchema    },
+  { C_CMD_DROP,       C_ONE_TABLE,   &SePrompt::bCmd_DropTable     },
+  { C_CMD_DROP,       C_ONE_TENANT,  &SePrompt::bCmd_DropTenant    },
+  { C_CMD_END,        C_ONE_INSERT,  &SePrompt::bCmd_EndInsert     },
+  { C_CMD_HELP1,      nullptr,       &SePrompt::bCmd_Help          },
+  { C_CMD_HELP2,      nullptr,       &SePrompt::bCmd_Help          },
+  { C_CMD_HISTORY,    nullptr,       &SePrompt::bCmd_History       },
+  { C_CMD_INSERT,     C_ONE_ROW,     &SePrompt::bCmd_InsertRow     },
+  { C_CMD_LOAD,       nullptr,       &SePrompt::bCmd_LoadTable     },
+  { C_CMD_LS,         nullptr,       &SePrompt::bCmd_ListDir       },
+  { C_CMD_PWD,        nullptr,       &SePrompt::bCmd_PrintDir      },
+  { C_CMD_RECALL,     nullptr,       &SePrompt::bCmd_RecallCommand },
+  { C_CMD_SLEEP,      nullptr,       &SePrompt::bCmd_Sleep         },
+  { C_CMD_USE,        nullptr,       &SePrompt::bCmd_UseSchema     },
+  { C_CMD_TIMERSTART, nullptr,       &SePrompt::bCmd_TimerStart    },
+  { C_CMD_TIMEREND,   nullptr,       &SePrompt::bCmd_TimerEnd      },
+  { nullptr,          nullptr,       nullptr                       }
 };
 
 /*----------------------------------------------------------------------------*/
@@ -1784,6 +1788,31 @@ bool SePrompt::bCmd_UseSchema(void)
     return false;
   
   //vTrace("Schema changed: %s\n"_Stz, m_xTokenVec2[2]);
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* timer start                                                                */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bCmd_TimerStart(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  m_xTimer.vStart();
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* timer end                                                                  */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bCmd_TimerEnd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  m_xTimer.vUpdate();
+  vTrace("duration %lldms\n"_Stz,m_xTimer.iMilliseconds());
+  
   return true;
 }
 

@@ -59,9 +59,9 @@ nPartitionThreads constant N_PARTITION_THREADS
 
   0 locals| pPartitionThread |
 
-  args.progress if
-    N_SERVER_THREADS "Partition threads: %v" str.format .
-  then
+//args.progress if
+//  N_SERVER_THREADS "Partition threads: %v" str.format .
+//then
 
   args.verbose if
     "N_PARTITION_THREADS " .put N_PARTITION_THREADS .put .\n
