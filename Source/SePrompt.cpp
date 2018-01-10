@@ -2181,30 +2181,31 @@ void SePrompt::vIterateBuffers(void)
     vTrace("metadata: %s\n"_Stz, m_pSEitf->m_sMetadata.aStr());
   }
   
-  while (m_pSEitf->bNextRow()) {
+  if (m_pSEitf->m_bDisplay) {
     
-    m_pSEitf->m_iRowsProcessed++;
-    
-    // get the partition from the entry buffer
-    i8 iPartition = m_pSEitf->m_pEntryBuffer->nPartitionNo();
-    
-    Entry* pEntry = m_pSEitf->m_pEntry;
-    RowData::vRowAsBinaryString(m_pSEitf->m_sResponse, (Stz*)pEntry->aRow(),
-                          m_pSEitf->m_pCurrentTable->pColumnVec());
-    if (m_pSEitf->m_bDisplay) {
-      if (gpAttachMap->m_bMetadata ) {
-        vTrace("row: (%lld, %s)\n"_Stz, iPartition, m_pSEitf->m_sResponse.aChar());
-      }
-      else {
-        vTrace("row: (%s)\n"_Stz, m_pSEitf->m_sResponse.aChar());
-      }
+    while (m_pSEitf->bNextRow()) {
+      
+      m_pSEitf->m_iRowsProcessed++;
+      
+      // get the partition from the entry buffer
+      i8 iPartition = m_pSEitf->m_pEntryBuffer->nPartitionNo();
+      
+      Entry* pEntry = m_pSEitf->m_pEntry;
+      RowData::vRowAsBinaryString(m_pSEitf->m_sResponse, (Stz*)pEntry->aRow(),
+                            m_pSEitf->m_pCurrentTable->pColumnVec());
+        if (gpAttachMap->m_bMetadata ) {
+          vTrace("row: (%lld, %s)\n"_Stz, iPartition, m_pSEitf->m_sResponse.aChar());
+        }
+        else {
+          vTrace("row: (%s)\n"_Stz, m_pSEitf->m_sResponse.aChar());
+        }
     }
-  }
-  if (gpAttachMap->m_bMetadata ) {
-    vTrace("success: %lld rows affected\n"_Stz, m_pSEitf->m_iRowsProcessed);
-  }
-  else {
-    vTrace("rows selected %lld\n"_Stz, m_pSEitf->m_iRowsProcessed);
+    if (gpAttachMap->m_bMetadata ) {
+      vTrace("success: %lld rows affected\n"_Stz, m_pSEitf->m_iRowsProcessed);
+    }
+    else {
+      vTrace("rows selected %lld\n"_Stz, m_pSEitf->m_iRowsProcessed);
+    }
   }
   
   m_pSEitf->m_iRowsProcessed = 0;

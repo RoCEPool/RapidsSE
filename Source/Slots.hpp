@@ -10,7 +10,7 @@ namespace DBobjects
   {
   private:
     Table*     m_pTable;         // table this slots belongs to
-    Dic        m_xSubDic;        // partitionn sub dictionary
+    Dic        m_xSubDic;        // partition sub dictionary
     PtnColVec* m_pPtnColVec;     // partition colummn vector
     PartitionVec* m_pPartitionVec;
     
