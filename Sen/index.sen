@@ -400,7 +400,7 @@ tp: makingIndex
 
       // insert row from entry in tempEntryBuffer
       //"Inserting row into tempEntryBuffer" .
-      entry pTempEntryBuffer entryBuffer.insertRow
+      pIndex entry entry.toDataRow pTempEntryBuffer entryBuffer.insertRow
 
       // check if we managed to insert the entry
       not if
@@ -414,7 +414,7 @@ tp: makingIndex
 
         // insert row from entry in temporary buffer
         //"Inserting row into tempEntryBuffer" .
-        entry pTempEntryBuffer entryBuffer.insertRow
+        pIndex entry entry.toDataRow pTempEntryBuffer entryBuffer.insertRow
         assert
       then
 
@@ -541,7 +541,7 @@ tp: lowerSelectIdxTask
     
     // insert row from entry in tempEntryBuffer
     //"Inserting row into tempEntryBuffer" .
-    entry tempEntryBuffer entryBuffer.insertRow
+    pIndex entry entry.toDataRow tempEntryBuffer entryBuffer.insertRow
 
     // check if we managed to insert the entry
     not if
@@ -557,7 +557,7 @@ tp: lowerSelectIdxTask
 
       // insert row from entry in temporary buffer
       //"Inserting row into tempEntryBuffer" .
-      entry tempEntryBuffer entryBuffer.insertRow
+      pIndex entry entry.toDataRow tempEntryBuffer entryBuffer.insertRow
       assert
     then
 
@@ -656,7 +656,7 @@ tp: lowerSelectIdxTask
     sUpper pIndexEntry iPartitionNo pIndex i_Phrase pPlanner index.upper if
       
       // look up data row and insert row into result buffer
-      pIndexEntry pResultBuffer entryBuffer.insertRow
+      pIndex pIndexEntry entry.toDataRow pResultBuffer entryBuffer.insertRow
 
       // check if we managed to insert the entry
       not if
@@ -668,7 +668,7 @@ tp: lowerSelectIdxTask
         iPartitionNo pIndex entryBuffer::create to pResultBuffer
 
         // look up data row and insert row into result buffer
-        pIndexEntry pResultBuffer entryBuffer.insertRow
+        pIndex pIndexEntry entry.toDataRow pResultBuffer entryBuffer.insertRow
         assert
       then
 
@@ -1078,7 +1078,7 @@ tp: populateIndex
       
       // insert row from entry in tempEntryBuffer
       //"Inserting row into tempEntryBuffer" .
-      entry tempEntryBuffer entryBuffer.insertRow
+      pIndex entry entry.toDataRow tempEntryBuffer entryBuffer.insertRow
 
       // check if we managed to insert the entry
       not if
@@ -1093,7 +1093,7 @@ tp: populateIndex
 
         // insert row from entry in temporary buffer
         //"Inserting row into tempEntryBuffer" .
-        entry tempEntryBuffer entryBuffer.insertRow
+        pIndex entry entry.toDataRow tempEntryBuffer entryBuffer.insertRow
         assert
       then
 
