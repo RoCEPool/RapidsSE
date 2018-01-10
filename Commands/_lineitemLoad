@@ -28,7 +28,11 @@ print "loading lineitem.tbl..." ;
 
 //docol stepsReset;
 //docol locksReset;
+
+timerStart;
 ld lineitem "/tpch/lineitem.tbl" ;
+timerEnd;
+
 //docol locksList;
 //docol stepsList;
 
@@ -40,6 +44,10 @@ pwf ;
 lf ;
 
 displayoff;
+
+timerStart;
+fetch lineitem;
+timerEnd;
 
 /*============================================================================*/
 /* end                                                                        */
