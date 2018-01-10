@@ -829,7 +829,7 @@ tp: populateIndex
       pSeitf seitf.fetchTaskEnded
     then
 
-    pp: endScanSelectTask
+    //pp: endScanSelectTask
     //"select ended...B" .
 
     //performancePrint
