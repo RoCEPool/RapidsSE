@@ -102,7 +102,7 @@ bool PosixThread::bBindThread(i8 iCpu)
     return true;
 
   #else
-  /*
+
     i8 iResult;
   
     cpu_set_t xAffinity;
@@ -111,13 +111,13 @@ bool PosixThread::bBindThread(i8 iCpu)
     CPU_SET(iCpu, &xAffinity);
   
     ASSERT(pthread_self() == m_iPosixThreadId);
-  
+    vWarn("binding to core %d\n"_Stz, (int)iCpu);
     iResult = pthread_setafffinity_np(m_iPosixThreadId, sizeof(cpu_set_t), &xAffinity);
     if (iResult == -1) {
       vWarn("Error in pthread_setafffinity_np() : %lld\n"_Stz, errno);
       
     }
-  */
+  
     return true;
     #endif
 }
