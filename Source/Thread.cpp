@@ -187,7 +187,7 @@ void* Thread::vEntry_Server(void* pArg)
     vTrace("[[%s]] Thread::vEntry_Server %p\n"_Stz,pThread->sName().aChar(),pThread);
   
   pThread->m_pPosixThread->bBindThread(pThread->m_iThreadNo % 2);
-  vTrace("Server thread %lld tied to core %lld\n"_Stz, pThread->m_iThreadNo, pThread->m_iThreadNo % 2);
+  
   try {
     pThread->vLoop_Server();
   }
