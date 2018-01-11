@@ -186,7 +186,7 @@ void* Thread::vEntry_Server(void* pArg)
   if (gpAttachMap->m_bVerbose || gpAttachMap->m_bProgress)
     vTrace("[[%s]] Thread::vEntry_Server %p\n"_Stz,pThread->sName().aChar(),pThread);
   
-  pThread->m_pPosixThread->bBindThread(pThread->m_iThreadNo % 2);
+  //pThread->m_pPosixThread->bBindThread(pThread->m_iThreadNo % 2);
   
   try {
     pThread->vLoop_Server();
