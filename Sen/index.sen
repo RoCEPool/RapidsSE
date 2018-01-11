@@ -788,7 +788,7 @@ tp: populateIndex
 : scanSelectIdxTask ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf iPartitionNo -- )
 
   locals| iPartitionNo pSeitf pIndex pBufferQueue upper lower key pPlanner i_Phrase |
-  0 0 0 locals| entry tempEntryBuffer indexBuffer |
+  0 0 0 0 locals| count entry tempEntryBuffer indexBuffer |
 
   tp: scanSelectIdxTask
 
@@ -799,7 +799,72 @@ tp: populateIndex
   pSeitf task::this task.seitf!
   //pSeitf seitf.index@ to pIndex
 
- // pp: beginScanSelectTask
+  //pp: beginScanSelectTask
+
+/*
+  //////////EXP1
+  // position in the first index buffer
+  iPartitionNo pIndex index.positionFirst
+  to indexBuffer
+
+  // iterate thru the buffer till no more entries
+  begin
+  indexBuffer
+  while
+    iPartitionNo pIndex entryBuffer::create to tempEntryBuffer
+    tempEntryBuffer pBufferQueue queue.append
+    indexBuffer entryBuffer.nextBuffer to indexBuffer
+  repeat
+ iPartitionNo pIndex entryBuffer::create to tempEntryBuffer
+ tempEntryBuffer entryBuffer.isLast!
+ tempEntryBuffer pBufferQueue queue.append
+
+ // mark that a fetch task has ended
+ pSeitf if
+   pSeitf seitf.fetchTaskEnded
+ then
+ exit
+
+
+
+  //////////EXP2
+  // position in the first index buffer
+  iPartitionNo pIndex index.positionFirst
+  to indexBuffer
+
+  // iterate thru the buffer till no more entries
+  begin
+  indexBuffer
+  while
+    iPartitionNo pIndex entryBuffer::create to tempEntryBuffer
+
+    // get the first entry in the buffer
+    indexBuffer entryBuffer.firstEntry
+    to entry
+
+    begin
+    entry
+    while
+      entry indexBuffer entryBuffer.nextEntry to entry
+    repeat
+
+    tempEntryBuffer pBufferQueue queue.append
+    indexBuffer entryBuffer.nextBuffer to indexBuffer
+
+  repeat
+
+  iPartitionNo pIndex entryBuffer::create to tempEntryBuffer
+  tempEntryBuffer entryBuffer.isLast!
+  tempEntryBuffer pBufferQueue queue.append
+
+  // mark that a fetch task has ended
+  pSeitf if
+    pSeitf seitf.fetchTaskEnded
+  then
+  exit
+*/
+
+
 
   // create a temporary index buffer for the results
   //"Creating a tempIndexBuffer" .
@@ -837,6 +902,7 @@ tp: populateIndex
     exit
   then
 
+
   // iterate thru the buffer till no more entries
   begin
   entry
@@ -844,7 +910,7 @@ tp: populateIndex
       // insert row from entry in tempEntryBuffer
       //"Inserting row into tempEntryBuffer" .
       entry tempEntryBuffer entryBuffer.insertRow
-
+    
       // check if we managed to insert the entry
       not if
         // buffer must be full
@@ -903,6 +969,7 @@ tp: populateIndex
   //"select ended...A" .
 
   //performancePrint
+
 ;
 
 /*----------------------------------------------------------------------------*/

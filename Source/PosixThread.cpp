@@ -82,10 +82,10 @@ bool PosixThread::bBindThread(i8 iCpu)
   
   i8 iCpuCount = Hardware::iCpuCount();
   
-  if (iCpu > iCpuCount) {
-    vWarn("Unable to bind to Cpu %lld on a system having %lld cores!\n"_Stz, iCpu, iCpuCount);
-    return false;
-  }
+//  if (iCpu > iCpuCount) {
+//    vWarn("Unable to bind to Cpu %lld on a system having %lld cores!\n"_Stz, iCpu, iCpuCount);
+//    return false;
+//  }
   
   #ifdef __APPLE__
   
@@ -95,8 +95,10 @@ bool PosixThread::bBindThread(i8 iCpu)
   
     thread_affinity_policy_data_t policy = { (int)iCpu };
     mach_thread = pthread_mach_thread_np(m_iPosixThreadId);
-    thread_policy_set(mach_thread, THREAD_AFFINITY_POLICY,
+    int iReturn = thread_policy_set(mach_thread, THREAD_AFFINITY_POLICY,
                       (thread_policy_t)&policy, 1);
+  
+    RASSERT(iReturn == 0);
     return true;
 
   #else

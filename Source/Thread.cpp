@@ -186,6 +186,8 @@ void* Thread::vEntry_Server(void* pArg)
   if (gpAttachMap->m_bVerbose || gpAttachMap->m_bProgress)
     vTrace("[[%s]] Thread::vEntry_Server %p\n"_Stz,pThread->sName().aChar(),pThread);
   
+  pThread->m_pPosixThread->bBindThread(pThread->m_iThreadNo % 2);
+  
   try {
     pThread->vLoop_Server();
   }
@@ -851,6 +853,8 @@ void Thread::vSpawn_Server(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   bool bResult = m_pPosixThread->bSpawnThread(Thread::vEntry_Server,this);
+  
+  
   ASSERT(bResult);
 }
 
