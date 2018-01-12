@@ -1254,53 +1254,9 @@ bool StrLib::bExtractTimestamp(char** aaSrc,
     return true;
   (*aaSrc)++;
   
-  // extract hour
-  if ( ! StrLib::bExtractU8(aaSrc,&uSubField,2) )
+  if ( ! bExtractTime(aaSrc,iHour,iMinute,iSecond,iMicro) )
     return false;
-  if (uSubField > 23)
-    return false;
-  iHour = uSubField;
-  
-  // skip : separator
-  if (':' != *(*aaSrc)++)
-    return false;
-  
-  // extract minute
-  if ( ! StrLib::bExtractU8(aaSrc,&uSubField,2) )
-    return false;
-  
-  if (uSubField > 59)
-    return false;
-  iMinute = uSubField;
-  
-  // skip : separator
-  if (':' != *(*aaSrc)++)
-    return false;
-  
-  // extract second
-  if ( ! StrLib::bExtractU8(aaSrc,&uSubField,2) )
-    return false;
-  if (uSubField > 59)
-    return false;
-  iSecond = uSubField;
-  
-  // extract fraction (assuming microseconds)
-  if ('.' == **aaSrc) {
-    (*aaSrc)++;
-    
-    if ( StrLib::bExtractFraction(aaSrc,&uSubField,6) ) {
-      iMicro = uSubField;
-    }
-    
-    // skip/truncate any remaining digits
-    while (bIsDigit(**aaSrc))
-      (*aaSrc)++;
-  }
-  
-  // skip optional Z (UTC zone designator)
-  if ('Z' == **aaSrc)
-    (*aaSrc)++;
-  
+
   return true;
 }
 
