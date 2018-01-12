@@ -610,7 +610,6 @@ void Task::vIndexPopulate(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.scan -- scan the index                                               */
 /*----------------------------------------------------------------------------*/
-#ifdef NEW_BUFFERS
 void Task::vIndexScan(MP_Task mpTask)
 {
   ENTRY("vIndexScan"_Stz);
@@ -652,7 +651,7 @@ void Task::vIndexScan(MP_Task mpTask)
   // position in the first index buffer
   //vTrace("Getting first buffer\n"_Stz);
   EntryBuffer* pEntryBuffer = pIndexData->pFirstBuffer();
-
+  
   // get the first entry in the buffer
   Entry* pEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHead());
   
@@ -722,7 +721,6 @@ void Task::vIndexScan(MP_Task mpTask)
         pEntry = nullptr;
     }
   }
- 
   
   // mark this buffer as the last buffer
   //"Marking tempEntryBuffer as last buffer" .
@@ -737,60 +735,10 @@ void Task::vIndexScan(MP_Task mpTask)
   if (pSEitf)
     --pSEitf->m_ziFetchTasks;
 
-}
-#else
-void Task::vIndexScan(MP_Task mpTask)
-{
-  ENTRY("vIndexScan"_Stz);
-  
-  Object* pPtrIndex = nullptr;
-  Object* pPtrTable = nullptr;
-  Object* pPtrQueue = nullptr;
-  ValWrk xValWrk;
-  i8 iPartition;
-  SEitf* pSEitf = mpTask->m_pSEitf;
-  EntryBuffer* pTempEntryBuffer;
-  Entry* pRow;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.scan"_Stz);
-  
-  Index* pIndex = _pIndex(pPtrIndex);
-  ASSERT(CN_INDEX == pIndex->eClass());
-  
-  if ( ! mpTask->m_pDataStack->bPop(iPartition) )
-    THROW_INVALID_DSTACK("index.scan"_Stz);
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrQueue) )
-    THROW_INVALID_DSTACK("index.scan"_Stz);
-  
-  Queue* pQueue = _pQueue(pPtrQueue);
-  ASSERT(CN_QUEUE == pPtrQueue->eClass());
-  
-  i8 iIndexNo = pIndex->iIndexNo();
-  Table* pTable = pIndex->pTable();
-  
-  Partition* pPartition = pTable->pPartition(iPartition);
-  IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
-  
-  EntryBuffer* pEntryBuffer = pIndexData->pFirstBuffer();
-  while (pEntryBuffer) {
-    if ( ! pEntryBuffer->pNextBuffer()) {
-      pEntryBuffer->vIsLast(true);
-    }
-    xValWrk = (Object*)pEntryBuffer;
-    pQueue->bAppend(xValWrk.pNestedValue());
-    
-    pEntryBuffer = pEntryBuffer->pNextBuffer();
-    
-  }
-  
-  if (pSEitf)
-    --pSEitf->m_ziFetchTasks;
-  
+                    
   EXIT();
 }
-#endif
+
 /*----------------------------------------------------------------------------*/
 /* index.showColumnVec -- show column vector                                  */
 /*----------------------------------------------------------------------------*/
