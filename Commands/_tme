@@ -8,23 +8,23 @@ create table tmeTest (
 );
 
 begin insert tmeTest;
-insert row "1,00:00:00";
-insert row "2,00:00:00.0";
-insert row "3,00:00:00.1";
-insert row "4,00:00:00.01";
-insert row "5,00:00:00.001";
-insert row "6,00:00:00.0001";
-insert row "7,00:00:00.00001";
-insert row "8,00:00:00.000001";
-insert row "9,00:00:00.0000001";
+insert row "1,01:00:00";
+insert row "2,02:00:00.0";
+insert row "3,03:00:00.1";
+insert row "4,04:00:00.01";
+insert row "5,05:00:00.001";
+insert row "6,06:00:00.0001";
+insert row "7,07:00:00.00001";
+insert row "8,08:00:00.000001";
+insert row "9,09:00:00.0000001";
 
-insert row "10,00:00:00.1";
-insert row "11,00:00:00.12";
-insert row "12,00:00:00.123";
-insert row "13,00:00:00.1234";
-insert row "14,00:00:00.12345";
-insert row "15,00:00:00.123456";
-insert row "16,00:00:00.1234567";
+insert row "10,10:00:00.1";
+insert row "11,11:00:00.12";
+insert row "12,12:00:00.123";
+insert row "13,13:00:00.1234";
+insert row "14,14:00:00.12345";
+insert row "15,15:00:00.123456";
+insert row "16,16:00:00.1234567";
 end insert;
 
 fetch tmeTest;
