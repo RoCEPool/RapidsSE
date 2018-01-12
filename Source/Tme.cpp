@@ -119,7 +119,7 @@ void Tme::vInitZero(void)
   x.m_uHour   = 0;
   x.m_uMinute = 0;
   x.m_uSecond = 0;
-  x.m_uMilli  = 0;
+  x.m_uMicro  = 0;
   x.m_uSpare  = 0;
 }
 
@@ -158,11 +158,11 @@ i8 Tme::iSecond(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get milli                                                                  */
+/* get microseconds                                                           */
 /*----------------------------------------------------------------------------*/
-i8 Tme::iMilli(void)
+i8 Tme::iMicroseconds(void)
 {
-  return x.m_uMilli;
+  return x.m_uMicro;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -245,15 +245,15 @@ bool Tme::bExtract(char** aaSrc, Tme* aTme, Column* pColumn, Formatters* pFormat
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // time field processing
   
-  i8 iHour, iMinute, iSecond, iMilli;
+  i8 iHour, iMinute, iSecond, iMicro;
   
-  if ( ! StrLib::bExtractTime(aaSrc, iHour, iMinute, iSecond, iMilli) )
+  if ( ! StrLib::bExtractTime(aaSrc, iHour, iMinute, iSecond, iMicro) )
     return false;
   
   aTme->x.m_uHour   = iHour;
   aTme->x.m_uMinute = iMinute;
   aTme->x.m_uSecond = iSecond;
-  aTme->x.m_uMilli  = iMilli;
+  aTme->x.m_uMicro  = iMicro;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
@@ -284,7 +284,7 @@ void Tme::vSprint(Stz* aDst, Stz* aSrc)
                     aTme->x.m_uHour,
                     aTme->x.m_uMinute,
                     aTme->x.m_uSecond,
-                    aTme->x.m_uMilli,
+                    aTme->x.m_uMicro,
                     '\0');
 }
 
@@ -304,7 +304,7 @@ void Tme::vSprintEscaped(Stz* aDst, Stz* aSrc)
                     aTme->x.m_uHour,
                     aTme->x.m_uMinute,
                     aTme->x.m_uSecond,
-                    aTme->x.m_uMilli,
+                    aTme->x.m_uMicro,
                     '\0');
 }
 
@@ -463,12 +463,12 @@ bool Tme::bGreaterEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 //           xTmeA.iHour(),
 //           xTmeA.iMinute(),
 //           xTmeA.iSecond(),
-//           xTmeA.iMilli(),
+//           xTmeA.iMicroseconds(),
 //
 //           xTmeB.iHour(),
 //           xTmeB.iMinute(),
 //           xTmeB.iSecond(),
-//           xTmeB.iMilli(),
+//           xTmeA.iMicroseconds(),
 //           
 //           bGreaterEqual ? "true" : "false"
 //           );
