@@ -864,7 +864,7 @@ tp: populateIndex
   exit
 */
 
-
+/*
 
   // create a temporary index buffer for the results
   //"Creating a tempIndexBuffer" .
@@ -969,7 +969,8 @@ tp: populateIndex
   //"select ended...A" .
 
   //performancePrint
-
+  */
+  pBufferQueue iPartitionNo pIndex index.scan
 ;
 
 /*----------------------------------------------------------------------------*/
