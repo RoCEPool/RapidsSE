@@ -45,17 +45,17 @@ lf ;
 
 displayoff;
 
-docol stepsReset;
-docol memoryReset;
-docol schedulerReset;
+//docol stepsReset;
+//docol memoryReset;
+//docol schedulerReset;
 
 timerStart;
 fetch lineitem;
 timerEnd;
 
-docol schedulerList;
-docol memoryList;
-docol stepsList;
+//docol schedulerList;
+//docol memoryList;
+//docol stepsList;
 
 /*============================================================================*/
 /* end                                                                        */
