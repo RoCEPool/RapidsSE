@@ -2,7 +2,7 @@
 /* _j1000 -- jtest creation and load etc                                      */
 /*============================================================================*/
 
-ping ;
+//ping ;
 
 docol epochTake;
 
@@ -21,7 +21,11 @@ lf ;
 
 
 
-//fetch j1000 ;
+displayOff;
+timerStart;
+fetch j1000;
+timerEnd;
+
 //drop table j1000;
 //docol epochDump;
 

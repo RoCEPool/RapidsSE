@@ -16,15 +16,19 @@ CREATE INDEX supplier_idx2 ON supplier(s_nationkey);
 
 print "loading supplier.tbl..." ;
 
-docol stepsReset;
+//docol stepsReset;
 ld supplier "/tpch/supplier.tbl" ;
-docol stepsList;
+//docol stepsList;
 
 pwf ;
 lf ;
 
 displayOff;
-//jupplier;
+
+displayOff;
+timerStart;
+fetch supplier;
+timerEnd;
 
 /*============================================================================*/
 /* end                                                                        */
