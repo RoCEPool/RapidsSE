@@ -63,6 +63,7 @@ namespace Base
     static bool  bExtractDate(char** ps, i8& iYear, i8& iMonth, i8& iDay);
     static bool  bExtractDecimal(char** ps, i8& iDecimal, i8 iLength, i8 iScale);
     static bool  bExtractFloat(char** ps, d8& dFloat);
+    static bool  bExtractFraction(char** ps, u8* u, i8 iDigits);
     static bool  bExtractInteger(char** ps, i8* i, bool bWithSign=false);
     static bool  bExtractInterval(char** ps, i8& iSecond, i8& iMilli);
     static bool  bExtractItem(char** ps, char* pItem);
@@ -87,6 +88,7 @@ namespace Base
     static bool  bFind(char** ps, const char cArg, i8 iOccurence);
     static bool  bFind(char** ps, const char* sArg);
     static bool  bFind(char** ps, const char* sArg, i8 iLenArg);
+    static void  vFormatFraction(char* sDst, u8 uFraction, i8 iDigits);
     static void  vFree(char** ps);
     
     static i8    iHexToInw(const char c);
