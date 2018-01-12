@@ -122,7 +122,7 @@ void Tsp::vInitZero(void)
   x.m_uHour   = 0;
   x.m_uMinute = 0;
   x.m_uSecond = 0;
-  x.m_uMilli  = 0;
+  x.m_uMicro  = 0;
   x.m_uSpare  = 0;
 }
 
@@ -185,11 +185,11 @@ i8 Tsp::iSecond(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get milli                                                                  */
+/* get microseconds                                                           */
 /*----------------------------------------------------------------------------*/
-i8 Tsp::iMilli(void)
+i8 Tsp::iMicroseconds(void)
 {
-  return x.m_uMilli;
+  return x.m_uMicro;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -273,10 +273,10 @@ bool Tsp::bExtract(char** aaSrc, Tsp* aTsp, Column* pColumn, Formatters* pFormat
   // timestamp field processing
   
   i8 iYear, iMonth, iDay;
-  i8 iHour, iMinute, iSecond, iMilli;
+  i8 iHour, iMinute, iSecond, iMicro;
   
   if ( ! StrLib::bExtractTimestamp(aaSrc, iYear, iMonth, iDay,
-                                          iHour, iMinute, iSecond, iMilli) )
+                                          iHour, iMinute, iSecond, iMicro) )
     return false;
 
   aTsp->x.m_uYear   = iYear;
@@ -285,7 +285,7 @@ bool Tsp::bExtract(char** aaSrc, Tsp* aTsp, Column* pColumn, Formatters* pFormat
   aTsp->x.m_uHour   = iHour;
   aTsp->x.m_uMinute = iMinute;
   aTsp->x.m_uSecond = iSecond;
-  aTsp->x.m_uMilli  = iMilli;
+  aTsp->x.m_uMicro  = iMicro;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
@@ -306,12 +306,12 @@ bool Tsp::bExtract(char** aaSrc, Tsp* aTsp, Column* pColumn, Formatters* pFormat
 void Tsp::vSprint(Stz* aDst, Stz* aSrc)
 {
   Tsp* aTsp = (Tsp*)aSrc;
-  u8 uMilli = (i8)aTsp->x.m_uMilli;
+  u8 uMicro = (i8)aTsp->x.m_uMicro;
   
-  if (uMilli < 10)
-    uMilli *= 100;
-  else if (uMilli < 100)
-    uMilli *= 10;
+  if (uMicro < 10)
+    uMicro *= 100;
+  else if (uMicro < 100)
+    uMicro *= 10;
   
   if (aTsp->bIsNull())
     StrLib::vSprint(aDst,"null%c"_Stz,
@@ -324,7 +324,7 @@ void Tsp::vSprint(Stz* aDst, Stz* aSrc)
                       (i8)aTsp->x.m_uHour,
                       (i8)aTsp->x.m_uMinute,
                       (i8)aTsp->x.m_uSecond,
-                      uMilli,
+                      uMicro,
                       '\0');
 }
 
@@ -335,12 +335,12 @@ void Tsp::vSprintEscaped(Stz* aDst, Stz* aSrc)
 {
   Tsp* aTsp = (Tsp*)aSrc;
   
-  u8 uMilli = (i8)aTsp->x.m_uMilli;
+  u8 uMicro = (i8)aTsp->x.m_uMicro;
   
-  if (uMilli < 10)
-    uMilli *= 100;
-  else if (uMilli < 100)
-    uMilli *= 10;
+  if (uMicro < 10)
+    uMicro *= 100;
+  else if (uMicro < 100)
+    uMicro *= 10;
   
   if (aTsp->bIsNull())
     StrLib::vSprint(aDst,"null%c"_Stz,
@@ -353,7 +353,7 @@ void Tsp::vSprintEscaped(Stz* aDst, Stz* aSrc)
                     (i8)aTsp->x.m_uHour,
                     (i8)aTsp->x.m_uMinute,
                     (i8)aTsp->x.m_uSecond,
-                    uMilli,
+                    uMicro,
                     '\0');
 }
 
@@ -364,12 +364,12 @@ void Tsp::vSprintNonSQL(Stz* aDst, Stz* aSrc)
 {
   Tsp* aTsp = (Tsp*)aSrc;
   
-  u8 uMilli = (i8)aTsp->x.m_uMilli;
+  u8 uMicro = (i8)aTsp->x.m_uMicro;
   
-  if (uMilli < 10)
-    uMilli *= 100;
-  else if (uMilli < 100)
-    uMilli *= 10;
+  if (uMicro < 10)
+    uMicro *= 100;
+  else if (uMicro < 100)
+    uMicro *= 10;
   
   if (aTsp->bIsNull())
     StrLib::vSprint(aDst,"null%c"_Stz,
@@ -382,7 +382,7 @@ void Tsp::vSprintNonSQL(Stz* aDst, Stz* aSrc)
                     (i8)aTsp->x.m_uHour,
                     (i8)aTsp->x.m_uMinute,
                     (i8)aTsp->x.m_uSecond,
-                    uMilli,
+                    uMicro,
                     '\0');
 }
 
