@@ -7,7 +7,7 @@ create table tspTest (
   tsp_tsp    TIMESTAMP   NOT NULL
 );
 
-begin insert tspTest;txdmp;
+begin insert tspTest;
 insert row "1,1900-01-01 00:00:00";
 insert row "2,1900-01-01 00:00:00.0";
 insert row "3,1900-01-01 00:00:00.1";
