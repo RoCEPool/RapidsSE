@@ -1130,13 +1130,14 @@ bool StrLib::bExtractString(char** ps, char* pString)
 /*----------------------------------------------------------------------------*/
 /* bExtractTime: extract a time from substr                                   */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractTime(char** aaSrc, i8& iHour, i8& iMinute, i8& iSecond, i8& iMilli)
+bool StrLib::bExtractTime(char** aaSrc,
+                          i8& iHour, i8& iMinute, i8& iSecond, i8& iMicro)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
   
   u8 uSubField;
   
-  iHour = iMinute = iSecond = iMilli = 0;
+  iHour = iMinute = iSecond = iMicro = 0;
   
   // extract hour
   if ( ! StrLib::bExtractU8(aaSrc,&uSubField,2) )
@@ -1168,15 +1169,17 @@ bool StrLib::bExtractTime(char** aaSrc, i8& iHour, i8& iMinute, i8& iSecond, i8&
     return false;
   iSecond = uSubField;
   
-  // extract optional fraction (assuming milliseconds)
+  // extract fraction (assuming microseconds)
   if ('.' == **aaSrc) {
     (*aaSrc)++;
     
-    if ( StrLib::bExtractU8(aaSrc,&uSubField,3) )
-      iMilli = uSubField;
+    if ( StrLib::bExtractFraction(aaSrc,&uSubField,6) ) {
+      iMicro = uSubField;
+    }
     
-    if (uSubField > 999)
-      return false;
+    // skip/truncate any remaining digits
+    while (bIsDigit(**aaSrc))
+      (*aaSrc)++;
   }
   
   // skip optional Z (UTC zone designator)
@@ -1292,9 +1295,6 @@ bool StrLib::bExtractTimestamp(char** aaSrc,
     // skip/truncate any remaining digits
     while (bIsDigit(**aaSrc))
       (*aaSrc)++;
-    
-//    if (uSubField > 999)
-//      return false;
   }
   
   // skip optional Z (UTC zone designator)
