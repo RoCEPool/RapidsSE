@@ -1289,6 +1289,10 @@ bool StrLib::bExtractTimestamp(char** aaSrc,
       iMicro = uSubField;
     }
     
+    // skip/truncate any remaining digits
+    while (bIsDigit(**aaSrc))
+      (*aaSrc)++;
+    
 //    if (uSubField > 999)
 //      return false;
   }
