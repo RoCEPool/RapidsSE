@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 docol epochTake;
-ping ;
+//ping ;
 
 create table j10 (
   j10_key   INTEGER NOT NULL,
@@ -36,9 +36,12 @@ docol bpa ;
 //reload "/tmp/checkpoint.dmp" ;
 
 displayOff;
+timerStart;
 fetch j10;
+timerEnd;
 drop table j10;
 docol epochDump;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
