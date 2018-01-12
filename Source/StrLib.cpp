@@ -1197,55 +1197,11 @@ bool StrLib::bExtractTimestamp(char** aaSrc,
                                i8& iHour, i8& iMinute, i8& iSecond, i8& iMicro)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
-  
-  u8 uSubField;
-  u8 iDaysPerMonth[12]     = { 31,28,31,30,31,30,31,31,30,31,30,31};
-  u8 iDaysPerMonthLeap[12] = { 31,29,31,30,31,30,31,31,30,31,30,31};
-  
-  iYear = iMonth  = iDay = 0;
-  iHour = iMinute = iSecond = iMicro = 0;
-  
+    
   // - date portion
-  
-  // extract year
-  if ( ! StrLib::bExtractU8(aaSrc,&uSubField, 4) )
+
+  if ( ! bExtractDate(aaSrc,iYear,iMonth,iDay) )
     return false;
-  
-  bool bLeapYear = true;
-  if (uSubField % 4 == 0) {
-    if ((uSubField % 100) == 0 && (uSubField % 400) != 0) {
-      // Not a leap year
-      bLeapYear = false;
-    }
-  }
-  iYear = uSubField;
-  
-  // skip - separator
-  if ('-' != *(*aaSrc)++)
-    return false;
-  
-  // extract month
-  if ( ! StrLib::bExtractU8(aaSrc,&uSubField,2) )
-    return false;
-  if (uSubField < 1 || uSubField > 12)
-    return false;
-  iMonth = uSubField;
-  
-  // skip - separator
-  if ('-' != *(*aaSrc)++) return false;
-  
-  // extract day
-  if ( ! StrLib::bExtractU8(aaSrc,&uSubField,2) )
-    return false;
-  if (bLeapYear) {
-    if (uSubField > iDaysPerMonthLeap[iMonth-1])
-      return false;
-  }
-  else {
-    if (uSubField > iDaysPerMonth[iMonth-1])
-      return false;
-  }
-  iDay = uSubField;
   
   // - time portion
   
