@@ -1610,10 +1610,13 @@ void StrLib::vFormatFraction(char* sDst, u8 uFraction, i8 iDigits)
 {
   char sFormat[16];
   
+  // create the format
   sprintf(sFormat,"%%0%lldlld",iDigits);
   
+  // sprint the number as an integer
   sprintf(sDst,sFormat,uFraction);
   
+  // strip off trailing zero's
   char *z = sDst;
   while (*z)
     z++;
