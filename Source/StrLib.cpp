@@ -883,6 +883,45 @@ bool StrLib::bExtractFloat(char** aaSrc, d8& dFloat)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bExtractFraction: extract an unsigned integer as a fraction from substr    */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bExtractFraction(char** ps, u8* aU8, i8 iDigits)
+{
+  char *s = *ps;
+  
+  if ( ! *s )
+    return false;
+  
+  bool bOnce = false;
+  if (*s && isdigit(*s))
+    bOnce = true;
+  
+  u8 uFraction = 0;
+  
+  for ( ; *s && iDigits > 0; s++) {
+    
+    char cDigit = *s;
+    
+    if (cDigit < '0' || cDigit > '9')
+      break;
+    
+    // decrement no of digits extracted
+    iDigits--;
+    
+    uFraction = (uFraction * 10) + (cDigit - '0');
+  }
+  
+  while (iDigits--)
+    uFraction *= 10;
+  
+  *aU8 = uFraction;
+  
+  *ps = s;
+  
+  return bOnce;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bExtractInteger: extract an integer from substr                            */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bExtractInteger(char** aaSrc, i8* aI8, bool bWithSign)
@@ -1091,13 +1130,14 @@ bool StrLib::bExtractString(char** ps, char* pString)
 /*----------------------------------------------------------------------------*/
 /* bExtractTime: extract a time from substr                                   */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractTime(char** aaSrc, i8& iHour, i8& iMinute, i8& iSecond, i8& iMilli)
+bool StrLib::bExtractTime(char** aaSrc,
+                          i8& iHour, i8& iMinute, i8& iSecond, i8& iMicro)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
   
   u8 uSubField;
   
-  iHour = iMinute = iSecond = iMilli = 0;
+  iHour = iMinute = iSecond = iMicro = 0;
   
   // extract hour
   if ( ! StrLib::bExtractU8(aaSrc,&uSubField,2) )
@@ -1129,15 +1169,17 @@ bool StrLib::bExtractTime(char** aaSrc, i8& iHour, i8& iMinute, i8& iSecond, i8&
     return false;
   iSecond = uSubField;
   
-  // extract optional fraction (assuming milliseconds)
+  // extract fraction (assuming microseconds)
   if ('.' == **aaSrc) {
     (*aaSrc)++;
     
-    if ( StrLib::bExtractU8(aaSrc,&uSubField,3) )
-      iMilli = uSubField;
+    if ( StrLib::bExtractFraction(aaSrc,&uSubField,6) ) {
+      iMicro = uSubField;
+    }
     
-    if (uSubField > 999)
-      return false;
+    // skip/truncate any remaining digits
+    while (bIsDigit(**aaSrc))
+      (*aaSrc)++;
   }
   
   // skip optional Z (UTC zone designator)
@@ -1152,58 +1194,14 @@ bool StrLib::bExtractTime(char** aaSrc, i8& iHour, i8& iMinute, i8& iSecond, i8&
 /*----------------------------------------------------------------------------*/
 bool StrLib::bExtractTimestamp(char** aaSrc,
                                i8& iYear, i8& iMonth,  i8& iDay,
-                               i8& iHour, i8& iMinute, i8& iSecond, i8& iMilli)
+                               i8& iHour, i8& iMinute, i8& iSecond, i8& iMicro)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
-  
-  u8 uSubField;
-  u8 iDaysPerMonth[12]     = { 31,28,31,30,31,30,31,31,30,31,30,31};
-  u8 iDaysPerMonthLeap[12] = { 31,29,31,30,31,30,31,31,30,31,30,31};
-  
-  iYear = iMonth  = iDay = 0;
-  iHour = iMinute = iSecond = iMilli = 0;
-  
+    
   // - date portion
-  
-  // extract year
-  if ( ! StrLib::bExtractU8(aaSrc,&uSubField, 4) )
+
+  if ( ! bExtractDate(aaSrc,iYear,iMonth,iDay) )
     return false;
-  
-  bool bLeapYear = true;
-  if (uSubField % 4 == 0) {
-    if ((uSubField % 100) == 0 && (uSubField % 400) != 0) {
-      // Not a leap year
-      bLeapYear = false;
-    }
-  }
-  iYear = uSubField;
-  
-  // skip - separator
-  if ('-' != *(*aaSrc)++)
-    return false;
-  
-  // extract month
-  if ( ! StrLib::bExtractU8(aaSrc,&uSubField,2) )
-    return false;
-  if (uSubField < 1 || uSubField > 12)
-    return false;
-  iMonth = uSubField;
-  
-  // skip - separator
-  if ('-' != *(*aaSrc)++) return false;
-  
-  // extract day
-  if ( ! StrLib::bExtractU8(aaSrc,&uSubField,2) )
-    return false;
-  if (bLeapYear) {
-    if (uSubField > iDaysPerMonthLeap[iMonth-1])
-      return false;
-  }
-  else {
-    if (uSubField > iDaysPerMonth[iMonth-1])
-      return false;
-  }
-  iDay = uSubField;
   
   // - time portion
   
@@ -1212,51 +1210,9 @@ bool StrLib::bExtractTimestamp(char** aaSrc,
     return true;
   (*aaSrc)++;
   
-  // extract hour
-  if ( ! StrLib::bExtractU8(aaSrc,&uSubField,2) )
+  if ( ! bExtractTime(aaSrc,iHour,iMinute,iSecond,iMicro) )
     return false;
-  if (uSubField > 23)
-    return false;
-  iHour = uSubField;
-  
-  // skip : separator
-  if (':' != *(*aaSrc)++)
-    return false;
-  
-  // extract minute
-  if ( ! StrLib::bExtractU8(aaSrc,&uSubField,2) )
-    return false;
-  
-  if (uSubField > 59)
-    return false;
-  iMinute = uSubField;
-  
-  // skip : separator
-  if (':' != *(*aaSrc)++)
-    return false;
-  
-  // extract second
-  if ( ! StrLib::bExtractU8(aaSrc,&uSubField,2) )
-    return false;
-  if (uSubField > 59)
-    return false;
-  iSecond = uSubField;
-  
-  // extract fraction (assuming milliseconds)
-  if ('.' == **aaSrc) {
-    (*aaSrc)++;
-    
-    if ( StrLib::bExtractU8(aaSrc,&uSubField,3) )
-      iMilli = uSubField;
-    
-    if (uSubField > 999)
-      return false;
-  }
-  
-  // skip optional Z (UTC zone designator)
-  if ('Z' == **aaSrc)
-    (*aaSrc)++;
-  
+
   return true;
 }
 
@@ -1645,6 +1601,29 @@ bool StrLib::bFind(char** ps, const char* sArg, i8 iLenArg)
     // advance
     s++;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* vFormatFraction: format a fraction                                         */
+/*----------------------------------------------------------------------------*/
+void StrLib::vFormatFraction(char* sDst, u8 uFraction, i8 iDigits)
+{
+  char sFormat[16];
+  
+  // create the format
+  sprintf(sFormat,"%%0%lldlld",iDigits);
+  
+  // sprint the number as an integer
+  sprintf(sDst,sFormat,uFraction);
+  
+  // strip off trailing zero's
+  char *z = sDst;
+  while (*z)
+    z++;
+  z--;
+  
+  while ('0' == *z)
+    *z-- = '\0';
 }
 
 /*----------------------------------------------------------------------------*/

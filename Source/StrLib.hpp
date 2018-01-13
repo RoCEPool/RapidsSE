@@ -63,6 +63,7 @@ namespace Base
     static bool  bExtractDate(char** ps, i8& iYear, i8& iMonth, i8& iDay);
     static bool  bExtractDecimal(char** ps, i8& iDecimal, i8 iLength, i8 iScale);
     static bool  bExtractFloat(char** ps, d8& dFloat);
+    static bool  bExtractFraction(char** ps, u8* u, i8 iDigits);
     static bool  bExtractInteger(char** ps, i8* i, bool bWithSign=false);
     static bool  bExtractInterval(char** ps, i8& iSecond, i8& iMilli);
     static bool  bExtractItem(char** ps, char* pItem);
@@ -70,9 +71,9 @@ namespace Base
     static bool  bExtractPath(char** ps, char* pPath);
     static bool  bExtractPort(char** ps, u2* pPort);
     static bool  bExtractString(char** ps, char* pString);
-    static bool  bExtractTime(char** ps, i8& iHour, i8& iMinute, i8& iSecond, i8& iMilli);
+    static bool  bExtractTime(char** ps, i8& iHour, i8& iMinute, i8& iSecond, i8& iMicro);
     static bool  bExtractTimestamp(char** ps, i8& iYear, i8& iMonth, i8& iDay,
-                                   i8& iHour, i8& iMinute, i8& iSecond, i8& iMilli);
+                                   i8& iHour, i8& iMinute, i8& iSecond, i8& iMicro);
     static bool  bExtractU8(char** ps, u8* u);
     static bool  bExtractU8(char** ps, u8* u, i8 iDigits);
     static bool  bExtractVarchar(char** ps, char* aVarchar, i8 iMaxLength,
@@ -87,6 +88,7 @@ namespace Base
     static bool  bFind(char** ps, const char cArg, i8 iOccurence);
     static bool  bFind(char** ps, const char* sArg);
     static bool  bFind(char** ps, const char* sArg, i8 iLenArg);
+    static void  vFormatFraction(char* sDst, u8 uFraction, i8 iDigits);
     static void  vFree(char** ps);
     
     static i8    iHexToInw(const char c);

@@ -11,8 +11,8 @@ namespace Datums
   
   protected:
     struct {
-      u8 m_uSpare  : 30 ; //
-      u8 m_uMilli  : 10 ; // 0..1023
+      u8 m_uSpare  : 20 ; //
+      u8 m_uMicro  : 20 ; // 0..1M
       u8 m_uSecond :  8 ; // 0..63
       u8 m_uMinute :  8 ; // 0..63
       u8 m_uHour   :  8 ; // 0..31
@@ -42,7 +42,7 @@ namespace Datums
     i8   iHour(void);
     i8   iMinute(void);
     i8   iSecond(void);
-    i8   iMilli(void);
+    i8   iMicroseconds(void);
 
     static i8   nCopy(void* aDst, void* aSrc);
     static void vCopy(void* aDst, void* aSrc);
