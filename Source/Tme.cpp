@@ -274,18 +274,32 @@ bool Tme::bExtract(char** aaSrc, Tme* aTme, Column* pColumn, Formatters* pFormat
 void Tme::vSprint(Stz* aDst, Stz* aSrc)
 {
   Tme* aTme = (Tme*)aSrc;
+  u8 uMicro = (i8)aTme->x.m_uMicro;
   
-  if (aTme->bIsNull())
+  if (aTme->bIsNull()) {
     StrLib::vSprint(aDst,"null%c"_Stz,
                     '\0');
-  else
+    return;
+  }
+  
+  if (uMicro) {
+    char sFraction[16];
+    StrLib::vFormatFraction(sFraction,uMicro,6);
     
-    StrLib::vSprint(aDst,"%02lld:%02lld:%02lld.%03lld%c"_Stz,
+    StrLib::vSprint(aDst,"%02lld:%02lld:%02lld.%s%c"_Stz,
                     aTme->x.m_uHour,
                     aTme->x.m_uMinute,
                     aTme->x.m_uSecond,
-                    aTme->x.m_uMicro,
+                    sFraction,
                     '\0');
+    return;
+  }
+
+  StrLib::vSprint(aDst,"%02lld:%02lld:%02lld%c"_Stz,
+                  aTme->x.m_uHour,
+                  aTme->x.m_uMinute,
+                  aTme->x.m_uSecond,
+                  '\0');
 }
 
 /*----------------------------------------------------------------------------*/
@@ -294,18 +308,33 @@ void Tme::vSprint(Stz* aDst, Stz* aSrc)
 void Tme::vSprintEscaped(Stz* aDst, Stz* aSrc)
 {
   Tme* aTme = (Tme*)aSrc;
+  u8 uMicro = (i8)aTme->x.m_uMicro;
   
-  if (aTme->bIsNull())
+  if (aTme->bIsNull()) {
     StrLib::vSprint(aDst,"null%c"_Stz,
                     '\0');
-  else
+    return;
+  }
+  
+  if (uMicro) {
+    char sFraction[16];
+    StrLib::vFormatFraction(sFraction,uMicro,6);
     
-    StrLib::vSprint(aDst,"%02lld:%02lld:%02lld.%03lld%c"_Stz,
+    StrLib::vSprint(aDst,"%02lld:%02lld:%02lld.%s%c"_Stz,
                     aTme->x.m_uHour,
                     aTme->x.m_uMinute,
                     aTme->x.m_uSecond,
-                    aTme->x.m_uMicro,
+                    sFraction,
                     '\0');
+    return;
+  }
+  
+  StrLib::vSprint(aDst,"%02lld:%02lld:%02lld.%03lld%c"_Stz,
+                  aTme->x.m_uHour,
+                  aTme->x.m_uMinute,
+                  aTme->x.m_uSecond,
+                  aTme->x.m_uMicro,
+                  '\0');
 }
 
 /*----------------------------------------------------------------------------*/
