@@ -2236,7 +2236,10 @@ void SePrompt::vIterateBuffers(void)
       vTrace("rows selected %lld\n"_Stz, m_pSEitf->m_iRowsProcessed);
     }
   }
-  
+  else {
+    // pop the buffers
+    m_pSEitf->vPopBufferQueue();
+  }
   m_pSEitf->m_iRowsProcessed = 0;
   
   m_pSEitf->vEndFetch();

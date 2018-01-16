@@ -240,6 +240,7 @@ namespace Interface
     void vEndFetch(void);
     bool bNextBuffer(void);
     bool bNextRow(void);
+    void vPopBufferQueue(void);
     
     //--------------------------------------------------------------------------
     bool bAppendRequest(StrVal& sRequest);

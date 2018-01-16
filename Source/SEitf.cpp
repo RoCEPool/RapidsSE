@@ -762,7 +762,7 @@ bool SEitf::bNextRow(void)
   while (true) {
     
     // if no entry buffer , pop one off the queue
-    if (!m_pEntryBuffer) {
+    if ( ! m_pEntryBuffer ) {
       
       // pop buffer off the buffer queue
       ValWrk xValWrk;
@@ -849,6 +849,38 @@ void SEitf::vPerformanceTrace(PerformanceTrace* pPerformanceTrace)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   m_pPerformanceTrace = pPerformanceTrace;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop all buffers from buffer queue                                          */
+/*----------------------------------------------------------------------------*/
+void SEitf::vPopBufferQueue(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  while (true) {
+    
+    // pop buffer off the buffer queue
+    ValWrk xValWrk;
+    while (!m_pBufferQueue->bPop(&xValWrk)) {
+      PosixThread::vSleepMilli(1);
+    }
+    
+    // get entry buffer
+    PtrVal* pPtrVal = xValWrk.pNestedPtrVal();
+    m_pEntryBuffer = (EntryBuffer*)(pPtrVal->pPtr());
+    
+    // is it the last buffer
+    if (m_pEntryBuffer->bIsLast()) {
+      m_ziLastBuffersScanned++;
+      
+      // if popped all last buffers return
+      if ( m_ziLastBuffersScanned == m_ziLastBuffers)
+        break;
+      
+      delete m_pEntryBuffer;
+    }
+  }
 }
 
 /*----------------------------------------------------------------------------*/
