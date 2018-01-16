@@ -10,6 +10,9 @@
 // Header   : Dump::vInvalid
 // Objects we don't want to dump (eg Word) : Dump::vDummy
 
+/*----------------------------------------------------------------------------*/
+/* dump functions                                                             */
+/*----------------------------------------------------------------------------*/
 pDUMPFUN *gpDump[]
 {
   /*  0 */ &Dump::vInvalid,         // CN_NONE
@@ -190,6 +193,9 @@ pDUMPFUN *gpDump[]
   /*138 */ &Dump::vEnums            // CN_ENUMS
 };
 
+/*----------------------------------------------------------------------------*/
+/* class sizes                                                                */
+/*----------------------------------------------------------------------------*/
 i8 giClassSize[]
 {
   /*  0 */ 0,                          // CN_NONE
@@ -369,95 +375,98 @@ i8 giClassSize[]
   /*138 */ -1
 };
 
+/*----------------------------------------------------------------------------*/
+/* which heap                                                                 */
+/*----------------------------------------------------------------------------*/
 eHT geWhichHeap[]
 {
   /*  0 */ HT_INVALID,
   
-  /*  1 */ HT_INVALID, // CN_BCDVAL
-  /*  2 */ HT_INVALID, // CN_BINVAL
-  /*  3 */ HT_INVALID, // CN_BOLVAL
-  /*  4 */ HT_INVALID, // CN_DTEVAL
-  /*  5 */ HT_INVALID, // CN_ENTWRK,
-  /*  6 */ HT_INVALID, // CN_FLTVAL
-  /*  7 */ HT_INVALID, // CN_INTVAL
-  /*  8 */ HT_INVALID, // CN_IPVAL
-  /*  9 */ HT_INVALID, // CN_IVLVAL
-  /* 10 */ HT_INVALID, // CN_OBJVAL
-  /* 11 */ HT_INVALID, // CN_PTRVAL
-  /* 12 */ HT_INVALID, // CN_STRVAL
-  /* 13 */ HT_INVALID, // CN_STRVAR
-  /* 14 */ HT_INVALID, // CN_TMEVAL
-  /* 15 */ HT_INVALID, // CN_TSPVAL
-  /* 16 */ HT_INVALID, // CN_VALREG
+  /*  1 */ HT_INVALID,           // CN_BCDVAL
+  /*  2 */ HT_INVALID,           // CN_BINVAL
+  /*  3 */ HT_INVALID,           // CN_BOLVAL
+  /*  4 */ HT_INVALID,           // CN_DTEVAL
+  /*  5 */ HT_INVALID,           // CN_ENTWRK,
+  /*  6 */ HT_INVALID,           // CN_FLTVAL
+  /*  7 */ HT_INVALID,           // CN_INTVAL
+  /*  8 */ HT_INVALID,           // CN_IPVAL
+  /*  9 */ HT_INVALID,           // CN_IVLVAL
+  /* 10 */ HT_INVALID,           // CN_OBJVAL
+  /* 11 */ HT_INVALID,           // CN_PTRVAL
+  /* 12 */ HT_INVALID,           // CN_STRVAL
+  /* 13 */ HT_INVALID,           // CN_STRVAR
+  /* 14 */ HT_INVALID,           // CN_TMEVAL
+  /* 15 */ HT_INVALID,           // CN_TSPVAL
+  /* 16 */ HT_INVALID,           // CN_VALREG
   /* 17 */ HT_TRANSIENT_MEDIUM,  // CN_VALSET
-  /* 18 */ HT_INVALID, // CN_VALWRK
+  /* 18 */ HT_INVALID,           // CN_VALWRK
   
   /* 19 */ HT_TRANSIENT_MEDIUM,  // CN_ACCESSPATH
   /* 20 */ HT_TRANSIENT_SMALL,   // CN_ACCUM
   /* 21 */ HT_TRANSIENT_MEDIUM,  // CN_ACCUMVEC
   /* 22 */ HT_TRANSIENT_SMALL,   // CN_ARG
-  /* 23 */ HT_INVALID, // CN_ARGUMENTS
-  /* 24 */ HT_INVALID, // CN_ATOMIC
-  /* 25 */ HT_INVALID, // CN_ATTACHMAP
+  /* 23 */ HT_INVALID,           // CN_ARGUMENTS
+  /* 24 */ HT_INVALID,           // CN_ATOMIC
+  /* 25 */ HT_INVALID,           // CN_ATTACHMAP
   
   /* 26 */ HT_TRANSIENT_SMALL,   // CN_BITARRAY
   /* 27 */ HT_TRANSIENT_LARGE,   // CN_BITMAP
-  /* 28 */ HT_INVALID, // CN_BUFFERPOOL
-  /* 29 */ HT_INVALID, // CN_BPA
+  /* 28 */ HT_INVALID,           // CN_BUFFERPOOL
+  /* 29 */ HT_INVALID,           // CN_BPA
 
-  /*    */ HT_INVALID,   // CN_CARRYOVER
+  /*    */ HT_INVALID,           // CN_CARRYOVER
   /* 30 */ HT_TRANSIENT_SMALL,   // CN_COLUMN
   /* 31 */ HT_TRANSIENT_MEDIUM,  // CN_COLUMNVEC
   
   /* 32 */ HT_TRANSIENT_MEDIUM,  // CN_DIC
-  /* 33 */ HT_INVALID, // CN_DICPATH
+  /* 33 */ HT_INVALID,           // CN_DICPATH
   /* 34 */ HT_TRANSIENT_SMALL,   // CN_DIR
 
-  /* 35 */ HT_INVALID, // CN_ENTRY
+  /* 35 */ HT_INVALID,           // CN_ENTRY
   /* 36 */ HT_TRANSIENT_LARGE,   // CN_ENTRYBUFFER
-  /* 37 */ HT_INVALID, // CN_ENTRYVEC
+  /* 37 */ HT_INVALID,           // CN_ENTRYVEC
   
   /* 38 */ HT_TRANSIENT_SMALL,   // CN_FILE
   /*    */ HT_TRANSIENT_SMALL,   // CN_FORMATTERS
-  /* 39 */ HT_INVALID, // CN_FREEBUFFER
-  /* 40 */ HT_INVALID, // CN_FREECHUNK
-  /* 41 */ HT_INVALID, // CN_FREEDNOT
+  /* 39 */ HT_INVALID,           // CN_FREEBUFFER
+  /* 40 */ HT_INVALID,           // CN_FREECHUNK
+  /* 41 */ HT_INVALID,           // CN_FREEDNOT
   
   /* 42 */ HT_TRANSIENT_SMALL,   // CN_GRAPH
   /* 43 */ HT_TRANSIENT_SMALL,   // CN_GRAPHCURSOR
   /* 44 */ HT_TRANSIENT_SMALL,   // CN_GRAPHNODE
-  /* 45 */ HT_INVALID, // CN_GRID
+  /* 45 */ HT_INVALID,           // CN_GRID
   /* 46 */ HT_TRANSIENT_SMALL,   // CN_GROUPBY
 
-  /* 47 */ HT_INVALID, // CN_HEAPBUFFER
+  /* 47 */ HT_INVALID,           // CN_HEAPBUFFER
   
-  /* 48 */ HT_INVALID, // CN_INDEX
+  /* 48 */ HT_INVALID,           // CN_INDEX
   /* 49 */ HT_TRANSIENT_SMALL,   // CN_INDEXDATA
   /* 50 */ HT_TRANSIENT_MEDIUM,  // CN_IDXCOLVEC
   /* 51 */ HT_TRANSIENT_MEDIUM,  // CN_IDXDATAVEC
   /* 52 */ HT_TRANSIENT_MEDIUM,  // CN_IDXVEC
   /* 53 */ HT_TRANSIENT_MEDIUM,  // CN_INDEXLEVELS
 
-  /*    */ HT_INVALID, // CN_JUMBOPERSISTENT
-  /* 54 */ HT_INVALID, // CN_JUMBOTRANSIENT
+  /*    */ HT_INVALID,           // CN_JUMBOPERSISTENT
+  /* 54 */ HT_INVALID,           // CN_JUMBOTRANSIENT
   
-  /* 55 */ HT_INVALID, // CN_KEY
+  /* 55 */ HT_INVALID,           // CN_KEY
   /* 56 */ HT_TRANSIENT_SMALL,   // CN_KEYVAL
   /* 57 */ HT_TRANSIENT_MEDIUM,  // CN_KEYVEC
-  /* 58 */ HT_INVALID, // CN_KEYWRK
+  /* 58 */ HT_INVALID,           // CN_KEYWRK
 
-  /*  */   HT_INVALID, // CN_LARGEPERSISTENT
-  /*  */   HT_INVALID, // CN_LARGETRANSIENT
+  /*  */   HT_INVALID,           // CN_LARGEPERSISTENT
+  /*  */   HT_INVALID,           // CN_LARGETRANSIENT
   
-  /* 59 */ HT_INVALID, // CN_LINEITEM
+  /* 59 */ HT_INVALID,           // CN_LINEITEM
   /* 60 */ HT_TRANSIENT_LARGE,   // CN_LOADCHUNK
   /* 61 */ HT_TRANSIENT_MEDIUM,  // CN_LOADER
   /* 62 */ HT_TRANSIENT_MEDIUM,  // CN_LOADERSUB
   /* 63 */ HT_TRANSIENT_JUMBO,   // CN_LOADMAP
-  /* 64 */ HT_INVALID, // CN_LOCK
+  /* 64 */ HT_INVALID,           // CN_LOCK
   
-  /*    */ HT_INVALID, // CN_MEDIUMPERSISTENT
-  /*    */ HT_INVALID, // CN_MEDIUMTRANSIENT
+  /*    */ HT_INVALID,           // CN_MEDIUMPERSISTENT
+  /*    */ HT_INVALID,           // CN_MEDIUMTRANSIENT
   
   /* 66 */ HT_TRANSIENT_SMALL,   // CN_NODE
   /* 67 */ HT_TRANSIENT_SMALL,   // CN_NODECURSOR
@@ -477,75 +486,75 @@ eHT geWhichHeap[]
   /* 77 */ HT_TRANSIENT_SMALL,   // CN_PREDICATE
   /* 78 */ HT_TRANSIENT_MEDIUM,  // CN_PREDICATEVEC
   /* 79 */ HT_TRANSIENT_SMALL,   // CN_POSIXTHREAD
-  /* 80 */ HT_INVALID, // CN_PROXY
-  /* 81 */ HT_INVALID, // CN_PROXYSET
+  /* 80 */ HT_INVALID,           // CN_PROXY
+  /* 81 */ HT_INVALID,           // CN_PROXYSET
   /* 82 */ HT_TRANSIENT_MEDIUM,  // CN_PTNCOLVEC
 
   /* 83 */ HT_TRANSIENT_SMALL,   // CN_QUEUE
-  /* 84 */ HT_INVALID, // CN_QUEUEBUFFER
+  /* 84 */ HT_INVALID,           // CN_QUEUEBUFFER
   
   /* 85 */ HT_TRANSIENT_SMALL,   // CN_RBCURSOR
   /* 86 */ HT_TRANSIENT_LARGE,   // CN_REGFRAME
   /*    */ HT_TRANSIENT_LARGE,   // CN_RESULTBUFFER
-  /*    */ HT_INVALID, // CN_RESULTROW
-  /* 87 */ HT_INVALID, // CN_RING
+  /*    */ HT_INVALID,           // CN_RESULTROW
+  /* 87 */ HT_INVALID,           // CN_RING
   /* 88 */ HT_TRANSIENT_MEDIUM,  // CN_ROARRAY
-  /* 89 */ HT_INVALID, // CN_ROWBUFFER
+  /* 89 */ HT_INVALID,           // CN_ROWBUFFER
   /* 90 */ HT_TRANSIENT_SMALL,   // CN_ROWCURSOR
   /* 91 */ HT_TRANSIENT_SMALL,   // CN_ROWONCE
   
   /* 92 */ HT_TRANSIENT_LARGE,   // CN_SCANBUFFER
   /* 93 */ HT_TRANSIENT_LARGE,   // CN_SCRATCH
-  /* 94 */ HT_INVALID, // CN_SEHISTORY
+  /* 94 */ HT_INVALID,           // CN_SEHISTORY
   /* 95 */ HT_TRANSIENT_MEDIUM,  // CN_SEITF
   /* 96 */ HT_TRANSIENT_SMALL,   // CN_SEITFCURSOR
-  /* 97 */ HT_INVALID, // CN_SEITFLIST
+  /* 97 */ HT_INVALID,           // CN_SEITFLIST
   /* 98 */ HT_TRANSIENT_SMALL,   // CN_SELCURSOR
   /* 99 */ HT_TRANSIENT_SMALL,   // CN_SEMAPHORE
   /*100 */ HT_TRANSIENT_LARGE,   // CN_SEPROMPT
-  /*101 */ HT_INVALID, // CN_SINCE
-  /*102 */ HT_INVALID, // CN_SKIPCURSOR
+  /*101 */ HT_INVALID,           // CN_SINCE
+  /*102 */ HT_INVALID,           // CN_SKIPCURSOR
   /*103 */ HT_TRANSIENT_SMALL,   // CN_SKIPLIST
   /*104 */ HT_TRANSIENT_SMALL,   // CN_SKIPNODE
   /*105 */ HT_TRANSIENT_LARGE,   // CN_SLAB
   /*106 */ HT_TRANSIENT_SMALL,   // CN_SLABALLOCATOR
-  /*107 */ HT_INVALID, // CN_SLOTS
-  /*    */ HT_INVALID, // SN_SMALLPERSISTENT
-  /*108 */ HT_INVALID, // SN_SMALLTRANSIENT
+  /*107 */ HT_INVALID,           // CN_SLOTS
+  /*    */ HT_INVALID,           // SN_SMALLPERSISTENT
+  /*108 */ HT_INVALID,           // SN_SMALLTRANSIENT
   /*109 */ HT_TRANSIENT_SMALL,   // CN_SOCKET
   /*110 */ HT_TRANSIENT_LARGE,   // CN_STACK
-  /*111 */ HT_INVALID, // CN_STEPACCUM
+  /*111 */ HT_INVALID,           // CN_STEPACCUM
   /*112 */ HT_TRANSIENT_LARGE,   // CN_STEPARRAY
-  /*113 */ HT_INVALID, // CN_SYSCALL
+  /*113 */ HT_INVALID,           // CN_SYSCALL
   
-  /*114 */ HT_INVALID, // CN_TABLE
+  /*114 */ HT_INVALID,           // CN_TABLE
   /*115 */ HT_TRANSIENT_MEDIUM,  // CN_TASK
-  /*116 */ HT_INVALID, // CN_TASKCURSOR
+  /*116 */ HT_INVALID,           // CN_TASKCURSOR
   /*117 */ HT_TRANSIENT_SMALL,   // CN_TASKLIST
   /*118 */ HT_TRANSIENT_SMALL,   // CN_TASKQUEUE
   /*119 */ HT_TRANSIENT_MEDIUM,  // CN_SERVERSCHEDULER
   /*120 */ HT_TRANSIENT_SMALL,   // CN_TASKSET
-  /*121 */ HT_INVALID, // CN_THREAD
+  /*121 */ HT_INVALID,           // CN_THREAD
   /*122 */ HT_TRANSIENT_SMALL,   // CN_THREADCURSOR
-  /*123 */ HT_INVALID, // CN_THREADLIST
-  /*124 */ HT_INVALID, // CN_THREADQUEUE
-  /*125 */ HT_INVALID, // CN_TIME
+  /*123 */ HT_INVALID,           // CN_THREADLIST
+  /*124 */ HT_INVALID,           // CN_THREADQUEUE
+  /*125 */ HT_INVALID,           // CN_TIME
   /*126 */ HT_TRANSIENT_SMALL,   // CN_TIMER
   /*127 */ HT_TRANSIENT_SMALL,   // CN_TOKEN
   /*128 */ HT_TRANSIENT_MEDIUM,  // CN_TOKENISER
-  /*129 */ HT_INVALID, // CN_TOKENARY
+  /*129 */ HT_INVALID,           // CN_TOKENARY
   /*130 */ HT_TRANSIENT_SMALL,   // CN_TOKENVEC
   /*131 */ HT_TRANSIENT_SMALL,   // CN_TX
   /*132 */ HT_TRANSIENT_SMALL,   // CN_TXSET
   
   /*133 */ HT_TRANSIENT_MEDIUM,  // CN_WORD
   
-  /*134 */ HT_INVALID, // CN_ZSMALL_
-  /*135 */ HT_INVALID, // CN_ZMEDIUM_
-  /*136 */ HT_INVALID, // CN_ZLARGE_
-  /*137 */ HT_INVALID, // CN_ZJUMBO_
+  /*134 */ HT_INVALID,           // CN_ZSMALL_
+  /*135 */ HT_INVALID,           // CN_ZMEDIUM_
+  /*136 */ HT_INVALID,           // CN_ZLARGE_
+  /*137 */ HT_INVALID,           // CN_ZJUMBO_
 
-  /*138 */ HT_INVALID, // CN_ENUMS
+  /*138 */ HT_INVALID,           // CN_ENUMS
 };
 
 /*----------------------------------------------------------------------------*/

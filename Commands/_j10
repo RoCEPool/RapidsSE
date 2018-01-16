@@ -35,7 +35,7 @@ docol bpa ;
 //checkpoint "/tmp/checkpoint.dmp" ;
 //reload "/tmp/checkpoint.dmp" ;
 
-displayOff;
+//displayOff;
 timerStart;
 fetch j10;
 timerEnd;
