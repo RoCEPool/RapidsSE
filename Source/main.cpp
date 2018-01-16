@@ -79,6 +79,9 @@ int main(int argc, const char* argv[])
   RapidsSE::vExecuteCmdLine();
 
   //vSkipListTest();
+  
+//  ResultBuffer* pRB = new ResultBuffer;
+//  delete pRB;
 
   vRunPrompt();
   
