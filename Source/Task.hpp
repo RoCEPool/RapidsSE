@@ -681,6 +681,7 @@ namespace Tasks
     static void vIndexColumnType(MP_Task mpTask);
     static void vIndexCreateColumnVec(MP_Task mpTask);
     static void vIndexDump(MP_Task mpTask);
+    static void vIndexExactKey(MP_Task mpTask);
     static void vIndexInit(MP_Task mpTask);
     static void vIndexIsHiddenFetch(MP_Task mpTask);
     static void vIndexIsHiddenStore(MP_Task mpTask);
@@ -1439,6 +1440,10 @@ namespace Tasks
     static void vZeroNotEqual(MP_Task mpTask);
     static void vZeroGreaterEqual(MP_Task mpTask);
     static void vZeroGreater(MP_Task mpTask);
+    
+  private:
+    static Entry* pPosition(Index* pIndex, EntryBuffer* pIndexBuffer,
+                            Planner* pPlanner, i8 iPhrase, KeyWrk &xKeyWrk);
     
     /*------------------------------------------------------------------------*/
     
