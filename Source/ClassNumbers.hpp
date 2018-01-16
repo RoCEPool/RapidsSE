@@ -42,6 +42,7 @@ namespace Base
     
     /* 26 */ CN_BITARRAY,
     /* 27 */ CN_BITMAP,
+    /*    */ CN_BUFFER,
     /* 28 */ CN_BUFFERPOOL,
     /* 29 */ CN_BPA,
   
@@ -223,6 +224,7 @@ namespace Base
     
     /* 26 */ "BITARRAY"_Stz,
     /* 27 */ "BITMAP"_Stz,
+    /*    */ "BUFFER"_Stz,
     /* 28 */ "BUFFERPOOL"_Stz,
     /* 29 */ "BPA"_Stz,
   
