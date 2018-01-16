@@ -371,7 +371,7 @@ timer: pIdxSelectTimer
     "0" //key
     i_Phrase pPlanner Planner.lowKey@
     "0" //upper
-    "lowerSelectIdxTaskOLD"
+    "lowerSelectIdxTask"
     i_Phrase pPlanner Planner.indexNm@
     pBufferQueue iSlot spawnSelectTask
   endof

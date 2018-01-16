@@ -193,20 +193,9 @@ void Task::vEntryBufferInsertRow(MP_Task mpTask)
   Entry* pOldEntry = _pEntry(pPtrOldEntry);
   ASSERT(CN_ENTRY == pOldEntry->eClass());
   
-  Id xId = pOldEntry->xId();
-  SEitf* pSEitf = mpTask->m_pSEitf;
-  
-  if (pSEitf && pSEitf->bRowSeen(xId)) {
+  bool bInserted = bInsertRow(pIndexBuffer, pOldEntry, mpTask->m_pSEitf);
+  if (bInserted)
     mpTask->m_pDataStack->vPushInt(1);
-    return;
-  }
-  
-  Entry* pRow;
-  
-  if (pIndexBuffer->bInsertRow(pOldEntry, &pRow)) {
-    ASSERT( ! pRow->nOffsets() );
-    mpTask->m_pDataStack->vPushInt(1);
-  }
   else
     mpTask->m_pDataStack->vPushInt(0);
   
@@ -483,6 +472,32 @@ void Task::vEntryBufferToEntryBuffer(MP_Task mpTask)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/*    PRIVATE                                                                 */
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* entryBuffer::toEntryBuffer -- convert string to entry buffer pointer       */
+/*----------------------------------------------------------------------------*/
+bool Task::bInsertRow(EntryBuffer* pEntryBuffer, Entry* pEntry, SEitf* pSEitf)
+{
+  
+  Entry* pRow;
+
+  Id xId = pEntry->xId();
+  
+  if (pSEitf && pSEitf->bRowSeen(xId)) {
+    // row already inserted
+    return true;
+  }
+  
+  if (pEntryBuffer->bInsertRow(pEntry, &pRow)) {
+    ASSERT( ! pRow->nOffsets() );
+    return true;
+  }
+  else
+    return false;
+}
 
 /*============================================================================*/
 /* end                                                                        */
