@@ -64,8 +64,6 @@ namespace DBobjects
     eBD  eDurability(void);
     void vDurability(eBD eDurability);
   
-    i8   nEntries(void);
-  
     EntryBuffer* pNextBuffer(void);
     void         vNextBuffer(EntryBuffer* pNextBuffer);
   

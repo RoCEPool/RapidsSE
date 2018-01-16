@@ -256,7 +256,7 @@ bool Table::bAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
   bool bLastBuffer = pEntryBuffer->bIsLast();
   
   // do not insert empty buffers
-  if (pEntryBuffer->nEntries() == 1) {
+  if (pEntryBuffer->nItems() == 1) {
     delete pEntryBuffer;
   }
   else {
@@ -351,7 +351,7 @@ void Table::vInsertEntries(i8 iSlot, EntryBuffer* pEntryBuffer)
   //ASSERT(pEntryBuffer->eDurability() == BD_TEMPORARY);
   
   // if buffer has 0 entries (only head) then should be last buffer
-  if (pEntryBuffer->nEntries() == 1) {
+  if (pEntryBuffer->nItems() == 1) {
     ASSERT(pEntryBuffer->bIsLast());
     return;
   }
@@ -961,7 +961,7 @@ i8 Table::nHiddenEntryCount(EntryBuffer* pFirstL0Buffer)
   
   i8 nEntries = 0;
   for (EntryBuffer* pEB = pFirstL0Buffer; pEB; pEB = pEB->pNextBuffer())
-    nEntries += pEB->nEntries() - 1;
+    nEntries += pEB->nItems() - 1;
   
   return nEntries;
 }

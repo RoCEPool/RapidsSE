@@ -182,16 +182,6 @@ void EntryBuffer::vDurability(eBD eDurability)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of enteries in the buffer                                       */
-/*----------------------------------------------------------------------------*/
-i8 EntryBuffer::nEntries(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-  
-  return m_nEntries;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get next buffer                                                            */
 /*----------------------------------------------------------------------------*/
 EntryBuffer* EntryBuffer::pNextBuffer(void)
@@ -248,7 +238,7 @@ void EntryBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
   vTrace("durability %s partition %lld rows %lld used %lld free %lld prevBuffer %p nextBuffer %p\n"_Stz,
          pRowBuffer->m_nPartitionNo,
          aBD[pRowBuffer->m_eDurability],
-         pRowBuffer->m_nEntries,
+         pRowBuffer->m_nItems,
          pRowBuffer->m_xWsp.nUsed(),
          pRowBuffer->m_xWsp.nFree(),
          pRowBuffer->m_pPrevBuffer,
@@ -277,34 +267,12 @@ Entry* EntryBuffer::pAllotEntry(i8 nBytes)
   Entry* pEntry = reinterpret_cast<Entry*>(m_xWsp.aAllot(nBytesRequired));
   new(pEntry) Entry(CN_ENTRY,nBytesRequired,0);
   
-  m_nEntries++;
+  m_nItems++;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   return pEntry;
 }
-
-/*----------------------------------------------------------------------------*/
-/* append entries of arg buffer into this buffer                              */
-/*----------------------------------------------------------------------------*/
-//void EntryBuffer::vAppendEntriesFromBuffer(EntryBuffer* pSrcBuffer)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-//  
-//  // how many bytes to be copied from arg buffer
-//  i8 nBytes  = pSrcBuffer->nUsedBytes();
-//  byte* aSrc = pSrcBuffer->aDataArea();
-//  
-//  // allot space in this buffer
-//  void* pDst = m_xWsp.aAllot(nBytes);
-//  
-//  // copy arg rows into this buffer
-//  MemLib::vCopy(pDst,aSrc,nBytes,CN_ENTRYBUFFER);
-//  
-//  // inc the number of rows in this buffer
-//  i8 nSrcRows = pSrcBuffer->m_nEntries;
-//  m_nEntries += nSrcRows;
-//}
 
 /*----------------------------------------------------------------------------*/
 /* get address of data area                                                   */
@@ -368,7 +336,7 @@ bool EntryBuffer::bInsertRow(Entry* pOldRow, Entry** ppRow)         //# critical
   //----------------------------------------------------------------------------
   // form the rowId
   bn nBufferNo = this->nBufferNo();
-  i8 nRowNo = nEntries();
+  i8 nRowNo = nItems();
   Id rowId(*nBufferNo, nRowNo);
   
   //----------------------------------------------------------------------------
@@ -460,9 +428,9 @@ void EntryBuffer::vRowCount(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  m_nEntries = 0;
+  m_nItems = 0;
   for (Entry* pRow = pFirstRow(); pRow; pRow = pNextRow(pRow))
-    m_nEntries++;
+    m_nItems++;
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ENTRYBUFFER);
 }
@@ -503,13 +471,13 @@ void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iE
       ASSERT(pNextBuffer->nBufferLevel() == 0);
       
       iBuffers++;
-      iEntries += (pNextBuffer->m_nEntries);
+      iEntries += (pNextBuffer->m_nItems);
       
       if (bDetailed)
       sAnalysis.vCatSprint("     buffer %5lld (L%lld) : %lld entries\n"_Stz,
                            iBuffers,
                            pNextBuffer->m_nBufferLevel,
-                           pNextBuffer->m_nEntries);
+                           pNextBuffer->m_nItems);
 
       EntryBuffer* pThisBuffer = pNextBuffer;
       pNextBuffer = pNextBuffer->pNextBuffer();
@@ -519,13 +487,13 @@ void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iE
   }
 
   iBuffers++;
-  iEntries += m_nEntries;
+  iEntries += m_nItems;
   
   if (bDetailed)
     sAnalysis.vCatSprint("     buffer %5lld (L%lld) : %lld entries\n"_Stz,
                          iBuffers,
                          m_nBufferLevel,
-                         m_nEntries);
+                         m_nItems);
   
   // recursively dump the lower level buffers
   if (m_nBufferLevel != 0) {
@@ -566,7 +534,7 @@ i8 EntryBuffer::iDecile(void)
   if (gpAttachMap->m_bIndexSpace)
     iDecile = IntLib::iDecile(m_xWsp.nUsed(), C_SIZE_POOL_BUFFER);
   else
-    iDecile = IntLib::iDecile(m_nEntries, gpAttachMap->m_nIndexEntries);
+    iDecile = IntLib::iDecile(m_nItems, gpAttachMap->m_nIndexEntries);
   
   
   return iDecile;
@@ -650,7 +618,7 @@ bool EntryBuffer::bHasSpace(i8 nBytes)
       return false;
   }
   else {
-    if (m_nEntries > gpAttachMap->m_nIndexEntries)
+    if (m_nItems > gpAttachMap->m_nIndexEntries)
       return false;
   }
   
@@ -776,7 +744,7 @@ bool EntryBuffer::bAppendRow(i8 iTxId, Stz* pRow, i8 iLength)     //# critical
   //----------------------------------------------------------------------------
   // form the rowId
   bn nBufferNo = this->nBufferNo();
-  i8 nRowNo = nEntries();
+  i8 nRowNo = nItems();
   Id rowId(*nBufferNo, nRowNo);
   
   //----------------------------------------------------------------------------
@@ -837,7 +805,7 @@ bool EntryBuffer::bInsertEntry(i8 iTxId, Stz* pRow, i8 iLength)     //# critical
   //----------------------------------------------------------------------------
   // form the rowId
   bn nBufferNo = this->nBufferNo();
-  i8 nRowNo = nEntries();
+  i8 nRowNo = nItems();
   Id rowId(*nBufferNo, nRowNo);
   
   //----------------------------------------------------------------------------
@@ -891,7 +859,7 @@ bool EntryBuffer::bAppendEntry(i8 iTxId, Stz* pRow, i8 iLength)     //# critical
   //----------------------------------------------------------------------------
   // form the rowId
   bn nBufferNo = this->nBufferNo();
-  i8 nRowNo = nEntries();
+  i8 nRowNo = nItems();
   Id rowId(*nBufferNo, nRowNo);
   
   //----------------------------------------------------------------------------
@@ -950,7 +918,7 @@ bool EntryBuffer::bAppendEntry(Entry* pRowEntry, Entry** ppEntry)     //# critic
   //----------------------------------------------------------------------------
   // form the rowId
   bn nBufferNo = this->nBufferNo();
-  i8 nRowNo = nEntries();
+  i8 nRowNo = nItems();
   Id rowId(*nBufferNo, nRowNo);
   
   //----------------------------------------------------------------------------
@@ -1241,7 +1209,7 @@ void EntryBuffer::vShow(void)
          m_nBufferLevel,
          m_pHigherLevel,
          sHigherLevel.aStr(),
-         m_nEntries,
+         m_nItems,
          m_pPrevBuffer,
          m_pNextBuffer);
   
@@ -1284,7 +1252,7 @@ EntryBuffer* EntryBuffer::pSplitBuffer(void)
   
   // get split entry to remain in this buffer and
   // move entry (and those that follow) which will be moved into new buffer
-  i8 iSplitAtEntry   = m_nEntries/2;
+  i8 iSplitAtEntry   = m_nItems/2;
   Entry* pSplitEntry = pGetEntry(iSplitAtEntry);
   Entry* aMoveEntry  = pNextEntry(pSplitEntry);
   //aSplitEntry->vShow(0,m_pIndex->pIdxColVec());
@@ -1346,7 +1314,7 @@ EntryBuffer* EntryBuffer::pSplitBuffer(void)
   m_pNextBuffer = pNewBuffer;
   
   // copy entries from this buffer starting at splitEntry to the new buffer
-  m_nEntries -= pNewBuffer->iCopyEntries(this, aMoveEntry);
+  m_nItems -= pNewBuffer->iCopyEntries(this, aMoveEntry);
   
   // give copied bytes back to wsp of this original buffer
   i8 nBytesToGive = nSub(m_xWsp.aLatter(), aMoveEntry);
@@ -1580,7 +1548,7 @@ Entry* EntryBuffer::pAllotEntry(i8 nBytes, i8 nOffsets, Entry* aAfterEntry)  //#
   new (pNewEntry) Entry(CN_ENTRY,nBytes,nOffsets);
   
   // increment the no of entries
-  m_nEntries++;
+  m_nItems++;
   
   return pNewEntry;
 }
@@ -1594,7 +1562,7 @@ void EntryBuffer::vAllotHead(void)
   
   // must be the first item in wsp
   ASSERT( ! m_xWsp.nUsed() );
-  ASSERT( ! m_nEntries );
+  ASSERT( ! m_nItems );
   
   // how many bytes are required
   i8 nBytes = Entry::nBytesRequired(gpAttachMap->m_nIndexOffsets,0,0);

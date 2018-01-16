@@ -31,7 +31,7 @@ BufferAbstract::BufferAbstract(eCN eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
-  m_nEntries = 0;
+  m_nItems = 0;
   //m_xWsp
   
 #ifdef __DEBUG_CHECKS
@@ -67,7 +67,7 @@ Entry* BufferAbstract::pAllotEntryBytes(i8 nBytes)
   Entry* pEntry = reinterpret_cast<Entry*>(m_xWsp.aAllot(nBytes));
   new(pEntry) Entry(CN_ENTRY,nBytes,0);
   
-  m_nEntries++;
+  m_nItems++;
   
   return pEntry;
 }
@@ -82,6 +82,16 @@ i8 BufferAbstract::nFreeBytes(void)
   i8 nBytes = m_xWsp.nFree();
   
   return nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of items in the buffer                                          */
+/*----------------------------------------------------------------------------*/
+i8 BufferAbstract::nItems(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_nItems;
 }
 
 /*============================================================================*/

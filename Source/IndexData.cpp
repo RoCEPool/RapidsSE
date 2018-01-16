@@ -864,7 +864,7 @@ void IndexData::vDumpLevel(EntryBuffer* pEntryBuffer)
     if (pEntryEntryBuffer->nBufferLevel() > 0) {
       
       // exclude the head entry
-      i8 iEntries = pEntryEntryBuffer->nEntries() - 1;
+      i8 iEntries = pEntryEntryBuffer->nItems() - 1;
       
       while (iEntries--)
         vTrace(" "_Stz);

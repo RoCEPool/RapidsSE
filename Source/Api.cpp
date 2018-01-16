@@ -1013,7 +1013,7 @@ eEC RapidsSE_FetchNextBuffer(SEitf* pSEitf, void** ppEntryBuffer, void** ppFirst
     if (bNextBuffer) {
       *ppEntryBuffer = pSEitf->m_pEntryBuffer;
       *ppFirstEntry = pSEitf->m_pEntryBuffer->pFirstRow();
-      pSEitf->m_iRowsProcessed = pSEitf->m_pEntryBuffer->nEntries() - 1;
+      pSEitf->m_iRowsProcessed = pSEitf->m_pEntryBuffer->nItems() - 1;
       *ppEntries = &pSEitf->m_iRowsProcessed;
       //pSEitf->m_pEntryBuffer->pFirstRow()->vContentDump();
     }
