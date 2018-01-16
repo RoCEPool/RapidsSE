@@ -453,6 +453,26 @@ tp: makingIndex
 ;
 
 /*----------------------------------------------------------------------------*/
+/* position key select cursor for table (called by keySelectIndex request)    */
+/*----------------------------------------------------------------------------*/
+: exactSelectIdxTask ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf iPartitionNo -- )
+
+tp: keySelectIdx
+
+  locals| iPartitionNo pSeitf pIndex pBufferQueue upper lower key pPlanner i_Phrase |
+  0 0 0 locals| entry pTempEntryBuffer pEntryBuffer |
+
+  // task is a select participant running on server thread
+  //task::this task.kind@ TK_SELECT_PART == assert
+  //task::this task.thread thread.actorModel@ AC_SERVER == assert
+
+  pSeitf task::this task.seitf!
+
+  // iterate thru the index and find natching rows
+  key i_Phrase pPlanner pBufferQueue iPartitionNo pIndex index.exactKey
+;
+
+/*----------------------------------------------------------------------------*/
 /* make an index (run by participant)                                         */
 /*----------------------------------------------------------------------------*/
 : loadIndexes allParticipants 0 checkResult ( -- true n# true )
