@@ -258,11 +258,13 @@ void Task::vIndexExactKey(MP_Task mpTask)
   Object* pPtrTable = nullptr;
   Object* pPtrQueue = nullptr;
   Object* pPtrPlanner = nullptr;
+  Entry* pEntry = nullptr;
   
   ValWrk xValWrk;
   i8 iPartition;
   SEitf* pSEitf = mpTask->m_pSEitf;
   EntryBuffer* pTempEntryBuffer;
+
   Entry* pRow;
   i8 i_Phrase;
   
@@ -326,24 +328,12 @@ void Task::vIndexExactKey(MP_Task mpTask)
   // did we get an index buffer ?
   if (pIndexBuffer) {
     // position in the index buffer at the key
-    Entry* pIndexEntry = pPosition(pIndex, pIndexBuffer, pPlanner, i_Phrase, xKeyWrk);
+    pEntry = pPosition(pIndex, pIndexBuffer, pPlanner, i_Phrase, xKeyWrk);
   }
   
+  // did we get an entry ?
+  if ( ! pEntry) {
   
-  
-  
-  
-  
-  
-  /*
-  
-  
-  
-  // did we get an entryBuffer ?
-  if ( ! pEntryBuffer) {
-    
-    pTempEntryBuffer = new EntryBuffer(pIndex->pTable()->pHiddenIndex(), 0, iPartition);
-    
     // mark this buffer as the last buffer
     //"Marking tempEntryBuffer as last buffer" .
     pTempEntryBuffer->vIsLast(true);
@@ -362,33 +352,43 @@ void Task::vIndexExactKey(MP_Task mpTask)
   }
   
   // get the first entry in the buffer
-  Entry* pEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHead());
+  pEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHead());
   
   // iterate thru the buffer till no more entries
   while (pEntry) {
     
-    // insert row from entry in tempEntryBuffer
-    //"Inserting row into tempEntryBuffer"
+    // check if entry matches key
+    bool bIsEqual = false;
+    bool bSame = pEntry->aKey()->bJuxtaCompare(JC_SAME, xKeyWrk.aKey(),
+                                               pIndex->pIdxColVec(), 1, bIsEqual);
     
-    if ( ! pTempEntryBuffer->bInsertRow(pEntry, &pRow)) {
+    if (bSame) {
       
-      // buffer must be full
-      // put this tempEntryBuffer in seitf bufferQueue
-      //"Inserting row into tempEntryBuffer" .
-      xValWrk = (Object*)pTempEntryBuffer;
-      pQueue->bAppend(xValWrk.pNestedValue());
+      // get the dataRow from the hidden index
+      Entry* pDataRowEntry = Task::pDataRow(pTable, pEntry);
       
-      // create another temporary index buffer for the results
-      //vTrace("Creating a tempIndexBuffer\n"_Stz);
-      pTempEntryBuffer = new EntryBuffer(pIndex->pTable()->pHiddenIndex(), 0, iPartition);
-      
-      // insert row from entry in temporary buffer
-      //"Inserting row into tempEntryBuffer" .
-      bool bResult = pTempEntryBuffer->bInsertRow(pEntry, &pRow);
-      RASSERT(bResult);
-    }
-    else {
-      ASSERT( ! pRow->nOffsets() );
+      // insert row from entry in tempEntryBuffer
+      //"Inserting row into tempEntryBuffer"
+      if ( ! pTempEntryBuffer->bInsertRow(pDataRowEntry, &pRow)) {
+        
+        // buffer must be full
+        // put this tempEntryBuffer in seitf bufferQueue
+        //"Inserting row into tempEntryBuffer" .
+        xValWrk = (Object*)pTempEntryBuffer;
+        pQueue->bAppend(xValWrk.pNestedValue());
+        
+        // create another temporary index buffer for the results
+        //vTrace("Creating a tempIndexBuffer\n"_Stz);
+        pTempEntryBuffer = new EntryBuffer(pIndex->pTable()->pHiddenIndex(), 0, iPartition);
+        
+        // insert row from entry in temporary buffer
+        //"Inserting row into tempEntryBuffer" .
+        bool bResult = pTempEntryBuffer->bInsertRow(pDataRowEntry, &pRow);
+        RASSERT(bResult);
+      }
+      else {
+        ASSERT( ! pRow->nOffsets() );
+      }
     }
     
     // move to next entry in the buffer
@@ -422,7 +422,6 @@ void Task::vIndexExactKey(MP_Task mpTask)
   // mark that a fetch task has ended
   if (pSEitf)
     --pSEitf->m_ziFetchTasks;
-  */
   
   EXIT();
 }

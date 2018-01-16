@@ -89,40 +89,7 @@ void Task::vEntryToDataRow(MP_Task mpTask)
   // get the table from the index
   Table* pTable = pIndex->pTable();
   
-  // get the hiddenindex from the table
-  Index* pHiddenIndex = pTable->pHiddenIndex();
-  
-  // get the Id from the entry
-  Id xId = pEntry->xId();
-  
-  // find the buffer from the buffer pool given the buffer no
-  //bn nBufferNo = xId.iBuffer();
-  //EntryBuffer* pEntryBuffer = reinterpret_cast<EntryBuffer*>
-  //   (gpBufferPool->pToBuffer(nBufferNo));
-  
-  EntryBuffer* pEntryBuffer = pEntry->pEntryBuffer();
-  
-  ASSERT(pEntryBuffer);
-  ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
-  ASSERT(pEntryBuffer->pIndex());
-  
-  // form the hidden index key using the row id from the entry
-  KeyWrk xKeyWrk;
-  ValWrk xValWrk;
-  xValWrk = xId.iRow();
-  
-  // hiddenIndex should have only one column
-  ASSERT(pHiddenIndex->pIdxColVec()->nItems() == 1);
-  
-  // get the 0th column of the hidden index
-  Column* pColumn = pHiddenIndex->pIdxColVec()->pGet(0);
-  ASSERT(pColumn->iColumnNo() == -1);
-  
-  // add the rowId to the key
-  xKeyWrk.vAddDatum(xValWrk, pColumn);
-
-  // position in the entry buffer at the row id key
-  Entry* pRowEntry = pEntryBuffer->pPosition(xKeyWrk,1,JC_AFTER);
+  Entry* pRowEntry = pDataRow(pTable, pEntry);
   
   // return the row entry
   mpTask->m_pDataStack->vPushObject(pRowEntry);
@@ -155,6 +122,53 @@ void Task::vEntrySame(MP_Task mpTask)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* PRIVATE                                                                    */
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get the dataRow entry matching entry from the tables hidden index          */
+/*----------------------------------------------------------------------------*/
+Entry* Task::pDataRow(Table* pTable, Entry* pEntry)
+{
+  
+  // get the hiddenindex from the table
+  Index* pHiddenIndex = pTable->pHiddenIndex();
+
+  // get the Id from the entry
+  Id xId = pEntry->xId();
+
+  // find the buffer from the buffer pool given the buffer no
+  //bn nBufferNo = xId.iBuffer();
+  //EntryBuffer* pEntryBuffer = reinterpret_cast<EntryBuffer*>
+  //   (gpBufferPool->pToBuffer(nBufferNo));
+
+  EntryBuffer* pEntryBuffer = pEntry->pEntryBuffer();
+
+  ASSERT(pEntryBuffer);
+  ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
+  ASSERT(pEntryBuffer->pIndex());
+
+  // form the hidden index key using the row id from the entry
+  KeyWrk xKeyWrk;
+  ValWrk xValWrk;
+  xValWrk = xId.iRow();
+
+  // hiddenIndex should have only one column
+  ASSERT(pHiddenIndex->pIdxColVec()->nItems() == 1);
+
+  // get the 0th column of the hidden index
+  Column* pColumn = pHiddenIndex->pIdxColVec()->pGet(0);
+  ASSERT(pColumn->iColumnNo() == -1);
+
+  // add the rowId to the key
+  xKeyWrk.vAddDatum(xValWrk, pColumn);
+
+  // position in the entry buffer at the row id key
+  Entry* pRowEntry = pEntryBuffer->pPosition(xKeyWrk,1,JC_AFTER);
+  
+  return pRowEntry;
+}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

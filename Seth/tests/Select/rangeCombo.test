@@ -23,6 +23,7 @@ rows: 5
 //fetch T1 "jA 2 <=" ;
 //rows: 5
 
+
 fetch T1 "jA 4 >= c ddd >= and";
 rows:
   (*,4,14,'ddd',' mood')

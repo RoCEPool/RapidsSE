@@ -1444,6 +1444,7 @@ namespace Tasks
   private:
     static Entry* pPosition(Index* pIndex, EntryBuffer* pIndexBuffer,
                             Planner* pPlanner, i8 iPhrase, KeyWrk &xKeyWrk);
+    static Entry* pDataRow(Table* pTable, Entry* pEntry);
     
     /*------------------------------------------------------------------------*/
     
