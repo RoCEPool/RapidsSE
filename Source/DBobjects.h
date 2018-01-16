@@ -46,6 +46,7 @@ typedef Vector<CN_PTNCOLVEC,Column,CN_COLUMN,1024,u8> PtnColVec;
 #include "KeyTest.hpp"
 #include "EntWrk.hpp"
 typedef Vector<CN_ENTRYVEC,Entry,CN_ENTRY,C_FLAT_LEVELS_MAX,ln> EntryVec;
+#include "BufferAbstract.hpp"
 #include "EntryBuffer.hpp"
 #include "IndexData.hpp"
 #include "Entry.hpp"
