@@ -35,7 +35,6 @@ namespace DBobjects
   
     eBD   m_eDurability; // buffer durability
     bool  m_bIsLast;
-    i8    m_nEntries;    // number of entries in this buffer
   
     EntryBuffer* m_pPrevBuffer;  // prev buffer
     EntryBuffer* m_pNextBuffer;  // next buffer
@@ -45,8 +44,6 @@ namespace DBobjects
     Index*       m_pIndex;       // index this buffer belongs to
     i8           m_nBufferLevel; // index buffer level
     i8           m_nPartitionNo; // partition no this buffer belongs to
-  
-    WspFxd<C_SIZE_LARGE_OBJECT - C_1KB*4> m_xWsp;
   
     // must be last
     Footer m_xFooter;
@@ -83,7 +80,6 @@ namespace DBobjects
     Entry*     pAllotEntry(i8 nBytes);
     byte*      aDataArea(void);
     Entry*     pFirstRow(void);
-    i8         nFreeBytes(void);
     bool       bInsertRow(EntWrk& xEntRow, Entry** ppRow);
     bool       bInsertRow(Entry* pOldRow, Entry** ppRow);
 
@@ -128,7 +124,6 @@ namespace DBobjects
     void         vTruncate(void);
     bool         bVerify(void);
     
-    Entry*       pAllotEntryBytes(i8 nBytes);
   
     private:
     

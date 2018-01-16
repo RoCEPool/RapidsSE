@@ -65,15 +65,12 @@ EntryBuffer::EntryBuffer(void)
   
   m_eDurability   = BD_NONE;
   m_bIsLast       = false;
-  m_nEntries      = 0;
   m_pPrevBuffer   = nullptr;
   m_pNextBuffer   = nullptr;
   m_pHigherLevel  = nullptr;
   m_pIndex        = nullptr;
   m_nBufferLevel  = 0;
   m_nPartitionNo  = -1;
-  
-  //m_xWsp
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -92,7 +89,6 @@ EntryBuffer::EntryBuffer(i8 iDataBytes)
   
   m_eDurability   = BD_NONE;
   m_bIsLast       = false;
-  m_nEntries      = 0;
   m_pPrevBuffer   = nullptr;
   m_pNextBuffer   = nullptr;
   m_pHigherLevel  = nullptr;
@@ -100,8 +96,6 @@ EntryBuffer::EntryBuffer(i8 iDataBytes)
   m_nBufferLevel  = 0;
   m_nPartitionNo  = -1;
   
-  //m_xWsp
-
   _checkInitialised_(CN_ENTRYBUFFER);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
@@ -118,7 +112,6 @@ EntryBuffer::EntryBuffer(Index* pIndex, i8 nBufferLevel, i8 nPartitionNo)
   
   m_eDurability  = BD_NONE;
   m_bIsLast      = false;
-  m_nEntries     = 0;
   m_pPrevBuffer  = nullptr;
   m_pNextBuffer  = nullptr;
   m_pHigherLevel = nullptr;
@@ -126,9 +119,6 @@ EntryBuffer::EntryBuffer(Index* pIndex, i8 nBufferLevel, i8 nPartitionNo)
   m_nBufferLevel = nBufferLevel;
   m_nPartitionNo = nPartitionNo;
   
-#ifdef __DEBUG_CHECKS
-  m_xWsp.vZero(CN_ENTRYBUFFER);
-#endif
   
   _checkInitialised_(CN_ENTRYBUFFER);
   
@@ -149,7 +139,6 @@ EntryBuffer::EntryBuffer(eCN eClassNo)
   
   m_eDurability  = BD_TEMPORARY;
   m_bIsLast      = false;
-  m_nEntries     = 0;
   m_pPrevBuffer  = nullptr;
   m_pNextBuffer  = nullptr;
   m_pHigherLevel = nullptr;
@@ -296,28 +285,6 @@ Entry* EntryBuffer::pAllotEntry(i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* allot an entry for a row in this buffer   //TEMPORARY!!!                   */
-/*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pAllotEntryBytes(i8 nBytes)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-  
-  // test  sufficient freespace
-  if (nFreeBytes() < nBytes) {
-    return nullptr;
-  }
-  
-  Entry* pEntry = reinterpret_cast<Entry*>(m_xWsp.aAllot(nBytes));
-  new(pEntry) Entry(CN_ENTRY,nBytes,0);
-  
-  m_nEntries++;
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  return pEntry;
-}
-
-/*----------------------------------------------------------------------------*/
 /* append entries of arg buffer into this buffer                              */
 /*----------------------------------------------------------------------------*/
 //void EntryBuffer::vAppendEntriesFromBuffer(EntryBuffer* pSrcBuffer)
@@ -364,18 +331,6 @@ Entry* EntryBuffer::pFirstRow(void)
   Entry* pFirst = reinterpret_cast<Entry*>(m_xWsp.aArea());
   
   return pFirst;
-}
-
-/*----------------------------------------------------------------------------*/
-/* how much free space (in bytes) left in segment?                            */
-/*----------------------------------------------------------------------------*/
-i8 EntryBuffer::nFreeBytes(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  i8 nBytes = m_xWsp.nFree();
-  
-  return nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
