@@ -417,7 +417,7 @@ timer: pIdxSelectTimer
     "0" //key
     "0" //lower
     "0" //upper
-    "scanSelectIdxTaskOLD"
+    "scanSelectIdxTask"
     "hidden"
      pBufferQueue iSlot spawnSelectTask
     endof
