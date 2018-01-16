@@ -652,11 +652,10 @@ void Task::vIndexScan(MP_Task mpTask)
   //vTrace("Getting first buffer\n"_Stz);
   EntryBuffer* pEntryBuffer = pIndexData->pFirstBuffer();
   
-  // get the first entry in the buffer
-  Entry* pEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHead());
-  
-  // did we find an entry ?
-  if ( ! pEntry ) {
+  // did we get an entryBuffer ?
+  if ( ! pEntryBuffer) {
+    
+    pTempEntryBuffer = new EntryBuffer(pIndex->pTable()->pHiddenIndex(), 0, iPartition);
     
     // mark this buffer as the last buffer
     //"Marking tempEntryBuffer as last buffer" .
@@ -670,13 +669,15 @@ void Task::vIndexScan(MP_Task mpTask)
     // mark that a fetch task has ended
     if (pSEitf)
       --pSEitf->m_ziFetchTasks;
-      
+    
     EXIT();
+    return;
   }
-      
-      
+  
+  // get the first entry in the buffer
+  Entry* pEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHead());
+  
   // iterate thru the buffer till no more entries
-
   while (pEntry) {
     
     // insert row from entry in tempEntryBuffer
