@@ -342,7 +342,7 @@ tp: makingIndex
 /*----------------------------------------------------------------------------*/
 /* position key select cursor for table (called by keySelectIndex request)    */
 /*----------------------------------------------------------------------------*/
-: exactSelectIdxTask ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf iPartitionNo -- )
+: exactSelectIdxTaskOLD ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf iPartitionNo -- )
 
   tp: keySelectIdx
 
@@ -400,7 +400,7 @@ tp: makingIndex
 
       // insert row from entry in tempEntryBuffer
       //"Inserting row into tempEntryBuffer" .
-      entry pTempEntryBuffer entryBuffer.insertRow
+      pIndex entry entry.toDataRow pTempEntryBuffer entryBuffer.insertRow
 
       // check if we managed to insert the entry
       not if
@@ -414,7 +414,7 @@ tp: makingIndex
 
         // insert row from entry in temporary buffer
         //"Inserting row into tempEntryBuffer" .
-        entry pTempEntryBuffer entryBuffer.insertRow
+        pIndex entry entry.toDataRow pTempEntryBuffer entryBuffer.insertRow
         assert
       then
 
@@ -485,7 +485,7 @@ tp: loadIndexes
 /*----------------------------------------------------------------------------*/
 /* position key select cursor for table (called by selectIndex request)       */
 /*----------------------------------------------------------------------------*/
-: lowerSelectIdxTask ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf partition -- )
+: lowerSelectIdxTaskOLD ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf partition -- )
 
 tp: lowerSelectIdxTask
 
@@ -541,7 +541,7 @@ tp: lowerSelectIdxTask
     
     // insert row from entry in tempEntryBuffer
     //"Inserting row into tempEntryBuffer" .
-    entry tempEntryBuffer entryBuffer.insertRow
+    pIndex entry entry.toDataRow tempEntryBuffer entryBuffer.insertRow
 
     // check if we managed to insert the entry
     not if
@@ -557,7 +557,7 @@ tp: lowerSelectIdxTask
 
       // insert row from entry in temporary buffer
       //"Inserting row into tempEntryBuffer" .
-      entry tempEntryBuffer entryBuffer.insertRow
+      pIndex entry entry.toDataRow tempEntryBuffer entryBuffer.insertRow
       assert
     then
 
@@ -596,7 +596,7 @@ tp: lowerSelectIdxTask
 /*----------------------------------------------------------------------------*/
 /* position key select cursor for table (called by selectIndex request)       */
 /*----------------------------------------------------------------------------*/
-: rangeSelectIdxTask ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf iPartitionNo -- )
+: rangeSelectIdxTaskOLD ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf iPartitionNo -- )
 
 //"rangeSelectIdxTask" .
 
@@ -656,7 +656,7 @@ tp: lowerSelectIdxTask
     sUpper pIndexEntry iPartitionNo pIndex i_Phrase pPlanner index.upper if
       
       // look up data row and insert row into result buffer
-      pIndexEntry pResultBuffer entryBuffer.insertRow
+      pIndex pIndexEntry entry.toDataRow pResultBuffer entryBuffer.insertRow
 
       // check if we managed to insert the entry
       not if
@@ -668,7 +668,7 @@ tp: lowerSelectIdxTask
         iPartitionNo pIndex entryBuffer::create to pResultBuffer
 
         // look up data row and insert row into result buffer
-        pIndexEntry pResultBuffer entryBuffer.insertRow
+        pIndex pIndexEntry entry.toDataRow pResultBuffer entryBuffer.insertRow
         assert
       then
 
@@ -785,7 +785,7 @@ tp: populateIndex
 /*----------------------------------------------------------------------------*/
 /* position key select cursor for table (called by selectIndex request)       */
 /*----------------------------------------------------------------------------*/
-: scanSelectIdxTask ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf iPartitionNo -- )
+: scanSelectIdxTaskOLD ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf iPartitionNo -- )
 
   locals| iPartitionNo pSeitf pIndex pBufferQueue upper lower key pPlanner i_Phrase |
   0 0 0 0 locals| count entry tempEntryBuffer indexBuffer |
@@ -800,7 +800,6 @@ tp: populateIndex
   //pSeitf seitf.index@ to pIndex
 
   //pp: beginScanSelectTask
-
 /*
   //////////EXP1
   // position in the first index buffer
@@ -824,7 +823,6 @@ tp: populateIndex
    pSeitf seitf.fetchTaskEnded
  then
  exit
-
 
 
   //////////EXP2
@@ -864,7 +862,6 @@ tp: populateIndex
   exit
 */
 
-/*
 
   // create a temporary index buffer for the results
   //"Creating a tempIndexBuffer" .
@@ -909,8 +906,8 @@ tp: populateIndex
   while
       // insert row from entry in tempEntryBuffer
       //"Inserting row into tempEntryBuffer" .
-      entry tempEntryBuffer entryBuffer.insertRow
-    
+      pIndex entry entry.toDataRow tempEntryBuffer entryBuffer.insertRow
+
       // check if we managed to insert the entry
       not if
         // buffer must be full
@@ -924,7 +921,7 @@ tp: populateIndex
 
         // insert row from entry in temporary buffer
         //"Inserting row into tempEntryBuffer" .
-        entry tempEntryBuffer entryBuffer.insertRow
+        pIndex entry entry.toDataRow tempEntryBuffer entryBuffer.insertRow
         assert
       then
 
@@ -969,7 +966,26 @@ tp: populateIndex
   //"select ended...A" .
 
   //performancePrint
-  */
+ 
+;
+
+/*----------------------------------------------------------------------------*/
+/* position key select cursor for table (called by selectIndex request)       */
+/*----------------------------------------------------------------------------*/
+: scanSelectIdxTask ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf iPartitionNo -- )
+
+  locals| iPartitionNo pSeitf pIndex pBufferQueue upper lower key pPlanner i_Phrase |
+  0 0 0 0 locals| count entry tempEntryBuffer indexBuffer |
+
+  tp: scanSelectIdxTask
+
+  // task is a select participant running on server thread
+  task::this task.kind@ TK_SELECT_PART == assert
+  task::this task.thread thread.actorModel@ AC_SERVER == assert
+
+  pSeitf task::this task.seitf!
+
+  // now scan the index
   pBufferQueue iPartitionNo pIndex index.scan
 ;
 
@@ -1090,7 +1106,7 @@ tp: populateIndex
 /*----------------------------------------------------------------------------*/
 /* position key select cursor for table (called by selectIndex request)       */
 /*----------------------------------------------------------------------------*/
-: upperSelectIdxTask ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pIndex pBufferQueue pSeitf partition -- )
+: upperSelectIdxTaskOLD ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pIndex pBufferQueue pSeitf partition -- )
 
   locals| iPartitionNo pSeitf pIndex pBufferQueue upper lower key pPlanner i_Phrase |
   0 0 0 0 locals| upperEntry entry tempEntryBuffer indexBuffer |
@@ -1146,7 +1162,7 @@ tp: populateIndex
       
       // insert row from entry in tempEntryBuffer
       //"Inserting row into tempEntryBuffer" .
-      entry tempEntryBuffer entryBuffer.insertRow
+      pIndex entry entry.toDataRow tempEntryBuffer entryBuffer.insertRow
 
       // check if we managed to insert the entry
       not if
@@ -1161,7 +1177,7 @@ tp: populateIndex
 
         // insert row from entry in temporary buffer
         //"Inserting row into tempEntryBuffer" .
-        entry tempEntryBuffer entryBuffer.insertRow
+        pIndex entry entry.toDataRow tempEntryBuffer entryBuffer.insertRow
         assert
       then
 
