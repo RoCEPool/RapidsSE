@@ -126,6 +126,8 @@ namespace Base
     
     /* 85 */ CN_RBCURSOR,
     /* 86 */ CN_REGFRAME,
+    /*    */ CN_RESULTBUFFER,
+    /*    */ CN_RESULTROW,
     /* 87 */ CN_RING,
     /* 88 */ CN_ROARRAY,
     /* 89 */ CN_ROWBUFFER,
@@ -305,6 +307,8 @@ namespace Base
   
     /* 85 */ "RBCURSOR"_Stz,
     /* 86 */ "REGFRAME"_Stz,
+    /*    */ "RESULTBUFFER"_Stz,
+    /*    */ "RESULTROW"_Stz,
     /* 87 */ "RING"_Stz,
     /* 88 */ "ROARRAY"_Stz,
     /* 89 */ "ROWBUFFER"_Stz,

@@ -1206,8 +1206,11 @@ bool StrLib::bExtractTimestamp(char** aaSrc,
   // - time portion
   
   // skip T or space separator
-  if ( ! ('T' == **aaSrc || ' ' == **aaSrc) )
+  if ( ! ('T' == **aaSrc || ' ' == **aaSrc) ) {
+    iHour = iMinute = iSecond = iMicro = 0;
     return true;
+  }
+  
   (*aaSrc)++;
   
   if ( ! bExtractTime(aaSrc,iHour,iMinute,iSecond,iMicro) )

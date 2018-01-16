@@ -128,6 +128,8 @@ pDUMPFUN *gpDump[]
 
   /* 85 */ &Dump::vUndefined,       // CN_RBCURSOR
   /* 86 */ &RegFrame::vDump,        // CN_REGFRAME
+  /*    */ &Dump::vUndefined,       // CN_RESULTBUFFER
+  /*    */ &Dump::vUndefined,       // CN_RESULTROW
   /* 87 */ &Dump::vUndefined,       // CN_RING
   /* 88 */ &Dump::vUndefined,       // CN_ROARRAY
   /* 89 */ &Dump::vUndefined,       // CN_ROWBUFFER
@@ -305,6 +307,8 @@ i8 giClassSize[]
   
   /* 85 */ sizeof(RbCursor),           // CN_RBCURSOR
   /* 86 */ sizeof(RegFrame),           // CN_REGFRAME
+  /*    */ 0,                          // CN_RESULTBUFFER
+  /*    */ 0,                          // CN_RESULTROW
   /* 87 */ sizeof(Ring),               // CN_RING
   /* 88 */ 0,                          // CN_ROARRAY
   /* 89 */ 0,                          // CN_ROWBUFFER
@@ -482,6 +486,8 @@ eHT geWhichHeap[]
   
   /* 85 */ HT_TRANSIENT_SMALL,   // CN_RBCURSOR
   /* 86 */ HT_TRANSIENT_LARGE,   // CN_REGFRAME
+  /*    */ HT_TRANSIENT_LARGE,   // CN_RESULTBUFFER
+  /*    */ HT_INVALID, // CN_RESULTROW
   /* 87 */ HT_INVALID, // CN_RING
   /* 88 */ HT_TRANSIENT_MEDIUM,  // CN_ROARRAY
   /* 89 */ HT_INVALID, // CN_ROWBUFFER
