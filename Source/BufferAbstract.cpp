@@ -29,9 +29,9 @@ BufferAbstract* DBobjects::_pBufferAbstract(void* aAddr)
 BufferAbstract::BufferAbstract(eCN eClassNo)
 : Object(eClassNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
   _checkInitialised_(eClassNo);
 }
@@ -42,7 +42,7 @@ BufferAbstract::BufferAbstract(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 BufferAbstract::~BufferAbstract(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
 }
 
 /*============================================================================*/
