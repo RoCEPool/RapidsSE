@@ -83,7 +83,7 @@ select column_name from rapids.system.columns where table_name = 'T1' and is_par
 rows:
 ('TSP')
 
-insert into T1 values (10, TIMESTAMP '1907-03-31 10:58:06.999');
+insert into T1 values (10, TIMESTAMP '1907-03-31 10:58:06.99999');
 success
 
 // insert rows in the table
@@ -103,10 +103,10 @@ failure
 // select from T1
 select * from T1;
 rows:
-(10, '1907-03-31 10:58:06.999')
+(10, '1907-03-31 10:58:06.99999')
 (20, '1900-10-31 10:30:30.0')
 (30, '1908-02-29 00:00:00.0')
-(40, '2018-12-31 10:59:59.023')
+(40, '2018-12-31 10:59:59.23')
 
 
 CLEANUP {
