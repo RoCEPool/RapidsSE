@@ -429,6 +429,10 @@ tp: makingIndex
           entry pEntryBuffer entryBuffer.nextEntry to entry
         then
       then
+      // check if seitf exiting
+      pSeitf seitf.isExiting if
+        0 to entry
+      then
     else
       // entry did not match the key, null the entry and break from loop
       0  to entry
@@ -593,6 +597,10 @@ tp: lowerSelectIdxTask
       then
     then
 
+    // check if seitf exiting
+    pSeitf seitf.isExiting if
+      0 to entry
+    then
     // yield
     //task.yield
 
@@ -719,6 +727,11 @@ tp: lowerSelectIdxTask
         pIndexBuffer if
          pIndexEntry pIndexBuffer entryBuffer.nextEntry to pIndexEntry
         then
+
+      then
+      // check if seitf exiting
+      pSeitf seitf.isExiting if
+        0 to pIndexEntry
       then
     else
       // entry beyond upper, null the entry and break from loop
@@ -1249,6 +1262,10 @@ tp: populateIndex
     else
       // entry beyond upper, null the entry and break from loop
       0  to entry
+    then
+    // check if seitf exiting
+    pSeitf seitf.isExiting if
+      0 to entry
     then
 
     // yield
