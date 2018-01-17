@@ -7,10 +7,10 @@ namespace DBobjects
 {
   class EntWrk;
   
-  class Entry : public Object
+  class Entry : public Item
   {
   protected:
-    i8  m_nThisBytes; // size of this item
+  //i8  m_nThisBytes; // size of this item
     Id  m_xId;        // id
     i8  m_nOffsets;   // no of offsets for this entry (0,1 or 2)
     i8  m_iTxId;      // transaction id

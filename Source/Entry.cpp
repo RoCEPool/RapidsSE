@@ -46,12 +46,11 @@ void* Entry::operator new(size_t iSize, Entry* pEntry)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Entry::Entry(eCN eClassNo, i8 nThisBytes, i8 nOffsets)
-: Object(eClassNo)
+: Item(eClassNo, nThisBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
   m_iTxId      = -1;
-  m_nThisBytes = nThisBytes;
   //m_xId
   m_nOffsets   = nOffsets;
   
@@ -135,7 +134,7 @@ void Entry::vId(Id xId)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the index buffer that this entry references                            */
+/* get the entry buffer that this entry is within                             */
 /*----------------------------------------------------------------------------*/
 EntryBuffer* Entry::pEntryBuffer(void)
 {
