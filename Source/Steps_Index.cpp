@@ -31,11 +31,12 @@ void Task::vAddPrimitives_Index(void)
   vAddPrimitive("index.isUnique@"_Stz,       &vIndexIsUniqueFetch,   false);
   vAddPrimitive("index.isUnique!"_Stz,       &vIndexIsUniqueStore,   false);
   vAddPrimitive("index.isValidUniqueIndex"_Stz,&vIndexIsValidUniqueIndex,false);
-  vAddPrimitive("index.lower"_Stz,           &vIndexLower,           false);
+  vAddPrimitive("index.lowerBound"_Stz,      &vIndexLowerBound,      false);
   vAddPrimitive("index.name@"_Stz,           &vIndexNameFetch,       false);
   vAddPrimitive("index.populate"_Stz,        &vIndexPopulate,        false);
   vAddPrimitive("index.position"_Stz,        &vIndexPosition,        false);
   vAddPrimitive("index.positionFirst"_Stz,   &vIndexPositionFirst,   false);
+  vAddPrimitive("index.range"_Stz,           &vIndexRange,           false);
   vAddPrimitive("index.showColumnVec"_Stz,   &vIndexShowColumnVec,   false);
   vAddPrimitive("index.scan"_Stz,            &vIndexScan,            false);
   vAddPrimitive("index.space"_Stz,           &vIndexSpace,           false);
@@ -44,6 +45,7 @@ void Task::vAddPrimitives_Index(void)
   vAddPrimitive("index.table!"_Stz,          &vIndexTableStore,      false);
   vAddPrimitive("index.truncate"_Stz,        &vIndexTruncate,        false);
   vAddPrimitive("index.upper"_Stz,           &vIndexUpper,           false);
+  vAddPrimitive("index.upperBound"_Stz,      &vIndexUpperBound,      false);
   vAddPrimitive("index.verify"_Stz,          &vIndexVerify,          false);
   vAddPrimitive("index.visualize"_Stz,       &vIndexVisualize,       false);
 }
@@ -624,11 +626,11 @@ void Task::vIndexIsValidUniqueIndex(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* index.lower -- return rows with lower bound                                */
+/* index.lowerBound -- return rows with lower bound                           */
 /*----------------------------------------------------------------------------*/
-void Task::vIndexLower(MP_Task mpTask)
+void Task::vIndexLowerBound(MP_Task mpTask)
 {
-  ENTRY("vIndexScan"_Stz);
+  ENTRY("vIndexLowerBound"_Stz);
   
   Object* pPtrIndex = nullptr;
   Object* pPtrTable = nullptr;
@@ -645,32 +647,32 @@ void Task::vIndexLower(MP_Task mpTask)
   i8 i_Phrase;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.lower"_Stz);
+    THROW_INVALID_DSTACK("index.lowerBound"_Stz);
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   if ( ! mpTask->m_pDataStack->bPop(iPartition) )
-    THROW_INVALID_DSTACK("index.lower"_Stz);
+    THROW_INVALID_DSTACK("index.lowerBound"_Stz);
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrQueue) )
-    THROW_INVALID_DSTACK("index.lower"_Stz);
+    THROW_INVALID_DSTACK("index.lowerBound"_Stz);
   
   Queue* pQueue = _pQueue(pPtrQueue);
   ASSERT(CN_QUEUE == pPtrQueue->eClass());
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrPlanner) )
-    THROW_INVALID_DSTACK("index.lower"_Stz);
+    THROW_INVALID_DSTACK("index.lowerBound"_Stz);
   
   Planner* pPlanner = _pPlanner(pPtrPlanner);
   ASSERT(CN_PLANNER == pPlanner->eClass());
   
   if ( ! mpTask->m_pDataStack->bPop(i_Phrase) )
-    THROW_INVALID_DSTACK("index.lower"_Stz);
+    THROW_INVALID_DSTACK("index.lowerBound"_Stz);
   
   // get the key
   if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
-    THROW_INVALID_DSTACK("index.lower"_Stz);
+    THROW_INVALID_DSTACK("index.lowerBound"_Stz);
   
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
@@ -694,12 +696,12 @@ void Task::vIndexLower(MP_Task mpTask)
   xKeyWrk.vAddDatum(pStrVal,pColumn0,pFormatters);
   //xKeyWrk.vShow();
   
-  // fisrt position at a level 0 buffer
+  // first position at a level 0 buffer
   EntryBuffer* pEntryBuffer = pIndexData->pPositionLevel(xKeyWrk, 1, JC_AFTER, 0);
   
   // did we get an index buffer ?
   if (pEntryBuffer) {
-    // position in the index buffer at the key
+    // position in the index buffer at the lower key
     pEntry = pPosition(pIndex, pEntryBuffer, pPlanner, i_Phrase, xKeyWrk);
   }
   
@@ -928,6 +930,191 @@ void Task::vIndexPositionFirst(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* index.range -- return rows within given range                              */
+/*----------------------------------------------------------------------------*/
+void Task::vIndexRange(MP_Task mpTask)
+{
+  ENTRY("vIndexRange"_Stz);
+  
+  Object* pPtrIndex = nullptr;
+  Object* pPtrTable = nullptr;
+  Object* pPtrQueue = nullptr;
+  Object* pPtrPlanner = nullptr;
+  Entry* pEntry = nullptr;
+  
+  ValWrk xValWrkLwr;
+  ValWrk xValWrkUpr;
+  ValWrk xValWrk;
+  
+  i8 iPartition;
+  SEitf* pSEitf = mpTask->m_pSEitf;
+  EntryBuffer* pTempEntryBuffer;
+  
+  Entry* pRow;
+  i8 i_Phrase;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
+    THROW_INVALID_DSTACK("index.range"_Stz);
+  
+  Index* pIndex = _pIndex(pPtrIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  if ( ! mpTask->m_pDataStack->bPop(iPartition) )
+    THROW_INVALID_DSTACK("index.range"_Stz);
+  
+  if ( ! mpTask->m_pDataStack->bPop(pPtrQueue) )
+    THROW_INVALID_DSTACK("index.range"_Stz);
+  
+  Queue* pQueue = _pQueue(pPtrQueue);
+  ASSERT(CN_QUEUE == pPtrQueue->eClass());
+  
+  if ( ! mpTask->m_pDataStack->bPop(pPtrPlanner) )
+    THROW_INVALID_DSTACK("index.range"_Stz);
+  
+  Planner* pPlanner = _pPlanner(pPtrPlanner);
+  ASSERT(CN_PLANNER == pPlanner->eClass());
+  
+  if ( ! mpTask->m_pDataStack->bPop(i_Phrase) )
+    THROW_INVALID_DSTACK("index.range"_Stz);
+  
+  // get the lower key
+  if ( ! mpTask->m_pDataStack->bPop(xValWrkLwr) )
+    THROW_INVALID_DSTACK("index.range"_Stz);
+  
+  // get the upper key
+  if ( ! mpTask->m_pDataStack->bPop(xValWrkUpr) )
+    THROW_INVALID_DSTACK("index.range"_Stz);
+  
+  i8 iIndexNo = pIndex->iIndexNo();
+  Table* pTable = pIndex->pTable();
+  
+  Partition* pPartition = pTable->pPartition(iPartition);
+  IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
+  
+  // create a temporary index buffer for the results
+  pTempEntryBuffer = new EntryBuffer(pIndex->pTable()->pHiddenIndex(), 0, iPartition);
+  
+  // make the lower key
+  StrVal* pStrVal = _pStrVal(xValWrkLwr.pNestedValueSelf());
+  
+  Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
+  
+  Formatters* pFormatters = &mpTask->m_pSEitf->m_xFormatters;
+  KeyWrk xKeyWrkLower;
+  
+  xKeyWrkLower.vAddDatum(pStrVal,pColumn0,pFormatters);
+  //xKeyWrkLower.vShow();
+  
+  // make the upper key
+  pStrVal = _pStrVal(xValWrkUpr.pNestedValueSelf());
+  
+  pColumn0 = pIndex->pIdxColVec()->pGet(0);
+  
+  KeyWrk xKeyWrkUpper;
+  
+  xKeyWrkUpper.vAddDatum(pStrVal,pColumn0,pFormatters);
+  //xKeyWrkUpper.vShow();
+  
+  // first position at a level 0 buffer
+  EntryBuffer* pEntryBuffer = pIndexData->pPositionLevel(xKeyWrkLower, 1, JC_AFTER, 0);
+  
+  // did we get an index buffer ?
+  if (pEntryBuffer) {
+    // position in the index buffer at the lower key
+    pEntry = pPosition(pIndex, pEntryBuffer, pPlanner, i_Phrase, xKeyWrkLower);
+  }
+  
+  // did we get an entry ?
+  if ( ! pEntry) {
+    
+    // mark this buffer as the last buffer
+    //"Marking tempEntryBuffer as last buffer" .
+    pTempEntryBuffer->vIsLast(true);
+    
+    // return the empty tempEntryBuffer
+    //"Appending last tempEntryBuffer to buffer queue" .
+    xValWrk = (Object*)pTempEntryBuffer;
+    pQueue->bAppend(xValWrk.pNestedValue());
+    
+    // mark that a fetch task has ended
+    if (pSEitf)
+      --pSEitf->m_ziFetchTasks;
+    
+    EXIT();
+    return;
+  }
+  
+  // iterate thru the buffer till no more entries
+  while (pEntry) {
+    
+    // check against the upper bound
+    if (bUpper(pIndex, pEntry, pPlanner, i_Phrase, xKeyWrkUpper)) {
+      // get the dataRow from the hidden index
+      Entry* pDataRowEntry = Task::pDataRow(pTable, pEntry);
+      
+      // insert row from entry in tempEntryBuffer
+      //"Inserting row into tempEntryBuffer"
+      if ( ! bInsertRow(pTempEntryBuffer, pDataRowEntry, pSEitf)) {
+        
+        // buffer must be full
+        // put this tempEntryBuffer in seitf bufferQueue
+        //"Inserting row into tempEntryBuffer" .
+        xValWrk = (Object*)pTempEntryBuffer;
+        pQueue->bAppend(xValWrk.pNestedValue());
+        
+        // create another temporary index buffer for the results
+        //vTrace("Creating a tempIndexBuffer\n"_Stz);
+        pTempEntryBuffer = new EntryBuffer(pIndex->pTable()->pHiddenIndex(), 0, iPartition);
+        
+        // insert row from entry in temporary buffer
+        //"Inserting row into tempEntryBuffer" .
+        bool bResult = bInsertRow(pTempEntryBuffer, pDataRowEntry, pSEitf);
+        RASSERT(bResult);
+      }
+      //else {
+      //  ASSERT( ! pRow->nOffsets() );
+      //}
+      
+      // move to next entry in the buffer
+      pEntry = pEntryBuffer->pNextEntry(pEntry);
+      
+      if ( ! pEntry ) {
+        // get next buffer from the current indexBuffer
+        //vTrace("Getting next buffer\n"_Stz);
+        pEntryBuffer = pEntryBuffer->pNextBuffer();
+        
+        if ( pEntryBuffer )
+          pEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHead());
+      }
+      else {
+        // there is an entry
+        // check if seitf exiting
+        if (pSEitf->m_bSeitfExiting)
+          pEntry = nullptr;
+      }
+    }
+    else {
+      pEntry = nullptr;
+    }
+  }
+  
+  // mark this buffer as the last buffer
+  //"Marking tempEntryBuffer as last buffer" .
+  pTempEntryBuffer->vIsLast(true);
+  
+  // put the buffer in the seitf bufferQueue
+  //"Appending tempEntryBuffer to buffer queue" .
+  xValWrk = (Object*)pTempEntryBuffer;
+  pQueue->bAppend(xValWrk.pNestedValue());
+  
+  // mark that a fetch task has ended
+  if (pSEitf)
+    --pSEitf->m_ziFetchTasks;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* index.scan -- scan the index                                               */
 /*----------------------------------------------------------------------------*/
 void Task::vIndexScan(MP_Task mpTask)
@@ -975,10 +1162,7 @@ void Task::vIndexScan(MP_Task mpTask)
   // did we get an entryBuffer ?
   if ( ! pEntryBuffer) {
     
-    pTempEntryBuffer = new EntryBuffer(pIndex->pTable()->pHiddenIndex(), 0, iPartition);
-    
     // mark this buffer as the last buffer
-    //"Marking tempEntryBuffer as last buffer" .
     pTempEntryBuffer->vIsLast(true);
     
     // return the empty tempEntryBuffer
@@ -1253,24 +1437,174 @@ void Task::vIndexUpper(MP_Task mpTask)
   
   xKeyWrk.vAddDatum(pStrVal, pIndex->pIdxColVec()->pGet(0),pFormatters);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the relation operator for the first predicate
+  bool bResult = bUpper(pIndex, pEntry, pPlanner, i_Phrase, xKeyWrk);
   
-  //SEitf* pSEitf = mpTask->m_pSEitf;
-  //Planner* pPlanner = pSEitf->m_pPlanner;
-  AccessPath* pChosenPath = pPlanner->pChosenPath(i_Phrase);
-  PredicateVec* pUpperPredicates = pChosenPath->pUpperPredicates();
-  Predicate* pPredicate = pUpperPredicates->pGet(0);
-  Op* pOp = pPredicate->pOp();
-  eRO eRelnOp = pOp->eOpKind();
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  mpTask->m_pDataStack->vPushInt(bResult ? 1 : 0);
   
-  bool bIsEqual = false;
-  bool bBefore = pEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrk.aKey(),
-                                               pIndex->pIdxColVec(), 1,
-                                               bIsEqual, eRelnOp);
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index.upperBound -- return rows with upper bound                           */
+/*----------------------------------------------------------------------------*/
+void Task::vIndexUpperBound(MP_Task mpTask)
+{
+  ENTRY("vIndexUpperBound"_Stz);
   
-  mpTask->m_pDataStack->vPushInt(bBefore ? 1 : 0);
+  Object* pPtrIndex = nullptr;
+  Object* pPtrTable = nullptr;
+  Object* pPtrQueue = nullptr;
+  Object* pPtrPlanner = nullptr;
+  Entry* pEntry = nullptr;
+  
+  ValWrk xValWrk;
+  i8 iPartition;
+  SEitf* pSEitf = mpTask->m_pSEitf;
+  EntryBuffer* pTempEntryBuffer;
+  
+  Entry* pRow;
+  i8 i_Phrase;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
+    THROW_INVALID_DSTACK("index.upperBound"_Stz);
+  
+  Index* pIndex = _pIndex(pPtrIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  if ( ! mpTask->m_pDataStack->bPop(iPartition) )
+    THROW_INVALID_DSTACK("index.upperBound"_Stz);
+  
+  if ( ! mpTask->m_pDataStack->bPop(pPtrQueue) )
+    THROW_INVALID_DSTACK("index.upperBound"_Stz);
+  
+  Queue* pQueue = _pQueue(pPtrQueue);
+  ASSERT(CN_QUEUE == pPtrQueue->eClass());
+  
+  if ( ! mpTask->m_pDataStack->bPop(pPtrPlanner) )
+    THROW_INVALID_DSTACK("index.upperBound"_Stz);
+  
+  Planner* pPlanner = _pPlanner(pPtrPlanner);
+  ASSERT(CN_PLANNER == pPlanner->eClass());
+  
+  if ( ! mpTask->m_pDataStack->bPop(i_Phrase) )
+    THROW_INVALID_DSTACK("index.upperBound"_Stz);
+  
+  // get the key
+  if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
+    THROW_INVALID_DSTACK("index.upperBound"_Stz);
+  
+  i8 iIndexNo = pIndex->iIndexNo();
+  Table* pTable = pIndex->pTable();
+  
+  Partition* pPartition = pTable->pPartition(iPartition);
+  IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
+  
+  // create a temporary index buffer for the results
+  pTempEntryBuffer = new EntryBuffer(pIndex->pTable()->pHiddenIndex(), 0, iPartition);
+  
+  // get the entryBuffer looking for the key
+  StrVal* pStrVal = _pStrVal(xValWrk.pNestedValueSelf());
+  //vTrace("Datum: %s\n"_Stz,pStrVal->aChar());
+  
+  Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
+  
+  Formatters* pFormatters = &mpTask->m_pSEitf->m_xFormatters;
+  KeyWrk xKeyWrk;
+  
+  xKeyWrk.vAddDatum(pStrVal,pColumn0,pFormatters);
+  //xKeyWrk.vShow();
+  
+  // position in the first index buffer
+  EntryBuffer* pEntryBuffer = pIndexData->pFirstBuffer();
+  
+  // did we get an entryBuffer ?
+  if ( ! pEntryBuffer) {
+    
+    // mark this buffer as the last buffer
+    //"Marking tempEntryBuffer as last buffer" .
+    pTempEntryBuffer->vIsLast(true);
+    
+    // return the empty tempEntryBuffer
+    //"Appending last tempEntryBuffer to buffer queue" .
+    xValWrk = (Object*)pTempEntryBuffer;
+    pQueue->bAppend(xValWrk.pNestedValue());
+    
+    // mark that a fetch task has ended
+    if (pSEitf)
+      --pSEitf->m_ziFetchTasks;
+    
+    EXIT();
+    return;
+  }
+
+  // get the first entry in the buffer
+  pEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHead());
+  
+  // iterate thru the buffer till no more entries
+  while (pEntry) {
+    
+    if (bUpper(pIndex, pEntry, pPlanner, i_Phrase, xKeyWrk)) {
+      // get the dataRow from the hidden index
+      Entry* pDataRowEntry = Task::pDataRow(pTable, pEntry);
+      
+      // insert row from entry in tempEntryBuffer
+      //"Inserting row into tempEntryBuffer"
+      if ( ! bInsertRow(pTempEntryBuffer, pDataRowEntry, pSEitf)) {
+        
+        // buffer must be full
+        // put this tempEntryBuffer in seitf bufferQueue
+        //"Inserting row into tempEntryBuffer" .
+        xValWrk = (Object*)pTempEntryBuffer;
+        pQueue->bAppend(xValWrk.pNestedValue());
+        
+        // create another temporary index buffer for the results
+        //vTrace("Creating a tempIndexBuffer\n"_Stz);
+        pTempEntryBuffer = new EntryBuffer(pIndex->pTable()->pHiddenIndex(), 0, iPartition);
+        
+        // insert row from entry in temporary buffer
+        //"Inserting row into tempEntryBuffer" .
+        bool bResult = bInsertRow(pTempEntryBuffer, pDataRowEntry, pSEitf);
+        RASSERT(bResult);
+      }
+      //else {
+      //  ASSERT( ! pRow->nOffsets() );
+      //}
+      
+      // move to next entry in the buffer
+      pEntry = pEntryBuffer->pNextEntry(pEntry);
+      
+      if ( ! pEntry ) {
+        // get next buffer from the current indexBuffer
+        //vTrace("Getting next buffer\n"_Stz);
+        pEntryBuffer = pEntryBuffer->pNextBuffer();
+        
+        if ( pEntryBuffer )
+          pEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHead());
+      }
+      else {
+        // there is an entry
+        // check if seitf exiting
+        if (pSEitf->m_bSeitfExiting)
+          pEntry = nullptr;
+      }
+    }
+    else {
+      pEntry = nullptr;
+    }
+  }
+  
+  // mark this buffer as the last buffer
+  //"Marking tempEntryBuffer as last buffer" .
+  pTempEntryBuffer->vIsLast(true);
+  
+  // put the buffer in the seitf bufferQueue
+  //"Appending tempEntryBuffer to buffer queue" .
+  xValWrk = (Object*)pTempEntryBuffer;
+  pQueue->bAppend(xValWrk.pNestedValue());
+  
+  // mark that a fetch task has ended
+  if (pSEitf)
+    --pSEitf->m_ziFetchTasks;
   
   EXIT();
 }
@@ -1363,6 +1697,31 @@ Entry* Task::pPosition(Index* pIndex, EntryBuffer* pIndexBuffer, Planner* pPlann
   }
   
   return pIndexEntry;
+}
+
+/*----------------------------------------------------------------------------*/
+/* check if entry is within upper bound of the phrase                         */
+/*----------------------------------------------------------------------------*/
+bool Task::bUpper(Index* pIndex, Entry* pEntry, Planner* pPlanner, i8 iPhrase, KeyWrk &xKeyWrk)
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the relation operator for the first predicate
+  
+  //SEitf* pSEitf = mpTask->m_pSEitf;
+  //Planner* pPlanner = pSEitf->m_pPlanner;
+  AccessPath* pChosenPath = pPlanner->pChosenPath(iPhrase);
+  PredicateVec* pUpperPredicates = pChosenPath->pUpperPredicates();
+  Predicate* pPredicate = pUpperPredicates->pGet(0);
+  Op* pOp = pPredicate->pOp();
+  eRO eRelnOp = pOp->eOpKind();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  bool bIsEqual = false;
+  bool bBefore = pEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrk.aKey(),
+                                               pIndex->pIdxColVec(), 1,
+                                               bIsEqual, eRelnOp);
+  
+  return bBefore;
 }
 
 /*============================================================================*/

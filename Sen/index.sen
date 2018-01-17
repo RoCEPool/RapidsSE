@@ -429,6 +429,10 @@ tp: makingIndex
           entry pEntryBuffer entryBuffer.nextEntry to entry
         then
       then
+      // check if seitf exiting
+      pSeitf seitf.isExiting if
+        0 to entry
+      then
     else
       // entry did not match the key, null the entry and break from loop
       0  to entry
@@ -593,6 +597,10 @@ tp: lowerSelectIdxTask
       then
     then
 
+    // check if seitf exiting
+    pSeitf seitf.isExiting if
+      0 to entry
+    then
     // yield
     //task.yield
 
@@ -627,11 +635,11 @@ tp: lowerSelectIdxTask
   pSeitf task::this task.seitf!
 
   // iterate thru the index and fetch lower bound rows
-  lower i_Phrase pPlanner pBufferQueue iPartitionNo pIndex index.lower
+  lower i_Phrase pPlanner pBufferQueue iPartitionNo pIndex index.lowerBound
 ;
 
 /*----------------------------------------------------------------------------*/
-/* position key select cursor for table (called by selectIndex request)       */
+/* range select task (sen)                                                    */
 /*----------------------------------------------------------------------------*/
 : rangeSelectIdxTaskOLD ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf iPartitionNo -- )
 
@@ -719,6 +727,11 @@ tp: lowerSelectIdxTask
         pIndexBuffer if
          pIndexEntry pIndexBuffer entryBuffer.nextEntry to pIndexEntry
         then
+
+      then
+      // check if seitf exiting
+      pSeitf seitf.isExiting if
+        0 to pIndexEntry
       then
     else
       // entry beyond upper, null the entry and break from loop
@@ -740,6 +753,23 @@ tp: lowerSelectIdxTask
   pSeitf if
     pSeitf seitf.fetchTaskEnded
   then
+;
+
+/*----------------------------------------------------------------------------*/
+/* range select task (c++)                                                    */
+/*----------------------------------------------------------------------------*/
+: rangeSelectIdxTask ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf partition -- )
+  locals| iPartitionNo pSeitf pIndex pBufferQueue upper lower key pPlanner i_Phrase |
+  0 0 0 locals| entry tempEntryBuffer indexBuffer |
+
+  // task is a select participant running on server thread
+  task::this task.kind@ TK_SELECT_PART == assert
+  task::this task.thread thread.actorModel@ AC_SERVER == assert
+
+  pSeitf task::this task.seitf!
+
+  // iterate thru the index and fetch lower bound rows
+  lower upper i_Phrase pPlanner pBufferQueue iPartitionNo pIndex index.range
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -1141,7 +1171,7 @@ tp: populateIndex
 ;
 
 /*----------------------------------------------------------------------------*/
-/* position key select cursor for table (called by selectIndex request)       */
+/* upper bound select task (sen)                                              */
 /*----------------------------------------------------------------------------*/
 : upperSelectIdxTaskOLD ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pIndex pBufferQueue pSeitf partition -- )
 
@@ -1233,6 +1263,10 @@ tp: populateIndex
       // entry beyond upper, null the entry and break from loop
       0  to entry
     then
+    // check if seitf exiting
+    pSeitf seitf.isExiting if
+      0 to entry
+    then
 
     // yield
     //task.yield
@@ -1252,6 +1286,24 @@ tp: populateIndex
     pSeitf seitf.fetchTaskEnded
   then
 ;
+
+/*----------------------------------------------------------------------------*/
+/* upper bound select task (c++)                                              */
+/*----------------------------------------------------------------------------*/
+: upperSelectIdxTask ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf partition -- )
+  locals| iPartitionNo pSeitf pIndex pBufferQueue upper lower key pPlanner i_Phrase |
+  0 0 0 locals| entry tempEntryBuffer indexBuffer |
+
+  // task is a select participant running on server thread
+  task::this task.kind@ TK_SELECT_PART == assert
+  task::this task.thread thread.actorModel@ AC_SERVER == assert
+
+  pSeitf task::this task.seitf!
+
+  // iterate thru the index and fetch lower bound rows
+  upper i_Phrase pPlanner pBufferQueue iPartitionNo pIndex index.upperBound
+;
+
 
 /*----------------------------------------------------------------------------*/
 /* verify an index of a table                                                 */
