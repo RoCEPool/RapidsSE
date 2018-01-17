@@ -405,12 +405,10 @@ void Task::vIndexExactKey(MP_Task mpTask)
       if ( pEntryBuffer )
         pEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHead());
     }
-    else {
-      // there is an entry
-      // check if seitf exiting
-      if (pSEitf->m_bSeitfExiting)
-        pEntry = nullptr;
-    }
+    // check if seitf exiting
+    if (pSEitf->m_bSeitfExiting)
+      pEntry = nullptr;
+    
   }
   
   // mark this buffer as the last buffer
@@ -765,12 +763,10 @@ void Task::vIndexLowerBound(MP_Task mpTask)
       if ( pEntryBuffer )
         pEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHead());
     }
-    else {
-      // there is an entry
-      // check if seitf exiting
-      if (pSEitf->m_bSeitfExiting)
-        pEntry = nullptr;
-    }
+    
+    // check if seitf exiting
+    if (pSEitf->m_bSeitfExiting)
+      pEntry = nullptr;
   }
   
   // mark this buffer as the last buffer
@@ -1096,6 +1092,9 @@ void Task::vIndexRange(MP_Task mpTask)
     else {
       pEntry = nullptr;
     }
+    // check if seitf exiting
+    if (pSEitf->m_bSeitfExiting)
+      pEntry = nullptr;
   }
   
   // mark this buffer as the last buffer
@@ -1219,12 +1218,10 @@ void Task::vIndexScan(MP_Task mpTask)
       if ( pEntryBuffer )
         pEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHead());
     }
-    else {
-      // there is an entry
-      // check if seitf exiting
-      if (pSEitf->m_bSeitfExiting)
-        pEntry = nullptr;
-    }
+    
+    // check if seitf exiting
+    if (pSEitf->m_bSeitfExiting)
+      pEntry = nullptr;
   }
   
   // mark this buffer as the last buffer
@@ -1581,16 +1578,14 @@ void Task::vIndexUpperBound(MP_Task mpTask)
         if ( pEntryBuffer )
           pEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHead());
       }
-      else {
-        // there is an entry
-        // check if seitf exiting
-        if (pSEitf->m_bSeitfExiting)
-          pEntry = nullptr;
-      }
     }
     else {
       pEntry = nullptr;
     }
+    
+    // check if seitf exiting
+    if (pSEitf->m_bSeitfExiting)
+      pEntry = nullptr;
   }
   
   // mark this buffer as the last buffer
