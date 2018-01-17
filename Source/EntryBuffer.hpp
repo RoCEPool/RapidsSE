@@ -87,7 +87,6 @@ namespace DBobjects
     void       vPartitionNo(i8 nPartitionNo);
     i8         nPartitionNo(void);
     void       vRowCount(void);
-    i8         nUsedBytes(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // what was IndexBuffer

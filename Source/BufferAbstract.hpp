@@ -21,6 +21,7 @@ namespace DBobjects
     i8     nFreeBytes(void);
   
     i8     nItems(void);
+    i8     nUsedBytes(void);
   };
   
   BufferAbstract* _pBufferAbstract(void* aAddr);
