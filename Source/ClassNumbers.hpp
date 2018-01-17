@@ -78,6 +78,7 @@ namespace Base
     /* 51 */ CN_IDXDATAVEC,
     /* 52 */ CN_IDXVEC,
     /* 53 */ CN_INDEXLEVELS,
+    /*    */ CN_ITEM,
   
     /*    */ CN_JUMBOPERSISTENT,
     /*    */ CN_JUMBOTRANSIENT,
@@ -260,6 +261,7 @@ namespace Base
     /* 51 */ "IDXDATAVEC"_Stz,
     /* 52 */ "IDXVEC"_Stz,
     /* 53 */ "INDEXLEVELS"_Stz,
+    /*    */ "ITEM"_Stz,
 
     /*    */ "JUMBOPERSISTENT"_Stz,
     /*    */ "JUMBOTRANSIENT"_Stz,

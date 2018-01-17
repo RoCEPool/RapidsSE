@@ -21,7 +21,7 @@ lf ;
 
 
 
-displayOff;
+//displayOff;
 timerStart;
 fetch j1000;
 timerEnd;
