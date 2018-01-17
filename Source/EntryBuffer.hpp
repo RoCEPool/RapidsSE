@@ -27,7 +27,7 @@ namespace DBobjects
   
   static const EntryBuffer* C_ENTRYBUFFER_MARKER = (EntryBuffer*)0xFFFFFFFFFFFFFFFF;
   
-  class EntryBuffer : public BufferAbstract
+  class EntryBuffer : public ItemBuffer
   {
   protected:
   

@@ -43,7 +43,6 @@ pFINALIZE *gpFinalize[]
   
   /* 26 */ &Finalize::vUndefined,         // CN_BITARRAY
   /* 27 */ &Finalize::vUndefined,         // CN_BITMAP
-  /*    */ &Finalize::vUndefined,         // CN_BUFFERABSTRACT
   /* 28 */ &Finalize::vUndefined,         // CN_BUFFERPOOL
   /* 29 */ &Finalize::vUndefined,         // CN_BPA
   
@@ -80,6 +79,7 @@ pFINALIZE *gpFinalize[]
   /* 52 */ &Finalize::vUndefined,         // CN_IDXVEC
   /* 53 */ &Finalize::vUndefined,         // CN_INDEXLEVELS
   /*    */ &Finalize::vUndefined,         // CN_ITEM
+  /*    */ &Finalize::vUndefined,         // CN_ITEMBUFFER
   
   /*    */ &Finalize::vUndefined,         // CN_JUMBOPERSISTENT
   /* 54 */ &Finalize::vUndefined,         // CN_JUMBOTRANSIENT

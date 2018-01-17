@@ -59,7 +59,7 @@ void EntryBuffer::operator delete(void* pRowBufferAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 EntryBuffer::EntryBuffer(void)
-: BufferAbstract(CN_ENTRYBUFFER)
+: ItemBuffer(CN_ENTRYBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -81,7 +81,7 @@ EntryBuffer::EntryBuffer(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 EntryBuffer::EntryBuffer(i8 iDataBytes)
-: BufferAbstract(CN_ENTRYBUFFER)
+: ItemBuffer(CN_ENTRYBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -133,7 +133,7 @@ EntryBuffer::EntryBuffer(Index* pIndex, i8 nBufferLevel, i8 nPartitionNo)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 EntryBuffer::EntryBuffer(eCN eClassNo)
-: BufferAbstract(eClassNo)
+: ItemBuffer(eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
   

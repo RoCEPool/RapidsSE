@@ -17,7 +17,6 @@ pDUMPFUN *gpDump[]
 {
   /*  0 */ &Dump::vInvalid,         // CN_NONE
   
-  
   /*  1 */ &Dump::vInvalid,         // CN_BCDVAL
   /*  2 */ &Dump::vInvalid,         // CN_BINVAL
   /*  3 */ &Dump::vInvalid,         // CN_BOLVAL
@@ -47,7 +46,6 @@ pDUMPFUN *gpDump[]
 
   /* 26 */ &Dump::vDummy,           // CN_BITARRAY
   /* 27 */ &Dump::vDummy,           // CN_BITMAP
-  /*    */ &Dump::vInvalid,         // CN_BUFFERABSTRACT
   /* 28 */ &Dump::vInvalid,         // CN_BUFFERPOOL
   /* 29 */ &Dump::vInvalid,         // CN_BPA
   
@@ -84,6 +82,7 @@ pDUMPFUN *gpDump[]
   /* 52 */ &Dump::vDummy,           // CN_IDXVEC
   /* 53 */ &Dump::vDummy,           // CN_INDEXLEVELS
   /*    */ &Dump::vInvalid,         // CN_ITEM
+  /*    */ &Dump::vInvalid,         // CN_ITEMBUFFER
 
   /*    */ &Heap::vDump,            // CN_JUMBOPERSISTENT
   /* 54 */ &Heap::vDump,            // CN_JUMBOTRANSIENT
@@ -231,7 +230,6 @@ i8 giClassSize[]
   
   /* 26 */ sizeof(BitArray),           // CN_BITARRAY
   /* 27 */ sizeof(BitArray),           // CN_BITMAP
-  /*    */ sizeof(BufferAbstract),     // CN_BUFFERABSTRACT
   /* 28 */ sizeof(BufferPool),         // CN_BUFFERPOOL
   /* 29 */ sizeof(BPA),                // CN_BPA
 
@@ -268,6 +266,7 @@ i8 giClassSize[]
   /* 52 */ sizeof(IdxVec),             // CN_IDXVEC
   /* 53 */ 0,                          // CN_INDEXLEVELS
   /*    */ 0,                          // CN_ITEM
+  /*    */ sizeof(ItemBuffer),     // CN_ITEMBUFFER
   
   /*    */ sizeof(Heap), // correct    // CN_JUMBOPERSISTENT
   /* 54 */ sizeof(Heap), // correct    // CN_JUMBOTRANSIENT
@@ -415,7 +414,6 @@ eHT geWhichHeap[]
   
   /* 26 */ HT_TRANSIENT_SMALL,   // CN_BITARRAY
   /* 27 */ HT_TRANSIENT_LARGE,   // CN_BITMAP
-  /*    */ HT_INVALID,           // CN_BUFFERABSTRACT
   /* 28 */ HT_INVALID,           // CN_BUFFERPOOL
   /* 29 */ HT_INVALID,           // CN_BPA
 
@@ -452,6 +450,7 @@ eHT geWhichHeap[]
   /* 52 */ HT_TRANSIENT_MEDIUM,  // CN_IDXVEC
   /* 53 */ HT_TRANSIENT_MEDIUM,  // CN_INDEXLEVELS
   /*    */ HT_INVALID,           // CN_ITEM
+  /*    */ HT_INVALID,           // CN_ITEMBUFFER
 
   /*    */ HT_INVALID,           // CN_JUMBOPERSISTENT
   /* 54 */ HT_INVALID,           // CN_JUMBOTRANSIENT

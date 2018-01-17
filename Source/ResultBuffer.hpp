@@ -5,7 +5,7 @@
 
 namespace DBobjects
 {
-  class ResultBuffer : public BufferAbstract
+  class ResultBuffer : public ItemBuffer
   {
   protected:
   

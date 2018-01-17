@@ -59,7 +59,7 @@ void ResultBuffer::operator delete(void* pBufferAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ResultBuffer::ResultBuffer(void)
-: BufferAbstract(CN_RESULTBUFFER)
+: ItemBuffer(CN_RESULTBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
   

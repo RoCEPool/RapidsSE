@@ -9,6 +9,10 @@
 
 namespace Base
 {
+
+/*----------------------------------------------------------------------------*/
+/* class numbers                                                              */
+/*----------------------------------------------------------------------------*/
   enum eCN // Class Number
   {
     /*  0 */ CN_NONE=0,
@@ -42,7 +46,6 @@ namespace Base
     
     /* 26 */ CN_BITARRAY,
     /* 27 */ CN_BITMAP,
-    /*    */ CN_BUFFERABSTRACT,
     /* 28 */ CN_BUFFERPOOL,
     /* 29 */ CN_BPA,
   
@@ -79,6 +82,7 @@ namespace Base
     /* 52 */ CN_IDXVEC,
     /* 53 */ CN_INDEXLEVELS,
     /*    */ CN_ITEM,
+    /*    */ CN_ITEMBUFFER,
   
     /*    */ CN_JUMBOPERSISTENT,
     /*    */ CN_JUMBOTRANSIENT,
@@ -191,6 +195,9 @@ namespace Base
     /*138 */ CN_ENUMS
   };
   
+/*----------------------------------------------------------------------------*/
+/* class names                                                                */
+/*----------------------------------------------------------------------------*/
   static Stz* aCN[]
   {
     /*  0 */ "NONE"_Stz,
@@ -225,7 +232,6 @@ namespace Base
     
     /* 26 */ "BITARRAY"_Stz,
     /* 27 */ "BITMAP"_Stz,
-    /*    */ "BUFFERABSTRACT"_Stz,
     /* 28 */ "BUFFERPOOL"_Stz,
     /* 29 */ "BPA"_Stz,
   
@@ -262,6 +268,7 @@ namespace Base
     /* 52 */ "IDXVEC"_Stz,
     /* 53 */ "INDEXLEVELS"_Stz,
     /*    */ "ITEM"_Stz,
+    /*    */ "ITEMBUFFER"_Stz,
 
     /*    */ "JUMBOPERSISTENT"_Stz,
     /*    */ "JUMBOTRANSIENT"_Stz,
