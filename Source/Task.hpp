@@ -695,6 +695,7 @@ namespace Tasks
     static void vIndexPopulate(MP_Task mpTask);
     static void vIndexPosition(MP_Task mpTask);
     static void vIndexPositionFirst(MP_Task mpTask);
+    static void vIndexRange(MP_Task mpTask);
     static void vIndexScan(MP_Task mpTask);
     static void vIndexShowColumnVec(MP_Task mpTask);
     static void vIndexSpace(MP_Task mpTask);

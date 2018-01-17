@@ -631,7 +631,7 @@ tp: lowerSelectIdxTask
 ;
 
 /*----------------------------------------------------------------------------*/
-/* position key select cursor for table (called by selectIndex request)       */
+/* range select task (sen)                                                    */
 /*----------------------------------------------------------------------------*/
 : rangeSelectIdxTaskOLD ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf iPartitionNo -- )
 
@@ -740,6 +740,23 @@ tp: lowerSelectIdxTask
   pSeitf if
     pSeitf seitf.fetchTaskEnded
   then
+;
+
+/*----------------------------------------------------------------------------*/
+/* range select task (c++)                                                    */
+/*----------------------------------------------------------------------------*/
+: rangeSelectIdxTask ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf partition -- )
+  locals| iPartitionNo pSeitf pIndex pBufferQueue upper lower key pPlanner i_Phrase |
+  0 0 0 locals| entry tempEntryBuffer indexBuffer |
+
+  // task is a select participant running on server thread
+  task::this task.kind@ TK_SELECT_PART == assert
+  task::this task.thread thread.actorModel@ AC_SERVER == assert
+
+  pSeitf task::this task.seitf!
+
+  // iterate thru the index and fetch lower bound rows
+  lower upper i_Phrase pPlanner pBufferQueue iPartitionNo pIndex index.range
 ;
 
 /*----------------------------------------------------------------------------*/
