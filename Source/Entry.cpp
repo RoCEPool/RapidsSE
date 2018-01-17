@@ -585,7 +585,7 @@ void Entry::vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
     }
     
     // add the column value to the key
-    xKeyWrk.vAddDatum(xValWrk, pColumn);
+    xKeyWrk.vAddDatumInteger(xValWrk, pColumn);
   }
   
 }

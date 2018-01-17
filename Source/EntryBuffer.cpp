@@ -349,7 +349,7 @@ bool EntryBuffer::bInsertRow(Entry* pOldRow, Entry** ppRow)         //# critical
   Column* pColumn = m_pIndex->pIdxColVec()->pGet(0);
   ASSERT(pColumn->iColumnNo() == -1);
   ASSERT(pColumn->eColumnType() == CT_INTEGER);
-  xKeyWrk.vAddDatum(xValWrk, pColumn);
+  xKeyWrk.vAddDatumInteger(xValWrk, pColumn);
   
   Entry* pRowEntry = pAllotEntry(pOldRow->nRowSize() + sizeof(i8)); //# why + sizeof(i8) ?
   if ( ! pRowEntry )
@@ -742,7 +742,7 @@ bool EntryBuffer::bAppendRow(i8 iTxId, Stz* pRow, i8 iLength)     //# critical
   xValWrk = nRowNo;
   Column* pColumn = m_pIndex->pIdxColVec()->pGet(0);
   ASSERT(pColumn->iColumnNo() == -1);
-  xKeyWrk.vAddDatum(xValWrk, pColumn);
+  xKeyWrk.vAddDatumInteger(xValWrk, pColumn);
   
   //----------------------------------------------------------------------------
   // add the id, txId and key to EntWrk
@@ -803,7 +803,7 @@ bool EntryBuffer::bInsertEntry(i8 iTxId, Stz* pRow, i8 iLength)     //# critical
   xValWrk = nRowNo;
   Column* pColumn = m_pIndex->pIdxColVec()->pGet(0);
   ASSERT(pColumn->iColumnNo() == -1);
-  xKeyWrk.vAddDatum(xValWrk, pColumn);
+  xKeyWrk.vAddDatumInteger(xValWrk, pColumn);
   
   //----------------------------------------------------------------------------
   // add the id, txId and key to EntWrk
@@ -857,7 +857,7 @@ bool EntryBuffer::bAppendEntry(i8 iTxId, Stz* pRow, i8 iLength)     //# critical
   xValWrk = nRowNo;
   Column* pColumn = m_pIndex->pIdxColVec()->pGet(0);
   ASSERT(pColumn->iColumnNo() == -1);
-  xKeyWrk.vAddDatum(xValWrk, pColumn);
+  xKeyWrk.vAddDatumInteger(xValWrk, pColumn);
   
   //----------------------------------------------------------------------------
   // add the id, txId and key to EntWrk
@@ -916,7 +916,7 @@ bool EntryBuffer::bAppendEntry(Entry* pRowEntry, Entry** ppEntry)     //# critic
   xValWrk = nRowNo;
   Column* pColumn = m_pIndex->pIdxColVec()->pGet(0);
   ASSERT(pColumn->iColumnNo() == -1);
-  xKeyWrk.vAddDatum(xValWrk, pColumn);
+  xKeyWrk.vAddDatumInteger(xValWrk, pColumn);
   
   //----------------------------------------------------------------------------
   // add the id, txId and key to EntWrk

@@ -248,7 +248,7 @@ Entry* GroupBy::pToLineItemEntry(Index* pIndex, Entry* pEntry)
   ASSERT(pColumn->iColumnNo() == -1);
   
   // add the rowId to the key
-  xKeyWrk.vAddDatum(xValWrk, pColumn);
+  xKeyWrk.vAddDatumInteger(xValWrk, pColumn);
   
   // position in the entry buffer at the row id key
   Entry* pLineItemEntry = pEntryBuffer->pPosition(xKeyWrk, 1, JC_AFTER);

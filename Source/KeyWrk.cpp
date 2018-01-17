@@ -196,7 +196,7 @@ void KeyWrk::vAddDatum(Values::StrVal* pStrVal, Column* pCol, Formatters* pForma
 /*----------------------------------------------------------------------------*/
 /* add element to key                                                         */
 /*----------------------------------------------------------------------------*/
-void KeyWrk::vAddDatum(ValWrk& xValWrk, Column* pCol)
+void KeyWrk::vAddDatumInteger(ValWrk& xValWrk, Column* pCol)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
@@ -205,10 +205,8 @@ void KeyWrk::vAddDatum(ValWrk& xValWrk, Column* pCol)
   char* pDst = m_xWsp.aLatter();
   char* pSrc;
   
-  if (DM_VCH == pCol->eDatumType())
-    pSrc = (char*)(_pStrVal(xValWrk.pNestedValueSelf())->aStr());
-  else
-    pSrc = pAdd<char*>(xValWrk.pNestedValueSelf(),sizeof(Value));
+  ASSERT(DM_INT == pCol->eDatumType());
+  pSrc = pAdd<char*>(xValWrk.pNestedValueSelf(),sizeof(Value));
 
   nBytes = DtmLib::nCopy(pCol->eDatumType(),pDst,pSrc,pCol);
   
