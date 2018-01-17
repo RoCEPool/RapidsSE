@@ -881,6 +881,7 @@ void SEitf::vPopBufferQueue(void)
       delete m_pEntryBuffer;
     }
   }
+  m_ziLastBuffersScanned = 0;
 }
 
 /*----------------------------------------------------------------------------*/
