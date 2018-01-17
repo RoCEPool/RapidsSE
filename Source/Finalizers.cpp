@@ -79,6 +79,7 @@ pFINALIZE *gpFinalize[]
   /* 51 */ &Finalize::vUndefined,         // CN_IDXDATAVEC
   /* 52 */ &Finalize::vUndefined,         // CN_IDXVEC
   /* 53 */ &Finalize::vUndefined,         // CN_INDEXLEVELS
+  /*    */ &Finalize::vUndefined,         // CN_ITEM
   
   /*    */ &Finalize::vUndefined,         // CN_JUMBOPERSISTENT
   /* 54 */ &Finalize::vUndefined,         // CN_JUMBOTRANSIENT
