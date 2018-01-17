@@ -115,11 +115,13 @@ void KeyWrk::vShow(void)
 /*----------------------------------------------------------------------------*/
 /* add element to key                                                         */
 /*----------------------------------------------------------------------------*/
-void KeyWrk::vAddDatum(Values::StrVal* pStrVal, Column* pCol, Formatters* pFormatters)
+void KeyWrk::vAddDatum(ValWrk& xValWrk, Column* pCol, Formatters* pFormatters)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
   i8 nBytes;
+  
+  StrVal* pStrVal = _pStrVal(xValWrk.pNestedValueSelf());
   
   char* pDst = m_xWsp.aLatter();
   char* pSrc = (char*)pStrVal->aStr();

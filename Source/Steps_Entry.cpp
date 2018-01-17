@@ -48,11 +48,8 @@ void Task::vEntryMatches(MP_Task mpTask)
     THROW_INVALID_DSTACK("entry.matches"_Stz);
   
   KeyWrk xKeyWrk;
-  
-  StrVal* pStrVal = _pStrVal(xValWrk.pNestedValueSelf());
-  
   Formatters* pFormatters = &mpTask->m_pSEitf->m_xFormatters;
-  xKeyWrk.vAddDatum(pStrVal, pIndex->pIdxColVec()->pGet(0),pFormatters);
+  xKeyWrk.vAddDatum(xValWrk, pIndex->pIdxColVec()->pGet(0),pFormatters);
 
   //pEntry->vShow(0, pIndex,true);
   bool bIsEqual = false;

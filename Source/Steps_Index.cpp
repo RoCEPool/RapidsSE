@@ -106,15 +106,9 @@ void Task::vIndexBuffer(MP_Task mpTask)
   IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
   
   KeyWrk xKeyWrk;
-  
-  StrVal* pStrVal = _pStrVal(xValWrk.pNestedValueSelf());
-  //vTrace("Datum: %s\n"_Stz,pStrVal->aChar());
-  
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
-  
   Formatters* pFormatters = &mpTask->m_pSEitf->m_xFormatters;
-  
-  xKeyWrk.vAddDatum(pStrVal,pColumn0,pFormatters);
+  xKeyWrk.vAddDatum(xValWrk,pColumn0,pFormatters);
   //xKeyWrk.vShow();
   
   EntryBuffer* pIndexBuffer = pIndexData->pPositionLevel(xKeyWrk, 1, JC_AFTER, 0);
@@ -314,15 +308,10 @@ void Task::vIndexExactKey(MP_Task mpTask)
   EntryBuffer* pEntryBuffer = pIndexData->pFirstBuffer();
   
   // get the entryBuffer looking for the key
-  StrVal* pStrVal = _pStrVal(xValWrk.pNestedValueSelf());
-  //vTrace("Datum: %s\n"_Stz,pStrVal->aChar());
-  
-  Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
-  
-  Formatters* pFormatters = &mpTask->m_pSEitf->m_xFormatters;
   KeyWrk xKeyWrk;
-  
-  xKeyWrk.vAddDatum(pStrVal,pColumn0,pFormatters);
+  Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
+  Formatters* pFormatters = &mpTask->m_pSEitf->m_xFormatters;
+  xKeyWrk.vAddDatum(xValWrk,pColumn0,pFormatters);
   //xKeyWrk.vShow();
   
   // fisrt position at a level 0 buffer
@@ -683,15 +672,10 @@ void Task::vIndexLowerBound(MP_Task mpTask)
   pTempEntryBuffer = new EntryBuffer(pIndex->pTable()->pHiddenIndex(), 0, iPartition);
   
   // get the entryBuffer looking for the key
-  StrVal* pStrVal = _pStrVal(xValWrk.pNestedValueSelf());
-  //vTrace("Datum: %s\n"_Stz,pStrVal->aChar());
-  
-  Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
-  
-  Formatters* pFormatters = &mpTask->m_pSEitf->m_xFormatters;
   KeyWrk xKeyWrk;
-  
-  xKeyWrk.vAddDatum(pStrVal,pColumn0,pFormatters);
+  Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
+  Formatters* pFormatters = &mpTask->m_pSEitf->m_xFormatters;
+  xKeyWrk.vAddDatum(xValWrk,pColumn0,pFormatters);
   //xKeyWrk.vShow();
   
   // first position at a level 0 buffer
@@ -875,14 +859,9 @@ void Task::vIndexPosition(MP_Task mpTask)
   //Table* pTable = pIndex->pTable();
   
   KeyWrk xKeyWrk;
-  
-  StrVal* pStrVal = _pStrVal(xValWrk.pNestedValueSelf());
-  
   Column* pColumn = pIndex->pIdxColVec()->pGet(0);
-  
   Formatters* pFormatters = &mpTask->m_pSEitf->m_xFormatters;
-  
-  xKeyWrk.vAddDatum(pStrVal, pColumn, pFormatters);
+  xKeyWrk.vAddDatum(xValWrk, pColumn, pFormatters);
   //xKeyWrk.aKey()->vShow(pIndex->pIdxColVec());
 
   // position at key in the entry buffer
@@ -991,24 +970,16 @@ void Task::vIndexRange(MP_Task mpTask)
   pTempEntryBuffer = new EntryBuffer(pIndex->pTable()->pHiddenIndex(), 0, iPartition);
   
   // make the lower key
-  StrVal* pStrVal = _pStrVal(xValWrkLwr.pNestedValueSelf());
-  
-  Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
-  
-  Formatters* pFormatters = &mpTask->m_pSEitf->m_xFormatters;
   KeyWrk xKeyWrkLower;
-  
-  xKeyWrkLower.vAddDatum(pStrVal,pColumn0,pFormatters);
+  Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
+  Formatters* pFormatters = &mpTask->m_pSEitf->m_xFormatters;
+  xKeyWrkLower.vAddDatum(xValWrkLwr,pColumn0,pFormatters);
   //xKeyWrkLower.vShow();
   
   // make the upper key
-  pStrVal = _pStrVal(xValWrkUpr.pNestedValueSelf());
-  
-  pColumn0 = pIndex->pIdxColVec()->pGet(0);
-  
   KeyWrk xKeyWrkUpper;
-  
-  xKeyWrkUpper.vAddDatum(pStrVal,pColumn0,pFormatters);
+  pColumn0 = pIndex->pIdxColVec()->pGet(0);
+  xKeyWrkUpper.vAddDatum(xValWrkUpr,pColumn0,pFormatters);
   //xKeyWrkUpper.vShow();
   
   // first position at a level 0 buffer
@@ -1422,17 +1393,12 @@ void Task::vIndexUpper(MP_Task mpTask)
   
   Partition* pPartition = pTable->pPartition(iPartition);
   IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
-
-  KeyWrk xKeyWrk;
   
   // assuming non-complex key
   //ASSERT(1 == pIndex->pIdxColVec()->nItems());
-  
-  StrVal* pStrVal = _pStrVal(xValWrk.pNestedValueSelf());
-  
+  KeyWrk xKeyWrk;
   Formatters* pFormatters = &mpTask->m_pSEitf->m_xFormatters;
-  
-  xKeyWrk.vAddDatum(pStrVal, pIndex->pIdxColVec()->pGet(0),pFormatters);
+  xKeyWrk.vAddDatum(xValWrk, pIndex->pIdxColVec()->pGet(0),pFormatters);
   
   bool bResult = bUpper(pIndex, pEntry, pPlanner, i_Phrase, xKeyWrk);
   
@@ -1500,15 +1466,10 @@ void Task::vIndexUpperBound(MP_Task mpTask)
   pTempEntryBuffer = new EntryBuffer(pIndex->pTable()->pHiddenIndex(), 0, iPartition);
   
   // get the entryBuffer looking for the key
-  StrVal* pStrVal = _pStrVal(xValWrk.pNestedValueSelf());
-  //vTrace("Datum: %s\n"_Stz,pStrVal->aChar());
-  
+  KeyWrk xKeyWrk;  
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
-  
   Formatters* pFormatters = &mpTask->m_pSEitf->m_xFormatters;
-  KeyWrk xKeyWrk;
-  
-  xKeyWrk.vAddDatum(pStrVal,pColumn0,pFormatters);
+  xKeyWrk.vAddDatum(xValWrk,pColumn0,pFormatters);
   //xKeyWrk.vShow();
   
   // position in the first index buffer
