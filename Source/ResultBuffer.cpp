@@ -59,7 +59,7 @@ void ResultBuffer::operator delete(void* pBufferAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ResultBuffer::ResultBuffer(void)
-: EntryBuffer(CN_RESULTBUFFER)
+: BufferAbstract(CN_RESULTBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
   
@@ -75,6 +75,19 @@ ResultBuffer::ResultBuffer(void)
 ResultBuffer::~ResultBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
+}
+
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* ResultBuffer::aFooter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER);
+  
+  return &m_xFooter;
 }
 
 /*============================================================================*/

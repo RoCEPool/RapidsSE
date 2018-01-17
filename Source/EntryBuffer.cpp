@@ -157,7 +157,7 @@ EntryBuffer::EntryBuffer(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 EntryBuffer::~EntryBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_); //,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
 
 }
 
@@ -166,7 +166,7 @@ EntryBuffer::~EntryBuffer(void)
 /*----------------------------------------------------------------------------*/
 eBD EntryBuffer::eDurability(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_); //,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   return m_eDurability;
 }
@@ -2412,7 +2412,7 @@ u8 EntryBuffer::uOffsetBetween(Entry* pEntryA, Entry* pEntryB)
 /*----------------------------------------------------------------------------*/
 Footer* EntryBuffer::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_); //,CN_ENTRYBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER);
   
   return &m_xFooter;
 }

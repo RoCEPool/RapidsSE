@@ -5,9 +5,12 @@
 
 namespace DBobjects
 {
-  class ResultBuffer : public EntryBuffer
+  class ResultBuffer : public BufferAbstract
   {
   protected:
+  
+  // must be last
+  Footer m_xFooter;
   
   public:
     void* operator new(size_t);
@@ -17,6 +20,8 @@ namespace DBobjects
     ResultBuffer(void);
    ~ResultBuffer(void);
   
+  public:
+  Footer* aFooter(void);
   };
   
   ResultBuffer* _pResultBuffer(void* aAddr);
