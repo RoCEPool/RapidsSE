@@ -275,6 +275,22 @@ Entry* EntryBuffer::pAllotEntry(i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
+/* allot an entry for a row in this buffer   //TEMPORARY!!!                   */
+/*----------------------------------------------------------------------------*/
+Entry* EntryBuffer::pAllotEntryBytes(i8 nBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  Entry* pEntry = reinterpret_cast<Entry*>(aAllotItem(nBytes));
+  if ( ! pEntry )
+    return nullptr;
+  
+  new(pEntry) Entry(CN_ENTRY,nBytes,0);
+  
+  return pEntry;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get address of data area                                                   */
 /*----------------------------------------------------------------------------*/
 byte* EntryBuffer::aDataArea(void)

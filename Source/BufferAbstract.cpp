@@ -55,7 +55,7 @@ BufferAbstract::~BufferAbstract(void)
 /*----------------------------------------------------------------------------*/
 /* allot an item of nBytes in this buffer                                     */
 /*----------------------------------------------------------------------------*/
-char* BufferAbstract::pAllotItem(i8 nBytes)
+char* BufferAbstract::aAllotItem(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -68,26 +68,6 @@ char* BufferAbstract::pAllotItem(i8 nBytes)
   m_nItems++;
   
   return aItem;
-}
-
-/*----------------------------------------------------------------------------*/
-/* allot an entry for a row in this buffer   //TEMPORARY!!!                   */
-/*----------------------------------------------------------------------------*/
-Entry* BufferAbstract::pAllotEntryBytes(i8 nBytes)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  // test  sufficient freespace
-  if (nFreeBytes() < nBytes) {
-    return nullptr;
-  }
-  
-  Entry* pEntry = reinterpret_cast<Entry*>(m_xWsp.aAllot(nBytes));
-  new(pEntry) Entry(CN_ENTRY,nBytes,0);
-  
-  m_nItems++;
-  
-  return pEntry;
 }
 
 /*----------------------------------------------------------------------------*/

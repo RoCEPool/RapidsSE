@@ -16,8 +16,7 @@ namespace DBobjects
     BufferAbstract(eCN eClassNo);
    ~BufferAbstract(void);
   
-    char*  pAllotItem(i8 nBytes);
-    Entry* pAllotEntryBytes(i8 nBytes);
+    char*  aAllotItem(i8 nBytes);
     i8     nFreeBytes(void);
   
     i8     nItems(void);
