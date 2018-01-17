@@ -71,6 +71,18 @@ char* BufferAbstract::aAllotItem(i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get address of data area                                                   */
+/*----------------------------------------------------------------------------*/
+char* BufferAbstract::aDataArea(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  char* aStart = m_xWsp.aArea();
+  
+  return aStart;
+}
+
+/*----------------------------------------------------------------------------*/
 /* how much free space (in bytes) left in segment?                            */
 /*----------------------------------------------------------------------------*/
 i8 BufferAbstract::nFreeBytes(void)

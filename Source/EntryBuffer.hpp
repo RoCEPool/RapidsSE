@@ -77,7 +77,6 @@ namespace DBobjects
     
     Entry*     pAllotEntry(i8 nBytes);
     Entry*     pAllotEntryBytes(i8 nBytes);
-    byte*      aDataArea(void);
     Entry*     pFirstRow(void);
     bool       bInsertRow(EntWrk& xEntRow, Entry** ppRow);
     bool       bInsertRow(Entry* pOldRow, Entry** ppRow);

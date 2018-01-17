@@ -289,18 +289,6 @@ Entry* EntryBuffer::pAllotEntryBytes(i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get address of data area                                                   */
-/*----------------------------------------------------------------------------*/
-byte* EntryBuffer::aDataArea(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  byte* pStart = reinterpret_cast<byte*>(m_xWsp.aArea());
-  
-  return pStart;
-}
-
-/*----------------------------------------------------------------------------*/
 /* first row                                                                  */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pFirstRow(void)
