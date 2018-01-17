@@ -49,7 +49,6 @@ ResultRow::ResultRow(i8 nSizeResultRow)
 : Item(CN_RESULTROW,nSizeResultRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RESULTROW);
-  
 }
 
 /*----------------------------------------------------------------------------*/
