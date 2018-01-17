@@ -259,15 +259,11 @@ Entry* EntryBuffer::pAllotEntry(i8 nBytes)
   // nBytes takes care of data, offsets and key
   i8 nBytesRequired = Entry::nBytesRequired(0,0,nBytes); //# change to 1 offset
   
-  // test  sufficient freespace
-  if (nFreeBytes() < nBytesRequired) {
+  Entry* pEntry = reinterpret_cast<Entry*>(aAllotItem(nBytesRequired));
+  if ( ! pEntry )
     return nullptr;
-  }
   
-  Entry* pEntry = reinterpret_cast<Entry*>(m_xWsp.aAllot(nBytesRequired));
   new(pEntry) Entry(CN_ENTRY,nBytesRequired,0);
-  
-  m_nItems++;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -286,6 +282,8 @@ Entry* EntryBuffer::pAllotEntryBytes(i8 nBytes)
     return nullptr;
   
   new(pEntry) Entry(CN_ENTRY,nBytes,0);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   return pEntry;
 }
