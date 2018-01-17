@@ -230,7 +230,7 @@ i8 giClassSize[]
   
   /* 26 */ sizeof(BitArray),           // CN_BITARRAY
   /* 27 */ sizeof(BitArray),           // CN_BITMAP
-  /*    */ 0,                          // CN_BUFFERABSTRACT
+  /*    */ sizeof(BufferAbstract),     // CN_BUFFERABSTRACT
   /* 28 */ sizeof(BufferPool),         // CN_BUFFERPOOL
   /* 29 */ sizeof(BPA),                // CN_BPA
 
@@ -243,7 +243,7 @@ i8 giClassSize[]
   /* 34 */ sizeof(Dir),                // CN_DIR
   
   /* 35 */ sizeof(Entry),              // CN_ENTRY
-  /* 36 */ 0,                          // CN_ENTRYBUFFER
+  /* 36 */ sizeof(EntryBuffer),        // CN_ENTRYBUFFER
   /* 37 */ sizeof(EntryVec),           // CN_ENTRYVEC
   
   /* 38 */ sizeof(File),               // CN_FILE
@@ -315,7 +315,7 @@ i8 giClassSize[]
   
   /* 85 */ sizeof(RbCursor),           // CN_RBCURSOR
   /* 86 */ sizeof(RegFrame),           // CN_REGFRAME
-  /*    */ 0,                          // CN_RESULTBUFFER
+  /*    */ sizeof(ResultBuffer),       // CN_RESULTBUFFER
   /*    */ 0,                          // CN_RESULTROW
   /* 87 */ sizeof(Ring),               // CN_RING
   /* 88 */ 0,                          // CN_ROARRAY
