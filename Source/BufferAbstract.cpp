@@ -35,12 +35,12 @@ BufferAbstract::BufferAbstract(eCN eClassNo)
   //m_xWsp
   
 #ifdef __DEBUG_CHECKS
-  m_xWsp.vZero(CN_ENTRYBUFFER);
+  m_xWsp.vZero(eClassNo);
 #endif
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
-  _checkInitialised_(eClassNo);
+  //  _checkInitialised_(eClassNo);
 }
 
 
@@ -75,7 +75,7 @@ char* BufferAbstract::aAllotItem(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 char* BufferAbstract::aDataArea(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   char* aStart = m_xWsp.aArea();
   

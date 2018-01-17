@@ -39,8 +39,8 @@ docol bpa ;
 timerStart;
 fetch j10;
 timerEnd;
-drop table j10;
-docol epochDump;
+//drop table j10;
+//docol epochDump;
 
 /*============================================================================*/
 /* end                                                                        */
