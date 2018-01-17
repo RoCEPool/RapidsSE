@@ -5,7 +5,7 @@
 
 namespace DBobjects
 {
-  class Row
+  class Row // is not a proper object
   {
   protected:
 

@@ -15,6 +15,9 @@ namespace DBobjects
   
     ResultRow(i8 nSizeRow);
     ~ResultRow(void);
+  
+    Row* aRow(void);
+
   };
   
   ResultRow* _pResultRow(void* aAddr);
