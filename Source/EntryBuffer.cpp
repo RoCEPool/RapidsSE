@@ -259,7 +259,7 @@ Entry* EntryBuffer::pAllotEntry(i8 nBytes)
   // nBytes takes care of data, offsets and key
   i8 nBytesRequired = Entry::nBytesRequired(0,0,nBytes); //# change to 1 offset
   
-  Entry* pEntry = reinterpret_cast<Entry*>(aAllotItem(nBytesRequired));
+  Entry* pEntry = reinterpret_cast<Entry*>(pAllotItem(nBytesRequired));
   if ( ! pEntry )
     return nullptr;
   
@@ -277,7 +277,7 @@ Entry* EntryBuffer::pAllotEntryBytes(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  Entry* pEntry = reinterpret_cast<Entry*>(aAllotItem(nBytes));
+  Entry* pEntry = reinterpret_cast<Entry*>(pAllotItem(nBytes));
   if ( ! pEntry )
     return nullptr;
   

@@ -163,7 +163,7 @@ i8 Entry::nSizeEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); 
   
-  return m_nThisBytes;
+  return nSizeItem();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -193,7 +193,7 @@ i8 Entry::nRowSize(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_); 
   
   i8 nOffsetBytes = RightVec::nBytesRequired(m_nOffsets);
-  i8 iRowSize = m_nThisBytes - (nOffsetBytes + sizeof(Entry) + sizeof(Footer) + sizeof(i8));
+  i8 iRowSize = nSizeItem() - (nOffsetBytes + sizeof(Entry) + sizeof(Footer) + sizeof(i8));
   
   return iRowSize;
 }
@@ -298,7 +298,7 @@ void Entry::vReplaceKey(EntWrk& xEntWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_); 
   
-  ASSERT(m_nThisBytes);
+  ASSERT(nSizeItem());
   
   // copy Key
   Key* aEntryKey = this->aKey();
@@ -322,7 +322,7 @@ void Entry::vSetEntry(EntWrk& xEntWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_); 
   
-  ASSERT(m_nThisBytes);
+  ASSERT(nSizeItem());
   
   // set RowId
   m_xId = xEntWrk.xId();
@@ -374,7 +374,7 @@ void Entry::vSetEntry(Id xId, i8 iKey, Entry* pOldEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_); 
   
-  ASSERT(m_nThisBytes);
+  ASSERT(nSizeItem());
   
   // set RowId
   m_xId  = xId;
@@ -484,7 +484,7 @@ void Entry::vContentDump(void)
   vTrace("Entry %p: ThisBytes %lld %p (%lld bytes) \n"_Stz,
          this,
          //m_iTxId,
-         m_nThisBytes,
+         nSizeItem(),
          aRow(),
          nRowSize()
          );
@@ -798,7 +798,7 @@ Footer* Entry::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  i8 iFooterOffset = m_nThisBytes - sizeof(Footer);
+  i8 iFooterOffset = nSizeItem() - sizeof(Footer);
   
   Footer* aFooter = pAdd<Footer*>(this,iFooterOffset);
   

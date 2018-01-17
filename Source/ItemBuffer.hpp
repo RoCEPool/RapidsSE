@@ -16,7 +16,7 @@ namespace DBobjects
     ItemBuffer(eCN eClassNo);
    ~ItemBuffer(void);
   
-    char*  aAllotItem(i8 nBytes);
+    Item*  pAllotItem(i8 nBytes);
     char*  aDataArea(void);
     i8     nFreeBytes(void);
     i8     nItems(void);

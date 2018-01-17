@@ -54,7 +54,7 @@ ItemBuffer::~ItemBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* allot an item of nBytes in this buffer                                     */
 /*----------------------------------------------------------------------------*/
-char* ItemBuffer::aAllotItem(i8 nBytes)
+Item* ItemBuffer::pAllotItem(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -62,11 +62,11 @@ char* ItemBuffer::aAllotItem(i8 nBytes)
   if (nFreeBytes() < nBytes)
     return nullptr;
   
-  char* aItem = m_xWsp.aAllot(nBytes);
+  Item* pItem = reinterpret_cast<Entry*>(m_xWsp.aAllot(nBytes));
   
   m_nItems++;
   
-  return aItem;
+  return pItem;
 }
 
 /*----------------------------------------------------------------------------*/

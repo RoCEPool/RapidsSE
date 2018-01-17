@@ -45,12 +45,12 @@ void* Item::operator new(size_t iSize, Item* pItem)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Item::Item(eCN eClassNo, i8 nThisBytes)
+Item::Item(eCN eClassNo, i8 nSizeItem)
 : Object(eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
-  m_nThisBytes = nThisBytes;
+  m_nSizeItem = nSizeItem;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -67,9 +67,9 @@ Item::~Item(void)
 /*----------------------------------------------------------------------------*/
 i8 Item::nSizeItem(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); 
+  _precondition_(_ADDRESS_,_MAGIC_); 
   
-  return m_nThisBytes;
+  return m_nSizeItem;
 }
 
 /*============================================================================*/

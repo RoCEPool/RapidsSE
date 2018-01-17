@@ -8,13 +8,13 @@ namespace DBobjects
   class Item : public Object
   {
   protected:
-    i8  m_nThisBytes; // size of this item
+    i8  m_nSizeItem; // size of this item
 
   public:
     void* operator new(size_t);
     void* operator new(size_t, Item*);
   
-    Item(eCN eClassNo, i8 nThisBytes);
+    Item(eCN eClassNo, i8 nSizeItem);
     ~Item(void);
   
     i8 nSizeItem(void);
