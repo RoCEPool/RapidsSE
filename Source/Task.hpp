@@ -690,7 +690,7 @@ namespace Tasks
     static void vIndexIsUniqueFetch(MP_Task mpTask);
     static void vIndexIsUniqueStore(MP_Task mpTask);
     static void vIndexIsValidUniqueIndex(MP_Task mpTask);
-    static void vIndexLower(MP_Task mpTask);
+    static void vIndexLowerBound(MP_Task mpTask);
     static void vIndexNameFetch(MP_Task mpTask);
     static void vIndexPopulate(MP_Task mpTask);
     static void vIndexPosition(MP_Task mpTask);
@@ -703,6 +703,7 @@ namespace Tasks
     static void vIndexTableStore(MP_Task mpTask);
     static void vIndexTruncate(MP_Task mpTask);
     static void vIndexUpper(MP_Task mpTask);
+    static void vIndexUpperBound(MP_Task mpTask);
     static void vIndexVerify(MP_Task mpTask);
     static void vIndexVisualize(MP_Task mpTask);
 
@@ -1448,6 +1449,7 @@ namespace Tasks
     static bool   bInsertRow(EntryBuffer* pIndexBuffer, Entry* pEntry, Interface::SEitf* pSEitf);
     static Entry* pPosition(Index* pIndex, EntryBuffer* pIndexBuffer,
                             Planner* pPlanner, i8 iPhrase, KeyWrk &xKeyWrk);
+    static bool   bUpper(Index* pIndex, Entry* pEntry, Planner* pPlanner, i8 iPhrase, KeyWrk &xKeyWrk);
     
     /*------------------------------------------------------------------------*/
     
