@@ -1582,13 +1582,14 @@ Entry* Task::pPosition(Index* pIndex, EntryBuffer* pIndexBuffer, Planner* pPlann
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the relation operator for the first predicate
-  AccessPath* pChosenPath = pPlanner->pChosenPath(iPhrase);
-  PredicateVec* pLowerPredicates = pChosenPath->pLowerPredicates();
-  Predicate* pPredicate = pLowerPredicates->pGet(0);
-  Op* pOp = pPredicate->pOp();
-  eRO eRelnOp = pOp->eOpKind();
+//  AccessPath* pChosenPath = pPlanner->pChosenPath(iPhrase);
+//  PredicateVec* pLowerPredicates = pChosenPath->pLowerPredicates();
+//  Predicate* pPredicate = pLowerPredicates->pGet(0);
+//  Op* pOp = pPredicate->pOp();
+//  eRO eRelnOp = pOp->eOpKind();
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  eRO eRelnOp = pPlanner->eGetFirstLowerPredicateRO(iPhrase);
   Entry* pIndexEntry = pIndexBuffer->pPosition(xKeyWrk, eRelnOp);
   
 //  Entry* pIndexEntry = pIndexBuffer->pPosition(xKeyWrk, 1, JC_AFTER);
@@ -1616,14 +1617,14 @@ bool Task::bUpper(Index* pIndex, Entry* pEntry, Planner* pPlanner, i8 iPhrase, K
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the relation operator for the first predicate
+//  AccessPath* pChosenPath = pPlanner->pChosenPath(iPhrase);
+//  PredicateVec* pUpperPredicates = pChosenPath->pUpperPredicates();
+//  Predicate* pPredicate = pUpperPredicates->pGet(0);
+//  Op* pOp = pPredicate->pOp();
+//  eRO eRelnOp = pOp->eOpKind();
   
-  //SEitf* pSEitf = mpTask->m_pSEitf;
-  //Planner* pPlanner = pSEitf->m_pPlanner;
-  AccessPath* pChosenPath = pPlanner->pChosenPath(iPhrase);
-  PredicateVec* pUpperPredicates = pChosenPath->pUpperPredicates();
-  Predicate* pPredicate = pUpperPredicates->pGet(0);
-  Op* pOp = pPredicate->pOp();
-  eRO eRelnOp = pOp->eOpKind();
+  eRO eRelnOp = pPlanner->eGetFirstUpperPredicateRO(iPhrase);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   bool bIsEqual = false;

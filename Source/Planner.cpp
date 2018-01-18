@@ -203,6 +203,44 @@ void Planner::vGenPaths(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the relatonal operator for the first lower predicate of phrase         */
+/*----------------------------------------------------------------------------*/
+eRO Planner::eGetFirstLowerPredicateRO(i8 iPhrase)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  // get the first predicate
+  AccessPath* pAccessPath = pChosenPath(iPhrase);
+  PredicateVec* pLowerPredicates = pAccessPath->pLowerPredicates();
+  Predicate* pPredicate = pLowerPredicates->pGet(0);
+  
+  // get the relational op
+  Op* pOp = pPredicate->pOp();
+  eRO eRelnOp = pOp->eOpKind();
+  
+  return eRelnOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the relatonal operator for the first upper predicate of phrase         */
+/*----------------------------------------------------------------------------*/
+eRO Planner::eGetFirstUpperPredicateRO(i8 iPhrase)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
+  
+  // get the first predicate
+  AccessPath* pAccessPath = pChosenPath(iPhrase);
+  PredicateVec* pUpperPredicates = pAccessPath->pUpperPredicates();
+  Predicate* pPredicate = pUpperPredicates->pGet(0);
+  
+  // get the relational op
+  Op* pOp = pPredicate->pOp();
+  eRO eRelnOp = pOp->eOpKind();
+  
+  return eRelnOp;
+}
+
+/*----------------------------------------------------------------------------*/
 /* generate the set of all paths for given phrase, index and access technique */
 /*----------------------------------------------------------------------------*/
 void Planner::vGenPaths(i8 i_Phrase, Index* pIndex, eAT eAccess)

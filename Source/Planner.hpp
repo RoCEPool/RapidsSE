@@ -34,6 +34,9 @@ namespace Plans
     AccessPath* pChosenPath(i8 i_Phrase);
     void vGenPaths(void);
     void vGenPaths(i8 i_Phrase, Index* pIndex, eAT eAccess);
+    eRO  eGetFirstLowerPredicateRO(i8 iPhrase);
+    eRO  eGetFirstUpperPredicateRO(i8 iPhrase);
+    
     bool bIsExactOp(eRO eRelOp);
     bool bIsLowerOp(eRO eRelOp);
     bool bIsMatchingOp(eAT eAccess, eRO eRelOp);
