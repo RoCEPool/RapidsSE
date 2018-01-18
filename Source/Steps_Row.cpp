@@ -73,8 +73,7 @@ void Task::vRowEscapedString(MP_Task mpTask)
   s48K sRow;
   Row* aRow = pRow->aRow();
   aRow->vAsEscapedString(sRow,pTable->pColumnVec());
-//  RowData::vRowAsEscapedString(sRow, (Stz*)pRow->aRowData(), pTable->pColumnVec());
-  
+
   mpTask->m_pDataStack->vPushS48K(sRow);
   
   EXIT();

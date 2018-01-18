@@ -112,8 +112,34 @@ void Row::vAsBinaryString(s48K& sDataString, ColumnVec* pColVec)
 /* convert row to escaped string                                              */
 /*----------------------------------------------------------------------------*/
 void Row::vAsEscapedString(s48K& sDataString, ColumnVec* pColVec)
-{
-  RowData::vRowAsEscapedString(sDataString,(Stz*)this,pColVec);
+{  
+  i8 i_RowLength = 0;
+  char* pOffset;
+  Stz* aData;
+  
+  i8 nColumns = pColVec->nItems();
+  
+  for (i8 i_Column = 0; i_Column < nColumns - 1; i_Column++) {
+    
+    Column* pColumn = pColVec->pGet(i_Column);
+    
+    if (i_Column != 0)
+      sDataString.vConcat(","_Stz);
+    
+    unsigned char* pOffset = (unsigned char*)(this) + i_Column*C_COLUMN_OFFSET_SIZE;
+    unsigned char iOffset = *(pOffset);
+    
+    // move to offset
+    aData = (Stz*)((unsigned char*)(this) + iOffset);
+    
+    s256 s;
+    DtmLib::vSprintEscaped(pColumn->eDatumType(), s, aData, pColumn);
+    if (i_Column == 0)
+      sDataString.vCopy(s);
+    else
+      sDataString.vConcat(s);
+  }
+  
 }
 
 /*----------------------------------------------------------------------------*/
