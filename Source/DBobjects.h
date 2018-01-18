@@ -80,7 +80,6 @@ typedef Vector<CN_KEYVEC,KeyVal,CN_KEYVAL,1024,u8> KeyVec;
 #include "LoadChunk.hpp"
 #include "Loader.hpp"
 #include "LoaderSub.hpp"
-#include "RowData.hpp"
 
 #include "User.hpp"
 
