@@ -26,6 +26,9 @@ namespace DBobjects
     void vIsLast(bool bIsLast);
     bool bIsLast(void);
   
+    ResultRow* pFirstRow(void);
+    ResultRow* pNextRow(ResultRow* pCurrentRow);
+  
     Footer* aFooter(void);
   };
   

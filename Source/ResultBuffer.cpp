@@ -70,7 +70,6 @@ ResultBuffer::ResultBuffer(void)
   _checkInitialised_(CN_RESULTBUFFER);
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
@@ -102,6 +101,18 @@ bool ResultBuffer::bAppendRow(Row* aRow, i8 nRowSize)
 }
 
 /*----------------------------------------------------------------------------*/
+/* first result row                                                           */
+/*----------------------------------------------------------------------------*/
+ResultRow* ResultBuffer::pFirstRow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  ResultRow* pFirst = reinterpret_cast<ResultRow*>(pFirstItem());
+  
+  return pFirst;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set buffer is last                                                         */
 /*----------------------------------------------------------------------------*/
 void ResultBuffer::vIsLast(bool bIsLast)
@@ -119,6 +130,18 @@ bool ResultBuffer::bIsLast(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
   
   return m_bIsLast;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next row                                                               */
+/*----------------------------------------------------------------------------*/
+ResultRow* ResultBuffer::pNextRow(ResultRow* pCurrentRow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  ResultRow* pNext = reinterpret_cast<ResultRow*>(pNextItem(pCurrentRow));
+  
+  return pNext;
 }
 
 /*----------------------------------------------------------------------------*/
