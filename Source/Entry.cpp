@@ -520,6 +520,7 @@ void Entry::vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
   // VCH cannot be > 256 bytes
   s4K s;                                                       //ALKA_ROWFORMAT
   
+  Row* aThisRow = aRow();
   i8 nCols = pIdxColVec->nItems();
   for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
     
@@ -530,7 +531,8 @@ void Entry::vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
     i8 iColumnNo = pColumn->iColumnNo();
     
     // get the column value from the row for the iColumnNo
-    char* pDst = (char*)RowData::aColumnDatum(aRowData(), iColumnNo);
+    
+    char* pDst = aThisRow->aColumnDatum(iColumnNo);
     
     switch(pColumn->eDatumType()) {
         
@@ -616,6 +618,8 @@ void Entry::vExtractSortKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
   
   w8 wColumnWord;
   
+  Row* aThisRow = aRow();
+  
   i8 nCols = pIdxColVec->nItems();
   for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
     
@@ -626,7 +630,7 @@ void Entry::vExtractSortKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
     i8 iColumnNo = pColumn->iColumnNo();
     
     // get address of the column datum from the row for the iColumnNo
-    char* aColumnDatum = RowData::aColumnDatum(aRowData(),iColumnNo);
+    char* aColumnDatum = aThisRow->aColumnDatum(iColumnNo);
     
     // convert column datum into column word
     switch (pColumn->eDatumType()) {
@@ -690,6 +694,8 @@ char* Entry::pExtractSortKey(char* aElement, IdxColVec* pIdxColVec)
   
   w8 wColumnWord;
   
+  Row* aThisRow = aRow();
+  
   i8 nCols = pIdxColVec->nItems();
   for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
     
@@ -700,7 +706,7 @@ char* Entry::pExtractSortKey(char* aElement, IdxColVec* pIdxColVec)
     i8 iColumnNo = pColumn->iColumnNo();
     
     // get address of the column datum from the row for the iColumnNo
-    char* aColumnDatum = RowData::aColumnDatum(aRowData(),iColumnNo);
+    char* aColumnDatum = aThisRow->aColumnDatum(iColumnNo);
     
     // convert column datum into column word
     switch (pColumn->eDatumType()) {

@@ -5,6 +5,8 @@
 
 namespace DBobjects
 {
+  const i8 C_COLUMN_OFFSET_SIZE = 1;
+  
   class Row // is not a proper object
   {
   protected:

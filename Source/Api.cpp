@@ -1177,6 +1177,7 @@ eEC RapidsSE_GetColumnFromRow(SEitf* pSEitf, i8 iColumnNo, void** ppRow, void** 
     VALIDATE_REFPOINTER("c"_Stz, ppValue);
     
     char* pRow = (char*)(*ppRow);
+    Row* aRow = (Row*)pRow;
     //RowData::vRowAsString(pSEitf->m_sResponse, (Stz*)pRow, pSEitf->m_pCurrentTable->pColumnVec());
     //vTrace("Row: %s\n"_Stz, pSEitf->m_sResponse.aChar());
     
@@ -1186,7 +1187,7 @@ eEC RapidsSE_GetColumnFromRow(SEitf* pSEitf, i8 iColumnNo, void** ppRow, void** 
     Column* pColumn = pColumnVec->pGet(iColumnNo);
     
     // get the column value from the row for the iColumnNo
-    char* pSrc = (char*)RowData::aColumnDatum(pRow, iColumnNo);
+    char* pSrc = aRow->aColumnDatum(iColumnNo);
     
     switch(pColumn->eDatumType()) {
         

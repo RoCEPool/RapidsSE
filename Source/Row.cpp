@@ -204,9 +204,15 @@ void Row::vAsEscapedString(s48K& sDataString, ColumnVec* pColVec)
 /*----------------------------------------------------------------------------*/
 char* Row::aColumnDatum(i8 iColumnNo)
 {
-  char* aDatum = RowData::aColumnDatum((char*)this,iColumnNo);
+  i8 iCurrentColumn = 0;
   
-  return aDatum;
+  char* aOffset = (char*)(this) + iColumnNo*C_COLUMN_OFFSET_SIZE;
+  unsigned char iOffset = *(aOffset);
+  
+  // move to offset
+  char* aCursor = ((char*)(this) + iOffset);
+  
+  return aCursor;
 }
 
 /*----------------------------------------------------------------------------*/
