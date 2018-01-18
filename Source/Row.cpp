@@ -157,7 +157,48 @@ char* Row::aColumnDatum(i8 iColumnNo)
 /*----------------------------------------------------------------------------*/
 void Row::vDump(ColumnVec* pColVec)
 {
-  RowData::vDump((Stz*)this,pColVec);
+  vTrace("RowData: "_Stz);
+  i8 i_RowLength = 0;
+  char* pOffset;
+  Stz* aData;
+
+  // get no of columns
+  i8 nColumns = pColVec->nItems();
+
+  // for each column except hidden column, dump teh offsets
+  for (i8 i_Column = 0; i_Column < nColumns - 1; i_Column++) {
+
+    // calulate the offset pointer for column
+    char* pOffset = (char*)(this) + i_Column*C_COLUMN_OFFSET_SIZE;
+
+    // get the column offset
+    unsigned char iOffset = *(pOffset);
+
+    vTrace("%lld|"_Stz, iOffset);
+  }
+
+  // for each column except hidden column, dump the column data
+  for (i8 i_Column = 0; i_Column < nColumns - 1; i_Column++) {
+
+    // get the column
+    Column* pColumn = pColVec->pGet(i_Column);
+
+    // calulate the offset pointer for column
+    char* pOffset = (char*)(this) + i_Column*C_COLUMN_OFFSET_SIZE;
+
+    // get the column offset
+    unsigned char iOffset = *(pOffset);
+
+    // let aData point to column data
+    aData = (Stz*)((unsigned char*)(this) + iOffset);
+
+    // dump the column value
+    s256 s;
+    DtmLib::vSprint(pColumn->eDatumType(), s, aData, pColumn);
+    vTrace("%s|"_Stz, s.aChar());
+  }
+
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
