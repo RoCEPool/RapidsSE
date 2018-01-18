@@ -1039,7 +1039,7 @@ void Task::vIndexScan(MP_Task mpTask)
   i8 iPartition;
   SEitf* pSEitf = mpTask->m_pSEitf;
   EntryBuffer* pTempEntryBuffer;
-  Entry* pRow;
+  Entry* pRowEntry;
   
   ResultBuffer* pResultBuffer;
   
@@ -1096,9 +1096,15 @@ void Task::vIndexScan(MP_Task mpTask)
   
   // iterate thru the buffer till no more entries
   while (pEntry) {
-    
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    //Row* aRow = pEntry->aRow();
+    //i8 nRowSize = pEntry->nRowSize();
+    //pResultBuffer->vAppendRow(aRow,nRowSize);
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
     // insert row from entry in tempEntryBuffer
-    if ( ! pTempEntryBuffer->bInsertRow(pEntry, &pRow)) {
+    if ( ! pTempEntryBuffer->bInsertRow(pEntry, &pRowEntry)) {
       
       // buffer must be full
       // put this tempEntryBuffer in seitf bufferQueue
@@ -1109,11 +1115,11 @@ void Task::vIndexScan(MP_Task mpTask)
       pTempEntryBuffer = new EntryBuffer(pIndex->pTable()->pHiddenIndex(), 0, iPartition);
       
       // insert row from entry in temporary buffer
-      bool bResult = pTempEntryBuffer->bInsertRow(pEntry, &pRow);
+      bool bResult = pTempEntryBuffer->bInsertRow(pEntry, &pRowEntry);
       RASSERT(bResult);
     }
     else {
-      ASSERT( ! pRow->nOffsets() );
+      ASSERT( ! pRowEntry->nOffsets() );
     }
       
     // move to next entry in the buffer

@@ -21,6 +21,8 @@ namespace DBobjects
     ResultBuffer(void);
    ~ResultBuffer(void);
   
+    bool bAppendRow(Row* aRow, i8 nRowSize);
+  
     void vIsLast(bool bIsLast);
     bool bIsLast(void);
   

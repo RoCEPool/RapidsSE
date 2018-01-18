@@ -16,6 +16,8 @@ namespace DBobjects
     ResultRow(i8 nSizeRow);
     ~ResultRow(void);
   
+    static i8 nBytesRequired(i8 nRowSize);
+  
     Row* aRow(void);
 
   };

@@ -80,6 +80,17 @@ ResultBuffer::~ResultBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append row                                                                 */
+/*----------------------------------------------------------------------------*/
+bool ResultBuffer::bAppendRow(Row* aRow, i8 nRowSize)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
+  
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set buffer is last                                                         */
 /*----------------------------------------------------------------------------*/
 void ResultBuffer::vIsLast(bool bIsLast)
