@@ -41,7 +41,7 @@ void Task::vRowString(MP_Task mpTask)
   ASSERT(CN_TABLE == pTable->eClass());
   
   s48K sRow;
-  RowData::vRowAsBinaryString(sRow, (Stz*)pRow->aRow(), pTable->pColumnVec());
+  RowData::vRowAsBinaryString(sRow, (Stz*)pRow->aRowData(), pTable->pColumnVec());
   
   mpTask->m_pDataStack->vPushS48K(sRow);
   
@@ -70,7 +70,7 @@ void Task::vRowEscapedString(MP_Task mpTask)
   ASSERT(CN_TABLE == pTable->eClass());
   
   s48K sRow;
-  RowData::vRowAsEscapedString(sRow, (Stz*)pRow->aRow(), pTable->pColumnVec());
+  RowData::vRowAsEscapedString(sRow, (Stz*)pRow->aRowData(), pTable->pColumnVec());
   
   mpTask->m_pDataStack->vPushS48K(sRow);
   

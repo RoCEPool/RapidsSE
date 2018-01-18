@@ -59,6 +59,7 @@ namespace Dictionaries
     eWT      m_eWordType;    // type of word
     bool     m_bPersistent;  // is on persistent heap
     eDT      m_eDistributed; // distributed
+    i8       m_iTrace;       // trace level
     i8       m_iEpoch;       // epoch no. used by bp analyzer
     Dic*     m_pDic;         // which dictionary this word in
     Word*    m_pKind;        // kind of word

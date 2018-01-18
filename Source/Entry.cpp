@@ -172,7 +172,7 @@ i8 Entry::nSizeEntry(void)
 /*----------------------------------------------------------------------------*/
 /* get row data pointer                                                       */
 /*----------------------------------------------------------------------------*/
-char* Entry::aRow(void)
+char* Entry::aRowData(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_); 
   
@@ -352,7 +352,7 @@ void Entry::vSetEntry(EntWrk& xEntWrk)
   
   // copy data
   if (xEntWrk.bHasData()) {
-    char* aEntryData = this->aRow();
+    char* aEntryData = this->aRowData();
     char* aEntWrkData = xEntWrk.aData();
     i8 nDataSize = xEntWrk.nDataSize();
     
@@ -389,14 +389,14 @@ void Entry::vSetEntry(Id xId, i8 iKey, Entry* pOldEntry)
   MemLib::vCopy(aEntryKey,&iKey,nKeyBytes,eClass());
   
   // copy data
-  char* aEntryData = this->aRow();;
+  char* aEntryData = this->aRowData();
   i8 nDataSize = pOldEntry->nRowSize();
   
   ASSERT(nDataSize);
   
   //StrVal* pStrVal = new((StrVal*)aEntryData) StrVal((StrVal*)aEntryData);
   //pStrVal->vAssign(sRow.aStr(),nDataSize);
-  MemLib::vCopy(aEntryData,pOldEntry->aRow(),nDataSize,eClass());
+  MemLib::vCopy(aEntryData,pOldEntry->aRowData(),nDataSize,eClass());
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_); 
 }
@@ -439,9 +439,9 @@ void Entry::vShow(i8 iBase, Index* pIndex, bool bShowKey)
     aKey->vShow(pIndex->pIdxColVec());
 
   if (pIndex->bIsHidden()) {
-    char* pRow = aRow();
+    char* pRow = aRowData();
     if (nRowSize() > 0)
-      RowData::vShow((Stz*)aRow(), pIndex->pTable()->pColumnVec());
+      RowData::vShow((Stz*)aRowData(), pIndex->pTable()->pColumnVec());
   }
   
   for (on nRight = 0_on; nRight < m_nOffsets; nRight++) {
@@ -485,7 +485,7 @@ void Entry::vContentDump(void)
          this,
          //m_iTxId,
          nSizeItem(),
-         aRow(),
+         aRowData(),
          nRowSize()
          );
 }
@@ -512,7 +512,7 @@ void Entry::vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
     i8 iColumnNo = pColumn->iColumnNo();
     
     // get the column value from the row for the iColumnNo
-    char* pDst = (char*)RowData::aColumnDatum(aRow(), iColumnNo);
+    char* pDst = (char*)RowData::aColumnDatum(aRowData(), iColumnNo);
     
     switch(pColumn->eDatumType()) {
         
@@ -608,7 +608,7 @@ void Entry::vExtractSortKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
     i8 iColumnNo = pColumn->iColumnNo();
     
     // get address of the column datum from the row for the iColumnNo
-    char* aColumnDatum = RowData::aColumnDatum(aRow(),iColumnNo);
+    char* aColumnDatum = RowData::aColumnDatum(aRowData(),iColumnNo);
     
     // convert column datum into column word
     switch (pColumn->eDatumType()) {
@@ -682,7 +682,7 @@ char* Entry::pExtractSortKey(char* aElement, IdxColVec* pIdxColVec)
     i8 iColumnNo = pColumn->iColumnNo();
     
     // get address of the column datum from the row for the iColumnNo
-    char* aColumnDatum = RowData::aColumnDatum(aRow(),iColumnNo);
+    char* aColumnDatum = RowData::aColumnDatum(aRowData(),iColumnNo);
     
     // convert column datum into column word
     switch (pColumn->eDatumType()) {

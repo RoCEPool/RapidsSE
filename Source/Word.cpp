@@ -75,6 +75,7 @@ Word::Word(Stz* sName)
   m_eWordType     = WT_ROUTINE;
   //m_bPersistent   = false;
   m_eDistributed  = DT_NOPARTICIPANT;
+  m_iTrace        = 0;
   //m_pDic        = pDic;
   m_pKind         = gpAttachMap->m_pWord ? gpAttachMap->m_pWord : this;
   m_iEpoch        = gpAttachMap->m_iEpoch;

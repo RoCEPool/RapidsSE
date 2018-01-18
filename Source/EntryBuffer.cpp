@@ -925,7 +925,7 @@ bool EntryBuffer::bAppendEntry(Entry* pRowEntry, Entry** ppEntry)     //# critic
   
   //----------------------------------------------------------------------------
   // add the row data to the EntWrk
-  char* pRow = pRowEntry->aRow();
+  char* pRow = pRowEntry->aRowData();
   i8 iLength = pRowEntry->nRowSize();
   
   xEntWrk.vData((Stz*)pRow, iLength);

@@ -62,7 +62,7 @@ Item* ItemBuffer::pAllotItem(i8 nBytes)
   if (nFreeBytes() < nBytes)
     return nullptr;
   
-  Item* pItem = reinterpret_cast<Entry*>(m_xWsp.aAllot(nBytes));
+  Item* pItem = reinterpret_cast<Item*>(m_xWsp.aAllot(nBytes));
   
   m_nItems++;
   

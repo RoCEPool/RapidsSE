@@ -1073,7 +1073,7 @@ eEC RapidsSE_FetchNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
 //    *ppRow = (void*)pSEitf->m_sResponse.aChar();
       
       // return back row
-      *ppRow = (void*)(Stz*)pEntry->aRow();
+      *ppRow = (void*)(Stz*)pEntry->aRowData();
     }
     else {
       *ppRow = nullptr;
@@ -1128,7 +1128,7 @@ eEC RapidsSE_FetchNextRow2(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
     
     if (bNextRow) {
       Entry* pEntry = pSEitf->m_pEntry;
-      *ppRow = (void*)pEntry->aRow();
+      *ppRow = (void*)pEntry->aRowData();
     }
     else {
       *ppRow = nullptr;

@@ -35,7 +35,7 @@ namespace DBobjects
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // data area
-    char* aRow(void);
+    char* aRowData(void);
     i8    nRowSize(void);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
