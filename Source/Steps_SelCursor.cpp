@@ -109,7 +109,7 @@ ENTRY("vSelCursorFirst"_Stz);
   
   pSelCursor->vFirst();
   
-  i8 bRow = pSelCursor->aRowAsStr() ? 1 : 0;
+  i8 bRow = pSelCursor->pRow() ? 1 : 0;
   
   mpTask->m_pDataStack->vPushInt(bRow);
   
@@ -210,7 +210,7 @@ ENTRY("vSelCursorNext"_Stz);
   
   pSelCursor->vNext();
   
-  i8 bRow = pSelCursor->aRowAsStr() ? 1 : 0;
+  i8 bRow = pSelCursor->pRow() ? 1 : 0;
   
   mpTask->m_pDataStack->vPushInt(bRow);
   

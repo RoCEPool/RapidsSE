@@ -19,9 +19,8 @@ namespace DBobjects
                             Stz* aRawData, i8 iRawLength,
                             Stz* aRowData, i8& iRowLength,
                             bool& bBlankLine);
-    static void vRowAsBinaryString(s48K& sDataString, Stz* aRowData, ColumnVec* pColVec);
     static void vRowAsEscapedString(s48K& sDataString, Stz* aRowData, ColumnVec* pColVec);
-   static void vShow(Stz* aRowData, ColumnVec* pColVec);
+    static void vShow_TBR(Stz* aRowData, ColumnVec* pColVec);
   };
 }
 

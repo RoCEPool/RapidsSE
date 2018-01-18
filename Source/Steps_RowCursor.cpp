@@ -109,7 +109,7 @@ ENTRY("vRowCursorFirst"_Stz);
   
   pRowCursor->vFirst();
   
-  i8 bRow = pRowCursor->aRowAsStr() ? 1 : 0;
+  i8 bRow = pRowCursor->pRow() ? 1 : 0;
   
   mpTask->m_pDataStack->vPushInt(bRow);
   
@@ -166,7 +166,7 @@ ENTRY("vRowCursorNext"_Stz);
   
   pRowCursor->vNext();
   
-  i8 bRow = pRowCursor->aRowAsStr() ? 1 : 0;
+  i8 bRow = pRowCursor->pRow() ? 1 : 0;
   
   mpTask->m_pDataStack->vPushInt(bRow);
   

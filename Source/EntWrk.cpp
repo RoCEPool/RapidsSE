@@ -219,7 +219,7 @@ void EntWrk::vShow(ColumnVec* pColVec)
          );
   
   if (m_bHasData) {
-    RowData::vShow((Stz*)aData(), pColVec);
+    RowData::vShow_TBR((Stz*)aData(), pColVec);
   }
   
   vTrace("\n"_Stz);

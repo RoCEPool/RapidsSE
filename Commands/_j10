@@ -26,7 +26,8 @@ dumpidx j10 hidden;
 
 vfyidx j10 hidden;
 
-dex j10 "/tmp/j10.csv" ;
+dex j10 "/tmp/j10_dex.csv" ;
+ex j10 "/tmp/j10_ex.csv" ;
 
 docol bpa ;
 
