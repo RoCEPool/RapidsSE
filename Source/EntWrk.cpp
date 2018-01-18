@@ -219,7 +219,8 @@ void EntWrk::vShow(ColumnVec* pColVec)
          );
   
   if (m_bHasData) {
-    RowData::vShow_TBR((Stz*)aData(), pColVec);
+    Row* aThisRow = aRow();
+    aThisRow->vShow(pColVec);
   }
   
   vTrace("\n"_Stz);
@@ -368,6 +369,18 @@ i8 EntWrk::nKeySize(void)
     return sizeof(i8);
   else
     return m_xDataWrk.nUsed();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get row address                                                            */
+/*----------------------------------------------------------------------------*/
+Row* EntWrk::aRow(void)
+{
+  ASSERT(m_bHasData);
+  
+  Row* aThisRow = (Row*)aData();
+  
+  return aThisRow;
 }
 
 /*----------------------------------------------------------------------------*/

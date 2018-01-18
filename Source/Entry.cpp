@@ -456,9 +456,10 @@ void Entry::vShow(i8 iBase, Index* pIndex, bool bShowKey)
     aKey->vShow(pIndex->pIdxColVec());
 
   if (pIndex->bIsHidden()) {
-    char* pRow = aRowData();
+    //char* pRow = aRowData();
+    Row* aThisRow = aRow();
     if (nRowSize() > 0)
-      RowData::vShow_TBR((Stz*)aRowData(), pIndex->pTable()->pColumnVec());
+      aThisRow->vShow(pIndex->pTable()->pColumnVec());
   }
   
   for (on nRight = 0_on; nRight < m_nOffsets; nRight++) {

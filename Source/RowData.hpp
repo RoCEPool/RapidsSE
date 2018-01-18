@@ -18,7 +18,6 @@ namespace DBobjects
                             Stz* aRawData, i8 iRawLength,
                             Stz* aRowData, i8& iRowLength,
                             bool& bBlankLine);
-    static void vShow_TBR(Stz* aRowData, ColumnVec* pColVec);
   };
 }
 

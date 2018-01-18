@@ -206,7 +206,29 @@ void Row::vDump(ColumnVec* pColVec)
 /*----------------------------------------------------------------------------*/
 void Row::vShow(ColumnVec* pColVec)
 {
-  RowData::vShow_TBR((Stz*)this,pColVec);
+  i8 i_RowLength = 0;
+  char* pOffset;
+  Stz* aData;
+  
+  i8 nColumns = pColVec->nItems();
+  
+  for (i8 i_Column = 0; i_Column < nColumns - 1; i_Column++) {
+    
+    Column* pColumn = pColVec->pGet(i_Column);
+    
+    char* pOffset = (char*)(this) + i_Column*C_COLUMN_OFFSET_SIZE;
+    unsigned char iOffset = *(pOffset);
+    
+    // move to offset
+    aData = (Stz*)((unsigned char*)(this) + iOffset);
+    
+    s256 s;
+    DtmLib::vSprint(pColumn->eDatumType(), s, aData, pColumn);
+    vTrace("%s "_Stz, s.aChar());
+  }
+  
+  //vTrace("\n"_Stz);
+  
 }
 
 /*============================================================================*/
