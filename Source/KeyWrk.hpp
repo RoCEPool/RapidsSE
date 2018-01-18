@@ -23,7 +23,7 @@ namespace DBobjects
   
     void vShow(void);
 
-    void vAddDatumInteger(ValWrk& xValWrk, Column* pCol);
+    void vAddDatum(ValWrk& xValWrk, Column* pCol);
     void vAddDatum(ValWrk& xValWrk, Column* pCol, Formatters* pFormatters);
     void vAddStz(Stz* aDatum);
     void vAddKey(Key* aKey, IdxColVec* pColVec);

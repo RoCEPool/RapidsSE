@@ -38,7 +38,7 @@ void KeyTest::vTest(void)
     xValWrk = i_Key;
     
     xKeyWrk.vReset();
-    xKeyWrk.vAddDatumInteger(xValWrk, pCol);
+    xKeyWrk.vAddDatum(xValWrk, pCol);
     //xKeyWrk.vShow();
     
     pKeyVal = new KeyVal(xKeyWrk);
@@ -71,7 +71,7 @@ void KeyTest::vTest(void)
   // scan the key vector for key value: >= 3
   xValWrk = (i8)3;
   xKeyWrk.vReset();
-  xKeyWrk.vAddDatumInteger(xValWrk, pCol);
+  xKeyWrk.vAddDatum(xValWrk, pCol);
   KeyVal* pKeyValFind = new KeyVal(xKeyWrk);
   vTrace("Find Key value >= 3\n"_Stz);
   
@@ -99,7 +99,7 @@ void KeyTest::vTest(void)
   // scan the key vector for key value: >= 3
   xValWrk = (i8)7;
   xKeyWrk.vReset();
-  xKeyWrk.vAddDatumInteger(xValWrk, pCol);
+  xKeyWrk.vAddDatum(xValWrk, pCol);
   vTrace("Find Key value < 7\n"_Stz);
   
   pOpAryFind->vClear();
@@ -160,7 +160,7 @@ void KeyTest::vTest(void)
     pStrVal = _pStrVal(xValWrk.pNestedValueSelf());
     
     xKeyWrk.vReset();
-    xKeyWrk.vAddDatumInteger(xValWrk, pCol);
+    xKeyWrk.vAddDatum(xValWrk, pCol);
     //xKeyWrk.vShow();
     
     pKeyVal = new KeyVal(xKeyWrk);
@@ -182,7 +182,7 @@ void KeyTest::vTest(void)
   pStrVal = _pStrVal(xValWrk.pNestedValueSelf());
   
   xKeyWrk.vReset();
-  xKeyWrk.vAddDatumInteger(xValWrk, pCol);
+  xKeyWrk.vAddDatum(xValWrk, pCol);
   pKeyValFind = new KeyVal(xKeyWrk);
   
   // scan the key vector for key value: >= pKeyValFind
@@ -219,7 +219,7 @@ void KeyTest::vTest(void)
   pStrVal = _pStrVal(xValWrk.pNestedValueSelf());
   
   xKeyWrk.vReset();
-  xKeyWrk.vAddDatumInteger(xValWrk, pCol);
+  xKeyWrk.vAddDatum(xValWrk, pCol);
   pKeyValFind = new KeyVal(xKeyWrk);
   
   // scan the key vector for key value: < pKeyValFind
@@ -279,11 +279,11 @@ void KeyTest::vTest(void)
     for (i8 j = 10; j <= 30; j += 10) {
       xValWrk = i_Key;
       xKeyWrk.vReset();
-      xKeyWrk.vAddDatumInteger(xValWrk, pCol0);
+      xKeyWrk.vAddDatum(xValWrk, pCol0);
       //xKeyWrk.vShow();
       
       xValWrk = j;
-      xKeyWrk.vAddDatumInteger(xValWrk, pCol1);
+      xKeyWrk.vAddDatum(xValWrk, pCol1);
       //xKeyWrk.vShow();
       pKeyVal = new KeyVal(xKeyWrk);
       pKeyVec->vAdd(pKeyVal);
@@ -303,9 +303,9 @@ void KeyTest::vTest(void)
   // scan the key vector for key value: >= 2,10
   xValWrk = (i8)2;
   xKeyWrk.vReset();
-  xKeyWrk.vAddDatumInteger(xValWrk, pCol0);
+  xKeyWrk.vAddDatum(xValWrk, pCol0);
   xValWrk = (i8)10;
-  xKeyWrk.vAddDatumInteger(xValWrk, pCol1);
+  xKeyWrk.vAddDatum(xValWrk, pCol1);
   pKeyValFind = new KeyVal(xKeyWrk);
   
   vTrace("Find Key value >= 2,10\n"_Stz);
@@ -335,9 +335,9 @@ void KeyTest::vTest(void)
   // scan the key vector for key value: >= 2,10
   xValWrk = (i8)2;
   xKeyWrk.vReset();
-  xKeyWrk.vAddDatumInteger(xValWrk, pCol0);
+  xKeyWrk.vAddDatum(xValWrk, pCol0);
   xValWrk = (i8)30;
-  xKeyWrk.vAddDatumInteger(xValWrk, pCol1);
+  xKeyWrk.vAddDatum(xValWrk, pCol1);
   pKeyValFind = new KeyVal(xKeyWrk);
   
   vTrace("Find Key value elem1 >= 2, elem2 < 30\n"_Stz);
@@ -397,14 +397,14 @@ void KeyTest::vTest(void)
     for (i8 j = 10; j <= 30; j += 10) {
       xValWrk = i_Key;
       xKeyWrk.vReset();
-      xKeyWrk.vAddDatumInteger(xValWrk, pCol0);
+      xKeyWrk.vAddDatum(xValWrk, pCol0);
       //xKeyWrk.vShow();
       
       sKey = Random::sRandomString(7);
       Stz* ptr = sKey.aStr();
       xValWrk = ptr;
       pStrVal = _pStrVal(xValWrk.pNestedValueSelf());
-      xKeyWrk.vAddDatumInteger(xValWrk, pCol1);
+      xKeyWrk.vAddDatum(xValWrk, pCol1);
       //xKeyWrk.vShow();
       
       pKeyVal = new KeyVal(xKeyWrk);
@@ -423,12 +423,12 @@ void KeyTest::vTest(void)
   // scan the key vector for key value: >= 2,10
   xValWrk = (i8)2;
   xKeyWrk.vReset();
-  xKeyWrk.vAddDatumInteger(xValWrk, pCol0);
+  xKeyWrk.vAddDatum(xValWrk, pCol0);
   sKey = Random::sRandomString(7);
   ptr = sKey.aStr();
   xValWrk = ptr;
   pStrVal = _pStrVal(xValWrk.pNestedValueSelf());
-  xKeyWrk.vAddDatumInteger(xValWrk, pCol1);
+  xKeyWrk.vAddDatum(xValWrk, pCol1);
   
   pKeyValFind = new KeyVal(xKeyWrk);
   
@@ -513,16 +513,16 @@ void KeyTest::vTestA(void)
   
   xKeyWrk.vReset();
   xValWrk = (i8)1;
-  xKeyWrk.vAddDatumInteger(xValWrk, pColVec->pGet(0));
+  xKeyWrk.vAddDatum(xValWrk, pColVec->pGet(0));
   xValWrk = (i8)10;
-  xKeyWrk.vAddDatumInteger(xValWrk, pColVec->pGet(1));
+  xKeyWrk.vAddDatum(xValWrk, pColVec->pGet(1));
   KeyVal* pKeyValThis = new KeyVal(xKeyWrk);
   
   xKeyWrk.vReset();
   xValWrk = (i8)1;
-  xKeyWrk.vAddDatumInteger(xValWrk, pColVec->pGet(0));
+  xKeyWrk.vAddDatum(xValWrk, pColVec->pGet(0));
   xValWrk = (i8)20;
-  xKeyWrk.vAddDatumInteger(xValWrk, pColVec->pGet(1));
+  xKeyWrk.vAddDatum(xValWrk, pColVec->pGet(1));
   KeyVal* pKeyValThat = new KeyVal(xKeyWrk);
   
   // [ ColA <= 1 , ColB < 10 ] should be before (2,20)
