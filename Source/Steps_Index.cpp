@@ -1580,44 +1580,6 @@ void Task::vIndexVisualize(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /*   PRIVATE FUNCTIONS                                                        */
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* position at key in an index buffer                                         */
-/*----------------------------------------------------------------------------*/
-Entry* Task::pPosition(Index* pIndex, EntryBuffer* pIndexBuffer, Planner* pPlanner, i8 iPhrase, KeyWrk &xKeyWrk)
-{
-  
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the relation operator for the first predicate
-//  AccessPath* pChosenPath = pPlanner->pChosenPath(iPhrase);
-//  PredicateVec* pLowerPredicates = pChosenPath->pLowerPredicates();
-//  Predicate* pPredicate = pLowerPredicates->pGet(0);
-//  Op* pOp = pPredicate->pOp();
-//  eRO eRelnOp = pOp->eOpKind();
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  eRO eRelnOp = pPlanner->eGetFirstLowerPredicateRO(iPhrase);
-  Entry* pIndexEntry = pIndexBuffer->pPosition(xKeyWrk, eRelnOp);
-  
-//  Entry* pIndexEntry = pIndexBuffer->pPosition(xKeyWrk, 1, JC_AFTER);
-//
-//  bool bAfter;
-//  if (pIndexEntry) {
-//    do {
-//      bool bIsEqual = false;
-//      bAfter = pIndexEntry->aKey()->bJuxtaCompare(JC_AFTER, xKeyWrk.aKey(),
-//                                                  pIndex->pIdxColVec(), 1,
-//                                                  bIsEqual, eRelnOp);
-//      if (! bAfter) {
-//        pIndexEntry = pIndexBuffer->pNextEntry(pIndexEntry);
-//      }
-//    } while (pIndexEntry && ! bAfter);
-//  }
-  
-  return pIndexEntry;
-}
-
 /*----------------------------------------------------------------------------*/
 /* check if entry is within upper bound of the phrase                         */
 /*----------------------------------------------------------------------------*/
