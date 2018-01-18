@@ -769,7 +769,7 @@ tp: lowerSelectIdxTask
   pSeitf task::this task.seitf!
 
   // iterate thru the index and fetch lower bound rows
-  lower upper i_Phrase pPlanner pBufferQueue iPartitionNo pIndex index.range
+  upper lower i_Phrase pPlanner pBufferQueue iPartitionNo pIndex index.range
 ;
 
 /*----------------------------------------------------------------------------*/

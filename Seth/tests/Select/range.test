@@ -111,6 +111,9 @@ rows: 0
 fetch jCdt "jA 1 >= jA 8 <= and" ;
 rows: 0
 
+fetch jCdt "jA 1 >= jA 18 <= and" ;
+rows: 12
+
 fetch jCdt "jA 8 <= jA 1 >= and" ;
 rows: 0
 
