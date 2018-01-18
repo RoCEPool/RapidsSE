@@ -6123,7 +6123,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "  pSeitf task::this task.seitf!\n"
     "\n"
     "  // iterate thru the index and fetch lower bound rows\n"
-    "  lower upper i_Phrase pPlanner pBufferQueue iPartitionNo pIndex index.range\n"
+    "  upper lower i_Phrase pPlanner pBufferQueue iPartitionNo pIndex index.range\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
