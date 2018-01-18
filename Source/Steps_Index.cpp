@@ -651,7 +651,6 @@ void Task::vIndexLowerBound(MP_Task mpTask)
   IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
   
   // create a temporary index buffer for the results
-  //vTrace("Creating a tempIndexBuffer\n"_Stz);
   pTempEntryBuffer = new EntryBuffer(pIndex->pTable()->pHiddenIndex(), 0, iPartition);
   
   // get the entryBuffer looking for the key
@@ -667,7 +666,6 @@ void Task::vIndexLowerBound(MP_Task mpTask)
   // did we get an index buffer ?
   if (pEntryBuffer) {
     // position in the index buffer at the lower key
-    //pEntry = pPosition(pIndex, pEntryBuffer, pPlanner, i_Phrase, xKeyWrk);
     eRO eRelnOp = pPlanner->eGetFirstLowerPredicateRO(i_Phrase);
     pEntry = pEntryBuffer->pPosition(xKeyWrk, eRelnOp);
   }
@@ -684,34 +682,26 @@ void Task::vIndexLowerBound(MP_Task mpTask)
     Entry* pDataRowEntry = Task::pDataRow(pTable, pEntry);
     
     // insert row from entry in tempEntryBuffer
-    //"Inserting row into tempEntryBuffer"
     if ( ! bInsertRow(pTempEntryBuffer, pDataRowEntry, pSEitf)) {
       
       // buffer must be full
       // put this tempEntryBuffer in seitf bufferQueue
-      //"Inserting row into tempEntryBuffer" .
       xValWrk = (Object*)pTempEntryBuffer;
       pQueue->bAppend(xValWrk.pNestedValue());
       
       // create another temporary index buffer for the results
-      //vTrace("Creating a tempIndexBuffer\n"_Stz);
       pTempEntryBuffer = new EntryBuffer(pIndex->pTable()->pHiddenIndex(), 0, iPartition);
       
       // insert row from entry in temporary buffer
-      //"Inserting row into tempEntryBuffer" .
       bool bResult = bInsertRow(pTempEntryBuffer, pDataRowEntry, pSEitf);
       RASSERT(bResult);
     }
-    //else {
-    //  ASSERT( ! pRow->nOffsets() );
-    //}
     
     // move to next entry in the buffer
     pEntry = pEntryBuffer->pNextEntry(pEntry);
     
     if ( ! pEntry ) {
       // get next buffer from the current indexBuffer
-      //vTrace("Getting next buffer\n"_Stz);
       pEntryBuffer = pEntryBuffer->pNextBuffer();
       
       if ( pEntryBuffer )
@@ -726,11 +716,9 @@ void Task::vIndexLowerBound(MP_Task mpTask)
 LastBuffer:
   
   // mark this buffer as the last buffer
-  //"Marking tempEntryBuffer as last buffer" .
   pTempEntryBuffer->vIsLast(true);
   
   // put the buffer in the seitf bufferQueue
-  //"Appending tempEntryBuffer to buffer queue" .
   xValWrk = (Object*)pTempEntryBuffer;
   pQueue->bAppend(xValWrk.pNestedValue());
   
@@ -827,9 +815,6 @@ void Task::vIndexPosition(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
     THROW_INVALID_DSTACK("index.position"_Stz);
   
-  //i8 iIndexNo = pIndex->iIndexNo();
-  //Table* pTable = pIndex->pTable();
-  
   KeyWrk xKeyWrk;
   Column* pColumn = pIndex->pIdxColVec()->pGet(0);
   Formatters* pFormatters = &mpTask->m_pSEitf->m_xFormatters;
@@ -837,7 +822,6 @@ void Task::vIndexPosition(MP_Task mpTask)
   //xKeyWrk.aKey()->vShow(pIndex->pIdxColVec());
 
   // position at key in the entry buffer
-  //Entry* pIndexEntry = pPosition(pIndex, pIndexBuffer, pPlanner, i_Phrase, xKeyWrk);
   eRO eRelnOp = pPlanner->eGetFirstLowerPredicateRO(i_Phrase);
   Entry* pEntry = pIndexBuffer->pPosition(xKeyWrk, eRelnOp);
   
@@ -962,7 +946,6 @@ void Task::vIndexRange(MP_Task mpTask)
   // did we get an index buffer ?
   if (pEntryBuffer) {
     // position in the index buffer at the lower key
-    //pEntry = pPosition(pIndex, pEntryBuffer, pPlanner, i_Phrase, xKeyWrkLower);
     eRO eRelnOp = pPlanner->eGetFirstLowerPredicateRO(i_Phrase);
     pEntry = pEntryBuffer->pPosition(xKeyWrkLower, eRelnOp);
   }
@@ -986,34 +969,26 @@ void Task::vIndexRange(MP_Task mpTask)
       Entry* pDataRowEntry = Task::pDataRow(pTable, pEntry);
       
       // insert row from entry in tempEntryBuffer
-      //"Inserting row into tempEntryBuffer"
       if ( ! bInsertRow(pTempEntryBuffer, pDataRowEntry, pSEitf)) {
         
         // buffer must be full
         // put this tempEntryBuffer in seitf bufferQueue
-        //"Inserting row into tempEntryBuffer" .
         xValWrk = (Object*)pTempEntryBuffer;
         pQueue->bAppend(xValWrk.pNestedValue());
         
         // create another temporary index buffer for the results
-        //vTrace("Creating a tempIndexBuffer\n"_Stz);
         pTempEntryBuffer = new EntryBuffer(pIndex->pTable()->pHiddenIndex(), 0, iPartition);
         
         // insert row from entry in temporary buffer
-        //"Inserting row into tempEntryBuffer" .
         bool bResult = bInsertRow(pTempEntryBuffer, pDataRowEntry, pSEitf);
         RASSERT(bResult);
       }
-      //else {
-      //  ASSERT( ! pRow->nOffsets() );
-      //}
       
       // move to next entry in the buffer
       pEntry = pEntryBuffer->pNextEntry(pEntry);
       
       if ( ! pEntry ) {
         // get next buffer from the current indexBuffer
-        //vTrace("Getting next buffer\n"_Stz);
         pEntryBuffer = pEntryBuffer->pNextBuffer();
         
         if ( pEntryBuffer )
@@ -1037,11 +1012,9 @@ void Task::vIndexRange(MP_Task mpTask)
 LastBuffer:
   
   // mark this buffer as the last buffer
-  //"Marking tempEntryBuffer as last buffer" .
   pTempEntryBuffer->vIsLast(true);
   
   // put the buffer in the seitf bufferQueue
-  //"Appending tempEntryBuffer to buffer queue" .
   xValWrk = (Object*)pTempEntryBuffer;
   pQueue->bAppend(xValWrk.pNestedValue());
   
@@ -1090,21 +1063,17 @@ void Task::vIndexScan(MP_Task mpTask)
   IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
   
   // create a temporary index buffer for the results
-  //vTrace("Creating a tempIndexBuffer\n"_Stz);
   pTempEntryBuffer = new EntryBuffer(pIndex->pTable()->pHiddenIndex(), 0, iPartition);
   
   // position in the first index buffer
-  //vTrace("Getting first buffer\n"_Stz);
   EntryBuffer* pEntryBuffer = pIndexData->pFirstBuffer();
   
   // did we get an entryBuffer ?
   if ( ! pEntryBuffer) {
     // mark this buffer as the last buffer
-    //"Marking tempEntryBuffer as last buffer" .
     pTempEntryBuffer->vIsLast(true);
     
     // put the buffer in the seitf bufferQueue
-    //"Appending tempEntryBuffer to buffer queue" .
     xValWrk = (Object*)pTempEntryBuffer;
     pQueue->bAppend(xValWrk.pNestedValue());
     
@@ -1123,22 +1092,17 @@ void Task::vIndexScan(MP_Task mpTask)
   while (pEntry) {
     
     // insert row from entry in tempEntryBuffer
-    //"Inserting row into tempEntryBuffer" 
-    
     if ( ! pTempEntryBuffer->bInsertRow(pEntry, &pRow)) {
       
       // buffer must be full
       // put this tempEntryBuffer in seitf bufferQueue
-      //"Inserting row into tempEntryBuffer" .
       xValWrk = (Object*)pTempEntryBuffer;
       pQueue->bAppend(xValWrk.pNestedValue());
       
       // create another temporary index buffer for the results
-      //vTrace("Creating a tempIndexBuffer\n"_Stz);
       pTempEntryBuffer = new EntryBuffer(pIndex->pTable()->pHiddenIndex(), 0, iPartition);
       
       // insert row from entry in temporary buffer
-      //"Inserting row into tempEntryBuffer" .
       bool bResult = pTempEntryBuffer->bInsertRow(pEntry, &pRow);
       RASSERT(bResult);
     }
@@ -1151,7 +1115,6 @@ void Task::vIndexScan(MP_Task mpTask)
 
     if ( ! pEntry ) {
       // get next buffer from the current indexBuffer
-      //vTrace("Getting next buffer\n"_Stz);
       pEntryBuffer = pEntryBuffer->pNextBuffer();
       
       if ( pEntryBuffer )
@@ -1164,19 +1127,16 @@ void Task::vIndexScan(MP_Task mpTask)
   }
   
   // mark this buffer as the last buffer
-  //"Marking tempEntryBuffer as last buffer" .
   pTempEntryBuffer->vIsLast(true);
 
   // put the buffer in the seitf bufferQueue
-  //"Appending tempEntryBuffer to buffer queue" .
   xValWrk = (Object*)pTempEntryBuffer;
   pQueue->bAppend(xValWrk.pNestedValue());
 
   // mark that a fetch task has ended
   if (pSEitf)
     --pSEitf->m_ziFetchTasks;
-
-                    
+  
   EXIT();
 }
 
@@ -1448,21 +1408,7 @@ void Task::vIndexUpperBound(MP_Task mpTask)
   
   // did we get an entryBuffer ?
   if ( ! pEntryBuffer) {
-    // mark this buffer as the last buffer
-    //"Marking tempEntryBuffer as last buffer" .
-    pTempEntryBuffer->vIsLast(true);
-    
-    // put the buffer in the seitf bufferQueue
-    //"Appending tempEntryBuffer to buffer queue" .
-    xValWrk = (Object*)pTempEntryBuffer;
-    pQueue->bAppend(xValWrk.pNestedValue());
-    
-    // mark that a fetch task has ended
-    if (pSEitf)
-      --pSEitf->m_ziFetchTasks;
-    
-    EXIT();
-    return;
+    goto LastBuffer;
   }
 
   // get the first entry in the buffer
@@ -1482,34 +1428,26 @@ void Task::vIndexUpperBound(MP_Task mpTask)
       Entry* pDataRowEntry = Task::pDataRow(pTable, pEntry);
       
       // insert row from entry in tempEntryBuffer
-      //"Inserting row into tempEntryBuffer"
       if ( ! bInsertRow(pTempEntryBuffer, pDataRowEntry, pSEitf)) {
         
         // buffer must be full
         // put this tempEntryBuffer in seitf bufferQueue
-        //"Inserting row into tempEntryBuffer" .
         xValWrk = (Object*)pTempEntryBuffer;
         pQueue->bAppend(xValWrk.pNestedValue());
         
         // create another temporary index buffer for the results
-        //vTrace("Creating a tempIndexBuffer\n"_Stz);
         pTempEntryBuffer = new EntryBuffer(pIndex->pTable()->pHiddenIndex(), 0, iPartition);
         
         // insert row from entry in temporary buffer
-        //"Inserting row into tempEntryBuffer" .
         bool bResult = bInsertRow(pTempEntryBuffer, pDataRowEntry, pSEitf);
         RASSERT(bResult);
       }
-      //else {
-      //  ASSERT( ! pRow->nOffsets() );
-      //}
       
       // move to next entry in the buffer
       pEntry = pEntryBuffer->pNextEntry(pEntry);
       
       if ( ! pEntry ) {
         // get next buffer from the current indexBuffer
-        //vTrace("Getting next buffer\n"_Stz);
         pEntryBuffer = pEntryBuffer->pNextBuffer();
         
         if ( pEntryBuffer )
@@ -1525,12 +1463,11 @@ void Task::vIndexUpperBound(MP_Task mpTask)
       pEntry = nullptr;
   }
   
+LastBuffer:
   // mark this buffer as the last buffer
-  //"Marking tempEntryBuffer as last buffer" .
   pTempEntryBuffer->vIsLast(true);
   
   // put the buffer in the seitf bufferQueue
-  //"Appending tempEntryBuffer to buffer queue" .
   xValWrk = (Object*)pTempEntryBuffer;
   pQueue->bAppend(xValWrk.pNestedValue());
   
