@@ -1138,6 +1138,31 @@ Entry* EntryBuffer::pPosition(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare)
 }
 
 /*----------------------------------------------------------------------------*/
+/* position at key as per relational operator                                 */
+/*----------------------------------------------------------------------------*/
+Entry* EntryBuffer::pPosition(KeyWrk &xKeyWrk, eRO eRelnOp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  Entry* pIndexEntry = pPosition(xKeyWrk, 1, JC_AFTER);
+  
+  bool bAfter;
+  if (pIndexEntry) {
+    do {
+      bool bIsEqual = false;
+      bAfter = pIndexEntry->aKey()->bJuxtaCompare(JC_AFTER, xKeyWrk.aKey(),
+                                                  m_pIndex->pIdxColVec(), 1,
+                                                  bIsEqual, eRelnOp);
+      if (! bAfter) {
+        pIndexEntry = pNextEntry(pIndexEntry);
+      }
+    } while (pIndexEntry && ! bAfter);
+  }
+  
+  return pIndexEntry;
+}
+
+/*----------------------------------------------------------------------------*/
 /* position at an index buffer at level iLevel starting from this buffer      */
 /*----------------------------------------------------------------------------*/
 EntryBuffer* EntryBuffer::pPositionLevel(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare, i8 iLevel)  //# critical

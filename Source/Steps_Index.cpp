@@ -112,8 +112,10 @@ void Task::vIndexBuffer(MP_Task mpTask)
   xKeyWrk.vAddDatum(xValWrk,pColumn0,pFormatters);
   //xKeyWrk.vShow();
   
+  // position at a level 0 index buffer at key
   EntryBuffer* pIndexBuffer = pIndexData->pPositionLevel(xKeyWrk, 1, JC_AFTER, 0);
   
+  // return the index buffer
   mpTask->m_pDataStack->vPushObject(pIndexBuffer);
   
   EXIT();
@@ -1576,14 +1578,10 @@ void Task::vIndexVisualize(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 Entry* Task::pPosition(Index* pIndex, EntryBuffer* pIndexBuffer, Planner* pPlanner, i8 iPhrase, KeyWrk &xKeyWrk)
 {
-  Entry* pIndexEntry = pIndexBuffer->pPosition(xKeyWrk, 1, JC_AFTER);
-  //pIndexEntry->aKey()->vShow(pIndex->pIdxColVec());
+  
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the relation operator for the first predicate
-  
-  //SEitf* pSEitf = mpTask->m_pSEitf;
-  //Planner* pPlanner = pSEitf->m_pPlanner;
   AccessPath* pChosenPath = pPlanner->pChosenPath(iPhrase);
   PredicateVec* pLowerPredicates = pChosenPath->pLowerPredicates();
   Predicate* pPredicate = pLowerPredicates->pGet(0);
@@ -1591,18 +1589,22 @@ Entry* Task::pPosition(Index* pIndex, EntryBuffer* pIndexBuffer, Planner* pPlann
   eRO eRelnOp = pOp->eOpKind();
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  bool bAfter;
-  if (pIndexEntry) {
-    do {
-      bool bIsEqual = false;
-      bAfter = pIndexEntry->aKey()->bJuxtaCompare(JC_AFTER, xKeyWrk.aKey(),
-                                                  pIndex->pIdxColVec(), 1,
-                                                  bIsEqual, eRelnOp);
-      if (! bAfter) {
-        pIndexEntry = pIndexBuffer->pNextEntry(pIndexEntry);
-      }
-    } while (pIndexEntry && ! bAfter);
-  }
+  Entry* pIndexEntry = pIndexBuffer->pPosition(xKeyWrk, eRelnOp);
+  
+//  Entry* pIndexEntry = pIndexBuffer->pPosition(xKeyWrk, 1, JC_AFTER);
+//
+//  bool bAfter;
+//  if (pIndexEntry) {
+//    do {
+//      bool bIsEqual = false;
+//      bAfter = pIndexEntry->aKey()->bJuxtaCompare(JC_AFTER, xKeyWrk.aKey(),
+//                                                  pIndex->pIdxColVec(), 1,
+//                                                  bIsEqual, eRelnOp);
+//      if (! bAfter) {
+//        pIndexEntry = pIndexBuffer->pNextEntry(pIndexEntry);
+//      }
+//    } while (pIndexEntry && ! bAfter);
+//  }
   
   return pIndexEntry;
 }

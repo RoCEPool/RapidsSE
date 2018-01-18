@@ -114,6 +114,8 @@ namespace DBobjects
     Entry*       pNextEntry(Entry* pEntry);
     EntryBuffer* pPositionLevel(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare, i8 iLevel);
     Entry*       pPosition(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare);
+    Entry*       pPosition(KeyWrk &xKeyWrk, eRO eRelOp);
+
     void         vPriorVecHead(EntryVec& xPriorVec);
     bool         bRemove(Key* aKey);
     void         vShow(void);
