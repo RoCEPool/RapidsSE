@@ -18,10 +18,11 @@ namespace DBobjects
   
     Item*  pAllotItem(i8 nBytes);
     char*  aDataArea(void);
+    Item*  pFirstItem(void);
     i8     nFreeBytes(void);
     i8     nItems(void);
+    Item*  pNextItem(Item* pCurrentItem);
     i8     nUsedBytes(void);
-
   };
   
   ItemBuffer* _pBufferAbstract(void* aAddr);

@@ -82,6 +82,21 @@ char* ItemBuffer::aDataArea(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* first item                                                                 */
+/*----------------------------------------------------------------------------*/
+Item* ItemBuffer::pFirstItem(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  if ( ! m_xWsp.nSize() )
+    return nullptr;
+  
+  Item* pFirst = reinterpret_cast<Item*>(m_xWsp.aArea());
+  
+  return pFirst;
+}
+
+/*----------------------------------------------------------------------------*/
 /* how much free space (in bytes) left in this buffer?                        */
 /*----------------------------------------------------------------------------*/
 i8 ItemBuffer::nFreeBytes(void)
@@ -101,6 +116,23 @@ i8 ItemBuffer::nItems(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   return m_nItems;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next item                                                              */
+/*----------------------------------------------------------------------------*/
+Item* ItemBuffer::pNextItem(Item* pCurrentItem)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  i8 nBytes = pCurrentItem->nSizeItem();
+  
+  Item* pNext = pAdd<Item*>(pCurrentItem,nBytes);
+  
+  if ((char*)pNext >= (char*)m_xWsp.aLatter())
+    return nullptr;
+  
+  return pNext;
 }
 
 /*----------------------------------------------------------------------------*/
