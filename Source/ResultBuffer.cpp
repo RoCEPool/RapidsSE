@@ -67,7 +67,7 @@ ResultBuffer::ResultBuffer(void)
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
   
-  _checkInitialised_(CN_ENTRYBUFFER);
+  _checkInitialised_(CN_RESULTBUFFER);
 }
 
 
@@ -86,6 +86,17 @@ bool ResultBuffer::bAppendRow(Row* aRow, i8 nRowSize)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
   
+  i8 nBytesRequired = ResultRow::nBytesRequired(nRowSize);
+  
+  i8 nFreeSpace = nFreeBytes();
+  if (nFreeSpace < nBytesRequired)
+    return false;
+  
+  ResultRow* aResultRow = reinterpret_cast<ResultRow*>(pAllotItem(nBytesRequired));
+  
+  Row* aAllotedRow = aResultRow->aRow();
+  
+  MemLib::vCopy(aAllotedRow,aRow,nRowSize,CN_RESULTBUFFER);
   
   return true;
 }

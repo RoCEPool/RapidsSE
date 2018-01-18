@@ -1100,7 +1100,7 @@ void Task::vIndexScan(MP_Task mpTask)
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //Row* aRow = pEntry->aRow();
     //i8 nRowSize = pEntry->nRowSize();
-    //pResultBuffer->vAppendRow(aRow,nRowSize);
+    //bool bAppended = pResultBuffer->bAppendRow(aRow,nRowSize);
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     // insert row from entry in tempEntryBuffer
