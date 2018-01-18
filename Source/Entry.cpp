@@ -170,7 +170,24 @@ i8 Entry::nSizeEntry(void)
 /*-- Row Data ----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/* get row data pointer                                                       */
+/* get row address                                                            */
+/*----------------------------------------------------------------------------*/
+Row* Entry::aRow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  i8 nOffsetBytes = RightVec::nBytesRequired(m_nOffsets);
+  
+  char* aKey = pAdd<char*>(aVblData(),nOffsetBytes);
+  // assuming key is CT_INTEGER for hidden index
+  
+  Row* aRow = pAdd<Row*>(aKey, sizeof(i8));
+  
+  return aRow;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get row data address                                                       */
 /*----------------------------------------------------------------------------*/
 char* Entry::aRowData(void)
 {
