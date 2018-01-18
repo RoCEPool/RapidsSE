@@ -1041,6 +1041,8 @@ void Task::vIndexScan(MP_Task mpTask)
   EntryBuffer* pTempEntryBuffer;
   Entry* pRow;
   
+  ResultBuffer* pResultBuffer;
+  
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
     THROW_INVALID_DSTACK("index.scan"_Stz);
   
@@ -1065,6 +1067,10 @@ void Task::vIndexScan(MP_Task mpTask)
   // create a temporary index buffer for the results
   pTempEntryBuffer = new EntryBuffer(pIndex->pTable()->pHiddenIndex(), 0, iPartition);
   
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  //pResultBuffer = new ResultBuffer;
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    
   // position in the first index buffer
   EntryBuffer* pEntryBuffer = pIndexData->pFirstBuffer();
   

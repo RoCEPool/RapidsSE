@@ -10,6 +10,7 @@ namespace DBobjects
   class Row // is not a proper object
   {
   protected:
+  // ..data..   // variable data area
 
   public:
     void* operator new(size_t);

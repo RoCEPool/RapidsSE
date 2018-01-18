@@ -50,9 +50,9 @@ Entry::Entry(eCN eClassNo, i8 nThisBytes, i8 nOffsets)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
-  m_iTxId      = -1;
   //m_xId
-  m_nOffsets   = nOffsets;
+  m_iTxId    = -1;
+  m_nOffsets = nOffsets;
   
   _setFooter_();
   
@@ -179,8 +179,8 @@ Row* Entry::aRow(void)
   i8 nOffsetBytes = RightVec::nBytesRequired(m_nOffsets);
   
   char* aKey = pAdd<char*>(aVblData(),nOffsetBytes);
-  // assuming key is CT_INTEGER for hidden index
   
+  // assuming key is CT_INTEGER for hidden index
   Row* aRow = pAdd<Row*>(aKey, sizeof(i8));
   
   return aRow;

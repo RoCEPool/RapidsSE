@@ -63,6 +63,8 @@ ResultBuffer::ResultBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
   
+  m_bIsLast = false;
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
   
   _checkInitialised_(CN_ENTRYBUFFER);
@@ -77,6 +79,27 @@ ResultBuffer::~ResultBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
 }
 
+/*----------------------------------------------------------------------------*/
+/* set buffer is last                                                         */
+/*----------------------------------------------------------------------------*/
+void ResultBuffer::vIsLast(bool bIsLast)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
+  
+  m_bIsLast = bIsLast;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get if buffer is last                                                      */
+/*----------------------------------------------------------------------------*/
+bool ResultBuffer::bIsLast(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
+  
+  return m_bIsLast;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

@@ -8,9 +8,10 @@ namespace DBobjects
   class ResultBuffer : public ItemBuffer
   {
   protected:
+  bool  m_bIsLast; // is this the last buffer in its sequence?jj
   
-  // must be last
-  Footer m_xFooter;
+    // must be last
+    Footer m_xFooter;
   
   public:
     void* operator new(size_t);
@@ -20,8 +21,10 @@ namespace DBobjects
     ResultBuffer(void);
    ~ResultBuffer(void);
   
-  public:
-  Footer* aFooter(void);
+    void vIsLast(bool bIsLast);
+    bool bIsLast(void);
+  
+    Footer* aFooter(void);
   };
   
   ResultBuffer* _pResultBuffer(void* aAddr);
