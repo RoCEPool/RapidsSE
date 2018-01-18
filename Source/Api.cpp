@@ -1853,10 +1853,10 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel)
     bool bBlankLine;
     
     // format the record into row format
-    bool bValid = RowData::bFormatData(pSEitf->m_pCurrentTable->pColumnVec(),
-                                       &pSEitf->m_xFormatters,
-                                       pRow, StrLib::iSize(pRow->aChar()),
-                                       s, iRowLength, bBlankLine);
+    bool bValid = Row::bFormatRow(pSEitf->m_pCurrentTable->pColumnVec(),
+                                  &pSEitf->m_xFormatters,
+                                  pRow, StrLib::iSize(pRow->aChar()),
+                                  s, iRowLength, bBlankLine);
     if (! bValid) {
       pSEitf->vSetLastError(EC_INVALID_VALUE);
       TRACE_ERROR("d"_Stz, pSEitf->m_eErrorCode);
@@ -1938,10 +1938,10 @@ eEC RapidsSE_InsertRowPartition(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel)
     bool bBlankLine;
     
     // format the record into row format
-    bool bValid = RowData::bFormatData(pSEitf->m_pCurrentTable->pColumnVec(),
-                                       &pSEitf->m_xFormatters,
-                                       pRow, StrLib::iSize(pRow->aChar()),
-                                       s, iRowLength, bBlankLine);
+    bool bValid = Row::bFormatRow(pSEitf->m_pCurrentTable->pColumnVec(),
+                                  &pSEitf->m_xFormatters,
+                                  pRow, StrLib::iSize(pRow->aChar()),
+                                  s, iRowLength, bBlankLine);
     if (! bValid) {
       pSEitf->vSetLastError(EC_INVALID_VALUE);
       TRACE_ERROR("d"_Stz, pSEitf->m_eErrorCode);

@@ -1540,7 +1540,7 @@ bool SePrompt::bCmd_InsertRow(void)
   i8 iRowLength;
   
   // format the record into row format
-  bool bValid = RowData::bFormatData(
+  bool bValid = Row::bFormatRow(
                   m_pSEitf->m_pCurrentTable->pColumnVec(),
                   &m_pSEitf->m_xFormatters,
                   pRow, StrLib::iSize(pRow->aChar()),

@@ -189,11 +189,11 @@ bool LoaderSub::bFetchRecord(void)
     aRawData = m_pLoadChunk->aNextRecord(iLength);
     if (aRawData) {
       // format the raw data into a record
-      bValid = RowData::bFormatData(m_pTable->pColumnVec(),
-                                    &pSEitf->m_xFormatters,
-                                    aRawData, iLength,
-                                    m_aRecord.aStr(), m_iLength,
-                                    bBlankLine);
+      bValid = Row::bFormatRow(m_pTable->pColumnVec(),
+                               &pSEitf->m_xFormatters,
+                               aRawData, iLength,
+                               m_aRecord.aStr(), m_iLength,
+                               bBlankLine);
       if (bValid) {
         m_iValidRecords++;
         return bValid;
@@ -215,11 +215,11 @@ bool LoaderSub::bFetchRecord(void)
     if (aRawData) {
       
       // format the raw data into a record
-      bValid = RowData::bFormatData(m_pTable->pColumnVec(),
-                                    &pSEitf->m_xFormatters,
-                                    aRawData, iLength,
-                                    m_aRecord.aStr(), m_iLength,
-                                    bBlankLine);
+      bValid = Row::bFormatRow(m_pTable->pColumnVec(),
+                               &pSEitf->m_xFormatters,
+                               aRawData, iLength,
+                               m_aRecord.aStr(), m_iLength,
+                               bBlankLine);
       if (bValid) {
         m_iValidRecords++;
         return bValid;
