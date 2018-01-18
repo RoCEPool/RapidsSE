@@ -1448,7 +1448,6 @@ namespace Tasks
     
     static Entry* pDataRow(Table* pTable, Entry* pEntry);
     static bool   bInsertRow(EntryBuffer* pIndexBuffer, Entry* pEntry, Interface::SEitf* pSEitf);
-    static bool   bUpper(Index* pIndex, Entry* pEntry, Planner* pPlanner, i8 iPhrase, KeyWrk &xKeyWrk);
     
     /*------------------------------------------------------------------------*/
     

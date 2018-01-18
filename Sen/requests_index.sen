@@ -358,7 +358,7 @@ timer: pIdxSelectTimer
     i_Phrase pPlanner Planner.key@
     "0"  //lower
     "0"  //upper
-    "exactSelectIdxTaskOLD"
+    "exactSelectIdxTask"
     i_Phrase pPlanner Planner.indexNm@
     pBufferQueue iSlot spawnSelectTask
   endof
@@ -371,7 +371,7 @@ timer: pIdxSelectTimer
     "0" //key
     i_Phrase pPlanner Planner.lowKey@
     "0" //upper
-    "lowerSelectIdxTaskOLD"
+    "lowerSelectIdxTask"
     i_Phrase pPlanner Planner.indexNm@
     pBufferQueue iSlot spawnSelectTask
   endof
@@ -384,7 +384,7 @@ timer: pIdxSelectTimer
     "0" //key
     "0" //lower
     i_Phrase pPlanner Planner.highKey@
-    "upperSelectIdxTaskOLD"
+    "upperSelectIdxTask"
     i_Phrase pPlanner Planner.indexNm@
     pBufferQueue iSlot spawnSelectTask
   endof
@@ -403,7 +403,7 @@ timer: pIdxSelectTimer
       spawnGroupByTask
     else
       //"case range" .
-      "rangeSelectIdxTaskOLD"
+      "rangeSelectIdxTask"
       i_Phrase pPlanner Planner.indexNm@
       pBufferQueue iSlot spawnSelectTask
     then
@@ -417,7 +417,7 @@ timer: pIdxSelectTimer
     "0" //key
     "0" //lower
     "0" //upper
-    "scanSelectIdxTaskOLD"
+    "scanSelectIdxTask"
     "hidden"
      pBufferQueue iSlot spawnSelectTask
     endof

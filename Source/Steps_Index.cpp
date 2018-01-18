@@ -976,7 +976,12 @@ void Task::vIndexRange(MP_Task mpTask)
   while (pEntry) {
     
     // check against the upper bound
-    if (bUpper(pIndex, pEntry, pPlanner, i_Phrase, xKeyWrkUpper)) {
+    eRO eRelnOp = pPlanner->eGetFirstUpperPredicateRO(i_Phrase);
+    bool bIsEqual = false;
+    bool bBefore = pEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrkUpper.aKey(),
+                                                 pIndex->pIdxColVec(), 1,
+                                                 bIsEqual, eRelnOp);
+    if (bBefore) {
       // get the dataRow from the hidden index
       Entry* pDataRowEntry = Task::pDataRow(pTable, pEntry);
       
@@ -1363,9 +1368,12 @@ void Task::vIndexUpper(MP_Task mpTask)
   Formatters* pFormatters = &mpTask->m_pSEitf->m_xFormatters;
   xKeyWrk.vAddDatum(xValWrk, pIndex->pIdxColVec()->pGet(0),pFormatters);
   
-  bool bResult = bUpper(pIndex, pEntry, pPlanner, i_Phrase, xKeyWrk);
-  
-  mpTask->m_pDataStack->vPushInt(bResult ? 1 : 0);
+  eRO eRelnOp = pPlanner->eGetFirstUpperPredicateRO(i_Phrase);
+  bool bIsEqual = false;
+  bool bBefore = pEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrk.aKey(),
+                                               pIndex->pIdxColVec(), 1,
+                                               bIsEqual, eRelnOp);
+  mpTask->m_pDataStack->vPushInt(bBefore ? 1 : 0);
   
   EXIT();
 }
@@ -1463,7 +1471,13 @@ void Task::vIndexUpperBound(MP_Task mpTask)
   // iterate thru the buffer till no more entries
   while (pEntry) {
     
-    if (bUpper(pIndex, pEntry, pPlanner, i_Phrase, xKeyWrk)) {
+    eRO eRelnOp = pPlanner->eGetFirstUpperPredicateRO(i_Phrase);
+    bool bIsEqual = false;
+    bool bBefore = pEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrk.aKey(),
+                                                 pIndex->pIdxColVec(), 1,
+                                                 bIsEqual, eRelnOp);
+    
+    if (bBefore) {
       // get the dataRow from the hidden index
       Entry* pDataRowEntry = Task::pDataRow(pTable, pEntry);
       
@@ -1575,34 +1589,6 @@ void Task::vIndexVisualize(MP_Task mpTask)
   }
   
   EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/*   PRIVATE FUNCTIONS                                                        */
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/* check if entry is within upper bound of the phrase                         */
-/*----------------------------------------------------------------------------*/
-bool Task::bUpper(Index* pIndex, Entry* pEntry, Planner* pPlanner, i8 iPhrase, KeyWrk &xKeyWrk)
-{
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the relation operator for the first predicate
-//  AccessPath* pChosenPath = pPlanner->pChosenPath(iPhrase);
-//  PredicateVec* pUpperPredicates = pChosenPath->pUpperPredicates();
-//  Predicate* pPredicate = pUpperPredicates->pGet(0);
-//  Op* pOp = pPredicate->pOp();
-//  eRO eRelnOp = pOp->eOpKind();
-  
-  eRO eRelnOp = pPlanner->eGetFirstUpperPredicateRO(iPhrase);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  bool bIsEqual = false;
-  bool bBefore = pEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrk.aKey(),
-                                               pIndex->pIdxColVec(), 1,
-                                               bIsEqual, eRelnOp);
-  
-  return bBefore;
 }
 
 /*============================================================================*/
