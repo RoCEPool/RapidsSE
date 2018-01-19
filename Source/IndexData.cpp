@@ -173,7 +173,7 @@ EntryBuffer* IndexData::pFirstBuffer(void)
   
   while (pEntryBuffer) {
     
-    Entry* pFirstEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHead());
+    Entry* pFirstEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHeadEntry());
     pEntryBuffer = pFirstEntry->pEntryBuffer();
     
     if (pEntryBuffer->nBufferLevel() == 0) {
@@ -251,7 +251,7 @@ void IndexData::vAppendEntriesFromBuffer(EntryBuffer* pEntryBuffer, EntryBuffer*
   
   m_zLock.vGrabWrite();
   
-  Entry* pRow = pEntryBuffer->pHead();
+  Entry* pRow = pEntryBuffer->pHeadEntry();
 
   if (m_pRoot == nullptr) {
     ASSERT( ! m_pCurrentBuffer )
@@ -757,8 +757,8 @@ void IndexData::vInsertFirstEntry(EntryBuffer* pToBuffer, EntryBuffer* pFromBuff
   xNewId.vRow(C_HIGHER_LEVEL_ID);
   
   // get the first entry from the first buffer
-  Entry* pHeadEntry = pFromBuffer->pHead();
-  Entry* pFirstEntry = pFromBuffer->pNextEntry(pHeadEntry);
+  Entry* pHead = pFromBuffer->pHeadEntry();
+  Entry* pFirstEntry = pFromBuffer->pNextEntry(pHead);
   
   // get the key from the first entry
   Key* aKey = pFirstEntry->aKey();
@@ -782,7 +782,7 @@ void IndexData::vFixHigherBuffer(EntryBuffer* pEntryBuffer, i8 iLevel)
   EntryBuffer* pRoot;
   
   // get first entry KeyWrk from first buffer
-  Entry* aFirstEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHead());
+  Entry* aFirstEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHeadEntry());
 
   // form a KeyWrk from the key
   xKeyWrk.vAddKey(aFirstEntry->aKey(), m_pIndex->pIdxColVec());

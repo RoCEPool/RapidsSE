@@ -372,7 +372,7 @@ void Task::vSocketRecv(MP_Task mpTask)
     // set the new entry buffer in each entry of the entry buffer
     Id xId;
     xId.vBuffer(*(pEntryBuffer->nBufferNo()));
-    for (Entry* pEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHead()); pEntry != nullptr;
+    for (Entry* pEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHeadEntry()); pEntry != nullptr;
          pEntry = pEntryBuffer->pNextEntry(pEntry)) {
       xId.vRow(pEntry->xId().iRow());
                

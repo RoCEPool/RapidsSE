@@ -399,7 +399,7 @@ void EntryBuffer::vRowCount(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   m_nItems = 0;
-  for (Entry* pRow = pHead(); pRow; pRow = pNextEntry(pRow))
+  for (Entry* pRow = pHeadEntry(); pRow; pRow = pNextEntry(pRow))
     m_nItems++;
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ENTRYBUFFER);
@@ -456,7 +456,7 @@ void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iE
   // recursively dump the lower level buffers
   if (m_nBufferLevel != 0) {
     
-    for (Entry* pEntry = pNextEntry(pHead()); pEntry != nullptr;
+    for (Entry* pEntry = pNextEntry(pHeadEntry()); pEntry != nullptr;
          pEntry = pNextEntry(pEntry)) {
       
       // get the index buffer from the entry
@@ -511,7 +511,7 @@ void EntryBuffer::vDump(void)
   // recursively dump the lower level buffers
   if (m_nBufferLevel != 0) {
     
-    for (Entry* pEntry = pNextEntry(pHead());
+    for (Entry* pEntry = pNextEntry(pHeadEntry());
          pEntry != nullptr;
          pEntry = pNextEntry(pEntry)) {
       
@@ -569,7 +569,7 @@ bool EntryBuffer::bHasSpace(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* get head entry of skip list in this index buffer                           */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pHead(void)
+Entry* EntryBuffer::pHeadEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -652,7 +652,7 @@ void EntryBuffer::vBufferCount(i8& nBuffers)
     // recursively dump the lower level buffers
     if (m_nBufferLevel != 0) {
       
-      for (Entry* pEntry = pNextEntry(pHead()); pEntry != nullptr;
+      for (Entry* pEntry = pNextEntry(pHeadEntry()); pEntry != nullptr;
            pEntry = pNextEntry(pEntry)) {
         
         // get the index buffer from the entry
@@ -1082,7 +1082,7 @@ Entry* EntryBuffer::pPosition(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare)
   
   pEntry = pPosition(aKey, nKeyCols, eJuxtaCompare, nullptr, bIsEqual, true);
   
-  if (pEntry == pHead())
+  if (pEntry == pHeadEntry())
     pEntry = pNextEntry(pEntry);
   
   return pEntry;
@@ -1179,8 +1179,8 @@ void EntryBuffer::vShow(void)
          m_pPrevBuffer,
          m_pNextBuffer);
   
-  Entry* pHeadEntry = pHead();
-  pHeadEntry->vShow(iToOffsetAbs(pHeadEntry), m_pIndex, false);
+  Entry* pHead = pHeadEntry();
+  pHead->vShow(iToOffsetAbs(pHead), m_pIndex, false);
   
   for (Entry* pEntry = pFirstEntry(); pEntry != nullptr; pEntry = pNextEntry(pEntry)) {
     vTrace("%8lld: "_Stz, nSub(pEntry, m_xWsp.aArea()));
@@ -1352,7 +1352,7 @@ bool EntryBuffer::bVerify(void)                                     //# critical
   do {
     
     // get the head entry of the buffer
-    Entry* pEntryOne = pHead();
+    Entry* pEntryOne = pHeadEntry();
     if ( ! pEntryOne )
       return true;
     
@@ -1381,7 +1381,7 @@ bool EntryBuffer::bVerify(void)                                     //# critical
       Key* pKeyB = pEntryTwo->aKey();
       
       // if entryA is not the head, compare the keys
-      if (pEntryOne != pHead()) {
+      if (pEntryOne != pHeadEntry()) {
         
         // KeyB should should be after keyA
         bool bIsEqual = false;
@@ -1434,7 +1434,7 @@ void EntryBuffer::vTruncate(void)
     if (m_nBufferLevel != 0) {
       
       // recursively delete the lower level buffers
-      for (Entry* pEntry = pNextEntry(pHead()); pEntry != nullptr;
+      for (Entry* pEntry = pNextEntry(pHeadEntry()); pEntry != nullptr;
            pEntry = pNextEntry(pEntry)) {
         
         // get the index buffer from the entry
@@ -1466,7 +1466,7 @@ void EntryBuffer::vAdjustOffsets(Entry* pEntry, i8 nAdjustAmount)   //# critical
     
     // here we adjust the iRightOffset if iRightOffset is > 0
     if (iRightOffset > 0) {
-      if (pEntry != pHead()) {
+      if (pEntry != pHeadEntry()) {
         i8 i = 10;
       }
       i8 iNewRightOffset = iRightOffset + nAdjustAmount;
@@ -1659,7 +1659,7 @@ void EntryBuffer::vFixHigherLevel(Entry* aNewEntry)                 //# critical
     return;
   
   // get the first entry right of head at level 0
-  Entry* aFirstEntry = pRightEntry(pHead(), ln::nZeroLevel());
+  Entry* aFirstEntry = pRightEntry(pHeadEntry(), ln::nZeroLevel());
   
   // if the entry we just added is not the first entry , nothing to fix
   if (aNewEntry != aFirstEntry)
@@ -1866,7 +1866,7 @@ void EntryBuffer::vReplaceLargerKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk) //# 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // we have replaced the first entry in this buffer
   // hence we need to fix the right offsets in the head
-  vAdjustOffsets(pHead(), nSizeDifference);
+  vAdjustOffsets(pHeadEntry(), nSizeDifference);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1944,7 +1944,7 @@ void EntryBuffer::vReplaceSmallereKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk) //
   // hence we need to fix the right offsets in the head
   nSizeDifference = uNewKeySize - uOldKeySize;
   ASSERT( nSizeDifference < 0 );
-  vAdjustOffsets(pHead(), nSizeDifference);
+  vAdjustOffsets(pHeadEntry(), nSizeDifference);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1997,7 +1997,7 @@ Entry* EntryBuffer::pGetEntry(i8 iEntryNo)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   // start with the head
-  Entry* pSplitEntry = pHead();
+  Entry* pSplitEntry = pHeadEntry();
   
   i8 iEntries = 0;
   while (pSplitEntry) {
@@ -2151,7 +2151,7 @@ Entry* EntryBuffer::pPosition(Key* aGivenKey, i8 nKeyCols,
   //vTrace("\n"_Stz);
   //vShow();
   
-  Entry* pScanEntry_sl = pHead();
+  Entry* pScanEntry_sl = pHeadEntry();
   Entry* pNextEntry_sl = nullptr;
   //Entry* pMoreEntry_sl = nullptr;
   
@@ -2225,12 +2225,11 @@ void EntryBuffer::vPriorVec(Entry* pEntry, EntryVec* pPriorVec)     //# critical
   ln nLevel;
   
   // set all entries to null
-  Entry* pHeadEntry = pHead();
   for (nLevel = 0_on; *nLevel < gpAttachMap->m_nIndexLevels; nLevel++)
     (*pPriorVec)[nLevel] = nullptr;
   
   // scan till we find the entry
-  for (Entry* pScan = pHead(); pScan; pScan = pNextEntry(pScan)) {
+  for (Entry* pScan = pHeadEntry(); pScan; pScan = pNextEntry(pScan)) {
     
     if (pScan == pEntry)
       return;
@@ -2256,7 +2255,7 @@ void EntryBuffer::vPriorVecHead(EntryVec& xPriorVec)
   
   ln nLevel;
   for (nLevel = 0_on; *nLevel < gpAttachMap->m_nIndexLevels; nLevel++)
-    xPriorVec[nLevel] = pHead();
+    xPriorVec[nLevel] = pHeadEntry();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2303,7 +2302,7 @@ Entry* EntryBuffer::pRightEntry(Entry* pEntry, ln nLevelNo)         //# critical
   }
   
   ASSERT( ! pRightEntry ||
-         ( pRightEntry > pHead() &&
+         ( pRightEntry > pHeadEntry() &&
           pRightEntry < _pEntry(m_xWsp.aLatter()) ) );
   
   return pRightEntry;

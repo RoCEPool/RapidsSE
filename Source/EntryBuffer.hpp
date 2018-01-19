@@ -100,7 +100,7 @@ namespace DBobjects
     void         vDump(void);
     Entry*       pFirstEntry(void);
     bool         bHasSpace(i8 nBytes);
-    Entry*       pHead(void);
+    Entry*       pHeadEntry(void);
     void         vHigherLevel(EntryBuffer* pHigherLevel);
     EntryBuffer* pHigherLevel(void);
     void         vIndex(Index* pIndex);

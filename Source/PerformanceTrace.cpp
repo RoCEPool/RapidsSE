@@ -139,7 +139,7 @@ void PerformanceTrace::vPrint(void)
        pEntryBuffer = pEntryBuffer->pNextBuffer()) {
     
     for (PerformanceEntry* pEntry =
-         static_cast<PerformanceEntry*>(pEntryBuffer->pHead());
+         static_cast<PerformanceEntry*>(pEntryBuffer->pHeadEntry());
          pEntry;
          pEntry =
          static_cast<PerformanceEntry*>(pEntryBuffer->pNextEntry(pEntry))) {

@@ -155,7 +155,7 @@ Entry* Id::pRow(void)
 {
   EntryBuffer* pRowBuffer = reinterpret_cast<EntryBuffer*>(gpBufferPool->pToBuffer(m_uBuffer));
   
-  Entry* pRow = pRowBuffer->pHead();
+  Entry* pRow = pRowBuffer->pHeadEntry();
   u8 uRowNo = 0;
   while (m_uRow != uRowNo) {
     pRow = pRowBuffer->pNextEntry(pRow);
