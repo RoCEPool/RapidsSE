@@ -1023,6 +1023,9 @@ void SEitf::vPopBufferQueue(void)
     }
   }
   m_ziLastBuffersScanned = 0;
+  m_pEntryBuffer = nullptr;
+  m_pEntry = nullptr;
+  m_aRow = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
