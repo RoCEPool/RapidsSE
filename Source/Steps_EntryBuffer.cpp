@@ -116,7 +116,7 @@ void Task::vEntryBufferFirstEntry(MP_Task mpTask)
   ASSERT(nullptr == pIndexBuffer || CN_ENTRYBUFFER == pIndexBuffer->eClass());
   
   if (pIndexBuffer)
-    mpTask->m_pDataStack->vPushObject(pIndexBuffer->pNextEntry(pIndexBuffer->pHead()));
+    mpTask->m_pDataStack->vPushObject(pIndexBuffer->pNextEntry(pIndexBuffer->pHeadEntry()));
   else
     mpTask->m_pDataStack->vPushObject(nullptr);
   
@@ -319,7 +319,7 @@ void Task::vEntryBufferIterate(MP_Task mpTask)
       pIndexBuffer = pIndexBuffer->pNextBuffer();
       if (! pIndexBuffer)
         break;
-      pIndexEntry = pIndexBuffer->pNextEntry(pIndexBuffer->pHead());
+      pIndexEntry = pIndexBuffer->pNextEntry(pIndexBuffer->pHeadEntry());
     }
   }
 
@@ -398,7 +398,7 @@ void Task::vEntryBufferNextEntry(MP_Task mpTask)
     ASSERT(CN_ENTRY == pEntry->eClass());
     pNextEntry = pIndexBuffer->pNextEntry(pEntry);
   } else {
-    pNextEntry = pIndexBuffer->pNextEntry(pIndexBuffer->pHead());
+    pNextEntry = pIndexBuffer->pNextEntry(pIndexBuffer->pHeadEntry());
   }
   
   mpTask->m_pDataStack->vPushObject(pNextEntry);

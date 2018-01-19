@@ -332,7 +332,7 @@ void Task::vIndexExactKey(MP_Task mpTask)
   }
   
   // get the first entry in the buffer
-  pEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHead());
+  pEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHeadEntry());
   
   // iterate thru the buffer till no more entries
   while (pEntry) {
@@ -375,7 +375,7 @@ void Task::vIndexExactKey(MP_Task mpTask)
       pEntryBuffer = pEntryBuffer->pNextBuffer();
       
       if ( pEntryBuffer )
-        pEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHead());
+        pEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHeadEntry());
     }
     // check if seitf exiting
     if (pSEitf->m_bSeitfExiting)
@@ -705,7 +705,7 @@ void Task::vIndexLowerBound(MP_Task mpTask)
       pEntryBuffer = pEntryBuffer->pNextBuffer();
       
       if ( pEntryBuffer )
-        pEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHead());
+        pEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHeadEntry());
     }
     
     // check if seitf exiting
@@ -992,7 +992,7 @@ void Task::vIndexRange(MP_Task mpTask)
         pEntryBuffer = pEntryBuffer->pNextBuffer();
         
         if ( pEntryBuffer )
-          pEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHead());
+          pEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHeadEntry());
       }
       else {
         // there is an entry
@@ -1092,7 +1092,7 @@ void Task::vIndexScan(MP_Task mpTask)
   }
   
   // get the first entry in the buffer
-  Entry* pEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHead());
+  Entry* pEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHeadEntry());
   
   // iterate thru the buffer till no more entries
   while (pEntry) {
@@ -1135,7 +1135,7 @@ void Task::vIndexScan(MP_Task mpTask)
       pEntryBuffer = pEntryBuffer->pNextBuffer();
       
       if ( pEntryBuffer )
-        pEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHead());
+        pEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHeadEntry());
     }
     
     // check if seitf exiting
@@ -1429,7 +1429,7 @@ void Task::vIndexUpperBound(MP_Task mpTask)
   }
 
   // get the first entry in the buffer
-  pEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHead());
+  pEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHeadEntry());
   
   // iterate thru the buffer till no more entries
   while (pEntry) {
@@ -1468,7 +1468,7 @@ void Task::vIndexUpperBound(MP_Task mpTask)
         pEntryBuffer = pEntryBuffer->pNextBuffer();
         
         if ( pEntryBuffer )
-          pEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHead());
+          pEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHeadEntry());
       }
     }
     else {

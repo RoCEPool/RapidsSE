@@ -155,10 +155,10 @@ Entry* Id::pRow(void)
 {
   EntryBuffer* pRowBuffer = reinterpret_cast<EntryBuffer*>(gpBufferPool->pToBuffer(m_uBuffer));
   
-  Entry* pRow = pRowBuffer->pFirstRow();
+  Entry* pRow = pRowBuffer->pHeadEntry();
   u8 uRowNo = 0;
   while (m_uRow != uRowNo) {
-    pRow = pRowBuffer->pNextRow(pRow);
+    pRow = pRowBuffer->pNextEntry(pRow);
     uRowNo++;
   }
   ASSERT(pRow);

@@ -104,7 +104,7 @@ void PerformanceTrace::vAdd(Stz* aWord, Stz* aNote)
 //       pEntryBuffer = pEntryBuffer->pNextBuffer()) {
 //
 //    for (PerformanceEntry* pEntry =
-//           static_cast<PerformanceEntry*>(pEntryBuffer->pFirstEntryActual());
+//           static_cast<PerformanceEntry*>(pEntryBuffer->pHead());
 //         pEntry;
 //         pEntry =
 //           static_cast<PerformanceEntry*>(pEntryBuffer->pNextEntry(pEntry))) {
@@ -139,7 +139,7 @@ void PerformanceTrace::vPrint(void)
        pEntryBuffer = pEntryBuffer->pNextBuffer()) {
     
     for (PerformanceEntry* pEntry =
-         static_cast<PerformanceEntry*>(pEntryBuffer->pFirstEntryActual());
+         static_cast<PerformanceEntry*>(pEntryBuffer->pHeadEntry());
          pEntry;
          pEntry =
          static_cast<PerformanceEntry*>(pEntryBuffer->pNextEntry(pEntry))) {
