@@ -58,12 +58,13 @@ void ResultBuffer::operator delete(void* pBufferAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ResultBuffer::ResultBuffer(void)
+ResultBuffer::ResultBuffer(Table* pTable)
 : ItemBuffer(CN_RESULTBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
   
   m_bIsLast = false;
+  m_pTable  = pTable;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
   
@@ -137,11 +138,26 @@ bool ResultBuffer::bIsLast(void)
 /*----------------------------------------------------------------------------*/
 ResultRow* ResultBuffer::pNextRow(ResultRow* pCurrentRow)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
   
   ResultRow* pNext = reinterpret_cast<ResultRow*>(pNextItem(pCurrentRow));
   
   return pNext;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show the contents of the buffer                                            */
+/*----------------------------------------------------------------------------*/
+void ResultBuffer::vShow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
+
+  ResultRow* pResultRow;
+  for (pResultRow = pFirstRow();
+       pResultRow;
+       pResultRow = pNextRow(pResultRow)) {
+
+  }
 }
 
 /*----------------------------------------------------------------------------*/

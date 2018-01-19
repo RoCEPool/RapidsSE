@@ -8,8 +8,9 @@ namespace DBobjects
   class ResultBuffer : public ItemBuffer
   {
   protected:
-  bool  m_bIsLast; // is this the last buffer in its sequence?jj
-  
+  bool   m_bIsLast; // is this the last buffer in its sequence?jj
+  Table* m_pTable;  // table which describes the rows
+
     // must be last
     Footer m_xFooter;
   
@@ -18,7 +19,7 @@ namespace DBobjects
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    ResultBuffer(void);
+    ResultBuffer(Table* pTable);
    ~ResultBuffer(void);
   
     bool bAppendRow(Row* aRow, i8 nRowSize);
@@ -28,6 +29,8 @@ namespace DBobjects
   
     ResultRow* pFirstRow(void);
     ResultRow* pNextRow(ResultRow* pCurrentRow);
+  
+    void vShow(void);
   
     Footer* aFooter(void);
   };

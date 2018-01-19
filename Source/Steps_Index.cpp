@@ -1068,7 +1068,7 @@ void Task::vIndexScan(MP_Task mpTask)
   pTempEntryBuffer = new EntryBuffer(pIndex->pTable()->pHiddenIndex(), 0, iPartition);
   
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  //pResultBuffer = new ResultBuffer;
+  //pResultBuffer = new ResultBuffer(pTable);
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
   // position in the first index buffer
