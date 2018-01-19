@@ -577,23 +577,6 @@ Entry* EntryBuffer::pFirstEntry(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get first entry (actual) of skip list in this index buffer                 */
-/*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pFirstEntryActual(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  // the head entry will have been alloted during constructor
-  ASSERT(m_xWsp.nUsed());
-  
-  // first get the head
-  Entry* pHead = _pEntry(m_xWsp.aArea());
-  
-  // return the next entry
-  return pHead;
-}
-
-/*----------------------------------------------------------------------------*/
 /* does the buffer have space for nBytes ?                                    */
 /*----------------------------------------------------------------------------*/
 bool EntryBuffer::bHasSpace(i8 nBytes)

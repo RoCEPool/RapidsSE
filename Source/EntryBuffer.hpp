@@ -101,7 +101,6 @@ namespace DBobjects
     i8           iDecile(void);
     void         vDump(void);
     Entry*       pFirstEntry(void);
-    Entry*       pFirstEntryActual(void);
     bool         bHasSpace(i8 nBytes);
     Entry*       pHead(void);
     void         vHigherLevel(EntryBuffer* pHigherLevel);
