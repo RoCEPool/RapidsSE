@@ -158,7 +158,7 @@ Entry* Id::pRow(void)
   Entry* pRow = pRowBuffer->pHead();
   u8 uRowNo = 0;
   while (m_uRow != uRowNo) {
-    pRow = pRowBuffer->pNextRow(pRow);
+    pRow = pRowBuffer->pNextEntry(pRow);
     uRowNo++;
   }
   ASSERT(pRow);

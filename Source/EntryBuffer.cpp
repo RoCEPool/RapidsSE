@@ -372,23 +372,6 @@ bool EntryBuffer::bIsLast(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next row                                                               */
-/*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pNextRow(Entry* pCurr)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  i8 nBytes = pCurr->nSizeEntry();
-  
-  Entry* pNext = pAdd<Entry*>(pCurr,nBytes);
-  
-  if ((char*)pNext >= (char*)m_xWsp.aLatter())
-    return nullptr;
-  
-  return pNext;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set partition no                                                           */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vPartitionNo(i8 nPartitionNo)
@@ -416,7 +399,7 @@ void EntryBuffer::vRowCount(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   m_nItems = 0;
-  for (Entry* pRow = pHead(); pRow; pRow = pNextRow(pRow))
+  for (Entry* pRow = pHead(); pRow; pRow = pNextEntry(pRow))
     m_nItems++;
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ENTRYBUFFER);

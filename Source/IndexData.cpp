@@ -259,8 +259,8 @@ void IndexData::vAppendEntriesFromBuffer(EntryBuffer* pEntryBuffer, EntryBuffer*
     m_pCurrentBuffer = m_pRoot;
   }
   
-  for ( pRow = pEntryBuffer->pNextRow(pRow) ; pRow;
-       pRow = pEntryBuffer->pNextRow(pRow)) {
+  for ( pRow = pEntryBuffer->pNextEntry(pRow) ; pRow;
+       pRow = pEntryBuffer->pNextEntry(pRow)) {
     
     bool bInserted = m_pCurrentBuffer->bAppendEntry(pRow, &pNewEntry);
     if ( !bInserted ) {
@@ -413,7 +413,7 @@ void IndexData::vInsertEntriesFromBuffer(EntryBuffer* pEntryBuffer, Entry* pRowE
   
   //m_zLock.vGrabWrite();
   
-  for ( Entry* pEntry = pRowEntry ; pEntry; pEntry = pEntryBuffer->pNextRow(pEntry)) {
+  for ( Entry* pEntry = pRowEntry ; pEntry; pEntry = pEntryBuffer->pNextEntry(pEntry)) {
     bool bInserted = bInsertEntry(pEntry);
     ASSERT(bInserted);
   }

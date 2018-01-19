@@ -82,7 +82,6 @@ namespace DBobjects
 
     void       vIsLast(bool bIsLast);
     bool       bIsLast(void);
-    Entry*     pNextRow(Entry* pCurrRow);
     void       vPartitionNo(i8 nPartitionNo);
     i8         nPartitionNo(void);
     void       vRowCount(void);
