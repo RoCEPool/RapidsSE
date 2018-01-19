@@ -52,6 +52,19 @@ ResultRow::ResultRow(i8 nSizeResultRow)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+ResultRow::ResultRow(Row* aSrcRow, i8 nSizeResultRow, i8 nSizeRow)
+: Item(CN_RESULTROW,nSizeResultRow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RESULTROW);
+  
+  Row* aDstRow = this->aRow();
+  
+  MemLib::vCopy(aDstRow,aSrcRow,nSizeRow,CN_RESULTBUFFER);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 ResultRow::~ResultRow(void)

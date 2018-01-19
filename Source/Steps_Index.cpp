@@ -1098,9 +1098,14 @@ void Task::vIndexScan(MP_Task mpTask)
   while (pEntry) {
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    //ColumnVec* pColVec = pTable->pColumnVec();
     //Row* aRow = pEntry->aRow();
+    //aRow->vShow(pColVec);
+    //vTrace("\n"_Stz);
+
     //i8 nRowSize = pEntry->nRowSize();
     //bool bAppended = pResultBuffer->bAppendRow(aRow,nRowSize);
+    //pResultBuffer->vShow();
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     // insert row from entry in tempEntryBuffer

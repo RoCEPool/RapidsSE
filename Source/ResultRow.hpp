@@ -14,6 +14,7 @@ namespace DBobjects
     void* operator new(size_t, ResultRow*);
   
     ResultRow(i8 nSizeRow);
+    ResultRow(Row* aSrcRow, i8 nResultRowSize, i8 nRowSize);
     ~ResultRow(void);
   
     static i8 nBytesRequired(i8 nRowSize);

@@ -86,17 +86,19 @@ bool ResultBuffer::bAppendRow(Row* aRow, i8 nRowSize)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
   
-  i8 nBytesRequired = ResultRow::nBytesRequired(nRowSize);
+  i8 nResultRowSize = ResultRow::nBytesRequired(nRowSize);
   
   i8 nFreeSpace = nFreeBytes();
-  if (nFreeSpace < nBytesRequired)
+  if (nFreeSpace < nResultRowSize)
     return false;
   
-  ResultRow* aResultRow = reinterpret_cast<ResultRow*>(pAllotItem(nBytesRequired));
+  ResultRow* aResultRow = reinterpret_cast<ResultRow*>(pAllotItem(nResultRowSize));
+
+  new(aResultRow) ResultRow(aRow,nResultRowSize,nRowSize);
   
-  Row* aAllotedRow = aResultRow->aRow();
-  
-  MemLib::vCopy(aAllotedRow,aRow,nRowSize,CN_RESULTBUFFER);
+//  Row* aAllotedRow = aResultRow->aRow();
+//  
+//  MemLib::vCopy(aAllotedRow,aRow,nRowSize,CN_RESULTBUFFER);
   
   return true;
 }
@@ -160,6 +162,7 @@ void ResultBuffer::vShow(void)
        pResultRow = pNextRow(pResultRow)) {
 
     pResultRow->vShow(pColVec);
+    vTrace("\n"_Stz);
   }
 }
 
