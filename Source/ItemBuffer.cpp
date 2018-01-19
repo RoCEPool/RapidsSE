@@ -88,7 +88,7 @@ Item* ItemBuffer::pFirstItem(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  if ( ! m_xWsp.nSize() )
+  if ( m_nItems == 0 )
     return nullptr;
   
   Item* pFirst = reinterpret_cast<Item*>(m_xWsp.aArea());
