@@ -855,29 +855,31 @@ bool SEitf::bNextRow2(i8& nPartition)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       if (CN_ENTRYBUFFER == m_pItemBuffer->eClass()) {
         
-        m_pEntryBuffer = (EntryBuffer*)m_pItemBuffer;
-        m_pResultBuffer = nullptr;
+        RASSERT(0);
         
-        m_pEntry = m_pEntryBuffer->pFirstEntry();
-        
-        if (m_pEntryBuffer->bIsLast()) {
-          m_ziLastBuffersScanned++;
-          //vTrace("m_ziLastBuffersScanned: %lld\n"_Stz, m_ziLastBuffersScanned );
-        }
-        
-        if ( ! m_pEntry ) {
-          m_pItemBuffer = nullptr;
-          m_pEntryBuffer = nullptr;
-          if (m_ziLastBuffersScanned == m_ziLastBuffers) {
-            m_ziLastBuffersScanned = 0;
-            return false;
-          }
-          continue;
-        }
-        
-        m_aRow = m_pEntry->aRow();
-        nPartition = m_pEntryBuffer->nPartitionNo();
-        return true;
+//        m_pEntryBuffer = (EntryBuffer*)m_pItemBuffer;
+//        m_pResultBuffer = nullptr;
+//        
+//        m_pEntry = m_pEntryBuffer->pFirstEntry();
+//        
+//        if (m_pEntryBuffer->bIsLast()) {
+//          m_ziLastBuffersScanned++;
+//          //vTrace("m_ziLastBuffersScanned: %lld\n"_Stz, m_ziLastBuffersScanned );
+//        }
+//        
+//        if ( ! m_pEntry ) {
+//          m_pItemBuffer = nullptr;
+//          m_pEntryBuffer = nullptr;
+//          if (m_ziLastBuffersScanned == m_ziLastBuffers) {
+//            m_ziLastBuffersScanned = 0;
+//            return false;
+//          }
+//          continue;
+//        }
+//        
+//        m_aRow = m_pEntry->aRow();
+//        nPartition = m_pEntryBuffer->nPartitionNo();
+//        return true;
       }
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       else if (CN_RESULTBUFFER == m_pItemBuffer->eClass()) {
@@ -919,23 +921,25 @@ bool SEitf::bNextRow2(i8& nPartition)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (m_pEntryBuffer) {
       
-      m_pEntry = m_pEntryBuffer->pNextEntry(m_pEntry);
-      if (m_pEntry) {
-        m_aRow = m_pEntry->aRow();
-        nPartition = m_pEntryBuffer->nPartitionNo();
-        return true;
-      }
+      RASSERT(0);
       
-      delete m_pEntryBuffer;
-      m_pItemBuffer = nullptr;
-      m_pEntryBuffer = nullptr;
-      
-      if (m_ziLastBuffersScanned == m_ziLastBuffers) {
-        m_ziLastBuffersScanned = 0;
-        return false;
-      }
-      
-      continue;
+//      m_pEntry = m_pEntryBuffer->pNextEntry(m_pEntry);
+//      if (m_pEntry) {
+//        m_aRow = m_pEntry->aRow();
+//        nPartition = m_pEntryBuffer->nPartitionNo();
+//        return true;
+//      }
+//      
+//      delete m_pEntryBuffer;
+//      m_pItemBuffer = nullptr;
+//      m_pEntryBuffer = nullptr;
+//      
+//      if (m_ziLastBuffersScanned == m_ziLastBuffers) {
+//        m_ziLastBuffersScanned = 0;
+//        return false;
+//      }
+//      
+//      continue;
     }
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     else if (m_pResultBuffer) {
