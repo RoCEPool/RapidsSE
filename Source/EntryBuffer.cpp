@@ -349,7 +349,7 @@ i8 EntryBuffer::nPartitionNo(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
+/*-- Complex Functions -------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -390,91 +390,6 @@ Entry* EntryBuffer::pAllotEntryBytes(i8 nBytes)
   
   return pEntry;
 }
-
-/*----------------------------------------------------------------------------*/
-/* insert row into this buffer     (invoked from rowBuffer.appendRecord/append*/
-/*----------------------------------------------------------------------------*/
-bool EntryBuffer::bInsertRow(EntWrk& xRowWrk, Entry** ppRow)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  i8 nBytes = Entry::nBytesRequired(xRowWrk);
-  
-  Entry* pRowEntry = pAllotEntry(nBytes);
-  if ( ! pRowEntry )
-    return false;
-  
-  pRowEntry->vSetEntry(xRowWrk);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  *ppRow = pRowEntry;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* insert row into this buffer (invoked from entryBuffer.insertRow)           */
-/*----------------------------------------------------------------------------*/
-bool EntryBuffer::bInsertRow(Entry* pOldRow, Entry** ppRow)         //# critical
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  // create working row
-  ValWrk xValWrk;
-  
-  //----------------------------------------------------------------------------
-  // form the rowId
-  bn nBufferNo = this->nBufferNo();
-  i8 nRowNo = nItems();
-  Id rowId(*nBufferNo, nRowNo);
-  
-  //----------------------------------------------------------------------------
-  // form the key
-  xValWrk = nRowNo;
-  
-  KeyWrk xKeyWrk; //# i don't think xKeyWrk gets used?
-  Column* pColumn = m_pIndex->pIdxColVec()->pGet(0);
-  ASSERT(pColumn->iColumnNo() == -1);
-  ASSERT(pColumn->eColumnType() == CT_INTEGER);
-  xKeyWrk.vAddDatum(xValWrk, pColumn);
-  
-  Entry* pRowEntry = pAllotEntry(pOldRow->nRowSize() + sizeof(i8)); //# why + sizeof(i8) ?
-  if ( ! pRowEntry )
-    return false;
-  
-  //----------------------------------------------------------------------------
-  // add the id and key to EntWrk
-  pRowEntry->vSetEntry(rowId, nRowNo, pOldRow);
-  
-  //pRowEntry->vShow(0, m_pIndex);
-  
-  *ppRow = pRowEntry;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set row count                                                              */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vRowCount(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  m_nItems = 0;
-  for (Entry* pRow = pHeadEntry(); pRow; pRow = pNextEntry(pRow))
-    m_nItems++;
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ENTRYBUFFER);
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* analyze                                                                    */
@@ -794,6 +709,69 @@ bool EntryBuffer::bInsertEntry(i8 iTxId, Stz* pRow, i8 iLength)     //# critical
     
   }
   //pEntry->vShow(pEntry->nOffsets(), m_pIndex);
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert row into this buffer     (invoked from rowBuffer.appendRecord/append*/
+/*----------------------------------------------------------------------------*/
+bool EntryBuffer::bInsertRow(EntWrk& xRowWrk, Entry** ppRow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  i8 nBytes = Entry::nBytesRequired(xRowWrk);
+  
+  Entry* pRowEntry = pAllotEntry(nBytes);
+  if ( ! pRowEntry )
+    return false;
+  
+  pRowEntry->vSetEntry(xRowWrk);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  *ppRow = pRowEntry;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert row into this buffer (invoked from entryBuffer.insertRow)           */
+/*----------------------------------------------------------------------------*/
+bool EntryBuffer::bInsertRow(Entry* pOldRow, Entry** ppRow)         //# critical
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  // create working row
+  ValWrk xValWrk;
+  
+  //----------------------------------------------------------------------------
+  // form the rowId
+  bn nBufferNo = this->nBufferNo();
+  i8 nRowNo = nItems();
+  Id rowId(*nBufferNo, nRowNo);
+  
+  //----------------------------------------------------------------------------
+  // form the key
+  xValWrk = nRowNo;
+  
+  KeyWrk xKeyWrk; //# i don't think xKeyWrk gets used?
+  Column* pColumn = m_pIndex->pIdxColVec()->pGet(0);
+  ASSERT(pColumn->iColumnNo() == -1);
+  ASSERT(pColumn->eColumnType() == CT_INTEGER);
+  xKeyWrk.vAddDatum(xValWrk, pColumn);
+  
+  Entry* pRowEntry = pAllotEntry(pOldRow->nRowSize() + sizeof(i8)); //# why + sizeof(i8) ?
+  if ( ! pRowEntry )
+    return false;
+  
+  //----------------------------------------------------------------------------
+  // add the id and key to EntWrk
+  pRowEntry->vSetEntry(rowId, nRowNo, pOldRow);
+  
+  //pRowEntry->vShow(0, m_pIndex);
+  
+  *ppRow = pRowEntry;
+  
   return true;
 }
 
@@ -1166,6 +1144,20 @@ bool EntryBuffer::bRemove(Key* aKey)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set row count                                                              */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vRowCount(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  m_nItems = 0;
+  for (Entry* pRow = pHeadEntry(); pRow; pRow = pNextEntry(pRow))
+    m_nItems++;
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ENTRYBUFFER);
 }
 
 /*----------------------------------------------------------------------------*/

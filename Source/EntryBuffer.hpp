@@ -69,6 +69,9 @@ namespace DBobjects
     eBD  eDurability(void);
     void vDurability(eBD eDurability);
   
+    void         vIsLast(bool bIsLast);
+    bool         bIsLast(void);
+  
     void         vHigherLevel(EntryBuffer* pHigherLevel);
     EntryBuffer* pHigherLevel(void);
   
@@ -87,19 +90,10 @@ namespace DBobjects
     i8           nPartitionNo(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // what was RowBufer
+    // complex functions
   
-    Entry*     pAllotEntry(i8 nBytes);
-    Entry*     pAllotEntryBytes(i8 nBytes);
-    bool       bInsertRow(EntWrk& xEntRow, Entry** ppRow);
-    bool       bInsertRow(Entry* pOldRow, Entry** ppRow);
-
-    void       vIsLast(bool bIsLast);
-    bool       bIsLast(void);
-    void       vRowCount(void);
-  
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // what was IndexBuffer
+    Entry*       pAllotEntry(i8 nBytes);
+    Entry*       pAllotEntryBytes(i8 nBytes);
   
     void         vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries);
     Entry*       pAppendEntry(EntWrk& xEntWrk,EntryVec& xPriorVec);
@@ -112,22 +106,24 @@ namespace DBobjects
     Entry*       pFirstEntry(void);
     bool         bHasSpace(i8 nBytes);
     Entry*       pHeadEntry(void);
-    bool         bInsertEntry(i8 iTxId, Stz* pRow, i8 iLength);
     bool         bInsert(EntWrk& xEntWrk);
+    bool         bInsertEntry(i8 iTxId, Stz* pRow, i8 iLength);
+    bool         bInsertRow(EntWrk& xEntRow, Entry** ppRow);
+    bool         bInsertRow(Entry* pOldRow, Entry** ppRow);
     EntryBuffer* pNewNextBuffer(void);
     Entry*       pNextEntry(Entry* pEntry);
     EntryBuffer* pPositionLevel(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare, i8 iLevel);
     Entry*       pPosition(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare);
     Entry*       pPosition(KeyWrk &xKeyWrk, eRO eRelOp);
-
     void         vPriorVecHead(EntryVec& xPriorVec);
     bool         bRemove(Key* aKey);
+    void         vRowCount(void);
     void         vShow(void);
     EntryBuffer* pSplitBuffer(void);
     void         vTruncate(void);
     bool         bVerify(void);
-    
   
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     private:
     
     void         vAdjustOffsets(Entry* pEntry, i8 nAdjustAmount);
