@@ -37,6 +37,7 @@ namespace Interface
     AccessPath*   m_pAccessPath;
   
     Entry* m_pEntry;
+    ResultRow* m_pResultRow;
     Row*   m_aRow;
     Tx*    m_pTx;
   

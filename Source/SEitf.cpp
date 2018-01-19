@@ -181,6 +181,7 @@ SEitf::SEitf(i8 iPartition)
   m_pPlanner        = nullptr;
   m_pAccessPath     = nullptr;
   m_pEntry          = nullptr;
+  m_pResultRow      = nullptr;
   m_aRow            = nullptr;
   m_pCurrentTable   = nullptr;
   m_pCurrentIndex   = nullptr;
@@ -831,80 +832,123 @@ bool SEitf::bNextRow(void)
 bool SEitf::bNextRow2(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  // get index buffer from seitf
-  Entry* pEntry = nullptr;
-  i8 iRowCount = 0;
+
+  ValWrk xValWrk;
   
   while (true) {
-    
-    // if no entry buffer , pop one off the queue
-    if ( ! m_pEntryBuffer ) {
+  
+    while ( ! m_pItemBuffer ) {
       
-      // pop buffer off the buffer queue
-      ValWrk xValWrk;
-      while (!m_pBufferQueue->bPop(&xValWrk)) {
+      // attempt to pop buffer off the buffer queue
+      if ( ! m_pBufferQueue->bPop(&xValWrk) ) {
         PosixThread::vSleepMilli(1);
+        continue;
       }
-      
-      // get entry buffer
       PtrVal* pPtrVal = xValWrk.pNestedPtrVal();
-      m_pEntryBuffer = (EntryBuffer*)(pPtrVal->pPtr());
+      m_pItemBuffer = (ItemBuffer*)(pPtrVal->pPtr());
       
-      // get first entry from buffer
-      pEntry = m_pEntryBuffer->pFirstEntry();
+      // determine type of buffer
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      if (CN_ENTRYBUFFER == m_pItemBuffer->eClass()) {
+        
+        m_pEntryBuffer = (EntryBuffer*)m_pItemBuffer;
+        m_pResultBuffer = nullptr;
+        
+        m_pEntry = m_pEntryBuffer->pFirstEntry();
+        
+        if (m_pEntryBuffer->bIsLast()) {
+          m_ziLastBuffersScanned++;
+          //vTrace("m_ziLastBuffersScanned: %lld\n"_Stz, pSEitf->m_ziLastBuffersScanned );
+        }
+        
+        if ( ! m_pEntry ) {
+          RASSERT(m_ziLastBuffersScanned == m_ziLastBuffers);
+          m_ziLastBuffersScanned = 0;
+          return false;
+        }
+        
+        m_aRow = m_pEntry->aRow();
+        return true;
+      }
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      else if (CN_RESULTBUFFER == m_pItemBuffer->eClass()) {
+
+        m_pResultBuffer = (ResultBuffer*)m_pItemBuffer;
+        m_pEntryBuffer = nullptr;
+        
+        m_pResultRow = m_pResultBuffer->pFirstRow();
+        
+        if (m_pResultBuffer->bIsLast()) {
+          m_ziLastBuffersScanned++;
+          //vTrace("m_ziLastBuffersScanned: %lld\n"_Stz, pSEitf->m_ziLastBuffersScanned );
+        }
+        
+        if ( ! m_pResultRow ) {
+          RASSERT(m_ziLastBuffersScanned == m_ziLastBuffers);
+          m_ziLastBuffersScanned = 0;
+          return false;
+        }
+        
+        m_aRow = m_pResultRow->aRow();
+        return true;
+      }
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      else {
+        RASSERT(0);
+      }
+ 
+      break;
       
-      if (m_pEntryBuffer->bIsLast()) {
-        m_ziLastBuffersScanned++;
-        //vTrace("m_ziLastBuffersScanned: %lld\n"_Stz, pSEitf->m_ziLastBuffersScanned );
+    } // while ( ! m_pItemBuffer )
+    
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (m_pEntryBuffer) {
+      
+      m_pEntry = m_pEntryBuffer->pNextEntry(m_pEntry);
+      if (m_pEntry) {
+        m_aRow = m_pEntry->aRow();
+        return true;
       }
       
+      delete m_pEntryBuffer;
+      m_pItemBuffer = nullptr;
+      m_pEntryBuffer = nullptr;
+      
+      if (m_ziLastBuffersScanned == m_ziLastBuffers) {
+        m_ziLastBuffersScanned = 0;
+        return false;
+      }
+      
+      continue;
+    }
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    else if (m_pResultBuffer) {
+      
+      m_pResultRow = m_pResultBuffer->pNextRow(m_pResultRow);
+      if (m_pResultRow) {
+        m_aRow = m_pResultRow->aRow();
+        return true;
+      }
+      
+      delete m_pResultBuffer;
+      m_pItemBuffer = nullptr;
+      m_pResultBuffer = nullptr;
+      
+      if (m_ziLastBuffersScanned == m_ziLastBuffers) {
+        m_ziLastBuffersScanned = 0;
+        return false;
+      }
+      
+      continue;
     }
     else {
-      
-      // seitf should have an entry
-      ASSERT(m_pEntry);
-      
-      //vTrace("sizeof entry %lld %lld\n"_Stz, sizeof(Entry), sizeof(Class));
-      // get next entry from buffer
-      pEntry = m_pEntryBuffer->pNextEntry(m_pEntry);
+      RASSERT(0);
     }
+
     
-    // if no entry, get next buffer
-    if (!pEntry) {
-      
-      // if we had an entry buffer delete it
-      if (m_pEntryBuffer)
-        delete m_pEntryBuffer;
-      
-      // null the buffer and get the next
-      m_pEntryBuffer = nullptr;
-    }
-    
-    // if found an entry break or last buffer break out of loop
-    if (pEntry || (!pEntry && m_ziLastBuffersScanned == m_ziLastBuffers))
-      break;
-  }
-  
-  if (!pEntry) {
-    m_ziLastBuffersScanned = 0;
-    return false;
-  }
-  else {
-    // save entry in SEitf
-    m_pEntry = pEntry;
-    m_aRow = pEntry->aRow();
-    return true;
-  }
-  
+  } // while (true)
 }
 
 /*----------------------------------------------------------------------------*/
