@@ -862,16 +862,16 @@ bool SEitf::bNextRow2(void)
         
         if (m_pEntryBuffer->bIsLast()) {
           m_ziLastBuffersScanned++;
-          vTrace("m_ziLastBuffersScanned: %lld\n"_Stz, m_ziLastBuffersScanned );
+          //vTrace("m_ziLastBuffersScanned: %lld\n"_Stz, m_ziLastBuffersScanned );
         }
         
         if ( ! m_pEntry ) {
+          m_pItemBuffer = nullptr;
+          m_pEntryBuffer = nullptr;
           if (m_ziLastBuffersScanned == m_ziLastBuffers) {
             m_ziLastBuffersScanned = 0;
             return false;
           }
-          m_pItemBuffer = nullptr;
-          m_pEntryBuffer = nullptr;
           continue;
         }
         
@@ -892,12 +892,12 @@ bool SEitf::bNextRow2(void)
         }
         
         if ( ! m_pResultRow ) {
-          if (m_ziLastBuffersScanned != m_ziLastBuffers) {
+          m_pItemBuffer = nullptr;
+          m_pResultBuffer = nullptr;
+          if (m_ziLastBuffersScanned == m_ziLastBuffers) {
             m_ziLastBuffersScanned = 0;
             return false;
           }
-          m_pItemBuffer = nullptr;
-          m_pResultBuffer = nullptr;
           continue;
         }
         
