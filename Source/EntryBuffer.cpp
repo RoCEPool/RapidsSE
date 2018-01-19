@@ -289,21 +289,6 @@ Entry* EntryBuffer::pAllotEntryBytes(i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* first row                                                                  */
-/*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pFirstRow(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  if ( ! m_xWsp.nSize() )
-    return nullptr;
-  
-  Entry* pFirst = reinterpret_cast<Entry*>(m_xWsp.aArea());
-  
-  return pFirst;
-}
-
-/*----------------------------------------------------------------------------*/
 /* insert row into this buffer     (invoked from rowBuffer.appendRecord/append*/
 /*----------------------------------------------------------------------------*/
 bool EntryBuffer::bInsertRow(EntWrk& xRowWrk, Entry** ppRow)
@@ -431,7 +416,7 @@ void EntryBuffer::vRowCount(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   m_nItems = 0;
-  for (Entry* pRow = pFirstRow(); pRow; pRow = pNextRow(pRow))
+  for (Entry* pRow = pHead(); pRow; pRow = pNextRow(pRow))
     m_nItems++;
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ENTRYBUFFER);

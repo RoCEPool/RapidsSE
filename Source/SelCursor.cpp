@@ -125,7 +125,7 @@ void SelCursor::vFirst(void)
   
   m_pRowBuffer = pHiddenIndexData->pFirstBuffer();
   if (m_pRowBuffer) {
-    m_pRow = m_pRowBuffer->pNextRow(m_pRowBuffer->pFirstRow());
+    m_pRow = m_pRowBuffer->pNextRow(m_pRowBuffer->pHead());
   }
   else
     m_pRow = nullptr;
@@ -147,7 +147,7 @@ void SelCursor::vNext(void)
   
   m_pRowBuffer = (EntryBuffer*)m_pRowBuffer->pNextBuffer();
   if (m_pRowBuffer) {
-    m_pRow = m_pRowBuffer->pFirstRow();
+    m_pRow = m_pRowBuffer->pHead();
     if (m_pRow)
       return;
   }

@@ -125,7 +125,7 @@ void Task::vRowBufferDump(MP_Task mpTask)
   EntryBuffer* pRowBuffer = (EntryBuffer*)_pEntryBuffer(pPtrRowBuffer);
   ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
 
-  Entry* pRow = pRowBuffer->pFirstRow();
+  Entry* pRow = pRowBuffer->pHead();
   
   while (pRow) {
     pRow->vContentDump();

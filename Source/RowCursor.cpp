@@ -109,7 +109,7 @@ void RowCursor::vFirst(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCURSOR,_FOOTER_);
   
   if (m_pRowBuffer)
-    m_pRow = m_pRowBuffer->pNextRow(m_pRowBuffer->pFirstRow());
+    m_pRow = m_pRowBuffer->pNextRow(m_pRowBuffer->pHead());
   else
     m_pRow = nullptr;
 }

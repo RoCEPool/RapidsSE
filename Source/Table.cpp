@@ -994,7 +994,7 @@ void Table::vPopulateSortArray(char* aSortArray, i8 nElements, i8 iSortElmSize,
   KeyWrk xKeyWrk;
   for (EntryBuffer* pEB = pFirstL0Buffer; pEB; pEB = pEB->pNextBuffer()) {
     
-    Entry* pRow = pEB->pFirstRow();
+    Entry* pRow = pEB->pHead();
     pRow = pEB->pNextRow(pRow);
     
     //if (gxArguments.m_bVerbose)

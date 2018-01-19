@@ -251,7 +251,7 @@ void IndexData::vAppendEntriesFromBuffer(EntryBuffer* pEntryBuffer, EntryBuffer*
   
   m_zLock.vGrabWrite();
   
-  Entry* pRow = pEntryBuffer->pFirstRow();
+  Entry* pRow = pEntryBuffer->pHead();
 
   if (m_pRoot == nullptr) {
     ASSERT( ! m_pCurrentBuffer )
