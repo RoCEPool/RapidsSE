@@ -35,6 +35,7 @@ namespace Interface
     AccessPath*  m_pAccessPath;
   
     Entry* m_pEntry;
+    Row*   m_pRow;
     Tx*    m_pTx;
   
     bool   m_bDisplay;

@@ -986,7 +986,7 @@ eEC RapidsSE_ExportData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath, i8 iTraceLev
 
 /*----------------------------------------------------------------------------*/
 /* fetch next buffer                                                          */
-/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*//*
 eEC RapidsSE_FetchNextBuffer(SEitf* pSEitf, void** ppEntryBuffer, void** ppFirstEntry, void** ppEntries, i8 iTraceLevel)
 {
   eEC eResult;
@@ -1040,7 +1040,7 @@ eEC RapidsSE_FetchNextBuffer(SEitf* pSEitf, void** ppEntryBuffer, void** ppFirst
     return EC_SE_UNKNOWN_ERROR;
   }
 }
-
+*/
 /*----------------------------------------------------------------------------*/
 /* fetch next row                                                             */
 /*----------------------------------------------------------------------------*/
@@ -1068,12 +1068,10 @@ eEC RapidsSE_FetchNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
     bool bNextRow = pSEitf->bNextRow();
     
     if (bNextRow) {
-      Entry* pEntry = pSEitf->m_pEntry;
-//    RowData::vRowAsString(pSEitf->m_sResponse, (Stz*)pEntry->aRow(), pSEitf->m_pCurrentTable->pColumnVec());
-//    *ppRow = (void*)pSEitf->m_sResponse.aChar();
+      //Entry* pEntry = pSEitf->m_pEntry;
       
       // return back row
-      *ppRow = (void*)(Stz*)pEntry->aRowData();
+      *ppRow = (void*)(Stz*)pSEitf->m_pRow;
     }
     else {
       *ppRow = nullptr;
@@ -1100,6 +1098,7 @@ eEC RapidsSE_FetchNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* fetch next row                                                             */
 /*----------------------------------------------------------------------------*/
+/*
 eEC RapidsSE_FetchNextRow2(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
 {
   eEC eResult;
@@ -1151,6 +1150,7 @@ eEC RapidsSE_FetchNextRow2(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
     return EC_SE_UNKNOWN_ERROR;
   }
 }
+*/
 
 /*----------------------------------------------------------------------------*/
 /* fetch next row                                                             */

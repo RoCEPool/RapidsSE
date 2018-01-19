@@ -179,6 +179,7 @@ SEitf::SEitf(i8 iPartition)
   m_pPlanner        = nullptr;
   m_pAccessPath     = nullptr;
   m_pEntry          = nullptr;
+  m_pRow            = nullptr;
   m_pCurrentTable   = nullptr;
   m_pCurrentIndex   = nullptr;
   m_pTx             = nullptr;
@@ -816,6 +817,7 @@ bool SEitf::bNextRow(void)
   else {
     // save entry in SEitf
     m_pEntry = pEntry;
+    m_pRow = pEntry->aRow();
     return true;
   }
   
