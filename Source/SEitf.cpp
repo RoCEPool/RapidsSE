@@ -815,6 +815,9 @@ bool SEitf::bNextRow(void)
   
   if (!pEntry) {
     m_ziLastBuffersScanned = 0;
+    m_pEntryBuffer = nullptr;
+    m_pEntry = nullptr;
+    m_aRow = nullptr;
     return false;
   }
   else {
@@ -859,13 +862,17 @@ bool SEitf::bNextRow2(void)
         
         if (m_pEntryBuffer->bIsLast()) {
           m_ziLastBuffersScanned++;
-          //vTrace("m_ziLastBuffersScanned: %lld\n"_Stz, pSEitf->m_ziLastBuffersScanned );
+          vTrace("m_ziLastBuffersScanned: %lld\n"_Stz, m_ziLastBuffersScanned );
         }
         
         if ( ! m_pEntry ) {
-          RASSERT(m_ziLastBuffersScanned == m_ziLastBuffers);
-          m_ziLastBuffersScanned = 0;
-          return false;
+          if (m_ziLastBuffersScanned == m_ziLastBuffers) {
+            m_ziLastBuffersScanned = 0;
+            return false;
+          }
+          m_pItemBuffer = nullptr;
+          m_pEntryBuffer = nullptr;
+          continue;
         }
         
         m_aRow = m_pEntry->aRow();
@@ -885,9 +892,13 @@ bool SEitf::bNextRow2(void)
         }
         
         if ( ! m_pResultRow ) {
-          RASSERT(m_ziLastBuffersScanned == m_ziLastBuffers);
-          m_ziLastBuffersScanned = 0;
-          return false;
+          if (m_ziLastBuffersScanned != m_ziLastBuffers) {
+            m_ziLastBuffersScanned = 0;
+            return false;
+          }
+          m_pItemBuffer = nullptr;
+          m_pResultBuffer = nullptr;
+          continue;
         }
         
         m_aRow = m_pResultRow->aRow();

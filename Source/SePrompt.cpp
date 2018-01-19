@@ -2212,7 +2212,7 @@ void SePrompt::vIterateBuffers(void)
   
   if (m_pSEitf->m_bDisplay) {
     
-    while (m_pSEitf->bNextRow2()) {
+    while (m_pSEitf->bNextRow()) {
       
       m_pSEitf->m_iRowsProcessed++;
       

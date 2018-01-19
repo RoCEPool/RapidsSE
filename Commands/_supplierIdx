@@ -34,6 +34,9 @@ print "loading supplier.tbl..." ;
 ld supplier "/tpch/supplier.tbl" ;
 print "loaded supplier.tbl..." ;
 
+print "\nSelecting rows from supplier (idx1) where S_SUPPKEY == 22 ...\n" ;
+fetch supplier "S_SUPPKEY 22 ==";
+
 docol epochDump;
 
 pwf ;
@@ -62,7 +65,6 @@ fetch supplier "S_SUPPKEY 9995 >=";
 
 print "\nSelecting rows from supplier (idx1) where S_SUPPKEY >= 9995 & <= 1995 ...\n" ;
 rgeselidx supplier idx1 9995 1995 ;
-
 
 print "\nSelecting rows from supplier (idx2) where S_NAME >= 'Supplier#000009900' ...\n" ;
 fetch supplier "S_NAME Supplier#000009900 >=" ;
@@ -109,10 +111,12 @@ visidx supplier idx3;
 displayOn;
 
 print "\nSelecting rows from supplier (idx1) where S_SUPPKEY = 5 ...\n" ;
-keyselidx supplier idx1 5 ;
+//keyselidx supplier idx1 5 ;
 
+print "\nSelecting rows from supplier (idx1) where S_SUPPKEY == 22 ...\n" ;
 fetch supplier "S_SUPPKEY 22 ==";
 
+print "\nSelecting rows from supplier (idx1) where S_SUPPKEY >= 2 ...\n" ;
 fetch supplier "S_SUPPKEY 2 >=";
 
 /*============================================================================*/
