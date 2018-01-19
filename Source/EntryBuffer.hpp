@@ -94,7 +94,6 @@ namespace DBobjects
   
     Entry*       pAllotEntry(i8 nBytes);
     Entry*       pAllotEntryBytes(i8 nBytes);
-  
     void         vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries);
     Entry*       pAppendEntry(EntWrk& xEntWrk,EntryVec& xPriorVec);
     bool         bAppendEntry(Entry* pRowEntry, Entry** ppNewEntry);
@@ -112,9 +111,9 @@ namespace DBobjects
     bool         bInsertRow(Entry* pOldRow, Entry** ppRow);
     EntryBuffer* pNewNextBuffer(void);
     Entry*       pNextEntry(Entry* pEntry);
-    EntryBuffer* pPositionLevel(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare, i8 iLevel);
     Entry*       pPosition(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare);
     Entry*       pPosition(KeyWrk &xKeyWrk, eRO eRelOp);
+    EntryBuffer* pPositionLevel(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare, i8 iLevel);
     void         vPriorVecHead(EntryVec& xPriorVec);
     bool         bRemove(Key* aKey);
     void         vRowCount(void);
