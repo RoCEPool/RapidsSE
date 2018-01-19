@@ -832,7 +832,7 @@ bool SEitf::bNextRow(void)
 /*----------------------------------------------------------------------------*/
 /* iterate entry buffers from the buffer queue (rows in response buffer)      */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bNextRow2(void)
+bool SEitf::bNextRow2(i8& nPartition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
 
@@ -876,6 +876,7 @@ bool SEitf::bNextRow2(void)
         }
         
         m_aRow = m_pEntry->aRow();
+        nPartition = m_pEntryBuffer->nPartitionNo();
         return true;
       }
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -902,6 +903,7 @@ bool SEitf::bNextRow2(void)
         }
         
         m_aRow = m_pResultRow->aRow();
+        nPartition = m_pResultBuffer->nPartitionNo();
         return true;
       }
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -920,6 +922,7 @@ bool SEitf::bNextRow2(void)
       m_pEntry = m_pEntryBuffer->pNextEntry(m_pEntry);
       if (m_pEntry) {
         m_aRow = m_pEntry->aRow();
+        nPartition = m_pEntryBuffer->nPartitionNo();
         return true;
       }
       
@@ -940,6 +943,7 @@ bool SEitf::bNextRow2(void)
       m_pResultRow = m_pResultBuffer->pNextRow(m_pResultRow);
       if (m_pResultRow) {
         m_aRow = m_pResultRow->aRow();
+        nPartition = m_pResultBuffer->nPartitionNo();
         return true;
       }
       
@@ -1009,23 +1013,53 @@ void SEitf::vPopBufferQueue(void)
     
     // get entry buffer
     PtrVal* pPtrVal = xValWrk.pNestedPtrVal();
-    m_pEntryBuffer = (EntryBuffer*)(pPtrVal->pPtr());
+    m_pItemBuffer = (EntryBuffer*)(pPtrVal->pPtr());
     
-    // is it the last buffer
-    if (m_pEntryBuffer->bIsLast()) {
-      m_ziLastBuffersScanned++;
+    if (CN_ENTRYBUFFER == m_pItemBuffer->eClass()) {
       
-      // if popped all last buffers return
-      if ( m_ziLastBuffersScanned == m_ziLastBuffers)
-        break;
+      m_pEntryBuffer = (EntryBuffer*)m_pItemBuffer;
+      m_pResultBuffer = nullptr;
       
-      delete m_pEntryBuffer;
+      // is it the last buffer
+      if (m_pEntryBuffer->bIsLast()) {
+        m_ziLastBuffersScanned++;
+        
+        // if popped all last buffers return
+        if ( m_ziLastBuffersScanned == m_ziLastBuffers)
+          break;
+        
+        delete m_pEntryBuffer;
+      }
     }
+    else if (CN_RESULTBUFFER == m_pItemBuffer->eClass()) {
+      m_pResultBuffer = (ResultBuffer*)m_pItemBuffer;
+      m_pEntryBuffer = nullptr;
+      
+      // is it the last buffer
+      if (m_pResultBuffer->bIsLast()) {
+        m_ziLastBuffersScanned++;
+        
+        // if popped all last buffers return
+        if ( m_ziLastBuffersScanned == m_ziLastBuffers)
+          break;
+        
+        delete m_pResultBuffer;
+      }
+      
+    }
+    else {
+      RASSERT(0);
+    }
+    
   }
+  
+  // cleanup
   m_ziLastBuffersScanned = 0;
-  m_pEntryBuffer = nullptr;
+  m_pEntryBuffer  = nullptr;
+  m_pResultBuffer = nullptr;
+  m_pItemBuffer   = nullptr;
   m_pEntry = nullptr;
-  m_aRow = nullptr;
+  m_aRow   = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

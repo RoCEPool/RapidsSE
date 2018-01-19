@@ -2204,6 +2204,7 @@ void SePrompt::vIterateBuffers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
+  i8 nPartition;
   m_pSEitf->m_iRowsProcessed = 0;
   
   if (gpAttachMap->m_bMetadata ) {
@@ -2212,12 +2213,9 @@ void SePrompt::vIterateBuffers(void)
   
   if (m_pSEitf->m_bDisplay) {
     
-    while (m_pSEitf->bNextRow2()) {
+    while (m_pSEitf->bNextRow2(nPartition)) {
       
       m_pSEitf->m_iRowsProcessed++;
-      
-      // get the partition from the entry buffer
-      i8 iPartition = m_pSEitf->m_pEntryBuffer->nPartitionNo();
       
       //Entry* pEntry = m_pSEitf->m_pEntry;
       //Row* aRow = pEntry->aRow();
@@ -2225,7 +2223,7 @@ void SePrompt::vIterateBuffers(void)
       aRow->vAsBinaryString(m_pSEitf->m_sResponse,
                             m_pSEitf->m_pCurrentTable->pColumnVec());
       if (gpAttachMap->m_bMetadata )
-        vTrace("row: (%lld, %s)\n"_Stz, iPartition, m_pSEitf->m_sResponse.aChar());
+        vTrace("row: (%lld, %s)\n"_Stz, nPartition, m_pSEitf->m_sResponse.aChar());
       else
         vTrace("row: (%s)\n"_Stz, m_pSEitf->m_sResponse.aChar());
     }

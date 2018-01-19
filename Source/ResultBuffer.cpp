@@ -58,13 +58,14 @@ void ResultBuffer::operator delete(void* pBufferAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ResultBuffer::ResultBuffer(Table* pTable)
+ResultBuffer::ResultBuffer(Table* pTable, i8 iPartition)
 : ItemBuffer(CN_RESULTBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
   
-  m_bIsLast = false;
-  m_pTable  = pTable;
+  m_bIsLast    = false;
+  m_pTable     = pTable;
+  m_iPartition = iPartition;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
   
@@ -141,6 +142,16 @@ ResultRow* ResultBuffer::pNextRow(ResultRow* pCurrentRow)
   ResultRow* pNext = reinterpret_cast<ResultRow*>(pNextItem(pCurrentRow));
   
   return pNext;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the partition                                                          */
+/*----------------------------------------------------------------------------*/
+i8 ResultBuffer::nPartitionNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
+  
+  return m_iPartition;
 }
 
 /*----------------------------------------------------------------------------*/

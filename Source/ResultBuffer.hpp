@@ -10,6 +10,7 @@ namespace DBobjects
   protected:
   bool   m_bIsLast; // is this the last buffer in its sequence?jj
   Table* m_pTable;  // table which describes the rows
+  i8     m_iPartition;  // partitionn this result buffer came from
 
     // must be last
     Footer m_xFooter;
@@ -19,7 +20,7 @@ namespace DBobjects
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    ResultBuffer(Table* pTable);
+    ResultBuffer(Table* pTable, i8 iPartition);
    ~ResultBuffer(void);
   
     bool bAppendRow(Row* aRow, i8 nRowSize);
@@ -29,6 +30,7 @@ namespace DBobjects
   
     ResultRow* pFirstRow(void);
     ResultRow* pNextRow(ResultRow* pCurrentRow);
+    i8         nPartitionNo(void);
   
     void vShow(void);
   
