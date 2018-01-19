@@ -1065,7 +1065,8 @@ eEC RapidsSE_FetchNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
     
     Entry* pEntry = nullptr;
     
-    bool bNextRow = pSEitf->bNextRow();
+    i8 iPartition;
+    bool bNextRow = pSEitf->bNextRow2(iPartition);
     
     if (bNextRow) {
       //Entry* pEntry = pSEitf->m_pEntry;
