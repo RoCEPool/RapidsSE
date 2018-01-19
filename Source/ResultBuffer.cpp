@@ -152,11 +152,14 @@ void ResultBuffer::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
 
+  ColumnVec* pColVec = m_pTable->pColumnVec();
+  
   ResultRow* pResultRow;
   for (pResultRow = pFirstRow();
        pResultRow;
        pResultRow = pNextRow(pResultRow)) {
 
+    pResultRow->vShow(pColVec);
   }
 }
 

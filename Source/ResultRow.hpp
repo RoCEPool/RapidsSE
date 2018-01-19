@@ -19,7 +19,7 @@ namespace DBobjects
     static i8 nBytesRequired(i8 nRowSize);
   
     Row* aRow(void);
-
+    void vShow(ColumnVec* pColVec);
   };
   
   ResultRow* _pResultRow(void* aAddr);
