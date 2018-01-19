@@ -2219,8 +2219,9 @@ void SePrompt::vIterateBuffers(void)
       // get the partition from the entry buffer
       i8 iPartition = m_pSEitf->m_pEntryBuffer->nPartitionNo();
       
-      Entry* pEntry = m_pSEitf->m_pEntry;
-      Row* aRow = pEntry->aRow();
+      //Entry* pEntry = m_pSEitf->m_pEntry;
+      //Row* aRow = pEntry->aRow();
+      Row* aRow = m_pSEitf->m_aRow;
       aRow->vAsBinaryString(m_pSEitf->m_sResponse,
                             m_pSEitf->m_pCurrentTable->pColumnVec());
       if (gpAttachMap->m_bMetadata )

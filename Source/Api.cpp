@@ -1071,7 +1071,7 @@ eEC RapidsSE_FetchNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
       //Entry* pEntry = pSEitf->m_pEntry;
       
       // return back row
-      *ppRow = (void*)(Stz*)pSEitf->m_pRow;
+      *ppRow = (void*)(Stz*)pSEitf->m_aRow;
     }
     else {
       *ppRow = nullptr;

@@ -27,15 +27,17 @@ namespace Interface
     eEC    m_eErrorCode;       //
     s256   m_sErrorMsg;
     
-    Table*       m_pCurrentTable;
-    Index*       m_pCurrentIndex;
-    Stz*         m_aRowPtr;
-    EntryBuffer* m_pEntryBuffer;
-    Planner*     m_pPlanner;
-    AccessPath*  m_pAccessPath;
+    Table*        m_pCurrentTable;
+    Index*        m_pCurrentIndex;
+    Stz*          m_aRowPtr;
+    ItemBuffer*   m_pItemBuffer;
+    EntryBuffer*  m_pEntryBuffer;
+    ResultBuffer* m_pResultBuffer;
+    Planner*      m_pPlanner;
+    AccessPath*   m_pAccessPath;
   
     Entry* m_pEntry;
-    Row*   m_pRow;
+    Row*   m_aRow;
     Tx*    m_pTx;
   
     bool   m_bDisplay;
@@ -241,6 +243,7 @@ namespace Interface
     void vEndFetch(void);
     bool bNextBuffer(void);
     bool bNextRow(void);
+    bool bNextRow2(void);
     void vPopBufferQueue(void);
     
     //--------------------------------------------------------------------------

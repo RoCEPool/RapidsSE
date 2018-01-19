@@ -96,10 +96,6 @@ bool ResultBuffer::bAppendRow(Row* aRow, i8 nRowSize)
 
   new(aResultRow) ResultRow(aRow,nResultRowSize,nRowSize);
   
-//  Row* aAllotedRow = aResultRow->aRow();
-//  
-//  MemLib::vCopy(aAllotedRow,aRow,nRowSize,CN_RESULTBUFFER);
-  
   return true;
 }
 

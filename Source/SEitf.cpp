@@ -175,11 +175,13 @@ SEitf::SEitf(i8 iPartition)
   m_sErrorMsg       = aEC[m_eErrorCode];
   m_sResponse       = ""_Stz;
   m_aRowPtr         = nullptr;
+  m_pItemBuffer     = nullptr;
   m_pEntryBuffer    = nullptr;
+  m_pResultBuffer   = nullptr;
   m_pPlanner        = nullptr;
   m_pAccessPath     = nullptr;
   m_pEntry          = nullptr;
-  m_pRow            = nullptr;
+  m_aRow            = nullptr;
   m_pCurrentTable   = nullptr;
   m_pCurrentIndex   = nullptr;
   m_pTx             = nullptr;
@@ -817,7 +819,89 @@ bool SEitf::bNextRow(void)
   else {
     // save entry in SEitf
     m_pEntry = pEntry;
-    m_pRow = pEntry->aRow();
+    m_aRow = pEntry->aRow();
+    return true;
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* iterate entry buffers from the buffer queue (rows in response buffer)      */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bNextRow2(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  // get index buffer from seitf
+  Entry* pEntry = nullptr;
+  i8 iRowCount = 0;
+  
+  while (true) {
+    
+    // if no entry buffer , pop one off the queue
+    if ( ! m_pEntryBuffer ) {
+      
+      // pop buffer off the buffer queue
+      ValWrk xValWrk;
+      while (!m_pBufferQueue->bPop(&xValWrk)) {
+        PosixThread::vSleepMilli(1);
+      }
+      
+      // get entry buffer
+      PtrVal* pPtrVal = xValWrk.pNestedPtrVal();
+      m_pEntryBuffer = (EntryBuffer*)(pPtrVal->pPtr());
+      
+      // get first entry from buffer
+      pEntry = m_pEntryBuffer->pFirstEntry();
+      
+      if (m_pEntryBuffer->bIsLast()) {
+        m_ziLastBuffersScanned++;
+        //vTrace("m_ziLastBuffersScanned: %lld\n"_Stz, pSEitf->m_ziLastBuffersScanned );
+      }
+      
+    }
+    else {
+      
+      // seitf should have an entry
+      ASSERT(m_pEntry);
+      
+      //vTrace("sizeof entry %lld %lld\n"_Stz, sizeof(Entry), sizeof(Class));
+      // get next entry from buffer
+      pEntry = m_pEntryBuffer->pNextEntry(m_pEntry);
+    }
+    
+    // if no entry, get next buffer
+    if (!pEntry) {
+      
+      // if we had an entry buffer delete it
+      if (m_pEntryBuffer)
+        delete m_pEntryBuffer;
+      
+      // null the buffer and get the next
+      m_pEntryBuffer = nullptr;
+    }
+    
+    // if found an entry break or last buffer break out of loop
+    if (pEntry || (!pEntry && m_ziLastBuffersScanned == m_ziLastBuffers))
+      break;
+  }
+  
+  if (!pEntry) {
+    m_ziLastBuffersScanned = 0;
+    return false;
+  }
+  else {
+    // save entry in SEitf
+    m_pEntry = pEntry;
+    m_aRow = pEntry->aRow();
     return true;
   }
   

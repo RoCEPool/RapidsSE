@@ -1067,8 +1067,8 @@ void Task::vIndexScan(MP_Task mpTask)
   // create a temporary index buffer for the results
   pTempEntryBuffer = new EntryBuffer(pIndex->pTable()->pHiddenIndex(), 0, iPartition);
   
-  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  //pResultBuffer = new ResultBuffer(pTable);
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  pResultBuffer = new ResultBuffer(pTable);
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
   // position in the first index buffer
@@ -1098,13 +1098,17 @@ void Task::vIndexScan(MP_Task mpTask)
   while (pEntry) {
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //ColumnVec* pColVec = pTable->pColumnVec();
-    //Row* aRow = pEntry->aRow();
+    ColumnVec* pColVec = pTable->pColumnVec();
+    Row* aRow = pEntry->aRow();
     //aRow->vShow(pColVec);
     //vTrace("\n"_Stz);
 
-    //i8 nRowSize = pEntry->nRowSize();
-    //bool bAppended = pResultBuffer->bAppendRow(aRow,nRowSize);
+    i8 nRowSize = pEntry->nRowSize();
+    bool bAppended = pResultBuffer->bAppendRow(aRow,nRowSize);
+    
+    if ( ! bAppended )
+      int iDebug = 1;
+    
     //pResultBuffer->vShow();
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
