@@ -36,10 +36,10 @@ namespace DBobjects
     eBD   m_eDurability; // buffer durability
     bool  m_bIsLast;
   
-    EntryBuffer* m_pPrevBuffer;  // prev buffer
-    EntryBuffer* m_pNextBuffer;  // next buffer
     EntryBuffer* m_pHigherLevel; // higher level buffer that has entries
                                  // that point to this buffer
+    EntryBuffer* m_pNextBuffer;  // next buffer
+    EntryBuffer* m_pPrevBuffer;  // prev buffer
   
     Index*       m_pIndex;       // index this buffer belongs to
     i8           m_nBufferLevel; // index buffer level
@@ -60,21 +60,35 @@ namespace DBobjects
     EntryBuffer(Index* pIndex, i8 nLevel, i8 nPartitionNo);
     ~EntryBuffer(void);
 
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
+  
+  
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // simple member functions
   
     eBD  eDurability(void);
     void vDurability(eBD eDurability);
+  
+    void         vHigherLevel(EntryBuffer* pHigherLevel);
+    EntryBuffer* pHigherLevel(void);
   
     EntryBuffer* pNextBuffer(void);
     void         vNextBuffer(EntryBuffer* pNextBuffer);
   
     EntryBuffer* pPrevBuffer(void);
     void         vPrevBuffer(EntryBuffer* pPrevBuffer);
+
+    i8           nBufferLevel(void);
   
+    void         vIndex(Index* pIndex);
+    Index*       pIndex(void);
+  
+    void         vPartitionNo(i8 nPartitionNo);
+    i8           nPartitionNo(void);
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // what was RowBufer
   
-    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    
     Entry*     pAllotEntry(i8 nBytes);
     Entry*     pAllotEntryBytes(i8 nBytes);
     bool       bInsertRow(EntWrk& xEntRow, Entry** ppRow);
@@ -82,8 +96,6 @@ namespace DBobjects
 
     void       vIsLast(bool bIsLast);
     bool       bIsLast(void);
-    void       vPartitionNo(i8 nPartitionNo);
-    i8         nPartitionNo(void);
     void       vRowCount(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -94,17 +106,12 @@ namespace DBobjects
     bool         bAppendEntry(Entry* pRowEntry, Entry** ppNewEntry);
     bool         bAppendEntry(i8 iTxId, Stz* pRow, i8 iLength);
     bool         bAppendRow(i8 iTxId, Stz* pRow, i8 iLength);
-    i8           nBufferLevel(void);
     void         vBufferCount(i8& nBufferCount);
     i8           iDecile(void);
     void         vDump(void);
     Entry*       pFirstEntry(void);
     bool         bHasSpace(i8 nBytes);
     Entry*       pHeadEntry(void);
-    void         vHigherLevel(EntryBuffer* pHigherLevel);
-    EntryBuffer* pHigherLevel(void);
-    void         vIndex(Index* pIndex);
-    Index*       pIndex(void);
     bool         bInsertEntry(i8 iTxId, Stz* pRow, i8 iLength);
     bool         bInsert(EntWrk& xEntWrk);
     EntryBuffer* pNewNextBuffer(void);

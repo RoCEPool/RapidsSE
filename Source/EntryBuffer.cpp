@@ -65,9 +65,11 @@ EntryBuffer::EntryBuffer(void)
   
   m_eDurability   = BD_NONE;
   m_bIsLast       = false;
-  m_pPrevBuffer   = nullptr;
-  m_pNextBuffer   = nullptr;
+  
   m_pHigherLevel  = nullptr;
+  m_pNextBuffer   = nullptr;
+  m_pPrevBuffer   = nullptr;
+
   m_pIndex        = nullptr;
   m_nBufferLevel  = 0;
   m_nPartitionNo  = -1;
@@ -89,9 +91,11 @@ EntryBuffer::EntryBuffer(i8 iDataBytes)
   
   m_eDurability   = BD_NONE;
   m_bIsLast       = false;
-  m_pPrevBuffer   = nullptr;
-  m_pNextBuffer   = nullptr;
+  
   m_pHigherLevel  = nullptr;
+  m_pNextBuffer   = nullptr;
+  m_pPrevBuffer   = nullptr;
+  
   m_pIndex        = nullptr;
   m_nBufferLevel  = 0;
   m_nPartitionNo  = -1;
@@ -112,13 +116,14 @@ EntryBuffer::EntryBuffer(Index* pIndex, i8 nBufferLevel, i8 nPartitionNo)
   
   m_eDurability  = BD_NONE;
   m_bIsLast      = false;
-  m_pPrevBuffer  = nullptr;
-  m_pNextBuffer  = nullptr;
+  
   m_pHigherLevel = nullptr;
+  m_pNextBuffer  = nullptr;
+  m_pPrevBuffer  = nullptr;
+  
   m_pIndex       = pIndex;
   m_nBufferLevel = nBufferLevel;
   m_nPartitionNo = nPartitionNo;
-  
   
   _checkInitialised_(CN_ENTRYBUFFER);
   
@@ -139,13 +144,14 @@ EntryBuffer::EntryBuffer(eCN eClassNo)
   
   m_eDurability  = BD_TEMPORARY;
   m_bIsLast      = false;
-  m_pPrevBuffer  = nullptr;
-  m_pNextBuffer  = nullptr;
+  
   m_pHigherLevel = nullptr;
+  m_pNextBuffer  = nullptr;
+  m_pPrevBuffer  = nullptr;
+  
   m_pIndex       = nullptr;
   m_nBufferLevel = 0;
   m_nPartitionNo = -1;
-  
   
   _checkInitialised_(eClassNo);
   
@@ -160,6 +166,34 @@ EntryBuffer::~EntryBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
 
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Static Functions --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* dump entry buffer                                                          */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
+{
+  ASSERT(eClass == CN_ENTRYBUFFER);
+  ASSERT(pObject->eClass() == CN_ENTRYBUFFER);
+  
+  EntryBuffer* pEntryBuffer = reinterpret_cast<EntryBuffer*>(pObject);
+  
+  vTrace("durability %s partition %lld rows %lld used %lld free %lld prevBuffer %p nextBuffer %p\n"_Stz,
+         pEntryBuffer->m_nPartitionNo,
+         aBD[pEntryBuffer->m_eDurability],
+         pEntryBuffer->m_nItems,
+         pEntryBuffer->m_xWsp.nUsed(),
+         pEntryBuffer->m_xWsp.nFree(),
+         pEntryBuffer->m_pPrevBuffer,
+         pEntryBuffer->m_pNextBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Member Functions --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* get durability                                                             */
@@ -179,6 +213,51 @@ void EntryBuffer::vDurability(eBD eDurability)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   m_eDurability = eDurability;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set buffer is last                                                         */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vIsLast(bool bIsLast)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  m_bIsLast = bIsLast;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get if buffer is last                                                      */
+/*----------------------------------------------------------------------------*/
+bool EntryBuffer::bIsLast(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  return m_bIsLast;
+}
+
+
+
+
+/*----------------------------------------------------------------------------*/
+/* get the higher level index buffer                                          */
+/*----------------------------------------------------------------------------*/
+EntryBuffer* EntryBuffer::pHigherLevel(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  return (EntryBuffer*)m_pHigherLevel;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the higher level index buffer                                          */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vHigherLevel(EntryBuffer* pHigherLevel)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  //ASSERT( ! m_pHigherLevel);
+  
+  m_pHigherLevel = pHigherLevel;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -222,27 +301,51 @@ void EntryBuffer::vPrevBuffer(EntryBuffer* pPrevBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the buffer level                                                       */
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
+i8 EntryBuffer::nBufferLevel(void)
+{
+  return m_nBufferLevel;
+}
 
 /*----------------------------------------------------------------------------*/
-/* dump rowbuffer                                                             */
+/* set the index of the index buffer                                          */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
+void EntryBuffer::vIndex(Index* pIndex)
 {
-  ASSERT(eClass == CN_ENTRYBUFFER);
-  ASSERT(pObject->eClass() == CN_ENTRYBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  EntryBuffer* pRowBuffer = reinterpret_cast<EntryBuffer*>(pObject);
+  m_pIndex = pIndex;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the index of the index buffer                                          */
+/*----------------------------------------------------------------------------*/
+Index* EntryBuffer::pIndex(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  vTrace("durability %s partition %lld rows %lld used %lld free %lld prevBuffer %p nextBuffer %p\n"_Stz,
-         pRowBuffer->m_nPartitionNo,
-         aBD[pRowBuffer->m_eDurability],
-         pRowBuffer->m_nItems,
-         pRowBuffer->m_xWsp.nUsed(),
-         pRowBuffer->m_xWsp.nFree(),
-         pRowBuffer->m_pPrevBuffer,
-         pRowBuffer->m_pNextBuffer);
+  return m_pIndex;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set partition no                                                           */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vPartitionNo(i8 nPartitionNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  m_nPartitionNo = nPartitionNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get partition no                                                           */
+/*----------------------------------------------------------------------------*/
+i8 EntryBuffer::nPartitionNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  return m_nPartitionNo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -352,46 +455,6 @@ bool EntryBuffer::bInsertRow(Entry* pOldRow, Entry** ppRow)         //# critical
 }
 
 /*----------------------------------------------------------------------------*/
-/* set buffer is last                                                         */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vIsLast(bool bIsLast)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  m_bIsLast = bIsLast;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get if buffer is last                                                      */
-/*----------------------------------------------------------------------------*/
-bool EntryBuffer::bIsLast(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  return m_bIsLast;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set partition no                                                           */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vPartitionNo(i8 nPartitionNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  m_nPartitionNo = nPartitionNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get partition no                                                           */
-/*----------------------------------------------------------------------------*/
-i8 EntryBuffer::nPartitionNo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  return m_nPartitionNo;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set row count                                                              */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vRowCount(void)
@@ -472,13 +535,6 @@ void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iE
   
 }
 
-/*----------------------------------------------------------------------------*/
-/* get the buffer level                                                       */
-/*----------------------------------------------------------------------------*/
-i8 EntryBuffer::nBufferLevel(void)
-{
-  return m_nBufferLevel;
-}
 
 /*----------------------------------------------------------------------------*/
 /* get decile full of the buffer                                              */
@@ -580,48 +636,6 @@ Entry* EntryBuffer::pHeadEntry(void)
   Entry* pHead = _pEntry(m_xWsp.aArea());
   
   return pHead;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the higher level index buffer                                          */
-/*----------------------------------------------------------------------------*/
-EntryBuffer* EntryBuffer::pHigherLevel(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  return (EntryBuffer*)m_pHigherLevel;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the higher level index buffer                                          */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vHigherLevel(EntryBuffer* pHigherLevel)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  //ASSERT( ! m_pHigherLevel);
-  
-  m_pHigherLevel = pHigherLevel;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the index of the index buffer                                          */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vIndex(Index* pIndex)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  m_pIndex = pIndex;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the index of the index buffer                                          */
-/*----------------------------------------------------------------------------*/
-Index* EntryBuffer::pIndex(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  return m_pIndex;
 }
 
 /*----------------------------------------------------------------------------*/
