@@ -479,11 +479,35 @@ void Task::vEntryBufferToEntryBuffer(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* entryBuffer::toEntryBuffer -- convert string to entry buffer pointer       */
 /*----------------------------------------------------------------------------*/
-bool Task::bInsertRow(EntryBuffer* pEntryBuffer, Entry* pEntry, SEitf* pSEitf)
+bool Task::bAppendRow(ResultBuffer* pResultBuffer, Entry* pEntry, SEitf* pSEitf)
 {
   
   Entry* pRow;
 
+  Id xId = pEntry->xId();
+  
+  if (pSEitf && pSEitf->bRowSeen(xId)) {
+    // row already inserted
+    return true;
+  }
+  
+  Row* aRow = pEntry->aRow();
+  i8 nRowSize = pEntry->nRowSize();
+
+  if (pResultBuffer->bAppendRow(aRow, nRowSize))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* entryBuffer::toEntryBuffer -- convert string to entry buffer pointer       */
+/*----------------------------------------------------------------------------*/
+bool Task::bInsertRow(EntryBuffer* pEntryBuffer, Entry* pEntry, SEitf* pSEitf)
+{
+  
+  Entry* pRow;
+  
   Id xId = pEntry->xId();
   
   if (pSEitf && pSEitf->bRowSeen(xId)) {

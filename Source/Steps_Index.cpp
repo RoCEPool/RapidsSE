@@ -84,7 +84,7 @@ void Task::vIndexBuffer(MP_Task mpTask)
   ENTRY("vIndexBuffer"_Stz);
   
   Object* pPtrIndex = nullptr;
-  Object* pPtrTable = nullptr;
+
   i8 iPartition;
   ValWrk xValWrk;
   
@@ -255,7 +255,6 @@ void Task::vIndexExactKey(MP_Task mpTask)
   ENTRY("vIndexExactKey"_Stz);
   
   Object* pPtrIndex = nullptr;
-  Object* pPtrTable = nullptr;
   Object* pPtrQueue = nullptr;
   Object* pPtrPlanner = nullptr;
   Entry* pEntry = nullptr;
@@ -265,7 +264,6 @@ void Task::vIndexExactKey(MP_Task mpTask)
   SEitf* pSEitf = mpTask->m_pSEitf;
   ResultBuffer* pResultBuffer;
 
-  Entry* pRow;
   i8 i_Phrase;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
@@ -603,7 +601,6 @@ void Task::vIndexLowerBound(MP_Task mpTask)
   ENTRY("vIndexLowerBound"_Stz);
   
   Object* pPtrIndex = nullptr;
-  Object* pPtrTable = nullptr;
   Object* pPtrQueue = nullptr;
   Object* pPtrPlanner = nullptr;
   Entry* pEntry = nullptr;
@@ -611,9 +608,8 @@ void Task::vIndexLowerBound(MP_Task mpTask)
   ValWrk xValWrk;
   i8 iPartition;
   SEitf* pSEitf = mpTask->m_pSEitf;
-  EntryBuffer* pTempEntryBuffer;
+  ResultBuffer* pResultBuffer;
   
-  Entry* pRow;
   i8 i_Phrase;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
@@ -650,8 +646,8 @@ void Task::vIndexLowerBound(MP_Task mpTask)
   Partition* pPartition = pTable->pPartition(iPartition);
   IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
   
-  // create a temporary index buffer for the results
-  pTempEntryBuffer = new EntryBuffer(pIndex->pTable()->pHiddenIndex(), 0, iPartition);
+  // create a result buffer for the results
+  pResultBuffer = new ResultBuffer(pTable, iPartition);
   
   // get the entryBuffer looking for the key
   KeyWrk xKeyWrk;
@@ -681,19 +677,19 @@ void Task::vIndexLowerBound(MP_Task mpTask)
     // get the dataRow from the hidden index
     Entry* pDataRowEntry = Task::pDataRow(pTable, pEntry);
     
-    // insert row from entry in tempEntryBuffer
-    if ( ! bInsertRow(pTempEntryBuffer, pDataRowEntry, pSEitf)) {
+    // insert row from entry in resultBuffer
+    if ( ! bAppendRow(pResultBuffer, pDataRowEntry, pSEitf)) {
       
       // buffer must be full
       // put this tempEntryBuffer in seitf bufferQueue
-      xValWrk = (Object*)pTempEntryBuffer;
+      xValWrk = (Object*)pResultBuffer;
       pQueue->bAppend(xValWrk.pNestedValue());
       
-      // create another temporary index buffer for the results
-      pTempEntryBuffer = new EntryBuffer(pIndex->pTable()->pHiddenIndex(), 0, iPartition);
+      // create another result buffer for the results
+      pResultBuffer = new ResultBuffer(pTable, iPartition);
       
       // insert row from entry in temporary buffer
-      bool bResult = bInsertRow(pTempEntryBuffer, pDataRowEntry, pSEitf);
+      bool bResult = bAppendRow(pResultBuffer, pDataRowEntry, pSEitf);
       RASSERT(bResult);
     }
     
@@ -716,10 +712,10 @@ void Task::vIndexLowerBound(MP_Task mpTask)
 LastBuffer:
   
   // mark this buffer as the last buffer
-  pTempEntryBuffer->vIsLast(true);
+  pResultBuffer->vIsLast(true);
   
   // put the buffer in the seitf bufferQueue
-  xValWrk = (Object*)pTempEntryBuffer;
+  xValWrk = (Object*)pResultBuffer;
   pQueue->bAppend(xValWrk.pNestedValue());
   
   // mark that a fetch task has ended
@@ -758,7 +754,6 @@ void Task::vIndexPopulate(MP_Task mpTask)
 {
   ENTRY("vIndexPopulate"_Stz);
   Object* pPtrIndex = nullptr;
-  Object* pPtrTable = nullptr;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
     THROW_INVALID_DSTACK("index.populate"_Stz);
@@ -838,7 +833,6 @@ void Task::vIndexPositionFirst(MP_Task mpTask)
   ENTRY("vIndexFirst"_Stz);
   
   Object* pPtrIndex = nullptr;
-  Object* pPtrTable = nullptr;
   ValWrk xValWrk;
   i8 iPartition;
   
@@ -870,7 +864,6 @@ void Task::vIndexRange(MP_Task mpTask)
   ENTRY("vIndexRange"_Stz);
   
   Object* pPtrIndex = nullptr;
-  Object* pPtrTable = nullptr;
   Object* pPtrQueue = nullptr;
   Object* pPtrPlanner = nullptr;
   Entry* pEntry = nullptr;
@@ -883,7 +876,6 @@ void Task::vIndexRange(MP_Task mpTask)
   SEitf* pSEitf = mpTask->m_pSEitf;
   EntryBuffer* pTempEntryBuffer;
   
-  Entry* pRow;
   i8 i_Phrase;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
@@ -1037,8 +1029,6 @@ void Task::vIndexScan(MP_Task mpTask)
   ValWrk xValWrk;
   i8 iPartition;
   SEitf* pSEitf = mpTask->m_pSEitf;
-  EntryBuffer* pTempEntryBuffer;
-  Entry* pRowEntry;
   
   ResultBuffer* pResultBuffer;
   
@@ -1423,7 +1413,6 @@ void Task::vIndexUpper(MP_Task mpTask)
   Object* pPtrPlanner = nullptr;
   Object* pPtrIndex = nullptr;
   Object* pPtrEntry = nullptr;
-  Object* pPtrTable = nullptr;
 
   ValWrk xValWrk;
   i8 iPartition;
@@ -1456,12 +1445,6 @@ void Task::vIndexUpper(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
     THROW_INVALID_DSTACK("index.upper"_Stz);
   
-  i8 iIndexNo = pIndex->iIndexNo();
-  Table* pTable = pIndex->pTable();
-  
-  Partition* pPartition = pTable->pPartition(iPartition);
-  IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
-  
   // assuming non-complex key
   //ASSERT(1 == pIndex->pIdxColVec()->nItems());
   KeyWrk xKeyWrk;
@@ -1486,7 +1469,6 @@ void Task::vIndexUpperBound(MP_Task mpTask)
   ENTRY("vIndexUpperBound"_Stz);
   
   Object* pPtrIndex = nullptr;
-  Object* pPtrTable = nullptr;
   Object* pPtrQueue = nullptr;
   Object* pPtrPlanner = nullptr;
   Entry* pEntry = nullptr;
@@ -1496,7 +1478,6 @@ void Task::vIndexUpperBound(MP_Task mpTask)
   SEitf* pSEitf = mpTask->m_pSEitf;
   EntryBuffer* pTempEntryBuffer;
   
-  Entry* pRow;
   i8 i_Phrase;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
@@ -1626,7 +1607,6 @@ void Task::vIndexVerify(MP_Task mpTask)
   ENTRY("vIndexVerify"_Stz);
   
   Object* pPtrIndex;
-  i8 iDetailed;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
     THROW_INVALID_DSTACK("index.verify"_Stz);

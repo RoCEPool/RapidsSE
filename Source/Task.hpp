@@ -1445,7 +1445,7 @@ namespace Tasks
     static void vZeroGreater(MP_Task mpTask);
     
   private:
-    
+    static bool   bAppendRow(ResultBuffer* pResultBuffer, Entry* pEntry, Interface::SEitf* pSEitf);
     static Entry* pDataRow(Table* pTable, Entry* pEntry);
     static bool   bInsertRow(EntryBuffer* pIndexBuffer, Entry* pEntry, Interface::SEitf* pSEitf);
     
