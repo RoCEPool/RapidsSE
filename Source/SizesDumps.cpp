@@ -115,6 +115,7 @@ pDUMPFUN *gpDump[]
   /* 71 */ &Dump::vDummy,           // CN_PARTITIONSCHEDULER
   /* 72 */ &Dump::vDummy,           // CN_PARTITIONVEC
   /* 73 */ &Dump::vInvalid,         // CN_PATHVEC
+  /*    */ &Dump::vInvalid,         // CN_PERFORMANCEBUFFER
   /*    */ &Dump::vInvalid,         // CN_PERFORMANCEENTRY
   /*    */ &Dump::vInvalid,         // CN_PERFORMANCETRACE
   /* 74 */ &Plan::vDump,            // CN_PLAN
@@ -266,7 +267,7 @@ i8 giClassSize[]
   /* 52 */ sizeof(IdxVec),             // CN_IDXVEC
   /* 53 */ 0,                          // CN_INDEXLEVELS
   /*    */ 0,                          // CN_ITEM
-  /*    */ sizeof(ItemBuffer),     // CN_ITEMBUFFER
+  /*    */ sizeof(ItemBuffer),         // CN_ITEMBUFFER
   
   /*    */ sizeof(Heap), // correct    // CN_JUMBOPERSISTENT
   /* 54 */ sizeof(Heap), // correct    // CN_JUMBOTRANSIENT
@@ -299,6 +300,7 @@ i8 giClassSize[]
   /* 71 */ sizeof(PartitionScheduler), // CN_PARTITIONSCHEDULER
   /* 72 */ sizeof(PartitionVec),       // CN_PARTITIONVEC
   /* 73 */ sizeof(PathVec),            // CN_PATHVEC
+  /*    */ 0,                          // CN_PERFORMANCEBUFFER
   /*    */ sizeof(PerformanceEntry),   // CN_PERFORMANCEENTRY
   /*    */ sizeof(PerformanceTrace),   // CN_PERFORMANCETRACE
   /* 74 */ sizeof(Plan),               // CN_PLAN
@@ -483,6 +485,7 @@ eHT geWhichHeap[]
   /* 71 */ HT_TRANSIENT_SMALL,   // CN_PARTITIONSCHEDULER
   /* 72 */ HT_TRANSIENT_MEDIUM,  // CN_PARTITIONVEC
   /* 73 */ HT_TRANSIENT_MEDIUM,  // CN_PATHVEC
+  /*    */ HT_TRANSIENT_LARGE,   // CN_PERFORMANCEBUFFER
   /*    */ HT_INVALID,           // CN_PERFORMANCEENTRY
   /*    */ HT_TRANSIENT_SMALL,   // CN_PERFORMANCETRACE
   /* 74 */ HT_TRANSIENT_MEDIUM,  // CN_PLAN
