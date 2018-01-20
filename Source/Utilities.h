@@ -16,6 +16,7 @@ using namespace Utilities;
 
 //------------------------------------------------------------------------------
 
+#include "PerformanceBuffer.hpp"
 #include "PerformanceEntry.hpp"
 #include "PerformanceTrace.hpp"
 #include "Prefetch.hpp"
