@@ -23,9 +23,7 @@ ld supplier "/tpch/supplier.tbl" ;
 pwf ;
 lf ;
 
-displayOff;
-
-displayOff;
+//displayOff;
 timerStart;
 fetch supplier;
 timerEnd;
