@@ -8,6 +8,9 @@ namespace DBobjects
   class PerformanceBuffer : public ItemBuffer
   {
   protected:
+  
+    PerformanceBuffer* m_pNextBuffer;  // next buffer
+    PerformanceBuffer* m_pPrevBuffer;  // prev buffer
 
     // must be last
     Footer m_xFooter;
@@ -18,6 +21,17 @@ namespace DBobjects
   
     PerformanceBuffer(void);
    ~PerformanceBuffer(void);
+  
+    PerformanceEntry*  pAllotEntry(void);
+  
+    PerformanceBuffer* pNextBuffer(void);
+    void               vNextBuffer(PerformanceBuffer* pNextBuffer);
+    
+    PerformanceBuffer* pPrevBuffer(void);
+    void               vPrevBuffer(PerformanceBuffer* pPrevBuffer);
+  
+    PerformanceEntry*  pFirstEntry(void);
+    PerformanceEntry*  pNextEntry(PerformanceEntry* pCurrentEntry);
   
     Footer* aFooter(void);
   };

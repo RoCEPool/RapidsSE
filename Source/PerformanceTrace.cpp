@@ -134,15 +134,15 @@ void PerformanceTrace::vPrint(void)
   
   i8 iEntryNumber = 0;
   
-  for (EntryBuffer* pEntryBuffer = m_pFirstBuffer;
-       pEntryBuffer;
-       pEntryBuffer = pEntryBuffer->pNextBuffer()) {
+  for (PerformanceBuffer* pPerfBuffer = m_pFirstBuffer;
+       pPerfBuffer;
+       pPerfBuffer = pPerfBuffer->pNextBuffer()) {
     
     for (PerformanceEntry* pEntry =
-         static_cast<PerformanceEntry*>(pEntryBuffer->pHeadEntry());
+         static_cast<PerformanceEntry*>(pPerfBuffer->pFirstEntry());
          pEntry;
          pEntry =
-         static_cast<PerformanceEntry*>(pEntryBuffer->pNextEntry(pEntry))) {
+         static_cast<PerformanceEntry*>(pPerfBuffer->pNextEntry(pEntry))) {
   
       i8 iEntryTicks = pEntry->iTicks();
       xTimerElapsed.vSet(0,iEntryTicks);
@@ -174,10 +174,10 @@ void PerformanceTrace::vPrint(void)
 /*----------------------------------------------------------------------------*/
 void PerformanceTrace::vReset(void)
 {
-  EntryBuffer* pEntryBuffer = m_pFirstBuffer;
+  PerformanceBuffer* pEntryBuffer = m_pFirstBuffer;
 
   while (pEntryBuffer) {
-    EntryBuffer* pNextEntryBuffer = pEntryBuffer->pNextBuffer();
+    PerformanceBuffer* pNextEntryBuffer = pEntryBuffer->pNextBuffer();
     delete pEntryBuffer;
     pEntryBuffer = pNextEntryBuffer;
   }
@@ -194,32 +194,24 @@ PerformanceEntry* PerformanceTrace::newPerformanceEntry(void)
   PerformanceEntry* pPerformanceEntry = nullptr;
   
   if ( ! m_pCurrentBuffer ) {
-    m_pFirstBuffer = new EntryBuffer(CN_ENTRYBUFFER);                    //! fix
+    m_pFirstBuffer = new PerformanceBuffer;
     m_pCurrentBuffer = m_pFirstBuffer;
     m_xTimer.vInit();
     m_xTimer.vStart();
   }
   
-  pPerformanceEntry =
-    static_cast<PerformanceEntry*>(
-      m_pCurrentBuffer->pAllotEntryBytes(sizeof(PerformanceEntry)));
+  pPerformanceEntry = m_pCurrentBuffer->pAllotEntry();
   
-  if (pPerformanceEntry) {
-    new(pPerformanceEntry) PerformanceEntry;
+  if (pPerformanceEntry)
     return pPerformanceEntry;
-  }
   
-  EntryBuffer* pNewBuffer = new EntryBuffer(CN_ENTRYBUFFER);             //! fix
+  PerformanceBuffer* pNewBuffer = new PerformanceBuffer;
   
   m_pCurrentBuffer->vNextBuffer(pNewBuffer);
   pNewBuffer->vPrevBuffer(m_pCurrentBuffer);
   m_pCurrentBuffer = pNewBuffer;
   
-  pPerformanceEntry =
-    static_cast<PerformanceEntry*>(
-      m_pCurrentBuffer->pAllotEntryBytes(sizeof(PerformanceEntry)));
-  
-  new(pPerformanceEntry) PerformanceEntry;
+  pPerformanceEntry = m_pCurrentBuffer->pAllotEntry();
   
   return pPerformanceEntry;
 }

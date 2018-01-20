@@ -53,6 +53,9 @@ PerformanceBuffer::PerformanceBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PERFORMANCEBUFFER,_FOOTER_);
   
+  m_pNextBuffer = nullptr;
+  m_pPrevBuffer = nullptr;
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PERFORMANCEBUFFER,_FOOTER_);
   
   _checkInitialised_(CN_PERFORMANCEBUFFER);
@@ -64,6 +67,92 @@ PerformanceBuffer::PerformanceBuffer(void)
 PerformanceBuffer::~PerformanceBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PERFORMANCEBUFFER,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* allot new performance entry                                                */
+/*----------------------------------------------------------------------------*/
+PerformanceEntry* PerformanceBuffer::pAllotEntry(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PERFORMANCEBUFFER,_FOOTER_);
+  
+  PerformanceEntry* pEntry =
+    reinterpret_cast<PerformanceEntry*>(pAllotItem(sizeof(PerformanceEntry)));
+  
+  if ( ! pEntry )
+    return nullptr;
+  
+  new(pEntry) PerformanceEntry;
+  
+  return pEntry;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next buffer                                                            */
+/*----------------------------------------------------------------------------*/
+PerformanceBuffer* PerformanceBuffer::pNextBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PERFORMANCEBUFFER,_FOOTER_);
+  
+  return m_pNextBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set next buffer                                                            */
+/*----------------------------------------------------------------------------*/
+void PerformanceBuffer::vNextBuffer(PerformanceBuffer* pNextBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PERFORMANCEBUFFER,_FOOTER_);
+  
+  m_pNextBuffer = pNextBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get prev buffer                                                            */
+/*----------------------------------------------------------------------------*/
+PerformanceBuffer* PerformanceBuffer::pPrevBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PERFORMANCEBUFFER,_FOOTER_);
+  
+  return m_pPrevBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set prev buffer                                                            */
+/*----------------------------------------------------------------------------*/
+void PerformanceBuffer::vPrevBuffer(PerformanceBuffer* pPrevBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PERFORMANCEBUFFER,_FOOTER_);
+  
+  m_pPrevBuffer = pPrevBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get first performance entry                                                */
+/*----------------------------------------------------------------------------*/
+PerformanceEntry* PerformanceBuffer::pFirstEntry(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  PerformanceEntry* pFirst = reinterpret_cast<PerformanceEntry*>(pFirstItem());
+  
+  return pFirst;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next performance entry                                                 */
+/*----------------------------------------------------------------------------*/
+PerformanceEntry* PerformanceBuffer::pNextEntry(PerformanceEntry* pCurrentEntry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PERFORMANCEBUFFER,_FOOTER_);
+  
+  PerformanceEntry* pNext = reinterpret_cast<PerformanceEntry*>(pNextItem(pCurrentEntry));
+  
+  return pNext;
 }
 
 /*----------------------------------------------------------------------------*/
