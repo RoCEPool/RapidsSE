@@ -30,15 +30,15 @@ namespace Interface
     Table*        m_pCurrentTable;
     Index*        m_pCurrentIndex;
     Stz*          m_aRowPtr;
-    ItemBuffer*   m_pItemBuffer;
     EntryBuffer*  m_pEntryBuffer;
-    ResultBuffer* m_pResultBuffer;
     Planner*      m_pPlanner;
     AccessPath*   m_pAccessPath;
   
-    Entry* m_pEntry;
-    ResultRow* m_pResultRow;
-    Row*   m_aRow;
+    ResultBuffer* m_pResultBuffer;
+    Entry*        m_pEntry;
+    ResultRow*    m_pResultRow;
+    Row*          m_aRow;
+  
     Tx*    m_pTx;
   
     bool   m_bDisplay;

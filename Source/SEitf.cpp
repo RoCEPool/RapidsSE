@@ -175,7 +175,6 @@ SEitf::SEitf(i8 iPartition)
   m_sErrorMsg       = aEC[m_eErrorCode];
   m_sResponse       = ""_Stz;
   m_aRowPtr         = nullptr;
-  m_pItemBuffer     = nullptr;
   m_pEntryBuffer    = nullptr;
   m_pResultBuffer   = nullptr;
   m_pPlanner        = nullptr;
@@ -840,7 +839,7 @@ bool SEitf::bNextRow2(i8& nPartition)
   
   while (true) {
   
-    while ( ! m_pItemBuffer ) {
+    while ( ! m_pResultBuffer ) {
       
       // attempt to pop buffer off the buffer queue
       if ( ! m_pBufferQueue->bPop(&xValWrk) ) {
@@ -848,14 +847,13 @@ bool SEitf::bNextRow2(i8& nPartition)
         continue;
       }
       PtrVal* pPtrVal = xValWrk.pNestedPtrVal();
-      m_pItemBuffer = (ItemBuffer*)(pPtrVal->pPtr());
+      m_pResultBuffer = (ResultBuffer*)(pPtrVal->pPtr());
       
       // determine type of buffer
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      RASSERT(CN_RESULTBUFFER == m_pItemBuffer->eClass());
+      RASSERT(CN_RESULTBUFFER == m_pResultBuffer->eClass());
 
-      m_pResultBuffer = (ResultBuffer*)m_pItemBuffer;
       m_pEntryBuffer = nullptr;
       
       m_pResultRow = m_pResultBuffer->pFirstRow();
@@ -866,7 +864,6 @@ bool SEitf::bNextRow2(i8& nPartition)
       }
       
       if ( ! m_pResultRow ) {
-        m_pItemBuffer = nullptr;
         m_pResultBuffer = nullptr;
         if (m_ziLastBuffersScanned == m_ziLastBuffers) {
           m_ziLastBuffersScanned = 0;
@@ -893,7 +890,6 @@ bool SEitf::bNextRow2(i8& nPartition)
     }
     
     delete m_pResultBuffer;
-    m_pItemBuffer = nullptr;
     m_pResultBuffer = nullptr;
     
     if (m_ziLastBuffersScanned == m_ziLastBuffers) {
@@ -1092,42 +1088,20 @@ void SEitf::vPopBufferQueue(void)
     
     // get entry buffer
     PtrVal* pPtrVal = xValWrk.pNestedPtrVal();
-    m_pItemBuffer = (EntryBuffer*)(pPtrVal->pPtr());
+    m_pResultBuffer = (ResultBuffer*)(pPtrVal->pPtr());
     
-    if (CN_ENTRYBUFFER == m_pItemBuffer->eClass()) {
+    RASSERT(CN_RESULTBUFFER == m_pResultBuffer->eClass());
+    
+    // is it the last buffer
+    if (m_pResultBuffer->bIsLast()) {
+      m_ziLastBuffersScanned++;
       
-      m_pEntryBuffer = (EntryBuffer*)m_pItemBuffer;
+      // if popped all last buffers return
+      if ( m_ziLastBuffersScanned == m_ziLastBuffers)
+        break;
+      
+      delete m_pResultBuffer;
       m_pResultBuffer = nullptr;
-      
-      // is it the last buffer
-      if (m_pEntryBuffer->bIsLast()) {
-        m_ziLastBuffersScanned++;
-        
-        // if popped all last buffers return
-        if ( m_ziLastBuffersScanned == m_ziLastBuffers)
-          break;
-        
-        delete m_pEntryBuffer;
-      }
-    }
-    else if (CN_RESULTBUFFER == m_pItemBuffer->eClass()) {
-      m_pResultBuffer = (ResultBuffer*)m_pItemBuffer;
-      m_pEntryBuffer = nullptr;
-      
-      // is it the last buffer
-      if (m_pResultBuffer->bIsLast()) {
-        m_ziLastBuffersScanned++;
-        
-        // if popped all last buffers return
-        if ( m_ziLastBuffersScanned == m_ziLastBuffers)
-          break;
-        
-        delete m_pResultBuffer;
-      }
-      
-    }
-    else {
-      RASSERT(0);
     }
     
   }
@@ -1136,7 +1110,6 @@ void SEitf::vPopBufferQueue(void)
   m_ziLastBuffersScanned = 0;
   m_pEntryBuffer  = nullptr;
   m_pResultBuffer = nullptr;
-  m_pItemBuffer   = nullptr;
   m_pEntry = nullptr;
   m_aRow   = nullptr;
 }
