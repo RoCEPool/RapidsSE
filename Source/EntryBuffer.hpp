@@ -134,7 +134,6 @@ namespace DBobjects
     void         vFixHigherLevel(Entry* aNewEntry);
     void         vFixPriorOffset(EntryVec* pPriorVec, Entry* aNewEntry);
     Entry*       pGetEntry(i8 iEntryNo);
-    i8           iLevel(void);
     void         vMoveLeft(void* aDst, i8 nBytes);
     void         vMoveRight(void* aSrc, i8 nBytes);
     u8           uOffsetBetween(Entry* pEntryA, Entry* pEntryB);

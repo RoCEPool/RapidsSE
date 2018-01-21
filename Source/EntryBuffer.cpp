@@ -1737,6 +1737,32 @@ void EntryBuffer::vFixHigherLevel(Entry* aNewEntry)                 //# critical
 }
 
 /*----------------------------------------------------------------------------*/
+/* get an entry by number                                                     */
+/*----------------------------------------------------------------------------*/
+Entry* EntryBuffer::pGetEntry(i8 iEntryNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  // start with the head
+  Entry* pSplitEntry = pHeadEntry();
+  
+  i8 iEntries = 0;
+  while (pSplitEntry) {
+    
+    iEntries++;
+    
+    // found split point
+    if (iEntries == iEntryNo)
+      break;
+    
+    // get next entry
+    pSplitEntry = this->pNextEntry(pSplitEntry);
+  }
+  
+  return pSplitEntry;
+}
+
+/*----------------------------------------------------------------------------*/
 /* replace old key with new key in the index buffer                           */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vReplace(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk)  //# critical
@@ -2004,32 +2030,6 @@ void EntryBuffer::vFixPriorOffset(EntryVec* pPriorVec, Entry* aNewEntry) //# cri
   //vTrace("PRIOR VECTOR AFTER FIXING\n"_Stz);
   //vDumpPrior(xPriorVec);
   //vTrace("\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get an entry by number                                                     */
-/*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pGetEntry(i8 iEntryNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  // start with the head
-  Entry* pSplitEntry = pHeadEntry();
-  
-  i8 iEntries = 0;
-  while (pSplitEntry) {
-    
-    iEntries++;
-    
-    // found split point
-    if (iEntries == iEntryNo)
-      break;
-    
-    // get next entry
-    pSplitEntry = this->pNextEntry(pSplitEntry);
-  }
-  
-  return pSplitEntry;
 }
 
 /*----------------------------------------------------------------------------*/
