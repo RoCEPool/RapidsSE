@@ -136,19 +136,19 @@ namespace DBobjects
     Entry*       pGetEntry(i8 iEntryNo);
     void         vMoveLeft(void* aDst, i8 nBytes);
     void         vMoveRight(void* aSrc, i8 nBytes);
-    u8           uOffsetBetween(Entry* pEntryA, Entry* pEntryB);
     Entry*       pPosition(Key* aGivenKey, i8 nKeyCols,
                            eJC eJuxtaCompare, EntryVec* pPriorVec,
                            bool& bIsEqual, bool bIsQuery);
     void         vPriorVec(Entry* pEntry, EntryVec* pPriorVec);
-    void         vReplace(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
-    void         vReplaceEqualKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
-    void         vReplaceLargerKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
-    void         vReplaceSmallereKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
+    void         vReplaceKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
+    void         vReplaceKeyEqual(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
+    void         vReplaceKeyLarger(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
+    void         vReplaceKeySmaller(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
     Entry*       pRightEntry(Entry* pEntry, ln nLevelNo);
     i8           iToEndOffsetAbs(Entry* pEntry);
     i8           iToOffsetAbs(Entry* pEntry);
     i8           iToRightOffsetAbs(Entry* pEntry, on nOffsetNo);
+    u8           uOffsetBetween(Entry* pEntryA, Entry* pEntryB);
   
     public:
     Footer* aFooter(void);

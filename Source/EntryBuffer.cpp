@@ -1728,266 +1728,12 @@ void EntryBuffer::vFixHigherLevel(Entry* aNewEntry)                 //# critical
     //xOldKeyWrk.vShow();
     //xNewKeyWrk.vShow();
     
-    pHigherLevel->vReplace(xOldKeyWrk, xNewKeyWrk);
+    pHigherLevel->vReplaceKey(xOldKeyWrk, xNewKeyWrk);
     
     //pHigherLevel->vShow();
     ASSERT(pHigherLevel->bVerify());
     pHigherLevel = (EntryBuffer*)pHigherLevel->m_pHigherLevel;
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* get an entry by number                                                     */
-/*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pGetEntry(i8 iEntryNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  // start with the head
-  Entry* pSplitEntry = pHeadEntry();
-  
-  i8 iEntries = 0;
-  while (pSplitEntry) {
-    
-    iEntries++;
-    
-    // found split point
-    if (iEntries == iEntryNo)
-      break;
-    
-    // get next entry
-    pSplitEntry = this->pNextEntry(pSplitEntry);
-  }
-  
-  return pSplitEntry;
-}
-
-/*----------------------------------------------------------------------------*/
-/* replace old key with new key in the index buffer                           */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vReplace(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk)  //# critical
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  // get the size of the old key
-  u8 uOldKeySize = xOldKeyWrk.nWspUsed();
-  
-  // get the size of the new key
-  u8 uNewKeySize = xNewKeyWrk.nWspUsed();
-  
-  if (uOldKeySize == uNewKeySize) {
-    vReplaceEqualKey(xOldKeyWrk, xNewKeyWrk);
-    return;
-  }
-  
-  if (uOldKeySize > uNewKeySize) {
-    vReplaceSmallereKey(xOldKeyWrk, xNewKeyWrk);
-    return;
-  }
-  
-  ASSERT(uOldKeySize < uNewKeySize);
-  vReplaceLargerKey(xOldKeyWrk, xNewKeyWrk);
-}
-
-/*----------------------------------------------------------------------------*/
-/* replace old key with new key of same size in the index buffer              */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vReplaceEqualKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk) //# critical
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   The old and new key are the same size, just change the key in the entry
-   
-   -------------    -------------
-   |Ka(m bytes) |   |Kc(m bytes) |
-   -------------    -------------
-   
-   We keep the same offsets etc. and just replace the key in the entry
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-  
-  // find the oldEntry in the higher level buffer
-  i8 nKeyCols = m_pIndex->pIdxColVec()->nItems();
-  Entry* pOldEntry = pPosition(xOldKeyWrk, nKeyCols, JC_SAME);
-  
-  // assert that we found one
-  ASSERT(pOldEntry);
-  
-  // assert the key of the higher level entry and the old entry match
-  bool bIsEqual = false;
-  ASSERT(pOldEntry->aKey()->bJuxtaCompare(JC_SAME,
-                                          xOldKeyWrk.aKey(),
-                                          m_pIndex->pIdxColVec(),
-                                          nKeyCols,
-                                          bIsEqual));
-  
-  EntWrk xEntWrk(pOldEntry);
-  xEntWrk.vAddKey(xNewKeyWrk);
-  
-  // just replace the key in the buffer
-  pOldEntry->vReplaceKey(xEntWrk);
-}
-
-/*----------------------------------------------------------------------------*/
-/* replace old key with new key in the index buffer                           */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vReplaceLargerKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk) //# critical
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  
-  /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   The new key is longer than the old key
-   
-   ---------------     --------------------
-   |Ka(m bytes)    |   |Kc(m+n bytes)       |
-   ---------------     --------------------
-   
-   We will moveRight in the buffer making space for n bytes
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-  
-  // find the oldEntry in the higher level buffer
-  i8 nKeyCols = m_pIndex->pIdxColVec()->nItems();
-  Entry* pOldEntry = pPosition(xOldKeyWrk,nKeyCols,JC_SAME);
-  
-  // assert that we found the old key
-  ASSERT(pOldEntry);
-  
-  // assert the key of the higher level entry and the old entry match
-  bool bIsEqual = false;
-  ASSERT(pOldEntry->aKey()->bJuxtaCompare(JC_SAME,
-                                          xOldKeyWrk.aKey(),
-                                          m_pIndex->pIdxColVec(),
-                                          nKeyCols,
-                                          bIsEqual));
-  
-  // create a newEntry at the same location as the pOldEntry
-  Entry* pNewEntry = _pEntry(pOldEntry);
-  
-  // get the size of the old key
-  u8 uOldKeySize = xOldKeyWrk.nWspUsed();
-  
-  // get the size of the new key
-  u8 uNewKeySize = xNewKeyWrk.nWspUsed();
-  
-  // the old key is smaller than the new key
-  i8 nSizeDifference = uNewKeySize - uOldKeySize;
-  ASSERT(nSizeDifference > 0);
-  
-  
-  // ensure we have space in the buffer
-  if (m_xWsp.nFree() < nSizeDifference) {
-    NEVER_REACH;                                                   //ALKA: TODO
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create an EntWrk from the old entry, with offsets et all
-  EntWrk xEntWrk(pOldEntry);
-  xEntWrk.vAddKey(xNewKeyWrk);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // we need to move right nSizeDifference bytes, making room for the bigger key
-  
-  // calculate the pDst address
-  i8 iOldEntrySize = pOldEntry->nSizeEntry();
-  void* pDst = pAdd<void*>(pOldEntry, iOldEntrySize);
-  
-  ASSERT(m_xWsp.nFree() >= nSizeDifference);
-  
-  // move right
-  m_xWsp.vTake(nSizeDifference);
-  vMoveRight(pDst, nSizeDifference);
-  
-  // calculate size of new entry
-  i8 nBytes =  iOldEntrySize + nSizeDifference;
-  
-  // create a new entry at pNewEntry using EntWrk
-  new (pNewEntry) Entry(CN_ENTRY, nBytes, xEntWrk.nOffsets());
-  pNewEntry->vSetEntry(xEntWrk);
-  ASSERT(pNewEntry->nSizeEntry() == nBytes);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // we have replaced the first entry in this buffer
-  // hence we need to fix the right offsets in the head
-  vAdjustOffsets(pHeadEntry(), nSizeDifference);
-}
-
-/*----------------------------------------------------------------------------*/
-/* replace old key with new key in the index buffer                           */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vReplaceSmallereKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk) //# critical
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  /*
-   The new key is shorter than the old key
-   
-   old key             new key
-   ----------------     ------------
-   |Ka(m bytes)    |   |Kc(m-nbytes)|
-   ----------------    ------------
-   
-   We will moveLeft in the buffer reclaiming n bytes
-   */
-  
-  // find the oldEntry in the higher level buffer
-  i8 nKeyCols = m_pIndex->pIdxColVec()->nItems();
-  Entry* pOldEntry = pPosition(xOldKeyWrk,nKeyCols,JC_SAME);
-  
-  // assert that we found one
-  ASSERT(pOldEntry);
-  
-  // assert the key of the higher level entry and the old entry match
-  bool bIsEqual = false;
-  ASSERT(pOldEntry->aKey()->bJuxtaCompare(JC_SAME,
-                                          xOldKeyWrk.aKey(),
-                                          m_pIndex->pIdxColVec(),
-                                          nKeyCols,
-                                          bIsEqual));
-  
-  // create a newEntry at the same location as the foundEntry
-  Entry* pNewEntry = _pEntry(pOldEntry);
-  
-  // get the size of the old key
-  u8 uOldKeySize = xOldKeyWrk.nWspUsed();
-  
-  // get the size of the new key
-  u8 uNewKeySize = xNewKeyWrk.nWspUsed();
-  
-  i8 iSize = pOldEntry->nSizeEntry();
-  
-  // the old key is smaller than the new key
-  i8 nSizeDifference = uOldKeySize - uNewKeySize;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create an EntWrk from the old entry, with offsets et all
-  EntWrk xEntWrk(pOldEntry);
-  xEntWrk.vAddKey(xNewKeyWrk);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // we need to move left nSizeDifference bytes, making room for the bigger key
-  
-  // calculate the pDst address
-  void* pDst = pAdd<void*>(pOldEntry, uNewKeySize);
-  
-  // move left
-  vMoveLeft(pDst, nSizeDifference);
-  m_xWsp.vGive(nSizeDifference);
-  
-  // calculate size of new entry
-  i8 nBytes =  iSize - (uOldKeySize - uNewKeySize);
-  
-  // create a new entry at pNewEntry using EntWrk
-  new (pNewEntry) Entry(CN_ENTRY, nBytes, xEntWrk.nOffsets());
-  pNewEntry->vSetEntry(xEntWrk);
-  ASSERT(pNewEntry->nSizeEntry() == nBytes);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // we have replaced the first entry in this buffer
-  // hence we need to fix the right offsets in the head
-  nSizeDifference = uNewKeySize - uOldKeySize;
-  ASSERT( nSizeDifference < 0 );
-  vAdjustOffsets(pHeadEntry(), nSizeDifference);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2030,6 +1776,32 @@ void EntryBuffer::vFixPriorOffset(EntryVec* pPriorVec, Entry* aNewEntry) //# cri
   //vTrace("PRIOR VECTOR AFTER FIXING\n"_Stz);
   //vDumpPrior(xPriorVec);
   //vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get an entry by number                                                     */
+/*----------------------------------------------------------------------------*/
+Entry* EntryBuffer::pGetEntry(i8 iEntryNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  // start with the head
+  Entry* pSplitEntry = pHeadEntry();
+  
+  i8 iEntries = 0;
+  while (pSplitEntry) {
+    
+    iEntries++;
+    
+    // found split point
+    if (iEntries == iEntryNo)
+      break;
+    
+    // get next entry
+    pSplitEntry = this->pNextEntry(pSplitEntry);
+  }
+  
+  return pSplitEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2261,6 +2033,234 @@ void EntryBuffer::vPriorVec(Entry* pEntry, EntryVec* pPriorVec)     //# critical
   }
   
   NEVER_REACH;
+}
+
+/*----------------------------------------------------------------------------*/
+/* replace old key with new key in the index buffer                           */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vReplaceKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk)  //# critical
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  // get the size of the old key
+  u8 uOldKeySize = xOldKeyWrk.nWspUsed();
+  
+  // get the size of the new key
+  u8 uNewKeySize = xNewKeyWrk.nWspUsed();
+  
+  if (uOldKeySize == uNewKeySize) {
+    vReplaceKeyEqual(xOldKeyWrk, xNewKeyWrk);
+    return;
+  }
+  
+  if (uOldKeySize > uNewKeySize) {
+    vReplaceKeySmaller(xOldKeyWrk, xNewKeyWrk);
+    return;
+  }
+  
+  ASSERT(uOldKeySize < uNewKeySize);
+  vReplaceKeyLarger(xOldKeyWrk, xNewKeyWrk);
+}
+
+/*----------------------------------------------------------------------------*/
+/* replace old key with new key of same size in the index buffer              */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vReplaceKeyEqual(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk) //# critical
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   The old and new key are the same size, just change the key in the entry
+   
+   -------------    -------------
+   |Ka(m bytes) |   |Kc(m bytes) |
+   -------------    -------------
+   
+   We keep the same offsets etc. and just replace the key in the entry
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+  
+  // find the oldEntry in the higher level buffer
+  i8 nKeyCols = m_pIndex->pIdxColVec()->nItems();
+  Entry* pOldEntry = pPosition(xOldKeyWrk, nKeyCols, JC_SAME);
+  
+  // assert that we found one
+  ASSERT(pOldEntry);
+  
+  // assert the key of the higher level entry and the old entry match
+  bool bIsEqual = false;
+  ASSERT(pOldEntry->aKey()->bJuxtaCompare(JC_SAME,
+                                          xOldKeyWrk.aKey(),
+                                          m_pIndex->pIdxColVec(),
+                                          nKeyCols,
+                                          bIsEqual));
+  
+  EntWrk xEntWrk(pOldEntry);
+  xEntWrk.vAddKey(xNewKeyWrk);
+  
+  // just replace the key in the buffer
+  pOldEntry->vReplaceKey(xEntWrk);
+}
+
+/*----------------------------------------------------------------------------*/
+/* replace old key with new key in the index buffer                           */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vReplaceKeyLarger(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk) //# critical
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  
+  /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   The new key is longer than the old key
+   
+   ---------------     --------------------
+   |Ka(m bytes)    |   |Kc(m+n bytes)       |
+   ---------------     --------------------
+   
+   We will moveRight in the buffer making space for n bytes
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+  
+  // find the oldEntry in the higher level buffer
+  i8 nKeyCols = m_pIndex->pIdxColVec()->nItems();
+  Entry* pOldEntry = pPosition(xOldKeyWrk,nKeyCols,JC_SAME);
+  
+  // assert that we found the old key
+  ASSERT(pOldEntry);
+  
+  // assert the key of the higher level entry and the old entry match
+  bool bIsEqual = false;
+  ASSERT(pOldEntry->aKey()->bJuxtaCompare(JC_SAME,
+                                          xOldKeyWrk.aKey(),
+                                          m_pIndex->pIdxColVec(),
+                                          nKeyCols,
+                                          bIsEqual));
+  
+  // create a newEntry at the same location as the pOldEntry
+  Entry* pNewEntry = _pEntry(pOldEntry);
+  
+  // get the size of the old key
+  u8 uOldKeySize = xOldKeyWrk.nWspUsed();
+  
+  // get the size of the new key
+  u8 uNewKeySize = xNewKeyWrk.nWspUsed();
+  
+  // the old key is smaller than the new key
+  i8 nSizeDifference = uNewKeySize - uOldKeySize;
+  ASSERT(nSizeDifference > 0);
+  
+  
+  // ensure we have space in the buffer
+  if (m_xWsp.nFree() < nSizeDifference) {
+    NEVER_REACH;                                                   //ALKA: TODO
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create an EntWrk from the old entry, with offsets et all
+  EntWrk xEntWrk(pOldEntry);
+  xEntWrk.vAddKey(xNewKeyWrk);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // we need to move right nSizeDifference bytes, making room for the bigger key
+  
+  // calculate the pDst address
+  i8 iOldEntrySize = pOldEntry->nSizeEntry();
+  void* pDst = pAdd<void*>(pOldEntry, iOldEntrySize);
+  
+  ASSERT(m_xWsp.nFree() >= nSizeDifference);
+  
+  // move right
+  m_xWsp.vTake(nSizeDifference);
+  vMoveRight(pDst, nSizeDifference);
+  
+  // calculate size of new entry
+  i8 nBytes =  iOldEntrySize + nSizeDifference;
+  
+  // create a new entry at pNewEntry using EntWrk
+  new (pNewEntry) Entry(CN_ENTRY, nBytes, xEntWrk.nOffsets());
+  pNewEntry->vSetEntry(xEntWrk);
+  ASSERT(pNewEntry->nSizeEntry() == nBytes);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // we have replaced the first entry in this buffer
+  // hence we need to fix the right offsets in the head
+  vAdjustOffsets(pHeadEntry(), nSizeDifference);
+}
+
+/*----------------------------------------------------------------------------*/
+/* replace old key with new key in the index buffer                           */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vReplaceKeySmaller(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk) //# critical
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  /*
+   The new key is shorter than the old key
+   
+   old key             new key
+   ----------------     ------------
+   |Ka(m bytes)    |   |Kc(m-nbytes)|
+   ----------------    ------------
+   
+   We will moveLeft in the buffer reclaiming n bytes
+   */
+  
+  // find the oldEntry in the higher level buffer
+  i8 nKeyCols = m_pIndex->pIdxColVec()->nItems();
+  Entry* pOldEntry = pPosition(xOldKeyWrk,nKeyCols,JC_SAME);
+  
+  // assert that we found one
+  ASSERT(pOldEntry);
+  
+  // assert the key of the higher level entry and the old entry match
+  bool bIsEqual = false;
+  ASSERT(pOldEntry->aKey()->bJuxtaCompare(JC_SAME,
+                                          xOldKeyWrk.aKey(),
+                                          m_pIndex->pIdxColVec(),
+                                          nKeyCols,
+                                          bIsEqual));
+  
+  // create a newEntry at the same location as the foundEntry
+  Entry* pNewEntry = _pEntry(pOldEntry);
+  
+  // get the size of the old key
+  u8 uOldKeySize = xOldKeyWrk.nWspUsed();
+  
+  // get the size of the new key
+  u8 uNewKeySize = xNewKeyWrk.nWspUsed();
+  
+  i8 iSize = pOldEntry->nSizeEntry();
+  
+  // the old key is smaller than the new key
+  i8 nSizeDifference = uOldKeySize - uNewKeySize;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create an EntWrk from the old entry, with offsets et all
+  EntWrk xEntWrk(pOldEntry);
+  xEntWrk.vAddKey(xNewKeyWrk);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // we need to move left nSizeDifference bytes, making room for the bigger key
+  
+  // calculate the pDst address
+  void* pDst = pAdd<void*>(pOldEntry, uNewKeySize);
+  
+  // move left
+  vMoveLeft(pDst, nSizeDifference);
+  m_xWsp.vGive(nSizeDifference);
+  
+  // calculate size of new entry
+  i8 nBytes =  iSize - (uOldKeySize - uNewKeySize);
+  
+  // create a new entry at pNewEntry using EntWrk
+  new (pNewEntry) Entry(CN_ENTRY, nBytes, xEntWrk.nOffsets());
+  pNewEntry->vSetEntry(xEntWrk);
+  ASSERT(pNewEntry->nSizeEntry() == nBytes);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // we have replaced the first entry in this buffer
+  // hence we need to fix the right offsets in the head
+  nSizeDifference = uNewKeySize - uOldKeySize;
+  ASSERT( nSizeDifference < 0 );
+  vAdjustOffsets(pHeadEntry(), nSizeDifference);
 }
 
 /*----------------------------------------------------------------------------*/
