@@ -852,7 +852,7 @@ bool EntryBuffer::bInsert(EntWrk& xEntWrk)                        //# critical
   // create a new entry after the prior entry and set it
   //EntWrk xEntWrk(xId,xKeyWrk);
   i8 nEntryBytes = Entry::nBytesRequired(xEntWrk);
-  Entry* pNewEntry = pAllotEntry(nEntryBytes, xEntWrk.nOffsets(), pAfterEntry);
+  Entry* pNewEntry = pAllotEntryAfter(nEntryBytes, xEntWrk.nOffsets(), pAfterEntry);
   pNewEntry->vSetEntry(xEntWrk);
   
   //vTrace("\n\n---------INDEX BUFFER AFTER MOVING --------------\n"_Stz);
@@ -1495,7 +1495,7 @@ void EntryBuffer::vAdjustOffsets(Entry* pEntry, i8 nAdjustAmount)   //# critical
 /*----------------------------------------------------------------------------*/
 /* allot new entry after given entry (return null if insufficient space)      */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pAllotEntry(i8 nBytes, i8 nOffsets, Entry* aAfterEntry)  //# critical
+Entry* EntryBuffer::pAllotEntryAfter(i8 nBytes, i8 nOffsets, Entry* aAfterEntry)  //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1552,7 +1552,7 @@ void EntryBuffer::vAllotHead(void)
   
   // allot the head
   
-  Entry* pHead = pAllotEntry(nBytes,gpAttachMap->m_nIndexOffsets,nullptr);
+  Entry* pHead = pAllotEntryAfter(nBytes,gpAttachMap->m_nIndexOffsets,nullptr);
   
   // initialize the head
   for (on nOffsetNo; nOffsetNo.bInRange(); nOffsetNo++)

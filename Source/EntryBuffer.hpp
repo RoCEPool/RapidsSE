@@ -127,7 +127,7 @@ namespace DBobjects
     private:
     
     void         vAdjustOffsets(Entry* pEntry, i8 nAdjustAmount);
-    Entry*       pAllotEntry(i8 nBytes, i8 nLevels, Entry* aAfterEntry);
+    Entry*       pAllotEntryAfter(i8 nBytes, i8 nLevels, Entry* aAfterEntry);
     void         vAllotHead(void);
     i8           iCopyEntries(EntryBuffer* pFromBuffer, Entry* aFromEntry);
     void         vDumpPrior(Entry* aPriorVec[]);
