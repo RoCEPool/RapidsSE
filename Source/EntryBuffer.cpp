@@ -128,7 +128,7 @@ EntryBuffer::EntryBuffer(Index* pIndex, i8 nBufferLevel, i8 nPartitionNo)
   _checkInitialised_(CN_ENTRYBUFFER);
   
   // new the head
-  vAllotHead();
+  vAllotHeadEntry();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1539,7 +1539,7 @@ Entry* EntryBuffer::pAllotEntryAfter(i8 nBytes, i8 nOffsets, Entry* aAfterEntry)
 /*----------------------------------------------------------------------------*/
 /* allot head entry (during constructor)                                      */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vAllotHead(void)
+void EntryBuffer::vAllotHeadEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1644,7 +1644,7 @@ i8 EntryBuffer::iCopyEntries(EntryBuffer* pFromBuffer, Entry* aFromEntry)  //# c
 /*----------------------------------------------------------------------------*/
 /* dump the prior vector                                                      */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vDumpPrior(Entry* xPriorVec[])
+void EntryBuffer::vDumpPriorVec(Entry* xPriorVec[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
