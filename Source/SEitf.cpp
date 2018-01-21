@@ -852,8 +852,6 @@ bool SEitf::bNextRow2(i8& nPartition)
       // determine type of buffer
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      RASSERT(CN_RESULTBUFFER == m_pResultBuffer->eClass());
-
       m_pEntryBuffer = nullptr;
       
       m_pResultRow = m_pResultBuffer->pFirstRow();
@@ -1089,9 +1087,7 @@ void SEitf::vPopBufferQueue(void)
     // get entry buffer
     PtrVal* pPtrVal = xValWrk.pNestedPtrVal();
     m_pResultBuffer = (ResultBuffer*)(pPtrVal->pPtr());
-    
-    RASSERT(CN_RESULTBUFFER == m_pResultBuffer->eClass());
-    
+        
     // is it the last buffer
     if (m_pResultBuffer->bIsLast()) {
       m_ziLastBuffersScanned++;

@@ -5,7 +5,7 @@
 
 namespace DBobjects
 {
-  class ItemBuffer : public Object
+  class ItemBuffer // : public Object
   {
   protected:
   i8    m_nItems;    // number of items in this buffer
@@ -13,7 +13,8 @@ namespace DBobjects
   WspFxd<C_SIZE_LARGE_OBJECT - C_1KB*4> m_xWsp;
   
   public:
-    ItemBuffer(eCN eClassNo);
+  //ItemBuffer(eCN eClassNo);
+    ItemBuffer(void);
    ~ItemBuffer(void);
   
     Item*  pAllotItem(i8 nBytes);

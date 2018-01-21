@@ -15,40 +15,52 @@ ItemBuffer* DBobjects::_pBufferAbstract(void* aAddr)
 {
   ItemBuffer* pBufferAbstract = reinterpret_cast<ItemBuffer*>(aAddr);
   
-  RASSERT(    !pBufferAbstract
-           || CN_ENTRYBUFFER == pBufferAbstract->eClass()
-           || CN_RESULTBUFFER == pBufferAbstract->eClass()
-          );
-  
   return pBufferAbstract;
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ItemBuffer::ItemBuffer(eCN eClassNo)
-: Object(eClassNo)
+ItemBuffer::ItemBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
+  //_precondition_(_ADDRESS_);
   
   m_nItems = 0;
   //m_xWsp
   
 #ifdef __DEBUG_CHECKS
-  m_xWsp.vZero(eClassNo);
+  m_xWsp.vZero(CN_ITEMBUFFER);
 #endif
   
-  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
+  //_postcondition_(_ADDRESS_);
   
   //  _checkInitialised_(eClassNo);
 }
+/*----------------------------------------------------------------------------*/
+//ItemBuffer::ItemBuffer(eCN eClassNo)
+//: Object(eClassNo)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
+//  
+//  m_nItems = 0;
+//  //m_xWsp
+//  
+//#ifdef __DEBUG_CHECKS
+//  m_xWsp.vZero(eClassNo);
+//#endif
+//  
+//  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
+//  
+//  //  _checkInitialised_(eClassNo);
+//}
+//
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 ItemBuffer::~ItemBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  //_precondition_(_ADDRESS_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -56,7 +68,7 @@ ItemBuffer::~ItemBuffer(void)
 /*----------------------------------------------------------------------------*/
 Item* ItemBuffer::pAllotItem(i8 nBytes)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  //_precondition_(_ADDRESS_);
   
   // test  sufficient freespace
   if (nFreeBytes() < nBytes)
@@ -74,7 +86,7 @@ Item* ItemBuffer::pAllotItem(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 char* ItemBuffer::aDataArea(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  //_precondition_(_ADDRESS_);
   
   char* aStart = m_xWsp.aArea();
   
@@ -86,7 +98,7 @@ char* ItemBuffer::aDataArea(void)
 /*----------------------------------------------------------------------------*/
 Item* ItemBuffer::pFirstItem(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  //_precondition_(_ADDRESS_);
   
   if ( m_nItems == 0 )
     return nullptr;
@@ -101,7 +113,7 @@ Item* ItemBuffer::pFirstItem(void)
 /*----------------------------------------------------------------------------*/
 i8 ItemBuffer::nFreeBytes(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  //_precondition_(_ADDRESS_);
   
   i8 nBytes = m_xWsp.nFree();
   
@@ -113,7 +125,7 @@ i8 ItemBuffer::nFreeBytes(void)
 /*----------------------------------------------------------------------------*/
 i8 ItemBuffer::nItems(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  //_precondition_(_ADDRESS_);
   
   return m_nItems;
 }
@@ -123,7 +135,7 @@ i8 ItemBuffer::nItems(void)
 /*----------------------------------------------------------------------------*/
 Item* ItemBuffer::pNextItem(Item* pCurrentItem)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  //_precondition_(_ADDRESS_);
   
   i8 nBytes = pCurrentItem->nSizeItem();
   
@@ -140,7 +152,7 @@ Item* ItemBuffer::pNextItem(Item* pCurrentItem)
 /*----------------------------------------------------------------------------*/
 i8 ItemBuffer::nUsedBytes(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  //_precondition_(_ADDRESS_);
   
   i8 nBytes = m_xWsp.nUsed();
   

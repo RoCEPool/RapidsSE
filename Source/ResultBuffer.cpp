@@ -19,8 +19,6 @@ ResultBuffer* DBobjects::_pResultBuffer(void* aAddr)
 {
   ResultBuffer* pResultBuffer = reinterpret_cast<ResultBuffer*>(aAddr);
   
-  RASSERT( !pResultBuffer || CN_RESULTBUFFER == pResultBuffer->eClass());
-  
   return pResultBuffer;
 }
 
@@ -52,22 +50,21 @@ void ResultBuffer::operator delete(void* pBufferAddress)
 {
   Buffer* pBuffer = static_cast<Buffer*>(pBufferAddress);
   
-  Heap::vFree(pBuffer);
+  Heap::vFree_NonObject(pBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ResultBuffer::ResultBuffer(Table* pTable, i8 iPartition)
-: ItemBuffer(CN_RESULTBUFFER)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
   
   m_bIsLast    = false;
   m_pTable     = pTable;
   m_iPartition = iPartition;
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
+  //_postcondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
   
   _checkInitialised_(CN_RESULTBUFFER);
 }
@@ -77,7 +74,7 @@ ResultBuffer::ResultBuffer(Table* pTable, i8 iPartition)
 /*----------------------------------------------------------------------------*/
 ResultBuffer::~ResultBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -85,7 +82,7 @@ ResultBuffer::~ResultBuffer(void)
 /*----------------------------------------------------------------------------*/
 bool ResultBuffer::bAppendRow(Row* aRow, i8 nRowSize)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
   
   i8 nResultRowSize = ResultRow::nBytesRequired(nRowSize);
   
@@ -105,7 +102,7 @@ bool ResultBuffer::bAppendRow(Row* aRow, i8 nRowSize)
 /*----------------------------------------------------------------------------*/
 ResultRow* ResultBuffer::pFirstRow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  //_precondition_(_ADDRESS_,_MAGIC_);
   
   ResultRow* pFirst = reinterpret_cast<ResultRow*>(pFirstItem());
   
@@ -117,7 +114,7 @@ ResultRow* ResultBuffer::pFirstRow(void)
 /*----------------------------------------------------------------------------*/
 void ResultBuffer::vIsLast(bool bIsLast)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
   
   m_bIsLast = bIsLast;
 }
@@ -127,7 +124,7 @@ void ResultBuffer::vIsLast(bool bIsLast)
 /*----------------------------------------------------------------------------*/
 bool ResultBuffer::bIsLast(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
   
   return m_bIsLast;
 }
@@ -137,7 +134,7 @@ bool ResultBuffer::bIsLast(void)
 /*----------------------------------------------------------------------------*/
 ResultRow* ResultBuffer::pNextRow(ResultRow* pCurrentRow)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
   
   ResultRow* pNext = reinterpret_cast<ResultRow*>(pNextItem(pCurrentRow));
   
@@ -149,7 +146,7 @@ ResultRow* ResultBuffer::pNextRow(ResultRow* pCurrentRow)
 /*----------------------------------------------------------------------------*/
 i8 ResultBuffer::nPartitionNo(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
   
   return m_iPartition;
 }
@@ -159,7 +156,7 @@ i8 ResultBuffer::nPartitionNo(void)
 /*----------------------------------------------------------------------------*/
 void ResultBuffer::vShow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
 
   ColumnVec* pColVec = m_pTable->pColumnVec();
   
@@ -182,7 +179,7 @@ void ResultBuffer::vShow(void)
 /*----------------------------------------------------------------------------*/
 Footer* ResultBuffer::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER);
   
   return &m_xFooter;
 }

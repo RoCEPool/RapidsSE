@@ -49,7 +49,7 @@ void PerformanceBuffer::operator delete(void* pBufferAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 PerformanceBuffer::PerformanceBuffer(void)
-: ItemBuffer(CN_PERFORMANCEBUFFER)
+: Object(CN_PERFORMANCEBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PERFORMANCEBUFFER,_FOOTER_);
   
