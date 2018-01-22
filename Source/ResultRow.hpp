@@ -5,9 +5,10 @@
 
 namespace DBobjects
 {
-  class ResultRow : public Item
+  class ResultRow //: public Item
   {
   protected:
+    i8  m_nSizeItem; // size of this item
 
   public:
     void* operator new(size_t);
@@ -21,6 +22,7 @@ namespace DBobjects
   
     Row* aRow(void);
     void vShow(ColumnVec* pColVec);
+    i8 nSizeItem(void);
   };
   
   ResultRow* _pResultRow(void* aAddr);

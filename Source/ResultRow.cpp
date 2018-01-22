@@ -46,19 +46,21 @@ void* ResultRow::operator new(size_t iSize, ResultRow* pResultRow)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ResultRow::ResultRow(i8 nSizeResultRow)
-: Item(CN_RESULTROW,nSizeResultRow)
+//: Item(CN_RESULTROW,nSizeResultRow)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RESULTROW);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_RESULTROW);
+  m_nSizeItem = nSizeResultRow;
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ResultRow::ResultRow(Row* aSrcRow, i8 nSizeResultRow, i8 nSizeRow)
-: Item(CN_RESULTROW,nSizeResultRow)
+//: Item(CN_RESULTROW,nSizeResultRow)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RESULTROW);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_RESULTROW);
   
+  m_nSizeItem = nSizeResultRow;
   Row* aDstRow = this->aRow();
   
   MemLib::vCopy(aDstRow,aSrcRow,nSizeRow,CN_RESULTBUFFER);
@@ -69,7 +71,7 @@ ResultRow::ResultRow(Row* aSrcRow, i8 nSizeResultRow, i8 nSizeRow)
 /*----------------------------------------------------------------------------*/
 ResultRow::~ResultRow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  //_precondition_(_ADDRESS_,_MAGIC_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -98,7 +100,7 @@ i8 ResultRow::nBytesRequired(i8 nRowSize)
 /*----------------------------------------------------------------------------*/
 Row* ResultRow::aRow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RESULTROW);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_RESULTROW);
   
   Row* aRow = pAdd<Row*>(this,sizeof(Item));
 
@@ -110,11 +112,21 @@ Row* ResultRow::aRow(void)
 /*----------------------------------------------------------------------------*/
 void ResultRow::vShow(ColumnVec* pColVec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RESULTROW);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_RESULTROW);
 
   Row* aRow = this->aRow();
   
   aRow->vShow(pColVec);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get size in bytes of this item                                             */
+/*----------------------------------------------------------------------------*/
+i8 ResultRow::nSizeItem(void)
+{
+  //_precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_nSizeItem;
 }
 
 /*============================================================================*/
