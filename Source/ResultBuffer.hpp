@@ -5,15 +5,15 @@
 
 namespace DBobjects
 {
-  class ResultBuffer //: public ItemBuffer
+  class ResultBuffer
   {
   protected:
-    i8    m_nItems;    // number of items in this buffer
+    i8    m_nResultRows; // number of ResultRows in this buffer
     WspFxd<C_SIZE_LARGE_OBJECT - C_1KB*4> m_xWsp;
     
     bool   m_bIsLast; // is this the last buffer in its sequence?jj
     Table* m_pTable;  // table which describes the rows
-    i8     m_iPartition;  // partitionn this result buffer came from
+    i8     m_iPartition; // partitionn this result buffer came from
 
     // must be last
     Footer m_xFooter;
@@ -26,27 +26,21 @@ namespace DBobjects
     ResultBuffer(Table* pTable, i8 iPartition);
    ~ResultBuffer(void);
  
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    ResultRow*  pAllotResult(i8 nBytes);
-    char*  aDataArea(void);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  public:
+    bool        bAppendResult(Row* aRow, i8 nRowSize);
     ResultRow*  pFirstResult(void);
-    i8     nFreeBytes(void);
-    i8     nItems(void);
+    void        vIsLast(bool bIsLast);
+    bool        bIsLast(void);
     ResultRow*  pNextResult(ResultRow* pCurrentItem);
-    i8     nUsedBytes(void);
+    i8          nPartitionNo(void);
+    i8          nResultRows(void);
+    void        vShow(void);
   
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    bool bAppendRow(Row* aRow, i8 nRowSize);
-  
-    void vIsLast(bool bIsLast);
-    bool bIsLast(void);
-  
-    ResultRow* pFirstRow(void);
-    ResultRow* pNextRow(ResultRow* pCurrentRow);
-    i8         nPartitionNo(void);
-  
-  
-    void vShow(void);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  private:
+    ResultRow*  pAllotResult(i8 nBytes);
+    i8          nFreeBytes(void);
   
     Footer* aFooter(void);
   };

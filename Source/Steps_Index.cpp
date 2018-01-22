@@ -349,7 +349,7 @@ void Task::vIndexExactKey(MP_Task mpTask)
       i8 nRowSize = pDataRowEntry->nRowSize();
       
       // insert row from entry in tempEntryBuffer
-      if ( ! pResultBuffer->bAppendRow(aRow, nRowSize)) {
+      if ( ! pResultBuffer->bAppendResult(aRow, nRowSize)) {
         
         // buffer must be full
         // put this tempEntryBuffer in seitf bufferQueue
@@ -360,7 +360,7 @@ void Task::vIndexExactKey(MP_Task mpTask)
         pResultBuffer = new ResultBuffer(pTable, iPartition);
         
         // insert row from entry in temporary buffer
-        bool bResult = pResultBuffer->bAppendRow(aRow, nRowSize);
+        bool bResult = pResultBuffer->bAppendResult(aRow, nRowSize);
         RASSERT(bResult);
       }
     }
@@ -1088,7 +1088,7 @@ void Task::vIndexScan(MP_Task mpTask)
     i8 nRowSize = pEntry->nRowSize();
 
     // insert row from entry in pResultBuffer
-    if ( ! pResultBuffer->bAppendRow(aRow, nRowSize)) {
+    if ( ! pResultBuffer->bAppendResult(aRow, nRowSize)) {
       
       //pResultBuffer->vShow();
       
@@ -1101,7 +1101,7 @@ void Task::vIndexScan(MP_Task mpTask)
       pResultBuffer = new ResultBuffer(pTable, iPartition);
       
       // insert row from entry in temporary buffer
-      bool bResult = pResultBuffer->bAppendRow(aRow, nRowSize);
+      bool bResult = pResultBuffer->bAppendResult(aRow, nRowSize);
       RASSERT(bResult);
     }
       

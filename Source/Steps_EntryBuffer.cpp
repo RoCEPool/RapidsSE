@@ -494,7 +494,7 @@ bool Task::bAppendRow(ResultBuffer* pResultBuffer, Entry* pEntry, SEitf* pSEitf)
   Row* aRow = pEntry->aRow();
   i8 nRowSize = pEntry->nRowSize();
 
-  if (pResultBuffer->bAppendRow(aRow, nRowSize))
+  if (pResultBuffer->bAppendResult(aRow, nRowSize))
     return true;
   else
     return false;

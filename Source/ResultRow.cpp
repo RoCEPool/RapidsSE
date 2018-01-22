@@ -4,10 +4,6 @@
 
 #include "DBobjects.h"
 
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
-
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -45,20 +41,8 @@ void* ResultRow::operator new(size_t iSize, ResultRow* pResultRow)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-//ResultRow::ResultRow(i8 nResultRowSize)
-//{
-//  //_precondition_(_ADDRESS_,_MAGIC_,CN_RESULTROW);
-//  m_nResultRowSize = nResultRowSize;
-//}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
 ResultRow::ResultRow(Row* aSrcRow, i8 nResultRowSize, i8 nRowSize)
-//: Item(CN_RESULTROW,nSizeResultRow)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_RESULTROW);
-  
   m_nResultRowSize = nResultRowSize;
   Row* aDstRow = this->aRow();
   
@@ -70,7 +54,6 @@ ResultRow::ResultRow(Row* aSrcRow, i8 nResultRowSize, i8 nRowSize)
 /*----------------------------------------------------------------------------*/
 ResultRow::~ResultRow(void)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -99,8 +82,6 @@ i8 ResultRow::nBytesRequired(i8 nRowSize)
 /*----------------------------------------------------------------------------*/
 Row* ResultRow::aRow(void)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_RESULTROW);
-  
   Row* aRow = pAdd<Row*>(this,sizeof(i8));
 
   return aRow;
@@ -111,8 +92,6 @@ Row* ResultRow::aRow(void)
 /*----------------------------------------------------------------------------*/
 void ResultRow::vShow(ColumnVec* pColVec)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_RESULTROW);
-
   Row* aRow = this->aRow();
   
   aRow->vShow(pColVec);
@@ -123,8 +102,6 @@ void ResultRow::vShow(ColumnVec* pColVec)
 /*----------------------------------------------------------------------------*/
 i8 ResultRow::nResultRowSize(void)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_);
-  
   return m_nResultRowSize;
 }
 

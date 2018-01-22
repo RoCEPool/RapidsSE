@@ -60,7 +60,7 @@ ResultBuffer::ResultBuffer(Table* pTable, i8 iPartition)
 {
   //_precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
   
-  m_nItems = 0;
+  m_nResultRows = 0;
   //m_xWsp
   
 #ifdef __DEBUG_CHECKS
@@ -86,118 +86,13 @@ ResultBuffer::~ResultBuffer(void)
 
 
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/* allot an item of nBytes in this buffer                                     */
-/*----------------------------------------------------------------------------*/
-ResultRow* ResultBuffer::pAllotResult(i8 nBytes)
-{
-  //_precondition_(_ADDRESS_);
-  
-  // test  sufficient freespace
-  if (nFreeBytes() < nBytes)
-    return nullptr;
-  
-  ResultRow* pResultRow = reinterpret_cast<ResultRow*>(m_xWsp.aAllot(nBytes));
-  
-  m_nItems++;
-  
-  return pResultRow;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get address of data area                                                   */
-/*----------------------------------------------------------------------------*/
-char* ResultBuffer::aDataArea(void)
-{
-  //_precondition_(_ADDRESS_);
-  
-  char* aStart = m_xWsp.aArea();
-  
-  return aStart;
-}
-
-/*----------------------------------------------------------------------------*/
-/* first item                                                                 */
-/*----------------------------------------------------------------------------*/
-ResultRow* ResultBuffer::pFirstResult(void)
-{
-  //_precondition_(_ADDRESS_);
-  
-  if ( m_nItems == 0 )
-    return nullptr;
-  
-  ResultRow* pFirst = reinterpret_cast<ResultRow*>(m_xWsp.aArea());
-  
-  return pFirst;
-}
-
-/*----------------------------------------------------------------------------*/
-/* how much free space (in bytes) left in this buffer?                        */
-/*----------------------------------------------------------------------------*/
-i8 ResultBuffer::nFreeBytes(void)
-{
-  //_precondition_(_ADDRESS_);
-  
-  i8 nBytes = m_xWsp.nFree();
-  
-  return nBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of items in the buffer                                          */
-/*----------------------------------------------------------------------------*/
-i8 ResultBuffer::nItems(void)
-{
-  //_precondition_(_ADDRESS_);
-  
-  return m_nItems;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get next item                                                              */
-/*----------------------------------------------------------------------------*/
-ResultRow* ResultBuffer::pNextResult(ResultRow* pCurrentItem)
-{
-  //_precondition_(_ADDRESS_);
-  
-  i8 nBytes = pCurrentItem->nResultRowSize();
-  
-  ResultRow* pNext = pAdd<ResultRow*>(pCurrentItem,nBytes);
-  
-  if ((char*)pNext >= (char*)m_xWsp.aLatter())
-    return nullptr;
-  
-  return pNext;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get bytes used                                                             */
-/*----------------------------------------------------------------------------*/
-i8 ResultBuffer::nUsedBytes(void)
-{
-  //_precondition_(_ADDRESS_);
-  
-  i8 nBytes = m_xWsp.nUsed();
-  
-  return nBytes;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
+/*-- public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-
-
-
 /*----------------------------------------------------------------------------*/
-/* append row                                                                 */
+/* append result row                                                          */
 /*----------------------------------------------------------------------------*/
-bool ResultBuffer::bAppendRow(Row* aRow, i8 nRowSize)
+bool ResultBuffer::bAppendResult(Row* aRow, i8 nRowSize)
 {
   //_precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
   
@@ -208,20 +103,23 @@ bool ResultBuffer::bAppendRow(Row* aRow, i8 nRowSize)
     return false;
   
   ResultRow* aResultRow = pAllotResult(nResultRowSize);
-
-  new(aResultRow) ResultRow(aRow,nResultRowSize,nRowSize);  
+  
+  new(aResultRow) ResultRow(aRow,nResultRowSize,nRowSize);
   
   return true;
 }
 
 /*----------------------------------------------------------------------------*/
-/* first result row                                                           */
+/* first item                                                                 */
 /*----------------------------------------------------------------------------*/
-ResultRow* ResultBuffer::pFirstRow(void)
+ResultRow* ResultBuffer::pFirstResult(void)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_);
+  //_precondition_(_ADDRESS_);
   
-  ResultRow* pFirst = pFirstResult();
+  if ( m_nResultRows == 0 )
+    return nullptr;
+  
+  ResultRow* pFirst = reinterpret_cast<ResultRow*>(m_xWsp.aArea());
   
   return pFirst;
 }
@@ -247,13 +145,18 @@ bool ResultBuffer::bIsLast(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next row                                                               */
+/* get next item                                                              */
 /*----------------------------------------------------------------------------*/
-ResultRow* ResultBuffer::pNextRow(ResultRow* pCurrentRow)
+ResultRow* ResultBuffer::pNextResult(ResultRow* pCurrentItem)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
+  //_precondition_(_ADDRESS_);
   
-  ResultRow* pNext = pNextResult(pCurrentRow);
+  i8 nBytes = pCurrentItem->nResultRowSize();
+  
+  ResultRow* pNext = pAdd<ResultRow*>(pCurrentItem,nBytes);
+  
+  if ((char*)pNext >= (char*)m_xWsp.aLatter())
+    return nullptr;
   
   return pNext;
 }
@@ -269,23 +172,69 @@ i8 ResultBuffer::nPartitionNo(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get number of result rows in this buffer                                   */
+/*----------------------------------------------------------------------------*/
+i8 ResultBuffer::nResultRows(void)
+{
+  //_precondition_(_ADDRESS_);
+  
+  return m_nResultRows;
+}
+
+/*----------------------------------------------------------------------------*/
 /* show the contents of the buffer                                            */
 /*----------------------------------------------------------------------------*/
 void ResultBuffer::vShow(void)
 {
   //_precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
-
+  
   ColumnVec* pColVec = m_pTable->pColumnVec();
   
   ResultRow* pResultRow;
-  for (pResultRow = pFirstRow();
+  for (pResultRow = pFirstResult();
        pResultRow;
-       pResultRow = pNextRow(pResultRow)) {
-
+       pResultRow = pNextResult(pResultRow)) {
+    
     pResultRow->vShow(pColVec);
     vTrace("\n"_Stz);
   }
 }
+
+
+/*----------------------------------------------------------------------------*/
+/*-- private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* allot an item of nBytes in this buffer                                     */
+/*----------------------------------------------------------------------------*/
+ResultRow* ResultBuffer::pAllotResult(i8 nBytes)
+{
+  //_precondition_(_ADDRESS_);
+  
+  // test  sufficient freespace
+  if (nFreeBytes() < nBytes)
+    return nullptr;
+  
+  ResultRow* pResultRow = reinterpret_cast<ResultRow*>(m_xWsp.aAllot(nBytes));
+  
+  m_nResultRows++;
+  
+  return pResultRow;
+}
+
+/*----------------------------------------------------------------------------*/
+/* how much free space (in bytes) left in this buffer?                        */
+/*----------------------------------------------------------------------------*/
+i8 ResultBuffer::nFreeBytes(void)
+{
+  //_precondition_(_ADDRESS_);
+  
+  i8 nBytes = m_xWsp.nFree();
+  
+  return nBytes;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
