@@ -60,6 +60,13 @@ ResultBuffer::ResultBuffer(Table* pTable, i8 iPartition)
 {
   //_precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
   
+  m_nItems = 0;
+  //m_xWsp
+  
+#ifdef __DEBUG_CHECKS
+  m_xWsp.vZero(CN_ITEMBUFFER);
+#endif
+  
   m_bIsLast    = false;
   m_pTable     = pTable;
   m_iPartition = iPartition;
@@ -77,6 +84,116 @@ ResultBuffer::~ResultBuffer(void)
   //_precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
 }
 
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------*/
+/* allot an item of nBytes in this buffer                                     */
+/*----------------------------------------------------------------------------*/
+ResultRow* ResultBuffer::pAllotResult(i8 nBytes)
+{
+  //_precondition_(_ADDRESS_);
+  
+  // test  sufficient freespace
+  if (nFreeBytes() < nBytes)
+    return nullptr;
+  
+  ResultRow* pResultRow = reinterpret_cast<ResultRow*>(m_xWsp.aAllot(nBytes));
+  
+  m_nItems++;
+  
+  return pResultRow;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address of data area                                                   */
+/*----------------------------------------------------------------------------*/
+char* ResultBuffer::aDataArea(void)
+{
+  //_precondition_(_ADDRESS_);
+  
+  char* aStart = m_xWsp.aArea();
+  
+  return aStart;
+}
+
+/*----------------------------------------------------------------------------*/
+/* first item                                                                 */
+/*----------------------------------------------------------------------------*/
+ResultRow* ResultBuffer::pFirstResult(void)
+{
+  //_precondition_(_ADDRESS_);
+  
+  if ( m_nItems == 0 )
+    return nullptr;
+  
+  ResultRow* pFirst = reinterpret_cast<ResultRow*>(m_xWsp.aArea());
+  
+  return pFirst;
+}
+
+/*----------------------------------------------------------------------------*/
+/* how much free space (in bytes) left in this buffer?                        */
+/*----------------------------------------------------------------------------*/
+i8 ResultBuffer::nFreeBytes(void)
+{
+  //_precondition_(_ADDRESS_);
+  
+  i8 nBytes = m_xWsp.nFree();
+  
+  return nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of items in the buffer                                          */
+/*----------------------------------------------------------------------------*/
+i8 ResultBuffer::nItems(void)
+{
+  //_precondition_(_ADDRESS_);
+  
+  return m_nItems;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next item                                                              */
+/*----------------------------------------------------------------------------*/
+ResultRow* ResultBuffer::pNextResult(ResultRow* pCurrentItem)
+{
+  //_precondition_(_ADDRESS_);
+  
+  i8 nBytes = pCurrentItem->nSizeItem();
+  
+  ResultRow* pNext = pAdd<ResultRow*>(pCurrentItem,nBytes);
+  
+  if ((char*)pNext >= (char*)m_xWsp.aLatter())
+    return nullptr;
+  
+  return pNext;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get bytes used                                                             */
+/*----------------------------------------------------------------------------*/
+i8 ResultBuffer::nUsedBytes(void)
+{
+  //_precondition_(_ADDRESS_);
+  
+  i8 nBytes = m_xWsp.nUsed();
+  
+  return nBytes;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+
+
 /*----------------------------------------------------------------------------*/
 /* append row                                                                 */
 /*----------------------------------------------------------------------------*/
@@ -90,7 +207,7 @@ bool ResultBuffer::bAppendRow(Row* aRow, i8 nRowSize)
   if (nFreeSpace < nResultRowSize)
     return false;
   
-  ResultRow* aResultRow = reinterpret_cast<ResultRow*>(pAllotItem(nResultRowSize));
+  ResultRow* aResultRow = pAllotResult(nResultRowSize);
 
   new(aResultRow) ResultRow(aRow,nResultRowSize,nRowSize);
   
@@ -104,7 +221,7 @@ ResultRow* ResultBuffer::pFirstRow(void)
 {
   //_precondition_(_ADDRESS_,_MAGIC_);
   
-  ResultRow* pFirst = reinterpret_cast<ResultRow*>(pFirstItem());
+  ResultRow* pFirst = pFirstResult();
   
   return pFirst;
 }
@@ -136,7 +253,7 @@ ResultRow* ResultBuffer::pNextRow(ResultRow* pCurrentRow)
 {
   //_precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
   
-  ResultRow* pNext = reinterpret_cast<ResultRow*>(pNextItem(pCurrentRow));
+  ResultRow* pNext = pNextResult(pCurrentRow);
   
   return pNext;
 }
