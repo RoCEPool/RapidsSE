@@ -266,7 +266,7 @@ i8 giClassSize[]
   /* 51 */ sizeof(IdxDataVec),         // CN_IDXDATAVEC
   /* 52 */ sizeof(IdxVec),             // CN_IDXVEC
   /* 53 */ 0,                          // CN_INDEXLEVELS
-  /*    */ 0,                          // CN_ITEM
+  /*    */ sizeof(Item),               // CN_ITEM
   /*    */ sizeof(ItemBuffer),         // CN_ITEMBUFFER
   
   /*    */ sizeof(Heap), // correct    // CN_JUMBOPERSISTENT
@@ -300,7 +300,7 @@ i8 giClassSize[]
   /* 71 */ sizeof(PartitionScheduler), // CN_PARTITIONSCHEDULER
   /* 72 */ sizeof(PartitionVec),       // CN_PARTITIONVEC
   /* 73 */ sizeof(PathVec),            // CN_PATHVEC
-  /*    */ 0,                          // CN_PERFORMANCEBUFFER
+  /*    */ sizeof(PerformanceBuffer),  // CN_PERFORMANCEBUFFER
   /*    */ sizeof(PerformanceEntry),   // CN_PERFORMANCEENTRY
   /*    */ sizeof(PerformanceTrace),   // CN_PERFORMANCETRACE
   /* 74 */ sizeof(Plan),               // CN_PLAN
