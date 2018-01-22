@@ -23,20 +23,6 @@ PerformanceEntry* Utilities::_pPerformanceEntry(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* PerformanceEntry::operator new(size_t iSize)
-{
-  RASSERT(iSize);
-  
-  void* pObject = Heap::pAllocate(CN_PERFORMANCEENTRY);
-  
-  MemLib::vZero(pObject, sizeof(PerformanceEntry),CN_PERFORMANCEENTRY);
-  
-  return pObject;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
 void* PerformanceEntry::operator new(size_t iSize, PerformanceEntry* pPeformanceEntry)
 {
   RASSERT(iSize);

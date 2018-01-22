@@ -18,7 +18,6 @@ namespace Utilities
     
     public:
     
-    void* operator new(size_t);
     void* operator new(size_t, PerformanceEntry*);
     void  operator delete(void*);
     
