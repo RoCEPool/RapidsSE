@@ -31,6 +31,8 @@ void MemLib::vCheckInitialised(void* aAddress, eCN eClass)
   u8* pMchWord = reinterpret_cast<u8*>(aAddress);
   i8  nBytes = giClassSize[eClass];
   i8  nWords = nBytes / 8;
+  
+  ASSERT(nWords);
 
   for (i8 i_Word = 0; i_Word < nWords; i_Word++) {
     

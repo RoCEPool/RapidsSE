@@ -247,7 +247,7 @@ i8 giClassSize[]
   /* 37 */ sizeof(EntryVec),           // CN_ENTRYVEC
   
   /* 38 */ sizeof(File),               // CN_FILE
-  /*    */ 0,                          // CN_FORMATTERS
+  /*    */ sizeof(Formatters),         // CN_FORMATTERS
   /* 39 */ sizeof(Buffer),             // CN_FREEBUFFER
   /* 40 */ sizeof(FreeChunk),          // CN_FREECHUNK
   /* 41 */ 0,                          // CN_FREEDNOT
@@ -340,7 +340,7 @@ i8 giClassSize[]
   /*103 */ sizeof(SkipList),           // CN_SKIPLIST
   /*104 */ sizeof(SkipNode),           // CN_SKIPNODE
   /*105 */ 0,                          // CN_SLAB
-  /*106 */ 0,                          // CN_SLABALLOCATOR
+  /*106 */ sizeof(SlabAllocator),      // CN_SLABALLOCATOR
   /*107 */ sizeof(Slots),              // CN_SLOTS
   /*108 */ sizeof(Heap), // correct    // SN_SMALLPERSISTENT
   /*    */ sizeof(Heap), // correct    // SN_SMALLTRANSIENT
@@ -368,7 +368,7 @@ i8 giClassSize[]
   /*129 */ sizeof(TokenAry),           // CN_TOKENARY
   /*130 */ sizeof(TokenVec),           // CN_TOKENVEC
   /*131 */ sizeof(Tx),                 // CN_TX
-  /*132 */ 0,                          // CN_TXSET
+  /*132 */ sizeof(TxSet),              // CN_TXSET
 
   /*133 */ sizeof(Word),               // CN_WORD
 
