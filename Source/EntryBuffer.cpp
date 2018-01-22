@@ -50,7 +50,7 @@ void* EntryBuffer::operator new(size_t iSize, void* aAddr)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::operator delete(void* pRowBufferAddress)
 {
-  Buffer* pBuffer = static_cast<Buffer*>(pRowBufferAddress);
+  Buffer* pBuffer = reinterpret_cast<Buffer*>(pRowBufferAddress);
   
   Heap::vFree(pBuffer);
 }
