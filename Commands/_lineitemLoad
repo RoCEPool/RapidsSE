@@ -40,18 +40,18 @@ timerEnd;
 
 //fetch lineitem "l_shipdate '1998-11-13  00:00:00' =";
 
-pwf ;
-lf ;
+//pwf ;
+//lf ;
 
-displayoff;
+//displayoff;
 
 //docol stepsReset;
 //docol memoryReset;
 //docol schedulerReset;
 
-timerStart;
-fetch lineitem;
-timerEnd;
+//timerStart;
+//fetch lineitem;
+//timerEnd;
 
 //docol schedulerList;
 //docol memoryList;

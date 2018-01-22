@@ -46,149 +46,150 @@ pFINALIZE *gpFinalize[]
   /* 28 */ &Finalize::vUndefined,         // CN_BUFFERPOOL
   /* 29 */ &Finalize::vUndefined,         // CN_BPA
   
-  /*    */ &Finalize::vUndefined,         // CN_CARRYOVER
-  /* 30 */ &Finalize::vUndefined,         // CN_COLUMN
-  /* 31 */ &Finalize::vUndefined,         // CN_COLUMNVEC
+  /* 30 */ &Finalize::vUndefined,         // CN_CARRYOVER
+  /* 31 */ &Finalize::vUndefined,         // CN_COLUMN
+  /* 32 */ &Finalize::vUndefined,         // CN_COLUMNVEC
   
-  /* 32 */ &Dic::vFinalize,               // CN_DIC
-  /* 33 */ &Finalize::vUndefined,         // CN_DICPATH
-  /* 34 */ &Finalize::vUndefined,         // CN_DIR
+  /* 33 */ &Dic::vFinalize,               // CN_DIC
+  /* 34 */ &Finalize::vUndefined,         // CN_DICPATH
+  /* 35 */ &Finalize::vUndefined,         // CN_DIR
   
-  /* 35 */ &Finalize::vUndefined,         // CN_ENTRY
-  /* 36 */ &Finalize::vUndefined,         // CN_ENTRYBUFFER
-  /* 37 */ &Finalize::vUndefined,         // CN_ENTRYVEC
+  /* 36 */ &Finalize::vUndefined,         // CN_ENTRY
+  /* 37 */ &Finalize::vUndefined,         // CN_ENTRYBUFFER
+  /* 38 */ &Finalize::vUndefined,         // CN_ENTRYVEC
 
-  /* 38 */ &Finalize::vUndefined,         // CN_FILE
-  /*    */ &Finalize::vUndefined,         // CN_FORMATTERS
-  /* 39 */ &Finalize::vUndefined,         // CN_FREEBUFFER
-  /* 40 */ &Finalize::vUndefined,         // CN_FREECHUNK
-  /* 41 */ &Finalize::vUndefined,         // CN_FREEDNOT
+  /* 39 */ &Finalize::vUndefined,         // CN_FILE
+  /* 40 */ &Finalize::vUndefined,         // CN_FORMATTERS
+  /* 41 */ &Finalize::vUndefined,         // CN_FREEBUFFER
+  /* 42 */ &Finalize::vUndefined,         // CN_FREECHUNK
+  /* 43 */ &Finalize::vUndefined,         // CN_FREEDNOT
   
-  /* 42 */ &Finalize::vUndefined,         // CN_GRAPH
-  /* 43 */ &Finalize::vUndefined,         // CN_GRAPH
-  /* 44 */ &Finalize::vUndefined,         // CN_GRAPHNODE
-  /* 45 */ &Finalize::vUndefined,         // CN_GRID
-  /* 46 */ &Finalize::vUndefined,         // CN_GROUPBY
+  /* 44 */ &Finalize::vUndefined,         // CN_GRAPH
+  /* 45 */ &Finalize::vUndefined,         // CN_GRAPH
+  /* 46 */ &Finalize::vUndefined,         // CN_GRAPHNODE
+  /* 47 */ &Finalize::vUndefined,         // CN_GRID
+  /* 48 */ &Finalize::vUndefined,         // CN_GROUPBY
   
-  /* 47 */ &Finalize::vUndefined,         // CN_HEAPBUFFER
+  /* 49 */ &Finalize::vUndefined,         // CN_HEAPBUFFER
   
-  /* 48 */ &Index::vFinalize,             // CN_INDEX
-  /* 49 */ &Finalize::vUndefined,         // CN_INDEXDATA
-  /* 50 */ &Finalize::vUndefined,         // CN_IDXCOLVEC
-  /* 51 */ &Finalize::vUndefined,         // CN_IDXDATAVEC
-  /* 52 */ &Finalize::vUndefined,         // CN_IDXVEC
-  /* 53 */ &Finalize::vUndefined,         // CN_INDEXLEVELS
-  /*    */ &Finalize::vUndefined,         // CN_ITEM
-  /*    */ &Finalize::vUndefined,         // CN_ITEMBUFFER
+  /* 50 */ &Index::vFinalize,             // CN_INDEX
+  /* 51 */ &Finalize::vUndefined,         // CN_INDEXDATA
+  /* 52 */ &Finalize::vUndefined,         // CN_IDXCOLVEC
+  /* 53 */ &Finalize::vUndefined,         // CN_IDXDATAVEC
+  /* 54 */ &Finalize::vUndefined,         // CN_IDXVEC
+  /* 55 */ &Finalize::vUndefined,         // CN_INDEXLEVELS
+  /* 56 */ &Finalize::vUndefined,         // CN_ITEM
+  /* 57 */ &Finalize::vUndefined,         // CN_ITEMBUFFER
   
-  /*    */ &Finalize::vUndefined,         // CN_JUMBOPERSISTENT
-  /* 54 */ &Finalize::vUndefined,         // CN_JUMBOTRANSIENT
+  /* 58 */ &Finalize::vUndefined,         // CN_JUMBOPERSISTENT
+  /* 59 */ &Finalize::vUndefined,         // CN_JUMBOTRANSIENT
   
-  /* 55 */ &Finalize::vUndefined,         // CN_KEY
-  /* 56 */ &Finalize::vUndefined,         // CN_KEYVAL
-  /* 57 */ &Finalize::vUndefined,         // CN_KEYVEC
-  /* 58 */ &Finalize::vUndefined,         // CN_KEYWRK
+  /* 60 */ &Finalize::vUndefined,         // CN_KEY
+  /* 61 */ &Finalize::vUndefined,         // CN_KEYVAL
+  /* 62 */ &Finalize::vUndefined,         // CN_KEYVEC
+  /* 63 */ &Finalize::vUndefined,         // CN_KEYWRK
   
-  /*    */ &Finalize::vUndefined,         // CN_LARGEPERSISTENT
-  /*    */ &Finalize::vUndefined,         // CN_LARGETRANSIENT
+  /* 64 */ &Finalize::vUndefined,         // CN_LARGEPERSISTENT
+  /* 65 */ &Finalize::vUndefined,         // CN_LARGETRANSIENT
   
-  /* 59 */ &Finalize::vUndefined,         // CN_LINEITEM
-  /* 60 */ &Finalize::vUndefined,         // CN_LOADCHUNK
-  /* 61 */ &Loader::vFinalize,            // CN_LOADER
-  /* 62 */ &Finalize::vUndefined,         // CN_LOADERSUB
-  /* 63 */ &Finalize::vUndefined,         // CN_LOADMAP
-  /* 64 */ &Finalize::vUndefined,         // CN_LOCK
+  /* 66 */ &Finalize::vUndefined,         // CN_LINEITEM
+  /* 67 */ &Finalize::vUndefined,         // CN_LOADCHUNK
+  /* 68 */ &Loader::vFinalize,            // CN_LOADER
+  /* 69 */ &Finalize::vUndefined,         // CN_LOADERSUB
+  /* 70 */ &Finalize::vUndefined,         // CN_LOADMAP
+  /* 71 */ &Finalize::vUndefined,         // CN_LOCK
   
-  /*    */ &Finalize::vUndefined,         // CN_MEDIUMPERSISTENT
-  /*    */ &Finalize::vUndefined,         // CN_MEDIUMTRANSIENT
+  /* 72 */ &Finalize::vUndefined,         // CN_MEDIUMPERSISTENT
+  /* 73 */ &Finalize::vUndefined,         // CN_MEDIUMTRANSIENT
   
-  /* 66 */ &Finalize::vUndefined,         // CN_NODE
-  /* 67 */ &Finalize::vUndefined,         // CN_NODECURSOR
+  /* 74 */ &Finalize::vUndefined,         // CN_NODE
+  /* 75 */ &Finalize::vUndefined,         // CN_NODECURSOR
   
-  /* 68 */ &Finalize::vUndefined,         // CN_OP
+  /* 76 */ &Finalize::vUndefined,         // CN_OP
   
-  /* 69 */ &Finalize::vUndefined,         // CN_PARSER
-  /* 70 */ &Finalize::vUndefined,         // CN_PARTITION
-  /* 71 */ &Finalize::vUndefined,         // CN_PARTITIONSCHEDULER
-  /* 72 */ &Finalize::vUndefined,         // CN_PARTITIONVEC
-  /* 73 */ &Finalize::vUndefined,         // CN_PATHVEC
-  /*    */ &Finalize::vUndefined,         // CN_PERFORMANCEENTRY
-  /*    */ &Finalize::vUndefined,         // CN_PERFORMANCETRACE
-  /* 74 */ &Finalize::vUndefined,         // CN_PLAN
-  /* 75 */ &Finalize::vUndefined,         // CN_PLANNER
-  /* 76 */ &Finalize::vUndefined,         // CN_PLANLIST
-  /* 77 */ &Finalize::vUndefined,         // CN_POSIXTHREAD
-  /* 78 */ &Finalize::vUndefined,         // CN_PREDICATE
-  /* 79 */ &Finalize::vUndefined,         // CN_PREDICATEVEC
-  /* 80 */ &Finalize::vUndefined,         // CN_PROXY
-  /* 81 */ &Finalize::vUndefined,         // CN_PROXYSET
-  /* 82 */ &Finalize::vUndefined,         // CN_PTNCOLVEC
+  /* 77 */ &Finalize::vUndefined,         // CN_PARSER
+  /* 78 */ &Finalize::vUndefined,         // CN_PARTITION
+  /* 79 */ &Finalize::vUndefined,         // CN_PARTITIONSCHEDULER
+  /* 80 */ &Finalize::vUndefined,         // CN_PARTITIONVEC
+  /* 81 */ &Finalize::vUndefined,         // CN_PATHVEC
+  /* 82 */ &Finalize::vUndefined,         // CN_PERFORMANCEBUFFER
+  /* 83 */ &Finalize::vUndefined,         // CN_PERFORMANCEENTRY
+  /* 84 */ &Finalize::vUndefined,         // CN_PERFORMANCETRACE
+  /* 85 */ &Finalize::vUndefined,         // CN_PLAN
+  /* 86 */ &Finalize::vUndefined,         // CN_PLANNER
+  /* 87 */ &Finalize::vUndefined,         // CN_PLANLIST
+  /* 88 */ &Finalize::vUndefined,         // CN_POSIXTHREAD
+  /* 89 */ &Finalize::vUndefined,         // CN_PREDICATE
+  /* 90 */ &Finalize::vUndefined,         // CN_PREDICATEVEC
+  /* 91 */ &Finalize::vUndefined,         // CN_PROXY
+  /* 92 */ &Finalize::vUndefined,         // CN_PROXYSET
+  /* 93 */ &Finalize::vUndefined,         // CN_PTNCOLVEC
   
-  /* 83 */ &Finalize::vUndefined,         // CN_QUEUE
-  /* 84 */ &Finalize::vUndefined,         // CN_QUEUEBUFFER
+  /* 94 */ &Finalize::vUndefined,         // CN_QUEUE
+  /* 95 */ &Finalize::vUndefined,         // CN_QUEUEBUFFER
   
-  /* 85 */ &Finalize::vUndefined,         // CN_RBCURSOR
-  /* 86 */ &Finalize::vUndefined,         // CN_REGFRAME
-  /*    */ &Finalize::vUndefined,         // CN_RESULTBUFFER
-  /*    */ &Finalize::vUndefined,         // CN_RESULTROW
-  /* 87 */ &Finalize::vUndefined,         // CN_RING
-  /* 88 */ &Finalize::vUndefined,         // CN_ROARRAY
-  /* 89 */ &Finalize::vUndefined,         // CN_ROWBUFFER
-  /* 90 */ &Finalize::vUndefined,         // CN_ROWCURSOR
-  /* 91 */ &Finalize::vUndefined,         // CN_ROWONCE
+  /* 96 */ &Finalize::vUndefined,         // CN_RBCURSOR
+  /* 97 */ &Finalize::vUndefined,         // CN_REGFRAME
+  /* 98 */ &Finalize::vUndefined,         // CN_RESULTBUFFER
+  /* 99 */ &Finalize::vUndefined,         // CN_RESULTROW
+  /*100 */ &Finalize::vUndefined,         // CN_RING
+  /*101 */ &Finalize::vUndefined,         // CN_ROARRAY
+  /*102 */ &Finalize::vUndefined,         // CN_ROWBUFFER
+  /*103 */ &Finalize::vUndefined,         // CN_ROWCURSOR
+  /*104 */ &Finalize::vUndefined,         // CN_ROWONCE
   
-  /* 92 */ &Finalize::vUndefined,         // CN_SCANBUFFER
-  /* 93 */ &Finalize::vUndefined,         // CN_SCRATCH
-  /* 94 */ &Finalize::vUndefined,         // CN_SEHISTORY
-  /* 95 */ &Finalize::vUndefined,         // CN_SEITF
-  /* 96 */ &Finalize::vUndefined,         // CN_SEITFCURSOR
-  /* 97 */ &Finalize::vUndefined,         // CN_SEITFLIST
-  /* 98 */ &SelCursor::vFinalize,         // CN_SELCURSOR
-  /* 99 */ &Finalize::vUndefined,         // CN_SEMAPHORE
-  /*100 */ &Finalize::vUndefined,         // CN_SEPROMPT
-  /*101 */ &Finalize::vUndefined,         // CN_SINCE
-  /*102 */ &Finalize::vUndefined,         // CN_SKIPCURSOR
-  /*103 */ &Finalize::vUndefined,         // CN_SKIPLIST
-  /*104 */ &Finalize::vUndefined,         // CN_SKIPNODE
-  /*105 */ &Finalize::vUndefined,         // CN_SLAB
-  /*106 */ &Finalize::vUndefined,         // CN_SLABALLOCATOR
-  /*107 */ &Slots::vFinalize,             // CN_SLOTS
-  /*    */ &Finalize::vUndefined,         // SN_SMALLPERSISTENT
-  /*108 */ &Finalize::vUndefined,         // SN_SMALLTRANSIENT
-  /*109 */ &Finalize::vUndefined,         // CN_SOCKET
-  /*110 */ &Finalize::vUndefined,         // CN_STACK
-  /*111 */ &Finalize::vUndefined,         // CN_STEPACCUM
-  /*112 */ &Finalize::vUndefined,         // CN_STEPARRAY
-  /*113 */ &Finalize::vUndefined,         // CN_SYSCALL
+  /*105 */ &Finalize::vUndefined,         // CN_SCANBUFFER
+  /*106 */ &Finalize::vUndefined,         // CN_SCRATCH
+  /*107 */ &Finalize::vUndefined,         // CN_SEHISTORY
+  /*108 */ &Finalize::vUndefined,         // CN_SEITF
+  /*109 */ &Finalize::vUndefined,         // CN_SEITFCURSOR
+  /*110 */ &Finalize::vUndefined,         // CN_SEITFLIST
+  /*111 */ &SelCursor::vFinalize,         // CN_SELCURSOR
+  /*112 */ &Finalize::vUndefined,         // CN_SEMAPHORE
+  /*113 */ &Finalize::vUndefined,         // CN_SEPROMPT
+  /*114 */ &Finalize::vUndefined,         // CN_SINCE
+  /*115 */ &Finalize::vUndefined,         // CN_SKIPCURSOR
+  /*116 */ &Finalize::vUndefined,         // CN_SKIPLIST
+  /*117 */ &Finalize::vUndefined,         // CN_SKIPNODE
+  /*118 */ &Finalize::vUndefined,         // CN_SLAB
+  /*119 */ &Finalize::vUndefined,         // CN_SLABALLOCATOR
+  /*120 */ &Slots::vFinalize,             // CN_SLOTS
+  /*121 */ &Finalize::vUndefined,         // SN_SMALLPERSISTENT
+  /*122 */ &Finalize::vUndefined,         // SN_SMALLTRANSIENT
+  /*123 */ &Finalize::vUndefined,         // CN_SOCKET
+  /*124 */ &Finalize::vUndefined,         // CN_STACK
+  /*125 */ &Finalize::vUndefined,         // CN_STEPACCUM
+  /*126 */ &Finalize::vUndefined,         // CN_STEPARRAY
+  /*127 */ &Finalize::vUndefined,         // CN_SYSCALL
   
-  /*114 */ &Table::vFinalize,             // CN_TABLE
-  /*115 */ &Finalize::vUndefined,         // CN_TASK
-  /*116 */ &Finalize::vUndefined,         // CN_TASKCURSOR
-  /*117 */ &Finalize::vUndefined,         // CN_TASKLIST
-  /*118 */ &Finalize::vUndefined,         // CN_TASKQUEUE
-  /*119 */ &Finalize::vUndefined,         // CN_SERVERSCHEDULER
-  /*120 */ &Finalize::vUndefined,         // CN_TASKSET
-  /*121 */ &Finalize::vUndefined,         // CN_THREAD
-  /*122 */ &Finalize::vUndefined,         // CN_THREADCURSOR
-  /*123 */ &Finalize::vUndefined,         // CN_THREADLIST
-  /*124 */ &Finalize::vUndefined,         // CN_THREADQUEUE
-  /*125 */ &Finalize::vUndefined,         // CN_TIME
-  /*126 */ &Finalize::vUndefined,         // CN_TIMER
-  /*127 */ &Finalize::vUndefined,         // CN_TOKEN
-  /*128 */ &Finalize::vUndefined,         // CN_TOKENISER
-  /*129 */ &Finalize::vUndefined,         // CN_TOKENARY
-  /*130 */ &Finalize::vUndefined,         // CN_TOKENVEC
-  /*131 */ &Finalize::vUndefined,         // CN_TX
-  /*132 */ &Finalize::vUndefined,         // CN_TXSET
+  /*128 */ &Table::vFinalize,             // CN_TABLE
+  /*129 */ &Finalize::vUndefined,         // CN_TASK
+  /*130 */ &Finalize::vUndefined,         // CN_TASKCURSOR
+  /*131 */ &Finalize::vUndefined,         // CN_TASKLIST
+  /*132 */ &Finalize::vUndefined,         // CN_TASKQUEUE
+  /*133 */ &Finalize::vUndefined,         // CN_SERVERSCHEDULER
+  /*134 */ &Finalize::vUndefined,         // CN_TASKSET
+  /*135 */ &Finalize::vUndefined,         // CN_THREAD
+  /*136 */ &Finalize::vUndefined,         // CN_THREADCURSOR
+  /*137 */ &Finalize::vUndefined,         // CN_THREADLIST
+  /*138 */ &Finalize::vUndefined,         // CN_THREADQUEUE
+  /*139 */ &Finalize::vUndefined,         // CN_TIME
+  /*140 */ &Finalize::vUndefined,         // CN_TIMER
+  /*141 */ &Finalize::vUndefined,         // CN_TOKEN
+  /*142 */ &Finalize::vUndefined,         // CN_TOKENISER
+  /*143 */ &Finalize::vUndefined,         // CN_TOKENARY
+  /*144 */ &Finalize::vUndefined,         // CN_TOKENVEC
+  /*145 */ &Finalize::vUndefined,         // CN_TX
+  /*146 */ &Finalize::vUndefined,         // CN_TXSET
   
-  /*133 */ &Finalize::vUndefined,         // CN_WORD
+  /*147 */ &Finalize::vUndefined,         // CN_WORD
   
-  /*134 */ &Finalize::vUndefined,         // CN_ZSMALL_
-  /*135 */ &Finalize::vUndefined,         // CN_ZMEDIUM_
-  /*136 */ &Finalize::vUndefined,         // CN_ZLARGE_
-  /*137 */ &Finalize::vUndefined,         // CN_ZJUMBO_
+  /*148 */ &Finalize::vUndefined,         // CN_ZSMALL_
+  /*149 */ &Finalize::vUndefined,         // CN_ZMEDIUM_
+  /*150 */ &Finalize::vUndefined,         // CN_ZLARGE_
+  /*151 */ &Finalize::vUndefined,         // CN_ZJUMBO_
   
-  /*138 */ &Finalize::vEnums              // CN_ENUMS
+  /*152 */ &Finalize::vEnums              // CN_ENUMS
 };
 
 /*----------------------------------------------------------------------------*/
