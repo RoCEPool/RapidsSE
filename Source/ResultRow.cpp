@@ -43,6 +43,8 @@ void* ResultRow::operator new(size_t iSize, ResultRow* pResultRow)
 /*----------------------------------------------------------------------------*/
 ResultRow::ResultRow(Row* aSrcRow, i8 nResultRowSize, i8 nRowSize)
 {
+  _poolAddress_(this);
+  
   m_nResultRowSize = nResultRowSize;
   Row* aDstRow = this->aRow();
   
@@ -54,6 +56,8 @@ ResultRow::ResultRow(Row* aSrcRow, i8 nResultRowSize, i8 nRowSize)
 /*----------------------------------------------------------------------------*/
 ResultRow::~ResultRow(void)
 {
+  _poolAddress_(this);
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -82,6 +86,8 @@ i8 ResultRow::nBytesRequired(i8 nRowSize)
 /*----------------------------------------------------------------------------*/
 Row* ResultRow::aRow(void)
 {
+  _poolAddress_(this);
+  
   Row* aRow = pAdd<Row*>(this,sizeof(i8));
 
   return aRow;
@@ -92,6 +98,8 @@ Row* ResultRow::aRow(void)
 /*----------------------------------------------------------------------------*/
 void ResultRow::vShow(ColumnVec* pColVec)
 {
+  _poolAddress_(this);
+  
   Row* aRow = this->aRow();
   
   aRow->vShow(pColVec);
@@ -102,6 +110,8 @@ void ResultRow::vShow(ColumnVec* pColVec)
 /*----------------------------------------------------------------------------*/
 i8 ResultRow::nResultRowSize(void)
 {
+  _poolAddress_(this);
+  
   return m_nResultRowSize;
 }
 
