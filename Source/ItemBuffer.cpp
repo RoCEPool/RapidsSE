@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ItemBuffer* DBobjects::_pBufferAbstract(void* aAddr)
+ItemBuffer* DBobjects::_pItemBuffer(void* aAddr)
 {
   ItemBuffer* pBufferAbstract = reinterpret_cast<ItemBuffer*>(aAddr);
   
@@ -37,7 +37,6 @@ ItemBuffer::ItemBuffer(eCN eClassNo)
   
   //  _checkInitialised_(eClassNo);
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */

@@ -8,12 +8,12 @@ namespace DBobjects
   class ResultBuffer
   {
   protected:
-    i8    m_nResultRows; // number of ResultRows in this buffer
+    bool   m_bIsLast;     // is this the last buffer in its sequence?jj
+    i8     m_iPartition;  // partitionn this result buffer came from
+    i8     m_nResultRows; // number of ResultRows in this buffer
+    Table* m_pTable;      // table which describes the rows
+
     WspFxd<C_SIZE_LARGE_OBJECT - C_1KB*4> m_xWsp;
-    
-    bool   m_bIsLast; // is this the last buffer in its sequence?jj
-    Table* m_pTable;  // table which describes the rows
-    i8     m_iPartition; // partitionn this result buffer came from
 
     // must be last
     Footer m_xFooter;

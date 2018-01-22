@@ -58,20 +58,14 @@ void ResultBuffer::operator delete(void* pBufferAddress)
 /*----------------------------------------------------------------------------*/
 ResultBuffer::ResultBuffer(Table* pTable, i8 iPartition)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
-  
+  m_bIsLast     = false;
+  m_iPartition  = iPartition;
   m_nResultRows = 0;
-  //m_xWsp
+  m_pTable      = pTable;
   
 #ifdef __DEBUG_CHECKS
   m_xWsp.vZero(CN_ITEMBUFFER);
 #endif
-  
-  m_bIsLast    = false;
-  m_pTable     = pTable;
-  m_iPartition = iPartition;
-  
-  //_postcondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
   
   _checkInitialised_(CN_RESULTBUFFER);
 }
@@ -81,7 +75,6 @@ ResultBuffer::ResultBuffer(Table* pTable, i8 iPartition)
 /*----------------------------------------------------------------------------*/
 ResultBuffer::~ResultBuffer(void)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
 }
 
 
@@ -94,8 +87,6 @@ ResultBuffer::~ResultBuffer(void)
 /*----------------------------------------------------------------------------*/
 bool ResultBuffer::bAppendResult(Row* aRow, i8 nRowSize)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
-  
   i8 nResultRowSize = ResultRow::nBytesRequired(nRowSize);
   
   i8 nFreeSpace = nFreeBytes();
@@ -129,8 +120,6 @@ ResultRow* ResultBuffer::pFirstResult(void)
 /*----------------------------------------------------------------------------*/
 void ResultBuffer::vIsLast(bool bIsLast)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
-  
   m_bIsLast = bIsLast;
 }
 
@@ -139,8 +128,6 @@ void ResultBuffer::vIsLast(bool bIsLast)
 /*----------------------------------------------------------------------------*/
 bool ResultBuffer::bIsLast(void)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
-  
   return m_bIsLast;
 }
 
@@ -149,8 +136,6 @@ bool ResultBuffer::bIsLast(void)
 /*----------------------------------------------------------------------------*/
 ResultRow* ResultBuffer::pNextResult(ResultRow* pCurrentItem)
 {
-  //_precondition_(_ADDRESS_);
-  
   i8 nBytes = pCurrentItem->nResultRowSize();
   
   ResultRow* pNext = pAdd<ResultRow*>(pCurrentItem,nBytes);
@@ -166,8 +151,6 @@ ResultRow* ResultBuffer::pNextResult(ResultRow* pCurrentItem)
 /*----------------------------------------------------------------------------*/
 i8 ResultBuffer::nPartitionNo(void)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
-  
   return m_iPartition;
 }
 
@@ -176,8 +159,6 @@ i8 ResultBuffer::nPartitionNo(void)
 /*----------------------------------------------------------------------------*/
 i8 ResultBuffer::nResultRows(void)
 {
-  //_precondition_(_ADDRESS_);
-  
   return m_nResultRows;
 }
 
@@ -186,8 +167,6 @@ i8 ResultBuffer::nResultRows(void)
 /*----------------------------------------------------------------------------*/
 void ResultBuffer::vShow(void)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER,_FOOTER_);
-  
   ColumnVec* pColVec = m_pTable->pColumnVec();
   
   ResultRow* pResultRow;
@@ -210,8 +189,6 @@ void ResultBuffer::vShow(void)
 /*----------------------------------------------------------------------------*/
 ResultRow* ResultBuffer::pAllotResult(i8 nBytes)
 {
-  //_precondition_(_ADDRESS_);
-  
   // test  sufficient freespace
   if (nFreeBytes() < nBytes)
     return nullptr;
@@ -228,8 +205,6 @@ ResultRow* ResultBuffer::pAllotResult(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 i8 ResultBuffer::nFreeBytes(void)
 {
-  //_precondition_(_ADDRESS_);
-  
   i8 nBytes = m_xWsp.nFree();
   
   return nBytes;
@@ -245,8 +220,6 @@ i8 ResultBuffer::nFreeBytes(void)
 /*----------------------------------------------------------------------------*/
 Footer* ResultBuffer::aFooter(void)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_RESULTBUFFER);
-  
   return &m_xFooter;
 }
 
