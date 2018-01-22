@@ -59,7 +59,7 @@ void PerformanceEntry::operator delete(void* pAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 PerformanceEntry::PerformanceEntry(void)
-: Entry(CN_PERFORMANCEENTRY,sizeof(PerformanceEntry),0)
+: Item(CN_PERFORMANCEENTRY,sizeof(PerformanceEntry))
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PERFORMANCEENTRY,_FOOTER_);
   

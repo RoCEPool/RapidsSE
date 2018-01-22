@@ -5,7 +5,7 @@
 
 namespace Utilities
 {
-  class PerformanceEntry : public Entry
+  class PerformanceEntry : public Item
   {
     private:
   
