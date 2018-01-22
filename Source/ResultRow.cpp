@@ -45,25 +45,24 @@ void* ResultRow::operator new(size_t iSize, ResultRow* pResultRow)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ResultRow::ResultRow(i8 nSizeResultRow)
-//: Item(CN_RESULTROW,nSizeResultRow)
-{
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_RESULTROW);
-  m_nSizeItem = nSizeResultRow;
-}
+//ResultRow::ResultRow(i8 nResultRowSize)
+//{
+//  //_precondition_(_ADDRESS_,_MAGIC_,CN_RESULTROW);
+//  m_nResultRowSize = nResultRowSize;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ResultRow::ResultRow(Row* aSrcRow, i8 nSizeResultRow, i8 nSizeRow)
+ResultRow::ResultRow(Row* aSrcRow, i8 nResultRowSize, i8 nRowSize)
 //: Item(CN_RESULTROW,nSizeResultRow)
 {
   //_precondition_(_ADDRESS_,_MAGIC_,CN_RESULTROW);
   
-  m_nSizeItem = nSizeResultRow;
+  m_nResultRowSize = nResultRowSize;
   Row* aDstRow = this->aRow();
   
-  MemLib::vCopy(aDstRow,aSrcRow,nSizeRow,CN_RESULTBUFFER);
+  MemLib::vCopy(aDstRow,aSrcRow,nRowSize,CN_RESULTBUFFER);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -120,13 +119,13 @@ void ResultRow::vShow(ColumnVec* pColVec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get size in bytes of this item                                             */
+/* get size in bytes of this result row                                       */
 /*----------------------------------------------------------------------------*/
-i8 ResultRow::nSizeItem(void)
+i8 ResultRow::nResultRowSize(void)
 {
   //_precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_nSizeItem;
+  return m_nResultRowSize;
 }
 
 /*============================================================================*/

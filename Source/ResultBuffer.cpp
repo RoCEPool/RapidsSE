@@ -164,7 +164,7 @@ ResultRow* ResultBuffer::pNextResult(ResultRow* pCurrentItem)
 {
   //_precondition_(_ADDRESS_);
   
-  i8 nBytes = pCurrentItem->nSizeItem();
+  i8 nBytes = pCurrentItem->nResultRowSize();
   
   ResultRow* pNext = pAdd<ResultRow*>(pCurrentItem,nBytes);
   
@@ -209,7 +209,7 @@ bool ResultBuffer::bAppendRow(Row* aRow, i8 nRowSize)
   
   ResultRow* aResultRow = pAllotResult(nResultRowSize);
 
-  new(aResultRow) ResultRow(aRow,nResultRowSize,nRowSize);
+  new(aResultRow) ResultRow(aRow,nResultRowSize,nRowSize);  
   
   return true;
 }
