@@ -40,7 +40,7 @@ void* PerformanceBuffer::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 void PerformanceBuffer::operator delete(void* pBufferAddress)
 {
-  Buffer* pBuffer = static_cast<Buffer*>(pBufferAddress);
+  Buffer* pBuffer = reinterpret_cast<Buffer*>(pBufferAddress);
   
   Heap::vFree(pBuffer);
 }
@@ -49,7 +49,7 @@ void PerformanceBuffer::operator delete(void* pBufferAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 PerformanceBuffer::PerformanceBuffer(void)
-: Object(CN_PERFORMANCEBUFFER)
+: ItemBuffer(CN_PERFORMANCEBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PERFORMANCEBUFFER,_FOOTER_);
   

@@ -21,39 +21,23 @@ ItemBuffer* DBobjects::_pBufferAbstract(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ItemBuffer::ItemBuffer(void)
+ItemBuffer::ItemBuffer(eCN eClassNo)
+: Object(eClassNo)
 {
-  //_precondition_(_ADDRESS_);
+  _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
   m_nItems = 0;
   //m_xWsp
   
 #ifdef __DEBUG_CHECKS
-  m_xWsp.vZero(CN_ITEMBUFFER);
+  m_xWsp.vZero(eClassNo);
 #endif
   
-  //_postcondition_(_ADDRESS_);
+  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
   //  _checkInitialised_(eClassNo);
 }
-/*----------------------------------------------------------------------------*/
-//ItemBuffer::ItemBuffer(eCN eClassNo)
-//: Object(eClassNo)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
-//  
-//  m_nItems = 0;
-//  //m_xWsp
-//  
-//#ifdef __DEBUG_CHECKS
-//  m_xWsp.vZero(eClassNo);
-//#endif
-//  
-//  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
-//  
-//  //  _checkInitialised_(eClassNo);
-//}
-//
+
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */

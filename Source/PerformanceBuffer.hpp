@@ -5,8 +5,7 @@
 
 namespace DBobjects
 {
-  class PerformanceBuffer : public Object,
-                            public ItemBuffer
+  class PerformanceBuffer : public ItemBuffer
   {
   protected:
   
