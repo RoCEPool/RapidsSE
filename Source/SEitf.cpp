@@ -727,8 +727,8 @@ bool SEitf::bNextBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
     
   // if we had an entry buffer delete it
-  if (m_pEntryBuffer)
-    delete m_pEntryBuffer;
+  if (m_pResultBuffer)
+    delete m_pResultBuffer;
   
   if (m_ziLastBuffersScanned == m_ziLastBuffers)
     return false;
@@ -741,9 +741,9 @@ bool SEitf::bNextBuffer(void)
   
   // get entry buffer
   PtrVal* pPtrVal = xValWrk.pNestedPtrVal();
-  m_pEntryBuffer = (EntryBuffer*)(pPtrVal->pPtr());
+  m_pResultBuffer = (ResultBuffer*)(pPtrVal->pPtr());
   
-  if (m_pEntryBuffer->bIsLast()) {
+  if (m_pResultBuffer->bIsLast()) {
     m_ziLastBuffersScanned++;
     //vTrace("m_ziLastBuffersScanned: %lld\n"_Stz, pSEitf->m_ziLastBuffersScanned );
   }

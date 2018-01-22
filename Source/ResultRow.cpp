@@ -83,8 +83,8 @@ ResultRow::~ResultRow(void)
 /*----------------------------------------------------------------------------*/
 i8 ResultRow::nBytesRequired(i8 nRowSize)
 {
-  i8 nBytes =   sizeof(Item)   // item
-              + nRowSize       // row proper
+  i8 nBytes =   //sizeof(Item)   // item
+              nRowSize       // row proper
               + sizeof(Footer) // footer
               ;
   
@@ -102,7 +102,7 @@ Row* ResultRow::aRow(void)
 {
   //_precondition_(_ADDRESS_,_MAGIC_,CN_RESULTROW);
   
-  Row* aRow = pAdd<Row*>(this,sizeof(Item));
+  Row* aRow = pAdd<Row*>(this,sizeof(i8));
 
   return aRow;
 }

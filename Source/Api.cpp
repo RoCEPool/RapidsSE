@@ -986,8 +986,8 @@ eEC RapidsSE_ExportData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath, i8 iTraceLev
 
 /*----------------------------------------------------------------------------*/
 /* fetch next buffer                                                          */
-/*----------------------------------------------------------------------------*//*
-eEC RapidsSE_FetchNextBuffer(SEitf* pSEitf, void** ppEntryBuffer, void** ppFirstEntry, void** ppEntries, i8 iTraceLevel)
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_FetchNextBuffer(SEitf* pSEitf, void** ppResultBuffer, i8 iTraceLevel)
 {
   eEC eResult;
   
@@ -1003,25 +1003,16 @@ eEC RapidsSE_FetchNextBuffer(SEitf* pSEitf, void** ppEntryBuffer, void** ppFirst
     // clear the last error
     CLEAR_LASTERROR();
     
-    // validate the reference pointers
-    VALIDATE_REFPOINTER("b"_Stz, ppEntryBuffer);
-    VALIDATE_REFPOINTER("b"_Stz, ppFirstEntry);
-    VALIDATE_REFPOINTER("b"_Stz, ppEntries);
+    // validate the reference pointer
+    VALIDATE_REFPOINTER("b"_Stz, ppResultBuffer);
     
     bool bNextBuffer = pSEitf->bNextBuffer();
     
     if (bNextBuffer) {
-      *ppEntryBuffer = pSEitf->m_pEntryBuffer;
-      *ppFirstEntry = pSEitf->m_pEntryBuffer->pHeadEntry();
-      pSEitf->m_iRowsProcessed = pSEitf->m_pEntryBuffer->nItems() - 1;
-      *ppEntries = &pSEitf->m_iRowsProcessed;
-      //pSEitf->m_pEntryBuffer->pHead()->vContentDump();
+      *ppResultBuffer = pSEitf->m_pResultBuffer;
     }
     else {
-      *ppEntryBuffer = nullptr;
-      *ppFirstEntry = nullptr;
-      pSEitf->m_iRowsProcessed = 0;
-      *ppEntries = &pSEitf->m_iRowsProcessed;
+      *ppResultBuffer = nullptr;
     }
     //vTrace("Buffer %p FirstRow %p Entries %lld\n"_Stz, *ppEntryBuffer, *ppFirstEntry, *ppEntries);
     
@@ -1040,7 +1031,7 @@ eEC RapidsSE_FetchNextBuffer(SEitf* pSEitf, void** ppEntryBuffer, void** ppFirst
     return EC_SE_UNKNOWN_ERROR;
   }
 }
-*/
+
 /*----------------------------------------------------------------------------*/
 /* fetch next row                                                             */
 /*----------------------------------------------------------------------------*/

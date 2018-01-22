@@ -9,7 +9,7 @@ namespace DBobjects
   {
   protected:
     i8  m_nSizeItem; // size of this item
-
+    // ... data
   public:
     void* operator new(size_t);
     void* operator new(size_t, ResultRow*);
