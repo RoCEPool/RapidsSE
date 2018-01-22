@@ -104,10 +104,10 @@ void PerformanceTrace::vAdd(Stz* aWord, Stz* aNote)
 //       pEntryBuffer = pEntryBuffer->pNextBuffer()) {
 //
 //    for (PerformanceEntry* pEntry =
-//           static_cast<PerformanceEntry*>(pEntryBuffer->pHead());
+//           reinterpret_cast<PerformanceEntry*>(pEntryBuffer->pHead());
 //         pEntry;
 //         pEntry =
-//           static_cast<PerformanceEntry*>(pEntryBuffer->pNextEntry(pEntry))) {
+//           reinterpret_cast<PerformanceEntry*>(pEntryBuffer->pNextEntry(pEntry))) {
 //      
 //      i8 iEntryTicks = pEntry->iTicks();
 //      iTicksUpdate += iEntryTicks;
@@ -139,10 +139,10 @@ void PerformanceTrace::vPrint(void)
        pPerfBuffer = pPerfBuffer->pNextBuffer()) {
     
     for (PerformanceEntry* pEntry =
-         static_cast<PerformanceEntry*>(pPerfBuffer->pFirstEntry());
+         reinterpret_cast<PerformanceEntry*>(pPerfBuffer->pFirstEntry());
          pEntry;
          pEntry =
-         static_cast<PerformanceEntry*>(pPerfBuffer->pNextEntry(pEntry))) {
+         reinterpret_cast<PerformanceEntry*>(pPerfBuffer->pNextEntry(pEntry))) {
   
       i8 iEntryTicks = pEntry->iTicks();
       xTimerElapsed.vSet(0,iEntryTicks);
