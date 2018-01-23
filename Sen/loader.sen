@@ -81,6 +81,9 @@ timer: loadTimer
   // begin a transaction
   tx::begin pSEitf seitf.tx!
 
+   // create a buffer queue
+  //"loaderTask.queue" queue::new to pBufferQueue
+
   // hold task mutex while we create sub loaders
   //task::this grabMutex
 
@@ -109,7 +112,8 @@ timer: loadTimer
   // break file into chunks (this causes sub loaders to load them)
 
   // using table loader scan thru the file and find chunks for sub loaders
-  begin pTblLoader loader.findChunk while repeat
+  //begin pTblLoader loader.findChunk while repeat
+  pTblLoader loader.chunkFile
 
   "Load file has been chunked" .verbose
 

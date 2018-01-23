@@ -17,6 +17,7 @@ void Task::vAddPrimitives_Loader(void)
 {
   vAddPrimitive("loader.addRecordsInvalid"_Stz, &vLoaderAddRecordsInvalid,false);
   vAddPrimitive("loader.addRecordsValid"_Stz,   &vLoaderAddRecordsValid, false);
+  vAddPrimitive("loader.chunkFile"_Stz,         &vLoaderChunkFile,       false);
   vAddPrimitive("loader.delete"_Stz,            &vLoaderDelete,          false);
   vAddPrimitive("loader.findChunk"_Stz,         &vLoaderFindChunk,       false);
   vAddPrimitive("loader.init"_Stz,              &vLoaderInit,            false);
@@ -94,6 +95,29 @@ void Task::vLoaderAddRecordsValid(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* loader.chunkFile -- chunk the file                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderChunkFile(MP_Task mpTask)
+{
+  ENTRY("vLoaderChunkFile"_Stz);
+  
+  Object* pPtrLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
+    THROW_INVALID_DSTACK("loader.chunkFile"_Stz);
+  
+  Loader* pLoader = _pLoader(pPtrLoader);
+  ASSERT(CN_LOADER == pLoader->eClass());
+  
+  bool bFoundChunk = false;
+  
+  do {
+    bFoundChunk = pLoader->bFindChunk();
+  } while (bFoundChunk);
+    
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* loader.findChunk -- find next chunk                                        */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderFindChunk(MP_Task mpTask)
@@ -107,7 +131,7 @@ void Task::vLoaderFindChunk(MP_Task mpTask)
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
   
-  bool bFoundChunk = pLoader->bFindChunk();
+  bool bFoundChunk  = pLoader->bFindChunk();
   
   mpTask->m_pDataStack->vPushInt(bFoundChunk);
  

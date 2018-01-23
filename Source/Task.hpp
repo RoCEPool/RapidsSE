@@ -740,6 +740,7 @@ namespace Tasks
     // loader
     static void vLoaderAddRecordsInvalid(MP_Task mpTask);
     static void vLoaderAddRecordsValid(MP_Task mpTask);
+    static void vLoaderChunkFile(MP_Task mpTask);
     static void vLoaderDelete(MP_Task mpTask);
     static void vLoaderFindChunk(MP_Task mpTask);
     static void vLoaderInit(MP_Task mpTask);
