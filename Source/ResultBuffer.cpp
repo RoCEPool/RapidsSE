@@ -4,10 +4,6 @@
 
 #include "DBobjects.h"
 
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
-
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -58,7 +54,7 @@ void ResultBuffer::operator delete(void* pBufferAddress)
 /*----------------------------------------------------------------------------*/
 ResultBuffer::ResultBuffer(Table* pTable, i8 iPartition)
 {
-  _poolAddress_(this);
+  _poolAddress_(this); _footer_();
   
   m_bIsLast     = false;
   m_iPartition  = iPartition;
@@ -77,7 +73,7 @@ ResultBuffer::ResultBuffer(Table* pTable, i8 iPartition)
 /*----------------------------------------------------------------------------*/
 ResultBuffer::~ResultBuffer(void)
 {
-  _poolAddress_(this);
+  _poolAddress_(this); _footer_();
 }
 
 
@@ -90,7 +86,7 @@ ResultBuffer::~ResultBuffer(void)
 /*----------------------------------------------------------------------------*/
 bool ResultBuffer::bAppendResult(Row* aRow, i8 nRowSize)
 {
-  _poolAddress_(this);
+  _poolAddress_(this); _footer_();
   
   i8 nResultRowSize = ResultRow::nBytesRequired(nRowSize);
   
@@ -110,7 +106,7 @@ bool ResultBuffer::bAppendResult(Row* aRow, i8 nRowSize)
 /*----------------------------------------------------------------------------*/
 ResultRow* ResultBuffer::pFirstResult(void)
 {
-  _poolAddress_(this);
+  _poolAddress_(this); _footer_();
   
   if ( m_nResultRows == 0 )
     return nullptr;
@@ -125,7 +121,7 @@ ResultRow* ResultBuffer::pFirstResult(void)
 /*----------------------------------------------------------------------------*/
 void ResultBuffer::vIsLast(bool bIsLast)
 {
-  _poolAddress_(this);
+  _poolAddress_(this); _footer_();
   
   m_bIsLast = bIsLast;
 }
@@ -135,7 +131,7 @@ void ResultBuffer::vIsLast(bool bIsLast)
 /*----------------------------------------------------------------------------*/
 bool ResultBuffer::bIsLast(void)
 {
-  _poolAddress_(this);
+  _poolAddress_(this); _footer_();
   
   return m_bIsLast;
 }
@@ -145,7 +141,7 @@ bool ResultBuffer::bIsLast(void)
 /*----------------------------------------------------------------------------*/
 ResultRow* ResultBuffer::pNextResult(ResultRow* pCurrentItem)
 {
-  _poolAddress_(this);
+  _poolAddress_(this); _footer_();
   
   i8 nBytes = pCurrentItem->nResultRowSize();
   
@@ -162,7 +158,7 @@ ResultRow* ResultBuffer::pNextResult(ResultRow* pCurrentItem)
 /*----------------------------------------------------------------------------*/
 i8 ResultBuffer::nPartitionNo(void)
 {
-  _poolAddress_(this);
+  _poolAddress_(this); _footer_();
   
   return m_iPartition;
 }
@@ -172,7 +168,7 @@ i8 ResultBuffer::nPartitionNo(void)
 /*----------------------------------------------------------------------------*/
 i8 ResultBuffer::nResultRows(void)
 {
-  _poolAddress_(this);
+  _poolAddress_(this); _footer_();
   
   return m_nResultRows;
 }
@@ -182,7 +178,7 @@ i8 ResultBuffer::nResultRows(void)
 /*----------------------------------------------------------------------------*/
 void ResultBuffer::vShow(void)
 {
-  _poolAddress_(this);
+  _poolAddress_(this); _footer_();
   
   ColumnVec* pColVec = m_pTable->pColumnVec();
   
@@ -206,7 +202,7 @@ void ResultBuffer::vShow(void)
 /*----------------------------------------------------------------------------*/
 ResultRow* ResultBuffer::pAllotResult(i8 nBytes)
 {
-  _poolAddress_(this);
+  _poolAddress_(this); _footer_();
   
   // test  sufficient freespace
   if (nFreeBytes() < nBytes)
@@ -224,7 +220,7 @@ ResultRow* ResultBuffer::pAllotResult(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 i8 ResultBuffer::nFreeBytes(void)
 {
-  _poolAddress_(this);
+  _poolAddress_(this); _footer_();
   
   i8 nBytes = m_xWsp.nFree();
   
