@@ -1546,7 +1546,7 @@ void Task::vIndexUpperBound(MP_Task mpTask)
     
     if (bBefore) {
       // get the dataRow from the hidden index
-      Entry* pDataRowEntry = pEntry; //Task::pDataRow(pTable, pEntry);
+      Entry* pDataRowEntry = Task::pDataRow(pTable, pEntry);
       
       // insert row from entry in tempEntryBuffer
       if ( ! bAppendRow(pResultBuffer, pDataRowEntry, pSEitf)) {
