@@ -80,7 +80,7 @@ namespace DBobjects
   
     EntryBuffer* pPrevBuffer(void);
     void         vPrevBuffer(EntryBuffer* pPrevBuffer);
-
+ 
     i8           nBufferLevel(void);
   
     void         vIndex(Index* pIndex);

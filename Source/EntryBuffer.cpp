@@ -792,19 +792,26 @@ bool EntryBuffer::bHasSpace(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  i8 iFree = m_xWsp.nFree();
+  i8 nFree = m_xWsp.nFree();
   
-  // free space calculation based on no of enteries
   if (gpAttachMap->m_bIndexSpace) {
-    if (iFree < nBytes)
+    // has space calculation based on free space
+    if (nFree < nBytes) {
+      //vTrace("EntryBuffer full with %lld bytes left\n"_Stz,nFree);
       return false;
+    }
+    else
+      return true;
   }
   else {
-    if (m_nItems > gpAttachMap->m_nIndexEntries)
+    // has space calculation based on no of enteries
+    if (m_nItems > gpAttachMap->m_nIndexEntries) {
+      vTrace("EntryBuffer full with %lld items\n"_Stz,m_nItems);
       return false;
+    }
+    else
+      return true;
   }
-  
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -10,7 +10,7 @@ namespace DBobjects
   protected:
   i8 m_nItems; // number of items in this buffer
 
-  WspFxd<C_SIZE_LARGE_OBJECT - C_1KB*4> m_xWsp;
+  WspFxd<C_SIZE_LARGE_OBJECT - C_1KB> m_xWsp;
   
   public:
     ItemBuffer(eCN eClassNo);

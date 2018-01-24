@@ -440,7 +440,7 @@ tp: addingPassOnToCP
 /*----------------------------------------------------------------------------*/
 /* path for SE                                                                */
 /*----------------------------------------------------------------------------*/
-"../OS\\ X/Build/Products/Debug/SE" constant SE_PATH
+"../OS\\ X/Build/Products/Release/SE" constant SE_PATH
 
 /*----------------------------------------------------------------------------*/
 /* form the shell command for spawning a node                                 */
