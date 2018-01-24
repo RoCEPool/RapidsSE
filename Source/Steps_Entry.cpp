@@ -162,9 +162,9 @@ Entry* Task::pDataRow(Table* pTable, Entry* pEntry)
   xKeyWrk.vAddDatum(xValWrk, pColumn);
 
   // position in the entry buffer at the row id key
-  //Entry* pRowEntry = pEntryBuffer->pPosition(xKeyWrk,1,JC_AFTER);
+  Entry* pRowEntry = pEntryBuffer->pPosition(xKeyWrk,1,JC_AFTER);
   
-  return pEntry;
+  return pRowEntry;
 }
 /*============================================================================*/
 /* end                                                                        */
