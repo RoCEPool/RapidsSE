@@ -1087,7 +1087,9 @@ void SEitf::vPopBufferQueue(void)
     // get entry buffer
     PtrVal* pPtrVal = xValWrk.pNestedPtrVal();
     m_pResultBuffer = (ResultBuffer*)(pPtrVal->pPtr());
-        
+    
+    m_iRowsProcessed += m_pResultBuffer->nResultRows();
+    
     // is it the last buffer
     if (m_pResultBuffer->bIsLast()) {
       m_ziLastBuffersScanned++;
