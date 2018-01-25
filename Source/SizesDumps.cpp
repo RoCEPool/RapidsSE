@@ -224,7 +224,7 @@ i8 giClassSize[]
   /* 19 */ sizeof(AccessPath),         // CN_ACCESSPATH
   /* 20 */ sizeof(Accum),              // CN_ACCUM
   /* 21 */ sizeof(AccumVec),           // CN_ACCUMVec
-  /* 22 */ 0,                          // CN_ARG
+  /* 22 */ sizeof(Arg),                // CN_ARG
   /* 23 */ sizeof(Arguments),          // CN_ARGUMENTS
   /* 24 */ sizeof(Atomic),             // CN_ATOMIC
   /* 25 */ sizeof(AttachMap),          // CN_ATTACHMAP
