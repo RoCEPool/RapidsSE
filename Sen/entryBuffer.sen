@@ -11,7 +11,11 @@
 
   "eb_ut" .
 
-  entryBuffer::unitTest
+  "ebTest"  pushTable assert
+  "ebTest" find execute locals| pTable |
+  popTable
+
+  pTable entryBuffer::unitTest
 ;
 
 /*============================================================================*/

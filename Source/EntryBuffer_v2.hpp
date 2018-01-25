@@ -6,6 +6,7 @@
 namespace DBobjects
 {
   class Index;
+  class Table;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Offset // item in the Offset2 and Offset1 arrays
@@ -149,7 +150,7 @@ namespace DBobjects
   
   EntryBuffer_v2* _pEntryBuffer_v2(void* aAddr);
   
-  void vEntryBuffer_v2_UnitTest(void);
+  void vEntryBuffer_v2_UnitTest(Table* pTable);
 }
 
 /*============================================================================*/

@@ -387,7 +387,8 @@ Footer* EntryBuffer_v2::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /*-- Unit Test ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void DBobjects::vEntryBuffer_v2_UnitTest(void)
+
+void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
 {
   EntryBuffer_v2* pEntryBuffer_v2 = new EntryBuffer_v2;
   

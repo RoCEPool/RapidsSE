@@ -481,7 +481,12 @@ void Task::vEntryBufferUnitTest(MP_Task mpTask)
 {
   ENTRY("vEntryBufferUnitTest"_Stz);
   
-  vEntryBuffer_v2_UnitTest();
+  Object* pPtrTable;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+    THROW_INVALID_DSTACK("entryBuffer::unitTest"_Stz);
+  Table* pTable = _pTable(pPtrTable);
+  
+  vEntryBuffer_v2_UnitTest(pTable);
   
   EXIT();
 }
