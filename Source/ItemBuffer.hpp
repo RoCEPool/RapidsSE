@@ -17,6 +17,7 @@ namespace DBobjects
    ~ItemBuffer(void);
   
     Item*  pAllotItem(i8 nBytes);
+    char*  aAllotSpace(i8 nBytes);
     char*  aDataArea(void);
     Item*  pFirstItem(void);
     i8     nFreeBytes(void);

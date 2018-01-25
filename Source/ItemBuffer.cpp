@@ -53,15 +53,30 @@ Item* ItemBuffer::pAllotItem(i8 nBytes)
 {
   //_precondition_(_ADDRESS_);
   
-  // test  sufficient freespace
-  if (nFreeBytes() < nBytes)
-    return nullptr;
+  Item* pItem = reinterpret_cast<Item*>(aAllotSpace(nBytes));
   
-  Item* pItem = reinterpret_cast<Item*>(m_xWsp.aAllot(nBytes));
+  if ( ! pItem )
+    return nullptr;
   
   m_nItems++;
   
   return pItem;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot space for nBytes in this buffer                                      */
+/*----------------------------------------------------------------------------*/
+char* ItemBuffer::aAllotSpace(i8 nBytes)
+{
+  //_precondition_(_ADDRESS_);
+  
+  // test  sufficient freespace
+  if (nFreeBytes() < nBytes)
+    return nullptr;
+  
+  char* aSpace = m_xWsp.aAllot(nBytes);
+  
+  return aSpace;
 }
 
 /*----------------------------------------------------------------------------*/
