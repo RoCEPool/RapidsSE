@@ -51,7 +51,7 @@ ItemBuffer::~ItemBuffer(void)
 /*----------------------------------------------------------------------------*/
 Item* ItemBuffer::pAllotItem(i8 nBytes)
 {
-  //_precondition_(_ADDRESS_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   Item* pItem = reinterpret_cast<Item*>(aAllotSpace(nBytes));
   
@@ -68,7 +68,7 @@ Item* ItemBuffer::pAllotItem(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 char* ItemBuffer::aAllotSpace(i8 nBytes)
 {
-  //_precondition_(_ADDRESS_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   // test  sufficient freespace
   if (nFreeBytes() < nBytes)
@@ -84,7 +84,7 @@ char* ItemBuffer::aAllotSpace(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 char* ItemBuffer::aDataArea(void)
 {
-  //_precondition_(_ADDRESS_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   char* aStart = m_xWsp.aArea();
   
@@ -96,7 +96,7 @@ char* ItemBuffer::aDataArea(void)
 /*----------------------------------------------------------------------------*/
 Item* ItemBuffer::pFirstItem(void)
 {
-  //_precondition_(_ADDRESS_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   if ( m_nItems == 0 )
     return nullptr;
@@ -111,7 +111,7 @@ Item* ItemBuffer::pFirstItem(void)
 /*----------------------------------------------------------------------------*/
 i8 ItemBuffer::nFreeBytes(void)
 {
-  //_precondition_(_ADDRESS_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   i8 nBytes = m_xWsp.nFree();
   
@@ -123,7 +123,7 @@ i8 ItemBuffer::nFreeBytes(void)
 /*----------------------------------------------------------------------------*/
 i8 ItemBuffer::nItems(void)
 {
-  //_precondition_(_ADDRESS_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   return m_nItems;
 }
@@ -133,7 +133,7 @@ i8 ItemBuffer::nItems(void)
 /*----------------------------------------------------------------------------*/
 Item* ItemBuffer::pNextItem(Item* pCurrentItem)
 {
-  //_precondition_(_ADDRESS_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   i8 nBytes = pCurrentItem->nSizeItem();
   
@@ -150,7 +150,7 @@ Item* ItemBuffer::pNextItem(Item* pCurrentItem)
 /*----------------------------------------------------------------------------*/
 i8 ItemBuffer::nUsedBytes(void)
 {
-  //_precondition_(_ADDRESS_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   i8 nBytes = m_xWsp.nUsed();
   
