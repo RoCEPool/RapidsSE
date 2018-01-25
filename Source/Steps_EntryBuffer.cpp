@@ -31,6 +31,8 @@ void Task::vAddPrimitives_EntryBuffer(void)
   vAddPrimitive("entryBuffer.partition@"_Stz,  &vEntryBufferPartitionFetch, false);
   vAddPrimitive("entryBuffer.partition!"_Stz,  &vEntryBufferPartitionStore, false);
   vAddPrimitive("entryBuffer::toEntryBuffer"_Stz,&vEntryBufferToEntryBuffer,false);
+
+  vAddPrimitive("eb_ut"_Stz,                   &vEntryBufferUnitTest,       false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -468,6 +470,18 @@ void Task::vEntryBufferToEntryBuffer(MP_Task mpTask)
   RASSERT(CN_ENTRYBUFFER == pEntryBuffer->eClass());
   
   mpTask->m_pDataStack->vPushObject(pEntryBuffer);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* eb_ut -- entry buffer v2 unit test                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vEntryBufferUnitTest(MP_Task mpTask)
+{
+  ENTRY("vEntryBufferUnitTest"_Stz);
+  
+  vEntryBuffer_v2_UnitTest();
   
   EXIT();
 }
