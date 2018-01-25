@@ -32,7 +32,7 @@ void Task::vAddPrimitives_EntryBuffer(void)
   vAddPrimitive("entryBuffer.partition!"_Stz,  &vEntryBufferPartitionStore, false);
   vAddPrimitive("entryBuffer::toEntryBuffer"_Stz,&vEntryBufferToEntryBuffer,false);
 
-  vAddPrimitive("eb_ut"_Stz,                   &vEntryBufferUnitTest,       false);
+  vAddPrimitive("entryBuffer::unitTest"_Stz,   &vEntryBufferUnitTest,       false);
 }
 
 /*----------------------------------------------------------------------------*/

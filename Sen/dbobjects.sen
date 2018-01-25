@@ -22,6 +22,7 @@
 "rowBuffer.sen" include
 "plan.sen" include
 
+"entryBuffer.sen" include
 
 /*============================================================================*/
 /* end                                                                        */
