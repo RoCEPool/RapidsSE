@@ -83,6 +83,8 @@ int main(int argc, const char* argv[])
 //  ResultBuffer* pRB = new ResultBuffer;
 //  delete pRB;
 
+  vEntryBuffer_v2_UnitTest();
+  
   vRunPrompt();
   
   RapidsSE::vPoolClose();

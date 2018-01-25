@@ -63,16 +63,20 @@ EntryBuffer_v2::EntryBuffer_v2(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  m_eDurability   = BD_NONE;
-  m_bIsLast       = false;
+  m_eDurability  = BD_NONE;
+  m_bIsLast      = false;
   
-  m_pHigherLevel  = nullptr;
-  m_pNextBuffer   = nullptr;
-  m_pPrevBuffer   = nullptr;
+  m_pHigherLevel = nullptr;
+  m_pNextBuffer  = nullptr;
+  m_pPrevBuffer  = nullptr;
 
-  m_pIndex        = nullptr;
-  m_nBufferLevel  = 0;
-  m_nPartitionNo  = -1;
+  m_pIndex       = nullptr;
+  m_nBufferLevel = 0;
+  m_nPartitionNo = -1;
+  
+  m_pOffset2 = reinterpret_cast<Offset*>(pAllotItem(sizeof(Offset) * C_OFFSET_2));
+  m_pOffset1 = reinterpret_cast<Offset*>(pAllotItem(sizeof(Offset) * C_OFFSET_1));
+  m_pOffset0 = reinterpret_cast<i4*>(pAllotItem(sizeof(i4) * C_OFFSET_0));
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -85,7 +89,6 @@ EntryBuffer_v2::EntryBuffer_v2(void)
 EntryBuffer_v2::~EntryBuffer_v2(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -386,6 +389,9 @@ Footer* EntryBuffer_v2::aFooter(void)
 /*----------------------------------------------------------------------------*/
 void DBobjects::vEntryBuffer_v2_UnitTest(void)
 {
+  EntryBuffer_v2* pEntryBuffer_v2 = new EntryBuffer_v2;
+  
+  delete pEntryBuffer_v2;
 }
 
 /*============================================================================*/

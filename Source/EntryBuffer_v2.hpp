@@ -6,7 +6,20 @@
 namespace DBobjects
 {
   class Index;
-    
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  class Offset // item in the Offset2 and Offset1 arrays
+  {
+  public:
+    i4 m_iEntryNo;    // which entry this is
+    i4 m_iNextOffset; // next offset at this level
+  };
+  
+  static const i8 C_OFFSET_0 = C_8KB;
+  static const i8 C_OFFSET_1 = C_1KB;
+  static const i8 C_OFFSET_2 = 128;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class EntryBuffer_v2 : public ItemBuffer
   {
   protected:
@@ -17,13 +30,17 @@ namespace DBobjects
     bool  m_bIsLast;
   
     EntryBuffer_v2* m_pHigherLevel; // higher level buffer that has entries
-                                 // that point to this buffer
+                                    // that point to this buffer
     EntryBuffer_v2* m_pNextBuffer;  // next buffer
     EntryBuffer_v2* m_pPrevBuffer;  // prev buffer
   
-    Index*       m_pIndex;       // index this buffer belongs to
-    i8           m_nBufferLevel; // index buffer level
-    i8           m_nPartitionNo; // partition no this buffer belongs to
+    Index*  m_pIndex;       // index this buffer belongs to
+    i8      m_nBufferLevel; // index buffer level
+    i8      m_nPartitionNo; // partition no this buffer belongs to
+  
+    Offset* m_pOffset2;     // array of level 2 offsets
+    Offset* m_pOffset1;     // array of level 1 offsets
+    i4*     m_pOffset0;     // array of level 0 offsets
   
     // must be last
     Footer m_xFooter;
