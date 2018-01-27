@@ -81,9 +81,6 @@ timer: loadTimer
   // begin a transaction
   tx::begin pSEitf seitf.tx!
 
-   // create a buffer queue
-  //"loaderTask.queue" queue::new to pBufferQueue
-
   // hold task mutex while we create sub loaders
   //task::this grabMutex
 
@@ -97,8 +94,10 @@ timer: loadTimer
   grid.slots grid.nodes * pSEitf seitf.acksRemaining!
 
   0 locals| pSubTask |
+  0 locals| servers |
+  N_SERVER_THREADS to servers
 
-  N_SERVER_THREADS 0 do
+  servers 0 do
 
     << pSEitf pTblLoader loader.newSub >>
 
@@ -136,6 +135,7 @@ timer: loadTimer
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // wait for all dist subloaders to finish : partitionAppendBuffer
+
   begin
     pSEitf seitf.acksRemaining@
     while
@@ -172,6 +172,175 @@ timer: loadTimer
   true
 ;
 
+/*----------------------------------------------------------------------------*/
+/* parallel loading of file into table                                        */
+/*----------------------------------------------------------------------------*/
+: tableLoaderNEW ( "<path>" "<tableNm>" -- t|f )
+
+  assert::stack_2 ( "<path>" "<tableNm>" )
+  locals| sTableNm sPath |
+
+  task::this task.seitf@ locals| pSEitf |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if path file exists                                 //! refactor this
+
+  file::new locals| fp |
+  sPath fp file.path!
+
+  OPEN_READ fp file.open ( t|f )
+  not if
+  fp file.delete assert::stack_0 EC_INVALID_FILE false exit
+  then
+
+  fp file.close fp file.delete assert::stack_0
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create table loader
+
+  // start load timer
+  loadTimer timer.start
+
+  // create table loader
+  "__table_loader" find dup if else
+  drop
+  "__table_loader" :loader
+  then
+  execute locals| pTblLoader | assert::stack_0
+
+  // set seitf in tblLoader
+  pSEitf pTblLoader loader.seitf!
+
+  // initialise table loader
+  sTableNm find execute locals| pTable |
+
+  // check if data is already loaded
+  pTable table.dataLoaded@ if EC_TABLE_ALREADY_LOADED false exit then
+
+  pTable pTblLoader loader.table!
+  sPath  pTblLoader loader.path!
+
+  grid.slots pTable table.indexesLoaded!
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create sub loaders
+
+  // begin a transaction
+  tx::begin pSEitf seitf.tx!
+
+  //****************************************************************************
+  0 0 locals| pSenderTask pBufferQueue |
+
+  // create a buffer queue and store it in the seitf
+  "loaderTask.queue" queue::new to pBufferQueue
+  pBufferQueue pSEitf seitf.bufferQueue!
+  //****************************************************************************
+
+  // hold task mutex while we create sub loaders
+  //task::this grabMutex
+
+  0 locals| servers |
+  N_SERVER_THREADS 1 - to servers
+
+  // set no of subloaders in table
+  //N_SERVER_THREADS pTable table.subLoaders
+  servers sTableNm setSubLoaders
+
+  //****************************************************************************
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // spawn a server task to take buffers from the queue and send them to partitions
+  << pSEitf pTable N_SERVER_THREADS 1 -
+  pathGet >>
+  1 "senderTask" task::this "senderTask" TK_SENDER_WORKER spawnServerTask to pSenderTask
+
+  N_SERVER_THREADS setAcks
+ //*****************************************************************************
+
+  // set acks remaining to be (no partitions)
+  grid.slots grid.nodes * pSEitf seitf.acksRemaining!
+
+  0 locals| pSubTask |
+
+  //servers "spawning %v subLoaders" str.format .
+  servers 0 do
+
+  << pSEitf pTblLoader loader.newSub >>
+
+  pathGet >>
+
+  1 "loadSub" task::this I >loadSubNm TK_LOADSUB_SERVER spawnServerTask to pSubTask
+
+  loop
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // break file into chunks (this causes sub loaders to load them)
+
+  // using table loader scan thru the file and find chunks for sub loaders
+  //begin pTblLoader loader.findChunk while repeat
+  pTblLoader loader.chunkFile
+
+  "Load file has been chunked" .verbose
+
+  // now wait for sub loaders to complete (drops mutex for duration)
+  ackWait
+
+  // at this point all sub loaders have completed and mutex was regrabbed
+
+  // drop mutex
+  //task::this dropMutex
+
+  // wait for other indexes to complete load
+  begin
+    pTable table.indexesLoaded@
+    while
+      1 thread.sleep_s
+  repeat
+
+  sTableNm "Table %v and its indexes loaded" str.format .verbose
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // wait for all dist subloaders to finish : partitionAppendBuffer
+
+  begin
+  pSEitf seitf.acksRemaining@
+  while
+    1 thread.sleep_s
+  repeat
+  
+  // mark data as being loaded in the table
+  1 pTable table.dataLoaded!
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tidy up
+
+  // commit the transaction
+  //pSEitf seitf.tx@ tx.id "dist commit of " . .
+
+  pSEitf seitf.tx@ tx.id txDistPrepare assert::stack_0
+
+  pSEitf seitf.tx@ tx.id txDistCommit  assert::stack_0
+
+  // destroy Loader
+  "__table_loader" find word.forget
+
+  // print timing
+  loadTimer timer.update
+
+  //****************************************************************************
+  pBufferQueue queue.delete
+  0 pSEitf seitf.bufferQueue!
+  //****************************************************************************
+
+  // put valid/invalid in seitf
+  pTblLoader loader.recordsInvalid@ pSEitf seitf.rowsInvalid!
+  pTblLoader loader.recordsValid@ pSEitf seitf.rowsValid!
+
+  pTblLoader loader.recordsInvalid@ pTblLoader loader.recordsValid@ "loaded %v rows (%v invalid)" str.format .verbose
+
+  "ms\n" loadTimer timer.millisecs "Load time" "%v %v %v" str.format .verbose
+
+  true
+;
 /*----------------------------------------------------------------------------*/
 /* loading of stream into table                                               */
 /*----------------------------------------------------------------------------*/
