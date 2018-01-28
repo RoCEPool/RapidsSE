@@ -25,19 +25,19 @@ create table lineitem (
   // SF0  :              273MB used ;
   //
   // No indexes:
-  // SF1  :   6M rows ;  1.6GB used ;  1278 buf ; 233B/row; 4,696 rows/buf
-  // SF10 :  60M rows ; 12.7GB used ; 12674 buf ; 200B/row; 4,734 rows/buf
-  // SF30 : 180M rows ; 37.7GB used ; 38006 buf ; 209B/row; 4,735 rows/buf
-  // SF100: 600M rows ;
+  // SF1  :   6M rows ;   1.6GB used ;   1278 buf ; 233B/row; 4,696 rows/buf
+  // SF10 :  60M rows ;  12.7GB used ;  12674 buf ; 200B/row; 4,734 rows/buf
+  // SF30 : 180M rows ;  37.7GB used ;  38006 buf ; 209B/row; 4,735 rows/buf
+  // SF100: 600M rows ; 124.5GB used ; 127096 buf ;
   // SF1K :   6B rows ;
   // SF10K:  60B rows ;
   //
   //
   // index on l_partkey
-  // SF1  :   6M rows ;  1.9GB used 
-  // SF10 :  60M rows ; 16.4GB used
-  // SF30 : 180M rows ; 48.6GB used
-  // SF100:
+  // SF1  :   6M rows ;   1.9GB used
+  // SF10 :  60M rows ;  16.4GB used
+  // SF30 : 180M rows ;  48.6GB used
+  // SF100: 600M rows ; 161.9GB used
 );
 
 CREATE INDEX lineitem_idx1 ON lineitem(l_partkey);
@@ -50,7 +50,7 @@ print "loading lineitem.tbl..." ;
 //docol locksReset;
 
 timerStart;
-ld lineitem "/tpchSF10/lineitem.tbl" ;
+ld lineitem "/tpch/lineitem.tbl" ;
 timerEnd;
 
 space;
