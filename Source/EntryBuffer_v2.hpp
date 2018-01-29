@@ -39,9 +39,9 @@ namespace DBobjects
     i8      m_nBufferLevel; // index buffer level
     i8      m_nPartitionNo; // partition no this buffer belongs to
   
-    Offset* m_pOffset2;     // array of level 2 offsets
-    Offset* m_pOffset1;     // array of level 1 offsets
-    i4*     m_pOffset0;     // array of level 0 offsets
+    Offset* m_pEntryOffset2; // array of level 2 offsets
+    Offset* m_pEntryOffset1; // array of level 1 offsets
+    i4*     m_pEntryOffset0; // array of level 0 offsets
   
     Entry*  m_pEntries;     // where entries start
   

@@ -74,9 +74,9 @@ EntryBuffer_v2::EntryBuffer_v2(void)
   m_nBufferLevel = 0;
   m_nPartitionNo = -1;
   
-  m_pOffset2 = reinterpret_cast<Offset*>(aAllotSpace(sizeof(Offset) * C_OFFSET_2));
-  m_pOffset1 = reinterpret_cast<Offset*>(aAllotSpace(sizeof(Offset) * C_OFFSET_1));
-  m_pOffset0 = reinterpret_cast<i4*>(aAllotSpace(sizeof(i4) * C_OFFSET_0));
+  m_pEntryOffset2 = reinterpret_cast<Offset*>(aAllotSpace(sizeof(Offset) * C_OFFSET_2));
+  m_pEntryOffset1 = reinterpret_cast<Offset*>(aAllotSpace(sizeof(Offset) * C_OFFSET_1));
+  m_pEntryOffset0 = reinterpret_cast<i4*>(aAllotSpace(sizeof(i4) * C_OFFSET_0));
   
   m_pEntries = _pEntry(m_xWsp.aLatter());
   
@@ -318,25 +318,31 @@ bool EntryBuffer_v2::bAppendEntry_v2(EntWrk_v2& xRowEntry)
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // form the rowId
+  
+  bn nBufferNo = this->nBufferNo();
+  i8 nRowNo = nItems();
+  Id xRowId(*nBufferNo, nRowNo);
+  
+  xRowEntry.vId(xRowId);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate space in this buffer
   
   Entry* pBufferEntry = pAllotEntryBytes(nEntryBytes);
   ASSERT(pBufferEntry)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // form the rowId
-  
-  bn nBufferNo = this->nBufferNo();
-  i8 nRowNo = nItems();
-  Id xRowId(*nBufferNo, nRowNo);
-
-  xRowEntry.vId(xRowId);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the buffer entry
   
   pBufferEntry->vSetEntry(xRowEntry);
     
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set entry offset 0
+  
+  i8 iEntryOffset = iToOffsetAbs(pBufferEntry);
+  m_pEntryOffset0[nRowNo] = iEntryOffset;
+  
   return true;
 }
 
@@ -459,6 +465,12 @@ void EntryBuffer_v2::vShow(void)
          m_pPrevBuffer,
          m_pNextBuffer);
   
+  vTrace("Entry Offsets 0:\n"_Stz);
+  for (i8 iEntry = 0; iEntry < m_nItems; iEntry++)
+    vTrace("  [%2lld]: %lld\n"_Stz,iEntry,m_pEntryOffset0[iEntry]);
+  
+  vTrace("\n"_Stz);
+  vTrace("Entries:\n"_Stz);
   for (Entry* pEntry = pFirstEntry(); pEntry != nullptr; pEntry = pNextEntry(pEntry)) {
     vTrace("%8lld: "_Stz,nSub(pEntry,m_xWsp.aArea()));
     i8 iOffset = iToOffsetAbs(pEntry);
