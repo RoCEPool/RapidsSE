@@ -185,7 +185,7 @@ tp: theIndirectResult
 /*----------------------------------------------------------------------------*/
 /* forward append of rowbuffer to participant for partition                   */
 /*----------------------------------------------------------------------------*/
-: ~loadAppendBufferNEW ( pLoaderSEitf pRowBuffer sTableNm -- )
+: ~loadAppendBuffer2 ( pLoaderSEitf pRowBuffer sTableNm -- )
 
 //"~loadAppendBuffer" .
 
@@ -432,9 +432,13 @@ tp: partitionAppendBuffer
 /*----------------------------------------------------------------------------*/
 /* parallel sub-loading of file into table                                    */
 /*----------------------------------------------------------------------------*/
-: senderTask ( pSEitf pTable nLastBuffers -- )
+: senderTask ( pSEitf sTableNm pBufferQueue nLastBuffers -- )
 
-  0 0 0 0 locals| pBufferQueue nLastBuffers pTable pSEitf |
+tp: senderTask
+
+  0 0 0 0 0 locals| pBufferQueue nLastBuffers pBufferQueue sTableNm pSEitf |
+
+  //"senderTask started" .
 
   task::this task.thread thread.taskset@
   task::this task.taskset!
@@ -443,17 +447,17 @@ tp: partitionAppendBuffer
   valset> drop dicPath.set
 
   to nLastBuffers
-  to pTable
+  to pBufferQueue
+  to sTableNm
   to pSEitf
 
   // get the buffer queue from the seitf
-  pSEitf seitf.bufferQueue@ to pBufferQueue
+  //pSEitf seitf.bufferQueue@ to pBufferQueue
 
-  0 0 locals| bIsLast pIndexBuffer sTableNm |
-
-  pTable table.name to sTableNm
+  0 0 locals| bIsLast pIndexBuffer |
 
   // loop thru buffers
+  //"senderTask looping thru buffers" .
   true
   begin
 
@@ -465,7 +469,7 @@ tp: partitionAppendBuffer
      pIndexBuffer entryBuffer.isLast@ to bIsLast
 
      // append buffer
-     pSEitf pIndexBuffer sTableNm ~loadAppendBuffer
+     pSEitf pIndexBuffer sTableNm ~loadAppendBuffer2
 
      //nLastBuffers "waiting for %v last buffers" str.format .
 
@@ -486,15 +490,21 @@ tp: partitionAppendBuffer
 
   repeat
 
+1 setAcks
+ackWait
+
+  //"sender acking parent".
   // ack the parent
   task.parent@ ack
+
 ;
 
 /*----------------------------------------------------------------------------*/
 /* parallel sub-loading of file into table                                    */
 /*----------------------------------------------------------------------------*/
-: loadSubNEW ( ^loaderSub -- )
+: loadSub2 ( ^loaderSub -- )
 
+tp: loadSub
   // this is being run by a general thread on the originator node
 
   // first set the taskset in this task
@@ -512,13 +522,25 @@ tp: partitionAppendBuffer
   to pLoaderSub
   to pLoaderSEitf
 
-  pLoaderSEitf seitf.bufferQueue@ locals| pBufferQueue |
-
   // get table, tx and load map from parent loader
   //   open the chunked file
   //   read first chunk
   pLoaderSub loaderSub.begin
 
+  "loaderTask.queue" queue::new locals| pBufferQueue |
+  pLoaderSub loaderSub.table table.name locals| sTableNm |
+  0 locals| pSenderTask |
+
+  //****************************************************************************
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // spawn a server task to take buffers from the queue and send them to partitions
+  << pLoaderSEitf sTableNm pBufferQueue 1
+  pathGet >>
+  1 "senderTask" task::this "senderTask" TK_SENDER_WORKER spawnServerTask to pSenderTask
+  //*****************************************************************************
+
+  pBufferQueue pLoaderSub loaderSub.loadData2
+/*
   pLoaderSub loaderSub.fetchRecord
 
   if
@@ -535,7 +557,7 @@ tp: partitionAppendBuffer
       pBufferQueue queue.append
       nullPtr pLoaderSub loaderSub.rowBuffer!
     repeat
-then
+  then
 
   // calculate total partitions in the cluster
   grid.slots grid.nodes *
@@ -571,7 +593,7 @@ then
       pLoaderSub loaderSub.newRowBuffer
 
       // get the buffer
-      pLoaderSub loaderSub.rowBuffer@  dup
+      pLoaderSub loaderSub.rowBuffer@ dup
 
       // mark as last buffer
       entryBuffer.isLast!
@@ -585,7 +607,7 @@ then
     then
 
   loop
-
+*/
   // add the valid/invalid records to loader
   pLoaderSub loaderSub.recordsValid pLoaderSub loaderSub.loader@ loader.addRecordsValid
   pLoaderSub loaderSub.recordsInvalid pLoaderSub loaderSub.loader@ loader.addRecordsInvalid
@@ -593,9 +615,11 @@ then
   // close the file
   pLoaderSub loaderSub.end
 
+  //"loadersub acking parent".
   // this sub has completed, ack the parent loader
   //task::this task.name@ "%v acking parent" str.format .
   task.parent@ ack
+
 ;
 
 /*----------------------------------------------------------------------------*/

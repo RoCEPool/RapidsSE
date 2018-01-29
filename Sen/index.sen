@@ -823,6 +823,7 @@ tp: lowerSelectIdxTask
     not while
       //REQUST_LOOP2
       //task.yield
+      //"waiting".
       args.sleep thread.sleep_ms
   repeat
 ;

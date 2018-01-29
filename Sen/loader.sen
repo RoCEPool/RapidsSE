@@ -86,6 +86,7 @@ timer: loadTimer
 
   // set no of subloaders in table
   //N_SERVER_THREADS pTable table.subLoaders
+
   N_SERVER_THREADS sTableNm setSubLoaders
 
   N_SERVER_THREADS setAcks
@@ -175,7 +176,7 @@ timer: loadTimer
 /*----------------------------------------------------------------------------*/
 /* parallel loading of file into table                                        */
 /*----------------------------------------------------------------------------*/
-: tableLoaderNEW ( "<path>" "<tableNm>" -- t|f )
+: tableLoader2 ( "<path>" "<tableNm>" -- t|f )
 
   assert::stack_2 ( "<path>" "<tableNm>" )
   locals| sTableNm sPath |
@@ -222,6 +223,10 @@ timer: loadTimer
 
   grid.slots pTable table.indexesLoaded!
 
+  0 locals| subLoaders |
+
+  N_SERVER_THREADS 2 / to subLoaders
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create sub loaders
 
@@ -229,31 +234,29 @@ timer: loadTimer
   tx::begin pSEitf seitf.tx!
 
   //****************************************************************************
-  0 0 locals| pSenderTask pBufferQueue |
+  //0 0 locals| pSenderTask pBufferQueue |
 
   // create a buffer queue and store it in the seitf
-  "loaderTask.queue" queue::new to pBufferQueue
-  pBufferQueue pSEitf seitf.bufferQueue!
+  //"loaderTask.queue" queue::new to pBufferQueue
+  //pBufferQueue pSEitf seitf.bufferQueue!
   //****************************************************************************
 
   // hold task mutex while we create sub loaders
   //task::this grabMutex
 
-  0 locals| servers |
-  N_SERVER_THREADS 1 - to servers
-
   // set no of subloaders in table
   //N_SERVER_THREADS pTable table.subLoaders
-  servers sTableNm setSubLoaders
+  subLoaders sTableNm setSubLoaders
 
   //****************************************************************************
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn a server task to take buffers from the queue and send them to partitions
-  << pSEitf pTable N_SERVER_THREADS 1 -
-  pathGet >>
-  1 "senderTask" task::this "senderTask" TK_SENDER_WORKER spawnServerTask to pSenderTask
+  //<< pSEitf pTable N_SERVER_THREADS 1 -
+  //pathGet >>
+  //1 "senderTask" task::this "senderTask" TK_SENDER_WORKER spawnServerTask to pSenderTask
 
-  N_SERVER_THREADS setAcks
+  subLoaders setAcks
+  //subLoaders >str "Waiting for %v acks" str.format .
  //*****************************************************************************
 
   // set acks remaining to be (no partitions)
@@ -262,13 +265,16 @@ timer: loadTimer
   0 locals| pSubTask |
 
   //servers "spawning %v subLoaders" str.format .
-  servers 0 do
+  subLoaders 0 do
 
-  << pSEitf pTblLoader loader.newSub >>
+    //"spawning sub loader" .
+    << pSEitf pTblLoader loader.newSub >>
 
-  pathGet >>
+    pathGet >>
 
-  1 "loadSub" task::this I >loadSubNm TK_LOADSUB_SERVER spawnServerTask to pSubTask
+
+
+    1 "loadSub" task::this I >loadSubNm TK_LOADSUB_SERVER spawnServerTask to pSubTask
 
   loop
 
@@ -327,8 +333,8 @@ timer: loadTimer
   loadTimer timer.update
 
   //****************************************************************************
-  pBufferQueue queue.delete
-  0 pSEitf seitf.bufferQueue!
+  //pBufferQueue queue.delete
+  //0 pSEitf seitf.bufferQueue!
   //****************************************************************************
 
   // put valid/invalid in seitf

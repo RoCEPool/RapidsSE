@@ -25,6 +25,7 @@ void Task::vAddPrimitives_LoaderSub(void)
   vAddPrimitive("loaderSub.loader@"_Stz,      &vLoaderSubLoaderFetch,   false);
   vAddPrimitive("loaderSub.loader!"_Stz,      &vLoaderSubLoaderStore,   false);
   vAddPrimitive("loaderSub.loadData"_Stz,     &vLoaderSubLoadData,      false);
+  vAddPrimitive("loaderSub.loadData2"_Stz,    &vLoaderSubLoadData2,     false);
   vAddPrimitive("loaderSub::new"_Stz,         &vLoaderSubNew,           false);
   vAddPrimitive("loaderSub.newRowBuffer"_Stz, &vLoaderSubNewRowBuffer,  false);
   vAddPrimitive("loaderSub.partition@"_Stz,   &vLoaderSubPartitionFetch,false);
@@ -209,6 +210,85 @@ void Task::vLoaderSubLoadData(MP_Task mpTask)
   } while (pLoaderSub->bFetchRecord());
   
   mpTask->m_pDataStack->vPushInt(false);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loaderSub.loadData2 -- load data                                            */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderSubLoadData2(MP_Task mpTask)
+{
+  ENTRY("vLoaderSubLoadData"_Stz);
+  
+  ValWrk xValWrk;
+  EntryBuffer* pRowBuffer;
+  
+  Object* pPtrLoaderSub;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoaderSub) )
+    THROW_INVALID_DSTACK("loaderSub.loadData"_Stz);
+  
+  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoaderSub);
+  
+  Object* pPtrBufferQueue;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrBufferQueue) )
+    THROW_INVALID_DSTACK("loaderSub.loadData"_Stz);
+  
+  Queue* pBufferQueue = _pQueue(pPtrBufferQueue);
+  ASSERT(pBufferQueue->eClass() == CN_QUEUE);
+  
+  while (pLoaderSub->bFetchRecord()) {
+    
+    // hash the record
+    pLoaderSub->vHashRecord();
+    
+    // attempt to insert the record
+    bool bInserted = pLoaderSub->bInsertRow();
+    
+    // check if buffer was full
+    if ( ! bInserted) {
+      
+      // append the row buffer to the buffer queue
+      pRowBuffer = pLoaderSub->pRowBuffer();
+      xValWrk = (Object*)pRowBuffer;
+      pBufferQueue->bAppend(xValWrk.pNestedValue());
+      pLoaderSub->vRowBuffer(nullptr);
+      
+      bInserted = pLoaderSub->bInsertRow();
+      ASSERT(bInserted);
+    }  
+    
+  }
+  
+  // calculate total partitions in the cluster
+  i8 iTotalPartitions = gpAttachMap->m_pGrid->iSlots() * gpAttachMap->m_pGrid->iNodes();
+  
+  // check for dangling buffers
+  for (i8 i_Partition = 0; i_Partition < iTotalPartitions; i_Partition++) {
+    
+    // set the partition we are using
+    pLoaderSub->vPartition(i_Partition);
+    
+    // test for a dangling row buffer for parition I
+    pRowBuffer = pLoaderSub->pRowBuffer();
+    
+    if ( ! pRowBuffer) {
+      //"DANGLING" .
+      // create a new row buffer
+      pLoaderSub->vNewRowBuffer();
+      pRowBuffer = pLoaderSub->pRowBuffer();
+    }
+
+    // mark as last buffer
+    pRowBuffer->vIsLast(true);
+    
+    // append row buffer to table/partition/strand
+    //pLoaderSEitf pLoaderSub ~loadAppendBuffer
+    //"loderSub appending last buffer to queue" .
+    xValWrk = (Object*)pRowBuffer;
+    pBufferQueue->bAppend(xValWrk.pNestedValue());
+    pLoaderSub->vRowBuffer(nullptr);
+ }
   
   EXIT();
 }
