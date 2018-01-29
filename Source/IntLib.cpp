@@ -120,6 +120,28 @@ i8 IntLib::iVlqToInt(byte yVlqVec[])
   return iInt;
 }
 
+/*----------------------------------------------------------------------------*/
+/* convert integer argument to text                                           */
+/*----------------------------------------------------------------------------*/
+char* IntLib::sAsText(i8 iValue)
+{
+  switch (iValue) {
+    case 0: return (char*)"zero";
+    case 1: return (char*)"one";
+    case 2: return (char*)"two";
+    case 3: return (char*)"three";
+    case 4: return (char*)"four";
+    case 5: return (char*)"five";
+    case 6: return (char*)"six";
+    case 7: return (char*)"seven";
+    case 8: return (char*)"eight";
+    case 9: return (char*)"nine";
+    default: return (char*)"other";
+  }
+  
+  //return (char*)"other";
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

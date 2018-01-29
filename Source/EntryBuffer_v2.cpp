@@ -565,7 +565,8 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
   i8 iRawLength;
   
   for (i8 iInt = 0; iInt < 10; iInt++) {
-    sprintf(sRawData.aChar(),"%lld",iInt);
+    sprintf(sRawData.aChar(),"%lld,%s,1900-01-01 00:00:%lld",
+            iInt,IntLib::sAsText(iInt),iInt);
     vTrace("Record: %s\n"_Stz,sRawData.aChar());
     
     char* aData = xEntWrk_v2.aData_v2();

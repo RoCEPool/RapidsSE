@@ -18,6 +18,8 @@ namespace Base
     static i8 iDecile(i8 iValue, i8 iMax);
     static i8 iIntToVlq(i8 iInt, byte yVlqVec[16]);
     static i8 iVlqToInt(byte yVlqVec[16]);
+  
+    static char* sAsText(i8 iValue);
   };
 }
 
