@@ -12,8 +12,8 @@ namespace DBobjects
   class Offset // item in the Offset2 and Offset1 arrays
   {
   public:
-    i4 m_iEntryNo;    // which entry this is
-    i4 m_iNextOffset; // next offset at this level
+    i4 m_iEntryNo; // which entry this is
+    i4 m_iOffset;  // offset where the entry is
   };
   
   static const i8 C_OFFSET_0 = C_8KB;
@@ -36,12 +36,15 @@ namespace DBobjects
     EntryBuffer_v2* m_pPrevBuffer;  // prev buffer
   
     Index*  m_pIndex;       // index this buffer belongs to
-    i8      m_nBufferLevel; // index buffer level
-    i8      m_nPartitionNo; // partition no this buffer belongs to
+    i2      m_nBufferLevel; // index buffer level
+    i2      m_nPartitionNo; // partition no this buffer belongs to
   
     Offset* m_pEntryOffset2; // array of level 2 offsets
     Offset* m_pEntryOffset1; // array of level 1 offsets
     i4*     m_pEntryOffset0; // array of level 0 offsets
+  
+    i4      m_nEntryOffset2; // number of level 2 offsets
+    i4      m_nEntryOffset1; // number of level 2 offsets
   
     Entry*  m_pEntries;     // where entries start
   

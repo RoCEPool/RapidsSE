@@ -78,6 +78,9 @@ EntryBuffer_v2::EntryBuffer_v2(void)
   m_pEntryOffset1 = reinterpret_cast<Offset*>(aAllotSpace(sizeof(Offset) * C_OFFSET_1));
   m_pEntryOffset0 = reinterpret_cast<i4*>(aAllotSpace(sizeof(i4) * C_OFFSET_0));
   
+  m_nEntryOffset2 = 0;
+  m_nEntryOffset1 = 0;
+  
   m_pEntries = _pEntry(m_xWsp.aLatter());
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
@@ -338,10 +341,24 @@ bool EntryBuffer_v2::bAppendEntry_v2(EntWrk_v2& xRowEntry)
   pBufferEntry->vSetEntry(xRowEntry);
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set entry offset 0
+  // set entry offsets
   
   i8 iEntryOffset = iToOffsetAbs(pBufferEntry);
   m_pEntryOffset0[nRowNo] = iEntryOffset;
+  
+  if (nOffsets >= 2) {
+    Offset* pOffset1 = &m_pEntryOffset1[m_nEntryOffset1];
+    pOffset1->m_iEntryNo = nRowNo;
+    pOffset1->m_iOffset = iEntryOffset;
+    m_nEntryOffset1++;
+  }
+  
+  if (nOffsets == 3) {
+    Offset* pOffset2 = &m_pEntryOffset2[m_nEntryOffset2];
+    pOffset2->m_iEntryNo = nRowNo;
+    pOffset2->m_iOffset = iEntryOffset;
+    m_nEntryOffset2++;
+  }
   
   return true;
 }
@@ -468,6 +485,18 @@ void EntryBuffer_v2::vShow(void)
   vTrace("Entry Offsets 0:\n"_Stz);
   for (i8 iEntry = 0; iEntry < m_nItems; iEntry++)
     vTrace("  [%2lld]: %lld\n"_Stz,iEntry,m_pEntryOffset0[iEntry]);
+
+  vTrace("Entry Offsets 1:\n"_Stz);
+  for (i8 iEntry = 0; iEntry < m_nEntryOffset1; iEntry++)
+    vTrace("  [%2lld]: %lld %lld\n"_Stz,
+           iEntry,m_pEntryOffset1[iEntry].m_iEntryNo,
+                  m_pEntryOffset1[iEntry].m_iOffset);
+  
+  vTrace("Entry Offsets 2:\n"_Stz);
+  for (i8 iEntry = 0; iEntry < m_nEntryOffset2; iEntry++)
+    vTrace("  [%2lld]: %lld %lld\n"_Stz,
+           iEntry,m_pEntryOffset2[iEntry].m_iEntryNo,
+                  m_pEntryOffset2[iEntry].m_iOffset);
   
   vTrace("\n"_Stz);
   vTrace("Entries:\n"_Stz);
