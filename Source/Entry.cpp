@@ -96,7 +96,7 @@ i8 Entry::nBytesRequired(EntWrk& xEntWrk)
 /*----------------------------------------------------------------------------*/
 i8 Entry::nBytesRequired(EntWrk_v2& xEntWrk_v2)
 {
-  i8 nOffsets = 0; //xEntWrk_v2.nOffsets();
+  //i8 nOffsets = xEntWrk_v2.nOffsets();
   
   //# ASSERT(nOffsets >= 1);
   
@@ -104,7 +104,7 @@ i8 Entry::nBytesRequired(EntWrk_v2& xEntWrk_v2)
   
   i8 nDataBytes = xEntWrk_v2.nDataSize();
   
-  i8 nBytes = Entry::nBytesRequired(nOffsets,nKeyBytes,nDataBytes);
+  i8 nBytes = Entry::nBytesRequired(0,nKeyBytes,nDataBytes);
   
   return nBytes;
 }
@@ -290,6 +290,16 @@ i8 Entry::nOffsets(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set number of offsets                                                      */
+/*----------------------------------------------------------------------------*/
+void Entry::vOffsets(i8 nOffsets)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  m_nOffsets = nOffsets;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get right offset for given level                                           */
 /*----------------------------------------------------------------------------*/
 i8 Entry::iRightOffset(on nOffsetNo)
@@ -424,9 +434,10 @@ void Entry::vSetEntry(EntWrk_v2& xEntWrk_v2)
   ASSERT(nSizeItem());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set id and transaction
+  // set id, transaction and offsets
   m_xId = xEntWrk_v2.xId();
   m_iTxId = xEntWrk_v2.iTxId();
+  m_nOffsets = xEntWrk_v2.nOffsets();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy key
@@ -566,9 +577,10 @@ void Entry::vShow_v2(i8 iBase, Index* pIndex, bool bShowKey)
 //    DtmLib::nCopy(DM_INT,&iKey,aKey,nullptr);
 //  }
   
-  vTrace("Entry: %p Size: %llu "_Stz,
+  vTrace("Entry: %p Size: %llu Offsets: %llu "_Stz,
          this,
-         nSizeEntry()
+         nSizeEntry(),
+         m_nOffsets
          );
   
   vTrace("Id: %3lli.%03lli "_Stz,

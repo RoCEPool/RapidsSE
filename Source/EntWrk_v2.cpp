@@ -243,9 +243,17 @@ void EntWrk_v2::vShow(ColumnVec* pColVec)
 /*----------------------------------------------------------------------------*/
 i8 EntWrk_v2::nOffsets(void)
 {
-  ASSERT(m_iOffsets >= 0 && m_iOffsets <= gpAttachMap->m_nIndexOffsets);
+  //ASSERT(m_iOffsets >= 0 && m_iOffsets <= gpAttachMap->m_nIndexOffsets);
   
   return m_iOffsets;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set number of offsets                                                      */
+/*----------------------------------------------------------------------------*/
+void EntWrk_v2::vOffsets(i8 nOffsets)
+{
+  m_iOffsets = nOffsets;
 }
 
 /*----------------------------------------------------------------------------*/

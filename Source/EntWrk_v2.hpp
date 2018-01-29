@@ -63,6 +63,7 @@ namespace DBobjects
     Key*   aKey(void);
     i8     nKeySize(void);
     i8     nOffsets(void);
+    void   vOffsets(i8 nOffsets);
     i8     iRightOffset(on nOffsetNo);
     void   vRightOffset(on nOffsetNo, u8 uRightOffset);
     RightVec* aRightVec(void);

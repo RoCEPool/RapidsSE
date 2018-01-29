@@ -305,6 +305,10 @@ bool EntryBuffer_v2::bAppendEntry_v2(EntWrk_v2& xRowEntry)
   
   ASSERT(nBufferLevel() == 0);
   
+  i8 nOffsets =
+    Random::iLogLevel(gpAttachMap->m_nIndexOffsets+1,C_FLAT_FREQ) + 1;
+  xRowEntry.vOffsets(nOffsets);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if this buffer has enough space
   
@@ -547,6 +551,12 @@ Footer* EntryBuffer_v2::aFooter(void)
 
 void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
 {
+  
+//  for (i8 iInt = 0; iInt < 1000; iInt++) {
+//    i8 nOffsets = Random::iLogLevel(gpAttachMap->m_nIndexOffsets+1, C_FLAT_FREQ);
+//    vTrace("nOffsets %lld\n"_Stz,nOffsets);
+//  }
+  
   Index* pHiddenIndex = pTable->pHiddenIndex();
   ColumnVec* pColVec = pTable->pColumnVec();
   Formatters* pFormatters = &gpAttachMap->m_xFormatters;
