@@ -92,6 +92,24 @@ i8 Entry::nBytesRequired(EntWrk& xEntWrk)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get bytes required for an Entry based on given EntWrk incl Object & Footer */
+/*----------------------------------------------------------------------------*/
+i8 Entry::nBytesRequired(EntWrk_v2& xEntWrk_v2)
+{
+  i8 nOffsets = 0; //xEntWrk_v2.nOffsets();
+  
+  //# ASSERT(nOffsets >= 1);
+  
+  i8 nKeyBytes = xEntWrk_v2.nKeySize();
+  
+  i8 nDataBytes = xEntWrk_v2.nDataSize();
+  
+  i8 nBytes = Entry::nBytesRequired(nOffsets,nKeyBytes,nDataBytes);
+  
+  return nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get total bytes required for entry incl Object & Footer                    */
 /*----------------------------------------------------------------------------*/
 i8 Entry::nBytesRequired(i8 nOffsets, i8 nKeyBytes, i8 nDataBytes)
@@ -182,6 +200,18 @@ Row* Entry::aRow(void)
   
   // assuming key is CT_INTEGER for hidden index
   Row* aRow = pAdd<Row*>(aKey, sizeof(i8));
+  
+  return aRow;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get row address                                                            */
+/*----------------------------------------------------------------------------*/
+Row* Entry::aRow_v2(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  Row* aRow = reinterpret_cast<Row*>(aVblData());
   
   return aRow;
 }
@@ -385,6 +415,49 @@ void Entry::vSetEntry(EntWrk& xEntWrk)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set entry given working entry                                              */
+/*----------------------------------------------------------------------------*/
+void Entry::vSetEntry(EntWrk_v2& xEntWrk_v2)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  ASSERT(nSizeItem());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set id and transaction
+  m_xId = xEntWrk_v2.xId();
+  m_iTxId = xEntWrk_v2.iTxId();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy key
+  if ( ! xEntWrk_v2.bHasData() ) {
+    Key* aEntryKey = this->aKey();
+    Key* aEntWrkKey = xEntWrk_v2.aKey();
+    i8 nKeySize = xEntWrk_v2.nKeySize();
+    
+    ASSERT(nKeySize);
+    MemLib::vCopy(aEntryKey,aEntWrkKey,nKeySize,eClass());
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy row
+  if (xEntWrk_v2.bHasData()) {
+    char* aEntryData = (char*)this->aRow_v2();
+    char* aEntWrkData = xEntWrk_v2.aData_v2();
+    i8 nDataSize = xEntWrk_v2.nDataSize();
+    
+    ASSERT(nDataSize);
+    MemLib::vCopy(aEntryData,aEntWrkData,nDataSize,eClass());
+    
+    //char* aRow = this->aRow();
+    //StrVal* pStrVal = reinterpret_cast<StrVal*>(aRow);
+    //vTrace("%s"_Stz, pStrVal->aStr());
+  }
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* set entry given eanother entry                                             */
 /*----------------------------------------------------------------------------*/
 void Entry::vSetEntry(Id xId, i8 iKey, Entry* pOldEntry)
@@ -471,6 +544,64 @@ void Entry::vShow(i8 iBase, Index* pIndex, bool bShowKey)
            iBase + iRightOffset(nRight) + nSizeEntry()
            );
   }
+  
+  vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* show content                                                               */
+/*----------------------------------------------------------------------------*/
+void Entry::vShow_v2(i8 iBase, Index* pIndex, bool bShowKey)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+//  Key* aKey = this->aKey();
+//  i8 iKey;
+//  
+//  if (m_xId.iBuffer() == 0) {
+//    ASSERT(m_xId.iRow() == 0);
+//    iKey = -1;
+//  }
+//  else {
+//    DtmLib::nCopy(DM_INT,&iKey,aKey,nullptr);
+//  }
+  
+  vTrace("Entry: %p Size: %llu "_Stz,
+         this,
+         nSizeEntry()
+         );
+  
+  vTrace("Id: %3lli.%03lli "_Stz,
+         m_xId.iBuffer(),
+         m_xId.iRow()
+         );
+  
+  vTrace("Tx: %lld.%03lld "_Stz,
+         Tx::iTxNode(m_iTxId),
+         Tx::iTxNo(m_iTxId)
+         );
+  
+//  if (bShowKey)
+//    aKey->vShow(pIndex->pIdxColVec());
+//  
+  if (pIndex->bIsHidden()) {
+    //char* pRow = aRowData();
+    Row* aThisRow = aRow_v2();
+    vTrace("Row: "_Stz);
+    if (nRowSize() > 0) {
+      aThisRow->vShow(pIndex->pTable()->pColumnVec());
+    }
+  }
+//  
+//  for (on nRight = 0_on; nRight < m_nOffsets; nRight++) {
+//    
+//    vTrace(" Offset(%lld): %lld "_Stz,
+//           *nRight,
+//           iRightOffset(nRight) == C_NIL_OFFSET ?
+//           C_NIL_OFFSET :
+//           iBase + iRightOffset(nRight) + nSizeEntry()
+//           );
+//  }
   
   vTrace("\n"_Stz);
 }

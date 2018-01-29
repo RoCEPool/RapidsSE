@@ -23,6 +23,7 @@ namespace DBobjects
     ~Entry(void);
   
     static i8 nBytesRequired(EntWrk& xEntWrk);
+    static i8 nBytesRequired(EntWrk_v2& xEntWrk);
     static i8 nBytesRequired(i8 nOffsets, i8 nKeyBytes, i8 nDataBytes);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -35,6 +36,7 @@ namespace DBobjects
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // data area
     Row*  aRow(void);
+    Row*  aRow_v2(void);
     char* aRowData(void);
     i8    nRowSize(void);
     
@@ -58,8 +60,10 @@ namespace DBobjects
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // index
     void vSetEntry(EntWrk& xEntWrk);
+    void vSetEntry(EntWrk_v2& xEntWrk);
     void vSetEntry(Id xId, i8 iKey, Entry* pOldEntry);
     void vShow(i8 iBase, Index* pIndex, bool bShowKey);
+    void vShow_v2(i8 iBase, Index* pIndex, bool bShowKey);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // row

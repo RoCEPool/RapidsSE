@@ -104,6 +104,8 @@ void EntryBuffer_v2::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
 }
 
+
+
 /*----------------------------------------------------------------------------*/
 /*-- Member Functions --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -275,6 +277,20 @@ i8 EntryBuffer_v2::nPartitionNo(void)
 /*----------------------------------------------------------------------------*/
 /* allot an entry in this buffer                                              */
 /*----------------------------------------------------------------------------*/
+Entry* EntryBuffer_v2::pAllotEntryBytes(i8 nBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  Entry* pEntry = reinterpret_cast<Entry*>(pAllotItem(nBytes));
+  if ( ! pEntry )
+    return nullptr;
+  
+  new(pEntry) Entry(CN_ENTRY,nBytes,0);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  return pEntry;
+}
 
 /*----------------------------------------------------------------------------*/
 /* analyze this buffer                                                        */
@@ -283,6 +299,42 @@ i8 EntryBuffer_v2::nPartitionNo(void)
 /*----------------------------------------------------------------------------*/
 /* append new entry into this index buffer                                    */
 /*----------------------------------------------------------------------------*/
+bool EntryBuffer_v2::bAppendEntry_v2(EntWrk_v2& xRowEntry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  ASSERT(nBufferLevel() == 0);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if this buffer has enough space
+  
+  i8 nEntryBytes = Entry::nBytesRequired(xRowEntry);
+  
+  if ( ! bHasSpace(nEntryBytes) )
+    return false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // allocate space in this buffer
+  
+  Entry* pBufferEntry = pAllotEntryBytes(nEntryBytes);
+  ASSERT(pBufferEntry)
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // form the rowId
+  
+  bn nBufferNo = this->nBufferNo();
+  i8 nRowNo = nItems();
+  Id xRowId(*nBufferNo, nRowNo);
+
+  xRowEntry.vId(xRowId);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the buffer entry
+  
+  pBufferEntry->vSetEntry(xRowEntry);
+    
+  return true;
+}
 
 /*----------------------------------------------------------------------------*/
 /* return number of index buffers under this buffer                           */
@@ -320,6 +372,32 @@ Entry* EntryBuffer_v2::pFirstEntry(void)
 /*----------------------------------------------------------------------------*/
 /* does buffer have space for nBytes ?                                        */
 /*----------------------------------------------------------------------------*/
+bool EntryBuffer_v2::bHasSpace(i8 nBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  i8 nFree = m_xWsp.nFree();
+  
+  if (gpAttachMap->m_bIndexSpace) {
+    // has space calculation based on free space
+    if (nFree < nBytes) {
+      //vTrace("EntryBuffer full with %lld bytes left\n"_Stz,nFree);
+      return false;
+    }
+    else
+      return true;
+  }
+  else {
+    // has space calculation based on no of enteries
+    if (m_nItems > gpAttachMap->m_nIndexEntries) {
+      vTrace("EntryBuffer full with %lld items\n"_Stz,m_nItems);
+      return false;
+    }
+    else
+      return true;
+  }
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* create a new next buffer                                                   */
@@ -378,8 +456,9 @@ void EntryBuffer_v2::vShow(void)
          m_pNextBuffer);
   
   for (Entry* pEntry = pFirstEntry(); pEntry != nullptr; pEntry = pNextEntry(pEntry)) {
-    vTrace("%8lld: "_Stz, nSub(pEntry, m_xWsp.aArea()));
-    pEntry->vShow(iToOffsetAbs(pEntry), m_pIndex, true);
+    vTrace("%8lld: "_Stz,nSub(pEntry,m_xWsp.aArea()));
+    i8 iOffset = iToOffsetAbs(pEntry);
+    pEntry->vShow_v2(iOffset,m_pIndex,true);
   }
   
   vTrace("\n"_Stz);
@@ -481,20 +560,26 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
   s256 sRowData;
   i8 iRowLength;
   bool bBlankLine;
-  bool bFormatted ;
+  bool bFormatted;
+  bool bAppended;
   i8 iRawLength;
   
   for (i8 iInt = 0; iInt < 10; iInt++) {
     sprintf(sRawData.aChar(),"%lld",iInt);
     vTrace("Record: %s\n"_Stz,sRawData.aChar());
     
-    iRawLength = sRawData.iLength();
-    bFormatted = Row::bFormatRow(pColVec,pFormatters,
-                                 sRawData,iRawLength,
-                                 sRowData,iRowLength,
-                                 bBlankLine);
+    char* aData = xEntWrk_v2.aData_v2();
+    iRawLength  = sRawData.iLength();
+    bFormatted  = Row::bFormatRow(pColVec,pFormatters,
+                                  sRawData,iRawLength,
+                                  (Stz*)aData,iRowLength,
+                                  bBlankLine);
+    xEntWrk_v2.vDataSize(iRowLength);
+    ((Row*)aData)->vDump(pColVec);
     
-    ((Row*)sRowData.aChar())->vDump(pColVec);
+    xEntWrk_v2.vTxId(0);
+    xEntWrk_v2.vHasData(true);
+    pEntryBuffer_v2->bAppendEntry_v2(xEntWrk_v2);
   }
   
   pEntryBuffer_v2->vShow();

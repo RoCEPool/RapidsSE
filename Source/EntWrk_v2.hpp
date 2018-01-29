@@ -51,10 +51,13 @@ namespace DBobjects
   
     void   vAddKey(KeyWrk& xKeyWrk);
     char*  aData(void);
+    char*  aData_v2(void);
     i8     nDataSize(void);
+    void   vDataSize(i8 iSize);
     void   vData(Stz* aData, i8 iSize);
     void   vForm(Id& xId, KeyWrk& xKeyWrk);
     bool   bHasData(void);
+    void   vHasData(bool bHasData);
     Id&    xId(void);
     void   vId(Id& xId);
     Key*   aKey(void);
