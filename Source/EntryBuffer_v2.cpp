@@ -63,7 +63,7 @@ EntryBuffer_v2::EntryBuffer_v2(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  m_eDurability  = BD_NONE;
+  m_eDurability  = BD_PERMANENT;
   m_bIsLast      = false;
   
   m_pHigherLevel = nullptr;
@@ -74,9 +74,11 @@ EntryBuffer_v2::EntryBuffer_v2(void)
   m_nBufferLevel = 0;
   m_nPartitionNo = -1;
   
-  m_pOffset2 = reinterpret_cast<Offset*>(pAllotItem(sizeof(Offset) * C_OFFSET_2));
-  m_pOffset1 = reinterpret_cast<Offset*>(pAllotItem(sizeof(Offset) * C_OFFSET_1));
-  m_pOffset0 = reinterpret_cast<i4*>(pAllotItem(sizeof(i4) * C_OFFSET_0));
+  m_pOffset2 = reinterpret_cast<Offset*>(aAllotSpace(sizeof(Offset) * C_OFFSET_2));
+  m_pOffset1 = reinterpret_cast<Offset*>(aAllotSpace(sizeof(Offset) * C_OFFSET_1));
+  m_pOffset0 = reinterpret_cast<i4*>(aAllotSpace(sizeof(i4) * C_OFFSET_0));
+  
+  m_pEntries = _pEntry(m_xWsp.aLatter());
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -297,6 +299,23 @@ i8 EntryBuffer_v2::nPartitionNo(void)
 /*----------------------------------------------------------------------------*/
 /* get first entry                                                            */
 /*----------------------------------------------------------------------------*/
+Entry* EntryBuffer_v2::pFirstEntry(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  // the location of the possible first entry set in constructor
+  ASSERT(m_pEntries);
+  
+  // first possible first entry
+  Entry* pFirst = m_pEntries;
+  
+  // check for valid entry
+  Entry* pLatter = _pEntry(m_xWsp.aLatter());
+  if (pFirst < pLatter)
+    return pFirst;
+  else
+    return nullptr;
+}
 
 /*----------------------------------------------------------------------------*/
 /* does buffer have space for nBytes ?                                        */
@@ -309,6 +328,21 @@ i8 EntryBuffer_v2::nPartitionNo(void)
 /*----------------------------------------------------------------------------*/
 /* get next entry                                                             */
 /*----------------------------------------------------------------------------*/
+Entry* EntryBuffer_v2::pNextEntry(Entry* pCurrent)
+{
+  // get the size of given entry
+  i8 nBytes = pCurrent->nSizeEntry();
+  
+  // compute the address of possible next entry
+  Entry* pNext = pAdd<Entry*>(pCurrent,nBytes);
+  
+  // check for valid entry
+  Entry* pLatter = _pEntry(m_xWsp.aLatter());
+  if (pNext < pLatter)
+    return pNext;
+  else
+    return nullptr;
+}
 
 /*----------------------------------------------------------------------------*/
 /* position at entry which is prior to key                                    */
@@ -321,6 +355,35 @@ i8 EntryBuffer_v2::nPartitionNo(void)
 /*----------------------------------------------------------------------------*/
 /* show contents of buffer                                                    */
 /*----------------------------------------------------------------------------*/
+void EntryBuffer_v2::vShow(void)
+{
+  s256 sHigherLevel;
+  if (m_pHigherLevel)
+    StrLib::wToString(((EntryBuffer_v2*)m_pHigherLevel)->m_nBufferLevel, sHigherLevel.aChar());
+  else
+    sHigherLevel = "..."_Stz;
+  
+  vTrace("EntryBuffer %p (buffer %lld): %s index %s partition %lld level L%lld HigerLevel %p (L%s) "
+         "entries %lld prevBuffer %p nextBuffer %p \n"_Stz,
+         this,
+         *nBufferNo(),
+         aBD[m_eDurability],
+         m_pIndex->aIndexName(),
+         m_nPartitionNo,
+         m_nBufferLevel,
+         m_pHigherLevel,
+         sHigherLevel.aStr(),
+         m_nItems,
+         m_pPrevBuffer,
+         m_pNextBuffer);
+  
+  for (Entry* pEntry = pFirstEntry(); pEntry != nullptr; pEntry = pNextEntry(pEntry)) {
+    vTrace("%8lld: "_Stz, nSub(pEntry, m_xWsp.aArea()));
+    pEntry->vShow(iToOffsetAbs(pEntry), m_pIndex, true);
+  }
+  
+  vTrace("\n"_Stz);
+}
 
 /*----------------------------------------------------------------------------*/
 /* split this buffer into two: this original buffer plus a new buffer         */
@@ -371,6 +434,21 @@ i8 EntryBuffer_v2::nPartitionNo(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* calculate the absolute offset within workspace for given entry             */
+/*----------------------------------------------------------------------------*/
+i8 EntryBuffer_v2::iToOffsetAbs(Entry* pEntry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  i8 iOffset = nSub(pEntry,m_xWsp.aArea());
+  
+  ASSERT(iOffset >= 0 && iOffset < m_xWsp.nSize());
+  
+  return iOffset;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -390,7 +468,36 @@ Footer* EntryBuffer_v2::aFooter(void)
 
 void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
 {
+  Index* pHiddenIndex = pTable->pHiddenIndex();
+  ColumnVec* pColVec = pTable->pColumnVec();
+  Formatters* pFormatters = &gpAttachMap->m_xFormatters;
+ 
   EntryBuffer_v2* pEntryBuffer_v2 = new EntryBuffer_v2;
+  pEntryBuffer_v2->vIndex(pHiddenIndex);
+  pEntryBuffer_v2->vPartitionNo(0);
+  
+  s256 sRawData;
+  EntWrk_v2 xEntWrk_v2;
+  s256 sRowData;
+  i8 iRowLength;
+  bool bBlankLine;
+  bool bFormatted ;
+  i8 iRawLength;
+  
+  for (i8 iInt = 0; iInt < 10; iInt++) {
+    sprintf(sRawData.aChar(),"%lld",iInt);
+    vTrace("Record: %s\n"_Stz,sRawData.aChar());
+    
+    iRawLength = sRawData.iLength();
+    bFormatted = Row::bFormatRow(pColVec,pFormatters,
+                                 sRawData,iRawLength,
+                                 sRowData,iRowLength,
+                                 bBlankLine);
+    
+    ((Row*)sRowData.aChar())->vDump(pColVec);
+  }
+  
+  pEntryBuffer_v2->vShow();
   
   delete pEntryBuffer_v2;
 }

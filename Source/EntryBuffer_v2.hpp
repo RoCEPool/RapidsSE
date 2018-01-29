@@ -43,6 +43,8 @@ namespace DBobjects
     Offset* m_pOffset1;     // array of level 1 offsets
     i4*     m_pOffset0;     // array of level 0 offsets
   
+    Entry*  m_pEntries;     // where entries start
+  
     // must be last
     Footer m_xFooter;
   
