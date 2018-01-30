@@ -324,7 +324,7 @@ i8 giClassSize[]
   /* 88 */ 0,                          // CN_ROARRAY
   /* 89 */ 0,                          // CN_ROWBUFFER
   /* 90 */ sizeof(RowCursor),          // CN_ROWCURSOR
-  /* 91 */ 0,                          // CN_ROWONCE
+  /* 91 */ sizeof(RowOnce),            // CN_ROWONCE
   
   /* 92 */ sizeof(ScanBuffer),         // CN_SCANBUFFER
   /* 93 */ sizeof(Scratch),            // CN_SCRATCH
