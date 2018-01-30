@@ -105,6 +105,7 @@ namespace DBobjects
     Entry*       pHeadEntry(void);
     bool         bInsert(EntWrk& xEntWrk);
     bool         bInsertEntry(i8 iTxId, Stz* pRow, i8 iLength);
+    Entry*       pInsertKey_v2(EntWrk_v2& xEntWrk_v2);
     bool         bInsertRow(EntWrk& xEntRow, Entry** ppRow);
     bool         bInsertRow(Entry* pOldRow, Entry** ppRow);
     EntryBuffer_v2* pNewNextBuffer(void);
@@ -136,6 +137,7 @@ namespace DBobjects
     Entry*       pPosition(Key* aGivenKey, i8 nKeyCols,
                            eJC eJuxtaCompare, EntryVec* pPriorVec,
                            bool& bIsEqual, bool bIsQuery);
+    void         vPositionPrior_v2(Key* aFindKey, EntryVec* pPriorVec);
     void         vPriorVec(Entry* pEntry, EntryVec* pPriorVec);
     void         vReplaceKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
     void         vReplaceKeyEqual(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);

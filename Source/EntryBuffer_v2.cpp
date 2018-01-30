@@ -427,6 +427,16 @@ bool EntryBuffer_v2::bHasSpace(i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
+/* attempt to insert a new key entry into this buffer                         */
+/*----------------------------------------------------------------------------*/
+Entry* EntryBuffer_v2::pInsertKey_v2(EntWrk_v2& xRowWrk)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* create a new next buffer                                                   */
 /*----------------------------------------------------------------------------*/
 EntryBuffer_v2* EntryBuffer_v2::pNewNextBuffer(void)
@@ -466,8 +476,12 @@ Entry* EntryBuffer_v2::pNextEntry(Entry* pCurrent)
 }
 
 /*----------------------------------------------------------------------------*/
-/* position at entry which is prior to key                                    */
+/* scan thru skip list and positition on entry prior to key                   */
 /*----------------------------------------------------------------------------*/
+void EntryBuffer_v2::vPositionPrior_v2(Key* aFindKey, EntryVec* pPriorVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+}
 
 /*----------------------------------------------------------------------------*/
 /* remove given entry                                                         */
