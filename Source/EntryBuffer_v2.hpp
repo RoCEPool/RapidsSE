@@ -7,6 +7,7 @@ namespace DBobjects
 {
   class Index;
   class Table;
+  class FreeEntry;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Offset // item in the Offset2 and Offset1 arrays
@@ -47,8 +48,8 @@ namespace DBobjects
     Entry*  m_pEntries;      // where entries start
   
     i4      m_nReclaimSpace; // amount of reclaimable space in the buffer
-    Entry*  m_pFirstFree;    // first free entry in buffer
-    Entry*  m_pLastFree;     // last free entry in buffer
+    FreeEntry*  m_pFirstFree;// first free entry in buffer
+    FreeEntry*  m_pLastFree; // last free entry in buffer
   
     // must be last
     Footer m_xFooter;
@@ -90,6 +91,8 @@ namespace DBobjects
     void         vPartitionNo(i8 nPartitionNo);
     i8           nPartitionNo(void);
 
+    FreeEntry*   pFirstFree(void);
+  
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // complex functions
   

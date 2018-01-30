@@ -279,6 +279,16 @@ i8 EntryBuffer_v2::nPartitionNo(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get next buffer                                                            */
+/*----------------------------------------------------------------------------*/
+FreeEntry* EntryBuffer_v2::pFirstFree(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  return m_pFirstFree;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Complex Functions -------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -535,10 +545,20 @@ void EntryBuffer_v2::vShow(void)
   
   vTrace("\n"_Stz);
   vTrace("Entries:\n"_Stz);
-  for (Entry* pEntry = pFirstEntry(); pEntry != nullptr; pEntry = pNextEntry(pEntry)) {
+  for (Entry* pEntry = pFirstEntry();
+       pEntry != nullptr;
+       pEntry = pNextEntry(pEntry)) {
     vTrace("%8lld: "_Stz,nSub(pEntry,m_xWsp.aArea()));
     i8 iOffset = iToOffsetAbs(pEntry);
     pEntry->vShow_v2(iOffset,m_pIndex,true);
+  }
+
+  vTrace("\n"_Stz);
+  vTrace("FreeEntries:\n"_Stz);
+  for (FreeEntry* pFreeEntry = pFirstFree();
+       pFreeEntry != nullptr;
+       pFreeEntry = pFreeEntry->pNextFree()) {
+    vTrace("  %p: %lld"_Stz,pFreeEntry,pFreeEntry->nSizeItem());
   }
   
   vTrace("\n"_Stz);
@@ -696,7 +716,7 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
        pCurrentBuffer = pCurrentBuffer->pNextBuffer())
     pCurrentBuffer->vShow();
 
-  pIndexBuffer->vShow();
+  //pIndexBuffer->vShow();
 }
 
 /*============================================================================*/
