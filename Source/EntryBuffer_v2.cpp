@@ -303,7 +303,7 @@ Entry* EntryBuffer_v2::pAllotEntryBytes(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* attempt to append a new row entry into this buffer                         */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer_v2::bAppendRow_v2(EntWrk_v2& xRowWrk)
+Entry* EntryBuffer_v2::pAppendRow_v2(EntWrk_v2& xRowWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -322,7 +322,7 @@ bool EntryBuffer_v2::bAppendRow_v2(EntWrk_v2& xRowWrk)
   i8 nEntryBytes = Entry::nBytesRequired(xRowWrk);
   
   if ( ! bHasSpace(nEntryBytes) )
-    return false;
+    return nullptr;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the rowId
@@ -364,7 +364,7 @@ bool EntryBuffer_v2::bAppendRow_v2(EntWrk_v2& xRowWrk)
     m_nEntryOffset2++;
   }
   
-  return true;
+  return pBufferEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -617,8 +617,10 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
   
   ColumnVec* pColVec = pTable->pColumnVec();
   Index* pHiddenIndex = pTable->pHiddenIndex();
+  
   IdxVec* pIdxVec = pTable->pIdxVec();
   Index* pIndex1 = pIdxVec->pGet(1);
+  IdxColVec* pIdxColVec1 = pIndex1->pIdxColVec();
   
   Formatters* pFormatters = &gpAttachMap->m_xFormatters;
  
@@ -626,6 +628,10 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
   EntryBuffer_v2* pCurrentBuffer = pFirstBuffer;
   pCurrentBuffer->vIndex(pHiddenIndex);
   pCurrentBuffer->vPartitionNo(0);
+
+  EntryBuffer_v2* pIndexBuffer = new EntryBuffer_v2;
+  pIndexBuffer->vIndex(pHiddenIndex);
+  pIndexBuffer->vPartitionNo(0);
   
   s256 sRecData;
   i8 iRecLength;
@@ -636,6 +642,8 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
   bool bBlankLine;
   bool bFormatted;
   bool bAppended;
+  
+  KeyWrk xKeyWrk;
   
   for (i8 iInt = 0; iInt < 10; iInt++) {
     sprintf(sRecData.aChar(),"%lld,%s,1900-01-01 00:00:%lld",
@@ -653,20 +661,22 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
     
     xRowEntWrk.vTxId(0);
     xRowEntWrk.vHasData(true);
-    bool bAppended = pCurrentBuffer->bAppendRow_v2(xRowEntWrk);
-    if (!bAppended) {
+    Entry* pRowEntry = pCurrentBuffer->pAppendRow_v2(xRowEntWrk);
+    if ( ! pRowEntry ) {
       pCurrentBuffer = pCurrentBuffer->pNewNextBuffer();
-      bAppended = pCurrentBuffer->bAppendRow_v2(xRowEntWrk);
-      ASSERT(bAppended);
+      pRowEntry = pCurrentBuffer->pAppendRow_v2(xRowEntWrk);
+      ASSERT(pRowEntry);
     }
+    
+    //pRowEntry->vExtractIndexKey(xKeyWrk,pIdxColVec1);
   }
 
   for (pCurrentBuffer = pFirstBuffer;
        pCurrentBuffer;
        pCurrentBuffer = pCurrentBuffer->pNextBuffer())
     pCurrentBuffer->vShow();
-  
-  delete pCurrentBuffer;
+
+  pIndexBuffer->vShow();
 }
 
 /*============================================================================*/
