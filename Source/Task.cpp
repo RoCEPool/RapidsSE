@@ -479,8 +479,7 @@ void Task::vAddConstants(void)
   /*  0 */ vAddConstant("AM_NONE"_Stz,         AM_NONE);
   /*  1 */ vAddConstant("AM_INDEXENTRIES"_Stz, AM_INDEXENTRIES);
   /*  2 */ vAddConstant("AM_INDEXLEVELS"_Stz,  AM_INDEXLEVELS);
-  /*  3 */ vAddConstant("AM_INDEXSPACE"_Stz,   AM_INDEXSPACE);
-  /*  4 */ vAddConstant("AM_ENUMS"_Stz,        AM_ENUMS);
+  /*  3 */ vAddConstant("AM_ENUMS"_Stz,        AM_ENUMS);
   
   // CN_ : class numbers
   /*  0 */ vAddConstant("CN_NONE"_Stz,         CN_NONE);

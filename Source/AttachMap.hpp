@@ -11,8 +11,7 @@ namespace StorageEngine
     /* 0 */ AM_NONE=0,
     /* 1 */ AM_INDEXENTRIES,
     /* 2 */ AM_INDEXLEVELS,
-    /* 3 */ AM_INDEXSPACE,
-    /* 4 */ AM_ENUMS
+    /* 3 */ AM_ENUMS
   };
   
   static Stz* aAM[]
@@ -70,7 +69,6 @@ namespace StorageEngine
     bool          m_bProgress;
     bool          m_bMetadata;
    
-    bool          m_bIndexSpace;    // index buffer space based on space
     i8            m_nIndexEntries;  // no of entries per buffer
     i8            m_nIndexLevels;   // no of levels per index buffer entry
     i8            m_nIndexOffsets;  // no of offsets per index buffer entry

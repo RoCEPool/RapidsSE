@@ -409,24 +409,21 @@ bool EntryBuffer_v2::bHasSpace(i8 nBytes)
   
   i8 nFree = m_xWsp.nFree();
   
-  if (gpAttachMap->m_bIndexSpace) {
-    // has space calculation based on free space
-    if (nFree < nBytes) {
-      //vTrace("EntryBuffer full with %lld bytes left\n"_Stz,nFree);
+  if (gpAttachMap->m_nIndexEntries > 0) {
+    // has space calculation based on no of entries
+    if (m_nItems >= gpAttachMap->m_nIndexEntries)
       return false;
-    }
     else
       return true;
   }
   else {
-    // has space calculation based on no of entries
-    if (m_nItems >= gpAttachMap->m_nIndexEntries) {
-      vTrace("EntryBuffer full with %lld items\n"_Stz,m_nItems);
+    // has space calculation based on free space
+    if (nFree < nBytes)
       return false;
-    }
     else
       return true;
   }
+  
 }
 
 /*----------------------------------------------------------------------------*/
