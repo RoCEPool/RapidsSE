@@ -246,6 +246,19 @@ i8 Entry::nRowSize(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get row data size                                                          */
+/*----------------------------------------------------------------------------*/
+i8 Entry::nRowSize_v2(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  //i8 nOffsetBytes = RightVec::nBytesRequired(m_nOffsets);
+  i8 iRowSize = nSizeItem() - (sizeof(Entry) + sizeof(Footer));
+  
+  return iRowSize;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Variable data area ------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -600,7 +613,8 @@ void Entry::vShow_v2(i8 iBase, Index* pIndex, bool bShowKey)
     //char* pRow = aRowData();
     Row* aThisRow = aRow_v2();
     vTrace("Row: "_Stz);
-    if (nRowSize() > 0) {
+    i8 iRowSize = nRowSize_v2();
+    if (iRowSize > 0) {
       aThisRow->vShow(pIndex->pTable()->pColumnVec());
     }
   }

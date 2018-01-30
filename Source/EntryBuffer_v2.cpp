@@ -312,6 +312,9 @@ bool EntryBuffer_v2::bAppendEntry_v2(EntWrk_v2& xRowEntry)
     Random::iLogLevel(gpAttachMap->m_nIndexOffsets+1,C_FLAT_FREQ) + 1;
   xRowEntry.vOffsets(nOffsets);
   
+//  if (3 == nOffsets)
+//    int iDebug = 1;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if this buffer has enough space
   
@@ -619,7 +622,7 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
   for (i8 iInt = 0; iInt < 10; iInt++) {
     sprintf(sRawData.aChar(),"%lld,%s,1900-01-01 00:00:%lld",
             iInt,IntLib::sAsText(iInt),iInt);
-    vTrace("Record: %s\n"_Stz,sRawData.aChar());
+    //vTrace("Record: %s\n"_Stz,sRawData.aChar());
     
     char* aData = xEntWrk_v2.aData_v2();
     iRawLength  = sRawData.iLength();
@@ -633,6 +636,7 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
     xEntWrk_v2.vTxId(0);
     xEntWrk_v2.vHasData(true);
     pEntryBuffer_v2->bAppendEntry_v2(xEntWrk_v2);
+    pEntryBuffer_v2->vShow();
   }
   
   pEntryBuffer_v2->vShow();

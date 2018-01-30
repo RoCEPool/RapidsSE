@@ -25,8 +25,6 @@ namespace DBobjects
   {
   protected:
   
-    //BitArray m_xBitArray;
-  
     eBD   m_eDurability; // buffer durability
     bool  m_bIsLast;     // is this the last buffer in
   
