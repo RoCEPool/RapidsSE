@@ -73,6 +73,7 @@ Arguments::Arguments(void)
   m_bDontFree      = false;
   m_bFreeRB        = false;
   m_bReload        = false;
+  m_nEntries       = 0;
   
   m_bStrictMode    = false;
   
@@ -471,6 +472,11 @@ bool Arguments::bParse(int argc, Stz* argv[])
     
     if (argv[i_Arg]->bSame("--strict"_Stz)) {
       m_bStrictMode = true;
+      continue;
+    }
+    
+    if (argv[i_Arg]->bSame("--entries"_Stz)) {
+      m_nEntries = argv[++i_Arg]->iToI8();
       continue;
     }
     
