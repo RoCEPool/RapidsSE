@@ -31,11 +31,7 @@ namespace DBobjects
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // datums
-  
-    union {
-      Key m_xKey; // this key overlays into m_xDataWrk
-      WspFxd<C_DATA_BYTES> m_xDataWrk; // datum workspace
-    };
+    WspFxd<C_DATA_BYTES> m_xDataWrk; // datum workspace
   
     Footer m_xFooter;
   
