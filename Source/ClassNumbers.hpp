@@ -66,6 +66,7 @@ namespace Base
     /* 41 */ CN_FREEBUFFER,
     /* 42 */ CN_FREECHUNK,
     /* 43 */ CN_FREEDNOT,
+    /*    */ CN_FREEENTRY,
     
     /* 44 */ CN_GRAPH,
     /* 45 */ CN_GRAPHCURSOR,
@@ -252,6 +253,7 @@ namespace Base
     /* 39 */ "FREEBUFFER"_Stz,
     /* 40 */ "FREECHUNK"_Stz,
     /* 41 */ "FREEDNOT"_Stz,
+    /*    */ "FREEENTRY"_Stz,
     
     /* 42 */ "GRAPH"_Stz,
     /* 43 */ "GRAPHCURSOR"_Stz,
