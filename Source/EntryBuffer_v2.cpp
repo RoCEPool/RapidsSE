@@ -668,7 +668,9 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
       ASSERT(pRowEntry);
     }
     
-    //pRowEntry->vExtractIndexKey(xKeyWrk,pIdxColVec1);
+    xKeyWrk.vReset();
+    pRowEntry->vExtractIndexKey_v2(xKeyWrk,pIdxColVec1);
+    xKeyWrk.vShow();
   }
 
   for (pCurrentBuffer = pFirstBuffer;
