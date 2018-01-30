@@ -28,12 +28,12 @@ namespace DBobjects
     //BitArray m_xBitArray;
   
     eBD   m_eDurability; // buffer durability
-    bool  m_bIsLast;
+    bool  m_bIsLast;     // is this the last buffer in
   
-    EntryBuffer_v2* m_pHigherLevel; // higher level buffer that has entries
-                                    // that point to this buffer
-    EntryBuffer_v2* m_pNextBuffer;  // next buffer
-    EntryBuffer_v2* m_pPrevBuffer;  // prev buffer
+    EntryBuffer_v2* m_pHigherBuffer; // higher level buffer that has entries
+                                     // that point to this buffer
+    EntryBuffer_v2* m_pNextBuffer;   // next buffer
+    EntryBuffer_v2* m_pPrevBuffer;   // prev buffer
   
     Index*  m_pIndex;       // index this buffer belongs to
     i2      m_nBufferLevel; // index buffer level
@@ -70,8 +70,8 @@ namespace DBobjects
     void         vIsLast(bool bIsLast);
     bool         bIsLast(void);
   
-    void         vHigherLevel(EntryBuffer_v2* pHigherLevel);
-    EntryBuffer_v2* pHigherLevel(void);
+    EntryBuffer_v2* pHigherBuffer(void);
+    void         vHigherBuffer(EntryBuffer_v2* pHigherLevel);
   
     EntryBuffer_v2* pNextBuffer(void);
     void         vNextBuffer(EntryBuffer_v2* pNextBuffer);

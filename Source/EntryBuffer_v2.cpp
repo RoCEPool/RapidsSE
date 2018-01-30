@@ -66,9 +66,9 @@ EntryBuffer_v2::EntryBuffer_v2(void)
   m_eDurability  = BD_PERMANENT;
   m_bIsLast      = false;
   
-  m_pHigherLevel = nullptr;
-  m_pNextBuffer  = nullptr;
-  m_pPrevBuffer  = nullptr;
+  m_pHigherBuffer = nullptr;
+  m_pNextBuffer   = nullptr;
+  m_pPrevBuffer   = nullptr;
 
   m_pIndex       = nullptr;
   m_nBufferLevel = 0;
@@ -156,23 +156,23 @@ bool EntryBuffer_v2::bIsLast(void)
 /*----------------------------------------------------------------------------*/
 /* get the higher level index buffer                                          */
 /*----------------------------------------------------------------------------*/
-EntryBuffer_v2* EntryBuffer_v2::pHigherLevel(void)
+EntryBuffer_v2* EntryBuffer_v2::pHigherBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  return (EntryBuffer_v2*)m_pHigherLevel;
+  return m_pHigherBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set the higher level index buffer                                          */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer_v2::vHigherLevel(EntryBuffer_v2* pHigherLevel)
+void EntryBuffer_v2::vHigherBuffer(EntryBuffer_v2* pHigherBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  //ASSERT( ! m_pHigherLevel);
+  //ASSERT( ! m_pHigherBuffer);
   
-  m_pHigherLevel = pHigherLevel;
+  m_pHigherBuffer = pHigherBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -462,22 +462,23 @@ Entry* EntryBuffer_v2::pNextEntry(Entry* pCurrent)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer_v2::vShow(void)
 {
-  s256 sHigherLevel;
-  if (m_pHigherLevel)
-    StrLib::wToString(((EntryBuffer_v2*)m_pHigherLevel)->m_nBufferLevel, sHigherLevel.aChar());
+  s256 sHigherBuffer;
+  if (m_pHigherBuffer)
+    StrLib::wToString(((EntryBuffer_v2*)m_pHigherBuffer)->m_nBufferLevel,
+                      sHigherBuffer.aChar());
   else
-    sHigherLevel = "..."_Stz;
+    sHigherBuffer = "..."_Stz;
   
   vTrace("EntryBuffer %p (buffer %lld): %s index %s partition %lld level L%lld "
-         "HigerLevel %p (L%s) entries %lld prevBuffer %p nextBuffer %p \n"_Stz,
+         "HigerBuffer %p (L%s) entries %lld prevBuffer %p nextBuffer %p \n"_Stz,
          this,
          *nBufferNo(),
          aBD[m_eDurability],
          m_pIndex->aIndexName(),
          m_nPartitionNo,
          m_nBufferLevel,
-         m_pHigherLevel,
-         sHigherLevel.aStr(),
+         m_pHigherBuffer,
+         sHigherBuffer.aStr(),
          m_nItems,
          m_pPrevBuffer,
          m_pNextBuffer);
