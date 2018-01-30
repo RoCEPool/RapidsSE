@@ -303,7 +303,7 @@ Entry* EntryBuffer_v2::pAllotEntryBytes(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* attempt to append a new row entry into this buffer                         */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer_v2::bAppendRow_v2(EntWrk_v2& xRowEntry)
+bool EntryBuffer_v2::bAppendRow_v2(EntWrk_v2& xRowWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -311,7 +311,7 @@ bool EntryBuffer_v2::bAppendRow_v2(EntWrk_v2& xRowEntry)
   
   i8 nOffsets =
     Random::iLogLevel(gpAttachMap->m_nIndexOffsets+1,C_FLAT_FREQ) + 1;
-  xRowEntry.vOffsets(nOffsets);
+  xRowWrk.vOffsets(nOffsets);
   
 //  if (3 == nOffsets)
 //    int iDebug = 1;
@@ -319,7 +319,7 @@ bool EntryBuffer_v2::bAppendRow_v2(EntWrk_v2& xRowEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if this buffer has enough space
   
-  i8 nEntryBytes = Entry::nBytesRequired(xRowEntry);
+  i8 nEntryBytes = Entry::nBytesRequired(xRowWrk);
   
   if ( ! bHasSpace(nEntryBytes) )
     return false;
@@ -331,7 +331,7 @@ bool EntryBuffer_v2::bAppendRow_v2(EntWrk_v2& xRowEntry)
   i8 nRowNo = nItems();
   Id xRowId(*nBufferNo, nRowNo);
   
-  xRowEntry.vId(xRowId);
+  xRowWrk.vId(xRowId);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate space in this buffer
@@ -342,7 +342,7 @@ bool EntryBuffer_v2::bAppendRow_v2(EntWrk_v2& xRowEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the buffer entry
   
-  pBufferEntry->vSetEntry(xRowEntry);
+  pBufferEntry->vSetEntry(xRowWrk);
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set entry offsets
@@ -419,7 +419,7 @@ bool EntryBuffer_v2::bHasSpace(i8 nBytes)
       return true;
   }
   else {
-    // has space calculation based on no of enteries
+    // has space calculation based on no of entries
     if (m_nItems >= gpAttachMap->m_nIndexEntries) {
       vTrace("EntryBuffer full with %lld items\n"_Stz,m_nItems);
       return false;
@@ -428,7 +428,6 @@ bool EntryBuffer_v2::bHasSpace(i8 nBytes)
       return true;
   }
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* create a new next buffer                                                   */
