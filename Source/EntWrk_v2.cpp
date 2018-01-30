@@ -44,14 +44,7 @@ EntWrk_v2::EntWrk_v2(void)
   
   m_bHasData = false;
   
-  // generate logarithmic level for this entry
-  m_iOffsets = Random::iLogLevel(gpAttachMap->m_nIndexOffsets+1, C_FLAT_FREQ);
-  ASSERT(m_iOffsets >= 0 && m_iOffsets <= gpAttachMap->m_nIndexOffsets);
-  
-  // set all right offsets to nil
-  on nOffsetNo;
-  for (nOffsetNo = 0_on; nOffsetNo < gpAttachMap->m_nIndexOffsets; nOffsetNo++)
-    m_iOffset[*nOffsetNo] = C_NIL_OFFSET;
+  m_nOffsets = -1;
   
   // m_xDataWrk
   m_xDataWrk.vInit();
@@ -73,15 +66,10 @@ EntWrk_v2::EntWrk_v2(i8 nOffsets)
   ASSERT(0 == m_xId.iBuffer() && 0 == m_xId.iRow());
   
   // set no of offsets
-  m_iOffsets = nOffsets;
-  ASSERT(m_iOffsets >= 0 && m_iOffsets <= gpAttachMap->m_nIndexOffsets);
+  m_nOffsets = nOffsets;
+  //ASSERT(m_nOffsets >= 0 && m_nOffsets <= gpAttachMap->m_nIndexOffsets);
   
   m_bHasData = false;
-  
-  // set all right offsets to nil
-  on nOffsetNo;
-  for (nOffsetNo = 0_on; nOffsetNo < gpAttachMap->m_nIndexOffsets; nOffsetNo++)
-    m_iOffset[*nOffsetNo] = C_NIL_OFFSET;
   
   // m_xDataWrk
   m_xDataWrk.vInit();
@@ -105,17 +93,13 @@ EntWrk_v2::EntWrk_v2(Entry* pEntry)
   m_bHasData = false;
   
   // set no of offsets
-  m_iOffsets = pEntry->nOffsets();
+  m_nOffsets = pEntry->nOffsets();
   
   // set the idx
   vId(pEntry->xId());
   
-  ASSERT(m_iOffsets >= 0 && m_iOffsets <= gpAttachMap->m_nIndexOffsets);
+  //ASSERT(m_nOffsets >= 0 && m_nOffsets <= gpAttachMap->m_nIndexOffsets);
   
-  // set all right offsets to nil
-  for (on nOffsetNo; nOffsetNo < m_iOffsets; nOffsetNo++) {
-    vRightOffset(nOffsetNo, pEntry->iRightOffset(nOffsetNo));
-  }
   
   // m_xDataWrk
   m_xDataWrk.vInit();
@@ -211,16 +195,9 @@ void EntWrk_v2::vShow(ColumnVec* pColVec)
          this,
          m_xId.iBuffer(),
          m_xId.iRow(),
-         m_iOffsets
-         );
-  
-  on nOffsetNo;
-  for (nOffsetNo = 0_on; nOffsetNo < m_iOffsets - 1; nOffsetNo++) {
-    vTrace("R%lld: %lld "_Stz,
-           *nOffsetNo,
-           iRightOffset(nOffsetNo)
-           );
-  }
+         m_nOffsets
+  );
+
   vTrace("key (size:%lld value:%lld) "_Stz,
          nKeySize(),
          iKey
@@ -243,9 +220,9 @@ void EntWrk_v2::vShow(ColumnVec* pColVec)
 /*----------------------------------------------------------------------------*/
 i8 EntWrk_v2::nOffsets(void)
 {
-  //ASSERT(m_iOffsets >= 0 && m_iOffsets <= gpAttachMap->m_nIndexOffsets);
-  
-  return m_iOffsets;
+  //ASSERT(m_nOffsets >= 0 && m_nOffsets <= gpAttachMap->m_nIndexOffsets);
+
+  return m_nOffsets;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -253,49 +230,7 @@ i8 EntWrk_v2::nOffsets(void)
 /*----------------------------------------------------------------------------*/
 void EntWrk_v2::vOffsets(i8 nOffsets)
 {
-  m_iOffsets = nOffsets;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get right offset at level                                                  */
-/*----------------------------------------------------------------------------*/
-i8 EntWrk_v2::iRightOffset(on nOffsetNo)
-{
-  ASSERT(nOffsetNo >= 0_on && nOffsetNo <= gpAttachMap->m_nIndexOffsets);
-  
-  return m_iOffset[*nOffsetNo];
-}
-
-/*----------------------------------------------------------------------------*/
-/* set right offset at level                                                  */
-/*----------------------------------------------------------------------------*/
-void EntWrk_v2::vRightOffset(on nOffsetNo, u8 uRightOffset)
-{
-  ASSERT(nOffsetNo >= 0_on && nOffsetNo <= gpAttachMap->m_nIndexOffsets);
-  
-  m_iOffset[*nOffsetNo] = uRightOffset;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get size of RightVec                                                       */
-/*----------------------------------------------------------------------------*/
-i8 EntWrk_v2::nRightSize(void)
-{
-  ASSERT(m_iOffsets >= 0 && m_iOffsets <= gpAttachMap->m_nIndexOffsets);
-  
-  i8 nBytes = RightVec::nBytesRequired(m_iOffsets);
-  
-  return nBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get RightVec                                                               */
-/*----------------------------------------------------------------------------*/
-RightVec* EntWrk_v2::aRightVec(void)
-{
-  RightVec* aRightVec = &m_xRight;
-  
-  return aRightVec;
+  m_nOffsets = nOffsets;
 }
 
 /*----------------------------------------------------------------------------*/

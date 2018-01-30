@@ -21,13 +21,7 @@ namespace DBobjects
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // offsets
-  
-    i8 m_iOffsets; // number of offsets (0, 1 or 2)
-    union {
-      RightVec m_xRight; // right vector
-      i8 m_iOffset[C_FLAT_OFFSETS_MAX]; // right offsets
-                                        // no offset for level 0
-    };
+    i8 m_nOffsets; // number of offsets (0, 1 or 2)
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // datums
@@ -60,10 +54,6 @@ namespace DBobjects
     i8     nKeySize(void);
     i8     nOffsets(void);
     void   vOffsets(i8 nOffsets);
-    i8     iRightOffset(on nOffsetNo);
-    void   vRightOffset(on nOffsetNo, u8 uRightOffset);
-    RightVec* aRightVec(void);
-    i8        nRightSize(void);
     Row*   aRow(void);
     void   vShow(ColumnVec* pColVec);
     i8     iTxId(void);
