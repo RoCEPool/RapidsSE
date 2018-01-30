@@ -8,6 +8,8 @@ create table ebTest (
   eb_tsp  TIMESTAMP   NOT NULL
 );
 
+create index idx1 on ebTest (eb_key);
+
 docol eb_ut;
 
 drop table ebTest;
