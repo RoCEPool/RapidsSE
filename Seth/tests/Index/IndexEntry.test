@@ -9,7 +9,7 @@
 // Logging a message
 LOG 'Running supplierLoop test with varying indexEntries per buffer.';
 
-setAttachMap AM_INDEXSPACE 0;
+setAttachMap AM_INDEXENTRIES 0;
 affected: 0
 
 setAttachMap AM_INDEXENTRIES 100;
