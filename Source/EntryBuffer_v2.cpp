@@ -107,8 +107,6 @@ void EntryBuffer_v2::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
 }
 
-
-
 /*----------------------------------------------------------------------------*/
 /*-- Member Functions --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -419,7 +417,7 @@ bool EntryBuffer_v2::bHasSpace(i8 nBytes)
   }
   else {
     // has space calculation based on no of enteries
-    if (m_nItems > gpAttachMap->m_nIndexEntries) {
+    if (m_nItems >= gpAttachMap->m_nIndexEntries) {
       vTrace("EntryBuffer full with %lld items\n"_Stz,m_nItems);
       return false;
     }
@@ -432,6 +430,22 @@ bool EntryBuffer_v2::bHasSpace(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* create a new next buffer                                                   */
 /*----------------------------------------------------------------------------*/
+EntryBuffer_v2* EntryBuffer_v2::pNewNextBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  // create new buffer at the same index level and link the two buffers
+  EntryBuffer_v2* pNewBuffer = new EntryBuffer_v2();
+  
+  pNewBuffer->vIndex(m_pIndex);
+  pNewBuffer->vBufferLevel(m_nBufferLevel);
+  pNewBuffer->vPartitionNo(m_nPartitionNo);
+  
+  pNewBuffer->vPrevBuffer(this);
+  vNextBuffer(pNewBuffer);
+  
+  return pNewBuffer;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get next entry                                                             */
@@ -606,9 +620,10 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
   ColumnVec* pColVec = pTable->pColumnVec();
   Formatters* pFormatters = &gpAttachMap->m_xFormatters;
  
-  EntryBuffer_v2* pEntryBuffer_v2 = new EntryBuffer_v2;
-  pEntryBuffer_v2->vIndex(pHiddenIndex);
-  pEntryBuffer_v2->vPartitionNo(0);
+  EntryBuffer_v2* pFirstBuffer = new EntryBuffer_v2;
+  EntryBuffer_v2* pCurrentBuffer = pFirstBuffer;
+  pCurrentBuffer->vIndex(pHiddenIndex);
+  pCurrentBuffer->vPartitionNo(0);
   
   s256 sRawData;
   EntWrk_v2 xEntWrk_v2;
@@ -635,13 +650,20 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
     
     xEntWrk_v2.vTxId(0);
     xEntWrk_v2.vHasData(true);
-    pEntryBuffer_v2->bAppendEntry_v2(xEntWrk_v2);
-    pEntryBuffer_v2->vShow();
+    bool bAppended = pCurrentBuffer->bAppendEntry_v2(xEntWrk_v2);
+    if (!bAppended) {
+      pCurrentBuffer = pCurrentBuffer->pNewNextBuffer();
+      bAppended = pCurrentBuffer->bAppendEntry_v2(xEntWrk_v2);
+      ASSERT(bAppended);
+    }
   }
+
+  for (pCurrentBuffer = pFirstBuffer;
+       pCurrentBuffer;
+       pCurrentBuffer = pCurrentBuffer->pNextBuffer())
+    pCurrentBuffer->vShow();
   
-  pEntryBuffer_v2->vShow();
-  
-  delete pEntryBuffer_v2;
+  delete pCurrentBuffer;
 }
 
 /*============================================================================*/
