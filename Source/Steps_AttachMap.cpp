@@ -40,9 +40,6 @@ void Task::vAttachMapFetch(MP_Task mpTask)
     case AM_INDEXLEVELS:
       mpTask->m_pDataStack->vPushInt(gpAttachMap->m_nIndexLevels);
       break;
-    case AM_INDEXSPACE:
-      mpTask->m_pDataStack->vPushInt(gpAttachMap->m_bIndexSpace ? 1 : 0);
-      break;
     default:
       THROW_INVALID_DSTACK("attachmap::attachmap@"_Stz);
   }
@@ -84,16 +81,8 @@ void Task::vAttachMapStore(MP_Task mpTask)
       gpAttachMap->m_nIndexLevels = iIndexLevels;
       gpAttachMap->m_nIndexOffsets = gpAttachMap->m_nIndexLevels - 1;
       break;
-  
-    case AM_INDEXSPACE:
-      i8 iIndexSpace;
-      if ( ! mpTask->m_pDataStack->bPop(sValue) )
-        THROW_INVALID_DSTACK("attachmap::attachmap!"_Stz);
-      iIndexSpace = StrLib::iToI8(sValue.aChar());
-      gpAttachMap->m_bIndexSpace = (iIndexSpace == 1 ? true : false);
-      break;
     
-        default:
+    default:
       THROW_INVALID_DSTACK("attachmap::attachmap!"_Stz);
   }
   

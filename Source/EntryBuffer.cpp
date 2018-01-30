@@ -730,7 +730,7 @@ i8 EntryBuffer::iDecile(void)
   
   i8 iDecile;
   
-  if (gpAttachMap->m_bIndexSpace)
+  if (gpAttachMap->m_nIndexEntries == 0)
     iDecile = IntLib::iDecile(m_xWsp.nUsed(), C_SIZE_POOL_BUFFER);
   else
     iDecile = IntLib::iDecile(m_nItems, gpAttachMap->m_nIndexEntries);
@@ -794,21 +794,17 @@ bool EntryBuffer::bHasSpace(i8 nBytes)
   
   i8 nFree = m_xWsp.nFree();
   
-  if (gpAttachMap->m_bIndexSpace) {
-    // has space calculation based on free space
-    if (nFree < nBytes) {
-      //vTrace("EntryBuffer full with %lld bytes left\n"_Stz,nFree);
+  if (gpAttachMap->m_nIndexEntries > 0) {
+    // has space calculation based on no of entries
+    if (m_nItems >= gpAttachMap->m_nIndexEntries)
       return false;
-    }
     else
       return true;
   }
   else {
-    // has space calculation based on no of enteries
-    if (m_nItems > gpAttachMap->m_nIndexEntries) {
-      vTrace("EntryBuffer full with %lld items\n"_Stz,m_nItems);
+    // has space calculation based on free space
+    if (nFree < nBytes)
       return false;
-    }
     else
       return true;
   }
