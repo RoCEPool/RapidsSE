@@ -25,8 +25,6 @@ namespace DBobjects
   {
   protected:
   
-    //BitArray m_xBitArray;
-  
     eBD   m_eDurability; // buffer durability
     bool  m_bIsLast;     // is this the last buffer in
   
@@ -97,7 +95,7 @@ namespace DBobjects
     Entry*       pAppendEntry(EntWrk& xEntWrk,EntryVec& xPriorVec);
     bool         bAppendEntry(Entry* pRowEntry, Entry** ppNewEntry);
     bool         bAppendEntry(i8 iTxId, Stz* pRow, i8 iLength);
-    bool         bAppendEntry_v2(EntWrk_v2& xEntWrk_v2);
+    bool         bAppendRow_v2(EntWrk_v2& xEntWrk_v2);
     bool         bAppendRow(i8 iTxId, Stz* pRow, i8 iLength);
     void         vBufferCount(i8& nBufferCount);
     i8           iDecile(void);

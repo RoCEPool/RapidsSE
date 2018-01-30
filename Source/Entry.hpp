@@ -39,7 +39,8 @@ namespace DBobjects
     Row*  aRow_v2(void);
     char* aRowData(void);
     i8    nRowSize(void);
-    
+    i8    nRowSize_v2(void);
+  
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // variable data area
     char* aVblData(void);
