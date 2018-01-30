@@ -63,16 +63,16 @@ EntryBuffer_v2::EntryBuffer_v2(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  m_eDurability  = BD_PERMANENT;
-  m_bIsLast      = false;
+  m_eDurability   = BD_PERMANENT;
+  m_bIsLast       = false;
   
   m_pHigherBuffer = nullptr;
   m_pNextBuffer   = nullptr;
   m_pPrevBuffer   = nullptr;
 
-  m_pIndex       = nullptr;
-  m_nBufferLevel = 0;
-  m_nPartitionNo = -1;
+  m_pIndex        = nullptr;
+  m_nBufferLevel  = 0;
+  m_nPartitionNo  = -1;
   
   m_pEntryOffset2 =
     reinterpret_cast<Offset*>(aAllotSpace(sizeof(Offset) * C_OFFSET_2));
@@ -85,6 +85,8 @@ EntryBuffer_v2::EntryBuffer_v2(void)
   m_nEntryOffset1 = 0;
   
   m_pEntries = _pEntry(m_xWsp.aLatter());
+  
+  m_nReclaimSpace = 0;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
