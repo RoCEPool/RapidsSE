@@ -618,8 +618,11 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
 //    vTrace("nOffsets %lld\n"_Stz,nOffsets);
 //  }
   
-  Index* pHiddenIndex = pTable->pHiddenIndex();
   ColumnVec* pColVec = pTable->pColumnVec();
+  Index* pHiddenIndex = pTable->pHiddenIndex();
+  IdxVec* pIdxVec = pTable->pIdxVec();
+  Index* pIndex1 = pIdxVec->pGet(1);
+  
   Formatters* pFormatters = &gpAttachMap->m_xFormatters;
  
   EntryBuffer_v2* pFirstBuffer = new EntryBuffer_v2;
