@@ -46,7 +46,7 @@ namespace DBobjects
     i4      m_nEntryOffset2; // number of level 2 offsets
     i4      m_nEntryOffset1; // number of level 2 offsets
   
-    Entry*  m_pEntries;     // where entries start
+    Entry*  m_pEntries;      // where entries start
   
     // must be last
     Footer m_xFooter;
@@ -60,7 +60,6 @@ namespace DBobjects
     ~EntryBuffer_v2(void);
 
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-  
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // simple member functions

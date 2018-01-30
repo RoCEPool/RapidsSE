@@ -468,8 +468,8 @@ void EntryBuffer_v2::vShow(void)
   else
     sHigherLevel = "..."_Stz;
   
-  vTrace("EntryBuffer %p (buffer %lld): %s index %s partition %lld level L%lld HigerLevel %p (L%s) "
-         "entries %lld prevBuffer %p nextBuffer %p \n"_Stz,
+  vTrace("EntryBuffer %p (buffer %lld): %s index %s partition %lld level L%lld "
+         "HigerLevel %p (L%s) entries %lld prevBuffer %p nextBuffer %p \n"_Stz,
          this,
          *nBufferNo(),
          aBD[m_eDurability],
