@@ -47,6 +47,8 @@ namespace DBobjects
     Entry*  m_pEntries;      // where entries start
   
     i4      m_nReclaimSpace; // amount of reclaimable space in the buffer
+    Entry*  m_pFirstFree;    // first free entry in buffer
+    Entry*  m_pLastFree;     // last free entry in buffer
   
     // must be last
     Footer m_xFooter;

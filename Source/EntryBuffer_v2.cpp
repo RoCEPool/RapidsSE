@@ -87,6 +87,8 @@ EntryBuffer_v2::EntryBuffer_v2(void)
   m_pEntries = _pEntry(m_xWsp.aLatter());
   
   m_nReclaimSpace = 0;
+  m_pFirstFree    = nullptr;
+  m_pLastFree     = nullptr;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
