@@ -355,8 +355,8 @@ void EntWrk::vForm(Id& xId, KeyWrk& xKeyWrk)
 /*----------------------------------------------------------------------------*/
 Key* EntWrk::aKey(void)
 {
-  Key* aKey = &m_xKey;
-  
+  //Key* aKey = &m_xKey;
+  Key* aKey = reinterpret_cast<Key*>(&m_xDataWrk);
   return aKey;
 }
 
