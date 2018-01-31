@@ -141,6 +141,7 @@ namespace Base
     /*102 */ CN_ROWBUFFER,
     /*103 */ CN_ROWCURSOR,
     /*104 */ CN_ROWONCE,
+    /*    */ CN_ROWWRK,
   
     /*105 */ CN_SCANBUFFER,
     /*106 */ CN_SCRATCH,
@@ -328,6 +329,7 @@ namespace Base
     /* 89 */ "ROWBUFFER"_Stz,
     /* 90 */ "ROWCURSOR"_Stz,
     /* 91 */ "ROWONCE"_Stz,
+    /*    */ "ROWWRK"_Stz,
   
     /* 92 */ "SCANBUFFER"_Stz,
     /* 93 */ "SCRATCH"_Stz,

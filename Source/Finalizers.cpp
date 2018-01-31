@@ -138,6 +138,7 @@ pFINALIZE *gpFinalize[]
   /*102 */ &Finalize::vUndefined,         // CN_ROWBUFFER
   /*103 */ &Finalize::vUndefined,         // CN_ROWCURSOR
   /*104 */ &Finalize::vUndefined,         // CN_ROWONCE
+  /*    */ &Finalize::vUndefined,         // CN_ROWWRK
   
   /*105 */ &Finalize::vUndefined,         // CN_SCANBUFFER
   /*106 */ &Finalize::vUndefined,         // CN_SCRATCH
