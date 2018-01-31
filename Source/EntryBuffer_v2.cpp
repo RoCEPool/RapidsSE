@@ -438,6 +438,7 @@ Entry* EntryBuffer_v2::pAppendRow_v2(EntWrk_v2& xRowWrk)
   return pBufferEntry;
 }
 
+
 /*----------------------------------------------------------------------------*/
 /* return number of index buffers under this buffer                           */
 /*----------------------------------------------------------------------------*/
@@ -863,9 +864,10 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
   pCurrentBuffer->vIndex(pHiddenIndex);
   pCurrentBuffer->vPartitionNo(0);
 
-  EntryBuffer_v2* pIndexBuffer = new EntryBuffer_v2;
-  pIndexBuffer->vIndex(pHiddenIndex);
-  pIndexBuffer->vPartitionNo(0);
+  EntryBuffer_v2* pFirstIndexBuffer = new EntryBuffer_v2;
+  EntryBuffer_v2* pIndexCurrentBuffer = pFirstIndexBuffer;
+  pIndexCurrentBuffer->vIndex(pIndex1);
+  pIndexCurrentBuffer->vPartitionNo(0);
   
   s256 sRecData;
   i8 iRecLength;
@@ -877,7 +879,7 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
   bool bFormatted;
   bool bAppended;
   
-  KeyWrk xKeyWrk;
+  KeyWrk_v2 xKeyWrk;
   
   for (i8 iInt = 0; iInt < 10; iInt++) {
     sprintf(sRecData.aChar(),"%lld,%s,1900-01-01 00:00:%lld",
@@ -894,7 +896,8 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
     ((Row*)aRowData)->vDump(pColVec);
     
     xRowEntWrk.vTxId(0);
-    //xRowEntWrk.vHasData(true);
+    //xRowEntWrk.vShow(pColVec);
+    
     Entry* pRowEntry = pCurrentBuffer->pAppendRow_v2(xRowEntWrk);
     if ( ! pRowEntry ) {
       pCurrentBuffer = pCurrentBuffer->pNewNextBuffer();
@@ -906,9 +909,15 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
     
     xKeyWrk.vReset();
     pRowEntry->vExtractIndexKey_v2(xKeyWrk,pIdxColVec1);
-    xKeyWrk.vShow();
+    //xKeyWrk.vShow(pIdxColVec1);
     
-    
+    pRowEntry = pIndexCurrentBuffer->pAppendRow_v2(xKeyWrk);
+    if ( ! pRowEntry ) {
+      pIndexCurrentBuffer = pIndexCurrentBuffer->pNewNextBuffer();
+      pRowEntry = pIndexCurrentBuffer->pAppendRow_v2(xKeyWrk);
+      ASSERT(pRowEntry);
+    }
+    pRowEntry->vShow_v2(0, pIndex1, true);
   }
 
   for (pCurrentBuffer = pFirstBuffer;
@@ -916,6 +925,11 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
        pCurrentBuffer = pCurrentBuffer->pNextBuffer())
     pCurrentBuffer->vShow();
 
+  for (pIndexCurrentBuffer = pFirstIndexBuffer;
+       pIndexCurrentBuffer;
+       pIndexCurrentBuffer = pIndexCurrentBuffer->pNextBuffer())
+    pIndexCurrentBuffer->vShow();
+  
   //pIndexBuffer->vShow();
 }
 

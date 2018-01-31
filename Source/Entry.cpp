@@ -372,6 +372,18 @@ Key* Entry::aKey(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get Key                                                                    */
+/*----------------------------------------------------------------------------*/
+Key* Entry::aKey_v2(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+   Key* aKey = reinterpret_cast<Key*>(aVblData());
+  
+  return aKey;
+}
+
+/*----------------------------------------------------------------------------*/
 /* replace existing key with given entry wsp                                  */
 /*----------------------------------------------------------------------------*/
 void Entry::vReplaceKey(EntWrk& xEntWrk)
@@ -461,32 +473,15 @@ void Entry::vSetEntry(EntWrk_v2& xEntWrk_v2)
   m_xId = xEntWrk_v2.xId();
   m_iTxId = xEntWrk_v2.iTxId();
   m_nOffsets = xEntWrk_v2.nOffsets();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // copy key                                                         ALKA!!!
-//  if ( ! xEntWrk_v2.bHasData() ) {
-//    Key* aEntryKey = this->aKey();
-//    Key* aEntWrkKey = xEntWrk_v2.aKey();
-//    i8 nKeySize = xEntWrk_v2.nKeySize();
-//
-//    ASSERT(nKeySize);
-//    MemLib::vCopy(aEntryKey,aEntWrkKey,nKeySize,eClass());
-//  }
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy row
-  //if (xEntWrk_v2.bHasData()) {
-    char* aEntryData = (char*)this->aRow_v2();
-    char* aEntWrkData = xEntWrk_v2.aData_v2();
-    i8 nDataSize = xEntWrk_v2.nDataSize();
-    
-    ASSERT(nDataSize);
-    MemLib::vCopy(aEntryData,aEntWrkData,nDataSize,eClass());
-    
-    //char* aRow = this->aRow();
-    //StrVal* pStrVal = reinterpret_cast<StrVal*>(aRow);
-    //vTrace("%s"_Stz, pStrVal->aStr());
-  //}
+  char* aEntryData = (char*)this->aRow_v2();
+  char* aEntWrkData = xEntWrk_v2.aData_v2();
+  i8 nDataSize = xEntWrk_v2.nDataSize();
+
+  ASSERT(nDataSize);
+  MemLib::vCopy(aEntryData,aEntWrkData,nDataSize,eClass());
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
 }
@@ -589,7 +584,7 @@ void Entry::vShow_v2(i8 iBase, Index* pIndex, bool bShowKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
-//  Key* aKey = this->aKey();
+  Key* aKey = this->aKey_v2();
 //  i8 iKey;
 //  
 //  if (m_xId.iBuffer() == 0) {
@@ -616,9 +611,9 @@ void Entry::vShow_v2(i8 iBase, Index* pIndex, bool bShowKey)
          Tx::iTxNo(m_iTxId)
          );
   
-//  if (bShowKey)
-//    aKey->vShow(pIndex->pIdxColVec());
-//  
+  if (bShowKey)
+    aKey->vShow(pIndex->pIdxColVec());
+  
   if (pIndex->bIsHidden()) {
     //char* pRow = aRowData();
     Row* aThisRow = aRow_v2();
@@ -779,7 +774,7 @@ void Entry::vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 /* extract an index key into KeyWrk from this row using given index columns   */
 /*----------------------------------------------------------------------------*/
-void Entry::vExtractIndexKey_v2(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
+void Entry::vExtractIndexKey_v2(KeyWrk_v2& xKeyWrk, IdxColVec* pIdxColVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   

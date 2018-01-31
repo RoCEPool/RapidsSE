@@ -57,6 +57,7 @@ namespace DBobjects
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // key
     Key* aKey(void);
+    Key* aKey_v2(void);
     i8   nKeySize(IdxColVec* pIdxColVec);
     void vReplaceKey(EntWrk& xEntWrk);
   
@@ -72,7 +73,7 @@ namespace DBobjects
     // row
     void vContentDump(void);
     void vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec);
-    void vExtractIndexKey_v2(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec);
+    void vExtractIndexKey_v2(KeyWrk_v2& xKeyWrk, IdxColVec* pIdxColVec);
     void vExtractSortKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec);
     char* pExtractSortKey(char *aElement, IdxColVec* pIdxColVec);
     i8   iTxId(void);

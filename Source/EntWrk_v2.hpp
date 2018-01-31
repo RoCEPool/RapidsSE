@@ -42,10 +42,12 @@ namespace DBobjects
     void   vId(Id& xId);
     //Key*   aKey(void);
     //i8     nKeySize(void);
+    char*  aLatter(void);
     i8     nOffsets(void);
     void   vOffsets(i8 nOffsets);
     //Row*   aRow(void);
     void   vShow(ColumnVec* pColVec);
+    void   vTake(i8 iSize);
     i8     iTxId(void);
     void   vTxId(i8 iTxId);
 

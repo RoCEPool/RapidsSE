@@ -1,0 +1,302 @@
+/*============================================================================*/
+/* KeyWrk.cpp -- Key Working Entry                                            */
+/*============================================================================*/
+
+#include "DBobjects.h"
+#include "StorageEngine.h"
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+void* KeyWrk_v2::operator new(size_t iSize)
+{
+  RASSERT(iSize);
+  vFatal("fatal: KeyWrk class cannot be new'd\n"_Stz);
+  
+  NEVER_REACH;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+void* KeyWrk_v2::operator new(size_t iSize, KeyWrk_v2* pKeyWrk)
+{
+  RASSERT(iSize);
+  return pKeyWrk;
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+KeyWrk_v2::KeyWrk_v2(void)
+: EntWrk_v2(CN_KEYWRK)
+{
+  _precondition_(_MAGIC_,CN_KEYWRK);
+  
+  _checkInitialisedSize_(sizeof(KeyWrk));
+  
+//#ifdef __DEBUG_CHECKS
+  //m_xWsp.vFill(0,CN_KEYWRK);                                       ALKA!!!
+//#endif
+  
+  _postcondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+KeyWrk_v2::KeyWrk_v2(Key* aKey, IdxColVec* pColVec)
+: EntWrk_v2(CN_KEYWRK)
+{
+  _precondition_(_MAGIC_,CN_KEYWRK);
+  
+  vAddKey(aKey, pColVec);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+KeyWrk_v2::~KeyWrk_v2(void)
+{
+  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add a key                                                                  */
+/*----------------------------------------------------------------------------*/
+void KeyWrk_v2::vAddKey(Key* aKey, IdxColVec* pColVec)
+{
+  _precondition_(_MAGIC_,CN_KEYWRK);
+  
+  char* aCursor = aKey->aWspArea();
+  i8 nBytes;
+  for (i8 iColumn = 0; iColumn < pColVec->nItems(); iColumn++) {
+    Column* pColumn = pColVec->pGet(iColumn);
+    
+    char* aElement = aKey->aEachDatum(pColumn, nBytes,&aCursor);
+    
+    char* pDst = aLatter();
+    char* pSrc = aElement;
+    
+    DtmLib::vCopy(pColumn->eDatumType(),pDst,pSrc,pColumn);
+  
+    vTake(nBytes);
+  }
+  
+  _checkInitialisedSize_(sizeof(KeyWrk));
+  
+  _postcondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add element to key                                                         */
+/*----------------------------------------------------------------------------*/
+void KeyWrk_v2::vAddDatum(ValWrk& xValWrk, Column* pCol, Formatters* pFormatters)
+{
+  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
+  
+  i8 nBytes;
+  
+  StrVal* pStrVal = _pStrVal(xValWrk.pNestedValueSelf());
+  
+  char* pDst = aLatter();
+  char* pSrc = (char*)pStrVal->aStr();
+  i8 iValue;
+  
+  switch(pCol->eDatumType()) {
+      
+    case DM_BCD: {
+      Bcd xBcd;
+      bool b = Bcd::bExtract(&pSrc,&xBcd,pCol,pFormatters);
+      nBytes = Bcd::nCopy((char*)pDst,(char*)&xBcd);
+      break;
+    }
+      
+    case DM_BOL: {
+      Bol xBoolean;
+      bool b = Bol::bExtract(&pSrc,&xBoolean,pCol,pFormatters);
+      nBytes = Bol::nCopy((char*)pDst,(char*)&xBoolean);
+      break;
+    }
+      
+    case DM_DTE: {
+      Dte xDate;
+      bool b = Dte::bExtract(&pSrc,&xDate,pCol,pFormatters);
+      nBytes = Dte::nCopy((char*)pDst,(char*)&xDate);
+      break;
+    }
+      
+    case DM_INT:
+      iValue = StrLib::iToI8(pSrc);
+      nBytes = Int::nCopy(pDst,(void*)&iValue);
+      break;
+      
+    case DM_IVL: {
+      Ivl xInterval;
+      bool b = Ivl::bExtract(&pSrc,&xInterval,pCol,pFormatters);
+      nBytes = Ivl::nCopy(pDst,(void*)&xInterval);
+      break;
+    }
+      
+    case DM_FLT: {
+      Flt xFloat;
+      bool b = Flt::bExtract(&pSrc,&xFloat,pCol,pFormatters);
+      nBytes = Flt::nCopy(pDst,(void*)&xFloat);
+      break;
+    }
+      
+    case DM_TME: {
+      Tme xTime;
+      bool b = Tme::bExtract(&pSrc,&xTime,pCol,pFormatters);
+      nBytes = Tme::nCopy((char*)pDst,(char*)&xTime);
+      break;
+    }
+      
+    case DM_TSP: {
+      Tsp xTimestamp;
+      bool b = Tsp::bExtract(&pSrc,&xTimestamp,pCol,pFormatters);
+      nBytes = Tsp::nCopy((char*)pDst,(char*)&xTimestamp);
+      break;
+    }
+      
+    case DM_VCH:
+      nBytes = Vch::nCopy(pDst,pSrc);
+      break;
+      
+    default:
+      NEVER_REACH;
+  }
+  
+  vTake(nBytes);
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* add element to key                                                         */
+/*----------------------------------------------------------------------------*/
+void KeyWrk_v2::vAddDatum(ValWrk& xValWrk, Column* pCol)
+{
+  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
+  
+  i8 nBytes;
+  
+  char* pDst = aLatter();
+  char* pSrc;
+  
+  if (DM_VCH == pCol->eDatumType())
+    pSrc = (char*)(_pStrVal(xValWrk.pNestedValueSelf())->aStr());
+  else
+    pSrc = pAdd<char*>(xValWrk.pNestedValueSelf(),sizeof(Value));
+  
+  
+  nBytes = DtmLib::nCopy(pCol->eDatumType(),pDst,pSrc,pCol);
+  
+  vTake(nBytes);
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* add element to key                                                         */
+/*----------------------------------------------------------------------------*/
+void KeyWrk_v2::vAddStz(Stz* aStz)
+{
+  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
+  
+  char* aDst = aLatter();
+  char* aSrc = (char*)aStz;
+  i8 nSize = StrLib::iSize(aSrc);
+  
+  MemLib::vCopy(aDst,aSrc,nSize,CN_KEYWRK);
+  
+  vTake(nSize);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add word to key workspace                                                  */
+/*----------------------------------------------------------------------------*/
+void KeyWrk_v2::vAddWord(w8 wWord)
+{
+  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
+  
+  char* aDst = aLatter();
+  
+  MemLib::vCopy(aDst, &wWord, sizeof(w8), CN_KEYWRK);
+  
+  vTake(sizeof(w8));
+}
+
+/*----------------------------------------------------------------------------*/
+/* get wsp area as key                                                        */
+/*----------------------------------------------------------------------------*/
+Key* KeyWrk_v2::aKey(void)
+{
+  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
+  
+  return reinterpret_cast<Key*>(aData_v2());
+}
+
+/*----------------------------------------------------------------------------*/
+/* get key size                                                               */
+/*----------------------------------------------------------------------------*/
+i8 KeyWrk_v2::nKeySize(void)
+{
+  return nDataSize();
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset the key wsp                                                          */
+/*----------------------------------------------------------------------------*/
+void KeyWrk_v2::vReset(void)
+{
+  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
+
+  vDataSize(0);
+}
+
+/*----------------------------------------------------------------------------*/
+/* show                                                                       */
+/*----------------------------------------------------------------------------*/
+void KeyWrk_v2::vShow(IdxColVec* pIdxColVec)
+{
+  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
+  
+  Key* aKey = this->aKey();
+  aKey->vShow(pIdxColVec);
+  vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Key ---------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add a key                                                                  */
+/*----------------------------------------------------------------------------*/
+//void EntWrk_v2::vAddKey(KeyWrk& xKeyWrk)
+//{
+//  Stz* aKeySrc = xKeyWrk.aWspStr();
+//  i8 nKeyBytes = xKeyWrk.nWspUsed();
+//
+//  m_xDataWrk.vAppend(aKeySrc,nKeyBytes,CN_ENTWRK);
+//}
+
+/*----------------------------------------------------------------------------*/
+/* form a simple entry using given id and key                                 */
+/*----------------------------------------------------------------------------*/
+//void EntWrk_v2::vForm(Id& xId, KeyWrk& xKeyWrk)
+//{
+//  m_xId = xId;
+//  vAddKey(xKeyWrk);
+//}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

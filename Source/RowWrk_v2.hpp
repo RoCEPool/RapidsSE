@@ -22,6 +22,7 @@ namespace DBobjects
     ~RowWrk_v2(void);
     
     Row*   aRow(void);
+    i8     nRowSize(void);
     void   vShow(ColumnVec* pColVec);
   };
 }
