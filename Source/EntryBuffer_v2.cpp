@@ -607,6 +607,7 @@ Entry* EntryBuffer_v2::pInsertKey_v2(KeyWrk_v2& xKeyWrk)
   if (nItems() == 1) {
     //i4 iEntry0 = m_iHeadFree0;
     //m_iHeadFree0 = - m_pEntryOffset0[iEntry0].m_iNextEntry;
+    m_pEntryOffset0[nRowNo].m_iNextEntry = -1;
     m_pEntryOffset0[nRowNo].m_iOffset = iEntryOffset;
     m_iHeadEntry0 = nRowNo;
   }
@@ -622,7 +623,8 @@ Entry* EntryBuffer_v2::pInsertKey_v2(KeyWrk_v2& xKeyWrk)
     Entry* pPriorEntry0 = xPriorVec[0_ln];
     i8 iPriorEntry0 = pPriorEntry0->iRow();
     m_pEntryOffset0[iPriorEntry0].m_iNextEntry = nRowNo;
-   m_pEntryOffset0[nRowNo].m_iOffset = iEntryOffset;
+    m_pEntryOffset0[nRowNo].m_iOffset = iEntryOffset;
+    m_pEntryOffset0[nRowNo].m_iNextEntry = -1;
   }
   
   //i8 iEntryOffset = iToOffsetAbs(pBufferEntry);
