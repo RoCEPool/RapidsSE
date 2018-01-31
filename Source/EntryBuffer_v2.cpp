@@ -79,7 +79,7 @@ EntryBuffer_v2::EntryBuffer_v2(void)
   m_pEntryOffset1 =
     reinterpret_cast<Offset*>(aAllotSpace(sizeof(Offset) * C_ENTRIES_1));
   m_pEntryOffset0 =
-    reinterpret_cast<i4*>(aAllotSpace(sizeof(i4) * C_ENTRIES_0));
+    reinterpret_cast<Offset*>(aAllotSpace(sizeof(Offset) * C_ENTRIES_0));
   
   m_nEntryOffset2 = 0;
   m_nEntryOffset1 = 0;
@@ -419,7 +419,7 @@ Entry* EntryBuffer_v2::pAppendRow_v2(EntWrk_v2& xRowWrk)
   // set entry offsets
   
   i8 iEntryOffset = iToOffsetAbs(pBufferEntry);
-  m_pEntryOffset0[nRowNo] = iEntryOffset;
+  m_pEntryOffset0[nRowNo].m_iOffset = iEntryOffset;
   
 //  if (nOffsets >= 2) {
 //    Offset* pOffset1 = &m_pEntryOffset1[m_nEntryOffset1];
@@ -505,9 +505,11 @@ void EntryBuffer_v2::vFreeChains(void)
   
   // L0 free chain
   for (i4 i_Entry = 0; i_Entry < (L_ENTRIES_0 - 1); i_Entry++) {
-    m_pEntryOffset0[i_Entry] = - (i_Entry+1);
+    m_pEntryOffset0[i_Entry].m_iEntryNo = i_Entry;
+    m_pEntryOffset0[i_Entry].m_iNextEntry = - (i_Entry+1);
   }
-  m_pEntryOffset0[L_ENTRIES_0 - 1] = - C_ENTRY_NONE;
+  m_pEntryOffset0[L_ENTRIES_0 - 1].m_iEntryNo = L_ENTRIES_0 - 1;
+  m_pEntryOffset0[L_ENTRIES_0 - 1].m_iNextEntry  = - C_ENTRY_NONE;
   m_iHeadEntry0 = 0;
 }
 
@@ -589,16 +591,21 @@ Entry* EntryBuffer_v2::pInsertKey_v2(KeyWrk_v2& xKeyWrk)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set entry offsets
+  i8 iEntryOffset = iToOffsetAbs(pBufferEntry);
   if (nItems() == 1) {
-    i8 iEntryOffset = iToOffsetAbs(pBufferEntry);
-    m_pEntryOffset0[nRowNo] = iEntryOffset;
+    i4 iEntry0 = m_iHeadEntry0;
+    m_iHeadEntry0 = - m_pEntryOffset0[iEntry0].m_iNextEntry;
+    m_pEntryOffset0[iEntry0].m_iOffset = iEntryOffset;
   }
   else if (xPriorVec[0_ln] == nullptr) {
-    ASSERT(0);
+    i4 iEntry0 = m_iHeadEntry0;
+    m_iHeadEntry0 = - m_pEntryOffset0[iEntry0].m_iNextEntry;
+    m_pEntryOffset0[iEntry0].m_iOffset = iEntryOffset;
   }
   else {
-    i8 iEntryOffset = iToOffsetAbs(pBufferEntry);
-    m_pEntryOffset0[nRowNo] = iEntryOffset;
+    Entry* pPriorEntry0 = xPriorVec[0_ln];
+    i8 iEntry0 = pPriorEntry0->iRow();
+    m_pEntryOffset0[iEntry0].m_iOffset = iEntryOffset;
   }
   
   //i8 iEntryOffset = iToOffsetAbs(pBufferEntry);
@@ -752,23 +759,26 @@ void EntryBuffer_v2::vRemoveFree(Entry *pEntry)
   // remove from entry free chain 0
   
   if (C_ENTRY_NONE == m_iHeadEntry0) {
-    m_pEntryOffset0[i_RowNo] = - C_ENTRY_NONE;
+    m_pEntryOffset0[i_RowNo].m_iEntryNo   = i_RowNo;
+    m_pEntryOffset0[i_RowNo].m_iNextEntry = - C_ENTRY_NONE;
     m_iHeadEntry0 = i_RowNo;
   }
   else if (i_RowNo < m_iHeadEntry0) {
-    m_pEntryOffset0[i_RowNo] = - m_iHeadEntry0;
+    m_pEntryOffset0[i_RowNo].m_iEntryNo   = i_RowNo;
+    m_pEntryOffset0[i_RowNo].m_iNextEntry = - m_iHeadEntry0;
     m_iHeadEntry0 = i_RowNo;
   }
   else {
     for (i4 i_Entry = m_iHeadEntry0;
          i_Entry != C_ENTRY_NONE;
-         i_Entry = - m_pEntryOffset0[i_Entry]) {
+         i_Entry = - m_pEntryOffset0[i_Entry].m_iNextEntry) {
       
-      i4 iNextEntry = - m_pEntryOffset0[i_Entry];
+      i4 iNextEntry = - m_pEntryOffset0[i_Entry].m_iNextEntry;
       if (i_Entry < i_RowNo &&
-            (iNextEntry > i_RowNo || iNextEntry == C_ENTRY_NONE)) {
-        m_pEntryOffset0[i_Entry] = - i_RowNo;
-        m_pEntryOffset0[i_RowNo] = - iNextEntry;
+          (iNextEntry > i_RowNo || iNextEntry == C_ENTRY_NONE)) {
+        m_pEntryOffset0[i_Entry].m_iNextEntry = - i_RowNo;
+        m_pEntryOffset0[i_RowNo].m_iEntryNo   = i_RowNo;
+        m_pEntryOffset0[i_RowNo].m_iNextEntry = - iNextEntry;
         break;
       }
     }
@@ -923,9 +933,10 @@ void EntryBuffer_v2::vShow(void)
     vTrace("FreeChains0:\n"_Stz);
     for (i4 i_Entry = m_iHeadEntry0;
          i_Entry != C_ENTRY_NONE;
-         i_Entry = - m_pEntryOffset0[i_Entry]) {
-      vTrace("  %lld: %lld\n"_Stz,
-             i_Entry,m_pEntryOffset0[i_Entry]);
+         i_Entry = - m_pEntryOffset0[i_Entry].m_iNextEntry) {
+      vTrace("  %lld: %lld %lld\n"_Stz,
+             i_Entry,m_pEntryOffset0[i_Entry].m_iEntryNo,
+             m_pEntryOffset0[i_Entry].m_iNextEntry);
     }
   }
   
@@ -995,7 +1006,7 @@ Entry* EntryBuffer_v2::pGetEntry(i8 iEntryNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  i4 iOffset = m_pEntryOffset0[iEntryNo];
+  i4 iOffset = m_pEntryOffset0[iEntryNo].m_iOffset;
   
   char* aAddress = pAdd<char*>(aDataArea(), iOffset);
   Entry* pEntry = reinterpret_cast<Entry*>(aAddress);
@@ -1013,7 +1024,7 @@ i4 EntryBuffer_v2::iGetFreeEntry(void)
   
   i4 iFreeEntry = m_iHeadEntry0;
   
-  m_iHeadEntry0 = - m_pEntryOffset0[m_iHeadEntry0];
+  m_iHeadEntry0 = - m_pEntryOffset0[m_iHeadEntry0].m_iEntryNo;
   
   return iFreeEntry;
 }
