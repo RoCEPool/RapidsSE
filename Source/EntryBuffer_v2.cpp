@@ -602,7 +602,7 @@ void EntryBuffer_v2::vRemoveFree(Entry *pEntry)
   i8 nOffsets = pEntry->nOffsets();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // remove from entry offset 0
+  // remove from entry free chain 0
   
   if (C_ENTRY_NONE == m_iHeadEntry0) {
     m_pEntryOffset0[i_RowNo] = - C_ENTRY_NONE;
@@ -628,7 +628,7 @@ void EntryBuffer_v2::vRemoveFree(Entry *pEntry)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // remove from entry offset 1
+  // remove from entry free chain 1
   
   if (nOffsets == 1)
     return;
@@ -660,7 +660,7 @@ void EntryBuffer_v2::vRemoveFree(Entry *pEntry)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // remove from entry offset 2
+  // remove from entry free chain 2
   
   if (nOffsets == 2)
     return;
