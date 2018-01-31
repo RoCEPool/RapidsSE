@@ -680,7 +680,7 @@ void EntryBuffer_v2::vPositionPrior_v2(Key* aFindKey, EntryVec* pPriorVec)
     for (ln nLevel = 0_ln; *nLevel < gpAttachMap->m_nIndexLevels; nLevel++)
       (*pPriorVec)[nLevel] = nullptr;
     return;
-  }
+  } 
   
   // start scanning from head entry and topmost level
   ln nScanLevel;
@@ -730,7 +730,9 @@ void EntryBuffer_v2::vPositionPrior_v2(Key* aFindKey, EntryVec* pPriorVec)
     //             note that aNextEntry may be null at this point
     
     // opt record scan entry as an insert-after revision point at this level
-    if (pPriorVec)
+    if (nItems() == 1)
+      (*pPriorVec)[nScanLevel] = nullptr;
+    else
       (*pPriorVec)[nScanLevel] = pScanEntry_sl;
     
     // now go down one level
@@ -885,9 +887,13 @@ void EntryBuffer_v2::vShow(void)
          "--------------------------------------------------\n"_Stz);
  
   vTrace("Entry Offsets 0:\n"_Stz);
+//  for (i8 i_Entry = 0; i_Entry < m_nItems; i_Entry++)
+//    vTrace("  [%2lld]: %lld\n"_Stz,i_Entry,m_pEntryOffset0[i_Entry]);
   for (i8 i_Entry = 0; i_Entry < m_nItems; i_Entry++)
-    vTrace("  [%2lld]: %lld\n"_Stz,i_Entry,m_pEntryOffset0[i_Entry]);
-
+    vTrace("  [%2lld]: %lld %lld\n"_Stz,
+           i_Entry,m_pEntryOffset0[i_Entry].m_iEntryNo,
+           m_pEntryOffset0[i_Entry].m_iOffset);
+  
   vTrace("Entry Offsets 1:\n"_Stz);
   for (i8 i_Entry = 0; i_Entry < m_nEntryOffset1; i_Entry++)
     vTrace("  [%2lld]: %lld %lld\n"_Stz,
@@ -1024,7 +1030,7 @@ i4 EntryBuffer_v2::iGetFreeEntry(void)
   
   i4 iFreeEntry = m_iHeadEntry0;
   
-  m_iHeadEntry0 = - m_pEntryOffset0[m_iHeadEntry0].m_iEntryNo;
+  m_iHeadEntry0 = - m_pEntryOffset0[iFreeEntry].m_iNextEntry;
   
   return iFreeEntry;
 }
