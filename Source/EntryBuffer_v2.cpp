@@ -380,8 +380,8 @@ Entry* EntryBuffer_v2::pAppendRow_v2(EntWrk_v2& xRowWrk)
   
   ASSERT(nBufferLevel() == 0);
   
-  i8 nOffsets =
-    Random::iLogLevel(gpAttachMap->m_nIndexOffsets+1,C_FLAT_FREQ) + 1;
+  i8 nOffsets = 1;
+    //Random::iLogLevel(gpAttachMap->m_nIndexOffsets+1,C_FLAT_FREQ) + 1;
   xRowWrk.vOffsets(nOffsets);
   
 //  if (3 == nOffsets)
@@ -408,7 +408,7 @@ Entry* EntryBuffer_v2::pAppendRow_v2(EntWrk_v2& xRowWrk)
   // allocate space in this buffer
   
   Entry* pBufferEntry = pAllotEntryBytes(nEntryBytes);
-  ASSERT(pBufferEntry)
+  ASSERT(pBufferEntry);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the buffer entry
@@ -540,11 +540,85 @@ bool EntryBuffer_v2::bHasSpace(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* attempt to insert a new key entry into this buffer                         */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer_v2::pInsertKey_v2(EntWrk_v2& xRowWrk)
+Entry* EntryBuffer_v2::pInsertKey_v2(KeyWrk_v2& xKeyWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  return nullptr;
+  //vTrace("Inserting key:\n"_Stz);
+  //xKeyWrk.vShow();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // insert a new entry into the skip list
+  
+  // find the entry after which the new entry.key will be inserted
+  EntryVec xPriorVec;
+
+  vPositionPrior_v2(xKeyWrk.aKey(), &xPriorVec);
+  vDumpPriorVec(&xPriorVec);
+  
+  i8 nOffsets = 1;
+    //Random::iLogLevel(gpAttachMap->m_nIndexOffsets+1,C_FLAT_FREQ) + 1;
+  xKeyWrk.vOffsets(nOffsets);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if this buffer has enough space
+  i8 nEntryBytes = Entry::nBytesRequired(xKeyWrk);
+  
+  if ( ! bHasSpace(nEntryBytes) )
+    return nullptr;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // form the rowId
+  
+  bn nBufferNo = this->nBufferNo();
+  i8 nRowNo = iGetFreeEntry(); //nItems();
+  Id xRowId(*nBufferNo, nRowNo);
+  
+  xKeyWrk.vId(xRowId);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // allocate space in this buffer
+  
+  Entry* pBufferEntry = pAllotEntryBytes(nEntryBytes);
+  ASSERT(pBufferEntry);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the buffer entry
+  
+  pBufferEntry->vSetEntry(xKeyWrk);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set entry offsets
+  if (nItems() == 1) {
+    i8 iEntryOffset = iToOffsetAbs(pBufferEntry);
+    m_pEntryOffset0[nRowNo] = iEntryOffset;
+  }
+  else if (xPriorVec[0_ln] == nullptr) {
+    ASSERT(0);
+  }
+  else {
+    i8 iEntryOffset = iToOffsetAbs(pBufferEntry);
+    m_pEntryOffset0[nRowNo] = iEntryOffset;
+  }
+  
+  //i8 iEntryOffset = iToOffsetAbs(pBufferEntry);
+  //m_pEntryOffset0[nRowNo] = iEntryOffset;
+  
+  //  if (nOffsets >= 2) {
+  //    Offset* pOffset1 = &m_pEntryOffset1[m_nEntryOffset1];
+  //    pOffset1->m_iEntryNo = nRowNo;
+  //    pOffset1->m_iOffset = iEntryOffset;
+  //    m_nEntryOffset1++;
+  //  }
+  //
+  //  if (nOffsets == 3) {
+  //    Offset* pOffset2 = &m_pEntryOffset2[m_nEntryOffset2];
+  //    pOffset2->m_iEntryNo = nRowNo;
+  //    pOffset2->m_iOffset = iEntryOffset;
+  //    m_nEntryOffset2++;
+  //  }
+  
+  return pBufferEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -592,6 +666,72 @@ Entry* EntryBuffer_v2::pNextEntry(Entry* pCurrent)
 void EntryBuffer_v2::vPositionPrior_v2(Key* aFindKey, EntryVec* pPriorVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+    
+  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  
+  if (nItems() == 0) {
+    for (ln nLevel = 0_ln; *nLevel < gpAttachMap->m_nIndexLevels; nLevel++)
+      (*pPriorVec)[nLevel] = nullptr;
+    return;
+  }
+  
+  // start scanning from head entry and topmost level
+  ln nScanLevel;
+  nScanLevel = 0; //gpAttachMap->m_nIndexLevels - 1;
+  
+  Entry* pScanEntry_sl = pFirstEntry();
+  Entry* pNextEntry_sl = nullptr;
+  
+  bool bIsJuxta;
+  bool bIsEqual = false;
+  i8 nKeyCols = pIdxColVec->nItems();
+  
+  do {
+    
+    pNextEntry_sl = pRightEntry(pScanEntry_sl,nScanLevel);
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // inner loop: scan right a number of entries at current scan level
+    //             until we find a key that is same/after given key
+    
+    
+    while (pNextEntry_sl) {
+      
+      // get next key after scan key
+      Key* aNextKey = pNextEntry_sl->aKey();
+      
+      // trace:
+      //aGivenKey->vShow(m_pIndex->pIdxColVec());
+      //aNextKey->vShow(m_pIndex->pIdxColVec());
+      
+      // juxta-compare given key with next key at this level
+      bIsJuxta = aFindKey->bJuxtaCompare(JC_AFTER,aNextKey,
+                                         pIdxColVec,nKeyCols,bIsEqual);
+      
+      //vTrace(" %s\n"_Stz,bAfter ? "after" : "before");
+      
+      // if given key is not same/after next key then break to outer loop
+      if (! bIsJuxta)
+        break;
+      
+      pScanEntry_sl = pNextEntry_sl;
+      pNextEntry_sl = pRightEntry(pNextEntry_sl,nScanLevel);
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // outer loop: having gone right as far as we can, go down one level
+    //             note that aNextEntry may be null at this point
+    
+    // opt record scan entry as an insert-after revision point at this level
+    if (pPriorVec)
+      (*pPriorVec)[nScanLevel] = pScanEntry_sl;
+    
+    // now go down one level
+    nScanLevel--;
+    
+    
+    // and repeat till we have scanned down thru all levels
+  } while (*nScanLevel >= 0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -831,6 +971,18 @@ void EntryBuffer_v2::vShow(void)
 /*----------------------------------------------------------------------------*/
 /* dump the given prior vector                                                */
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/* dump the prior vector                                                      */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer_v2::vDumpPriorVec(EntryVec* pPriorVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  for (ln nLevel = 0_ln; *nLevel < gpAttachMap->m_nIndexLevels; nLevel++)
+    
+    vTrace("%lld %p\n"_Stz,
+           *nLevel, (*pPriorVec)[nLevel]);
+}
 
 /*----------------------------------------------------------------------------*/
 /* fix the higher level buffers                                               */
@@ -839,6 +991,17 @@ void EntryBuffer_v2::vShow(void)
 /*----------------------------------------------------------------------------*/
 /* get an entry by number                                                     */
 /*----------------------------------------------------------------------------*/
+Entry* EntryBuffer_v2::pGetEntry(i8 iEntryNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  i4 iOffset = m_pEntryOffset0[iEntryNo];
+  
+  char* aAddress = pAdd<char*>(aDataArea(), iOffset);
+  Entry* pEntry = reinterpret_cast<Entry*>(aAddress);
+  
+  return pEntry;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get a free entry (or C_ENTRY_NONE if none)                                 */
@@ -866,6 +1029,19 @@ i4 EntryBuffer_v2::iGetFreeEntry(void)
 /*----------------------------------------------------------------------------*/
 /* get right entry at given level (returns null if no right)                  */
 /*----------------------------------------------------------------------------*/
+Entry* EntryBuffer_v2::pRightEntry(Entry* pEntry, ln nLevelNo)         //# critical
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  Entry* pRightEntry = nullptr;
+  
+  i8 iEntryNumber = pEntry->iRow();
+  
+  if (iEntryNumber + 1 < nItems())
+    pRightEntry = pGetEntry(iEntryNumber+1);
+  
+  return pRightEntry;
+}
 
 /*----------------------------------------------------------------------------*/
 /* calculate the absolute offset within workspace for given entry             */
@@ -939,7 +1115,7 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
   
   KeyWrk_v2 xKeyWrk;
   
-  for (i8 iInt = 0; iInt < 10; iInt++) {
+  for (i8 iInt = 9; iInt >= 0; iInt--) {
     sprintf(sRecData.aChar(),"%lld,%s,1900-01-01 00:00:%lld",
             iInt,IntLib::sAsText(iInt),iInt);
     //vTrace("Record: %s\n"_Stz,sRawData.aChar());
@@ -971,12 +1147,13 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
     pRowEntry->vExtractIndexKey_v2(xKeyWrk,pIdxColVec1);
     xKeyWrk.vShow(pIdxColVec1);
     
-    Entry* pKeyEntry = pCurrentIndexBuffer->pAppendRow_v2(xKeyWrk);
+    Entry* pKeyEntry = pCurrentIndexBuffer->pInsertKey_v2(xKeyWrk);
     if ( ! pKeyEntry ) {
       pCurrentIndexBuffer = pCurrentIndexBuffer->pNewNextBuffer();
-      pKeyEntry = pCurrentIndexBuffer->pAppendRow_v2(xKeyWrk);
+      pKeyEntry = pCurrentIndexBuffer->pInsertKey_v2(xKeyWrk);
       ASSERT(pKeyEntry);
     }
+    pCurrentIndexBuffer->vShow();
     
   }
 

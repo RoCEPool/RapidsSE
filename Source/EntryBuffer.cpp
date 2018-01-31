@@ -843,14 +843,16 @@ bool EntryBuffer::bInsert(EntWrk& xEntWrk)                        //# critical
   EntryVec xPriorVec;
   bool bIsEqual = false;
   i8 nKeyCols = m_pIndex->pIdxColVec()->nItems();
-  Entry* pAfterEntry = pPosition(xEntWrk.aKey(), nKeyCols, JC_AFTER, &xPriorVec, bIsEqual, false);
+  vPositionPrior(xEntWrk.aKey(), &xPriorVec);
   
-  if (m_pIndex->bIsUnique() and bIsEqual) { //# note the and !!!
-    vTrace("Warning: Duplicate key in unique index %s "_Stz, m_pIndex->aIndexName());
-    xEntWrk.aKey()->vShow(m_pIndex->pIdxColVec());
-    vTrace("\n"_Stz);
-    return false;
-  }
+  Entry* pAfterEntry = xPriorVec[0_ln];
+  
+//  if (m_pIndex->bIsUnique() and bIsEqual) { //# note the and !!!
+//    vTrace("Warning: Duplicate key in unique index %s "_Stz, m_pIndex->aIndexName());
+//    xEntWrk.aKey()->vShow(m_pIndex->pIdxColVec());
+//    vTrace("\n"_Stz);
+//    return false;
+//  }
   
   // create a new entry after the prior entry and set it
   //EntWrk xEntWrk(xId,xKeyWrk);
@@ -2005,6 +2007,75 @@ Entry* EntryBuffer::pPosition(Key* aGivenKey, i8 nKeyCols,
   // JC_SAME : return the entry which is same as given key
   // JC_AFTER: return the entry which the given key would be inserted after
   return pScanEntry_sl;
+}
+
+/*----------------------------------------------------------------------------*/
+/* scan thru skip list and positition to entry (optionally set prior vector)  */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vPositionPrior(Key* aFindKey, EntryVec* pPriorVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  
+  // start scanning from head entry and topmost level
+  ln nScanLevel;
+  nScanLevel = gpAttachMap->m_nIndexLevels - 1;
+  
+  Entry* pScanEntry_sl = pHeadEntry();
+  Entry* pNextEntry_sl = nullptr;
+  
+  bool bIsJuxta;
+  bool bIsEqual = false;
+  i8 nKeyCols = pIdxColVec->nItems();
+  
+  do {
+    
+    pNextEntry_sl = pRightEntry(pScanEntry_sl,nScanLevel);
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // inner loop: scan right a number of entries at current scan level
+    //             until we find a key that is same/after given key
+    
+    
+    while (pNextEntry_sl) {
+      
+      // get next key after scan key
+      Key* aNextKey = pNextEntry_sl->aKey();
+      
+      // trace:
+      //aGivenKey->vShow(m_pIndex->pIdxColVec());
+      //aNextKey->vShow(m_pIndex->pIdxColVec());
+      
+      // juxta-compare given key with next key at this level
+      bIsJuxta = aFindKey->bJuxtaCompare(JC_AFTER,aNextKey,
+                                          pIdxColVec,nKeyCols,bIsEqual);
+      
+      //vTrace(" %s\n"_Stz,bAfter ? "after" : "before");
+      
+      // if given key is not same/after next key then break to outer loop
+      if (! bIsJuxta)
+        break;
+      
+      pScanEntry_sl = pNextEntry_sl;
+      pNextEntry_sl = pRightEntry(pNextEntry_sl,nScanLevel);
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // outer loop: having gone right as far as we can, go down one level
+    //             note that aNextEntry may be null at this point
+    
+    // opt record scan entry as an insert-after revision point at this level
+    if (pPriorVec)
+      (*pPriorVec)[nScanLevel] = pScanEntry_sl;
+    
+    // now go down one level
+    nScanLevel--;
+    
+    
+    // and repeat till we have scanned down thru all levels
+  } while (*nScanLevel >= 0);
+
 }
 
 /*----------------------------------------------------------------------------*/

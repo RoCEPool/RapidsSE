@@ -138,6 +138,7 @@ namespace DBobjects
     Entry*       pPosition(Key* aGivenKey, i8 nKeyCols,
                            eJC eJuxtaCompare, EntryVec* pPriorVec,
                            bool& bIsEqual, bool bIsQuery);
+    void         vPositionPrior(Key* aFindKey, EntryVec* pPriorVec);
     void         vPriorVec(Entry* pEntry, EntryVec* pPriorVec);
     void         vReplaceKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
     void         vReplaceKeyEqual(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);

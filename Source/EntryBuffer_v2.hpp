@@ -122,7 +122,7 @@ namespace DBobjects
     Entry*       pHeadEntry(void);
     bool         bInsert(EntWrk& xEntWrk);
     bool         bInsertEntry(i8 iTxId, Stz* pRow, i8 iLength);
-    Entry*       pInsertKey_v2(EntWrk_v2& xEntWrk_v2);
+    Entry*       pInsertKey_v2(KeyWrk_v2& xKeyWrk);
     bool         bInsertRow(EntWrk& xEntRow, Entry** ppRow);
     bool         bInsertRow(Entry* pOldRow, Entry** ppRow);
     EntryBuffer_v2* pNewNextBuffer(void);
@@ -148,7 +148,7 @@ namespace DBobjects
     Entry*       pAllotEntryAfter(i8 nBytes, i8 nLevels, Entry* aAfterEntry);
     void         vAllotHeadEntry(void);
     i8           iCopyEntries(EntryBuffer_v2* pFromBuffer, Entry* aFromEntry);
-    void         vDumpPriorVec(Entry* aPriorVec[]);
+    void         vDumpPriorVec(EntryVec* pPriorVec);
     void         vFixHigherLevel(Entry* aNewEntry);
     void         vFixPriorOffset(EntryVec* pPriorVec, Entry* aNewEntry);
     void         vFreeChains(void);
