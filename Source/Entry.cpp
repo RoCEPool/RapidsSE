@@ -100,7 +100,7 @@ i8 Entry::nBytesRequired(EntWrk_v2& xEntWrk_v2)
   
   //# ASSERT(nOffsets >= 1);
   
-  i8 nKeyBytes = xEntWrk_v2.nKeySize();
+  i8 nKeyBytes = 0; //xEntWrk_v2.nKeySize();                         ALKA!!!
   
   i8 nDataBytes = xEntWrk_v2.nDataSize();
   
@@ -463,19 +463,19 @@ void Entry::vSetEntry(EntWrk_v2& xEntWrk_v2)
   m_nOffsets = xEntWrk_v2.nOffsets();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // copy key
-  if ( ! xEntWrk_v2.bHasData() ) {
-    Key* aEntryKey = this->aKey();
-    Key* aEntWrkKey = xEntWrk_v2.aKey();
-    i8 nKeySize = xEntWrk_v2.nKeySize();
-    
-    ASSERT(nKeySize);
-    MemLib::vCopy(aEntryKey,aEntWrkKey,nKeySize,eClass());
-  }
+  // copy key                                                         ALKA!!!
+//  if ( ! xEntWrk_v2.bHasData() ) {
+//    Key* aEntryKey = this->aKey();
+//    Key* aEntWrkKey = xEntWrk_v2.aKey();
+//    i8 nKeySize = xEntWrk_v2.nKeySize();
+//
+//    ASSERT(nKeySize);
+//    MemLib::vCopy(aEntryKey,aEntWrkKey,nKeySize,eClass());
+//  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy row
-  if (xEntWrk_v2.bHasData()) {
+  //if (xEntWrk_v2.bHasData()) {
     char* aEntryData = (char*)this->aRow_v2();
     char* aEntWrkData = xEntWrk_v2.aData_v2();
     i8 nDataSize = xEntWrk_v2.nDataSize();
@@ -486,7 +486,7 @@ void Entry::vSetEntry(EntWrk_v2& xEntWrk_v2)
     //char* aRow = this->aRow();
     //StrVal* pStrVal = reinterpret_cast<StrVal*>(aRow);
     //vTrace("%s"_Stz, pStrVal->aStr());
-  }
+  //}
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
 }

@@ -877,7 +877,7 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
   s256 sRecData;
   i8 iRecLength;
   
-  EntWrk_v2 xRowEntWrk;
+  RowWrk_v2 xRowEntWrk;
   i8 iRowLength;
   
   bool bBlankLine;
@@ -901,7 +901,7 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
     ((Row*)aRowData)->vDump(pColVec);
     
     xRowEntWrk.vTxId(0);
-    xRowEntWrk.vHasData(true);
+    //xRowEntWrk.vHasData(true);
     Entry* pRowEntry = pCurrentBuffer->pAppendRow_v2(xRowEntWrk);
     if ( ! pRowEntry ) {
       pCurrentBuffer = pCurrentBuffer->pNewNextBuffer();
@@ -914,6 +914,8 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
     xKeyWrk.vReset();
     pRowEntry->vExtractIndexKey_v2(xKeyWrk,pIdxColVec1);
     xKeyWrk.vShow();
+    
+    
   }
 
   for (pCurrentBuffer = pFirstBuffer;
