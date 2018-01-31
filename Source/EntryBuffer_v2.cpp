@@ -418,9 +418,9 @@ Entry* EntryBuffer_v2::pAppendRow_v2(EntWrk_v2& xRowWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set entry offsets
   
-//  i8 iEntryOffset = iToOffsetAbs(pBufferEntry);
-//  m_pEntryOffset0[nRowNo] = iEntryOffset;
-//  
+  i8 iEntryOffset = iToOffsetAbs(pBufferEntry);
+  m_pEntryOffset0[nRowNo] = iEntryOffset;
+  
 //  if (nOffsets >= 2) {
 //    Offset* pOffset1 = &m_pEntryOffset1[m_nEntryOffset1];
 //    pOffset1->m_iEntryNo = nRowNo;
@@ -761,22 +761,24 @@ void EntryBuffer_v2::vShow(void)
   }
 
   if (gpAttachMap->m_nIndexEntries) {
-    vTrace("\n"_Stz);
-    vTrace("FreeChains2:\n"_Stz);
-    for (i4 i_Entry = m_iHeadEntry2;
-         i_Entry != C_ENTRY_NONE;
-         i_Entry = - m_pEntryOffset2[i_Entry].m_iNextEntry) {
-      vTrace("  %lld: %lld %lld\n"_Stz,
-             i_Entry,m_pEntryOffset2[i_Entry].m_iEntryNo,
-                     m_pEntryOffset2[i_Entry].m_iNextEntry);
-    }
-    vTrace("FreeChains1:\n"_Stz);
-    for (i4 i_Entry = m_iHeadEntry1;
-         i_Entry != C_ENTRY_NONE;
-         i_Entry = - m_pEntryOffset1[i_Entry].m_iNextEntry) {
-      vTrace("  %lld: %lld %lld\n"_Stz,
-             i_Entry,m_pEntryOffset1[i_Entry].m_iEntryNo,
-                     m_pEntryOffset1[i_Entry].m_iNextEntry);
+    if ( ! m_pIndex->bIsHidden() ) {
+      vTrace("\n"_Stz);
+      vTrace("FreeChains2:\n"_Stz);
+      for (i4 i_Entry = m_iHeadEntry2;
+           i_Entry != C_ENTRY_NONE;
+           i_Entry = - m_pEntryOffset2[i_Entry].m_iNextEntry) {
+        vTrace("  %lld: %lld %lld\n"_Stz,
+               i_Entry,m_pEntryOffset2[i_Entry].m_iEntryNo,
+                       m_pEntryOffset2[i_Entry].m_iNextEntry);
+      }
+      vTrace("FreeChains1:\n"_Stz);
+      for (i4 i_Entry = m_iHeadEntry1;
+           i_Entry != C_ENTRY_NONE;
+           i_Entry = - m_pEntryOffset1[i_Entry].m_iNextEntry) {
+        vTrace("  %lld: %lld %lld\n"_Stz,
+               i_Entry,m_pEntryOffset1[i_Entry].m_iEntryNo,
+                       m_pEntryOffset1[i_Entry].m_iNextEntry);
+      }
     }
     vTrace("FreeChains0:\n"_Stz);
     for (i4 i_Entry = m_iHeadEntry0;
