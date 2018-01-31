@@ -21,6 +21,8 @@ namespace DBobjects
   static const i8 C_OFFSET_1 = C_1KB;
   static const i8 C_OFFSET_2 = 128;
   
+  static const i4 C_OFFSET_NONE = - C_16KB;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class EntryBuffer_v2 : public ItemBuffer
   {
@@ -44,6 +46,10 @@ namespace DBobjects
   
     i4      m_nEntryOffset2; // number of level 2 offsets
     i4      m_nEntryOffset1; // number of level 2 offsets
+  
+    i4      m_iHeadOffset2;  // head of offset free chain for L2 offsets
+    i4      m_iHeadOffset1;  // head of offset free chain for L1 offsets
+    i4      m_iHeadOffset0;  // head of offset free chain for L0 offsets
   
     Entry*  m_pEntries;      // where entries start
   
@@ -145,6 +151,7 @@ namespace DBobjects
     Entry*       pGetEntry(i8 iEntryNo);
     void         vMoveLeft(void* aDst, i8 nBytes);
     void         vMoveRight(void* aSrc, i8 nBytes);
+    void         vOffsetChains(void);
     Entry*       pPosition(Key* aGivenKey, i8 nKeyCols,
                            eJC eJuxtaCompare, EntryVec* pPriorVec,
                            bool& bIsEqual, bool bIsQuery);
@@ -159,6 +166,7 @@ namespace DBobjects
     i8           iToOffsetAbs(Entry* pEntry);
     i8           iToRightOffsetAbs(Entry* pEntry, on nOffsetNo);
     u8           uOffsetBetween(Entry* pEntryA, Entry* pEntryB);
+  
   
     public:
     Footer* aFooter(void);

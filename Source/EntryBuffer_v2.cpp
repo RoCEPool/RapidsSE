@@ -84,11 +84,17 @@ EntryBuffer_v2::EntryBuffer_v2(void)
   m_nEntryOffset2 = 0;
   m_nEntryOffset1 = 0;
   
+  m_iHeadOffset2  = C_OFFSET_NONE;
+  m_iHeadOffset1  = C_OFFSET_NONE;
+  m_iHeadOffset0  = C_OFFSET_NONE;
+  
   m_pEntries = _pEntry(m_xWsp.aLatter());
   
   m_nReclaimSpace = 0;
   m_pFirstFree    = nullptr;
   m_pLastFree     = nullptr;
+  
+  vOffsetChains();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -542,6 +548,34 @@ Entry* EntryBuffer_v2::pNextEntry(Entry* pCurrent)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set up the initial offset free chains                                      */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer_v2::vOffsetChains(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  for (i4 iOffset = 0; iOffset < (C_OFFSET_2 - 1); iOffset++) {
+    m_pEntryOffset2[iOffset].m_iEntryNo = iOffset;
+    m_pEntryOffset2[iOffset].m_iOffset = - (iOffset+1);
+  }
+  m_pEntryOffset2[C_OFFSET_2 - 1].m_iOffset = C_OFFSET_NONE;
+  m_iHeadOffset2 = 0;
+  
+  for (i4 iOffset = 0; iOffset < (C_OFFSET_1 - 1); iOffset++) {
+    m_pEntryOffset1[iOffset].m_iEntryNo = iOffset;
+    m_pEntryOffset1[iOffset].m_iOffset = - (iOffset+1);
+  }
+  m_pEntryOffset1[C_OFFSET_1 - 1].m_iOffset = C_OFFSET_NONE;
+  m_iHeadOffset1 = 0;
+  
+  for (i4 iOffset = 0; iOffset < (C_OFFSET_0 - 1); iOffset++) {
+    m_pEntryOffset0[iOffset] = - (iOffset+1);
+  }
+  m_pEntryOffset0[C_OFFSET_0 - 1] = C_OFFSET_NONE;
+  m_iHeadOffset0 = 0;
+}
+
+/*----------------------------------------------------------------------------*/
 /* scan thru skip list and positition on entry prior to key                   */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer_v2::vPositionPrior_v2(Key* aFindKey, EntryVec* pPriorVec)
@@ -694,7 +728,6 @@ i8 EntryBuffer_v2::iToOffsetAbs(Entry* pEntry)
   
   return iOffset;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
