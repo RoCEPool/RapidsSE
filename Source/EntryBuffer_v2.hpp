@@ -13,11 +13,9 @@ namespace DBobjects
   class Offset // item in the Offset2 and Offset1 arrays
   {
   public:
-    i4 m_iEntryNo; // which entry this is
-    union {
-      i4 m_iOffset;    // offset where the entry is
-      i4 m_iNextEntry; // nex entry
-    };
+    i4 m_iEntryNo;   // which entry this is
+    i4 m_iNextEntry; // next entry
+    i4 m_iOffset;    // offset where the entry is
   };
   
   static const i8 C_ENTRIES_0 = C_8KB;
@@ -48,11 +46,16 @@ namespace DBobjects
     Offset* m_pEntryOffset0; // array of level 0 offsets
   
     i4      m_nEntryOffset2; // number of level 2 offsets
-    i4      m_nEntryOffset1; // number of level 2 offsets
+    i4      m_nEntryOffset1; // number of level 1 offsets
   
     i4      m_iHeadEntry2;   // head of entry free chain for L2 offsets
     i4      m_iHeadEntry1;   // head of entry free chain for L1 offsets
     i4      m_iHeadEntry0;   // head of entry free chain for L0 offsets
+  
+    i4      m_iHeadFree2;    // head of entry free chain for L2 offsets
+    i4      m_iHeadFree1;    // head of entry free chain for L1 offsets
+    i4      m_iHeadFree0;    // head of entry free chain for L0 offsets
+  
   
     Entry*  m_pEntries;      // where entries start
   

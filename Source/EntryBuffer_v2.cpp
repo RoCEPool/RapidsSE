@@ -84,9 +84,13 @@ EntryBuffer_v2::EntryBuffer_v2(void)
   m_nEntryOffset2 = 0;
   m_nEntryOffset1 = 0;
   
-  m_iHeadEntry2  = C_ENTRY_NONE;
-  m_iHeadEntry1  = C_ENTRY_NONE;
-  m_iHeadEntry0  = C_ENTRY_NONE;
+  m_iHeadEntry2   = C_ENTRY_NONE;
+  m_iHeadEntry1   = C_ENTRY_NONE;
+  m_iHeadEntry0   = C_ENTRY_NONE;
+  
+  m_iHeadFree2    = C_ENTRY_NONE;
+  m_iHeadFree1    = C_ENTRY_NONE;
+  m_iHeadFree0    = C_ENTRY_NONE;
   vFreeChains();
   
   m_pEntries = _pEntry(m_xWsp.aLatter());
@@ -489,28 +493,34 @@ void EntryBuffer_v2::vFreeChains(void)
   for (i4 i_Entry = 0; i_Entry < (L_ENTRIES_2 - 1); i_Entry++) {
     m_pEntryOffset2[i_Entry].m_iEntryNo = i_Entry;
     m_pEntryOffset2[i_Entry].m_iNextEntry = - (i_Entry+1);
+    m_pEntryOffset2[i_Entry].m_iOffset = -1;
   }
   m_pEntryOffset2[L_ENTRIES_2 - 1].m_iEntryNo = L_ENTRIES_2 - 1;
   m_pEntryOffset2[L_ENTRIES_2 - 1].m_iNextEntry = - C_ENTRY_NONE;
-  m_iHeadEntry2 = 0;
+  m_pEntryOffset2[L_ENTRIES_2 - 1].m_iOffset = -1;
+  m_iHeadFree2 = 0;
   
   // L1 free chain
   for (i4 i_Entry = 0; i_Entry < (L_ENTRIES_1 - 1); i_Entry++) {
     m_pEntryOffset1[i_Entry].m_iEntryNo = i_Entry;
     m_pEntryOffset1[i_Entry].m_iNextEntry = - (i_Entry+1);
+    m_pEntryOffset2[i_Entry].m_iOffset = -1;
   }
   m_pEntryOffset1[L_ENTRIES_1 - 1].m_iEntryNo = L_ENTRIES_1 - 1;
   m_pEntryOffset1[L_ENTRIES_1 - 1].m_iNextEntry  = - C_ENTRY_NONE;
-  m_iHeadEntry1 = 0;
+  m_pEntryOffset1[L_ENTRIES_1 - 1].m_iOffset = -1;
+  m_iHeadFree1 = 0;
   
   // L0 free chain
   for (i4 i_Entry = 0; i_Entry < (L_ENTRIES_0 - 1); i_Entry++) {
     m_pEntryOffset0[i_Entry].m_iEntryNo = i_Entry;
     m_pEntryOffset0[i_Entry].m_iNextEntry = - (i_Entry+1);
+    m_pEntryOffset2[i_Entry].m_iOffset = -1;
   }
   m_pEntryOffset0[L_ENTRIES_0 - 1].m_iEntryNo = L_ENTRIES_0 - 1;
   m_pEntryOffset0[L_ENTRIES_0 - 1].m_iNextEntry  = - C_ENTRY_NONE;
-  m_iHeadEntry0 = 0;
+  m_pEntryOffset0[L_ENTRIES_0 - 1].m_iOffset = -1;
+  m_iHeadFree0 = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -593,19 +603,23 @@ Entry* EntryBuffer_v2::pInsertKey_v2(KeyWrk_v2& xKeyWrk)
   // set entry offsets
   i8 iEntryOffset = iToOffsetAbs(pBufferEntry);
   if (nItems() == 1) {
-    i4 iEntry0 = m_iHeadEntry0;
-    m_iHeadEntry0 = - m_pEntryOffset0[iEntry0].m_iNextEntry;
-    m_pEntryOffset0[iEntry0].m_iOffset = iEntryOffset;
+    //i4 iEntry0 = m_iHeadFree0;
+    //m_iHeadFree0 = - m_pEntryOffset0[iEntry0].m_iNextEntry;
+    m_pEntryOffset0[nRowNo].m_iOffset = iEntryOffset;
+    m_iHeadEntry0 = nRowNo;
   }
   else if (xPriorVec[0_ln] == nullptr) {
-    i4 iEntry0 = m_iHeadEntry0;
-    m_iHeadEntry0 = - m_pEntryOffset0[iEntry0].m_iNextEntry;
-    m_pEntryOffset0[iEntry0].m_iOffset = iEntryOffset;
+    //i4 iEntry0 = m_iHeadFree0;
+    //m_iHeadFree0 = - m_pEntryOffset0[iEntry0].m_iNextEntry;
+    //m_pEntryOffset0[m_iHeadEntry0].m_iNextEntry = nRowNo;
+    m_pEntryOffset0[nRowNo].m_iOffset = iEntryOffset;
+    m_pEntryOffset0[nRowNo].m_iNextEntry = m_iHeadEntry0;
+    m_iHeadEntry0 = nRowNo;
   }
   else {
     Entry* pPriorEntry0 = xPriorVec[0_ln];
-    i8 iEntry0 = pPriorEntry0->iRow();
-    m_pEntryOffset0[iEntry0].m_iOffset = iEntryOffset;
+    //i8 iEntry0 = pPriorEntry0->iRow();
+    m_pEntryOffset0[nRowNo].m_iOffset = iEntryOffset;
   }
   
   //i8 iEntryOffset = iToOffsetAbs(pBufferEntry);
@@ -674,74 +688,126 @@ void EntryBuffer_v2::vPositionPrior_v2(Key* aFindKey, EntryVec* pPriorVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
     
-  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  
   if (nItems() == 0) {
     for (ln nLevel = 0_ln; *nLevel < gpAttachMap->m_nIndexLevels; nLevel++)
       (*pPriorVec)[nLevel] = nullptr;
     return;
-  } 
+  }
   
-  // start scanning from head entry and topmost level
+  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  i8 nKeyCols = pIdxColVec->nItems();
+  
   ln nScanLevel;
   nScanLevel = 0; //gpAttachMap->m_nIndexLevels - 1;
   
-  Entry* pScanEntry_sl = pFirstEntry();
-  Entry* pNextEntry_sl = nullptr;
-  
+  Entry* pScanEntry_sl = nullptr;
+  Entry* pNextEntry_sl = pFirstEntry();
+  ASSERT(pNextEntry_sl);
+  Key* aNextKey = pNextEntry_sl->aKey();
+  ASSERT(aNextKey);
+
   bool bIsJuxta;
   bool bIsEqual = false;
-  i8 nKeyCols = pIdxColVec->nItems();
   
-  do {
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  while (pNextEntry_sl) {
     
-    pNextEntry_sl = pRightEntry(pScanEntry_sl,nScanLevel);
+    Key* aNextKey = pNextEntry_sl->aKey();
     
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // inner loop: scan right a number of entries at current scan level
-    //             until we find a key that is same/after given key
+    bIsJuxta =
+      aNextKey->bJuxtaCompare(JC_AFTER,aFindKey,pIdxColVec,nKeyCols,bIsEqual);
+ 
+    if (bIsJuxta)
+      break;
     
-    
-    while (pNextEntry_sl) {
-      
-      // get next key after scan key
-      Key* aNextKey = pNextEntry_sl->aKey();
-      
-      // trace:
-      //aGivenKey->vShow(m_pIndex->pIdxColVec());
-      //aNextKey->vShow(m_pIndex->pIdxColVec());
-      
-      // juxta-compare given key with next key at this level
-      bIsJuxta = aFindKey->bJuxtaCompare(JC_AFTER,aNextKey,
-                                         pIdxColVec,nKeyCols,bIsEqual);
-      
-      //vTrace(" %s\n"_Stz,bAfter ? "after" : "before");
-      
-      // if given key is not same/after next key then break to outer loop
-      if (! bIsJuxta)
-        break;
-      
-      pScanEntry_sl = pNextEntry_sl;
-      pNextEntry_sl = pRightEntry(pNextEntry_sl,nScanLevel);
-    }
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // outer loop: having gone right as far as we can, go down one level
-    //             note that aNextEntry may be null at this point
-    
-    // opt record scan entry as an insert-after revision point at this level
-    if (nItems() == 1)
-      (*pPriorVec)[nScanLevel] = nullptr;
-    else
-      (*pPriorVec)[nScanLevel] = pScanEntry_sl;
-    
-    // now go down one level
-    nScanLevel--;
-    
-    
-    // and repeat till we have scanned down thru all levels
-  } while (*nScanLevel >= 0);
+    pScanEntry_sl = pNextEntry_sl;
+    pNextEntry_sl = pRightEntry(pNextEntry_sl,nScanLevel);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (pScanEntry_sl) {
+    (*pPriorVec)[nScanLevel] = pScanEntry_sl;
+  }
+  else {
+    (*pPriorVec)[nScanLevel] = nullptr;
+  }
 }
+
+/*----------------------------------------------------------------------------*/
+//void EntryBuffer_v2::vPositionPrior_v2(Key* aFindKey, EntryVec* pPriorVec)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+//  
+//  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+//  
+//  if (nItems() == 0) {
+//    for (ln nLevel = 0_ln; *nLevel < gpAttachMap->m_nIndexLevels; nLevel++)
+//      (*pPriorVec)[nLevel] = nullptr;
+//    return;
+//  }
+//  
+//  // start scanning from head entry and topmost level
+//  ln nScanLevel;
+//  nScanLevel = 0; //gpAttachMap->m_nIndexLevels - 1;
+//  
+//  Entry* pScanEntry_sl = pFirstEntry();
+//  Entry* pNextEntry_sl = nullptr;
+//  
+//  bool bIsJuxta;
+//  bool bIsEqual = false;
+//  i8 nKeyCols = pIdxColVec->nItems();
+//  
+//  do {
+//    
+//    pNextEntry_sl = pRightEntry(pScanEntry_sl,nScanLevel);
+//    
+//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//    // inner loop: scan right a number of entries at current scan level
+//    //             until we find a key that is same/after given key
+//    
+//    
+//    while (pNextEntry_sl) {
+//      
+//      // get next key after scan key
+//      Key* aNextKey = pNextEntry_sl->aKey();
+//      
+//      // trace:
+//      //aGivenKey->vShow(m_pIndex->pIdxColVec());
+//      //aNextKey->vShow(m_pIndex->pIdxColVec());
+//      
+//      // juxta-compare given key with next key at this level
+//      bIsJuxta = aFindKey->bJuxtaCompare(JC_AFTER,aNextKey,
+//                                         pIdxColVec,nKeyCols,bIsEqual);
+//      
+//      //vTrace(" %s\n"_Stz,bAfter ? "after" : "before");
+//      
+//      // if given key is not same/after next key then break to outer loop
+//      if (! bIsJuxta)
+//        break;
+//      
+//      pScanEntry_sl = pNextEntry_sl;
+//      pNextEntry_sl = pRightEntry(pNextEntry_sl,nScanLevel);
+//    }
+//    
+//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//    // outer loop: having gone right as far as we can, go down one level
+//    //             note that aNextEntry may be null at this point
+//    
+//    // opt record scan entry as an insert-after revision point at this level
+//    if (nItems() == 1)
+//      (*pPriorVec)[nScanLevel] = nullptr;
+//    else
+//      (*pPriorVec)[nScanLevel] = pScanEntry_sl;
+//    
+//    // now go down one level
+//    nScanLevel--;
+//    
+//    
+//    // and repeat till we have scanned down thru all levels
+//  } while (*nScanLevel >= 0);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* remove given entry                                                         */
@@ -760,18 +826,18 @@ void EntryBuffer_v2::vRemoveFree(Entry *pEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove from entry free chain 0
   
-  if (C_ENTRY_NONE == m_iHeadEntry0) {
+  if (C_ENTRY_NONE == m_iHeadFree0) {
     m_pEntryOffset0[i_RowNo].m_iEntryNo   = i_RowNo;
     m_pEntryOffset0[i_RowNo].m_iNextEntry = - C_ENTRY_NONE;
-    m_iHeadEntry0 = i_RowNo;
+    m_iHeadFree0 = i_RowNo;
   }
-  else if (i_RowNo < m_iHeadEntry0) {
+  else if (i_RowNo < m_iHeadFree0) {
     m_pEntryOffset0[i_RowNo].m_iEntryNo   = i_RowNo;
-    m_pEntryOffset0[i_RowNo].m_iNextEntry = - m_iHeadEntry0;
-    m_iHeadEntry0 = i_RowNo;
+    m_pEntryOffset0[i_RowNo].m_iNextEntry = - m_iHeadFree0;
+    m_iHeadFree0 = i_RowNo;
   }
   else {
-    for (i4 i_Entry = m_iHeadEntry0;
+    for (i4 i_Entry = m_iHeadFree0;
          i_Entry != C_ENTRY_NONE;
          i_Entry = - m_pEntryOffset0[i_Entry].m_iNextEntry) {
       
@@ -792,18 +858,18 @@ void EntryBuffer_v2::vRemoveFree(Entry *pEntry)
   if (nOffsets == 1)
     return;
 
-  if (C_ENTRY_NONE == m_iHeadEntry1) {
+  if (C_ENTRY_NONE == m_iHeadFree1) {
     m_pEntryOffset1[i_RowNo].m_iEntryNo   = i_RowNo;
     m_pEntryOffset1[i_RowNo].m_iNextEntry = - C_ENTRY_NONE;
-    m_iHeadEntry1 = i_RowNo;
+    m_iHeadFree1 = i_RowNo;
   }
-  else if (i_RowNo < m_iHeadEntry1) {
+  else if (i_RowNo < m_iHeadFree1) {
     m_pEntryOffset1[i_RowNo].m_iEntryNo   = i_RowNo;
-    m_pEntryOffset1[i_RowNo].m_iNextEntry = - m_iHeadEntry1;
-    m_iHeadEntry1 = i_RowNo;
+    m_pEntryOffset1[i_RowNo].m_iNextEntry = - m_iHeadFree1;
+    m_iHeadFree1 = i_RowNo;
   }
   else {
-    for (i4 i_Entry = m_iHeadEntry1;
+    for (i4 i_Entry = m_iHeadFree1;
          i_Entry != C_ENTRY_NONE;
          i_Entry = - m_pEntryOffset1[i_Entry].m_iNextEntry) {
       
@@ -824,18 +890,18 @@ void EntryBuffer_v2::vRemoveFree(Entry *pEntry)
   if (nOffsets == 2)
     return;
   
-  if (C_ENTRY_NONE == m_iHeadEntry2) {
+  if (C_ENTRY_NONE == m_iHeadFree2) {
     m_pEntryOffset2[i_RowNo].m_iEntryNo   = i_RowNo;
     m_pEntryOffset2[i_RowNo].m_iNextEntry = - C_ENTRY_NONE;
-    m_iHeadEntry2 = i_RowNo;
+    m_iHeadFree2 = i_RowNo;
   }
-  else if (i_RowNo < m_iHeadEntry2) {
+  else if (i_RowNo < m_iHeadFree2) {
     m_pEntryOffset2[i_RowNo].m_iEntryNo   = i_RowNo;
-    m_pEntryOffset2[i_RowNo].m_iNextEntry = - m_iHeadEntry2;
-    m_iHeadEntry2 = i_RowNo;
+    m_pEntryOffset2[i_RowNo].m_iNextEntry = - m_iHeadFree2;
+    m_iHeadFree2 = i_RowNo;
   }
   else {
-    for (i4 i_Entry = m_iHeadEntry2;
+    for (i4 i_Entry = m_iHeadFree2;
          i_Entry != C_ENTRY_NONE;
          i_Entry = - m_pEntryOffset2[i_Entry].m_iNextEntry) {
       
@@ -868,7 +934,9 @@ void EntryBuffer_v2::vShow(void)
          "--------------------------------------------------\n"_Stz);
   vTrace("EntryBuffer %p (buffer %lld): %s index %s partition %lld level L%lld\n"
          "  HigherBuffer %p (L%s) entries %lld prevBuffer %p nextBuffer %p\n"
-         "  ReclaimSpace: %lld FirstFree: %p LastFree %p\n"_Stz,
+         "  ReclaimSpace: %lld FirstFree: %p LastFree %p\n"
+         "  HeadEntry2: %lld HeadEntry1: %lld HeadEntry0: %lld \n"
+         "  HeadFree2: %lld HeadFree1: %lld HeadFree0: %lld \n"_Stz,
          this,
          *nBufferNo(),
          aBD[m_eDurability],
@@ -882,7 +950,13 @@ void EntryBuffer_v2::vShow(void)
          m_pNextBuffer,
          m_nReclaimSpace,
          m_pFirstFree,
-         m_pLastFree);
+         m_pLastFree,
+         m_iHeadEntry2,
+         m_iHeadEntry1,
+         m_iHeadEntry0,
+         m_iHeadFree2,
+         m_iHeadFree1,
+         m_iHeadFree0);
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);
  
@@ -890,21 +964,24 @@ void EntryBuffer_v2::vShow(void)
 //  for (i8 i_Entry = 0; i_Entry < m_nItems; i_Entry++)
 //    vTrace("  [%2lld]: %lld\n"_Stz,i_Entry,m_pEntryOffset0[i_Entry]);
   for (i8 i_Entry = 0; i_Entry < m_nItems; i_Entry++)
-    vTrace("  [%2lld]: %lld %lld\n"_Stz,
+    vTrace("  [%2lld]: %lld %lld %lld\n"_Stz,
            i_Entry,m_pEntryOffset0[i_Entry].m_iEntryNo,
-           m_pEntryOffset0[i_Entry].m_iOffset);
+                   m_pEntryOffset0[i_Entry].m_iNextEntry,
+                   m_pEntryOffset0[i_Entry].m_iOffset);
   
   vTrace("Entry Offsets 1:\n"_Stz);
   for (i8 i_Entry = 0; i_Entry < m_nEntryOffset1; i_Entry++)
-    vTrace("  [%2lld]: %lld %lld\n"_Stz,
+    vTrace("  [%2lld]: %lld %lld %lld\n"_Stz,
            i_Entry,m_pEntryOffset1[i_Entry].m_iEntryNo,
-                  m_pEntryOffset1[i_Entry].m_iOffset);
+                   m_pEntryOffset1[i_Entry].m_iNextEntry,
+                   m_pEntryOffset1[i_Entry].m_iOffset);
   
   vTrace("Entry Offsets 2:\n"_Stz);
   for (i8 i_Entry = 0; i_Entry < m_nEntryOffset2; i_Entry++)
-    vTrace("  [%2lld]: %lld %lld\n"_Stz,
+    vTrace("  [%2lld]: %lld %lld %lld\n"_Stz,
            i_Entry,m_pEntryOffset2[i_Entry].m_iEntryNo,
-                  m_pEntryOffset2[i_Entry].m_iOffset);
+                   m_pEntryOffset2[i_Entry].m_iNextEntry,
+                   m_pEntryOffset2[i_Entry].m_iOffset);
   
   vTrace("\n"_Stz);
   vTrace("Entries:\n"_Stz);
@@ -920,29 +997,32 @@ void EntryBuffer_v2::vShow(void)
     if ( ! m_pIndex->bIsHidden() ) {
       vTrace("\n"_Stz);
       vTrace("FreeChains2:\n"_Stz);
-      for (i4 i_Entry = m_iHeadEntry2;
+      for (i4 i_Entry = m_iHeadFree2;
            i_Entry != C_ENTRY_NONE;
            i_Entry = - m_pEntryOffset2[i_Entry].m_iNextEntry) {
-        vTrace("  %lld: %lld %lld\n"_Stz,
+        vTrace("  %lld: %lld %lld %lld\n"_Stz,
                i_Entry,m_pEntryOffset2[i_Entry].m_iEntryNo,
-                       m_pEntryOffset2[i_Entry].m_iNextEntry);
+                       m_pEntryOffset2[i_Entry].m_iNextEntry,
+                       m_pEntryOffset2[i_Entry].m_iOffset);
       }
       vTrace("FreeChains1:\n"_Stz);
-      for (i4 i_Entry = m_iHeadEntry1;
+      for (i4 i_Entry = m_iHeadFree1;
            i_Entry != C_ENTRY_NONE;
            i_Entry = - m_pEntryOffset1[i_Entry].m_iNextEntry) {
-        vTrace("  %lld: %lld %lld\n"_Stz,
+        vTrace("  %lld: %lld %lld %lld\n"_Stz,
                i_Entry,m_pEntryOffset1[i_Entry].m_iEntryNo,
-                       m_pEntryOffset1[i_Entry].m_iNextEntry);
+                       m_pEntryOffset1[i_Entry].m_iNextEntry,
+                       m_pEntryOffset1[i_Entry].m_iOffset);
       }
     }
     vTrace("FreeChains0:\n"_Stz);
-    for (i4 i_Entry = m_iHeadEntry0;
+    for (i4 i_Entry = m_iHeadFree0;
          i_Entry != C_ENTRY_NONE;
          i_Entry = - m_pEntryOffset0[i_Entry].m_iNextEntry) {
-      vTrace("  %lld: %lld %lld\n"_Stz,
+      vTrace("  %lld: %lld %lld %lld\n"_Stz,
              i_Entry,m_pEntryOffset0[i_Entry].m_iEntryNo,
-             m_pEntryOffset0[i_Entry].m_iNextEntry);
+                     m_pEntryOffset0[i_Entry].m_iNextEntry,
+                     m_pEntryOffset0[i_Entry].m_iOffset);
     }
   }
   
@@ -1025,12 +1105,12 @@ Entry* EntryBuffer_v2::pGetEntry(i8 iEntryNo)
 /*----------------------------------------------------------------------------*/
 i4 EntryBuffer_v2::iGetFreeEntry(void)
 {
-  if (C_ENTRY_NONE == m_iHeadEntry0)
+  if (C_ENTRY_NONE == m_iHeadFree0)
     return C_ENTRY_NONE;
   
-  i4 iFreeEntry = m_iHeadEntry0;
+  i4 iFreeEntry = m_iHeadFree0;
   
-  m_iHeadEntry0 = - m_pEntryOffset0[iFreeEntry].m_iNextEntry;
+  m_iHeadFree0 = - m_pEntryOffset0[iFreeEntry].m_iNextEntry;
   
   return iFreeEntry;
 }
@@ -1119,6 +1199,7 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
   EntryBuffer_v2* pCurrentIndexBuffer = pFirstIndexBuffer;
   pCurrentIndexBuffer->vIndex(pIndex1);
   pCurrentIndexBuffer->vPartitionNo(0);
+  pCurrentIndexBuffer->vShow();
   
   s256 sRecData;
   i8 iRecLength;
@@ -1132,7 +1213,8 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
   
   KeyWrk_v2 xKeyWrk;
   
-  for (i8 iInt = 9; iInt >= 0; iInt--) {
+//  for (i8 iInt = 9; iInt >= 0; iInt--) {
+  for (i8 iInt = 0; iInt <= 9; iInt++) {
     sprintf(sRecData.aChar(),"%lld,%s,1900-01-01 00:00:%lld",
             iInt,IntLib::sAsText(iInt),iInt);
     //vTrace("Record: %s\n"_Stz,sRawData.aChar());
