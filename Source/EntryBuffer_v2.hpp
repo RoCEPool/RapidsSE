@@ -14,14 +14,17 @@ namespace DBobjects
   {
   public:
     i4 m_iEntryNo; // which entry this is
-    i4 m_iOffset;  // offset where the entry is
+    union {
+      i4 m_iOffset;    // offset where the entry is
+      i4 m_iNextEntry; // nex entry 
+    };
   };
   
-  static const i8 C_OFFSET_0 = C_8KB;
-  static const i8 C_OFFSET_1 = C_1KB;
-  static const i8 C_OFFSET_2 = 128;
+  static const i8 C_ENTRIES_0 = C_8KB;
+  static const i8 C_ENTRIES_1 = C_1KB;
+  static const i8 C_ENTRIES_2 = 128;
   
-  static const i4 C_OFFSET_NONE = - C_16KB;
+  static const i4 C_ENTRY_NONE = C_16KB;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class EntryBuffer_v2 : public ItemBuffer
@@ -47,9 +50,9 @@ namespace DBobjects
     i4      m_nEntryOffset2; // number of level 2 offsets
     i4      m_nEntryOffset1; // number of level 2 offsets
   
-    i4      m_iHeadOffset2;  // head of offset free chain for L2 offsets
-    i4      m_iHeadOffset1;  // head of offset free chain for L1 offsets
-    i4      m_iHeadOffset0;  // head of offset free chain for L0 offsets
+    i4      m_iHeadEntry2;   // head of entry free chain for L2 offsets
+    i4      m_iHeadEntry1;   // head of entry free chain for L1 offsets
+    i4      m_iHeadEntry0;   // head of entry free chain for L0 offsets
   
     Entry*  m_pEntries;      // where entries start
   
@@ -148,10 +151,10 @@ namespace DBobjects
     void         vDumpPriorVec(Entry* aPriorVec[]);
     void         vFixHigherLevel(Entry* aNewEntry);
     void         vFixPriorOffset(EntryVec* pPriorVec, Entry* aNewEntry);
+    void         vFreeChains(void);
     Entry*       pGetEntry(i8 iEntryNo);
     void         vMoveLeft(void* aDst, i8 nBytes);
     void         vMoveRight(void* aSrc, i8 nBytes);
-    void         vOffsetChains(void);
     Entry*       pPosition(Key* aGivenKey, i8 nKeyCols,
                            eJC eJuxtaCompare, EntryVec* pPriorVec,
                            bool& bIsEqual, bool bIsQuery);
