@@ -554,6 +554,17 @@ void EntryBuffer_v2::vPositionPrior_v2(Key* aFindKey, EntryVec* pPriorVec)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* remove entry from entry offset arrays                                      */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer_v2::vRemoveFree(Entry *pEntry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  // remove from entry offset 0
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* show contents of buffer                                                    */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer_v2::vShow(void)

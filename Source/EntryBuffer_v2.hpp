@@ -123,6 +123,9 @@ namespace DBobjects
     EntryBuffer_v2* pPositionLevel(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare, i8 iLevel);
     void         vPriorVecHead(EntryVec& xPriorVec);
     bool         bRemove(Key* aKey);
+  
+    void         vRemoveFree(Entry* pEntry);
+  
     void         vRowCount(void);
     void         vShow(void);
     EntryBuffer_v2* pSplitBuffer(void);
