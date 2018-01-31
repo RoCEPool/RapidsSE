@@ -293,6 +293,58 @@ FreeEntry* EntryBuffer_v2::pFirstFree(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* add given entry to free list                                               */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer_v2::vAddFree(Entry *pEntry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  i8 nSizeEntry = pEntry->nSizeItem();
+  
+  FreeEntry* pFreeEntry = new(pEntry) FreeEntry(nSizeEntry);
+  
+  if ( ! m_pFirstFree ) {
+    m_pFirstFree = pFreeEntry;
+    m_pLastFree = pFreeEntry;
+    return;
+  }
+  
+  if (pFreeEntry < m_pFirstFree) {
+    pFreeEntry->vNextFree(m_pFirstFree);
+    m_pFirstFree->vPrevFree(pFreeEntry);
+    m_pFirstFree = pFreeEntry;
+  }
+  
+  if (pFreeEntry > m_pLastFree) {
+    pFreeEntry->vPrevFree(m_pLastFree);
+    m_pLastFree->vNextFree(pFreeEntry);
+    m_pLastFree = pFreeEntry;
+  }
+  
+  FreeEntry* pNextFree;
+  for (FreeEntry* pScanFree = m_pFirstFree;
+       pScanFree;
+       pScanFree = pScanFree->pNextFree()) {
+    
+    pNextFree = pScanFree->pNextFree();
+    ASSERT(pNextFree);
+    
+    if (pFreeEntry > pScanFree && pFreeEntry < pNextFree) {
+      
+      pScanFree->vNextFree(pFreeEntry);
+      pFreeEntry->vPrevFree(pScanFree);
+      
+      pNextFree->vPrevFree(pFreeEntry);
+      pFreeEntry->vNextFree(pScanFree);
+      
+      return;
+    }
+  }
+  
+  ASSERT(0);
+}
+
+/*----------------------------------------------------------------------------*/
 /* allot an entry in this buffer                                              */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer_v2::pAllotEntryBytes(i8 nBytes)
@@ -513,8 +565,9 @@ void EntryBuffer_v2::vShow(void)
   else
     sHigherBuffer = "..."_Stz;
   
-  vTrace("EntryBuffer %p (buffer %lld): %s index %s partition %lld level L%lld "
-         "HigerBuffer %p (L%s) entries %lld prevBuffer %p nextBuffer %p \n"_Stz,
+  vTrace("EntryBuffer %p (buffer %lld): %s index %s partition %lld level L%lld\n"
+         "  HigherBuffer %p (L%s) entries %lld prevBuffer %p nextBuffer %p\n"
+         "  ReclaimSpace: %lld FirstFree: %p LastFree %p\n"_Stz,
          this,
          *nBufferNo(),
          aBD[m_eDurability],
@@ -525,7 +578,10 @@ void EntryBuffer_v2::vShow(void)
          sHigherBuffer.aStr(),
          m_nItems,
          m_pPrevBuffer,
-         m_pNextBuffer);
+         m_pNextBuffer,
+         m_nReclaimSpace,
+         m_pFirstFree,
+         m_pLastFree);
   
   vTrace("Entry Offsets 0:\n"_Stz);
   for (i8 iEntry = 0; iEntry < m_nItems; iEntry++)
@@ -558,7 +614,9 @@ void EntryBuffer_v2::vShow(void)
   for (FreeEntry* pFreeEntry = pFirstFree();
        pFreeEntry != nullptr;
        pFreeEntry = pFreeEntry->pNextFree()) {
-    vTrace("  %p: %lld"_Stz,pFreeEntry,pFreeEntry->nSizeItem());
+    vTrace("  %p bytes: %lld next: %p prev: %p\n"_Stz,
+           pFreeEntry,pFreeEntry->nSizeItem(),
+           pFreeEntry->pNextFree(),pFreeEntry->pPrevFree());
   }
   
   vTrace("\n"_Stz);
@@ -705,6 +763,8 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
       pRowEntry = pCurrentBuffer->pAppendRow_v2(xRowEntWrk);
       ASSERT(pRowEntry);
     }
+    
+    //pCurrentBuffer->vAddFree(pRowEntry);
     
     xKeyWrk.vReset();
     pRowEntry->vExtractIndexKey_v2(xKeyWrk,pIdxColVec1);

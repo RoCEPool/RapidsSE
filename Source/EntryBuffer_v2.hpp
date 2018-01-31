@@ -96,6 +96,7 @@ namespace DBobjects
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // complex functions
   
+    void         vAddFree(Entry* pEntry);
     Entry*       pAllotEntry(i8 nBytes);
     Entry*       pAllotEntryBytes(i8 nBytes);
     void         vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries);

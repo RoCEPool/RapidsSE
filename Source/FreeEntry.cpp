@@ -36,10 +36,10 @@ void* FreeEntry::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* FreeEntry::operator new(size_t iSize, FreeEntry* pEntry)
+void* FreeEntry::operator new(size_t iSize, Entry* pEntry)
 {
   RASSERT(iSize);
-  return pEntry;
+  return reinterpret_cast<FreeEntry*>(pEntry);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -50,9 +50,12 @@ FreeEntry::FreeEntry(i8 nSizeItem)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FREEENTRY);
   
+  m_pNextFree = nullptr;
+  m_pPrevFree = nullptr;
+  
   _setFooter_();
   
-  _checkInitialised_(CN_FREEENTRY);
+  _checkInitialisedSize_(nSizeItem);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_FREEENTRY,_FOOTER_);
 }
