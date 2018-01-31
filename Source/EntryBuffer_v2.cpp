@@ -399,7 +399,7 @@ Entry* EntryBuffer_v2::pAppendRow_v2(EntWrk_v2& xRowWrk)
   // form the rowId
   
   bn nBufferNo = this->nBufferNo();
-  i8 nRowNo = nItems();
+  i8 nRowNo = iGetFreeEntry(); //nItems();
   Id xRowId(*nBufferNo, nRowNo);
   
   xRowWrk.vId(xRowId);
@@ -421,23 +421,22 @@ Entry* EntryBuffer_v2::pAppendRow_v2(EntWrk_v2& xRowWrk)
   i8 iEntryOffset = iToOffsetAbs(pBufferEntry);
   m_pEntryOffset0[nRowNo] = iEntryOffset;
   
-  if (nOffsets >= 2) {
-    Offset* pOffset1 = &m_pEntryOffset1[m_nEntryOffset1];
-    pOffset1->m_iEntryNo = nRowNo;
-    pOffset1->m_iOffset = iEntryOffset;
-    m_nEntryOffset1++;
-  }
-  
-  if (nOffsets == 3) {
-    Offset* pOffset2 = &m_pEntryOffset2[m_nEntryOffset2];
-    pOffset2->m_iEntryNo = nRowNo;
-    pOffset2->m_iOffset = iEntryOffset;
-    m_nEntryOffset2++;
-  }
+//  if (nOffsets >= 2) {
+//    Offset* pOffset1 = &m_pEntryOffset1[m_nEntryOffset1];
+//    pOffset1->m_iEntryNo = nRowNo;
+//    pOffset1->m_iOffset = iEntryOffset;
+//    m_nEntryOffset1++;
+//  }
+//  
+//  if (nOffsets == 3) {
+//    Offset* pOffset2 = &m_pEntryOffset2[m_nEntryOffset2];
+//    pOffset2->m_iEntryNo = nRowNo;
+//    pOffset2->m_iOffset = iEntryOffset;
+//    m_nEntryOffset2++;
+//  }
   
   return pBufferEntry;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* return number of index buffers under this buffer                           */
@@ -479,29 +478,36 @@ void EntryBuffer_v2::vFreeChains(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+  i8 L_ENTRIES_2 = gpAttachMap->m_nIndexEntries ?
+       gpAttachMap->m_nIndexEntries : C_ENTRIES_2;
+  i8 L_ENTRIES_1 = gpAttachMap->m_nIndexEntries ?
+      gpAttachMap->m_nIndexEntries : C_ENTRIES_1;
+  i8 L_ENTRIES_0 = gpAttachMap->m_nIndexEntries ?
+      gpAttachMap->m_nIndexEntries : C_ENTRIES_0;
+  
   // L2 free chain
-  for (i4 i_Entry = 0; i_Entry < (C_ENTRIES_2 - 1); i_Entry++) {
+  for (i4 i_Entry = 0; i_Entry < (L_ENTRIES_2 - 1); i_Entry++) {
     m_pEntryOffset2[i_Entry].m_iEntryNo = i_Entry;
     m_pEntryOffset2[i_Entry].m_iNextEntry = - (i_Entry+1);
   }
-  m_pEntryOffset2[C_ENTRIES_2 - 1].m_iEntryNo = C_ENTRIES_2 - 1;
-  m_pEntryOffset2[C_ENTRIES_2 - 1].m_iNextEntry = - C_ENTRY_NONE;
+  m_pEntryOffset2[L_ENTRIES_2 - 1].m_iEntryNo = L_ENTRIES_2 - 1;
+  m_pEntryOffset2[L_ENTRIES_2 - 1].m_iNextEntry = - C_ENTRY_NONE;
   m_iHeadEntry2 = 0;
   
   // L1 free chain
-  for (i4 i_Entry = 0; i_Entry < (C_ENTRIES_1 - 1); i_Entry++) {
+  for (i4 i_Entry = 0; i_Entry < (L_ENTRIES_1 - 1); i_Entry++) {
     m_pEntryOffset1[i_Entry].m_iEntryNo = i_Entry;
     m_pEntryOffset1[i_Entry].m_iNextEntry = - (i_Entry+1);
   }
-  m_pEntryOffset1[C_ENTRIES_1 - 1].m_iEntryNo = C_ENTRIES_1 - 1;
-  m_pEntryOffset1[C_ENTRIES_1 - 1].m_iNextEntry  = - C_ENTRY_NONE;
+  m_pEntryOffset1[L_ENTRIES_1 - 1].m_iEntryNo = L_ENTRIES_1 - 1;
+  m_pEntryOffset1[L_ENTRIES_1 - 1].m_iNextEntry  = - C_ENTRY_NONE;
   m_iHeadEntry1 = 0;
   
   // L0 free chain
-  for (i4 i_Entry = 0; i_Entry < (C_ENTRIES_0 - 1); i_Entry++) {
+  for (i4 i_Entry = 0; i_Entry < (L_ENTRIES_0 - 1); i_Entry++) {
     m_pEntryOffset0[i_Entry] = - (i_Entry+1);
   }
-  m_pEntryOffset0[C_ENTRIES_0 - 1] = - C_ENTRY_NONE;
+  m_pEntryOffset0[L_ENTRIES_0 - 1] = - C_ENTRY_NONE;
   m_iHeadEntry0 = 0;
 }
 
@@ -705,6 +711,9 @@ void EntryBuffer_v2::vShow(void)
   else
     sHigherBuffer = "..."_Stz;
   
+  vTrace("\n"_Stz);
+  vTrace("--------------------------------------------------"
+         "--------------------------------------------------\n"_Stz);
   vTrace("EntryBuffer %p (buffer %lld): %s index %s partition %lld level L%lld\n"
          "  HigherBuffer %p (L%s) entries %lld prevBuffer %p nextBuffer %p\n"
          "  ReclaimSpace: %lld FirstFree: %p LastFree %p\n"_Stz,
@@ -722,7 +731,9 @@ void EntryBuffer_v2::vShow(void)
          m_nReclaimSpace,
          m_pFirstFree,
          m_pLastFree);
-  
+  vTrace("--------------------------------------------------"
+         "--------------------------------------------------\n"_Stz);
+ 
   vTrace("Entry Offsets 0:\n"_Stz);
   for (i8 i_Entry = 0; i_Entry < m_nItems; i_Entry++)
     vTrace("  [%2lld]: %lld\n"_Stz,i_Entry,m_pEntryOffset0[i_Entry]);
@@ -749,6 +760,35 @@ void EntryBuffer_v2::vShow(void)
     pEntry->vShow_v2(iOffset,m_pIndex,true);
   }
 
+  if (gpAttachMap->m_nIndexEntries) {
+    if ( ! m_pIndex->bIsHidden() ) {
+      vTrace("\n"_Stz);
+      vTrace("FreeChains2:\n"_Stz);
+      for (i4 i_Entry = m_iHeadEntry2;
+           i_Entry != C_ENTRY_NONE;
+           i_Entry = - m_pEntryOffset2[i_Entry].m_iNextEntry) {
+        vTrace("  %lld: %lld %lld\n"_Stz,
+               i_Entry,m_pEntryOffset2[i_Entry].m_iEntryNo,
+                       m_pEntryOffset2[i_Entry].m_iNextEntry);
+      }
+      vTrace("FreeChains1:\n"_Stz);
+      for (i4 i_Entry = m_iHeadEntry1;
+           i_Entry != C_ENTRY_NONE;
+           i_Entry = - m_pEntryOffset1[i_Entry].m_iNextEntry) {
+        vTrace("  %lld: %lld %lld\n"_Stz,
+               i_Entry,m_pEntryOffset1[i_Entry].m_iEntryNo,
+                       m_pEntryOffset1[i_Entry].m_iNextEntry);
+      }
+    }
+    vTrace("FreeChains0:\n"_Stz);
+    for (i4 i_Entry = m_iHeadEntry0;
+         i_Entry != C_ENTRY_NONE;
+         i_Entry = - m_pEntryOffset0[i_Entry]) {
+      vTrace("  %lld: %lld\n"_Stz,
+             i_Entry,m_pEntryOffset0[i_Entry]);
+    }
+  }
+  
   vTrace("\n"_Stz);
   vTrace("FreeEntries:\n"_Stz);
   for (FreeEntry* pFreeEntry = pFirstFree();
@@ -760,6 +800,8 @@ void EntryBuffer_v2::vShow(void)
   }
   
   vTrace("\n"_Stz);
+  vTrace("=================================================="
+         "==================================================\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -797,6 +839,21 @@ void EntryBuffer_v2::vShow(void)
 /*----------------------------------------------------------------------------*/
 /* get an entry by number                                                     */
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get a free entry (or C_ENTRY_NONE if none)                                 */
+/*----------------------------------------------------------------------------*/
+i4 EntryBuffer_v2::iGetFreeEntry(void)
+{
+  if (C_ENTRY_NONE == m_iHeadEntry0)
+    return C_ENTRY_NONE;
+  
+  i4 iFreeEntry = m_iHeadEntry0;
+  
+  m_iHeadEntry0 = - m_pEntryOffset0[m_iHeadEntry0];
+  
+  return iFreeEntry;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get the prior vector of given entry                                        */
@@ -863,11 +920,11 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
   EntryBuffer_v2* pCurrentBuffer = pFirstBuffer;
   pCurrentBuffer->vIndex(pHiddenIndex);
   pCurrentBuffer->vPartitionNo(0);
+  //pCurrentBuffer->vShow();
 
-  EntryBuffer_v2* pFirstIndexBuffer = new EntryBuffer_v2;
-  EntryBuffer_v2* pIndexCurrentBuffer = pFirstIndexBuffer;
-  pIndexCurrentBuffer->vIndex(pIndex1);
-  pIndexCurrentBuffer->vPartitionNo(0);
+  EntryBuffer_v2* pIndexBuffer = new EntryBuffer_v2;
+  pIndexBuffer->vIndex(pHiddenIndex);
+  pIndexBuffer->vPartitionNo(0);
   
   s256 sRecData;
   i8 iRecLength;
@@ -879,7 +936,7 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
   bool bFormatted;
   bool bAppended;
   
-  KeyWrk_v2 xKeyWrk;
+  KeyWrk xKeyWrk;
   
   for (i8 iInt = 0; iInt < 10; iInt++) {
     sprintf(sRecData.aChar(),"%lld,%s,1900-01-01 00:00:%lld",
@@ -896,8 +953,8 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
     ((Row*)aRowData)->vDump(pColVec);
     
     xRowEntWrk.vTxId(0);
-    //xRowEntWrk.vShow(pColVec);
-    
+    //xRowEntWrk.vHasData(true);
+    //pCurrentBuffer->vShow();
     Entry* pRowEntry = pCurrentBuffer->pAppendRow_v2(xRowEntWrk);
     if ( ! pRowEntry ) {
       pCurrentBuffer = pCurrentBuffer->pNewNextBuffer();
@@ -905,19 +962,15 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
       ASSERT(pRowEntry);
     }
     
+    //pCurrentBuffer->vShow();
+
     //pCurrentBuffer->vAddFree(pRowEntry);
     
     xKeyWrk.vReset();
     pRowEntry->vExtractIndexKey_v2(xKeyWrk,pIdxColVec1);
-    //xKeyWrk.vShow(pIdxColVec1);
+    xKeyWrk.vShow();
     
-    pRowEntry = pIndexCurrentBuffer->pAppendRow_v2(xKeyWrk);
-    if ( ! pRowEntry ) {
-      pIndexCurrentBuffer = pIndexCurrentBuffer->pNewNextBuffer();
-      pRowEntry = pIndexCurrentBuffer->pAppendRow_v2(xKeyWrk);
-      ASSERT(pRowEntry);
-    }
-    pRowEntry->vShow_v2(0, pIndex1, true);
+    
   }
 
   for (pCurrentBuffer = pFirstBuffer;
@@ -925,11 +978,6 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
        pCurrentBuffer = pCurrentBuffer->pNextBuffer())
     pCurrentBuffer->vShow();
 
-  for (pIndexCurrentBuffer = pFirstIndexBuffer;
-       pIndexCurrentBuffer;
-       pIndexCurrentBuffer = pIndexCurrentBuffer->pNextBuffer())
-    pIndexCurrentBuffer->vShow();
-  
   //pIndexBuffer->vShow();
 }
 
