@@ -16,7 +16,7 @@ namespace DBobjects
     i4 m_iEntryNo; // which entry this is
     union {
       i4 m_iOffset;    // offset where the entry is
-      i4 m_iNextEntry; // nex entry 
+      i4 m_iNextEntry; // nex entry
     };
   };
   

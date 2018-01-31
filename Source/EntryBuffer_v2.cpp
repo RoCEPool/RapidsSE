@@ -478,29 +478,36 @@ void EntryBuffer_v2::vFreeChains(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+  i8 L_ENTRIES_2 = gpAttachMap->m_nIndexEntries ?
+       gpAttachMap->m_nIndexEntries : C_ENTRIES_2;
+  i8 L_ENTRIES_1 = gpAttachMap->m_nIndexEntries ?
+      gpAttachMap->m_nIndexEntries : C_ENTRIES_1;
+  i8 L_ENTRIES_0 = gpAttachMap->m_nIndexEntries ?
+      gpAttachMap->m_nIndexEntries : C_ENTRIES_0;
+  
   // L2 free chain
-  for (i4 i_Entry = 0; i_Entry < (C_ENTRIES_2 - 1); i_Entry++) {
+  for (i4 i_Entry = 0; i_Entry < (L_ENTRIES_2 - 1); i_Entry++) {
     m_pEntryOffset2[i_Entry].m_iEntryNo = i_Entry;
     m_pEntryOffset2[i_Entry].m_iNextEntry = - (i_Entry+1);
   }
-  m_pEntryOffset2[C_ENTRIES_2 - 1].m_iEntryNo = C_ENTRIES_2 - 1;
-  m_pEntryOffset2[C_ENTRIES_2 - 1].m_iNextEntry = - C_ENTRY_NONE;
+  m_pEntryOffset2[L_ENTRIES_2 - 1].m_iEntryNo = L_ENTRIES_2 - 1;
+  m_pEntryOffset2[L_ENTRIES_2 - 1].m_iNextEntry = - C_ENTRY_NONE;
   m_iHeadEntry2 = 0;
   
   // L1 free chain
-  for (i4 i_Entry = 0; i_Entry < (C_ENTRIES_1 - 1); i_Entry++) {
+  for (i4 i_Entry = 0; i_Entry < (L_ENTRIES_1 - 1); i_Entry++) {
     m_pEntryOffset1[i_Entry].m_iEntryNo = i_Entry;
     m_pEntryOffset1[i_Entry].m_iNextEntry = - (i_Entry+1);
   }
-  m_pEntryOffset1[C_ENTRIES_1 - 1].m_iEntryNo = C_ENTRIES_1 - 1;
-  m_pEntryOffset1[C_ENTRIES_1 - 1].m_iNextEntry  = - C_ENTRY_NONE;
+  m_pEntryOffset1[L_ENTRIES_1 - 1].m_iEntryNo = L_ENTRIES_1 - 1;
+  m_pEntryOffset1[L_ENTRIES_1 - 1].m_iNextEntry  = - C_ENTRY_NONE;
   m_iHeadEntry1 = 0;
   
   // L0 free chain
-  for (i4 i_Entry = 0; i_Entry < (C_ENTRIES_0 - 1); i_Entry++) {
+  for (i4 i_Entry = 0; i_Entry < (L_ENTRIES_0 - 1); i_Entry++) {
     m_pEntryOffset0[i_Entry] = - (i_Entry+1);
   }
-  m_pEntryOffset0[C_ENTRIES_0 - 1] = - C_ENTRY_NONE;
+  m_pEntryOffset0[L_ENTRIES_0 - 1] = - C_ENTRY_NONE;
   m_iHeadEntry0 = 0;
 }
 
