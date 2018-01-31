@@ -556,8 +556,10 @@ Entry* EntryBuffer_v2::pInsertKey_v2(KeyWrk_v2& xKeyWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  //vTrace("Inserting key:\n"_Stz);
-  //xKeyWrk.vShow();
+  
+  vTrace("Inserting key:\n"_Stz);
+  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  xKeyWrk.vShow(pIdxColVec);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert a new entry into the skip list
@@ -618,8 +620,9 @@ Entry* EntryBuffer_v2::pInsertKey_v2(KeyWrk_v2& xKeyWrk)
   }
   else {
     Entry* pPriorEntry0 = xPriorVec[0_ln];
-    //i8 iEntry0 = pPriorEntry0->iRow();
-    m_pEntryOffset0[nRowNo].m_iOffset = iEntryOffset;
+    i8 iPriorEntry0 = pPriorEntry0->iRow();
+    m_pEntryOffset0[iPriorEntry0].m_iNextEntry = nRowNo;
+   m_pEntryOffset0[nRowNo].m_iOffset = iEntryOffset;
   }
   
   //i8 iEntryOffset = iToOffsetAbs(pBufferEntry);
@@ -703,8 +706,6 @@ void EntryBuffer_v2::vPositionPrior_v2(Key* aFindKey, EntryVec* pPriorVec)
   Entry* pScanEntry_sl = nullptr;
   Entry* pNextEntry_sl = pFirstEntry();
   ASSERT(pNextEntry_sl);
-  Key* aNextKey = pNextEntry_sl->aKey();
-  ASSERT(aNextKey);
 
   bool bIsJuxta;
   bool bIsEqual = false;
@@ -713,7 +714,10 @@ void EntryBuffer_v2::vPositionPrior_v2(Key* aFindKey, EntryVec* pPriorVec)
 
   while (pNextEntry_sl) {
     
-    Key* aNextKey = pNextEntry_sl->aKey();
+    Key* aNextKey = pNextEntry_sl->aKey_v2();
+    
+    aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
+    aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
     
     bIsJuxta =
       aNextKey->bJuxtaCompare(JC_AFTER,aFindKey,pIdxColVec,nKeyCols,bIsEqual);
@@ -1213,8 +1217,8 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
   
   KeyWrk_v2 xKeyWrk;
   
-//  for (i8 iInt = 9; iInt >= 0; iInt--) {
-  for (i8 iInt = 0; iInt <= 9; iInt++) {
+  for (i8 iInt = 9; iInt >= 0; iInt--) {
+  //for (i8 iInt = 0; iInt <= 9; iInt++) {
     sprintf(sRecData.aChar(),"%lld,%s,1900-01-01 00:00:%lld",
             iInt,IntLib::sAsText(iInt),iInt);
     //vTrace("Record: %s\n"_Stz,sRawData.aChar());
