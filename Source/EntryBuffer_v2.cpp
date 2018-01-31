@@ -922,9 +922,10 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
   pCurrentBuffer->vPartitionNo(0);
   //pCurrentBuffer->vShow();
 
-  EntryBuffer_v2* pIndexBuffer = new EntryBuffer_v2;
-  pIndexBuffer->vIndex(pHiddenIndex);
-  pIndexBuffer->vPartitionNo(0);
+  EntryBuffer_v2* pFirstIndexBuffer = new EntryBuffer_v2;
+  EntryBuffer_v2* pCurrentIndexBuffer = pFirstIndexBuffer;
+  pCurrentIndexBuffer->vIndex(pIndex1);
+  pCurrentIndexBuffer->vPartitionNo(0);
   
   s256 sRecData;
   i8 iRecLength;
@@ -936,7 +937,7 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
   bool bFormatted;
   bool bAppended;
   
-  KeyWrk xKeyWrk;
+  KeyWrk_v2 xKeyWrk;
   
   for (i8 iInt = 0; iInt < 10; iInt++) {
     sprintf(sRecData.aChar(),"%lld,%s,1900-01-01 00:00:%lld",
@@ -968,8 +969,14 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
     
     xKeyWrk.vReset();
     pRowEntry->vExtractIndexKey_v2(xKeyWrk,pIdxColVec1);
-    xKeyWrk.vShow();
+    xKeyWrk.vShow(pIdxColVec1);
     
+    Entry* pKeyEntry = pCurrentIndexBuffer->pAppendRow_v2(xKeyWrk);
+    if ( ! pKeyEntry ) {
+      pCurrentIndexBuffer = pCurrentIndexBuffer->pNewNextBuffer();
+      pKeyEntry = pCurrentIndexBuffer->pAppendRow_v2(xKeyWrk);
+      ASSERT(pKeyEntry);
+    }
     
   }
 
@@ -978,7 +985,10 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
        pCurrentBuffer = pCurrentBuffer->pNextBuffer())
     pCurrentBuffer->vShow();
 
-  //pIndexBuffer->vShow();
+  for (pCurrentIndexBuffer = pFirstIndexBuffer;
+       pCurrentIndexBuffer;
+       pCurrentIndexBuffer = pCurrentIndexBuffer->pNextBuffer())
+    pCurrentIndexBuffer->vShow();
 }
 
 /*============================================================================*/
