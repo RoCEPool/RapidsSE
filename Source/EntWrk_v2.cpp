@@ -12,37 +12,15 @@ extern AttachMap* gpAttachMap;
 extern i8 gnIndexOffsets;
 
 /*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* EntWrk_v2::operator new(size_t iSize)
-{
-  RASSERT(iSize);
-  vFatal("fatal: EntWrk class cannot be new'd\n"_Stz);
-  
-  NEVER_REACH;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* EntWrk_v2::operator new(size_t iSize, EntWrk* pEntWrk)
-{
-  RASSERT(iSize);
-  return pEntWrk;
-}
-
-/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-EntWrk_v2::EntWrk_v2(void)
-: Object(CN_ENTWRK)
+EntWrk_v2::EntWrk_v2(eCN eClassNo)
+: Object(eClassNo)
 {
-  _precondition_(_MAGIC_,CN_ENTWRK);
+  _precondition_(_MAGIC_);
 
   // check initialisation of rowid
   ASSERT(0 == m_xId.iBuffer() && 0 == m_xId.iRow());
-  
-  m_bHasData = false;
   
   m_nOffsets = -1;
   
@@ -51,16 +29,16 @@ EntWrk_v2::EntWrk_v2(void)
   
   _checkInitialisedSize_(sizeof(EntWrk));
   
-  _postcondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  _postcondition_(_MAGIC_,eClassNo,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-EntWrk_v2::EntWrk_v2(i8 nOffsets)
-: Object(CN_ENTWRK)
+EntWrk_v2::EntWrk_v2(eCN eClassNo, i8 nOffsets)
+: Object(eClassNo)
 {
-  _precondition_(_MAGIC_,CN_ENTWRK);
+  _precondition_(_MAGIC_);
   
   // check initialisation of rowid
   ASSERT(0 == m_xId.iBuffer() && 0 == m_xId.iRow());
@@ -69,28 +47,24 @@ EntWrk_v2::EntWrk_v2(i8 nOffsets)
   m_nOffsets = nOffsets;
   //ASSERT(m_nOffsets >= 0 && m_nOffsets <= gpAttachMap->m_nIndexOffsets);
   
-  m_bHasData = false;
-  
   // m_xDataWrk
   m_xDataWrk.vInit();
   
   _checkInitialisedSize_(sizeof(EntWrk));
   
-  _postcondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  _postcondition_(_MAGIC_,eClassNo,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-EntWrk_v2::EntWrk_v2(Entry* pEntry)
-: Object(CN_ENTWRK)
+EntWrk_v2::EntWrk_v2(eCN eClassNo, Entry* pEntry)
+: Object(eClassNo)
 {
-  _precondition_(_MAGIC_,CN_ENTWRK);
+  _precondition_(_MAGIC_);
   
   // check initialisation of rowid
   ASSERT(0 == m_xId.iBuffer() && 0 == m_xId.iRow());
-  
-  m_bHasData = false;
   
   // set no of offsets
   m_nOffsets = pEntry->nOffsets();
@@ -106,28 +80,28 @@ EntWrk_v2::EntWrk_v2(Entry* pEntry)
   
   _checkInitialisedSize_(sizeof(EntWrk));
   
-  _postcondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  _postcondition_(_MAGIC_,eClassNo,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-EntWrk_v2::EntWrk_v2(Id& xId, i8 iTxId, KeyWrk& xKeyWrk)
-: EntWrk_v2()
-{
-  _precondition_(_MAGIC_,CN_ENTWRK);
-
-  vForm(xId,xKeyWrk);
-  
-  m_iTxId = iTxId;
-}
+//EntWrk_v2::EntWrk_v2(Id& xId, i8 iTxId, KeyWrk& xKeyWrk)
+//: EntWrk_v2()
+//{
+//  _precondition_(_MAGIC_,CN_ENTWRK);
+//
+//  vForm(xId,xKeyWrk);
+//
+//  m_iTxId = iTxId;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 EntWrk_v2::~EntWrk_v2(void)
 {
-  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -137,18 +111,18 @@ EntWrk_v2::~EntWrk_v2(void)
 /*----------------------------------------------------------------------------*/
 /* get has data                                                               */
 /*----------------------------------------------------------------------------*/
-bool EntWrk_v2::bHasData(void)
-{
-  return m_bHasData;
-}
+//bool EntWrk_v2::bHasData(void)
+//{
+//  return m_bHasData;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get has data                                                               */
 /*----------------------------------------------------------------------------*/
-void EntWrk_v2::vHasData(bool bHasData)
-{
-  m_bHasData = bHasData;
-}
+//void EntWrk_v2::vHasData(bool bHasData)
+//{
+//  m_bHasData = bHasData;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get row id                                                                 */
@@ -187,28 +161,28 @@ void EntWrk_v2::vTxId(i8 iTxId)
 /*----------------------------------------------------------------------------*/
 void EntWrk_v2::vShow(ColumnVec* pColVec)
 {
-  i8 iKey;
-  
-  Int::vCopy(&iKey,aKey());
-  
-  vTrace("EntWrk %p: Id %lli.%lli Offsets: %llu "_Stz,
-         this,
-         m_xId.iBuffer(),
-         m_xId.iRow(),
-         m_nOffsets
-  );
-
-  vTrace("key (size:%lld value:%lld) "_Stz,
-         nKeySize(),
-         iKey
-         );
-  
-  if (m_bHasData) {
-    Row* aThisRow = aRow();
-    aThisRow->vShow(pColVec);
-  }
-  
-  vTrace("\n"_Stz);
+//  i8 iKey;
+//  
+//  Int::vCopy(&iKey,aKey());
+//  
+//  vTrace("EntWrk %p: Id %lli.%lli Offsets: %llu "_Stz,
+//         this,
+//         m_xId.iBuffer(),
+//         m_xId.iRow(),
+//         m_nOffsets
+//  );
+//
+//  vTrace("key (size:%lld value:%lld) "_Stz,
+//         nKeySize(),
+//         iKey
+//         );
+//  
+//  if (m_bHasData) {
+//    Row* aThisRow = aRow();
+//    aThisRow->vShow(pColVec);
+//  }
+//  
+//  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -240,16 +214,14 @@ void EntWrk_v2::vOffsets(i8 nOffsets)
 /*----------------------------------------------------------------------------*/
 /* get data pointer                                                           */
 /*----------------------------------------------------------------------------*/
-char* EntWrk_v2::aData(void)
-{
-  ASSERT(m_bHasData);
-  
-  char* aKey = reinterpret_cast<char*>(&m_xDataWrk);
-  // assuming key of type CT_INTEGER in hidden index
-  char* aData = pAdd<char*>(aKey, sizeof(i8));                       //ALKA-TODO
-
-  return aData;
-}
+//char* EntWrk_v2::aData(void)
+//{
+//  char* aKey = reinterpret_cast<char*>(&m_xDataWrk);
+//  // assuming key of type CT_INTEGER in hidden index
+//  char* aData = pAdd<char*>(aKey, sizeof(i8));                       //ALKA-TODO
+//
+//  return aData;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get data pointer                                                           */
@@ -266,11 +238,7 @@ char* EntWrk_v2::aData_v2(void)
 /*----------------------------------------------------------------------------*/
 i8 EntWrk_v2::nDataSize(void)
 {
-  if (m_bHasData)
-    return m_xDataWrk.nUsed();
-  else
-    return 0;
-  
+  return m_xDataWrk.nUsed();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -290,8 +258,6 @@ void EntWrk_v2::vData(Stz* aDataBytes, i8 iSize)
   MemLib::vCopy(aDataArea,aDataBytes,iSize,CN_ENTWRK);
   
   m_xDataWrk.vTake(iSize);
-  
-  m_bHasData = true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -301,55 +267,55 @@ void EntWrk_v2::vData(Stz* aDataBytes, i8 iSize)
 /*----------------------------------------------------------------------------*/
 /* add a key                                                                  */
 /*----------------------------------------------------------------------------*/
-void EntWrk_v2::vAddKey(KeyWrk& xKeyWrk)
-{
-  Stz* aKeySrc = xKeyWrk.aWspStr();
-  i8 nKeyBytes = xKeyWrk.nWspUsed();
-  
-  m_xDataWrk.vAppend(aKeySrc,nKeyBytes,CN_ENTWRK);
-}
+//void EntWrk_v2::vAddKey(KeyWrk& xKeyWrk)
+//{
+//  Stz* aKeySrc = xKeyWrk.aWspStr();
+//  i8 nKeyBytes = xKeyWrk.nWspUsed();
+//
+//  m_xDataWrk.vAppend(aKeySrc,nKeyBytes,CN_ENTWRK);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* form a simple entry using given id and key                                 */
 /*----------------------------------------------------------------------------*/
-void EntWrk_v2::vForm(Id& xId, KeyWrk& xKeyWrk)
-{
-  m_xId = xId;
-  vAddKey(xKeyWrk);
-}
+//void EntWrk_v2::vForm(Id& xId, KeyWrk& xKeyWrk)
+//{
+//  m_xId = xId;
+//  vAddKey(xKeyWrk);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get key                                                                    */
 /*----------------------------------------------------------------------------*/
-Key* EntWrk_v2::aKey(void)
-{
-  Key* aKey = reinterpret_cast<Key*>(&m_xDataWrk);
-  
-  return aKey;
-}
+//Key* EntWrk_v2::aKey(void)
+//{
+//  Key* aKey = reinterpret_cast<Key*>(&m_xDataWrk);
+//
+//  return aKey;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get key size                                                               */
 /*----------------------------------------------------------------------------*/
-i8 EntWrk_v2::nKeySize(void)
-{
-  if (m_bHasData)
-    return sizeof(i8);
-  else
-    return m_xDataWrk.nUsed();
-}
+//i8 EntWrk_v2::nKeySize(void)
+//{
+//  if (m_bHasData)
+//    return sizeof(i8);
+//  else
+//    return m_xDataWrk.nUsed();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get row address                                                            */
 /*----------------------------------------------------------------------------*/
-Row* EntWrk_v2::aRow(void)
-{
-  ASSERT(m_bHasData);
-  
-  Row* aThisRow = (Row*)aData();
-  
-  return aThisRow;
-}
+//Row* EntWrk_v2::aRow(void)
+//{
+//  ASSERT(m_bHasData);
+//
+//  Row* aThisRow = (Row*)aData();
+//
+//  return aThisRow;
+//}
 
 /*----------------------------------------------------------------------------*/
 /*-- Datums ------------------------------------------------------------------*/
