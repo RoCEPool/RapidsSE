@@ -755,6 +755,33 @@ void EntryBuffer_v2::vShow(void)
     pEntry->vShow_v2(iOffset,m_pIndex,true);
   }
 
+  if (gpAttachMap->m_nIndexEntries) {
+    vTrace("\n"_Stz);
+    vTrace("FreeChains2:\n"_Stz);
+    for (i4 i_Entry = m_iHeadEntry2;
+         i_Entry != C_ENTRY_NONE;
+         i_Entry = - m_pEntryOffset2[i_Entry].m_iNextEntry) {
+      vTrace("  %lld: %lld %lld\n"_Stz,
+             i_Entry,m_pEntryOffset2[i_Entry].m_iEntryNo,
+                     m_pEntryOffset2[i_Entry].m_iNextEntry);
+    }
+    vTrace("FreeChains1:\n"_Stz);
+    for (i4 i_Entry = m_iHeadEntry1;
+         i_Entry != C_ENTRY_NONE;
+         i_Entry = - m_pEntryOffset1[i_Entry].m_iNextEntry) {
+      vTrace("  %lld: %lld %lld\n"_Stz,
+             i_Entry,m_pEntryOffset1[i_Entry].m_iEntryNo,
+                     m_pEntryOffset1[i_Entry].m_iNextEntry);
+    }
+    vTrace("FreeChains0:\n"_Stz);
+    for (i4 i_Entry = m_iHeadEntry0;
+         i_Entry != C_ENTRY_NONE;
+         i_Entry = - m_pEntryOffset0[i_Entry]) {
+      vTrace("  %lld: %lld\n"_Stz,
+             i_Entry,m_pEntryOffset0[i_Entry]);
+    }
+  }
+  
   vTrace("\n"_Stz);
   vTrace("FreeEntries:\n"_Stz);
   for (FreeEntry* pFreeEntry = pFirstFree();
@@ -869,6 +896,7 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
   EntryBuffer_v2* pCurrentBuffer = pFirstBuffer;
   pCurrentBuffer->vIndex(pHiddenIndex);
   pCurrentBuffer->vPartitionNo(0);
+  //pCurrentBuffer->vShow();
 
   EntryBuffer_v2* pIndexBuffer = new EntryBuffer_v2;
   pIndexBuffer->vIndex(pHiddenIndex);
