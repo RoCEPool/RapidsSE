@@ -153,6 +153,7 @@ namespace DBobjects
     void         vFixPriorOffset(EntryVec* pPriorVec, Entry* aNewEntry);
     void         vFreeChains(void);
     Entry*       pGetEntry(i8 iEntryNo);
+    i4           iGetFreeEntry(void);
     void         vMoveLeft(void* aDst, i8 nBytes);
     void         vMoveRight(void* aSrc, i8 nBytes);
     Entry*       pPosition(Key* aGivenKey, i8 nKeyCols,

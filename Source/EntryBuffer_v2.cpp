@@ -399,7 +399,7 @@ Entry* EntryBuffer_v2::pAppendRow_v2(EntWrk_v2& xRowWrk)
   // form the rowId
   
   bn nBufferNo = this->nBufferNo();
-  i8 nRowNo = nItems();
+  i8 nRowNo = iGetFreeEntry(); //nItems();
   Id xRowId(*nBufferNo, nRowNo);
   
   xRowWrk.vId(xRowId);
@@ -418,22 +418,22 @@ Entry* EntryBuffer_v2::pAppendRow_v2(EntWrk_v2& xRowWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set entry offsets
   
-  i8 iEntryOffset = iToOffsetAbs(pBufferEntry);
-  m_pEntryOffset0[nRowNo] = iEntryOffset;
-  
-  if (nOffsets >= 2) {
-    Offset* pOffset1 = &m_pEntryOffset1[m_nEntryOffset1];
-    pOffset1->m_iEntryNo = nRowNo;
-    pOffset1->m_iOffset = iEntryOffset;
-    m_nEntryOffset1++;
-  }
-  
-  if (nOffsets == 3) {
-    Offset* pOffset2 = &m_pEntryOffset2[m_nEntryOffset2];
-    pOffset2->m_iEntryNo = nRowNo;
-    pOffset2->m_iOffset = iEntryOffset;
-    m_nEntryOffset2++;
-  }
+//  i8 iEntryOffset = iToOffsetAbs(pBufferEntry);
+//  m_pEntryOffset0[nRowNo] = iEntryOffset;
+//  
+//  if (nOffsets >= 2) {
+//    Offset* pOffset1 = &m_pEntryOffset1[m_nEntryOffset1];
+//    pOffset1->m_iEntryNo = nRowNo;
+//    pOffset1->m_iOffset = iEntryOffset;
+//    m_nEntryOffset1++;
+//  }
+//  
+//  if (nOffsets == 3) {
+//    Offset* pOffset2 = &m_pEntryOffset2[m_nEntryOffset2];
+//    pOffset2->m_iEntryNo = nRowNo;
+//    pOffset2->m_iOffset = iEntryOffset;
+//    m_nEntryOffset2++;
+//  }
   
   return pBufferEntry;
 }
@@ -711,6 +711,9 @@ void EntryBuffer_v2::vShow(void)
   else
     sHigherBuffer = "..."_Stz;
   
+  vTrace("\n"_Stz);
+  vTrace("--------------------------------------------------"
+         "--------------------------------------------------\n"_Stz);
   vTrace("EntryBuffer %p (buffer %lld): %s index %s partition %lld level L%lld\n"
          "  HigherBuffer %p (L%s) entries %lld prevBuffer %p nextBuffer %p\n"
          "  ReclaimSpace: %lld FirstFree: %p LastFree %p\n"_Stz,
@@ -728,7 +731,9 @@ void EntryBuffer_v2::vShow(void)
          m_nReclaimSpace,
          m_pFirstFree,
          m_pLastFree);
-  
+  vTrace("--------------------------------------------------"
+         "--------------------------------------------------\n"_Stz);
+ 
   vTrace("Entry Offsets 0:\n"_Stz);
   for (i8 i_Entry = 0; i_Entry < m_nItems; i_Entry++)
     vTrace("  [%2lld]: %lld\n"_Stz,i_Entry,m_pEntryOffset0[i_Entry]);
@@ -793,6 +798,8 @@ void EntryBuffer_v2::vShow(void)
   }
   
   vTrace("\n"_Stz);
+  vTrace("=================================================="
+         "==================================================\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -830,6 +837,21 @@ void EntryBuffer_v2::vShow(void)
 /*----------------------------------------------------------------------------*/
 /* get an entry by number                                                     */
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get a free entry (or C_ENTRY_NONE if none)                                 */
+/*----------------------------------------------------------------------------*/
+i4 EntryBuffer_v2::iGetFreeEntry(void)
+{
+  if (C_ENTRY_NONE == m_iHeadEntry0)
+    return C_ENTRY_NONE;
+  
+  i4 iFreeEntry = m_iHeadEntry0;
+  
+  m_iHeadEntry0 = - m_pEntryOffset0[m_iHeadEntry0];
+  
+  return iFreeEntry;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get the prior vector of given entry                                        */
@@ -930,6 +952,7 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
     
     xRowEntWrk.vTxId(0);
     //xRowEntWrk.vHasData(true);
+    //pCurrentBuffer->vShow();
     Entry* pRowEntry = pCurrentBuffer->pAppendRow_v2(xRowEntWrk);
     if ( ! pRowEntry ) {
       pCurrentBuffer = pCurrentBuffer->pNewNextBuffer();
@@ -937,6 +960,8 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
       ASSERT(pRowEntry);
     }
     
+    //pCurrentBuffer->vShow();
+
     //pCurrentBuffer->vAddFree(pRowEntry);
     
     xKeyWrk.vReset();
