@@ -710,12 +710,13 @@ void EntryBuffer_v2::vPositionPrior_v2(Key* aFindKey, EntryVec* pPriorVec)
   //Entry* pNextEntry_sl = pFirstEntry();
   Entry* pNextEntry_sl = pGetEntry(m_iHeadEntry0);
   ASSERT(pNextEntry_sl);
-
+  ASSERT(pNextEntry_sl->eClass() == CN_ENTRY);
+  
   bool bIsJuxta;
   bool bIsEqual = false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+//do {
   while (pNextEntry_sl) {
     
     Key* aNextKey = pNextEntry_sl->aKey_v2();
@@ -741,6 +742,12 @@ void EntryBuffer_v2::vPositionPrior_v2(Key* aFindKey, EntryVec* pPriorVec)
   else {
     (*pPriorVec)[nScanLevel] = nullptr;
   }
+  // now go down one level
+  //    nScanLevel--;
+  //
+  //
+  //    // and repeat till we have scanned down thru all levels
+  //  } while (*nScanLevel >= 0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1117,6 +1124,9 @@ Entry* EntryBuffer_v2::pGetEntry(i8 iEntryNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+  if (iEntryNo == -1)
+    return nullptr;
+  
   i4 iOffset = m_pEntryOffset0[iEntryNo].m_iOffset;
   
   char* aAddress = pAdd<char*>(aDataArea(), iOffset);
@@ -1242,14 +1252,17 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
   KeyWrk_v2 xKeyWrk;
   
   // keys in ascending order
-  //for (i8 iInt = 0; iInt <= 9; iInt++) {
-  
+  for (i8 iInt = 0; iInt <= 9; iInt++) {
+    i8 iKey = iInt;
+    
   // keys in descending order
   //for (i8 iInt = 9; iInt >= 0; iInt--) {
-  
+  //  i8 iKey = iInt;
+    
   // keys in random order
-  for (i8 iInt = 0; iInt <= 9; iInt++) {
-    i8 iKey = Random::iRandom(9);
+  //for (i8 iInt = 0; iInt <= 9; iInt++) {
+  //  i8 iKey = Random::iRandom(9);
+  
     sprintf(sRecData.aChar(),"%lld,%s,1900-01-01 00:00:%lld",
             iKey,IntLib::sAsText(iInt),iInt);
     //vTrace("Record: %s\n"_Stz,sRawData.aChar());
