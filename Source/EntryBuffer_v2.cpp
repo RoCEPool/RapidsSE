@@ -1003,6 +1003,21 @@ void EntryBuffer_v2::vShow(void)
     iEntry++;
   }
 
+  if ( ! m_pIndex->bIsHidden()) {
+    vTrace("\n"_Stz);
+    vTrace("Ordered Entries:\n"_Stz);
+    i8 iIndex = m_iHeadEntry0;
+    if (C_ENTRY_NONE != m_iHeadEntry0) {
+      while (iIndex != -1) {
+        Entry* pEntry = pGetEntry(m_pEntryOffset0[iIndex].m_iEntryNo);
+        vTrace("%4lld %8lld: "_Stz,iIndex, nSub(pEntry,m_xWsp.aArea()));
+        i8 iOffset = iToOffsetAbs(pEntry);
+        pEntry->vShow_v2(iOffset,m_pIndex,true);
+        iIndex = m_pEntryOffset0[iIndex].m_iNextEntry;
+      }
+    }
+  }
+  
   if (gpAttachMap->m_nIndexEntries) {
     if ( ! m_pIndex->bIsHidden() ) {
       vTrace("\n"_Stz);
@@ -1033,140 +1048,6 @@ void EntryBuffer_v2::vShow(void)
              i_Entry,m_pEntryOffset0[i_Entry].m_iEntryNo,
                      m_pEntryOffset0[i_Entry].m_iNextEntry,
                      m_pEntryOffset0[i_Entry].m_iOffset);
-    }
-  }
-  
-  vTrace("\n"_Stz);
-  vTrace("FreeEntries:\n"_Stz);
-  for (FreeEntry* pFreeEntry = pFirstFree();
-       pFreeEntry != nullptr;
-       pFreeEntry = pFreeEntry->pNextFree()) {
-    vTrace("  %p bytes: %lld next: %p prev: %p\n"_Stz,
-           pFreeEntry,pFreeEntry->nSizeItem(),
-           pFreeEntry->pNextFree(),pFreeEntry->pPrevFree());
-  }
-  
-  vTrace("\n"_Stz);
-  vTrace("=================================================="
-         "==================================================\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* show contents of buffer in ascending order of key                          */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer_v2::vShowAscending(void)
-{
-  s256 sHigherBuffer;
-  if (m_pHigherBuffer)
-    StrLib::wToString(((EntryBuffer_v2*)m_pHigherBuffer)->m_nBufferLevel,
-                      sHigherBuffer.aChar());
-  else
-    sHigherBuffer = "..."_Stz;
-  
-  vTrace("\n"_Stz);
-  vTrace("--------------------------------------------------"
-         "--------------------------------------------------\n"_Stz);
-  vTrace("EntryBuffer %p (buffer %lld): %s index %s partition %lld level L%lld\n"
-         "  HigherBuffer %p (L%s) entries %lld prevBuffer %p nextBuffer %p\n"
-         "  ReclaimSpace: %lld FirstFree: %p LastFree %p\n"
-         "  HeadEntry2: %lld HeadEntry1: %lld HeadEntry0: %lld \n"
-         "  HeadFree2: %lld HeadFree1: %lld HeadFree0: %lld \n"_Stz,
-         this,
-         *nBufferNo(),
-         aBD[m_eDurability],
-         m_pIndex->aIndexName(),
-         m_nPartitionNo,
-         m_nBufferLevel,
-         m_pHigherBuffer,
-         sHigherBuffer.aStr(),
-         m_nItems,
-         m_pPrevBuffer,
-         m_pNextBuffer,
-         m_nReclaimSpace,
-         m_pFirstFree,
-         m_pLastFree,
-         m_iHeadEntry2,
-         m_iHeadEntry1,
-         m_iHeadEntry0,
-         m_iHeadFree2,
-         m_iHeadFree1,
-         m_iHeadFree0);
-  vTrace("--------------------------------------------------"
-         "--------------------------------------------------\n"_Stz);
-  
-  vTrace("Entry Offsets 0:\n"_Stz);
-  //  for (i8 i_Entry = 0; i_Entry < m_nItems; i_Entry++)
-  //    vTrace("  [%2lld]: %lld\n"_Stz,i_Entry,m_pEntryOffset0[i_Entry]);
-  for (i8 i_Entry = 0; i_Entry < m_nItems; i_Entry++)
-    vTrace("  [%2lld]: %lld %lld %lld\n"_Stz,
-           i_Entry,m_pEntryOffset0[i_Entry].m_iEntryNo,
-           m_pEntryOffset0[i_Entry].m_iNextEntry,
-           m_pEntryOffset0[i_Entry].m_iOffset);
-  
-  vTrace("Entry Offsets 1:\n"_Stz);
-  for (i8 i_Entry = 0; i_Entry < m_nEntryOffset1; i_Entry++)
-    vTrace("  [%2lld]: %lld %lld %lld\n"_Stz,
-           i_Entry,m_pEntryOffset1[i_Entry].m_iEntryNo,
-           m_pEntryOffset1[i_Entry].m_iNextEntry,
-           m_pEntryOffset1[i_Entry].m_iOffset);
-  
-  vTrace("Entry Offsets 2:\n"_Stz);
-  for (i8 i_Entry = 0; i_Entry < m_nEntryOffset2; i_Entry++)
-    vTrace("  [%2lld]: %lld %lld %lld\n"_Stz,
-           i_Entry,m_pEntryOffset2[i_Entry].m_iEntryNo,
-           m_pEntryOffset2[i_Entry].m_iNextEntry,
-           m_pEntryOffset2[i_Entry].m_iOffset);
-  
-  vTrace("\n"_Stz);
-  vTrace("Entries:\n"_Stz);
-//  i8 iEntry = 0;
-//  for (Entry* pEntry = pFirstEntry();
-//       pEntry != nullptr;
-//       pEntry = pNextEntry(pEntry)) {
-//    vTrace("%4lld %8lld: "_Stz,iEntry, nSub(pEntry,m_xWsp.aArea()));
-//    i8 iOffset = iToOffsetAbs(pEntry);
-//    pEntry->vShow_v2(iOffset,m_pIndex,true);
-//    iEntry++;
-//  }
-  i8 iIndex = m_iHeadEntry0;
-  while (iIndex != -1) {
-    Entry* pEntry = pGetEntry(m_pEntryOffset0[iIndex].m_iEntryNo);
-    vTrace("%4lld %8lld: "_Stz,iIndex, nSub(pEntry,m_xWsp.aArea()));
-    i8 iOffset = iToOffsetAbs(pEntry);
-    pEntry->vShow_v2(iOffset,m_pIndex,true);
-    iIndex = m_pEntryOffset0[iIndex].m_iNextEntry;
-  }
-    
-  if (gpAttachMap->m_nIndexEntries) {
-    if ( ! m_pIndex->bIsHidden() ) {
-      vTrace("\n"_Stz);
-      vTrace("FreeChains2:\n"_Stz);
-      for (i4 i_Entry = m_iHeadFree2;
-           i_Entry != C_ENTRY_NONE;
-           i_Entry = - m_pEntryOffset2[i_Entry].m_iNextEntry) {
-        vTrace("  %lld: %lld %lld %lld\n"_Stz,
-               i_Entry,m_pEntryOffset2[i_Entry].m_iEntryNo,
-               m_pEntryOffset2[i_Entry].m_iNextEntry,
-               m_pEntryOffset2[i_Entry].m_iOffset);
-      }
-      vTrace("FreeChains1:\n"_Stz);
-      for (i4 i_Entry = m_iHeadFree1;
-           i_Entry != C_ENTRY_NONE;
-           i_Entry = - m_pEntryOffset1[i_Entry].m_iNextEntry) {
-        vTrace("  %lld: %lld %lld %lld\n"_Stz,
-               i_Entry,m_pEntryOffset1[i_Entry].m_iEntryNo,
-               m_pEntryOffset1[i_Entry].m_iNextEntry,
-               m_pEntryOffset1[i_Entry].m_iOffset);
-      }
-    }
-    vTrace("FreeChains0:\n"_Stz);
-    for (i4 i_Entry = m_iHeadFree0;
-         i_Entry != C_ENTRY_NONE;
-         i_Entry = - m_pEntryOffset0[i_Entry].m_iNextEntry) {
-      vTrace("  %lld: %lld %lld %lld\n"_Stz,
-             i_Entry,m_pEntryOffset0[i_Entry].m_iEntryNo,
-             m_pEntryOffset0[i_Entry].m_iNextEntry,
-             m_pEntryOffset0[i_Entry].m_iOffset);
     }
   }
   
@@ -1416,13 +1297,6 @@ void DBobjects::vEntryBuffer_v2_UnitTest(Table* pTable)
        pCurrentIndexBuffer;
        pCurrentIndexBuffer = pCurrentIndexBuffer->pNextBuffer())
     pCurrentIndexBuffer->vShow();
-  
-  for (pCurrentIndexBuffer = pFirstIndexBuffer;
-       pCurrentIndexBuffer;
-       pCurrentIndexBuffer = pCurrentIndexBuffer->pNextBuffer()) {
-    // print in ascending order of key
-    pCurrentIndexBuffer->vShowAscending();
-  }
 }
 
 /*============================================================================*/

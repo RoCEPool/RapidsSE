@@ -139,7 +139,6 @@ namespace DBobjects
   
     void         vRowCount(void);
     void         vShow(void);
-    void         vShowAscending(void);
     EntryBuffer_v2* pSplitBuffer(void);
     void         vTruncate(void);
     bool         bVerify(void);
