@@ -56,7 +56,6 @@ namespace DBobjects
     i4      m_iHeadFree1;    // head of entry free chain for L1 offsets
     i4      m_iHeadFree0;    // head of entry free chain for L0 offsets
   
-  
     Entry*  m_pEntries;      // where entries start
   
     i4      m_nReclaimSpace; // amount of reclaimable space in the buffer
@@ -140,6 +139,7 @@ namespace DBobjects
   
     void         vRowCount(void);
     void         vShow(void);
+    void         vShowAscending(void);
     EntryBuffer_v2* pSplitBuffer(void);
     void         vTruncate(void);
     bool         bVerify(void);
