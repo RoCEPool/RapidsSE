@@ -150,7 +150,7 @@ namespace DBobjects
     Entry*       pAllotEntryAfter(i8 nBytes, i8 nLevels, Entry* aAfterEntry);
     void         vAllotHeadEntry(void);
     i8           iCopyEntries(EntryBuffer_v2* pFromBuffer, Entry* aFromEntry);
-    void         vDumpPriorVec(EntryVec* pPriorVec);
+    void         vDumpPriorVec(i8* pPriorVec);
     void         vFixHigherLevel(Entry* aNewEntry);
     void         vFixPriorOffset(EntryVec* pPriorVec, Entry* aNewEntry);
     void         vFreeChains(void);
@@ -161,7 +161,7 @@ namespace DBobjects
     Entry*       pPosition(Key* aGivenKey, i8 nKeyCols,
                            eJC eJuxtaCompare, EntryVec* pPriorVec,
                            bool& bIsEqual, bool bIsQuery);
-    void         vPositionPrior_v2(Key* aFindKey, EntryVec* pPriorVec);
+    void         vPositionPrior_v2(Key* aFindKey, i8* pPriorVec);
     void         vPriorVec(Entry* pEntry, EntryVec* pPriorVec);
     void         vReplaceKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
     void         vReplaceKeyEqual(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);

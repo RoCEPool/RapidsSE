@@ -556,7 +556,6 @@ Entry* EntryBuffer_v2::pInsertKey_v2(KeyWrk_v2& xKeyWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  
   vTrace("Inserting key:\n"_Stz);
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   xKeyWrk.vShow(pIdxColVec);
@@ -564,18 +563,25 @@ Entry* EntryBuffer_v2::pInsertKey_v2(KeyWrk_v2& xKeyWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert a new entry into the skip list
   
-  // find the entry after which the new entry.key will be inserted
-  EntryVec xPriorVec;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 1 offset
+  i8 nOffsets = 0;
   
-  i8 nOffsets = Random::iLogLevel(gpAttachMap->m_nIndexOffsets,C_FLAT_FREQ + 1);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 2 offsets
+  //i8 nOffsets = Random::iLogLevel(gpAttachMap->m_nIndexOffsets,C_FLAT_FREQ + 1);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 3 offsets
   //i8 nOffsets = Random::iLogLevel(gpAttachMap->m_nIndexOffsets+1,C_FLAT_FREQ) + 1;
   
-  if (nOffsets == 1)
-    int iDebug = 1;
+  i8 xPriorVec[nOffsets];
   
-  vPositionPrior_v2(xKeyWrk.aKey(), &xPriorVec);
-  vDumpPriorVec(&xPriorVec);
+  // find the entry after which the new entry.key will be inserted
+  vPositionPrior_v2(xKeyWrk.aKey(), xPriorVec);
+  vDumpPriorVec(xPriorVec);
   
+  // set no of offsets in working key
   xKeyWrk.vOffsets(nOffsets);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -610,76 +616,28 @@ Entry* EntryBuffer_v2::pInsertKey_v2(KeyWrk_v2& xKeyWrk)
   i8 iEntryOffset = iToOffsetAbs(pBufferEntry);
 
   if (nItems() == 1) {
-    //i4 iEntry0 = m_iHeadFree0;
-    //m_iHeadFree0 = - m_pEntryOffset0[iEntry0].m_iNextEntry;
-    m_pEntryOffset0[nRowNo].m_iNextEntry = -1;
+    m_pEntryOffset0[nRowNo].m_iEntryNo = nRowNo;
     m_pEntryOffset0[nRowNo].m_iOffset = iEntryOffset;
+    m_pEntryOffset0[nRowNo].m_iNextEntry = C_ENTRY_NONE;
+   
     m_iHeadEntry0 = nRowNo;
-    if (nOffsets == 1) {
-      m_pEntryOffset1[m_nEntryOffset1].m_iNextEntry = -1;
-      m_pEntryOffset1[m_nEntryOffset1].m_iEntryNo = nRowNo;
-      m_pEntryOffset1[m_nEntryOffset1].m_iOffset = iEntryOffset;
-      m_iHeadEntry1 = m_nEntryOffset1;
-      m_nEntryOffset1++;
-    }
   }
   else {
-    if (xPriorVec[0_ln] == nullptr) {
+    i8 iPriorEntry = xPriorVec[0_ln];
+    if ( iPriorEntry == C_ENTRY_NONE) {
+      m_pEntryOffset0[nRowNo].m_iEntryNo = nRowNo;
       m_pEntryOffset0[nRowNo].m_iOffset = iEntryOffset;
       m_pEntryOffset0[nRowNo].m_iNextEntry = m_iHeadEntry0;
       m_iHeadEntry0 = nRowNo;
     }
     else {
-      Entry* pPriorEntry = xPriorVec[0_ln];
-      if ( pPriorEntry ) {
-        i8 iPriorEntry = pPriorEntry->iRow();
-        i8 iPririorEntryNext = m_pEntryOffset0[iPriorEntry].m_iNextEntry;
-        m_pEntryOffset0[iPriorEntry].m_iNextEntry = nRowNo;
-        m_pEntryOffset0[nRowNo].m_iOffset = iEntryOffset;
-        m_pEntryOffset0[nRowNo].m_iNextEntry = iPririorEntryNext;
-      }
-   }
-   if (nOffsets == 1) {
-     if (xPriorVec[1_ln] == nullptr) {
-       m_pEntryOffset1[m_nEntryOffset1].m_iOffset = iEntryOffset;
-       m_pEntryOffset1[m_nEntryOffset1].m_iEntryNo = nRowNo;
-       if (m_nEntryOffset1 == 0)
-         m_pEntryOffset1[m_nEntryOffset1].m_iNextEntry = -1;
-       else
-         m_pEntryOffset1[m_nEntryOffset1].m_iNextEntry = m_pEntryOffset1[m_nEntryOffset1 - 1].m_iEntryNo;
-       m_iHeadEntry1 = m_nEntryOffset1;
-       m_nEntryOffset1++;
-     }
-     else {
-       Entry* pPriorEntry = xPriorVec[1_ln];
-       if ( pPriorEntry ) {
-         i8 iPriorEntry = pPriorEntry->iRow();
-         i8 iPririorEntryNext = m_pEntryOffset1[iPriorEntry].m_iNextEntry;
-         m_pEntryOffset1[iPriorEntry].m_iNextEntry = nRowNo;
-         m_pEntryOffset1[nRowNo].m_iOffset = iEntryOffset;
-         m_pEntryOffset1[nRowNo].m_iNextEntry = iPririorEntryNext;
-         m_nEntryOffset1++;
-       }
-     }
-   }
+      i8 iPririorEntryNext = m_pEntryOffset0[iPriorEntry].m_iNextEntry;
+      m_pEntryOffset0[iPriorEntry].m_iNextEntry = nRowNo;
+      m_pEntryOffset0[nRowNo].m_iOffset = iEntryOffset;
+      m_pEntryOffset0[nRowNo].m_iNextEntry = iPririorEntryNext;
+      m_pEntryOffset0[nRowNo].m_iEntryNo = nRowNo;
+    }
   }
-
-  //i8 iEntryOffset = iToOffsetAbs(pBufferEntry);
-  //m_pEntryOffset0[nRowNo] = iEntryOffset;
-  
-  //  if (nOffsets >= 2) {
-  //    Offset* pOffset1 = &m_pEntryOffset1[m_nEntryOffset1];
-  //    pOffset1->m_iEntryNo = nRowNo;
-  //    pOffset1->m_iOffset = iEntryOffset;
-  //    m_nEntryOffset1++;
-  //  }
-  //
-  //  if (nOffsets == 3) {
-  //    Offset* pOffset2 = &m_pEntryOffset2[m_nEntryOffset2];
-  //    pOffset2->m_iEntryNo = nRowNo;
-  //    pOffset2->m_iOffset = iEntryOffset;
-  //    m_nEntryOffset2++;
-  //  }
   
   return pBufferEntry;
 }
@@ -726,13 +684,13 @@ Entry* EntryBuffer_v2::pNextEntry(Entry* pCurrent)
 /*----------------------------------------------------------------------------*/
 /* scan thru skip list and positition on entry prior to key                   */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer_v2::vPositionPrior_v2(Key* aFindKey, EntryVec* pPriorVec)
+void EntryBuffer_v2::vPositionPrior_v2(Key* aFindKey, i8* pPriorVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
     
   if (nItems() == 0) {
     for (ln nLevel = 0_ln; *nLevel < gpAttachMap->m_nIndexLevels; nLevel++)
-      (*pPriorVec)[nLevel] = nullptr;
+      pPriorVec[nLevel] = C_ENTRY_NONE;
     return;
   }
   
@@ -740,55 +698,46 @@ void EntryBuffer_v2::vPositionPrior_v2(Key* aFindKey, EntryVec* pPriorVec)
   i8 nKeyCols = pIdxColVec->nItems();
   
   ln nScanLevel;
-  nScanLevel = 1; //gpAttachMap->m_nIndexLevels - 1;
+  nScanLevel = 0; //gpAttachMap->m_nIndexLevels - 1;
   
   Entry* pScanEntry_sl = nullptr;
-  //Entry* pNextEntry_sl = pFirstEntry();
-  Entry* pNextEntry_sl = pGetEntry(m_iHeadEntry1, nScanLevel);
-  i8 iNextEntry = m_iHeadEntry1;
-  i8 iScanEntry = -1;
-  //ASSERT(pNextEntry_sl);
-  //ASSERT(pNextEntry_sl->eClass() == CN_ENTRY);
+  i8 iScanEntry = C_ENTRY_NONE;
+  
+  Entry* pNextEntry_sl = pGetEntry(m_iHeadEntry0, nScanLevel);
+  i8 iNextEntry = m_iHeadEntry0;
   
   bool bIsJuxta;
   bool bIsEqual = false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  do {
-    while (pNextEntry_sl) {
-      
-      Key* aNextKey = pNextEntry_sl->aKey_v2();
-      
-      aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
-      aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
-      
-      bIsJuxta =
-        aNextKey->bJuxtaCompare(JC_AFTER,aFindKey,pIdxColVec,nKeyCols,bIsEqual);
-   
-      if (bIsJuxta)
-        break;
-      
-      pScanEntry_sl = pNextEntry_sl;
-      pNextEntry_sl = pRightEntry(pNextEntry_sl,nScanLevel);
-    }
+  while (pNextEntry_sl) {
     
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    Key* aNextKey = pNextEntry_sl->aKey_v2();
     
-    if (pScanEntry_sl) {
-      (*pPriorVec)[nScanLevel] = pScanEntry_sl;
-    }
-    else {
-      (*pPriorVec)[nScanLevel] = nullptr;
-    }
+    aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
+    aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
     
-    //now go down one level
-    nScanLevel--;
+    bIsJuxta =
+      aNextKey->bJuxtaCompare(JC_AFTER,aFindKey,pIdxColVec,nKeyCols,bIsEqual);
+ 
+    if (bIsJuxta)
+      break;
     
-    pScanEntry_sl = nullptr;
-    pNextEntry_sl = pGetEntry(m_iHeadEntry0, 0_ln);
+    pScanEntry_sl = pNextEntry_sl;
+    iScanEntry = iNextEntry;
     
-    // and repeat till we have scanned down thru all levels
-  } while (*nScanLevel >= 0);
+    pNextEntry_sl = pRightEntry(pNextEntry_sl,nScanLevel);
+    iNextEntry = m_pEntryOffset0[iNextEntry].m_iNextEntry;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (pScanEntry_sl) {
+    pPriorVec[*nScanLevel] = iScanEntry;
+  }
+  else {
+    pPriorVec[*nScanLevel] = C_ENTRY_NONE;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1019,25 +968,32 @@ void EntryBuffer_v2::vShow(void)
   vTrace("Entry Offsets 0:\n"_Stz);
 //  for (i8 i_Entry = 0; i_Entry < m_nItems; i_Entry++)
 //    vTrace("  [%2lld]: %lld\n"_Stz,i_Entry,m_pEntryOffset0[i_Entry]);
-  for (i8 i_Entry = 0; i_Entry < m_nItems; i_Entry++)
-    vTrace("  [%2lld]: %lld %lld %lld\n"_Stz,
-           i_Entry,m_pEntryOffset0[i_Entry].m_iEntryNo,
-                   m_pEntryOffset0[i_Entry].m_iNextEntry,
-                   m_pEntryOffset0[i_Entry].m_iOffset);
-  
-  vTrace("Entry Offsets 1:\n"_Stz);
-  for (i8 i_Entry = 0; i_Entry < m_nEntryOffset1; i_Entry++)
-    vTrace("  [%2lld]: %lld %lld %lld\n"_Stz,
-           i_Entry,m_pEntryOffset1[i_Entry].m_iEntryNo,
-                   m_pEntryOffset1[i_Entry].m_iNextEntry,
-                   m_pEntryOffset1[i_Entry].m_iOffset);
-  
-  vTrace("Entry Offsets 2:\n"_Stz);
-  for (i8 i_Entry = 0; i_Entry < m_nEntryOffset2; i_Entry++)
-    vTrace("  [%2lld]: %lld %lld %lld\n"_Stz,
-           i_Entry,m_pEntryOffset2[i_Entry].m_iEntryNo,
-                   m_pEntryOffset2[i_Entry].m_iNextEntry,
-                   m_pEntryOffset2[i_Entry].m_iOffset);
+  if (m_iHeadEntry0 != C_ENTRY_NONE) {
+    for (i8 i_Entry = 0; i_Entry < m_nItems; i_Entry++)
+      vTrace("  [%2lld]: %lld %lld %lld\n"_Stz,
+             i_Entry,m_pEntryOffset0[i_Entry].m_iEntryNo,
+             m_pEntryOffset0[i_Entry].m_iNextEntry == C_ENTRY_NONE ?
+             -1 : m_pEntryOffset0[i_Entry].m_iNextEntry,
+                     m_pEntryOffset0[i_Entry].m_iOffset);
+  }
+  if (m_iHeadEntry1 != C_ENTRY_NONE) {
+    vTrace("Entry Offsets 1:\n"_Stz);
+    for (i8 i_Entry = 0; i_Entry < m_nEntryOffset1; i_Entry++)
+      vTrace("  [%2lld]: %lld %lld %lld\n"_Stz,
+             i_Entry,m_pEntryOffset1[i_Entry].m_iEntryNo,
+             m_pEntryOffset1[i_Entry].m_iNextEntry == C_ENTRY_NONE ?
+                -1 : m_pEntryOffset1[i_Entry].m_iNextEntry,
+                     m_pEntryOffset1[i_Entry].m_iOffset);
+  }
+  if (m_iHeadEntry2 != C_ENTRY_NONE) {
+    vTrace("Entry Offsets 2:\n"_Stz);
+    for (i8 i_Entry = 0; i_Entry < m_nEntryOffset2; i_Entry++)
+      vTrace("  [%2lld]: %lld %lld %lld\n"_Stz,
+             i_Entry,m_pEntryOffset2[i_Entry].m_iEntryNo,
+             m_pEntryOffset2[i_Entry].m_iNextEntry == C_ENTRY_NONE ?
+             -1 : m_pEntryOffset2[i_Entry].m_iNextEntry,
+                     m_pEntryOffset2[i_Entry].m_iOffset);
+  }
   
   vTrace("\n"_Stz);
   vTrace("Entries:\n"_Stz);
@@ -1055,14 +1011,12 @@ void EntryBuffer_v2::vShow(void)
     vTrace("\n"_Stz);
     vTrace("Ordered Entries:\n"_Stz);
     i8 iIndex = m_iHeadEntry0;
-    if (C_ENTRY_NONE != m_iHeadEntry0) {
-      while (iIndex != -1) {
-        Entry* pEntry = pGetEntry(m_pEntryOffset0[iIndex].m_iEntryNo, 0_ln);
-        vTrace("%4lld %8lld: "_Stz,iIndex, nSub(pEntry,m_xWsp.aArea()));
-        i8 iOffset = iToOffsetAbs(pEntry);
-        pEntry->vShow_v2(iOffset,m_pIndex,true);
-        iIndex = m_pEntryOffset0[iIndex].m_iNextEntry;
-      }
+    while (iIndex != C_ENTRY_NONE) {
+      Entry* pEntry = pGetEntry(m_pEntryOffset0[iIndex].m_iEntryNo, 0_ln);
+      vTrace("%4lld %8lld: "_Stz,iIndex, nSub(pEntry,m_xWsp.aArea()));
+      i8 iOffset = iToOffsetAbs(pEntry);
+      pEntry->vShow_v2(iOffset,m_pIndex,true);
+      iIndex = m_pEntryOffset0[iIndex].m_iNextEntry;
     }
   }
   
@@ -1144,14 +1098,19 @@ void EntryBuffer_v2::vShow(void)
 /*----------------------------------------------------------------------------*/
 /* dump the prior vector                                                      */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer_v2::vDumpPriorVec(EntryVec* pPriorVec)
+void EntryBuffer_v2::vDumpPriorVec(i8* pPriorVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  for (ln nLevel = 0_ln; *nLevel < gpAttachMap->m_nIndexLevels; nLevel++)
+  vTrace("Prior Vector\n"_Stz);
+  vTrace("Level Entry# Entry\n"_Stz);
+  
+  for (ln nLevel = 0_ln; *nLevel < 1 ; /*gpAttachMap->m_nIndexLevels*/ nLevel++)
     
-    vTrace("%lld %p\n"_Stz,
-           *nLevel, (*pPriorVec)[nLevel]);
+    vTrace("%3lld     %3lld      %p\n"_Stz,
+           *nLevel,
+           pPriorVec[*nLevel] == C_ENTRY_NONE ? -1 : pPriorVec[*nLevel],
+           pPriorVec[*nLevel] == C_ENTRY_NONE ? NULL : pGetEntry(pPriorVec[*nLevel], nLevel));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1165,7 +1124,7 @@ Entry* EntryBuffer_v2::pGetEntry(i8 iEntryNo, ln nLevelNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  if (iEntryNo == -1 || iEntryNo == C_ENTRY_NONE)
+  if (iEntryNo == C_ENTRY_NONE)
     return nullptr;
   
   Entry* pEntry = nullptr;
@@ -1248,7 +1207,6 @@ Entry* EntryBuffer_v2::pRightEntry(Entry* pEntry, ln nLevelNo)         //# criti
     default:
       ASSERT(0);
   }
-  
   
   return pRightEntry;
 }
