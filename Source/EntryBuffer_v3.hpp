@@ -142,6 +142,7 @@ namespace DBobjects
     //i4           iGetFreeEntry(void);
     //void         vMoveLeft(void* aDst, i8 nBytes);
     //void         vMoveRight(void* aSrc, i8 nBytes);
+    NEO*           aNEO(void);
     //Entry*       pPosition(Key* aGivenKey, i8 nKeyCols,
     //                       eJC eJuxtaCompare, EntryVec* pPriorVec,
     //                       bool& bIsEqual, bool bIsQuery);
