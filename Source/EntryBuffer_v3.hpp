@@ -13,6 +13,13 @@ namespace DBobjects
   static const i4 C_ENTRY_NONE_V3 = C_16KB;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  class NEO // next entry offset
+  {
+  public:
+    i4 m_iOffset[1];  // offset where the entry is
+  };
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class EntryBuffer_v3 : public ItemBuffer
   {
   protected:
