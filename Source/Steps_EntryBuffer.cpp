@@ -32,7 +32,8 @@ void Task::vAddPrimitives_EntryBuffer(void)
   vAddPrimitive("entryBuffer.partition!"_Stz,  &vEntryBufferPartitionStore, false);
   vAddPrimitive("entryBuffer::toEntryBuffer"_Stz,&vEntryBufferToEntryBuffer,false);
 
-  vAddPrimitive("entryBuffer::unitTest"_Stz,   &vEntryBufferUnitTest,       false);
+  vAddPrimitive("entryBuffer::unitTest_v2"_Stz,&vEntryBufferUnitTest_v2,  false);
+  vAddPrimitive("entryBuffer::unitTest_v3"_Stz,&vEntryBufferUnitTest_v3,  false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -475,18 +476,35 @@ void Task::vEntryBufferToEntryBuffer(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* eb_ut -- entry buffer v2 unit test                                         */
+/* entryBuffer::unitTest_v2 -- entry buffer v2 unit test                      */
 /*----------------------------------------------------------------------------*/
-void Task::vEntryBufferUnitTest(MP_Task mpTask)
+void Task::vEntryBufferUnitTest_v2(MP_Task mpTask)
 {
-  ENTRY("vEntryBufferUnitTest"_Stz);
+  ENTRY("vEntryBufferUnitTest_v2"_Stz);
   
   Object* pPtrTable;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("entryBuffer::unitTest"_Stz);
+    THROW_INVALID_DSTACK("entryBuffer::unitTest_v2"_Stz);
   Table* pTable = _pTable(pPtrTable);
   
   vEntryBuffer_v2_UnitTest(pTable);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* entryBuffer::unitTest_v3 -- entry buffer v3 unit test                      */
+/*----------------------------------------------------------------------------*/
+void Task::vEntryBufferUnitTest_v3(MP_Task mpTask)
+{
+  ENTRY("vEntryBufferUnitTest_v2"_Stz);
+  
+  Object* pPtrTable;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+    THROW_INVALID_DSTACK("entryBuffer::unitTest_v3"_Stz);
+  Table* pTable = _pTable(pPtrTable);
+  
+  vEntryBuffer_v3_UnitTest(pTable);
   
   EXIT();
 }

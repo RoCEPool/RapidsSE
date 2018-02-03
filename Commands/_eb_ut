@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _eb_ut -- EntryBuffer v2 unit testing                                      */
+/* _eb_ut -- EntryBuffer v3 unit testing                                      */
 /*============================================================================*/
 
 create table ebTest (
@@ -10,7 +10,7 @@ create table ebTest (
 
 create index idx1 on ebTest (eb_key);
 
-docol eb_ut;
+docol eb_ut_v3;
 
 drop table ebTest;
 
