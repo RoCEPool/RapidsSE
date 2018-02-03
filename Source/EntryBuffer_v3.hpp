@@ -26,11 +26,12 @@ namespace DBobjects
     EntryBuffer_v3* m_pPrevBuffer;   // prev buffer
   
     Index*  m_pIndex;       // index this buffer belongs to
-    i2      m_nBufferLevel; // index buffer level
     i2      m_nPartitionNo; // partition no this buffer belongs to
+    i2      m_nBufferLevel; // index buffer level
   
     i4*     m_pEntryOffset0;   // array of entry offset 0
-    i4      m_iFreeOffsetHead; // head of entry offset free chain
+    i4      m_nFreeOffsets;    // number of free entry offsets
+    i4      m_iFreeOffsetHead; // head of free entry offset chain
   
     Entry*     m_pHeadEntry;  // head entry of buffer
     Entry*     m_pFirstEntry; // first entry in buffer
@@ -129,7 +130,7 @@ namespace DBobjects
     //void         vDumpPriorVec(i8* pPriorVec);
     //void         vFixHigherLevel(Entry* aNewEntry);
     //void         vFixPriorOffset(EntryVec* pPriorVec, Entry* aNewEntry);
-    //void         vFreeChains(void);
+    void           vFreeChains(void);
     //Entry*       pGetEntry(i8 iEntryNo, ln nLevelNo);
     //i4           iGetFreeEntry(void);
     //void         vMoveLeft(void* aDst, i8 nBytes);

@@ -71,18 +71,18 @@ EntryBuffer_v3::EntryBuffer_v3(void)
   m_pPrevBuffer   = nullptr;
 
   m_pIndex        = nullptr;
-  m_nBufferLevel  = 0;
   m_nPartitionNo  = -1;
+  m_nBufferLevel  = 0;
   
-//  for (i4 i_Entry = 0; i_Entry < (C_ENTRIES_0_V3 - 1); i_Entry++)
-//    m_iEntryOffset0[i_Entry] = C_ENTRY_NONE_V3;
-  m_pEntryOffset0 = nullptr;
+  m_pEntryOffset0   =
+  reinterpret_cast<i4*>(aAllotSpace(sizeof(i4) * C_ENTRIES_0_V3));
+  m_nFreeOffsets    = 0;
+  m_iFreeOffsetHead = C_ENTRY_NONE_V3;
+  vFreeChains();
   
   m_pHeadEntry = nullptr;
   m_pFirstEntry = nullptr;
   m_pFirstFree  = nullptr;
-  
-  m_iFreeOffsetHead = C_ENTRY_NONE_V3;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -418,24 +418,35 @@ void EntryBuffer_v3::vShow(void)
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);
   
-  vTrace("EntryBuffer_v3 %p (buffer %lld): durability: %s last: %s\n"_Stz,
+  vTrace("EntryBuffer_v3: %p (buffer %lld): durability: %s last: %s\n"_Stz,
          this,*nBufferNo(),aBD[m_eDurability],m_bIsLast ? "true" : "false");
   
-  vTrace("  HigherBuffer %p (L%s) prevBuffer %p nextBuffer %p\n"_Stz,
+  vTrace("  higherBuffer %p (L%s) prevBuffer %p nextBuffer %p\n"_Stz,
          m_pHigherBuffer,sHigherBuffer.aStr(),m_pPrevBuffer,m_pNextBuffer);
 
-  vTrace("  index: %s level: %lld partition: %lld\n"_Stz,
-         m_pIndex->aIndexName(),m_nBufferLevel,m_nPartitionNo);
+  vTrace("  index: %s partition: %lld level: %lld\n"_Stz,
+         m_pIndex->aIndexName(),m_nPartitionNo,m_nBufferLevel);
   
-  vTrace("  entryOffset0: %p firstOffsetHead: %lld\n"_Stz,
-         m_pEntryOffset0,m_iFreeOffsetHead);
+  vTrace("  entryOffset0: %p m_nFreeOffsets: %lld freeOffsetHead: %lld\n"_Stz,
+         m_pEntryOffset0,m_nFreeOffsets,m_iFreeOffsetHead);
 
   vTrace("  headEntry: %p firstEntry: %p firstFree: %p\n"_Stz,
          m_pHeadEntry,m_pFirstEntry,m_pFirstFree);
   
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);
-         
+  
+  if (gpAttachMap->m_nIndexEntries) {
+    vTrace("\n"_Stz);
+    vTrace("Free Entry Chain:\n"_Stz);
+    for (i4 i_Entry = m_iFreeOffsetHead;
+         i_Entry != C_ENTRY_NONE_V3;
+         i_Entry = - m_pEntryOffset0[i_Entry]) {
+      vTrace("  %lld: %lld\n"_Stz,
+             i_Entry,m_pEntryOffset0[i_Entry]);
+    }
+  }
+    
   vTrace("\n"_Stz);
   vTrace("=================================================="
          "==================================================\n"_Stz);
@@ -618,6 +629,25 @@ void EntryBuffer_v3::vShow(void)
 /*----------------------------------------------------------------------------*/
 /* fix the higher level buffers                                               */
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* set up the initial offset free chains                                      */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer_v3::vFreeChains(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  i8 L_ENTRIES_0 = gpAttachMap->m_nIndexEntries ?
+  gpAttachMap->m_nIndexEntries : C_ENTRIES_0_V3;
+  
+  // L0 free chain
+  for (i4 i_Entry = 0; i_Entry < (L_ENTRIES_0 - 1); i_Entry++)
+    m_pEntryOffset0[i_Entry] = - (i_Entry+1);
+  m_pEntryOffset0[L_ENTRIES_0 - 1] = - C_ENTRY_NONE;
+  
+  m_iFreeOffsetHead = 0;
+  m_nFreeOffsets = L_ENTRIES_0;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get an entry by number                                                     */
