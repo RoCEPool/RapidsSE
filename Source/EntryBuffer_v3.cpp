@@ -74,8 +74,9 @@ EntryBuffer_v3::EntryBuffer_v3(void)
   m_nBufferLevel  = 0;
   m_nPartitionNo  = -1;
   
-  for (i4 i_Entry = 0; i_Entry < (C_ENTRIES_0_V3 - 1); i_Entry++)
-    m_iEntryOffset0[i_Entry] = C_ENTRY_NONE_V3;
+//  for (i4 i_Entry = 0; i_Entry < (C_ENTRIES_0_V3 - 1); i_Entry++)
+//    m_iEntryOffset0[i_Entry] = C_ENTRY_NONE_V3;
+  m_pEntryOffset0 = nullptr;
   
   m_pHeadEntry = nullptr;
   m_pFirstEntry = nullptr;
@@ -639,6 +640,31 @@ Footer* EntryBuffer_v3::aFooter(void)
 
 void DBobjects::vEntryBuffer_v3_UnitTest(Table* pTable)
 {
+  
+  ColumnVec* pColVec = pTable->pColumnVec();
+  Index* pHiddenIndex = pTable->pHiddenIndex();
+  
+  IdxVec* pIdxVec = pTable->pIdxVec();
+  Index* pIndex1 = pIdxVec->pGet(1);
+  IdxColVec* pIdxColVec1 = pIndex1->pIdxColVec();
+  
+  Formatters* pFormatters = &gpAttachMap->m_xFormatters;
+  
+  EntryBuffer_v3* pFirstBuffer = new EntryBuffer_v3;
+  EntryBuffer_v3* pCurrentBuffer = pFirstBuffer;
+  pCurrentBuffer->vIndex(pHiddenIndex);
+  pCurrentBuffer->vPartitionNo(0);
+  pCurrentBuffer->vShow();
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   /*
 //  for (i8 iInt = 0; iInt < 1000; iInt++) {
 //    i8 nOffsets = Random::iLogLevel(gpAttachMap->m_nIndexOffsets+1, C_FLAT_FREQ);

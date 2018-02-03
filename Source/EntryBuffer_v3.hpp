@@ -25,11 +25,11 @@ namespace DBobjects
     EntryBuffer_v3* m_pNextBuffer;   // next buffer
     EntryBuffer_v3* m_pPrevBuffer;   // prev buffer
   
-    Index*  m_pIndex;       // index this buffer belongs to
-    i2      m_nBufferLevel; // index buffer level
-    i2      m_nPartitionNo; // partition no this buffer belongs to
+    Index*  m_pIndex;        // index this buffer belongs to
+    i2      m_nBufferLevel;  // index buffer level
+    i2      m_nPartitionNo;  // partition no this buffer belongs to
   
-    i4      m_iEntryOffset0[C_ENTRIES_0_V3];    // array of entry offset 0
+    i4*     m_pEntryOffset0; // array of entry offset 0
     
     Entry*  m_pHeadEntry;    // head entry of buffer
     Entry*  m_pFirstEntry;   // first entry in buffer
