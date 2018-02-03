@@ -11,14 +11,7 @@ namespace DBobjects
   
   static const i8 C_ENTRIES_0_V3 = C_8KB;
   static const i4 C_ENTRY_NONE_V3 = C_16KB;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class NEO // next entry offset
-  {
-  public:
-    i4 m_iOffset[1];  // offset where the entry is
-  };
-  
+    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class EntryBuffer_v3 : public ItemBuffer
   {
@@ -142,7 +135,6 @@ namespace DBobjects
     //i4           iGetFreeEntry(void);
     //void         vMoveLeft(void* aDst, i8 nBytes);
     //void         vMoveRight(void* aSrc, i8 nBytes);
-    NEO*           aNEO(void);
     //Entry*       pPosition(Key* aGivenKey, i8 nKeyCols,
     //                       eJC eJuxtaCompare, EntryVec* pPriorVec,
     //                       bool& bIsEqual, bool bIsQuery);

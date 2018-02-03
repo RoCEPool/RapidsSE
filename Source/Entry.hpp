@@ -7,6 +7,14 @@ namespace DBobjects
 {
   class EntWrk;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  class NEO // next entry offset
+  {
+  public:
+  i4 m_iOffset[1];  // offset where the entry is
+  };
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Entry : public Item
   {
   protected:
@@ -79,6 +87,8 @@ namespace DBobjects
     i8   iTxId(void);
     void vTxId(i8 iTxId);
   
+    NEO* aNEO(void);
+
     Footer* aFooter(void);
   
   private:
