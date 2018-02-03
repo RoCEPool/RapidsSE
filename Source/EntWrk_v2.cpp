@@ -200,6 +200,18 @@ i8 EntWrk_v2::nOffsets(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get offset bytes                                                           */
+/*----------------------------------------------------------------------------*/
+i8 EntWrk_v2::nOffsetSize(void)
+{
+  //ASSERT(m_nOffsets >= 0 && m_nOffsets <= gpAttachMap->m_nIndexOffsets);
+  
+  i8 nBytes = sizeof(i4) * m_nOffsets;
+  
+  return nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set number of offsets                                                      */
 /*----------------------------------------------------------------------------*/
 void EntWrk_v2::vOffsets(i8 nOffsets)

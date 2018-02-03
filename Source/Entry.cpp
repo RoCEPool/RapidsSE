@@ -110,6 +110,22 @@ i8 Entry::nBytesRequired(EntWrk_v2& xEntWrk_v2)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get bytes required for an Entry based on given EntWrk incl Object & Footer */
+/*----------------------------------------------------------------------------*/
+i8 Entry::nBytesRequired_v3(EntWrk_v2& xEntWrk_v2)
+{
+  i8 nOffsetBytes = xEntWrk_v2.nOffsetSize();
+    
+  i8 nKeyBytes = 0; //xEntWrk_v2.nKeySize();                         ALKA!!!
+  
+  i8 nDataBytes = xEntWrk_v2.nDataSize();
+  
+  i8 nBytes = Entry::nBytesRequired(nOffsetBytes,nKeyBytes,nDataBytes);
+  
+  return nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get total bytes required for entry incl Object & Footer                    */
 /*----------------------------------------------------------------------------*/
 i8 Entry::nBytesRequired(i8 nOffsets, i8 nKeyBytes, i8 nDataBytes)
@@ -125,6 +141,20 @@ i8 Entry::nBytesRequired(i8 nOffsets, i8 nKeyBytes, i8 nDataBytes)
                + sizeof(Footer);
   
   return nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get total bytes required for entry incl Object & Footer                    */
+/*----------------------------------------------------------------------------*/
+i8 Entry::nBytesRequired_v3(i8 nOffsetBytes, i8 nKeyBytes, i8 nDataBytes)
+{
+  i8 nEntryBytes = sizeof(Entry)
+                     + nKeyBytes
+                     + nDataBytes
+                     + sizeof(Footer)
+                     + nOffsetBytes;
+  
+  return nEntryBytes;
 }
 
 /*----------------------------------------------------------------------------*/

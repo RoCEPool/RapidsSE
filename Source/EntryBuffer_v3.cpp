@@ -341,9 +341,7 @@ Entry* EntryBuffer_v3::pAppendRow_v3(EntWrk_v2& xRowWrk)
   
   ASSERT(nBufferLevel() == 0);
   
-  i8 nOffsets = 1;
-  //Random::iLogLevel(gpAttachMap->m_nIndexOffsets+1,C_FLAT_FREQ) + 1;
-  xRowWrk.vOffsets(nOffsets);
+  xRowWrk.vOffsets(1);
   
   //  if (3 == nOffsets)
   //    int iDebug = 1;
@@ -351,7 +349,7 @@ Entry* EntryBuffer_v3::pAppendRow_v3(EntWrk_v2& xRowWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if this buffer has enough space
   
-  i8 nEntryBytes = Entry::nBytesRequired(xRowWrk);
+  i8 nEntryBytes = Entry::nBytesRequired_v3(xRowWrk);
   
   if ( ! bHasSpace(nEntryBytes) )
     return nullptr;

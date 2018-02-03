@@ -44,6 +44,7 @@ namespace DBobjects
     //i8     nKeySize(void);
     char*  aLatter(void);
     i8     nOffsets(void);
+    i8     nOffsetSize(void);
     void   vOffsets(i8 nOffsets);
     //Row*   aRow(void);
     void   vShow(ColumnVec* pColVec);

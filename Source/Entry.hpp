@@ -32,7 +32,9 @@ namespace DBobjects
   
     static i8 nBytesRequired(EntWrk& xEntWrk);
     static i8 nBytesRequired(EntWrk_v2& xEntWrk);
+    static i8 nBytesRequired_v3(EntWrk_v2& xEntWrk);
     static i8 nBytesRequired(i8 nOffsets, i8 nKeyBytes, i8 nDataBytes);
+    static i8 nBytesRequired_v3(i8 nOffsetBytes, i8 nKeyBytes, i8 nDataBytes);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // entry proper
