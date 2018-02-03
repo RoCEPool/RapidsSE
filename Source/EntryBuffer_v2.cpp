@@ -937,7 +937,7 @@ void EntryBuffer_v2::vShow(void)
   vTrace("\n"_Stz);
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);
-  vTrace("EntryBuffer %p (buffer %lld): %s index %s partition %lld level L%lld\n"
+  vTrace("EntryBuffer_v2 %p (buffer %lld): %s index %s partition %lld level L%lld\n"
          "  HigherBuffer %p (L%s) entries %lld prevBuffer %p nextBuffer %p\n"
          "  ReclaimSpace: %lld FirstFree: %p LastFree %p\n"
          "  HeadEntry2: %lld HeadEntry1: %lld HeadEntry0: %lld \n"

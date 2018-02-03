@@ -407,6 +407,39 @@ bool EntryBuffer_v3::bHasSpace(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer_v3::vShow(void)
 {
+  s256 sHigherBuffer;
+  if (m_pHigherBuffer)
+    StrLib::wToString(((EntryBuffer_v3*)m_pHigherBuffer)->m_nBufferLevel,
+                      sHigherBuffer.aChar());
+  else
+    sHigherBuffer = "..."_Stz;
+  
+  vTrace("\n"_Stz);
+  vTrace("--------------------------------------------------"
+         "--------------------------------------------------\n"_Stz);
+  
+  vTrace("EntryBuffer_v3 %p (buffer %lld): durability: %s last: %s\n"_Stz,
+         this,*nBufferNo(),aBD[m_eDurability],m_bIsLast ? "true" : "false");
+  
+  vTrace("  HigherBuffer %p (L%s) prevBuffer %p nextBuffer %p\n"_Stz,
+         m_pHigherBuffer,sHigherBuffer.aStr(),m_pPrevBuffer,m_pNextBuffer);
+
+  vTrace("  index: %s level: %lld partition: %lld\n"_Stz,
+         m_pIndex->aIndexName(),m_nBufferLevel,m_nPartitionNo);
+  
+  vTrace("  entryOffset0: %p firstOffsetHead: %lld\n"_Stz,
+         m_pEntryOffset0,m_iFreeOffsetHead);
+
+  vTrace("  headEntry: %p firstEntry: %p firstFree: %p\n"_Stz,
+         m_pHeadEntry,m_pFirstEntry,m_pFirstFree);
+  
+  vTrace("--------------------------------------------------"
+         "--------------------------------------------------\n"_Stz);
+         
+  vTrace("\n"_Stz);
+  vTrace("=================================================="
+         "==================================================\n"_Stz);
+  
   /*
   s256 sHigherBuffer;
   if (m_pHigherBuffer)
