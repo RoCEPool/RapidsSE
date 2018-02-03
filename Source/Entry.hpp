@@ -11,7 +11,7 @@ namespace DBobjects
   class NEO // next entry offset
   {
   public:
-  i4 m_iOffset[1];  // offset where the entry is
+    i4 m_iOffset[1];  // offset where the entry is
   };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -88,6 +88,8 @@ namespace DBobjects
     void vTxId(i8 iTxId);
   
     NEO* aNEO(void);
+    i4   iNEO(i8 iOffset);
+    void vNEO(i8 iOffset, i4 iNEO);
 
     Footer* aFooter(void);
   

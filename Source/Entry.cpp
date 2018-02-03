@@ -1079,11 +1079,43 @@ RightVec* Entry::aRightVec(void)
 /*----------------------------------------------------------------------------*/
 NEO* Entry::aNEO(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+
   Footer* aFooter = this->aFooter();
   
   NEO* aNEO = pAdd<NEO*>(aFooter,sizeof(Footer));
   
   return aNEO;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get a next entry offset                                                    */
+/*----------------------------------------------------------------------------*/
+i4 Entry::iNEO(i8 iOffset)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  ASSERT(iOffset < m_nOffsets);
+  
+  NEO* aNEO = this->aNEO();
+  
+  i4 iNEO = aNEO->m_iOffset[iOffset];
+  
+  return iNEO;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set a next entry offset                                                    */
+/*----------------------------------------------------------------------------*/
+void Entry::vNEO(i8 iOffset, i4 iNEO)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  ASSERT(iOffset < m_nOffsets);
+  
+  NEO* aNEO = this->aNEO();
+  
+  aNEO->m_iOffset[iOffset] = iNEO;
 }
 
 /*----------------------------------------------------------------------------*/
