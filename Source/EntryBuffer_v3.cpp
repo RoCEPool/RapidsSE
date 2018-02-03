@@ -335,6 +335,55 @@ Entry* EntryBuffer_v3::pAllotEntryBytes(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* attempt to append a new row entry into this buffer                         */
 /*----------------------------------------------------------------------------*/
+Entry* EntryBuffer_v3::pAppendRow_v3(EntWrk_v2& xRowWrk)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  ASSERT(nBufferLevel() == 0);
+  
+  i8 nOffsets = 1;
+  //Random::iLogLevel(gpAttachMap->m_nIndexOffsets+1,C_FLAT_FREQ) + 1;
+  xRowWrk.vOffsets(nOffsets);
+  
+  //  if (3 == nOffsets)
+  //    int iDebug = 1;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if this buffer has enough space
+  
+  i8 nEntryBytes = Entry::nBytesRequired(xRowWrk);
+  
+  if ( ! bHasSpace(nEntryBytes) )
+    return nullptr;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // form the rowId
+  
+  bn nBufferNo = this->nBufferNo();
+  i8 nRowNo = iGetFreeEntry(); //nItems();
+  Id xRowId(*nBufferNo, nRowNo);
+  
+  xRowWrk.vId(xRowId);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // allocate space in this buffer
+  
+  Entry* pBufferEntry = pAllotEntryBytes(nEntryBytes);
+  ASSERT(pBufferEntry);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the buffer entry
+  
+  pBufferEntry->vSetEntry(xRowWrk);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set entry offsets
+  
+  i8 iEntryOffset = iToOffsetAbs(pBufferEntry);
+  m_pEntryOffset0[nRowNo] = iEntryOffset;
+  
+  return pBufferEntry;
+}
 
 /*----------------------------------------------------------------------------*/
 /* return number of index buffers under this buffer                           */
@@ -435,6 +484,19 @@ void EntryBuffer_v3::vShow(void)
   
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);
+  
+  i8 i_Entry = 0;
+  for (i_Entry = 0; i_Entry != C_ENTRIES_0_V3; i_Entry++) {
+
+    if (m_pEntryOffset0[i_Entry] <= 0)
+      continue;
+
+    Entry* pEntry = pGetEntry(i_Entry, 0_ln);
+    vTrace("%4lld %8lld: "_Stz,i_Entry, nSub(pEntry,m_xWsp.aArea()));
+    i8 iOffset = iToOffsetAbs(pEntry);
+    pEntry->vShow_v2(iOffset,m_pIndex,true);
+  }
+  
   
   if (gpAttachMap->m_nIndexEntries) {
     vTrace("\n"_Stz);
@@ -652,10 +714,74 @@ void EntryBuffer_v3::vFreeChains(void)
 /*----------------------------------------------------------------------------*/
 /* get an entry by number                                                     */
 /*----------------------------------------------------------------------------*/
+Entry* EntryBuffer_v3::pGetEntry(i8 iEntryNo, ln nLevelNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  if (iEntryNo == C_ENTRY_NONE_V3)
+    return nullptr;
+  
+  Entry* pEntry = nullptr;
+  char* aAddress;
+  i4 iOffset;
+  
+  switch (nLevelNo) {
+    case 0:
+      iOffset = m_pEntryOffset0[iEntryNo];
+      aAddress = pAdd<char*>(aDataArea(), iOffset);
+      pEntry = reinterpret_cast<Entry*>(aAddress);
+      break;
+//    case 1:
+//      iOffset = m_pEntryOffset1[iEntryNo].m_iOffset;
+//      aAddress = pAdd<char*>(aDataArea(), iOffset);
+//      pEntry = reinterpret_cast<Entry*>(aAddress);
+//      break;
+//    case 2:
+//      iOffset = m_pEntryOffset2[iEntryNo].m_iOffset;
+//      aAddress = pAdd<char*>(aDataArea(), iOffset);
+//      pEntry = reinterpret_cast<Entry*>(aAddress);
+//      break;
+    default:
+      ASSERT(0);
+  }
+  
+  return pEntry;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get a free entry (or C_ENTRY_NONE if none)                                 */
 /*----------------------------------------------------------------------------*/
+i4 EntryBuffer_v3::iGetFreeEntry(void)
+{
+  if (C_ENTRY_NONE_V3 == m_iFreeOffsetHead)
+    return C_ENTRY_NONE_V3;
+  
+  i4 iFreeEntry = m_iFreeOffsetHead;
+  
+  m_iFreeOffsetHead = - m_pEntryOffset0[iFreeEntry];
+  
+  return iFreeEntry;
+}
+
+/*----------------------------------------------------------------------------*/
+/* create a new next buffer                                                   */
+/*----------------------------------------------------------------------------*/
+EntryBuffer_v3* EntryBuffer_v3::pNewNextBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  // create new buffer at the same index level and link the two buffers
+  EntryBuffer_v3* pNewBuffer = new EntryBuffer_v3();
+  
+  pNewBuffer->vIndex(m_pIndex);
+  pNewBuffer->vBufferLevel(m_nBufferLevel);
+  pNewBuffer->vPartitionNo(m_nPartitionNo);
+  
+  pNewBuffer->vPrevBuffer(this);
+  vNextBuffer(pNewBuffer);
+  
+  return pNewBuffer;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get the prior vector of given entry                                        */
@@ -717,14 +843,43 @@ void DBobjects::vEntryBuffer_v3_UnitTest(Table* pTable)
   EntryBuffer_v3* pCurrentBuffer = pFirstBuffer;
   pCurrentBuffer->vIndex(pHiddenIndex);
   pCurrentBuffer->vPartitionNo(0);
+  
   pCurrentBuffer->vShow();
   
+  s256 sRecData;
+  i8 iRecLength;
+  RowWrk_v2 xRowEntWrk;
+  i8 iRowLength;
+  bool bFormatted;
+  bool bBlankLine;
   
+  // keys in ascending order
+  for (i8 iInt = 0; iInt <= 9; iInt++) {
+    i8 iKey = iInt;
   
+    sprintf(sRecData.aChar(),"%lld,%s,1900-01-01 00:00:%lld",
+            iKey,IntLib::sAsText(iInt),iInt);
+    vTrace("Record: %s\n"_Stz,sRecData.aChar());
   
+    char* aRowData = xRowEntWrk.aData_v2();
+    iRecLength = sRecData.iLength();
+    bFormatted = Row::bFormatRow(pColVec,pFormatters,
+                                 sRecData,iRecLength,
+                                 (Stz*)aRowData,iRowLength,
+                                 bBlankLine);
+    
+    xRowEntWrk.vDataSize(iRowLength);
+    ((Row*)aRowData)->vDump(pColVec);
+    
+    Entry* pRowEntry = pCurrentBuffer->pAppendRow_v3(xRowEntWrk);
+    if ( ! pRowEntry ) {
+      pCurrentBuffer = pCurrentBuffer->pNewNextBuffer();
+      pRowEntry = pCurrentBuffer->pAppendRow_v3(xRowEntWrk);
+      ASSERT(pRowEntry);
+    }
+  }
   
-  
-  
+  pCurrentBuffer->vShow();
   
   
   

@@ -91,7 +91,7 @@ namespace DBobjects
     //Entry*       pAppendEntry(EntWrk& xEntWrk,EntryVec& xPriorVec);
     //bool         bAppendEntry(Entry* pRowEntry, Entry** ppNewEntry);
     //bool         bAppendEntry(i8 iTxId, Stz* pRow, i8 iLength);
-    //Entry*       pAppendRow_v3(EntWrk_v2& xEntWrk_v2);
+    Entry*         pAppendRow_v3(EntWrk_v2& xEntWrk_v2);
     //bool         bAppendRow(i8 iTxId, Stz* pRow, i8 iLength);
     //void         vBufferCount(i8& nBufferCount);
     //i8           iDecile(void);
@@ -104,7 +104,7 @@ namespace DBobjects
     //Entry*       pInsertKey_v3(KeyWrk_v2& xKeyWrk);
     //bool         bInsertRow(EntWrk& xEntRow, Entry** ppRow);
     //bool         bInsertRow(Entry* pOldRow, Entry** ppRow);
-    //EntryBuffer_v3* pNewNextBuffer(void);
+    EntryBuffer_v3* pNewNextBuffer(void);
     //Entry*       pNextEntry(Entry* pEntry);
     //Entry*       pPosition(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare);
     //Entry*       pPosition(KeyWrk &xKeyWrk, eRO eRelOp);
@@ -131,8 +131,8 @@ namespace DBobjects
     //void         vFixHigherLevel(Entry* aNewEntry);
     //void         vFixPriorOffset(EntryVec* pPriorVec, Entry* aNewEntry);
     void           vFreeChains(void);
-    //Entry*       pGetEntry(i8 iEntryNo, ln nLevelNo);
-    //i4           iGetFreeEntry(void);
+    Entry*         pGetEntry(i8 iEntryNo, ln nLevelNo);
+    i4             iGetFreeEntry(void);
     //void         vMoveLeft(void* aDst, i8 nBytes);
     //void         vMoveRight(void* aSrc, i8 nBytes);
     //Entry*       pPosition(Key* aGivenKey, i8 nKeyCols,
