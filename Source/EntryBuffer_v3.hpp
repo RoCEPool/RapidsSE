@@ -88,7 +88,7 @@ namespace DBobjects
     //void         vAddFree(Entry* pEntry);
     //Entry*       pAllotEntry(i8 nBytes);
     Entry*         pAllotEntryBytes(i8 nBytes);
-    i4*            pAllotOffsetBytes(i8 nBytes);
+    NEO*           aAllotNEO(i8 nBytes);
     //void         vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries);
     //Entry*       pAppendEntry(EntWrk& xEntWrk,EntryVec& xPriorVec);
     //bool         bAppendEntry(Entry* pRowEntry, Entry** ppNewEntry);

@@ -332,15 +332,15 @@ Entry* EntryBuffer_v3::pAllotEntryBytes(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* allot an offset array in this buffer                                       */
 /*----------------------------------------------------------------------------*/
-i4* EntryBuffer_v3::pAllotOffsetBytes(i8 nBytes)
+NEO* EntryBuffer_v3::aAllotNEO(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  i4* pOffsetArray = reinterpret_cast<i4*>(aAllotSpace(nBytes));
+  NEO* aNEO = reinterpret_cast<NEO*>(aAllotSpace(nBytes));
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  return pOffsetArray;
+  return aNEO;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -398,7 +398,7 @@ Entry* EntryBuffer_v3::pAppendRow_v3(EntWrk_v2& xRowWrk)
   i8 iEntryOffset = iToOffsetAbs(pRowEntry);
   m_pEntryOffset0[nRowNo] = iEntryOffset;
   
-  i4* pOffsetArray = pAllotOffsetBytes(nOffsetBytes);
+  NEO* aNEO = aAllotNEO(nOffsetBytes);
   if (m_pLastEntry)
     m_pLastEntry->vNEO(0,iEntryOffset);
   pRowEntry->vNEO(0,-1);

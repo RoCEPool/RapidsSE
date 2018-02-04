@@ -6,6 +6,7 @@
 namespace DBobjects
 {
   class EntWrk;
+  class Index;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class NEO // next entry offset
