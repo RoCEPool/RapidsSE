@@ -108,6 +108,7 @@ namespace DBobjects
     //bool         bInsertRow(Entry* pOldRow, Entry** ppRow);
     EntryBuffer_v3* pNewNextBuffer(void);
     //Entry*       pNextEntry(Entry* pEntry);
+    Entry*         pNextEntry(Entry* pEntry, i8 nOffsetNo);
     //Entry*       pPosition(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare);
     //Entry*       pPosition(KeyWrk &xKeyWrk, eRO eRelOp);
     //EntryBuffer_v3* pPositionLevel(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare, i8 iLevel);

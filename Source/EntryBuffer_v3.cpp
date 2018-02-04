@@ -463,6 +463,19 @@ bool EntryBuffer_v3::bHasSpace(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* get next entry                                                             */
 /*----------------------------------------------------------------------------*/
+Entry* EntryBuffer_v3::pNextEntry(Entry* pCurrent, i8 nOffsetNo)
+{
+  
+  i4 iOffset = pCurrent->iNEO(nOffsetNo);
+  
+  if (-1 == iOffset)
+    return nullptr;
+  
+  char* aAddress = pAdd<char*>(aDataArea(), iOffset);
+  Entry* pEntry = reinterpret_cast<Entry*>(aAddress);
+
+  return pEntry;
+}
 
 /*----------------------------------------------------------------------------*/
 /* scan thru skip list and positition on entry prior to key                   */
@@ -510,8 +523,9 @@ void EntryBuffer_v3::vShow(void)
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);
   
-  i8 i_Entry = 0;
-  for (i_Entry = 0; i_Entry != C_ENTRIES_0_V3; i_Entry++) {
+  vTrace("\n"_Stz);
+  vTrace("Entries (by EntryOffset array):\n"_Stz);
+  for (i8 i_Entry = 0; i_Entry != C_ENTRIES_0_V3; i_Entry++) {
 
     if (m_pEntryOffset0[i_Entry] <= 0)
       continue;
@@ -520,6 +534,18 @@ void EntryBuffer_v3::vShow(void)
     vTrace("%4lld %8lld: "_Stz,i_Entry, nSub(pEntry,m_xWsp.aArea()));
     i8 iOffset = iToOffsetAbs(pEntry);
     pEntry->vShow_v3(iOffset,m_pIndex,true);
+  }
+  
+  vTrace("\n"_Stz);
+  vTrace("Entries (by next offset):\n"_Stz);
+  
+  for (Entry* pEntry = m_pFirstEntry; pEntry; ) {
+    
+    i8 iOffset = iToOffsetAbs(pEntry);
+    vTrace("%8lld: "_Stz,iOffset);
+    pEntry->vShow_v3(iOffset,m_pIndex,true);
+    
+    pEntry = pNextEntry(pEntry,0);
   }
   
   
