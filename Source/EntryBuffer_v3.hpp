@@ -35,6 +35,7 @@ namespace DBobjects
   
     Entry*     m_pHeadEntry;  // head entry of buffer
     Entry*     m_pFirstEntry; // first entry in buffer
+    Entry*     m_pLastEntry;  // last entry in buffer
     FreeEntry* m_pFirstFree;  // first free space in buffer
   
     // must be last
@@ -87,6 +88,7 @@ namespace DBobjects
     //void         vAddFree(Entry* pEntry);
     //Entry*       pAllotEntry(i8 nBytes);
     Entry*         pAllotEntryBytes(i8 nBytes);
+    i4*            pAllotOffsetBytes(i8 nBytes);
     //void         vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries);
     //Entry*       pAppendEntry(EntWrk& xEntWrk,EntryVec& xPriorVec);
     //bool         bAppendEntry(Entry* pRowEntry, Entry** ppNewEntry);

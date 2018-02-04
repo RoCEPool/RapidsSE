@@ -80,8 +80,9 @@ EntryBuffer_v3::EntryBuffer_v3(void)
   m_iFreeOffsetHead = C_ENTRY_NONE_V3;
   vFreeChains();
   
-  m_pHeadEntry = nullptr;
+  m_pHeadEntry  = nullptr;
   m_pFirstEntry = nullptr;
+  m_pLastEntry  = nullptr;
   m_pFirstFree  = nullptr;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
@@ -329,6 +330,20 @@ Entry* EntryBuffer_v3::pAllotEntryBytes(i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
+/* allot an offset array in this buffer                                       */
+/*----------------------------------------------------------------------------*/
+i4* EntryBuffer_v3::pAllotOffsetBytes(i8 nBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  i4* pOffsetArray = reinterpret_cast<i4*>(aAllotSpace(nBytes));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  return pOffsetArray;
+}
+
+/*----------------------------------------------------------------------------*/
 /* analyze this buffer                                                        */
 /*----------------------------------------------------------------------------*/
 
@@ -351,7 +366,10 @@ Entry* EntryBuffer_v3::pAppendRow_v3(EntWrk_v2& xRowWrk)
   
   i8 nEntryBytes = Entry::nBytesRequired_v3(xRowWrk);
   
-  if ( ! bHasSpace(nEntryBytes) )
+  i8 nOffsetBytes = xRowWrk.nOffsetSize();
+
+  i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
+  if ( ! bHasSpace(nEntryPlusOffsets) )
     return nullptr;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -366,21 +384,30 @@ Entry* EntryBuffer_v3::pAppendRow_v3(EntWrk_v2& xRowWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate space in this buffer
   
-  Entry* pBufferEntry = pAllotEntryBytes(nEntryBytes);
-  ASSERT(pBufferEntry);
+  Entry* pRowEntry = pAllotEntryBytes(nEntryBytes);
+  ASSERT(pRowEntry);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the buffer entry
   
-  pBufferEntry->vSetEntry(xRowWrk);
+  pRowEntry->vSetEntry(xRowWrk);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set entry offsets
   
-  i8 iEntryOffset = iToOffsetAbs(pBufferEntry);
+  i8 iEntryOffset = iToOffsetAbs(pRowEntry);
   m_pEntryOffset0[nRowNo] = iEntryOffset;
   
-  return pBufferEntry;
+  i4* pOffsetArray = pAllotOffsetBytes(nOffsetBytes);
+  if (m_pLastEntry)
+    m_pLastEntry->vNEO(0,iEntryOffset);
+  pRowEntry->vNEO(0,-1);
+  
+  if (! m_pFirstEntry)
+    m_pFirstEntry = pRowEntry;
+  m_pLastEntry = pRowEntry;
+  
+  return pRowEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -477,8 +504,8 @@ void EntryBuffer_v3::vShow(void)
   vTrace("  entryOffset0: %p m_nFreeOffsets: %lld freeOffsetHead: %lld\n"_Stz,
          m_pEntryOffset0,m_nFreeOffsets,m_iFreeOffsetHead);
 
-  vTrace("  headEntry: %p firstEntry: %p firstFree: %p\n"_Stz,
-         m_pHeadEntry,m_pFirstEntry,m_pFirstFree);
+  vTrace("  headEntry: %p firstEntry: %p lastEntry: %p firstFree: %p\n"_Stz,
+         m_pHeadEntry,m_pFirstEntry,m_pLastEntry,m_pFirstFree);
   
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);
@@ -492,7 +519,7 @@ void EntryBuffer_v3::vShow(void)
     Entry* pEntry = pGetEntry(i_Entry, 0_ln);
     vTrace("%4lld %8lld: "_Stz,i_Entry, nSub(pEntry,m_xWsp.aArea()));
     i8 iOffset = iToOffsetAbs(pEntry);
-    pEntry->vShow_v2(iOffset,m_pIndex,true);
+    pEntry->vShow_v3(iOffset,m_pIndex,true);
   }
   
   

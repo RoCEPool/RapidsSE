@@ -34,7 +34,7 @@ namespace DBobjects
     static i8 nBytesRequired(EntWrk_v2& xEntWrk);
     static i8 nBytesRequired_v3(EntWrk_v2& xEntWrk);
     static i8 nBytesRequired(i8 nOffsets, i8 nKeyBytes, i8 nDataBytes);
-    static i8 nBytesRequired_v3(i8 nOffsetBytes, i8 nKeyBytes, i8 nDataBytes);
+    static i8 nBytesRequired_v3(i8 nKeyBytes, i8 nDataBytes);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // entry proper
@@ -78,6 +78,7 @@ namespace DBobjects
     void vSetEntry(Id xId, i8 iKey, Entry* pOldEntry);
     void vShow(i8 iBase, Index* pIndex, bool bShowKey);
     void vShow_v2(i8 iBase, Index* pIndex, bool bShowKey);
+    void vShow_v3(i8 iBase, Index* pIndex, bool bShowKey);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // row

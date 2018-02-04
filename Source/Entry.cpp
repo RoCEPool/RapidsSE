@@ -114,13 +114,13 @@ i8 Entry::nBytesRequired(EntWrk_v2& xEntWrk_v2)
 /*----------------------------------------------------------------------------*/
 i8 Entry::nBytesRequired_v3(EntWrk_v2& xEntWrk_v2)
 {
-  i8 nOffsetBytes = xEntWrk_v2.nOffsetSize();
+  //i8 nOffsetBytes = xEntWrk_v2.nOffsetSize();
     
   i8 nKeyBytes = 0; //xEntWrk_v2.nKeySize();                         ALKA!!!
   
   i8 nDataBytes = xEntWrk_v2.nDataSize();
   
-  i8 nBytes = Entry::nBytesRequired(nOffsetBytes,nKeyBytes,nDataBytes);
+  i8 nBytes = Entry::nBytesRequired_v3(nKeyBytes,nDataBytes);
   
   return nBytes;
 }
@@ -146,13 +146,12 @@ i8 Entry::nBytesRequired(i8 nOffsets, i8 nKeyBytes, i8 nDataBytes)
 /*----------------------------------------------------------------------------*/
 /* get total bytes required for entry incl Object & Footer                    */
 /*----------------------------------------------------------------------------*/
-i8 Entry::nBytesRequired_v3(i8 nOffsetBytes, i8 nKeyBytes, i8 nDataBytes)
+i8 Entry::nBytesRequired_v3(i8 nKeyBytes, i8 nDataBytes)
 {
   i8 nEntryBytes = sizeof(Entry)
                      + nKeyBytes
                      + nDataBytes
-                     + sizeof(Footer)
-                     + nOffsetBytes;
+                     + sizeof(Footer);
   
   return nEntryBytes;
 }
@@ -625,7 +624,7 @@ void Entry::vShow_v2(i8 iBase, Index* pIndex, bool bShowKey)
 //    DtmLib::nCopy(DM_INT,&iKey,aKey,nullptr);
 //  }
   
-  vTrace("Entry: %p Size: %llu Offsets: %llu "_Stz,
+  vTrace("Entry v2: %p Size: %llu Offsets: %llu "_Stz,
          this,
          nSizeEntry(),
          m_nOffsets
@@ -663,6 +662,72 @@ void Entry::vShow_v2(i8 iBase, Index* pIndex, bool bShowKey)
 //           iBase + iRightOffset(nRight) + nSizeEntry()
 //           );
 //  }
+  
+  vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* show content                                                               */
+/*----------------------------------------------------------------------------*/
+void Entry::vShow_v3(i8 iBase, Index* pIndex, bool bShowKey)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  Key* aKey = this->aKey_v2();
+  //  i8 iKey;
+  //
+  //  if (m_xId.iBuffer() == 0) {
+  //    ASSERT(m_xId.iRow() == 0);
+  //    iKey = -1;
+  //  }
+  //  else {
+  //    DtmLib::nCopy(DM_INT,&iKey,aKey,nullptr);
+  //  }
+  
+  vTrace("Entry v3: %p Size: %llu Offsets: %llu "_Stz,
+         this,
+         nSizeEntry(),
+         m_nOffsets
+         );
+  
+  vTrace("Id: %3lli.%03lli "_Stz,
+         m_xId.iBuffer(),
+         m_xId.iRow()
+         );
+  
+  vTrace("Tx: %lld.%03lld "_Stz,
+         Tx::iTxNode(m_iTxId),
+         Tx::iTxNo(m_iTxId)
+         );
+  
+  if (bShowKey)
+    aKey->vShow(pIndex->pIdxColVec());
+  
+  if (pIndex->bIsHidden()) {
+    //char* pRow = aRowData();
+    Row* aThisRow = aRow_v2();
+    vTrace("Row: "_Stz);
+    i8 iRowSize = nRowSize_v2();
+    if (iRowSize > 0) {
+      aThisRow->vShow(pIndex->pTable()->pColumnVec());
+    }
+  }
+  
+  
+  vTrace(" offsets:"_Stz);
+  for (i8 i_Offset = 0; i_Offset < m_nOffsets; i_Offset++)
+    vTrace(" %lld"_Stz,aNEO()[i_Offset]);
+  
+  //
+  //  for (on nRight = 0_on; nRight < m_nOffsets; nRight++) {
+  //
+  //    vTrace(" Offset(%lld): %lld "_Stz,
+  //           *nRight,
+  //           iRightOffset(nRight) == C_NIL_OFFSET ?
+  //           C_NIL_OFFSET :
+  //           iBase + iRightOffset(nRight) + nSizeEntry()
+  //           );
+  //  }
   
   vTrace("\n"_Stz);
 }
