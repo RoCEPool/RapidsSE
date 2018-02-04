@@ -521,8 +521,11 @@ void EntryBuffer_v3::vShow(void)
   vTrace("  entryOffset0: %p m_nFreeOffsets: %lld freeOffsetHead: %lld\n"_Stz,
          m_pEntryOffset0,m_nFreeOffsets,m_iFreeOffsetHead);
 
-  vTrace("  headEntry: %p firstEntry: %p lastEntry: %p firstFree: %p\n"_Stz,
-         m_pHeadEntry,m_pFirstEntry,m_pLastEntry,m_pFirstFree);
+  vTrace("  headEntry: %p[%lld,%lld,%lld] firstEntry: %p lastEntry: %p firstFree: %p\n"_Stz,
+         m_pHeadEntry,m_pHeadEntry ? m_pHeadEntry->iNEO(0) : 0,
+                      m_pHeadEntry ? m_pHeadEntry->iNEO(1) : 0,
+                      m_pHeadEntry ? m_pHeadEntry->iNEO(2) : 0,
+         m_pFirstEntry,m_pLastEntry,m_pFirstFree);
   
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);
