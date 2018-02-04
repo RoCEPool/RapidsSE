@@ -206,7 +206,7 @@ i8 EntWrk_v2::nOffsetSize(void)
 {
   //ASSERT(m_nOffsets >= 0 && m_nOffsets <= gpAttachMap->m_nIndexOffsets);
   
-  vTrace("sizeof(i4) %d sizeof(long) %d\n"_Stz,sizeof(i4),sizeof(long));
+  //vTrace("sizeof(i4) %d sizeof(long) %d\n"_Stz,sizeof(i4),sizeof(long));
   
   i8 nBytes = sizeof(i4) * m_nOffsets;
   

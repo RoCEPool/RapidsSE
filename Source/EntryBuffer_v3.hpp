@@ -103,7 +103,7 @@ namespace DBobjects
 
     //bool         bInsert(EntWrk& xEntWrk);
     //bool         bInsertEntry(i8 iTxId, Stz* pRow, i8 iLength);
-    //Entry*       pInsertKey_v3(KeyWrk_v2& xKeyWrk);
+    Entry*       pInsertKey_v3(KeyWrk_v2& xKeyWrk);
     //bool         bInsertRow(EntWrk& xEntRow, Entry** ppRow);
     //bool         bInsertRow(Entry* pOldRow, Entry** ppRow);
     EntryBuffer_v3* pNewNextBuffer(void);

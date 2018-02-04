@@ -459,6 +459,101 @@ bool EntryBuffer_v3::bHasSpace(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* attempt to insert a new key entry into this buffer                         */
 /*----------------------------------------------------------------------------*/
+Entry* EntryBuffer_v3::pInsertKey_v3(KeyWrk_v2& xKeyWrk)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  vTrace("Inserting key:\n"_Stz);
+  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  xKeyWrk.vShow(pIdxColVec);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // insert a new entry into the skip list
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 1 offset
+  i8 nOffsets = 1;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 2 offsets
+  //i8 nOffsets = Random::iLogLevel(gpAttachMap->m_nIndexOffsets,C_FLAT_FREQ + 1);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 3 offsets
+  //i8 nOffsets = Random::iLogLevel(gpAttachMap->m_nIndexOffsets+1,C_FLAT_FREQ) + 1;
+  
+  Entry* xPriorVec[nOffsets];
+
+  /*
+  
+  // find the entry after which the new entry.key will be inserted
+  vPositionPrior_v2(xKeyWrk.aKey(), xPriorVec);
+  vDumpPriorVec(xPriorVec);
+  
+  // set no of offsets in working key
+  xKeyWrk.vOffsets(nOffsets);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if this buffer has enough space
+  i8 nEntryBytes = Entry::nBytesRequired(xKeyWrk);
+  
+  if ( ! bHasSpace(nEntryBytes) )
+    return nullptr;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // form the rowId
+  
+  bn nBufferNo = this->nBufferNo();
+  i8 nRowNo = iGetFreeEntry(); //nItems();
+  Id xRowId(*nBufferNo, nRowNo);
+  
+  xKeyWrk.vId(xRowId);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // allocate space in this buffer
+  
+  Entry* pBufferEntry = pAllotEntryBytes(nEntryBytes);
+  ASSERT(pBufferEntry);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the buffer entry
+  
+  pBufferEntry->vSetEntry(xKeyWrk);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set entry offsets
+  i8 iEntryOffset = iToOffsetAbs(pBufferEntry);
+  
+  if (nItems() == 1) {
+    m_pEntryOffset0[nRowNo].m_iEntryNo = nRowNo;
+    m_pEntryOffset0[nRowNo].m_iOffset = iEntryOffset;
+    m_pEntryOffset0[nRowNo].m_iNextEntry = C_ENTRY_NONE;
+    
+    m_iHeadEntry0 = nRowNo;
+  }
+  else {
+    i8 iPriorEntry = xPriorVec[0_ln];
+    if ( iPriorEntry == C_ENTRY_NONE) {
+      m_pEntryOffset0[nRowNo].m_iEntryNo = nRowNo;
+      m_pEntryOffset0[nRowNo].m_iOffset = iEntryOffset;
+      m_pEntryOffset0[nRowNo].m_iNextEntry = m_iHeadEntry0;
+      m_iHeadEntry0 = nRowNo;
+    }
+    else {
+      i8 iPririorEntryNext = m_pEntryOffset0[iPriorEntry].m_iNextEntry;
+      m_pEntryOffset0[iPriorEntry].m_iNextEntry = nRowNo;
+      m_pEntryOffset0[nRowNo].m_iOffset = iEntryOffset;
+      m_pEntryOffset0[nRowNo].m_iNextEntry = iPririorEntryNext;
+      m_pEntryOffset0[nRowNo].m_iEntryNo = nRowNo;
+    }
+  }
+  
+  return pBufferEntry;
+ */
+  
+  return nullptr;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* create a new next buffer                                                   */
@@ -942,7 +1037,8 @@ void DBobjects::vEntryBuffer_v3_UnitTest(Table* pTable)
   i8 iRowLength;
   bool bFormatted;
   bool bBlankLine;
-  
+  KeyWrk_v2 xKeyWrk;
+
   // keys in ascending order
   for (i8 iInt = 0; iInt <= 9; iInt++) {
     i8 iKey = iInt;
@@ -967,6 +1063,19 @@ void DBobjects::vEntryBuffer_v3_UnitTest(Table* pTable)
       pRowEntry = pCurrentBuffer->pAppendRow_v3(xRowEntWrk);
       ASSERT(pRowEntry);
     }
+    
+    xKeyWrk.vReset();
+    pRowEntry->vExtractIndexKey_v2(xKeyWrk,pIdxColVec1);
+    //xKeyWrk.vShow(pIdxColVec1);
+    
+    Entry* pKeyEntry = pCurrentIndexBuffer->pInsertKey_v3(xKeyWrk);
+//    if ( ! pKeyEntry ) {
+//      pCurrentIndexBuffer = pCurrentIndexBuffer->pNewNextBuffer();
+//      pKeyEntry = pCurrentIndexBuffer->pInsertKey_v3(xKeyWrk);
+//      ASSERT(pKeyEntry);
+//    }
+    pCurrentIndexBuffer->vShow();
+    
   }
   
   pCurrentBuffer->vShow();
