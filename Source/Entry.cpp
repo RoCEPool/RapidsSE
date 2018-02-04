@@ -509,8 +509,8 @@ void Entry::vSetEntry(EntWrk_v2& xEntWrk_v2)
   char* aEntWrkData = xEntWrk_v2.aData_v2();
   i8 nDataSize = xEntWrk_v2.nDataSize();
 
-  ASSERT(nDataSize);
-  MemLib::vCopy(aEntryData,aEntWrkData,nDataSize,eClass());
+  if (nDataSize)
+    MemLib::vCopy(aEntryData,aEntWrkData,nDataSize,eClass());
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
 }

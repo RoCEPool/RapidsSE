@@ -136,6 +136,7 @@ namespace DBobjects
     void           vFreeChains(void);
     Entry*         pGetEntry(i8 iEntryNo, ln nLevelNo);
     i4             iGetFreeEntry(void);
+    void           vHeadEntry(void);
     //void         vMoveLeft(void* aDst, i8 nBytes);
     //void         vMoveRight(void* aSrc, i8 nBytes);
     //Entry*       pPosition(Key* aGivenKey, i8 nKeyCols,

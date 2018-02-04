@@ -271,6 +271,10 @@ void EntryBuffer_v3::vIndex(Index* pIndex)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   m_pIndex = pIndex;
+  
+  // create a head entry if we have a non-hidden index
+  if (! m_pIndex->bIsHidden() )
+    vHeadEntry();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -815,6 +819,33 @@ i4 EntryBuffer_v3::iGetFreeEntry(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* create a head entry                                                        */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer_v3::vHeadEntry(void)
+{
+  RowWrk_v2 xHeadWrk;
+  
+  xHeadWrk.vOffsets(3);
+  
+  i8 nEntryBytes = Entry::nBytesRequired_v3(xHeadWrk);
+  
+  i8 nOffsetBytes = xHeadWrk.nOffsetSize();
+  
+  i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
+  ASSERT(bHasSpace(nEntryPlusOffsets));
+  
+  m_pHeadEntry = pAllotEntryBytes(nEntryBytes);
+  ASSERT(m_pHeadEntry);
+  
+  m_pHeadEntry->vSetEntry(xHeadWrk);
+
+  NEO* aNEO = aAllotNEO(nOffsetBytes);
+  m_pHeadEntry->vNEO(0,-1);
+  m_pHeadEntry->vNEO(1,-1);
+  m_pHeadEntry->vNEO(2,-1);
+}
+
+/*----------------------------------------------------------------------------*/
 /* create a new next buffer                                                   */
 /*----------------------------------------------------------------------------*/
 EntryBuffer_v3* EntryBuffer_v3::pNewNextBuffer(void)
@@ -894,8 +925,13 @@ void DBobjects::vEntryBuffer_v3_UnitTest(Table* pTable)
   EntryBuffer_v3* pCurrentBuffer = pFirstBuffer;
   pCurrentBuffer->vIndex(pHiddenIndex);
   pCurrentBuffer->vPartitionNo(0);
+  //pCurrentBuffer->vShow();
   
-  pCurrentBuffer->vShow();
+  EntryBuffer_v3* pFirstIndexBuffer = new EntryBuffer_v3;
+  EntryBuffer_v3* pCurrentIndexBuffer = pFirstIndexBuffer;
+  pCurrentIndexBuffer->vIndex(pIndex1);
+  pCurrentIndexBuffer->vPartitionNo(0);
+  pCurrentIndexBuffer->vShow();
   
   s256 sRecData;
   i8 iRecLength;
