@@ -99,11 +99,11 @@ namespace DBobjects
     //i8           iDecile(void);
     //void         vDump(void);
     
-    bool         bHasSpace(i8 nBytes);
+    bool           bHasSpace(i8 nBytes);
 
     //bool         bInsert(EntWrk& xEntWrk);
     //bool         bInsertEntry(i8 iTxId, Stz* pRow, i8 iLength);
-    Entry*       pInsertKey_v3(KeyWrk_v2& xKeyWrk);
+    Entry*         pInsertKey_v3(KeyWrk_v2& xKeyWrk);
     //bool         bInsertRow(EntWrk& xEntRow, Entry** ppRow);
     //bool         bInsertRow(Entry* pOldRow, Entry** ppRow);
     EntryBuffer_v3* pNewNextBuffer(void);
@@ -130,7 +130,7 @@ namespace DBobjects
     //Entry*       pAllotEntryAfter(i8 nBytes, i8 nLevels, Entry* aAfterEntry);
     //void         vAllotHeadEntry(void);
     //i8           iCopyEntries(EntryBuffer_v3* pFromBuffer, Entry* aFromEntry);
-    //void         vDumpPriorVec(i8* pPriorVec);
+    void           vDumpPriorVec(Entry* pPriorVec[]);
     //void         vFixHigherLevel(Entry* aNewEntry);
     //void         vFixPriorOffset(EntryVec* pPriorVec, Entry* aNewEntry);
     void           vFreeChains(void);
@@ -142,7 +142,7 @@ namespace DBobjects
     //Entry*       pPosition(Key* aGivenKey, i8 nKeyCols,
     //                       eJC eJuxtaCompare, EntryVec* pPriorVec,
     //                       bool& bIsEqual, bool bIsQuery);
-    //void         vPositionPrior_v3(Key* aFindKey, i8* pPriorVec);
+    void           vPositionPrior_v3(Key* aFindKey, Entry** pPriorVec);
     //void         vPriorVec(Entry* pEntry, EntryVec* pPriorVec);
     //void         vReplaceKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
     //void         vReplaceKeyEqual(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
@@ -150,7 +150,7 @@ namespace DBobjects
     //void         vReplaceKeySmaller(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
     //Entry*       pRightEntry(Entry* pEntry, ln nLevelNo);
     //i8           iToEndOffsetAbs(Entry* pEntry);
-    i8           iToOffsetAbs(Entry* pEntry);
+    i8             iToOffsetAbs(Entry* pEntry);
     //i8           iToRightOffsetAbs(Entry* pEntry, on nOffsetNo);
     //u8           uOffsetBetween(Entry* pEntryA, Entry* pEntryB);
   

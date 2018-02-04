@@ -606,7 +606,7 @@ Entry* EntryBuffer_v2::pInsertKey_v2(KeyWrk_v2& xKeyWrk)
   Entry* pBufferEntry = pAllotEntryBytes(nEntryBytes);
   ASSERT(pBufferEntry);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - EntryBuffer_v3::pInsertKey_v3(KeyWrk_v2& xKeyWrk)- - - - - - - - - - - - - - - - -
   // set the buffer entry
   
   pBufferEntry->vSetEntry(xKeyWrk);
