@@ -501,6 +501,32 @@ void EntryBuffer_v3::vDeleteEntry(Entry* pEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+  i8 iRowNo = pEntry->iRow();
+  
+  if (pEntry == m_pFirstEntry) {
+    Entry* pNextEntry = this->pNextEntry(pEntry,0);
+    m_pFirstEntry = pNextEntry;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  i8 nSizeEntry = pEntry->nSizeEntry();
+  i8 nSizeNEO   = pEntry->iNEOsize();
+  i8 nSizeFree  = nSizeEntry + nSizeNEO;
+  
+  FreeEntry* pFreeEntry = new(pEntry) FreeEntry(nSizeFree);
+  
+  if (m_pFirstFree) {
+    m_pFirstFree->vPrevFree(pFreeEntry);
+    pFreeEntry->vNextFree(m_pFirstFree);
+  }
+  
+  m_pFirstFree = pFreeEntry;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  m_pEntryOffset0[iRowNo] = - m_iFreeOffsetHead;
+  m_iFreeOffsetHead = iRowNo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1353,14 +1379,14 @@ void DBobjects::vEntryBuffer_v3_UnitTest(Table* pTable)
   KeyWrk_v2 xKeyWrk;
 
   // keys in ascending order
-  //for (i8 iInt = 0; iInt <= 100; iInt++) {
+  for (i8 iInt = 0; iInt <= 10; iInt++) {
     
   // keys in descending order
   //for (i8 iInt = 100; iInt >= 0; iInt--) {
     
   // keys in random order
-  for (i8 iCount = 0; iCount <= 100; iCount++) {
-    i8 iInt = Random::iRandom(10);
+  //for (i8 iCount = 0; iCount <= 100; iCount++) {
+  //  i8 iInt = Random::iRandom(10);
     
     i8 iKey = iInt;
   
@@ -1408,6 +1434,11 @@ void DBobjects::vEntryBuffer_v3_UnitTest(Table* pTable)
   
   pCurrentBuffer->vShow();
   
+  // delete first entry
+  Entry* pFirstEntry = pCurrentBuffer->pFirstEntry();
+  pCurrentBuffer->vDeleteEntry(pFirstEntry);
+  
+  pCurrentBuffer->vShow();
   
   
   /*
