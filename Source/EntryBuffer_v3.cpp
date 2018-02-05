@@ -451,7 +451,9 @@ Entry* EntryBuffer_v3::pFirstEntryAny(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  return nullptr;
+  Entry* pFirstEntry = pNextEntryAny(m_pHeadEntry);
+  
+  return pFirstEntry;
 }
 
 /*----------------------------------------------------------------------------*/
