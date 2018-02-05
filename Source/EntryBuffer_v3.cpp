@@ -472,11 +472,12 @@ Entry* EntryBuffer_v3::pInsertKey_v3(KeyWrk_v2& xKeyWrk)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1 offset
-  i8 nOffsets = 1;
+  //i8 nOffsets = 1;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 2 offsets
   //i8 nOffsets = Random::iLogLevel(gpAttachMap->m_nIndexOffsets,C_FLAT_FREQ + 1);
+  i8 nOffsets = Random::iLogLevel(3,C_FLAT_FREQ + 1) + 1;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 3 offsets
@@ -490,7 +491,7 @@ Entry* EntryBuffer_v3::pInsertKey_v3(KeyWrk_v2& xKeyWrk)
   vDumpPriorVec(xPriorVec);
   
   // set no of offsets in working key
-  xKeyWrk.vOffsets(1); // just N0 for the moment
+  xKeyWrk.vOffsets(nOffsets); // 1,2 or 3 for the moment
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if this buffer has enough space
@@ -530,7 +531,7 @@ Entry* EntryBuffer_v3::pInsertKey_v3(KeyWrk_v2& xKeyWrk)
   NEO* aNEO = aAllotNEO(nOffsetBytes);
   
   for (i8 iNextOffset = 0; iNextOffset < nOffsets; iNextOffset++) {
-
+    
     i8 iPriorOffset = xPriorVec[iNextOffset]->iNEO(iNextOffset);
 
     pKeyEntry->vNEO(iNextOffset,iPriorOffset);
@@ -581,10 +582,12 @@ void EntryBuffer_v3::vPositionPrior_v3(Key* aFindKey, Entry* pPriorVec[])
   bool bIsJuxta;
   bool bIsEqual;
 
+  Entry* pScanEntry_sl = m_pHeadEntry;
+  
   ln nScanLevel;
-  for (nScanLevel = 0; *nScanLevel >= 0; nScanLevel--) {
+  for (nScanLevel = 2; *nScanLevel >= 0; nScanLevel--) {
 
-    Entry* pNextEntry_sl = pNextEntry(m_pHeadEntry,*nScanLevel);
+    Entry* pNextEntry_sl = pNextEntry(pScanEntry_sl,*nScanLevel);
     while (pNextEntry_sl) {
     
       Key* aNextKey = pNextEntry_sl->aKey_v2();
@@ -597,53 +600,55 @@ void EntryBuffer_v3::vPositionPrior_v3(Key* aFindKey, Entry* pPriorVec[])
       
       if (bIsJuxta)
         break;
-      
-      pPriorVec[*nScanLevel] = pNextEntry_sl;
-
+    
+      pScanEntry_sl = pNextEntry_sl;
       pNextEntry_sl = pNextEntry(pNextEntry_sl,*nScanLevel);
     }
+    pPriorVec[*nScanLevel] = pScanEntry_sl;
   }
   
-  /*
-  i8 iScanEntry = C_ENTRY_NONE;
-  
-  Entry* pNextEntry_sl = pGetEntry(m_iHeadEntry0, nScanLevel);
-  i8 iNextEntry = m_iHeadEntry0;
-  
-  bool bIsJuxta;
-  bool bIsEqual = false;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  while (pNextEntry_sl) {
-    
-    Key* aNextKey = pNextEntry_sl->aKey_v2();
-    
-    aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
-    aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
-    
-    bIsJuxta =
-    aNextKey->bJuxtaCompare(JC_AFTER,aFindKey,pIdxColVec,nKeyCols,bIsEqual);
-    
-    if (bIsJuxta)
-      break;
-    
-    pScanEntry_sl = pNextEntry_sl;
-    iScanEntry = iNextEntry;
-    
-    pNextEntry_sl = pRightEntry(pNextEntry_sl,nScanLevel);
-    iNextEntry = m_pEntryOffset0[iNextEntry].m_iNextEntry;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  if (pScanEntry_sl) {
-    pPriorVec[*nScanLevel] = iScanEntry;
-  }
-  else {
-    pPriorVec[*nScanLevel] = C_ENTRY_NONE;
-  }
-  */
 }
+/*----------------------------------------------------------------------------*/
+//void EntryBuffer_v3::vPositionPrior_v3(Key* aFindKey, Entry* pPriorVec[])
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+//  
+//  for (ln nLevel = 0_ln; *nLevel < gpAttachMap->m_nIndexLevels; nLevel++)
+//    pPriorVec[*nLevel] = m_pHeadEntry;
+//  
+//  if (nItems() == 0)
+//    return;
+//  
+//  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+//  i8 nKeyCols = pIdxColVec->nItems();
+//  
+//  bool bIsJuxta;
+//  bool bIsEqual;
+//  
+//  ln nScanLevel;
+//  for (nScanLevel = 2; *nScanLevel >= 0; nScanLevel--) {
+//    
+//    Entry* pNextEntry_sl = pNextEntry(m_pHeadEntry,*nScanLevel);
+//    while (pNextEntry_sl) {
+//      
+//      Key* aNextKey = pNextEntry_sl->aKey_v2();
+//      
+//      aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
+//      aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
+//      
+//      bIsJuxta =
+//      aNextKey->bJuxtaCompare(JC_AFTER,aFindKey,pIdxColVec,nKeyCols,bIsEqual);
+//      
+//      if (bIsJuxta)
+//        break;
+//      
+//      pPriorVec[*nScanLevel] = pNextEntry_sl;
+//      
+//      pNextEntry_sl = pNextEntry(pNextEntry_sl,*nScanLevel);
+//    }
+//  }
+//  
+//}
 
 /*----------------------------------------------------------------------------*/
 /* remove given entry                                                         */
@@ -919,13 +924,9 @@ void EntryBuffer_v3::vDumpPriorVec(Entry* pPriorVec[])
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   vTrace("Prior Vector\n"_Stz);
-  vTrace("Level Entry\n"_Stz);
   
-  for (ln nLevel = 0_ln; *nLevel < 1 ; /*gpAttachMap->m_nIndexLevels*/ nLevel++)
-    
-    vTrace("%lld %p\n"_Stz,
-           *nLevel,
-           pPriorVec[*nLevel]);
+    vTrace("  0:%p 1:%p 2:%p\n"_Stz,
+           pPriorVec[0],pPriorVec[1],pPriorVec[2]);
 }
 
 
@@ -1146,7 +1147,7 @@ void DBobjects::vEntryBuffer_v3_UnitTest(Table* pTable)
   KeyWrk_v2 xKeyWrk;
 
   // keys in ascending order
-  for (i8 iInt = 0; iInt <= 9; iInt++) {
+  for (i8 iInt = 0; iInt <= 100; iInt++) {
     
   // keys in descending order
   //for (i8 iInt = 9; iInt >= 0; iInt--) {
