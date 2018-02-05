@@ -423,6 +423,7 @@ Entry* EntryBuffer_v3::pAppendRow_v3(EntWrk_v2& xRowWrk)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer_v3::vCompactBuffer(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
 }
 
@@ -433,6 +434,16 @@ void EntryBuffer_v3::vCompactBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get the absolute first entry in the buffer (could be a free entry etc)     */
+/*----------------------------------------------------------------------------*/
+Entry* EntryBuffer_v3::pFirstEntryAny(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  return nullptr;
+}
 
 /*----------------------------------------------------------------------------*/
 /* set up the initial offset free chains                                      */
@@ -569,6 +580,16 @@ Entry* EntryBuffer_v3::pNextEntry(Entry* pCurrent, i8 nOffsetNo)
   Entry* pEntry = reinterpret_cast<Entry*>(aAddress);
 
   return pEntry;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the absolute next entry in the buffer (could be a free entry etc)      */
+/*----------------------------------------------------------------------------*/
+Entry* EntryBuffer_v3::pNextEntryAny(Entry* pCurrent)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

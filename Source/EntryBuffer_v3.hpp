@@ -99,9 +99,8 @@ namespace DBobjects
     void           vCompactBuffer(void);
     //i8           iDecile(void);
     //void         vDump(void);
-    
+    Entry*         pFirstEntryAny(void);
     bool           bHasSpace(i8 nBytes);
-
     //bool         bInsert(EntWrk& xEntWrk);
     //bool         bInsertEntry(i8 iTxId, Stz* pRow, i8 iLength);
     Entry*         pInsertKey_v3(KeyWrk_v2& xKeyWrk);
@@ -110,6 +109,7 @@ namespace DBobjects
     EntryBuffer_v3* pNewNextBuffer(void);
     //Entry*       pNextEntry(Entry* pEntry);
     Entry*         pNextEntry(Entry* pEntry, i8 nOffsetNo);
+    Entry*         pNextEntryAny(Entry* pCurrent);
     //Entry*       pPosition(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare);
     //Entry*       pPosition(KeyWrk &xKeyWrk, eRO eRelOp);
     //EntryBuffer_v3* pPositionLevel(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare, i8 iLevel);
@@ -119,7 +119,7 @@ namespace DBobjects
     //void         vRemoveFree(Entry* pEntry);
   
     //void         vRowCount(void);
-    void         vShow(void);
+    void           vShow(void);
     //EntryBuffer_v3* pSplitBuffer(void);
     //void         vTruncate(void);
     //bool         bVerify(void);
