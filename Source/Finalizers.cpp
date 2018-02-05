@@ -184,6 +184,7 @@ pFINALIZE *gpFinalize[]
   /*145 */ &Finalize::vUndefined,         // CN_TX
   /*146 */ &Finalize::vUndefined,         // CN_TXSET
   
+  /*    */ &Finalize::vUndefined,         // CN_WILDERNESS
   /*147 */ &Finalize::vUndefined,         // CN_WORD
   
   /*148 */ &Finalize::vUndefined,         // CN_ZSMALL_

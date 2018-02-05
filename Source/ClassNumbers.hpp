@@ -187,6 +187,7 @@ namespace Base
     /*145 */ CN_TX,
     /*146 */ CN_TXSET,
 
+    /*    */ CN_WILDERNESS,
     /*147 */ CN_WORD,
     
     /*148 */ CN_ZSMALL_,
@@ -375,6 +376,7 @@ namespace Base
     /*131 */ "TX"_Stz,
     /*132 */ "TXSET"_Stz,
     
+    /*    */ "WILDERNESS"_Stz,
     /*133 */ "WORD"_Stz,
     
     /*134 */ "ZSMALL_"_Stz,

@@ -187,6 +187,7 @@ pDUMPFUN *gpDump[]
   /*131 */ &Tx::vDump,              // CN_TX
   /*132 */ &Dump::vUndefined,       // CN_TXSET
 
+  /*    */ &Dump::vInvalid,         // CN_WILDERNESS
   /*133 */ &Word::vDump,            // CN_WORD
   
   /*134 */ &Dump::vUndefined,       // CN_ZSMALL_
@@ -374,6 +375,7 @@ i8 giClassSize[]
   /*131 */ sizeof(Tx),                 // CN_TX
   /*132 */ sizeof(TxSet),              // CN_TXSET
 
+  /*    */ 0,                          // CN_WILDERNESS
   /*133 */ sizeof(Word),               // CN_WORD
 
   /*134 */ C_SIZE_SMALL_OBJECT  - 256, // CN_ZSMALL_
@@ -561,6 +563,7 @@ eHT geWhichHeap[]
   /*131 */ HT_TRANSIENT_SMALL,   // CN_TX
   /*132 */ HT_TRANSIENT_SMALL,   // CN_TXSET
   
+  /*    */ HT_INVALID,           // CN_WILDERNESS
   /*133 */ HT_TRANSIENT_MEDIUM,  // CN_WORD
   
   /*134 */ HT_INVALID,           // CN_ZSMALL_
