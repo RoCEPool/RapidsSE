@@ -485,7 +485,8 @@ Entry* EntryBuffer_v3::pInsertKey_v3(KeyWrk_v2& xKeyWrk)
   Entry* xPriorVec[3];
 
   // find the entry after which the new entry.key will be inserted
-  vPositionPrior_v3(xKeyWrk.aKey(), xPriorVec);
+  Key* aKey = xKeyWrk.aKey();
+  vPositionPrior_v3(aKey, xPriorVec);
   vDumpPriorVec(xPriorVec);
   
   // set no of offsets in working key
@@ -578,15 +579,26 @@ void EntryBuffer_v3::vPositionPrior_v3(Key* aFindKey, Entry* pPriorVec[])
   i8 nKeyCols = pIdxColVec->nItems();
   
   ln nScanLevel(0);
+  bool bIsJuxta;
+  bool bIsEqual;
   
   Entry* pNextEntry_sl = m_pFirstEntry;
-  
   while (pNextEntry_sl) {
   
     Key* aNextKey = pNextEntry_sl->aKey_v2();
     
     aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
     aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
+    
+    bIsJuxta =
+      aNextKey->bJuxtaCompare(JC_AFTER,aFindKey,pIdxColVec,nKeyCols,bIsEqual);
+    
+    if (bIsJuxta)
+      break;
+    
+    pPriorVec[*nScanLevel] = pNextEntry_sl;
+
+    pNextEntry_sl = pNextEntry(pNextEntry_sl,*nScanLevel);
   }
   
   /*
