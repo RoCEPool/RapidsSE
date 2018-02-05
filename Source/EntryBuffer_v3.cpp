@@ -579,7 +579,7 @@ void EntryBuffer_v3::vPositionPrior_v3(Key* aFindKey, Entry* pPriorVec[])
   bool bIsJuxta;
   bool bIsEqual;
   
-  Entry* pNextEntry_sl = m_pFirstEntry;
+  Entry* pNextEntry_sl = pNextEntry(m_pHeadEntry,*nScanLevel);
   while (pNextEntry_sl) {
   
     Key* aNextKey = pNextEntry_sl->aKey_v2();
@@ -1140,10 +1140,14 @@ void DBobjects::vEntryBuffer_v3_UnitTest(Table* pTable)
   KeyWrk_v2 xKeyWrk;
 
   // keys in ascending order
-  for (i8 iInt = 0; iInt <= 9; iInt++) {
+  //for (i8 iInt = 0; iInt <= 9; iInt++) {
     
   // keys in descending order
   //for (i8 iInt = 9; iInt >= 0; iInt--) {
+    
+  // keys in random order
+  for (i8 iCount = 0; iCount <= 10; iCount++) {
+    i8 iInt = Random::iRandom(10);
     
     i8 iKey = iInt;
   
