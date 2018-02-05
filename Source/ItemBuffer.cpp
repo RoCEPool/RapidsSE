@@ -33,6 +33,8 @@ ItemBuffer::ItemBuffer(eCN eClassNo)
   m_xWsp.vZero(eClassNo);
 #endif
   
+  vSetWilderness();
+  
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
   //  _checkInitialised_(eClassNo);
@@ -75,6 +77,8 @@ char* ItemBuffer::aAllotSpace(i8 nBytes)
     return nullptr;
   
   char* aSpace = m_xWsp.aAllot(nBytes);
+  
+  vSetWilderness();
   
   return aSpace;
 }
@@ -155,6 +159,25 @@ i8 ItemBuffer::nUsedBytes(void)
   i8 nBytes = m_xWsp.nUsed();
   
   return nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* set wilderness marker                                                      */
+/*----------------------------------------------------------------------------*/
+void ItemBuffer::vSetWilderness(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  if (nFreeBytes() < (i8)sizeof(Wilderness))
+    return;
+  
+  Wilderness* aWilderness = reinterpret_cast<Wilderness*>(m_xWsp.aLatter());
+  
+  new(aWilderness) Wilderness;
 }
 
 /*============================================================================*/

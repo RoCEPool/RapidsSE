@@ -8,7 +8,7 @@ namespace DBobjects
   class ItemBuffer : public Object
   {
   protected:
-  i8 m_nItems; // number of items in this buffer
+    i8 m_nItems; // number of items in this buffer
 
   WspFxd<C_SIZE_LARGE_OBJECT - C_1KB> m_xWsp;
   
@@ -24,6 +24,9 @@ namespace DBobjects
     i8     nItems(void);
     Item*  pNextItem(Item* pCurrentItem);
     i8     nUsedBytes(void);
+  
+  private:
+    void   vSetWilderness(void);
   };
   
   ItemBuffer* _pItemBuffer(void* aAddr);

@@ -375,7 +375,7 @@ i8 giClassSize[]
   /*131 */ sizeof(Tx),                 // CN_TX
   /*132 */ sizeof(TxSet),              // CN_TXSET
 
-  /*    */ 0,                          // CN_WILDERNESS
+  /*    */ sizeof(Wilderness),         // CN_WILDERNESS
   /*133 */ sizeof(Word),               // CN_WORD
 
   /*134 */ C_SIZE_SMALL_OBJECT  - 256, // CN_ZSMALL_

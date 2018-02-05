@@ -58,6 +58,7 @@ typedef Vector<CN_ENTRYVEC,Entry,CN_ENTRY,C_FLAT_LEVELS_MAX,ln> EntryVec;
 #include "EntryBuffer_v3.hpp"
 #include "IndexData.hpp"
 #include "FreeEntry.hpp"
+#include "Wilderness.hpp"
 
 #include "ResultRow.hpp"
 #include "ResultBuffer.hpp"
