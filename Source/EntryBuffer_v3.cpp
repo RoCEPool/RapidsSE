@@ -436,6 +436,15 @@ void EntryBuffer_v3::vCompactBuffer(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* delete the given entry                                                     */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer_v3::vDeleteEntry(Entry* pEntry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the absolute first entry in the buffer (could be a free entry etc)     */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer_v3::pFirstEntryAny(void)

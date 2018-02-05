@@ -98,6 +98,7 @@ namespace DBobjects
     //void         vBufferCount(i8& nBufferCount);
     void           vCompactBuffer(void);
     //i8           iDecile(void);
+    void           vDeleteEntry(Entry* pEntry);
     //void         vDump(void);
     Entry*         pFirstEntryAny(void);
     bool           bHasSpace(i8 nBytes);
