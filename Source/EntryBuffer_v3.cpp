@@ -417,7 +417,7 @@ Entry* EntryBuffer_v3::pAppendRow_v3(EntWrk_v2& xRowWrk)
 /*----------------------------------------------------------------------------*/
 /* attempt to append a new row entry into this buffer                         */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer_v3::pAppendRow_v3a(i8 iTxId, Stz* aRow, i8 iLength)
+Entry* EntryBuffer_v3::pAppendRow_v3a(i8 iTxId, Stz* aRow, i8 iRowLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -428,7 +428,7 @@ Entry* EntryBuffer_v3::pAppendRow_v3a(i8 iTxId, Stz* aRow, i8 iLength)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if this buffer has enough space
   i8 nOffsetBytes = sizeof(i4);
-  i8 nEntryBytes = Entry::nBytesRequired_v3(nOffsets, iLength);
+  i8 nEntryBytes = Entry::nBytesRequired_v3(nOffsets, iRowLength);
   i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
   
   if ( ! bHasSpace(nEntryPlusOffsets) )
@@ -452,7 +452,7 @@ Entry* EntryBuffer_v3::pAppendRow_v3a(i8 iTxId, Stz* aRow, i8 iLength)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the buffer entry
   
-  pRowEntry->vSetEntry_v3(iTxId, xRowId, nOffsets, aRow, iLength);
+  pRowEntry->vSetEntry_v3(iTxId, xRowId, nOffsets, aRow, iRowLength);
   pRowEntry->vShow_v2(0, m_pIndex, true);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -623,6 +623,93 @@ Entry* EntryBuffer_v3::pInsertKey_v3(KeyWrk_v2& xKeyWrk)
     
     i8 iPriorOffset = xPriorVec[iNextOffset]->iNEO(iNextOffset);
 
+    pKeyEntry->vNEO(iNextOffset,iPriorOffset);
+    
+    xPriorVec[iNextOffset]->vNEO(iNextOffset,iKeyEntryOffset);
+  }
+  
+  return pKeyEntry;
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt to insert a new key entry into this buffer                         */
+/*----------------------------------------------------------------------------*/
+Entry* EntryBuffer_v3::pInsertKey_v3a(i8 iTxId, Key* aKey, i8 iKeyLength)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  vTrace("Inserting key:\n"_Stz);
+  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  //xKeyWrk.vShow(pIdxColVec);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // insert a new entry into the skip list
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 1 offset
+  //i8 nOffsets = 1;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 2 offsets
+  //i8 nOffsets = Random::iLogLevel(gpAttachMap->m_nIndexOffsets,C_FLAT_FREQ + 1);
+  i8 nOffsets = Random::iLogLevel(3,C_FLAT_FREQ + 1) + 1;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 3 offsets
+  //i8 nOffsets = Random::iLogLevel(gpAttachMap->m_nIndexOffsets+1,C_FLAT_FREQ) + 1;
+  
+  Entry* xPriorVec[3];
+  
+  // find the entry after which the new entry.key will be inserted
+  //Key* aKey = xKeyWrk.aKey();
+  vPositionPrior_v3(aKey, xPriorVec);
+  vDumpPriorVec(xPriorVec);
+  
+  // set no of offsets in working key
+  //xKeyWrk.vOffsets(nOffsets); // 1,2 or 3 for the moment
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if this buffer has enough space
+  i8 nEntryBytes = Entry::nBytesRequired_v3(nOffsets, iKeyLength);
+  
+  i8 nOffsetBytes = nOffsets*sizeof(i4); //xKeyWrk.nOffsetSize();
+  
+  i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
+  if ( ! bHasSpace(nEntryPlusOffsets) )
+    return nullptr;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // form the rowId
+  
+  bn nBufferNo = this->nBufferNo();
+  i8 nRowNo = iGetFreeEntry(); //nItems();
+  Id xRowId(*nBufferNo, nRowNo);
+  
+  //xKeyWrk.vId(xRowId);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // allocate space in this buffer
+  
+  Entry* pKeyEntry = pAllotEntryBytes(nEntryBytes);
+  ASSERT(pKeyEntry);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the key entry
+  
+  //pKeyEntry->vSetEntry(xKeyWrk);
+  pKeyEntry->vSetEntry_v3(iTxId, xRowId, nOffsets, (Stz*)aKey, iKeyLength);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set prior offsets
+  
+  i8 iKeyEntryOffset = iToOffsetAbs(pKeyEntry);
+  
+  NEO* aNEO = aAllotNEO(nOffsetBytes);
+  
+  for (i8 iNextOffset = 0; iNextOffset < nOffsets; iNextOffset++) {
+    
+    i8 iPriorOffset = xPriorVec[iNextOffset]->iNEO(iNextOffset);
+    
     pKeyEntry->vNEO(iNextOffset,iPriorOffset);
     
     xPriorVec[iNextOffset]->vNEO(iNextOffset,iKeyEntryOffset);
@@ -1298,7 +1385,7 @@ void DBobjects::vEntryBuffer_v3_UnitTest(Table* pTable)
     
     if ( ! pRowEntry ) {
       pCurrentBuffer = pCurrentBuffer->pNewNextBuffer();
-      pRowEntry = pCurrentBuffer->pAppendRow_v3(xRowEntWrk);
+      pRowEntry = pCurrentBuffer->pAppendRow_v3a(0, (Stz*)aRowData, iRowLength);
       ASSERT(pRowEntry);
     }
     
@@ -1306,7 +1393,10 @@ void DBobjects::vEntryBuffer_v3_UnitTest(Table* pTable)
     pRowEntry->vExtractIndexKey_v2(xKeyWrk,pIdxColVec1);
     //xKeyWrk.vShow(pIdxColVec1);
     
-    Entry* pKeyEntry = pCurrentIndexBuffer->pInsertKey_v3(xKeyWrk);
+    //Entry* pKeyEntry = pCurrentIndexBuffer->pInsertKey_v3(xKeyWrk);
+    
+    Entry* pKeyEntry = pCurrentIndexBuffer->pInsertKey_v3a(0, xKeyWrk.aKey(), xKeyWrk.nKeySize());
+    
 //    if ( ! pKeyEntry ) {
 //      pCurrentIndexBuffer = pCurrentIndexBuffer->pNewNextBuffer();
 //      pKeyEntry = pCurrentIndexBuffer->pInsertKey_v3(xKeyWrk);
