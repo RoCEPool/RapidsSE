@@ -669,7 +669,7 @@ void Entry::vShow_v2(i8 iBase, Index* pIndex, bool bShowKey)
 /*----------------------------------------------------------------------------*/
 /* show content                                                               */
 /*----------------------------------------------------------------------------*/
-void Entry::vShow_v3(i8 iBase, Index* pIndex, bool bShowKey)
+void Entry::vShow_v3(i8 iOffset, Index* pIndex, bool bShowKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
@@ -684,7 +684,8 @@ void Entry::vShow_v3(i8 iBase, Index* pIndex, bool bShowKey)
   //    DtmLib::nCopy(DM_INT,&iKey,aKey,nullptr);
   //  }
   
-  vTrace("Entry v3: %p Size: %llu Offsets: %llu "_Stz,
+  vTrace("%lld: Entry v3: %p Size: %llu Offsets: %llu "_Stz,
+         iOffset,
          this,
          nSizeEntry(),
          m_nOffsets

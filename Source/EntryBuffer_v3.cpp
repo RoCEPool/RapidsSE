@@ -528,15 +528,12 @@ Entry* EntryBuffer_v3::pInsertKey_v3(KeyWrk_v2& xKeyWrk)
   i8 iKeyEntryOffset = iToOffsetAbs(pKeyEntry);
   
   NEO* aNEO = aAllotNEO(nOffsetBytes);
-  if (m_pLastEntry)
-    m_pLastEntry->vNEO(0,iKeyEntryOffset);
-  pKeyEntry->vNEO(0,-1);
+
+  i8 iPriorOffset = xPriorVec[0]->iNEO(0);
+  
+  pKeyEntry->vNEO(0,iPriorOffset);
   
   xPriorVec[0]->vNEO(0,iKeyEntryOffset);
-  
-  if (! m_pFirstEntry)
-    m_pFirstEntry = pKeyEntry;
-  m_pLastEntry = pKeyEntry;
   
   return pKeyEntry;
 }
@@ -687,31 +684,44 @@ void EntryBuffer_v3::vShow(void)
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);
   
-  vTrace("\n"_Stz);
-  vTrace("Entries (by EntryOffset array):\n"_Stz);
-  for (i8 i_Entry = 0; i_Entry != C_ENTRIES_0_V3; i_Entry++) {
-
-    if (m_pEntryOffset0[i_Entry] <= 0)
-      continue;
-
-    Entry* pEntry = pGetEntry(i_Entry, 0_ln);
-    vTrace("%4lld %8lld: "_Stz,i_Entry, nSub(pEntry,m_xWsp.aArea()));
-    i8 iOffset = iToOffsetAbs(pEntry);
-    pEntry->vShow_v3(iOffset,m_pIndex,true);
-  }
-  
-  vTrace("\n"_Stz);
-  vTrace("Entries (by next offset):\n"_Stz);
-  
-  for (Entry* pEntry = m_pFirstEntry; pEntry; ) {
+  if (m_pHeadEntry) {
     
-    i8 iOffset = iToOffsetAbs(pEntry);
-    vTrace("%8lld: "_Stz,iOffset);
-    pEntry->vShow_v3(iOffset,m_pIndex,true);
-    
-    pEntry = pNextEntry(pEntry,0);
+    vTrace("\n"_Stz);
+    vTrace("Entries (by headEntry vector):\n"_Stz);
+   
+    i8 iOffset = m_pHeadEntry->iNEO(0);
+    while (iOffset > -1) {
+      Entry* pEntry = pGetEntry(iOffset);
+      pEntry->vShow_v3(iOffset,m_pIndex,true);
+      iOffset = pEntry->iNEO(0);
+    }
   }
-  
+  else {
+    vTrace("\n"_Stz);
+    vTrace("Entries (by EntryOffset array):\n"_Stz);
+    for (i8 i_Entry = 0; i_Entry != C_ENTRIES_0_V3; i_Entry++) {
+
+      if (m_pEntryOffset0[i_Entry] <= 0)
+        continue;
+
+      Entry* pEntry = pGetEntry(i_Entry, 0_ln);
+      vTrace("%4lld %8lld: "_Stz,i_Entry, nSub(pEntry,m_xWsp.aArea()));
+      i8 iOffset = iToOffsetAbs(pEntry);
+      pEntry->vShow_v3(iOffset,m_pIndex,true);
+    }
+    
+    vTrace("\n"_Stz);
+    vTrace("Entries (by next offset):\n"_Stz);
+    
+    for (Entry* pEntry = m_pFirstEntry; pEntry; ) {
+      
+      i8 iOffset = iToOffsetAbs(pEntry);
+      vTrace("%8lld: "_Stz,iOffset);
+      pEntry->vShow_v3(iOffset,m_pIndex,true);
+      
+      pEntry = pNextEntry(pEntry,0);
+    }
+  }
   
   if (gpAttachMap->m_nIndexEntries) {
     vTrace("\n"_Stz);
@@ -941,6 +951,19 @@ void EntryBuffer_v3::vFreeChains(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get an entry by offset                                                     */
+/*----------------------------------------------------------------------------*/
+Entry* EntryBuffer_v3::pGetEntry(i8 iOffset)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  char* aAddress = pAdd<char*>(aDataArea(), iOffset);
+  Entry* pEntry = reinterpret_cast<Entry*>(aAddress);
+  
+  return pEntry;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get an entry by number                                                     */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer_v3::pGetEntry(i8 iEntryNo, ln nLevelNo)
@@ -1118,6 +1141,10 @@ void DBobjects::vEntryBuffer_v3_UnitTest(Table* pTable)
 
   // keys in ascending order
   for (i8 iInt = 0; iInt <= 9; iInt++) {
+    
+  // keys in descending order
+  //for (i8 iInt = 9; iInt >= 0; iInt--) {
+    
     i8 iKey = iInt;
   
     sprintf(sRecData.aChar(),"%lld,%s,1900-01-01 00:00:%lld",

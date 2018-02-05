@@ -134,6 +134,7 @@ namespace DBobjects
     //void         vFixHigherLevel(Entry* aNewEntry);
     //void         vFixPriorOffset(EntryVec* pPriorVec, Entry* aNewEntry);
     void           vFreeChains(void);
+    Entry*         pGetEntry(i8 iOffset);
     Entry*         pGetEntry(i8 iEntryNo, ln nLevelNo);
     i4             iGetFreeEntry(void);
     void           vHeadEntry(void);
