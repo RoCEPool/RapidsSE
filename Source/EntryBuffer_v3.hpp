@@ -137,6 +137,7 @@ namespace DBobjects
     Entry*         pGetEntry(i8 iOffset);
     Entry*         pGetEntry(i8 iEntryNo, ln nLevelNo);
     i4             iGetFreeEntry(void);
+    Entry*         pGetSplitEntry(i8 iSplitEntryNo);
     void           vHeadEntry(void);
     //void         vMoveLeft(void* aDst, i8 nBytes);
     //void         vMoveRight(void* aSrc, i8 nBytes);

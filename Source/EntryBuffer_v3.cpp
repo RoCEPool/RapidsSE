@@ -1008,6 +1008,26 @@ Entry* EntryBuffer_v3::pGetEntry(i8 iEntryNo, ln nLevelNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get split entry by number                                                  */
+/*----------------------------------------------------------------------------*/
+Entry* EntryBuffer_v3::pGetSplitEntry(i8 iSplitEntryNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  i8 iEntryNo = 0;
+  for (Entry* pSplitEntry = pFirstEntry();
+       pSplitEntry;
+       pSplitEntry = this->pNextEntry(pSplitEntry,0)) {
+    
+    // found split point?
+    if (iEntryNo++ == iSplitEntryNo)
+      return pSplitEntry;
+  }
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get a free entry (or C_ENTRY_NONE if none)                                 */
 /*----------------------------------------------------------------------------*/
 i4 EntryBuffer_v3::iGetFreeEntry(void)
