@@ -472,7 +472,7 @@ Entry* EntryBuffer_v3::pInsertKey_v3(KeyWrk_v2& xKeyWrk)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1 offset
-  i8 nOffsets = 3;
+  i8 nOffsets = 1;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 2 offsets
@@ -528,12 +528,15 @@ Entry* EntryBuffer_v3::pInsertKey_v3(KeyWrk_v2& xKeyWrk)
   i8 iKeyEntryOffset = iToOffsetAbs(pKeyEntry);
   
   NEO* aNEO = aAllotNEO(nOffsetBytes);
+  
+  for (i8 iNextOffset = 0; iNextOffset < nOffsets; iNextOffset++) {
 
-  i8 iPriorOffset = xPriorVec[0]->iNEO(0);
-  
-  pKeyEntry->vNEO(0,iPriorOffset);
-  
-  xPriorVec[0]->vNEO(0,iKeyEntryOffset);
+    i8 iPriorOffset = xPriorVec[iNextOffset]->iNEO(iNextOffset);
+
+    pKeyEntry->vNEO(iNextOffset,iPriorOffset);
+    
+    xPriorVec[iNextOffset]->vNEO(iNextOffset,iKeyEntryOffset);
+  }
   
   return pKeyEntry;
 }
@@ -575,27 +578,30 @@ void EntryBuffer_v3::vPositionPrior_v3(Key* aFindKey, Entry* pPriorVec[])
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   i8 nKeyCols = pIdxColVec->nItems();
   
-  ln nScanLevel(0);
   bool bIsJuxta;
   bool bIsEqual;
-  
-  Entry* pNextEntry_sl = pNextEntry(m_pHeadEntry,*nScanLevel);
-  while (pNextEntry_sl) {
-  
-    Key* aNextKey = pNextEntry_sl->aKey_v2();
-    
-    aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
-    aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
-    
-    bIsJuxta =
-      aNextKey->bJuxtaCompare(JC_AFTER,aFindKey,pIdxColVec,nKeyCols,bIsEqual);
-    
-    if (bIsJuxta)
-      break;
-    
-    pPriorVec[*nScanLevel] = pNextEntry_sl;
 
-    pNextEntry_sl = pNextEntry(pNextEntry_sl,*nScanLevel);
+  ln nScanLevel;
+  for (nScanLevel = 0; *nScanLevel >= 0; nScanLevel--) {
+
+    Entry* pNextEntry_sl = pNextEntry(m_pHeadEntry,*nScanLevel);
+    while (pNextEntry_sl) {
+    
+      Key* aNextKey = pNextEntry_sl->aKey_v2();
+      
+      aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
+      aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
+      
+      bIsJuxta =
+        aNextKey->bJuxtaCompare(JC_AFTER,aFindKey,pIdxColVec,nKeyCols,bIsEqual);
+      
+      if (bIsJuxta)
+        break;
+      
+      pPriorVec[*nScanLevel] = pNextEntry_sl;
+
+      pNextEntry_sl = pNextEntry(pNextEntry_sl,*nScanLevel);
+    }
   }
   
   /*
@@ -1140,14 +1146,14 @@ void DBobjects::vEntryBuffer_v3_UnitTest(Table* pTable)
   KeyWrk_v2 xKeyWrk;
 
   // keys in ascending order
-  //for (i8 iInt = 0; iInt <= 9; iInt++) {
+  for (i8 iInt = 0; iInt <= 9; iInt++) {
     
   // keys in descending order
   //for (i8 iInt = 9; iInt >= 0; iInt--) {
     
   // keys in random order
-  for (i8 iCount = 0; iCount <= 10; iCount++) {
-    i8 iInt = Random::iRandom(10);
+  //for (i8 iCount = 0; iCount <= 10; iCount++) {
+  //  i8 iInt = Random::iRandom(10);
     
     i8 iKey = iInt;
   
