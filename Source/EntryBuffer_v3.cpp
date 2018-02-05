@@ -415,6 +415,65 @@ Entry* EntryBuffer_v3::pAppendRow_v3(EntWrk_v2& xRowWrk)
 }
 
 /*----------------------------------------------------------------------------*/
+/* attempt to append a new row entry into this buffer                         */
+/*----------------------------------------------------------------------------*/
+Entry* EntryBuffer_v3::pAppendRow_v3a(i8 iTxId, Stz* aRow, i8 iLength)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  ASSERT(nBufferLevel() == 0);
+  
+  i8 nOffsets = 1;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if this buffer has enough space
+  i8 nOffsetBytes = sizeof(i4);
+  i8 nEntryBytes = Entry::nBytesRequired_v3(nOffsets, iLength);
+  i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
+  
+  if ( ! bHasSpace(nEntryPlusOffsets) )
+    return nullptr;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // form the rowId
+  
+  bn nBufferNo = this->nBufferNo();
+  i8 nRowNo = iGetFreeEntry(); //nItems();
+  Id xRowId(*nBufferNo, nRowNo);
+  
+  //xRowWrk.vId(xRowId);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // allocate space in this buffer
+  
+  Entry* pRowEntry = pAllotEntryBytes(nEntryBytes);
+  ASSERT(pRowEntry);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the buffer entry
+  
+  pRowEntry->vSetEntry_v3(iTxId, xRowId, nOffsets, aRow, iLength);
+  pRowEntry->vShow_v2(0, m_pIndex, true);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set entry offsets
+  
+  i8 iEntryOffset = iToOffsetAbs(pRowEntry);
+  m_pEntryOffset0[nRowNo] = iEntryOffset;
+  
+  NEO* aNEO = aAllotNEO(nOffsetBytes);
+  if (m_pLastEntry)
+    m_pLastEntry->vNEO(0,iEntryOffset);
+  pRowEntry->vNEO(0,-1);
+  
+  if (! m_pFirstEntry)
+    m_pFirstEntry = pRowEntry;
+  m_pLastEntry = pRowEntry;
+  
+  return pRowEntry;
+}
+
+/*----------------------------------------------------------------------------*/
 /* return number of index buffers under this buffer                           */
 /*----------------------------------------------------------------------------*/
 
@@ -1147,14 +1206,14 @@ void DBobjects::vEntryBuffer_v3_UnitTest(Table* pTable)
   KeyWrk_v2 xKeyWrk;
 
   // keys in ascending order
-  for (i8 iInt = 0; iInt <= 100; iInt++) {
+  //for (i8 iInt = 0; iInt <= 100; iInt++) {
     
   // keys in descending order
-  //for (i8 iInt = 9; iInt >= 0; iInt--) {
+  //for (i8 iInt = 100; iInt >= 0; iInt--) {
     
   // keys in random order
-  //for (i8 iCount = 0; iCount <= 10; iCount++) {
-  //  i8 iInt = Random::iRandom(10);
+  for (i8 iCount = 0; iCount <= 100; iCount++) {
+    i8 iInt = Random::iRandom(10);
     
     i8 iKey = iInt;
   
@@ -1164,15 +1223,19 @@ void DBobjects::vEntryBuffer_v3_UnitTest(Table* pTable)
   
     char* aRowData = xRowEntWrk.aData_v2();
     iRecLength = sRecData.iLength();
+    
     bFormatted = Row::bFormatRow(pColVec,pFormatters,
                                  sRecData,iRecLength,
                                  (Stz*)aRowData,iRowLength,
                                  bBlankLine);
-    
+
     xRowEntWrk.vDataSize(iRowLength);
     ((Row*)aRowData)->vDump(pColVec);
+
+    //Entry* pRowEntry = pCurrentBuffer->pAppendRow_v3(xRowEntWrk);
     
-    Entry* pRowEntry = pCurrentBuffer->pAppendRow_v3(xRowEntWrk);
+    Entry* pRowEntry = pCurrentBuffer->pAppendRow_v3a(0, (Stz*)aRowData, iRowLength);
+    
     if ( ! pRowEntry ) {
       pCurrentBuffer = pCurrentBuffer->pNewNextBuffer();
       pRowEntry = pCurrentBuffer->pAppendRow_v3(xRowEntWrk);

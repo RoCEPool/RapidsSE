@@ -115,12 +115,10 @@ i8 Entry::nBytesRequired(EntWrk_v2& xEntWrk_v2)
 i8 Entry::nBytesRequired_v3(EntWrk_v2& xEntWrk_v2)
 {
   //i8 nOffsetBytes = xEntWrk_v2.nOffsetSize();
-    
-  i8 nKeyBytes = 0; //xEntWrk_v2.nKeySize();                         ALKA!!!
   
   i8 nDataBytes = xEntWrk_v2.nDataSize();
   
-  i8 nBytes = Entry::nBytesRequired_v3(nKeyBytes,nDataBytes);
+  i8 nBytes = Entry::nBytesRequired_v3(nDataBytes);
   
   return nBytes;
 }
@@ -146,10 +144,26 @@ i8 Entry::nBytesRequired(i8 nOffsets, i8 nKeyBytes, i8 nDataBytes)
 /*----------------------------------------------------------------------------*/
 /* get total bytes required for entry incl Object & Footer                    */
 /*----------------------------------------------------------------------------*/
-i8 Entry::nBytesRequired_v3(i8 nKeyBytes, i8 nDataBytes)
+i8 Entry::nBytesRequired_v3(i8 nOffsets, i8 nDataBytes)
+{
+  i8 nOffsetBytes = RightVec::nBytesRequired(nOffsets);
+  
+  //# ASSERT(nOffsets >= 1);
+  
+  i8 nBytes = sizeof(Entry)
+  + nOffsetBytes
+  + nDataBytes
+  + sizeof(Footer);
+  
+  return nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get total bytes required for entry incl Object & Footer                    */
+/*----------------------------------------------------------------------------*/
+i8 Entry::nBytesRequired_v3(i8 nDataBytes)
 {
   i8 nEntryBytes = sizeof(Entry)
-                     + nKeyBytes
                      + nDataBytes
                      + sizeof(Footer);
   
@@ -511,6 +525,31 @@ void Entry::vSetEntry(EntWrk_v2& xEntWrk_v2)
 
   if (nDataSize)
     MemLib::vCopy(aEntryData,aEntWrkData,nDataSize,eClass());
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set entry given working entry                                              */
+/*----------------------------------------------------------------------------*/
+void Entry::vSetEntry_v3(i8 xTxId, Id xId, i8 nOffsets, Stz* aData, i8 nDataSize)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  ASSERT(nSizeItem());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set id, transaction and offsets
+  m_xId = xId;
+  m_iTxId = xTxId;
+  m_nOffsets = nOffsets;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy row
+  char* aEntryData = (char*)this->aRow_v2();
+  
+  if (nDataSize)
+    MemLib::vCopy(aEntryData,aData,nDataSize,eClass());
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
 }
