@@ -956,7 +956,19 @@ void EntryBuffer_v3::vShow(void)
              i_Entry,m_pEntryOffset0[i_Entry]);
     }
   }
-    
+  
+  if (m_pFirstFree) {
+    vTrace("\n"_Stz);
+    vTrace("FreeEntries:\n"_Stz);
+    for (FreeEntry* pFreeEntry = pFirstFree();
+         pFreeEntry != nullptr;
+         pFreeEntry = pFreeEntry->pNextFree()) {
+      vTrace("  %p bytes: %lld next: %p prev: %p\n"_Stz,
+             pFreeEntry,pFreeEntry->nSizeItem(),
+             pFreeEntry->pNextFree(),pFreeEntry->pPrevFree());
+    }
+  }
+  
   vTrace("\n"_Stz);
   vTrace("=================================================="
          "==================================================\n"_Stz);
@@ -1215,6 +1227,23 @@ Entry* EntryBuffer_v3::pGetEntry(i8 iEntryNo, ln nLevelNo)
     default:
       ASSERT(0);
   }
+  
+  return pEntry;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get an entry by row number                                                 */
+/*----------------------------------------------------------------------------*/
+Entry* EntryBuffer_v3::pGetEntryRow(i8 iRowNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  i8 iOffset = m_pEntryOffset0[iRowNo];
+  
+  if (iOffset < 0)
+    return nullptr;
+  
+  Entry* pEntry = pGetEntry(iOffset);
   
   return pEntry;
 }

@@ -140,6 +140,7 @@ namespace DBobjects
     void           vFreeChains(void);
     Entry*         pGetEntry(i8 iOffset);
     Entry*         pGetEntry(i8 iEntryNo, ln nLevelNo);
+    Entry*         pGetEntryRow(i8 iRowNo);
     i4             iGetFreeEntry(void);
     Entry*         pGetSplitEntry(i8 iSplitEntryNo);
     void           vHeadEntry(void);
