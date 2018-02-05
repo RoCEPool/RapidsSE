@@ -478,12 +478,42 @@ Entry* EntryBuffer_v3::pAppendRow_v3a(i8 iTxId, Stz* aRow, i8 iLength)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* compact this buffer                                                        */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer_v3::vCompactBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* get decile full of the buffer                                              */
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* delete the given entry                                                     */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer_v3::vDeleteEntry(Entry* pEntry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the absolute first entry in the buffer (could be a free entry etc)     */
+/*----------------------------------------------------------------------------*/
+Entry* EntryBuffer_v3::pFirstEntryAny(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  Entry* pFirstEntry = pNextEntryAny(m_pHeadEntry);
+  
+  return pFirstEntry;
+}
 
 /*----------------------------------------------------------------------------*/
 /* set up the initial offset free chains                                      */
@@ -620,6 +650,16 @@ Entry* EntryBuffer_v3::pNextEntry(Entry* pCurrent, i8 nOffsetNo)
   Entry* pEntry = reinterpret_cast<Entry*>(aAddress);
 
   return pEntry;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the absolute next entry in the buffer (could be a free entry etc)      */
+/*----------------------------------------------------------------------------*/
+Entry* EntryBuffer_v3::pNextEntryAny(Entry* pCurrent)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1064,6 +1104,26 @@ Entry* EntryBuffer_v3::pGetEntry(i8 iEntryNo, ln nLevelNo)
   }
   
   return pEntry;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get split entry by number                                                  */
+/*----------------------------------------------------------------------------*/
+Entry* EntryBuffer_v3::pGetSplitEntry(i8 iSplitEntryNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  i8 iEntryNo = 0;
+  for (Entry* pSplitEntry = pFirstEntry();
+       pSplitEntry;
+       pSplitEntry = this->pNextEntry(pSplitEntry,0)) {
+    
+    // found split point?
+    if (iEntryNo++ == iSplitEntryNo)
+      return pSplitEntry;
+  }
+  
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
