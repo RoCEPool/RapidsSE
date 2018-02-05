@@ -96,6 +96,7 @@ namespace DBobjects
     Entry*         pAppendRow_v3(EntWrk_v2& xEntWrk_v2);
     //bool         bAppendRow(i8 iTxId, Stz* pRow, i8 iLength);
     //void         vBufferCount(i8& nBufferCount);
+    void           vCompactBuffer(void);
     //i8           iDecile(void);
     //void         vDump(void);
     
