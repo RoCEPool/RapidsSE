@@ -484,6 +484,68 @@ void EntryBuffer_v3::vCompactBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+  // scan item is the
+  Item* pScanItem = pFirstItem();
+  
+  // loop while we can still reclaim more space
+  for (;;) {
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // find the first free entry in buffer
+    
+    FreeEntry* pFirstFree = nullptr;
+    for (Item* pItem = pFirstItem();
+         pItem != nullptr;
+         pItem = pNextItem(pItem)) {
+    
+      eCN eClass = pItem->eClass();
+      
+      if (CN_FREEENTRY == eClass) {
+        pFirstFree = static_cast<FreeEntry*>(pItem);
+        break;
+      }
+    }
+    
+    // return early if no free entry because compaction is not possible
+    if (! pFirstFree )
+      return;
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // find the next entry in buffer after the first free entry
+    
+    FreeEntry* pNextEntry = nullptr;
+    for (Item* pItem = pNextItem(pFirstFree);
+         pItem != nullptr;
+         pItem = pNextItem(pItem)) {
+      
+      eCN eClass = pItem->eClass();
+      
+      if (CN_ENTRY == eClass) {
+        pFirstFree = static_cast<FreeEntry*>(pItem);
+        break;
+      }
+    }
+    
+    // return early if no entry because compaction is not possible
+    if (! pNextEntry )
+      return;
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // now copy left
+    
+    // calc the number of bytes
+    // i8 nBytesReclaimed;
+    
+    //MemLib::vCopy(pDst, pSrc, nBytes, CN_ENTRYBUFFER);
+    
+    // adjust free bytes in item buffer
+    // vGiveSpace(nBytesReclaimed);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // move scan 
+    
+  } // for
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1420,6 +1482,8 @@ void DBobjects::vEntryBuffer_v3_UnitTest(Table* pTable)
   pEntry = xKeyEntries[4];
   pCurrentIndexBuffer->vDeleteEntry(pEntry);
   pCurrentIndexBuffer->vShow();
+  
+  pCurrentIndexBuffer->vCompactBuffer();
 }
 
 /*============================================================================*/
