@@ -61,7 +61,6 @@ Item::~Item(void)
   _precondition_(_ADDRESS_,_MAGIC_);
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* get size in bytes of this item                                             */
 /*----------------------------------------------------------------------------*/
@@ -70,6 +69,18 @@ i8 Item::nSizeItem(void)
   _precondition_(_ADDRESS_,_MAGIC_); 
   
   return m_nSizeItem;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address after this item                                                */
+/*----------------------------------------------------------------------------*/
+char* Item::aAddressAfter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  char* aAfter = pAdd<char*>(this,m_nSizeItem);
+  
+  return aAfter;
 }
 
 /*============================================================================*/

@@ -101,7 +101,7 @@ namespace DBobjects
     //i8           iDecile(void);
     void           vDeleteEntry(Entry* pEntry);
     //void         vDump(void);
-    Entry*         pFirstEntryAny(void);
+    Item*          pFirstItem(void);
     Entry*         pGetEntryRow(i8 iRowNo);
     bool           bHasSpace(i8 nBytes);
     //bool         bInsert(EntWrk& xEntWrk);
@@ -113,7 +113,7 @@ namespace DBobjects
     EntryBuffer_v3* pNewNextBuffer(void);
   //Entry*         pNextEntry(Entry* pEntry);
     Entry*         pNextEntry(Entry* pEntry, i8 nOffsetNo);
-    Entry*         pNextEntryAny(Entry* pCurrent);
+    Item*          pNextItem(Item* pItem);
     //Entry*       pPosition(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare);
     //Entry*       pPosition(KeyWrk &xKeyWrk, eRO eRelOp);
     //EntryBuffer_v3* pPositionLevel(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare, i8 iLevel);

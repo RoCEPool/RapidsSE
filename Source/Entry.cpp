@@ -1266,6 +1266,24 @@ i8 Entry::iNEOsize(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get address after this entry                                               */
+/*----------------------------------------------------------------------------*/
+char* Entry::aAddressAfter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  i8 nEntryBytes = nSizeEntry();
+  
+  i8 nSizeNEO = iNEOsize();
+  
+  i8 nEntryPlusNEO = nEntryBytes + nSizeNEO;
+  
+  char* aAfter = pAdd<char*>(this,nEntryPlusNEO);
+  
+  return aAfter;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

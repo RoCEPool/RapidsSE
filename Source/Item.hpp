@@ -18,6 +18,8 @@ namespace DBobjects
     ~Item(void);
   
     i8 nSizeItem(void);
+  
+    char* aAddressAfter(void);
   };
   
   Item* _pItem(void* aAddr);

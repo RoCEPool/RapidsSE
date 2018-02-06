@@ -545,15 +545,15 @@ void EntryBuffer_v3::vDeleteEntry(Entry* pEntry)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the absolute first entry in the buffer (could be a free entry etc)     */
+/* get first item after head (could be entry, free entry or wilderness)       */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer_v3::pFirstEntryAny(void)
+Item* EntryBuffer_v3::pFirstItem(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  Entry* pFirstEntry = pNextEntryAny(m_pHeadEntry);
+  Item* pFirstItem = pNextItem(m_pHeadEntry);
   
-  return pFirstEntry;
+  return pFirstItem;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -781,13 +781,37 @@ Entry* EntryBuffer_v3::pNextEntry(Entry* pCurrent, i8 nOffsetNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the absolute next entry in the buffer (could be a free entry etc)      */
+/* get next item in buffer (could be entry, free entry, wilderness)           */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer_v3::pNextEntryAny(Entry* pCurrent)
+Item* EntryBuffer_v3::pNextItem(Item* pCurrent)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+
+  Item* pItemNext = nullptr;
   
-  return nullptr;
+  eCN eClass = pCurrent->eClass();
+  
+  switch (eClass) {
+    case CN_ENTRY: {
+      Entry* pEntryCurr = static_cast<Entry*>(pCurrent);
+      pItemNext = reinterpret_cast<Item*>(pEntryCurr->aAddressAfter());
+      break;
+    }
+      
+    case CN_FREEENTRY: {
+      FreeEntry* pFreeEntryCurr = static_cast<FreeEntry*>(pCurrent);
+      pItemNext = reinterpret_cast<Item*>(pFreeEntryCurr->aAddressAfter());
+      break;
+    }
+      
+    case CN_WILDERNESS:
+      break;
+      
+    default:
+      ASSERT(0);
+  }
+  
+  return pItemNext;
 }
 
 /*----------------------------------------------------------------------------*/

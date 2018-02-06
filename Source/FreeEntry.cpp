@@ -99,13 +99,27 @@ FreeEntry* FreeEntry::pPrevFree(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set prev free entry                                                       */
+/* set prev free entry                                                        */
 /*----------------------------------------------------------------------------*/
 void FreeEntry::vPrevFree(FreeEntry* pPrevFree)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FREEENTRY,_FOOTER_);
   
   m_pPrevFree = pPrevFree;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address after this freeEntry                                           */
+/*----------------------------------------------------------------------------*/
+char* FreeEntry::aAddressAfter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  i8 nFreeEntryBytes = nSizeItem();
+  
+  char* aAfter = pAdd<char*>(this,nFreeEntryBytes);
+  
+  return aAfter;
 }
 
 /*----------------------------------------------------------------------------*/

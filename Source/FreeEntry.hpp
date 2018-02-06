@@ -24,6 +24,8 @@ namespace DBobjects
     FreeEntry* pPrevFree(void);
     void       vPrevFree(FreeEntry* pPrevFree);
   
+    char* aAddressAfter(void);
+  
     Footer* aFooter(void);
 };
   
