@@ -1,9 +1,8 @@
 /*============================================================================*/
-/* KeyWrk.cpp -- Key Working Entry                                            */
+/* KeyWrk.cpp -- Key Working Object                                           */
 /*============================================================================*/
 
 #include "DBobjects.h"
-#include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -12,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* KeyWrk_v2::operator new(size_t iSize)
+void* KeyWrk::operator new(size_t iSize)
 {
   RASSERT(iSize);
   vFatal("fatal: KeyWrk class cannot be new'd\n"_Stz);
@@ -23,7 +22,7 @@ void* KeyWrk_v2::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* KeyWrk_v2::operator new(size_t iSize, KeyWrk_v2* pKeyWrk)
+void* KeyWrk::operator new(size_t iSize, KeyWrk* pKeyWrk)
 {
   RASSERT(iSize);
   return pKeyWrk;
@@ -32,16 +31,16 @@ void* KeyWrk_v2::operator new(size_t iSize, KeyWrk_v2* pKeyWrk)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-KeyWrk_v2::KeyWrk_v2(void)
-: EntWrk_v2(CN_KEYWRK)
+KeyWrk::KeyWrk(void)
+: Object(CN_KEYWRK)
 {
   _precondition_(_MAGIC_,CN_KEYWRK);
   
   _checkInitialisedSize_(sizeof(KeyWrk));
   
-//#ifdef __DEBUG_CHECKS
-  //m_xWsp.vFill(0,CN_KEYWRK);                                       ALKA!!!
-//#endif
+#ifdef __DEBUG_CHECKS
+  m_xWsp.vFill(0,CN_KEYWRK);
+#endif
   
   _postcondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
 }
@@ -49,8 +48,8 @@ KeyWrk_v2::KeyWrk_v2(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-KeyWrk_v2::KeyWrk_v2(Key* aKey, IdxColVec* pColVec)
-: EntWrk_v2(CN_KEYWRK)
+KeyWrk::KeyWrk(Key* aKey, IdxColVec* pColVec)
+: KeyWrk()
 {
   _precondition_(_MAGIC_,CN_KEYWRK);
   
@@ -60,7 +59,7 @@ KeyWrk_v2::KeyWrk_v2(Key* aKey, IdxColVec* pColVec)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-KeyWrk_v2::~KeyWrk_v2(void)
+KeyWrk::~KeyWrk(void)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
 }
@@ -70,9 +69,9 @@ KeyWrk_v2::~KeyWrk_v2(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add a key                                                                  */
+/* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-void KeyWrk_v2::vAddKey(Key* aKey, IdxColVec* pColVec)
+void KeyWrk::vAddKey(Key* aKey, IdxColVec* pColVec)
 {
   _precondition_(_MAGIC_,CN_KEYWRK);
   
@@ -83,12 +82,13 @@ void KeyWrk_v2::vAddKey(Key* aKey, IdxColVec* pColVec)
     
     char* aElement = aKey->aEachDatum(pColumn, nBytes,&aCursor);
     
-    char* pDst = aLatter();
+    char* pDst = m_xWsp.aLatter();
     char* pSrc = aElement;
     
     DtmLib::vCopy(pColumn->eDatumType(),pDst,pSrc,pColumn);
-  
-    vTake(nBytes);
+    
+    m_xWsp.vTake(nBytes);
+    
   }
   
   _checkInitialisedSize_(sizeof(KeyWrk));
@@ -97,9 +97,25 @@ void KeyWrk_v2::vAddKey(Key* aKey, IdxColVec* pColVec)
 }
 
 /*----------------------------------------------------------------------------*/
+/* show                                                                       */
+/*----------------------------------------------------------------------------*/
+void KeyWrk::vShow(void)
+{
+  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
+  
+  i8 iKey = *((i8*)m_xWsp.aArea());
+  vTrace("KeyWrk %p: bytesUsed %lld value %lld\n"_Stz,
+         this,
+         nWspUsed(),
+         iKey);
+  
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* add element to key                                                         */
 /*----------------------------------------------------------------------------*/
-void KeyWrk_v2::vAddDatum(ValWrk& xValWrk, Column* pCol, Formatters* pFormatters)
+void KeyWrk::vAddDatum(ValWrk& xValWrk, Column* pCol, Formatters* pFormatters)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
@@ -107,7 +123,7 @@ void KeyWrk_v2::vAddDatum(ValWrk& xValWrk, Column* pCol, Formatters* pFormatters
   
   StrVal* pStrVal = _pStrVal(xValWrk.pNestedValueSelf());
   
-  char* pDst = aLatter();
+  char* pDst = m_xWsp.aLatter();
   char* pSrc = (char*)pStrVal->aStr();
   i8 iValue;
   
@@ -175,127 +191,118 @@ void KeyWrk_v2::vAddDatum(ValWrk& xValWrk, Column* pCol, Formatters* pFormatters
       NEVER_REACH;
   }
   
-  vTake(nBytes);
+  m_xWsp.vTake(nBytes);
   
 }
 
 /*----------------------------------------------------------------------------*/
 /* add element to key                                                         */
 /*----------------------------------------------------------------------------*/
-void KeyWrk_v2::vAddDatum(ValWrk& xValWrk, Column* pCol)
+void KeyWrk::vAddDatum(ValWrk& xValWrk, Column* pCol)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
   i8 nBytes;
-  
-  char* pDst = aLatter();
+    
+  char* pDst = m_xWsp.aLatter();
   char* pSrc;
   
   if (DM_VCH == pCol->eDatumType())
     pSrc = (char*)(_pStrVal(xValWrk.pNestedValueSelf())->aStr());
   else
     pSrc = pAdd<char*>(xValWrk.pNestedValueSelf(),sizeof(Value));
-  
-  
+
+
   nBytes = DtmLib::nCopy(pCol->eDatumType(),pDst,pSrc,pCol);
   
-  vTake(nBytes);
+  m_xWsp.vTake(nBytes);
   
 }
 
 /*----------------------------------------------------------------------------*/
 /* add element to key                                                         */
 /*----------------------------------------------------------------------------*/
-void KeyWrk_v2::vAddStz(Stz* aStz)
+void KeyWrk::vAddStz(Stz* aStz)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
-  char* aDst = aLatter();
+  char* aDst = m_xWsp.aLatter();
   char* aSrc = (char*)aStz;
   i8 nSize = StrLib::iSize(aSrc);
   
   MemLib::vCopy(aDst,aSrc,nSize,CN_KEYWRK);
   
-  vTake(nSize);
+  m_xWsp.vTake(nSize);
 }
 
 /*----------------------------------------------------------------------------*/
 /* add word to key workspace                                                  */
 /*----------------------------------------------------------------------------*/
-void KeyWrk_v2::vAddWord(w8 wWord)
+void KeyWrk::vAddWord(w8 wWord)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
-  char* aDst = aLatter();
+  char* aDst = m_xWsp.aLatter();
   
   MemLib::vCopy(aDst, &wWord, sizeof(w8), CN_KEYWRK);
   
-  vTake(sizeof(w8));
+  m_xWsp.vTake(sizeof(w8));
 }
 
 /*----------------------------------------------------------------------------*/
 /* get wsp area as key                                                        */
 /*----------------------------------------------------------------------------*/
-Key* KeyWrk_v2::aKey(void)
+Key* KeyWrk::aKey(void)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
-  return reinterpret_cast<Key*>(aData_v2());
-}
-
-/*----------------------------------------------------------------------------*/
-/* get key size                                                               */
-/*----------------------------------------------------------------------------*/
-i8 KeyWrk_v2::nKeySize(void)
-{
-  return nDataSize();
+  return reinterpret_cast<Key*>(m_xWsp.aArea());
 }
 
 /*----------------------------------------------------------------------------*/
 /* reset the key wsp                                                          */
 /*----------------------------------------------------------------------------*/
-void KeyWrk_v2::vReset(void)
+void KeyWrk::vReset(void)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
-
-  vDataSize(0);
+ 
+  m_xWsp.vUsed(0);
 }
 
 /*----------------------------------------------------------------------------*/
-/* show                                                                       */
+/* get wsp area                                                               */
 /*----------------------------------------------------------------------------*/
-void KeyWrk_v2::vShow(IdxColVec* pIdxColVec)
+char* KeyWrk::aWspArea(void)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
-  Key* aKey = this->aKey();
-  aKey->vShow(pIdxColVec);
-  vTrace("\n"_Stz);
+  return m_xWsp.aArea();
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Key ---------------------------------------------------------------------*/
+/* get wsp area                                                               */
 /*----------------------------------------------------------------------------*/
+Stz* KeyWrk::aWspStr(void)
+{
+  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
+  
+  return m_xWsp.aStr();
+}
 
 /*----------------------------------------------------------------------------*/
-/* add a key                                                                  */
+/* get wsp bytes used                                                         */
 /*----------------------------------------------------------------------------*/
-//void EntWrk_v2::vAddKey(KeyWrk& xKeyWrk)
-//{
-//  Stz* aKeySrc = xKeyWrk.aWspStr();
-//  i8 nKeyBytes = xKeyWrk.nWspUsed();
-//
-//  m_xDataWrk.vAppend(aKeySrc,nKeyBytes,CN_ENTWRK);
-//}
+i8 KeyWrk::nWspUsed(void)
+{
+  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
+  
+  return m_xWsp.nUsed();
+}
 
 /*----------------------------------------------------------------------------*/
-/* form a simple entry using given id and key                                 */
+/*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-//void EntWrk_v2::vForm(Id& xId, KeyWrk& xKeyWrk)
-//{
-//  m_xId = xId;
-//  vAddKey(xKeyWrk);
-//}
+_aFooter_(KeyWrk)
 
 /*============================================================================*/
 /* end                                                                        */

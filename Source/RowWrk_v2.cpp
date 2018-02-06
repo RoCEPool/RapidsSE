@@ -35,7 +35,7 @@ void* RowWrk_v2::operator new(size_t iSize, RowWrk_v2* pRowWrk)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 RowWrk_v2::RowWrk_v2(void)
-: EntWrk_v2(CN_ROWWRK)
+: EntWrk(CN_ROWWRK)
 {
   _precondition_(_MAGIC_,CN_ROWWRK);
   
@@ -48,7 +48,7 @@ RowWrk_v2::RowWrk_v2(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 RowWrk_v2::RowWrk_v2(i8 nOffsets)
-: EntWrk_v2(CN_ROWWRK, nOffsets)
+: EntWrk(CN_ROWWRK, nOffsets)
 {
   _precondition_(_MAGIC_,CN_ROWWRK);
   
@@ -61,7 +61,7 @@ RowWrk_v2::RowWrk_v2(i8 nOffsets)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 RowWrk_v2::RowWrk_v2(Entry* pEntry)
-: EntWrk_v2(CN_ROWWRK, pEntry)
+: EntWrk(CN_ROWWRK, pEntry)
 {
   _precondition_(_MAGIC_,CN_ROWWRK);
   
@@ -88,7 +88,7 @@ Row* RowWrk_v2::aRow(void)
 {
   _precondition_(_MAGIC_,CN_ROWWRK);
   
-  Row* aThisRow = (Row*)aData_v2();
+  Row* aThisRow = (Row*)aData();
   return aThisRow;
 }
 
@@ -99,7 +99,7 @@ i8 RowWrk_v2::nRowSize(void)
 {
   _precondition_(_MAGIC_,CN_ROWWRK);
   
-  Row* aThisRow = (Row*)aData_v2();
+  Row* aThisRow = (Row*)aData();
   return nDataSize();
 }
 

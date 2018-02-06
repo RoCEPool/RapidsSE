@@ -12,96 +12,138 @@ extern AttachMap* gpAttachMap;
 extern i8 gnIndexOffsets;
 
 /*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+void* EntWrk_v1::operator new(size_t iSize)
+{
+  RASSERT(iSize);
+  vFatal("fatal: EntWrk class cannot be new'd\n"_Stz);
+  
+  NEVER_REACH;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+void* EntWrk_v1::operator new(size_t iSize, EntWrk* pEntWrk)
+{
+  RASSERT(iSize);
+  return pEntWrk;
+}
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-EntWrk_v2::EntWrk_v2(eCN eClassNo)
-: Object(eClassNo)
+EntWrk_v1::EntWrk_v1(void)
+: Object(CN_ENTWRK)
 {
-  _precondition_(_MAGIC_);
+  _precondition_(_MAGIC_,CN_ENTWRK);
 
   // check initialisation of rowid
   ASSERT(0 == m_xId.iBuffer() && 0 == m_xId.iRow());
   
-  m_nOffsets = -1;
+  m_bHasData = false;
+  
+  // generate logarithmic level for this entry
+  m_iOffsets = Random::iLogLevel(gpAttachMap->m_nIndexOffsets+1, C_FLAT_FREQ);
+  ASSERT(m_iOffsets >= 0 && m_iOffsets <= gpAttachMap->m_nIndexOffsets);
+  
+  // set all right offsets to nil
+  on nOffsetNo;
+  for (nOffsetNo = 0_on; nOffsetNo < gpAttachMap->m_nIndexOffsets; nOffsetNo++)
+    m_iOffset[*nOffsetNo] = C_NIL_OFFSET;
   
   // m_xDataWrk
   m_xDataWrk.vInit();
   
   _checkInitialisedSize_(sizeof(EntWrk));
   
-  _postcondition_(_MAGIC_,eClassNo,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-EntWrk_v2::EntWrk_v2(eCN eClassNo, i8 nOffsets)
-: Object(eClassNo)
+EntWrk_v1::EntWrk_v1(i8 nOffsets)
+: Object(CN_ENTWRK)
 {
-  _precondition_(_MAGIC_);
+  _precondition_(_MAGIC_,CN_ENTWRK);
   
   // check initialisation of rowid
   ASSERT(0 == m_xId.iBuffer() && 0 == m_xId.iRow());
   
   // set no of offsets
-  m_nOffsets = nOffsets;
-  //ASSERT(m_nOffsets >= 0 && m_nOffsets <= gpAttachMap->m_nIndexOffsets);
+  m_iOffsets = nOffsets;
+  ASSERT(m_iOffsets >= 0 && m_iOffsets <= gpAttachMap->m_nIndexOffsets);
+  
+  m_bHasData = false;
+  
+  // set all right offsets to nil
+  on nOffsetNo;
+  for (nOffsetNo = 0_on; nOffsetNo < gpAttachMap->m_nIndexOffsets; nOffsetNo++)
+    m_iOffset[*nOffsetNo] = C_NIL_OFFSET;
   
   // m_xDataWrk
   m_xDataWrk.vInit();
   
-  _checkInitialisedSize_(sizeof(EntWrk));
+  _checkInitialisedSize_(sizeof(EntWrk_v1));
   
-  _postcondition_(_MAGIC_,eClassNo,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-EntWrk_v2::EntWrk_v2(eCN eClassNo, Entry* pEntry)
-: Object(eClassNo)
+EntWrk_v1::EntWrk_v1(Entry* pEntry)
+: Object(CN_ENTWRK)
 {
-  _precondition_(_MAGIC_);
+  _precondition_(_MAGIC_,CN_ENTWRK);
   
   // check initialisation of rowid
   ASSERT(0 == m_xId.iBuffer() && 0 == m_xId.iRow());
   
+  m_bHasData = false;
+  
   // set no of offsets
-  m_nOffsets = pEntry->nOffsets();
+  m_iOffsets = pEntry->nOffsets();
   
   // set the idx
   vId(pEntry->xId());
   
-  //ASSERT(m_nOffsets >= 0 && m_nOffsets <= gpAttachMap->m_nIndexOffsets);
+  ASSERT(m_iOffsets >= 0 && m_iOffsets <= gpAttachMap->m_nIndexOffsets);
   
+  // set all right offsets to nil
+  for (on nOffsetNo; nOffsetNo < m_iOffsets; nOffsetNo++) {
+    vRightOffset(nOffsetNo, pEntry->iRightOffset(nOffsetNo));
+  }
   
   // m_xDataWrk
   m_xDataWrk.vInit();
   
   _checkInitialisedSize_(sizeof(EntWrk));
   
-  _postcondition_(_MAGIC_,eClassNo,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-//EntWrk_v2::EntWrk_v2(Id& xId, i8 iTxId, KeyWrk& xKeyWrk)
-//: EntWrk_v2()
-//{
-//  _precondition_(_MAGIC_,CN_ENTWRK);
-//
-//  vForm(xId,xKeyWrk);
-//
-//  m_iTxId = iTxId;
-//}
+EntWrk_v1::EntWrk(Id& xId, i8 iTxId, KeyWrk& xKeyWrk)
+: EntWrk()
+{
+  _precondition_(_MAGIC_,CN_ENTWRK);
+
+  vForm(xId,xKeyWrk);
+  
+  m_iTxId = iTxId;
+}
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-EntWrk_v2::~EntWrk_v2(void)
+EntWrk_v1::~EntWrk_v1(void)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -109,25 +151,17 @@ EntWrk_v2::~EntWrk_v2(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get has data                                                               */
+/* get row id                                                                 */
 /*----------------------------------------------------------------------------*/
-//bool EntWrk_v2::bHasData(void)
-//{
-//  return m_bHasData;
-//}
-
-/*----------------------------------------------------------------------------*/
-/* get has data                                                               */
-/*----------------------------------------------------------------------------*/
-//void EntWrk_v2::vHasData(bool bHasData)
-//{
-//  m_bHasData = bHasData;
-//}
+bool EntWrk_v1::bHasData(void)
+{
+  return m_bHasData;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get row id                                                                 */
 /*----------------------------------------------------------------------------*/
-Id& EntWrk_v2::xId(void)
+Id& EntWrk_v1::xId(void)
 {
   return m_xId;
 }
@@ -135,7 +169,7 @@ Id& EntWrk_v2::xId(void)
 /*----------------------------------------------------------------------------*/
 /* set row id                                                                 */
 /*----------------------------------------------------------------------------*/
-void EntWrk_v2::vId(Id& xId)
+void EntWrk_v1::vId(Id& xId)
 {
   m_xId = xId;
 }
@@ -143,7 +177,7 @@ void EntWrk_v2::vId(Id& xId)
 /*----------------------------------------------------------------------------*/
 /* get tx id                                                                  */
 /*----------------------------------------------------------------------------*/
-i8 EntWrk_v2::iTxId(void)
+i8 EntWrk_v1::iTxId(void)
 {
   return m_iTxId;
 }
@@ -151,7 +185,7 @@ i8 EntWrk_v2::iTxId(void)
 /*----------------------------------------------------------------------------*/
 /* set tx id                                                                  */
 /*----------------------------------------------------------------------------*/
-void EntWrk_v2::vTxId(i8 iTxId)
+void EntWrk_v1::vTxId(i8 iTxId)
 {
   m_iTxId = iTxId;
 }
@@ -159,30 +193,37 @@ void EntWrk_v2::vTxId(i8 iTxId)
 /*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
-void EntWrk_v2::vShow(ColumnVec* pColVec)
+void EntWrk_v1::vShow(ColumnVec* pColVec)
 {
-//  i8 iKey;
-//  
-//  Int::vCopy(&iKey,aKey());
-//  
-//  vTrace("EntWrk %p: Id %lli.%lli Offsets: %llu "_Stz,
-//         this,
-//         m_xId.iBuffer(),
-//         m_xId.iRow(),
-//         m_nOffsets
-//  );
-//
-//  vTrace("key (size:%lld value:%lld) "_Stz,
-//         nKeySize(),
-//         iKey
-//         );
-//  
-//  if (m_bHasData) {
-//    Row* aThisRow = aRow();
-//    aThisRow->vShow(pColVec);
-//  }
-//  
-//  vTrace("\n"_Stz);
+  i8 iKey;
+  
+  Int::vCopy(&iKey,aKey());
+  
+  vTrace("EntWrk %p: Id %lli.%lli Offsets: %llu "_Stz,
+         this,
+         m_xId.iBuffer(),
+         m_xId.iRow(),
+         m_iOffsets
+         );
+  
+  on nOffsetNo;
+  for (nOffsetNo = 0_on; nOffsetNo < m_iOffsets - 1; nOffsetNo++) {
+    vTrace("R%lld: %lld "_Stz,
+           *nOffsetNo,
+           iRightOffset(nOffsetNo)
+           );
+  }
+  vTrace("key (size:%lld value:%lld) "_Stz,
+         nKeySize(),
+         iKey
+         );
+  
+  if (m_bHasData) {
+    Row* aThisRow = aRow();
+    aThisRow->vShow(pColVec);
+  }
+  
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -192,33 +233,53 @@ void EntWrk_v2::vShow(ColumnVec* pColVec)
 /*----------------------------------------------------------------------------*/
 /* get nLevel                                                                 */
 /*----------------------------------------------------------------------------*/
-i8 EntWrk_v2::nOffsets(void)
+i8 EntWrk_v1::nOffsets(void)
 {
-  //ASSERT(m_nOffsets >= 0 && m_nOffsets <= gpAttachMap->m_nIndexOffsets);
-
-  return m_nOffsets;
+  ASSERT(m_iOffsets >= 0 && m_iOffsets <= gpAttachMap->m_nIndexOffsets);
+  
+  return m_iOffsets;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get offset bytes                                                           */
+/* get right offset at level                                                  */
 /*----------------------------------------------------------------------------*/
-i8 EntWrk_v2::nOffsetSize(void)
+i8 EntWrk_v1::iRightOffset(on nOffsetNo)
 {
-  //ASSERT(m_nOffsets >= 0 && m_nOffsets <= gpAttachMap->m_nIndexOffsets);
+  ASSERT(nOffsetNo >= 0_on && nOffsetNo <= gpAttachMap->m_nIndexOffsets);
   
-  //vTrace("sizeof(i4) %d sizeof(long) %d\n"_Stz,sizeof(i4),sizeof(long));
+  return m_iOffset[*nOffsetNo];
+}
+
+/*----------------------------------------------------------------------------*/
+/* set right offset at level                                                  */
+/*----------------------------------------------------------------------------*/
+void EntWrk_v1::vRightOffset(on nOffsetNo, u8 uRightOffset)
+{
+  ASSERT(nOffsetNo >= 0_on && nOffsetNo <= gpAttachMap->m_nIndexOffsets);
   
-  i8 nBytes = sizeof(i4) * m_nOffsets;
+  m_iOffset[*nOffsetNo] = uRightOffset;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get size of RightVec                                                       */
+/*----------------------------------------------------------------------------*/
+i8 EntWrk_v1::nRightSize(void)
+{
+  ASSERT(m_iOffsets >= 0 && m_iOffsets <= gpAttachMap->m_nIndexOffsets);
+  
+  i8 nBytes = RightVec::nBytesRequired(m_iOffsets);
   
   return nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set number of offsets                                                      */
+/* get RightVec                                                               */
 /*----------------------------------------------------------------------------*/
-void EntWrk_v2::vOffsets(i8 nOffsets)
+RightVec* EntWrk_v1::aRightVec(void)
 {
-  m_nOffsets = nOffsets;
+  RightVec* aRightVec = &m_xRight;
+  
+  return aRightVec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -228,67 +289,43 @@ void EntWrk_v2::vOffsets(i8 nOffsets)
 /*----------------------------------------------------------------------------*/
 /* get data pointer                                                           */
 /*----------------------------------------------------------------------------*/
-//char* EntWrk_v2::aData(void)
-//{
-//  char* aKey = reinterpret_cast<char*>(&m_xDataWrk);
-//  // assuming key of type CT_INTEGER in hidden index
-//  char* aData = pAdd<char*>(aKey, sizeof(i8));                       //ALKA-TODO
-//
-//  return aData;
-//}
-
-/*----------------------------------------------------------------------------*/
-/* get data pointer                                                           */
-/*----------------------------------------------------------------------------*/
-char* EntWrk_v2::aData_v2(void)
-{  
-  char* aData = reinterpret_cast<char*>(&m_xDataWrk);
+char* EntWrk_v1::aData(void)
+{
+  ASSERT(m_bHasData);
   
+  char* aKey = reinterpret_cast<char*>(&m_xDataWrk);
+  // assuming key of type CT_INTEGER in hidden index
+  char* aData = pAdd<char*>(aKey, sizeof(i8));                       //ALKA-TODO
+
   return aData;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get data size                                                              */
 /*----------------------------------------------------------------------------*/
-i8 EntWrk_v2::nDataSize(void)
+i8 EntWrk_v1::nDataSize(void)
 {
-  return m_xDataWrk.nUsed();
-}
-
-/*----------------------------------------------------------------------------*/
-/* set data size                                                              */
-/*----------------------------------------------------------------------------*/
-void EntWrk_v2::vDataSize(i8 iSize)
-{
-  m_xDataWrk.vUsed(iSize);
+  if (m_bHasData)
+    // assuming key of type CT_INTEGER in hidden index
+    return m_xDataWrk.nUsed() - sizeof(i8);                          //ALKA-TODO
+  else
+    return 0;
+  
 }
 
 /*----------------------------------------------------------------------------*/
 /* copy the row data                                                          */
 /*----------------------------------------------------------------------------*/
-void EntWrk_v2::vData(Stz* aDataBytes, i8 iSize)
+void EntWrk_v1::vData(Stz* aDataBytes, i8 iSize)
 {
   char* aDataArea = m_xDataWrk.aLatter();
   MemLib::vCopy(aDataArea,aDataBytes,iSize,CN_ENTWRK);
   
   m_xDataWrk.vTake(iSize);
+  
+  m_bHasData = true;
 }
 
-/*----------------------------------------------------------------------------*/
-/* get address of next available chunk                                        */
-/*----------------------------------------------------------------------------*/
-char* EntWrk_v2::aLatter(void)
-{
-  return m_xDataWrk.aLatter();
-}
-
-/*----------------------------------------------------------------------------*/
-/* take chunk                                                                 */
-/*----------------------------------------------------------------------------*/
-void EntWrk_v2::vTake(i8 iSize)
-{
-  m_xDataWrk.vTake(iSize);
-}
 /*----------------------------------------------------------------------------*/
 /*-- Key ---------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -296,55 +333,55 @@ void EntWrk_v2::vTake(i8 iSize)
 /*----------------------------------------------------------------------------*/
 /* add a key                                                                  */
 /*----------------------------------------------------------------------------*/
-//void EntWrk_v2::vAddKey(KeyWrk& xKeyWrk)
-//{
-//  Stz* aKeySrc = xKeyWrk.aWspStr();
-//  i8 nKeyBytes = xKeyWrk.nWspUsed();
-//
-//  m_xDataWrk.vAppend(aKeySrc,nKeyBytes,CN_ENTWRK);
-//}
+void EntWrk_v1::vAddKey(KeyWrk& xKeyWrk)
+{
+  Stz* aKeySrc = xKeyWrk.aWspStr();
+  i8 nKeyBytes = xKeyWrk.nWspUsed();
+  
+  m_xDataWrk.vAppend(aKeySrc,nKeyBytes,CN_ENTWRK);
+}
 
 /*----------------------------------------------------------------------------*/
 /* form a simple entry using given id and key                                 */
 /*----------------------------------------------------------------------------*/
-//void EntWrk_v2::vForm(Id& xId, KeyWrk& xKeyWrk)
-//{
-//  m_xId = xId;
-//  vAddKey(xKeyWrk);
-//}
+void EntWrk_v1::vForm(Id& xId, KeyWrk& xKeyWrk)
+{
+  m_xId = xId;
+  vAddKey(xKeyWrk);
+}
 
 /*----------------------------------------------------------------------------*/
 /* get key                                                                    */
 /*----------------------------------------------------------------------------*/
-//Key* EntWrk_v2::aKey(void)
-//{
-//  Key* aKey = reinterpret_cast<Key*>(&m_xDataWrk);
-//
-//  return aKey;
-//}
+Key* EntWrk_v1::aKey(void)
+{
+  //Key* aKey = &m_xKey;
+  Key* aKey = reinterpret_cast<Key*>(&m_xDataWrk);
+  return aKey;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get key size                                                               */
 /*----------------------------------------------------------------------------*/
-//i8 EntWrk_v2::nKeySize(void)
-//{
-//  if (m_bHasData)
-//    return sizeof(i8);
-//  else
-//    return m_xDataWrk.nUsed();
-//}
+i8 EntWrk_v1::nKeySize(void)
+{
+  if (m_bHasData)
+    return sizeof(i8);
+  else
+    return m_xDataWrk.nUsed();
+}
 
 /*----------------------------------------------------------------------------*/
 /* get row address                                                            */
 /*----------------------------------------------------------------------------*/
-//Row* EntWrk_v2::aRow(void)
-//{
-//  ASSERT(m_bHasData);
-//
-//  Row* aThisRow = (Row*)aData();
-//
-//  return aThisRow;
-//}
+Row* EntWrk_v1::aRow(void)
+{
+  ASSERT(m_bHasData);
+  
+  Row* aThisRow = (Row*)aData();
+  
+  return aThisRow;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Datums ------------------------------------------------------------------*/
@@ -353,7 +390,7 @@ void EntWrk_v2::vTake(i8 iSize)
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-_aFooter_(EntWrk_v2)
+_aFooter_(EntWrk_v1)
 
 /*============================================================================*/
 /* end                                                                        */

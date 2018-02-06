@@ -7,7 +7,7 @@ namespace DBobjects
 {
   class Entry;
   
-  class RowWrk_v2 : public EntWrk_v2
+  class RowWrk_v2 : public EntWrk
   {
   
   private:

@@ -15,9 +15,9 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* DBobjects::_pEntryBuffer(void* aAddr)
+EntryBuffer_v1* DBobjects::_pEntryBuffer_v1(void* aAddr)
 {
-  EntryBuffer* pEntryBuffer = reinterpret_cast<EntryBuffer*>(aAddr);
+  EntryBuffer_v1* pEntryBuffer = reinterpret_cast<EntryBuffer_v1*>(aAddr);
   
   RASSERT( !pEntryBuffer || CN_ENTRYBUFFER == pEntryBuffer->eClass());
   
@@ -27,7 +27,7 @@ EntryBuffer* DBobjects::_pEntryBuffer(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* fetch a new buffer from buffer pool                                        */
 /*----------------------------------------------------------------------------*/
-void* EntryBuffer::operator new(size_t iSize)
+void* EntryBuffer_v1::operator new(size_t iSize)
 {
   RASSERT(iSize);
   Buffer* pBuffer = (Buffer*)Heap::pAllocate(CN_ENTRYBUFFER);
@@ -38,7 +38,7 @@ void* EntryBuffer::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* fetch a new buffer from buffer pool                                        */
 /*----------------------------------------------------------------------------*/
-void* EntryBuffer::operator new(size_t iSize, void* aAddr)
+void* EntryBuffer_v1::operator new(size_t iSize, void* aAddr)
 {
   RASSERT(iSize);
   
@@ -48,7 +48,7 @@ void* EntryBuffer::operator new(size_t iSize, void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* return a row buffer to the buffer pool                                     */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::operator delete(void* pRowBufferAddress)
+void EntryBuffer_v1::operator delete(void* pRowBufferAddress)
 {
   Buffer* pBuffer = reinterpret_cast<Buffer*>(pRowBufferAddress);
   
@@ -58,7 +58,7 @@ void EntryBuffer::operator delete(void* pRowBufferAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-EntryBuffer::EntryBuffer(void)
+EntryBuffer_v1::EntryBuffer_v1(void)
 : ItemBuffer(CN_ENTRYBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
@@ -82,7 +82,7 @@ EntryBuffer::EntryBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-EntryBuffer::EntryBuffer(i8 iDataBytes)
+EntryBuffer_v1::EntryBuffer_v1(i8 iDataBytes)
 : ItemBuffer(CN_ENTRYBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
@@ -109,7 +109,7 @@ EntryBuffer::EntryBuffer(i8 iDataBytes)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-EntryBuffer::EntryBuffer(Index* pIndex, i8 nBufferLevel, i8 nPartitionNo)
+EntryBuffer_v1::EntryBuffer_v1(Index* pIndex, i8 nBufferLevel, i8 nPartitionNo)
 : ItemBuffer(CN_ENTRYBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
@@ -137,7 +137,7 @@ EntryBuffer::EntryBuffer(Index* pIndex, i8 nBufferLevel, i8 nPartitionNo)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-EntryBuffer::EntryBuffer(eCN eClassNo)
+EntryBuffer_v1::EntryBuffer_v1(eCN eClassNo)
 : ItemBuffer(eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
@@ -161,7 +161,7 @@ EntryBuffer::EntryBuffer(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-EntryBuffer::~EntryBuffer(void)
+EntryBuffer_v1::~EntryBuffer_v1(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
 
@@ -174,12 +174,12 @@ EntryBuffer::~EntryBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* dump entry buffer                                                          */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
+void EntryBuffer_v1::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   ASSERT(eClass == CN_ENTRYBUFFER);
   ASSERT(pObject->eClass() == CN_ENTRYBUFFER);
   
-  EntryBuffer* pEntryBuffer = reinterpret_cast<EntryBuffer*>(pObject);
+  EntryBuffer_v1* pEntryBuffer = reinterpret_cast<EntryBuffer_v1*>(pObject);
   
   vTrace("durability %s partition %lld rows %lld used %lld free %lld prevBuffer %p nextBuffer %p\n"_Stz,
          pEntryBuffer->m_nPartitionNo,
@@ -198,7 +198,7 @@ void EntryBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* get durability                                                             */
 /*----------------------------------------------------------------------------*/
-eBD EntryBuffer::eDurability(void)
+eBD EntryBuffer_v1::eDurability(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -208,7 +208,7 @@ eBD EntryBuffer::eDurability(void)
 /*----------------------------------------------------------------------------*/
 /* set durability                                                             */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vDurability(eBD eDurability)
+void EntryBuffer_v1::vDurability(eBD eDurability)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -218,7 +218,7 @@ void EntryBuffer::vDurability(eBD eDurability)
 /*----------------------------------------------------------------------------*/
 /* set buffer is last                                                         */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vIsLast(bool bIsLast)
+void EntryBuffer_v1::vIsLast(bool bIsLast)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -228,7 +228,7 @@ void EntryBuffer::vIsLast(bool bIsLast)
 /*----------------------------------------------------------------------------*/
 /* get if buffer is last                                                      */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bIsLast(void)
+bool EntryBuffer_v1::bIsLast(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -241,17 +241,17 @@ bool EntryBuffer::bIsLast(void)
 /*----------------------------------------------------------------------------*/
 /* get the higher level index buffer                                          */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* EntryBuffer::pHigherLevel(void)
+EntryBuffer_v1* EntryBuffer_v1::pHigherLevel(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  return (EntryBuffer*)m_pHigherLevel;
+  return (EntryBuffer_v1*)m_pHigherLevel;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set the higher level index buffer                                          */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vHigherLevel(EntryBuffer* pHigherLevel)
+void EntryBuffer_v1::vHigherLevel(EntryBuffer_v1* pHigherLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -263,7 +263,7 @@ void EntryBuffer::vHigherLevel(EntryBuffer* pHigherLevel)
 /*----------------------------------------------------------------------------*/
 /* get next buffer                                                            */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* EntryBuffer::pNextBuffer(void)
+EntryBuffer_v1* EntryBuffer_v1::pNextBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
@@ -273,7 +273,7 @@ EntryBuffer* EntryBuffer::pNextBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* set next buffer                                                            */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vNextBuffer(EntryBuffer* pNextBuffer)
+void EntryBuffer_v1::vNextBuffer(EntryBuffer_v1* pNextBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -283,7 +283,7 @@ void EntryBuffer::vNextBuffer(EntryBuffer* pNextBuffer)
 /*----------------------------------------------------------------------------*/
 /* get prev buffer                                                            */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* EntryBuffer::pPrevBuffer(void)
+EntryBuffer_v1* EntryBuffer_v1::pPrevBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -293,7 +293,7 @@ EntryBuffer* EntryBuffer::pPrevBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* set prev buffer                                                            */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vPrevBuffer(EntryBuffer* pPrevBuffer)
+void EntryBuffer_v1::vPrevBuffer(EntryBuffer_v1* pPrevBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -303,7 +303,7 @@ void EntryBuffer::vPrevBuffer(EntryBuffer* pPrevBuffer)
 /*----------------------------------------------------------------------------*/
 /* get the buffer level                                                       */
 /*----------------------------------------------------------------------------*/
-i8 EntryBuffer::nBufferLevel(void)
+i8 EntryBuffer_v1::nBufferLevel(void)
 {
   return m_nBufferLevel;
 }
@@ -311,7 +311,7 @@ i8 EntryBuffer::nBufferLevel(void)
 /*----------------------------------------------------------------------------*/
 /* set the index of the index buffer                                          */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vIndex(Index* pIndex)
+void EntryBuffer_v1::vIndex(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -321,7 +321,7 @@ void EntryBuffer::vIndex(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /* get the index of the index buffer                                          */
 /*----------------------------------------------------------------------------*/
-Index* EntryBuffer::pIndex(void)
+Index* EntryBuffer_v1::pIndex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -331,7 +331,7 @@ Index* EntryBuffer::pIndex(void)
 /*----------------------------------------------------------------------------*/
 /* set partition no                                                           */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vPartitionNo(i8 nPartitionNo)
+void EntryBuffer_v1::vPartitionNo(i8 nPartitionNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -341,7 +341,7 @@ void EntryBuffer::vPartitionNo(i8 nPartitionNo)
 /*----------------------------------------------------------------------------*/
 /* get partition no                                                           */
 /*----------------------------------------------------------------------------*/
-i8 EntryBuffer::nPartitionNo(void)
+i8 EntryBuffer_v1::nPartitionNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -355,7 +355,7 @@ i8 EntryBuffer::nPartitionNo(void)
 /*----------------------------------------------------------------------------*/
 /* allot an entry in this buffer                                              */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pAllotEntry(i8 nBytes)
+Entry* EntryBuffer_v1::pAllotEntry(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
@@ -376,7 +376,7 @@ Entry* EntryBuffer::pAllotEntry(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* allot an entry in this buffer                                 TEMPORARY!!! */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pAllotEntryBytes(i8 nBytes)
+Entry* EntryBuffer_v1::pAllotEntryBytes(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -394,14 +394,14 @@ Entry* EntryBuffer::pAllotEntryBytes(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* analyze                                                                    */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries)
+void EntryBuffer_v1::vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   if (m_pIndex->bIsHidden()) {
     
     ASSERT(m_nBufferLevel == 0);
-    EntryBuffer* pNextBuffer = this;
+    EntryBuffer_v1* pNextBuffer = this;
     
     do {
       ASSERT(pNextBuffer->nBufferLevel() == 0);
@@ -415,7 +415,7 @@ void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iE
                            pNextBuffer->m_nBufferLevel,
                            pNextBuffer->m_nItems);
 
-      EntryBuffer* pThisBuffer = pNextBuffer;
+      EntryBuffer_v1* pThisBuffer = pNextBuffer;
       pNextBuffer = pNextBuffer->pNextBuffer();
     } while (pNextBuffer);
     
@@ -453,7 +453,7 @@ void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iE
 /*----------------------------------------------------------------------------*/
 /* append new entry into this index buffer                                    */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pAppendEntry(EntWrk& xEntWrk,EntryVec& xPriorVec)
+Entry* EntryBuffer_v1::pAppendEntry(EntWrk_v1& xEntWrk,EntryVec& xPriorVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -461,13 +461,13 @@ Entry* EntryBuffer::pAppendEntry(EntWrk& xEntWrk,EntryVec& xPriorVec)
   // append the entry
   
   // determine the number of bytes required for entry
-  i8 nEntryBytes = Entry::nBytesRequired(xEntWrk);
+  i8 nEntryBytes = Entry::nBytesRequired_v1(xEntWrk);
   
   // allot space for entry at end of buffer
   Entry* pNewEntry = pAllotEntryBytes(nEntryBytes);
   
   // set the entry
-  pNewEntry->vSetEntry(xEntWrk);
+  pNewEntry->vSetEntry_v1(xEntWrk);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // revise prior offsets
@@ -495,7 +495,7 @@ Entry* EntryBuffer::pAppendEntry(EntWrk& xEntWrk,EntryVec& xPriorVec)
 /*----------------------------------------------------------------------------*/
 /* append an entry for {key,id} into an index buffer at level 0               */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bAppendEntry(Entry* pRowEntry, Entry** ppEntry)     //# critical
+bool EntryBuffer_v1::bAppendEntry(Entry* pRowEntry, Entry** ppEntry)     //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -522,7 +522,7 @@ bool EntryBuffer::bAppendEntry(Entry* pRowEntry, Entry** ppEntry)     //# critic
   //----------------------------------------------------------------------------
   // add the id, txId and key to EntWrk
   i8 iTxId = pRowEntry->iTxId();
-  EntWrk xEntWrk(rowId, iTxId, xKeyWrk);
+  EntWrk_v1 xEntWrk(rowId, iTxId, xKeyWrk);
   
   //----------------------------------------------------------------------------
   // add the row data to the EntWrk
@@ -534,7 +534,7 @@ bool EntryBuffer::bAppendEntry(Entry* pRowEntry, Entry** ppEntry)     //# critic
   
   //----------------------------------------------------------------------------
   // check if current index buffer has enough space
-  i8 nEntryBytes = Entry::nBytesRequired(xEntWrk);
+  i8 nEntryBytes = Entry::nBytesRequired_v1(xEntWrk);
   
   if ( ! bHasSpace(nEntryBytes) ) {
     return false;
@@ -549,7 +549,7 @@ bool EntryBuffer::bAppendEntry(Entry* pRowEntry, Entry** ppEntry)     //# critic
     
     //----------------------------------------------------------------------------
     // add the id and key to EntWrk
-    pEntry->vSetEntry(xEntWrk);
+    pEntry->vSetEntry_v1(xEntWrk);
     
     *ppEntry = pEntry;
   }
@@ -560,7 +560,7 @@ bool EntryBuffer::bAppendEntry(Entry* pRowEntry, Entry** ppEntry)     //# critic
 /*----------------------------------------------------------------------------*/
 /* append an entry for {key,id} into an index buffer at level 0               */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bAppendEntry(i8 iTxId, Stz* pRow, i8 iLength)     //# critical
+bool EntryBuffer_v1::bAppendEntry(i8 iTxId, Stz* pRow, i8 iLength)     //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -586,7 +586,7 @@ bool EntryBuffer::bAppendEntry(i8 iTxId, Stz* pRow, i8 iLength)     //# critical
   
   //----------------------------------------------------------------------------
   // add the id, txId and key to EntWrk
-  EntWrk xEntWrk(rowId, iTxId, xKeyWrk);
+  EntWrk_v1 xEntWrk(rowId, iTxId, xKeyWrk);
   
   //----------------------------------------------------------------------------
   // add the row data to the EntWrk
@@ -619,7 +619,7 @@ bool EntryBuffer::bAppendEntry(i8 iTxId, Stz* pRow, i8 iLength)     //# critical
 /*----------------------------------------------------------------------------*/
 /* append a row into an index buffer                                          */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bAppendRow(i8 iTxId, Stz* pRow, i8 iLength)     //# critical
+bool EntryBuffer_v1::bAppendRow(i8 iTxId, Stz* pRow, i8 iLength)     //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -645,7 +645,7 @@ bool EntryBuffer::bAppendRow(i8 iTxId, Stz* pRow, i8 iLength)     //# critical
   
   //----------------------------------------------------------------------------
   // add the id, txId and key to EntWrk
-  EntWrk xEntWrk(rowId, iTxId, xKeyWrk);
+  EntWrk_v1 xEntWrk(rowId, iTxId, xKeyWrk);
   
   //----------------------------------------------------------------------------
   // add the row data to the EntWrk
@@ -680,9 +680,9 @@ bool EntryBuffer::bAppendRow(i8 iTxId, Stz* pRow, i8 iLength)     //# critical
 /*----------------------------------------------------------------------------*/
 /* return no of index buffers under this buffer                               */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vBufferCount(i8& nBuffers)
+void EntryBuffer_v1::vBufferCount(i8& nBuffers)
 {
-  EntryBuffer* pNextBuffer = nullptr;
+  EntryBuffer_v1* pNextBuffer = nullptr;
   
   if (m_pIndex->bIsHidden()) {
     ASSERT(m_nBufferLevel == 0);
@@ -692,7 +692,7 @@ void EntryBuffer::vBufferCount(i8& nBuffers)
     while (pNextBuffer) {
       ASSERT(pNextBuffer->nBufferLevel() == 0);
       
-      EntryBuffer* pThisBuffer = pNextBuffer;
+      EntryBuffer_v1* pThisBuffer = pNextBuffer;
       pNextBuffer = pNextBuffer->pNextBuffer();
       nBuffers++;
     }
@@ -709,7 +709,7 @@ void EntryBuffer::vBufferCount(i8& nBuffers)
            pEntry = pNextEntry(pEntry)) {
         
         // get the index buffer from the entry
-        pNextBuffer = pEntry->pEntryBuffer();;
+        pNextBuffer = pEntry->pEntryBuffer_v1();;
         
         ASSERT(pNextBuffer);
         ASSERT(pNextBuffer->eClass() == CN_ENTRYBUFFER);
@@ -724,7 +724,7 @@ void EntryBuffer::vBufferCount(i8& nBuffers)
 /*----------------------------------------------------------------------------*/
 /* get decile full of the buffer                                              */
 /*----------------------------------------------------------------------------*/
-i8 EntryBuffer::iDecile(void)
+i8 EntryBuffer_v1::iDecile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -742,7 +742,7 @@ i8 EntryBuffer::iDecile(void)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vDump(void)
+void EntryBuffer_v1::vDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -757,7 +757,7 @@ void EntryBuffer::vDump(void)
          pEntry = pNextEntry(pEntry)) {
       
       // get the index buffer from the entry
-      EntryBuffer* pEntryBuffer = pEntry->pEntryBuffer();
+      EntryBuffer_v1* pEntryBuffer = pEntry->pEntryBuffer_v1();
       
       ASSERT(pEntryBuffer);
       ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
@@ -771,7 +771,7 @@ void EntryBuffer::vDump(void)
 /*----------------------------------------------------------------------------*/
 /* get first entry (after the head) of skip list in this index buffer         */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pFirstEntry(void)
+Entry* EntryBuffer_v1::pFirstEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -788,7 +788,7 @@ Entry* EntryBuffer::pFirstEntry(void)
 /*----------------------------------------------------------------------------*/
 /* does the buffer have space for nBytes ?                                    */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bHasSpace(i8 nBytes)
+bool EntryBuffer_v1::bHasSpace(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -813,7 +813,7 @@ bool EntryBuffer::bHasSpace(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* get head entry of skip list in this index buffer                           */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pHeadEntry(void)
+Entry* EntryBuffer_v1::pHeadEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -829,7 +829,7 @@ Entry* EntryBuffer::pHeadEntry(void)
 /*----------------------------------------------------------------------------*/
 /* insert new entry into this index buffer                                    */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bInsert(EntWrk& xEntWrk)                        //# critical
+bool EntryBuffer_v1::bInsert(EntWrk_v1& xEntWrk)                        //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -856,9 +856,9 @@ bool EntryBuffer::bInsert(EntWrk& xEntWrk)                        //# critical
   
   // create a new entry after the prior entry and set it
   //EntWrk xEntWrk(xId,xKeyWrk);
-  i8 nEntryBytes = Entry::nBytesRequired(xEntWrk);
+  i8 nEntryBytes = Entry::nBytesRequired_v1(xEntWrk);
   Entry* pNewEntry = pAllotEntryAfter(nEntryBytes, xEntWrk.nOffsets(), pAfterEntry);
-  pNewEntry->vSetEntry(xEntWrk);
+  pNewEntry->vSetEntry_v1(xEntWrk);
   
   //vTrace("\n\n---------INDEX BUFFER AFTER MOVING --------------\n"_Stz);
   //vShow();
@@ -931,7 +931,7 @@ bool EntryBuffer::bInsert(EntWrk& xEntWrk)                        //# critical
 /*----------------------------------------------------------------------------*/
 /* insert an entry for {key,id} into an index buffer                          */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bInsertEntry(i8 iTxId, Stz* pRow, i8 iLength)     //# critical
+bool EntryBuffer_v1::bInsertEntry(i8 iTxId, Stz* pRow, i8 iLength)     //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -957,7 +957,7 @@ bool EntryBuffer::bInsertEntry(i8 iTxId, Stz* pRow, i8 iLength)     //# critical
   
   //----------------------------------------------------------------------------
   // add the id, txId and key to EntWrk
-  EntWrk xEntWrk(rowId, iTxId, xKeyWrk);
+  EntWrk_v1 xEntWrk(rowId, iTxId, xKeyWrk);
   
   //----------------------------------------------------------------------------
   // add the row data to the EntWrk
@@ -966,7 +966,7 @@ bool EntryBuffer::bInsertEntry(i8 iTxId, Stz* pRow, i8 iLength)     //# critical
   
   //----------------------------------------------------------------------------
   // check if current index buffer has enough space
-  i8 nEntryBytes = Entry::nBytesRequired(xEntWrk);
+  i8 nEntryBytes = Entry::nBytesRequired_v1(xEntWrk);
   
   if ( ! bHasSpace(nEntryBytes) ) {
     return false;
@@ -985,17 +985,17 @@ bool EntryBuffer::bInsertEntry(i8 iTxId, Stz* pRow, i8 iLength)     //# critical
 /*----------------------------------------------------------------------------*/
 /* insert row into this buffer     (invoked from rowBuffer.appendRecord/append*/
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bInsertRow(EntWrk& xRowWrk, Entry** ppRow)
+bool EntryBuffer_v1::bInsertRow(EntWrk_v1& xRowWrk, Entry** ppRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  i8 nBytes = Entry::nBytesRequired(xRowWrk);
+  i8 nBytes = Entry::nBytesRequired_v1(xRowWrk);
   
   Entry* pRowEntry = pAllotEntry(nBytes);
   if ( ! pRowEntry )
     return false;
   
-  pRowEntry->vSetEntry(xRowWrk);
+  pRowEntry->vSetEntry_v1(xRowWrk);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1007,7 +1007,7 @@ bool EntryBuffer::bInsertRow(EntWrk& xRowWrk, Entry** ppRow)
 /*----------------------------------------------------------------------------*/
 /* insert row into this buffer (invoked from entryBuffer.insertRow)           */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bInsertRow(Entry* pOldRow, Entry** ppRow)         //# critical
+bool EntryBuffer_v1::bInsertRow(Entry* pOldRow, Entry** ppRow)         //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1048,12 +1048,12 @@ bool EntryBuffer::bInsertRow(Entry* pOldRow, Entry** ppRow)         //# critical
 /*----------------------------------------------------------------------------*/
 /* create a next buffer                                                       */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* EntryBuffer::pNewNextBuffer(void)
+EntryBuffer_v1* EntryBuffer_v1::pNewNextBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   // create new buffer at the same index level and link the two buffers
-  EntryBuffer* pNewBuffer = new EntryBuffer(m_pIndex, m_nBufferLevel, m_nPartitionNo);
+  EntryBuffer_v1* pNewBuffer = new EntryBuffer_v1(m_pIndex, m_nBufferLevel, m_nPartitionNo);
   pNewBuffer->m_pNextBuffer = pNextBuffer();
   pNewBuffer->m_pPrevBuffer = this;
   m_pNextBuffer = pNewBuffer;
@@ -1064,7 +1064,7 @@ EntryBuffer* EntryBuffer::pNewNextBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* get next entry (eq to right L0) after given entry (null if no next)        */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pNextEntry(Entry* pEntry)                           //! tune
+Entry* EntryBuffer_v1::pNextEntry(Entry* pEntry)                           //! tune
 {
   // get the size of given entry
   i8 nBytes = pEntry->nSizeEntry();              // inline this
@@ -1083,7 +1083,7 @@ Entry* EntryBuffer::pNextEntry(Entry* pEntry)                           //! tune
 /*----------------------------------------------------------------------------*/
 /* position at entry with lower bound at key                                  */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pPosition(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare)
+Entry* EntryBuffer_v1::pPosition(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1103,7 +1103,7 @@ Entry* EntryBuffer::pPosition(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare)
 /*----------------------------------------------------------------------------*/
 /* position at key as per relational operator                                 */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pPosition(KeyWrk &xKeyWrk, eRO eRelnOp)
+Entry* EntryBuffer_v1::pPosition(KeyWrk &xKeyWrk, eRO eRelnOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1128,11 +1128,11 @@ Entry* EntryBuffer::pPosition(KeyWrk &xKeyWrk, eRO eRelnOp)
 /*----------------------------------------------------------------------------*/
 /* position at an index buffer at level iLevel starting from this buffer      */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* EntryBuffer::pPositionLevel(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare, i8 iLevel)  //# critical
+EntryBuffer_v1* EntryBuffer_v1::pPositionLevel(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare, i8 iLevel)  //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  EntryBuffer* pEntryBuffer = this;
+  EntryBuffer_v1* pEntryBuffer = this;
   
   i8 iBufferLevel;
   Entry* pEntry;
@@ -1148,7 +1148,7 @@ EntryBuffer* EntryBuffer::pPositionLevel(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxt
     ASSERT(pEntry);
     
     // get the index buffer of the entry
-    pEntryBuffer = pEntry->pEntryBuffer();
+    pEntryBuffer = pEntry->pEntryBuffer_v1();
     ASSERT(pEntryBuffer);
     ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
   }
@@ -1159,7 +1159,7 @@ EntryBuffer* EntryBuffer::pPositionLevel(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxt
 /*----------------------------------------------------------------------------*/
 /* set the prior vector to the head entry                                     */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vPriorVecHead(EntryVec& xPriorVec)
+void EntryBuffer_v1::vPriorVecHead(EntryVec& xPriorVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1171,7 +1171,7 @@ void EntryBuffer::vPriorVecHead(EntryVec& xPriorVec)
  /*----------------------------------------------------------------------------*/
 /* remove existing entry                                                      */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bRemove(Key* aKey)
+bool EntryBuffer_v1::bRemove(Key* aKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1181,7 +1181,7 @@ bool EntryBuffer::bRemove(Key* aKey)
 /*----------------------------------------------------------------------------*/
 /* set row count                                                              */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vRowCount(void)
+void EntryBuffer_v1::vRowCount(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1195,11 +1195,11 @@ void EntryBuffer::vRowCount(void)
 /*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vShow(void)
+void EntryBuffer_v1::vShow(void)
 {
   s256 sHigherLevel;
   if (m_pHigherLevel)
-    StrLib::wToString(((EntryBuffer*)m_pHigherLevel)->m_nBufferLevel, sHigherLevel.aChar());
+    StrLib::wToString(((EntryBuffer_v1*)m_pHigherLevel)->m_nBufferLevel, sHigherLevel.aChar());
   else
     sHigherLevel = "..."_Stz;
   
@@ -1232,7 +1232,7 @@ void EntryBuffer::vShow(void)
 /*----------------------------------------------------------------------------*/
 /* split this buffer into two: this original buffer plus a new buffer         */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* EntryBuffer::pSplitBuffer(void)
+EntryBuffer_v1* EntryBuffer_v1::pSplitBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1296,7 +1296,7 @@ EntryBuffer* EntryBuffer::pSplitBuffer(void)
   // create new buffer and move the entries into it
   
   // create new buffer at the same index level and link the two buffers
-  EntryBuffer* pNewBuffer = new EntryBuffer(m_pIndex, m_nBufferLevel, m_nPartitionNo);
+  EntryBuffer_v1* pNewBuffer = new EntryBuffer_v1(m_pIndex, m_nBufferLevel, m_nPartitionNo);
   pNewBuffer->m_pNextBuffer = pNextBuffer();
   pNewBuffer->m_pPrevBuffer = this;
   m_pNextBuffer = pNewBuffer;
@@ -1315,11 +1315,11 @@ EntryBuffer* EntryBuffer::pSplitBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* truncate                                                                    */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vTruncate(void)
+void EntryBuffer_v1::vTruncate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  EntryBuffer* pNextBuffer;
+  EntryBuffer_v1* pNextBuffer;
   
   // hidden index buffers are just one level
   if (m_pIndex->bIsHidden()) {
@@ -1329,7 +1329,7 @@ void EntryBuffer::vTruncate(void)
     while (pNextBuffer) {
       ASSERT(pNextBuffer->nBufferLevel() == 0);
       
-      EntryBuffer* pThisBuffer = pNextBuffer;
+      EntryBuffer_v1* pThisBuffer = pNextBuffer;
       pNextBuffer = pNextBuffer->pNextBuffer();
       delete pThisBuffer;
     }
@@ -1342,7 +1342,7 @@ void EntryBuffer::vTruncate(void)
            pEntry = pNextEntry(pEntry)) {
         
         // get the index buffer from the entry
-        pNextBuffer = pEntry->pEntryBuffer();;
+        pNextBuffer = pEntry->pEntryBuffer_v1();;
         
         ASSERT(pNextBuffer);
         ASSERT(pNextBuffer->eClass() == CN_ENTRYBUFFER);
@@ -1357,7 +1357,7 @@ void EntryBuffer::vTruncate(void)
 /*----------------------------------------------------------------------------*/
 /* verify                                                                     */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bVerify(void)                                     //# critical
+bool EntryBuffer_v1::bVerify(void)                                     //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1479,7 +1479,7 @@ bool EntryBuffer::bVerify(void)                                     //# critical
 /*----------------------------------------------------------------------------*/
 /* adjust the  entry offsets                                                  */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vAdjustOffsets(Entry* pEntry, i8 nAdjustAmount)   //# critical
+void EntryBuffer_v1::vAdjustOffsets(Entry* pEntry, i8 nAdjustAmount)   //# critical
 {
   for (on nOffsetNo; nOffsetNo < pEntry->nOffsets(); nOffsetNo++) {
     
@@ -1500,7 +1500,7 @@ void EntryBuffer::vAdjustOffsets(Entry* pEntry, i8 nAdjustAmount)   //# critical
 /*----------------------------------------------------------------------------*/
 /* allot new entry after given entry (return null if insufficient space)      */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pAllotEntryAfter(i8 nBytes, i8 nOffsets, Entry* aAfterEntry)  //# critical
+Entry* EntryBuffer_v1::pAllotEntryAfter(i8 nBytes, i8 nOffsets, Entry* aAfterEntry)  //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1544,7 +1544,7 @@ Entry* EntryBuffer::pAllotEntryAfter(i8 nBytes, i8 nOffsets, Entry* aAfterEntry)
 /*----------------------------------------------------------------------------*/
 /* allot head entry (during constructor)                                      */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vAllotHeadEntry(void)
+void EntryBuffer_v1::vAllotHeadEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1567,7 +1567,7 @@ void EntryBuffer::vAllotHeadEntry(void)
 /*----------------------------------------------------------------------------*/
 /* copy entries from fromBuffer starting at fromEntry to this buffer          */
 /*----------------------------------------------------------------------------*/
-i8 EntryBuffer::iCopyEntries(EntryBuffer* pFromBuffer, Entry* aFromEntry)  //# critical
+i8 EntryBuffer_v1::iCopyEntries(EntryBuffer_v1* pFromBuffer, Entry* aFromEntry)  //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1583,7 +1583,7 @@ i8 EntryBuffer::iCopyEntries(EntryBuffer* pFromBuffer, Entry* aFromEntry)  //# c
     
     // form the EntWrk from the entry
     i8 iTxId = pEntry->iTxId();
-    EntWrk xEntWrk(pEntry->xId(), iTxId, xKeyWrk);
+    EntWrk_v1 xEntWrk(pEntry->xId(), iTxId, xKeyWrk);
     
     // insert entry into this buffer
     bool bInserted = bInsert(xEntWrk);
@@ -1649,7 +1649,7 @@ i8 EntryBuffer::iCopyEntries(EntryBuffer* pFromBuffer, Entry* aFromEntry)  //# c
 /*----------------------------------------------------------------------------*/
 /* dump the prior vector                                                      */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vDumpPriorVec(Entry* xPriorVec[])
+void EntryBuffer_v1::vDumpPriorVec(Entry* xPriorVec[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1664,7 +1664,7 @@ void EntryBuffer::vDumpPriorVec(Entry* xPriorVec[])
 /*----------------------------------------------------------------------------*/
 /* fix the higher level                                                       */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vFixHigherLevel(Entry* aNewEntry)                 //# critical
+void EntryBuffer_v1::vFixHigherLevel(Entry* aNewEntry)                 //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1744,7 +1744,7 @@ void EntryBuffer::vFixHigherLevel(Entry* aNewEntry)                 //# critical
 /*----------------------------------------------------------------------------*/
 /* fix offsets of the entries in the prior vector to account for new entry    */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vFixPriorOffset(EntryVec* pPriorVec, Entry* aNewEntry) //# critical
+void EntryBuffer_v1::vFixPriorOffset(EntryVec* pPriorVec, Entry* aNewEntry) //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1786,7 +1786,7 @@ void EntryBuffer::vFixPriorOffset(EntryVec* pPriorVec, Entry* aNewEntry) //# cri
 /*----------------------------------------------------------------------------*/
 /* get an entry by number                                                     */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pGetEntry(i8 iEntryNo)
+Entry* EntryBuffer_v1::pGetEntry(i8 iEntryNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1812,7 +1812,7 @@ Entry* EntryBuffer::pGetEntry(i8 iEntryNo)
 /*----------------------------------------------------------------------------*/
 /* move subset of entries left (thereby removing an entry)                    */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vMoveLeft(void* aDst, i8 nBytes)                  //# critical
+void EntryBuffer_v1::vMoveLeft(void* aDst, i8 nBytes)                  //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1861,7 +1861,7 @@ void EntryBuffer::vMoveLeft(void* aDst, i8 nBytes)                  //# critical
 /*----------------------------------------------------------------------------*/
 /* move subset of entries right (thereby making room for a new entry)         */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vMoveRight(void* aSrc, i8 nBytes)                 //# critical
+void EntryBuffer_v1::vMoveRight(void* aSrc, i8 nBytes)                 //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1916,7 +1916,7 @@ void EntryBuffer::vMoveRight(void* aSrc, i8 nBytes)                 //# critical
 /*----------------------------------------------------------------------------*/
 /* scan thru skip list and positition to entry (optionally set prior vector)  */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pPosition(Key* aGivenKey, i8 nKeyCols,
+Entry* EntryBuffer_v1::pPosition(Key* aGivenKey, i8 nKeyCols,
                               eJC eJuxtaCompare, EntryVec* pPriorVec,
                               bool& bIsEqual, bool bIsQuery) //# critical
 {
@@ -2012,7 +2012,7 @@ Entry* EntryBuffer::pPosition(Key* aGivenKey, i8 nKeyCols,
 /*----------------------------------------------------------------------------*/
 /* scan thru skip list and positition to entry (optionally set prior vector)  */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vPositionPrior(Key* aFindKey, EntryVec* pPriorVec)
+void EntryBuffer_v1::vPositionPrior(Key* aFindKey, EntryVec* pPriorVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -2081,7 +2081,7 @@ void EntryBuffer::vPositionPrior(Key* aFindKey, EntryVec* pPriorVec)
 /*----------------------------------------------------------------------------*/
 /* get the prior vector of given entry                                        */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vPriorVec(Entry* pEntry, EntryVec* pPriorVec)     //# critical
+void EntryBuffer_v1::vPriorVec(Entry* pEntry, EntryVec* pPriorVec)     //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -2112,7 +2112,7 @@ void EntryBuffer::vPriorVec(Entry* pEntry, EntryVec* pPriorVec)     //# critical
 /*----------------------------------------------------------------------------*/
 /* replace old key with new key in the index buffer                           */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vReplaceKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk)  //# critical
+void EntryBuffer_v1::vReplaceKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk)  //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -2139,7 +2139,7 @@ void EntryBuffer::vReplaceKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk)  //# criti
 /*----------------------------------------------------------------------------*/
 /* replace old key with new key of same size in the index buffer              */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vReplaceKeyEqual(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk) //# critical
+void EntryBuffer_v1::vReplaceKeyEqual(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk) //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -2168,7 +2168,7 @@ void EntryBuffer::vReplaceKeyEqual(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk) //# c
                                           nKeyCols,
                                           bIsEqual));
   
-  EntWrk xEntWrk(pOldEntry);
+  EntWrk_v1 xEntWrk(pOldEntry);
   xEntWrk.vAddKey(xNewKeyWrk);
   
   // just replace the key in the buffer
@@ -2178,7 +2178,7 @@ void EntryBuffer::vReplaceKeyEqual(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk) //# c
 /*----------------------------------------------------------------------------*/
 /* replace old key with new key in the index buffer                           */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vReplaceKeyLarger(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk) //# critical
+void EntryBuffer_v1::vReplaceKeyLarger(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk) //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -2229,7 +2229,7 @@ void EntryBuffer::vReplaceKeyLarger(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk) //# 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create an EntWrk from the old entry, with offsets et all
-  EntWrk xEntWrk(pOldEntry);
+  EntWrk_v1 xEntWrk(pOldEntry);
   xEntWrk.vAddKey(xNewKeyWrk);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2250,7 +2250,7 @@ void EntryBuffer::vReplaceKeyLarger(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk) //# 
   
   // create a new entry at pNewEntry using EntWrk
   new (pNewEntry) Entry(CN_ENTRY, nBytes, xEntWrk.nOffsets());
-  pNewEntry->vSetEntry(xEntWrk);
+  pNewEntry->vSetEntry_v1(xEntWrk);
   ASSERT(pNewEntry->nSizeEntry() == nBytes);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2262,7 +2262,7 @@ void EntryBuffer::vReplaceKeyLarger(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk) //# 
 /*----------------------------------------------------------------------------*/
 /* replace old key with new key in the index buffer                           */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vReplaceKeySmaller(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk) //# critical
+void EntryBuffer_v1::vReplaceKeySmaller(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk) //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -2308,7 +2308,7 @@ void EntryBuffer::vReplaceKeySmaller(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk) //#
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create an EntWrk from the old entry, with offsets et all
-  EntWrk xEntWrk(pOldEntry);
+  EntWrk_v1 xEntWrk(pOldEntry);
   xEntWrk.vAddKey(xNewKeyWrk);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2326,7 +2326,7 @@ void EntryBuffer::vReplaceKeySmaller(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk) //#
   
   // create a new entry at pNewEntry using EntWrk
   new (pNewEntry) Entry(CN_ENTRY, nBytes, xEntWrk.nOffsets());
-  pNewEntry->vSetEntry(xEntWrk);
+  pNewEntry->vSetEntry_v1(xEntWrk);
   ASSERT(pNewEntry->nSizeEntry() == nBytes);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2340,7 +2340,7 @@ void EntryBuffer::vReplaceKeySmaller(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk) //#
 /*----------------------------------------------------------------------------*/
 /* get right entry at given level (returns null if no right)                  */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pRightEntry(Entry* pEntry, ln nLevelNo)         //# critical
+Entry* EntryBuffer_v1::pRightEntry(Entry* pEntry, ln nLevelNo)         //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -2390,7 +2390,7 @@ Entry* EntryBuffer::pRightEntry(Entry* pEntry, ln nLevelNo)         //# critical
 /*----------------------------------------------------------------------------*/
 /* converts given entry to absolute offset to end of entry                    */
 /*----------------------------------------------------------------------------*/
-i8 EntryBuffer::iToEndOffsetAbs(Entry* pEntry)
+i8 EntryBuffer_v1::iToEndOffsetAbs(Entry* pEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -2404,7 +2404,7 @@ i8 EntryBuffer::iToEndOffsetAbs(Entry* pEntry)
 /*----------------------------------------------------------------------------*/
 /* calculate the absolute offset within workspace for given entry             */
 /*----------------------------------------------------------------------------*/
-i8 EntryBuffer::iToOffsetAbs(Entry* pEntry)
+i8 EntryBuffer_v1::iToOffsetAbs(Entry* pEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -2418,7 +2418,7 @@ i8 EntryBuffer::iToOffsetAbs(Entry* pEntry)
 /*----------------------------------------------------------------------------*/
 /* calculate the absolute right offset for a given entry and offset no        */
 /*----------------------------------------------------------------------------*/
-i8 EntryBuffer::iToRightOffsetAbs(Entry* pEntry, on nOffsetNo)
+i8 EntryBuffer_v1::iToRightOffsetAbs(Entry* pEntry, on nOffsetNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_); 
   
@@ -2437,7 +2437,7 @@ i8 EntryBuffer::iToRightOffsetAbs(Entry* pEntry, on nOffsetNo)
 /*----------------------------------------------------------------------------*/
 /* calculate the relative offset between two entries                          */
 /*----------------------------------------------------------------------------*/
-u8 EntryBuffer::uOffsetBetween(Entry* pEntryA, Entry* pEntryB)
+u8 EntryBuffer_v1::uOffsetBetween(Entry* pEntryA, Entry* pEntryB)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -2464,7 +2464,7 @@ u8 EntryBuffer::uOffsetBetween(Entry* pEntryA, Entry* pEntryB)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* EntryBuffer::aFooter(void)
+Footer* EntryBuffer_v1::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER);
   

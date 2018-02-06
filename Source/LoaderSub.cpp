@@ -253,8 +253,10 @@ bool LoaderSub::bInsertRow(void)
   
   // check for working buffer
   if (! m_pEntryBuffer[m_iPartition]) {
-    m_pEntryBuffer[m_iPartition] = new EntryBuffer(m_pTable->pHiddenIndex(),
-                                                   0, m_iPartition);
+    m_pEntryBuffer[m_iPartition] = new EntryBuffer;
+    m_pEntryBuffer[m_iPartition]->vIndex(m_pTable->pHiddenIndex());
+    m_pEntryBuffer[m_iPartition]->vPartitionNo(m_iPartition);
+    
     if (! m_pEntryBuffer[m_iPartition]) {
       vTrace("EntryBuffer allocation failed\n"_Stz);
       return false;
@@ -271,11 +273,11 @@ bool LoaderSub::bInsertRow(void)
   i8 iDistTxId = pTx->iDistTxId();
   
   // insert row into working buffer
-  bool b = pEntryBuffer->bAppendEntry(iDistTxId,m_aRecord,m_iLength);
+  Entry* pEntry = pEntryBuffer->pAppendRow(iDistTxId,(Stz*)m_aRecord.aChar(),m_iLength);
   
   //pEntryBuffer->vShow();
   
-  return b;
+  return pEntry ? true: false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -315,8 +317,9 @@ void LoaderSub::vNewRowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
   
-  m_pEntryBuffer[m_iPartition] = new EntryBuffer(m_pTable->pHiddenIndex(),
-                                                 0, m_iPartition);
+  m_pEntryBuffer[m_iPartition] = new EntryBuffer;
+  m_pEntryBuffer[m_iPartition]->vIndex(m_pTable->pHiddenIndex());
+  m_pEntryBuffer[m_iPartition]->vPartitionNo(m_iPartition);
   m_pEntryBuffer[m_iPartition]->vDurability(BD_TEMPORARY);
 }
 

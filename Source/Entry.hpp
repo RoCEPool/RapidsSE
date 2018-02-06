@@ -31,12 +31,12 @@ namespace DBobjects
     Entry(eCN eClassNo, i8 nThisBytes, i8 uOffsets);
     ~Entry(void);
   
+    //static i8 nBytesRequired_v1(EntWrk_v1& xEntWrk);
+    //static i8 nBytesRequired_v2(EntWrk_v2& xEntWrk);
     static i8 nBytesRequired(EntWrk& xEntWrk);
-    static i8 nBytesRequired(EntWrk_v2& xEntWrk);
-    static i8 nBytesRequired_v3(EntWrk_v2& xEntWrk);
     static i8 nBytesRequired(i8 nOffsets, i8 nKeyBytes, i8 nDataBytes);
-    static i8 nBytesRequired_v3(i8 nOffsets, i8 nDataBytes);
-    static i8 nBytesRequired_v3(i8 nDataBytes);
+    static i8 nBytesRequired(i8 nOffsets, i8 nDataBytes);
+    static i8 nBytesRequired(i8 nDataBytes);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // entry proper
@@ -75,10 +75,11 @@ namespace DBobjects
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // index
+    //void vSetEntry_v1(EntWrk_v1& xEntWrk);
+
     void vSetEntry(EntWrk& xEntWrk);
-    void vSetEntry(EntWrk_v2& xEntWrk);
     void vSetEntry(Id xId, i8 iKey, Entry* pOldEntry);
-    void vSetEntry_v3(i8 xTxId, Id xId, i8 nOffsets, Stz* aData, i8 nDataSize);
+    void vSetEntry(i8 xTxId, Id xId, i8 nOffsets, Stz* aData, i8 nDataSize);
     void vShow(i8 iBase, Index* pIndex, bool bShowKey);
     void vShow_v2(i8 iBase, Index* pIndex, bool bShowKey);
     void vShow_v3(i8 iBase, Index* pIndex, bool bShowKey);
@@ -87,7 +88,6 @@ namespace DBobjects
     // row
     void vContentDump(void);
     void vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec);
-    void vExtractIndexKey_v2(KeyWrk_v2& xKeyWrk, IdxColVec* pIdxColVec);
     void vExtractSortKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec);
     char* pExtractSortKey(char *aElement, IdxColVec* pIdxColVec);
     i8   iTxId(void);

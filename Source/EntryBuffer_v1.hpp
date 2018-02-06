@@ -25,9 +25,9 @@ namespace DBobjects
   
   static const i8 C_BUFFER_THRESHOLD = 100;
   
-  static const EntryBuffer* C_ENTRYBUFFER_MARKER = (EntryBuffer*)0xFFFFFFFFFFFFFFFF;
+  static const EntryBuffer_v1* C_ENTRYBUFFER_MARKER = (EntryBuffer_v1*)0xFFFFFFFFFFFFFFFF;
   
-  class EntryBuffer : public ItemBuffer
+  class EntryBuffer_v1 : public ItemBuffer
   {
   protected:
   
@@ -36,10 +36,10 @@ namespace DBobjects
     eBD   m_eDurability; // buffer durability
     bool  m_bIsLast;
   
-    EntryBuffer* m_pHigherLevel; // higher level buffer that has entries
+    EntryBuffer_v1* m_pHigherLevel; // higher level buffer that has entries
                                  // that point to this buffer
-    EntryBuffer* m_pNextBuffer;  // next buffer
-    EntryBuffer* m_pPrevBuffer;  // prev buffer
+    EntryBuffer_v1* m_pNextBuffer;  // next buffer
+    EntryBuffer_v1* m_pPrevBuffer;  // prev buffer
   
     Index*       m_pIndex;       // index this buffer belongs to
     i8           m_nBufferLevel; // index buffer level
@@ -53,12 +53,12 @@ namespace DBobjects
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    EntryBuffer(void);
-    EntryBuffer(i8 iDataBytes);
+    EntryBuffer_v1(void);
+    EntryBuffer_v1(i8 iDataBytes);
   
-    EntryBuffer(eCN eClassNo);
-    EntryBuffer(Index* pIndex, i8 nLevel, i8 nPartitionNo);
-    ~EntryBuffer(void);
+    EntryBuffer_v1(eCN eClassNo);
+    EntryBuffer_v1(Index* pIndex, i8 nLevel, i8 nPartitionNo);
+    ~EntryBuffer_v1(void);
 
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
@@ -72,14 +72,14 @@ namespace DBobjects
     void         vIsLast(bool bIsLast);
     bool         bIsLast(void);
   
-    void         vHigherLevel(EntryBuffer* pHigherLevel);
-    EntryBuffer* pHigherLevel(void);
+    void         vHigherLevel(EntryBuffer_v1* pHigherLevel);
+    EntryBuffer_v1* pHigherLevel(void);
   
-    EntryBuffer* pNextBuffer(void);
-    void         vNextBuffer(EntryBuffer* pNextBuffer);
+    EntryBuffer_v1* pNextBuffer(void);
+    void         vNextBuffer(EntryBuffer_v1* pNextBuffer);
   
-    EntryBuffer* pPrevBuffer(void);
-    void         vPrevBuffer(EntryBuffer* pPrevBuffer);
+    EntryBuffer_v1* pPrevBuffer(void);
+    void         vPrevBuffer(EntryBuffer_v1* pPrevBuffer);
  
     i8           nBufferLevel(void);
   
@@ -95,7 +95,7 @@ namespace DBobjects
     Entry*       pAllotEntry(i8 nBytes);
     Entry*       pAllotEntryBytes(i8 nBytes);
     void         vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries);
-    Entry*       pAppendEntry(EntWrk& xEntWrk,EntryVec& xPriorVec);
+    Entry*       pAppendEntry(EntWrk_v1& xEntWrk,EntryVec& xPriorVec);
     bool         bAppendEntry(Entry* pRowEntry, Entry** ppNewEntry);
     bool         bAppendEntry(i8 iTxId, Stz* pRow, i8 iLength);
     bool         bAppendRow(i8 iTxId, Stz* pRow, i8 iLength);
@@ -105,20 +105,20 @@ namespace DBobjects
     Entry*       pFirstEntry(void);
     bool         bHasSpace(i8 nBytes);
     Entry*       pHeadEntry(void);
-    bool         bInsert(EntWrk& xEntWrk);
+    bool         bInsert(EntWrk_v1& xEntWrk);
     bool         bInsertEntry(i8 iTxId, Stz* pRow, i8 iLength);
-    bool         bInsertRow(EntWrk& xEntRow, Entry** ppRow);
+    bool         bInsertRow(EntWrk_v1& xEntRow, Entry** ppRow);
     bool         bInsertRow(Entry* pOldRow, Entry** ppRow);
-    EntryBuffer* pNewNextBuffer(void);
+    EntryBuffer_v1* pNewNextBuffer(void);
     Entry*       pNextEntry(Entry* pEntry);
     Entry*       pPosition(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare);
     Entry*       pPosition(KeyWrk &xKeyWrk, eRO eRelOp);
-    EntryBuffer* pPositionLevel(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare, i8 iLevel);
+    EntryBuffer_v1* pPositionLevel(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare, i8 iLevel);
     void         vPriorVecHead(EntryVec& xPriorVec);
     bool         bRemove(Key* aKey);
     void         vRowCount(void);
     void         vShow(void);
-    EntryBuffer* pSplitBuffer(void);
+    EntryBuffer_v1* pSplitBuffer(void);
     void         vTruncate(void);
     bool         bVerify(void);
   
@@ -128,7 +128,7 @@ namespace DBobjects
     void         vAdjustOffsets(Entry* pEntry, i8 nAdjustAmount);
     Entry*       pAllotEntryAfter(i8 nBytes, i8 nLevels, Entry* aAfterEntry);
     void         vAllotHeadEntry(void);
-    i8           iCopyEntries(EntryBuffer* pFromBuffer, Entry* aFromEntry);
+    i8           iCopyEntries(EntryBuffer_v1* pFromBuffer, Entry* aFromEntry);
     void         vDumpPriorVec(Entry* aPriorVec[]);
     void         vFixHigherLevel(Entry* aNewEntry);
     void         vFixPriorOffset(EntryVec* pPriorVec, Entry* aNewEntry);
@@ -154,7 +154,7 @@ namespace DBobjects
     Footer* aFooter(void);
   };
   
-  EntryBuffer* _pEntryBuffer(void* aAddr);
+  EntryBuffer_v1* _pEntryBuffer_v1(void* aAddr);
 }
 
 /*============================================================================*/

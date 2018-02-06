@@ -27,7 +27,8 @@ void Task::vAddPrimitives_RowBuffer(void)
 void Task::vRowBufferAppend(MP_Task mpTask)
 {
 ENTRY("vRowBufferAppend"_Stz);
-  
+  RASSERT(0);
+  /*
   Object* pPtrRowBuffer;
   Entry* pRow;
   
@@ -61,7 +62,7 @@ ENTRY("vRowBufferAppend"_Stz);
     mpTask->m_pDataStack->vPushS48K(sRecord);
     mpTask->m_pDataStack->vPushInt((i8)0);
   }
-    
+    */
   EXIT();
 }
 
@@ -71,7 +72,8 @@ ENTRY("vRowBufferAppend"_Stz);
 void Task::vRowBufferAppendRecord(MP_Task mpTask)
 {
   ENTRY("vRowBufferAppendRecord"_Stz);
-  
+  RASSERT(0);
+  /*
   Entry* pRow;
   
   Object* pPtrRowBuffer;
@@ -108,7 +110,7 @@ void Task::vRowBufferAppendRecord(MP_Task mpTask)
   else {
     mpTask->m_pDataStack->vPushInt((i8)0);
   }
-  
+  */
   EXIT();
 }
 
