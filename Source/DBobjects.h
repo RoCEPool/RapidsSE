@@ -53,7 +53,7 @@ typedef Vector<CN_ENTRYVEC,Entry,CN_ENTRY,C_FLAT_LEVELS_MAX,ln> EntryVec;
 #include "Item.hpp"
 #include "ItemBuffer.hpp"
 #include "Entry.hpp"
-#include "EntryBuffer.hpp"
+#include "EntryBuffer_v1.hpp"
 #include "EntryBuffer_v2.hpp"
 #include "EntryBuffer_v3.hpp"
 #include "IndexData.hpp"
