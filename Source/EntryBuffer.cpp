@@ -1368,7 +1368,7 @@ i4 EntryBuffer::iGetFreeEntry(void)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vHeadEntry(void)
 {
-  RowWrk_v2 xHeadWrk;
+  RowWrk xHeadWrk;
   
   xHeadWrk.vOffsets(3);
   
@@ -1481,7 +1481,7 @@ void DBobjects::vEntryBuffer_v3_UnitTest(Table* pTable)
   
   s256 sRecData;
   i8 iRecLength;
-  RowWrk_v2 xRowEntWrk;
+  RowWrk xRowEntWrk;
   i8 iRowLength;
   bool bFormatted;
   bool bBlankLine;
