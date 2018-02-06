@@ -1,35 +1,42 @@
 /*============================================================================*/
-/* KeyWrk.hpp -- Key Working Entry                                            */
+/* KeyWrk.hpp -- Key Working Object                                           */
 /*============================================================================*/
 #pragma once
 
 namespace DBobjects
 {
+  class Key;
   
-  class KeyWrk_v2 : public EntWrk_v2
+  class KeyWrk_v1 : public Object
   {
   private:
-  
+    WspFxd<C_1KB*15> m_xWsp;
+    Footer           m_xFooter;
+    
   public:
     void* operator new(size_t);
-    void* operator new(size_t, KeyWrk_v2*);
+    void* operator new(size_t, KeyWrk*);
     
-    KeyWrk_v2(void);
-    KeyWrk_v2(Key* aKey, IdxColVec* pColVec);
-    ~KeyWrk_v2(void);
-    
+    KeyWrk(void);
+    KeyWrk(Key* aKey, IdxColVec* pColVec);
+    ~KeyWrk(void);
+  
+    void vShow(void);
+
     void vAddDatum(ValWrk& xValWrk, Column* pCol);
     void vAddDatum(ValWrk& xValWrk, Column* pCol, Formatters* pFormatters);
     void vAddStz(Stz* aDatum);
     void vAddKey(Key* aKey, IdxColVec* pColVec);
     void vAddWord(w8 wWord);
-    Key* aKey(void);
-    i8   nKeySize(void);
-    void vReset(void);
-    void vShow(IdxColVec* pIdxColVec);
-    
-    //void   vAddKey(KeyWrk& xKeyWrk);
-    //void   vForm(Id& xId, KeyWrk& xKeyWrk);
+  
+    void  vReset(void);
+  
+    char* aWspArea(void);
+    Stz*  aWspStr(void);
+    i8    nWspUsed(void);
+    Key*  aKey(void);
+
+    Footer* aFooter(void);
   };
 }
 

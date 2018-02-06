@@ -76,49 +76,49 @@ Entry::~Entry(void)
 /*----------------------------------------------------------------------------*/
 /* get bytes required for an Entry based on given EntWrk incl Object & Footer */
 /*----------------------------------------------------------------------------*/
+//i8 Entry::nBytesRequired_v1(EntWrk_v1& xEntWrk)
+//{
+//  i8 nOffsets = xEntWrk.nOffsets();
+//
+//  //# ASSERT(nOffsets >= 1);
+//
+//  i8 nKeyBytes = xEntWrk.nKeySize();
+//
+//  i8 nDataBytes = xEntWrk.nDataSize();
+//
+//  i8 nBytes = Entry::nBytesRequired(nOffsets,nKeyBytes,nDataBytes);
+//
+//  return nBytes;
+//}
+
+/*----------------------------------------------------------------------------*/
+/* get bytes required for an Entry based on given EntWrk incl Object & Footer */
+/*----------------------------------------------------------------------------*/
+//i8 Entry::nBytesRequired_v2(EntWrk_v2& xEntWrk)
+//{
+//  //i8 nOffsets = xEntWrk_v2.nOffsets();
+//
+//  //# ASSERT(nOffsets >= 1);
+//
+//  i8 nKeyBytes = 0; //xEntWrk_v2.nKeySize();                         ALKA!!!
+//
+//  i8 nDataBytes = xEntWrk.nDataSize();
+//
+//  i8 nBytes = Entry::nBytesRequired(0,nKeyBytes,nDataBytes);
+//
+//  return nBytes;
+//}
+
+/*----------------------------------------------------------------------------*/
+/* get bytes required for an Entry based on given EntWrk incl Object & Footer */
+/*----------------------------------------------------------------------------*/
 i8 Entry::nBytesRequired(EntWrk& xEntWrk)
-{
-  i8 nOffsets = xEntWrk.nOffsets();
-  
-  //# ASSERT(nOffsets >= 1);
-  
-  i8 nKeyBytes = xEntWrk.nKeySize();
-  
-  i8 nDataBytes = xEntWrk.nDataSize();
-  
-  i8 nBytes = Entry::nBytesRequired(nOffsets,nKeyBytes,nDataBytes);
-  
-  return nBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get bytes required for an Entry based on given EntWrk incl Object & Footer */
-/*----------------------------------------------------------------------------*/
-i8 Entry::nBytesRequired(EntWrk_v2& xEntWrk_v2)
-{
-  //i8 nOffsets = xEntWrk_v2.nOffsets();
-  
-  //# ASSERT(nOffsets >= 1);
-  
-  i8 nKeyBytes = 0; //xEntWrk_v2.nKeySize();                         ALKA!!!
-  
-  i8 nDataBytes = xEntWrk_v2.nDataSize();
-  
-  i8 nBytes = Entry::nBytesRequired(0,nKeyBytes,nDataBytes);
-  
-  return nBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get bytes required for an Entry based on given EntWrk incl Object & Footer */
-/*----------------------------------------------------------------------------*/
-i8 Entry::nBytesRequired_v3(EntWrk_v2& xEntWrk_v2)
 {
   //i8 nOffsetBytes = xEntWrk_v2.nOffsetSize();
   
-  i8 nDataBytes = xEntWrk_v2.nDataSize();
+  i8 nDataBytes = xEntWrk.nDataSize();
   
-  i8 nBytes = Entry::nBytesRequired_v3(nDataBytes);
+  i8 nBytes = Entry::nBytesRequired(nDataBytes);
   
   return nBytes;
 }
@@ -144,7 +144,7 @@ i8 Entry::nBytesRequired(i8 nOffsets, i8 nKeyBytes, i8 nDataBytes)
 /*----------------------------------------------------------------------------*/
 /* get total bytes required for entry incl Object & Footer                    */
 /*----------------------------------------------------------------------------*/
-i8 Entry::nBytesRequired_v3(i8 nOffsets, i8 nDataBytes)
+i8 Entry::nBytesRequired(i8 nOffsets, i8 nDataBytes)
 {
   i8 nOffsetBytes = RightVec::nBytesRequired(nOffsets);
   
@@ -161,7 +161,7 @@ i8 Entry::nBytesRequired_v3(i8 nOffsets, i8 nDataBytes)
 /*----------------------------------------------------------------------------*/
 /* get total bytes required for entry incl Object & Footer                    */
 /*----------------------------------------------------------------------------*/
-i8 Entry::nBytesRequired_v3(i8 nDataBytes)
+i8 Entry::nBytesRequired(i8 nDataBytes)
 {
   i8 nEntryBytes = sizeof(Entry)
                      + nDataBytes
@@ -207,19 +207,42 @@ i8 Entry::iRow(void)
 /*----------------------------------------------------------------------------*/
 /* get the entry buffer that this entry is within                             */
 /*----------------------------------------------------------------------------*/
+//EntryBuffer_v1* Entry::pEntryBuffer_v1(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+//
+//  bn nBufferNo = m_xId.iBuffer();
+////  EntryBuffer* pEntryBuffer =
+////    reinterpret_cast<EntryBuffer*>(gpBufferPool->pToBuffer(nBufferNo));
+//
+//  HeapBuffer* pHeapBuffer =
+//    reinterpret_cast<HeapBuffer*>(gpBufferPool->pToBuffer(nBufferNo));
+//
+//  EntryBuffer_v1* pEntryBuffer =
+//    reinterpret_cast<EntryBuffer*>(pHeapBuffer->pFirstChunk());
+//
+//  ASSERT(pEntryBuffer);
+//  ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
+//
+//  return pEntryBuffer;
+//}
+
+/*----------------------------------------------------------------------------*/
+/* get the entry buffer that this entry is within                             */
+/*----------------------------------------------------------------------------*/
 EntryBuffer* Entry::pEntryBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
   bn nBufferNo = m_xId.iBuffer();
-//  EntryBuffer* pEntryBuffer =
-//    reinterpret_cast<EntryBuffer*>(gpBufferPool->pToBuffer(nBufferNo));
-
+  //  EntryBuffer* pEntryBuffer =
+  //    reinterpret_cast<EntryBuffer*>(gpBufferPool->pToBuffer(nBufferNo));
+  
   HeapBuffer* pHeapBuffer =
-    reinterpret_cast<HeapBuffer*>(gpBufferPool->pToBuffer(nBufferNo));
-
+  reinterpret_cast<HeapBuffer*>(gpBufferPool->pToBuffer(nBufferNo));
+  
   EntryBuffer* pEntryBuffer =
-    reinterpret_cast<EntryBuffer*>(pHeapBuffer->pFirstChunk());
+  reinterpret_cast<EntryBuffer*>(pHeapBuffer->pFirstChunk());
   
   ASSERT(pEntryBuffer);
   ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
@@ -453,86 +476,88 @@ void Entry::vReplaceKey(EntWrk& xEntWrk)
 /*----------------------------------------------------------------------------*/
 /* set entry given entry wsp                                                  */
 /*----------------------------------------------------------------------------*/
-void Entry::vSetEntry(EntWrk& xEntWrk)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_); 
-  
-  ASSERT(nSizeItem());
-  
-  // set RowId
-  m_xId = xEntWrk.xId();
-  
-  // set Offsets
-  m_nOffsets = xEntWrk.nOffsets();
-  
-  // set Transaction Id
-  m_iTxId = xEntWrk.iTxId();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // copy RightVec
-  RightVec* aEntryRightVec = this->aRightVec();
-  RightVec* aEntWrkRightVec = xEntWrk.aRightVec();
-  i8 nRightBytes = xEntWrk.nRightSize();
-  
-  MemLib::vCopy(aEntryRightVec,aEntWrkRightVec,nRightBytes,eClass());
- 
-  // copy Key
-  Key* aEntryKey = this->aKey();
-  Key* aEntWrkKey = xEntWrk.aKey();
-  i8 nKeyBytes = xEntWrk.nKeySize();
-  
-  ASSERT(nKeyBytes);
-  MemLib::vCopy(aEntryKey,aEntWrkKey,nKeyBytes,eClass());
-  
-  // copy data
-  if (xEntWrk.bHasData()) {
-    char* aEntryData = this->aRowData();
-    char* aEntWrkData = xEntWrk.aData();
-    i8 nDataSize = xEntWrk.nDataSize();
-    
-    ASSERT(nDataSize);
-    MemLib::vCopy(aEntryData,aEntWrkData,nDataSize,eClass());
-    
-    //char* aRow = this->aRow();
-    //StrVal* pStrVal = reinterpret_cast<StrVal*>(aRow);
-    //vTrace("%s"_Stz, pStrVal->aStr());
-  }
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_); 
+void Entry::vSetEntry(EntWrk& xEntWrk) {
+  RASSERT(0);
 }
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+//
+//  ASSERT(nSizeItem());
+//
+//  // set RowId
+//  m_xId = xEntWrk.xId();
+//
+//  // set Offsets
+//  m_nOffsets = xEntWrk.nOffsets();
+//
+//  // set Transaction Id
+//  m_iTxId = xEntWrk.iTxId();
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  // copy RightVec
+//  RightVec* aEntryRightVec = this->aRightVec();
+//  RightVec* aEntWrkRightVec = xEntWrk.aRightVec();
+//  i8 nRightBytes = xEntWrk.nRightSize();
+//
+//  MemLib::vCopy(aEntryRightVec,aEntWrkRightVec,nRightBytes,eClass());
+//
+//  // copy Key
+//  Key* aEntryKey = this->aKey();
+//  Key* aEntWrkKey = xEntWrk.aKey();
+//  i8 nKeyBytes = xEntWrk.nKeySize();
+//
+//  ASSERT(nKeyBytes);
+//  MemLib::vCopy(aEntryKey,aEntWrkKey,nKeyBytes,eClass());
+//
+//  // copy data
+//  if (xEntWrk.bHasData()) {
+//    char* aEntryData = this->aRowData();
+//    char* aEntWrkData = xEntWrk.aData();
+//    i8 nDataSize = xEntWrk.nDataSize();
+//
+//    ASSERT(nDataSize);
+//    MemLib::vCopy(aEntryData,aEntWrkData,nDataSize,eClass());
+//
+//    //char* aRow = this->aRow();
+//    //StrVal* pStrVal = reinterpret_cast<StrVal*>(aRow);
+//    //vTrace("%s"_Stz, pStrVal->aStr());
+//  }
+//
+//  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* set entry given working entry                                              */
 /*----------------------------------------------------------------------------*/
-void Entry::vSetEntry(EntWrk_v2& xEntWrk_v2)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
-  
-  ASSERT(nSizeItem());
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set id, transaction and offsets
-  m_xId = xEntWrk_v2.xId();
-  m_iTxId = xEntWrk_v2.iTxId();
-  m_nOffsets = xEntWrk_v2.nOffsets();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // copy row
-  char* aEntryData = (char*)this->aRow_v2();
-  char* aEntWrkData = xEntWrk_v2.aData_v2();
-  i8 nDataSize = xEntWrk_v2.nDataSize();
-
-  if (nDataSize)
-    MemLib::vCopy(aEntryData,aEntWrkData,nDataSize,eClass());
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
-}
+//void Entry::vSetEntry(EntWrk_v2& xEntWrk_v2)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+//
+//  ASSERT(nSizeItem());
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // set id, transaction and offsets
+//  m_xId = xEntWrk_v2.xId();
+//  m_iTxId = xEntWrk_v2.iTxId();
+//  m_nOffsets = xEntWrk_v2.nOffsets();
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // copy row
+//  char* aEntryData = (char*)this->aRow_v2();
+//  char* aEntWrkData = xEntWrk_v2.aData_v2();
+//  i8 nDataSize = xEntWrk_v2.nDataSize();
+//
+//  if (nDataSize)
+//    MemLib::vCopy(aEntryData,aEntWrkData,nDataSize,eClass());
+//
+//  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* set entry given working entry                                              */
 /*----------------------------------------------------------------------------*/
-void Entry::vSetEntry_v3(i8 xTxId, Id xId, i8 nOffsets, Stz* aData, i8 nDataSize)
+void Entry::vSetEntry(i8 xTxId, Id xId, i8 nOffsets, Stz* aData, i8 nDataSize)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
@@ -809,107 +834,6 @@ void Entry::vContentDump(void)
 /* extract an index key into KeyWrk from this row using given index columns   */
 /*----------------------------------------------------------------------------*/
 void Entry::vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_); 
-  
-  ValWrk xValWrk;
-  
-  // VCH cannot be > 256 bytes
-  s4K s;                                                       //ALKA_ROWFORMAT
-  
-  Row* aThisRow = aRow();
-  i8 nCols = pIdxColVec->nItems();
-  for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
-    
-    // get the column from the index column vector
-    Column* pColumn = pIdxColVec->pGet(i_Column);
-    
-    // get the column number of the column
-    i8 iColumnNo = pColumn->iColumnNo();
-    
-    // get the column value from the row for the iColumnNo
-    
-    char* pDst = aThisRow->aColumnDatum(iColumnNo);
-    
-    switch(pColumn->eDatumType()) {
-        
-      case DM_BOL: {
-        Bol xBol = *((Bol*)pDst);
-        xValWrk = xBol;
-        break;
-      }
-        
-      case DM_DTE: {
-        Dte xDte = *((Dte*)pDst);
-        xValWrk = xDte;
-        break;
-      }
-        
-      case DM_BCD: {
-        Bcd xBcd = *((Bcd*)pDst);
-        xValWrk = xBcd;
-        break;
-      }
-        
-      case DM_FLT: {
-        Flt xFlt = *((Flt*)pDst);
-        xValWrk = xFlt.dAsD8();
-        break;
-      }
-        
-      case DM_INT: {
-        Int xInt = *((Int*)pDst);
-        xValWrk = xInt.iAsI8();
-        break;
-      }
-        
-      case DM_IVL: {
-        Ivl xIvl = *((Ivl*)pDst);
-        xValWrk = xIvl;
-        break;
-      }
-        
-      case DM_TME: {
-        Tme xTme = *((Tme*)pDst);
-        //bool b = Tme::bExtract(pDst,&xTme,iLength,pColumn);
-        //ASSERT(b);
-        xValWrk = xTme;
-        break;
-      }
-        
-      case DM_TSP: {
-        Tsp xTsp = *((Tsp*)pDst);
-        //bool b = Tsp::bExtract(pDst,&xTsp,iLength,pColumn);
-        //ASSERT(b);
-        xValWrk = xTsp;
-        break;
-      }
-        
-      case DM_VBN: {
-        NEVER_REACH;
-        break;
-      }
-        
-      case DM_VCH: {
-        s = (Stz*)pDst;
-        xValWrk = s;
-        break;
-      }
-        
-      default:
-        NEVER_REACH;
-    }
-    
-    // add the column value to the key
-    xKeyWrk.vAddDatum(xValWrk, pColumn);
-  }
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/* extract an index key into KeyWrk from this row using given index columns   */
-/*----------------------------------------------------------------------------*/
-void Entry::vExtractIndexKey_v2(KeyWrk_v2& xKeyWrk, IdxColVec* pIdxColVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   

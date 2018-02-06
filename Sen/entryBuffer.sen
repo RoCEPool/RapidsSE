@@ -7,16 +7,16 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: eb_ut_v2
+//: eb_ut_v2
 
-  "eb_ut_v2" .
+//  "eb_ut_v2" .
 
-  "ebTest"  pushTable assert
-  "ebTest" find execute locals| pTable |
-  popTable
+//  "ebTest"  pushTable assert
+//  "ebTest" find execute locals| pTable |
+//  popTable
 
-  pTable entryBuffer::unitTest_v2
-;
+//  pTable entryBuffer::unitTest_v2
+//;
 
 : eb_ut_v3
 

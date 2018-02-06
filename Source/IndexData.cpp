@@ -647,12 +647,12 @@ EntryBuffer* IndexData::pAppendL0Entry(EntryBuffer* pEntryBuffer,
   if (pEntryBuffer) {
     
     // get the L1 higher level buffer
-    pHigherLevel = pEntryBuffer->pHigherLevel();
+    pHigherLevel = pEntryBuffer->pHigherBuffer();
     ASSERT(pHigherLevel);
     
     // create a subsequent L0 entry buffer and set its higher level buffer
     pEntryBuffer = pEntryBuffer->pNewNextBuffer();
-    pEntryBuffer->vHigherLevel(pHigherLevel);
+    pEntryBuffer->vHigherBuffer(pHigherLevel);
     
     // set the prior vector to be the head entry of L0 buffer
     pEntryBuffer->vPriorVecHead(xPriorVec);
@@ -683,7 +683,7 @@ EntryBuffer* IndexData::pAppendL0Entry(EntryBuffer* pEntryBuffer,
   
   // create very first L0 buffer and set its higher level buffer
   pEntryBuffer = new EntryBuffer(m_pIndex,0,m_nPartitionNo);
-  pEntryBuffer->vHigherLevel(pHigherLevel);
+  pEntryBuffer->vHigherBuffer(pHigherLevel);
   
   // set the prior vector to be the head entry of L0 buffer
   pEntryBuffer->vPriorVecHead(xPriorVec);
@@ -726,7 +726,7 @@ bool IndexData::bInsertEntry(EntryBuffer* pHigher, KeyWrk& xKeyWrk, Id xId, i8 i
     
     // find position again
     bool bEqual;
-    pEntryBuffer = pEntryBuffer->pHigherLevel()->pPositionLevel(xKeyWrk,nKeyCols, JC_AFTER, iLevel);
+    pEntryBuffer = pEntryBuffer->pHigherBuffer()->pPositionLevel(xKeyWrk,nKeyCols, JC_AFTER, iLevel);
   }
   
   // assert we have a buffer
@@ -790,7 +790,7 @@ void IndexData::vFixHigherBuffer(EntryBuffer* pEntryBuffer, i8 iLevel)
   pRoot = m_pRoot->pPositionLevel(xKeyWrk, m_pIndex->pIdxColVec()->nItems(),
                                   JC_AFTER, iLevel);
 
-  pEntryBuffer->vHigherLevel(pRoot);
+  pEntryBuffer->vHigherBuffer(pRoot);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -810,7 +810,7 @@ EntryBuffer* IndexData::pSplitBuffer(EntryBuffer* pEntryBuffer)
   EntryBuffer* pEntryBufferNew = pEntryBuffer->pSplitBuffer();
   
   // get the next level buffer
-  EntryBuffer* pHigherLevel = pEntryBuffer->pHigherLevel();
+  EntryBuffer* pHigherLevel = pEntryBuffer->pHigherBuffer();
   
   // create a next level buffer if it does not exist
   if ( ! pHigherLevel ) {

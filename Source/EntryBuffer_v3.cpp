@@ -542,7 +542,7 @@ void EntryBuffer_v3::vCompactBuffer(void)
     // vGiveSpace(nBytesReclaimed);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // move scan 
+    // move scan
     
   } // for
   

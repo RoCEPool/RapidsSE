@@ -18,11 +18,11 @@ namespace DBobjects
     i4 m_iOffset;    // offset where the entry is
   };
   
-  static const i8 C_ENTRIES_0 = C_8KB;
-  static const i8 C_ENTRIES_1 = C_1KB;
-  static const i8 C_ENTRIES_2 = 128;
+  static const i8 C_ENTRIES_0_v2 = C_8KB;
+  static const i8 C_ENTRIES_1_v2 = C_1KB;
+  static const i8 C_ENTRIES_2_v2 = 128;
   
-  static const i4 C_ENTRY_NONE = C_16KB;
+  static const i4 C_ENTRY_NONE_v2 = C_16KB;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class EntryBuffer_v2 : public ItemBuffer
