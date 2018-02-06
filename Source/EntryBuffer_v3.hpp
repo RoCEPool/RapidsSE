@@ -18,7 +18,7 @@ namespace DBobjects
   protected:
   
     eBD   m_eDurability; // buffer durability
-    bool  m_bIsLast;     // is this the last buffer in
+    bool  m_bIsLast;     // is this the last buffer in sequence
   
     EntryBuffer_v3* m_pHigherBuffer; // higher level buffer that has entries
                                      // that point to this buffer
@@ -33,10 +33,10 @@ namespace DBobjects
     i4      m_nFreeOffsets;    // number of free entry offsets
     i4      m_iFreeOffsetHead; // head of free entry offset chain
   
-    Entry*     m_pHeadEntry;  // head entry of buffer
+    Entry*     m_pHeadEntry;  // head entry
     Entry*     m_pFirstEntry; // first entry in buffer
     Entry*     m_pLastEntry;  // last entry in buffer
-    FreeEntry* m_pFirstFree;  // first free space in buffer
+    FreeEntry* m_pFirstFree;  // head of free entry list
   
     // must be last
     Footer m_xFooter;
@@ -102,6 +102,7 @@ namespace DBobjects
     void           vDeleteEntry(Entry* pEntry);
     //void         vDump(void);
     Entry*         pFirstEntryAny(void);
+    Entry*         pGetEntryRow(i8 iRowNo);
     bool           bHasSpace(i8 nBytes);
     //bool         bInsert(EntWrk& xEntWrk);
     //bool         bInsertEntry(i8 iTxId, Stz* pRow, i8 iLength);
@@ -140,7 +141,6 @@ namespace DBobjects
     void           vFreeChains(void);
     Entry*         pGetEntry(i8 iOffset);
     Entry*         pGetEntry(i8 iEntryNo, ln nLevelNo);
-    Entry*         pGetEntryRow(i8 iRowNo);
     i4             iGetFreeEntry(void);
     Entry*         pGetSplitEntry(i8 iSplitEntryNo);
     void           vHeadEntry(void);

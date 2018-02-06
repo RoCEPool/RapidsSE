@@ -94,8 +94,8 @@ namespace DBobjects
     void vTxId(i8 iTxId);
   
     NEO* aNEO(void);
-    i4   iNEO(i8 iOffset);
-    void vNEO(i8 iOffset, i4 iNEO);
+    i4   iNEO(i8 i_Offset);
+    void vNEO(i8 i_Offset, i4 iNEO);
   
     i8   iNEOsize(void);
 

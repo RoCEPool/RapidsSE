@@ -501,7 +501,26 @@ void EntryBuffer_v3::vDeleteEntry(Entry* pEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  i8 iRowNo = pEntry->iRow();
+  // currently we only delete from non-hidden indexes
+  ASSERT(! m_pIndex->bIsHidden());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // remove entry from next offset chains
+  
+  Entry* xPriorVec[3];
+
+  Key* aKey = pEntry->aKey_v2();
+  vPositionPrior_v3(aKey, xPriorVec);
+  vDumpPriorVec(xPriorVec);
+  
+  i8 nOffsets = pEntry->nOffsets();
+  for (i8 i_Offset = 0; i_Offset < nOffsets; i_Offset++) {
+    i4 iNEO = pEntry->iNEO(i_Offset);
+    xPriorVec[i_Offset]->vNEO(i_Offset,iNEO);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // if we are deleting the first entry adjust m_pFirstEntry
   
   if (pEntry == m_pFirstEntry) {
     Entry* pNextEntry = this->pNextEntry(pEntry,0);
@@ -509,7 +528,8 @@ void EntryBuffer_v3::vDeleteEntry(Entry* pEntry)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+  // add entry to head of free entry list
+  
   i8 nSizeEntry = pEntry->nSizeEntry();
   i8 nSizeNEO   = pEntry->iNEOsize();
   i8 nSizeFree  = nSizeEntry + nSizeNEO;
@@ -522,11 +542,6 @@ void EntryBuffer_v3::vDeleteEntry(Entry* pEntry)
   }
   
   m_pFirstFree = pFreeEntry;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  m_pEntryOffset0[iRowNo] = - m_iFreeOffsetHead;
-  m_iFreeOffsetHead = iRowNo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1406,6 +1421,8 @@ void DBobjects::vEntryBuffer_v3_UnitTest(Table* pTable)
   bool bFormatted;
   bool bBlankLine;
   KeyWrk_v2 xKeyWrk;
+  
+  Entry* xKeyEntries[1000];
 
   // keys in ascending order
   for (i8 iInt = 0; iInt <= 10; iInt++) {
@@ -1452,6 +1469,8 @@ void DBobjects::vEntryBuffer_v3_UnitTest(Table* pTable)
     
     Entry* pKeyEntry = pCurrentIndexBuffer->pInsertKey_v3a(0, xKeyWrk.aKey(), xKeyWrk.nKeySize());
     
+    xKeyEntries[iKey] = pKeyEntry;
+    
 //    if ( ! pKeyEntry ) {
 //      pCurrentIndexBuffer = pCurrentIndexBuffer->pNewNextBuffer();
 //      pKeyEntry = pCurrentIndexBuffer->pInsertKey_v3(xKeyWrk);
@@ -1463,112 +1482,19 @@ void DBobjects::vEntryBuffer_v3_UnitTest(Table* pTable)
   
   pCurrentBuffer->vShow();
   
-  // delete first entry
-  Entry* pFirstEntry = pCurrentBuffer->pFirstEntry();
-  pCurrentBuffer->vDeleteEntry(pFirstEntry);
-  
-  pCurrentBuffer->vShow();
-  
-  
-  /*
-//  for (i8 iInt = 0; iInt < 1000; iInt++) {
-//    i8 nOffsets = Random::iLogLevel(gpAttachMap->m_nIndexOffsets+1, C_FLAT_FREQ);
-//    vTrace("nOffsets %lld\n"_Stz,nOffsets);
-//  }
-  
-  ColumnVec* pColVec = pTable->pColumnVec();
-  Index* pHiddenIndex = pTable->pHiddenIndex();
-  
-  IdxVec* pIdxVec = pTable->pIdxVec();
-  Index* pIndex1 = pIdxVec->pGet(1);
-  IdxColVec* pIdxColVec1 = pIndex1->pIdxColVec();
-  
-  Formatters* pFormatters = &gpAttachMap->m_xFormatters;
- 
-  EntryBuffer_v3* pFirstBuffer = new EntryBuffer_v3;
-  EntryBuffer_v3* pCurrentBuffer = pFirstBuffer;
-  pCurrentBuffer->vIndex(pHiddenIndex);
-  pCurrentBuffer->vPartitionNo(0);
-  //pCurrentBuffer->vShow();
-
-  EntryBuffer_v3* pFirstIndexBuffer = new EntryBuffer_v3;
-  EntryBuffer_v3* pCurrentIndexBuffer = pFirstIndexBuffer;
-  pCurrentIndexBuffer->vIndex(pIndex1);
-  pCurrentIndexBuffer->vPartitionNo(0);
+  // delete some entries
+  pCurrentIndexBuffer->vShow();
+  Entry* pEntry = xKeyEntries[0];
+  pCurrentIndexBuffer->vDeleteEntry(pEntry);
   pCurrentIndexBuffer->vShow();
   
-  s256 sRecData;
-  i8 iRecLength;
+  pEntry = xKeyEntries[2];
+  pCurrentIndexBuffer->vDeleteEntry(pEntry);
+  pCurrentIndexBuffer->vShow();
   
-  RowWrk_v2 xRowEntWrk;
-  i8 iRowLength;
-  
-  bool bBlankLine;
-  bool bFormatted;
-  bool bAppended;
-  
-  KeyWrk_v2 xKeyWrk;
-  
-  // keys in ascending order
-  //for (i8 iInt = 0; iInt <= 9; iInt++) {
-  //  i8 iKey = iInt;
-    
-  // keys in descending order
-  //for (i8 iInt = 9; iInt >= 0; iInt--) {
-  //  i8 iKey = iInt;
-    
-  // keys in random order
-  for (i8 iInt = 0; iInt <= 20; iInt++) {
-    i8 iKey = Random::iRandom(20);
-  
-    sprintf(sRecData.aChar(),"%lld,%s,1900-01-01 00:00:%lld",
-            iKey,IntLib::sAsText(iInt),iInt);
-    //vTrace("Record: %s\n"_Stz,sRawData.aChar());
-    
-    char* aRowData = xRowEntWrk.aData_v2();
-    iRecLength = sRecData.iLength();
-    bFormatted = Row::bFormatRow(pColVec,pFormatters,
-                                 sRecData,iRecLength,
-                                 (Stz*)aRowData,iRowLength,
-                                 bBlankLine);
-    xRowEntWrk.vDataSize(iRowLength);
-    ((Row*)aRowData)->vDump(pColVec);
-    
-    xRowEntWrk.vTxId(0);
-    //pCurrentBuffer->vShow();
-    Entry* pRowEntry = pCurrentBuffer->pAppendRow_v2(xRowEntWrk);
-    if ( ! pRowEntry ) {
-      pCurrentBuffer = pCurrentBuffer->pNewNextBuffer();
-      pRowEntry = pCurrentBuffer->pAppendRow_v2(xRowEntWrk);
-      ASSERT(pRowEntry);
-    }
-    //pCurrentBuffer->vShow();
-
-    //pCurrentBuffer->vAddFree(pRowEntry);
-    
-    xKeyWrk.vReset();
-    pRowEntry->vExtractIndexKey_v2(xKeyWrk,pIdxColVec1);
-    xKeyWrk.vShow(pIdxColVec1);
-    
-    Entry* pKeyEntry = pCurrentIndexBuffer->pInsertKey_v2(xKeyWrk);
-    if ( ! pKeyEntry ) {
-      pCurrentIndexBuffer = pCurrentIndexBuffer->pNewNextBuffer();
-      pKeyEntry = pCurrentIndexBuffer->pInsertKey_v2(xKeyWrk);
-      ASSERT(pKeyEntry);
-    }
-    pCurrentIndexBuffer->vShow();
-  }
-
-  for (pCurrentBuffer = pFirstBuffer;
-       pCurrentBuffer;
-       pCurrentBuffer = pCurrentBuffer->pNextBuffer())
-    pCurrentBuffer->vShow();
-
-  for (pCurrentIndexBuffer = pFirstIndexBuffer;
-       pCurrentIndexBuffer;
-       pCurrentIndexBuffer = pCurrentIndexBuffer->pNextBuffer())
-    pCurrentIndexBuffer->vShow();
-   */
+  pEntry = xKeyEntries[4];
+  pCurrentIndexBuffer->vDeleteEntry(pEntry);
+  pCurrentIndexBuffer->vShow();
 }
 
 /*============================================================================*/
