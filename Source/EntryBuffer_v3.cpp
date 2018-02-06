@@ -1008,6 +1008,45 @@ void EntryBuffer_v3::vShow(void)
     }
   }
   
+  if (m_pHeadEntry) {
+    vTrace("\n"_Stz);
+    vTrace("By item:\n"_Stz);
+    for (Item* pItem = pFirstItem();
+         pItem != nullptr;
+         pItem = pNextItem(pItem)) {
+      
+      vTrace(" %p: "_Stz,pItem);
+      eCN eClass = pItem->eClass();
+      i8 iSize;
+      
+      switch (eClass) {
+        case CN_ENTRY: {
+          Entry* pEntryItem = static_cast<Entry*>(pItem);
+          iSize = pEntryItem->nSizeEntry() + pEntryItem->iNEOsize();
+          vTrace("Entry %lld bytes"_Stz,iSize);
+          break;
+        }
+          
+        case CN_FREEENTRY: {
+          FreeEntry* pFreeEntryItem = static_cast<FreeEntry*>(pItem);
+          iSize = pFreeEntryItem->nSizeItem();
+          vTrace("FreeEntry %lld bytes"_Stz,iSize);
+          break;
+        }
+          
+        case CN_WILDERNESS:
+          iSize = nFreeBytes();
+          vTrace("Wilderness (%lld bytes free)"_Stz,iSize);
+          break;
+          
+        default:
+          break;
+      }
+      vTrace("\n"_Stz);
+    }
+  }
+  
+
   vTrace("\n"_Stz);
   vTrace("=================================================="
          "==================================================\n"_Stz);
