@@ -416,6 +416,8 @@ void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iE
     return;
   }
   
+  RASSERT(0);
+  
   iBuffers++;
   iEntries += m_nItems;
   
