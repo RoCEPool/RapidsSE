@@ -1153,7 +1153,44 @@ EntryBuffer* EntryBuffer::pSplitBuffer(void)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vTruncate(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  EntryBuffer* pNextBuffer;
+  
+  // hidden index buffers are just one level
+  if (m_pIndex->bIsHidden()) {
+    ASSERT(m_nBufferLevel == 0);
+    pNextBuffer = this->pNextBuffer();
+    
+    while (pNextBuffer) {
+      ASSERT(pNextBuffer->nBufferLevel() == 0);
+      
+      EntryBuffer* pThisBuffer = pNextBuffer;
+      pNextBuffer = pNextBuffer->pNextBuffer();
+      delete pThisBuffer;
+    }
+    delete this;
+    return;
+  }
+  
   RASSERT(0);
+  
+  if (m_nBufferLevel != 0) {
+    
+    // recursively delete the lower level buffers
+    for (Entry* pEntry = pFirstEntry(); pEntry != nullptr;
+         pEntry = pNextEntry(pEntry, 0)) {
+      
+      // get the index buffer from the entry
+      pNextBuffer = pEntry->pEntryBuffer();;
+      
+      ASSERT(pNextBuffer);
+      ASSERT(pNextBuffer->eClass() == CN_ENTRYBUFFER);
+      pNextBuffer->vTruncate();
+    }
+  }
+  
+  delete this;
 }
 
 /*----------------------------------------------------------------------------*/

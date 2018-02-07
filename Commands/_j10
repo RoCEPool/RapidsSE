@@ -25,8 +25,12 @@ sz j10;
 tableSizes;
 ex j10 "/tmp/j10_ex.csv" ;
 
-/*
 drop table j10;
+
+docol epochDump;
+
+/*
+
 
 create table j10 (
   j10_key   INTEGER NOT NULL,
