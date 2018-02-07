@@ -153,7 +153,7 @@ namespace DBobjects
     //void         vFixHigherLevel(Entry* aNewEntry);
     //void         vFixPriorOffset(EntryVec* pPriorVec, Entry* aNewEntry);
     void           vFreeChains(void);
-    Entry*         pGetEntryNo(i8 iEntryNo, ln nLevelNo);
+    Entry*         pGetEntryNo(i8 iEntryNo);
     Entry*         pGetEntryOffset(i8 iOffset);
     i4             iGetFreeEntry(void);
     Entry*         pGetSplitEntry(i8 iSplitEntryNo);

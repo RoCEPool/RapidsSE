@@ -659,93 +659,6 @@ bool EntryBuffer::bHasSpace(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* attempt to insert a new key entry into this buffer                         */
 /*----------------------------------------------------------------------------*/
-/*
-Entry* EntryBuffer::pInsertKey_v3(KeyWrk& xKeyWrk)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  vTrace("Inserting key:\n"_Stz);
-  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  xKeyWrk.vShow(pIdxColVec);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // insert a new entry into the skip list
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 1 offset
-  //i8 nOffsets = 1;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 2 offsets
-  //i8 nOffsets = Random::iLogLevel(gpAttachMap->m_nIndexOffsets,C_FLAT_FREQ + 1);
-  i8 nOffsets = Random::iLogLevel(3,C_FLAT_FREQ + 1) + 1;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 3 offsets
-  //i8 nOffsets = Random::iLogLevel(gpAttachMap->m_nIndexOffsets+1,C_FLAT_FREQ) + 1;
-  
-  Entry* xPriorVec[3];
-
-  // find the entry after which the new entry.key will be inserted
-  Key* aKey = xKeyWrk.aKey();
-  vPositionPrior_v3(aKey, xPriorVec);
-  vDumpPriorVec(xPriorVec);
-  
-  // set no of offsets in working key
-  xKeyWrk.vOffsets(nOffsets); // 1,2 or 3 for the moment
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check if this buffer has enough space
-  i8 nEntryBytes = Entry::nBytesRequired(xKeyWrk);
-  
-  i8 nOffsetBytes = xKeyWrk.nOffsetSize();
- 
-  i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
-  if ( ! bHasSpace(nEntryPlusOffsets) )
-    return nullptr;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // form the rowId
-  
-  bn nBufferNo = this->nBufferNo();
-  i8 nRowNo = iGetFreeEntry(); //nItems();
-  Id xRowId(*nBufferNo, nRowNo);
-  
-  xKeyWrk.vId(xRowId);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // allocate space in this buffer
-  
-  Entry* pKeyEntry = pAllotEntryBytes(nEntryBytes);
-  ASSERT(pKeyEntry);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set the key entry
-  
-  pKeyEntry->vSetEntry(xKeyWrk);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set prior offsets
-  
-  i8 iKeyEntryOffset = iToOffsetAbs(pKeyEntry);
-  
-  NEO* aNEO = aAllotNEO(nOffsetBytes);
-  
-  for (i8 iNextOffset = 0; iNextOffset < nOffsets; iNextOffset++) {
-    
-    i8 iPriorOffset = xPriorVec[iNextOffset]->iNEO(iNextOffset);
-
-    pKeyEntry->vNEO(iNextOffset,iPriorOffset);
-    
-    xPriorVec[iNextOffset]->vNEO(iNextOffset,iKeyEntryOffset);
-  }
-  
-  return pKeyEntry;
-}
-*/
-/*----------------------------------------------------------------------------*/
-/* attempt to insert a new key entry into this buffer                         */
-/*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pInsertKey(i8 iTxId, Key* aKey, i8 iKeyLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
@@ -838,10 +751,6 @@ bool EntryBuffer::bInsertRow(Entry* pOldRow, Entry** ppRow) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* create a new next buffer                                                   */
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
 /* get next entry                                                             */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pNextEntry(Entry* pCurrent, i8 nOffsetNo)
@@ -899,6 +808,7 @@ Entry* EntryBuffer::pPosition(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare)
 {
   RASSERT(0);
 }
+
 /*----------------------------------------------------------------------------*/
 /* position at key as per relational operator                                 */
 /*----------------------------------------------------------------------------*/
@@ -906,6 +816,7 @@ Entry* EntryBuffer::pPosition(KeyWrk &xKeyWrk, eRO eRelnOp)
 {
   RASSERT(0);
 }
+
 /*----------------------------------------------------------------------------*/
 /* position at an index buffer at level iLevel starting from this buffer      */
 /*----------------------------------------------------------------------------*/
@@ -967,10 +878,6 @@ void EntryBuffer::vPriorVecHead(EntryVec& xPriorVec)
 {
   RASSERT(0);
 }
-
-/*----------------------------------------------------------------------------*/
-/* remove given entry                                                         */
-/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* remove entry from entry offset arrays                                      */
@@ -1051,7 +958,7 @@ void EntryBuffer::vShow(void)
       if (m_pEntryOffset0[i_Entry] <= 0)
         continue;
 
-      Entry* pEntry = pGetEntryNo(i_Entry, 0_ln);
+      Entry* pEntry = pGetEntryNo(i_Entry);
       vTrace("%4lld %8lld: "_Stz,i_Entry, nSub(pEntry,m_xWsp.aArea()));
       i8 iOffset = iToOffsetAbs(pEntry);
       pEntry->vShow(iOffset,m_pIndex,true);
@@ -1149,9 +1056,6 @@ EntryBuffer* EntryBuffer::pSplitBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* truncate this buffer by removing all entries                               */
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/* truncate                                                                    */
-/*----------------------------------------------------------------------------*/
 void EntryBuffer::vTruncate(void)
 {
   RASSERT(0);
@@ -1185,11 +1089,6 @@ void EntryBuffer::vDumpPriorVec(Entry* pPriorVec[])
            pPriorVec[0],pPriorVec[1],pPriorVec[2]);
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* dump the prior vector                                                      */
-/*----------------------------------------------------------------------------*/
-
 /*----------------------------------------------------------------------------*/
 /* fix the higher level buffers                                               */
 /*----------------------------------------------------------------------------*/
@@ -1216,36 +1115,17 @@ void EntryBuffer::vFreeChains(void)
 /*----------------------------------------------------------------------------*/
 /* get an entry by number                                                     */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pGetEntryNo(i8 iEntryNo, ln nLevelNo)
+Entry* EntryBuffer::pGetEntryNo(i8 iEntryNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   if (iEntryNo == C_ENTRY_NONE)
     return nullptr;
   
-  Entry* pEntry = nullptr;
-  char* aAddress;
-  i4 iOffset;
-  
-  switch (nLevelNo) {
-    case 0:
-      iOffset = m_pEntryOffset0[iEntryNo];
-      aAddress = pAdd<char*>(aDataArea(), iOffset);
-      pEntry = reinterpret_cast<Entry*>(aAddress);
-      break;
-//    case 1:
-//      iOffset = m_pEntryOffset1[iEntryNo].m_iOffset;
-//      aAddress = pAdd<char*>(aDataArea(), iOffset);
-//      pEntry = reinterpret_cast<Entry*>(aAddress);
-//      break;
-//    case 2:
-//      iOffset = m_pEntryOffset2[iEntryNo].m_iOffset;
-//      aAddress = pAdd<char*>(aDataArea(), iOffset);
-//      pEntry = reinterpret_cast<Entry*>(aAddress);
-//      break;
-    default:
-      ASSERT(0);
-  }
+  i4 iOffset = m_pEntryOffset0[iEntryNo];
+  char* aAddress = pAdd<char*>(aDataArea(), iOffset);
+
+  Entry* pEntry = reinterpret_cast<Entry*>(aAddress);
   
   return pEntry;
 }
