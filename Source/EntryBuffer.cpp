@@ -545,6 +545,75 @@ void EntryBuffer::vCompactBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+  FreeEntry* pFreeEntry;
+  Entry*     pNextEntry;
+  
+  // scan item is the working pointer
+  Item* pScanItem = pFirstItem();
+  
+  // loop while we can still reclaim more space
+  for (;;) {
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // find the next free entry in buffer
+    
+    pFreeEntry = nullptr;
+    for (;
+         pScanItem != nullptr;
+         pScanItem = pNextItem(pScanItem)) {
+      
+      eCN eClass = pScanItem->eClass();
+      
+      if (CN_FREEENTRY == eClass) {
+        pFreeEntry = static_cast<FreeEntry*>(pScanItem);
+        break;
+      }
+    }
+    
+    // return if no more free entries
+    if (! pFreeEntry )
+      return;
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // find the next entry in buffer after the free entry
+    
+    pNextEntry = nullptr;
+    for (Item* pItem = pNextItem(pFreeEntry);
+         pItem != nullptr;
+         pItem = pNextItem(pItem)) {
+      
+      eCN eClass = pItem->eClass();
+      
+      if (CN_ENTRY == eClass) {
+        pNextEntry = static_cast<Entry*>(pItem);
+        break;
+      }
+    }
+    
+    // return if no more entries after the free etry
+    if (! pNextEntry )
+      return;
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // now copy left
+    
+    // calculate the number of bytes to copy
+    i8 nCopyBytes = pNextEntry->nSizeEntry() + pNextEntry->iNEOsize();
+    
+    // copy the next entry over the free entry
+    MemLib::vCopy(pFreeEntry, pNextEntry, nCopyBytes, CN_ENTRYBUFFER);
+    
+    // give the reclaimed space back to the buffer
+    i8 nReclaimedBytes = nSub(pNextEntry,pFreeEntry);
+    vGiveSpace(nReclaimedBytes);
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // move scan
+    pScanItem = pFreeEntry;
+    
+    
+  } // for
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1213,10 +1282,6 @@ bool EntryBuffer::bVerify(void) {
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* compact this buffer                                                        */
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
 /* copy entries from fromBuffer starting at fromEntry to this buffer          */
 /*----------------------------------------------------------------------------*/
 
@@ -1383,7 +1448,7 @@ void EntryBuffer::vHeadEntry(void)
   ASSERT(m_pHeadEntry);
   new(m_pHeadEntry) Entry(CN_ENTRY,nEntryBytes,0);
   
-  m_pHeadEntry->vSetEntry(xHeadWrk);
+  m_pHeadEntry->vSetEntry(0,xHeadWrk.xId(),3,nullptr,0);
 
   NEO* aNEO = aAllotNEO(nOffsetBytes);
   m_pHeadEntry->vNEO(0,-1);

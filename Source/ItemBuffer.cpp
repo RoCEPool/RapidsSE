@@ -123,6 +123,16 @@ i8 ItemBuffer::nFreeBytes(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* give space back to this buffer                                             */
+/*----------------------------------------------------------------------------*/
+void ItemBuffer::vGiveSpace(i8 nBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_xWsp.vGive(nBytes);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of items in the buffer                                          */
 /*----------------------------------------------------------------------------*/
 i8 ItemBuffer::nItems(void)
