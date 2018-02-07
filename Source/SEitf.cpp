@@ -793,7 +793,7 @@ bool SEitf::bNextRow(void)
       
       //vTrace("sizeof entry %lld %lld\n"_Stz, sizeof(Entry), sizeof(Class));
       // get next entry from buffer
-      pEntry = m_pEntryBuffer->pNextEntry(m_pEntry);
+      pEntry = m_pEntryBuffer->pNextEntry(m_pEntry, 0);
     }
     
     // if no entry, get next buffer

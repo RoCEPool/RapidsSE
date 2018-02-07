@@ -130,7 +130,6 @@ namespace DBobjects
     //bool         bInsertRow(EntWrk& xEntRow, Entry** ppRow);
     bool           bInsertRow(Entry* pOldRow, Entry** ppRow);
     EntryBuffer*   pNewNextBuffer(void);
-    Entry*         pNextEntry(Entry* pEntry);
     Entry*         pNextEntry(Entry* pEntry, i8 nOffsetNo);
     Item*          pNextItem(Item* pItem);
     Entry*         pPosition(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare);

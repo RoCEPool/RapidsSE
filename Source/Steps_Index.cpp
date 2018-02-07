@@ -330,7 +330,7 @@ void Task::vIndexExactKey(MP_Task mpTask)
   }
   
   // get the first entry in the buffer
-  pEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHeadEntry());
+  pEntry = pEntryBuffer->pFirstEntry();
   
   // iterate thru the buffer till no more entries
   while (pEntry) {
@@ -366,14 +366,14 @@ void Task::vIndexExactKey(MP_Task mpTask)
     }
     
     // move to next entry in the buffer
-    pEntry = pEntryBuffer->pNextEntry(pEntry);
+    pEntry = pEntryBuffer->pNextEntry(pEntry, 0);
     
     if ( ! pEntry ) {
       // get next buffer from the current indexBuffer
       pEntryBuffer = pEntryBuffer->pNextBuffer();
       
       if ( pEntryBuffer )
-        pEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHeadEntry());
+        pEntry = pEntryBuffer->pFirstEntry();
     }
     // check if seitf exiting
     if (pSEitf->m_bSeitfExiting)
@@ -694,14 +694,14 @@ void Task::vIndexLowerBound(MP_Task mpTask)
     }
     
     // move to next entry in the buffer
-    pEntry = pEntryBuffer->pNextEntry(pEntry);
+    pEntry = pEntryBuffer->pNextEntry(pEntry, 0);
     
     if ( ! pEntry ) {
       // get next buffer from the current indexBuffer
       pEntryBuffer = pEntryBuffer->pNextBuffer();
       
       if ( pEntryBuffer )
-        pEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHeadEntry());
+        pEntry = pEntryBuffer->pFirstEntry();
     }
     
     // check if seitf exiting
@@ -977,14 +977,14 @@ void Task::vIndexRange(MP_Task mpTask)
       }
       
       // move to next entry in the buffer
-      pEntry = pEntryBuffer->pNextEntry(pEntry);
+      pEntry = pEntryBuffer->pNextEntry(pEntry, 0);
       
       if ( ! pEntry ) {
         // get next buffer from the current indexBuffer
         pEntryBuffer = pEntryBuffer->pNextBuffer();
         
         if ( pEntryBuffer )
-          pEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHeadEntry());
+          pEntry = pEntryBuffer->pFirstEntry();
       }
       else {
         // there is an entry
@@ -1113,7 +1113,7 @@ void Task::vIndexScan(MP_Task mpTask)
       pEntryBuffer = pEntryBuffer->pNextBuffer();
       
       if ( pEntryBuffer )
-        pEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHeadEntry());
+        pEntry = pEntryBuffer->pFirstEntry();
     }
     
     // check if seitf exiting
@@ -1533,7 +1533,7 @@ void Task::vIndexUpperBound(MP_Task mpTask)
   }
 
   // get the first entry in the buffer
-  pEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHeadEntry());
+  pEntry = pEntryBuffer->pFirstEntry();
   
   // iterate thru the buffer till no more entries
   while (pEntry) {
@@ -1565,14 +1565,14 @@ void Task::vIndexUpperBound(MP_Task mpTask)
       }
       
       // move to next entry in the buffer
-      pEntry = pEntryBuffer->pNextEntry(pEntry);
+      pEntry = pEntryBuffer->pNextEntry(pEntry, 0);
       
       if ( ! pEntry ) {
         // get next buffer from the current indexBuffer
         pEntryBuffer = pEntryBuffer->pNextBuffer();
         
         if ( pEntryBuffer )
-          pEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHeadEntry());
+          pEntry = pEntryBuffer->pFirstEntry();
       }
     }
     else {

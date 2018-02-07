@@ -131,7 +131,7 @@ void Task::vRowBufferDump(MP_Task mpTask)
   
   while (pRow) {
     pRow->vContentDump();
-    pRow = pRowBuffer->pNextEntry(pRow);
+    pRow = pRowBuffer->pNextEntry(pRow, 0);
   }
   
   EXIT();

@@ -995,7 +995,7 @@ void Table::vPopulateSortArray(char* aSortArray, i8 nElements, i8 iSortElmSize,
   for (EntryBuffer* pEB = pFirstL0Buffer; pEB; pEB = pEB->pNextBuffer()) {
     
     Entry* pRow = pEB->pHeadEntry();
-    pRow = pEB->pNextEntry(pRow);
+    pRow = pEB->pNextEntry(pRow, 0);
     
     //if (gxArguments.m_bVerbose)
     //  vTrace("vPopulateSortArray for buffer %p\n"_Stz, pEB);
@@ -1014,7 +1014,7 @@ void Table::vPopulateSortArray(char* aSortArray, i8 nElements, i8 iSortElmSize,
   }
 
 #else
-    for ( ; pRow; pRow = pEB->pNextEntry(pRow)) {
+    for ( ; pRow; pRow = pEB->pNextEntry(pRow, 0)) {
 
       // get the key datum for this index
       xKeyWrk.vReset();

@@ -906,14 +906,6 @@ bool EntryBuffer::bInsertRow(Entry* pOldRow, Entry** ppRow) {
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get next entry (eq to right L0) after given entry (null if no next)        */
-/*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pNextEntry(Entry* pEntry)                           //! tune
-{
-  RASSERT(0);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get next entry                                                             */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pNextEntry(Entry* pCurrent, i8 nOffsetNo)

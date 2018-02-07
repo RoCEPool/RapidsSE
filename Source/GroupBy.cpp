@@ -87,7 +87,7 @@ void GroupBy::vApplyBuffer(EntryBuffer* pEntryBuffer)
   _precondition_(_ADDRESS_,_MAGIC_,CN_GROUPBY,_FOOTER_);
   
   Entry* pEntry = pEntryBuffer->pHeadEntry();
-  while( (pEntry = pEntryBuffer->pNextEntry(pEntry)) ) {
+  while( (pEntry = pEntryBuffer->pNextEntry(pEntry, 0)) ) {
     
     LineItem* pLineItem = (LineItem*)pEntry->aRowData();
     

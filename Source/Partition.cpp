@@ -165,7 +165,7 @@ bool Partition::bPopulateIndex(i8 iIndexNo)
         return false;
       
       // get next entry
-      pEntry = pEntryBuffer->pNextEntry(pEntry);
+      pEntry = pEntryBuffer->pNextEntry(pEntry, 0);
     }
    
     pEntryBuffer = pEntryBuffer->pNextBuffer();
