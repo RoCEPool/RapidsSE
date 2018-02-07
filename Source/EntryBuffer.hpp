@@ -172,7 +172,7 @@ namespace DBobjects
   
   EntryBuffer* _pEntryBuffer(void* aAddr);
   
-  void vEntryBuffer_v3_UnitTest(Table* pTable);
+  void vEntryBuffer_UnitTest(Table* pTable);
 }
 
 /*============================================================================*/

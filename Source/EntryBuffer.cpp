@@ -1270,7 +1270,7 @@ Footer* EntryBuffer::aFooter(void)
 /*-- Unit Test ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-void DBobjects::vEntryBuffer_v3_UnitTest(Table* pTable)
+void DBobjects::vEntryBuffer_UnitTest(Table* pTable)
 {
   
   ColumnVec* pColVec = pTable->pColumnVec();
