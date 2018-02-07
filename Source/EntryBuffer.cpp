@@ -643,7 +643,7 @@ void EntryBuffer::vDeleteEntry(Entry* pEntry)
   
   Entry* xPriorVec[3];
 
-  Key* aKey = pEntry->aKey_v2();
+  Key* aKey = pEntry->aKey();
   vPositionPrior_v3(aKey, xPriorVec);
   vDumpPriorVec(xPriorVec);
   
@@ -1005,7 +1005,7 @@ void EntryBuffer::vPositionPrior_v3(Key* aFindKey, Entry* pPriorVec[])
     Entry* pNextEntry_sl = pNextEntry(pScanEntry_sl,*nScanLevel);
     while (pNextEntry_sl) {
     
-      Key* aNextKey = pNextEntry_sl->aKey_v2();
+      Key* aNextKey = pNextEntry_sl->aKey();
       
       aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);

@@ -67,7 +67,6 @@ namespace DBobjects
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // key
     Key* aKey(void);
-    Key* aKey_v2(void);
     i8   nKeySize(IdxColVec* pIdxColVec);
     void vReplaceKey(EntWrk& xEntWrk);
   

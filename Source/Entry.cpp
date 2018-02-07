@@ -76,46 +76,8 @@ Entry::~Entry(void)
 /*----------------------------------------------------------------------------*/
 /* get bytes required for an Entry based on given EntWrk incl Object & Footer */
 /*----------------------------------------------------------------------------*/
-//i8 Entry::nBytesRequired_v1(EntWrk_v1& xEntWrk)
-//{
-//  i8 nOffsets = xEntWrk.nOffsets();
-//
-//  //# ASSERT(nOffsets >= 1);
-//
-//  i8 nKeyBytes = xEntWrk.nKeySize();
-//
-//  i8 nDataBytes = xEntWrk.nDataSize();
-//
-//  i8 nBytes = Entry::nBytesRequired(nOffsets,nKeyBytes,nDataBytes);
-//
-//  return nBytes;
-//}
-
-/*----------------------------------------------------------------------------*/
-/* get bytes required for an Entry based on given EntWrk incl Object & Footer */
-/*----------------------------------------------------------------------------*/
-//i8 Entry::nBytesRequired_v2(EntWrk_v2& xEntWrk)
-//{
-//  //i8 nOffsets = xEntWrk_v2.nOffsets();
-//
-//  //# ASSERT(nOffsets >= 1);
-//
-//  i8 nKeyBytes = 0; //xEntWrk_v2.nKeySize();                         ALKA!!!
-//
-//  i8 nDataBytes = xEntWrk.nDataSize();
-//
-//  i8 nBytes = Entry::nBytesRequired(0,nKeyBytes,nDataBytes);
-//
-//  return nBytes;
-//}
-
-/*----------------------------------------------------------------------------*/
-/* get bytes required for an Entry based on given EntWrk incl Object & Footer */
-/*----------------------------------------------------------------------------*/
 i8 Entry::nBytesRequired(EntWrk& xEntWrk)
 {
-  //i8 nOffsetBytes = xEntWrk_v2.nOffsetSize();
-  
   i8 nDataBytes = xEntWrk.nDataSize();
   
   i8 nBytes = Entry::nBytesRequired(nDataBytes);
@@ -415,20 +377,6 @@ void Entry::vRightOffset(on nOffsetNo, i8 iRightOffset)
 /*----------------------------------------------------------------------------*/
 Key* Entry::aKey(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_); 
-  
-  i8 nOffsetBytes = RightVec::nBytesRequired(m_nOffsets);
-  
-  Key* aKey = pAdd<Key*>(aVblData(),nOffsetBytes);
-  
-  return aKey;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get Key                                                                    */
-/*----------------------------------------------------------------------------*/
-Key* Entry::aKey_v2(void)
-{
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
    Key* aKey = reinterpret_cast<Key*>(aVblData());
@@ -583,7 +531,7 @@ void Entry::vShow_v2(i8 iBase, Index* pIndex, bool bShowKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  Key* aKey = this->aKey_v2();
+  Key* aKey = this->aKey();
 //  i8 iKey;
 //  
 //  if (m_xId.iBuffer() == 0) {
@@ -643,7 +591,7 @@ void Entry::vShow_v3(i8 iOffset, Index* pIndex, bool bShowKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  Key* aKey = this->aKey_v2();
+  Key* aKey = this->aKey();
   //  i8 iKey;
   //
   //  if (m_xId.iBuffer() == 0) {
