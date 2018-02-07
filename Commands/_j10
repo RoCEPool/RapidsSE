@@ -12,17 +12,15 @@ create table j10 (
 
 print "loading j10.tbl..." ;
 ld j10 "../JTEST/j10.csv" ;
-//escape connector se 'load j10' with file = '/Users/alkayamarti/rapidsSE/rapidsse/JTEST/x.csv', delimiter = '\t', node='node1';
-//escape connector se 'load j10' with file = '/Users/alkayamarti/rapidsSE/rapidsse/JTEST/j10.csv', delimiter = ',', node='node1';
-//escape connector se 'export j10' with file='/tmp/p' , node='node1';
-//ld j10 "../JTEST/x.csv" delimiter "\t";
-
 
 pwf ;
 lf ;
 dumpidx j10 hidden;
 
-//fetch j10 ;
+fetch j10 ;
+antbl j10;
+dantbl j10;
+
 /*
 vfyidx j10 hidden;
 
