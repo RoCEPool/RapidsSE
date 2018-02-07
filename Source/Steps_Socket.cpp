@@ -256,6 +256,7 @@ void Task::vSocketSend(MP_Task mpTask)
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // send entryBuffer size
     i8 iBytes = pEntryBuffer->nUsedBytes();
+    //vTrace("sending %lld bytes\n"_Stz, iBytes);
     bResult = pSocket->bSendTo(sizeof(iBytes), &iBytes, xSysCall);
     
     if ( ! bResult ) {
@@ -359,7 +360,9 @@ void Task::vSocketRecv(MP_Task mpTask)
     //******************************************************************
     // receive entryBuffer
     //******************************************************************
-    EntryBuffer* pEntryBuffer = (EntryBuffer*)new EntryBuffer(iBytes);
+    EntryBuffer* pEntryBuffer = (EntryBuffer*)new EntryBuffer();
+    pEntryBuffer->aAllotSpace(iBytes);
+    
     //vTrace("Recvd EntryBuffer: %p\n"_Stz,pEntryBuffer);
     bResult = pSocket->bRecvBytes(iBytes, reinterpret_cast<void*>(pEntryBuffer->aDataArea()), xSysCall);
     
@@ -367,7 +370,7 @@ void Task::vSocketRecv(MP_Task mpTask)
       THROW("Unable to recvFrom socket: Errno %d!"_Stz, xSysCall.iError());
     
     pEntryBuffer->vRowCount();
-    //vTrace("%lld \n"_Stz, *(pEntryBuffer->nBufferNo()));
+    //vTrace("%lld %lld %lld\n"_Stz, iBytes, *(pEntryBuffer->nBufferNo()), pEntryBuffer->nItems());
     
     // set the new entry buffer in each entry of the entry buffer
     Id xId;
@@ -377,14 +380,15 @@ void Task::vSocketRecv(MP_Task mpTask)
       xId.vRow(pEntry->xId().iRow());
                
       pEntry->vId(xId);
-      
     }
+    
     //******************************************************************
     // set entryBuffer in valset
     //******************************************************************
     bool bSet = xValSet.bSetRowBuffer(pEntryBuffer);
     ASSERT(bSet);
   }
+
   
   mpTask->m_pDataStack->vPushValSet(xValSet);
   
