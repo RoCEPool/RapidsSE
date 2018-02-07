@@ -1038,7 +1038,7 @@ void EntryBuffer::vShow(void)
    
     i8 iOffset = m_pHeadEntry->iNEO(0);
     while (iOffset > -1) {
-      Entry* pEntry = pGetEntry(iOffset);
+      Entry* pEntry = pGetEntryOffset(iOffset);
       pEntry->vShow(iOffset,m_pIndex,true);
       iOffset = pEntry->iNEO(0);
     }
@@ -1051,7 +1051,7 @@ void EntryBuffer::vShow(void)
       if (m_pEntryOffset0[i_Entry] <= 0)
         continue;
 
-      Entry* pEntry = pGetEntry(i_Entry, 0_ln);
+      Entry* pEntry = pGetEntryNo(i_Entry, 0_ln);
       vTrace("%4lld %8lld: "_Stz,i_Entry, nSub(pEntry,m_xWsp.aArea()));
       i8 iOffset = iToOffsetAbs(pEntry);
       pEntry->vShow(iOffset,m_pIndex,true);
@@ -1214,22 +1214,9 @@ void EntryBuffer::vFreeChains(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get an entry by offset                                                     */
-/*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pGetEntry(i8 iOffset)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  char* aAddress = pAdd<char*>(aDataArea(), iOffset);
-  Entry* pEntry = reinterpret_cast<Entry*>(aAddress);
-  
-  return pEntry;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get an entry by number                                                     */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pGetEntry(i8 iEntryNo, ln nLevelNo)
+Entry* EntryBuffer::pGetEntryNo(i8 iEntryNo, ln nLevelNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1264,6 +1251,19 @@ Entry* EntryBuffer::pGetEntry(i8 iEntryNo, ln nLevelNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get an entry by offset                                                     */
+/*----------------------------------------------------------------------------*/
+Entry* EntryBuffer::pGetEntryOffset(i8 iOffset)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  char* aAddress = pAdd<char*>(aDataArea(), iOffset);
+  Entry* pEntry = reinterpret_cast<Entry*>(aAddress);
+  
+  return pEntry;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get an entry by row number                                                 */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pGetEntryRow(i8 iRowNo)
@@ -1275,7 +1275,7 @@ Entry* EntryBuffer::pGetEntryRow(i8 iRowNo)
   if (iOffset < 0)
     return nullptr;
   
-  Entry* pEntry = pGetEntry(iOffset);
+  Entry* pEntry = pGetEntryOffset(iOffset);
   
   return pEntry;
 }
