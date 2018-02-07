@@ -45,6 +45,7 @@
   loop
 
   r1 file.close
+  r1 file.delete
 
   rdrop rdrop
 
