@@ -1144,23 +1144,6 @@ Entry* EntryBuffer::pGetEntryOffset(i8 iOffset)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get an entry by row number                                                 */
-/*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pGetEntryRow(i8 iRowNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  i8 iOffset = m_pEntryOffset0[iRowNo];
-  
-  if (iOffset < 0)
-    return nullptr;
-  
-  Entry* pEntry = pGetEntryOffset(iOffset);
-  
-  return pEntry;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get split entry by number                                                  */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pGetSplitEntry(i8 iSplitEntryNo)

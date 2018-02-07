@@ -120,7 +120,6 @@ namespace DBobjects
     void           vDeleteEntry(Entry* pEntry);
     void           vDump(void);
     Item*          pFirstItem(void);
-    Entry*         pGetEntryRow(i8 iRowNo);
     bool           bHasSpace(i8 nBytes);
     bool           bInsert(EntWrk& xEntWrk);
     Entry*         pInsertKey(i8 iTxId, Key* pKey, i8 iKeyLength);
