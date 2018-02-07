@@ -746,7 +746,7 @@ Entry* EntryBuffer::pInsertKey_v3(KeyWrk& xKeyWrk)
 /*----------------------------------------------------------------------------*/
 /* attempt to insert a new key entry into this buffer                         */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pInsertKey_v3a(i8 iTxId, Key* aKey, i8 iKeyLength)
+Entry* EntryBuffer::pInsertKey(i8 iTxId, Key* aKey, i8 iKeyLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1484,7 +1484,7 @@ void DBobjects::vEntryBuffer_v3_UnitTest(Table* pTable)
     
     //Entry* pKeyEntry = pCurrentIndexBuffer->pInsertKey_v3(xKeyWrk);
     
-    Entry* pKeyEntry = pCurrentIndexBuffer->pInsertKey_v3a(0, xKeyWrk.aKey(), xKeyWrk.nKeySize());
+    Entry* pKeyEntry = pCurrentIndexBuffer->pInsertKey(0, xKeyWrk.aKey(), xKeyWrk.nKeySize());
     
     xKeyEntries[iKey] = pKeyEntry;
     
