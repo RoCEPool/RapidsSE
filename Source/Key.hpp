@@ -41,7 +41,7 @@ namespace DBobjects
     bool operator <(Key* pKeyArg);
     bool operator <=(Key* pKeyArg);
     
-    void  vShow(IdxColVec* pColVec);
+    void  vShow(IdxColVec* pIdxColVec);
   
     void  vKey(Key& xKey);
     void  vKey(KeyWrk& xKeyWrk);

@@ -160,6 +160,20 @@ Item* ItemBuffer::pNextItem(Item* pCurrentItem)
 }
 
 /*----------------------------------------------------------------------------*/
+/* calculate the absolute offset within workspace for given item              */
+/*----------------------------------------------------------------------------*/
+i8 ItemBuffer::iToOffsetAbs(Item* pItem)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  i8 iOffset = nSub(pItem,m_xWsp.aArea());
+  
+  ASSERT(iOffset >= 0 && iOffset < m_xWsp.nSize());
+  
+  return iOffset;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get bytes used                                                             */
 /*----------------------------------------------------------------------------*/
 i8 ItemBuffer::nUsedBytes(void)

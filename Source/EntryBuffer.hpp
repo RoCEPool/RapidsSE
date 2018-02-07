@@ -161,7 +161,6 @@ namespace DBobjects
     //void         vReplaceKeySmaller(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
     //Entry*       pRightEntry(Entry* pEntry, ln nLevelNo);
     //i8           iToEndOffsetAbs(Entry* pEntry);
-    i8             iToOffsetAbs(Entry* pEntry);
     //i8           iToRightOffsetAbs(Entry* pEntry, on nOffsetNo);
     //u8           uOffsetBetween(Entry* pEntryA, Entry* pEntryB);
   

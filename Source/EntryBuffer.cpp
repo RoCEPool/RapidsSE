@@ -577,6 +577,8 @@ void EntryBuffer::vCompactBuffer(void)
   
   FreeEntry* pFreeEntry;
   Entry*     pNextEntry;
+  Entry*     xPriorVec[3];
+  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
   // scan item is the working pointer
   Item* pScanItem = pFirstItem();
@@ -602,7 +604,7 @@ void EntryBuffer::vCompactBuffer(void)
     
     // return if no more free entries
     if (! pFreeEntry )
-      return;
+      break;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // find the next entry in buffer after the free entry
@@ -620,9 +622,21 @@ void EntryBuffer::vCompactBuffer(void)
       }
     }
     
-    // return if no more entries after the free etry
+    // return if no more entries after the free entry
     if (! pNextEntry )
-      return;
+      break;
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+    Key* aKey = pNextEntry->aKey();
+    aKey->vShow(pIdxColVec);
+    vTrace("\n"_Stz);
+    
+    vPositionPrior(aKey, xPriorVec);
+    vDumpPriorVec(xPriorVec);
+    
+    i8 iWasOffset = iToOffsetAbs(pNextEntry);
+    i8 iNowOffset = iToOffsetAbs(pFreeEntry);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // now copy left
@@ -637,13 +651,21 @@ void EntryBuffer::vCompactBuffer(void)
     i8 nReclaimedBytes = nSub(pNextEntry,pFreeEntry);
     vGiveSpace(nReclaimedBytes);
     
+    // convert the copied entry to a free entry
+    FreeEntry* pOpenedFreeEntry = new(pNextEntry) FreeEntry(nReclaimedBytes);
+
+    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // move scan
     pScanItem = pFreeEntry;
     
+    vShow();
     
   } // for
   
+  vSetWilderness();
+  
+  m_pFirstFree = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1390,20 +1412,6 @@ EntryBuffer* EntryBuffer::pNewNextBuffer(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* calculate the absolute offset within workspace for given entry             */
-/*----------------------------------------------------------------------------*/
-i8 EntryBuffer::iToOffsetAbs(Entry* pEntry)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  i8 iOffset = nSub(pEntry,m_xWsp.aArea());
-  
-  ASSERT(iOffset >= 0 && iOffset < m_xWsp.nSize());
-  
-  return iOffset;
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -1518,14 +1526,16 @@ void DBobjects::vEntryBuffer_UnitTest(Table* pTable)
   Entry* pEntry = xKeyEntries[0];
   pCurrentIndexBuffer->vDeleteEntry(pEntry);
   pCurrentIndexBuffer->vShow();
-  
-  pEntry = xKeyEntries[2];
-  pCurrentIndexBuffer->vDeleteEntry(pEntry);
-  pCurrentIndexBuffer->vShow();
-  
-  pEntry = xKeyEntries[4];
-  pCurrentIndexBuffer->vDeleteEntry(pEntry);
-  pCurrentIndexBuffer->vShow();
+
+  //pCurrentIndexBuffer->vCompactBuffer();
+
+//  pEntry = xKeyEntries[2];
+//  pCurrentIndexBuffer->vDeleteEntry(pEntry);
+//  pCurrentIndexBuffer->vShow();
+//  
+//  pEntry = xKeyEntries[4];
+//  pCurrentIndexBuffer->vDeleteEntry(pEntry);
+//  pCurrentIndexBuffer->vShow();
 }
 
 /*============================================================================*/

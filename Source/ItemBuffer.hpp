@@ -24,9 +24,10 @@ namespace DBobjects
     void   vGiveSpace(i8 nBytes);
     i8     nItems(void);
     Item*  pNextItem(Item* pCurrentItem);
+    i8     iToOffsetAbs(Item* pItem);
     i8     nUsedBytes(void);
   
-  private:
+  //private:
     void   vSetWilderness(void);
   };
   
