@@ -355,7 +355,7 @@ i8 EntryBuffer::nPartitionNo(void)
 /*----------------------------------------------------------------------------*/
 /* allot an entry in this buffer                                              */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pAllotEntryBytes(i8 nBytes)
+Entry* EntryBuffer::pAllotEntry(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -439,7 +439,7 @@ Entry* EntryBuffer::pAppendRow(i8 iTxId, Stz* aRow, i8 iRowLength)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate space in this buffer
   
-  Entry* pRowEntry = pAllotEntryBytes(nEntryBytes);
+  Entry* pRowEntry = pAllotEntry(nEntryBytes);
   ASSERT(pRowEntry);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -715,7 +715,7 @@ Entry* EntryBuffer::pInsertKey(i8 iTxId, Key* aKey, i8 iKeyLength)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate space in this buffer
   
-  Entry* pKeyEntry = pAllotEntryBytes(nEntryBytes);
+  Entry* pKeyEntry = pAllotEntry(nEntryBytes);
   ASSERT(pKeyEntry);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -104,16 +104,12 @@ namespace DBobjects
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // complex functions
   
-    //void         vAddFree(Entry* pEntry);
-    //Entry*       pAllotEntry(i8 nBytes);
-    Entry*         pAllotEntryBytes(i8 nBytes);
+    Entry*         pAllotEntry(i8 nBytes);
     NEO*           aAllotNEO(i8 nBytes);
     void           vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries);
     Entry*         pAppendEntry(EntWrk& xEntWrk,EntryVec& xPriorVec);
     bool           bAppendEntry(Entry* pRowEntry, Entry** ppNewEntry);
-    //bool         bAppendEntry(i8 iTxId, Stz* pRow, i8 iLength);
     Entry*         pAppendRow(i8 iTxId, Stz* pRow, i8 iRowLength);
-    //bool         bAppendRow(i8 iTxId, Stz* pRow, i8 iLength);
     void           vBufferCount(i8& nBufferCount);
     void           vCompactBuffer(void);
     i8             iDecile(void);
@@ -131,10 +127,6 @@ namespace DBobjects
     Entry*         pPosition(KeyWrk &xKeyWrk, eRO eRelOp);
     EntryBuffer*   pPositionLevel(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare, i8 iLevel);
     void           vPriorVecHead(EntryVec& xPriorVec);
-    //bool         bRemove(Key* aKey);
-  
-    //void         vRemoveFree(Entry* pEntry);
-  
     void           vRowCount(void);
     void           vShow(void);
     EntryBuffer*   pSplitBuffer(void);
