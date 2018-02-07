@@ -49,153 +49,153 @@ pDUMPFUN *gpDump[]
   /* 28 */ &Dump::vInvalid,         // CN_BUFFERPOOL
   /* 29 */ &Dump::vInvalid,         // CN_BPA
   
-  /*    */ &Dump::vDummy,           // CN_CARRYOVER
-  /* 30 */ &Dump::vDummy,           // CN_COLUMN
-  /* 31 */ &Dump::vDummy,           // CN_COLUMNVEC
+  /* 30 */ &Dump::vDummy,           // CN_CARRYOVER
+  /* 31 */ &Dump::vDummy,           // CN_COLUMN
+  /* 32 */ &Dump::vDummy,           // CN_COLUMNVEC
 
-  /* 32 */ &Dic::vDump,             // CN_DIC
-  /* 33 */ &DicPath::vDump,         // CN_DICPATH
-  /* 34 */ &Dump::vInvalid,         // CN_DIR
+  /* 33 */ &Dic::vDump,             // CN_DIC
+  /* 34 */ &DicPath::vDump,         // CN_DICPATH
+  /* 35 */ &Dump::vInvalid,         // CN_DIR
   
-  /* 35 */ &Dump::vDummy,           // CN_ENTRY
-  /* 36 */ &Dump::vDummy,           // CN_ENTRYBUFFER
-  /* 37 */ &Dump::vInvalid,         // CN_ENTRYVEC
+  /* 36 */ &Dump::vDummy,           // CN_ENTRY
+  /* 37 */ &Dump::vDummy,           // CN_ENTRYBUFFER
+  /* 38 */ &Dump::vInvalid,         // CN_ENTRYVEC
   
-  /* 38 */ &Dump::vInvalid,         // CN_FILE
-  /*    */ &Dump::vDummy,           // CN_FORMATTERS
-  /* 39 */ &Dump::vDummy,           // CN_FREEBUFFER
-  /* 40 */ &Dump::vDummy,           // CN_FREECHUNK
-  /* 41 */ &Dump::vDummy,           // CN_FREEDNOT
-  /*    */ &Dump::vDummy,           // CN_FREEENTRY
+  /* 39 */ &Dump::vInvalid,         // CN_FILE
+  /* 40 */ &Dump::vDummy,           // CN_FORMATTERS
+  /* 41 */ &Dump::vDummy,           // CN_FREEBUFFER
+  /* 42 */ &Dump::vDummy,           // CN_FREECHUNK
+  /* 43 */ &Dump::vDummy,           // CN_FREEDNOT
+  /* 44 */ &Dump::vDummy,           // CN_FREEENTRY
   
-  /* 42 */ &Graph::vDump,           // CN_GRAPH
-  /* 43 */ &GraphCursor::vDump,     // CN_GRAPH
-  /* 44 */ &GraphNode::vDump,       // CN_GRAPHNODE
-  /* 45 */ &Grid::vDump,            // CN_GRID
-  /* 46 */ &Dump::vDummy,           // CN_GROUPBY
+  /* 45 */ &Graph::vDump,           // CN_GRAPH
+  /* 46 */ &GraphCursor::vDump,     // CN_GRAPH
+  /* 47 */ &GraphNode::vDump,       // CN_GRAPHNODE
+  /* 48 */ &Grid::vDump,            // CN_GRID
+  /* 49 */ &Dump::vDummy,           // CN_GROUPBY
 
-  /* 47 */ &HeapBuffer::vDump,      // CN_HEAPBUFFER
+  /* 50 */ &HeapBuffer::vDump,      // CN_HEAPBUFFER
   
-  /* 48 */ &Dump::vDummy,           // CN_INDEX
-  /* 49 */ &Dump::vDummy,           // CN_INDEXDATA
-  /* 50 */ &Dump::vDummy,           // CN_IDXCOLVEC
-  /* 51 */ &Dump::vDummy,           // CN_IDXDATAVEC
-  /* 52 */ &Dump::vDummy,           // CN_IDXVEC
-  /* 53 */ &Dump::vDummy,           // CN_INDEXLEVELS
-  /*    */ &Dump::vInvalid,         // CN_ITEM
-  /*    */ &Dump::vInvalid,         // CN_ITEMBUFFER
+  /* 51 */ &Dump::vDummy,           // CN_INDEX
+  /* 52 */ &Dump::vDummy,           // CN_INDEXDATA
+  /* 53 */ &Dump::vDummy,           // CN_IDXCOLVEC
+  /* 54 */ &Dump::vDummy,           // CN_IDXDATAVEC
+  /* 55 */ &Dump::vDummy,           // CN_IDXVEC
+  /* 56 */ &Dump::vDummy,           // CN_INDEXLEVELS
+  /* 57 */ &Dump::vInvalid,         // CN_ITEM
+  /* 58 */ &Dump::vInvalid,         // CN_ITEMBUFFER
 
-  /*    */ &Heap::vDump,            // CN_JUMBOPERSISTENT
-  /* 54 */ &Heap::vDump,            // CN_JUMBOTRANSIENT
+  /* 59 */ &Heap::vDump,            // CN_JUMBOPERSISTENT
+  /* 60 */ &Heap::vDump,            // CN_JUMBOTRANSIENT
   
-  /* 55 */ &Dump::vDummy,           // CN_KEY
-  /* 56 */ &Dump::vDummy,           // CN_KEYVAL
-  /* 57 */ &Dump::vDummy,           // CN_KEYVEC
-  /* 58 */ &Dump::vInvalid,         // CN_KEYWRK
+  /* 61 */ &Dump::vDummy,           // CN_KEY
+  /* 62 */ &Dump::vDummy,           // CN_KEYVAL
+  /* 63 */ &Dump::vDummy,           // CN_KEYVEC
+  /* 64 */ &Dump::vInvalid,         // CN_KEYWRK
   
-  /*    */ &Heap::vDump,            // CN_LARGEPERSISTENT
-  /*    */ &Heap::vDump,            // CN_LARGETRANSIENT
+  /* 65 */ &Heap::vDump,            // CN_LARGEPERSISTENT
+  /* 66 */ &Heap::vDump,            // CN_LARGETRANSIENT
   
-  /* 59 */ &LoadChunk::vDump,       // CN_LINEITEM
-  /* 60 */ &LoadChunk::vDump,       // CN_LOADCHUNK
-  /* 61 */ &Loader::vDump,          // CN_LOADER
-  /* 62 */ &LoaderSub::vDump,       // CN_LOADERSUB
-  /* 63 */ &LoadMap::vDump,         // CN_LOADMAP
-  /* 64 */ &Dump::vInvalid,         // CN_LOCK
+  /* 67 */ &LoadChunk::vDump,       // CN_LINEITEM
+  /* 68 */ &LoadChunk::vDump,       // CN_LOADCHUNK
+  /* 69 */ &Loader::vDump,          // CN_LOADER
+  /* 70 */ &LoaderSub::vDump,       // CN_LOADERSUB
+  /* 71 */ &LoadMap::vDump,         // CN_LOADMAP
+  /* 72 */ &Dump::vInvalid,         // CN_LOCK
   
-  /*    */ &Heap::vDump,            // CN_MEDIUMPERSISTENT
-  /*    */ &Heap::vDump,            // CN_MEDIUMTRANSIENT
+  /* 73 */ &Heap::vDump,            // CN_MEDIUMPERSISTENT
+  /* 74 */ &Heap::vDump,            // CN_MEDIUMTRANSIENT
   
-  /* 66 */ &Node::vDump,            // CN_NODE
-  /* 67 */ &NodeCursor::vDump,      // CN_NODECURSOR
+  /* 75 */ &Node::vDump,            // CN_NODE
+  /* 76 */ &NodeCursor::vDump,      // CN_NODECURSOR
   
-  /* 68 */ &Dump::vUndefined,       // CN_OP
+  /* 77 */ &Dump::vUndefined,       // CN_OP
   
-  /* 69 */ &Parser::vDump,          // CN_PARSER
-  /* 70 */ &Partition::vDump,       // CN_PARTITION
-  /* 71 */ &Dump::vDummy,           // CN_PARTITIONSCHEDULER
-  /* 72 */ &Dump::vDummy,           // CN_PARTITIONVEC
-  /* 73 */ &Dump::vInvalid,         // CN_PATHVEC
-  /*    */ &Dump::vInvalid,         // CN_PERFORMANCEBUFFER
-  /*    */ &Dump::vInvalid,         // CN_PERFORMANCEENTRY
-  /*    */ &Dump::vInvalid,         // CN_PERFORMANCETRACE
-  /* 74 */ &Plan::vDump,            // CN_PLAN
-  /* 75 */ &Dump::vUndefined,       // CN_PLANNER
-  /* 76 */ &PlanList::vDump,        // CN_PLANLIST
-  /* 77 */ &Dump::vUndefined,       // CN_PREDICATE
-  /* 78 */ &Dump::vUndefined,       // CN_PREDVEC
-  /* 79 */ &Dump::vUndefined,       // CN_POSIXTHREAD
-  /* 80 */ &Dump::vUndefined,       // CN_PROXY
-  /* 81 */ &Dump::vUndefined,       // CN_PROXYSET
-  /* 82 */ &Dump::vDummy,           // CN_PTNCOLVEC
+  /* 78 */ &Parser::vDump,          // CN_PARSER
+  /* 79 */ &Partition::vDump,       // CN_PARTITION
+  /* 80 */ &Dump::vDummy,           // CN_PARTITIONSCHEDULER
+  /* 81 */ &Dump::vDummy,           // CN_PARTITIONVEC
+  /* 82 */ &Dump::vInvalid,         // CN_PATHVEC
+  /* 83 */ &Dump::vInvalid,         // CN_PERFORMANCEBUFFER
+  /* 84 */ &Dump::vInvalid,         // CN_PERFORMANCEENTRY
+  /* 85 */ &Dump::vInvalid,         // CN_PERFORMANCETRACE
+  /* 86 */ &Plan::vDump,            // CN_PLAN
+  /* 87 */ &Dump::vUndefined,       // CN_PLANNER
+  /* 88 */ &PlanList::vDump,        // CN_PLANLIST
+  /* 89 */ &Dump::vUndefined,       // CN_PREDICATE
+  /* 90 */ &Dump::vUndefined,       // CN_PREDVEC
+  /* 91 */ &Dump::vUndefined,       // CN_POSIXTHREAD
+  /* 92 */ &Dump::vUndefined,       // CN_PROXY
+  /* 93 */ &Dump::vUndefined,       // CN_PROXYSET
+  /* 94 */ &Dump::vDummy,           // CN_PTNCOLVEC
   
-  /* 83 */ &Queue::vDump,           // CN_QUEUE
-  /* 84 */ &QueueBuffer::vDump,     // CN_QUEUEBUFFER
+  /* 95 */ &Queue::vDump,           // CN_QUEUE
+  /* 96 */ &QueueBuffer::vDump,     // CN_QUEUEBUFFER
 
-  /* 85 */ &Dump::vUndefined,       // CN_RBCURSOR
-  /* 86 */ &RegFrame::vDump,        // CN_REGFRAME
-  /*    */ &Dump::vUndefined,       // CN_RESULTBUFFER
-  /*    */ &Dump::vUndefined,       // CN_RESULTROW
-  /* 87 */ &Dump::vUndefined,       // CN_RING
-  /* 88 */ &Dump::vUndefined,       // CN_ROARRAY
-  /* 89 */ &Dump::vUndefined,       // CN_ROWBUFFER
-  /* 90 */ &Dump::vUndefined,       // CN_ROWCURSOR
-  /* 91 */ &Dump::vUndefined,       // CN_ROWONCE
-  /*    */ &Dump::vUndefined,       // CN_ROWWRK
+  /* 97 */ &Dump::vUndefined,       // CN_RBCURSOR
+  /* 98 */ &RegFrame::vDump,        // CN_REGFRAME
+  /* 99 */ &Dump::vUndefined,       // CN_RESULTBUFFER
+  /*100 */ &Dump::vUndefined,       // CN_RESULTROW
+  /*101 */ &Dump::vUndefined,       // CN_RING
+  /*102 */ &Dump::vUndefined,       // CN_ROARRAY
+  /*103 */ &Dump::vUndefined,       // CN_ROWBUFFER
+  /*104 */ &Dump::vUndefined,       // CN_ROWCURSOR
+  /*105 */ &Dump::vUndefined,       // CN_ROWONCE
+  /*106 */ &Dump::vUndefined,       // CN_ROWWRK
   
-  /* 92 */ &Dump::vUndefined,       // CN_SCANBUFFER
-  /* 93 */ &Dump::vUndefined,       // CN_SCRATCH
-  /* 94 */ &Dump::vUndefined,       // CN_SEHISTORY
-  /* 95 */ &SEitf::vDump,           // CN_SEITF
-  /* 96 */ &Dump::vUndefined,       // CN_SEITFCURSOR
-  /* 97 */ &Dump::vUndefined,       // CN_SEITFLIST
-  /* 98 */ &Dump::vUndefined,       // CN_SELCURSOR
-  /* 99 */ &Dump::vUndefined,       // CN_SEMAPHORE
-  /*100 */ &SePrompt::vDump,        // CN_SEPROMPT
-  /*101 */ &Dump::vUndefined,       // CN_SINCE
-  /*102 */ &Dump::vUndefined,       // CN_SKIPCURSOR
-  /*103 */ &Dump::vUndefined,       // CN_SKIPLIST
-  /*104 */ &Dump::vUndefined,       // CN_SKIPNODE
-  /*105 */ &Dump::vUndefined,       // CN_SLAB
-  /*106 */ &Dump::vUndefined,       // CN_SLABALLOCATOR
-  /*107 */ &Slots::vDump,           // CN_SLOTS
-  /*108 */ &Heap::vDump,            // SN_SMALLPERSISTENT
-  /*    */ &Heap::vDump,            // SN_SMALLTRANSIENT
-  /*109 */ &Socket::vDump,          // CN_SOCKET
-  /*110 */ &Stack::vDump,           // CN_STACK
-  /*111 */ &Dump::vInvalid,         // CN_STEPACCUM
-  /*112 */ &StepArray::vDump,       // CN_STEPARRAY
-  /*113 */ &Dump::vInvalid,         // CN_SYSCALL
+  /*107 */ &Dump::vUndefined,       // CN_SCANBUFFER
+  /*108 */ &Dump::vUndefined,       // CN_SCRATCH
+  /*109 */ &Dump::vUndefined,       // CN_SEHISTORY
+  /*110 */ &SEitf::vDump,           // CN_SEITF
+  /*111 */ &Dump::vUndefined,       // CN_SEITFCURSOR
+  /*112 */ &Dump::vUndefined,       // CN_SEITFLIST
+  /*113 */ &Dump::vUndefined,       // CN_SELCURSOR
+  /*114 */ &Dump::vUndefined,       // CN_SEMAPHORE
+  /*115 */ &SePrompt::vDump,        // CN_SEPROMPT
+  /*116 */ &Dump::vUndefined,       // CN_SINCE
+  /*117 */ &Dump::vUndefined,       // CN_SKIPCURSOR
+  /*118 */ &Dump::vUndefined,       // CN_SKIPLIST
+  /*119 */ &Dump::vUndefined,       // CN_SKIPNODE
+  /*120 */ &Dump::vUndefined,       // CN_SLAB
+  /*121 */ &Dump::vUndefined,       // CN_SLABALLOCATOR
+  /*122 */ &Slots::vDump,           // CN_SLOTS
+  /*123 */ &Heap::vDump,            // SN_SMALLPERSISTENT
+  /*124 */ &Heap::vDump,            // SN_SMALLTRANSIENT
+  /*125 */ &Socket::vDump,          // CN_SOCKET
+  /*126 */ &Stack::vDump,           // CN_STACK
+  /*127 */ &Dump::vInvalid,         // CN_STEPACCUM
+  /*128 */ &StepArray::vDump,       // CN_STEPARRAY
+  /*129 */ &Dump::vInvalid,         // CN_SYSCALL
 
-  /*114 */ &Table::vDump,           // CN_TABLE
-  /*115 */ &Task::vDump,            // CN_TASK
-  /*116 */ &Dump::vUndefined,       // CN_TASKCURSOR
-  /*117 */ &TaskList::vDump,        // CN_TASKLIST
-  /*118 */ &Dump::vUndefined,       // CN_TASKQUEUE
-  /*119 */ &Dump::vUndefined,       // CN_SERVERSCHEDULER
-  /*120 */ &Dump::vUndefined,       // CN_TASKSET
-  /*121 */ &Dump::vUndefined,       // CN_THREAD
-  /*122 */ &Dump::vUndefined,       // CN_THREADCURSOR
-  /*123 */ &Dump::vUndefined,       // CN_THREADLIST
-  /*124 */ &Dump::vUndefined,       // CN_THREADQUEUE
-  /*125 */ &Dump::vUndefined,       // CN_TIME
-  /*126 */ &Dump::vInvalid,         // CN_TIMER
-  /*127 */ &Token::vDump,           // CN_TOKEN
-  /*128 */ &Tokeniser::vDump,       // CN_TOKENISER
-  /*129 */ &Dump::vInvalid,         // CN_TOKENARY
-  /*130 */ &Dump::vInvalid,         // CN_TOKENVEC
-  /*131 */ &Tx::vDump,              // CN_TX
-  /*132 */ &Dump::vUndefined,       // CN_TXSET
+  /*130 */ &Table::vDump,           // CN_TABLE
+  /*131 */ &Task::vDump,            // CN_TASK
+  /*132 */ &Dump::vUndefined,       // CN_TASKCURSOR
+  /*133 */ &TaskList::vDump,        // CN_TASKLIST
+  /*134 */ &Dump::vUndefined,       // CN_TASKQUEUE
+  /*134 */ &Dump::vUndefined,       // CN_SERVERSCHEDULER
+  /*136 */ &Dump::vUndefined,       // CN_TASKSET
+  /*137 */ &Dump::vUndefined,       // CN_THREAD
+  /*138 */ &Dump::vUndefined,       // CN_THREADCURSOR
+  /*139 */ &Dump::vUndefined,       // CN_THREADLIST
+  /*140 */ &Dump::vUndefined,       // CN_THREADQUEUE
+  /*141 */ &Dump::vUndefined,       // CN_TIME
+  /*142 */ &Dump::vInvalid,         // CN_TIMER
+  /*143 */ &Token::vDump,           // CN_TOKEN
+  /*144 */ &Tokeniser::vDump,       // CN_TOKENISER
+  /*145 */ &Dump::vInvalid,         // CN_TOKENARY
+  /*146 */ &Dump::vInvalid,         // CN_TOKENVEC
+  /*147 */ &Tx::vDump,              // CN_TX
+  /*148 */ &Dump::vUndefined,       // CN_TXSET
 
-  /*    */ &Dump::vInvalid,         // CN_WILDERNESS
-  /*133 */ &Word::vDump,            // CN_WORD
+  /*149 */ &Dump::vInvalid,         // CN_WILDERNESS
+  /*150 */ &Word::vDump,            // CN_WORD
   
-  /*134 */ &Dump::vUndefined,       // CN_ZSMALL_
-  /*135 */ &Dump::vUndefined,       // CN_ZMEDIUM_
-  /*136 */ &Dump::vUndefined,       // CN_ZLARGE_
-  /*137 */ &Dump::vUndefined,       // CN_ZJUMBO_
+  /*151 */ &Dump::vUndefined,       // CN_ZSMALL_
+  /*152 */ &Dump::vUndefined,       // CN_ZMEDIUM_
+  /*153 */ &Dump::vUndefined,       // CN_ZLARGE_
+  /*154 */ &Dump::vUndefined,       // CN_ZJUMBO_
   
-  /*138 */ &Dump::vEnums            // CN_ENUMS
+  /*155 */ &Dump::vEnums            // CN_ENUMS
 };
 
 /*----------------------------------------------------------------------------*/
@@ -237,153 +237,153 @@ i8 giClassSize[]
   /* 28 */ sizeof(BufferPool),         // CN_BUFFERPOOL
   /* 29 */ sizeof(BPA),                // CN_BPA
 
-  /*    */ sizeof(CarryOver),          // CN_CARRYOVER
-  /* 30 */ sizeof(Column),             // CN_COLUMN
-  /* 31 */ sizeof(ColumnVec),          // CN_COLUMNVEC
+  /* 30 */ sizeof(CarryOver),          // CN_CARRYOVER
+  /* 31 */ sizeof(Column),             // CN_COLUMN
+  /* 32 */ sizeof(ColumnVec),          // CN_COLUMNVEC
   
-  /* 32 */ sizeof(Dic),                // CN_DIC
-  /* 33 */ sizeof(DicPath),            // CN_DICPATH
-  /* 34 */ sizeof(Dir),                // CN_DIR
+  /* 33 */ sizeof(Dic),                // CN_DIC
+  /* 34 */ sizeof(DicPath),            // CN_DICPATH
+  /* 35 */ sizeof(Dir),                // CN_DIR
   
-  /* 35 */ sizeof(Entry),              // CN_ENTRY
-  /* 36 */ sizeof(EntryBuffer),        // CN_ENTRYBUFFER
-  /* 37 */ sizeof(EntryVec),           // CN_ENTRYVEC
+  /* 36 */ sizeof(Entry),              // CN_ENTRY
+  /* 37 */ sizeof(EntryBuffer),        // CN_ENTRYBUFFER
+  /* 38 */ sizeof(EntryVec),           // CN_ENTRYVEC
   
-  /* 38 */ sizeof(File),               // CN_FILE
-  /*    */ sizeof(Formatters),         // CN_FORMATTERS
-  /* 39 */ sizeof(Buffer),             // CN_FREEBUFFER
-  /* 40 */ sizeof(FreeChunk),          // CN_FREECHUNK
-  /* 41 */ 0,                          // CN_FREEDNOT
-  /*    */ 0,                          // CN_FREEENTRY
+  /* 39 */ sizeof(File),               // CN_FILE
+  /* 40 */ sizeof(Formatters),         // CN_FORMATTERS
+  /* 41 */ sizeof(Buffer),             // CN_FREEBUFFER
+  /* 42 */ sizeof(FreeChunk),          // CN_FREECHUNK
+  /* 43 */ 0,                          // CN_FREEDNOT
+  /* 44 */ 0,                          // CN_FREEENTRY
   
-  /* 42 */ sizeof(Graph),              // CN_GRAPH
-  /* 43 */ sizeof(GraphCursor),        // CN_GRAPHCURSOR
-  /* 44 */ sizeof(GraphNode),          // CN_GRAPHNODE
-  /* 45 */ sizeof(Grid),               // CN_GRID
-  /* 46 */ sizeof(GroupBy),            // CN_GROUPBY
+  /* 45 */ sizeof(Graph),              // CN_GRAPH
+  /* 46 */ sizeof(GraphCursor),        // CN_GRAPHCURSOR
+  /* 47 */ sizeof(GraphNode),          // CN_GRAPHNODE
+  /* 48 */ sizeof(Grid),               // CN_GRID
+  /* 49 */ sizeof(GroupBy),            // CN_GROUPBY
   
-  /* 47 */ sizeof(HeapBuffer),         // CN_HEAPBUFFER
+  /* 50 */ sizeof(HeapBuffer),         // CN_HEAPBUFFER
   
-  /* 48 */ sizeof(Index),              // CN_INDEX
-  /* 49 */ sizeof(IndexData),          // CN_INDEXDATA
-  /* 50 */ sizeof(IdxColVec),          // CN_IDXCOLVEC
-  /* 51 */ sizeof(IdxDataVec),         // CN_IDXDATAVEC
-  /* 52 */ sizeof(IdxVec),             // CN_IDXVEC
-  /* 53 */ 0,                          // CN_INDEXLEVELS
-  /*    */ sizeof(Item),               // CN_ITEM
-  /*    */ sizeof(ItemBuffer),         // CN_ITEMBUFFER
+  /* 51 */ sizeof(Index),              // CN_INDEX
+  /* 52 */ sizeof(IndexData),          // CN_INDEXDATA
+  /* 53 */ sizeof(IdxColVec),          // CN_IDXCOLVEC
+  /* 54 */ sizeof(IdxDataVec),         // CN_IDXDATAVEC
+  /* 55 */ sizeof(IdxVec),             // CN_IDXVEC
+  /* 56 */ 0,                          // CN_INDEXLEVELS
+  /* 57 */ sizeof(Item),               // CN_ITEM
+  /* 58 */ sizeof(ItemBuffer),         // CN_ITEMBUFFER
   
-  /*    */ sizeof(Heap), // correct    // CN_JUMBOPERSISTENT
-  /* 54 */ sizeof(Heap), // correct    // CN_JUMBOTRANSIENT
+  /* 59 */ sizeof(Heap), // correct    // CN_JUMBOPERSISTENT
+  /* 60 */ sizeof(Heap), // correct    // CN_JUMBOTRANSIENT
   
-  /* 55 */ 0,                          // CN_KEY
-  /* 56 */ sizeof(KeyVal),             // CN_KEYVAL
-  /* 57 */ 0,                          // CN_KEYVEC
-  /* 58 */ sizeof(KeyWrk),             // CN_KEYWRK
+  /* 61 */ 0,                          // CN_KEY
+  /* 62 */ sizeof(KeyVal),             // CN_KEYVAL
+  /* 63 */ 0,                          // CN_KEYVEC
+  /* 64 */ sizeof(KeyWrk),             // CN_KEYWRK
   
-  /*    */ sizeof(Heap), // correct    // CN_LARGEPERSISTENT
-  /*    */ sizeof(Heap), // correct    // CN_LARGETRANSIENT
+  /* 65 */ sizeof(Heap), // correct    // CN_LARGEPERSISTENT
+  /* 66 */ sizeof(Heap), // correct    // CN_LARGETRANSIENT
   
-  /* 59 */ sizeof(LineItem),           // CN_LINEITEM
-  /* 60 */ sizeof(LoadChunk),          // CN_LOADCHUNK
-  /* 61 */ sizeof(Loader),             // CN_LOADER
-  /* 62 */ sizeof(LoaderSub),          // CN_LOADERSUB
-  /* 63 */ sizeof(LoadMap),            // CN_LOADMAP
-  /* 64 */ sizeof(Lock),               // CN_LOCK
+  /* 67 */ sizeof(LineItem),           // CN_LINEITEM
+  /* 68 */ sizeof(LoadChunk),          // CN_LOADCHUNK
+  /* 69 */ sizeof(Loader),             // CN_LOADER
+  /* 70 */ sizeof(LoaderSub),          // CN_LOADERSUB
+  /* 71 */ sizeof(LoadMap),            // CN_LOADMAP
+  /* 72 */ sizeof(Lock),               // CN_LOCK
   
-  /*    */ sizeof(Heap), // correct    // CN_MEDIUMPERSISTENT
-  /*    */ sizeof(Heap), // correct    // CN_MEDIUMTRANSIENT
+  /* 73 */ sizeof(Heap), // correct    // CN_MEDIUMPERSISTENT
+  /* 74 */ sizeof(Heap), // correct    // CN_MEDIUMTRANSIENT
   
-  /* 66 */ sizeof(Node),               // CN_NODE
-  /* 67 */ sizeof(NodeCursor),         // CN_NODECURSOR
+  /* 75 */ sizeof(Node),               // CN_NODE
+  /* 76 */ sizeof(NodeCursor),         // CN_NODECURSOR
   
-  /* 68 */ sizeof(Op),                 // CN_OP
+  /* 77 */ sizeof(Op),                 // CN_OP
   
-  /* 69 */ sizeof(Parser),             // CN_PARSER
-  /* 70 */ sizeof(Partition),          // CN_PARTITION
-  /* 71 */ sizeof(PartitionScheduler), // CN_PARTITIONSCHEDULER
-  /* 72 */ sizeof(PartitionVec),       // CN_PARTITIONVEC
-  /* 73 */ sizeof(PathVec),            // CN_PATHVEC
-  /*    */ sizeof(PerformanceBuffer),  // CN_PERFORMANCEBUFFER
-  /*    */ sizeof(PerformanceEntry),   // CN_PERFORMANCEENTRY
-  /*    */ sizeof(PerformanceTrace),   // CN_PERFORMANCETRACE
-  /* 74 */ sizeof(Plan),               // CN_PLAN
-  /* 75 */ sizeof(Planner),            // CN_PLANNER
-  /* 76 */ sizeof(PlanList),           // CN_PLANLIST
-  /* 77 */ sizeof(PosixThread),        // CN_POSIXTHREAD
-  /* 78 */ sizeof(Predicate),          // CN_PREDICATE
-  /* 79 */ sizeof(PredicateVec),       // CN_PREDICATEVEC
-  /* 80 */ sizeof(Proxy),              // CN_PROXY
-  /* 81 */ sizeof(ProxySet),           // CN_PROXYSET
-  /* 82 */ sizeof(PtnColVec),          // CN_PTNCOLVEC
+  /* 78 */ sizeof(Parser),             // CN_PARSER
+  /* 79 */ sizeof(Partition),          // CN_PARTITION
+  /* 80 */ sizeof(PartitionScheduler), // CN_PARTITIONSCHEDULER
+  /* 81 */ sizeof(PartitionVec),       // CN_PARTITIONVEC
+  /* 82 */ sizeof(PathVec),            // CN_PATHVEC
+  /* 83 */ sizeof(PerformanceBuffer),  // CN_PERFORMANCEBUFFER
+  /* 84 */ sizeof(PerformanceEntry),   // CN_PERFORMANCEENTRY
+  /* 85 */ sizeof(PerformanceTrace),   // CN_PERFORMANCETRACE
+  /* 86 */ sizeof(Plan),               // CN_PLAN
+  /* 87 */ sizeof(Planner),            // CN_PLANNER
+  /* 88 */ sizeof(PlanList),           // CN_PLANLIST
+  /* 89 */ sizeof(PosixThread),        // CN_POSIXTHREAD
+  /* 90 */ sizeof(Predicate),          // CN_PREDICATE
+  /* 91 */ sizeof(PredicateVec),       // CN_PREDICATEVEC
+  /* 92 */ sizeof(Proxy),              // CN_PROXY
+  /* 93 */ sizeof(ProxySet),           // CN_PROXYSET
+  /* 94 */ sizeof(PtnColVec),          // CN_PTNCOLVEC
   
-  /* 83 */ sizeof(Queue),              // CN_QUEUE
-  /* 84 */ sizeof(QueueBuffer),        // CN_QUEUEBUFFER
+  /* 95 */ sizeof(Queue),              // CN_QUEUE
+  /* 96 */ sizeof(QueueBuffer),        // CN_QUEUEBUFFER
   
-  /* 85 */ sizeof(RbCursor),           // CN_RBCURSOR
-  /* 86 */ sizeof(RegFrame),           // CN_REGFRAME
-  /*    */ sizeof(ResultBuffer),       // CN_RESULTBUFFER
-  /*    */ 0,                          // CN_RESULTROW
-  /* 87 */ sizeof(Ring),               // CN_RING
-  /* 88 */ 0,                          // CN_ROARRAY
-  /* 89 */ 0,                          // CN_ROWBUFFER
-  /* 90 */ sizeof(RowCursor),          // CN_ROWCURSOR
-  /* 91 */ sizeof(RowOnce),            // CN_ROWONCE
-  /* 91 */ 0,                          // CN_ROWWRK
+  /* 97 */ sizeof(RbCursor),           // CN_RBCURSOR
+  /* 98 */ sizeof(RegFrame),           // CN_REGFRAME
+  /* 99 */ sizeof(ResultBuffer),       // CN_RESULTBUFFER
+  /*100 */ 0,                          // CN_RESULTROW
+  /*101 */ sizeof(Ring),               // CN_RING
+  /*102 */ 0,                          // CN_ROARRAY
+  /*103 */ 0,                          // CN_ROWBUFFER
+  /*104 */ sizeof(RowCursor),          // CN_ROWCURSOR
+  /*105 */ sizeof(RowOnce),            // CN_ROWONCE
+  /*106 */ 0,                          // CN_ROWWRK
   
-  /* 92 */ sizeof(ScanBuffer),         // CN_SCANBUFFER
-  /* 93 */ sizeof(Scratch),            // CN_SCRATCH
-  /* 94 */ sizeof(SeHistory),          // CN_SEHISTORY
-  /* 95 */ sizeof(SEitf),              // CN_SEITF
-  /* 96 */ sizeof(SEitfCursor),        // CN_SEITFCURSOR
-  /* 97 */ sizeof(SEitfList),          // CN_SEITFLIST
-  /* 98 */ sizeof(SelCursor),          // CN_SELCURSOR
-  /* 99 */ sizeof(Semaphore),          // CN_SEMAPHORE
-  /*100 */ sizeof(SePrompt),           // CN_SEPROMPT
-  /*101 */ sizeof(Since),              // CN_SINCE
-  /*102 */ sizeof(SkipCursor),         // CN_SKIPCURSOR
-  /*103 */ sizeof(SkipList),           // CN_SKIPLIST
-  /*104 */ sizeof(SkipNode),           // CN_SKIPNODE
-  /*105 */ 0,                          // CN_SLAB
-  /*106 */ sizeof(SlabAllocator),      // CN_SLABALLOCATOR
-  /*107 */ sizeof(Slots),              // CN_SLOTS
-  /*108 */ sizeof(Heap), // correct    // SN_SMALLPERSISTENT
-  /*    */ sizeof(Heap), // correct    // SN_SMALLTRANSIENT
-  /*109 */ sizeof(Socket),             // CN_SOCKET
-  /*110 */ sizeof(Stack),              // CN_STACK
-  /*111 */ sizeof(StepAccum),          // CN_STEPACCUM
-  /*112 */ sizeof(StepArray),          // CN_STEPARRAY
-  /*113 */ sizeof(SysCall),            // CN_SYSCALL
+  /*107 */ sizeof(ScanBuffer),         // CN_SCANBUFFER
+  /*108 */ sizeof(Scratch),            // CN_SCRATCH
+  /*109 */ sizeof(SeHistory),          // CN_SEHISTORY
+  /*110 */ sizeof(SEitf),              // CN_SEITF
+  /*111 */ sizeof(SEitfCursor),        // CN_SEITFCURSOR
+  /*112 */ sizeof(SEitfList),          // CN_SEITFLIST
+  /*113 */ sizeof(SelCursor),          // CN_SELCURSOR
+  /*114 */ sizeof(Semaphore),          // CN_SEMAPHORE
+  /*115 */ sizeof(SePrompt),           // CN_SEPROMPT
+  /*116 */ sizeof(Since),              // CN_SINCE
+  /*117 */ sizeof(SkipCursor),         // CN_SKIPCURSOR
+  /*118 */ sizeof(SkipList),           // CN_SKIPLIST
+  /*119 */ sizeof(SkipNode),           // CN_SKIPNODE
+  /*120 */ 0,                          // CN_SLAB
+  /*121 */ sizeof(SlabAllocator),      // CN_SLABALLOCATOR
+  /*122 */ sizeof(Slots),              // CN_SLOTS
+  /*123 */ sizeof(Heap), // correct    // SN_SMALLPERSISTENT
+  /*124 */ sizeof(Heap), // correct    // SN_SMALLTRANSIENT
+  /*125 */ sizeof(Socket),             // CN_SOCKET
+  /*126 */ sizeof(Stack),              // CN_STACK
+  /*127 */ sizeof(StepAccum),          // CN_STEPACCUM
+  /*128 */ sizeof(StepArray),          // CN_STEPARRAY
+  /*129 */ sizeof(SysCall),            // CN_SYSCALL
 
-  /*114 */ sizeof(Table),              // CN_TABLE
-  /*115 */ sizeof(Task),               // CN_TASK
-  /*116 */ sizeof(TaskCursor),         // CN_TASKCURSOR
-  /*117 */ sizeof(TaskList),           // CN_TASKLIST
-  /*118 */ sizeof(TaskQueue),          // CN_TASKQUEUE
-  /*119 */ sizeof(ServerScheduler),    // CN_SERVERSCHEDULER
-  /*120 */ sizeof(TaskSet),            // CN_TASKSET
-  /*121 */ sizeof(Thread),             // CN_THREAD
-  /*122 */ sizeof(ThreadCursor),       // CN_THREADCURSOR
-  /*123 */ sizeof(ThreadList),         // CN_THREADLIST
-  /*124 */ sizeof(ThreadQueue),        // CN_THREADQUEUE
-  /*125 */ sizeof(Time),               // CN_TIME
-  /*126 */ sizeof(Timer),              // CN_TIMER
-  /*127 */ sizeof(Token),              // CN_TOKEN
-  /*128 */ sizeof(Tokeniser),          // CN_TOKENISER
-  /*129 */ sizeof(TokenAry),           // CN_TOKENARY
-  /*130 */ sizeof(TokenVec),           // CN_TOKENVEC
-  /*131 */ sizeof(Tx),                 // CN_TX
-  /*132 */ sizeof(TxSet),              // CN_TXSET
+  /*130 */ sizeof(Table),              // CN_TABLE
+  /*131 */ sizeof(Task),               // CN_TASK
+  /*132 */ sizeof(TaskCursor),         // CN_TASKCURSOR
+  /*133 */ sizeof(TaskList),           // CN_TASKLIST
+  /*134 */ sizeof(TaskQueue),          // CN_TASKQUEUE
+  /*135 */ sizeof(ServerScheduler),    // CN_SERVERSCHEDULER
+  /*136 */ sizeof(TaskSet),            // CN_TASKSET
+  /*137 */ sizeof(Thread),             // CN_THREAD
+  /*138 */ sizeof(ThreadCursor),       // CN_THREADCURSOR
+  /*139 */ sizeof(ThreadList),         // CN_THREADLIST
+  /*140 */ sizeof(ThreadQueue),        // CN_THREADQUEUE
+  /*141 */ sizeof(Time),               // CN_TIME
+  /*142 */ sizeof(Timer),              // CN_TIMER
+  /*143 */ sizeof(Token),              // CN_TOKEN
+  /*144 */ sizeof(Tokeniser),          // CN_TOKENISER
+  /*145 */ sizeof(TokenAry),           // CN_TOKENARY
+  /*146 */ sizeof(TokenVec),           // CN_TOKENVEC
+  /*147 */ sizeof(Tx),                 // CN_TX
+  /*148 */ sizeof(TxSet),              // CN_TXSET
 
-  /*    */ sizeof(Wilderness),         // CN_WILDERNESS
-  /*133 */ sizeof(Word),               // CN_WORD
+  /*149 */ sizeof(Wilderness),         // CN_WILDERNESS
+  /*150 */ sizeof(Word),               // CN_WORD
 
-  /*134 */ C_SIZE_SMALL_OBJECT  - 256, // CN_ZSMALL_
-  /*135 */ C_SIZE_MEDIUM_OBJECT - 256, // CN_ZMEDIUM_
-  /*136 */ C_SIZE_POOL_BUFFER   - 256, // CN_ZLARGE_
-  /*137 */ C_SIZE_JUMBO_OBJECT  - 256, // CN_ZJUMBO_
+  /*151 */ C_SIZE_SMALL_OBJECT  - 256, // CN_ZSMALL_
+  /*152 */ C_SIZE_MEDIUM_OBJECT - 256, // CN_ZMEDIUM_
+  /*153 */ C_SIZE_POOL_BUFFER   - 256, // CN_ZLARGE_
+  /*154 */ C_SIZE_JUMBO_OBJECT  - 256, // CN_ZJUMBO_
 
-  /*138 */ -1
+  /*155 */ -1
 };
 
 /*----------------------------------------------------------------------------*/
@@ -391,7 +391,7 @@ i8 giClassSize[]
 /*----------------------------------------------------------------------------*/
 eHT geWhichHeap[]
 {
-  /*  0 */ HT_INVALID,
+  /*  0 */ HT_INVALID,           // CN_NONE
   
   /*  1 */ HT_INVALID,           // CN_BCDVAL
   /*  2 */ HT_INVALID,           // CN_BINVAL
@@ -425,153 +425,153 @@ eHT geWhichHeap[]
   /* 28 */ HT_INVALID,           // CN_BUFFERPOOL
   /* 29 */ HT_INVALID,           // CN_BPA
 
-  /*    */ HT_INVALID,           // CN_CARRYOVER
-  /* 30 */ HT_TRANSIENT_SMALL,   // CN_COLUMN
-  /* 31 */ HT_TRANSIENT_MEDIUM,  // CN_COLUMNVEC
+  /* 30 */ HT_INVALID,           // CN_CARRYOVER
+  /* 31 */ HT_TRANSIENT_SMALL,   // CN_COLUMN
+  /* 32 */ HT_TRANSIENT_MEDIUM,  // CN_COLUMNVEC
   
-  /* 32 */ HT_TRANSIENT_MEDIUM,  // CN_DIC
-  /* 33 */ HT_INVALID,           // CN_DICPATH
-  /* 34 */ HT_TRANSIENT_SMALL,   // CN_DIR
+  /* 33 */ HT_TRANSIENT_MEDIUM,  // CN_DIC
+  /* 34 */ HT_INVALID,           // CN_DICPATH
+  /* 35 */ HT_TRANSIENT_SMALL,   // CN_DIR
 
-  /* 35 */ HT_INVALID,           // CN_ENTRY
-  /* 36 */ HT_TRANSIENT_LARGE,   // CN_ENTRYBUFFER
-  /* 37 */ HT_INVALID,           // CN_ENTRYVEC
+  /* 36 */ HT_INVALID,           // CN_ENTRY
+  /* 37 */ HT_TRANSIENT_LARGE,   // CN_ENTRYBUFFER
+  /* 38 */ HT_INVALID,           // CN_ENTRYVEC
   
-  /* 38 */ HT_TRANSIENT_SMALL,   // CN_FILE
-  /*    */ HT_TRANSIENT_SMALL,   // CN_FORMATTERS
-  /* 39 */ HT_INVALID,           // CN_FREEBUFFER
-  /* 40 */ HT_INVALID,           // CN_FREECHUNK
-  /* 41 */ HT_INVALID,           // CN_FREEDNOT
-  /*    */ HT_INVALID,           // CN_FREEENTRY
+  /* 39 */ HT_TRANSIENT_SMALL,   // CN_FILE
+  /* 40 */ HT_TRANSIENT_SMALL,   // CN_FORMATTERS
+  /* 41 */ HT_INVALID,           // CN_FREEBUFFER
+  /* 42 */ HT_INVALID,           // CN_FREECHUNK
+  /* 43 */ HT_INVALID,           // CN_FREEDNOT
+  /* 44 */ HT_INVALID,           // CN_FREEENTRY
   
-  /* 42 */ HT_TRANSIENT_SMALL,   // CN_GRAPH
-  /* 43 */ HT_TRANSIENT_SMALL,   // CN_GRAPHCURSOR
-  /* 44 */ HT_TRANSIENT_SMALL,   // CN_GRAPHNODE
-  /* 45 */ HT_INVALID,           // CN_GRID
-  /* 46 */ HT_TRANSIENT_SMALL,   // CN_GROUPBY
+  /* 45 */ HT_TRANSIENT_SMALL,   // CN_GRAPH
+  /* 46 */ HT_TRANSIENT_SMALL,   // CN_GRAPHCURSOR
+  /* 47 */ HT_TRANSIENT_SMALL,   // CN_GRAPHNODE
+  /* 48 */ HT_INVALID,           // CN_GRID
+  /* 49 */ HT_TRANSIENT_SMALL,   // CN_GROUPBY
 
-  /* 47 */ HT_INVALID,           // CN_HEAPBUFFER
+  /* 50 */ HT_INVALID,           // CN_HEAPBUFFER
   
-  /* 48 */ HT_INVALID,           // CN_INDEX
-  /* 49 */ HT_TRANSIENT_SMALL,   // CN_INDEXDATA
-  /* 50 */ HT_TRANSIENT_MEDIUM,  // CN_IDXCOLVEC
-  /* 51 */ HT_TRANSIENT_MEDIUM,  // CN_IDXDATAVEC
-  /* 52 */ HT_TRANSIENT_MEDIUM,  // CN_IDXVEC
-  /* 53 */ HT_TRANSIENT_MEDIUM,  // CN_INDEXLEVELS
-  /*    */ HT_INVALID,           // CN_ITEM
-  /*    */ HT_INVALID,           // CN_ITEMBUFFER
+  /* 51 */ HT_INVALID,           // CN_INDEX
+  /* 52 */ HT_TRANSIENT_SMALL,   // CN_INDEXDATA
+  /* 53 */ HT_TRANSIENT_MEDIUM,  // CN_IDXCOLVEC
+  /* 54 */ HT_TRANSIENT_MEDIUM,  // CN_IDXDATAVEC
+  /* 55 */ HT_TRANSIENT_MEDIUM,  // CN_IDXVEC
+  /* 56 */ HT_TRANSIENT_MEDIUM,  // CN_INDEXLEVELS
+  /* 57 */ HT_INVALID,           // CN_ITEM
+  /* 58 */ HT_INVALID,           // CN_ITEMBUFFER
 
-  /*    */ HT_INVALID,           // CN_JUMBOPERSISTENT
-  /* 54 */ HT_INVALID,           // CN_JUMBOTRANSIENT
+  /* 59 */ HT_INVALID,           // CN_JUMBOPERSISTENT
+  /* 60 */ HT_INVALID,           // CN_JUMBOTRANSIENT
   
-  /* 55 */ HT_INVALID,           // CN_KEY
-  /* 56 */ HT_TRANSIENT_SMALL,   // CN_KEYVAL
-  /* 57 */ HT_TRANSIENT_MEDIUM,  // CN_KEYVEC
-  /* 58 */ HT_INVALID,           // CN_KEYWRK
+  /* 61 */ HT_INVALID,           // CN_KEY
+  /* 62 */ HT_TRANSIENT_SMALL,   // CN_KEYVAL
+  /* 63 */ HT_TRANSIENT_MEDIUM,  // CN_KEYVEC
+  /* 64 */ HT_INVALID,           // CN_KEYWRK
 
-  /*  */   HT_INVALID,           // CN_LARGEPERSISTENT
-  /*  */   HT_INVALID,           // CN_LARGETRANSIENT
+  /* 65 */   HT_INVALID,           // CN_LARGEPERSISTENT
+  /* 66 */   HT_INVALID,           // CN_LARGETRANSIENT
   
-  /* 59 */ HT_INVALID,           // CN_LINEITEM
-  /* 60 */ HT_TRANSIENT_LARGE,   // CN_LOADCHUNK
-  /* 61 */ HT_TRANSIENT_MEDIUM,  // CN_LOADER
-  /* 62 */ HT_TRANSIENT_MEDIUM,  // CN_LOADERSUB
-  /* 63 */ HT_TRANSIENT_JUMBO,   // CN_LOADMAP
-  /* 64 */ HT_INVALID,           // CN_LOCK
+  /* 67 */ HT_INVALID,           // CN_LINEITEM
+  /* 68 */ HT_TRANSIENT_LARGE,   // CN_LOADCHUNK
+  /* 69 */ HT_TRANSIENT_MEDIUM,  // CN_LOADER
+  /* 70 */ HT_TRANSIENT_MEDIUM,  // CN_LOADERSUB
+  /* 71 */ HT_TRANSIENT_JUMBO,   // CN_LOADMAP
+  /* 72 */ HT_INVALID,           // CN_LOCK
   
-  /*    */ HT_INVALID,           // CN_MEDIUMPERSISTENT
-  /*    */ HT_INVALID,           // CN_MEDIUMTRANSIENT
+  /* 73 */ HT_INVALID,           // CN_MEDIUMPERSISTENT
+  /* 74 */ HT_INVALID,           // CN_MEDIUMTRANSIENT
   
-  /* 66 */ HT_TRANSIENT_SMALL,   // CN_NODE
-  /* 67 */ HT_TRANSIENT_SMALL,   // CN_NODECURSOR
+  /* 75 */ HT_TRANSIENT_SMALL,   // CN_NODE
+  /* 76 */ HT_TRANSIENT_SMALL,   // CN_NODECURSOR
   
-  /* 68 */ HT_TRANSIENT_SMALL,   // CN_OP
+  /* 77 */ HT_TRANSIENT_SMALL,   // CN_OP
   
-  /* 69 */ HT_TRANSIENT_MEDIUM,  // CN_PARSER
-  /* 70 */ HT_TRANSIENT_SMALL,   // CN_PARTITION
-  /* 71 */ HT_TRANSIENT_SMALL,   // CN_PARTITIONSCHEDULER
-  /* 72 */ HT_TRANSIENT_MEDIUM,  // CN_PARTITIONVEC
-  /* 73 */ HT_TRANSIENT_MEDIUM,  // CN_PATHVEC
-  /*    */ HT_TRANSIENT_LARGE,   // CN_PERFORMANCEBUFFER
-  /*    */ HT_INVALID,           // CN_PERFORMANCEENTRY
-  /*    */ HT_TRANSIENT_SMALL,   // CN_PERFORMANCETRACE
-  /* 74 */ HT_TRANSIENT_MEDIUM,  // CN_PLAN
-  /* 75 */ HT_TRANSIENT_MEDIUM,  // CN_PLANNER
-  /* 76 */ HT_TRANSIENT_SMALL,   // CN_PLANLIST
-  /* 77 */ HT_TRANSIENT_SMALL,   // CN_PREDICATE
-  /* 78 */ HT_TRANSIENT_MEDIUM,  // CN_PREDICATEVEC
-  /* 79 */ HT_TRANSIENT_SMALL,   // CN_POSIXTHREAD
-  /* 80 */ HT_INVALID,           // CN_PROXY
-  /* 81 */ HT_INVALID,           // CN_PROXYSET
-  /* 82 */ HT_TRANSIENT_MEDIUM,  // CN_PTNCOLVEC
+  /* 78 */ HT_TRANSIENT_MEDIUM,  // CN_PARSER
+  /* 79 */ HT_TRANSIENT_SMALL,   // CN_PARTITION
+  /* 80 */ HT_TRANSIENT_SMALL,   // CN_PARTITIONSCHEDULER
+  /* 81 */ HT_TRANSIENT_MEDIUM,  // CN_PARTITIONVEC
+  /* 82 */ HT_TRANSIENT_MEDIUM,  // CN_PATHVEC
+  /* 83 */ HT_TRANSIENT_LARGE,   // CN_PERFORMANCEBUFFER
+  /* 84 */ HT_INVALID,           // CN_PERFORMANCEENTRY
+  /* 85 */ HT_TRANSIENT_SMALL,   // CN_PERFORMANCETRACE
+  /* 86 */ HT_TRANSIENT_MEDIUM,  // CN_PLAN
+  /* 87 */ HT_TRANSIENT_MEDIUM,  // CN_PLANNER
+  /* 88 */ HT_TRANSIENT_SMALL,   // CN_PLANLIST
+  /* 89 */ HT_TRANSIENT_SMALL,   // CN_PREDICATE
+  /* 90 */ HT_TRANSIENT_MEDIUM,  // CN_PREDICATEVEC
+  /* 91 */ HT_TRANSIENT_SMALL,   // CN_POSIXTHREAD
+  /* 92 */ HT_INVALID,           // CN_PROXY
+  /* 93 */ HT_INVALID,           // CN_PROXYSET
+  /* 94 */ HT_TRANSIENT_MEDIUM,  // CN_PTNCOLVEC
 
-  /* 83 */ HT_TRANSIENT_SMALL,   // CN_QUEUE
-  /* 84 */ HT_INVALID,           // CN_QUEUEBUFFER
+  /* 95 */ HT_TRANSIENT_SMALL,   // CN_QUEUE
+  /* 96 */ HT_INVALID,           // CN_QUEUEBUFFER
   
-  /* 85 */ HT_TRANSIENT_SMALL,   // CN_RBCURSOR
-  /* 86 */ HT_TRANSIENT_LARGE,   // CN_REGFRAME
-  /*    */ HT_TRANSIENT_LARGE,   // CN_RESULTBUFFER
-  /*    */ HT_INVALID,           // CN_RESULTROW
-  /* 87 */ HT_INVALID,           // CN_RING
-  /* 88 */ HT_TRANSIENT_MEDIUM,  // CN_ROARRAY
-  /* 89 */ HT_INVALID,           // CN_ROWBUFFER
-  /* 90 */ HT_TRANSIENT_SMALL,   // CN_ROWCURSOR
-  /* 91 */ HT_TRANSIENT_SMALL,   // CN_ROWONCE
-  /*    */ HT_INVALID,           // CN_ROWWRK
+  /* 97 */ HT_TRANSIENT_SMALL,   // CN_RBCURSOR
+  /* 98 */ HT_TRANSIENT_LARGE,   // CN_REGFRAME
+  /* 99 */ HT_TRANSIENT_LARGE,   // CN_RESULTBUFFER
+  /*100 */ HT_INVALID,           // CN_RESULTROW
+  /*101 */ HT_INVALID,           // CN_RING
+  /*102 */ HT_TRANSIENT_MEDIUM,  // CN_ROARRAY
+  /*103 */ HT_INVALID,           // CN_ROWBUFFER
+  /*104 */ HT_TRANSIENT_SMALL,   // CN_ROWCURSOR
+  /*105 */ HT_TRANSIENT_SMALL,   // CN_ROWONCE
+  /*106 */ HT_INVALID,           // CN_ROWWRK
   
-  /* 92 */ HT_TRANSIENT_LARGE,   // CN_SCANBUFFER
-  /* 93 */ HT_TRANSIENT_LARGE,   // CN_SCRATCH
-  /* 94 */ HT_INVALID,           // CN_SEHISTORY
-  /* 95 */ HT_TRANSIENT_MEDIUM,  // CN_SEITF
-  /* 96 */ HT_TRANSIENT_SMALL,   // CN_SEITFCURSOR
-  /* 97 */ HT_INVALID,           // CN_SEITFLIST
-  /* 98 */ HT_TRANSIENT_SMALL,   // CN_SELCURSOR
-  /* 99 */ HT_TRANSIENT_SMALL,   // CN_SEMAPHORE
-  /*100 */ HT_TRANSIENT_LARGE,   // CN_SEPROMPT
-  /*101 */ HT_INVALID,           // CN_SINCE
-  /*102 */ HT_INVALID,           // CN_SKIPCURSOR
-  /*103 */ HT_TRANSIENT_SMALL,   // CN_SKIPLIST
-  /*104 */ HT_TRANSIENT_SMALL,   // CN_SKIPNODE
-  /*105 */ HT_TRANSIENT_LARGE,   // CN_SLAB
-  /*106 */ HT_TRANSIENT_SMALL,   // CN_SLABALLOCATOR
-  /*107 */ HT_INVALID,           // CN_SLOTS
-  /*    */ HT_INVALID,           // SN_SMALLPERSISTENT
-  /*108 */ HT_INVALID,           // SN_SMALLTRANSIENT
-  /*109 */ HT_TRANSIENT_SMALL,   // CN_SOCKET
-  /*110 */ HT_TRANSIENT_LARGE,   // CN_STACK
-  /*111 */ HT_INVALID,           // CN_STEPACCUM
-  /*112 */ HT_TRANSIENT_LARGE,   // CN_STEPARRAY
-  /*113 */ HT_INVALID,           // CN_SYSCALL
+  /*107 */ HT_TRANSIENT_LARGE,   // CN_SCANBUFFER
+  /*108 */ HT_TRANSIENT_LARGE,   // CN_SCRATCH
+  /*109 */ HT_INVALID,           // CN_SEHISTORY
+  /*110 */ HT_TRANSIENT_MEDIUM,  // CN_SEITF
+  /*111 */ HT_TRANSIENT_SMALL,   // CN_SEITFCURSOR
+  /*112 */ HT_INVALID,           // CN_SEITFLIST
+  /*113 */ HT_TRANSIENT_SMALL,   // CN_SELCURSOR
+  /*114 */ HT_TRANSIENT_SMALL,   // CN_SEMAPHORE
+  /*115 */ HT_TRANSIENT_LARGE,   // CN_SEPROMPT
+  /*116 */ HT_INVALID,           // CN_SINCE
+  /*117 */ HT_INVALID,           // CN_SKIPCURSOR
+  /*118 */ HT_TRANSIENT_SMALL,   // CN_SKIPLIST
+  /*119 */ HT_TRANSIENT_SMALL,   // CN_SKIPNODE
+  /*120 */ HT_TRANSIENT_LARGE,   // CN_SLAB
+  /*121 */ HT_TRANSIENT_SMALL,   // CN_SLABALLOCATOR
+  /*122 */ HT_INVALID,           // CN_SLOTS
+  /*123 */ HT_INVALID,           // SN_SMALLPERSISTENT
+  /*124 */ HT_INVALID,           // SN_SMALLTRANSIENT
+  /*125 */ HT_TRANSIENT_SMALL,   // CN_SOCKET
+  /*126 */ HT_TRANSIENT_LARGE,   // CN_STACK
+  /*127 */ HT_INVALID,           // CN_STEPACCUM
+  /*128 */ HT_TRANSIENT_LARGE,   // CN_STEPARRAY
+  /*129 */ HT_INVALID,           // CN_SYSCALL
   
-  /*114 */ HT_INVALID,           // CN_TABLE
-  /*115 */ HT_TRANSIENT_MEDIUM,  // CN_TASK
-  /*116 */ HT_INVALID,           // CN_TASKCURSOR
-  /*117 */ HT_TRANSIENT_SMALL,   // CN_TASKLIST
-  /*118 */ HT_TRANSIENT_SMALL,   // CN_TASKQUEUE
-  /*119 */ HT_TRANSIENT_MEDIUM,  // CN_SERVERSCHEDULER
-  /*120 */ HT_TRANSIENT_SMALL,   // CN_TASKSET
-  /*121 */ HT_INVALID,           // CN_THREAD
-  /*122 */ HT_TRANSIENT_SMALL,   // CN_THREADCURSOR
-  /*123 */ HT_INVALID,           // CN_THREADLIST
-  /*124 */ HT_INVALID,           // CN_THREADQUEUE
-  /*125 */ HT_INVALID,           // CN_TIME
-  /*126 */ HT_TRANSIENT_SMALL,   // CN_TIMER
-  /*127 */ HT_TRANSIENT_SMALL,   // CN_TOKEN
-  /*128 */ HT_TRANSIENT_MEDIUM,  // CN_TOKENISER
-  /*129 */ HT_INVALID,           // CN_TOKENARY
-  /*130 */ HT_TRANSIENT_SMALL,   // CN_TOKENVEC
-  /*131 */ HT_TRANSIENT_SMALL,   // CN_TX
-  /*132 */ HT_TRANSIENT_SMALL,   // CN_TXSET
+  /*130 */ HT_INVALID,           // CN_TABLE
+  /*131 */ HT_TRANSIENT_MEDIUM,  // CN_TASK
+  /*132 */ HT_INVALID,           // CN_TASKCURSOR
+  /*133 */ HT_TRANSIENT_SMALL,   // CN_TASKLIST
+  /*134 */ HT_TRANSIENT_SMALL,   // CN_TASKQUEUE
+  /*135 */ HT_TRANSIENT_MEDIUM,  // CN_SERVERSCHEDULER
+  /*136 */ HT_TRANSIENT_SMALL,   // CN_TASKSET
+  /*137 */ HT_INVALID,           // CN_THREAD
+  /*138 */ HT_TRANSIENT_SMALL,   // CN_THREADCURSOR
+  /*139 */ HT_INVALID,           // CN_THREADLIST
+  /*140 */ HT_INVALID,           // CN_THREADQUEUE
+  /*141 */ HT_INVALID,           // CN_TIME
+  /*142 */ HT_TRANSIENT_SMALL,   // CN_TIMER
+  /*143 */ HT_TRANSIENT_SMALL,   // CN_TOKEN
+  /*144 */ HT_TRANSIENT_MEDIUM,  // CN_TOKENISER
+  /*145 */ HT_INVALID,           // CN_TOKENARY
+  /*146 */ HT_TRANSIENT_SMALL,   // CN_TOKENVEC
+  /*147 */ HT_TRANSIENT_SMALL,   // CN_TX
+  /*148 */ HT_TRANSIENT_SMALL,   // CN_TXSET
   
-  /*    */ HT_INVALID,           // CN_WILDERNESS
-  /*133 */ HT_TRANSIENT_MEDIUM,  // CN_WORD
+  /*149 */ HT_INVALID,           // CN_WILDERNESS
+  /*150 */ HT_TRANSIENT_MEDIUM,  // CN_WORD
   
-  /*134 */ HT_INVALID,           // CN_ZSMALL_
-  /*135 */ HT_INVALID,           // CN_ZMEDIUM_
-  /*136 */ HT_INVALID,           // CN_ZLARGE_
-  /*137 */ HT_INVALID,           // CN_ZJUMBO_
+  /*151 */ HT_INVALID,           // CN_ZSMALL_
+  /*152 */ HT_INVALID,           // CN_ZMEDIUM_
+  /*153 */ HT_INVALID,           // CN_ZLARGE_
+  /*154 */ HT_INVALID,           // CN_ZJUMBO_
 
-  /*138 */ HT_INVALID,           // CN_ENUMS
+  /*155 */ HT_INVALID,           // CN_ENUMS
 };
 
 /*----------------------------------------------------------------------------*/
