@@ -526,7 +526,46 @@ Entry* EntryBuffer::pAppendRow(i8 iTxId, Stz* aRow, i8 iRowLength)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vBufferCount(i8& nBuffers)
 {
+  EntryBuffer* pNextBuffer = nullptr;
+  
+  if (m_pIndex->bIsHidden()) {
+    ASSERT(m_nBufferLevel == 0);
+    pNextBuffer = this->pNextBuffer();
+    nBuffers++;
+    
+    while (pNextBuffer) {
+      ASSERT(pNextBuffer->nBufferLevel() == 0);
+      
+      EntryBuffer* pThisBuffer = pNextBuffer;
+      pNextBuffer = pNextBuffer->pNextBuffer();
+      nBuffers++;
+    }
+    
+    return;
+  }
+  
+    
   RASSERT(0);
+  
+  // count this buffer
+  nBuffers++;
+  
+  // recursively dump the lower level buffers
+  if (m_nBufferLevel != 0) {
+    
+    for (Entry* pEntry = pFirstEntry(); pEntry != nullptr;
+         pEntry = pNextEntry(pEntry, 0)) {
+      
+      // get the index buffer from the entry
+      pNextBuffer = pEntry->pEntryBuffer();;
+      
+      ASSERT(pNextBuffer);
+      ASSERT(pNextBuffer->eClass() == CN_ENTRYBUFFER);
+      
+      pNextBuffer->vBufferCount(nBuffers);
+      
+    }
+  }
 }
 
 /*----------------------------------------------------------------------------*/
