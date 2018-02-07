@@ -476,9 +476,9 @@ void Entry::vReplaceKey(EntWrk& xEntWrk)
 /*----------------------------------------------------------------------------*/
 /* set entry given entry wsp                                                  */
 /*----------------------------------------------------------------------------*/
-void Entry::vSetEntry(EntWrk& xEntWrk) {
-  RASSERT(0);
-}
+//void Entry::vSetEntry(EntWrk& xEntWrk) {
+//  RASSERT(0);
+//}
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
 //
