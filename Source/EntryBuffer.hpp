@@ -112,7 +112,6 @@ namespace DBobjects
     Entry*         pAppendEntry(EntWrk& xEntWrk,EntryVec& xPriorVec);
     bool           bAppendEntry(Entry* pRowEntry, Entry** ppNewEntry);
     //bool         bAppendEntry(i8 iTxId, Stz* pRow, i8 iLength);
-    //Entry*         pAppendRow_v3(EntWrk& xEntWrk_v2);
     Entry*         pAppendRow(i8 iTxId, Stz* pRow, i8 iRowLength);
     //bool         bAppendRow(i8 iTxId, Stz* pRow, i8 iLength);
     void           vBufferCount(i8& nBufferCount);

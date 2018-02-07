@@ -31,8 +31,6 @@ namespace DBobjects
     Entry(eCN eClassNo, i8 nThisBytes, i8 uOffsets);
     ~Entry(void);
   
-    //static i8 nBytesRequired_v1(EntWrk_v1& xEntWrk);
-    //static i8 nBytesRequired_v2(EntWrk_v2& xEntWrk);
     static i8 nBytesRequired(EntWrk& xEntWrk);
     static i8 nBytesRequired(i8 nOffsets, i8 nKeyBytes, i8 nDataBytes);
     static i8 nBytesRequired(i8 nOffsets, i8 nDataBytes);

@@ -959,47 +959,6 @@ void EntryBuffer::vPositionPrior_v3(Key* aFindKey, Entry* pPriorVec[])
   }
   
 }
-/*----------------------------------------------------------------------------*/
-//void EntryBuffer::vPositionPrior_v3(Key* aFindKey, Entry* pPriorVec[])
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-//  
-//  for (ln nLevel = 0_ln; *nLevel < gpAttachMap->m_nIndexLevels; nLevel++)
-//    pPriorVec[*nLevel] = m_pHeadEntry;
-//  
-//  if (nItems() == 0)
-//    return;
-//  
-//  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-//  i8 nKeyCols = pIdxColVec->nItems();
-//  
-//  bool bIsJuxta;
-//  bool bIsEqual;
-//  
-//  ln nScanLevel;
-//  for (nScanLevel = 2; *nScanLevel >= 0; nScanLevel--) {
-//    
-//    Entry* pNextEntry_sl = pNextEntry(m_pHeadEntry,*nScanLevel);
-//    while (pNextEntry_sl) {
-//      
-//      Key* aNextKey = pNextEntry_sl->aKey_v2();
-//      
-//      aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
-//      aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
-//      
-//      bIsJuxta =
-//      aNextKey->bJuxtaCompare(JC_AFTER,aFindKey,pIdxColVec,nKeyCols,bIsEqual);
-//      
-//      if (bIsJuxta)
-//        break;
-//      
-//      pPriorVec[*nScanLevel] = pNextEntry_sl;
-//      
-//      pNextEntry_sl = pNextEntry(pNextEntry_sl,*nScanLevel);
-//    }
-//  }
-//  
-//}
 
 /*----------------------------------------------------------------------------*/
 /* set the prior vector to the head entry                                     */
