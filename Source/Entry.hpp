@@ -75,8 +75,6 @@ namespace DBobjects
     void vSetEntry(Id xId, i8 iKey, Entry* pOldEntry);
     void vSetEntry(i8 xTxId, Id xId, i8 nOffsets, Stz* aData, i8 nDataSize);
     void vShow(i8 iBase, Index* pIndex, bool bShowKey);
-    void vShow_v2(i8 iBase, Index* pIndex, bool bShowKey);
-    void vShow_v3(i8 iBase, Index* pIndex, bool bShowKey);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // row

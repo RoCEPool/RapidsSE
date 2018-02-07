@@ -410,70 +410,6 @@ bool EntryBuffer::bAppendEntry(Entry* pRowEntry, Entry** ppEntry)     //# critic
 /*----------------------------------------------------------------------------*/
 /* attempt to append a new row entry into this buffer                         */
 /*----------------------------------------------------------------------------*/
-/*
-Entry* EntryBuffer::pAppendRow_v3(EntWrk& xRowWrk)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  ASSERT(nBufferLevel() == 0);
-  
-  xRowWrk.vOffsets(1);
-  
-  //  if (3 == nOffsets)
-  //    int iDebug = 1;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check if this buffer has enough space
-  
-  i8 nEntryBytes = Entry::nBytesRequired(xRowWrk);
-  
-  i8 nOffsetBytes = xRowWrk.nOffsetSize();
-
-  i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
-  if ( ! bHasSpace(nEntryPlusOffsets) )
-    return nullptr;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // form the rowId
-  
-  bn nBufferNo = this->nBufferNo();
-  i8 nRowNo = iGetFreeEntry(); //nItems();
-  Id xRowId(*nBufferNo, nRowNo);
-  
-  xRowWrk.vId(xRowId);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // allocate space in this buffer
-  
-  Entry* pRowEntry = pAllotEntryBytes(nEntryBytes);
-  ASSERT(pRowEntry);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set the buffer entry
-  
-  pRowEntry->vSetEntry(xRowWrk);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set entry offsets
-  
-  i8 iEntryOffset = iToOffsetAbs(pRowEntry);
-  m_pEntryOffset0[nRowNo] = iEntryOffset;
-  
-  NEO* aNEO = aAllotNEO(nOffsetBytes);
-  if (m_pLastEntry)
-    m_pLastEntry->vNEO(0,iEntryOffset);
-  pRowEntry->vNEO(0,-1);
-  
-  if (! m_pFirstEntry)
-    m_pFirstEntry = pRowEntry;
-  m_pLastEntry = pRowEntry;
-  
-  return pRowEntry;
-}
-*/
-/*----------------------------------------------------------------------------*/
-/* attempt to append a new row entry into this buffer                         */
-/*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pAppendRow(i8 iTxId, Stz* aRow, i8 iRowLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
@@ -510,7 +446,7 @@ Entry* EntryBuffer::pAppendRow(i8 iTxId, Stz* aRow, i8 iRowLength)
   // set the buffer entry
   
   pRowEntry->vSetEntry(iTxId, xRowId, nOffsets, aRow, iRowLength);
-  pRowEntry->vShow_v2(0, m_pIndex, true);
+  pRowEntry->vShow(0, m_pIndex, true);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set entry offsets
@@ -1144,7 +1080,7 @@ void EntryBuffer::vShow(void)
     i8 iOffset = m_pHeadEntry->iNEO(0);
     while (iOffset > -1) {
       Entry* pEntry = pGetEntry(iOffset);
-      pEntry->vShow_v3(iOffset,m_pIndex,true);
+      pEntry->vShow(iOffset,m_pIndex,true);
       iOffset = pEntry->iNEO(0);
     }
   }
@@ -1159,7 +1095,7 @@ void EntryBuffer::vShow(void)
       Entry* pEntry = pGetEntry(i_Entry, 0_ln);
       vTrace("%4lld %8lld: "_Stz,i_Entry, nSub(pEntry,m_xWsp.aArea()));
       i8 iOffset = iToOffsetAbs(pEntry);
-      pEntry->vShow_v3(iOffset,m_pIndex,true);
+      pEntry->vShow(iOffset,m_pIndex,true);
     }
     
     vTrace("\n"_Stz);
@@ -1169,7 +1105,7 @@ void EntryBuffer::vShow(void)
       
       i8 iOffset = iToOffsetAbs(pEntry);
       vTrace("%8lld: "_Stz,iOffset);
-      pEntry->vShow_v3(iOffset,m_pIndex,true);
+      pEntry->vShow(iOffset,m_pIndex,true);
       
       pEntry = pNextEntry(pEntry,0);
     }

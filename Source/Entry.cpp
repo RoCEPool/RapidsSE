@@ -470,137 +470,11 @@ void Entry::vSetEntry(Id xId, i8 iKey, Entry* pOldEntry)
 /*----------------------------------------------------------------------------*/
 /* show content                                                               */
 /*----------------------------------------------------------------------------*/
-void Entry::vShow(i8 iBase, Index* pIndex, bool bShowKey)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_); 
-  
-  Key* aKey = this->aKey();
-  i8 iKey;
-  
-  if (m_xId.iBuffer() == 0) {
-    ASSERT(m_xId.iRow() == 0);
-    iKey = -1;
-  }
-  else {
-    DtmLib::nCopy(DM_INT,&iKey,aKey,nullptr);
-  }
-  
-  vTrace("Entry %p: Size: %llu Offsets: %llu "_Stz,
-         this,
-         nSizeEntry(),
-         m_nOffsets
-         );
-  
-  vTrace("Id %3lli.%03lli "_Stz,
-         m_xId.iBuffer(),
-         m_xId.iRow()
-         );
-  
-  vTrace("Tx %lld.%03lld "_Stz,
-         Tx::iTxNode(m_iTxId),
-         Tx::iTxNo(m_iTxId)
-         );
-  
-  if (bShowKey)
-    aKey->vShow(pIndex->pIdxColVec());
-
-  if (pIndex->bIsHidden()) {
-    //char* pRow = aRowData();
-    Row* aThisRow = aRow();
-    if (nRowSize() > 0)
-      aThisRow->vShow(pIndex->pTable()->pColumnVec());
-  }
-  
-  for (on nRight = 0_on; nRight < m_nOffsets; nRight++) {
-    
-    vTrace(" Offset(%lld): %lld "_Stz,
-           *nRight,
-           iRightOffset(nRight) == C_NIL_OFFSET ?
-           C_NIL_OFFSET :
-           iBase + iRightOffset(nRight) + nSizeEntry()
-           );
-  }
-  
-  vTrace("\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* show content                                                               */
-/*----------------------------------------------------------------------------*/
-void Entry::vShow_v2(i8 iBase, Index* pIndex, bool bShowKey)
+void Entry::vShow(i8 iOffset, Index* pIndex, bool bShowKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
   Key* aKey = this->aKey();
-//  i8 iKey;
-//  
-//  if (m_xId.iBuffer() == 0) {
-//    ASSERT(m_xId.iRow() == 0);
-//    iKey = -1;
-//  }
-//  else {
-//    DtmLib::nCopy(DM_INT,&iKey,aKey,nullptr);
-//  }
-  
-  vTrace("Entry v2: %p Size: %llu Offsets: %llu "_Stz,
-         this,
-         nSizeEntry(),
-         m_nOffsets
-         );
-  
-  vTrace("Id: %3lli.%03lli "_Stz,
-         m_xId.iBuffer(),
-         m_xId.iRow()
-         );
-  
-  vTrace("Tx: %lld.%03lld "_Stz,
-         Tx::iTxNode(m_iTxId),
-         Tx::iTxNo(m_iTxId)
-         );
-  
-  if (bShowKey)
-    aKey->vShow(pIndex->pIdxColVec());
-  
-  if (pIndex->bIsHidden()) {
-    //char* pRow = aRowData();
-    Row* aThisRow = aRow();
-    vTrace("Row: "_Stz);
-    i8 iRowSize = nRowSize();
-    if (iRowSize > 0) {
-      aThisRow->vShow(pIndex->pTable()->pColumnVec());
-    }
-  }
-//  
-//  for (on nRight = 0_on; nRight < m_nOffsets; nRight++) {
-//    
-//    vTrace(" Offset(%lld): %lld "_Stz,
-//           *nRight,
-//           iRightOffset(nRight) == C_NIL_OFFSET ?
-//           C_NIL_OFFSET :
-//           iBase + iRightOffset(nRight) + nSizeEntry()
-//           );
-//  }
-  
-  vTrace("\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* show content                                                               */
-/*----------------------------------------------------------------------------*/
-void Entry::vShow_v3(i8 iOffset, Index* pIndex, bool bShowKey)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
-  
-  Key* aKey = this->aKey();
-  //  i8 iKey;
-  //
-  //  if (m_xId.iBuffer() == 0) {
-  //    ASSERT(m_xId.iRow() == 0);
-  //    iKey = -1;
-  //  }
-  //  else {
-  //    DtmLib::nCopy(DM_INT,&iKey,aKey,nullptr);
-  //  }
   
   vTrace("%lld: Entry v3: %p Size: %llu Offsets: %llu "_Stz,
          iOffset,
@@ -636,18 +510,7 @@ void Entry::vShow_v3(i8 iOffset, Index* pIndex, bool bShowKey)
   vTrace(" offsets:"_Stz);
   for (i8 i_Offset = 0; i_Offset < m_nOffsets; i_Offset++)
     vTrace(" %lld"_Stz,aNEO()[i_Offset]);
-  
-  //
-  //  for (on nRight = 0_on; nRight < m_nOffsets; nRight++) {
-  //
-  //    vTrace(" Offset(%lld): %lld "_Stz,
-  //           *nRight,
-  //           iRightOffset(nRight) == C_NIL_OFFSET ?
-  //           C_NIL_OFFSET :
-  //           iBase + iRightOffset(nRight) + nSizeEntry()
-  //           );
-  //  }
-  
+
   vTrace("\n"_Stz);
 }
 
