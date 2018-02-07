@@ -476,7 +476,7 @@ void Entry::vShow(i8 iOffset, Index* pIndex, bool bShowKey)
   
   Key* aKey = this->aKey();
   
-  vTrace("%lld: Entry v3: %p Size: %llu Offsets: %llu "_Stz,
+  vTrace("%lld: Entry: %p Size: %llu Offsets: %llu "_Stz,
          iOffset,
          this,
          nSizeEntry(),

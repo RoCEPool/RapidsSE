@@ -501,7 +501,7 @@ Entry* EntryBuffer::pAppendRow(i8 iTxId, Stz* aRow, i8 iRowLength)
   // set the buffer entry
   
   pRowEntry->vSetEntry(iTxId, xRowId, nOffsets, aRow, iRowLength);
-  pRowEntry->vShow(0, m_pIndex, true);
+  //pRowEntry->vShow(0, m_pIndex, false);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set entry offsets
@@ -1055,7 +1055,8 @@ void EntryBuffer::vShow(void)
       Entry* pEntry = pGetEntryNo(i_Entry);
       vTrace("%4lld %8lld: "_Stz,i_Entry, nSub(pEntry,m_xWsp.aArea()));
       i8 iOffset = iToOffsetAbs(pEntry);
-      pEntry->vShow(iOffset,m_pIndex,true);
+      
+      pEntry->vShow(iOffset,m_pIndex,m_pIndex->bIsHidden() ? false : true);
     }
     
     vTrace("\n"_Stz);
@@ -1065,7 +1066,7 @@ void EntryBuffer::vShow(void)
       
       i8 iOffset = iToOffsetAbs(pEntry);
       vTrace("%8lld: "_Stz,iOffset);
-      pEntry->vShow(iOffset,m_pIndex,true);
+      pEntry->vShow(iOffset,m_pIndex,m_pIndex->bIsHidden() ? false : true);
       
       pEntry = pNextEntry(pEntry,0);
     }

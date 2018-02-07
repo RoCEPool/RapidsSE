@@ -13,14 +13,15 @@ create table j10 (
 print "loading j10.tbl..." ;
 ld j10 "../JTEST/j10.csv" ;
 
-pwf ;
-lf ;
 dumpidx j10 hidden;
+
+dump j10;
 
 fetch j10 ;
 antbl j10;
 dantbl j10;
 
+sz j10;
 /*
 vfyidx j10 hidden;
 
