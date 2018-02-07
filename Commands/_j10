@@ -27,9 +27,6 @@ ex j10 "/tmp/j10_ex.csv" ;
 
 drop table j10;
 
-docol epochDump;
-
-/*
 
 
 create table j10 (
@@ -41,7 +38,11 @@ ld j10 "/tmp/j10_ex.csv" ;
 
 fetch j10;
 
+drop table j10;
 
+docol epochDump;
+
+/*
 vfyidx j10 hidden;
 
 dex j10 "/tmp/j10_dex.csv" ;
