@@ -154,8 +154,8 @@ namespace DBobjects
     void           vFreeChains(void);
     Entry*         pGetEntryNo(i8 iEntryNo);
     Entry*         pGetEntryOffset(i8 iOffset);
+    Entry*         pGetEntrySplit(i8 iSplitEntryNo);
     i4             iGetFreeEntry(void);
-    Entry*         pGetSplitEntry(i8 iSplitEntryNo);
     void           vHeadEntry(void);
     //void         vMoveLeft(void* aDst, i8 nBytes);
     //void         vMoveRight(void* aSrc, i8 nBytes);

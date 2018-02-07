@@ -1144,9 +1144,9 @@ Entry* EntryBuffer::pGetEntryOffset(i8 iOffset)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get split entry by number                                                  */
+/* get split entry by split number                                            */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pGetSplitEntry(i8 iSplitEntryNo)
+Entry* EntryBuffer::pGetEntrySplit(i8 iSplitEntryNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
