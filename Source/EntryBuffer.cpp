@@ -984,10 +984,9 @@ void EntryBuffer::vRowCount(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  RASSERT(0);
-//  m_nItems = 0;
-//  for (Entry* pRow = pHeadEntry(); pRow; pRow = pNextEntry(pRow))
-//    m_nItems++;
+  m_nItems = 0;
+  for (Entry* pRow = pHeadEntry(); pRow; pRow = pNextEntry(pRow, 0))
+    m_nItems++;
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ENTRYBUFFER);
 }
