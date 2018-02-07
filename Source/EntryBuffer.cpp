@@ -580,7 +580,7 @@ void EntryBuffer::vDeleteEntry(Entry* pEntry)
   Entry* xPriorVec[3];
 
   Key* aKey = pEntry->aKey();
-  vPositionPrior_v3(aKey, xPriorVec);
+  vPositionPrior(aKey, xPriorVec);
   vDumpPriorVec(xPriorVec);
   
   i8 nOffsets = pEntry->nOffsets();
@@ -687,7 +687,7 @@ Entry* EntryBuffer::pInsertKey(i8 iTxId, Key* aKey, i8 iKeyLength)
   
   // find the entry after which the new entry.key will be inserted
   //Key* aKey = xKeyWrk.aKey();
-  vPositionPrior_v3(aKey, xPriorVec);
+  vPositionPrior(aKey, xPriorVec);
   vDumpPriorVec(xPriorVec);
   
   // set no of offsets in working key
@@ -828,7 +828,7 @@ EntryBuffer* EntryBuffer::pPositionLevel(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxt
 /*----------------------------------------------------------------------------*/
 /* scan thru skip list and positition on entry prior to key                   */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vPositionPrior_v3(Key* aFindKey, Entry* pPriorVec[])
+void EntryBuffer::vPositionPrior(Key* aFindKey, Entry* pPriorVec[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   

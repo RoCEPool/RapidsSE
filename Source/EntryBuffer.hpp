@@ -135,11 +135,11 @@ namespace DBobjects
   
     //void         vRemoveFree(Entry* pEntry);
   
-    void         vRowCount(void);
+    void           vRowCount(void);
     void           vShow(void);
-    EntryBuffer* pSplitBuffer(void);
-    void         vTruncate(void);
-    bool         bVerify(void);
+    EntryBuffer*   pSplitBuffer(void);
+    void           vTruncate(void);
+    bool           bVerify(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     private:
@@ -162,8 +162,7 @@ namespace DBobjects
     //Entry*       pPosition(Key* aGivenKey, i8 nKeyCols,
     //                       eJC eJuxtaCompare, EntryVec* pPriorVec,
     //                       bool& bIsEqual, bool bIsQuery);
-    void           vPositionPrior_v3(Key* aFindKey, Entry** pPriorVec);
-    //void         vPriorVec(Entry* pEntry, EntryVec* pPriorVec);
+    void           vPositionPrior(Key* aFindKey, Entry** pPriorVec);
     //void         vReplaceKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
     //void         vReplaceKeyEqual(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
     //void         vReplaceKeyLarger(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
