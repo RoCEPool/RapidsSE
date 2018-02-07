@@ -10,7 +10,7 @@ namespace DBobjects
   protected:
     i8 m_nItems; // number of items in this buffer
 
-  WspFxd<C_SIZE_LARGE_OBJECT - C_1KB> m_xWsp;
+    WspFxd<C_SIZE_LARGE_OBJECT - C_1KB> m_xWsp;
   
   public:
     ItemBuffer(eCN eClassNo);
@@ -21,6 +21,7 @@ namespace DBobjects
     char*  aDataArea(void);
     Item*  pFirstItem(void);
     i8     nFreeBytes(void);
+    void   vGiveSpace(i8 nBytes);
     i8     nItems(void);
     Item*  pNextItem(Item* pCurrentItem);
     i8     nUsedBytes(void);
