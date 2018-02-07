@@ -162,7 +162,7 @@ Item* ItemBuffer::pNextItem(Item* pCurrentItem)
 /*----------------------------------------------------------------------------*/
 /* calculate the absolute offset within workspace for given item              */
 /*----------------------------------------------------------------------------*/
-i8 ItemBuffer::iToOffsetAbs(Item* pItem)
+i8 ItemBuffer::iToOffset(Item* pItem)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   

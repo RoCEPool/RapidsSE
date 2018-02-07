@@ -506,7 +506,7 @@ Entry* EntryBuffer::pAppendRow(i8 iTxId, Stz* aRow, i8 iRowLength)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set entry offsets
   
-  i8 iEntryOffset = iToOffsetAbs(pRowEntry);
+  i8 iEntryOffset = iToOffset(pRowEntry);
   m_pEntryOffset0[nRowNo] = iEntryOffset;
   
   NEO* aNEO = aAllotNEO(nOffsetBytes);
@@ -635,8 +635,8 @@ void EntryBuffer::vCompactBuffer(void)
     vPositionPrior(aKey, xPriorVec);
     vDumpPriorVec(xPriorVec);
     
-    i8 iWasOffset = iToOffsetAbs(pNextEntry);
-    i8 iNowOffset = iToOffsetAbs(pFreeEntry);
+    i8 iWasOffset = iToOffset(pNextEntry);
+    i8 iNowOffset = iToOffset(pFreeEntry);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // now copy left
@@ -863,7 +863,7 @@ Entry* EntryBuffer::pInsertKey(i8 iTxId, Key* aKey, i8 iKeyLength)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set prior offsets
   
-  i8 iKeyEntryOffset = iToOffsetAbs(pKeyEntry);
+  i8 iKeyEntryOffset = iToOffset(pKeyEntry);
   
   NEO* aNEO = aAllotNEO(nOffsetBytes);
   
@@ -1095,7 +1095,7 @@ void EntryBuffer::vShow(void)
 
       Entry* pEntry = pGetEntryNo(i_Entry);
       vTrace("%4lld %8lld: "_Stz,i_Entry, nSub(pEntry,m_xWsp.aArea()));
-      i8 iOffset = iToOffsetAbs(pEntry);
+      i8 iOffset = iToOffset(pEntry);
       
       pEntry->vShow(iOffset,m_pIndex,m_pIndex->bIsHidden() ? false : true);
     }
@@ -1105,7 +1105,7 @@ void EntryBuffer::vShow(void)
     
     for (Entry* pEntry = m_pFirstEntry; pEntry; ) {
       
-      i8 iOffset = iToOffsetAbs(pEntry);
+      i8 iOffset = iToOffset(pEntry);
       vTrace("%8lld: "_Stz,iOffset);
       pEntry->vShow(iOffset,m_pIndex,m_pIndex->bIsHidden() ? false : true);
       
