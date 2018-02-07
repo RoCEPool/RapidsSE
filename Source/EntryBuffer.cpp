@@ -387,8 +387,61 @@ NEO* EntryBuffer::aAllotNEO(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* analyze this buffer                                                        */
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/* analyze this buffer                                                        */
+/*----------------------------------------------------------------------------*/
 void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries) {
-  RASSERT(0);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  if (m_pIndex->bIsHidden()) {
+    
+    ASSERT(m_nBufferLevel == 0);
+    EntryBuffer* pNextBuffer = this;
+    
+    do {
+      ASSERT(pNextBuffer->nBufferLevel() == 0);
+      
+      iBuffers++;
+      iEntries += (pNextBuffer->m_nItems);
+      
+      if (bDetailed)
+        sAnalysis.vCatSprint("     buffer %5lld (L%lld) : %lld entries\n"_Stz,
+                             iBuffers,
+                             pNextBuffer->m_nBufferLevel,
+                             pNextBuffer->m_nItems);
+      
+      pNextBuffer = pNextBuffer->pNextBuffer();
+    } while (pNextBuffer);
+    
+    return;
+  }
+  
+  iBuffers++;
+  iEntries += m_nItems;
+  
+  if (bDetailed)
+    sAnalysis.vCatSprint("     buffer %5lld (L%lld) : %lld entries\n"_Stz,
+                         iBuffers,
+                         m_nBufferLevel,
+                         m_nItems);
+  
+  // recursively dump the lower level buffers
+  if (m_nBufferLevel != 0) {
+    
+    for (Entry* pEntry = pFirstEntry(); pEntry != nullptr;
+         pEntry = pNextEntry(pEntry, 0)) {
+      
+      // get the index buffer from the entry
+      EntryBuffer* pEntryBuffer = pEntry->pEntryBuffer();;
+      
+      ASSERT(pEntryBuffer);
+      ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
+      
+      pEntryBuffer->vAnalyze(sAnalysis, bDetailed, iBuffers, iEntries);
+      
+    }
+  }
+  
 }
 
 /*----------------------------------------------------------------------------*/
