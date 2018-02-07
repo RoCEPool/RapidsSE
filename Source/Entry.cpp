@@ -266,24 +266,24 @@ i8 Entry::nSizeEntry(void)
 /*----------------------------------------------------------------------------*/
 /* get row address                                                            */
 /*----------------------------------------------------------------------------*/
-Row* Entry::aRow(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
-  
-  i8 nOffsetBytes = RightVec::nBytesRequired(m_nOffsets);
-  
-  char* aKey = pAdd<char*>(aVblData(),nOffsetBytes);
-  
-  // assuming key is CT_INTEGER for hidden index
-  Row* aRow = pAdd<Row*>(aKey, sizeof(i8));
-  
-  return aRow;
-}
+//Row* Entry::aRow(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+//
+//  i8 nOffsetBytes = RightVec::nBytesRequired(m_nOffsets);
+//
+//  char* aKey = pAdd<char*>(aVblData(),nOffsetBytes);
+//
+//  // assuming key is CT_INTEGER for hidden index
+//  Row* aRow = pAdd<Row*>(aKey, sizeof(i8));
+//
+//  return aRow;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get row address                                                            */
 /*----------------------------------------------------------------------------*/
-Row* Entry::aRow_v2(void)
+Row* Entry::aRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
@@ -312,19 +312,6 @@ char* Entry::aRowData(void)
 /* get row data size                                                          */
 /*----------------------------------------------------------------------------*/
 i8 Entry::nRowSize(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_); 
-  
-  i8 nOffsetBytes = RightVec::nBytesRequired(m_nOffsets);
-  i8 iRowSize = nSizeItem() - (nOffsetBytes + sizeof(Entry) + sizeof(Footer) + sizeof(i8));
-  
-  return iRowSize;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get row data size                                                          */
-/*----------------------------------------------------------------------------*/
-i8 Entry::nRowSize_v2(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
@@ -544,7 +531,7 @@ void Entry::vSetEntry(EntWrk& xEntWrk) {
 //
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  // copy row
-//  char* aEntryData = (char*)this->aRow_v2();
+//  char* aEntryData = (char*)this->aRow();
 //  char* aEntWrkData = xEntWrk_v2.aData_v2();
 //  i8 nDataSize = xEntWrk_v2.nDataSize();
 //
@@ -571,7 +558,7 @@ void Entry::vSetEntry(i8 xTxId, Id xId, i8 nOffsets, Stz* aData, i8 nDataSize)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy row
-  char* aEntryData = (char*)this->aRow_v2();
+  char* aEntryData = (char*)this->aRow();
   
   if (nDataSize)
     MemLib::vCopy(aEntryData,aData,nDataSize,eClass());
@@ -709,9 +696,9 @@ void Entry::vShow_v2(i8 iBase, Index* pIndex, bool bShowKey)
   
   if (pIndex->bIsHidden()) {
     //char* pRow = aRowData();
-    Row* aThisRow = aRow_v2();
+    Row* aThisRow = aRow();
     vTrace("Row: "_Stz);
-    i8 iRowSize = nRowSize_v2();
+    i8 iRowSize = nRowSize();
     if (iRowSize > 0) {
       aThisRow->vShow(pIndex->pTable()->pColumnVec());
     }
@@ -770,9 +757,9 @@ void Entry::vShow_v3(i8 iOffset, Index* pIndex, bool bShowKey)
   
   if (pIndex->bIsHidden()) {
     //char* pRow = aRowData();
-    Row* aThisRow = aRow_v2();
+    Row* aThisRow = aRow();
     vTrace("Row: "_Stz);
-    i8 iRowSize = nRowSize_v2();
+    i8 iRowSize = nRowSize();
     if (iRowSize > 0) {
       aThisRow->vShow(pIndex->pTable()->pColumnVec());
     }
@@ -842,7 +829,7 @@ void Entry::vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
   // VCH cannot be > 256 bytes
   s4K s;                                                       //ALKA_ROWFORMAT
   
-  Row* aThisRow = aRow_v2();
+  Row* aThisRow = aRow();
   i8 nCols = pIdxColVec->nItems();
   for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
     

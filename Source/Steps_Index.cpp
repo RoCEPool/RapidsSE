@@ -1077,7 +1077,7 @@ void Task::vIndexScan(MP_Task mpTask)
   }
   
   // get the first entry in the buffer
-  Entry* pEntry = pEntryBuffer->pNextEntry(pEntryBuffer->pHeadEntry());
+  Entry* pEntry = pEntryBuffer->pFirstEntry();
   
   // iterate thru the buffer till no more entries
   while (pEntry) {
@@ -1106,7 +1106,7 @@ void Task::vIndexScan(MP_Task mpTask)
     }
       
     // move to next entry in the buffer
-    pEntry = pEntryBuffer->pNextEntry(pEntry);
+    pEntry = pEntryBuffer->pNextEntry(pEntry, 0);
 
     if ( ! pEntry ) {
       // get next buffer from the current indexBuffer

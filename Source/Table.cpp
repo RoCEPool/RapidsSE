@@ -256,7 +256,7 @@ bool Table::bAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
   bool bLastBuffer = pEntryBuffer->bIsLast();
   
   // do not insert empty buffers
-  if (pEntryBuffer->nItems() == 1) {
+  if (pEntryBuffer->nItems() == 0) {
     delete pEntryBuffer;
   }
   else {

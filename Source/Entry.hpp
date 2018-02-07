@@ -49,10 +49,8 @@ namespace DBobjects
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // data area
     Row*  aRow(void);
-    Row*  aRow_v2(void);
     char* aRowData(void);
     i8    nRowSize(void);
-    i8    nRowSize_v2(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // variable data area
