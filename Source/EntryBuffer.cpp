@@ -310,7 +310,7 @@ void EntryBuffer::vIndex(Index* pIndex)
   m_pIndex = pIndex;
   
   // create a head entry if we have a non-hidden index
-  if (! m_pIndex->bIsHidden() )
+  //if (! m_pIndex->bIsHidden() )
     vHeadEntry();
 }
 
@@ -653,9 +653,29 @@ void EntryBuffer::vCompactBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vDump(void)
+void EntryBuffer::vDump(void)                            //ALKA - LEVEL 1 ??
 {
-  RASSERT(0);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  // show this buffer
+  vShow();
+  
+  // recursively dump the lower level buffers
+  if (m_nBufferLevel != 0) {
+    
+    for (Entry* pEntry = pFirstEntry();
+         pEntry != nullptr;
+         pEntry = pNextEntry(pEntry, 0)) {
+      
+      // get the index buffer from the entry
+      EntryBuffer* pEntryBuffer = pEntry->pEntryBuffer();
+      
+      ASSERT(pEntryBuffer);
+      ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
+      
+      pEntryBuffer->vDump();
+    }
+  }
 }
 
 /*----------------------------------------------------------------------------*/

@@ -12,7 +12,7 @@ create table j10 (
 
 print "loading j10.tbl..." ;
 ld j10 "../JTEST/j10.csv" ;
-
+/*
 dumpidx j10 hidden;
 
 dump j10;
@@ -24,10 +24,11 @@ dantbl j10;
 sz j10;
 tableSizes;
 ex j10 "/tmp/j10_ex.csv" ;
+dex j10 "/tmp/j10_dex.csv" ;
+*/
 
+/*
 drop table j10;
-
-
 
 create table j10 (
   j10_key   INTEGER NOT NULL,
@@ -42,7 +43,7 @@ drop table j10;
 
 docol epochDump;
 
-/*
+
 vfyidx j10 hidden;
 
 dex j10 "/tmp/j10_dex.csv" ;

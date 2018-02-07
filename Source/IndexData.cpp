@@ -303,7 +303,7 @@ void IndexData::vAppendEntry(KeyWrk& xKeyWrk, Id xId, EntryVec& xPriorVec)
   
   m_zLock.vGrabWrite();
   
-  m_pCurrentBuffer = pAppendL0Entry(m_pCurrentBuffer,xKeyWrk,xId,xPriorVec);
+  m_pCurrentBuffer = pAppendL0Entry(m_pCurrentBuffer,xKeyWrk,xId);
   
   m_zLock.vDropWrite();
 }
@@ -604,6 +604,70 @@ bool IndexData::bVerify(void)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* check current L0 index buffer for space and append an entry for {key,id}   */
+/*----------------------------------------------------------------------------*/
+EntryBuffer* IndexData::pAppendL0Entry(EntryBuffer* pEntryBuffer,
+                                       KeyWrk& xKeyWrk, Id xId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  
+  // current working buffer should be a L0 buffer
+  ASSERT(pEntryBuffer == nullptr || pEntryBuffer->nBufferLevel() == 0);
+  
+  // initialize the entry wsp (generates randon number of offsets)
+  i8 iTxId = -1;                                                   //! not right
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // case where we append into an existing L0 entry buffer
+  
+  // check for a current L0 buffer and that it has enough space
+  if (pEntryBuffer) {
+    
+    // insert entry into L0 index buffer
+    Entry* pEntry = pEntryBuffer->pInsertKey(iTxId, xKeyWrk.aKey(), xKeyWrk.nKeySize());
+    
+    // did we manage to insert ?
+    if (pEntry)
+      return pEntryBuffer;
+  
+    RASSERT(0);
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // case where existing L0 entry buffer is full
+    
+    return pEntryBuffer;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // case where there is no existing L0 entry buffer
+  
+  ASSERT(! m_pRoot);
+  
+  // create very first L1 buffer and set it as root
+//  EntryBuffer* pHigherLevel = new EntryBuffer;
+//  pHigherLevel->vIndex(m_pIndex);
+//  pHigherLevel->vPartitionNo(m_nPartitionNo);
+//  m_pRoot = pHigherLevel;
+
+  // create very first L0 buffer and set its higher level buffer
+  pEntryBuffer = new EntryBuffer;
+  pEntryBuffer->vIndex(m_pIndex);
+  pEntryBuffer->vPartitionNo(m_nPartitionNo);
+  
+  m_pRoot = pEntryBuffer;
+  
+  //pEntryBuffer->vHigherBuffer(pHigherLevel);
+  
+  
+  // append entry into first L0 buffer
+  Entry* pEntry = pEntryBuffer->pInsertKey(iTxId, xKeyWrk.aKey(), xKeyWrk.nKeySize());
+  
+  // insert the first entry of L0 entry buffer into L1 higher level buffer
+  //vInsertFirstEntry(pHigherLevel,pEntryBuffer);
+  
+  return pEntryBuffer;
+}
 
 /*----------------------------------------------------------------------------*/
 /* check current L0 index buffer for space and append an entry for {key,id}   */

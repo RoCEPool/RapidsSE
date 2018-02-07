@@ -916,7 +916,7 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pNewIndexData,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // populate the sort array
-  
+  pHiddenIndexData->vDump(true);
   vPopulateSortArray(aSortRegionAddr,nHiddenEntries,iSortElmSize,
                      pNewIndexData,pHiddenIndexData->pRoot());
   
@@ -962,7 +962,7 @@ i8 Table::nHiddenEntryCount(EntryBuffer* pFirstL0Buffer)
   
   i8 nEntries = 0;
   for (EntryBuffer* pEB = pFirstL0Buffer; pEB; pEB = pEB->pNextBuffer())
-    nEntries += pEB->nItems() - 1;
+    nEntries += pEB->nItems();
   
   return nEntries;
 }
@@ -994,8 +994,8 @@ void Table::vPopulateSortArray(char* aSortArray, i8 nElements, i8 iSortElmSize,
   KeyWrk xKeyWrk;
   for (EntryBuffer* pEB = pFirstL0Buffer; pEB; pEB = pEB->pNextBuffer()) {
     
-    Entry* pRow = pEB->pHeadEntry();
-    pRow = pEB->pNextEntry(pRow, 0);
+    //Entry* pRow = pEB->pHeadEntry();
+    //pRow = pEB->pNextEntry(pRow, 0);
     
     //if (gxArguments.m_bVerbose)
     //  vTrace("vPopulateSortArray for buffer %p\n"_Stz, pEB);
@@ -1014,7 +1014,7 @@ void Table::vPopulateSortArray(char* aSortArray, i8 nElements, i8 iSortElmSize,
   }
 
 #else
-    for ( ; pRow; pRow = pEB->pNextEntry(pRow, 0)) {
+  for ( Entry* pRow = pEB->pFirstEntry() ; pRow; pRow = pEB->pNextEntry(pRow, 0)) {
 
       // get the key datum for this index
       xKeyWrk.vReset();

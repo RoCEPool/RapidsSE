@@ -17,6 +17,7 @@ create index idx1 on j10 (j10_key);
 
 print "loading j10.tbl..." ;
 ld j10 "../JTEST/j10.csv" ;
+dumpidx j10 idx1;
 //dex j10 "/tmp/j10.csv";
 
 //escape connector se 'load vch /Users/alkayamarti/rapidsse/rapidsSE/JTEST/vch_defaults.csv ' with node='NODE1' ;
