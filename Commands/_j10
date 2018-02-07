@@ -22,6 +22,8 @@ antbl j10;
 dantbl j10;
 
 sz j10;
+tableSizes;
+
 /*
 vfyidx j10 hidden;
 
