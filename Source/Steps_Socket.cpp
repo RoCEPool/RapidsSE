@@ -372,10 +372,11 @@ void Task::vSocketRecv(MP_Task mpTask)
     if ( ! bResult )
       THROW("Unable to recvFrom socket: Errno %d!"_Stz, xSysCall.iError());
     
-    pEntryBuffer->vHeadEntryRestore();
-    pEntryBuffer->vFirstEntryRestore();
+    //pEntryBuffer->vHeadEntryRestore();
+    //pEntryBuffer->vFirstEntryRestore();
+    //pEntryBuffer->vRowCount();
+    pEntryBuffer->vRestoreBuffer();
     
-    pEntryBuffer->vRowCount();
     //pEntryBuffer->vShow();
     
     //vTrace("%lld %lld %lld\n"_Stz, iBytes, *(pEntryBuffer->nBufferNo()), pEntryBuffer->nItems());

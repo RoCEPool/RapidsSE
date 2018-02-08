@@ -117,6 +117,7 @@ namespace DBobjects
     void           vDump(void);
     void           vFirstEntryRestore(void);
     Item*          pFirstItem(void);
+    Entry*         pGetEntryNo(i8 iEntryNo);
     bool           bHasSpace(i8 nBytes);
     void           vHeadEntryRestore(void);
     bool           bInsert(EntWrk& xEntWrk);
@@ -131,14 +132,13 @@ namespace DBobjects
     EntryBuffer*   pPositionLevel(Key* aGivenKey, i8 nKeyCols, eJC eJuxtaCompare, i8 iLevel);
     
     void           vPriorVecHead(EntryVec& xPriorVec);
+    void           vRestoreBuffer(void);
     void           vRowCount(void);
     void           vShow(void);
     EntryBuffer*   pSplitBuffer(void);
     void           vTruncate(void);
     bool           bVerify(void);
   
-    
-    Entry*         pGetEntryNo(i8 iEntryNo);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     private:

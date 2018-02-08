@@ -793,6 +793,24 @@ Item* EntryBuffer::pFirstItem(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get an entry by number                                                     */
+/*----------------------------------------------------------------------------*/
+Entry* EntryBuffer::pGetEntryNo(i8 iEntryNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  if (iEntryNo == C_ENTRY_NONE)
+    return nullptr;
+  
+  i4 iOffset = m_pEntryOffset0[iEntryNo];
+  char* aAddress = pAdd<char*>(aDataArea(), iOffset);
+  
+  Entry* pEntry = reinterpret_cast<Entry*>(aAddress);
+  
+  return pEntry;
+}
+
+/*----------------------------------------------------------------------------*/
 /* does buffer have space for nBytes ?                                        */
 /*----------------------------------------------------------------------------*/
 bool EntryBuffer::bHasSpace(i8 nBytes)
@@ -1158,6 +1176,16 @@ void EntryBuffer::vPriorVecHead(EntryVec& xPriorVec)
 }
 
 /*----------------------------------------------------------------------------*/
+/* restore the buffer after being received over a socket                      */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vRestoreBuffer(void)
+{
+  vHeadEntryRestore();
+  vFirstEntryRestore();
+  vRowCount();
+}
+
+/*----------------------------------------------------------------------------*/
 /* set row count                                                              */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vRowCount(void)
@@ -1461,24 +1489,6 @@ void EntryBuffer::vFreeChains(void)
   
   m_iFreeOffsetHead = 0;
   m_nFreeOffsets = L_ENTRIES_0;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get an entry by number                                                     */
-/*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pGetEntryNo(i8 iEntryNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  if (iEntryNo == C_ENTRY_NONE)
-    return nullptr;
-  
-  i4 iOffset = m_pEntryOffset0[iEntryNo];
-  char* aAddress = pAdd<char*>(aDataArea(), iOffset);
-
-  Entry* pEntry = reinterpret_cast<Entry*>(aAddress);
-  
-  return pEntry;
 }
 
 /*----------------------------------------------------------------------------*/
