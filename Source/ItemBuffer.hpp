@@ -19,6 +19,7 @@ namespace DBobjects
     Item*  pAllotItem(i8 nBytes);
     char*  aAllotSpace(i8 nBytes);
     char*  aDataArea(void);
+    void   vDecItems(void);
     Item*  pFirstItem(void);
     i8     nFreeBytes(void);
     void   vGiveSpace(i8 nBytes);

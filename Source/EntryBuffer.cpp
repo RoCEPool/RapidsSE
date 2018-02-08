@@ -770,6 +770,10 @@ void EntryBuffer::vDeleteEntry(Entry* pEntry)
   }
   
   m_pFirstFree = pFreeEntry;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // decement the number of items in buffer
+  vDecItems();
 }
 
 /*----------------------------------------------------------------------------*/
