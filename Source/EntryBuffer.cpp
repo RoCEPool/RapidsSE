@@ -927,6 +927,9 @@ Entry* EntryBuffer::pInsertKey(i8 iTxId, Key* aKey, i8 iKeyLength)
     xPriorVec[iNextOffset]->vNEO(iNextOffset,iKeyEntryOffset);
   }
   
+  if (! m_pFirstEntry)
+    m_pFirstEntry = pKeyEntry;
+  
   return pKeyEntry;
 }
 
