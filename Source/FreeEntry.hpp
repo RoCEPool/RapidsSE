@@ -14,6 +14,7 @@ namespace DBobjects
   public:
     void* operator new(size_t);
     void* operator new(size_t, Entry*);
+    void* operator new(size_t, FreeEntry*);
   
     FreeEntry(i8 nSizeItem);
     ~FreeEntry(void);

@@ -576,10 +576,13 @@ void EntryBuffer::vCompactBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   FreeEntry* pFreeEntry;
-  Entry*     pNextEntry;
+  Entry*     pMoveEntry;
   Entry*     xPriorVec[3];
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  
+
+  // loose the free list so vShow() works correctly
+  m_pFirstFree = nullptr;
+
   // scan item is the working pointer
   Item* pScanItem = pFirstItem();
   
@@ -609,7 +612,7 @@ void EntryBuffer::vCompactBuffer(void)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // find the next entry in buffer after the free entry
     
-    pNextEntry = nullptr;
+    pMoveEntry = nullptr;
     for (Item* pItem = pNextItem(pFreeEntry);
          pItem != nullptr;
          pItem = pNextItem(pItem)) {
@@ -617,55 +620,66 @@ void EntryBuffer::vCompactBuffer(void)
       eCN eClass = pItem->eClass();
       
       if (CN_ENTRY == eClass) {
-        pNextEntry = static_cast<Entry*>(pItem);
+        pMoveEntry = static_cast<Entry*>(pItem);
         break;
       }
     }
     
     // return if no more entries after the free entry
-    if (! pNextEntry )
+    if (! pMoveEntry )
       break;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the prior vector to the entry being moved
     
-    Key* aKey = pNextEntry->aKey();
+    Key* aKey = pMoveEntry->aKey();
     aKey->vShow(pIdxColVec);
     vTrace("\n"_Stz);
     
     vPositionPrior(aKey, xPriorVec);
     vDumpPriorVec(xPriorVec);
     
-    i8 iWasOffset = iToOffset(pNextEntry);
+    i8 iWasOffset = iToOffset(pMoveEntry);
     i8 iNowOffset = iToOffset(pFreeEntry);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // now copy left
+    // now copy move entry left onto free entry
     
     // calculate the number of bytes to copy
-    i8 nCopyBytes = pNextEntry->nSizeEntry() + pNextEntry->iNEOsize();
+    i8 nCopyBytes = pMoveEntry->nSizeEntry() + pMoveEntry->iNEOsize();
     
-    // copy the next entry over the free entry
-    MemLib::vCopy(pFreeEntry, pNextEntry, nCopyBytes, CN_ENTRYBUFFER);
+    // copy the move entry over the free entry
+    MemLib::vMove(pFreeEntry, pMoveEntry, nCopyBytes, CN_ENTRYBUFFER);
     
     // give the reclaimed space back to the buffer
-    i8 nReclaimedBytes = nSub(pNextEntry,pFreeEntry);
+    i8 nReclaimedBytes = nSub(pMoveEntry,pFreeEntry);
     vGiveSpace(nReclaimedBytes);
     
-    // convert the copied entry to a free entry
-    FreeEntry* pOpenedFreeEntry = new(pNextEntry) FreeEntry(nReclaimedBytes);
+    // convert the moved entry to a free entry
+    FreeEntry* pOpenedFreeEntry = pAdd<FreeEntry*>(pFreeEntry,nCopyBytes);
+    new(pOpenedFreeEntry) FreeEntry(nReclaimedBytes);
+    
+    Entry* pCheckEntry = reinterpret_cast<Entry*>(pFreeEntry);
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the prior vector to the entry being moved
+    
+    for (i8 i_Offset = 0; i_Offset < 3; i_Offset++)
+      if (iWasOffset == xPriorVec[i_Offset]->iNEO(i_Offset))
+        xPriorVec[i_Offset]->vNEO(i_Offset,iNowOffset);
+    
+    vShow();
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // move scan
-    pScanItem = pFreeEntry;
     
-    vShow();
+    pScanItem = pFreeEntry;
     
   } // for
   
   vSetWilderness();
   
-  m_pFirstFree = nullptr;
+  vShow();
 }
 
 /*----------------------------------------------------------------------------*/

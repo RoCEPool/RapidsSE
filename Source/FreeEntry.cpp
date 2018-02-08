@@ -43,6 +43,15 @@ void* FreeEntry::operator new(size_t iSize, Entry* pEntry)
 }
 
 /*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+void* FreeEntry::operator new(size_t iSize, FreeEntry* pFreeEntry)
+{
+  RASSERT(iSize);
+  return pFreeEntry;
+}
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 FreeEntry::FreeEntry(i8 nSizeItem)
