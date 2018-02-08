@@ -531,6 +531,9 @@ void EntryBuffer::vBufferCount(i8& nBuffers)
 {
   EntryBuffer* pNextBuffer = nullptr;
   
+  
+  //----------------------------------------------------------------------------
+  // hidden index ?
   if (m_pIndex->bIsHidden()) {
     ASSERT(m_nBufferLevel == 0);
     pNextBuffer = this->pNextBuffer();
@@ -547,8 +550,8 @@ void EntryBuffer::vBufferCount(i8& nBuffers)
     return;
   }
   
-    
-  RASSERT(0);
+  //----------------------------------------------------------------------------
+  // other index
   
   // count this buffer
   nBuffers++;

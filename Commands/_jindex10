@@ -61,6 +61,7 @@ fetch j10 "j10_key 6 <";
 
 anidx j10 idx1;
 dumpidx j10 idx1;
+szidx j10 idx1;
 
 /*
 create index idx2 on j10 (j10_name);
