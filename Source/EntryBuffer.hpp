@@ -166,12 +166,12 @@ namespace DBobjects
     //Entry*       pRightEntry(Entry* pEntry, ln nLevelNo);
   
     public:
-    Footer* aFooter(void);
+  Footer* aFooter(void);
+  
+    static void vUnitTest(Table* pTable);
   };
   
   EntryBuffer* _pEntryBuffer(void* aAddr);
-  
-  void vEntryBuffer_UnitTest(Table* pTable);
 }
 
 /*============================================================================*/
