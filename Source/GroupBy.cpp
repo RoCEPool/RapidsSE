@@ -253,7 +253,7 @@ Entry* GroupBy::pToLineItemEntry(Index* pIndex, Entry* pEntry)
   xKeyWrk.vAddDatum(xValWrk, pColumn);
   
   // position in the entry buffer at the row id key
-  Entry* pLineItemEntry = pEntryBuffer->pPosition(xKeyWrk, 1, JC_AFTER);
+  Entry* pLineItemEntry = pEntryBuffer->pPositionQuery(xKeyWrk.aKey(), 1, JC_AFTER);
   
   return pLineItemEntry;
 }

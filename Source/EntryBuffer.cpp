@@ -991,39 +991,20 @@ Item* EntryBuffer::pNextItem(Item* pCurrent)
 }
 
 /*----------------------------------------------------------------------------*/
-/* position at entry with lower bound at key                                  */
-/*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pPosition(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  Entry* pEntry;
-  bool bIsEqual = false;
-  
-  Key* aKey = xKeyWrk.aKey();
-  
-  pEntry = pPositionQuery(aKey, nKeyCols, eJuxtaCompare, bIsEqual);
-  
-  if (pEntry == pHeadEntry())
-    pEntry = pNextEntry(pEntry, *nBufferNo());
-  
-  return pEntry;
-}
-
-/*----------------------------------------------------------------------------*/
 /* position at key as per relational operator                                 */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pPosition(KeyWrk &xKeyWrk, eRO eRelnOp)
+Entry* EntryBuffer::pPositionQuery(Key* aGivenKey, eRO eRelnOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  Entry* pIndexEntry = pPosition(xKeyWrk, 1, JC_AFTER);
+  bool bIsEqual;
+  Entry* pIndexEntry = pPositionQuery(aGivenKey, 1, JC_AFTER);
   
   bool bAfter;
   if (pIndexEntry) {
     do {
       bool bIsEqual = false;
-      bAfter = pIndexEntry->aKey()->bJuxtaCompare(JC_AFTER, xKeyWrk.aKey(),
+      bAfter = pIndexEntry->aKey()->bJuxtaCompare(JC_AFTER, aGivenKey,
                                                   m_pIndex->pIdxColVec(), 1,
                                                   bIsEqual, eRelnOp);
       if (! bAfter) {
@@ -1038,7 +1019,7 @@ Entry* EntryBuffer::pPosition(KeyWrk &xKeyWrk, eRO eRelnOp)
 /*----------------------------------------------------------------------------*/
 /* position at an index buffer at level iLevel starting from this buffer      */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* EntryBuffer::pPositionLevel(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare, i8 iLevel)  //# critical
+EntryBuffer* EntryBuffer::pPositionLevel(Key* aGivenKey, i8 nKeyCols, eJC eJuxtaCompare, i8 iLevel)  //# critical
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1054,7 +1035,7 @@ EntryBuffer* EntryBuffer::pPositionLevel(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxt
       break;
     
     // get the entry
-    pEntry = pEntryBuffer->pPosition(xKeyWrk, nKeyCols, eJuxtaCompare);
+    pEntry = pEntryBuffer->pPositionQuery(aGivenKey, nKeyCols, eJuxtaCompare);
     ASSERT(pEntry);
     
     // get the index buffer of the entry
@@ -1064,6 +1045,68 @@ EntryBuffer* EntryBuffer::pPositionLevel(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxt
   }
   
   return pEntryBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* position at given key                                                      */
+/*----------------------------------------------------------------------------*/
+Entry* EntryBuffer::pPositionQuery(Key* aGivenKey,i8 nKeyCols, eJC eJuxtaCompare) //# critical
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  /*
+   * positioning is based on eJuxtaCompare
+   *   JC_BEFORE: never called
+   *   JC_SAME:   scan for entry which is the same as given key
+   *   JC_AFTER:  scan for entry which the given key would be inserted after
+   */
+  
+  ASSERT(JC_SAME == eJuxtaCompare || JC_AFTER == eJuxtaCompare);
+  
+  bool bIsJuxta;
+  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  
+  Entry* pScanEntry_sl = m_pHeadEntry;
+  bool bIsEqual;
+  
+  ln nScanLevel;
+  for (nScanLevel = 2; *nScanLevel >= 0; nScanLevel--) {
+    
+    Entry* pNextEntry_sl = pNextEntry(pScanEntry_sl,*nScanLevel);
+    while (pNextEntry_sl) {
+      
+      Key* aNextKey = pNextEntry_sl->aKey();
+      
+      //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
+      //aGivenKey->vShow(pIdxColVec); vTrace("\n"_Stz);
+      
+      bIsJuxta =
+      aGivenKey->bJuxtaCompare(JC_AFTER,aNextKey,pIdxColVec,nKeyCols,bIsEqual);
+      
+      // have we found to key during a query?
+      if (bIsEqual) {
+        if (0 == nScanLevel)
+          return pNextEntry_sl;
+        else
+          break;
+      }
+      
+      // if given key is not same/after next key then break to outer loop
+      if (! bIsJuxta)
+        break;
+      
+      pScanEntry_sl = pNextEntry_sl;
+      pNextEntry_sl = pNextEntry(pNextEntry_sl,*nScanLevel);
+    }
+    //pPriorVec[*nScanLevel] = pScanEntry_sl;
+  }
+  
+  if (pScanEntry_sl == pHeadEntry())
+    pScanEntry_sl = pNextEntry(pScanEntry_sl, *nBufferNo());
+  
+  // JC_SAME : return the entry which is same as given key
+  // JC_AFTER: return the entry which the given key would be inserted after
+  return pScanEntry_sl;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1558,158 +1601,6 @@ EntryBuffer* EntryBuffer::pNewNextBuffer(void)
   vNextBuffer(pNewBuffer);
   
   return pNewBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the prior vector of given entry                                        */
-/*----------------------------------------------------------------------------*/
-/*
-Entry* EntryBuffer::pPosition(Key* aGivenKey, i8 nKeyCols,
-                              eJC eJuxtaCompare, EntryVec* pPriorVec,
-                              bool& bIsEqual, bool bIsQuery) //# critical
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  ?*
-   * positioning is based on eJuxtaCompare
-   *   JC_BEFORE: never called
-   *   JC_SAME:   scan for entry which is the same as given key
-   *   JC_AFTER:  scan for entry which the given key would be inserted after
-   *?
-  
-  ASSERT(JC_SAME == eJuxtaCompare || JC_AFTER == eJuxtaCompare);
-  
-  if (bIsQuery)
-    int iDebug = 1;
-  
-  bool bIsJuxta;
-  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  
-  // start scanning from head entry and topmost level
-  ln nScanLevel;
-  nScanLevel = gpAttachMap->m_nIndexLevels - 1;
-  
-  //aGivenKey->vShow(m_pIndex->pIdxColVec());
-  //vTrace("\n"_Stz);
-  //vShow();
-  
-  Entry* pScanEntry_sl = pHeadEntry();
-  Entry* pNextEntry_sl = nullptr;
-  //Entry* pMoreEntry_sl = nullptr;
-  
-  do {
-    
-    pNextEntry_sl = pRightEntry(pScanEntry_sl,nScanLevel);
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // inner loop: scan right a number of entries at current scan level
-    //             until we find a key that is same/after given key
-    
-    
-    while (pNextEntry_sl) {
-      
-      // get next key after scan key
-      Key* aNextKey = pNextEntry_sl->aKey();
-      
-      // trace:
-      //aGivenKey->vShow(m_pIndex->pIdxColVec());
-      //aNextKey->vShow(m_pIndex->pIdxColVec());
-      
-      // juxta-compare given key with next key at this level
-      bIsJuxta = aGivenKey->bJuxtaCompare(eJuxtaCompare,aNextKey,
-                                          pIdxColVec,nKeyCols,bIsEqual);
-      
-      //vTrace(" %s\n"_Stz,bAfter ? "after" : "before");
-      
-      // have we found to key during a query?
-      if (bIsQuery && bIsEqual) {
-        if (0 == nScanLevel)
-          return pNextEntry_sl;
-        else
-          break;
-      }
-      
-      // if given key is not same/after next key then break to outer loop
-      if (! bIsJuxta)
-        break;
-      
-      pScanEntry_sl = pNextEntry_sl;
-      pNextEntry_sl = pRightEntry(pNextEntry_sl,nScanLevel);;
-    }
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // outer loop: having gone right as far as we can, go down one level
-    //             note that aNextEntry may be null at this point
-    
-    // opt record scan entry as an insert-after revision point at this level
-    if (pPriorVec)
-      (*pPriorVec)[nScanLevel] = pScanEntry_sl;
-    
-    // now go down one level
-    nScanLevel--;
-    
-    
-    // and repeat till we have scanned down thru all levels
-  } while (*nScanLevel >= 0);
-  
-  // JC_SAME : return the entry which is same as given key
-  // JC_AFTER: return the entry which the given key would be inserted after
-  return pScanEntry_sl;
-}
-*/
-Entry* EntryBuffer::pPositionQuery(Key* aGivenKey,i8 nKeyCols, eJC eJuxtaCompare, bool& bIsEqual) //# critical
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  /*
-   * positioning is based on eJuxtaCompare
-   *   JC_BEFORE: never called
-   *   JC_SAME:   scan for entry which is the same as given key
-   *   JC_AFTER:  scan for entry which the given key would be inserted after
-   */
-  
-  ASSERT(JC_SAME == eJuxtaCompare || JC_AFTER == eJuxtaCompare);
-  
-  bool bIsJuxta;
-  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  
-  Entry* pScanEntry_sl = m_pHeadEntry;
-  
-  ln nScanLevel;
-  for (nScanLevel = 2; *nScanLevel >= 0; nScanLevel--) {
-    
-    Entry* pNextEntry_sl = pNextEntry(pScanEntry_sl,*nScanLevel);
-    while (pNextEntry_sl) {
-      
-      Key* aNextKey = pNextEntry_sl->aKey();
-      
-      //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
-      //aGivenKey->vShow(pIdxColVec); vTrace("\n"_Stz);
-      
-      bIsJuxta =
-      aGivenKey->bJuxtaCompare(JC_AFTER,aNextKey,pIdxColVec,nKeyCols,bIsEqual);
-      
-      // have we found to key during a query?
-      if (bIsEqual) {
-        if (0 == nScanLevel)
-          return pNextEntry_sl;
-        else
-          break;
-      }
-      
-      // if given key is not same/after next key then break to outer loop
-      if (! bIsJuxta)
-        break;
-      
-      pScanEntry_sl = pNextEntry_sl;
-      pNextEntry_sl = pNextEntry(pNextEntry_sl,*nScanLevel);
-    }
-    //pPriorVec[*nScanLevel] = pScanEntry_sl;
-  }
-  
-  // JC_SAME : return the entry which is same as given key
-  // JC_AFTER: return the entry which the given key would be inserted after
-  return pScanEntry_sl;
 }
 
 /*----------------------------------------------------------------------------*/

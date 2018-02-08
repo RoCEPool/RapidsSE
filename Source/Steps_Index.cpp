@@ -321,7 +321,7 @@ void Task::vIndexExactKey(MP_Task mpTask)
     // position in the index buffer at the key
     //pEntry = pPosition(pIndex, pIndexBuffer, pPlanner, i_Phrase, xKeyWrk);
     eRO eRelnOp = pPlanner->eGetFirstLowerPredicateRO(i_Phrase);
-    pEntry = pIndexBuffer->pPosition(xKeyWrk, eRelnOp);
+    pEntry = pIndexBuffer->pPositionQuery(xKeyWrk.aKey(), eRelnOp);
   }
   
   // did we get an entry ?
@@ -663,7 +663,7 @@ void Task::vIndexLowerBound(MP_Task mpTask)
   if (pEntryBuffer) {
     // position in the index buffer at the lower key
     eRO eRelnOp = pPlanner->eGetFirstLowerPredicateRO(i_Phrase);
-    pEntry = pEntryBuffer->pPosition(xKeyWrk, eRelnOp);
+    pEntry = pEntryBuffer->pPositionQuery(xKeyWrk.aKey(), eRelnOp);
   }
   
   // did we get an entry ?
@@ -818,7 +818,7 @@ void Task::vIndexPosition(MP_Task mpTask)
 
   // position at key in the entry buffer
   eRO eRelnOp = pPlanner->eGetFirstLowerPredicateRO(i_Phrase);
-  Entry* pEntry = pIndexBuffer->pPosition(xKeyWrk, eRelnOp);
+  Entry* pEntry = pIndexBuffer->pPositionQuery(xKeyWrk.aKey(), eRelnOp);
   
   mpTask->m_pDataStack->vPushObject(pEntry);
   
@@ -939,7 +939,7 @@ void Task::vIndexRange(MP_Task mpTask)
   if (pEntryBuffer) {
     // position in the index buffer at the lower key
     eRO eRelnOp = pPlanner->eGetFirstLowerPredicateRO(i_Phrase);
-    pEntry = pEntryBuffer->pPosition(xKeyWrkLower, eRelnOp);
+    pEntry = pEntryBuffer->pPositionQuery(xKeyWrkLower.aKey(), eRelnOp);
   }
   
   // did we get an entry ?

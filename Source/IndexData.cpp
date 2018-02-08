@@ -460,7 +460,7 @@ EntryBuffer* IndexData::pPositionLevel(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaC
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
   if (m_pRoot)
-    return m_pRoot->pPositionLevel(xKeyWrk, nKeyCols, eJuxtaCompare, iLevel);
+    return m_pRoot->pPositionLevel(xKeyWrk.aKey(), nKeyCols, eJuxtaCompare, iLevel);
   else
     return nullptr;
 }
@@ -764,7 +764,7 @@ bool IndexData::bInsertEntry(EntryBuffer* pHigher, KeyWrk& xKeyWrk, Id xId, i8 i
   // find index buffer which contains the entry after which the new entry will
   // be inserted into, starting with given higher
   i8 nKeyCols = pHigher->pIndex()->pIdxColVec()->nItems();
-  EntryBuffer* pEntryBuffer = pHigher->pPositionLevel(xKeyWrk,nKeyCols, JC_AFTER, iLevel);
+  EntryBuffer* pEntryBuffer = pHigher->pPositionLevel(xKeyWrk.aKey(),nKeyCols, JC_AFTER, iLevel);
   
   // check if found index buffer has enough space
   i8 nEntryBytes = Entry::nBytesRequired(xEntWrk);
@@ -779,7 +779,7 @@ bool IndexData::bInsertEntry(EntryBuffer* pHigher, KeyWrk& xKeyWrk, Id xId, i8 i
     
     // find position again
     bool bEqual;
-    pEntryBuffer = pEntryBuffer->pHigherBuffer()->pPositionLevel(xKeyWrk,nKeyCols, JC_AFTER, iLevel);
+    pEntryBuffer = pEntryBuffer->pHigherBuffer()->pPositionLevel(xKeyWrk.aKey(),nKeyCols, JC_AFTER, iLevel);
   }
   
   // assert we have a buffer
@@ -839,7 +839,7 @@ void IndexData::vFixHigherBuffer(EntryBuffer* pEntryBuffer, i8 iLevel)
   // form a KeyWrk from the key
   xKeyWrk.vAddKey(aFirstEntry->aKey(), m_pIndex->pIdxColVec());
   
-  pRoot = m_pRoot->pPositionLevel(xKeyWrk, m_pIndex->pIdxColVec()->nItems(),
+  pRoot = m_pRoot->pPositionLevel(xKeyWrk.aKey(), m_pIndex->pIdxColVec()->nItems(),
                                   JC_AFTER, iLevel);
 
   pEntryBuffer->vHigherBuffer(pRoot);

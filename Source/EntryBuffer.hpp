@@ -125,9 +125,11 @@ namespace DBobjects
     EntryBuffer*   pNewNextBuffer(void);
     Entry*         pNextEntry(Entry* pEntry, i8 nOffsetNo);
     Item*          pNextItem(Item* pItem);
-    Entry*         pPosition(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare);
-    Entry*         pPosition(KeyWrk &xKeyWrk, eRO eRelOp);
-    EntryBuffer*   pPositionLevel(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare, i8 iLevel);
+    
+    Entry*         pPositionQuery(Key* aGivenKey, eRO eRelOp);
+    Entry*         pPositionQuery(Key* aGivenKey, i8 nKeyCols, eJC eJuxtaCompare);
+    EntryBuffer*   pPositionLevel(Key* aGivenKey, i8 nKeyCols, eJC eJuxtaCompare, i8 iLevel);
+    
     void           vPriorVecHead(EntryVec& xPriorVec);
     void           vRowCount(void);
     void           vShow(void);
@@ -156,7 +158,6 @@ namespace DBobjects
     void           vHeadEntryNew(void);
     //void         vMoveLeft(void* aDst, i8 nBytes);
     //void         vMoveRight(void* aSrc, i8 nBytes);
-    Entry*         pPositionQuery(Key* aGivenKey, i8 nKeyCols, eJC eJuxtaCompare, bool& bIsEqual);
     void           vPositionPrior(Key* aFindKey, Entry** pPriorVec);
     //void         vReplaceKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
     //void         vReplaceKeyEqual(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
