@@ -38,7 +38,7 @@ namespace DBobjects
     bool  m_bIsLast;     // is this the last buffer in sequence
   
     EntryBuffer* m_pHigherBuffer; // higher level buffer that has entries
-                                     // that point to this buffer
+                                  // that point to this buffer
     EntryBuffer* m_pNextBuffer;   // next buffer
     EntryBuffer* m_pPrevBuffer;   // prev buffer
   
@@ -47,7 +47,6 @@ namespace DBobjects
     i2      m_nBufferLevel; // index buffer level
   
     i4*     m_pEntryOffset;    // array of entry offsets
-    i4      m_nFreeOffsets;    // number of free entry offsets
     i4      m_iFreeOffsetHead; // head of free entry offset chain
   
     Entry*     m_pHeadEntry;  // head entry

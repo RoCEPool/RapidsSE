@@ -74,9 +74,8 @@ EntryBuffer::EntryBuffer(void)
   m_nPartitionNo  = -1;
   m_nBufferLevel  = 0;
   
-  m_pEntryOffset   =
+  m_pEntryOffset    =
     reinterpret_cast<i4*>(aAllotSpace(sizeof(i4) * C_ENTRIES_0));
-  m_nFreeOffsets    = 0;
   m_iFreeOffsetHead = C_ENTRY_NONE;
   vFreeChains();
   
@@ -1114,8 +1113,8 @@ void EntryBuffer::vShow(void)
   vTrace("  index: %s partition: %lld level: %lld\n"_Stz,
          m_pIndex ? m_pIndex->aIndexName() : "NULL"_Stz,m_nPartitionNo,m_nBufferLevel);
   
-  vTrace("  entryOffset0: %p m_nFreeOffsets: %lld freeOffsetHead: %lld\n"_Stz,
-         m_pEntryOffset,m_nFreeOffsets,m_iFreeOffsetHead);
+  vTrace("  entryOffset: %p freeOffsetHead: %lld\n"_Stz,
+         m_pEntryOffset,m_iFreeOffsetHead);
 
   vTrace("  headEntry: %p[%lld,%lld,%lld] firstEntry: %p lastEntry: %p firstFree: %p\n"_Stz,
          m_pHeadEntry,m_pHeadEntry ? m_pHeadEntry->iNEO(0) : 0,
@@ -1429,7 +1428,6 @@ void EntryBuffer::vFreeChains(void)
   m_pEntryOffset[L_ENTRIES_0 - 1] = - C_ENTRY_NONE;
   
   m_iFreeOffsetHead = 0;
-  m_nFreeOffsets = L_ENTRIES_0;
 }
 
 /*----------------------------------------------------------------------------*/
