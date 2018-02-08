@@ -887,7 +887,7 @@ EntryBuffer* IndexData::pSplitBuffer(EntryBuffer* pEntryBuffer)
   KeyWrk xFirstKeyWrk2;
   
   // split the index buffer
-  EntryBuffer* pEntryBufferNew = pEntryBuffer->pSplitBuffer();
+  EntryBuffer* pEntryBufferNew = pEntryBuffer->pSplit();
   
   // get the next level buffer
   EntryBuffer* pHigherLevel = pEntryBuffer->pHigherBuffer();

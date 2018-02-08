@@ -109,7 +109,7 @@ namespace DBobjects
     bool           bAppendEntry(Entry* pRowEntry, Entry** ppNewEntry);
     Entry*         pAppendRow(i8 iTxId, Stz* pRow, i8 iRowLength);
     void           vBufferCount(i8& nBufferCount);
-    void           vCompactBuffer(void);
+    void           vCompact(void);
     i8             iDecile(void);
     void           vDeleteEntry(Entry* pEntry);
     void           vDump(void);
@@ -128,7 +128,7 @@ namespace DBobjects
     void           vPriorVecHead(EntryVec& xPriorVec);
     void           vRestore(void);
     void           vShow(void);
-    EntryBuffer*   pSplitBuffer(void);
+    EntryBuffer*   pSplit(void);
     void           vTruncate(void);
     bool           bVerify(void);
   

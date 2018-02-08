@@ -519,7 +519,7 @@ void EntryBuffer::vBufferCount(i8& nBuffers)
 /*----------------------------------------------------------------------------*/
 /* compact this buffer                                                        */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vCompactBuffer(void)
+void EntryBuffer::vCompact(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1237,7 +1237,7 @@ void EntryBuffer::vShow(void)
 /*----------------------------------------------------------------------------*/
 /* split this buffer into two: this original buffer plus a new buffer         */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* EntryBuffer::pSplitBuffer(void)
+EntryBuffer* EntryBuffer::pSplit(void)
 {
   //RASSERT(0);
  
@@ -1284,7 +1284,7 @@ EntryBuffer* EntryBuffer::pSplitBuffer(void)
  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compact the buffer
-  vCompactBuffer();
+  vCompact();
   
   return pNewBuffer;
 }
@@ -1707,7 +1707,7 @@ void EntryBuffer::vUnitTest(Table* pTable)
   pCurrentBuffer->vShow();
 
   pCurrentIndexBuffer->vShow();
-  EntryBuffer* pSplitIndexBuffer = pCurrentIndexBuffer->pSplitBuffer();
+  EntryBuffer* pSplitIndexBuffer = pCurrentIndexBuffer->pSplit();
   pCurrentIndexBuffer->vShow();
   pSplitIndexBuffer->vShow();
   
