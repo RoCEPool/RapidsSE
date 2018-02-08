@@ -617,7 +617,7 @@ EntryBuffer* IndexData::pAppendL0Entry(EntryBuffer* pEntryBuffer,
   ASSERT(pEntryBuffer == nullptr || pEntryBuffer->nBufferLevel() == 0);
   
   // initialize the entry wsp (generates randon number of offsets)
-  i8 iTxId = -1;                                                   //! not right
+  i8 iTxId = 0;                                                   //! not right
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // case where we append into an existing L0 entry buffer
@@ -644,12 +644,6 @@ EntryBuffer* IndexData::pAppendL0Entry(EntryBuffer* pEntryBuffer,
   
   ASSERT(! m_pRoot);
   
-  // create very first L1 buffer and set it as root
-//  EntryBuffer* pHigherLevel = new EntryBuffer;
-//  pHigherLevel->vIndex(m_pIndex);
-//  pHigherLevel->vPartitionNo(m_nPartitionNo);
-//  m_pRoot = pHigherLevel;
-
   // create very first L0 buffer and set its higher level buffer
   pEntryBuffer = new EntryBuffer;
   pEntryBuffer->vIndex(m_pIndex);
@@ -657,14 +651,9 @@ EntryBuffer* IndexData::pAppendL0Entry(EntryBuffer* pEntryBuffer,
   
   m_pRoot = pEntryBuffer;
   
-  //pEntryBuffer->vHigherBuffer(pHigherLevel);
-  
-  
   // append entry into first L0 buffer
   Entry* pEntry = pEntryBuffer->pInsertKey(iTxId, xKeyWrk.aKey(), xKeyWrk.nKeySize());
-  
-  // insert the first entry of L0 entry buffer into L1 higher level buffer
-  //vInsertFirstEntry(pHigherLevel,pEntryBuffer);
+  ASSERT(pEntry);
   
   return pEntryBuffer;
 }
