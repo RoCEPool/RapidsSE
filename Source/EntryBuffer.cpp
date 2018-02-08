@@ -770,6 +770,10 @@ void EntryBuffer::vDeleteEntry(Entry* pEntry)
   }
   
   m_pFirstFree = pFreeEntry;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // decement the number of items in buffer
+  vDecItems();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1261,6 +1265,44 @@ void EntryBuffer::vShow(void)
 EntryBuffer* EntryBuffer::pSplitBuffer(void)
 {
   RASSERT(0);
+ 
+  EntryBuffer* pNewBuffer = pNewNextBuffer();
+ 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // find split entry
+  i8 iSplitAtEntry = m_nItems/2;
+  Entry* pSplitEntry = pGetEntrySplit(iSplitAtEntry);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the prior vector to the split entry being
+  KeyWrk xKeyWrk;
+  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  pSplitEntry->vExtractIndexKey(xKeyWrk,pIdxColVec);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // move entries to new buffer
+  
+  Entry* pMoveEntry = pSplitEntry;
+  
+  while (pMoveEntry) {
+    Entry* pNextEntry = this->pNextEntry(pMoveEntry,0);
+    
+    i8 iTxId = pMoveEntry->iTxId();
+    Key* aKey = pMoveEntry->aKey();
+    i8 nKeySize = pMoveEntry->nKeySize(pIdxColVec);
+    
+    Entry* pNewEntry = pNewBuffer->pInsertKey(iTxId,aKey,nKeySize);
+    
+    vDeleteEntry(pMoveEntry);
+    
+    pMoveEntry = pNextEntry;
+  }
+ 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compact the buffer
+  vCompactBuffer();
+  
+  return pNewBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1744,20 +1786,27 @@ void DBobjects::vEntryBuffer_UnitTest(Table* pTable)
   pCurrentBuffer->vShow();
   
   // delete some entries
+  Entry* pEntry;
   pCurrentIndexBuffer->vShow();
-  Entry* pEntry = xKeyEntries[0];
+  
+  pEntry = xKeyEntries[0];
   pCurrentIndexBuffer->vDeleteEntry(pEntry);
   pCurrentIndexBuffer->vShow();
 
-  pCurrentIndexBuffer->vCompactBuffer();
-
-//  pEntry = xKeyEntries[2];
+//  pEntry = xKeyEntries[1];
 //  pCurrentIndexBuffer->vDeleteEntry(pEntry);
 //  pCurrentIndexBuffer->vShow();
-//  
+  
+  pEntry = xKeyEntries[2];
+  pCurrentIndexBuffer->vDeleteEntry(pEntry);
+  pCurrentIndexBuffer->vShow();
+  
 //  pEntry = xKeyEntries[4];
 //  pCurrentIndexBuffer->vDeleteEntry(pEntry);
 //  pCurrentIndexBuffer->vShow();
+
+  pCurrentIndexBuffer->vCompactBuffer();
+  pCurrentIndexBuffer->vShow();
 }
 
 /*============================================================================*/
