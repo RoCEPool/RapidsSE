@@ -115,7 +115,6 @@ namespace DBobjects
     i8             iDecile(void);
     void           vDeleteEntry(Entry* pEntry);
     void           vDump(void);
-    Item*          pFirstItem(void);
     Entry*         pGetEntryNo(i8 iEntryNo);
     bool           bHasSpace(i8 nBytes);
     bool           bInsert(EntWrk& xEntWrk);
@@ -123,8 +122,7 @@ namespace DBobjects
     bool           bInsertRow(Entry* pOldRow, Entry** ppRow);
     EntryBuffer*   pNewNextBuffer(void);
     Entry*         pNextEntry(Entry* pEntry, i8 nOffsetNo);
-    Item*          pNextItem(Item* pItem);
-    
+  
     Entry*         pPositionQuery(Key* aGivenKey, eRO eRelOp);
     Entry*         pPositionQuery(Key* aGivenKey, i8 nKeyCols, eJC eJuxtaCompare);
     EntryBuffer*   pPositionLevel(Key* aGivenKey, i8 nKeyCols, eJC eJuxtaCompare, i8 iLevel);
@@ -146,6 +144,7 @@ namespace DBobjects
     //i8           iCopyEntries(EntryBuffer_v3* pFromBuffer, Entry* aFromEntry);
     void           vDumpPriorVec(Entry* pPriorVec[]);
     void           vFirstEntryRestore(void);
+    Item*          pFirstItem(void);
     //void         vFixHigherLevel(Entry* aNewEntry);
     //void         vFixPriorOffset(EntryVec* pPriorVec, Entry* aNewEntry);
     void           vFreeChains(void);
@@ -154,6 +153,7 @@ namespace DBobjects
     i4             iGetFreeEntry(void);
     void           vHeadEntryNew(void);
     void           vHeadEntryRestore(void);
+    Item*          pNextItem(Item* pItem);
     void           vPositionPrior(Key* aFindKey, Entry** pPriorVec);
     //void         vReplaceKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
     //void         vReplaceKeyEqual(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);

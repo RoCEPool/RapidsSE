@@ -771,18 +771,6 @@ void EntryBuffer::vDump(void)                            //ALKA - LEVEL 1 ??
 }
 
 /*----------------------------------------------------------------------------*/
-/* get first item after head (could be entry, free entry or wilderness)       */
-/*----------------------------------------------------------------------------*/
-Item* EntryBuffer::pFirstItem(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  Item* pFirstItem = pNextItem(m_pHeadEntry);
-  
-  return pFirstItem;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get an entry by number                                                     */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pGetEntryNo(i8 iEntryNo)
@@ -945,41 +933,6 @@ Entry* EntryBuffer::pNextEntry(Entry* pCurrent, i8 nOffsetNo)
   Entry* pEntry = reinterpret_cast<Entry*>(aAddress);
 
   return pEntry;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get next item in buffer (could be entry, free entry, wilderness)           */
-/*----------------------------------------------------------------------------*/
-Item* EntryBuffer::pNextItem(Item* pCurrent)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-
-  Item* pItemNext = nullptr;
-  
-  eCN eClass = pCurrent->eClass();
-  
-  switch (eClass) {
-    case CN_ENTRY: {
-      Entry* pEntryCurr = static_cast<Entry*>(pCurrent);
-      pItemNext = reinterpret_cast<Item*>(pEntryCurr->aAddressAfter());
-      break;
-    }
-      
-    case CN_FREEENTRY: {
-      FreeEntry* pFreeEntryCurr = static_cast<FreeEntry*>(pCurrent);
-      pItemNext = reinterpret_cast<Item*>(pFreeEntryCurr->aAddressAfter());
-      break;
-    }
-      
-    case CN_WILDERNESS:
-      break;
-      
-    default:
-      //ASSERT(0);
-      break;
-  }
-  
-  return pItemNext;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1449,6 +1402,18 @@ void EntryBuffer::vFirstEntryRestore(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get first item after head (could be entry, free entry or wilderness)       */
+/*----------------------------------------------------------------------------*/
+Item* EntryBuffer::pFirstItem(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  Item* pFirstItem = pNextItem(m_pHeadEntry);
+  
+  return pFirstItem;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set up the initial offset free chains                                      */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vFreeChains(void)
@@ -1580,6 +1545,41 @@ EntryBuffer* EntryBuffer::pNewNextBuffer(void)
   vNextBuffer(pNewBuffer);
   
   return pNewBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next item in buffer (could be entry, free entry, wilderness)           */
+/*----------------------------------------------------------------------------*/
+Item* EntryBuffer::pNextItem(Item* pCurrent)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  Item* pItemNext = nullptr;
+  
+  eCN eClass = pCurrent->eClass();
+  
+  switch (eClass) {
+    case CN_ENTRY: {
+      Entry* pEntryCurr = static_cast<Entry*>(pCurrent);
+      pItemNext = reinterpret_cast<Item*>(pEntryCurr->aAddressAfter());
+      break;
+    }
+      
+    case CN_FREEENTRY: {
+      FreeEntry* pFreeEntryCurr = static_cast<FreeEntry*>(pCurrent);
+      pItemNext = reinterpret_cast<Item*>(pFreeEntryCurr->aAddressAfter());
+      break;
+    }
+      
+    case CN_WILDERNESS:
+      break;
+      
+    default:
+      //ASSERT(0);
+      break;
+  }
+  
+  return pItemNext;
 }
 
 /*----------------------------------------------------------------------------*/
