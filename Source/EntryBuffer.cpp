@@ -74,7 +74,7 @@ EntryBuffer::EntryBuffer(void)
   m_nPartitionNo  = -1;
   m_nBufferLevel  = 0;
   
-  m_pEntryOffset0   =
+  m_pEntryOffset   =
     reinterpret_cast<i4*>(aAllotSpace(sizeof(i4) * C_ENTRIES_0));
   m_nFreeOffsets    = 0;
   m_iFreeOffsetHead = C_ENTRY_NONE;
@@ -448,7 +448,7 @@ Entry* EntryBuffer::pAppendRow(i8 iTxId, Stz* aRow, i8 iRowLength)
   // set entry offsets
   
   i8 iEntryOffset = iToOffset(pRowEntry);
-  m_pEntryOffset0[nRowNo] = iEntryOffset;
+  m_pEntryOffset[nRowNo] = iEntryOffset;
   
   NEO* aNEO = aAllotNEO(nOffsetBytes);
   if (m_pLastEntry)
@@ -748,7 +748,7 @@ Entry* EntryBuffer::pGetEntryNo(i8 iEntryNo)
   if (iEntryNo == C_ENTRY_NONE)
     return nullptr;
   
-  i4 iOffset = m_pEntryOffset0[iEntryNo];
+  i4 iOffset = m_pEntryOffset[iEntryNo];
   char* aAddress = pAdd<char*>(aDataArea(), iOffset);
   
   Entry* pEntry = reinterpret_cast<Entry*>(aAddress);
@@ -1115,7 +1115,7 @@ void EntryBuffer::vShow(void)
          m_pIndex ? m_pIndex->aIndexName() : "NULL"_Stz,m_nPartitionNo,m_nBufferLevel);
   
   vTrace("  entryOffset0: %p m_nFreeOffsets: %lld freeOffsetHead: %lld\n"_Stz,
-         m_pEntryOffset0,m_nFreeOffsets,m_iFreeOffsetHead);
+         m_pEntryOffset,m_nFreeOffsets,m_iFreeOffsetHead);
 
   vTrace("  headEntry: %p[%lld,%lld,%lld] firstEntry: %p lastEntry: %p firstFree: %p\n"_Stz,
          m_pHeadEntry,m_pHeadEntry ? m_pHeadEntry->iNEO(0) : 0,
@@ -1143,7 +1143,7 @@ void EntryBuffer::vShow(void)
     vTrace("Entries (by EntryOffset array):\n"_Stz);
     for (i8 i_Entry = 0; i_Entry != C_ENTRIES_0; i_Entry++) {
 
-      if (m_pEntryOffset0[i_Entry] <= 0)
+      if (m_pEntryOffset[i_Entry] <= 0)
         continue;
 
       Entry* pEntry = pGetEntryNo(i_Entry);
@@ -1171,9 +1171,9 @@ void EntryBuffer::vShow(void)
     vTrace("Free Entry Chain:\n"_Stz);
     for (i4 i_Entry = m_iFreeOffsetHead;
          i_Entry != C_ENTRY_NONE;
-         i_Entry = - m_pEntryOffset0[i_Entry]) {
+         i_Entry = - m_pEntryOffset[i_Entry]) {
       vTrace("  %lld: %lld\n"_Stz,
-             i_Entry,m_pEntryOffset0[i_Entry]);
+             i_Entry,m_pEntryOffset[i_Entry]);
     }
   }
   
@@ -1425,8 +1425,8 @@ void EntryBuffer::vFreeChains(void)
   
   // L0 free chain
   for (i4 i_Entry = 0; i_Entry < (L_ENTRIES_0 - 1); i_Entry++)
-    m_pEntryOffset0[i_Entry] = - (i_Entry+1);
-  m_pEntryOffset0[L_ENTRIES_0 - 1] = - C_ENTRY_NONE;
+    m_pEntryOffset[i_Entry] = - (i_Entry+1);
+  m_pEntryOffset[L_ENTRIES_0 - 1] = - C_ENTRY_NONE;
   
   m_iFreeOffsetHead = 0;
   m_nFreeOffsets = L_ENTRIES_0;
@@ -1477,7 +1477,7 @@ i4 EntryBuffer::iGetFreeEntry(void)
   
   i4 iFreeEntry = m_iFreeOffsetHead;
   
-  m_iFreeOffsetHead = - m_pEntryOffset0[iFreeEntry];
+  m_iFreeOffsetHead = - m_pEntryOffset[iFreeEntry];
   
   return iFreeEntry;
 }

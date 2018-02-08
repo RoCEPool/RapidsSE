@@ -46,7 +46,7 @@ namespace DBobjects
     i2      m_nPartitionNo; // partition no this buffer belongs to
     i2      m_nBufferLevel; // index buffer level
   
-    i4*     m_pEntryOffset0;   // array of entry offset 0
+    i4*     m_pEntryOffset;    // array of entry offsets
     i4      m_nFreeOffsets;    // number of free entry offsets
     i4      m_iFreeOffsetHead; // head of free entry offset chain
   
