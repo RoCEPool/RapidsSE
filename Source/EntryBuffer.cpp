@@ -1209,6 +1209,44 @@ void EntryBuffer::vShow(void)
 EntryBuffer* EntryBuffer::pSplitBuffer(void)
 {
   RASSERT(0);
+ 
+  EntryBuffer* pNewBuffer = pNewNextBuffer();
+ 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // find split entry
+  i8 iSplitAtEntry = m_nItems/2;
+  Entry* pSplitEntry = pGetEntrySplit(iSplitAtEntry);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the prior vector to the split entry being
+  KeyWrk xKeyWrk;
+  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  pSplitEntry->vExtractIndexKey(xKeyWrk,pIdxColVec);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // move entries to new buffer
+  
+  Entry* pMoveEntry = pSplitEntry;
+  
+  while (pMoveEntry) {
+    Entry* pNextEntry = this->pNextEntry(pMoveEntry,0);
+    
+    i8 iTxId = pMoveEntry->iTxId();
+    Key* aKey = pMoveEntry->aKey();
+    i8 nKeySize = pMoveEntry->nKeySize(pIdxColVec);
+    
+    Entry* pNewEntry = pNewBuffer->pInsertKey(iTxId,aKey,nKeySize);
+    
+    vDeleteEntry(pMoveEntry);
+    
+    pMoveEntry = pNextEntry;
+  }
+ 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compact the buffer
+  vCompactBuffer();
+  
+  return pNewBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
