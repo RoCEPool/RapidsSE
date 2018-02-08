@@ -195,7 +195,7 @@ EntryBuffer* EntryBuffer::pHigherBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the higher level index                                           */
+/* set the higher level index                                                 */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vHigherBuffer(EntryBuffer* pHigherBuffer)
 {
@@ -416,8 +416,6 @@ void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iE
     
     return;
   }
-  
-  RASSERT(0);
   
   iBuffers++;
   iEntries += m_nItems;
