@@ -259,6 +259,8 @@ Entry* EntryBuffer::pFirstEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+  //ASSERT(pNextEntry(m_pHeadEntry,0) == m_pFirstEntry);
+  
   return m_pFirstEntry;
 }
 
@@ -872,8 +874,11 @@ Entry* EntryBuffer::pInsertKey(i8 iTxId, Key* aKey, i8 iKeyLength)
     xPriorVec[iNextOffset]->vNEO(iNextOffset,iKeyEntryOffset);
   }
   
-  if (! m_pFirstEntry)
+  if (! m_pFirstEntry) {
+    //ASSERT(-1 == m_pHeadEntry->iNEO(0));
+    //m_pHeadEntry->vNEO(0,iKeyEntryOffset);
     m_pFirstEntry = pKeyEntry;
+  }
   
   return pKeyEntry;
 }

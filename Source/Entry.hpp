@@ -85,9 +85,10 @@ namespace DBobjects
     NEO* aNEO(void);
     i4   iNEO(i8 i_Offset);
     void vNEO(i8 i_Offset, i4 iNEO);
+    void vNEOdump(void);
+    i8   iNEOsize(void);
   
     char* aAddressAfter(void);
-    i8   iNEOsize(void);
 
     Footer* aFooter(void);
   

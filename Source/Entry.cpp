@@ -895,6 +895,23 @@ void Entry::vNEO(i8 iOffset, i4 iNEO)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump the NEO after this entry                                              */
+/*----------------------------------------------------------------------------*/
+void Entry::vNEOdump(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+
+  NEO* aNEO = this->aNEO();
+  vTrace("Entry %p offsets: %lld NEO: %p"_Stz,
+         this,m_nOffsets,aNEO);
+  
+  for (i8 i_Offset = 0; i_Offset < m_nOffsets; i_Offset++)
+    vTrace(" %lld: %lld"_Stz,i_Offset,aNEO->m_iOffset[i_Offset]);
+  
+  vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get size of the NEO after this entry                                       */
 /*----------------------------------------------------------------------------*/
 i8 Entry::iNEOsize(void)
