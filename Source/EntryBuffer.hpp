@@ -133,6 +133,9 @@ namespace DBobjects
     void           vTruncate(void);
     bool           bVerify(void);
   
+    
+    Entry*         pGetEntryNo(i8 iEntryNo);
+    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     private:
     
@@ -144,16 +147,14 @@ namespace DBobjects
     //void         vFixHigherLevel(Entry* aNewEntry);
     //void         vFixPriorOffset(EntryVec* pPriorVec, Entry* aNewEntry);
     void           vFreeChains(void);
-    Entry*         pGetEntryNo(i8 iEntryNo);
+    //Entry*         pGetEntryNo(i8 iEntryNo);
     Entry*         pGetEntryOffset(i8 iOffset);
     Entry*         pGetEntrySplit(i8 iSplitEntryNo);
     i4             iGetFreeEntry(void);
     void           vHeadEntry(void);
     //void         vMoveLeft(void* aDst, i8 nBytes);
     //void         vMoveRight(void* aSrc, i8 nBytes);
-    //Entry*       pPosition(Key* aGivenKey, i8 nKeyCols,
-    //                       eJC eJuxtaCompare, EntryVec* pPriorVec,
-    //                       bool& bIsEqual, bool bIsQuery);
+    Entry*         pPositionQuery(Key* aGivenKey, i8 nKeyCols, eJC eJuxtaCompare, bool& bIsEqual);
     void           vPositionPrior(Key* aFindKey, Entry** pPriorVec);
     //void         vReplaceKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
     //void         vReplaceKeyEqual(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
