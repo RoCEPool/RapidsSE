@@ -19,56 +19,57 @@ print "loading j10.tbl..." ;
 ld j10 "../JTEST/j10.csv" ;
 dumpidx j10 idx1;
 
-//fetch j10 "j10_key 3 >=";
-//fetch j10 "j10_key 3 ==";
+print "-----------------------------";
+print "j10_key >= 3";
+fetch j10 "j10_key 3 >=";
+
+print "-----------------------------";
+print "j10_key == 3";
+fetch j10 "j10_key 3 ==";
+
+print "-----------------------------";
+print "j10_key <= 3";
 fetch j10 "j10_key 3 <=";
 
-//dex j10 "/tmp/j10.csv";
+print "-----------------------------";
+print "j10_key >= 3 AND j10_key <= 7";
+fetch j10 "j10_key 3 >= j10_key 7 <= and ";
 
-//escape connector se 'load vch /Users/alkayamarti/rapidsse/rapidsSE/JTEST/vch_defaults.csv ' with node='NODE1' ;
-//escape connector se 'load vch /Users/alkayamarti/rapidsse/rapidsSE/JTEST/vch_delimiter.csv delimiter | ' with node='NODE1' ;
-//escape connector se 'load vch /Users/alkayamarti/rapidsse/rapidsSE/JTEST/vch_no_enclosed.csv enclosed_by none ' with node='NODE1' ;
-//escape connector se 'load vch /Users/alkayamarti/rapidsse/rapidsSE/JTEST/vch_no_enclosed_no_escape.csv escape_char none enclosed_by none ' with node='NODE1' ;
-//escape connector se 'load vch /Users/alkayamarti/rapidsse/rapidsSE/JTEST/vch_no_escape.csv escape_char none' with node='NODE1' ;
-//escape connector se 'load vch /Users/alkayamarti/rapidsse/rapidsSE/JTEST/vch_term_defaults.csv terminator ; ' with node='NODE1' ;
-//escape connector se 'load vch /Users/alkayamarti/rapidsse/rapidsSE/JTEST/vch_term_no_enclosed.csv terminator ; enclosed_by none ' with node='NODE1' ;
-//escape connector se 'load vch /Users/alkayamarti/rapidsse/rapidsSE/JTEST/vch_term_no_escape.csv terminator ; escape_char none ' with node='NODE1' ;
+print "-----------------------------";
+print "j10_key == 2 OR j10_key == 3 OR j10_key == 4";
+fetch j10 "j10_key 2 = j10_key 3 = OR j10_key 4 = OR";
 
-//escape connector se 'load vch /Users/alkayamarti/rapidsse/rapidsSE/JTEST/vch_term_no_enclosed_no_escape.csv terminator ; escape_char none enclosed_by none' with node='NODE1' ;
-
-
-//fetch j10 "j10_key 2 = j10_key 3 = OR j10_key 4 = OR";
-//escape connector se 'load vch3 /tmp/vch.csv escape_char \\ terminator none  enclosed_by \'  delimiter , ' with node='NODE1' ;
-
-/*
-fetch j10 "j10_name '\\' =";
-dumpidx j10 idx1;
-
+print "-----------------------------";
+print "j10_key == 6";
 fetch j10 "j10_key 6 ==";
 
+print "-----------------------------";
+print "j10_key >= 6";
 fetch j10 "j10_key 6 >=";
 
+print "-----------------------------";
+print "j10_key > 6";
 fetch j10 "j10_key 6 >";
 
+print "-----------------------------";
+print "j10_key <= 6";
 fetch j10 "j10_key 6 <=";
 
+print "-----------------------------";
+print "j10_key < 6";
 fetch j10 "j10_key 6 <";
 
-
-fetch j10 "j10_key 6 ==";
-
+/*
 create index idx2 on j10 (j10_name);
 fetch j10 "j10_name 'f' >=";
 
 fetch j10 "j10_key 6 == j10_name 'six' == and";
 fetch j10 "j10_key 6 == j10_name 'seven' == and";
-*/
 
-//fetch j10 "J10_KEY 6 == J10_KEY 7 == OR";
+fetch j10 "J10_KEY 6 == J10_KEY 7 == OR";
 
-
-
-//fetch j10 "J10_KEY 6 == J10_KEY 7 == and";
+fetch j10 "J10_KEY 6 == J10_KEY 7 == and";
+ */
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

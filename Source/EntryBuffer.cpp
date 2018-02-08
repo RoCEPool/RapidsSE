@@ -1097,8 +1097,8 @@ void EntryBuffer::vPositionPrior(Key* aFindKey, Entry* pPriorVec[])
     
       Key* aNextKey = pNextEntry_sl->aKey();
       
-      aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
-      aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
+      //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
+      //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       
       bIsJuxta =
         aNextKey->bJuxtaCompare(JC_AFTER,aFindKey,pIdxColVec,nKeyCols,bIsEqual);
@@ -1685,8 +1685,8 @@ Entry* EntryBuffer::pPositionQuery(Key* aGivenKey,i8 nKeyCols, eJC eJuxtaCompare
       
       Key* aNextKey = pNextEntry_sl->aKey();
       
-      aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
-      aGivenKey->vShow(pIdxColVec); vTrace("\n"_Stz);
+      //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
+      //aGivenKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       
       bIsJuxta =
       aGivenKey->bJuxtaCompare(JC_AFTER,aNextKey,pIdxColVec,nKeyCols,bIsEqual);
