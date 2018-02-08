@@ -435,9 +435,11 @@ bool IndexData::bInsertEntry(Entry* pRow)
   
   //xKeyWrk.vShow();
   
-  if ( ! m_pRoot )
-    m_pRoot = new EntryBuffer(m_pIndex, 0, m_nPartitionNo);
-  
+  if ( ! m_pRoot ) {
+    m_pRoot = new EntryBuffer;
+    m_pRoot->vIndex(m_pIndex);
+    m_pRoot->vPartitionNo(m_nPartitionNo);
+  }
   bool bInserted = bInsertEntry(m_pRoot, xKeyWrk, pRow->xId(), 0);
   
   m_zLock.vDropWrite();
@@ -758,6 +760,31 @@ bool IndexData::bInsertEntry(EntryBuffer* pHigher, KeyWrk& xKeyWrk, Id xId, i8 i
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
   // initialize the entry wsp
+  i8 iTxId = 0;                                                   //! not right
+  
+  // find index buffer which contains the entry after which the new entry will
+  // be inserted into, starting with given higher
+  i8 nKeyCols = pHigher->pIndex()->pIdxColVec()->nItems();
+  EntryBuffer* pEntryBuffer = pHigher->pPositionLevel(xKeyWrk.aKey(),nKeyCols, JC_AFTER, iLevel);
+  
+  // assert we have a buffer
+  ASSERT(pEntryBuffer);
+  
+  // insert entry into index buffer
+  Entry* pEntry = pEntryBuffer->pInsertKey(iTxId, xKeyWrk.aKey(), xKeyWrk.nKeySize());
+  if ( ! pEntry ) {
+    // no space
+    return false;
+  }
+  
+  return true;
+}
+/*
+bool IndexData::bInsertEntry(EntryBuffer* pHigher, KeyWrk& xKeyWrk, Id xId, i8 iLevel)
+{ //# indexTuning
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  
+  // initialize the entry wsp
   i8 iTxId = -1;                                                   //! not right
   EntWrk xEntWrk(xId,iTxId,xKeyWrk);
   
@@ -787,13 +814,14 @@ bool IndexData::bInsertEntry(EntryBuffer* pHigher, KeyWrk& xKeyWrk, Id xId, i8 i
   
   // insert entry into index buffer
   bool bInserted = pEntryBuffer->bInsert(xEntWrk);
+  
   //pEntry->vShow(0, m_pIndex);
   
   //pEntryBuffer->vShow();
   
   return bInserted;
 }
-
+*/
 /*----------------------------------------------------------------------------*/
 /* add first entry of fromBuffer into the toBuffer                            */
 /*----------------------------------------------------------------------------*/
