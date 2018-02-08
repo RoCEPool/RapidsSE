@@ -73,8 +73,8 @@ namespace DBobjects
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // simple member functions
   
-    eBD  eDurability(void);
-    void vDurability(eBD eDurability);
+    eBD          eDurability(void);
+    void         vDurability(eBD eDurability);
   
     void         vIsLast(bool bIsLast);
     bool         bIsLast(void);

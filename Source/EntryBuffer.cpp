@@ -134,24 +134,6 @@ void EntryBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get decile full of the buffer                                              */
-/*----------------------------------------------------------------------------*/
-i8 EntryBuffer::iDecile(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  i8 iDecile;
-  
-  if (gpAttachMap->m_nIndexEntries == 0)
-    iDecile = IntLib::iDecile(m_xWsp.nUsed(), C_SIZE_POOL_BUFFER);
-  else
-    iDecile = IntLib::iDecile(m_nItems, gpAttachMap->m_nIndexEntries);
-  
-  
-  return iDecile;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get durability                                                             */
 /*----------------------------------------------------------------------------*/
 eBD EntryBuffer::eDurability(void)
@@ -302,14 +284,6 @@ Entry* EntryBuffer::pHeadEntry(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert new entry into this index buffer                                    */
-/*----------------------------------------------------------------------------*/
-bool EntryBuffer::bInsert(EntWrk& xEntWrk)                        //# critical
-{
-  RASSERT(0);
-}
-
-/*----------------------------------------------------------------------------*/
 /* set the index of the index buffer                                          */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vIndex(Index* pIndex)
@@ -357,10 +331,6 @@ i8 EntryBuffer::nPartitionNo(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add given entry to free list                                               */
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
 /* allot an entry in this buffer                                              */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pAllotEntry(i8 nBytes)
@@ -392,9 +362,6 @@ NEO* EntryBuffer::aAllotNEO(i8 nBytes)
   return aNEO;
 }
 
-/*----------------------------------------------------------------------------*/
-/* analyze this buffer                                                        */
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /* analyze this buffer                                                        */
 /*----------------------------------------------------------------------------*/
@@ -538,9 +505,9 @@ void EntryBuffer::vBufferCount(i8& nBuffers)
 {
   EntryBuffer* pNextBuffer = nullptr;
   
-  
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // hidden index ?
+  
   if (m_pIndex->bIsHidden()) {
     ASSERT(m_nBufferLevel == 0);
     pNextBuffer = this->pNextBuffer();
@@ -557,7 +524,7 @@ void EntryBuffer::vBufferCount(i8& nBuffers)
     return;
   }
   
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // other index
   
   // count this buffer
@@ -706,33 +673,19 @@ void EntryBuffer::vCompactBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* get decile full of the buffer                                              */
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* dump                                                                       */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vDump(void)                            //ALKA - LEVEL 1 ??
+i8 EntryBuffer::iDecile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  // show this buffer
-  vShow();
+  i8 iDecile;
   
-  // recursively dump the lower level buffers
-  if (m_nBufferLevel != 0) {
-    
-    for (Entry* pEntry = pFirstEntry();
-         pEntry != nullptr;
-         pEntry = pNextEntry(pEntry, 0)) {
-      
-      // get the index buffer from the entry
-      EntryBuffer* pEntryBuffer = pEntry->pEntryBuffer();
-      
-      ASSERT(pEntryBuffer);
-      ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
-      
-      pEntryBuffer->vDump();
-    }
-  }
+  if (gpAttachMap->m_nIndexEntries == 0)
+    iDecile = IntLib::iDecile(m_xWsp.nUsed(), C_SIZE_POOL_BUFFER);
+  else
+    iDecile = IntLib::iDecile(m_nItems, gpAttachMap->m_nIndexEntries);
+  
+  
+  return iDecile;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -790,6 +743,34 @@ void EntryBuffer::vDeleteEntry(Entry* pEntry)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump                                                                       */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vDump(void)                            //ALKA - LEVEL 1 ??
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  // show this buffer
+  vShow();
+  
+  // recursively dump the lower level buffers
+  if (m_nBufferLevel != 0) {
+    
+    for (Entry* pEntry = pFirstEntry();
+         pEntry != nullptr;
+         pEntry = pNextEntry(pEntry, 0)) {
+      
+      // get the index buffer from the entry
+      EntryBuffer* pEntryBuffer = pEntry->pEntryBuffer();
+      
+      ASSERT(pEntryBuffer);
+      ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
+      
+      pEntryBuffer->vDump();
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* restore the first entry                                                    */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vFirstEntryRestore(void)
@@ -810,10 +791,6 @@ Item* EntryBuffer::pFirstItem(void)
   
   return pFirstItem;
 }
-
-/*----------------------------------------------------------------------------*/
-/* set up the initial offset free chains                                      */
-/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* does buffer have space for nBytes ?                                        */
@@ -838,7 +815,6 @@ bool EntryBuffer::bHasSpace(i8 nBytes)
     else
       return true;
   }
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -849,6 +825,14 @@ void EntryBuffer::vHeadEntryRestore(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   m_pHeadEntry = pAdd<Entry *>(aDataArea(),sizeof(i4) * C_ENTRIES_0);
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert new entry into this index buffer                                    */
+/*----------------------------------------------------------------------------*/
+bool EntryBuffer::bInsert(EntWrk& xEntWrk)                        //# critical
+{
+  RASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1174,10 +1158,6 @@ void EntryBuffer::vPriorVecHead(EntryVec& xPriorVec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove entry from entry offset arrays                                      */
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
 /* set row count                                                              */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vRowCount(void)
@@ -1452,10 +1432,6 @@ bool EntryBuffer::bVerify(void) {
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* copy entries from fromBuffer starting at fromEntry to this buffer          */
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
 /* dump the given prior vector                                                */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vDumpPriorVec(Entry* pPriorVec[])
@@ -1467,10 +1443,6 @@ void EntryBuffer::vDumpPriorVec(Entry* pPriorVec[])
     vTrace("  0:%p 1:%p 2:%p\n"_Stz,
            pPriorVec[0],pPriorVec[1],pPriorVec[2]);
 }
-
-/*----------------------------------------------------------------------------*/
-/* fix the higher level buffers                                               */
-/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* set up the initial offset free chains                                      */
@@ -1613,14 +1585,6 @@ EntryBuffer* EntryBuffer::pNewNextBuffer(void)
   
   return pNewBuffer;
 }
-
-/*----------------------------------------------------------------------------*/
-/* replace old key with new key in the index buffer                           */
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get right entry at given level (returns null if no right)                  */
-/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
