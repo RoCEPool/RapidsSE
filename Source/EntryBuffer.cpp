@@ -331,38 +331,6 @@ i8 EntryBuffer::nPartitionNo(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* allot an entry in this buffer                                              */
-/*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pAllotEntry(i8 nBytes)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  Entry* pEntry = reinterpret_cast<Entry*>(pAllotItem(nBytes));
-  if ( ! pEntry )
-    return nullptr;
-  
-  new(pEntry) Entry(CN_ENTRY,nBytes,0);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  return pEntry;
-}
-
-/*----------------------------------------------------------------------------*/
-/* allot an offset array in this buffer                                       */
-/*----------------------------------------------------------------------------*/
-NEO* EntryBuffer::aAllotNEO(i8 nBytes)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  NEO* aNEO = reinterpret_cast<NEO*>(aAllotSpace(nBytes));
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  return aNEO;
-}
-
-/*----------------------------------------------------------------------------*/
 /* analyze this buffer                                                        */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries) {
@@ -1377,6 +1345,38 @@ bool EntryBuffer::bVerify(void) {
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* allot an entry in this buffer                                              */
+/*----------------------------------------------------------------------------*/
+Entry* EntryBuffer::pAllotEntry(i8 nBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  Entry* pEntry = reinterpret_cast<Entry*>(pAllotItem(nBytes));
+  if ( ! pEntry )
+    return nullptr;
+  
+  new(pEntry) Entry(CN_ENTRY,nBytes,0);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  return pEntry;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot an offset array in this buffer                                       */
+/*----------------------------------------------------------------------------*/
+NEO* EntryBuffer::aAllotNEO(i8 nBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  NEO* aNEO = reinterpret_cast<NEO*>(aAllotSpace(nBytes));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  return aNEO;
+}
 
 /*----------------------------------------------------------------------------*/
 /* dump the given prior vector                                                */

@@ -104,8 +104,6 @@ namespace DBobjects
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // complex functions
   
-    Entry*         pAllotEntry(i8 nBytes);
-    NEO*           aAllotNEO(i8 nBytes);
     void           vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries);
     Entry*         pAppendEntry(EntWrk& xEntWrk,EntryVec& xPriorVec);
     bool           bAppendEntry(Entry* pRowEntry, Entry** ppNewEntry);
@@ -141,6 +139,8 @@ namespace DBobjects
     //void         vAdjustOffsets(Entry* pEntry, i8 nAdjustAmount);
     //Entry*       pAllotEntryAfter(i8 nBytes, i8 nLevels, Entry* aAfterEntry);
     //void         vAllotHeadEntry(void);
+    Entry*         pAllotEntry(i8 nBytes);
+    NEO*           aAllotNEO(i8 nBytes);
     //i8           iCopyEntries(EntryBuffer_v3* pFromBuffer, Entry* aFromEntry);
     void           vDumpPriorVec(Entry* pPriorVec[]);
     void           vFirstEntryRestore(void);
