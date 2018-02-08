@@ -1266,6 +1266,8 @@ EntryBuffer* EntryBuffer::pSplitBuffer(void)
 {
   //RASSERT(0);
  
+  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  
   EntryBuffer* pNewBuffer = pNewNextBuffer();
  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1275,9 +1277,8 @@ EntryBuffer* EntryBuffer::pSplitBuffer(void)
   Entry* pSplitEntry = pGetEntrySplit(iSplitAtEntry);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the prior vector to the split entry being
+  // get the prior vector to the split entry
   
-  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   Key* aKey = pSplitEntry->aKey();
   i8 iKeyLength = aKey->nKeySize(pIdxColVec);
   
