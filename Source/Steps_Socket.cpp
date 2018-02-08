@@ -251,6 +251,9 @@ void Task::vSocketSend(MP_Task mpTask)
   EntryBuffer* pEntryBuffer = xValSet.pGetRowBuffer();
   
   if (pEntryBuffer) {
+    
+    //pEntryBuffer->vShow();
+    
     //vTrace("Sending EntryBuffer: %p\n"_Stz,pEntryBuffer);
     
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
@@ -369,7 +372,12 @@ void Task::vSocketRecv(MP_Task mpTask)
     if ( ! bResult )
       THROW("Unable to recvFrom socket: Errno %d!"_Stz, xSysCall.iError());
     
+    pEntryBuffer->vHeadEntryRestore();
+    pEntryBuffer->vFirstEntryRestore();
+    
     pEntryBuffer->vRowCount();
+    //pEntryBuffer->vShow();
+    
     //vTrace("%lld %lld %lld\n"_Stz, iBytes, *(pEntryBuffer->nBufferNo()), pEntryBuffer->nItems());
     
     // set the new entry buffer in each entry of the entry buffer

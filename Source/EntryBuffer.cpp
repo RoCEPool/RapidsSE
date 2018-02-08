@@ -85,6 +85,8 @@ EntryBuffer::EntryBuffer(void)
   m_pLastEntry  = nullptr;
   m_pFirstFree  = nullptr;
   
+  vHeadEntryNew();
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   _checkInitialised_(CN_ENTRYBUFFER);
@@ -311,7 +313,6 @@ void EntryBuffer::vIndex(Index* pIndex)
   
   // create a head entry if we have a non-hidden index
   //if (! m_pIndex->bIsHidden() )
-    vHeadEntry();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -517,6 +518,10 @@ Entry* EntryBuffer::pAppendRow(i8 iTxId, Stz* aRow, i8 iRowLength)
   if (! m_pFirstEntry)
     m_pFirstEntry = pRowEntry;
   m_pLastEntry = pRowEntry;
+  
+  // set head entry offset
+  if (m_pHeadEntry->iNEO(0) == -1)
+    m_pHeadEntry->vNEO(0, iEntryOffset);
   
   return pRowEntry;
 }
@@ -777,6 +782,16 @@ void EntryBuffer::vDeleteEntry(Entry* pEntry)
 }
 
 /*----------------------------------------------------------------------------*/
+/* restore the first entry                                                    */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vFirstEntryRestore(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  m_pFirstEntry = pNextEntry(m_pHeadEntry, 0);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get first item after head (could be entry, free entry or wilderness)       */
 /*----------------------------------------------------------------------------*/
 Item* EntryBuffer::pFirstItem(void)
@@ -816,6 +831,16 @@ bool EntryBuffer::bHasSpace(i8 nBytes)
       return true;
   }
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* restore the head entry                                                     */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vHeadEntryRestore(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  m_pHeadEntry = pAdd<Entry *>(aDataArea(),sizeof(i4) * C_ENTRIES_0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -957,7 +982,8 @@ Item* EntryBuffer::pNextItem(Item* pCurrent)
       break;
       
     default:
-      ASSERT(0);
+      //ASSERT(0);
+      break;
   }
   
   return pItemNext;
@@ -1105,7 +1131,7 @@ void EntryBuffer::vRowCount(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   m_nItems = 0;
-  for (Entry* pRow = pHeadEntry(); pRow; pRow = pNextEntry(pRow, 0))
+  for (Entry* pRow = pFirstEntry(); pRow; pRow = pNextEntry(pRow, 0))
     m_nItems++;
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ENTRYBUFFER);
@@ -1137,7 +1163,7 @@ void EntryBuffer::vShow(void)
          m_pHigherBuffer,sHigherBuffer.aStr(),m_pPrevBuffer,m_pNextBuffer);
 
   vTrace("  index: %s partition: %lld level: %lld\n"_Stz,
-         m_pIndex->aIndexName(),m_nPartitionNo,m_nBufferLevel);
+         m_pIndex ? m_pIndex->aIndexName() : "NULL"_Stz,m_nPartitionNo,m_nBufferLevel);
   
   vTrace("  entryOffset0: %p m_nFreeOffsets: %lld freeOffsetHead: %lld\n"_Stz,
          m_pEntryOffset0,m_nFreeOffsets,m_iFreeOffsetHead);
@@ -1470,9 +1496,11 @@ i4 EntryBuffer::iGetFreeEntry(void)
 /*----------------------------------------------------------------------------*/
 /* create a head entry                                                        */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vHeadEntry(void)
+void EntryBuffer::vHeadEntryNew(void)
 {
   RowWrk xHeadWrk;
+  
+  ASSERT( ! m_pHeadEntry );
   
   xHeadWrk.vOffsets(3);
   
@@ -1485,6 +1513,11 @@ void EntryBuffer::vHeadEntry(void)
   
   m_pHeadEntry = reinterpret_cast<Entry*>(aAllotSpace(nEntryBytes));
   ASSERT(m_pHeadEntry);
+  char* aData = aDataArea();
+  char* aHead = pAdd<char *>(aData,sizeof(i4) * C_ENTRIES_0);
+  
+  ASSERT((char*)m_pHeadEntry == aHead);
+  
   new(m_pHeadEntry) Entry(CN_ENTRY,nEntryBytes,0);
   
   m_pHeadEntry->vSetEntry(0,xHeadWrk.xId(),3,nullptr,0);

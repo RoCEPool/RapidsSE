@@ -115,8 +115,10 @@ namespace DBobjects
     i8             iDecile(void);
     void           vDeleteEntry(Entry* pEntry);
     void           vDump(void);
+    void           vFirstEntryRestore(void);
     Item*          pFirstItem(void);
     bool           bHasSpace(i8 nBytes);
+    void           vHeadEntryRestore(void);
     bool           bInsert(EntWrk& xEntWrk);
     Entry*         pInsertKey(i8 iTxId, Key* pKey, i8 iKeyLength);
     bool           bInsertRow(Entry* pOldRow, Entry** ppRow);
@@ -151,7 +153,7 @@ namespace DBobjects
     Entry*         pGetEntryOffset(i8 iOffset);
     Entry*         pGetEntrySplit(i8 iSplitEntryNo);
     i4             iGetFreeEntry(void);
-    void           vHeadEntry(void);
+    void           vHeadEntryNew(void);
     //void         vMoveLeft(void* aDst, i8 nBytes);
     //void         vMoveRight(void* aSrc, i8 nBytes);
     Entry*         pPositionQuery(Key* aGivenKey, i8 nKeyCols, eJC eJuxtaCompare, bool& bIsEqual);
