@@ -374,8 +374,8 @@ void Task::vSocketRecv(MP_Task mpTask)
     
     //pEntryBuffer->vHeadEntryRestore();
     //pEntryBuffer->vFirstEntryRestore();
-    //pEntryBuffer->vRowCount();
-    pEntryBuffer->vRestoreBuffer();
+    //pEntryBuffer->vRowCountRestore();
+    pEntryBuffer->vRestore();
     
     //pEntryBuffer->vShow();
     

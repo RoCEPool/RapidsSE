@@ -771,16 +771,6 @@ void EntryBuffer::vDump(void)                            //ALKA - LEVEL 1 ??
 }
 
 /*----------------------------------------------------------------------------*/
-/* restore the first entry                                                    */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vFirstEntryRestore(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  m_pFirstEntry = pNextEntry(m_pHeadEntry, 0);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get first item after head (could be entry, free entry or wilderness)       */
 /*----------------------------------------------------------------------------*/
 Item* EntryBuffer::pFirstItem(void)
@@ -833,16 +823,6 @@ bool EntryBuffer::bHasSpace(i8 nBytes)
     else
       return true;
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* restore the head entry                                                     */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vHeadEntryRestore(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  m_pHeadEntry = pAdd<Entry *>(aDataArea(),sizeof(i4) * C_ENTRIES_0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1178,25 +1158,11 @@ void EntryBuffer::vPriorVecHead(EntryVec& xPriorVec)
 /*----------------------------------------------------------------------------*/
 /* restore the buffer after being received over a socket                      */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vRestoreBuffer(void)
+void EntryBuffer::vRestore(void)
 {
   vHeadEntryRestore();
   vFirstEntryRestore();
-  vRowCount();
-}
-
-/*----------------------------------------------------------------------------*/
-/* set row count                                                              */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vRowCount(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  m_nItems = 0;
-  for (Entry* pRow = pFirstEntry(); pRow; pRow = pNextEntry(pRow, 0))
-    m_nItems++;
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ENTRYBUFFER);
+  vRowCountRestore();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1473,6 +1439,16 @@ void EntryBuffer::vDumpPriorVec(Entry* pPriorVec[])
 }
 
 /*----------------------------------------------------------------------------*/
+/* restore the first entry                                                    */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vFirstEntryRestore(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  m_pFirstEntry = pNextEntry(m_pHeadEntry, 0);
+}
+
+/*----------------------------------------------------------------------------*/
 /* set up the initial offset free chains                                      */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vFreeChains(void)
@@ -1577,6 +1553,16 @@ void EntryBuffer::vHeadEntryNew(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* restore the head entry                                                     */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vHeadEntryRestore(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  m_pHeadEntry = pAdd<Entry *>(aDataArea(),sizeof(i4) * C_ENTRIES_0);
+}
+
+/*----------------------------------------------------------------------------*/
 /* create a new next buffer                                                   */
 /*----------------------------------------------------------------------------*/
 EntryBuffer* EntryBuffer::pNewNextBuffer(void)
@@ -1594,6 +1580,20 @@ EntryBuffer* EntryBuffer::pNewNextBuffer(void)
   vNextBuffer(pNewBuffer);
   
   return pNewBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* restore row count                                                          */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vRowCountRestore(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  m_nItems = 0;
+  for (Entry* pRow = pFirstEntry(); pRow; pRow = pNextEntry(pRow, 0))
+    m_nItems++;
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ENTRYBUFFER);
 }
 
 /*----------------------------------------------------------------------------*/

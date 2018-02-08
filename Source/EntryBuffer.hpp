@@ -115,11 +115,9 @@ namespace DBobjects
     i8             iDecile(void);
     void           vDeleteEntry(Entry* pEntry);
     void           vDump(void);
-    void           vFirstEntryRestore(void);
     Item*          pFirstItem(void);
     Entry*         pGetEntryNo(i8 iEntryNo);
     bool           bHasSpace(i8 nBytes);
-    void           vHeadEntryRestore(void);
     bool           bInsert(EntWrk& xEntWrk);
     Entry*         pInsertKey(i8 iTxId, Key* pKey, i8 iKeyLength);
     bool           bInsertRow(Entry* pOldRow, Entry** ppRow);
@@ -132,8 +130,7 @@ namespace DBobjects
     EntryBuffer*   pPositionLevel(Key* aGivenKey, i8 nKeyCols, eJC eJuxtaCompare, i8 iLevel);
     
     void           vPriorVecHead(EntryVec& xPriorVec);
-    void           vRestoreBuffer(void);
-    void           vRowCount(void);
+    void           vRestore(void);
     void           vShow(void);
     EntryBuffer*   pSplitBuffer(void);
     void           vTruncate(void);
@@ -148,22 +145,22 @@ namespace DBobjects
     //void         vAllotHeadEntry(void);
     //i8           iCopyEntries(EntryBuffer_v3* pFromBuffer, Entry* aFromEntry);
     void           vDumpPriorVec(Entry* pPriorVec[]);
+    void           vFirstEntryRestore(void);
     //void         vFixHigherLevel(Entry* aNewEntry);
     //void         vFixPriorOffset(EntryVec* pPriorVec, Entry* aNewEntry);
     void           vFreeChains(void);
-    //Entry*         pGetEntryNo(i8 iEntryNo);
     Entry*         pGetEntryOffset(i8 iOffset);
     Entry*         pGetEntrySplit(i8 iSplitEntryNo);
     i4             iGetFreeEntry(void);
     void           vHeadEntryNew(void);
-    //void         vMoveLeft(void* aDst, i8 nBytes);
-    //void         vMoveRight(void* aSrc, i8 nBytes);
+    void           vHeadEntryRestore(void);
     void           vPositionPrior(Key* aFindKey, Entry** pPriorVec);
     //void         vReplaceKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
     //void         vReplaceKeyEqual(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
     //void         vReplaceKeyLarger(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
     //void         vReplaceKeySmaller(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
     //Entry*       pRightEntry(Entry* pEntry, ln nLevelNo);
+    void           vRowCountRestore(void);
   
     public:
   Footer* aFooter(void);
