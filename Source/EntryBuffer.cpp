@@ -1544,20 +1544,27 @@ void DBobjects::vEntryBuffer_UnitTest(Table* pTable)
   pCurrentBuffer->vShow();
   
   // delete some entries
+  Entry* pEntry;
   pCurrentIndexBuffer->vShow();
-  Entry* pEntry = xKeyEntries[0];
+  
+  pEntry = xKeyEntries[0];
   pCurrentIndexBuffer->vDeleteEntry(pEntry);
   pCurrentIndexBuffer->vShow();
 
-  pCurrentIndexBuffer->vCompactBuffer();
-
-//  pEntry = xKeyEntries[2];
+//  pEntry = xKeyEntries[1];
 //  pCurrentIndexBuffer->vDeleteEntry(pEntry);
 //  pCurrentIndexBuffer->vShow();
-//  
+  
+  pEntry = xKeyEntries[2];
+  pCurrentIndexBuffer->vDeleteEntry(pEntry);
+  pCurrentIndexBuffer->vShow();
+  
 //  pEntry = xKeyEntries[4];
 //  pCurrentIndexBuffer->vDeleteEntry(pEntry);
 //  pCurrentIndexBuffer->vShow();
+
+  pCurrentIndexBuffer->vCompactBuffer();
+  pCurrentIndexBuffer->vShow();
 }
 
 /*============================================================================*/
