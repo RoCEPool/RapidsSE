@@ -330,7 +330,7 @@ void Task::vIndexExactKey(MP_Task mpTask)
   }
   
   // get the first entry in the buffer
-  pEntry = pEntryBuffer->pFirstEntry();
+  //pEntry = pEntryBuffer->pFirstEntry();
   
   // iterate thru the buffer till no more entries
   while (pEntry) {
