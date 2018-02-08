@@ -579,6 +579,10 @@ void EntryBuffer::vCompactBuffer(void)
   Entry*     pMoveEntry;
   Entry*     xPriorVec[3];
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  
+  // we can only compact if there are free entries
+  if (! m_pFirstFree)
+    return;
 
   // loose the free list so vShow() works correctly
   m_pFirstFree = nullptr;
@@ -653,7 +657,7 @@ void EntryBuffer::vCompactBuffer(void)
     
     // give the reclaimed space back to the buffer
     i8 nReclaimedBytes = nSub(pMoveEntry,pFreeEntry);
-    vGiveSpace(nReclaimedBytes);
+    //vGiveSpace(nReclaimedBytes);
     
     // convert the moved entry to a free entry
     FreeEntry* pOpenedFreeEntry = pAdd<FreeEntry*>(pFreeEntry,nCopyBytes);
@@ -676,6 +680,10 @@ void EntryBuffer::vCompactBuffer(void)
     pScanItem = pFreeEntry;
     
   } // for
+  
+  ASSERT(CN_FREEENTRY == pScanItem->eClass());
+  
+  vResetUsed(pScanItem);
   
   vSetWilderness();
   
@@ -1541,7 +1549,7 @@ void DBobjects::vEntryBuffer_UnitTest(Table* pTable)
   pCurrentIndexBuffer->vDeleteEntry(pEntry);
   pCurrentIndexBuffer->vShow();
 
-  //pCurrentIndexBuffer->vCompactBuffer();
+  pCurrentIndexBuffer->vCompactBuffer();
 
 //  pEntry = xKeyEntries[2];
 //  pCurrentIndexBuffer->vDeleteEntry(pEntry);

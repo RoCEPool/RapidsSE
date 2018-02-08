@@ -24,6 +24,7 @@ namespace DBobjects
     void   vGiveSpace(i8 nBytes);
     i8     nItems(void);
     Item*  pNextItem(Item* pCurrentItem);
+    void   vResetUsed(Item* pUptil);
     i8     iToOffset(Item* pItem);
     i8     nUsedBytes(void);
   

@@ -160,6 +160,18 @@ Item* ItemBuffer::pNextItem(Item* pCurrentItem)
 }
 
 /*----------------------------------------------------------------------------*/
+/* reset used space                                                           */
+/*----------------------------------------------------------------------------*/
+void ItemBuffer::vResetUsed(Item* pUptil)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  i8 nUsedBytes = nSub(pUptil,aDataArea());
+  
+  m_xWsp.vUsed(nUsedBytes);
+}
+
+/*----------------------------------------------------------------------------*/
 /* calculate the absolute offset within workspace for given item              */
 /*----------------------------------------------------------------------------*/
 i8 ItemBuffer::iToOffset(Item* pItem)
