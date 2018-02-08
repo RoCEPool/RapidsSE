@@ -1396,6 +1396,7 @@ void EntryBuffer::vTruncate(void)
   
   EntryBuffer* pNextBuffer;
   
+  //----------------------------------------------------------------------------
   // hidden index buffers are just one level
   if (m_pIndex->bIsHidden()) {
     ASSERT(m_nBufferLevel == 0);
@@ -1412,8 +1413,8 @@ void EntryBuffer::vTruncate(void)
     return;
   }
   
-  RASSERT(0);
-  
+  //----------------------------------------------------------------------------
+  // other index
   if (m_nBufferLevel != 0) {
     
     // recursively delete the lower level buffers

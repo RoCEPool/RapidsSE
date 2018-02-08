@@ -63,6 +63,10 @@ anidx j10 idx1;
 dumpidx j10 idx1;
 szidx j10 idx1;
 
+lsidx j10;
+drop index j10.idx1;
+lsidx j10;
+
 /*
 create index idx2 on j10 (j10_name);
 fetch j10 "j10_name 'f' >=";
