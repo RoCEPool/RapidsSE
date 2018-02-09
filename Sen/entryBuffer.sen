@@ -16,6 +16,8 @@
   popTable
 
   pTable entryBuffer::unitTest_b
+
+  pTable entryBuffer::unitTest_c
 ;
 
 /*============================================================================*/

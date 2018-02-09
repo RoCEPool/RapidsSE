@@ -154,6 +154,7 @@ namespace DBobjects
     Footer* aFooter(void);
   
     static void vUnitTest_b(Table* pTable);
+    static void vUnitTest_c(Table* pTable);
   };
   
   EntryBuffer* _pEntryBuffer(void* aAddr);
