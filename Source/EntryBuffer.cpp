@@ -1076,7 +1076,7 @@ void EntryBuffer::vPriorVecHead(EntryVec& xPriorVec)
 void EntryBuffer::vRestore(void)
 {
   vHeadEntryRestore();
-  vRowCountRestore();
+  vItemCountRestore();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1119,44 +1119,16 @@ void EntryBuffer::vShow(void)
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);
   
-  if (m_pHeadEntry) {
-    
-    vTrace("\n"_Stz);
-    vTrace("Entries (by headEntry vector):\n"_Stz);
-   
-    i8 iOffset = m_pHeadEntry->iNEO(0);
-    while (iOffset > -1) {
-      Entry* pEntry = pGetEntryOffset(iOffset);
-      pEntry->vShow(iOffset,m_pIndex,true);
-      iOffset = pEntry->iNEO(0);
-    }
-  }
-  else {
-    vTrace("\n"_Stz);
-    vTrace("Entries (by EntryOffset array):\n"_Stz);
-    for (i8 i_Entry = 0; i_Entry != C_ENTRIES_0; i_Entry++) {
-
-      if (m_pEntryOffset[i_Entry] <= 0)
-        continue;
-
-      Entry* pEntry = pGetEntryNo(i_Entry);
-      vTrace("%4lld %8lld: "_Stz,i_Entry, nSub(pEntry,m_xWsp.aArea()));
-      i8 iOffset = iToOffset(pEntry);
-      
-      pEntry->vShow(iOffset,m_pIndex,m_pIndex->bIsHidden() ? false : true);
-    }
-    
-    vTrace("\n"_Stz);
-    vTrace("Entries (by next offset):\n"_Stz);
-    
-    for (Entry* pEntry = pFirstEntry(); pEntry; ) {
-      
-      i8 iOffset = iToOffset(pEntry);
-      vTrace("%8lld: "_Stz,iOffset);
-      pEntry->vShow(iOffset,m_pIndex,m_pIndex->bIsHidden() ? false : true);
-      
-      pEntry = pNextEntry(pEntry,0);
-    }
+  ASSERT(m_pHeadEntry);
+  
+  vTrace("\n"_Stz);
+  vTrace("Entries (by headEntry vector[0]):\n"_Stz);
+ 
+  i8 iOffset = m_pHeadEntry->iNEO(0);
+  while (iOffset > -1) {
+    Entry* pEntry = pGetEntryOffset(iOffset);
+    pEntry->vShow(iOffset,m_pIndex,true);
+    iOffset = pEntry->iNEO(0);
   }
   
   if (gpAttachMap->m_nIndexEntries) {
@@ -1182,43 +1154,41 @@ void EntryBuffer::vShow(void)
     }
   }
   
-  if (m_pHeadEntry) {
-    vTrace("\n"_Stz);
-    vTrace("By item:\n"_Stz);
-    for (Item* pItem = pFirstItem();
-         pItem != nullptr;
-         pItem = pNextItem(pItem)) {
-      
-      vTrace(" %p: "_Stz,pItem);
-      eCN eClass = pItem->eClass();
-      i8 iSize;
-      
-      switch (eClass) {
-        case CN_ENTRY: {
-          Entry* pEntryItem = static_cast<Entry*>(pItem);
-          iSize = pEntryItem->nSizeEntry() + pEntryItem->iNEOsize();
-          vTrace("Entry %lld bytes"_Stz,iSize);
-          break;
-        }
-          
-        case CN_FREEENTRY: {
-          FreeEntry* pFreeEntryItem = static_cast<FreeEntry*>(pItem);
-          iSize = pFreeEntryItem->nSizeItem();
-          vTrace("FreeEntry %lld bytes"_Stz,iSize);
-          break;
-        }
-          
-        case CN_WILDERNESS:
-          iSize = nFreeBytes();
-          vTrace("Wilderness (%lld bytes free)"_Stz,iSize);
-          break;
-          
-        default:
-          break;
+  vTrace("\n"_Stz);
+  vTrace("By item:\n"_Stz);
+  for (Item* pItem = pFirstItem();
+       pItem != nullptr;
+       pItem = pNextItem(pItem)) {
+    
+    vTrace(" %p: "_Stz,pItem);
+    eCN eClass = pItem->eClass();
+    i8 iSize;
+    
+    switch (eClass) {
+      case CN_ENTRY: {
+        Entry* pEntryItem = static_cast<Entry*>(pItem);
+        iSize = pEntryItem->nSizeEntry() + pEntryItem->iNEOsize();
+        vTrace("Entry %lld bytes"_Stz,iSize);
+        break;
       }
-      vTrace("\n"_Stz);
+        
+      case CN_FREEENTRY: {
+        FreeEntry* pFreeEntryItem = static_cast<FreeEntry*>(pItem);
+        iSize = pFreeEntryItem->nSizeItem();
+        vTrace("FreeEntry %lld bytes"_Stz,iSize);
+        break;
+      }
+        
+      case CN_WILDERNESS:
+        iSize = nFreeBytes();
+        vTrace("Wilderness (%lld bytes free)"_Stz,iSize);
+        break;
+        
+      default:
+        break;
     }
-  }
+    vTrace("\n"_Stz);
+    }
   
 
   vTrace("\n"_Stz);
@@ -1510,6 +1480,18 @@ void EntryBuffer::vHeadEntryRestore(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* restore item count                                                         */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vItemCountRestore(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  m_nItems = 0;
+  for (Entry* pEntry = pFirstEntry(); pEntry; pEntry = pNextEntry(pEntry, 0))
+    m_nItems++;
+}
+
+/*----------------------------------------------------------------------------*/
 /* create a new next buffer                                                   */
 /*----------------------------------------------------------------------------*/
 EntryBuffer* EntryBuffer::pNewNextBuffer(void)
@@ -1565,20 +1547,6 @@ Item* EntryBuffer::pNextItem(Item* pCurrent)
 }
 
 /*----------------------------------------------------------------------------*/
-/* restore row count                                                          */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vRowCountRestore(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  m_nItems = 0;
-  for (Entry* pRow = pFirstEntry(); pRow; pRow = pNextEntry(pRow, 0))
-    m_nItems++;
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ENTRYBUFFER);
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -1593,11 +1561,18 @@ Footer* EntryBuffer::aFooter(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Unit Test ---------------------------------------------------------------*/
+/*-- Unit Tests --------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-void EntryBuffer::vUnitTest(Table* pTable)
+/*----------------------------------------------------------------------------*/
+/* unit test (a) -> (b)                                                       */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vUnitTest_b(Table* pTable)
 {
+  vTrace("\n"_Stz);
+  vTrace("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"_Stz);
+  vTrace("EntryBuffer::vUnitTest_b\n"_Stz);
+  vTrace("\n"_Stz);
   
   ColumnVec* pColVec = pTable->pColumnVec();
   Index* pHiddenIndex = pTable->pHiddenIndex();
@@ -1715,6 +1690,17 @@ void EntryBuffer::vUnitTest(Table* pTable)
 //
 //  pCurrentIndexBuffer->vCompactBuffer();
 //  pCurrentIndexBuffer->vShow();
+}
+
+/*----------------------------------------------------------------------------*/
+/* unit test (b) -> (c)                                                       */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vUnitTest_c(Table* pTable)
+{
+  vTrace("\n"_Stz);
+  vTrace("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"_Stz);
+  vTrace("EntryBuffer::vUnitTest_c\n"_Stz);
+  vTrace("\n"_Stz);
 }
 
 /*============================================================================*/

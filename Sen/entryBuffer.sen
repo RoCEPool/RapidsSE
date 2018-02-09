@@ -15,7 +15,9 @@
   "ebTest" find execute locals| pTable |
   popTable
 
-  pTable entryBuffer::unitTest
+  pTable entryBuffer::unitTest_b
+
+  pTable entryBuffer::unitTest_c
 ;
 
 /*============================================================================*/
