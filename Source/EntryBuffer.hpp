@@ -106,7 +106,7 @@ namespace DBobjects
     Entry*       pGetEntryNo(i8 iEntryNo);
     bool         bHasSpace(i8 nBytes);
     bool         bInsert(EntWrk& xEntWrk);
-    Entry*       pInsertKey(i8 iTxId, Key* pKey, i8 iKeyLength);
+    Entry*       pInsertKey(i8 iTxId, Id xIdx, Key* pKey, i8 iKeyLength);
     bool         bInsertRow(Entry* pOldRow, Entry** ppRow);
     EntryBuffer* pNewNextBuffer(void);
     Entry*       pNextEntry(Entry* pEntry, i8 nOffsetNo);

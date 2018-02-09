@@ -628,7 +628,7 @@ EntryBuffer* IndexData::pAppendL0Entry(EntryBuffer* pEntryBuffer,
   if (pEntryBuffer) {
     
     // insert entry into L0 index buffer
-    Entry* pEntry = pEntryBuffer->pInsertKey(iTxId, xKeyWrk.aKey(), xKeyWrk.nKeySize());
+    Entry* pEntry = pEntryBuffer->pInsertKey(iTxId, xId, xKeyWrk.aKey(), xKeyWrk.nKeySize());
     
     // did we manage to insert ?
     if (pEntry)
@@ -654,7 +654,7 @@ EntryBuffer* IndexData::pAppendL0Entry(EntryBuffer* pEntryBuffer,
   m_pRoot = pEntryBuffer;
   
   // append entry into first L0 buffer
-  Entry* pEntry = pEntryBuffer->pInsertKey(iTxId, xKeyWrk.aKey(), xKeyWrk.nKeySize());
+  Entry* pEntry = pEntryBuffer->pInsertKey(iTxId, xId, xKeyWrk.aKey(), xKeyWrk.nKeySize());
   ASSERT(pEntry);
   
   return pEntryBuffer;
@@ -771,7 +771,7 @@ bool IndexData::bInsertEntry(EntryBuffer* pHigher, KeyWrk& xKeyWrk, Id xId, i8 i
   ASSERT(pEntryBuffer);
   
   // insert entry into index buffer
-  Entry* pEntry = pEntryBuffer->pInsertKey(iTxId, xKeyWrk.aKey(), xKeyWrk.nKeySize());
+  Entry* pEntry = pEntryBuffer->pInsertKey(iTxId, xId, xKeyWrk.aKey(), xKeyWrk.nKeySize());
   if ( ! pEntry ) {
     // no space
     return false;

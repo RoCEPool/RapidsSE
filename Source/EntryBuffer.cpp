@@ -784,11 +784,11 @@ bool EntryBuffer::bInsert(EntWrk& xEntWrk)                        //# critical
 /*----------------------------------------------------------------------------*/
 /* attempt to insert a new key entry into this buffer                         */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pInsertKey(i8 iTxId, Key* aKey, i8 iKeyLength)
+Entry* EntryBuffer::pInsertKey(i8 iTxId, Id xId, Key* aKey, i8 iKeyLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  vTrace("Inserting key:\n"_Stz);
+  //vTrace("Inserting key:\n"_Stz);
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   //aKey->vShow(pIdxColVec);
   
@@ -832,7 +832,7 @@ Entry* EntryBuffer::pInsertKey(i8 iTxId, Key* aKey, i8 iKeyLength)
   // form the rowId
   
   bn nBufferNo = this->nBufferNo();
-  i8 nRowNo = iGetFreeEntry(); //nItems();
+  i8 nRowNo = xId.iRow(); //iGetFreeEntry(); //nItems();
   Id xRowId(*nBufferNo, nRowNo);
   
   //xKeyWrk.vId(xRowId);
@@ -1237,8 +1237,9 @@ EntryBuffer* EntryBuffer::pSplit(void)
     i8 iTxId = pMoveEntry->iTxId();
     Key* aKey = pMoveEntry->aKey();
     i8 nKeySize = aKey->nKeySize(pIdxColVec);
+    Id xId = pMoveEntry->xId();
     
-    Entry* pNewEntry = pNewBuffer->pInsertKey(iTxId,aKey,nKeySize);
+    Entry* pNewEntry = pNewBuffer->pInsertKey(iTxId,xId,aKey,nKeySize);
     
     vDeleteEntry(pMoveEntry);
     
@@ -1648,7 +1649,7 @@ void EntryBuffer::vUnitTest_b(Table* pTable)
     
     //Entry* pKeyEntry = pCurrentIndexBuffer->pInsertKey_v3(xKeyWrk);
     
-    Entry* pKeyEntry = pCurrentIndexBuffer->pInsertKey(0, xKeyWrk.aKey(), xKeyWrk.nKeySize());
+    Entry* pKeyEntry = pCurrentIndexBuffer->pInsertKey(0, pRowEntry->xId(), xKeyWrk.aKey(), xKeyWrk.nKeySize());
     
     xKeyEntries[iKey] = pKeyEntry;
     

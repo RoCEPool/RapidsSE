@@ -27,9 +27,9 @@ success
 antbl boolTable;
 rows:
  (*,*,*,0)
- (*,*,*,6)
+ (*,*,*,5)
  (*,*,*,0)
- (*,*,*,6)
+ (*,*,*,5)
 
 // drop the table
 drop table boolTable;
