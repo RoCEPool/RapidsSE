@@ -433,7 +433,7 @@ bool IndexData::bInsertEntry(Entry* pRow)
   KeyWrk xKeyWrk;
   pRow->vExtractIndexKey(xKeyWrk, m_pIndex->pIdxColVec());
   
-  //xKeyWrk.vShow();
+  //xKeyWrk.vShow(m_pIndex->pIdxColVec());
   
   if ( ! m_pRoot ) {
     m_pRoot = new EntryBuffer;

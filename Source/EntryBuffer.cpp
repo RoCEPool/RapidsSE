@@ -575,7 +575,7 @@ void EntryBuffer::vCompact(void)
     vTrace("\n"_Stz);
     
     vPositionPrior(aKey, xPriorVec);
-    vDumpPriorVec(xPriorVec);
+    //vDumpPriorVec(xPriorVec);
     
     i8 iWasOffset = iToOffset(pMoveEntry);
     i8 iNowOffset = iToOffset(pFreeEntry);
@@ -659,7 +659,7 @@ void EntryBuffer::vDeleteEntry(Entry* pEntry)
 
   Key* aKey = pEntry->aKey();
   vPositionPrior(aKey, xPriorVec);
-  vDumpPriorVec(xPriorVec);
+  //vDumpPriorVec(xPriorVec);
   
   i8 nOffsets = pEntry->nOffsets();
   for (i8 i_Offset = 0; i_Offset < nOffsets; i_Offset++) {
@@ -790,7 +790,7 @@ Entry* EntryBuffer::pInsertKey(i8 iTxId, Key* aKey, i8 iKeyLength)
   
   vTrace("Inserting key:\n"_Stz);
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  //xKeyWrk.vShow(pIdxColVec);
+  //aKey->vShow(pIdxColVec);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert a new entry into the skip list
@@ -813,7 +813,7 @@ Entry* EntryBuffer::pInsertKey(i8 iTxId, Key* aKey, i8 iKeyLength)
   // find the entry after which the new entry.key will be inserted
   //Key* aKey = xKeyWrk.aKey();
   vPositionPrior(aKey, xPriorVec);
-  vDumpPriorVec(xPriorVec);
+  //vDumpPriorVec(xPriorVec);
   
   // set no of offsets in working key
   //xKeyWrk.vOffsets(nOffsets); // 1,2 or 3 for the moment
@@ -864,6 +864,8 @@ Entry* EntryBuffer::pInsertKey(i8 iTxId, Key* aKey, i8 iKeyLength)
     
     xPriorVec[iNextOffset]->vNEO(iNextOffset,iKeyEntryOffset);
   }
+  
+  //vDump();
   
   return pKeyEntry;
 }
@@ -1003,8 +1005,11 @@ Entry* EntryBuffer::pPositionQuery(Key* aGivenKey,i8 nKeyCols, eJC eJuxtaCompare
     //pPriorVec[*nScanLevel] = pScanEntry_sl;
   }
   
-  if (pScanEntry_sl == pHeadEntry())
-    pScanEntry_sl = pNextEntry(pScanEntry_sl, *nBufferNo());
+  if (pScanEntry_sl == pHeadEntry()) {
+    pScanEntry_sl = pNextEntry(pScanEntry_sl, 0);
+    // we currently think it should be null
+    // RASSERT( ! pScanEntry_sl );
+  }
   
   // JC_SAME : return the entry which is same as given key
   // JC_AFTER: return the entry which the given key would be inserted after
@@ -1247,7 +1252,7 @@ EntryBuffer* EntryBuffer::pSplit(void)
   
   Entry* xPriorVec[3];
   vPositionPrior(aKey, xPriorVec);
-  vDumpPriorVec(xPriorVec);
+  //vDumpPriorVec(xPriorVec);
   for (i8 i_Offset = 0; i_Offset < 3; i_Offset++)
     xPriorVec[i_Offset]->vNEO(i_Offset,-1);
   
@@ -1650,7 +1655,7 @@ void EntryBuffer::vUnitTest(Table* pTable)
                                  bBlankLine);
 
     xRowEntWrk.vDataSize(iRowLength);
-    ((Row*)aRowData)->vDump(pColVec);
+    //((Row*)aRowData)->vDump(pColVec);
 
     //Entry* pRowEntry = pCurrentBuffer->pAppendRow_v3(xRowEntWrk);
     

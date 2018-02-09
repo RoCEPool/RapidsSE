@@ -871,7 +871,7 @@ i4 Entry::iNEO(i8 iOffset)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  ASSERT(iOffset < m_nOffsets);
+  ASSERT(iOffset >= 0 && iOffset < m_nOffsets);
   
   NEO* aNEO = this->aNEO();
   
@@ -887,7 +887,7 @@ void Entry::vNEO(i8 iOffset, i4 iNEO)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  ASSERT(iOffset < m_nOffsets);
+  ASSERT(iOffset >= 0 && iOffset < m_nOffsets);
   
   NEO* aNEO = this->aNEO();
   
