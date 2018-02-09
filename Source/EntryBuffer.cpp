@@ -80,7 +80,6 @@ EntryBuffer::EntryBuffer(void)
   vFreeChains();
   
   m_pHeadEntry  = nullptr;
-  m_pFirstEntry = nullptr;
   m_pLastEntry  = nullptr;
   m_pFirstFree  = nullptr;
   
@@ -250,18 +249,6 @@ void EntryBuffer::vBufferLevel(i8 nBufferLevel)
 i8 EntryBuffer::nBufferLevel(void)
 {
   return m_nBufferLevel;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get first entry                                                            */
-/*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pFirstEntry(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  //ASSERT(pNextEntry(m_pHeadEntry,0) == m_pFirstEntry);
-  
-  return m_pFirstEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -456,8 +443,6 @@ Entry* EntryBuffer::pAppendRow(i8 iTxId, Stz* aRow, i8 iRowLength)
     m_pLastEntry->vNEO(0,iEntryOffset);
   pRowEntry->vNEO(0,-1);
   
-  if (! m_pFirstEntry)
-    m_pFirstEntry = pRowEntry;
   m_pLastEntry = pRowEntry;
   
   // set head entry offset
@@ -683,14 +668,6 @@ void EntryBuffer::vDeleteEntry(Entry* pEntry)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // if we are deleting the first entry adjust m_pFirstEntry
-  
-  if (pEntry == m_pFirstEntry) {
-    Entry* pNextEntry = this->pNextEntry(pEntry,0);
-    m_pFirstEntry = pNextEntry;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add entry to head of free entry list
   
   i8 nSizeEntry = pEntry->nSizeEntry();
@@ -737,6 +714,20 @@ void EntryBuffer::vDump(void)                            //ALKA - LEVEL 1 ??
       pEntryBuffer->vDump();
     }
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get first entry                                                            */
+/*----------------------------------------------------------------------------*/
+Entry* EntryBuffer::pFirstEntry(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  //m_pHeadEntry->vNEOdump();
+  
+  Entry* pFirst = pNextEntry(m_pHeadEntry,0);
+  
+  return pFirst;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -872,12 +863,6 @@ Entry* EntryBuffer::pInsertKey(i8 iTxId, Key* aKey, i8 iKeyLength)
     pKeyEntry->vNEO(iNextOffset,iPriorOffset);
     
     xPriorVec[iNextOffset]->vNEO(iNextOffset,iKeyEntryOffset);
-  }
-  
-  if (! m_pFirstEntry) {
-    //ASSERT(-1 == m_pHeadEntry->iNEO(0));
-    //m_pHeadEntry->vNEO(0,iKeyEntryOffset);
-    m_pFirstEntry = pKeyEntry;
   }
   
   return pKeyEntry;
@@ -1086,7 +1071,6 @@ void EntryBuffer::vPriorVecHead(EntryVec& xPriorVec)
 void EntryBuffer::vRestore(void)
 {
   vHeadEntryRestore();
-  vFirstEntryRestore();
   vRowCountRestore();
 }
 
@@ -1121,11 +1105,11 @@ void EntryBuffer::vShow(void)
   vTrace("  entryOffset: %p freeOffsetHead: %lld\n"_Stz,
          m_pEntryOffset,m_iFreeOffsetHead);
 
-  vTrace("  headEntry: %p[%lld,%lld,%lld] firstEntry: %p lastEntry: %p firstFree: %p\n"_Stz,
+  vTrace("  headEntry: %p[%lld,%lld,%lld] lastEntry: %p firstFree: %p\n"_Stz,
          m_pHeadEntry,m_pHeadEntry ? m_pHeadEntry->iNEO(0) : 0,
                       m_pHeadEntry ? m_pHeadEntry->iNEO(1) : 0,
                       m_pHeadEntry ? m_pHeadEntry->iNEO(2) : 0,
-         m_pFirstEntry,m_pLastEntry,m_pFirstFree);
+         m_pLastEntry,m_pFirstFree);
   
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);
@@ -1160,7 +1144,7 @@ void EntryBuffer::vShow(void)
     vTrace("\n"_Stz);
     vTrace("Entries (by next offset):\n"_Stz);
     
-    for (Entry* pEntry = m_pFirstEntry; pEntry; ) {
+    for (Entry* pEntry = pFirstEntry(); pEntry; ) {
       
       i8 iOffset = iToOffset(pEntry);
       vTrace("%8lld: "_Stz,iOffset);
@@ -1393,16 +1377,6 @@ void EntryBuffer::vDumpPriorVec(Entry* pPriorVec[])
   
     vTrace("  0:%p 1:%p 2:%p\n"_Stz,
            pPriorVec[0],pPriorVec[1],pPriorVec[2]);
-}
-
-/*----------------------------------------------------------------------------*/
-/* restore the first entry                                                    */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vFirstEntryRestore(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  m_pFirstEntry = pNextEntry(m_pHeadEntry, 0);
 }
 
 /*----------------------------------------------------------------------------*/

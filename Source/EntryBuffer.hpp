@@ -50,7 +50,6 @@ namespace DBobjects
     i4      m_iFreeOffsetHead; // head of free entry offset chain
   
     Entry*     m_pHeadEntry;  // head entry
-    Entry*     m_pFirstEntry; // first entry in buffer
     Entry*     m_pLastEntry;  // last entry in buffer
     FreeEntry* m_pFirstFree;  // head of free entry list
   
@@ -90,7 +89,6 @@ namespace DBobjects
     void         vBufferLevel(i8 nBufferLevel);
     i8           nBufferLevel(void);
   
-    Entry*       pFirstEntry(void);
     FreeEntry*   pFirstFree(void);
     Entry*       pHeadEntry(void);
     
@@ -112,6 +110,7 @@ namespace DBobjects
     i8             iDecile(void);
     void           vDeleteEntry(Entry* pEntry);
     void           vDump(void);
+    Entry*         pFirstEntry(void);
     Entry*         pGetEntryNo(i8 iEntryNo);
     bool           bHasSpace(i8 nBytes);
     bool           bInsert(EntWrk& xEntWrk);
@@ -142,7 +141,6 @@ namespace DBobjects
     NEO*           aAllotNEO(i8 nBytes);
     //i8           iCopyEntries(EntryBuffer_v3* pFromBuffer, Entry* aFromEntry);
     void           vDumpPriorVec(Entry* pPriorVec[]);
-    void           vFirstEntryRestore(void);
     Item*          pFirstItem(void);
     //void         vFixHigherLevel(Entry* aNewEntry);
     //void         vFixPriorOffset(EntryVec* pPriorVec, Entry* aNewEntry);
