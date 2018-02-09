@@ -153,7 +153,7 @@ namespace DBobjects
     public:
     Footer* aFooter(void);
   
-    static void vUnitTest(Table* pTable);
+    static void vUnitTest_b(Table* pTable);
   };
   
   EntryBuffer* _pEntryBuffer(void* aAddr);
