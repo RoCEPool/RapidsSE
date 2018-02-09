@@ -831,9 +831,9 @@ Entry* EntryBuffer::pInsertKey(i8 iTxId, Id xId, Key* aKey, i8 iKeyLength)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the rowId
   
-  bn nBufferNo = this->nBufferNo();
-  i8 nRowNo = xId.iRow(); //iGetFreeEntry(); //nItems();
-  Id xRowId(*nBufferNo, nRowNo);
+//  bn nBufferNo = this->nBufferNo();
+//  i8 nRowNo = xRowId.iRow(); //iGetFreeEntry(); //nItems();
+//  Id xRowId(*nBufferNo, nRowNo);
   
   //xKeyWrk.vId(xRowId);
   
@@ -847,7 +847,7 @@ Entry* EntryBuffer::pInsertKey(i8 iTxId, Id xId, Key* aKey, i8 iKeyLength)
   // set the key entry
   
   //pKeyEntry->vSetEntry(xKeyWrk);
-  pKeyEntry->vSetEntry(iTxId, xRowId, nOffsets, (Stz*)aKey, iKeyLength);
+  pKeyEntry->vSetEntry(iTxId, xId, nOffsets, (Stz*)aKey, iKeyLength);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set prior offsets

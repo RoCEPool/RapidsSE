@@ -168,13 +168,15 @@ Entry* Task::pDataRow(Table* pTable, Entry* pEntry)
   Id xId = pEntry->xId();
   
   // get the partition no
-  i8 nPartitionNo = pEntry->pEntryBuffer()->nPartitionNo();
+  //i8 nPartitionNo = pEntry->pEntryBuffer()->nPartitionNo();
   
   // get the partition
-  Partition* pPartition = pTable->pPartition(nPartitionNo);
+  //Partition* pPartition = pTable->pPartition(nPartitionNo);
   
-  // get the entry buffer                                      // ALKA_TODO
-  EntryBuffer* pEntryBuffer = pPartition->pHiddenIndexData()->pRoot();
+  // get the entry buffer of this entries Id
+  EntryBuffer* pEntryBuffer = pEntry->pEntryBuffer();
+  
+
   
   Entry* pRowEntry = pEntryBuffer->pGetEntryNo(xId.iRow());
   
