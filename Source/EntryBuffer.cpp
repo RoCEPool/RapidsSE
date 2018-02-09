@@ -132,6 +132,24 @@ void EntryBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* set buffer level                                                           */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vBufferLevel(i8 nBufferLevel)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  m_nBufferLevel = nBufferLevel;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the buffer level                                                       */
+/*----------------------------------------------------------------------------*/
+i8 EntryBuffer::nBufferLevel(void)
+{
+  return m_nBufferLevel;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get durability                                                             */
 /*----------------------------------------------------------------------------*/
 eBD EntryBuffer::eDurability(void)
@@ -152,23 +170,23 @@ void EntryBuffer::vDurability(eBD eDurability)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set buffer is last                                                         */
+/* get next buffer                                                            */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vIsLast(bool bIsLast)
+FreeEntry* EntryBuffer::pFirstFree(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  m_bIsLast = bIsLast;
+  return m_pFirstFree;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get if buffer is last                                                      */
+/* get head entry                                                             */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bIsLast(void)
+Entry* EntryBuffer::pHeadEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  return m_bIsLast;
+  return m_pHeadEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -191,84 +209,6 @@ void EntryBuffer::vHigherBuffer(EntryBuffer* pHigherBuffer)
   //ASSERT( ! m_pHigherBuffer);
   
   m_pHigherBuffer = pHigherBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get next buffer                                                            */
-/*----------------------------------------------------------------------------*/
-EntryBuffer* EntryBuffer::pNextBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-  
-  return m_pNextBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set next buffer                                                            */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vNextBuffer(EntryBuffer* pNextBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  m_pNextBuffer = pNextBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get prev buffer                                                            */
-/*----------------------------------------------------------------------------*/
-EntryBuffer* EntryBuffer::pPrevBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  return m_pPrevBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set prev buffer                                                            */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vPrevBuffer(EntryBuffer* pPrevBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  m_pPrevBuffer = pPrevBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set buffer level                                                           */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vBufferLevel(i8 nBufferLevel)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  m_nBufferLevel = nBufferLevel;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the buffer level                                                       */
-/*----------------------------------------------------------------------------*/
-i8 EntryBuffer::nBufferLevel(void)
-{
-  return m_nBufferLevel;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get next buffer                                                            */
-/*----------------------------------------------------------------------------*/
-FreeEntry* EntryBuffer::pFirstFree(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  return m_pFirstFree;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get head entry                                                             */
-/*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pHeadEntry(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  return m_pHeadEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -295,6 +235,46 @@ Index* EntryBuffer::pIndex(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set buffer is last                                                         */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vIsLast(bool bIsLast)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  m_bIsLast = bIsLast;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get if buffer is last                                                      */
+/*----------------------------------------------------------------------------*/
+bool EntryBuffer::bIsLast(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  return m_bIsLast;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next buffer                                                            */
+/*----------------------------------------------------------------------------*/
+EntryBuffer* EntryBuffer::pNextBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  return m_pNextBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set next buffer                                                            */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vNextBuffer(EntryBuffer* pNextBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  m_pNextBuffer = pNextBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set partition no                                                           */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vPartitionNo(i8 nPartitionNo)
@@ -312,6 +292,26 @@ i8 EntryBuffer::nPartitionNo(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   return m_nPartitionNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get prev buffer                                                            */
+/*----------------------------------------------------------------------------*/
+EntryBuffer* EntryBuffer::pPrevBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  return m_pPrevBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set prev buffer                                                            */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vPrevBuffer(EntryBuffer* pPrevBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  m_pPrevBuffer = pPrevBuffer;
 }
 
 /*----------------------------------------------------------------------------*/

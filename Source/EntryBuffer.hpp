@@ -71,96 +71,87 @@ namespace DBobjects
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // simple member functions
   
+    void         vBufferLevel(i8 nBufferLevel);
+    i8           nBufferLevel(void);
     eBD          eDurability(void);
     void         vDurability(eBD eDurability);
-  
-    void         vIsLast(bool bIsLast);
-    bool         bIsLast(void);
-  
+    FreeEntry*   pFirstFree(void);
+    Entry*       pHeadEntry(void);
     EntryBuffer* pHigherBuffer(void);
     void         vHigherBuffer(EntryBuffer* pHigherLevel);
-  
+    void         vIndex(Index* pIndex);
+    Index*       pIndex(void);
+    void         vIsLast(bool bIsLast);
+    bool         bIsLast(void);
     EntryBuffer* pNextBuffer(void);
     void         vNextBuffer(EntryBuffer* pNextBuffer);
-  
+    void         vPartitionNo(i8 nPartitionNo);
+    i8           nPartitionNo(void);
     EntryBuffer* pPrevBuffer(void);
     void         vPrevBuffer(EntryBuffer* pPrevBuffer);
  
-    void         vBufferLevel(i8 nBufferLevel);
-    i8           nBufferLevel(void);
-  
-    FreeEntry*   pFirstFree(void);
-    Entry*       pHeadEntry(void);
-    
-    void         vIndex(Index* pIndex);
-    Index*       pIndex(void);
-  
-    void         vPartitionNo(i8 nPartitionNo);
-    i8           nPartitionNo(void);
-  
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // complex functions
   
-    void           vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries);
-    Entry*         pAppendEntry(EntWrk& xEntWrk,EntryVec& xPriorVec);
-    bool           bAppendEntry(Entry* pRowEntry, Entry** ppNewEntry);
-    Entry*         pAppendRow(i8 iTxId, Stz* pRow, i8 iRowLength);
-    void           vBufferCount(i8& nBufferCount);
-    void           vCompact(void);
-    i8             iDecile(void);
-    void           vDeleteEntry(Entry* pEntry);
-    void           vDump(void);
-    Entry*         pFirstEntry(void);
-    Entry*         pGetEntryNo(i8 iEntryNo);
-    bool           bHasSpace(i8 nBytes);
-    bool           bInsert(EntWrk& xEntWrk);
-    Entry*         pInsertKey(i8 iTxId, Key* pKey, i8 iKeyLength);
-    bool           bInsertRow(Entry* pOldRow, Entry** ppRow);
-    EntryBuffer*   pNewNextBuffer(void);
-    Entry*         pNextEntry(Entry* pEntry, i8 nOffsetNo);
+    void         vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries);
+    Entry*       pAppendEntry(EntWrk& xEntWrk,EntryVec& xPriorVec);
+    bool         bAppendEntry(Entry* pRowEntry, Entry** ppNewEntry);
+    Entry*       pAppendRow(i8 iTxId, Stz* pRow, i8 iRowLength);
+    void         vBufferCount(i8& nBufferCount);
+    void         vCompact(void);
+    i8           iDecile(void);
+    void         vDeleteEntry(Entry* pEntry);
+    void         vDump(void);
+    Entry*       pFirstEntry(void);
+    Entry*       pGetEntryNo(i8 iEntryNo);
+    bool         bHasSpace(i8 nBytes);
+    bool         bInsert(EntWrk& xEntWrk);
+    Entry*       pInsertKey(i8 iTxId, Key* pKey, i8 iKeyLength);
+    bool         bInsertRow(Entry* pOldRow, Entry** ppRow);
+    EntryBuffer* pNewNextBuffer(void);
+    Entry*       pNextEntry(Entry* pEntry, i8 nOffsetNo);
   
-    Entry*         pPositionQuery(Key* aGivenKey, eRO eRelOp);
-    Entry*         pPositionQuery(Key* aGivenKey, i8 nKeyCols, eJC eJuxtaCompare);
-    EntryBuffer*   pPositionLevel(Key* aGivenKey, i8 nKeyCols, eJC eJuxtaCompare, i8 iLevel);
+    Entry*       pPositionQuery(Key* aGivenKey, eRO eRelOp);
+    Entry*       pPositionQuery(Key* aGivenKey, i8 nKeyCols, eJC eJuxtaCompare);
+    EntryBuffer* pPositionLevel(Key* aGivenKey, i8 nKeyCols, eJC eJuxtaCompare, i8 iLevel);
     
-    void           vPriorVecHead(EntryVec& xPriorVec);
-    void           vRestore(void);
-    void           vShow(void);
-    EntryBuffer*   pSplit(void);
-    void           vTruncate(void);
-    bool           bVerify(void);
+    void         vPriorVecHead(EntryVec& xPriorVec);
+    void         vRestore(void);
+    void         vShow(void);
+    EntryBuffer* pSplit(void);
+    void         vTruncate(void);
+    bool         bVerify(void);
   
-    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     private:
     
-    //void         vAdjustOffsets(Entry* pEntry, i8 nAdjustAmount);
-    //Entry*       pAllotEntryAfter(i8 nBytes, i8 nLevels, Entry* aAfterEntry);
-    //void         vAllotHeadEntry(void);
-    Entry*         pAllotEntry(i8 nBytes);
-    NEO*           aAllotNEO(i8 nBytes);
-    //i8           iCopyEntries(EntryBuffer_v3* pFromBuffer, Entry* aFromEntry);
-    void           vDumpPriorVec(Entry* pPriorVec[]);
-    Item*          pFirstItem(void);
-    //void         vFixHigherLevel(Entry* aNewEntry);
-    //void         vFixPriorOffset(EntryVec* pPriorVec, Entry* aNewEntry);
-    void           vFreeChains(void);
-    Entry*         pGetEntryOffset(i8 iOffset);
-    Entry*         pGetEntrySplit(i8 iSplitEntryNo);
-    i4             iGetFreeEntry(void);
-    void           vHeadEntryNew(void);
-    void           vHeadEntryRestore(void);
-    Item*          pNextItem(Item* pItem);
-    void           vPositionPrior(Key* aFindKey, Entry** pPriorVec);
-    //void         vReplaceKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
-    //void         vReplaceKeyEqual(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
-    //void         vReplaceKeyLarger(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
-    //void         vReplaceKeySmaller(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
-    //Entry*       pRightEntry(Entry* pEntry, ln nLevelNo);
-    void           vRowCountRestore(void);
+    //void       vAdjustOffsets(Entry* pEntry, i8 nAdjustAmount);
+    //Entry*     pAllotEntryAfter(i8 nBytes, i8 nLevels, Entry* aAfterEntry);
+    //void       vAllotHeadEntry(void);
+    Entry*       pAllotEntry(i8 nBytes);
+    NEO*         aAllotNEO(i8 nBytes);
+    //i8         iCopyEntries(EntryBuffer* pFromBuffer, Entry* aFromEntry);
+    void         vDumpPriorVec(Entry* pPriorVec[]);
+    Item*        pFirstItem(void);
+    //void       vFixHigherLevel(Entry* aNewEntry);
+    //void       vFixPriorOffset(EntryVec* pPriorVec, Entry* aNewEntry);
+    void         vFreeChains(void);
+    Entry*       pGetEntryOffset(i8 iOffset);
+    Entry*       pGetEntrySplit(i8 iSplitEntryNo);
+    i4           iGetFreeEntry(void);
+    void         vHeadEntryNew(void);
+    void         vHeadEntryRestore(void);
+    Item*        pNextItem(Item* pItem);
+    void         vPositionPrior(Key* aFindKey, Entry** pPriorVec);
+    //void       vReplaceKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
+    //void       vReplaceKeyEqual(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
+    //void       vReplaceKeyLarger(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
+    //void       vReplaceKeySmaller(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
+    //Entry*     pRightEntry(Entry* pEntry, ln nLevelNo);
+    void         vRowCountRestore(void);
   
     public:
-  Footer* aFooter(void);
+    Footer* aFooter(void);
   
     static void vUnitTest(Table* pTable);
   };
