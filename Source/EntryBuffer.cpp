@@ -1354,6 +1354,8 @@ void EntryBuffer::vPriorVecHead(EntryVec& xPriorVec)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vRestore(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
   vHeadEntryRestore();
   vItemCountRestore();
 }
@@ -1363,6 +1365,8 @@ void EntryBuffer::vRestore(void)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vShow(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
   s256 sHigherBuffer;
   if (m_pHigherBuffer)
     StrLib::wToString(((EntryBuffer*)m_pHigherBuffer)->m_nBufferLevel,
@@ -1474,6 +1478,47 @@ void EntryBuffer::vShow(void)
   vTrace("=================================================="
          "==================================================\n"_Stz);
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* show contents of all buffers in index tree                                 */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vShowTree(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  vTrace("["_Stz);
+  
+  i8 iOffset = m_pHeadEntry->iNEO(0);
+  while (iOffset > -1) {
+    Entry* pEntry = pGetEntryOffset(iOffset);
+    pEntry->vShow(iOffset,m_pIndex,true);
+    iOffset = pEntry->iNEO(0);
+  }
+  
+  vTrace("\n"_Stz);
+  
+  Id xId;
+
+  iOffset = m_pHeadEntry->iNEO(0);
+  while (iOffset > -1) {
+    Entry* pEntry = pGetEntryOffset(iOffset);
+    
+    xId = pEntry->xId();
+    bn nBuffer = xId.iBuffer();
+    
+    HeapBuffer* pHeapBuffer =
+      reinterpret_cast<HeapBuffer*>(gpBufferPool->pToBuffer(nBuffer));
+    
+    EntryBuffer* pChildBuffer =
+    reinterpret_cast<EntryBuffer*>(pHeapBuffer->pFirstChunk());
+    
+    pChildBuffer->vShowTree();
+    
+    iOffset = pEntry->iNEO(0);
+  }
+  
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2234,6 +2279,8 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
     pRowBuffer->vShow();
   
   pRootKeyBuffer->vShow();
+  
+  //pRootKeyBuffer->vShowTree();
 }
 
 /*============================================================================*/
