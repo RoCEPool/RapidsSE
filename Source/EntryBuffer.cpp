@@ -850,6 +850,25 @@ Entry* EntryBuffer::pInsertKey(i8 iTxId, Id xId, Key* aKey, i8 iKeyLength,
       (*ppRootKeyBuffer) = pNewHigherBuffer();
       EntryBuffer* pNewRightKeyBuffer = pSplit();
       
+      Entry* pFirstKeyLeft  = this->pFirstEntry();
+      Id xIdLeft(*this->nBufferNo(),0);
+      
+      i8 iTxIdLeft = pFirstKeyLeft->iTxId();
+      Key* aKeyLeft = pFirstKeyLeft->aKey();
+      i8 iKeyLenLeft = aKeyLeft->nKeySize(m_pIndex->pIdxColVec());
+      Entry* pNewKeyLeft =
+        (*ppRootKeyBuffer)->pInsertKey(iTxIdLeft,xIdLeft,aKeyLeft,iKeyLenLeft);
+      
+      Entry* pFirstKeyRight = pNewRightKeyBuffer->pFirstEntry();
+      Id xIdRight(*pNewRightKeyBuffer->nBufferNo(),0);
+      
+      i8 iTxIdRight = pFirstKeyRight->iTxId();
+      Key* aKeyRight = pFirstKeyRight->aKey();
+      i8 iKeyLenRight = aKeyRight->nKeySize(m_pIndex->pIdxColVec());
+      Entry* pNewKeyRight =
+      (*ppRootKeyBuffer)->pInsertKey(iTxIdRight,xIdRight,aKeyRight,iKeyLenRight);
+      
+      
       (*ppRootKeyBuffer)->vShow();
       this->vShow();
       pNewRightKeyBuffer->vShow();
@@ -864,7 +883,7 @@ Entry* EntryBuffer::pInsertKey(i8 iTxId, Id xId, Key* aKey, i8 iKeyLength,
       
     }
     
-    // this lefy buffer has sufficient space after compacting...
+    // this left buffer has sufficient space after compacting...
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
