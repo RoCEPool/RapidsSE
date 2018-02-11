@@ -1983,10 +1983,10 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // keys in ascending order
-  for (i8 iInt = 0; iInt < 4; iInt++) {
+  //for (i8 iInt = 0; iInt < 4; iInt++) {
     
   // keys in descending order
-  //for (i8 iInt = 3; iInt >= 0; iInt--) {
+  for (i8 iInt = 3; iInt >= 0; iInt--) {
   
     i8 iKey = iInt;
     
