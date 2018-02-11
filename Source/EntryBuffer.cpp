@@ -848,7 +848,9 @@ Entry* EntryBuffer::pInsertKey(i8 iTxId, Id xId, Key* aKey, i8 iKeyLength,
         return nullptr;
     
       (*ppRootKeyBuffer) = pNewHigherBuffer();
-      EntryBuffer* pNewRightKeyBuffer = pSplit();
+      EntryBuffer* pNewRightKeyBuffer = this->pSplit();
+      this->vShow();
+      pNewRightKeyBuffer->vShow();
       
       Entry* pFirstKeyLeft  = this->pFirstEntry();
       Id xIdLeft(*this->nBufferNo(),0);
@@ -923,7 +925,7 @@ Entry* EntryBuffer::pInsertKey(i8 iTxId, Id xId, Key* aKey, i8 iKeyLength,
     xPriorVec[iNextOffset]->vNEO(iNextOffset,iKeyEntryOffset);
   }
   
-  //vDump();
+  vShow();
   
   return pKeyEntry;
 }
@@ -1716,7 +1718,7 @@ void EntryBuffer::vUnitTest_b(Table* pTable)
     i8 iKey = iInt;
   
     sprintf(sRecData.aChar(),"%lld,%s,1900-01-01 00:00:%lld",
-            iKey,IntLib::sAsText(iInt),iInt);
+            iKey,IntLib::sAsText(iKey),iKey);
     vTrace("Record: %s\n"_Stz,sRecData.aChar());
   
     char* aRowData = xRowEntWrk.aData();
@@ -1829,13 +1831,15 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // keys in ascending order
-  for (i8 iInt = 0; iInt < 4; iInt++) {
-    
+  //for (i8 iInt = 0; iInt < 4; iInt++) {
+  // keys in descending order
+  for (i8 iInt = 3; iInt >= 0; iInt--) {
+  
     i8 iKey = iInt;
     
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     sprintf(sRecData.aChar(),"%lld,%s,1900-01-01 00:00:%lld",
-            iKey,IntLib::sAsText(iInt),iInt);
+            iKey,IntLib::sAsText(iKey),iKey);
     vTrace("Record: %s\n"_Stz,sRecData.aChar());
     
     char* aRowData = xRowEntWrk.aData();
