@@ -110,6 +110,7 @@ namespace DBobjects
     Entry*       pInsertKey(i8 iTxId, Id xIdx, Key* pKey, i8 iKeyLength,
                             EntryBuffer** ppRootKeyBuffer=nullptr);
     bool         bInsertRow(Entry* pOldRow, Entry** ppRow);
+    EntryBuffer* pNewHigherBuffer(void);
     EntryBuffer* pNewNextBuffer(void);
     Entry*       pNextEntry(Entry* pEntry, i8 nOffsetNo);
   

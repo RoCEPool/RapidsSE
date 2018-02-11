@@ -847,10 +847,13 @@ Entry* EntryBuffer::pInsertKey(i8 iTxId, Id xId, Key* aKey, i8 iKeyLength,
       if ( ! ppRootKeyBuffer )
         return nullptr;
     
+      (*ppRootKeyBuffer) = pNewHigherBuffer();
       EntryBuffer* pNewRightKeyBuffer = pSplit();
       
-      vShow();
+      (*ppRootKeyBuffer)->vShow();
+      this->vShow();
       pNewRightKeyBuffer->vShow();
+      
       
       if ( ! pNewRightKeyBuffer->bKeyBeforeBuffer(aKey,iKeyLength) ) {
         pKeyEntry = pNewRightKeyBuffer->pInsertKey(iTxId, xId, aKey, iKeyLength,
@@ -1539,6 +1542,25 @@ bool EntryBuffer::bKeyBeforeBuffer(Key* pKey, i8 iKeyLength)
 }
 
 /*----------------------------------------------------------------------------*/
+/* create a new higher buffer                                                 */
+/*----------------------------------------------------------------------------*/
+EntryBuffer* EntryBuffer::pNewHigherBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  // create new buffer at one higher index level
+  EntryBuffer* pNewBuffer = new EntryBuffer();
+  
+  pNewBuffer->vIndex(m_pIndex);
+  pNewBuffer->vBufferLevel(m_nBufferLevel+1);
+  pNewBuffer->vPartitionNo(m_nPartitionNo);
+  
+  vHigherBuffer(pNewBuffer);
+  
+  return pNewBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* create a new next buffer                                                   */
 /*----------------------------------------------------------------------------*/
 EntryBuffer* EntryBuffer::pNewNextBuffer(void)
@@ -1552,6 +1574,7 @@ EntryBuffer* EntryBuffer::pNewNextBuffer(void)
   pNewBuffer->vBufferLevel(m_nBufferLevel);
   pNewBuffer->vPartitionNo(m_nPartitionNo);
   
+  pNewBuffer->vHigherBuffer(m_pHigherBuffer);
   pNewBuffer->vPrevBuffer(this);
   vNextBuffer(pNewBuffer);
   
