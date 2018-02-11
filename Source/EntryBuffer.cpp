@@ -412,7 +412,7 @@ Entry* EntryBuffer::pAppendRow(i8 iTxId, Stz* aRow, i8 iRowLength,
   
   if ( ! bHasSpace(nEntryPlusOffsets) ) {
     
-    if (!ppLastRowBuffer)
+    if (! ppLastRowBuffer)
       return nullptr;
     
     *ppLastRowBuffer = pNewNextBuffer();
@@ -800,6 +800,8 @@ Entry* EntryBuffer::pInsertKey(i8 iTxId, Id xId, Key* aKey, i8 iKeyLength,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+  Entry* pKeyEntry;
+  
   //vTrace("Inserting key:\n"_Stz);
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   //aKey->vShow(pIdxColVec);
@@ -837,8 +839,30 @@ Entry* EntryBuffer::pInsertKey(i8 iTxId, Id xId, Key* aKey, i8 iKeyLength,
   i8 nOffsetBytes = nOffsets*sizeof(i4); //xKeyWrk.nOffsetSize();
   
   i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
-  if ( ! bHasSpace(nEntryPlusOffsets) )
-    return nullptr;
+  if ( ! bHasSpace(nEntryPlusOffsets) ) {
+    
+    vCompact();
+    
+    if ( ! bHasSpace(nEntryPlusOffsets) ) {
+      if ( ! ppRootKeyBuffer )
+        return nullptr;
+    
+      EntryBuffer* pNewRightKeyBuffer = pSplit();
+      
+      vShow();
+      pNewRightKeyBuffer->vShow();
+      
+      if ( ! pNewRightKeyBuffer->bKeyBeforeBuffer(aKey,iKeyLength) ) {
+        pKeyEntry = pNewRightKeyBuffer->pInsertKey(iTxId, xId, aKey, iKeyLength,
+                                                   ppRootKeyBuffer);
+        pNewRightKeyBuffer->vShow();
+        return pKeyEntry;
+      }
+      
+    }
+    
+    // this lefy buffer has sufficient space after compacting...
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the rowId
@@ -852,7 +876,7 @@ Entry* EntryBuffer::pInsertKey(i8 iTxId, Id xId, Key* aKey, i8 iKeyLength,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate space in this buffer
   
-  Entry* pKeyEntry = pAllotEntry(nEntryBytes);
+  pKeyEntry = pAllotEntry(nEntryBytes);
   ASSERT(pKeyEntry);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1505,6 +1529,16 @@ void EntryBuffer::vItemCountRestore(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is given key before the first key of this buffer                           */
+/*----------------------------------------------------------------------------*/
+bool EntryBuffer::bKeyBeforeBuffer(Key* pKey, i8 iKeyLength)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* create a new next buffer                                                   */
 /*----------------------------------------------------------------------------*/
 EntryBuffer* EntryBuffer::pNewNextBuffer(void)
@@ -1715,6 +1749,14 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
   vTrace("EntryBuffer::vUnitTest_c\n"_Stz);
   vTrace("\n"_Stz);
   
+  s256 sRecData;
+  i8 iRecLength;
+  RowWrk xRowEntWrk;
+  i8 iRowLength;
+  bool bFormatted;
+  bool bBlankLine;
+  KeyWrk xKeyWrk;
+  
   ColumnVec* pColVec = pTable->pColumnVec();
   Index* pHiddenIndex = pTable->pHiddenIndex();
   
@@ -1734,18 +1776,9 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
   pRootKeyBuffer->vPartitionNo(0);
   pRootKeyBuffer->vShow();
   
-  
-  s256 sRecData;
-  i8 iRecLength;
-  RowWrk xRowEntWrk;
-  i8 iRowLength;
-  bool bFormatted;
-  bool bBlankLine;
-  KeyWrk xKeyWrk;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // keys in ascending order
-  for (i8 iInt = 0; iInt < 3; iInt++) {
+  for (i8 iInt = 0; iInt < 4; iInt++) {
     
     i8 iKey = iInt;
     
