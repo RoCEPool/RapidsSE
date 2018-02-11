@@ -102,6 +102,7 @@ namespace DBobjects
     void         vCompact(void);
     i8           iDecile(void);
     void         vDeleteEntry(Entry* pEntry);
+    void         vDeleteEntry(Key* aKey);
     void         vDump(void);
     Entry*       pFirstEntry(void);
     Entry*       pGetEntryNo(i8 iEntryNo);
@@ -109,8 +110,13 @@ namespace DBobjects
     bool         bInsert(EntWrk& xEntWrk);
     Entry*       pInsertKey(i8 iTxId, Id xIdx, Key* pKey, i8 iKeyLength,
                             EntryBuffer** ppRootKeyBuffer=nullptr);
-    static Entry* pInsertKey_c(i8 iTxId, Id xIdx, Key* pKey, i8 iKeyLength,
-                               EntryBuffer** ppRootKeyBuffer=nullptr);
+    static Entry* pInsert_c(i8 iTxId, Id xIdx,
+                            Key* pKey, i8 iKeyLength,
+                            EntryBuffer** ppRootKeyBuffer=nullptr);
+    Entry*       pInsertKey_c(i8 iTxId, Id xIdx,
+                              Key* pKey, i8 iKeyLength,
+                              i8 nOffsets,
+                              EntryBuffer** ppRootKeyBuffer=nullptr);
     bool         bInsertRow(Entry* pOldRow, Entry** ppRow);
     EntryBuffer* pNewHigherBuffer(void);
     EntryBuffer* pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
@@ -157,6 +163,7 @@ namespace DBobjects
     //void       vReplaceKeyEqual(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
     //void       vReplaceKeyLarger(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
     //void       vReplaceKeySmaller(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
+    void         vReplaceKey(Entry* pWasEntry, Entry* pWithEntry);
     //Entry*     pRightEntry(Entry* pEntry, ln nLevelNo);
   
     public:
