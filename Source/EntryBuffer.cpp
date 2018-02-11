@@ -874,7 +874,7 @@ Entry* EntryBuffer::pInsertKey(i8 iTxId, Id xId, Key* aKey, i8 iKeyLength,
       pNewRightKeyBuffer->vShow();
       
       
-      if ( ! pNewRightKeyBuffer->bKeyBeforeBuffer(aKey,iKeyLength) ) {
+      if ( ! pNewRightKeyBuffer->bKeyBeforeBuffer(aKey) ) {
         pKeyEntry = pNewRightKeyBuffer->pInsertKey(iTxId, xId, aKey, iKeyLength,
                                                    ppRootKeyBuffer);
         pNewRightKeyBuffer->vShow();
@@ -1553,11 +1553,20 @@ void EntryBuffer::vItemCountRestore(void)
 /*----------------------------------------------------------------------------*/
 /* is given key before the first key of this buffer                           */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bKeyBeforeBuffer(Key* pKey, i8 iKeyLength)
+bool EntryBuffer::bKeyBeforeBuffer(Key* aKeyTest)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  return false;
+  Entry* pFirstEntry = this->pFirstEntry();
+  Key* aFirstKey = pFirstEntry->aKey();
+  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  i8 nKeyCols = pIdxColVec->nItems();
+  
+  bool bIsEqual;
+  bool bIsJuxta =
+    aKeyTest->bJuxtaCompare(JC_BEFORE,aFirstKey,pIdxColVec,nKeyCols,bIsEqual);
+  
+  return bIsJuxta;
 }
 
 /*----------------------------------------------------------------------------*/
