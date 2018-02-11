@@ -1743,13 +1743,13 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
   bool bBlankLine;
   KeyWrk xKeyWrk;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // keys in ascending order
-  for (i8 iInt = 0; iInt < 12; iInt++) {
+  for (i8 iInt = 0; iInt < 3; iInt++) {
     
     i8 iKey = iInt;
     
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     sprintf(sRecData.aChar(),"%lld,%s,1900-01-01 00:00:%lld",
             iKey,IntLib::sAsText(iInt),iInt);
     vTrace("Record: %s\n"_Stz,sRecData.aChar());
@@ -1765,27 +1765,30 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
     xRowEntWrk.vDataSize(iRowLength);
     //((Row*)aRowData)->vDump(pColVec);
     
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     Entry* pRowEntry =
       pLastRowBuffer->pAppendRow(0,(Stz*)aRowData,iRowLength,
                                     &pLastRowBuffer);
   
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    xKeyWrk.vReset();
-//    pRowEntry->vExtractIndexKey(xKeyWrk,pIdxColVec1);
-//    //xKeyWrk.vShow(pIdxColVec1);
-//    
-//    Entry* pKeyEntry =
-//      pRootIndexBuffer->pInsertKey(0, pRowEntry->xId(),
-//                                   xKeyWrk.aKey(), xKeyWrk.nKeySize(),
-//                                   &pRootKeyBuffer);
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+    xKeyWrk.vReset();
+    pRowEntry->vExtractIndexKey(xKeyWrk,pIdxColVec1);
+    //xKeyWrk.vShow(pIdxColVec1);
+    
+    Entry* pKeyEntry =
+      pRootKeyBuffer->pInsertKey(0, pRowEntry->xId(),
+                                 xKeyWrk.aKey(), xKeyWrk.nKeySize(),
+                                 &pRootKeyBuffer);
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   for (EntryBuffer* pRowBuffer = pFirstRowBuffer;
        pRowBuffer;
        pRowBuffer = pRowBuffer->pNextBuffer())
     pRowBuffer->vShow();
+  
+  pRootKeyBuffer->vShow();
 }
 
 /*============================================================================*/
