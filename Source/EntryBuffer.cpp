@@ -1702,6 +1702,62 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
   vTrace("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"_Stz);
   vTrace("EntryBuffer::vUnitTest_c\n"_Stz);
   vTrace("\n"_Stz);
+  
+  ColumnVec* pColVec = pTable->pColumnVec();
+  Index* pHiddenIndex = pTable->pHiddenIndex();
+  
+  IdxVec* pIdxVec = pTable->pIdxVec();
+  Index* pIndex1 = pIdxVec->pGet(1);
+  IdxColVec* pIdxColVec1 = pIndex1->pIdxColVec();
+  
+  Formatters* pFormatters = &gpAttachMap->m_xFormatters;
+  
+  EntryBuffer* pFirstBuffer = new EntryBuffer;
+  EntryBuffer* pCurrentBuffer = pFirstBuffer;
+  pCurrentBuffer->vIndex(pHiddenIndex);
+  pCurrentBuffer->vPartitionNo(0);
+  
+  s256 sRecData;
+  i8 iRecLength;
+  RowWrk xRowEntWrk;
+  i8 iRowLength;
+  bool bFormatted;
+  bool bBlankLine;
+  
+  // keys in ascending order
+  for (i8 iInt = 0; iInt <= 12; iInt++) {
+    
+    i8 iKey = iInt;
+    
+    sprintf(sRecData.aChar(),"%lld,%s,1900-01-01 00:00:%lld",
+            iKey,IntLib::sAsText(iInt),iInt);
+    vTrace("Record: %s\n"_Stz,sRecData.aChar());
+    
+    char* aRowData = xRowEntWrk.aData();
+    iRecLength = sRecData.iLength();
+    
+    bFormatted = Row::bFormatRow(pColVec,pFormatters,
+                                 sRecData,iRecLength,
+                                 (Stz*)aRowData,iRowLength,
+                                 bBlankLine);
+    
+    xRowEntWrk.vDataSize(iRowLength);
+    //((Row*)aRowData)->vDump(pColVec);
+    
+    Entry* pRowEntry = pCurrentBuffer->pAppendRow(0,(Stz*)aRowData,iRowLength);
+  
+    if ( ! pRowEntry ) {
+      pCurrentBuffer = pCurrentBuffer->pNewNextBuffer();
+      pRowEntry = pCurrentBuffer->pAppendRow(0, (Stz*)aRowData, iRowLength);
+      ASSERT(pRowEntry);
+    }
+    
+  }
+  
+  for (EntryBuffer* pBuffer = pFirstBuffer;
+       pBuffer;
+       pBuffer = pBuffer->pNextBuffer())
+    pBuffer->vShow();
 }
 
 /*============================================================================*/
