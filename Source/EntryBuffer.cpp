@@ -394,12 +394,14 @@ bool EntryBuffer::bAppendEntry(Entry* pRowEntry, Entry** ppEntry)     //# critic
 /*----------------------------------------------------------------------------*/
 /* attempt to append a new row entry into this buffer                         */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pAppendRow(i8 iTxId, Stz* aRow, i8 iRowLength)
+Entry* EntryBuffer::pAppendRow(i8 iTxId, Stz* aRow, i8 iRowLength,
+                               EntryBuffer** ppLastRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   ASSERT(nBufferLevel() == 0);
   
+  Entry* pRowEntry;
   i8 nOffsets = 1;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -408,8 +410,17 @@ Entry* EntryBuffer::pAppendRow(i8 iTxId, Stz* aRow, i8 iRowLength)
   i8 nEntryBytes = Entry::nBytesRequired(nOffsets, iRowLength);
   i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
   
-  if ( ! bHasSpace(nEntryPlusOffsets) )
-    return nullptr;
+  if ( ! bHasSpace(nEntryPlusOffsets) ) {
+    
+    if (!ppLastRowBuffer)
+      return nullptr;
+    
+    *ppLastRowBuffer = pNewNextBuffer();
+    pRowEntry = (*ppLastRowBuffer)->pAppendRow(0,aRow,iRowLength,
+                                                ppLastRowBuffer);
+    ASSERT(pRowEntry);
+    return pRowEntry;
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the rowId
@@ -423,7 +434,7 @@ Entry* EntryBuffer::pAppendRow(i8 iTxId, Stz* aRow, i8 iRowLength)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate space in this buffer
   
-  Entry* pRowEntry = pAllotEntry(nEntryBytes);
+  pRowEntry = pAllotEntry(nEntryBytes);
   ASSERT(pRowEntry);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -784,7 +795,8 @@ bool EntryBuffer::bInsert(EntWrk& xEntWrk)                        //# critical
 /*----------------------------------------------------------------------------*/
 /* attempt to insert a new key entry into this buffer                         */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pInsertKey(i8 iTxId, Id xId, Key* aKey, i8 iKeyLength)
+Entry* EntryBuffer::pInsertKey(i8 iTxId, Id xId, Key* aKey, i8 iKeyLength,
+                               EntryBuffer** ppRootKeyBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1712,10 +1724,16 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
   
   Formatters* pFormatters = &gpAttachMap->m_xFormatters;
   
-  EntryBuffer* pFirstBuffer = new EntryBuffer;
-  EntryBuffer* pCurrentBuffer = pFirstBuffer;
-  pCurrentBuffer->vIndex(pHiddenIndex);
-  pCurrentBuffer->vPartitionNo(0);
+  EntryBuffer* pFirstRowBuffer = new EntryBuffer;
+  EntryBuffer* pLastRowBuffer = pFirstRowBuffer;
+  pLastRowBuffer->vIndex(pHiddenIndex);
+  pLastRowBuffer->vPartitionNo(0);
+  
+  EntryBuffer* pRootKeyBuffer = new EntryBuffer;
+  pRootKeyBuffer->vIndex(pIndex1);
+  pRootKeyBuffer->vPartitionNo(0);
+  pRootKeyBuffer->vShow();
+  
   
   s256 sRecData;
   i8 iRecLength;
@@ -1723,11 +1741,14 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
   i8 iRowLength;
   bool bFormatted;
   bool bBlankLine;
+  KeyWrk xKeyWrk;
   
   // keys in ascending order
-  for (i8 iInt = 0; iInt <= 12; iInt++) {
+  for (i8 iInt = 0; iInt < 12; iInt++) {
     
     i8 iKey = iInt;
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     sprintf(sRecData.aChar(),"%lld,%s,1900-01-01 00:00:%lld",
             iKey,IntLib::sAsText(iInt),iInt);
@@ -1744,20 +1765,27 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
     xRowEntWrk.vDataSize(iRowLength);
     //((Row*)aRowData)->vDump(pColVec);
     
-    Entry* pRowEntry = pCurrentBuffer->pAppendRow(0,(Stz*)aRowData,iRowLength);
-  
-    if ( ! pRowEntry ) {
-      pCurrentBuffer = pCurrentBuffer->pNewNextBuffer();
-      pRowEntry = pCurrentBuffer->pAppendRow(0, (Stz*)aRowData, iRowLength);
-      ASSERT(pRowEntry);
-    }
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
+    Entry* pRowEntry =
+      pLastRowBuffer->pAppendRow(0,(Stz*)aRowData,iRowLength,
+                                    &pLastRowBuffer);
+  
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//    xKeyWrk.vReset();
+//    pRowEntry->vExtractIndexKey(xKeyWrk,pIdxColVec1);
+//    //xKeyWrk.vShow(pIdxColVec1);
+//    
+//    Entry* pKeyEntry =
+//      pRootIndexBuffer->pInsertKey(0, pRowEntry->xId(),
+//                                   xKeyWrk.aKey(), xKeyWrk.nKeySize(),
+//                                   &pRootKeyBuffer);
   }
   
-  for (EntryBuffer* pBuffer = pFirstBuffer;
-       pBuffer;
-       pBuffer = pBuffer->pNextBuffer())
-    pBuffer->vShow();
+  for (EntryBuffer* pRowBuffer = pFirstRowBuffer;
+       pRowBuffer;
+       pRowBuffer = pRowBuffer->pNextBuffer())
+    pRowBuffer->vShow();
 }
 
 /*============================================================================*/
