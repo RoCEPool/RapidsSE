@@ -155,6 +155,8 @@ namespace DBobjects
     i4           iGetFreeEntry(void);
     void         vHeadEntryNew(void);
     void         vHeadEntryRestore(void);
+    EntryBuffer* pInsertableBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
+                                   EntryBuffer** ppRootKeyBuffer);
     void         vItemCountRestore(void);
     bool         bKeyBeforeBuffer(Key* aKey);
     Item*        pNextItem(Item* pItem);
@@ -163,7 +165,8 @@ namespace DBobjects
     //void       vReplaceKeyEqual(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
     //void       vReplaceKeyLarger(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
     //void       vReplaceKeySmaller(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
-    void         vReplaceKey(Entry* pWasEntry, Entry* pWithEntry);
+    void         vReplaceKey(Entry* pWasEntry, Entry* pWithEntry,
+                             EntryBuffer** ppRootKeyBuffer=nullptr);
     //Entry*     pRightEntry(Entry* pEntry, ln nLevelNo);
   
     public:
