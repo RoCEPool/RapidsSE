@@ -582,8 +582,8 @@ void EntryBuffer::vCompact(void)
     // get the prior vector to the entry being moved
     
     Key* aKey = pMoveEntry->aKey();
-    aKey->vShow(pIdxColVec);
-    vTrace("\n"_Stz);
+    //aKey->vShow(pIdxColVec);
+    //vTrace("\n"_Stz);
     
     vPositionPrior(aKey, xPriorVec);
     //vDumpPriorVec(xPriorVec);
@@ -1112,8 +1112,11 @@ Entry* EntryBuffer::pInsertKeyBuffer_c(i8 iTxId, Id xId,
   //pInsertedKeyEntry->vShow(0,m_pIndex,true);
   
   if (pFirstEntry() == pInsertedKeyEntry) {
-    if (m_pHigherBuffer)
-      m_pHigherBuffer->vReplaceKey(pOriginalFirstEntry,pInsertedKeyEntry, *nBufferNo());
+    if (m_pHigherBuffer) {
+      //(*ppRootKeyBuffer)->vShowTree();
+      m_pHigherBuffer->vReplaceKey(pOriginalFirstEntry,pInsertedKeyEntry,
+                                   *nBufferNo(),ppRootKeyBuffer);
+    }
   }
   
   return pInsertedKeyEntry;
@@ -1543,6 +1546,9 @@ void EntryBuffer::vShow(void)
 void EntryBuffer::vShowTree(bool bDumpBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  if (! m_pHigherBuffer )
+    vTrace("\nIndex Tree:\n"_Stz,m_nBufferLevel);
   
   vTrace("L%lld"_Stz,m_nBufferLevel);
   
@@ -1988,6 +1994,7 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
   // split the left buffer to yield a right buffer
   
   EntryBuffer* pRightBuffer = pLeftBuffer->pSplit();
+  //(*ppRootKeyBuffer)->vShowTree();
   //pLeftBuffer->vShow();
   //pRightBuffer->vShow();
   
@@ -2028,7 +2035,7 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
                                        nOffsetsRight,
                                        ppRootKeyBuffer);
   
-//  (*ppRootKeyBuffer)->vShowTree();
+  //(*ppRootKeyBuffer)->vShowTree();
   
 //  EntryBuffer* pNewKeyRightBuffer = pNewKeyRight->pEntryBuffer();
 //  if (pHigherBuffer != pNewKeyRightBuffer->pHigherBuffer()) {
@@ -2139,6 +2146,7 @@ void EntryBuffer::vReplaceKey(Entry* pWasEntry, Entry* pWithEntry, i8 iBufferNo,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete the was key
   
+  //vShow();
   Key* aKeyWas = pWasEntry->aKey();
   vDeleteEntry(aKeyWas);
   //vShow();
@@ -2365,14 +2373,14 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
   //for (i8 iInt = 0; iInt <= 10; iInt++) {
     
   // keys in descending order
-  for (i8 iInt = 6; iInt >= 0; iInt--) {
+  for (i8 iInt = 7; iInt >= 0; iInt--) {
   
     i8 iKey = iInt;
     
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     sprintf(sRecData.aChar(),"%lld,%s,1900-01-01 00:00:%lld",
             iKey,IntLib::sAsText(iKey),iKey);
-    vTrace("Record: %s\n"_Stz,sRecData.aChar());
+    vTrace("\nInserting record: %s\n"_Stz,sRecData.aChar());
     
     char* aRowData = xRowEntWrk.aData();
     iRecLength = sRecData.iLength();
