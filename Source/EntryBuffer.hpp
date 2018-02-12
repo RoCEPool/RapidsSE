@@ -161,6 +161,7 @@ namespace DBobjects
     void         vItemCountRestore(void);
     bool         bKeyBeforeBuffer(Key* aKey);
     Item*        pNextItem(Item* pItem);
+    Entry*       pPositionPrior(Key* aFindKey);
     void         vPositionPrior(Key* aFindKey, Entry** pPriorVec);
     //void       vReplaceKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
     //void       vReplaceKeyEqual(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);

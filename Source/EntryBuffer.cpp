@@ -1166,11 +1166,40 @@ Entry* EntryBuffer::pNextEntry(Entry* pCurrent, i8 nOffsetNo)
 /*----------------------------------------------------------------------------*/
 /* position at the buffer into which key should be inserted                   */
 /*----------------------------------------------------------------------------*/
+//EntryBuffer* EntryBuffer::pPositionInsert(Key* aInsKey)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+//  
+//  return this;
+//}
+/*----------------------------------------------------------------------------*/
 EntryBuffer* EntryBuffer::pPositionInsert(Key* aInsKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  return this;
+
+  EntryBuffer* pEntryBuffer = this;
+
+  i8 iBufferLevel;
+  Entry* pEntry;
+
+  while (true) {
+    
+    iBufferLevel = pEntryBuffer->nBufferLevel();
+    
+    if (iBufferLevel == 0)
+      break;
+    
+    // get the entry before the key
+    pEntry = pEntryBuffer->pPositionPrior(aInsKey);
+    ASSERT(pEntry);
+    
+    // get the index buffer of the entry
+    pEntryBuffer = pEntry->pEntryBuffer();
+    ASSERT(pEntryBuffer);
+    ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
+  }
+
+  return pEntryBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1292,6 +1321,49 @@ Entry* EntryBuffer::pPositionQuery(Key* aGivenKey,i8 nKeyCols, eJC eJuxtaCompare
   
   // JC_SAME : return the entry which is same as given key
   // JC_AFTER: return the entry which the given key would be inserted after
+  return pScanEntry_sl;
+}
+
+/*----------------------------------------------------------------------------*/
+/* scan thru skip list and positition on entry prior to key                   */
+/*----------------------------------------------------------------------------*/
+Entry* EntryBuffer::pPositionPrior(Key* aFindKey)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  if (nItems() == 0)
+    return nullptr;
+  
+  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  i8 nKeyCols = pIdxColVec->nItems();
+  
+  bool bIsJuxta;
+  bool bIsEqual;
+  
+  Entry* pScanEntry_sl = m_pHeadEntry;
+  
+  ln nScanLevel;
+  for (nScanLevel = 2; *nScanLevel >= 0; nScanLevel--) {
+    
+    Entry* pNextEntry_sl = pNextEntry(pScanEntry_sl,*nScanLevel);
+    while (pNextEntry_sl) {
+      
+      Key* aNextKey = pNextEntry_sl->aKey();
+      
+      //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
+      //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
+      
+      bIsJuxta =
+        aNextKey->bJuxtaCompare(JC_AFTER,aFindKey,pIdxColVec,nKeyCols,bIsEqual);
+      
+      if (bIsJuxta)
+        break;
+      
+      pScanEntry_sl = pNextEntry_sl;
+      pNextEntry_sl = pNextEntry(pNextEntry_sl,*nScanLevel);
+    }
+  }
+  
   return pScanEntry_sl;
 }
 
@@ -1878,6 +1950,8 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+  (*ppRootKeyBuffer)->vShowTree();
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compact this buffer and check if it has enough space
   
@@ -1906,15 +1980,17 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the first key of left buffer into higher buffer
   
-  Entry* pFirstKeyLeft  = pLeftBuffer->pFirstEntry();
-  
-  Id xIdLeft(*pLeftBuffer->nBufferNo(),0);
-  i8 iTxIdLeft = pFirstKeyLeft->iTxId();
-  Key* aKeyLeft = pFirstKeyLeft->aKey();
-  i8 iKeyLenLeft = aKeyLeft->nKeySize(m_pIndex->pIdxColVec());
-  Entry* pNewKeyLeft =
-    pHigherBuffer->pInsertKey(iTxIdLeft,xIdLeft,aKeyLeft,iKeyLenLeft);
-  pHigherBuffer->vShow();
+  if ( ! pHigherBuffer->nItems() ) {
+    Entry* pFirstKeyLeft  = pLeftBuffer->pFirstEntry();
+    
+    Id xIdLeft(*pLeftBuffer->nBufferNo(),0);
+    i8 iTxIdLeft = pFirstKeyLeft->iTxId();
+    Key* aKeyLeft = pFirstKeyLeft->aKey();
+    i8 iKeyLenLeft = aKeyLeft->nKeySize(m_pIndex->pIdxColVec());
+    Entry* pNewKeyLeft =
+      pHigherBuffer->pInsertKey(iTxIdLeft,xIdLeft,aKeyLeft,iKeyLenLeft);
+    pHigherBuffer->vShow();
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the first key of right buffer into higher buffer
@@ -1935,6 +2011,8 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
   pRightBuffer->vShow();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  (*ppRootKeyBuffer)->vShowTree();
   
   if ( pRightBuffer->bKeyBeforeBuffer(aInsKey) )
     return pLeftBuffer;
@@ -2248,7 +2326,7 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // keys in ascending order
-  for (i8 iInt = 0; iInt < 4; iInt++) {
+  for (i8 iInt = 0; iInt <= 4; iInt++) {
     
   // keys in descending order
   //for (i8 iInt = 3; iInt >= 0; iInt--) {
