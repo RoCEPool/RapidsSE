@@ -1567,7 +1567,8 @@ void EntryBuffer::vShowTree(bool bDumpBuffer)
       
       Key* aKey = pEntry->aKey();
       
-      i8 iVal = *(i8*)aKey->aWspArea();
+      //i8 iVal = *(i8*)aKey->aWspArea();
+      i8 iVal = aKey->iGetInt();
       
       vTrace("%lld"_Stz,iVal);
       
@@ -1965,7 +1966,7 @@ bool EntryBuffer::bKeyBeforeBuffer(Key* aKeyTest)
 }
 
 /*----------------------------------------------------------------------------*/
-/* create a new insert buffer (adjusting higher buffers accordingly)           */
+/* create a new insert buffer (adjusting higher buffers accordingly)          */
 /*----------------------------------------------------------------------------*/
 EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
                                            EntryBuffer** ppRootKeyBuffer)
@@ -1994,7 +1995,7 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
   // split the left buffer to yield a right buffer
   
   EntryBuffer* pRightBuffer = pLeftBuffer->pSplit();
-  //(*ppRootKeyBuffer)->vShowTree();
+  (*ppRootKeyBuffer)->vShowTree();
   //pLeftBuffer->vShow();
   //pRightBuffer->vShow();
   

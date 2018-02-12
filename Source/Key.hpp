@@ -75,6 +75,8 @@ namespace DBobjects
   
     char* aWspArea(void);
     Stz*  aWspStr(void);
+  
+    i8 iGetInt(void);
   };
   
   Key* _aKey(void* aAddr);
