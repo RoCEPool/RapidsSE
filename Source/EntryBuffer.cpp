@@ -2086,7 +2086,9 @@ EntryBuffer* EntryBuffer::pNewNextBuffer(void)
   
   pNewBuffer->vHigherBuffer(m_pHigherBuffer);
   pNewBuffer->vPrevBuffer(this);
-  vNextBuffer(pNewBuffer);
+  pNewBuffer->vNextBuffer(m_pNextBuffer);
+  
+  m_pNextBuffer = pNewBuffer;
   
   return pNewBuffer;
 }
@@ -2363,7 +2365,7 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
   //for (i8 iInt = 0; iInt <= 10; iInt++) {
     
   // keys in descending order
-  for (i8 iInt = 4; iInt >= 0; iInt--) {
+  for (i8 iInt = 6; iInt >= 0; iInt--) {
   
     i8 iKey = iInt;
     
