@@ -171,7 +171,7 @@ namespace DBobjects
     //void       vReplaceKeyEqual(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
     //void       vReplaceKeyLarger(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
     //void       vReplaceKeySmaller(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
-    void         vReplaceKey(Entry* pWasEntry, Entry* pWithEntry,
+    void         vReplaceKey(Entry* pWasEntry, Entry* pWithEntry,i8 iBufferNo,
                              EntryBuffer** ppRootKeyBuffer=nullptr);
     //Entry*     pRightEntry(Entry* pEntry, ln nLevelNo);
   

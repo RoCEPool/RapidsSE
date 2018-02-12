@@ -617,7 +617,7 @@ void EntryBuffer::vCompact(void)
       if (iWasOffset == xPriorVec[i_Offset]->iNEO(i_Offset))
         xPriorVec[i_Offset]->vNEO(i_Offset,iNowOffset);
     
-    vShow();
+    //();
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // move scan
@@ -896,8 +896,8 @@ Entry* EntryBuffer::pInsertKey(i8 iTxId, Id xId, Key* aKey, i8 iKeyLength,
     
       (*ppRootKeyBuffer) = pNewHigherBuffer();
       EntryBuffer* pNewRightKeyBuffer = this->pSplit();
-      this->vShow();
-      pNewRightKeyBuffer->vShow();
+      //this->vShow();
+      //pNewRightKeyBuffer->vShow();
       
       Entry* pFirstKeyLeft  = this->pFirstEntry();
       Id xIdLeft(*this->nBufferNo(),0);
@@ -918,15 +918,15 @@ Entry* EntryBuffer::pInsertKey(i8 iTxId, Id xId, Key* aKey, i8 iKeyLength,
       (*ppRootKeyBuffer)->pInsertKey(iTxIdRight,xIdRight,aKeyRight,iKeyLenRight);
       
       
-      (*ppRootKeyBuffer)->vShow();
-      this->vShow();
-      pNewRightKeyBuffer->vShow();
+      //(*ppRootKeyBuffer)->vShow();
+      //this->vShow();
+      //pNewRightKeyBuffer->vShow();
       
       
       if ( ! pNewRightKeyBuffer->bKeyBeforeBuffer(aKey) ) {
         pKeyEntry = pNewRightKeyBuffer->pInsertKey(iTxId, xId, aKey, iKeyLength,
                                                    ppRootKeyBuffer);
-        pNewRightKeyBuffer->vShow();
+        //pNewRightKeyBuffer->vShow();
         return pKeyEntry;
       }
       
@@ -1108,9 +1108,12 @@ Entry* EntryBuffer::pInsertKeyBuffer_c(i8 iTxId, Id xId,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // handle the insert of a left most key
   
+  //pFirstEntry()->vShow(0,m_pIndex,true);
+  //pInsertedKeyEntry->vShow(0,m_pIndex,true);
+  
   if (pFirstEntry() == pInsertedKeyEntry) {
     if (m_pHigherBuffer)
-      m_pHigherBuffer->vReplaceKey(pOriginalFirstEntry,pInsertedKeyEntry);
+      m_pHigherBuffer->vReplaceKey(pOriginalFirstEntry,pInsertedKeyEntry, *nBufferNo());
   }
   
   return pInsertedKeyEntry;
@@ -2125,7 +2128,7 @@ Item* EntryBuffer::pNextItem(Item* pCurrent)
 /*----------------------------------------------------------------------------*/
 /* replace key                                                                */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vReplaceKey(Entry* pWasEntry, Entry* pWithEntry,
+void EntryBuffer::vReplaceKey(Entry* pWasEntry, Entry* pWithEntry, i8 iBufferNo,
                               EntryBuffer** ppRootKeyBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
@@ -2135,12 +2138,13 @@ void EntryBuffer::vReplaceKey(Entry* pWasEntry, Entry* pWithEntry,
   
   Key* aKeyWas = pWasEntry->aKey();
   vDeleteEntry(aKeyWas);
-  
+  //vShow();
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the with key
   
   i8 iTxIdWith = pWithEntry->iTxId();
-  Id xIdWith(pWithEntry->xId().iBuffer(),0);
+  //Id xIdWith(pWithEntry->xId().iBuffer(),0);
+  Id xIdWith(iBufferNo,0);
   Key* aKeyWith = pWithEntry->aKey();
   i8 iKeyLenWith = aKeyWith->nKeySize(m_pIndex->pIdxColVec());
   
@@ -2166,6 +2170,7 @@ void EntryBuffer::vReplaceKey(Entry* pWasEntry, Entry* pWithEntry,
                                       aKeyWith,iKeyLenWith,nOffsets,
                                       ppRootKeyBuffer);
   
+  //vShow();
   ASSERT(pNewWithEntry);
 }
 
@@ -2354,10 +2359,10 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // keys in ascending order
-  for (i8 iInt = 0; iInt <= 6; iInt++) {
+  //for (i8 iInt = 0; iInt <= 10; iInt++) {
     
   // keys in descending order
-  //for (i8 iInt = 3; iInt >= 0; iInt--) {
+  for (i8 iInt = 3; iInt >= 0; iInt--) {
   
     i8 iKey = iInt;
     
