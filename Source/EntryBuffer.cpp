@@ -8,6 +8,8 @@
 
 extern AttachMap* gpAttachMap;
 
+bool mbWatch = false;
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -1995,7 +1997,8 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
   // split the left buffer to yield a right buffer
   
   EntryBuffer* pRightBuffer = pLeftBuffer->pSplit();
-  (*ppRootKeyBuffer)->vShowTree();
+  //if (mbWatch)
+  //  (*ppRootKeyBuffer)->vShowTree();
   //pLeftBuffer->vShow();
   //pRightBuffer->vShow();
   
@@ -2036,7 +2039,8 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
                                        nOffsetsRight,
                                        ppRootKeyBuffer);
   
-  //(*ppRootKeyBuffer)->vShowTree();
+  //if (mbWatch)
+  //  (*ppRootKeyBuffer)->vShowTree();
   
 //  EntryBuffer* pNewKeyRightBuffer = pNewKeyRight->pEntryBuffer();
 //  if (pHigherBuffer != pNewKeyRightBuffer->pHigherBuffer()) {
@@ -2378,10 +2382,16 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
   
     i8 iKey = iInt;
     
+    if (0 == iKey) {
+      mbWatch = true;
+      pRootKeyBuffer->vShowTree(false);
+    }
+    
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     sprintf(sRecData.aChar(),"%lld,%s,1900-01-01 00:00:%lld",
             iKey,IntLib::sAsText(iKey),iKey);
-    vTrace("\nInserting record: %s\n"_Stz,sRecData.aChar());
+    if (mbWatch)
+      vTrace("\nInserting record: %s\n"_Stz,sRecData.aChar());
     
     char* aRowData = xRowEntWrk.aData();
     iRecLength = sRecData.iLength();
@@ -2408,7 +2418,9 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
       pRootKeyBuffer->pInsertKeyTree_c(0, pRowEntry->xId(),
                                        xKeyWrk.aKey(), xKeyWrk.nKeySize(),
                                        &pRootKeyBuffer);
-    pRootKeyBuffer->vShowTree(false);
+    if (mbWatch)
+      pRootKeyBuffer->vShowTree(false);
+
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
