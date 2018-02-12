@@ -1031,6 +1031,23 @@ Entry* EntryBuffer::pInsertKeyUpwards_c(i8 iTxId, Id xId,
     pInsertIntoBuffer->pInsertKeyBuffer_c(iTxId,xId,aInsKey,iInsKeyLen,nOffsets,
                                           ppRootKeyBuffer);
   
+  if (pInsertIntoBuffer->m_nBufferLevel) {
+    xId = pInsertedKeyEntry->xId();
+    i8 nBuffer = xId.iBuffer();
+    
+    HeapBuffer* pHeapBuffer =
+    reinterpret_cast<HeapBuffer*>(gpBufferPool->pToBuffer(nBuffer));
+    
+    EntryBuffer* pChildBuffer =
+    reinterpret_cast<EntryBuffer*>(pHeapBuffer->pFirstChunk());
+    
+    if (pChildBuffer->m_pHigherBuffer != pInsertIntoBuffer) {
+      //(*ppRootKeyBuffer)->vShowTree();
+      pChildBuffer->m_pHigherBuffer = pInsertIntoBuffer;
+      //(*ppRootKeyBuffer)->vShowTree();
+    }
+  }
+  
   return pInsertedKeyEntry;
 }
 
@@ -2007,14 +2024,14 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
                                        nOffsetsRight,
                                        ppRootKeyBuffer);
   
-  (*ppRootKeyBuffer)->vShowTree(true);
+//  (*ppRootKeyBuffer)->vShowTree();
   
-  EntryBuffer* pNewKeyRightBuffer = pNewKeyRight->pEntryBuffer();
-  if (pHigherBuffer != pNewKeyRightBuffer->pHigherBuffer()) {
-    pHigherBuffer->vShow();
-    pNewKeyRightBuffer->vShow();
-  }
-  ASSERT(pHigherBuffer == pNewKeyRight->pEntryBuffer()->pHigherBuffer());
+//  EntryBuffer* pNewKeyRightBuffer = pNewKeyRight->pEntryBuffer();
+//  if (pHigherBuffer != pNewKeyRightBuffer->pHigherBuffer()) {
+//    pHigherBuffer->vShow();
+//    pNewKeyRightBuffer->vShow();
+//  }
+//  ASSERT(pHigherBuffer == pNewKeyRight->pEntryBuffer()->pHigherBuffer());
   //(*ppRootKeyBuffer)->vShowTree();
   
   
