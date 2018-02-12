@@ -1492,11 +1492,27 @@ void EntryBuffer::vShowTree(void)
   i8 iOffset = m_pHeadEntry->iNEO(0);
   while (iOffset > -1) {
     Entry* pEntry = pGetEntryOffset(iOffset);
-    pEntry->vShow(iOffset,m_pIndex,true);
+    //pEntry->vShow(iOffset,m_pIndex,true);
+    
+    Key* aKey = pEntry->aKey();
+    
+    i8 iVal = *(i8*)aKey->aWspArea();
+    
+    vTrace("%lld"_Stz,iVal);
+    
     iOffset = pEntry->iNEO(0);
+    if (iOffset > -1)
+      vTrace(","_Stz);
+    
   }
+  vTrace("]"_Stz);
   
-  vTrace("\n"_Stz);
+  if ( ! m_nBufferLevel ) {
+    return;
+  }
+  else {
+    vTrace("\n"_Stz);
+  }
   
   Id xId;
 
@@ -1519,6 +1535,7 @@ void EntryBuffer::vShowTree(void)
   }
   
   vTrace("\n"_Stz);
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1900,6 +1917,7 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
   i8 iKeyLenLeft = aKeyLeft->nKeySize(m_pIndex->pIdxColVec());
   Entry* pNewKeyLeft =
     pHigherBuffer->pInsertKey(iTxIdLeft,xIdLeft,aKeyLeft,iKeyLenLeft);
+  pHigherBuffer->vShow();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the first key of right buffer into higher buffer
@@ -1912,6 +1930,7 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
   i8 iKeyLenRight = aKeyRight->nKeySize(m_pIndex->pIdxColVec());
   Entry* pNewKeyRight =
     pHigherBuffer->pInsertKey(iTxIdRight,xIdRight,aKeyRight,iKeyLenRight);
+  pHigherBuffer->vShow();
   
   
   pHigherBuffer->vShow();
@@ -2280,7 +2299,7 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
   
   pRootKeyBuffer->vShow();
   
-  //pRootKeyBuffer->vShowTree();
+  pRootKeyBuffer->vShowTree();
 }
 
 /*============================================================================*/
