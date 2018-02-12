@@ -632,7 +632,7 @@ void EntryBuffer::vCompact(void)
   
   vSetWilderness();
   
-  vShow();
+  //vShow();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -972,7 +972,7 @@ Entry* EntryBuffer::pInsertKey(i8 iTxId, Id xId, Key* aKey, i8 iKeyLength,
     xPriorVec[iNextOffset]->vNEO(iNextOffset,iKeyEntryOffset);
   }
   
-  vShow();
+  //vShow();
   
   return pKeyEntry;
 }
@@ -1000,6 +1000,7 @@ Entry* EntryBuffer::pInsertKeyTree_c(i8 iTxId, Id xId,
   // position on the initial buffer we will try to insert into
   
   EntryBuffer* pPositionedBuffer = (*ppRootKeyBuffer)->pPositionInsert(aInsKey);
+  //pPositionedBuffer->vShow();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1025,7 +1026,6 @@ Entry* EntryBuffer::pInsertKeyUpwards_c(i8 iTxId, Id xId,
   
   EntryBuffer* pInsertIntoBuffer =
     pInsertableBuffer(aInsKey,nEntryPlusOffsets,ppRootKeyBuffer);
-  
   
   Entry* pInsertedKeyEntry =
     pInsertIntoBuffer->pInsertKeyBuffer_c(iTxId,xId,aInsKey,iInsKeyLen,nOffsets,
@@ -1086,7 +1086,7 @@ Entry* EntryBuffer::pInsertKeyBuffer_c(i8 iTxId, Id xId,
     xPriorVec[i_Offset]->vNEO(i_Offset,iKeyEntryOffset);
   }
   
-  vShow();
+  //vShow();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // handle the insert of a left most key
@@ -1519,15 +1519,19 @@ void EntryBuffer::vShow(void)
 /*----------------------------------------------------------------------------*/
 /* show contents of all buffers in index tree                                 */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vShowTree(void)
+void EntryBuffer::vShowTree(bool bDumpBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  vTrace("L%lld"_Stz,m_nBufferLevel);
   
   for (EntryBuffer* pBuffer = this;
        pBuffer;
        pBuffer = pBuffer->pNextBuffer()) {
     
-    vTrace("["_Stz);
+    vTrace("[t%lld h%lld: "_Stz,
+           *pBuffer->nBufferNo(),
+           pBuffer->pHigherBuffer() ? *pBuffer->pHigherBuffer()->nBufferNo() : 0);
     
     i8 iOffset = pBuffer->pHeadEntry()->iNEO(0);
     while (iOffset > -1) {
@@ -1551,6 +1555,13 @@ void EntryBuffer::vShowTree(void)
   
   vTrace("\n"_Stz);
   
+  if (bDumpBuffer) {
+    for (EntryBuffer* pBuffer = this;
+         pBuffer;
+         pBuffer = pBuffer->pNextBuffer())
+      pBuffer->vShow();
+  }
+  
   if ( ! m_nBufferLevel )
     return;
   
@@ -1568,7 +1579,7 @@ void EntryBuffer::vShowTree(void)
   EntryBuffer* pChildBuffer =
     reinterpret_cast<EntryBuffer*>(pHeapBuffer->pFirstChunk());
   
-  pChildBuffer->vShowTree();
+  pChildBuffer->vShowTree(bDumpBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1620,6 +1631,26 @@ EntryBuffer* EntryBuffer::pSplit(void)
     pMoveEntry = pNextEntry;
   }
  
+  Id xId;
+  if (m_nBufferLevel != 0)  {
+    for (Entry* pEntry = pNewBuffer->pFirstEntry();
+         pEntry;
+         pEntry = pNewBuffer->pNextEntry(pEntry, 0)) {
+      
+      xId = pEntry->xId();
+      i8 nBuffer = xId.iBuffer();
+      
+      HeapBuffer* pHeapBuffer =
+        reinterpret_cast<HeapBuffer*>(gpBufferPool->pToBuffer(nBuffer));
+      
+      EntryBuffer* pChildBuffer =
+        reinterpret_cast<EntryBuffer*>(pHeapBuffer->pFirstChunk());
+      
+      ASSERT(pChildBuffer->m_pHigherBuffer == this);
+      pChildBuffer->m_pHigherBuffer = pNewBuffer;
+    }
+  }
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compact the buffer
   vCompact();
@@ -1869,7 +1900,7 @@ EntryBuffer* EntryBuffer::pInsertableBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
   else {
     pInsertIntoBuffer =
       pNewInsertBuffer(aInsKey,nEntryPlusOffsets,ppRootKeyBuffer);
-    (*ppRootKeyBuffer)->vShow();
+    //(*ppRootKeyBuffer)->vShow();
   }
  
   return pInsertIntoBuffer;
@@ -1914,8 +1945,6 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  (*ppRootKeyBuffer)->vShowTree();
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compact this buffer and check if it has enough space
   
@@ -1938,8 +1967,8 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
   // split the left buffer to yield a right buffer
   
   EntryBuffer* pRightBuffer = pLeftBuffer->pSplit();
-  pLeftBuffer->vShow();
-  pRightBuffer->vShow();
+  //pLeftBuffer->vShow();
+  //pRightBuffer->vShow();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the first key of left buffer into higher buffer
@@ -1958,7 +1987,7 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
                                          aKeyLeft,iKeyLenLeft,
                                          nOffsetsLeft,
                                          ppRootKeyBuffer);
-    pHigherBuffer->vShow();
+    //(*ppRootKeyBuffer)->vShowTree();
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1977,16 +2006,23 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
                                        aKeyRight,iKeyLenRight,
                                        nOffsetsRight,
                                        ppRootKeyBuffer);
-  pHigherBuffer->vShow();
+  
+  (*ppRootKeyBuffer)->vShowTree(true);
+  
+  EntryBuffer* pNewKeyRightBuffer = pNewKeyRight->pEntryBuffer();
+  if (pHigherBuffer != pNewKeyRightBuffer->pHigherBuffer()) {
+    pHigherBuffer->vShow();
+    pNewKeyRightBuffer->vShow();
+  }
+  ASSERT(pHigherBuffer == pNewKeyRight->pEntryBuffer()->pHigherBuffer());
+  //(*ppRootKeyBuffer)->vShowTree();
   
   
-  pHigherBuffer->vShow();
-  pLeftBuffer->vShow();
-  pRightBuffer->vShow();
+  //pHigherBuffer->vShow();
+  //pLeftBuffer->vShow();
+  //pRightBuffer->vShow();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  (*ppRootKeyBuffer)->vShowTree();
   
   if ( pRightBuffer->bKeyBeforeBuffer(aInsKey) )
     return pLeftBuffer;
@@ -2238,7 +2274,7 @@ void EntryBuffer::vUnitTest_b(Table* pTable)
   pCurrentIndexBuffer->vShow();
   pSplitIndexBuffer->vShow();
   
-//  // delete some entries
+//  // delete some entries[2]
 //  Entry* pEntry;
 //  pCurrentIndexBuffer->vShow();
 //  
@@ -2297,7 +2333,7 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
   EntryBuffer* pRootKeyBuffer = new EntryBuffer;
   pRootKeyBuffer->vIndex(pIndex1);
   pRootKeyBuffer->vPartitionNo(0);
-  pRootKeyBuffer->vShow();
+
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // keys in ascending order
@@ -2338,18 +2374,16 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
       pRootKeyBuffer->pInsertKeyTree_c(0, pRowEntry->xId(),
                                        xKeyWrk.aKey(), xKeyWrk.nKeySize(),
                                        &pRootKeyBuffer);
+    pRootKeyBuffer->vShowTree(false);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  for (EntryBuffer* pRowBuffer = pFirstRowBuffer;
-       pRowBuffer;
-       pRowBuffer = pRowBuffer->pNextBuffer())
-    pRowBuffer->vShow();
+//  for (EntryBuffer* pRowBuffer = pFirstRowBuffer;
+//       pRowBuffer;
+//       pRowBuffer = pRowBuffer->pNextBuffer())
+//    pRowBuffer->vShow();
   
-  pRootKeyBuffer->vShow();
-  
-  pRootKeyBuffer->vShowTree();
 }
 
 /*============================================================================*/
