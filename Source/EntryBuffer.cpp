@@ -1340,10 +1340,11 @@ Entry* EntryBuffer::pPositionPrior(Key* aFindKey)
       bIsJuxta =
         aNextKey->bJuxtaCompare(JC_AFTER,aFindKey,pIdxColVec,nKeyCols,bIsEqual);
       
+      pScanEntry_sl = pNextEntry_sl;
+      
       if (bIsJuxta)
         break;
       
-      pScanEntry_sl = pNextEntry_sl;
       pNextEntry_sl = pNextEntry(pNextEntry_sl,*nScanLevel);
     }
   }
@@ -2362,7 +2363,7 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
   //for (i8 iInt = 0; iInt <= 10; iInt++) {
     
   // keys in descending order
-  for (i8 iInt = 3; iInt >= 0; iInt--) {
+  for (i8 iInt = 4; iInt >= 0; iInt--) {
   
     i8 iKey = iInt;
     
