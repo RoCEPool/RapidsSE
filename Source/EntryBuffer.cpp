@@ -1487,55 +1487,52 @@ void EntryBuffer::vShowTree(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  vTrace("["_Stz);
-  
-  i8 iOffset = m_pHeadEntry->iNEO(0);
-  while (iOffset > -1) {
-    Entry* pEntry = pGetEntryOffset(iOffset);
-    //pEntry->vShow(iOffset,m_pIndex,true);
+  for (EntryBuffer* pBuffer = this;
+       pBuffer;
+       pBuffer = pBuffer->pNextBuffer()) {
     
-    Key* aKey = pEntry->aKey();
+    vTrace("["_Stz);
     
-    i8 iVal = *(i8*)aKey->aWspArea();
+    i8 iOffset = pBuffer->pHeadEntry()->iNEO(0);
+    while (iOffset > -1) {
+      Entry* pEntry = pBuffer->pGetEntryOffset(iOffset);
+      //pEntry->vShow(iOffset,m_pIndex,true);
+      
+      Key* aKey = pEntry->aKey();
+      
+      i8 iVal = *(i8*)aKey->aWspArea();
+      
+      vTrace("%lld"_Stz,iVal);
+      
+      iOffset = pEntry->iNEO(0);
+      if (iOffset > -1)
+        vTrace(","_Stz);
+      
+    }
+    vTrace("]"_Stz);
     
-    vTrace("%lld"_Stz,iVal);
-    
-    iOffset = pEntry->iNEO(0);
-    if (iOffset > -1)
-      vTrace(","_Stz);
-    
-  }
-  vTrace("]"_Stz);
-  
-  if ( ! m_nBufferLevel ) {
-    return;
-  }
-  else {
-    vTrace("\n"_Stz);
-  }
-  
-  Id xId;
-
-  iOffset = m_pHeadEntry->iNEO(0);
-  while (iOffset > -1) {
-    Entry* pEntry = pGetEntryOffset(iOffset);
-    
-    xId = pEntry->xId();
-    bn nBuffer = xId.iBuffer();
-    
-    HeapBuffer* pHeapBuffer =
-      reinterpret_cast<HeapBuffer*>(gpBufferPool->pToBuffer(nBuffer));
-    
-    EntryBuffer* pChildBuffer =
-    reinterpret_cast<EntryBuffer*>(pHeapBuffer->pFirstChunk());
-    
-    pChildBuffer->vShowTree();
-    
-    iOffset = pEntry->iNEO(0);
   }
   
   vTrace("\n"_Stz);
   
+  if ( ! m_nBufferLevel )
+    return;
+  
+  Entry* pFirstEntry = this->pFirstEntry();
+  if (! pFirstEntry)
+    return;
+  
+  Id xId;
+  xId = pFirstEntry->xId();
+  bn nBuffer = xId.iBuffer();
+  
+  HeapBuffer* pHeapBuffer =
+  reinterpret_cast<HeapBuffer*>(gpBufferPool->pToBuffer(nBuffer));
+  
+  EntryBuffer* pChildBuffer =
+  reinterpret_cast<EntryBuffer*>(pHeapBuffer->pFirstChunk());
+  
+  pChildBuffer->vShowTree();
 }
 
 /*----------------------------------------------------------------------------*/
