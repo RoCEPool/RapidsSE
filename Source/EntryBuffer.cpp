@@ -671,7 +671,7 @@ void EntryBuffer::vDeleteEntry(Entry* pEntry)
   Entry* xPriorVec[3];
 
   Key* aKey = pEntry->aKey();
-  vPositionPrior(aKey, xPriorVec); //, pEntry);
+  vPositionPrior(aKey, xPriorVec, pEntry);
   //vDumpPriorVec(xPriorVec);
   
   i8 nOffsets = pEntry->nOffsets();
@@ -1448,9 +1448,9 @@ void EntryBuffer::vPositionPrior(Key* aFindKey, Entry* pPriorVec[],
         aNextKey->bJuxtaCompare(JC_AFTER,aFindKey,pIdxColVec,nKeyCols,bIsEqual);
       
       if (bIsJuxta) {
-        if (! pFindEntry)
+        if (! pFindEntry  || *nScanLevel)
           break;
-        if (pNextEntry_sl == pFindEntry)
+        if (0 == *nScanLevel && pNextEntry_sl == pFindEntry)
           break;
       }
       
@@ -2542,7 +2542,7 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
     //i8 iInt = Random::iRandom(1000);
   
   // duplicate keys
-  for (i8 iInt = 1; iInt <= 9; iInt++)
+  for (i8 iInt = 1; iInt <= 3; iInt++)
   for (i8 iCount = 0; iCount < iInt; iCount++) {
     
     i8 iKey = iInt;
