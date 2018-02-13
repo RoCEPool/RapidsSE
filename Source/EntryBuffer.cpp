@@ -1414,7 +1414,8 @@ Entry* EntryBuffer::pPositionPrior(Key* aFindKey)
 /*----------------------------------------------------------------------------*/
 /* scan thru skip list and positition on entry prior to key                   */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vPositionPrior(Key* aFindKey, Entry* pPriorVec[])
+void EntryBuffer::vPositionPrior(Key* aFindKey, Entry* pPriorVec[],
+                                 Entry* pFindEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1446,9 +1447,13 @@ void EntryBuffer::vPositionPrior(Key* aFindKey, Entry* pPriorVec[])
       bIsJuxta =
         aNextKey->bJuxtaCompare(JC_AFTER,aFindKey,pIdxColVec,nKeyCols,bIsEqual);
       
-      if (bIsJuxta)
-        break;
-    
+      if (bIsJuxta) {
+        if (! pFindEntry)
+          break;
+        if (pNextEntry_sl == pFindEntry)
+          break;
+      }
+      
       pScanEntry_sl = pNextEntry_sl;
       pNextEntry_sl = pNextEntry(pNextEntry_sl,*nScanLevel);
     }
@@ -1691,7 +1696,7 @@ void EntryBuffer::vShowTree(bool bDumpBuffer)
   EntryBuffer* pChildBuffer =
     reinterpret_cast<EntryBuffer*>(pHeapBuffer->pFirstChunk());
   
-  //pChildBuffer->vShowTree(bDumpBuffer);
+  pChildBuffer->vShowTree(bDumpBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2267,75 +2272,75 @@ Item* EntryBuffer::pNextItem(Item* pCurrent)
 /*----------------------------------------------------------------------------*/
 /* replace key                                                                */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vReplaceKey(Entry* pWasEntry, Entry* pWithEntry, i8 iBufferNo,
-                              EntryBuffer** ppRootKeyBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  if (mbWatch) {
-    vTrace("*[%lld]Replacing %lld with %lld\n"_Stz,
-           *nBufferNo(),
-           pWasEntry->aKey()->iGetInt(),
-           pWithEntry->aKey()->iGetInt());
-    int iDebug = 1;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // delete the was key
-  
-  //vShow();
-  Key* aKeyWas = pWasEntry->aKey();
-  vDeleteEntry(aKeyWas);
-  if (mbWatch) {
-    vTrace("*[%lld]Deleted "_Stz,*nBufferNo());
-    vShowShort();
-    vTrace("\n"_Stz);
-    int iDebug = 1;
-  }
-  
-  
-  //vShow();
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the with key
-  
-  i8 iTxIdWith = pWithEntry->iTxId();
-  //Id xIdWith(pWithEntry->xId().iBuffer(),0);
-  Id xIdWith(iBufferNo,0);
-  Key* aKeyWith = pWithEntry->aKey();
-  i8 iKeyLenWith = aKeyWith->nKeySize(m_pIndex->pIdxColVec());
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // offsets and sizes
-  
-  i8 nOffsets = Random::iLogLevel(3,C_FLAT_FREQ + 1) + 1;
-  i8 nEntryBytes = Entry::nBytesRequired(nOffsets,iKeyLenWith);
-  i8 nOffsetBytes = nOffsets*sizeof(i4);
-  i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get insertable buffer
-  
-  EntryBuffer* pInsertBuffer = pInsertableBuffer(aKeyWith,nEntryPlusOffsets,
-                                                 ppRootKeyBuffer);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // insert the with key
-  
-  Entry* pNewWithEntry =
-    pInsertBuffer->pInsertKeyBuffer_c(iTxIdWith,xIdWith,
-                                      aKeyWith,iKeyLenWith,nOffsets,
-                                      ppRootKeyBuffer);
-  
-  if (mbWatch) {
-    vTrace("*[%lld]Replaced "_Stz,*nBufferNo());
-    vShowShort();
-    vTrace("\n"_Stz);
-    int iDebug = 1;
-  }
-  
-  ASSERT(pNewWithEntry);
-}
-
+//void EntryBuffer::vReplaceKey(Entry* pWasEntry, Entry* pWithEntry, i8 iBufferNo,
+//                              EntryBuffer** ppRootKeyBuffer)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+//  
+//  if (mbWatch) {
+//    vTrace("*[%lld]Replacing %lld with %lld\n"_Stz,
+//           *nBufferNo(),
+//           pWasEntry->aKey()->iGetInt(),
+//           pWithEntry->aKey()->iGetInt());
+//    int iDebug = 1;
+//  }
+//  
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // delete the was key
+//  
+//  //vShow();
+//  Key* aKeyWas = pWasEntry->aKey();
+//  vDeleteEntry(aKeyWas);
+//  if (mbWatch) {
+//    vTrace("*[%lld]Deleted "_Stz,*nBufferNo());
+//    vShowShort();
+//    vTrace("\n"_Stz);
+//    int iDebug = 1;
+//  }
+//  
+//  
+//  //vShow();
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // get the with key
+//  
+//  i8 iTxIdWith = pWithEntry->iTxId();
+//  //Id xIdWith(pWithEntry->xId().iBuffer(),0);
+//  Id xIdWith(iBufferNo,0);
+//  Key* aKeyWith = pWithEntry->aKey();
+//  i8 iKeyLenWith = aKeyWith->nKeySize(m_pIndex->pIdxColVec());
+//  
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // offsets and sizes
+//  
+//  i8 nOffsets = Random::iLogLevel(3,C_FLAT_FREQ + 1) + 1;
+//  i8 nEntryBytes = Entry::nBytesRequired(nOffsets,iKeyLenWith);
+//  i8 nOffsetBytes = nOffsets*sizeof(i4);
+//  i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // get insertable buffer
+//  
+//  EntryBuffer* pInsertBuffer = pInsertableBuffer(aKeyWith,nEntryPlusOffsets,
+//                                                 ppRootKeyBuffer);
+//  
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // insert the with key
+//  
+//  Entry* pNewWithEntry =
+//    pInsertBuffer->pInsertKeyBuffer_c(iTxIdWith,xIdWith,
+//                                      aKeyWith,iKeyLenWith,nOffsets,
+//                                      ppRootKeyBuffer);
+//  
+//  if (mbWatch) {
+//    vTrace("*[%lld]Replaced "_Stz,*nBufferNo());
+//    vShowShort();
+//    vTrace("\n"_Stz);
+//    int iDebug = 1;
+//  }
+//  
+//  ASSERT(pNewWithEntry);
+//}
+//
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -2527,13 +2532,17 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
   //for (i8 iInt = 100; iInt >= 0; iInt--) {
   
   // keys in random order
-  i8 iRndNo[] = { 4,0,1,7,8,2,5,9,6,3,10 };
-  for (i8 iCount = 0; iCount <= 100; iCount++) {
-    //i8 iInt = iRndNo[iCount]; //Random::iRandom(10);
-    i8 iInt = Random::iRandom(1000);
+  //i8 iRndNo[] = { 4,0,1,7,8,2,5,9,6,3,10 };
+  //for (i8 iCount = 0; iCount <= 100; iCount++) {
+  //  //i8 iInt = iRndNo[iCount]; //Random::iRandom(10);
+  //  i8 iInt = Random::iRandom(1000);
+  
+  // duplicate keys
+  for (i8 iInt = 1; iInt <= 9; iInt++)
+  for (i8 iCount = 0; iCount < iInt; iCount++) {
     
     i8 iKey = iInt;
-    
+  
 //    if (3 == iKey) {
 //      mbWatch = true;
 //      pRootKeyBuffer->vShowTree(true);
@@ -2574,6 +2583,7 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
     vTrace("\nInserted record: %s\n"_Stz,sRecData.aChar());
     pRootKeyBuffer->vShowTree(false);
 
+    int iDebug = 1;
   }
   pRootKeyBuffer->vShowTree(false);
   

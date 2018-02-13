@@ -169,7 +169,8 @@ namespace DBobjects
     bool         bKeyBeforeBuffer(Key* aKey);
     Item*        pNextItem(Item* pItem);
     Entry*       pPositionPrior(Key* aFindKey);
-    void         vPositionPrior(Key* aFindKey, Entry** pPriorVec);
+    void         vPositionPrior(Key* aFindKey, Entry** pPriorVec,
+                                Entry* pFindEntry=nullptr);
     //void       vReplaceKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
     //void       vReplaceKeyEqual(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
     //void       vReplaceKeyLarger(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
