@@ -457,7 +457,14 @@ bool IndexData::bInsertEntry(Entry* pRow)
     m_pRoot->vIndex(m_pIndex);
     m_pRoot->vPartitionNo(m_nPartitionNo);
   }
-  bool bInserted = bInsertEntry(m_pRoot, xKeyWrk, pRow->xId(), 0);
+  
+  //bool bInserted = bInsertEntry(m_pRoot, xKeyWrk, pRow->xId(), 0);
+  
+  Entry* pKeyEntry =
+  m_pRoot->pInsertKeyTree_c(0, pRow->xId(), xKeyWrk.aKey(),
+                            xKeyWrk.nKeySize(),
+                            &m_pRoot);
+  ASSERT(pKeyEntry);
   
   m_zLock.vDropWrite();
   
@@ -468,7 +475,7 @@ bool IndexData::bInsertEntry(Entry* pRow)
   //  NEVER_REACH;
   //}
   
-  return bInserted;
+  return true;                                                    //ALKA
 }
 
 /*----------------------------------------------------------------------------*/
