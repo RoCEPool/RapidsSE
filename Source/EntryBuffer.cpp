@@ -671,7 +671,7 @@ void EntryBuffer::vDeleteEntry(Entry* pEntry)
   Entry* xPriorVec[3];
 
   Key* aKey = pEntry->aKey();
-  vPositionPrior(aKey, xPriorVec);
+  vPositionPrior(aKey, xPriorVec, pEntry);
   //vDumpPriorVec(xPriorVec);
   
   i8 nOffsets = pEntry->nOffsets();
@@ -1723,7 +1723,7 @@ EntryBuffer* EntryBuffer::pSplit(void)
   i8 iKeyLength = aKey->nKeySize(pIdxColVec);
   
   Entry* xPriorVec[3];
-  vPositionPrior(aKey, xPriorVec);
+  vPositionPrior(aKey, xPriorVec, pSplitEntry);
   //vDumpPriorVec(xPriorVec);
   for (i8 i_Offset = 0; i_Offset < 3; i_Offset++)
     xPriorVec[i_Offset]->vNEO(i_Offset,-1);
