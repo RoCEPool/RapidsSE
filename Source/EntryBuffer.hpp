@@ -136,6 +136,7 @@ namespace DBobjects
     void         vPriorVecHead(EntryVec& xPriorVec);
     void         vRestore(void);
     void         vShow(void);
+    void         vShowShort(void);
     void         vShowTree(bool bDumpBuffer=false);
     EntryBuffer* pSplit(void);
     void         vTruncate(void);

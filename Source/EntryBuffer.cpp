@@ -1029,6 +1029,9 @@ Entry* EntryBuffer::pInsertKeyUpwards_c(i8 iTxId, Id xId,
   EntryBuffer* pInsertIntoBuffer =
     pInsertableBuffer(aInsKey,nEntryPlusOffsets,ppRootKeyBuffer);
   
+  if (mbWatch)
+    (*ppRootKeyBuffer)->vShowTree(false);
+
   Entry* pInsertedKeyEntry =
     pInsertIntoBuffer->pInsertKeyBuffer_c(iTxId,xId,aInsKey,iInsKeyLen,nOffsets,
                                           ppRootKeyBuffer);
@@ -1062,6 +1065,15 @@ Entry* EntryBuffer::pInsertKeyBuffer_c(i8 iTxId, Id xId,
                                        EntryBuffer** ppRootKeyBuffer)
 {
   
+  if (mbWatch) {
+    vTrace("*[%lld]Inserting %lld into "_Stz,
+           *nBufferNo(),
+           aInsKey->iGetInt());
+    vShowShort();
+    vTrace("\n"_Stz);
+  }
+
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // offsets
   
@@ -1073,6 +1085,11 @@ Entry* EntryBuffer::pInsertKeyBuffer_c(i8 iTxId, Id xId,
   // record orginal first entry incase we insert a new first entry
   
   Entry* pOriginalFirstEntry = pFirstEntry();
+  if (mbWatch && pOriginalFirstEntry) {
+    vTrace("*[%lld]OriginalFirstEntry: %p key %lld\n"_Stz,
+           *nBufferNo(),
+           pOriginalFirstEntry,pOriginalFirstEntry->aKey()->iGetInt());
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the entry after which the new key will be inserted
@@ -1093,6 +1110,11 @@ Entry* EntryBuffer::pInsertKeyBuffer_c(i8 iTxId, Id xId,
   // set the key entry
   
   pInsertedKeyEntry->vSetEntry(iTxId,xId,nOffsets,(Stz*)aInsKey,iInsKeyLen);
+  if (mbWatch && pOriginalFirstEntry) {
+    vTrace("*[%lld]pInsertedKeyEntry: %p key %lld\n"_Stz,
+           *nBufferNo(),
+           pInsertedKeyEntry,pInsertedKeyEntry->aKey()->iGetInt());
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set prior offsets
@@ -1105,7 +1127,10 @@ Entry* EntryBuffer::pInsertKeyBuffer_c(i8 iTxId, Id xId,
     xPriorVec[i_Offset]->vNEO(i_Offset,iKeyEntryOffset);
   }
   
-  //vShow();
+  if (mbWatch && pOriginalFirstEntry) {
+    vShowShort();
+    vTrace("\n"_Stz);
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // handle the insert of a left most key
@@ -1115,9 +1140,12 @@ Entry* EntryBuffer::pInsertKeyBuffer_c(i8 iTxId, Id xId,
   
   if (pFirstEntry() == pInsertedKeyEntry) {
     if (m_pHigherBuffer) {
-      //(*ppRootKeyBuffer)->vShowTree();
+      if (mbWatch)
+        (*ppRootKeyBuffer)->vShowTree();
       m_pHigherBuffer->vReplaceKey(pOriginalFirstEntry,pInsertedKeyEntry,
                                    *nBufferNo(),ppRootKeyBuffer);
+      if (mbWatch)
+        (*ppRootKeyBuffer)->vShowTree();
     }
   }
   
@@ -1543,6 +1571,33 @@ void EntryBuffer::vShow(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* show short form of buffer                                                  */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vShowShort(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  vTrace("[t%lld h%lld: "_Stz,
+         *nBufferNo(),
+         pHigherBuffer() ? *pHigherBuffer()->nBufferNo() : 0);
+  
+  i8 iOffset = pHeadEntry()->iNEO(0);
+  while (iOffset > -1) {
+    Entry* pEntry = pGetEntryOffset(iOffset);
+    
+    Key* aKey = pEntry->aKey();
+    i8 iVal = aKey->iGetInt();
+    vTrace("%lld"_Stz,iVal);
+    
+    iOffset = pEntry->iNEO(0);
+    if (iOffset > -1)
+      vTrace(","_Stz);
+  }
+  vTrace("]"_Stz);
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* show contents of all buffers in index tree                                 */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vShowTree(bool bDumpBuffer)
@@ -1557,7 +1612,7 @@ void EntryBuffer::vShowTree(bool bDumpBuffer)
   for (EntryBuffer* pBuffer = this;
        pBuffer;
        pBuffer = pBuffer->pNextBuffer()) {
-    
+    /*
     vTrace("[t%lld h%lld: "_Stz,
            *pBuffer->nBufferNo(),
            pBuffer->pHigherBuffer() ? *pBuffer->pHigherBuffer()->nBufferNo() : 0);
@@ -1580,7 +1635,8 @@ void EntryBuffer::vShowTree(bool bDumpBuffer)
       
     }
     vTrace("]"_Stz);
-    
+    */
+    pBuffer->vShowShort();
   }
   
   vTrace("\n"_Stz);
@@ -2148,12 +2204,28 @@ void EntryBuffer::vReplaceKey(Entry* pWasEntry, Entry* pWithEntry, i8 iBufferNo,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+  if (mbWatch) {
+    vTrace("*[%lld]Replacing %lld with %lld\n"_Stz,
+           *nBufferNo(),
+           pWasEntry->aKey()->iGetInt(),
+           pWithEntry->aKey()->iGetInt());
+    int iDebug = 1;
+  }
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete the was key
   
   //vShow();
   Key* aKeyWas = pWasEntry->aKey();
   vDeleteEntry(aKeyWas);
+  if (mbWatch) {
+    vTrace("*[%lld]Deleted "_Stz,*nBufferNo());
+    vShowShort();
+    vTrace("\n"_Stz);
+    int iDebug = 1;
+  }
+  
+  
   //vShow();
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the with key
@@ -2186,7 +2258,13 @@ void EntryBuffer::vReplaceKey(Entry* pWasEntry, Entry* pWithEntry, i8 iBufferNo,
                                       aKeyWith,iKeyLenWith,nOffsets,
                                       ppRootKeyBuffer);
   
-  //vShow();
+  if (mbWatch) {
+    vTrace("*[%lld]Replaced "_Stz,*nBufferNo());
+    vShowShort();
+    vTrace("\n"_Stz);
+    int iDebug = 1;
+  }
+  
   ASSERT(pNewWithEntry);
 }
 
@@ -2344,7 +2422,7 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
   vTrace("\n"_Stz);
   vTrace("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"_Stz);
   vTrace("EntryBuffer::vUnitTest_c\n"_Stz);
-  vTrace("\n"_Stz);
+  //vTrace("\n"_Stz);
   
   s256 sRecData;
   i8 iRecLength;
