@@ -1618,7 +1618,11 @@ void EntryBuffer::vShowShort(void)
     
     Key* aKey = pEntry->aKey();
     i8 iVal = aKey->iGetInt();
-    vTrace("%lld"_Stz,iVal);
+    
+    if (m_nBufferLevel)
+      vTrace("%lld(%lld)"_Stz,iVal,*pEntry->pEntryBuffer()->nBufferNo());
+    else
+      vTrace("%lld"_Stz,iVal);
     
     iOffset = pEntry->iNEO(0);
     if (iOffset > -1)
@@ -2533,13 +2537,13 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
   
   // keys in random order
   //i8 iRndNo[] = { 4,0,1,7,8,2,5,9,6,3,10 };
-  for (i8 iCount = 0; iCount <= 100; iCount++) {
+  //for (i8 iCount = 0; iCount <= 100; iCount++) {
     //i8 iInt = iRndNo[iCount]; //Random::iRandom(10);
-    i8 iInt = Random::iRandom(1000);
+    //i8 iInt = Random::iRandom(1000);
   
   // duplicate keys
-  //for (i8 iInt = 1; iInt <= 9; iInt++)
-  //for (i8 iCount = 0; iCount < iInt; iCount++) {
+  for (i8 iInt = 1; iInt <= 9; iInt++)
+  for (i8 iCount = 0; iCount < iInt; iCount++) {
     
     i8 iKey = iInt;
   
