@@ -1085,6 +1085,9 @@ Entry* EntryBuffer::pInsertKeyBuffer_c(i8 iTxId, Id xId,
   // record orginal first entry incase we insert a new first entry
   
   Entry* pOriginalFirstEntry = pFirstEntry();
+  if (!pOriginalFirstEntry)
+    pOriginalFirstEntry = pFirstEntry();
+  
   if (mbWatch && pOriginalFirstEntry) {
     vTrace("*[%lld]OriginalFirstEntry: %p key %lld\n"_Stz,
            *nBufferNo(),
@@ -1143,9 +1146,12 @@ Entry* EntryBuffer::pInsertKeyBuffer_c(i8 iTxId, Id xId,
       //if (mbWatch)
         (*ppRootKeyBuffer)->vShowTree();
       //if (mbWatch) {
-      Key* aDeleteKey = pOriginalFirstEntry->aKey();
-      m_pHigherBuffer->vDeleteUpwards(aDeleteKey);
-      (*ppRootKeyBuffer)->vShowTree();
+      
+      if (pOriginalFirstEntry) {
+        Key* aDeleteKey = pOriginalFirstEntry->aKey();
+        m_pHigherBuffer->vDeleteUpwards(aDeleteKey);
+        (*ppRootKeyBuffer)->vShowTree();
+      }
       Key* aInsertKey = pInsertedKeyEntry->aKey();
       IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
       Id xInsertId(*nBufferNo(),0);
@@ -2516,10 +2522,16 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // keys in ascending order
   //for (i8 iInt = 0; iInt <= 10; iInt++) {
-    
+
   // keys in descending order
-  for (i8 iInt = 100; iInt >= 0; iInt--) {
+  //for (i8 iInt = 100; iInt >= 0; iInt--) {
   
+  // keys in random order
+  i8 iRndNo[] = { 4,0,1,7,8,2,5,9,6,3,10 };
+  for (i8 iCount = 0; iCount <= 100; iCount++) {
+    //i8 iInt = iRndNo[iCount]; //Random::iRandom(10);
+    i8 iInt = Random::iRandom(1000);
+    
     i8 iKey = iInt;
     
 //    if (3 == iKey) {
@@ -2558,10 +2570,12 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
       pRootKeyBuffer->pInsertKeyTree_c(0, pRowEntry->xId(),
                                        xKeyWrk.aKey(), xKeyWrk.nKeySize(),
                                        &pRootKeyBuffer);
-    if (mbWatch)
-      pRootKeyBuffer->vShowTree(false);
+    //if (mbWatch)
+    vTrace("\nInserted record: %s\n"_Stz,sRecData.aChar());
+    pRootKeyBuffer->vShowTree(false);
 
   }
+  pRootKeyBuffer->vShowTree(false);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
