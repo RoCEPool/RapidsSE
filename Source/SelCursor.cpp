@@ -147,7 +147,7 @@ void SelCursor::vNext(void)
   
   m_pRowBuffer = (EntryBuffer*)m_pRowBuffer->pNextBuffer();
   if (m_pRowBuffer) {
-    m_pRow = m_pRowBuffer->pHeadEntry();
+    m_pRow = m_pRowBuffer->pFirstEntry();
     if (m_pRow)
       return;
   }
