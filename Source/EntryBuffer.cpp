@@ -1834,6 +1834,36 @@ NEO* EntryBuffer::aAllotNEO(i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
+/* delete upwards                                                             */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vDeleteUpwards(Key* aDeleteKey,
+                                 EntryBuffer** ppRootKeyBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  // hack
+  Entry* pPriorEntry = pPositionPrior(aDeleteKey);
+  if (!pPriorEntry)
+    return;
+  
+  Entry* pDeleteEntry = pNextEntry(pPriorEntry,0);
+  if (!pDeleteEntry)
+    return;
+  
+  Key* aDeleteEntryKey = pDeleteEntry->aKey();
+  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  if (! aDeleteEntryKey->bEqualTo(aDeleteKey,pIdxColVec))
+    return;
+  // end hack
+  
+  Entry* pFirstEntry = this->pFirstEntry();
+  if (pDeleteEntry == pFirstEntry && m_pHigherBuffer)
+    vDeleteUpwards(aDeleteKey,ppRootKeyBuffer);
+
+  vDeleteEntry(pDeleteEntry);
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump the given prior vector                                                */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vDumpPriorVec(Entry* pPriorVec[])
@@ -2453,10 +2483,10 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // keys in ascending order
-  //for (i8 iInt = 0; iInt <= 10; iInt++) {
+  for (i8 iInt = 0; iInt <= 10; iInt++) {
     
   // keys in descending order
-  for (i8 iInt = 7; iInt >= 0; iInt--) {
+  //for (i8 iInt = 7; iInt >= 0; iInt--) {
   
     i8 iKey = iInt;
     

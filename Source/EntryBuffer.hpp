@@ -151,6 +151,8 @@ namespace DBobjects
     Entry*       pAllotEntry(i8 nBytes);
     NEO*         aAllotNEO(i8 nBytes);
     //i8         iCopyEntries(EntryBuffer* pFromBuffer, Entry* aFromEntry);
+    void         vDeleteUpwards(Key* aDeleteKey,
+                                EntryBuffer** ppRootKeyBuffer=nullptr);
     void         vDumpPriorVec(Entry* pPriorVec[]);
     Item*        pFirstItem(void);
     //void       vFixHigherLevel(Entry* aNewEntry);
