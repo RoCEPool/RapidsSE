@@ -671,7 +671,7 @@ void EntryBuffer::vDeleteEntry(Entry* pEntry)
   Entry* xPriorVec[3];
 
   Key* aKey = pEntry->aKey();
-  vPositionPrior(aKey, xPriorVec, pEntry);
+  vPositionPrior(aKey, xPriorVec); //, pEntry);
   //vDumpPriorVec(xPriorVec);
   
   i8 nOffsets = pEntry->nOffsets();
@@ -2533,13 +2533,13 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
   
   // keys in random order
   //i8 iRndNo[] = { 4,0,1,7,8,2,5,9,6,3,10 };
-  //for (i8 iCount = 0; iCount <= 100; iCount++) {
-  //  //i8 iInt = iRndNo[iCount]; //Random::iRandom(10);
-  //  i8 iInt = Random::iRandom(1000);
+  for (i8 iCount = 0; iCount <= 100; iCount++) {
+    //i8 iInt = iRndNo[iCount]; //Random::iRandom(10);
+    i8 iInt = Random::iRandom(1000);
   
   // duplicate keys
-  for (i8 iInt = 1; iInt <= 9; iInt++)
-  for (i8 iCount = 0; iCount < iInt; iCount++) {
+  //for (i8 iInt = 1; iInt <= 9; iInt++)
+  //for (i8 iCount = 0; iCount < iInt; iCount++) {
     
     i8 iKey = iInt;
   
