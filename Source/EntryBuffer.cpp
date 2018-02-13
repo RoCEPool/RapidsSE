@@ -1140,11 +1140,26 @@ Entry* EntryBuffer::pInsertKeyBuffer_c(i8 iTxId, Id xId,
   
   if (pFirstEntry() == pInsertedKeyEntry) {
     if (m_pHigherBuffer) {
-      if (mbWatch)
+      //if (mbWatch)
         (*ppRootKeyBuffer)->vShowTree();
-      m_pHigherBuffer->vReplaceKey(pOriginalFirstEntry,pInsertedKeyEntry,
-                                   *nBufferNo(),ppRootKeyBuffer);
-      if (mbWatch)
+      //if (mbWatch) {
+      Key* aDeleteKey = pOriginalFirstEntry->aKey();
+      m_pHigherBuffer->vDeleteUpwards(aDeleteKey);
+      (*ppRootKeyBuffer)->vShowTree();
+      Key* aInsertKey = pInsertedKeyEntry->aKey();
+      IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+      Id xInsertId(*nBufferNo(),0);
+      i8 iInsertKeyLen = aInsertKey->nKeySize(pIdxColVec);
+      i8 nInsertOffsets = pInsertedKeyEntry->nOffsets();
+      m_pHigherBuffer->pInsertKeyBuffer_c(iTxId, xInsertId,
+                                          aInsertKey, iInsertKeyLen,
+                                          nInsertOffsets,
+                                          ppRootKeyBuffer);
+      //}
+      //else
+      //  m_pHigherBuffer->vReplaceKey(pOriginalFirstEntry,pInsertedKeyEntry,
+      //                               *nBufferNo(),ppRootKeyBuffer);
+      //if (mbWatch)
         (*ppRootKeyBuffer)->vShowTree();
     }
   }
@@ -1209,8 +1224,13 @@ EntryBuffer* EntryBuffer::pPositionInsert(Key* aInsKey)
     // get the entry before the key
     pEntry = pEntryBuffer->pPositionPrior(aInsKey);
     ASSERT(pEntry);
+    if (pEntry == pEntryBuffer->pHeadEntry())
+      pEntry = pEntryBuffer->pNextEntry(pEntry,0);
+    ASSERT(pEntry);
     
     // get the index buffer of the entry
+    pEntryBuffer->vShow();
+    ASSERT(pEntryBuffer != pEntry->pEntryBuffer());
     pEntryBuffer = pEntry->pEntryBuffer();
     ASSERT(pEntryBuffer);
     ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
@@ -1373,11 +1393,11 @@ Entry* EntryBuffer::pPositionPrior(Key* aFindKey)
       bIsJuxta =
         aNextKey->bJuxtaCompare(JC_AFTER,aFindKey,pIdxColVec,nKeyCols,bIsEqual);
       
-      pScanEntry_sl = pNextEntry_sl;
-      
       if (bIsJuxta)
         break;
       
+      pScanEntry_sl = pNextEntry_sl;
+     
       pNextEntry_sl = pNextEntry(pNextEntry_sl,*nScanLevel);
     }
   }
@@ -1841,6 +1861,12 @@ void EntryBuffer::vDeleteUpwards(Key* aDeleteKey,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+  if (mbWatch) {
+    vTrace("*[%lld]vDeleteUpwards: key %lld\n"_Stz,
+           *nBufferNo(),
+           aDeleteKey->iGetInt());
+  }
+  
   // hack
   Entry* pPriorEntry = pPositionPrior(aDeleteKey);
   if (!pPriorEntry)
@@ -1849,6 +1875,10 @@ void EntryBuffer::vDeleteUpwards(Key* aDeleteKey,
   Entry* pDeleteEntry = pNextEntry(pPriorEntry,0);
   if (!pDeleteEntry)
     return;
+  //Entry* pDeleteEntry = pPriorEntry;
+
+  vTrace("pDeleteEntry key %lld\n"_Stz,
+         pDeleteEntry->aKey()->iGetInt());
   
   Key* aDeleteEntryKey = pDeleteEntry->aKey();
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
@@ -1858,7 +1888,7 @@ void EntryBuffer::vDeleteUpwards(Key* aDeleteKey,
   
   Entry* pFirstEntry = this->pFirstEntry();
   if (pDeleteEntry == pFirstEntry && m_pHigherBuffer)
-    vDeleteUpwards(aDeleteKey,ppRootKeyBuffer);
+    m_pHigherBuffer->vDeleteUpwards(aDeleteKey,ppRootKeyBuffer);
 
   vDeleteEntry(pDeleteEntry);
 }
@@ -1962,6 +1992,8 @@ i4 EntryBuffer::iGetFreeEntry(void)
 void EntryBuffer::vHeadEntryNew(void)
 {
   RowWrk xHeadWrk;
+  
+  xHeadWrk.xId().vBuffer(*nBufferNo());
   
   ASSERT( ! m_pHeadEntry );
   
@@ -2483,17 +2515,17 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // keys in ascending order
-  for (i8 iInt = 0; iInt <= 10; iInt++) {
+  //for (i8 iInt = 0; iInt <= 10; iInt++) {
     
   // keys in descending order
-  //for (i8 iInt = 7; iInt >= 0; iInt--) {
+  for (i8 iInt = 100; iInt >= 0; iInt--) {
   
     i8 iKey = iInt;
     
-    if (0 == iKey) {
-      mbWatch = true;
-      pRootKeyBuffer->vShowTree(false);
-    }
+//    if (3 == iKey) {
+//      mbWatch = true;
+//      pRootKeyBuffer->vShowTree(true);
+//    }
     
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     sprintf(sRecData.aChar(),"%lld,%s,1900-01-01 00:00:%lld",
