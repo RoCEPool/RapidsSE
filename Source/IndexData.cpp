@@ -154,7 +154,6 @@ void IndexData::vDump(bool bSameLevel)
     if (m_pRoot)
       m_pRoot->vDump();
   }
-  m_pRoot->vShowTree();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -312,15 +311,15 @@ void IndexData::vAppendEntry(KeyWrk& xKeyWrk, Id xId, EntryVec& xPriorVec)
     m_pRoot->vPartitionNo(m_nPartitionNo);
   }
   
-  vTrace("\nInserting key: "_Stz);
-  xKeyWrk.aKey()->vShow(m_pIndex->pIdxColVec());
+  //vTrace("\nInserting key: "_Stz);
+  //xKeyWrk.aKey()->vShow(m_pIndex->pIdxColVec());
   
   Entry* pKeyEntry =
     m_pRoot->pInsertKeyTree_c(0, xId, xKeyWrk.aKey(),
                                       xKeyWrk.nKeySize(),
                                       &m_pRoot);
   
-  m_pRoot->vShowTree(true);
+  //m_pRoot->vShowTree(true);
   
   m_zLock.vDropWrite();
 }
