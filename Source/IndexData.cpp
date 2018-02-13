@@ -303,7 +303,23 @@ void IndexData::vAppendEntry(KeyWrk& xKeyWrk, Id xId, EntryVec& xPriorVec)
   
   m_zLock.vGrabWrite();
   
-  m_pCurrentBuffer = pAppendL0Entry(m_pCurrentBuffer,xKeyWrk,xId);
+  //m_pCurrentBuffer = pAppendL0Entry(m_pCurrentBuffer,xKeyWrk,xId);
+  
+  if ( ! m_pRoot ) {
+    m_pRoot = new EntryBuffer;
+    m_pRoot->vIndex(m_pIndex);
+    m_pRoot->vPartitionNo(m_nPartitionNo);
+  }
+  
+  //vTrace("\nInserting key: "_Stz);
+  //xKeyWrk.aKey()->vShow(m_pIndex->pIdxColVec());
+  
+  Entry* pKeyEntry =
+    m_pRoot->pInsertKeyTree_c(0, xId, xKeyWrk.aKey(),
+                                      xKeyWrk.nKeySize(),
+                                      &m_pRoot);
+  
+  //m_pRoot->vShowTree(true);
   
   m_zLock.vDropWrite();
 }
@@ -440,7 +456,14 @@ bool IndexData::bInsertEntry(Entry* pRow)
     m_pRoot->vIndex(m_pIndex);
     m_pRoot->vPartitionNo(m_nPartitionNo);
   }
-  bool bInserted = bInsertEntry(m_pRoot, xKeyWrk, pRow->xId(), 0);
+  
+  //bool bInserted = bInsertEntry(m_pRoot, xKeyWrk, pRow->xId(), 0);
+  
+  Entry* pKeyEntry =
+  m_pRoot->pInsertKeyTree_c(0, pRow->xId(), xKeyWrk.aKey(),
+                            xKeyWrk.nKeySize(),
+                            &m_pRoot);
+  ASSERT(pKeyEntry);
   
   m_zLock.vDropWrite();
   
@@ -451,7 +474,7 @@ bool IndexData::bInsertEntry(Entry* pRow)
   //  NEVER_REACH;
   //}
   
-  return bInserted;
+  return true;                                                    //ALKA
 }
 
 /*----------------------------------------------------------------------------*/
@@ -663,6 +686,7 @@ EntryBuffer* IndexData::pAppendL0Entry(EntryBuffer* pEntryBuffer,
 /*----------------------------------------------------------------------------*/
 /* check current L0 index buffer for space and append an entry for {key,id}   */
 /*----------------------------------------------------------------------------*/
+/*
 EntryBuffer* IndexData::pAppendL0Entry(EntryBuffer* pEntryBuffer,
                                        KeyWrk& xKeyWrk, Id xId,
                                        EntryVec& xPriorVec)
@@ -751,7 +775,7 @@ EntryBuffer* IndexData::pAppendL0Entry(EntryBuffer* pEntryBuffer,
   
   return pEntryBuffer;
 }
-
+*/
 /*----------------------------------------------------------------------------*/
 /* insert an entry for {key,id} into an index buffer at given level           */
 /*----------------------------------------------------------------------------*/

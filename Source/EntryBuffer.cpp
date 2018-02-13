@@ -1144,13 +1144,13 @@ Entry* EntryBuffer::pInsertKeyBuffer_c(i8 iTxId, Id xId,
   if (pFirstEntry() == pInsertedKeyEntry) {
     if (m_pHigherBuffer) {
       //if (mbWatch)
-        (*ppRootKeyBuffer)->vShowTree();
+      //  (*ppRootKeyBuffer)->vShowTree();
       //if (mbWatch) {
       
       if (pOriginalFirstEntry) {
         Key* aDeleteKey = pOriginalFirstEntry->aKey();
         m_pHigherBuffer->vDeleteUpwards(aDeleteKey);
-        (*ppRootKeyBuffer)->vShowTree();
+        //(*ppRootKeyBuffer)->vShowTree();
       }
       Key* aInsertKey = pInsertedKeyEntry->aKey();
       IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
@@ -1166,7 +1166,7 @@ Entry* EntryBuffer::pInsertKeyBuffer_c(i8 iTxId, Id xId,
       //  m_pHigherBuffer->vReplaceKey(pOriginalFirstEntry,pInsertedKeyEntry,
       //                               *nBufferNo(),ppRootKeyBuffer);
       //if (mbWatch)
-        (*ppRootKeyBuffer)->vShowTree();
+      //  (*ppRootKeyBuffer)->vShowTree();
     }
   }
   
@@ -1235,7 +1235,7 @@ EntryBuffer* EntryBuffer::pPositionInsert(Key* aInsKey)
     ASSERT(pEntry);
     
     // get the index buffer of the entry
-    pEntryBuffer->vShow();
+    //pEntryBuffer->vShow();
     ASSERT(pEntryBuffer != pEntry->pEntryBuffer());
     pEntryBuffer = pEntry->pEntryBuffer();
     ASSERT(pEntryBuffer);
@@ -1691,7 +1691,7 @@ void EntryBuffer::vShowTree(bool bDumpBuffer)
   EntryBuffer* pChildBuffer =
     reinterpret_cast<EntryBuffer*>(pHeapBuffer->pFirstChunk());
   
-  pChildBuffer->vShowTree(bDumpBuffer);
+  //pChildBuffer->vShowTree(bDumpBuffer);
 }
 
 /*----------------------------------------------------------------------------*/

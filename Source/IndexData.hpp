@@ -57,8 +57,8 @@ namespace DBobjects
     Footer*      aFooter(void);
     
   private:
-    EntryBuffer* pAppendL0Entry(EntryBuffer* pRoot,KeyWrk& xKeyWrk, Id xId,
-                                EntryVec& xPriorVec);
+    //EntryBuffer* pAppendL0Entry(EntryBuffer* pRoot,KeyWrk& xKeyWrk, Id xId,
+    //                            EntryVec& xPriorVec);
     EntryBuffer* pAppendL0Entry(EntryBuffer* pRoot,KeyWrk& xKeyWrk, Id xId);
     void         vFixHigherBuffer(EntryBuffer* pEntryBuffer, i8 iLevel);
     bool         bInsertEntry(EntryBuffer* pRoot,KeyWrk& xKeyWrk, Id xId, i8 iLevel);

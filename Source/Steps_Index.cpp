@@ -304,7 +304,8 @@ void Task::vIndexExactKey(MP_Task mpTask)
   pResultBuffer = new ResultBuffer(pTable, iPartition);
   
   // position in the first index buffer
-  EntryBuffer* pEntryBuffer = pIndexData->pFirstBuffer();
+  //EntryBuffer* pEntryBuffer = pIndexData->pFirstBuffer();
+  //EntryBuffer* pEntryBuffer = pIndexData->pRoot();
   
   // form the key
   KeyWrk xKeyWrk;
@@ -366,14 +367,14 @@ void Task::vIndexExactKey(MP_Task mpTask)
     }
     
     // move to next entry in the buffer
-    pEntry = pEntryBuffer->pNextEntry(pEntry, 0);
+    pEntry = pIndexBuffer->pNextEntry(pEntry, 0);
     
     if ( ! pEntry ) {
       // get next buffer from the current indexBuffer
-      pEntryBuffer = pEntryBuffer->pNextBuffer();
+      pIndexBuffer = pIndexBuffer->pNextBuffer();
       
-      if ( pEntryBuffer )
-        pEntry = pEntryBuffer->pFirstEntry();
+      if ( pIndexBuffer )
+        pEntry = pIndexBuffer->pFirstEntry();
     }
     // check if seitf exiting
     if (pSEitf->m_bSeitfExiting)

@@ -916,7 +916,7 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pNewIndexData,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // populate the sort array
-  pHiddenIndexData->vDump(true);
+  //pHiddenIndexData->vDump(true);
   vPopulateSortArray(aSortRegionAddr,nHiddenEntries,iSortElmSize,
                      pNewIndexData,pHiddenIndexData->pRoot());
   
