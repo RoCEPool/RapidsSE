@@ -663,6 +663,7 @@ EntryBuffer* IndexData::pAppendL0Entry(EntryBuffer* pEntryBuffer,
 /*----------------------------------------------------------------------------*/
 /* check current L0 index buffer for space and append an entry for {key,id}   */
 /*----------------------------------------------------------------------------*/
+/*
 EntryBuffer* IndexData::pAppendL0Entry(EntryBuffer* pEntryBuffer,
                                        KeyWrk& xKeyWrk, Id xId,
                                        EntryVec& xPriorVec)
@@ -751,7 +752,7 @@ EntryBuffer* IndexData::pAppendL0Entry(EntryBuffer* pEntryBuffer,
   
   return pEntryBuffer;
 }
-
+*/
 /*----------------------------------------------------------------------------*/
 /* insert an entry for {key,id} into an index buffer at given level           */
 /*----------------------------------------------------------------------------*/
