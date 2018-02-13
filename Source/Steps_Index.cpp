@@ -304,7 +304,8 @@ void Task::vIndexExactKey(MP_Task mpTask)
   pResultBuffer = new ResultBuffer(pTable, iPartition);
   
   // position in the first index buffer
-  EntryBuffer* pEntryBuffer = pIndexData->pFirstBuffer();
+  //EntryBuffer* pEntryBuffer = pIndexData->pFirstBuffer();
+  EntryBuffer* pEntryBuffer = pIndexData->pRoot();
   
   // form the key
   KeyWrk xKeyWrk;
