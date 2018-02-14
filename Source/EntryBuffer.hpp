@@ -148,18 +148,12 @@ namespace DBobjects
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     private:
     
-    //void       vAdjustOffsets(Entry* pEntry, i8 nAdjustAmount);
-    //Entry*     pAllotEntryAfter(i8 nBytes, i8 nLevels, Entry* aAfterEntry);
-    //void       vAllotHeadEntry(void);
     Entry*       pAllotEntry(i8 nBytes);
     NEO*         aAllotNEO(i8 nBytes);
-    //i8         iCopyEntries(EntryBuffer* pFromBuffer, Entry* aFromEntry);
     void         vDeleteUpwards(Key* aDeleteKey,
                                 EntryBuffer** ppRootKeyBuffer=nullptr);
     void         vDumpPriorVec(Entry* pPriorVec[]);
     Item*        pFirstItem(void);
-    //void       vFixHigherLevel(Entry* aNewEntry);
-    //void       vFixPriorOffset(EntryVec* pPriorVec, Entry* aNewEntry);
     void         vFreeChains(void);
     Entry*       pGetEntryOffset(i8 iOffset);
     Entry*       pGetEntrySplit(i8 iSplitEntryNo);
@@ -178,13 +172,8 @@ namespace DBobjects
                                   i8 iBufferNo=0);
     void         vPositionPriorLnAfter(Key* aFindKey, Entry** pPriorVec,
                                        i8 iBufferNo);
-    //void       vReplaceKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
-    //void       vReplaceKeyEqual(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
-    //void       vReplaceKeyLarger(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
-    //void       vReplaceKeySmaller(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
     void         vReplaceKey(Entry* pWasEntry, Entry* pWithEntry,i8 iBufferNo,
                              EntryBuffer** ppRootKeyBuffer=nullptr);
-    //Entry*     pRightEntry(Entry* pEntry, ln nLevelNo);
   
     public:
     Footer* aFooter(void);

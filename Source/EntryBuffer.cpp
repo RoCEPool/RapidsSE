@@ -209,8 +209,6 @@ void EntryBuffer::vHigherBuffer(EntryBuffer* pHigherBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  //ASSERT( ! m_pHigherBuffer);
-  
   m_pHigherBuffer = pHigherBuffer;
 }
 
@@ -222,9 +220,6 @@ void EntryBuffer::vIndex(Index* pIndex)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   m_pIndex = pIndex;
-  
-  // create a head entry if we have a non-hidden index
-  //if (! m_pIndex->bIsHidden() )
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1215,13 +1210,6 @@ Entry* EntryBuffer::pNextEntry(Entry* pCurrent, i8 nOffsetNo)
 
 /*----------------------------------------------------------------------------*/
 /* position at the buffer into which key should be inserted                   */
-/*----------------------------------------------------------------------------*/
-//EntryBuffer* EntryBuffer::pPositionInsert(Key* aInsKey)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-//  
-//  return this;
-//}
 /*----------------------------------------------------------------------------*/
 EntryBuffer* EntryBuffer::pPositionInsert(Key* aInsKey)
 {
@@ -2439,78 +2427,6 @@ Item* EntryBuffer::pNextItem(Item* pCurrent)
   return pItemNext;
 }
 
-/*----------------------------------------------------------------------------*/
-/* replace key                                                                */
-/*----------------------------------------------------------------------------*/
-//void EntryBuffer::vReplaceKey(Entry* pWasEntry, Entry* pWithEntry, i8 iBufferNo,
-//                              EntryBuffer** ppRootKeyBuffer)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-//  
-//  if (mbWatch) {
-//    vTrace("*[%lld]Replacing %lld with %lld\n"_Stz,
-//           *nBufferNo(),
-//           pWasEntry->aKey()->iGetInt(),
-//           pWithEntry->aKey()->iGetInt());
-//    int iDebug = 1;
-//  }
-//  
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // delete the was key
-//  
-//  //vShow();
-//  Key* aKeyWas = pWasEntry->aKey();
-//  vDeleteEntry(aKeyWas);
-//  if (mbWatch) {
-//    vTrace("*[%lld]Deleted "_Stz,*nBufferNo());
-//    vShowShort();
-//    vTrace("\n"_Stz);
-//    int iDebug = 1;
-//  }
-//  
-//  
-//  //vShow();
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // get the with key
-//  
-//  i8 iTxIdWith = pWithEntry->iTxId();
-//  //Id xIdWith(pWithEntry->xId().iBuffer(),0);
-//  Id xIdWith(iBufferNo,0);
-//  Key* aKeyWith = pWithEntry->aKey();
-//  i8 iKeyLenWith = aKeyWith->nKeySize(m_pIndex->pIdxColVec());
-//  
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // offsets and sizes
-//  
-//  i8 nOffsets = Random::iLogLevel(3,C_FLAT_FREQ + 1) + 1;
-//  i8 nEntryBytes = Entry::nBytesRequired(nOffsets,iKeyLenWith);
-//  i8 nOffsetBytes = nOffsets*sizeof(i4);
-//  i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // get insertable buffer
-//  
-//  EntryBuffer* pInsertBuffer = pInsertableBuffer(aKeyWith,nEntryPlusOffsets,
-//                                                 ppRootKeyBuffer);
-//  
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // insert the with key
-//  
-//  Entry* pNewWithEntry =
-//    pInsertBuffer->pInsertKeyBuffer_c(iTxIdWith,xIdWith,
-//                                      aKeyWith,iKeyLenWith,nOffsets,
-//                                      ppRootKeyBuffer);
-//  
-//  if (mbWatch) {
-//    vTrace("*[%lld]Replaced "_Stz,*nBufferNo());
-//    vShowShort();
-//    vTrace("\n"_Stz);
-//    int iDebug = 1;
-//  }
-//  
-//  ASSERT(pNewWithEntry);
-//}
-//
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
