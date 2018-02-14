@@ -1459,7 +1459,16 @@ void EntryBuffer::vPositionPrior(Key* aFindKey, Entry* pPriorVec[],
     }
     pPriorVec[*nScanLevel] = pScanEntry_sl;
   }
-  
+ 
+  if (pFindEntry) {
+//    vShow();
+//    vDumpPriorVec(pPriorVec);
+//    vTrace("PriorVec[0] %p Next %p FindEntry %p\n"_Stz,
+//           pPriorVec[0],
+//           pNextEntry(pPriorVec[0],0),
+//           pFindEntry);
+    ASSERT(pNextEntry(pPriorVec[0],0) == pFindEntry);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1729,8 +1738,8 @@ EntryBuffer* EntryBuffer::pSplit(void)
   Entry* xPriorVec[3];
   vPositionPrior(aKey, xPriorVec, pSplitEntry);
   //vDumpPriorVec(xPriorVec);
-  for (i8 i_Offset = 0; i_Offset < 3; i_Offset++)
-    xPriorVec[i_Offset]->vNEO(i_Offset,-1);
+//  for (i8 i_Offset = 0; i_Offset < 3; i_Offset++)
+//    xPriorVec[i_Offset]->vNEO(i_Offset,-1);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move entries to new buffer
