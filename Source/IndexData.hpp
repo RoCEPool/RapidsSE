@@ -61,7 +61,7 @@ namespace DBobjects
     //EntryBuffer* pAppendL0Entry(EntryBuffer* pRoot,KeyWrk& xKeyWrk, Id xId);
     //void         vFixHigherBuffer(EntryBuffer* pEntryBuffer, i8 iLevel);
     bool         bInsertEntry(EntryBuffer* pRoot,KeyWrk& xKeyWrk, Id xId, i8 iLevel);
-    void         vInsertFirstEntry(EntryBuffer* pToBuffer, EntryBuffer* pFromBuffer);
+    //void         vInsertFirstEntry(EntryBuffer* pToBuffer, EntryBuffer* pFromBuffer);
     //EntryBuffer* pSplitBuffer(EntryBuffer* pEntryBuffer);
     void         vDumpLevel(EntryBuffer* pEntryBuffer);
   };

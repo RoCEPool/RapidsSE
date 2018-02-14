@@ -754,6 +754,7 @@ bool IndexData::bInsertEntry(EntryBuffer* pHigher, KeyWrk& xKeyWrk, Id xId, i8 i
 /*----------------------------------------------------------------------------*/
 /* add first entry of fromBuffer into the toBuffer                            */
 /*----------------------------------------------------------------------------*/
+/*
 void IndexData::vInsertFirstEntry(EntryBuffer* pToBuffer, EntryBuffer* pFromBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
@@ -779,6 +780,7 @@ void IndexData::vInsertFirstEntry(EntryBuffer* pToBuffer, EntryBuffer* pFromBuff
   bool bInserted = bInsertEntry(pToBuffer, xFirstKeyWrk, xNewId, pToBuffer->nBufferLevel());
   ASSERT(bInserted);
 }
+*/
 
 /*----------------------------------------------------------------------------*/
 /* fix the higher level buffer in the given index buffer                      */
