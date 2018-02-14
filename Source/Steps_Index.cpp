@@ -304,7 +304,7 @@ void Task::vIndexExactKey(MP_Task mpTask)
   pResultBuffer = new ResultBuffer(pTable, iPartition);
   
   // position in the first index buffer
-  //EntryBuffer* pEntryBuffer = pIndexData->pFirstBuffer();
+  //EntryBuffer* pEntryBuffer = pIndexData->pFirstL0Buffer();
   //EntryBuffer* pEntryBuffer = pIndexData->pRoot();
   
   // form the key
@@ -852,7 +852,7 @@ void Task::vIndexPositionFirst(MP_Task mpTask)
   Partition* pPartition = pTable->pPartition(iPartition);
   IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
   
-  mpTask->m_pDataStack->vPushObject(pIndexData->pFirstBuffer());
+  mpTask->m_pDataStack->vPushObject(pIndexData->pFirstL0Buffer());
   
   EXIT();
 }
@@ -1058,7 +1058,7 @@ void Task::vIndexScan(MP_Task mpTask)
   pResultBuffer = new ResultBuffer(pTable, iPartition);
     
   // position in the first index buffer
-  EntryBuffer* pEntryBuffer = pIndexData->pFirstBuffer();
+  EntryBuffer* pEntryBuffer = pIndexData->pFirstL0Buffer();
   
   // did we get an entryBuffer ?
   if ( ! pEntryBuffer) {
@@ -1181,7 +1181,7 @@ void Task::vIndexScan(MP_Task mpTask)
  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  
  // position in the first index buffer
- EntryBuffer* pEntryBuffer = pIndexData->pFirstBuffer();
+ EntryBuffer* pEntryBuffer = pIndexData->pFirstL0Buffer();
  
  // did we get an entryBuffer ?
  if ( ! pEntryBuffer) {
@@ -1526,7 +1526,7 @@ void Task::vIndexUpperBound(MP_Task mpTask)
   //xKeyWrk.vShow();
   
   // position in the first index buffer
-  EntryBuffer* pEntryBuffer = pIndexData->pFirstBuffer();
+  EntryBuffer* pEntryBuffer = pIndexData->pFirstL0Buffer();
   
   // did we get an entryBuffer ?
   if ( ! pEntryBuffer) {

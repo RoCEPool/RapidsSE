@@ -159,7 +159,7 @@ void IndexData::vDump(bool bSameLevel)
 /*----------------------------------------------------------------------------*/
 /* get the first L0 buffer                                                    */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* IndexData::pFirstBuffer(void)
+EntryBuffer* IndexData::pFirstL0Buffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   

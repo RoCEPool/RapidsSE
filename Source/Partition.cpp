@@ -152,7 +152,7 @@ bool Partition::bPopulateIndex(i8 iIndexNo)
   IndexData* pHiddenIndexData = this->pHiddenIndexData();
   IndexData* pIndexData = this->pIndexData(iIndexNo);
   
-  EntryBuffer* pEntryBuffer = pHiddenIndexData->pFirstBuffer();
+  EntryBuffer* pEntryBuffer = pHiddenIndexData->pFirstL0Buffer();
   
   while (pEntryBuffer) {
     

@@ -333,7 +333,7 @@ void Task::vEntryBufferIterate(MP_Task mpTask)
 //  Partition* pPartition = pSlots->pPartition(0);
 //  IndexData* pIndexData = pPartition->pHiddenIndexData();
 //  
-//  EntryBuffer* pRowBuffer = pIndexData->pFirstBuffer();
+//  EntryBuffer* pRowBuffer = pIndexData->pFirstL0Buffer();
 //  
 //  while ( (pRowBuffer = pRowBuffer->pNextBuffer()) ) {
 //    BitArray* pBitArray = pRowBuffer->pBitArray();

@@ -123,7 +123,7 @@ void SelCursor::vFirst(void)
   m_pPartition = m_pTable->pPartition(m_iPartition);
   IndexData* pHiddenIndexData = m_pPartition->pHiddenIndexData();
   
-  m_pRowBuffer = pHiddenIndexData->pFirstBuffer();
+  m_pRowBuffer = pHiddenIndexData->pFirstL0Buffer();
   if (m_pRowBuffer) {
     m_pRow = m_pRowBuffer->pFirstEntry();
   }
