@@ -881,7 +881,7 @@ Entry* EntryBuffer::pInsertKey(i8 iTxId, Id xId, Key* aKey, i8 iKeyLength,
   if (0 == m_nBufferLevel)
     vPositionPriorL0(aKey, xPriorVec);
   else
-    vPositionPriorLnAfter(aKey, xPriorVec, iRefBufNo, pToBuffer);
+    vPositionPriorLnAfter(aKey, xPriorVec, pToBuffer);
   //vDumpPriorVec(xPriorVec);
   
   // set no of offsets in working key
@@ -1120,7 +1120,7 @@ Entry* EntryBuffer::pInsertKeyBuffer_c(i8 iTxId, Id xId,
   if (0 == m_nBufferLevel)
     vPositionPriorL0(aInsKey,xPriorVec);
   else
-    vPositionPriorLnAfter(aInsKey,xPriorVec,iRefBufNo, pToBuffer);
+    vPositionPriorLnAfter(aInsKey,xPriorVec,pToBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate space for the key entry in the buffer
@@ -1560,13 +1560,13 @@ void EntryBuffer::vPositionPriorLn(Key* aFindKey, Entry* pPriorVec[],
 /* scan thru skip list and position on entry prior to Key & buffer no         */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vPositionPriorLnAfter(Key* aFindKey, Entry* pPriorVec[],
-                                        i8 iBufferNo,
                                         EntryBuffer* pToBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   ASSERT(0 != m_nBufferLevel);
-  ASSERT(iBufferNo == *pToBuffer->nBufferNo());
+  
+  i8 iBufferNo = *pToBuffer->nBufferNo();
   
   for (ln nLevel = 0_ln; *nLevel < gpAttachMap->m_nIndexLevels; nLevel++)
     pPriorVec[*nLevel] = m_pHeadEntry;
@@ -1892,9 +1892,8 @@ EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
     vPositionPriorL0(aKey, xPriorVec, pSplitEntry);
   }
   else {
-    i8 iRefBuffNo = pSplitEntry->iBufferNo();
     EntryBuffer* pToBuffer = pSplitEntry->pEntryBuffer();
-    vPositionPriorLnAfter(aKey, xPriorVec, iRefBuffNo, pToBuffer);
+    vPositionPriorLnAfter(aKey, xPriorVec, pToBuffer);
   }
   //vDumpPriorVec(xPriorVec);
 //  for (i8 i_Offset = 0; i_Offset < 3; i_Offset++)
