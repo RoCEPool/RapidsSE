@@ -111,7 +111,8 @@ namespace DBobjects
     bool         bInsert(EntWrk& xEntWrk);
     Entry*       pInsertKey(i8 iTxId, Id xIdx, Key* pKey, i8 iKeyLength,
                             EntryBuffer** ppRootKeyBuffer,
-                            i8 iRefBufNo=0);
+                            i8 iRefBufNo=0,
+                            EntryBuffer* pToBuffer=nullptr);
     static Entry* pInsertKeyTree_c(i8 iTxId, Id xIdx,
                                    Key* pKey, i8 iKeyLength,
                                    EntryBuffer** ppRootKeyBuffer);
@@ -119,12 +120,14 @@ namespace DBobjects
                                      Key* pKey, i8 iKeyLength,
                                      i8 nOffsets,
                                      EntryBuffer** ppRootKeyBuffer,
-                                     i8 iRefBufNo=0);
+                                     i8 iRefBufNo=0,
+                                     EntryBuffer* pToBuffer=nullptr);
     Entry*       pInsertKeyBuffer_c(i8 iTxId, Id xIdx,
                                     Key* pKey, i8 iKeyLength,
                                     i8 nOffsets,
                                     EntryBuffer** ppRootKeyBuffer,
-                                    i8 iRefBufNo=0);
+                                    i8 iRefBufNo=0,
+                                    EntryBuffer* pToBuffer=nullptr);
     bool         bInsertRow(Entry* pOldRow, Entry** ppRow);
     EntryBuffer* pNewHigherBuffer(void);
     EntryBuffer* pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
