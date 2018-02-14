@@ -783,6 +783,7 @@ void IndexData::vInsertFirstEntry(EntryBuffer* pToBuffer, EntryBuffer* pFromBuff
 /*----------------------------------------------------------------------------*/
 /* fix the higher level buffer in the given index buffer                      */
 /*----------------------------------------------------------------------------*/
+/*
 void IndexData::vFixHigherBuffer(EntryBuffer* pEntryBuffer, i8 iLevel)
 {
    _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
@@ -801,7 +802,7 @@ void IndexData::vFixHigherBuffer(EntryBuffer* pEntryBuffer, i8 iLevel)
 
   pEntryBuffer->vHigherBuffer(pRoot);
 }
-
+*/
 /*----------------------------------------------------------------------------*/
 /* split a buffer                                                             */
 /*----------------------------------------------------------------------------*/
