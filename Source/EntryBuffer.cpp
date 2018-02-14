@@ -901,7 +901,7 @@ Entry* EntryBuffer::pInsertKey(i8 iTxId, Id xId, Key* aKey, i8 iKeyLength,
         return nullptr;
     
       (*ppRootKeyBuffer) = pNewHigherBuffer();
-      EntryBuffer* pNewRightKeyBuffer = this->pSplit();
+      EntryBuffer* pNewRightKeyBuffer = this->pSplit(ppRootKeyBuffer);
       //this->vShow();
       //pNewRightKeyBuffer->vShow();
       
@@ -1852,7 +1852,7 @@ void EntryBuffer::vShowTree(bool bDumpBuffer)
 /*----------------------------------------------------------------------------*/
 /* split this buffer into two: this original buffer plus a new buffer         */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* EntryBuffer::pSplit(void)
+EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
 {
   //RASSERT(0);
  
@@ -1896,10 +1896,18 @@ EntryBuffer* EntryBuffer::pSplit(void)
     Key* aKey = pMoveEntry->aKey();
     i8 nKeySize = aKey->nKeySize(pIdxColVec);
     Id xId = pMoveEntry->xId();
-    
+    i8 nOffsets = pMoveEntry->nOffsets();
+    i8 iRefBufNo = pMoveEntry->iBufferNo();
     Entry* pNewEntry = pNewBuffer->pInsertKey(iTxId,xId,aKey,nKeySize);
+//    Entry* pNewEntry =
+//      pNewBuffer->pInsertKeyBuffer_c(iTxId,xId,
+//                                     aKey,nKeySize,
+//                                     nOffsets,
+//                                     nullptr,
+//                                     iRefBufNo);
     
     vDeleteEntry(pMoveEntry);
+    //(*ppRootKeyBuffer)->vShowTree();
     
     pMoveEntry = pNextEntry;
   }
@@ -2281,7 +2289,7 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // split the left buffer to yield a right buffer
   
-  EntryBuffer* pRightBuffer = pLeftBuffer->pSplit();
+  EntryBuffer* pRightBuffer = pLeftBuffer->pSplit(ppRootKeyBuffer);
   //if (mbWatch)
   //  (*ppRootKeyBuffer)->vShowTree();
   //pLeftBuffer->vShow();
@@ -2545,7 +2553,7 @@ void EntryBuffer::vUnitTest_b(Table* pTable)
   pCurrentBuffer->vShow();
 
   pCurrentIndexBuffer->vShow();
-  EntryBuffer* pSplitIndexBuffer = pCurrentIndexBuffer->pSplit();
+  EntryBuffer* pSplitIndexBuffer = pCurrentIndexBuffer->pSplit(nullptr);
   pCurrentIndexBuffer->vShow();
   pSplitIndexBuffer->vShow();
   

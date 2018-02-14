@@ -141,7 +141,7 @@ namespace DBobjects
     void         vShow(void);
     void         vShowShort(void);
     void         vShowTree(bool bDumpBuffer=false);
-    EntryBuffer* pSplit(void);
+    EntryBuffer* pSplit(EntryBuffer** ppRootKeyBuffer);
     void         vTruncate(void);
     bool         bVerify(void);
   
