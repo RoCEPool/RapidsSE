@@ -175,7 +175,9 @@ namespace DBobjects
     void         vPositionPriorL0(Key* aFindKey, Entry** pPriorVec,
                                 Entry* pFindEntry=nullptr);
     void         vPositionPriorLn(Key* aFindKey, Entry** pPriorVec,
-                                i8 iBufferNo=0);
+                                  i8 iBufferNo=0);
+    void         vPositionPriorLnAfter(Key* aFindKey, Entry** pPriorVec,
+                                       i8 iBufferNo);
     //void       vReplaceKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
     //void       vReplaceKeyEqual(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
     //void       vReplaceKeyLarger(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
