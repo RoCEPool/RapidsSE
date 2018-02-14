@@ -949,6 +949,16 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pNewIndexData,
  
   iDebug = 2;
   //vTrace("vNewIndexLoad: DONE\n"_Stz);
+/*
+  
+  KeyWrk xKeyWrk;
+  for (EntryBuffer* pEB = pHiddenIndexData->pRoot(); pEB; pEB = pEB->pNextBuffer()) {
+    
+    for ( Entry* pRow = pEB->pFirstEntry() ; pRow; pRow = pEB->pNextEntry(pRow, 0)) {
+      pNewIndexData->bInsertEntry(pRow);
+    }
+  }
+*/
 }
 
 /*----------------------------------------------------------------------------*/
