@@ -537,6 +537,7 @@ bool IndexData::bVerify(void)
 /*----------------------------------------------------------------------------*/
 /* check current L0 index buffer for space and append an entry for {key,id}   */
 /*----------------------------------------------------------------------------*/
+/*
 EntryBuffer* IndexData::pAppendL0Entry(EntryBuffer* pEntryBuffer,
                                        KeyWrk& xKeyWrk, Id xId)
 {
@@ -586,7 +587,7 @@ EntryBuffer* IndexData::pAppendL0Entry(EntryBuffer* pEntryBuffer,
   
   return pEntryBuffer;
 }
-
+*/
 /*----------------------------------------------------------------------------*/
 /* check current L0 index buffer for space and append an entry for {key,id}   */
 /*----------------------------------------------------------------------------*/
