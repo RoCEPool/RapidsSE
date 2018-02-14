@@ -110,7 +110,7 @@ namespace DBobjects
     bool         bHasSpace(i8 nBytes);
     bool         bInsert(EntWrk& xEntWrk);
     Entry*       pInsertKey(i8 iTxId, Id xIdx, Key* pKey, i8 iKeyLength,
-                            EntryBuffer** ppRootKeyBuffer=nullptr);
+                            EntryBuffer** ppRootKeyBuffer);
     static Entry* pInsertKeyTree_c(i8 iTxId, Id xIdx,
                                    Key* pKey, i8 iKeyLength,
                                    EntryBuffer** ppRootKeyBuffer);

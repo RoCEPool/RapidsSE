@@ -912,7 +912,8 @@ Entry* EntryBuffer::pInsertKey(i8 iTxId, Id xId, Key* aKey, i8 iKeyLength,
       Key* aKeyLeft = pFirstKeyLeft->aKey();
       i8 iKeyLenLeft = aKeyLeft->nKeySize(m_pIndex->pIdxColVec());
       Entry* pNewKeyLeft =
-        (*ppRootKeyBuffer)->pInsertKey(iTxIdLeft,xIdLeft,aKeyLeft,iKeyLenLeft);
+        (*ppRootKeyBuffer)->pInsertKey(iTxIdLeft,xIdLeft,aKeyLeft,iKeyLenLeft,
+                                       ppRootKeyBuffer);
       
       Entry* pFirstKeyRight = pNewRightKeyBuffer->pFirstEntry();
       Id xIdRight(*pNewRightKeyBuffer->nBufferNo(),0);
@@ -921,7 +922,8 @@ Entry* EntryBuffer::pInsertKey(i8 iTxId, Id xId, Key* aKey, i8 iKeyLength,
       Key* aKeyRight = pFirstKeyRight->aKey();
       i8 iKeyLenRight = aKeyRight->nKeySize(m_pIndex->pIdxColVec());
       Entry* pNewKeyRight =
-      (*ppRootKeyBuffer)->pInsertKey(iTxIdRight,xIdRight,aKeyRight,iKeyLenRight);
+      (*ppRootKeyBuffer)->pInsertKey(iTxIdRight,xIdRight,aKeyRight,iKeyLenRight,
+                                     ppRootKeyBuffer);
       
       
       //(*ppRootKeyBuffer)->vShow();
@@ -1898,7 +1900,8 @@ EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
     Id xId = pMoveEntry->xId();
     i8 nOffsets = pMoveEntry->nOffsets();
     i8 iRefBufNo = pMoveEntry->iBufferNo();
-    Entry* pNewEntry = pNewBuffer->pInsertKey(iTxId,xId,aKey,nKeySize);
+    Entry* pNewEntry = pNewBuffer->pInsertKey(iTxId,xId,aKey,nKeySize,
+                                              ppRootKeyBuffer);
 //    Entry* pNewEntry =
 //      pNewBuffer->pInsertKeyBuffer_c(iTxId,xId,
 //                                     aKey,nKeySize,
@@ -1908,6 +1911,8 @@ EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
     
     vDeleteEntry(pMoveEntry);
     //(*ppRootKeyBuffer)->vShowTree();
+    pNewBuffer->vShowShort();
+    vTrace("\n"_Stz);
     
     pMoveEntry = pNextEntry;
   }
@@ -2537,7 +2542,10 @@ void EntryBuffer::vUnitTest_b(Table* pTable)
     
     //Entry* pKeyEntry = pCurrentIndexBuffer->pInsertKey_v3(xKeyWrk);
     
-    Entry* pKeyEntry = pCurrentIndexBuffer->pInsertKey(0, pRowEntry->xId(), xKeyWrk.aKey(), xKeyWrk.nKeySize());
+    Entry* pKeyEntry =
+      pCurrentIndexBuffer->pInsertKey(0, pRowEntry->xId(),
+                                      xKeyWrk.aKey(), xKeyWrk.nKeySize(),
+                                      nullptr);
     
     xKeyEntries[iKey] = pKeyEntry;
     
