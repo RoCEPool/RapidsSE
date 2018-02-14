@@ -111,8 +111,8 @@ namespace DBobjects
     bool         bInsert(EntWrk& xEntWrk);
     Entry*       pInsertKey(i8 iTxId, Id xIdx, Key* pKey, i8 iKeyLength,
                             EntryBuffer** ppRootKeyBuffer,
-                            i8 iRefBufNo=0,
-                            EntryBuffer* pToBuffer=nullptr);
+                            i8 iRefBufNo,
+                            EntryBuffer* pToBuffer);
     static Entry* pInsertKeyTree_c(i8 iTxId, Id xIdx,
                                    Key* pKey, i8 iKeyLength,
                                    EntryBuffer** ppRootKeyBuffer);
@@ -175,7 +175,8 @@ namespace DBobjects
     void         vPositionPriorLn(Key* aFindKey, Entry** pPriorVec,
                                   i8 iBufferNo=0);
     void         vPositionPriorLnAfter(Key* aFindKey, Entry** pPriorVec,
-                                       i8 iBufferNo);
+                                       i8 iBufferNo,
+                                       EntryBuffer* pToBuffer);
     void         vReplaceKey(Entry* pWasEntry, Entry* pWithEntry,i8 iBufferNo,
                              EntryBuffer** ppRootKeyBuffer=nullptr);
   
