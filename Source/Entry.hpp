@@ -22,6 +22,7 @@ namespace DBobjects
     Id  m_xId;        // id
     i8  m_iTxId;      // transaction id
     i8  m_nOffsets;   // no of offsets for this entry (0,1 or 2)
+    i8  m_iIntKey;    // key debug hack
     // ..data..       // variable data area
 
   public:

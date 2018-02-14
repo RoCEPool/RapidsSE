@@ -44,6 +44,7 @@ namespace DBobjects
   
     Index*  m_pIndex;       // index this buffer belongs to
     i2      m_nPartitionNo; // partition no this buffer belongs to
+    i8      m_iBufferNo;    // this EntryBuffer's buffer number 
     i2      m_nBufferLevel; // index buffer level
   
     i4*     m_pEntryOffset;    // array of entry offsets
@@ -169,9 +170,9 @@ namespace DBobjects
     bool         bKeyBeforeBuffer(Key* aKey);
     Item*        pNextItem(Item* pItem);
     Entry*       pPositionPrior(Key* aFindKey);
-    void         vPositionPrior(Key* aFindKey, Entry** pPriorVec,
+    void         vPositionPriorL0(Key* aFindKey, Entry** pPriorVec,
                                 Entry* pFindEntry=nullptr);
-    void         vPositionPrior2(Key* aFindKey, Entry** pPriorVec,
+    void         vPositionPriorLn(Key* aFindKey, Entry** pPriorVec,
                                 i8 iBufferNo=0);
     //void       vReplaceKey(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
     //void       vReplaceKeyEqual(KeyWrk& xOldKeyWrk, KeyWrk& xNewKeyWrk);
