@@ -805,6 +805,7 @@ void IndexData::vFixHigherBuffer(EntryBuffer* pEntryBuffer, i8 iLevel)
 /*----------------------------------------------------------------------------*/
 /* split a buffer                                                             */
 /*----------------------------------------------------------------------------*/
+/*
 EntryBuffer* IndexData::pSplitBuffer(EntryBuffer* pEntryBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
@@ -851,7 +852,7 @@ EntryBuffer* IndexData::pSplitBuffer(EntryBuffer* pEntryBuffer)
   
   return pEntryBuffer;
 }
-
+*/
 /*----------------------------------------------------------------------------*/
 /* visualize the index                                                        */
 /*----------------------------------------------------------------------------*/
