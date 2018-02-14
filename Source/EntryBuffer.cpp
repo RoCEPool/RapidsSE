@@ -846,7 +846,8 @@ bool EntryBuffer::bInsert(EntWrk& xEntWrk)                        //# critical
 /* attempt to insert a new key entry into this buffer                         */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pInsertKey(i8 iTxId, Id xId, Key* aKey, i8 iKeyLength,
-                               EntryBuffer** ppRootKeyBuffer)
+                               EntryBuffer** ppRootKeyBuffer,
+                               i8 iRefBufNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -879,7 +880,7 @@ Entry* EntryBuffer::pInsertKey(i8 iTxId, Id xId, Key* aKey, i8 iKeyLength,
   if (0 == m_nBufferLevel)
     vPositionPriorL0(aKey, xPriorVec);
   else
-    vPositionPriorLn(aKey, xPriorVec);
+    vPositionPriorLnAfter(aKey, xPriorVec, iRefBufNo);
   //vDumpPriorVec(xPriorVec);
   
   // set no of offsets in working key
@@ -1173,7 +1174,8 @@ Entry* EntryBuffer::pInsertKeyBuffer_c(i8 iTxId, Id xId,
       m_pHigherBuffer->pInsertKeyBuffer_c(iTxId, xInsertId,
                                           aInsertKey, iInsertKeyLen,
                                           nInsertOffsets,
-                                          ppRootKeyBuffer);
+                                          ppRootKeyBuffer,
+                                          iRefBufNo);
       //}
       //else
       //  m_pHigherBuffer->vReplaceKey(pOriginalFirstEntry,pInsertedKeyEntry,
@@ -1901,7 +1903,7 @@ EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
     i8 nOffsets = pMoveEntry->nOffsets();
     i8 iRefBufNo = pMoveEntry->iBufferNo();
     Entry* pNewEntry = pNewBuffer->pInsertKey(iTxId,xId,aKey,nKeySize,
-                                              ppRootKeyBuffer);
+                                              ppRootKeyBuffer,iRefBufNo);
 //    Entry* pNewEntry =
 //      pNewBuffer->pInsertKeyBuffer_c(iTxId,xId,
 //                                     aKey,nKeySize,
@@ -1911,8 +1913,8 @@ EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
     
     vDeleteEntry(pMoveEntry);
     //(*ppRootKeyBuffer)->vShowTree();
-    pNewBuffer->vShowShort();
-    vTrace("\n"_Stz);
+    //pNewBuffer->vShowShort();
+    //vTrace("\n"_Stz);
     
     pMoveEntry = pNextEntry;
   }
@@ -2640,7 +2642,7 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
     //i8 iInt = Random::iRandom(1000);
   
   // duplicate keys
-  for (i8 iInt = 1; iInt <= 3; iInt++)
+  for (i8 iInt = 1; iInt <= 4; iInt++)
   for (i8 iCount = 0; iCount < iInt; iCount++) {
     
     i8 iKey = iInt;
