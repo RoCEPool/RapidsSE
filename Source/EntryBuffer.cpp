@@ -1428,7 +1428,7 @@ void EntryBuffer::vPositionPriorL0(Key* aFindKey, Entry* pPriorVec[],
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  vShow();
+  //vShow();
   
   ASSERT(0 == m_nBufferLevel);
   
