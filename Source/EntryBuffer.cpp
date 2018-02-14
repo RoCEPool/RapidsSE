@@ -1507,12 +1507,13 @@ void EntryBuffer::vPositionPrior2(Key* aFindKey, Entry* pPriorVec[],
       //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       
       bIsJuxta =
-      aNextKey->bJuxtaCompare(JC_AFTER,aFindKey,pIdxColVec,nKeyCols,bIsEqual);
+        aNextKey->bJuxtaCompare(JC_AFTER,aFindKey,pIdxColVec,nKeyCols,bIsEqual);
       
       if (bIsJuxta) {
         if (! iBufferNo  || *nScanLevel)
           break;
-        if (pNextEntry_sl->iBufferNo() == iBufferNo)
+        i8 iRefBuffNo = pNextEntry_sl->iBufferNo();
+        if (iRefBuffNo == iBufferNo)
           break;
       }
       
@@ -1798,7 +1799,8 @@ EntryBuffer* EntryBuffer::pSplit(void)
   i8 iKeyLength = aKey->nKeySize(pIdxColVec);
   
   Entry* xPriorVec[3];
-  vPositionPrior(aKey, xPriorVec, pSplitEntry);
+  i8 iRefBuffNo = pSplitEntry->iBufferNo();
+  vPositionPrior2(aKey, xPriorVec, iRefBuffNo);
   //vDumpPriorVec(xPriorVec);
 //  for (i8 i_Offset = 0; i_Offset < 3; i_Offset++)
 //    xPriorVec[i_Offset]->vNEO(i_Offset,-1);
@@ -2601,7 +2603,7 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // keys in ascending order
-  for (i8 iInt = 0; iInt <= 10; iInt++) {
+  //for (i8 iInt = 0; iInt <= 10; iInt++) {
 
   // keys in descending order
   //for (i8 iInt = 100; iInt >= 0; iInt--) {
@@ -2613,8 +2615,8 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
     //i8 iInt = Random::iRandom(1000);
   
   // duplicate keys
-  //for (i8 iInt = 1; iInt <= 3; iInt++)
-  //for (i8 iCount = 0; iCount < iInt; iCount++) {
+  for (i8 iInt = 1; iInt <= 3; iInt++)
+  for (i8 iCount = 0; iCount < iInt; iCount++) {
     
     i8 iKey = iInt;
   
