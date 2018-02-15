@@ -518,7 +518,7 @@ void EntryBuffer::vCompact(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  vQuickVerify();
+  //vQuickVerify();
   
   FreeEntry* pFreeEntry;
   Entry*     pMoveEntry;
@@ -643,7 +643,7 @@ void EntryBuffer::vCompact(void)
   
   vSetWilderness();
   
-  vQuickVerify();
+  //vQuickVerify();
   
   //vShow();
 }
@@ -698,6 +698,12 @@ void EntryBuffer::vDeleteEntry(Entry* pEntry)
     xPriorVec[i_Offset]->vNEO(i_Offset,iNEO);
   }
   
+  if (! bQuickVerify(pEntry)) {
+    pEntry->vShow(iToOffset(pEntry),m_pIndex,true);
+    vDumpPriorVec(xPriorVec);
+    vQuickVerify();
+  }
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add entry to head of free entry list
   
@@ -706,6 +712,11 @@ void EntryBuffer::vDeleteEntry(Entry* pEntry)
   i8 nSizeFree  = nSizeEntry + nSizeNEO;
   
   FreeEntry* pFreeEntry = new(pEntry) FreeEntry(nSizeFree);
+  
+  if (! bQuickVerify(pEntry)) {
+    vDumpPriorVec(xPriorVec);
+    vQuickVerify();
+  }
   
   if (m_pFirstFree) {
     m_pFirstFree->vPrevFree(pFreeEntry);
@@ -2165,8 +2176,20 @@ void EntryBuffer::vDumpPriorVec(Entry* pPriorVec[])
   
   vTrace("Prior Vector\n"_Stz);
   
-    vTrace("  0:%p 1:%p 2:%p\n"_Stz,
-           pPriorVec[0],pPriorVec[1],pPriorVec[2]);
+  vTrace("  0:%p 1:%p 2:%p\n"_Stz,
+         pPriorVec[0],pPriorVec[1],pPriorVec[2]);
+  
+  for (i8 i = 0; i < 3; i++) {
+    Entry* pEntry = pPriorVec[i];
+    for (i8 i_Offset = 0; i_Offset < pEntry->nOffsets(); i_Offset++) {
+      vTrace("  i : %lld Entry : %p i_Offset : %lld offset : %lld pointsTo : %p\n"_Stz,
+             i,
+             pEntry,
+             i_Offset,
+             pEntry->iNEO(i_Offset),
+             pGetEntryOffset(pEntry->iNEO(i_Offset)));
+    }
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2542,23 +2565,81 @@ void EntryBuffer::vQuickVerify(Entry* pSeeEntry)
        pItem != nullptr;
        pItem = pNextItem(pItem))
     ;
-
-  ln nScanLevel;
-  for (nScanLevel = 2; *nScanLevel >= 0; nScanLevel--) {
-
-    for (Entry* pTestEntry = pNextEntry(m_pHeadEntry,*nScanLevel);
-         pTestEntry;
-         pTestEntry = pNextEntry(pTestEntry,*nScanLevel)) {
+  
+  for (Entry* pTestEntry = pNextEntry(m_pHeadEntry,0);
+       pTestEntry;
+       pTestEntry = pNextEntry(pTestEntry,0)) {
+  
+    if (pSeeEntry)
+      pTestEntry->vShow(iToOffset(pTestEntry),m_pIndex,true);
+    
+    if (pTestEntry == pSeeEntry)
+      int iDebug = 1;
+    
+    ln nScanLevel;
+    for (nScanLevel = pTestEntry->nOffsets()-1; *nScanLevel >= 0; nScanLevel--) {
+      Entry* pCheckEntry = pNextEntry(pTestEntry,*nScanLevel);
+      if (!pCheckEntry)
+        continue;
       
-      if (pTestEntry == pSeeEntry)
-        int iDebug = 1;
-      
-      if (CN_ENTRY != pTestEntry->eClass())
+      if (CN_ENTRY != pCheckEntry->eClass())
         vShow();
-      ASSERT(CN_ENTRY == pTestEntry->eClass());
+      ASSERT(CN_ENTRY == pCheckEntry->eClass());
     }
   }
   
+//  ln nScanLevel;
+//  for (nScanLevel = 2; *nScanLevel >= 0; nScanLevel--) {
+//
+//    for (Entry* pTestEntry = pNextEntry(m_pHeadEntry,*nScanLevel);
+//         pTestEntry;
+//         pTestEntry = pNextEntry(pTestEntry,*nScanLevel)) {
+//      
+//      if (pSeeEntry) {
+//        vTrace("|scan: %lld| "_Stz,*nScanLevel);
+//        pTestEntry->vShow(iToOffset(pTestEntry),m_pIndex,true);
+//      }
+//      
+//      if (pTestEntry == pSeeEntry)
+//        int iDebug = 1;
+//      
+//      if (CN_ENTRY != pTestEntry->eClass())
+//        vShow();
+//      ASSERT(CN_ENTRY == pTestEntry->eClass());
+//    }
+//  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* quick verify                                                               */
+/*----------------------------------------------------------------------------*/
+bool EntryBuffer::bQuickVerify(Entry* pNotSeeEntry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  
+  for (Entry* pTestEntry = pNextEntry(m_pHeadEntry,0);
+       pTestEntry;
+       pTestEntry = pNextEntry(pTestEntry,0)) {
+    
+    ln nScanLevel;
+    for (nScanLevel = pTestEntry->nOffsets()-1; *nScanLevel >= 0; nScanLevel--) {
+      
+      Entry* pCheckEntry = pNextEntry(pTestEntry,*nScanLevel);
+      if (!pCheckEntry)
+        continue;
+      
+      if (pCheckEntry == pNotSeeEntry) {
+        pCheckEntry->vShow(iToOffset(pCheckEntry),m_pIndex,true);
+        return false;
+      }
+      
+      if (CN_ENTRY != pCheckEntry->eClass())
+        return false;
+    }
+  }
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

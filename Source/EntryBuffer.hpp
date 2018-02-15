@@ -177,6 +177,7 @@ namespace DBobjects
     void         vReplaceKey(Entry* pWasEntry, Entry* pWithEntry,i8 iBufferNo,
                              EntryBuffer** ppRootKeyBuffer=nullptr);
     void         vQuickVerify(Entry* pSeeEntry=nullptr);
+    bool         bQuickVerify(Entry* pNotSeeEntry);
   
     public:
     Footer* aFooter(void);
