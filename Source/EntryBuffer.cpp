@@ -518,6 +518,8 @@ void EntryBuffer::vCompact(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+  vQuickVerify();
+  
   FreeEntry* pFreeEntry;
   Entry*     pMoveEntry;
   Entry*     xPriorVec[3];
@@ -583,10 +585,18 @@ void EntryBuffer::vCompact(void)
     //aKey->vShow(pIdxColVec);
     //vTrace("\n"_Stz);
     
-    if (0 == m_nBufferLevel)
-      vPositionPriorL0(aKey, xPriorVec);
-    else
+    if (0 == m_nBufferLevel) {
+      vPositionPriorL0(aKey, xPriorVec, pMoveEntry);
+      
+      if (1 == nItems() && xPriorVec[0] == pFirstEntry())
+        vPositionPriorL0(aKey, xPriorVec, pMoveEntry);
+    }
+    else {
       vPositionPriorLn(aKey, xPriorVec);
+      
+      if (1 == nItems() && xPriorVec[0] == pFirstEntry())
+        vPositionPriorLn(aKey, xPriorVec);
+    }
     
     //vDumpPriorVec(xPriorVec);
     
@@ -615,11 +625,10 @@ void EntryBuffer::vCompact(void)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the prior vector to the entry being moved
     
+    //vDumpPriorVec(xPriorVec);
     for (i8 i_Offset = 0; i_Offset < 3; i_Offset++)
       if (iWasOffset == xPriorVec[i_Offset]->iNEO(i_Offset))
         xPriorVec[i_Offset]->vNEO(i_Offset,iNowOffset);
-    
-    //();
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // move scan
@@ -633,6 +642,8 @@ void EntryBuffer::vCompact(void)
   vResetUsed(pScanItem);
   
   vSetWilderness();
+  
+  vQuickVerify();
   
   //vShow();
 }
@@ -661,6 +672,8 @@ i8 EntryBuffer::iDecile(void)
 void EntryBuffer::vDeleteEntry(Entry* pEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  vQuickVerify();
   
   // currently we only delete from non-hidden indexes
   ASSERT(! m_pIndex->bIsHidden());
@@ -704,6 +717,8 @@ void EntryBuffer::vDeleteEntry(Entry* pEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // decement the number of items in buffer
   vDecItems();
+  
+  vQuickVerify();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -820,7 +835,7 @@ bool EntryBuffer::bHasSpace(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  i8 nFree = m_xWsp.nFree();
+  i8 nFree = m_xWsp.nFree() - sizeof(Wilderness);
   
   if (gpAttachMap->m_nIndexEntries > 0) {
     // has space calculation based on no of entries
@@ -1212,6 +1227,7 @@ bool EntryBuffer::bInsertRow(Entry* pOldRow, Entry** ppRow) {
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pNextEntry(Entry* pCurrent, i8 nOffsetNo)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   i4 iOffset = pCurrent->iNEO(nOffsetNo);
   
@@ -1231,7 +1247,6 @@ EntryBuffer* EntryBuffer::pPositionInsert(Key* aInsKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
 
-  
   if ( ! nItems() )
     return this;
   
@@ -1442,6 +1457,7 @@ void EntryBuffer::vPositionPriorL0(Key* aFindKey, Entry* pPriorVec[],
   //vShow();
   
   ASSERT(0 == m_nBufferLevel);
+  ASSERT(! pFindEntry || CN_ENTRY == pFindEntry->eClass());
   
   for (ln nLevel = 0_ln; *nLevel < gpAttachMap->m_nIndexLevels; nLevel++)
     pPriorVec[*nLevel] = m_pHeadEntry;
@@ -1462,6 +1478,17 @@ void EntryBuffer::vPositionPriorL0(Key* aFindKey, Entry* pPriorVec[],
 
     Entry* pNextEntry_sl = pNextEntry(pScanEntry_sl,*nScanLevel);
     while (pNextEntry_sl) {
+      
+      if (CN_ENTRY != pNextEntry_sl->eClass()) {
+        pScanEntry_sl->vNEOdump();
+        vQuickVerify(pNextEntry_sl);
+        vQuickVerify(pScanEntry_sl);
+        vShow();
+      }
+      ASSERT(CN_ENTRY == pNextEntry_sl->eClass());
+      
+      if (pFindEntry == pNextEntry_sl)
+        break;
     
       Key* aNextKey = pNextEntry_sl->aKey();
       
@@ -1481,6 +1508,7 @@ void EntryBuffer::vPositionPriorL0(Key* aFindKey, Entry* pPriorVec[],
       pScanEntry_sl = pNextEntry_sl;
       pNextEntry_sl = pNextEntry(pNextEntry_sl,*nScanLevel);
     }
+    ASSERT(CN_ENTRY == pScanEntry_sl->eClass());
     pPriorVec[*nScanLevel] = pScanEntry_sl;
   }
  
@@ -1736,9 +1764,10 @@ void EntryBuffer::vShow(void)
     for (FreeEntry* pFreeEntry = pFirstFree();
          pFreeEntry != nullptr;
          pFreeEntry = pFreeEntry->pNextFree()) {
-      vTrace("  %p bytes: %lld next: %p prev: %p\n"_Stz,
+      vTrace("  %p bytes: %lld next: %p prev: %p offset %lld\n"_Stz,
              pFreeEntry,pFreeEntry->nSizeItem(),
-             pFreeEntry->pNextFree(),pFreeEntry->pPrevFree());
+             pFreeEntry->pNextFree(),pFreeEntry->pPrevFree(),
+             iToOffset(pFreeEntry));
     }
   }
   
@@ -1896,7 +1925,8 @@ void EntryBuffer::vShowTree(bool bDumpBuffer)
 EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
 {
   //RASSERT(0);
- 
+
+  
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
   EntryBuffer* pNewBuffer = pNewNextBuffer();
@@ -1940,9 +1970,14 @@ EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
     i8 nOffsets = pMoveEntry->nOffsets();
     i8 iRefBufNo = pMoveEntry->iBufferNo();
     EntryBuffer* pToBuffer = pMoveEntry->pEntryBuffer();
+    
+    //vQuickVerify();
+    
     Entry* pNewEntry = pNewBuffer->pInsertKey(iTxId,xId,aKey,nKeySize,
                                               ppRootKeyBuffer,iRefBufNo,
                                               pToBuffer);
+    //pNewBuffer->vQuickVerify();
+    
 //    Entry* pNewEntry =
 //      pNewBuffer->pInsertKeyBuffer_c(iTxId,xId,
 //                                     aKey,nKeySize,
@@ -1950,10 +1985,14 @@ EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
 //                                     nullptr,
 //                                     iRefBufNo);
     
+    //vQuickVerify();
+    
     vDeleteEntry(pMoveEntry);
     //(*ppRootKeyBuffer)->vShowTree();
     //pNewBuffer->vShowShort();
     //vTrace("\n"_Stz);
+    
+    //vQuickVerify();
     
     pMoveEntry = pNextEntry;
   }
@@ -2484,11 +2523,42 @@ Item* EntryBuffer::pNextItem(Item* pCurrent)
       break;
       
     default:
-      //ASSERT(0);
+      vShow();
+      ASSERT(0);
       break;
   }
   
   return pItemNext;
+}
+
+/*----------------------------------------------------------------------------*/
+/* quick verify                                                               */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vQuickVerify(Entry* pSeeEntry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  for (Item* pItem = pFirstItem();
+       pItem != nullptr;
+       pItem = pNextItem(pItem))
+    ;
+
+  ln nScanLevel;
+  for (nScanLevel = 2; *nScanLevel >= 0; nScanLevel--) {
+
+    for (Entry* pTestEntry = pNextEntry(m_pHeadEntry,*nScanLevel);
+         pTestEntry;
+         pTestEntry = pNextEntry(pTestEntry,*nScanLevel)) {
+      
+      if (pTestEntry == pSeeEntry)
+        int iDebug = 1;
+      
+      if (CN_ENTRY != pTestEntry->eClass())
+        vShow();
+      ASSERT(CN_ENTRY == pTestEntry->eClass());
+    }
+  }
+  
 }
 
 /*----------------------------------------------------------------------------*/

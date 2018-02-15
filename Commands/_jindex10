@@ -7,12 +7,11 @@ create table j10 (
   j10_name  VARCHAR(32) NOT NULL
 );
 
-create index idx1 on j10 (j10_key);
+//create index idx1 on j10 (j10_key);
 //create index idx2 on j10 (j10_name);
 
 print "loading j10.tbl..." ;
-ld j10 "../JTEST/j10.csv" ;
-
+ld j10 "../JTEST/j10_dup.csv" ;
 
 
 dumpidx j10 idx1;
