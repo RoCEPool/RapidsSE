@@ -673,7 +673,7 @@ void EntryBuffer::vDeleteEntry(Entry* pEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  vQuickVerify();
+  //vQuickVerify();
   
   // currently we only delete from non-hidden indexes
   ASSERT(! m_pIndex->bIsHidden());
@@ -696,18 +696,27 @@ void EntryBuffer::vDeleteEntry(Entry* pEntry)
   for (i8 i_Offset = 0; i_Offset < nOffsets; i_Offset++) {
     if (pEntry != pGetEntryOffset(xPriorVec[i_Offset]->iNEO(i_Offset))) {
       vDumpPriorVec(xPriorVec);
+      vShow();
       vPositionPriorL0(aKey, xPriorVec, pEntry);
+      ASSERT(pEntry == pGetEntryOffset(xPriorVec[i_Offset]->iNEO(i_Offset)));
+    }
+  }
+  
+  for (i8 i_Offset = 0; i_Offset < nOffsets; i_Offset++) {
+    if (pEntry != pGetEntryOffset(xPriorVec[i_Offset]->iNEO(i_Offset))) {
+      vDumpPriorVec(xPriorVec);
+      //vPositionPriorL0(aKey, xPriorVec, pEntry);
       ASSERT(pEntry == pGetEntryOffset(xPriorVec[i_Offset]->iNEO(i_Offset)));
     }
     i4 iNEO = pEntry->iNEO(i_Offset);
     xPriorVec[i_Offset]->vNEO(i_Offset,iNEO);
   }
   
-  if (! bQuickVerify(pEntry)) {
-    pEntry->vShow(iToOffset(pEntry),m_pIndex,true);
-    vDumpPriorVec(xPriorVec);
-    vQuickVerify();
-  }
+//  if (! bQuickVerify(pEntry)) {
+//    pEntry->vShow(iToOffset(pEntry),m_pIndex,true);
+//    vDumpPriorVec(xPriorVec);
+//    vQuickVerify();
+//  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add entry to head of free entry list
@@ -718,10 +727,10 @@ void EntryBuffer::vDeleteEntry(Entry* pEntry)
   
   FreeEntry* pFreeEntry = new(pEntry) FreeEntry(nSizeFree);
   
-  if (! bQuickVerify(pEntry)) {
-    vDumpPriorVec(xPriorVec);
-    vQuickVerify();
-  }
+//  if (! bQuickVerify(pEntry)) {
+//    vDumpPriorVec(xPriorVec);
+//    vQuickVerify();
+//  }
   
   if (m_pFirstFree) {
     m_pFirstFree->vPrevFree(pFreeEntry);
@@ -734,7 +743,7 @@ void EntryBuffer::vDeleteEntry(Entry* pEntry)
   // decement the number of items in buffer
   vDecItems();
   
-  vQuickVerify();
+  //vQuickVerify();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1487,6 +1496,7 @@ void EntryBuffer::vPositionPriorL0(Key* aFindKey, Entry* pPriorVec[],
   bool bIsJuxta;
   bool bIsEqual;
 
+  i8 iFindLevels = pFindEntry ? pFindEntry->nOffsets() - 1 : 2;
   Entry* pScanEntry_sl = m_pHeadEntry;
   
   ln nScanLevel;
@@ -1495,12 +1505,12 @@ void EntryBuffer::vPositionPriorL0(Key* aFindKey, Entry* pPriorVec[],
     Entry* pNextEntry_sl = pNextEntry(pScanEntry_sl,*nScanLevel);
     while (pNextEntry_sl) {
       
-      if (CN_ENTRY != pNextEntry_sl->eClass()) {
-        pScanEntry_sl->vNEOdump();
-        vQuickVerify(pNextEntry_sl);
-        vQuickVerify(pScanEntry_sl);
-        vShow();
-      }
+//      if (CN_ENTRY != pNextEntry_sl->eClass()) {
+//        pScanEntry_sl->vNEOdump();
+//        vQuickVerify(pNextEntry_sl);
+//        vQuickVerify(pScanEntry_sl);
+//        vShow();
+//      }
       ASSERT(CN_ENTRY == pNextEntry_sl->eClass());
       
       if (pFindEntry == pNextEntry_sl)
@@ -1515,10 +1525,15 @@ void EntryBuffer::vPositionPriorL0(Key* aFindKey, Entry* pPriorVec[],
         aNextKey->bJuxtaCompare(JC_AFTER,aFindKey,pIdxColVec,nKeyCols,bIsEqual);
       
       if (bIsJuxta) {
-        if (! pFindEntry  || *nScanLevel)
+        if (! pFindEntry )
           break;
+        
         if (pNextEntry_sl == pFindEntry)
           break;
+        
+        if (*nScanLevel > iFindLevels)
+          break;
+        
       }
       
       pScanEntry_sl = pNextEntry_sl;
@@ -1535,7 +1550,7 @@ void EntryBuffer::vPositionPriorL0(Key* aFindKey, Entry* pPriorVec[],
 //           pPriorVec[0],
 //           pNextEntry(pPriorVec[0],0),
 //           pFindEntry);
-    ASSERT(pNextEntry(pPriorVec[0],0) == pFindEntry);
+    //ASSERT(pNextEntry(pPriorVec[0],0) == pFindEntry);
   }
 }
 
@@ -1547,7 +1562,7 @@ void EntryBuffer::vPositionPriorLn(Key* aFindKey, Entry* pPriorVec[],
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  ASSERT(0 != m_nBufferLevel);
+  //ASSERT(0 != m_nBufferLevel);
   
   i8 iFindInt = aFindKey->iGetInt();
   if (7 == iFindInt)
@@ -2565,7 +2580,7 @@ Item* EntryBuffer::pNextItem(Item* pCurrent)
 void EntryBuffer::vQuickVerify(Entry* pSeeEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
+
   for (Item* pItem = pFirstItem();
        pItem != nullptr;
        pItem = pNextItem(pItem))
@@ -2591,8 +2606,9 @@ void EntryBuffer::vQuickVerify(Entry* pSeeEntry)
         vShow();
       ASSERT(CN_ENTRY == pCheckEntry->eClass());
     }
+ 
   }
-  
+
 //  ln nScanLevel;
 //  for (nScanLevel = 2; *nScanLevel >= 0; nScanLevel--) {
 //
@@ -2623,7 +2639,6 @@ bool EntryBuffer::bQuickVerify(Entry* pNotSeeEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  
   for (Entry* pTestEntry = pNextEntry(m_pHeadEntry,0);
        pTestEntry;
        pTestEntry = pNextEntry(pTestEntry,0)) {
@@ -2645,6 +2660,7 @@ bool EntryBuffer::bQuickVerify(Entry* pNotSeeEntry)
         return false;
     }
   }
+   
   return true;
 }
 
