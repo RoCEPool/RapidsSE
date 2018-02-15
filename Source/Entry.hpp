@@ -91,7 +91,7 @@ namespace DBobjects
     i8   iNEOsize(void);
   
     char* aAddressAfter(void);
-
+  
     Footer* aFooter(void);
   
   private:

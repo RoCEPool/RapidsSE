@@ -583,7 +583,11 @@ void EntryBuffer::vCompact(void)
     //aKey->vShow(pIdxColVec);
     //vTrace("\n"_Stz);
     
-    vPositionPriorL0(aKey, xPriorVec);
+    if (0 == m_nBufferLevel)
+      vPositionPriorL0(aKey, xPriorVec);
+    else
+      vPositionPriorLn(aKey, xPriorVec);
+    
     //vDumpPriorVec(xPriorVec);
     
     i8 iWasOffset = iToOffset(pMoveEntry);
@@ -1021,7 +1025,7 @@ Entry* EntryBuffer::pInsertKeyTree_c(i8 iTxId, Id xId,
   
   pInsertedKeyEntry =
     pPositionedBuffer->pInsertKeyUpwards_c(iTxId,xId,aInsKey,iInsKeyLen,nOffsets,
-                                           ppRootKeyBuffer);
+                                           ppRootKeyBuffer,nullptr);
   
   return pInsertedKeyEntry;
 
@@ -1034,7 +1038,6 @@ Entry* EntryBuffer::pInsertKeyUpwards_c(i8 iTxId, Id xId,
                                         Key* aInsKey, i8 iInsKeyLen,
                                         i8 nOffsets,
                                         EntryBuffer** ppRootKeyBuffer,
-                                        i8 iRefBufNo,
                                         EntryBuffer* pToBuffer)
 {
   i8 nEntryBytes = Entry::nBytesRequired(nOffsets,iInsKeyLen);
@@ -1050,7 +1053,6 @@ Entry* EntryBuffer::pInsertKeyUpwards_c(i8 iTxId, Id xId,
   Entry* pInsertedKeyEntry =
     pInsertIntoBuffer->pInsertKeyBuffer_c(iTxId,xId,aInsKey,iInsKeyLen,nOffsets,
                                           ppRootKeyBuffer,
-                                          iRefBufNo,
                                           pToBuffer);
   
   if (pInsertIntoBuffer->m_nBufferLevel) {
@@ -1080,7 +1082,6 @@ Entry* EntryBuffer::pInsertKeyBuffer_c(i8 iTxId, Id xId,
                                        Key* aInsKey, i8 iInsKeyLen,
                                        i8 nOffsets,
                                        EntryBuffer** ppRootKeyBuffer,
-                                       i8 iRefBufNo,
                                        EntryBuffer* pToBuffer)
 {
   
@@ -1169,6 +1170,9 @@ Entry* EntryBuffer::pInsertKeyBuffer_c(i8 iTxId, Id xId,
       //  (*ppRootKeyBuffer)->vShowTree();
       //if (mbWatch) {
       
+      if (7 == pInsertedKeyEntry->aKey()->iGetInt())
+        int iDebug = 1;
+        
       if (pOriginalFirstEntry) {
         Key* aDeleteKey = pOriginalFirstEntry->aKey();
         m_pHigherBuffer->vDeleteUpwards(aDeleteKey);
@@ -1183,7 +1187,6 @@ Entry* EntryBuffer::pInsertKeyBuffer_c(i8 iTxId, Id xId,
                                           aInsertKey, iInsertKeyLen,
                                           nInsertOffsets,
                                           ppRootKeyBuffer,
-                                          iRefBufNo,
                                           this);
       //}
       //else
@@ -1502,6 +1505,10 @@ void EntryBuffer::vPositionPriorLn(Key* aFindKey, Entry* pPriorVec[],
   
   ASSERT(0 != m_nBufferLevel);
   
+  i8 iFindInt = aFindKey->iGetInt();
+  if (7 == iFindInt)
+    int iDebug = 0;
+  
   for (ln nLevel = 0_ln; *nLevel < gpAttachMap->m_nIndexLevels; nLevel++)
     pPriorVec[*nLevel] = m_pHeadEntry;
   
@@ -1568,6 +1575,10 @@ void EntryBuffer::vPositionPriorLnAfter(Key* aFindKey, Entry* pPriorVec[],
   
   i8 iBufferNo = *pToBuffer->nBufferNo();
   
+  i8 iFindInt = aFindKey->iGetInt();
+  if (7 == iFindInt)
+    int iDebug = 0;
+  
   for (ln nLevel = 0_ln; *nLevel < gpAttachMap->m_nIndexLevels; nLevel++)
     pPriorVec[*nLevel] = m_pHeadEntry;
   
@@ -1577,6 +1588,7 @@ void EntryBuffer::vPositionPriorLnAfter(Key* aFindKey, Entry* pPriorVec[],
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   i8 nKeyCols = pIdxColVec->nItems();
   
+  bool bAreSame;
   bool bIsJuxta;
   bool bIsEqual;
   
@@ -1598,10 +1610,21 @@ void EntryBuffer::vPositionPriorLnAfter(Key* aFindKey, Entry* pPriorVec[],
         aNextKey->bGreaterThan(aFindKey,pIdxColVec);
       
       if (bIsJuxta) {
-        if (! iBufferNo  || *nScanLevel)
+        
+        //if (! iBufferNo  || *nScanLevel)
           break;
-        i8 iRefBuffNo = pScanEntry_sl->iBufferNo();
-        if (pScanEntry_sl != m_pHeadEntry && iRefBuffNo < iBufferNo)
+        
+        //i8 iRefBuffNo = pScanEntry_sl->iBufferNo();
+        //if (pScanEntry_sl != m_pHeadEntry && iRefBuffNo < iBufferNo)
+        //  break;
+        
+      }
+  
+      if (0 == *nScanLevel) {
+        bAreSame =
+          aNextKey->bEqualTo(aFindKey,pIdxColVec);
+        if (bAreSame &&
+              (pToBuffer == pNextEntry_sl->pEntryBuffer()->pPrevBuffer()))
           break;
       }
       
@@ -1618,8 +1641,8 @@ void EntryBuffer::vPositionPriorLnAfter(Key* aFindKey, Entry* pPriorVec[],
 //           pPriorVec[0],
 //           pNextEntry(pPriorVec[0],0),
 //           iBufferNo);
-    ASSERT(! pNextEntry(pPriorVec[0],0) ||
-           pNextEntry(pPriorVec[0],0)->iBufferNo() == iBufferNo);
+//ASSERT(! pNextEntry(pPriorVec[0],0) ||
+//           pNextEntry(pPriorVec[0],0)->iBufferNo() == iBufferNo);
   }
 }
 
@@ -1926,8 +1949,8 @@ EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
     
     vDeleteEntry(pMoveEntry);
     //(*ppRootKeyBuffer)->vShowTree();
-    //pNewBuffer->vShowShort();
-    //vTrace("\n"_Stz);
+    pNewBuffer->vShowShort();
+    vTrace("\n"_Stz);
     
     pMoveEntry = pNextEntry;
   }
@@ -1951,6 +1974,8 @@ EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
       pChildBuffer->m_pHigherBuffer = pNewBuffer;
     }
   }
+  
+  (*ppRootKeyBuffer)->vShowTree();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compact the buffer
@@ -2072,7 +2097,8 @@ void EntryBuffer::vDeleteUpwards(Key* aDeleteKey,
     return;
   //Entry* pDeleteEntry = pPriorEntry;
 
-  vTrace("pDeleteEntry key %lld\n"_Stz,
+  vTrace("[%lld] pDeleteEntry key %lld\n"_Stz,
+         *nBufferNo(),
          pDeleteEntry->aKey()->iGetInt());
   
   Key* aDeleteEntryKey = pDeleteEntry->aKey();
@@ -2326,16 +2352,15 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
     Key* aKeyLeft = pFirstKeyLeft->aKey();
     i8 iKeyLenLeft = aKeyLeft->nKeySize(m_pIndex->pIdxColVec());
     i8 nOffsetsLeft = pFirstKeyLeft->nOffsets();
-    i8 iLeftBufferNo = *pLeftBuffer->nBufferNo();
     
     Entry* pNewKeyLeft =
       pHigherBuffer->pInsertKeyUpwards_c(iTxIdLeft,xIdLeft,
                                          aKeyLeft,iKeyLenLeft,
                                          nOffsetsLeft,
                                          ppRootKeyBuffer,
-                                         iLeftBufferNo,
+
                                          pLeftBuffer);
-    //(*ppRootKeyBuffer)->vShowTree();
+    (*ppRootKeyBuffer)->vShowTree();
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2348,17 +2373,17 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
   Key* aKeyRight = pFirstKeyRight->aKey();
   i8 iKeyLenRight = aKeyRight->nKeySize(m_pIndex->pIdxColVec());
   i8 nOffsetsRight = pFirstKeyRight->nOffsets();
-  i8 iRightBufferNo = *pRightBuffer->nBufferNo();
+
   Entry* pNewKeyRight =
     pHigherBuffer->pInsertKeyUpwards_c(iTxIdRight,xIdRight,
                                        aKeyRight,iKeyLenRight,
                                        nOffsetsRight,
                                        ppRootKeyBuffer,
-                                       iRightBufferNo,
+
                                        pRightBuffer);
   
   //if (mbWatch)
-  //  (*ppRootKeyBuffer)->vShowTree();
+  (*ppRootKeyBuffer)->vShowTree();
   
 //  EntryBuffer* pNewKeyRightBuffer = pNewKeyRight->pEntryBuffer();
 //  if (pHigherBuffer != pNewKeyRightBuffer->pHigherBuffer()) {
@@ -2649,7 +2674,7 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
   //for (i8 iInt = 0; iInt <= 10; iInt++) {
 
   // keys in descending order
-  //for (i8 iInt = 100; iInt >= 0; iInt--) {
+  //for (i8 iInt = 10; iInt >= 0; iInt--) {
   
   // keys in random order
   //i8 iRndNo[] = { 4,0,1,7,8,2,5,9,6,3,10 };
@@ -2658,7 +2683,7 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
     //i8 iInt = Random::iRandom(1000);
   
   // duplicate keys
-  for (i8 iInt = 1; iInt <= 4; iInt++)
+  for (i8 iInt = 1; iInt <= 5; iInt++)
   for (i8 iCount = 0; iCount < iInt; iCount++) {
     
     i8 iKey = iInt;
