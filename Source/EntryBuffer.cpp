@@ -694,6 +694,11 @@ void EntryBuffer::vDeleteEntry(Entry* pEntry)
   
   i8 nOffsets = pEntry->nOffsets();
   for (i8 i_Offset = 0; i_Offset < nOffsets; i_Offset++) {
+    if (pEntry != pGetEntryOffset(xPriorVec[i_Offset]->iNEO(i_Offset))) {
+      vDumpPriorVec(xPriorVec);
+      vPositionPriorL0(aKey, xPriorVec, pEntry);
+      ASSERT(pEntry == pGetEntryOffset(xPriorVec[i_Offset]->iNEO(i_Offset)));
+    }
     i4 iNEO = pEntry->iNEO(i_Offset);
     xPriorVec[i_Offset]->vNEO(i_Offset,iNEO);
   }
@@ -2631,6 +2636,7 @@ bool EntryBuffer::bQuickVerify(Entry* pNotSeeEntry)
         continue;
       
       if (pCheckEntry == pNotSeeEntry) {
+        pTestEntry->vShow(iToOffset(pTestEntry),m_pIndex,true);
         pCheckEntry->vShow(iToOffset(pCheckEntry),m_pIndex,true);
         return false;
       }
