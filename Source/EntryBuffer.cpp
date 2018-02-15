@@ -1856,6 +1856,9 @@ void EntryBuffer::vShowTree(bool bDumpBuffer)
     vTrace("]"_Stz);
     */
     pBuffer->vShowShort();
+    
+    ASSERT(! pBuffer->pPrevBuffer() || pBuffer == pBuffer->pPrevBuffer()->pNextBuffer());
+    ASSERT(! pBuffer->pNextBuffer() || pBuffer == pBuffer->pNextBuffer()->pPrevBuffer());
   }
   
   vTrace("\n"_Stz);
@@ -1975,7 +1978,7 @@ EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
     }
   }
   
-  (*ppRootKeyBuffer)->vShowTree();
+  //(*ppRootKeyBuffer)->vShowTree();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compact the buffer
@@ -2360,7 +2363,7 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
                                          ppRootKeyBuffer,
 
                                          pLeftBuffer);
-    (*ppRootKeyBuffer)->vShowTree();
+    //(*ppRootKeyBuffer)->vShowTree();
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2383,7 +2386,7 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
                                        pRightBuffer);
   
   //if (mbWatch)
-  (*ppRootKeyBuffer)->vShowTree();
+  //(*ppRootKeyBuffer)->vShowTree();
   
 //  EntryBuffer* pNewKeyRightBuffer = pNewKeyRight->pEntryBuffer();
 //  if (pHigherBuffer != pNewKeyRightBuffer->pHigherBuffer()) {
@@ -2442,8 +2445,12 @@ EntryBuffer* EntryBuffer::pNewNextBuffer(void)
   pNewBuffer->vHigherBuffer(m_pHigherBuffer);
   pNewBuffer->vPrevBuffer(this);
   pNewBuffer->vNextBuffer(m_pNextBuffer);
+  if (m_pNextBuffer)
+    m_pNextBuffer->vPrevBuffer(pNewBuffer);
   
   m_pNextBuffer = pNewBuffer;
+  
+  ASSERT(this == pNewBuffer->pPrevBuffer());
   
   return pNewBuffer;
 }
@@ -2730,7 +2737,7 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
 
     int iDebug = 1;
   }
-  pRootKeyBuffer->vShowTree(false);
+  pRootKeyBuffer->vShowTree();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
