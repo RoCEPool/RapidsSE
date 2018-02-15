@@ -1952,8 +1952,8 @@ EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
     
     vDeleteEntry(pMoveEntry);
     //(*ppRootKeyBuffer)->vShowTree();
-    pNewBuffer->vShowShort();
-    vTrace("\n"_Stz);
+    //pNewBuffer->vShowShort();
+    //vTrace("\n"_Stz);
     
     pMoveEntry = pNextEntry;
   }
@@ -2304,7 +2304,8 @@ bool EntryBuffer::bKeyBeforeBuffer(Key* aKeyTest)
   
   bool bIsEqual;
   bool bIsJuxta =
-    aKeyTest->bJuxtaCompare(JC_BEFORE,aFirstKey,pIdxColVec,nKeyCols,bIsEqual);
+  //aKeyTest->bJuxtaCompare(JC_BEFORE,aFirstKey,pIdxColVec,nKeyCols,bIsEqual);
+    aKeyTest->bLessThan(aFirstKey,pIdxColVec);
   
   return bIsJuxta;
 }
@@ -2690,7 +2691,7 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
     //i8 iInt = Random::iRandom(1000);
   
   // duplicate keys
-  for (i8 iInt = 1; iInt <= 5; iInt++)
+  for (i8 iInt = 1; iInt <= 10; iInt++)
   for (i8 iCount = 0; iCount < iInt; iCount++) {
     
     i8 iKey = iInt;
