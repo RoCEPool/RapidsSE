@@ -505,7 +505,7 @@ void Entry::vShow(i8 iOffset, Index* pIndex, bool bShowKey)
          Tx::iTxNo(m_iTxId)
          );
   
-  if (bShowKey)
+  if (bShowKey && ! pIndex->bIsHidden())
     aKey->vShow(pIndex->pIdxColVec());
   
   if (pIndex->bIsHidden()) {
