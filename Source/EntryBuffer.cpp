@@ -2170,9 +2170,9 @@ void EntryBuffer::vDeleteUpwards(Key* aDeleteKey,
     return;
   //Entry* pDeleteEntry = pPriorEntry;
 
-  vTrace("[%lld] pDeleteEntry key %lld\n"_Stz,
-         *nBufferNo(),
-         pDeleteEntry->aKey()->iGetInt());
+//  vTrace("[%lld] pDeleteEntry key %lld\n"_Stz,
+//         *nBufferNo(),
+//         pDeleteEntry->aKey()->iGetInt());
   
   Key* aDeleteEntryKey = pDeleteEntry->aKey();
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
