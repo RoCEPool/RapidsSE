@@ -62,9 +62,8 @@ Key::~Key(void)
 /*----------------------------------------------------------------------------*/
 bool Key::operator <(Key* pKeyArg)
 {
-  i8 iDatumA = *(i8*)aWspStr();
-  i8 iDatumB = *(i8*)pKeyArg->aWspStr();
-  
+  i8 iDatumA = *(i8*)aWspArea();
+  i8 iDatumB = *(i8*)pKeyArg->aWspArea();
   bool b = iDatumA < iDatumB;
   
   return b;
@@ -75,8 +74,8 @@ bool Key::operator <(Key* pKeyArg)
 /*----------------------------------------------------------------------------*/
 bool Key::operator <=(Key* pKeyArg)
 {
-  i8 iDatumA = *(i8*)aWspStr();
-  i8 iDatumB = *(i8*)pKeyArg->aWspStr();
+  i8 iDatumA = *(i8*)aWspArea();
+  i8 iDatumB = *(i8*)pKeyArg->aWspArea();
   
   bool b = iDatumA <= iDatumB;
   
@@ -88,8 +87,8 @@ bool Key::operator <=(Key* pKeyArg)
 /*----------------------------------------------------------------------------*/
 void Key::vKey(KeyWrk& xKeyWrk)
 {
-  Stz* aDst = aWspStr();
-  Stz* aSrc = (Stz*)xKeyWrk.aData();
+  char* aDst = aWspArea();
+  char* aSrc = xKeyWrk.aData();
   i8 nBytes  = xKeyWrk.nDataSize();
   
   MemLib::vCopy(aDst,aSrc,nBytes,CN_KEY);
@@ -667,14 +666,6 @@ void Key::vSprintSortKey(s48K& sVar, IdxColVec* pIdxColVec)
 char* Key::aWspArea(void)
 {
   return m_xWsp.aArea();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get wsp area                                                               */
-/*----------------------------------------------------------------------------*/
-Stz* Key::aWspStr(void)
-{
-  return m_xWsp.aStr();
 }
 
 /*----------------------------------------------------------------------------*/

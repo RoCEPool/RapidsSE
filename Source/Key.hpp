@@ -74,7 +74,6 @@ namespace DBobjects
     void vSprintSortKey(s48K& sBuff, IdxColVec* pColVec);
   
     char* aWspArea(void);
-    Stz*  aWspStr(void);
   
     i8 iGetInt(void);
   };
