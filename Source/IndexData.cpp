@@ -315,9 +315,12 @@ void IndexData::vAppendEntry(KeyWrk& xKeyWrk, Id xId, EntryVec& xPriorVec)
   //xKeyWrk.aKey()->vShow(m_pIndex->pIdxColVec());
   
   Entry* pKeyEntry =
-    m_pRoot->pInsertKeyTree_c(0, xId, xKeyWrk.aKey(),
-                                      xKeyWrk.nKeySize(),
-                                      &m_pRoot);
+    m_pRoot->pInsertKeyTree_c(0,
+                              //xId,
+                              xKeyWrk.xId(),
+                              xKeyWrk.aKey(),
+                              xKeyWrk.nKeySize(),
+                              &m_pRoot);
   
   //m_pRoot->vShowTree(true);
   
@@ -353,6 +356,9 @@ bool IndexData::bInsertEntry(Entry* pRow)
   KeyWrk xKeyWrk;
   pRow->vExtractIndexKey(xKeyWrk, m_pIndex->pIdxColVec());
   
+  xKeyWrk.vTxId(0);
+  xKeyWrk.vId(pRow->xId());
+  
   //xKeyWrk.vShow(m_pIndex->pIdxColVec());
   
   if ( ! m_pRoot ) {
@@ -364,9 +370,13 @@ bool IndexData::bInsertEntry(Entry* pRow)
   //bool bInserted = bInsertEntry(m_pRoot, xKeyWrk, pRow->xId(), 0);
   
   Entry* pKeyEntry =
-  m_pRoot->pInsertKeyTree_c(0, pRow->xId(), xKeyWrk.aKey(),
-                            xKeyWrk.nKeySize(),
-                            &m_pRoot);
+    m_pRoot->pInsertKeyTree_c(//0,
+                              xKeyWrk.iTxId(),
+                              //pRow->xId(),
+                              xKeyWrk.xId(),
+                              xKeyWrk.aKey(),
+                              xKeyWrk.nKeySize(),
+                              &m_pRoot);
   ASSERT(pKeyEntry);
   
   m_zLock.vDropWrite();

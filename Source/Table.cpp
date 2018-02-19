@@ -1538,8 +1538,14 @@ void Table::vBuildNewIndex(char* aSortArray, i8 nElements, i8 nElmSize,
       }
       aPrevKey = aSortKey;
     }
+    
+    xKeyWrk.vId(xId);
+    
     // append an entry into index structure
-    pNewIndexData->vAppendEntry(xKeyWrk,xId,xPriorVec);
+    pNewIndexData->vAppendEntry(xKeyWrk,
+                                //xId,
+                                xKeyWrk.xId(),
+                                xPriorVec);
   }
 
   if (gxArguments.m_bVerbose)

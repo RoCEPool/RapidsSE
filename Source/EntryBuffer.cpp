@@ -2897,9 +2897,16 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
     pRowEntry->vExtractIndexKey(xKeyWrk,pIdxColVec1);
     //xKeyWrk.vShow(pIdxColVec1);
     
+    xKeyWrk.vTxId(0);
+    xKeyWrk.vId(pRowEntry->xId());
+    
     Entry* pKeyEntry =
-      pRootKeyBuffer->pInsertKeyTree_c(0, pRowEntry->xId(),
-                                       xKeyWrk.aKey(), xKeyWrk.nKeySize(),
+      pRootKeyBuffer->pInsertKeyTree_c(//0,
+                                       xKeyWrk.iTxId(),
+                                       //pRowEntry->xId(),
+                                       xKeyWrk.xId(),
+                                       xKeyWrk.aKey(),
+                                       xKeyWrk.nKeySize(),
                                        &pRootKeyBuffer);
     //if (mbWatch)
     vTrace("\nInserted record: %s\n"_Stz,sRecData.aChar());
