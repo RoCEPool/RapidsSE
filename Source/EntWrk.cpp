@@ -44,13 +44,13 @@ EntWrk::~EntWrk(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get data pointer                                                           */
+/* get address of data                                                        */
 /*----------------------------------------------------------------------------*/
 char* EntWrk::aData(void)
 {  
   _precondition_(_MAGIC_,_FOOTER_);
   
-  char* aData = reinterpret_cast<char*>(&m_xDataWrk);
+  char* aData = m_xDataWrk.aArea();
   
   return aData;
 }
