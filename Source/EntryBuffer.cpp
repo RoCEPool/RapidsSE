@@ -1072,169 +1072,6 @@ Entry* EntryBuffer::pInsertKeyTree_c(i8 iTxId, Id xId,
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert a new key entry into this key tree                                  */
-/*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pInsertKeyUpwards_c(i8 iTxId, Id xId,
-                                        Key* aInsKey, i8 iInsKeyLen,
-                                        i8 nOffsets,
-                                        EntryBuffer** ppRootKeyBuffer,
-                                        EntryBuffer* pToBuffer)
-{
-  i8 nEntryBytes = Entry::nBytesRequired(nOffsets,iInsKeyLen);
-  i8 nOffsetBytes = nOffsets*sizeof(i4);
-  i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
-  
-  EntryBuffer* pInsertIntoBuffer =
-    pInsertableBuffer(aInsKey,nEntryPlusOffsets,ppRootKeyBuffer);
-  
-  if (mbWatch)
-    (*ppRootKeyBuffer)->vShowTree(false);
-
-  Entry* pInsertedKeyEntry =
-    pInsertIntoBuffer->pInsertKeyBuffer_c(iTxId,xId,aInsKey,iInsKeyLen,nOffsets,
-                                          ppRootKeyBuffer,
-                                          pToBuffer);
-  
-  if (pInsertIntoBuffer->m_nBufferLevel) {
-    xId = pInsertedKeyEntry->xId();
-    i8 nBuffer = xId.iBuffer();
-    
-    HeapBuffer* pHeapBuffer =
-    reinterpret_cast<HeapBuffer*>(gpBufferPool->pToBuffer(nBuffer));
-    
-    EntryBuffer* pChildBuffer =
-    reinterpret_cast<EntryBuffer*>(pHeapBuffer->pFirstChunk());
-    
-    if (pChildBuffer->m_pHigherBuffer != pInsertIntoBuffer) {
-      //(*ppRootKeyBuffer)->vShowTree();
-      pChildBuffer->m_pHigherBuffer = pInsertIntoBuffer;
-      //(*ppRootKeyBuffer)->vShowTree();
-    }
-  }
-  
-  return pInsertedKeyEntry;
-}
-
-/*----------------------------------------------------------------------------*/
-/* insert a new key entry into this buffer                                    */
-/*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pInsertKeyBuffer_c(i8 iTxId, Id xId,
-                                       Key* aInsKey, i8 iInsKeyLen,
-                                       i8 nOffsets,
-                                       EntryBuffer** ppRootKeyBuffer,
-                                       EntryBuffer* pToBuffer)
-{
-  
-  if (mbWatch) {
-    vTrace("*[%lld]Inserting %lld into "_Stz,
-           *nBufferNo(),
-           aInsKey->iGetInt());
-    vShowShort();
-    vTrace("\n"_Stz);
-  }
-
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // offsets
-  
-  i8 nEntryBytes = Entry::nBytesRequired(nOffsets,iInsKeyLen);
-  i8 nOffsetBytes = nOffsets*sizeof(i4);
-  i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // record orginal first entry incase we insert a new first entry
-  
-  Entry* pOriginalFirstEntry = pFirstEntry();
-  if (!pOriginalFirstEntry)
-    pOriginalFirstEntry = pFirstEntry();
-  
-  if (mbWatch && pOriginalFirstEntry) {
-    vTrace("*[%lld]OriginalFirstEntry: %p key %lld\n"_Stz,
-           *nBufferNo(),
-           pOriginalFirstEntry,pOriginalFirstEntry->aKey()->iGetInt());
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // find the entry after which the new key will be inserted
-  
-  Entry* xPriorVec[3];
-  if (0 == m_nBufferLevel)
-    vPositionPriorL0(aInsKey,xPriorVec);
-  else
-    vPositionPriorLnAfter(aInsKey,xPriorVec,pToBuffer);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // allocate space for the key entry in the buffer
-  
-  Entry* pInsertedKeyEntry = pAllotEntry(nEntryBytes);
-  ASSERT(pInsertedKeyEntry);
-  
-  NEO* aNEO = aAllotNEO(nOffsetBytes);
-  ASSERT(aNEO);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set the key entry
-  
-  pInsertedKeyEntry->vSetEntry(iTxId,xId,nOffsets,(Stz*)aInsKey,iInsKeyLen);
-  if (mbWatch && pOriginalFirstEntry) {
-    vTrace("*[%lld]pInsertedKeyEntry: %p key %lld\n"_Stz,
-           *nBufferNo(),
-           pInsertedKeyEntry,pInsertedKeyEntry->aKey()->iGetInt());
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set prior offsets
-  
-  i8 iKeyEntryOffset = iToOffset(pInsertedKeyEntry);
-  
-  for (i8 i_Offset = 0; i_Offset < nOffsets; i_Offset++) {
-    i8 iPriorOffset = xPriorVec[i_Offset]->iNEO(i_Offset);
-    pInsertedKeyEntry->vNEO(i_Offset,iPriorOffset);
-    xPriorVec[i_Offset]->vNEO(i_Offset,iKeyEntryOffset);
-  }
-  
-  if (mbWatch && pOriginalFirstEntry) {
-    vShowShort();
-    vTrace("\n"_Stz);
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // handle the insert of a left most key
-  
-  //pFirstEntry()->vShow(0,m_pIndex,true);
-  //pInsertedKeyEntry->vShow(0,m_pIndex,true);
-  
-  if (pFirstEntry() == pInsertedKeyEntry) {
-    if (m_pHigherBuffer) {
-      //if (mbWatch)
-      //  (*ppRootKeyBuffer)->vShowTree();
-      //if (mbWatch) {
-      
-      if (7 == pInsertedKeyEntry->aKey()->iGetInt())
-        int iDebug = 1;
-        
-      if (pOriginalFirstEntry) {
-        Key* aDeleteKey = pOriginalFirstEntry->aKey();
-        m_pHigherBuffer->vDeleteUpwards(aDeleteKey,ppRootKeyBuffer);
-        //(*ppRootKeyBuffer)->vShowTree();
-      }
-      Key* aInsertKey = pInsertedKeyEntry->aKey();
-      IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-      Id xInsertId(*nBufferNo(),0);
-      i8 iInsertKeyLen = aInsertKey->nKeySize(pIdxColVec);
-      i8 nInsertOffsets = pInsertedKeyEntry->nOffsets();
-      m_pHigherBuffer->pInsertKeyBuffer_c(iTxId, xInsertId,
-                                          aInsertKey, iInsertKeyLen,
-                                          nInsertOffsets,
-                                          ppRootKeyBuffer,
-                                          this);
-    }
-  }
-  
-  return pInsertedKeyEntry;
-}
-
-/*----------------------------------------------------------------------------*/
 /* insert row into this buffer (invoked from entryBuffer.insertRow)           */
 /*----------------------------------------------------------------------------*/
 bool EntryBuffer::bInsertRow(Entry* pOldRow, Entry** ppRow) {
@@ -2354,6 +2191,169 @@ EntryBuffer* EntryBuffer::pInsertableBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
   }
  
   return pInsertIntoBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert a new key entry into this buffer                                    */
+/*----------------------------------------------------------------------------*/
+Entry* EntryBuffer::pInsertKeyBuffer_c(i8 iTxId, Id xId,
+                                       Key* aInsKey, i8 iInsKeyLen,
+                                       i8 nOffsets,
+                                       EntryBuffer** ppRootKeyBuffer,
+                                       EntryBuffer* pToBuffer)
+{
+  
+  if (mbWatch) {
+    vTrace("*[%lld]Inserting %lld into "_Stz,
+           *nBufferNo(),
+           aInsKey->iGetInt());
+    vShowShort();
+    vTrace("\n"_Stz);
+  }
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // offsets
+  
+  i8 nEntryBytes = Entry::nBytesRequired(nOffsets,iInsKeyLen);
+  i8 nOffsetBytes = nOffsets*sizeof(i4);
+  i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // record orginal first entry incase we insert a new first entry
+  
+  Entry* pOriginalFirstEntry = pFirstEntry();
+  if (!pOriginalFirstEntry)
+    pOriginalFirstEntry = pFirstEntry();
+  
+  if (mbWatch && pOriginalFirstEntry) {
+    vTrace("*[%lld]OriginalFirstEntry: %p key %lld\n"_Stz,
+           *nBufferNo(),
+           pOriginalFirstEntry,pOriginalFirstEntry->aKey()->iGetInt());
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // find the entry after which the new key will be inserted
+  
+  Entry* xPriorVec[3];
+  if (0 == m_nBufferLevel)
+    vPositionPriorL0(aInsKey,xPriorVec);
+  else
+    vPositionPriorLnAfter(aInsKey,xPriorVec,pToBuffer);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // allocate space for the key entry in the buffer
+  
+  Entry* pInsertedKeyEntry = pAllotEntry(nEntryBytes);
+  ASSERT(pInsertedKeyEntry);
+  
+  NEO* aNEO = aAllotNEO(nOffsetBytes);
+  ASSERT(aNEO);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the key entry
+  
+  pInsertedKeyEntry->vSetEntry(iTxId,xId,nOffsets,(Stz*)aInsKey,iInsKeyLen);
+  if (mbWatch && pOriginalFirstEntry) {
+    vTrace("*[%lld]pInsertedKeyEntry: %p key %lld\n"_Stz,
+           *nBufferNo(),
+           pInsertedKeyEntry,pInsertedKeyEntry->aKey()->iGetInt());
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set prior offsets
+  
+  i8 iKeyEntryOffset = iToOffset(pInsertedKeyEntry);
+  
+  for (i8 i_Offset = 0; i_Offset < nOffsets; i_Offset++) {
+    i8 iPriorOffset = xPriorVec[i_Offset]->iNEO(i_Offset);
+    pInsertedKeyEntry->vNEO(i_Offset,iPriorOffset);
+    xPriorVec[i_Offset]->vNEO(i_Offset,iKeyEntryOffset);
+  }
+  
+  if (mbWatch && pOriginalFirstEntry) {
+    vShowShort();
+    vTrace("\n"_Stz);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // handle the insert of a left most key
+  
+  //pFirstEntry()->vShow(0,m_pIndex,true);
+  //pInsertedKeyEntry->vShow(0,m_pIndex,true);
+  
+  if (pFirstEntry() == pInsertedKeyEntry) {
+    if (m_pHigherBuffer) {
+      //if (mbWatch)
+      //  (*ppRootKeyBuffer)->vShowTree();
+      //if (mbWatch) {
+      
+      if (7 == pInsertedKeyEntry->aKey()->iGetInt())
+        int iDebug = 1;
+      
+      if (pOriginalFirstEntry) {
+        Key* aDeleteKey = pOriginalFirstEntry->aKey();
+        m_pHigherBuffer->vDeleteUpwards(aDeleteKey,ppRootKeyBuffer);
+        //(*ppRootKeyBuffer)->vShowTree();
+      }
+      Key* aInsertKey = pInsertedKeyEntry->aKey();
+      IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+      Id xInsertId(*nBufferNo(),0);
+      i8 iInsertKeyLen = aInsertKey->nKeySize(pIdxColVec);
+      i8 nInsertOffsets = pInsertedKeyEntry->nOffsets();
+      m_pHigherBuffer->pInsertKeyBuffer_c(iTxId, xInsertId,
+                                          aInsertKey, iInsertKeyLen,
+                                          nInsertOffsets,
+                                          ppRootKeyBuffer,
+                                          this);
+    }
+  }
+  
+  return pInsertedKeyEntry;
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert a new key entry into this key tree                                  */
+/*----------------------------------------------------------------------------*/
+Entry* EntryBuffer::pInsertKeyUpwards_c(i8 iTxId, Id xId,
+                                        Key* aInsKey, i8 iInsKeyLen,
+                                        i8 nOffsets,
+                                        EntryBuffer** ppRootKeyBuffer,
+                                        EntryBuffer* pToBuffer)
+{
+  i8 nEntryBytes = Entry::nBytesRequired(nOffsets,iInsKeyLen);
+  i8 nOffsetBytes = nOffsets*sizeof(i4);
+  i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
+  
+  EntryBuffer* pInsertIntoBuffer =
+  pInsertableBuffer(aInsKey,nEntryPlusOffsets,ppRootKeyBuffer);
+  
+  if (mbWatch)
+    (*ppRootKeyBuffer)->vShowTree(false);
+  
+  Entry* pInsertedKeyEntry =
+  pInsertIntoBuffer->pInsertKeyBuffer_c(iTxId,xId,aInsKey,iInsKeyLen,nOffsets,
+                                        ppRootKeyBuffer,
+                                        pToBuffer);
+  
+  if (pInsertIntoBuffer->m_nBufferLevel) {
+    xId = pInsertedKeyEntry->xId();
+    i8 nBuffer = xId.iBuffer();
+    
+    HeapBuffer* pHeapBuffer =
+    reinterpret_cast<HeapBuffer*>(gpBufferPool->pToBuffer(nBuffer));
+    
+    EntryBuffer* pChildBuffer =
+    reinterpret_cast<EntryBuffer*>(pHeapBuffer->pFirstChunk());
+    
+    if (pChildBuffer->m_pHigherBuffer != pInsertIntoBuffer) {
+      //(*ppRootKeyBuffer)->vShowTree();
+      pChildBuffer->m_pHigherBuffer = pInsertIntoBuffer;
+      //(*ppRootKeyBuffer)->vShowTree();
+    }
+  }
+  
+  return pInsertedKeyEntry;
 }
 
 /*----------------------------------------------------------------------------*/

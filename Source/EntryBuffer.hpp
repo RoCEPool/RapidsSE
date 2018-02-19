@@ -116,16 +116,6 @@ namespace DBobjects
     static Entry* pInsertKeyTree_c(i8 iTxId, Id xIdx,
                                    Key* pKey, i8 iKeyLength,
                                    EntryBuffer** ppRootKeyBuffer);
-    Entry*       pInsertKeyUpwards_c(i8 iTxId, Id xIdx,
-                                     Key* pKey, i8 iKeyLength,
-                                     i8 nOffsets,
-                                     EntryBuffer** ppRootKeyBuffer,
-                                     EntryBuffer* pToBuffer);
-    Entry*       pInsertKeyBuffer_c(i8 iTxId, Id xIdx,
-                                    Key* pKey, i8 iKeyLength,
-                                    i8 nOffsets,
-                                    EntryBuffer** ppRootKeyBuffer,
-                                    EntryBuffer* pToBuffer);
     bool         bInsertRow(Entry* pOldRow, Entry** ppRow);
     EntryBuffer* pNewHigherBuffer(void);
     EntryBuffer* pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
@@ -163,6 +153,16 @@ namespace DBobjects
     void         vHeadEntryRestore(void);
     EntryBuffer* pInsertableBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
                                    EntryBuffer** ppRootKeyBuffer);
+    Entry*       pInsertKeyBuffer_c(i8 iTxId, Id xIdx,
+                                    Key* pKey, i8 iKeyLength,
+                                    i8 nOffsets,
+                                    EntryBuffer** ppRootKeyBuffer,
+                                    EntryBuffer* pToBuffer);
+    Entry*       pInsertKeyUpwards_c(i8 iTxId, Id xIdx,
+                                     Key* pKey, i8 iKeyLength,
+                                     i8 nOffsets,
+                                     EntryBuffer** ppRootKeyBuffer,
+                                     EntryBuffer* pToBuffer);
     void         vItemCountRestore(void);
     bool         bKeyBeforeBuffer(Key* aKey);
     Item*        pNextItem(Item* pItem);
