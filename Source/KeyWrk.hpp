@@ -16,7 +16,6 @@ namespace DBobjects
     void* operator new(size_t, KeyWrk*);
     
     KeyWrk(void);
-    KeyWrk(Key* aKey, IdxColVec* pColVec);
     ~KeyWrk(void);
     
     void vAddDatum(ValWrk& xValWrk, Column* pCol);
@@ -28,9 +27,6 @@ namespace DBobjects
     i8   nKeySize(void);
     void vReset(void);
     void vShow(IdxColVec* pIdxColVec);
-    
-    //void   vAddKey(KeyWrk& xKeyWrk);
-    //void   vForm(Id& xId, KeyWrk& xKeyWrk);
   };
 }
 

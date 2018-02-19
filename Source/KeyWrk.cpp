@@ -47,17 +47,6 @@ KeyWrk::KeyWrk(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-KeyWrk::KeyWrk(Key* aKey, IdxColVec* pColVec)
-: EntWrk(CN_KEYWRK)
-{
-  _precondition_(_MAGIC_,CN_KEYWRK);
-  
-  vAddKey(aKey, pColVec);
-}
-
-/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 KeyWrk::~KeyWrk(void)
@@ -248,6 +237,8 @@ Key* KeyWrk::aKey(void)
 /*----------------------------------------------------------------------------*/
 i8 KeyWrk::nKeySize(void)
 {
+  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
+  
   return nDataSize();
 }
 
