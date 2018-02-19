@@ -5,9 +5,6 @@
 
 namespace DBobjects
 {
-  class Entry;
-  class Key;
-  
   class EntWrk : public Object
   {
   static const i8 C_DATA_BYTES = C_1KB*15;
