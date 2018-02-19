@@ -173,8 +173,6 @@ namespace DBobjects
                                   i8 iBufferNo=0);
     void         vPositionPriorLnAfter(Key* aFindKey, Entry** pPriorVec,
                                        EntryBuffer* pToBuffer);
-    void         vReplaceKey(Entry* pWasEntry, Entry* pWithEntry,i8 iBufferNo,
-                             EntryBuffer** ppRootKeyBuffer=nullptr);
     void         vQuickVerify(Entry* pSeeEntry=nullptr);
     bool         bQuickVerify(Entry* pNotSeeEntry);
   

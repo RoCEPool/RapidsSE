@@ -395,26 +395,6 @@ Key* Entry::aKey(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* replace existing key with given entry wsp                                  */
-/*----------------------------------------------------------------------------*/
-void Entry::vReplaceKey(EntWrk& xEntWrk)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_); 
-  
-  ASSERT(nSizeItem());
-  
-  // copy Key
-  Key* aEntryKey = this->aKey();
-  
-  Key* aEntWrkKey = xEntWrk.aKey();
-  i8 nKeyBytes = xEntWrk.nKeySize();
-  
-  MemLib::vCopy(aEntryKey,aEntWrkKey,nKeyBytes,eClass());
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Index -------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

@@ -1228,12 +1228,6 @@ Entry* EntryBuffer::pInsertKeyBuffer_c(i8 iTxId, Id xId,
                                           nInsertOffsets,
                                           ppRootKeyBuffer,
                                           this);
-      //}
-      //else
-      //  m_pHigherBuffer->vReplaceKey(pOriginalFirstEntry,pInsertedKeyEntry,
-      //                               *nBufferNo(),ppRootKeyBuffer);
-      //if (mbWatch)
-      //  (*ppRootKeyBuffer)->vShowTree();
     }
   }
   

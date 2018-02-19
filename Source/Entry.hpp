@@ -71,7 +71,6 @@ namespace DBobjects
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // key
     Key* aKey(void);
-    void vReplaceKey(EntWrk& xEntWrk);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // index
