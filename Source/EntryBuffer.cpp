@@ -1956,7 +1956,9 @@ void EntryBuffer::vShowTree(bool bDumpBuffer)
 EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
 {
   //RASSERT(0);
-
+//  static i8 nSplits = 0;
+//
+//  vTrace("SPLIT %lld\n"_Stz,++nSplits);
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   

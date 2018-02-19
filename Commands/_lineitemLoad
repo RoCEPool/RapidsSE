@@ -40,7 +40,7 @@ create table lineitem (
   // SF100: 600M rows ; 161.9GB used
 );
 
-CREATE INDEX lineitem_idx1 ON lineitem(l_partkey);
+//CREATE INDEX lineitem_idx1 ON lineitem(l_partkey);
 //CREATE INDEX lineitem_idx2 ON lineitem(l_shipdate);
 //CREATE INDEX lineitem_idx3 ON lineitem(l_suppkey);
 
@@ -56,6 +56,18 @@ timerEnd;
 space;
 
 antbl lineitem;
+
+print "sleeping..." ;
+sleep 3;
+print "slept" ;
+
+timerStart;
+CREATE INDEX lineitem_idx1 ON lineitem(l_partkey);
+timerEnd;
+
+visidx lineitem lineitem_idx1;
+
+anidx lineitem lineitem_idx1;
 
 //docol locksList;
 //docol stepsList;
