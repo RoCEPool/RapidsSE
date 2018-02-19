@@ -294,7 +294,9 @@ void IndexData::vAppendEntriesFromBuffer(EntryBuffer* pEntryBuffer, EntryBuffer*
 /*----------------------------------------------------------------------------*/
 /* append an entry into this index at level 0                                 */
 /*----------------------------------------------------------------------------*/
-void IndexData::vAppendEntry(KeyWrk& xKeyWrk, Id xId, EntryVec& xPriorVec)
+void IndexData::vAppendEntry(KeyWrk& xKeyWrk,
+                             //Id xId,
+                             EntryVec& xPriorVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   

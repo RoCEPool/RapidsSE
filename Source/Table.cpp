@@ -1544,7 +1544,7 @@ void Table::vBuildNewIndex(char* aSortArray, i8 nElements, i8 nElmSize,
     // append an entry into index structure
     pNewIndexData->vAppendEntry(xKeyWrk,
                                 //xId,
-                                xKeyWrk.xId(),
+                                //xKeyWrk.xId(),
                                 xPriorVec);
   }
 
