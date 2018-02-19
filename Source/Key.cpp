@@ -88,8 +88,8 @@ bool Key::operator <=(Key* pKeyArg)
 void Key::vKey(KeyWrk& xKeyWrk)
 {
   char* aDst = aWspArea();
-  char* aSrc = xKeyWrk.aData();
-  i8 nBytes  = xKeyWrk.nDataSize();
+  char* aSrc = (char*)xKeyWrk.aKey();
+  i8 nBytes  = xKeyWrk.nKeySize();
   
   MemLib::vCopy(aDst,aSrc,nBytes,CN_KEY);
 }

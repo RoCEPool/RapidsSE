@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* EntWrk.hpp -- Working Entry                                                */
+/* EntWrk.hpp -- Working Entry (contains an embedded object)                  */
 /*============================================================================*/
 #pragma once
 
@@ -7,16 +7,19 @@ namespace DBobjects
 {
   class EntWrk : public Object
   {
+  friend class Entry;
+  friend class Table;
+  
   static const i8 C_DATA_BYTES = C_1KB*15;
   
   private:
-    Id m_xId;      // id
+    Id m_xId;      // id of row, or referenced entry in another buffer
     i8 m_iTxId;    // transaction id
     i8 m_nOffsets; // number of offsets (0..3)
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // key and datums
-    WspFxd<C_DATA_BYTES> m_xDataWrk; // data area workspace
+    WspFxd<C_DATA_BYTES> m_xEmbeddedWsp; // embedded object workspace
   
     Footer m_xFooter;
   
@@ -24,10 +27,7 @@ namespace DBobjects
   EntWrk(eCN eClass);
     ~EntWrk(void);
   
-    char*  aData(void);
-    i8     nDataSize(void);
-    void   vDataSize(i8 iSize);
-    void   vData(Stz* aData, i8 iSize);
+    char*  aEmbedded(void);
     Id&    xId(void);
     void   vId(Id& xId);
     char*  aLatter(void);
@@ -39,6 +39,10 @@ namespace DBobjects
     void   vTxId(i8 iTxId);
 
     Footer* aFooter(void);
+  
+  protected:
+    i8     nEmbeddedSize(void);
+    void   vEmbeddedSize(i8 iSize);
   };
 }
 

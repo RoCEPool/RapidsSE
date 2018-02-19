@@ -2735,7 +2735,7 @@ void EntryBuffer::vUnitTest_b(Table* pTable)
             iKey,IntLib::sAsText(iKey),iKey);
     vTrace("Record: %s\n"_Stz,sRecData.aChar());
   
-    char* aRowData = xRowEntWrk.aData();
+    char* aRowData = (char*)xRowEntWrk.aRow();
     iRecLength = sRecData.iLength();
     
     bFormatted = Row::bFormatRow(pColVec,pFormatters,
@@ -2743,7 +2743,7 @@ void EntryBuffer::vUnitTest_b(Table* pTable)
                                  (Stz*)aRowData,iRowLength,
                                  bBlankLine);
 
-    xRowEntWrk.vDataSize(iRowLength);
+    xRowEntWrk.vRowSize(iRowLength);
     //((Row*)aRowData)->vDump(pColVec);
 
     //Entry* pRowEntry = pCurrentBuffer->pAppendRow_v3(xRowEntWrk);
@@ -2876,7 +2876,7 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
     if (mbWatch)
       vTrace("\nInserting record: %s\n"_Stz,sRecData.aChar());
     
-    char* aRowData = xRowEntWrk.aData();
+    char* aRowData = (char*)xRowEntWrk.aRow();
     iRecLength = sRecData.iLength();
     
     bFormatted = Row::bFormatRow(pColVec,pFormatters,
@@ -2884,7 +2884,7 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
                                  (Stz*)aRowData,iRowLength,
                                  bBlankLine);
     
-    xRowEntWrk.vDataSize(iRowLength);
+    xRowEntWrk.vRowSize(iRowLength);
     //((Row*)aRowData)->vDump(pColVec);
     
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -

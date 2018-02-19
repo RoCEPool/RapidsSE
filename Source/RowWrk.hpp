@@ -21,6 +21,7 @@ namespace DBobjects
     
     Row*   aRow(void);
     i8     nRowSize(void);
+    void   vRowSize(i8 nRowSize);
     void   vShow(ColumnVec* pColVec);
   };
 }

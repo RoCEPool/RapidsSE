@@ -62,7 +62,7 @@ Row* RowWrk::aRow(void)
 {
   _precondition_(_MAGIC_,CN_ROWWRK);
   
-  Row* aThisRow = (Row*)aData();
+  Row* aThisRow = (Row*)aEmbedded();
   return aThisRow;
 }
 
@@ -73,8 +73,17 @@ i8 RowWrk::nRowSize(void)
 {
   _precondition_(_MAGIC_,CN_ROWWRK);
   
-  Row* aThisRow = (Row*)aData();
-  return nDataSize();
+  return nEmbeddedSize();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set row size                                                               */
+/*----------------------------------------------------------------------------*/
+void RowWrk::vRowSize(i8 nRowSize)
+{
+  _precondition_(_MAGIC_,CN_ROWWRK);
+  
+  vEmbeddedSize(nRowSize);
 }
 
 /*----------------------------------------------------------------------------*/

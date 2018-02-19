@@ -78,11 +78,11 @@ Entry::~Entry(void)
 /*----------------------------------------------------------------------------*/
 i8 Entry::nBytesRequired(EntWrk& xEntWrk)
 {
-  i8 nDataBytes = xEntWrk.nDataSize();
+  i8 nEmbeddedBytes = xEntWrk.nEmbeddedSize();
   
-  i8 nBytes = Entry::nBytesRequired(nDataBytes);
+  i8 nEntryBytes = Entry::nBytesRequired(nEmbeddedBytes);
   
-  return nBytes;
+  return nEntryBytes;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -23,7 +23,7 @@ EntWrk::EntWrk(eCN eClassNo)
   
   m_nOffsets = -1;
   
-  m_xDataWrk.vInit();
+  m_xEmbeddedWsp.vInit();
   
   _checkInitialisedSize_(sizeof(EntWrk));
   
@@ -43,48 +43,15 @@ EntWrk::~EntWrk(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get address of data                                                        */
+/* get address of embedded object                                             */
 /*----------------------------------------------------------------------------*/
-char* EntWrk::aData(void)
+char* EntWrk::aEmbedded(void)
 {  
   _precondition_(_MAGIC_,_FOOTER_);
   
-  char* aData = m_xDataWrk.aArea();
+  char* aData = m_xEmbeddedWsp.aArea();
   
   return aData;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get data size                                                              */
-/*----------------------------------------------------------------------------*/
-i8 EntWrk::nDataSize(void)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  return m_xDataWrk.nUsed();
-}
-
-/*----------------------------------------------------------------------------*/
-/* set data size                                                              */
-/*----------------------------------------------------------------------------*/
-void EntWrk::vDataSize(i8 iSize)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  m_xDataWrk.vUsed(iSize);
-}
-
-/*----------------------------------------------------------------------------*/
-/* copy the row data                                                          */
-/*----------------------------------------------------------------------------*/
-void EntWrk::vData(Stz* aDataBytes, i8 iSize)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  char* aDataArea = m_xDataWrk.aLatter();
-  MemLib::vCopy(aDataArea,aDataBytes,iSize,CN_ENTWRK);
-  
-  m_xDataWrk.vTake(iSize);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -112,7 +79,7 @@ void EntWrk::vId(Id& xId)
 /*----------------------------------------------------------------------------*/
 char* EntWrk::aLatter(void)
 {
-  return m_xDataWrk.aLatter();
+  return m_xEmbeddedWsp.aLatter();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -160,7 +127,7 @@ void EntWrk::vTake(i8 iSize)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  m_xDataWrk.vTake(iSize);
+  m_xEmbeddedWsp.vTake(iSize);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -181,6 +148,30 @@ void EntWrk::vTxId(i8 iTxId)
   _precondition_(_MAGIC_,_FOOTER_);
   
   m_iTxId = iTxId;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Protected ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get embedded object size                                                   */
+/*----------------------------------------------------------------------------*/
+i8 EntWrk::nEmbeddedSize(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  return m_xEmbeddedWsp.nUsed();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set embedded object size                                                   */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vEmbeddedSize(i8 iSize)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  m_xEmbeddedWsp.vUsed(iSize);
 }
 
 /*----------------------------------------------------------------------------*/

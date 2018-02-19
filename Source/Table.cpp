@@ -1031,8 +1031,8 @@ void Table::vPopulateSortArray(char* aSortArray, i8 nElements, i8 iSortElmSize,
       pRow->vExtractSortKey(xKeyWrk,pIdxColVec);
       
       // copy the key datum into the sort element
-      MemLib::vCopy(aSortElm,xKeyWrk.aData(),xKeyWrk.nDataSize(),CN_TABLE);
-      aSortElm = pAdd<char*>(aSortElm,xKeyWrk.nDataSize());
+      MemLib::vCopy(aSortElm,xKeyWrk.aEmbedded(),xKeyWrk.nKeySize(),CN_TABLE);
+      aSortElm = pAdd<char*>(aSortElm,xKeyWrk.nKeySize());
       
       // set the id into the sort element
       *((Id*)aSortElm) = pRow->xId();
@@ -1578,7 +1578,7 @@ void Table::vBuildKeyWrk(Key* aSortKey, IdxColVec* pIdxColVec, KeyWrk& rKeyWrk)
       if (((Vch*)aDatum)->bIsNull())
         rKeyWrk.vAddWord(C_NULL_VCH);
       else
-        rKeyWrk.vAddStz(aDatum);
+        rKeyWrk.vAddDatum(aDatum);
     }
     else {
       w8 wDatum = *(w8*)aSortElm;

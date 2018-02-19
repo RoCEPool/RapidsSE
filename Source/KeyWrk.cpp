@@ -59,30 +59,19 @@ KeyWrk::~KeyWrk(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add a key                                                                  */
+/* add element to key                                                         */
 /*----------------------------------------------------------------------------*/
-void KeyWrk::vAddKey(Key* aKey, IdxColVec* pColVec)
+void KeyWrk::vAddDatum(Stz* aStz)
 {
-  _precondition_(_MAGIC_,CN_KEYWRK);
+  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
-  char* aCursor = aKey->aWspArea();
-  i8 nBytes;
-  for (i8 iColumn = 0; iColumn < pColVec->nItems(); iColumn++) {
-    Column* pColumn = pColVec->pGet(iColumn);
-    
-    char* aElement = aKey->aEachDatum(pColumn, nBytes,&aCursor);
-    
-    char* pDst = aLatter();
-    char* pSrc = aElement;
-    
-    DtmLib::vCopy(pColumn->eDatumType(),pDst,pSrc,pColumn);
+  char* aDst = aLatter();
+  char* aSrc = (char*)aStz;
+  i8 nSize = StrLib::iSize(aSrc);
   
-    vTake(nBytes);
-  }
+  MemLib::vCopy(aDst,aSrc,nSize,CN_KEYWRK);
   
-  _checkInitialisedSize_(sizeof(KeyWrk));
-  
-  _postcondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
+  vTake(nSize);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -193,19 +182,30 @@ void KeyWrk::vAddDatum(ValWrk& xValWrk, Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add element to key                                                         */
+/* add a key                                                                  */
 /*----------------------------------------------------------------------------*/
-void KeyWrk::vAddStz(Stz* aStz)
+void KeyWrk::vAddKey(Key* aKey, IdxColVec* pColVec)
 {
-  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
+  _precondition_(_MAGIC_,CN_KEYWRK);
   
-  char* aDst = aLatter();
-  char* aSrc = (char*)aStz;
-  i8 nSize = StrLib::iSize(aSrc);
+  char* aCursor = aKey->aWspArea();
+  i8 nBytes;
+  for (i8 iColumn = 0; iColumn < pColVec->nItems(); iColumn++) {
+    Column* pColumn = pColVec->pGet(iColumn);
+    
+    char* aElement = aKey->aEachDatum(pColumn, nBytes,&aCursor);
+    
+    char* pDst = aLatter();
+    char* pSrc = aElement;
+    
+    DtmLib::vCopy(pColumn->eDatumType(),pDst,pSrc,pColumn);
+    
+    vTake(nBytes);
+  }
   
-  MemLib::vCopy(aDst,aSrc,nSize,CN_KEYWRK);
+  _checkInitialisedSize_(sizeof(KeyWrk));
   
-  vTake(nSize);
+  _postcondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -229,7 +229,7 @@ Key* KeyWrk::aKey(void)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
-  return reinterpret_cast<Key*>(aData());
+  return reinterpret_cast<Key*>(aEmbedded());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -239,7 +239,7 @@ i8 KeyWrk::nKeySize(void)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
-  return nDataSize();
+  return nEmbeddedSize();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -249,7 +249,7 @@ void KeyWrk::vReset(void)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
 
-  vDataSize(0);
+  vEmbeddedSize(0);
 }
 
 /*----------------------------------------------------------------------------*/
