@@ -17,8 +17,6 @@ namespace DBobjects
     void* operator new(size_t, RowWrk*);
     
     RowWrk(void);
-    RowWrk(i8 nOffsets);
-    RowWrk(Entry* pEntry);
     ~RowWrk(void);
     
     Row*   aRow(void);
