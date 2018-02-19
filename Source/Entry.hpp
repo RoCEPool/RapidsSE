@@ -21,13 +21,10 @@ namespace DBobjects
   protected:
     Id  m_xId;        // id
     i8  m_iTxId;      // transaction id
-    i8  m_nOffsets;   // no of offsets for this entry (0,1 or 2)
+    i8  m_nOffsets;   // no of offsets for this entry (0..3)
     i8  m_iIntKey;    // key debug hack
   
-    i8  m_iSeeCount0;
-    i8  m_iSeeCount1;
-    i8  m_iSeeCount2;
-    // ..data..       // variable data area
+    // ..embedded object..
 
   public:
     void* operator new(size_t);
