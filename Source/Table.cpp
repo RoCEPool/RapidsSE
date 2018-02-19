@@ -816,7 +816,7 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pNewIndexData,
                           IndexData* pHiddenIndexData, i8 nHiddenEntries)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-
+/*
   int iFD;
   s256 sRegionName;
   s32 sRegionMagnitude;
@@ -949,7 +949,7 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pNewIndexData,
  
   iDebug = 2;
   //vTrace("vNewIndexLoad: DONE\n"_Stz);
-/*
+*/
   
   KeyWrk xKeyWrk;
   for (EntryBuffer* pEB = pHiddenIndexData->pRoot(); pEB; pEB = pEB->pNextBuffer()) {
@@ -958,7 +958,7 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pNewIndexData,
       pNewIndexData->bInsertEntry(pRow);
     }
   }
-*/
+
 }
 
 /*----------------------------------------------------------------------------*/
