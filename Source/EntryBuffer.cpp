@@ -1051,6 +1051,8 @@ Entry* EntryBuffer::pInsertKeyTree_c(KeyWrk& xKeyWrk,
   // offsets
   
   i8 nOffsets = Random::iLogLevel(3,C_FLAT_FREQ + 1) + 1;
+  xKeyWrk.vOffsets(nOffsets);
+  
   i8 nEntryBytes = Entry::nBytesRequired(nOffsets,iInsKeyLen);
   i8 nOffsetBytes = nOffsets*sizeof(i4);
   i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
@@ -1064,9 +1066,17 @@ Entry* EntryBuffer::pInsertKeyTree_c(KeyWrk& xKeyWrk,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  //pInsertedKeyEntry =
+  //  pPositionedBuffer->pInsertKeyUpwards_c(iTxId,xId,aInsKey,iInsKeyLen,nOffsets,
+  //                                         ppRootKeyBuffer,nullptr);
   pInsertedKeyEntry =
-    pPositionedBuffer->pInsertKeyUpwards_c(iTxId,xId,aInsKey,iInsKeyLen,nOffsets,
-                                           ppRootKeyBuffer,nullptr);
+    pPositionedBuffer->pInsertKeyUpwards_c(xKeyWrk.iTxId(),        //iTxId,
+                                           xKeyWrk.xId(),          //xId,
+                                           xKeyWrk.aKey(),         //aInsKey,
+                                           xKeyWrk.nKeySize(),     //iInsKeyLen,
+                                           xKeyWrk.nOffsets(),     //nOffsets,
+                                           ppRootKeyBuffer,
+                                           nullptr);
   
   return pInsertedKeyEntry;
 

@@ -318,7 +318,8 @@ void IndexData::vAppendEntry(KeyWrk& xKeyWrk,
   
   Entry* pKeyEntry =
     m_pRoot->pInsertKeyTree_c(xKeyWrk,
-                              0,
+                              //0,
+                              xKeyWrk.iTxId(),
                               //xId,
                               xKeyWrk.xId(),
                               xKeyWrk.aKey(),
