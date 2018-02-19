@@ -19,7 +19,7 @@ namespace DBobjects
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // key and datums
-    WspFxd<C_DATA_BYTES> m_xDataWrk; // datum workspace
+    WspFxd<C_DATA_BYTES> m_xDataWrk; // data area workspace
   
     Footer m_xFooter;
   
