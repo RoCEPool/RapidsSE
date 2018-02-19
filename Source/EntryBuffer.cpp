@@ -1039,8 +1039,8 @@ Entry* EntryBuffer::pInsertKey(i8 iTxId, Id xId, Key* aKey, i8 iKeyLength,
 /* insert a new key entry into this key tree                                  */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pInsertKeyTree_c(KeyWrk& xKeyWrk,
-                                     i8 iTxId, Id xId,
-                                     Key* aInsKey, i8 iInsKeyLen,
+                                     //i8 iTxId, Id xId,
+                                     //Key* aInsKey, i8 iInsKeyLen,
                                      EntryBuffer** ppRootKeyBuffer)
 {
   // note: this is a static function
@@ -1053,6 +1053,8 @@ Entry* EntryBuffer::pInsertKeyTree_c(KeyWrk& xKeyWrk,
   i8 nOffsets = Random::iLogLevel(3,C_FLAT_FREQ + 1) + 1;
   xKeyWrk.vOffsets(nOffsets);
   
+  Key* aInsKey = xKeyWrk.aKey();
+  i8 iInsKeyLen = xKeyWrk.nKeySize();
   i8 nEntryBytes = Entry::nBytesRequired(nOffsets,iInsKeyLen);
   i8 nOffsetBytes = nOffsets*sizeof(i4);
   i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
@@ -2913,12 +2915,12 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
     
     Entry* pKeyEntry =
       pRootKeyBuffer->pInsertKeyTree_c(xKeyWrk,
-                                       //0,
-                                       xKeyWrk.iTxId(),
-                                       //pRowEntry->xId(),
-                                       xKeyWrk.xId(),
-                                       xKeyWrk.aKey(),
-                                       xKeyWrk.nKeySize(),
+//                                       //0,
+//                                       xKeyWrk.iTxId(),
+//                                       //pRowEntry->xId(),
+//                                       xKeyWrk.xId(),
+//                                       xKeyWrk.aKey(),
+//                                       xKeyWrk.nKeySize(),
                                        &pRootKeyBuffer);
     //if (mbWatch)
     vTrace("\nInserted record: %s\n"_Stz,sRecData.aChar());

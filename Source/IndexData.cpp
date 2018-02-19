@@ -318,12 +318,12 @@ void IndexData::vAppendEntry(KeyWrk& xKeyWrk,
   
   Entry* pKeyEntry =
     m_pRoot->pInsertKeyTree_c(xKeyWrk,
-                              //0,
-                              xKeyWrk.iTxId(),
-                              //xId,
-                              xKeyWrk.xId(),
-                              xKeyWrk.aKey(),
-                              xKeyWrk.nKeySize(),
+//                              //0,
+//                              xKeyWrk.iTxId(),
+//                              //xId,
+//                              xKeyWrk.xId(),
+//                              xKeyWrk.aKey(),
+//                              xKeyWrk.nKeySize(),
                               &m_pRoot);
   
   //m_pRoot->vShowTree(true);
@@ -375,12 +375,12 @@ bool IndexData::bInsertEntry(Entry* pRow)
   
   Entry* pKeyEntry =
     m_pRoot->pInsertKeyTree_c(xKeyWrk,
-                              //0,
-                              xKeyWrk.iTxId(),
-                              //pRow->xId(),
-                              xKeyWrk.xId(),
-                              xKeyWrk.aKey(),
-                              xKeyWrk.nKeySize(),
+//                              //0,
+//                              xKeyWrk.iTxId(),
+//                              //pRow->xId(),
+//                              xKeyWrk.xId(),
+//                              xKeyWrk.aKey(),
+//                              xKeyWrk.nKeySize(),
                               &m_pRoot);
   ASSERT(pKeyEntry);
   
