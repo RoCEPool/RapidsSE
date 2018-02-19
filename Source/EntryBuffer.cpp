@@ -1215,7 +1215,7 @@ Entry* EntryBuffer::pInsertKeyBuffer_c(i8 iTxId, Id xId,
         
       if (pOriginalFirstEntry) {
         Key* aDeleteKey = pOriginalFirstEntry->aKey();
-        m_pHigherBuffer->vDeleteUpwards(aDeleteKey);
+        m_pHigherBuffer->vDeleteUpwards(aDeleteKey,ppRootKeyBuffer);
         //(*ppRootKeyBuffer)->vShowTree();
       }
       Key* aInsertKey = pInsertedKeyEntry->aKey();

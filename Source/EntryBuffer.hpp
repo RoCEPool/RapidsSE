@@ -152,8 +152,7 @@ namespace DBobjects
     
     Entry*       pAllotEntry(i8 nBytes);
     NEO*         aAllotNEO(i8 nBytes);
-    void         vDeleteUpwards(Key* aDeleteKey,
-                                EntryBuffer** ppRootKeyBuffer=nullptr);
+    void         vDeleteUpwards(Key* aDeleteKey, EntryBuffer** ppRootKeyBuffer);
     void         vDumpPriorVec(Entry* pPriorVec[]);
     Item*        pFirstItem(void);
     void         vFreeChains(void);
