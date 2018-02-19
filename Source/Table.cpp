@@ -1574,7 +1574,7 @@ void Table::vBuildKeyWrk(Key* aSortKey, IdxColVec* pIdxColVec, KeyWrk& rKeyWrk)
     eDM eDatum = pColumn->eDatumType();
     
     if (DM_VCH == eDatum) {
-      Stz* aDatum = *(Stz**)aSortElm;
+      char* aDatum = *(char**)aSortElm;
       if (((Vch*)aDatum)->bIsNull())
         rKeyWrk.vAddWord(C_NULL_VCH);
       else

@@ -18,7 +18,7 @@ namespace DBobjects
     KeyWrk(void);
     ~KeyWrk(void);
     
-    void vAddDatum(Stz* aDatum);
+    void vAddDatum(char* aDatum);
     void vAddDatum(ValWrk& xValWrk, Column* pCol);
     void vAddDatum(ValWrk& xValWrk, Column* pCol, Formatters* pFormatters);
     void vAddKey(Key* aKey, IdxColVec* pColVec);

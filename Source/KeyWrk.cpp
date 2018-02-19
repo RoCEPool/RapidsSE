@@ -61,12 +61,12 @@ KeyWrk::~KeyWrk(void)
 /*----------------------------------------------------------------------------*/
 /* add element to key                                                         */
 /*----------------------------------------------------------------------------*/
-void KeyWrk::vAddDatum(Stz* aStz)
+void KeyWrk::vAddDatum(char* aDatum)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
   char* aDst = aLatter();
-  char* aSrc = (char*)aStz;
+  char* aSrc = (char*)aDatum;
   i8 nSize = StrLib::iSize(aSrc);
   
   MemLib::vCopy(aDst,aSrc,nSize,CN_KEYWRK);
