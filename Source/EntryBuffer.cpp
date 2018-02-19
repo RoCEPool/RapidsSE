@@ -1072,7 +1072,8 @@ Entry* EntryBuffer::pInsertKeyTree_c(KeyWrk& xKeyWrk,
   //  pPositionedBuffer->pInsertKeyUpwards_c(iTxId,xId,aInsKey,iInsKeyLen,nOffsets,
   //                                         ppRootKeyBuffer,nullptr);
   pInsertedKeyEntry =
-    pPositionedBuffer->pInsertKeyUpwards_c(xKeyWrk.iTxId(),        //iTxId,
+    pPositionedBuffer->pInsertKeyUpwards_c(xKeyWrk,
+                                           xKeyWrk.iTxId(),        //iTxId,
                                            xKeyWrk.xId(),          //xId,
                                            xKeyWrk.aKey(),         //aInsKey,
                                            xKeyWrk.nKeySize(),     //iInsKeyLen,
@@ -2328,8 +2329,11 @@ Entry* EntryBuffer::pInsertKeyBuffer_c(i8 iTxId, Id xId,
 /*----------------------------------------------------------------------------*/
 /* insert a new key entry into this key tree                                  */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pInsertKeyUpwards_c(i8 iTxId, Id xId,
-                                        Key* aInsKey, i8 iInsKeyLen,
+Entry* EntryBuffer::pInsertKeyUpwards_c(KeyWrk& xKeyWrk,
+                                        i8 iTxId,
+                                        Id xId,
+                                        Key* aInsKey,
+                                        i8 iInsKeyLen,
                                         i8 nOffsets,
                                         EntryBuffer** ppRootKeyBuffer,
                                         EntryBuffer* pToBuffer)
@@ -2448,12 +2452,16 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
     i8 iKeyLenLeft = aKeyLeft->nKeySize(m_pIndex->pIdxColVec());
     i8 nOffsetsLeft = pFirstKeyLeft->nOffsets();
     
+    KeyWrk xKeyWrkLeft;
+    
     Entry* pNewKeyLeft =
-      pHigherBuffer->pInsertKeyUpwards_c(iTxIdLeft,xIdLeft,
-                                         aKeyLeft,iKeyLenLeft,
+      pHigherBuffer->pInsertKeyUpwards_c(xKeyWrkLeft,
+                                         iTxIdLeft,
+                                         xIdLeft,
+                                         aKeyLeft,
+                                         iKeyLenLeft,
                                          nOffsetsLeft,
                                          ppRootKeyBuffer,
-
                                          pLeftBuffer);
     //(*ppRootKeyBuffer)->vShowTree();
   }
@@ -2469,12 +2477,16 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
   i8 iKeyLenRight = aKeyRight->nKeySize(m_pIndex->pIdxColVec());
   i8 nOffsetsRight = pFirstKeyRight->nOffsets();
 
+  KeyWrk xKeyWrkRight;
+  
   Entry* pNewKeyRight =
-    pHigherBuffer->pInsertKeyUpwards_c(iTxIdRight,xIdRight,
-                                       aKeyRight,iKeyLenRight,
+    pHigherBuffer->pInsertKeyUpwards_c(xKeyWrkRight,
+                                       iTxIdRight,
+                                       xIdRight,
+                                       aKeyRight,
+                                       iKeyLenRight,
                                        nOffsetsRight,
                                        ppRootKeyBuffer,
-
                                        pRightBuffer);
   
   //if (mbWatch)

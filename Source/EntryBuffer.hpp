@@ -157,7 +157,8 @@ namespace DBobjects
                                     i8 nOffsets,
                                     EntryBuffer** ppRootKeyBuffer,
                                     EntryBuffer* pToBuffer);
-    Entry*       pInsertKeyUpwards_c(i8 iTxId, Id xIdx,
+    Entry*       pInsertKeyUpwards_c(KeyWrk& xKeyWrk,
+                                     i8 iTxId, Id xIdx,
                                      Key* pKey, i8 iKeyLength,
                                      i8 nOffsets,
                                      EntryBuffer** ppRootKeyBuffer,
