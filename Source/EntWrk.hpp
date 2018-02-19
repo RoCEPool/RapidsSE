@@ -26,8 +26,6 @@ namespace DBobjects
   public:
     EntWrk(eCN eClass);
     EntWrk(eCN eClass, i8 nOffsets);
-    EntWrk(eCN eClass, Entry* pEntry);
-    EntWrk(Id& xId, i8 iTxId, EntWrk& xEntWrk);
     ~EntWrk(void);
   
     //void   vAddKey(KeyWrk& xKeyWrk);

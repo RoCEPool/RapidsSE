@@ -56,43 +56,6 @@ EntWrk::EntWrk(eCN eClassNo, i8 nOffsets)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-EntWrk::EntWrk(eCN eClassNo, Entry* pEntry)
-: Object(eClassNo)
-{
-  _precondition_(_MAGIC_);
-  
-  // check initialisation of rowid
-  ASSERT(0 == m_xId.iBuffer() && 0 == m_xId.iRow());
-  
-  // set no of offsets
-  m_nOffsets = pEntry->nOffsets();
-  
-  // set the idx
-  vId(pEntry->xId());
-  
-  //ASSERT(m_nOffsets >= 0 && m_nOffsets <= gpAttachMap->m_nIndexOffsets);
-  
-  
-  // m_xDataWrk
-  m_xDataWrk.vInit();
-  
-  _checkInitialisedSize_(sizeof(EntWrk));
-  
-  _postcondition_(_MAGIC_,eClassNo,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-EntWrk::EntWrk(Id& xId, i8 iTxId, EntWrk& xEntWrk)
-: Object(CN_KEYWRK)
-{
-  RASSERT(0);
-}
-
-/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 EntWrk::~EntWrk(void)
