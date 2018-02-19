@@ -33,8 +33,6 @@ namespace DBobjects
     void   vData(Stz* aData, i8 iSize);
     Id&    xId(void);
     void   vId(Id& xId);
-    Key*   aKey(void);
-    i8     nKeySize(void);
     char*  aLatter(void);
     i8     nOffsets(void);
     i8     nOffsetSize(void);
