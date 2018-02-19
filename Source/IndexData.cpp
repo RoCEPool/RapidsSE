@@ -317,7 +317,8 @@ void IndexData::vAppendEntry(KeyWrk& xKeyWrk,
   //xKeyWrk.aKey()->vShow(m_pIndex->pIdxColVec());
   
   Entry* pKeyEntry =
-    m_pRoot->pInsertKeyTree_c(0,
+    m_pRoot->pInsertKeyTree_c(xKeyWrk,
+                              0,
                               //xId,
                               xKeyWrk.xId(),
                               xKeyWrk.aKey(),
@@ -372,7 +373,8 @@ bool IndexData::bInsertEntry(Entry* pRow)
   //bool bInserted = bInsertEntry(m_pRoot, xKeyWrk, pRow->xId(), 0);
   
   Entry* pKeyEntry =
-    m_pRoot->pInsertKeyTree_c(//0,
+    m_pRoot->pInsertKeyTree_c(xKeyWrk,
+                              //0,
                               xKeyWrk.iTxId(),
                               //pRow->xId(),
                               xKeyWrk.xId(),

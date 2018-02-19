@@ -113,7 +113,8 @@ namespace DBobjects
                             EntryBuffer** ppRootKeyBuffer,
                             i8 iRefBufNo,
                             EntryBuffer* pToBuffer);
-    static Entry* pInsertKeyTree_c(i8 iTxId, Id xIdx,
+    static Entry* pInsertKeyTree_c(KeyWrk& xKeyWrk,
+                                   i8 iTxId, Id xIdx,
                                    Key* pKey, i8 iKeyLength,
                                    EntryBuffer** ppRootKeyBuffer);
     bool         bInsertRow(Entry* pOldRow, Entry** ppRow);

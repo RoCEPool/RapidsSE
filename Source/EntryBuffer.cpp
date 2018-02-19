@@ -1038,7 +1038,8 @@ Entry* EntryBuffer::pInsertKey(i8 iTxId, Id xId, Key* aKey, i8 iKeyLength,
 /*----------------------------------------------------------------------------*/
 /* insert a new key entry into this key tree                                  */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pInsertKeyTree_c(i8 iTxId, Id xId,
+Entry* EntryBuffer::pInsertKeyTree_c(KeyWrk& xKeyWrk,
+                                     i8 iTxId, Id xId,
                                      Key* aInsKey, i8 iInsKeyLen,
                                      EntryBuffer** ppRootKeyBuffer)
 {
@@ -2901,7 +2902,8 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
     xKeyWrk.vId(pRowEntry->xId());
     
     Entry* pKeyEntry =
-      pRootKeyBuffer->pInsertKeyTree_c(//0,
+      pRootKeyBuffer->pInsertKeyTree_c(xKeyWrk,
+                                       //0,
                                        xKeyWrk.iTxId(),
                                        //pRowEntry->xId(),
                                        xKeyWrk.xId(),
