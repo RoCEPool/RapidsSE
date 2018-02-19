@@ -24,8 +24,7 @@ namespace DBobjects
     Footer m_xFooter;
   
   public:
-    EntWrk(eCN eClass);
-    EntWrk(eCN eClass, i8 nOffsets);
+  EntWrk(eCN eClass);
     ~EntWrk(void);
   
     //void   vAddKey(KeyWrk& xKeyWrk);
