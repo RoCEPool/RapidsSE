@@ -2914,14 +2914,14 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
     xKeyWrk.vId(pRowEntry->xId());
     
     Entry* pKeyEntry =
-      pRootKeyBuffer->pInsertKeyTree_c(xKeyWrk,
-//                                       //0,
-//                                       xKeyWrk.iTxId(),
-//                                       //pRowEntry->xId(),
-//                                       xKeyWrk.xId(),
-//                                       xKeyWrk.aKey(),
-//                                       xKeyWrk.nKeySize(),
-                                       &pRootKeyBuffer);
+      EntryBuffer::pInsertKeyTree_c(xKeyWrk,
+//                                  //0,
+//                                  xKeyWrk.iTxId(),
+//                                  //pRowEntry->xId(),
+//                                  xKeyWrk.xId(),
+//                                  xKeyWrk.aKey(),
+//                                  xKeyWrk.nKeySize(),
+                                    &pRootKeyBuffer);
     //if (mbWatch)
     vTrace("\nInserted record: %s\n"_Stz,sRecData.aChar());
     pRootKeyBuffer->vShowTree(false);
