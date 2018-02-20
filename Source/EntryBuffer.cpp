@@ -2186,7 +2186,8 @@ EntryBuffer* EntryBuffer::pInsertableBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
 /*----------------------------------------------------------------------------*/
 /* insert a new key entry into this buffer                                    */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pInsertKeyBuffer_c(i8 iTxId, Id xId,
+Entry* EntryBuffer::pInsertKeyBuffer_c(KeyWrk& xKeyWrk,
+                                       i8 iTxId, Id xId,
                                        Key* aInsKey, i8 iInsKeyLen,
                                        i8 nOffsets,
                                        EntryBuffer** ppRootKeyBuffer,
@@ -2286,12 +2287,15 @@ Entry* EntryBuffer::pInsertKeyBuffer_c(i8 iTxId, Id xId,
         m_pHigherBuffer->vDeleteUpwards(aDeleteKey,ppRootKeyBuffer);
         //(*ppRootKeyBuffer)->vShowTree();
       }
+      
+      KeyWrk xKeyWrkIns;
       Key* aInsertKey = pInsertedKeyEntry->aKey();
       IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
       Id xInsertId(*nBufferNo(),0);
       i8 iInsertKeyLen = aInsertKey->nKeySize(pIdxColVec);
       i8 nInsertOffsets = pInsertedKeyEntry->nOffsets();
-      m_pHigherBuffer->pInsertKeyBuffer_c(iTxId, xInsertId,
+      m_pHigherBuffer->pInsertKeyBuffer_c(xKeyWrkIns,
+                                          iTxId, xInsertId,
                                           aInsertKey, iInsertKeyLen,
                                           nInsertOffsets,
                                           ppRootKeyBuffer,
@@ -2325,7 +2329,8 @@ Entry* EntryBuffer::pInsertKeyUpwards_c(KeyWrk& xKeyWrk,
     (*ppRootKeyBuffer)->vShowTree(false);
   
   Entry* pInsertedKeyEntry =
-  pInsertIntoBuffer->pInsertKeyBuffer_c(iTxId,xId,aInsKey,iInsKeyLen,nOffsets,
+  pInsertIntoBuffer->pInsertKeyBuffer_c(xKeyWrk,
+                                        iTxId,xId,aInsKey,iInsKeyLen,nOffsets,
                                         ppRootKeyBuffer,
                                         pToBuffer);
   
