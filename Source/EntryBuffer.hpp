@@ -127,7 +127,6 @@ namespace DBobjects
     Entry*       pPositionQuery(Key* aGivenKey, i8 nKeyCols, eJC eJuxtaCompare);
     EntryBuffer* pPositionLevel(Key* aGivenKey, i8 nKeyCols, eJC eJuxtaCompare, i8 iLevel);
     
-    void         vPriorVecHead(EntryVec& xPriorVec);
     void         vRestore(void);
     void         vShow(void);
     void         vShowShort(void);

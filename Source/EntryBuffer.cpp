@@ -1551,14 +1551,6 @@ void EntryBuffer::vPositionPriorLnAfter(Key* aFindKey, Entry* pPriorVec[],
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the prior vector to the head entry                                     */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vPriorVecHead(EntryVec& xPriorVec)
-{
-  RASSERT(0);
-}
-
-/*----------------------------------------------------------------------------*/
 /* restore the buffer after being received over a socket                      */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vRestore(void)
