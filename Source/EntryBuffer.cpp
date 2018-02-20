@@ -1973,6 +1973,41 @@ NEO* EntryBuffer::aAllotNEO(i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add given entry to free list                                               */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vAddFreeList(Entry* pEntry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add entry to head of free entry list
+  
+  i8 nSizeEntry = pEntry->nSizeEntry();
+  i8 nSizeNEO   = pEntry->iNEOsize();
+  i8 nSizeFree  = nSizeEntry + nSizeNEO;
+  
+  FreeEntry* pFreeEntry = new(pEntry) FreeEntry(nSizeFree);
+  
+  //  if (! bQuickVerify(pEntry)) {
+  //    vDumpPriorVec(xPriorVec);
+  //    vQuickVerify();
+  //  }
+  
+  if (m_pFirstFree) {
+    m_pFirstFree->vPrevFree(pFreeEntry);
+    pFreeEntry->vNextFree(m_pFirstFree);
+  }
+  
+  m_pFirstFree = pFreeEntry;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // decement the number of items in buffer
+  vDecItems();
+  
+  //vQuickVerify();
+}
+
+/*----------------------------------------------------------------------------*/
 /* delete upwards                                                             */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vDeleteUpwards(Key* aDeleteKey,
