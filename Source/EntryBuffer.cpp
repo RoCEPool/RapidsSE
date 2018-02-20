@@ -374,14 +374,6 @@ void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iE
 }
 
 /*----------------------------------------------------------------------------*/
-/* append new entry into this index buffer                                    */
-/*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pAppendEntry(EntWrk& xEntWrk,EntryVec& xPriorVec)
-{
-  RASSERT(0);
-}
-
-/*----------------------------------------------------------------------------*/
 /* append an entry for {key,id} into an index buffer at level 0               */
 /*----------------------------------------------------------------------------*/
 bool EntryBuffer::bAppendEntry(Entry* pRowEntry, Entry** ppEntry)     //# critical
@@ -876,14 +868,6 @@ bool EntryBuffer::bHasSpace(i8 nBytes)
     else
       return true;
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* insert new entry into this index buffer                                    */
-/*----------------------------------------------------------------------------*/
-bool EntryBuffer::bInsert(EntWrk& xEntWrk)                        //# critical
-{
-  RASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/
