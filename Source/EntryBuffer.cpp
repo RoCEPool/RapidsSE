@@ -711,34 +711,7 @@ void EntryBuffer::vDeleteEntry(Entry* pEntry)
 //    vDumpPriorVec(xPriorVec);
 //    vQuickVerify();
 //  }
-  
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // add entry to head of free entry list
-//  
-//  i8 nSizeEntry = pEntry->nSizeEntry();
-//  i8 nSizeNEO   = pEntry->iNEOsize();
-//  i8 nSizeFree  = nSizeEntry + nSizeNEO;
-//  
-//  FreeEntry* pFreeEntry = new(pEntry) FreeEntry(nSizeFree);
-//  
-////  if (! bQuickVerify(pEntry)) {
-////    vDumpPriorVec(xPriorVec);
-////    vQuickVerify();
-////  }
-//  
-//  if (m_pFirstFree) {
-//    m_pFirstFree->vPrevFree(pFreeEntry);
-//    pFreeEntry->vNextFree(m_pFirstFree);
-//  }
-//  
-//  m_pFirstFree = pFreeEntry;
-//  
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // decement the number of items in buffer
-//  vDecItems();
-//  
-//  //vQuickVerify();
-  
+    
   vAddFreeList(pEntry);
 }
 
@@ -767,26 +740,6 @@ void EntryBuffer::vDeleteEntry(Key* aKey)
     i4 iNEO = pEntry->iNEO(i_Offset);
     xPriorVec[i_Offset]->vNEO(i_Offset,iNEO);
   }
-  
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // add entry to head of free entry list
-//  
-//  i8 nSizeEntry = pEntry->nSizeEntry();
-//  i8 nSizeNEO   = pEntry->iNEOsize();
-//  i8 nSizeFree  = nSizeEntry + nSizeNEO;
-//  
-//  FreeEntry* pFreeEntry = new(pEntry) FreeEntry(nSizeFree);
-//  
-//  if (m_pFirstFree) {
-//    m_pFirstFree->vPrevFree(pFreeEntry);
-//    pFreeEntry->vNextFree(m_pFirstFree);
-//  }
-//  
-//  m_pFirstFree = pFreeEntry;
-//  
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // decement the number of items in buffer
-//  vDecItems();
   
   vAddFreeList(pEntry);
 }
