@@ -35,7 +35,6 @@ ENTRY("vRowBufferAppend"_Stz);
   if ( ! mpTask->m_pDataStack->bPop(pPtrRowBuffer) )
     THROW_INVALID_DSTACK("rowbuffer.append"_Stz);
   EntryBuffer* pRowBuffer = (EntryBuffer*)_pEntryBuffer(pPtrRowBuffer);
-  ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
 
   Object* pPtrTx;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTx) )
@@ -80,7 +79,6 @@ void Task::vRowBufferAppendRecord(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pPtrRowBuffer) )
     THROW_INVALID_DSTACK("rowBuffer.appendRecord"_Stz);
   EntryBuffer* pRowBuffer = (EntryBuffer*)_pEntryBuffer(pPtrRowBuffer);
-  ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
   
   Object* pPtrTx;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTx) )
@@ -125,7 +123,6 @@ void Task::vRowBufferDump(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pPtrRowBuffer) )
     THROW_INVALID_DSTACK("rowbuffer.dump"_Stz);
   EntryBuffer* pRowBuffer = (EntryBuffer*)_pEntryBuffer(pPtrRowBuffer);
-  ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
 
   Entry* pRow = pRowBuffer->pHeadEntry();
   

@@ -233,7 +233,6 @@ void Task::vRowCursorEntryBufferStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("rowCursor.entryBuffer!"_Stz);
   
   EntryBuffer* pRowBuffer = (EntryBuffer*)_pEntryBuffer(pPtrRowBuffer);
-  //ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
   
   pRowCursor->vRowBuffer(pRowBuffer);
   

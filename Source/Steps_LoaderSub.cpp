@@ -399,7 +399,6 @@ void Task::vLoaderSubRowBufferStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("loaderSub.rowBuffer!"_Stz);
   
   EntryBuffer* pRowBuffer = (EntryBuffer*)_pEntryBuffer(pPtrRowBuffer);
-  ASSERT( !pRowBuffer || CN_ENTRYBUFFER == pRowBuffer->eClass() );
   
   pLoaderSub->vRowBuffer(pRowBuffer);
   

@@ -150,7 +150,6 @@ void Task::vTableAppendBuffer(MP_Task mpTask)
     THROW_INVALID_DSTACK("table.appendBuffer"_Stz);
   
   EntryBuffer* pRowBuffer = (EntryBuffer*)_pEntryBuffer(pPtrRowBuffer);
-  ASSERT(CN_ENTRYBUFFER == pRowBuffer->eClass());
   
   i8 iSlot = Partition::iPartitionToSlot(iPartition);
   

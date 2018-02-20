@@ -806,7 +806,6 @@ void Task::vIndexPosition(MP_Task mpTask)
     THROW_INVALID_DSTACK("index.position"_Stz);
   
   EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
-  ASSERT(CN_ENTRYBUFFER == pIndexBuffer->eClass());
   
   if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
     THROW_INVALID_DSTACK("index.position"_Stz);
