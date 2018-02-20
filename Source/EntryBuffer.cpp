@@ -686,32 +686,34 @@ void EntryBuffer::vDeleteEntry(Entry* pEntry)
     vPositionPriorLn(aKey, xPriorVec, iBufferNo);
   //vDumpPriorVec(xPriorVec);
   
-  i8 nOffsets = pEntry->nOffsets();
-  for (i8 i_Offset = 0; i_Offset < nOffsets; i_Offset++) {
-    if (pEntry != pGetEntryOffset(xPriorVec[i_Offset]->iNEO(i_Offset))) {
-      vDumpPriorVec(xPriorVec);
-      vShow();
-      vPositionPriorL0(aKey, xPriorVec, pEntry);
-      ASSERT(pEntry == pGetEntryOffset(xPriorVec[i_Offset]->iNEO(i_Offset)));
-    }
-  }
+//  i8 nOffsets = pEntry->nOffsets();
+//  for (i8 i_Offset = 0; i_Offset < nOffsets; i_Offset++) {
+//    if (pEntry != pGetEntryOffset(xPriorVec[i_Offset]->iNEO(i_Offset))) {
+//      vDumpPriorVec(xPriorVec);
+//      vShow();
+//      vPositionPriorL0(aKey, xPriorVec, pEntry);
+//      ASSERT(pEntry == pGetEntryOffset(xPriorVec[i_Offset]->iNEO(i_Offset)));
+//    }
+//  }
+//  
+//  for (i8 i_Offset = 0; i_Offset < nOffsets; i_Offset++) {
+//    if (pEntry != pGetEntryOffset(xPriorVec[i_Offset]->iNEO(i_Offset))) {
+//      vDumpPriorVec(xPriorVec);
+//      //vPositionPriorL0(aKey, xPriorVec, pEntry);
+//      ASSERT(pEntry == pGetEntryOffset(xPriorVec[i_Offset]->iNEO(i_Offset)));
+//    }
+//    i4 iNEO = pEntry->iNEO(i_Offset);
+//    xPriorVec[i_Offset]->vNEO(i_Offset,iNEO);
+//  }
   
-  for (i8 i_Offset = 0; i_Offset < nOffsets; i_Offset++) {
-    if (pEntry != pGetEntryOffset(xPriorVec[i_Offset]->iNEO(i_Offset))) {
-      vDumpPriorVec(xPriorVec);
-      //vPositionPriorL0(aKey, xPriorVec, pEntry);
-      ASSERT(pEntry == pGetEntryOffset(xPriorVec[i_Offset]->iNEO(i_Offset)));
-    }
-    i4 iNEO = pEntry->iNEO(i_Offset);
-    xPriorVec[i_Offset]->vNEO(i_Offset,iNEO);
-  }
+  vCutEntry(pEntry,xPriorVec);
   
 //  if (! bQuickVerify(pEntry)) {
 //    pEntry->vShow(iToOffset(pEntry),m_pIndex,true);
 //    vDumpPriorVec(xPriorVec);
 //    vQuickVerify();
 //  }
-    
+  
   vAddFreeList(pEntry);
 }
 
@@ -735,11 +737,13 @@ void EntryBuffer::vDeleteEntry(Key* aKey)
   
   Entry* pEntry = pGetEntryOffset(xPriorVec[0]->iNEO(0));
   
-  i8 nOffsets = pEntry->nOffsets();
-  for (i8 i_Offset = 0; i_Offset < nOffsets; i_Offset++) {
-    i4 iNEO = pEntry->iNEO(i_Offset);
-    xPriorVec[i_Offset]->vNEO(i_Offset,iNEO);
-  }
+//  i8 nOffsets = pEntry->nOffsets();
+//  for (i8 i_Offset = 0; i_Offset < nOffsets; i_Offset++) {
+//    i4 iNEO = pEntry->iNEO(i_Offset);
+//    xPriorVec[i_Offset]->vNEO(i_Offset,iNEO);
+//  }
+  
+  vCutEntry(pEntry,xPriorVec);
   
   vAddFreeList(pEntry);
 }
@@ -1962,6 +1966,21 @@ void EntryBuffer::vAddFreeList(Entry* pEntry)
   vDecItems();
   
   //vQuickVerify();
+}
+
+/*----------------------------------------------------------------------------*/
+/* cut entry from skip list                                                   */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vCutEntry(Entry* pEntry, Entry* pPriorVec[])
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  i8 nOffsets = pEntry->nOffsets();
+  
+  for (i8 i_Offset = 0; i_Offset < nOffsets; i_Offset++) {
+    i4 iNEO = pEntry->iNEO(i_Offset);
+    pPriorVec[i_Offset]->vNEO(i_Offset,iNEO);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
