@@ -27,9 +27,7 @@ namespace DBobjects
     void operator =(Id& xId); // assignment
   
     i8    iAsI8(void);
-  
-    void  vContentDump(void);
-    
+      
     i8    iBuffer(void);
     void  vBuffer(i8 iBuffer);
   
@@ -41,6 +39,11 @@ namespace DBobjects
     void  vId(Id& xId);
     
     Entry*  pRow(void);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  
+  
   };
 }
 
