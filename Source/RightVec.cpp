@@ -64,7 +64,7 @@ RightVec::~RightVec(void)
 /*----------------------------------------------------------------------------*/
 i8 RightVec::iOffset(i8 i_OffsetNo)
 {
-  ASSERT(i_OffsetNo >= 0_on && i_OffsetNo < gpAttachMap->m_nIndexOffsets);
+  ASSERT(i_OffsetNo >= 0 && i_OffsetNo < gpAttachMap->m_nIndexOffsets);
   
   u8 uOffset = m_nOffset[i_OffsetNo];
   
@@ -76,7 +76,7 @@ i8 RightVec::iOffset(i8 i_OffsetNo)
 /*----------------------------------------------------------------------------*/
 void RightVec::vOffset(i8 i_OffsetNo, i8 iOffset)
 {
-  ASSERT(i_OffsetNo >= 0_on && i_OffsetNo < gpAttachMap->m_nIndexOffsets);
+  ASSERT(i_OffsetNo >= 0 && i_OffsetNo < gpAttachMap->m_nIndexOffsets);
   
   m_nOffset[i_OffsetNo] = iOffset;
 }
