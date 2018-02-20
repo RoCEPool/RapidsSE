@@ -23,7 +23,6 @@ namespace DBobjects
     ~RowOnce(void);
   
     bool bRowSeen(Id xRowId);
-    bool bRowSeen2(Id xRowId);
   
     Footer* aFooter(void);  
   };

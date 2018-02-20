@@ -65,19 +65,9 @@ RowOnce::~RowOnce(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* has row been seen?                                                         */
-/*----------------------------------------------------------------------------*/
-bool RowOnce::bRowSeen(Id xRowId)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWONCE,_FOOTER_);
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* has row been seen? (complete implementation)                               */
 /*----------------------------------------------------------------------------*/
-bool RowOnce::bRowSeen2(Id xRowId)
+bool RowOnce::bRowSeen(Id xRowId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWONCE,_FOOTER_);
   

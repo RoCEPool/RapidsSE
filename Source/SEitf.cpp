@@ -1183,7 +1183,7 @@ bool SEitf::bRowSeen(Id xRowId)
   if (! m_pRowOnce)
     return false;
   
-  bool bSeen = m_pRowOnce->bRowSeen2(xRowId);
+  bool bSeen = m_pRowOnce->bRowSeen(xRowId);
   
   return bSeen;
 }
