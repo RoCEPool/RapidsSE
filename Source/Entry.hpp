@@ -34,7 +34,6 @@ namespace DBobjects
     ~Entry(void);
   
     static i8 nBytesRequired(EntWrk& xEntWrk);
-    static i8 nBytesRequired(i8 nOffsets, i8 nKeyBytes, i8 nDataBytes);
     static i8 nBytesRequired(i8 nOffsets, i8 nDataBytes);
     static i8 nBytesRequired(i8 nDataBytes);
   
