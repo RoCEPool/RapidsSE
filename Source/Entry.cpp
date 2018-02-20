@@ -167,29 +167,6 @@ i8 Entry::iRow(void)
 /*----------------------------------------------------------------------------*/
 /* get the entry buffer that this entry is within                             */
 /*----------------------------------------------------------------------------*/
-//EntryBuffer_v1* Entry::pEntryBuffer_v1(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
-//
-//  bn nBufferNo = m_xId.iBuffer();
-////  EntryBuffer* pEntryBuffer =
-////    reinterpret_cast<EntryBuffer*>(gpBufferPool->pToBuffer(nBufferNo));
-//
-//  HeapBuffer* pHeapBuffer =
-//    reinterpret_cast<HeapBuffer*>(gpBufferPool->pToBuffer(nBufferNo));
-//
-//  EntryBuffer_v1* pEntryBuffer =
-//    reinterpret_cast<EntryBuffer*>(pHeapBuffer->pFirstChunk());
-//
-//  ASSERT(pEntryBuffer);
-//  ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
-//
-//  return pEntryBuffer;
-//}
-
-/*----------------------------------------------------------------------------*/
-/* get the entry buffer that this entry is within                             */
-/*----------------------------------------------------------------------------*/
 EntryBuffer* Entry::pEntryBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
@@ -223,22 +200,6 @@ i8 Entry::nSizeEntry(void)
 /*----------------------------------------------------------------------------*/
 /*-- Row Data ----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/* get row address                                                            */
-/*----------------------------------------------------------------------------*/
-//Row* Entry::aRow(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
-//
-//  i8 nOffsetBytes = RightVec::nBytesRequired(m_nOffsets);
-//
-//  char* aKey = pAdd<char*>(aVblData(),nOffsetBytes);
-//
-//  // assuming key is CT_INTEGER for hidden index
-//  Row* aRow = pAdd<Row*>(aKey, sizeof(i8));
-//
-//  return aRow;
-//}
 
 /*----------------------------------------------------------------------------*/
 /* get row address                                                            */
@@ -282,7 +243,7 @@ i8 Entry::nRowSize(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Variable data area ------------------------------------------------------*/
+/*-- Embedded Object ---------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
