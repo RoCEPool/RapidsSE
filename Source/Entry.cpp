@@ -86,32 +86,38 @@ i8 Entry::nBytesRequired(EntWrk& xEntWrk)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get total bytes required for entry incl Object & Footer                    */
+/* get total bytes required for entry incl Object & Footer (no offsets)       */
 /*----------------------------------------------------------------------------*/
-i8 Entry::nBytesRequired(i8 nOffsets, i8 nDataBytes)
+i8 Entry::nBytesRequired(i8 nEmbeddedBytes)
 {
-  i8 nOffsetBytes = RightVec::nBytesRequired(nOffsets);
+  //
+  // memory layout is:  Entry|EmbeddedObject|Footer
+  //
   
-  //# ASSERT(nOffsets >= 1);
+  i8 nEntryBytes = sizeof(Entry)
+                    + nEmbeddedBytes
+                    + sizeof(Footer);
   
-  i8 nBytes = sizeof(Entry)
-  + nOffsetBytes
-  + nDataBytes
-  + sizeof(Footer);
-  
-  return nBytes;
+  return nEntryBytes;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get total bytes required for entry incl Object & Footer                    */
+/* get total bytes required for entry incl Object, Footer & Offsets           */
 /*----------------------------------------------------------------------------*/
-i8 Entry::nBytesRequired(i8 nDataBytes)
+i8 Entry::nBytesRequired(i8 nOffsets, i8 nEmbeddedBytes)
 {
-  i8 nEntryBytes = sizeof(Entry)
-                     + nDataBytes
-                     + sizeof(Footer);
+  //
+  // memory layout is:  Entry|EmbeddedObject|Footer|Offsets
+  //
   
-  return nEntryBytes;
+  i8 nOffsetBytes = RightVec::nBytesRequired(nOffsets);
+  
+  i8 nTotalBytes = sizeof(Entry)
+                    + nEmbeddedBytes
+                    + sizeof(Footer)
+                    + nOffsetBytes;
+  
+  return nTotalBytes;
 }
 
 /*----------------------------------------------------------------------------*/
