@@ -92,7 +92,6 @@ namespace DBobjects
   
   private:
     bn     nBufferNo(void);
-    RightVec* aRightVec(void);
   };
   
   Entry* _pEntry(void* aAddr);

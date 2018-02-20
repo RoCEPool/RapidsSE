@@ -774,18 +774,6 @@ bn Entry::nBufferNo(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the RightVec for this Entry                                            */
-/*----------------------------------------------------------------------------*/
-RightVec* Entry::aRightVec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_); 
-  
-  RightVec* aRightVec = _aRightVec(aEmbeddedObject());
-  
-  return aRightVec;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get address of next entry offset array                                     */
 /*----------------------------------------------------------------------------*/
 NEO* Entry::aNEO(void)
