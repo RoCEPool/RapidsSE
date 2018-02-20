@@ -53,8 +53,8 @@ namespace DBobjects
     i8    nRowSize(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // variable data area
-    char* aVblData(void);
+    // embedded object area
+    char* aEmbeddedObject(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // offsets

@@ -247,7 +247,7 @@ Row* Entry::aRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  Row* aRow = reinterpret_cast<Row*>(aVblData());
+  Row* aRow = reinterpret_cast<Row*>(aEmbeddedObject());
   
   return aRow;
 }
@@ -255,13 +255,13 @@ Row* Entry::aRow(void)
 /*----------------------------------------------------------------------------*/
 /* get row data address                                                       */
 /*----------------------------------------------------------------------------*/
-char* Entry::aRowData(void)
+char* Entry::aRowData(void)                   //! this function just seems wrong
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_); 
   
   i8 nOffsetBytes = RightVec::nBytesRequired(m_nOffsets);
 
-  char* aKey = pAdd<char*>(aVblData(),nOffsetBytes);
+  char* aKey = pAdd<char*>(aEmbeddedObject(),nOffsetBytes);
   // assuming key is CT_INTEGER for hidden index
   char* aRow = pAdd<char*>(aKey, sizeof(i8));                        //ALKA-TODO
   
@@ -286,15 +286,15 @@ i8 Entry::nRowSize(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get data                                                                   */
+/* get address of embedded object                                             */
 /*----------------------------------------------------------------------------*/
-char* Entry::aVblData(void)
+char* Entry::aEmbeddedObject(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_); 
   
-  char* aVblData = pAdd<char*>(this,sizeof(Entry));
+  char* aEmbObj = pAdd<char*>(this,sizeof(Entry));
   
-  return pPoolCheck<char*>(aVblData);
+  return pPoolCheck<char*>(aEmbObj);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -332,7 +332,7 @@ Key* Entry::aKey(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
-   Key* aKey = reinterpret_cast<Key*>(aVblData());
+   Key* aKey = reinterpret_cast<Key*>(aEmbeddedObject());
   
   return aKey;
 }
@@ -780,7 +780,7 @@ RightVec* Entry::aRightVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_); 
   
-  RightVec* aRightVec = _aRightVec(aVblData());
+  RightVec* aRightVec = _aRightVec(aEmbeddedObject());
   
   return aRightVec;
 }
