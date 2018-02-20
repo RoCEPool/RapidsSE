@@ -21,7 +21,7 @@ namespace DBobjects
   operator i8(); // auto conversion to i8
   
     static ln nZeroLevel(void);
-    on nToOffsetNo(void);
+  //on nToOffsetNo(void);
     
     void operator =(i8 i);
     bool operator ==(i8 i);

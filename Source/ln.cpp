@@ -49,14 +49,14 @@ ln ln::nZeroLevel(void)
 /*----------------------------------------------------------------------------*/
 /* convert level no to offset no                                              */
 /*----------------------------------------------------------------------------*/
-on ln::nToOffsetNo(void)
-{
-  i8 iLevelNo = m_iLevelNo - 1;
-  
-  on nOffsetNo(iLevelNo);
-  
-  return nOffsetNo;
-}
+//on ln::nToOffsetNo(void)
+//{
+//  i8 iLevelNo = m_iLevelNo - 1;
+//  
+//  on nOffsetNo(iLevelNo);
+//  
+//  return nOffsetNo;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* -- i8 operators -----------------------------------------------------------*/

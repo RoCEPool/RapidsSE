@@ -302,20 +302,6 @@ char* Entry::aVblData(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get highest offset                                                         */
-/*----------------------------------------------------------------------------*/
-on Entry::nHighestOffset(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_); 
-  
-  ASSERT(m_nOffsets >= 0 && m_nOffsets <= gpAttachMap->m_nIndexOffsets);
-  
-  on nHighest(m_nOffsets - 1);
-  
-  return nHighest;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get number of offsets                                                      */
 /*----------------------------------------------------------------------------*/
 i8 Entry::nOffsets(void)
@@ -333,37 +319,6 @@ void Entry::vOffsets(i8 nOffsets)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
   m_nOffsets = nOffsets;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get right offset for given level                                           */
-/*----------------------------------------------------------------------------*/
-i8 Entry::iRightOffset(on nOffsetNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_); 
-  
-  ASSERT(nOffsetNo >= 0_on && nOffsetNo < gpAttachMap->m_nIndexOffsets);
-  
-  if (nOffsetNo >= m_nOffsets)
-    return C_NIL_OFFSET;
-  
-  i8 iRight = aRightVec()->iOffset(nOffsetNo);
-  
-  return iRight;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set right offset for given level                                           */
-/*----------------------------------------------------------------------------*/
-void Entry::vRightOffset(on nOffsetNo, i8 iRightOffset)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_); 
-  
-  ASSERT(nOffsetNo >= 0_on && nOffsetNo < gpAttachMap->m_nIndexOffsets);
-  
-  aRightVec()->vOffset(nOffsetNo,iRightOffset);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

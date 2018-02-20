@@ -58,11 +58,8 @@ namespace DBobjects
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // offsets
-    on   nHighestOffset(void);
     i8   nOffsets(void);
     void vOffsets(i8 nOffsets);
-    i8   iRightOffset(on nOffsetNo);
-    void vRightOffset(on nOffsetNo, i8 iRightOffset);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // key
