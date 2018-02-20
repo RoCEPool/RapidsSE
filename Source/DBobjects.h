@@ -39,14 +39,13 @@ typedef Vector<CN_PTNCOLVEC,Column,CN_COLUMN,1024,u8> PtnColVec;
 #include "Id.hpp"
 #include "EntWrk.hpp"
 #include "KeyWrk.hpp"
-#include "ln.hpp"
 #include "RightVec.hpp"
 #include "Key.hpp"
 #include "KeyVal.hpp"
 #include "KeyTest.hpp"
 #include "Row.hpp"
 #include "RowWrk.hpp"
-typedef Vector<CN_ENTRYVEC,Entry,CN_ENTRY,C_FLAT_LEVELS_MAX,ln> EntryVec;
+typedef Vector<CN_ENTRYVEC,Entry,CN_ENTRY,C_FLAT_LEVELS_MAX,i8> EntryVec;
 #include "Item.hpp"
 #include "ItemBuffer.hpp"
 #include "Entry.hpp"
