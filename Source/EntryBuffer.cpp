@@ -319,7 +319,9 @@ void EntryBuffer::vPrevBuffer(EntryBuffer* pPrevBuffer)
 /*----------------------------------------------------------------------------*/
 /* analyze this buffer                                                        */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries) {
+void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
+                           i8& iBuffers, i8& iEntries)
+{
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   if (m_pIndex->bIsHidden()) {
@@ -376,7 +378,7 @@ void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iE
 /*----------------------------------------------------------------------------*/
 /* append an entry for {key,id} into an index buffer at level 0               */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bAppendEntry(Entry* pRowEntry, Entry** ppEntry)     //# critical
+bool EntryBuffer::bAppendEntry(Entry* pRowEntry, Entry** ppEntry)
 {
   RASSERT(0);
 }
@@ -788,7 +790,7 @@ void EntryBuffer::vDeleteEntry(Key* aKey)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vDump(void)                            //ALKA - LEVEL 1 ??
+void EntryBuffer::vDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1163,7 +1165,8 @@ Entry* EntryBuffer::pPositionQuery(Key* aGivenKey, eRO eRelnOp)
 /*----------------------------------------------------------------------------*/
 /* position at an index buffer at level iLevel starting from this buffer      */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* EntryBuffer::pPositionLevel(Key* aGivenKey, i8 nKeyCols, eJC eJuxtaCompare, i8 iLevel)  //# critical
+EntryBuffer* EntryBuffer::pPositionLevel(Key* aGivenKey, i8 nKeyCols,
+                                         eJC eJuxtaCompare, i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1194,7 +1197,7 @@ EntryBuffer* EntryBuffer::pPositionLevel(Key* aGivenKey, i8 nKeyCols, eJC eJuxta
 /*----------------------------------------------------------------------------*/
 /* position at given key                                                      */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pPositionQuery(Key* aGivenKey,i8 nKeyCols, eJC eJuxtaCompare) //# critical
+Entry* EntryBuffer::pPositionQuery(Key* aGivenKey,i8 nKeyCols, eJC eJuxtaCompare)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
