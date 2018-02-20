@@ -399,7 +399,7 @@ Entry* EntryBuffer::pAppendRow(i8 iTxId, Stz* aRow, i8 iRowLength,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if this buffer has enough space
   i8 nOffsetBytes = sizeof(i4);
-  i8 nEntryBytes = Entry::nBytesRequired(nOffsets, iRowLength);
+  i8 nEntryBytes = Entry::nBytesRequired(iRowLength, nOffsets);
   i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
   
   if ( ! bHasSpace(nEntryPlusOffsets) ) {
@@ -919,7 +919,7 @@ Entry* EntryBuffer::pInsertKey(i8 iTxId, Id xId, Key* aKey, i8 iKeyLength,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if this buffer has enough space
-  i8 nEntryBytes = Entry::nBytesRequired(nOffsets, iKeyLength);
+  i8 nEntryBytes = Entry::nBytesRequired(iKeyLength, nOffsets);
   
   i8 nOffsetBytes = nOffsets*sizeof(i4); //xKeyWrk.nOffsetSize();
   
@@ -1041,7 +1041,7 @@ Entry* EntryBuffer::pInsertKeyTree_c(KeyWrk& xKeyWrk,
   
   Key* aInsKey = xKeyWrk.aKey();
   i8 iInsKeyLen = xKeyWrk.nKeySize();
-  i8 nEntryBytes = Entry::nBytesRequired(nOffsets,iInsKeyLen);
+  i8 nEntryBytes = Entry::nBytesRequired(iInsKeyLen,nOffsets);
   i8 nOffsetBytes = nOffsets*sizeof(i4);
   i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
   
@@ -2209,7 +2209,7 @@ Entry* EntryBuffer::pInsertKeyBuffer_c(KeyWrk& xKeyWrk,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // offsets
   
-  i8 nEntryBytes = Entry::nBytesRequired(nOffsets,iInsKeyLen);
+  i8 nEntryBytes = Entry::nBytesRequired(iInsKeyLen,nOffsets);
   i8 nOffsetBytes = nOffsets*sizeof(i4);
   i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
   
@@ -2321,7 +2321,7 @@ Entry* EntryBuffer::pInsertKeyUpwards_c(KeyWrk& xKeyWrk,
                                         EntryBuffer** ppRootKeyBuffer,
                                         EntryBuffer* pToBuffer)
 {
-  i8 nEntryBytes = Entry::nBytesRequired(nOffsets,iInsKeyLen);
+  i8 nEntryBytes = Entry::nBytesRequired(iInsKeyLen,nOffsets);
   i8 nOffsetBytes = nOffsets*sizeof(i4);
   i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
   

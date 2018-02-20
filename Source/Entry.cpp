@@ -104,7 +104,7 @@ i8 Entry::nBytesRequired(i8 nEmbeddedBytes)
 /*----------------------------------------------------------------------------*/
 /* get total bytes required for entry incl Object, Footer & Offsets           */
 /*----------------------------------------------------------------------------*/
-i8 Entry::nBytesRequired(i8 nOffsets, i8 nEmbeddedBytes)
+i8 Entry::nBytesRequired(i8 nEmbeddedBytes, i8 nOffsets)
 {
   //
   // memory layout is:  Entry|EmbeddedObject|Footer|Offsets

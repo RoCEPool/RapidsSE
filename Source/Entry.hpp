@@ -35,7 +35,7 @@ namespace DBobjects
   
     static i8 nBytesRequired(EntWrk& xEntWrk);
     static i8 nBytesRequired(i8 nEmbeddedBytes);
-    static i8 nBytesRequired(i8 nOffsets, i8 nDataBytes);
+    static i8 nBytesRequired(i8 nEmbeddedBytes, i8 nOffsets);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // entry proper
