@@ -19,10 +19,10 @@ namespace DBobjects
     RightVec(void);
     ~RightVec(void);
 
-    i8 iOffset(on nOffsetNo);
-    void vOffset(on nOffsetNo, i8 iOffset);
+    i8 iOffset(i8 i_OffsetNo);
+    void vOffset(i8 i_OffsetNo, i8 iOffset);
   
-    static i8 nBytesRequired(i8 nLevels);
+    static i8 nBytesRequired(i8 nOffsets);
   };
   
   RightVec* _aRightVec(void* aAddr);
