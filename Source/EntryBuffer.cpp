@@ -661,19 +661,14 @@ i8 EntryBuffer::iDecile(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete the given entry                       REFACTOR THE 2 vDeleteEntry() */
+/* delete the given entry                                                     */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vDeleteEntry(Entry* pEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  //vQuickVerify();
-  
   // currently we only delete from non-hidden indexes
   ASSERT(! m_pIndex->bIsHidden());
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // remove entry from next offset chains
   
   Entry* xPriorVec[3];
 
@@ -684,41 +679,14 @@ void EntryBuffer::vDeleteEntry(Entry* pEntry)
     vPositionPriorL0(aKey, xPriorVec, pEntry);
   else
     vPositionPriorLn(aKey, xPriorVec, iBufferNo);
-  //vDumpPriorVec(xPriorVec);
-  
-//  i8 nOffsets = pEntry->nOffsets();
-//  for (i8 i_Offset = 0; i_Offset < nOffsets; i_Offset++) {
-//    if (pEntry != pGetEntryOffset(xPriorVec[i_Offset]->iNEO(i_Offset))) {
-//      vDumpPriorVec(xPriorVec);
-//      vShow();
-//      vPositionPriorL0(aKey, xPriorVec, pEntry);
-//      ASSERT(pEntry == pGetEntryOffset(xPriorVec[i_Offset]->iNEO(i_Offset)));
-//    }
-//  }
-//  
-//  for (i8 i_Offset = 0; i_Offset < nOffsets; i_Offset++) {
-//    if (pEntry != pGetEntryOffset(xPriorVec[i_Offset]->iNEO(i_Offset))) {
-//      vDumpPriorVec(xPriorVec);
-//      //vPositionPriorL0(aKey, xPriorVec, pEntry);
-//      ASSERT(pEntry == pGetEntryOffset(xPriorVec[i_Offset]->iNEO(i_Offset)));
-//    }
-//    i4 iNEO = pEntry->iNEO(i_Offset);
-//    xPriorVec[i_Offset]->vNEO(i_Offset,iNEO);
-//  }
   
   vCutEntry(pEntry,xPriorVec);
-  
-//  if (! bQuickVerify(pEntry)) {
-//    pEntry->vShow(iToOffset(pEntry),m_pIndex,true);
-//    vDumpPriorVec(xPriorVec);
-//    vQuickVerify();
-//  }
   
   vAddFreeList(pEntry);
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete the entry of the given key            REFACTOR THE 2 vDeleteEntry() */
+/* delete the entry of the given key                                          */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vDeleteEntry(Key* aKey)
 {
@@ -727,21 +695,11 @@ void EntryBuffer::vDeleteEntry(Key* aKey)
   // currently we only delete from non-hidden indexes
   ASSERT(! m_pIndex->bIsHidden());
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // remove entry from next offset chains
-  
   Entry* xPriorVec[3];
   
   vPositionPriorL0(aKey, xPriorVec);
-  //vDumpPriorVec(xPriorVec);
   
   Entry* pEntry = pGetEntryOffset(xPriorVec[0]->iNEO(0));
-  
-//  i8 nOffsets = pEntry->nOffsets();
-//  for (i8 i_Offset = 0; i_Offset < nOffsets; i_Offset++) {
-//    i4 iNEO = pEntry->iNEO(i_Offset);
-//    xPriorVec[i_Offset]->vNEO(i_Offset,iNEO);
-//  }
   
   vCutEntry(pEntry,xPriorVec);
   
