@@ -751,14 +751,14 @@ Entry* EntryBuffer::pFirstEntry(void)
 /*----------------------------------------------------------------------------*/
 /* get an entry by number                                                     */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pGetEntryNo(i8 iEntryNo)
+Entry* EntryBuffer::pGetEntryNo(i8 i_Entry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  if (iEntryNo == C_ENTRY_NONE)
+  if (i_Entry == C_ENTRY_NONE)
     return nullptr;
   
-  i4 iOffset = m_pEntryOffset[iEntryNo];
+  i4 iOffset = m_pEntryOffset[i_Entry];
   char* aAddress = pAdd<char*>(aDataArea(), iOffset);
   
   Entry* pEntry = reinterpret_cast<Entry*>(aAddress);

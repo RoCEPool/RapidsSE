@@ -105,7 +105,7 @@ namespace DBobjects
     void         vDeleteEntry(Key* aKey);
     void         vDump(void);
     Entry*       pFirstEntry(void);
-    Entry*       pGetEntryNo(i8 iEntryNo);
+    Entry*       pGetEntryNo(i8 i_Entry);
     bool         bHasSpace(i8 nBytes);
     Entry*       pInsertKey(KeyWrk& xKeyWrk,
                             i8 iTxId, Id xIdx, Key* pKey, i8 iKeyLength,
