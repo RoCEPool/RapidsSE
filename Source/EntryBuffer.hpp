@@ -119,7 +119,7 @@ namespace DBobjects
     EntryBuffer* pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
                                   EntryBuffer** ppRootKeyBuffer);
     EntryBuffer* pNewNextBuffer(void);
-    Entry*       pNextEntry(Entry* pEntry, i8 nOffsetNo);
+    Entry*       pNextEntry(Entry* pEntry, i8 i_Offset);
   
     EntryBuffer* pPositionInsert(Key* aInsKey);
     Entry*       pPositionQuery(Key* aGivenKey, eRO eRelOp);

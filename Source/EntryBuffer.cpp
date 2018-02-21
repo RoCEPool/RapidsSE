@@ -1020,11 +1020,11 @@ bool EntryBuffer::bInsertRow(Entry* pOldRow, Entry** ppRow) {
 /*----------------------------------------------------------------------------*/
 /* get next entry                                                             */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pNextEntry(Entry* pCurrent, i8 nOffsetNo)
+Entry* EntryBuffer::pNextEntry(Entry* pCurrent, i8 i_Offset)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  i4 iOffset = pCurrent->iNEO(nOffsetNo);
+  i4 iOffset = pCurrent->iNEO(i_Offset);
   
   if (-1 == iOffset)
     return nullptr;
