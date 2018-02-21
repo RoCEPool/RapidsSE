@@ -17,9 +17,9 @@ bool mbWatch = false;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* DBobjects::_pEntryBuffer(void* aAddr)
+EntryBuffer* DBobjects::_pEntryBuffer(void* aAddress)
 {
-  EntryBuffer* pEntryBuffer = reinterpret_cast<EntryBuffer*>(aAddr);
+  EntryBuffer* pEntryBuffer = reinterpret_cast<EntryBuffer*>(aAddress);
   
   RASSERT( !pEntryBuffer || CN_ENTRYBUFFER == pEntryBuffer->eClass());
   
@@ -27,34 +27,36 @@ EntryBuffer* DBobjects::_pEntryBuffer(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* fetch a new buffer from buffer pool                                        */
+/* allocate a new entry buffer from heap                                      */
 /*----------------------------------------------------------------------------*/
 void* EntryBuffer::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  Buffer* pBuffer = (Buffer*)Heap::pAllocate(CN_ENTRYBUFFER);
   
-  return pBuffer;
+  EntryBuffer* pEntryBuffer =
+    static_cast<EntryBuffer*>(Heap::pAllocate(CN_ENTRYBUFFER));
+  
+  return pEntryBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
-/* fetch a new buffer from buffer pool                                        */
+/* perform new of entry buffer for given address                              */
 /*----------------------------------------------------------------------------*/
-void* EntryBuffer::operator new(size_t iSize, void* aAddr)
+void* EntryBuffer::operator new(size_t iSize, void* aAddress)
 {
   RASSERT(iSize);
   
-  return aAddr;
+  return aAddress;
 }
 
 /*----------------------------------------------------------------------------*/
-/* return a row buffer to the buffer pool                                     */
+/* free an entry buffer back to the heap                                      */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::operator delete(void* pRowBufferAddress)
+void EntryBuffer::operator delete(void* aAddress)
 {
-  Buffer* pBuffer = reinterpret_cast<Buffer*>(pRowBufferAddress);
+  EntryBuffer* pEntryBuffer = static_cast<EntryBuffer*>(aAddress);
   
-  Heap::vFree(pBuffer);
+  Heap::vFree(pEntryBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1102,7 +1104,7 @@ Entry* EntryBuffer::pPositionQuery(Key* aGivenKey, eRO eRelnOp)
 }
 
 /*----------------------------------------------------------------------------*/
-/* position at an index buffer at level iLevel starting from this buffer      */
+/* position at an index buffer at given level starting from this buffer       */
 /*----------------------------------------------------------------------------*/
 EntryBuffer* EntryBuffer::pPositionLevel(Key* aGivenKey, i8 nKeyCols,
                                          eJC eJuxtaCompare, i8 iLevel)
@@ -1244,7 +1246,7 @@ Entry* EntryBuffer::pPositionPrior(Key* aFindKey)
 /* scan thru skip list and positition on entry prior to key                   */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vPositionPriorL0(Key* aFindKey, Entry* pPriorVec[],
-                                 Entry* pFindEntry)
+                                   Entry* pFindEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1326,7 +1328,7 @@ void EntryBuffer::vPositionPriorL0(Key* aFindKey, Entry* pPriorVec[],
 /* scan thru skip list and position on entry prior to Key & buffer no         */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vPositionPriorLn(Key* aFindKey, Entry* pPriorVec[],
-                                  i8 iBufferNo)
+                                   i8 iBufferNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
