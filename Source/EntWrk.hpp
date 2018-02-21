@@ -10,16 +10,20 @@ namespace DBobjects
   friend class Entry;
   friend class Table;
   
-  static const i8 C_DATA_BYTES = C_1KB*15;
+  static const i8 C_AREA_BYTES = C_1KB*15;
   
   private:
-    Id m_xId;      // id of row, or referenced entry in another buffer
-    i8 m_iTxId;    // transaction id
-    i8 m_nOffsets; // number of offsets (0..3)
+    Id    m_xId;       // id of row, or referenced entry in another buffer
+    i8    m_iTxId;     // transaction id
+    i8    m_nOffsets;  // number of offsets (0..3)
+  
+    char* m_aEmbedded; // address of embedded object. this may be different
+                       // from m_xEmbeddedWsp.aArea() to allow for the object
+                       // not to have to be copied into the wsp
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // key and datums
-    WspFxd<C_DATA_BYTES> m_xEmbeddedWsp; // embedded object workspace
+    // key and row workspace
+    WspFxd<C_AREA_BYTES> m_xEmbeddedWsp; // embedded object workspace
   
     Footer m_xFooter;
   
@@ -28,12 +32,14 @@ namespace DBobjects
     ~EntWrk(void);
   
     char*  aEmbedded(void);
+    void   vEmbedded(char* aEmbedded);
     Id&    xId(void);
     void   vId(Id& xId);
     char*  aLatter(void);
     i8     nOffsets(void);
     i8     nOffsetSize(void);
     void   vOffsets(i8 nOffsets);
+    void   vReset(void);
     void   vTake(i8 iSize);
     i8     iTxId(void);
     void   vTxId(i8 iTxId);

@@ -25,6 +25,8 @@ EntWrk::EntWrk(eCN eClassNo)
   
   m_xEmbeddedWsp.vInit();
   
+  m_aEmbedded = m_xEmbeddedWsp.aArea();
+  
   _checkInitialisedSize_(sizeof(EntWrk));
   
   _postcondition_(_MAGIC_,eClassNo,_FOOTER_);
@@ -49,9 +51,21 @@ char* EntWrk::aEmbedded(void)
 {  
   _precondition_(_MAGIC_,_FOOTER_);
   
-  char* aData = m_xEmbeddedWsp.aArea();
+//  char* aData = m_xEmbeddedWsp.aArea();
+//  
+//  return aData;
   
-  return aData;
+  return m_aEmbedded;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set address of embedded object                                             */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vEmbedded(char* aEmbedded)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  m_aEmbedded = aEmbedded;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -118,6 +132,16 @@ void EntWrk::vOffsets(i8 nOffsets)
   _precondition_(_MAGIC_,_FOOTER_);
   
   m_nOffsets = nOffsets;
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset embedded address                                                     */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vReset(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  m_aEmbedded = m_xEmbeddedWsp.aArea();
 }
 
 /*----------------------------------------------------------------------------*/
