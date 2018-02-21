@@ -107,7 +107,8 @@ namespace DBobjects
     Entry*       pFirstEntry(void);
     Entry*       pGetEntryNo(i8 iEntryNo);
     bool         bHasSpace(i8 nBytes);
-    Entry*       pInsertKey(i8 iTxId, Id xIdx, Key* pKey, i8 iKeyLength,
+    Entry*       pInsertKey(KeyWrk& xKeyWrk,
+                            i8 iTxId, Id xIdx, Key* pKey, i8 iKeyLength,
                             EntryBuffer** ppRootKeyBuffer,
                             i8 iRefBufNo,
                             EntryBuffer* pToBuffer);

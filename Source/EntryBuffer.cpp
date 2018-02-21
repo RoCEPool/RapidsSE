@@ -794,7 +794,11 @@ bool EntryBuffer::bHasSpace(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* attempt to insert a new key entry into this buffer                         */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pInsertKey(i8 iTxId, Id xId, Key* aKey, i8 iKeyLength,
+Entry* EntryBuffer::pInsertKey(KeyWrk& xKeyWrk,
+                               i8 iTxId,
+                               Id xId,
+                               Key* aKey,
+                               i8 iKeyLength,
                                EntryBuffer** ppRootKeyBuffer,
                                i8 iRefBufNo,
                                EntryBuffer* pToBuffer)
@@ -802,6 +806,7 @@ Entry* EntryBuffer::pInsertKey(i8 iTxId, Id xId, Key* aKey, i8 iKeyLength,
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   Entry* pKeyEntry;
+  KeyWrk xKeyWrkIns;
   
   //vTrace("Inserting key:\n"_Stz);
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
@@ -865,8 +870,14 @@ Entry* EntryBuffer::pInsertKey(i8 iTxId, Id xId, Key* aKey, i8 iKeyLength,
       i8 iRefBufLeft = pFirstKeyLeft->iBufferNo();
       EntryBuffer* pToBufferLeft = pFirstKeyLeft->pEntryBuffer();
       Entry* pNewKeyLeft =
-        (*ppRootKeyBuffer)->pInsertKey(iTxIdLeft,xIdLeft,aKeyLeft,iKeyLenLeft,
-                                       ppRootKeyBuffer,iRefBufLeft,pToBufferLeft);
+        (*ppRootKeyBuffer)->pInsertKey(xKeyWrkIns,
+                                       iTxIdLeft,
+                                       xIdLeft,
+                                       aKeyLeft,
+                                       iKeyLenLeft,
+                                       ppRootKeyBuffer,
+                                       iRefBufLeft,
+                                       pToBufferLeft);
       
       Entry* pFirstKeyRight = pNewRightKeyBuffer->pFirstEntry();
       Id xIdRight(*pNewRightKeyBuffer->nBufferNo(),0);
@@ -877,8 +888,14 @@ Entry* EntryBuffer::pInsertKey(i8 iTxId, Id xId, Key* aKey, i8 iKeyLength,
       i8 iRefBufRight = pFirstKeyRight->iBufferNo();
       EntryBuffer* pToBufferRight = pFirstKeyRight->pEntryBuffer();
       Entry* pNewKeyRight =
-      (*ppRootKeyBuffer)->pInsertKey(iTxIdRight,xIdRight,aKeyRight,iKeyLenRight,
-                                     ppRootKeyBuffer,iRefBufRight,pToBufferRight);
+      (*ppRootKeyBuffer)->pInsertKey(xKeyWrkIns,
+                                     iTxIdRight,
+                                     xIdRight,
+                                     aKeyRight,
+                                     iKeyLenRight,
+                                     ppRootKeyBuffer,
+                                     iRefBufRight,
+                                     pToBufferRight);
       
       
       //(*ppRootKeyBuffer)->vShow();
@@ -887,8 +904,14 @@ Entry* EntryBuffer::pInsertKey(i8 iTxId, Id xId, Key* aKey, i8 iKeyLength,
       
       
       if ( ! pNewRightKeyBuffer->bKeyBeforeBuffer(aKey) ) {
-        pKeyEntry = pNewRightKeyBuffer->pInsertKey(iTxId, xId, aKey, iKeyLength,
-                                                   ppRootKeyBuffer,iRefBufNo,pToBuffer);
+        pKeyEntry = pNewRightKeyBuffer->pInsertKey(xKeyWrkIns,
+                                                   iTxId,
+                                                   xId,
+                                                   aKey,
+                                                   iKeyLength,
+                                                   ppRootKeyBuffer,
+                                                   iRefBufNo,
+                                                   pToBuffer);
         //pNewRightKeyBuffer->vShow();
         return pKeyEntry;
       }
@@ -1695,6 +1718,7 @@ void EntryBuffer::vShowTree(bool bDumpBuffer)
 /*----------------------------------------------------------------------------*/
 EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
 {
+  KeyWrk xKeyWrkIns;
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
@@ -1737,8 +1761,13 @@ EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
     i8 iRefBufNo = pMoveEntry->iBufferNo();
     EntryBuffer* pToBuffer = pMoveEntry->pEntryBuffer();
     
-    Entry* pNewEntry = pNewBuffer->pInsertKey(iTxId,xId,aKey,nKeySize,
-                                              ppRootKeyBuffer,iRefBufNo,
+    Entry* pNewEntry = pNewBuffer->pInsertKey(xKeyWrkIns,
+                                              iTxId,
+                                              xId,
+                                              aKey,
+                                              nKeySize,
+                                              ppRootKeyBuffer,
+                                              iRefBufNo,
                                               pToBuffer);
     
     vDeleteEntry(pMoveEntry);
@@ -2674,6 +2703,7 @@ void EntryBuffer::vUnitTest_b(Table* pTable)
   bool bFormatted;
   bool bBlankLine;
   KeyWrk xKeyWrk;
+  KeyWrk xKeyWrkIns;
   
   Entry* xKeyEntries[1000];
 
@@ -2721,9 +2751,14 @@ void EntryBuffer::vUnitTest_b(Table* pTable)
     //Entry* pKeyEntry = pCurrentIndexBuffer->pInsertKey_v3(xKeyWrk);
     
     Entry* pKeyEntry =
-      pCurrentIndexBuffer->pInsertKey(0, pRowEntry->xId(),
-                                      xKeyWrk.aKey(), xKeyWrk.nKeySize(),
-                                      nullptr,0,nullptr);
+      pCurrentIndexBuffer->pInsertKey(xKeyWrkIns,
+                                      0,
+                                      pRowEntry->xId(),
+                                      xKeyWrk.aKey(),
+                                      xKeyWrk.nKeySize(),
+                                      nullptr,
+                                      0,
+                                      nullptr);
     
     xKeyEntries[iKey] = pKeyEntry;
     
