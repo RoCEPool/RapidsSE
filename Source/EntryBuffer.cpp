@@ -1654,30 +1654,7 @@ void EntryBuffer::vShowTree(bool bDumpBuffer)
   for (EntryBuffer* pBuffer = this;
        pBuffer;
        pBuffer = pBuffer->pNextBuffer()) {
-    /*
-    vTrace("[t%lld h%lld: "_Stz,
-           *pBuffer->nBufferNo(),
-           pBuffer->pHigherBuffer() ? *pBuffer->pHigherBuffer()->nBufferNo() : 0);
     
-    i8 iOffset = pBuffer->pHeadEntry()->iNEO(0);
-    while (iOffset > -1) {
-      Entry* pEntry = pBuffer->pGetEntryOffset(iOffset);
-      //pEntry->vShow(iOffset,m_pIndex,true);
-      
-      Key* aKey = pEntry->aKey();
-      
-      //i8 iVal = *(i8*)aKey->aWspArea();
-      i8 iVal = aKey->iGetInt();
-      
-      vTrace("%lld"_Stz,iVal);
-      
-      iOffset = pEntry->iNEO(0);
-      if (iOffset > -1)
-        vTrace(","_Stz);
-      
-    }
-    vTrace("]"_Stz);
-    */
     pBuffer->vShowShort();
     
     ASSERT(! pBuffer->pPrevBuffer() || pBuffer == pBuffer->pPrevBuffer()->pNextBuffer());
