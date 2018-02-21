@@ -1155,10 +1155,9 @@ Entry* EntryBuffer::pPositionQuery(Key* aGivenKey,i8 nKeyCols, eJC eJuxtaCompare
   Entry* pScanEntry_sl = m_pHeadEntry;
   bool bIsEqual;
   
-  i8 nScanLevel;
-  for (nScanLevel = 2; nScanLevel >= 0; nScanLevel--) {
+  for (i8 i_ScanOffset = 2; i_ScanOffset >= 0; i_ScanOffset--) {
     
-    Entry* pNextEntry_sl = pNextEntry(pScanEntry_sl,nScanLevel);
+    Entry* pNextEntry_sl = pNextEntry(pScanEntry_sl,i_ScanOffset);
     while (pNextEntry_sl) {
       
       Key* aNextKey = pNextEntry_sl->aKey();
@@ -1167,11 +1166,11 @@ Entry* EntryBuffer::pPositionQuery(Key* aGivenKey,i8 nKeyCols, eJC eJuxtaCompare
       //aGivenKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       
       bIsJuxta =
-      aGivenKey->bJuxtaCompare(JC_AFTER,aNextKey,pIdxColVec,nKeyCols,bIsEqual);
+        aGivenKey->bJuxtaCompare(JC_AFTER,aNextKey,pIdxColVec,nKeyCols,bIsEqual);
       
       // have we found to key during a query?
       if (bIsEqual) {
-        if (0 == nScanLevel)
+        if (0 == i_ScanOffset)
           return pNextEntry_sl;
         else
           break;
@@ -1182,9 +1181,9 @@ Entry* EntryBuffer::pPositionQuery(Key* aGivenKey,i8 nKeyCols, eJC eJuxtaCompare
         break;
       
       pScanEntry_sl = pNextEntry_sl;
-      pNextEntry_sl = pNextEntry(pNextEntry_sl,nScanLevel);
+      pNextEntry_sl = pNextEntry(pNextEntry_sl,i_ScanOffset);
     }
-    //pPriorVec[*nScanLevel] = pScanEntry_sl;
+    //pPriorVec[*i_ScanOffset] = pScanEntry_sl;
   }
   
   if (pScanEntry_sl == pHeadEntry()) {
@@ -1216,10 +1215,9 @@ Entry* EntryBuffer::pPositionPrior(Key* aFindKey)
   
   Entry* pScanEntry_sl = m_pHeadEntry;
   
-  i8 nScanLevel;
-  for (nScanLevel = 2; nScanLevel >= 0; nScanLevel--) {
+  for (i8 i_ScanOffset = 2; i_ScanOffset >= 0; i_ScanOffset--) {
     
-    Entry* pNextEntry_sl = pNextEntry(pScanEntry_sl,nScanLevel);
+    Entry* pNextEntry_sl = pNextEntry(pScanEntry_sl,i_ScanOffset);
     while (pNextEntry_sl) {
       
       Key* aNextKey = pNextEntry_sl->aKey();
@@ -1235,7 +1233,7 @@ Entry* EntryBuffer::pPositionPrior(Key* aFindKey)
       
       pScanEntry_sl = pNextEntry_sl;
      
-      pNextEntry_sl = pNextEntry(pNextEntry_sl,nScanLevel);
+      pNextEntry_sl = pNextEntry(pNextEntry_sl,i_ScanOffset);
     }
   }
   
@@ -1270,10 +1268,9 @@ void EntryBuffer::vPositionPriorL0(Key* aFindKey, Entry* pPriorVec[],
   i8 iFindLevels = pFindEntry ? pFindEntry->nOffsets() - 1 : 2;
   Entry* pScanEntry_sl = m_pHeadEntry;
   
-  i8 nScanLevel;
-  for (nScanLevel = 2; nScanLevel >= 0; nScanLevel--) {
+  for (i8 i_ScanOffset = 2; i_ScanOffset >= 0; i_ScanOffset--) {
 
-    Entry* pNextEntry_sl = pNextEntry(pScanEntry_sl,nScanLevel);
+    Entry* pNextEntry_sl = pNextEntry(pScanEntry_sl,i_ScanOffset);
     while (pNextEntry_sl) {
       
 //      if (CN_ENTRY != pNextEntry_sl->eClass()) {
@@ -1302,16 +1299,16 @@ void EntryBuffer::vPositionPriorL0(Key* aFindKey, Entry* pPriorVec[],
         if (pNextEntry_sl == pFindEntry)
           break;
         
-        if (nScanLevel > iFindLevels)
+        if (i_ScanOffset > iFindLevels)
           break;
         
       }
       
       pScanEntry_sl = pNextEntry_sl;
-      pNextEntry_sl = pNextEntry(pNextEntry_sl,nScanLevel);
+      pNextEntry_sl = pNextEntry(pNextEntry_sl,i_ScanOffset);
     }
     ASSERT(CN_ENTRY == pScanEntry_sl->eClass());
-    pPriorVec[nScanLevel] = pScanEntry_sl;
+    pPriorVec[i_ScanOffset] = pScanEntry_sl;
   }
  
   if (pFindEntry) {
@@ -1353,10 +1350,9 @@ void EntryBuffer::vPositionPriorLn(Key* aFindKey, Entry* pPriorVec[],
   
   Entry* pScanEntry_sl = m_pHeadEntry;
   
-  i8 nScanLevel;
-  for (nScanLevel = 2; nScanLevel >= 0; nScanLevel--) {
+  for (i8 i_ScanOffset = 2; i_ScanOffset >= 0; i_ScanOffset--) {
     
-    Entry* pNextEntry_sl = pNextEntry(pScanEntry_sl,nScanLevel);
+    Entry* pNextEntry_sl = pNextEntry(pScanEntry_sl,i_ScanOffset);
     while (pNextEntry_sl) {
       
       Key* aNextKey = pNextEntry_sl->aKey();
@@ -1368,7 +1364,7 @@ void EntryBuffer::vPositionPriorLn(Key* aFindKey, Entry* pPriorVec[],
         aNextKey->bJuxtaCompare(JC_AFTER,aFindKey,pIdxColVec,nKeyCols,bIsEqual);
       
       if (bIsJuxta) {
-        if (! iBufferNo  || nScanLevel)
+        if (! iBufferNo  || i_ScanOffset)
           break;
         i8 iRefBuffNo = pNextEntry_sl->iBufferNo();
         if (iRefBuffNo == iBufferNo)
@@ -1376,9 +1372,9 @@ void EntryBuffer::vPositionPriorLn(Key* aFindKey, Entry* pPriorVec[],
       }
       
       pScanEntry_sl = pNextEntry_sl;
-      pNextEntry_sl = pNextEntry(pNextEntry_sl,nScanLevel);
+      pNextEntry_sl = pNextEntry(pNextEntry_sl,i_ScanOffset);
     }
-    pPriorVec[nScanLevel] = pScanEntry_sl;
+    pPriorVec[i_ScanOffset] = pScanEntry_sl;
   }
   
   if (iBufferNo) {
@@ -1424,10 +1420,9 @@ void EntryBuffer::vPositionPriorLnAfter(Key* aFindKey, Entry* pPriorVec[],
   
   Entry* pScanEntry_sl = m_pHeadEntry;
   
-  i8 nScanLevel;
-  for (nScanLevel = 2; nScanLevel >= 0; nScanLevel--) {
+  for (i8 i_ScanOffset = 2; i_ScanOffset >= 0; i_ScanOffset--) {
     
-    Entry* pNextEntry_sl = pNextEntry(pScanEntry_sl,nScanLevel);
+    Entry* pNextEntry_sl = pNextEntry(pScanEntry_sl,i_ScanOffset);
     while (pNextEntry_sl) {
       
       Key* aNextKey = pNextEntry_sl->aKey();
@@ -1441,7 +1436,7 @@ void EntryBuffer::vPositionPriorLnAfter(Key* aFindKey, Entry* pPriorVec[],
       
       if (bIsJuxta) {
         
-        //if (! iBufferNo  || *nScanLevel)
+        //if (! iBufferNo  || *i_ScanOffset)
           break;
         
         //i8 iRefBuffNo = pScanEntry_sl->iBufferNo();
@@ -1450,7 +1445,7 @@ void EntryBuffer::vPositionPriorLnAfter(Key* aFindKey, Entry* pPriorVec[],
         
       }
   
-      if (0 == nScanLevel) {
+      if (0 == i_ScanOffset) {
         bAreSame =
           aNextKey->bEqualTo(aFindKey,pIdxColVec);
         if (bAreSame &&
@@ -1459,9 +1454,9 @@ void EntryBuffer::vPositionPriorLnAfter(Key* aFindKey, Entry* pPriorVec[],
       }
       
       pScanEntry_sl = pNextEntry_sl;
-      pNextEntry_sl = pNextEntry(pNextEntry_sl,nScanLevel);
+      pNextEntry_sl = pNextEntry(pNextEntry_sl,i_ScanOffset);
     }
-    pPriorVec[nScanLevel] = pScanEntry_sl;
+    pPriorVec[i_ScanOffset] = pScanEntry_sl;
   }
   
   if (iBufferNo) {
@@ -1605,7 +1600,6 @@ void EntryBuffer::vShow(void)
   vTrace("\n"_Stz);
   vTrace("=================================================="
          "==================================================\n"_Stz);
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1636,7 +1630,6 @@ void EntryBuffer::vShowShort(void)
       vTrace(","_Stz);
   }
   vTrace("]"_Stz);
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2543,9 +2536,8 @@ void EntryBuffer::vQuickVerify(Entry* pSeeEntry)
     if (pTestEntry == pSeeEntry)
       int iDebug = 1;
     
-    i8 nScanLevel;
-    for (nScanLevel = pTestEntry->nOffsets()-1; nScanLevel >= 0; nScanLevel--) {
-      Entry* pCheckEntry = pNextEntry(pTestEntry,nScanLevel);
+    for (i8 i_ScanOffset = pTestEntry->nOffsets()-1; i_ScanOffset >= 0; i_ScanOffset--) {
+      Entry* pCheckEntry = pNextEntry(pTestEntry,i_ScanOffset);
       if (!pCheckEntry)
         continue;
       
@@ -2556,15 +2548,15 @@ void EntryBuffer::vQuickVerify(Entry* pSeeEntry)
  
   }
 
-//  ln nScanLevel;
-//  for (nScanLevel = 2; *nScanLevel >= 0; nScanLevel--) {
+//  ln i_ScanOffset;
+//  for (i_ScanOffset = 2; *i_ScanOffset >= 0; i_ScanOffset--) {
 //
-//    for (Entry* pTestEntry = pNextEntry(m_pHeadEntry,*nScanLevel);
+//    for (Entry* pTestEntry = pNextEntry(m_pHeadEntry,*i_ScanOffset);
 //         pTestEntry;
-//         pTestEntry = pNextEntry(pTestEntry,*nScanLevel)) {
+//         pTestEntry = pNextEntry(pTestEntry,*i_ScanOffset)) {
 //      
 //      if (pSeeEntry) {
-//        vTrace("|scan: %lld| "_Stz,*nScanLevel);
+//        vTrace("|scan: %lld| "_Stz,*i_ScanOffset);
 //        pTestEntry->vShow(iToOffset(pTestEntry),m_pIndex,true);
 //      }
 //      
@@ -2590,10 +2582,9 @@ bool EntryBuffer::bQuickVerify(Entry* pNotSeeEntry)
        pTestEntry;
        pTestEntry = pNextEntry(pTestEntry,0)) {
     
-    i8 nScanLevel;
-    for (nScanLevel = pTestEntry->nOffsets()-1; nScanLevel >= 0; nScanLevel--) {
+    for (i8 i_ScanOffset = pTestEntry->nOffsets()-1; i_ScanOffset >= 0; i_ScanOffset--) {
       
-      Entry* pCheckEntry = pNextEntry(pTestEntry,nScanLevel);
+      Entry* pCheckEntry = pNextEntry(pTestEntry,i_ScanOffset);
       if (!pCheckEntry)
         continue;
       
