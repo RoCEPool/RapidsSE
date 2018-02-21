@@ -1789,8 +1789,9 @@ void EntryBuffer::vTruncate(void)
   
   EntryBuffer* pNextBuffer;
   
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // hidden index buffers are just one level
+  
   if (m_pIndex->bIsHidden()) {
     ASSERT(m_nBufferLevel == 0);
     pNextBuffer = this->pNextBuffer();
@@ -1806,7 +1807,7 @@ void EntryBuffer::vTruncate(void)
     return;
   }
   
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // other index
   if (m_nBufferLevel != 0) {
     
@@ -2376,8 +2377,6 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
   EntryBuffer* pRightBuffer = pLeftBuffer->pSplit(ppRootKeyBuffer);
   //if (mbWatch)
   //  (*ppRootKeyBuffer)->vShowTree();
-  //pLeftBuffer->vShow();
-  //pRightBuffer->vShow();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the first key of left buffer into higher buffer
@@ -2402,7 +2401,8 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
                                          nOffsetsLeft,
                                          ppRootKeyBuffer,
                                          pLeftBuffer);
-    //(*ppRootKeyBuffer)->vShowTree();
+    //if (mbWatch)
+    //  (*ppRootKeyBuffer)->vShowTree();
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2429,20 +2429,7 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
                                        pRightBuffer);
   
   //if (mbWatch)
-  //(*ppRootKeyBuffer)->vShowTree();
-  
-//  EntryBuffer* pNewKeyRightBuffer = pNewKeyRight->pEntryBuffer();
-//  if (pHigherBuffer != pNewKeyRightBuffer->pHigherBuffer()) {
-//    pHigherBuffer->vShow();
-//    pNewKeyRightBuffer->vShow();
-//  }
-//  ASSERT(pHigherBuffer == pNewKeyRight->pEntryBuffer()->pHigherBuffer());
-  //(*ppRootKeyBuffer)->vShowTree();
-  
-  
-  //pHigherBuffer->vShow();
-  //pLeftBuffer->vShow();
-  //pRightBuffer->vShow();
+  //  (*ppRootKeyBuffer)->vShowTree();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
