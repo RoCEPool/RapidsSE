@@ -2220,7 +2220,9 @@ Entry* EntryBuffer::pInsertKeyBuffer_c(KeyWrk& xKeyWrk,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the key entry
   
-  pInsertedKeyEntry->vSetEntry(iTxId,xId,nOffsets,(Stz*)aInsKey,iInsKeyLen);
+  //pInsertedKeyEntry->vSetEntry(iTxId,xId,nOffsets,(Stz*)aInsKey,iInsKeyLen);
+  pInsertedKeyEntry->vSetEntry(xKeyWrk);
+  
   if (mbWatch && pOriginalFirstEntry) {
     vTrace("*[%lld]pInsertedKeyEntry: %p key %lld\n"_Stz,
            *nBufferNo(),

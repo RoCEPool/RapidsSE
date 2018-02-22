@@ -344,7 +344,7 @@ void Entry::vSetEntry(KeyWrk& xKeyWrk)
   m_nOffsets = xKeyWrk.nOffsets();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // copy row into this entry
+  // copy key into this entry
   
   Key* aSrcKey = xKeyWrk.aKey();
   Key* aDstKey = this->aKey();
