@@ -148,7 +148,9 @@ namespace DBobjects
     i4           iGetFreeEntry(void);
     void         vHeadEntryNew(void);
     void         vHeadEntryRestore(void);
-    EntryBuffer* pInsertableBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
+    EntryBuffer* pInsertableBuffer(KeyWrk& xKeyWrk,
+                                   //Key* aInsKey,
+                                   //i8 nEntryPlusOffsets,
                                    EntryBuffer** ppRootKeyBuffer);
     Entry*       pInsertKey(KeyWrk& xKeyWrk,
                             i8 iTxId,
