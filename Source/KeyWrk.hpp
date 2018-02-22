@@ -25,6 +25,7 @@ namespace DBobjects
     void vAddWord(w8 wWord);
     Key* aKey(void);
     i8   nKeySize(void);
+    void vKeySize(i8 nKeySize);
     void vReset(void);
     void vShow(IdxColVec* pIdxColVec);
   };
