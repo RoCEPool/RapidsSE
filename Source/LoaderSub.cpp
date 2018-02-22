@@ -274,6 +274,10 @@ bool LoaderSub::bInsertRow(void)
   
   RowWrk xRowWrk;
   
+  xRowWrk.vTxId(iDistTxId);
+  xRowWrk.vEmbedded(m_aRecord.aChar());
+  xRowWrk.vRowSize(m_iLength);
+  
   // insert row into working buffer
   Entry* pEntry = pEntryBuffer->pAppendRow(xRowWrk,
                                            iDistTxId,

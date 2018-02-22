@@ -497,6 +497,10 @@ bool SEitf::bInsertRow(Stz* aRow, i8 iLength)
   
   RowWrk xRowWrk;
   
+  xRowWrk.vTxId(iDistTxId);
+  xRowWrk.vEmbedded((char*)aRow);
+  xRowWrk.vRowSize(iLength);
+  
   // append row into working buffer
   if (pRowBuffer->pAppendRow(xRowWrk,iDistTxId,aRow,iLength))
     return true;
@@ -564,6 +568,10 @@ bool SEitf::bInsertRow(Stz* aRow, i8 iLength, i8 iPartition)
   
   RowWrk xRowWrk;
   
+  xRowWrk.vTxId(iDistTxId);
+  xRowWrk.vEmbedded((char*)aRow);
+  xRowWrk.vRowSize(iLength);
+
   // append row into working buffer
   if (pRowBuffer->pAppendRow(xRowWrk,iDistTxId,aRow,iLength))
     return true;

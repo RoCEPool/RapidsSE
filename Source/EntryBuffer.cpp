@@ -398,6 +398,12 @@ Entry* EntryBuffer::pAppendRow(RowWrk& xRowWrk,
   
   ASSERT(nBufferLevel() == 0);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check validity of parameters
+  ASSERT(xRowWrk.iTxId() == iTxId);
+  ASSERT(xRowWrk.aRow() == (Row*)aRow);
+  ASSERT(xRowWrk.nRowSize() == iRowLength);
+  
   Entry* pRowEntry;
   i8 nOffsets = 1;
   
@@ -406,6 +412,8 @@ Entry* EntryBuffer::pAppendRow(RowWrk& xRowWrk,
   i8 nOffsetBytes = sizeof(i4);
   i8 nEntryBytes = Entry::nBytesRequired(iRowLength, nOffsets);
   i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
+  
+  xRowWrk.vOffsets(nOffsets);
   
   if ( ! bHasSpace(nEntryPlusOffsets) ) {
     
@@ -429,7 +437,7 @@ Entry* EntryBuffer::pAppendRow(RowWrk& xRowWrk,
   i8 nRowNo = iGetFreeEntry(); //nItems();
   Id xRowId(*nBufferNo, nRowNo);
   
-  //xRowWrk.vId(xRowId);
+  xRowWrk.vId(xRowId);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate space in this buffer
@@ -440,7 +448,9 @@ Entry* EntryBuffer::pAppendRow(RowWrk& xRowWrk,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the buffer entry
   
-  pRowEntry->vSetEntry(iTxId, xRowId, nOffsets, aRow, iRowLength);
+  //pRowEntry->vSetEntry(iTxId, xRowId, nOffsets, aRow, iRowLength);
+  pRowEntry->vSetEntry(xRowWrk);
+  
   //pRowEntry->vShow(0, m_pIndex, false);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2695,6 +2705,8 @@ void EntryBuffer::vUnitTest_b(Table* pTable)
                                  bBlankLine);
 
     xRowWrk.vRowSize(iRowLength);
+    xRowWrk.vTxId(0);
+    
     //((Row*)aRowData)->vDump(pColVec);
 
     //Entry* pRowEntry = pCurrentBuffer->pAppendRow_v3(xRowEntWrk);
@@ -2847,6 +2859,8 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
                                  bBlankLine);
     
     xRowWrk.vRowSize(iRowLength);
+    xRowWrk.vTxId(0);
+    
     //((Row*)aRowData)->vDump(pColVec);
     
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
