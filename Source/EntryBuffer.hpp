@@ -159,27 +159,12 @@ namespace DBobjects
                             i8 iRefBufNo,
                             EntryBuffer* pToBuffer);
     Entry*       pInsertKeyAbs(KeyWrk& xKeyWrk,
-                               //i8 iTxId,
-                               //Id xIdx,
-                               //Key* pKey,
-                               //i8 iKeyLength,
                                EntryBuffer** ppRootKeyBuffer,
-                               //i8 iRefBufNo,
                                EntryBuffer* pToBuffer);
     Entry*       pInsertKeyBuffer(KeyWrk& xKeyWrk,
-                                  //i8 iTxId,
-                                  //Id xIdx,
-                                  //Key* pKey,
-                                  //i8 iKeyLength,
-                                  //i8 nOffsets,
                                   EntryBuffer** ppRootKeyBuffer,
                                   EntryBuffer* pToBuffer);
     Entry*       pInsertKeyUpwards(KeyWrk& xKeyWrk,
-                                   //i8 iTxId,
-                                   //Id xIdx,
-                                   //Key* pKey,
-                                   //i8 iKeyLength,
-                                   //i8 nOffsets,
                                    EntryBuffer** ppRootKeyBuffer,
                                    EntryBuffer* pToBuffer);
     void         vItemCountRestore(void);

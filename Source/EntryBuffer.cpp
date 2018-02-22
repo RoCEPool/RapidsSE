@@ -814,10 +814,6 @@ bool EntryBuffer::bHasSpace(i8 nBytes)
 /* insert a new key entry into this key tree                                  */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pInsertKeyTree(KeyWrk& xKeyWrk,
-                                   //i8 iTxId,
-                                   //Id xId,
-                                   //Key* aInsKey,
-                                   //i8 iInsKeyLen,
                                    EntryBuffer** ppRootKeyBuffer)
 {
   // note: this is a static function
@@ -847,11 +843,6 @@ Entry* EntryBuffer::pInsertKeyTree(KeyWrk& xKeyWrk,
   
   pInsertedKeyEntry =
     pPositionedBuffer->pInsertKeyUpwards(xKeyWrk,
-                                         //xKeyWrk.iTxId(),        //iTxId,
-                                         //xKeyWrk.xId(),          //xId,
-                                         //xKeyWrk.aKey(),         //aInsKey,
-                                         //xKeyWrk.nKeySize(),     //iInsKeyLen,
-                                         //xKeyWrk.nOffsets(),     //nOffsets,
                                          ppRootKeyBuffer,
                                          nullptr);
   
@@ -2165,30 +2156,13 @@ Entry* EntryBuffer::pInsertKey(KeyWrk& xKeyWrk,
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert a key entry into this buffer (there should be enough space)         */
+/* insert a key entry specificaly into this buffer (should be enough space)   */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pInsertKeyAbs(KeyWrk& xKeyWrk,
-                                  //i8 iTxId,
-                                  //Id xId,
-                                  //Key* aKey,
-                                  //i8 iKeyLength,
                                   EntryBuffer** ppRootKeyBuffer,
-                                  //i8 iRefBufNo,
                                   EntryBuffer* pToBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check validity of parameters
-  
-  //RASSERT(xKeyWrk.iTxId() == iTxId);
-  //RASSERT(xKeyWrk.xId().iAsI8() == xId.iAsI8());
-  //RASSERT(xKeyWrk.aKey() == aKey);
-  //RASSERT(xKeyWrk.nKeySize() == iKeyLength);
-  //RASSERT(xKeyWrk.nOffsets() != 0);
-  
-  //RASSERT(xKeyWrk.xId().iBuffer() == iRefBufNo);
-
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // trace
@@ -2221,14 +2195,12 @@ Entry* EntryBuffer::pInsertKeyAbs(KeyWrk& xKeyWrk,
   // set the key entry
   
   pKeyEntry->vSetEntry(xKeyWrk);
-  //pKeyEntry->vSetEntry(iTxId, xId, nOffsets, (Stz*)aKey, iKeyLength);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // find the entry after which the new entry.key will be inserted
+  // find the entry after which the new entry will be inserted
   
   Entry* xPriorVec[3];
   
-  //Key* aKey = xKeyWrk.aKey();
   if (0 == m_nBufferLevel)
     vPositionPriorL0(aKey, xPriorVec);
   else
@@ -2255,35 +2227,10 @@ Entry* EntryBuffer::pInsertKeyAbs(KeyWrk& xKeyWrk,
 /* insert a new key entry into this buffer                                    */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pInsertKeyBuffer(KeyWrk& xKeyWrk,
-                                     //i8 iTxId,
-                                     //Id xId,
-                                     //Key* aInsKey,
-                                     //i8 iInsKeyLen,
-                                     //i8 nOffsets,
                                      EntryBuffer** ppRootKeyBuffer,
                                      EntryBuffer* pToBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check validity of parameters
-  
-  //RASSERT(xKeyWrk.iTxId() == iTxId);
-  //RASSERT(xKeyWrk.xId().iAsI8() == xId.iAsI8());
-  //RASSERT(xKeyWrk.aKey() == aInsKey);
-  //RASSERT(xKeyWrk.nKeySize() == iInsKeyLen);
-  //RASSERT(xKeyWrk.nOffsets() == nOffsets);
-  
-  
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // offsets
-//  
-//  i8 nKeySize = xKeyWrk.nKeySize();
-//  i8 nOffsets = xKeyWrk.nOffsets();
-//  i8 nEntryBytes = Entry::nBytesRequired(nKeySize,nOffsets);
-//  i8 nOffsetBytes = nOffsets*sizeof(i4);
-//  //i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
-//
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // record orginal first entry incase we insert a new first entry
@@ -2298,75 +2245,20 @@ Entry* EntryBuffer::pInsertKeyBuffer(KeyWrk& xKeyWrk,
            pOriginalFirstEntry,pOriginalFirstEntry->aKey()->iGetInt());
   }
   
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // find the entry after which the new key will be inserted
-//  
-//  Key* aInsKey = xKeyWrk.aKey();
-//  
-//  Entry* xPriorVec[3];
-//  if (0 == m_nBufferLevel)
-//    vPositionPriorL0(aInsKey,xPriorVec);
-//  else
-//    vPositionPriorLnAfter(aInsKey,xPriorVec,pToBuffer);
-//  
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // allocate space for the key entry in the buffer
-//  
-//  Entry* pInsertedKeyEntry = pAllotEntry(nEntryBytes);
-//  ASSERT(pInsertedKeyEntry);
-//  
-//  NEO* aNEO = aAllotNEO(nOffsetBytes);
-//  ASSERT(aNEO);
-//  
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // set the key entry
-//  
-//  //pInsertedKeyEntry->vSetEntry(iTxId,xId,nOffsets,(Stz*)aInsKey,iInsKeyLen);
-//  pInsertedKeyEntry->vSetEntry(xKeyWrk);
-//  
-//  if (mbWatch && pOriginalFirstEntry) {
-//    vTrace("*[%lld]pInsertedKeyEntry: %p key %lld\n"_Stz,
-//           *nBufferNo(),
-//           pInsertedKeyEntry,pInsertedKeyEntry->aKey()->iGetInt());
-//  }
-//  
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // set prior offsets
-//  
-//  i8 iKeyEntryOffset = iToOffset(pInsertedKeyEntry);
-//  
-//  for (i8 i_Offset = 0; i_Offset < nOffsets; i_Offset++) {
-//    i8 iPriorOffset = xPriorVec[i_Offset]->iNEO(i_Offset);
-//    pInsertedKeyEntry->vNEO(i_Offset,iPriorOffset);
-//    xPriorVec[i_Offset]->vNEO(i_Offset,iKeyEntryOffset);
-//  }
-//  
-//  if (mbWatch && pOriginalFirstEntry) {
-//    vShowShort();
-//    vTrace("\n"_Stz);
-//  }
-  
-  //i8 iRefBufNo = xKeyWrk.xId().iBuffer();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // insert the key
   
   Entry* pInsertedKeyEntry = pInsertKeyAbs(xKeyWrk,
                                            ppRootKeyBuffer,
-                                           //iRefBufNo,
                                            pToBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // handle the insert of a left most key
   
-  //pFirstEntry()->vShow(0,m_pIndex,true);
-  //pInsertedKeyEntry->vShow(0,m_pIndex,true);
   
   if (pFirstEntry() == pInsertedKeyEntry) {
+
     if (m_pHigherBuffer) {
-      //if (mbWatch)
-      //  (*ppRootKeyBuffer)->vShowTree();
-      //if (mbWatch) {
-      
-      if (7 == pInsertedKeyEntry->aKey()->iGetInt())
-        int iDebug = 1;
       
       if (pOriginalFirstEntry) {
         Key* aDeleteKey = pOriginalFirstEntry->aKey();
@@ -2390,11 +2282,6 @@ Entry* EntryBuffer::pInsertKeyBuffer(KeyWrk& xKeyWrk,
       xKeyWrkIns.vOffsets(nInsertOffsets);
       
       m_pHigherBuffer->pInsertKeyBuffer(xKeyWrkIns,
-                                        //iTxId,
-                                        //xInsertId,
-                                        //aInsertKey,
-                                        //iInsertKeyLen,
-                                        //nInsertOffsets,
                                         ppRootKeyBuffer,
                                         this);
     }
@@ -2404,27 +2291,13 @@ Entry* EntryBuffer::pInsertKeyBuffer(KeyWrk& xKeyWrk,
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert a new key entry into this key tree                                  */
+/* insert a new key entry into this key tree (handling ripple upwards)        */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pInsertKeyUpwards(KeyWrk& xKeyWrk,
-                                      //i8 iTxId,
-                                      //Id xId,
-                                      //Key* aInsKey,
-                                      //i8 iInsKeyLen,
-                                      //i8 nOffsets,
                                       EntryBuffer** ppRootKeyBuffer,
                                       EntryBuffer* pToBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check validity of parameters
-  
-  //RASSERT(xKeyWrk.iTxId() == iTxId);
-  //RASSERT(xKeyWrk.xId().iAsI8() == xId.iAsI8());
-  //RASSERT(xKeyWrk.aKey() == aInsKey);
-  //RASSERT(xKeyWrk.nKeySize() == iInsKeyLen);
-  //RASSERT(xKeyWrk.nOffsets() == nOffsets);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -2437,22 +2310,23 @@ Entry* EntryBuffer::pInsertKeyUpwards(KeyWrk& xKeyWrk,
 
   Key* aInsKey = xKeyWrk.aKey();
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   EntryBuffer* pInsertIntoBuffer =
     pInsertableBuffer(aInsKey,nEntryPlusOffsets,ppRootKeyBuffer);
   
   if (mbWatch)
     (*ppRootKeyBuffer)->vShowTree(false);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   Entry* pInsertedKeyEntry =
     pInsertIntoBuffer->pInsertKeyBuffer(xKeyWrk,
-                                        //iTxId,
-                                        //xId,
-                                        //aInsKey,
-                                        //iInsKeyLen,
-                                        //nOffsets,
                                         ppRootKeyBuffer,
                                         pToBuffer);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   if (pInsertIntoBuffer->m_nBufferLevel) {
     Id xId = pInsertedKeyEntry->xId();
     i8 nBuffer = xId.iBuffer();
