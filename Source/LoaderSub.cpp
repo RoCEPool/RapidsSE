@@ -272,8 +272,13 @@ bool LoaderSub::bInsertRow(void)
   Tx* pTx = pSEitf->pTx();
   i8 iDistTxId = pTx->iDistTxId();
   
+  RowWrk xRowWrk;
+  
   // insert row into working buffer
-  Entry* pEntry = pEntryBuffer->pAppendRow(iDistTxId,(Stz*)m_aRecord.aChar(),m_iLength);
+  Entry* pEntry = pEntryBuffer->pAppendRow(xRowWrk,
+                                           iDistTxId,
+                                           (Stz*)m_aRecord.aChar(),
+                                           m_iLength);
   
   //pEntryBuffer->vShow();
   

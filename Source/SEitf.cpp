@@ -495,8 +495,10 @@ bool SEitf::bInsertRow(Stz* aRow, i8 iLength)
   // get tx id
   i8 iDistTxId = m_pTx->iDistTxId();
   
+  RowWrk xRowWrk;
+  
   // append row into working buffer
-  if (pRowBuffer->pAppendRow(iDistTxId,aRow,iLength))
+  if (pRowBuffer->pAppendRow(xRowWrk,iDistTxId,aRow,iLength))
     return true;
   
   // buffer is full, copy buffer into table
@@ -526,7 +528,7 @@ bool SEitf::bInsertRow(Stz* aRow, i8 iLength)
   pRowBuffer = m_pRowBuffer[iSlot];
   
   // append row into working buffer
-  if (pRowBuffer->pAppendRow(iDistTxId,aRow,iLength))
+  if (pRowBuffer->pAppendRow(xRowWrk,iDistTxId,aRow,iLength))
     return true;
   else
     return false;
@@ -560,8 +562,10 @@ bool SEitf::bInsertRow(Stz* aRow, i8 iLength, i8 iPartition)
   // get tx id
   i8 iDistTxId = m_pTx->iDistTxId();
   
+  RowWrk xRowWrk;
+  
   // append row into working buffer
-  if (pRowBuffer->pAppendRow(iDistTxId,aRow,iLength))
+  if (pRowBuffer->pAppendRow(xRowWrk,iDistTxId,aRow,iLength))
     return true;
   
   // buffer is full, copy buffer into table
@@ -593,7 +597,7 @@ bool SEitf::bInsertRow(Stz* aRow, i8 iLength, i8 iPartition)
   pRowBuffer = m_pRowBuffer[iPartition];
   
   // append row into working buffer
-  if (pRowBuffer->pAppendRow(iDistTxId,aRow,iLength))
+  if (pRowBuffer->pAppendRow(xRowWrk,iDistTxId,aRow,iLength))
     return true;
   else
     return false;

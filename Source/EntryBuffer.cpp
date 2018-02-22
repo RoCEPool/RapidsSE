@@ -388,7 +388,10 @@ bool EntryBuffer::bAppendEntry(Entry* pRowEntry, Entry** ppEntry)
 /*----------------------------------------------------------------------------*/
 /* attempt to append a new row entry into this buffer                         */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pAppendRow(i8 iTxId, Stz* aRow, i8 iRowLength,
+Entry* EntryBuffer::pAppendRow(RowWrk& xRowWrk,
+                               i8 iTxId,
+                               Stz* aRow,
+                               i8 iRowLength,
                                EntryBuffer** ppLastRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
@@ -410,8 +413,11 @@ Entry* EntryBuffer::pAppendRow(i8 iTxId, Stz* aRow, i8 iRowLength,
       return nullptr;
     
     *ppLastRowBuffer = pNewNextBuffer();
-    pRowEntry = (*ppLastRowBuffer)->pAppendRow(0,aRow,iRowLength,
-                                                ppLastRowBuffer);
+    pRowEntry = (*ppLastRowBuffer)->pAppendRow(xRowWrk,
+                                               iTxId,
+                                               aRow,
+                                               iRowLength,
+                                               ppLastRowBuffer);
     ASSERT(pRowEntry);
     return pRowEntry;
   }
@@ -2655,7 +2661,7 @@ void EntryBuffer::vUnitTest_b(Table* pTable)
   
   s256 sRecData;
   i8 iRecLength;
-  RowWrk xRowEntWrk;
+  RowWrk xRowWrk;
   i8 iRowLength;
   bool bFormatted;
   bool bBlankLine;
@@ -2680,7 +2686,7 @@ void EntryBuffer::vUnitTest_b(Table* pTable)
             iKey,IntLib::sAsText(iKey),iKey);
     vTrace("Record: %s\n"_Stz,sRecData.aChar());
   
-    char* aRowData = (char*)xRowEntWrk.aRow();
+    char* aRowData = (char*)xRowWrk.aRow();
     iRecLength = sRecData.iLength();
     
     bFormatted = Row::bFormatRow(pColVec,pFormatters,
@@ -2688,16 +2694,22 @@ void EntryBuffer::vUnitTest_b(Table* pTable)
                                  (Stz*)aRowData,iRowLength,
                                  bBlankLine);
 
-    xRowEntWrk.vRowSize(iRowLength);
+    xRowWrk.vRowSize(iRowLength);
     //((Row*)aRowData)->vDump(pColVec);
 
     //Entry* pRowEntry = pCurrentBuffer->pAppendRow_v3(xRowEntWrk);
     
-    Entry* pRowEntry = pCurrentBuffer->pAppendRow(0, (Stz*)aRowData, iRowLength);
+    Entry* pRowEntry = pCurrentBuffer->pAppendRow(xRowWrk,
+                                                  0,
+                                                  (Stz*)aRowData,
+                                                  iRowLength);
     
     if ( ! pRowEntry ) {
       pCurrentBuffer = pCurrentBuffer->pNewNextBuffer();
-      pRowEntry = pCurrentBuffer->pAppendRow(0, (Stz*)aRowData, iRowLength);
+      pRowEntry = pCurrentBuffer->pAppendRow(xRowWrk,
+                                             0,
+                                             (Stz*)aRowData,
+                                             iRowLength);
       ASSERT(pRowEntry);
     }
     
@@ -2771,7 +2783,7 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
   
   s256 sRecData;
   i8 iRecLength;
-  RowWrk xRowEntWrk;
+  RowWrk xRowWrk;
   i8 iRowLength;
   bool bFormatted;
   bool bBlankLine;
@@ -2826,7 +2838,7 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
     if (mbWatch)
       vTrace("\nInserting record: %s\n"_Stz,sRecData.aChar());
     
-    char* aRowData = (char*)xRowEntWrk.aRow();
+    char* aRowData = (char*)xRowWrk.aRow();
     iRecLength = sRecData.iLength();
     
     bFormatted = Row::bFormatRow(pColVec,pFormatters,
@@ -2834,13 +2846,16 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
                                  (Stz*)aRowData,iRowLength,
                                  bBlankLine);
     
-    xRowEntWrk.vRowSize(iRowLength);
+    xRowWrk.vRowSize(iRowLength);
     //((Row*)aRowData)->vDump(pColVec);
     
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     Entry* pRowEntry =
-      pLastRowBuffer->pAppendRow(0,(Stz*)aRowData,iRowLength,
-                                    &pLastRowBuffer);
+      pLastRowBuffer->pAppendRow(xRowWrk,
+                                 0,
+                                 (Stz*)aRowData,
+                                 iRowLength,
+                                  &pLastRowBuffer);
   
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     xKeyWrk.vReset();
