@@ -1537,8 +1537,6 @@ void EntryBuffer::vShowTree(bool bDumpBuffer)
 /*----------------------------------------------------------------------------*/
 EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
 {
-  KeyWrk xKeyWrkIns;
-  
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1565,6 +1563,8 @@ EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move entries to a new buffer
   
+  KeyWrk xKeyWrk;
+  
   EntryBuffer* pNewBuffer = pNewNextBuffer();
   
   Entry* pMoveEntry = pSplitEntry;
@@ -1579,20 +1579,20 @@ EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
     i8 iRefBufNo = pMoveEntry->iBufferNo();
     EntryBuffer* pToBuffer = pMoveEntry->pEntryBuffer();
     
-    xKeyWrkIns.vTxId(iTxId);
-    xKeyWrkIns.vId(xId);
-    xKeyWrkIns.vEmbedded((char*)aKey);
-    xKeyWrkIns.vKeySize(nKeySize);
-    xKeyWrkIns.vOffsets(nOffsets);
+    xKeyWrk.vTxId(iTxId);
+    xKeyWrk.vId(xId);
+    xKeyWrk.vEmbedded((char*)aKey);
+    xKeyWrk.vKeySize(nKeySize);
+    xKeyWrk.vOffsets(nOffsets);
    
-    Entry* pNewEntry = pNewBuffer->pInsertKey(xKeyWrkIns,
-                                              iTxId,
-                                              xId,
-                                              aKey,
-                                              nKeySize,
-                                              ppRootKeyBuffer,
-                                              iRefBufNo,
-                                              pToBuffer);
+    Entry* pNewEntry = pNewBuffer->pInsertKeyAbs(xKeyWrk,
+                                                 iTxId,
+                                                 xId,
+                                                 aKey,
+                                                 nKeySize,
+                                                 ppRootKeyBuffer,
+                                                 iRefBufNo,
+                                                 pToBuffer);
     
     vDeleteEntry(pMoveEntry);
     
