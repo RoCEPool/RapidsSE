@@ -2184,7 +2184,7 @@ Entry* EntryBuffer::pInsertKeyBuffer_c(KeyWrk& xKeyWrk,
   
   i8 nEntryBytes = Entry::nBytesRequired(iInsKeyLen,nOffsets);
   i8 nOffsetBytes = nOffsets*sizeof(i4);
-  i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
+  //i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // record orginal first entry incase we insert a new first entry
