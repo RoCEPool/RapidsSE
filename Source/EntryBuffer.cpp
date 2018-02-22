@@ -818,22 +818,17 @@ Entry* EntryBuffer::pInsertKeyTree(KeyWrk& xKeyWrk,
 {
   // note: this is a static function
   
-  Entry* pInsertedKeyEntry;
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // offsets
   
   i8 nOffsets = Random::iLogLevel(3,C_FLAT_FREQ + 1) + 1;
   xKeyWrk.vOffsets(nOffsets);
   
-  Key* aInsKey = xKeyWrk.aKey();
-  i8 iInsKeyLen = xKeyWrk.nKeySize();
-  i8 nEntryBytes = Entry::nBytesRequired(iInsKeyLen,nOffsets);
-  i8 nOffsetBytes = nOffsets*sizeof(i4);
-  i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // position on the initial buffer we will try to insert into
+  
+  Key* aInsKey = xKeyWrk.aKey();
+  i8 iInsKeyLen = xKeyWrk.nKeySize();
   
   EntryBuffer* pPositionedBuffer = (*ppRootKeyBuffer)->pPositionInsert(aInsKey);
   ASSERT(0 == pPositionedBuffer->nBufferLevel());
@@ -841,13 +836,12 @@ Entry* EntryBuffer::pInsertKeyTree(KeyWrk& xKeyWrk,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pInsertedKeyEntry =
+  Entry* pInsertedKeyEntry =
     pPositionedBuffer->pInsertKeyUpwards(xKeyWrk,
                                          ppRootKeyBuffer,
                                          nullptr);
   
   return pInsertedKeyEntry;
-
 }
 
 /*----------------------------------------------------------------------------*/
