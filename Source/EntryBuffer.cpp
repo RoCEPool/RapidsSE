@@ -985,12 +985,12 @@ Entry* EntryBuffer::pInsertKey(KeyWrk& xKeyWrk,
 /*----------------------------------------------------------------------------*/
 /* insert a new key entry into this key tree                                  */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pInsertKeyTree_c(KeyWrk& xKeyWrk,
-                                     //i8 iTxId,
-                                     //Id xId,
-                                     //Key* aInsKey,
-                                     //i8 iInsKeyLen,
-                                     EntryBuffer** ppRootKeyBuffer)
+Entry* EntryBuffer::pInsertKeyTree(KeyWrk& xKeyWrk,
+                                   //i8 iTxId,
+                                   //Id xId,
+                                   //Key* aInsKey,
+                                   //i8 iInsKeyLen,
+                                   EntryBuffer** ppRootKeyBuffer)
 {
   // note: this is a static function
   
@@ -1018,14 +1018,14 @@ Entry* EntryBuffer::pInsertKeyTree_c(KeyWrk& xKeyWrk,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   pInsertedKeyEntry =
-    pPositionedBuffer->pInsertKeyUpwards_c(xKeyWrk,
-                                           //xKeyWrk.iTxId(),        //iTxId,
-                                           //xKeyWrk.xId(),          //xId,
-                                           //xKeyWrk.aKey(),         //aInsKey,
-                                           //xKeyWrk.nKeySize(),     //iInsKeyLen,
-                                           //xKeyWrk.nOffsets(),     //nOffsets,
-                                           ppRootKeyBuffer,
-                                           nullptr);
+    pPositionedBuffer->pInsertKeyUpwards(xKeyWrk,
+                                         //xKeyWrk.iTxId(),        //iTxId,
+                                         //xKeyWrk.xId(),          //xId,
+                                         //xKeyWrk.aKey(),         //aInsKey,
+                                         //xKeyWrk.nKeySize(),     //iInsKeyLen,
+                                         //xKeyWrk.nOffsets(),     //nOffsets,
+                                         ppRootKeyBuffer,
+                                         nullptr);
   
   return pInsertedKeyEntry;
 
@@ -2151,14 +2151,14 @@ EntryBuffer* EntryBuffer::pInsertableBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
 /*----------------------------------------------------------------------------*/
 /* insert a new key entry into this buffer                                    */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pInsertKeyBuffer_c(KeyWrk& xKeyWrk,
-                                       //i8 iTxId,
-                                       //Id xId,
-                                       //Key* aInsKey,
-                                       //i8 iInsKeyLen,
-                                       //i8 nOffsets,
-                                       EntryBuffer** ppRootKeyBuffer,
-                                       EntryBuffer* pToBuffer)
+Entry* EntryBuffer::pInsertKeyBuffer(KeyWrk& xKeyWrk,
+                                     //i8 iTxId,
+                                     //Id xId,
+                                     //Key* aInsKey,
+                                     //i8 iInsKeyLen,
+                                     //i8 nOffsets,
+                                     EntryBuffer** ppRootKeyBuffer,
+                                     EntryBuffer* pToBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -2278,14 +2278,14 @@ Entry* EntryBuffer::pInsertKeyBuffer_c(KeyWrk& xKeyWrk,
       xKeyWrkIns.vKeySize(iInsertKeyLen);
       xKeyWrkIns.vOffsets(nInsertOffsets);
       
-      m_pHigherBuffer->pInsertKeyBuffer_c(xKeyWrkIns,
-                                          //iTxId,
-                                          //xInsertId,
-                                          //aInsertKey,
-                                          //iInsertKeyLen,
-                                          //nInsertOffsets,
-                                          ppRootKeyBuffer,
-                                          this);
+      m_pHigherBuffer->pInsertKeyBuffer(xKeyWrkIns,
+                                        //iTxId,
+                                        //xInsertId,
+                                        //aInsertKey,
+                                        //iInsertKeyLen,
+                                        //nInsertOffsets,
+                                        ppRootKeyBuffer,
+                                        this);
     }
   }
   
@@ -2295,14 +2295,14 @@ Entry* EntryBuffer::pInsertKeyBuffer_c(KeyWrk& xKeyWrk,
 /*----------------------------------------------------------------------------*/
 /* insert a new key entry into this key tree                                  */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pInsertKeyUpwards_c(KeyWrk& xKeyWrk,
-                                        //i8 iTxId,
-                                        //Id xId,
-                                        //Key* aInsKey,
-                                        //i8 iInsKeyLen,
-                                        //i8 nOffsets,
-                                        EntryBuffer** ppRootKeyBuffer,
-                                        EntryBuffer* pToBuffer)
+Entry* EntryBuffer::pInsertKeyUpwards(KeyWrk& xKeyWrk,
+                                      //i8 iTxId,
+                                      //Id xId,
+                                      //Key* aInsKey,
+                                      //i8 iInsKeyLen,
+                                      //i8 nOffsets,
+                                      EntryBuffer** ppRootKeyBuffer,
+                                      EntryBuffer* pToBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -2333,14 +2333,14 @@ Entry* EntryBuffer::pInsertKeyUpwards_c(KeyWrk& xKeyWrk,
     (*ppRootKeyBuffer)->vShowTree(false);
   
   Entry* pInsertedKeyEntry =
-    pInsertIntoBuffer->pInsertKeyBuffer_c(xKeyWrk,
-                                          //iTxId,
-                                          //xId,
-                                          //aInsKey,
-                                          //iInsKeyLen,
-                                          //nOffsets,
-                                          ppRootKeyBuffer,
-                                          pToBuffer);
+    pInsertIntoBuffer->pInsertKeyBuffer(xKeyWrk,
+                                        //iTxId,
+                                        //xId,
+                                        //aInsKey,
+                                        //iInsKeyLen,
+                                        //nOffsets,
+                                        ppRootKeyBuffer,
+                                        pToBuffer);
   
   if (pInsertIntoBuffer->m_nBufferLevel) {
     Id xId = pInsertedKeyEntry->xId();
@@ -2449,14 +2449,14 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
     
     
     Entry* pNewKeyLeft =
-      pHigherBuffer->pInsertKeyUpwards_c(xKeyWrkLeft,
-                                         //iTxIdLeft,
-                                         //xIdLeft,
-                                         //aKeyLeft,
-                                         //iKeyLenLeft,
-                                         //nOffsetsLeft,
-                                         ppRootKeyBuffer,
-                                         pLeftBuffer);
+      pHigherBuffer->pInsertKeyUpwards(xKeyWrkLeft,
+                                       //iTxIdLeft,
+                                       //xIdLeft,
+                                       //aKeyLeft,
+                                       //iKeyLenLeft,
+                                       //nOffsetsLeft,
+                                       ppRootKeyBuffer,
+                                       pLeftBuffer);
     //if (mbWatch)
     //  (*ppRootKeyBuffer)->vShowTree();
   }
@@ -2482,14 +2482,14 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
   
   
   Entry* pNewKeyRight =
-    pHigherBuffer->pInsertKeyUpwards_c(xKeyWrkRight,
-                                       //iTxIdRight,
-                                       //xIdRight,
-                                       //aKeyRight,
-                                       //iKeyLenRight,
-                                       //nOffsetsRight,
-                                       ppRootKeyBuffer,
-                                       pRightBuffer);
+    pHigherBuffer->pInsertKeyUpwards(xKeyWrkRight,
+                                     //iTxIdRight,
+                                     //xIdRight,
+                                     //aKeyRight,
+                                     //iKeyLenRight,
+                                     //nOffsetsRight,
+                                     ppRootKeyBuffer,
+                                     pRightBuffer);
   
   //if (mbWatch)
   //  (*ppRootKeyBuffer)->vShowTree();
@@ -2934,14 +2934,14 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
     xKeyWrk.vId(pRowEntry->xId());
     
     Entry* pKeyEntry =
-      EntryBuffer::pInsertKeyTree_c(xKeyWrk,
-//                                  //0,
-//                                  xKeyWrk.iTxId(),
-//                                  //pRowEntry->xId(),
-//                                  xKeyWrk.xId(),
-//                                  xKeyWrk.aKey(),
-//                                  xKeyWrk.nKeySize(),
-                                    &pRootKeyBuffer);
+      EntryBuffer::pInsertKeyTree(xKeyWrk,
+                                  //0,
+                                  //xKeyWrk.iTxId(),
+                                  //pRowEntry->xId(),
+                                  //xKeyWrk.xId(),
+                                  //xKeyWrk.aKey(),
+                                  //xKeyWrk.nKeySize(),
+                                  &pRootKeyBuffer);
     //if (mbWatch)
     vTrace("\nInserted record: %s\n"_Stz,sRecData.aChar());
     pRootKeyBuffer->vShowTree(false);
