@@ -100,7 +100,7 @@ namespace DBobjects
                             //i8 iTxId,
                             //Stz* pRow,
                             //i8 iRowLength,
-                            EntryBuffer** ppLastRowBuffer=nullptr);
+                            EntryBuffer** ppLastRowBuffer);
     void         vBufferCount(i8& nBufferCount);
     void         vCompact(void);
     i8           iDecile(void);

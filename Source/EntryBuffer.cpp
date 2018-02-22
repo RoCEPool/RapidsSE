@@ -2712,19 +2712,19 @@ void EntryBuffer::vUnitTest_b(Table* pTable)
 
     //Entry* pRowEntry = pCurrentBuffer->pAppendRow_v3(xRowEntWrk);
     
-    Entry* pRowEntry = pCurrentBuffer->pAppendRow(xRowWrk
+    Entry* pRowEntry = pCurrentBuffer->pAppendRow(xRowWrk,
                                                   //0,
                                                   //(Stz*)aRowData,
                                                   //iRowLength
-                                                  );
+                                                  nullptr);
     
     if ( ! pRowEntry ) {
       pCurrentBuffer = pCurrentBuffer->pNewNextBuffer();
-      pRowEntry = pCurrentBuffer->pAppendRow(xRowWrk
+      pRowEntry = pCurrentBuffer->pAppendRow(xRowWrk,
                                              //0,
                                              //(Stz*)aRowData,
                                              //iRowLength
-                                             );
+                                             nullptr);
       ASSERT(pRowEntry);
     }
     
