@@ -70,19 +70,27 @@ EntryBuffer::EntryBuffer(void)
   m_eDurability   = BD_PERMANENT;
   m_bIsLast       = false;
   
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
   m_pHigherBuffer = nullptr;
   m_pNextBuffer   = nullptr;
   m_pPrevBuffer   = nullptr;
 
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
   m_pIndex        = nullptr;
   m_nPartitionNo  = -1;
   m_iBufferNo     = *nBufferNo();
   m_nBufferLevel  = 0;
   
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+
   m_pEntryOffset    =
     reinterpret_cast<i4*>(aAllotSpace(sizeof(i4) * C_ENTRIES_0));
   m_iFreeOffsetHead = C_ENTRY_NONE;
   vFreeChains();
+
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   m_pHeadEntry  = nullptr;
   m_pLastEntry  = nullptr;
@@ -1945,6 +1953,8 @@ void EntryBuffer::vHandleLeftInsert(Entry* pInsertedKeyEntry,
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vHeadEntryNew(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+ 
   RowWrk xHeadWrk;
   
   xHeadWrk.xId().vBuffer(*nBufferNo());
@@ -2307,36 +2317,42 @@ Entry* EntryBuffer::pInsertKeyBuffer(KeyWrk& xKeyWrk,
   // handle the insert of a left most key
   
   
-  if (pFirstEntry() == pInsertedKeyEntry) {
-
-    if (m_pHigherBuffer) {
-      
-      if (pOriginalFirstEntry) {
-        Key* aDeleteKey = pOriginalFirstEntry->aKey();
-        m_pHigherBuffer->vDeleteUpwards(aDeleteKey,ppRootKeyBuffer);
-        //(*ppRootKeyBuffer)->vShowTree();
-      }
-      
-      Key* aInsertKey = pInsertedKeyEntry->aKey();
-      IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-      Id xInsertId(*nBufferNo(),0);
-      i8 iInsertKeyLen = aInsertKey->nKeySize(pIdxColVec);
-      i8 nInsertOffsets = pInsertedKeyEntry->nOffsets();
-      
-      i8 iTxId = xKeyWrk.iTxId();
-      
-      KeyWrk xKeyWrkIns;
-      xKeyWrkIns.vTxId(iTxId);
-      xKeyWrkIns.vId(xInsertId);
-      xKeyWrkIns.vEmbedded((char*)aInsertKey);
-      xKeyWrkIns.vKeySize(iInsertKeyLen);
-      xKeyWrkIns.vOffsets(nInsertOffsets);
-      
-      m_pHigherBuffer->pInsertKeyBuffer(xKeyWrkIns,
-                                        ppRootKeyBuffer,
-                                        this);
-    }
-  }
+//  if (pFirstEntry() == pInsertedKeyEntry) {
+//
+//    if (m_pHigherBuffer) {
+//      
+//      if (pOriginalFirstEntry) {
+//        Key* aDeleteKey = pOriginalFirstEntry->aKey();
+//        m_pHigherBuffer->vDeleteUpwards(aDeleteKey,ppRootKeyBuffer);
+//        //(*ppRootKeyBuffer)->vShowTree();
+//      }
+//      
+//      Key* aInsertKey = pInsertedKeyEntry->aKey();
+//      IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+//      Id xInsertId(*nBufferNo(),0);
+//      i8 iInsertKeyLen = aInsertKey->nKeySize(pIdxColVec);
+//      i8 nInsertOffsets = pInsertedKeyEntry->nOffsets();
+//      
+//      i8 iTxId = xKeyWrk.iTxId();
+//      
+//      KeyWrk xKeyWrkIns;
+//      xKeyWrkIns.vTxId(iTxId);
+//      xKeyWrkIns.vId(xInsertId);
+//      xKeyWrkIns.vEmbedded((char*)aInsertKey);
+//      xKeyWrkIns.vKeySize(iInsertKeyLen);
+//      xKeyWrkIns.vOffsets(nInsertOffsets);
+//      
+//      m_pHigherBuffer->pInsertKeyBuffer(xKeyWrkIns,
+//                                        ppRootKeyBuffer,
+//                                        this);
+//    }
+//  }
+  
+  
+  if (pFirstEntry() == pInsertedKeyEntry)
+    vHandleLeftInsert(pInsertedKeyEntry,
+                      pOriginalFirstEntry,
+                      ppRootKeyBuffer);
   
   return pInsertedKeyEntry;
 }
@@ -2352,22 +2368,8 @@ Entry* EntryBuffer::pInsertKeyUpwards(KeyWrk& xKeyWrk,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-//  i8 nKeySize = xKeyWrk.nKeySize();
-//  i8 nOffsets = xKeyWrk.nOffsets();
-//
-//  i8 nEntryBytes = Entry::nBytesRequired(nKeySize,nOffsets);
-//  i8 nOffsetBytes = nOffsets*sizeof(i4);
-//  i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  Key* aInsKey = xKeyWrk.aKey();
-  
   EntryBuffer* pInsertIntoBuffer =
-    pInsertableBuffer(xKeyWrk,
-                      //aInsKey,
-                      //nEntryPlusOffsets,
-                      ppRootKeyBuffer);
+    pInsertableBuffer(xKeyWrk,ppRootKeyBuffer);
   
   if (mbWatch)
     (*ppRootKeyBuffer)->vShowTree(false);
@@ -2910,7 +2912,7 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // keys in ascending order
-  //for (i8 iInt = 0; iInt <= 10; iInt++) {
+  //for (i8 iInt = 0; iInt <= 100; iInt++) {
 
   // keys in descending order
   //for (i8 iInt = 10; iInt >= 0; iInt--) {
