@@ -330,6 +330,32 @@ void Entry::vSetEntry(i8 xTxId, Id xId, i8 nOffsets, Stz* aData, i8 nDataSize)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set entry using given row working entry                                    */
+/*----------------------------------------------------------------------------*/
+void Entry::vSetEntry(RowWrk& xRowWrk)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set id, transaction and offsets
+  
+  m_xId = xRowWrk.xId();
+  m_iTxId = xRowWrk.iTxId();
+  m_nOffsets = xRowWrk.nOffsets();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy row into this entry
+  
+  Row* aSrcRow = xRowWrk.aRow();
+  Row* aDstRow = this->aRow();
+  i8 nRowSize = xRowWrk.nRowSize();
+ 
+  MemLib::vCopy(aDstRow,aSrcRow,nRowSize,CN_ENTRY);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* set entry given eanother entry                                             */
 /*----------------------------------------------------------------------------*/
 void Entry::vSetEntry(Id xId, i8 iKey, Entry* pOldEntry)
