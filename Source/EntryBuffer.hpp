@@ -110,11 +110,6 @@ namespace DBobjects
     Entry*       pFirstEntry(void);
     Entry*       pGetEntryNo(i8 i_Entry);
     bool         bHasSpace(i8 nBytes);
-    Entry*       pInsertKey(KeyWrk& xKeyWrk,
-                            i8 iTxId, Id xIdx, Key* pKey, i8 iKeyLength,
-                            EntryBuffer** ppRootKeyBuffer,
-                            i8 iRefBufNo,
-                            EntryBuffer* pToBuffer);
     static Entry* pInsertKeyTree(KeyWrk& xKeyWrk,
                                  EntryBuffer** ppRootKeyBuffer);
     bool         bInsertRow(Entry* pOldRow, Entry** ppRow);
@@ -155,6 +150,22 @@ namespace DBobjects
     void         vHeadEntryRestore(void);
     EntryBuffer* pInsertableBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
                                    EntryBuffer** ppRootKeyBuffer);
+    Entry*       pInsertKey(KeyWrk& xKeyWrk,
+                            i8 iTxId,
+                            Id xIdx,
+                            Key* pKey, i8
+                            iKeyLength,
+                            EntryBuffer** ppRootKeyBuffer,
+                            i8 iRefBufNo,
+                            EntryBuffer* pToBuffer);
+    Entry*       pInsertKeyAbs(KeyWrk& xKeyWrk,
+                               i8 iTxId,
+                               Id xIdx,
+                               Key* pKey, i8
+                               iKeyLength,
+                               EntryBuffer** ppRootKeyBuffer,
+                               i8 iRefBufNo,
+                               EntryBuffer* pToBuffer);
     Entry*       pInsertKeyBuffer(KeyWrk& xKeyWrk,
                                   //i8 iTxId,
                                   //Id xIdx,
