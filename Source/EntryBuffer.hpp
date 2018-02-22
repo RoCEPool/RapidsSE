@@ -159,10 +159,10 @@ namespace DBobjects
                             i8 iRefBufNo,
                             EntryBuffer* pToBuffer);
     Entry*       pInsertKeyAbs(KeyWrk& xKeyWrk,
-                               i8 iTxId,
-                               Id xIdx,
-                               Key* pKey, i8
-                               iKeyLength,
+                               //i8 iTxId,
+                               //Id xIdx,
+                               //Key* pKey,
+                               //i8 iKeyLength,
                                EntryBuffer** ppRootKeyBuffer,
                                i8 iRefBufNo,
                                EntryBuffer* pToBuffer);

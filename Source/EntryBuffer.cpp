@@ -1586,10 +1586,10 @@ EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
     xKeyWrk.vOffsets(nOffsets);
    
     Entry* pNewEntry = pNewBuffer->pInsertKeyAbs(xKeyWrk,
-                                                 iTxId,
-                                                 xId,
-                                                 aKey,
-                                                 nKeySize,
+                                                 //iTxId,
+                                                 //xId,
+                                                 //aKey,
+                                                 //nKeySize,
                                                  ppRootKeyBuffer,
                                                  iRefBufNo,
                                                  pToBuffer);
@@ -2168,10 +2168,10 @@ Entry* EntryBuffer::pInsertKey(KeyWrk& xKeyWrk,
 /* insert a key entry into this buffer (there should be enough space)         */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pInsertKeyAbs(KeyWrk& xKeyWrk,
-                                  i8 iTxId,
-                                  Id xId,
-                                  Key* aKey,
-                                  i8 iKeyLength,
+                                  //i8 iTxId,
+                                  //Id xId,
+                                  //Key* aKey,
+                                  //i8 iKeyLength,
                                   EntryBuffer** ppRootKeyBuffer,
                                   i8 iRefBufNo,
                                   EntryBuffer* pToBuffer)
@@ -2181,11 +2181,11 @@ Entry* EntryBuffer::pInsertKeyAbs(KeyWrk& xKeyWrk,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check validity of parameters
   
-  RASSERT(xKeyWrk.iTxId() == iTxId);
-  RASSERT(xKeyWrk.xId().iAsI8() == xId.iAsI8());
-  RASSERT(xKeyWrk.aKey() == aKey);
-  RASSERT(xKeyWrk.nKeySize() == iKeyLength);
-  RASSERT(xKeyWrk.nOffsets() != 0);
+  //RASSERT(xKeyWrk.iTxId() == iTxId);
+  //RASSERT(xKeyWrk.xId().iAsI8() == xId.iAsI8());
+  //RASSERT(xKeyWrk.aKey() == aKey);
+  //RASSERT(xKeyWrk.nKeySize() == iKeyLength);
+  //RASSERT(xKeyWrk.nOffsets() != 0);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // trace
@@ -2198,6 +2198,8 @@ Entry* EntryBuffer::pInsertKeyAbs(KeyWrk& xKeyWrk,
   // assert this buffer has enough space
   
   i8 nOffsets = xKeyWrk.nOffsets();
+  Key* aKey = xKeyWrk.aKey();
+  i8 iKeyLength = xKeyWrk.nKeySize();
   i8 nEntryBytes = Entry::nBytesRequired(iKeyLength, nOffsets);
   i8 nOffsetBytes = nOffsets*sizeof(i4); //xKeyWrk.nOffsetSize();
   i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
@@ -2215,8 +2217,8 @@ Entry* EntryBuffer::pInsertKeyAbs(KeyWrk& xKeyWrk,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the key entry
   
-  //pKeyEntry->vSetEntry(xKeyWrk);
-  pKeyEntry->vSetEntry(iTxId, xId, nOffsets, (Stz*)aKey, iKeyLength);
+  pKeyEntry->vSetEntry(xKeyWrk);
+  //pKeyEntry->vSetEntry(iTxId, xId, nOffsets, (Stz*)aKey, iKeyLength);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the entry after which the new entry.key will be inserted
