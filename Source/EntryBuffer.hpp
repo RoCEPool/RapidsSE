@@ -146,6 +146,9 @@ namespace DBobjects
     Entry*       pGetEntryOffset(i8 iOffset);
     Entry*       pGetEntrySplit(i8 iSplitEntryNo);
     i4           iGetFreeEntry(void);
+    void         vHandleLeftInsert(Entry* pInsertedKeyEntry,
+                                   Entry* pOriginalFirstEntry,
+                                   EntryBuffer** ppRootKeyBuffer);
     void         vHeadEntryNew(void);
     void         vHeadEntryRestore(void);
     EntryBuffer* pInsertableBuffer(KeyWrk& xKeyWrk,

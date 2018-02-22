@@ -1899,6 +1899,48 @@ i4 EntryBuffer::iGetFreeEntry(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* handle the insert of a left most key                                       */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vHandleLeftInsert(Entry* pInsertedKeyEntry,
+                                    Entry* pOriginalFirstEntry,
+                                    EntryBuffer** ppRootKeyBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  if (! m_pHigherBuffer)
+    return;
+      
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (pOriginalFirstEntry) {
+    Key* aDeleteKey = pOriginalFirstEntry->aKey();
+    m_pHigherBuffer->vDeleteUpwards(aDeleteKey,ppRootKeyBuffer);
+    //(*ppRootKeyBuffer)->vShowTree();
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Key* aInsertKey = pInsertedKeyEntry->aKey();
+  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  Id xInsertId(*nBufferNo(),0);
+  i8 iInsertKeyLen = aInsertKey->nKeySize(pIdxColVec);
+  i8 nInsertOffsets = pInsertedKeyEntry->nOffsets();
+  
+  i8 iTxId = pInsertedKeyEntry->iTxId();
+  
+  KeyWrk xKeyWrkIns;
+  xKeyWrkIns.vTxId(iTxId);
+  xKeyWrkIns.vId(xInsertId);
+  xKeyWrkIns.vEmbedded((char*)aInsertKey);
+  xKeyWrkIns.vKeySize(iInsertKeyLen);
+  xKeyWrkIns.vOffsets(nInsertOffsets);
+  
+  m_pHigherBuffer->pInsertKeyBuffer(xKeyWrkIns,
+                                    ppRootKeyBuffer,
+                                    this);
+}
+
+/*----------------------------------------------------------------------------*/
 /* create a head entry                                                        */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vHeadEntryNew(void)
