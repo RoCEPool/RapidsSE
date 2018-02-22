@@ -2160,6 +2160,16 @@ Entry* EntryBuffer::pInsertKeyBuffer_c(KeyWrk& xKeyWrk,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check validity of parameters
+  
+  RASSERT(xKeyWrk.iTxId() == iTxId);
+  RASSERT(xKeyWrk.xId().iAsI8() == xId.iAsI8());
+  RASSERT(xKeyWrk.aKey() == aInsKey);
+  RASSERT(xKeyWrk.nKeySize() == iInsKeyLen);
+  RASSERT(xKeyWrk.nOffsets() == nOffsets);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (mbWatch) {
     vTrace("*[%lld]Inserting %lld into "_Stz,
            *nBufferNo(),
@@ -2254,12 +2264,19 @@ Entry* EntryBuffer::pInsertKeyBuffer_c(KeyWrk& xKeyWrk,
         //(*ppRootKeyBuffer)->vShowTree();
       }
       
-      KeyWrk xKeyWrkIns;
       Key* aInsertKey = pInsertedKeyEntry->aKey();
       IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
       Id xInsertId(*nBufferNo(),0);
       i8 iInsertKeyLen = aInsertKey->nKeySize(pIdxColVec);
       i8 nInsertOffsets = pInsertedKeyEntry->nOffsets();
+      
+      KeyWrk xKeyWrkIns;
+      xKeyWrkIns.vTxId(iTxId);
+      xKeyWrkIns.vId(xInsertId);
+      xKeyWrkIns.vEmbedded((char*)aInsertKey);
+      xKeyWrkIns.vKeySize(iInsertKeyLen);
+      xKeyWrkIns.vOffsets(nInsertOffsets);
+      
       m_pHigherBuffer->pInsertKeyBuffer_c(xKeyWrkIns,
                                           iTxId,
                                           xInsertId,
