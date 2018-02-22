@@ -389,9 +389,9 @@ bool EntryBuffer::bAppendEntry(Entry* pRowEntry, Entry** ppEntry)
 /* attempt to append a new row entry into this buffer                         */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pAppendRow(RowWrk& xRowWrk,
-                               i8 iTxId,
-                               Stz* aRow,
-                               i8 iRowLength,
+                               //i8 iTxId,
+                               //Stz* aRow,
+                               //i8 iRowLength,
                                EntryBuffer** ppLastRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
@@ -400,9 +400,9 @@ Entry* EntryBuffer::pAppendRow(RowWrk& xRowWrk,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check validity of parameters
-  ASSERT(xRowWrk.iTxId() == iTxId);
-  ASSERT(xRowWrk.aRow() == (Row*)aRow);
-  ASSERT(xRowWrk.nRowSize() == iRowLength);
+  //ASSERT(xRowWrk.iTxId() == iTxId);
+  //ASSERT(xRowWrk.aRow() == (Row*)aRow);
+  //ASSERT(xRowWrk.nRowSize() == iRowLength);
   
   Entry* pRowEntry;
   i8 nOffsets = 1;
@@ -410,7 +410,8 @@ Entry* EntryBuffer::pAppendRow(RowWrk& xRowWrk,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if this buffer has enough space
   i8 nOffsetBytes = sizeof(i4);
-  i8 nEntryBytes = Entry::nBytesRequired(iRowLength, nOffsets);
+  i8 nRowSize = xRowWrk.nRowSize();
+  i8 nEntryBytes = Entry::nBytesRequired(nRowSize, nOffsets);
   i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
   
   xRowWrk.vOffsets(nOffsets);
@@ -422,9 +423,9 @@ Entry* EntryBuffer::pAppendRow(RowWrk& xRowWrk,
     
     *ppLastRowBuffer = pNewNextBuffer();
     pRowEntry = (*ppLastRowBuffer)->pAppendRow(xRowWrk,
-                                               iTxId,
-                                               aRow,
-                                               iRowLength,
+                                               //iTxId,
+                                               //aRow,
+                                               //iRowLength,
                                                ppLastRowBuffer);
     ASSERT(pRowEntry);
     return pRowEntry;
@@ -2711,17 +2712,19 @@ void EntryBuffer::vUnitTest_b(Table* pTable)
 
     //Entry* pRowEntry = pCurrentBuffer->pAppendRow_v3(xRowEntWrk);
     
-    Entry* pRowEntry = pCurrentBuffer->pAppendRow(xRowWrk,
-                                                  0,
-                                                  (Stz*)aRowData,
-                                                  iRowLength);
+    Entry* pRowEntry = pCurrentBuffer->pAppendRow(xRowWrk
+                                                  //0,
+                                                  //(Stz*)aRowData,
+                                                  //iRowLength
+                                                  );
     
     if ( ! pRowEntry ) {
       pCurrentBuffer = pCurrentBuffer->pNewNextBuffer();
-      pRowEntry = pCurrentBuffer->pAppendRow(xRowWrk,
-                                             0,
-                                             (Stz*)aRowData,
-                                             iRowLength);
+      pRowEntry = pCurrentBuffer->pAppendRow(xRowWrk
+                                             //0,
+                                             //(Stz*)aRowData,
+                                             //iRowLength
+                                             );
       ASSERT(pRowEntry);
     }
     
@@ -2866,9 +2869,9 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     Entry* pRowEntry =
       pLastRowBuffer->pAppendRow(xRowWrk,
-                                 0,
-                                 (Stz*)aRowData,
-                                 iRowLength,
+                                 //0,
+                                 //(Stz*)aRowData,
+                                 //iRowLength,
                                   &pLastRowBuffer);
   
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
