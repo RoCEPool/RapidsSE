@@ -164,9 +164,11 @@ namespace DBobjects
                                     EntryBuffer** ppRootKeyBuffer,
                                     EntryBuffer* pToBuffer);
     Entry*       pInsertKeyUpwards_c(KeyWrk& xKeyWrk,
-                                     i8 iTxId, Id xIdx,
-                                     Key* pKey, i8 iKeyLength,
-                                     i8 nOffsets,
+                                     //i8 iTxId,
+                                     //Id xIdx,
+                                     //Key* pKey,
+                                     //i8 iKeyLength,
+                                     //i8 nOffsets,
                                      EntryBuffer** ppRootKeyBuffer,
                                      EntryBuffer* pToBuffer);
     void         vItemCountRestore(void);
