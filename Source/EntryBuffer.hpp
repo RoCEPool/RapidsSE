@@ -164,7 +164,7 @@ namespace DBobjects
                                //Key* pKey,
                                //i8 iKeyLength,
                                EntryBuffer** ppRootKeyBuffer,
-                               i8 iRefBufNo,
+                               //i8 iRefBufNo,
                                EntryBuffer* pToBuffer);
     Entry*       pInsertKeyBuffer(KeyWrk& xKeyWrk,
                                   //i8 iTxId,

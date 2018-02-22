@@ -1576,7 +1576,7 @@ EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
     Key* aKey = pMoveEntry->aKey();
     i8 nKeySize = aKey->nKeySize(pIdxColVec);
     i8 nOffsets = pMoveEntry->nOffsets();
-    i8 iRefBufNo = pMoveEntry->iBufferNo();
+    //i8 iRefBufNo = pMoveEntry->iBufferNo();
     EntryBuffer* pToBuffer = pMoveEntry->pEntryBuffer();
     
     xKeyWrk.vTxId(iTxId);
@@ -1591,7 +1591,7 @@ EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
                                                  //aKey,
                                                  //nKeySize,
                                                  ppRootKeyBuffer,
-                                                 iRefBufNo,
+                                                 //iRefBufNo,
                                                  pToBuffer);
     
     vDeleteEntry(pMoveEntry);
@@ -2173,7 +2173,7 @@ Entry* EntryBuffer::pInsertKeyAbs(KeyWrk& xKeyWrk,
                                   //Key* aKey,
                                   //i8 iKeyLength,
                                   EntryBuffer** ppRootKeyBuffer,
-                                  i8 iRefBufNo,
+                                  //i8 iRefBufNo,
                                   EntryBuffer* pToBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
@@ -2186,6 +2186,9 @@ Entry* EntryBuffer::pInsertKeyAbs(KeyWrk& xKeyWrk,
   //RASSERT(xKeyWrk.aKey() == aKey);
   //RASSERT(xKeyWrk.nKeySize() == iKeyLength);
   //RASSERT(xKeyWrk.nOffsets() != 0);
+  
+  //RASSERT(xKeyWrk.xId().iBuffer() == iRefBufNo);
+
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // trace
@@ -2343,11 +2346,11 @@ Entry* EntryBuffer::pInsertKeyBuffer(KeyWrk& xKeyWrk,
 //    vTrace("\n"_Stz);
 //  }
   
-  i8 iRefBufNo = xKeyWrk.xId().iBuffer();
+  //i8 iRefBufNo = xKeyWrk.xId().iBuffer();
   
   Entry* pInsertedKeyEntry = pInsertKeyAbs(xKeyWrk,
                                            ppRootKeyBuffer,
-                                           iRefBufNo,
+                                           //iRefBufNo,
                                            pToBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
