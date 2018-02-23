@@ -602,20 +602,7 @@ void EntryBuffer::vCompact(void)
     //aKey->vShow(pIdxColVec);
     //vTrace("\n"_Stz);
     
-    //    if (0 == m_nBufferLevel) {
-      vPositionPriorL0(aMoveKey, xPriorVec, pMoveEntry);
-      
-      if (1 == nItems() && xPriorVec[0] == pFirstEntry())
-        vPositionPriorL0(aMoveKey, xPriorVec, pMoveEntry);
-    //    }
-//    else {
-//      
-//      i8 iBufferNo = pMoveEntry->iBufferNo();
-//      vPositionPriorLn(aMoveKey, xPriorVec, iBufferNo);
-//      
-//      if (1 == nItems() && xPriorVec[0] == pFirstEntry())
-//        vPositionPriorLn(aMoveKey, xPriorVec, iBufferNo);
-//    }
+    vPositionPriorL0(aMoveKey, xPriorVec, pMoveEntry);
     
     if (m_nBufferLevel) {
       vDumpPriorVec(xPriorVec);
@@ -651,9 +638,7 @@ void EntryBuffer::vCompact(void)
     for (i8 i_Offset = 0; i_Offset < 3; i_Offset++) {
       Entry* pPriorEntry = xPriorVec[i_Offset];
       i8 iPriorOffset = pPriorEntry->iNEO(i_Offset);
-      //if (iWasOffset == xPriorVec[i_Offset]->iNEO(i_Offset))
       if (iWasOffset == iPriorOffset)
-        //xPriorVec[i_Offset]->vNEO(i_Offset,iNowOffset);
         pPriorEntry->vNEO(i_Offset,iNowOffset);
     }
     
@@ -661,11 +646,6 @@ void EntryBuffer::vCompact(void)
     // move scan
     
     pScanItem = pFreeEntry;
-    
-//    if (! bQuickVerify(nullptr)) {
-//      vShow();
-//      int iDebug = 1;
-//    }
     
   } // for
   
