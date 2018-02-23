@@ -390,20 +390,11 @@ bool EntryBuffer::bAppendEntry(Entry* pRowEntry, Entry** ppEntry)
 /* attempt to append a new row entry into this buffer                         */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pAppendRow(RowWrk& xRowWrk,
-                               //i8 iTxId,
-                               //Stz* aRow,
-                               //i8 iRowLength,
                                EntryBuffer** ppLastRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   ASSERT(nBufferLevel() == 0);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check validity of parameters
-  //ASSERT(xRowWrk.iTxId() == iTxId);
-  //ASSERT(xRowWrk.aRow() == (Row*)aRow);
-  //ASSERT(xRowWrk.nRowSize() == iRowLength);
   
   Entry* pRowEntry;
   i8 nOffsets = 1;
@@ -424,9 +415,6 @@ Entry* EntryBuffer::pAppendRow(RowWrk& xRowWrk,
     
     *ppLastRowBuffer = pNewNextBuffer();
     pRowEntry = (*ppLastRowBuffer)->pAppendRow(xRowWrk,
-                                               //iTxId,
-                                               //aRow,
-                                               //iRowLength,
                                                ppLastRowBuffer);
     ASSERT(pRowEntry);
     return pRowEntry;
@@ -1579,12 +1567,7 @@ EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
     xKeyWrk.vOffsets(nOffsets);
    
     Entry* pNewEntry = pNewBuffer->pInsertKeyAbs(xKeyWrk,
-                                                 //iTxId,
-                                                 //xId,
-                                                 //aKey,
-                                                 //nKeySize,
                                                  ppRootKeyBuffer,
-                                                 //iRefBufNo,
                                                  pToBuffer);
     
     vDeleteEntry(pMoveEntry);
@@ -2001,8 +1984,6 @@ void EntryBuffer::vHeadEntryRestore(void)
 /* get an insertable buffer                                                   */
 /*----------------------------------------------------------------------------*/
 EntryBuffer* EntryBuffer::pInsertableBuffer(KeyWrk& xKeyWrk,
-                                            //Key* aInsKey,
-                                            //i8 nEntryPlusOffsets,
                                             EntryBuffer** ppRootKeyBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
@@ -2316,39 +2297,6 @@ Entry* EntryBuffer::pInsertKeyBuffer(KeyWrk& xKeyWrk,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // handle the insert of a left most key
   
-  
-//  if (pFirstEntry() == pInsertedKeyEntry) {
-//
-//    if (m_pHigherBuffer) {
-//      
-//      if (pOriginalFirstEntry) {
-//        Key* aDeleteKey = pOriginalFirstEntry->aKey();
-//        m_pHigherBuffer->vDeleteUpwards(aDeleteKey,ppRootKeyBuffer);
-//        //(*ppRootKeyBuffer)->vShowTree();
-//      }
-//      
-//      Key* aInsertKey = pInsertedKeyEntry->aKey();
-//      IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-//      Id xInsertId(*nBufferNo(),0);
-//      i8 iInsertKeyLen = aInsertKey->nKeySize(pIdxColVec);
-//      i8 nInsertOffsets = pInsertedKeyEntry->nOffsets();
-//      
-//      i8 iTxId = xKeyWrk.iTxId();
-//      
-//      KeyWrk xKeyWrkIns;
-//      xKeyWrkIns.vTxId(iTxId);
-//      xKeyWrkIns.vId(xInsertId);
-//      xKeyWrkIns.vEmbedded((char*)aInsertKey);
-//      xKeyWrkIns.vKeySize(iInsertKeyLen);
-//      xKeyWrkIns.vOffsets(nInsertOffsets);
-//      
-//      m_pHigherBuffer->pInsertKeyBuffer(xKeyWrkIns,
-//                                        ppRootKeyBuffer,
-//                                        this);
-//    }
-//  }
-  
-  
   if (pFirstEntry() == pInsertedKeyEntry)
     vHandleLeftInsert(pInsertedKeyEntry,
                       pOriginalFirstEntry,
@@ -2520,11 +2468,6 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
   
   Entry* pNewKeyRight =
     pHigherBuffer->pInsertKeyUpwards(xKeyWrkRight,
-                                     //iTxIdRight,
-                                     //xIdRight,
-                                     //aKeyRight,
-                                     //iKeyLenRight,
-                                     //nOffsetsRight,
                                      ppRootKeyBuffer,
                                      pRightBuffer);
   
