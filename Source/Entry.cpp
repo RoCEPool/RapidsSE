@@ -19,7 +19,7 @@ Entry* DBobjects::_pEntry(void* aAddr)
 {
   Entry* pEntry = reinterpret_cast<Entry*>(aAddr);
 
-  RASSERT( !pEntry || CN_ENTRY == pEntry->eClass() );
+  //RASSERT( !pEntry || CN_ENTRY == pEntry->eClass() );
   
   return pEntry;
 }

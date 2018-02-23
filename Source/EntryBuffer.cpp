@@ -550,10 +550,10 @@ void EntryBuffer::vCompact(void)
   // loop while we can still reclaim more space
   for (;;) {
     
-//    if (m_nBufferLevel) {
-//      vShow();
-//      int iDebug = 1;
-//    }
+    if (m_nBufferLevel) {
+      vShow();
+      int iDebug = 1;
+    }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // find the next free entry in buffer
@@ -566,13 +566,13 @@ void EntryBuffer::vCompact(void)
       eCN eClass = pScanItem->eClass();
       
       if (CN_FREEENTRY == eClass) {
-        pFreeEntry = static_cast<FreeEntry*>(pScanItem);
+        pFreeEntry = _pFreeEntry(pScanItem);
         break;
       }
     }
     
     // return if no more free entries
-    if (! pFreeEntry )
+    if (! pFreeEntry)
       break;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -592,33 +592,35 @@ void EntryBuffer::vCompact(void)
     }
     
     // return if no more entries after the free entry
-    if (! pMoveEntry )
+    if (! pMoveEntry)
       break;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the prior vector to the entry being moved
     
-    Key* aKey = pMoveEntry->aKey();
+    Key* aMoveKey = pMoveEntry->aKey();
     //aKey->vShow(pIdxColVec);
     //vTrace("\n"_Stz);
     
-    if (0 == m_nBufferLevel) {
-      vPositionPriorL0(aKey, xPriorVec, pMoveEntry);
+    //    if (0 == m_nBufferLevel) {
+      vPositionPriorL0(aMoveKey, xPriorVec, pMoveEntry);
       
       if (1 == nItems() && xPriorVec[0] == pFirstEntry())
-        vPositionPriorL0(aKey, xPriorVec, pMoveEntry);
-    }
-    else {
-      vPositionPriorLn(aKey, xPriorVec);
-      
-      if (1 == nItems() && xPriorVec[0] == pFirstEntry())
-        vPositionPriorLn(aKey, xPriorVec);
-    }
-    
-//    if (m_nBufferLevel) {
-//      vDumpPriorVec(xPriorVec);
-//      int iDebug = 1;
+        vPositionPriorL0(aMoveKey, xPriorVec, pMoveEntry);
+    //    }
+//    else {
+//      
+//      i8 iBufferNo = pMoveEntry->iBufferNo();
+//      vPositionPriorLn(aMoveKey, xPriorVec, iBufferNo);
+//      
+//      if (1 == nItems() && xPriorVec[0] == pFirstEntry())
+//        vPositionPriorLn(aMoveKey, xPriorVec, iBufferNo);
 //    }
+    
+    if (m_nBufferLevel) {
+      vDumpPriorVec(xPriorVec);
+      int iDebug = 1;
+    }
     
     i8 iWasOffset = iToOffset(pMoveEntry);
     i8 iNowOffset = iToOffset(pFreeEntry);
@@ -646,16 +648,24 @@ void EntryBuffer::vCompact(void)
     // get the prior vector to the entry being moved
     
     //vDumpPriorVec(xPriorVec);
-    for (i8 i_Offset = 0; i_Offset < 3; i_Offset++)
-      if (iWasOffset == xPriorVec[i_Offset]->iNEO(i_Offset))
-        xPriorVec[i_Offset]->vNEO(i_Offset,iNowOffset);
+    for (i8 i_Offset = 0; i_Offset < 3; i_Offset++) {
+      Entry* pPriorEntry = xPriorVec[i_Offset];
+      i8 iPriorOffset = pPriorEntry->iNEO(i_Offset);
+      //if (iWasOffset == xPriorVec[i_Offset]->iNEO(i_Offset))
+      if (iWasOffset == iPriorOffset)
+        //xPriorVec[i_Offset]->vNEO(i_Offset,iNowOffset);
+        pPriorEntry->vNEO(i_Offset,iNowOffset);
+    }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // move scan
     
     pScanItem = pFreeEntry;
     
-    //vQuickVerify();
+//    if (! bQuickVerify(nullptr)) {
+//      vShow();
+//      int iDebug = 1;
+//    }
     
   } // for
   
@@ -681,7 +691,6 @@ i8 EntryBuffer::iDecile(void)
     iDecile = IntLib::iDecile(m_xWsp.nUsed(), C_SIZE_POOL_BUFFER);
   else
     iDecile = IntLib::iDecile(m_nItems, gpAttachMap->m_nIndexEntries);
-  
   
   return iDecile;
 }
@@ -874,9 +883,10 @@ Entry* EntryBuffer::pNextEntry(Entry* pCurrent, i8 i_Offset)
     return nullptr;
   
   char* aAddress = pAdd<char*>(aDataArea(), iOffset);
+  Item* pItem = _pItem(aAddress);
   
-  if (CN_ENTRY != ((Entry*)aAddress)->eClass())
-    vShow();
+  //if (CN_ENTRY != pItem->eClass())
+  //  vShow();
   
   Entry* pEntry = _pEntry(aAddress);
 
@@ -1098,7 +1108,7 @@ void EntryBuffer::vPositionPriorL0(Key* aFindKey, Entry* pPriorVec[],
   
   //vShow();
   
-  ASSERT(0 == m_nBufferLevel);
+  //ASSERT(0 == m_nBufferLevel);
   ASSERT(! pFindEntry || CN_ENTRY == pFindEntry->eClass());
   
   for (i8 nLevel = 0; nLevel < gpAttachMap->m_nIndexLevels; nLevel++)
@@ -1414,7 +1424,9 @@ void EntryBuffer::vShow(void)
        pItem != nullptr;
        pItem = pNextItem(pItem)) {
     
-    vTrace(" %p: "_Stz,pItem);
+    i8 iItemOffset = iToOffset(pItem);
+    
+    vTrace(" %lld: %p: "_Stz,iItemOffset,pItem);
     eCN eClass = pItem->eClass();
     i8 iSize;
     
