@@ -18,6 +18,8 @@ extern AttachMap* gpAttachMap;
 Entry* DBobjects::_pEntry(void* aAddr)
 {
   Entry* pEntry = reinterpret_cast<Entry*>(aAddr);
+
+  RASSERT( !pEntry || CN_ENTRY == pEntry->eClass() );
   
   return pEntry;
 }
@@ -192,7 +194,7 @@ EntryBuffer* Entry::pEntryBuffer(void)
 /*----------------------------------------------------------------------------*/
 i8 Entry::nSizeEntry(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_); 
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
   return nSizeItem();
 }

@@ -70,27 +70,19 @@ EntryBuffer::EntryBuffer(void)
   m_eDurability   = BD_PERMANENT;
   m_bIsLast       = false;
   
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
   m_pHigherBuffer = nullptr;
   m_pNextBuffer   = nullptr;
   m_pPrevBuffer   = nullptr;
 
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
   m_pIndex        = nullptr;
   m_nPartitionNo  = -1;
   m_iBufferNo     = *nBufferNo();
   m_nBufferLevel  = 0;
   
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-
   m_pEntryOffset    =
     reinterpret_cast<i4*>(aAllotSpace(sizeof(i4) * C_ENTRIES_0));
   m_iFreeOffsetHead = C_ENTRY_NONE;
   vFreeChains();
-
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   m_pHeadEntry  = nullptr;
   m_pLastEntry  = nullptr;
@@ -102,6 +94,7 @@ EntryBuffer::EntryBuffer(void)
   
   _checkInitialised_(CN_ENTRYBUFFER);
 }
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
@@ -539,8 +532,6 @@ void EntryBuffer::vCompact(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  //vQuickVerify();
-  
   FreeEntry* pFreeEntry;
   Entry*     pMoveEntry;
   Entry*     xPriorVec[3];
@@ -558,6 +549,11 @@ void EntryBuffer::vCompact(void)
   
   // loop while we can still reclaim more space
   for (;;) {
+    
+//    if (m_nBufferLevel) {
+//      vShow();
+//      int iDebug = 1;
+//    }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // find the next free entry in buffer
@@ -619,7 +615,10 @@ void EntryBuffer::vCompact(void)
         vPositionPriorLn(aKey, xPriorVec);
     }
     
-    //vDumpPriorVec(xPriorVec);
+//    if (m_nBufferLevel) {
+//      vDumpPriorVec(xPriorVec);
+//      int iDebug = 1;
+//    }
     
     i8 iWasOffset = iToOffset(pMoveEntry);
     i8 iNowOffset = iToOffset(pFreeEntry);
@@ -656,6 +655,8 @@ void EntryBuffer::vCompact(void)
     
     pScanItem = pFreeEntry;
     
+    //vQuickVerify();
+    
   } // for
   
   ASSERT(CN_FREEENTRY == pScanItem->eClass());
@@ -663,8 +664,6 @@ void EntryBuffer::vCompact(void)
   vResetUsed(pScanItem);
   
   vSetWilderness();
-  
-  //vQuickVerify();
   
   //vShow();
 }
@@ -710,6 +709,7 @@ void EntryBuffer::vDeleteEntry(Entry* pEntry)
   vCutEntry(pEntry,xPriorVec);
   
   vAddFreeList(pEntry);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -866,13 +866,19 @@ Entry* EntryBuffer::pNextEntry(Entry* pCurrent, i8 i_Offset)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+  ASSERT(CN_ENTRY == pCurrent->eClass());
+  
   i4 iOffset = pCurrent->iNEO(i_Offset);
   
   if (-1 == iOffset)
     return nullptr;
   
   char* aAddress = pAdd<char*>(aDataArea(), iOffset);
-  Entry* pEntry = reinterpret_cast<Entry*>(aAddress);
+  
+  if (CN_ENTRY != ((Entry*)aAddress)->eClass())
+    vShow();
+  
+  Entry* pEntry = _pEntry(aAddress);
 
   return pEntry;
 }
@@ -1530,6 +1536,8 @@ void EntryBuffer::vShowTree(bool bDumpBuffer)
 /*----------------------------------------------------------------------------*/
 EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1616,7 +1624,7 @@ EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
   // compact the buffer
   
   vCompact();
-  
+
   return pNewBuffer;
 }
 
@@ -2447,6 +2455,7 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
   // compact this buffer and check if it has enough space
   
   this->vCompact();
+  
   if (this->bHasSpace(nEntryPlusOffsets) )
     return this;
   
