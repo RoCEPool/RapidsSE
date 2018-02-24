@@ -422,7 +422,7 @@ Entry* EntryBuffer::pAppendRow(RowWrk& xRowWrk,
   i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check if this buffer has enough space for the row entry
+  // check if this buffer has enough space
   
   if ( ! bHasSpace(nEntryPlusOffsets) ) {
     

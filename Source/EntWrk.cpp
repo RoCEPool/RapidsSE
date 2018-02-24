@@ -69,6 +69,20 @@ void EntWrk::vEmbedded(char* aEmbedded)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the size of the entry required to contain the embedded object          */
+/*----------------------------------------------------------------------------*/
+i8 EntWrk::nEntrySize(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  i8 nEmbedded = nEmbeddedSize();
+  
+  i8 nBytes = Entry::nBytesRequired(nEmbedded);
+  
+  return nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get row id                                                                 */
 /*----------------------------------------------------------------------------*/
 Id& EntWrk::xId(void)

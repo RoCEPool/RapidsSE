@@ -33,6 +33,7 @@ namespace DBobjects
   
     char*  aEmbedded(void);
     void   vEmbedded(char* aEmbedded);
+    i8     nEntrySize(void);
     Id&    xId(void);
     void   vId(Id& xId);
     char*  aLatter(void);
