@@ -374,7 +374,7 @@ void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
          pEntry = pNextEntry(pEntry, 0)) {
       
       // get the index buffer from the entry
-      EntryBuffer* pEntryBuffer = pEntry->pEntryBuffer();;
+      EntryBuffer* pEntryBuffer = pEntry->pReferencedEntryBuffer();
       
       ASSERT(pEntryBuffer);
       ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
@@ -510,7 +510,7 @@ void EntryBuffer::vBufferCount(i8& nBuffers)
          pEntry = pNextEntry(pEntry, 0)) {
       
       // get the index buffer from the entry
-      pNextBuffer = pEntry->pEntryBuffer();;
+      pNextBuffer = pEntry->pReferencedEntryBuffer();
       
       ASSERT(pNextBuffer);
       ASSERT(pNextBuffer->eClass() == CN_ENTRYBUFFER);
@@ -735,7 +735,7 @@ void EntryBuffer::vDump(void)
          pEntry = pNextEntry(pEntry, 0)) {
       
       // get the index buffer from the entry
-      EntryBuffer* pEntryBuffer = pEntry->pEntryBuffer();
+      EntryBuffer* pEntryBuffer = pEntry->pReferencedEntryBuffer();
       
       ASSERT(pEntryBuffer);
       ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
@@ -897,7 +897,7 @@ EntryBuffer* EntryBuffer::pPositionInsert(Key* aInsKey)
     // get the index buffer of the entry
     //pEntryBuffer->vShow();
     ASSERT(pEntryBuffer != pEntry->pEntryBuffer());
-    pEntryBuffer = pEntry->pEntryBuffer();
+    pEntryBuffer = pEntry->pReferencedEntryBuffer();
     ASSERT(pEntryBuffer);
     pEntryBuffer->vAssertEntryBuffer();
   }
@@ -955,7 +955,7 @@ EntryBuffer* EntryBuffer::pPositionLevel(Key* aGivenKey, i8 nKeyCols,
     ASSERT(pEntry);
     
     // get the index buffer of the entry
-    pEntryBuffer = pEntry->pEntryBuffer();
+    pEntryBuffer = pEntry->pReferencedEntryBuffer();
     ASSERT(pEntryBuffer);
     ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
   }
@@ -1279,7 +1279,7 @@ void EntryBuffer::vPositionPriorLnAfter(Key* aFindKey, Entry* pPriorVec[],
         bAreSame =
           aNextKey->bEqualTo(aFindKey,pIdxColVec);
         if (bAreSame &&
-              (pToBuffer == pNextEntry_sl->pEntryBuffer()->pPrevBuffer()))
+              (pToBuffer == pNextEntry_sl->pReferencedEntryBuffer()->pPrevBuffer()))
           break;
       }
       
@@ -1453,9 +1453,9 @@ void EntryBuffer::vShowShort(void)
     i8 iVal = aKey->iGetInt();
     
     if (m_iBufferLevel)
-      vTrace("%lld(%lld)"_Stz,iVal,*pEntry->pEntryBuffer()->nBufferNo());
+      vTrace("%lld(%lld)"_Stz,iVal,*pEntry->pReferencedEntryBuffer()->nBufferNo());
     else
-      vTrace("%lld|%lld|"_Stz,iVal,*pEntry->pEntryBuffer()->nBufferNo());
+      vTrace("%lld|%lld|"_Stz,iVal,*pEntry->pReferencedEntryBuffer()->nBufferNo());
     
     iOffset = pEntry->iNEO(0);
     if (iOffset > -1)
@@ -1541,7 +1541,7 @@ EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
     vPositionPriorL0(aKey, xPriorVec, pSplitEntry);
   }
   else {
-    EntryBuffer* pToBuffer = pSplitEntry->pEntryBuffer();
+    EntryBuffer* pToBuffer = pSplitEntry->pReferencedEntryBuffer();
     vPositionPriorLnAfter(aKey, xPriorVec, pToBuffer);
   }
   
@@ -1562,7 +1562,7 @@ EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
     i8 nKeySize = aKey->nKeySize(pIdxColVec);
     i8 nOffsets = pMoveEntry->nOffsets();
     //i8 iRefBufNo = pMoveEntry->iBufferNo();
-    EntryBuffer* pToBuffer = pMoveEntry->pEntryBuffer();
+    EntryBuffer* pToBuffer = pMoveEntry->pReferencedEntryBuffer();
     
     xKeyWrk.vTxId(iTxId);
     xKeyWrk.vId(xId);
@@ -1643,7 +1643,7 @@ void EntryBuffer::vTruncate(void)
          pEntry = pNextEntry(pEntry, 0)) {
       
       // get the index buffer from the entry
-      pNextBuffer = pEntry->pEntryBuffer();;
+      pNextBuffer = pEntry->pReferencedEntryBuffer();
       
       ASSERT(pNextBuffer);
       ASSERT(pNextBuffer->eClass() == CN_ENTRYBUFFER);
@@ -2105,7 +2105,7 @@ Entry* EntryBuffer::pInsertKey(KeyWrk& xKeyWrk,
       Key* aKeyLeft = pFirstKeyLeft->aKey();
       i8 iKeyLenLeft = aKeyLeft->nKeySize(m_pIndex->pIdxColVec());
       i8 iRefBufLeft = pFirstKeyLeft->iBufferNo();
-      EntryBuffer* pToBufferLeft = pFirstKeyLeft->pEntryBuffer();
+      EntryBuffer* pToBufferLeft = pFirstKeyLeft->pReferencedEntryBuffer();
       
       Entry* pNewKeyLeft =
       (*ppRootKeyBuffer)->pInsertKey(xKeyWrkIns,
@@ -2124,7 +2124,7 @@ Entry* EntryBuffer::pInsertKey(KeyWrk& xKeyWrk,
       Key* aKeyRight = pFirstKeyRight->aKey();
       i8 iKeyLenRight = aKeyRight->nKeySize(m_pIndex->pIdxColVec());
       i8 iRefBufRight = pFirstKeyRight->iBufferNo();
-      EntryBuffer* pToBufferRight = pFirstKeyRight->pEntryBuffer();
+      EntryBuffer* pToBufferRight = pFirstKeyRight->pReferencedEntryBuffer();
       Entry* pNewKeyRight =
       (*ppRootKeyBuffer)->pInsertKey(xKeyWrkIns,
                                      iTxIdRight,

@@ -174,7 +174,7 @@ Entry* Task::pDataRow(Table* pTable, Entry* pEntry)
   //Partition* pPartition = pTable->pPartition(nPartitionNo);
   
   // get the entry buffer of this entries Id
-  EntryBuffer* pEntryBuffer = pEntry->pEntryBuffer();
+  EntryBuffer* pEntryBuffer = pEntry->pReferencedEntryBuffer();
   
 
   

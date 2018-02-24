@@ -44,7 +44,7 @@ namespace DBobjects
     Id&  xId(void);
     void vId(Id xId);
     i8   iRow(void);
-    EntryBuffer* pEntryBuffer(void);
+    EntryBuffer* pReferencedEntryBuffer(void);
     i8   iBufferNo(void);
     i8   nSizeEntry(void);
   

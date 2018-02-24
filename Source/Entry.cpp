@@ -177,7 +177,7 @@ i8 Entry::iRow(void)
 /*----------------------------------------------------------------------------*/
 /* get the entry buffer that this entry references                            */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* Entry::pEntryBuffer(void)
+EntryBuffer* Entry::pReferencedEntryBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   

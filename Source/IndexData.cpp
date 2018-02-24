@@ -1,4 +1,3 @@
-
 /*============================================================================*/
 /* IndexData.cpp - index data portion of table partition                      */
 /*============================================================================*/
@@ -174,7 +173,7 @@ EntryBuffer* IndexData::pFirstL0Buffer(void)
   while (pEntryBuffer) {
     
     Entry* pFirstEntry = pEntryBuffer->pFirstEntry();
-    pEntryBuffer = pFirstEntry->pEntryBuffer();
+    pEntryBuffer = pFirstEntry->pReferencedEntryBuffer();
     
     if (pEntryBuffer->iBufferLevel() == 0) {
       return pEntryBuffer;
@@ -507,7 +506,7 @@ bool IndexData::bVerify(void)
       // each entry points to another index buffer
       // get buffer first entry points to
       // if k1 we get B1
-      EntryBuffer* pEntryBufferN_1 = aEntryLN->pEntryBuffer();
+      EntryBuffer* pEntryBufferN_1 = aEntryLN->pReferencedEntryBuffer();
       
       // get the key of the first entry
       // if ka get ka
@@ -561,7 +560,7 @@ void IndexData::vDumpLevel(EntryBuffer* pEntryBuffer)
   while (pEntry) {
     
     // get the index buffer the first enetry poinst to
-    EntryBuffer* pEntryEntryBuffer = pEntry->pEntryBuffer();
+    EntryBuffer* pEntryEntryBuffer = pEntry->pReferencedEntryBuffer();
     
     // print the decile of the buffer
     vTrace("%lld"_Stz, pEntryEntryBuffer->iDecile());
@@ -635,7 +634,7 @@ void IndexData::vVisualize(void)
       Entry* pEntry = pEntryBuffer->pFirstEntry();
       
       // get the index buffer this entry points to
-      pEntryBuffer = pEntry->pEntryBuffer();
+      pEntryBuffer = pEntry->pReferencedEntryBuffer();
     }
   }
   
