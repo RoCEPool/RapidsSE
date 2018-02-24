@@ -416,8 +416,14 @@ Entry* EntryBuffer::pAppendRow(RowWrk& xRowWrk,
 //  i8 nOffsetBytes = xRowWrk.nOffsetSize(); //nOffsets*sizeof(i4);
 //  i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
 
+//  i8 nRowSize = xRowWrk.nRowSize();
+//  i8 nEntryBytes = Entry::nBytesRequired(nRowSize);
+//  i8 nOffsetBytes = xRowWrk.nOffsetSize();
+//  i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
+
+  i8 nEntryBytes = xRowWrk.nEntrySize();
   i8 nRowSize = xRowWrk.nRowSize();
-  i8 nEntryBytes = Entry::nBytesRequired(nRowSize);
+  RASSERT(nEntryBytes == Entry::nBytesRequired(nRowSize));
   i8 nOffsetBytes = xRowWrk.nOffsetSize();
   i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
   
