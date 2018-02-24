@@ -686,7 +686,6 @@ void EntryBuffer::vDeleteEntry(Entry* pEntry)
   vCutEntry(pEntry,xPriorVec);
   
   vAddFreeList(pEntry);
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -744,8 +743,6 @@ void EntryBuffer::vDump(void)
 Entry* EntryBuffer::pFirstEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  //m_pHeadEntry->vNEOdump();
   
   Entry* pFirst = pNextEntry(m_pHeadEntry,0);
   
@@ -820,6 +817,7 @@ Entry* EntryBuffer::pInsertKeyTree(KeyWrk& xKeyWrk,
   //pPositionedBuffer->vShow();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // insert into the tree 
   
   Entry* pInsertedKeyEntry =
     pPositionedBuffer->pInsertKeyUpwards(xKeyWrk,
@@ -843,7 +841,7 @@ Entry* EntryBuffer::pNextEntry(Entry* pCurrent, i8 i_Offset)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  ASSERT(CN_ENTRY == pCurrent->eClass());
+  pCurrent->vAssertEntry();
   
   i4 iOffset = pCurrent->iNEO(i_Offset);
   

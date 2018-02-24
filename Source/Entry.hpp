@@ -94,6 +94,7 @@ namespace DBobjects
     char* aAddressAfter(void);
   
     Footer* aFooter(void);
+    void   vAssertEntry(void);
   
   private:
     bn     nBufferNo(void);
