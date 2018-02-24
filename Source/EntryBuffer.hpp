@@ -47,8 +47,8 @@ namespace DBobjects
     i8      m_iBufferNo;    // this EntryBuffer's buffer number 
     i2      m_iBufferLevel; // index buffer level
   
-    i4*     m_pEntryOffset;    // array of entry offsets
-    i4      m_iFreeOffsetHead; // head of free entry offset chain
+    i4*     m_pEntryOffset;     // array of entry offsets
+    i4      m_i_FreeOffsetHead; // head of free entry offset chain
   
     Entry*     m_pHeadEntry;  // head entry
     Entry*     m_pLastEntry;  // last entry in buffer
