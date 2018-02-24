@@ -45,7 +45,7 @@ namespace DBobjects
     Index*  m_pIndex;       // index this buffer belongs to
     i2      m_nPartitionNo; // partition no this buffer belongs to
     i8      m_iBufferNo;    // this EntryBuffer's buffer number 
-    i2      m_nBufferLevel; // index buffer level
+    i2      m_iBufferLevel; // index buffer level
   
     i4*     m_pEntryOffset;    // array of entry offsets
     i4      m_iFreeOffsetHead; // head of free entry offset chain
@@ -72,8 +72,8 @@ namespace DBobjects
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // simple member functions
   
-    void         vBufferLevel(i8 nBufferLevel);
-    i8           nBufferLevel(void);
+    void         vBufferLevel(i8 iBufferLevel);
+    i8           iBufferLevel(void);
     eBD          eDurability(void);
     void         vDurability(eBD eDurability);
     FreeEntry*   pFirstFree(void);

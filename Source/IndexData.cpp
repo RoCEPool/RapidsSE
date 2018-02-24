@@ -168,7 +168,7 @@ EntryBuffer* IndexData::pFirstL0Buffer(void)
   if ( ! pEntryBuffer )
     return nullptr;
   
-  if (pEntryBuffer->nBufferLevel() == 0)
+  if (pEntryBuffer->iBufferLevel() == 0)
     return pEntryBuffer;
   
   while (pEntryBuffer) {
@@ -176,7 +176,7 @@ EntryBuffer* IndexData::pFirstL0Buffer(void)
     Entry* pFirstEntry = pEntryBuffer->pFirstEntry();
     pEntryBuffer = pFirstEntry->pEntryBuffer();
     
-    if (pEntryBuffer->nBufferLevel() == 0) {
+    if (pEntryBuffer->iBufferLevel() == 0) {
       return pEntryBuffer;
     }
   }
@@ -490,7 +490,7 @@ bool IndexData::bVerify(void)
     }
     
     // if we are at level 0 , get the next buffer at the same level
-    if (pEntryBuffer->nBufferLevel() == 0) {
+    if (pEntryBuffer->iBufferLevel() == 0) {
       // if at B1 get B2
       pEntryBuffer = (EntryBuffer*)pEntryBuffer->pNextBuffer();
       continue;
@@ -567,7 +567,7 @@ void IndexData::vDumpLevel(EntryBuffer* pEntryBuffer)
     vTrace("%lld"_Stz, pEntryEntryBuffer->iDecile());
     
     // insert spaces for no of entries in buffer
-    if (pEntryEntryBuffer->nBufferLevel() > 0) {
+    if (pEntryEntryBuffer->iBufferLevel() > 0) {
       
       // exclude the head entry
       i8 iEntries = pEntryEntryBuffer->nItems() - 1;
@@ -610,7 +610,7 @@ void IndexData::vVisualize(void)
   // print the decile of the root buffer
   vTrace("%lld\n"_Stz, pEntryBuffer->iDecile());
   
-  i8 iBufferLevel = pEntryBuffer->nBufferLevel();
+  i8 iBufferLevel = pEntryBuffer->iBufferLevel();
   
   // if there is only one buffer i.e root is at level 0, we are done
   if (iBufferLevel == 0) {
@@ -625,7 +625,7 @@ void IndexData::vVisualize(void)
     vDumpLevel(pEntryBuffer);
 
     // if we are at level 1, iterate thru next buffers
-    if (pEntryBuffer->nBufferLevel() == 1) {
+    if (pEntryBuffer->iBufferLevel() == 1) {
       pEntryBuffer = (EntryBuffer*)pEntryBuffer->pNextBuffer();
     }
     else {
