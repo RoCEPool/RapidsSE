@@ -594,7 +594,7 @@ void IndexData::vVisualize(void)
   if (m_pIndex->bIsHidden()) {
     
     do {
-      ASSERT(pEntryBuffer->nBufferLevel() == 0);
+      ASSERT(pEntryBuffer->iBufferLevel() == 0);
       // print the decile of pNextBuffer
       vTrace("%lld"_Stz, pEntryBuffer->iDecile());
       

@@ -968,7 +968,7 @@ i8 Table::nHiddenEntryCount(EntryBuffer* pFirstL0Buffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  ASSERT(pFirstL0Buffer == nullptr || 0 == pFirstL0Buffer->nBufferLevel());
+  ASSERT(pFirstL0Buffer == nullptr || 0 == pFirstL0Buffer->iBufferLevel());
   
   i8 nEntries = 0;
   for (EntryBuffer* pEB = pFirstL0Buffer; pEB; pEB = pEB->pNextBuffer())
@@ -989,7 +989,7 @@ void Table::vPopulateSortArray(char* aSortArray, i8 nElements, i8 iSortElmSize,
   Timer xTimer;
   xTimer.vStart();
   
-  ASSERT(pFirstL0Buffer == nullptr || 0 == pFirstL0Buffer->nBufferLevel());
+  ASSERT(pFirstL0Buffer == nullptr || 0 == pFirstL0Buffer->iBufferLevel());
   ASSERT(sizeof(i8) == sizeof(Id));
   
   Index* pIndex = pNewIndexData->pIndex();

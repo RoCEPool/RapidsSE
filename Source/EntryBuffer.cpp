@@ -406,15 +406,15 @@ Entry* EntryBuffer::pAppendRow(RowWrk& xRowWrk,
   
   Entry* pRowEntry;
   i8 nOffsets = 1;
+  xRowWrk.vOffsets(nOffsets);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if this buffer has enough space
-  i8 nOffsetBytes = sizeof(i4);
+  
   i8 nRowSize = xRowWrk.nRowSize();
   i8 nEntryBytes = Entry::nBytesRequired(nRowSize, nOffsets);
+  i8 nOffsetBytes = xRowWrk.nOffsetSize(); //nOffsets*sizeof(i4);
   i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
-  
-  xRowWrk.vOffsets(nOffsets);
   
   if ( ! bHasSpace(nEntryPlusOffsets) ) {
     
@@ -875,7 +875,7 @@ EntryBuffer* EntryBuffer::pPositionInsert(Key* aInsKey)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
 
   if ( ! nItems() ) {
-    ASSERT( 0 == pEntryBuffer->iBufferLevel());
+    ASSERT( 0 == iBufferLevel());
     return this;
   }
   
@@ -896,7 +896,7 @@ EntryBuffer* EntryBuffer::pPositionInsert(Key* aInsKey)
     
     // get the index buffer of the entry
     //pEntryBuffer->vShow();
-    ASSERT(pEntryBuffer != pEntry->pEntryBuffer());
+    ASSERT(pEntryBuffer != pEntry->pReferencedEntryBuffer());
     pEntryBuffer = pEntry->pReferencedEntryBuffer();
     ASSERT(pEntryBuffer);
     pEntryBuffer->vAssertEntryBuffer();
@@ -1423,12 +1423,12 @@ void EntryBuffer::vShow(void)
         break;
         
       default:
+        vTrace("Unknown (class is %lld)"_Stz,eClass);
         break;
     }
     vTrace("\n"_Stz);
-    }
+  }
   
-
   vTrace("\n"_Stz);
   vTrace("=================================================="
          "==================================================\n"_Stz);
@@ -1944,18 +1944,17 @@ void EntryBuffer::vHeadEntryNew(void)
  
   RowWrk xHeadWrk;
   
-  xHeadWrk.xId().vBuffer(*nBufferNo());
-  
   ASSERT( ! m_pHeadEntry );
   
   xHeadWrk.vOffsets(3);
   
   i8 nEntryBytes = Entry::nBytesRequired(xHeadWrk);
-  
   i8 nOffsetBytes = xHeadWrk.nOffsetSize();
-  
   i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
+  
   ASSERT(bHasSpace(nEntryPlusOffsets));
+
+  xHeadWrk.xId().vBuffer(*nBufferNo());
   
   m_pHeadEntry = reinterpret_cast<Entry*>(aAllotSpace(nEntryBytes));
   ASSERT(m_pHeadEntry);
@@ -1994,17 +1993,17 @@ EntryBuffer* EntryBuffer::pInsertableBuffer(KeyWrk& xKeyWrk,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Key* aInsKey = xKeyWrk.aKey();
-  
   i8 nKeySize = xKeyWrk.nKeySize();
   i8 nOffsets = xKeyWrk.nOffsets();
   
   i8 nEntryBytes = Entry::nBytesRequired(nKeySize,nOffsets);
-  i8 nOffsetBytes = nOffsets*sizeof(i4);
+  i8 nOffsetBytes = xKeyWrk.nOffsetSize(); //nOffsets*sizeof(i4);
   i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  Key* aInsKey = xKeyWrk.aKey();
+  
   EntryBuffer* pInsertIntoBuffer;
   
   if (bHasSpace(nEntryPlusOffsets))
@@ -2050,20 +2049,16 @@ Entry* EntryBuffer::pInsertKey(KeyWrk& xKeyWrk,
   //aKey->vShow(pIdxColVec);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // insert a new entry into the skip list
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 1 offset
-  //i8 nOffsets = 1;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 2 offsets
   //i8 nOffsets = Random::iLogLevel(gpAttachMap->m_nIndexOffsets,C_FLAT_FREQ + 1);
   i8 nOffsets = Random::iLogLevel(3,C_FLAT_FREQ + 1) + 1;
+  xKeyWrk.vOffsets(nOffsets);
+  
+  i8 nEntryBytes = Entry::nBytesRequired(iKeyLength, nOffsets);
+  i8 nOffsetBytes = xKeyWrk.nOffsetSize(); //nOffsets*sizeof(i4);
+  i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 3 offsets
-  //i8 nOffsets = Random::iLogLevel(gpAttachMap->m_nIndexOffsets+1,C_FLAT_FREQ) + 1;
   
   Entry* xPriorVec[3];
   
@@ -2080,11 +2075,7 @@ Entry* EntryBuffer::pInsertKey(KeyWrk& xKeyWrk,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if this buffer has enough space
-  i8 nEntryBytes = Entry::nBytesRequired(iKeyLength, nOffsets);
   
-  i8 nOffsetBytes = nOffsets*sizeof(i4); //xKeyWrk.nOffsetSize();
-  
-  i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
   if ( ! bHasSpace(nEntryPlusOffsets) ) {
     
     vCompact();
@@ -2218,14 +2209,14 @@ Entry* EntryBuffer::pInsertKeyAbs(KeyWrk& xKeyWrk,
   //aKey->vShow(pIdxColVec);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // assert this buffer has enough space
+  // calculate space required
   
   i8 nOffsets = xKeyWrk.nOffsets();
-  Key* aKey = xKeyWrk.aKey();
   i8 iKeyLength = xKeyWrk.nKeySize();
   i8 nEntryBytes = Entry::nBytesRequired(iKeyLength, nOffsets);
-  i8 nOffsetBytes = nOffsets*sizeof(i4); //xKeyWrk.nOffsetSize();
+  i8 nOffsetBytes = xKeyWrk.nOffsetSize(); //nOffsets*sizeof(i4);
   i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
+  
   RASSERT(bHasSpace(nEntryPlusOffsets));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2246,6 +2237,8 @@ Entry* EntryBuffer::pInsertKeyAbs(KeyWrk& xKeyWrk,
   // find the entry after which the new entry will be inserted
   
   Entry* xPriorVec[3];
+  
+  Key* aKey = xKeyWrk.aKey();
   
   if (0 == m_iBufferLevel)
     vPositionPriorL0(aKey, xPriorVec);
