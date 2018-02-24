@@ -149,6 +149,16 @@ void EntWrk::vOffsets(i8 nOffsets)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set a random number of offsets                                             */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vRandomOffsets(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  m_nOffsets = Random::iLogLevel(3,C_FLAT_FREQ + 1) + 1;
+}
+
+/*----------------------------------------------------------------------------*/
 /* reset embedded address                                                     */
 /*----------------------------------------------------------------------------*/
 void EntWrk::vReset(void)

@@ -40,6 +40,7 @@ namespace DBobjects
     i8     nOffsets(void);
     i8     nOffsetSize(void);
     void   vOffsets(i8 nOffsets);
+    void   vRandomOffsets(void);
     void   vReset(void);
     void   vTake(i8 iSize);
     i8     iTxId(void);
