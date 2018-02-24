@@ -25,14 +25,6 @@ Entry* DBobjects::_pEntry(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* assert valid entry                                                         */
-/*----------------------------------------------------------------------------*/
-void Entry::vAssertEntry(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* Entry::operator new(size_t iSize)
@@ -75,6 +67,14 @@ Entry::Entry(eCN eClassNo, i8 nThisBytes, i8 nOffsets)
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Entry::~Entry(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* assert valid entry                                                         */
+/*----------------------------------------------------------------------------*/
+void Entry::vAssertEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
 }

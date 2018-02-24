@@ -19,6 +19,8 @@ namespace DBobjects
     FreeEntry(i8 nSizeItem);
     ~FreeEntry(void);
   
+    void vAssertFreeEntry(void);
+  
     FreeEntry* pNextFree(void);
     void       vNextFree(FreeEntry* pNextFree);
   

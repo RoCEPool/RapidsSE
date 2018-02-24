@@ -33,6 +33,8 @@ namespace DBobjects
     Entry(eCN eClassNo, i8 nThisBytes, i8 uOffsets);
     ~Entry(void);
   
+    void vAssertEntry(void);
+  
     static i8 nBytesRequired(EntWrk& xEntWrk);
     static i8 nBytesRequired(i8 nEmbeddedBytes);
     static i8 nBytesRequired(i8 nEmbeddedBytes, i8 nOffsets);
@@ -94,7 +96,6 @@ namespace DBobjects
     char* aAddressAfter(void);
   
     Footer* aFooter(void);
-    void   vAssertEntry(void);
   
   private:
     bn     nBufferNo(void);
