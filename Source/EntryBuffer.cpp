@@ -118,6 +118,14 @@ EntryBuffer::~EntryBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* assert valid entry buffer                                                  */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vAssertEntryBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Static Functions --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -860,29 +868,27 @@ Entry* EntryBuffer::pNextEntry(Entry* pCurrent, i8 i_Offset)
 }
 
 /*----------------------------------------------------------------------------*/
-/* position at the buffer into which key should be inserted                   */
+/* position at the L0 buffer into which key should be inserted                */
 /*----------------------------------------------------------------------------*/
 EntryBuffer* EntryBuffer::pPositionInsert(Key* aInsKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
 
-  if ( ! nItems() )
+  if ( ! nItems() ) {
+    ASSERT( 0 == pEntryBuffer->iBufferLevel());
     return this;
+  }
   
   EntryBuffer* pEntryBuffer = this;
-  
-  i8 iBufferLevel;
-  Entry* pEntry;
-
   while (true) {
     
-    iBufferLevel = pEntryBuffer->iBufferLevel();
-    
+    // have we arrived at L0 ?
+    i8 iBufferLevel = pEntryBuffer->iBufferLevel();
     if (iBufferLevel == 0)
       break;
     
-    // get the entry before the key
-    pEntry = pEntryBuffer->pPositionPrior(aInsKey);
+    // get the entry before the given insert key
+    Entry* pEntry = pEntryBuffer->pPositionPrior(aInsKey);
     ASSERT(pEntry);
     if (pEntry == pEntryBuffer->pHeadEntry())
       pEntry = pEntryBuffer->pNextEntry(pEntry,0);
@@ -893,7 +899,7 @@ EntryBuffer* EntryBuffer::pPositionInsert(Key* aInsKey)
     ASSERT(pEntryBuffer != pEntry->pEntryBuffer());
     pEntryBuffer = pEntry->pEntryBuffer();
     ASSERT(pEntryBuffer);
-    ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
+    pEntryBuffer->vAssertEntryBuffer();
   }
 
   return pEntryBuffer;

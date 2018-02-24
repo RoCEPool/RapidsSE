@@ -67,6 +67,8 @@ namespace DBobjects
     EntryBuffer(Index* pIndex, i8 nLevel, i8 nPartitionNo);
     ~EntryBuffer(void);
 
+    void vAssertEntryBuffer(void);
+  
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
