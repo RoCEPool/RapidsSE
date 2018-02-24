@@ -424,8 +424,8 @@ Entry* EntryBuffer::pAppendRow(RowWrk& xRowWrk,
   // form the rowId
   
   bn nBufferNo = this->nBufferNo();
-  i8 nRowNo = iGetFreeEntry(); //nItems();
-  Id xRowId(*nBufferNo, nRowNo);
+  i8 i_RowNo = iGetFreeEntry(); //nItems();
+  Id xRowId(*nBufferNo, i_RowNo);
   
   xRowWrk.vId(xRowId);
   
@@ -447,7 +447,7 @@ Entry* EntryBuffer::pAppendRow(RowWrk& xRowWrk,
   // set entry offsets
   
   i8 iEntryOffset = iToOffset(pRowEntry);
-  m_pEntryOffset[nRowNo] = iEntryOffset;
+  m_pEntryOffset[i_RowNo] = iEntryOffset;
   
   NEO* aNEO = aAllotNEO(nOffsetBytes);
   if (m_pLastEntry)
