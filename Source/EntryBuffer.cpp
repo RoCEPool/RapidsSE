@@ -405,11 +405,12 @@ Entry* EntryBuffer::pAppendRow(RowWrk& xRowWrk,
   ASSERT(iBufferLevel() == 0);
   
   Entry* pRowEntry;
-  i8 nOffsets = 1;
-  xRowWrk.vOffsets(nOffsets);
+
+  // rows only ever have one next offset
+  xRowWrk.vOffsets(1);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // compute required entry space for row and offsets
+  // compute required entry space for row and offset
   
   i8 nEntryBytes = xRowWrk.nEntrySize();
   i8 nOffsetBytes = xRowWrk.nOffsetSize();
@@ -1950,17 +1951,20 @@ void EntryBuffer::vHeadEntryNew(void)
   
   ASSERT( ! m_pHeadEntry );
   
+  // the head entry always has 3 offsets
   xHeadWrk.vOffsets(3);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space
   
-  i8 nEntryBytes = xHeadWrk.nEntrySize(); //Entry::nBytesRequired(xHeadWrk);
+  i8 nEntryBytes = xHeadWrk.nEntrySize();
   i8 nOffsetBytes = xHeadWrk.nOffsetSize();
   i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
   
   ASSERT(bHasSpace(nEntryPlusOffsets));
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   xHeadWrk.xId().vBuffer(*nBufferNo());
   
   m_pHeadEntry = reinterpret_cast<Entry*>(aAllotSpace(nEntryBytes));
@@ -2001,19 +2005,16 @@ EntryBuffer* EntryBuffer::pInsertableBuffer(KeyWrk& xKeyWrk,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space
 
-  //i8 nKeySize = xKeyWrk.nKeySize();
-  //i8 nOffsets = xKeyWrk.nOffsets();
-  
-  i8 nEntryBytes = xKeyWrk.nEntrySize(); //Entry::nBytesRequired(nKeySize,nOffsets);
-  i8 nOffsetBytes = xKeyWrk.nOffsetSize(); //nOffsets*sizeof(i4);
+  i8 nEntryBytes = xKeyWrk.nEntrySize();
+  i8 nOffsetBytes = xKeyWrk.nOffsetSize();
   i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+  // insert key into this EntryBuffer if it has space or get a new one
+  
   Key* aInsKey = xKeyWrk.aKey();
   
   EntryBuffer* pInsertIntoBuffer;
-  
   if (bHasSpace(nEntryPlusOffsets))
     pInsertIntoBuffer = this;
   else {
@@ -2065,8 +2066,8 @@ Entry* EntryBuffer::pInsertKey(KeyWrk& xKeyWrk,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space
   
-  i8 nEntryBytes = xKeyWrk.nEntrySize(); //Entry::nBytesRequired(iKeyLength, nOffsets);
-  i8 nOffsetBytes = xKeyWrk.nOffsetSize(); //nOffsets*sizeof(i4);
+  i8 nEntryBytes = xKeyWrk.nEntrySize();
+  i8 nOffsetBytes = xKeyWrk.nOffsetSize();
   i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2222,10 +2223,8 @@ Entry* EntryBuffer::pInsertKeyAbs(KeyWrk& xKeyWrk,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space
   
-  //i8 nOffsets = xKeyWrk.nOffsets();
-  //i8 iKeyLength = xKeyWrk.nKeySize();
-  i8 nEntryBytes = xKeyWrk.nEntrySize(); //Entry::nBytesRequired(iKeyLength, nOffsets);
-  i8 nOffsetBytes = xKeyWrk.nOffsetSize(); //nOffsets*sizeof(i4);
+  i8 nEntryBytes = xKeyWrk.nEntrySize();
+  i8 nOffsetBytes = xKeyWrk.nOffsetSize();
   i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
   
   RASSERT(bHasSpace(nEntryPlusOffsets));
