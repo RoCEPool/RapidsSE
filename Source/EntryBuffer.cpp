@@ -409,12 +409,20 @@ Entry* EntryBuffer::pAppendRow(RowWrk& xRowWrk,
   xRowWrk.vOffsets(nOffsets);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check if this buffer has enough space
+  // compute required entry space for row and offsets
   
+//  i8 nRowSize = xRowWrk.nRowSize();
+//  i8 nEntryBytes = Entry::nBytesRequired(nRowSize, nOffsets);
+//  i8 nOffsetBytes = xRowWrk.nOffsetSize(); //nOffsets*sizeof(i4);
+//  i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
+
   i8 nRowSize = xRowWrk.nRowSize();
-  i8 nEntryBytes = Entry::nBytesRequired(nRowSize, nOffsets);
-  i8 nOffsetBytes = xRowWrk.nOffsetSize(); //nOffsets*sizeof(i4);
+  i8 nEntryBytes = Entry::nBytesRequired(nRowSize);
+  i8 nOffsetBytes = xRowWrk.nOffsetSize();
   i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if this buffer has enough space for the row entry
   
   if ( ! bHasSpace(nEntryPlusOffsets) ) {
     
@@ -438,10 +446,13 @@ Entry* EntryBuffer::pAppendRow(RowWrk& xRowWrk,
   xRowWrk.vId(xRowId);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // allocate space in this buffer
+  // allocate space in this buffer for the row and offsets
   
   pRowEntry = pAllotEntry(nEntryBytes);
   ASSERT(pRowEntry);
+  
+  NEO* aNEO = aAllotNEO(nOffsetBytes);
+  ASSERT(aNEO);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the buffer entry
@@ -457,7 +468,6 @@ Entry* EntryBuffer::pAppendRow(RowWrk& xRowWrk,
   i8 iEntryOffset = iToOffset(pRowEntry);
   m_pEntryOffset[i_RowNo] = iEntryOffset;
   
-  NEO* aNEO = aAllotNEO(nOffsetBytes);
   if (m_pLastEntry)
     m_pLastEntry->vNEO(0,iEntryOffset);
   pRowEntry->vNEO(0,-1);
@@ -1948,6 +1958,9 @@ void EntryBuffer::vHeadEntryNew(void)
   
   xHeadWrk.vOffsets(3);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compute required entry space
+  
   i8 nEntryBytes = Entry::nBytesRequired(xHeadWrk);
   i8 nOffsetBytes = xHeadWrk.nOffsetSize();
   i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
@@ -1992,6 +2005,7 @@ EntryBuffer* EntryBuffer::pInsertableBuffer(KeyWrk& xKeyWrk,
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compute required entry space
 
   i8 nKeySize = xKeyWrk.nKeySize();
   i8 nOffsets = xKeyWrk.nOffsets();
@@ -2053,6 +2067,9 @@ Entry* EntryBuffer::pInsertKey(KeyWrk& xKeyWrk,
   //i8 nOffsets = Random::iLogLevel(gpAttachMap->m_nIndexOffsets,C_FLAT_FREQ + 1);
   i8 nOffsets = Random::iLogLevel(3,C_FLAT_FREQ + 1) + 1;
   xKeyWrk.vOffsets(nOffsets);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compute required entry space
   
   i8 nEntryBytes = Entry::nBytesRequired(iKeyLength, nOffsets);
   i8 nOffsetBytes = xKeyWrk.nOffsetSize(); //nOffsets*sizeof(i4);
@@ -2209,7 +2226,7 @@ Entry* EntryBuffer::pInsertKeyAbs(KeyWrk& xKeyWrk,
   //aKey->vShow(pIdxColVec);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // calculate space required
+  // compute required entry space
   
   i8 nOffsets = xKeyWrk.nOffsets();
   i8 iKeyLength = xKeyWrk.nKeySize();
