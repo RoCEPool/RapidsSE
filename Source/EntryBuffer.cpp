@@ -2300,7 +2300,7 @@ Item* EntryBuffer::pNextItem(Item* pCurrent)
 }
 
 /*----------------------------------------------------------------------------*/
-/* scan thru skip list and positition on entry prior to key                   */
+/* scan thru skip list and return entry prior to key                          */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pPositionPrior(Key* aFindKey)
 {
@@ -2311,9 +2311,6 @@ Entry* EntryBuffer::pPositionPrior(Key* aFindKey)
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   i8 nKeyCols = pIdxColVec->nItems();
-  
-  bool bIsJuxta;
-  bool bIsEqual;
   
   Entry* pScanEntry_sl = m_pHeadEntry;
   
@@ -2327,14 +2324,11 @@ Entry* EntryBuffer::pPositionPrior(Key* aFindKey)
       //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       
-      bIsJuxta =
-      aNextKey->bJuxtaCompare(JC_AFTER,aFindKey,pIdxColVec,nKeyCols,bIsEqual);
-      
-      if (bIsJuxta)
+      bool bKeyIsGreaterEqual = aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
+      if (bKeyIsGreaterEqual)
         break;
       
       pScanEntry_sl = pNextEntry_sl;
-      
       pNextEntry_sl = pNextEntry(pNextEntry_sl,i_ScanOffset);
     }
   }
@@ -2351,10 +2345,7 @@ void EntryBuffer::vPositionPriorL0(Key* aFindKey, Entry* pPriorVec[],
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  //vShow();
-  
   //ASSERT(0 == m_iBufferLevel);
-  ASSERT(! pFindEntry || CN_ENTRY == pFindEntry->eClass());
   
   for (i8 i_Level = 0; i_Level < gpAttachMap->m_nIndexLevels; i_Level++)
     pPriorVec[i_Level] = m_pHeadEntry;
@@ -2366,9 +2357,6 @@ void EntryBuffer::vPositionPriorL0(Key* aFindKey, Entry* pPriorVec[],
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   i8 nKeyCols = pIdxColVec->nItems();
-  
-  bool bIsJuxta;
-  bool bIsEqual;
   
   i8 iFindLevels = pFindEntry ? pFindEntry->nOffsets() - 1 : 2;
   Entry* pScanEntry_sl = m_pHeadEntry;
@@ -2386,9 +2374,7 @@ void EntryBuffer::vPositionPriorL0(Key* aFindKey, Entry* pPriorVec[],
       //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       
-      bIsJuxta =
-      //aNextKey->bJuxtaCompare(JC_AFTER,aFindKey,pIdxColVec,nKeyCols,bIsEqual);
-        aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
+      bool bIsJuxta = aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
       
       if (bIsJuxta) {
         if (! pFindEntry || pNextEntry_sl == pFindEntry)
