@@ -811,13 +811,11 @@ bool EntryBuffer::bHasSpace(i8 nBytes)
 Entry* EntryBuffer::pInsertKeyTree(KeyWrk& xKeyWrk,
                                    EntryBuffer** ppRootKeyBuffer)
 {
-  // note: this is a static function
+  // ** note: this is a static function **
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // offsets
+  // set a random number offsets
   
-  //i8 nOffsets = Random::iLogLevel(3,C_FLAT_FREQ + 1) + 1;
-  //xKeyWrk.vOffsets(nOffsets);
   xKeyWrk.vRandomOffsets();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
