@@ -816,8 +816,9 @@ Entry* EntryBuffer::pInsertKeyTree(KeyWrk& xKeyWrk,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // offsets
   
-  i8 nOffsets = Random::iLogLevel(3,C_FLAT_FREQ + 1) + 1;
-  xKeyWrk.vOffsets(nOffsets);
+  //i8 nOffsets = Random::iLogLevel(3,C_FLAT_FREQ + 1) + 1;
+  //xKeyWrk.vOffsets(nOffsets);
+  xKeyWrk.vRandomOffsets();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // position on the initial buffer we will try to insert into
@@ -2005,6 +2006,8 @@ EntryBuffer* EntryBuffer::pInsertableBuffer(KeyWrk& xKeyWrk,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space
 
+  RASSERT(xKeyWrk.nOffsets());
+  
   i8 nEntryBytes = xKeyWrk.nEntrySize();
   i8 nOffsetBytes = xKeyWrk.nOffsetSize();
   i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
@@ -2058,13 +2061,9 @@ Entry* EntryBuffer::pInsertKey(KeyWrk& xKeyWrk,
   //aKey->vShow(pIdxColVec);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 2 offsets
-  //i8 nOffsets = Random::iLogLevel(gpAttachMap->m_nIndexOffsets,C_FLAT_FREQ + 1);
-  i8 nOffsets = Random::iLogLevel(3,C_FLAT_FREQ + 1) + 1;
-  xKeyWrk.vOffsets(nOffsets);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space
+  
+  RASSERT(xKeyWrk.nOffsets());
   
   i8 nEntryBytes = xKeyWrk.nEntrySize();
   i8 nOffsetBytes = xKeyWrk.nOffsetSize();
@@ -2180,6 +2179,8 @@ Entry* EntryBuffer::pInsertKey(KeyWrk& xKeyWrk,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the key entry
   
+  i8 nOffsets = xKeyWrk.nOffsets();
+  
   //pKeyEntry->vSetEntry(xKeyWrk);
   pKeyEntry->vSetEntry(iTxId, xId, nOffsets, (Stz*)aKey, iKeyLength);
   
@@ -2222,6 +2223,8 @@ Entry* EntryBuffer::pInsertKeyAbs(KeyWrk& xKeyWrk,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space
+  
+  RASSERT(xKeyWrk.nOffsets());
   
   i8 nEntryBytes = xKeyWrk.nEntrySize();
   i8 nOffsetBytes = xKeyWrk.nOffsetSize();
