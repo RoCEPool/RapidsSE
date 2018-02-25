@@ -1032,280 +1032,6 @@ Entry* EntryBuffer::pPositionQuery(Key* aGivenKey,i8 nKeyCols, eJC eJuxtaCompare
 }
 
 /*----------------------------------------------------------------------------*/
-/* scan thru skip list and positition on entry prior to key                   */
-/*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pPositionPrior(Key* aFindKey)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  if (nItems() == 0)
-    return m_pHeadEntry;
-  
-  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  i8 nKeyCols = pIdxColVec->nItems();
-  
-  bool bIsJuxta;
-  bool bIsEqual;
-  
-  Entry* pScanEntry_sl = m_pHeadEntry;
-  
-  for (i8 i_ScanOffset = 2; i_ScanOffset >= 0; i_ScanOffset--) {
-    
-    Entry* pNextEntry_sl = pNextEntry(pScanEntry_sl,i_ScanOffset);
-    while (pNextEntry_sl) {
-      
-      Key* aNextKey = pNextEntry_sl->aKey();
-      
-      //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
-      //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
-      
-      bIsJuxta =
-        aNextKey->bJuxtaCompare(JC_AFTER,aFindKey,pIdxColVec,nKeyCols,bIsEqual);
-      
-      if (bIsJuxta)
-        break;
-      
-      pScanEntry_sl = pNextEntry_sl;
-     
-      pNextEntry_sl = pNextEntry(pNextEntry_sl,i_ScanOffset);
-    }
-  }
-  
-  return pScanEntry_sl;
-}
-
-/*----------------------------------------------------------------------------*/
-/* scan thru skip list and positition on entry prior to key                   */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vPositionPriorL0(Key* aFindKey, Entry* pPriorVec[],
-                                   Entry* pFindEntry)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  //vShow();
-  
-  //ASSERT(0 == m_iBufferLevel);
-  ASSERT(! pFindEntry || CN_ENTRY == pFindEntry->eClass());
-  
-  for (i8 nLevel = 0; nLevel < gpAttachMap->m_nIndexLevels; nLevel++)
-    pPriorVec[nLevel] = m_pHeadEntry;
-  
-  if (nItems() == 0)
-    return;
-  
-  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  i8 nKeyCols = pIdxColVec->nItems();
-  
-  bool bIsJuxta;
-  bool bIsEqual;
-
-  i8 iFindLevels = pFindEntry ? pFindEntry->nOffsets() - 1 : 2;
-  Entry* pScanEntry_sl = m_pHeadEntry;
-  
-  for (i8 i_ScanOffset = 2; i_ScanOffset >= 0; i_ScanOffset--) {
-
-    Entry* pNextEntry_sl = pNextEntry(pScanEntry_sl,i_ScanOffset);
-    while (pNextEntry_sl) {
-      
-//      if (CN_ENTRY != pNextEntry_sl->eClass()) {
-//        pScanEntry_sl->vNEOdump();
-//        vQuickVerify(pNextEntry_sl);
-//        vQuickVerify(pScanEntry_sl);
-//        vShow();
-//      }
-      ASSERT(CN_ENTRY == pNextEntry_sl->eClass());
-      
-      if (pFindEntry == pNextEntry_sl)
-        break;
-    
-      Key* aNextKey = pNextEntry_sl->aKey();
-      
-      //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
-      //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
-      
-      bIsJuxta =
-        aNextKey->bJuxtaCompare(JC_AFTER,aFindKey,pIdxColVec,nKeyCols,bIsEqual);
-      
-      if (bIsJuxta) {
-        if (! pFindEntry )
-          break;
-        
-        if (pNextEntry_sl == pFindEntry)
-          break;
-        
-        if (i_ScanOffset > iFindLevels)
-          break;
-        
-      }
-      
-      pScanEntry_sl = pNextEntry_sl;
-      pNextEntry_sl = pNextEntry(pNextEntry_sl,i_ScanOffset);
-    }
-    ASSERT(CN_ENTRY == pScanEntry_sl->eClass());
-    pPriorVec[i_ScanOffset] = pScanEntry_sl;
-  }
- 
-  if (pFindEntry) {
-//    vShow();
-//    vDumpPriorVec(pPriorVec);
-//    vTrace("PriorVec[0] %p Next %p FindEntry %p\n"_Stz,
-//           pPriorVec[0],
-//           pNextEntry(pPriorVec[0],0),
-//           pFindEntry);
-    //ASSERT(pNextEntry(pPriorVec[0],0) == pFindEntry);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* scan thru skip list and position on entry prior to Key & buffer no         */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vPositionPriorLn(Key* aFindKey, Entry* pPriorVec[],
-                                   i8 iBufferNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  //ASSERT(0 != m_iBufferLevel);
-  
-  i8 iFindInt = aFindKey->iGetInt();
-  if (7 == iFindInt)
-    int iDebug = 0;
-  
-  for (i8 nLevel = 0; nLevel < gpAttachMap->m_nIndexLevels; nLevel++)
-    pPriorVec[nLevel] = m_pHeadEntry;
-  
-  if (nItems() == 0)
-    return;
-  
-  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  i8 nKeyCols = pIdxColVec->nItems();
-  
-  bool bIsJuxta;
-  bool bIsEqual;
-  
-  Entry* pScanEntry_sl = m_pHeadEntry;
-  
-  for (i8 i_ScanOffset = 2; i_ScanOffset >= 0; i_ScanOffset--) {
-    
-    Entry* pNextEntry_sl = pNextEntry(pScanEntry_sl,i_ScanOffset);
-    while (pNextEntry_sl) {
-      
-      Key* aNextKey = pNextEntry_sl->aKey();
-      
-      //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
-      //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
-      
-      bIsJuxta =
-        aNextKey->bJuxtaCompare(JC_AFTER,aFindKey,pIdxColVec,nKeyCols,bIsEqual);
-      
-      if (bIsJuxta) {
-        if (! iBufferNo  || i_ScanOffset)
-          break;
-        i8 iRefBuffNo = pNextEntry_sl->iBufferNo();
-        if (iRefBuffNo == iBufferNo)
-          break;
-      }
-      
-      pScanEntry_sl = pNextEntry_sl;
-      pNextEntry_sl = pNextEntry(pNextEntry_sl,i_ScanOffset);
-    }
-    pPriorVec[i_ScanOffset] = pScanEntry_sl;
-  }
-  
-  if (iBufferNo) {
-//    vShow();
-//    vDumpPriorVec(pPriorVec);
-//    vTrace("PriorVec[0] %p Next %p iBufferNo %lld\n"_Stz,
-//           pPriorVec[0],
-//           pNextEntry(pPriorVec[0],0),
-//           iBufferNo);
-//    ASSERT(! pNextEntry(pPriorVec[0],0) ||
-//           pNextEntry(pPriorVec[0],0)->iBufferNo() == iBufferNo);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* scan thru skip list and position on entry prior to Key & buffer no         */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vPositionPriorLnAfter(Key* aFindKey, Entry* pPriorVec[],
-                                        EntryBuffer* pToBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  ASSERT(0 != m_iBufferLevel);
-  
-  i8 iBufferNo = *pToBuffer->nBufferNo();
-  
-  i8 iFindInt = aFindKey->iGetInt();
-  if (7 == iFindInt)
-    int iDebug = 0;
-  
-  for (i8 nLevel = 0; nLevel < gpAttachMap->m_nIndexLevels; nLevel++)
-    pPriorVec[nLevel] = m_pHeadEntry;
-  
-  if (nItems() == 0)
-    return;
-  
-  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  i8 nKeyCols = pIdxColVec->nItems();
-  
-  bool bAreSame;
-  bool bIsJuxta;
-  bool bIsEqual;
-  
-  Entry* pScanEntry_sl = m_pHeadEntry;
-  
-  for (i8 i_ScanOffset = 2; i_ScanOffset >= 0; i_ScanOffset--) {
-    
-    Entry* pNextEntry_sl = pNextEntry(pScanEntry_sl,i_ScanOffset);
-    while (pNextEntry_sl) {
-      
-      Key* aNextKey = pNextEntry_sl->aKey();
-      
-      //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
-      //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
-      
-      bIsJuxta =
-        //aNextKey->bJuxtaCompare(JC_AFTER,aFindKey,pIdxColVec,nKeyCols,bIsEqual);
-        aNextKey->bGreaterThan(aFindKey,pIdxColVec);
-      
-      if (bIsJuxta) {
-        
-        //if (! iBufferNo  || *i_ScanOffset)
-          break;
-        
-        //i8 iRefBuffNo = pScanEntry_sl->iBufferNo();
-        //if (pScanEntry_sl != m_pHeadEntry && iRefBuffNo < iBufferNo)
-        //  break;
-        
-      }
-  
-      if (0 == i_ScanOffset) {
-        bAreSame =
-          aNextKey->bEqualTo(aFindKey,pIdxColVec);
-        if (bAreSame &&
-              (pToBuffer == pNextEntry_sl->pReferencedEntryBuffer()->pPrevBuffer()))
-          break;
-      }
-      
-      pScanEntry_sl = pNextEntry_sl;
-      pNextEntry_sl = pNextEntry(pNextEntry_sl,i_ScanOffset);
-    }
-    pPriorVec[i_ScanOffset] = pScanEntry_sl;
-  }
-  
-  if (iBufferNo) {
-//    vShow();
-//    vDumpPriorVec(pPriorVec);
-//    vTrace("PriorVec[0] %p Next %p iBufferNo %lld\n"_Stz,
-//           pPriorVec[0],
-//           pNextEntry(pPriorVec[0],0),
-//           iBufferNo);
-//ASSERT(! pNextEntry(pPriorVec[0],0) ||
-//           pNextEntry(pPriorVec[0],0)->iBufferNo() == iBufferNo);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* restore the buffer after being received over a socket                      */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vRestore(void)
@@ -2571,6 +2297,280 @@ Item* EntryBuffer::pNextItem(Item* pCurrent)
   }
   
   return pItemNext;
+}
+
+/*----------------------------------------------------------------------------*/
+/* scan thru skip list and positition on entry prior to key                   */
+/*----------------------------------------------------------------------------*/
+Entry* EntryBuffer::pPositionPrior(Key* aFindKey)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  if (nItems() == 0)
+    return m_pHeadEntry;
+  
+  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  i8 nKeyCols = pIdxColVec->nItems();
+  
+  bool bIsJuxta;
+  bool bIsEqual;
+  
+  Entry* pScanEntry_sl = m_pHeadEntry;
+  
+  for (i8 i_ScanOffset = 2; i_ScanOffset >= 0; i_ScanOffset--) {
+    
+    Entry* pNextEntry_sl = pNextEntry(pScanEntry_sl,i_ScanOffset);
+    while (pNextEntry_sl) {
+      
+      Key* aNextKey = pNextEntry_sl->aKey();
+      
+      //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
+      //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
+      
+      bIsJuxta =
+      aNextKey->bJuxtaCompare(JC_AFTER,aFindKey,pIdxColVec,nKeyCols,bIsEqual);
+      
+      if (bIsJuxta)
+        break;
+      
+      pScanEntry_sl = pNextEntry_sl;
+      
+      pNextEntry_sl = pNextEntry(pNextEntry_sl,i_ScanOffset);
+    }
+  }
+  
+  return pScanEntry_sl;
+}
+
+/*----------------------------------------------------------------------------*/
+/* scan thru skip list and positition on entry prior to key                   */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vPositionPriorL0(Key* aFindKey, Entry* pPriorVec[],
+                                   Entry* pFindEntry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  //vShow();
+  
+  //ASSERT(0 == m_iBufferLevel);
+  ASSERT(! pFindEntry || CN_ENTRY == pFindEntry->eClass());
+  
+  for (i8 nLevel = 0; nLevel < gpAttachMap->m_nIndexLevels; nLevel++)
+    pPriorVec[nLevel] = m_pHeadEntry;
+  
+  if (nItems() == 0)
+    return;
+  
+  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  i8 nKeyCols = pIdxColVec->nItems();
+  
+  bool bIsJuxta;
+  bool bIsEqual;
+  
+  i8 iFindLevels = pFindEntry ? pFindEntry->nOffsets() - 1 : 2;
+  Entry* pScanEntry_sl = m_pHeadEntry;
+  
+  for (i8 i_ScanOffset = 2; i_ScanOffset >= 0; i_ScanOffset--) {
+    
+    Entry* pNextEntry_sl = pNextEntry(pScanEntry_sl,i_ScanOffset);
+    while (pNextEntry_sl) {
+      
+      //      if (CN_ENTRY != pNextEntry_sl->eClass()) {
+      //        pScanEntry_sl->vNEOdump();
+      //        vQuickVerify(pNextEntry_sl);
+      //        vQuickVerify(pScanEntry_sl);
+      //        vShow();
+      //      }
+      ASSERT(CN_ENTRY == pNextEntry_sl->eClass());
+      
+      if (pFindEntry == pNextEntry_sl)
+        break;
+      
+      Key* aNextKey = pNextEntry_sl->aKey();
+      
+      //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
+      //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
+      
+      bIsJuxta =
+      aNextKey->bJuxtaCompare(JC_AFTER,aFindKey,pIdxColVec,nKeyCols,bIsEqual);
+      
+      if (bIsJuxta) {
+        if (! pFindEntry )
+          break;
+        
+        if (pNextEntry_sl == pFindEntry)
+          break;
+        
+        if (i_ScanOffset > iFindLevels)
+          break;
+        
+      }
+      
+      pScanEntry_sl = pNextEntry_sl;
+      pNextEntry_sl = pNextEntry(pNextEntry_sl,i_ScanOffset);
+    }
+    ASSERT(CN_ENTRY == pScanEntry_sl->eClass());
+    pPriorVec[i_ScanOffset] = pScanEntry_sl;
+  }
+  
+  if (pFindEntry) {
+    //    vShow();
+    //    vDumpPriorVec(pPriorVec);
+    //    vTrace("PriorVec[0] %p Next %p FindEntry %p\n"_Stz,
+    //           pPriorVec[0],
+    //           pNextEntry(pPriorVec[0],0),
+    //           pFindEntry);
+    //ASSERT(pNextEntry(pPriorVec[0],0) == pFindEntry);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* scan thru skip list and position on entry prior to Key & buffer no         */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vPositionPriorLn(Key* aFindKey, Entry* pPriorVec[],
+                                   i8 iBufferNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  //ASSERT(0 != m_iBufferLevel);
+  
+  i8 iFindInt = aFindKey->iGetInt();
+  if (7 == iFindInt)
+    int iDebug = 0;
+  
+  for (i8 nLevel = 0; nLevel < gpAttachMap->m_nIndexLevels; nLevel++)
+    pPriorVec[nLevel] = m_pHeadEntry;
+  
+  if (nItems() == 0)
+    return;
+  
+  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  i8 nKeyCols = pIdxColVec->nItems();
+  
+  bool bIsJuxta;
+  bool bIsEqual;
+  
+  Entry* pScanEntry_sl = m_pHeadEntry;
+  
+  for (i8 i_ScanOffset = 2; i_ScanOffset >= 0; i_ScanOffset--) {
+    
+    Entry* pNextEntry_sl = pNextEntry(pScanEntry_sl,i_ScanOffset);
+    while (pNextEntry_sl) {
+      
+      Key* aNextKey = pNextEntry_sl->aKey();
+      
+      //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
+      //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
+      
+      bIsJuxta =
+      aNextKey->bJuxtaCompare(JC_AFTER,aFindKey,pIdxColVec,nKeyCols,bIsEqual);
+      
+      if (bIsJuxta) {
+        if (! iBufferNo  || i_ScanOffset)
+          break;
+        i8 iRefBuffNo = pNextEntry_sl->iBufferNo();
+        if (iRefBuffNo == iBufferNo)
+          break;
+      }
+      
+      pScanEntry_sl = pNextEntry_sl;
+      pNextEntry_sl = pNextEntry(pNextEntry_sl,i_ScanOffset);
+    }
+    pPriorVec[i_ScanOffset] = pScanEntry_sl;
+  }
+  
+  if (iBufferNo) {
+    //    vShow();
+    //    vDumpPriorVec(pPriorVec);
+    //    vTrace("PriorVec[0] %p Next %p iBufferNo %lld\n"_Stz,
+    //           pPriorVec[0],
+    //           pNextEntry(pPriorVec[0],0),
+    //           iBufferNo);
+    //    ASSERT(! pNextEntry(pPriorVec[0],0) ||
+    //           pNextEntry(pPriorVec[0],0)->iBufferNo() == iBufferNo);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* scan thru skip list and position on entry prior to Key & buffer no         */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vPositionPriorLnAfter(Key* aFindKey, Entry* pPriorVec[],
+                                        EntryBuffer* pToBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  ASSERT(0 != m_iBufferLevel);
+  
+  i8 iBufferNo = *pToBuffer->nBufferNo();
+  
+  i8 iFindInt = aFindKey->iGetInt();
+  if (7 == iFindInt)
+    int iDebug = 0;
+  
+  for (i8 nLevel = 0; nLevel < gpAttachMap->m_nIndexLevels; nLevel++)
+    pPriorVec[nLevel] = m_pHeadEntry;
+  
+  if (nItems() == 0)
+    return;
+  
+  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  i8 nKeyCols = pIdxColVec->nItems();
+  
+  bool bAreSame;
+  bool bIsJuxta;
+  bool bIsEqual;
+  
+  Entry* pScanEntry_sl = m_pHeadEntry;
+  
+  for (i8 i_ScanOffset = 2; i_ScanOffset >= 0; i_ScanOffset--) {
+    
+    Entry* pNextEntry_sl = pNextEntry(pScanEntry_sl,i_ScanOffset);
+    while (pNextEntry_sl) {
+      
+      Key* aNextKey = pNextEntry_sl->aKey();
+      
+      //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
+      //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
+      
+      bIsJuxta =
+      //aNextKey->bJuxtaCompare(JC_AFTER,aFindKey,pIdxColVec,nKeyCols,bIsEqual);
+      aNextKey->bGreaterThan(aFindKey,pIdxColVec);
+      
+      if (bIsJuxta) {
+        
+        //if (! iBufferNo  || *i_ScanOffset)
+        break;
+        
+        //i8 iRefBuffNo = pScanEntry_sl->iBufferNo();
+        //if (pScanEntry_sl != m_pHeadEntry && iRefBuffNo < iBufferNo)
+        //  break;
+        
+      }
+      
+      if (0 == i_ScanOffset) {
+        bAreSame =
+        aNextKey->bEqualTo(aFindKey,pIdxColVec);
+        if (bAreSame &&
+            (pToBuffer == pNextEntry_sl->pReferencedEntryBuffer()->pPrevBuffer()))
+          break;
+      }
+      
+      pScanEntry_sl = pNextEntry_sl;
+      pNextEntry_sl = pNextEntry(pNextEntry_sl,i_ScanOffset);
+    }
+    pPriorVec[i_ScanOffset] = pScanEntry_sl;
+  }
+  
+  if (iBufferNo) {
+    //    vShow();
+    //    vDumpPriorVec(pPriorVec);
+    //    vTrace("PriorVec[0] %p Next %p iBufferNo %lld\n"_Stz,
+    //           pPriorVec[0],
+    //           pNextEntry(pPriorVec[0],0),
+    //           iBufferNo);
+    //ASSERT(! pNextEntry(pPriorVec[0],0) ||
+    //           pNextEntry(pPriorVec[0],0)->iBufferNo() == iBufferNo);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
