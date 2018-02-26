@@ -63,7 +63,20 @@ Wilderness::~Wilderness(void)
 /*----------------------------------------------------------------------------*/
 void Wilderness::vAssertWilderness(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WILDERNESS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WILDERNESS);
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for valid wilderness                                                  */
+/*----------------------------------------------------------------------------*/
+bool Wilderness::bValidWilderness(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WILDERNESS);
+  
+  if (CN_WILDERNESS != eClass())
+    return false;
+  
+  return true;
 }
 
 /*============================================================================*/

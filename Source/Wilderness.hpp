@@ -16,6 +16,7 @@ namespace DBobjects
     ~Wilderness(void);
   
     void vAssertWilderness(void);
+    bool bValidWilderness(void);
   };
   
   Wilderness* _pWilderness(void* aAddr);

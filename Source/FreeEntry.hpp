@@ -20,6 +20,7 @@ namespace DBobjects
     ~FreeEntry(void);
   
     void vAssertFreeEntry(void);
+    bool bValidFreeEntry(void);
   
     FreeEntry* pNextFree(void);
     void       vNextFree(FreeEntry* pNextFree);

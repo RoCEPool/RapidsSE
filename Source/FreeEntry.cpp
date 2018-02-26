@@ -86,6 +86,22 @@ void FreeEntry::vAssertFreeEntry(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test for valid free entry                                                  */
+/*----------------------------------------------------------------------------*/
+bool FreeEntry::bValidFreeEntry(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FREEENTRY,_FOOTER_);
+  
+  if (CN_FREEENTRY != eClass())
+    return false;
+
+  if (! aFooter()->bValidFooter())
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

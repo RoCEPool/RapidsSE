@@ -89,7 +89,10 @@ bool Entry::bValidEntry(void)
   if (CN_ENTRY != eClass())
     return false;
   
-  return true;
+  if (! aFooter()->bValidFooter())
+    return false;
+  
+ return true;
 }
 
 /*----------------------------------------------------------------------------*/
