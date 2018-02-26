@@ -193,6 +193,7 @@ namespace DBobjects
     bool         bVerifyItems(void);
     bool         bVerifyKeyOrder(void);
     bool         bVerifyRows(void);
+    void         vVerifyFault(void);
 
   
     public:

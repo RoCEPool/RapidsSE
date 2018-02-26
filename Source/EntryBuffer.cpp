@@ -2743,8 +2743,10 @@ bool EntryBuffer::bVerifyEntryOffset(void)
     
     if (i_EntryOffset < 0) {
       i8 i_NextEntryOffset = m_pEntryOffset[i_EntryOffset];
-      if (i_NextEntryOffset >= 0)
+      if (i_NextEntryOffset >= 0) {
+        vVerifyFault();
         return false;
+      }
     }
     
     Entry* pEntry = pGetEntryOffset(i_EntryOffset);
@@ -2765,10 +2767,13 @@ bool EntryBuffer::bVerifyFreeList(void)
   
   for (FreeEntry* pFreeEntry = pFirstFree();
        pFreeEntry != nullptr;
-       pFreeEntry = pFreeEntry->pNextFree())
-    if (! pFreeEntry->bValidFreeEntry())
+       pFreeEntry = pFreeEntry->pNextFree()) {
+    if (! pFreeEntry->bValidFreeEntry()) {
+      vVerifyFault();
       return false;
-  
+    }
+  }
+
   return true;
 }
 
@@ -2789,7 +2794,9 @@ bool EntryBuffer::bVerifyItems(void)
       case CN_ENTRY:      break;
       case CN_FREEENTRY:  break;
       case CN_WILDERNESS: break;
-      default:            return false;
+      default:
+        vVerifyFault();
+        return false;
     }
   }
   
@@ -2814,6 +2821,16 @@ bool EntryBuffer::bVerifyRows(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* verify has detected a fault                                                */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vVerifyFault(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  return;
 }
 
 /*----------------------------------------------------------------------------*/
