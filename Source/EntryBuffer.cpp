@@ -2754,6 +2754,20 @@ bool EntryBuffer::bVerifyItems(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+  for (Item* pItem = pFirstItem();
+       pItem != nullptr;
+       pItem = pNextItem(pItem)) {
+    
+    eCN eClass = pItem->eClass();
+    
+    switch (eClass) {
+      case CN_ENTRY:      break;
+      case CN_FREEENTRY:  break;
+      case CN_WILDERNESS: break;
+      default:            return false;
+    }
+  }
+  
   return true;
 }
 
