@@ -1387,8 +1387,19 @@ void EntryBuffer::vTruncate(void)
 /*----------------------------------------------------------------------------*/
 /* verify the structure of this buffer                                        */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bVerify(void) {
-  RASSERT(0);
+bool EntryBuffer::bVerify(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  //RASSERT(0);
+  
+  bool bValid = false;
+  if (0 == m_iBufferLevel)
+    bValid = bVerifyL0();
+  else
+    bValid = bVerifyLn();
+  
+  return bValid;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2586,6 +2597,26 @@ bool EntryBuffer::bQuickVerify(Entry* pNotSeeEntry)
     }
   }
    
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* verify the structure of this L0 buffer                                     */
+/*----------------------------------------------------------------------------*/
+bool EntryBuffer::bVerifyL0(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* verify the structure of this Ln buffer                                     */
+/*----------------------------------------------------------------------------*/
+bool EntryBuffer::bVerifyLn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
   return true;
 }
 

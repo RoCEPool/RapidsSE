@@ -184,6 +184,8 @@ namespace DBobjects
                                        EntryBuffer* pToBuffer);
     void         vQuickVerify(Entry* pSeeEntry=nullptr);
     bool         bQuickVerify(Entry* pNotSeeEntry);
+    bool         bVerifyL0(void);
+    bool         bVerifyLn(void);
   
     public:
     Footer* aFooter(void);
