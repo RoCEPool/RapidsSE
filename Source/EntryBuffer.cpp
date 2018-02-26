@@ -2314,7 +2314,9 @@ Entry* EntryBuffer::pPositionPrior(Key* aFindKey)
   
   Entry* pScanEntry_sl = m_pHeadEntry;
   
-  for (i8 i_ScanOffset = 2; i_ScanOffset >= 0; i_ScanOffset--) {
+  for (i8 i_ScanOffset = gpAttachMap->m_nIndexOffsets - 1;
+       i_ScanOffset >= 0;
+       i_ScanOffset--) {
     
     Entry* pNextEntry_sl = pNextEntry(pScanEntry_sl,i_ScanOffset);
     while (pNextEntry_sl) {
@@ -2361,7 +2363,9 @@ void EntryBuffer::vPositionPriorL0(Key* aFindKey, Entry* pPriorVec[],
   i8 iFindLevels = pFindEntry ? pFindEntry->nOffsets() - 1 : 2;
   Entry* pScanEntry_sl = m_pHeadEntry;
   
-  for (i8 i_ScanOffset = 2; i_ScanOffset >= 0; i_ScanOffset--) {
+  for (i8 i_ScanOffset = gpAttachMap->m_nIndexOffsets - 1;
+       i_ScanOffset >= 0;
+       i_ScanOffset--) {
     
     Entry* pNextEntry_sl = pNextEntry(pScanEntry_sl,i_ScanOffset);
     while (pNextEntry_sl) {
@@ -2415,7 +2419,9 @@ void EntryBuffer::vPositionPriorLn(Key* aFindKey, Entry* pPriorVec[],
   
   Entry* pScanEntry_sl = m_pHeadEntry;
   
-  for (i8 i_ScanOffset = 2; i_ScanOffset >= 0; i_ScanOffset--) {
+  for (i8 i_ScanOffset = gpAttachMap->m_nIndexOffsets - 1;
+       i_ScanOffset >= 0;
+       i_ScanOffset--) {
     
     Entry* pNextEntry_sl = pNextEntry(pScanEntry_sl,i_ScanOffset);
     while (pNextEntry_sl) {
@@ -2465,7 +2471,9 @@ void EntryBuffer::vPositionPriorLnAfter(Key* aFindKey, Entry* pPriorVec[],
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
   Entry* pScanEntry_sl = m_pHeadEntry;
-  for (i8 i_ScanOffset = 2; i_ScanOffset >= 0; i_ScanOffset--) {
+  for (i8 i_ScanOffset = gpAttachMap->m_nIndexOffsets - 1;
+       i_ScanOffset >= 0;
+       i_ScanOffset--) {
     
     Entry* pNextEntry_sl = pNextEntry(pScanEntry_sl,i_ScanOffset);
     while (pNextEntry_sl) {
