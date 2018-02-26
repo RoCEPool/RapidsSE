@@ -20,6 +20,7 @@ namespace CorrectnessAlgebra
     ~Footer(void);
     
     void vAssertFooter(void) const;
+    bool bValidFooter(void);
     void vSetFooter(void);
   };
 }

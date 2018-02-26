@@ -34,6 +34,7 @@ namespace DBobjects
     ~Entry(void);
   
     void vAssertEntry(void);
+    bool bValidEntry(void);
   
     static i8 nBytesRequired(EntWrk& xEntWrk);
     static i8 nBytesRequired(i8 nEmbeddedBytes);

@@ -2733,6 +2733,25 @@ bool EntryBuffer::bVerifyLn(void)
 bool EntryBuffer::bVerifyEntryOffset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+
+  for (i8 i_Offset = 0; i_Offset < C_ENTRIES_0; i_Offset++) {
+
+    i8 i_EntryOffset = m_pEntryOffset[i_Offset];
+    
+    if (C_ENTRY_NONE == i_EntryOffset)
+      continue;
+    
+    if (i_EntryOffset < 0) {
+      i8 i_NextEntryOffset = m_pEntryOffset[i_EntryOffset];
+      if (i_NextEntryOffset >= 0)
+        return false;
+    }
+    
+    Entry* pEntry = pGetEntryOffset(i_EntryOffset);
+    
+    if (! pEntry->bValidEntry())
+      return false;
+  }
   
   return true;
 }
