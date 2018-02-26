@@ -535,7 +535,7 @@ void EntryBuffer::vCompact(void)
   
   FreeEntry* pFreeEntry;
   Entry*     pMoveEntry;
-  Entry*     xPriorVec[3];
+  Entry*     xPriorVec[gpAttachMap->m_nIndexOffsets];
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
   // we can only compact if there are free entries
@@ -686,7 +686,7 @@ void EntryBuffer::vDeleteEntry(Entry* pEntry)
   // currently we only delete from non-hidden indexes
   ASSERT(! m_pIndex->bIsHidden());
   
-  Entry* xPriorVec[3];
+  Entry* xPriorVec[gpAttachMap->m_nIndexOffsets];
 
   Key* aKey = pEntry->aKey();
   i8 iBufferNo = pEntry->iBufferNo();
@@ -711,7 +711,7 @@ void EntryBuffer::vDeleteEntry(Key* aKey)
   // currently we only delete from non-hidden indexes
   ASSERT(! m_pIndex->bIsHidden());
   
-  Entry* xPriorVec[3];
+  Entry* xPriorVec[gpAttachMap->m_nIndexOffsets];
   
   vPositionPriorL0(aKey, xPriorVec);
   
@@ -1266,7 +1266,7 @@ EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
   Key* aKey = pSplitEntry->aKey();
   i8 iKeyLength = aKey->nKeySize(pIdxColVec);
   
-  Entry* xPriorVec[3];
+  Entry* xPriorVec[gpAttachMap->m_nIndexOffsets];
   if (0 == m_iBufferLevel) {
     vPositionPriorL0(aKey, xPriorVec, pSplitEntry);
   }
@@ -1795,7 +1795,7 @@ Entry* EntryBuffer::pInsertKey(KeyWrk& xKeyWrk,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Entry* xPriorVec[3];
+  Entry* xPriorVec[gpAttachMap->m_nIndexOffsets];
   
   // find the entry after which the new entry.key will be inserted
   //Key* aKey = xKeyWrk.aKey();
@@ -1973,7 +1973,7 @@ Entry* EntryBuffer::pInsertKeyAbs(KeyWrk& xKeyWrk,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the entry after which the new entry will be inserted
   
-  Entry* xPriorVec[3];
+  Entry* xPriorVec[gpAttachMap->m_nIndexOffsets];
   
   Key* aKey = xKeyWrk.aKey();
   
@@ -2339,7 +2339,7 @@ Entry* EntryBuffer::pPositionPrior(Key* aFindKey)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compute prior vector for find key, such that next of prior L0 is           */
+/* compute prior vector for find key, such that next of priorVec[0] is        */
 /* specifically the given find entry                                          */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vPositionPriorL0(Key* aFindKey, Entry* pPriorVec[],
@@ -2396,8 +2396,8 @@ void EntryBuffer::vPositionPriorL0(Key* aFindKey, Entry* pPriorVec[],
 }
 
 /*----------------------------------------------------------------------------*/
-/* compute prior vector for find key, such that next of prior L0 is the entry */
-/* which has given buffer no                                                  */
+/* compute prior vector for find key, such that next of priorVec[0] is the    */
+/* entry which has given buffer no                                            */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vPositionPriorLn(Key* aFindKey, Entry* pPriorVec[],
                                    i8 iBufferNo)
@@ -2450,8 +2450,8 @@ void EntryBuffer::vPositionPriorLn(Key* aFindKey, Entry* pPriorVec[],
 }
 
 /*----------------------------------------------------------------------------*/
-/* compute prior vector for find key, such that next of prior L0 is the next  */
-/* buffer after find keys pToBuffer (ie nextBuffer->prevBuffer == toBuffer)   */
+/* compute prior vec for find key, such that next of priorVec[0] is the next  */
+/* buffer after find keys toBuffer (ie nextBuffer->prevBuffer == toBuffer)    */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vPositionPriorLnAfter(Key* aFindKey, Entry* pPriorVec[],
                                         EntryBuffer* pToBuffer)
