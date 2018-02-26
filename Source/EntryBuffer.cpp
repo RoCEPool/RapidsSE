@@ -2618,6 +2618,24 @@ bool EntryBuffer::bVerifyL0(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // verify the contents of this L0 non-hidden index buffer
   
+  bool bValid;
+  
+  bValid = bVerifyItems();
+  if (! bValid)
+    return false;
+  
+  bValid = bVerifyFreeList();
+  if (! bValid)
+    return false;
+  
+  bValid = bVerifyEntryOffset();
+  if (! bValid)
+    return false;
+  
+  bValid = bVerifyKeyOrder();
+  if (! bValid)
+    return false;
+  
   return true;
 }
 
@@ -2634,6 +2652,24 @@ bool EntryBuffer::bVerifyL0Hidden(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // verify the contents of this L0 hidden index buffer buffer
   
+  bool bValid;
+  
+  bValid = bVerifyItems();
+  if (! bValid)
+    return false;
+  
+  bValid = bVerifyFreeList();
+  if (! bValid)
+    return false;
+  
+  bValid = bVerifyEntryOffset();
+  if (! bValid)
+    return false;
+  
+  bValid = bVerifyRows();
+  if (! bValid)
+    return false;
+  
   return true;
 }
 
@@ -2649,10 +2685,28 @@ bool EntryBuffer::bVerifyLn(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // verify the contents of this buffer
   
+  bool bValid;
+  
+  bValid = bVerifyItems();
+  if (! bValid)
+    return false;
+  
+  bValid = bVerifyFreeList();
+  if (! bValid)
+    return false;
+  
+  bValid = bVerifyEntryOffset();
+  if (! bValid)
+    return false;
+  
+  bValid = bVerifyKeyOrder();
+  if (! bValid)
+    return false;
+  
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // verify the contents of child buffers
   
-  bool bValid;
   for (Entry* pEntry = pGetEntryOffset(m_pHeadEntry->iNEO(0));
        pEntry;
        pEntry = pGetEntryOffset(pEntry->iNEO(0))) {
