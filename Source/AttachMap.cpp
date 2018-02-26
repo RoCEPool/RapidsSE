@@ -114,7 +114,7 @@ void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize, i8 iJumboSize)
   
   //m_nIndexEntries = 0;
   m_nIndexLevels  = 3;
-  m_nIndexOffsets = m_nIndexLevels - 1;
+  m_nIndexOffsets = 3;
   
   m_iStop       = 0;
   m_iQuit       = 0;

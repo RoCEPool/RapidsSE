@@ -79,7 +79,7 @@ void Task::vAttachMapStore(MP_Task mpTask)
       if (iIndexLevels >= C_FLAT_LEVELS_MAX)
         THROW("IndexLevel should be < %lldattachmap::attachmap!"_Stz, C_FLAT_LEVELS_MAX);
       gpAttachMap->m_nIndexLevels = iIndexLevels;
-      gpAttachMap->m_nIndexOffsets = gpAttachMap->m_nIndexLevels - 1;
+      gpAttachMap->m_nIndexOffsets = gpAttachMap->m_nIndexLevels;
       break;
     
     default:

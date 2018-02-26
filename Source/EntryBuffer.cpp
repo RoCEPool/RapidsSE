@@ -2347,7 +2347,7 @@ void EntryBuffer::vPositionPriorL0(Key* aFindKey, Entry* pPriorVec[],
   
   //ASSERT(0 == m_iBufferLevel);
   
-  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexLevels; i_Offset++)
+  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexOffsets; i_Offset++)
     pPriorVec[i_Offset] = m_pHeadEntry;
   
   if (nItems() == 0)
@@ -2402,7 +2402,7 @@ void EntryBuffer::vPositionPriorLn(Key* aFindKey, Entry* pPriorVec[],
   
   //ASSERT(0 != m_iBufferLevel);
   
-  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexLevels; i_Offset++)
+  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexOffsets; i_Offset++)
     pPriorVec[i_Offset] = m_pHeadEntry;
   
   if (nItems() == 0)
@@ -2454,7 +2454,7 @@ void EntryBuffer::vPositionPriorLnAfter(Key* aFindKey, Entry* pPriorVec[],
   
   ASSERT(0 != m_iBufferLevel);
   
-  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexLevels; i_Offset++)
+  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexOffsets; i_Offset++)
     pPriorVec[i_Offset] = m_pHeadEntry;
   
   if (nItems() == 0)
