@@ -2763,6 +2763,12 @@ bool EntryBuffer::bVerifyFreeList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+  for (FreeEntry* pFreeEntry = pFirstFree();
+       pFreeEntry != nullptr;
+       pFreeEntry = pFreeEntry->pNextFree())
+    if (! pFreeEntry->bValidFreeEntry())
+      return false;
+  
   return true;
 }
 
