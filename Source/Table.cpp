@@ -766,6 +766,27 @@ void Table::vTruncateIndex(i8 iIndexNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* verify all indexes                                                         */
+/*----------------------------------------------------------------------------*/
+bool Table::bVerifyIndexes(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  Partition* pPartition = this->pPartition(0);             //# discuss with Alka
+  IdxDataVec* pIdxDataVec = pPartition->pIdxDataVec();
+  i8 nIndexes = pIdxDataVec->nItems();
+
+  for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
+    IndexData* pIndexData = pIdxDataVec->pGet(i_Index);
+    bool bValid = pIndexData->bVerifyIndex();
+    if (! bValid)
+      return false;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* verify index                                                               */
 /*----------------------------------------------------------------------------*/
 bool Table::bVerifyIndex(Index* pIndex)

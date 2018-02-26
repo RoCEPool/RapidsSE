@@ -89,6 +89,7 @@ namespace DBobjects
     void vTidyUpIndex(i8 iIndexNo);
     void vTruncate(void);
     void vTruncateIndex(i8 iIndexNo);
+    bool bVerifyIndexes(void);
     bool bVerifyIndex(Index* pIndex);
     
     Footer* aFooter(void);
