@@ -92,6 +92,9 @@ bool FreeEntry::bValidFreeEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FREEENTRY,_FOOTER_);
   
+  if (! bValidMagic())
+    return false;
+  
   if (CN_FREEENTRY != eClass())
     return false;
 

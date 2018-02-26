@@ -86,6 +86,9 @@ bool Entry::bValidEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
+  if (! bValidMagic())
+    return false;
+  
   if (CN_ENTRY != eClass())
     return false;
   

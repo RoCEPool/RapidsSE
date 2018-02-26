@@ -73,6 +73,9 @@ bool Wilderness::bValidWilderness(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WILDERNESS);
   
+  if (! bValidMagic())
+    return false;
+  
   if (CN_WILDERNESS != eClass())
     return false;
   
