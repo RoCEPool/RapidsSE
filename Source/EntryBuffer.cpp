@@ -2707,9 +2707,8 @@ bool EntryBuffer::bVerifyLn(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // verify the contents of child buffers
   
-  for (Entry* pEntry = pGetEntryOffset(m_pHeadEntry->iNEO(0));
-       pEntry;
-       pEntry = pGetEntryOffset(pEntry->iNEO(0))) {
+  for (Entry* pEntry = pFirstEntry(); pEntry; pEntry = pNextEntry(pEntry,0)) {
+    
     EntryBuffer* pRefEntBuf = pEntry->pReferencedEntryBuffer();
     if (pRefEntBuf->m_iBufferLevel) {
       bValid = pRefEntBuf->bVerifyLn();
@@ -2768,6 +2767,7 @@ bool EntryBuffer::bVerifyFreeList(void)
   for (FreeEntry* pFreeEntry = pFirstFree();
        pFreeEntry != nullptr;
        pFreeEntry = pFreeEntry->pNextFree()) {
+    
     if (! pFreeEntry->bValidFreeEntry()) {
       vVerifyFault();
       return false;
@@ -2810,6 +2810,25 @@ bool EntryBuffer::bVerifyKeyOrder(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  
+  for (Entry* pEntry = pFirstEntry(); pEntry; pEntry = pNextEntry(pEntry,0)) {
+    
+    Entry* pNextEntry = this->pNextEntry(pEntry,0);
+    if (! pNextEntry)
+      break;
+    
+    // get keys of the two entries
+    Key* pKeyA = pEntry->aKey();
+    Key* pKeyB = pNextEntry->aKey();
+
+    bool bGreaterEqual = pKeyB->bGreaterEqual(pKeyA,pIdxColVec);
+    if (! bGreaterEqual) {
+      vVerifyFault();
+      return false;
+    }
+  }
+  
   return true;
 }
 
@@ -2819,6 +2838,9 @@ bool EntryBuffer::bVerifyKeyOrder(void)
 bool EntryBuffer::bVerifyRows(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  for (Entry* pEntry = pFirstEntry(); pEntry; pEntry = pNextEntry(pEntry,0)) {
+  }
   
   return true;
 }
