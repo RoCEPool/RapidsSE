@@ -188,6 +188,7 @@ namespace DBobjects
     bool         bVerifyL0Hidden(void);
     bool         bVerifyLn(void);
 
+    bool         bVerifyBufferRefs(void);
     bool         bVerifyEntryOffset(void);
     bool         bVerifyFreeList(void);
     bool         bVerifyItems(void);

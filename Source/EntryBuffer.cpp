@@ -2707,6 +2707,10 @@ bool EntryBuffer::bVerifyLn(void)
   if (! bValid)
     return false;
   
+  bValid = bVerifyBufferRefs();
+  if (! bValid)
+    return false;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // verify the contents of child buffers
   
@@ -2724,6 +2728,21 @@ bool EntryBuffer::bVerifyLn(void)
     }
     if (! bValid)
       return false;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* verify the buffer references in this Ln index buffer                       */
+/*----------------------------------------------------------------------------*/
+bool EntryBuffer::bVerifyBufferRefs(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  RASSERT(0 != m_iBufferLevel);
+  
+  for (Entry* pEntry = pFirstEntry(); pEntry; pEntry = pNextEntry(pEntry,0)) {
   }
   
   return true;
