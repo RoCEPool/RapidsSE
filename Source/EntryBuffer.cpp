@@ -2636,6 +2636,10 @@ bool EntryBuffer::bVerifyL0(void)
   if (! bValid)
     return false;
   
+  bValid = bVerifyRowRefs();
+  if (! bValid)
+    return false;
+  
   return true;
 }
 
@@ -2702,7 +2706,6 @@ bool EntryBuffer::bVerifyLn(void)
   bValid = bVerifyKeyOrder();
   if (! bValid)
     return false;
-  
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // verify the contents of child buffers
@@ -2838,6 +2841,25 @@ bool EntryBuffer::bVerifyKeyOrder(void)
 bool EntryBuffer::bVerifyRows(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  RASSERT(0 == m_iBufferLevel);
+  RASSERT(m_pIndex->bIsHidden());
+  
+  for (Entry* pEntry = pFirstEntry(); pEntry; pEntry = pNextEntry(pEntry,0)) {
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* verify the row references in this L0 non-hidden index buffer               */
+/*----------------------------------------------------------------------------*/
+bool EntryBuffer::bVerifyRowRefs(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  RASSERT(0 == m_iBufferLevel);
+  RASSERT(! m_pIndex->bIsHidden());
   
   for (Entry* pEntry = pFirstEntry(); pEntry; pEntry = pNextEntry(pEntry,0)) {
   }
