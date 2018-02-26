@@ -1385,7 +1385,7 @@ void EntryBuffer::vTruncate(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* verify the structure of this buffer                                        */
+/* verify the structure of this buffer (and its children)                     */
 /*----------------------------------------------------------------------------*/
 bool EntryBuffer::bVerify(void)
 {
@@ -1395,14 +1395,14 @@ bool EntryBuffer::bVerify(void)
   
   bool bValid = false;
   
-  if (0 == m_iBufferLevel) {
+  if (m_iBufferLevel) {
+    bValid = bVerifyLnAny();
+  }
+  else {
     if (m_pIndex->bIsHidden())
       bValid = bVerifyL0Hidden();
     else
-      bValid = bVerifyL0();
-  }
-  else {
-    bValid = bVerifyLn();
+      bValid = bVerifyL0Other();
   }
   
   return bValid;
@@ -2609,7 +2609,7 @@ bool EntryBuffer::bQuickVerify(Entry* pNotSeeEntry)
 /*----------------------------------------------------------------------------*/
 /* verify the structure of this L0 buffer (non-hidden index)                  */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bVerifyL0(void)
+bool EntryBuffer::bVerifyL0Other(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -2678,9 +2678,9 @@ bool EntryBuffer::bVerifyL0Hidden(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* verify the structure of this Ln buffer                                     */
+/* verify the structure of this Ln buffer (any index)                         */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bVerifyLn(void)
+bool EntryBuffer::bVerifyLnAny(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -2718,13 +2718,13 @@ bool EntryBuffer::bVerifyLn(void)
     
     EntryBuffer* pRefEntBuf = pEntry->pReferencedEntryBuffer();
     if (pRefEntBuf->m_iBufferLevel) {
-      bValid = pRefEntBuf->bVerifyLn();
+      bValid = pRefEntBuf->bVerifyLnAny();
     }
     else {
       if (m_pIndex->bIsHidden())
         bValid = pRefEntBuf->bVerifyL0Hidden();
       else
-        bValid = pRefEntBuf->bVerifyL0();
+        bValid = pRefEntBuf->bVerifyL0Other();
     }
     if (! bValid)
       return false;

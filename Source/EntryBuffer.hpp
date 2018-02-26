@@ -184,9 +184,10 @@ namespace DBobjects
                                        EntryBuffer* pToBuffer);
     void         vQuickVerify(Entry* pSeeEntry=nullptr);
     bool         bQuickVerify(Entry* pNotSeeEntry);
-    bool         bVerifyL0(void);
+  
     bool         bVerifyL0Hidden(void);
-    bool         bVerifyLn(void);
+    bool         bVerifyL0Other(void);
+    bool         bVerifyLnAny(void);
 
     bool         bVerifyBufferRefs(void);
     bool         bVerifyEntryOffset(void);
