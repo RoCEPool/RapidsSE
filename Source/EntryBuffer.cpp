@@ -2754,6 +2754,8 @@ bool EntryBuffer::bVerifyBufferRefs(void)
 bool EntryBuffer::bVerifyEntryOffset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  //vShow();
 
   for (i8 i_Offset = 0; i_Offset < C_ENTRIES_0; i_Offset++) {
 
@@ -2763,11 +2765,21 @@ bool EntryBuffer::bVerifyEntryOffset(void)
       continue;
     
     if (i_EntryOffset < 0) {
-      i8 i_NextEntryOffset = m_pEntryOffset[i_EntryOffset];
+      
+      if (C_ENTRY_NONE == - i_EntryOffset)
+        continue;
+      
+      i8 i_NextEntryOffset = m_pEntryOffset[ - i_EntryOffset ];
+      
+      if (C_ENTRY_NONE == - i_NextEntryOffset)
+        continue;
+
       if (i_NextEntryOffset >= 0) {
         vVerifyFault();
         return false;
       }
+      
+      continue;
     }
     
     Entry* pEntry = pGetEntryOffset(i_EntryOffset);

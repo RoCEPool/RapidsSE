@@ -309,13 +309,21 @@ bool Table::bAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
   // mark indexes being loaded
   --m_ziIndexesLoaded;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // temporary                                                           //! fix
+  
+  if (1 == gpAttachMap->m_pGrid->m_nPartitions) {
+    bool bValid = bVerifyIndexes();
+  }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   return true;
  
   // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
 }
 
 /*----------------------------------------------------------------------------*/
-/* is data loaded ?                                                             */
+/* is data loaded ?                                                           */
 /*----------------------------------------------------------------------------*/
 bool Table::bDataLoaded(void)
 {
