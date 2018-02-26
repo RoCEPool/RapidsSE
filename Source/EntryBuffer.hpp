@@ -185,7 +185,15 @@ namespace DBobjects
     void         vQuickVerify(Entry* pSeeEntry=nullptr);
     bool         bQuickVerify(Entry* pNotSeeEntry);
     bool         bVerifyL0(void);
+    bool         bVerifyL0Hidden(void);
     bool         bVerifyLn(void);
+
+    bool         bVerifyEntryOffset(void);
+    bool         bVerifyFreeList(void);
+    bool         bVerifyItems(void);
+    bool         bVerifyKeyOrder(void);
+    bool         bVerifyRows(void);
+
   
     public:
     Footer* aFooter(void);

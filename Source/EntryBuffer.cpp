@@ -1394,10 +1394,16 @@ bool EntryBuffer::bVerify(void)
   //RASSERT(0);
   
   bool bValid = false;
-  if (0 == m_iBufferLevel)
-    bValid = bVerifyL0();
-  else
+  
+  if (0 == m_iBufferLevel) {
+    if (m_pIndex->bIsHidden())
+      bValid = bVerifyL0Hidden();
+    else
+      bValid = bVerifyL0();
+  }
+  else {
     bValid = bVerifyLn();
+  }
   
   return bValid;
 }
@@ -2601,11 +2607,32 @@ bool EntryBuffer::bQuickVerify(Entry* pNotSeeEntry)
 }
 
 /*----------------------------------------------------------------------------*/
-/* verify the structure of this L0 buffer                                     */
+/* verify the structure of this L0 buffer (non-hidden index)                  */
 /*----------------------------------------------------------------------------*/
 bool EntryBuffer::bVerifyL0(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  RASSERT(0 == m_iBufferLevel);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // verify the contents of this L0 non-hidden index buffer
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* verify the structure of this L0 buffer (hidden index)                      */
+/*----------------------------------------------------------------------------*/
+bool EntryBuffer::bVerifyL0Hidden(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  RASSERT(0 == m_iBufferLevel);
+  RASSERT(m_pIndex->bIsHidden());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // verify the contents of this L0 hidden index buffer buffer
   
   return true;
 }
@@ -2614,6 +2641,82 @@ bool EntryBuffer::bVerifyL0(void)
 /* verify the structure of this Ln buffer                                     */
 /*----------------------------------------------------------------------------*/
 bool EntryBuffer::bVerifyLn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  RASSERT(0 != m_iBufferLevel);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // verify the contents of this buffer
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // verify the contents of child buffers
+  
+  bool bValid;
+  for (Entry* pEntry = pGetEntryOffset(m_pHeadEntry->iNEO(0));
+       pEntry;
+       pEntry = pGetEntryOffset(pEntry->iNEO(0))) {
+    EntryBuffer* pRefEntBuf = pEntry->pReferencedEntryBuffer();
+    if (pRefEntBuf->m_iBufferLevel) {
+      bValid = pRefEntBuf->bVerifyLn();
+    }
+    else {
+      if (m_pIndex->bIsHidden())
+        bValid = pRefEntBuf->bVerifyL0Hidden();
+      else
+        bValid = pRefEntBuf->bVerifyL0();
+    }
+    if (! bValid)
+      return false;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* verify the entry offsets of this buffer                                    */
+/*----------------------------------------------------------------------------*/
+bool EntryBuffer::bVerifyEntryOffset(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* verify the free list of this buffer                                        */
+/*----------------------------------------------------------------------------*/
+bool EntryBuffer::bVerifyFreeList(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* verify the items of this buffer                                            */
+/*----------------------------------------------------------------------------*/
+bool EntryBuffer::bVerifyItems(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* verify the key order of this buffer                                        */
+/*----------------------------------------------------------------------------*/
+bool EntryBuffer::bVerifyKeyOrder(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* verify the rows of this buffer                                             */
+/*----------------------------------------------------------------------------*/
+bool EntryBuffer::bVerifyRows(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
