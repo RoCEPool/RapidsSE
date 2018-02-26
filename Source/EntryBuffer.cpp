@@ -2893,6 +2893,26 @@ bool EntryBuffer::bVerifyRowRefs(void)
   RASSERT(! m_pIndex->bIsHidden());
   
   for (Entry* pEntry = pFirstEntry(); pEntry; pEntry = pNextEntry(pEntry,0)) {
+    
+    EntryBuffer* pEntryBuffer = pEntry->pReferencedEntryBuffer();
+    
+    if (0 != pEntryBuffer->iBufferLevel()) {
+      vVerifyFault();
+      return false;
+    }
+    
+    if (! pEntryBuffer->pIndex()->bIsHidden()) {
+      vVerifyFault();
+      return false;
+    }
+    
+    i8 i_Row = pEntry->iRow();
+    Entry* pRowEntry = pEntryBuffer->pGetEntryNo(i_Row);
+    
+    if (1 != pRowEntry->nOffsets()) {
+      vVerifyFault();
+      return false;
+    }
   }
   
   return true;
