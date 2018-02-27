@@ -182,6 +182,9 @@ namespace DBobjects
                                   i8 iBufferNo);
     void         vPositionPriorLnAfter(Key* aFindKey, Entry** pPriorVec,
                                        EntryBuffer* pToBuffer);
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // verify functions
+  
     void         vQuickVerify(Entry* pSeeEntry=nullptr);
     bool         bQuickVerify(Entry* pNotSeeEntry);
   

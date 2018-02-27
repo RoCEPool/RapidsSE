@@ -2519,6 +2519,10 @@ void EntryBuffer::vPositionPriorLnAfter(Key* aFindKey, Entry* pPriorVec[],
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Verify ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* quick verify                                                               */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vQuickVerify(Entry* pSeeEntry)
@@ -2607,6 +2611,40 @@ bool EntryBuffer::bQuickVerify(Entry* pNotSeeEntry)
 }
 
 /*----------------------------------------------------------------------------*/
+/* verify the structure of this L0 buffer (hidden index)                      */
+/*----------------------------------------------------------------------------*/
+bool EntryBuffer::bVerifyL0Hidden(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  RASSERT(0 == m_iBufferLevel);
+  RASSERT(m_pIndex->bIsHidden());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // verify the contents of this L0 hidden index buffer buffer
+  
+  bool bValid;
+  
+  bValid = bVerifyItems();
+  if (! bValid)
+    return false;
+  
+  bValid = bVerifyFreeList();
+  if (! bValid)
+    return false;
+  
+  bValid = bVerifyEntryOffset();
+  if (! bValid)
+    return false;
+  
+  bValid = bVerifyRows();
+  if (! bValid)
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* verify the structure of this L0 buffer (non-hidden index)                  */
 /*----------------------------------------------------------------------------*/
 bool EntryBuffer::bVerifyL0Other(void)
@@ -2637,40 +2675,6 @@ bool EntryBuffer::bVerifyL0Other(void)
     return false;
   
   bValid = bVerifyRowRefs();
-  if (! bValid)
-    return false;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* verify the structure of this L0 buffer (hidden index)                      */
-/*----------------------------------------------------------------------------*/
-bool EntryBuffer::bVerifyL0Hidden(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  RASSERT(0 == m_iBufferLevel);
-  RASSERT(m_pIndex->bIsHidden());
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // verify the contents of this L0 hidden index buffer buffer
-  
-  bool bValid;
-  
-  bValid = bVerifyItems();
-  if (! bValid)
-    return false;
-  
-  bValid = bVerifyFreeList();
-  if (! bValid)
-    return false;
-  
-  bValid = bVerifyEntryOffset();
-  if (! bValid)
-    return false;
-  
-  bValid = bVerifyRows();
   if (! bValid)
     return false;
   
@@ -2825,9 +2829,34 @@ bool EntryBuffer::bVerifyItems(void)
     eCN eClass = pItem->eClass();
     
     switch (eClass) {
-      case CN_ENTRY:      break;
-      case CN_FREEENTRY:  break;
-      case CN_WILDERNESS: break;
+      
+      case CN_ENTRY: {
+        Entry* pEntry = _pEntry(pItem);
+        if (! pEntry->bValidEntry()) {
+          vVerifyFault();
+          return false;
+        }
+        break;
+      }
+      
+      case CN_FREEENTRY: {
+        FreeEntry* pFreeEntry = _pFreeEntry(pItem);
+        if (! pFreeEntry->bValidFreeEntry()) {
+          vVerifyFault();
+          return false;
+        }
+        break;
+      }
+        
+      case CN_WILDERNESS: {
+        Wilderness* pWilderness = _pWilderness(pItem);
+        if (! pWilderness->bValidWilderness()) {
+          vVerifyFault();
+          return false;
+        }
+        break;
+      }
+    
       default:
         vVerifyFault();
         return false;
@@ -2869,7 +2898,7 @@ bool EntryBuffer::bVerifyKeyOrder(void)
 /*----------------------------------------------------------------------------*/
 /* verify the rows of this buffer                                             */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bVerifyRows(void)
+bool EntryBuffer::bVerifyRows(void)                        //# discuss with Alka
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
