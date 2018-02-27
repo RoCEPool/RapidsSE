@@ -2666,9 +2666,9 @@ bool EntryBuffer::bVerifyL0Other(void)
   if (! bValid)
     return false;
   
-  bValid = bVerifyEntryOffset();
-  if (! bValid)
-    return false;
+//  bValid = bVerifyEntryOffset();
+//  if (! bValid)
+//    return false;
   
   bValid = bVerifyKeyOrder();
   if (! bValid)
@@ -2753,31 +2753,34 @@ bool EntryBuffer::bVerifyBufferRefs(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* verify the entry offsets of this buffer                                    */
+/* verify the entry offset array of this buffer                               */
 /*----------------------------------------------------------------------------*/
 bool EntryBuffer::bVerifyEntryOffset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+  RASSERT(0 == m_iBufferLevel);
+  RASSERT(m_pIndex->bIsHidden());
+  
   //vShow();
-
+  
   for (i8 i_Offset = 0; i_Offset < C_ENTRIES_0; i_Offset++) {
 
     i8 i_EntryOffset = m_pEntryOffset[i_Offset];
     
-    if (C_ENTRY_NONE == i_EntryOffset)
-      continue;
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // validate free offset element
     
     if (i_EntryOffset < 0) {
       
+      // last offset in free chain
       if (C_ENTRY_NONE == - i_EntryOffset)
         continue;
       
+      // get the next offset in free chain
       i8 i_NextEntryOffset = m_pEntryOffset[ - i_EntryOffset ];
       
-      if (C_ENTRY_NONE == - i_NextEntryOffset)
-        continue;
-
+      // next offset should be free (or end of free chain)
       if (i_NextEntryOffset >= 0) {
         vVerifyFault();
         return false;
@@ -2786,8 +2789,10 @@ bool EntryBuffer::bVerifyEntryOffset(void)
       continue;
     }
     
-    Entry* pEntry = pGetEntryOffset(i_EntryOffset);
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // validate offset element which is the offset to an entry
     
+    Entry* pEntry = pGetEntryOffset(i_EntryOffset);
     if (! pEntry->bValidEntry())
       return false;
   }
