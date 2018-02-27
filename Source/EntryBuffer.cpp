@@ -2738,6 +2738,10 @@ bool EntryBuffer::bVerifyLnAny(void)
   if (! bValid)
     return false;
   
+  bValid = bVerifyKeyBufferOrder();
+  if (! bValid)
+    return false;
+  
   bValid = bVerifyFirstKeys();
   if (! bValid)
     return false;
@@ -2946,6 +2950,44 @@ bool EntryBuffer::bVerifyItems(void)
     vShow();
     vVerifyFault();
     return false;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* verify that keys are in buffer order of the child buffers                  */
+/*----------------------------------------------------------------------------*/
+bool EntryBuffer::bVerifyKeyBufferOrder(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  RASSERT(m_iBufferLevel >= 1);
+  
+  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  
+  for (Entry* pEntry = pFirstEntry(); pEntry; pEntry = pNextEntry(pEntry,0)) {
+    
+    // get next entry
+    Entry* pNextEntry = this->pNextEntry(pEntry,0);
+    if (! pNextEntry)
+      break;
+    
+    // get the child entry buffers
+    EntryBuffer* pChildBufferA = pEntry->pReferencedEntryBuffer();
+    EntryBuffer* pChildBufferB = pNextEntry->pReferencedEntryBuffer();
+    
+    // child A should point to child B
+    if (pChildBufferA->pNextBuffer() != pChildBufferB) {
+      vVerifyFault();
+      return false;
+    }
+
+    // child B should point to child A
+    if (pChildBufferB->pPrevBuffer() != pChildBufferA) {
+      vVerifyFault();
+      return false;
+    }
   }
   
   return true;
