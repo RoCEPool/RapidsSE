@@ -1399,15 +1399,23 @@ bool EntryBuffer::bVerify(void)
   
   if (m_iBufferLevel) {
     bValid = bVerifyLnAny();
-  }
-  else {
-    if (m_pIndex->bIsHidden())
-      bValid = bVerifyL0Hidden();
-    else
-      bValid = bVerifyL0Other();
+    return bValid;
   }
   
-  return bValid;
+  if (!m_pIndex->bIsHidden()) {
+    bValid = bVerifyL0Other();
+    return bValid;
+  }
+
+  for (EntryBuffer* EBhiddenL0 = this;
+       EBhiddenL0;
+       EBhiddenL0 = EBhiddenL0->pNextBuffer()) {
+    bValid = EBhiddenL0->bVerifyL0Hidden();
+    if (! bValid)
+      return false;
+  }
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2622,8 +2630,8 @@ bool EntryBuffer::bVerifyL0Hidden(void)
   RASSERT(0 == m_iBufferLevel);
   RASSERT(m_pIndex->bIsHidden());
   
-  vTrace("VerifyL0 %s: bufno: %lld level %lld\n"_Stz,
-         m_pIndex->aIndexName(),m_iBufferNo,m_iBufferLevel);
+//  vTrace("VerifyL0 %s: bufno: %lld level %lld\n"_Stz,
+//         m_pIndex->aIndexName(),m_iBufferNo,m_iBufferLevel);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // verify the contents of this L0 hidden index buffer buffer
@@ -2632,29 +2640,23 @@ bool EntryBuffer::bVerifyL0Hidden(void)
   
   bValid = bVerifyItems();
   if (! bValid) {
-    vTrace("bVerifyL0Hidden A\n"_Stz);
     return false;
   }
   
   bValid = bVerifyFreeList();
   if (! bValid) {
-    vTrace("bVerifyL0Hidden B\n"_Stz);
     return false;
   }
   
   bValid = bVerifyEntryOffset();
   if (! bValid) {
-    vTrace("bVerifyL0Hidden C\n"_Stz);
     return false;
   }
   
   bValid = bVerifyRows();
   if (! bValid) {
-    vTrace("bVerifyL0Hidden D\n"_Stz);
     return false;
   }
-  
-  vTrace("bVerifyL0Hidden passed\n"_Stz);
   
   return true;
 }
@@ -2668,8 +2670,8 @@ bool EntryBuffer::bVerifyL0Other(void)
   
   RASSERT(0 == m_iBufferLevel);
   
-  vTrace("VerifyL0 %s: bufno: %lld level %lld\n"_Stz,
-         m_pIndex->aIndexName(),m_iBufferNo,m_iBufferLevel);
+//  vTrace("VerifyL0 %s: bufno: %lld level %lld\n"_Stz,
+//         m_pIndex->aIndexName(),m_iBufferNo,m_iBufferLevel);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // verify the contents of this L0 non-hidden index buffer
@@ -2704,8 +2706,8 @@ bool EntryBuffer::bVerifyLnAny(void)
   
   RASSERT(0 != m_iBufferLevel);
 
-  vTrace("VerifyLn %s: bufno: %lld level %lld\n"_Stz,
-         m_pIndex->aIndexName(),m_iBufferNo,m_iBufferLevel);
+//  vTrace("VerifyLn %s: bufno: %lld level %lld\n"_Stz,
+//         m_pIndex->aIndexName(),m_iBufferNo,m_iBufferLevel);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // verify the contents of this buffer
@@ -2840,6 +2842,8 @@ bool EntryBuffer::bVerifyItems(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+  i8 nEntryItems = 0;
+  
   for (Item* pItem = pFirstItem();
        pItem != nullptr;
        pItem = pNextItem(pItem)) {
@@ -2857,6 +2861,7 @@ bool EntryBuffer::bVerifyItems(void)
           vVerifyFault();
           return false;
         }
+        nEntryItems++;
         break;
       }
       
@@ -2884,6 +2889,13 @@ bool EntryBuffer::bVerifyItems(void)
         vVerifyFault();
         return false;
     }
+  }
+  
+  // check the number of entries match
+  if (nEntryItems != nItems()) {
+    vShow();
+    vVerifyFault();
+    return false;
   }
   
   return true;
