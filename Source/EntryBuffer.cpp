@@ -2804,9 +2804,21 @@ bool EntryBuffer::bVerifyBufferRefs(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  RASSERT(0 != m_iBufferLevel);
+  RASSERT(m_iBufferLevel >= 1);
   
   for (Entry* pEntry = pFirstEntry(); pEntry; pEntry = pNextEntry(pEntry,0)) {
+    
+    EntryBuffer* pRefEntBuf = pEntry->pReferencedEntryBuffer();
+    
+    if ( ! pRefEntBuf->bValidEntryBuffer() ) {
+      vVerifyFault();
+      return false;
+    }
+    
+    if (pRefEntBuf->iBufferLevel() != m_iBufferLevel - 1) {
+      vVerifyFault();
+      return false;
+    }
   }
   
   return true;
