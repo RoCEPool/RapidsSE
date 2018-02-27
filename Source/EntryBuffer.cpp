@@ -126,6 +126,31 @@ void EntryBuffer::vAssertEntryBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test for valid entry buffer                                                */
+/*----------------------------------------------------------------------------*/
+bool EntryBuffer::bValidEntryBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  if (! bValidMagic()) {
+    vTrace("Not valid magic\n"_Stz);
+    return false;
+  }
+  
+  if (CN_ENTRYBUFFER != eClass()) {
+    vTrace("Not valid class\n"_Stz);
+    return false;
+  }
+  
+  if (! aFooter()->bValidFooter()) {
+    vTrace("Not valid footer\n"_Stz);
+    return false;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Static Functions --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -2738,15 +2763,15 @@ bool EntryBuffer::bVerifyLnAny(void)
   if (! bValid)
     return false;
   
+  bValid = bVerifyBufferRefs();
+  if (! bValid)
+    return false;
+  
   bValid = bVerifyKeyBufferOrder();
   if (! bValid)
     return false;
   
   bValid = bVerifyFirstKeys();
-  if (! bValid)
-    return false;
-  
-  bValid = bVerifyBufferRefs();
   if (! bValid)
     return false;
   

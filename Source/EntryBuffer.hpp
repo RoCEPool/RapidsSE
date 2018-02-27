@@ -68,6 +68,7 @@ namespace DBobjects
     ~EntryBuffer(void);
 
     void vAssertEntryBuffer(void);
+    bool bValidEntryBuffer(void);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
