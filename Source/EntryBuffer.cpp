@@ -2738,6 +2738,10 @@ bool EntryBuffer::bVerifyLnAny(void)
   if (! bValid)
     return false;
   
+  bValid = bVerifyFirstKeys();
+  if (! bValid)
+    return false;
+  
   bValid = bVerifyBufferRefs();
   if (! bValid)
     return false;
@@ -2822,6 +2826,40 @@ bool EntryBuffer::bVerifyEntryOffset(void)
     Entry* pEntry = pGetEntryOffset(i_EntryOffset);
     if (! pEntry->bValidEntry())
       return false;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* verify the first key order of child buffers                                */
+/*----------------------------------------------------------------------------*/
+bool EntryBuffer::bVerifyFirstKeys(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  RASSERT(m_iBufferLevel >= 1);
+  
+  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  
+  for (Entry* pEntry = pFirstEntry(); pEntry; pEntry = pNextEntry(pEntry,0)) {
+    
+    // get the entry buffer that this entry references
+    EntryBuffer* pChildEntryBuffer = pEntry->pReferencedEntryBuffer();
+    
+    // get the first entry of the child buffer
+    Entry* pChildFirstEntry = pChildEntryBuffer->pFirstEntry();
+
+    // get keys of the two entries
+    Key* pKeyParent = pEntry->aKey();
+    Key* pKeyChild  = pChildFirstEntry->aKey();
+   
+    // the two keys should match
+    bool bEqual = pKeyChild->bEqualTo(pKeyParent,pIdxColVec);
+    if (! bEqual) {
+      vVerifyFault();
+      return false;
+    }
   }
   
   return true;
