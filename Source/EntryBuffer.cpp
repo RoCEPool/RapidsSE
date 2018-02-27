@@ -2638,6 +2638,10 @@ bool EntryBuffer::bVerifyL0Hidden(void)
   
   bool bValid;
   
+  bValid = bVerifyNextPrev();
+  if (! bValid)
+    return false;
+  
   bValid = bVerifyItems();
   if (! bValid) {
     return false;
@@ -2678,6 +2682,10 @@ bool EntryBuffer::bVerifyL0Other(void)
   
   bool bValid;
   
+  bValid = bVerifyNextPrev();
+  if (! bValid)
+    return false;
+  
   bValid = bVerifyItems();
   if (! bValid)
     return false;
@@ -2713,6 +2721,10 @@ bool EntryBuffer::bVerifyLnAny(void)
   // verify the contents of this buffer
   
   bool bValid;
+  
+  bValid = bVerifyNextPrev();
+  if (! bValid)
+    return false;
   
   bValid = bVerifyItems();
   if (! bValid)
@@ -2928,6 +2940,16 @@ bool EntryBuffer::bVerifyKeyOrder(void)
       return false;
     }
   }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* verify the next, previous and higher pointers                              */
+/*----------------------------------------------------------------------------*/
+bool EntryBuffer::bVerifyNextPrev(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   return true;
 }

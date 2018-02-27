@@ -194,6 +194,7 @@ namespace DBobjects
     bool         bVerifyFreeList(void);
     bool         bVerifyItems(void);
     bool         bVerifyKeyOrder(void);
+    bool         bVerifyNextPrev(void);
     bool         bVerifyRows(void);
     bool         bVerifyRowRefs(void);
     void         vVerifyFault(void);
