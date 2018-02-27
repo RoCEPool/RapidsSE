@@ -2951,6 +2951,41 @@ bool EntryBuffer::bVerifyNextPrev(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (m_pPrevBuffer) {
+    if (m_pPrevBuffer->pNextBuffer() != this) {
+      vVerifyFault();
+      return false;
+    }
+    if (m_pPrevBuffer->iBufferLevel() != m_iBufferLevel) {
+      vVerifyFault();
+      return false;
+    }
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (m_pNextBuffer) {
+    if (m_pNextBuffer->pPrevBuffer() != this) {
+      vVerifyFault();
+      return false;
+    }
+    if (m_pNextBuffer->iBufferLevel() != m_iBufferLevel) {
+      vVerifyFault();
+      return false;
+    }
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (m_pHigherBuffer) {
+    if (m_pHigherBuffer->iBufferLevel() != m_iBufferLevel + 1) {
+      vVerifyFault();
+      return false;
+    }
+  }
+  
   return true;
 }
 
