@@ -2808,14 +2808,19 @@ bool EntryBuffer::bVerifyBufferRefs(void)
   
   for (Entry* pEntry = pFirstEntry(); pEntry; pEntry = pNextEntry(pEntry,0)) {
     
-    EntryBuffer* pRefEntBuf = pEntry->pReferencedEntryBuffer();
+    EntryBuffer* pChildEntBuf = pEntry->pReferencedEntryBuffer();
     
-    if ( ! pRefEntBuf->bValidEntryBuffer() ) {
+    if ( ! pChildEntBuf->bValidEntryBuffer() ) {
       vVerifyFault();
       return false;
     }
     
-    if (pRefEntBuf->iBufferLevel() != m_iBufferLevel - 1) {
+    if (pChildEntBuf->iBufferLevel() != m_iBufferLevel - 1) {
+      vVerifyFault();
+      return false;
+    }
+    
+    if (pChildEntBuf->pHigherBuffer() != this) {
       vVerifyFault();
       return false;
     }
