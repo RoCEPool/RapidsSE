@@ -62,7 +62,7 @@ FreeEntry::FreeEntry(i8 nSizeItem)
   m_pNextFree = nullptr;
   m_pPrevFree = nullptr;
   
-  _setFooter_();
+  aFooter()->vSetFooter();
   
   _checkInitialisedSize_(nSizeItem);
   

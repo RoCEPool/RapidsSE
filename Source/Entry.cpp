@@ -56,7 +56,7 @@ Entry::Entry(eCN eClassNo, i8 nThisBytes, i8 nOffsets)
   m_iTxId    = -1;
   m_nOffsets = nOffsets;
   
-  _setFooter_();
+  aFooter()->vSetFooter();
   
   _checkInitialised_(eClassNo);
   
@@ -86,14 +86,20 @@ bool Entry::bValidEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  if (! bValidMagic())
+  if (! bValidMagic()) {
+    vTrace("Not valid magic\n"_Stz);
     return false;
+  }
   
-  if (CN_ENTRY != eClass())
+  if (CN_ENTRY != eClass()) {
+    vTrace("Not valid class\n"_Stz);
     return false;
+  }
   
-  if (! aFooter()->bValidFooter())
+  if (! aFooter()->bValidFooter()) {
+    vTrace("Not valid footer\n"_Stz);
     return false;
+  }
   
  return true;
 }

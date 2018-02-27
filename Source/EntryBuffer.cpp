@@ -473,6 +473,8 @@ Entry* EntryBuffer::pAppendRow(RowWrk& xRowWrk,
   if (m_pHeadEntry->iNEO(0) == -1)
     m_pHeadEntry->vNEO(0, iEntryOffset);
   
+  RASSERT(pRowEntry->bValidEntry());
+  
   return pRowEntry;
 }
 
@@ -2620,26 +2622,39 @@ bool EntryBuffer::bVerifyL0Hidden(void)
   RASSERT(0 == m_iBufferLevel);
   RASSERT(m_pIndex->bIsHidden());
   
+  vTrace("VerifyL0 %s: bufno: %lld level %lld\n"_Stz,
+         m_pIndex->aIndexName(),m_iBufferNo,m_iBufferLevel);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // verify the contents of this L0 hidden index buffer buffer
   
   bool bValid;
   
   bValid = bVerifyItems();
-  if (! bValid)
+  if (! bValid) {
+    vTrace("bVerifyL0Hidden A\n"_Stz);
     return false;
+  }
   
   bValid = bVerifyFreeList();
-  if (! bValid)
+  if (! bValid) {
+    vTrace("bVerifyL0Hidden B\n"_Stz);
     return false;
+  }
   
   bValid = bVerifyEntryOffset();
-  if (! bValid)
+  if (! bValid) {
+    vTrace("bVerifyL0Hidden C\n"_Stz);
     return false;
+  }
   
   bValid = bVerifyRows();
-  if (! bValid)
+  if (! bValid) {
+    vTrace("bVerifyL0Hidden D\n"_Stz);
     return false;
+  }
+  
+  vTrace("bVerifyL0Hidden passed\n"_Stz);
   
   return true;
 }
@@ -2652,6 +2667,9 @@ bool EntryBuffer::bVerifyL0Other(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   RASSERT(0 == m_iBufferLevel);
+  
+  vTrace("VerifyL0 %s: bufno: %lld level %lld\n"_Stz,
+         m_pIndex->aIndexName(),m_iBufferNo,m_iBufferLevel);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // verify the contents of this L0 non-hidden index buffer
@@ -2686,6 +2704,9 @@ bool EntryBuffer::bVerifyLnAny(void)
   
   RASSERT(0 != m_iBufferLevel);
 
+  vTrace("VerifyLn %s: bufno: %lld level %lld\n"_Stz,
+         m_pIndex->aIndexName(),m_iBufferNo,m_iBufferLevel);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // verify the contents of this buffer
   
@@ -2696,10 +2717,6 @@ bool EntryBuffer::bVerifyLnAny(void)
     return false;
   
   bValid = bVerifyFreeList();
-  if (! bValid)
-    return false;
-  
-  bValid = bVerifyEntryOffset();
   if (! bValid)
     return false;
   
@@ -2827,6 +2844,8 @@ bool EntryBuffer::bVerifyItems(void)
        pItem != nullptr;
        pItem = pNextItem(pItem)) {
     
+    //vTrace("Verify item %p\n"_Stz,pItem);
+    
     eCN eClass = pItem->eClass();
     
     switch (eClass) {
@@ -2834,6 +2853,7 @@ bool EntryBuffer::bVerifyItems(void)
       case CN_ENTRY: {
         Entry* pEntry = _pEntry(pItem);
         if (! pEntry->bValidEntry()) {
+          vShow();
           vVerifyFault();
           return false;
         }
@@ -2843,6 +2863,7 @@ bool EntryBuffer::bVerifyItems(void)
       case CN_FREEENTRY: {
         FreeEntry* pFreeEntry = _pFreeEntry(pItem);
         if (! pFreeEntry->bValidFreeEntry()) {
+          vShow();
           vVerifyFault();
           return false;
         }
@@ -2852,6 +2873,7 @@ bool EntryBuffer::bVerifyItems(void)
       case CN_WILDERNESS: {
         Wilderness* pWilderness = _pWilderness(pItem);
         if (! pWilderness->bValidWilderness()) {
+          vShow();
           vVerifyFault();
           return false;
         }
@@ -2961,6 +2983,8 @@ bool EntryBuffer::bVerifyRowRefs(void)
 void EntryBuffer::vVerifyFault(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  vTrace("VerifyFault\n"_Stz);
   
   return;
 }
