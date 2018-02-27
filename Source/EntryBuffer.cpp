@@ -2665,11 +2665,7 @@ bool EntryBuffer::bVerifyL0Other(void)
   bValid = bVerifyFreeList();
   if (! bValid)
     return false;
-  
-//  bValid = bVerifyEntryOffset();
-//  if (! bValid)
-//    return false;
-  
+    
   bValid = bVerifyKeyOrder();
   if (! bValid)
     return false;
@@ -2882,6 +2878,7 @@ bool EntryBuffer::bVerifyKeyOrder(void)
   
   for (Entry* pEntry = pFirstEntry(); pEntry; pEntry = pNextEntry(pEntry,0)) {
     
+    // get next entry
     Entry* pNextEntry = this->pNextEntry(pEntry,0);
     if (! pNextEntry)
       break;
@@ -2890,6 +2887,7 @@ bool EntryBuffer::bVerifyKeyOrder(void)
     Key* pKeyA = pEntry->aKey();
     Key* pKeyB = pNextEntry->aKey();
 
+    // next keyB should be greater than or equal to keyA
     bool bGreaterEqual = pKeyB->bGreaterEqual(pKeyA,pIdxColVec);
     if (! bGreaterEqual) {
       vVerifyFault();
