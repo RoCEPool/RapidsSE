@@ -2926,21 +2926,26 @@ bool EntryBuffer::bVerifyRowRefs(void)
   
   for (Entry* pEntry = pFirstEntry(); pEntry; pEntry = pNextEntry(pEntry,0)) {
     
+    // get the entry buffer that this L0 key leaf references
     EntryBuffer* pEntryBuffer = pEntry->pReferencedEntryBuffer();
     
+    // that referenced entry buffer should be an L0 buffer
     if (0 != pEntryBuffer->iBufferLevel()) {
       vVerifyFault();
       return false;
     }
     
+    // that referenced entry buffer should be for a hidden index
     if (! pEntryBuffer->pIndex()->bIsHidden()) {
       vVerifyFault();
       return false;
     }
     
+    // get the row entry from referenced entry buffer
     i8 i_Row = pEntry->iRow();
     Entry* pRowEntry = pEntryBuffer->pGetEntryNo(i_Row);
     
+    // validate the row entry                                          //# more?
     if (1 != pRowEntry->nOffsets()) {
       vVerifyFault();
       return false;
