@@ -84,10 +84,10 @@ IndexData::IndexData(Index* pIndex, i8 nPartitionNo)
   
   m_zLock.vInitLock(LK_INDEX_DATA);
   m_pIndex = pIndex;
+  m_nPartitionNo = nPartitionNo;
   
   m_pRoot = nullptr;
   m_pCurrentBuffer = nullptr;
-  m_nPartitionNo = nPartitionNo;
   
   _checkInitialised_(CN_INDEXDATA);
   
@@ -237,7 +237,9 @@ void IndexData::vAppendBuffer(EntryBuffer* pEntryBuffer)
 /*----------------------------------------------------------------------------*/
 /* insert an entry for {key,id} into an index buffer at given level           */
 /*----------------------------------------------------------------------------*/
-void IndexData::vAppendEntriesFromBuffer(EntryBuffer* pEntryBuffer, EntryBuffer** ppFirstBuffer, Entry** ppFirstEntry)
+void IndexData::vAppendEntriesFromBuffer(EntryBuffer* pEntryBuffer,
+                                         EntryBuffer** ppFirstBuffer,
+                                         Entry** ppFirstEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
@@ -294,7 +296,6 @@ void IndexData::vAppendEntriesFromBuffer(EntryBuffer* pEntryBuffer, EntryBuffer*
 /* append an entry into this index at level 0                                 */
 /*----------------------------------------------------------------------------*/
 void IndexData::vAppendEntry(KeyWrk& xKeyWrk,
-                             //Id xId,
                              EntryVec& xPriorVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
@@ -317,12 +318,6 @@ void IndexData::vAppendEntry(KeyWrk& xKeyWrk,
   
   Entry* pKeyEntry =
     EntryBuffer::pInsertKeyTree(xKeyWrk,
-                                //0,
-                                //xKeyWrk.iTxId(),
-                                //xId,
-                                //xKeyWrk.xId(),
-                                //xKeyWrk.aKey(),
-                                //xKeyWrk.nKeySize(),
                                 &m_pRoot);
   
   //m_pRoot->vShowTree(true);
@@ -333,13 +328,17 @@ void IndexData::vAppendEntry(KeyWrk& xKeyWrk,
 /*----------------------------------------------------------------------------*/
 /* insert entries from entryBuffer into this index at level 0                 */
 /*----------------------------------------------------------------------------*/
-void IndexData::vInsertEntriesFromBuffer(EntryBuffer* pEntryBuffer, Entry* pRowEntry)
-{ //# indexTuning
+void IndexData::vInsertEntriesFromBuffer(EntryBuffer* pEntryBuffer,
+                                         Entry* pRowEntry)
+{
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
   //m_zLock.vGrabWrite();
   
-  for ( Entry* pEntry = pRowEntry ; pEntry; pEntry = pEntryBuffer->pNextEntry(pEntry, 0)) {
+  for ( Entry* pEntry = pRowEntry ;
+       pEntry;
+       pEntry = pEntryBuffer->pNextEntry(pEntry, 0)) {
+    
     bool bInserted = bInsertEntry(pEntry);
     ASSERT(bInserted);
   }
@@ -351,7 +350,7 @@ void IndexData::vInsertEntriesFromBuffer(EntryBuffer* pEntryBuffer, Entry* pRowE
 /* insert an entry for given row into this index at level 0                   */
 /*----------------------------------------------------------------------------*/
 bool IndexData::bInsertEntry(Entry* pRow)
-{ //# indexTuning
+{
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
   m_zLock.vGrabWrite();
@@ -374,12 +373,6 @@ bool IndexData::bInsertEntry(Entry* pRow)
   
   Entry* pKeyEntry =
     EntryBuffer::pInsertKeyTree(xKeyWrk,
-                                //0,
-                                //xKeyWrk.iTxId(),
-                                //pRow->xId(),
-                                //xKeyWrk.xId(),
-                                //xKeyWrk.aKey(),
-                                //xKeyWrk.nKeySize(),
                                 &m_pRoot);
   ASSERT(pKeyEntry);
   
@@ -398,12 +391,13 @@ bool IndexData::bInsertEntry(Entry* pRow)
 /*----------------------------------------------------------------------------*/
 /* position the indexData at a particular level of index buffer               */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* IndexData::pPositionLevel(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare, i8 iLevel)
+EntryBuffer* IndexData::pPositionLevel(KeyWrk& xKeyWrk, i8 nKeyCols,
+                                       eJC eJuxtaCompare, i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
   if (m_pRoot)
-    return m_pRoot->pPositionLevel(xKeyWrk.aKey(), nKeyCols, eJuxtaCompare, iLevel);
+    return m_pRoot->pPositionLevel(xKeyWrk.aKey(),nKeyCols,eJuxtaCompare,iLevel);
   else
     return nullptr;
 }
@@ -443,7 +437,6 @@ void IndexData::vTruncate(void)
   m_pRoot = nullptr;
   
   m_zLock.vDropWrite();
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -565,6 +558,7 @@ bool IndexData::bVerifyIndex(void)
 /*----------------------------------------------------------------------------*/
 void IndexData::vDumpLevel(EntryBuffer* pEntryBuffer)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
   // get the first entry
   Entry* pEntry = pEntryBuffer->pFirstEntry();
@@ -652,7 +646,6 @@ void IndexData::vVisualize(void)
   
   vTrace("\n"_Stz);
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

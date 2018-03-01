@@ -16,11 +16,11 @@ namespace DBobjects
   {
     
   private:
-    Lock         m_zLock;
-    Index*       m_pIndex;
-    EntryBuffer* m_pRoot;
-    EntryBuffer* m_pCurrentBuffer;
-    i8           m_nPartitionNo;
+    Lock         m_zLock;          // lock on the buffer tree
+    Index*       m_pIndex;         // which index
+    i8           m_nPartitionNo;   // which partition
+    EntryBuffer* m_pRoot;          // the root buffer
+    EntryBuffer* m_pCurrentBuffer; // current buffer for insert hidden index
   
     // must be last
     Footer m_xFooter;
