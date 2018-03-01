@@ -77,14 +77,14 @@ void IndexData::operator delete(void* pDataAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-IndexData::IndexData(Index* pIndex, i8 nPartitionNo)
+IndexData::IndexData(Index* pIndex, i8 iPartitionNo)
 : Object(CN_INDEXDATA)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
   m_zLock.vInitLock(LK_INDEX_DATA);
   m_pIndex = pIndex;
-  m_nPartitionNo = nPartitionNo;
+  m_iPartitionNo = iPartitionNo;
   
   m_pRoot = nullptr;
   m_pCurrentBuffer = nullptr;
@@ -256,7 +256,7 @@ void IndexData::vAppendEntriesFromBuffer(EntryBuffer* pEntryBuffer,
 
   if (m_pRoot == nullptr) {
     ASSERT( ! m_pCurrentBuffer )
-    m_pRoot = new EntryBuffer(m_pIndex, 0, m_nPartitionNo);
+    m_pRoot = new EntryBuffer(m_pIndex, 0, m_iPartitionNo);
     m_pCurrentBuffer = m_pRoot;
   }
   
@@ -267,7 +267,7 @@ void IndexData::vAppendEntriesFromBuffer(EntryBuffer* pEntryBuffer,
     if ( !bInserted ) {
       //----------------------------------------------------------------------------
       // create a new entry buffer and link with current buffer
-      EntryBuffer* pNewBuffer = new EntryBuffer(m_pIndex, 0, m_nPartitionNo);
+      EntryBuffer* pNewBuffer = new EntryBuffer(m_pIndex, 0, m_iPartitionNo);
       pNewBuffer->vNextBuffer(m_pCurrentBuffer->pNextBuffer());
       pNewBuffer->vPrevBuffer(m_pCurrentBuffer);
       m_pCurrentBuffer->vNextBuffer(pNewBuffer);
@@ -310,7 +310,7 @@ void IndexData::vAppendEntry(KeyWrk& xKeyWrk,
   if ( ! m_pRoot ) {
     m_pRoot = new EntryBuffer;
     m_pRoot->vIndex(m_pIndex);
-    m_pRoot->vPartitionNo(m_nPartitionNo);
+    m_pRoot->vPartitionNo(m_iPartitionNo);
   }
   
   //vTrace("\nInserting key: "_Stz);
@@ -366,7 +366,7 @@ bool IndexData::bInsertEntry(Entry* pRow)
   if ( ! m_pRoot ) {
     m_pRoot = new EntryBuffer;
     m_pRoot->vIndex(m_pIndex);
-    m_pRoot->vPartitionNo(m_nPartitionNo);
+    m_pRoot->vPartitionNo(m_iPartitionNo);
   }
   
   //bool bInserted = bInsertEntry(m_pRoot, xKeyWrk, pRow->xId(), 0);

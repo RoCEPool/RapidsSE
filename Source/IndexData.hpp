@@ -18,7 +18,7 @@ namespace DBobjects
   private:
     Lock         m_zLock;          // lock on the buffer tree
     Index*       m_pIndex;         // which index
-    i8           m_nPartitionNo;   // which partition
+    i8           m_iPartitionNo;   // which partition
     EntryBuffer* m_pRoot;          // the root buffer
     EntryBuffer* m_pCurrentBuffer; // current buffer for insert hidden index
   
@@ -33,11 +33,13 @@ namespace DBobjects
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static void vFinalize(eCN eClass, Object* pObject);
     
-    IndexData(Index* pIndex, i8 nPartitionNo);
+    IndexData(Index* pIndex, i8 iPartitionNo);
     ~IndexData(void);
   
     Stz*         pAnalyze(void);
-    void         vAppendEntriesFromBuffer(EntryBuffer* pEntryBuffer,EntryBuffer** ppFirstBuffer, Entry** ppFirstEntry);
+    void         vAppendEntriesFromBuffer(EntryBuffer* pEntryBuffer,
+                                          EntryBuffer** ppFirstBuffer,
+                                          Entry** ppFirstEntry);
     void         vAppendBuffer(EntryBuffer* pEntryBuffer);
     void         vAppendEntry(KeyWrk& xKeyWrk, EntryVec& xPriorVec);
     void         vDump(bool bSameLevel);
