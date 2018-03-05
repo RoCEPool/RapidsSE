@@ -279,11 +279,7 @@ bool LoaderSub::bInsertRow(void)
   xRowWrk.vRowSize(m_iLength);
   
   // insert row into working buffer
-  Entry* pEntry = pEntryBuffer->pAppendRow(xRowWrk,
-                                           //iDistTxId,
-                                           //(Stz*)m_aRecord.aChar(),
-                                           //m_iLength
-                                           nullptr);
+  Entry* pEntry = pEntryBuffer->pAppendRow(xRowWrk);
   
   //pEntryBuffer->vShow();
   
