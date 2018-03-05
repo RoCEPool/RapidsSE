@@ -449,6 +449,8 @@ Entry* EntryBuffer::pAppendRow(RowWrk& xRowWrk,
     if (! ppLastRowBuffer)
       return nullptr;
     
+    RASSERT(0);
+    
     *ppLastRowBuffer = pNewNextBuffer();
     pRowEntry = (*ppLastRowBuffer)->pAppendRow(xRowWrk,
                                                ppLastRowBuffer);
