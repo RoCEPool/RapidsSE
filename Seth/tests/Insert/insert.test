@@ -32,6 +32,7 @@ fetch T1;
 rows: 12
 
 // (4) insert some rows into the table
+
 begin insert T1;
 success
 
@@ -71,6 +72,9 @@ success
 // check no of rows
 fetch T1;
 rows: 22
+
+insert row "21,null";
+failure: 'no such table'
 
 // (5) insert some invalid row
 begin insert T1;
