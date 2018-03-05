@@ -142,14 +142,6 @@ namespace DBobjects
     void         vHeadEntryRestore(void);
     EntryBuffer* pInsertableBuffer(KeyWrk& xKeyWrk,
                                    EntryBuffer** ppRootKeyBuffer);
-    Entry*       pInsertKey(KeyWrk& xKeyWrk,
-                            i8 iTxId,
-                            Id xIdx,
-                            Key* pKey, i8
-                            iKeyLength,
-                            EntryBuffer** ppRootKeyBuffer,
-                            i8 iRefBufNo,
-                            EntryBuffer* pToBuffer);
     Entry*       pInsertKeyAbs(KeyWrk& xKeyWrk,
                                EntryBuffer** ppRootKeyBuffer,
                                EntryBuffer* pToBuffer);
