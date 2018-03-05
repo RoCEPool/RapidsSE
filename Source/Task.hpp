@@ -611,7 +611,6 @@ namespace Tasks
     static void vEntryBufferPartitionStore(MP_Task mpTask);
     static void vEntryBufferToEntryBuffer(MP_Task mpTask);
   
-    static void vEntryBufferUnitTest_b(MP_Task mpTask);
     static void vEntryBufferUnitTest_c(MP_Task mpTask);
   
     // env

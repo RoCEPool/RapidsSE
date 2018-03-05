@@ -202,7 +202,6 @@ namespace DBobjects
     public:
     Footer* aFooter(void);
   
-    static void vUnitTest_b(Table* pTable);
     static void vUnitTest_c(Table* pTable);
   };
   
