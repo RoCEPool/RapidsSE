@@ -98,11 +98,13 @@ bool Row::bFormatRow(ColumnVec* pColVec,
 
     // is the datum valid ?
     if ( ! bValid ) {
-      vWarn("Skipping row - invalid field %s in record: "_Stz,
-             pColumn->sColumnName().aChar());
-      for (char* a = (char*)aRawData; *a && '\n' != *a && '\r' != *a; a++)
-        vTrace("%c"_Stz,*a);
-      vTrace("\n"_Stz);
+      if ( ! gpAttachMap->m_bMetadata ) {
+        vWarn("Skipping row - invalid field %s in record: "_Stz,
+               pColumn->sColumnName().aChar());
+        for (char* a = (char*)aRawData; *a && '\n' != *a && '\r' != *a; a++)
+          vTrace("%c"_Stz,*a);
+        vTrace("\n"_Stz);
+      }
       return false;
     }
 

@@ -264,7 +264,7 @@ void IndexData::vAppendEntriesFromBuffer(EntryBuffer* pEntryBuffer,
   for ( pRow = pEntryBuffer->pNextEntry(pRow, 0) ; pRow;
        pRow = pEntryBuffer->pNextEntry(pRow, 0)) {
     
-    pRow->vShow(0, m_pIndex, false);
+    //pRow->vShow(0, m_pIndex, false);
     RowWrk xRowWrk;
     
     xRowWrk.vTxId(pRow->iTxId());
@@ -273,7 +273,7 @@ void IndexData::vAppendEntriesFromBuffer(EntryBuffer* pEntryBuffer,
     
     xRowWrk.vShow(m_pIndex->pTable()->pColumnVec());
     pNewEntry = m_pCurrentBuffer->pAppendRow(xRowWrk);
-    m_pCurrentBuffer->vDump();
+    //m_pCurrentBuffer->vDump();
     if ( !pNewEntry ) {
       //----------------------------------------------------------------------------
       // create a new entry buffer and link with current buffer
