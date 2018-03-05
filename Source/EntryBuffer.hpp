@@ -101,7 +101,6 @@ namespace DBobjects
     bool         bAppendEntry(Entry* pRowEntry, Entry** ppNewEntry);
     Entry*       pAppendRow(RowWrk& xRowWrk);
     void         vBufferCount(i8& nBufferCount);
-    void         vCompact(void);
     i8           iDecile(void);
     void         vDeleteEntry(Entry* pEntry);
     void         vDeleteEntry(Key* aKey);
@@ -137,6 +136,7 @@ namespace DBobjects
     Entry*       pAllotEntry(i8 nBytes);
     NEO*         aAllotNEO(i8 nBytes);
     void         vAddFreeList(Entry* pEntry);
+    void         vCompact(void);
     void         vCutEntry(Entry* pEntry, Entry* pPriorVec[]);
     void         vDeleteUpwards(Key* aDeleteKey, EntryBuffer** ppRootKeyBuffer);
     void         vDumpPriorVec(Entry* pPriorVec[]);
