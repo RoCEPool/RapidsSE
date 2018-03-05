@@ -103,7 +103,6 @@ namespace DBobjects
     void         vBufferCount(i8& nBufferCount);
     i8           iDecile(void);
     void         vDeleteEntry(Entry* pEntry);
-    void         vDeleteEntry(Key* aKey);
     void         vDump(void);
     Entry*       pFirstEntry(void);
     Entry*       pGetEntryNo(i8 i_Entry);

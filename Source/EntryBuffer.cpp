@@ -586,27 +586,6 @@ void EntryBuffer::vDeleteEntry(Entry* pEntry)
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete the entry of the given key                                          */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vDeleteEntry(Key* aKey)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  // currently we only delete from non-hidden indexes
-  ASSERT(! m_pIndex->bIsHidden());
-  
-  Entry* xPriorVec[gpAttachMap->m_nIndexOffsets];
-  
-  vPositionPriorL0(aKey, xPriorVec);
-  
-  Entry* pEntry = pGetEntryOffset(xPriorVec[0]->iNEO(0));
-  
-  vCutEntry(pEntry,xPriorVec);
-  
-  vAddFreeList(pEntry);
-}
-
-/*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vDump(void)
