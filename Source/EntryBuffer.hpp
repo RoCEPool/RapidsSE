@@ -112,7 +112,6 @@ namespace DBobjects
     bool         bInsertRow(Entry* pOldRow, Entry** ppRow);
     Entry*       pNextEntry(Entry* pEntry, i8 i_Offset);
   
-    EntryBuffer* pPositionInsert(Key* aInsKey);
     Entry*       pPositionQuery(Key* aGivenKey, eRO eRelOp);
     Entry*       pPositionQuery(Key* aGivenKey, i8 nKeyCols, eJC eJuxtaCompare);
     EntryBuffer* pPositionLevel(Key* aGivenKey, i8 nKeyCols, eJC eJuxtaCompare, i8 iLevel);
@@ -172,6 +171,7 @@ namespace DBobjects
                                   EntryBuffer** ppRootKeyBuffer);
     EntryBuffer* pNewNextBuffer(void);
     Item*        pNextItem(Item* pItem);
+    EntryBuffer* pPositionInsert(Key* aInsKey);
     Entry*       pPositionPrior(Key* aFindKey);
     void         vPositionPriorL0(Key* aFindKey, Entry** pPriorVec,
                                 Entry* pFindEntry=nullptr);

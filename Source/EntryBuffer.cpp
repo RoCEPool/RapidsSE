@@ -731,44 +731,6 @@ Entry* EntryBuffer::pNextEntry(Entry* pCurrent, i8 i_Offset)
 }
 
 /*----------------------------------------------------------------------------*/
-/* position at the L0 buffer into which key should be inserted                */
-/*----------------------------------------------------------------------------*/
-EntryBuffer* EntryBuffer::pPositionInsert(Key* aInsKey)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-
-  if ( ! nItems() ) {
-    ASSERT( 0 == iBufferLevel());
-    return this;
-  }
-  
-  EntryBuffer* pEntryBuffer = this;
-  while (true) {
-    
-    // have we arrived at L0 ?
-    i8 iBufferLevel = pEntryBuffer->iBufferLevel();
-    if (iBufferLevel == 0)
-      break;
-    
-    // get the entry before the given insert key
-    Entry* pEntry = pEntryBuffer->pPositionPrior(aInsKey);
-    ASSERT(pEntry);
-    if (pEntry == pEntryBuffer->pHeadEntry())
-      pEntry = pEntryBuffer->pNextEntry(pEntry,0);
-    ASSERT(pEntry);
-    
-    // get the index buffer of the entry
-    //pEntryBuffer->vShow();
-    ASSERT(pEntryBuffer != pEntry->pReferencedEntryBuffer());
-    pEntryBuffer = pEntry->pReferencedEntryBuffer();
-    ASSERT(pEntryBuffer);
-    pEntryBuffer->vAssertEntryBuffer();
-  }
-
-  return pEntryBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
 /* position at key as per relational operator                                 */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pPositionQuery(Key* aGivenKey, eRO eRelnOp)
@@ -2339,6 +2301,44 @@ Item* EntryBuffer::pNextItem(Item* pCurrent)
   }
   
   return pItemNext;
+}
+
+/*----------------------------------------------------------------------------*/
+/* position at the L0 buffer into which key should be inserted                */
+/*----------------------------------------------------------------------------*/
+EntryBuffer* EntryBuffer::pPositionInsert(Key* aInsKey)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  if ( ! nItems() ) {
+    ASSERT( 0 == iBufferLevel());
+    return this;
+  }
+  
+  EntryBuffer* pEntryBuffer = this;
+  while (true) {
+    
+    // have we arrived at L0 ?
+    i8 iBufferLevel = pEntryBuffer->iBufferLevel();
+    if (iBufferLevel == 0)
+      break;
+    
+    // get the entry before the given insert key
+    Entry* pEntry = pEntryBuffer->pPositionPrior(aInsKey);
+    ASSERT(pEntry);
+    if (pEntry == pEntryBuffer->pHeadEntry())
+      pEntry = pEntryBuffer->pNextEntry(pEntry,0);
+    ASSERT(pEntry);
+    
+    // get the index buffer of the entry
+    //pEntryBuffer->vShow();
+    ASSERT(pEntryBuffer != pEntry->pReferencedEntryBuffer());
+    pEntryBuffer = pEntry->pReferencedEntryBuffer();
+    ASSERT(pEntryBuffer);
+    pEntryBuffer->vAssertEntryBuffer();
+  }
+  
+  return pEntryBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
