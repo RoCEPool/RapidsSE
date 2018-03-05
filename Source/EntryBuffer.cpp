@@ -665,31 +665,6 @@ Entry* EntryBuffer::pGetEntryNo(i8 i_Entry)
 }
 
 /*----------------------------------------------------------------------------*/
-/* does buffer have space for nBytes ?                                        */
-/*----------------------------------------------------------------------------*/
-bool EntryBuffer::bHasSpace(i8 nBytes)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  i8 nFree = m_xWsp.nFree() - sizeof(Wilderness);
-  
-  if (gpAttachMap->m_nIndexEntries > 0) {
-    // has space calculation based on no of entries
-    if (m_nItems >= gpAttachMap->m_nIndexEntries)
-      return false;
-    else
-      return true;
-  }
-  else {
-    // has space calculation based on free space
-    if (nFree < nBytes)
-      return false;
-    else
-      return true;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* insert a new key entry into this key tree                                  */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pInsertKeyTree(KeyWrk& xKeyWrk,
@@ -1705,6 +1680,31 @@ void EntryBuffer::vHandleLeftInsert(Entry* pInsertedKeyEntry,
   m_pHigherBuffer->pInsertKeyBuffer(xKeyWrkIns,
                                     ppRootKeyBuffer,
                                     this);
+}
+
+/*----------------------------------------------------------------------------*/
+/* does buffer have space for nBytes ?                                        */
+/*----------------------------------------------------------------------------*/
+bool EntryBuffer::bHasSpace(i8 nBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  i8 nFree = m_xWsp.nFree() - sizeof(Wilderness);
+  
+  if (gpAttachMap->m_nIndexEntries > 0) {
+    // has space calculation based on no of entries
+    if (m_nItems >= gpAttachMap->m_nIndexEntries)
+      return false;
+    else
+      return true;
+  }
+  else {
+    // has space calculation based on free space
+    if (nFree < nBytes)
+      return false;
+    else
+      return true;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

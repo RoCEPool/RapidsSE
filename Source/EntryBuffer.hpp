@@ -107,7 +107,6 @@ namespace DBobjects
     void         vDump(void);
     Entry*       pFirstEntry(void);
     Entry*       pGetEntryNo(i8 i_Entry);
-    bool         bHasSpace(i8 nBytes);
     static Entry* pInsertKeyTree(KeyWrk& xKeyWrk,
                                  EntryBuffer** ppRootKeyBuffer);
     bool         bInsertRow(Entry* pOldRow, Entry** ppRow);
@@ -148,6 +147,7 @@ namespace DBobjects
     void         vHandleLeftInsert(Entry* pInsertedKeyEntry,
                                    Entry* pOriginalFirstEntry,
                                    EntryBuffer** ppRootKeyBuffer);
+    bool         bHasSpace(i8 nBytes);
     void         vHeadEntryNew(void);
     void         vHeadEntryRestore(void);
     EntryBuffer* pInsertableBuffer(KeyWrk& xKeyWrk,
