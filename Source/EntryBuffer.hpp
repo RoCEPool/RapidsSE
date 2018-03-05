@@ -120,7 +120,6 @@ namespace DBobjects
     void         vShow(void);
     void         vShowShort(void);
     void         vShowTree(bool bDumpBuffer=false);
-    EntryBuffer* pSplit(EntryBuffer** ppRootKeyBuffer);
     void         vTruncate(void);
     bool         bVerify(void);
   
@@ -179,6 +178,8 @@ namespace DBobjects
                                   i8 iBufferNo);
     void         vPositionPriorLnAfter(Key* aFindKey, Entry** pPriorVec,
                                        EntryBuffer* pToBuffer);
+    EntryBuffer* pSplit(EntryBuffer** ppRootKeyBuffer);
+    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // verify functions
   

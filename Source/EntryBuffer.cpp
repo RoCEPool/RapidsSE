@@ -1067,98 +1067,6 @@ void EntryBuffer::vShowTree(bool bDumpBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
-/* split this buffer into two: this original buffer plus a new buffer         */
-/*----------------------------------------------------------------------------*/
-EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // find split entry
-  
-  i8 iSplitAtEntry = m_nItems/2;
-  Entry* pSplitEntry = pGetEntrySplit(iSplitAtEntry);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the prior vector to the split entry
-  
-  Key* aKey = pSplitEntry->aKey();
-  i8 iKeyLength = aKey->nKeySize(pIdxColVec);
-  
-  Entry* xPriorVec[gpAttachMap->m_nIndexOffsets];
-  if (0 == m_iBufferLevel) {
-    vPositionPriorL0(aKey, xPriorVec, pSplitEntry);
-  }
-  else {
-    EntryBuffer* pToBuffer = pSplitEntry->pReferencedEntryBuffer();
-    vPositionPriorLnAfter(aKey, xPriorVec, pToBuffer);
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // move entries to a new buffer
-  
-  KeyWrk xKeyWrk;
-  
-  EntryBuffer* pNewBuffer = pNewNextBuffer();
-  
-  Entry* pMoveEntry = pSplitEntry;
-  while (pMoveEntry) {
-    Entry* pNextEntry = this->pNextEntry(pMoveEntry,0);
-    
-    i8 iTxId = pMoveEntry->iTxId();
-    Id xId = pMoveEntry->xId();
-    Key* aKey = pMoveEntry->aKey();
-    i8 nKeySize = aKey->nKeySize(pIdxColVec);
-    i8 nOffsets = pMoveEntry->nOffsets();
-    //i8 iRefBufNo = pMoveEntry->iBufferNo();
-    EntryBuffer* pToBuffer = pMoveEntry->pReferencedEntryBuffer();
-    
-    xKeyWrk.vTxId(iTxId);
-    xKeyWrk.vId(xId);
-    xKeyWrk.vEmbedded((char*)aKey);
-    xKeyWrk.vKeySize(nKeySize);
-    xKeyWrk.vOffsets(nOffsets);
-   
-    Entry* pNewEntry = pNewBuffer->pInsertKeyAbs(xKeyWrk,
-                                                 ppRootKeyBuffer,
-                                                 pToBuffer);
-    
-    vDeleteEntry(pMoveEntry);
-    
-    pMoveEntry = pNextEntry;
-  }
- 
-  Id xId;
-  if (m_iBufferLevel != 0)  {
-    for (Entry* pEntry = pNewBuffer->pFirstEntry();
-         pEntry;
-         pEntry = pNewBuffer->pNextEntry(pEntry, 0)) {
-      
-      xId = pEntry->xId();
-      i8 nBuffer = xId.iBuffer();
-      
-      HeapBuffer* pHeapBuffer =
-        reinterpret_cast<HeapBuffer*>(gpBufferPool->pToBuffer(nBuffer));
-      
-      EntryBuffer* pChildBuffer =
-        reinterpret_cast<EntryBuffer*>(pHeapBuffer->pFirstChunk());
-      
-      ASSERT(pChildBuffer->m_pHigherBuffer == this);
-      pChildBuffer->m_pHigherBuffer = pNewBuffer;
-    }
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // compact the buffer
-  
-  vCompact();
-
-  return pNewBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
 /* truncate this buffer by removing all entries                               */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vTruncate(void)
@@ -2541,6 +2449,98 @@ void EntryBuffer::vPositionPriorLnAfter(Key* aFindKey, Entry* pPriorVec[],
     }
     pPriorVec[i_ScanOffset] = pScanEntry_sl;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* split this buffer into two: this original buffer plus a new buffer         */
+/*----------------------------------------------------------------------------*/
+EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // find split entry
+  
+  i8 iSplitAtEntry = m_nItems/2;
+  Entry* pSplitEntry = pGetEntrySplit(iSplitAtEntry);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the prior vector to the split entry
+  
+  Key* aKey = pSplitEntry->aKey();
+  i8 iKeyLength = aKey->nKeySize(pIdxColVec);
+  
+  Entry* xPriorVec[gpAttachMap->m_nIndexOffsets];
+  if (0 == m_iBufferLevel) {
+    vPositionPriorL0(aKey, xPriorVec, pSplitEntry);
+  }
+  else {
+    EntryBuffer* pToBuffer = pSplitEntry->pReferencedEntryBuffer();
+    vPositionPriorLnAfter(aKey, xPriorVec, pToBuffer);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // move entries to a new buffer
+  
+  KeyWrk xKeyWrk;
+  
+  EntryBuffer* pNewBuffer = pNewNextBuffer();
+  
+  Entry* pMoveEntry = pSplitEntry;
+  while (pMoveEntry) {
+    Entry* pNextEntry = this->pNextEntry(pMoveEntry,0);
+    
+    i8 iTxId = pMoveEntry->iTxId();
+    Id xId = pMoveEntry->xId();
+    Key* aKey = pMoveEntry->aKey();
+    i8 nKeySize = aKey->nKeySize(pIdxColVec);
+    i8 nOffsets = pMoveEntry->nOffsets();
+    //i8 iRefBufNo = pMoveEntry->iBufferNo();
+    EntryBuffer* pToBuffer = pMoveEntry->pReferencedEntryBuffer();
+    
+    xKeyWrk.vTxId(iTxId);
+    xKeyWrk.vId(xId);
+    xKeyWrk.vEmbedded((char*)aKey);
+    xKeyWrk.vKeySize(nKeySize);
+    xKeyWrk.vOffsets(nOffsets);
+    
+    Entry* pNewEntry = pNewBuffer->pInsertKeyAbs(xKeyWrk,
+                                                 ppRootKeyBuffer,
+                                                 pToBuffer);
+    
+    vDeleteEntry(pMoveEntry);
+    
+    pMoveEntry = pNextEntry;
+  }
+  
+  Id xId;
+  if (m_iBufferLevel != 0)  {
+    for (Entry* pEntry = pNewBuffer->pFirstEntry();
+         pEntry;
+         pEntry = pNewBuffer->pNextEntry(pEntry, 0)) {
+      
+      xId = pEntry->xId();
+      i8 nBuffer = xId.iBuffer();
+      
+      HeapBuffer* pHeapBuffer =
+      reinterpret_cast<HeapBuffer*>(gpBufferPool->pToBuffer(nBuffer));
+      
+      EntryBuffer* pChildBuffer =
+      reinterpret_cast<EntryBuffer*>(pHeapBuffer->pFirstChunk());
+      
+      ASSERT(pChildBuffer->m_pHigherBuffer == this);
+      pChildBuffer->m_pHigherBuffer = pNewBuffer;
+    }
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compact the buffer
+  
+  vCompact();
+  
+  return pNewBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
