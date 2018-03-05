@@ -358,7 +358,7 @@ void Table::vInsertEntries(i8 iSlot, EntryBuffer* pEntryBuffer)
   //ASSERT(pEntryBuffer->eDurability() == BD_TEMPORARY);
   
   // if buffer has 0 entries (only head) then should be last buffer
-  if (pEntryBuffer->nItems() == 1) {
+  if (pEntryBuffer->nItems() == 0) {
     ASSERT(pEntryBuffer->bIsLast());
     return;
   }

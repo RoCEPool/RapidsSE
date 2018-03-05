@@ -264,8 +264,17 @@ void IndexData::vAppendEntriesFromBuffer(EntryBuffer* pEntryBuffer,
   for ( pRow = pEntryBuffer->pNextEntry(pRow, 0) ; pRow;
        pRow = pEntryBuffer->pNextEntry(pRow, 0)) {
     
-    bool bInserted = m_pCurrentBuffer->bAppendEntry(pRow, &pNewEntry);
-    if ( !bInserted ) {
+    pRow->vShow(0, m_pIndex, false);
+    RowWrk xRowWrk;
+    
+    xRowWrk.vTxId(pRow->iTxId());
+    xRowWrk.vEmbedded(pRow->aEmbeddedObject());
+    xRowWrk.vRowSize(pRow->nRowSize());
+    
+    xRowWrk.vShow(m_pIndex->pTable()->pColumnVec());
+    pNewEntry = m_pCurrentBuffer->pAppendRow(xRowWrk);
+    m_pCurrentBuffer->vDump();
+    if ( !pNewEntry ) {
       //----------------------------------------------------------------------------
       // create a new entry buffer and link with current buffer
       EntryBuffer* pNewBuffer = new EntryBuffer();
@@ -280,8 +289,8 @@ void IndexData::vAppendEntriesFromBuffer(EntryBuffer* pEntryBuffer,
       m_pCurrentBuffer = pNewBuffer;
       
       // now insert into new buffer
-      bInserted = m_pCurrentBuffer->bAppendEntry(pRow, &pNewEntry);
-      ASSERT(bInserted);
+      pNewEntry = m_pCurrentBuffer->pAppendRow(xRowWrk);
+      ASSERT(pNewEntry);
     }
     
     if ( ! *ppFirstBuffer )
