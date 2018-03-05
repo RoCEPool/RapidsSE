@@ -398,14 +398,6 @@ void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
 }
 
 /*----------------------------------------------------------------------------*/
-/* append an entry for {key,id} into an index buffer at level 0               */
-/*----------------------------------------------------------------------------*/
-bool EntryBuffer::bAppendEntry(Entry* pRowEntry, Entry** ppEntry)
-{
-  RASSERT(0);
-}
-
-/*----------------------------------------------------------------------------*/
 /* attempt to append a new row entry into this buffer                         */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pAppendRow(RowWrk& xRowWrk)
