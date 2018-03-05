@@ -710,32 +710,6 @@ Entry* EntryBuffer::pNextEntry(Entry* pCurrent, i8 i_Offset)
 }
 
 /*----------------------------------------------------------------------------*/
-/* position at key as per relational operator                                 */
-/*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pPositionQuery(Key* aGivenKey, eRO eRelnOp)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  bool bIsEqual;
-  Entry* pIndexEntry = pPositionQuery(aGivenKey, 1, JC_AFTER);
-  
-  bool bAfter;
-  if (pIndexEntry) {
-    do {
-      bool bIsEqual = false;
-      bAfter = pIndexEntry->aKey()->bJuxtaCompare(JC_AFTER, aGivenKey,
-                                                  m_pIndex->pIdxColVec(), 1,
-                                                  bIsEqual, eRelnOp);
-      if (! bAfter) {
-        pIndexEntry = pNextEntry(pIndexEntry, iBufferLevel());
-      }
-    } while (pIndexEntry && ! bAfter);
-  }
-  
-  return pIndexEntry;
-}
-
-/*----------------------------------------------------------------------------*/
 /* position at an index buffer at given level starting from this buffer       */
 /*----------------------------------------------------------------------------*/
 EntryBuffer* EntryBuffer::pPositionLevel(Key* aGivenKey, i8 nKeyCols,
@@ -765,6 +739,32 @@ EntryBuffer* EntryBuffer::pPositionLevel(Key* aGivenKey, i8 nKeyCols,
   }
   
   return pEntryBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* position at key as per relational operator                                 */
+/*----------------------------------------------------------------------------*/
+Entry* EntryBuffer::pPositionQuery(Key* aGivenKey, eRO eRelnOp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  bool bIsEqual;
+  Entry* pIndexEntry = pPositionQuery(aGivenKey, 1, JC_AFTER);
+  
+  bool bAfter;
+  if (pIndexEntry) {
+    do {
+      bool bIsEqual = false;
+      bAfter = pIndexEntry->aKey()->bJuxtaCompare(JC_AFTER, aGivenKey,
+                                                  m_pIndex->pIdxColVec(), 1,
+                                                  bIsEqual, eRelnOp);
+      if (! bAfter) {
+        pIndexEntry = pNextEntry(pIndexEntry, iBufferLevel());
+      }
+    } while (pIndexEntry && ! bAfter);
+  }
+  
+  return pIndexEntry;
 }
 
 /*----------------------------------------------------------------------------*/
