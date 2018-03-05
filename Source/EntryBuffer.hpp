@@ -63,8 +63,6 @@ namespace DBobjects
     void  operator delete(void*);
   
     EntryBuffer(void);
-    EntryBuffer(i8 iDataBytes);
-    EntryBuffer(Index* pIndex, i8 nLevel, i8 nPartitionNo);
     ~EntryBuffer(void);
 
     void vAssertEntryBuffer(void);

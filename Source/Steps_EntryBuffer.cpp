@@ -55,7 +55,9 @@ void Task::vEntryBufferCreate(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(nPartitionNo) )
     THROW_INVALID_DSTACK("entryBuffer::create"_Stz);
   
-  EntryBuffer* pEntryBuffer = new EntryBuffer(pIndex->pTable()->pHiddenIndex(), 0, nPartitionNo);
+  EntryBuffer* pEntryBuffer = new EntryBuffer;
+  pEntryBuffer->vIndex(pIndex->pTable()->pHiddenIndex());
+  pEntryBuffer->vPartitionNo(nPartitionNo);
   
   mpTask->m_pDataStack->vPushObject(pEntryBuffer);
   

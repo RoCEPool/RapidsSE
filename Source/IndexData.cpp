@@ -244,7 +244,6 @@ void IndexData::vAppendEntriesFromBuffer(EntryBuffer* pEntryBuffer,
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
   
   EntryVec xPriorVec;
-  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   Entry* pNewEntry;
   
   *ppFirstBuffer = nullptr;
@@ -256,7 +255,9 @@ void IndexData::vAppendEntriesFromBuffer(EntryBuffer* pEntryBuffer,
 
   if (m_pRoot == nullptr) {
     ASSERT( ! m_pCurrentBuffer )
-    m_pRoot = new EntryBuffer(m_pIndex, 0, m_iPartitionNo);
+    m_pRoot = new EntryBuffer();
+    m_pRoot->vIndex(m_pIndex);
+    m_pRoot->vPartitionNo(m_iPartitionNo);
     m_pCurrentBuffer = m_pRoot;
   }
   
@@ -267,7 +268,9 @@ void IndexData::vAppendEntriesFromBuffer(EntryBuffer* pEntryBuffer,
     if ( !bInserted ) {
       //----------------------------------------------------------------------------
       // create a new entry buffer and link with current buffer
-      EntryBuffer* pNewBuffer = new EntryBuffer(m_pIndex, 0, m_iPartitionNo);
+      EntryBuffer* pNewBuffer = new EntryBuffer();
+      pNewBuffer->vIndex(m_pIndex);
+      pNewBuffer->vPartitionNo(m_iPartitionNo);
       pNewBuffer->vNextBuffer(m_pCurrentBuffer->pNextBuffer());
       pNewBuffer->vPrevBuffer(m_pCurrentBuffer);
       m_pCurrentBuffer->vNextBuffer(pNewBuffer);

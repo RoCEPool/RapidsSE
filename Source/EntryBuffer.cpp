@@ -96,20 +96,6 @@ EntryBuffer::EntryBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-EntryBuffer::EntryBuffer(i8 iDataBytes)
-: ItemBuffer(CN_ENTRYBUFFER)
-{
-  RASSERT(0);
-}
-
-EntryBuffer::EntryBuffer(Index* pIndex, i8 nLevel, i8 nPartitionNo)
-: ItemBuffer(CN_ENTRYBUFFER) {
-  RASSERT(0);
-}
-
-/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 EntryBuffer::~EntryBuffer(void)

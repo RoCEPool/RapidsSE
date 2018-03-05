@@ -479,13 +479,15 @@ bool SEitf::bInsertRow(Stz* aRow, i8 iLength)
   
   // check for working buffer
   if (! m_pRowBuffer[iSlot]) {
-    m_pRowBuffer[iSlot] = new EntryBuffer(m_pCurrentTable->pHiddenIndex(),
-                                          0, m_iPartition);
+    m_pRowBuffer[iSlot] = new EntryBuffer();
+    
     if (! m_pRowBuffer[iSlot]) {
       vTrace("EntryBuffer allocation failed\n"_Stz);
       m_eErrorCode = EC_LOW_BUFFERS;
       return false;
     }
+    m_pRowBuffer[iSlot]->vIndex(m_pCurrentTable->pHiddenIndex());
+    m_pRowBuffer[iSlot]->vPartitionNo(m_iPartition);
     m_pRowBuffer[iSlot]->vDurability(BD_TEMPORARY);
   }
   
@@ -520,13 +522,14 @@ bool SEitf::bInsertRow(Stz* aRow, i8 iLength)
   }
   
   // get a new working buffer
-  m_pRowBuffer[iSlot] = new EntryBuffer(m_pCurrentTable->pHiddenIndex(),
-                                        0, m_iPartition);
+  m_pRowBuffer[iSlot] = new EntryBuffer();
   if (! m_pRowBuffer[iSlot]) {
     vTrace("EntryBuffer allocation failed\n"_Stz);
     m_eErrorCode = EC_LOW_BUFFERS;
     return false;
   }
+  m_pRowBuffer[iSlot]->vIndex(m_pCurrentTable->pHiddenIndex());
+  m_pRowBuffer[iSlot]->vPartitionNo(m_iPartition);
   m_pRowBuffer[iSlot]->vDurability(BD_TEMPORARY);
   
   pRowBuffer = m_pRowBuffer[iSlot];
@@ -550,13 +553,16 @@ bool SEitf::bInsertRow(Stz* aRow, i8 iLength, i8 iPartition)
   
   // check for working buffer
   if (! m_pRowBuffer[iPartition]) {
-    m_pRowBuffer[iPartition] = new EntryBuffer(m_pCurrentTable->pHiddenIndex(),
-                                               0, iPartition);
+    m_pRowBuffer[iPartition] = new EntryBuffer();
+    
     if (! m_pRowBuffer[iPartition]) {
       vTrace("EntryBuffer allocation failed\n"_Stz);
       m_eErrorCode = EC_LOW_BUFFERS;
       return false;
     }
+    
+    m_pRowBuffer[iPartition]->vIndex(m_pCurrentTable->pHiddenIndex());
+    m_pRowBuffer[iPartition]->vPartitionNo(iPartition);
     m_pRowBuffer[iPartition]->vDurability(BD_TEMPORARY);
   }
   
@@ -593,13 +599,19 @@ bool SEitf::bInsertRow(Stz* aRow, i8 iLength, i8 iPartition)
   
   //vTrace("creating new buffer\n"_Stz);
   // get a new working buffer
-  m_pRowBuffer[iPartition] = new EntryBuffer(m_pCurrentTable->pHiddenIndex(),
-                                             0, iPartition);
+  m_pRowBuffer[iPartition] = new EntryBuffer();
   if (! m_pRowBuffer[iPartition]) {
     vTrace("EntryBuffer allocation failed\n"_Stz);
     m_eErrorCode = EC_LOW_BUFFERS;
     return false;
   }
+  if (! m_pRowBuffer[iPartition]) {
+    vTrace("EntryBuffer allocation failed\n"_Stz);
+    m_eErrorCode = EC_LOW_BUFFERS;
+    return false;
+  }
+  m_pRowBuffer[iPartition]->vIndex(m_pCurrentTable->pHiddenIndex());
+  m_pRowBuffer[iPartition]->vPartitionNo(m_iPartition);
   m_pRowBuffer[iPartition]->vDurability(BD_TEMPORARY);
   
   pRowBuffer = m_pRowBuffer[iPartition];
@@ -679,10 +691,17 @@ bool SEitf::bInsertLastBuffer(i8 iPartition)
   //vTrace("%p inserting entries from row buffer into table..%lld.\n"_Stz, this, iPartition);
   
   if (! m_pRowBuffer[iPartition]) {
-    m_pRowBuffer[iPartition] = new EntryBuffer(m_pCurrentTable->pHiddenIndex(),
-                                               0, m_iPartition);
+    m_pRowBuffer[iPartition] = new EntryBuffer();
+    if (! m_pRowBuffer[iPartition]) {
+      vTrace("EntryBuffer allocation failed\n"_Stz);
+      m_eErrorCode = EC_LOW_BUFFERS;
+      return false;
+    }
+    m_pRowBuffer[iPartition]->vIndex(m_pCurrentTable->pHiddenIndex());
+    m_pRowBuffer[iPartition]->vPartitionNo(m_iPartition);
     m_pRowBuffer[iPartition]->vDurability(BD_TEMPORARY);
   }
+    
   ASSERT(m_pRowBuffer[iPartition]->eDurability() == BD_TEMPORARY);
   
   //vTrace("inserting %p ..%lld.\n"_Stz, m_pRowBuffer[iPartition], iPartition);
