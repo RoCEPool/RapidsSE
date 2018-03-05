@@ -110,10 +110,6 @@ namespace DBobjects
     static Entry* pInsertKeyTree(KeyWrk& xKeyWrk,
                                  EntryBuffer** ppRootKeyBuffer);
     bool         bInsertRow(Entry* pOldRow, Entry** ppRow);
-    EntryBuffer* pNewHigherBuffer(void);
-    EntryBuffer* pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
-                                  EntryBuffer** ppRootKeyBuffer);
-    EntryBuffer* pNewNextBuffer(void);
     Entry*       pNextEntry(Entry* pEntry, i8 i_Offset);
   
     EntryBuffer* pPositionInsert(Key* aInsKey);
@@ -171,6 +167,10 @@ namespace DBobjects
                                    EntryBuffer* pToBuffer);
     void         vItemCountRestore(void);
     bool         bKeyBeforeBuffer(Key* aKey);
+    EntryBuffer* pNewHigherBuffer(void);
+    EntryBuffer* pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
+                                  EntryBuffer** ppRootKeyBuffer);
+    EntryBuffer* pNewNextBuffer(void);
     Item*        pNextItem(Item* pItem);
     Entry*       pPositionPrior(Key* aFindKey);
     void         vPositionPriorL0(Key* aFindKey, Entry** pPriorVec,

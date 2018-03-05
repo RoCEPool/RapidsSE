@@ -2161,6 +2161,25 @@ bool EntryBuffer::bKeyBeforeBuffer(Key* aKeyTest)
 }
 
 /*----------------------------------------------------------------------------*/
+/* create a new higher buffer                                                 */
+/*----------------------------------------------------------------------------*/
+EntryBuffer* EntryBuffer::pNewHigherBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  // create new buffer at one higher index level
+  EntryBuffer* pNewBuffer = new EntryBuffer();
+  
+  pNewBuffer->vIndex(m_pIndex);
+  pNewBuffer->vBufferLevel(m_iBufferLevel+1);
+  pNewBuffer->vPartitionNo(m_nPartitionNo);
+  
+  vHigherBuffer(pNewBuffer);
+  
+  return pNewBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* create a new insert buffer (adjusting higher buffers accordingly)          */
 /*----------------------------------------------------------------------------*/
 EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
@@ -2216,9 +2235,9 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
     
     
     Entry* pNewKeyLeft =
-      pHigherBuffer->pInsertKeyUpwards(xKeyWrkLeft,
-                                       ppRootKeyBuffer,
-                                       pLeftBuffer);
+    pHigherBuffer->pInsertKeyUpwards(xKeyWrkLeft,
+                                     ppRootKeyBuffer,
+                                     pLeftBuffer);
     //if (mbWatch)
     //  (*ppRootKeyBuffer)->vShowTree();
   }
@@ -2233,7 +2252,7 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
   Key* aKeyRight = pFirstKeyRight->aKey();
   i8 iKeyLenRight = aKeyRight->nKeySize(m_pIndex->pIdxColVec());
   i8 nOffsetsRight = pFirstKeyRight->nOffsets();
-
+  
   
   KeyWrk xKeyWrkRight;
   xKeyWrkRight.vTxId(iTxIdRight);
@@ -2244,9 +2263,9 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
   
   
   Entry* pNewKeyRight =
-    pHigherBuffer->pInsertKeyUpwards(xKeyWrkRight,
-                                     ppRootKeyBuffer,
-                                     pRightBuffer);
+  pHigherBuffer->pInsertKeyUpwards(xKeyWrkRight,
+                                   ppRootKeyBuffer,
+                                   pRightBuffer);
   
   //if (mbWatch)
   //  (*ppRootKeyBuffer)->vShowTree();
@@ -2257,25 +2276,6 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
     return pLeftBuffer;
   else
     return pRightBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* create a new higher buffer                                                 */
-/*----------------------------------------------------------------------------*/
-EntryBuffer* EntryBuffer::pNewHigherBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  // create new buffer at one higher index level
-  EntryBuffer* pNewBuffer = new EntryBuffer();
-  
-  pNewBuffer->vIndex(m_pIndex);
-  pNewBuffer->vBufferLevel(m_iBufferLevel+1);
-  pNewBuffer->vPartitionNo(m_nPartitionNo);
-  
-  vHigherBuffer(pNewBuffer);
-  
-  return pNewBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
