@@ -77,7 +77,6 @@ namespace DBobjects
     i8           iBufferLevel(void);
     eBD          eDurability(void);
     void         vDurability(eBD eDurability);
-    FreeEntry*   pFirstFree(void);
     Entry*       pHeadEntry(void);
     EntryBuffer* pHigherBuffer(void);
     void         vHigherBuffer(EntryBuffer* pHigherLevel);
@@ -129,6 +128,7 @@ namespace DBobjects
     void         vCutEntry(Entry* pEntry, Entry* pPriorVec[]);
     void         vDeleteUpwards(Key* aDeleteKey, EntryBuffer** ppRootKeyBuffer);
     void         vDumpPriorVec(Entry* pPriorVec[]);
+    FreeEntry*   pFirstFree(void);
     Item*        pFirstItem(void);
     void         vFreeChains(void);
     Entry*       pGetEntryOffset(i8 iOffset);
@@ -142,14 +142,6 @@ namespace DBobjects
     void         vHeadEntryRestore(void);
     EntryBuffer* pInsertableBuffer(KeyWrk& xKeyWrk,
                                    EntryBuffer** ppRootKeyBuffer);
-    Entry*       pInsertKey(KeyWrk& xKeyWrk,
-                            i8 iTxId,
-                            Id xIdx,
-                            Key* pKey, i8
-                            iKeyLength,
-                            EntryBuffer** ppRootKeyBuffer,
-                            i8 iRefBufNo,
-                            EntryBuffer* pToBuffer);
     Entry*       pInsertKeyAbs(KeyWrk& xKeyWrk,
                                EntryBuffer** ppRootKeyBuffer,
                                EntryBuffer* pToBuffer);
@@ -202,7 +194,6 @@ namespace DBobjects
     public:
     Footer* aFooter(void);
   
-    static void vUnitTest_b(Table* pTable);
     static void vUnitTest_c(Table* pTable);
   };
   

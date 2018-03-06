@@ -32,7 +32,6 @@ void Task::vAddPrimitives_EntryBuffer(void)
   vAddPrimitive("entryBuffer.partition!"_Stz,  &vEntryBufferPartitionStore, false);
   vAddPrimitive("entryBuffer::toEntryBuffer"_Stz,&vEntryBufferToEntryBuffer,false);
 
-  vAddPrimitive("entryBuffer::unitTest_b"_Stz, &vEntryBufferUnitTest_b,  false);
   vAddPrimitive("entryBuffer::unitTest_c"_Stz, &vEntryBufferUnitTest_c,  false);
 }
 
@@ -460,23 +459,6 @@ void Task::vEntryBufferToEntryBuffer(MP_Task mpTask)
   RASSERT(CN_ENTRYBUFFER == pEntryBuffer->eClass());
   
   mpTask->m_pDataStack->vPushObject(pEntryBuffer);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* entryBuffer::unitTest_b -- entry buffer unit test (a) -> (b)               */
-/*----------------------------------------------------------------------------*/
-void Task::vEntryBufferUnitTest_b(MP_Task mpTask)
-{
-  ENTRY("vEntryBufferUnitTest_b"_Stz);
-  
-  Object* pPtrTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("entryBuffer::unitTest_b"_Stz);
-  Table* pTable = _pTable(pPtrTable);
-  
-  EntryBuffer::vUnitTest_b(pTable);
   
   EXIT();
 }

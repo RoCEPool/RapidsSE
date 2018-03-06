@@ -195,16 +195,6 @@ void EntryBuffer::vDurability(eBD eDurability)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next buffer                                                            */
-/*----------------------------------------------------------------------------*/
-FreeEntry* EntryBuffer::pFirstFree(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  return m_pFirstFree;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get head entry                                                             */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pHeadEntry(void)
@@ -1386,6 +1376,16 @@ void EntryBuffer::vDumpPriorVec(Entry* pPriorVec[])
 }
 
 /*----------------------------------------------------------------------------*/
+/* get first free entry                                                       */
+/*----------------------------------------------------------------------------*/
+FreeEntry* EntryBuffer::pFirstFree(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  return m_pFirstFree;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get first item after head (could be entry, free entry or wilderness)       */
 /*----------------------------------------------------------------------------*/
 Item* EntryBuffer::pFirstItem(void)
@@ -1618,182 +1618,6 @@ EntryBuffer* EntryBuffer::pInsertableBuffer(KeyWrk& xKeyWrk,
   }
  
   return pInsertIntoBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* attempt to insert a new key entry into this buffer                         */
-/*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pInsertKey(KeyWrk& xKeyWrk,
-                               i8 iTxId,
-                               Id xId,
-                               Key* aKey,
-                               i8 iKeyLength,
-                               EntryBuffer** ppRootKeyBuffer,
-                               i8 iRefBufNo,
-                               EntryBuffer* pToBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check validity of parameters
-  
-  RASSERT(xKeyWrk.iTxId() == iTxId);
-  RASSERT(xKeyWrk.xId().iAsI8() == xId.iAsI8());
-  RASSERT(xKeyWrk.aKey() == aKey);
-  RASSERT(xKeyWrk.nKeySize() == iKeyLength);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  Entry* pKeyEntry;
-  KeyWrk xKeyWrkIns;
-  
-  //vTrace("Inserting key:\n"_Stz);
-  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  //aKey->vShow(pIdxColVec);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // compute required entry space
-  
-  RASSERT(xKeyWrk.nOffsets());
-  
-  i8 nEntryBytes = xKeyWrk.nEntrySize();
-  i8 nOffsetBytes = xKeyWrk.nOffsetSize();
-  i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  Entry* xPriorVec[gpAttachMap->m_nIndexOffsets];
-  
-  // find the entry after which the new entry.key will be inserted
-  //Key* aKey = xKeyWrk.aKey();
-  if (0 == m_iBufferLevel)
-    vPositionPriorL0(aKey, xPriorVec);
-  else
-    vPositionPriorLnAfter(aKey, xPriorVec, pToBuffer);
-  //vDumpPriorVec(xPriorVec);
-  
-  // set no of offsets in working key
-  //xKeyWrk.vOffsets(nOffsets); // 1,2 or 3 for the moment
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check if this buffer has enough space
-  
-  if ( ! bHasSpace(nEntryPlusOffsets) ) {
-    
-    vCompact();
-    
-    if ( ! bHasSpace(nEntryPlusOffsets) ) {
-      if ( ! ppRootKeyBuffer )
-        return nullptr;
-      
-      (*ppRootKeyBuffer) = pNewHigherBuffer();
-      EntryBuffer* pNewRightKeyBuffer = this->pSplit(ppRootKeyBuffer);
-      //this->vShow();
-      //pNewRightKeyBuffer->vShow();
-      
-      Entry* pFirstKeyLeft  = this->pFirstEntry();
-      Id xIdLeft(*this->nBufferNo(),0);
-      
-      i8 iTxIdLeft = pFirstKeyLeft->iTxId();
-      Key* aKeyLeft = pFirstKeyLeft->aKey();
-      i8 iKeyLenLeft = aKeyLeft->nKeySize(m_pIndex->pIdxColVec());
-      i8 iRefBufLeft = pFirstKeyLeft->iBufferNo();
-      EntryBuffer* pToBufferLeft = pFirstKeyLeft->pReferencedEntryBuffer();
-      
-      Entry* pNewKeyLeft =
-      (*ppRootKeyBuffer)->pInsertKey(xKeyWrkIns,
-                                     iTxIdLeft,
-                                     xIdLeft,
-                                     aKeyLeft,
-                                     iKeyLenLeft,
-                                     ppRootKeyBuffer,
-                                     iRefBufLeft,
-                                     pToBufferLeft);
-      
-      Entry* pFirstKeyRight = pNewRightKeyBuffer->pFirstEntry();
-      Id xIdRight(*pNewRightKeyBuffer->nBufferNo(),0);
-      
-      i8 iTxIdRight = pFirstKeyRight->iTxId();
-      Key* aKeyRight = pFirstKeyRight->aKey();
-      i8 iKeyLenRight = aKeyRight->nKeySize(m_pIndex->pIdxColVec());
-      i8 iRefBufRight = pFirstKeyRight->iBufferNo();
-      EntryBuffer* pToBufferRight = pFirstKeyRight->pReferencedEntryBuffer();
-      Entry* pNewKeyRight =
-      (*ppRootKeyBuffer)->pInsertKey(xKeyWrkIns,
-                                     iTxIdRight,
-                                     xIdRight,
-                                     aKeyRight,
-                                     iKeyLenRight,
-                                     ppRootKeyBuffer,
-                                     iRefBufRight,
-                                     pToBufferRight);
-      
-      
-      //(*ppRootKeyBuffer)->vShow();
-      //this->vShow();
-      //pNewRightKeyBuffer->vShow();
-      
-      
-      if ( ! pNewRightKeyBuffer->bKeyBeforeBuffer(aKey) ) {
-        pKeyEntry = pNewRightKeyBuffer->pInsertKey(xKeyWrkIns,
-                                                   iTxId,
-                                                   xId,
-                                                   aKey,
-                                                   iKeyLength,
-                                                   ppRootKeyBuffer,
-                                                   iRefBufNo,
-                                                   pToBuffer);
-        //pNewRightKeyBuffer->vShow();
-        return pKeyEntry;
-      }
-      
-    }
-    
-    // this left buffer has sufficient space after compacting...
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // form the rowId
-  
-  //  bn nBufferNo = this->nBufferNo();
-  //  i8 nRowNo = xRowId.iRow(); //iGetFreeEntry(); //nItems();
-  //  Id xRowId(*nBufferNo, nRowNo);
-  
-  //xKeyWrk.vId(xRowId);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // allocate space in this buffer
-  
-  pKeyEntry = pAllotEntry(nEntryBytes);
-  ASSERT(pKeyEntry);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set the key entry
-  
-  i8 nOffsets = xKeyWrk.nOffsets();
-  
-  //pKeyEntry->vSetEntry(xKeyWrk);
-  pKeyEntry->vSetEntry(iTxId, xId, nOffsets, (Stz*)aKey, iKeyLength);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set prior offsets
-  
-  i8 iKeyEntryOffset = iToOffset(pKeyEntry);
-  
-  NEO* aNEO = aAllotNEO(nOffsetBytes);
-  
-  for (i8 iNextOffset = 0; iNextOffset < nOffsets; iNextOffset++) {
-    
-    i8 iPriorOffset = xPriorVec[iNextOffset]->iNEO(iNextOffset);
-    
-    pKeyEntry->vNEO(iNextOffset,iPriorOffset);
-    
-    xPriorVec[iNextOffset]->vNEO(iNextOffset,iKeyEntryOffset);
-  }
-  
-  //vShow();
-  
-  return pKeyEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3142,145 +2966,6 @@ Footer* EntryBuffer::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /*-- Unit Tests --------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* unit test (a) -> (b)                                                       */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vUnitTest_b(Table* pTable)
-{
-  vTrace("\n"_Stz);
-  vTrace("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"_Stz);
-  vTrace("EntryBuffer::vUnitTest_b\n"_Stz);
-  vTrace("\n"_Stz);
-  
-  ColumnVec* pColVec = pTable->pColumnVec();
-  Index* pHiddenIndex = pTable->pHiddenIndex();
-  
-  IdxVec* pIdxVec = pTable->pIdxVec();
-  Index* pIndex1 = pIdxVec->pGet(1);
-  IdxColVec* pIdxColVec1 = pIndex1->pIdxColVec();
-  
-  Formatters* pFormatters = &gpAttachMap->m_xFormatters;
-  
-  EntryBuffer* pFirstBuffer = new EntryBuffer;
-  EntryBuffer* pCurrentBuffer = pFirstBuffer;
-  pCurrentBuffer->vIndex(pHiddenIndex);
-  pCurrentBuffer->vPartitionNo(0);
-  //pCurrentBuffer->vShow();
-  
-  EntryBuffer* pFirstIndexBuffer = new EntryBuffer;
-  EntryBuffer* pCurrentIndexBuffer = pFirstIndexBuffer;
-  pCurrentIndexBuffer->vIndex(pIndex1);
-  pCurrentIndexBuffer->vPartitionNo(0);
-  pCurrentIndexBuffer->vShow();
-  
-  s256 sRecData;
-  i8 iRecLength;
-  RowWrk xRowWrk;
-  i8 iRowLength;
-  bool bFormatted;
-  bool bBlankLine;
-  KeyWrk xKeyWrk;
-  KeyWrk xKeyWrkIns;
-  
-  Entry* xKeyEntries[1000];
-
-  // keys in ascending order
-  for (i8 iInt = 0; iInt <= 100; iInt++) {
-    
-  // keys in descending order
-  //for (i8 iInt = 100; iInt >= 0; iInt--) {
-    
-  // keys in random order
-  //for (i8 iCount = 0; iCount <= 100; iCount++) {
-  //  i8 iInt = Random::iRandom(10);
-    
-    i8 iKey = iInt;
-  
-    sprintf(sRecData.aChar(),"%lld,%s,1900-01-01 00:00:%lld",
-            iKey,IntLib::sAsText(iKey),iKey);
-    vTrace("Record: %s\n"_Stz,sRecData.aChar());
-  
-    char* aRowData = (char*)xRowWrk.aRow();
-    iRecLength = sRecData.iLength();
-    
-    bFormatted = Row::bFormatRow(pColVec,pFormatters,
-                                 sRecData,iRecLength,
-                                 (Stz*)aRowData,iRowLength,
-                                 bBlankLine);
-
-    xRowWrk.vRowSize(iRowLength);
-    xRowWrk.vTxId(0);
-    
-    //((Row*)aRowData)->vDump(pColVec);
-
-    //Entry* pRowEntry = pCurrentBuffer->pAppendRow_v3(xRowEntWrk);
-    
-    Entry* pRowEntry = pCurrentBuffer->pAppendRow(xRowWrk);
-    
-    if ( ! pRowEntry ) {
-      pCurrentBuffer = pCurrentBuffer->pNewNextBuffer();
-      pRowEntry = pCurrentBuffer->pAppendRow(xRowWrk);
-      ASSERT(pRowEntry);
-    }
-    
-    xKeyWrk.vReset();
-    pRowEntry->vExtractIndexKey(xKeyWrk,pIdxColVec1);
-    //xKeyWrk.vShow(pIdxColVec1);
-    
-    //Entry* pKeyEntry = pCurrentIndexBuffer->pInsertKey_v3(xKeyWrk);
-    
-    Entry* pKeyEntry =
-      pCurrentIndexBuffer->pInsertKey(xKeyWrkIns,
-                                      0,
-                                      pRowEntry->xId(),
-                                      xKeyWrk.aKey(),
-                                      xKeyWrk.nKeySize(),
-                                      nullptr,
-                                      0,
-                                      nullptr);
-    
-    xKeyEntries[iKey] = pKeyEntry;
-    
-//    if ( ! pKeyEntry ) {
-//      pCurrentIndexBuffer = pCurrentIndexBuffer->pNewNextBuffer();
-//      pKeyEntry = pCurrentIndexBuffer->pInsertKey_v3(xKeyWrk);
-//      ASSERT(pKeyEntry);
-//    }
-    pCurrentIndexBuffer->vShow();
-    
-  }
-  
-  pCurrentBuffer->vShow();
-
-  pCurrentIndexBuffer->vShow();
-  EntryBuffer* pSplitIndexBuffer = pCurrentIndexBuffer->pSplit(nullptr);
-  pCurrentIndexBuffer->vShow();
-  pSplitIndexBuffer->vShow();
-  
-//  // delete some entries[2]
-//  Entry* pEntry;
-//  pCurrentIndexBuffer->vShow();
-//  
-//  pEntry = xKeyEntries[0];
-//  pCurrentIndexBuffer->vDeleteEntry(pEntry);
-//  pCurrentIndexBuffer->vShow();
-//
-////  pEntry = xKeyEntries[1];
-////  pCurrentIndexBuffer->vDeleteEntry(pEntry);
-////  pCurrentIndexBuffer->vShow();
-//  
-//  pEntry = xKeyEntries[2];
-//  pCurrentIndexBuffer->vDeleteEntry(pEntry);
-//  pCurrentIndexBuffer->vShow();
-//  
-////  pEntry = xKeyEntries[4];
-////  pCurrentIndexBuffer->vDeleteEntry(pEntry);
-////  pCurrentIndexBuffer->vShow();
-//
-//  pCurrentIndexBuffer->vCompactBuffer();
-//  pCurrentIndexBuffer->vShow();
-}
 
 /*----------------------------------------------------------------------------*/
 /* unit test (b) -> (c)                                                       */
