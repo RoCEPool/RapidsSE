@@ -77,7 +77,6 @@ namespace DBobjects
     i8           iBufferLevel(void);
     eBD          eDurability(void);
     void         vDurability(eBD eDurability);
-    FreeEntry*   pFirstFree(void);
     Entry*       pHeadEntry(void);
     EntryBuffer* pHigherBuffer(void);
     void         vHigherBuffer(EntryBuffer* pHigherLevel);
@@ -129,6 +128,7 @@ namespace DBobjects
     void         vCutEntry(Entry* pEntry, Entry* pPriorVec[]);
     void         vDeleteUpwards(Key* aDeleteKey, EntryBuffer** ppRootKeyBuffer);
     void         vDumpPriorVec(Entry* pPriorVec[]);
+    FreeEntry*   pFirstFree(void);
     Item*        pFirstItem(void);
     void         vFreeChains(void);
     Entry*       pGetEntryOffset(i8 iOffset);

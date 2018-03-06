@@ -195,16 +195,6 @@ void EntryBuffer::vDurability(eBD eDurability)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next buffer                                                            */
-/*----------------------------------------------------------------------------*/
-FreeEntry* EntryBuffer::pFirstFree(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  return m_pFirstFree;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get head entry                                                             */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pHeadEntry(void)
@@ -1385,6 +1375,16 @@ void EntryBuffer::vDumpPriorVec(Entry* pPriorVec[])
              pGetEntryOffset(pEntry->iNEO(i_Offset)));
     }
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get first free entry                                                       */
+/*----------------------------------------------------------------------------*/
+FreeEntry* EntryBuffer::pFirstFree(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  return m_pFirstFree;
 }
 
 /*----------------------------------------------------------------------------*/
