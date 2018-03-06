@@ -135,7 +135,6 @@ namespace Base
     /* 97 */ CN_RBCURSOR,
     /*    */ CN_REGFRAME,
     
-    /*100 */ CN_RESULTROW,
     /*101 */ CN_RING,
     /*102 */ CN_ROARRAY,
     /*103 */ CN_ROWBUFFER,
@@ -190,7 +189,8 @@ namespace Base
     /*149 */ CN_WILDERNESS,
     /*150 */ CN_WORD,
     /*    */ CN_WORKINGBUFFER,
-    
+    /*    */ CN_WORKINGROW,
+        
     /*151 */ CN_ZSMALL_,
     /*152 */ CN_ZMEDIUM_,
     /*153 */ CN_ZLARGE_,
@@ -324,7 +324,6 @@ namespace Base
     /* 97 */ "RBCURSOR"_Stz,
     /*    */ "REGFRAME"_Stz,
     
-    /*100 */ "RESULTROW"_Stz,
     /*101 */ "RING"_Stz,
     /*102 */ "ROARRAY"_Stz,
     /*103 */ "ROWBUFFER"_Stz,
@@ -379,6 +378,7 @@ namespace Base
     /*149 */ "WILDERNESS"_Stz,
     /*150 */ "WORD"_Stz,
     /*    */ "WORKINGBUFFER"_Stz,
+    /*    */ "WORKINGROW"_Stz,
     
     /*151 */ "ZSMALL_"_Stz,
     /*152 */ "ZMEDIUM_"_Stz,

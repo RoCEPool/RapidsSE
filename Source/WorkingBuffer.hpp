@@ -8,10 +8,10 @@ namespace DBobjects
   class WorkingBuffer : public Object
   {
   protected:
-    bool   m_bIsLast;     // is this the last buffer in its sequence?jj
-    i8     m_iPartition;  // partitionn this result buffer came from
-    i8     m_nResultRows; // number of ResultRows in this buffer
-    Table* m_pTable;      // table which describes the rows
+    bool   m_bIsLast;      // is this the last buffer in its sequence?jj
+    i8     m_iPartition;   // partitionn this result buffer came from
+    i8     m_nWorkingRows; // number of WorkingRows in this buffer
+    Table* m_pTable;       // table which describes the rows
 
     WspFxd<C_SIZE_LARGE_OBJECT - C_1KB*4> m_xWsp;
 
@@ -30,17 +30,17 @@ namespace DBobjects
   public:
     bool        bAppendResult(Row* aRow, i8 nRowSize);
     bool        bAppendRow(RowWrk xRowWrk);
-    ResultRow*  pFirstResult(void);
+    WorkingRow* pFirstResult(void);
     void        vIsLast(bool bIsLast);
     bool        bIsLast(void);
-    ResultRow*  pNextResult(ResultRow* pCurrentItem);
+    WorkingRow* pNextResult(WorkingRow* pCurrentItem);
     i8          nPartitionNo(void);
-    i8          nResultRows(void);
+    i8          nWorkingRows(void);
     void        vShow(void);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   private:
-    ResultRow*  pAllotResult(i8 nBytes);
+    WorkingRow* pAllotResult(i8 nBytes);
     i8          nFreeBytes(void);
   
     Footer* aFooter(void);

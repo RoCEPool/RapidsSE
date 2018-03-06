@@ -1,31 +1,31 @@
 /*============================================================================*/
-/* ResultRow.hpp -- result row                                                */
+/* WorkingRow -- working row                                                  */
 /*============================================================================*/
 #pragma once
 
 namespace DBobjects
 {
-  class ResultRow
+  class WorkingRow
   {
   protected:
-    i8  m_nResultRowSize; // size of this result row
+    i8  m_nWorkingRowSize; // size of this working row
     // ... data
   
   public:
     void* operator new(size_t);
-    void* operator new(size_t, ResultRow*);
+    void* operator new(size_t, WorkingRow*);
   
-    ResultRow(Row* aSrcRow, i8 nResultRowSize, i8 nRowSize);
-    ~ResultRow(void);
+    WorkingRow(Row* aSrcRow, i8 nWorkingRowSize, i8 nRowSize);
+    ~WorkingRow(void);
   
     static i8 nBytesRequired(i8 nRowSize);
   
     Row* aRow(void);
     void vShow(ColumnVec* pColVec);
-    i8   nResultRowSize(void);
+    i8   nRowSize(void);
   };
   
-  ResultRow* _pResultRow(void* aAddr);
+  WorkingRow* _pWorkingRow(void* aAddr);
 }
 
 /*============================================================================*/

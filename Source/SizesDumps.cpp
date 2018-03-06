@@ -135,7 +135,6 @@ pDUMPFUN *gpDump[]
   /* 97 */ &Dump::vUndefined,       // CN_RBCURSOR
   /*    */ &RegFrame::vDump,        // CN_REGFRAME
 
-  /*100 */ &Dump::vUndefined,       // CN_RESULTROW
   /*101 */ &Dump::vUndefined,       // CN_RING
   /*102 */ &Dump::vUndefined,       // CN_ROARRAY
   /*103 */ &Dump::vUndefined,       // CN_ROWBUFFER
@@ -190,6 +189,7 @@ pDUMPFUN *gpDump[]
   /*149 */ &Dump::vInvalid,         // CN_WILDERNESS
   /*150 */ &Word::vDump,            // CN_WORD
   /*    */ &Dump::vUndefined,       // CN_WORKINGBUFFER
+  /*    */ &Dump::vUndefined,       // CN_WORKINGROW
   
   /*151 */ &Dump::vUndefined,       // CN_ZSMALL_
   /*152 */ &Dump::vUndefined,       // CN_ZMEDIUM_
@@ -324,7 +324,6 @@ i8 giClassSize[]
   /* 97 */ sizeof(RbCursor),           // CN_RBCURSOR
   /*    */ sizeof(RegFrame),           // CN_REGFRAME
   
-  /*100 */ 0,                          // CN_RESULTROW
   /*101 */ sizeof(Ring),               // CN_RING
   /*102 */ 0,                          // CN_ROARRAY
   /*103 */ 0,                          // CN_ROWBUFFER
@@ -379,7 +378,8 @@ i8 giClassSize[]
   /*149 */ sizeof(Wilderness),         // CN_WILDERNESS
   /*150 */ sizeof(Word),               // CN_WORD
   /*    */ sizeof(WorkingBuffer),      // CN_WORKINGBUFFER
-
+  /*100 */ 0,                          // CN_WORKINGROW
+  
   /*151 */ C_SIZE_SMALL_OBJECT  - 256, // CN_ZSMALL_
   /*152 */ C_SIZE_MEDIUM_OBJECT - 256, // CN_ZMEDIUM_
   /*153 */ C_SIZE_POOL_BUFFER   - 256, // CN_ZLARGE_
@@ -513,7 +513,6 @@ eHT geWhichHeap[]
   /* 97 */ HT_TRANSIENT_SMALL,   // CN_RBCURSOR
   /*    */ HT_TRANSIENT_LARGE,   // CN_REGFRAME
   
-  /*100 */ HT_INVALID,           // CN_RESULTROW
   /*101 */ HT_INVALID,           // CN_RING
   /*102 */ HT_TRANSIENT_MEDIUM,  // CN_ROARRAY
   /*103 */ HT_INVALID,           // CN_ROWBUFFER
@@ -568,6 +567,7 @@ eHT geWhichHeap[]
   /*149 */ HT_INVALID,           // CN_WILDERNESS
   /*150 */ HT_TRANSIENT_MEDIUM,  // CN_WORD
   /*    */ HT_TRANSIENT_LARGE,   // CN_WORKINGBUFFER
+  /*    */ HT_INVALID,           // CN_WORKINGROW
   
   /*151 */ HT_INVALID,           // CN_ZSMALL_
   /*152 */ HT_INVALID,           // CN_ZMEDIUM_

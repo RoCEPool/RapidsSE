@@ -36,7 +36,7 @@ namespace Interface
   
     WorkingBuffer* m_pResultBuffer;
     Entry*        m_pEntry;
-    ResultRow*    m_pResultRow;
+    WorkingRow*   m_pResultRow;
     Row*          m_aRow;
   
     Tx*    m_pTx;

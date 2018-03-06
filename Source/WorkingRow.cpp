@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ResultRow.cpp -- result row                                                */
+/* WorkingRow.cpp -- result row                                                */
 /*============================================================================*/
 
 #include "DBobjects.h"
@@ -11,20 +11,20 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ResultRow* DBobjects::_pResultRow(void* aAddr)
+WorkingRow* DBobjects::_pWorkingRow(void* aAddr)
 {
-  ResultRow* pResultRow = reinterpret_cast<ResultRow*>(aAddr);
+  WorkingRow* pWorkingRow = reinterpret_cast<WorkingRow*>(aAddr);
   
-  return pResultRow;
+  return pWorkingRow;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* ResultRow::operator new(size_t iSize)
+void* WorkingRow::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: ResultRow class cannot be new'd\n"_Stz);
+  vFatal("fatal: WorkingRow class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -32,20 +32,20 @@ void* ResultRow::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* ResultRow::operator new(size_t iSize, ResultRow* pResultRow)
+void* WorkingRow::operator new(size_t iSize, WorkingRow* pWorkingRow)
 {
   RASSERT(iSize);
-  return pResultRow;
+  return pWorkingRow;
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ResultRow::ResultRow(Row* aSrcRow, i8 nResultRowSize, i8 nRowSize)
+WorkingRow::WorkingRow(Row* aSrcRow, i8 nWorkingRowSize, i8 nRowSize)
 {
   _poolAddress_(this);
   
-  m_nResultRowSize = nResultRowSize;
+  m_nWorkingRowSize = nWorkingRowSize;
   Row* aDstRow = this->aRow();
   
   MemLib::vCopy(aDstRow,aSrcRow,nRowSize,CN_WORKINGBUFFER);
@@ -54,7 +54,7 @@ ResultRow::ResultRow(Row* aSrcRow, i8 nResultRowSize, i8 nRowSize)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-ResultRow::~ResultRow(void)
+WorkingRow::~WorkingRow(void)
 {
   _poolAddress_(this);
   
@@ -67,7 +67,7 @@ ResultRow::~ResultRow(void)
 /*----------------------------------------------------------------------------*/
 /* get bytes required for row incl Item & Footer                              */
 /*----------------------------------------------------------------------------*/
-i8 ResultRow::nBytesRequired(i8 nRowSize)
+i8 WorkingRow::nBytesRequired(i8 nRowSize)
 {
   i8 nBytes =   //sizeof(Item)   // item
               nRowSize       // row proper
@@ -84,7 +84,7 @@ i8 ResultRow::nBytesRequired(i8 nRowSize)
 /*----------------------------------------------------------------------------*/
 /* get row address                                                            */
 /*----------------------------------------------------------------------------*/
-Row* ResultRow::aRow(void)
+Row* WorkingRow::aRow(void)
 {
   _poolAddress_(this);
   
@@ -96,7 +96,7 @@ Row* ResultRow::aRow(void)
 /*----------------------------------------------------------------------------*/
 /* show the result row                                                        */
 /*----------------------------------------------------------------------------*/
-void ResultRow::vShow(ColumnVec* pColVec)
+void WorkingRow::vShow(ColumnVec* pColVec)
 {
   _poolAddress_(this);
   
@@ -108,11 +108,11 @@ void ResultRow::vShow(ColumnVec* pColVec)
 /*----------------------------------------------------------------------------*/
 /* get size in bytes of this result row                                       */
 /*----------------------------------------------------------------------------*/
-i8 ResultRow::nResultRowSize(void)
+i8 WorkingRow::nRowSize(void)
 {
   _poolAddress_(this);
   
-  return m_nResultRowSize;
+  return m_nWorkingRowSize;
 }
 
 /*============================================================================*/

@@ -57,10 +57,10 @@ WorkingBuffer::WorkingBuffer(Table* pTable, i8 iPartition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORKINGBUFFER,_FOOTER_);
   
-  m_bIsLast     = false;
-  m_iPartition  = iPartition;
-  m_nResultRows = 0;
-  m_pTable      = pTable;
+  m_bIsLast      = false;
+  m_iPartition   = iPartition;
+  m_nWorkingRows = 0;
+  m_pTable       = pTable;
   
 #ifdef __DEBUG_CHECKS
   m_xWsp.vZero(CN_WORKINGBUFFER);
@@ -89,15 +89,15 @@ bool WorkingBuffer::bAppendResult(Row* aRow, i8 nRowSize)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORKINGBUFFER,_FOOTER_);
   
-  i8 nResultRowSize = ResultRow::nBytesRequired(nRowSize);
+  i8 nWorkingRowSize = WorkingRow::nBytesRequired(nRowSize);
   
   i8 nFreeSpace = nFreeBytes();
-  if (nFreeSpace < nResultRowSize)
+  if (nFreeSpace < nWorkingRowSize)
     return false;
   
-  ResultRow* aResultRow = pAllotResult(nResultRowSize);
+  WorkingRow* aWorkingRow = pAllotResult(nWorkingRowSize);
   
-  new(aResultRow) ResultRow(aRow,nResultRowSize,nRowSize);
+  new(aWorkingRow) WorkingRow(aRow,nWorkingRowSize,nRowSize);
   
   return true;
 }
@@ -109,15 +109,15 @@ bool WorkingBuffer::bAppendRow(RowWrk xRowWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORKINGBUFFER,_FOOTER_);
   
-  i8 nResultRowSize = ResultRow::nBytesRequired(xRowWrk.nRowSize());
+  i8 nWorkingRowSize = WorkingRow::nBytesRequired(xRowWrk.nRowSize());
   
   i8 nFreeSpace = nFreeBytes();
-  if (nFreeSpace < nResultRowSize)
+  if (nFreeSpace < nWorkingRowSize)
     return false;
   
-  ResultRow* aResultRow = pAllotResult(nResultRowSize);
+  WorkingRow* aWorkingRow = pAllotResult(nWorkingRowSize);
   
-  new(aResultRow) ResultRow(xRowWrk.aRow(),nResultRowSize,xRowWrk.nRowSize());
+  new(aWorkingRow) WorkingRow(xRowWrk.aRow(),nWorkingRowSize,xRowWrk.nRowSize());
   
   vShow();
   
@@ -127,14 +127,14 @@ bool WorkingBuffer::bAppendRow(RowWrk xRowWrk)
 /*----------------------------------------------------------------------------*/
 /* first item                                                                 */
 /*----------------------------------------------------------------------------*/
-ResultRow* WorkingBuffer::pFirstResult(void)
+WorkingRow* WorkingBuffer::pFirstResult(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORKINGBUFFER,_FOOTER_);
   
-  if ( m_nResultRows == 0 )
+  if ( m_nWorkingRows == 0 )
     return nullptr;
   
-  ResultRow* pFirst = reinterpret_cast<ResultRow*>(m_xWsp.aArea());
+  WorkingRow* pFirst = reinterpret_cast<WorkingRow*>(m_xWsp.aArea());
   
   return pFirst;
 }
@@ -162,13 +162,13 @@ bool WorkingBuffer::bIsLast(void)
 /*----------------------------------------------------------------------------*/
 /* get next item                                                              */
 /*----------------------------------------------------------------------------*/
-ResultRow* WorkingBuffer::pNextResult(ResultRow* pCurrentItem)
+WorkingRow* WorkingBuffer::pNextResult(WorkingRow* pCurrentItem)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORKINGBUFFER,_FOOTER_);
   
-  i8 nBytes = pCurrentItem->nResultRowSize();
+  i8 nBytes = pCurrentItem->nRowSize();
   
-  ResultRow* pNext = pAdd<ResultRow*>(pCurrentItem,nBytes);
+  WorkingRow* pNext = pAdd<WorkingRow*>(pCurrentItem,nBytes);
   
   if ((char*)pNext >= (char*)m_xWsp.aLatter())
     return nullptr;
@@ -189,11 +189,11 @@ i8 WorkingBuffer::nPartitionNo(void)
 /*----------------------------------------------------------------------------*/
 /* get number of result rows in this buffer                                   */
 /*----------------------------------------------------------------------------*/
-i8 WorkingBuffer::nResultRows(void)
+i8 WorkingBuffer::nWorkingRows(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORKINGBUFFER,_FOOTER_);
   
-  return m_nResultRows;
+  return m_nWorkingRows;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -205,12 +205,12 @@ void WorkingBuffer::vShow(void)
   
   ColumnVec* pColVec = m_pTable->pColumnVec();
   
-  ResultRow* pResultRow;
-  for (pResultRow = pFirstResult();
-       pResultRow;
-       pResultRow = pNextResult(pResultRow)) {
+  WorkingRow* pWorkingRow;
+  for (pWorkingRow = pFirstResult();
+       pWorkingRow;
+       pWorkingRow = pNextResult(pWorkingRow)) {
     
-    pResultRow->vShow(pColVec);
+    pWorkingRow->vShow(pColVec);
     vTrace("\n"_Stz);
   }
 }
@@ -223,7 +223,7 @@ void WorkingBuffer::vShow(void)
 /*----------------------------------------------------------------------------*/
 /* allot an item of nBytes in this buffer                                     */
 /*----------------------------------------------------------------------------*/
-ResultRow* WorkingBuffer::pAllotResult(i8 nBytes)
+WorkingRow* WorkingBuffer::pAllotResult(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORKINGBUFFER,_FOOTER_);
   
@@ -231,11 +231,11 @@ ResultRow* WorkingBuffer::pAllotResult(i8 nBytes)
   if (nFreeBytes() < nBytes)
     return nullptr;
   
-  ResultRow* pResultRow = reinterpret_cast<ResultRow*>(m_xWsp.aAllot(nBytes));
+  WorkingRow* pWorkingRow = reinterpret_cast<WorkingRow*>(m_xWsp.aAllot(nBytes));
   
-  m_nResultRows++;
+  m_nWorkingRows++;
   
-  return pResultRow;
+  return pWorkingRow;
 }
 
 /*----------------------------------------------------------------------------*/

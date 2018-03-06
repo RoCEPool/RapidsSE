@@ -251,7 +251,7 @@ void IndexData::vAppendEntriesFromBuffer(WorkingBuffer* pWorkingBuffer,
   
   m_zLock.vGrabWrite();
   
-  ResultRow* pRow;
+  WorkingRow* pRow;
 
   if (m_pRoot == nullptr) {
     ASSERT( ! m_pCurrentBuffer )
@@ -269,7 +269,7 @@ void IndexData::vAppendEntriesFromBuffer(WorkingBuffer* pWorkingBuffer,
     
     xRowWrk.vTxId(0);                                          //ALKA - TODO
     xRowWrk.vEmbedded((char*)pRow->aRow());
-    xRowWrk.vRowSize(pRow->nResultRowSize());
+    xRowWrk.vRowSize(pRow->nRowSize());
     //xRowWrk.vShow(m_pIndex->pTable()->pColumnVec());
     
     pNewEntry = m_pCurrentBuffer->pAppendRow(xRowWrk);

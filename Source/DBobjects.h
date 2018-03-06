@@ -54,7 +54,7 @@ typedef Vector<CN_ENTRYVEC,Entry,CN_ENTRY,C_FLAT_LEVELS_MAX,i8> EntryVec;
 #include "FreeEntry.hpp"
 #include "Wilderness.hpp"
 
-#include "ResultRow.hpp"
+#include "WorkingRow.hpp"
 #include "WorkingBuffer.hpp"
 
 #include "Partition.hpp"
