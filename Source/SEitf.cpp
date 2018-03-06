@@ -622,17 +622,17 @@ bool SEitf::bInsertBuffer(void)
   
   i8 iSlot = Partition::iPartitionToSlot(m_iPartition);
   
-  if (! m_pRowBuffer[iSlot]) {
+  if (! m_pWorkingBuffer[iSlot]) {
     return false;
   }
   
   //m_pRowBuffer[iSlot]->vDump();
   
   // now insert the entries from this temporary buffer into the table
-  bool bResult = bInsertEntriesTableSlot(m_pRowBuffer[iSlot],iSlot);
+  bool bResult = bInsertEntriesTableSlot(m_pWorkingBuffer[iSlot],iSlot);
   
   // null the buffer
-  m_pRowBuffer[iSlot] = nullptr;
+  m_pWorkingBuffer[iSlot] = nullptr;
   
   return bResult;
 }
@@ -2971,7 +2971,7 @@ bool SEitf::bVisualizeIndex(TokenVec& xTokenVec, i8 iReqNo)
 /*----------------------------------------------------------------------------*/
 /* append rowbuffer entries into current table                                */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bInsertEntriesTableSlot(EntryBuffer* pRowBuffer, i8 iSlot)
+bool SEitf::bInsertEntriesTableSlot(WorkingBuffer* pWorkingBuffer, i8 iSlot)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
 
@@ -2983,7 +2983,7 @@ bool SEitf::bInsertEntriesTableSlot(EntryBuffer* pRowBuffer, i8 iSlot)
   sRequest.vConcat(sBuffer);
   sRequest.vConcat("\""_Stz);
   
-  sBuffer = (i8)pRowBuffer;
+  sBuffer = (i8)pWorkingBuffer;
   sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(sBuffer);
   sRequest.vConcat("\""_Stz);

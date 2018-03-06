@@ -218,8 +218,8 @@ namespace Interface
     bool bInsertBuffer(i8 iPartition);
     bool bInsertLastBuffer(i8 iPartition);
 
-    bool bInsertEntriesTable(WorkingBuffer* pResultBuffer, i8 iPartition);
-    bool bInsertEntriesTableSlot(EntryBuffer* pRowBuffer, i8 iSlot);
+    bool bInsertEntriesTable(WorkingBuffer* pWorkingBuffer, i8 iPartition);
+    bool bInsertEntriesTableSlot(WorkingBuffer* pWorkingBuffer, i8 iSlot);
     
     bool bChangeFolder(TokenVec& xTokenVec, i8 iReqNo);
     bool bPrintWorkingFolder(TokenVec& xTokenVec, i8 iReqNo);
