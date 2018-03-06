@@ -55,7 +55,7 @@ void WorkingBuffer::operator delete(void* pBufferAddress)
 WorkingBuffer::WorkingBuffer(Table* pTable, i8 iPartition)
 : Object(CN_WORKINGBUFFER)
 {
-  _poolAddress_(this); _footer_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORKINGBUFFER,_FOOTER_);
   
   m_bIsLast     = false;
   m_iPartition  = iPartition;
@@ -74,7 +74,7 @@ WorkingBuffer::WorkingBuffer(Table* pTable, i8 iPartition)
 /*----------------------------------------------------------------------------*/
 WorkingBuffer::~WorkingBuffer(void)
 {
-  _poolAddress_(this); _footer_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORKINGBUFFER,_FOOTER_);
 }
 
 
@@ -87,7 +87,7 @@ WorkingBuffer::~WorkingBuffer(void)
 /*----------------------------------------------------------------------------*/
 bool WorkingBuffer::bAppendResult(Row* aRow, i8 nRowSize)
 {
-  _poolAddress_(this); _footer_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORKINGBUFFER,_FOOTER_);
   
   i8 nResultRowSize = ResultRow::nBytesRequired(nRowSize);
   
@@ -107,7 +107,7 @@ bool WorkingBuffer::bAppendResult(Row* aRow, i8 nRowSize)
 /*----------------------------------------------------------------------------*/
 bool WorkingBuffer::bAppendRow(RowWrk xRowWrk)
 {
-  _poolAddress_(this); _footer_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORKINGBUFFER,_FOOTER_);
   
   i8 nResultRowSize = ResultRow::nBytesRequired(xRowWrk.nRowSize());
   
@@ -129,7 +129,7 @@ bool WorkingBuffer::bAppendRow(RowWrk xRowWrk)
 /*----------------------------------------------------------------------------*/
 ResultRow* WorkingBuffer::pFirstResult(void)
 {
-  _poolAddress_(this); _footer_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORKINGBUFFER,_FOOTER_);
   
   if ( m_nResultRows == 0 )
     return nullptr;
@@ -144,7 +144,7 @@ ResultRow* WorkingBuffer::pFirstResult(void)
 /*----------------------------------------------------------------------------*/
 void WorkingBuffer::vIsLast(bool bIsLast)
 {
-  _poolAddress_(this); _footer_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORKINGBUFFER,_FOOTER_);
   
   m_bIsLast = bIsLast;
 }
@@ -154,7 +154,7 @@ void WorkingBuffer::vIsLast(bool bIsLast)
 /*----------------------------------------------------------------------------*/
 bool WorkingBuffer::bIsLast(void)
 {
-  _poolAddress_(this); _footer_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORKINGBUFFER,_FOOTER_);
   
   return m_bIsLast;
 }
@@ -164,7 +164,7 @@ bool WorkingBuffer::bIsLast(void)
 /*----------------------------------------------------------------------------*/
 ResultRow* WorkingBuffer::pNextResult(ResultRow* pCurrentItem)
 {
-  _poolAddress_(this); _footer_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORKINGBUFFER,_FOOTER_);
   
   i8 nBytes = pCurrentItem->nResultRowSize();
   
@@ -181,7 +181,7 @@ ResultRow* WorkingBuffer::pNextResult(ResultRow* pCurrentItem)
 /*----------------------------------------------------------------------------*/
 i8 WorkingBuffer::nPartitionNo(void)
 {
-  _poolAddress_(this); _footer_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORKINGBUFFER,_FOOTER_);
   
   return m_iPartition;
 }
@@ -191,7 +191,7 @@ i8 WorkingBuffer::nPartitionNo(void)
 /*----------------------------------------------------------------------------*/
 i8 WorkingBuffer::nResultRows(void)
 {
-  _poolAddress_(this); _footer_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORKINGBUFFER,_FOOTER_);
   
   return m_nResultRows;
 }
@@ -201,7 +201,7 @@ i8 WorkingBuffer::nResultRows(void)
 /*----------------------------------------------------------------------------*/
 void WorkingBuffer::vShow(void)
 {
-  _poolAddress_(this); _footer_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORKINGBUFFER,_FOOTER_);
   
   ColumnVec* pColVec = m_pTable->pColumnVec();
   
@@ -225,7 +225,7 @@ void WorkingBuffer::vShow(void)
 /*----------------------------------------------------------------------------*/
 ResultRow* WorkingBuffer::pAllotResult(i8 nBytes)
 {
-  _poolAddress_(this); _footer_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORKINGBUFFER,_FOOTER_);
   
   // test  sufficient freespace
   if (nFreeBytes() < nBytes)
@@ -243,7 +243,7 @@ ResultRow* WorkingBuffer::pAllotResult(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 i8 WorkingBuffer::nFreeBytes(void)
 {
-  _poolAddress_(this); _footer_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORKINGBUFFER,_FOOTER_);
   
   i8 nBytes = m_xWsp.nFree();
   
