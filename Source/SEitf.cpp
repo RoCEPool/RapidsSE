@@ -206,7 +206,6 @@ SEitf::SEitf(i8 iPartition)
   
   for (i8 i_Partition = 0; i_Partition < C_SLOTS_PER_NODE; i_Partition++) {
     m_pWorkingBuffer[i_Partition] = nullptr;
-    m_pRowBuffer[i_Partition]     = nullptr;
     m_pGroupBy[i_Partition]       = nullptr;
   }
   
@@ -626,7 +625,7 @@ bool SEitf::bInsertBuffer(void)
     return false;
   }
   
-  //m_pRowBuffer[iSlot]->vDump();
+  //m_pWorkingBuffer[iSlot]->vDump();
   
   // now insert the entries from this temporary buffer into the table
   bool bResult = bInsertEntriesTableSlot(m_pWorkingBuffer[iSlot],iSlot);
@@ -652,7 +651,7 @@ bool SEitf::bInsertBuffer(i8 iPartition)
   
   //vTrace("inserting ..%lld.\n"_Stz, iPartition);
   
-  //m_pRowBuffer[iSlot]->vDump();
+  //m_pWorkingBuffer[iSlot]->vDump();
   
   // now insert the entries from this temporary buffer into the table
   bool bResult = bInsertEntriesTable(m_pWorkingBuffer[iPartition],iPartition);
@@ -685,10 +684,10 @@ bool SEitf::bInsertLastBuffer(i8 iPartition)
     }
   }
   
-  //vTrace("inserting %p ..%lld.\n"_Stz, m_pRowBuffer[iPartition], iPartition);
+  //vTrace("inserting %p ..%lld.\n"_Stz, m_pWorkingBuffer[iPartition], iPartition);
   
-  //m_pRowBuffer[iSlot]->vDump();
-  //vTrace("No of entries %lld %lld\n"_Stz, iPartition, m_pRowBuffer[iPartition]->nEntries());
+  //m_pWorkingBuffer[iSlot]->vDump();
+  //vTrace("No of entries %lld %lld\n"_Stz, iPartition, m_pWorkingBuffer[iPartition]->nEntries());
   
   // mark this buffer as the last buffer
   m_pWorkingBuffer[iPartition]->vIsLast(true);
