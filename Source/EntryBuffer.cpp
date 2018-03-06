@@ -195,16 +195,6 @@ void EntryBuffer::vDurability(eBD eDurability)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get head entry                                                             */
-/*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pHeadEntry(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  return m_pHeadEntry;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get the higher level index buffer                                          */
 /*----------------------------------------------------------------------------*/
 EntryBuffer* EntryBuffer::pHigherBuffer(void)
@@ -1530,6 +1520,16 @@ bool EntryBuffer::bHasSpace(i8 nBytes)
     else
       return true;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get head entry                                                             */
+/*----------------------------------------------------------------------------*/
+Entry* EntryBuffer::pHeadEntry(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  return m_pHeadEntry;
 }
 
 /*----------------------------------------------------------------------------*/

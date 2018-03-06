@@ -124,7 +124,7 @@ void Task::vRowBufferDump(MP_Task mpTask)
     THROW_INVALID_DSTACK("rowbuffer.dump"_Stz);
   EntryBuffer* pRowBuffer = (EntryBuffer*)_pEntryBuffer(pPtrRowBuffer);
 
-  Entry* pRow = pRowBuffer->pHeadEntry();
+  Entry* pRow = pRowBuffer->pFirstEntry();
   
   while (pRow) {
     pRow->vContentDump();

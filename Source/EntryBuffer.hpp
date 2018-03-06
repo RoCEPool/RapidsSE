@@ -77,7 +77,6 @@ namespace DBobjects
     i8           iBufferLevel(void);
     eBD          eDurability(void);
     void         vDurability(eBD eDurability);
-    Entry*       pHeadEntry(void);
     EntryBuffer* pHigherBuffer(void);
     void         vHigherBuffer(EntryBuffer* pHigherLevel);
     void         vIndex(Index* pIndex);
@@ -138,6 +137,7 @@ namespace DBobjects
                                    Entry* pOriginalFirstEntry,
                                    EntryBuffer** ppRootKeyBuffer);
     bool         bHasSpace(i8 nBytes);
+    Entry*       pHeadEntry(void);
     void         vHeadEntryNew(void);
     void         vHeadEntryRestore(void);
     EntryBuffer* pInsertableBuffer(KeyWrk& xKeyWrk,

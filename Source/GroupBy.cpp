@@ -86,8 +86,9 @@ void GroupBy::vApplyBuffer(EntryBuffer* pEntryBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GROUPBY,_FOOTER_);
   
-  Entry* pEntry = pEntryBuffer->pHeadEntry();
-  while( (pEntry = pEntryBuffer->pNextEntry(pEntry, 0)) ) {
+  Entry* pEntry = pEntryBuffer->pFirstEntry();
+  
+    while (pEntry) {
     
     LineItem* pLineItem = (LineItem*)pEntry->aRowData();
     
@@ -116,6 +117,9 @@ void GroupBy::vApplyBuffer(EntryBuffer* pEntryBuffer)
     if (iQuantity > pAccum->m_iMax)
       pAccum->m_iMax = iQuantity;
     pAccum->m_iCount++;
+     
+    //get next entry
+    pEntry = pEntryBuffer->pNextEntry(pEntry, 0);
   }
   
 }
