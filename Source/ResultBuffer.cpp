@@ -53,6 +53,7 @@ void ResultBuffer::operator delete(void* pBufferAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ResultBuffer::ResultBuffer(Table* pTable, i8 iPartition)
+: Object(CN_ENTRYBUFFER)
 {
   _poolAddress_(this); _footer_();
   
@@ -97,6 +98,28 @@ bool ResultBuffer::bAppendResult(Row* aRow, i8 nRowSize)
   ResultRow* aResultRow = pAllotResult(nResultRowSize);
   
   new(aResultRow) ResultRow(aRow,nResultRowSize,nRowSize);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* append row                                                                 */
+/*----------------------------------------------------------------------------*/
+bool ResultBuffer::bAppendRow(RowWrk xRowWrk)
+{
+  _poolAddress_(this); _footer_();
+  
+  i8 nResultRowSize = ResultRow::nBytesRequired(xRowWrk.nRowSize());
+  
+  i8 nFreeSpace = nFreeBytes();
+  if (nFreeSpace < nResultRowSize)
+    return false;
+  
+  ResultRow* aResultRow = pAllotResult(nResultRowSize);
+  
+  new(aResultRow) ResultRow(xRowWrk.aRow(),nResultRowSize,xRowWrk.nRowSize());
+  
+  vShow();
   
   return true;
 }

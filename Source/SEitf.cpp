@@ -205,8 +205,9 @@ SEitf::SEitf(i8 iPartition)
   gpAttachMap->m_pSEitfList->vAppend(pSEitf);
   
   for (i8 i_Partition = 0; i_Partition < C_SLOTS_PER_NODE; i_Partition++) {
-    m_pRowBuffer[i_Partition] = nullptr;
-    m_pGroupBy[i_Partition] = nullptr;
+    m_pWorkingBuffer[i_Partition] = nullptr;
+    m_pRowBuffer[i_Partition]     = nullptr;
+    m_pGroupBy[i_Partition]       = nullptr;
   }
   
   m_pRowOnce = nullptr;
@@ -552,22 +553,18 @@ bool SEitf::bInsertRow(Stz* aRow, i8 iLength, i8 iPartition)
   //vTrace("Inserting into partition %lld\n"_Stz, iPartition);
   
   // check for working buffer
-  if (! m_pRowBuffer[iPartition]) {
-    m_pRowBuffer[iPartition] = new EntryBuffer();
+  if (! m_pWorkingBuffer[iPartition]) {
+    m_pWorkingBuffer[iPartition] = new ResultBuffer(m_pCurrentTable, iPartition);
     
-    if (! m_pRowBuffer[iPartition]) {
+    if (! m_pWorkingBuffer[iPartition]) {
       vTrace("EntryBuffer allocation failed\n"_Stz);
       m_eErrorCode = EC_LOW_BUFFERS;
       return false;
     }
-    
-    m_pRowBuffer[iPartition]->vIndex(m_pCurrentTable->pHiddenIndex());
-    m_pRowBuffer[iPartition]->vPartitionNo(iPartition);
-    m_pRowBuffer[iPartition]->vDurability(BD_TEMPORARY);
   }
   
   // get working buffer for partition row hashed into
-  EntryBuffer* pRowBuffer = m_pRowBuffer[iPartition];
+  ResultBuffer* pResultBuffer = m_pWorkingBuffer[iPartition];
   
   // get tx id
   i8 iDistTxId = m_pTx->iDistTxId();
@@ -579,7 +576,7 @@ bool SEitf::bInsertRow(Stz* aRow, i8 iLength, i8 iPartition)
   xRowWrk.vRowSize(iLength);
 
   // append row into working buffer
-  if (pRowBuffer->pAppendRow(xRowWrk))
+  if (pResultBuffer->bAppendRow(xRowWrk))
     return true;
   
   // buffer is full, copy buffer into table
@@ -599,25 +596,22 @@ bool SEitf::bInsertRow(Stz* aRow, i8 iLength, i8 iPartition)
   
   //vTrace("creating new buffer\n"_Stz);
   // get a new working buffer
-  m_pRowBuffer[iPartition] = new EntryBuffer();
-  if (! m_pRowBuffer[iPartition]) {
+  m_pWorkingBuffer[iPartition] = new ResultBuffer(m_pCurrentTable, iPartition);
+  if (! m_pWorkingBuffer[iPartition]) {
     vTrace("EntryBuffer allocation failed\n"_Stz);
     m_eErrorCode = EC_LOW_BUFFERS;
     return false;
   }
-  if (! m_pRowBuffer[iPartition]) {
+  if (! m_pWorkingBuffer[iPartition]) {
     vTrace("EntryBuffer allocation failed\n"_Stz);
     m_eErrorCode = EC_LOW_BUFFERS;
     return false;
   }
-  m_pRowBuffer[iPartition]->vIndex(m_pCurrentTable->pHiddenIndex());
-  m_pRowBuffer[iPartition]->vPartitionNo(m_iPartition);
-  m_pRowBuffer[iPartition]->vDurability(BD_TEMPORARY);
   
-  pRowBuffer = m_pRowBuffer[iPartition];
+  pResultBuffer = m_pWorkingBuffer[iPartition];
   
   // append row into working buffer
-  if (pRowBuffer->pAppendRow(xRowWrk))
+  if (pResultBuffer->bAppendRow(xRowWrk))
     return true;
   else
     return false;
@@ -658,25 +652,23 @@ bool SEitf::bInsertBuffer(i8 iPartition)
   
   //vTrace("inserting entries from row buffer into table..%lld.\n"_Stz, iPartition);
   
-  if (! m_pRowBuffer[iPartition]) {
+  if (! m_pWorkingBuffer[iPartition]) {
     return false;
   }
-  ASSERT(m_pRowBuffer[iPartition]->eDurability() == BD_TEMPORARY);
   
   //vTrace("inserting ..%lld.\n"_Stz, iPartition);
   
   //m_pRowBuffer[iSlot]->vDump();
   
   // now insert the entries from this temporary buffer into the table
-  m_pEntryBuffer = m_pRowBuffer[iPartition];
-  bool bResult = bInsertEntriesTable(m_pRowBuffer[iPartition],iPartition);
+  bool bResult = bInsertEntriesTable(m_pWorkingBuffer[iPartition],iPartition);
   
   // wait for response
   //eEC eResult = eGetResponse();
   //ASSERT(eResult == EC_NONE);
   
   // null the buffer
-  m_pRowBuffer[iPartition] = nullptr;
+  m_pWorkingBuffer[iPartition] = nullptr;
   
   return bResult;
 }
@@ -690,19 +682,14 @@ bool SEitf::bInsertLastBuffer(i8 iPartition)
   
   //vTrace("%p inserting entries from row buffer into table..%lld.\n"_Stz, this, iPartition);
   
-  if (! m_pRowBuffer[iPartition]) {
-    m_pRowBuffer[iPartition] = new EntryBuffer();
-    if (! m_pRowBuffer[iPartition]) {
+  if (! m_pWorkingBuffer[iPartition]) {
+    m_pWorkingBuffer[iPartition] = new ResultBuffer(m_pCurrentTable, iPartition);
+    if (! m_pWorkingBuffer[iPartition]) {
       vTrace("EntryBuffer allocation failed\n"_Stz);
       m_eErrorCode = EC_LOW_BUFFERS;
       return false;
     }
-    m_pRowBuffer[iPartition]->vIndex(m_pCurrentTable->pHiddenIndex());
-    m_pRowBuffer[iPartition]->vPartitionNo(m_iPartition);
-    m_pRowBuffer[iPartition]->vDurability(BD_TEMPORARY);
   }
-    
-  ASSERT(m_pRowBuffer[iPartition]->eDurability() == BD_TEMPORARY);
   
   //vTrace("inserting %p ..%lld.\n"_Stz, m_pRowBuffer[iPartition], iPartition);
   
@@ -710,17 +697,17 @@ bool SEitf::bInsertLastBuffer(i8 iPartition)
   //vTrace("No of entries %lld %lld\n"_Stz, iPartition, m_pRowBuffer[iPartition]->nEntries());
   
   // mark this buffer as the last buffer
-  m_pRowBuffer[iPartition]->vIsLast(true);
+  m_pWorkingBuffer[iPartition]->vIsLast(true);
   
   // now insert the entries from this temporary buffer into the table
-  bool bResult = bInsertEntriesTable(m_pRowBuffer[iPartition],iPartition);
+  bool bResult = bInsertEntriesTable(m_pWorkingBuffer[iPartition],iPartition);
   
   // wait for response
   //eEC eResult = eGetResponse();
   //ASSERT(eResult == EC_NONE);
   
   // null the buffer
-  m_pRowBuffer[iPartition] = nullptr;
+  m_pWorkingBuffer[iPartition] = nullptr;
   
   //vTrace("bInsertLastBuffer\n"_Stz);
   
@@ -3020,7 +3007,7 @@ bool SEitf::bInsertEntriesTableSlot(EntryBuffer* pRowBuffer, i8 iSlot)
 /*----------------------------------------------------------------------------*/
 /* append rowbuffer entries into current table                                */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bInsertEntriesTable(EntryBuffer* pRowBuffer, i8 iPartition)
+bool SEitf::bInsertEntriesTable(ResultBuffer* pWorkingBuffer, i8 iPartition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -3032,7 +3019,7 @@ bool SEitf::bInsertEntriesTable(EntryBuffer* pRowBuffer, i8 iPartition)
   sRequest.vConcat(sBuffer);
   sRequest.vConcat("\""_Stz);
   
-  sBuffer = (i8)pRowBuffer;
+  sBuffer = (i8)pWorkingBuffer;
   sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(sBuffer);
   sRequest.vConcat("\""_Stz);

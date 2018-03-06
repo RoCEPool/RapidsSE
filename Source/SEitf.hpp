@@ -63,6 +63,8 @@ namespace Interface
     EntryBuffer* m_pRowBuffer[C_SLOTS_PER_NODE]; // working row buffers
     GroupBy*     m_pGroupBy[C_SLOTS_PER_NODE];   // working group by
   
+    ResultBuffer* m_pWorkingBuffer[C_SLOTS_PER_NODE]; // working row buffers
+    
     RowOnce* m_pRowOnce; // has row been seen before?
   
     Formatters m_xFormatters; // record formatters
@@ -216,7 +218,7 @@ namespace Interface
     bool bInsertBuffer(i8 iPartition);
     bool bInsertLastBuffer(i8 iPartition);
 
-    bool bInsertEntriesTable(EntryBuffer* pRowBuffer, i8 iPartition);
+    bool bInsertEntriesTable(ResultBuffer* pResultBuffer, i8 iPartition);
     bool bInsertEntriesTableSlot(EntryBuffer* pRowBuffer, i8 iSlot);
     
     bool bChangeFolder(TokenVec& xTokenVec, i8 iReqNo);

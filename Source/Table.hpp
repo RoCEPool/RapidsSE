@@ -61,7 +61,7 @@ namespace DBobjects
     bool bAppendBuffer(i8 iPartition, EntryBuffer* pRowBuffer);
     bool bDataLoaded(void);
     void vDataLoaded(bool bDataLoaded);
-    void vInsertEntries(i8 iPartition, EntryBuffer* pRowBuffer);
+    void vInsertEntries(i8 iPartition, ResultBuffer* pResultBuffer);
     ColumnVec* pColumnVec(void);
     void vContentDump(void);
     void vCreateColumnVec(s32& sName, s48K& sDefinition);

@@ -5,7 +5,7 @@
 
 namespace DBobjects
 {
-  class ResultBuffer
+  class ResultBuffer : public Object
   {
   protected:
     bool   m_bIsLast;     // is this the last buffer in its sequence?jj
@@ -29,6 +29,7 @@ namespace DBobjects
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public:
     bool        bAppendResult(Row* aRow, i8 nRowSize);
+    bool        bAppendRow(RowWrk xRowWrk);
     ResultRow*  pFirstResult(void);
     void        vIsLast(bool bIsLast);
     bool        bIsLast(void);

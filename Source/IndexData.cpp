@@ -237,7 +237,7 @@ void IndexData::vAppendBuffer(EntryBuffer* pEntryBuffer)
 /*----------------------------------------------------------------------------*/
 /* insert an entry for {key,id} into an index buffer at given level           */
 /*----------------------------------------------------------------------------*/
-void IndexData::vAppendEntriesFromBuffer(EntryBuffer* pEntryBuffer,
+void IndexData::vAppendEntriesFromBuffer(ResultBuffer* pResultBuffer,
                                          EntryBuffer** ppFirstBuffer,
                                          Entry** ppFirstEntry)
 {
@@ -251,7 +251,7 @@ void IndexData::vAppendEntriesFromBuffer(EntryBuffer* pEntryBuffer,
   
   m_zLock.vGrabWrite();
   
-  Entry* pRow = pEntryBuffer->pHeadEntry();
+  ResultRow* pRow;
 
   if (m_pRoot == nullptr) {
     ASSERT( ! m_pCurrentBuffer )
@@ -261,17 +261,17 @@ void IndexData::vAppendEntriesFromBuffer(EntryBuffer* pEntryBuffer,
     m_pCurrentBuffer = m_pRoot;
   }
   
-  for ( pRow = pEntryBuffer->pNextEntry(pRow, 0) ; pRow;
-       pRow = pEntryBuffer->pNextEntry(pRow, 0)) {
+  for ( pRow = pResultBuffer->pFirstResult() ; pRow;
+       pRow = pResultBuffer->pNextResult(pRow)) {
     
-    //pRow->vShow(0, m_pIndex, false);
+    //pRow->vShow(m_pIndex->pTable()->pColumnVec());
     RowWrk xRowWrk;
     
-    xRowWrk.vTxId(pRow->iTxId());
-    xRowWrk.vEmbedded(pRow->aEmbeddedObject());
-    xRowWrk.vRowSize(pRow->nRowSize());
+    xRowWrk.vTxId(0);                                          //ALKA - TODO
+    xRowWrk.vEmbedded((char*)pRow->aRow());
+    xRowWrk.vRowSize(pRow->nResultRowSize());
+    //xRowWrk.vShow(m_pIndex->pTable()->pColumnVec());
     
-    xRowWrk.vShow(m_pIndex->pTable()->pColumnVec());
     pNewEntry = m_pCurrentBuffer->pAppendRow(xRowWrk);
     //m_pCurrentBuffer->vDump();
     if ( !pNewEntry ) {

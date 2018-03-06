@@ -1077,8 +1077,6 @@ bool EntryBuffer::bVerify(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  //RASSERT(0);
-  
   bool bValid = false;
   
   if (m_iBufferLevel) {

@@ -315,6 +315,7 @@ namespace Tasks
     void vAddPrimitives_Queue(void);
     void vAddPrimitives_RbCursor(void);
     void vAddPrimitives_Reg(void);
+    void vAddPrimitives_ResultBuffer(void);
     void vAddPrimitives_Row(void);
     void vAddPrimitives_RowBuffer(void);
     void vAddPrimitives_RowCursor(void);
@@ -970,6 +971,11 @@ namespace Tasks
     static void vRegToRegE(MP_Task mpTask);
     static void vRegToRegF(MP_Task mpTask);
     static void vRegToRegNth(MP_Task mpTask);
+    
+    // result buffer
+    static void vResultBufferIsLastFetch(MP_Task mpTask);
+    static void vResultBufferIsLastStore(MP_Task mpTask);
+    static void vResultBufferToResultBuffer(MP_Task mpTask);
     
     // row
     static void vRowString(MP_Task mpTask);

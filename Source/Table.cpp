@@ -344,7 +344,7 @@ void Table::vDataLoaded(bool bDataLoaded)
 /*----------------------------------------------------------------------------*/
 /* insert entries from a row buffer into the table (hidden and other indexes) */
 /*----------------------------------------------------------------------------*/
-void Table::vInsertEntries(i8 iSlot, EntryBuffer* pEntryBuffer)
+void Table::vInsertEntries(i8 iSlot, ResultBuffer* pResultBuffer)
 { //# indexTuning
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
@@ -358,8 +358,8 @@ void Table::vInsertEntries(i8 iSlot, EntryBuffer* pEntryBuffer)
   //ASSERT(pEntryBuffer->eDurability() == BD_TEMPORARY);
   
   // if buffer has 0 entries (only head) then should be last buffer
-  if (pEntryBuffer->nItems() == 0) {
-    ASSERT(pEntryBuffer->bIsLast());
+  if (pResultBuffer->nResultRows() == 0) {
+    ASSERT(pResultBuffer->bIsLast());
     return;
   }
   
@@ -370,7 +370,7 @@ void Table::vInsertEntries(i8 iSlot, EntryBuffer* pEntryBuffer)
   
   EntryBuffer* pFirstBuffer;
   Entry* pFirstEntry;
-  pHiddenIndexData->vAppendEntriesFromBuffer(pEntryBuffer, &pFirstBuffer, &pFirstEntry);
+  pHiddenIndexData->vAppendEntriesFromBuffer(pResultBuffer, &pFirstBuffer, &pFirstEntry);
   
   //----------------------------------------------------------------------------
   // (2) insert entries from hidden index pFirstBuffer starting at pFirstEntry
