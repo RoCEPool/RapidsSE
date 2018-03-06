@@ -103,10 +103,10 @@ ddlLock::grabRead
 /*----------------------------------------------------------------------------*/
 /* insert buffer entries to partition of given named table                    */
 /*----------------------------------------------------------------------------*/
-: insertBufferEntries$ ( pSEitf iNode resultBuffer bIsLast partitionNo "<tableNm>" -- true )
+: insertBufferEntries$ ( pSEitf iNode workingBuffer bIsLast partitionNo "<tableNm>" -- true )
 
 tp: insertBufferEntries$
-  0 locals| pTable sTableNm iPartitionNo bIsLast pResultBuffer iNode pSEitf |
+  0 locals| pTable sTableNm iPartitionNo bIsLast pWorkingBuffer iNode pSEitf |
 
   // why:
   //   we have forwarded a full entryBuffer whose entries need to be
@@ -122,7 +122,7 @@ tp: insertBufferEntries$
   //1 task::this task.thread thread.name@ str.left "p" str.equal assert
 
   args.tracepoint if
-    sTableNm "INSERTING RESULTBUFFER ENTRIES" swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
+    sTableNm "INSERTING WORKINGBUFFER ENTRIES" swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
   then
 
   //"insertBufferEntries$" .
@@ -136,13 +136,13 @@ tp: insertBufferEntries$
 
   // is it the last buffer ?
   bIsLast if
-    pResultBuffer resultBuffer.isLast!
+    pWorkingBuffer workingBuffer.isLast!
   then
 
   // set the partition in the row buffer
-  //iPartitionNo pResultBuffer resultBuffer.partition!
+  //iPartitionNo pWorkingBuffer resultBuffer.partition!
 
-  pSEitf iNode pResultBuffer iPartitionNo pTable    ( rb ptn tablePtr )
+  pSEitf iNode pWorkingBuffer iPartitionNo pTable    ( rb ptn tablePtr )
 
   5 "partitionInsertBufferEntries" iPartitionNo grid::toSlot dup >partitionTaskNm
   TK_LOADSUB_PART
@@ -155,17 +155,17 @@ tp: insertBufferEntries$
 /*----------------------------------------------------------------------------*/
 /* partition task inserts the entry buffer entries to the table               */
 /*----------------------------------------------------------------------------*/
-: partitionInsertBufferEntries ( pSEitf iNode resultBuffer partitionNo table^ -- )
+: partitionInsertBufferEntries ( pSEitf iNode workingBuffer partitionNo table^ -- )
 
   tp: partitionInsertBufferEntries
-  0 locals| bIsLast pTable iPartitionNo pResultBuffer iNode pSEitf |
+  0 locals| bIsLast pTable iPartitionNo pWorkingBuffer iNode pSEitf |
 
   //"partitionInsertBufferEntries" .
   //pEntryBuffer .
 
-  pResultBuffer resultBuffer.isLast@ to bIsLast
+  pWorkingBuffer workingBuffer.isLast@ to bIsLast
 
-  iPartitionNo grid::toSlot >str pResultBuffer >str pTable >str table.insertEntries ( )
+  iPartitionNo grid::toSlot >str pWorkingBuffer >str pTable >str table.insertEntries ( )
 
   bIsLast not if exit then
   //drop exit
@@ -209,7 +209,7 @@ tp: insertTableEntries_req
 
   sPartitionNo str.tailInt assert to iPartitionNo
 
-  sWorkingBuffer ResultBuffer::toResultBuffer to pWorkingBuffer
+  sWorkingBuffer WorkingBuffer::toWorkingBuffer to pWorkingBuffer
 
   //"insertTableEntries_req" .
   //iPartitionNo .
@@ -221,7 +221,7 @@ tp: insertTableEntries_req
 
       ( << rb )
   pWorkingBuffer
-  pWorkingBuffer resultBuffer.isLast@
+  pWorkingBuffer workingBuffer.isLast@
   iPartitionNo                       ( << rb ptn )
   pTableName                         ( << rb ptn "<tableNm>" )
   "insertBufferEntries$"             ( << rb ptn "<tableNm>" "insertBufferEntries$" )

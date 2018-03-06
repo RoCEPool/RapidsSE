@@ -262,7 +262,7 @@ void Task::vIndexExactKey(MP_Task mpTask)
   ValWrk xValWrk;
   i8 iPartition;
   SEitf* pSEitf = mpTask->m_pSEitf;
-  ResultBuffer* pResultBuffer;
+  WorkingBuffer* pWorkingBuffer;
 
   i8 i_Phrase;
   
@@ -301,7 +301,7 @@ void Task::vIndexExactKey(MP_Task mpTask)
   IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
   
   // create a result buffer for the results
-  pResultBuffer = new ResultBuffer(pTable, iPartition);
+  pWorkingBuffer = new WorkingBuffer(pTable, iPartition);
   
   // position in the first index buffer
   //EntryBuffer* pEntryBuffer = pIndexData->pFirstL0Buffer();
@@ -350,18 +350,18 @@ void Task::vIndexExactKey(MP_Task mpTask)
       i8 nRowSize = pDataRowEntry->nRowSize();
       
       // insert row from entry in tempEntryBuffer
-      if ( ! pResultBuffer->bAppendResult(aRow, nRowSize)) {
+      if ( ! pWorkingBuffer->bAppendResult(aRow, nRowSize)) {
         
         // buffer must be full
         // put this tempEntryBuffer in seitf bufferQueue
-        xValWrk = (Object*)pResultBuffer;
+        xValWrk = (Object*)pWorkingBuffer;
         pQueue->bAppend(xValWrk.pNestedValue());
         
         // create another result buffer for the results
-        pResultBuffer = new ResultBuffer(pTable, iPartition);
+        pWorkingBuffer = new WorkingBuffer(pTable, iPartition);
         
         // insert row from entry in temporary buffer
-        bool bResult = pResultBuffer->bAppendResult(aRow, nRowSize);
+        bool bResult = pWorkingBuffer->bAppendResult(aRow, nRowSize);
         RASSERT(bResult);
       }
     }
@@ -385,10 +385,10 @@ void Task::vIndexExactKey(MP_Task mpTask)
 LastBuffer:
   
   // mark this buffer as the last buffer
-  pResultBuffer->vIsLast(true);
+  pWorkingBuffer->vIsLast(true);
   
   // put the buffer in the seitf bufferQueue
-  xValWrk = (Object*)pResultBuffer;
+  xValWrk = (Object*)pWorkingBuffer;
   pQueue->bAppend(xValWrk.pNestedValue());
   
   // mark that a fetch task has ended
@@ -609,7 +609,7 @@ void Task::vIndexLowerBound(MP_Task mpTask)
   ValWrk xValWrk;
   i8 iPartition;
   SEitf* pSEitf = mpTask->m_pSEitf;
-  ResultBuffer* pResultBuffer;
+  WorkingBuffer* pWorkingBuffer;
   
   i8 i_Phrase;
   
@@ -648,7 +648,7 @@ void Task::vIndexLowerBound(MP_Task mpTask)
   IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
   
   // create a result buffer for the results
-  pResultBuffer = new ResultBuffer(pTable, iPartition);
+  pWorkingBuffer = new WorkingBuffer(pTable, iPartition);
   
   // get the entryBuffer looking for the key
   KeyWrk xKeyWrk;
@@ -679,18 +679,18 @@ void Task::vIndexLowerBound(MP_Task mpTask)
     Entry* pDataRowEntry = Task::pDataRow(pTable, pEntry);
     
     // insert row from entry in resultBuffer
-    if ( ! bAppendRow(pResultBuffer, pDataRowEntry, pSEitf)) {
+    if ( ! bAppendRow(pWorkingBuffer, pDataRowEntry, pSEitf)) {
       
       // buffer must be full
       // put this tempEntryBuffer in seitf bufferQueue
-      xValWrk = (Object*)pResultBuffer;
+      xValWrk = (Object*)pWorkingBuffer;
       pQueue->bAppend(xValWrk.pNestedValue());
       
       // create another result buffer for the results
-      pResultBuffer = new ResultBuffer(pTable, iPartition);
+      pWorkingBuffer = new WorkingBuffer(pTable, iPartition);
       
       // insert row from entry in temporary buffer
-      bool bResult = bAppendRow(pResultBuffer, pDataRowEntry, pSEitf);
+      bool bResult = bAppendRow(pWorkingBuffer, pDataRowEntry, pSEitf);
       RASSERT(bResult);
     }
     
@@ -713,10 +713,10 @@ void Task::vIndexLowerBound(MP_Task mpTask)
 LastBuffer:
   
   // mark this buffer as the last buffer
-  pResultBuffer->vIsLast(true);
+  pWorkingBuffer->vIsLast(true);
   
   // put the buffer in the seitf bufferQueue
-  xValWrk = (Object*)pResultBuffer;
+  xValWrk = (Object*)pWorkingBuffer;
   pQueue->bAppend(xValWrk.pNestedValue());
   
   // mark that a fetch task has ended
@@ -874,7 +874,7 @@ void Task::vIndexRange(MP_Task mpTask)
   
   i8 iPartition;
   SEitf* pSEitf = mpTask->m_pSEitf;
-  ResultBuffer* pResultBuffer;
+  WorkingBuffer* pWorkingBuffer;
   
   i8 i_Phrase;
   
@@ -917,7 +917,7 @@ void Task::vIndexRange(MP_Task mpTask)
   IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
   
   // create a result buffer for the results
-  pResultBuffer = new ResultBuffer(pTable, iPartition);
+  pWorkingBuffer = new WorkingBuffer(pTable, iPartition);
   
   // make the lower key
   KeyWrk xKeyWrkLower;
@@ -961,18 +961,18 @@ void Task::vIndexRange(MP_Task mpTask)
       Entry* pDataRowEntry = Task::pDataRow(pTable, pEntry);
       
       // insert row from entry in tempEntryBuffer
-      if ( ! bAppendRow(pResultBuffer, pDataRowEntry, pSEitf)) {
+      if ( ! bAppendRow(pWorkingBuffer, pDataRowEntry, pSEitf)) {
         
         // buffer must be full
         // put this tempEntryBuffer in seitf bufferQueue
-        xValWrk = (Object*)pResultBuffer;
+        xValWrk = (Object*)pWorkingBuffer;
         pQueue->bAppend(xValWrk.pNestedValue());
 
         // create another result buffer for the results
-        pResultBuffer = new ResultBuffer(pTable, iPartition);
+        pWorkingBuffer = new WorkingBuffer(pTable, iPartition);
         
         // insert row from entry in temporary buffer
-        bool bResult = bAppendRow(pResultBuffer, pDataRowEntry, pSEitf);
+        bool bResult = bAppendRow(pWorkingBuffer, pDataRowEntry, pSEitf);
         RASSERT(bResult);
       }
       
@@ -1004,10 +1004,10 @@ void Task::vIndexRange(MP_Task mpTask)
 LastBuffer:
   
   // mark this buffer as the last buffer
-  pResultBuffer->vIsLast(true);
+  pWorkingBuffer->vIsLast(true);
   
   // put the buffer in the seitf bufferQueue
-  xValWrk = (Object*)pResultBuffer;
+  xValWrk = (Object*)pWorkingBuffer;
   pQueue->bAppend(xValWrk.pNestedValue());
   
   // mark that a fetch task has ended
@@ -1030,7 +1030,7 @@ void Task::vIndexScan(MP_Task mpTask)
   i8 iPartition;
   SEitf* pSEitf = mpTask->m_pSEitf;
   
-  ResultBuffer* pResultBuffer;
+  WorkingBuffer* pWorkingBuffer;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
     THROW_INVALID_DSTACK("index.scan"_Stz);
@@ -1054,7 +1054,7 @@ void Task::vIndexScan(MP_Task mpTask)
   IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
   
   // create a result buffer for the results
-  pResultBuffer = new ResultBuffer(pTable, iPartition);
+  pWorkingBuffer = new WorkingBuffer(pTable, iPartition);
     
   // position in the first index buffer
   EntryBuffer* pEntryBuffer = pIndexData->pFirstL0Buffer();
@@ -1062,10 +1062,10 @@ void Task::vIndexScan(MP_Task mpTask)
   // did we get an entryBuffer ?
   if ( ! pEntryBuffer) {
     // mark this buffer as the last buffer
-    pResultBuffer->vIsLast(true);
+    pWorkingBuffer->vIsLast(true);
     
     // put the buffer in the seitf bufferQueue
-    xValWrk = (Object*)pResultBuffer;
+    xValWrk = (Object*)pWorkingBuffer;
     pQueue->bAppend(xValWrk.pNestedValue());
     
     // mark that a fetch task has ended
@@ -1087,21 +1087,21 @@ void Task::vIndexScan(MP_Task mpTask)
 
     i8 nRowSize = pEntry->nRowSize();
 
-    // insert row from entry in pResultBuffer
-    if ( ! pResultBuffer->bAppendResult(aRow, nRowSize)) {
+    // insert row from entry in pWorkingBuffer
+    if ( ! pWorkingBuffer->bAppendResult(aRow, nRowSize)) {
       
-      //pResultBuffer->vShow();
+      //pWorkingBuffer->vShow();
       
       // buffer must be full
       // put this tempEntryBuffer in seitf bufferQueue
-      xValWrk = (Object*)pResultBuffer;
+      xValWrk = (Object*)pWorkingBuffer;
       pQueue->bAppend(xValWrk.pNestedValue());
       
       // create another result buffer for the results
-      pResultBuffer = new ResultBuffer(pTable, iPartition);
+      pWorkingBuffer = new WorkingBuffer(pTable, iPartition);
       
       // insert row from entry in temporary buffer
-      bool bResult = pResultBuffer->bAppendResult(aRow, nRowSize);
+      bool bResult = pWorkingBuffer->bAppendResult(aRow, nRowSize);
       RASSERT(bResult);
     }
       
@@ -1122,12 +1122,12 @@ void Task::vIndexScan(MP_Task mpTask)
   }
   
   // mark this buffer as the last buffer
-  pResultBuffer->vIsLast(true);
+  pWorkingBuffer->vIsLast(true);
 
-  //pResultBuffer->vShow();
+  //pWorkingBuffer->vShow();
   
   // put the buffer in the seitf bufferQueue
-  xValWrk = (Object*)pResultBuffer;
+  xValWrk = (Object*)pWorkingBuffer;
   pQueue->bAppend(xValWrk.pNestedValue());
 
   // mark that a fetch task has ended
@@ -1476,7 +1476,7 @@ void Task::vIndexUpperBound(MP_Task mpTask)
   ValWrk xValWrk;
   i8 iPartition;
   SEitf* pSEitf = mpTask->m_pSEitf;
-  ResultBuffer* pResultBuffer;
+  WorkingBuffer* pWorkingBuffer;
   
   i8 i_Phrase;
   
@@ -1515,7 +1515,7 @@ void Task::vIndexUpperBound(MP_Task mpTask)
   IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
   
   // create a result buffer for the results
-  pResultBuffer = new ResultBuffer(pTable, iPartition);
+  pWorkingBuffer = new WorkingBuffer(pTable, iPartition);
   
   // get the entryBuffer looking for the key
   KeyWrk xKeyWrk;
@@ -1549,18 +1549,18 @@ void Task::vIndexUpperBound(MP_Task mpTask)
       Entry* pDataRowEntry = Task::pDataRow(pTable, pEntry);
       
       // insert row from entry in tempEntryBuffer
-      if ( ! bAppendRow(pResultBuffer, pDataRowEntry, pSEitf)) {
+      if ( ! bAppendRow(pWorkingBuffer, pDataRowEntry, pSEitf)) {
         
         // buffer must be full
         // put this tempEntryBuffer in seitf bufferQueue
-        xValWrk = (Object*)pResultBuffer;
+        xValWrk = (Object*)pWorkingBuffer;
         pQueue->bAppend(xValWrk.pNestedValue());
         
         // create another result buffer for the results
-        pResultBuffer = new ResultBuffer(pTable, iPartition);
+        pWorkingBuffer = new WorkingBuffer(pTable, iPartition);
         
         // insert row from entry in temporary buffer
-        bool bResult = bAppendRow(pResultBuffer, pDataRowEntry, pSEitf);
+        bool bResult = bAppendRow(pWorkingBuffer, pDataRowEntry, pSEitf);
         RASSERT(bResult);
       }
       
@@ -1586,10 +1586,10 @@ void Task::vIndexUpperBound(MP_Task mpTask)
   
 LastBuffer:
   // mark this buffer as the last buffer
-  pResultBuffer->vIsLast(true);
+  pWorkingBuffer->vIsLast(true);
   
   // put the buffer in the seitf bufferQueue
-  xValWrk = (Object*)pResultBuffer;
+  xValWrk = (Object*)pWorkingBuffer;
   pQueue->bAppend(xValWrk.pNestedValue());
   
   // mark that a fetch task has ended

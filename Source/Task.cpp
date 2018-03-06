@@ -976,7 +976,6 @@ void Task::vAddPrimitives(void)
   
   vAddPrimitives_Queue();
   
-  vAddPrimitives_ResultBuffer();
   vAddPrimitives_RbCursor();
   vAddPrimitives_Row();
   vAddPrimitives_RowBuffer();
@@ -1018,6 +1017,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_Vector();
   
   vAddPrimitives_Word();
+  vAddPrimitives_WorkingBuffer();
   
   vAddPrimitives_Zero();
 }

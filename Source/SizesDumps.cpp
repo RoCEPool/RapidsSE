@@ -133,8 +133,8 @@ pDUMPFUN *gpDump[]
   /* 96 */ &QueueBuffer::vDump,     // CN_QUEUEBUFFER
 
   /* 97 */ &Dump::vUndefined,       // CN_RBCURSOR
-  /* 98 */ &RegFrame::vDump,        // CN_REGFRAME
-  /* 99 */ &Dump::vUndefined,       // CN_RESULTBUFFER
+  /*    */ &RegFrame::vDump,        // CN_REGFRAME
+
   /*100 */ &Dump::vUndefined,       // CN_RESULTROW
   /*101 */ &Dump::vUndefined,       // CN_RING
   /*102 */ &Dump::vUndefined,       // CN_ROARRAY
@@ -189,6 +189,7 @@ pDUMPFUN *gpDump[]
 
   /*149 */ &Dump::vInvalid,         // CN_WILDERNESS
   /*150 */ &Word::vDump,            // CN_WORD
+  /*    */ &Dump::vUndefined,       // CN_WORKINGBUFFER
   
   /*151 */ &Dump::vUndefined,       // CN_ZSMALL_
   /*152 */ &Dump::vUndefined,       // CN_ZMEDIUM_
@@ -321,8 +322,8 @@ i8 giClassSize[]
   /* 96 */ sizeof(QueueBuffer),        // CN_QUEUEBUFFER
   
   /* 97 */ sizeof(RbCursor),           // CN_RBCURSOR
-  /* 98 */ sizeof(RegFrame),           // CN_REGFRAME
-  /* 99 */ sizeof(ResultBuffer),       // CN_RESULTBUFFER
+  /*    */ sizeof(RegFrame),           // CN_REGFRAME
+  
   /*100 */ 0,                          // CN_RESULTROW
   /*101 */ sizeof(Ring),               // CN_RING
   /*102 */ 0,                          // CN_ROARRAY
@@ -377,6 +378,7 @@ i8 giClassSize[]
 
   /*149 */ sizeof(Wilderness),         // CN_WILDERNESS
   /*150 */ sizeof(Word),               // CN_WORD
+  /*    */ sizeof(WorkingBuffer),      // CN_WORKINGBUFFER
 
   /*151 */ C_SIZE_SMALL_OBJECT  - 256, // CN_ZSMALL_
   /*152 */ C_SIZE_MEDIUM_OBJECT - 256, // CN_ZMEDIUM_
@@ -509,8 +511,8 @@ eHT geWhichHeap[]
   /* 96 */ HT_INVALID,           // CN_QUEUEBUFFER
   
   /* 97 */ HT_TRANSIENT_SMALL,   // CN_RBCURSOR
-  /* 98 */ HT_TRANSIENT_LARGE,   // CN_REGFRAME
-  /* 99 */ HT_TRANSIENT_LARGE,   // CN_RESULTBUFFER
+  /*    */ HT_TRANSIENT_LARGE,   // CN_REGFRAME
+  
   /*100 */ HT_INVALID,           // CN_RESULTROW
   /*101 */ HT_INVALID,           // CN_RING
   /*102 */ HT_TRANSIENT_MEDIUM,  // CN_ROARRAY
@@ -565,6 +567,7 @@ eHT geWhichHeap[]
   
   /*149 */ HT_INVALID,           // CN_WILDERNESS
   /*150 */ HT_TRANSIENT_MEDIUM,  // CN_WORD
+  /*    */ HT_TRANSIENT_LARGE,   // CN_WORKINGBUFFER
   
   /*151 */ HT_INVALID,           // CN_ZSMALL_
   /*152 */ HT_INVALID,           // CN_ZMEDIUM_

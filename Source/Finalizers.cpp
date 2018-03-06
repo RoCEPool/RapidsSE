@@ -129,8 +129,8 @@ pFINALIZE *gpFinalize[]
   /* 96 */ &Finalize::vUndefined,         // CN_QUEUEBUFFER
   
   /* 97 */ &Finalize::vUndefined,         // CN_RBCURSOR
-  /* 98 */ &Finalize::vUndefined,         // CN_REGFRAME
-  /* 99 */ &Finalize::vUndefined,         // CN_RESULTBUFFER
+  /*    */ &Finalize::vUndefined,         // CN_REGFRAME
+
   /*100 */ &Finalize::vUndefined,         // CN_RESULTROW
   /*101 */ &Finalize::vUndefined,         // CN_RING
   /*102 */ &Finalize::vUndefined,         // CN_ROARRAY
@@ -185,6 +185,7 @@ pFINALIZE *gpFinalize[]
   
   /*149 */ &Finalize::vUndefined,         // CN_WILDERNESS
   /*150 */ &Finalize::vUndefined,         // CN_WORD
+  /*    */ &Finalize::vUndefined,         // CN_WORKINGBUFFER
   
   /*151 */ &Finalize::vUndefined,         // CN_ZSMALL_
   /*152 */ &Finalize::vUndefined,         // CN_ZMEDIUM_

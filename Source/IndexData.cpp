@@ -237,7 +237,7 @@ void IndexData::vAppendBuffer(EntryBuffer* pEntryBuffer)
 /*----------------------------------------------------------------------------*/
 /* insert an entry for {key,id} into an index buffer at given level           */
 /*----------------------------------------------------------------------------*/
-void IndexData::vAppendEntriesFromBuffer(ResultBuffer* pResultBuffer,
+void IndexData::vAppendEntriesFromBuffer(WorkingBuffer* pWorkingBuffer,
                                          EntryBuffer** ppFirstBuffer,
                                          Entry** ppFirstEntry)
 {
@@ -261,8 +261,8 @@ void IndexData::vAppendEntriesFromBuffer(ResultBuffer* pResultBuffer,
     m_pCurrentBuffer = m_pRoot;
   }
   
-  for ( pRow = pResultBuffer->pFirstResult() ; pRow;
-       pRow = pResultBuffer->pNextResult(pRow)) {
+  for ( pRow = pWorkingBuffer->pFirstResult() ; pRow;
+       pRow = pWorkingBuffer->pNextResult(pRow)) {
     
     //pRow->vShow(m_pIndex->pTable()->pColumnVec());
     RowWrk xRowWrk;

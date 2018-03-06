@@ -2,9 +2,49 @@
 /* _scratch -- scratch test                                                   */
 /*============================================================================*/
 
+docol epochTake;
+
+// (1) create a table
+create table T1 (
+col0   integer not null,
+col1   varchar(32) not null
+);
+
+// (2) create an index on the table
+create index idx on T1 (col0);
+
+ld T1 "../Seth/tests/Insert/insert.csv" ;
+
+// (4) insert some rows into the table
+begin insert T1;
+insert row "21,null";
+insert row "1,abcdef";
+insert row "2,ghijk";
+insert row "3,lmno";
+insert row "4,pqr";
+insert row "5,stuvw";
+insert row "6,xyz";
+insert row "7,abc";
+insert row "8,defgh";
+insert row "9,ijk";
+insert row "10,lmn";
+insert row "82,lmn";
+end insert;
+
+// check no of rows
+fetch T1;
+
+//drop table T1;
+
+//docol epochDump;
+/*
+ 
+
+ 
+ 
 create table test(c1 integer, c2 varchar, c3 varchar);
 ld test "../JTEST/terminator.csv" terminator "|";
-/*
+
  
 docol epochTake;
 create table jidx (
@@ -21,10 +61,6 @@ ld jidx "../JTEST/test.csv" ;
 drop table jidx;
 docol epochDump;
 
-*/
-
-
-/*
 create table boolTable (
 key   BOOLEAN NOT NULL,
 value INTEGER,

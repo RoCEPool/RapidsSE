@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ResultBuffer.cpp -- Result Buffer                                          */
+/* WorkingBuffer.cpp -- Working Buffer                                        */
 /*============================================================================*/
 
 #include "DBobjects.h"
@@ -11,20 +11,20 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ResultBuffer* DBobjects::_pResultBuffer(void* aAddr)
+WorkingBuffer* DBobjects::_pWorkingBuffer(void* aAddr)
 {
-  ResultBuffer* pResultBuffer = reinterpret_cast<ResultBuffer*>(aAddr);
+  WorkingBuffer* pWorkingBuffer = reinterpret_cast<WorkingBuffer*>(aAddr);
   
-  return pResultBuffer;
+  return pWorkingBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
 /* fetch a new result buffer from buffer pool                                 */
 /*----------------------------------------------------------------------------*/
-void* ResultBuffer::operator new(size_t iSize)
+void* WorkingBuffer::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  Buffer* pBuffer = (Buffer*)Heap::pAllocate(CN_RESULTBUFFER);
+  Buffer* pBuffer = (Buffer*)Heap::pAllocate(CN_WORKINGBUFFER);
   
   return pBuffer;
 }
@@ -32,7 +32,7 @@ void* ResultBuffer::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* fetch a new buffer from buffer pool                                        */
 /*----------------------------------------------------------------------------*/
-void* ResultBuffer::operator new(size_t iSize, void* aAddr)
+void* WorkingBuffer::operator new(size_t iSize, void* aAddr)
 {
   RASSERT(iSize);
   
@@ -42,7 +42,7 @@ void* ResultBuffer::operator new(size_t iSize, void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* return a result buffer to the buffer pool                                  */
 /*----------------------------------------------------------------------------*/
-void ResultBuffer::operator delete(void* pBufferAddress)
+void WorkingBuffer::operator delete(void* pBufferAddress)
 {
   Buffer* pBuffer = static_cast<Buffer*>(pBufferAddress);
   
@@ -52,8 +52,8 @@ void ResultBuffer::operator delete(void* pBufferAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ResultBuffer::ResultBuffer(Table* pTable, i8 iPartition)
-: Object(CN_ENTRYBUFFER)
+WorkingBuffer::WorkingBuffer(Table* pTable, i8 iPartition)
+: Object(CN_WORKINGBUFFER)
 {
   _poolAddress_(this); _footer_();
   
@@ -63,16 +63,16 @@ ResultBuffer::ResultBuffer(Table* pTable, i8 iPartition)
   m_pTable      = pTable;
   
 #ifdef __DEBUG_CHECKS
-  m_xWsp.vZero(CN_ITEMBUFFER);
+  m_xWsp.vZero(CN_WORKINGBUFFER);
 #endif
   
-  _checkInitialised_(CN_RESULTBUFFER);
+  _checkInitialised_(CN_WORKINGBUFFER);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-ResultBuffer::~ResultBuffer(void)
+WorkingBuffer::~WorkingBuffer(void)
 {
   _poolAddress_(this); _footer_();
 }
@@ -85,7 +85,7 @@ ResultBuffer::~ResultBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* append result row                                                          */
 /*----------------------------------------------------------------------------*/
-bool ResultBuffer::bAppendResult(Row* aRow, i8 nRowSize)
+bool WorkingBuffer::bAppendResult(Row* aRow, i8 nRowSize)
 {
   _poolAddress_(this); _footer_();
   
@@ -105,7 +105,7 @@ bool ResultBuffer::bAppendResult(Row* aRow, i8 nRowSize)
 /*----------------------------------------------------------------------------*/
 /* append row                                                                 */
 /*----------------------------------------------------------------------------*/
-bool ResultBuffer::bAppendRow(RowWrk xRowWrk)
+bool WorkingBuffer::bAppendRow(RowWrk xRowWrk)
 {
   _poolAddress_(this); _footer_();
   
@@ -127,7 +127,7 @@ bool ResultBuffer::bAppendRow(RowWrk xRowWrk)
 /*----------------------------------------------------------------------------*/
 /* first item                                                                 */
 /*----------------------------------------------------------------------------*/
-ResultRow* ResultBuffer::pFirstResult(void)
+ResultRow* WorkingBuffer::pFirstResult(void)
 {
   _poolAddress_(this); _footer_();
   
@@ -142,7 +142,7 @@ ResultRow* ResultBuffer::pFirstResult(void)
 /*----------------------------------------------------------------------------*/
 /* set buffer is last                                                         */
 /*----------------------------------------------------------------------------*/
-void ResultBuffer::vIsLast(bool bIsLast)
+void WorkingBuffer::vIsLast(bool bIsLast)
 {
   _poolAddress_(this); _footer_();
   
@@ -152,7 +152,7 @@ void ResultBuffer::vIsLast(bool bIsLast)
 /*----------------------------------------------------------------------------*/
 /* get if buffer is last                                                      */
 /*----------------------------------------------------------------------------*/
-bool ResultBuffer::bIsLast(void)
+bool WorkingBuffer::bIsLast(void)
 {
   _poolAddress_(this); _footer_();
   
@@ -162,7 +162,7 @@ bool ResultBuffer::bIsLast(void)
 /*----------------------------------------------------------------------------*/
 /* get next item                                                              */
 /*----------------------------------------------------------------------------*/
-ResultRow* ResultBuffer::pNextResult(ResultRow* pCurrentItem)
+ResultRow* WorkingBuffer::pNextResult(ResultRow* pCurrentItem)
 {
   _poolAddress_(this); _footer_();
   
@@ -179,7 +179,7 @@ ResultRow* ResultBuffer::pNextResult(ResultRow* pCurrentItem)
 /*----------------------------------------------------------------------------*/
 /* get the partition                                                          */
 /*----------------------------------------------------------------------------*/
-i8 ResultBuffer::nPartitionNo(void)
+i8 WorkingBuffer::nPartitionNo(void)
 {
   _poolAddress_(this); _footer_();
   
@@ -189,7 +189,7 @@ i8 ResultBuffer::nPartitionNo(void)
 /*----------------------------------------------------------------------------*/
 /* get number of result rows in this buffer                                   */
 /*----------------------------------------------------------------------------*/
-i8 ResultBuffer::nResultRows(void)
+i8 WorkingBuffer::nResultRows(void)
 {
   _poolAddress_(this); _footer_();
   
@@ -199,7 +199,7 @@ i8 ResultBuffer::nResultRows(void)
 /*----------------------------------------------------------------------------*/
 /* show the contents of the buffer                                            */
 /*----------------------------------------------------------------------------*/
-void ResultBuffer::vShow(void)
+void WorkingBuffer::vShow(void)
 {
   _poolAddress_(this); _footer_();
   
@@ -223,7 +223,7 @@ void ResultBuffer::vShow(void)
 /*----------------------------------------------------------------------------*/
 /* allot an item of nBytes in this buffer                                     */
 /*----------------------------------------------------------------------------*/
-ResultRow* ResultBuffer::pAllotResult(i8 nBytes)
+ResultRow* WorkingBuffer::pAllotResult(i8 nBytes)
 {
   _poolAddress_(this); _footer_();
   
@@ -241,7 +241,7 @@ ResultRow* ResultBuffer::pAllotResult(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* how much free space (in bytes) left in this buffer?                        */
 /*----------------------------------------------------------------------------*/
-i8 ResultBuffer::nFreeBytes(void)
+i8 WorkingBuffer::nFreeBytes(void)
 {
   _poolAddress_(this); _footer_();
   
@@ -258,7 +258,7 @@ i8 ResultBuffer::nFreeBytes(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* ResultBuffer::aFooter(void)
+Footer* WorkingBuffer::aFooter(void)
 {
   _poolAddress_(this);
   

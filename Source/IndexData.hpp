@@ -11,7 +11,7 @@ namespace DBobjects
   class Table;
   class Partition;
   class Index;
-  class ResultBuffer;
+  class WorkingBuffer;
   
   class IndexData : public Object
   {
@@ -38,7 +38,7 @@ namespace DBobjects
     ~IndexData(void);
   
     Stz*         pAnalyze(void);
-    void         vAppendEntriesFromBuffer(ResultBuffer* pResultBuffer,
+    void         vAppendEntriesFromBuffer(WorkingBuffer* pWorkingBuffer,
                                           EntryBuffer** ppFirstBuffer,
                                           Entry** ppFirstEntry);
     void         vAppendBuffer(EntryBuffer* pEntryBuffer);

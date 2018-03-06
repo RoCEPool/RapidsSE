@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* ResultBuffer.hpp -- Result Buffer                                          */
+/* WorkingBuffer.hpp -- Working Buffer                                        */
 /*============================================================================*/
 #pragma once
 
 namespace DBobjects
 {
-  class ResultBuffer : public Object
+  class WorkingBuffer : public Object
   {
   protected:
     bool   m_bIsLast;     // is this the last buffer in its sequence?jj
@@ -23,8 +23,8 @@ namespace DBobjects
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    ResultBuffer(Table* pTable, i8 iPartition);
-   ~ResultBuffer(void);
+    WorkingBuffer(Table* pTable, i8 iPartition);
+   ~WorkingBuffer(void);
  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public:
@@ -46,7 +46,7 @@ namespace DBobjects
     Footer* aFooter(void);
   };
   
-  ResultBuffer* _pResultBuffer(void* aAddr);
+  WorkingBuffer* _pWorkingBuffer(void* aAddr);
 }
 
 /*============================================================================*/

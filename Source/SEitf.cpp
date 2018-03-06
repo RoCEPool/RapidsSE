@@ -554,7 +554,7 @@ bool SEitf::bInsertRow(Stz* aRow, i8 iLength, i8 iPartition)
   
   // check for working buffer
   if (! m_pWorkingBuffer[iPartition]) {
-    m_pWorkingBuffer[iPartition] = new ResultBuffer(m_pCurrentTable, iPartition);
+    m_pWorkingBuffer[iPartition] = new WorkingBuffer(m_pCurrentTable, iPartition);
     
     if (! m_pWorkingBuffer[iPartition]) {
       vTrace("EntryBuffer allocation failed\n"_Stz);
@@ -564,7 +564,7 @@ bool SEitf::bInsertRow(Stz* aRow, i8 iLength, i8 iPartition)
   }
   
   // get working buffer for partition row hashed into
-  ResultBuffer* pResultBuffer = m_pWorkingBuffer[iPartition];
+  WorkingBuffer* pWorkingBuffer = m_pWorkingBuffer[iPartition];
   
   // get tx id
   i8 iDistTxId = m_pTx->iDistTxId();
@@ -576,7 +576,7 @@ bool SEitf::bInsertRow(Stz* aRow, i8 iLength, i8 iPartition)
   xRowWrk.vRowSize(iLength);
 
   // append row into working buffer
-  if (pResultBuffer->bAppendRow(xRowWrk))
+  if (pWorkingBuffer->bAppendRow(xRowWrk))
     return true;
   
   // buffer is full, copy buffer into table
@@ -596,7 +596,7 @@ bool SEitf::bInsertRow(Stz* aRow, i8 iLength, i8 iPartition)
   
   //vTrace("creating new buffer\n"_Stz);
   // get a new working buffer
-  m_pWorkingBuffer[iPartition] = new ResultBuffer(m_pCurrentTable, iPartition);
+  m_pWorkingBuffer[iPartition] = new WorkingBuffer(m_pCurrentTable, iPartition);
   if (! m_pWorkingBuffer[iPartition]) {
     vTrace("EntryBuffer allocation failed\n"_Stz);
     m_eErrorCode = EC_LOW_BUFFERS;
@@ -608,10 +608,10 @@ bool SEitf::bInsertRow(Stz* aRow, i8 iLength, i8 iPartition)
     return false;
   }
   
-  pResultBuffer = m_pWorkingBuffer[iPartition];
+  pWorkingBuffer = m_pWorkingBuffer[iPartition];
   
   // append row into working buffer
-  if (pResultBuffer->bAppendRow(xRowWrk))
+  if (pWorkingBuffer->bAppendRow(xRowWrk))
     return true;
   else
     return false;
@@ -683,7 +683,7 @@ bool SEitf::bInsertLastBuffer(i8 iPartition)
   //vTrace("%p inserting entries from row buffer into table..%lld.\n"_Stz, this, iPartition);
   
   if (! m_pWorkingBuffer[iPartition]) {
-    m_pWorkingBuffer[iPartition] = new ResultBuffer(m_pCurrentTable, iPartition);
+    m_pWorkingBuffer[iPartition] = new WorkingBuffer(m_pCurrentTable, iPartition);
     if (! m_pWorkingBuffer[iPartition]) {
       vTrace("EntryBuffer allocation failed\n"_Stz);
       m_eErrorCode = EC_LOW_BUFFERS;
@@ -759,7 +759,7 @@ bool SEitf::bNextBuffer(void)
   
   // get entry buffer
   PtrVal* pPtrVal = xValWrk.pNestedPtrVal();
-  m_pResultBuffer = (ResultBuffer*)(pPtrVal->pPtr());
+  m_pResultBuffer = (WorkingBuffer*)(pPtrVal->pPtr());
   
   if (m_pResultBuffer->bIsLast()) {
     m_ziLastBuffersScanned++;
@@ -865,7 +865,7 @@ bool SEitf::bNextRow2(i8& nPartition)
         continue;
       }
       PtrVal* pPtrVal = xValWrk.pNestedPtrVal();
-      m_pResultBuffer = (ResultBuffer*)(pPtrVal->pPtr());
+      m_pResultBuffer = (WorkingBuffer*)(pPtrVal->pPtr());
       
       // determine type of buffer
 
@@ -1104,7 +1104,7 @@ void SEitf::vPopBufferQueue(void)
     
     // get entry buffer
     PtrVal* pPtrVal = xValWrk.pNestedPtrVal();
-    m_pResultBuffer = (ResultBuffer*)(pPtrVal->pPtr());
+    m_pResultBuffer = (WorkingBuffer*)(pPtrVal->pPtr());
     
     m_iRowsProcessed += m_pResultBuffer->nResultRows();
     
@@ -3007,7 +3007,7 @@ bool SEitf::bInsertEntriesTableSlot(EntryBuffer* pRowBuffer, i8 iSlot)
 /*----------------------------------------------------------------------------*/
 /* append rowbuffer entries into current table                                */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bInsertEntriesTable(ResultBuffer* pWorkingBuffer, i8 iPartition)
+bool SEitf::bInsertEntriesTable(WorkingBuffer* pWorkingBuffer, i8 iPartition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   

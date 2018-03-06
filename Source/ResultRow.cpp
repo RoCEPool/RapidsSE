@@ -48,7 +48,7 @@ ResultRow::ResultRow(Row* aSrcRow, i8 nResultRowSize, i8 nRowSize)
   m_nResultRowSize = nResultRowSize;
   Row* aDstRow = this->aRow();
   
-  MemLib::vCopy(aDstRow,aSrcRow,nRowSize,CN_RESULTBUFFER);
+  MemLib::vCopy(aDstRow,aSrcRow,nRowSize,CN_WORKINGBUFFER);
 }
 
 /*----------------------------------------------------------------------------*/

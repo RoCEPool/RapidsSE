@@ -315,7 +315,6 @@ namespace Tasks
     void vAddPrimitives_Queue(void);
     void vAddPrimitives_RbCursor(void);
     void vAddPrimitives_Reg(void);
-    void vAddPrimitives_ResultBuffer(void);
     void vAddPrimitives_Row(void);
     void vAddPrimitives_RowBuffer(void);
     void vAddPrimitives_RowCursor(void);
@@ -350,6 +349,7 @@ namespace Tasks
     void vAddPrimitives_Vector(void);
     void vAddPrimitives_Utility(void);
     void vAddPrimitives_Word(void);
+    void vAddPrimitives_WorkingBuffer(void);
     void vAddPrimitives_Zero(void);
 
     /*------------------------------------------------------------------------*/
@@ -971,11 +971,6 @@ namespace Tasks
     static void vRegToRegF(MP_Task mpTask);
     static void vRegToRegNth(MP_Task mpTask);
     
-    // result buffer
-    static void vResultBufferIsLastFetch(MP_Task mpTask);
-    static void vResultBufferIsLastStore(MP_Task mpTask);
-    static void vResultBufferToResultBuffer(MP_Task mpTask);
-    
     // row
     static void vRowString(MP_Task mpTask);
     static void vRowEscapedString(MP_Task mpTask);
@@ -1445,6 +1440,11 @@ namespace Tasks
     static void vWordTypeGet(MP_Task mpTask);
     static void vWordTypeSet(MP_Task mpTask);
 
+    // working buffer
+    static void vWorkingBufferIsLastFetch(MP_Task mpTask);
+    static void vWorkingBufferIsLastStore(MP_Task mpTask);
+    static void vWorkingBufferToWorkingBuffer(MP_Task mpTask);
+    
     // zero
     static void vZeroLess(MP_Task mpTask);
     static void vZeroLessEqual(MP_Task mpTask);
@@ -1454,7 +1454,7 @@ namespace Tasks
     static void vZeroGreater(MP_Task mpTask);
     
   private:
-    static bool   bAppendRow(ResultBuffer* pResultBuffer, Entry* pEntry, Interface::SEitf* pSEitf);
+    static bool   bAppendRow(WorkingBuffer* pWorkingBuffer, Entry* pEntry, Interface::SEitf* pSEitf);
     static Entry* pDataRow(Table* pTable, Entry* pEntry);
     static bool   bInsertRow(EntryBuffer* pIndexBuffer, Entry* pEntry, Interface::SEitf* pSEitf);
     

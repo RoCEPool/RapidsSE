@@ -112,17 +112,17 @@ void Task::vTableInsertEntries(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(sString) )
     THROW_INVALID_DSTACK("table.insertEntries"_Stz);
   
-  ResultBuffer* pResultBuffer = reinterpret_cast<ResultBuffer*>(sString.iToI8());
-  //ASSERT(CN_RESULTBUFFER == pResultBuffer->eClass());
+  WorkingBuffer* pWorkingBuffer = reinterpret_cast<WorkingBuffer*>(sString.iToI8());
+  ASSERT(CN_WORKINGBUFFER == pWorkingBuffer->eClass());
   
   if ( ! mpTask->m_pDataStack->bPop(sString) )
     THROW_INVALID_DSTACK("table.insertEntries"_Stz);
   
   iSlot = sString.iToI8();
-  pTable->vInsertEntries(iSlot,pResultBuffer);
+  pTable->vInsertEntries(iSlot,pWorkingBuffer);
   
   // now delete the temporary buffer
-  delete pResultBuffer;
+  delete pWorkingBuffer;
   
   EXIT();
 }
