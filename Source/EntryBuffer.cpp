@@ -1749,6 +1749,44 @@ Entry* EntryBuffer::pInsertKeyAbsLazy(KeyWrk& xKeyWrk,
 }
 
 /*----------------------------------------------------------------------------*/
+/* insert key entry into skip list of this buffer                             */
+/*----------------------------------------------------------------------------*/
+Entry* EntryBuffer::pInsertKeySkip(Entry* pKeyEntry,
+                                   EntryBuffer* pToBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // find the entry after which the new entry will be inserted
+  
+  Entry* xPriorVec[gpAttachMap->m_nIndexOffsets];
+  
+  Key* aKey = pKeyEntry->aKey();
+  
+  if (0 == m_iBufferLevel)
+    vPositionPriorL0(aKey, xPriorVec);
+  else
+    vPositionPriorLnAfter(aKey, xPriorVec, pToBuffer);
+  //vDumpPriorVec(xPriorVec);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set prior offsets
+  
+  i8 iKeyEntryOffset = iToOffset(pKeyEntry);
+  
+  i8 nOffsets = pKeyEntry->nOffsets();
+  for (i8 iNextOffset = 0; iNextOffset < nOffsets; iNextOffset++) {
+    i8 iPriorOffset = xPriorVec[iNextOffset]->iNEO(iNextOffset);
+    pKeyEntry->vNEO(iNextOffset,iPriorOffset);
+    xPriorVec[iNextOffset]->vNEO(iNextOffset,iKeyEntryOffset);
+  }
+  
+  //vShow();
+  
+  return pKeyEntry;
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert a new key entry into this buffer                                    */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pInsertKeyBuffer(KeyWrk& xKeyWrk,
