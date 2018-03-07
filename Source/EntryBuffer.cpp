@@ -1154,6 +1154,33 @@ void EntryBuffer::vAddFreeList(Entry* pEntry)
 }
 
 /*----------------------------------------------------------------------------*/
+/* build skip list from the lazy chain                                        */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vBuildSkipList(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  if (! m_pLazyChain )
+    return;
+  
+  Entry* pLazyChain = m_pLazyChain;
+  m_pLazyChain = nullptr;
+  
+  while (pLazyChain) {
+    
+    Entry* pKeyEntry = pLazyChain;
+    
+    i8 iNextOffset = pKeyEntry->iNEO(0);
+    if (-1 == iNextOffset)
+      pLazyChain = nullptr;
+    else
+      pLazyChain = pGetEntryOffset(iNextOffset);
+    
+    vInsertKeySkip(pKeyEntry, nullptr);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* compact this buffer                                                        */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vCompact(void)
@@ -1967,9 +1994,9 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
     
     
     Entry* pNewKeyLeft =
-    pHigherBuffer->pInsertKeyUpwards(xKeyWrkLeft,
-                                     ppRootKeyBuffer,
-                                     pLeftBuffer);
+      pHigherBuffer->pInsertKeyUpwards(xKeyWrkLeft,
+                                       ppRootKeyBuffer,
+                                       pLeftBuffer);
     //if (mbWatch)
     //  (*ppRootKeyBuffer)->vShowTree();
   }
@@ -1995,9 +2022,9 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
   
   
   Entry* pNewKeyRight =
-  pHigherBuffer->pInsertKeyUpwards(xKeyWrkRight,
-                                   ppRootKeyBuffer,
-                                   pRightBuffer);
+    pHigherBuffer->pInsertKeyUpwards(xKeyWrkRight,
+                                     ppRootKeyBuffer,
+                                     pRightBuffer);
   
   //if (mbWatch)
   //  (*ppRootKeyBuffer)->vShowTree();
