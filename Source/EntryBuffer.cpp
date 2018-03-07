@@ -1629,7 +1629,9 @@ Entry* EntryBuffer::pInsertKeyAbs(KeyWrk& xKeyWrk,
                                   EntryBuffer* pToBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
+
+  RASSERT(0== m_iBufferLevel || xKeyWrk.pReferencedEntryBuffer() == pToBuffer);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // trace
   
@@ -1680,6 +1682,8 @@ Entry* EntryBuffer::pInsertKeyAbsLazy(KeyWrk& xKeyWrk,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+  RASSERT(0 == m_iBufferLevel || xKeyWrk.pReferencedEntryBuffer() == pToBuffer);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // trace
   
@@ -1736,6 +1740,8 @@ void EntryBuffer::vInsertKeySkip(Entry* pKeyEntry,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+  RASSERT(0 == m_iBufferLevel || pKeyEntry->pReferencedEntryBuffer() == pToBuffer);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the entry after which the new entry will be inserted
   
@@ -1745,10 +1751,9 @@ void EntryBuffer::vInsertKeySkip(Entry* pKeyEntry,
   
   if (0 == m_iBufferLevel)
     vPositionPriorL0(aKey, xPriorVec);
-  else {
-    RASSERT(pKeyEntry->pReferencedEntryBuffer() == pToBuffer);
+  else
     vPositionPriorLnAfter(aKey, xPriorVec, pToBuffer);
-  }
+  
   //vDumpPriorVec(xPriorVec);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1774,6 +1779,8 @@ Entry* EntryBuffer::pInsertKeyBuffer(KeyWrk& xKeyWrk,
                                      EntryBuffer* pToBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  RASSERT(0 == m_iBufferLevel || xKeyWrk.pReferencedEntryBuffer() == pToBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // record orginal first entry incase we insert a new first entry
@@ -1813,6 +1820,8 @@ Entry* EntryBuffer::pInsertKeyUpwards(KeyWrk& xKeyWrk,
                                       EntryBuffer* pToBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  RASSERT(0 == m_iBufferLevel || xKeyWrk.pReferencedEntryBuffer() == pToBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
