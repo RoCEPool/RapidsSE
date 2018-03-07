@@ -253,6 +253,18 @@ void KeyWrk::vKeySize(i8 nKeySize)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the entry buffer that this key references                              */
+/*----------------------------------------------------------------------------*/
+EntryBuffer* KeyWrk::pReferencedEntryBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_KEYWRK,_FOOTER_);
+  
+  EntryBuffer* pEntryBuffer = xId().pReferencedEntryBuffer();
+  
+  return pEntryBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* reset the key wsp                                                          */
 /*----------------------------------------------------------------------------*/
 void KeyWrk::vReset(void)

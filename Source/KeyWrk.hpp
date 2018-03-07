@@ -26,6 +26,7 @@ namespace DBobjects
     Key* aKey(void);
     i8   nKeySize(void);
     void vKeySize(i8 nKeySize);
+    EntryBuffer* pReferencedEntryBuffer(void);
     void vReset(void);
     void vShow(IdxColVec* pIdxColVec);
   };
