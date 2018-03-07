@@ -30,18 +30,23 @@ namespace DBobjects
   public:
     bool        bAppendResult(Row* aRow, i8 nRowSize);
     bool        bAppendRow(RowWrk xRowWrk);
+    WorkingRow* pAllotResult(i8 nBytes);
+    WorkingRow* pAllotSpace(i8 nBytes);
+    char*       aDataArea(void);
     WorkingRow* pFirstResult(void);
     void        vIsLast(bool bIsLast);
     bool        bIsLast(void);
     WorkingRow* pNextResult(WorkingRow* pCurrentItem);
     i8          nPartitionNo(void);
+    void        vRestore(void);
     i8          nWorkingRows(void);
     void        vShow(void);
+    i8          nUsedBytes(void);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   private:
-    WorkingRow* pAllotResult(i8 nBytes);
     i8          nFreeBytes(void);
+    void        vItemCountRestore(void);
   
     Footer* aFooter(void);
   };

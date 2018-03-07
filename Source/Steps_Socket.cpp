@@ -244,6 +244,9 @@ void Task::vSocketSend(MP_Task mpTask)
   if ( ! bResult ) {
     //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
     mpTask->m_pDataStack->vPushInt((i8)0);
+    
+    //goto exit;
+    EXIT();
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -265,8 +268,7 @@ void Task::vSocketSend(MP_Task mpTask)
     if ( ! bResult ) {
       
       // delete the rowbuffer if its temporary
-      if (BD_TEMPORARY == pEntryBuffer->eDurability())
-        delete pEntryBuffer;
+      RASSERT(BD_TEMPORARY != pEntryBuffer->eDurability());
       
       //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
       mpTask->m_pDataStack->vPushInt((i8)0);
@@ -281,8 +283,7 @@ void Task::vSocketSend(MP_Task mpTask)
     
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // delete the rowbuffer if its temporary
-    if (BD_TEMPORARY == pEntryBuffer->eDurability())
-      delete pEntryBuffer;
+    RASSERT(BD_TEMPORARY != pEntryBuffer->eDurability());
     
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // test send result
@@ -293,6 +294,57 @@ void Task::vSocketSend(MP_Task mpTask)
       
       //goto exit;
       EXIT();
+    }
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get workingBuffer if any in valset
+  WorkingBuffer* pWorkingBuffer = xValSet.pGetWorkingBuffer();
+  
+  if (pWorkingBuffer) {
+    
+    //pWorkingBuffer->vShow();
+    
+    //vTrace("Sending WorkingBuffer: %p\n"_Stz,pWorkingBuffer);
+    
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+    // send entryBuffer size
+    i8 iBytes = pWorkingBuffer->nUsedBytes();
+    //vTrace("sending %lld bytes\n"_Stz, iBytes);
+
+    bResult = pSocket->bSendTo(sizeof(iBytes), &iBytes, xSysCall);
+    
+    if ( ! bResult ) {
+      
+      // delete the working buffer
+      delete pWorkingBuffer;
+      
+      //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
+      mpTask->m_pDataStack->vPushInt((i8)0);
+      
+      //goto exit;
+      EXIT();
+    }
+    
+    if (iBytes) {
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+      // send entryBuffer itself
+      bResult = pSocket->bSendTo(iBytes, pWorkingBuffer->aDataArea(), xSysCall);
+      
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+      // delete the working buffer
+      delete pWorkingBuffer;
+      
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+      // test send result
+      if ( ! bResult ) {
+        
+        //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
+        mpTask->m_pDataStack->vPushInt((i8)0);
+        
+        //goto exit;
+        EXIT();
+      }
     }
   }
   
@@ -398,7 +450,60 @@ void Task::vSocketRecv(MP_Task mpTask)
     ASSERT(bSet);
   }
 
+  //******************************************************************
+  // Check if valset has a working buffer
+  //******************************************************************
+  bool bHasWorkingBuffer = xValSet.bHasWorkingBuffer();
   
+  if (bHasWorkingBuffer) {
+    
+    //******************************************************************
+    // receive workingBuffer size
+    //******************************************************************
+    bResult = pSocket->bRecvBytes(sizeof(iBytes), reinterpret_cast<void*>(&iBytes), xSysCall);
+    
+    if ( ! bResult )
+      THROW("Unable to recvFrom socket: Errno %d!"_Stz, xSysCall.iError());
+    
+    //******************************************************************
+    // receive workingBuffer
+    //******************************************************************
+    WorkingBuffer* pWorkingBuffer = (WorkingBuffer*)new WorkingBuffer(nullptr, -1);
+    
+    if (iBytes) {
+      pWorkingBuffer->pAllotSpace(iBytes);
+      
+      //vTrace("Recvd EntryBuffer: %p\n"_Stz,pEntryBuffer);
+      bResult = pSocket->bRecvBytes(iBytes, reinterpret_cast<void*>(pWorkingBuffer->aDataArea()), xSysCall);
+      
+      if ( ! bResult )
+        THROW("Unable to recvFrom socket: Errno %d!"_Stz, xSysCall.iError());
+      
+      //pEntryBuffer->vHeadEntryRestore();
+      //pEntryBuffer->vFirstEntryRestore();
+      //pEntryBuffer->vRowCountRestore();
+      pWorkingBuffer->vRestore();
+      
+      //pEntryBuffer->vShow();
+      
+      //vTrace("%lld %lld %lld\n"_Stz, iBytes, *(pEntryBuffer->nBufferNo()), pEntryBuffer->nItems());
+      
+      // set the new entry buffer in each entry of the entry buffer
+  //    Id xId;
+  //    xId.vBuffer(*(pWorkingBuffer->nBufferNo()));
+  //    for (Entry* pEntry = pWorkingBuffer->pFirstEntry(); pEntry != nullptr;
+  //         pEntry = pWorkingBuffer->pNextEntry(pEntry, 0)) {
+  //      xId.vRow(pEntry->xId().iRow());
+  //
+  //      pEntry->vId(xId);
+  //    }
+    }
+    //******************************************************************
+    // set workingBuffer in valset
+    //******************************************************************
+    bool bSet = xValSet.bSetWorkingBuffer(pWorkingBuffer);
+    ASSERT(bSet);
+  }
   mpTask->m_pDataStack->vPushValSet(xValSet);
   
   EXIT();

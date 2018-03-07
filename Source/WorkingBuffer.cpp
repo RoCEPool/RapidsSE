@@ -125,13 +125,28 @@ bool WorkingBuffer::bAppendRow(RowWrk xRowWrk)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get address of data area                                                   */
+/*----------------------------------------------------------------------------*/
+char* WorkingBuffer::aDataArea(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  char* aStart = m_xWsp.aArea();
+  
+  return aStart;
+}
+
+/*----------------------------------------------------------------------------*/
 /* first item                                                                 */
 /*----------------------------------------------------------------------------*/
 WorkingRow* WorkingBuffer::pFirstResult(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORKINGBUFFER,_FOOTER_);
   
-  if ( m_nWorkingRows == 0 )
+  //if ( m_nWorkingRows == 0 )
+  //  return nullptr;
+  
+  if (nUsedBytes() == 0)
     return nullptr;
   
   WorkingRow* pFirst = reinterpret_cast<WorkingRow*>(m_xWsp.aArea());
@@ -187,6 +202,16 @@ i8 WorkingBuffer::nPartitionNo(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* restore the buffer after being received over a socket                      */
+/*----------------------------------------------------------------------------*/
+void WorkingBuffer::vRestore(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORKINGBUFFER,_FOOTER_);
+  
+  vItemCountRestore();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of result rows in this buffer                                   */
 /*----------------------------------------------------------------------------*/
 i8 WorkingBuffer::nWorkingRows(void)
@@ -215,6 +240,18 @@ void WorkingBuffer::vShow(void)
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* get bytes used                                                             */
+/*----------------------------------------------------------------------------*/
+i8 WorkingBuffer::nUsedBytes(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  i8 nBytes = m_xWsp.nUsed();
+  
+  return nBytes;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- private -----------------------------------------------------------------*/
@@ -224,6 +261,24 @@ void WorkingBuffer::vShow(void)
 /* allot an item of nBytes in this buffer                                     */
 /*----------------------------------------------------------------------------*/
 WorkingRow* WorkingBuffer::pAllotResult(i8 nBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORKINGBUFFER,_FOOTER_);
+  
+  // test  sufficient freespace
+  if (nFreeBytes() < nBytes)
+    return nullptr;
+  
+  WorkingRow* pWorkingRow = reinterpret_cast<WorkingRow*>(m_xWsp.aAllot(nBytes));
+  
+  m_nWorkingRows++;
+  
+  return pWorkingRow;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot space of nBytes in this buffer                                       */
+/*----------------------------------------------------------------------------*/
+WorkingRow* WorkingBuffer::pAllotSpace(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORKINGBUFFER,_FOOTER_);
   
@@ -250,6 +305,17 @@ i8 WorkingBuffer::nFreeBytes(void)
   return nBytes;
 }
 
+/*----------------------------------------------------------------------------*/
+/* restore item count                                                         */
+/*----------------------------------------------------------------------------*/
+void WorkingBuffer::vItemCountRestore(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORKINGBUFFER,_FOOTER_);
+    
+  m_nWorkingRows = 0;
+  for (WorkingRow* pRow = pFirstResult(); pRow; pRow = pNextResult(pRow))
+    m_nWorkingRows++;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
