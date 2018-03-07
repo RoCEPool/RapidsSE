@@ -157,9 +157,7 @@ Entry* Id::pRow(void)
 /* get the entry buffer that this id references                               */
 /*----------------------------------------------------------------------------*/
 EntryBuffer* Id::pReferencedEntryBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
-  
+{  
   bn nBufferNo = m_uBuffer;
   
   HeapBuffer* pHeapBuffer =
