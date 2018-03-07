@@ -1626,7 +1626,6 @@ EntryBuffer* EntryBuffer::pInsertableBuffer(KeyWrk& xKeyWrk,
 /* insert a key entry specifically into this buffer (should be enough space)  */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pInsertKeyAbs(KeyWrk& xKeyWrk,
-                                  EntryBuffer** ppRootKeyBuffer,
                                   EntryBuffer* pToBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
@@ -1697,7 +1696,6 @@ Entry* EntryBuffer::pInsertKeyAbs(KeyWrk& xKeyWrk,
 /* insert a key entry specifically into this buffer (should be enough space)  */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pInsertKeyAbsLazy(KeyWrk& xKeyWrk,
-                                      EntryBuffer** ppRootKeyBuffer,
                                       EntryBuffer* pToBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
@@ -1776,7 +1774,6 @@ Entry* EntryBuffer::pInsertKeyBuffer(KeyWrk& xKeyWrk,
   // insert the key
   
   Entry* pInsertedKeyEntry = pInsertKeyAbs(xKeyWrk,
-                                           ppRootKeyBuffer,
                                            pToBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2345,7 +2342,6 @@ EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
     xKeyWrk.vOffsets(nOffsets);
     
     Entry* pNewEntry = pNewBuffer->pInsertKeyAbs(xKeyWrk,
-                                                 ppRootKeyBuffer,
                                                  pToBuffer);
     
     vDeleteEntry(pMoveEntry);
