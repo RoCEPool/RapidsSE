@@ -257,7 +257,7 @@ void KeyWrk::vKeySize(i8 nKeySize)
 /*----------------------------------------------------------------------------*/
 EntryBuffer* KeyWrk::pReferencedEntryBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_KEYWRK,_FOOTER_);
+  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
   EntryBuffer* pEntryBuffer = xId().pReferencedEntryBuffer();
   

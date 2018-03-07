@@ -3130,8 +3130,12 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
     //((Row*)aRowData)->vDump(pColVec);
     
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-    Entry* pRowEntry =
-      pLastRowBuffer->pAppendRow(xRowWrk);
+    Entry* pRowEntry = pLastRowBuffer->pAppendRow(xRowWrk);
+    
+    if ( ! pRowEntry ) {
+      pLastRowBuffer = pLastRowBuffer->pNewNextBuffer();
+      pRowEntry = pLastRowBuffer->pAppendRow(xRowWrk);
+    }
   
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     xKeyWrk.vReset();
