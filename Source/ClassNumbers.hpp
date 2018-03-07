@@ -77,7 +77,7 @@ namespace Base
     /* 50 */ CN_HEAPBUFFER,
     
     /* 51 */ CN_INDEX,
-    /* 52 */ CN_INDEXDATA,
+    /* 52 */ CN_INDEXTREE,
     /* 53 */ CN_IDXCOLVEC,
     /* 54 */ CN_IDXDATAVEC,
     /* 55 */ CN_IDXVEC,

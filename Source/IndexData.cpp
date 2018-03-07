@@ -18,7 +18,7 @@ IndexData* DBobjects::_pIndexData(void* pAddr)
 {
   IndexData* pIndexData = reinterpret_cast<IndexData*>(pAddr);
   
-  RASSERT( !pIndexData || CN_INDEXDATA == pIndexData->eClass() );
+  RASSERT( !pIndexData || CN_INDEXTREE == pIndexData->eClass() );
   
   return pIndexData;
 }
@@ -28,8 +28,8 @@ IndexData* DBobjects::_pIndexData(void* pAddr)
 /*----------------------------------------------------------------------------*/
 void IndexData::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  ASSERT(eClass == CN_INDEXDATA);
-  ASSERT(pObject->eClass() == CN_INDEXDATA);
+  ASSERT(eClass == CN_INDEXTREE);
+  ASSERT(pObject->eClass() == CN_INDEXTREE);
   
 }
 
@@ -38,8 +38,8 @@ void IndexData::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 void IndexData::vFinalize(eCN eClass, Object* pObject)
 {
-  ASSERT(eClass == CN_INDEXDATA);
-  ASSERT(pObject->eClass() == CN_INDEXDATA);
+  ASSERT(eClass == CN_INDEXTREE);
+  ASSERT(pObject->eClass() == CN_INDEXTREE);
   
   IndexData* pIndexData = reinterpret_cast<IndexData*>(pObject);
   ASSERT(pIndexData->bWordBody());
@@ -58,7 +58,7 @@ void* IndexData::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  void* pObject = Heap::pAllocate(CN_INDEXDATA);
+  void* pObject = Heap::pAllocate(CN_INDEXTREE);
   
   return pObject;
 }
@@ -78,9 +78,9 @@ void IndexData::operator delete(void* pDataAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 IndexData::IndexData(Index* pIndex, i8 iPartitionNo)
-: Object(CN_INDEXDATA)
+: Object(CN_INDEXTREE)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   m_zLock.vInitLock(LK_INDEX_DATA);
   m_pIndex = pIndex;
@@ -89,9 +89,9 @@ IndexData::IndexData(Index* pIndex, i8 iPartitionNo)
   m_pRoot = nullptr;
   m_pCurrentBuffer = nullptr;
   
-  _checkInitialised_(CN_INDEXDATA);
+  _checkInitialised_(CN_INDEXTREE);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -99,7 +99,7 @@ IndexData::IndexData(Index* pIndex, i8 iPartitionNo)
 /*----------------------------------------------------------------------------*/
 IndexData::~IndexData(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   vTidyUp();
 }
@@ -113,7 +113,7 @@ IndexData::~IndexData(void)
 /*----------------------------------------------------------------------------*/
 Stz* IndexData::pAnalyze(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   i8 nRowsTotal = 0;
   i8 nBuffersTotal = 0;
@@ -138,7 +138,7 @@ Stz* IndexData::pAnalyze(void)
 /*----------------------------------------------------------------------------*/
 void IndexData::vDump(bool bSameLevel)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
 
   if (bSameLevel) {
     EntryBuffer* pEntryBuffer = m_pRoot;
@@ -160,7 +160,7 @@ void IndexData::vDump(bool bSameLevel)
 /*----------------------------------------------------------------------------*/
 EntryBuffer* IndexData::pFirstL0Buffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   EntryBuffer* pEntryBuffer = m_pRoot;
   
@@ -188,7 +188,7 @@ EntryBuffer* IndexData::pFirstL0Buffer(void)
 /*----------------------------------------------------------------------------*/
 Index* IndexData::pIndex(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   return m_pIndex;
 }
@@ -198,7 +198,7 @@ Index* IndexData::pIndex(void)
 /*----------------------------------------------------------------------------*/
 i8 IndexData::nEntryBuffers(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   i8 nBufferCount = 0;
   if (m_pRoot)
@@ -212,7 +212,7 @@ i8 IndexData::nEntryBuffers(void)
 /*----------------------------------------------------------------------------*/
 void IndexData::vAppendBuffer(EntryBuffer* pEntryBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   // we should be appending buffers only for hidden index
   ASSERT(m_pIndex->bIsHidden());
@@ -241,7 +241,7 @@ void IndexData::vAppendEntriesFromBuffer(WorkingBuffer* pWorkingBuffer,
                                          EntryBuffer** ppFirstBuffer,
                                          Entry** ppFirstEntry)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   EntryVec xPriorVec;
   Entry* pNewEntry;
@@ -310,7 +310,7 @@ void IndexData::vAppendEntriesFromBuffer(WorkingBuffer* pWorkingBuffer,
 void IndexData::vAppendEntry(KeyWrk& xKeyWrk,
                              EntryVec& xPriorVec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   // this is invoked during ld while building non-hidden indexes
   ASSERT( ! m_pIndex->bIsHidden() );
@@ -343,7 +343,7 @@ void IndexData::vAppendEntry(KeyWrk& xKeyWrk,
 void IndexData::vInsertEntriesFromBuffer(EntryBuffer* pEntryBuffer,
                                          Entry* pRowEntry)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   //m_zLock.vGrabWrite();
   
@@ -363,7 +363,7 @@ void IndexData::vInsertEntriesFromBuffer(EntryBuffer* pEntryBuffer,
 /*----------------------------------------------------------------------------*/
 bool IndexData::bInsertEntry(Entry* pRow)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   m_zLock.vGrabWrite();
   
@@ -406,7 +406,7 @@ bool IndexData::bInsertEntry(Entry* pRow)
 EntryBuffer* IndexData::pPositionLevel(KeyWrk& xKeyWrk, i8 nKeyCols,
                                        eJC eJuxtaCompare, i8 iLevel)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   if (m_pRoot)
     return m_pRoot->pPositionLevel(xKeyWrk.aKey(),nKeyCols,eJuxtaCompare,iLevel);
@@ -419,7 +419,7 @@ EntryBuffer* IndexData::pPositionLevel(KeyWrk& xKeyWrk, i8 nKeyCols,
 /*----------------------------------------------------------------------------*/
 EntryBuffer* IndexData::pRoot(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   return m_pRoot;
 }
@@ -429,7 +429,7 @@ EntryBuffer* IndexData::pRoot(void)
 /*----------------------------------------------------------------------------*/
 void IndexData::vTidyUp(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   // nothing to do
 }
@@ -439,7 +439,7 @@ void IndexData::vTidyUp(void)
 /*----------------------------------------------------------------------------*/
 void IndexData::vTruncate(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   m_zLock.vGrabWrite();
   
@@ -456,7 +456,7 @@ void IndexData::vTruncate(void)
 /*----------------------------------------------------------------------------*/
 bool IndexData::bVerify(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   return m_pRoot->bVerify();
 }
@@ -466,7 +466,7 @@ bool IndexData::bVerify(void)
 /*----------------------------------------------------------------------------*/
 bool IndexData::bVerifyIndex(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   bool bValid = m_pRoot->bVerify();
   
@@ -482,7 +482,7 @@ bool IndexData::bVerifyIndex(void)
 /*----------------------------------------------------------------------------*/
 void IndexData::vDumpLevel(EntryBuffer* pEntryBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   // get the first entry
   Entry* pEntry = pEntryBuffer->pFirstEntry();
@@ -515,7 +515,7 @@ void IndexData::vDumpLevel(EntryBuffer* pEntryBuffer)
 /*----------------------------------------------------------------------------*/
 void IndexData::vVisualize(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   // start with the root buffer
   EntryBuffer* pEntryBuffer = m_pRoot;
@@ -580,7 +580,7 @@ void IndexData::vVisualize(void)
 /*----------------------------------------------------------------------------*/
 Footer* IndexData::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDATA);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE);
   
   return &m_xFooter;
 }

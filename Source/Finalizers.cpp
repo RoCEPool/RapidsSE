@@ -73,7 +73,7 @@ pFINALIZE *gpFinalize[]
   /* 50 */ &Finalize::vUndefined,         // CN_HEAPBUFFER
   
   /* 51 */ &Index::vFinalize,             // CN_INDEX
-  /* 52 */ &Finalize::vUndefined,         // CN_INDEXDATA
+  /* 52 */ &Finalize::vUndefined,         // CN_INDEXTREE
   /* 53 */ &Finalize::vUndefined,         // CN_IDXCOLVEC
   /* 54 */ &Finalize::vUndefined,         // CN_IDXDATAVEC
   /* 55 */ &Finalize::vUndefined,         // CN_IDXVEC
