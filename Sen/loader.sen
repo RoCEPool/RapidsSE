@@ -240,8 +240,8 @@ timer: loadTimer
 
   N_SERVER_THREADS setAcks
 
-  // set acks remaining to be (no partitions)
-  grid.slots grid.nodes * pSEitf seitf.acksRemaining!
+  // set acks remaining to be (no partitions)* subLoaders
+  grid.slots grid.nodes N_SERVER_THREADS * * pSEitf seitf.acksRemaining!
 
   0 locals| pSubTask |
   0 locals| servers |
