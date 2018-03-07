@@ -40,6 +40,9 @@ namespace DBobjects
     
     Entry*  pRow(void);
   
+    EntryBuffer* pReferencedEntryBuffer(void);
+
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   

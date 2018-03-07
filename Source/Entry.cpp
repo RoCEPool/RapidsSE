@@ -206,18 +206,7 @@ EntryBuffer* Entry::pReferencedEntryBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  bn nBufferNo = m_xId.iBuffer();
-  //  EntryBuffer* pEntryBuffer =
-  //    reinterpret_cast<EntryBuffer*>(gpBufferPool->pToBuffer(nBufferNo));
-  
-  HeapBuffer* pHeapBuffer =
-    reinterpret_cast<HeapBuffer*>(gpBufferPool->pToBuffer(nBufferNo));
-  
-  EntryBuffer* pEntryBuffer =
-    reinterpret_cast<EntryBuffer*>(pHeapBuffer->pFirstChunk());
-  
-  ASSERT(pEntryBuffer);
-  ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
+  EntryBuffer* pEntryBuffer = m_xId.pReferencedEntryBuffer();
   
   return pEntryBuffer;
 }

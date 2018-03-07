@@ -153,6 +153,27 @@ Entry* Id::pRow(void)
   return pRow;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get the entry buffer that this id references                               */
+/*----------------------------------------------------------------------------*/
+EntryBuffer* Id::pReferencedEntryBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  bn nBufferNo = m_uBuffer;
+  
+  HeapBuffer* pHeapBuffer =
+  reinterpret_cast<HeapBuffer*>(gpBufferPool->pToBuffer(nBufferNo));
+  
+  EntryBuffer* pEntryBuffer =
+  reinterpret_cast<EntryBuffer*>(pHeapBuffer->pFirstChunk());
+  
+  ASSERT(pEntryBuffer);
+  ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
+  
+  return pEntryBuffer;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
