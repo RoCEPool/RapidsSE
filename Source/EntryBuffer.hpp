@@ -147,6 +147,9 @@ namespace DBobjects
     Entry*       pInsertKeyAbs(KeyWrk& xKeyWrk,
                                EntryBuffer** ppRootKeyBuffer,
                                EntryBuffer* pToBuffer);
+    Entry*       pInsertKeyAbsLazy(KeyWrk& xKeyWrk,
+                                   EntryBuffer** ppRootKeyBuffer,
+                                   EntryBuffer* pToBuffer);
     Entry*       pInsertKeyBuffer(KeyWrk& xKeyWrk,
                                   EntryBuffer** ppRootKeyBuffer,
                                   EntryBuffer* pToBuffer);

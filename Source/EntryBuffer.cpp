@@ -1623,7 +1623,7 @@ EntryBuffer* EntryBuffer::pInsertableBuffer(KeyWrk& xKeyWrk,
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert a key entry specificaly into this buffer (should be enough space)   */
+/* insert a key entry specifically into this buffer (should be enough space)  */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pInsertKeyAbs(KeyWrk& xKeyWrk,
                                   EntryBuffer** ppRootKeyBuffer,
@@ -1689,6 +1689,63 @@ Entry* EntryBuffer::pInsertKeyAbs(KeyWrk& xKeyWrk,
   }
   
   //vShow();
+  
+  return pKeyEntry;
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert a key entry specifically into this buffer (should be enough space)  */
+/*----------------------------------------------------------------------------*/
+Entry* EntryBuffer::pInsertKeyAbsLazy(KeyWrk& xKeyWrk,
+                                      EntryBuffer** ppRootKeyBuffer,
+                                      EntryBuffer* pToBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // trace
+  
+  //vTrace("Inserting key:\n"_Stz);
+  //IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  //aKey->vShow(pIdxColVec);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compute required entry space
+  
+  RASSERT(xKeyWrk.nOffsets());
+  
+  i8 nEntryBytes = xKeyWrk.nEntrySize();
+  i8 nOffsetBytes = xKeyWrk.nOffsetSize();
+  i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
+  
+  RASSERT(bHasSpace(nEntryPlusOffsets));
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // allocate space for the key and next offsets in this buffer
+  
+  Entry* pKeyEntry = pAllotEntry(nEntryBytes);
+  ASSERT(pKeyEntry);
+  
+  NEO* aNEO = aAllotNEO(nOffsetBytes);
+  ASSERT(aNEO);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the key entry
+  
+  pKeyEntry->vSetEntry(xKeyWrk);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // form lazy chain
+  
+  if (m_pLazyChain) {
+    i8 iLazyOffset = iToOffset(m_pLazyChain);
+    pKeyEntry->vNEO(0,iLazyOffset);
+  }
+  else {
+    pKeyEntry->vNEO(0,-1);
+  }
+
+  m_pLazyChain = pKeyEntry;
   
   return pKeyEntry;
 }
