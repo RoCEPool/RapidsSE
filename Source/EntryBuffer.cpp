@@ -1745,8 +1745,10 @@ void EntryBuffer::vInsertKeySkip(Entry* pKeyEntry,
   
   if (0 == m_iBufferLevel)
     vPositionPriorL0(aKey, xPriorVec);
-  else
+  else {
+    RASSERT(pKeyEntry->pReferencedEntryBuffer() == pToBuffer);
     vPositionPriorLnAfter(aKey, xPriorVec, pToBuffer);
+  }
   //vDumpPriorVec(xPriorVec);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
