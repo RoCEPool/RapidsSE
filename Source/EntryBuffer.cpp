@@ -88,6 +88,8 @@ EntryBuffer::EntryBuffer(void)
   m_pLastEntry  = nullptr;
   m_pFirstFree  = nullptr;
   
+  m_pLazyChain  = nullptr;
+  
   vHeadEntryNew();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);

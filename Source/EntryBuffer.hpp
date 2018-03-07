@@ -54,6 +54,8 @@ namespace DBobjects
     Entry*     m_pLastEntry;  // last entry in buffer
     FreeEntry* m_pFirstFree;  // head of free entry list
   
+    Entry*     m_pLazyChain;  // first lazy entry
+  
     // must be last
     Footer m_xFooter;
   
