@@ -39,6 +39,7 @@
 /*----------------------------------------------------------------------------*/
 /* append row buffer to partition of given named table                        */
 /*----------------------------------------------------------------------------*/
+/*
 : loadAppendBuffer$ ( pLoaderSEitf iLoaderNode iDistTxId rowBuffer isLast partitionNo "<indexNm>" "<tableNm>" -- true )
 
 //"loadAppendBuffer$" .
@@ -102,6 +103,7 @@ tp: loadAppendBuffer$
 
   true <SUCCESS_RESULT>
 ;
+*/
 
 /*----------------------------------------------------------------------------*/
 /* forward append of rowbuffer to participant for partition                   */
@@ -112,7 +114,7 @@ tp: loadAppendBuffer$
 
 tp: ~loadAppendBuffer
 
-   0 locals| pRowBuffer pLoaderSub pLoaderSEitf |
+   0 locals| pWorkingBuffer pLoaderSub pLoaderSEitf |
 
   // why:
   //   loaderSub has a full rowBuffer which needs to be sent to participant
@@ -134,7 +136,7 @@ tp: ~loadAppendBuffer
   // a) form the indirect call of loadAppendBuffer
   //
 
-  pLoaderSub loaderSub.rowBuffer@ to pRowBuffer
+  pLoaderSub loaderSub.workingBuffer@ to pWorkingBuffer
   //pRowBuffer entryBuffer.dump
 
   //"~loadAppendBuffer" .
@@ -147,18 +149,17 @@ tp: ~loadAppendBuffer
   <<
     pLoaderSEitf
     grid.thisNode@
-    iDistTxId
-    pRowBuffer                                    ( << rb )
-    pRowBuffer entryBuffer.isLast@
-    nullPtr pLoaderSub loaderSub.rowBuffer!  // set working row buffer to null
+    pWorkingBuffer                                    ( << rb )
+    pWorkingBuffer workingBuffer.isLast@
     pLoaderSub loaderSub.partition@               ( << rb ptn )
-    pRowBuffer entryBuffer.index@ index.name@     ( << rb ptn "<tableNm>" )
     pLoaderSub loaderSub.table table.name         ( << rb ptn "<tableNm>" )
-    "loadAppendBuffer$"                           ( << rb ptn "<tableNm>" "loadAppendBuffer$" )
+    "insertBufferEntries$"                        ( << rb ptn "<tableNm>" "insertBufferEntries$" )
 
 tp: theIndirectCall
 
   >>                       ( <<loadAppendBuffer$>> )
+
+  nullPtr pLoaderSub loaderSub.workingBuffer!  // set working buffer to null
 
   //
   // b) <<loadAppendBuffer$>> to be forwarded to one participant
@@ -185,6 +186,7 @@ tp: theIndirectResult
 /*----------------------------------------------------------------------------*/
 /* forward append of rowbuffer to participant for partition                   */
 /*----------------------------------------------------------------------------*/
+/*
 : ~loadAppendBuffer2 ( pLoaderSEitf pRowBuffer sTableNm -- )
 
 //"~loadAppendBuffer" .
@@ -264,10 +266,12 @@ tp: ~loadAppendBuffer
 
   checkResult
 ;
+*/
 
 /*----------------------------------------------------------------------------*/
 /* parallel sub-loading of file into table                                    */
 /*----------------------------------------------------------------------------*/
+/*
 : loadSub ( ^loaderSub -- )
 
   // this is being run by a general thread on the originator node
@@ -369,10 +373,117 @@ tp: ~loadAppendBuffer
   //task::this task.name@ "%v acking parent" str.format .
   task.parent@ ack
 ;
+*/
+
+/*----------------------------------------------------------------------------*/
+/* parallel sub-loading of file into table                                    */
+/*----------------------------------------------------------------------------*/
+: loadSub ( ^loaderSub -- )
+
+  // this is being run by a general thread on the originator node
+
+  // first set the taskset in this task
+  // needed when being resumed by coordinator
+  0 0 0 0 0 locals| iPartitionNo ploaderSub iTotalPartitions pLoaderSEitf iTxId |
+
+  task::this task.thread thread.taskset@
+  task::this task.taskset!
+
+  // expand dic stack valset and set
+  valset> drop dicPath.set
+
+  // expand args valset
+  valset> drop
+  to pLoaderSub
+  to pLoaderSEitf
+
+  //"loadSub pLoaderSEitf ..." .
+  //pLoaderSEitf .
+
+  // get table, tx and load map from parent loader
+  //   open the chunked file
+  //   read first chunk
+  pLoaderSub loaderSub.begin
+
+  pLoaderSub loaderSub.fetchRecord
+
+  if
+    // fill a buffer
+    begin
+
+    pLoaderSub loaderSub.loadData
+
+    while
+
+      // append row buffer to table/partition/strand
+      pLoaderSEitf pLoaderSub ~loadAppendBuffer
+
+    repeat
+  then
+
+  // calculate total partitions in the cluster
+  grid.slots grid.nodes *
+  to iTotalPartitions
+
+  // check for dangling buffers
+  iTotalPartitions 0 do
+
+    // set the partition we are using
+    I pLoaderSub loaderSub.partition!
+
+    // test for a dangling row buffer for parition I
+    pLoaderSub loaderSub.workingBuffer@
+    if
+      //"DANGLING" .
+      // get the buffer
+      pLoaderSub loaderSub.workingBuffer@
+
+      // mark as last buffer
+      workingBuffer.isLast!
+
+      // append row buffer to table/partition/strand
+      pLoaderSEitf pLoaderSub ~loadAppendBuffer
+
+    else
+
+      //"NO DANGLING" .
+
+      // check if loader sub fetched any records
+      //pLoaderSub loaderSub.recordsFetched if
+
+      // create a new working buffer
+      pLoaderSub loaderSub.newWorkingBuffer
+
+      // get the buffer
+      pLoaderSub loaderSub.workingBuffer@
+
+      // mark as last buffer
+      workingBuffer.isLast!
+
+      // append row buffer to table/partition/strand
+      pLoaderSEitf pLoaderSub ~loadAppendBuffer
+      //then
+
+    then
+
+  loop
+
+  // add the valid/invalid records to loader
+  pLoaderSub loaderSub.recordsValid pLoaderSub loaderSub.loader@ loader.addRecordsValid
+  pLoaderSub loaderSub.recordsInvalid pLoaderSub loaderSub.loader@ loader.addRecordsInvalid
+
+  // close the file
+  pLoaderSub loaderSub.end
+
+  // this sub has completed, ack the parent loader
+  //task::this task.name@ "%v acking parent" str.format .
+  task.parent@ ack
+;
 
 /*----------------------------------------------------------------------------*/
 /* partition task appends the row buffer to the table                         */
 /*----------------------------------------------------------------------------*/
+/*
 : partitionAppendBuffer ( pLoaderSEitf iLoaderNode iDistTxId rowBuffer iDistTxId partitionNo table^ -- )
 
 tp: partitionAppendBuffer
@@ -428,10 +539,12 @@ tp: partitionAppendBuffer
 
   checkResult
 ;
+*/
 
 /*----------------------------------------------------------------------------*/
 /* parallel sub-loading of file into table                                    */
 /*----------------------------------------------------------------------------*/
+/*
 : senderTask ( pSEitf sTableNm pBufferQueue nLastBuffers -- )
 
 tp: senderTask
@@ -498,7 +611,7 @@ ackWait
   task.parent@ ack
 
 ;
-
+*/
 /*----------------------------------------------------------------------------*/
 /* ackSEitf$                                                                  */
 /*----------------------------------------------------------------------------*/

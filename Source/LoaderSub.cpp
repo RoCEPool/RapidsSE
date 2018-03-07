@@ -72,7 +72,7 @@ LoaderSub::LoaderSub(void)
   m_iInvalidRecords = 0;
   
   for (i8 i_Partition = 0; i_Partition < C_MAX_PARTITIONS; i_Partition++)
-    m_pEntryBuffer[i_Partition] = nullptr;
+    m_pWorkingBuffer[i_Partition] = nullptr;
   
   _checkInitialised_(CN_LOADERSUB);
   
@@ -110,17 +110,17 @@ void LoaderSub::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* append working buffer into table                                           */
 /*----------------------------------------------------------------------------*/
-void LoaderSub::vAppendBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
-  
-  // get working buffer
-  EntryBuffer* pEntryBuffer = m_pEntryBuffer[m_iPartition];
-  m_pEntryBuffer[m_iPartition] = nullptr;
-  
-  // append working buffer into table
-  bool bIndexesLoaded = m_pTable->bAppendBuffer(m_iPartition,pEntryBuffer);
-}
+//void LoaderSub::vAppendBuffer(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+//  
+//  // get working buffer
+//  EntryBuffer* pEntryBuffer = m_pEntryBuffer[m_iPartition];
+//  m_pEntryBuffer[m_iPartition] = nullptr;
+//  
+//  // append working buffer into table
+//  bool bIndexesLoaded = m_pTable->bAppendBuffer(m_iPartition,pEntryBuffer);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* begin loading                                                              */
@@ -160,7 +160,7 @@ void LoaderSub::vEnd(void)
       m_pTable->vAppendBuffer(m_iPartition,pEntryBuffer);
     }
 */
-    ASSERT(! m_pEntryBuffer[i_Partition]);
+    ASSERT(! m_pWorkingBuffer[i_Partition]);
   }
   
   // close the file being loaded
@@ -252,20 +252,17 @@ bool LoaderSub::bInsertRow(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
   
   // check for working buffer
-  if (! m_pEntryBuffer[m_iPartition]) {
-    m_pEntryBuffer[m_iPartition] = new EntryBuffer;
-    m_pEntryBuffer[m_iPartition]->vIndex(m_pTable->pHiddenIndex());
-    m_pEntryBuffer[m_iPartition]->vPartitionNo(m_iPartition);
+  if (! m_pWorkingBuffer[m_iPartition]) {
+    m_pWorkingBuffer[m_iPartition] = new WorkingBuffer(m_pTable, m_iPartition);;
     
-    if (! m_pEntryBuffer[m_iPartition]) {
+    if (! m_pWorkingBuffer[m_iPartition]) {
       vTrace("EntryBuffer allocation failed\n"_Stz);
       return false;
     }
-    m_pEntryBuffer[m_iPartition]->vDurability(BD_TEMPORARY);
   }
   
   // get working buffer
-  EntryBuffer* pEntryBuffer = m_pEntryBuffer[m_iPartition];
+  WorkingBuffer* pWorkingBuffer = m_pWorkingBuffer[m_iPartition];
   
   // get the tx id
   SEitf* pSEitf = m_pLoader->pSEitf();
@@ -279,11 +276,11 @@ bool LoaderSub::bInsertRow(void)
   xRowWrk.vRowSize(m_iLength);
   
   // insert row into working buffer
-  Entry* pEntry = pEntryBuffer->pAppendRow(xRowWrk);
+  bool bAppended = pWorkingBuffer->bAppendRow(xRowWrk);
   
   //pEntryBuffer->vShow();
   
-  return pEntry ? true: false;
+  return bAppended;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -317,16 +314,13 @@ void LoaderSub::vLoader(Loader* pLoader)
 }
 
 /*----------------------------------------------------------------------------*/
-/* create a new rowBuffer                                                     */
+/* create a new working buffer                                                */
 /*----------------------------------------------------------------------------*/
-void LoaderSub::vNewRowBuffer(void)
+void LoaderSub::vNewWorkingBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
   
-  m_pEntryBuffer[m_iPartition] = new EntryBuffer;
-  m_pEntryBuffer[m_iPartition]->vIndex(m_pTable->pHiddenIndex());
-  m_pEntryBuffer[m_iPartition]->vPartitionNo(m_iPartition);
-  m_pEntryBuffer[m_iPartition]->vDurability(BD_TEMPORARY);
+  m_pWorkingBuffer[m_iPartition] = new WorkingBuffer(m_pTable, m_iPartition);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -391,27 +385,27 @@ bool LoaderSub::bReadChunk(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get rowBuffer                                                              */
+/* get workingBuffer                                                          */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* LoaderSub::pRowBuffer(void)
+WorkingBuffer* LoaderSub::pWorkingBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
   
-  EntryBuffer* pEntryBuffer = m_pEntryBuffer[m_iPartition];
+  WorkingBuffer* pWorkingBuffer = m_pWorkingBuffer[m_iPartition];
 
   //m_pRowBuffer[m_iPartition] = nullptr;
   
-  return pEntryBuffer;
+  return pWorkingBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set rowBuffer                                                              */
+/* set workingBuffer                                                          */
 /*----------------------------------------------------------------------------*/
-void LoaderSub::vRowBuffer(EntryBuffer* pRowBuffer)
+void LoaderSub::vWorkingBuffer(WorkingBuffer* pWorkingBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
   
-  m_pEntryBuffer[m_iPartition] = pRowBuffer;
+  m_pWorkingBuffer[m_iPartition] = pWorkingBuffer;
   
 }
 

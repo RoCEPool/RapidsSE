@@ -119,7 +119,7 @@ bool WorkingBuffer::bAppendRow(RowWrk xRowWrk)
   
   new(aWorkingRow) WorkingRow(xRowWrk.aRow(),nWorkingRowSize,xRowWrk.nRowSize());
   
-  vShow();
+  //vShow();
   
   return true;
 }

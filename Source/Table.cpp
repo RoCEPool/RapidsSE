@@ -238,6 +238,7 @@ Stz* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed)
 /*----------------------------------------------------------------------------*/
 /* append row buffer; return true if all indexes were also loaded             */
 /*----------------------------------------------------------------------------*/
+/*
 bool Table::bAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
 { //# indexTuning
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
@@ -320,6 +321,7 @@ bool Table::bAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
  
   // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
 }
+*/
 
 /*----------------------------------------------------------------------------*/
 /* is data loaded ?                                                           */

@@ -20,7 +20,7 @@ namespace DBobjects
     bool       m_bMoreChunks; // continue while there are more chunks
     LoadChunk* m_pLoadChunk;  // chunk loading buffer
     
-    EntryBuffer* m_pEntryBuffer[C_MAX_PARTITIONS]; // working row buffers
+    WorkingBuffer* m_pWorkingBuffer[C_MAX_PARTITIONS]; // working row buffers
     
     // must be last
     Footer m_xFooter;
@@ -35,7 +35,7 @@ namespace DBobjects
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
-    void vAppendBuffer(void);
+    //void vAppendBuffer(void);
     void vBegin(void);
     void vEnd(void);
     bool bFetchRecord(void);
@@ -44,12 +44,12 @@ namespace DBobjects
     i8   iInvalidRecords(void);
     Loader* pLoader(void);
     void vLoader(Loader* pLoader);
-    void vNewRowBuffer(void);
+    void vNewWorkingBuffer(void);
     i8   iPartition(void);
     void vPartition(i8 iPartition);
     bool bReadChunk(void);
-    EntryBuffer* pRowBuffer(void);
-    void vRowBuffer(EntryBuffer* pRowBuffer);
+    WorkingBuffer* pWorkingBuffer(void);
+    void vWorkingBuffer(WorkingBuffer* pWorkingBuffer);
     Table* pTable(void);
     i8   iValidRecords(void);
   

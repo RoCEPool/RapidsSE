@@ -134,6 +134,9 @@ void Task::vTableAppendBuffer(MP_Task mpTask)
 {
   ENTRY("vTableAppendBuffer"_Stz);
 
+  // no longer invoked
+  RASSERT(0);
+  /*
   Object* pPtrTable;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
     THROW_INVALID_DSTACK("table.appendBuffer"_Stz);
@@ -153,9 +156,12 @@ void Task::vTableAppendBuffer(MP_Task mpTask)
   
   i8 iSlot = Partition::iPartitionToSlot(iPartition);
   
+  
+  
   bool bIndexesLoaded = pTable->bAppendBuffer(iSlot,pRowBuffer);
   
   mpTask->m_pDataStack->vPushInt(bIndexesLoaded ? 1 : 0);
+  */
   
   EXIT();
 }

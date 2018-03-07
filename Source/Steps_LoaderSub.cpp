@@ -26,13 +26,13 @@ void Task::vAddPrimitives_LoaderSub(void)
   vAddPrimitive("loaderSub.loader!"_Stz,      &vLoaderSubLoaderStore,   false);
   vAddPrimitive("loaderSub.loadData"_Stz,     &vLoaderSubLoadData,      false);
   vAddPrimitive("loaderSub::new"_Stz,         &vLoaderSubNew,           false);
-  vAddPrimitive("loaderSub.newRowBuffer"_Stz, &vLoaderSubNewRowBuffer,  false);
+  vAddPrimitive("loaderSub.newWorkingBuffer"_Stz, &vLoaderSubNewWorkingBuffer,false);
   vAddPrimitive("loaderSub.partition@"_Stz,   &vLoaderSubPartitionFetch,false);
   vAddPrimitive("loaderSub.partition!"_Stz,   &vLoaderSubPartitionStore,false);
   vAddPrimitive("loaderSub.recordsInvalid"_Stz, &vLoaderSubRecordsInvalid, false);
   vAddPrimitive("loaderSub.recordsValid"_Stz, &vLoaderSubRecordsValid,  false);
-  vAddPrimitive("loaderSub.rowBuffer@"_Stz,   &vLoaderSubRowBufferFetch,false);
-  vAddPrimitive("loaderSub.rowBuffer!"_Stz,   &vLoaderSubRowBufferStore,false);
+  vAddPrimitive("loaderSub.workingBuffer@"_Stz, &vLoaderSubWorkingBufferFetch,false);
+  vAddPrimitive("loaderSub.workingBuffer!"_Stz, &vLoaderSubWorkingBufferStore,false);
   vAddPrimitive("loaderSub.table"_Stz,        &vLoaderSubTable,         false);
 }
 
@@ -272,19 +272,19 @@ void Task::vLoaderSubNew(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loaderSub.newRowBuffer -- create a new row buffer for given partition      */
+/* loaderSub.newWorkingBuffer --create new working buffer for given partition */
 /*----------------------------------------------------------------------------*/
-void Task::vLoaderSubNewRowBuffer(MP_Task mpTask)
+void Task::vLoaderSubNewWorkingBuffer(MP_Task mpTask)
 {
-  ENTRY("vLoaderSubNewRowBuffer"_Stz);
+  ENTRY("vLoaderSubNewWorkingBuffer"_Stz);
   
   Object* pPtrLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
-    THROW_INVALID_DSTACK("loaderSub.newRowBuffer"_Stz);
+    THROW_INVALID_DSTACK("loaderSub.newWorkingBuffer"_Stz);
   LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoader);
   
-  ASSERT( ! pLoaderSub->pRowBuffer() );
-  pLoaderSub->vNewRowBuffer();
+  ASSERT( ! pLoaderSub->pWorkingBuffer() );
+  pLoaderSub->vNewWorkingBuffer();
   
   EXIT();
 }
@@ -364,48 +364,6 @@ void Task::vLoaderSubRecordsValid(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loaderSub.rowBuffer@ -- get row buffer of given partition                  */
-/*----------------------------------------------------------------------------*/
-void Task::vLoaderSubRowBufferFetch(MP_Task mpTask)
-{
-  ENTRY("vLoaderSubRowBufferFetch"_Stz);
-  
-  Object* pPtrLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
-    THROW_INVALID_DSTACK("loaderSub.rowBuffer@"_Stz);
-  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoader);
-  
-  EntryBuffer* pRowBuffer = pLoaderSub->pRowBuffer();
-  
-  mpTask->m_pDataStack->vPushObject(pRowBuffer);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* loaderSub.rowBuffer! -- store row buffer                                   */
-/*----------------------------------------------------------------------------*/
-void Task::vLoaderSubRowBufferStore(MP_Task mpTask)
-{
-  ENTRY("vLoaderSubRowBufferStore"_Stz);
-  
-  Object* pPtrLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
-    THROW_INVALID_DSTACK("loaderSub.rowBuffer@"_Stz);
-  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoader);
-  
-  Object* pPtrRowBuffer;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrRowBuffer) )
-    THROW_INVALID_DSTACK("loaderSub.rowBuffer!"_Stz);
-  
-  EntryBuffer* pRowBuffer = (EntryBuffer*)_pEntryBuffer(pPtrRowBuffer);
-  
-  pLoaderSub->vRowBuffer(pRowBuffer);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* loaderSub.table -- get table being loaded                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubTable(MP_Task mpTask)
@@ -420,6 +378,48 @@ void Task::vLoaderSubTable(MP_Task mpTask)
   Table* pTable = pLoaderSub->pTable();
   
   mpTask->m_pDataStack->vPushObject(pTable);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loaderSub.workingBuffer@ -- get working buffer of given partition          */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderSubWorkingBufferFetch(MP_Task mpTask)
+{
+  ENTRY("vLoaderSubWorkingBufferFetch"_Stz);
+  
+  Object* pPtrLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
+    THROW_INVALID_DSTACK("loaderSub.workingBuffer@"_Stz);
+  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoader);
+  
+  WorkingBuffer* pWorkingBuffer = pLoaderSub->pWorkingBuffer();
+  
+  mpTask->m_pDataStack->vPushObject(pWorkingBuffer);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loaderSub.workingBuffer! -- store working buffer                           */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderSubWorkingBufferStore(MP_Task mpTask)
+{
+  ENTRY("vLoaderSubWorkingBufferStore"_Stz);
+  
+  Object* pPtrLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
+    THROW_INVALID_DSTACK("loaderSub.workingBuffer@"_Stz);
+  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoader);
+  
+  Object* pPtrWorkingBuffer;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrWorkingBuffer) )
+    THROW_INVALID_DSTACK("loaderSub.workingBuffer!"_Stz);
+  
+  WorkingBuffer* pWorkingBuffer = (WorkingBuffer*)_pWorkingBuffer(pPtrWorkingBuffer);
+  
+  pLoaderSub->vWorkingBuffer(pWorkingBuffer);
   
   EXIT();
 }

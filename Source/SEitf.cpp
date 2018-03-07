@@ -1108,17 +1108,17 @@ void SEitf::vPopBufferQueue(void)
       // if popped all last buffers return
       if ( m_ziLastBuffersScanned == m_ziLastBuffers)
         break;
-      
-      delete m_pResultBuffer;
-      m_pResultBuffer = nullptr;
     }
     
   }
   
+  delete m_pResultBuffer;
+  m_pResultBuffer = nullptr;
+  
   // cleanup
   m_ziLastBuffersScanned = 0;
   m_pEntryBuffer  = nullptr;
-  m_pResultBuffer = nullptr;
+  //m_pResultBuffer = nullptr;
   m_pEntry = nullptr;
   m_aRow   = nullptr;
 }

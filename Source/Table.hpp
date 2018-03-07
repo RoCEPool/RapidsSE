@@ -58,7 +58,7 @@ namespace DBobjects
     
     void vAddIndex(Index* pIndex);
     Stz* pAnalyzeIndex(Index* pIndex, bool bDetailed);
-    bool bAppendBuffer(i8 iPartition, EntryBuffer* pRowBuffer);
+    //bool bAppendBuffer(i8 iPartition, EntryBuffer* pRowBuffer);
     bool bDataLoaded(void);
     void vDataLoaded(bool bDataLoaded);
     void vInsertEntries(i8 iPartition, WorkingBuffer* pWorkingBuffer);
