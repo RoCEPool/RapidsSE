@@ -266,7 +266,7 @@ namespace Base
     /* 50 */ "HEAPBUFFER"_Stz,
     
     /* 51 */ "INDEX"_Stz,
-    /* 52 */ "INDEXDATA"_Stz,
+    /* 52 */ "INDEXTREE"_Stz,
     /* 53 */ "IDXCOLVEC"_Stz,
     /* 54 */ "IDXDATAVEC"_Stz,
     /* 55 */ "IDXVEC"_Stz,

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* IndexData.hpp - index portion of table partition                           */
+/* IndexTree.hpp - index portion of table partition                           */
 /*============================================================================*/
 #pragma once
 
@@ -13,7 +13,7 @@ namespace DBobjects
   class Index;
   class WorkingBuffer;
   
-  class IndexData : public Object
+  class IndexTree : public Object
   {
     
   private:
@@ -28,14 +28,14 @@ namespace DBobjects
     
   public:
     void* operator new(size_t);
-    void* operator new(size_t, IndexData* pIndexData);
+    void* operator new(size_t, IndexTree* pIndexTree);
     void  operator delete(void*);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static void vFinalize(eCN eClass, Object* pObject);
     
-    IndexData(Index* pIndex, i8 iPartitionNo);
-    ~IndexData(void);
+    IndexTree(Index* pIndex, i8 iPartitionNo);
+    ~IndexTree(void);
   
     Stz*         pAnalyze(void);
     void         vAppendEntriesFromBuffer(WorkingBuffer* pWorkingBuffer,
@@ -70,7 +70,7 @@ namespace DBobjects
     void         vDumpLevel(EntryBuffer* pEntryBuffer);
   };
   
-  IndexData* _pIndexData(void* pAddr);
+  IndexTree* _pIndexTree(void* pAddr);
 }
 
 /*============================================================================*/

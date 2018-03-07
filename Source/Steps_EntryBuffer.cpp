@@ -323,9 +323,9 @@ void Task::vEntryBufferIterate(MP_Task mpTask)
 //  Table* pTable = pIndex->pTable();
 //  Slots* pSlots = pTable->pSlots();
 //  Partition* pPartition = pSlots->pPartition(0);
-//  IndexData* pIndexData = pPartition->pHiddenIndexData();
+//  IndexTree* pIndexTree = pPartition->pHiddenIndexTree();
 //  
-//  EntryBuffer* pRowBuffer = pIndexData->pFirstL0Buffer();
+//  EntryBuffer* pRowBuffer = pIndexTree->pFirstL0Buffer();
 //  
 //  while ( (pRowBuffer = pRowBuffer->pNextBuffer()) ) {
 //    BitArray* pBitArray = pRowBuffer->pBitArray();

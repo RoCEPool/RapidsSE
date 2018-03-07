@@ -166,10 +166,10 @@ void Table::vAddIndex(Index* pIndex)
   // add index to table
   m_pIdxVec->vAdd(pIndex);
   
-  // create an IndexData for the index in each partition
+  // create an IndexTree for the index in each partition
   for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nSlots; iPartition++) {
     Partition* pPartition = this->pPartition(iPartition);
-    pPartition->vAddIndex(new IndexData(pIndex, iPartition));
+    pPartition->vAddIndex(new IndexTree(pIndex, iPartition));
   }
 }
 
@@ -199,7 +199,7 @@ Stz* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed)
     
     i8 iPartition = Partition::iSlotToPartition(iSlot);
     
-    EntryBuffer *pIndexBuffer = pPartition(iSlot)->pIndexData(pIndex->iIndexNo())->pRoot();
+    EntryBuffer *pIndexBuffer = pPartition(iSlot)->pIndexTree(pIndex->iIndexNo())->pRoot();
     
     i8 nBuffers = 0;
     i8 nEntries = 0;
@@ -249,7 +249,7 @@ bool Table::bAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
   
   // first append buffer to the hidden index
   Partition* pPartition = this->pPartition(iPartition);
-  IndexData* pHiddenIndexData = pPartition->pHiddenIndexData();
+  IndexTree* pHiddenIndexTree = pPartition->pHiddenIndexTree();
   
   // is this the last buffer
   bool bLastBuffer = pEntryBuffer->bIsLast();
@@ -260,7 +260,7 @@ bool Table::bAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
   }
   else {
     // append the buffer to the hidden index
-    pHiddenIndexData->vAppendBuffer(pEntryBuffer);
+    pHiddenIndexTree->vAppendBuffer(pEntryBuffer);
   }
   
   // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
@@ -278,7 +278,7 @@ bool Table::bAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
     return false;
   
   // compute the number of entries in hidden index
-  i8 nHiddenEntries = nHiddenEntryCount(pHiddenIndexData->pRoot());
+  i8 nHiddenEntries = nHiddenEntryCount(pHiddenIndexTree->pRoot());
   if (gxArguments.m_bVerbose) {
     vTrace("Hidden index has %lld entries\n"_Stz,
            nHiddenEntries);
@@ -292,15 +292,15 @@ bool Table::bAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
   for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
     
     // get index
-    IndexData* pNewIndexData = pIdxDataVec->pGet(i_Index);
+    IndexTree* pNewIndexTree = pIdxDataVec->pGet(i_Index);
     
     // skip the hidden index
-    Index* pIndex = pNewIndexData->pIndex();
+    Index* pIndex = pNewIndexTree->pIndex();
     if (pIndex->bIsHidden())
       continue;
   
     // load from hidden index into index being built
-    vNewIndexLoad(iPartition,pNewIndexData,pHiddenIndexData,nHiddenEntries);
+    vNewIndexLoad(iPartition,pNewIndexTree,pHiddenIndexTree,nHiddenEntries);
   }
   
   //vTrace("MARKING %lld %lld\n"_Stz, gpAttachMap->m_pGrid->m_iThisNode, *m_ziIndexesLoaded);
@@ -366,11 +366,11 @@ void Table::vInsertEntries(i8 iSlot, WorkingBuffer* pWorkingBuffer)
   //----------------------------------------------------------------------------
   // (1) append the buffer entries into the hidden index
   Partition* pPartition = this->pPartition(iSlot);
-  IndexData* pHiddenIndexData = pPartition->pHiddenIndexData();
+  IndexTree* pHiddenIndexTree = pPartition->pHiddenIndexTree();
   
   EntryBuffer* pFirstBuffer;
   Entry* pFirstEntry;
-  pHiddenIndexData->vAppendEntriesFromBuffer(pWorkingBuffer, &pFirstBuffer, &pFirstEntry);
+  pHiddenIndexTree->vAppendEntriesFromBuffer(pWorkingBuffer, &pFirstBuffer, &pFirstEntry);
   
   //----------------------------------------------------------------------------
   // (2) insert entries from hidden index pFirstBuffer starting at pFirstEntry
@@ -384,10 +384,10 @@ void Table::vInsertEntries(i8 iSlot, WorkingBuffer* pWorkingBuffer)
   for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
     
     // get index
-    IndexData* pNewIndexData = pIdxDataVec->pGet(i_Index);
+    IndexTree* pNewIndexTree = pIdxDataVec->pGet(i_Index);
     
     // skip the hidden index
-    Index* pIndex = pNewIndexData->pIndex();
+    Index* pIndex = pNewIndexTree->pIndex();
     if (pIndex->bIsHidden())
       continue;
     
@@ -400,7 +400,7 @@ void Table::vInsertEntries(i8 iSlot, WorkingBuffer* pWorkingBuffer)
     // in pFirstBuffer and insert corresponding entries in other indexes
     while (pHiddenEntryBuffer) {
       
-      pNewIndexData->vInsertEntriesFromBuffer(pHiddenEntryBuffer, pEntry);
+      pNewIndexTree->vInsertEntriesFromBuffer(pHiddenEntryBuffer, pEntry);
       pHiddenEntryBuffer = pHiddenEntryBuffer->pNextBuffer();
       
       // get the next buffer and first entry in it
@@ -559,9 +559,9 @@ i8 Table::nIndexBuffers(i8 iIndexNo)
   i8 iBuffers = 0;
   
   for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nSlots; iPartition++) {
-    IndexData* pIndexData = pPartition(iPartition)->pIndexData(iIndexNo);
+    IndexTree* pIndexTree = pPartition(iPartition)->pIndexTree(iIndexNo);
 
-    iBuffers += pIndexData->nEntryBuffers();
+    iBuffers += pIndexTree->nEntryBuffers();
   }
   
   return iBuffers;
@@ -784,8 +784,8 @@ bool Table::bVerifyIndexes(void)
   i8 nIndexes = pIdxDataVec->nItems();
 
   for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
-    IndexData* pIndexData = pIdxDataVec->pGet(i_Index);
-    bool bValid = pIndexData->bVerifyIndex();
+    IndexTree* pIndexTree = pIdxDataVec->pGet(i_Index);
+    bool bValid = pIndexTree->bVerifyIndex();
     if (! bValid)
       return false;
   }
@@ -806,7 +806,7 @@ bool Table::bVerifyIndex(Index* pIndex)
 
     i8 iPartition = Partition::iSlotToPartition(iSlot);
     
-    EntryBuffer *pIndexBuffer = pPartition(iSlot)->pIndexData(pIndex->iIndexNo())->pRoot();
+    EntryBuffer *pIndexBuffer = pPartition(iSlot)->pIndexTree(pIndex->iIndexNo())->pRoot();
     
     if (pIndexBuffer)
       bVerify = pIndexBuffer->bVerify();
@@ -840,8 +840,8 @@ Footer* Table::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* load the given new index from the hidden index using the sort technique    */
 /*----------------------------------------------------------------------------*/
-void Table::vNewIndexLoad(i8 iPartition, IndexData* pNewIndexData,
-                          IndexData* pHiddenIndexData, i8 nHiddenEntries)
+void Table::vNewIndexLoad(i8 iPartition, IndexTree* pNewIndexTree,
+                          IndexTree* pHiddenIndexTree, i8 nHiddenEntries)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 /*
@@ -854,7 +854,7 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pNewIndexData,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Index* pNewIndex = pNewIndexData->pIndex();
+  Index* pNewIndex = pNewIndexTree->pIndex();
   if (gxArguments.m_bVerbose) {
     vTrace("Loading index %s on partition %lld\n"_Stz,
          pNewIndex->aIndexName(), iPartition);
@@ -887,7 +887,7 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pNewIndexData,
   //# add table name
   sRegionName.vSprint("%s_%s_PTN%lld"_Stz,
                       gxArguments.m_sRegionName.aChar(),
-                      pNewIndexData->pIndex()->sIndexName().aChar(),
+                      pNewIndexTree->pIndex()->sIndexName().aChar(),
                       iPartition);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -944,29 +944,29 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pNewIndexData,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // populate the sort array
-  //pHiddenIndexData->vDump(true);
+  //pHiddenIndexTree->vDump(true);
   vPopulateSortArray(aSortRegionAddr,nHiddenEntries,iSortElmSize,
-                     pNewIndexData,pHiddenIndexData->pRoot());
+                     pNewIndexTree,pHiddenIndexTree->pRoot());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the unsorted array
   
-  //vDumpSortArray(aSortRegionAddr,nHiddenEntries,iSortElmSize,pNewIndexData);
+  //vDumpSortArray(aSortRegionAddr,nHiddenEntries,iSortElmSize,pNewIndexTree);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sort the array
   
-  vSortTheArray(aSortRegionAddr,nHiddenEntries,iSortElmSize,pNewIndexData);
+  vSortTheArray(aSortRegionAddr,nHiddenEntries,iSortElmSize,pNewIndexTree);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the sorted array
   
-  //vDumpSortArray(aSortRegionAddr,nHiddenEntries,iSortElmSize,pNewIndexData);
+  //vDumpSortArray(aSortRegionAddr,nHiddenEntries,iSortElmSize,pNewIndexTree);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // build the new index
   
-  vBuildNewIndex(aSortRegionAddr,nHiddenEntries,iSortElmSize,pNewIndexData);
+  vBuildNewIndex(aSortRegionAddr,nHiddenEntries,iSortElmSize,pNewIndexTree);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // destroy the sort region
@@ -980,10 +980,10 @@ void Table::vNewIndexLoad(i8 iPartition, IndexData* pNewIndexData,
 */
   
   KeyWrk xKeyWrk;
-  for (EntryBuffer* pEB = pHiddenIndexData->pRoot(); pEB; pEB = pEB->pNextBuffer()) {
+  for (EntryBuffer* pEB = pHiddenIndexTree->pRoot(); pEB; pEB = pEB->pNextBuffer()) {
     
     for ( Entry* pRow = pEB->pFirstEntry() ; pRow; pRow = pEB->pNextEntry(pRow, 0)) {
-      pNewIndexData->bInsertEntry(pRow);
+      pNewIndexTree->bInsertEntry(pRow);
     }
   }
 
@@ -1010,7 +1010,7 @@ i8 Table::nHiddenEntryCount(EntryBuffer* pFirstL0Buffer)
 /* populate the sort array for the given index from the hidden index          */
 /*----------------------------------------------------------------------------*/
 void Table::vPopulateSortArray(char* aSortArray, i8 nElements, i8 iSortElmSize,
-                               IndexData* pNewIndexData, EntryBuffer* pFirstL0Buffer)
+                               IndexTree* pNewIndexTree, EntryBuffer* pFirstL0Buffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
@@ -1020,7 +1020,7 @@ void Table::vPopulateSortArray(char* aSortArray, i8 nElements, i8 iSortElmSize,
   ASSERT(pFirstL0Buffer == nullptr || 0 == pFirstL0Buffer->iBufferLevel());
   ASSERT(sizeof(i8) == sizeof(Id));
   
-  Index* pIndex = pNewIndexData->pIndex();
+  Index* pIndex = pNewIndexTree->pIndex();
   IdxColVec* pIdxColVec = pIndex->pIdxColVec();
   
   //if (gxArguments.m_bVerbose)
@@ -1085,13 +1085,13 @@ void Table::vPopulateSortArray(char* aSortArray, i8 nElements, i8 iSortElmSize,
 /* the qsort compare function for a complex key datum                         */
 /*----------------------------------------------------------------------------*/
 #ifdef __APPLE__
-int DBobjects::iQsort_complex(void* aIndexData, const void* aArg1, const void* aArg2)
+int DBobjects::iQsort_complex(void* aIndexTree, const void* aArg1, const void* aArg2)
 #else
-int DBobjects::iQsort_complex(const void* aArg1, const void* aArg2, void* aIndexData)
+int DBobjects::iQsort_complex(const void* aArg1, const void* aArg2, void* aIndexTree)
 #endif
 {
-  IndexData* pIndexData = _pIndexData(aIndexData);
-  Index* pIndex = pIndexData->pIndex();
+  IndexTree* pIndexTree = _pIndexTree(aIndexTree);
+  Index* pIndex = pIndexTree->pIndex();
   IdxColVec* pIdxColVec = pIndex->pIdxColVec();
   
   int iCmp = 0;
@@ -1381,14 +1381,14 @@ int DBobjects::iQsort_i8i8i8(const void* aArg1, const void* aArg2)
 /* qsort the sort array for the given index                                   */
 /*----------------------------------------------------------------------------*/
 void Table::vSortTheArray(char* aSortArray, i8 nElements, i8 nElmSize,
-                          IndexData* pNewIndexData)
+                          IndexTree* pNewIndexTree)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   Timer xTimer;
   xTimer.vStart();
 
-  Index* pIndex = pNewIndexData->pIndex();
+  Index* pIndex = pNewIndexTree->pIndex();
   eIF eIndexForm = pIndex->eIndexForm();
   
   if (IF_I8 == eIndexForm)
@@ -1401,9 +1401,9 @@ void Table::vSortTheArray(char* aSortArray, i8 nElements, i8 nElmSize,
     qsort(aSortArray,nElements,nElmSize,iQsort_i8i8i8);
   
 #ifdef __APPLE__
-    qsort_r(aSortArray,nElements,nElmSize,(void*)pNewIndexData,iQsort_complex);
+    qsort_r(aSortArray,nElements,nElmSize,(void*)pNewIndexTree,iQsort_complex);
 #else
-    qsort_r(aSortArray,nElements,nElmSize,iQsort_complex,(void*)pNewIndexData);
+    qsort_r(aSortArray,nElements,nElmSize,iQsort_complex,(void*)pNewIndexTree);
 #endif
   xTimer.vUpdate();
   
@@ -1411,7 +1411,7 @@ void Table::vSortTheArray(char* aSortArray, i8 nElements, i8 nElmSize,
   Magnitudes::vTimeMag(xTimer.iNanoseconds(),sTimeMagnitude);
   
   if (gxArguments.m_bVerbose) {
-    Index* pIndex = pNewIndexData->pIndex();
+    Index* pIndex = pNewIndexTree->pIndex();
     vTrace("qsort for index %s took %s\n"_Stz,
            pIndex->aIndexName(),
            sTimeMagnitude.aChar());
@@ -1422,11 +1422,11 @@ void Table::vSortTheArray(char* aSortArray, i8 nElements, i8 nElmSize,
 /* dump the sort array                                                        */
 /*----------------------------------------------------------------------------*/
 //void Table::vDumpSortArray(char* aSortArray, i8 nElements, i8 nElmSize,
-//                           IndexData* pNewIndexData)
+//                           IndexTree* pNewIndexTree)
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 //  
-//  Index* pIndex = pNewIndexData->pIndex();
+//  Index* pIndex = pNewIndexTree->pIndex();
 //  eIF eIndexForm = pIndex->eIndexForm();
 //  char* aSortElm = aSortArray;
 //  
@@ -1473,11 +1473,11 @@ void Table::vSortTheArray(char* aSortArray, i8 nElements, i8 nElmSize,
 //}
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void Table::vDumpSortArray(char* aSortArray, i8 nElements, i8 nElmSize,
-                           IndexData* pNewIndexData)
+                           IndexTree* pNewIndexTree)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  Index* pIndex = pNewIndexData->pIndex();
+  Index* pIndex = pNewIndexTree->pIndex();
   IdxColVec* pIdxColVec = pIndex->pIdxColVec();
   eIF eIndexForm = pIndex->eIndexForm();
   char* aSortElm = aSortArray;
@@ -1514,7 +1514,7 @@ void Table::vDumpSortArray(char* aSortArray, i8 nElements, i8 nElmSize,
 /* build the new index                                                        */
 /*----------------------------------------------------------------------------*/
 void Table::vBuildNewIndex(char* aSortArray, i8 nElements, i8 nElmSize,
-                           IndexData* pNewIndexData)
+                           IndexTree* pNewIndexTree)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
@@ -1526,8 +1526,8 @@ void Table::vBuildNewIndex(char* aSortArray, i8 nElements, i8 nElmSize,
   
   KeyWrk xKeyWrk;
   EntryVec xPriorVec;
-  IdxColVec* pIdxColVec = pNewIndexData->pIndex()->pIdxColVec();
-  bool bUniqueIndex = pNewIndexData->pIndex()->bIsUnique();
+  IdxColVec* pIdxColVec = pNewIndexTree->pIndex()->pIdxColVec();
+  bool bUniqueIndex = pNewIndexTree->pIndex()->bIsUnique();
   
   i8 nDatums = (nElmSize - sizeof(Id)) / sizeof(w8);
   ASSERT(pIdxColVec->nItems() == nDatums);
@@ -1570,7 +1570,7 @@ void Table::vBuildNewIndex(char* aSortArray, i8 nElements, i8 nElmSize,
     xKeyWrk.vId(xId);
     
     // append an entry into index structure
-    pNewIndexData->vAppendEntry(xKeyWrk,
+    pNewIndexTree->vAppendEntry(xKeyWrk,
                                 //xId,
                                 //xKeyWrk.xId(),
                                 xPriorVec);
@@ -1585,7 +1585,7 @@ void Table::vBuildNewIndex(char* aSortArray, i8 nElements, i8 nElmSize,
   Magnitudes::vTimeMag(xTimer.iNanoseconds(),sTimeMagnitude);
   
   if (gxArguments.m_bVerbose) {
-    Index* pIndex = pNewIndexData->pIndex();
+    Index* pIndex = pNewIndexTree->pIndex();
     vTrace("vBuildNewIndex for index %s took %s\n"_Stz,
            pIndex->aIndexName(),
            sTimeMagnitude.aChar());

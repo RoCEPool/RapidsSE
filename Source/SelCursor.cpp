@@ -121,9 +121,9 @@ void SelCursor::vFirst(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SELCURSOR,_FOOTER_);
   
   m_pPartition = m_pTable->pPartition(m_iPartition);
-  IndexData* pHiddenIndexData = m_pPartition->pHiddenIndexData();
+  IndexTree* pHiddenIndexTree = m_pPartition->pHiddenIndexTree();
   
-  m_pRowBuffer = pHiddenIndexData->pFirstL0Buffer();
+  m_pRowBuffer = pHiddenIndexTree->pFirstL0Buffer();
   if (m_pRowBuffer) {
     m_pRow = m_pRowBuffer->pFirstEntry();
   }

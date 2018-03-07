@@ -104,7 +104,7 @@ void Task::vIndexBuffer(MP_Task mpTask)
   Table* pTable = pIndex->pTable();
   
   Partition* pPartition = pTable->pPartition(iPartition);
-  IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
+  IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
   
   KeyWrk xKeyWrk;
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
@@ -113,7 +113,7 @@ void Task::vIndexBuffer(MP_Task mpTask)
   //xKeyWrk.vShow();
   
   // position at a level 0 index buffer at key
-  EntryBuffer* pIndexBuffer = pIndexData->pPositionLevel(xKeyWrk, 1, JC_AFTER, 0);
+  EntryBuffer* pIndexBuffer = pIndexTree->pPositionLevel(xKeyWrk, 1, JC_AFTER, 0);
   
   // return the index buffer
   mpTask->m_pDataStack->vPushObject(pIndexBuffer);
@@ -235,13 +235,13 @@ void Task::vIndexDump(MP_Task mpTask)
   
   for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nSlots; iPartition++) {
     Partition* pPartition = pTable->pPartition(iPartition);
-    IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
+    IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
     vTrace("Partition %lld\n"_Stz, iPartition);
     
     if (pIndex->bIsHidden())
-      pIndexData->vDump(true);
+      pIndexTree->vDump(true);
     else
-      pIndexData->vDump(false);
+      pIndexTree->vDump(false);
   }
   
   EXIT();
@@ -298,14 +298,14 @@ void Task::vIndexExactKey(MP_Task mpTask)
   Table* pTable = pIndex->pTable();
   
   Partition* pPartition = pTable->pPartition(iPartition);
-  IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
+  IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
   
   // create a result buffer for the results
   pWorkingBuffer = new WorkingBuffer(pTable, iPartition);
   
   // position in the first index buffer
-  //EntryBuffer* pEntryBuffer = pIndexData->pFirstL0Buffer();
-  //EntryBuffer* pEntryBuffer = pIndexData->pRoot();
+  //EntryBuffer* pEntryBuffer = pIndexTree->pFirstL0Buffer();
+  //EntryBuffer* pEntryBuffer = pIndexTree->pRoot();
   
   // form the key
   KeyWrk xKeyWrk;
@@ -315,7 +315,7 @@ void Task::vIndexExactKey(MP_Task mpTask)
   //xKeyWrk.vShow();
   
   // position at a level 0 buffer for given key
-  EntryBuffer* pIndexBuffer = pIndexData->pPositionLevel(xKeyWrk, 1, JC_AFTER, 0);
+  EntryBuffer* pIndexBuffer = pIndexTree->pPositionLevel(xKeyWrk, 1, JC_AFTER, 0);
   
   // did we get an index buffer ?
   if (pIndexBuffer) {
@@ -645,7 +645,7 @@ void Task::vIndexLowerBound(MP_Task mpTask)
   Table* pTable = pIndex->pTable();
   
   Partition* pPartition = pTable->pPartition(iPartition);
-  IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
+  IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
   
   // create a result buffer for the results
   pWorkingBuffer = new WorkingBuffer(pTable, iPartition);
@@ -658,7 +658,7 @@ void Task::vIndexLowerBound(MP_Task mpTask)
   //xKeyWrk.vShow();
   
   // first position at a level 0 buffer
-  EntryBuffer* pEntryBuffer = pIndexData->pPositionLevel(xKeyWrk, 1, JC_AFTER, 0);
+  EntryBuffer* pEntryBuffer = pIndexTree->pPositionLevel(xKeyWrk, 1, JC_AFTER, 0);
   
   // did we get an index buffer ?
   if (pEntryBuffer) {
@@ -849,9 +849,9 @@ void Task::vIndexPositionFirst(MP_Task mpTask)
   Table* pTable = pIndex->pTable();
   
   Partition* pPartition = pTable->pPartition(iPartition);
-  IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
+  IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
   
-  mpTask->m_pDataStack->vPushObject(pIndexData->pFirstL0Buffer());
+  mpTask->m_pDataStack->vPushObject(pIndexTree->pFirstL0Buffer());
   
   EXIT();
 }
@@ -914,7 +914,7 @@ void Task::vIndexRange(MP_Task mpTask)
   Table* pTable = pIndex->pTable();
   
   Partition* pPartition = pTable->pPartition(iPartition);
-  IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
+  IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
   
   // create a result buffer for the results
   pWorkingBuffer = new WorkingBuffer(pTable, iPartition);
@@ -933,7 +933,7 @@ void Task::vIndexRange(MP_Task mpTask)
   //xKeyWrkUpper.vShow();
   
   // first position at a level 0 buffer
-  EntryBuffer* pEntryBuffer = pIndexData->pPositionLevel(xKeyWrkLower, 1, JC_AFTER, 0);
+  EntryBuffer* pEntryBuffer = pIndexTree->pPositionLevel(xKeyWrkLower, 1, JC_AFTER, 0);
   
   // did we get an index buffer ?
   if (pEntryBuffer) {
@@ -1051,13 +1051,13 @@ void Task::vIndexScan(MP_Task mpTask)
   Table* pTable = pIndex->pTable();
   
   Partition* pPartition = pTable->pPartition(iPartition);
-  IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
+  IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
   
   // create a result buffer for the results
   pWorkingBuffer = new WorkingBuffer(pTable, iPartition);
     
   // position in the first index buffer
-  EntryBuffer* pEntryBuffer = pIndexData->pFirstL0Buffer();
+  EntryBuffer* pEntryBuffer = pIndexTree->pFirstL0Buffer();
   
   // did we get an entryBuffer ?
   if ( ! pEntryBuffer) {
@@ -1170,7 +1170,7 @@ void Task::vIndexScan(MP_Task mpTask)
  Table* pTable = pIndex->pTable();
  
  Partition* pPartition = pTable->pPartition(iPartition);
- IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
+ IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
  
  // create a temporary index buffer for the results
  pTempEntryBuffer = new EntryBuffer(pIndex->pTable()->pHiddenIndex(), 0, iPartition);
@@ -1180,7 +1180,7 @@ void Task::vIndexScan(MP_Task mpTask)
  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  
  // position in the first index buffer
- EntryBuffer* pEntryBuffer = pIndexData->pFirstL0Buffer();
+ EntryBuffer* pEntryBuffer = pIndexTree->pFirstL0Buffer();
  
  // did we get an entryBuffer ?
  if ( ! pEntryBuffer) {
@@ -1512,7 +1512,7 @@ void Task::vIndexUpperBound(MP_Task mpTask)
   Table* pTable = pIndex->pTable();
   
   Partition* pPartition = pTable->pPartition(iPartition);
-  IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
+  IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
   
   // create a result buffer for the results
   pWorkingBuffer = new WorkingBuffer(pTable, iPartition);
@@ -1525,7 +1525,7 @@ void Task::vIndexUpperBound(MP_Task mpTask)
   //xKeyWrk.vShow();
   
   // position in the first index buffer
-  EntryBuffer* pEntryBuffer = pIndexData->pFirstL0Buffer();
+  EntryBuffer* pEntryBuffer = pIndexTree->pFirstL0Buffer();
   
   // did we get an entryBuffer ?
   if ( ! pEntryBuffer) {
@@ -1640,9 +1640,9 @@ void Task::vIndexVisualize(MP_Task mpTask)
   
   for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nSlots; iPartition++) {
     Partition* pPartition = pTable->pPartition(iPartition);
-    IndexData* pIndexData = pPartition->pIndexData(iIndexNo);
+    IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
     vTrace("Partition %lld\n"_Stz, iPartition);
-    pIndexData->vVisualize();
+    pIndexTree->vVisualize();
   }
   
   EXIT();

@@ -114,12 +114,12 @@ Partition::~Partition(void)
 /*----------------------------------------------------------------------------*/
 /* insert a row into this strand                                              */
 /*----------------------------------------------------------------------------*/
-void Partition::vAddIndex(IndexData* pIndexData)
+void Partition::vAddIndex(IndexTree* pIndexTree)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
   ASSERT(m_pIdxDataVec->nItems() < C_INDEXES_PER_TABLE);
-  m_pIdxDataVec->vAdd(pIndexData);
+  m_pIdxDataVec->vAdd(pIndexTree);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -149,10 +149,10 @@ bool Partition::bPopulateIndex(i8 iIndexNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
-  IndexData* pHiddenIndexData = this->pHiddenIndexData();
-  IndexData* pIndexData = this->pIndexData(iIndexNo);
+  IndexTree* pHiddenIndexTree = this->pHiddenIndexTree();
+  IndexTree* pIndexTree = this->pIndexTree(iIndexNo);
   
-  EntryBuffer* pEntryBuffer = pHiddenIndexData->pFirstL0Buffer();
+  EntryBuffer* pEntryBuffer = pHiddenIndexTree->pFirstL0Buffer();
   
   while (pEntryBuffer) {
     
@@ -161,7 +161,7 @@ bool Partition::bPopulateIndex(i8 iIndexNo)
     while (pEntry) {
       
       // insert entry
-      if ( ! pIndexData->bInsertEntry(pEntry))
+      if ( ! pIndexTree->bInsertEntry(pEntry))
         return false;
       
       // get next entry
@@ -176,36 +176,36 @@ bool Partition::bPopulateIndex(i8 iIndexNo)
 
 
 /*----------------------------------------------------------------------------*/
-/* get indexData                                                              */
+/* get IndexTree                                                              */
 /*----------------------------------------------------------------------------*/
-IndexData* Partition::pIndexData(i8 iIndexNo)
+IndexTree* Partition::pIndexTree(i8 iIndexNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
-  IndexData* pIndexData = nullptr;
+  IndexTree* pIndexTree = nullptr;
   i8 nIndexes = m_pIdxDataVec->nItems();
   
   for (i8 i_Index=0; i_Index < nIndexes; i_Index++) {
-    pIndexData = m_pIdxDataVec->pGet(i_Index);
-    Index* pIndex = pIndexData->pIndex();
+    pIndexTree = m_pIdxDataVec->pGet(i_Index);
+    Index* pIndex = pIndexTree->pIndex();
     if (pIndex->iIndexNo() == iIndexNo)
       break;
   }
   
-  return pIndexData;
+  return pIndexTree;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get hidden indexData                                                       */
+/* get hidden IndexTree                                                       */
 /*----------------------------------------------------------------------------*/
-IndexData* Partition::pHiddenIndexData(void)
+IndexTree* Partition::pHiddenIndexTree(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
-  IndexData* pIndexData = nullptr;
-  pIndexData = m_pIdxDataVec->pGet(0);
+  IndexTree* pIndexTree = nullptr;
+  pIndexTree = m_pIdxDataVec->pGet(0);
   
-  return pIndexData;
+  return pIndexTree;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -225,15 +225,15 @@ IdxDataVec* Partition::pIdxDataVec(void)
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
 //  
-//  IndexData* pIndexData = nullptr;
+//  IndexTree* pIndexTree = nullptr;
 //  i8 nIndexes = m_pIdxDataVec->nItems();
 //  
 //  for (i8 i_Index=0; i_Index < nIndexes; i_Index++) {
-//    pIndexData = m_pIdxDataVec->pGet(i_Index);
-//    Index* pIndex = pIndexData->pIndex();
+//    pIndexTree = m_pIdxDataVec->pGet(i_Index);
+//    Index* pIndex = pIndexTree->pIndex();
 //    if (pIndex->iIndexNo() == iIndexNo) {
-//      delete pIndexData;
-//      m_pIdxDataVec->vRemove(pIndexData);
+//      delete pIndexTree;
+//      m_pIdxDataVec->vRemove(pIndexTree);
 //      break;
 //    }
 //  }
@@ -258,11 +258,11 @@ void Partition::vTidyUpIndex(i8 iIndexNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
-  IndexData* pIndexData = this->pIndexData(iIndexNo);
+  IndexTree* pIndexTree = this->pIndexTree(iIndexNo);
   
   // remove the index from the IdxDataVec
-  m_pIdxDataVec->vRemove(pIndexData);
-  delete pIndexData;
+  m_pIdxDataVec->vRemove(pIndexTree);
+  delete pIndexTree;
 }
 
 /*----------------------------------------------------------------------------*/

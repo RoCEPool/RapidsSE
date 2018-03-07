@@ -266,7 +266,7 @@ i8 giClassSize[]
   /* 50 */ sizeof(HeapBuffer),         // CN_HEAPBUFFER
   
   /* 51 */ sizeof(Index),              // CN_INDEX
-  /* 52 */ sizeof(IndexData),          // CN_INDEXTREE
+  /* 52 */ sizeof(IndexTree),          // CN_INDEXTREE
   /* 53 */ sizeof(IdxColVec),          // CN_IDXCOLVEC
   /* 54 */ sizeof(IdxDataVec),         // CN_IDXDATAVEC
   /* 55 */ sizeof(IdxVec),             // CN_IDXVEC

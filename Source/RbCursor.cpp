@@ -106,9 +106,9 @@ void RbCursor::vFirst(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_RBCURSOR,_FOOTER_);
   
   m_pPartition = m_pTable->pPartition(m_iPartition);
-  IndexData* pHiddenIndexData = m_pPartition->pHiddenIndexData();
+  IndexTree* pHiddenIndexTree = m_pPartition->pHiddenIndexTree();
   
-  m_pRowBuffer = pHiddenIndexData->pFirstL0Buffer();
+  m_pRowBuffer = pHiddenIndexTree->pFirstL0Buffer();
 }
 
 /*----------------------------------------------------------------------------*/

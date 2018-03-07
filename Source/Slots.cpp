@@ -277,7 +277,7 @@ void Slots::vTruncateIndex(i8 iIndexNo)
   
   i8 i_Partn;
   for (i_Partn = 0; i_Partn < gpAttachMap->m_pGrid->iSlots(); i_Partn++)
-    m_pPartitionVec->pGet(i_Partn)->pIndexData(iIndexNo)->vTruncate();
+    m_pPartitionVec->pGet(i_Partn)->pIndexTree(iIndexNo)->vTruncate();
 }
 
 /*----------------------------------------------------------------------------*/

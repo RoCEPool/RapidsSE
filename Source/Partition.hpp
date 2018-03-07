@@ -11,7 +11,7 @@ namespace DBobjects
   // allow for maximum 8 indexes per table
   static const i8 C_INDEXES_PER_TABLE = 1025;
 
-  typedef Vector<CN_IDXDATAVEC,IndexData,CN_INDEXTREE,C_INDEXES_PER_TABLE,u8> IdxDataVec;
+  typedef Vector<CN_IDXDATAVEC,IndexTree,CN_INDEXTREE,C_INDEXES_PER_TABLE,u8> IdxDataVec;
   
   class Partition : public Object
   {
@@ -35,15 +35,15 @@ namespace DBobjects
     Partition(void);
     ~Partition(void);
   
-    void    vAddIndex(IndexData* pIndexData);
+    void    vAddIndex(IndexTree* pIndexTree);
     
     i8      iPartitionId(void);
     void    vPartitionId(i8 iPartitionId);
     bool    bPopulateIndex(i8 iIndexNo);
     //Data*   pData(void);
     
-    IndexData*  pIndexData(i8 iIndexNo);
-    IndexData*  pHiddenIndexData(void);
+    IndexTree*  pIndexTree(i8 iIndexNo);
+    IndexTree*  pHiddenIndexTree(void);
     IdxDataVec* pIdxDataVec(void);
     //void        vRemoveIndex(i8 iIndexNo);
     void        vTidyUp(void);

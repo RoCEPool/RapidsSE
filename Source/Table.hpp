@@ -95,25 +95,25 @@ namespace DBobjects
     Footer* aFooter(void);
   
   
-    void vNewIndexLoad(i8 iPartition, IndexData* pIndexData,
-                       IndexData* pHiddenIndexData, i8 nHiddenEntries);
+    void vNewIndexLoad(i8 iPartition, IndexTree* pIndexTree,
+                       IndexTree* pHiddenIndexTree, i8 nHiddenEntries);
     i8 nHiddenEntryCount(EntryBuffer* pFirstL0Buffer);
     void vPopulateSortArray(char* aSortArray, i8 nElements, i8 nElmSize,
-                            IndexData* pIndexData, EntryBuffer* pFirstL0Buffer);
+                            IndexTree* pIndexTree, EntryBuffer* pFirstL0Buffer);
     void vSortTheArray(char* aSortArray, i8 nElements, i8 nElmSize,
-                       IndexData* pIndexData);
+                       IndexTree* pIndexTree);
     void vDumpSortArray(char* aSortArray, i8 nElements, i8 nElmSize,
-                        IndexData* pIndexData);
+                        IndexTree* pIndexTree);
     void vBuildNewIndex(char* aSortArray, i8 nElements, i8 nElmSize,
-                        IndexData* pIndexData);
+                        IndexTree* pIndexTree);
     void vBuildKeyWrk(Key* aSortElm, IdxColVec* pIdxColVec, KeyWrk& xKeyWrk);
   };
   
   Table* _pTable(void* aAddr);
 #ifdef __APPLE__
-  int iQsort_complex(void* aIndexData, const void* aArg1, const void* aArg2);
+  int iQsort_complex(void* aIndexTree, const void* aArg1, const void* aArg2);
 #else
-  int iQsort_complex(const void* aArg1, const void* aArg2, void* aIndexData);
+  int iQsort_complex(const void* aArg1, const void* aArg2, void* aIndexTree);
 #endif
   int iQsort_i8(const void* aArg1, const void* aArg2);
   int iQsort_i8i8(const void* aArg1, const void* aArg2);
