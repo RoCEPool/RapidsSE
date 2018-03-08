@@ -865,7 +865,7 @@ bool SEitf::bNextRow2(i8& nPartition)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       m_pEntryBuffer = nullptr;
       
-      m_pResultRow = m_pResultBuffer->pFirstResult();
+      m_pResultRow = m_pResultBuffer->pFirstRow();
       
       if (m_pResultBuffer->bIsLast()) {
         m_ziLastBuffersScanned++;
@@ -892,7 +892,7 @@ bool SEitf::bNextRow2(i8& nPartition)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     RASSERT(m_pResultBuffer);
       
-    m_pResultRow = m_pResultBuffer->pNextResult(m_pResultRow);
+    m_pResultRow = m_pResultBuffer->pNextRow(m_pResultRow);
     if (m_pResultRow) {
       m_aRow = m_pResultRow->aRow();
       nPartition = m_pResultBuffer->nPartitionNo();

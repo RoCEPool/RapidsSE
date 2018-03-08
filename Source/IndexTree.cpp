@@ -261,8 +261,8 @@ void IndexTree::vAppendEntriesFromBuffer(WorkingBuffer* pWorkingBuffer,
     m_pCurrentBuffer = m_pRoot;
   }
   
-  for ( pRow = pWorkingBuffer->pFirstResult() ; pRow;
-       pRow = pWorkingBuffer->pNextResult(pRow)) {
+  for ( pRow = pWorkingBuffer->pFirstRow() ; pRow;
+       pRow = pWorkingBuffer->pNextRow(pRow)) {
     
     //pRow->vShow(m_pIndex->pTable()->pColumnVec());
     RowWrk xRowWrk;

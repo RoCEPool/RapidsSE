@@ -83,9 +83,9 @@ WorkingBuffer::~WorkingBuffer(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* append result row                                                          */
+/* append row                                                                 */
 /*----------------------------------------------------------------------------*/
-bool WorkingBuffer::bAppendResult(Row* aRow, i8 nRowSize)
+bool WorkingBuffer::bAppendRow(Row* aRow, i8 nRowSize)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORKINGBUFFER,_FOOTER_);
   
@@ -139,7 +139,7 @@ char* WorkingBuffer::aDataArea(void)
 /*----------------------------------------------------------------------------*/
 /* first item                                                                 */
 /*----------------------------------------------------------------------------*/
-WorkingRow* WorkingBuffer::pFirstResult(void)
+WorkingRow* WorkingBuffer::pFirstRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORKINGBUFFER,_FOOTER_);
   
@@ -177,7 +177,7 @@ bool WorkingBuffer::bIsLast(void)
 /*----------------------------------------------------------------------------*/
 /* get next item                                                              */
 /*----------------------------------------------------------------------------*/
-WorkingRow* WorkingBuffer::pNextResult(WorkingRow* pCurrentItem)
+WorkingRow* WorkingBuffer::pNextRow(WorkingRow* pCurrentItem)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORKINGBUFFER,_FOOTER_);
   
@@ -231,9 +231,9 @@ void WorkingBuffer::vShow(void)
   ColumnVec* pColVec = m_pTable->pColumnVec();
   
   WorkingRow* pWorkingRow;
-  for (pWorkingRow = pFirstResult();
+  for (pWorkingRow = pFirstRow();
        pWorkingRow;
-       pWorkingRow = pNextResult(pWorkingRow)) {
+       pWorkingRow = pNextRow(pWorkingRow)) {
     
     pWorkingRow->vShow(pColVec);
     vTrace("\n"_Stz);
@@ -313,7 +313,7 @@ void WorkingBuffer::vItemCountRestore(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORKINGBUFFER,_FOOTER_);
     
   m_nWorkingRows = 0;
-  for (WorkingRow* pRow = pFirstResult(); pRow; pRow = pNextResult(pRow))
+  for (WorkingRow* pRow = pFirstRow(); pRow; pRow = pNextRow(pRow))
     m_nWorkingRows++;
 }
 
