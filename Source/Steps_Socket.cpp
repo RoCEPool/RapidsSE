@@ -267,9 +267,6 @@ void Task::vSocketSend(MP_Task mpTask)
     
     if ( ! bResult ) {
       
-      // delete the rowbuffer if its temporary
-      RASSERT(BD_TEMPORARY != pEntryBuffer->eDurability());
-      
       //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
       mpTask->m_pDataStack->vPushInt((i8)0);
       
@@ -280,10 +277,6 @@ void Task::vSocketSend(MP_Task mpTask)
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // send entryBuffer itself
     bResult = pSocket->bSendTo(iBytes, pEntryBuffer->aDataArea(), xSysCall);
-    
-    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-    // delete the rowbuffer if its temporary
-    RASSERT(BD_TEMPORARY != pEntryBuffer->eDurability());
     
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // test send result

@@ -67,7 +67,6 @@ EntryBuffer::EntryBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  m_eDurability   = BD_PERMANENT;
   m_bIsLast       = false;
   
   m_pHigherBuffer = nullptr;
@@ -174,26 +173,6 @@ void EntryBuffer::vBufferLevel(i8 iBufferLevel)
 i8 EntryBuffer::iBufferLevel(void)
 {
   return m_iBufferLevel;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get durability                                                             */
-/*----------------------------------------------------------------------------*/
-eBD EntryBuffer::eDurability(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  return m_eDurability;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set durability                                                             */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vDurability(eBD eDurability)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  m_eDurability = eDurability;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -822,9 +801,6 @@ void EntryBuffer::vShow(void)
   
   vTrace("EntryBuffer: %p (buffer %lld): items: %lld used: %lld freespace %lld\n"_Stz,
          this,*nBufferNo(),nItems(),nUsedBytes(),nFreeBytes());
-  
-  vTrace("  durability: %s last: %s\n"_Stz,
-         aBD[m_eDurability],m_bIsLast ? "true" : "false");
   
   vTrace("  higherBuffer %p (L%s) prevBuffer %p nextBuffer %p\n"_Stz,
          m_pHigherBuffer,sHigherBuffer.aStr(),m_pPrevBuffer,m_pNextBuffer);

@@ -356,9 +356,6 @@ void Table::vInsertEntries(i8 iSlot, WorkingBuffer* pWorkingBuffer)
   
   ASSERT(iSlot < gpAttachMap->m_pGrid->m_nSlots);
   
-  // buffer should be temporary
-  //ASSERT(pEntryBuffer->eDurability() == BD_TEMPORARY);
-  
   // if buffer has 0 entries (only head) then should be last buffer
   if (pWorkingBuffer->nWorkingRows() == 0) {
     ASSERT(pWorkingBuffer->bIsLast());

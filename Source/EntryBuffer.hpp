@@ -9,22 +9,6 @@ namespace DBobjects
   class Table;
   class FreeEntry;
   
-  enum eBD // Buffer Durability
-  {
-    /* 0 */ BD_NONE=0,
-    /* 1 */ BD_TEMPORARY,
-    /* 2 */ BD_PERMANENT,
-    /* 3 */ BD_ENUMS
-  };
-  
-  static Stz* aBD[]
-  {
-    /* 0 */ "NONE"_Stz,
-    /* 1 */ "TEMPORARY"_Stz,
-    /* 2 */ "PERMANENT"_Stz,
-    /* 3 */ "ENUMS"_Stz,
-  };
-  
   static const i8 C_ENTRIES_0 = C_8KB;
   static const i4 C_ENTRY_NONE = C_16KB;
   static const EntryBuffer* C_ENTRYBUFFER_MARKER = (EntryBuffer*)0xFFFFFFFFFFFFFFFF;
@@ -35,7 +19,6 @@ namespace DBobjects
   {
   protected:
   
-    eBD   m_eDurability; // buffer durability
     bool  m_bIsLast;     // is this the last buffer in sequence
   
     EntryBuffer* m_pHigherBuffer; // higher level buffer that has entries
@@ -78,8 +61,6 @@ namespace DBobjects
   
     void         vBufferLevel(i8 iBufferLevel);
     i8           iBufferLevel(void);
-    eBD          eDurability(void);
-    void         vDurability(eBD eDurability);
     EntryBuffer* pHigherBuffer(void);
     void         vHigherBuffer(EntryBuffer* pHigherLevel);
     void         vIndex(Index* pIndex);
