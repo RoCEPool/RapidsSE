@@ -17,8 +17,6 @@ void Task::vAddPrimitives_Table(void)
   vAddPrimitive("table.analyze"_Stz,            &vTableAnalyze,          false);
   vAddPrimitive("table.appendBuffer"_Stz,       &vTableAppendBuffer,     false);
   vAddPrimitive("table.createColumnVec"_Stz,    &vTableCreateColumnVec,  false);
-  vAddPrimitive("table.dataLoaded@"_Stz,        &vTableDataLoadedFetch,  false);
-  vAddPrimitive("table.dataLoaded!"_Stz,        &vTableDataLoadedStore,  false);
   vAddPrimitive("table.drop"_Stz,               &vTableDrop,             false);
   vAddPrimitive("table.dump"_Stz,               &vTableDump,             false);
   vAddPrimitive("table.getColumns"_Stz,         &vTableGetColumns,       false);
@@ -188,48 +186,6 @@ void Task::vTableCreateColumnVec(MP_Task mpTask)
     THROW_INVALID_DSTACK("table.createColumnVec"_Stz);
   
   pTable->vCreateColumnVec(sColumnNm,sColumnDef);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.dataLoaded@ -- get if data is loaded in table                        */
-/*----------------------------------------------------------------------------*/
-void Task::vTableDataLoadedFetch(MP_Task mpTask)
-{
-  ENTRY("vTableDataLoadedFetch"_Stz);
-  
-  Object* pPtrTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.dataLoaded@"_Stz);
-  
-  Table* pTable = _pTable(pPtrTable);
-  ASSERT(CN_TABLE == pTable->eClass());
-  
-  mpTask->m_pDataStack->vPushInt(pTable->bDataLoaded() ? 1 : 0);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.dataLoaded! -- set data is loaded in table                           */
-/*----------------------------------------------------------------------------*/
-void Task::vTableDataLoadedStore(MP_Task mpTask)
-{
-  ENTRY("vTableDataLoadedStore"_Stz);
-  
-  Object* pPtrTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.dataLoaded!"_Stz);
-  
-  Table* pTable = _pTable(pPtrTable);
-  ASSERT(CN_TABLE == pTable->eClass());
-  
-  i8 iDataLoaded;
-  if ( ! mpTask->m_pDataStack->bPop(iDataLoaded) )
-    THROW_INVALID_DSTACK("table.dataLoaded!"_Stz);
-  
-  pTable->vDataLoaded(iDataLoaded ? true : false);
   
   EXIT();
 }

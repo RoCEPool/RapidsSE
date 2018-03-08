@@ -39,8 +39,6 @@ namespace DBobjects
     Atomic     m_ziSubLoaders[C_SLOTS_PER_NODE];  // subloader*slot count
     Atomic     m_ziIndexesLoaded; // have all indexes been loaded
     
-    bool       m_bDataLoaded;
-    
     // must be last
     Footer m_xFooter;
     
@@ -59,8 +57,7 @@ namespace DBobjects
     void vAddIndex(Index* pIndex);
     Stz* pAnalyzeIndex(Index* pIndex, bool bDetailed);
     //bool bAppendBuffer(i8 iPartition, EntryBuffer* pRowBuffer);
-    bool bDataLoaded(void);
-    void vDataLoaded(bool bDataLoaded);
+    
     void vInsertEntries(i8 iPartition, WorkingBuffer* pWorkingBuffer);
     ColumnVec* pColumnVec(void);
     void vContentDump(void);

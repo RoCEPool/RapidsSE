@@ -1160,8 +1160,6 @@ namespace Tasks
     static void vTableAnalyze(MP_Task mpTask);
     static void vTableAppendBuffer(MP_Task mpTask);
     static void vTableCreateColumnVec(MP_Task mpTask);
-    static void vTableDataLoadedFetch(MP_Task mpTask);
-    static void vTableDataLoadedStore(MP_Task mpTask);
     static void vTableDrop(MP_Task mpTask);
     static void vTableDump(MP_Task mpTask);
     static void vTableFirstBuffer(MP_Task mpTask);
