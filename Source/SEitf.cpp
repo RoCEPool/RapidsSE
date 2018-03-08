@@ -873,6 +873,7 @@ bool SEitf::bNextRow2(i8& nPartition)
       }
       
       if ( ! m_pResultRow ) {
+        delete m_pResultBuffer;
         m_pResultBuffer = nullptr;
         if (m_ziLastBuffersScanned == m_ziLastBuffers) {
           m_ziLastBuffersScanned = 0;
@@ -1113,12 +1114,11 @@ void SEitf::vPopBufferQueue(void)
   }
   
   delete m_pResultBuffer;
-  m_pResultBuffer = nullptr;
   
   // cleanup
+  m_pResultBuffer = nullptr;
   m_ziLastBuffersScanned = 0;
-  m_pEntryBuffer  = nullptr;
-  //m_pResultBuffer = nullptr;
+  m_pEntryBuffer  = nullptr;  
   m_pEntry = nullptr;
   m_aRow   = nullptr;
 }
