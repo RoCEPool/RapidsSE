@@ -10,6 +10,8 @@ extern AttachMap* gpAttachMap;
 
 bool mbWatch = false;
 
+//#define EB_LAZY_CHAIN
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -1634,6 +1636,13 @@ Entry* EntryBuffer::pInsertKeyAbs(KeyWrk& xKeyWrk,
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
 
   RASSERT(0== m_iBufferLevel || xKeyWrk.pReferencedEntryBuffer() == pToBuffer);
+  
+  Entry* pKeyEntry;
+  
+#ifdef EB_LAZY_CHAIN
+  pKeyEntry = pInsertKeyAbs(xKeyWrk,pToBuffer);
+  return pKeyEntry;
+#endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // trace
@@ -1656,7 +1665,7 @@ Entry* EntryBuffer::pInsertKeyAbs(KeyWrk& xKeyWrk,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate space for the key and next offsets in this buffer
   
-  Entry* pKeyEntry = pAllotEntry(nEntryBytes);
+  pKeyEntry = pAllotEntry(nEntryBytes);
   ASSERT(pKeyEntry);
   
   NEO* aNEO = aAllotNEO(nOffsetBytes);
@@ -2083,6 +2092,12 @@ EntryBuffer* EntryBuffer::pPositionInsert(Key* aInsKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+#ifdef EB_LAZY_CHAIN
+  RASSERT( ! m_pLazyChain );
+#endif
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   if ( ! nItems() ) {
     ASSERT( 0 == iBufferLevel());
     return this;
@@ -2121,6 +2136,12 @@ Entry* EntryBuffer::pPositionPrior(Key* aFindKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+#ifdef EB_LAZY_CHAIN
+  RASSERT( ! m_pLazyChain );
+#endif
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   if (nItems() == 0)
     return m_pHeadEntry;
   
@@ -2164,6 +2185,12 @@ void EntryBuffer::vPositionPriorL0(Key* aFindKey, Entry* pPriorVec[],
   
   //ASSERT(0 == m_iBufferLevel);
   
+#ifdef EB_LAZY_CHAIN
+  RASSERT( ! m_pLazyChain );
+#endif
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexOffsets; i_Offset++)
     pPriorVec[i_Offset] = m_pHeadEntry;
   
@@ -2221,6 +2248,12 @@ void EntryBuffer::vPositionPriorLn(Key* aFindKey, Entry* pPriorVec[],
   
   //ASSERT(0 != m_iBufferLevel);
   
+#ifdef EB_LAZY_CHAIN
+  RASSERT( ! m_pLazyChain );
+#endif
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexOffsets; i_Offset++)
     pPriorVec[i_Offset] = m_pHeadEntry;
   
@@ -2275,6 +2308,12 @@ void EntryBuffer::vPositionPriorLnAfter(Key* aFindKey, Entry* pPriorVec[],
   
   ASSERT(0 != m_iBufferLevel);
   
+#ifdef EB_LAZY_CHAIN
+  RASSERT( ! m_pLazyChain );
+#endif
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexOffsets; i_Offset++)
     pPriorVec[i_Offset] = m_pHeadEntry;
   
@@ -2324,6 +2363,10 @@ EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  
+#ifdef EB_LAZY_CHAIN
+  RASSERT( ! m_pLazyChain );
+#endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find split entry
