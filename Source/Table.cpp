@@ -795,11 +795,12 @@ Footer* Table::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* load the given new index from the hidden index using the sort technique    */
 /*----------------------------------------------------------------------------*/
+/*
 void Table::vNewIndexLoad(i8 iPartition, IndexTree* pNewIndexTree,
                           IndexTree* pHiddenIndexTree, i8 nHiddenEntries)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-/*
+
   int iFD;
   s256 sRegionName;
   s32 sRegionMagnitude;
@@ -932,7 +933,7 @@ void Table::vNewIndexLoad(i8 iPartition, IndexTree* pNewIndexTree,
  
   iDebug = 2;
   //vTrace("vNewIndexLoad: DONE\n"_Stz);
-*/
+-------------------------------------------------------------------------------
   
   KeyWrk xKeyWrk;
   for (EntryBuffer* pEB = pHiddenIndexTree->pRoot(); pEB; pEB = pEB->pNextBuffer()) {
@@ -943,7 +944,7 @@ void Table::vNewIndexLoad(i8 iPartition, IndexTree* pNewIndexTree,
   }
 
 }
-
+*/
 /*----------------------------------------------------------------------------*/
 /* compute the number of entries in the hidden index                          */
 /*----------------------------------------------------------------------------*/
@@ -964,6 +965,7 @@ i8 Table::nHiddenEntryCount(EntryBuffer* pFirstL0Buffer)
 /*----------------------------------------------------------------------------*/
 /* populate the sort array for the given index from the hidden index          */
 /*----------------------------------------------------------------------------*/
+/*
 void Table::vPopulateSortArray(char* aSortArray, i8 nElements, i8 iSortElmSize,
                                IndexTree* pNewIndexTree, EntryBuffer* pFirstL0Buffer)
 {
@@ -1035,10 +1037,12 @@ void Table::vPopulateSortArray(char* aSortArray, i8 nElements, i8 iSortElmSize,
            pIndex->aIndexName(),
            sTimeMagnitude.aChar());
 }
+*/
 
 /*----------------------------------------------------------------------------*/
 /* the qsort compare function for a complex key datum                         */
 /*----------------------------------------------------------------------------*/
+/*
 #ifdef __APPLE__
 int DBobjects::iQsort_complex(void* aIndexTree, const void* aArg1, const void* aArg2)
 #else
@@ -1101,10 +1105,12 @@ int DBobjects::iQsort_complex(const void* aArg1, const void* aArg2, void* aIndex
   
   return iCmp;
 }
+*/
 
 /*----------------------------------------------------------------------------*/
 /* the qsort compare function for an {i8} key datum                           */
 /*----------------------------------------------------------------------------*/
+/*
 int DBobjects::iQsort_i8(const void* aArg1, const void* aArg2)
 {
   
@@ -1139,10 +1145,12 @@ int DBobjects::iQsort_i8(const void* aArg1, const void* aArg2)
   
   return 0;
 }
+*/
 
 /*----------------------------------------------------------------------------*/
 /* the qsort compare function for an {i8,i8} key datum                        */
 /*----------------------------------------------------------------------------*/
+/*
 int DBobjects::iQsort_i8i8(const void* aArg1, const void* aArg2)
 {
   i8* pArg1a = (i8*)aArg1;
@@ -1217,10 +1225,12 @@ int DBobjects::iQsort_i8i8(const void* aArg1, const void* aArg2)
   
   return 0;
 }
+*/
 
 /*----------------------------------------------------------------------------*/
 /* the qsort compare function for an {i8,i8,i8} key datum                     */
 /*----------------------------------------------------------------------------*/
+/*
 int DBobjects::iQsort_i8i8i8(const void* aArg1, const void* aArg2)
 {
   i8* pArg1a = (i8*)aArg1;
@@ -1331,10 +1341,12 @@ int DBobjects::iQsort_i8i8i8(const void* aArg1, const void* aArg2)
 
   return 0;
 }
+*/
 
 /*----------------------------------------------------------------------------*/
 /* qsort the sort array for the given index                                   */
 /*----------------------------------------------------------------------------*/
+/*
 void Table::vSortTheArray(char* aSortArray, i8 nElements, i8 nElmSize,
                           IndexTree* pNewIndexTree)
 {
@@ -1372,6 +1384,7 @@ void Table::vSortTheArray(char* aSortArray, i8 nElements, i8 nElmSize,
            sTimeMagnitude.aChar());
   }
 }
+*/
 
 /*----------------------------------------------------------------------------*/
 /* dump the sort array                                                        */
@@ -1427,6 +1440,7 @@ void Table::vSortTheArray(char* aSortArray, i8 nElements, i8 nElmSize,
 //  vTrace("---------------------------------\n"_Stz);
 //}
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
 void Table::vDumpSortArray(char* aSortArray, i8 nElements, i8 nElmSize,
                            IndexTree* pNewIndexTree)
 {
@@ -1464,10 +1478,11 @@ void Table::vDumpSortArray(char* aSortArray, i8 nElements, i8 nElmSize,
   
   vTrace("---------------------------------\n"_Stz);
 }
-
+*/
 /*----------------------------------------------------------------------------*/
 /* build the new index                                                        */
 /*----------------------------------------------------------------------------*/
+/*
 void Table::vBuildNewIndex(char* aSortArray, i8 nElements, i8 nElmSize,
                            IndexTree* pNewIndexTree)
 {
@@ -1546,10 +1561,12 @@ void Table::vBuildNewIndex(char* aSortArray, i8 nElements, i8 nElmSize,
            sTimeMagnitude.aChar());
   }
 }
+*/
 
 /*----------------------------------------------------------------------------*/
 /* build a new key work from given sort key                                   */
 /*----------------------------------------------------------------------------*/
+/*
 void Table::vBuildKeyWrk(Key* aSortKey, IdxColVec* pIdxColVec, KeyWrk& rKeyWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
@@ -1577,7 +1594,7 @@ void Table::vBuildKeyWrk(Key* aSortKey, IdxColVec* pIdxColVec, KeyWrk& rKeyWrk)
     aSortElm = pAdd<char*>(aSortElm,8);
   }
 }
-
+*/
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
