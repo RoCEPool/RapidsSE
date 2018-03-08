@@ -406,40 +406,6 @@ void Entry::vSetEntry(RowWrk& xRowWrk)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set entry given eanother entry                                             */
-/*----------------------------------------------------------------------------*/
-void Entry::vSetEntry(Id xId, i8 iKey, Entry* pOldEntry)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_); 
-  
-  ASSERT(nSizeItem());
-  
-  // set RowId
-  m_xId  = xId;
-  
-  // copy TxId
-  m_iTxId = pOldEntry->m_iTxId;
-  
-  // copy Key
-  i8 nKeyBytes = 8;
-  Key* aEntryKey = this->aKey();
-  
-  MemLib::vCopy(aEntryKey,&iKey,nKeyBytes,eClass());
-  
-  // copy data
-  char* aEntryData = this->aRowData();
-  i8 nDataSize = pOldEntry->nRowSize();
-  
-  ASSERT(nDataSize);
-  
-  //StrVal* pStrVal = new((StrVal*)aEntryData) StrVal((StrVal*)aEntryData);
-  //pStrVal->vAssign(sRow.aStr(),nDataSize);
-  MemLib::vCopy(aEntryData,pOldEntry->aRowData(),nDataSize,eClass());
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_); 
-}
-
-/*----------------------------------------------------------------------------*/
 /* show content                                                               */
 /*----------------------------------------------------------------------------*/
 void Entry::vShow(i8 iOffset, Index* pIndex, bool bShowKey)
