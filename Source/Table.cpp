@@ -88,8 +88,6 @@ Table::Table(void)
   for (i8 i_Slot = 0; i_Slot < C_SLOTS_PER_NODE; i_Slot++)
     m_ziSubLoaders[i_Slot] = 0;
   
-  m_ziIndexesLoaded = -1;
-  
   _checkInitialised_(CN_TABLE);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
@@ -542,26 +540,6 @@ i8 Table::nIndexBuffers(i8 iIndexNo)
   }
   
   return iBuffers;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get indexes loaded or not                                                  */
-/*----------------------------------------------------------------------------*/
-i8 Table::iIndexesLoaded(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  return *m_ziIndexesLoaded;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set indexes loaded                                                         */
-/*----------------------------------------------------------------------------*/
-void Table::vIndexesLoaded(i8 iIndexesLoaded)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  m_ziIndexesLoaded = iIndexesLoaded;
 }
 
 /*----------------------------------------------------------------------------*/

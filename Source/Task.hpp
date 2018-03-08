@@ -1167,8 +1167,6 @@ namespace Tasks
     static void vTableHiddenIndexFetch(MP_Task mpTask);
     static void vTableHiddenIndexStore(MP_Task mpTask);
     static void vTableIndexCount(MP_Task mpTask);
-    static void vTableIndexesLoadedFetch(MP_Task mpTask);
-    static void vTableIndexesLoadedStore(MP_Task mpTask);
     static void vTableInit(MP_Task mpTask);
     static void vTableInsert(MP_Task mpTask);
     static void vTableInsertEntries(MP_Task mpTask);

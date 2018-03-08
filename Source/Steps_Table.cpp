@@ -23,8 +23,6 @@ void Task::vAddPrimitives_Table(void)
   vAddPrimitive("table.hiddenIndex@"_Stz,       &vTableHiddenIndexFetch, false);
   vAddPrimitive("table.hiddenIndex!"_Stz,       &vTableHiddenIndexStore, false);
   vAddPrimitive("table.indexCount"_Stz,         &vTableIndexCount,       false);
-  vAddPrimitive("table.indexesLoaded@"_Stz,     &vTableIndexesLoadedFetch, false);
-  vAddPrimitive("table.indexesLoaded!"_Stz,     &vTableIndexesLoadedStore, false);
   vAddPrimitive("table.init"_Stz,               &vTableInit,             false);
   vAddPrimitive("table.insert"_Stz,             &vTableInsert,           false);
   vAddPrimitive("table.insertEntries"_Stz,      &vTableInsertEntries,    false);
@@ -326,48 +324,6 @@ void Task::vTableIndexCount(MP_Task mpTask)
   ASSERT(CN_TABLE == pTable->eClass())
   
   mpTask->m_pDataStack->vPushInt(pTable->pIdxVec()->nItems());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.indexesLoaded@ -- fetch the indexesLoaded from the table             */
-/*----------------------------------------------------------------------------*/
-void Task::vTableIndexesLoadedFetch(MP_Task mpTask)
-{
-  ENTRY("vTableIndexesLoadedFetch"_Stz);
-  
-  Object* pPtrTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.indexesLoaded@"_Stz);
-  
-  Table* pTable = _pTable(pPtrTable);
-  ASSERT(CN_TABLE == pTable->eClass())
-  
-  mpTask->m_pDataStack->vPushInt(pTable->iIndexesLoaded());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.indexesLoaded! -- store the indexesLoaded in the table               */
-/*----------------------------------------------------------------------------*/
-void Task::vTableIndexesLoadedStore(MP_Task mpTask)
-{
-  ENTRY("vTableIndexesLoadedStore"_Stz);
-  
-  Object* pPtrTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.hiddenIndex!"_Stz);
-  
-  Table* pTable = _pTable(pPtrTable);
-  ASSERT(CN_TABLE == pTable->eClass());
-  
-  i8 iIndexesLoaded;
-  if ( ! mpTask->m_pDataStack->bPop(iIndexesLoaded) )
-    THROW_INVALID_DSTACK("table.hiddenIndex!"_Stz);
-  
-  pTable->vIndexesLoaded(iIndexesLoaded);
   
   EXIT();
 }
