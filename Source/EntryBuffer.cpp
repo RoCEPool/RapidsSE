@@ -502,12 +502,16 @@ i8 EntryBuffer::iDecile(void)
 /*----------------------------------------------------------------------------*/
 /* delete the given entry                                                     */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vDeleteEntry(Entry* pEntry)
+void EntryBuffer::vDeleteEntry(Entry** ppEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   // currently we only delete from non-hidden indexes
   ASSERT(! m_pIndex->bIsHidden());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Entry* pEntry = *ppEntry;
   
   Entry* xPriorVec[gpAttachMap->m_nIndexOffsets];
 
@@ -522,6 +526,9 @@ void EntryBuffer::vDeleteEntry(Entry* pEntry)
   vCutEntry(pEntry,xPriorVec);
   
   vAddFreeList(pEntry);
+  
+  // entry no longer exists, set the pointer to be null
+  *ppEntry = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1342,7 +1349,7 @@ void EntryBuffer::vDeleteUpwards(Key* aDeleteKey,
   if (pDeleteEntry == pFirstEntry && m_pHigherBuffer)
     m_pHigherBuffer->vDeleteUpwards(aDeleteKey,ppRootKeyBuffer);
 
-  vDeleteEntry(pDeleteEntry);
+  vDeleteEntry(&pDeleteEntry);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2417,7 +2424,7 @@ EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
     Entry* pNewEntry = pNewBuffer->pInsertKeyAbs(xKeyWrk,
                                                  pToBuffer);
     
-    vDeleteEntry(pMoveEntry);
+    vDeleteEntry(&pMoveEntry);
     
     pMoveEntry = pNextEntry;
   }

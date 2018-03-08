@@ -81,7 +81,7 @@ namespace DBobjects
     Entry*       pAppendRow(RowWrk& xRowWrk);
     void         vBufferCount(i8& nBufferCount);
     i8           iDecile(void);
-    void         vDeleteEntry(Entry* pEntry);
+    void         vDeleteEntry(Entry** ppEntry);
     void         vDump(void);
     Entry*       pFirstEntry(void);
     Entry*       pGetEntryNo(i8 i_Entry);
