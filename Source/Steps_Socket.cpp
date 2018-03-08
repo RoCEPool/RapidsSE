@@ -424,9 +424,6 @@ void Task::vSocketRecv(MP_Task mpTask)
     if ( ! bResult )
       THROW("Unable to recvFrom socket: Errno %d!"_Stz, xSysCall.iError());
     
-    //pEntryBuffer->vHeadEntryRestore();
-    //pEntryBuffer->vFirstEntryRestore();
-    //pEntryBuffer->vRowCountRestore();
     pEntryBuffer->vRestore();
     
     //pEntryBuffer->vShow();
@@ -479,25 +476,11 @@ void Task::vSocketRecv(MP_Task mpTask)
       if ( ! bResult )
         THROW("Unable to recvFrom socket: Errno %d!"_Stz, xSysCall.iError());
       
-      //pEntryBuffer->vHeadEntryRestore();
-      //pEntryBuffer->vFirstEntryRestore();
-      //pEntryBuffer->vRowCountRestore();
       pWorkingBuffer->vRestore();
       
       //pEntryBuffer->vShow();
-      
-      //vTrace("%lld %lld %lld\n"_Stz, iBytes, *(pEntryBuffer->nBufferNo()), pEntryBuffer->nItems());
-      
-      // set the new entry buffer in each entry of the entry buffer
-  //    Id xId;
-  //    xId.vBuffer(*(pWorkingBuffer->nBufferNo()));
-  //    for (Entry* pEntry = pWorkingBuffer->pFirstEntry(); pEntry != nullptr;
-  //         pEntry = pWorkingBuffer->pNextEntry(pEntry, 0)) {
-  //      xId.vRow(pEntry->xId().iRow());
-  //
-  //      pEntry->vId(xId);
-  //    }
     }
+    
     //******************************************************************
     // set workingBuffer in valset
     //******************************************************************
