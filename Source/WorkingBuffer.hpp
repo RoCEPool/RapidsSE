@@ -30,7 +30,7 @@ namespace DBobjects
   public:
     bool        bAppendRow(Row* aRow, i8 nRowSize);
     bool        bAppendRow(RowWrk xRowWrk);
-    WorkingRow* pAllotResult(i8 nBytes);
+    WorkingRow* pAllotRow(i8 nBytes);
     WorkingRow* pAllotSpace(i8 nBytes);
     char*       aDataArea(void);
     WorkingRow* pFirstRow(void);

@@ -95,7 +95,7 @@ bool WorkingBuffer::bAppendRow(Row* aRow, i8 nRowSize)
   if (nFreeSpace < nWorkingRowSize)
     return false;
   
-  WorkingRow* aWorkingRow = pAllotResult(nWorkingRowSize);
+  WorkingRow* aWorkingRow = pAllotRow(nWorkingRowSize);
   
   new(aWorkingRow) WorkingRow(aRow,nWorkingRowSize,nRowSize);
   
@@ -115,7 +115,7 @@ bool WorkingBuffer::bAppendRow(RowWrk xRowWrk)
   if (nFreeSpace < nWorkingRowSize)
     return false;
   
-  WorkingRow* aWorkingRow = pAllotResult(nWorkingRowSize);
+  WorkingRow* aWorkingRow = pAllotRow(nWorkingRowSize);
   
   new(aWorkingRow) WorkingRow(xRowWrk.aRow(),nWorkingRowSize,xRowWrk.nRowSize());
   
@@ -260,7 +260,7 @@ i8 WorkingBuffer::nUsedBytes(void)
 /*----------------------------------------------------------------------------*/
 /* allot an item of nBytes in this buffer                                     */
 /*----------------------------------------------------------------------------*/
-WorkingRow* WorkingBuffer::pAllotResult(i8 nBytes)
+WorkingRow* WorkingBuffer::pAllotRow(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORKINGBUFFER,_FOOTER_);
   
