@@ -106,18 +106,16 @@ tp: loadAppendBuffer$
 */
 
 /*----------------------------------------------------------------------------*/
-/* forward append of rowbuffer to participant for partition                   */
+/* forward insert of workingbuffer to participant for partition               */
 /*----------------------------------------------------------------------------*/
-: ~loadAppendBuffer ( pLoaderSEitf pLoaderSub -- )
+: ~loadInsertBufferEntries ( pLoaderSEitf pLoaderSub -- )
 
-//"~loadAppendBuffer" .
-
-tp: ~loadAppendBuffer
+tp: ~loadInsertBufferEntries
 
    0 locals| pWorkingBuffer pLoaderSub pLoaderSEitf |
 
   // why:
-  //   loaderSub has a full rowBuffer which needs to be sent to participant
+  //   loaderSub has a full workingBuffer which needs to be sent to participant
   //   to be appended to partition of table
 
   // where:
@@ -126,7 +124,7 @@ tp: ~loadAppendBuffer
   //   reg0 has ^loaderSub
 
   // what:
-  //   we need to have the coordinator send the loadAppendBuffer$ indirect call
+  //   we need to have the coordinator send the insertBufferEntries$ indirect call
   //   to the participant via a sendParticipant call
 
   //13 task::this task.thread thread.name@ str.left "generalThread" str.equal assert
@@ -415,8 +413,8 @@ tp: ~loadAppendBuffer
 
     while
 
-      // append row buffer to table/partition/strand
-      pLoaderSEitf pLoaderSub ~loadAppendBuffer
+      // insert working buffer entries into table/partition/strand
+      pLoaderSEitf pLoaderSub ~loadInsertBufferEntries
 
     repeat
   then
@@ -441,8 +439,8 @@ tp: ~loadAppendBuffer
       // mark as last buffer
       workingBuffer.isLast!
 
-      // append row buffer to table/partition/strand
-      pLoaderSEitf pLoaderSub ~loadAppendBuffer
+      // insert working buffer entries into table/partition/strand
+      pLoaderSEitf pLoaderSub ~loadInsertBufferEntries
 
     else
 
@@ -460,9 +458,8 @@ tp: ~loadAppendBuffer
       // mark as last buffer
       workingBuffer.isLast!
 
-      // append row buffer to table/partition/strand
-      pLoaderSEitf pLoaderSub ~loadAppendBuffer
-      //then
+      // insert working buffer entries into table/partition/strand
+      pLoaderSEitf pLoaderSub ~loadInsertBufferEntries
 
     then
 

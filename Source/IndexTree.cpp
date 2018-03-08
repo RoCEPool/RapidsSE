@@ -267,7 +267,7 @@ void IndexTree::vAppendEntriesFromBuffer(WorkingBuffer* pWorkingBuffer,
     //pRow->vShow(m_pIndex->pTable()->pColumnVec());
     RowWrk xRowWrk;
     
-    xRowWrk.vTxId(0);                                          //ALKA - TODO
+    xRowWrk.vTxId(0);                                              //ALKA - TODO
     xRowWrk.vEmbedded((char*)pRow->aRow());
     xRowWrk.vRowSize(pRow->nRowSize());
     //xRowWrk.vShow(m_pIndex->pTable()->pColumnVec());
