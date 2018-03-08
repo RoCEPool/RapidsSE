@@ -78,6 +78,32 @@ void Task::vWorkingBufferToWorkingBuffer(MP_Task mpTask)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/*    PRIVATE                                                                 */
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* append a row to a working buffer                                           */
+/*----------------------------------------------------------------------------*/
+bool Task::bAppendRow(WorkingBuffer* pWorkingBuffer, Entry* pEntry, SEitf* pSEitf)
+{
+  
+  Id xId = pEntry->xId();
+  
+  if (pSEitf && pSEitf->bRowSeen(xId)) {
+    // row already inserted
+    return true;
+  }
+  
+  Row* aRow = pEntry->aRow();
+  i8 nRowSize = pEntry->nRowSize();
+  
+  if (pWorkingBuffer->bAppendResult(aRow, nRowSize))
+    return true;
+  else
+    return false;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

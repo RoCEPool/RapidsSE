@@ -485,31 +485,7 @@ void Task::vEntryBufferUnitTest_c(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* entryBuffer::toEntryBuffer -- convert string to entry buffer pointer       */
-/*----------------------------------------------------------------------------*/
-bool Task::bAppendRow(WorkingBuffer* pWorkingBuffer, Entry* pEntry, SEitf* pSEitf)
-{
-  
-  Entry* pRow;
-
-  Id xId = pEntry->xId();
-  
-  if (pSEitf && pSEitf->bRowSeen(xId)) {
-    // row already inserted
-    return true;
-  }
-  
-  Row* aRow = pEntry->aRow();
-  i8 nRowSize = pEntry->nRowSize();
-
-  if (pWorkingBuffer->bAppendResult(aRow, nRowSize))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* entryBuffer::toEntryBuffer -- convert string to entry buffer pointer       */
+/* insert a row into an entry buffer                                          */
 /*----------------------------------------------------------------------------*/
 bool Task::bInsertRow(EntryBuffer* pEntryBuffer, Entry* pEntry, SEitf* pSEitf)
 {
