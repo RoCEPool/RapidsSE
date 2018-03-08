@@ -296,6 +296,9 @@ void Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::vRemove(ITEM* pItem)
   i8 nBytes = nSub(aLst,aDst);
   
   MemLib::vMove(aDst,aSrc,nBytes,VEC_CN);
+  
+  // clear the last item
+  m_pItem[nItemNo+1] = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
