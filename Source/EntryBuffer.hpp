@@ -127,18 +127,23 @@ namespace DBobjects
     void         vHeadEntryRestore(void);
     EntryBuffer* pInsertableBuffer(KeyWrk& xKeyWrk,
                                    EntryBuffer** ppRootKeyBuffer);
-    Entry*       pInsertKeyAbs(KeyWrk& xKeyWrk,
-                               EntryBuffer* pToBuffer);
-    Entry*       pInsertKeyAbsLazy(KeyWrk& xKeyWrk,
-                                   EntryBuffer* pToBuffer);
-    void         vInsertKeySkip(Entry* pKeyEntry,
-                                EntryBuffer* pToBuffer);
+    Entry*       pInsertKeyAbs(KeyWrk& xKeyWrk
+                               ,EntryBuffer* pToBuffer
+                               );
+    Entry*       pInsertKeyAbsLazy(KeyWrk& xKeyWrk
+                                   ,EntryBuffer* pToBuffer
+                                   );
+    void         vInsertKeySkip(Entry* pKeyEntry
+                                ,EntryBuffer* pToBuffer
+                                );
     Entry*       pInsertKeyBuffer(KeyWrk& xKeyWrk,
-                                  EntryBuffer** ppRootKeyBuffer,
-                                  EntryBuffer* pToBuffer);
+                                  EntryBuffer** ppRootKeyBuffer
+                                  ,EntryBuffer* pToBuffer
+                                  );
     Entry*       pInsertKeyUpwards(KeyWrk& xKeyWrk,
-                                   EntryBuffer** ppRootKeyBuffer,
-                                   EntryBuffer* pToBuffer);
+                                   EntryBuffer** ppRootKeyBuffer
+                                   ,EntryBuffer* pToBuffer
+                                   );
     void         vItemCountRestore(void);
     bool         bKeyBeforeBuffer(Key* aKey);
     EntryBuffer* pNewHigherBuffer(void);
@@ -150,8 +155,8 @@ namespace DBobjects
     Entry*       pPositionPrior(Key* aFindKey);
     void         vPositionPriorL0(Key* aFindKey, Entry** pPriorVec,
                                 Entry* pFindEntry=nullptr);
-    void         vPositionPriorLn(Key* aFindKey, Entry** pPriorVec,
-                                  i8 iBufferNo);
+  //    void         vPositionPriorLn(Key* aFindKey, Entry** pPriorVec,
+  //                                i8 iBufferNo);
     void         vPositionPriorLnAfter(Key* aFindKey, Entry** pPriorVec,
                                        EntryBuffer* pToBuffer);
     EntryBuffer* pSplit(EntryBuffer** ppRootKeyBuffer);

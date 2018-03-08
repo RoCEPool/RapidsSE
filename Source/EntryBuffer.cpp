@@ -516,12 +516,17 @@ void EntryBuffer::vDeleteEntry(Entry** ppEntry)
   Entry* xPriorVec[gpAttachMap->m_nIndexOffsets];
 
   Key* aKey = pEntry->aKey();
-  i8 iBufferNo = pEntry->iBufferNo();
   
+  /*
+  i8 iBufferNo = pEntry->iBufferNo();
+   
   if (0 == m_iBufferLevel)
     vPositionPriorL0(aKey, xPriorVec, pEntry);
   else
-    vPositionPriorLn(aKey, xPriorVec, iBufferNo);
+    //vPositionPriorLn(aKey, xPriorVec, iBufferNo);
+    vPositionPriorL0(aKey, xPriorVec, pEntry);
+  */
+  vPositionPriorL0(aKey, xPriorVec, pEntry);
   
   vCutEntry(pEntry,xPriorVec);
   
@@ -1662,8 +1667,9 @@ EntryBuffer* EntryBuffer::pInsertableBuffer(KeyWrk& xKeyWrk,
 /*----------------------------------------------------------------------------*/
 /* insert a key entry specifically into this buffer (should be enough space)  */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pInsertKeyAbs(KeyWrk& xKeyWrk,
-                                  EntryBuffer* pToBuffer)
+Entry* EntryBuffer::pInsertKeyAbs(KeyWrk& xKeyWrk
+                                  ,EntryBuffer* pToBuffer
+                                  )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
 
@@ -1723,8 +1729,9 @@ Entry* EntryBuffer::pInsertKeyAbs(KeyWrk& xKeyWrk,
 /*----------------------------------------------------------------------------*/
 /* insert a key entry specifically into this buffer (should be enough space)  */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pInsertKeyAbsLazy(KeyWrk& xKeyWrk,
-                                      EntryBuffer* pToBuffer)
+Entry* EntryBuffer::pInsertKeyAbsLazy(KeyWrk& xKeyWrk
+                                      ,EntryBuffer* pToBuffer
+                                      )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1781,8 +1788,9 @@ Entry* EntryBuffer::pInsertKeyAbsLazy(KeyWrk& xKeyWrk,
 /*----------------------------------------------------------------------------*/
 /* insert key entry into skip list of this buffer                             */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vInsertKeySkip(Entry* pKeyEntry,
-                                 EntryBuffer* pToBuffer)
+void EntryBuffer::vInsertKeySkip(Entry* pKeyEntry
+                                 ,EntryBuffer* pToBuffer
+                                 )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1821,8 +1829,9 @@ void EntryBuffer::vInsertKeySkip(Entry* pKeyEntry,
 /* insert a new key entry into this buffer                                    */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pInsertKeyBuffer(KeyWrk& xKeyWrk,
-                                     EntryBuffer** ppRootKeyBuffer,
-                                     EntryBuffer* pToBuffer)
+                                     EntryBuffer** ppRootKeyBuffer
+                                     ,EntryBuffer* pToBuffer
+                                     )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1862,8 +1871,8 @@ Entry* EntryBuffer::pInsertKeyBuffer(KeyWrk& xKeyWrk,
 /* insert a new key entry into this key tree (handling ripple upwards)        */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pInsertKeyUpwards(KeyWrk& xKeyWrk,
-                                      EntryBuffer** ppRootKeyBuffer,
-                                      EntryBuffer* pToBuffer)
+                                      EntryBuffer** ppRootKeyBuffer
+                                      ,EntryBuffer* pToBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -2275,6 +2284,7 @@ void EntryBuffer::vPositionPriorL0(Key* aFindKey, Entry* pPriorVec[],
 /* compute prior vector for find key, such that next of priorVec[0] is the    */
 /* entry which has given buffer no                                            */
 /*----------------------------------------------------------------------------*/
+/*
 void EntryBuffer::vPositionPriorLn(Key* aFindKey, Entry* pPriorVec[],
                                    i8 iBufferNo)
 {
@@ -2330,6 +2340,7 @@ void EntryBuffer::vPositionPriorLn(Key* aFindKey, Entry* pPriorVec[],
     pPriorVec[i_ScanOffset] = pScanEntry_sl;
   }
 }
+*/
 
 /*----------------------------------------------------------------------------*/
 /* compute prior vec for find key, such that next of priorVec[0] is the next  */
