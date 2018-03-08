@@ -35,7 +35,6 @@ namespace DBobjects
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
-    //void vAppendBuffer(void);
     void vBegin(void);
     void vEnd(void);
     bool bFetchRecord(void);

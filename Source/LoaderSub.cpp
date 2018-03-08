@@ -108,21 +108,6 @@ void LoaderSub::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* append working buffer into table                                           */
-/*----------------------------------------------------------------------------*/
-//void LoaderSub::vAppendBuffer(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
-//  
-//  // get working buffer
-//  EntryBuffer* pEntryBuffer = m_pEntryBuffer[m_iPartition];
-//  m_pEntryBuffer[m_iPartition] = nullptr;
-//  
-//  // append working buffer into table
-//  bool bIndexesLoaded = m_pTable->bAppendBuffer(m_iPartition,pEntryBuffer);
-//}
-
-/*----------------------------------------------------------------------------*/
 /* begin loading                                                              */
 /*----------------------------------------------------------------------------*/
 void LoaderSub::vBegin(void)
@@ -153,13 +138,6 @@ void LoaderSub::vEnd(void)
   
   // append any dangling buffers
   for (i8 i_Partition = 0; i_Partition < C_MAX_PARTITIONS; i_Partition++) {
-/*
-    if (m_pEntryBuffer[i_Partition]) {
-      EntryBuffer* pEntryBuffer = m_pEntryBuffer[i_Partition];
-      m_pEntryBuffer[i_Partition] = nullptr;
-      m_pTable->vAppendBuffer(m_iPartition,pEntryBuffer);
-    }
-*/
     ASSERT(! m_pWorkingBuffer[i_Partition]);
   }
   
@@ -253,7 +231,9 @@ bool LoaderSub::bInsertRow(void)
   
   // check for working buffer
   if (! m_pWorkingBuffer[m_iPartition]) {
-    m_pWorkingBuffer[m_iPartition] = new WorkingBuffer(m_pTable, m_iPartition);;
+    
+    // create a new working buffer for this partition
+    vNewWorkingBuffer();
     
     if (! m_pWorkingBuffer[m_iPartition]) {
       vTrace("EntryBuffer allocation failed\n"_Stz);
