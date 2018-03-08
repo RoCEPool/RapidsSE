@@ -82,8 +82,6 @@ namespace Interface
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
-    DicPath* pPathStack(void);
-    
     void   vBufferQueue(Queue* pBufferQueue);
     Queue* pBufferQueue(void);
 
@@ -96,11 +94,14 @@ namespace Interface
     void   vContentDump(void);
     
     void   vInit(void);
+    
     i8     iPartition(void);
     i8     iSlot(void);
     i8     nLastBuffers(void);
     void   vLastBuffers(i8 nLastBuffer);
   
+    DicPath* pPathStack(void);
+    
     void   vRequestQueue(Queue* pRequestQueue);
     Queue* pRequestQueue(void);
     

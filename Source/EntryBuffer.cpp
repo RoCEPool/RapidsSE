@@ -405,8 +405,6 @@ Entry* EntryBuffer::pAppendRow(RowWrk& xRowWrk)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the buffer entry
-  
-  //pRowEntry->vSetEntry(iTxId, xRowId, nOffsets, aRow, iRowLength);
   pRowEntry->vSetEntry(xRowWrk);
   
   //pRowEntry->vShow(0, m_pIndex, false);
@@ -1574,11 +1572,13 @@ void EntryBuffer::vHeadEntryNew(void)
   new(m_pHeadEntry) Entry(CN_ENTRY,nEntryBytes,0);
   
   m_pHeadEntry->vSetEntry(0,xHeadWrk.xId(),3,nullptr,0);
-
+  //m_pHeadEntry->vSetEntry(xHeadWrk);
+  
   NEO* aNEO = aAllotNEO(nOffsetBytes);
   m_pHeadEntry->vNEO(0,-1);
   m_pHeadEntry->vNEO(1,-1);
   m_pHeadEntry->vNEO(2,-1);
+  
 }
 
 /*----------------------------------------------------------------------------*/

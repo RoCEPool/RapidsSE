@@ -158,16 +158,18 @@ bool Partition::bPopulateIndex(i8 iIndexNo)
     
     Entry* pEntry = pEntryBuffer->pFirstEntry();
     
-    while (pEntry) {
-      
-      // insert entry
-      if ( ! pIndexTree->bInsertEntry(pEntry))
-        return false;
-      
-      // get next entry
-      pEntry = pEntryBuffer->pNextEntry(pEntry, 0);
-    }
+//    while (pEntry) {
+//
+//      // insert entry
+//      if ( ! pIndexTree->bInsertEntry(pEntry))
+//        return false;
+//
+//      // get next entry
+//      pEntry = pEntryBuffer->pNextEntry(pEntry, 0);
+//    }
    
+    pIndexTree->vInsertEntriesFromBuffer(pEntryBuffer, pEntry);
+    
     pEntryBuffer = pEntryBuffer->pNextBuffer();
   }
   
