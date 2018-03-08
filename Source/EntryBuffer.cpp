@@ -578,6 +578,13 @@ Entry* EntryBuffer::pGetEntryNo(i8 i_Entry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+#ifdef EB_LAZY_CHAIN
+  pKeyEntry = pInsertKeyAbs(xKeyWrk,pToBuffer);
+  return pKeyEntry;
+#endif
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   if (i_Entry == C_ENTRY_NONE)
     return nullptr;
   
@@ -1170,6 +1177,12 @@ void EntryBuffer::vCompact(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+#ifdef EB_LAZY_CHAIN
+  RASSERT( ! m_pLazyChain );
+#endif
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   FreeEntry* pFreeEntry;
   Entry*     pMoveEntry;
   Entry*     xPriorVec[gpAttachMap->m_nIndexOffsets];
@@ -1319,6 +1332,12 @@ void EntryBuffer::vDeleteUpwards(Key* aDeleteKey,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+#ifdef EB_LAZY_CHAIN
+  RASSERT( ! m_pLazyChain );
+#endif
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   if (mbWatch) {
     vTrace("*[%lld]vDeleteUpwards: key %lld\n"_Stz,
            *nBufferNo(),
@@ -1438,6 +1457,12 @@ Entry* EntryBuffer::pGetEntrySplit(i8 iSplitEntryNo)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   ASSERT(m_pHeadEntry);
+  
+#ifdef EB_LAZY_CHAIN
+  RASSERT( ! m_pLazyChain );
+#endif
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   i8 iEntryNo = 0;
   for (Entry* pSplitEntry = pNextEntry(m_pHeadEntry,0);
@@ -1647,8 +1672,10 @@ Entry* EntryBuffer::pInsertKeyAbs(KeyWrk& xKeyWrk,
   Entry* pKeyEntry;
   
 #ifdef EB_LAZY_CHAIN
-  pKeyEntry = pInsertKeyAbs(xKeyWrk,pToBuffer);
-  return pKeyEntry;
+  if (m_iBufferLevel) {
+    pKeyEntry = pInsertKeyAbsLazy(xKeyWrk,pToBuffer);
+    return pKeyEntry;
+  }
 #endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2099,12 +2126,6 @@ EntryBuffer* EntryBuffer::pPositionInsert(Key* aInsKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-#ifdef EB_LAZY_CHAIN
-  RASSERT( ! m_pLazyChain );
-#endif
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   if ( ! nItems() ) {
     ASSERT( 0 == iBufferLevel());
     return this;
@@ -2115,8 +2136,14 @@ EntryBuffer* EntryBuffer::pPositionInsert(Key* aInsKey)
     
     // have we arrived at L0 ?
     i8 iBufferLevel = pEntryBuffer->iBufferLevel();
-    if (iBufferLevel == 0)
+    if (iBufferLevel == 0) {
       break;
+    }
+    else {
+#ifdef EB_LAZY_CHAIN
+      RASSERT( ! m_pLazyChain );
+#endif
+    }
     
     // get the entry before the given insert key
     Entry* pEntry = pEntryBuffer->pPositionPrior(aInsKey);
