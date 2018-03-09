@@ -347,11 +347,14 @@ void IndexTree::vInsertEntriesFromBuffer(EntryBuffer* pEntryBuffer,
   
   //m_zLock.vGrabWrite();
   
+  //pEntryBuffer->vShow();
+  
   for ( Entry* pEntry = pRowEntry ;
        pEntry;
        pEntry = pEntryBuffer->pNextEntry(pEntry, 0)) {
     
     bool bInserted = bInsertEntry(pEntry);
+    bVerify();
     ASSERT(bInserted);
   }
   

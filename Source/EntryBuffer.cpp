@@ -2321,7 +2321,7 @@ EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
   
   EntryBuffer* pThisLeftBuffer = this;
   
-  pThisLeftBuffer->vShow();
+  //pThisLeftBuffer->vShow();
   
   //ASSERT( (* ppRootKeyBuffer)->bVerify() );
   
@@ -2428,7 +2428,7 @@ EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
       
       
       if (pChildBuffer->m_pHigherBuffer != pThisLeftBuffer) {
-        pThisLeftBuffer->vShow();
+        //pThisLeftBuffer->vShow();
         //pNewRightBuffer->vShow();
         //pChildBuffer->vShow();
       }
@@ -2662,6 +2662,10 @@ bool EntryBuffer::bVerifyLnAny(void)
   if (! bValid)
     return false;
   
+  bValid = bVerifyAdjacent();
+  if (!bValid)
+    return false;
+  
   bValid = bVerifyKeyBufferOrder();
   if (! bValid)
     return false;
@@ -2687,6 +2691,41 @@ bool EntryBuffer::bVerifyLnAny(void)
     }
     if (! bValid)
       return false;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* verify the adjacent entries not pointing to the same buffer                */
+/*----------------------------------------------------------------------------*/
+bool EntryBuffer::bVerifyAdjacent(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  RASSERT(m_iBufferLevel >= 1);
+  
+  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  
+  for (Entry* pEntry = pFirstEntry(); pEntry; pEntry = pNextEntry(pEntry,0)) {
+    
+    // get the buffer that this entry references
+    EntryBuffer* pChildEntryBuffer = pEntry->pReferencedEntryBuffer();
+    
+    // get the adjacent entry
+    Entry* pAdjacentEntry = pNextEntry(pEntry,0);
+    
+    if (pAdjacentEntry) {
+      // get the buffer that the adjacent entry references
+      EntryBuffer* pAdjacentChildEntryBuffer = pAdjacentEntry->pReferencedEntryBuffer();
+      
+      // the two child buffers should not be the same
+     if ( pChildEntryBuffer == pAdjacentChildEntryBuffer) {
+        vShow();
+        vVerifyFault();
+        return false;
+      }
+    }
   }
   
   return true;

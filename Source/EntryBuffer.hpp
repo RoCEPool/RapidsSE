@@ -159,6 +159,7 @@ namespace DBobjects
     bool         bVerifyL0Other(void);
     bool         bVerifyLnAny(void);
 
+    bool         bVerifyAdjacent(void);
     bool         bVerifyBufferRefs(void);
     bool         bVerifyEntryOffset(void);
     bool         bVerifyFirstKeys(void);
