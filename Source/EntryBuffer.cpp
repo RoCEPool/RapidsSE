@@ -1804,7 +1804,7 @@ void EntryBuffer::vInsertKeySkip(Entry* pKeyEntry
   Key* aKey = pKeyEntry->aKey();
   
   if (0 == m_iBufferLevel)
-    vPositionPriorL0(aKey, xPriorVec);
+    vPositionPriorL0(aKey, xPriorVec, nullptr);
   else
     vPositionPriorLnAfter(aKey, xPriorVec, pToBuffer);
   
