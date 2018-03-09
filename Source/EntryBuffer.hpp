@@ -128,21 +128,21 @@ namespace DBobjects
     EntryBuffer* pInsertableBuffer(KeyWrk& xKeyWrk,
                                    EntryBuffer** ppRootKeyBuffer);
     Entry*       pInsertKeyAbs(KeyWrk& xKeyWrk
-                               ,EntryBuffer* pToBuffer
+                             //,EntryBuffer* pToBuffer
                                );
     Entry*       pInsertKeyAbsLazy(KeyWrk& xKeyWrk
-                                   ,EntryBuffer* pToBuffer
+                                 //,EntryBuffer* pToBuffer
                                    );
     void         vInsertKeySkip(Entry* pKeyEntry
-                                ,EntryBuffer* pToBuffer
+                              //,EntryBuffer* pToBuffer
                                 );
     Entry*       pInsertKeyBuffer(KeyWrk& xKeyWrk,
                                   EntryBuffer** ppRootKeyBuffer
-                                  ,EntryBuffer* pToBuffer
+                                //,EntryBuffer* pToBuffer
                                   );
     Entry*       pInsertKeyUpwards(KeyWrk& xKeyWrk,
                                    EntryBuffer** ppRootKeyBuffer
-                                   ,EntryBuffer* pToBuffer
+                                 //,EntryBuffer* pToBuffer
                                    );
     void         vItemCountRestore(void);
     bool         bKeyBeforeBuffer(Key* aKey);
