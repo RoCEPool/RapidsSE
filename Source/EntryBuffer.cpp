@@ -526,7 +526,7 @@ void EntryBuffer::vDeleteEntry(Entry** ppEntry)
     //vPositionPriorLn(aKey, xPriorVec, iBufferNo);
     vPositionPriorL0(aKey, xPriorVec, pEntry);
   */
-  vPositionPriorL0(aKey, xPriorVec, pEntry);
+  vPositionPriorVecEntry(aKey, xPriorVec, pEntry);
   
   vCutEntry(pEntry,xPriorVec);
   
@@ -1262,7 +1262,7 @@ void EntryBuffer::vCompact(void)
     //aKey->vShow(pIdxColVec);
     //vTrace("\n"_Stz);
     
-    vPositionPriorL0(aMoveKey, xPriorVec, pMoveEntry);
+    vPositionPriorVecEntry(aMoveKey, xPriorVec, pMoveEntry);
     
     if (m_iBufferLevel) {
       vDumpPriorVec(xPriorVec);
@@ -1808,9 +1808,9 @@ void EntryBuffer::vInsertKeySkip(Entry* pKeyEntry
   Key* aKey = pKeyEntry->aKey();
   
   if (0 == m_iBufferLevel)
-    vPositionPriorL0(aKey, xPriorVec, nullptr);
+    vPositionPriorVecEntry(aKey, xPriorVec, nullptr);
   else
-    vPositionPriorLnAfter(aKey, xPriorVec, pToBuffer);
+    vPositionPriorVecBuffer(aKey, xPriorVec, pToBuffer);
   
   //vDumpPriorVec(xPriorVec);
   
@@ -2225,8 +2225,8 @@ Entry* EntryBuffer::pPositionPriorEntry(Key* aFindKey)
 /* compute prior vector for find key, such that next of priorVec[0] is        */
 /* specifically the given find entry                                          */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vPositionPriorL0(Key* aFindKey, Entry* pPriorVec[],
-                                   Entry* pFindEntry)
+void EntryBuffer::vPositionPriorVecEntry(Key* aFindKey, Entry* pPriorVec[],
+                                         Entry* pFindEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -2349,8 +2349,8 @@ void EntryBuffer::vPositionPriorLn(Key* aFindKey, Entry* pPriorVec[],
 /* compute prior vec for find key, such that next of priorVec[0] is the next  */
 /* buffer after find keys toBuffer (ie nextBuffer->prevBuffer == toBuffer)    */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vPositionPriorLnAfter(Key* aFindKey, Entry* pPriorVec[],
-                                        EntryBuffer* pToBuffer)
+void EntryBuffer::vPositionPriorVecBuffer(Key* aFindKey, Entry* pPriorVec[],
+                                          EntryBuffer* pToBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -2439,7 +2439,7 @@ EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
     vPositionPriorL0(aKey, xPriorVec, pSplitEntry);
   }
   */
-  vPositionPriorL0(aKey, xPriorVec, pSplitEntry);
+  vPositionPriorVecEntry(aKey, xPriorVec, pSplitEntry);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move entries to a new buffer

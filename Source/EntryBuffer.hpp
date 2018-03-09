@@ -153,12 +153,12 @@ namespace DBobjects
     Item*        pNextItem(Item* pItem);
     EntryBuffer* pPositionPriorBuffer(Key* aFindKey);
     Entry*       pPositionPriorEntry(Key* aFindKey);
-    void         vPositionPriorL0(Key* aFindKey, Entry** pPriorVec,
-                                  Entry* pFindEntry);
+    void         vPositionPriorVecEntry(Key* aFindKey, Entry** pPriorVec,
+                                        Entry* pFindEntry);
   //    void         vPositionPriorLn(Key* aFindKey, Entry** pPriorVec,
   //                                i8 iBufferNo);
-    void         vPositionPriorLnAfter(Key* aFindKey, Entry** pPriorVec,
-                                       EntryBuffer* pToBuffer);
+    void         vPositionPriorVecBuffer(Key* aFindKey, Entry** pPriorVec,
+                                         EntryBuffer* pToBuffer);
     EntryBuffer* pSplit(EntryBuffer** ppRootKeyBuffer);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
