@@ -152,7 +152,7 @@ namespace DBobjects
     EntryBuffer* pNewNextBuffer(void);
     Item*        pNextItem(Item* pItem);
     EntryBuffer* pPositionInsert(Key* aInsKey);
-    Entry*       pPositionPrior(Key* aFindKey);
+    Entry*       pPositionPriorEntry(Key* aFindKey);
     void         vPositionPriorL0(Key* aFindKey, Entry** pPriorVec,
                                   Entry* pFindEntry);
   //    void         vPositionPriorLn(Key* aFindKey, Entry** pPriorVec,

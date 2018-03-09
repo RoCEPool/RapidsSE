@@ -1350,7 +1350,7 @@ void EntryBuffer::vDeleteUpwards(Key* aDeleteKey,
   }
   
   // hack
-  Entry* pPriorEntry = pPositionPrior(aDeleteKey);
+  Entry* pPriorEntry = pPositionPriorEntry(aDeleteKey);
   if (!pPriorEntry)
     return;
   
@@ -2155,16 +2155,16 @@ EntryBuffer* EntryBuffer::pPositionInsert(Key* aInsKey)
     }
     
     // get the entry before the given insert key
-    Entry* pEntry = pEntryBuffer->pPositionPrior(aInsKey);
+    Entry* pEntryPrior = pEntryBuffer->pPositionPriorEntry(aInsKey);
     ASSERT(pEntry);
-    if (pEntry == pEntryBuffer->pHeadEntry())
-      pEntry = pEntryBuffer->pNextEntry(pEntry,0);
+    if (pEntryPrior == pEntryBuffer->pHeadEntry())
+      pEntryPrior = pEntryBuffer->pNextEntry(pEntryPrior,0);
     ASSERT(pEntry);
     
     // get the index buffer of the entry
     //pEntryBuffer->vShow();
     ASSERT(pEntryBuffer != pEntry->pReferencedEntryBuffer());
-    pEntryBuffer = pEntry->pReferencedEntryBuffer();
+    pEntryBuffer = pEntryPrior->pReferencedEntryBuffer();
     ASSERT(pEntryBuffer);
     pEntryBuffer->vAssertEntryBuffer();
   }
@@ -2175,7 +2175,7 @@ EntryBuffer* EntryBuffer::pPositionInsert(Key* aInsKey)
 /*----------------------------------------------------------------------------*/
 /* scan thru skip list and return entry prior to key                          */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pPositionPrior(Key* aFindKey)
+Entry* EntryBuffer::pPositionPriorEntry(Key* aFindKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
