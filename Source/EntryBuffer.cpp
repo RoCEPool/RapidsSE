@@ -517,15 +517,6 @@ void EntryBuffer::vDeleteEntry(Entry** ppEntry)
 
   Key* aKey = pEntry->aKey();
   
-  /*
-  i8 iBufferNo = pEntry->iBufferNo();
-   
-  if (0 == m_iBufferLevel)
-    vPositionPriorL0(aKey, xPriorVec, pEntry);
-  else
-    //vPositionPriorLn(aKey, xPriorVec, iBufferNo);
-    vPositionPriorL0(aKey, xPriorVec, pEntry);
-  */
   vPositionPriorVecEntry(aKey, xPriorVec, pEntry);
   
   vCutEntry(pEntry,xPriorVec);
@@ -2254,68 +2245,6 @@ void EntryBuffer::vPositionPriorVecEntry(Key* aFindKey, Entry* pPriorVec[],
     pPriorVec[i_ScanOffset] = pScanEntry_sl;
   }
 }
-
-/*----------------------------------------------------------------------------*/
-/* compute prior vector for find key, such that next of priorVec[0] is the    */
-/* entry which has given buffer no                                            */
-/*----------------------------------------------------------------------------*/
-/*
-void EntryBuffer::vPositionPriorLn(Key* aFindKey, Entry* pPriorVec[],
-                                   i8 iBufferNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  //ASSERT(0 != m_iBufferLevel);
-  
-#ifdef EB_LAZY_CHAIN
-  RASSERT( ! m_pLazyChain );
-#endif
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexOffsets; i_Offset++)
-    pPriorVec[i_Offset] = m_pHeadEntry;
-  
-  if (nItems() == 0)
-    return;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  i8 nKeyCols = pIdxColVec->nItems();
-  
-  Entry* pScanEntry_sl = m_pHeadEntry;
-  
-  for (i8 i_ScanOffset = gpAttachMap->m_nIndexOffsets - 1;
-       i_ScanOffset >= 0;
-       i_ScanOffset--) {
-    
-    Entry* pNextEntry_sl = pNextEntry(pScanEntry_sl,i_ScanOffset);
-    while (pNextEntry_sl) {
-      
-      Key* aNextKey = pNextEntry_sl->aKey();
-      
-      //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
-      //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
-      
-      bool bKeyIsGreaterEqual = aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
-      if (bKeyIsGreaterEqual) {
-        
-        if (i_ScanOffset)
-          break;
-        
-        i8 iRefBuffNo = pNextEntry_sl->iBufferNo();
-        if (iRefBuffNo == iBufferNo)
-          break;
-      }
-      
-      pScanEntry_sl = pNextEntry_sl;
-      pNextEntry_sl = pNextEntry(pNextEntry_sl,i_ScanOffset);
-    }
-    pPriorVec[i_ScanOffset] = pScanEntry_sl;
-  }
-}
-*/
 
 /*----------------------------------------------------------------------------*/
 /* compute prior vec for find key, such that next of priorVec[0] is the next  */

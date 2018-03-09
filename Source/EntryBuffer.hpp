@@ -145,8 +145,6 @@ namespace DBobjects
     Entry*       pPositionPriorEntry(Key* aFindKey);
     void         vPositionPriorVecEntry(Key* aFindKey, Entry** pPriorVec,
                                         Entry* pFindEntry);
-  //    void         vPositionPriorLn(Key* aFindKey, Entry** pPriorVec,
-  //                                i8 iBufferNo);
     void         vPositionPriorVecBuffer(Key* aFindKey, Entry** pPriorVec,
                                          EntryBuffer* pToBuffer);
     EntryBuffer* pSplit(EntryBuffer** ppRootKeyBuffer);
