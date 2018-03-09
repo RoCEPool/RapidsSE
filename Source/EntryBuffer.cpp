@@ -2160,14 +2160,14 @@ EntryBuffer* EntryBuffer::pPositionPriorBuffer(Key* aFindKey)
     
     // get the entry before the given insert key
     Entry* pEntryPrior = pEntryBuffer->pPositionPriorEntry(aFindKey);
-    ASSERT(pEntry);
+    ASSERT(pEntryPrior);
     if (pEntryPrior == pEntryBuffer->pHeadEntry())
       pEntryPrior = pEntryBuffer->pNextEntry(pEntryPrior,0);
-    ASSERT(pEntry);
+    ASSERT(pEntryPrior);
     
     // get the index buffer of the entry
     //pEntryBuffer->vShow();
-    ASSERT(pEntryBuffer != pEntry->pReferencedEntryBuffer());
+    ASSERT(pEntryBuffer != pEntryPrior->pReferencedEntryBuffer());
     pEntryBuffer = pEntryPrior->pReferencedEntryBuffer();
     ASSERT(pEntryBuffer);
     pEntryBuffer->vAssertEntryBuffer();
@@ -2247,11 +2247,10 @@ void EntryBuffer::vPositionPriorL0(Key* aFindKey, Entry* pPriorVec[],
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  i8 nKeyCols = pIdxColVec->nItems();
   
   i8 iFindLevels = pFindEntry ? pFindEntry->nOffsets() - 1 : 2;
-  Entry* pScanEntry_sl = m_pHeadEntry;
   
+  Entry* pScanEntry_sl = m_pHeadEntry;
   for (i8 i_ScanOffset = gpAttachMap->m_nIndexOffsets - 1;
        i_ScanOffset >= 0;
        i_ScanOffset--) {
@@ -2430,13 +2429,17 @@ EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
   i8 iKeyLength = aKey->nKeySize(pIdxColVec);
   
   Entry* xPriorVec[gpAttachMap->m_nIndexOffsets];
+  /*
   if (0 == m_iBufferLevel) {
     vPositionPriorL0(aKey, xPriorVec, pSplitEntry);
   }
   else {
-    EntryBuffer* pToBuffer = pSplitEntry->pReferencedEntryBuffer();
-    vPositionPriorLnAfter(aKey, xPriorVec, pToBuffer);
+    //EntryBuffer* pToBuffer = pSplitEntry->pReferencedEntryBuffer();
+    //vPositionPriorLnAfter(aKey, xPriorVec, pToBuffer);
+    vPositionPriorL0(aKey, xPriorVec, pSplitEntry);
   }
+  */
+  vPositionPriorL0(aKey, xPriorVec, pSplitEntry);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move entries to a new buffer
