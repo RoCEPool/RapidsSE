@@ -609,6 +609,8 @@ Entry* EntryBuffer::pInsertKeyTree(KeyWrk& xKeyWrk,
 {
   // ** note: this is a static function **
   
+  EntryBuffer* pRootKeyBuffer = *ppRootKeyBuffer;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set a random number offsets
   
@@ -620,7 +622,9 @@ Entry* EntryBuffer::pInsertKeyTree(KeyWrk& xKeyWrk,
   Key* aInsKey = xKeyWrk.aKey();
   i8 iInsKeyLen = xKeyWrk.nKeySize();
   
-  EntryBuffer* pPositionedBuffer = (*ppRootKeyBuffer)->pPositionInsert(aInsKey);
+  EntryBuffer* pPositionedBuffer =
+    pRootKeyBuffer->pPositionPriorBuffer(aInsKey);
+
   ASSERT(0 == pPositionedBuffer->iBufferLevel());
   //pPositionedBuffer->vShow();
   
@@ -2131,7 +2135,7 @@ Item* EntryBuffer::pNextItem(Item* pCurrent)
 /*----------------------------------------------------------------------------*/
 /* position at the L0 buffer into which key should be inserted                */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* EntryBuffer::pPositionInsert(Key* aInsKey)
+EntryBuffer* EntryBuffer::pPositionPriorBuffer(Key* aFindKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -2155,7 +2159,7 @@ EntryBuffer* EntryBuffer::pPositionInsert(Key* aInsKey)
     }
     
     // get the entry before the given insert key
-    Entry* pEntryPrior = pEntryBuffer->pPositionPriorEntry(aInsKey);
+    Entry* pEntryPrior = pEntryBuffer->pPositionPriorEntry(aFindKey);
     ASSERT(pEntry);
     if (pEntryPrior == pEntryBuffer->pHeadEntry())
       pEntryPrior = pEntryBuffer->pNextEntry(pEntryPrior,0);

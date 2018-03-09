@@ -151,7 +151,7 @@ namespace DBobjects
                                   EntryBuffer** ppRootKeyBuffer);
     EntryBuffer* pNewNextBuffer(void);
     Item*        pNextItem(Item* pItem);
-    EntryBuffer* pPositionInsert(Key* aInsKey);
+    EntryBuffer* pPositionPriorBuffer(Key* aFindKey);
     Entry*       pPositionPriorEntry(Key* aFindKey);
     void         vPositionPriorL0(Key* aFindKey, Entry** pPriorVec,
                                   Entry* pFindEntry);
