@@ -8,9 +8,9 @@ namespace DBobjects
   class WorkingBuffer : public Object
   {
   protected:
+    i8     m_nWorkingRows; // number of WorkingRows in this buffer
     bool   m_bIsLast;      // is this the last buffer in its sequence?jj
     i8     m_iPartition;   // partitionn this result buffer came from
-    i8     m_nWorkingRows; // number of WorkingRows in this buffer
     Table* m_pTable;       // table which describes the rows
 
     WspFxd<C_SIZE_LARGE_OBJECT - C_1KB*4> m_xWsp;
