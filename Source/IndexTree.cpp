@@ -354,7 +354,7 @@ void IndexTree::vInsertEntriesFromBuffer(EntryBuffer* pEntryBuffer,
        pEntry = pEntryBuffer->pNextEntry(pEntry, 0)) {
     
     bool bInserted = bInsertEntry(pEntry);
-    bVerify();
+    //bVerify();
     ASSERT(bInserted);
   }
   

@@ -1501,7 +1501,7 @@ void EntryBuffer::vHandleLeftInsert(Entry* pInsertedKeyEntry,
   
   if (! m_pHigherBuffer)
     return;
-      
+ 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (pOriginalFirstEntry) {
@@ -1674,9 +1674,10 @@ Entry* EntryBuffer::pInsertKeyAbs(KeyWrk& xKeyWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // trace
   
-  //vTrace("Inserting key:\n"_Stz);
+  //vTrace("Inserting key: "_Stz);
   //IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  //aKey->vShow(pIdxColVec);
+  //xKeyWrk.aKey()->vShow(pIdxColVec);
+  //vTrace("\n"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space
@@ -1707,6 +1708,9 @@ Entry* EntryBuffer::pInsertKeyAbs(KeyWrk& xKeyWrk)
   // insert the key entry into the skip list
   
   vInsertKeySkip(pKeyEntry);
+  
+  //if (! m_pIndex->bIsHidden() && m_iBufferLevel)
+  //  bVerifyAdjacent();
   
   //vShow();
   
@@ -1835,10 +1839,25 @@ Entry* EntryBuffer::pInsertKeyBuffer(KeyWrk& xKeyWrk,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // handle the insert of a left most key
   
-  if (pFirstEntry() == pInsertedKeyEntry)
-    vHandleLeftInsert(pInsertedKeyEntry,
-                      pOriginalFirstEntry,
-                      ppRootKeyBuffer);
+  if (pFirstEntry() == pInsertedKeyEntry) {
+    
+    if (pOriginalFirstEntry) {
+      Key* aOriginalFirstKey = pOriginalFirstEntry->aKey();
+      Key* aInsertedFirstKey = pInsertedKeyEntry->aKey();
+    
+      IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+    
+      if (aInsertedFirstKey->bNotEqual(aOriginalFirstKey,pIdxColVec))
+        vHandleLeftInsert(pInsertedKeyEntry,
+                          pOriginalFirstEntry,
+                          ppRootKeyBuffer);
+    }
+    else {
+      vHandleLeftInsert(pInsertedKeyEntry,
+                        pOriginalFirstEntry,
+                        ppRootKeyBuffer);
+    }
+  }
   
   return pInsertedKeyEntry;
 }

@@ -50,28 +50,28 @@ namespace DBobjects
     
     static char* aEachDatum(Column* pColumn, i8& nBytes, char** aaCursor);
   
-    bool bLessThan(Key* pKey, IdxColVec* pColVec);
-    bool bLessEqual(Key* pKey, IdxColVec* pColVec);
-    bool bEqualTo(Key* pKey, IdxColVec* pColVec);
-    bool bNotEqual(Key* pKey, IdxColVec* pColVec);
-    bool bGreaterEqual(Key* pKey, IdxColVec* pColVec);
-    bool bGreaterThan(Key* pKey, IdxColVec* pColVec);
+    bool bLessThan(Key* pKey, IdxColVec* pIdxColVec);
+    bool bLessEqual(Key* pKey, IdxColVec* pIdxColVec);
+    bool bEqualTo(Key* pKey, IdxColVec* pIdxColVec);
+    bool bNotEqual(Key* pKey, IdxColVec* pIdxColVec);
+    bool bGreaterEqual(Key* pKey, IdxColVec* pIdxColVec);
+    bool bGreaterThan(Key* pKey, IdxColVec* pIdxColVec);
     
-    i8 iCmp(Key* pKey, IdxColVec* pColVec);
+    i8 iCmp(Key* pKey, IdxColVec* pIdxColVec);
     
-    bool bMatches(Key* pKey, IdxColVec* pColVec, RelOpAry* pOpAry);
+    bool bMatches(Key* pKey, IdxColVec* pIdxColVec, RelOpAry* pOpAry);
 
     bool bJuxtaCompare(eJC eJuxtaCompare, Key* pKey,
-                       IdxColVec* pColVec, i8 nSearchKeyCols,
+                       IdxColVec* pIdxColVec, i8 nSearchKeyCols,
                        bool& bIsEqual, eRO eRelnOp=RO_NONE);
-    bool bJuxtaBefore(Key* pSearchKey, IdxColVec* pColVec, i8 nSearchKeyCols,
+    bool bJuxtaBefore(Key* pSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
                       bool& bIsEqual, eRO eRelnOp=RO_NONE);
-    bool bJuxtaSame(Key* pSearchKey, IdxColVec* pColVec, i8 nSearchKeyCols,
+    bool bJuxtaSame(Key* pSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
                     bool& bIsEqual);
-    bool bJuxtaAfter(Key* pSearchKey, IdxColVec* pColVec, i8 nSearchKeyCols,
+    bool bJuxtaAfter(Key* pSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
                      bool& bIsEqual, eRO eRelnOp=RO_NONE);
   
-    void vSprintSortKey(s48K& sBuff, IdxColVec* pColVec);
+    void vSprintSortKey(s48K& sBuff, IdxColVec* pIdxColVec);
   
     char* aWspArea(void);
   
