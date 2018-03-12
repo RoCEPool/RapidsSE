@@ -110,7 +110,10 @@ namespace DBobjects
     void         vBuildSkipList(void);
     void         vCompact(void);
     void         vCutEntry(Entry* pEntry, Entry* pPriorVec[]);
-    void         vDeleteUpwards(Key* aDeleteKey, EntryBuffer** ppRootKeyBuffer);
+    void         vDeleteUpwards(Key* aDeleteKey,
+                                EntryBuffer** ppRootKeyBuffer);
+    void         vDeleteUpwards(Key* aDeleteKey, EntryBuffer* pToBuffer,
+                                EntryBuffer** ppRootKeyBuffer);
     void         vDumpPriorVec(Entry* pPriorVec[]);
     FreeEntry*   pFirstFree(void);
     Item*        pFirstItem(void);
