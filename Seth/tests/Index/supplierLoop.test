@@ -18,9 +18,8 @@ success
 ld supplier "/tpch/supplier.tbl";
 success
 
-//LOOP 2  {
-
-// create an index
+//------------------------------------------------------------------------------
+// create an index on suppkey
 create index idx on supplier (S_SUPPKEY);
 affected: 0
 
@@ -34,16 +33,120 @@ lsidxcol supplier idx;
 rows:
   ('S_SUPPKEY', 'INTEGER')
 
-// keysel
+//------------------------------------------------------------------------------
+// exact key fetches
+
+fetch supplier "S_SUPPKEY 5 ==";
+rows: (*, 5,'Supplier#000000005',...)
+
 fetch supplier "S_SUPPKEY 10 =";
-//rows: (0, 10,'Supplier#000000010','Saygah3gYWMp72i PY',24,'34-852-489-8585',3891.91,'ing waters. regular requests ar')
 rows: (*, 10,'Supplier#000000010',...)
 
-// drop the index keyIdx;
+fetch supplier "S_SUPPKEY 22 ==";
+rows: (*, 22,'Supplier#000000022',...)
+
+fetch supplier "S_SUPPKEY 9972 ==";
+rows: (*, 9972,'Supplier#000009972',...)
+
+//------------------------------------------------------------------------------
+// lower bound key fetches
+
+fetch supplier "S_SUPPKEY 9972 >=";
+rows: 29
+
+fetch supplier "S_SUPPKEY 9985 >=";
+rows: 16
+
+//------------------------------------------------------------------------------
+// upper bound key fetches
+fetch supplier "S_SUPPKEY 9972 <=";
+rows: 9972
+
+fetch supplier "S_SUPPKEY 9985 <=";
+rows: 9985
+
+//------------------------------------------------------------------------------
+// range fetches
+
+fetch supplier  "s_suppkey 9972 >= s_suppkey 9982 <= and";
+rows: 11
+
+fetch supplier "s_suppkey 9985 >= s_suppkey  9987 <= and";
+rows: 3
+
+fetch supplier "s_suppkey 9972 >= s_suppkey 1995 <= and";
+rows: 0
+
+// drop the index idx;
 drop index supplier.idx;
 success
 
-//} // end of loop
+//------------------------------------------------------------------------------
+// create an index on nationkey
+create index idx on supplier (S_NATIONKEY);
+affected: 0
+
+// check existence of index
+lsidx supplier;
+rows:
+('idx',false,false)
+
+// check columns of index
+lsidxcol supplier idx;
+rows:
+('S_NATIONKEY', 'INTEGER')
+
+//------------------------------------------------------------------------------
+// exact key fetches
+
+fetch supplier "s_nationkey 10 ==";
+rows: 393
+
+fetch supplier "s_nationkey 40 ==";
+rows:  0
+
+fetch supplier "s_nationkey 22 ==";
+rows: 401
+
+//------------------------------------------------------------------------------
+// lower bound key fetches
+
+fetch supplier "s_nationkey 10 >=";
+rows: 5945
+
+fetch supplier "s_nationkey 40 >=";
+rows: 0
+
+fetch supplier "s_nationkey 22 >=";
+rows: 1184
+
+//------------------------------------------------------------------------------
+// upper bound key fetches
+
+fetch supplier "s_nationkey 10 <=";
+rows: 4448
+
+fetch supplier "s_nationkey 40 <=";
+rows: 10000
+
+fetch supplier "s_nationkey 22 <=";
+rows: 9217
+
+//------------------------------------------------------------------------------
+// range fetches
+
+fetch supplier  "s_nationkey 10 >= s_nationkey 22 <= and";
+rows: 5162
+
+fetch supplier "s_nationkey 22 >= s_nationkey  40 <= and";
+rows: 1184
+
+fetch supplier "s_nationkey 40 >= s_nationkey 10 <= and";
+rows: 0
+
+// drop the index idx;
+drop index supplier.idx;
+success
 
 // now drop the table
 drop table supplier;
