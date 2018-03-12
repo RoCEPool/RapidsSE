@@ -2,6 +2,112 @@
 /* index.sen -- index related words                                           */
 /*============================================================================*/
 
+/*
+: rangeSelectIdxTask ( <"key>" "<lower>" "<upper>" pIndex pSeitf iPartitionNo -- )
+
+//"rangeSelectIdxTask" .
+
+// save args
+locals| iPartitionNo pSeitf pIndex sUpper sLower sKey |
+
+// local variables
+0 0 0 0 locals| pUpperEntry pIndexEntry pIndexBuffer pResultBuffer |
+
+tp: rangeSelectIdxTask
+
+//debug::trap
+
+// task is a select participant running on server thread
+task::this task.kind@ TK_SELECT_PART == assert
+task::this task.thread thread.actorModel@ AC_SERVER == assert
+
+// save seitf into this task
+pSeitf task::this task.seitf!
+
+// start groupBy for this partition
+iPartitionNo pSeitf seitf.groupBy@ locals| pGroupBy |
+pGroupBy groupBy.start
+
+// create a temporary buffer for the results
+pIndex entryBuffer::create to pResultBuffer
+
+// position in the first index buffer
+iPartitionNo pIndex index.positionFirst to pIndexBuffer
+
+// position at the upper bound entry
+sUpper pIndexBuffer pIndex index.position to pUpperEntry
+
+// get the indexBuffer looking for the lower key
+sLower iPartitionNo pIndex index.buffer to pIndexBuffer
+
+// position in the index buffer at the lower key
+sLower pIndexBuffer pIndex index.position to pIndexEntry
+
+// did we find an entry ?
+pIndexEntry not if
+
+// mark this result buffer as the last buffer
+pResultBuffer entryBuffer.isLast!
+
+// return the empty result buffer
+pResultBuffer pGroupby groupBy.applyBuffer
+pResultBuffer pSeitf seitf.bufferQueue@ queue.append
+
+exit
+then
+
+// iterate thru the index buffer till no more index entries
+begin
+pIndexEntry
+while
+
+// check against upper bound
+pUpperEntry pIndexEntry entry.same not if
+
+// look up data row and insert row into result buffer
+//"calling entry.toDataRow" .
+pIndex pIndexEntry entry.toDataRow row.string pResultBuffer entryBuffer.insertRow
+
+// check if we managed to insert the entry
+not if
+// buffer must be full
+// put this result buffer in seitf buffer queue
+pResultBuffer pGroupby groupBy.applyBuffer
+pResultBuffer pSeitf seitf.bufferQueue@ queue.append
+
+// create another result buffer
+pIndex entryBuffer::create to pResultBuffer
+
+// look up data row and insert row into result buffer
+pIndex pIndexEntry entry.toDataRow row.string pResultBuffer entryBuffer.insertRow
+assert
+then
+
+// move to next index entry in the index buffer
+pIndexEntry pIndexBuffer entryBuffer.nextEntry to pIndexEntry
+
+pIndexEntry not if
+// get next index buffer from the current index buffer
+pIndexBuffer entryBuffer.nextBuffer to pIndexBuffer
+
+pIndexBuffer if
+pIndexEntry pIndexBuffer entryBuffer.nextEntry to pIndexEntry
+then
+then
+else
+// entry beyond upper, null the entry and break from loop
+0  to pIndexEntry
+then
+repeat
+
+// mark this result buffer as the last buffer
+pResultBuffer entryBuffer.isLast!
+
+// put the result buffer in the seitf buffer queue
+pResultBuffer pGroupby groupBy.applyBuffer
+pResultBuffer pSeitf seitf.bufferQueue@ queue.append
+;
+*/
 "index.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
