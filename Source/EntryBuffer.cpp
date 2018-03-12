@@ -1342,31 +1342,77 @@ void EntryBuffer::vDeleteUpwards(Key* aDeleteKey,
            aDeleteKey->iGetInt());
   }
   
-  // hack
   Entry* pPriorEntry = pPositionPriorEntry(aDeleteKey);
   if (!pPriorEntry)
     return;
   
-  Entry* pDeleteEntry = pNextEntry(pPriorEntry,0);
-  if (!pDeleteEntry)
+  Entry* pEntryToBeDeleted = pNextEntry(pPriorEntry,0);
+  if (!pEntryToBeDeleted)
     return;
-  //Entry* pDeleteEntry = pPriorEntry;
 
 //  vTrace("[%lld] pDeleteEntry key %lld\n"_Stz,
 //         *nBufferNo(),
-//         pDeleteEntry->aKey()->iGetInt());
+//         pEntryToBeDeleted->aKey()->iGetInt());
   
-  Key* aDeleteEntryKey = pDeleteEntry->aKey();
+  Key* aDeleteEntryKey = pEntryToBeDeleted->aKey();
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  if (! aDeleteEntryKey->bEqualTo(aDeleteKey,pIdxColVec))
-    return;
-  // end hack
+  //if (! aDeleteEntryKey->bEqualTo(aDeleteKey,pIdxColVec))
+  //  return;
+  RASSERT(aDeleteEntryKey->bEqualTo(aDeleteKey,pIdxColVec));
   
   Entry* pFirstEntry = this->pFirstEntry();
-  if (pDeleteEntry == pFirstEntry && m_pHigherBuffer)
+  if (pEntryToBeDeleted == pFirstEntry && m_pHigherBuffer)
     m_pHigherBuffer->vDeleteUpwards(aDeleteKey,ppRootKeyBuffer);
 
-  vDeleteEntry(&pDeleteEntry);
+  vDeleteEntry(&pEntryToBeDeleted);
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete upwards                                                             */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vDeleteUpwards(Key* aDeleteKey, EntryBuffer* pToBuffer,
+                                 EntryBuffer** ppRootKeyBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+#ifdef EB_LAZY_CHAIN
+  RASSERT( ! m_pLazyChain );
+#endif
+  
+  if (mbWatch) {
+    vTrace("*[%lld]vDeleteUpwards: key %lld\n"_Stz,
+           *nBufferNo(),
+           aDeleteKey->iGetInt());
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Entry* xPriorVec[gpAttachMap->m_nIndexOffsets];
+
+  vPositionPriorVecBuffer(aDeleteKey,xPriorVec,pToBuffer);
+  
+  Entry* pPriorEntry = xPriorVec[0];
+
+  Entry* pEntryToBeDeleted = pNextEntry(pPriorEntry,0);
+  if (!pEntryToBeDeleted)
+    return;
+  
+  //  vTrace("[%lld] pDeleteEntry key %lld\n"_Stz,
+  //         *nBufferNo(),
+  //         pEntryToBeDeleted->aKey()->iGetInt());
+  
+  Key* aDeleteEntryKey = pEntryToBeDeleted->aKey();
+  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  //if (! aDeleteEntryKey->bEqualTo(aDeleteKey,pIdxColVec))
+  //  return;
+  RASSERT(aDeleteEntryKey->bEqualTo(aDeleteKey,pIdxColVec));
+  RASSERT(pToBuffer == pEntryToBeDeleted->pReferencedEntryBuffer());
+  
+  Entry* pFirstEntry = this->pFirstEntry();
+  if (pEntryToBeDeleted == pFirstEntry && m_pHigherBuffer)
+    m_pHigherBuffer->vDeleteUpwards(aDeleteKey,this,ppRootKeyBuffer);
+  
+  vDeleteEntry(&pEntryToBeDeleted);
 }
 
 /*----------------------------------------------------------------------------*/
