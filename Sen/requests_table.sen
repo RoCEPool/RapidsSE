@@ -91,7 +91,7 @@ ddlLock::grabRead
 /*----------------------------------------------------------------------------*/
 /* insert entries from row buffer into table                                  */
 /*----------------------------------------------------------------------------*/
-: insertTableEntriesSlot_req ( tablePtr, bufferPtr, slot -- <R> )
+: insertTableEntriesSlot_req ( tablePtr, bufferPtr, slot, txIdx -- <R> )
 
   ddlLock::grabRead
 
@@ -103,10 +103,10 @@ ddlLock::grabRead
 /*----------------------------------------------------------------------------*/
 /* insert buffer entries to partition of given named table                    */
 /*----------------------------------------------------------------------------*/
-: insertBufferEntries$ ( pSEitf iNode workingBuffer bIsLast partitionNo "<tableNm>" -- true )
+: insertBufferEntries$ ( pSEitf iNode workingBuffer bIsLast txId partitionNo "<tableNm>" -- true )
 
 tp: insertBufferEntries$
-  0 locals| pTable sTableNm iPartitionNo bIsLast pWorkingBuffer iNode pSEitf |
+  0 locals| pTable sTableNm iPartitionNo iTxId bIsLast pWorkingBuffer iNode pSEitf |
 
   // why:
   //   we have forwarded a full entryBuffer whose entries need to be
@@ -126,7 +126,7 @@ tp: insertBufferEntries$
   then
 
   //"insertBufferEntries$" .
-  //pEntryBuffer .
+  //iTxId .
 
   // get ^table
   sTableNm pushTable assert
@@ -142,9 +142,9 @@ tp: insertBufferEntries$
   // set the partition in the row buffer
   //iPartitionNo pWorkingBuffer resultBuffer.partition!
 
-  pSEitf iNode pWorkingBuffer iPartitionNo pTable    ( rb ptn tablePtr )
+  pSEitf iTxId iNode pWorkingBuffer iPartitionNo pTable    ( rb ptn tablePtr )
 
-  5 "partitionInsertBufferEntries" iPartitionNo grid::toSlot dup >partitionTaskNm
+  6 "partitionInsertBufferEntries" iPartitionNo grid::toSlot dup >partitionTaskNm
   TK_LOADSUB_PART
 
   spawnPartitionTask
@@ -155,17 +155,20 @@ tp: insertBufferEntries$
 /*----------------------------------------------------------------------------*/
 /* partition task inserts the entry buffer entries to the table               */
 /*----------------------------------------------------------------------------*/
-: partitionInsertBufferEntries ( pSEitf iNode workingBuffer partitionNo table^ -- )
+: partitionInsertBufferEntries ( pSEitf iTxId iNode workingBuffer partitionNo table^ -- )
 
   tp: partitionInsertBufferEntries
-  0 locals| bIsLast pTable iPartitionNo pWorkingBuffer iNode pSEitf |
+  0 locals| bIsLast pTable iPartitionNo pWorkingBuffer iNode iTxId pSEitf |
 
   //"partitionInsertBufferEntries" .
+
   //pEntryBuffer .
 
   pWorkingBuffer workingBuffer.isLast@ to bIsLast
+  //"partitionInsertBufferEntries" .
+  //iTxId .
 
-  iPartitionNo grid::toSlot >str pWorkingBuffer >str pTable >str table.insertEntries ( )
+  iTxId >str iPartitionNo grid::toSlot >str pWorkingBuffer >str pTable >str table.insertEntries ( )
 
   bIsLast not if exit then
   //drop exit
@@ -201,27 +204,25 @@ tp: insertBufferEntries$
 /*----------------------------------------------------------------------------*/
 /* insert entries from row buffer into table                                  */
 /*----------------------------------------------------------------------------*/
-: insertTableEntries_req ( partition, workingBuffer, tableName -- <R> )
+: insertTableEntries_req ( txId, partition, workingBuffer, tableName -- <R> )
 
-  0 0 locals| pWorkingBuffer iPartitionNo pTableName sWorkingBuffer sPartitionNo |
+  0 0 0 locals| pWorkingBuffer iPartitionNo iTxId pTableName sWorkingBuffer sPartitionNo sTxId |
 
 tp: insertTableEntries_req
 
   sPartitionNo str.tailInt assert to iPartitionNo
-
+  sTxId str.tailInt assert to iTxId
   sWorkingBuffer WorkingBuffer::toWorkingBuffer to pWorkingBuffer
 
   //"insertTableEntries_req" .
-  //iPartitionNo .
-  //pEntryBuffer .
+  //sTxId .
 
   <<
   task::this task.seitf@ 
   grid.thisNode@
-
-      ( << rb )
   pWorkingBuffer
   pWorkingBuffer workingBuffer.isLast@
+  iTxId
   iPartitionNo                       ( << rb ptn )
   pTableName                         ( << rb ptn "<tableNm>" )
   "insertBufferEntries$"             ( << rb ptn "<tableNm>" "insertBufferEntries$" )

@@ -38,7 +38,8 @@ namespace DBobjects
     ~IndexTree(void);
   
     Stz*         pAnalyze(void);
-    void         vAppendEntriesFromBuffer(WorkingBuffer* pWorkingBuffer,
+    void         vAppendEntriesFromBuffer(i8 iTxId,
+                                          WorkingBuffer* pWorkingBuffer,
                                           EntryBuffer** ppFirstBuffer,
                                           Entry** ppFirstEntry);
     void         vAppendBuffer(EntryBuffer* pEntryBuffer);

@@ -80,6 +80,7 @@ tp: ~loadInsertBufferEntries
     grid.thisNode@
     pWorkingBuffer                                    ( << rb )
     pWorkingBuffer workingBuffer.isLast@
+    pLoaderSEitf seitf.tx@ tx.id
     pLoaderSub loaderSub.partition@               ( << rb ptn )
     pLoaderSub loaderSub.table table.name         ( << rb ptn "<tableNm>" )
     "insertBufferEntries$"                        ( << rb ptn "<tableNm>" "insertBufferEntries$" )

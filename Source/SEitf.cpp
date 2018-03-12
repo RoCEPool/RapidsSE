@@ -2977,8 +2977,13 @@ bool SEitf::bInsertEntriesTableSlot(WorkingBuffer* pWorkingBuffer, i8 iSlot)
   s256 sRequest;
   s256 sBuffer;
 
-  sBuffer = iSlot;
+  sBuffer = m_pTx->iDistTxId();
   sRequest.vCopy("\""_Stz);
+  sRequest.vConcat(sBuffer);
+  sRequest.vConcat("\""_Stz);
+  
+  sBuffer = iSlot;
+  sRequest.vConcat("\""_Stz);
   sRequest.vConcat(sBuffer);
   sRequest.vConcat("\""_Stz);
   
@@ -3007,8 +3012,13 @@ bool SEitf::bInsertEntriesTable(WorkingBuffer* pWorkingBuffer, i8 iPartition)
   s256 sRequest;
   s256 sBuffer;
   
-  sBuffer = iPartition;
+  sBuffer = m_pTx->iDistTxId();
   sRequest.vCopy("\""_Stz);
+  sRequest.vConcat(sBuffer);
+  sRequest.vConcat("\""_Stz);
+  
+  sBuffer = iPartition;
+  sRequest.vConcat("\""_Stz);
   sRequest.vConcat(sBuffer);
   sRequest.vConcat("\""_Stz);
   

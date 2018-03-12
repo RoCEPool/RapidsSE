@@ -322,7 +322,7 @@ bool Table::bAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
 /*----------------------------------------------------------------------------*/
 /* insert entries from a row buffer into the table (hidden and other indexes) */
 /*----------------------------------------------------------------------------*/
-void Table::vInsertEntries(i8 iSlot, WorkingBuffer* pWorkingBuffer)
+void Table::vInsertEntries(i8 iTxId, i8 iSlot, WorkingBuffer* pWorkingBuffer)
 { //# indexTuning
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
@@ -345,7 +345,7 @@ void Table::vInsertEntries(i8 iSlot, WorkingBuffer* pWorkingBuffer)
   
   EntryBuffer* pFirstBuffer;
   Entry* pFirstEntry;
-  pHiddenIndexTree->vAppendEntriesFromBuffer(pWorkingBuffer, &pFirstBuffer, &pFirstEntry);
+  pHiddenIndexTree->vAppendEntriesFromBuffer(iTxId, pWorkingBuffer, &pFirstBuffer, &pFirstEntry);
   
   //----------------------------------------------------------------------------
   // (2) insert entries from hidden index pFirstBuffer starting at pFirstEntry
