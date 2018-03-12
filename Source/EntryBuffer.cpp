@@ -9,6 +9,7 @@
 extern AttachMap* gpAttachMap;
 
 bool mbWatch = false;
+//#define MB_WATCH
 
 //#define EB_LAZY_CHAIN
 
@@ -600,7 +601,24 @@ Entry* EntryBuffer::pInsertKeyTree(KeyWrk& xKeyWrk,
 {
   // ** note: this is a static function **
   
+  
   EntryBuffer* pRootKeyBuffer = *ppRootKeyBuffer;
+  
+#ifdef MB_WATCH
+  static i8 nInserts = 0;
+  nInserts++;
+  
+  if (2947 == nInserts)
+    mbWatch = true;
+  
+  if (mbWatch) {
+    IdxColVec* pIdxColVec = pRootKeyBuffer->pIndex()->pIdxColVec();
+    vTrace("\n[ ] pInsertKeyTree: "_Stz);
+    xKeyWrk.vShow(pIdxColVec);
+    pRootKeyBuffer->vShowTree();
+    int iDebug = 1;
+  }
+#endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set a random number offsets
@@ -620,10 +638,22 @@ Entry* EntryBuffer::pInsertKeyTree(KeyWrk& xKeyWrk,
   //pPositionedBuffer->vShow();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // insert into the tree 
+  // insert into the tree
   
+
   Entry* pInsertedKeyEntry =
     pPositionedBuffer->pInsertKeyUpwards(xKeyWrk,ppRootKeyBuffer);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#ifdef MB_WATCH
+  if (mbWatch) {
+    IdxColVec* pIdxColVec = pRootKeyBuffer->pIndex()->pIdxColVec();
+    vTrace("\n[ ] pInsertKeyTree: "_Stz);
+    xKeyWrk.vShow(pIdxColVec);
+    pRootKeyBuffer->vShowTree();
+    int iDebug = 1;
+  }
+#endif
   
   return pInsertedKeyEntry;
 }
@@ -1335,12 +1365,19 @@ void EntryBuffer::vDeleteUpwards(Key* aDeleteKey,
 #endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+#ifdef MB_WATCH
   if (mbWatch) {
-    vTrace("*[%lld]vDeleteUpwards: key %lld\n"_Stz,
-           *nBufferNo(),
-           aDeleteKey->iGetInt());
+    EntryBuffer* pRootKeyBuffer = *ppRootKeyBuffer;
+    IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+    vTrace("\n[%lld] vDeleteUpwards: "_Stz,m_iBufferNo);
+    aDeleteKey->vShow(pIdxColVec);
+    vTrace("\n"_Stz);
+    pRootKeyBuffer->vShowTree();
+    int iDebug = 1;
   }
+#endif
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Entry* pPriorEntry = pPositionPriorEntry(aDeleteKey);
   if (!pPriorEntry)
@@ -1356,9 +1393,24 @@ void EntryBuffer::vDeleteUpwards(Key* aDeleteKey,
   
   Key* aDeleteEntryKey = pEntryToBeDeleted->aKey();
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  //if (! aDeleteEntryKey->bEqualTo(aDeleteKey,pIdxColVec))
-  //  return;
-  RASSERT(aDeleteEntryKey->bEqualTo(aDeleteKey,pIdxColVec));
+  
+  if ( ! aDeleteEntryKey->bEqualTo(aDeleteKey,pIdxColVec) ) {
+    
+    //vShow();
+    
+    //vShowTree();
+    
+    //vTrace("Delete key: "_Stz);
+    //aDeleteKey->vShow(pIdxColVec);
+    //vTrace("\n"_Stz);
+    
+    //vTrace("Delete entry key found: "_Stz);
+    //aDeleteEntryKey->vShow(pIdxColVec);
+    //vTrace("\n"_Stz);
+    
+    return;
+  }
+  //RASSERT(aDeleteEntryKey->bEqualTo(aDeleteKey,pIdxColVec));
   
   Entry* pFirstEntry = this->pFirstEntry();
   if (pEntryToBeDeleted == pFirstEntry && m_pHigherBuffer)
@@ -1379,12 +1431,6 @@ void EntryBuffer::vDeleteUpwards(Key* aDeleteKey, EntryBuffer* pToBuffer,
   RASSERT( ! m_pLazyChain );
 #endif
   
-  if (mbWatch) {
-    vTrace("*[%lld]vDeleteUpwards: key %lld\n"_Stz,
-           *nBufferNo(),
-           aDeleteKey->iGetInt());
-  }
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Entry* xPriorVec[gpAttachMap->m_nIndexOffsets];
@@ -1548,6 +1594,21 @@ void EntryBuffer::vHandleLeftInsert(Entry* pInsertedKeyEntry,
   if (! m_pHigherBuffer)
     return;
  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#ifdef MB_WATCH
+  if (mbWatch) {
+    EntryBuffer* pRootKeyBuffer = *ppRootKeyBuffer;
+    IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+    vTrace("\n[%lld] vHandleLeftInsert: Inserted "_Stz,m_iBufferNo);
+    pInsertedKeyEntry->aKey()->vShow(pIdxColVec);
+    vTrace(" Orginial "_Stz);
+    pOriginalFirstEntry->aKey()->vShow(pIdxColVec);
+    vTrace("\n"_Stz);
+    pRootKeyBuffer->vShowTree();
+    int iDebug = 1;
+  }
+#endif
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (pOriginalFirstEntry) {
@@ -1865,17 +1926,23 @@ Entry* EntryBuffer::pInsertKeyBuffer(KeyWrk& xKeyWrk,
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#ifdef MB_WATCH
+  if (mbWatch) {
+    EntryBuffer* pRootKeyBuffer = *ppRootKeyBuffer;
+    IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+    vTrace("\n[%lld] pInsertKeyBuffer: "_Stz,m_iBufferNo);
+    xKeyWrk.vShow(pIdxColVec);
+    pRootKeyBuffer->vShowTree();
+    int iDebug = 1;
+  }
+#endif
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // record orginal first entry incase we insert a new first entry
   
   Entry* pOriginalFirstEntry = pFirstEntry();
   if (!pOriginalFirstEntry)
     pOriginalFirstEntry = pFirstEntry();
-  
-  if (mbWatch && pOriginalFirstEntry) {
-    vTrace("*[%lld]OriginalFirstEntry: %p key %lld\n"_Stz,
-           *nBufferNo(),
-           pOriginalFirstEntry,pOriginalFirstEntry->aKey()->iGetInt());
-  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the key
@@ -1917,17 +1984,26 @@ Entry* EntryBuffer::pInsertKeyUpwards(KeyWrk& xKeyWrk,
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#ifdef MB_WATCH
+  if (mbWatch) {
+    EntryBuffer* pRootKeyBuffer = *ppRootKeyBuffer;
+    IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+    vTrace("\n[%lld] pInsertKeyUpwards: "_Stz,m_iBufferNo);
+    xKeyWrk.vShow(pIdxColVec);
+    pRootKeyBuffer->vShowTree();
+    int iDebug = 1;
+  }
+#endif
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   EntryBuffer* pInsertIntoBuffer =
     pInsertableBuffer(xKeyWrk,ppRootKeyBuffer);
   
-  if (mbWatch)
-    (*ppRootKeyBuffer)->vShowTree(false);
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Entry* pInsertedKeyEntry =
-  pInsertIntoBuffer->pInsertKeyBuffer(xKeyWrk,ppRootKeyBuffer);
+    pInsertIntoBuffer->pInsertKeyBuffer(xKeyWrk,ppRootKeyBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -2033,8 +2109,6 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
   // split the left buffer to yield a right buffer
   
   EntryBuffer* pRightBuffer = pLeftBuffer->pSplit(ppRootKeyBuffer);
-  //if (mbWatch)
-  //  (*ppRootKeyBuffer)->vShowTree();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the first key of left buffer into higher buffer
@@ -2059,8 +2133,6 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
     
     Entry* pNewKeyLeft =
     pHigherBuffer->pInsertKeyUpwards(xKeyWrkLeft,ppRootKeyBuffer);
-    //if (mbWatch)
-    //  (*ppRootKeyBuffer)->vShowTree();
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2086,8 +2158,6 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
   Entry* pNewKeyRight =
   pHigherBuffer->pInsertKeyUpwards(xKeyWrkRight,ppRootKeyBuffer);
   
-  //if (mbWatch)
-  //  (*ppRootKeyBuffer)->vShowTree();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -3252,17 +3322,10 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
   for (i8 iCount = 0; iCount < iInt; iCount++) {
     
     i8 iKey = iInt;
-  
-//    if (3 == iKey) {
-//      mbWatch = true;
-//      pRootKeyBuffer->vShowTree(true);
-//    }
     
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     sprintf(sRecData.aChar(),"%lld,%s,1900-01-01 00:00:%lld",
             iKey,IntLib::sAsText(iKey),iKey);
-    if (mbWatch)
-      vTrace("\nInserting record: %s\n"_Stz,sRecData.aChar());
     
     char* aRowData = (char*)xRowWrk.aRow();
     iRecLength = sRecData.iLength();
@@ -3296,7 +3359,6 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
     Entry* pKeyEntry =
       EntryBuffer::pInsertKeyTree(xKeyWrk,&pRootKeyBuffer);
     
-    //if (mbWatch)
     vTrace("\nInserted record: %s\n"_Stz,sRecData.aChar());
     pRootKeyBuffer->vShowTree(false);
 

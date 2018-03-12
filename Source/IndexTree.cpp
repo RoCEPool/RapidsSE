@@ -370,13 +370,21 @@ bool IndexTree::bInsertEntry(Entry* pRow)
   
   m_zLock.vGrabWrite();
   
+  //static i8 nInserts = 0;
+  
+  //nInserts++;
+  
   KeyWrk xKeyWrk;
   pRow->vExtractIndexKey(xKeyWrk, m_pIndex->pIdxColVec());
   
   xKeyWrk.vTxId(0);
   xKeyWrk.vId(pRow->xId());
   
-  //xKeyWrk.vShow(m_pIndex->pIdxColVec());
+  //if (2947 == nInserts) {
+  //  xKeyWrk.vShow(m_pIndex->pIdxColVec());
+  //  m_pRoot->vShowTree();
+  //  int iDebug = 1;
+  //}
   
   if ( ! m_pRoot ) {
     m_pRoot = new EntryBuffer;
