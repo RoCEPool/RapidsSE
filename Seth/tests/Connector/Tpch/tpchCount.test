@@ -6,7 +6,6 @@
 refresh;
 success
 
-loop 50 {
 select * from region;
 rows: 5
 
