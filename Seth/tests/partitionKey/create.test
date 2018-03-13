@@ -30,7 +30,7 @@ failure: 'invalid command'
 
 -- check existence of partition key
 lspartcol createT1;
-failure: no such table
+failure: 'no such table'
 
 create table createT1 (
   key   INTEGER NOT NULL,
@@ -40,7 +40,7 @@ failure: 'invalid command'
 
 -- check existence of partition key
 lspartcol createT1;
-failure: no such table
+failure: 'no such table'
 
 create table createT1 (
   key   INTEGER NOT NULL,
