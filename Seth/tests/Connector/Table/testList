@@ -1,3 +1,4 @@
+createTableIfNotExists.test
 booleanColumn.test
 decimalColumn.test
 integerColumn.test
