@@ -25,12 +25,13 @@ namespace Datums
   {
   public:
   
-    char m_cEnclosedBy;       // enclosed by
-    char m_cEscapeChar;       // escape char
-    char m_cFieldSeparator;   // field separator
-    char m_cRecordTerminator; // record terminator
-    eDC  m_eDateComponent[3]; // date component order
-    char m_cDateSeparator;    // date separacter
+    char m_cEnclosedBy_Leading;  // enclosed by
+    char m_cEnclosedBy_Trailing; // enclosed by
+    char m_cEscapeChar;          // escape char
+    char m_cFieldSeparator;      // field separator
+    char m_cRecordTerminator;    // record terminator
+    eDC  m_eDateComponent[3];    // date component order
+    char m_cDateSeparator;       // date separater
   
     // must be last
     Footer m_xFooter;

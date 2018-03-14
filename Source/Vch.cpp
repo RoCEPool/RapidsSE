@@ -265,7 +265,7 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn, Formatters* pFormat
     
   i8 iColumnLength = pColumn->iColumnLength();
   if ( ! StrLib::bExtractVarchar(aaSrc,(char*)aVch,iColumnLength,
-                                 pFormatters->m_cEnclosedBy,
+                                 pFormatters->m_cEnclosedBy_Leading,
                                  pFormatters->m_cEscapeChar,
                                  pFormatters->m_cFieldSeparator,
                                  pFormatters->m_cRecordTerminator
@@ -315,7 +315,7 @@ void Vch::vSprint(Stz* aDst, Stz* aSrc)
   }
   
   // get the formatters
-  char cEnclosedBy = gpAttachMap->m_xFormatters.m_cEnclosedBy;
+  char cEnclosedBy = gpAttachMap->m_xFormatters.m_cEnclosedBy_Leading;
   char cEscapeChar = gpAttachMap->m_xFormatters.m_cEscapeChar;
   
   char* aDstChar = (char*)aDst;
@@ -356,7 +356,7 @@ void Vch::vSprintEscaped(Stz* aDst, Stz* aSrc)
   }
   
   // get the formatters
-  char cEnclosedBy = gpAttachMap->m_xFormatters.m_cEnclosedBy;
+  char cEnclosedBy = gpAttachMap->m_xFormatters.m_cEnclosedBy_Leading;
   char cEscapeChar = gpAttachMap->m_xFormatters.m_cEscapeChar;
   
   char* aDstChar = (char*)aDst;

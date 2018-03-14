@@ -512,10 +512,10 @@ bool DtmLib::bTestForNull(char** aaSrc, DBobjects::Column* pColumn,
     // skip over \N
     *aaSrc = (*aaSrc) + 2;
   }
-  else if (**aaSrc     == pFormatters->m_cEnclosedBy &&
+  else if (**aaSrc     == pFormatters->m_cEnclosedBy_Leading &&
            *(*aaSrc+1) == pFormatters->m_cEscapeChar &&
            *(*aaSrc+2) == 'N'                        &&
-           *(*aaSrc+3) == pFormatters->m_cEnclosedBy) {
+           *(*aaSrc+3) == pFormatters->m_cEnclosedBy_Leading) {
     // skip over '\N'
     *aaSrc = (*aaSrc) + 4;
   }

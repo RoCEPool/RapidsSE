@@ -2026,8 +2026,8 @@ eEC RapidsSE_LoadData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath,
     if (pFieldSeparator->bEqual("\\t"_Stz))
       pSEitf->m_xFormatters.m_cFieldSeparator   = '\t';
     
-    pSEitf->m_xFormatters.m_cEnclosedBy       = *(pEnclosedBy->aChar());
-    pSEitf->m_xFormatters.m_cEscapeChar       = *(pEscapeChar->aChar());
+    pSEitf->m_xFormatters.m_cEnclosedBy_Leading  = *(pEnclosedBy->aChar());
+    pSEitf->m_xFormatters.m_cEscapeChar          = *(pEscapeChar->aChar());
     
     // add a column
     eResult = eExecuteRequest(pSEitf, "ld"_Stz,

@@ -1621,9 +1621,10 @@ bool SePrompt::bCmd_LoadTable(void)
         m_pSEitf->m_xFormatters.m_cFieldSeparator = '\0';
     }
     else if (m_xTokenVec2[iCurrentIndex]->bSame(C_ENCLOSED_BY)) {
-      m_pSEitf->m_xFormatters.m_cEnclosedBy = *m_xTokenVec2[++iCurrentIndex]->sText().aChar();
-      if (m_pSEitf->m_xFormatters.m_cEnclosedBy == '0')
-        m_pSEitf->m_xFormatters.m_cEnclosedBy = '\0';
+      m_pSEitf->m_xFormatters.m_cEnclosedBy_Leading =
+        *m_xTokenVec2[++iCurrentIndex]->sText().aChar();
+      if (m_pSEitf->m_xFormatters.m_cEnclosedBy_Leading == '0')
+        m_pSEitf->m_xFormatters.m_cEnclosedBy_Leading = '\0';
     }
     else if (m_xTokenVec2[iCurrentIndex]->bSame(C_ESCAPE_CHAR)) {
       m_pSEitf->m_xFormatters.m_cEscapeChar = *m_xTokenVec2[++iCurrentIndex]->sText().aChar();

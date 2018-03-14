@@ -34,7 +34,8 @@ Formatters::Formatters(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORMATTERS);
 
-  m_cEnclosedBy = '\'';
+  m_cEnclosedBy_Leading  = '\'';
+  m_cEnclosedBy_Trailing = '\'';
   m_cEscapeChar = '\\';
   m_cFieldSeparator = ',';
   m_cRecordTerminator = '\0';
@@ -64,7 +65,9 @@ void Formatters::vReset(Formatters* pDefaults)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORMATTERS);
   
-  m_cEnclosedBy       = pDefaults->m_cEnclosedBy;
+  m_cEnclosedBy_Leading  = pDefaults->m_cEnclosedBy_Leading;
+  m_cEnclosedBy_Trailing = pDefaults->m_cEnclosedBy_Trailing;
+  
   m_cEscapeChar       = pDefaults->m_cEscapeChar;
   m_cFieldSeparator   = pDefaults->m_cFieldSeparator;
   m_cRecordTerminator = pDefaults->m_cRecordTerminator;
