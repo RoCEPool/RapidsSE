@@ -694,8 +694,7 @@ bool StrLib::bExtractBoolean(char** aaSrc, i8& iBoolean)
 /*----------------------------------------------------------------------------*/
 /* bExtractDate: extract a date from substr                                   */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractDate(char** aaSrc, i8& iYear, i8& iMonth, i8& iDay,
-                          Datums::Formatters* pFormatters)
+bool StrLib::bExtractDate(char** aaSrc, i8& iYear, i8& iMonth, i8& iDay)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
   
@@ -1279,15 +1278,18 @@ bool StrLib::bExtractTime(char** aaSrc,
 /*----------------------------------------------------------------------------*/
 bool StrLib::bExtractTimestamp(char** aaSrc,
                                i8& iYear, i8& iMonth,  i8& iDay,
-                               i8& iHour, i8& iMinute, i8& iSecond, i8& iMicro,
-                               Datums::Formatters* pFormatters)
+                               i8& iHour, i8& iMinute, i8& iSecond, i8& iMicro)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
     
   // - date portion
 
-  if ( ! bExtractDate(aaSrc,iYear,iMonth,iDay,pFormatters) )
+  if ( ! bExtractDate(aaSrc,iYear,iMonth,iDay) )
     return false;
+  //if ( ! StrLib::bExtractDate2(aaSrc, iYear, iMonth, iDay,
+  //                             pFormatters->m_eDateComponent,
+  //                             pFormatters->m_cDateSeparator) )
+  //  return false;
   
   // - time portion
   
@@ -1302,6 +1304,40 @@ bool StrLib::bExtractTimestamp(char** aaSrc,
   if ( ! bExtractTime(aaSrc,iHour,iMinute,iSecond,iMicro) )
     return false;
 
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bExtractTimestamp: extract a timestamp from substr                         */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bExtractTimestamp2(char** aaSrc,
+                                i8& iYear, i8& iMonth,  i8& iDay,
+                                i8& iHour, i8& iMinute, i8& iSecond, i8& iMicro,
+                                eDC* pDateComponents, char cDateSeparator)
+{
+  // refer: http://en.wikipedia.org/wiki/ISO_8601
+  
+  // - date portion
+  
+  //if ( ! bExtractDate(aaSrc,iYear,iMonth,iDay) )
+  //  return false;
+  if ( ! StrLib::bExtractDate2(aaSrc, iYear, iMonth, iDay,
+                               pDateComponents,cDateSeparator) )
+    return false;
+  
+  // - time portion
+  
+  // skip T or space separator
+  if ( ! ('T' == **aaSrc || ' ' == **aaSrc) ) {
+    iHour = iMinute = iSecond = iMicro = 0;
+    return true;
+  }
+  
+  (*aaSrc)++;
+  
+  if ( ! bExtractTime(aaSrc,iHour,iMinute,iSecond,iMicro) )
+    return false;
+  
   return true;
 }
 

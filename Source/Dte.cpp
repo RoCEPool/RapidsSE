@@ -238,8 +238,12 @@ bool Dte::bExtract(char** aaSrc, Dte* aDte, Column* pColumn, Formatters* pFormat
   
   i8 iYear, iMonth, iDay;
   
-  if ( ! StrLib::bExtractDate(aaSrc, iYear, iMonth, iDay, pFormatters) )
+  if ( ! StrLib::bExtractDate(aaSrc, iYear, iMonth, iDay) )
     return false;
+  //if ( ! StrLib::bExtractDate2(aaSrc, iYear, iMonth, iDay,
+  //                             pFormatters->m_eDateComponent,
+  //                             pFormatters->m_cDateSeparator) )
+  //  return false;
   
   aDte->x.m_uYear   = iYear;
   aDte->x.m_uMonth  = iMonth;

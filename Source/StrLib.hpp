@@ -80,8 +80,7 @@ namespace Base
     static bool  bEscapedSpecial(const char cArg);
     static bool  bExtractArg(char** ps, char* pPath);
     static bool  bExtractBoolean(char** ps, i8& iBoolean);
-    static bool  bExtractDate(char** ps, i8& iYear, i8& iMonth, i8& iDay,
-                              Datums::Formatters* pFormatters);
+    static bool  bExtractDate(char** ps, i8& iYear, i8& iMonth, i8& iDay);
     static bool  bExtractDate2(char** ps, i8& iYear, i8& iMonth, i8& iDay,
                                eDC* pDateComponents, char cDateSeparator);
     static bool  bExtractDay(char** ps, i8& iDay);
@@ -98,8 +97,10 @@ namespace Base
     static bool  bExtractString(char** ps, char* pString);
     static bool  bExtractTime(char** ps, i8& iHour, i8& iMinute, i8& iSecond, i8& iMicro);
     static bool  bExtractTimestamp(char** ps, i8& iYear, i8& iMonth, i8& iDay,
+                                   i8& iHour, i8& iMinute, i8& iSecond, i8& iMicro);
+    static bool  bExtractTimestamp2(char** ps, i8& iYear, i8& iMonth, i8& iDay,
                                    i8& iHour, i8& iMinute, i8& iSecond, i8& iMicro,
-                                   Datums::Formatters* pFormatters);
+                                    eDC* pDateComponents, char cDateSeparator);
     static bool  bExtractU8(char** ps, u8* u);
     static bool  bExtractU8(char** ps, u8* u, i8 iDigits);
     static bool  bExtractVarchar(char** ps, char* aVarchar, i8 iMaxLength,
