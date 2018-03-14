@@ -66,6 +66,7 @@ namespace Base
     static bool  bExtractBoolean(char** ps, i8& iBoolean);
     static bool  bExtractDate(char** ps, i8& iYear, i8& iMonth, i8& iDay,
                               Datums::Formatters* pFormatters);
+    static bool  bExtractDay(char** ps, i8& iDay, Datums::Formatters* pFormatters);
     static bool  bExtractDecimal(char** ps, i8& iDecimal, i8 iLength, i8 iScale);
     static bool  bExtractFloat(char** ps, d8& dFloat);
     static bool  bExtractFraction(char** ps, u8* u, i8 iDigits);
@@ -73,6 +74,7 @@ namespace Base
     static bool  bExtractInterval(char** ps, i8& iSecond, i8& iMilli);
     static bool  bExtractItem(char** ps, char* pItem);
     static bool  bExtractItem(char** ps, char* pItem, char cDelimiter);
+    static bool  bExtractMonth(char** ps, i8& iMonth, Datums::Formatters* pFormatters);
     static bool  bExtractPath(char** ps, char* pPath);
     static bool  bExtractPort(char** ps, u2* pPort);
     static bool  bExtractString(char** ps, char* pString);
@@ -89,7 +91,8 @@ namespace Base
                                  char cRecordTerminator);
     static bool  bExtractWord(char** ps, char* pWord);
     static bool  bExtractWordString(char** ps, char* pWord);
-    
+    static bool  bExtractYear(char** ps, i8& iYear, Datums::Formatters* pFormatters);
+  
     static bool  bFind(char** ps, const char cArg);
     static bool  bFind(char** ps, const char cArg, i8 iOccurence);
     static bool  bFind(char** ps, const char* sArg);

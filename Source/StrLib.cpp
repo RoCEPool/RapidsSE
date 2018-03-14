@@ -751,6 +751,15 @@ bool StrLib::bExtractDate(char** aaSrc, i8& iYear, i8& iMonth, i8& iDay,
 }
 
 /*----------------------------------------------------------------------------*/
+/* bExtractDay: extract a day from substr                                     */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bExtractDay(char** aaSrc, i8& iDay, Datums::Formatters* pFormatters)
+{
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bExtractDecimal: extract a decimal from substr                             */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bExtractDecimal(char** aaSrc, i8& iDecimal, i8 iLength, i8 iScale)
@@ -1050,6 +1059,15 @@ bool StrLib::bExtractItem(char** ps, char* pItem, char cDelimiter)
   *a = '\0';
   
   return bOnce;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bExtractMonth: extract a month from substr                                 */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bExtractMonth(char** aaSrc, i8& iMonth, Datums::Formatters* pFormatters)
+{
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1530,6 +1548,15 @@ bool StrLib::bExtractWordString(char** ps, char* pWord)
   *a = '\0';
   
   return bOnce;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bExtractYear: extract a month from substr                                  */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bExtractYear(char** aaSrc, i8& iYear, Datums::Formatters* pFormatters)
+{
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
