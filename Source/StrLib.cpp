@@ -694,7 +694,8 @@ bool StrLib::bExtractBoolean(char** aaSrc, i8& iBoolean)
 /*----------------------------------------------------------------------------*/
 /* bExtractDate: extract a date from substr                                   */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractDate(char** aaSrc, i8& iYear, i8& iMonth, i8& iDay)
+bool StrLib::bExtractDate(char** aaSrc, i8& iYear, i8& iMonth, i8& iDay,
+                          Datums::Formatters* pFormatters)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
   
@@ -1194,13 +1195,14 @@ bool StrLib::bExtractTime(char** aaSrc,
 /*----------------------------------------------------------------------------*/
 bool StrLib::bExtractTimestamp(char** aaSrc,
                                i8& iYear, i8& iMonth,  i8& iDay,
-                               i8& iHour, i8& iMinute, i8& iSecond, i8& iMicro)
+                               i8& iHour, i8& iMinute, i8& iSecond, i8& iMicro,
+                               Datums::Formatters* pFormatters)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
     
   // - date portion
 
-  if ( ! bExtractDate(aaSrc,iYear,iMonth,iDay) )
+  if ( ! bExtractDate(aaSrc,iYear,iMonth,iDay,pFormatters) )
     return false;
   
   // - time portion

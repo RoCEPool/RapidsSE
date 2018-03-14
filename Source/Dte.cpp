@@ -238,7 +238,7 @@ bool Dte::bExtract(char** aaSrc, Dte* aDte, Column* pColumn, Formatters* pFormat
   
   i8 iYear, iMonth, iDay;
   
-  if ( ! StrLib::bExtractDate(aaSrc, iYear, iMonth, iDay) )
+  if ( ! StrLib::bExtractDate(aaSrc, iYear, iMonth, iDay, pFormatters) )
     return false;
   
   aDte->x.m_uYear   = iYear;

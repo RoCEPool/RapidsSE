@@ -276,7 +276,8 @@ bool Tsp::bExtract(char** aaSrc, Tsp* aTsp, Column* pColumn, Formatters* pFormat
   i8 iHour, iMinute, iSecond, iMicro;
   
   if ( ! StrLib::bExtractTimestamp(aaSrc, iYear, iMonth, iDay,
-                                          iHour, iMinute, iSecond, iMicro) )
+                                          iHour, iMinute, iSecond, iMicro,
+                                          pFormatters) )
     return false;
 
   aTsp->x.m_uYear   = iYear;

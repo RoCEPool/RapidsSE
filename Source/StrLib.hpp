@@ -4,6 +4,10 @@
 
 #pragma once
 
+namespace Datums {
+  class Formatters;
+}
+
 namespace Base
 {
   static const int C_NO_CASE = 0;
@@ -60,7 +64,8 @@ namespace Base
     static bool  bEscapedSpecial(const char cArg);
     static bool  bExtractArg(char** ps, char* pPath);
     static bool  bExtractBoolean(char** ps, i8& iBoolean);
-    static bool  bExtractDate(char** ps, i8& iYear, i8& iMonth, i8& iDay);
+    static bool  bExtractDate(char** ps, i8& iYear, i8& iMonth, i8& iDay,
+                              Datums::Formatters* pFormatters);
     static bool  bExtractDecimal(char** ps, i8& iDecimal, i8 iLength, i8 iScale);
     static bool  bExtractFloat(char** ps, d8& dFloat);
     static bool  bExtractFraction(char** ps, u8* u, i8 iDigits);
@@ -73,7 +78,8 @@ namespace Base
     static bool  bExtractString(char** ps, char* pString);
     static bool  bExtractTime(char** ps, i8& iHour, i8& iMinute, i8& iSecond, i8& iMicro);
     static bool  bExtractTimestamp(char** ps, i8& iYear, i8& iMonth, i8& iDay,
-                                   i8& iHour, i8& iMinute, i8& iSecond, i8& iMicro);
+                                   i8& iHour, i8& iMinute, i8& iSecond, i8& iMicro,
+                                   Datums::Formatters* pFormatters);
     static bool  bExtractU8(char** ps, u8* u);
     static bool  bExtractU8(char** ps, u8* u, i8 iDigits);
     static bool  bExtractVarchar(char** ps, char* aVarchar, i8 iMaxLength,
