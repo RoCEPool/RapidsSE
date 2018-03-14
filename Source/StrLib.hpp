@@ -150,6 +150,8 @@ namespace Base
     static char* wToString(i8 iArg, char* w);
     
     static char* zTerminator(char* s);
+  
+    static bool  bValidateMonth(i8 iMonth, i8 iYear);
   };
   
 }

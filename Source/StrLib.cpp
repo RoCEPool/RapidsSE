@@ -2341,6 +2341,35 @@ char* StrLib::zTerminator(char* s)
   return z;
 }
 
+/*----------------------------------------------------------------------------*/
+/* bValidateMonth: validate month                                             */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bValidateMonth(i8 iMonth, i8 iYear)
+{
+  i8 iDaysPerMonth[12]     = { 31,28,31,30,31,30,31,31,30,31,30,31};
+  i8 iDaysPerMonthLeap[12] = { 31,29,31,30,31,30,31,31,30,31,30,31};
+  
+  // assume a leap year
+  bool bLeapYear = true;
+  if (iYear % 4 == 0) {
+    if ((iYear % 100) == 0 && (iYear % 400) != 0) {
+      // not a leap year
+      bLeapYear = false;
+    }
+  }
+
+  if (bLeapYear) {
+    if (iYear > iDaysPerMonthLeap[iMonth-1])
+      return false;
+  }
+  else {
+    if (iYear > iDaysPerMonth[iMonth-1])
+      return false;
+  }
+
+  return true;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
