@@ -755,7 +755,15 @@ bool StrLib::bExtractDate(char** aaSrc, i8& iYear, i8& iMonth, i8& iDay,
 /*----------------------------------------------------------------------------*/
 bool StrLib::bExtractDay(char** aaSrc, i8& iDay, Datums::Formatters* pFormatters)
 {
-  
+  u8 uSubField;
+
+  iDay = 0;
+
+  if ( ! StrLib::bExtractU8(aaSrc,&uSubField,2) )
+    return false;
+
+  iDay = uSubField;
+
   return true;
 }
 
@@ -1066,6 +1074,17 @@ bool StrLib::bExtractItem(char** ps, char* pItem, char cDelimiter)
 /*----------------------------------------------------------------------------*/
 bool StrLib::bExtractMonth(char** aaSrc, i8& iMonth, Datums::Formatters* pFormatters)
 {
+  u8 uSubField;
+  
+  iMonth = 0;
+  
+  if ( ! StrLib::bExtractU8(aaSrc,&uSubField,2) )
+    return false;
+  
+  if (uSubField < 1 || uSubField > 12)
+    return false;
+
+  iMonth = uSubField;
   
   return true;
 }
@@ -1555,7 +1574,14 @@ bool StrLib::bExtractWordString(char** ps, char* pWord)
 /*----------------------------------------------------------------------------*/
 bool StrLib::bExtractYear(char** aaSrc, i8& iYear, Datums::Formatters* pFormatters)
 {
+  u8 uSubField;
   
+  // extract year
+  if ( ! StrLib::bExtractU8(aaSrc,&uSubField, 4) )
+    return false;
+
+  iYear = uSubField;
+
   return true;
 }
 
