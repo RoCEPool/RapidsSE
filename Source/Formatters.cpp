@@ -39,6 +39,11 @@ Formatters::Formatters(void)
   m_cFieldSeparator = ',';
   m_cRecordTerminator = '\0';
   
+  m_eDateComponent[0] = DC_YYYY;  // default is YYYY=MM-DD
+  m_eDateComponent[1] = DC_MM;
+  m_eDateComponent[2] = DC_DD;
+  m_cDateSeparator = '-';
+  
   _checkInitialised_(CN_FORMATTERS);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_FORMATTERS,_FOOTER_);
@@ -63,6 +68,12 @@ void Formatters::vReset(Formatters* pDefaults)
   m_cEscapeChar       = pDefaults->m_cEscapeChar;
   m_cFieldSeparator   = pDefaults->m_cFieldSeparator;
   m_cRecordTerminator = pDefaults->m_cRecordTerminator;
+
+  m_eDateComponent[0] = pDefaults->m_eDateComponent[0];
+  m_eDateComponent[1] = pDefaults->m_eDateComponent[1];
+  m_eDateComponent[2] = pDefaults->m_eDateComponent[2];
+  
+  m_cDateSeparator    = pDefaults->m_cDateSeparator;
 }
 
 /*----------------------------------------------------------------------------*/
