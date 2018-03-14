@@ -10,6 +10,22 @@ namespace Datums {
 
 namespace Base
 {
+  enum eDC // date components
+  {
+  /* 0 */ DC_NONE=0,
+  /* 1 */ DC_YYYY,
+  /* 2 */ DC_MM,
+  /* 3 */ DC_DD
+  };
+  
+  static Stz* aDC[]
+  {
+  /* 0 */ "none"_Stz,
+  /* 1 */ "YYYY"_Stz,
+  /* 2 */ "MM"_Stz,
+  /* 3 */ "DD"_Stz
+  };
+  
   static const int C_NO_CASE = 0;
   static const int C_CASE    = 1;
   
@@ -66,7 +82,9 @@ namespace Base
     static bool  bExtractBoolean(char** ps, i8& iBoolean);
     static bool  bExtractDate(char** ps, i8& iYear, i8& iMonth, i8& iDay,
                               Datums::Formatters* pFormatters);
-    static bool  bExtractDay(char** ps, i8& iDay, Datums::Formatters* pFormatters);
+    static bool  bExtractDate2(char** ps, i8& iYear, i8& iMonth, i8& iDay,
+                               eDC* pDateComponents, char cDateSeparator);
+    static bool  bExtractDay(char** ps, i8& iDay);
     static bool  bExtractDecimal(char** ps, i8& iDecimal, i8 iLength, i8 iScale);
     static bool  bExtractFloat(char** ps, d8& dFloat);
     static bool  bExtractFraction(char** ps, u8* u, i8 iDigits);
@@ -74,7 +92,7 @@ namespace Base
     static bool  bExtractInterval(char** ps, i8& iSecond, i8& iMilli);
     static bool  bExtractItem(char** ps, char* pItem);
     static bool  bExtractItem(char** ps, char* pItem, char cDelimiter);
-    static bool  bExtractMonth(char** ps, i8& iMonth, Datums::Formatters* pFormatters);
+    static bool  bExtractMonth(char** ps, i8& iMonth);
     static bool  bExtractPath(char** ps, char* pPath);
     static bool  bExtractPort(char** ps, u2* pPort);
     static bool  bExtractString(char** ps, char* pString);
@@ -91,7 +109,7 @@ namespace Base
                                  char cRecordTerminator);
     static bool  bExtractWord(char** ps, char* pWord);
     static bool  bExtractWordString(char** ps, char* pWord);
-    static bool  bExtractYear(char** ps, i8& iYear, Datums::Formatters* pFormatters);
+    static bool  bExtractYear(char** ps, i8& iYear);
   
     static bool  bFind(char** ps, const char cArg);
     static bool  bFind(char** ps, const char cArg, i8 iOccurence);

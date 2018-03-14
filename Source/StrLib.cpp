@@ -751,9 +751,56 @@ bool StrLib::bExtractDate(char** aaSrc, i8& iYear, i8& iMonth, i8& iDay,
 }
 
 /*----------------------------------------------------------------------------*/
+/* bExtractDate: extract a date from substr                                   */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bExtractDate2(char** aaSrc, i8& iYear, i8& iMonth, i8& iDay,
+                           eDC* pDateComponents, char cDateSeparator)
+{
+  // refer: http://en.wikipedia.org/wiki/ISO_8601
+  
+  for (i8 i_Component = 0; i_Component < 3; i_Component++) {
+  
+    eDC eDateComponent = pDateComponents[i_Component];
+    
+    switch (eDateComponent) {
+      
+      case DC_DD:
+        if (! bExtractDay(aaSrc,iYear))
+          return false;
+        break;
+      
+      case DC_MM:
+        if (! bExtractMonth(aaSrc,iYear))
+          return false;
+        break;
+      
+      case DC_YYYY:
+        if (! bExtractYear(aaSrc,iYear))
+          return false;
+        break;
+      
+      default:
+        return false;
+    }
+    
+    // skip separator after components  0 and 1
+    if (i_Component < 2) {
+      if (cDateSeparator != *(*aaSrc)++)
+        return false;
+    }
+    
+  }
+  
+  if (! bValidateMonth(iMonth, iYear))
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bExtractDay: extract a day from substr                                     */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractDay(char** aaSrc, i8& iDay, Datums::Formatters* pFormatters)
+bool StrLib::bExtractDay(char** aaSrc, i8& iDay)
 {
   u8 uSubField;
 
@@ -1072,7 +1119,7 @@ bool StrLib::bExtractItem(char** ps, char* pItem, char cDelimiter)
 /*----------------------------------------------------------------------------*/
 /* bExtractMonth: extract a month from substr                                 */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractMonth(char** aaSrc, i8& iMonth, Datums::Formatters* pFormatters)
+bool StrLib::bExtractMonth(char** aaSrc, i8& iMonth)
 {
   u8 uSubField;
   
@@ -1572,7 +1619,7 @@ bool StrLib::bExtractWordString(char** ps, char* pWord)
 /*----------------------------------------------------------------------------*/
 /* bExtractYear: extract a month from substr                                  */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractYear(char** aaSrc, i8& iYear, Datums::Formatters* pFormatters)
+bool StrLib::bExtractYear(char** aaSrc, i8& iYear)
 {
   u8 uSubField;
   
