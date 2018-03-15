@@ -1498,7 +1498,7 @@ bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength,
     }
     
     // did we see an end quote ?
-    if (cEnclosedBy_Leading != **aaSrc)
+    if (cEnclosedBy_Trailing != **aaSrc)
       return false;
     
     (*aaSrc)++;
