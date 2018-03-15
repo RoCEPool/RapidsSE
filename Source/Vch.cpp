@@ -341,7 +341,7 @@ void Vch::vSprint(Stz* aDst, Stz* aSrc)
   }
   
   // put trailing enclosing quote/char and \0 terminate
-  *aDstChar++ = cEnclosedBy_Leading;
+  *aDstChar++ = cEnclosedBy_Trailing;
   *aDstChar = '\0';
 }
 

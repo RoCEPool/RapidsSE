@@ -36,6 +36,9 @@ Formatters::Formatters(void)
 
   m_cEnclosedBy_Leading  = '\'';
   m_cEnclosedBy_Trailing = m_cEnclosedBy_Leading;
+  //m_cEnclosedBy_Leading  = '{';
+  //m_cEnclosedBy_Trailing = '}';
+  
   m_cEscapeChar = '\\';
   m_cFieldSeparator = ',';
   m_cRecordTerminator = '\0';

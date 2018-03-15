@@ -475,10 +475,15 @@ void StrLib::vEscape(const char* sArg, char* sEscaped)
 /*----------------------------------------------------------------------------*/
 /* bEscapeConvert: test if cArg is an escape character                        */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bEscapeConvert(const char cArg, char cEnclosedBy, char cEscapeChar,
-                            char cDelimiter, char cTerminator)
+bool StrLib::bEscapeConvert(const char cArg,
+                            char cEnclosedBy_Leading,
+                            char cEnclosedBy_Trailing,
+                            char cEscapeChar,
+                            char cDelimiter,
+                            char cTerminator)
 {
-  if (cEnclosedBy == cArg) return true;
+  if (cEnclosedBy_Leading == cArg) return true;
+  if (cEnclosedBy_Trailing == cArg) return true;
   if (cEscapeChar == cArg) return true;
   if (cDelimiter == cArg) return true;
   if (cTerminator == cArg) return true;
@@ -1454,7 +1459,7 @@ bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength,
     while (**aaSrc) {
       
       // test for the leading enclosedBy
-      if (cEnclosedBy_Leading == **aaSrc) {
+      if (cEnclosedBy_Trailing == **aaSrc) {
         
         // skip over the leading enclosedBy
         (*aaSrc)++;
@@ -1473,7 +1478,7 @@ bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength,
       if (cEscapeChar == **aaSrc) {
         
         if (StrLib::bEscapeConvert( *((*aaSrc)+1),
-                                   cEnclosedBy_Leading,
+                                   cEnclosedBy_Leading, cEnclosedBy_Trailing,
                                    cEscapeChar, cFieldSeparator, cRecordTerminator)) {
         
            // skip escape character
@@ -1523,8 +1528,9 @@ bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength,
       // test for an escaped character
       if (cEscapeChar == **aaSrc) {
         
-        if (StrLib::bEscapeConvert( *((*aaSrc)+1), cEnclosedBy_Leading, cEscapeChar,
-                                   cFieldSeparator, cRecordTerminator )) {
+        if (StrLib::bEscapeConvert( *((*aaSrc)+1),
+                                   cEnclosedBy_Leading, cEnclosedBy_Trailing,
+                                   cEscapeChar, cFieldSeparator, cRecordTerminator )) {
           
           // skip escape character
           (*aaSrc)++;
@@ -1566,8 +1572,9 @@ bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength,
     // test for escape character
     if (cEscapeChar == **aaSrc) {
       
-      if (StrLib::bEscapeConvert( *((*aaSrc)+1), cEnclosedBy_Leading, cEscapeChar,
-                                 cFieldSeparator, cRecordTerminator)) {
+      if (StrLib::bEscapeConvert( *((*aaSrc)+1),
+                                 cEnclosedBy_Leading, cEnclosedBy_Trailing,
+                                 cEscapeChar, cFieldSeparator, cRecordTerminator)) {
         
         // skip escape character
         (*aaSrc)++;
