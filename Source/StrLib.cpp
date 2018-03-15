@@ -1417,7 +1417,8 @@ bool StrLib::bExtractU8(char** ps, u8* aU8, i8 iDigits)
 /* bExtractVarchar: extract a varchar from substr                             */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength,
-                             char cEnclosedBy,
+                             char cEnclosedBy_Leading,
+                             char cEnclosedBy_Trailing,
                              char cEscapeChar,
                              char cFieldSeparator,
                              char cRecordTerminator)
@@ -1436,7 +1437,7 @@ bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength,
 
   // is it an enclosed varchar?
   bool bIsEnclosed = false;
-  if (cEnclosedBy == **aaSrc) {
+  if (cEnclosedBy_Leading == **aaSrc) {
     bIsEnclosed = true;
     (*aaSrc)++;
   }
@@ -1453,14 +1454,14 @@ bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength,
     while (**aaSrc) {
       
       // test for the enclosedBy
-      if (cEnclosedBy == **aaSrc) {
+      if (cEnclosedBy_Leading == **aaSrc) {
         
         // skip over the second enclosedBy
         (*aaSrc)++;
         
         // if its not another enclosedBy go back to the enclosedBy char
         // and break so as to terminate the enclosed varchar
-        if (cEnclosedBy != **aaSrc) {
+        if (cEnclosedBy_Leading != **aaSrc) {
           (*aaSrc)--;
           break;
         }
@@ -1471,7 +1472,7 @@ bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength,
       // test for escape character
       if (cEscapeChar == **aaSrc) {
         
-        if (StrLib::bEscapeConvert( *((*aaSrc)+1), cEnclosedBy, cEscapeChar,
+        if (StrLib::bEscapeConvert( *((*aaSrc)+1), cEnclosedBy_Leading, cEscapeChar,
                                    cFieldSeparator, cRecordTerminator)) {
         
            // skip escape character
@@ -1497,7 +1498,7 @@ bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength,
     }
     
     // did we see an end quote ?
-    if (cEnclosedBy != **aaSrc)
+    if (cEnclosedBy_Leading != **aaSrc)
       return false;
     
     (*aaSrc)++;
@@ -1521,7 +1522,7 @@ bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength,
       // test for an escaped character
       if (cEscapeChar == **aaSrc) {
         
-        if (StrLib::bEscapeConvert( *((*aaSrc)+1), cEnclosedBy, cEscapeChar,
+        if (StrLib::bEscapeConvert( *((*aaSrc)+1), cEnclosedBy_Leading, cEscapeChar,
                                    cFieldSeparator, cRecordTerminator )) {
           
           // skip escape character
@@ -1564,7 +1565,7 @@ bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength,
     // test for escape character
     if (cEscapeChar == **aaSrc) {
       
-      if (StrLib::bEscapeConvert( *((*aaSrc)+1), cEnclosedBy, cEscapeChar,
+      if (StrLib::bEscapeConvert( *((*aaSrc)+1), cEnclosedBy_Leading, cEscapeChar,
                                  cFieldSeparator, cRecordTerminator)) {
         
         // skip escape character

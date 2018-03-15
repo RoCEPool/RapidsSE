@@ -35,7 +35,7 @@ Formatters::Formatters(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORMATTERS);
 
   m_cEnclosedBy_Leading  = '\'';
-  m_cEnclosedBy_Trailing = '\'';
+  m_cEnclosedBy_Trailing = m_cEnclosedBy_Leading;
   m_cEscapeChar = '\\';
   m_cFieldSeparator = ',';
   m_cRecordTerminator = '\0';

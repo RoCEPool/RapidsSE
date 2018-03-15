@@ -2027,6 +2027,11 @@ eEC RapidsSE_LoadData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath,
       pSEitf->m_xFormatters.m_cFieldSeparator   = '\t';
     
     pSEitf->m_xFormatters.m_cEnclosedBy_Leading  = *(pEnclosedBy->aChar());
+    
+    // temp (rjh)
+    pSEitf->m_xFormatters.m_cEnclosedBy_Trailing =
+      pSEitf->m_xFormatters.m_cEnclosedBy_Leading;
+    
     pSEitf->m_xFormatters.m_cEscapeChar          = *(pEscapeChar->aChar());
     
     // add a column

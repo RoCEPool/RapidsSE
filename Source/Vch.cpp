@@ -266,6 +266,7 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn, Formatters* pFormat
   i8 iColumnLength = pColumn->iColumnLength();
   if ( ! StrLib::bExtractVarchar(aaSrc,(char*)aVch,iColumnLength,
                                  pFormatters->m_cEnclosedBy_Leading,
+                                 pFormatters->m_cEnclosedBy_Trailing,
                                  pFormatters->m_cEscapeChar,
                                  pFormatters->m_cFieldSeparator,
                                  pFormatters->m_cRecordTerminator
@@ -315,21 +316,22 @@ void Vch::vSprint(Stz* aDst, Stz* aSrc)
   }
   
   // get the formatters
-  char cEnclosedBy = gpAttachMap->m_xFormatters.m_cEnclosedBy_Leading;
+  char cEnclosedBy_Leading  = gpAttachMap->m_xFormatters.m_cEnclosedBy_Leading;
+  char cEnclosedBy_Trailing = gpAttachMap->m_xFormatters.m_cEnclosedBy_Trailing;
   char cEscapeChar = gpAttachMap->m_xFormatters.m_cEscapeChar;
   
   char* aDstChar = (char*)aDst;
   char* aSrcChar = (char*)aSrc;
   
   // put leading enclosing quote/char
-  *aDstChar++ = cEnclosedBy;
+  *aDstChar++ = cEnclosedBy_Leading;
   
   // copy from src to dst
   while (*aSrcChar) {
     
-    if (cEnclosedBy == *aSrcChar) {
+    if (cEnclosedBy_Leading == *aSrcChar) {
       // escape an enclosing quote/char
-      *aDstChar++ = cEnclosedBy;
+      *aDstChar++ = cEnclosedBy_Leading;
       *aDstChar++ = *aSrcChar++;
     }
     else {
@@ -339,7 +341,7 @@ void Vch::vSprint(Stz* aDst, Stz* aSrc)
   }
   
   // put trailing enclosing quote/char and \0 terminate
-  *aDstChar++ = cEnclosedBy;
+  *aDstChar++ = cEnclosedBy_Leading;
   *aDstChar = '\0';
 }
 
@@ -356,14 +358,15 @@ void Vch::vSprintEscaped(Stz* aDst, Stz* aSrc)
   }
   
   // get the formatters
-  char cEnclosedBy = gpAttachMap->m_xFormatters.m_cEnclosedBy_Leading;
+  char cEnclosedBy_Leading  = gpAttachMap->m_xFormatters.m_cEnclosedBy_Leading;
+  char cEnclosedBy_Trailing = gpAttachMap->m_xFormatters.m_cEnclosedBy_Trailing;
   char cEscapeChar = gpAttachMap->m_xFormatters.m_cEscapeChar;
   
   char* aDstChar = (char*)aDst;
   char* aSrcChar = (char*)aSrc;
   
   // put leading enclosing quote/char
-  *aDstChar++ = cEnclosedBy;
+  *aDstChar++ = cEnclosedBy_Leading;
   
   // copy from src to dst
   while (*aSrcChar) {
@@ -374,9 +377,9 @@ void Vch::vSprintEscaped(Stz* aDst, Stz* aSrc)
       *aDstChar++ = *aSrcChar++;
     }
     else
-    if (cEnclosedBy == *aSrcChar) {
+    if (cEnclosedBy_Leading == *aSrcChar) {
       // escape an enclosing quote/char
-      *aDstChar++ = cEnclosedBy;
+      *aDstChar++ = cEnclosedBy_Leading;
       *aDstChar++ = *aSrcChar++;
     }
     else
@@ -392,7 +395,7 @@ void Vch::vSprintEscaped(Stz* aDst, Stz* aSrc)
   }
   
   // put trailing enclosing quote/char and \0 terminate
-  *aDstChar++ = cEnclosedBy;
+  *aDstChar++ = cEnclosedBy_Leading;
   *aDstChar = '\0';
 }
 

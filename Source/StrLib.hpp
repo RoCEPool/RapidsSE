@@ -104,7 +104,8 @@ namespace Base
     static bool  bExtractU8(char** ps, u8* u);
     static bool  bExtractU8(char** ps, u8* u, i8 iDigits);
     static bool  bExtractVarchar(char** ps, char* aVarchar, i8 iMaxLength,
-                                 char cEnclosedBy,
+                                 char cEnclosedBy_Leading,
+                                 char cEnclosedBy_Trailing,
                                  char cEscapeChar,
                                  char cFieldSeparator,
                                  char cRecordTerminator);
