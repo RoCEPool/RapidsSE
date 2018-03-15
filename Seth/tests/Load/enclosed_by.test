@@ -1,0 +1,100 @@
+/*----------------------------------------------------------------------------*/
+/* enclosedBy -- enclosedBy tests                                             */
+/*----------------------------------------------------------------------------*/
+
+create table T1 (
+col_id      INTEGER,
+col_vch     VARCHAR(15),
+col_int     INTEGER NOT NULL,
+col_decimal DECIMAL,
+col_float   FLOAT NOT NULL,
+col_tsp     TIMESTAMP,
+col_bool    BOOLEAN,
+col_comment VARCHAR(15)
+);
+success
+
+// load T1 with deafult enclosedBy
+ld T1 "../JTEST/enclosedBy1.csv" ;
+success
+
+// fetch rows
+fetch T1;
+rows:
+  (*, 1,'''DAVE''s DATA''',9,9,9,TIMESTAMP '2018-04-04 09:00:00',true,' valid')
+  (*, 7,'DAVE''s DATA',9,9,9,TIMESTAMP '2018-04-04 09:00:00',true,' valid')
+
+// drop the table
+drop table T1;
+success
+
+// create the table
+create table T1 (
+col_id      INTEGER,
+col_vch     VARCHAR(15),
+col_int     INTEGER NOT NULL,
+col_decimal DECIMAL,
+col_float   FLOAT NOT NULL,
+col_tsp     TIMESTAMP,
+col_bool    BOOLEAN,
+col_comment VARCHAR(15)
+);
+success
+
+// load table T1 with enclosed_by_leading '
+ld T1 "../JTEST/enclosedBy2.csv" enclosed_by_leading "'";
+success
+
+// fetch rows
+fetch T1;
+rows:
+  (*, 1,'DAVE''s DATA',9,9,9,TIMESTAMP '2018-04-04 09:00:00',true,' valid')
+  (*, 3,' DAVE''s DATA',9,9,9,TIMESTAMP '2018-04-04 09:00:00',true,' valid')
+
+// drop the table
+drop table T1;
+success
+
+// create table table
+create table T1 (
+col_id      INTEGER,
+col_vch     VARCHAR(15),
+col_int     INTEGER NOT NULL,
+col_decimal DECIMAL,
+col_float   FLOAT NOT NULL,
+col_tsp     TIMESTAMP,
+col_bool    BOOLEAN,
+col_comment VARCHAR(15)
+);
+success
+
+// load table T1 2ith enclosed_by_leading [ and enclosed_by_trailing ]
+ld T1 "../JTEST/enclosedBy3.csv" enclosed_by_leading "[" enclosed_by_trailing "]";
+success
+
+// fetch rows
+fetch T1;
+rows:
+  (*, 1,' ''[DAVE''s DATA]',9,9,9,TIMESTAMP '2018-04-04 09:00:00',true,'valid')
+  (*,2,'WITH []',9,9,9,TIMESTAMP '2018-04-04 09:00:00',true,'valid')
+  (*,4,' ''DAVE''s DATA''',9,9,9,TIMESTAMP '2018-04-04 09:00:00',true,'valid')
+  (*,10,' DAVE''s DATA',9,9,9,TIMESTAMP '2018-04-04 09:00:00',true,'valid')
+  (*,12,' DAVE''s DATA]',9,9,9,TIMESTAMP '2018-04-04 09:00:00',true,'valid')
+
+// drop the table
+drop table T1;
+
+success
+CLEANUP {
+  
+  drop table T1;
+  mute
+
+  bye;
+  mute
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* end                                                                        */
+/*----------------------------------------------------------------------------*/
