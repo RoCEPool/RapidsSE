@@ -275,10 +275,16 @@ bool Tsp::bExtract(char** aaSrc, Tsp* aTsp, Column* pColumn, Formatters* pFormat
   i8 iYear, iMonth, iDay;
   i8 iHour, iMinute, iSecond, iMicro;
   
-  if ( ! StrLib::bExtractTimestamp(aaSrc, iYear, iMonth, iDay,
-                                          iHour, iMinute, iSecond, iMicro) )
-    return false;
+  //if ( ! StrLib::bExtractTimestamp(aaSrc, iYear, iMonth, iDay,
+  //                                        iHour, iMinute, iSecond, iMicro) )
+  //  return false;
 
+  if ( ! StrLib::bExtractTimestamp2(aaSrc, iYear, iMonth, iDay,
+                                    iHour, iMinute, iSecond, iMicro,
+                                    pFormatters->m_eDateComponent,
+                                    pFormatters->m_cDateSeparator) )
+    return false;
+  
   aTsp->x.m_uYear   = iYear;
   aTsp->x.m_uMonth  = iMonth;
   aTsp->x.m_uDay    = iDay;

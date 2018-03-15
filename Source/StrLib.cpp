@@ -764,12 +764,12 @@ bool StrLib::bExtractDate2(char** aaSrc, i8& iYear, i8& iMonth, i8& iDay,
     switch (eDateComponent) {
       
       case DC_DD:
-        if (! bExtractDay(aaSrc,iYear))
+        if (! bExtractDay(aaSrc,iDay))
           return false;
         break;
       
       case DC_MM:
-        if (! bExtractMonth(aaSrc,iYear))
+        if (! bExtractMonth(aaSrc,iMonth))
           return false;
         break;
       
@@ -790,7 +790,7 @@ bool StrLib::bExtractDate2(char** aaSrc, i8& iYear, i8& iMonth, i8& iDay,
     
   }
   
-  if (! bValidateMonth(iMonth, iYear))
+  if (! bValidateMonth(iDay, iMonth, iYear))
     return false;
   
   return true;
@@ -1317,15 +1317,15 @@ bool StrLib::bExtractTimestamp2(char** aaSrc,
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
   
-  // - date portion
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // date portion
   
-  //if ( ! bExtractDate(aaSrc,iYear,iMonth,iDay) )
-  //  return false;
   if ( ! StrLib::bExtractDate2(aaSrc, iYear, iMonth, iDay,
                                pDateComponents,cDateSeparator) )
     return false;
   
-  // - time portion
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // time portion
   
   // skip T or space separator
   if ( ! ('T' == **aaSrc || ' ' == **aaSrc) ) {
@@ -2427,7 +2427,7 @@ char* StrLib::zTerminator(char* s)
 /*----------------------------------------------------------------------------*/
 /* bValidateMonth: validate month                                             */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bValidateMonth(i8 iMonth, i8 iYear)
+bool StrLib::bValidateMonth(i8 iDay, i8 iMonth, i8 iYear)
 {
   i8 iDaysPerMonth[12]     = { 31,28,31,30,31,30,31,31,30,31,30,31};
   i8 iDaysPerMonthLeap[12] = { 31,29,31,30,31,30,31,31,30,31,30,31};
@@ -2442,11 +2442,11 @@ bool StrLib::bValidateMonth(i8 iMonth, i8 iYear)
   }
 
   if (bLeapYear) {
-    if (iYear > iDaysPerMonthLeap[iMonth-1])
+    if (iDay > iDaysPerMonthLeap[iMonth-1])
       return false;
   }
   else {
-    if (iYear > iDaysPerMonth[iMonth-1])
+    if (iDay > iDaysPerMonth[iMonth-1])
       return false;
   }
 
