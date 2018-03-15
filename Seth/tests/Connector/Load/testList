@@ -7,4 +7,5 @@ terminatorLarge_cr.test
 terminatorSmall_cr.test
 terminatorSmallNull_cr.test
 vch_defaults.test
+vch_enclosedBy.test
 vch_term_defaults.test

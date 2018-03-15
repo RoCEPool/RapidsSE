@@ -1,0 +1,37 @@
+/*----------------------------------------------------------------------------*/
+/* vch_enclosedBy -- enclosedBy tests for varchar                             */
+/*----------------------------------------------------------------------------*/
+
+// create the table
+create table vch (
+    vch_testno  INTEGER     NOT NULL,
+    vch_field   VARCHAR(32),
+    vch_comment VARCHAR(64) NOT NULL
+);
+
+
+// load data into the table with default formatter settings
+ESCAPE CONNECTOR se 'load vch' WITH file = '/Users/alkayamarti/rapidsSE/rapidsse/JTEST/vch_braces.csv', enclosed_by = '{}' , node = 'node1' ;
+failure contains: 'Warning'
+
+Select * from vch;
+rows:
+(10001 ,'quick brown fox', 'valid: quoted field')
+(10002 ,'quick brown{}fox', 'valid: quoted field')
+
+drop table vch;
+success
+
+CLEANUP {
+  
+  drop table vch;
+  mute
+
+  bye;
+  mute
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* end                                                                        */
+/*----------------------------------------------------------------------------*/
