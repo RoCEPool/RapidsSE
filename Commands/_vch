@@ -31,7 +31,7 @@ create table vch (
 
 print "loading table vch..." ;
 ld vch "../JTEST/vch_no_enclosed.csv"
-  enclosed_by "\0" ;
+  enclosed_by_leading "\0" ;
 
 fetch vch;
 drop table vch;
@@ -47,7 +47,7 @@ create table vch (
 
 print "loading table vch..." ;
 ld vch "../JTEST/vch_no_enclosed_no_escape.csv"
-  enclosed_by "\0" escape_char "\0" ;
+  enclosed_by_leading "\0" escape_char "\0" ;
 
 fetch vch;
 drop table vch;
@@ -96,7 +96,7 @@ create table vch (
 
 print "loading table vch..." ;
 ld vch "../JTEST/vch_term_no_enclosed.csv"
-  terminator ";" enclosed_by "\0" ;
+  terminator ";" enclosed_by_leading "\0" ;
 
 fetch vch;
 drop table vch;
@@ -112,7 +112,7 @@ create table vch (
 
 print "loading table vch..." ;
 ld vch "../JTEST/vch_term_no_enclosed_no_escape.csv"
-  terminator ";" enclosed_by "\0" escape_char "\0" ;
+  terminator ";" enclosed_by_leading "\0" escape_char "\0" ;
 
 fetch vch;
 drop table vch;
