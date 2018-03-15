@@ -35,7 +35,7 @@ create index rdp_idx_0 on rdp(rdp_testno);
 success
 
 // load data into the table with default formatter settings
-ld rdp "../JTEST/rdp.csv" ;
+ld rdp "../JTEST/rdp.csv" enclosed_by_leading "'";
 success
 
 
