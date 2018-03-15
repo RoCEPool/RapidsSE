@@ -9,8 +9,11 @@ create table vch (
     vch_comment VARCHAR(64) NOT NULL
 );
 
+// load data into the table with enclosed_by as 3 characters
+ESCAPE CONNECTOR se 'load vch' WITH file = '/Users/alkayamarti/rapidsSE/rapidsse/JTEST/vch_braces.csv', enclosed_by = '{x}' , node = 'node1' ;
+failure: 'enclosed_by can only be'
 
-// load data into the table with default formatter settings
+// load data into the table with enclosed_by as {}
 ESCAPE CONNECTOR se 'load vch' WITH file = '/Users/alkayamarti/rapidsSE/rapidsse/JTEST/vch_braces.csv', enclosed_by = '{}' , node = 'node1' ;
 failure contains: 'Warning'
 
