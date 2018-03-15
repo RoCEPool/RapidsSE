@@ -50,9 +50,9 @@ extern "C" eEC RapidsSE_InsertRow(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel);
 extern "C" eEC RapidsSE_InsertRowPartition(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel);
 extern "C" eEC RapidsSE_LoadData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath,
                                  Stz* pRecordTerminator, Stz* pFieldSeparator,
-                                 Stz* pEnclosedBy, Stz* pEscapeChar,
-                                 void** ppValidRows, void** ppInvalidRows,
-                                 i8 iTraceLevel);
+                                 Stz* pEnclosedByLeading, Stz* pEnclosedByTrailing,
+                                 Stz* pEscapeChar, void** ppValidRows,
+                                 void** ppInvalidRows, i8 iTraceLevel);
 extern "C" eEC RapidsSE_PoolOpen(Stz* pInstanceName, void** ppInstance, i8 iTraceLevel);
 extern "C" eEC RapidsSE_SEitfDelete(SEitf* pSEitf, i8 iTraceLevel);
 extern "C" eEC RapidsSE_SEitfNew(void** ppSEitf, i8 iPartition, i8 iTraceLevel);

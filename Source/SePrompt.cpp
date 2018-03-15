@@ -1620,15 +1620,21 @@ bool SePrompt::bCmd_LoadTable(void)
       if (m_pSEitf->m_xFormatters.m_cFieldSeparator == '0')
         m_pSEitf->m_xFormatters.m_cFieldSeparator = '\0';
     }
-    else if (m_xTokenVec2[iCurrentIndex]->bSame(C_ENCLOSED_BY)) {
+    else if (m_xTokenVec2[iCurrentIndex]->bSame(C_ENCLOSED_BY_LEADING)) {
       m_pSEitf->m_xFormatters.m_cEnclosedBy_Leading =
         *m_xTokenVec2[++iCurrentIndex]->sText().aChar();
       if (m_pSEitf->m_xFormatters.m_cEnclosedBy_Leading == '0')
         m_pSEitf->m_xFormatters.m_cEnclosedBy_Leading = '\0';
       
-      // temp (rjh)
+      // default set trailing same as leading
       m_pSEitf->m_xFormatters.m_cEnclosedBy_Trailing =
         m_pSEitf->m_xFormatters.m_cEnclosedBy_Leading;
+    }
+    else if (m_xTokenVec2[iCurrentIndex]->bSame(C_ENCLOSED_BY_TRAILING)) {
+      m_pSEitf->m_xFormatters.m_cEnclosedBy_Trailing =
+        *m_xTokenVec2[++iCurrentIndex]->sText().aChar();
+      if (m_pSEitf->m_xFormatters.m_cEnclosedBy_Trailing == '0')
+        m_pSEitf->m_xFormatters.m_cEnclosedBy_Trailing = '\0';
     }
     else if (m_xTokenVec2[iCurrentIndex]->bSame(C_ESCAPE_CHAR)) {
       m_pSEitf->m_xFormatters.m_cEscapeChar = *m_xTokenVec2[++iCurrentIndex]->sText().aChar();

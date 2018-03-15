@@ -1989,9 +1989,9 @@ eEC RapidsSE_InsertRowPartition(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_LoadData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath,
                       Stz* pRecordTerminator, Stz* pFieldSeparator,
-                      Stz* pEnclosedBy, Stz* pEscapeChar,
-                      void** ppValidRows, void** ppInvalidRows,
-                      i8 iTraceLevel)
+                      Stz* pEnclosedByLeading, Stz* pEnclosedByTrailing,
+                      Stz* pEscapeChar, void** ppValidRows,
+                      void** ppInvalidRows, i8 iTraceLevel)
 {
   
   eEC eResult;
@@ -2016,7 +2016,8 @@ eEC RapidsSE_LoadData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath,
     
 //    vTrace("rt = %s\n"_Stz, pRecordTerminator->aChar());
 //    vTrace("fs = %s\n"_Stz, pFieldSeparator->aChar());
-//    vTrace("eb = %s\n"_Stz, pEnclosedBy->aChar());
+//    vTrace("ebl = %s\n"_Stz, pEnclosedByLeading->aChar());
+//    vTrace("ebt = %s\n"_Stz, pEnclosedByLeading->aChar());
 //    vTrace("ec = %s\n"_Stz, pEscapeChar->aChar());
     
     // set the formatters
@@ -2026,11 +2027,8 @@ eEC RapidsSE_LoadData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath,
     if (pFieldSeparator->bEqual("\\t"_Stz))
       pSEitf->m_xFormatters.m_cFieldSeparator   = '\t';
     
-    pSEitf->m_xFormatters.m_cEnclosedBy_Leading  = *(pEnclosedBy->aChar());
-    
-    // temp (rjh)
-    pSEitf->m_xFormatters.m_cEnclosedBy_Trailing =
-      pSEitf->m_xFormatters.m_cEnclosedBy_Leading;
+    pSEitf->m_xFormatters.m_cEnclosedBy_Leading  = *(pEnclosedByLeading->aChar());
+    pSEitf->m_xFormatters.m_cEnclosedBy_Trailing = *(pEnclosedByTrailing->aChar());
     
     pSEitf->m_xFormatters.m_cEscapeChar          = *(pEscapeChar->aChar());
     
