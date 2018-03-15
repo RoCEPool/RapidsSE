@@ -1,0 +1,40 @@
+/*----------------------------------------------------------------------------*/
+/* vch_enclosedBy -- enclosedBy tests for varchar                             */
+/*----------------------------------------------------------------------------*/
+
+// create the table
+create table vch (
+    vch_testno  INTEGER     NOT NULL,
+    vch_field   VARCHAR(32),
+    vch_comment VARCHAR(64) NOT NULL
+);
+
+// load data into the table with enclosed_by as 3 characters
+ESCAPE CONNECTOR se 'load vch' WITH file = ''/home/alka/master/rapidsse/JTEST/vch_braces.csv', enclosed_by = '{x}' , node = 'node1' ;
+failure: 'enclosed_by can only be'
+
+// load data into the table with enclosed_by as {}
+ESCAPE CONNECTOR se 'load vch' WITH file = ''/home/alka/master/rapidsse/JTEST/vch_braces.csv', enclosed_by = '{}' , node = 'node1' ;
+failure contains: 'Warning'
+
+Select * from vch;
+rows:
+(10001 ,'quick brown fox', 'valid: quoted field')
+(10002 ,'quick brown{}fox', 'valid: quoted field')
+
+drop table vch;
+success
+
+CLEANUP {
+  
+  drop table vch;
+  mute
+
+  bye;
+  mute
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* end                                                                        */
+/*----------------------------------------------------------------------------*/
