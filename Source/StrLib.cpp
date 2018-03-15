@@ -1907,6 +1907,23 @@ char* StrLib::sLast(const char* s)
 }
 
 /*----------------------------------------------------------------------------*/
+/* vSkipLeading: skip leading sequence                                        */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bSkipLeading(char** ps, char cEnclosedBy_Leading)
+{
+  while (' ' == **ps)
+    (*ps)++;
+  
+  if (cEnclosedBy_Leading == **ps) {
+    (*ps)++;
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* iLength: get length in bytes of arg (not including terminating null)       */
 /*----------------------------------------------------------------------------*/
 i8 StrLib::iLength(const char* s)
@@ -2196,6 +2213,19 @@ void StrLib::vSkipSpaces(char** ps)
 {
   while (' ' == **ps)
     (*ps)++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* vSkipTrailing: skip trailing sequence                                      */
+/*----------------------------------------------------------------------------*/
+void StrLib::vSkipTrailing(char** ps,  bool bSawEnclosedBy_Leading, char cEnclosedBy_Trailing)
+{
+  while (' ' == **ps)
+    (*ps)++;
+  
+  if (bSawEnclosedBy_Leading && cEnclosedBy_Trailing == **ps) {
+    (*ps)++;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

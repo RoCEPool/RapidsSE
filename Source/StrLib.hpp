@@ -152,9 +152,11 @@ namespace Base
     static i8    iSize(const char* s);
     static void  vSkipDigits(char** ps);
     static bool  bSkipEOL(char** ps);
+    static bool  bSkipLeading(char** ps, char cEnclosedBy_Leading);
     static bool  bSkipNonAlnum(char** ps);
     static bool  bSkipNonDigit(char** ps);
     static void  vSkipSpaces(char** ps);
+    static void  vSkipTrailing(char** ps, bool bSawEnclosedBy_Leading, char cEnclosedBy_Trailing);
     static void  vSkipWhite(char** ps);
     static void  vSprint(Stz* sDst, Stz* sFormat, ...);
     static void  vSprint(char* sDst, Stz* sFormat, ...);

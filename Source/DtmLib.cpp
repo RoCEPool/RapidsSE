@@ -501,7 +501,7 @@ bool DtmLib::bTestForNull(char** aaSrc, DBobjects::Column* pColumn,
   }
       
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for null, \N or '\N'
+  // test for null, \N, '\N' or [\N]
   
   if ( 0 == StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) ) {
     // skip over token null

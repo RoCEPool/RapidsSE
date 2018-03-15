@@ -14,7 +14,7 @@ create table vch (
 );
 
 print "loading table vch..." ;
-ld vch "../JTEST/vch_braces.csv" ;
+ld vch "../JTEST/vch_braces.csv" enclosed_by_leading "{" enclosed_by_trailing "}" ;
 
 fetch vch;
 

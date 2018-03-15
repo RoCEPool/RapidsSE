@@ -248,6 +248,9 @@ bool Int::bExtract(char** aaSrc, Int* aInt, Column* pColumn, Formatters* pFormat
   
   // skip leading spaces
   StrLib::vSkipSpaces(aaSrc);
+  
+  //bool bSawEnclosedLeading =
+  //  StrLib::bSkipLeading(aaSrc,pFormatters->m_cEnclosedBy_Leading);
     
   // is there any data ?
   //if ( ! DtmLib::bIsThereFieldData(**aaSrc,pFormatters) )
@@ -286,6 +289,8 @@ bool Int::bExtract(char** aaSrc, Int* aInt, Column* pColumn, Formatters* pFormat
   
   // skip trailing spaces
   StrLib::vSkipSpaces(aaSrc);
+  
+  //StrLib::vSkipTrailing(aaSrc,bSawEnclosedLeading,pFormatters->m_cEnclosedBy_Trailing);
   
   // should see a FS, NL or CR
   if ( ! DtmLib::bValidFieldEnd(aaSrc,pFormatters) )
