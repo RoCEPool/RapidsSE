@@ -1911,10 +1911,13 @@ char* StrLib::sLast(const char* s)
 /*----------------------------------------------------------------------------*/
 bool StrLib::bSkipLeading(char** ps, char cEnclosedBy_Leading)
 {
+  // skip leading spaces first
   while (' ' == **ps)
     (*ps)++;
   
+  // do we see the leading enclose character?
   if (cEnclosedBy_Leading == **ps) {
+    // skip the leading enclose character
     (*ps)++;
     return true;
   }
@@ -2216,16 +2219,31 @@ void StrLib::vSkipSpaces(char** ps)
 }
 
 /*----------------------------------------------------------------------------*/
-/* vSkipTrailing: skip trailing sequence                                      */
+/* bSkipTrailing: skip trailing sequence                                      */
 /*----------------------------------------------------------------------------*/
-void StrLib::vSkipTrailing(char** ps,  bool bSawEnclosedBy_Leading, char cEnclosedBy_Trailing)
+bool StrLib::bSkipTrailing(char** ps,  bool bSawEnclosedBy_Leading,
+                           char cEnclosedBy_Trailing)
 {
+  // skip any blanks
   while (' ' == **ps)
     (*ps)++;
   
-  if (bSawEnclosedBy_Leading && cEnclosedBy_Trailing == **ps) {
+  // if no leading enclosed then we have a valid end of the field
+  if (! bSawEnclosedBy_Leading)
+    return true;
+  
+  // test we see the trailing enclosed
+  if (cEnclosedBy_Trailing == **ps) {
+    // skip trailing enclosed
     (*ps)++;
+    //skip any blanks
+    while (' ' == **ps)
+      (*ps)++;
+    return true;
   }
+
+  // we expected to see a trailing enclosed but didn't
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -156,7 +156,7 @@ namespace Base
     static bool  bSkipNonAlnum(char** ps);
     static bool  bSkipNonDigit(char** ps);
     static void  vSkipSpaces(char** ps);
-    static void  vSkipTrailing(char** ps, bool bSawEnclosedBy_Leading, char cEnclosedBy_Trailing);
+    static bool  bSkipTrailing(char** ps, bool bSawEnclosedBy_Leading, char cEnclosedBy_Trailing);
     static void  vSkipWhite(char** ps);
     static void  vSprint(Stz* sDst, Stz* sFormat, ...);
     static void  vSprint(char* sDst, Stz* sFormat, ...);
