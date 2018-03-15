@@ -23,6 +23,7 @@ dantbl j10;
 
 sz j10;
 tableSizes;
+
 ex j10 "/tmp/j10_ex.csv" ;
 dex j10 "/tmp/j10_dex.csv" ;
 
@@ -33,7 +34,7 @@ create table j10 (
   j10_name  VARCHAR(32) NOT NULL
 );
 print "loading j10.tbl from exported file ..." ;
-ld j10 "/tmp/j10_ex.csv" ;
+ld j10 "/tmp/j10_ex.csv" enclosed_by_leading "'" enclosed_by_trailing "'";
 
 fetch j10;
 
@@ -48,10 +49,10 @@ ld j10 "/tmp/j10_dex.csv" ;
 
 fetch j10;
 
-//drop table j10;
-/*
-docol epochDump;
+drop table j10;
 
+docol epochDump;
+/*
 
 vfyidx j10 hidden;
 
