@@ -1447,16 +1447,16 @@ bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // enclosed processing
-  //   (processing terminated by the second enclosedBy)
+  //   (processing terminated by the trailing enclosedBy)
   
   if (bIsEnclosed) {
     
     while (**aaSrc) {
       
-      // test for the enclosedBy
+      // test for the leading enclosedBy
       if (cEnclosedBy_Leading == **aaSrc) {
         
-        // skip over the second enclosedBy
+        // skip over the leading enclosedBy
         (*aaSrc)++;
         
         // if its not another enclosedBy go back to the enclosedBy char
@@ -1472,8 +1472,9 @@ bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength,
       // test for escape character
       if (cEscapeChar == **aaSrc) {
         
-        if (StrLib::bEscapeConvert( *((*aaSrc)+1), cEnclosedBy_Leading, cEscapeChar,
-                                   cFieldSeparator, cRecordTerminator)) {
+        if (StrLib::bEscapeConvert( *((*aaSrc)+1),
+                                   cEnclosedBy_Leading,
+                                   cEscapeChar, cFieldSeparator, cRecordTerminator)) {
         
            // skip escape character
           (*aaSrc)++;
@@ -1497,7 +1498,7 @@ bool StrLib::bExtractVarchar(char** aaSrc, char* aVarChar, i8 iMaxLength,
         (*aaSrc)++;
     }
     
-    // did we see an end quote ?
+    // did we see the trailing enclosedBy ?
     if (cEnclosedBy_Trailing != **aaSrc)
       return false;
     
