@@ -1631,6 +1631,14 @@ bool SePrompt::bCmd_LoadTable(void)
         m_pSEitf->m_xFormatters.m_cEnclosedBy_Leading;
     }
     else if (m_xTokenVec2[iCurrentIndex]->bSame(C_ENCLOSED_BY_TRAILING)) {
+      
+      // if trailing is specified, leading should also have been specified
+      if (m_pSEitf->m_xFormatters.m_cEnclosedBy_Leading == '\0') {
+        if ( ! gpAttachMap->m_bMetadata)
+          vWarn("Invalid load : enclosed_by_trailing specified but no enclosed_by_leading\n"_Stz);
+        m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+        return false;
+      }
       m_pSEitf->m_xFormatters.m_cEnclosedBy_Trailing =
         *m_xTokenVec2[++iCurrentIndex]->sText().aChar();
       if (m_pSEitf->m_xFormatters.m_cEnclosedBy_Trailing == '0')
