@@ -35,7 +35,7 @@ create index rdp_idx_0 on rdp(rdp_testno);
 success
 
 // load data into the table with default formatter settings
-escape connector se 'load rdp' with file='../JTEST/rdp.csv', node='node1';
+escape connector se 'load rdp' with file='../JTEST/rdp.csv', enclosed_by="'", node='node1';
 failure contains: 'Success'
 
 

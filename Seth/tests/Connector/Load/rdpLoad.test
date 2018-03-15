@@ -223,7 +223,7 @@ create index rdp_idx_0 on rdp(rdp_testno);
 success
 
 // load data into the table with default formatter settings
-escape connector se 'load rdp' with file='../JTEST/rdp_delimiter_tab.csv', delimiter= '\t', node='node1';
+escape connector se 'load rdp' with file='../JTEST/rdp_delimiter_tab.csv', delimiter= '\t', enclosed_by="'", node='node1';
 failure contains: 'Success'
 
 // unable to select 3000 because of min/max's
@@ -280,11 +280,11 @@ create index rdp_idx_0 on rdp(rdp_testno);
 success
 
 // load data into the table with incorrect enclosed by
-escape connector se 'load rdp' with file='../JTEST/rdp.csv', enclosed_by= 'xy', node='node1';
+escape connector se 'load rdp' with file='../JTEST/rdp.csv', enclosed_by= 'xyz', node='node1';
 failure contains: 'enclosed_by can only be'
 
 // load data into the table with incorrect enclosed by
-escape connector se 'load rdp' with file='../JTEST/rdp.csv', enclosed_by= '\n', node='node1';
+escape connector se 'load rdp' with file='../JTEST/rdp.csv', enclosed_by= '\nx', node='node1';
 failure contains: 'enclosed_by can only be'
 
 // load data into the table with incorrect enclosed by
@@ -402,7 +402,7 @@ failure contains: 'escape_char can only be'
 //-----------------------//
 
 // load data into the table with default formatter settings
-escape connector se 'load rdp' with file='../JTEST/rdp.csv', escape_char='\', node='node1';
+escape connector se 'load rdp' with file='../JTEST/rdp.csv', escape_char='\', enclosed_by="'", node='node1';
 failure contains: 'Success'
 
 // unable to select 3000 because of min/max's
@@ -736,7 +736,7 @@ create index rdp_idx_0 on rdp(rdp_testno);
 success
 
 // load data into the table with default formatter settings
-escape connector se 'load rdp' with file='../JTEST/rdp.csv', terminator=';\r', node='node1';
+escape connector se 'load rdp' with file='../JTEST/rdp.csv', terminator=';\r', enclosed_by="'", node='node1';
 failure contains: 'Success'
 
 // unable to select 3000 because of min/max's
@@ -942,7 +942,7 @@ rows:
 // (3000,'test 3000', false,true, -9223372036854775807,9223372036854775807, -1.797693e+308,1.797693e+308, -9223372036854775807,9223372036854775807, TIMESTAMP '0001-01-01 00:00:00',TIMESTAMP '4000-01-01 12:59:59', 'quick brown fox','quick brown fox')
 
 // export rdp data no table name
-escape connector se 'export' with file='/tmp/rdp.csv' , node='node1';
+escape connector se 'export' with file='/tmp/rdp.csv' , enclosed_by="'", node='node1';
 failure contains: 'No table name'
 
 // export rdp data invalid table name
@@ -991,7 +991,7 @@ create index rdp_idx_0 on rdp(rdp_testno);
 success
 
 // load data into the table with default formatter settings from exported file
-escape connector se 'load rdp' with file='/tmp/rdp.csv' , node='node1';
+escape connector se 'load rdp' with file='/tmp/rdp.csv' , enclosed_by="'", node='node1';
 failure contains: 'Success'
 
 
