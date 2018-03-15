@@ -72,7 +72,7 @@ success
 // load data into the table with default formatter settings
 ESCAPE CONNECTOR se 'load table1' WITH file = '/Users/alkayamarti/rapidsSE/rapidsse/JTEST/basic3.csv', delimiter = '\t',
   terminator = '|\r\n',
-  enclosed_by = '"',
+  enclosed_by_leading = '"',
   escape_char = '^',
   node = 'node1';
 failure contains: 'Success'

@@ -18,7 +18,7 @@ success;
 
 // load data into the table with default formatter settings
 ld vch "../JTEST/vch_no_enclosed_no_escape.csv"
-  enclosed_by "\0" escape_char "\0" ;
+  enclosed_by_leading "\0" escape_char "\0" ;
 success
 
 //fetch vch;
