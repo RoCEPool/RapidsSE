@@ -34,7 +34,7 @@ Formatters::Formatters(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORMATTERS);
 
-  m_cEnclosedBy_Leading  = '\'';
+  m_cEnclosedBy_Leading  = '\0';
   m_cEnclosedBy_Trailing = m_cEnclosedBy_Leading;
   //m_cEnclosedBy_Leading  = '{';
   //m_cEnclosedBy_Trailing = '}';
