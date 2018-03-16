@@ -44,6 +44,7 @@ namespace Datums
                              bool& bValidNull,
                              bool bSkipTrailingSpaces=true);
     static bool bValidFieldEnd(char** aaSrc, Formatters* pFormatters);
+    static bool bValidFieldEnd2(char** aaSrc, Formatters* pFormatters);
   };
 }
 

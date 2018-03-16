@@ -599,6 +599,60 @@ bool DtmLib::bValidFieldEnd(char** aaSrc, Formatters* pFormatters)
     return true;
 }
 
+/*----------------------------------------------------------------------------*/
+/* test for valid field end                                                   */
+/*----------------------------------------------------------------------------*/
+bool DtmLib::bValidFieldEnd2(char** aaSrc, Formatters* pFormatters)
+{
+  // valid field end if we've run out of data
+  if (! **aaSrc)
+    return true;
+  
+  // valid field end if we've encounter the field separator
+  if (**aaSrc == pFormatters->m_cFieldSeparator)
+    return true;
+  
+  if (pFormatters->m_cRecordTerminator) {
+    
+    if (**aaSrc != pFormatters->m_cRecordTerminator)
+      return false;
+
+    if (RE_NONE == pFormatters->m_eRecordEnds)
+      return true;
+    
+    // we fall thru here if we match the record termintor and there
+    // is a record ends
+  }
+  
+  // we can arrive here if there is no record terminator specified
+  // or we match the record terminator and a record ends is specified
+  
+  switch (pFormatters->m_eRecordEnds) {
+    
+    case RE_NL:
+      if (C_NL == **aaSrc)
+        return true;
+      else
+        return false;
+      
+    case RE_CR:
+      if (C_CR == **aaSrc)
+        return true;
+      else
+        return false;
+
+    case RE_CRNL:
+      if (C_CR == **aaSrc && C_NL == *(*aaSrc+1))
+        return true;
+      else
+        return false;
+      
+    default:
+      // otherwise not a field end
+      return false;
+  }
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
