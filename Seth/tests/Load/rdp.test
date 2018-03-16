@@ -209,7 +209,7 @@ rows:
 
 fetch rdp "rdp_testno 2060 =";
 rows:
-  (*, 2060,'test 2060', false,false, 6,6 , 6.0e0,6.0e0 , 6,6   ,TIMESTAMP '1906-01-01 00:00:00',TIMESTAMP '1906-06-06 06:06:06','quick brown fox',null)
+  (*, 2060,'test 2060', false,false, 6,6 , 6.0e0,6.0e0 , 6,6   ,TIMESTAMP '1906-01-01 00:00:00',TIMESTAMP '1906-06-06 06:06:06','quick brown fox','')
 
 fetch rdp "rdp_testno 2061 =";
 rows:
@@ -251,6 +251,9 @@ rows:
 //fetch rdp "rdp_testno 3000 =";
 //rows:
 // (*, 3000,'test 3000', false,true, -9223372036854775807,9223372036854775807, -1.797693e+308,1.797693e+308, -9223372036854775807,9223372036854775807, TIMESTAMP '0001-01-01 00:00:00',TIMESTAMP '4000-01-01 12:59:59', 'quick brown fox','quick brown fox')
+
+fetch rdp "rdp_testno 2092 =";;
+rows: 0
 
 CLEANUP {
   
