@@ -270,7 +270,7 @@ bool Tme::bExtract(char** aaSrc, Tme* aTme, Column* pColumn, Formatters* pFormat
     return false;
   
   // should see a FS, NL or CR
-  if ( ! DtmLib::bValidFieldEnd(aaSrc,pFormatters) )
+  if ( ! DtmLib::bValidFieldEnd(*aaSrc,pFormatters) )
     return false;
   
   return true;

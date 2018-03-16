@@ -43,8 +43,8 @@ namespace Datums
                              Formatters* pFormatters,
                              bool& bValidNull,
                              bool bSkipTrailingSpaces=true);
-    static bool bValidFieldEnd(char** aaSrc, Formatters* pFormatters);
-    static bool bValidFieldEnd2(char** aaSrc, Formatters* pFormatters);
+    static bool bValidFieldEnd(char* aSrc, Formatters* pFormatters);
+    static bool bValidRecordEnd(char* aSrc, Formatters* pFormatters);
 
   };
 }

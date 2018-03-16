@@ -586,36 +586,20 @@ bool DtmLib::bTestForNull(char** aaSrc, DBobjects::Column* pColumn,
 /*----------------------------------------------------------------------------*/
 /* test for valid field end                                                   */
 /*----------------------------------------------------------------------------*/
-bool DtmLib::bValidFieldEnd2(char** aaSrc, Formatters* pFormatters)
-{
-  // should see a FS, NL or CR
-  if (**aaSrc
-      && **aaSrc != pFormatters->m_cFieldSeparator
-      && **aaSrc != pFormatters->m_cRecordTerminator
-      && **aaSrc != C_NL
-      && **aaSrc != C_CR)
-    return false;
-  else
-    return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test for valid field end                                                   */
-/*----------------------------------------------------------------------------*/
-bool DtmLib::bValidFieldEnd(char** aaSrc, Formatters* pFormatters)
+bool DtmLib::bValidFieldEnd(char* aSrc, Formatters* pFormatters)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for end of data
   
   // valid field end if we've run out of data
-  if (! **aaSrc)
+  if (! *aSrc)
     return true;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for explicit field separator
   
   // valid field end if we've encounter the field separator
-  if (**aaSrc == pFormatters->m_cFieldSeparator)
+  if (*aSrc == pFormatters->m_cFieldSeparator)
     return true;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -624,25 +608,25 @@ bool DtmLib::bValidFieldEnd(char** aaSrc, Formatters* pFormatters)
   if (pFormatters->m_cRecordTerminator) {
     
     // not a valid field end if record terminator not seen
-    if (**aaSrc != pFormatters->m_cRecordTerminator)
+    if (*aSrc != pFormatters->m_cRecordTerminator)
       return false;
 
     switch (pFormatters->m_eRecordEnds) {
         
       case RE_NL: // test for \n
-        if (C_NL == *(*aaSrc+1))
+        if (C_NL == *(aSrc+1))
           return true;
         else
           return false;
         
       case RE_CR: // test for \r
-        if (C_CR == *(*aaSrc+1))
+        if (C_CR == *(aSrc+1))
           return true;
         else
           return false;
         
       case RE_CRNL: // test for \r\n
-        if (C_CR == *(*aaSrc+1) && C_NL == *(*aaSrc+2))
+        if (C_CR == *(aSrc+1) && C_NL == *(aSrc+2))
           return true;
         else
           return false;
@@ -658,24 +642,55 @@ bool DtmLib::bValidFieldEnd(char** aaSrc, Formatters* pFormatters)
   switch (pFormatters->m_eRecordEnds) {
     
     case RE_NL: // test for \n
-      if (C_NL == **aaSrc)
+      if (C_NL == *aSrc)
         return true;
       else
         return false;
       
     case RE_CR: // test for \r
-      if (C_CR == **aaSrc)
+      if (C_CR == *aSrc)
         return true;
       else
         return false;
 
     case RE_CRNL: // test for \r\n
-      if (C_CR == **aaSrc && C_NL == *(*aaSrc+1))
+      if (C_CR == *aSrc && C_NL == *(aSrc+1))
         return true;
       else
         return false;
       
     default: // otherwise not a field end
+      return false;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for valid record end                                                  */
+/*----------------------------------------------------------------------------*/
+bool DtmLib::bValidRecordEnd(char* aSrc, Formatters* pFormatters)
+{
+  switch (pFormatters->m_eRecordEnds) {
+      
+    case RE_NL: // test for \n
+      if (C_NL == *aSrc)
+        return true;
+      else
+        return false;
+      
+    case RE_CR: // test for \r
+      if (C_CR == *aSrc)
+        return true;
+      else
+        return false;
+      
+    case RE_CRNL: // test for \r\n
+      if (C_CR == *aSrc && C_NL == *(aSrc+1))
+        return true;
+      else
+        return false;
+      
+    default: // otherwise not a field end
+      RASSERT(0);
       return false;
   }
 }

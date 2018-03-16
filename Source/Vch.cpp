@@ -283,7 +283,7 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn, Formatters* pFormat
   StrLib::vSkipSpaces(aaSrc);
   
   // should see a FS, NL or CR
-  if ( ! DtmLib::bValidFieldEnd(aaSrc,pFormatters) )
+  if ( ! DtmLib::bValidFieldEnd(*aaSrc,pFormatters) )
     return false;
   
   return true;

@@ -224,7 +224,7 @@ bool Bcd::bExtract(char** aaSrc, Bcd* aBcd, DBobjects::Column* pColumn, Formatte
     return false;
   
   // should see a FS, NL or CR
-  if ( ! DtmLib::bValidFieldEnd(aaSrc,pFormatters) )
+  if ( ! DtmLib::bValidFieldEnd(*aaSrc,pFormatters) )
     return false;
   
   return true;
