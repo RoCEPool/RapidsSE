@@ -71,7 +71,13 @@ bool Row::bFormatRow(ColumnVec* pColVec,
   char* aStart = aSrc;
 
   // skip leading spaces
-  StrLib::vSkipSpaces(&aSrc);
+  if (! pFormatters->m_cRecordTerminator)
+    StrLib::vSkipSpaces(&aSrc);
+  else {
+    //while (' ' == *aSrc || C_NL == *aSrc || C_CR == *aSrc)
+    //  aSrc++;
+    StrLib::vSkipWhite(&aSrc);
+  }
 
   // skip blank lines
   if (! DtmLib::bIsThereLineData(*aSrc,pFormatters) ) {
@@ -80,7 +86,7 @@ bool Row::bFormatRow(ColumnVec* pColVec,
   }
 
   // reset back to start
-  aSrc = aStart;
+  //aSrc = aStart;
 
   //vTrace("RawData: ]%256s[\n"_Stz,aRawData);
 
