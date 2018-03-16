@@ -15,7 +15,7 @@ create index idx on vch (vch_testno);
 success;
 
 // load data into the table with default formatter settings
-ld vch "../JTEST/vch_defaults.csv" record_terminator ";" escape_char "\0" ;
+ld vch "../JTEST/vch_term_no_escape.csv" terminator ";" escape_char "\0" enclosed_by_leading "'" ;
 success
 
 //fetch vch;
@@ -23,82 +23,83 @@ success
 
 fetch vch "vch_testno 801 =";
 rows:
-  (*, 801, 'quick brown fox', *);
+  (*, 801, 'quick brown fox', *)
 
 fetch vch "vch_testno 802 =";
 rows:
-  (*, 802, 'quick, brown fox', *);
+  (*, 802, 'quick, brown fox', *)
 
 fetch vch "vch_testno 803 =";
 rows:
-  (*, 803, 'quick brown fox\'s', *);
+  (*, 803, 'quick brown fox\', *)
 
 fetch vch "vch_testno 804 =";
 rows:
-  (*, 804, 'quick brown fox's', *);
+  (*, 804, 'quick brown fox''s', *)
 
 fetch vch "vch_testno 805 =";
 rows:
-  (*, 805, 'quick brown\n fox', *);
+  (*, 805, 'quick brow\\n foxs', *)
 
 fetch vch "vch_testno 806 =";
 rows:
-  (*, 806, 'quick brown fox
-s', *);
+  (*, 806, 'quick brown fox\ns', *)
 
 fetch vch "vch_testno 807 =";
 rows:
-  (*, 807, 'quick brown fox', *);
+  (*, 807, 'quick brown fox', *)
 
 fetch vch "vch_testno 808 =";
 rows:
-  (*, 808, 'quick brown fox', *);
+  (*, 808, 'quick brown fox', *)
 
 fetch vch "vch_testno 809 =";
 rows:
-  (*, 809, '', *);
+  (*, 809, '', *)
 
 fetch vch "vch_testno 810 =";
 rows:
-  (*, 810, 'null', *);
+  (*, 810, 'null', *)
 
 fetch vch "vch_testno 811 =";
 rows:
-  (*, 811, null, *);
+  (*, 811, '\N', *)
 
 fetch vch "vch_testno 812 =";
 rows:
-  (*, 812, 'quick brown fox', *);
+  (*, 812, 'quick brown fox', *)
 
 fetch vch "vch_testno 813 =";
 rows:
-  (*, 813, '   quick brown fox   ', *);
+  (*, 813, '   quick brown fox   ', *)
 
 fetch vch "vch_testno 814 =";
 rows:
-  (*, 814, 'quick brown fox's', *);
+  (*, 814, 'quick brown fox''s''', *)
 
 fetch vch "vch_testno 815 =";
 rows:
-  (*, 815, '', *);
+  (*, 815, '', *)
 
 fetch vch "vch_testno 816 =";
 rows:
-  (*, 816, null, *);
+  (*, 816, null, *)
 
 fetch vch "vch_testno 817 =";
 rows:
-  (*, 817, null, *);
+  (*, 817, '\N', *)
 
 fetch vch "vch_testno 818 =";
 rows:
-  (*, 818, ''quick brown fox
-s', *);
+  (*, 818, 'quick brown fox\ns', *)
+
+drop table vch;
+success
 
 CLEANUP {
   
-  //drop table vch;
-  //mute
+  drop table vch;
+  mute
 
   bye;
   mute
