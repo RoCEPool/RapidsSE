@@ -2,8 +2,17 @@
 /* _scratch -- scratch test                                                   */
 /*============================================================================*/
 
-docol epochTake;
 
+create table vch (
+vch_testno  INTEGER     NOT NULL,
+vch_field   VARCHAR(32),
+vch_comment VARCHAR(64) NOT NULL
+);
+
+// load data into the table with default formatter settings
+ld vch "../JTEST/vch_term_no_enclosed_no_escape.csv" record_terminator ";" record_ends "\r\n" enclosed_by_leading "\0" escape_char "\0" ;
+
+/*
 // (1) create a table
 create table T1 (
 col0   integer not null,
@@ -13,7 +22,7 @@ col1   varchar(32) not null
 // (2) create an index on the table
 create index idx on T1 (col0);
 
-ld T1 "../Seth/tests/Insert/insert.csv" ;
+//ld T1 "../Seth/tests/Insert/insert.csv" ;
 
 // (4) insert some rows into the table
 begin insert T1;
@@ -31,13 +40,14 @@ insert row "10,lmn";
 insert row "82,lmn";
 end insert;
 
+docol epochTake;
+
 // check no of rows
 fetch T1;
 
-//drop table T1;
 
-//docol epochDump;
-/*
+docol epochDump;
+
  
 
  
