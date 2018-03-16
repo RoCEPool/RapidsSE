@@ -462,12 +462,12 @@ i8 DtmLib::iSize(eDM eDatum, char* aSrc)
 /*----------------------------------------------------------------------------*/
 /* is there data?                                                             */
 /*----------------------------------------------------------------------------*/
-bool DtmLib::bIsThereFieldData(char cSrc, Formatters* pFormatters)
+bool DtmLib::bIsThereFieldData(char* aSrc, Formatters* pFormatters)
 {
-  if ( ! cSrc
-       || cSrc == pFormatters->m_cFieldSeparator
-       || cSrc == C_NL
-       || cSrc == C_CR
+  if ( ! *aSrc
+       || *aSrc == pFormatters->m_cFieldSeparator
+       || *aSrc == C_NL
+       || *aSrc == C_CR
       )
     return false;
   else
@@ -477,11 +477,11 @@ bool DtmLib::bIsThereFieldData(char cSrc, Formatters* pFormatters)
 /*----------------------------------------------------------------------------*/
 /* is there data?                                                             */
 /*----------------------------------------------------------------------------*/
-bool DtmLib::bIsThereLineData(char cSrc, Formatters* pFormatters)
+bool DtmLib::bIsThereRecordData(char* aSrc, Formatters* pFormatters)
 {
-  if ( ! cSrc
-      || cSrc == C_NL
-      || cSrc == C_CR
+  if ( ! *aSrc
+      || *aSrc == C_NL
+      || *aSrc == C_CR
       )
     return false;
   else
@@ -524,7 +524,7 @@ bool DtmLib::bTestForNull(char** aaSrc, DBobjects::Column* pColumn,
     return true;
   }
   */
-  if ( ! DtmLib::bIsThereFieldData(**aaSrc, pFormatters))
+  if ( ! DtmLib::bIsThereFieldData(*aaSrc, pFormatters))
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

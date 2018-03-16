@@ -80,7 +80,7 @@ bool Row::bFormatRow(ColumnVec* pColVec,
   }
 
   // skip blank lines
-  if (! DtmLib::bIsThereLineData(*aSrc,pFormatters) ) {
+  if (! DtmLib::bIsThereRecordData(aSrc,pFormatters) ) {
     bBlankLine = true;
     return false;
   }
