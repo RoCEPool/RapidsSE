@@ -80,7 +80,7 @@ rows:
 
 fetch vch "vch_testno 515 =";
 rows:
-  (*, 515, null, *)
+  (*, 515, '', *)
 
 fetch vch "vch_testno 516 =";
 rows:
@@ -94,6 +94,9 @@ fetch vch "vch_testno 518 =";
 rows:
   (*, 518, 'quick brown fox
 s', *)
+
+drop table vch;
+success
 
 CLEANUP {
   
