@@ -65,11 +65,11 @@ dumpidx vchTbl vch_idx3;
 // fetch
 fetch vchTbl "vch_col2 'nine' =";
 rows:
-  (*,9,'nine','109',9,null)
+  (*,9,'nine','109',9,'')
 
 fetch vchTbl "vch_col2 'one zero' =";
 rows:
-  (*,10,'one zero','110',0,null)
+  (*,10,'one zero','110',0,'')
 
 // drop the table
 drop table VchTbl;

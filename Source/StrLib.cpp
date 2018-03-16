@@ -838,6 +838,10 @@ bool StrLib::bExtractDecimal(char** aaSrc, i8& iDecimal, i8 iLength, i8 iScale)
       (*aaSrc)++;
     }
   
+  bool bOnce = false;
+  if (**aaSrc && (isdigit(**aaSrc) || '.' == **aaSrc))
+    bOnce = true;
+  
   // ignore leading 0's
   while (StrLib::bIsDigit(**aaSrc) && StrLib::iDigitToI8(**aaSrc) == 0) {
     (*aaSrc)++;
@@ -889,7 +893,7 @@ bool StrLib::bExtractDecimal(char** aaSrc, i8& iDecimal, i8 iLength, i8 iScale)
   
   iDecimal = uUnsignedResult;
   
-  return true;
+  return bOnce;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -911,6 +915,10 @@ bool StrLib::bExtractFloat(char** aaSrc, d8& dFloat)
     if (**aaSrc && '+' == **aaSrc ) {
       (*aaSrc)++;
     }
+  
+  bool bOnce = false;
+  if (**aaSrc && (isdigit(**aaSrc) || '.' == **aaSrc))
+    bOnce = true;
   
   // collect leading portion (till '.')
   while (StrLib::bIsDigit(**aaSrc))
@@ -948,7 +956,7 @@ bool StrLib::bExtractFloat(char** aaSrc, d8& dFloat)
   dUnsignedResult = atof(xBuffer);
   dFloat = bNegative ? - dUnsignedResult : dUnsignedResult;
   
-  return true;
+  return bOnce;
 }
 
 /*----------------------------------------------------------------------------*/
