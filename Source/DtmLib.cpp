@@ -629,10 +629,6 @@ bool DtmLib::bValidFieldEnd(char** aaSrc, Formatters* pFormatters)
 
     // - at this point we've seen the specified record terminator
     
-    // valid field end if no specified records ends
-    if (RE_NONE == pFormatters->m_eRecordEnds)
-      return true;
-    
     // - we arrive here if we match the record terminator and there
     //   is a specifed record ends
   }
@@ -666,6 +662,21 @@ bool DtmLib::bValidFieldEnd(char** aaSrc, Formatters* pFormatters)
     default: // otherwise not a field end
       return false;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for valid record end                                                  */
+/*----------------------------------------------------------------------------*/
+bool DtmLib::bIsRecordEnd(char* aSrc, Formatters* pFormatters)
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for end of data
+  
+  // valid field end if we've run out of data
+  if (! *aSrc)
+    return true;
+  
+  return false;
 }
 
 /*============================================================================*/

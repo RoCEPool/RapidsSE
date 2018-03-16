@@ -7,19 +7,18 @@ namespace Datums
 {
   enum eRE // record ends
   {
-  /* 0 */ RE_NONE=0,
-  /* 1 */ RE_NL,     // record finally ends with \n
-  /* 2 */ RE_CR,     // record finally ends with \r
-  /* 3 */ RE_CRNL    // record finally ends with \r\n
+  /* 0 */ RE_NL,     // record finally ends with \n
+  /* 1 */ RE_CR,     // record finally ends with \r
+  /* 2 */ RE_CRNL    // record finally ends with \r\n
   };
   
   static Stz* aRE[]
   {
-  /* 0 */ "none"_Stz,
-  /* 1 */ "NL"_Stz,
-  /* 2 */ "CR"_Stz,
-  /* 3 */ "CRNL"_Stz
+  /* 0 */ "NL"_Stz,
+  /* 1 */ "CR"_Stz,
+  /* 2 */ "CRNL"_Stz
   };
+  
   class Formatters : public Object
   {
   public:
