@@ -607,61 +607,22 @@ bool DtmLib::bValidFieldEnd(char* aSrc, Formatters* pFormatters)
   
   if (pFormatters->m_cRecordTerminator) {
     
-    // not a valid field end if record terminator not seen
+    // not a valid field end if expected record terminator is not seen
     if (*aSrc != pFormatters->m_cRecordTerminator)
       return false;
 
-    switch (pFormatters->m_eRecordEnds) {
-        
-      case RE_NL: // test for \n
-        if (C_NL == *(aSrc+1))
-          return true;
-        else
-          return false;
-        
-      case RE_CR: // test for \r
-        if (C_CR == *(aSrc+1))
-          return true;
-        else
-          return false;
-        
-      case RE_CRNL: // test for \r\n
-        if (C_CR == *(aSrc+1) && C_NL == *(aSrc+2))
-          return true;
-        else
-          return false;
-        
-      default: // otherwise not a field end
-        return false;
-    }
+    // test we see the record end after the record termintor
+    bool bValidEnd = bValidRecordEnd(aSrc+1,pFormatters);
+    
+    return bValidEnd;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for explicit record ends
-  
-  switch (pFormatters->m_eRecordEnds) {
-    
-    case RE_NL: // test for \n
-      if (C_NL == *aSrc)
-        return true;
-      else
-        return false;
-      
-    case RE_CR: // test for \r
-      if (C_CR == *aSrc)
-        return true;
-      else
-        return false;
 
-    case RE_CRNL: // test for \r\n
-      if (C_CR == *aSrc && C_NL == *(aSrc+1))
-        return true;
-      else
-        return false;
-      
-    default: // otherwise not a field end
-      return false;
-  }
+  bool bValidEnd = bValidRecordEnd(aSrc,pFormatters);
+  
+  return bValidEnd;
 }
 
 /*----------------------------------------------------------------------------*/
