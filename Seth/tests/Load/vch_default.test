@@ -15,7 +15,7 @@ create index idx on vch (vch_testno);
 success
 
 // load data into the table with default formatter settings
-ld vch "../JTEST/vch_no_enclosed.csv" enclosed_by_leading "\0";
+ld vch "../JTEST/vch_no_enclosed.csv" ;
 success
 
 fetch vch;
@@ -91,6 +91,103 @@ rows:
   (*, 217, 'quick brown fox
 s', *)
 */
+
+drop table vch;
+success
+
+// create the tables
+create table vch (
+vch_testno  INTEGER     NOT NULL,
+vch_field   VARCHAR(32),
+vch_comment VARCHAR(64) NOT NULL
+);
+success
+
+// create an index
+create index idx on vch (vch_testno);
+success
+
+// load data into the table with \0 as enclosed_by_leading
+ld vch "../JTEST/vch_no_enclosed.csv" enclosed_by_leading "\0";
+success
+
+fetch vch;
+rows: 17
+
+fetch vch "vch_testno 201 =";
+rows:
+(*, 201, '''quick brown fox''', *)
+
+fetch vch "vch_testno 202 =";
+rows:
+(*, 202, '''quick brown fox\''s''', *)
+
+fetch vch "vch_testno 203 =";
+rows:
+(*, 203, '''quick brown fox''''s''', *)
+
+fetch vch "vch_testno 204 =";
+rows:
+(*, 204, '''quick brow\n foxs''', *)
+
+fetch vch "vch_testno 205 =";
+rows:
+(*, 205, '''quick brown fox
+s''', *)
+
+fetch vch "vch_testno 206 =";
+rows:
+(*, 206, '''quick brown fox''', *)
+
+fetch vch "vch_testno 207 =";
+rows:
+(*, 207, '   ''quick brown fox''   ', *)
+
+fetch vch "vch_testno 208 =";
+rows:
+(*, 208, '''''', *)
+
+fetch vch "vch_testno 209 =";
+rows:
+(*, 209, '''null''', *)
+
+fetch vch "vch_testno 210 =";
+rows:
+(*, 210, '''\N''', *)
+/*
+ fetch vch "vch_testno 211 =";
+ rows:
+ (*, 211, 'quick brown fox', *)
+ 
+ fetch vch "vch_testno 212 =";
+ rows:
+ (*, 212, '   quick brown fox   ', *)
+ 
+ fetch vch "vch_testno 213 =";
+ rows:
+ (*, 213, 'quick brown fox''s', *)
+ 
+ fetch vch "vch_testno 214 =";
+ rows:
+ (*, 214, '', *)
+ 
+ fetch vch "vch_testno 215 =";
+ rows:
+ (*, 215, null, *)
+ 
+ fetch vch "vch_testno 216 =";
+ rows:
+ (*, 216, null, *)
+ 
+ fetch vch "vch_testno 217 =";
+ rows:
+ (*, 217, 'quick brown fox
+ s', *)
+ */
+
+drop table vch;
+success
+
 CLEANUP {
   
   drop table vch;

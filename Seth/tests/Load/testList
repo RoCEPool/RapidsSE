@@ -1,4 +1,5 @@
 //regressionData.test
+vch_defaults.test
 vch_enclosedBy.test
 vch_term_defaults.test
 vch_no_enclosed.test

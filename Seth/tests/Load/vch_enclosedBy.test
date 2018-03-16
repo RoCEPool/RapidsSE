@@ -107,6 +107,9 @@ rows:
   (*, 121, 'quick brown fox
 s', *)
 
+drop table vch;
+success
+
 CLEANUP {
   
   drop table vch;
