@@ -46,7 +46,6 @@ namespace Datums
     static bool bValidFieldEnd(char** aaSrc, Formatters* pFormatters);
     static bool bValidFieldEnd2(char** aaSrc, Formatters* pFormatters);
 
-    static bool bIsRecordEnd(char* aSrc, Formatters* pFormatters);
   };
 }
 

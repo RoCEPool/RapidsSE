@@ -50,6 +50,9 @@ namespace DBobjects
     i8       iValidRecords(void);
     
     Footer* aFooter(void);
+  
+    static void vAdvanceRecordEnd(char** aSrc, Formatters* pFormatters);
+  
   };
   
   Loader* _pLoader(void* aAddr);

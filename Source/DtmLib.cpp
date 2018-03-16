@@ -627,17 +627,33 @@ bool DtmLib::bValidFieldEnd(char** aaSrc, Formatters* pFormatters)
     if (**aaSrc != pFormatters->m_cRecordTerminator)
       return false;
 
-    // - at this point we've seen the specified record terminator
-    
-    // - we arrive here if we match the record terminator and there
-    //   is a specifed record ends
+    switch (pFormatters->m_eRecordEnds) {
+        
+      case RE_NL: // test for \n
+        if (C_NL == *(*aaSrc+1))
+          return true;
+        else
+          return false;
+        
+      case RE_CR: // test for \r
+        if (C_CR == *(*aaSrc+1))
+          return true;
+        else
+          return false;
+        
+      case RE_CRNL: // test for \r\n
+        if (C_CR == *(*aaSrc+1) && C_NL == *(*aaSrc+2))
+          return true;
+        else
+          return false;
+        
+      default: // otherwise not a field end
+        return false;
+    }
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for explicit record ends
-  
-  // - we can arrive here if there is no record terminator specified
-  //   or we match the record terminator and a record ends is specified
   
   switch (pFormatters->m_eRecordEnds) {
     
@@ -655,64 +671,6 @@ bool DtmLib::bValidFieldEnd(char** aaSrc, Formatters* pFormatters)
 
     case RE_CRNL: // test for \r\n
       if (C_CR == **aaSrc && C_NL == *(*aaSrc+1))
-        return true;
-      else
-        return false;
-      
-    default: // otherwise not a field end
-      return false;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* test for valid record end                                                  */
-/*----------------------------------------------------------------------------*/
-bool DtmLib::bIsRecordEnd(char* aSrc, Formatters* pFormatters)
-{
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for end of data
-  
-  // valid field end if we've run out of data
-  if (! *aSrc)
-    return true;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for explicit record terminator
-  
-  if (pFormatters->m_cRecordTerminator) {
-    
-    // not a valid field end if record terminator not seen
-    if (*aSrc != pFormatters->m_cRecordTerminator)
-      return false;
-    
-    // - at this point we've seen the specified record terminator
-    
-    // - we arrive here if we match the record terminator and there
-    //   is a specifed record ends
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for explicit record ends
-  
-  // - we can arrive here if there is no record terminator specified
-  //   or we match the record terminator and a record ends is specified
-  
-  switch (pFormatters->m_eRecordEnds) {
-      
-    case RE_NL: // test for \n
-      if (C_NL == *aSrc)
-        return true;
-      else
-        return false;
-      
-    case RE_CR: // test for \r
-      if (C_CR == *aSrc)
-        return true;
-      else
-        return false;
-      
-    case RE_CRNL: // test for \r\n
-      if (C_CR == *aSrc && C_NL == *(aSrc+1))
         return true;
       else
         return false;

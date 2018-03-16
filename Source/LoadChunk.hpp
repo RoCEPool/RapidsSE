@@ -30,7 +30,7 @@ namespace DBobjects
     
     void  vCloseFile(void);
     i8    iNextRecord(void);
-    Stz*  aNextRecord(i8& iRecordBytes);
+    Stz*  aNextRecord(i8& iRecordBytes, Formatters* pFormatters);
     void  vOpenFile(s256& sPath);
     void  vReadChunk(i8 iSeek, i8 nBytes);
     

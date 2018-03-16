@@ -156,7 +156,9 @@ bool LoaderSub::bFetchRecord(void)
   i8 iLength;
   bool bValid = false;
   bool bBlankLine;
+  
   Interface::SEitf* pSEitf = m_pLoader->pSEitf();
+  Formatters* pFormatters = &pSEitf->m_xFormatters;
   
   if (! m_bMoreChunks)
     return false;
@@ -164,11 +166,11 @@ bool LoaderSub::bFetchRecord(void)
   while (true) {
     
     // fetch next record from current chunk
-    aRawData = m_pLoadChunk->aNextRecord(iLength);
+    aRawData = m_pLoadChunk->aNextRecord(iLength,pFormatters);
     if (aRawData) {
       // format the raw data into a record
       bValid = Row::bFormatRow(m_pTable->pColumnVec(),
-                               &pSEitf->m_xFormatters,
+                               pFormatters,
                                aRawData, iLength,
                                m_aRecord.aStr(), m_iLength,
                                bBlankLine);
@@ -189,12 +191,12 @@ bool LoaderSub::bFetchRecord(void)
       return false;
     
     // fetch first record from chunk just read
-    aRawData = m_pLoadChunk->aNextRecord(iLength);
+    aRawData = m_pLoadChunk->aNextRecord(iLength,pFormatters);
     if (aRawData) {
       
       // format the raw data into a record
       bValid = Row::bFormatRow(m_pTable->pColumnVec(),
-                               &pSEitf->m_xFormatters,
+                               pFormatters,
                                aRawData, iLength,
                                m_aRecord.aStr(), m_iLength,
                                bBlankLine);

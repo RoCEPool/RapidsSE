@@ -83,7 +83,7 @@ void LoadChunk::vCloseFile(void)
 /*----------------------------------------------------------------------------*/
 /* get address of next record and its byte length                             */
 /*----------------------------------------------------------------------------*/
-Stz* LoadChunk::aNextRecord(i8& iRecordBytes)
+Stz* LoadChunk::aNextRecord(i8& iRecordBytes, Formatters* pFormatters)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK,_FOOTER_);
   
@@ -106,11 +106,13 @@ Stz* LoadChunk::aNextRecord(i8& iRecordBytes)
   Stz* pRecord = m_aNextRecord;
   
   // find end of next record
-  while (C_NL != *((char*)m_aNextRecord) &&
-         C_CR != *((char*)m_aNextRecord))
-    m_aNextRecord++;
+  //while (C_NL != *((char*)m_aNextRecord) &&
+  //       C_CR != *((char*)m_aNextRecord))
+  //  m_aNextRecord++;
   //*m_aNextRecord = '\0';
   
+  Loader::vAdvanceRecordEnd((char**)&m_aNextRecord, pFormatters);
+
   // compute the number of bytes
   iRecordBytes = m_aNextRecord - pRecord;
   
