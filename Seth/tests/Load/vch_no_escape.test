@@ -15,7 +15,7 @@ create index idx on vch (vch_testno);
 success;
 
 // load data into the table with default formatter settings
-ld vch "../JTEST/vch_no_escapes.csv" escape_char "\0";
+ld vch "../JTEST/vch_no_escape.csv" escape_char "\0" enclosed_by_leading "'";
 success
 
 //fetch vch;
@@ -31,11 +31,11 @@ rows:
 
 fetch vch "vch_testno 403 =";
 rows:
- (*, 403, 'quick brown fox\'s', *);
+ (*, 403, 'quick brown fox''s', *);
 
 fetch vch "vch_testno 404 =";
 rows:
-  (*, 404, 'quick brown fox's', *);
+  (*, 404, 'quick brown fox''s', *);
 
 fetch vch "vch_testno 405 =";
 rows:
@@ -72,15 +72,15 @@ rows:
 
 fetch vch "vch_testno 413 =";
 rows:
-  (*, 413, '   quick brown fox   ', *);
+  (*, 413, 'quick brown fox''s', *);
 
 fetch vch "vch_testno 414 =";
 rows:
-  (*, 414, 'quick brown fox's', *);
+  (*, 414, '', *);
 
 fetch vch "vch_testno 415 =";
 rows:
-  (*, 415, '', *);
+  (*, 415, null, *);
 
 fetch vch "vch_testno 416 =";
 rows:
@@ -88,17 +88,16 @@ rows:
 
 fetch vch "vch_testno 417 =";
 rows:
-  (*, 417, null, *);
-
-fetch vch "vch_testno 418 =";
-rows:
-  (*, 418, ''quick brown fox
+  (*, 417, 'quick brown fox
 s', *);
+
+drop table vch;
+success
 
 CLEANUP {
   
-  //drop table vch;
-  //mute
+  drop table vch;
+  mute
 
   bye;
   mute
