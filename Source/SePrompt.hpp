@@ -9,7 +9,8 @@
 
 using namespace CorrectnessAlgebra;
 
-static Stz* C_RECORD_TERMINATOR    = "terminator"_Stz;
+static Stz* C_RECORD_ENDS          = "record_ends"_Stz;
+static Stz* C_RECORD_TERMINATOR    = "record_terminator"_Stz;
 static Stz* C_FIELD_SEPARATOR      = "delimiter"_Stz;
 static Stz* C_ENCLOSED_BY_LEADING  = "enclosed_by_leading"_Stz;
 static Stz* C_ENCLOSED_BY_TRAILING = "enclosed_by_trailing"_Stz;

@@ -43,7 +43,8 @@ namespace Datums
     ~Formatters(void);
   
     void vReset(Formatters* pDefaults);
-  
+    void vShow(void);
+    
     Footer* aFooter(void);
   };
 }

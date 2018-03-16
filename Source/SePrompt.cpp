@@ -1610,16 +1610,59 @@ bool SePrompt::bCmd_LoadTable(void)
       return false;
     }
     
+    //--------------------------------------------------------------------------
+    // C_RECORD_TERMINATOR
     if (m_xTokenVec2[iCurrentIndex]->bSame(C_RECORD_TERMINATOR)) {
       m_pSEitf->m_xFormatters.m_cRecordTerminator = *m_xTokenVec2[++iCurrentIndex]->sText().aChar();
       if (m_pSEitf->m_xFormatters.m_cRecordTerminator == '0')
         m_pSEitf->m_xFormatters.m_cRecordTerminator = '\0';
     }
+    //--------------------------------------------------------------------------
+    // C_RECORD_ENDS
+    else if (m_xTokenVec2[iCurrentIndex]->bSame(C_RECORD_ENDS)) {
+      char cRecordEnds = *m_xTokenVec2[++iCurrentIndex]->sText().aChar();
+      
+      // is record_ends 1 character ?
+      if (m_xTokenVec2[iCurrentIndex]->iLength() == 1) {
+        if (cRecordEnds == '0') {
+          vWarn("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
+          m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+          return false;
+        }
+        else if (cRecordEnds == '\n') {
+          m_pSEitf->m_xFormatters.m_eRecordEnds = RE_NL;
+        }
+        else if (cRecordEnds == '\r') {
+          m_pSEitf->m_xFormatters.m_eRecordEnds = RE_CR;
+        }
+      }
+      // record_ends is 2 characters
+      else if (m_xTokenVec2[iCurrentIndex]->iLength() == 2) {
+        
+        if (m_xTokenVec2[iCurrentIndex]->bSame("\r\n"_Stz)) {
+          m_pSEitf->m_xFormatters.m_eRecordEnds = RE_CRNL;
+        }
+        else {
+          vWarn("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
+          m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+          return false;
+        }
+      }
+      else {
+        vWarn("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
+        m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+        return false;
+      }
+    }
+    //--------------------------------------------------------------------------
+    // C_FIELD_SEPARATOR
     else if (m_xTokenVec2[iCurrentIndex]->bSame(C_FIELD_SEPARATOR)) {
       m_pSEitf->m_xFormatters.m_cFieldSeparator = *m_xTokenVec2[++iCurrentIndex]->sText().aChar();
       if (m_pSEitf->m_xFormatters.m_cFieldSeparator == '0')
         m_pSEitf->m_xFormatters.m_cFieldSeparator = '\0';
     }
+    //--------------------------------------------------------------------------
+    // C_ENCLOSED_BY_LEADING
     else if (m_xTokenVec2[iCurrentIndex]->bSame(C_ENCLOSED_BY_LEADING)) {
       m_pSEitf->m_xFormatters.m_cEnclosedBy_Leading =
         *m_xTokenVec2[++iCurrentIndex]->sText().aChar();
@@ -1630,6 +1673,8 @@ bool SePrompt::bCmd_LoadTable(void)
       m_pSEitf->m_xFormatters.m_cEnclosedBy_Trailing =
         m_pSEitf->m_xFormatters.m_cEnclosedBy_Leading;
     }
+    //--------------------------------------------------------------------------
+    // C_ENCLOSED_BY_TRAILING
     else if (m_xTokenVec2[iCurrentIndex]->bSame(C_ENCLOSED_BY_TRAILING)) {
       
       // if trailing is specified, leading should also have been specified
@@ -1644,6 +1689,8 @@ bool SePrompt::bCmd_LoadTable(void)
       if (m_pSEitf->m_xFormatters.m_cEnclosedBy_Trailing == '0')
         m_pSEitf->m_xFormatters.m_cEnclosedBy_Trailing = '\0';
     }
+    //--------------------------------------------------------------------------
+    // C_ESCAPE_CHAR
     else if (m_xTokenVec2[iCurrentIndex]->bSame(C_ESCAPE_CHAR)) {
       m_pSEitf->m_xFormatters.m_cEscapeChar = *m_xTokenVec2[++iCurrentIndex]->sText().aChar();
       if (m_pSEitf->m_xFormatters.m_cEscapeChar == '0')
@@ -1655,6 +1702,8 @@ bool SePrompt::bCmd_LoadTable(void)
     }
     iCurrentIndex++;
   }
+  
+  m_pSEitf->m_xFormatters.vShow();
   
   //
   // clear the last error

@@ -667,6 +667,8 @@ eTN Tokeniser::eParseNormalString(char* wToken)
       // translate \n into new line
       if ('n' == m_cParsedChar)
         m_cParsedChar = '\n';
+      else if ('r' == m_cParsedChar)
+        m_cParsedChar = '\r';
     }
     
     *z++ = m_cParsedChar;

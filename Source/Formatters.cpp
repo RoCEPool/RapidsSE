@@ -85,6 +85,28 @@ void Formatters::vReset(Formatters* pDefaults)
 }
 
 /*----------------------------------------------------------------------------*/
+/* show                                                                       */
+/*----------------------------------------------------------------------------*/
+void Formatters::vShow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMATTERS);
+  
+  vTrace("enclosed_by_Leading %c\n"_Stz, m_cEnclosedBy_Leading ? m_cEnclosedBy_Leading : '0');
+  vTrace("enclosed_by_trailing %c\n"_Stz, m_cEnclosedBy_Trailing ? m_cEnclosedBy_Trailing : '0');
+  
+  vTrace("escape_char %c\n"_Stz, m_cEscapeChar ? m_cEscapeChar : '0');
+  vTrace("delimiter %c\n"_Stz, m_cFieldSeparator ? m_cFieldSeparator : '0');
+  vTrace("record_terminator %c\n"_Stz, m_cRecordTerminator ? m_cRecordTerminator : '0');
+  vTrace("record_ends %s\n"_Stz, aRE[m_eRecordEnds]);
+  
+  vTrace("date component 0 %s\n"_Stz, aDC[m_eDateComponent[0]]);
+  vTrace("date component 1 %s\n"_Stz, aDC[m_eDateComponent[1]]);
+  vTrace("date component 2 %s\n"_Stz, aDC[m_eDateComponent[2]]);
+  
+  vTrace("date_separator %c\n"_Stz, m_cDateSeparator ? m_cDateSeparator : '0');
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
