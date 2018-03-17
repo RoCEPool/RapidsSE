@@ -264,7 +264,8 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn, Formatters* pFormat
 //  }
     
   i8 iColumnLength = pColumn->iColumnLength();
-  if ( ! StrLib::bExtractVarchar(aaSrc,(char*)aVch,iColumnLength,
+  if ( ! StrLib::bExtractVarchar(aaSrc,(char*)aVch,
+                                 iColumnLength,
                                  pFormatters->m_cEnclosedBy_Leading,
                                  pFormatters->m_cEnclosedBy_Trailing,
                                  pFormatters->m_cEscapeChar,

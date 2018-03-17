@@ -283,7 +283,7 @@ bool Tsp::bExtract(char** aaSrc, Tsp* aTsp, Column* pColumn, Formatters* pFormat
   //  return false;
 
   if ( ! StrLib::bExtractTimestamp2(aaSrc, iYear, iMonth, iDay,
-                                    iHour, iMinute, iSecond, iMicro,
+                                           iHour, iMinute, iSecond, iMicro,
                                     pFormatters->m_eDateComponent,
                                     pFormatters->m_cDateSeparator) )
     return false;

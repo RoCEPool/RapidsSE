@@ -270,7 +270,8 @@ bool Int::bExtract(char** aaSrc, Int* aInt, Column* pColumn, Formatters* pFormat
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // integer field processing
   
-  if ( ! StrLib::bExtractInteger(aaSrc,&aInt->m_iInt,true/*bWithSign*/) )
+  if ( ! StrLib::bExtractInteger(aaSrc,&aInt->m_iInt,
+                                 true/*bWithSign*/) )
     return false;
   
 //  if (0 == pColumn->iColumnNo())
