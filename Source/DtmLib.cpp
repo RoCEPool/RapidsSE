@@ -560,11 +560,12 @@ bool DtmLib::bTestForNull(char** aaSrc, DBobjects::Column* pColumn,
     StrLib::vSkipSpaces(aaSrc);
   
   // check it was "null" only
-  if (**aaSrc
-      && **aaSrc != pFormatters->m_cFieldSeparator
-      && **aaSrc != C_NL
-      && **aaSrc != C_CR) {
-    // no null detected
+  //if (**aaSrc
+  //    && **aaSrc != pFormatters->m_cFieldSeparator
+  //    && **aaSrc != C_NL
+  //    && **aaSrc != C_CR) {
+  if (! bValidFieldEnd(*aaSrc,pFormatters)) {
+    // no well formed null detected
     bValidNull = false; // no null, so neither valid or invalid
     return false;
   }
