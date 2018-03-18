@@ -215,15 +215,8 @@ bool Dte::bExtract(char** aaSrc, Dte* aDte, Column* pColumn, Formatters* pFormat
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
-  // skip leading spaces
-  //StrLib::vSkipSpaces(aaSrc);
-   
   bool bSawEnclosedLeading =
     StrLib::bSkipLeading(aaSrc,pFormatters->m_cEnclosedBy_Leading);
-  
-  // is there any data ?
-  //if ( ! DtmLib::bIsThereFieldData(**aaSrc,pFormatters) )
-  //  return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // null processing
@@ -241,8 +234,6 @@ bool Dte::bExtract(char** aaSrc, Dte* aDte, Column* pColumn, Formatters* pFormat
   
   i8 iYear, iMonth, iDay;
   
-  //if ( ! StrLib::bExtractDate(aaSrc, iYear, iMonth, iDay) )
-  //  return false;
   if ( ! StrLib::bExtractDate2(aaSrc, iYear, iMonth, iDay,
                                pFormatters->m_eDateComponent,
                                pFormatters->m_cDateSeparator) )
@@ -254,16 +245,13 @@ bool Dte::bExtract(char** aaSrc, Dte* aDte, Column* pColumn, Formatters* pFormat
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
-  
-  // skip trailing spaces
-  //StrLib::vSkipSpaces(aaSrc);
-  
+    
   bool bSawEnclosedTrailing =
     StrLib::bSkipTrailing(aaSrc,bSawEnclosedLeading,pFormatters->m_cEnclosedBy_Trailing);
   if (! bSawEnclosedTrailing)
     return false;
   
-  // should see a FS, NL or CR
+  // should see a valid field end
   if ( ! DtmLib::bValidFieldEnd(*aaSrc,pFormatters) )
     return false;
   
