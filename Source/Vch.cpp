@@ -234,35 +234,20 @@ void Vch::vCopy(void* pDst, void* pSrc)
 /*----------------------------------------------------------------------------*/
 bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn, Formatters* pFormatters)
 {
-  // is there data ?
-  //if ( ! DtmLib::bIsThereFieldData(**aaSrc,pFormatters) ) {
-    // empty string
-  //  *(char*)aVch = '\0';
-  //  return true;
-  //}
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for null
   
-  char* aStart = *aaSrc;
-  bool bValidNull;
+  bool bValidNull = false;
   if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull,false)) {
     if ( ! bValidNull )
       return false;
     aVch->vSetNull();
-//    if (13 == pColumn->iColumnNo())
-//      vTrace("vch: null\n"_Stz);
     return true;
   }
-  *(aaSrc) = aStart;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // collect the csv
-//  if (13 == pColumn->iColumnNo()) {
-//    int iDebug = 0;
-//    MemLib::vHexDump(*aaSrc,64);
-//  }
-    
+  // varchar field processing
+  
   i8 iColumnLength = pColumn->iColumnLength();
   if ( ! StrLib::bExtractVarchar(aaSrc,(char*)aVch,
                                  iColumnLength,
@@ -274,16 +259,13 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn, Formatters* pFormat
                                  ) )
     return false;
   
-//    if (13 == pColumn->iColumnNo())
-//     vTrace("vch: ]%s[\n"_Stz,aVch);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
   
   // skip trailing spaces
   StrLib::vSkipSpaces(aaSrc);
   
-  // should see a FS, NL or CR
+  // should see a valid field end
   if ( ! DtmLib::bValidFieldEnd(*aaSrc,pFormatters) )
     return false;
   

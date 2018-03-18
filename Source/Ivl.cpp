@@ -218,7 +218,7 @@ bool Ivl::bExtract(char** aaSrc, Ivl* aIvl, Column* pColumn, Formatters* pFormat
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // null processing
   
-  bool bValidNull;
+  bool bValidNull = false;
   if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;

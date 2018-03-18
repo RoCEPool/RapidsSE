@@ -530,6 +530,8 @@ bool DtmLib::bTestForNull(char** aaSrc, DBobjects::Column* pColumn,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for null, \N, '\N' or [\N]
   
+  char* aStart = *aaSrc;
+  
   if ( 0 == StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) ) {
     // skip over token null
     *aaSrc = (*aaSrc) + 4;
@@ -560,12 +562,9 @@ bool DtmLib::bTestForNull(char** aaSrc, DBobjects::Column* pColumn,
     StrLib::vSkipSpaces(aaSrc);
   
   // check it was "null" only
-  //if (**aaSrc
-  //    && **aaSrc != pFormatters->m_cFieldSeparator
-  //    && **aaSrc != C_NL
-  //    && **aaSrc != C_CR) {
   if (! bValidFieldEnd(*aaSrc,pFormatters)) {
     // no well formed null detected
+    *(aaSrc) = aStart;
     bValidNull = false; // no null, so neither valid or invalid
     return false;
   }

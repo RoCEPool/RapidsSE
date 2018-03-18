@@ -221,7 +221,7 @@ bool Dte::bExtract(char** aaSrc, Dte* aDte, Column* pColumn, Formatters* pFormat
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // null processing
   
-  bool bValidNull;
+  bool bValidNull = false;
   if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;

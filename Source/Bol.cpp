@@ -245,7 +245,7 @@ bool Bol::bExtract(char** aaSrc, Bol* aBol, Column* pColumn, Formatters* pFormat
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // null processing
   
-  bool bValidNull;
+  bool bValidNull = false;
   if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
