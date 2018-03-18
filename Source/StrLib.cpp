@@ -650,7 +650,7 @@ bool StrLib::bExtractBoolean(char** aaSrc, i8& iBoolean)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // true or false processing
+  // true processing
   
   // test for possible true
   if ('t' ==  **aaSrc || 'T' == **aaSrc) {
@@ -670,6 +670,9 @@ bool StrLib::bExtractBoolean(char** aaSrc, i8& iBoolean)
     
     return true; // saw true
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // false processing
   
   // test for possible false
   if ('f' ==  **aaSrc || 'F' == **aaSrc) {
