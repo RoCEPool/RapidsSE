@@ -1578,12 +1578,11 @@ bool SePrompt::bCmd_LoadTable(void)
   s32 sEnclosedBy;
   s32 sEscapeChar;
   
+  bool bResult = false;
+  i8 iIndex;
+  i8 iCurrentIndex;
+  
   ASSERT(m_xTokenVec[0]->bSame("ld"_Stz));
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // reset seitf formatters
-  
-  m_pSEitf->m_xFormatters.vReset(&gpAttachMap->m_xFormatters);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy tokens from m_xTokenVec to m_xTokenVec2
@@ -1593,21 +1592,21 @@ bool SePrompt::bCmd_LoadTable(void)
   // there should be at least 3 tokens
   if (iNumTokens < 3) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return false;
+    goto resetFormatter;
   }
   
-  i8 iIndex = 0;
+  iIndex = 0;
   m_xTokenVec[iIndex++]->vCopy(m_xTokenVec2[0]);
   m_xTokenVec[iIndex++]->vCopy(m_xTokenVec2[1]);
   m_xTokenVec[iIndex++]->vCopy(m_xTokenVec2[2]);
   
-  i8 iCurrentIndex = 3;
+  iCurrentIndex = 3;
     
   while (iNumTokens > iCurrentIndex) {
     
     if (iNumTokens < iCurrentIndex + 2) {
       m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-      return false;
+      goto resetFormatter;
     }
     
     //--------------------------------------------------------------------------
@@ -1627,7 +1626,7 @@ bool SePrompt::bCmd_LoadTable(void)
         if (cRecordEnds == '0') {
           vWarn("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-          return false;
+          goto resetFormatter;
         }
         else if (cRecordEnds == '\n') {
           m_pSEitf->m_xFormatters.m_eRecordEnds = RE_NL;
@@ -1645,13 +1644,13 @@ bool SePrompt::bCmd_LoadTable(void)
         else {
           vWarn("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-          return false;
+          goto resetFormatter;
         }
       }
       else {
         vWarn("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
         m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-        return false;
+        goto resetFormatter;
       }
     }
     //--------------------------------------------------------------------------
@@ -1682,7 +1681,7 @@ bool SePrompt::bCmd_LoadTable(void)
         if ( ! gpAttachMap->m_bMetadata)
           vWarn("Invalid load : enclosed_by_trailing specified but no enclosed_by_leading\n"_Stz);
         m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-        return false;
+        goto resetFormatter;
       }
       m_pSEitf->m_xFormatters.m_cEnclosedBy_Trailing =
         *m_xTokenVec2[++iCurrentIndex]->sText().aChar();
@@ -1698,7 +1697,7 @@ bool SePrompt::bCmd_LoadTable(void)
     }
     else {
       m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-      return false;
+      goto resetFormatter;
     }
     iCurrentIndex++;
   }
@@ -1710,9 +1709,16 @@ bool SePrompt::bCmd_LoadTable(void)
   m_pSEitf->vClearLastError();
 
   if (!bExecuteRequest())
-    return false;
+    goto resetFormatter;
   
-  return true;
+  bResult = true;
+  
+resetFormatter:
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // reset seitf formatters
+  
+  m_pSEitf->m_xFormatters.vReset(&gpAttachMap->m_xFormatters);
+  return bResult;
 }
 
 /*----------------------------------------------------------------------------*/
