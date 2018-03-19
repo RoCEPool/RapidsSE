@@ -2461,51 +2461,6 @@ bool SePrompt::bExtractDateFormat(i8 &i_token)
 }
   
 /*----------------------------------------------------------------------------*/
-/* extract the day format                                                     */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bExtractDayFormat(i8 &i_token)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  if ( (*m_xTokenVec2[++i_token]->sText().aChar() != 'D') &&
-       (*m_xTokenVec2[++i_token]->sText().aChar() != 'D') )
-    return false;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* extract the month format                                                   */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bExtractMonthFormat(i8 &i_token)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  if ( (*m_xTokenVec2[++i_token]->sText().aChar() != 'M') &&
-       (*m_xTokenVec2[++i_token]->sText().aChar() != 'M') )
-    return false;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* extract the year format                                                    */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bExtractYearFormat(i8 &i_token)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  if ( (*m_xTokenVec2[++i_token]->sText().aChar() != 'Y') &&
-       (*m_xTokenVec2[++i_token]->sText().aChar() != 'Y') &&
-       (*m_xTokenVec2[++i_token]->sText().aChar() != 'Y') &&
-       (*m_xTokenVec2[++i_token]->sText().aChar() != 'Y') )
-    return false;
-  
-  
-  return true;
-}
-  
-/*----------------------------------------------------------------------------*/
 /* index return table                                                         */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bIndexReturnTable(Stz* aTableName, Stz* aIndexName)
@@ -2712,19 +2667,6 @@ bool SePrompt::bRemoveTable(Stz* pTableName)
   if (!bExecuteRequest()) {
     return false;
   }
-  
-  return true;
-}
-  
-/*----------------------------------------------------------------------------*/
-/* skip the date separator                                                    */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bSkipDateSeparator(i8 &i_token)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  if (*m_xTokenVec2[++i_token]->sText().aChar() != m_pSEitf->m_xFormatters.m_cDateSeparator)
-    return false;
   
   return true;
 }
