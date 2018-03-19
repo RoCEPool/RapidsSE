@@ -1,0 +1,111 @@
+/*----------------------------------------------------------------------------*/
+/* vch_no_enclosed -- varchar with no enclosed by                             */
+/*----------------------------------------------------------------------------*/
+
+// create the tables
+create table tsp (
+tsp_key    INTEGER     NOT NULL,
+tsp_tsp    TIMESTAMP   NOT NULL
+);
+success
+
+// load data into the table with default formatter settings
+//ld vch "../JTEST/vch_no_enclosed.csv" ;
+//success
+
+create index idx on tsp (tsp_key);
+success
+
+begin insert tsp;
+success
+
+insert row "1,1901-02-03 01:01:01";
+success
+
+insert row "2,1902-03-04 02:02:02.0";
+success
+
+insert row "3,1903-04-05 03:03:03.1";
+success
+
+insert row "4,1904-05-06 04:04:04.01";
+success
+
+insert row "5,1905-06-07 05:05:05.001";
+success
+
+insert row "6,1906-07-08 06:06:06.0001";
+success
+
+insert row "7,1907-08-09 07:07:07.00001";
+success
+
+insert row "8,1908-09-10 08:08:08.000001";
+success
+
+insert row "9,1909-10-11 09:09:09.0000001";
+success
+
+insert row "10,1910-01-02 10:03:04.1";
+success
+
+insert row "11,1911-02-03 11:04:05.12";
+success
+
+insert row "12,1912-03-04 12:05:06.123";
+success
+
+insert row "13,1913-04-05 13:06:07.1234";
+success
+
+insert row "14,1914-05-06 14:07:08.12345";
+success
+
+insert row "15,1915-06-07 15:08:09.123456";
+success
+
+insert row "16,1916-07-08 16:09:10.1234567";
+success
+
+end insert;
+success
+
+fetch tsp;
+rows: 16
+
+fetch tsp "tsp_key 8 =";
+rows:
+  (*, 8, TIMESTAMP '1908-09-10 08:08:08.000001')
+
+fetch tsp "tsp_key 9 =";
+rows:
+  (*, 9, TIMESTAMP '1909-10-11 09:09:09')
+
+fetch tsp "tsp_key 10 =";
+rows:
+  (*, 10, TIMESTAMP '1910-01-02 10:03:04.1')
+
+fetch tsp "tsp_key 15 =";
+rows:
+  (*, 15, TIMESTAMP '1915-06-07 15:08:09.123456')
+
+fetch tsp "tsp_key 16 =";
+rows:
+  (*, 16, TIMESTAMP '1916-07-08 16:09:10.123456')
+
+drop table tsp;
+success
+
+CLEANUP {
+  
+  drop table tsp;
+  mute
+
+  bye;
+  mute
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* end                                                                        */
+/*----------------------------------------------------------------------------*/
