@@ -15,7 +15,7 @@ create index idx on vch (vch_testno);
 success;
 
 // load data into the table with default formatter settings
-ld vch "../JTEST/vch_term_defaults.csv" terminator ";" enclosed_by_leading "'";
+ld vch "../JTEST/vch_term_defaults.csv" record_terminator ";" enclosed_by_leading "'";
 success
 
 fetch vch;

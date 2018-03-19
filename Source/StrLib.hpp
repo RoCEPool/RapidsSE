@@ -29,8 +29,8 @@ namespace Base
   static const int C_NO_CASE = 0;
   static const int C_CASE    = 1;
   
-  static const char C_NL = '\n';
-  static const char C_CR = '\r';
+  static const char C_NL = '\n';    // 0a is newline
+  static const char C_CR = '\r';    // 0d is carriage return
   
   static const char C_COMMA = ',';
   

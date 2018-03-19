@@ -9,12 +9,14 @@
 
 using namespace CorrectnessAlgebra;
 
-static Stz* C_RECORD_ENDS          = "record_ends"_Stz;
-static Stz* C_RECORD_TERMINATOR    = "record_terminator"_Stz;
-static Stz* C_FIELD_SEPARATOR      = "delimiter"_Stz;
+
+static Stz* C_DATE_FORMAT          = "date_format"_Stz;
 static Stz* C_ENCLOSED_BY_LEADING  = "enclosed_by_leading"_Stz;
 static Stz* C_ENCLOSED_BY_TRAILING = "enclosed_by_trailing"_Stz;
 static Stz* C_ESCAPE_CHAR          = "escape_char"_Stz;
+static Stz* C_FIELD_SEPARATOR      = "delimiter"_Stz;
+static Stz* C_RECORD_ENDS          = "record_ends"_Stz;
+static Stz* C_RECORD_TERMINATOR    = "record_terminator"_Stz;
 
 class SePrompt : public Object
 {
@@ -118,6 +120,7 @@ private:
   i8   iCopyTokens(TokenVec& xFromTokenVec, TokenVec& xToTokenVec);
   bool bDropReturnTable(Stz* aTableName);
   bool bEndMakeTable(void);
+  bool bExtractDateFormat(i8 &i_token);
   bool bMakeTable(void);
   bool bPartitionTable(i8 i_Token, i8 iNumTokens);
   bool bPartitionTable(Stz* pColumnName);

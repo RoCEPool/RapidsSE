@@ -11,7 +11,7 @@ create table terminator_cr (
 success
 
 // load data into the table with default formatter settings
-ld terminator_cr "../Seth/tests/Load/terminator_cr.csv" ;
+ld terminator_cr "../Seth/tests/Load/terminator_cr.csv" record_ends "\r";
 success
 
 // create index
