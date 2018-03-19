@@ -71,12 +71,13 @@ bool Row::bFormatRow(ColumnVec* pColVec,
   char* aStart = aSrc;
 
   // skip leading spaces
-  if (! pFormatters->m_cRecordTerminator)
-    StrLib::vSkipSpaces(&aSrc);
-  else {
+  if (pFormatters->m_cRecordTerminator) {
     //while (' ' == *aSrc || C_NL == *aSrc || C_CR == *aSrc)
     //  aSrc++;
     StrLib::vSkipWhite(&aSrc);
+  }
+  else {
+    StrLib::vSkipSpaces(&aSrc);
   }
 
   // skip blank lines

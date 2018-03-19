@@ -167,48 +167,28 @@ bool LoaderSub::bFetchRecord(void)
     
     // fetch next record from current chunk
     aRawData = m_pLoadChunk->aNextRecord(iLength,pFormatters);
-    if (aRawData) {
-      // format the raw data into a record
-      bValid = Row::bFormatRow(m_pTable->pColumnVec(),
-                               pFormatters,
-                               aRawData, iLength,
-                               m_aRecord.aStr(), m_iLength,
-                               bBlankLine);
-      if (bValid) {
-        m_iValidRecords++;
-        return bValid;
-      }
-      else {
-        if ( ! bBlankLine )
-          m_iInvalidRecords++;
-        continue;
-      }
+    
+    if (! aRawData) {
+      // read next chunk
+      m_bMoreChunks = bReadChunk();
+      if (! m_bMoreChunks)
+        return false;
+      continue;
     }
     
-    // read next chunk
-    m_bMoreChunks = bReadChunk();
-    if (! m_bMoreChunks)
-      return false;
-    
-    // fetch first record from chunk just read
-    aRawData = m_pLoadChunk->aNextRecord(iLength,pFormatters);
-    if (aRawData) {
-      
-      // format the raw data into a record
-      bValid = Row::bFormatRow(m_pTable->pColumnVec(),
-                               pFormatters,
-                               aRawData, iLength,
-                               m_aRecord.aStr(), m_iLength,
-                               bBlankLine);
-      if (bValid) {
-        m_iValidRecords++;
-        return bValid;
-      }
-      else {
-        if ( ! bBlankLine )
-          m_iInvalidRecords++;
-      }
+    // format the raw data into a row
+    bValid = Row::bFormatRow(m_pTable->pColumnVec(),
+                             pFormatters,
+                             aRawData, iLength,
+                             m_aRecord.aStr(), m_iLength,
+                             bBlankLine);
+    if (bValid) {
+      m_iValidRecords++;
+      return bValid;
     }
+    
+    if ( ! bBlankLine )
+      m_iInvalidRecords++;
   }
   
   return false;
