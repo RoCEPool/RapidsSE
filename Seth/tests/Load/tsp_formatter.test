@@ -9,13 +9,53 @@ tsp_tsp    TIMESTAMP   NOT NULL
 );
 success
 
-// load data into the table with default formatter settings
-//ld vch "../JTEST/vch_no_enclosed.csv" ;
-//success
-
 create index idx on tsp (tsp_key);
 success
 
+//------------------------------------------------------------------------------
+// load data into the table with incorrect formatters
+
+ld tsp "../Seth/tests/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYYY-DD.MM" ;
+failure: 'invalid command'
+
+ld tsp "../Seth/tests/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "XX-DD-MM" ;
+failure: 'invalid command'
+
+ld tsp "../Seth/tests/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YY-DD-MM" ;
+failure: 'invalid command'
+
+ld tsp "../Seth/tests/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYY-DD-MM" ;
+failure: 'invalid command'
+
+ld tsp "../Seth/tests/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYYY-XX-MM" ;
+failure: 'invalid command'
+
+ld tsp "../Seth/tests/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYYY-DX-MM" ;
+failure: 'invalid command'
+
+ld tsp "../Seth/tests/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYYY-DD-XM" ;
+failure: 'invalid command'
+
+ld tsp "../Seth/tests/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYYY-DD-MX" ;
+failure: 'invalid command'
+
+ld tsp "../Seth/tests/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYYY/DD-MM" ;
+failure: 'invalid command'
+
+ld tsp "../Seth/tests/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "DD-MM-YYYD" ;
+failure: 'invalid command'
+
+ld tsp "../Seth/tests/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "MM-MM-YYYD" ;
+failure: 'invalid command'
+
+ld tsp "../Seth/tests/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "MM-DD/YYYYY" ;
+failure: 'invalid command'
+
+ld tsp "../Seth/tests/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "DD-MM/YYYYY" ;
+failure: 'invalid command'
+
+//------------------------------------------------------------------------------
+// load data into the table with inserts (default formatter)
 begin insert tsp;
 success
 
@@ -67,11 +107,17 @@ success
 insert row "16,1916-07-08 16:09:10.1234567";
 success
 
+insert row "17,1909-11-25 09:09:09.999";
+success
+
+insert row "18,1909-12-26 09:09:09.998";
+success
+
 end insert;
 success
 
 fetch tsp;
-rows: 16
+rows: 18
 
 fetch tsp "tsp_key 8 =";
 rows:
@@ -92,6 +138,367 @@ rows:
 fetch tsp "tsp_key 16 =";
 rows:
   (*, 16, TIMESTAMP '1916-07-08 16:09:10.123456')
+
+fetch tsp "tsp_key 17 =";
+rows:
+  (*, 17, TIMESTAMP '1909-11-25 09:09:09.999')
+
+fetch tsp "tsp_key 18 =";
+rows:
+  (*, 18, TIMESTAMP '1909-12-26 09:09:09.998')
+
+drop table tsp;
+success
+
+//------------------------------------------------------------------------------
+// load data into the table with default formatter settings
+
+// create the tables
+create table tsp (
+  tsp_key    INTEGER     NOT NULL,
+  tsp_tsp    TIMESTAMP   NOT NULL
+);
+success
+
+ld tsp "../Seth/tests/Load/tsp_YYYY-MM-DD.csv" ;
+success
+
+create index idx on tsp (tsp_key);
+success
+
+fetch tsp;
+rows: 18
+
+fetch tsp "tsp_key 8 =";
+rows:
+  (*, 8, TIMESTAMP '1908-09-10 08:08:08.000001')
+
+fetch tsp "tsp_key 9 =";
+rows:
+  (*, 9, TIMESTAMP '1909-10-11 09:09:09')
+
+fetch tsp "tsp_key 10 =";
+rows:
+  (*, 10, TIMESTAMP '1910-01-02 10:03:04.1')
+
+fetch tsp "tsp_key 15 =";
+rows:
+  (*, 15, TIMESTAMP '1915-06-07 15:08:09.123456')
+
+fetch tsp "tsp_key 16 =";
+rows:
+  (*, 16, TIMESTAMP '1916-07-08 16:09:10.123456')
+
+fetch tsp "tsp_key 17 =";
+rows:
+  (*, 17, TIMESTAMP '1909-11-25 09:09:09.999')
+
+fetch tsp "tsp_key 18 =";
+rows:
+  (*, 18, TIMESTAMP '1909-12-26 09:09:09.998')
+
+drop table tsp;
+success
+
+//------------------------------------------------------------------------------
+// load data into the table with default formatter settings
+
+// create the tables
+create table tsp (
+  tsp_key    INTEGER     NOT NULL,
+  tsp_tsp    TIMESTAMP   NOT NULL
+);
+success
+
+
+ld tsp "../Seth/tests/Load/tsp_YYYY-MM-DD.csv" DATE_FORMAT "YYYY-MM-DD";
+success
+
+create index idx on tsp (tsp_key);
+success
+
+fetch tsp;
+rows: 18
+
+fetch tsp "tsp_key 8 =";
+rows:
+(*, 8, TIMESTAMP '1908-09-10 08:08:08.000001')
+
+fetch tsp "tsp_key 9 =";
+rows:
+(*, 9, TIMESTAMP '1909-10-11 09:09:09')
+
+fetch tsp "tsp_key 10 =";
+rows:
+(*, 10, TIMESTAMP '1910-01-02 10:03:04.1')
+
+fetch tsp "tsp_key 15 =";
+rows:
+(*, 15, TIMESTAMP '1915-06-07 15:08:09.123456')
+
+fetch tsp "tsp_key 16 =";
+rows:
+(*, 16, TIMESTAMP '1916-07-08 16:09:10.123456')
+
+fetch tsp "tsp_key 17 =";
+rows:
+  (*, 17, TIMESTAMP '1909-11-25 09:09:09.999')
+
+fetch tsp "tsp_key 18 =";
+rows:
+  (*, 18, TIMESTAMP '1909-12-26 09:09:09.998')
+
+drop table tsp;
+success
+
+//------------------------------------------------------------------------------
+// load data into the table with DATE FORMAT YYYY-DD-MM
+// create the tables
+
+create table tsp (
+  tsp_key    INTEGER     NOT NULL,
+  tsp_tsp    TIMESTAMP   NOT NULL
+);
+success
+
+ld tsp "../Seth/tests/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYYY-DD-MM";
+success
+
+create index idx on tsp (tsp_key);
+success
+
+fetch tsp;
+rows: 18
+
+fetch tsp "tsp_key 8 =";
+rows:
+(*, 8, TIMESTAMP '1908-09-10 08:08:08.000001')
+
+fetch tsp "tsp_key 9 =";
+rows:
+(*, 9, TIMESTAMP '1909-10-11 09:09:09')
+
+fetch tsp "tsp_key 10 =";
+rows:
+(*, 10, TIMESTAMP '1910-01-02 10:03:04.1')
+
+fetch tsp "tsp_key 15 =";
+rows:
+(*, 15, TIMESTAMP '1915-06-07 15:08:09.123456')
+
+fetch tsp "tsp_key 16 =";
+rows:
+(*, 16, TIMESTAMP '1916-07-08 16:09:10.123456')
+
+fetch tsp "tsp_key 17 =";
+rows:
+  (*, 17, TIMESTAMP '1909-11-25 09:09:09.999')
+
+fetch tsp "tsp_key 18 =";
+rows:
+  (*, 18, TIMESTAMP '1909-12-26 09:09:09.998')
+
+ 
+drop table tsp;
+success
+
+//------------------------------------------------------------------------------
+// load data into the table with DATE FORMAT DD-YYYY-MM
+// create the tables
+
+create table tsp (
+tsp_key    INTEGER     NOT NULL,
+tsp_tsp    TIMESTAMP   NOT NULL
+);
+success
+
+ld tsp "../Seth/tests/Load/tsp_DD-YYYY-MM.csv" DATE_FORMAT "DD-YYYY-MM";
+success
+
+create index idx on tsp (tsp_key);
+success
+
+fetch tsp;
+rows: 18
+
+fetch tsp "tsp_key 8 =";
+rows:
+  (*, 8, TIMESTAMP '1908-09-10 08:08:08.000001')
+
+fetch tsp "tsp_key 9 =";
+rows:
+  (*, 9, TIMESTAMP '1909-10-11 09:09:09')
+
+fetch tsp "tsp_key 10 =";
+rows:
+  (*, 10, TIMESTAMP '1910-01-02 10:03:04.1')
+
+fetch tsp "tsp_key 15 =";
+rows:
+  (*, 15, TIMESTAMP '1915-06-07 15:08:09.123456')
+
+fetch tsp "tsp_key 16 =";
+rows:
+  (*, 16, TIMESTAMP '1916-07-08 16:09:10.123456')
+
+fetch tsp "tsp_key 17 =";
+rows:
+  (*, 17, TIMESTAMP '1909-11-25 09:09:09.999')
+
+fetch tsp "tsp_key 18 =";
+rows:
+  (*, 18, TIMESTAMP '1909-12-26 09:09:09.998')
+
+ 
+drop table tsp;
+success
+
+//------------------------------------------------------------------------------
+// load data into the table with DATE FORMAT DD-MM-YYYY
+// create the tables
+
+create table tsp (
+tsp_key    INTEGER     NOT NULL,
+tsp_tsp    TIMESTAMP   NOT NULL
+);
+success
+
+ld tsp "../Seth/tests/Load/tsp_DD-MM-YYYY.csv" DATE_FORMAT "DD-MM-YYYY";
+success
+
+create index idx on tsp (tsp_key);
+success
+
+fetch tsp;
+rows: 18
+
+fetch tsp "tsp_key 8 =";
+rows:
+  (*, 8, TIMESTAMP '1908-09-10 08:08:08.000001')
+
+fetch tsp "tsp_key 9 =";
+rows:
+  (*, 9, TIMESTAMP '1909-10-11 09:09:09')
+
+fetch tsp "tsp_key 10 =";
+rows:
+  (*, 10, TIMESTAMP '1910-01-02 10:03:04.1')
+
+fetch tsp "tsp_key 15 =";
+rows:
+  (*, 15, TIMESTAMP '1915-06-07 15:08:09.123456')
+
+fetch tsp "tsp_key 16 =";
+rows:
+  (*, 16, TIMESTAMP '1916-07-08 16:09:10.123456')
+
+fetch tsp "tsp_key 17 =";
+rows:
+  (*, 17, TIMESTAMP '1909-11-25 09:09:09.999')
+
+fetch tsp "tsp_key 18 =";
+rows:
+  (*, 18, TIMESTAMP '1909-12-26 09:09:09.998')
+
+drop table tsp;
+success
+
+//------------------------------------------------------------------------------
+// load data into the table with DATE FORMAT MM/DD/YYYY
+// create the tables
+
+create table tsp (
+  tsp_key    INTEGER     NOT NULL,
+  tsp_tsp    TIMESTAMP   NOT NULL
+);
+success
+
+ld tsp "../Seth/tests/Load/tsp_MM-DD-YYYY_backslash.csv" DATE_FORMAT "MM/DD/YYYY";
+success
+
+create index idx on tsp (tsp_key);
+success
+
+fetch tsp;
+rows: 18
+
+fetch tsp "tsp_key 8 =";
+rows:
+(*, 8, TIMESTAMP '1908-09-10 08:08:08.000001')
+
+fetch tsp "tsp_key 9 =";
+rows:
+(*, 9, TIMESTAMP '1909-10-11 09:09:09')
+
+fetch tsp "tsp_key 10 =";
+rows:
+(*, 10, TIMESTAMP '1910-01-02 10:03:04.1')
+
+fetch tsp "tsp_key 15 =";
+rows:
+(*, 15, TIMESTAMP '1915-06-07 15:08:09.123456')
+
+fetch tsp "tsp_key 16 =";
+rows:
+(*, 16, TIMESTAMP '1916-07-08 16:09:10.123456')
+
+fetch tsp "tsp_key 17 =";
+rows:
+(*, 17, TIMESTAMP '1909-11-25 09:09:09.999')
+
+fetch tsp "tsp_key 18 =";
+rows:
+(*, 18, TIMESTAMP '1909-12-26 09:09:09.998')
+
+drop table tsp;
+success
+
+//------------------------------------------------------------------------------
+// load data into the table with DATE FORMAT MM/YYYY/DD
+// create the tables
+
+create table tsp (
+  tsp_key    INTEGER     NOT NULL,
+  tsp_tsp    TIMESTAMP   NOT NULL
+);
+success
+
+ld tsp "../Seth/tests/Load/tsp_MM-YYYY-DD_backslash.csv" DATE_FORMAT "MM/YYYY/DD";
+success
+
+create index idx on tsp (tsp_key);
+success
+
+fetch tsp;
+rows: 18
+
+fetch tsp "tsp_key 8 =";
+rows:
+  (*, 8, TIMESTAMP '1908-09-10 08:08:08.000001')
+
+fetch tsp "tsp_key 9 =";
+rows:
+  (*, 9, TIMESTAMP '1909-10-11 09:09:09')
+
+fetch tsp "tsp_key 10 =";
+rows:
+  (*, 10, TIMESTAMP '1910-01-02 10:03:04.1')
+
+fetch tsp "tsp_key 15 =";
+rows:
+  (*, 15, TIMESTAMP '1915-06-07 15:08:09.123456')
+
+fetch tsp "tsp_key 16 =";
+rows:
+  (*, 16, TIMESTAMP '1916-07-08 16:09:10.123456')
+
+fetch tsp "tsp_key 17 =";
+rows:
+  (*, 17, TIMESTAMP '1909-11-25 09:09:09.999')
+
+fetch tsp "tsp_key 18 =";
+rows:
+  (*, 18, TIMESTAMP '1909-12-26 09:09:09.998')
 
 drop table tsp;
 success
