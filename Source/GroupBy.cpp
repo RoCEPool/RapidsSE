@@ -102,7 +102,7 @@ void GroupBy::vApplyBuffer(EntryBuffer* pEntryBuffer)
     char* aCursor = aRow->aColumnDatum(0);
     i8 iOrderKey = *((i8*)aCursor);
     
-    // extract the quantity (its after the fifth C_FS)
+    // extract the quantity (its after the fifth field)
     aCursor = aRow->aColumnDatum(5);
     i8 iQuantity = *((i8*)aCursor);
     
@@ -144,7 +144,7 @@ void GroupBy::vApplyEntry(Entry* pLineItemEntry)
   char* aCursor = aRow->aColumnDatum(0);
   i8 iOrderKey = *((i8*)aCursor);
   
-  // extract the quantity (its after the fifth C_FS)
+  // extract the quantity (its after the fifth field)
   aCursor = aRow->aColumnDatum(5);
   i8 iQuantity = *((i8*)aCursor);
   

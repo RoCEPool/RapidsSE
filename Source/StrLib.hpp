@@ -29,9 +29,8 @@ namespace Base
   static const int C_NO_CASE = 0;
   static const int C_CASE    = 1;
   
-  static const char C_FS = ',';
-  static const char C_NL = '\n';  // newline is 0a
-  static const char C_CR = '\r';  // carriage return is 0d
+  static const char C_NL = '\n';
+  static const char C_CR = '\r';
   
   class StrLib
   {

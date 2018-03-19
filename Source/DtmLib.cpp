@@ -78,7 +78,8 @@ bool DtmLib::bExtract(eDM eDatum, Stz* aDst, char** aaSrc,
              eDatum);
   }
   
-  // move aSrc to after the C_FS but not past the C_NL or C_CR
+  // move aSrc to after the field separator but not past the
+  // record terminator or record ends 
   if ( pFormatters->m_cFieldSeparator &&
        *(*aaSrc) == pFormatters->m_cFieldSeparator )
     (*aaSrc)++;

@@ -198,7 +198,7 @@ void Task::vStrFirstCsv(MP_Task mpTask)
   
   char* aValue = sStr.aChar();
   
-  if (! StrLib::bExtractItem(&aValue,sFirstValue.aChar(), C_FS))
+  if (! StrLib::bExtractItem(&aValue,sFirstValue.aChar(), ','))
     sFirstValue = ""_Stz;
   
   mpTask->m_pDataStack->vPushS48K(sFirstValue);
