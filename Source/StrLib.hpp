@@ -29,7 +29,6 @@ namespace Base
   static const int C_NO_CASE = 0;
   static const int C_CASE    = 1;
   
-  static const char C_FS = ',';
   static const char C_NL = '\n';
   static const char C_CR = '\r';
   
