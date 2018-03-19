@@ -1054,6 +1054,45 @@ bool StrLib::bExtractInteger(char** aaSrc, i8* aI8, bool bWithSign)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bExtractInteger: extract an integer from substr, counting no of digits     */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bExtractInteger(char** aaSrc, i8* aI8, i8 nDigits)
+{
+  char *aSrc = *aaSrc;
+  
+  if ( ! *aSrc )
+    return false;
+  
+  bool bOnce = false;
+  if (*aSrc && isdigit(*aSrc))
+    bOnce = true;
+  
+  nDigits = 0;
+  
+  u8 uUnsignedResult = 0;
+  for ( ; *aSrc; aSrc++) {
+    
+    char c = *aSrc;
+    
+    if ( c < '0' || c > '9' )
+      break;
+    
+    uUnsignedResult = (uUnsignedResult * 10) + (c - '0');
+    nDigits++;
+    
+    // have we exceeded the max ?
+    if (uUnsignedResult > (u8)C_I8_MAX)
+      return false;
+  }
+  
+  *aI8 = uUnsignedResult;
+  
+  *aaSrc = aSrc;
+  
+  return bOnce;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bExtractInterval: extract an interval from substr                          */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bExtractInterval(char** aaSrc, i8& iSecond, i8& iMilli)
