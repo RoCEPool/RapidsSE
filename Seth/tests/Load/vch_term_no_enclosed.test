@@ -15,7 +15,7 @@ create index idx on vch (vch_testno);
 success;
 
 // load data into the table with default formatter settings
-ld vch "../JTEST/vch_defaults.csv" record_terminator ";" escape_char "\0" ;
+ld vch "../JTEST/vch_term_no_enclosed.csv" record_terminator ";" escape_char "\0" ;
 success
 
 //fetch vch;
@@ -23,77 +23,80 @@ success
 
 fetch vch "vch_testno 601 =";
 rows:
-  (*, 601, 'quick brown fox', *);
+  (*, 601, '''quick brown fox''', *)
 
 fetch vch "vch_testno 602 =";
 rows:
-  (*, 602, 'quick, brown fox', *);
+  (*, 602, '''quick brown fox\''', *)
 
 fetch vch "vch_testno 603 =";
 rows:
-  (*, 603, 'quick brown fox\'s', *);
+  (*, 603, '''quick brown fox''''s''', *)
 
 fetch vch "vch_testno 604 =";
 rows:
-  (*, 604, 'quick brown fox's', *);
+  (*, 604, '''quick brow\\n foxs''', *)
 
 fetch vch "vch_testno 605 =";
 rows:
-  (*, 605, 'quick brown\n fox', *);
+  (*, 605, '''quick brown fox
+s''', *);
 
 fetch vch "vch_testno 606 =";
 rows:
-  (*, 606, 'quick brown fox
-s', *);
+(*, 606, '''quick brown fox''', *);
 
 fetch vch "vch_testno 607 =";
 rows:
-  (*, 607, 'quick brown fox', *);
+  (*, 607, '   ''quick brown fox''   ', *)
 
 fetch vch "vch_testno 608 =";
 rows:
-  (*, 608, 'quick brown fox', *);
+  (*, 608, '''''', *)
 
 fetch vch "vch_testno 609 =";
 rows:
-  (*, 609, '', *);
+  (*, 609, '''null''', *)
 
 fetch vch "vch_testno 610 =";
 rows:
-  (*, 610, 'null', *);
+  (*, 610, '''\N''', *)
 
 fetch vch "vch_testno 611 =";
 rows:
-  (*, 611, null, *);
+  (*, 611, 'quick brown fox', *)
 
 fetch vch "vch_testno 612 =";
 rows:
-  (*, 612, 'quick brown fox', *);
+  (*, 612, '   quick brown fox   ', *)
 
 fetch vch "vch_testno 613 =";
 rows:
-  (*, 613, '   quick brown fox   ', *);
+  (*, 613, 'quick brown fox''s''', *)
 
 fetch vch "vch_testno 614 =";
 rows:
-  (*, 614, 'quick brown fox's', *);
+  (*, 614, '', *)
 
 fetch vch "vch_testno 615 =";
 rows:
-  (*, 615, '', *);
+  (*, 615, null, *)
 
 fetch vch "vch_testno 616 =";
 rows:
-  (*, 616, null, *);
+  (*, 616, '\N', *)
 
 fetch vch "vch_testno 617 =";
 rows:
-  (*, 616, null, *);
+  (*, 617, 'quick brown fox\ns', *)
+
+drop table vch;
+success;
 
 CLEANUP {
   
-  //drop table vch;
-  //mute
+  drop table vch;
+  mute
 
   bye;
   mute
