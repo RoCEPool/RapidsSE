@@ -1691,12 +1691,6 @@ bool StrLib::bExtractVarchar2(char** aaSrc,
       break;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // test for a non-printable character
-    
-    if (! isprint(**aaSrc))
-      break;
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // test for the escape character
     
     if (**aaSrc == cEscapeChar) {
@@ -1720,6 +1714,12 @@ bool StrLib::bExtractVarchar2(char** aaSrc,
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // test for a non-printable character
+    
+    if (! isprint(**aaSrc))
+      break;
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // normal character
     
     // append the normal character
@@ -1733,9 +1733,12 @@ bool StrLib::bExtractVarchar2(char** aaSrc,
   // terminate
   *aDst++ = '\0';
   
+  // if this an enclosed varchar we should have expected to
+  // see the trailing enclosedBy
   if (bIsEnclosed)
     return bSawTrailingEnclosed;
   
+  // its not an enclosed varchar so we consider it to be valid
   return true;
 }
 
