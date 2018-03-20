@@ -1988,7 +1988,7 @@ eEC RapidsSE_InsertRowPartition(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel)
 /* load data from file into the table                                         */
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_LoadData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath,
-                      Stz* pRecordTerminator, Stz* pRecordEnds, Stz* pFieldSeparator,
+                      Stz* pRecordTerminator, Stz* pRecordEnds, Stz* pFieldDelimiter,
                       Stz* pEnclosedByLeading, Stz* pEnclosedByTrailing,
                       Stz* pEscapeChar, Stz* pDateFormat,
                       void** ppValidRows, void** ppInvalidRows, i8 iTraceLevel)
@@ -2041,11 +2041,11 @@ eEC RapidsSE_LoadData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath,
       }
     }
     
-    // field separator
-    pSEitf->m_xFormatters.m_cFieldSeparator   = *(pFieldSeparator->aChar());
+    // field delimiter
+    pSEitf->m_xFormatters.m_cFieldDelimiter   = *(pFieldDelimiter->aChar());
     
-    if (pFieldSeparator->bEqual("\\t"_Stz))
-      pSEitf->m_xFormatters.m_cFieldSeparator   = '\t';
+    if (pFieldDelimiter->bEqual("\\t"_Stz))
+      pSEitf->m_xFormatters.m_cFieldDelimiter   = '\t';
     
     pSEitf->m_xFormatters.m_cEnclosedBy_Leading  = *(pEnclosedByLeading->aChar());
     pSEitf->m_xFormatters.m_cEnclosedBy_Trailing = *(pEnclosedByTrailing->aChar());

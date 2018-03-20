@@ -255,7 +255,7 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch,
                                  pFormatters->m_cEnclosedBy_Leading,
                                  pFormatters->m_cEnclosedBy_Trailing,
                                  pFormatters->m_cEscapeChar,
-                                 pFormatters->m_cFieldSeparator,
+                                 pFormatters->m_cFieldDelimiter,
                                  pFormatters->m_cRecordTerminator
                                  ) )
     return false;
@@ -304,7 +304,7 @@ bool Vch::bExtract2(char** aaSrc, Vch* aVch,
                                   pFormatters->m_cEnclosedBy_Leading,
                                   pFormatters->m_cEnclosedBy_Trailing,
                                   pFormatters->m_cEscapeChar,
-                                  pFormatters->m_cFieldSeparator,
+                                  pFormatters->m_cFieldDelimiter,
                                   pFormatters->m_cRecordTerminator
                                  ) )
     return false;

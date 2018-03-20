@@ -78,10 +78,10 @@ bool DtmLib::bExtract(eDM eDatum, Stz* aDst, char** aaSrc,
              eDatum);
   }
   
-  // move aSrc to after the field separator but not past the
+  // move aSrc to after the field delimiter but not past the
   // record terminator or record ends 
-  if ( pFormatters->m_cFieldSeparator &&
-       *(*aaSrc) == pFormatters->m_cFieldSeparator )
+  if ( pFormatters->m_cFieldDelimiter &&
+       *(*aaSrc) == pFormatters->m_cFieldDelimiter )
     (*aaSrc)++;
   
   if (!b)
@@ -491,7 +491,7 @@ bool DtmLib::bIsEnclosed(char** aaSrc, Formatters* pFormatters)
 bool DtmLib::bIsThereFieldData(char* aSrc, Formatters* pFormatters)
 {
   if ( ! *aSrc
-       || *aSrc == pFormatters->m_cFieldSeparator
+       || *aSrc == pFormatters->m_cFieldDelimiter
        || *aSrc == C_NL
        || *aSrc == C_CR
       )
@@ -624,8 +624,8 @@ bool DtmLib::bValidFieldEnd(char* aSrc, Formatters* pFormatters)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for explicit field separator
   
-  // valid field end if we've encounter the field separator
-  if (*aSrc == pFormatters->m_cFieldSeparator)
+  // valid field end if we've encounter the field delimiter
+  if (*aSrc == pFormatters->m_cFieldDelimiter)
     return true;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

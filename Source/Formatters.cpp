@@ -40,7 +40,7 @@ Formatters::Formatters(void)
   //m_cEnclosedBy_Trailing = '}';
   
   m_cEscapeChar = '\\';
-  m_cFieldSeparator = ',';
+  m_cFieldDelimiter = ',';
   m_cRecordTerminator = '\0';
   m_eRecordEnds = RE_NL;
   
@@ -73,10 +73,10 @@ void Formatters::vReset(Formatters* pDefaults)
   m_cEnclosedBy_Trailing = pDefaults->m_cEnclosedBy_Trailing;
   
   m_cEscapeChar       = pDefaults->m_cEscapeChar;
-  m_cFieldSeparator   = pDefaults->m_cFieldSeparator;
+  m_cFieldDelimiter   = pDefaults->m_cFieldDelimiter;
   m_cRecordTerminator = pDefaults->m_cRecordTerminator;
   m_eRecordEnds       = pDefaults->m_eRecordEnds;
-
+  
   m_eDateComponent[0] = pDefaults->m_eDateComponent[0];
   m_eDateComponent[1] = pDefaults->m_eDateComponent[1];
   m_eDateComponent[2] = pDefaults->m_eDateComponent[2];
@@ -95,7 +95,7 @@ void Formatters::vShow(void)
   vTrace("enclosed_by_trailing %c\n"_Stz, m_cEnclosedBy_Trailing ? m_cEnclosedBy_Trailing : '0');
   
   vTrace("escape_char %c\n"_Stz, m_cEscapeChar ? m_cEscapeChar : '0');
-  vTrace("delimiter %c\n"_Stz, m_cFieldSeparator ? m_cFieldSeparator : '0');
+  vTrace("delimiter %c\n"_Stz, m_cFieldDelimiter ? m_cFieldDelimiter : '0');
   vTrace("record_terminator %c\n"_Stz, m_cRecordTerminator ? m_cRecordTerminator : '0');
   vTrace("record_ends %s\n"_Stz, aRE[m_eRecordEnds]);
   

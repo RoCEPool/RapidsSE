@@ -1573,12 +1573,6 @@ bool SePrompt::bCmd_LoadTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  s32 sRecordTerminator;
-  s32 sSeparator;
-  s32 sEnclosedBy;
-  s32 sEscapeChar;
-  s32 sDateFormat;
-  
   bool bResult = false;
   i8 iIndex;
   i8 iCurrentIndex;
@@ -1655,11 +1649,11 @@ bool SePrompt::bCmd_LoadTable(void)
       }
     }
     //--------------------------------------------------------------------------
-    // C_FIELD_SEPARATOR
-    else if (m_xTokenVec2[iCurrentIndex]->bSame(C_FIELD_SEPARATOR)) {
-      m_pSEitf->m_xFormatters.m_cFieldSeparator = *m_xTokenVec2[++iCurrentIndex]->sText().aChar();
-      if (m_pSEitf->m_xFormatters.m_cFieldSeparator == '0')
-        m_pSEitf->m_xFormatters.m_cFieldSeparator = '\0';
+    // C_FIELD_DELIMITER
+    else if (m_xTokenVec2[iCurrentIndex]->bSame(C_FIELD_DELIMITER)) {
+      m_pSEitf->m_xFormatters.m_cFieldDelimiter = *m_xTokenVec2[++iCurrentIndex]->sText().aChar();
+      if (m_pSEitf->m_xFormatters.m_cFieldDelimiter == '0')
+        m_pSEitf->m_xFormatters.m_cFieldDelimiter = '\0';
     }
     //--------------------------------------------------------------------------
     // C_ENCLOSED_BY_LEADING

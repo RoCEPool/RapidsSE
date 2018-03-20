@@ -49,7 +49,7 @@ extern "C" eEC RapidsSE_HashRowPartition(SEitf* pSEitf, Stz* pRow, void** ppPart
 extern "C" eEC RapidsSE_InsertRow(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel);
 extern "C" eEC RapidsSE_InsertRowPartition(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel);
 extern "C" eEC RapidsSE_LoadData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath,
-                                 Stz* pRecordTerminator, Stz* pRecordEnds, Stz* pFieldSeparator,
+                                 Stz* pRecordTerminator, Stz* pRecordEnds, Stz* pFieldDelimiter,
                                  Stz* pEnclosedByLeading, Stz* pEnclosedByTrailing,
                                  Stz* pEscapeChar, Stz* pDateFormat,
                                  void** ppValidRows, void** ppInvalidRows, i8 iTraceLevel);
