@@ -1674,12 +1674,18 @@ bool StrLib::bExtractVarchar2(char** aaSrc,
   while (**aaSrc) {
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // test for the trailing enclosedBy
+    // test for normal end
     
-    if (bIsEnclosed && **aaSrc == cEnclosedBy_Trailing) {
-      bSawTrailingEnclosed = true;
-      break;
+    if (bIsEnclosed) {
+      if (**aaSrc == cEnclosedBy_Trailing) {
+        bSawTrailingEnclosed = true;
+        break;
+      }
     }
+    else if (**aaSrc == cFieldSeparator)
+      break;
+    else if (**aaSrc == cRecordTerminator)
+      break;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // test for a non-printable character
