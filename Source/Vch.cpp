@@ -232,7 +232,8 @@ void Vch::vCopy(void* pDst, void* pSrc)
 /*----------------------------------------------------------------------------*/
 /* extract a varchar field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
-bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn, Formatters* pFormatters)
+bool Vch::bExtract(char** aaSrc, Vch* aVch,
+                   Column* pColumn, Formatters* pFormatters)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for null
@@ -256,6 +257,50 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch, Column* pColumn, Formatters* pFormat
                                  pFormatters->m_cEscapeChar,
                                  pFormatters->m_cFieldSeparator,
                                  pFormatters->m_cRecordTerminator
+                                 ) )
+    return false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
+  
+  // skip trailing spaces
+  StrLib::vSkipSpaces(aaSrc);
+  
+  // should see a valid field end
+  if ( ! DtmLib::bValidFieldEnd(*aaSrc,pFormatters) )
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract a varchar field from csv substr                                    */
+/*----------------------------------------------------------------------------*/
+bool Vch::bExtract2(char** aaSrc, Vch* aVch,
+                    Column* pColumn, Formatters* pFormatters)
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for null
+  
+  bool bValidNull = false;
+  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull,false)) {
+    if ( ! bValidNull )
+      return false;
+    aVch->vSetNull();
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // varchar field processing
+  
+  i8 iColumnLength = pColumn->iColumnLength();
+  if ( ! StrLib::bExtractVarchar2(aaSrc,(char*)aVch,
+                                  iColumnLength,
+                                  pFormatters->m_cEnclosedBy_Leading,
+                                  pFormatters->m_cEnclosedBy_Trailing,
+                                  pFormatters->m_cEscapeChar,
+                                  pFormatters->m_cFieldSeparator,
+                                  pFormatters->m_cRecordTerminator
                                  ) )
     return false;
   

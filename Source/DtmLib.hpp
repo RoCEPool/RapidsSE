@@ -36,6 +36,8 @@ namespace Datums
     static i8 iCmp(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
     static i8 iSize(eDM eDatum, char* pSrc);
   
+  
+    static bool bIsEnclosed(char** aaSrc, Formatters* pFormatters);
     static bool bIsThereFieldData(char* aSrc, Formatters* pFormatters);
     static bool bIsThereRecordData(char* aSrc, Formatters* pFormatters);
     static bool bTestForNull(char** aaSrc,

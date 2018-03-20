@@ -461,6 +461,28 @@ i8 DtmLib::iSize(eDM eDatum, char* aSrc)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is the string enclosed?                                                    */
+/*----------------------------------------------------------------------------*/
+bool DtmLib::bIsEnclosed(char** aaSrc, Formatters* pFormatters)
+{
+  char *aStart = *aaSrc;
+  
+  // find first non-space character
+  while (' ' == **aaSrc)
+    (*aaSrc)++;
+  
+  // is it an enclosed varchar?
+  if (**aaSrc == pFormatters->m_cEnclosedBy_Leading) {
+    (*aaSrc)++;
+    return true;
+  }
+  else {
+    *(aaSrc) = aStart;
+    return false;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* is there data?                                                             */
 /*----------------------------------------------------------------------------*/
 bool DtmLib::bIsThereFieldData(char* aSrc, Formatters* pFormatters)
