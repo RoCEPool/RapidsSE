@@ -11,7 +11,7 @@ create table terminator_cr (
 success
 
 // load data into the table with default formatter settings
-ESCAPE CONNECTOR se 'load terminator_cr' with file='../Seth/tests/Load/terminator_cr.csv' , node='NODE1' ;
+ESCAPE CONNECTOR se 'load terminator_cr' with file='../Seth/tests/Load/terminator_cr.csv' , terminator='\r', node='NODE1' ;
 failure contains: 'Success'
 
 // create index
@@ -34,8 +34,8 @@ rows: 2
 
 CLEANUP {
   
-  drop table terminator_cr;
-  mute
+  //drop table terminator_cr;
+  //mute
 
   bye;
   mute
