@@ -1988,14 +1988,13 @@ eEC RapidsSE_InsertRowPartition(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel)
 /* load data from file into the table                                         */
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_LoadData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath,
-                      Stz* pRecordTerminator, Stz* pFieldSeparator,
+                      Stz* pRecordTerminator, Stz* pRecordEnds, Stz* pFieldSeparator,
                       Stz* pEnclosedByLeading, Stz* pEnclosedByTrailing,
-                      Stz* pEscapeChar, void** ppValidRows,
-                      void** ppInvalidRows, i8 iTraceLevel)
+                      Stz* pEscapeChar, Stz* pDateFormat,
+                      void** ppValidRows, void** ppInvalidRows, i8 iTraceLevel)
 {
   
   eEC eResult;
-  eEC eResponse;
   
   Stz* aApiCall = "RapidsSE_LoadData"_Stz;
   
@@ -2015,6 +2014,7 @@ eEC RapidsSE_LoadData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath,
     VALIDATE_PARAM("c"_Stz, pFilePath);
     
 //    vTrace("rt = %s\n"_Stz, pRecordTerminator->aChar());
+//    vTrace("re = %s\n"_Stz, pRecordEnds);
 //    vTrace("fs = %s\n"_Stz, pFieldSeparator->aChar());
 //    vTrace("ebl = %s\n"_Stz, pEnclosedByLeading->aChar());
 //    vTrace("ebt = %s\n"_Stz, pEnclosedByLeading->aChar());
@@ -2022,6 +2022,26 @@ eEC RapidsSE_LoadData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath,
     
     // set the formatters
     pSEitf->m_xFormatters.m_cRecordTerminator = *(pRecordTerminator->aChar());
+    
+    // extract the record ends
+    if (pRecordEnds->iLength() > 0) {
+      if (pRecordEnds->bSame("\\n"_Stz)) {
+        pSEitf->m_xFormatters.m_eRecordEnds = RE_NL;
+      }
+      else if (pRecordEnds->bSame("\\r"_Stz)) {
+        pSEitf->m_xFormatters.m_eRecordEnds = RE_CR;
+      }
+      else if (pRecordEnds->bSame("\\r\\n"_Stz)) {
+        pSEitf->m_xFormatters.m_eRecordEnds = RE_CRNL;
+      }
+      else {
+        pSEitf->vSetLastError(EC_INVALID_COMMAND);
+        TRACE_ERROR("d",EC_INVALID_COMMAND);
+        return EC_INVALID_COMMAND;
+      }
+    }
+    
+    // field separator
     pSEitf->m_xFormatters.m_cFieldSeparator   = *(pFieldSeparator->aChar());
     
     if (pFieldSeparator->bEqual("\\t"_Stz))
@@ -2032,13 +2052,23 @@ eEC RapidsSE_LoadData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath,
     
     pSEitf->m_xFormatters.m_cEscapeChar          = *(pEscapeChar->aChar());
     
+    // validate and extract the date format componenets
+    if ( pDateFormat->iLength() > 0) {
+
+      if ( ! pSEitf->bExtractDateFormat(pDateFormat) ) {
+        pSEitf->vSetLastError(EC_INVALID_COMMAND);
+        TRACE_ERROR("e",EC_INVALID_COMMAND);
+        return EC_INVALID_COMMAND;
+      }
+    }
+    
     // add a column
     eResult = eExecuteRequest(pSEitf, "ld"_Stz,
                               pTable,
                               pFilePath);
     
-    CHECK_RESULT("d"_Stz);
-    CHECK_RESPONSE("e"_Stz);
+    CHECK_RESULT("f"_Stz);
+    CHECK_RESPONSE("g"_Stz);
     
     // return the vlaid/invalid rows
     *ppInvalidRows = &pSEitf->m_iRowsInvalid;
