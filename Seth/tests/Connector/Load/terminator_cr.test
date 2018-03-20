@@ -32,10 +32,13 @@ rows:
 select * from  terminator_cr;
 rows: 2
 
+drop terminator_cr;
+success
+
 CLEANUP {
   
-  //drop table terminator_cr;
-  //mute
+  drop table terminator_cr;
+  mute
 
   bye;
   mute

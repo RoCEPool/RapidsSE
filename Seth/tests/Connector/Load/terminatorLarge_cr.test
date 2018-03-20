@@ -28,6 +28,9 @@ rows:
 select * from terminator_cr ;
 rows: 6895
 
+drop table terminator_cr;
+success
+
 CLEANUP {
   
   drop table terminator_cr;
