@@ -1672,6 +1672,26 @@ bool StrLib::bExtractVarchar2(char** aaSrc,
   bool bSawTrailingEnclosed = false;
   
   while (**aaSrc) {
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // special case of double enclosedBy
+    
+    if (cEnclosedBy_Trailing == cEnclosedBy_Leading) {
+      if (**aaSrc == cEnclosedBy_Leading && *(*aaSrc+1) == cEnclosedBy_Leading) {
+        
+        // skip the first enclosed character
+        (*aaSrc)++;
+       
+        // append one instance of the enclosedBy character
+        if (iLength++ < iMaxLength)
+          *aDst++ = *(*aaSrc)++;
+        else
+          (*aaSrc)++;
+        
+        continue;
+      }
+      //falls thru if not the case of double enclosedBy
+    }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // test for a non-printable character (e.g. \n or \r)
