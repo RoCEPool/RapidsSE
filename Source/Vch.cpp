@@ -294,13 +294,13 @@ bool Vch::bExtract2(char** aaSrc, Vch* aVch,
   // varchar field processing
   
   i8 iColumnLength = pColumn->iColumnLength();
-  if ( ! StrLib::bExtractVarchar(aaSrc,(char*)aVch,
-                                 iColumnLength,
-                                 pFormatters->m_cEnclosedBy_Leading,
-                                 pFormatters->m_cEnclosedBy_Trailing,
-                                 pFormatters->m_cEscapeChar,
-                                 pFormatters->m_cFieldSeparator,
-                                 pFormatters->m_cRecordTerminator
+  if ( ! StrLib::bExtractVarchar2(aaSrc,(char*)aVch,
+                                  iColumnLength,
+                                  pFormatters->m_cEnclosedBy_Leading,
+                                  pFormatters->m_cEnclosedBy_Trailing,
+                                  pFormatters->m_cEscapeChar,
+                                  pFormatters->m_cFieldSeparator,
+                                  pFormatters->m_cRecordTerminator
                                  ) )
     return false;
   

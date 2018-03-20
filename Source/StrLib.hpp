@@ -113,6 +113,13 @@ namespace Base
                                  char cEscapeChar,
                                  char cFieldSeparator,
                                  char cRecordTerminator);
+    static bool  bExtractVarchar2(char** ps,
+                                  char* aVarchar, i8 iMaxLength,
+                                  char cEnclosedBy_Leading,
+                                  char cEnclosedBy_Trailing,
+                                  char cEscapeChar,
+                                  char cFieldSeparator,
+                                  char cRecordTerminator);
     static bool  bExtractWord(char** ps, char* pWord);
     static bool  bExtractWordString(char** ps, char* pWord);
     static bool  bExtractYear(char** ps, i8& iYear);
