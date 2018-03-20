@@ -289,6 +289,10 @@ bool Vch::bExtract2(char** aaSrc, Vch* aVch,
     aVch->vSetNull();
     return true;
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for enclosed
+  bool bSawEnclosedLeading = DtmLib::bIsEnclosed(aaSrc,pFormatters);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // varchar field processing
@@ -296,6 +300,7 @@ bool Vch::bExtract2(char** aaSrc, Vch* aVch,
   i8 iColumnLength = pColumn->iColumnLength();
   if ( ! StrLib::bExtractVarchar2(aaSrc,(char*)aVch,
                                   iColumnLength,
+                                  bSawEnclosedLeading,
                                   pFormatters->m_cEnclosedBy_Leading,
                                   pFormatters->m_cEnclosedBy_Trailing,
                                   pFormatters->m_cEscapeChar,
@@ -307,8 +312,10 @@ bool Vch::bExtract2(char** aaSrc, Vch* aVch,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
   
-  // skip trailing spaces
-  StrLib::vSkipSpaces(aaSrc);
+  bool bSawEnclosedTrailing =
+    StrLib::bSkipTrailing(aaSrc,bSawEnclosedLeading,pFormatters->m_cEnclosedBy_Trailing);
+  if (! bSawEnclosedTrailing)
+    return false;
   
   // should see a valid field end
   if ( ! DtmLib::bValidFieldEnd(*aaSrc,pFormatters) )

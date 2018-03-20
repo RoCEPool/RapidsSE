@@ -465,6 +465,9 @@ i8 DtmLib::iSize(eDM eDatum, char* aSrc)
 /*----------------------------------------------------------------------------*/
 bool DtmLib::bIsEnclosed(char** aaSrc, Formatters* pFormatters)
 {
+  if (! pFormatters->m_cEnclosedBy_Leading)
+    return false;
+  
   char *aStart = *aaSrc;
   
   // find first non-space character

@@ -1659,6 +1659,7 @@ bool StrLib::bExtractVarchar(char** aaSrc,
 /*----------------------------------------------------------------------------*/
 bool StrLib::bExtractVarchar2(char** aaSrc,
                               char* aVarChar, i8 iMaxLength,
+                              bool bIsEnclosed,
                               char cEnclosedBy_Leading,
                               char cEnclosedBy_Trailing,
                               char cEscapeChar,
@@ -1666,176 +1667,65 @@ bool StrLib::bExtractVarchar2(char** aaSrc,
                               char cRecordTerminator)
 {
   i8 iLength = 0;
+  char *aDst = (char*)aVarChar;
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // is this an enclosed varchar?
+  bool bSawTrailingEnclosed = false;
   
-  char *aChar = (char*)aVarChar;
-  char *aStart = *aaSrc;
-  
-  // find first non-space character
-  while (' ' == **aaSrc)
-    (*aaSrc)++;
-  
-  // is it an enclosed varchar?
-  bool bIsEnclosed = false;
-  if (cEnclosedBy_Leading == **aaSrc) {
-    bIsEnclosed = true;
-    (*aaSrc)++;
-  }
-  else {
-    *(aaSrc) = aStart;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // enclosed processing
-  //   (processing terminated by the trailing enclosedBy)
-  
-  if (bIsEnclosed) {
+  while (**aaSrc) {
     
-    while (**aaSrc) {
-      
-      // test for the leading enclosedBy
-      if (cEnclosedBy_Trailing == **aaSrc) {
-        
-        // skip over the leading enclosedBy
-        (*aaSrc)++;
-        
-        // if its not another enclosedBy go back to the enclosedBy char
-        // and break so as to terminate the enclosed varchar
-        if (cEnclosedBy_Leading != **aaSrc) {
-          (*aaSrc)--;
-          break;
-        }
-        // fall thru here to process the
-        // escaped enclosedBy as ordinary char
-      }
-      else
-        // test for escape character
-        if (cEscapeChar == **aaSrc) {
-          
-          if (StrLib::bEscapeConvert( *((*aaSrc)+1),
-                                     cEnclosedBy_Leading, cEnclosedBy_Trailing,
-                                     cEscapeChar, cFieldSeparator, cRecordTerminator)) {
-            
-            // skip escape character
-            (*aaSrc)++;
-            
-            // must have some non-zero character
-            if ( ! **aaSrc )
-              return false;
-            
-            if (iLength++ < iMaxLength)
-              *aChar++ = StrLib::cEscapeConvert(*(*aaSrc)++);
-            else
-              (*aaSrc)++;
-            
-            continue;
-          }
-        }
-      
-      if (iLength++ < iMaxLength)
-        *aChar++ = *(*aaSrc)++;
-      else
-        (*aaSrc)++;
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // test for the trailing enclosedBy
+    
+    if (bIsEnclosed && **aaSrc == cEnclosedBy_Trailing) {
+      bSawTrailingEnclosed = true;
+      break;
     }
     
-    // did we see the trailing enclosedBy ?
-    if (cEnclosedBy_Trailing != **aaSrc)
-      return false;
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // test for a non-printable character
     
-    (*aaSrc)++;
-    *aChar++ = '\0';
+    if (! isprint(**aaSrc))
+      break;
     
-    return true;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // non-enclosed processing, no record terminator
-  //   (processing terminated by field separator, new line or carriage return)
-  
-  if ( ! cRecordTerminator ) {
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // test for the escape character
     
-    // collect the characters of the varchar
-    while (**aaSrc
-           && cFieldSeparator != **aaSrc
-           && C_NL != **aaSrc
-           && C_CR != **aaSrc) {
-      
-      // test for an escaped character
-      if (cEscapeChar == **aaSrc) {
-        
-        if (StrLib::bEscapeConvert( *((*aaSrc)+1),
-                                   cEnclosedBy_Leading, cEnclosedBy_Trailing,
-                                   cEscapeChar, cFieldSeparator, cRecordTerminator )) {
-          
-          // skip escape character
-          (*aaSrc)++;
-          
-          // must have some non-zero character
-          if ( ! **aaSrc )
-            return false;
-          
-          if (iLength++ < iMaxLength)
-            *aChar++ = StrLib::cEscapeConvert(*(*aaSrc)++);
-          else
-            (*aaSrc)++;
-          
-          continue;
-        }
-      }
-      
-      if (iLength++ < iMaxLength)
-        *aChar++ = *(*aaSrc)++;
-      else
-        (*aaSrc)++;
-    }
-    
-    *aChar++ = '\0';
-    
-    return true;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // non-enclosed processing, with record terminator
-  //   (processing terminated by field separator or record terminator)
-  
-  while (**aaSrc
-         && cFieldSeparator   != **aaSrc
-         && cRecordTerminator != **aaSrc
-         && C_NL != **aaSrc
-         && C_CR != **aaSrc) {
-    
-    // test for escape character
-    if (cEscapeChar == **aaSrc) {
+    if (**aaSrc == cEscapeChar) {
       
       if (StrLib::bEscapeConvert( *((*aaSrc)+1),
                                  cEnclosedBy_Leading, cEnclosedBy_Trailing,
                                  cEscapeChar, cFieldSeparator, cRecordTerminator)) {
         
-        // skip escape character
+        // skip the escape character
         (*aaSrc)++;
         
-        // must have some non-zero character
-        if ( ! **aaSrc )
-          return false;
-        
+        // append the escaped character
         if (iLength++ < iMaxLength)
-          *aChar++ = StrLib::cEscapeConvert(*(*aaSrc)++);
+          *aDst++ = StrLib::cEscapeConvert(*(*aaSrc)++);
         else
           (*aaSrc)++;
         
         continue;
       }
+  
     }
     
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // normal character
+    
+    // append the normal character
     if (iLength++ < iMaxLength)
-      *aChar++ = *(*aaSrc)++;
+      *aDst++ = *(*aaSrc)++;
     else
       (*aaSrc)++;
+    
   }
   
-  *aChar++ = '\0';
+  // terminate
+  *aDst++ = '\0';
+  
+  if (bIsEnclosed)
+    return bSawTrailingEnclosed;
   
   return true;
 }

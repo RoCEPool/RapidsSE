@@ -115,6 +115,7 @@ namespace Base
                                  char cRecordTerminator);
     static bool  bExtractVarchar2(char** ps,
                                   char* aVarchar, i8 iMaxLength,
+                                  bool bIsEnclosed,
                                   char cEnclosedBy_Leading,
                                   char cEnclosedBy_Trailing,
                                   char cEscapeChar,
