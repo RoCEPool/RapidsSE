@@ -40,7 +40,7 @@ success
 
 // load data into the table with default formatter settings
 ESCAPE CONNECTOR se 'load table1' WITH file = '/Users/alkayamarti/rapidsSE/rapidsse/JTEST/basic2.csv',
-terminator = '\r\n', enclosed_by = "''", node = 'node1';
+terminator = '\n', enclosed_by = "''", node = 'node1';
 failure contains: '1 records in error'
 
 Select * from table1;
@@ -70,7 +70,7 @@ success
 
 // load data into the table with default formatter settings
 ESCAPE CONNECTOR se 'load table1' WITH file = '/Users/alkayamarti/rapidsSE/rapidsse/JTEST/basic3.csv', delimiter = '\t',
-  terminator = '|\r\n',
+  terminator = '|\n',
   enclosed_by = '""',
   escape_char = '^',
   node = 'node1';
