@@ -502,6 +502,53 @@ void Vch::vSprintEscaped(Stz* aDst, Stz* aSrc)
 }
 
 /*----------------------------------------------------------------------------*/
+/* sprint vch datum                                                           */
+/*----------------------------------------------------------------------------*/
+void Vch::vSprintEscapedQuotes(Stz* aDst, Stz* aSrc)
+{
+  // test for null
+  Vch* aVch = (Vch*)aSrc;
+  if (aVch->bIsNull()) {
+    StrLib::vSprint(aDst,"null%c"_Stz,'\0');
+    return;
+  }
+  
+  // get the formatters
+  char cEscapeChar = gpAttachMap->m_xFormatters.m_cEscapeChar;
+  
+  char* aDstChar = (char*)aDst;
+  char* aSrcChar = (char*)aSrc;
+  
+  // put leading quote
+  *aDstChar++ = '\'';
+  
+  // copy from src to dst
+  while (*aSrcChar) {
+    
+    if (cEscapeChar == *aSrcChar) {
+      // escape an escape character
+      *aDstChar++ = cEscapeChar;
+      *aDstChar++ = *aSrcChar++;
+    }
+    else
+      
+      if (StrLib::bEscapedSpecial(*aSrcChar)) {
+        // convert special character back to escaped form
+        *aDstChar++ = cEscapeChar;
+        *aDstChar++ = StrLib::cEscapeInverse(*aSrcChar++);
+      }
+      else {
+        // copy an ordinary char
+        *aDstChar++ = *aSrcChar++;
+      }
+  }
+  
+  // put trailing enclosing quote/char and \0 terminate
+  *aDstChar++ = '\'';
+  *aDstChar = '\0';
+}
+
+/*----------------------------------------------------------------------------*/
 /* sprint vch datum with quotes                                               */
 /*----------------------------------------------------------------------------*/
 void Vch::vSprintQuotes(Stz* aDst, Stz* aSrc)

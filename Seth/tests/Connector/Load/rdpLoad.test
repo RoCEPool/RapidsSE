@@ -72,7 +72,7 @@ failure contains: 'Success'
 
 // unable to select 3000 because of min/max's
 select * from rdp where rdp_testno < 3000;
-rows: 40
+rows: 41
 
 // drop the table
 drop table rdp;
@@ -138,7 +138,7 @@ failure contains: 'Success'
 
 // unable to select 3000 because of min/max's
 select * from rdp where rdp_testno < 3000;
-rows: 40
+rows: 41
 
 drop table rdp;
 success
@@ -407,7 +407,8 @@ failure contains: 'Success'
 
 // unable to select 3000 because of min/max's
 select * from rdp where rdp_testno < 3000;
-rows: 40
+rows: 41
+
 select * from rdp where rdp_testno = 2000;
 rows:
   (2000,'test 2000', false,false, 0,0 , 0.0e0,0.0e0 , 0,0   ,TIMESTAMP '1900-01-01 00:00:00',TIMESTAMP '1900-01-01 00:00:00','quick brown \yfox','quick brown fox')
@@ -505,7 +506,7 @@ failure contains: 'Success'
 
 // unable to select 3000 because of min/max's
 select * from rdp where rdp_testno < 3000;
-rows: 40
+rows: 41
 
 drop table rdp;
 success
@@ -514,7 +515,7 @@ success
 //-----------------------//
 // TERMINATOR  \r        //
 //-----------------------//
-
+/*
 // create table again
 create table RDP (
 
@@ -552,11 +553,11 @@ failure contains: 'Success'
 
 // unable to select 3000 because of min/max's
 select * from rdp where rdp_testno < 3000;
-rows: 40
+rows: 41
 
 drop table rdp;
 success
-
+*/
 
 //-----------------------//
 // TERMINATOR  \n        //
@@ -594,17 +595,18 @@ create index rdp_idx_0 on rdp(rdp_testno);
 success
 
 // load data into the table with default formatter settings
-escape connector se 'load rdp' with file='../JTEST/rdp.csv', terminator='\r\n', node='node1';
+
+escape connector se 'load rdp' with file='../JTEST/rdp.csv', terminator='\n', node='node1';
 failure contains: 'Success'
 
 // unable to select 3000 because of min/max's
 select * from rdp where rdp_testno < 3000;
-rows: 40
+rows: 41
 
 drop table rdp;
 success
 
-
+/*
 //-----------------------//
 // TERMINATOR  ;\r\n     //
 //-----------------------//
@@ -646,11 +648,11 @@ failure contains: 'Success'
 
 // unable to select 3000 because of min/max's
 select * from rdp where rdp_testno < 3000;
-rows: 40
+rows: 41
 
 drop table rdp;
 success
-
+*/
 
 //-----------------------//
 // TERMINATOR  ;\n       //
@@ -688,13 +690,13 @@ create index rdp_idx_0 on rdp(rdp_testno);
 success
 
 // load data into the table with default formatter settings
-escape connector se 'load rdp' with file='../JTEST/rdp.csv', terminator=';\n', node='node1';
+escape connector se 'load rdp' with file='../JTEST/rdp_terminator.csv', terminator=';\n', node='node1';
 failure contains: 'Success'
 
 // unable to select 3000 because of min/max's
 select * from rdp where rdp_testno < 3000;
 rows: 40
-
+/*
 drop table rdp;
 success
 
@@ -940,7 +942,7 @@ rows:
 //select * from rdp where rdp_testno = 3000 ;
 //rows:
 // (3000,'test 3000', false,true, -9223372036854775807,9223372036854775807, -1.797693e+308,1.797693e+308, -9223372036854775807,9223372036854775807, TIMESTAMP '0001-01-01 00:00:00',TIMESTAMP '4000-01-01 12:59:59', 'quick brown fox','quick brown fox')
-
+*/
 // export rdp data no table name
 escape connector se 'export' with file='/tmp/rdp.csv' , enclosed_by="'", node='node1';
 failure contains: 'No table name'

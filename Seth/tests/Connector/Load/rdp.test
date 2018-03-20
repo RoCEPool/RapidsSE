@@ -205,8 +205,6 @@ select * from rdp where rdp_testno = 2051 ;
 rows:
 (2051,'test 2051', false,null ,-5,null,-5.0e0,null,-5,null,TIMESTAMP '1905-01-01 00:00:00',null               ,'quick brown fox',null)
 
-
-
 select * from rdp where rdp_testno = 2060 ;
 rows:
   (2060,'test 2060', false,false, 6,6 , 6.0e0,6.0e0 , 6,6   ,TIMESTAMP '1906-01-01 00:00:00',TIMESTAMP '1906-06-06 06:06:06','quick brown fox','')
@@ -292,7 +290,7 @@ create index rdp_idx_0 on rdp(rdp_testno);
 success
 
 // load data into the table with default formatter settings from exported file
-escape connector se 'load rdp' with file='/tmp/rdp.csv' , node='node1';
+escape connector se 'load rdp' with file='/tmp/rdp.csv' , enclosed_by="'", node='node1';
 failure contains: 'Success'
 
 

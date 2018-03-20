@@ -24,6 +24,8 @@ namespace Datums
                         DBobjects::Column* pColumn);
     static void vSprintEscaped(eDM eDatum, Stz* aDst, Stz* aSrc,
                                DBobjects::Column* pColumn);
+    static void vSprintEscapedQuotes(eDM eDatum, Stz* aDst, Stz* aSrc,
+                               DBobjects::Column* pColumn);
     static void vSprintQuotes(eDM eDatum, Stz* aDst, Stz* aSrc,
                               DBobjects::Column* pColumn);
     static bool bLessThan(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
