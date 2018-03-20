@@ -244,6 +244,7 @@ namespace Interface
   
     //--------------------------------------------------------------------------
     void vEndFetch(void);
+    bool bExtractDateFormat(Stz* dateFormat);
     bool bNextBuffer(void);
     bool bNextRow(void);
     bool bNextRow2(i8& nPartition);
