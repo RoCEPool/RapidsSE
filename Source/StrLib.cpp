@@ -1056,7 +1056,7 @@ bool StrLib::bExtractInteger(char** aaSrc, i8* aI8, bool bWithSign)
 /*----------------------------------------------------------------------------*/
 /* bExtractInteger: extract an integer from substr, counting no of digits     */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractInteger(char** aaSrc, i8* aI8, i8 nDigits)
+bool StrLib::bExtractInteger(char** aaSrc, i8* aI8, i8& nDigits)
 {
   char *aSrc = *aaSrc;
   
@@ -1716,6 +1716,7 @@ bool StrLib::bExtractWordString(char** ps, char* pWord)
 /*----------------------------------------------------------------------------*/
 bool StrLib::bExtractYear(char** aaSrc, i8& iYear)
 {
+  /*
   u8 uSubField;
   
   // extract year
@@ -1725,6 +1726,23 @@ bool StrLib::bExtractYear(char** aaSrc, i8& iYear)
   iYear = uSubField;
 
   return true;
+  */
+
+  i8 nDigits;
+  
+  // extract year
+  if ( ! bExtractInteger(aaSrc,&iYear,nDigits) )
+    return false;
+  
+  if (2 == nDigits) {
+    iYear += 2000;
+    return true;
+  }
+  
+  if (4 == nDigits)
+    return true;
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

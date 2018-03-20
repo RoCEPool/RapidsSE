@@ -90,7 +90,7 @@ namespace Base
     static bool  bExtractFloat(char** ps, d8& dFloat);
     static bool  bExtractFraction(char** ps, u8* u, i8 iDigits);
     static bool  bExtractInteger(char** ps, i8* i, bool bWithSign=false);
-    static bool  bExtractInteger(char** ps, i8* i, i8 nDigits);
+    static bool  bExtractInteger(char** ps, i8* i, i8& nDigits);
     static bool  bExtractInterval(char** ps, i8& iSecond, i8& iMilli);
     static bool  bExtractItem(char** ps, char* pItem);
     static bool  bExtractItem(char** ps, char* pItem, char cDelimiter);
