@@ -120,7 +120,7 @@ private:
   i8   iCopyTokens(TokenVec& xFromTokenVec, TokenVec& xToTokenVec);
   bool bDropReturnTable(Stz* aTableName);
   bool bEndMakeTable(void);
-  bool bExtractDateFormat(i8 &i_token);
+  bool bExtractDateFormat(Stz* dateFormat);
   bool bMakeTable(void);
   bool bPartitionTable(i8 i_Token, i8 iNumTokens);
   bool bPartitionTable(Stz* pColumnName);

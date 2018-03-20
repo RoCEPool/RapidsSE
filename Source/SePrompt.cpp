@@ -1697,7 +1697,7 @@ bool SePrompt::bCmd_LoadTable(void)
     // C_DATE_FORMAT
     else if (m_xTokenVec2[iCurrentIndex]->bSame(C_DATE_FORMAT)) {
       // extract date format
-      if ( ! bExtractDateFormat(++iCurrentIndex) ) {
+      if ( ! bExtractDateFormat(m_xTokenVec2[++iCurrentIndex]->sText()) ) {
         if ( ! gpAttachMap->m_bMetadata)
           vWarn("Invalid load : enclosed_by_trailing specified but no enclosed_by_leading\n"_Stz);
         m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
@@ -2268,42 +2268,42 @@ bool SePrompt::bEndMakeTable()
 /*----------------------------------------------------------------------------*/
 /* extract the date separator                                                 */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bExtractDateFormat(i8 &i_token)
+bool SePrompt::bExtractDateFormat(Stz* dateFormat)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   i8 iIndex = 0;
   
   // leading YYYY
-  if (*m_xTokenVec2[i_token]->sText().aChar() == 'Y') {
+  if (*dateFormat->aChar() == 'Y') {
   
     // expect YYYY
-    if ( (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != 'Y') ||
-         (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != 'Y') ||
-         (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != 'Y') ||
-         (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != 'Y') )
+    if ( (*(dateFormat + iIndex++)->aChar() != 'Y') ||
+         (*(dateFormat + iIndex++)->aChar() != 'Y') ||
+         (*(dateFormat + iIndex++)->aChar() != 'Y') ||
+         (*(dateFormat + iIndex++)->aChar() != 'Y') )
       return false;
     
     // extract format separator
-    Stz* pSeparator= m_xTokenVec2[i_token]->sText() + iIndex++;
+    Stz* pSeparator= dateFormat + iIndex++;
     m_pSEitf->m_xFormatters.m_cDateSeparator = *pSeparator->aChar();
     
     // is next character 'M' ?
-    if (*(m_xTokenVec2[i_token]->sText() + iIndex)->aChar() == 'M') {
+    if (*(dateFormat + iIndex)->aChar() == 'M') {
       
       // FORMAT should be YYYY-MM-DD
       // expect another M
-      if ( (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != 'M') ||
-           (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != 'M'))
+      if ( (*(dateFormat + iIndex++)->aChar() != 'M') ||
+           (*(dateFormat + iIndex++)->aChar() != 'M'))
         return false;
       
       // expect format separator
-      if ( (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != m_pSEitf->m_xFormatters.m_cDateSeparator) )
+      if ( (*(dateFormat + iIndex++)->aChar() != m_pSEitf->m_xFormatters.m_cDateSeparator) )
         return false;
       
       // expect DD
-      if ( (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != 'D') ||
-           (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != 'D') )
+      if ( (*(dateFormat + iIndex++)->aChar() != 'D') ||
+           (*(dateFormat + iIndex++)->aChar() != 'D') )
         return false;
       
       m_pSEitf->m_xFormatters.m_eDateComponent[0] = DC_YYYY;
@@ -2315,17 +2315,17 @@ bool SePrompt::bExtractDateFormat(i8 &i_token)
     else {
       // FORMAT should be YYYY-DD-MM
       // expect DD
-      if ( (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != 'D') ||
-           (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != 'D'))
+      if ( (*(dateFormat + iIndex++)->aChar() != 'D') ||
+           (*(dateFormat + iIndex++)->aChar() != 'D'))
         return false;
       
       // expect format separator
-      if ( (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != m_pSEitf->m_xFormatters.m_cDateSeparator) )
+      if ( (*(dateFormat + iIndex++)->aChar() != m_pSEitf->m_xFormatters.m_cDateSeparator) )
         return false;
       
       // expect MM
-      if ( (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != 'M') ||
-           (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != 'M') )
+      if ( (*(dateFormat + iIndex++)->aChar() != 'M') ||
+           (*(dateFormat + iIndex++)->aChar() != 'M') )
         return false;
       
       m_pSEitf->m_xFormatters.m_eDateComponent[0] = DC_YYYY;
@@ -2335,35 +2335,35 @@ bool SePrompt::bExtractDateFormat(i8 &i_token)
     }
   }
   // leading MM
-  else if (*m_xTokenVec2[i_token]->sText().aChar() == 'M') {
+  else if (*dateFormat->aChar() == 'M') {
     
     // expect MM
-    if ( (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != 'M') ||
-         (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != 'M') )
+    if ( (*(dateFormat + iIndex++)->aChar() != 'M') ||
+         (*(dateFormat + iIndex++)->aChar() != 'M') )
       return false;
     
     // extract format separator
-    Stz* pSeparator= m_xTokenVec2[i_token]->sText() + iIndex++;
+    Stz* pSeparator= dateFormat + iIndex++;
     m_pSEitf->m_xFormatters.m_cDateSeparator = *pSeparator->aChar();
     
     // is next character 'Y' ?
-    if (*(m_xTokenVec2[i_token]->sText() + iIndex)->aChar() == 'Y') {
+    if (*(dateFormat + iIndex)->aChar() == 'Y') {
       
       // FORMAT should be MM-YYYY-DD
       // expect YYY
-      if ( (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != 'Y') ||
-           (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != 'Y') ||
-           (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != 'Y') ||
-           (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != 'Y') )
+      if ( (*(dateFormat + iIndex++)->aChar() != 'Y') ||
+           (*(dateFormat + iIndex++)->aChar() != 'Y') ||
+           (*(dateFormat + iIndex++)->aChar() != 'Y') ||
+           (*(dateFormat + iIndex++)->aChar() != 'Y') )
         return false;
       
       // expect format separator
-      if ( (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != m_pSEitf->m_xFormatters.m_cDateSeparator) )
+      if ( (*(dateFormat + iIndex++)->aChar() != m_pSEitf->m_xFormatters.m_cDateSeparator) )
         return false;
       
       // expect DD
-      if ( (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != 'D') ||
-           (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != 'D') )
+      if ( (*(dateFormat + iIndex++)->aChar() != 'D') ||
+           (*(dateFormat + iIndex++)->aChar() != 'D') )
         return false;
       
       m_pSEitf->m_xFormatters.m_eDateComponent[0] = DC_MM;
@@ -2373,19 +2373,19 @@ bool SePrompt::bExtractDateFormat(i8 &i_token)
     else {
       // FORMAT should be MM-DD-YYYY
       // expect DD
-      if ( (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != 'D') ||
-           (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != 'D'))
+      if ( (*(dateFormat + iIndex++)->aChar() != 'D') ||
+           (*(dateFormat + iIndex++)->aChar() != 'D'))
         return false;
       
       // expect format separator
-      if ( (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != m_pSEitf->m_xFormatters.m_cDateSeparator) )
+      if ( (*(dateFormat + iIndex++)->aChar() != m_pSEitf->m_xFormatters.m_cDateSeparator) )
         return false;
       
       // expect YYYY
-      if ( (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != 'Y') ||
-           (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != 'Y') ||
-           (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != 'Y') ||
-           (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != 'Y') )
+      if ( (*(dateFormat + iIndex++)->aChar() != 'Y') ||
+           (*(dateFormat + iIndex++)->aChar() != 'Y') ||
+           (*(dateFormat + iIndex++)->aChar() != 'Y') ||
+           (*(dateFormat + iIndex++)->aChar() != 'Y') )
         return false;
       
       m_pSEitf->m_xFormatters.m_eDateComponent[0] = DC_MM;
@@ -2395,35 +2395,35 @@ bool SePrompt::bExtractDateFormat(i8 &i_token)
     }
   }
   // leading DD
-  else if (*m_xTokenVec2[i_token]->sText().aChar() == 'D') {
+  else if (*dateFormat->aChar() == 'D') {
     
     // expect DD
-    if ( (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != 'D') ||
-         (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != 'D') )
+    if ( (*(dateFormat + iIndex++)->aChar() != 'D') ||
+         (*(dateFormat + iIndex++)->aChar() != 'D') )
       return false;
     
     // extract format separator
-    Stz* pSeparator= m_xTokenVec2[i_token]->sText() + iIndex++;
+    Stz* pSeparator= dateFormat + iIndex++;
     m_pSEitf->m_xFormatters.m_cDateSeparator = *pSeparator->aChar();
     
     // is next character 'M' ?
-    if (*(m_xTokenVec2[i_token]->sText() + iIndex)->aChar() == 'M') {
+    if (*(dateFormat + iIndex)->aChar() == 'M') {
       
       // FORMAT should be DD-MM-YYYY
       // expect another M
-      if ( (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != 'M') ||
-           (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != 'M') )
+      if ( (*(dateFormat + iIndex++)->aChar() != 'M') ||
+           (*(dateFormat + iIndex++)->aChar() != 'M') )
         return false;
       
       // expect format separator
-      if ( (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != m_pSEitf->m_xFormatters.m_cDateSeparator) )
+      if ( (*(dateFormat + iIndex++)->aChar() != m_pSEitf->m_xFormatters.m_cDateSeparator) )
         return false;
       
       // expect YYYY
-      if ( (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != 'Y') ||
-           (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != 'Y') ||
-           (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != 'Y') ||
-           (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != 'Y') )
+      if ( (*(dateFormat + iIndex++)->aChar() != 'Y') ||
+           (*(dateFormat + iIndex++)->aChar() != 'Y') ||
+           (*(dateFormat + iIndex++)->aChar() != 'Y') ||
+           (*(dateFormat + iIndex++)->aChar() != 'Y') )
         return false;
       
       m_pSEitf->m_xFormatters.m_eDateComponent[0] = DC_DD;
@@ -2434,18 +2434,18 @@ bool SePrompt::bExtractDateFormat(i8 &i_token)
     else {
     
       // expect YYYY
-      if ( (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != 'Y') ||
-           (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != 'Y') ||
-           (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != 'Y') ||
-           (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != 'Y') )
+      if ( (*(dateFormat + iIndex++)->aChar() != 'Y') ||
+           (*(dateFormat + iIndex++)->aChar() != 'Y') ||
+           (*(dateFormat + iIndex++)->aChar() != 'Y') ||
+           (*(dateFormat + iIndex++)->aChar() != 'Y') )
         return false;
       
       // expect format separator
-      if ( (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != m_pSEitf->m_xFormatters.m_cDateSeparator) )
+      if ( (*(dateFormat + iIndex++)->aChar() != m_pSEitf->m_xFormatters.m_cDateSeparator) )
         return false;
       
-      if ( (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != 'M') ||
-          (*(m_xTokenVec2[i_token]->sText() + iIndex++)->aChar() != 'M'))
+      if ( (*(dateFormat + iIndex++)->aChar() != 'M') ||
+          (*(dateFormat + iIndex++)->aChar() != 'M'))
         return false;
       
       m_pSEitf->m_xFormatters.m_eDateComponent[0] = DC_DD;
