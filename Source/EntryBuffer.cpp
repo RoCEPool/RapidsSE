@@ -11,7 +11,7 @@ extern AttachMap* gpAttachMap;
 bool mbWatch = false;
 //#define MB_WATCH
 
-#define EB_LAZY_CHAIN
+//#define EB_LAZY_CHAIN
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -563,6 +563,13 @@ Entry* EntryBuffer::pFirstEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+#ifdef EB_LAZY_CHAIN
+  //RASSERT( ! m_pLazyChain );
+  
+  if (m_pLazyChain)
+    vBuildSkipList();
+#endif
+  
   Entry* pFirst = pNextEntry(m_pHeadEntry,0);
   
   return pFirst;
@@ -671,6 +678,10 @@ Entry* EntryBuffer::pNextEntry(Entry* pCurrent, i8 i_Offset)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+#ifdef EB_LAZY_CHAIN
+  RASSERT( ! m_pLazyChain );
+#endif
+  
   pCurrent->vAssertEntry();
   
   i4 iOffset = pCurrent->iNEO(i_Offset);
@@ -736,7 +747,10 @@ Entry* EntryBuffer::pPositionQuery(Key* aGivenKey, eRO eRelnOp)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
 #ifdef EB_LAZY_CHAIN
-  RASSERT( ! m_pLazyChain );
+  //RASSERT( ! m_pLazyChain );
+  
+  if (m_pLazyChain)
+    vBuildSkipList();
 #endif
   
   bool bIsEqual;
@@ -766,7 +780,10 @@ Entry* EntryBuffer::pPositionQuery(Key* aGivenKey,i8 nKeyCols, eJC eJuxtaCompare
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
 #ifdef EB_LAZY_CHAIN
-  RASSERT( ! m_pLazyChain );
+  //RASSERT( ! m_pLazyChain );
+  
+  if (m_pLazyChain)
+    vBuildSkipList();
 #endif
   
   /*
@@ -1195,6 +1212,9 @@ void EntryBuffer::vBuildSkipList(void)
   if (! m_pLazyChain )
     return;
   
+  static i8 nBuild = 0;
+  vTrace("vBuildSkipList %lld (%lld items)\n"_Stz,++nBuild,nItems());
+  
   Entry* pLazyChain = m_pLazyChain;
   m_pLazyChain = nullptr;
   
@@ -1220,7 +1240,10 @@ void EntryBuffer::vCompact(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
 #ifdef EB_LAZY_CHAIN
-  RASSERT( ! m_pLazyChain );
+  //RASSERT( ! m_pLazyChain );
+  
+  if (m_pLazyChain)
+    vBuildSkipList();
 #endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -41,7 +41,7 @@ create table lineitem (
 );
 
 //CREATE INDEX lineitem_idx1 ON lineitem(l_partkey);
-CREATE INDEX lineitem_idx2 ON lineitem(l_shipdate);
+//CREATE INDEX lineitem_idx2 ON lineitem(l_shipdate);
 //CREATE INDEX lineitem_idx3 ON lineitem(l_suppkey);
 
 print "loading lineitem.tbl..." ;
@@ -54,8 +54,11 @@ ld lineitem "/tpch/lineitem.tbl" ;
 timerEnd;
 
 print "creating index on l_partkey..." ;
+timerStart;
 CREATE INDEX lineitem_idx1 ON lineitem(l_partkey);
+timerEnd;
 
+exit;
 space;
 
 antbl lineitem;
