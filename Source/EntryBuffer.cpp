@@ -1620,6 +1620,36 @@ i4 EntryBuffer::iGetFreeEntry(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* handle the insert of a first key                                           */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vHandleFirstInsert(Entry* pInsertedKeyEntry,
+                                     Entry* pOriginalFirstEntry,
+                                     EntryBuffer** ppRootKeyBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  if (pFirstEntry() != pInsertedKeyEntry)
+    return;
+    
+  if (pOriginalFirstEntry) {
+    Key* aOriginalFirstKey = pOriginalFirstEntry->aKey();
+    Key* aInsertedFirstKey = pInsertedKeyEntry->aKey();
+    
+    IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+    
+    if (aInsertedFirstKey->bNotEqual(aOriginalFirstKey,pIdxColVec))
+      vHandleLeftInsert(pInsertedKeyEntry,
+                        pOriginalFirstEntry,
+                        ppRootKeyBuffer);
+  }
+  else {
+    vHandleLeftInsert(pInsertedKeyEntry,
+                      pOriginalFirstEntry,
+                      ppRootKeyBuffer);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* handle the insert of a left most key                                       */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vHandleLeftInsert(Entry* pInsertedKeyEntry,
@@ -1989,6 +2019,7 @@ Entry* EntryBuffer::pInsertKeyBuffer(KeyWrk& xKeyWrk,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // handle the insert of a left most key
   
+  /*
   if (pFirstEntry() == pInsertedKeyEntry) {
     
     if (pOriginalFirstEntry) {
@@ -2008,6 +2039,8 @@ Entry* EntryBuffer::pInsertKeyBuffer(KeyWrk& xKeyWrk,
                         ppRootKeyBuffer);
     }
   }
+  */
+  vHandleFirstInsert(pInsertedKeyEntry,pOriginalFirstEntry,ppRootKeyBuffer);
   
   return pInsertedKeyEntry;
 }
