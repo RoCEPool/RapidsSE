@@ -144,7 +144,7 @@ vch_comment VARCHAR(64) NOT NULL
 
 print "loading table vch..." ;
 ld vch "../JTEST/vch_delimiter.csv"
-  delimiter "|";
+  field_delimiter "|";
 
 fetch vch;
 drop table vch;
