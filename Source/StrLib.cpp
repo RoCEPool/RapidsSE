@@ -1659,7 +1659,7 @@ bool StrLib::bExtractVarchar(char** aaSrc,
 /*----------------------------------------------------------------------------*/
 bool StrLib::bExtractVarchar2(char** aaSrc,
                               char* aVarChar, i8 iMaxLength,
-                              bool bIsEnclosed,
+                              bool bSawLeadingEnclosed,
                               char cEnclosedBy_Leading,
                               char cEnclosedBy_Trailing,
                               char cEscapeChar,
@@ -1674,20 +1674,27 @@ bool StrLib::bExtractVarchar2(char** aaSrc,
   while (**aaSrc) {
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // test for a non-printable character (e.g. \n or \r)
+    
+    if (! isprint(**aaSrc))
+      break;
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // test for normal end
     
-    if (bIsEnclosed) {
-      // test for trailing enclosedBy
+    if (bSawLeadingEnclosed) {
+      // we saw a leading enclodedBy so test for trailing enclosedBy
       if (**aaSrc == cEnclosedBy_Trailing) {
         bSawTrailingEnclosed = true;
         break;
       }
+      //falls thru if not trailing enclosedBy
     }
-    // test for field separator
-    else if (**aaSrc == cFieldSeparator)
+    // test for field separator (because its not enclosed)
+    else if (cFieldSeparator && **aaSrc == cFieldSeparator)
       break;
-    // test for record terminator
-    else if (**aaSrc == cRecordTerminator)
+    // test for record terminator (because its not enclosed)
+    else if (cRecordTerminator && **aaSrc == cRecordTerminator)
       break;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1714,12 +1721,6 @@ bool StrLib::bExtractVarchar2(char** aaSrc,
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // test for a non-printable character
-    
-    if (! isprint(**aaSrc))
-      break;
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // normal character
     
     // append the normal character
@@ -1727,7 +1728,6 @@ bool StrLib::bExtractVarchar2(char** aaSrc,
       *aDst++ = *(*aaSrc)++;
     else
       (*aaSrc)++;
-    
   }
   
   // terminate
@@ -1735,7 +1735,7 @@ bool StrLib::bExtractVarchar2(char** aaSrc,
   
   // if this an enclosed varchar we should have expected to
   // see the trailing enclosedBy
-  if (bIsEnclosed)
+  if (bSawLeadingEnclosed)
     return bSawTrailingEnclosed;
   
   // its not an enclosed varchar so we consider it to be valid
