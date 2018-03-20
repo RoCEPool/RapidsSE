@@ -15,7 +15,7 @@ success
 
 // load data into the table with default formatter settings
 ESCAPE CONNECTOR se 'load table1' WITH file = '/Users/alkayamarti/rapidsSE/rapidsse/JTEST/basic1.csv',node = 'node1', enclosed_by="'";
-failure contains: 'Success'
+failure contains: '1 records in error'
 
 Select * from table1;
 rows:
@@ -24,7 +24,6 @@ rows:
  (3 ,   'A')
  (4 ,   'A''')
  (5,    '')
- (NULL, NULL)
 
 drop table table1;
 success
@@ -40,8 +39,9 @@ create index idx_0 on table1(c1);
 success
 
 // load data into the table with default formatter settings
- ESCAPE CONNECTOR se 'load table1' WITH file = '/Users/alkayamarti/rapidsSE/rapidsse/JTEST/basic2.csv', terminator = '\r\n', enclosed_by = "''", node = 'node1';
-failure contains: 'Success'
+ESCAPE CONNECTOR se 'load table1' WITH file = '/Users/alkayamarti/rapidsSE/rapidsse/JTEST/basic2.csv',
+terminator = '\r\n', enclosed_by = "''", node = 'node1';
+failure contains: '1 records in error'
 
 Select * from table1;
 rows:
@@ -50,7 +50,6 @@ rows:
   (3 ,   'A')
   (4 ,   'A''')
   (5,    '')
-  (NULL, NULL)
 
 Select char_length(c2) from table1 where c1 = 5;
 rows:
@@ -75,7 +74,7 @@ ESCAPE CONNECTOR se 'load table1' WITH file = '/Users/alkayamarti/rapidsSE/rapid
   enclosed_by = '""',
   escape_char = '^',
   node = 'node1';
-failure contains: 'Success'
+failure contains: '1 records in error'
 
 Select * from table1;
 rows:
@@ -84,7 +83,6 @@ rows:
 (3 ,   'A')
 (4 ,   'A"')
 (5,    '')
-(NULL, NULL)
 
 Select char_length(c2) from table1 where c1 = 5;
 rows:
