@@ -576,8 +576,7 @@ Entry* EntryBuffer::pGetEntryNo(i8 i_Entry)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
 #ifdef EB_LAZY_CHAIN
-  pKeyEntry = pInsertKeyAbs(xKeyWrk);
-  return pKeyEntry;
+  RASSERT( ! m_pLazyChain );
 #endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1772,7 +1771,7 @@ Entry* EntryBuffer::pInsertKeyAbs(KeyWrk& xKeyWrk)
   Entry* pKeyEntry;
   
 #ifdef EB_LAZY_CHAIN
-  if (m_iBufferLevel) {
+  if (! m_iBufferLevel) {
     pKeyEntry = pInsertKeyAbsLazy(xKeyWrk);
     return pKeyEntry;
   }
