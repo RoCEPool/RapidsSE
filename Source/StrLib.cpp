@@ -1677,13 +1677,16 @@ bool StrLib::bExtractVarchar2(char** aaSrc,
     // test for normal end
     
     if (bIsEnclosed) {
+      // test for trailing enclosedBy
       if (**aaSrc == cEnclosedBy_Trailing) {
         bSawTrailingEnclosed = true;
         break;
       }
     }
+    // test for field separator
     else if (**aaSrc == cFieldSeparator)
       break;
+    // test for record terminator
     else if (**aaSrc == cRecordTerminator)
       break;
     
