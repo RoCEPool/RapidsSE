@@ -11,7 +11,7 @@ extern AttachMap* gpAttachMap;
 bool mbWatch = false;
 //#define MB_WATCH
 
-//#define EB_LAZY_CHAIN
+#define EB_LAZY_CHAIN
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -697,6 +697,13 @@ EntryBuffer* EntryBuffer::pPositionLevel(Key* aGivenKey, i8 nKeyCols,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+#ifdef EB_LAZY_CHAIN
+  //RASSERT( ! m_pLazyChain );
+  
+  if (m_pLazyChain)
+    vBuildSkipList();
+#endif
+
   EntryBuffer* pEntryBuffer = this;
   
   i8 iBufferLevel;
@@ -728,6 +735,10 @@ Entry* EntryBuffer::pPositionQuery(Key* aGivenKey, eRO eRelnOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+#ifdef EB_LAZY_CHAIN
+  RASSERT( ! m_pLazyChain );
+#endif
+  
   bool bIsEqual;
   Entry* pIndexEntry = pPositionQuery(aGivenKey, 1, JC_AFTER);
   
@@ -753,6 +764,10 @@ Entry* EntryBuffer::pPositionQuery(Key* aGivenKey, eRO eRelnOp)
 Entry* EntryBuffer::pPositionQuery(Key* aGivenKey,i8 nKeyCols, eJC eJuxtaCompare)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+#ifdef EB_LAZY_CHAIN
+  RASSERT( ! m_pLazyChain );
+#endif
   
   /*
    * positioning is based on eJuxtaCompare
