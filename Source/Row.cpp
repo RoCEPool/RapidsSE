@@ -100,8 +100,10 @@ bool Row::bFormatRow(ColumnVec* pColVec,
 
     // extract datum type
     eDM eDatumType = pColumn->eDatumType();
+    bool bLastColumn = (i_Column + 1 == nColumns) ? true : false;
     bool bValid = DtmLib::bExtract(eDatumType, aDst, &aSrc,
-                                   pColumn, pFormatters);
+                                   pColumn, bLastColumn,
+                                   pFormatters);
 
     // is the datum valid ?
     if ( ! bValid ) {
