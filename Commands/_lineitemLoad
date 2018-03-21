@@ -54,7 +54,9 @@ ld lineitem "/tpch/lineitem.tbl" ;
 timerEnd;
 
 print "creating index on l_partkey..." ;
+timerStart;
 CREATE INDEX lineitem_idx1 ON lineitem(l_partkey);
+timerEnd;
 
 space;
 

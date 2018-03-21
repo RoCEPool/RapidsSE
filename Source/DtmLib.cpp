@@ -58,7 +58,8 @@ void DtmLib::vCopy(eDM eDatum, void* aDst, void* aSrc, DBobjects::Column* pColum
 /* extract                                                                    */
 /*----------------------------------------------------------------------------*/
 bool DtmLib::bExtract(eDM eDatum, Stz* aDst, char** aaSrc,
-                      DBobjects::Column* pColumn, Formatters* pFormatters)
+                      DBobjects::Column* pColumn, bool bLastColumn,
+                      Formatters* pFormatters)
 {
   bool b = false;
   
@@ -78,11 +79,28 @@ bool DtmLib::bExtract(eDM eDatum, Stz* aDst, char** aaSrc,
              eDatum);
   }
   
-  // move aSrc to after the field delimiter but not past the
-  // record terminator or record ends 
-  if ( pFormatters->m_cFieldDelimiter &&
-       *(*aaSrc) == pFormatters->m_cFieldDelimiter )
-    (*aaSrc)++;
+  // move past the field delimiter
+  //   (but not past the record terminator or record ends)
+  
+  if (bLastColumn) {
+    // do not expect to see a field delimiter
+    if ( pFormatters->m_cFieldDelimiter &&
+        *(*aaSrc) == pFormatters->m_cFieldDelimiter ) {
+      // saw a field delimiter after last field (incorrect)
+      b = false;
+    }
+    // did not see a field delimiter (correct)
+  }
+  else {
+    // expect to see a field delimiter
+    if ( pFormatters->m_cFieldDelimiter &&
+        *(*aaSrc) == pFormatters->m_cFieldDelimiter )
+      // saw a field delimiter after non-last field (correct)
+      (*aaSrc)++;
+    else
+      // did not see a field delimiter after non-last field (incorrect)
+      b = false;
+  }
   
   if (!b)
     return b;

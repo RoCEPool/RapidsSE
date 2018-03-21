@@ -18,7 +18,8 @@ namespace Datums
     static i8   nCopy(eDM eDatum, void* pDst, void* pSrc, DBobjects::Column* pColumn);
     static void vCopy(eDM eDatum,  void* aDst, void* aSrc, DBobjects::Column* pColumn);
     static bool bExtract(eDM eDatum, Stz* aDst, char** aSrc,
-                         DBobjects::Column* pColumn, Formatters* pFormatters);
+                         DBobjects::Column* pColumn, bool bLastColumn,
+                         Formatters* pFormatters);
     static void vHash(eDM eDatum, i8& iHash, Stz* aSrc, DBobjects::Column* pColumn);    
     static void vSprint(eDM eDatum, Stz* aDst, Stz* aSrc,
                         DBobjects::Column* pColumn);
