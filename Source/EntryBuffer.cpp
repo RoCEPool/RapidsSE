@@ -2548,7 +2548,10 @@ void EntryBuffer::vPositionPriorVecBuffer(Key* aFindKey, Entry* pPriorVec[],
 EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
+
+  static i8 nSplit = 0;
+  //vTrace("pSplit %lld (%lld items)\n"_Stz,++nSplit,nItems());
+
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
 #ifdef EB_LAZY_CHAIN
