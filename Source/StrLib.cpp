@@ -1664,7 +1664,8 @@ bool StrLib::bExtractVarchar2(char** aaSrc,
                               char cEnclosedBy_Trailing,
                               char cEscapeChar,
                               char cFieldSeparator,
-                              char cRecordTerminator)
+                              char cRecordTerminator,
+                              bool bAllowNonPrintable)
 {
   i8 iLength = 0;
   char *aDst = (char*)aVarChar;
@@ -1696,7 +1697,7 @@ bool StrLib::bExtractVarchar2(char** aaSrc,
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // test for a non-printable character (e.g. \n or \r)
     
-    if (! isprint(**aaSrc))
+    if (! bAllowNonPrintable && ! isprint(**aaSrc))
       break;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1737,7 +1738,9 @@ bool StrLib::bExtractVarchar2(char** aaSrc,
         
         continue;
       }
-  
+      else {
+        (*aaSrc)++;
+      }
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

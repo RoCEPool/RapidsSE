@@ -32,7 +32,7 @@ rows:
 select * from  terminator_cr;
 rows: 2
 
-drop terminator_cr;
+drop table terminator_cr;
 success
 
 CLEANUP {
