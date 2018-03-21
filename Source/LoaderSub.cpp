@@ -181,7 +181,8 @@ bool LoaderSub::bFetchRecord(void)
                              pFormatters,
                              aRawData, iLength,
                              m_aRecord.aStr(), m_iLength,
-                             bBlankLine);
+                             bBlankLine,
+                             false /* allowNonPrintable */);
     if (bValid) {
       m_iValidRecords++;
       return bValid;

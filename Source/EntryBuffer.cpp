@@ -3434,7 +3434,8 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
     bFormatted = Row::bFormatRow(pColVec,pFormatters,
                                  sRecData,iRecLength,
                                  (Stz*)aRowData,iRowLength,
-                                 bBlankLine);
+                                 bBlankLine,
+                                 false /* allowNonPrintable */);
     
     xRowWrk.vRowSize(iRowLength);
     xRowWrk.vTxId(0);

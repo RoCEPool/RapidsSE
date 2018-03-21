@@ -277,7 +277,8 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch,
 /* extract a varchar field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
 bool Vch::bExtract2(char** aaSrc, Vch* aVch,
-                    Column* pColumn, Formatters* pFormatters)
+                    Column* pColumn, Formatters* pFormatters,
+                    bool bAllowNonPrintable)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for null
@@ -305,7 +306,8 @@ bool Vch::bExtract2(char** aaSrc, Vch* aVch,
                                   pFormatters->m_cEnclosedBy_Trailing,
                                   pFormatters->m_cEscapeChar,
                                   pFormatters->m_cFieldDelimiter,
-                                  pFormatters->m_cRecordTerminator
+                                  pFormatters->m_cRecordTerminator,
+                                  bAllowNonPrintable
                                  ) )
     return false;
   
@@ -406,7 +408,6 @@ void Vch::vSprint(Stz* aDst, Stz* aSrc)
 /*----------------------------------------------------------------------------*/
 /* sprint vch datum in escaped form                                           */
 /*----------------------------------------------------------------------------*/
-/*
 void Vch::vSprintEscaped(Stz* aDst, Stz* aSrc)
 {
   // test for null
@@ -425,7 +426,8 @@ void Vch::vSprintEscaped(Stz* aDst, Stz* aSrc)
   char* aSrcChar = (char*)aSrc;
   
   // put leading enclosing quote/char
-  *aDstChar++ = cEnclosedBy_Leading;
+  if (cEnclosedBy_Leading)
+    *aDstChar++ = cEnclosedBy_Leading;
   
   // copy from src to dst
   while (*aSrcChar) {
@@ -454,13 +456,15 @@ void Vch::vSprintEscaped(Stz* aDst, Stz* aSrc)
   }
   
   // put trailing enclosing quote/char and \0 terminate
-  *aDstChar++ = cEnclosedBy_Leading;
+  if (cEnclosedBy_Leading)
+    *aDstChar++ = cEnclosedBy_Leading;
   *aDstChar = '\0';
 }
-*/
+
 /*----------------------------------------------------------------------------*/
 /* sprint vch datum                                                           */
 /*----------------------------------------------------------------------------*/
+/*
 void Vch::vSprintEscaped(Stz* aDst, Stz* aSrc)
 {
   // test for null
@@ -500,7 +504,7 @@ void Vch::vSprintEscaped(Stz* aDst, Stz* aSrc)
   // put \0 terminate
   *aDstChar = '\0';
 }
-
+*/
 /*----------------------------------------------------------------------------*/
 /* is the size valid ?                                                        */
 /*----------------------------------------------------------------------------*/

@@ -21,7 +21,8 @@ namespace DBobjects
     static bool bFormatRow(ColumnVec* pColVec, Formatters* pFormatters,
                            Stz* aRawData, i8 iRawLength,
                            Stz* aRowData, i8& iRowLength,
-                           bool& bBlankLine);
+                           bool& bBlankLine,
+                           bool bAllowNonPrintable);
   
 
     void vAsBinaryString(s48K& sDataString, ColumnVec* pColVec);

@@ -1544,7 +1544,8 @@ bool SePrompt::bCmd_InsertRow(void)
                   m_pSEitf->m_pCurrentTable->pColumnVec(),
                   &m_pSEitf->m_xFormatters,
                   pRow, StrLib::iSize(pRow->aChar()),
-                  s, iRowLength, bBlankLine);
+                  s, iRowLength, bBlankLine,
+                  false /* allowNonPrintable */);
   
   if (! bValid) {
     m_pSEitf->vSetLastError(EC_INVALID_VALUE);

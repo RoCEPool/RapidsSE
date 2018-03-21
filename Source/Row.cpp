@@ -58,7 +58,8 @@ bool Row::bFormatRow(ColumnVec* pColVec,
                      Formatters* pFormatters,
                      Stz* aRawData, i8 iRawLength,
                      Stz* aRowData, i8& iRowLength,
-                     bool &bBlankLine)
+                     bool &bBlankLine,
+                     bool bAllowNonPrintable)
 {  
   char* aSrc = aRawData->aChar();
   bBlankLine = false;
@@ -103,6 +104,7 @@ bool Row::bFormatRow(ColumnVec* pColVec,
     bool bLastColumn = (i_Column + 1 == nColumns) ? true : false;
     bool bValid = DtmLib::bExtract(eDatumType, aDst, &aSrc,
                                    pColumn, bLastColumn,
+                                   bAllowNonPrintable,
                                    pFormatters);
 
     // is the datum valid ?

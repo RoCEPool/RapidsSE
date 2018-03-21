@@ -120,7 +120,8 @@ namespace Base
                                   char cEnclosedBy_Trailing,
                                   char cEscapeChar,
                                   char cFieldSeparator,
-                                  char cRecordTerminator);
+                                  char cRecordTerminator,
+                                  bool bAllowNonPrintable);
     static bool  bExtractWord(char** ps, char* pWord);
     static bool  bExtractWordString(char** ps, char* pWord);
     static bool  bExtractYear(char** ps, i8& iYear);
