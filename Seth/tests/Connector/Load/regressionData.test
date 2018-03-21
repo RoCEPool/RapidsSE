@@ -290,40 +290,40 @@ failure
 ESCAPE CONNECTOR se 'load TABLE9' with file='../Seth/tests/Load/tbl9data.csv' , node = 'Node1' ;
 failure
 
-ESCAPE CONNECTOR se 'load ORDERS' with file='../Seth/tests/Load/orders.csv' , node = 'Node1' ;
+ESCAPE CONNECTOR se 'load ORDERS' with file='../Seth/tests/Load/orders.csv', record_terminator='\r\n' , node = 'Node1' ;
 failure
 
-ESCAPE CONNECTOR se 'load LINEITEM' with file='../Seth/tests/Load/lineitem.csv' , node = 'Node1' ;
+ESCAPE CONNECTOR se 'load LINEITEM' with file='../Seth/tests/Load/lineitem.csv', record_terminator='\r\n' , node = 'Node1' ;
 failure
 
-ESCAPE CONNECTOR se 'load CUSTOMERH' with file='../Seth/tests/Load/customer.csv' , node = 'Node1' ;
+ESCAPE CONNECTOR se 'load CUSTOMERH' with file='../Seth/tests/Load/customer.csv', record_terminator='\r\n' , node = 'Node1' ;
 failure
 
-ESCAPE CONNECTOR se 'load PARTSUPP' with file='../Seth/tests/Load/partsupp.csv' , node = 'Node1' ;
+ESCAPE CONNECTOR se 'load PARTSUPP' with file='../Seth/tests/Load/partsupp.csv', record_terminator='\r\n' , node = 'Node1' ;
 failure
 
-ESCAPE CONNECTOR se 'load PART' with file='../Seth/tests/Load/part.csv' , node = 'Node1' ;
+ESCAPE CONNECTOR se 'load PART' with file='../Seth/tests/Load/part.csv', record_terminator='\r\n' , node = 'Node1' ;
 failure
 
-ESCAPE CONNECTOR se 'load SHIPPING' with file='../Seth/tests/Load/shipping.csv' , node = 'Node1' ;
+ESCAPE CONNECTOR se 'load SHIPPING' with file='../Seth/tests/Load/shipping.csv', record_terminator='\r\n' , node = 'Node1' ;
 failure
 
-ESCAPE CONNECTOR se 'load SHIPADDRESS' with file='../Seth/tests/Load/shipaddr.csv' , node = 'Node1' ;
+ESCAPE CONNECTOR se 'load SHIPADDRESS' with file='../Seth/tests/Load/shipaddr.csv', record_terminator='\r\n' , node = 'Node1' ;
 failure
 
-ESCAPE CONNECTOR se 'load SUPPLIER' with file='../Seth/tests/Load/supplier.csv' , node = 'Node1' ;
+ESCAPE CONNECTOR se 'load SUPPLIER' with file='../Seth/tests/Load/supplier.csv', record_terminator='\r\n' , node = 'Node1' ;
 failure
 
-ESCAPE CONNECTOR se 'load MANUFACTURER' with file='../Seth/tests/Load/manufacturer.csv', node = 'Node1' ;
+ESCAPE CONNECTOR se 'load MANUFACTURER' with file='../Seth/tests/Load/manufacturer.csv', record_terminator='\r\n', node = 'Node1' ;
 failure
 
-ESCAPE CONNECTOR se 'load NATION' with file='../Seth/tests/Load/nation.csv', node = 'Node1' ;
+ESCAPE CONNECTOR se 'load NATION' with file='../Seth/tests/Load/nation.csv', record_terminator='\r\n', node = 'Node1' ;
 failure
 
-ESCAPE CONNECTOR se 'load REGION' with file='../Seth/tests/Load/region.csv' , node = 'Node1' ;
+ESCAPE CONNECTOR se 'load REGION' with file='../Seth/tests/Load/region.csv', record_terminator='\r\n' , node = 'Node1' ;
 failure
 
-ESCAPE CONNECTOR se 'load RETURNS' with file='../Seth/tests/Load/returns.csv', node = 'Node1' ;
+ESCAPE CONNECTOR se 'load RETURNS' with file='../Seth/tests/Load/returns.csv', record_terminator='\r\n', node = 'Node1' ;
 failure
 
 // check existence of table

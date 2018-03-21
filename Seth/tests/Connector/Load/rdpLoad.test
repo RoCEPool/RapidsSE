@@ -1256,8 +1256,8 @@ insert into rdp2 select * from rdp;
 success
 
 // drop rdp
-//drop table rdp;
-//success;
+drop table rdp;
+success;
 
 // unable to select 3000 because of min/max's
 select * from rdp2 where rdp_testno < 3000;
@@ -1476,11 +1476,11 @@ rows:
 
 CLEANUP {
   
-  //drop table rdp;
-  //mute
+  drop table rdp;
+  mute
   
-  //drop table rdp2;
-  //mute
+  drop table rdp2;
+  mute
 
   bye;
   mute
