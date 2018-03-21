@@ -1215,7 +1215,7 @@ void EntryBuffer::vBuildSkipList(void)
   Entry* pOriginalFirstEntry = pNextEntry(m_pHeadEntry,0);
   
   static i8 nBuild = 0;
-  vTrace("vBuildSkipList %lld (%lld items)\n"_Stz,++nBuild,nItems());
+  //vTrace("vBuildSkipList %lld (%lld items)\n"_Stz,++nBuild,nItems());
   
   Entry* pLazyChain = m_pLazyChain;
   m_pLazyChain = nullptr;
