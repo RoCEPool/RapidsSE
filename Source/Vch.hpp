@@ -35,8 +35,6 @@ namespace Datums
     static i8   iSize(char* aSrc);
     static void vSprint(Stz* aDst, Stz* aSrc);
     static void vSprintEscaped(Stz* aDst, Stz* aSrc);
-    static void vSprintEscapedQuotes(Stz* aDst, Stz* aSrc);
-    static void vSprintQuotes(Stz* aDst, Stz* aSrc);
     static bool bIsValidSize(i8 iSize);
     
     static bool bExtract(char** aaSrc, Vch* aVch,
