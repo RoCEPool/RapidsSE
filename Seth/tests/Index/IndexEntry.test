@@ -12,7 +12,7 @@ LOG 'Running supplierLoop test with varying indexEntries per buffer.';
 //------------------------------------------------------------------------------
 LOG 'Entries per buffer: default';
 INCLUDE 'supplierLoop.test';
-/*
+
 //------------------------------------------------------------------------------
 setAttachMap AM_INDEXENTRIES 5;
 affected: 0
@@ -384,7 +384,7 @@ affected: 0
 
 LOG 'Entries per buffer: 2000';
 INCLUDE 'supplierLoop.test';
-*/
+
 //------------------------------------------------------------------------------
 setAttachMap AM_INDEXENTRIES 0;
 affected: 0
