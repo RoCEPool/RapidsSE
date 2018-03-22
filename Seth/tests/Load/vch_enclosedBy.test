@@ -68,7 +68,7 @@ rows:
 
 fetch vch "vch_testno 112 =";
 rows:
-  (*, 112, 'quick brown \N fox', *)
+  (*, 112, 'quick brown N fox', *)
 
 fetch vch "vch_testno 113 =";
 rows:
