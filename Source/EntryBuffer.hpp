@@ -108,7 +108,9 @@ namespace DBobjects
     NEO*         aAllotNEO(i8 nBytes);
     void         vAddFreeList(Entry* pEntry);
     void         vBuildSkipList(void);
+    void         vBuildSkipListSorted(void);
     void         vCompact(void);
+    void         vCompactLeft(void);
     void         vCutEntry(Entry* pEntry, Entry* pPriorVec[]);
     void         vDeleteUpwards(Key* aDeleteKey,
                                 EntryBuffer** ppRootKeyBuffer);
@@ -154,7 +156,8 @@ namespace DBobjects
     void         vPositionPriorVecBuffer(Key* aFindKey, Entry** pPriorVec,
                                          EntryBuffer* pToBuffer);
     EntryBuffer* pSplit(EntryBuffer** ppRootKeyBuffer);
-    
+    EntryBuffer* pSplit2(EntryBuffer** ppRootKeyBuffer);
+  
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // verify functions
   

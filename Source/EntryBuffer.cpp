@@ -11,7 +11,7 @@ extern AttachMap* gpAttachMap;
 bool mbWatch = false;
 //#define MB_WATCH
 
-//#define EB_LAZY_CHAIN
+#define EB_LAZY_CHAIN
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -1239,6 +1239,42 @@ void EntryBuffer::vBuildSkipList(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* build skip list from the lazy chain                                        */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vBuildSkipListSorted(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  if (! m_pLazyChain )
+    return;
+  
+  Entry* pOriginalFirstEntry = pNextEntry(m_pHeadEntry,0);
+  
+  static i8 nBuild = 0;
+  //vTrace("vBuildSkipList %lld (%lld items)\n"_Stz,++nBuild,nItems());
+  
+  Entry* pLazyChain = m_pLazyChain;
+  m_pLazyChain = nullptr;
+  
+  while (pLazyChain) {
+    
+    Entry* pKeyEntry = pLazyChain;
+    
+    i8 iNextOffset = pKeyEntry->iNEO(0);
+    if (-1 == iNextOffset)
+      pLazyChain = nullptr;
+    else
+      pLazyChain = pGetEntryOffset(iNextOffset);
+    
+    vInsertKeySkip(pKeyEntry);
+  }
+  
+  Entry* pInsertedKeyEntry = pNextEntry(m_pHeadEntry,0);
+  
+  vHandleFirstInsert(pInsertedKeyEntry,pOriginalFirstEntry,nullptr);
+}
+
+/*----------------------------------------------------------------------------*/
 /* compact this buffer                                                        */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vCompact(void)
@@ -1378,6 +1414,19 @@ void EntryBuffer::vCompact(void)
   vSetWilderness();
   
   //vShow();
+}
+
+/*----------------------------------------------------------------------------*/
+/* compact this buffer                                                        */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vCompactLeft(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+#ifdef EB_LAZY_CHAIN
+  RASSERT( ! m_pLazyChain );
+#endif
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2548,7 +2597,10 @@ void EntryBuffer::vPositionPriorVecBuffer(Key* aFindKey, Entry* pPriorVec[],
 EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
+
+  static i8 nSplit = 0;
+  //vTrace("pSplit %lld (%lld items)\n"_Stz,++nSplit,nItems());
+
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
 #ifdef EB_LAZY_CHAIN
@@ -2680,6 +2732,141 @@ EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
   vCompact();
   
   //ASSERT( (* ppRootKeyBuffer)->bVerify() );
+  
+  return pNewRightBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* split this buffer into two: this original buffer and a new right buffer    */
+/*----------------------------------------------------------------------------*/
+EntryBuffer* EntryBuffer::pSplit2(EntryBuffer** ppRootKeyBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  static i8 nSplit = 0;
+  //vTrace("pSplit2 %lld (%lld items)\n"_Stz,++nSplit,nItems());
+  
+  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  
+#ifdef EB_LAZY_CHAIN
+  RASSERT( ! m_pLazyChain );
+#endif
+  
+  EntryBuffer* pThisLeftBuffer = this;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create a new right buffer and a working buffer
+  
+  EntryBuffer* pNewRightBuffer = pNewNextBuffer();
+
+  EntryBuffer* pWorkingBuffer = new EntryBuffer();
+  pWorkingBuffer->vIndex(m_pIndex);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // find split entry. every entry from split entry and to the right of it
+  // will be moved to the new right buffer
+  
+  i8 iSplitAtEntry = m_nItems/2;
+  Entry* pSplitEntry = pGetEntrySplit(iSplitAtEntry);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // move split right entries to a new right buffer
+  
+  KeyWrk xKeyWrk;
+  Entry* pMoveEntry;
+  Entry* pNextEntry;
+  Entry* pPriorEntry = nullptr;
+  
+  for (pMoveEntry = pSplitEntry;
+       pMoveEntry;
+       pMoveEntry = pNextEntry) {
+    
+    ASSERT(! m_iBufferLevel ||
+           pMoveEntry->pReferencedEntryBuffer()->m_pHigherBuffer == pThisLeftBuffer);
+    
+    pPriorEntry = pMoveEntry;
+    pNextEntry = this->pNextEntry(pMoveEntry,0);
+    
+    i8 iTxId = pMoveEntry->iTxId();
+    Id xId = pMoveEntry->xId();
+    Key* aKey = pMoveEntry->aKey();
+    i8 nKeySize = aKey->nKeySize(pIdxColVec);
+    i8 nOffsets = pMoveEntry->nOffsets();
+    
+    xKeyWrk.vTxId(iTxId);
+    xKeyWrk.vId(xId);
+    xKeyWrk.vEmbedded((char*)aKey);
+    xKeyWrk.vKeySize(nKeySize);
+    xKeyWrk.vOffsets(nOffsets);
+    
+    Entry* pNewEntry = pNewRightBuffer->pInsertKeyAbsLazy(xKeyWrk);
+    
+    // these can be commented
+    ASSERT(! m_iBufferLevel ||
+           pNewEntry->pReferencedEntryBuffer()->m_pHigherBuffer == pThisLeftBuffer);
+    
+    i8 nBuffer = xId.iBuffer();
+    HeapBuffer* pHeapBuffer =
+      reinterpret_cast<HeapBuffer*>(gpBufferPool->pToBuffer(nBuffer));
+    
+    EntryBuffer* pChildBuffer =
+      reinterpret_cast<EntryBuffer*>(pHeapBuffer->pFirstChunk());
+    
+    ASSERT(pChildBuffer->m_pHigherBuffer ==
+           pNewEntry->pReferencedEntryBuffer()->m_pHigherBuffer);
+    
+  }
+  
+  // cut off right entries
+  ASSERT(this->pNextEntry(pPriorEntry,0) == pSplitEntry);
+  pPriorEntry->vNEO(0,-1);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // build the skip list of the right buffer
+  
+  pNewRightBuffer->vBuildSkipListSorted();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // the child buffer of any moved entry needs to have its higher buffer
+  // corrected to the new right buffer
+  
+  Id xId;
+  if (m_iBufferLevel != 0)  {
+    for (Entry* pMovedEntry = pNewRightBuffer->pFirstEntry();
+         pMovedEntry;
+         pMovedEntry = pNewRightBuffer->pNextEntry(pMovedEntry, 0)) {
+      
+      xId = pMovedEntry->xId();
+      i8 nBuffer = xId.iBuffer();
+      
+      HeapBuffer* pHeapBuffer =
+      reinterpret_cast<HeapBuffer*>(gpBufferPool->pToBuffer(nBuffer));
+      
+      EntryBuffer* pChildBuffer =
+      reinterpret_cast<EntryBuffer*>(pHeapBuffer->pFirstChunk());
+      
+      ASSERT(pChildBuffer->m_pHigherBuffer ==
+             pMovedEntry->pReferencedEntryBuffer()->m_pHigherBuffer);
+      
+      
+      if (pChildBuffer->m_pHigherBuffer != pThisLeftBuffer) {
+        //pThisLeftBuffer->vShow();
+        //pNewRightBuffer->vShow();
+        //pChildBuffer->vShow();
+      }
+      
+      ASSERT(pChildBuffer->m_pHigherBuffer == pThisLeftBuffer);
+      pChildBuffer->m_pHigherBuffer = pNewRightBuffer;
+    }
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compact the left buffer
+  
+  pThisLeftBuffer->vCompactLeft();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   
   return pNewRightBuffer;
 }
