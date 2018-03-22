@@ -1239,33 +1239,49 @@ void EntryBuffer::vBuildSkipList(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* build skip list from the lazy chain                                        */
+/* build skip list based on existing L0 offset chain being in sorted order    */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vBuildSkipListSorted(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+  //
+  //  H:
+  //  [p]..[ ].................[ ]
+  //  [p]..[ ]..[ ].......[ ]..[ ]
+  //  [p]--[ ]--[ ]--[ ]--[ ]--[ ]  (L0 is a-priori in sorted order)
+  //
+  
   Entry* xPrev[gpAttachMap->m_nIndexOffsets];
-
+  
   for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexOffsets; i_Offset++)
     xPrev[i_Offset] = m_pHeadEntry;
+
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // go through each entry in L0 order and
+  //   correct the prior offset to that entry for each level
   
   for (Entry* pEntry = pFirstEntry();
        pEntry != nullptr;
        pEntry = pNextEntry(pEntry, 0)) {
-    
-    i8 nOffsets = pEntry->nOffsets();
   
+    // where is this entry in the buffer (offset-wise)?
     i8 iEntryOffset = iToOffset(pEntry);
     
+    // get the number of offsets for this entry
+    i8 nOffsets = pEntry->nOffsets();
+    
+    // connect the dots
     for (i8 i_Offset = 1; i_Offset < nOffsets; i_Offset++) {
       
+      // set previous entry at this level to refer to this entry
       xPrev[i_Offset]->vNEO(i_Offset,iEntryOffset);
       
+      // the previous entry at this level now becomes this entry
       xPrev[i_Offset] = pEntry;
     }
   }
-  
 }
 
 /*----------------------------------------------------------------------------*/
