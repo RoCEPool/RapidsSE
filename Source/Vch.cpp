@@ -417,18 +417,28 @@ void Vch::vSprintQuotes(Stz* aDst, Stz* aSrc)
   char* aDstChar = (char*)aDst;
   char* aSrcChar = (char*)aSrc;
   
+  // put leading enclosing quote/char
   *aDstChar++ = '\'';
   
   // copy from src to dst
   while (*aSrcChar) {
-    // copy an ordinary char
-    *aDstChar++ = *aSrcChar++;
+    
+    if ('\'' == *aSrcChar) {
+      // escape an enclosing quote/char
+      *aDstChar++ = '\'';
+      *aDstChar++ = *aSrcChar++;
+    }
+    else {
+      // copy an ordinary char
+      *aDstChar++ = *aSrcChar++;
+    }
   }
   
-  // put \0
+  // put trailing enclosing quote/char and \0 terminate
   *aDstChar++ = '\'';
   *aDstChar = '\0';
 }
+
 /*----------------------------------------------------------------------------*/
 /* sprint vch datum in escaped form                                           */
 /*----------------------------------------------------------------------------*/
