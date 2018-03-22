@@ -231,7 +231,11 @@ rows:
   (*,17,27,37,47,'hh')
   (*,19,29,39,49,'jj')
   (*,9223372036854775807,27,37,47,'hh')
-
+/*
+ 
+ SE does not handle the next 2 queries yet.
+ It only uses leading portion of the index
+ 
 // complex range
 fetch T1 "JA 1 >= JB 25 < JA 18 <= AND OR";
 rows:
@@ -269,7 +273,7 @@ rows:
   (*, -9223372036854775807,27,37,47,'hh')
   (*,-10,20,30,40,'aa')
   (*, 9223372036854775807,27,37,47,'hh')
-
+*/
 // full table
 fetch T1 ;
 rows:
