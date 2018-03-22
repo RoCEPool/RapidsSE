@@ -1245,33 +1245,27 @@ void EntryBuffer::vBuildSkipListSorted(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  if (! m_pLazyChain )
-    return;
+  Entry* xPrev[gpAttachMap->m_nIndexOffsets];
+
+  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexOffsets; i_Offset++)
+    xPrev[i_Offset] = m_pHeadEntry;
   
-  Entry* pOriginalFirstEntry = pNextEntry(m_pHeadEntry,0);
-  
-  static i8 nBuild = 0;
-  //vTrace("vBuildSkipList %lld (%lld items)\n"_Stz,++nBuild,nItems());
-  
-  Entry* pLazyChain = m_pLazyChain;
-  m_pLazyChain = nullptr;
-  
-  while (pLazyChain) {
+  for (Entry* pEntry = pFirstEntry();
+       pEntry != nullptr;
+       pEntry = pNextEntry(pEntry, 0)) {
     
-    Entry* pKeyEntry = pLazyChain;
+    i8 nOffsets = pEntry->nOffsets();
+  
+    i8 iEntryOffset = iToOffset(pEntry);
     
-    i8 iNextOffset = pKeyEntry->iNEO(0);
-    if (-1 == iNextOffset)
-      pLazyChain = nullptr;
-    else
-      pLazyChain = pGetEntryOffset(iNextOffset);
-    
-    vInsertKeySkip(pKeyEntry);
+    for (i8 i_Offset = 1; i_Offset < nOffsets; i_Offset++) {
+      
+      xPrev[i_Offset]->vNEO(i_Offset,iEntryOffset);
+      
+      xPrev[i_Offset] = pEntry;
+    }
   }
   
-  Entry* pInsertedKeyEntry = pNextEntry(m_pHeadEntry,0);
-  
-  vHandleFirstInsert(pInsertedKeyEntry,pOriginalFirstEntry,nullptr);
 }
 
 /*----------------------------------------------------------------------------*/
