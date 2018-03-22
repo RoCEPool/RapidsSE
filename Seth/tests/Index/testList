@@ -3,4 +3,5 @@ createLoop.test
 createUnique.test
 emptyTable.test
 indexEntry.test
+rangeQuery.test
 supplierLoop.test
