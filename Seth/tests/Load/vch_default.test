@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* vch_no_enclosed -- varchar with no enclosed by                             */
+/* vch_default -- varchar with no enclosed by                                 */
 /*----------------------------------------------------------------------------*/
 
 // create the tables
@@ -27,7 +27,8 @@ rows:
 
 fetch vch "vch_testno 202 =";
 rows:
-  (*, 202, '''quick brown fox\''s''', *)
+  (*, 202, '''quick brown fox''s''', *)
+//(*, 202, '''quick brown fox\''s''', *)                        ##CHECK-WITH-RAY
 
 fetch vch "vch_testno 203 =";
 rows:
@@ -60,7 +61,8 @@ rows:
 
 fetch vch "vch_testno 210 =";
 rows:
-  (*, 210, '''\N''', *)
+  (*, 210, '''N''', *)
+  //(*, 210, '''\N''', *)                                       ##CHECK-WITH-RAY
 
 fetch vch "vch_testno 211 =";
 rows:
@@ -119,7 +121,7 @@ rows:
 
 fetch vch "vch_testno 202 =";
 rows:
-  (*, 202, '''quick brown fox\''s''', *)
+  (*, 202, '''quick brown fox''s''', *)
 
 fetch vch "vch_testno 203 =";
 rows:
@@ -152,7 +154,7 @@ rows:
 
 fetch vch "vch_testno 210 =";
 rows:
-  (*, 210, '''\N''', *)
+  (*, 210, '''N''', *)
 
 fetch vch "vch_testno 211 =";
 rows:
