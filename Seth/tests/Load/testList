@@ -1,16 +1,17 @@
 enclosed_by.test
 rdp.test
 regressionData.test
+terminator_cr.test
 terminatorLarge_cr.test
 terminatorSmall_cr.test
 terminatorSmallNull_cr.test
 tsp_formatter.test
 vch_default.test
 vch_enclosedBy.test
-vch_term_defaults.test
 vch_no_enclosed_no_escape.test
 vch_no_escape.test
 vch_term_defaults.test
+vch_term_no_enclosed.test
 vch_term_no_enclosed_no_escape.test
 vch_term_no_escape.test
 
