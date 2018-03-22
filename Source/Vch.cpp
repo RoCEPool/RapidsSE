@@ -405,6 +405,30 @@ void Vch::vSprint(Stz* aDst, Stz* aSrc)
   *aDstChar = '\0';
 }
 
+void Vch::vSprintQuotes(Stz* aDst, Stz* aSrc)
+{
+  // test for null
+  Vch* aVch = (Vch*)aSrc;
+  if (aVch->bIsNull()) {
+    StrLib::vSprint(aDst,"null%c"_Stz,'\0');
+    return;
+  }
+  
+  char* aDstChar = (char*)aDst;
+  char* aSrcChar = (char*)aSrc;
+  
+  *aDstChar++ = '\'';
+  
+  // copy from src to dst
+  while (*aSrcChar) {
+    // copy an ordinary char
+    *aDstChar++ = *aSrcChar++;
+  }
+  
+  // put \0
+  *aDstChar++ = '\'';
+  *aDstChar = '\0';
+}
 /*----------------------------------------------------------------------------*/
 /* sprint vch datum in escaped form                                           */
 /*----------------------------------------------------------------------------*/
