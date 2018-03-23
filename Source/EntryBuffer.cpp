@@ -1437,14 +1437,16 @@ void EntryBuffer::vCompactLeft(void)
   RASSERT( ! m_pLazyChain );
 #endif
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // go through each entry in L0 order
+  //
+  //  [head](free)[entry][entry](free)[entry](wilderness)
+  //
   
+  // go through each entry in L0 order
   for (Entry* pThisEntry = m_pHeadEntry;
        pThisEntry != nullptr;
        pThisEntry = pNextEntry(pThisEntry, 0)) {
     
-    // get the address after the entry
+    // get the address after this entry
     char* aAfterAddr = pThisEntry->aAddressAfter();
     
     // get the address of the next entry
