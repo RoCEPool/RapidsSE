@@ -1,4 +1,5 @@
 basic.test
+enclosedByBraces.test
 rdp.test
 rdpLoad.test
 regressionData.test
