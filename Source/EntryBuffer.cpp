@@ -2902,7 +2902,7 @@ EntryBuffer* EntryBuffer::pSplit2(EntryBuffer** ppRootKeyBuffer)
        pCopyEntry = pNextEntry) {
     
     ASSERT(! m_iBufferLevel ||
-           pMoveEntry->pReferencedEntryBuffer()->m_pHigherBuffer == pThisLeftBuffer);
+           pCopyEntry->pReferencedEntryBuffer()->m_pHigherBuffer == pThisLeftBuffer);
     
     pNextEntry = this->pNextEntry(pCopyEntry,0);
     
