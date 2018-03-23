@@ -1437,6 +1437,38 @@ void EntryBuffer::vCompactLeft(void)
   RASSERT( ! m_pLazyChain );
 #endif
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // go through each entry in L0 order
+  
+  for (Entry* pThisEntry = m_pHeadEntry;
+       pThisEntry != nullptr;
+       pThisEntry = pNextEntry(pThisEntry, 0)) {
+    
+    // get the address after the entry
+    char* aAfterAddr = pThisEntry->aAddressAfter();
+    
+    // get the address of the next entry
+    Entry* pNextEntry = this->pNextEntry(pThisEntry,0);
+    
+    // if next entry is contiguous with this entry then skip this
+    if ((char*)pNextEntry == aAfterAddr)
+      continue;
+    
+    // - there is a gap between this entry and next entry
+    
+    // calculate the number of bytes to copy
+    i8 nCopyBytes = pNextEntry->nSizeEntry() + pNextEntry->iNEOsize();
+    
+    // copy the next entry so its adjacent to this entry
+    MemLib::vMove(aAfterAddr, pNextEntry, nCopyBytes, CN_ENTRYBUFFER);
+    
+    // reset the L0 offset in this entry
+    i8 iRevisedNextOffset = iToOffset((Entry*)aAfterAddr);
+    pThisEntry->vNEO(0,iRevisedNextOffset);
+  }
+  
+  // reset the wilderness
+  vSetWilderness();
 }
 
 /*----------------------------------------------------------------------------*/
