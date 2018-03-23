@@ -11,7 +11,7 @@ extern AttachMap* gpAttachMap;
 bool mbWatch = false;
 //#define MB_WATCH
 
-//#define EB_LAZY_CHAIN
+#define EB_LAZY_CHAIN
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -1203,6 +1203,21 @@ void EntryBuffer::vAddFreeList(Entry* pEntry)
 }
 
 /*----------------------------------------------------------------------------*/
+/* build L0 of the skip list from the lazy chain                              */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vBuildOffsetL0(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  ASSERT(! pFirstEntry());
+  
+  Entry* pTailEntry = m_pHeadEntry;
+  while (Entry* pPoppedEntry = pPopLazyChain()) {
+
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* build skip list from the lazy chain                                        */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vBuildSkipList(void)
@@ -1252,10 +1267,10 @@ void EntryBuffer::vBuildSkipListSorted(void)
   //  [p]--[ ]--[ ]--[ ]--[ ]--[ ]  (L0 is a-priori in sorted order)
   //
   
-  Entry* xPrev[gpAttachMap->m_nIndexOffsets];
+  Entry* xPrevVec[gpAttachMap->m_nIndexOffsets];
   
   for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexOffsets; i_Offset++)
-    xPrev[i_Offset] = m_pHeadEntry;
+    xPrevVec[i_Offset] = m_pHeadEntry;
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1276,10 +1291,10 @@ void EntryBuffer::vBuildSkipListSorted(void)
     for (i8 i_Offset = 1; i_Offset < nOffsets; i_Offset++) {
       
       // set previous entry at this level to refer to this entry
-      xPrev[i_Offset]->vNEO(i_Offset,iEntryOffset);
+      xPrevVec[i_Offset]->vNEO(i_Offset,iEntryOffset);
       
       // the previous entry at this level now becomes this entry
-      xPrev[i_Offset] = pEntry;
+      xPrevVec[i_Offset] = pEntry;
     }
   }
 }
@@ -1438,7 +1453,11 @@ void EntryBuffer::vCompactLeft(void)
 #endif
   
   //
-  //  [head](free)[entry][entry](free)[entry](wilderness)
+  // this is contiguous in memory:
+  //
+  // before:  [head](free)[entry][entry](free)(free)[entry](wilderness)
+  //
+  // after:   [head][entry][entry][entry](wilderness)
   //
   
   // go through each entry in L0 order
@@ -1471,6 +1490,9 @@ void EntryBuffer::vCompactLeft(void)
   
   // reset the wilderness
   vSetWilderness();
+  
+  // rebuild the full skiplist
+  vBuildSkipListSorted();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2254,6 +2276,22 @@ bool EntryBuffer::bKeyBeforeBuffer(Key* aKeyTest)
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert given entry into free entry                                        */
+/*----------------------------------------------------------------------------*/
+FreeEntry* EntryBuffer::pMakeFreeEntry(Entry* pEntry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  i8 nSizeEntry = pEntry->nSizeEntry();
+  i8 nSizeNEO   = pEntry->iNEOsize();
+  i8 nSizeFree  = nSizeEntry + nSizeNEO;
+  
+  FreeEntry* pFreeEntry = new(pEntry) FreeEntry(nSizeFree);
+
+  return pFreeEntry;
+}
+
+/*----------------------------------------------------------------------------*/
 /* create a new higher buffer                                                 */
 /*----------------------------------------------------------------------------*/
 EntryBuffer* EntryBuffer::pNewHigherBuffer(void)
@@ -2821,12 +2859,9 @@ EntryBuffer* EntryBuffer::pSplit2(EntryBuffer** ppRootKeyBuffer)
   EntryBuffer* pThisLeftBuffer = this;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create a new right buffer and a working buffer
+  // create a new right buffer
   
   EntryBuffer* pNewRightBuffer = pNewNextBuffer();
-
-  EntryBuffer* pWorkingBuffer = new EntryBuffer();
-  pWorkingBuffer->vIndex(m_pIndex);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find split entry. every entry from split entry and to the right of it
@@ -2893,6 +2928,11 @@ EntryBuffer* EntryBuffer::pSplit2(EntryBuffer** ppRootKeyBuffer)
   pNewRightBuffer->vBuildSkipListSorted();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compact the left buffer
+  
+  pThisLeftBuffer->vCompactLeft();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // the child buffer of any moved entry needs to have its higher buffer
   // corrected to the new right buffer
   
@@ -2927,12 +2967,6 @@ EntryBuffer* EntryBuffer::pSplit2(EntryBuffer** ppRootKeyBuffer)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // compact the left buffer
-  
-  pThisLeftBuffer->vCompactLeft();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
   
   return pNewRightBuffer;
 }

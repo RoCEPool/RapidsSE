@@ -145,6 +145,7 @@ namespace DBobjects
                                    EntryBuffer** ppRootKeyBuffer);
     void         vItemCountRestore(void);
     bool         bKeyBeforeBuffer(Key* aKey);
+    FreeEntry*   pMakeFreeEntry(Entry* pEntry);
     EntryBuffer* pNewHigherBuffer(void);
     EntryBuffer* pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
                                   EntryBuffer** ppRootKeyBuffer);
