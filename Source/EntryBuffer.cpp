@@ -2427,6 +2427,28 @@ Item* EntryBuffer::pNextItem(Item* pCurrent)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop entry from lazy chain                                                  */
+/*----------------------------------------------------------------------------*/
+Entry* EntryBuffer::pPopLazyChain(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  if (! m_pLazyChain )
+    return nullptr;
+  
+  Entry* pPoppedLazyEntry = m_pLazyChain;
+  
+  i8 iNextLazyOffset = pPoppedLazyEntry->iNEO(0);
+  
+  if (-1 == iNextLazyOffset)
+    m_pLazyChain = nullptr;
+  else
+    m_pLazyChain = pGetEntryOffset(iNextLazyOffset);
+  
+  return pPoppedLazyEntry;
+}
+
+/*----------------------------------------------------------------------------*/
 /* position at the L0 buffer into which key should be inserted                */
 /*----------------------------------------------------------------------------*/
 EntryBuffer* EntryBuffer::pPositionPriorBuffer(Key* aFindKey)

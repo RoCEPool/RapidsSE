@@ -107,6 +107,7 @@ namespace DBobjects
     Entry*       pAllotEntry(i8 nBytes);
     NEO*         aAllotNEO(i8 nBytes);
     void         vAddFreeList(Entry* pEntry);
+    void         vBuildOffsetL0(void);
     void         vBuildSkipList(void);
     void         vBuildSkipListSorted(void);
     void         vCompact(void);
@@ -149,6 +150,7 @@ namespace DBobjects
                                   EntryBuffer** ppRootKeyBuffer);
     EntryBuffer* pNewNextBuffer(void);
     Item*        pNextItem(Item* pItem);
+    Entry*       pPopLazyChain(void);
     EntryBuffer* pPositionPriorBuffer(Key* aFindKey);
     Entry*       pPositionPriorEntry(Key* aFindKey);
     void         vPositionPriorVecEntry(Key* aFindKey, Entry** pPriorVec,
