@@ -11,7 +11,7 @@ extern AttachMap* gpAttachMap;
 bool mbWatch = false;
 //#define MB_WATCH
 
-#define EB_LAZY_CHAIN
+//#define EB_LAZY_CHAIN
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -1177,11 +1177,15 @@ void EntryBuffer::vAddFreeList(Entry* pEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add entry to head of free entry list
   
+  /*
   i8 nSizeEntry = pEntry->nSizeEntry();
   i8 nSizeNEO   = pEntry->iNEOsize();
   i8 nSizeFree  = nSizeEntry + nSizeNEO;
   
   FreeEntry* pFreeEntry = new(pEntry) FreeEntry(nSizeFree);
+  */
+  
+  FreeEntry* pFreeEntry = pMakeFreeEntry(pEntry);
   
   //  if (! bQuickVerify(pEntry)) {
   //    vDumpPriorVec(xPriorVec);
@@ -2901,6 +2905,9 @@ EntryBuffer* EntryBuffer::pSplit2(EntryBuffer** ppRootKeyBuffer)
     xKeyWrk.vOffsets(nOffsets);
     
     Entry* pNewEntry = pNewRightBuffer->pInsertKeyAbsLazy(xKeyWrk);
+    
+    // make the moved entry in the left buffer to be a free entry
+    FreeEntry* pFreeEntry = pMakeFreeEntry(pMoveEntry);
     
     // these can be commented
     ASSERT(! m_iBufferLevel ||
