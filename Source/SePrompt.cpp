@@ -1714,7 +1714,7 @@ bool SePrompt::bCmd_LoadTable(void)
     iCurrentIndex++;
   }
   
-  m_pSEitf->m_xFormatters.vShow();
+  //m_pSEitf->m_xFormatters.vShow();
   
   //
   // clear the last error
