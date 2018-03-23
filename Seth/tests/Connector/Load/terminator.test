@@ -11,7 +11,7 @@ success
 
 // load data into the table with default formatter settings
 ESCAPE CONNECTOR se 'load T1' with file='../JTEST/terminator.csv' , terminator='|\n', node='NODE1' ;
-failure contains: 'Success'
+failure contains: 'Warning'
 
 // create index
 create index idx on T1(c1);
