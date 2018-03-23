@@ -3,6 +3,7 @@ enclosedByBraces.test
 rdp.test
 rdpLoad.test
 regressionData.test
+terminator.test
 terminator_cr.test
 terminatorLarge_cr.test
 terminatorSmall_cr.test
