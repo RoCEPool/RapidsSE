@@ -1,0 +1,40 @@
+/*----------------------------------------------------------------------------*/
+/* terminator -- terminator file                                              */
+/*----------------------------------------------------------------------------*/
+
+// create the table
+create table T1(
+  c1 integer,
+  c2 varchar,
+  c3 varchar);
+success
+
+// load data into the table with default formatter settings
+ESCAPE CONNECTOR se 'load T1' with file='../JTEST/terminator.csv' , terminator='|\n', node='NODE1' ;
+failure contains: 'Success'
+
+// create index
+create index idx on T1(c1);
+success
+
+Select * from T1;
+rows:
+  (1,'A','Should be A')
+  (2,'A|','Should be A <pipe>')
+
+//drop table T1;
+//success
+
+CLEANUP {
+  
+  //drop table T1;
+  //mute
+
+  bye;
+  mute
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* end                                                                        */
+/*----------------------------------------------------------------------------*/
