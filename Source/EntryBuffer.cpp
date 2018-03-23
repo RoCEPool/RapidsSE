@@ -12,6 +12,7 @@ bool mbWatch = false;
 //#define MB_WATCH
 
 //#define EB_LAZY_CHAIN
+//#define EB_SPLIT2
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -1453,11 +1454,16 @@ void EntryBuffer::vCompactLeft(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
 #ifdef EB_LAZY_CHAIN
-  RASSERT( ! m_pLazyChain );
+  //RASSERT( ! m_pLazyChain );
+  
+  if (m_pLazyChain)
+    vBuildSkipList();
 #endif
   
   //
   // this is contiguous in memory:
+  //
+  // example:
   //
   // before:  [head](free)[entry][entry](free)(free)[entry](wilderness)
   //
@@ -2347,8 +2353,12 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // split the left buffer to yield a right buffer
-  
+
+#ifdef EB_SPLIT2
+  EntryBuffer* pRightBuffer = pLeftBuffer->pSplit2(ppRootKeyBuffer);
+#else
   EntryBuffer* pRightBuffer = pLeftBuffer->pSplit(ppRootKeyBuffer);
+#endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the first key of left buffer into higher buffer
@@ -2881,26 +2891,26 @@ EntryBuffer* EntryBuffer::pSplit2(EntryBuffer** ppRootKeyBuffer)
   Entry* pSplitEntry = pGetEntrySplit(iSplitAtEntry,&pPriorEntry);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // move split right entries to a new right buffer
+  // copy split right entries to a new right buffer
   
   KeyWrk xKeyWrk;
-  Entry* pMoveEntry;
+  Entry* pCopyEntry;
   Entry* pNextEntry;
   
-  for (pMoveEntry = pSplitEntry;
-       pMoveEntry;
-       pMoveEntry = pNextEntry) {
+  for (pCopyEntry = pSplitEntry;
+       pCopyEntry;
+       pCopyEntry = pNextEntry) {
     
     ASSERT(! m_iBufferLevel ||
            pMoveEntry->pReferencedEntryBuffer()->m_pHigherBuffer == pThisLeftBuffer);
     
-    pNextEntry = this->pNextEntry(pMoveEntry,0);
+    pNextEntry = this->pNextEntry(pCopyEntry,0);
     
-    i8 iTxId = pMoveEntry->iTxId();
-    Id xId = pMoveEntry->xId();
-    Key* aKey = pMoveEntry->aKey();
+    i8 iTxId = pCopyEntry->iTxId();
+    Id xId = pCopyEntry->xId();
+    Key* aKey = pCopyEntry->aKey();
     i8 nKeySize = aKey->nKeySize(pIdxColVec);
-    i8 nOffsets = pMoveEntry->nOffsets();
+    i8 nOffsets = pCopyEntry->nOffsets();
     
     xKeyWrk.vTxId(iTxId);
     xKeyWrk.vId(xId);
@@ -2911,7 +2921,7 @@ EntryBuffer* EntryBuffer::pSplit2(EntryBuffer** ppRootKeyBuffer)
     Entry* pNewEntry = pNewRightBuffer->pInsertKeyAbsLazy(xKeyWrk);
     
     // make the moved entry in the left buffer to be a free entry
-    FreeEntry* pFreeEntry = pMakeFreeEntry(pMoveEntry);
+    FreeEntry* pFreeEntry = pMakeFreeEntry(pCopyEntry);
     
     // these can be commented
     ASSERT(! m_iBufferLevel ||
@@ -2929,9 +2939,14 @@ EntryBuffer* EntryBuffer::pSplit2(EntryBuffer** ppRootKeyBuffer)
     
   }
   
-  // cut off right entries
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // cut off right entries at L0
+  
   ASSERT(this->pNextEntry(pPriorEntry,0) == pSplitEntry);
   pPriorEntry->vNEO(0,-1);
+  
+  // - at this point the left buffer no longer has the right latter entries
+  //   and the SkipList is not valid (other than L0)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // build the skip list of the right buffer
@@ -2939,7 +2954,7 @@ EntryBuffer* EntryBuffer::pSplit2(EntryBuffer** ppRootKeyBuffer)
   pNewRightBuffer->vBuildSkipListSorted();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // compact the left buffer
+  // compact the left buffer and rebuild SkipList
   
   pThisLeftBuffer->vCompactLeft();
   
