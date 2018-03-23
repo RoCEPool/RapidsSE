@@ -1704,7 +1704,7 @@ Entry* EntryBuffer::pGetEntryOffset(i8 iOffset)
 /*----------------------------------------------------------------------------*/
 /* get split entry by split number                                            */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pGetEntrySplit(i8 iSplitEntryNo)
+Entry* EntryBuffer::pGetEntrySplit(i8 iSplitEntryNo,Entry** ppPriorEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1716,6 +1716,8 @@ Entry* EntryBuffer::pGetEntrySplit(i8 iSplitEntryNo)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  *ppPriorEntry = nullptr;
+  
   i8 iEntryNo = 0;
   for (Entry* pSplitEntry = pNextEntry(m_pHeadEntry,0);
        pSplitEntry;
@@ -1724,6 +1726,8 @@ Entry* EntryBuffer::pGetEntrySplit(i8 iSplitEntryNo)
     // found split point?
     if (iEntryNo++ == iSplitEntryNo)
       return pSplitEntry;
+    
+    *ppPriorEntry = pSplitEntry;
   }
   
   return nullptr;
@@ -2725,8 +2729,9 @@ EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
   // find split entry. every entry from split entry and to the right of it
   // will be moved to the new right buffer
   
+  Entry* pPriorEntry;
   i8 iSplitAtEntry = m_nItems/2;
-  Entry* pSplitEntry = pGetEntrySplit(iSplitAtEntry);
+  Entry* pSplitEntry = pGetEntrySplit(iSplitAtEntry,&pPriorEntry);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the prior vector to the split entry
@@ -2871,8 +2876,9 @@ EntryBuffer* EntryBuffer::pSplit2(EntryBuffer** ppRootKeyBuffer)
   // find split entry. every entry from split entry and to the right of it
   // will be moved to the new right buffer
   
+  Entry* pPriorEntry;
   i8 iSplitAtEntry = m_nItems/2;
-  Entry* pSplitEntry = pGetEntrySplit(iSplitAtEntry);
+  Entry* pSplitEntry = pGetEntrySplit(iSplitAtEntry,&pPriorEntry);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move split right entries to a new right buffer
@@ -2880,7 +2886,6 @@ EntryBuffer* EntryBuffer::pSplit2(EntryBuffer** ppRootKeyBuffer)
   KeyWrk xKeyWrk;
   Entry* pMoveEntry;
   Entry* pNextEntry;
-  Entry* pPriorEntry = nullptr;
   
   for (pMoveEntry = pSplitEntry;
        pMoveEntry;
@@ -2889,7 +2894,6 @@ EntryBuffer* EntryBuffer::pSplit2(EntryBuffer** ppRootKeyBuffer)
     ASSERT(! m_iBufferLevel ||
            pMoveEntry->pReferencedEntryBuffer()->m_pHigherBuffer == pThisLeftBuffer);
     
-    pPriorEntry = pMoveEntry;
     pNextEntry = this->pNextEntry(pMoveEntry,0);
     
     i8 iTxId = pMoveEntry->iTxId();

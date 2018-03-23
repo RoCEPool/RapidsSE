@@ -122,7 +122,7 @@ namespace DBobjects
     Item*        pFirstItem(void);
     void         vFreeChains(void);
     Entry*       pGetEntryOffset(i8 iOffset);
-    Entry*       pGetEntrySplit(i8 iSplitEntryNo);
+    Entry*       pGetEntrySplit(i8 iSplitEntryNo, Entry** ppPriorEntry);
     i4           iGetFreeEntry(void);
     void         vHandleFirstInsert(Entry* pInsertedKeyEntry,
                                     Entry* pOriginalFirstEntry,
