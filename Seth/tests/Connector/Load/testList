@@ -1,4 +1,5 @@
 basic.test
+enclosedBy.test
 enclosedByBraces.test
 rdp.test
 rdpLoad.test

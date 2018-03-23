@@ -22,13 +22,13 @@ rows:
   (1,'A','Should be A')
   (2,'A|','Should be A <pipe>')
 
-//drop table T1;
-//success
+drop table T1;
+success
 
 CLEANUP {
   
-  //drop table T1;
-  //mute
+  drop table T1;
+  mute
 
   bye;
   mute
