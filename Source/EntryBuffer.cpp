@@ -2981,6 +2981,11 @@ EntryBuffer* EntryBuffer::pSplit2(EntryBuffer** ppRootKeyBuffer)
   ASSERT(this->pNextEntry(pPriorEntry,0) == pSplitEntry);
   pPriorEntry->vNEO(0,-1);
   
+  // adjust the number of items in the buffer
+  i8 nItemsOriginally = pThisLeftBuffer->nItems();
+  i8 nRevisedItems = nItemsOriginally - nEntriesCopied;
+  pThisLeftBuffer->vItems(nRevisedItems);
+  
   // - at this point the left buffer no longer has the right latter entries
   //   and the SkipList is not valid (other than L0)
   
