@@ -138,6 +138,7 @@ namespace DBobjects
                                    EntryBuffer** ppRootKeyBuffer);
     Entry*       pInsertKeyAbs(KeyWrk& xKeyWrk);
     Entry*       pInsertKeyAbsLazy(KeyWrk& xKeyWrk);
+    Entry*       pInsertKeyAbsL0(KeyWrk& xKeyWrk, Entry* pPriorEntry);
     void         vInsertKeySkip(Entry* pKeyEntry);
     Entry*       pInsertKeyBuffer(KeyWrk& xKeyWrk,
                                   EntryBuffer** ppRootKeyBuffer);

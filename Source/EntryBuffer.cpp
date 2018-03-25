@@ -2102,6 +2102,62 @@ Entry* EntryBuffer::pInsertKeyAbsLazy(KeyWrk& xKeyWrk)
 }
 
 /*----------------------------------------------------------------------------*/
+/* insert a key entry specifically into this buffer (L0 chain only)           */
+/*----------------------------------------------------------------------------*/
+Entry* EntryBuffer::pInsertKeyAbsL0(KeyWrk& xKeyWrk, Entry* pPriorEntry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // trace
+  
+  //vTrace("Inserting key:\n"_Stz);
+  //IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  //aKey->vShow(pIdxColVec);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compute required entry space
+  
+  RASSERT(xKeyWrk.nOffsets());
+  
+  i8 nEntryBytes = xKeyWrk.nEntrySize();
+  i8 nOffsetBytes = xKeyWrk.nOffsetSize();
+  i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
+  
+  RASSERT(bHasSpace(nEntryPlusOffsets));
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // allocate space for the key and next offsets in this buffer
+  
+  Entry* pKeyEntry = pAllotEntry(nEntryBytes);
+  ASSERT(pKeyEntry);
+  
+  NEO* aNEO = aAllotNEO(nOffsetBytes);
+  ASSERT(aNEO);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the key entry
+  
+  pKeyEntry->vSetEntry(xKeyWrk);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append to prior entry at L0 only
+
+  i8 iOffset = iToOffset(pKeyEntry);
+  
+  pPriorEntry->vNEO(0,iOffset);
+
+  // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
+  // for the moment we set L1 & L2 offsets in prior entry to -1
+  
+  i8 nPriorOffsets = pPriorEntry->nOffsets();
+  for (i8 i_Offset = 1; i_Offset < nPriorOffsets; i_Offset++)
+    pPriorEntry->vNEO(i_Offset,-1);
+  
+  return pKeyEntry;
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert key entry into skip list of this buffer                             */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vInsertKeySkip(Entry* pKeyEntry)
