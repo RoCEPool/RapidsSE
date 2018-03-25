@@ -1272,6 +1272,26 @@ void EntryBuffer::vBuildSkipListSorted(void)
   //  [p]--[ ]--[ ]--[ ]--[ ]--[ ]  (L0 is a-priori in sorted order)
   //
   
+  /*
+   // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
+  // temp: clear out all l1 and l2 offsets for testing purpoes
+  
+  for (Entry* pEntry = m_pHeadEntry;
+       pEntry != nullptr;
+       pEntry = pNextEntry(pEntry, 0)) {
+  
+    // get the number of offsets for this entry
+    i8 nOffsets = pEntry->nOffsets();
+    
+    // connect the dots
+    for (i8 i_Offset = 1; i_Offset < nOffsets; i_Offset++)
+      pEntry->vNEO(i_Offset,-1);
+  }
+  vShow();
+  */
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   Entry* xPrevVec[gpAttachMap->m_nIndexOffsets];
   
   for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexOffsets; i_Offset++)
@@ -2341,6 +2361,17 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
     return this;
   
   EntryBuffer* pLeftBuffer = this;
+
+  
+  // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
+  // experiment to see if building the skip list (sorted) works
+  
+  vShow();
+  vBuildSkipListSorted();
+  vShow();
+  
+  // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
+  
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the higher buffer, creating one if it doesnt exist
