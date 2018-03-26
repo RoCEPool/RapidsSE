@@ -251,15 +251,17 @@ bool Key::bGreaterEqual(Key* pKeyThat, IdxColVec* pIdxColVec)
   char* aCursorThis = aWspArea();
   char* aCursorThat = pKeyThat->aWspArea();
   
+  i8 nBytesThis;
+  i8 nBytesThat;
+  
   for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
     
     Column* pColumn = pIdxColVec->pGet(i_Column);
     
-    i8 nBytesThis;
-    i8 nBytesThat;
-    
-    char* aDatumThis = aEachDatum(pColumn,nBytesThis,&aCursorThis);
-    char* aDatumThat = aEachDatum(pColumn,nBytesThat,&aCursorThat);
+    char* aDatumThis = //aEachDatum(pColumn,nBytesThis,&aCursorThis);
+                       pColumn->aValue(nBytesThis,&aCursorThis);
+    char* aDatumThat = //aEachDatum(pColumn,nBytesThat,&aCursorThat);
+                       pColumn->aValue(nBytesThat,&aCursorThat);
     
     bGreaterEqual = pColumn->bGreaterEqual(aDatumThis,aDatumThat);
     if (!bGreaterEqual)
