@@ -2104,7 +2104,7 @@ Entry* EntryBuffer::pInsertKeyAbsLazy(KeyWrk& xKeyWrk)
 /*----------------------------------------------------------------------------*/
 /* insert a key entry specifically into this buffer (L0 chain only)           */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pInsertKeyAbsL0(KeyWrk& xKeyWrk, Entry* pPriorEntry)
+Entry* EntryBuffer::pInsertKeyAbsL0(KeyWrk& xKeyWrk, Entry** ppPriorEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -2145,14 +2145,18 @@ Entry* EntryBuffer::pInsertKeyAbsL0(KeyWrk& xKeyWrk, Entry* pPriorEntry)
 
   i8 iOffset = iToOffset(pKeyEntry);
   
-  pPriorEntry->vNEO(0,iOffset);
+  (*ppPriorEntry)->vNEO(0,iOffset);
 
   // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
   // for the moment we set L1 & L2 offsets in prior entry to -1
   
-  i8 nPriorOffsets = pPriorEntry->nOffsets();
+  i8 nPriorOffsets = (*ppPriorEntry)->nOffsets();
   for (i8 i_Offset = 1; i_Offset < nPriorOffsets; i_Offset++)
-    pPriorEntry->vNEO(i_Offset,-1);
+    (*ppPriorEntry)->vNEO(i_Offset,-1);
+  
+  // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
+  
+  *ppPriorEntry = pKeyEntry;
   
   return pKeyEntry;
 }
@@ -2986,6 +2990,8 @@ EntryBuffer* EntryBuffer::pSplit2(EntryBuffer** ppRootKeyBuffer)
   Entry* pCopyEntry;
   Entry* pNextEntry;
   
+  Entry* pLastEntryRight = pNewRightBuffer->pHeadEntry();
+ 
   i8 nEntriesCopied = 0;
   for (pCopyEntry = pSplitEntry;
        pCopyEntry;
@@ -3010,7 +3016,7 @@ EntryBuffer* EntryBuffer::pSplit2(EntryBuffer** ppRootKeyBuffer)
     xKeyWrk.vKeySize(nKeySize);
     xKeyWrk.vOffsets(nOffsets);
     
-    Entry* pNewEntry = pNewRightBuffer->pInsertKeyAbsLazy(xKeyWrk);
+    Entry* pNewEntry = pNewRightBuffer->pInsertKeyAbsL0(xKeyWrk,&pLastEntryRight);
     
     // make the moved entry in the left buffer to be a free entry
     FreeEntry* pFreeEntry = pMakeFreeEntry(pCopyEntry);
