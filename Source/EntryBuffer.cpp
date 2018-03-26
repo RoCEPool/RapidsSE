@@ -1547,6 +1547,81 @@ void EntryBuffer::vCompactLeft(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* compact this buffer                                                        */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vCompactLeft2(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+#ifdef EB_LAZY_CHAIN
+  RASSERT(! m_pLazyChain);
+#endif
+
+  EntryBuffer* pThisBuffer = this;
+  EntryBuffer* pTempBuffer = new EntryBuffer();
+  
+  IdxColVec* pIdxColVec;
+
+  KeyWrk xKeyWrk;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Entry* pPriorEntry = pTempBuffer->pHeadEntry();
+  
+  for (Entry* pThisEntry = pThisBuffer->pFirstEntry();
+       pThisEntry != nullptr;
+       pThisEntry = pThisBuffer->pNextEntry(pThisEntry, 0)) {
+    
+    i8 iTxId = pThisEntry->iTxId();
+    Id xId = pThisEntry->xId();
+    Key* aKey = pThisEntry->aKey();
+    i8 nKeySize = aKey->nKeySize(pIdxColVec);
+    i8 nOffsets = pThisEntry->nOffsets();
+    
+    xKeyWrk.vTxId(iTxId);
+    xKeyWrk.vId(xId);
+    xKeyWrk.vEmbedded((char*)aKey);
+    xKeyWrk.vKeySize(nKeySize);
+    xKeyWrk.vOffsets(nOffsets);
+    
+    pTempBuffer->pInsertKeyAbsL0(xKeyWrk,&pPriorEntry);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Item* pThisWilderness = pAdd<Item*>(m_pHeadEntry,
+                                      m_pHeadEntry->nSizeEntry() +
+                                      m_pHeadEntry->iNEOsize());
+  vResetUsed(pThisWilderness);
+  vSetWilderness();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  pPriorEntry = pThisBuffer->pHeadEntry();
+  
+  for (Entry* pTempEntry = pTempBuffer->pFirstEntry();
+       pTempEntry != nullptr;
+       pTempEntry = pTempBuffer->pNextEntry(pTempEntry, 0)) {
+    
+    i8 iTxId = pTempEntry->iTxId();
+    Id xId = pTempEntry->xId();
+    Key* aKey = pTempEntry->aKey();
+    i8 nKeySize = aKey->nKeySize(pIdxColVec);
+    i8 nOffsets = pTempEntry->nOffsets();
+    
+    xKeyWrk.vTxId(iTxId);
+    xKeyWrk.vId(xId);
+    xKeyWrk.vEmbedded((char*)aKey);
+    xKeyWrk.vKeySize(nKeySize);
+    xKeyWrk.vOffsets(nOffsets);
+    
+    pTempBuffer->pInsertKeyAbsL0(xKeyWrk,&pPriorEntry);
+  }
+  
+  delete pTempBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* cut entry from skip list                                                   */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vCutEntry(Entry* pEntry, Entry* pPriorVec[])

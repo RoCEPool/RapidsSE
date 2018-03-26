@@ -112,6 +112,7 @@ namespace DBobjects
     void         vBuildSkipListSorted(void);
     void         vCompact(void);
     void         vCompactLeft(void);
+    void         vCompactLeft2(void);
     void         vCutEntry(Entry* pEntry, Entry* pPriorVec[]);
     void         vDeleteUpwards(Key* aDeleteKey,
                                 EntryBuffer** ppRootKeyBuffer);
