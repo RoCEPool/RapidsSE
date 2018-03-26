@@ -1480,6 +1480,8 @@ void EntryBuffer::vCompactLeft(void)
     vBuildSkipList();
 #endif
   
+  vShow();
+  
   //
   // this is contiguous in memory:
   //
@@ -1491,15 +1493,22 @@ void EntryBuffer::vCompactLeft(void)
   //
   
   // go through each entry in L0 order
+  Entry* pLastEntry = nullptr;
+  
   for (Entry* pThisEntry = m_pHeadEntry;
        pThisEntry != nullptr;
        pThisEntry = pNextEntry(pThisEntry, 0)) {
+    
+    pLastEntry = pThisEntry;
     
     // get the address after this entry
     char* aAfterAddr = pThisEntry->aAddressAfter();
     
     // get the address of the next entry
     Entry* pNextEntry = this->pNextEntry(pThisEntry,0);
+    
+    if (! pNextEntry)
+      break;
     
     // if next entry is contiguous with this entry then skip this
     if ((char*)pNextEntry == aAfterAddr)
@@ -1510,16 +1519,28 @@ void EntryBuffer::vCompactLeft(void)
     // calculate the number of bytes to copy
     i8 nCopyBytes = pNextEntry->nSizeEntry() + pNextEntry->iNEOsize();
     
+    vTrace("ThisEntry %p AfterAddr %p NextEntry %p CopyBytes %lld\n"_Stz,
+           pThisEntry,aAfterAddr,pNextEntry,nCopyBytes);
+           
     // copy the next entry so its adjacent to this entry
     MemLib::vMove(aAfterAddr, pNextEntry, nCopyBytes, CN_ENTRYBUFFER);
     
     // reset the L0 offset in this entry
     i8 iRevisedNextOffset = iToOffset((Entry*)aAfterAddr);
     pThisEntry->vNEO(0,iRevisedNextOffset);
+    
+    //vResetUsed(pAdd<Item*>(pLastEntry,nCopyBytes));
   }
   
   // reset the wilderness
+  
+  Item* pNewWilderness = pAdd<Item*>(pLastEntry,pLastEntry->nSizeEntry() + pLastEntry->iNEOsize());
+  
+  vResetUsed(pNewWilderness);
+  
   vSetWilderness();
+  
+  vShow();
   
   // rebuild the full skiplist
   vBuildSkipListSorted();
