@@ -413,7 +413,7 @@ char* Column::aValue(i8& nBytes, char** aaCursor)
 
   Stz* aElem;
   char* aValue = *aaCursor;
-  
+  /*
   switch (m_eDatumType) {
       
     case DM_BOL:
@@ -466,6 +466,20 @@ char* Column::aValue(i8& nBytes, char** aaCursor)
     default:
       NEVER_REACH;
   }
+  */
+  
+  if (DM_VCH == m_eDatumType) {
+    aElem = (Stz*)aValue;
+    nBytes = 0;
+    
+    while (*aElem->aChar() != '\0') {
+      nBytes++;
+      aElem++;
+    }
+    nBytes++;    
+  }
+  else
+    nBytes = sizeof(i8);
   
   *aaCursor = pAdd<char*>(aValue,nBytes);
   
@@ -523,11 +537,11 @@ bool Column::bNotEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* greater equal                                                              */
 /*----------------------------------------------------------------------------*/
-bool Column::bGreaterEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Column::bGreaterEqual(char* aArgA, char* aArgB)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
-  bool bGreaterEqual = DtmLib::bGreaterEqual(m_eDatumType,aArgA,nBytesA,aArgB,nBytesB);
+  bool bGreaterEqual = DtmLib::bGreaterEqual(m_eDatumType,aArgA,aArgB);
   
   return bGreaterEqual;
 }
@@ -535,11 +549,11 @@ bool Column::bGreaterEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* greater than                                                               */
 /*----------------------------------------------------------------------------*/
-bool Column::bGreaterThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Column::bGreaterThan(char* aArgA, char* aArgB)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
-  bool bGreaterThan = DtmLib::bGreaterThan(m_eDatumType,aArgA,nBytesA,aArgB,nBytesB);
+  bool bGreaterThan = DtmLib::bGreaterThan(m_eDatumType,aArgA,aArgB);
   
   return bGreaterThan;
 }
@@ -619,8 +633,8 @@ bool Column::bCmp(eRO eRelnOp, char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
     case RO_LESS_EQUAL:   return bLessEqual   (aArgA, nBytesA, aArgB, nBytesB);
     case RO_EQUAL_TO:     return bEqualTo     (aArgA, nBytesA, aArgB, nBytesB);
     case RO_NOT_EQUAL:    return bNotEqual    (aArgA, nBytesA, aArgB, nBytesB);
-    case RO_GREATER_EQUAL:return bGreaterEqual(aArgA, nBytesA, aArgB, nBytesB);
-    case RO_GREATER_THAN: return bGreaterThan (aArgA, nBytesA, aArgB, nBytesB);
+    case RO_GREATER_EQUAL:return bGreaterEqual(aArgA, aArgB);
+    case RO_GREATER_THAN: return bGreaterThan (aArgA, aArgB);
     default: NEVER_REACH;
   }
   

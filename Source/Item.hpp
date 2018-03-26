@@ -22,7 +22,19 @@ namespace DBobjects
     char* aAddressAfter(void);
   };
   
-  Item* _pItem(void* aAddr);
+  //Item* _pItem(void* aAddr);
+  
+  /*----------------------------------------------------------------------------*/
+  /* safe cast                                                                  */
+  /*----------------------------------------------------------------------------*/
+  inline Item* _pItem(void* aAddr)
+  {
+  Item* pItem = reinterpret_cast<Item*>(aAddr);
+  
+  return pItem;
+  }
+  
+  
 }
 
 /*============================================================================*/

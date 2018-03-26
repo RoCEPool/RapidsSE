@@ -372,12 +372,9 @@ bool Flt::bNotEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* is flt argA >= aArgB?                                                      */
 /*----------------------------------------------------------------------------*/
-bool Flt::bGreaterEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Flt::bGreaterEqual(char* aArgA, char* aArgB)
 {
   bool bGreaterEqual;
-  
-  ASSERT(sizeof(d8) == nBytesA);
-  ASSERT(sizeof(d8) == nBytesB);
   
   if (((Flt*)aArgA)->bIsNull())
     bGreaterEqual = true;
@@ -401,7 +398,7 @@ bool Flt::bGreaterEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* is flt argA > aArgB?                                                       */
 /*----------------------------------------------------------------------------*/
-bool Flt::bGreaterThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Flt::bGreaterThan(char* aArgA, char* aArgB)
 {
   bool bGreaterThan;
   

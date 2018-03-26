@@ -261,8 +261,7 @@ bool Key::bGreaterEqual(Key* pKeyThat, IdxColVec* pIdxColVec)
     char* aDatumThis = aEachDatum(pColumn,nBytesThis,&aCursorThis);
     char* aDatumThat = aEachDatum(pColumn,nBytesThat,&aCursorThat);
     
-    bGreaterEqual = pColumn->bGreaterEqual(aDatumThis,nBytesThis,
-                                           aDatumThat,nBytesThat);
+    bGreaterEqual = pColumn->bGreaterEqual(aDatumThis,aDatumThat);
     if (!bGreaterEqual)
       break;
   }
@@ -290,8 +289,8 @@ bool Key::bGreaterThan(Key* pKeyThat, IdxColVec* pIdxColVec)
     char* aDatumThis = aEachDatum(pColumn,nBytesThis,&aCursorThis);
     char* aDatumThat = aEachDatum(pColumn,nBytesThat,&aCursorThat);
     
-    bGreaterThan = pColumn->bGreaterThan(aDatumThis,nBytesThis,
-                                         aDatumThat,nBytesThat);
+    bGreaterThan = pColumn->bGreaterThan(aDatumThis,aDatumThat);
+    
     if (!bGreaterThan)
       break;
   }

@@ -378,22 +378,22 @@ bool DtmLib::bNotEqual(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nByt
 /*----------------------------------------------------------------------------*/
 /* is datum argA >= argB?                                                     */
 /*----------------------------------------------------------------------------*/
-bool DtmLib::bGreaterEqual(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool DtmLib::bGreaterEqual(eDM eDatum, char* aArgA, char* aArgB)
 {
   bool bGE = false;
   
   switch (eDatum) {
-    case DM_BCD: bGE = Bcd::bGreaterEqual(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_BOL: bGE = Bol::bGreaterEqual(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_CHR: bGE = Vch::bGreaterEqual(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_DTE: bGE = Dte::bGreaterEqual(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_FLT: bGE = Flt::bGreaterEqual(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_INT: bGE = Int::bGreaterEqual(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_IVL: bGE = Ivl::bGreaterEqual(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_TME: bGE = Tme::bGreaterEqual(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_TSP: bGE = Tsp::bGreaterEqual(aArgA,nBytesA,aArgB,nBytesB); break;
+    case DM_BCD: bGE = Bcd::bGreaterEqual(aArgA,aArgB); break;
+    case DM_BOL: bGE = Bol::bGreaterEqual(aArgA,aArgB); break;
+    case DM_CHR: bGE = Vch::bGreaterEqual(aArgA,aArgB); break;
+    case DM_DTE: bGE = Dte::bGreaterEqual(aArgA,aArgB); break;
+    case DM_FLT: bGE = Flt::bGreaterEqual(aArgA,aArgB); break;
+    case DM_INT: bGE = Int::bGreaterEqual(aArgA,aArgB); break;
+    case DM_IVL: bGE = Ivl::bGreaterEqual(aArgA,aArgB); break;
+    case DM_TME: bGE = Tme::bGreaterEqual(aArgA,aArgB); break;
+    case DM_TSP: bGE = Tsp::bGreaterEqual(aArgA,aArgB); break;
     case DM_VBN: NEVER_REACH; break;
-    case DM_VCH: bGE = Vch::bGreaterEqual(aArgA,nBytesA,aArgB,nBytesB); break;
+    case DM_VCH: bGE = Vch::bGreaterEqual(aArgA,aArgB); break;
       
     default:
       THROW("DtmLib::bGreaterEqual: Invalid eDatum %lld"_Stz,eDatum);
@@ -405,22 +405,22 @@ bool DtmLib::bGreaterEqual(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 
 /*----------------------------------------------------------------------------*/
 /* is datum argA > argB?                                                      */
 /*----------------------------------------------------------------------------*/
-bool DtmLib::bGreaterThan(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool DtmLib::bGreaterThan(eDM eDatum, char* aArgA, char* aArgB)
 {
   bool bGT = false;
   
   switch (eDatum) {
-    case DM_BCD: bGT = Bcd::bGreaterThan(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_BOL: bGT = Bol::bGreaterThan(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_CHR: bGT = Vch::bGreaterThan(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_DTE: bGT = Dte::bGreaterThan(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_FLT: bGT = Flt::bGreaterThan(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_INT: bGT = Int::bGreaterThan(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_IVL: bGT = Ivl::bGreaterThan(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_TME: bGT = Tme::bGreaterThan(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_TSP: bGT = Tsp::bGreaterThan(aArgA,nBytesA,aArgB,nBytesB); break;
+    case DM_BCD: bGT = Bcd::bGreaterThan(aArgA,aArgB); break;
+    case DM_BOL: bGT = Bol::bGreaterThan(aArgA,aArgB); break;
+    case DM_CHR: bGT = Vch::bGreaterThan(aArgA,aArgB); break;
+    case DM_DTE: bGT = Dte::bGreaterThan(aArgA,aArgB); break;
+    case DM_FLT: bGT = Flt::bGreaterThan(aArgA,aArgB); break;
+    case DM_INT: bGT = Int::bGreaterThan(aArgA,aArgB); break;
+    case DM_IVL: bGT = Ivl::bGreaterThan(aArgA,aArgB); break;
+    case DM_TME: bGT = Tme::bGreaterThan(aArgA,aArgB); break;
+    case DM_TSP: bGT = Tsp::bGreaterThan(aArgA,aArgB); break;
     case DM_VBN: NEVER_REACH; break;
-    case DM_VCH: bGT = Vch::bGreaterThan(aArgA,nBytesA,aArgB,nBytesB); break;
+    case DM_VCH: bGT = Vch::bGreaterThan(aArgA,aArgB); break;
     
     default:
       THROW("DtmLib::bGreaterThan: Invalid eDatum %lld"_Stz,eDatum);

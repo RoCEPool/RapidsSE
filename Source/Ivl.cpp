@@ -356,12 +356,9 @@ bool Ivl::bNotEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* is ivl argA >= aArgB?                                                      */
 /*----------------------------------------------------------------------------*/
-bool Ivl::bGreaterEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Ivl::bGreaterEqual(char* aArgA, char* aArgB)
 {
   bool bGreaterEqual;
-  
-  ASSERT(sizeof(i8) == nBytesA);
-  ASSERT(sizeof(i8) == nBytesB);
   
   i8 iA = *(i8*)aArgA;
   i8 iB = *(i8*)aArgB;
@@ -377,12 +374,9 @@ bool Ivl::bGreaterEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* is ivl argA > aArgB?                                                       */
 /*----------------------------------------------------------------------------*/
-bool Ivl::bGreaterThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Ivl::bGreaterThan(char* aArgA, char* aArgB)
 {
   bool bGreaterThan;
-  
-  ASSERT(sizeof(i8) == nBytesA);
-  ASSERT(sizeof(i8) == nBytesB);
   
   i8 iA = *(i8*)aArgA;
   i8 iB = *(i8*)aArgB;

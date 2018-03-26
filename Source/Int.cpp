@@ -427,12 +427,9 @@ bool Int::bNotEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* is embeddedint argA >= embeddedaArgB?                                      */
 /*----------------------------------------------------------------------------*/
-bool Int::bGreaterEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Int::bGreaterEqual(char* aArgA, char* aArgB)
 {
   bool bGreaterEqual;
-  
-  ASSERT(sizeof(i8) == nBytesA);
-  ASSERT(sizeof(i8) == nBytesB);
   
   if (((Int*)aArgA)->bIsNull())
     bGreaterEqual = false;
@@ -456,7 +453,7 @@ bool Int::bGreaterEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* is embedded int argA > embedded aArgB?                                     */
 /*----------------------------------------------------------------------------*/
-bool Int::bGreaterThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Int::bGreaterThan(char* aArgA, char* aArgB)
 {
   bool bGreaterThan;
   

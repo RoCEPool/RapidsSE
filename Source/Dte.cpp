@@ -421,12 +421,9 @@ bool Dte::bNotEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* is dte argA >= aArgB?                                                      */
 /*----------------------------------------------------------------------------*/
-bool Dte::bGreaterEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Dte::bGreaterEqual(char* aArgA, char* aArgB)
 {
   bool bGreaterEqual;
-  
-  ASSERT(sizeof(i8) == nBytesA);
-  ASSERT(sizeof(i8) == nBytesB);
   
   if (((Dte*)aArgA)->bIsNull())
     bGreaterEqual = false;
@@ -451,12 +448,9 @@ bool Dte::bGreaterEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* is dte argA > aArgB?                                                       */
 /*----------------------------------------------------------------------------*/
-bool Dte::bGreaterThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Dte::bGreaterThan(char* aArgA, char* aArgB)
 {
   bool bGreaterThan;
-  
-  ASSERT(sizeof(i8) == nBytesA);
-  ASSERT(sizeof(i8) == nBytesB);
   
   if (((Dte*)aArgA)->bIsNull())
     bGreaterThan = false;

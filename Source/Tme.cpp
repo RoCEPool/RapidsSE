@@ -457,12 +457,9 @@ bool Tme::bNotEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* is tme argA >= aArgB?                                                      */
 /*----------------------------------------------------------------------------*/
-bool Tme::bGreaterEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Tme::bGreaterEqual(char* aArgA, char* aArgB)
 {
   bool bGreaterEqual;
-  
-  ASSERT(sizeof(i8) == nBytesA);
-  ASSERT(sizeof(i8) == nBytesB);
   
   if (((Vch*)aArgA)->bIsNull())
     bGreaterEqual = true;
@@ -506,7 +503,7 @@ bool Tme::bGreaterEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* is tme argA > aArgB?                                                       */
 /*----------------------------------------------------------------------------*/
-bool Tme::bGreaterThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Tme::bGreaterThan(char* aArgA, char* aArgB)
 {
   bool bGreaterThan;
   

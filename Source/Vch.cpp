@@ -665,7 +665,7 @@ bool Vch::bNotEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* is varchar argA >= aArgB?                                                  */
 /*----------------------------------------------------------------------------*/
-bool Vch::bGreaterEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Vch::bGreaterEqual(char* aArgA, char* aArgB)
 {
   bool bGreaterEqual;
   
@@ -676,9 +676,6 @@ bool Vch::bGreaterEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
     bGreaterEqual = true;
   
   else {
-    ASSERT(StrLib::iSize(aArgA) == nBytesA);
-    ASSERT(StrLib::iSize(aArgB) == nBytesB);
-    
     if (StrLib::iCompare(aArgA, aArgB) >= 0)
       bGreaterEqual = true;
     else
@@ -691,7 +688,7 @@ bool Vch::bGreaterEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* is Vch argA > aArgB?                                                       */
 /*----------------------------------------------------------------------------*/
-bool Vch::bGreaterThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Vch::bGreaterThan(char* aArgA, char* aArgB)
 {
   bool bGreaterThan;
   
@@ -702,9 +699,6 @@ bool Vch::bGreaterThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
     bGreaterThan = true;
   
   else {
-    ASSERT(StrLib::iSize(aArgA) == nBytesA);
-    ASSERT(StrLib::iSize(aArgB) == nBytesB);
-    
     if (StrLib::iCompare(aArgA, aArgB) > 0)
       bGreaterThan = true;
     else

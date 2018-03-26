@@ -411,12 +411,9 @@ bool Bol::bNotEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* is bol argA >= aArgB?                                                      */
 /*----------------------------------------------------------------------------*/
-bool Bol::bGreaterEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Bol::bGreaterEqual(char* aArgA, char* aArgB)
 {
   bool bGreaterEqual;
-  
-  ASSERT(sizeof(i8) == nBytesA);
-  ASSERT(sizeof(i8) == nBytesB);
   
   if (((Bol*)aArgA)->bIsNull())
     bGreaterEqual = false;
@@ -440,12 +437,9 @@ bool Bol::bGreaterEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* is bol argA > aArgB?                                                       */
 /*----------------------------------------------------------------------------*/
-bool Bol::bGreaterThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Bol::bGreaterThan(char* aArgA, char* aArgB)
 {
   bool bGreaterThan;
-  
-  ASSERT(sizeof(i8) == nBytesA);
-  ASSERT(sizeof(i8) == nBytesB);
   
   if (((Bol*)aArgA)->bIsNull())
     bGreaterThan = false;

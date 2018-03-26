@@ -52,8 +52,8 @@ namespace Datums
     static bool bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
     static bool bEqualTo(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
     static bool bNotEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
-    static bool bGreaterEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
-    static bool bGreaterThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
+    static bool bGreaterEqual(char* aArgA, char* aArgB);
+    static bool bGreaterThan(char* aArgA, char* aArgB);
     
     static i8 iCmp(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
   };
