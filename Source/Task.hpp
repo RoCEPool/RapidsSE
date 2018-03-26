@@ -700,6 +700,7 @@ namespace Tasks
     static void vIndexPositionFirst(MP_Task mpTask);
     static void vIndexRange(MP_Task mpTask);
     static void vIndexScan(MP_Task mpTask);
+    static void vIndexSetSingleColumn(MP_Task mpTask);
     static void vIndexShowColumnVec(MP_Task mpTask);
     static void vIndexSpace(MP_Task mpTask);
     static void vIndexSubDic(MP_Task mpTask);

@@ -83,6 +83,8 @@ Column::Column(Stz* aName)
   m_bIsNullable = true;
   m_bIsPartitionKey = false;
 
+  m_fGreaterEqual = nullptr;
+
   _checkInitialised_(CN_COLUMN);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
@@ -104,6 +106,8 @@ Column::Column(Stz* aName, Stz* aDefinition)
   m_eDatumType  = DM_NONE;
   m_bIsNullable = true;
   m_bIsPartitionKey = false;
+
+  m_fGreaterEqual = nullptr;
 
   vSet(aDefinition);
   

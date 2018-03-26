@@ -37,6 +37,7 @@ void Task::vAddPrimitives_Index(void)
   vAddPrimitive("index.position"_Stz,        &vIndexPosition,        false);
   vAddPrimitive("index.positionFirst"_Stz,   &vIndexPositionFirst,   false);
   vAddPrimitive("index.range"_Stz,           &vIndexRange,           false);
+  vAddPrimitive("index.setSingleColumn"_Stz, &vIndexSetSingleColumn, false);
   vAddPrimitive("index.showColumnVec"_Stz,   &vIndexShowColumnVec,   false);
   vAddPrimitive("index.scan"_Stz,            &vIndexScan,            false);
   vAddPrimitive("index.space"_Stz,           &vIndexSpace,           false);
@@ -1445,6 +1446,23 @@ void Task::vIndexScan(MP_Task mpTask)
  EXIT();
  }
  */
+
+/*----------------------------------------------------------------------------*/
+/* index.setSingleColumn -- set if single column index                        */
+/*----------------------------------------------------------------------------*/
+void Task::vIndexSetSingleColumn(MP_Task mpTask)
+{
+  ENTRY("vIndexSetSingleColumn"_Stz);
+  
+  Object* pPtrIndex;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
+    THROW_INVALID_DSTACK("index.showColumnVec"_Stz);
+  Index* pIndex = _pIndex(pPtrIndex);
+  
+  pIndex->vSetSingleColumn();
+  
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /* index.showColumnVec -- show column vector                                  */
