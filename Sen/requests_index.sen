@@ -280,6 +280,12 @@ timer: pIdxSelectTimer
         exit then
   then
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set if single column
+
+  pIndexPtr index.setSingleColumn
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now populate the index
   sIndexNm populateIndex
      not if <NIP+ERROR> popIndexes popTable
