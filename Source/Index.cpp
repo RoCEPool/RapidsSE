@@ -97,6 +97,9 @@ Index::Index(void)
   m_pTable        = nullptr;
   m_pIdxColVec    = new IdxColVec;
   
+  m_bSingleColumn = false;
+  m_fGreaterEqual = nullptr;
+  
   // m_xSubDic
   
   _checkInitialised_(CN_INDEX);
@@ -254,6 +257,52 @@ i8 Index::iIndexNo(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
   return m_iIndexNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get if the index is a single column index                                  */
+/*----------------------------------------------------------------------------*/
+bool Index::bSingleColumn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+
+  return m_bSingleColumn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set if the index is a single column index                                  */
+/*----------------------------------------------------------------------------*/
+void Index::vSetSingleColumn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+
+  if (! m_pIdxColVec || 1 != m_pIdxColVec->nItems()) {
+    m_bSingleColumn = false;
+    return;
+  }
+  
+  Column* pColumn = m_pIdxColVec->pGet(0);
+  
+  eDM eDatum = pColumn->eDatumType();
+  
+  switch (eDatum) {
+    case DM_BCD: m_fGreaterEqual = Bcd::bGreaterThan; break;
+    case DM_BOL: m_fGreaterEqual = Bol::bGreaterThan; break;
+    case DM_CHR: m_fGreaterEqual = Vch::bGreaterThan; break;
+    case DM_DTE: m_fGreaterEqual = Dte::bGreaterThan; break;
+    case DM_FLT: m_fGreaterEqual = Flt::bGreaterThan; break;
+    case DM_INT: m_fGreaterEqual = Int::bGreaterThan; break;
+    case DM_IVL: m_fGreaterEqual = Ivl::bGreaterThan; break;
+    case DM_TME: m_fGreaterEqual = Tme::bGreaterThan; break;
+    case DM_TSP: m_fGreaterEqual = Tsp::bGreaterThan; break;
+    case DM_VBN: NEVER_REACH; break;
+    case DM_VCH: m_fGreaterEqual = Vch::bGreaterThan; break;
+      
+    default:
+      THROW("Index::vSetSingleColumn: Invalid eDatum %lld"_Stz,eDatum);
+  }
+  
+  m_bSingleColumn = true;
 }
 
 /*----------------------------------------------------------------------------*/

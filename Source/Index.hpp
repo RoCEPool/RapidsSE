@@ -52,6 +52,9 @@ namespace DBobjects
     IdxColVec*   m_pIdxColVec;    //
     bool         m_bIsHidden;
   
+    bool         m_bSingleColumn; // is this index only over a signle column
+    bool         (*m_fGreaterEqual)(char* aArgA, char* aArgB);
+  
     // must be last
     Footer m_xFooter;
     
@@ -80,6 +83,8 @@ namespace DBobjects
     void   vIsPrimaryKey(bool bUnique);
     bool   bIsUnique(void);
     void   vIsUnique(bool bUnique);
+    bool   bSingleColumn(void);
+    void   vSetSingleColumn(void);
     void   vShowColumnVec(void);
     i8     iSortKeyDatum(void);
     Dic*   pSubDic(void);
