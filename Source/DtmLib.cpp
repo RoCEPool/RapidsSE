@@ -270,22 +270,22 @@ void DtmLib::vSprintEscaped(eDM eDatum, Stz* aDst, Stz* aSrc,
 /*----------------------------------------------------------------------------*/
 /* is datum argA < argB?                                                      */
 /*----------------------------------------------------------------------------*/
-bool DtmLib::bLessThan(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool DtmLib::bLessThan(eDM eDatum, char* aArgA, char* aArgB)
 {
   bool bLT = false;
   
   switch (eDatum) {
-    case DM_BCD: bLT = Bcd::bLessThan(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_BOL: bLT = Bol::bLessThan(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_CHR: bLT = Vch::bLessThan(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_DTE: bLT = Dte::bLessThan(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_FLT: bLT = Flt::bLessThan(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_INT: bLT = Int::bLessThan(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_IVL: bLT = Ivl::bLessThan(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_TME: bLT = Tme::bLessThan(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_TSP: bLT = Tsp::bLessThan(aArgA,nBytesA,aArgB,nBytesB); break;
+    case DM_BCD: bLT = Bcd::bLessThan(aArgA,aArgB); break;
+    case DM_BOL: bLT = Bol::bLessThan(aArgA,aArgB); break;
+    case DM_CHR: bLT = Vch::bLessThan(aArgA,aArgB); break;
+    case DM_DTE: bLT = Dte::bLessThan(aArgA,aArgB); break;
+    case DM_FLT: bLT = Flt::bLessThan(aArgA,aArgB); break;
+    case DM_INT: bLT = Int::bLessThan(aArgA,aArgB); break;
+    case DM_IVL: bLT = Ivl::bLessThan(aArgA,aArgB); break;
+    case DM_TME: bLT = Tme::bLessThan(aArgA,aArgB); break;
+    case DM_TSP: bLT = Tsp::bLessThan(aArgA,aArgB); break;
     case DM_VBN: NEVER_REACH; break;
-    case DM_VCH: bLT = Vch::bLessThan(aArgA,nBytesA,aArgB,nBytesB); break;
+    case DM_VCH: bLT = Vch::bLessThan(aArgA,aArgB); break;
       
     default:
       THROW("DtmLib::bLessThan: Invalid eDatum %lld"_Stz,eDatum);
@@ -297,22 +297,22 @@ bool DtmLib::bLessThan(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nByt
 /*----------------------------------------------------------------------------*/
 /* is datum argA <= argB?                                                     */
 /*----------------------------------------------------------------------------*/
-bool DtmLib::bLessEqual(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool DtmLib::bLessEqual(eDM eDatum, char* aArgA, char* aArgB)
 {
   bool bLE = false;
   
   switch (eDatum) {
-    case DM_BCD: bLE = Bcd::bLessEqual(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_BOL: bLE = Bol::bLessEqual(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_CHR: bLE = Vch::bLessEqual(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_DTE: bLE = Dte::bLessEqual(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_FLT: bLE = Flt::bLessEqual(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_INT: bLE = Int::bLessEqual(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_IVL: bLE = Ivl::bLessEqual(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_TME: bLE = Tme::bLessEqual(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_TSP: bLE = Tsp::bLessEqual(aArgA,nBytesA,aArgB,nBytesB); break;
+    case DM_BCD: bLE = Bcd::bLessEqual(aArgA,aArgB); break;
+    case DM_BOL: bLE = Bol::bLessEqual(aArgA,aArgB); break;
+    case DM_CHR: bLE = Vch::bLessEqual(aArgA,aArgB); break;
+    case DM_DTE: bLE = Dte::bLessEqual(aArgA,aArgB); break;
+    case DM_FLT: bLE = Flt::bLessEqual(aArgA,aArgB); break;
+    case DM_INT: bLE = Int::bLessEqual(aArgA,aArgB); break;
+    case DM_IVL: bLE = Ivl::bLessEqual(aArgA,aArgB); break;
+    case DM_TME: bLE = Tme::bLessEqual(aArgA,aArgB); break;
+    case DM_TSP: bLE = Tsp::bLessEqual(aArgA,aArgB); break;
     case DM_VBN: NEVER_REACH; break;
-    case DM_VCH: bLE = Vch::bLessEqual(aArgA,nBytesA,aArgB,nBytesB); break;
+    case DM_VCH: bLE = Vch::bLessEqual(aArgA,aArgB); break;
       
     default:
       THROW("DtmLib::bLessEqual: Invalid eDatum %lld"_Stz,eDatum);
@@ -324,22 +324,22 @@ bool DtmLib::bLessEqual(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nBy
 /*----------------------------------------------------------------------------*/
 /* is datum argA == argB?                                                     */
 /*----------------------------------------------------------------------------*/
-bool DtmLib::bEqualTo(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool DtmLib::bEqualTo(eDM eDatum, char* aArgA, char* aArgB)
 {
   bool bEQ = false;
   
   switch (eDatum) {
-    case DM_BCD: bEQ = Bcd::bEqualTo(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_BOL: bEQ = Bol::bEqualTo(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_CHR: bEQ = Vch::bEqualTo(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_DTE: bEQ = Dte::bEqualTo(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_FLT: bEQ = Flt::bEqualTo(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_INT: bEQ = Int::bEqualTo(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_IVL: bEQ = Ivl::bEqualTo(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_TME: bEQ = Tme::bEqualTo(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_TSP: bEQ = Tsp::bEqualTo(aArgA,nBytesA,aArgB,nBytesB); break;
+    case DM_BCD: bEQ = Bcd::bEqualTo(aArgA,aArgB); break;
+    case DM_BOL: bEQ = Bol::bEqualTo(aArgA,aArgB); break;
+    case DM_CHR: bEQ = Vch::bEqualTo(aArgA,aArgB); break;
+    case DM_DTE: bEQ = Dte::bEqualTo(aArgA,aArgB); break;
+    case DM_FLT: bEQ = Flt::bEqualTo(aArgA,aArgB); break;
+    case DM_INT: bEQ = Int::bEqualTo(aArgA,aArgB); break;
+    case DM_IVL: bEQ = Ivl::bEqualTo(aArgA,aArgB); break;
+    case DM_TME: bEQ = Tme::bEqualTo(aArgA,aArgB); break;
+    case DM_TSP: bEQ = Tsp::bEqualTo(aArgA,aArgB); break;
     case DM_VBN: NEVER_REACH; break;
-    case DM_VCH: bEQ = Vch::bEqualTo(aArgA,nBytesA,aArgB,nBytesB); break;
+    case DM_VCH: bEQ = Vch::bEqualTo(aArgA,aArgB); break;
       
     default:
       THROW("DtmLib::bEqualTo: Invalid eDatum %lld"_Stz,eDatum);
@@ -351,22 +351,22 @@ bool DtmLib::bEqualTo(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nByte
 /*----------------------------------------------------------------------------*/
 /* is datum argA != argB?                                                     */
 /*----------------------------------------------------------------------------*/
-bool DtmLib::bNotEqual(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool DtmLib::bNotEqual(eDM eDatum, char* aArgA, char* aArgB)
 {
   bool bNE = false;
   
   switch (eDatum) {
-    case DM_BCD: bNE = Bcd::bNotEqual(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_BOL: bNE = Bol::bNotEqual(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_CHR: bNE = Vch::bNotEqual(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_DTE: bNE = Dte::bNotEqual(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_FLT: bNE = Flt::bNotEqual(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_INT: bNE = Int::bNotEqual(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_IVL: bNE = Ivl::bNotEqual(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_TME: bNE = Tme::bNotEqual(aArgA,nBytesA,aArgB,nBytesB); break;
-    case DM_TSP: bNE = Tsp::bNotEqual(aArgA,nBytesA,aArgB,nBytesB); break;
+    case DM_BCD: bNE = Bcd::bNotEqual(aArgA,aArgB); break;
+    case DM_BOL: bNE = Bol::bNotEqual(aArgA,aArgB); break;
+    case DM_CHR: bNE = Vch::bNotEqual(aArgA,aArgB); break;
+    case DM_DTE: bNE = Dte::bNotEqual(aArgA,aArgB); break;
+    case DM_FLT: bNE = Flt::bNotEqual(aArgA,aArgB); break;
+    case DM_INT: bNE = Int::bNotEqual(aArgA,aArgB); break;
+    case DM_IVL: bNE = Ivl::bNotEqual(aArgA,aArgB); break;
+    case DM_TME: bNE = Tme::bNotEqual(aArgA,aArgB); break;
+    case DM_TSP: bNE = Tsp::bNotEqual(aArgA,aArgB); break;
     case DM_VBN: NEVER_REACH; break;
-    case DM_VCH: bNE = Vch::bNotEqual(aArgA,nBytesA,aArgB,nBytesB); break;
+    case DM_VCH: bNE = Vch::bNotEqual(aArgA,aArgB); break;
       
     default:
       THROW("DtmLib::bNotEqual: Invalid eDatum %lld"_Stz,eDatum);

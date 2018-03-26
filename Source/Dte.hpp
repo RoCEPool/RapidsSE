@@ -48,10 +48,10 @@ namespace Datums
                          DBobjects::Column* pColumn, Formatters* pFormatters);
     static void vSprint(Stz* aDst, Stz* aSrc);
     static void vSprintEscaped(Stz* aDst, Stz* aSrc);
-    static bool bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
-    static bool bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
-    static bool bEqualTo(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
-    static bool bNotEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
+    static bool bLessThan(char* aArgA, char* aArgB);
+    static bool bLessEqual(char* aArgA, char* aArgB);
+    static bool bEqualTo(char* aArgA, char* aArgB);
+    static bool bNotEqual(char* aArgA, char* aArgB);
     static bool bGreaterEqual(char* aArgA, char* aArgB);
     static bool bGreaterThan(char* aArgA, char* aArgB);
     

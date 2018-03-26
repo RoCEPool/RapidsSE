@@ -280,12 +280,9 @@ bool Bcd::bIsValidSize(i8 iPrecision, i8 iScale)
 /*----------------------------------------------------------------------------*/
 /* is bol argA < aArgB?                                                       */
 /*----------------------------------------------------------------------------*/
-bool Bcd::bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Bcd::bLessThan(char* aArgA, char* aArgB)
 {
   bool bLessThan;
-  
-  ASSERT(sizeof(i8) == nBytesA);
-  ASSERT(sizeof(i8) == nBytesB);
   
   if (((Bcd*)aArgA)->bIsNull())
     bLessThan = true;
@@ -309,12 +306,9 @@ bool Bcd::bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* is bol argA <= aArgB?                                                      */
 /*----------------------------------------------------------------------------*/
-bool Bcd::bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Bcd::bLessEqual(char* aArgA, char* aArgB)
 {
   bool bLessEqual;
-  
-  ASSERT(sizeof(i8) == nBytesA);
-  ASSERT(sizeof(i8) == nBytesB);
   
   if (((Bcd*)aArgA)->bIsNull())
     bLessEqual = true;
@@ -338,12 +332,9 @@ bool Bcd::bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* is bol argA == aArgB?                                                      */
 /*----------------------------------------------------------------------------*/
-bool Bcd::bEqualTo(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Bcd::bEqualTo(char* aArgA, char* aArgB)
 {
   bool bEqualTo;
-  
-  ASSERT(sizeof(i8) == nBytesA);
-  ASSERT(sizeof(i8) == nBytesB);
   
   if (((Bcd*)aArgA)->bIsNull())
     bEqualTo = true;
@@ -367,12 +358,9 @@ bool Bcd::bEqualTo(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* is bol argA != aArgB?                                                      */
 /*----------------------------------------------------------------------------*/
-bool Bcd::bNotEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Bcd::bNotEqual(char* aArgA, char* aArgB)
 {
   bool bNotEqual;
-  
-  ASSERT(sizeof(i8) == nBytesA);
-  ASSERT(sizeof(i8) == nBytesB);
   
   if (((Bcd*)aArgA)->bIsNull())
     bNotEqual = true;

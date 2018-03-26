@@ -427,12 +427,9 @@ void Tsp::vSprintNonSQL(Stz* aDst, Stz* aSrc)
 /*----------------------------------------------------------------------------*/
 /* is tsp argA < aArgB?                                                       */
 /*----------------------------------------------------------------------------*/
-bool Tsp::bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Tsp::bLessThan(char* aArgA, char* aArgB)
 {
   bool bLessThan;
-  
-  ASSERT(sizeof(i8) == nBytesA);
-  ASSERT(sizeof(i8) == nBytesB);
   
   if (((Tsp*)aArgA)->bIsNull())
     bLessThan = true;
@@ -456,12 +453,9 @@ bool Tsp::bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* is tsp argA <= aArgB?                                                      */
 /*----------------------------------------------------------------------------*/
-bool Tsp::bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Tsp::bLessEqual(char* aArgA, char* aArgB)
 {
   bool bLessEqual;
-  
-  ASSERT(sizeof(i8) == nBytesA);
-  ASSERT(sizeof(i8) == nBytesB);
   
   if (((Tsp*)aArgA)->bIsNull())
     bLessEqual = true;
@@ -485,12 +479,9 @@ bool Tsp::bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* is tsp argA == aArgB?                                                      */
 /*----------------------------------------------------------------------------*/
-bool Tsp::bEqualTo(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Tsp::bEqualTo(char* aArgA, char* aArgB)
 {
   bool bEqualTo;
-  
-  ASSERT(sizeof(i8) == nBytesA);
-  ASSERT(sizeof(i8) == nBytesB);
   
   if (((Tsp*)aArgA)->bIsNull())
     bEqualTo = true;
@@ -514,12 +505,9 @@ bool Tsp::bEqualTo(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* is tsp argA != aArgB?                                                      */
 /*----------------------------------------------------------------------------*/
-bool Tsp::bNotEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Tsp::bNotEqual(char* aArgA, char* aArgB)
 {
   bool bNotEqual;
-  
-  ASSERT(sizeof(i8) == nBytesA);
-  ASSERT(sizeof(i8) == nBytesB);
   
   if (((Tsp*)aArgA)->bIsNull())
     bNotEqual = true;

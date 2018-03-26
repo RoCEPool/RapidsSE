@@ -489,11 +489,11 @@ char* Column::aValue(i8& nBytes, char** aaCursor)
 /*----------------------------------------------------------------------------*/
 /* less than                                                                  */
 /*----------------------------------------------------------------------------*/
-bool Column::bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Column::bLessThan(char* aArgA, char* aArgB)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
-  bool bLessThan = DtmLib::bLessThan(m_eDatumType,aArgA,nBytesA,aArgB,nBytesB);
+  bool bLessThan = DtmLib::bLessThan(m_eDatumType,aArgA,aArgB);
   
   return bLessThan;
 }
@@ -501,11 +501,11 @@ bool Column::bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* less equal                                                                 */
 /*----------------------------------------------------------------------------*/
-bool Column::bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Column::bLessEqual(char* aArgA, char* aArgB)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
-  bool bLessEqual = DtmLib::bLessEqual(m_eDatumType,aArgA,nBytesA,aArgB,nBytesB);
+  bool bLessEqual = DtmLib::bLessEqual(m_eDatumType,aArgA,aArgB);
   
   return bLessEqual;
 }
@@ -513,11 +513,11 @@ bool Column::bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* equal to                                                                   */
 /*----------------------------------------------------------------------------*/
-bool Column::bEqualTo(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Column::bEqualTo(char* aArgA, char* aArgB)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
-  bool bEqualTo = DtmLib::bEqualTo(m_eDatumType,aArgA,nBytesA,aArgB,nBytesB);
+  bool bEqualTo = DtmLib::bEqualTo(m_eDatumType,aArgA,aArgB);
   
   return bEqualTo;
 }
@@ -525,11 +525,11 @@ bool Column::bEqualTo(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* not equal to                                                               */
 /*----------------------------------------------------------------------------*/
-bool Column::bNotEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Column::bNotEqual(char* aArgA, char* aArgB)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
-  bool bNotEqual = DtmLib::bNotEqual(m_eDatumType,aArgA,nBytesA,aArgB,nBytesB);
+  bool bNotEqual = DtmLib::bNotEqual(m_eDatumType,aArgA,aArgB);
   
   return bNotEqual;
 }
@@ -624,15 +624,15 @@ i8 Column::iCmp(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 //  return true;
 //}
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-bool Column::bCmp(eRO eRelnOp, char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Column::bCmp(eRO eRelnOp, char* aArgA, char* aArgB)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
   switch(eRelnOp) {
-    case RO_LESS_THAN:    return bLessThan    (aArgA, nBytesA, aArgB, nBytesB);
-    case RO_LESS_EQUAL:   return bLessEqual   (aArgA, nBytesA, aArgB, nBytesB);
-    case RO_EQUAL_TO:     return bEqualTo     (aArgA, nBytesA, aArgB, nBytesB);
-    case RO_NOT_EQUAL:    return bNotEqual    (aArgA, nBytesA, aArgB, nBytesB);
+    case RO_LESS_THAN:    return bLessThan    (aArgA, aArgB);
+    case RO_LESS_EQUAL:   return bLessEqual   (aArgA, aArgB);
+    case RO_EQUAL_TO:     return bEqualTo     (aArgA, aArgB);
+    case RO_NOT_EQUAL:    return bNotEqual    (aArgA, aArgB);
     case RO_GREATER_EQUAL:return bGreaterEqual(aArgA, aArgB);
     case RO_GREATER_THAN: return bGreaterThan (aArgA, aArgB);
     default: NEVER_REACH;

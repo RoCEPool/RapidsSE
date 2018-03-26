@@ -27,10 +27,10 @@ namespace Datums
                         DBobjects::Column* pColumn);
     static void vSprintEscaped(eDM eDatum, Stz* aDst, Stz* aSrc,
                                DBobjects::Column* pColumn);
-    static bool bLessThan(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
-    static bool bLessEqual(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
-    static bool bEqualTo(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
-    static bool bNotEqual(eDM eDatum, char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
+    static bool bLessThan(eDM eDatum, char* aArgA, char* aArgB);
+    static bool bLessEqual(eDM eDatum, char* aArgA, char* aArgB);
+    static bool bEqualTo(eDM eDatum, char* aArgA, char* aArgB);
+    static bool bNotEqual(eDM eDatum, char* aArgA, char* aArgB);
     static bool bGreaterEqual(eDM eDatum, char* aArgA, char* aArgB);
     static bool bGreaterThan(eDM eDatum, char* aArgA, char* aArgB);
     

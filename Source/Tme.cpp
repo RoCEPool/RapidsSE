@@ -342,12 +342,9 @@ void Tme::vSprintEscaped(Stz* aDst, Stz* aSrc)
 /*----------------------------------------------------------------------------*/
 /* is tme argA < aArgB?                                                       */
 /*----------------------------------------------------------------------------*/
-bool Tme::bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Tme::bLessThan(char* aArgA, char* aArgB)
 {
   bool bLessThan;
-  
-  ASSERT(sizeof(i8) == nBytesA);
-  ASSERT(sizeof(i8) == nBytesB);
   
   if (((Tme*)aArgA)->bIsNull())
     bLessThan = true;
@@ -370,12 +367,9 @@ bool Tme::bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* is tme argA <= aArgB?                                                      */
 /*----------------------------------------------------------------------------*/
-bool Tme::bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Tme::bLessEqual(char* aArgA, char* aArgB)
 {
   bool bLessEqual;
-  
-  ASSERT(sizeof(i8) == nBytesA);
-  ASSERT(sizeof(i8) == nBytesB);
   
   if (((Tme*)aArgA)->bIsNull())
     bLessEqual = true;
@@ -399,12 +393,9 @@ bool Tme::bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* is tme argA == aArgB?                                                      */
 /*----------------------------------------------------------------------------*/
-bool Tme::bEqualTo(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Tme::bEqualTo(char* aArgA, char* aArgB)
 {
   bool bEqualTo;
-  
-  ASSERT(sizeof(i8) == nBytesA);
-  ASSERT(sizeof(i8) == nBytesB);
   
   if (((Tme*)aArgA)->bIsNull())
     bEqualTo = true;
@@ -428,12 +419,9 @@ bool Tme::bEqualTo(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* is tme argA != aArgB?                                                      */
 /*----------------------------------------------------------------------------*/
-bool Tme::bNotEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Tme::bNotEqual(char* aArgA, char* aArgB)
 {
   bool bNotEqual;
-  
-  ASSERT(sizeof(i8) == nBytesA);
-  ASSERT(sizeof(i8) == nBytesB);
   
   if (((Tme*)aArgA)->bIsNull())
     bNotEqual = true;
@@ -506,9 +494,6 @@ bool Tme::bGreaterEqual(char* aArgA, char* aArgB)
 bool Tme::bGreaterThan(char* aArgA, char* aArgB)
 {
   bool bGreaterThan;
-  
-  ASSERT(sizeof(i8) == nBytesA);
-  ASSERT(sizeof(i8) == nBytesB);
   
   if (((Tme*)aArgA)->bIsNull())
     bGreaterThan = true;

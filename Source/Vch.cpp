@@ -557,7 +557,7 @@ bool Vch::bIsValidSize(i8 iSize)
 /*----------------------------------------------------------------------------*/
 /* is varchar argA < aArgB?                                                   */
 /*----------------------------------------------------------------------------*/
-bool Vch::bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Vch::bLessThan(char* aArgA, char* aArgB)
 {
   bool bLessThan;
 
@@ -568,9 +568,6 @@ bool Vch::bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
     bLessThan = false;
   
   else {
-    
-    ASSERT(StrLib::iSize(aArgA) == nBytesA);
-    ASSERT(StrLib::iSize(aArgB) == nBytesB);
     
     if (StrLib::iCompare(aArgA, aArgB) < 0)
       bLessThan = true;
@@ -584,7 +581,7 @@ bool Vch::bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* is varchar argA <= aArgB?                                                  */
 /*----------------------------------------------------------------------------*/
-bool Vch::bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Vch::bLessEqual(char* aArgA, char* aArgB)
 {
   bool bLessEqual;
   
@@ -595,9 +592,6 @@ bool Vch::bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
     bLessEqual = false;
   
   else {
-    
-    ASSERT(StrLib::iSize(aArgA) == nBytesA);
-    ASSERT(StrLib::iSize(aArgB) == nBytesB);
     
     if (StrLib::iCompare(aArgA, aArgB) <= 0)
       bLessEqual = true;
@@ -611,7 +605,7 @@ bool Vch::bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* is varchar argA == aArgB?                                                  */
 /*----------------------------------------------------------------------------*/
-bool Vch::bEqualTo(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Vch::bEqualTo(char* aArgA, char* aArgB)
 {
   bool bEqualTo;
   
@@ -622,9 +616,6 @@ bool Vch::bEqualTo(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
     bEqualTo = false;
   
   else {
-    
-    ASSERT(StrLib::iSize(aArgA) == nBytesA);
-    ASSERT(StrLib::iSize(aArgB) == nBytesB);
     
     if (StrLib::iCompare(aArgA, aArgB) == 0)
       bEqualTo = true;
@@ -638,7 +629,7 @@ bool Vch::bEqualTo(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* is varchar argA != aArgB?                                                  */
 /*----------------------------------------------------------------------------*/
-bool Vch::bNotEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Vch::bNotEqual(char* aArgA, char* aArgB)
 {
   bool bNotEqual;
   
@@ -649,9 +640,6 @@ bool Vch::bNotEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
     bNotEqual = true;
   
   else {
-
-    ASSERT(StrLib::iSize(aArgA) == nBytesA);
-    ASSERT(StrLib::iSize(aArgB) == nBytesB);
     
     if (StrLib::iCompare(aArgA, aArgB) != 0)
       bNotEqual = true;

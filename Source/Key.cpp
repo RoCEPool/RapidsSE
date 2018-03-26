@@ -142,11 +142,11 @@ bool Key::bLessThan(Key* pKeyThat, IdxColVec* pIdxColVec)
     i8 nBytesThis;
     i8 nBytesThat;
     
-    char* aDatumThis = aEachDatum(pColumn,nBytesThis,&aCursorThis);
-    char* aDatumThat = aEachDatum(pColumn,nBytesThat,&aCursorThat);
+    char* aDatumThis = pColumn->aValue(nBytesThis,&aCursorThis);
+    char* aDatumThat = pColumn->aValue(nBytesThat,&aCursorThat);
     
-    bLessThan = pColumn->bLessThan(aDatumThis,nBytesThis,
-                                   aDatumThat,nBytesThat);
+    bLessThan = pColumn->bLessThan(aDatumThis,aDatumThat);
+    
     if (!bLessThan)
       break;
   }
@@ -171,11 +171,11 @@ bool Key::bLessEqual(Key* pKeyThat, IdxColVec* pIdxColVec)
     i8 nBytesThis;
     i8 nBytesThat;
     
-    char* aDatumThis = aEachDatum(pColumn,nBytesThis,&aCursorThis);
-    char* aDatumThat = aEachDatum(pColumn,nBytesThat,&aCursorThat);
+    char* aDatumThis = pColumn->aValue(nBytesThis,&aCursorThis);
+    char* aDatumThat = pColumn->aValue(nBytesThat,&aCursorThat);
     
-    bLessEqual = pColumn->bLessEqual(aDatumThis,nBytesThis,
-                                     aDatumThat,nBytesThat);
+    bLessEqual = pColumn->bLessEqual(aDatumThis,aDatumThat);
+    
     if (!bLessEqual)
       break;
   }
@@ -200,11 +200,11 @@ bool Key::bEqualTo(Key* pKeyThat, IdxColVec* pIdxColVec)
     i8 nBytesThis;
     i8 nBytesThat;
     
-    char* aDatumThis = aEachDatum(pColumn,nBytesThis,&aCursorThis);
-    char* aDatumThat = aEachDatum(pColumn,nBytesThat,&aCursorThat);
+    char* aDatumThis = pColumn->aValue(nBytesThis,&aCursorThis);
+    char* aDatumThat = pColumn->aValue(nBytesThat,&aCursorThat);
     
-    bEqualTo = pColumn->bEqualTo(aDatumThis,nBytesThis,
-                                 aDatumThat,nBytesThat);
+    bEqualTo = pColumn->bEqualTo(aDatumThis,aDatumThat);
+    
     if (!bEqualTo)
       break;
   }
@@ -229,11 +229,10 @@ bool Key::bNotEqual(Key* pKeyThat, IdxColVec* pIdxColVec)
     i8 nBytesThis;
     i8 nBytesThat;
     
-    char* aDatumThis = aEachDatum(pColumn,nBytesThis,&aCursorThis);
-    char* aDatumThat = aEachDatum(pColumn,nBytesThat,&aCursorThat);
+    char* aDatumThis = pColumn->aValue(nBytesThis,&aCursorThis);
+    char* aDatumThat = pColumn->aValue(nBytesThat,&aCursorThat);
     
-    bNotEqual = pColumn->bNotEqual(aDatumThis,nBytesThis,
-                                   aDatumThat,nBytesThat);
+    bNotEqual = pColumn->bNotEqual(aDatumThis,aDatumThat);
     if (!bNotEqual)
       break;
   }
@@ -258,10 +257,8 @@ bool Key::bGreaterEqual(Key* pKeyThat, IdxColVec* pIdxColVec)
     
     Column* pColumn = pIdxColVec->pGet(i_Column);
     
-    char* aDatumThis = //aEachDatum(pColumn,nBytesThis,&aCursorThis);
-                       pColumn->aValue(nBytesThis,&aCursorThis);
-    char* aDatumThat = //aEachDatum(pColumn,nBytesThat,&aCursorThat);
-                       pColumn->aValue(nBytesThat,&aCursorThat);
+    char* aDatumThis = pColumn->aValue(nBytesThis,&aCursorThis);
+    char* aDatumThat = pColumn->aValue(nBytesThat,&aCursorThat);
     
     bGreaterEqual = pColumn->bGreaterEqual(aDatumThis,aDatumThat);
     if (!bGreaterEqual)
@@ -288,8 +285,8 @@ bool Key::bGreaterThan(Key* pKeyThat, IdxColVec* pIdxColVec)
     i8 nBytesThis;
     i8 nBytesThat;
     
-    char* aDatumThis = aEachDatum(pColumn,nBytesThis,&aCursorThis);
-    char* aDatumThat = aEachDatum(pColumn,nBytesThat,&aCursorThat);
+    char* aDatumThis = pColumn->aValue(nBytesThis,&aCursorThis);
+    char* aDatumThat = pColumn->aValue(nBytesThat,&aCursorThat);
     
     bGreaterThan = pColumn->bGreaterThan(aDatumThis,aDatumThat);
     
@@ -352,8 +349,8 @@ bool Key::bMatches(Key* pKeyThat, IdxColVec* pIdxColVec, RelOpAry* pRelOpAry)
     eRO eRelOp = pRelOpAry->xGet(i_Column);
     
     bCmp = pColumn->bCmp(eRelOp,
-                         aDatumThis,nBytesThis,
-                         aDatumThat,nBytesThat);
+                         aDatumThis,
+                         aDatumThat);
     
     if ( ! bCmp )
       break;

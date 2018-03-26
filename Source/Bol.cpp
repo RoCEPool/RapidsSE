@@ -295,12 +295,9 @@ void Bol::vSprint(Stz* aDst, Stz* aSrc)
 /*----------------------------------------------------------------------------*/
 /* is bol argA < aArgB?                                                       */
 /*----------------------------------------------------------------------------*/
-bool Bol::bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Bol::bLessThan(char* aArgA, char* aArgB)
 {
   bool bLessThan;
-  
-  ASSERT(sizeof(i8) == nBytesA);
-  ASSERT(sizeof(i8) == nBytesB);
   
   if (((Bol*)aArgA)->bIsNull())
     bLessThan = false;
@@ -324,12 +321,9 @@ bool Bol::bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* is bol argA <= aArgB?                                                      */
 /*----------------------------------------------------------------------------*/
-bool Bol::bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Bol::bLessEqual(char* aArgA, char* aArgB)
 {
   bool bLessEqual;
-  
-  ASSERT(sizeof(i8) == nBytesA);
-  ASSERT(sizeof(i8) == nBytesB);
   
   if (((Bol*)aArgA)->bIsNull())
     bLessEqual = false;
@@ -353,12 +347,9 @@ bool Bol::bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* is bol argA == aArgB?                                                      */
 /*----------------------------------------------------------------------------*/
-bool Bol::bEqualTo(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Bol::bEqualTo(char* aArgA, char* aArgB)
 {
   bool bEqualTo;
-  
-  ASSERT(sizeof(i8) == nBytesA);
-  ASSERT(sizeof(i8) == nBytesB);
   
   if (((Bol*)aArgA)->bIsNull())
     bEqualTo = false;
@@ -382,12 +373,9 @@ bool Bol::bEqualTo(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* is bol argA != aArgB?                                                      */
 /*----------------------------------------------------------------------------*/
-bool Bol::bNotEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Bol::bNotEqual(char* aArgA, char* aArgB)
 {
   bool bNotEqual;
-  
-  ASSERT(sizeof(i8) == nBytesA);
-  ASSERT(sizeof(i8) == nBytesB);
   
   if (((Bol*)aArgA)->bIsNull())
     bNotEqual = false;

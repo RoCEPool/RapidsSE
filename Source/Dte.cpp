@@ -301,12 +301,9 @@ void Dte::vSprintEscaped(Stz* aDst, Stz* aSrc)
 /*----------------------------------------------------------------------------*/
 /* is dte argA < aArgB?                                                       */
 /*----------------------------------------------------------------------------*/
-bool Dte::bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Dte::bLessThan(char* aArgA, char* aArgB)
 {
   bool bLessThan;
-  
-  ASSERT(sizeof(i8) == nBytesA);
-  ASSERT(sizeof(i8) == nBytesB);
   
   if (((Dte*)aArgA)->bIsNull())
     bLessThan = true;
@@ -331,12 +328,9 @@ bool Dte::bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* is dte argA <= aArgB?                                                      */
 /*----------------------------------------------------------------------------*/
-bool Dte::bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Dte::bLessEqual(char* aArgA, char* aArgB)
 {
   bool bLessEqual;
-  
-  ASSERT(sizeof(i8) == nBytesA);
-  ASSERT(sizeof(i8) == nBytesB);
   
   if (((Dte*)aArgA)->bIsNull())
     bLessEqual = true;
@@ -361,12 +355,9 @@ bool Dte::bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* is dte argA == aArgB?                                                      */
 /*----------------------------------------------------------------------------*/
-bool Dte::bEqualTo(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Dte::bEqualTo(char* aArgA, char* aArgB)
 {
   bool bEqualTo;
-  
-  ASSERT(sizeof(i8) == nBytesA);
-  ASSERT(sizeof(i8) == nBytesB);
   
   if (((Dte*)aArgA)->bIsNull())
     bEqualTo = false;
@@ -391,12 +382,9 @@ bool Dte::bEqualTo(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* is dte argA != aArgB?                                                      */
 /*----------------------------------------------------------------------------*/
-bool Dte::bNotEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Dte::bNotEqual(char* aArgA, char* aArgB)
 {
   bool bNotEqual;
-  
-  ASSERT(sizeof(i8) == nBytesA);
-  ASSERT(sizeof(i8) == nBytesB);
   
   if (((Dte*)aArgA)->bIsNull())
     bNotEqual = true;

@@ -311,12 +311,9 @@ void Int::vSprint(Stz* aDst, Stz* aSrc)
 /*----------------------------------------------------------------------------*/
 /* is embedded int argA < embedded aArgB?                                     */
 /*----------------------------------------------------------------------------*/
-bool Int::bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Int::bLessThan(char* aArgA, char* aArgB)
 {
   bool bLessThan;
-
-  ASSERT(sizeof(i8) == nBytesA);
-  ASSERT(sizeof(i8) == nBytesB);
   
   if (((Int*)aArgA)->bIsNull())
     bLessThan = true;
@@ -340,12 +337,9 @@ bool Int::bLessThan(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* is embedded int argA <= embedded aArgB?                                    */
 /*----------------------------------------------------------------------------*/
-bool Int::bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Int::bLessEqual(char* aArgA, char* aArgB)
 {
   bool bLessEqual;
-  
-  ASSERT(sizeof(i8) == nBytesA);
-  ASSERT(sizeof(i8) == nBytesB);
   
   if (((Int*)aArgA)->bIsNull())
     bLessEqual = true;
@@ -369,12 +363,9 @@ bool Int::bLessEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* is embedded int argA == embedded aArgB?                                    */
 /*----------------------------------------------------------------------------*/
-bool Int::bEqualTo(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Int::bEqualTo(char* aArgA, char* aArgB)
 {
   bool bEqualTo;
-  
-  ASSERT(sizeof(i8) == nBytesA);
-  ASSERT(sizeof(i8) == nBytesB);
   
   if (((Int*)aArgA)->bIsNull())
     bEqualTo = false;
@@ -398,12 +389,9 @@ bool Int::bEqualTo(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
 /*----------------------------------------------------------------------------*/
 /* is embedded int argA != embedded aArgB?                                    */
 /*----------------------------------------------------------------------------*/
-bool Int::bNotEqual(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+bool Int::bNotEqual(char* aArgA, char* aArgB)
 {
   bool bNotEqual;
-  
-  ASSERT(sizeof(i8) == nBytesA);
-  ASSERT(sizeof(i8) == nBytesB);
   
   if (((Int*)aArgA)->bIsNull())
     bNotEqual = true;
@@ -456,9 +444,6 @@ bool Int::bGreaterEqual(char* aArgA, char* aArgB)
 bool Int::bGreaterThan(char* aArgA, char* aArgB)
 {
   bool bGreaterThan;
-  
-  ASSERT(sizeof(i8) == nBytesA);
-  ASSERT(sizeof(i8) == nBytesB);
   
   if (((Int*)aArgA)->bIsNull())
     bGreaterThan = false;

@@ -32,7 +32,7 @@ bool BndLib::bIsBefore(Key& xKeyThis, Key& xKeyThat,
            eOp == RO_LESS_EQUAL ||
            eOp == RO_EQUAL_TO);
    
-    if ( ! pColumn->bCmp(eOp,aDatumThis,nBytesThis,aDatumThat,nBytesThat))
+    if ( ! pColumn->bCmp(eOp,aDatumThis,aDatumThat))
       return false;
   }
   
@@ -62,7 +62,7 @@ bool BndLib::bPassesFilter(Key& xKeyThis, Key& xKeyThat,
     
     eRO eOp = xOpAry.xGet(iColumn);
     
-    if ( ! pColumn->bCmp(eOp,aDatumThis,nBytesThis,aDatumThat,nBytesThat))
+    if ( ! pColumn->bCmp(eOp,aDatumThis,aDatumThat))
       return false;
   }
   
