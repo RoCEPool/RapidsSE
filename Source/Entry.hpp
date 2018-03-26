@@ -112,6 +112,17 @@ namespace DBobjects
     
     return pEntry;
   }
+  /*----------------------------------------------------------------------------*/
+  /* get Key                                                                    */
+  /*----------------------------------------------------------------------------*/
+  inline Key* Entry::aKey(void)
+  {
+    _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+    
+    Key* aKey = reinterpret_cast<Key*>(aEmbeddedObject());
+    
+    return aKey;
+  }
 
 }
 

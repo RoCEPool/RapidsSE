@@ -29,13 +29,6 @@ void Wsp::vAppend(void* aSrc, i8 nBytes)
   vFatal("Wsp::vAppend: not overridden\n"_Stz);
 }
 
-/*----------------------------------------------------------------------------*/
-/* get address of byte area                                                   */
-/*----------------------------------------------------------------------------*/
-char* Wsp::aArea(void)
-{
-  return reinterpret_cast<char*>(this);
-}
 
 /*----------------------------------------------------------------------------*/
 /* fill byte area with given byte                                             */

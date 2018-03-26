@@ -34,6 +34,14 @@ namespace CorrectnessAlgebra
     void  vZero(void);
     void  vZero(i8 nBytes, eCN eClassNo);
   };
+  /*----------------------------------------------------------------------------*/
+  /* get address of byte area                                                   */
+  /*----------------------------------------------------------------------------*/
+  inline char* Wsp::aArea(void)
+  {
+    return reinterpret_cast<char*>(this);
+  }
+
 }
 
 /*============================================================================*/

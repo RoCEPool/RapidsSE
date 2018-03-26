@@ -683,7 +683,9 @@ Entry* EntryBuffer::pNextEntry(Entry* pCurrent, i8 i_Offset)
   //RASSERT( ! m_pLazyChain );
   //#endif
   
+#ifdef _DEBUG
   pCurrent->vAssertEntry();
+#endif
   
   i4 iOffset = pCurrent->iNEO(i_Offset);
   
@@ -691,7 +693,7 @@ Entry* EntryBuffer::pNextEntry(Entry* pCurrent, i8 i_Offset)
     return nullptr;
   
   char* aAddress = pAdd<char*>(aDataArea(), iOffset);
-  Item* pItem = _pItem(aAddress);
+  //Item* pItem = _pItem(aAddress);
   
   //if (CN_ENTRY != pItem->eClass())
   //  vShow();
