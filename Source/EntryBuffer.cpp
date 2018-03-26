@@ -11,8 +11,8 @@ extern AttachMap* gpAttachMap;
 bool mbWatch = false;
 //#define MB_WATCH
 
-//#define EB_LAZY_CHAIN
-//#define EB_SPLIT2
+#define EB_LAZY_CHAIN
+#define EB_SPLIT2
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -1480,7 +1480,7 @@ void EntryBuffer::vCompactLeft(void)
     vBuildSkipList();
 #endif
   
-  vShow();
+  //vShow();
   
   //
   // this is contiguous in memory:
@@ -1540,7 +1540,7 @@ void EntryBuffer::vCompactLeft(void)
   
   vSetWilderness();
   
-  vShow();
+  //vShow();
   
   // rebuild the full skiplist
   vBuildSkipListSorted();
@@ -1560,7 +1560,7 @@ void EntryBuffer::vCompactLeft2(void)
   EntryBuffer* pThisBuffer = this;
   EntryBuffer* pTempBuffer = new EntryBuffer();
   
-  IdxColVec* pIdxColVec;
+  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
 
   KeyWrk xKeyWrk;
   
@@ -1594,6 +1594,10 @@ void EntryBuffer::vCompactLeft2(void)
                                       m_pHeadEntry->iNEOsize());
   vResetUsed(pThisWilderness);
   vSetWilderness();
+  vItems(0);
+
+  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexOffsets; i_Offset++)
+    m_pHeadEntry->vNEO(i_Offset,-1);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1615,9 +1619,15 @@ void EntryBuffer::vCompactLeft2(void)
     xKeyWrk.vKeySize(nKeySize);
     xKeyWrk.vOffsets(nOffsets);
     
-    pTempBuffer->pInsertKeyAbsL0(xKeyWrk,&pPriorEntry);
+    pThisBuffer->pInsertKeyAbsL0(xKeyWrk,&pPriorEntry);
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  pThisBuffer->vBuildSkipListSorted();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   delete pTempBuffer;
 }
 
@@ -3114,7 +3124,7 @@ EntryBuffer* EntryBuffer::pSplit2(EntryBuffer** ppRootKeyBuffer)
     
     Entry* pNewEntry = pNewRightBuffer->pInsertKeyAbsL0(xKeyWrk,&pLastEntryRight);
     
-    pNewRightBuffer->vShow();
+    //.pNewRightBuffer->vShow();
     
     // make the moved entry in the left buffer to be a free entry
     FreeEntry* pFreeEntry = pMakeFreeEntry(pCopyEntry);
@@ -3157,7 +3167,7 @@ EntryBuffer* EntryBuffer::pSplit2(EntryBuffer** ppRootKeyBuffer)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compact the left buffer and rebuild SkipList
   
-  pThisLeftBuffer->vCompactLeft();
+  pThisLeftBuffer->vCompactLeft2();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // the child buffer of any moved entry needs to have its higher buffer
