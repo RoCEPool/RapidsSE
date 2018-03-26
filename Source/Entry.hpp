@@ -100,7 +100,19 @@ namespace DBobjects
     bn     nBufferNo(void);
   };
   
-  Entry* _pEntry(void* aAddr);
+  //Entry* _pEntry(void* aAddr);
+  /*----------------------------------------------------------------------------*/
+  /* safe cast                                                                  */
+  /*----------------------------------------------------------------------------*/
+  inline Entry* _pEntry(void* aAddr)
+  {
+    Entry* pEntry = reinterpret_cast<Entry*>(aAddr);
+    
+    //RASSERT( !pEntry || CN_ENTRY == pEntry->eClass() );
+    
+    return pEntry;
+  }
+
 }
 
 /*============================================================================*/

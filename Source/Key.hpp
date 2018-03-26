@@ -73,9 +73,16 @@ namespace DBobjects
   
     void vSprintSortKey(s48K& sBuff, IdxColVec* pIdxColVec);
   
-    char* aWspArea(void);
-  
+    //char* aWspArea(void);
+    /*----------------------------------------------------------------------------*/
+    /* get wsp area                                                               */
+    /*----------------------------------------------------------------------------*/
+    inline char* aWspArea(void)
+    {
+      return m_xWsp.aArea();
+    }
     i8 iGetInt(void);
+    
   };
   
   Key* _aKey(void* aAddr);
