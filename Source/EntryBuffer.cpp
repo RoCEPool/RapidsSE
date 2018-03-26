@@ -2150,9 +2150,9 @@ Entry* EntryBuffer::pInsertKeyAbsL0(KeyWrk& xKeyWrk, Entry** ppPriorEntry)
   // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
   // for the moment we set L1 & L2 offsets in prior entry to -1
   
-  i8 nPriorOffsets = (*ppPriorEntry)->nOffsets();
-  for (i8 i_Offset = 1; i_Offset < nPriorOffsets; i_Offset++)
-    (*ppPriorEntry)->vNEO(i_Offset,-1);
+  i8 nPriorOffsets = pKeyEntry->nOffsets();
+  for (i8 i_Offset = 0; i_Offset < nPriorOffsets; i_Offset++)
+    pKeyEntry->vNEO(i_Offset,-1);
   
   // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
   
@@ -3017,6 +3017,8 @@ EntryBuffer* EntryBuffer::pSplit2(EntryBuffer** ppRootKeyBuffer)
     xKeyWrk.vOffsets(nOffsets);
     
     Entry* pNewEntry = pNewRightBuffer->pInsertKeyAbsL0(xKeyWrk,&pLastEntryRight);
+    
+    pNewRightBuffer->vShow();
     
     // make the moved entry in the left buffer to be a free entry
     FreeEntry* pFreeEntry = pMakeFreeEntry(pCopyEntry);
