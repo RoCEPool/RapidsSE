@@ -60,6 +60,7 @@ Column::Column(void)
   m_bIsPartitionKey = false;
   
   m_fGreaterEqual = nullptr;
+  m_fGreaterThan  = nullptr;
   
   _checkInitialised_(CN_COLUMN);
   
@@ -84,7 +85,8 @@ Column::Column(Stz* aName)
   m_bIsPartitionKey = false;
 
   m_fGreaterEqual = nullptr;
-
+  m_fGreaterThan  = nullptr;
+  
   _checkInitialised_(CN_COLUMN);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
@@ -108,7 +110,8 @@ Column::Column(Stz* aName, Stz* aDefinition)
   m_bIsPartitionKey = false;
 
   m_fGreaterEqual = nullptr;
-
+  m_fGreaterThan  = nullptr;
+  
   vSet(aDefinition);
   
   _checkInitialised_(CN_COLUMN);

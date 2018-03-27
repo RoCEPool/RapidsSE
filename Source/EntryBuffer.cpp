@@ -2925,11 +2925,11 @@ void EntryBuffer::vPositionPriorVecBuffer(Key* aFindKey, Entry* pPriorVec[],
       
 #ifdef EB_SINGLE_COLIDX
       if (m_pIndex->bSingleColumn()) {
-        bNextKeyIsGreater = aNextKey->bGreaterEqualSingle(aFindKey,m_pIndex);
+        bNextKeyIsGreater = aNextKey->bGreaterThanSingle(aFindKey,m_pIndex);
         RASSERT(bNextKeyIsGreater == aNextKey->bGreaterThan(aFindKey,pIdxColVec));
       }
       else
-        bNextKeyIsGreater = aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
+        bNextKeyIsGreater = aNextKey->bGreaterThan(aFindKey,pIdxColVec);
 #else
       bNextKeyIsGreater = aNextKey->bGreaterThan(aFindKey,pIdxColVec);
 #endif

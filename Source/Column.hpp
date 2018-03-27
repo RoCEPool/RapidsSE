@@ -52,6 +52,7 @@ namespace DBobjects
     bool  m_bIsPartitionKey;
   
     bool  (*m_fGreaterEqual)(char* aArgA, char* aArgB);
+    bool  (*m_fGreaterThan)(char* aArgA, char* aArgB);
   
     // must be last
     Footer m_xFooter;

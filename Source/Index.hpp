@@ -54,7 +54,8 @@ namespace DBobjects
   
     bool         m_bSingleColumn; // is this index only over a signle column
     bool         (*m_fGreaterEqual)(char* aArgA, char* aArgB);
-  
+    bool         (*m_fGreaterThan)(char* aArgA, char* aArgB);
+    
     // must be last
     Footer m_xFooter;
     
@@ -74,7 +75,8 @@ namespace DBobjects
     void   vDump(void);
   
     bool   bGreaterEqual(char* aDatumA, char* aDatumB);
-  
+    bool   bGreaterThan(char* aDatumA, char* aDatumB);
+    
     eIF    eIndexForm(void);
     Stz*   aIndexName(void);
     s256   sIndexName(void);
