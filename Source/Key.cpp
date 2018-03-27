@@ -269,6 +269,19 @@ bool Key::bGreaterEqual(Key* pKeyThat, IdxColVec* pIdxColVec)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this key greater than or equal to given key?                            */
+/*----------------------------------------------------------------------------*/
+bool Key::bGreaterEqualSingle(Key* pKeyThat, Index* pIndex)
+{
+  char* aCursorThis = aWspArea();
+  char* aCursorThat = pKeyThat->aWspArea();
+
+  bool bGreaterEqual = pIndex->bGreaterEqual(aCursorThis,aCursorThat);
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* if this key greater than given key?                                        */
 /*----------------------------------------------------------------------------*/
 bool Key::bGreaterThan(Key* pKeyThat, IdxColVec* pIdxColVec)

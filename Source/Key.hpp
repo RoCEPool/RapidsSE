@@ -5,6 +5,8 @@
 
 namespace DBobjects
 {
+  class Index;
+  
   //-----------------------------------------------------------------------------
   
   enum eJC // JuxtaPosition
@@ -55,6 +57,7 @@ namespace DBobjects
     bool bEqualTo(Key* pKey, IdxColVec* pIdxColVec);
     bool bNotEqual(Key* pKey, IdxColVec* pIdxColVec);
     bool bGreaterEqual(Key* pKey, IdxColVec* pIdxColVec);
+    bool bGreaterEqualSingle(Key* pKey, Index* pIndex);
     bool bGreaterThan(Key* pKey, IdxColVec* pIdxColVec);
     
     i8 iCmp(Key* pKey, IdxColVec* pIdxColVec);

@@ -178,6 +178,16 @@ void Index::vDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is single value keyA greater than or equal to keyB?                        */
+/*----------------------------------------------------------------------------*/
+bool Index::bGreaterEqual(char* aDatumA, char* aDatumB)
+{
+  bool bIsGreaterEqual = (*m_fGreaterEqual)(aDatumA,aDatumB);
+  
+  return bIsGreaterEqual;
+}
+
+/*----------------------------------------------------------------------------*/
 /* compute the index form                                                     */
 /*----------------------------------------------------------------------------*/
 eIF Index::eIndexForm(void)

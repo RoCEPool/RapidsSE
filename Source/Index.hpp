@@ -72,6 +72,9 @@ namespace DBobjects
     Stz*   pAnalyze(void);
     void   vCreateColumnVec(s32& sName, s48K& sDefinition);
     void   vDump(void);
+  
+    bool   bGreaterEqual(char* aDatumA, char* aDatumB);
+  
     eIF    eIndexForm(void);
     Stz*   aIndexName(void);
     s256   sIndexName(void);
