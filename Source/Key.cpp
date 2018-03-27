@@ -278,7 +278,7 @@ bool Key::bGreaterEqualSingle(Key* pKeyThat, Index* pIndex)
 
   bool bGreaterEqual = pIndex->bGreaterEqual(aCursorThis,aCursorThat);
   
-  return false;
+  return bGreaterEqual;
 }
 
 /*----------------------------------------------------------------------------*/
