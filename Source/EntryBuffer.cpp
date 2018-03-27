@@ -11,9 +11,9 @@ extern AttachMap* gpAttachMap;
 bool mbWatch = false;
 //#define MB_WATCH
 
-#define EB_LAZY_CHAIN
-#define EB_SPLIT2
-#define EB_SINGLE_COLIDX
+//#define EB_LAZY_CHAIN
+//#define EB_SPLIT2
+//#define EB_SINGLE_COLIDX
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
