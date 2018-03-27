@@ -2770,6 +2770,8 @@ Entry* EntryBuffer::pPositionPriorEntry(Key* aFindKey)
   
   Entry* pScanEntry_sl = m_pHeadEntry;
   
+  bool bKeyIsGreaterEqual;
+  
   for (i8 i_ScanOffset = gpAttachMap->m_nIndexOffsets - 1;
        i_ScanOffset >= 0;
        i_ScanOffset--) {
@@ -2782,7 +2784,12 @@ Entry* EntryBuffer::pPositionPriorEntry(Key* aFindKey)
       //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       
-      bool bKeyIsGreaterEqual = aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
+      //bKeyIsGreaterEqual = aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
+      if (m_pIndex->bSingleColumn())
+        bKeyIsGreaterEqual = aNextKey->bGreaterEqualSingle(aFindKey,m_pIndex);
+      else
+        bKeyIsGreaterEqual = aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
+      
       if (bKeyIsGreaterEqual)
         break;
       
@@ -2823,6 +2830,7 @@ void EntryBuffer::vPositionPriorVecEntry(Key* aFindKey, Entry* pPriorVec[],
   
   i8 iFindLevels = pFindEntry ? pFindEntry->nOffsets() - 1 : 2;
   
+  bool bIsJuxta;
   Entry* pScanEntry_sl = m_pHeadEntry;
   for (i8 i_ScanOffset = gpAttachMap->m_nIndexOffsets - 1;
        i_ScanOffset >= 0;
@@ -2839,7 +2847,11 @@ void EntryBuffer::vPositionPriorVecEntry(Key* aFindKey, Entry* pPriorVec[],
       //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       
-      bool bIsJuxta = aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
+      //bIsJuxta = aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
+      if (m_pIndex->bSingleColumn())
+        bIsJuxta = aNextKey->bGreaterEqualSingle(aFindKey,m_pIndex);
+      else
+        bIsJuxta = aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
       
       if (bIsJuxta) {
         if (! pFindEntry || pNextEntry_sl == pFindEntry)
@@ -2882,8 +2894,9 @@ void EntryBuffer::vPositionPriorVecBuffer(Key* aFindKey, Entry* pPriorVec[],
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  
+  bool bNextKeyIsGreater;
   Entry* pScanEntry_sl = m_pHeadEntry;
+  
   for (i8 i_ScanOffset = gpAttachMap->m_nIndexOffsets - 1;
        i_ScanOffset >= 0;
        i_ScanOffset--) {
@@ -2896,7 +2909,11 @@ void EntryBuffer::vPositionPriorVecBuffer(Key* aFindKey, Entry* pPriorVec[],
       //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       
-      bool bNextKeyIsGreater = aNextKey->bGreaterThan(aFindKey,pIdxColVec);
+      //bNextKeyIsGreater = aNextKey->bGreaterThan(aFindKey,pIdxColVec);
+      if (m_pIndex->bSingleColumn())
+        bNextKeyIsGreater = aNextKey->bGreaterEqualSingle(aFindKey,m_pIndex);
+      else
+        bNextKeyIsGreater = aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
       if (bNextKeyIsGreater)
         break;
       
