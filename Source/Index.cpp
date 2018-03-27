@@ -296,17 +296,17 @@ void Index::vSetSingleColumn(void)
   eDM eDatum = pColumn->eDatumType();
   
   switch (eDatum) {
-    case DM_BCD: m_fGreaterEqual = Bcd::bGreaterThan; break;
-    case DM_BOL: m_fGreaterEqual = Bol::bGreaterThan; break;
-    case DM_CHR: m_fGreaterEqual = Vch::bGreaterThan; break;
-    case DM_DTE: m_fGreaterEqual = Dte::bGreaterThan; break;
-    case DM_FLT: m_fGreaterEqual = Flt::bGreaterThan; break;
-    case DM_INT: m_fGreaterEqual = Int::bGreaterThan; break;
-    case DM_IVL: m_fGreaterEqual = Ivl::bGreaterThan; break;
-    case DM_TME: m_fGreaterEqual = Tme::bGreaterThan; break;
-    case DM_TSP: m_fGreaterEqual = Tsp::bGreaterThan; break;
+    case DM_BCD: m_fGreaterEqual = Bcd::bGreaterEqual; break;
+    case DM_BOL: m_fGreaterEqual = Bol::bGreaterEqual; break;
+    case DM_CHR: m_fGreaterEqual = Vch::bGreaterEqual; break;
+    case DM_DTE: m_fGreaterEqual = Dte::bGreaterEqual; break;
+    case DM_FLT: m_fGreaterEqual = Flt::bGreaterEqual; break;
+    case DM_INT: m_fGreaterEqual = Int::bGreaterEqual; break;
+    case DM_IVL: m_fGreaterEqual = Ivl::bGreaterEqual; break;
+    case DM_TME: m_fGreaterEqual = Tme::bGreaterEqual; break;
+    case DM_TSP: m_fGreaterEqual = Tsp::bGreaterEqual; break;
     case DM_VBN: NEVER_REACH; break;
-    case DM_VCH: m_fGreaterEqual = Vch::bGreaterThan; break;
+    case DM_VCH: m_fGreaterEqual = Vch::bGreaterEqual; break;
       
     default:
       THROW("Index::vSetSingleColumn: Invalid eDatum %lld"_Stz,eDatum);

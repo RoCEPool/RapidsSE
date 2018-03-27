@@ -11,8 +11,9 @@ extern AttachMap* gpAttachMap;
 bool mbWatch = false;
 //#define MB_WATCH
 
-#define EB_LAZY_CHAIN
-#define EB_SPLIT2
+//#define EB_LAZY_CHAIN
+//#define EB_SPLIT2
+//#define EB_SINGLE_COLIDX
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -2784,11 +2785,14 @@ Entry* EntryBuffer::pPositionPriorEntry(Key* aFindKey)
       //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       
-      //bKeyIsGreaterEqual = aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
+#ifdef EB_SINGLE_COLIDX
       if (m_pIndex->bSingleColumn())
         bKeyIsGreaterEqual = aNextKey->bGreaterEqualSingle(aFindKey,m_pIndex);
       else
         bKeyIsGreaterEqual = aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
+#else
+      bKeyIsGreaterEqual = aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
+#endif
       
       if (bKeyIsGreaterEqual)
         break;
@@ -2847,11 +2851,14 @@ void EntryBuffer::vPositionPriorVecEntry(Key* aFindKey, Entry* pPriorVec[],
       //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       
-      //bIsJuxta = aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
+#ifdef EB_SINGLE_COLIDX
       if (m_pIndex->bSingleColumn())
         bIsJuxta = aNextKey->bGreaterEqualSingle(aFindKey,m_pIndex);
       else
         bIsJuxta = aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
+#else
+      bIsJuxta = aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
+#endif
       
       if (bIsJuxta) {
         if (! pFindEntry || pNextEntry_sl == pFindEntry)
@@ -2909,11 +2916,15 @@ void EntryBuffer::vPositionPriorVecBuffer(Key* aFindKey, Entry* pPriorVec[],
       //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       
-      //bNextKeyIsGreater = aNextKey->bGreaterThan(aFindKey,pIdxColVec);
+#ifdef EB_SINGLE_COLIDX
       if (m_pIndex->bSingleColumn())
         bNextKeyIsGreater = aNextKey->bGreaterEqualSingle(aFindKey,m_pIndex);
       else
         bNextKeyIsGreater = aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
+#else
+      bNextKeyIsGreater = aNextKey->bGreaterThan(aFindKey,pIdxColVec);
+#endif
+      
       if (bNextKeyIsGreater)
         break;
       
