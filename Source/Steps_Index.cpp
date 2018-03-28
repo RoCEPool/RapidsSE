@@ -949,23 +949,68 @@ void Task::vIndexRange(MP_Task mpTask)
     pEntry = pEntryBuffer->pPositionQuery(xKeyWrkLower.aKey(), eRelnOp);
   }
   
+  
+  // have to defined before the goto
+  eRO eUpperRelnOp;
+  Entry* pUpperEntry;
+
   // did we get an entry ?
   if ( ! pEntry) {
     goto LastBuffer;
   }
   
+  // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
+  
   // first position at a level 0 buffer
   pUpperEntryBuffer = pIndexTree->pPositionLevel(xKeyWrkUpper, 1, JC_AFTER, 0);
+  
+  pUpperEntryBuffer->vShow();
+  
+  eUpperRelnOp = pPlanner->eGetFirstUpperPredicateRO(i_Phrase);
+  pUpperEntry = pUpperEntryBuffer->pPositionQuery(xKeyWrkUpper.aKey(), eUpperRelnOp);
+  
+  while (pUpperEntry) {
+    
+    pUpperEntry->vShow(0,pIndex,true);
+    
+    bool bIsEqual = false;
+    bool bBefore = pUpperEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrkUpper.aKey(),
+                                                 pIndex->pIdxColVec(), 1,
+                                                 bIsEqual, eUpperRelnOp);
+    
+    if (! bBefore)
+      break;
+    
+    // move to next entry in the buffer
+    pUpperEntry = pUpperEntryBuffer->pNextEntry(pUpperEntry, 0);
+    
+    if ( ! pEntry ) {
+      // get next buffer from the current indexBuffer
+      pUpperEntryBuffer = pUpperEntryBuffer->pNextBuffer();
+      
+      if ( pUpperEntryBuffer )
+        pEntry = pUpperEntryBuffer->pFirstEntry();
+    }
+  }
+  
+  pUpperEntry->vShow(0,pIndex,true);
 
+  // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
+
+  
+  
   // iterate thru the buffer till no more entries
   while (pEntry) {
     
     // check against the upper bound
     eRO eRelnOp = pPlanner->eGetFirstUpperPredicateRO(i_Phrase);
     bool bIsEqual = false;
-    bool bBefore = pEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrkUpper.aKey(),
-                                                 pIndex->pIdxColVec(), 1,
-                                                 bIsEqual, eRelnOp);
+    //bool bBefore = pEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrkUpper.aKey(),
+    //                                             pIndex->pIdxColVec(), 1,
+    //                                             bIsEqual, eRelnOp);
+    
+    bool bBefore = (pEntry == pUpperEntry) ? false : true;
+    
     if (bBefore) {
       // get the dataRow from the hidden index
       Entry* pDataRowEntry = Task::pDataRow(pTable, pEntry);

@@ -12,8 +12,8 @@ create table jCdt (
   jE  VARCHAR(32)
 );
 
-//create index jCdt_idx1 on jCdt (jA);
-create index jCdt_idx2 on jCdt (jA,jB);
+create index jCdt_idx1 on jCdt (jA);
+//create index jCdt_idx2 on jCdt (jA,jB);
 //create index jCdt_idx3 on jCdt (jA,jB,jC);
 //create index jCdt_idx4 on jCdt (jA,jB,jC,jD);
 create index jCdt_idx5 on jCdt (jE);
