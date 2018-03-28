@@ -26,6 +26,12 @@ fetch jCdt ;
 // range bound
 fetch jCdt "jA 10 >= jA 18 <= and" ;
 
+fetch jCdt "jA 10 >= jA 18 < and" ;
+
+fetch jCdt "jA 10 >= jA 100 <= and" ;
+
+fetch jCdt "jA 10 >= jA 100 < and" ;
+
 //docol stepsList;
 //create index jCdt_idx6 on jCdt (jE,jA);
 
