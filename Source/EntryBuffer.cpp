@@ -566,10 +566,10 @@ Entry* EntryBuffer::pFirstEntry(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
 #ifdef EB_LAZY_CHAIN
-  //RASSERT( ! m_pLazyChain );
+  RASSERT( ! m_pLazyChain );
   
-  if (m_pLazyChain)
-    vBuildSkipList();
+  //if (m_pLazyChain)
+  //  vBuildSkipList();
 #endif
   
   Entry* pFirst = pNextEntry(m_pHeadEntry,0);
@@ -713,10 +713,10 @@ EntryBuffer* EntryBuffer::pPositionLevel(Key* aGivenKey, i8 nKeyCols,
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
 #ifdef EB_LAZY_CHAIN
-  //RASSERT( ! m_pLazyChain );
+  RASSERT( ! m_pLazyChain );
   
-  if (m_pLazyChain)
-    vBuildSkipList();
+  //if (m_pLazyChain)
+  //  vBuildSkipList();
 #endif
 
   EntryBuffer* pEntryBuffer = this;
@@ -751,10 +751,10 @@ Entry* EntryBuffer::pPositionQuery(Key* aGivenKey, eRO eRelnOp)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
 #ifdef EB_LAZY_CHAIN
-  //RASSERT( ! m_pLazyChain );
+  RASSERT( ! m_pLazyChain );
   
-  if (m_pLazyChain)
-    vBuildSkipList();
+  //if (m_pLazyChain)
+  //  vBuildSkipList();
 #endif
   
   bool bIsEqual;
@@ -784,10 +784,10 @@ Entry* EntryBuffer::pPositionQuery(Key* aGivenKey,i8 nKeyCols, eJC eJuxtaCompare
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
 #ifdef EB_LAZY_CHAIN
-  //RASSERT( ! m_pLazyChain );
+  RASSERT( ! m_pLazyChain );
   
-  if (m_pLazyChain)
-    vBuildSkipList();
+  //if (m_pLazyChain)
+  //  vBuildSkipList();
 #endif
   
   /*
@@ -2103,9 +2103,11 @@ Entry* EntryBuffer::pInsertKeyAbs(KeyWrk& xKeyWrk)
   Entry* pKeyEntry;
   
 #ifdef EB_LAZY_CHAIN
-  if (! m_iBufferLevel) {
-    pKeyEntry = pInsertKeyAbsLazy(xKeyWrk);
-    return pKeyEntry;
+  if (m_pIndex->pTable()->bIsLoading()) {
+    if (! m_iBufferLevel) {
+      pKeyEntry = pInsertKeyAbsLazy(xKeyWrk);
+      return pKeyEntry;
+    }
   }
 #endif
 
@@ -2377,13 +2379,20 @@ Entry* EntryBuffer::pInsertKeyBuffer(KeyWrk& xKeyWrk,
   Entry* pInsertedKeyEntry;
 
 #ifdef EB_LAZY_CHAIN
-  if (m_iBufferLevel) {
+  if (m_pIndex->pTable()->bIsLoading()) {
+    if (m_iBufferLevel) {
+      Entry* pOriginalFirstEntry = pFirstEntry();
+      pInsertedKeyEntry = pInsertKeyAbs(xKeyWrk);
+      vHandleFirstInsert(pInsertedKeyEntry,pOriginalFirstEntry,ppRootKeyBuffer);
+    }
+    else {
+      pInsertedKeyEntry = pInsertKeyAbs(xKeyWrk);
+    }
+  }
+  else {
     Entry* pOriginalFirstEntry = pFirstEntry();
     pInsertedKeyEntry = pInsertKeyAbs(xKeyWrk);
     vHandleFirstInsert(pInsertedKeyEntry,pOriginalFirstEntry,ppRootKeyBuffer);
-  }
-  else {
-    pInsertedKeyEntry = pInsertKeyAbs(xKeyWrk);
   }
 #else
   Entry* pOriginalFirstEntry = pFirstEntry();
