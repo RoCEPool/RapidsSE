@@ -325,10 +325,6 @@ void Task::vSocketSend(MP_Task mpTask)
       bResult = pSocket->bSendTo(iBytes, pWorkingBuffer->aDataArea(), xSysCall);
       
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      // delete the working buffer
-      delete pWorkingBuffer;
-      
-      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       // test send result
       if ( ! bResult ) {
         
@@ -339,6 +335,10 @@ void Task::vSocketSend(MP_Task mpTask)
         EXIT();
       }
     }
+    
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+    // delete the working buffer
+    delete pWorkingBuffer;
   }
   
   mpTask->m_pDataStack->vPushInt((i8)1);
