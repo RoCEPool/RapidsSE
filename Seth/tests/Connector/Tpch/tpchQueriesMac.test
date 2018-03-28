@@ -5,7 +5,7 @@
 -- refresh metadata
 //refresh;
 //success
-/*
+
 // create tables
 create table customer (
 C_CUSTKEY       INTEGER NOT NULL,
@@ -154,7 +154,7 @@ failure contains: 'Success'
 ESCAPE CONNECTOR se 'load customer' with file='/tpch/customer.tbl' , node = 'Node1' ;
 failure contains: 'Success'
 
-INCLUDE 'tpchCount.test';
+//INCLUDE 'tpchCount.test';
 
 //Loop 3 {
   
@@ -248,7 +248,7 @@ select c_custkey, c_name, sum(l_extendedprice * (1 - l_discount)) as revenue, c_
   l_returnflag = 'R' and c_nationkey = n_nationkey group by c_custkey, c_name, c_acctbal, c_phone, n_name,
   c_address, c_comment order by revenue desc ;
 rows: 37967
-*/
+
 
 // Query 11
 select ps_partkey, sum(ps_supplycost * ps_availqty) as value1 from PARTSUPP, SUPPLIER, NATION
@@ -348,7 +348,29 @@ rows: 7
 //} // end of loop
 
 CLEANUP {
+drop table customer;
+success
 
+drop table supplier;
+success
+
+drop table orders;
+success
+
+drop table partsupp;
+success
+
+drop table part;
+success
+
+drop table region;
+success
+
+drop table lineitem;
+success
+
+drop table nation;
+success
 }
 
 
