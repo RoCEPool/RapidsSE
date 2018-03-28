@@ -379,27 +379,27 @@ bool Key::bJuxtaCompare(eJC eJuxtaCompare, Key* pKeyThat,
                         IdxColVec* pIdxColVec, i8 nSearchKeyCols,
                         bool& bIsEqual, eRO eRelnOp)
 {
-  bool bJuxtaCompare = false;
+  bool bJuxtaResult = false;
   
   switch (eJuxtaCompare) {
       
     case JC_BEFORE:
-      bJuxtaCompare = bJuxtaBefore(pKeyThat,pIdxColVec,nSearchKeyCols,bIsEqual,eRelnOp);
+      bJuxtaResult = bJuxtaBefore(pKeyThat,pIdxColVec,nSearchKeyCols,bIsEqual,eRelnOp);
       break;
       
     case JC_SAME:
-      bJuxtaCompare = bJuxtaSame(pKeyThat,pIdxColVec,nSearchKeyCols,bIsEqual);
+      bJuxtaResult = bJuxtaSame(pKeyThat,pIdxColVec,nSearchKeyCols,bIsEqual);
       break;
       
     case JC_AFTER:
-      bJuxtaCompare = bJuxtaAfter(pKeyThat,pIdxColVec,nSearchKeyCols,bIsEqual,eRelnOp);
+      bJuxtaResult = bJuxtaAfter(pKeyThat,pIdxColVec,nSearchKeyCols,bIsEqual,eRelnOp);
       break;
       
     default:
       NEVER_REACH;
   }
   
-  return bJuxtaCompare;
+  return bJuxtaResult;
 }
 
 /*----------------------------------------------------------------------------*/
