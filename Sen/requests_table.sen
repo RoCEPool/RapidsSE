@@ -178,6 +178,10 @@ tp: insertBufferEntries$
   //"sending got for last buffer..." .
   //iPartitionNo grid::toSlot .
 
+  //----------------------------------------------------------------------------
+  // lazy build of index
+  iPartitionNo grid::toSlot >str pTable >str table.lazyBuildIndexes ( )
+
   <<
   13
   pSEitf >str       ( << pSEitf )

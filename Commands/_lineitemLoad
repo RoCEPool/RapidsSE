@@ -53,10 +53,10 @@ timerStart;
 ld lineitem "/tpch/lineitem.tbl" ;
 timerEnd;
 
-print "lazily building lineitem_idx2 on l_shipdate" ;
-timerStart;
-lzybld lineitem lineitem_idx2;
-timerEnd;
+//print "lazily building lineitem_idx2 on l_shipdate" ;
+//timerStart;
+//lzybld lineitem lineitem_idx2;
+//timerEnd;
 
 //print "creating index on l_partkey..." ;
 //timerStart;

@@ -26,6 +26,7 @@ void Task::vAddPrimitives_Table(void)
   vAddPrimitive("table.init"_Stz,               &vTableInit,             false);
   vAddPrimitive("table.insert"_Stz,             &vTableInsert,           false);
   vAddPrimitive("table.insertEntries"_Stz,      &vTableInsertEntries,    false);
+  vAddPrimitive("table.lazyBuildIndexes"_Stz,   &vTableLazyBuildIndexes, false);
   vAddPrimitive("table.name"_Stz,               &vTableName,             false);
   vAddPrimitive("table.ref"_Stz,                &vTableRef,              false);
   vAddPrimitive("table.removeIndex"_Stz,        &vTableRemoveIndex,      false);
@@ -126,6 +127,32 @@ void Task::vTableInsertEntries(MP_Task mpTask)
   
   // now delete the temporary buffer
   delete pWorkingBuffer;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.lazyBuildIndexes -- lazy build of indexes (from lazy chains)         */
+/*----------------------------------------------------------------------------*/
+void Task::vTableLazyBuildIndexes(MP_Task mpTask)
+{
+  ENTRY("vTableLazyBuildIndexes"_Stz);
+  i8 iSlot;
+  i8 iTxId;
+  s48K sString;
+  
+  if ( ! mpTask->m_pDataStack->bPop(sString) )
+    THROW_INVALID_DSTACK("table.lazyBuildIndexes"_Stz);
+  
+  Table* pTable = reinterpret_cast<Table*>(sString.iToI8());
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  if ( ! mpTask->m_pDataStack->bPop(sString) )
+    THROW_INVALID_DSTACK("table.lazyBuildIndexes"_Stz);
+  
+  iSlot = sString.iToI8();
+  
+  pTable->vLazyBuildIndexes(iSlot);
   
   EXIT();
 }

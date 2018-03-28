@@ -240,10 +240,39 @@ void Table::vLazyBuild(Index* pIndex)
   
   for (i8 iSlot = 0; iSlot < gpAttachMap->m_pGrid->m_nSlots; iSlot++) {
     
-    i8 iPartition = Partition::iSlotToPartition(iSlot);
-    
     EntryBuffer *pIndexBuffer = pPartition(iSlot)->pIndexTree(pIndex->iIndexNo())->pFirstL0Buffer();
     
+    if (pIndexBuffer)
+      pIndexBuffer->vLazyBuild();
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* lazy build of index                                                        */
+/*----------------------------------------------------------------------------*/
+void Table::vLazyBuildIndexes(i8 iSlot)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  Partition* pPartition = this->pPartition(iSlot);
+  IdxDataVec* pIdxDataVec = pPartition->pIdxDataVec();
+  i8 nIndexes = pIdxDataVec->nItems();
+  
+  // iterate all indexes of the table
+  for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
+    
+    // get index
+    IndexTree* pNewIndexTree = pIdxDataVec->pGet(i_Index);
+    
+    // skip the hidden index
+    Index* pIndex = pNewIndexTree->pIndex();
+    if (pIndex->bIsHidden())
+      continue;
+    
+    // get an L0 buffer
+    EntryBuffer *pIndexBuffer = pPartition->pIndexTree(pIndex->iIndexNo())->pFirstL0Buffer();
+    
+    // build skip list for all L0 buffers
     if (pIndexBuffer)
       pIndexBuffer->vLazyBuild();
   }
