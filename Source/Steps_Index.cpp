@@ -31,7 +31,6 @@ void Task::vAddPrimitives_Index(void)
   vAddPrimitive("index.isUnique@"_Stz,       &vIndexIsUniqueFetch,   false);
   vAddPrimitive("index.isUnique!"_Stz,       &vIndexIsUniqueStore,   false);
   vAddPrimitive("index.isValidUniqueIndex"_Stz,&vIndexIsValidUniqueIndex,false);
-  vAddPrimitive("index.lazyBuild"_Stz,       &vIndexLazyBuild,       false);
   vAddPrimitive("index.lowerBound"_Stz,      &vIndexLowerBound,      false);
   vAddPrimitive("index.name@"_Stz,           &vIndexNameFetch,       false);
   vAddPrimitive("index.populate"_Stz,        &vIndexPopulate,        false);
@@ -594,35 +593,6 @@ void Task::vIndexIsValidUniqueIndex(MP_Task mpTask)
   mpTask->m_pDataStack->vPushInt(bValid ? 1 : 0);
   
   EXIT();
-}
-/*----------------------------------------------------------------------------*/
-/* index.lazyBuild -- build skip list for index from lazy chanis              */
-/*----------------------------------------------------------------------------*/
-void Task::vIndexLazyBuild(MP_Task mpTask)
-{
-  ENTRY("vIndexLazyBuild"_Stz);
-  
-  Object* pPtrIndex = nullptr;
-  Object* pPtrQueue = nullptr;
-  Object* pPtrPlanner = nullptr;
-  Entry* pEntry = nullptr;
-  
-  ValWrk xValWrk;
-  i8 iPartition;
-  SEitf* pSEitf = mpTask->m_pSEitf;
-  WorkingBuffer* pWorkingBuffer;
-  
-  i8 i_Phrase;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.lazyBuild"_Stz);
-  
-  Index* pIndex = _pIndex(pPtrIndex);
-  ASSERT(CN_INDEX == pIndex->eClass());
-  
-  Table* pTable = pIndex->pTable();
-  
-  pIndex->pTable()->vLazyBuild(pIndex);
 }
 
 /*----------------------------------------------------------------------------*/

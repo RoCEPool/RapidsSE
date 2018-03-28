@@ -693,7 +693,6 @@ namespace Tasks
     static void vIndexIsUniqueFetch(MP_Task mpTask);
     static void vIndexIsUniqueStore(MP_Task mpTask);
     static void vIndexIsValidUniqueIndex(MP_Task mpTask);
-    static void vIndexLazyBuild(MP_Task mpTask);
     static void vIndexLowerBound(MP_Task mpTask);
     static void vIndexNameFetch(MP_Task mpTask);
     static void vIndexPopulate(MP_Task mpTask);

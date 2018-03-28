@@ -142,7 +142,6 @@ namespace Interface
     bool bRemoveFolder(TokenVec& xTokenVec, i8 iReqNo);
     
     bool bCreateTenant(TokenVec& xTokenVec, i8 iReqNo);
-    bool bLazyBuild(TokenVec& xTokenVec, i8 iReqNo);
     bool bListTenants(TokenVec& xTokenVec, i8 iReqNo);
     bool bDropTenant(TokenVec& xTokenVec, i8 iReqNo);
 

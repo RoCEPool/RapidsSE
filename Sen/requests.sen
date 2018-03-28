@@ -93,7 +93,6 @@ dumpidx   dumpIndex_req
 fetch     fetchRowsIndex_req
 dfetch    DistFetchRowsIndex_req
 getidx    getIndex_req
-lzybld    lazyBuild_req
 mkidx     createIndex_req
 lsidx     listIndexes_req
 retidx    returnIndex_req

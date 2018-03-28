@@ -236,22 +236,6 @@ Stz* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed)
 /*----------------------------------------------------------------------------*/
 /* lazy build of index                                                        */
 /*----------------------------------------------------------------------------*/
-void Table::vLazyBuild(Index* pIndex)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  for (i8 iSlot = 0; iSlot < gpAttachMap->m_pGrid->m_nSlots; iSlot++) {
-    
-    EntryBuffer *pIndexBuffer = pPartition(iSlot)->pIndexTree(pIndex->iIndexNo())->pFirstL0Buffer();
-    
-    if (pIndexBuffer)
-      pIndexBuffer->vLazyBuild();
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* lazy build of index                                                        */
-/*----------------------------------------------------------------------------*/
 void Table::vLazyBuildIndexes(i8 iSlot)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
