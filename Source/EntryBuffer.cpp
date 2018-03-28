@@ -2479,6 +2479,27 @@ bool EntryBuffer::bKeyBeforeBuffer(Key* aKeyTest)
 }
 
 /*----------------------------------------------------------------------------*/
+/* build skip lists from the lazy chain of all L0 buffers                     */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vLazyBuild(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  EntryBuffer* pEntryBuffer = this;
+  
+  while (pEntryBuffer) {
+    
+    RASSERT(pEntryBuffer->iBufferLevel() == 0);
+    
+    //vTrace("Building skip list %p\n"_Stz, pEntryBuffer);
+    
+    pEntryBuffer->vBuildSkipList();
+    
+    pEntryBuffer = pEntryBuffer->pNextBuffer();
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert given entry into free entry                                        */
 /*----------------------------------------------------------------------------*/
 FreeEntry* EntryBuffer::pMakeFreeEntry(Entry* pEntry)

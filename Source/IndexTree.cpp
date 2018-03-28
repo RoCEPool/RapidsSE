@@ -413,6 +413,16 @@ bool IndexTree::bInsertEntry(Entry* pRow)
 }
 
 /*----------------------------------------------------------------------------*/
+/* build skip lists for the index                                             */
+/*----------------------------------------------------------------------------*/
+void IndexTree::vLazyBuild(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  
+  m_pRoot->vLazyBuild();
+}
+
+/*----------------------------------------------------------------------------*/
 /* position the IndexTree at a particular level of index buffer               */
 /*----------------------------------------------------------------------------*/
 EntryBuffer* IndexTree::pPositionLevel(KeyWrk& xKeyWrk, i8 nKeyCols,

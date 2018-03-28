@@ -57,6 +57,7 @@ ReqTable SeRequests[] =
  { "lssch"_Stz,          &SEitf::bListSchemas,          "listSchemas_req"_Stz     },
  { "lstbl"_Stz,          &SEitf::bListTables,           "listTables_req"_Stz      },
  { "lsten"_Stz,          &SEitf::bListTenants,          "listTenants_req"_Stz     },
+ { "lzybld"_Stz,         &SEitf::bLazyBuild,            "lazyBuild_req"_Stz       },
  { "mkcat"_Stz,          &SEitf::bCreateCatalog,        "createCatalog_req"_Stz   },
  { "mkidx"_Stz,          &SEitf::bCreateIndex,          "createIndex_req"_Stz     },
  { "mksch"_Stz,          &SEitf::bCreateSchema,         "createSchema_req"_Stz    },
@@ -1655,6 +1656,36 @@ bool SEitf::bCreateTenant(TokenVec& xTokenVec, i8 iReqNo)
   }
 
   sRequest.vCopy("\""_Stz);
+  sRequest.vConcat(xTokenVec[1]->aText());
+  sRequest.vConcat("\""_Stz);
+  
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* lazy build of index                                                        */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bLazyBuild(TokenVec& xTokenVec, i8 iReqNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  if (xTokenVec.nTokens() != 3) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  ASSERT(xTokenVec[0]->bSame("lzybld"_Stz));
+  
+  sRequest.vCopy("\""_Stz);
+  sRequest.vConcat(xTokenVec[2]->aText());
+  sRequest.vConcat("\""_Stz);
+  
+  sRequest.vConcat("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
   

@@ -80,6 +80,7 @@ namespace DBobjects
     void         vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries);
     Entry*       pAppendRow(RowWrk& xRowWrk);
     void         vBufferCount(i8& nBufferCount);
+
     i8           iDecile(void);
     void         vDeleteEntry(Entry** ppEntry);
     void         vDump(void);
@@ -88,6 +89,7 @@ namespace DBobjects
     static Entry* pInsertKeyTree(KeyWrk& xKeyWrk,
                                  EntryBuffer** ppRootKeyBuffer);
     bool         bInsertRow(Entry* pOldRow, Entry** ppRow);
+    void         vLazyBuild(void);
     Entry*       pNextEntry(Entry* pEntry, i8 i_Offset);
   
     Entry*       pPositionQuery(Key* aGivenKey, eRO eRelOp);
