@@ -59,6 +59,7 @@ namespace DBobjects
     bool bGreaterEqual(Key* pKey, IdxColVec* pIdxColVec);
     bool bGreaterEqualSingle(Key* pKey, Index* pIndex);
     bool bGreaterThan(Key* pKey, IdxColVec* pIdxColVec);
+    bool bGreaterThanSingle(Key* pKey, Index* pIndex);
     
     i8 iCmp(Key* pKey, IdxColVec* pIdxColVec);
     
