@@ -18,9 +18,14 @@ create index jCdt_idx2 on jCdt (jA,jB);
 //create index jCdt_idx4 on jCdt (jA,jB,jC,jD);
 create index jCdt_idx5 on jCdt (jE);
 
-
 //docol stepsReset;
 ld jCdt "../JTEST/jCdt.csv";
+
+fetch jCdt ;
+
+// range bound
+fetch jCdt "jA 10 >= jA 18 <= and" ;
+
 //docol stepsList;
 //create index jCdt_idx6 on jCdt (jE,jA);
 
@@ -42,9 +47,9 @@ ld jCdt "../JTEST/jCdt.csv";
 //print "dumping jCdt_idx6 index\n" ;
 //dumpidx jCdt jCdt_idx6;
 
+/*
 fetch jCdt "jA 15 >=";
 
-/*
  fetch jCdt "JA 1 >= jA 22 <= OR";
  
 print "\nSelecting rows with key <= 7 using idx1 ...\n" ;
