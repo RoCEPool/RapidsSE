@@ -27,6 +27,7 @@ void Task::vAddPrimitives_Table(void)
   vAddPrimitive("table.insert"_Stz,             &vTableInsert,           false);
   vAddPrimitive("table.insertEntries"_Stz,      &vTableInsertEntries,    false);
   vAddPrimitive("table.lazyBuildIndexes"_Stz,   &vTableLazyBuildIndexes, false);
+  vAddPrimitive("table.isLoading!"_Stz,         &vTableIsLoadingStore,     false);
   vAddPrimitive("table.name"_Stz,               &vTableName,             false);
   vAddPrimitive("table.ref"_Stz,                &vTableRef,              false);
   vAddPrimitive("table.removeIndex"_Stz,        &vTableRemoveIndex,      false);
@@ -153,6 +154,30 @@ void Task::vTableLazyBuildIndexes(MP_Task mpTask)
   iSlot = sString.iToI8();
   
   pTable->vLazyBuildIndexes(iSlot);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.isLoading! -- store lable is loading                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vTableIsLoadingStore(MP_Task mpTask)
+{
+  ENTRY("vTableIsLoadingStore"_Stz);
+  
+  Object* pPtrTable;
+  i8 iLoading;
+
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+    THROW_INVALID_DSTACK("table.analyze"_Stz);
+  
+  Table* pTable = _pTable(pPtrTable);
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  if ( ! mpTask->m_pDataStack->bPop(iLoading) )
+    THROW_INVALID_DSTACK("table.isLoading"_Stz);
+  
+  pTable->vIsLoading(iLoading == 1 ? true : false);
   
   EXIT();
 }

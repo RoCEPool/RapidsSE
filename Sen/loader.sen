@@ -93,6 +93,9 @@ timer: loadTimer
 
   popTable assertInTables
 
+  // mark table is loading
+  true pTable table.isLoading!
+
   servers 0 do
 
   << pSEitf pTblLoader loader.newSub >>
@@ -129,6 +132,9 @@ timer: loadTimer
     while
     1 thread.sleep_s
   repeat
+
+  // mark table is not loading
+  false pTable table.isLoading!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tidy up

@@ -1173,6 +1173,7 @@ namespace Tasks
     static void vTableInsert(MP_Task mpTask);
     static void vTableInsertEntries(MP_Task mpTask);
     static void vTableLazyBuildIndexes(MP_Task mpTask);
+    static void vTableIsLoadingStore(MP_Task mpTask);
     static void vTableList(MP_Task mpTask);
     static void vTableName(MP_Task mpTask);
     static void vTableRef(MP_Task mpTask);

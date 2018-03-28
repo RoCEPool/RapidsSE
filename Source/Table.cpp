@@ -88,6 +88,8 @@ Table::Table(void)
   for (i8 i_Slot = 0; i_Slot < C_SLOTS_PER_NODE; i_Slot++)
     m_ziSubLoaders[i_Slot] = 0;
   
+  m_bIsLoading = false;
+  
   _checkInitialised_(CN_TABLE);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
@@ -504,6 +506,26 @@ IdxVec* Table::pIdxVec(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   return m_pIdxVec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get if table is loading                                                    */
+/*----------------------------------------------------------------------------*/
+bool Table::bIsLoading(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  return m_bIsLoading;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set table is loading                                                       */
+/*----------------------------------------------------------------------------*/
+void Table::vIsLoading(bool bIsLoading)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  m_bIsLoading = bIsLoading;
 }
 
 /*----------------------------------------------------------------------------*/

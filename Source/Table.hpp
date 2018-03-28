@@ -37,6 +37,7 @@ namespace DBobjects
     ColumnVec* m_pColumnVec; // colummn vector
 
     Atomic     m_ziSubLoaders[C_SLOTS_PER_NODE];  // subloader*slot count
+    bool       m_bIsLoading;   // data is loading
     
     // must be last
     Footer m_xFooter;
@@ -65,6 +66,8 @@ namespace DBobjects
     Index* pHiddenIndex(void);
     void vHiddenIndex(Index* pHiddenIndex);
     IdxVec* pIdxVec(void);
+    void  vIsLoading(bool bIsLoading);
+    bool  bIsLoading(void);
     Partition* pPartition(i8 iSlot);
     bool bPopulateIndex(i8 iIndexNo);
     void vRefDec(void);
