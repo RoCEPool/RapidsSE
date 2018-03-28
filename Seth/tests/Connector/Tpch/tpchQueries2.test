@@ -366,7 +366,7 @@ c_custkey = o_custkey and l_orderkey = o_orderkey and o_orderdate < date '1995-0
 l_shipdate > date '1995-03-15' group by l_orderkey, o_orderdate, o_shippriority
 order by revenue desc, o_orderdate ;
 rows: 11620
-/*
+
 // Query 4
 select o_orderpriority, count(*) as order_count from ORDERS where
 o_orderdate >= date '1993-07-01' and o_orderdate < date '1993-10-01' and exists
@@ -521,7 +521,7 @@ substring (c_phone from 1 for 2) in ('13','31','23','29','30','18','17') ) and
 not exists ( select * from ORDERS where o_custkey = c_custkey ) ) as custsale
 group by cntrycode order by cntrycode ;
 rows: 7
-*/
+
 //} // end of loop
 
 CLEANUP {
