@@ -970,6 +970,18 @@ void Task::vIndexRange(MP_Task mpTask)
       goto LastBuffer;
   }
 
+  // check if upperKey >/>= lowerKey
+  bIsEqual = false;
+  //  bBefore = xKeyWrkUpper.aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrkLower.aKey(),
+  //                                               pIndex->pIdxColVec(), 1,
+  //                                               bIsEqual, eUpperRelnOp);
+  bBefore = xKeyWrkUpper.aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrkLower.aKey(),
+                                               pIndex->pIdxColVec(), 1,
+                                               bIsEqual, RO_LESS_THAN);
+  if (bBefore) {
+    goto LastBuffer;
+  }
+  
   // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
   //pEntryBuffer->vShow();
   
@@ -1019,18 +1031,6 @@ void Task::vIndexRange(MP_Task mpTask)
   //pUpperEntry->vShow(0,pIndex,true);
 
   // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
-  
-  // check if upperKey >/>= lowerKey
-  bIsEqual = false;
-//  bBefore = xKeyWrkUpper.aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrkLower.aKey(),
-//                                               pIndex->pIdxColVec(), 1,
-//                                               bIsEqual, eUpperRelnOp);
-  bBefore = xKeyWrkUpper.aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrkLower.aKey(),
-                                               pIndex->pIdxColVec(), 1,
-                                               bIsEqual, RO_LESS_THAN);
-  if (bBefore) {
-    goto LastBuffer;
-  }
   
   // iterate thru the buffer till no more entries
   while (pEntry) {
