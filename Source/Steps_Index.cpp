@@ -607,7 +607,6 @@ void Task::vIndexLowerBound(MP_Task mpTask)
   Object* pPtrIndex = nullptr;
   Object* pPtrQueue = nullptr;
   Object* pPtrPlanner = nullptr;
-  Entry* pEntry = nullptr;
   
   ValWrk xValWrk;
   i8 iPartition;
@@ -644,42 +643,62 @@ void Task::vIndexLowerBound(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
     THROW_INVALID_DSTACK("index.lowerBound"_Stz);
   
+  EntryBuffer* pLowerEntryBuffer;
+  Entry* pLowerEntry = nullptr;
+  eRO eLowerRelnOp;
+  
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
   
   Partition* pPartition = pTable->pPartition(iPartition);
   IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
   
+  //----------------------------------------------------------------------------
   // create a result buffer for the results
   pWorkingBuffer = new WorkingBuffer(pTable, iPartition);
   
-  // get the entryBuffer looking for the key
-  KeyWrk xKeyWrk;
+  //----------------------------------------------------------------------------
+  KeyWrk xKeyWrkLower;
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
   Formatters* pFormatters = &mpTask->m_pSEitf->m_xFormatters;
-  xKeyWrk.vAddDatum(xValWrk,pColumn0,pFormatters);
+  xKeyWrkLower.vAddDatum(xValWrk,pColumn0,pFormatters);
   //xKeyWrk.vShow();
   
-  // first position at a level 0 buffer
-  EntryBuffer* pEntryBuffer = pIndexTree->pPositionLevel(xKeyWrk, 1, JC_AFTER, 0);
+  //----------------------------------------------------------------------------
+  // first position at a level 0 buffer with keyLower
+  pLowerEntryBuffer = pIndexTree->pPositionLevel(xKeyWrkLower, 1, JC_AFTER, 0);
+  eLowerRelnOp = pPlanner->eGetFirstLowerPredicateRO(i_Phrase);
   
-  // did we get an index buffer ?
-  if (pEntryBuffer) {
+  // did we get an entry buffer ?
+  if (pLowerEntryBuffer) {
     // position in the index buffer at the lower key
-    eRO eRelnOp = pPlanner->eGetFirstLowerPredicateRO(i_Phrase);
-    pEntry = pEntryBuffer->pPositionQuery(xKeyWrk.aKey(), eRelnOp);
+    pLowerEntry = pLowerEntryBuffer->pPositionQuery(xKeyWrkLower.aKey(), eLowerRelnOp);
   }
   
-  // did we get an entry ?
-  if ( ! pEntry) {
+  // loop till we get an entry
+  while ( ! pLowerEntry) {
+    if (pLowerEntryBuffer->pNextBuffer()) {
+      
+      // move to the next buffer
+      pLowerEntryBuffer = pLowerEntryBuffer->pNextBuffer();
+      
+      // position in the index buffer at the lower key
+      pLowerEntry = pLowerEntryBuffer->pPositionQuery(xKeyWrkLower.aKey(), eLowerRelnOp);
+    }
+    else
+      break;
+  }
+  
+  // did we get a lower entry ?
+  if ( ! pLowerEntry) {
     goto LastBuffer;
   }
   
   // iterate thru the buffer till no more entries
-  while (pEntry) {
+  while (pLowerEntry) {
     
     // get the dataRow from the hidden index
-    Entry* pDataRowEntry = Task::pDataRow(pTable, pEntry);
+    Entry* pDataRowEntry = Task::pDataRow(pTable, pLowerEntry);
     
     // insert row from entry in resultBuffer
     if ( ! bAppendRow(pWorkingBuffer, pDataRowEntry, pSEitf)) {
@@ -697,24 +716,26 @@ void Task::vIndexLowerBound(MP_Task mpTask)
       RASSERT(bResult);
     }
     
+    //--------------------------------------------------------------------------
     // move to next entry in the buffer
-    pEntry = pEntryBuffer->pNextEntry(pEntry, 0);
+    pLowerEntry = pLowerEntryBuffer->pNextEntry(pLowerEntry, 0);
     
-    if ( ! pEntry ) {
+    if ( ! pLowerEntry ) {
       // get next buffer from the current indexBuffer
-      pEntryBuffer = pEntryBuffer->pNextBuffer();
+      pLowerEntryBuffer = pLowerEntryBuffer->pNextBuffer();
       
-      if ( pEntryBuffer )
-        pEntry = pEntryBuffer->pFirstEntry();
+      if ( pLowerEntryBuffer )
+        pLowerEntry = pLowerEntryBuffer->pFirstEntry();
     }
     
     // check if seitf exiting
     if (pSEitf->m_bSeitfExiting)
-      pEntry = nullptr;
+      pLowerEntry = nullptr;
   }
   
 LastBuffer:
   
+  //----------------------------------------------------------------------------
   // mark this buffer as the last buffer
   pWorkingBuffer->vIsLast(true);
   
@@ -722,6 +743,7 @@ LastBuffer:
   xValWrk = (Object*)pWorkingBuffer;
   pQueue->bAppend(xValWrk.pNestedValue());
   
+  //----------------------------------------------------------------------------
   // mark that a fetch task has ended
   if (pSEitf)
     --pSEitf->m_ziFetchTasks;
@@ -1084,7 +1106,7 @@ void Task::vIndexRange(MP_Task mpTask)
         RASSERT(bResult);
       }
       
-      //---------------------------------------------------------------------------
+      //------------------------------------------------------------------------
       // move to next entry in the buffer
       pLowerEntry = pLowerEntryBuffer->pNextEntry(pLowerEntry, 0);
       
@@ -1112,11 +1134,11 @@ void Task::vIndexRange(MP_Task mpTask)
 
 LastBuffer:
   
-  //---------------------------------------------------------------------------
+  //----------------------------------------------------------------------------
   // mark this buffer as the last buffer
   pWorkingBuffer->vIsLast(true);
   
-  //---------------------------------------------------------------------------
+  //----------------------------------------------------------------------------
   // put the buffer in the seitf bufferQueue
   xValWrk = (Object*)pWorkingBuffer;
   pQueue->bAppend(xValWrk.pNestedValue());
@@ -2026,7 +2048,7 @@ void Task::vIndexUpperBound(MP_Task mpTask)
   // first position at a level 0 buffer
   pUpperEntryBuffer = pIndexTree->pPositionLevel(xKeyWrkUpper, 1, JC_AFTER, 0);
   
-  pUpperEntryBuffer->vShow();
+  //pUpperEntryBuffer->vShow();
   
   eUpperRelnOp = pPlanner->eGetFirstUpperPredicateRO(i_Phrase);
   pUpperEntry = pUpperEntryBuffer->pPositionQuery(xKeyWrkUpper.aKey(), eUpperRelnOp);
