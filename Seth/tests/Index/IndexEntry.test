@@ -14,6 +14,7 @@ LOG 'Entries per buffer: default';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
+/*
 setAttachMap AM_INDEXENTRIES 5;
 affected: 0
 
@@ -27,7 +28,7 @@ affected: 0
 LOG 'Entries per buffer: 6';
 INCLUDE 'supplierLoop.test';
 
-
+*/
 //------------------------------------------------------------------------------
 setAttachMap AM_INDEXENTRIES 7;
 affected: 0

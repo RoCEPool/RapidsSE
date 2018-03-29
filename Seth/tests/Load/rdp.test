@@ -543,7 +543,7 @@ success
 
 // unable to select 3000 because of min/max's
 fetch rdp "rdp_testno 3000 <";
-rows: 41
+rows: 43
 
 // 1000 tests
 fetch rdp "rdp_testno 1000 ==";
@@ -745,6 +745,18 @@ rows:
 fetch rdp "rdp_testno 2091 =";
 rows:
 (*, 2091,'test 2091', false,null ,-9,null,-9.0e0,null,-9,null,TIMESTAMP '1909-01-01 00:00:00',null               ,'quick brown fox',null)
+
+fetch rdp "rdp_testno 2092 =";
+rows:
+(2092,'test 2092', false,null ,-9,null,-9.0e0,null,0,null,TIMESTAMP '1909-01-01 00:00:00',null               ,'quick brown fox',null)
+
+fetch rdp "rdp_testno 2093 =";
+rows:
+(2093,'test 2093', false,null ,-9,null,-9.0e0,null,0,null,TIMESTAMP '1909-01-01 00:00:00',null               ,'quick brown fox','null')
+
+fetch rdp "rdp_testno 2094 =";
+rows:
+(2094,'test 2094', false,null ,-9,null,-9.0e0,null,0,null,TIMESTAMP '1909-01-01 00:00:00',null               ,'quick brown fox','')
 
 //fetch rdp "rdp_testno 3000 =";
 //rows:

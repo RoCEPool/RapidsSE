@@ -57,6 +57,12 @@ rows: 29
 fetch supplier "S_SUPPKEY 9985 >=";
 rows: 16
 
+fetch supplier "S_SUPPKEY 9971 >=";
+rows: 30
+
+fetch supplier "S_SUPPKEY 9977 >=";
+rows: 24
+
 //------------------------------------------------------------------------------
 // upper bound key fetches
 fetch supplier "S_SUPPKEY 9972 <=";
@@ -64,6 +70,15 @@ rows: 9972
 
 fetch supplier "S_SUPPKEY 9985 <=";
 rows: 9985
+
+fetch supplier "S_SUPPKEY 9977 <=";
+rows: 9977
+
+fetch supplier "S_SUPPKEY 9972 <= " ;
+rows: 9972
+
+fetch supplier "S_SUPPKEY 9971 <=";
+rows: 9971
 
 //------------------------------------------------------------------------------
 // range fetches
@@ -77,10 +92,14 @@ rows: 3
 fetch supplier "s_suppkey 9972 >= s_suppkey 1995 <= and";
 rows: 0
 
+fetch supplier "s_suppkey 9972 >= s_suppkey 10000 <= AND";
+rows: 29
+
 // drop the index idx;
 drop index supplier.idx;
 success
 
+/*
 //------------------------------------------------------------------------------
 // create an index on nationkey
 create index idx on supplier (S_NATIONKEY);
@@ -147,6 +166,7 @@ rows: 0
 // drop the index idx;
 drop index supplier.idx;
 success
+*/
 
 // now drop the table
 drop table supplier;
