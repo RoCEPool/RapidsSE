@@ -124,6 +124,7 @@ rows: 20
 
 fetch supplier "s_suppkey 9972 >= s_suppkey 9990 <= AND";
 rows: 19
+
 fetch supplier "s_suppkey 9972 >= s_suppkey 9989 <= AND";
 rows: 18
 fetch supplier "s_suppkey 9972 >= s_suppkey 9988 <= AND";
