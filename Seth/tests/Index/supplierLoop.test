@@ -47,7 +47,7 @@ rows: (*, 22,'Supplier#000000022',...)
 
 fetch supplier "S_SUPPKEY 9972 ==";
 rows: (*, 9972,'Supplier#000009972',...)
-
+/*
 //------------------------------------------------------------------------------
 // lower bound key fetches
 
@@ -79,7 +79,7 @@ rows: 9972
 
 fetch supplier "S_SUPPKEY 9971 <=";
 rows: 9971
-
+*/
 //------------------------------------------------------------------------------
 // range fetches
 
@@ -94,6 +94,81 @@ rows: 0
 
 fetch supplier "s_suppkey 9972 >= s_suppkey 10000 <= AND";
 rows: 29
+
+fetch supplier "s_suppkey 9972 >= s_suppkey 9999 <= AND";
+rows: 28
+
+fetch supplier "s_suppkey 9972 >= s_suppkey 9998 <= AND";
+rows: 27
+
+fetch supplier "s_suppkey 9972 >= s_suppkey 9997 <= AND";
+rows: 26
+
+fetch supplier "s_suppkey 9972 >= s_suppkey 9996 <= AND";
+rows: 25
+
+fetch supplier "s_suppkey 9972 >= s_suppkey 9995 <= AND";
+rows: 24
+
+fetch supplier "s_suppkey 9972 >= s_suppkey 9994 <= AND";
+rows: 23
+
+fetch supplier "s_suppkey 9972 >= s_suppkey 9993 <= AND";
+rows: 22
+
+fetch supplier "s_suppkey 9972 >= s_suppkey 9992 <= AND";
+rows: 21
+
+fetch supplier "s_suppkey 9972 >= s_suppkey 9991 <= AND";
+rows: 20
+
+fetch supplier "s_suppkey 9972 >= s_suppkey 9990 <= AND";
+rows: 19
+fetch supplier "s_suppkey 9972 >= s_suppkey 9989 <= AND";
+rows: 18
+fetch supplier "s_suppkey 9972 >= s_suppkey 9988 <= AND";
+rows: 17
+fetch supplier "s_suppkey 9972 >= s_suppkey 9987 <= AND";
+rows: 16
+fetch supplier "s_suppkey 9972 >= s_suppkey 9986 <= AND";
+rows: 15
+fetch supplier "s_suppkey 9972 >= s_suppkey 9985 <= AND";
+rows: 14
+fetch supplier "s_suppkey 9972 >= s_suppkey 9984 <= AND";
+rows: 13
+fetch supplier "s_suppkey 9972 >= s_suppkey 9983 <= AND";
+rows: 12
+fetch supplier "s_suppkey 9972 >= s_suppkey 9982 <= AND";
+rows: 11
+fetch supplier "s_suppkey 9972 >= s_suppkey 9981 <= AND";
+rows: 10
+fetch supplier "s_suppkey 9972 >= s_suppkey 9980 <= AND";
+rows: 9
+fetch supplier "s_suppkey 9972 >= s_suppkey 9979 <= AND";
+rows: 8
+fetch supplier "s_suppkey 9972 >= s_suppkey 9978 <= AND";
+rows: 7
+
+fetch supplier "s_suppkey 9972 >= s_suppkey 9977 <= AND";
+rows: 6
+
+fetch supplier "s_suppkey 9972 >= s_suppkey 9976 <= AND";
+rows: 5
+
+fetch supplier "s_suppkey 9972 >= s_suppkey 9975 <= AND";
+rows: 4
+
+fetch supplier "s_suppkey 9972 >= s_suppkey 9974 <= AND";
+rows: 3
+
+fetch supplier "s_suppkey 9972 >= s_suppkey 9973 <= AND";
+rows: 2
+
+fetch supplier "s_suppkey 9972 >= s_suppkey 9972 <= AND";
+rows: 1
+
+fetch supplier "s_suppkey 9972 >= s_suppkey 9971 <= AND";
+rows: 0
 
 // drop the index idx;
 drop index supplier.idx;
