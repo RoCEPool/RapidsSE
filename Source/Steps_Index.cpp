@@ -8,7 +8,7 @@
 
 extern AttachMap*      gpAttachMap;
 
-//#define SI_UPPER_BOUND
+#define SI_UPPER_BOUND
 
 // index: //////////////////////////////////////////////////////////////////////
 
@@ -993,7 +993,7 @@ void Task::vIndexRange(MP_Task mpTask)
     }
   }
   
-  pUpperEntry->vShow(0,pIndex,true);
+  //pUpperEntry->vShow(0,pIndex,true);
 
   // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
 
@@ -1942,6 +1942,8 @@ void Task::vIndexUpperBound(MP_Task mpTask)
   // have to defined before the goto
   eRO eUpperRelnOp;
   Entry* pUpperEntry;
+  EntryBuffer* pUpperEntryBuffer;
+  bool bBefore;
   
   // did we get an entryBuffer ?
   if ( ! pEntryBuffer) {
@@ -1985,7 +1987,7 @@ void Task::vIndexUpperBound(MP_Task mpTask)
     }
   }
   
-  pUpperEntry->vShow(0,pIndex,true);
+  //pUpperEntry->vShow(0,pIndex,true);
   
   // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
 
