@@ -949,29 +949,52 @@ void Task::vIndexRange(MP_Task mpTask)
     pEntry = pEntryBuffer->pPositionQuery(xKeyWrkLower.aKey(), eRelnOp);
   }
   
-  
   // have to defined before the goto
   eRO eUpperRelnOp;
   Entry* pUpperEntry;
+  bool bBefore;
+  bool bIsEqual;
 
   // did we get an entry ?
   if ( ! pEntry) {
-    goto LastBuffer;
+    if (pEntryBuffer->pNextBuffer()) {
+      pEntryBuffer = pEntryBuffer->pNextBuffer();
+      // position in the index buffer at the lower key
+      eRO eRelnOp = pPlanner->eGetFirstLowerPredicateRO(i_Phrase);
+      pEntry = pEntryBuffer->pPositionQuery(xKeyWrkLower.aKey(), eRelnOp);
+      
+      if (! pEntry )
+        goto LastBuffer;
+    }
+    else
+      goto LastBuffer;
   }
-  
+
   // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
+  //pEntryBuffer->vShow();
   
   // first position at a level 0 buffer
   pUpperEntryBuffer = pIndexTree->pPositionLevel(xKeyWrkUpper, 1, JC_AFTER, 0);
   
-  pUpperEntryBuffer->vShow();
+  //pUpperEntryBuffer->vShow();
   
   eUpperRelnOp = pPlanner->eGetFirstUpperPredicateRO(i_Phrase);
   pUpperEntry = pUpperEntryBuffer->pPositionQuery(xKeyWrkUpper.aKey(), eUpperRelnOp);
   
+  // did we get an entry ?
+  if ( ! pUpperEntry) {
+    if ( pUpperEntryBuffer ) {
+      // get next buffer from the current indexBuffer
+      pUpperEntryBuffer = pUpperEntryBuffer->pNextBuffer();
+      
+      if ( pUpperEntryBuffer )
+        pUpperEntry = pUpperEntryBuffer->pPositionQuery(xKeyWrkUpper.aKey(), eUpperRelnOp);
+    }
+  }
+  
   while (pUpperEntry) {
     
-    pUpperEntry->vShow(0,pIndex,true);
+    //pUpperEntry->vShow(0,pIndex,true);
     
     bool bIsEqual = false;
     bool bBefore = pUpperEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrkUpper.aKey(),
@@ -984,32 +1007,42 @@ void Task::vIndexRange(MP_Task mpTask)
     // move to next entry in the buffer
     pUpperEntry = pUpperEntryBuffer->pNextEntry(pUpperEntry, 0);
     
-    if ( ! pEntry ) {
+    if ( ! pUpperEntry ) {
       // get next buffer from the current indexBuffer
       pUpperEntryBuffer = pUpperEntryBuffer->pNextBuffer();
       
       if ( pUpperEntryBuffer )
-        pEntry = pUpperEntryBuffer->pFirstEntry();
+        pUpperEntry = pUpperEntryBuffer->pFirstEntry();
     }
   }
   
   //pUpperEntry->vShow(0,pIndex,true);
 
   // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
-
   
+  // check if upperKey >/>= lowerKey
+  bIsEqual = false;
+//  bBefore = xKeyWrkUpper.aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrkLower.aKey(),
+//                                               pIndex->pIdxColVec(), 1,
+//                                               bIsEqual, eUpperRelnOp);
+  bBefore = xKeyWrkUpper.aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrkLower.aKey(),
+                                               pIndex->pIdxColVec(), 1,
+                                               bIsEqual, RO_LESS_THAN);
+  if (bBefore) {
+    goto LastBuffer;
+  }
   
   // iterate thru the buffer till no more entries
   while (pEntry) {
     
     // check against the upper bound
-    eRO eRelnOp = pPlanner->eGetFirstUpperPredicateRO(i_Phrase);
-    bool bIsEqual = false;
+    bIsEqual = false;
+    
     //bool bBefore = pEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrkUpper.aKey(),
     //                                             pIndex->pIdxColVec(), 1,
     //                                             bIsEqual, eRelnOp);
     
-    bool bBefore = (pEntry == pUpperEntry) ? false : true;
+    bBefore = (pEntry == pUpperEntry) ? false : true;
     
     if (bBefore) {
       // get the dataRow from the hidden index
@@ -1161,8 +1194,19 @@ void Task::vIndexRange(MP_Task mpTask)
   
   // did we get an entry ?
   if ( ! pEntry) {
-    goto LastBuffer;
+    if (pEntryBuffer->pNextBuffer()) {
+      pEntryBuffer = pEntryBuffer->pNextBuffer();
+      // position in the index buffer at the lower key
+      eRO eRelnOp = pPlanner->eGetFirstLowerPredicateRO(i_Phrase);
+      pEntry = pEntryBuffer->pPositionQuery(xKeyWrkLower.aKey(), eRelnOp);
+   
+      if (! pEntry )
+        goto LastBuffer;
+    }
+    else
+      goto LastBuffer;
   }
+
   
   // first position at a level 0 buffer
   pUpperEntryBuffer = pIndexTree->pPositionLevel(xKeyWrkUpper, 1, JC_AFTER, 0);
