@@ -1860,7 +1860,7 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel)
     // get the partition this row hashes to
     i8 iRowPartition = pSEitf->pCurrentTable()->iRowPartition(s);
     
-    //vTrace("%p(%lld) got row %s\n"_Stz,  \
+    //vTrace("%p(%lld) got row %s\n"_Stz,
     //       pSEitf, pSEitf ? pSEitf->iPartition() : -1, pRow);
     
     
@@ -1946,7 +1946,7 @@ eEC RapidsSE_InsertRowPartition(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel)
     // get the partition this row hashes to
     i8 iRowPartition = pSEitf->pCurrentTable()->iRowPartition(s);
     
-    //vTrace("%p(%lld) got row %s\n"_Stz,  \
+    //vTrace("%p(%lld) got row %s\n"_Stz,  
     //       pSEitf, pSEitf ? pSEitf->iPartition() : -1, pRow);
     
     // is this row for this seitf partition ?
