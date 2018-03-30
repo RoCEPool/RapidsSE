@@ -700,7 +700,7 @@ bool Vch::bGreaterThan(char* aArgA, char* aArgB)
 /*----------------------------------------------------------------------------*/
 /* cmp argA with argB (-ve: argA < argB, 0: argA == argB, +ve: argA > argB)   */
 /*----------------------------------------------------------------------------*/
-i8 Vch::iCmp(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+i8 Vch::iCmp(char* aArgA, char* aArgB)
 {
   
   if (((Vch*)aArgA)->bIsNull())
@@ -708,9 +708,6 @@ i8 Vch::iCmp(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
   
   if (((Vch*)aArgB)->bIsNull())
     return 1;
-    
-  ASSERT(StrLib::iSize(aArgA) == nBytesA);
-  ASSERT(StrLib::iSize(aArgB) == nBytesB);
   
   i8 iCmp = StrLib::iCompare(aArgA, aArgB);
   

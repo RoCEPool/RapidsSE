@@ -343,8 +343,7 @@ i8 Key::iCmp(Key* pKeyThat, IdxColVec* pIdxColVec)
     char* aDatumThis = aEachDatum(pColumn,nBytesThis,&aCursorThis);
     char* aDatumThat = aEachDatum(pColumn,nBytesThat,&aCursorThat);
     
-    iCmp = pColumn->iCmp(aDatumThis,nBytesThis,
-                         aDatumThat,nBytesThat);
+    iCmp = pColumn->iCmp(aDatumThis,aDatumThat);
     if (iCmp)
       break;
   }
@@ -467,8 +466,7 @@ bool Key::bJuxtaBefore(Key* pSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols
     char* aDatumThis = aEachDatum(pColumn,nBytesThis,&aCursorThis);
     char* aDatumThat = aEachDatum(pColumn,nBytesThat,&aCursorThat);
     
-    iCmp = pColumn->iCmp(aDatumThis,nBytesThis,
-                         aDatumThat,nBytesThat);
+    iCmp = pColumn->iCmp(aDatumThis,aDatumThat);
     
     // return true (is before) if this element is less than that element
     // examples (2), (3), (4)
@@ -529,8 +527,7 @@ bool Key::bJuxtaSame(Key* pSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
     char* aDatumThis = aEachDatum(pColumn,nBytesThis,&aCursorThis);
     char* aDatumThat = aEachDatum(pColumn,nBytesThat,&aCursorThat);
     
-    iCmp = pColumn->iCmp(aDatumThis,nBytesThis,
-                         aDatumThat,nBytesThat);
+    iCmp = pColumn->iCmp(aDatumThis,aDatumThat);
     
     // return false (not same) if this element is not equal to that element
     if (iCmp)
@@ -599,8 +596,7 @@ bool Key::bJuxtaAfter(Key* pSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
     char* aDatumThis = aEachDatum(pColumn,nBytesThis,&aCursorThis);
     char* aDatumThat = aEachDatum(pColumn,nBytesThat,&aCursorThat);
     
-    iCmp = pColumn->iCmp(aDatumThis,nBytesThis,
-                         aDatumThat,nBytesThat);
+    iCmp = pColumn->iCmp(aDatumThis,aDatumThat);
 
     // return true (is after) if this element is greater than that element
     // examples (2), (3), (4)

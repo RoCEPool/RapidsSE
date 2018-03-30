@@ -105,7 +105,7 @@ namespace DBobjects
     bool bGreaterEqual(char* aArgA, char* aArgB);
     bool bGreaterThan(char* aArgA, char* aArgB);
   
-    i8 iCmp(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB);
+    i8 iCmp(char* aArgA, char* aArgB);
 
     bool bCmp(eRO eRelOp, char* aArgA, char* aArgB);
   

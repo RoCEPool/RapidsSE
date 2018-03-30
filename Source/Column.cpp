@@ -570,11 +570,11 @@ bool Column::bGreaterThan(char* aArgA, char* aArgB)
 /*----------------------------------------------------------------------------*/
 /* cmp                                                                        */
 /*----------------------------------------------------------------------------*/
-i8 Column::iCmp(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+i8 Column::iCmp(char* aArgA, char* aArgB)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
-  i8 iCmp = DtmLib::iCmp(m_eDatumType,aArgA,nBytesA,aArgB,nBytesB);
+  i8 iCmp = DtmLib::iCmp(m_eDatumType,aArgA,aArgB);
   
   return iCmp;
 }

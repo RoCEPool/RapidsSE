@@ -463,10 +463,8 @@ bool Dte::bGreaterThan(char* aArgA, char* aArgB)
 /*----------------------------------------------------------------------------*/
 /* cmp argA with argB (-ve: argA < argB, 0: argA == argB, +ve: argA > argB)   */
 /*----------------------------------------------------------------------------*/
-i8 Dte::iCmp(char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
+i8 Dte::iCmp(char* aArgA, char* aArgB)
 {
-  ASSERT(sizeof(i8) == nBytesA);
-  ASSERT(sizeof(i8) == nBytesB);
   
   if (((Dte*)aArgA)->bIsNull())
     return -1;
