@@ -3975,6 +3975,7 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
   i8 iRecLength;
   RowWrk xRowWrk;
   i8 iRowLength;
+  bool bFormatted;
   bool bBlankLine;
   KeyWrk xKeyWrk;
   
