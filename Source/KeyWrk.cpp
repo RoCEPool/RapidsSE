@@ -175,7 +175,7 @@ void KeyWrk::vAddDatum(ValWrk& xValWrk, Column* pCol)
     pSrc = pAdd<char*>(xValWrk.pNestedValueSelf(),sizeof(Value));
   
   
-  nBytes = DtmLib::nCopy(pCol->eDatumType(),pDst,pSrc,pCol);
+  nBytes = DtmLib::nCopy(pCol->eDatumType(),pDst,pSrc);
   
   vTake(nBytes);
   
@@ -198,7 +198,7 @@ void KeyWrk::vAddKey(Key* aKey, IdxColVec* pColVec)
     char* pDst = aLatter();
     char* pSrc = aElement;
     
-    DtmLib::vCopy(pColumn->eDatumType(),pDst,pSrc,pColumn);
+    DtmLib::vCopy(pColumn->eDatumType(),pDst,pSrc);
     
     vTake(nBytes);
   }

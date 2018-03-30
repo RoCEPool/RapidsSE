@@ -2094,8 +2094,8 @@ void Task::vIndexUpperBound(MP_Task mpTask)
     
     //pUpperEntry->vShow(0,pIndex,true);
     
-    bool bIsEqual = false;
-    bool bBefore = pUpperEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrkUpper.aKey(),
+    bIsEqual = false;
+    bBefore = pUpperEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrkUpper.aKey(),
                                                       pIndex->pIdxColVec(), 1,
                                                       bIsEqual, eUpperRelnOp);
     

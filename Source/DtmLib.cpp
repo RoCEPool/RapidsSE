@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 /* copy datum (return the number of bytes copied)                             */
 /*----------------------------------------------------------------------------*/
-i8 DtmLib::nCopy(eDM eDatum, void* pDst, void* pSrc, DBobjects::Column* pColumn)
+i8 DtmLib::nCopy(eDM eDatum, void* pDst, void* pSrc)
 {
   switch (eDatum) {
       
@@ -33,7 +33,7 @@ i8 DtmLib::nCopy(eDM eDatum, void* pDst, void* pSrc, DBobjects::Column* pColumn)
 /*----------------------------------------------------------------------------*/
 /* s-print                                                                    */
 /*----------------------------------------------------------------------------*/
-void DtmLib::vCopy(eDM eDatum, void* aDst, void* aSrc, DBobjects::Column* pColumn)
+void DtmLib::vCopy(eDM eDatum, void* aDst, void* aSrc)
 {
   switch(eDatum) {
     case DM_BCD: Bcd::vCopy((char*)aDst,(char*)aSrc); break;
