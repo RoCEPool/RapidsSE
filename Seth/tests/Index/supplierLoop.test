@@ -315,24 +315,195 @@ rows: 1
 fetch supplier "S_SUPPKEY 10000 >";
 rows: 0
 
-/*
+
 //------------------------------------------------------------------------------
 // upper bound key fetches
-fetch supplier "S_SUPPKEY 9972 <=";
-rows: 9972
-
 fetch supplier "S_SUPPKEY 9985 <=";
 rows: 9985
 
-fetch supplier "S_SUPPKEY 9977 <=";
-rows: 9977
-
-fetch supplier "S_SUPPKEY 9972 <= " ;
-rows: 9972
+fetch supplier "S_SUPPKEY 9985 <";
+rows: 9984
 
 fetch supplier "S_SUPPKEY 9971 <=";
 rows: 9971
-*/
+
+fetch supplier "S_SUPPKEY 9971 <";
+rows: 9970
+
+fetch supplier "S_SUPPKEY 9972 <=";
+rows: 9972
+
+fetch supplier "S_SUPPKEY 9972 <";
+rows: 9971
+
+fetch supplier "S_SUPPKEY 9973 <=";
+rows: 9973
+
+fetch supplier "S_SUPPKEY 9973 <";
+rows: 9972
+
+fetch supplier "S_SUPPKEY 9974 <= " ;
+rows: 9974
+
+fetch supplier "S_SUPPKEY 9974 < " ;
+rows: 9973
+
+fetch supplier "S_SUPPKEY 9975 <= " ;
+rows: 9975
+
+fetch supplier "S_SUPPKEY 9974 < " ;
+rows: 9974
+
+fetch supplier "S_SUPPKEY 9976 <= " ;
+rows: 9976
+
+fetch supplier "S_SUPPKEY 9976 < " ;
+rows: 9975
+
+fetch supplier "S_SUPPKEY 9977 <= " ;
+rows: 9977
+
+fetch supplier "S_SUPPKEY 9977 < " ;
+rows: 9976
+
+fetch supplier "S_SUPPKEY 9978 <= " ;
+rows: 9978
+
+fetch supplier "S_SUPPKEY 9978 < " ;
+rows: 9977
+
+fetch supplier "S_SUPPKEY 9979 <= " ;
+rows: 9979
+
+fetch supplier "S_SUPPKEY 9979 < " ;
+rows: 9978
+
+fetch supplier "S_SUPPKEY 9980 <= " ;
+rows: 9980
+
+fetch supplier "S_SUPPKEY 9980 < " ;
+rows: 9979
+
+fetch supplier "S_SUPPKEY 9981 <= " ;
+rows: 9981
+
+fetch supplier "S_SUPPKEY 9981 < " ;
+rows: 9980
+
+fetch supplier "S_SUPPKEY 9982 <= " ;
+rows: 9982
+
+fetch supplier "S_SUPPKEY 9982 < " ;
+rows: 9981
+
+fetch supplier "S_SUPPKEY 9983 <= " ;
+rows: 9983
+
+fetch supplier "S_SUPPKEY 9983 < " ;
+rows: 9982
+
+fetch supplier "S_SUPPKEY 9984 <= " ;
+rows: 9984
+
+fetch supplier "S_SUPPKEY 9984 < " ;
+rows: 9983
+
+fetch supplier "S_SUPPKEY 9985 <= " ;
+rows: 9985
+
+fetch supplier "S_SUPPKEY 9985 < " ;
+rows: 9984
+
+fetch supplier "S_SUPPKEY 9986 <= " ;
+rows: 9986
+
+fetch supplier "S_SUPPKEY 9986 < " ;
+rows: 9985
+
+fetch supplier "S_SUPPKEY 9987 <= " ;
+rows: 9987
+
+fetch supplier "S_SUPPKEY 9987 < " ;
+rows: 9986
+
+fetch supplier "S_SUPPKEY 9988 <= " ;
+rows: 9989
+
+fetch supplier "S_SUPPKEY 9988 < " ;
+rows: 9980
+
+fetch supplier "S_SUPPKEY 9989 <= " ;
+rows: 9988
+
+fetch supplier "S_SUPPKEY 9989 < " ;
+rows: 9980
+
+fetch supplier "S_SUPPKEY 9990 <= " ;
+rows: 9990
+
+fetch supplier "S_SUPPKEY 9990 < " ;
+rows: 9989
+
+fetch supplier "S_SUPPKEY 9991 <= " ;
+rows: 9991
+
+fetch supplier "S_SUPPKEY 9991 < " ;
+rows: 9990
+
+fetch supplier "S_SUPPKEY 9992 <= " ;
+rows: 9992
+
+fetch supplier "S_SUPPKEY 9992 < " ;
+rows: 9991
+
+fetch supplier "S_SUPPKEY 9993 <= " ;
+rows: 9993
+
+fetch supplier "S_SUPPKEY 9993 < " ;
+rows: 9992
+
+fetch supplier "S_SUPPKEY 9994 <= " ;
+rows: 9994
+
+fetch supplier "S_SUPPKEY 9994 < " ;
+rows: 9993
+
+fetch supplier "S_SUPPKEY 9995 <= " ;
+rows: 9995
+
+fetch supplier "S_SUPPKEY 9995 < " ;
+rows: 9994
+
+fetch supplier "S_SUPPKEY 9996 <= " ;
+rows: 9996
+
+fetch supplier "S_SUPPKEY 9996 < " ;
+rows: 9995
+
+fetch supplier "S_SUPPKEY 9997 <= " ;
+rows: 9997
+
+fetch supplier "S_SUPPKEY 9997 < " ;
+rows: 9996
+
+fetch supplier "S_SUPPKEY 9998 <= " ;
+rows: 9998
+
+fetch supplier "S_SUPPKEY 9998 < " ;
+rows: 9997
+
+fetch supplier "S_SUPPKEY 9999 <= " ;
+rows: 9999
+
+fetch supplier "S_SUPPKEY 9999 < " ;
+rows: 9998
+
+fetch supplier "S_SUPPKEY 10000 <= " ;
+rows: 10000
+
+fetch supplier "S_SUPPKEY 10000 < " ;
+rows: 9999
+
 
 //------------------------------------------------------------------------------
 // range fetches
