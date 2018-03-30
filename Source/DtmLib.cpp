@@ -120,9 +120,9 @@ bool DtmLib::bExtract(eDM eDatum, Stz* aDst, char** aaSrc,
 /*----------------------------------------------------------------------------*/
 /* hash                                                                       */
 /*----------------------------------------------------------------------------*/
-void DtmLib::vHash(eDM eDatum, i8& iHash, Stz* aScr, DBobjects::Column* pColumn)
+void DtmLib::vHash(eDM eDatum, i8& iHash, Stz* aScr)
 {
-  switch (pColumn->eDatumType()) {
+  switch (eDatum) {
       
     case DM_BOL: {
       Bol xBol = *((Bol*)aScr);
