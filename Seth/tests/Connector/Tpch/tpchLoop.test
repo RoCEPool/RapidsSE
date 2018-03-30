@@ -1,0 +1,23 @@
+--------------------------------------------------------------------------------
+-- tpch queries in a loop
+--------------------------------------------------------------------------------
+
+// Logging a message
+LOG 'Running tpchQueries2 test in a loop.';
+
+LOOP 10  {
+
+//------------------------------------------------------------------------------
+LOG 'Running tpch queries...';
+INCLUDE 'tpchQueries2.test';
+
+INCLUDE 'tpchSchemaDrop.test';
+
+} -- end of llop
+
+CLEANUP {
+
+  bye;
+  mute
+}
+
