@@ -351,7 +351,7 @@ rows: 9973
 fetch supplier "S_SUPPKEY 9975 <= " ;
 rows: 9975
 
-fetch supplier "S_SUPPKEY 9974 < " ;
+fetch supplier "S_SUPPKEY 9975 < " ;
 rows: 9974
 
 fetch supplier "S_SUPPKEY 9976 <= " ;
@@ -427,16 +427,16 @@ fetch supplier "S_SUPPKEY 9987 < " ;
 rows: 9986
 
 fetch supplier "S_SUPPKEY 9988 <= " ;
-rows: 9989
-
-fetch supplier "S_SUPPKEY 9988 < " ;
-rows: 9980
-
-fetch supplier "S_SUPPKEY 9989 <= " ;
 rows: 9988
 
+fetch supplier "S_SUPPKEY 9988 < " ;
+rows: 9987
+
+fetch supplier "S_SUPPKEY 9989 <= " ;
+rows: 9989
+
 fetch supplier "S_SUPPKEY 9989 < " ;
-rows: 9980
+rows: 9988
 
 fetch supplier "S_SUPPKEY 9990 <= " ;
 rows: 9990

@@ -518,7 +518,7 @@ rows:
 
 select * from rdp where rdp_testno = 2093 ;
 rows:
-(2093,'test 2093', false,null ,-9,null,-9.0e0,null,0,null,TIMESTAMP '1909-01-01 00:00:00',null               ,'quick brown fox','null')
+(2093,'test 2093', false,null ,-9,null,-9.0e0,null,0,null,TIMESTAMP '1909-01-01 00:00:00',null               ,'quick brown fox',null)
 
 select * from rdp where rdp_testno = 2094 ;
 rows:
@@ -777,15 +777,15 @@ select * from rdp2 where rdp_testno = 2091 ;
 rows:
 (2091,'test 2091', false,null ,-9,null,-9.0e0,null,-9,null,TIMESTAMP '1909-01-01 00:00:00',null               ,'quick brown fox',null)
 
-select * from rdp where rdp_testno = 2092 ;
+select * from rdp2 where rdp_testno = 2092 ;
 rows:
 (2092,'test 2092', false,null ,-9,null,-9.0e0,null,0,null,TIMESTAMP '1909-01-01 00:00:00',null               ,'quick brown fox',null)
 
-select * from rdp where rdp_testno = 2093 ;
+select * from rdp2 where rdp_testno = 2093 ;
 rows:
-(2093,'test 2093', false,null ,-9,null,-9.0e0,null,0,null,TIMESTAMP '1909-01-01 00:00:00',null               ,'quick brown fox','null')
+(2093,'test 2093', false,null ,-9,null,-9.0e0,null,0,null,TIMESTAMP '1909-01-01 00:00:00',null               ,'quick brown fox',null)
 
-select * from rdp where rdp_testno = 2094 ;
+select * from rdp2 where rdp_testno = 2094 ;
 rows:
 (2094,'test 2094', false,null ,-9,null,-9.0e0,null,0,null,TIMESTAMP '1909-01-01 00:00:00',null               ,'quick brown fox','')
 

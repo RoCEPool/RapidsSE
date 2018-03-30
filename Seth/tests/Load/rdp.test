@@ -40,7 +40,7 @@ success
 
 // unable to select 3000 because of min/max's
 fetch rdp "rdp_testno 3000 <";
-rows: 41
+rows: 43
 
 // 1000 tests
 fetch rdp "rdp_testno 1000 ==";
@@ -248,7 +248,7 @@ rows:
 // (*, 3000,'test 3000', false,true, -9223372036854775807,9223372036854775807, -1.797693e+308,1.797693e+308, -9223372036854775807,9223372036854775807, TIMESTAMP '0001-01-01 00:00:00',TIMESTAMP '4000-01-01 12:59:59', 'quick brown fox','quick brown fox')
 // unable to select 3000 because of min/max's
 fetch rdp "rdp_testno 3000 <";
-rows: 41
+rows: 43
 
 // export rdp data
 dex rdp "/tmp/rdp_dex.csv";
@@ -293,7 +293,7 @@ success
 
 // unable to select 3000 because of min/max's
 fetch rdp "rdp_testno 3000 <";
-rows: 41
+rows: 43
 
 // 1000 tests
 fetch rdp "rdp_testno 1000 ==";
@@ -748,15 +748,15 @@ rows:
 
 fetch rdp "rdp_testno 2092 =";
 rows:
-(2092,'test 2092', false,null ,-9,null,-9.0e0,null,0,null,TIMESTAMP '1909-01-01 00:00:00',null               ,'quick brown fox',null)
+(*, 2092,'test 2092', false,null ,-9,null,-9.0e0,null,0,null,TIMESTAMP '1909-01-01 00:00:00',null               ,'quick brown fox',null)
 
 fetch rdp "rdp_testno 2093 =";
 rows:
-(2093,'test 2093', false,null ,-9,null,-9.0e0,null,0,null,TIMESTAMP '1909-01-01 00:00:00',null               ,'quick brown fox','null')
+(*, 2093,'test 2093', false,null ,-9,null,-9.0e0,null,0,null,TIMESTAMP '1909-01-01 00:00:00',null               ,'quick brown fox',null)
 
 fetch rdp "rdp_testno 2094 =";
 rows:
-(2094,'test 2094', false,null ,-9,null,-9.0e0,null,0,null,TIMESTAMP '1909-01-01 00:00:00',null               ,'quick brown fox','')
+(*, 2094,'test 2094', false,null ,-9,null,-9.0e0,null,0,null,TIMESTAMP '1909-01-01 00:00:00',null               ,'quick brown fox','')
 
 //fetch rdp "rdp_testno 3000 =";
 //rows:
