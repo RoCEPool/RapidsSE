@@ -255,6 +255,28 @@ i8 Entry::nRowSize(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Data entry --------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get the dataRow entry matching entry from the tables hidden index          */
+/*----------------------------------------------------------------------------*/
+Entry* Entry::pDataEntry(void)
+{
+  ENTRY("pDataEntry"_Stz);
+
+  // get the referenced entry buffer of this entries Id
+  EntryBuffer* pEntryBuffer = pReferencedEntryBuffer();
+  
+  // get the row entry
+  Entry* pRowEntry = pEntryBuffer->pGetEntryNo(m_xId.iRow());
+  
+  return pRowEntry;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Embedded Object ---------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

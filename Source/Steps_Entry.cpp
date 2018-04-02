@@ -82,11 +82,7 @@ void Task::vEntryToDataRow(MP_Task mpTask)
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the table from the index
-  Table* pTable = pIndex->pTable();
-  
-  Entry* pRowEntry = pDataRow(pEntry);
+  Entry* pRowEntry = pEntry->pDataEntry();
   
   // return the row entry
   mpTask->m_pDataStack->vPushObject(pRowEntry);
@@ -116,30 +112,6 @@ void Task::vEntrySame(MP_Task mpTask)
   ASSERT(CN_ENTRY == pOtherEntry->eClass());
   
   mpTask->m_pDataStack->vPushInt(pEntry == pOtherEntry ? 1 : 0);
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* PRIVATE                                                                    */
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get the dataRow entry matching entry from the tables hidden index          */
-/*----------------------------------------------------------------------------*/
-Entry* Task::pDataRow(Entry* pEntry)
-{
-  ENTRY("pDataRow"_Stz);
-  
-  // get the Id from the entry
-  Id xId = pEntry->xId();
-  
-  // get the entry buffer of this entries Id
-  EntryBuffer* pEntryBuffer = pEntry->pReferencedEntryBuffer();
-  
-  Entry* pRowEntry = pEntryBuffer->pGetEntryNo(xId.iRow());
-  
-  return pRowEntry;
-  
   EXIT();
 }
 

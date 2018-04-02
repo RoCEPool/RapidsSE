@@ -1454,7 +1454,6 @@ namespace Tasks
     
   private:
     static bool   bAppendRow(WorkingBuffer* pWorkingBuffer, Entry* pEntry, Interface::SEitf* pSEitf);
-    static Entry* pDataRow(Entry* pEntry);
     static bool   bInsertRow(EntryBuffer* pIndexBuffer, Entry* pEntry, Interface::SEitf* pSEitf);
     
     /*------------------------------------------------------------------------*/

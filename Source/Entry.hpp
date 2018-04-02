@@ -56,6 +56,10 @@ namespace DBobjects
     i8    nRowSize(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // data entry
+    Entry* pDataEntry(void);
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // embedded object area
     char* aEmbeddedObject(void);
   
