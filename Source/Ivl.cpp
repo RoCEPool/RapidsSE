@@ -46,7 +46,7 @@ Ivl::~Ivl(void)
 /*----------------------------------------------------------------------------*/
 bool Ivl::operator < (Ivl& xIvl)
 {
-  if (*(i8*)&x < *(i8*)&xIvl.x)
+  if (m_iValue < xIvl.m_iValue)
     return true;
   else
     return false;
@@ -57,7 +57,7 @@ bool Ivl::operator < (Ivl& xIvl)
 /*----------------------------------------------------------------------------*/
 bool Ivl::operator <= (Ivl& xIvl)
 {
-  if (*(i8*)&x <= *(i8*)&xIvl.x)
+  if (m_iValue <= xIvl.m_iValue)
     return true;
   else
     return false;
@@ -68,7 +68,7 @@ bool Ivl::operator <= (Ivl& xIvl)
 /*----------------------------------------------------------------------------*/
 bool Ivl::operator == (Ivl& xIvl)
 {
-  if (*(i8*)&x == *(i8*)&xIvl.x)
+  if (m_iValue == xIvl.m_iValue)
     return true;
   else
     return false;
@@ -79,7 +79,7 @@ bool Ivl::operator == (Ivl& xIvl)
 /*----------------------------------------------------------------------------*/
 bool Ivl::operator != (Ivl& xIvl)
 {
-  if (*(i8*)&x != *(i8*)&xIvl.x)
+  if (m_iValue != xIvl.m_iValue)
     return true;
   else
     return false;
@@ -90,7 +90,7 @@ bool Ivl::operator != (Ivl& xIvl)
 /*----------------------------------------------------------------------------*/
 bool Ivl::operator >= (Ivl& xIvl)
 {
-  if (*(i8*)&x >= *(i8*)&xIvl.x)
+  if (m_iValue >= xIvl.m_iValue)
     return true;
   else
     return false;
@@ -101,7 +101,7 @@ bool Ivl::operator >= (Ivl& xIvl)
 /*----------------------------------------------------------------------------*/
 bool Ivl::operator > (Ivl& xIvl)
 {
-  if (*(i8*)&x > *(i8*)&xIvl.x)
+  if (m_iValue > xIvl.m_iValue)
     return true;
   else
     return false;
@@ -125,9 +125,7 @@ void Ivl::vInitZero(void)
 /*----------------------------------------------------------------------------*/
 i8 Ivl::iAsI8(void)
 {
-  i8 i = *(i8*)&x;
-  
-  return i;
+  return m_iValue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -164,7 +162,7 @@ void Ivl::vSet(u8 uSecond, u8 uMilli)
 /*----------------------------------------------------------------------------*/
 bool Ivl::bIsNull(void)
 {
-  if (C_NULL_INT == *(i8*)&x)
+  if (C_NULL_INT == m_iValue)
     return true;
   else
     return false;
@@ -175,7 +173,7 @@ bool Ivl::bIsNull(void)
 /*----------------------------------------------------------------------------*/
 void Ivl::vSetNull(void)
 {
-  *(i8*)&x = C_NULL_INT;
+  m_iValue = C_NULL_INT;
 }
 
 /*----------------------------------------------------------------------------*/
