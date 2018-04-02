@@ -1,0 +1,87 @@
+/*----------------------------------------------------------------------------*/
+/* terminatorSmall_cr -- cr terminator with < 1mb file                        */
+/*----------------------------------------------------------------------------*/
+
+// create the table
+
+create table terminator (
+  pcol1 integer not null,
+  tcol1 integer,
+  cola1 integer,
+  colb1 varchar(20),
+  colc1 timestamp,
+  cold1 float,
+  cole1 decimal(15,2),
+  colf1 integer,
+  colg1 integer,
+  ucol integer,
+  ucolvc varchar(5));
+success
+
+// create an index
+create index idx on terminator(pcol1);
+success
+
+// load data into the table with default formatter settings
+ld terminator "../Seth/tests/Load/terminator.csv"  field_delimiter "|" record_terminator "|";
+success
+
+fetch terminator;
+rows: 11
+
+// fetch
+fetch terminator "pcol1 0 =";
+rows:
+ (*, 0,217,260,'grey',timestamp '2015-10-31 00:00:00',73.44,5.34,8,-152,81,'lll')
+
+// drop table terminator;
+drop table terminator;
+success;
+
+create table terminator (
+  pcol1 integer not null,
+  tcol1 integer,
+  cola1 integer,
+  colb1 varchar(20),
+  colc1 timestamp,
+  cold1 float,
+  cole1 decimal(15,2),
+  colf1 integer,
+  colg1 integer,
+  ucol integer,
+  ucolvc varchar(5));
+success
+
+// create an index
+create index idx on terminator(pcol1);
+success
+
+// load data into the table with default formatter settings
+ld terminator "../Seth/tests/Load/terminator.csv"  field_delimiter "|";
+success
+
+fetch terminator;
+rows: 11
+
+// fetch
+fetch terminator "pcol1 0 =";
+rows:
+(*, 0,217,260,'grey',timestamp '2015-10-31 00:00:00',73.44,5.34,8,-152,81,'lll|')
+
+// drop table terminator;
+drop table terminator;
+success;
+
+CLEANUP {
+  
+  drop table terminator;
+  mute
+
+  bye;
+  mute
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* end                                                                        */
+/*----------------------------------------------------------------------------*/
