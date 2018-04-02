@@ -10,16 +10,19 @@ namespace Datums
   friend class DtmLib;
   
   protected:
-    struct {
-      u8 m_uSpare  : 20 ; //
-      u8 m_uMicro  : 20 ; // 0..1M
-      u8 m_uSecond :  8 ; // 0..63
-      u8 m_uMinute :  8 ; // 0..63
-      u8 m_uHour   :  8 ; // 0..31
-      //            ---
-      //             64
-      //            ===
-    } x;
+    union {
+      struct {
+        u8 m_uSpare  : 20 ; //
+        u8 m_uMicro  : 20 ; // 0..1M
+        u8 m_uSecond :  8 ; // 0..63
+        u8 m_uMinute :  8 ; // 0..63
+        u8 m_uHour   :  8 ; // 0..31
+        //            ---
+        //             64
+        //            ===
+      } x;
+      i8 m_iValue;
+    };
   
   public:
     void* operator new(size_t);

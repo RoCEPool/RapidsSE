@@ -46,7 +46,7 @@ Dte::~Dte(void)
 /*----------------------------------------------------------------------------*/
 bool Dte::operator < (Dte& xDte)
 {
-  if (*(i8*)&x < *(i8*)&xDte.x)
+  if (m_iValue < xDte.m_iValue)
     return true;
   else
     return false;
@@ -57,7 +57,7 @@ bool Dte::operator < (Dte& xDte)
 /*----------------------------------------------------------------------------*/
 bool Dte::operator <= (Dte& xDte)
 {
-  if (*(i8*)&x <= *(i8*)&xDte.x)
+  if (m_iValue <= xDte.m_iValue)
     return true;
   else
     return false;
@@ -68,7 +68,7 @@ bool Dte::operator <= (Dte& xDte)
 /*----------------------------------------------------------------------------*/
 bool Dte::operator == (Dte& xDte)
 {
-  if (*(i8*)&x == *(i8*)&xDte.x)
+  if (m_iValue == xDte.m_iValue)
     return true;
   else
     return false;
@@ -79,7 +79,7 @@ bool Dte::operator == (Dte& xDte)
 /*----------------------------------------------------------------------------*/
 bool Dte::operator != (Dte& xDte)
 {
-  if (*(i8*)&x != *(i8*)&xDte.x)
+  if (m_iValue != xDte.m_iValue)
     return true;
   else
     return false;
@@ -90,7 +90,7 @@ bool Dte::operator != (Dte& xDte)
 /*----------------------------------------------------------------------------*/
 bool Dte::operator >= (Dte& xDte)
 {
-  if (*(i8*)&x >= *(i8*)&xDte.x)
+  if (m_iValue >= xDte.m_iValue)
     return true;
   else
     return false;
@@ -101,7 +101,7 @@ bool Dte::operator >= (Dte& xDte)
 /*----------------------------------------------------------------------------*/
 bool Dte::operator > (Dte& xDte)
 {
-  if (*(i8*)&x > *(i8*)&xDte.x)
+  if (m_iValue > xDte.m_iValue)
     return true;
   else
     return false;
@@ -127,9 +127,7 @@ void Dte::vInitZero(void)
 /*----------------------------------------------------------------------------*/
 i8 Dte::iAsI8(void)
 {
-  i8 i = *(i8*)&x;
-  
-  return i;
+  return m_iValue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -165,7 +163,7 @@ i8 Dte::iDay(void)
 /*----------------------------------------------------------------------------*/
 bool Dte::bIsNull(void)
 {
-  if (C_NULL_INT == *(i8*)&x)
+  if (C_NULL_INT == m_iValue)
     return true;
   else
     return false;
@@ -176,7 +174,7 @@ bool Dte::bIsNull(void)
 /*----------------------------------------------------------------------------*/
 void Dte::vSetNull(void)
 {
-  *(i8*)&x = C_NULL_INT;
+  m_iValue = C_NULL_INT;
 }
 
 /*----------------------------------------------------------------------------*/

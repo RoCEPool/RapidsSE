@@ -46,7 +46,7 @@ Tme::~Tme(void)
 /*----------------------------------------------------------------------------*/
 bool Tme::operator < (Tme& xTme)
 {
-  if (*(i8*)&x < *(i8*)&xTme.x)
+  if (m_iValue < xTme.m_iValue)
     return true;
   else
     return false;
@@ -57,7 +57,7 @@ bool Tme::operator < (Tme& xTme)
 /*----------------------------------------------------------------------------*/
 bool Tme::operator <= (Tme& xTme)
 {
-  if (*(i8*)&x <= *(i8*)&xTme.x)
+  if (m_iValue <= xTme.m_iValue)
     return true;
   else
     return false;
@@ -68,7 +68,7 @@ bool Tme::operator <= (Tme& xTme)
 /*----------------------------------------------------------------------------*/
 bool Tme::operator == (Tme& xTme)
 {
-  if (*(i8*)&x == *(i8*)&xTme.x)
+  if (m_iValue == xTme.m_iValue)
     return true;
   else
     return false;
@@ -79,7 +79,7 @@ bool Tme::operator == (Tme& xTme)
 /*----------------------------------------------------------------------------*/
 bool Tme::operator != (Tme& xTme)
 {
-  if (*(i8*)&x != *(i8*)&xTme.x)
+  if (m_iValue != xTme.m_iValue)
     return true;
   else
     return false;
@@ -90,7 +90,7 @@ bool Tme::operator != (Tme& xTme)
 /*----------------------------------------------------------------------------*/
 bool Tme::operator >= (Tme& xTme)
 {
-  if (*(i8*)&x >= *(i8*)&xTme.x)
+  if (m_iValue >= xTme.m_iValue)
     return true;
   else
     return false;
@@ -101,7 +101,7 @@ bool Tme::operator >= (Tme& xTme)
 /*----------------------------------------------------------------------------*/
 bool Tme::operator > (Tme& xTme)
 {
-  if (*(i8*)&x > *(i8*)&xTme.x)
+  if (m_iValue > xTme.m_iValue)
     return true;
   else
     return false;
@@ -174,7 +174,7 @@ i8 Tme::iMicroseconds(void)
 /*----------------------------------------------------------------------------*/
 bool Tme::bIsNull(void)
 {
-  if (C_NULL_INT == *(i8*)&x)
+  if (C_NULL_INT == m_iValue)
     return true;
   else
     return false;
@@ -185,7 +185,7 @@ bool Tme::bIsNull(void)
 /*----------------------------------------------------------------------------*/
 void Tme::vSetNull(void)
 {
-  *(i8*)&x = C_NULL_INT;
+  m_iValue = C_NULL_INT;
 }
 
 /*----------------------------------------------------------------------------*/
