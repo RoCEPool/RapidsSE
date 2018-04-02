@@ -145,7 +145,7 @@ void Index::vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn)
       break;
     }
   }
-  ASSERT(bFound);
+  RASSERT(bFound);
   
   m_pIdxColVec->vInsert(pColumn);
 }
