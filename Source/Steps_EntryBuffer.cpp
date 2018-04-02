@@ -22,7 +22,6 @@ void Task::vAddPrimitives_EntryBuffer(void)
   vAddPrimitive("entryBuffer.firstEntry"_Stz,  &vEntryBufferFirstEntry,  false);
   vAddPrimitive("entryBuffer.index@"_Stz,      &vEntryBufferIndexFetch,  false);
   vAddPrimitive("entryBuffer.index!"_Stz,      &vEntryBufferIndexStore,  false);
-  vAddPrimitive("entryBuffer.insertRow"_Stz,   &vEntryBufferInsertRow,   false);
   vAddPrimitive("entryBuffer.isLast@"_Stz,     &vEntryBufferIsLastFetch, false);
   vAddPrimitive("entryBuffer.isLast!"_Stz,     &vEntryBufferIsLastStore, false);
   vAddPrimitive("entryBuffer.iterate"_Stz,     &vEntryBufferIterate,     false);
@@ -173,32 +172,32 @@ void Task::vEntryBufferIndexStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* entryBuffer.insertRow -- insert a row entry into the index buffer          */
 /*----------------------------------------------------------------------------*/
-void Task::vEntryBufferInsertRow(MP_Task mpTask)
-{
-  ENTRY("vEntryBufferInsertRow"_Stz);
-  
-  Object* pPtrOldEntry = nullptr;
-  Object* pPtrIndexBuffer;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
-    THROW_INVALID_DSTACK("entryBuffer.insertRow"_Stz);
-  
-  EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrOldEntry) )
-    THROW_INVALID_DSTACK("entryBuffer.insertRow"_Stz);
-  
-  Entry* pOldEntry = _pEntry(pPtrOldEntry);
-  ASSERT(CN_ENTRY == pOldEntry->eClass());
-  
-  bool bInserted = bInsertRow(pIndexBuffer, pOldEntry, mpTask->m_pSEitf);
-  if (bInserted)
-    mpTask->m_pDataStack->vPushInt(1);
-  else
-    mpTask->m_pDataStack->vPushInt(0);
-  
-  EXIT();
-}
+//void Task::vEntryBufferInsertRow(MP_Task mpTask)
+//{
+//  ENTRY("vEntryBufferInsertRow"_Stz);
+//
+//  Object* pPtrOldEntry = nullptr;
+//  Object* pPtrIndexBuffer;
+//
+//  if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
+//    THROW_INVALID_DSTACK("entryBuffer.insertRow"_Stz);
+//
+//  EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
+//
+//  if ( ! mpTask->m_pDataStack->bPop(pPtrOldEntry) )
+//    THROW_INVALID_DSTACK("entryBuffer.insertRow"_Stz);
+//
+//  Entry* pOldEntry = _pEntry(pPtrOldEntry);
+//  ASSERT(CN_ENTRY == pOldEntry->eClass());
+//
+//  bool bInserted = bInsertRow(pIndexBuffer, pOldEntry, mpTask->m_pSEitf);
+//  if (bInserted)
+//    mpTask->m_pDataStack->vPushInt(1);
+//  else
+//    mpTask->m_pDataStack->vPushInt(0);
+//
+//  EXIT();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* entryBuffer.isLast@ -- get if buffer is last                               */
@@ -487,25 +486,25 @@ void Task::vEntryBufferUnitTest_c(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* insert a row into an entry buffer                                          */
 /*----------------------------------------------------------------------------*/
-bool Task::bInsertRow(EntryBuffer* pEntryBuffer, Entry* pEntry, SEitf* pSEitf)
-{
-  
-  Entry* pRow;
-  
-  Id xId = pEntry->xId();
-  
-  if (pSEitf && pSEitf->bRowSeen(xId)) {
-    // row already inserted
-    return true;
-  }
-  
-  if (pEntryBuffer->bInsertRow(pEntry, &pRow)) {
-    ASSERT( ! pRow->nOffsets() );
-    return true;
-  }
-  else
-    return false;
-}
+//bool Task::bInsertRow(EntryBuffer* pEntryBuffer, Entry* pEntry, SEitf* pSEitf)
+//{
+//
+//  Entry* pRow;
+//
+//  Id xId = pEntry->xId();
+//
+//  if (pSEitf && pSEitf->bRowSeen(xId)) {
+//    // row already inserted
+//    return true;
+//  }
+//
+//  if (pEntryBuffer->bInsertRow(pEntry, &pRow)) {
+//    ASSERT( ! pRow->nOffsets() );
+//    return true;
+//  }
+//  else
+//    return false;
+//}
 
 /*============================================================================*/
 /* end                                                                        */

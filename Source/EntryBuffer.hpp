@@ -88,7 +88,6 @@ namespace DBobjects
     Entry*       pGetEntryNo(i8 i_Entry);
     static Entry* pInsertKeyTree(KeyWrk& xKeyWrk,
                                  EntryBuffer** ppRootKeyBuffer);
-    bool         bInsertRow(Entry* pOldRow, Entry** ppRow);
     void         vLazyBuild(void);
     Entry*       pNextEntry(Entry* pEntry, i8 i_Offset);
   

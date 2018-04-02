@@ -602,7 +602,6 @@ namespace Tasks
     static void vEntryBufferFirstEntry(MP_Task mpTask);
     static void vEntryBufferIndexFetch(MP_Task mpTask);
     static void vEntryBufferIndexStore(MP_Task mpTask);
-    static void vEntryBufferInsertRow(MP_Task mpTask);
     static void vEntryBufferIsLastFetch(MP_Task mpTask);
     static void vEntryBufferIsLastStore(MP_Task mpTask);
     static void vEntryBufferIterate(MP_Task mpTask);
@@ -1454,7 +1453,7 @@ namespace Tasks
     
   private:
     static bool   bAppendRow(WorkingBuffer* pWorkingBuffer, Entry* pEntry, Interface::SEitf* pSEitf);
-    static bool   bInsertRow(EntryBuffer* pIndexBuffer, Entry* pEntry, Interface::SEitf* pSEitf);
+    //static bool   bInsertRow(EntryBuffer* pIndexBuffer, Entry* pEntry, Interface::SEitf* pSEitf);
     
     /*------------------------------------------------------------------------*/
     

@@ -668,13 +668,6 @@ Entry* EntryBuffer::pInsertKeyTree(KeyWrk& xKeyWrk,
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert row into this buffer (invoked from entryBuffer.insertRow)           */
-/*----------------------------------------------------------------------------*/
-bool EntryBuffer::bInsertRow(Entry* pOldRow, Entry** ppRow) {
-  RASSERT(0);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get next entry                                                             */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pNextEntry(Entry* pCurrent, i8 i_Offset)
