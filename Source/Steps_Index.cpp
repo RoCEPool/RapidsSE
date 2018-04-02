@@ -347,7 +347,7 @@ void Task::vIndexExactKey(MP_Task mpTask)
     if (bSame) {
       
       // get the dataRow from the hidden index
-      Entry* pDataRowEntry = Task::pDataRow(pTable, pEntry);
+      Entry* pDataRowEntry = Task::pDataRow(pEntry);
       Row* aRow = pDataRowEntry->aRow();
       //aRow->vShow(pTable->pColumnVec());
       i8 nRowSize = pDataRowEntry->nRowSize();
@@ -698,7 +698,7 @@ void Task::vIndexLowerBound(MP_Task mpTask)
   while (pLowerEntry) {
     
     // get the dataRow from the hidden index
-    Entry* pDataRowEntry = Task::pDataRow(pTable, pLowerEntry);
+    Entry* pDataRowEntry = Task::pDataRow(pLowerEntry);
     
     // insert row from entry in resultBuffer
     if ( ! bAppendRow(pWorkingBuffer, pDataRowEntry, pSEitf)) {
@@ -1091,7 +1091,7 @@ void Task::vIndexRange(MP_Task mpTask)
     
     if (bBefore) {
       // get the dataRow from the hidden index
-      Entry* pDataRowEntry = Task::pDataRow(pTable, pLowerEntry);
+      Entry* pDataRowEntry = Task::pDataRow(pLowerEntry);
       
       // insert row from entry in tempEntryBuffer
       if ( ! bAppendRow(pWorkingBuffer, pDataRowEntry, pSEitf)) {
@@ -2127,7 +2127,7 @@ void Task::vIndexUpperBound(MP_Task mpTask)
     
     if (bBefore) {
       // get the dataRow from the hidden index
-      Entry* pDataRowEntry = Task::pDataRow(pTable, pEntry);
+      Entry* pDataRowEntry = Task::pDataRow(pEntry);
       
       // insert row from entry in tempEntryBuffer
       if ( ! bAppendRow(pWorkingBuffer, pDataRowEntry, pSEitf)) {
