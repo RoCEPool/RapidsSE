@@ -2581,9 +2581,9 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
   // split the left buffer to yield a right buffer
 
 #ifdef EB_SPLIT2
-  EntryBuffer* pRightBuffer = pLeftBuffer->pSplit2(ppRootKeyBuffer);
+  EntryBuffer* pRightBuffer = pLeftBuffer->pSplit2();
 #else
-  EntryBuffer* pRightBuffer = pLeftBuffer->pSplit(ppRootKeyBuffer);
+  EntryBuffer* pRightBuffer = pLeftBuffer->pSplit();
 #endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2978,7 +2978,7 @@ void EntryBuffer::vPositionPriorVecBuffer(Key* aFindKey, Entry* pPriorVec[],
 /*----------------------------------------------------------------------------*/
 /* split this buffer into two: this original buffer and a new right buffer    */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
+EntryBuffer* EntryBuffer::pSplit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
 
@@ -3124,7 +3124,7 @@ EntryBuffer* EntryBuffer::pSplit(EntryBuffer** ppRootKeyBuffer)
 /*----------------------------------------------------------------------------*/
 /* split this buffer into two: this original buffer and a new right buffer    */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* EntryBuffer::pSplit2(EntryBuffer** ppRootKeyBuffer)
+EntryBuffer* EntryBuffer::pSplit2(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   

@@ -161,8 +161,8 @@ namespace DBobjects
                                         Entry* pFindEntry);
     void         vPositionPriorVecBuffer(Key* aFindKey, Entry** pPriorVec,
                                          EntryBuffer* pToBuffer);
-    EntryBuffer* pSplit(EntryBuffer** ppRootKeyBuffer);
-    EntryBuffer* pSplit2(EntryBuffer** ppRootKeyBuffer);
+    EntryBuffer* pSplit(void);
+    EntryBuffer* pSplit2(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // verify functions
