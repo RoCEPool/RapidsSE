@@ -308,35 +308,35 @@ void IndexTree::vAppendEntriesFromBuffer(i8 iTxId,
 /*----------------------------------------------------------------------------*/
 /* append an entry into this index at level 0                                 */
 /*----------------------------------------------------------------------------*/
-void IndexTree::vAppendEntry(KeyWrk& xKeyWrk,
-                             EntryVec& xPriorVec)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
-  
-  // this is invoked during ld while building non-hidden indexes
-  ASSERT( ! m_pIndex->bIsHidden() );
-  
-  m_zLock.vGrabWrite();
-  
-  //m_pCurrentBuffer = pAppendL0Entry(m_pCurrentBuffer,xKeyWrk,xId);
-  
-  if ( ! m_pRoot ) {
-    m_pRoot = new EntryBuffer;
-    m_pRoot->vIndex(m_pIndex);
-    m_pRoot->vPartitionNo(m_iPartitionNo);
-  }
-  
-  //vTrace("\nInserting key: "_Stz);
-  //xKeyWrk.aKey()->vShow(m_pIndex->pIdxColVec());
-  
-  Entry* pKeyEntry =
-    EntryBuffer::pInsertKeyTree(xKeyWrk,
-                                &m_pRoot);
-  
-  //m_pRoot->vShowTree(true);
-  
-  m_zLock.vDropWrite();
-}
+//void IndexTree::vAppendEntry(KeyWrk& xKeyWrk,
+//                             EntryVec& xPriorVec)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+//
+//  // this is invoked during ld while building non-hidden indexes
+//  ASSERT( ! m_pIndex->bIsHidden() );
+//
+//  m_zLock.vGrabWrite();
+//
+//  //m_pCurrentBuffer = pAppendL0Entry(m_pCurrentBuffer,xKeyWrk,xId);
+//
+//  if ( ! m_pRoot ) {
+//    m_pRoot = new EntryBuffer;
+//    m_pRoot->vIndex(m_pIndex);
+//    m_pRoot->vPartitionNo(m_iPartitionNo);
+//  }
+//
+//  //vTrace("\nInserting key: "_Stz);
+//  //xKeyWrk.aKey()->vShow(m_pIndex->pIdxColVec());
+//
+//  Entry* pKeyEntry =
+//    EntryBuffer::pInsertKeyTree(xKeyWrk,
+//                                &m_pRoot);
+//
+//  //m_pRoot->vShowTree(true);
+//
+//  m_zLock.vDropWrite();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* insert entries from entryBuffer into this index at level 0                 */
