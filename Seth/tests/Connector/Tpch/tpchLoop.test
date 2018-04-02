@@ -5,7 +5,7 @@
 // Logging a message
 LOG 'Running tpchQueries2 test in a loop.';
 
-LOOP 10  {
+LOOP 50  {
 
 //------------------------------------------------------------------------------
 LOG 'Running tpch queries...';
