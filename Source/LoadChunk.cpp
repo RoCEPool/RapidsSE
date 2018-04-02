@@ -58,8 +58,8 @@ LoadChunk::~LoadChunk(void)
 /*----------------------------------------------------------------------------*/
 void LoadChunk::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  ASSERT(eClass == CN_LOADCHUNK);
-  ASSERT(pObject->eClass() == CN_LOADCHUNK);
+  RASSERT(eClass == CN_LOADCHUNK);
+  RASSERT(pObject->eClass() == CN_LOADCHUNK);
   
   LoadChunk* pLoadChunk = reinterpret_cast<LoadChunk*>(pObject);
   

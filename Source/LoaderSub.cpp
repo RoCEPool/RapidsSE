@@ -95,8 +95,8 @@ LoaderSub::~LoaderSub(void)
 /*----------------------------------------------------------------------------*/
 void LoaderSub::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  ASSERT(eClass == CN_LOADERSUB);
-  ASSERT(pObject->eClass() == CN_LOADERSUB);
+  RASSERT(eClass == CN_LOADERSUB);
+  RASSERT(pObject->eClass() == CN_LOADERSUB);
   
   LoaderSub* pLoader = reinterpret_cast<LoaderSub*>(pObject);
   

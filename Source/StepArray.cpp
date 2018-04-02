@@ -66,8 +66,8 @@ StepAccum* StepArray::pAllocAccum(Stz* aStepNm)
 /*----------------------------------------------------------------------------*/
 void StepArray::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  ASSERT(eClass == CN_STEPARRAY);
-  ASSERT(pObject->eClass() == CN_STEPARRAY);
+  RASSERT(eClass == CN_STEPARRAY);
+  RASSERT(pObject->eClass() == CN_STEPARRAY);
   
   StepArray* pStepArray = reinterpret_cast<StepArray*>(pObject);
   

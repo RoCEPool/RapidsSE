@@ -2,8 +2,8 @@ sethRel.sh -f tests/Datums/testList
 sethRel.sh -f tests/Examples/testList
 sethRel.sh -f tests/Misc/testList
 sethRel.sh -f tests/PartitionKey/testList
-sethRel.sh -f tests/Index/testList
 sethRel.sh -f tests/Insert/testList
 sethRel.sh -f tests/Select/testList
 sethRel.sh -f tests/Table/testList
 sethRel.sh -f tests/Load/testList
+sethRel.sh -f tests/Index/testList

@@ -84,8 +84,8 @@ Loader::~Loader(void)
 /*----------------------------------------------------------------------------*/
 void Loader::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  ASSERT(eClass == CN_LOADER);
-  ASSERT(pObject->eClass() == CN_LOADER);
+  RASSERT(eClass == CN_LOADER);
+  RASSERT(pObject->eClass() == CN_LOADER);
   
   Loader* pLoader = reinterpret_cast<Loader*>(pObject);
   

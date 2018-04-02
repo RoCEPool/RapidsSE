@@ -184,8 +184,8 @@ SePrompt::~SePrompt(void)
 /*----------------------------------------------------------------------------*/
 void SePrompt::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  ASSERT(eClass == CN_SEPROMPT);
-  ASSERT(pObject->eClass() == CN_SEPROMPT);
+  RASSERT(eClass == CN_SEPROMPT);
+  RASSERT(pObject->eClass() == CN_SEPROMPT);
   
   SePrompt* pSePrompt = reinterpret_cast<SePrompt*>(pObject);
   

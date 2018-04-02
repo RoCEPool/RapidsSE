@@ -74,8 +74,8 @@ NodeCursor::~NodeCursor(void)
 /*----------------------------------------------------------------------------*/
 void NodeCursor::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  ASSERT(eClass == CN_NODECURSOR);
-  ASSERT(pObject->eClass() == CN_NODECURSOR);
+  RASSERT(eClass == CN_NODECURSOR);
+  RASSERT(pObject->eClass() == CN_NODECURSOR);
   
   NodeCursor* pNodeCursor = reinterpret_cast<NodeCursor*>(pObject);
   

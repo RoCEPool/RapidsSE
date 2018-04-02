@@ -151,7 +151,8 @@ bool EntryBuffer::bValidEntryBuffer(void)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  ASSERT(CN_ATTACHMAP == eClass);
+  RASSERT(CN_ENTRYBUFFER == eClass);
+  RASSERT(pObject->eClass() == CN_ENTRYBUFFER);
   
   EntryBuffer* pEntryBuffer = _pEntryBuffer(pObject);
 

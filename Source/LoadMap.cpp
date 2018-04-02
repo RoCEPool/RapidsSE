@@ -80,8 +80,8 @@ LoadMap::~LoadMap(void)
 /*----------------------------------------------------------------------------*/
 void LoadMap::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  ASSERT(eClass == CN_LOADMAP);
-  ASSERT(pObject->eClass() == CN_LOADMAP);
+  RASSERT(eClass == CN_LOADMAP);
+  RASSERT(pObject->eClass() == CN_LOADMAP);
   
   LoadMap* pSeekMap = reinterpret_cast<LoadMap*>(pObject);
   

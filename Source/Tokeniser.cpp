@@ -118,8 +118,8 @@ void Tokeniser::vStripSingleQuotes(TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  ASSERT(eClass == CN_TOKENISER);
-  ASSERT(pObject->eClass() == CN_TOKENISER);
+  RASSERT(eClass == CN_TOKENISER);
+  RASSERT(pObject->eClass() == CN_TOKENISER);
   
   Tokeniser* pTokeniser = reinterpret_cast<Tokeniser*>(pObject);
   

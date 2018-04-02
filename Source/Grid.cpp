@@ -91,8 +91,8 @@ void Grid::vInit(i8 nNodes, i8 nSlots)
 /*----------------------------------------------------------------------------*/
 void Grid::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  ASSERT(eClass == CN_GRID);
-  ASSERT(pObject->eClass() == CN_GRID);
+  RASSERT(eClass == CN_GRID);
+  RASSERT(pObject->eClass() == CN_GRID);
   
   Grid* pGrid = reinterpret_cast<Grid*>(pObject);
   

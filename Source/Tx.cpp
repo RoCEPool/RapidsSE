@@ -330,8 +330,8 @@ void Tx::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 void Tx::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  ASSERT(eClass == CN_TX);
-  ASSERT(pObject->eClass() == CN_TX);
+  RASSERT(eClass == CN_TX);
+  RASSERT(pObject->eClass() == CN_TX);
   
   Tx* pTx = reinterpret_cast<Tx*>(pObject);
   

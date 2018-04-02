@@ -1362,8 +1362,8 @@ void Task::vDebug(void)
 /*----------------------------------------------------------------------------*/
 void Task::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  ASSERT(eClass == CN_TASK);
-  ASSERT(pObject->eClass() == CN_TASK);
+  RASSERT(eClass == CN_TASK);
+  RASSERT(pObject->eClass() == CN_TASK);
   
   Task* pTask = reinterpret_cast<Task*>(pObject);
   

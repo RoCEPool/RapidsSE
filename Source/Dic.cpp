@@ -131,8 +131,8 @@ void Dic::vDicKind(Word* pDicKind)
 /*----------------------------------------------------------------------------*/
 void Dic::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  ASSERT(eClass == CN_DIC);
-  ASSERT(pObject->eClass() == CN_DIC);
+  RASSERT(eClass == CN_DIC);
+  RASSERT(pObject->eClass() == CN_DIC);
   
   Dic* pDic = reinterpret_cast<Dic*>(pObject);
   

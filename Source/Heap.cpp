@@ -80,12 +80,12 @@ Heap::~Heap(void)
 /*----------------------------------------------------------------------------*/
 void Heap::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  ASSERT(eClass == CN_SMALLTRANSIENT  || eClass == CN_MEDIUMTRANSIENT ||
+  RASSERT(eClass == CN_SMALLTRANSIENT  || eClass == CN_MEDIUMTRANSIENT ||
          eClass == CN_LARGETRANSIENT  || eClass == CN_JUMBOTRANSIENT  ||
          eClass == CN_SMALLPERSISTENT || eClass == CN_MEDIUMPERSISTENT ||
          eClass == CN_LARGEPERSISTENT || eClass == CN_JUMBOPERSISTENT);
   
-  ASSERT(pObject->eClass() == CN_SMALLTRANSIENT   ||
+  RASSERT(pObject->eClass() == CN_SMALLTRANSIENT   ||
          pObject->eClass() == CN_MEDIUMTRANSIENT  ||
          pObject->eClass() == CN_LARGETRANSIENT  ||
          pObject->eClass() == CN_JUMBOTRANSIENT   ||

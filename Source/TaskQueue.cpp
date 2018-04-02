@@ -82,8 +82,8 @@ void TaskQueue::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 void TaskQueue::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  ASSERT(eClass == CN_TASKQUEUE);
-  ASSERT(pObject->eClass() == CN_TASKQUEUE);
+  RASSERT(eClass == CN_TASKQUEUE);
+  RASSERT(pObject->eClass() == CN_TASKQUEUE);
   
   TaskQueue* pTaskQueue = reinterpret_cast<TaskQueue*>(pObject);
   

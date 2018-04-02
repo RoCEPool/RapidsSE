@@ -123,8 +123,8 @@ Table::~Table(void)
 /*----------------------------------------------------------------------------*/
 void Table::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  ASSERT(eClass == CN_TABLE);
-  ASSERT(pObject->eClass() == CN_TABLE);
+  RASSERT(eClass == CN_TABLE);
+  RASSERT(pObject->eClass() == CN_TABLE);
   
   Table* pTable = reinterpret_cast<Table*>(pObject);
   

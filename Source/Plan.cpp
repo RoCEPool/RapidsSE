@@ -120,8 +120,8 @@ Plan::~Plan(void)
 /*----------------------------------------------------------------------------*/
 void Plan::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  ASSERT(eClass == CN_PLAN);
-  ASSERT(pObject->eClass() == CN_PLAN);
+  RASSERT(eClass == CN_PLAN);
+  RASSERT(pObject->eClass() == CN_PLAN);
   
   Plan* pPlan = reinterpret_cast<Plan*>(pObject);
   

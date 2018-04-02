@@ -104,8 +104,8 @@ void Node::vInit(void)
 /*----------------------------------------------------------------------------*/
 void Node::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  ASSERT(eClass == CN_NODE);
-  ASSERT(pObject->eClass() == CN_NODE);
+  RASSERT(eClass == CN_NODE);
+  RASSERT(pObject->eClass() == CN_NODE);
   
   Node* pNode = reinterpret_cast<Node*>(pObject);
 

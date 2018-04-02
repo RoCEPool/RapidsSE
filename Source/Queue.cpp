@@ -135,8 +135,8 @@ void Queue::vContentDump(Stz* aTab)
 /*----------------------------------------------------------------------------*/
 void Queue::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  ASSERT(eClass == CN_QUEUE);
-  ASSERT(pObject->eClass() == CN_QUEUE);
+  RASSERT(eClass == CN_QUEUE);
+  RASSERT(pObject->eClass() == CN_QUEUE);
   
   Queue* pQueue = reinterpret_cast<Queue*>(pObject);
   

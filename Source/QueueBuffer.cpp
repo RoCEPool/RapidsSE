@@ -104,8 +104,8 @@ void QueueBuffer::vContentDump(Stz* aTab)
 /*----------------------------------------------------------------------------*/
 void QueueBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  ASSERT(eClass == CN_QUEUEBUFFER);
-  ASSERT(pObject->eClass() == CN_QUEUEBUFFER);
+  RASSERT(eClass == CN_QUEUEBUFFER);
+  RASSERT(pObject->eClass() == CN_QUEUEBUFFER);
   
   QueueBuffer* pQueueBuffer = reinterpret_cast<QueueBuffer*>(pObject);
   

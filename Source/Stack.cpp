@@ -80,8 +80,8 @@ Stack::~Stack(void)
 /*----------------------------------------------------------------------------*/
 void Stack::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  ASSERT(eClass == CN_STACK);
-  ASSERT(pObject->eClass() == CN_STACK);
+  RASSERT(eClass == CN_STACK);
+  RASSERT(pObject->eClass() == CN_STACK);
   
   Stack* pStack = _pStack(pObject);
   

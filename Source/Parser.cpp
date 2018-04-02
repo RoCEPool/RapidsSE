@@ -90,8 +90,8 @@ Parser::~Parser(void)
 /*----------------------------------------------------------------------------*/
 void Parser::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  ASSERT(eClass == CN_PARSER);
-  ASSERT(pObject->eClass() == CN_PARSER);
+  RASSERT(eClass == CN_PARSER);
+  RASSERT(pObject->eClass() == CN_PARSER);
   
   Parser* pParser = _pParser(pObject);
   

@@ -433,8 +433,8 @@ void Word::vDistributed(eDT eDistributed)
 /*----------------------------------------------------------------------------*/
 void Word::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  ASSERT(eClass == CN_WORD);
-  ASSERT(pObject->eClass() == CN_WORD);
+  RASSERT(eClass == CN_WORD);
+  RASSERT(pObject->eClass() == CN_WORD);
   
   Word* pWord = reinterpret_cast<Word*>(pObject);
   

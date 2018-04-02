@@ -116,8 +116,8 @@ void DicPath::vDiscard(void)
 /*----------------------------------------------------------------------------*/
 void DicPath::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  ASSERT(eClass == CN_DICPATH);
-  ASSERT(pObject->eClass() == CN_DICPATH);
+  RASSERT(eClass == CN_DICPATH);
+  RASSERT(pObject->eClass() == CN_DICPATH);
   
   DicPath* pDicPath = reinterpret_cast<DicPath*>(pObject);
   

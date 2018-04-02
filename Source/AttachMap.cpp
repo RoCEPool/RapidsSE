@@ -154,9 +154,9 @@ void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize, i8 iJumboSize)
 /*----------------------------------------------------------------------------*/
 void AttachMap::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  ASSERT(CN_ATTACHMAP == eClass);
+  RASSERT(CN_ATTACHMAP == eClass);
   AttachMap* pAttachMap = reinterpret_cast<AttachMap*>(pObject);
-  ASSERT(pAttachMap->eClass() == eClass);
+  RASSERT(pAttachMap->eClass() == eClass);
   
   vTrace("pid %lld utc %s regionSize %lld\n"_Stz,
          pAttachMap->m_iPid,

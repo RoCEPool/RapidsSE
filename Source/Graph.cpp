@@ -74,6 +74,9 @@ Graph::~Graph(void)
 /*----------------------------------------------------------------------------*/
 void Graph::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
+  RASSERT(eClass == CN_GRAPH);
+  RASSERT(pObject->eClass() == CN_GRAPH);
+  
   vTrace("\n"_Stz);
 }
 

@@ -28,8 +28,8 @@ IndexTree* DBobjects::_pIndexTree(void* pAddr)
 /*----------------------------------------------------------------------------*/
 void IndexTree::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  ASSERT(eClass == CN_INDEXTREE);
-  ASSERT(pObject->eClass() == CN_INDEXTREE);
+  RASSERT(eClass == CN_INDEXTREE);
+  RASSERT(pObject->eClass() == CN_INDEXTREE);
   
 }
 

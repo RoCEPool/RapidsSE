@@ -17,8 +17,8 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Partition::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  ASSERT(eClass == CN_PARTITION);
-  ASSERT(pObject->eClass() == CN_PARTITION);
+  RASSERT(eClass == CN_PARTITION);
+  RASSERT(pObject->eClass() == CN_PARTITION);
   
   Partition* pPartition = reinterpret_cast<Partition*>(pObject);
   

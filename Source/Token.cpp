@@ -44,8 +44,8 @@ void Token::operator delete(void* pTokenAddress)
 /*----------------------------------------------------------------------------*/
 void Token::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  ASSERT(eClass == CN_TOKEN);
-  ASSERT(pObject->eClass() == CN_TOKEN);
+  RASSERT(eClass == CN_TOKEN);
+  RASSERT(pObject->eClass() == CN_TOKEN);
   
   Token* pToken = reinterpret_cast<Token*>(pObject);
   

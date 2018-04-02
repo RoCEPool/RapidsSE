@@ -74,6 +74,9 @@ GraphCursor::~GraphCursor(void)
 /*----------------------------------------------------------------------------*/
 void GraphCursor::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
+  RASSERT(eClass == CN_GRAPHCURSOR);
+  RASSERT(pObject->eClass() == CN_GRAPHCURSOR);
+  
   vTrace("\n"_Stz);
 }
 

@@ -80,8 +80,8 @@ Socket::~Socket()
 /*----------------------------------------------------------------------------*/
 void Socket::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  ASSERT(eClass == CN_SOCKET);
-  ASSERT(pObject->eClass() == CN_SOCKET);
+  RASSERT(eClass == CN_SOCKET);
+  RASSERT(pObject->eClass() == CN_SOCKET);
   
   Socket* pSocket = reinterpret_cast<Socket*>(pObject);
 

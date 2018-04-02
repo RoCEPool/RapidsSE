@@ -79,8 +79,8 @@ void HeapBuffer::vAnalyse(i8 nBytes, i8 xCounts[])
 /*----------------------------------------------------------------------------*/
 void HeapBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  ASSERT(eClass == CN_HEAPBUFFER);
-  ASSERT(pObject->eClass() == CN_HEAPBUFFER);
+  RASSERT(eClass == CN_HEAPBUFFER);
+  RASSERT(pObject->eClass() == CN_HEAPBUFFER);
   
   HeapBuffer* pHeapBuffer = reinterpret_cast<HeapBuffer*>(pObject);
   

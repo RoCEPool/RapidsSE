@@ -88,8 +88,8 @@ void PlanList::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 void PlanList::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  ASSERT(eClass == CN_PLANLIST);
-  ASSERT(pObject->eClass() == CN_PLANLIST);
+  RASSERT(eClass == CN_PLANLIST);
+  RASSERT(pObject->eClass() == CN_PLANLIST);
   
   PlanList* pPlanList = reinterpret_cast<PlanList*>(pObject);
   

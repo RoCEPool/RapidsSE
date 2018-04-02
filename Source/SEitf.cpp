@@ -346,8 +346,8 @@ void SEitf::vDecAcksRemaining(void)
 /*----------------------------------------------------------------------------*/
 void SEitf::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  ASSERT(eClass == CN_SEITF);
-  ASSERT(pObject->eClass() == CN_SEITF);
+  RASSERT(eClass == CN_SEITF);
+  RASSERT(pObject->eClass() == CN_SEITF);
   
   SEitf* pSEitf = reinterpret_cast<SEitf*>(pObject);
   
