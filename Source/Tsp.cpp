@@ -46,7 +46,7 @@ Tsp::~Tsp(void)
 /*----------------------------------------------------------------------------*/
 bool Tsp::operator < (Tsp& xTsp)
 {
-  if (*(i8*)&x < *(i8*)&xTsp.x)
+  if (m_iValue < xTsp.m_iValue)
     return true;
   else
     return false;
@@ -57,7 +57,7 @@ bool Tsp::operator < (Tsp& xTsp)
 /*----------------------------------------------------------------------------*/
 bool Tsp::operator <= (Tsp& xTsp)
 {
-  if (*(i8*)&x <= *(i8*)&xTsp.x)
+  if (m_iValue <= xTsp.m_iValue)
     return true;
   else
     return false;
@@ -68,7 +68,7 @@ bool Tsp::operator <= (Tsp& xTsp)
 /*----------------------------------------------------------------------------*/
 bool Tsp::operator == (Tsp& xTsp)
 {
-  if (*(i8*)&x == *(i8*)&xTsp.x)
+  if (m_iValue == xTsp.m_iValue)
     return true;
   else
     return false;
@@ -79,7 +79,7 @@ bool Tsp::operator == (Tsp& xTsp)
 /*----------------------------------------------------------------------------*/
 bool Tsp::operator != (Tsp& xTsp)
 {
-  if (*(i8*)&x != *(i8*)&xTsp.x)
+  if (m_iValue != xTsp.m_iValue)
     return true;
   else
     return false;
@@ -90,7 +90,7 @@ bool Tsp::operator != (Tsp& xTsp)
 /*----------------------------------------------------------------------------*/
 bool Tsp::operator >= (Tsp& xTsp)
 {
-  if (*(i8*)&x >= *(i8*)&xTsp.x)
+  if (m_iValue >= xTsp.m_iValue)
     return true;
   else
     return false;
@@ -101,7 +101,7 @@ bool Tsp::operator >= (Tsp& xTsp)
 /*----------------------------------------------------------------------------*/
 bool Tsp::operator > (Tsp& xTsp)
 {
-  if (*(i8*)&x > *(i8*)&xTsp.x)
+  if (m_iValue > xTsp.m_iValue)
     return true;
   else
     return false;
@@ -131,9 +131,7 @@ void Tsp::vInitZero(void)
 /*----------------------------------------------------------------------------*/
 i8 Tsp::iAsI8(void)
 {
-  i8 i = *(i8*)&x;
-  
-  return i;
+  return m_iValue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -201,7 +199,7 @@ i8 Tsp::iMicroseconds(void)
 /*----------------------------------------------------------------------------*/
 bool Tsp::bIsNull(void)
 {
-  if (C_NULL_INT == *(i8*)&x)
+  if (C_NULL_INT == m_iValue)
     return true;
   else
     return false;
