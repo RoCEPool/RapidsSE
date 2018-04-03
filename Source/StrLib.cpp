@@ -1696,9 +1696,22 @@ bool StrLib::bExtractVarchar2(char** aaSrc,
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // test for a non-printable character (e.g. \n or \r)
+   
+    // Alka: Changed check from ! isprint (not-printable) to isspace and then allowing space
+    // this ways we allow for UTF-8 characters to pass this test
+    // I think there is more to supporting UTF-8 but this will let us allow for UTF-8 characters to
+    // be loaded from files.
     
-    if (! bAllowNonPrintable && ! isprint(**aaSrc))
-      break;
+    //if (! bAllowNonPrintable && ! isprint(**aaSrc) )
+    
+    // isprint: checks for any printable character including space.
+    
+    // isspace : checks for white-space characters. In the C and POSIX locales, these are:
+    // space, form-feed ('\f'), newline ('\n'), carriage return ('\r'), horizontal tab ('\t'),
+    // and vertical tab ('\v').
+      
+    if (! bAllowNonPrintable && isspace(**aaSrc) && (**aaSrc != ' ') )
+        break;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // test for normal end
