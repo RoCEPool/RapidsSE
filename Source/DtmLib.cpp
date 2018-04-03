@@ -561,8 +561,8 @@ bool DtmLib::bTestForNull(char** aaSrc, DBobjects::Column* pColumn,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test if there is any field data
-  /*
-  if ( ! DtmLib::bIsThereFieldData(**aaSrc, pFormatters)) {
+ 
+  if ( ! DtmLib::bIsThereFieldData(*aaSrc, pFormatters)) {
     if ( ! pColumn->bIsNullable() ) {
       // a null was detected in a non-nullable column
       bValidNull = false;
@@ -572,9 +572,9 @@ bool DtmLib::bTestForNull(char** aaSrc, DBobjects::Column* pColumn,
     bValidNull = true;
     return true;
   }
-  */
-  if ( ! DtmLib::bIsThereFieldData(*aaSrc, pFormatters))
-    return false;
+ 
+  //if ( ! DtmLib::bIsThereFieldData(*aaSrc, pFormatters))
+  //  return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for null, \N, '\N' or [\N]

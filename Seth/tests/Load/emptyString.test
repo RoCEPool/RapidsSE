@@ -1,0 +1,110 @@
+/*----------------------------------------------------------------------------*/
+/* emptyString -- empty string tests                                          */
+/*----------------------------------------------------------------------------*/
+
+create table T1 (
+  col_id       INTEGER,
+  col_vch      VARCHAR(15),
+  col_int      INTEGER
+);
+success
+
+// create an index
+create index idx on T1 (col_id);
+success
+
+// load T1 with deafult enclosedBy
+ld T1 "../JTEST/emptyString1.csv" ;
+success
+
+// fetch rows
+fetch T1;
+rows: 2
+
+fetch T1 "col_id 1 =";
+rows:
+  (*, 1,'''''',3)
+
+fetch T1 "col_id 2 =";
+rows:
+  (*, 2,null,3)
+
+// drop the table
+drop table T1;
+success
+
+create table T1 (
+  col_id       INTEGER,
+  col_vch      VARCHAR(15),
+  col_int      INTEGER
+);
+success
+
+// create an ndex
+create index idx on T1 (col_id);
+success
+
+// load table T1 with enclosed_by_leading '
+ld T1 "../JTEST/emptyString1.csv" enclosed_by_leading "'";
+success
+
+// fetch rows
+fetch T1;
+rows: 2
+
+fetch T1 "col_id 1 =";
+rows:
+  (*, 1,'',3)
+
+fetch T1 "col_id 2 =";
+rows:
+  (*, 2,null,3)
+
+// drop the table
+drop table T1;
+success
+
+create table T1 (
+col_id       INTEGER,
+col_vch      VARCHAR(15),
+col_int      INTEGER
+);
+success
+
+// create an ndex
+create index idx on T1 (col_id);
+success
+
+// load table T1 with enclosed_by_leading '
+ld T1 "../JTEST/emptyString2.csv" enclosed_by_leading "{" enclosed_by_trailing "}";
+success
+
+// fetch rows
+fetch T1;
+rows: 2
+
+fetch T1 "col_id 1 =";
+rows:
+  (*, 1,'',3)
+
+fetch T1 "col_id 2 =";
+rows:
+  (*, 2,null,3)
+
+// drop the table
+drop table T1;
+success
+
+CLEANUP {
+  
+  //drop table T1;
+  //mute
+
+  bye;
+  mute
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* end                                                                        */
+/*----------------------------------------------------------------------------*/
