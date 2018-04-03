@@ -583,9 +583,6 @@ bool Tsp::bGreaterThan(char* aArgA, char* aArgB)
 /*----------------------------------------------------------------------------*/
 i8 Tsp::iCmp(char* aArgA, char* aArgB)
 {
-  ASSERT(sizeof(i8) == nBytesA);
-  ASSERT(sizeof(i8) == nBytesB);
-  
   if (((Tsp*)aArgA)->bIsNull())
     return -1;
   

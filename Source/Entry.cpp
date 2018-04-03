@@ -263,7 +263,7 @@ i8 Entry::nRowSize(void)
 /*----------------------------------------------------------------------------*/
 Entry* Entry::pDataEntry(void)
 {
-  ENTRY("pDataEntry"_Stz);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
 
   // get the referenced entry buffer of this entries Id
   EntryBuffer* pEntryBuffer = pReferencedEntryBuffer();
@@ -272,8 +272,6 @@ Entry* Entry::pDataEntry(void)
   Entry* pRowEntry = pEntryBuffer->pGetEntryNo(m_xId.iRow());
   
   return pRowEntry;
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
