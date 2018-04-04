@@ -597,6 +597,12 @@ bool DtmLib::bTestForNull(char** aaSrc, DBobjects::Column* pColumn,
     // skip over '\N' or [\N]
     *aaSrc = (*aaSrc) + 4;
   }
+  else if (**aaSrc    == pFormatters->m_cEnclosedBy_Leading &&
+                    0 == StrLib::iCompare(*aaSrc+1, "NULL", 4, C_NO_CASE) &&
+          *(*aaSrc+5) == pFormatters->m_cEnclosedBy_Trailing) {
+    // skip over 'NULL'
+    *aaSrc = (*aaSrc) + 6;
+  }
   else {
     // no null detected
     bValidNull = false; // no null, so neither valid or invalid
