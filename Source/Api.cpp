@@ -245,6 +245,10 @@ eEC RapidsSE_BeginInsert(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable
     VALIDATE_PARAM("c"_Stz, pSchema);
     VALIDATE_PARAM("d"_Stz, pTable);
     
+    // set the enclosined_by to be a '
+    pSEitf->m_xFormatters.m_cEnclosedBy_Leading = '\'';
+    pSEitf->m_xFormatters.m_cEnclosedBy_Trailing = '\'';
+    
     // change directory to tables
     CF_TABLES("e"_Stz);
     
