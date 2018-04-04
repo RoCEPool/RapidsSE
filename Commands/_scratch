@@ -2,94 +2,63 @@
 /* _scratch -- scratch test                                                   */
 /*============================================================================*/
 
+create table terminator (
+  pcol1 integer not null,
+  tcol1 integer,
+  cola1 integer,
+  colb1 varchar(20),
+  colc1 timestamp,
+  cold1 float,
+  cole1 decimal(15,2),
+  colf1 integer,
+  colg1 integer,
+  ucol integer,
+  ucolvc varchar(5));
 
-create table table1 (c1 integer, c2 varchar(100));
+// create an index
+create index idx on terminator(pcol1);
 
 // load data into the table with default formatter settings
-ld table1 "/Users/alkayamarti/rapidsSE/rapidsse/JTEST/basic1.csv" enclosed_by_leading "'" record_ends "\n";
+ld terminator "../Seth/tests/Load/terminator.csv"  field_delimiter "|" record_terminator "|";
+
+
+//------------------------------------------------------------------------------
+// The following fetch shpould return the following row
+//(*, 0,217,260,'grey',timestamp '2015-10-31 00:00:00',73.44,5.34,8,-152,81,'lll')
+fetch terminator "pcol1 0 =";
+
+
+// drop table terminator;
+drop table terminator;
+
+create table terminator (
+  pcol1 integer not null,
+  tcol1 integer,
+  cola1 integer,
+  colb1 varchar(20),
+  colc1 timestamp,
+  cold1 float,
+  cole1 decimal(15,2),
+  colf1 integer,
+  colg1 integer,
+  ucol integer,
+  ucolvc varchar(5));
+
+// create an index
+create index idx on terminator(pcol1);
 
 // load data into the table with default formatter settings
-//ld vch "../JTEST/vch_term_no_enclosed_no_escape.csv" record_terminator ";" record_ends "\r\n" enclosed_by_leading "\0" escape_char "\0" ;
+ld terminator "../Seth/tests/Load/terminator.csv"  field_delimiter "|";
 
-/*
-// (1) create a table
-create table T1 (
-col0   integer not null,
-col1   varchar(32) not null
-);
-
-// (2) create an index on the table
-create index idx on T1 (col0);
-
-//ld T1 "../Seth/tests/Insert/insert.csv" ;
-
-// (4) insert some rows into the table
-begin insert T1;
-insert row "21,null";
-insert row "1,abcdef";
-insert row "2,ghijk";
-insert row "3,lmno";
-insert row "4,pqr";
-insert row "5,stuvw";
-insert row "6,xyz";
-insert row "7,abc";
-insert row "8,defgh";
-insert row "9,ijk";
-insert row "10,lmn";
-insert row "82,lmn";
-end insert;
-
-docol epochTake;
-
-// check no of rows
-fetch T1;
+//------------------------------------------------------------------------------
+// The following fetch shpould return the following row
+//(*, 0,217,260,'grey',timestamp '2015-10-31 00:00:00',73.44,5.34,8,-152,81,'lll|')
+fetch terminator "pcol1 0 =";
 
 
-docol epochDump;
+// drop table terminator;
+drop table terminator;
 
- 
-
- 
- 
-create table test(c1 integer, c2 varchar, c3 varchar);
-ld test "../JTEST/terminator.csv" terminator "|";
-
- 
-docol epochTake;
-create table jidx (
-jidx_key   INTEGER NOT NULL,
-jidx_name  VARCHAR(32) NOT NULL,
-jidx_100   INTEGER NOT NULL,
-jidx_10    INTEGER NOT NULL
-);
-
-create index idx1 on jidx (jidx_10);
-
-ld jidx "../JTEST/test.csv" ;
-
-drop table jidx;
-docol epochDump;
-
-create table boolTable (
-key   BOOLEAN NOT NULL,
-value INTEGER,
-name  VARCHAR(32) NOT NULL
-);
-
-create  index idx on boolTable (key);
-ld boolTable "../Seth/tests/partitionKey/bool.csv";
-
-lwrselidx boolTable idx 1;
-
- create table T2 (
- idxkey  integer,
- name    varchar(32));
- 
- create index index1 on T2 (idxkey);
- create index index1 on T2 (name);
- 
- drop table T2;
- */
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
