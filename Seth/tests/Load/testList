@@ -1,4 +1,5 @@
 enclosed_by.test
+null.test
 rdp.test
 regressionData.test
 terminator_cr.test
