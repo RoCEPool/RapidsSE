@@ -76,7 +76,7 @@ rows:
 
 fetch vch "vch_testno 614 =";
 rows:
-  (*, 614, '', *)
+  (*, 614, null, *)
 
 fetch vch "vch_testno 615 =";
 rows:
