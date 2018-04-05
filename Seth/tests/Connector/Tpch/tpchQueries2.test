@@ -256,28 +256,28 @@ success
 CREATE INDEX supplier_idx2 ON supplier2(s_nationkey);
 success
 
-ESCAPE CONNECTOR se 'load nation2' with file='/mnt/ssd/tpch/tpch_sf1/nation.tbl' , node = 'Node1' ;
+ESCAPE CONNECTOR se 'load nation2' with file='/mnt/ssd/tpch/tpch_sf1/nation.tbl' , terminator = ',\n', node = 'Node1' ;
 failure contains: 'Success'
 
-ESCAPE CONNECTOR se 'load orders2' with file='/mnt/ssd/tpch/tpch_sf1/orders.tbl' , node = 'Node1' ;
+ESCAPE CONNECTOR se 'load orders2' with file='/mnt/ssd/tpch/tpch_sf1/orders.tbl' , terminator = ',\n', node = 'Node1' ;
 failure contains: 'Success'
 
-ESCAPE CONNECTOR se 'load supplier2' with file='/mnt/ssd/tpch/tpch_sf1/supplier.tbl' , node = 'Node1' ;
+ESCAPE CONNECTOR se 'load supplier2' with file='/mnt/ssd/tpch/tpch_sf1/supplier.tbl' , terminator = ',\n',node = 'Node1' ;
 failure contains: 'Success'
 
-ESCAPE CONNECTOR se 'load region2' with file='/mnt/ssd/tpch/tpch_sf1/region.tbl' , node = 'Node1' ;
+ESCAPE CONNECTOR se 'load region2' with file='/mnt/ssd/tpch/tpch_sf1/region.tbl' , terminator = ',\n',node = 'Node1' ;
 failure contains: 'Success'
 
-ESCAPE CONNECTOR se 'load lineitem2' with file='/mnt/ssd/tpch/tpch_sf1/lineitem.tbl' , node = 'Node1' ;
+ESCAPE CONNECTOR se 'load lineitem2' with file='/mnt/ssd/tpch/tpch_sf1/lineitem.tbl' , terminator = ',\n',node = 'Node1' ;
 failure contains: 'Success'
 
-ESCAPE CONNECTOR se 'load part2' with file='/mnt/ssd/tpch/tpch_sf1/part.tbl' , node = 'Node1' ;
+ESCAPE CONNECTOR se 'load part2' with file='/mnt/ssd/tpch/tpch_sf1/part.tbl' , terminator = ',\n',node = 'Node1' ;
 failure contains: 'Success'
 
-ESCAPE CONNECTOR se 'load partsupp2' with file='/mnt/ssd/tpch/tpch_sf1/partsupp.tbl' , node = 'Node1' ;
+ESCAPE CONNECTOR se 'load partsupp2' with file='/mnt/ssd/tpch/tpch_sf1/partsupp.tbl' , terminator = ',\n',node = 'Node1' ;
 failure contains: 'Success'
 
-ESCAPE CONNECTOR se 'load customer2' with file='/mnt/ssd/tpch/tpch_sf1/customer.tbl' , node = 'Node1' ;
+ESCAPE CONNECTOR se 'load customer2' with file='/mnt/ssd/tpch/tpch_sf1/customer.tbl' , terminator = ',\n',node = 'Node1' ;
 failure contains: 'Success'
 
 // insert-select into region
