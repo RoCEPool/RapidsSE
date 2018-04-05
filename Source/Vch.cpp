@@ -452,8 +452,8 @@ void Vch::vSprintEscaped(Stz* aDst, Stz* aSrc)
   }
   
   // get the formatters
-  char cEnclosedBy_Leading  = gpAttachMap->m_xFormatters.m_cEnclosedBy_Leading;
-  char cEnclosedBy_Trailing = gpAttachMap->m_xFormatters.m_cEnclosedBy_Trailing;
+  char cEnclosedBy_Leading  = '\''; //gpAttachMap->m_xFormatters.m_cEnclosedBy_Leading;
+  char cEnclosedBy_Trailing = '\''; //gpAttachMap->m_xFormatters.m_cEnclosedBy_Trailing;
   char cEscapeChar = gpAttachMap->m_xFormatters.m_cEscapeChar;
   
   char* aDstChar = (char*)aDst;

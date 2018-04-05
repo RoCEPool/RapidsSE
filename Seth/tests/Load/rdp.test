@@ -206,7 +206,7 @@ rows:
 
 fetch rdp "rdp_testno 2060 =";
 rows:
-  (*, 2060,'test 2060', false,false, 6,6 , 6.0e0,6.0e0 , 6,6   ,TIMESTAMP '1906-01-01 00:00:00',TIMESTAMP '1906-06-06 06:06:06','quick brown fox','')
+  (*, 2060,'test 2060', false,false, 6,6 , 6.0e0,6.0e0 , 6,6   ,TIMESTAMP '1906-01-01 00:00:00',TIMESTAMP '1906-06-06 06:06:06','quick brown fox',null)
 
 fetch rdp "rdp_testno 2061 =";
 rows:
@@ -288,7 +288,7 @@ create index rdp_idx_0 on rdp(rdp_testno);
 success
 
 // load data into the table with default formatter settings
-ld rdp "/tmp/rdp_dex.csv";
+ld rdp "/tmp/rdp_dex.csv" enclosed_by_leading "'";
 success
 
 // unable to select 3000 because of min/max's
@@ -459,7 +459,7 @@ rows:
 
 fetch rdp "rdp_testno 2060 =";
 rows:
-(*, 2060,'test 2060', false,false, 6,6 , 6.0e0,6.0e0 , 6,6   ,TIMESTAMP '1906-01-01 00:00:00',TIMESTAMP '1906-06-06 06:06:06','quick brown fox','')
+(*, 2060,'test 2060', false,false, 6,6 , 6.0e0,6.0e0 , 6,6   ,TIMESTAMP '1906-01-01 00:00:00',TIMESTAMP '1906-06-06 06:06:06','quick brown fox',null)
 
 fetch rdp "rdp_testno 2061 =";
 rows:
@@ -538,7 +538,7 @@ create index rdp_idx_0 on rdp(rdp_testno);
 success
 
 // load data into the table with default formatter settings
-ld rdp "/tmp/rdp_ex.csv";
+ld rdp "/tmp/rdp_ex.csv" enclosed_by_leading "'";
 success
 
 // unable to select 3000 because of min/max's
@@ -709,7 +709,7 @@ rows:
 
 fetch rdp "rdp_testno 2060 =";
 rows:
-(*, 2060,'test 2060', false,false, 6,6 , 6.0e0,6.0e0 , 6,6   ,TIMESTAMP '1906-01-01 00:00:00',TIMESTAMP '1906-06-06 06:06:06','quick brown fox','')
+(*, 2060,'test 2060', false,false, 6,6 , 6.0e0,6.0e0 , 6,6   ,TIMESTAMP '1906-01-01 00:00:00',TIMESTAMP '1906-06-06 06:06:06','quick brown fox',null)
 
 fetch rdp "rdp_testno 2061 =";
 rows:
@@ -756,7 +756,7 @@ rows:
 
 fetch rdp "rdp_testno 2094 =";
 rows:
-(*, 2094,'test 2094', false,null ,-9,null,-9.0e0,null,0,null,TIMESTAMP '1909-01-01 00:00:00',null               ,'quick brown fox','')
+(*, 2094,'test 2094', false,null ,-9,null,-9.0e0,null,0,null,TIMESTAMP '1909-01-01 00:00:00',null               ,'quick brown fox',null)
 
 //fetch rdp "rdp_testno 3000 =";
 //rows:
