@@ -325,11 +325,10 @@ void Tme::vSprintEscaped(Stz* aDst, Stz* aSrc)
     return;
   }
   
-  StrLib::vSprint(aDst,"%02lld:%02lld:%02lld.%03lld%c"_Stz,
+  StrLib::vSprint(aDst,"%02lld:%02lld:%02lld%c"_Stz,
                   aTme->x.m_uHour,
                   aTme->x.m_uMinute,
                   aTme->x.m_uSecond,
-                  aTme->x.m_uMicro,
                   '\0');
 }
 

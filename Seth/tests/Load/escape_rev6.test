@@ -1,0 +1,52 @@
+/*----------------------------------------------------------------------------*/
+/* escape -- escape tests                                                     */
+/*----------------------------------------------------------------------------*/
+
+create table T1 (
+col_id      INTEGER,
+col_vch     VARCHAR(25)
+);
+success
+
+// create an ndex
+create index idx on T1 (col_id);
+success
+
+// load T1 with deafult escape
+ld T1 "../Seth/tests/Load/escape_defaults.csv";
+success
+
+// fetch rows
+fetch T1;
+rows: 9
+
+fetch T1 ;
+rows:
+  (*, 1, null)
+  (*, 2, '''N''')
+  (*, 3, 'N not on its own')
+  (*, 4, '\N not on its own')
+  (*, 5, *)
+  (*, 6, 'Addr 1
+Addr 2')
+  (*, 7, 'Other chars AB')
+  (*, 8, 'Part 1, part 2')
+  (*, 9, 'Dave''s house')
+
+// drop the table
+//drop table T1;
+//success
+
+CLEANUP {
+  
+ // drop table T1;
+ // mute
+
+  bye;
+  mute
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* end                                                                        */
+/*----------------------------------------------------------------------------*/
