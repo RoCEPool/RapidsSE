@@ -1,0 +1,66 @@
+/*----------------------------------------------------------------------------*/
+/* spaces -- leading and trailing spaces tests                                */
+/*----------------------------------------------------------------------------*/
+
+create table T1 (
+  col_id       INTEGER,
+  col_vch      VARCHAR(50)
+);
+success
+
+// create an index
+create index idx on T1 (col_id);
+success
+
+// load T1 with deafult enclosedBy
+ld T1 "../Seth/tests/Load/terminatorVch_rev6.csv" record_terminator "|" record_ends "\n";
+success
+
+// fetch rows
+fetch T1;
+rows: 1
+
+fetch T1;
+rows:
+  (*,300,'ABC')
+
+// drop the table
+drop table T1;
+success
+
+create table T1 (
+  col_id       INTEGER,
+  col_int      INTEGER
+);
+success
+
+// create an index
+create index idx on T1 (col_id);
+success
+
+// load T1 with deafult enclosedBy
+ld T1 "../Seth/tests/Load/terminatorInt_rev6.csv" record_terminator "|" record_ends "\n";
+success
+
+// fetch rows
+fetch T1;
+rows: 1
+
+// drop the table
+drop table T1;
+success
+
+
+CLEANUP {
+  
+  drop table T1;
+  mute
+
+  bye;
+  mute
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* end                                                                        */
+/*----------------------------------------------------------------------------*/
