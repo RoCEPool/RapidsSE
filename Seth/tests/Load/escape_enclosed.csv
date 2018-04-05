@@ -1,3 +1,9 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:77f5eac9f5b297d6d409ceb156189ba7473e1c584fa2e6ed46df0e80173c9e35
-size 546
+1,\N
+2,'\N'
+3,\N not on its own
+4,\\N not on its own
+5,A tab \t
+6,Addr 1\nAddr 2
+7,Other chars \A\B
+8,'Part 1, part 2'
+9,'Dave\'s house'
