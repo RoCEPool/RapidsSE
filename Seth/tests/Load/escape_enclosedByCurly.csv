@@ -1,3 +1,10 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:99abf7b7a23df6a3ff3ff6c3463c3bb20105f087677811b244148b5d5a9cf071
-size 613
+1,\N
+2,{\N}
+3,{\N not on its own}
+4,{\\N not on its own}
+5,{A tab \t}
+6,{Addr 1\nAddr 2}
+7,{Other chars \A\B}
+8,{Part 1, part 2}
+9,{Dave's house}
+10,{{My home\}}
