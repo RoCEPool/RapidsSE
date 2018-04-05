@@ -1,8 +1,10 @@
-enclosed_by.test
-null.test
-spaces.test
+emptyString_rev6.test
+enclosedBy_rev6.test
+escape_rev6.test
+null_rev6.test
 rdp.test
 regressionData.test
+spaces_rev6.test
 terminator_cr.test
 terminatorLarge_cr.test
 terminatorSmall_cr.test
