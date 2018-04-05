@@ -96,7 +96,7 @@ bool Row::bFormatRow(ColumnVec* pColVec,
   for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
 
     Column* pColumn = pColVec->pGet(i_Column);
-    if (13 == pColumn->iColumnNo())
+    if (2 == pColumn->iColumnNo())
       int iDebug = 1;
 
     // extract datum type

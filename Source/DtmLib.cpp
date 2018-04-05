@@ -85,6 +85,7 @@ bool DtmLib::bExtract(eDM eDatum, Stz* aDst, char** aaSrc,
   if (bLastColumn) {
     // do not expect to see a field delimiter
     if ( pFormatters->m_cFieldDelimiter &&
+         pFormatters->m_cRecordTerminator &&
          pFormatters->m_cFieldDelimiter != pFormatters->m_cRecordTerminator &&
          *(*aaSrc) == pFormatters->m_cFieldDelimiter ) {
       // saw a field delimiter after last field (incorrect)
