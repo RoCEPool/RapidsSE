@@ -60,7 +60,7 @@ rows:
 
 fetch vch "vch_testno 510 =";
 rows:
-  (*, 510, 'null', *)
+  (*, 510, null, *)
 
 fetch vch "vch_testno 511 =";
 rows:
@@ -80,7 +80,7 @@ rows:
 
 fetch vch "vch_testno 515 =";
 rows:
-  (*, 515, '', *)
+  (*, 515, null, *)
 
 fetch vch "vch_testno 516 =";
 rows:
