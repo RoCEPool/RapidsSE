@@ -1,0 +1,27 @@
+//------------------------------------------------------------------------------
+
+// escape defaults
+
+ld <TABLENAME> "../Seth/tests/Load/escape_defaults.csv";
+
+\N
+'\N
+\N not on its own
+\\N not on its own
+A tab \t
+Addr 1\nAddr 2
+Other chars \A\B
+Part 1\, part 2	Part 1, part 2
+
+//------------------------------------------------------------------------------
+// expected results
+
+<null value>
+'N'
+N not on its own
+\N not on its own
+A tab <x09>
+Addr 1<x0A>Addr 2
+Other chars AB
+Part 1, part 2
+Dave’s house
