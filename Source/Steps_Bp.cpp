@@ -183,14 +183,15 @@ void Task::vFreeSpace(MP_Task mpTask)
   ENTRY("vFreeSpace"_Stz);
   
   i8 iFreeSpace = gpBufferPool->iFreeSpace();
-  
-  mpTask->m_pDataStack->vPushInt(iFreeSpace);
+  i8 iFreeSpaceInPool = BPA::iPoolFree();
+
+  mpTask->m_pDataStack->vPushInt(iFreeSpace + iFreeSpaceInPool);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* bp::inUseSpace -- push in-use space in buffer pool onto stack               */
+/* bp::inUseSpace -- push in-use space in buffer pool onto stack              */
 /*----------------------------------------------------------------------------*/
 void Task::vInUseSpace(MP_Task mpTask)
 {
@@ -198,7 +199,8 @@ void Task::vInUseSpace(MP_Task mpTask)
   
   i8 iInUseSpace = gpAttachMap->m_iRegionSize
                      - gpAttachMap->m_iJumboSize
-                     - gpBufferPool->iFreeSpace();
+                     - gpBufferPool->iFreeSpace()
+                     - BPA::iPoolFree();
   
   mpTask->m_pDataStack->vPushInt(iInUseSpace);
   

@@ -485,6 +485,25 @@ void BPA::vPoolDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get free space in the pool                                                 */
+/*----------------------------------------------------------------------------*/
+i8 BPA::iPoolFree(void)
+{
+  i8 iTransientSmall   = gpAttachMap->m_pTransientSmallHeap->iFreeCount() * C_SIZE_SMALL_OBJECT;
+  i8 iTransientMedium  = gpAttachMap->m_pTransientMediumHeap->iFreeCount() * C_SIZE_MEDIUM_OBJECT;
+  i8 iTransientLarge   = gpAttachMap->m_pTransientLargeHeap->iFreeCount() * C_SIZE_LARGE_OBJECT;
+  i8 iPersistentSmall  = gpAttachMap->m_pCarryOver->m_pPersistentSmallHeap->iFreeCount() * C_SIZE_SMALL_OBJECT;
+  i8 iPersistentMedium = gpAttachMap->m_pCarryOver->m_pPersistentMediumHeap->iFreeCount() * C_SIZE_MEDIUM_OBJECT;
+  i8 iPersistentLarge  = gpAttachMap->m_pCarryOver->m_pPersistentLargeHeap->iFreeCount() * C_SIZE_LARGE_OBJECT;
+
+  i8 iTotalFree =
+    iTransientSmall + iTransientMedium + iTransientLarge +
+    iPersistentSmall + iPersistentMedium + iPersistentLarge;
+  
+  return iTotalFree;
+}
+
+/*----------------------------------------------------------------------------*/
 /* read all the buffer pool buffers from file                                 */
 /*----------------------------------------------------------------------------*/
 void BPA::vReadBuffers(Stz* sFilePath)
@@ -549,7 +568,7 @@ void BPA::vRegionSummary()
          gpAttachMap->m_pTransientMediumHeap->iFreeCount());
   
   vTrace("   Transitent LargeHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
-         sMagJumbo.aChar(),
+         sMagLarge.aChar(),
          gpAttachMap->m_pTransientLargeHeap->iBufferCount(),
          gpAttachMap->m_pTransientLargeHeap->iAllocCount(),
          gpAttachMap->m_pTransientLargeHeap->iFreeCount());

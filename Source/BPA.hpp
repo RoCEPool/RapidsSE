@@ -19,6 +19,8 @@ namespace Pool
     BPA(void);
     ~BPA(void);
     
+    static i8 iPoolFree(void);
+    
     void vBufferDump(Buffer* pBuffer);
     void vHeapDump(Heap* pBuffer);
     void vHeapDump(Heap* pBuffer, i8 iEpoch);
@@ -26,7 +28,7 @@ namespace Pool
     void vObjectSummary(void);
     void vObjectSnapshot(i8* pCountObjects);
     void vPoolAnalyze(void);
-    void vPoolDump(void);
+    void vPoolDump(void);    
     void vReadBuffers(Stz* sFilePath);
     void vRegionSummary(void);
     void vResourceSummary(void);
