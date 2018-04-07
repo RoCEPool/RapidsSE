@@ -60,7 +60,7 @@ rows:
 
 select vch_field from vch where vch_testno = 510;
 rows:
-  ('null')
+  (null)
 
 select vch_field from vch where vch_testno = 511;
 rows:
@@ -80,7 +80,7 @@ rows:
 
 select vch_field from vch where vch_testno = 515;
 rows:
-  ('')
+  (null)
 
 select vch_field from vch where vch_testno = 516;
 rows:

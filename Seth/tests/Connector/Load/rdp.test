@@ -207,7 +207,7 @@ rows:
 
 select * from rdp where rdp_testno = 2060 ;
 rows:
-  (2060,'test 2060', false,false, 6,6 , 6.0e0,6.0e0 , 6,6   ,TIMESTAMP '1906-01-01 00:00:00',TIMESTAMP '1906-06-06 06:06:06','quick brown fox','')
+  (2060,'test 2060', false,false, 6,6 , 6.0e0,6.0e0 , 6,6   ,TIMESTAMP '1906-01-01 00:00:00',TIMESTAMP '1906-06-06 06:06:06','quick brown fox',null)
 
 select * from rdp where rdp_testno = 2061 ;
 rows:
@@ -250,11 +250,11 @@ rows:
 
 select * from rdp where rdp_testno = 2093 ;
 rows:
-(2093,'test 2093', false,null ,-9,null,-9.0e0,null,0,null,TIMESTAMP '1909-01-01 00:00:00',null               ,'quick brown fox','null')
+(2093,'test 2093', false,null ,-9,null,-9.0e0,null,0,null,TIMESTAMP '1909-01-01 00:00:00',null               ,'quick brown fox',null)
 
 select * from rdp where rdp_testno = 2094 ;
 rows:
-(2094,'test 2094', false,null ,-9,null,-9.0e0,null,0,null,TIMESTAMP '1909-01-01 00:00:00',null               ,'quick brown fox','')
+(2094,'test 2094', false,null ,-9,null,-9.0e0,null,0,null,TIMESTAMP '1909-01-01 00:00:00',null               ,'quick brown fox',null)
 
 // seth giving errors with max values (?)
 // rdp not liking timestamp
@@ -475,7 +475,7 @@ rows:
 
 select * from rdp where rdp_testno = 2060 ;
 rows:
-(2060,'test 2060', false,false, 6,6 , 6.0e0,6.0e0 , 6,6   ,TIMESTAMP '1906-01-01 00:00:00',TIMESTAMP '1906-06-06 06:06:06','quick brown fox','')
+(2060,'test 2060', false,false, 6,6 , 6.0e0,6.0e0 , 6,6   ,TIMESTAMP '1906-01-01 00:00:00',TIMESTAMP '1906-06-06 06:06:06','quick brown fox',null)
 
 select * from rdp where rdp_testno = 2061 ;
 rows:
@@ -522,7 +522,7 @@ rows:
 
 select * from rdp where rdp_testno = 2094 ;
 rows:
-(2094,'test 2094', false,null ,-9,null,-9.0e0,null,0,null,TIMESTAMP '1909-01-01 00:00:00',null               ,'quick brown fox','')
+(2094,'test 2094', false,null ,-9,null,-9.0e0,null,0,null,TIMESTAMP '1909-01-01 00:00:00',null               ,'quick brown fox',null)
 
 
 // seth giving errors with max values (?)
@@ -740,7 +740,7 @@ rows:
 
 select * from rdp2 where rdp_testno = 2060 ;
 rows:
-(2060,'test 2060', false,false, 6,6 , 6.0e0,6.0e0 , 6,6   ,TIMESTAMP '1906-01-01 00:00:00',TIMESTAMP '1906-06-06 06:06:06','quick brown fox','')
+(2060,'test 2060', false,false, 6,6 , 6.0e0,6.0e0 , 6,6   ,TIMESTAMP '1906-01-01 00:00:00',TIMESTAMP '1906-06-06 06:06:06','quick brown fox',null)
 
 select * from rdp2 where rdp_testno = 2061 ;
 rows:
@@ -787,7 +787,7 @@ rows:
 
 select * from rdp2 where rdp_testno = 2094 ;
 rows:
-(2094,'test 2094', false,null ,-9,null,-9.0e0,null,0,null,TIMESTAMP '1909-01-01 00:00:00',null               ,'quick brown fox','')
+(2094,'test 2094', false,null ,-9,null,-9.0e0,null,0,null,TIMESTAMP '1909-01-01 00:00:00',null               ,'quick brown fox',null)
 
 // seth giving errors with max values (?)
 // rdp not liking timestamp
