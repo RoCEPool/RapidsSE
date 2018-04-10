@@ -84,6 +84,7 @@ namespace DBobjects
     i8           iDecile(void);
     void         vDeleteEntry(Entry** ppEntry);
     void         vDump(void);
+    EntryBuffer* pFirstChildBuffer(void);
     Entry*       pFirstEntry(void);
     Entry*       pGetEntryNo(i8 i_Entry);
     static Entry* pInsertKeyTree(KeyWrk& xKeyWrk,

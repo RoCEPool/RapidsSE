@@ -560,6 +560,26 @@ void EntryBuffer::vDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get first child buffer                                                     */
+/*----------------------------------------------------------------------------*/
+EntryBuffer* EntryBuffer::pFirstChildBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+#ifdef EB_LAZY_CHAIN
+  RASSERT( ! m_pLazyChain );
+  
+  //if (m_pLazyChain)
+  //  vBuildSkipList();
+#endif
+  
+  Entry* pFirstEntry = this->pFirstEntry();
+  EntryBuffer* pChildEntryBuffer = pFirstEntry->pReferencedEntryBuffer();
+  
+  return pChildEntryBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get first entry                                                            */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pFirstEntry(void)
