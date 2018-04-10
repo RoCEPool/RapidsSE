@@ -214,7 +214,7 @@ void Task::vIndexCompact(MP_Task mpTask)
     THROW_INVALID_DSTACK("index.compact"_Stz);
   
   s48K sAnalysis;
-  sAnalysis = (Stz*)pIndex->pTable()->pAnalyzeIndex(pIndex, iDetailed == 1 ? true : false);
+  sAnalysis = (Stz*)pIndex->pTable()->pCompactIndex(pIndex, iDetailed == 1 ? true : false);
   mpTask->m_pDataStack->vPushS48K(sAnalysis);
   
   EXIT();
