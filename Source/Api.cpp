@@ -1365,17 +1365,22 @@ eEC RapidsSE_GetColumns(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema,
       sColumns.vConcat(" "_Stz);
       sColumns.vConcat(aCT[pColumn->eColumnType()]);
       
-      sColumns.vConcat("("_Stz);
-      i8 iPrecision = pColumn->iColumnLength();
-      StrLib::wToString(iPrecision, sValue.aChar());
-      sColumns.vConcat(sValue);
-      
-      if (pColumn->eColumnType() == CT_DECIMAL) {
-        sColumns.vConcat(","_Stz);
-        StrLib::wToString(pColumn->iColumnScale(), sValue.aChar());
+      // no precision/scale for boolean and timestamps
+      if (pColumn->eColumnType() != CT_TIMESTAMP &&
+          pColumn->eColumnType() != CT_BOOLEAN) {
+        
+        sColumns.vConcat("("_Stz);
+        i8 iPrecision = pColumn->iColumnLength();
+        StrLib::wToString(iPrecision, sValue.aChar());
         sColumns.vConcat(sValue);
+        
+        if (pColumn->eColumnType() == CT_DECIMAL) {
+          sColumns.vConcat(","_Stz);
+          StrLib::wToString(pColumn->iColumnScale(), sValue.aChar());
+          sColumns.vConcat(sValue);
+        }
+        sColumns.vConcat(")"_Stz);
       }
-      sColumns.vConcat(")"_Stz);
       
       // check for NULLABLE
       sColumns.vConcat(pColumn->bIsNullable() ?
