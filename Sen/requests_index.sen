@@ -114,7 +114,7 @@ timer: pIdxSelectTimer
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // analyse the index
+  // compact the index
   bDetailed not if
     args.metadata if
       "(nodeName VARCHAR, partition INTEGER, buffers INTEGER, entries INTEGER)"
@@ -122,7 +122,7 @@ timer: pIdxSelectTimer
     then
   then
 
-  bDetailed sIndexNm analyzeIndex ( )
+  bDetailed sIndexNm compactIndex ( )
 
   // set no of rows processed equal to total no of partitions
   grid.partitions task::this task.seitf@ seitf.rowsProcessed

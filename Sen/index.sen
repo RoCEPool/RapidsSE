@@ -343,6 +343,20 @@ pResultBuffer pSeitf seitf.bufferQueue@ queue.append
 ;
 
 /*----------------------------------------------------------------------------*/
+/* compact an index of a table                                                */
+/*----------------------------------------------------------------------------*/
+: compactIndex allParticipants 2 returnResult ( detailed "<indexNm>" -- true n# true )
+
+  tp: compactIndex
+
+  find execute
+
+  index.analyze
+
+  <SUCCESS_RESULT>
+;
+
+/*----------------------------------------------------------------------------*/
 /* get index pointer and put into task.seitf.currentIndex                     */
 /*----------------------------------------------------------------------------*/
 : getIndex ( "<indexNm>" "<tableNm>" -- <R> )
