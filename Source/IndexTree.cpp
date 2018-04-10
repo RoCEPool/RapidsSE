@@ -165,6 +165,34 @@ void IndexTree::vDump(bool bSameLevel)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the first L1 buffer                                                    */
+/*----------------------------------------------------------------------------*/
+EntryBuffer* IndexTree::pFirstL1Buffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  
+  EntryBuffer* pEntryBuffer = m_pRoot;
+  
+  if ( ! pEntryBuffer )
+    return nullptr;
+  
+  if (pEntryBuffer->iBufferLevel() == 1)
+    return pEntryBuffer;
+  
+  while (pEntryBuffer) {
+    
+    Entry* pFirstEntry = pEntryBuffer->pFirstEntry();
+    pEntryBuffer = pFirstEntry->pReferencedEntryBuffer();
+    
+    if (pEntryBuffer->iBufferLevel() == 1) {
+      return pEntryBuffer;
+    }
+  }
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the first L0 buffer                                                    */
 /*----------------------------------------------------------------------------*/
 EntryBuffer* IndexTree::pFirstL0Buffer(void)

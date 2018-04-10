@@ -45,7 +45,8 @@ namespace DBobjects
     void         vAppendBuffer(EntryBuffer* pEntryBuffer);
     void         vCompact(void);
     void         vDump(bool bSameLevel);
-    EntryBuffer* pFirstL0Buffer();
+    EntryBuffer* pFirstL1Buffer(void);
+    EntryBuffer* pFirstL0Buffer(void);
     Index*       pIndex(void);
     i8           nEntryBuffers(void);
     
