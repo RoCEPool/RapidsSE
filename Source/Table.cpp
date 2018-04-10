@@ -256,7 +256,15 @@ Stz* Table::pCompactIndex(Index* pIndex, bool bDetailed)
                            pIndex->aIndexName()->aChar(),
                            m_sTableName.aChar());
   }
+  for (i8 iSlot = 0; iSlot < gpAttachMap->m_pGrid->m_nSlots; iSlot++) {
+    
+    i8 iPartition = Partition::iSlotToPartition(iSlot);
+    
+    IndexTree *pIndexTree = pPartition(iSlot)->pIndexTree(pIndex->iIndexNo());
+    
+  }
   
+  /*
   for (i8 iSlot = 0; iSlot < gpAttachMap->m_pGrid->m_nSlots; iSlot++) {
     
     i8 iPartition = Partition::iSlotToPartition(iSlot);
@@ -293,6 +301,7 @@ Stz* Table::pCompactIndex(Index* pIndex, bool bDetailed)
                          "        total: %3lld buffers; %5lld entries\n"_Stz,
                          nBuffersTotal,
                          nEntriesTotal);
+  */
   
   return sAnalysis;
 }
