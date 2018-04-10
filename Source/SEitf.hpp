@@ -180,6 +180,7 @@ namespace Interface
     bool bListPartitionColumns(TokenVec& xTokenVec, i8 iReqNo);
     
     bool bAnalyzeIndex(TokenVec& xTokenVec, i8 iReqNo);
+    bool bCompactIndex(TokenVec& xTokenVec, i8 iReqNo);
     bool bDanalyzeIndex(TokenVec& xTokenVec, i8 iReqNo);
     bool bGetIndex(TokenVec& xTokenVec, i8 iReqNo);
     bool bRetIndex(TokenVec& xTokenVec, i8 iReqNo);

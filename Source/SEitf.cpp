@@ -22,6 +22,7 @@ ReqTable SeRequests[] =
  { "addpartcol"_Stz,     &SEitf::bAddPartitionColumn,   "addPartColumn_req"_Stz   },
  { "cf"_Stz,             &SEitf::bChangeFolder,         "cf_req"_Stz              },
  { "checkpoint"_Stz,     &SEitf::bCheckpoint,           "checkpoint_req"_Stz      },
+ { "compactidx"_Stz,     &SEitf::bCompactIndex,         "compactIndex_req"_Stz    },
  { "connectCluster"_Stz, &SEitf::bConnectCluster,       "connectCluster_req"_Stz  },
  { "cp"_Stz,             &SEitf::bCopyTable,            "copyTable_req"_Stz       },
  { "danidx"_Stz,         &SEitf::bDanalyzeIndex,        "danalyzeIndex_req"_Stz   },
@@ -2425,6 +2426,34 @@ bool SEitf::bAnalyzeIndex(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(xTokenVec[1]->aText());
   sRequest.vConcat("\""_Stz);
 
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* compact an index                                                           */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bCompactIndex(TokenVec& xTokenVec, i8 iReqNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  if (xTokenVec.nTokens() != 3) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  sRequest.vCopy("\""_Stz);
+  sRequest.vConcat(xTokenVec[2]->aText());
+  sRequest.vConcat("\""_Stz);
+  
+  sRequest.vConcat("\""_Stz);
+  sRequest.vConcat(xTokenVec[1]->aText());
+  sRequest.vConcat("\""_Stz);
+  
   sRequest.vConcat(" "_Stz);
   sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
