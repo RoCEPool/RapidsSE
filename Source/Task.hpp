@@ -681,6 +681,7 @@ namespace Tasks
     static void vIndexColumnCount(MP_Task mpTask);
     static void vIndexColumnName(MP_Task mpTask);
     static void vIndexColumnType(MP_Task mpTask);
+    static void vIndexCompact(MP_Task mpTask);
     static void vIndexCreateColumnVec(MP_Task mpTask);
     static void vIndexDump(MP_Task mpTask);
     static void vIndexExactKey(MP_Task mpTask);

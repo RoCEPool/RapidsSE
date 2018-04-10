@@ -22,6 +22,7 @@ void Task::vAddPrimitives_Index(void)
   vAddPrimitive("index.columnCount"_Stz,     &vIndexColumnCount,     false);
   vAddPrimitive("index.columnName"_Stz,      &vIndexColumnName,      false);
   vAddPrimitive("index.columnType"_Stz,      &vIndexColumnType,      false);
+  vAddPrimitive("index.compact"_Stz,         &vIndexCompact,         false);
   vAddPrimitive("index.createColumnVec"_Stz, &vIndexCreateColumnVec, false);
   vAddPrimitive("index.dump"_Stz,            &vIndexDump,            false);
   vAddPrimitive("index.exactKey"_Stz,        &vIndexExactKey,        false);
@@ -189,6 +190,32 @@ void Task::vIndexColumnType(MP_Task mpTask)
   s32 sColumnType = DBobjects::aCT[pColumn->eColumnType()];
   
   mpTask->m_pDataStack->vPushS32(sColumnType);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index.compact -- index compaction                                          */
+/*----------------------------------------------------------------------------*/
+void Task::vIndexCompact(MP_Task mpTask)
+{
+  ENTRY("vIndexCompact"_Stz);
+  
+  Object* pPtrIndex;
+  i8 iDetailed;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
+    THROW_INVALID_DSTACK("index.compact"_Stz);
+  
+  Index* pIndex = _pIndex(pPtrIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  if ( ! mpTask->m_pDataStack->bPop(iDetailed) )
+    THROW_INVALID_DSTACK("index.compact"_Stz);
+  
+  s48K sAnalysis;
+  sAnalysis = (Stz*)pIndex->pTable()->pAnalyzeIndex(pIndex, iDetailed == 1 ? true : false);
+  mpTask->m_pDataStack->vPushS48K(sAnalysis);
   
   EXIT();
 }
