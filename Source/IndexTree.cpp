@@ -146,18 +146,29 @@ void IndexTree::vCompact(void)
     
     vTrace("  Compacting L1 %p\n"_Stz,pL1);
 
-    EntryBuffer* pLeftL0 = pL1->pFirstChildBuffer();
+    // get the first L0 of current L1
+    EntryBuffer* pFirstLeftL0 = pL1->pFirstChildBuffer();
     
-    EntryBuffer* pSubList = pLeftL0->pUnlinkSubList();
+    // get the sublist after the first L0 of current L1
+    EntryBuffer* pSubList = pFirstLeftL0->pUnlinkSubList();
+    if (! pSubList)
+      continue;
     
+    // copy each key entry in each L0 of sublist leftwards into (new) L0 buffers
+    
+    EntryBuffer* pLeftL0 = pFirstLeftL0;
+    
+    // each right L0 in sublist
     while (EntryBuffer* pRightL0 = pPopSubList(&pSubList)) {
    
+      // copy contents of right L0 leftwards
       vCopyLeft(&pLeftL0,pRightL0);
       
+      // delete the right L0
       delete pRightL0;
     }
-    
   }
+  
 }
 
 /*----------------------------------------------------------------------------*/
