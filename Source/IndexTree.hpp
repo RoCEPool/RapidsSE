@@ -44,7 +44,7 @@ namespace DBobjects
                                           Entry** ppFirstEntry);
     void         vAppendBuffer(EntryBuffer* pEntryBuffer);
     void         vCompact(void);
-    void         vCopyLeft(EntryBuffer** ppDstL0, EntryBuffer* pSrcL0);
+    void         vCopyLeft(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0);
     void         vDump(bool bSameLevel);
     EntryBuffer* pFirstL1Buffer(void);
     EntryBuffer* pFirstL0Buffer(void);
@@ -53,6 +53,7 @@ namespace DBobjects
     
     void         vInsertEntriesFromBuffer(EntryBuffer* pEntryBuffer, Entry* pRowEntry);
     void         vLazyBuild(void);
+    EntryBuffer* pPopSubList(EntryBuffer** ppSubList);
     EntryBuffer* pPositionLevel(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare, i8 iLevel);
     EntryBuffer* pRoot(void);
     void         vTidyUp(void);

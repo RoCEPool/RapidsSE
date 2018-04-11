@@ -144,7 +144,12 @@ void IndexTree::vCompact(void)
   
   for (EntryBuffer* pL1 = pFirstL1Buffer(); pL1; pL1 = pL1->pNextBuffer()) {
     
-    vTrace("  L1 %p\n"_Stz,pL1);
+    vTrace("  Compacting L1 %p\n"_Stz,pL1);
+    
+    EntryBuffer* pLeftL0 = pL1->pFirstChildBuffer();
+    
+    EntryBuffer* pSubList = pLeftL0->pUnlinkSubList();
+    
   }
   
 }
@@ -152,7 +157,7 @@ void IndexTree::vCompact(void)
 /*----------------------------------------------------------------------------*/
 /* copy left (from src to dst)                                                */
 /*----------------------------------------------------------------------------*/
-void IndexTree::vCopyLeft(EntryBuffer** ppDstL0, EntryBuffer* pSrcL0)
+void IndexTree::vCopyLeft(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
@@ -473,6 +478,25 @@ void IndexTree::vLazyBuild(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   m_pRoot->vLazyBuild();
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop entry buffer from sub list                                             */
+/*----------------------------------------------------------------------------*/
+EntryBuffer* IndexTree::pPopSubList(EntryBuffer** ppSubList)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+
+  EntryBuffer* pTopBuffer = *ppSubList;
+  
+  *ppSubList = (*ppSubList)->pNextBuffer();
+  
+  pTopBuffer->vNextBuffer(nullptr);
+  pTopBuffer->vPrevBuffer(nullptr);
+  
+  (*ppSubList)->vPrevBuffer(nullptr);
+  
+  return pTopBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
