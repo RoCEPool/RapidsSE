@@ -648,6 +648,70 @@ bool EntryBuffer::bHasSpace(i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
+/* insert a key entry specifically into this buffer (should be enough space)  */
+/*----------------------------------------------------------------------------*/
+Entry* EntryBuffer::pInsertKeyAbs(KeyWrk& xKeyWrk)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  Entry* pKeyEntry;
+  
+#ifdef EB_LAZY_CHAIN
+  if (m_pIndex->pTable()->bIsLoading()) {
+    if (! m_iBufferLevel) {
+      pKeyEntry = pInsertKeyAbsLazy(xKeyWrk);
+      return pKeyEntry;
+    }
+  }
+#endif
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // trace
+  
+  //vTrace("Inserting key: "_Stz);
+  //IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  //xKeyWrk.aKey()->vShow(pIdxColVec);
+  //vTrace("\n"_Stz);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compute required entry space
+  
+  RASSERT(xKeyWrk.nOffsets());
+  
+  i8 nEntryBytes = xKeyWrk.nEntrySize();
+  i8 nOffsetBytes = xKeyWrk.nOffsetSize();
+  i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
+  
+  RASSERT(bHasSpace(nEntryPlusOffsets));
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // allocate space for the key and next offsets in this buffer
+  
+  pKeyEntry = pAllotEntry(nEntryBytes);
+  ASSERT(pKeyEntry);
+  
+  NEO* aNEO = aAllotNEO(nOffsetBytes);
+  ASSERT(aNEO);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the key entry
+  
+  pKeyEntry->vSetEntry(xKeyWrk);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // insert the key entry into the skip list
+  
+  vInsertKeySkip(pKeyEntry);
+  
+  //if (! m_pIndex->bIsHidden() && m_iBufferLevel)
+  //  bVerifyAdjacent();
+  
+  //vShow();
+  
+  return pKeyEntry;
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert a new key entry into this key tree                                  */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pInsertKeyTree(KeyWrk& xKeyWrk,
@@ -2198,70 +2262,6 @@ EntryBuffer* EntryBuffer::pInsertableBuffer(KeyWrk& xKeyWrk,
   }
  
   return pInsertIntoBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* insert a key entry specifically into this buffer (should be enough space)  */
-/*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pInsertKeyAbs(KeyWrk& xKeyWrk)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  Entry* pKeyEntry;
-  
-#ifdef EB_LAZY_CHAIN
-  if (m_pIndex->pTable()->bIsLoading()) {
-    if (! m_iBufferLevel) {
-      pKeyEntry = pInsertKeyAbsLazy(xKeyWrk);
-      return pKeyEntry;
-    }
-  }
-#endif
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // trace
-  
-  //vTrace("Inserting key: "_Stz);
-  //IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  //xKeyWrk.aKey()->vShow(pIdxColVec);
-  //vTrace("\n"_Stz);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // compute required entry space
-  
-  RASSERT(xKeyWrk.nOffsets());
-  
-  i8 nEntryBytes = xKeyWrk.nEntrySize();
-  i8 nOffsetBytes = xKeyWrk.nOffsetSize();
-  i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
-  
-  RASSERT(bHasSpace(nEntryPlusOffsets));
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // allocate space for the key and next offsets in this buffer
-  
-  pKeyEntry = pAllotEntry(nEntryBytes);
-  ASSERT(pKeyEntry);
-  
-  NEO* aNEO = aAllotNEO(nOffsetBytes);
-  ASSERT(aNEO);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set the key entry
-  
-  pKeyEntry->vSetEntry(xKeyWrk);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // insert the key entry into the skip list
-  
-  vInsertKeySkip(pKeyEntry);
-  
-  //if (! m_pIndex->bIsHidden() && m_iBufferLevel)
-  //  bVerifyAdjacent();
-  
-  //vShow();
-  
-  return pKeyEntry;
 }
 
 /*----------------------------------------------------------------------------*/

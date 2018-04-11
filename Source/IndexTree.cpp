@@ -144,9 +144,8 @@ void IndexTree::vCompact(void)
   
   for (EntryBuffer* pL1 = pFirstL1Buffer(); pL1; pL1 = pL1->pNextBuffer()) {
     
-    vTrace("  Compacting L1 %p\n"_Stz,pL1);    bool         bHasSpace(i8 nBytes);
+    vTrace("  Compacting L1 %p\n"_Stz,pL1);
 
-    
     EntryBuffer* pLeftL0 = pL1->pFirstChildBuffer();
     
     EntryBuffer* pSubList = pLeftL0->pUnlinkSubList();
@@ -197,7 +196,17 @@ void IndexTree::vCopyLeft(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
 
     if (! pLeftL0->bHasSpace(nEntryPlusOffsets)) {
       
+      EntryBuffer* pNewLeftL0 = new EntryBuffer;
+      
+      pLeftL0->vSpliceAfter(pNewLeftL0);
+      
+      *ppLeftL0 = pNewLeftL0;
+      
+      pLeftL0 = pNewLeftL0;
     }
+    
+    Entry* pLeftEntryL0 = pLeftL0->pInsertKeyAbs(xKeyWrk);
+    
   }
 
 }

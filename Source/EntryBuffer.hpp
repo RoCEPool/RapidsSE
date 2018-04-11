@@ -88,6 +88,7 @@ namespace DBobjects
     Entry*       pFirstEntry(void);
     Entry*       pGetEntryNo(i8 i_Entry);
     bool         bHasSpace(i8 nBytes);
+    Entry*       pInsertKeyAbs(KeyWrk& xKeyWrk);
     static Entry* pInsertKeyTree(KeyWrk& xKeyWrk,
                                  EntryBuffer** ppRootKeyBuffer);
     void         vLazyBuild(void);
@@ -141,7 +142,6 @@ namespace DBobjects
     void         vHeadEntryRestore(void);
     EntryBuffer* pInsertableBuffer(KeyWrk& xKeyWrk,
                                    EntryBuffer** ppRootKeyBuffer);
-    Entry*       pInsertKeyAbs(KeyWrk& xKeyWrk);
     Entry*       pInsertKeyAbsLazy(KeyWrk& xKeyWrk);
     Entry*       pInsertKeyAbsL0(KeyWrk& xKeyWrk, Entry** ppPriorEntry);
     void         vInsertKeySkip(Entry* pKeyEntry);
