@@ -22,16 +22,18 @@ create table lineitem (
 
 );
 
-CREATE INDEX idx ON lineitem(l_partkey);
-
 print "loading lineitem.tbl..." ;
 
 timerStart;
 ld lineitem "/tpch/lineitem.tbl" ;
 timerEnd;
 
-anidx lineitem idx;
+print "creating index on l_partkey...";
 
+CREATE INDEX idx ON lineitem(l_partkey);
+
+anidx lineitem hidden;
+anidx lineitem idx;
 visidx lineitem idx;
 
 //                                              ----
