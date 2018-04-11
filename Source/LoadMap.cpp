@@ -310,26 +310,25 @@ bool LoadMap::bNextChunk(i8& iSeek, i8& nBytes, i8& iChunk, i8& nChunks)
   }
   ASSERT(m_iNext < m_iEntries);
   
+  // a subsequent subordinate calling this func will get the next entry
+  // save m_iNext before incrementing
+  iChunk  = m_iNext++;
+  
+  // now ok to drop the lock
+  m_zLock.vDropWrite();
+  
   // - a seekmap holds ending offsets only
-
-  iChunk  = m_iNext;
   nChunks = m_iEntries;
   
   // calculate starting seek offset of next read-chunk
-  if (0 == m_iNext)
+  if (0 == iChunk)
     iSeek = 0;
   else
-    iSeek = m_iEolOffset[m_iNext - 1] + 1;
+    iSeek = m_iEolOffset[iChunk - 1] + 1;
   
   // calculate the number of bytes in the read-chunk
-  i8 iEnd = m_iEolOffset[m_iNext];
+  i8 iEnd = m_iEolOffset[iChunk];
   nBytes  = iEnd - iSeek + 1;
-  
-  // a subsequent subordinate calling this func will get the next entry
-  m_iNext++;
-  
-  
-  m_zLock.vDropWrite();
   
   return true;
 }
