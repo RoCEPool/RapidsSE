@@ -1073,6 +1073,33 @@ void EntryBuffer::vShowTree(bool bDumpBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
+/* splice the given buffer after this buffer                                  */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vSpliceAfter(EntryBuffer* pSplicedBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  EntryBuffer* pThisBuffer = this;
+  EntryBuffer* pNextBuffer = pThisBuffer->pNextBuffer();
+  
+  // the spliced buffer is always inserted after this buffer
+  pThisBuffer->vNextBuffer(pSplicedBuffer);
+  pSplicedBuffer->vNextBuffer(pNextBuffer);
+  pSplicedBuffer->vPrevBuffer(pThisBuffer);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // circumstance (a), no next buffer
+  
+  if (! pNextBuffer)
+    return;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // circumstance (b), next buffer
+  
+  pNextBuffer->vPrevBuffer(pSplicedBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
 /* truncate this buffer by removing all entries                               */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vTruncate(void)
@@ -1133,28 +1160,30 @@ EntryBuffer* EntryBuffer::pUnlinkSubList(void)
   EntryBuffer* pNextL0 = pThisL0->pNextBuffer();
   EntryBuffer* pNextL1 = pThisL1->pNextBuffer();
 
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // circumstance (a) no more L0
 
   if (! pNextL0)
     return nullptr;
   
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // circumstance (b) only one L0 under L1
 
   if (pNextL0->pHigherBuffer() != pHigherBuffer())
     return nullptr;
 
+  //----------------------------------------------------------------------------
   //
   // - there is a sublist
   //
+  //----------------------------------------------------------------------------
   
   EntryBuffer* pThisL0SubList = pNextL0;
   
   // the sublist no longer points back to this L0
   pThisL0SubList->vPrevBuffer(nullptr);
   
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // circumstance (c) last L1, there is a sublist
 
   if (! pNextL1) {
@@ -1165,7 +1194,7 @@ EntryBuffer* EntryBuffer::pUnlinkSubList(void)
     return pThisL0SubList;
   }
   
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // circumstance (d) middle L1, there is a sublist
   
   EntryBuffer* pFirstL0ofNextL1 = pNextL1->pFirstChildBuffer();
