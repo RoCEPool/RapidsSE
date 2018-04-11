@@ -150,8 +150,14 @@ void IndexTree::vCompact(void)
     
     EntryBuffer* pSubList = pLeftL0->pUnlinkSubList();
     
+    while (EntryBuffer* pRightL0 = pPopSubList(&pSubList)) {
+   
+      vCopyLeft(&pLeftL0,pRightL0);
+      
+      delete pRightL0;
+    }
+    
   }
-  
 }
 
 /*----------------------------------------------------------------------------*/
