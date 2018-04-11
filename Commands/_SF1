@@ -30,7 +30,9 @@ timerEnd;
 
 print "creating index on l_partkey...";
 
+timerStart;
 CREATE INDEX idx ON lineitem(l_partkey);
+timerEnd;
 
 anidx lineitem hidden;
 anidx lineitem idx;
