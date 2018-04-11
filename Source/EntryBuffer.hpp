@@ -102,6 +102,7 @@ namespace DBobjects
     void         vRestore(void);
     void         vShow(void);
     void         vShowShort(void);
+    void         vShowSubList(void);
     void         vShowTree(bool bDumpBuffer=false);
     void         vSpliceAfter(EntryBuffer* pSplicedBuffer);
     void         vTruncate(void);

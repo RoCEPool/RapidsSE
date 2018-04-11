@@ -250,7 +250,7 @@ void IndexTree::vCopyLeft(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
     
     if (1 == pLeftL0->nItems()) {
 
-      i8 iLeftL0BufferNo = *(pLeftL0->nBufferNo());
+      i8 iLeftL0BufferNo = pLeftL0->iBufferNo();
       xId.vBuffer(iLeftL0BufferNo);
       xLeftKeyWrk.vId(xId);
       
