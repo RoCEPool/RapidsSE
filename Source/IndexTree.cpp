@@ -144,7 +144,8 @@ void IndexTree::vCompact(void)
   
   for (EntryBuffer* pL1 = pFirstL1Buffer(); pL1; pL1 = pL1->pNextBuffer()) {
     
-    vTrace("  Compacting L1 %p\n"_Stz,pL1);
+    vTrace("  Compacting L1 %p\n"_Stz,pL1);    bool         bHasSpace(i8 nBytes);
+
     
     EntryBuffer* pLeftL0 = pL1->pFirstChildBuffer();
     
@@ -167,6 +168,38 @@ void IndexTree::vCopyLeft(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
+  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  
+  KeyWrk xKeyWrk;
+
+  
+  EntryBuffer* pLeftL0 = *ppLeftL0;
+  
+  for (Entry* pRightEntry = pRightL0->pFirstEntry();
+       pRightEntry;
+       pRightEntry = pRightL0->pNextEntry(pRightEntry,0)) {
+    
+    i8 iTxId = pRightEntry->iTxId();
+    Id xId = pRightEntry->xId();
+    Key* aKey = pRightEntry->aKey();
+    i8 nKeySize = aKey->nKeySize(pIdxColVec);
+    i8 nOffsets = pRightEntry->nOffsets();
+    
+    xKeyWrk.vTxId(iTxId);
+    xKeyWrk.vId(xId);
+    xKeyWrk.vEmbedded((char*)aKey);
+    xKeyWrk.vKeySize(nKeySize);
+    xKeyWrk.vOffsets(nOffsets);
+    
+    i8 nEntryBytes = xKeyWrk.nEntrySize();
+    i8 nOffsetBytes = xKeyWrk.nOffsetSize();
+    i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
+
+    if (! pLeftL0->bHasSpace(nEntryPlusOffsets)) {
+      
+    }
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
