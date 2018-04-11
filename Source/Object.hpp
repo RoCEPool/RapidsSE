@@ -20,6 +20,7 @@ namespace CorrectnessAlgebra
   public:
     Object(eCN eClass);
   
+    i8  iBufferNo(void);
     Pool::bn nBufferNo(void);
   
     bool bWordBody(void);
