@@ -190,6 +190,7 @@ void IndexTree::vCopyLeft(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
     xKeyWrk.vKeySize(nKeySize);
     xKeyWrk.vOffsets(nOffsets);
     
+    
     i8 nEntryBytes = xKeyWrk.nEntrySize();
     i8 nOffsetBytes = xKeyWrk.nOffsetSize();
     i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
@@ -205,8 +206,15 @@ void IndexTree::vCopyLeft(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
       pLeftL0 = pNewLeftL0;
     }
     
+    if (pRightEntry == pRightL0->pFirstEntry()) {
+      
+    }
+    
     Entry* pLeftEntryL0 = pLeftL0->pInsertKeyAbs(xKeyWrk);
     
+    if (1 == pLeftL0->nItems()) {
+    
+    }
   }
 
 }
