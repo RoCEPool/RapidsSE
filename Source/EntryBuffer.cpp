@@ -3299,7 +3299,8 @@ EntryBuffer* EntryBuffer::pSplit2(void)
   // will be moved to the new right buffer
   
   Entry* pPriorEntry;
-  i8 iSplitAtEntry = m_nItems/2;
+  //i8 iSplitAtEntry = m_nItems/2;
+  i8 iSplitAtEntry = m_nItems*gpAttachMap->m_nSplitRatio/100;
   Entry* pSplitEntry = pGetEntrySplit(iSplitAtEntry,&pPriorEntry);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
