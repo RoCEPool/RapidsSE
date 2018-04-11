@@ -140,6 +140,13 @@ void IndexTree::vCompact(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
+  vTrace("IndexTree::vCompact\n"_Stz);
+  
+  for (EntryBuffer* pL1 = pFirstL1Buffer(); pL1; pL1 = pL1->pNextBuffer()) {
+    
+    vTrace("  L1 %p\n"_Stz,pL1);
+  }
+  
 }
 
 /*----------------------------------------------------------------------------*/

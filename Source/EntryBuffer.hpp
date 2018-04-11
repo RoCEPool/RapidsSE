@@ -101,6 +101,7 @@ namespace DBobjects
     void         vShowShort(void);
     void         vShowTree(bool bDumpBuffer=false);
     void         vTruncate(void);
+    EntryBuffer* pUnlinkSubList(void);
     bool         bVerify(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

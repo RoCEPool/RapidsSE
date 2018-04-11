@@ -1120,6 +1120,70 @@ void EntryBuffer::vTruncate(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* unlink the sublist of EB's following this L0 EB within this L1             */
+/*----------------------------------------------------------------------------*/
+EntryBuffer* EntryBuffer::pUnlinkSubList(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  ASSERT(0 == m_iBufferLevel);
+
+  EntryBuffer* pThisL0 = this;
+  EntryBuffer* pThisL1 = pThisL0->pHigherBuffer();
+  EntryBuffer* pNextL0 = pThisL0->pNextBuffer();
+  EntryBuffer* pNextL1 = pThisL1->pNextBuffer();
+
+  //----------------------------------------------------------------------------
+  // circumstance (a) no more L0
+
+  if (! pNextL0)
+    return nullptr;
+  
+  //----------------------------------------------------------------------------
+  // circumstance (b) only one L0 under L1
+
+  if (pNextL0->pHigherBuffer() != pHigherBuffer())
+    return nullptr;
+
+  //
+  // - there is a sublist
+  //
+  
+  EntryBuffer* pThisL0SubList = pNextL0;
+  
+  // the sublist no longer points back to this L0
+  pThisL0SubList->vPrevBuffer(nullptr);
+  
+  //----------------------------------------------------------------------------
+  // circumstance (c) last L1, there is a sublist
+
+  if (! pNextL1) {
+
+    // last L1, therefore the next chain terminates here
+    pThisL0->vNextBuffer(nullptr);
+
+    return pThisL0SubList;
+  }
+  
+  //----------------------------------------------------------------------------
+  // circumstance (d) middle L1, there is a sublist
+  
+  EntryBuffer* pFirstL0ofNextL1 = pNextL1->pFirstChildBuffer();
+  EntryBuffer* pLastL0ofThisL1 = pFirstL0ofNextL1->pPrevBuffer();
+  
+  // the next chain points to first L0 buffer of next L1
+  pThisL0->vNextBuffer(pFirstL0ofNextL1);
+  
+  // the prev chain of first L0 of next L1 is this L0
+  pFirstL0ofNextL1->vPrevBuffer(pThisL0);
+  
+  // the prev chain of last L0 of sublist terminates
+  pLastL0ofThisL1->vNextBuffer(nullptr);
+  
+  return pThisL0SubList;
+}
+
+/*----------------------------------------------------------------------------*/
 /* verify the structure of this buffer (and its children)                     */
 /*----------------------------------------------------------------------------*/
 bool EntryBuffer::bVerify(void)

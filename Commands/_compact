@@ -2,125 +2,26 @@
 /* _compact -- index compaction testing                                       */
 /*============================================================================*/
 
-create table j10 (
-  j10_key   INTEGER,
-  j10_name  VARCHAR(32) NOT NULL
+create table supplier (
+S_SUPPKEY       INTEGER NOT NULL,
+S_NAME          CHAR(25) NOT NULL,
+S_ADDRESS       VARCHAR(40) NOT NULL,
+S_NATIONKEY     INTEGER NOT NULL,
+S_PHONE         CHAR(15) NOT NULL,
+S_ACCTBAL       DECIMAL(15,2) NOT NULL,
+S_COMMENT       VARCHAR(101) NOT NULL
 );
 
-create index idx1 on j10 (j10_key);
-//create index idx2 on j10 (j10_name);
+CREATE INDEX supplier_idx1 ON supplier(s_suppkey);
+//CREATE INDEX supplier_idx2 ON supplier(s_nationkey);
 
-print "loading j10.tbl..." ;
-ld j10 "../JTEST/j10_dup.csv" ;
+print "loading supplier.tbl..." ;
 
-dumpidx j10 idx1;
-lsidx j10;
+ld supplier "/tpch/supplier.tbl" ;
 
+compactidx supplier supplier_idx1;
 
-//------------------------------------------------------------------------------
-
-print "-----------------------------";
-print "j10_key >= 3";
-fetch j10 "j10_key 3 >=";
-
-print "-----------------------------";
-print "j10_key == 3";
-fetch j10 "j10_key 3 ==";
-
-print "-----------------------------";
-print "j10_key <= 3";
-fetch j10 "j10_key 3 <=";
-
-print "-----------------------------";
-print "j10_key >= 3 AND j10_key <= 7";
-fetch j10 "j10_key 3 >= j10_key 7 <= and ";
-
-print "-----------------------------";
-print "j10_key == 2 OR j10_key == 3 OR j10_key == 4";
-fetch j10 "j10_key 2 = j10_key 3 = OR j10_key 4 = OR";
-
-print "-----------------------------";
-print "j10_key == 6";
-fetch j10 "j10_key 6 ==";
-
-print "-----------------------------";
-print "j10_key >= 6";
-fetch j10 "j10_key 6 >=";
-
-print "-----------------------------";
-print "j10_key > 6";
-fetch j10 "j10_key 6 >";
-
-print "-----------------------------";
-print "j10_key <= 6";
-fetch j10 "j10_key 6 <=";
-
-print "-----------------------------";
-print "j10_key < 6";
-fetch j10 "j10_key 6 <";
-
-//------------------------------------------------------------------------------
-
-
-anidx j10 idx1;
-dumpidx j10 idx1;
-szidx j10 idx1;
-
-
-compactidx j10 idx1;
-
-
-anidx j10 idx1;
-dumpidx j10 idx1;
-szidx j10 idx1;
-
-
-//------------------------------------------------------------------------------
-
-print "-----------------------------";
-print "j10_key >= 3";
-fetch j10 "j10_key 3 >=";
-
-print "-----------------------------";
-print "j10_key == 3";
-fetch j10 "j10_key 3 ==";
-
-print "-----------------------------";
-print "j10_key <= 3";
-fetch j10 "j10_key 3 <=";
-
-print "-----------------------------";
-print "j10_key >= 3 AND j10_key <= 7";
-fetch j10 "j10_key 3 >= j10_key 7 <= and ";
-
-print "-----------------------------";
-print "j10_key == 2 OR j10_key == 3 OR j10_key == 4";
-fetch j10 "j10_key 2 = j10_key 3 = OR j10_key 4 = OR";
-
-print "-----------------------------";
-print "j10_key == 6";
-fetch j10 "j10_key 6 ==";
-
-print "-----------------------------";
-print "j10_key >= 6";
-fetch j10 "j10_key 6 >=";
-
-print "-----------------------------";
-print "j10_key > 6";
-fetch j10 "j10_key 6 >";
-
-print "-----------------------------";
-print "j10_key <= 6";
-fetch j10 "j10_key 6 <=";
-
-print "-----------------------------";
-print "j10_key < 6";
-fetch j10 "j10_key 6 <";
-
-
-//------------------------------------------------------------------------------
-
-drop table j10;
+drop table supplier;
 
 /*============================================================================*/
 /* end                                                                        */

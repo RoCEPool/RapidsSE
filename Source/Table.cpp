@@ -262,6 +262,8 @@ Stz* Table::pCompactIndex(Index* pIndex, bool bDetailed)
     
     IndexTree *pIndexTree = pPartition(iSlot)->pIndexTree(pIndex->iIndexNo());
     
+    pIndexTree->vCompact();
+    
   }
   
   /*
