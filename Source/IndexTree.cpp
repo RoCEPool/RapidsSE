@@ -150,6 +150,15 @@ void IndexTree::vCompact(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* copy left (from src to dst)                                                */
+/*----------------------------------------------------------------------------*/
+void IndexTree::vCopyLeft(EntryBuffer** ppDstL0, EntryBuffer* pSrcL0)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump the index                                                             */
 /*----------------------------------------------------------------------------*/
 void IndexTree::vDump(bool bSameLevel)
