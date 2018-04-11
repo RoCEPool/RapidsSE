@@ -532,6 +532,43 @@ void EntryBuffer::vDeleteEntry(Entry** ppEntry)
 }
 
 /*----------------------------------------------------------------------------*/
+/* delete key                                                                 */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vDeleteKey(Key* aDeleteKey, EntryBuffer* pToBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+#ifdef EB_LAZY_CHAIN
+  RASSERT( ! m_pLazyChain );
+#endif
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Entry* xPriorVec[gpAttachMap->m_nIndexOffsets];
+  
+  vPositionPriorVecBuffer(aDeleteKey,xPriorVec,pToBuffer);
+  
+  Entry* pPriorEntry = xPriorVec[0];
+  
+  Entry* pEntryToBeDeleted = pNextEntry(pPriorEntry,0);
+  if (!pEntryToBeDeleted)
+    return;
+  
+  //  vTrace("[%lld] pDeleteEntry key %lld\n"_Stz,
+  //         *nBufferNo(),
+  //         pEntryToBeDeleted->aKey()->iGetInt());
+  
+  Key* aDeleteEntryKey = pEntryToBeDeleted->aKey();
+  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  //if (! aDeleteEntryKey->bEqualTo(aDeleteKey,pIdxColVec))
+  //  return;
+  RASSERT(aDeleteEntryKey->bEqualTo(aDeleteKey,pIdxColVec));
+  RASSERT(pToBuffer == pEntryToBeDeleted->pReferencedEntryBuffer());
+  
+  vDeleteEntry(&pEntryToBeDeleted);
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vDump(void)

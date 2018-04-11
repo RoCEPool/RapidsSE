@@ -83,6 +83,7 @@ namespace DBobjects
 
     i8           iDecile(void);
     void         vDeleteEntry(Entry** ppEntry);
+    void         vDeleteKey(Key* aDeleteKey, EntryBuffer* pToBuffer);
     void         vDump(void);
     EntryBuffer* pFirstChildBuffer(void);
     Entry*       pFirstEntry(void);
