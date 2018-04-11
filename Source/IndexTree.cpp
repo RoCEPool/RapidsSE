@@ -161,61 +161,94 @@ void IndexTree::vCompact(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy left (from src to dst)                                                */
+/* copy all the elements of the right buffer to the left                      */
 /*----------------------------------------------------------------------------*/
 void IndexTree::vCopyLeft(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+
+  KeyWrk xLeftKeyWrk;
+  
+  EntryBuffer* pLeftL0 = *ppLeftL0;
+  ASSERT(0 == pLeftL0->iBufferLevel());
+  ASSERT(0 == pRightL0->iBufferLevel());
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
-  KeyWrk xKeyWrk;
-
-  
-  EntryBuffer* pLeftL0 = *ppLeftL0;
-  
-  for (Entry* pRightEntry = pRightL0->pFirstEntry();
-       pRightEntry;
-       pRightEntry = pRightL0->pNextEntry(pRightEntry,0)) {
+  // iterate thru each key entry in right L0
+  for (Entry* pRightKeyEntry = pRightL0->pFirstEntry();
+       pRightKeyEntry;
+       pRightKeyEntry = pRightL0->pNextEntry(pRightKeyEntry,0)) {
     
-    i8 iTxId = pRightEntry->iTxId();
-    Id xId = pRightEntry->xId();
-    Key* aKey = pRightEntry->aKey();
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the elements of the right key entry
+    
+    i8 iTxId = pRightKeyEntry->iTxId();
+    Id xId = pRightKeyEntry->xId();
+    Key* aKey = pRightKeyEntry->aKey();
     i8 nKeySize = aKey->nKeySize(pIdxColVec);
-    i8 nOffsets = pRightEntry->nOffsets();
+    i8 nOffsets = pRightKeyEntry->nOffsets();
     
-    xKeyWrk.vTxId(iTxId);
-    xKeyWrk.vId(xId);
-    xKeyWrk.vEmbedded((char*)aKey);
-    xKeyWrk.vKeySize(nKeySize);
-    xKeyWrk.vOffsets(nOffsets);
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // form the working version of the left key entry
     
+    xLeftKeyWrk.vTxId(iTxId);
+    xLeftKeyWrk.vId(xId);
+    xLeftKeyWrk.vEmbedded((char*)aKey);
+    xLeftKeyWrk.vKeySize(nKeySize);
+    xLeftKeyWrk.vOffsets(nOffsets);
     
-    i8 nEntryBytes = xKeyWrk.nEntrySize();
-    i8 nOffsetBytes = xKeyWrk.nOffsetSize();
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // compute the size of the left key entry
+    
+    i8 nEntryBytes = xLeftKeyWrk.nEntrySize();
+    i8 nOffsetBytes = xLeftKeyWrk.nOffsetSize();
     i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get a new left buffer if not enough space in current left buffer
+    
     if (! pLeftL0->bHasSpace(nEntryPlusOffsets)) {
       
+      // new left buffer
       EntryBuffer* pNewLeftL0 = new EntryBuffer;
       
+      // splice the left buffer into the new sublist
       pLeftL0->vSpliceAfter(pNewLeftL0);
       
+      // adjust variables
       *ppLeftL0 = pNewLeftL0;
-      
       pLeftL0 = pNewLeftL0;
     }
     
-    if (pRightEntry == pRightL0->pFirstEntry()) {
-      
-    }
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // remove a first key entry from right L1
     
-    Entry* pLeftEntryL0 = pLeftL0->pInsertKeyAbs(xKeyWrk);
+    if (pRightKeyEntry == pRightL0->pFirstEntry()) {
+      EntryBuffer* pRightL1 = pRightL0->pHigherBuffer();
+      pRightL1->vDeleteKey(aKey,pRightL0);
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // insert a copy of the right key entry into left buffer
+    
+    Entry* pLeftKeyEntryL0 = pLeftL0->pInsertKeyAbs(xLeftKeyWrk);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // insert a first key entry into left L1
     
     if (1 == pLeftL0->nItems()) {
-    
+
+      i8 iLeftL0BufferNo = *(pLeftL0->nBufferNo());
+      xId.vBuffer(iLeftL0BufferNo);
+      xLeftKeyWrk.vId(xId);
+      
+      EntryBuffer* pLeftL1 = pLeftL0->pHigherBuffer();
+      
+      Entry* pLeftEntryL1 = pLeftL1->pInsertKeyAbs(xLeftKeyWrk);
     }
-  }
+    
+  } // for
 
 }
 
