@@ -83,7 +83,7 @@ namespace DBobjects
 
     i8           iDecile(void);
     void         vDeleteEntry(Entry** ppEntry);
-    void         vDeleteKey(Key* aDeleteKey, EntryBuffer* pToBuffer);
+    bool         bDeleteKey(Key* aDeleteKey, EntryBuffer* pToBuffer);
     void         vDump(void);
     EntryBuffer* pFirstChildBuffer(void);
     Entry*       pFirstEntry(void);
@@ -167,6 +167,8 @@ namespace DBobjects
     void         vPositionPriorVecBuffer(Key* aFindKey, Entry** pPriorVec,
                                          EntryBuffer* pToBuffer);
     void         vPositionPriorVecBuffer2(Key* aFindKey, Entry** pPriorVec,
+                                          EntryBuffer* pToBuffer);
+    void         vPositionPriorVecBuffer3(Key* aFindKey, Entry** pPriorVec,
                                           EntryBuffer* pToBuffer);
     EntryBuffer* pSplit(void);
     EntryBuffer* pSplit2(void);

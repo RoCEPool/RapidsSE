@@ -2,6 +2,24 @@
 /* _compact -- index compaction testing                                       */
 /*============================================================================*/
 
+create table j100 (
+  j100_key   INTEGER NOT NULL,
+  j100_name  VARCHAR(32) NOT NULL,
+  j100_j10   INTEGER NOT NULL
+);
+
+create index idx1 on j100 (j100_key);
+
+print "loading j100.tbl..." ;
+ld j100 "../JTEST/j100.csv" ;
+
+visidx j100 idx1 ;
+
+compactidx j100 idx1;
+
+visidx j100 idx1 ;
+
+/*
 create table lineitem (
   L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B
   L_PARTKEY       INTEGER NOT NULL,         //  1)  8B
@@ -32,8 +50,6 @@ visidx lineitem idx2 ;
 compactidx lineitem idx2;
 
 visidx lineitem idx2 ;
-
-
 
 
 print "-----------------------------------------------------------------------";
@@ -119,11 +135,9 @@ timerEnd;
 print "-----------------------------------------------------------------------";
 
 
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
-
-
-
-/*
 create table supplier (
   S_SUPPKEY       INTEGER NOT NULL,
   S_NAME          CHAR(25) NOT NULL,
@@ -148,7 +162,8 @@ visidx supplier idx1 ;
 print "\nSelecting rows from supplier (idx1) where S_SUPPKEY >= 500 and S_SUPPKEY <= 1000 ...\n" ;
 fetch supplier "S_SUPPKEY 500 >= S_SUPPKEY 1000 <= and";
 
-//------------------------------------------------------------------------------
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 create table j100 (
   j100_key   INTEGER NOT NULL,
