@@ -2996,7 +2996,7 @@ Entry* EntryBuffer::pPositionPriorEntry(Key* aFindKey)
 #ifdef EB_SINGLE_COLIDX
       if (m_pIndex->bSingleColumn()) {
         bKeyIsGreaterEqual = aNextKey->bGreaterEqualSingle(aFindKey,m_pIndex);
-        RASSERT(bKeyIsGreaterEqual == aNextKey->bGreaterEqual(aFindKey,pIdxColVec));
+        //RASSERT(bKeyIsGreaterEqual == aNextKey->bGreaterEqual(aFindKey,pIdxColVec));
       }
       else
         bKeyIsGreaterEqual = aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
@@ -3064,10 +3064,10 @@ void EntryBuffer::vPositionPriorVecEntry(Key* aFindKey, Entry* pPriorVec[],
 #ifdef EB_SINGLE_COLIDX
       if (m_pIndex->bSingleColumn()) {
         bIsJuxta = aNextKey->bGreaterEqualSingle(aFindKey,m_pIndex);
-        if (bIsJuxta != aNextKey->bGreaterEqual(aFindKey,pIdxColVec)) {
-          aNextKey->bGreaterEqualSingle(aFindKey,m_pIndex);
-          aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
-        }
+//        if (bIsJuxta != aNextKey->bGreaterEqual(aFindKey,pIdxColVec)) {
+//          aNextKey->bGreaterEqualSingle(aFindKey,m_pIndex);
+//          aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
+//        }
       }
       else
         bIsJuxta = aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
