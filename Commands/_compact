@@ -2,24 +2,12 @@
 /* _compact -- index compaction testing                                       */
 /*============================================================================*/
 
-create table j100 (
-  j100_key   INTEGER NOT NULL,
-  j100_name  VARCHAR(32) NOT NULL,
-  j100_j10   INTEGER NOT NULL
-);
-
-create index idx1 on j100 (j100_key);
-
-print "loading j100.tbl..." ;
-ld j100 "../JTEST/j100.csv" ;
-
-visidx j100 idx1 ;
-
-compactidx j100 idx1;
-
-visidx j100 idx1 ;
 
 /*
+ 
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+ 
 create table lineitem (
   L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B
   L_PARTKEY       INTEGER NOT NULL,         //  1)  8B
