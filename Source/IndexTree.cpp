@@ -144,15 +144,19 @@ void IndexTree::vCompact(void)
   
   for (EntryBuffer* pL1 = pFirstL1Buffer(); pL1; pL1 = pL1->pNextBuffer()) {
     
-    vTrace("  Compacting L1 %p\n"_Stz,pL1);
+    vTrace("  Compacting L1 %lld\n"_Stz,pL1->iBufferNo());
 
     // get the first L0 of current L1
     EntryBuffer* pFirstLeftL0 = pL1->pFirstChildBuffer();
+    
+    pFirstLeftL0->vShowSubList();
     
     // get the sublist after the first L0 of current L1
     EntryBuffer* pSubList = pFirstLeftL0->pUnlinkSubList();
     if (! pSubList)
       continue;
+
+    pSubList->vShowSubList();
     
     // copy each key entry in each L0 of sublist leftwards into (new) L0 buffers
     
@@ -160,6 +164,8 @@ void IndexTree::vCompact(void)
     
     // each right L0 in sublist
     while (EntryBuffer* pRightL0 = pPopSubList(&pSubList)) {
+      
+      pSubList->vShowSubList();
    
       // copy contents of right L0 leftwards
       vCopyLeft(&pLeftL0,pRightL0);
@@ -178,27 +184,36 @@ void IndexTree::vCopyLeft(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
 
+  vTrace("IndexTree::vCopyLeft (right %lld)\n"_Stz,pRightL0->iBufferNo());
+  
   KeyWrk xLeftKeyWrk;
   
   EntryBuffer* pLeftL0 = *ppLeftL0;
   ASSERT(0 == pLeftL0->iBufferLevel());
   ASSERT(0 == pRightL0->iBufferLevel());
+  EntryBuffer* pL1 = pLeftL0->pHigherBuffer();
+  ASSERT(1 == pL1->iBufferLevel());
+  ASSERT(pRightL0->pHigherBuffer() == pLeftL0->pHigherBuffer());
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
+  pRightL0->vShow();
+  
   // iterate thru each key entry in right L0
-  for (Entry* pRightKeyEntry = pRightL0->pFirstEntry();
-       pRightKeyEntry;
-       pRightKeyEntry = pRightL0->pNextEntry(pRightKeyEntry,0)) {
+  for (Entry* pRightKeyEntryL0 = pRightL0->pFirstEntry();
+       pRightKeyEntryL0;
+       pRightKeyEntryL0 = pRightL0->pNextEntry(pRightKeyEntryL0,0)) {
+    
+    pRightKeyEntryL0->vShow(0, m_pIndex, true);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the elements of the right key entry
     
-    i8 iTxId = pRightKeyEntry->iTxId();
-    Id xId = pRightKeyEntry->xId();
-    Key* aKey = pRightKeyEntry->aKey();
+    i8 iTxId = pRightKeyEntryL0->iTxId();
+    Id xId = pRightKeyEntryL0->xId();
+    Key* aKey = pRightKeyEntryL0->aKey();
     i8 nKeySize = aKey->nKeySize(pIdxColVec);
-    i8 nOffsets = pRightKeyEntry->nOffsets();
+    i8 nOffsets = pRightKeyEntryL0->nOffsets();
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // form the working version of the left key entry
@@ -233,20 +248,24 @@ void IndexTree::vCopyLeft(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // remove a first key entry from right L1
+    // remove a first L0 key entry from L1
     
-    if (pRightKeyEntry == pRightL0->pFirstEntry()) {
-      EntryBuffer* pRightL1 = pRightL0->pHigherBuffer();
-      pRightL1->vDeleteKey(aKey,pRightL0);
+    if (pRightKeyEntryL0 == pRightL0->pFirstEntry()) {
+      pL1->vShow();
+      pL1->vDeleteKey(aKey,pRightL0);
+      pL1->vShow();
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // insert a copy of the right key entry into left buffer
     
+    pLeftL0->vShow();
     Entry* pLeftKeyEntryL0 = pLeftL0->pInsertKeyAbs(xLeftKeyWrk);
+    pLeftKeyEntryL0->vShow(0, m_pIndex, true);
+    pLeftL0->vShow();
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // insert a first key entry into left L1
+    // insert a first L0 key entry into L1
     
     if (1 == pLeftL0->nItems()) {
 
@@ -254,9 +273,10 @@ void IndexTree::vCopyLeft(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
       xId.vBuffer(iLeftL0BufferNo);
       xLeftKeyWrk.vId(xId);
       
-      EntryBuffer* pLeftL1 = pLeftL0->pHigherBuffer();
-      
-      Entry* pLeftEntryL1 = pLeftL1->pInsertKeyAbs(xLeftKeyWrk);
+      pL1->vShow();
+      Entry* pLeftEntryL1 = pL1->pInsertKeyAbs(xLeftKeyWrk);
+      pLeftEntryL1->vShow(0, m_pIndex, true);
+      pL1->vShow();
     }
     
   } // for
