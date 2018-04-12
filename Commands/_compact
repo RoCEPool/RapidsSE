@@ -27,6 +27,8 @@ CREATE INDEX idx2 ON lineitem(l_shipdate);
 print "loading lineitem.tbl..." ;
 ld lineitem "/tpch/lineitem.tbl" ;
 
+vfyidx lineitem idx2;
+
 visidx lineitem idx2 ;
 
 compactidx lineitem idx2;

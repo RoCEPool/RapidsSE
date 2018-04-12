@@ -1003,7 +1003,7 @@ void EntryBuffer::vRestore(void)
 /*----------------------------------------------------------------------------*/
 /* show contents of buffer                                                    */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vShow(void)
+void EntryBuffer::vShow(Entry* pMarkEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1048,6 +1048,10 @@ void EntryBuffer::vShow(void)
   while (iOffset > -1) {
     Entry* pEntry = pGetEntryOffset(iOffset);
     pEntry->vShow(iOffset,m_pIndex,true);
+    if (pMarkEntry == pEntry)
+      vTrace("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+             "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n"_Stz);
+    
     iOffset = pEntry->iNEO(0);
   }
   
@@ -4087,6 +4091,7 @@ bool EntryBuffer::bVerifyKeyBufferOrder(void)
     
     // child A should point to child B
     if (pChildBufferA->pNextBuffer() != pChildBufferB) {
+      vShow(pEntry);
       vVerifyFault();
       return false;
     }

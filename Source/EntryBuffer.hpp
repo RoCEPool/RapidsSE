@@ -100,7 +100,7 @@ namespace DBobjects
     EntryBuffer* pPositionLevel(Key* aGivenKey, i8 nKeyCols, eJC eJuxtaCompare, i8 iLevel);
     
     void         vRestore(void);
-    void         vShow(void);
+    void         vShow(Entry* pMarkEntry = nullptr);
     void         vShowShort(void);
     void         vShowSubList(void);
     void         vShowTree(bool bDumpBuffer=false);
