@@ -7,8 +7,8 @@
 
 extern AttachMap* gpAttachMap;
 
-//#define TRACE_COMPACT(x) x
-#define TRACE_COMPACT(x)
+#define TRACE_COMPACT(x) x
+//#define TRACE_COMPACT(x)
 
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
@@ -258,7 +258,8 @@ void IndexTree::vCopyLeft(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
     
     if (pRightKeyEntryL0 == pRightL0->pFirstEntry()) {
       TRACE_COMPACT( pL1->vShow(); )
-      pL1->vDeleteKey(aKey,pRightL0);
+      bool bDeleted = pL1->bDeleteKey(aKey,pRightL0);
+      RASSERT(bDeleted);
       TRACE_COMPACT( pL1->vShow(); )
     }
 
