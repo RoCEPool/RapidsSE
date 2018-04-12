@@ -242,7 +242,7 @@ void IndexTree::vCopyLeft(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
       pNewLeftL0->vIndex(m_pIndex);
       pNewLeftL0->vHigherBuffer(pL1);
       
-      // splice the left buffer into the new sublist
+      // splice the new left buffer into the L0 list
       pLeftL0->vSpliceAfter(pNewLeftL0);
       
       // adjust variables
