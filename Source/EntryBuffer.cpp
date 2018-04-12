@@ -2996,7 +2996,7 @@ Entry* EntryBuffer::pPositionPriorEntry(Key* aFindKey)
 #ifdef EB_SINGLE_COLIDX
       if (m_pIndex->bSingleColumn()) {
         bKeyIsGreaterEqual = aNextKey->bGreaterEqualSingle(aFindKey,m_pIndex);
-        RASSERT(bKeyIsGreaterEqual == aNextKey->bGreaterEqual(aFindKey,pIdxColVec));
+        //RASSERT(bKeyIsGreaterEqual == aNextKey->bGreaterEqual(aFindKey,pIdxColVec));
       }
       else
         bKeyIsGreaterEqual = aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
