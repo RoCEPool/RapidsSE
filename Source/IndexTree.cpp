@@ -165,7 +165,8 @@ void IndexTree::vCompact(void)
     // each right L0 in sublist
     while (EntryBuffer* pRightL0 = pPopSubList(&pSubList)) {
       
-      pSubList->vShowSubList();
+      if (pSubList)
+        pSubList->vShowSubList();
    
       // copy contents of right L0 leftwards
       vCopyLeft(&pLeftL0,pRightL0);
@@ -238,6 +239,8 @@ void IndexTree::vCopyLeft(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
       
       // new left buffer
       EntryBuffer* pNewLeftL0 = new EntryBuffer;
+      pNewLeftL0->vIndex(m_pIndex);
+      pNewLeftL0->vHigherBuffer(pL1);
       
       // splice the left buffer into the new sublist
       pLeftL0->vSpliceAfter(pNewLeftL0);
@@ -609,12 +612,16 @@ EntryBuffer* IndexTree::pPopSubList(EntryBuffer** ppSubList)
 
   EntryBuffer* pTopBuffer = *ppSubList;
   
+  if (! pTopBuffer)
+    return nullptr;
+  
   *ppSubList = (*ppSubList)->pNextBuffer();
   
   pTopBuffer->vNextBuffer(nullptr);
   pTopBuffer->vPrevBuffer(nullptr);
   
-  (*ppSubList)->vPrevBuffer(nullptr);
+  if (*ppSubList)
+    (*ppSubList)->vPrevBuffer(nullptr);
   
   return pTopBuffer;
 }
