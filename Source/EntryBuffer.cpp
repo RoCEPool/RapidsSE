@@ -3277,6 +3277,10 @@ void EntryBuffer::vPositionPriorVecBuffer3(Key* aFindKey, Entry* pPriorVec[],
     }
     pPriorVec[i_ScanOffset] = pScanEntry_sl;
   }
+  
+  Entry* pToBeDelete = pNextEntry(pPriorVec[0],0);
+  
+  RASSERT(pToBuffer == pToBeDelete->pReferencedEntryBuffer());
 }
 
 /*----------------------------------------------------------------------------*/

@@ -7,8 +7,8 @@
 
 extern AttachMap* gpAttachMap;
 
-#define TRACE_COMPACT(x) x
-//#define TRACE_COMPACT(x)
+//#define TRACE_COMPACT(x) x
+#define TRACE_COMPACT(x)
 
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
