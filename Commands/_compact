@@ -2,6 +2,32 @@
 /* _compact -- index compaction testing                                       */
 /*============================================================================*/
 
+create table supplier (
+  S_SUPPKEY       INTEGER NOT NULL,
+  S_NAME          CHAR(25) NOT NULL,
+  S_ADDRESS       VARCHAR(40) NOT NULL,
+  S_NATIONKEY     INTEGER NOT NULL,
+  S_PHONE         CHAR(15) NOT NULL,
+  S_ACCTBAL       DECIMAL(15,2) NOT NULL,
+  S_COMMENT       VARCHAR(101) NOT NULL
+);
+
+CREATE INDEX idx1 ON supplier(s_suppkey);
+
+print "loading supplier.tbl..." ;
+ld supplier "/tpch/supplier.tbl" ;
+
+visidx supplier idx1 ;
+
+compactidx supplier idx1;
+
+visidx supplier idx1 ;
+
+print "\nSelecting rows from supplier (idx1) where S_SUPPKEY >= 500 and S_SUPPKEY <= 1000 ...\n" ;
+fetch supplier "S_SUPPKEY 500 >= S_SUPPKEY 1000 <= and";
+
+
+/*
 create table j100 (
   j100_key   INTEGER NOT NULL,
   j100_name  VARCHAR(32) NOT NULL,
@@ -18,6 +44,7 @@ visidx j100 idx1 ;
 compactidx j100 idx1;
 
 visidx j100 idx1 ;
+*/
 
 /*============================================================================*/
 /* end                                                                        */

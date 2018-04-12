@@ -554,9 +554,9 @@ void EntryBuffer::vDeleteKey(Key* aDeleteKey, EntryBuffer* pToBuffer)
   if (!pEntryToBeDeleted)
     return;
   
-  vTrace("[%lld] pDeleteEntry key %lld\n"_Stz,
-         *nBufferNo(),
-         pEntryToBeDeleted->aKey()->iGetInt());
+  //vTrace("[%lld] pDeleteEntry key %lld\n"_Stz,
+  //       *nBufferNo(),
+  //       pEntryToBeDeleted->aKey()->iGetInt());
   
   Key* aDeleteEntryKey = pEntryToBeDeleted->aKey();
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();

@@ -7,6 +7,9 @@
 
 extern AttachMap* gpAttachMap;
 
+//#define TRACE_COMPACT(x) x
+#define TRACE_COMPACT(x)
+
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -140,23 +143,23 @@ void IndexTree::vCompact(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
-  vTrace("IndexTree::vCompact\n"_Stz);
+  TRACE_COMPACT( vTrace("IndexTree::vCompact\n"_Stz); )
   
   for (EntryBuffer* pL1 = pFirstL1Buffer(); pL1; pL1 = pL1->pNextBuffer()) {
     
-    vTrace("  Compacting L1 %lld\n"_Stz,pL1->iBufferNo());
+    TRACE_COMPACT( vTrace("  Compacting L1 %lld\n"_Stz,pL1->iBufferNo()); )
 
     // get the first L0 of current L1
     EntryBuffer* pFirstLeftL0 = pL1->pFirstChildBuffer();
     
-    pFirstLeftL0->vShowSubList();
+    TRACE_COMPACT( pFirstLeftL0->vShowSubList(); )
     
     // get the sublist after the first L0 of current L1
     EntryBuffer* pSubList = pFirstLeftL0->pUnlinkSubList();
     if (! pSubList)
       continue;
 
-    pSubList->vShowSubList();
+    TRACE_COMPACT( pSubList->vShowSubList(); )
     
     // copy each key entry in each L0 of sublist leftwards into (new) L0 buffers
     
@@ -165,8 +168,7 @@ void IndexTree::vCompact(void)
     // each right L0 in sublist
     while (EntryBuffer* pRightL0 = pPopSubList(&pSubList)) {
       
-      if (pSubList)
-        pSubList->vShowSubList();
+      TRACE_COMPACT( if (pSubList) pSubList->vShowSubList(); )
    
       // copy contents of right L0 leftwards
       vCopyLeft(&pLeftL0,pRightL0);
@@ -185,8 +187,9 @@ void IndexTree::vCopyLeft(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
 
-  vTrace("IndexTree::vCopyLeft (right %lld)\n"_Stz,pRightL0->iBufferNo());
-  
+  TRACE_COMPACT( vTrace("IndexTree::vCopyLeft (right %lld)\n"_Stz,
+                        pRightL0->iBufferNo()); )
+
   KeyWrk xLeftKeyWrk;
   
   EntryBuffer* pLeftL0 = *ppLeftL0;
@@ -198,14 +201,14 @@ void IndexTree::vCopyLeft(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
-  pRightL0->vShow();
+  TRACE_COMPACT( pRightL0->vShow(); )
   
   // iterate thru each key entry in right L0
   for (Entry* pRightKeyEntryL0 = pRightL0->pFirstEntry();
        pRightKeyEntryL0;
        pRightKeyEntryL0 = pRightL0->pNextEntry(pRightKeyEntryL0,0)) {
     
-    pRightKeyEntryL0->vShow(0, m_pIndex, true);
+    TRACE_COMPACT( pRightKeyEntryL0->vShow(0, m_pIndex, true); )
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the elements of the right key entry
@@ -254,18 +257,18 @@ void IndexTree::vCopyLeft(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
     // remove a first L0 key entry from L1
     
     if (pRightKeyEntryL0 == pRightL0->pFirstEntry()) {
-      pL1->vShow();
+      TRACE_COMPACT( pL1->vShow(); )
       pL1->vDeleteKey(aKey,pRightL0);
-      pL1->vShow();
+      TRACE_COMPACT( pL1->vShow(); )
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // insert a copy of the right key entry into left buffer
     
-    pLeftL0->vShow();
+    TRACE_COMPACT( pLeftL0->vShow(); )
     Entry* pLeftKeyEntryL0 = pLeftL0->pInsertKeyAbs(xLeftKeyWrk);
-    pLeftKeyEntryL0->vShow(0, m_pIndex, true);
-    pLeftL0->vShow();
+    TRACE_COMPACT( pLeftKeyEntryL0->vShow(0, m_pIndex, true); )
+    TRACE_COMPACT( pLeftL0->vShow(); )
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // insert a first L0 key entry into L1
@@ -276,10 +279,10 @@ void IndexTree::vCopyLeft(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
       xId.vBuffer(iLeftL0BufferNo);
       xLeftKeyWrk.vId(xId);
       
-      pL1->vShow();
+      TRACE_COMPACT( pL1->vShow(); )
       Entry* pLeftEntryL1 = pL1->pInsertKeyAbs(xLeftKeyWrk);
-      pLeftEntryL1->vShow(0, m_pIndex, true);
-      pL1->vShow();
+      TRACE_COMPACT( pLeftEntryL1->vShow(0, m_pIndex, true); )
+      TRACE_COMPACT( pL1->vShow(); )
     }
     
   } // for
@@ -318,6 +321,9 @@ EntryBuffer* IndexTree::pFirstL1Buffer(void)
   EntryBuffer* pEntryBuffer = m_pRoot;
   
   if ( ! pEntryBuffer )
+    return nullptr;
+  
+  if (pEntryBuffer->iBufferLevel() == 0)
     return nullptr;
   
   if (pEntryBuffer->iBufferLevel() == 1)
