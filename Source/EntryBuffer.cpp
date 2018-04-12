@@ -3245,7 +3245,7 @@ void EntryBuffer::vPositionPriorVecBuffer3(Key* aFindKey, Entry* pPriorVec[],
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  bool bNextKeyIsGreater;
+  bool bNextKeyIsGreaterEqual;
   Entry* pScanEntry_sl = m_pHeadEntry;
   
   for (i8 i_ScanOffset = gpAttachMap->m_nIndexOffsets - 1;
@@ -3260,27 +3260,17 @@ void EntryBuffer::vPositionPriorVecBuffer3(Key* aFindKey, Entry* pPriorVec[],
       //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       
-#ifdef EB_SINGLE_COLIDX
-      if (m_pIndex->bSingleColumn()) {
-        bNextKeyIsGreater = aNextKey->bGreaterThanSingle(aFindKey,m_pIndex);
-        RASSERT(bNextKeyIsGreater == aNextKey->bGreaterThan(aFindKey,pIdxColVec));
-      }
-      else
-        bNextKeyIsGreater = aNextKey->bGreaterThan(aFindKey,pIdxColVec);
-#else
-      bNextKeyIsGreater = aNextKey->bGreaterThan(aFindKey,pIdxColVec);
-#endif
+      bNextKeyIsGreaterEqual = aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
       
       if (0 == i_ScanOffset) {
         bool bKeysAreEqual = aNextKey->bEqualTo(aFindKey,pIdxColVec);
         if (bKeysAreEqual &&
-            (pToBuffer == pNextEntry_sl->pReferencedEntryBuffer()->pPrevBuffer()))
+            (pToBuffer == pNextEntry_sl->pReferencedEntryBuffer()))
           break;
       }
-      else {
-        if (bNextKeyIsGreater)
-          break;
-      }
+      
+      if (bNextKeyIsGreaterEqual)
+        break;
       
       pScanEntry_sl = pNextEntry_sl;
       pNextEntry_sl = pNextEntry(pNextEntry_sl,i_ScanOffset);
