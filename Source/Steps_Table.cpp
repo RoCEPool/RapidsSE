@@ -142,6 +142,8 @@ void Task::vTableLazyBuildIndexes(MP_Task mpTask)
   i8 iTxId;
   s48K sString;
   
+  RASSERT(Thread::pThread()->m_eActorModel == AC_PARTITION);
+  
   if ( ! mpTask->m_pDataStack->bPop(sString) )
     THROW_INVALID_DSTACK("table.lazyBuildIndexes"_Stz);
   
