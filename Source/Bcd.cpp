@@ -310,6 +310,9 @@ bool Bcd::bLessEqual(char* aArgA, char* aArgB)
 {
   bool bLessEqual;
   
+  if (((Bcd*)aArgA)->bIsNull() && ((Bcd*)aArgB)->bIsNull())
+    bLessEqual = true;
+  
   if (((Bcd*)aArgA)->bIsNull())
     bLessEqual = true;
   
@@ -336,13 +339,13 @@ bool Bcd::bEqualTo(char* aArgA, char* aArgB)
 {
   bool bEqualTo;
   
-  if (((Bcd*)aArgA)->bIsNull())
-    bEqualTo = true;
-  
-  else if (((Bcd*)aArgB)->bIsNull())
-    bEqualTo = false;
-  
-  else {
+//  if (((Bcd*)aArgA)->bIsNull())
+//    bEqualTo = true;
+//
+//  else if (((Bcd*)aArgB)->bIsNull())
+//    bEqualTo = false;
+//
+//  else {
     i8 iA = *(i8*)aArgA;
     i8 iB = *(i8*)aArgB;
     
@@ -350,7 +353,7 @@ bool Bcd::bEqualTo(char* aArgA, char* aArgB)
       bEqualTo = true;
     else
       bEqualTo = false;
-  }
+//  }
   
   return bEqualTo;
 }
@@ -362,13 +365,13 @@ bool Bcd::bNotEqual(char* aArgA, char* aArgB)
 {
   bool bNotEqual;
   
-  if (((Bcd*)aArgA)->bIsNull())
-    bNotEqual = true;
-  
-  else if (((Bcd*)aArgB)->bIsNull())
-    bNotEqual = false;
-  
-  else {
+//  if (((Bcd*)aArgA)->bIsNull())
+//    bNotEqual = true;
+//
+//  else if (((Bcd*)aArgB)->bIsNull())
+//    bNotEqual = false;
+//
+//  else {
     i8 iA = *(i8*)aArgA;
     i8 iB = *(i8*)aArgB;
     
@@ -376,7 +379,7 @@ bool Bcd::bNotEqual(char* aArgA, char* aArgB)
       bNotEqual = true;
     else
       bNotEqual = false;
-  }
+//  }
   
   return bNotEqual;
 }
@@ -388,11 +391,14 @@ bool Bcd::bGreaterEqual(char* aArgA, char* aArgB)
 {
   bool bGreaterEqual;
   
-  if (((Bcd*)aArgA)->bIsNull())
+  if (((Bcd*)aArgA)->bIsNull() && ((Bcd*)aArgB)->bIsNull())
     bGreaterEqual = true;
   
-  else if (((Bcd*)aArgB)->bIsNull())
+  if (((Bcd*)aArgA)->bIsNull())
     bGreaterEqual = false;
+  
+  else if (((Bcd*)aArgB)->bIsNull())
+    bGreaterEqual = true;
   
   else {
     i8 iA = *(i8*)aArgA;
@@ -415,10 +421,10 @@ bool Bcd::bGreaterThan(char* aArgA, char* aArgB)
   bool bGreaterThan;
     
   if (((Bcd*)aArgA)->bIsNull())
-    bGreaterThan = true;
+    bGreaterThan = false;
   
   else if (((Bcd*)aArgB)->bIsNull())
-    bGreaterThan = false;
+    bGreaterThan = true;
   
   else {
     i8 iA = *(i8*)aArgA;
