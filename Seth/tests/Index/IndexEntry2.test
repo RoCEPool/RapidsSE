@@ -1,0 +1,394 @@
+--------------------------------------------------------------------------------
+-- create index in a loop tests
+--------------------------------------------------------------------------------
+
+--
+-- Examples of other miscellaneous commands you can give to seth.
+--
+
+// Logging a message
+LOG 'Running indexEntry2 test with varying indexEntries per buffer.';
+
+//------------------------------------------------------------------------------
+LOG 'Entries per buffer: default';
+INCLUDE 'indexEntry2.test';
+
+//------------------------------------------------------------------------------
+/*
+setAttachMap AM_INDEXENTRIES 5;
+affected: 0
+
+LOG 'Entries per buffer: 5';
+INCLUDE 'indexEntry2';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 6;
+affected: 0
+
+LOG 'Entries per buffer: 6';
+INCLUDE 'indexEntry2';
+
+*/
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 7;
+affected: 0
+
+LOG 'Entries per buffer: 7';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 8;
+affected: 0
+
+LOG 'Entries per buffer: 8';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 9;
+affected: 0
+
+LOG 'Entries per buffer: 9';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 10;
+affected: 0
+
+LOG 'Entries per buffer: 10';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 11;
+affected: 0
+
+LOG 'Entries per buffer: 11';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 12;
+affected: 0
+
+LOG 'Entries per buffer: 12';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 13;
+affected: 0
+
+LOG 'Entries per buffer: 13';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 14;
+affected: 0
+
+LOG 'Entries per buffer: 14';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 15;
+affected: 0
+
+LOG 'Entries per buffer: 15';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 16;
+affected: 0
+
+LOG 'Entries per buffer: 16';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 17;
+affected: 0
+
+LOG 'Entries per buffer: 17';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 18;
+affected: 0
+
+LOG 'Entries per buffer: 18';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 19;
+affected: 0
+
+LOG 'Entries per buffer: 19';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 20;
+affected: 0
+
+LOG 'Entries per buffer: 20';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 21;
+affected: 0
+
+LOG 'Entries per buffer: 21';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 22;
+affected: 0
+
+LOG 'Entries per buffer: 22';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 23;
+affected: 0
+
+LOG 'Entries per buffer: 23';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 24;
+affected: 0
+
+LOG 'Entries per buffer: 24';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 25;
+affected: 0
+
+LOG 'Entries per buffer: 25';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 26;
+affected: 0
+
+LOG 'Entries per buffer: 26';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 27;
+affected: 0
+
+LOG 'Entries per buffer: 27';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 28;
+affected: 0
+
+LOG 'Entries per buffer: 28';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 29;
+affected: 0
+
+LOG 'Entries per buffer: 20';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 30;
+affected: 0
+
+LOG 'Entries per buffer: 30';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 31;
+affected: 0
+
+LOG 'Entries per buffer: 31';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 32;
+affected: 0
+
+LOG 'Entries per buffer: 32';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 33;
+affected: 0
+
+LOG 'Entries per buffer: 33';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 34;
+affected: 0
+
+LOG 'Entries per buffer: 34';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 35;
+affected: 0
+
+LOG 'Entries per buffer: 35';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 36;
+affected: 0
+
+LOG 'Entries per buffer: 36';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 37;
+affected: 0
+
+LOG 'Entries per buffer: 37';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 38;
+affected: 0
+
+LOG 'Entries per buffer: 38';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 39;
+affected: 0
+
+LOG 'Entries per buffer: 39';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 40;
+affected: 0
+
+LOG 'Entries per buffer: 40';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 41;
+affected: 0
+
+LOG 'Entries per buffer: 41';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 42;
+affected: 0
+
+LOG 'Entries per buffer: 42';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 43;
+affected: 0
+
+LOG 'Entries per buffer: 43';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 44;
+affected: 0
+
+LOG 'Entries per buffer: 44';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 45;
+affected: 0
+
+LOG 'Entries per buffer: 45';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 46;
+affected: 0
+
+LOG 'Entries per buffer: 46';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 47;
+affected: 0
+
+LOG 'Entries per buffer: 47';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 48;
+affected: 0
+
+LOG 'Entries per buffer: 48';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 49;
+affected: 0
+
+LOG 'Entries per buffer: 49';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 50;
+affected: 0
+
+LOG 'Entries per buffer: 50';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 100;
+affected: 0
+
+LOG 'Entries per buffer: 100';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 200;
+affected: 0
+
+LOG 'Entries per buffer: 200';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 300;
+affected: 0
+
+LOG 'Entries per buffer: 300';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 400;
+affected: 0
+
+LOG 'Entries per buffer: 400';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 500;
+affected: 0
+
+LOG 'Entries per buffer: 500';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 1000;
+affected: 0
+
+LOG 'Entries per buffer: 1000';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 2000;
+affected: 0
+
+LOG 'Entries per buffer: 2000';
+INCLUDE 'indexEntry2Loop.test';
+
+//------------------------------------------------------------------------------
+setAttachMap AM_INDEXENTRIES 0;
+affected: 0
+
+LOG 'Entries per buffer: default';
+INCLUDE 'indexEntry2Loop.test';

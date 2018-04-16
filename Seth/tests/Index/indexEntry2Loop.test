@@ -1,0 +1,46 @@
+--------------------------------------------------------------------------------
+-- create index in a loop tests
+--------------------------------------------------------------------------------
+
+// create a table
+create table TABLE9 (
+  pcol9 integer not null,
+  scol9 integer,
+  tcol9 integer,
+  colb9 varchar(20),
+  cold9 float,
+  cole9 decimal(15,2),
+  colf9 integer,
+  colg9 integer,
+  ucol integer,
+  ucolvc varchar(5))
+partition by (pcol9,colb9);
+success
+
+create index tbl9idx1 on table9(pcol9);
+
+ld TABLE9 "../Seth/tests/Load/tbl9data.csv" ;
+success
+
+create index tbl9idx2 on table9(scol9);
+success
+
+create index tblidx6 on table9(cole9);
+success
+
+fetch TABLE9 "cole9 -5.0 > cole9 5.0 < and";
+rows: 12
+
+// now drop the table
+//drop table table9;
+//success
+
+CLEANUP {
+
+  //drop table table9;
+  //mute
+
+  bye;
+  mute
+}
+
