@@ -313,7 +313,7 @@ bool Bcd::bLessEqual(char* aArgA, char* aArgB)
   if (((Bcd*)aArgA)->bIsNull() && ((Bcd*)aArgB)->bIsNull())
     bLessEqual = true;
   
-  if (((Bcd*)aArgA)->bIsNull())
+  else if (((Bcd*)aArgA)->bIsNull())
     bLessEqual = true;
   
   else if (((Bcd*)aArgB)->bIsNull())
@@ -339,21 +339,13 @@ bool Bcd::bEqualTo(char* aArgA, char* aArgB)
 {
   bool bEqualTo;
   
-//  if (((Bcd*)aArgA)->bIsNull())
-//    bEqualTo = true;
-//
-//  else if (((Bcd*)aArgB)->bIsNull())
-//    bEqualTo = false;
-//
-//  else {
-    i8 iA = *(i8*)aArgA;
-    i8 iB = *(i8*)aArgB;
-    
-    if (iA == iB)
-      bEqualTo = true;
-    else
-      bEqualTo = false;
-//  }
+  i8 iA = *(i8*)aArgA;
+  i8 iB = *(i8*)aArgB;
+  
+  if (iA == iB)
+    bEqualTo = true;
+  else
+    bEqualTo = false;
   
   return bEqualTo;
 }
@@ -365,21 +357,13 @@ bool Bcd::bNotEqual(char* aArgA, char* aArgB)
 {
   bool bNotEqual;
   
-//  if (((Bcd*)aArgA)->bIsNull())
-//    bNotEqual = true;
-//
-//  else if (((Bcd*)aArgB)->bIsNull())
-//    bNotEqual = false;
-//
-//  else {
-    i8 iA = *(i8*)aArgA;
-    i8 iB = *(i8*)aArgB;
-    
-    if (iA != iB)
-      bNotEqual = true;
-    else
-      bNotEqual = false;
-//  }
+  i8 iA = *(i8*)aArgA;
+  i8 iB = *(i8*)aArgB;
+  
+  if (iA != iB)
+    bNotEqual = true;
+  else
+    bNotEqual = false;
   
   return bNotEqual;
 }
@@ -394,7 +378,7 @@ bool Bcd::bGreaterEqual(char* aArgA, char* aArgB)
   if (((Bcd*)aArgA)->bIsNull() && ((Bcd*)aArgB)->bIsNull())
     bGreaterEqual = true;
   
-  if (((Bcd*)aArgA)->bIsNull())
+  else if (((Bcd*)aArgA)->bIsNull())
     bGreaterEqual = false;
   
   else if (((Bcd*)aArgB)->bIsNull())
@@ -444,6 +428,10 @@ bool Bcd::bGreaterThan(char* aArgA, char* aArgB)
 /*----------------------------------------------------------------------------*/
 i8 Bcd::iCmp(char* aArgA, char* aArgB)
 {
+  //----------------------------------------------------------------------------
+  // check for nulls first
+  if (((Bcd*)aArgA)->bIsNull() && ((Bcd*)aArgB)->bIsNull())
+    return 0;
   
   if (((Bcd*)aArgA)->bIsNull())
     return -1;

@@ -274,13 +274,22 @@ bool Ivl::bLessThan(char* aArgA, char* aArgB)
 {
   bool bLessThan;
   
-  i8 iA = *(i8*)aArgA;
-  i8 iB = *(i8*)aArgB;
-  
-  if (iA < iB)
+  if (((Ivl*)aArgA)->bIsNull())
     bLessThan = true;
-  else
+  
+  else if (((Ivl*)aArgB)->bIsNull())
     bLessThan = false;
+  
+  else {
+    
+    i8 iA = *(i8*)aArgA;
+    i8 iB = *(i8*)aArgB;
+    
+    if (iA < iB)
+      bLessThan = true;
+    else
+      bLessThan = false;
+  }
   
   return bLessThan;
 }
@@ -292,13 +301,24 @@ bool Ivl::bLessEqual(char* aArgA, char* aArgB)
 {
   bool bLessEqual;
   
-  i8 iA = *(i8*)aArgA;
-  i8 iB = *(i8*)aArgB;
-  
-  if (iA <= iB)
+  if (((Ivl*)aArgA)->bIsNull() && ((Ivl*)aArgB)->bIsNull())
     bLessEqual = true;
-  else
+  
+  else if (((Ivl*)aArgA)->bIsNull())
+    bLessEqual = true;
+  
+  else if (((Int*)aArgB)->bIsNull())
     bLessEqual = false;
+  
+  else {
+    i8 iA = *(i8*)aArgA;
+    i8 iB = *(i8*)aArgB;
+    
+    if (iA <= iB)
+      bLessEqual = true;
+    else
+      bLessEqual = false;
+  }
   
   return bLessEqual;
 }
@@ -346,13 +366,25 @@ bool Ivl::bGreaterEqual(char* aArgA, char* aArgB)
 {
   bool bGreaterEqual;
   
-  i8 iA = *(i8*)aArgA;
-  i8 iB = *(i8*)aArgB;
-  
-  if (iA >= iB)
+  if (((Ivl*)aArgA)->bIsNull() && ((Ivl*)aArgB)->bIsNull())
     bGreaterEqual = true;
-  else
+  
+  else if (((Ivl*)aArgA)->bIsNull())
     bGreaterEqual = false;
+  
+  else if (((Ivl*)aArgB)->bIsNull())
+    bGreaterEqual = true;
+  
+  else {
+    
+    i8 iA = *(i8*)aArgA;
+    i8 iB = *(i8*)aArgB;
+    
+    if (iA >= iB)
+      bGreaterEqual = true;
+    else
+      bGreaterEqual = false;
+  }
   
   return bGreaterEqual;
 }
@@ -364,13 +396,21 @@ bool Ivl::bGreaterThan(char* aArgA, char* aArgB)
 {
   bool bGreaterThan;
   
-  i8 iA = *(i8*)aArgA;
-  i8 iB = *(i8*)aArgB;
-  
-  if (iA > iB)
-    bGreaterThan = true;
-  else
+  if (((Ivl*)aArgA)->bIsNull())
     bGreaterThan = false;
+  
+  else if (((Ivl*)aArgB)->bIsNull())
+    bGreaterThan = true;
+  
+  else {
+    i8 iA = *(i8*)aArgA;
+    i8 iB = *(i8*)aArgB;
+    
+    if (iA > iB)
+      bGreaterThan = true;
+    else
+      bGreaterThan = false;
+  }
   
   return bGreaterThan;
 }
@@ -380,6 +420,17 @@ bool Ivl::bGreaterThan(char* aArgA, char* aArgB)
 /*----------------------------------------------------------------------------*/
 i8 Ivl::iCmp(char* aArgA, char* aArgB)
 {
+  //----------------------------------------------------------------------------
+  // check for nulls first
+  if (((Ivl*)aArgA)->bIsNull() && ((Ivl*)aArgB)->bIsNull())
+    return 0;
+  
+  if (((Ivl*)aArgA)->bIsNull())
+    return -1;
+  
+  if (((Ivl*)aArgB)->bIsNull())
+    return 1;
+  
   i8 iA = *(i8*)aArgA;
   i8 iB = *(i8*)aArgB;
   

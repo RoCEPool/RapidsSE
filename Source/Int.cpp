@@ -341,7 +341,10 @@ bool Int::bLessEqual(char* aArgA, char* aArgB)
 {
   bool bLessEqual;
   
-  if (((Int*)aArgA)->bIsNull())
+  if (((Int*)aArgA)->bIsNull() && ((Int*)aArgB)->bIsNull())
+    bLessEqual = true;
+  
+  else if (((Int*)aArgA)->bIsNull())
     bLessEqual = true;
   
   else if (((Int*)aArgB)->bIsNull())
@@ -367,21 +370,13 @@ bool Int::bEqualTo(char* aArgA, char* aArgB)
 {
   bool bEqualTo;
   
-  if (((Int*)aArgA)->bIsNull())
-    bEqualTo = false;
+  i8 iA = *(i8*)aArgA;
+  i8 iB = *(i8*)aArgB;
   
-  else if (((Int*)aArgB)->bIsNull())
+  if (iA == iB)
+    bEqualTo = true;
+  else
     bEqualTo = false;
-  
-  else {
-    i8 iA = *(i8*)aArgA;
-    i8 iB = *(i8*)aArgB;
-    
-    if (iA == iB)
-      bEqualTo = true;
-    else
-      bEqualTo = false;
-  }
   
   return bEqualTo;
 }
@@ -393,21 +388,13 @@ bool Int::bNotEqual(char* aArgA, char* aArgB)
 {
   bool bNotEqual;
   
-  if (((Int*)aArgA)->bIsNull())
-    bNotEqual = true;
+  i8 iA = *(i8*)aArgA;
+  i8 iB = *(i8*)aArgB;
   
-  else if (((Int*)aArgB)->bIsNull())
+  if (iA != iB)
     bNotEqual = true;
-  
-  else {
-    i8 iA = *(i8*)aArgA;
-    i8 iB = *(i8*)aArgB;
-    
-    if (iA != iB)
-      bNotEqual = true;
-    else
-      bNotEqual = false;
-  }
+  else
+    bNotEqual = false;
   
   return bNotEqual;
 }
@@ -419,7 +406,10 @@ bool Int::bGreaterEqual(char* aArgA, char* aArgB)
 {
   bool bGreaterEqual;
   
-  if (((Int*)aArgA)->bIsNull())
+  if (((Int*)aArgA)->bIsNull() && ((Int*)aArgB)->bIsNull())
+    bGreaterEqual = true;
+  
+  else if (((Int*)aArgA)->bIsNull())
     bGreaterEqual = false;
   
   else if (((Int*)aArgB)->bIsNull())
@@ -469,9 +459,11 @@ bool Int::bGreaterThan(char* aArgA, char* aArgB)
 /*----------------------------------------------------------------------------*/
 i8 Int::iCmp(char* aArgA, char* aArgB)
 {
-  
   //----------------------------------------------------------------------------
   // check for nulls first
+  if (((Int*)aArgA)->bIsNull() && ((Int*)aArgB)->bIsNull())
+    return 0;
+  
   if (((Int*)aArgA)->bIsNull())
     return -1;
   

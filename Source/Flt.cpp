@@ -286,7 +286,10 @@ bool Flt::bLessEqual(char* aArgA, char* aArgB)
 {
   bool bLessEqual;
   
-  if (((Flt*)aArgA)->bIsNull())
+  if (((Flt*)aArgA)->bIsNull() && ((Flt*)aArgB)->bIsNull())
+    bLessEqual = true;
+  
+  else if (((Flt*)aArgA)->bIsNull())
     bLessEqual = true;
   
   else if (((Flt*)aArgB)->bIsNull())
@@ -312,21 +315,13 @@ bool Flt::bEqualTo(char* aArgA, char* aArgB)
 {
   bool bEqualTo;
   
-  if (((Flt*)aArgA)->bIsNull())
+  d8 dA = *(d8*)aArgA;
+  d8 dB = *(d8*)aArgB;
+  
+  if (dA == dB)
     bEqualTo = true;
-  
-  else if (((Flt*)aArgB)->bIsNull())
+  else
     bEqualTo = false;
-  
-  else {
-    d8 dA = *(d8*)aArgA;
-    d8 dB = *(d8*)aArgB;
-    
-    if (dA == dB)
-      bEqualTo = true;
-    else
-      bEqualTo = false;
-  }
   
   return bEqualTo;
 }
@@ -338,21 +333,13 @@ bool Flt::bNotEqual(char* aArgA, char* aArgB)
 {
   bool bNotEqual;
   
-  if (((Flt*)aArgA)->bIsNull())
+  d8 dA = *(d8*)aArgA;
+  d8 dB = *(d8*)aArgB;
+  
+  if (dA != dB)
     bNotEqual = true;
-  
-  else if (((Flt*)aArgB)->bIsNull())
+  else
     bNotEqual = false;
-  
-  else {
-    d8 dA = *(d8*)aArgA;
-    d8 dB = *(d8*)aArgB;
-    
-    if (dA != dB)
-      bNotEqual = true;
-    else
-      bNotEqual = false;
-  }
   
   return bNotEqual;
 }
@@ -364,11 +351,14 @@ bool Flt::bGreaterEqual(char* aArgA, char* aArgB)
 {
   bool bGreaterEqual;
   
-  if (((Flt*)aArgA)->bIsNull())
+  if (((Flt*)aArgA)->bIsNull() && ((Flt*)aArgB)->bIsNull())
     bGreaterEqual = true;
   
-  else if (((Flt*)aArgB)->bIsNull())
+  else if (((Flt*)aArgA)->bIsNull())
     bGreaterEqual = false;
+  
+  else if (((Flt*)aArgB)->bIsNull())
+    bGreaterEqual = true;
   
   else {
     d8 dA = *(d8*)aArgA;
@@ -391,10 +381,10 @@ bool Flt::bGreaterThan(char* aArgA, char* aArgB)
   bool bGreaterThan;
   
   if (((Flt*)aArgA)->bIsNull())
-    bGreaterThan = true;
+    bGreaterThan = false;
   
   else if (((Flt*)aArgB)->bIsNull())
-    bGreaterThan = false;
+    bGreaterThan = true;
   
   else {
     d8 dA = *(d8*)aArgA;
@@ -414,6 +404,10 @@ bool Flt::bGreaterThan(char* aArgA, char* aArgB)
 /*----------------------------------------------------------------------------*/
 i8 Flt::iCmp(char* aArgA, char* aArgB)
 {
+  //----------------------------------------------------------------------------
+  // check for nulls first
+  if (((Flt*)aArgA)->bIsNull() && ((Flt*)aArgB)->bIsNull())
+    return 0;
   
   if (((Flt*)aArgA)->bIsNull())
     return -1;

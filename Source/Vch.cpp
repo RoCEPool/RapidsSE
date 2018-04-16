@@ -585,7 +585,10 @@ bool Vch::bLessEqual(char* aArgA, char* aArgB)
 {
   bool bLessEqual;
   
-  if (((Vch*)aArgA)->bIsNull())
+  if (((Vch*)aArgA)->bIsNull() && ((Vch*)aArgB)->bIsNull())
+    bLessEqual = true;
+  
+  else if (((Vch*)aArgA)->bIsNull())
     bLessEqual = true;
   
   else if (((Vch*)aArgB)->bIsNull())
@@ -608,20 +611,11 @@ bool Vch::bLessEqual(char* aArgA, char* aArgB)
 bool Vch::bEqualTo(char* aArgA, char* aArgB)
 {
   bool bEqualTo;
-  
-  if (((Vch*)aArgA)->bIsNull())
+
+  if (StrLib::iCompare(aArgA, aArgB) == 0)
+    bEqualTo = true;
+  else
     bEqualTo = false;
-  
-  else if (((Vch*)aArgB)->bIsNull())
-    bEqualTo = false;
-  
-  else {
-    
-    if (StrLib::iCompare(aArgA, aArgB) == 0)
-      bEqualTo = true;
-    else
-      bEqualTo = false;
-  }
   
   return bEqualTo;
 }
@@ -633,19 +627,10 @@ bool Vch::bNotEqual(char* aArgA, char* aArgB)
 {
   bool bNotEqual;
   
-  if (((Vch*)aArgA)->bIsNull())
+  if (StrLib::iCompare(aArgA, aArgB) != 0)
     bNotEqual = true;
-  
-  else if (((Vch*)aArgB)->bIsNull())
-    bNotEqual = true;
-  
-  else {
-    
-    if (StrLib::iCompare(aArgA, aArgB) != 0)
-      bNotEqual = true;
-    else
-      bNotEqual = false;
-  }
+  else
+    bNotEqual = false;
   
   return bNotEqual;
 }
@@ -657,7 +642,10 @@ bool Vch::bGreaterEqual(char* aArgA, char* aArgB)
 {
   bool bGreaterEqual;
   
-  if (((Vch*)aArgA)->bIsNull())
+  if (((Vch*)aArgA)->bIsNull() && ((Vch*)aArgB)->bIsNull())
+    bGreaterEqual = true;
+  
+  else if (((Vch*)aArgA)->bIsNull())
     bGreaterEqual = false;
   
   else if (((Vch*)aArgB)->bIsNull())
@@ -702,6 +690,10 @@ bool Vch::bGreaterThan(char* aArgA, char* aArgB)
 /*----------------------------------------------------------------------------*/
 i8 Vch::iCmp(char* aArgA, char* aArgB)
 {
+  //----------------------------------------------------------------------------
+  // check for nulls first
+  if (((Vch*)aArgA)->bIsNull() && ((Vch*)aArgB)->bIsNull())
+    return 0;
   
   if (((Vch*)aArgA)->bIsNull())
     return -1;

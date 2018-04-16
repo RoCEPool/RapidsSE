@@ -330,7 +330,10 @@ bool Dte::bLessEqual(char* aArgA, char* aArgB)
 {
   bool bLessEqual;
   
-  if (((Dte*)aArgA)->bIsNull())
+  if (((Dte*)aArgA)->bIsNull() && ((Dte*)aArgB)->bIsNull())
+    bLessEqual = true;
+  
+  else if (((Dte*)aArgA)->bIsNull())
     bLessEqual = true;
   
   else if (((Dte*)aArgB)->bIsNull())
@@ -357,22 +360,13 @@ bool Dte::bEqualTo(char* aArgA, char* aArgB)
 {
   bool bEqualTo;
   
-  if (((Dte*)aArgA)->bIsNull())
-    bEqualTo = false;
+  i8 iA = *(i8*)aArgA;
+  i8 iB = *(i8*)aArgB;
   
-  else if (((Dte*)aArgB)->bIsNull())
+  if (iA == iB)
+    bEqualTo = true;
+  else
     bEqualTo = false;
-  
-  else {
-    
-    i8 iA = *(i8*)aArgA;
-    i8 iB = *(i8*)aArgB;
-    
-    if (iA == iB)
-      bEqualTo = true;
-    else
-      bEqualTo = false;
-  }
   
   return bEqualTo;
 }
@@ -384,22 +378,13 @@ bool Dte::bNotEqual(char* aArgA, char* aArgB)
 {
   bool bNotEqual;
   
-  if (((Dte*)aArgA)->bIsNull())
-    bNotEqual = true;
+  i8 iA = *(i8*)aArgA;
+  i8 iB = *(i8*)aArgB;
   
-  else if (((Dte*)aArgB)->bIsNull())
+  if (iA != iB)
     bNotEqual = true;
-  
-  else {
-    
-    i8 iA = *(i8*)aArgA;
-    i8 iB = *(i8*)aArgB;
-    
-    if (iA != iB)
-      bNotEqual = true;
-    else
-      bNotEqual = false;
-  }
+  else
+    bNotEqual = false;
   
   return bNotEqual;
 }
@@ -411,7 +396,10 @@ bool Dte::bGreaterEqual(char* aArgA, char* aArgB)
 {
   bool bGreaterEqual;
   
-  if (((Dte*)aArgA)->bIsNull())
+  if (((Dte*)aArgA)->bIsNull() && ((Dte*)aArgB)->bIsNull())
+    bGreaterEqual = true;
+  
+  else if (((Dte*)aArgA)->bIsNull())
     bGreaterEqual = false;
   
   else if (((Dte*)aArgB)->bIsNull())
@@ -463,6 +451,10 @@ bool Dte::bGreaterThan(char* aArgA, char* aArgB)
 /*----------------------------------------------------------------------------*/
 i8 Dte::iCmp(char* aArgA, char* aArgB)
 {
+  //----------------------------------------------------------------------------
+  // check for nulls first
+  if (((Dte*)aArgA)->bIsNull() && ((Dte*)aArgB)->bIsNull())
+    return 0;
   
   if (((Dte*)aArgA)->bIsNull())
     return -1;

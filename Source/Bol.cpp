@@ -300,10 +300,10 @@ bool Bol::bLessThan(char* aArgA, char* aArgB)
   bool bLessThan;
   
   if (((Bol*)aArgA)->bIsNull())
-    bLessThan = false;
+    bLessThan = true;
   
   else if (((Bol*)aArgB)->bIsNull())
-    bLessThan = true;
+    bLessThan = false;
   
   else {
     i8 iA = *(i8*)aArgA;
@@ -325,11 +325,14 @@ bool Bol::bLessEqual(char* aArgA, char* aArgB)
 {
   bool bLessEqual;
   
-  if (((Bol*)aArgA)->bIsNull())
-    bLessEqual = false;
+  if (((Bol*)aArgA)->bIsNull() && ((Bol*)aArgB)->bIsNull())
+    bLessEqual = true;
+  
+  else if (((Bol*)aArgA)->bIsNull())
+    bLessEqual = true;
   
   else if (((Bol*)aArgB)->bIsNull())
-    bLessEqual = true;
+    bLessEqual = false;
   
   else {
     i8 iA = *(i8*)aArgA;
@@ -351,21 +354,13 @@ bool Bol::bEqualTo(char* aArgA, char* aArgB)
 {
   bool bEqualTo;
   
-  if (((Bol*)aArgA)->bIsNull())
-    bEqualTo = false;
+  i8 iA = *(i8*)aArgA;
+  i8 iB = *(i8*)aArgB;
   
-  else if (((Bol*)aArgB)->bIsNull())
+  if (iA == iB)
     bEqualTo = true;
-  
-  else {
-    i8 iA = *(i8*)aArgA;
-    i8 iB = *(i8*)aArgB;
-    
-    if (iA == iB)
-      bEqualTo = true;
-    else
-      bEqualTo = false;
-  }
+  else
+    bEqualTo = false;
   
   return bEqualTo;
 }
@@ -377,21 +372,13 @@ bool Bol::bNotEqual(char* aArgA, char* aArgB)
 {
   bool bNotEqual;
   
-  if (((Bol*)aArgA)->bIsNull())
-    bNotEqual = false;
+  i8 iA = *(i8*)aArgA;
+  i8 iB = *(i8*)aArgB;
   
-  else if (((Bol*)aArgB)->bIsNull())
+  if (iA != iB)
     bNotEqual = true;
-  
-  else {
-    i8 iA = *(i8*)aArgA;
-    i8 iB = *(i8*)aArgB;
-    
-    if (iA != iB)
-      bNotEqual = true;
-    else
-      bNotEqual = false;
-  }
+  else
+    bNotEqual = false;
   
   return bNotEqual;
 }
@@ -403,7 +390,10 @@ bool Bol::bGreaterEqual(char* aArgA, char* aArgB)
 {
   bool bGreaterEqual;
   
-  if (((Bol*)aArgA)->bIsNull())
+  if (((Bol*)aArgA)->bIsNull() && ((Bol*)aArgB)->bIsNull())
+    bGreaterEqual = true;
+  
+  else if (((Bol*)aArgA)->bIsNull())
     bGreaterEqual = false;
   
   else if (((Bol*)aArgB)->bIsNull())
@@ -453,6 +443,11 @@ bool Bol::bGreaterThan(char* aArgA, char* aArgB)
 /*----------------------------------------------------------------------------*/
 i8 Bol::iCmp(char* aArgA, char* aArgB)
 {
+  //----------------------------------------------------------------------------
+  // check for nulls first
+  if (((Bol*)aArgA)->bIsNull() && ((Bol*)aArgB)->bIsNull())
+    return 0;
+  
   if (((Bol*)aArgA)->bIsNull())
     return -1;
   

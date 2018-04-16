@@ -368,7 +368,10 @@ bool Tme::bLessEqual(char* aArgA, char* aArgB)
 {
   bool bLessEqual;
   
-  if (((Tme*)aArgA)->bIsNull())
+  if (((Tme*)aArgA)->bIsNull() && ((Tme*)aArgB)->bIsNull())
+    bLessEqual = true;
+  
+  else if (((Tme*)aArgA)->bIsNull())
     bLessEqual = true;
   
   else if (((Tme*)aArgB)->bIsNull())
@@ -394,22 +397,14 @@ bool Tme::bEqualTo(char* aArgA, char* aArgB)
 {
   bool bEqualTo;
   
-  if (((Tme*)aArgA)->bIsNull())
+  i8 iA = *(i8*)aArgA;
+  i8 iB = *(i8*)aArgB;
+  
+  if (iA == iB)
     bEqualTo = true;
-  
-  else if (((Tme*)aArgB)->bIsNull())
+  else
     bEqualTo = false;
-  
-  else {
-    
-    i8 iA = *(i8*)aArgA;
-    i8 iB = *(i8*)aArgB;
-    
-    if (iA == iB)
-      bEqualTo = true;
-    else
-      bEqualTo = false;
-  }
+
   return bEqualTo;
 }
 
@@ -420,22 +415,14 @@ bool Tme::bNotEqual(char* aArgA, char* aArgB)
 {
   bool bNotEqual;
   
-  if (((Tme*)aArgA)->bIsNull())
+  i8 iA = *(i8*)aArgA;
+  i8 iB = *(i8*)aArgB;
+  
+  if (iA != iB)
     bNotEqual = true;
-  
-  else if (((Tme*)aArgB)->bIsNull())
+  else
     bNotEqual = false;
-  
-  else {
-    
-    i8 iA = *(i8*)aArgA;
-    i8 iB = *(i8*)aArgB;
-    
-    if (iA != iB)
-      bNotEqual = true;
-    else
-      bNotEqual = false;
-  }
+
   return bNotEqual;
 }
 
@@ -446,11 +433,14 @@ bool Tme::bGreaterEqual(char* aArgA, char* aArgB)
 {
   bool bGreaterEqual;
   
-  if (((Vch*)aArgA)->bIsNull())
+  if (((Tme*)aArgA)->bIsNull() && ((Tme*)aArgB)->bIsNull())
     bGreaterEqual = true;
   
-  else if (((Vch*)aArgB)->bIsNull())
+  else if (((Tme*)aArgA)->bIsNull())
     bGreaterEqual = false;
+  
+  else if (((Tme*)aArgB)->bIsNull())
+    bGreaterEqual = true;
   
   else {
     
@@ -516,6 +506,10 @@ bool Tme::bGreaterThan(char* aArgA, char* aArgB)
 /*----------------------------------------------------------------------------*/
 i8 Tme::iCmp(char* aArgA, char* aArgB)
 {
+  //----------------------------------------------------------------------------
+  // check for nulls first
+  if (((Tme*)aArgA)->bIsNull() && ((Tme*)aArgB)->bIsNull())
+    return 0;
   
   if (((Tme*)aArgA)->bIsNull())
     return -1;

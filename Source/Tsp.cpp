@@ -455,7 +455,10 @@ bool Tsp::bLessEqual(char* aArgA, char* aArgB)
 {
   bool bLessEqual;
   
-  if (((Tsp*)aArgA)->bIsNull())
+  if (((Tsp*)aArgA)->bIsNull() && ((Tsp*)aArgB)->bIsNull())
+    bLessEqual = true;
+  
+  else if (((Tsp*)aArgA)->bIsNull())
     bLessEqual = true;
   
   else if (((Tsp*)aArgB)->bIsNull())
@@ -481,21 +484,13 @@ bool Tsp::bEqualTo(char* aArgA, char* aArgB)
 {
   bool bEqualTo;
   
-  if (((Tsp*)aArgA)->bIsNull())
+  i8 iA = *(i8*)aArgA;
+  i8 iB = *(i8*)aArgB;
+  
+  if (iA == iB)
     bEqualTo = true;
-  
-  else if (((Tsp*)aArgB)->bIsNull())
+  else
     bEqualTo = false;
-  
-  else {
-    i8 iA = *(i8*)aArgA;
-    i8 iB = *(i8*)aArgB;
-    
-    if (iA == iB)
-      bEqualTo = true;
-    else
-      bEqualTo = false;
-  }
   
   return bEqualTo;
 }
@@ -507,21 +502,13 @@ bool Tsp::bNotEqual(char* aArgA, char* aArgB)
 {
   bool bNotEqual;
   
-  if (((Tsp*)aArgA)->bIsNull())
+  i8 iA = *(i8*)aArgA;
+  i8 iB = *(i8*)aArgB;
+  
+  if (iA != iB)
     bNotEqual = true;
-  
-  else if (((Tsp*)aArgB)->bIsNull())
+  else
     bNotEqual = false;
-  
-  else {
-    i8 iA = *(i8*)aArgA;
-    i8 iB = *(i8*)aArgB;
-    
-    if (iA != iB)
-      bNotEqual = true;
-    else
-      bNotEqual = false;
-  }
   
   return bNotEqual;
 }
@@ -533,11 +520,14 @@ bool Tsp::bGreaterEqual(char* aArgA, char* aArgB)
 {
   bool bGreaterEqual;
   
-  if (((Tsp*)aArgA)->bIsNull())
+  if (((Tsp*)aArgA)->bIsNull() && ((Tsp*)aArgB)->bIsNull())
     bGreaterEqual = true;
   
-  else if (((Tsp*)aArgB)->bIsNull())
+  else if (((Tsp*)aArgA)->bIsNull())
     bGreaterEqual = false;
+  
+  else if (((Tsp*)aArgB)->bIsNull())
+    bGreaterEqual = true;
   
   else {
     i8 iA = *(i8*)aArgA;
@@ -560,10 +550,10 @@ bool Tsp::bGreaterThan(char* aArgA, char* aArgB)
   bool bGreaterThan;
   
   if (((Tsp*)aArgA)->bIsNull())
-    bGreaterThan = true;
+    bGreaterThan = false;
   
   else if (((Tsp*)aArgB)->bIsNull())
-    bGreaterThan = false;
+    bGreaterThan = true;
   
   else {
     i8 iA = *(i8*)aArgA;
@@ -583,6 +573,11 @@ bool Tsp::bGreaterThan(char* aArgA, char* aArgB)
 /*----------------------------------------------------------------------------*/
 i8 Tsp::iCmp(char* aArgA, char* aArgB)
 {
+  //----------------------------------------------------------------------------
+  // check for nulls first
+  if (((Tsp*)aArgA)->bIsNull() && ((Tsp*)aArgB)->bIsNull())
+    return 0;
+  
   if (((Tsp*)aArgA)->bIsNull())
     return -1;
   
