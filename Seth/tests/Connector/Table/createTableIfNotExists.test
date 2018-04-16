@@ -7,25 +7,25 @@ create table T1 (c1 integer);
 success;
 
 // check existence of table
-select * from rapids.system.tables where catalog_name = 'RAPIDSSE';
+select * from rapids.system.tables where catalog_name = 'rapidsse';
 rows:
-('RAPIDSSE', 'PUBLIC', 'T1', true)
+('rapidsse', 'public', 'T1', true)
 
 // create table only if it does not exits
 create table if not exists T1 (c1 integer);
 success;
 
 // check existence of table
-select * from rapids.system.tables where catalog_name = 'RAPIDSSE';
+select * from rapids.system.tables where catalog_name = 'rapidsse';
 rows:
-('RAPIDSSE', 'PUBLIC', 'T1', true)
+('rapidsse', 'public', 'T1', true)
 
 // now drop the table
 drop table T1;
 success;
 
 // check existence of table
-select * from rapids.system.tables where catalog_name = 'RAPIDSSE';
+select * from rapids.system.tables where catalog_name = 'rapidsse';
 rows: 0
 
 create table if not exists T1 (c1 integer);
@@ -35,9 +35,9 @@ create table T1 (c1 integer);
 failure: 'Subsystem exception'
 
 // check existence of table
-select * from rapids.system.tables where catalog_name = 'RAPIDSSE';
+select * from rapids.system.tables where catalog_name = 'rapidsse';
 rows:
-('RAPIDSSE', 'PUBLIC', 'T1', true)
+('rapidsse', 'public', 'T1', true)
 
 CLEANUP {
 drop table T1 ;   mute;

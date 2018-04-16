@@ -327,7 +327,7 @@ ESCAPE CONNECTOR se 'load RETURNS' with file='../Seth/tests/Load/returns.csv', r
 failure
 
 // check existence of table
-select * from tables where catalog_name = 'RAPIDSSE';
+select * from tables where catalog_name = 'rapidsse';
 rows: 21
 
 CLEANUP {

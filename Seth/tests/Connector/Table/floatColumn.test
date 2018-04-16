@@ -9,7 +9,7 @@ create table T1 (
 );
 success
 // table should have gotten created
-select table_name from rapids.system.tables where catalog_name = 'RAPIDSSE';
+select table_name from rapids.system.tables where catalog_name = 'rapidsse';
 rows:
 ('T1')
 
@@ -35,7 +35,7 @@ create table T1 (
 success
 
 // table should have gotten created
-select table_name from rapids.system.tables where catalog_name = 'RAPIDSSE';
+select table_name from rapids.system.tables where catalog_name = 'rapidsse';
 rows:
   ('T1')
 
@@ -106,7 +106,7 @@ create table T1 (
 success
 
 // table should have gotten created
-select table_name from rapids.system.tables where catalog_name = 'RAPIDSSE';
+select table_name from rapids.system.tables where catalog_name = 'rapidsse';
 rows:
   ('T1')
 

@@ -31,16 +31,16 @@ create table T1000 (
 success
 
 -- check existence of table
-select * from rapids.system.tables where catalog_name = 'RAPIDSSE';
+select * from rapids.system.tables where catalog_name = 'rapidsse';
 rows:
-('RAPIDSSE', 'PUBLIC', 'T1000', true)
+('rapidsse', 'public', 'T1000', true)
 
 -- check existence of index
 select * from rapids.system.indexes;
 rows:
-('RAPIDSSE', 'PUBLIC', 'T1000', 'INDEX1', false,  false, 'SKIPLIST', 1, 'T1000_KEY')
-('RAPIDSSE', 'PUBLIC', 'T1000', 'INDEX2', false, false, 'SKIPLIST', 1, 'T1000_100')
-('RAPIDSSE', 'PUBLIC', 'T1000', 'INDEX3', false, false, 'SKIPLIST', 1, 'T1000_NAME')
+('rapidsse', 'public', 'T1000', 'INDEX1', false,  false, 'SKIPLIST', 1, 'T1000_KEY')
+('rapidsse', 'public', 'T1000', 'INDEX2', false, false, 'SKIPLIST', 1, 'T1000_100')
+('rapidsse', 'public', 'T1000', 'INDEX3', false, false, 'SKIPLIST', 1, 'T1000_NAME')
 
 
 -- insert data into T1000
@@ -69,20 +69,20 @@ create table R1000 (
 success
 
 -- check existence of table
-select * from rapids.system.tables where catalog_name = 'RAPIDSSE';
+select * from rapids.system.tables where catalog_name = 'rapidsse';
 rows:
-('RAPIDSSE', 'PUBLIC', 'T1000', true)
-('RAPIDSSE', 'PUBLIC', 'R1000', true)
+('rapidsse', 'public', 'T1000', true)
+('rapidsse', 'public', 'R1000', true)
 
 -- check existence of index
 select * from rapids.system.indexes;
 rows:
-('RAPIDSSE', 'PUBLIC', 'T1000', 'INDEX1', false,  false, 'SKIPLIST', 1, 'T1000_KEY')
-('RAPIDSSE', 'PUBLIC', 'T1000', 'INDEX2', false, false, 'SKIPLIST', 1, 'T1000_100')
-('RAPIDSSE', 'PUBLIC', 'T1000', 'INDEX3', false, false, 'SKIPLIST', 1, 'T1000_NAME')
-('RAPIDSSE', 'PUBLIC', 'R1000', 'INDEX1', false,  false, 'SKIPLIST', 1, 'R1000_KEY')
-('RAPIDSSE', 'PUBLIC', 'R1000', 'INDEX2', false, false, 'SKIPLIST', 1, 'R1000_100')
-('RAPIDSSE', 'PUBLIC', 'R1000', 'INDEX3', false, false, 'SKIPLIST', 1, 'R1000_NAME')
+('rapidsse', 'public', 'T1000', 'INDEX1', false,  false, 'SKIPLIST', 1, 'T1000_KEY')
+('rapidsse', 'public', 'T1000', 'INDEX2', false, false, 'SKIPLIST', 1, 'T1000_100')
+('rapidsse', 'public', 'T1000', 'INDEX3', false, false, 'SKIPLIST', 1, 'T1000_NAME')
+('rapidsse', 'public', 'R1000', 'INDEX1', false,  false, 'SKIPLIST', 1, 'R1000_KEY')
+('rapidsse', 'public', 'R1000', 'INDEX2', false, false, 'SKIPLIST', 1, 'R1000_100')
+('rapidsse', 'public', 'R1000', 'INDEX3', false, false, 'SKIPLIST', 1, 'R1000_NAME')
 
 -- insert-select
 insert into R1000 select * from T1000;
