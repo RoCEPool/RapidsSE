@@ -92,7 +92,7 @@ bool Task::bAppendRow(WorkingBuffer* pWorkingBuffer, Entry* pEntry, SEitf* pSEit
   
   if (pSEitf && pSEitf->bRowSeen(xId)) {
     // row already inserted
-    vTrace("Row already inserted %p \n"_Stz, pEntry);
+    //vTrace("Row already inserted %p \n"_Stz, pEntry);
     return true;
   }
   
