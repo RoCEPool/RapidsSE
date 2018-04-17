@@ -381,7 +381,7 @@ void Task::vIndexExactKey(MP_Task mpTask)
       s48K s;
       pDataRowEntry->aRow()->vAsEscapedString(s, pIndex->pTable()->pColumnVec());
       
-      vTrace("appending row %p: %s from partition %lld\n"_Stz, pDataRowEntry, s.aChar(), iPartition);
+      //vTrace("appending row %p: %s from partition %lld\n"_Stz, pDataRowEntry, s.aChar(), iPartition);
       
       // insert row from entry in tempEntryBuffer
       if ( ! bAppendRow(pWorkingBuffer, pDataRowEntry, pSEitf)) {
