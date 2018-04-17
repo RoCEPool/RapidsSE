@@ -1,64 +1,50 @@
 /*============================================================================*/
 /* _scratch -- scratch test                                                   */
 /*============================================================================*/
+create table TABLE1 (
+PCOL1   INTEGER NOT NULL,
+tcol1   INTEGER NOT NULL,
+cola1   INTEGER,
+COLB1   VARCHAR(20),
+colc1   TIMESTAMP,
+cold1   FLOAT,
+cole1   DECIMAL(15, 2),
+colf1   INTEGER,
+colg1   INTEGER,
+ucol    INTEGER,
+ucolvc  VARCHAR(5)
+);
 
-create table terminator (
-  pcol1 integer not null,
-  tcol1 integer,
-  cola1 integer,
-  colb1 varchar(20),
-  colc1 timestamp,
-  cold1 float,
-  cole1 decimal(15,2),
-  colf1 integer,
-  colg1 integer,
-  ucol integer,
-  ucolvc varchar(5));
+create index tbl1idx3 on table1(colb1);
 
-// create an index
-create index idx on terminator(pcol1);
+//create index idx on table1(colb1);
+ld TABLE1 "../Seth/tests/Load/tbl1data.csv" ;
 
-// load data into the table with default formatter settings
-ld terminator "../Seth/tests/Load/terminator.csv"  field_delimiter "|" record_terminator "|";
+print "BLUE or blue or BLACK...";
+fetch table1 "colb1 'BLUE' = colb1 'blue' = OR colb1 'BLACK' = OR";
+print "BLUE or blue or BLACK or black...";
+fetch table1 "colb1 'BLUE' = colb1 'blue' = OR colb1 'BLACK' = OR colb1 'black' = OR";
 
-
-//------------------------------------------------------------------------------
-// The following fetch shpould return the following row
-//(*, 0,217,260,'grey',timestamp '2015-10-31 00:00:00',73.44,5.34,8,-152,81,'lll')
-fetch terminator "pcol1 0 =";
-
-
-// drop table terminator;
-drop table terminator;
-
-create table terminator (
-  pcol1 integer not null,
-  tcol1 integer,
-  cola1 integer,
-  colb1 varchar(20),
-  colc1 timestamp,
-  cold1 float,
-  cole1 decimal(15,2),
-  colf1 integer,
-  colg1 integer,
-  ucol integer,
-  ucolvc varchar(5));
-
-// create an index
-create index idx on terminator(pcol1);
-
-// load data into the table with default formatter settings
-ld terminator "../Seth/tests/Load/terminator.csv"  field_delimiter "|";
-
-//------------------------------------------------------------------------------
-// The following fetch shpould return the following row
-//(*, 0,217,260,'grey',timestamp '2015-10-31 00:00:00',73.44,5.34,8,-152,81,'lll|')
-fetch terminator "pcol1 0 =";
+// table1 "colb1 'BLUE' = colb1 'blue' = OR 'BLACK' colb1 = OR";
+/*
+print "BLUE...";
+fetch table1 "colb1 'BLUE' =";
+print "blue...";
+fetch table1 "colb1 'blue' =";
+print "BLACK...";
+fetch table1 "colb1 'BLACK' =";
+print "black...";
+fetch table1 "colb1 'black' =";
+print "BLUE or blue...";
+fetch table1 "colb1 'BLUE' = colb1 'blue' = OR";
+print "BLACK or black...";
+fetch table1 "colb1 'BLACK' = colb1 'black' = OR";
 
 
-// drop table terminator;
-drop table terminator;
+*/
+//select "colb1" from table1 where "colb1" = 'blue' or "colb1" = 'black' or "colb1" = 'BLUE' or "colb1" = 'BLACK';
 
+//select colb1, trim(leading 'b' from colb1), trim(leading 'B' from colb1) from table1 where colb1 = 'blue' or colb1 = 'black' or colb1 = 'BLUE' or colb1 = 'BLACK' order by colb1, pcol1;
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
