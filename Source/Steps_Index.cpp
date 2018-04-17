@@ -375,12 +375,16 @@ void Task::vIndexExactKey(MP_Task mpTask)
       
       // get the dataRow from the hidden index
       Entry* pDataRowEntry = pEntry->pDataEntry();
-      Row* aRow = pDataRowEntry->aRow();
+      //Row* aRow = pDataRowEntry->aRow();
       //aRow->vShow(pTable->pColumnVec());
-      i8 nRowSize = pDataRowEntry->nRowSize();
+      //i8 nRowSize = pDataRowEntry->nRowSize();
+      s48K s;
+      pDataRowEntry->aRow()->vAsEscapedString(s, pIndex->pTable()->pColumnVec());
+      
+      vTrace("appending row %p: %s from partition %lld\n"_Stz, pDataRowEntry, s.aChar(), iPartition);
       
       // insert row from entry in tempEntryBuffer
-      if ( ! pWorkingBuffer->bAppendRow(aRow, nRowSize)) {
+      if ( ! bAppendRow(pWorkingBuffer, pDataRowEntry, pSEitf)) {
         
         // buffer must be full
         // put this tempEntryBuffer in seitf bufferQueue
@@ -391,7 +395,7 @@ void Task::vIndexExactKey(MP_Task mpTask)
         pWorkingBuffer = new WorkingBuffer(pTable, iPartition);
         
         // insert row from entry in temporary buffer
-        bool bResult = pWorkingBuffer->bAppendRow(aRow, nRowSize);
+        bool bResult = bAppendRow(pWorkingBuffer, pDataRowEntry, pSEitf);
         RASSERT(bResult);
       }
     }
