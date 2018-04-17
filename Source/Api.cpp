@@ -1014,6 +1014,7 @@ eEC RapidsSE_FetchNextBuffer(SEitf* pSEitf, void** ppWorkingBuffer, i8 iTraceLev
     
     if (bNextBuffer) {
       *ppWorkingBuffer = pSEitf->m_pResultBuffer;
+      pSEitf->m_pResultBuffer->vShow();
     }
     else {
       *ppWorkingBuffer = nullptr;
