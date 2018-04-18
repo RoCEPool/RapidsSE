@@ -835,7 +835,7 @@ Entry* EntryBuffer::pNextEntry(Entry* pCurrent, i8 i_Offset)
   if (-1 == iOffset)
     return nullptr;
   
-  char* aAddress = pAdd<char*>(aDataArea(), iOffset);
+  char* aAddress = pAdd(aDataArea(), iOffset);
   //Item* pItem = _pItem(aAddress);
   
   //if (CN_ENTRY != pItem->eClass())
