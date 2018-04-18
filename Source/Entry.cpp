@@ -780,9 +780,11 @@ NEO* Entry::aNEO(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
 
-  Footer* aFooter = this->aFooter();
+  //Footer* aFooter = this->aFooter();
   
-  NEO* aNEO = pAdd<NEO*>(aFooter,sizeof(Footer));
+  //NEO* aNEO = pAdd<NEO*>(aFooter,sizeof(Footer));
+  
+  NEO* aNEO = pAdd<NEO*>(this, nSizeItem());
   
   return aNEO;
 }
@@ -796,9 +798,11 @@ i4 Entry::iNEO(i8 iOffset)
   
   ASSERT(iOffset >= 0 && iOffset < m_nOffsets);
   
-  NEO* aNEO = this->aNEO();
+  //NEO* aNEO = this->aNEO();
   
-  i4 iNEO = aNEO->m_iOffset[iOffset];
+  //i4 iNEO = aNEO->m_iOffset[iOffset];
+  
+  i4 iNEO = *(pAdd<i4*>(this, nSizeItem() + sizeof(i4) * iOffset));
   
   return iNEO;
 }
@@ -812,9 +816,12 @@ void Entry::vNEO(i8 iOffset, i4 iNEO)
   
   ASSERT(iOffset >= 0 && iOffset < m_nOffsets);
   
-  NEO* aNEO = this->aNEO();
+  //NEO* aNEO = this->aNEO();
   
-  aNEO->m_iOffset[iOffset] = iNEO;
+  //aNEO->m_iOffset[iOffset] = iNEO;
+  
+  *(pAdd<i4*>(this, nSizeItem() + sizeof(i4) * iOffset)) = iNEO;
+  
 }
 
 /*----------------------------------------------------------------------------*/
