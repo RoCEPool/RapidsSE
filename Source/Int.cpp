@@ -406,15 +406,24 @@ bool Int::bGreaterEqual(char* aArgA, char* aArgB)
 {
   bool bGreaterEqual;
   
-  if (((Int*)aArgA)->bIsNull() && ((Int*)aArgB)->bIsNull())
-    bGreaterEqual = true;
+//  if (((Int*)aArgA)->bIsNull() && ((Int*)aArgB)->bIsNull())
+//    bGreaterEqual = true;
+//
+//  else if (((Int*)aArgA)->bIsNull())
+//    bGreaterEqual = false;
+//
+//  else if (((Int*)aArgB)->bIsNull())
+//    bGreaterEqual = true;
   
-  else if (((Int*)aArgA)->bIsNull())
-    bGreaterEqual = false;
-  
-  else if (((Int*)aArgB)->bIsNull())
-    bGreaterEqual = true;
-  
+  if (((Int*)aArgA)->bIsNull()) {
+    if (((Int*)aArgA)->bIsNull())
+      return true;
+    else
+      return false;
+  }
+  else if (((Int*)aArgA)->bIsNull()) {
+      return true;
+  }
   else {
     i8 iA = *(i8*)aArgA;
     i8 iB = *(i8*)aArgB;
