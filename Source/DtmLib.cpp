@@ -583,7 +583,7 @@ bool DtmLib::bTestForNull(char** aaSrc, DBobjects::Column* pColumn,
   
   char* aStart = *aaSrc;
   
-  if ( 0 == StrLib::iCompare(*aaSrc, "NULL", 4, C_NO_CASE) ) {
+  if ( (**aaSrc == 'N' || **aaSrc == 'n') && (0 == StrLib::iCompare(*aaSrc+1, "ULL", 3, C_NO_CASE)) ) {
     // skip over token null
     *aaSrc = (*aaSrc) + 4;
   }
@@ -600,7 +600,7 @@ bool DtmLib::bTestForNull(char** aaSrc, DBobjects::Column* pColumn,
     *aaSrc = (*aaSrc) + 4;
   }
   else if (**aaSrc    == pFormatters->m_cEnclosedBy_Leading &&
-                    0 == StrLib::iCompare(*aaSrc+1, "NULL", 4, C_NO_CASE) &&
+           ((*(*aaSrc+1) == 'N' || *(*aaSrc+1) == 'n') && (0 == StrLib::iCompare(*aaSrc+2, "ULL", 3, C_NO_CASE))) &&
           *(*aaSrc+5) == pFormatters->m_cEnclosedBy_Trailing) {
     // skip over 'NULL'
     *aaSrc = (*aaSrc) + 6;
