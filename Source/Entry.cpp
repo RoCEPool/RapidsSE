@@ -491,9 +491,6 @@ void Entry::vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
   
   ValWrk xValWrk;
   
-  // VCH cannot be > 256 bytes
-  s4K s;                                                       //ALKA_ROWFORMAT
-  
   Row* aThisRow = aRow();
   i8 nCols = pIdxColVec->nItems();
   for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
@@ -568,6 +565,7 @@ void Entry::vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
       }
         
       case DM_VCH: {
+        s4K s;
         s = (Stz*)pDst;
         xValWrk = s;
         break;
