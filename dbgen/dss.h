@@ -269,7 +269,7 @@ EXTERN distribution grammar;
 
 
 EXTERN long scale;
-EXTERN int refresh;
+//EXTERN int refresh;
 EXTERN int resume;
 EXTERN long verbose;
 EXTERN long force;
