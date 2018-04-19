@@ -583,6 +583,45 @@ snap1:
 ;
 
 /*----------------------------------------------------------------------------*/
+/* parallel load a table                                                      */
+/*----------------------------------------------------------------------------*/
+: parallelLoadTable_req ( "<fileNm>" "<tableNm>" -- <R> )
+
+  ddlLock::grabRead
+
+  locals| sTableNm sFileNm |
+
+  // should be in the tables folder
+  checkInTables       not if <NIP+ERROR> exit then
+
+  // there should be a table folder
+  sTableNm checkIsTableFolder not if <NIP+ERROR> exit then
+
+  // push table dictionary
+  sTableNm pushTable assert
+
+  // check it is a table
+  sTableNm checkIsTable  not if <NIP+ERROR> exit then
+  drop
+
+  //bp::freeSpace .
+
+  snap0:
+
+  sFileNm sTableNm tableLoader not if popTable <NIP+ERROR> exit then
+  //loadIndexes
+
+  //bp::freeSpace .
+
+  // pop table dictionary
+  popTable
+
+  snap1:
+  printClassCounts
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
 /* return a table ref                                                         */
 /*----------------------------------------------------------------------------*/
 : returnTable_req ( -- <R> )

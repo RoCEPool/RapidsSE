@@ -78,6 +78,7 @@ gettblNew getTableNew_req
 ld      loadTable_req
 lstbl   listTables_req
 mktbl   createTable_req
+pld     parallelLoadTable_req
 rettbl  returnTable_req
 rmtbl   dropTable_req
 sz      sizeTable_req
