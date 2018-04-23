@@ -116,13 +116,13 @@
   //   read first chunk
   pLoaderSub loaderSub.begin
 
-  pLoaderSub loaderSub.fetchRecord
+  pLoaderSub loaderSub.fetchRecordDist
 
   if
     // fill a buffer
     begin
 
-    pLoaderSub loaderSub.loadData
+    pLoaderSub loaderSub.loadNodeData
 
     while
 
@@ -177,6 +177,9 @@
     then
 
   loop
+
+  // wait for ack when alst buffer is loaded
+  ackWait
 
   // add the valid/invalid records to loader
   //pLoaderSub loaderSub.recordsValid pLoaderSub loaderSub.loader@ loader.addRecordsValid

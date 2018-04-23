@@ -38,8 +38,10 @@ namespace DBobjects
     void vBegin(void);
     void vEnd(void);
     bool bFetchRecord(void);
+    bool bFetchRecordDist(void);
     void vHashRecord(void);
     bool bInsertRow(void);
+    bool bInsertRowDist(void);
     i8   iInvalidRecords(void);
     Loader* pLoader(void);
     void vLoader(Loader* pLoader);

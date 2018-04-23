@@ -19,12 +19,14 @@ void Task::vAddPrimitives_LoaderSub(void)
   vAddPrimitive("loaderSub.delete"_Stz,       &vLoaderSubDelete,        false);
   vAddPrimitive("loaderSub.end"_Stz,          &vLoaderSubEnd,           false);
   vAddPrimitive("loaderSub.fetchRecord"_Stz,  &vLoaderSubFetchRecord,   false);
+  vAddPrimitive("loaderSub.fetchRecordDist"_Stz,  &vLoaderSubFetchRecordDist, false);
   vAddPrimitive("loaderSub.hashPartition"_Stz,&vLoaderSubHashPartition, false);
   vAddPrimitive("loaderSub.hashRecord"_Stz,   &vLoaderSubHashRecord,    false);
   vAddPrimitive("loaderSub.init"_Stz,         &vLoaderSubInit,          false);
   vAddPrimitive("loaderSub.loader@"_Stz,      &vLoaderSubLoaderFetch,   false);
   vAddPrimitive("loaderSub.loader!"_Stz,      &vLoaderSubLoaderStore,   false);
   vAddPrimitive("loaderSub.loadData"_Stz,     &vLoaderSubLoadData,      false);
+  vAddPrimitive("loaderSub.loadNodeData"_Stz, &vLoaderSubLoadNodeData,  false);
   vAddPrimitive("loaderSub::new"_Stz,         &vLoaderSubNew,           false);
   vAddPrimitive("loaderSub.newWorkingBuffer"_Stz, &vLoaderSubNewWorkingBuffer,false);
   vAddPrimitive("loaderSub.partition@"_Stz,   &vLoaderSubPartitionFetch,false);
@@ -108,6 +110,31 @@ void Task::vLoaderSubFetchRecord(MP_Task mpTask)
   LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoader);
   
   bool bFetched = pLoaderSub->bFetchRecord();
+  
+  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  
+  //pLoaderSub->vTruncateRecord(13);
+  
+  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  
+  mpTask->m_pDataStack->vPushInt(bFetched);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loaderSub.fetchRecordDist -- fetch next record from file being loaded      */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderSubFetchRecordDist(MP_Task mpTask)
+{
+  ENTRY("vLoaderSubFetchRecord"_Stz);
+  
+  Object* pPtrLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
+    THROW_INVALID_DSTACK("loaderSub.fetchRecord"_Stz);
+  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoader);
+  
+  bool bFetched = pLoaderSub->bFetchRecordDist();
   
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   
@@ -207,6 +234,54 @@ void Task::vLoaderSubLoadData(MP_Task mpTask)
     }
     
   } while (pLoaderSub->bFetchRecord());
+  
+  mpTask->m_pDataStack->vPushInt(false);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loaderSub.loadNodeData -- load node data                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderSubLoadNodeData(MP_Task mpTask)
+{
+  ENTRY("vLoaderSubLoadNodeData"_Stz);
+  
+  Object* pPtrLoaderSub;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoaderSub) )
+    THROW_INVALID_DSTACK("loaderSub.loadNodeData"_Stz);
+  
+  // get this node
+  i8 iNode = gpAttachMap->m_pGrid->iThisNode();
+  
+  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoaderSub);
+  
+  do  {
+    
+    // hash the record
+    pLoaderSub->vHashRecord();
+    
+    i8 iPartition = pLoaderSub->iPartition();
+    
+    // skip records not for this node
+    if (Partition::iPartitionToNode(iPartition) != iNode) {
+      //vTrace("Node: %lld skipping row for partition %lld\n"_Stz, iNode, iPartition);
+      continue;
+    }
+    
+    // attempt to insert the record
+    bool bInserted = pLoaderSub->bInsertRowDist();
+    
+    // check if buffer was full
+    if ( ! bInserted) {
+      
+      // buffer was full
+      // return to loaderSub to append buffer to the table/partition
+      mpTask->m_pDataStack->vPushInt(true);
+      return;
+    }
+    
+  } while (pLoaderSub->bFetchRecordDist());
   
   mpTask->m_pDataStack->vPushInt(false);
   
