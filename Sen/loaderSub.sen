@@ -135,6 +135,9 @@
   // set total partitions in the node
   grid.slots to iTotalPartitions
 
+  // set acks to no of totalPartitions
+  iTotalPartitions setAcks
+
   // check for dangling buffers
   iTotalPartitions 0 do
 
@@ -179,6 +182,7 @@
   loop
 
   // wait for ack when alst buffer is loaded
+  "sub loader waiting to hear from partitionTasks" .verbose
   ackWait
 
   // add the valid/invalid records to loader
@@ -189,6 +193,7 @@
   pLoaderSub loaderSub.end
 
   // this sub has completed, ack the parent loader
+  "subloader acking the parent" .verbose
   task.parent@ ack
 ;
 
