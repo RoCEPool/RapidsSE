@@ -206,6 +206,22 @@ tp: insertBufferEntries$
 ;
 
 /*----------------------------------------------------------------------------*/
+/* partition task inserts the entry buffer entries to the table               */
+/*----------------------------------------------------------------------------*/
+: partitionInsertBufferEntries2 ( iTxId workingBuffer partitionNo table^ -- )
+
+  tp: partitionInsertBufferEntries2
+  0 locals| bIsLast pTable iPartitionNo pWorkingBuffer iNode iTxId pSEitf |
+
+  pWorkingBuffer workingBuffer.isLast@ to bIsLast
+
+  iTxId >str iPartitionNo grid::toSlot >str pWorkingBuffer >str pTable >str table.insertEntries ( )
+
+  bIsLast not if exit then
+  task.parent@ ack
+;
+
+/*----------------------------------------------------------------------------*/
 /* insert entries from row buffer into table                                  */
 /*----------------------------------------------------------------------------*/
 : insertTableEntries_req ( txId, partition, workingBuffer, tableName -- <R> )

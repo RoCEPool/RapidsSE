@@ -95,9 +95,6 @@ timer: loadTimer
 
   N_SERVER_THREADS setAcks
 
-  // set acks remaining to be (no partitions)* subLoaders
-  //grid.slots grid.nodes N_SERVER_THREADS * * pSEitf seitf.acksRemaining!  XXXX
-
   0 locals| pSubTask |
   0 locals| servers |
   N_SERVER_THREADS to servers
@@ -109,11 +106,10 @@ timer: loadTimer
 
   servers 0 do
 
-  //<< pSEitf pTblLoader loader.newSub >>                                 ??????
-  << pSeitf pTblLoader loader.newSub >>
-  pathGet >>
+    << pTblLoader loader.newSub >>
+    pathGet >>
 
-  1 "loadSub" task::this I >loadSubNm TK_LOADSUB_SERVER spawnServerTask to pSubTask
+    1 "distLoadSub" task::this I >loadSubNm TK_LOADSUB_SERVER spawnServerTask to pSubTask
 
   loop
 
@@ -177,7 +173,7 @@ timer: loadTimer
   tp: distParallelTableLoader
   //pSeitf "distTableLoader seitf %v" str.format .
 
-  pSeitf iNode sCat sSch sTableNm sPath 6 "parallelTableLoader" task::this "hello" TK_LOADSUB_SERVER  spawnServerTask to tableLoader
+  pSeitf iNode sCat sSch sTableNm sPath 6 "parallelTableLoader" task::this "distLoader" TK_LOADSUB_SERVER  spawnServerTask to tableLoader
   "distLoad done" .verbose
 
   true <SUCCESS_RESULT>
