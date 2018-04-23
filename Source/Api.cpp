@@ -1822,6 +1822,26 @@ eEC RapidsSE_HashRowPartition(SEitf* pSEitf, Stz* pRow, void** ppPartition, i8 i
 }
 
 /*----------------------------------------------------------------------------*/
+/* hash the integer value to a node                                           */
+/*----------------------------------------------------------------------------*/
+i8 RapidsSE_HashIntegerNode(i8 iInt)
+{
+  // get no of nodes in the grid
+  i8 iNodes = gpAttachMap->m_pGrid->iNodes();
+  
+  // get the hash of the integer
+  i8 iHash = XXH32(&iInt,sizeof(i8),0);
+  
+  // calculate the partition this integer hashes to
+  i8 iPartition = iHash % (gpAttachMap->m_pGrid->m_nSlots * iNodes);
+
+  // now figure out the node this partition belongs to
+  i8 iNode = iPartition % iNodes;
+  
+  return iNode;
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert the given row into a table                                          */
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_InsertRow(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel)
