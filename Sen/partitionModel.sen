@@ -111,7 +111,7 @@ nPartitionThreads constant N_PARTITION_THREADS
 
   locals| eTaskKind sTaskNm iPtnNo sSeed nArgs |
 
-  nArgs sSeed nullptr AC_PARTITION sTaskNm eTaskKind task::new locals| pTask |
+  nArgs sSeed task::this AC_PARTITION sTaskNm eTaskKind task::new locals| pTask |
 
 /*
   iPtnNo >partitionThreadNm findActorTaskSet locals| pTaskSet |
