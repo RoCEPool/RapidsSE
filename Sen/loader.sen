@@ -26,6 +26,164 @@ timer: loadTimer
 ;
 
 /*----------------------------------------------------------------------------*/
+/* parallel loading of file into table (on a node)                            */
+/*----------------------------------------------------------------------------*/
+: parallelTableLoader ( "<seif>" "<iNode>" "<catalog>" "<schema" "<tableNm>" "<path>"  -- t|f )
+
+  assert::stack_5+ ( "<seif>" "<iNode>" "<catalog>" "<schema" "<tableNm>" "<path>" )
+  locals|  sPath sTableNm  sSchema sCatalog iNode pSeitf |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the dictionary path for this table loader on this node
+
+  "tenants" 1 dicPath.set
+
+  "boray" find execute
+  pathPush
+
+  "catalogs"  find execute
+  pathPush
+
+  // push tableNm folder on the dictionary path
+  sCatalog find execute
+  pathPush
+
+  // push tableNm folder on the dictionary path
+  "schemas" find execute
+  pathPush
+
+  // push tableNm folder on the dictionary path
+  sSchema find execute
+  pathPush
+
+  // push tableNm folder on the dictionary path
+  "tables" find execute
+  pathPush
+
+  sTableNm pushTable assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if file path exists                                 //! refactor this
+
+  file::new locals| fp |
+  sPath fp file.path!
+
+  OPEN_READ fp file.open ( t|f )
+  not if
+  fp file.delete assert::stack_0 EC_INVALID_FILE false exit
+  then
+
+  fp file.close fp file.delete assert::stack_0
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create table loader object
+
+  "__table_loader" find dup if else
+  drop
+  "__table_loader" :loader
+  then
+  execute locals| pTblLoader | assert::stack_0
+
+  // initialise table loader
+  sTableNm find execute locals| pTable |
+
+  pTable pTblLoader loader.table!
+  sPath  pTblLoader loader.path!
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create sub loaders
+
+  N_SERVER_THREADS setAcks
+
+  // set acks remaining to be (no partitions)* subLoaders
+  //grid.slots grid.nodes N_SERVER_THREADS * * pSEitf seitf.acksRemaining!  XXXX
+
+  0 locals| pSubTask |
+  0 locals| servers |
+  N_SERVER_THREADS to servers
+
+  popTable assertInTables
+
+  // mark table is loading
+  true pTable table.isLoading!
+
+  servers 0 do
+
+  //<< pSEitf pTblLoader loader.newSub >>                                 ??????
+  << pSeitf pTblLoader loader.newSub >>
+  pathGet >>
+
+  1 "loadSub" task::this I >loadSubNm TK_LOADSUB_SERVER spawnServerTask to pSubTask
+
+  loop
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // break file into chunks (this causes sub loaders to load them)
+
+  // chunk the file
+  pTblLoader loader.chunkFile
+
+  "Load file has been chunked.." .verbose
+
+  // now wait for sub loaders to complete (drops mutex for duration)
+  ackWait
+
+  // at this point all sub loaders have completed and mutex was regrabbed
+
+  sTableNm "Table %v and its indexes loaded" str.format .verbose
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // send ack to seitf of the distParallel loader task on initiating node
+
+  <<
+  13
+  pSEitf  >str      ( << pSEitf )
+  grid.thisNode@
+  "ackSEitf$"   ( << pSEitf "ackSEitf$" )
+
+  tp: theIndirectCall
+
+  >>            ( <<ackSEitf$>> )
+
+  // to which node/participant
+  iNode  ( <<ackSEitf$>> node )
+
+  //"forwarding ackSEitf$ to coordinator..." .
+  >>oneParticipant> ( bool )
+
+  // mark table is not loading
+  false pTable table.isLoading!
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tidy up
+
+  // destroy Loader
+  sTableNm pushTable assert
+  "__table_loader" find word.forget
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* distributed parallel loading of file into table                            */
+/*----------------------------------------------------------------------------*/
+: distParallelTableLoader allParticipants 6 checkResult ( "<seitf>" iNode "<path>" "<tableNm>" "<schema>" "<catalog>" -- t|f )
+
+  args.tracepoint if
+  dup "LOADING TABLE " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
+  then
+
+  0 locals| tableLoader sCat sSch sTableNm sPath iNode pSeitf |
+
+  tp: distParallelTableLoader
+  //pSeitf "distTableLoader seitf %v" str.format .
+
+  pSeitf iNode sCat sSch sTableNm sPath 6 "parallelTableLoader" task::this "hello" TK_LOADSUB_SERVER  spawnServerTask to tableLoader
+  "distLoad done" .verbose
+
+  true <SUCCESS_RESULT>
+;
+
+/*----------------------------------------------------------------------------*/
 /* parallel loading of file into table                                        */
 /*----------------------------------------------------------------------------*/
 : tableLoader ( "<path>" "<tableNm>" -- t|f )
