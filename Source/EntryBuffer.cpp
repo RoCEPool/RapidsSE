@@ -990,6 +990,29 @@ Entry* EntryBuffer::pPositionQuery(Key* aGivenKey,i8 nKeyCols, eJC eJuxtaCompare
 }
 
 /*----------------------------------------------------------------------------*/
+/* reset/empty the buffer                                                     */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vReset(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  vResetUsed();
+  
+  m_pEntryOffset =
+    reinterpret_cast<i4*>(aAllotSpace(sizeof(i4) * C_ENTRIES_0));
+  m_i_FreeOffsetHead = C_ENTRY_NONE;
+  vFreeChains();
+  
+  m_pHeadEntry  = nullptr;
+  m_pLastEntry  = nullptr;
+  m_pFirstFree  = nullptr;
+  
+  m_pLazyChain  = nullptr;
+  
+  vHeadEntryNew();
+}
+
+/*----------------------------------------------------------------------------*/
 /* restore the buffer after being received over a socket                      */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vRestore(void)
@@ -3589,6 +3612,66 @@ EntryBuffer* EntryBuffer::pSplit2(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* check prior vec ordering                                                   */
+/*----------------------------------------------------------------------------*/
+bool EntryBuffer::bCheckPriorVec(Entry* pPriorVec[])
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  vNumberEntries();
+  
+  Entry* pPriorEntry_0 = pPriorVec[0];
+  Entry* pPriorEntry_1 = pPriorVec[1];
+  Entry* pPriorEntry_2 = pPriorVec[2];
+  
+  Entry* pNextEntry_0  = pNextEntry(pPriorEntry_0,0);
+  Entry* pNextEntry_1  = pNextEntry(pPriorEntry_1,1);
+  Entry* pNextEntry_2  = pNextEntry(pPriorEntry_2,2);
+  
+  if (pNextEntry_0 && pNextEntry_1) {
+    if (pNextEntry_0->m_iEntryNo > pNextEntry_1->m_iEntryNo) {
+      vVerifyFault();
+      return false;
+    }
+  }
+  
+  if (pNextEntry_1 && pNextEntry_2) {
+    if (pNextEntry_1->m_iEntryNo > pNextEntry_2->m_iEntryNo) {
+      vVerifyFault();
+      return false;
+    }
+  }
+  
+  if (pNextEntry_0 && pNextEntry_2) {
+    if (pNextEntry_0->m_iEntryNo > pNextEntry_2->m_iEntryNo) {
+      vVerifyFault();
+      return false;
+    }
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* number entries                                                             */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vNumberEntries(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  // set entry no
+  
+  i8 iEntryNo = 0;
+  
+  for (Entry* pTestEntry_0 = pNextEntry(m_pHeadEntry,0);
+       pTestEntry_0;
+       pTestEntry_0 = pNextEntry(pTestEntry_0,0))
+    
+    pTestEntry_0->m_iEntryNo = iEntryNo++;
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* quick verify                                                               */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vQuickVerify(Entry* pSeeEntry)
@@ -4234,6 +4317,131 @@ bool EntryBuffer::bVerifyRowRefs(void)
       vVerifyFault();
       return false;
     }
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* verify the skip list only contains only entries                            */
+/*----------------------------------------------------------------------------*/
+bool EntryBuffer::bVerifySkipListEntry(bool bShowKeys)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  
+  Entry* pNextEntry2;
+  Entry* pNextEntry1;
+  Entry* pNextEntry0;
+  
+  for (i8 i_ScanLevel = gpAttachMap->m_nIndexOffsets - 1;
+       i_ScanLevel >= 0;
+       i_ScanLevel--) {
+    
+    if (bShowKeys)
+      vTrace("i_ScanLevel %lld\n"_Stz,i_ScanLevel);
+    
+    Entry* pTestEntry_sl = pNextEntry(m_pHeadEntry,i_ScanLevel);
+    while (pTestEntry_sl) {
+      
+      if (CN_ENTRY != pTestEntry_sl->eClass()) {
+        vVerifyFault();
+        return false;
+      }
+      
+      switch (i_ScanLevel) {
+        case 2:
+          pNextEntry2 = pNextEntry(pTestEntry_sl,2);
+          if (pNextEntry2 && CN_ENTRY != pNextEntry2->eClass()) {
+            vVerifyFault();
+            return false;
+          }
+        case 1:
+          pNextEntry1 = pNextEntry(pTestEntry_sl,1);
+          if (pNextEntry1 && CN_ENTRY != pNextEntry1->eClass()) {
+            vVerifyFault();
+            return false;
+          }
+        case 0:
+          pNextEntry0 = pNextEntry(pTestEntry_sl,0);
+          if (pNextEntry0 && CN_ENTRY != pNextEntry0->eClass()) {
+            vVerifyFault();
+            return false;
+          }
+          break;
+      }
+      
+      if (bShowKeys) {
+        Key* aTestKey = pTestEntry_sl->aKey();
+        vTrace("Test %p: "_Stz,pTestEntry_sl);
+        aTestKey->vShow(pIdxColVec);
+        vTrace("\n"_Stz);
+      }
+      
+      pTestEntry_sl = pNextEntry(pTestEntry_sl,i_ScanLevel);
+    }
+  }
+  
+  if (! bVerifySkipListLevels())
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* verify the skip list levels                                                */
+/*----------------------------------------------------------------------------*/
+bool EntryBuffer::bVerifySkipListLevels(bool bShowKeys)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  // set entry no's
+  vNumberEntries();
+  
+  // run through all entries at level 0
+  Entry* pTestEntry_0 = pNextEntry(m_pHeadEntry,0);
+  while (pTestEntry_0) {
+    
+    // check if scan entry has more than one offset
+    i8 nOffsets = pTestEntry_0->nOffsets();
+    if (1 == nOffsets) {
+      pTestEntry_0 = pNextEntry(pTestEntry_0,0);
+      continue;
+    }
+    
+    // for each level see if we can find the test entry
+    for (i8 i_SkipLevel = nOffsets - 1;
+         i_SkipLevel > 0;
+         i_SkipLevel--) {
+      
+      Entry* pScanEntry_sl = pNextEntry(m_pHeadEntry,i_SkipLevel);
+      while (pScanEntry_sl) {
+        
+        if (pScanEntry_sl == pTestEntry_0)
+          break;
+        
+        Entry* pNextEntry_sl = pNextEntry(pScanEntry_sl,i_SkipLevel);
+        
+        // check we dont go backwwards
+        if (pNextEntry_sl->m_iEntryNo < pScanEntry_sl->m_iEntryNo) {
+          vShow(pScanEntry_sl);
+          vVerifyFault();
+          return false;
+        }
+        
+        pScanEntry_sl = pNextEntry_sl;
+      }
+      
+      if (pScanEntry_sl != pTestEntry_0) {
+        vShow(pTestEntry_0);
+        vVerifyFault();
+        return false;
+      }
+      
+    }
+    
+    pTestEntry_0 = pNextEntry(pTestEntry_0,0);
   }
   
   return true;

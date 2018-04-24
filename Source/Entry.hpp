@@ -24,6 +24,9 @@ namespace DBobjects
     i8  m_nOffsets;   // no of offsets for this entry (0..3)
     i8  m_iIntKey;    // key debug hack
   
+  public:
+    i8  m_iEntryNo;   // verify of entry order
+  
     // ..embedded object..
 
   public:
