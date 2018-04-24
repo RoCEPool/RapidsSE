@@ -206,6 +206,28 @@ tp: insertBufferEntries$
 ;
 
 /*----------------------------------------------------------------------------*/
+/* partition task inserts the entry buffer entries to the table               */
+/*----------------------------------------------------------------------------*/
+: partitionInsertBufferEntries2 ( iTxId workingBuffer partitionNo table^ -- )
+
+  tp: partitionInsertBufferEntries2
+  0 locals| bIsLast pTable iPartitionNo pWorkingBuffer iNode iTxId pSEitf |
+
+  pWorkingBuffer workingBuffer.isLast@ to bIsLast
+
+  iTxId >str iPartitionNo grid::toSlot >str pWorkingBuffer >str pTable >str table.insertEntries ( )
+
+  bIsLast not if exit then
+
+  // lazy build of indexes
+  iPartitionNo "Building indexes on partition %v" str.format .verbose
+  iPartitionNo grid::toSlot >str pTable >str table.lazyBuildIndexes ( )
+
+  iPartitionNo "Partition task on partition %v acking subLoader" str.format .verbose
+  task.parent@ ack
+;
+
+/*----------------------------------------------------------------------------*/
 /* insert entries from row buffer into table                                  */
 /*----------------------------------------------------------------------------*/
 : insertTableEntries_req ( txId, partition, workingBuffer, tableName -- <R> )
@@ -585,11 +607,11 @@ snap1:
 /*----------------------------------------------------------------------------*/
 /* parallel load a table                                                      */
 /*----------------------------------------------------------------------------*/
-: parallelLoadTable_req ( "<fileNm>" "<tableNm>" -- <R> )
+: distParallelLoadTable_req ( "<fileNm>" "<tableNm>" -- <R> )
 
   ddlLock::grabRead
 
-  locals| sTableNm sFileNm |
+  0 locals| pSEitf sTableNm sFileNm |
 
   // should be in the tables folder
   checkInTables       not if <NIP+ERROR> exit then
@@ -604,20 +626,43 @@ snap1:
   sTableNm checkIsTable  not if <NIP+ERROR> exit then
   drop
 
-  //bp::freeSpace .
+  // get this tasks seitf
+  task::this task.seitf@ to pSEitf
 
-  snap0:
+  // push originating tasks seitf
+  pSEitf >str ( "seitf" )
 
-  sFileNm sTableNm tableLoader not if popTable <NIP+ERROR> exit then
-  //loadIndexes
+  // push originating node no
+  grid.thisNode@ ( "seitf" iNode )
 
-  //bp::freeSpace .
+  // push file path
+  sFileNm  ( "seitf" iNode "<fileNm>" )
+
+  // push table name
+  sTableNm ( "seitf" iNode "<fileNm>" "<tableNm>" )
+
+  // push schema name
+  2 pathPick dic.name  ( "seitf" iNode "<fileNm>" "<tableNm>" "<schemaNm>" )
+
+  // push catalog name
+  4 pathPick dic.name  ( "seitf" iNode "<fileNm>" "<tableNm>" "<schemaNm>" "<catalogNm>" )
+
+  // set acks remaining to be no of nodes
+  grid.nodes pSEitf seitf.acksRemaining!
+
+  // invoke the disParallelTableLoader that spawn the parallel loader on each node
+  distParallelTableLoader
+
+  // wait for all distributed loaders to finish and ack
+  begin
+    pSEitf seitf.acksRemaining@
+    while
+      1 thread.sleep_s
+  repeat
 
   // pop table dictionary
   popTable
 
-  snap1:
-  printClassCounts
   <OK>
 ;
 

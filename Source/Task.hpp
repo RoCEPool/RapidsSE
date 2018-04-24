@@ -762,11 +762,13 @@ namespace Tasks
     static void vLoaderSubDelete(MP_Task mpTask);
     static void vLoaderSubEnd(MP_Task mpTask);
     static void vLoaderSubFetchRecord(MP_Task mpTask);
+    static void vLoaderSubFetchRecordDist(MP_Task mpTask);
     static void vLoaderSubHashPartition(MP_Task mpTask);
     static void vLoaderSubHashRecord(MP_Task mpTask);
     static void vLoaderSubInit(MP_Task mpTask);
     static void vLoaderSubInsertRow(MP_Task mpTask);
     static void vLoaderSubLoadData(MP_Task mpTask);
+    static void vLoaderSubLoadNodeData(MP_Task mpTask);
     static void vLoaderSubLoaderFetch(MP_Task mpTask);
     static void vLoaderSubLoaderStore(MP_Task mpTask);
     static void vLoaderSubNew(MP_Task mpTask);

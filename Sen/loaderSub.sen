@@ -39,6 +39,167 @@
 /*----------------------------------------------------------------------------*/
 /* forward insert of workingbuffer to participant for partition               */
 /*----------------------------------------------------------------------------*/
+: ~loadInsertBufferEntries2 ( iTxId pLoaderSub -- )
+
+  tp: ~loadInsertBufferEntries2
+
+  0 0 0 0 locals| iPartitionNo sTableNm pTable pWorkingBuffer pLoaderSub iTxId |
+
+  // why:
+  //   loaderSub has a full workingBuffer which needs to be sent to participant
+  //   to be appended to partition of table
+
+  // where:
+  //   in loadSub task running loadSub on general thread;
+  //   parent task is req.task running tableLoader;
+  //   reg0 has ^loaderSub
+
+  // what:
+  //   we need to have the coordinator send the insertBufferEntries$ indirect call
+  //   to the participant via a sendParticipant call
+
+  //13 task::this task.thread thread.name@ str.left "generalThread" str.equal assert
+  //task.parent@ task.name@ "req.task" str.equal assert
+
+  //
+  // a) form the indirect call of loadAppendBuffer
+  //
+
+  // get ^table
+  pLoaderSub loaderSub.table table.name to sTableNm
+  sTableNm pushTable assert
+  sTableNm find execute ( rb ptn table )
+  to pTable
+  popTable
+
+  // get partition no
+  pLoaderSub loaderSub.partition@ to iPartitionNo
+
+  // get the working buffer
+  pLoaderSub loaderSub.workingBuffer@ to pWorkingBuffer
+
+  // pass 0 for TxId at this stage
+  iTxId pWorkingBuffer iPartitionNo pTable    ( rb ptn tablePtr )
+
+  4 "partitionInsertBufferEntries2" iPartitionNo grid::toSlot dup >partitionTaskNm
+  TK_LOADSUB_PART
+
+  spawnPartitionTask
+
+  nullPtr pLoaderSub loaderSub.workingBuffer!  // set working buffer to null
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* parallel sub-loading of file into table                                    */
+/*----------------------------------------------------------------------------*/
+: distLoadSub ( ^loaderSub -- )
+
+  // this is being run by a general thread on the originator node
+
+  // first set the taskset in this task
+  // needed when being resumed by coordinator
+  0 0 0 0 0 locals| iPartitionNo ploaderSub iTotalPartitions pLoaderSEitf iTxId |
+
+  task::this task.thread thread.taskset@
+  task::this task.taskset!
+
+  // expand dic stack valset and set
+  valset> drop dicPath.set
+
+  // expand args valset
+  valset> drop
+  to pLoaderSub
+
+  // get table, tx and load map from parent loader
+  //   open the chunked file
+  //   read first chunk
+  pLoaderSub loaderSub.begin
+
+  pLoaderSub loaderSub.fetchRecordDist
+
+  if
+    // fill a buffer
+    begin
+
+    pLoaderSub loaderSub.loadNodeData
+
+    while
+
+      // insert working buffer entries into table/partition/strand
+      iTxId pLoaderSub ~loadInsertBufferEntries2
+
+    repeat
+  then
+
+  // set total partitions in the node
+  grid.slots to iTotalPartitions
+
+  // set acks to no of totalPartitions
+  iTotalPartitions setAcks
+
+  // check for dangling buffers
+  iTotalPartitions 0 do
+
+    // set the partition we are using
+    I grid::toPartition pLoaderSub loaderSub.partition!
+
+    // test for a dangling row buffer for parition I
+    pLoaderSub loaderSub.workingBuffer@
+
+    if
+      //"DANGLING" .
+      // get the buffer
+      pLoaderSub loaderSub.workingBuffer@
+
+      // mark as last buffer
+      workingBuffer.isLast!
+
+      // insert working buffer entries into table/partition/strand
+      iTxId pLoaderSub ~loadInsertBufferEntries2
+
+    else
+
+      //"NO DANGLING" .
+
+      // check if loader sub fetched any records
+      //pLoaderSub loaderSub.recordsFetched if
+
+      // create a new working buffer
+      pLoaderSub loaderSub.newWorkingBuffer
+
+      // get the buffer
+      pLoaderSub loaderSub.workingBuffer@
+
+      // mark as last buffer
+      workingBuffer.isLast!
+
+      // insert working buffer entries into table/partition/strand
+      iTxId pLoaderSub ~loadInsertBufferEntries2
+
+    then
+
+  loop
+
+  // wait for ack when alst buffer is loaded
+  "sub loader waiting to hear from partitionTasks" .verbose
+  ackWait
+
+  // add the valid/invalid records to loader
+  //pLoaderSub loaderSub.recordsValid pLoaderSub loaderSub.loader@ loader.addRecordsValid
+  //pLoaderSub loaderSub.recordsInvalid pLoaderSub loaderSub.loader@ loader.addRecordsInvalid
+
+  // close the file
+  pLoaderSub loaderSub.end
+
+  // this sub has completed, ack the parent loader
+  "subloader acking the parent" .verbose
+  task.parent@ ack
+;
+
+/*----------------------------------------------------------------------------*/
+/* forward insert of workingbuffer to participant for partition               */
+/*----------------------------------------------------------------------------*/
 : ~loadInsertBufferEntries ( pLoaderSEitf pLoaderSub -- )
 
 tp: ~loadInsertBufferEntries

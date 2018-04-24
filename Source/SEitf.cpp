@@ -63,7 +63,7 @@ ReqTable SeRequests[] =
  { "mksch"_Stz,          &SEitf::bCreateSchema,         "createSchema_req"_Stz    },
  { "mktbl"_Stz,          &SEitf::bCreateTable,          "createTable_req"_Stz     },
  { "mkten"_Stz,          &SEitf::bCreateTenant,         "createTenant_req"_Stz    },
- { "pld"_Stz,            &SEitf::bParallelLoadTable,    "parallelLoadTable_req"_Stz},
+ { "dpld"_Stz,           &SEitf::bDistParallelLoadTable,"distParallelLoadTable_req"_Stz},
  { "pwf"_Stz,            &SEitf::bPrintWorkingFolder,   "pwf_req"_Stz             },
  { "reload"_Stz,         &SEitf::bReload,               "reload_req"_Stz          },
  { "retidx"_Stz,         &SEitf::bRetIndex,             "returnIndex_req"_Stz     },
@@ -2841,9 +2841,9 @@ bool SEitf::bInUseTable(TokenVec& xTokenVec, i8 iReqNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* load a table from file in parallel across nodes                            */
+/* load a table from file distributed parallel across nodes                   */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bParallelLoadTable(TokenVec& xTokenVec, i8 iReqNo)
+bool SEitf::bDistParallelLoadTable(TokenVec& xTokenVec, i8 iReqNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   

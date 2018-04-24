@@ -46,6 +46,7 @@ extern "C" eEC RapidsSE_GetSchemas(SEitf* pSEitf, Stz* pCatalog, void** ppSchema
 extern "C" eEC RapidsSE_GetEngineVersion(SEitf* pSEitf, void** ppVersion, i8 iTraceLevel);
 extern "C" eEC RapidsSE_GetTables(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, void** ppTables, i8 iTraceLevel);
 extern "C" eEC RapidsSE_HashRowPartition(SEitf* pSEitf, Stz* pRow, void** ppPartition, i8 iTraceLevel);
+extern "C" i8  RapidsSE_HashIntegerNode(i8 iInt);
 extern "C" eEC RapidsSE_InsertRow(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel);
 extern "C" eEC RapidsSE_InsertRowPartition(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel);
 extern "C" eEC RapidsSE_LoadData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath,
