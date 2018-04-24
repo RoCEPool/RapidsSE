@@ -3807,6 +3807,10 @@ bool EntryBuffer::bVerifyL0Hidden(void)
   if (! bValid)
     return false;
   
+  bValid = bVerifySkipListLevels();
+  if (! bValid)
+    return false;
+  
   return true;
 }
 
@@ -3904,6 +3908,10 @@ bool EntryBuffer::bVerifyLnAny(void)
     return false;
   
   bValid = bVerifySkipListEntry();
+  if (! bValid)
+    return false;
+  
+  bValid = bVerifySkipListLevels();
   if (! bValid)
     return false;
   
