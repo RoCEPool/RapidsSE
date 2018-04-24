@@ -17,6 +17,8 @@ namespace DBobjects
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class EntryBuffer : public ItemBuffer
   {
+  friend class IndexTree;
+
   protected:
   
     bool  m_bIsLast;     // is this the last buffer in sequence
@@ -177,6 +179,9 @@ namespace DBobjects
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // verify functions
   
+    bool         bCheckPriorVec(Entry* pPriorVec[]);
+    void         vNumberEntries(void);
+  
     void         vQuickVerify(Entry* pSeeEntry=nullptr);
     bool         bQuickVerify(Entry* pNotSeeEntry);
   
@@ -195,6 +200,8 @@ namespace DBobjects
     bool         bVerifyNextPrev(void);
     bool         bVerifyRows(void);
     bool         bVerifyRowRefs(void);
+    bool         bVerifySkipListEntry(bool bShowKeys = false);
+    bool         bVerifySkipListLevels(bool bShowKeys = false);
     void         vVerifyFault(void);
 
   
