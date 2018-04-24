@@ -99,6 +99,7 @@ namespace DBobjects
     Entry*       pPositionQuery(Key* aGivenKey, i8 nKeyCols, eJC eJuxtaCompare);
     EntryBuffer* pPositionLevel(Key* aGivenKey, i8 nKeyCols, eJC eJuxtaCompare, i8 iLevel);
     
+    void         vReset(void);
     void         vRestore(void);
     void         vShow(Entry* pMarkEntry = nullptr);
     void         vShowShort(void);

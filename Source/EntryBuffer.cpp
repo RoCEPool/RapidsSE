@@ -990,6 +990,29 @@ Entry* EntryBuffer::pPositionQuery(Key* aGivenKey,i8 nKeyCols, eJC eJuxtaCompare
 }
 
 /*----------------------------------------------------------------------------*/
+/* reset/empty the buffer                                                     */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vReset(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  //vResetUsed();
+  
+  m_pEntryOffset    =
+  reinterpret_cast<i4*>(aAllotSpace(sizeof(i4) * C_ENTRIES_0));
+  m_i_FreeOffsetHead = C_ENTRY_NONE;
+  vFreeChains();
+  
+  m_pHeadEntry  = nullptr;
+  m_pLastEntry  = nullptr;
+  m_pFirstFree  = nullptr;
+  
+  m_pLazyChain  = nullptr;
+  
+  vHeadEntryNew();
+}
+
+/*----------------------------------------------------------------------------*/
 /* restore the buffer after being received over a socket                      */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vRestore(void)
