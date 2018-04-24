@@ -888,7 +888,8 @@ bool Table::bVerifyIndex(Index* pIndex)
 
     i8 iPartition = Partition::iSlotToPartition(iSlot);
     
-    EntryBuffer *pIndexBuffer = pPartition(iSlot)->pIndexTree(pIndex->iIndexNo())->pRoot();
+    EntryBuffer *pIndexBuffer =
+      pPartition(iSlot)->pIndexTree(pIndex->iIndexNo())->pRoot();
     
     if (pIndexBuffer)
       bVerify = pIndexBuffer->bVerify();

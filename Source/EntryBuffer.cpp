@@ -1413,7 +1413,7 @@ bool EntryBuffer::bVerify(void)
     return bValid;
   }
   
-  if (!m_pIndex->bIsHidden()) {
+  if (! m_pIndex->bIsHidden()) {
     bValid = bVerifyL0Other();
     return bValid;
   }
@@ -3766,6 +3766,8 @@ bool EntryBuffer::bVerifyL0Hidden(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+  ASSERT(! m_pLazyChain);
+    
   RASSERT(0 == m_iBufferLevel);
   RASSERT(m_pIndex->bIsHidden());
   
@@ -3800,6 +3802,10 @@ bool EntryBuffer::bVerifyL0Hidden(void)
   if (! bValid) {
     return false;
   }
+  
+  bValid = bVerifySkipListEntry();
+  if (! bValid)
+    return false;
   
   return true;
 }
@@ -3838,6 +3844,10 @@ bool EntryBuffer::bVerifyL0Other(void)
     return false;
   
   bValid = bVerifyRowRefs();
+  if (! bValid)
+    return false;
+  
+  bValid = bVerifySkipListEntry();
   if (! bValid)
     return false;
   
@@ -3890,6 +3900,10 @@ bool EntryBuffer::bVerifyLnAny(void)
     return false;
   
   bValid = bVerifyFirstKeys();
+  if (! bValid)
+    return false;
+  
+  bValid = bVerifySkipListEntry();
   if (! bValid)
     return false;
   
@@ -3994,7 +4008,7 @@ bool EntryBuffer::bVerifyEntryOffset(void)
   
   //vShow();
   
-  for (i8 i_Offset = 0; i_Offset < C_ENTRIES_0; i_Offset++) {
+  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexEntries; i_Offset++) {
 
     i8 i_EntryOffset = m_pEntryOffset[i_Offset];
     

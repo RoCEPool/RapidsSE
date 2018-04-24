@@ -1,8 +1,9 @@
 /*============================================================================*/
-/* _jindex -- index entry testing                                             */
+/* _jindex1000 -- index entry testing (1000 rows)                             */
 /*============================================================================*/
 
 pwf ;
+
 create table j1000 (
   j1000_key   INTEGER NOT NULL,
   j1000_name  VARCHAR(32) NOT NULL
@@ -14,6 +15,7 @@ ld j1000 "../JTEST/j1000.csv" ;
 
 fetch j1000 "j1000_key 0 =";
 print "\n";
+
 fetch j1000 "j1000_key 111 =";
 print "\n";
 
@@ -22,6 +24,19 @@ print "\n";
 
 fetch j1000 "j1000_key 789 =";
 print "\n";
+
+print "visualising index idx..." ;
+visidx j1000 idx;
+
+print "visualising index hidden..." ;
+visidx j1000 hidden;
+
+print "verifying index idx..." ;
+vfyidx j1000 idx;
+
+print "verifying index hidden..." ;
+vfyidx j1000 hidden;
+
 /*
 fetch j1000 "j1000_key 989 =";
 print "\n";
@@ -38,8 +53,6 @@ print "\n";
 fetch j1000 "j1000_key 990 >= j1000_key <= 995 and";
 print "\n";
 */
-vfyidx j1000 idx;
-vfyidx j1000 hidden;
 
 /*============================================================================*/
 /* end                                                                        */
