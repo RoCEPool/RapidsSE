@@ -996,10 +996,10 @@ void EntryBuffer::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  //vResetUsed();
+  vResetUsed();
   
-  m_pEntryOffset    =
-  reinterpret_cast<i4*>(aAllotSpace(sizeof(i4) * C_ENTRIES_0));
+  m_pEntryOffset =
+    reinterpret_cast<i4*>(aAllotSpace(sizeof(i4) * C_ENTRIES_0));
   m_i_FreeOffsetHead = C_ENTRY_NONE;
   vFreeChains();
   

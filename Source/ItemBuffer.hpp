@@ -26,6 +26,7 @@ namespace DBobjects
     i8     nItems(void);
     void   vItems(i8 nItems);
     Item*  pNextItem(Item* pCurrentItem);
+    void   vResetUsed(void);
     void   vResetUsed(Item* pUptil);
     i8     iToOffset(Item* pItem);
     i8     nUsedBytes(void);
