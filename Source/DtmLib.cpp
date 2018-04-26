@@ -58,7 +58,7 @@ void DtmLib::vCopy(eDM eDatum, void* aDst, void* aSrc)
 /* extract                                                                    */
 /*----------------------------------------------------------------------------*/
 bool DtmLib::bExtract(eDM eDatum, Stz* aDst, char** aaSrc,
-                      DBobjects::Column* pColumn, bool bLastColumn,
+                      i8& iColumnLength, DBobjects::Column* pColumn, bool bLastColumn,
                       bool bAllowNonPrintable, Formatters* pFormatters)
 {
   bool b = false;
@@ -78,6 +78,8 @@ bool DtmLib::bExtract(eDM eDatum, Stz* aDst, char** aaSrc,
       vFatal("DtmLib::bValid: Invalid aDatum argument: %lld\n"_Stz,
              eDatum);
   }
+  
+  iColumnLength = iSize(eDatum, aDst->aChar());
   
   // move past the field delimiter
   //   (but not past the record terminator or record ends)
