@@ -91,8 +91,7 @@ bool Row::bFormatRow(ColumnVec* pColVec,
   //aSrc = aStart;
 
   //vTrace("RawData: ]%256s[\n"_Stz,aRawData);
-  i8 iColumnLength;
-  
+
   //MemLib::vHexDump(aRawData,256);
   for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
 
@@ -104,7 +103,7 @@ bool Row::bFormatRow(ColumnVec* pColVec,
     eDM eDatumType = pColumn->eDatumType();
     bool bLastColumn = (i_Column + 1 == nColumns) ? true : false;
     bool bValid = DtmLib::bExtract(eDatumType, aDst, &aSrc,
-                                   iColumnLength, pColumn, bLastColumn,
+                                   pColumn, bLastColumn,
                                    bAllowNonPrintable,
                                    pFormatters);
 
@@ -123,7 +122,7 @@ bool Row::bFormatRow(ColumnVec* pColVec,
     // save offset
     *(pOffset->aChar()) = iRowLength;
 
-    //i8 iColumnLength = DtmLib::iSize(eDatumType, aDst->aChar());
+    i8 iColumnLength = DtmLib::iSize(eDatumType, aDst->aChar());
 
     // move to next offset location
     pOffset += C_COLUMN_OFFSET_SIZE;
