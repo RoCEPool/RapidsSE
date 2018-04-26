@@ -4484,7 +4484,9 @@ bool EntryBuffer::bVerifySkipListLevels(bool bShowKeys)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   /*
-      
+      Verify entries with skip offsets greater than one that they
+      can be found by following the  skip chain at that level, and
+      that the entries all move forward (not backward).
    */
   
   // set entry no's
