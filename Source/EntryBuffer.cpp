@@ -3944,6 +3944,15 @@ bool EntryBuffer::bVerifyAdjacent(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+  /*
+      Every entry in an Ln buffer would point to a different buffer.  This
+      routine performs a simple whereby two adjacent entries can't point to
+      the same buffer.
+   
+      A more complete test would be to mark all buffers with some reference
+      count.
+   */
+  
   RASSERT(m_iBufferLevel >= 1);
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
@@ -3979,6 +3988,11 @@ bool EntryBuffer::bVerifyBufferRefs(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+  /*
+      Every entry in an Ln buffer should reference an Ln-1 buffer. And
+      the Ln-1 buffer should have its parent buffer be that Ln buffer
+   */
+  
   RASSERT(m_iBufferLevel >= 1);
   
   for (Entry* pEntry = pFirstEntry(); pEntry; pEntry = pNextEntry(pEntry,0)) {
@@ -4005,20 +4019,29 @@ bool EntryBuffer::bVerifyBufferRefs(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* verify the entry offset array of this buffer                               */
+/* verify the entry offset array of this L0 hidden index buffer               */
 /*----------------------------------------------------------------------------*/
 bool EntryBuffer::bVerifyEntryOffset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  /*
+      For the hidden index each buffer has an offset array which indicates
+      where the row is located in the buffer.
+   
+      Entries are only maintained for entries 0..gpAttachMap->m_nIndexEntries-1.
+   
+      In all cases the hidden index is a list of L0 buffers.
+   */
   
   RASSERT(0 == m_iBufferLevel);
   RASSERT(m_pIndex->bIsHidden());
   
   //vShow();
   
-  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexEntries; i_Offset++) {
+  for (i8 i_Entry = 0; i_Entry < gpAttachMap->m_nIndexEntries; i_Entry++) {
 
-    i8 i_EntryOffset = m_pEntryOffset[i_Offset];
+    i8 i_EntryOffset = m_pEntryOffset[i_Entry];
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // validate free offset element
@@ -4059,6 +4082,11 @@ bool EntryBuffer::bVerifyFirstKeys(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+  /*
+      The for each entry in an Ln buffer will match the first key in an
+      Ln-1 buffer
+   */
+  
   RASSERT(m_iBufferLevel >= 1);
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
@@ -4093,6 +4121,11 @@ bool EntryBuffer::bVerifyFreeList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+  /*
+      The chain of free entries in any buffer must consist of solely
+      of FreeEntry's.  No other class is permited.
+   */
+  
   for (FreeEntry* pFreeEntry = pFirstFree();
        pFreeEntry != nullptr;
        pFreeEntry = pFreeEntry->pNextFree()) {
@@ -4112,6 +4145,14 @@ bool EntryBuffer::bVerifyFreeList(void)
 bool EntryBuffer::bVerifyItems(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  /*
+      The items in and entry buffer are some sequence of:
+   
+        {[Entry]|[FreeEntry]...}[Wilderness]
+   
+      The number of Entries must match the number of items in the buffer
+   */
   
   i8 nEntryItems = 0;
   
@@ -4179,6 +4220,10 @@ bool EntryBuffer::bVerifyKeyBufferOrder(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+  /*
+      The entries in an Ln buffer should be in order of the child buffer list
+   */
+  
   RASSERT(m_iBufferLevel >= 1);
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
@@ -4218,6 +4263,11 @@ bool EntryBuffer::bVerifyKeyOrder(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+  /*
+      Any Ln buffer or non-hidden L0 buffer should have its keys in ascending 
+      order.
+   */
+  
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
   for (Entry* pEntry = pFirstEntry(); pEntry; pEntry = pNextEntry(pEntry,0)) {
@@ -4248,6 +4298,11 @@ bool EntryBuffer::bVerifyKeyOrder(void)
 bool EntryBuffer::bVerifyNextPrev(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  /*
+      Any buffer should have a next whose prev point back to it; any prev should
+      point forward to it; a child buffer should point back to its parent
+   */
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -4310,6 +4365,11 @@ bool EntryBuffer::bVerifyRowRefs(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+  /*
+      For this L0 non-hidden index verify that its key entries referen a
+      valid row in an L0 hidden index buffer
+   */
+  
   RASSERT(0 == m_iBufferLevel);
   RASSERT(! m_pIndex->bIsHidden());
   
@@ -4350,6 +4410,11 @@ bool EntryBuffer::bVerifyRowRefs(void)
 bool EntryBuffer::bVerifySkipListEntry(bool bShowKeys)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  /*
+      Run thru each scan list level and verify we discover entries with
+      the same number of scan entries
+   */
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
@@ -4417,6 +4482,10 @@ bool EntryBuffer::bVerifySkipListEntry(bool bShowKeys)
 bool EntryBuffer::bVerifySkipListLevels(bool bShowKeys)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  /*
+      
+   */
   
   // set entry no's
   vNumberEntries();
