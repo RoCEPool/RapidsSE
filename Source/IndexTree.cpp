@@ -156,26 +156,29 @@ void IndexTree::vCompact(void)
     
     RASSERT(pL1->bVerifySkipListEntry());
     
+    //continue;
+    
     // get the first L0 of current L1
-    EntryBuffer* pFirstLeftL0 = pL1->pFirstChildBuffer();
+    EntryBuffer* pFirstL0 = pL1->pFirstChildBuffer();
     
     TRACE_COMPACT( pFirstLeftL0->vShowSubList(); )
     
     // get the sublist after the first L0 of current L1
-    EntryBuffer* pSubList = pFirstLeftL0->pUnlinkSubList();
-    if (! pSubList)
+    EntryBuffer* pL0SubList = pFirstL0->pUnlinkSubList();
+    if (! pL0SubList)
       continue;
     
-    TRACE_COMPACT( pSubList->vShowSubList(); )
+    TRACE_COMPACT( pL0SubList->vShowSubList(); )
     
     // copy each key entry in each L0 of sublist leftwards into (new) L0 buffers
     
-    EntryBuffer* pLeftL0 = pFirstLeftL0;
+    EntryBuffer* pLeftL0 = pFirstL0;
     
-    vCopyInitL1(pL1,pFirstLeftL0);
+    // reinit the L1 buffer
+    vCopyReInitL1(pL1,pFirstL0);
     
     // each right L0 in sublist
-    while (EntryBuffer* pRightL0 = pPopSubList(&pSubList)) {
+    while (EntryBuffer* pRightL0 = pPopSubList(&pL0SubList)) {
       
       TRACE_COMPACT( if (pSubList) pSubList->vShowSubList(); )
       
@@ -191,45 +194,47 @@ void IndexTree::vCompact(void)
   
 }
 
-
 /*----------------------------------------------------------------------------*/
-/* copy all the elements of the right buffer to the left                      */
+/* reinitialise the L1 buffer with just the first key of the first L0 buffer  */
 /*----------------------------------------------------------------------------*/
-void IndexTree::vCopyInitL1(EntryBuffer* pL1, EntryBuffer* pLeftL0)
+void IndexTree::vCopyReInitL1(EntryBuffer* pL1, EntryBuffer* pFirstL0)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
-  
-  KeyWrk xLeftKeyWrk;
-  
-  
-  ASSERT(0 == pLeftL0->iBufferLevel());
+  ASSERT(0 == pFirstL0->iBufferLevel());
   ASSERT(1 == pL1->iBufferLevel());
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // reset the L1 buffer
   
   pL1->vReset();
+  pL1->vShow();
   
-  Entry* pFirstKeyEntryL0 = pLeftL0->pFirstEntry();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // reinsert the first key of the first L0 buffer back into the L1 buffer
   
-  i8 iTxId = pFirstKeyEntryL0->iTxId();
-  Id xId = pFirstKeyEntryL0->xId();
-  Key* aKey = pFirstKeyEntryL0->aKey();
+  Entry* pFirstKeyL0 = pFirstL0->pFirstEntry();
+  
+  i8 iTxId = pFirstKeyL0->iTxId();
+  Id xId = pFirstKeyL0->xId();
+  Key* aKey = pFirstKeyL0->aKey();
   i8 nKeySize = aKey->nKeySize(pIdxColVec);
-  i8 nOffsets = pFirstKeyEntryL0->nOffsets();
+  i8 nOffsets = pFirstKeyL0->nOffsets();
   
-  xLeftKeyWrk.vTxId(iTxId);
-  xLeftKeyWrk.vId(xId);
-  xLeftKeyWrk.vEmbedded((char*)aKey);
-  xLeftKeyWrk.vKeySize(nKeySize);
-  xLeftKeyWrk.vOffsets(nOffsets);
+  KeyWrk xFirstKeyWrk;
   
-  i8 iFirstL0BufferNo = pLeftL0->iBufferNo();
+  xFirstKeyWrk.vTxId(iTxId);
+  xFirstKeyWrk.vId(xId);
+  xFirstKeyWrk.vEmbedded((char*)aKey);
+  xFirstKeyWrk.vKeySize(nKeySize);
+  xFirstKeyWrk.vOffsets(nOffsets);
+  
+  i8 iFirstL0BufferNo = pFirstL0->iBufferNo();
   xId.vBuffer(iFirstL0BufferNo);
   
-  Entry* pLeftEntryL1 = pL1->pInsertKeyAbs(xLeftKeyWrk);
+  Entry* pFirstKeyL1 = pL1->pInsertKeyAbs(xFirstKeyWrk);
   
   pL1->vShow();
 }

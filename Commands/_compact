@@ -2,40 +2,33 @@
 /* _compact -- index compaction testing                                       */
 /*============================================================================*/
 
-create table lineitem (
-L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B
-L_PARTKEY       INTEGER NOT NULL,         //  1)  8B
-L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B
-L_LINENUMBER    INTEGER NOT NULL,         //  3)  8B
-L_QUANTITY      DECIMAL(15,2) NOT NULL,   //  4)  8B
-L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,   //  5)  8B
-L_DISCOUNT      DECIMAL(15,2) NOT NULL,   //  6)  8B
-L_TAX           DECIMAL(15,2) NOT NULL,   //  7)  8B
-L_RETURNFLAG    CHAR(1) NOT NULL,         //  8)  2B
-L_LINESTATUS    CHAR(1) NOT NULL,         //  9)  2B
-L_SHIPDATE      TIMESTAMP NOT NULL,       // 10)  8B
-L_COMMITDATE    TIMESTAMP NOT NULL,       // 11)  8B
-L_RECEIPTDATE   TIMESTAMP NOT NULL,       // 12)  8B
-L_SHIPINSTRUCT  CHAR(25) NOT NULL,        // 13) 26B
-L_SHIPMODE      CHAR(10) NOT NULL,        // 14) 11B
-L_COMMENT       VARCHAR(44) NOT NULL      // 15) 45B
+create table supplier (
+  S_SUPPKEY       INTEGER NOT NULL,
+  S_NAME          CHAR(25) NOT NULL,
+  S_ADDRESS       VARCHAR(40) NOT NULL,
+  S_NATIONKEY     INTEGER NOT NULL,
+  S_PHONE         CHAR(15) NOT NULL,
+  S_ACCTBAL       DECIMAL(15,2) NOT NULL,
+  S_COMMENT       VARCHAR(101) NOT NULL
 );
 
-//CREATE INDEX idx1 ON lineitem(l_partkey);
-CREATE INDEX idx2 ON lineitem(l_shipdate);
+CREATE INDEX idx1 ON supplier(s_suppkey);
 
-print "loading lineitem.tbl..." ;
-ld lineitem "/tpch/lineitem.tbl" ;
+print "loading supplier.tbl..." ;
+ld supplier "/tpch/supplier.tbl" ;
 
-vfyidx lineitem idx2;
+visidx supplier idx1 ;
 
-visidx lineitem idx2 ;
+compactidx supplier idx1;
 
-compactidx lineitem idx2;
+visidx supplier idx1 ;
 
-visidx lineitem idx2 ;
+//print "\nSelecting rows from supplier (idx1) where S_SUPPKEY >= 500 and S_SUPPKEY <= 1000 ...\n" ;
+//fetch supplier "S_SUPPKEY 500 >= S_SUPPKEY 1000 <= and";
 
+//fetch supplier ;
 
+//visidx supplier idx1 ;
 
 /*
  
@@ -67,10 +60,14 @@ CREATE INDEX idx2 ON lineitem(l_shipdate);
 print "loading lineitem.tbl..." ;
 ld lineitem "/tpch/lineitem.tbl" ;
 
+vfyidx lineitem idx2;
+ 
 visidx lineitem idx2 ;
 
 compactidx lineitem idx2;
 
+vfyidx lineitem idx2;
+ 
 visidx lineitem idx2 ;
 
 
