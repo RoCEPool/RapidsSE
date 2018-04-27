@@ -15,9 +15,9 @@ ld j100 "../JTEST/j100.csv" ;
 
 visidx j100 idx1 ;
 
-//compactidx j100 idx1;
+compactidx j100 idx1;
 
-//visidx j100 idx1 ;
+visidx j100 idx1 ;
 
 /*
  

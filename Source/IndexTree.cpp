@@ -242,7 +242,7 @@ void IndexTree::vCopyReInitL1(EntryBuffer* pL1, EntryBuffer* pFirstL0)
   
   Entry* pFirstKeyL1 = pL1->pInsertKeyAbs(xFirstKeyWrk);
   
-  pL1->vShow();
+  //pL1->vShow();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -334,7 +334,7 @@ void IndexTree::vCopyLeft(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
     TRACE_COMPACT( pLeftL0->vShow(); )
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // insert a first L0 key entry into L1
+    // insert a first L0 key into L1
     
     if (1 == pLeftL0->nItems()) {
       
@@ -348,7 +348,11 @@ void IndexTree::vCopyLeft(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
       RASSERT(pL1->bVerifySkipListEntry());
       TRACE_COMPACT( pLeftEntryL1->vShow(0, m_pIndex, true); )
       TRACE_COMPACT( pL1->vShow(); )
+      
+      pL1->bVerifyKeyBufferOrder();
     }
+    
+    pL1->bVerifyKeyBufferOrder();
     
   } // for
   

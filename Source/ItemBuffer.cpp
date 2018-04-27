@@ -187,6 +187,8 @@ void ItemBuffer::vResetUsed(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_xWsp.vUsed(0);
+  
+  m_nItems = 0;
 }
 
 /*----------------------------------------------------------------------------*/
