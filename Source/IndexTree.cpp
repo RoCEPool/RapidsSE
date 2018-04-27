@@ -149,6 +149,9 @@ void IndexTree::vCompact(void)
   
   mbCheckPriorVec = true;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // step thru each L1 buffer in the index
+  
   for (EntryBuffer* pL1 = pFirstL1Buffer(); pL1; pL1 = pL1->pNextBuffer()) {
     
     TRACE_COMPACT( vTrace("  Compacting L1 %lld\n"_Stz,pL1->iBufferNo()); )
@@ -157,6 +160,9 @@ void IndexTree::vCompact(void)
     RASSERT(pL1->bVerifySkipListEntry());
     
     //continue;
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the first L0 and the sublist which follows
     
     // get the first L0 of current L1
     EntryBuffer* pFirstL0 = pL1->pFirstChildBuffer();
@@ -170,12 +176,13 @@ void IndexTree::vCompact(void)
     
     TRACE_COMPACT( pL0SubList->vShowSubList(); )
     
-    // copy each key entry in each L0 of sublist leftwards into (new) L0 buffers
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // copy each key in each L0 of sublist leftwards into (new) L0 buffers
     
-    // reinit the L1 buffer
+    // first reinit the L1 buffer
     vCopyReInitL1(pL1,pFirstL0);
     
-    // each right L0 in sublist
+    // foreach right L0 in sublist
     EntryBuffer* pLeftL0 = pFirstL0;
     while (EntryBuffer* pRightL0 = pPopSubList(&pL0SubList)) {
       
