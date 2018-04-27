@@ -44,9 +44,9 @@ namespace DBobjects
                                           Entry** ppFirstEntry);
     void         vAppendBuffer(EntryBuffer* pEntryBuffer);
     void         vCompact(void);
-    void         vCopyInitL1(EntryBuffer* pL1, EntryBuffer* pLeftL0);
+    void         vCopyReInitL1(EntryBuffer* pL1, EntryBuffer* pLeftL0);
     void         vCopyLeft(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0);
-    void         vCopyLeft2(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0);
+  //void         vCopyLeftV1(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0);
     void         vDump(bool bSameLevel);
     EntryBuffer* pFirstL1Buffer(void);
     EntryBuffer* pFirstL0Buffer(void);
