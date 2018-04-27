@@ -55,7 +55,7 @@ int main(int argc, const char* argv[])
   
   //vTest1();
   //vTest2();
-  //vTest3();
+  vTest3();
   //vTest4();
   //vTest5();
   //vTest6();
@@ -357,13 +357,21 @@ void vTest3(void)
 {
   byte xVlq[16];
   
-  i8 nBytes = IntLib::iIntToVlq(0,xVlq);
+  i8 nBytes = IntLib::iIntToVlq(C_NULL_INT,xVlq);
   i8 i = IntLib::iVlqToInt(xVlq);
+  assert(C_NULL_INT == i);
+  
+  nBytes = IntLib::iIntToVlq(0,xVlq);
+  i = IntLib::iVlqToInt(xVlq);
   assert(0 == i);
   
   nBytes = IntLib::iIntToVlq(30,xVlq);
   i = IntLib::iVlqToInt(xVlq);
   assert(30 == i);
+  
+  nBytes = IntLib::iIntToVlq(-30,xVlq);
+  i = IntLib::iVlqToInt(xVlq);
+  assert(-30 == i);
   
   nBytes = IntLib::iIntToVlq(31,xVlq);
   i = IntLib::iVlqToInt(xVlq);
@@ -380,6 +388,19 @@ void vTest3(void)
   nBytes = IntLib::iIntToVlq(128,xVlq);
   i = IntLib::iVlqToInt(xVlq);
   assert(128 == i);
+  
+  nBytes = IntLib::iIntToVlq(-130,xVlq);
+  i = IntLib::iVlqToInt(xVlq);
+  assert(-130 == i);
+  
+  nBytes = IntLib::iIntToVlq(-130,xVlq);
+  i = IntLib::iVlqToInt(xVlq);
+  assert(-130 == i);
+  
+  nBytes = IntLib::iIntToVlq(4096,xVlq);
+  i = IntLib::iVlqToInt(xVlq);
+  assert(4096 == i);
+  
 }
 
 /*----------------------------------------------------------------------------*/

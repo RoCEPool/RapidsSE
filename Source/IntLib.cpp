@@ -17,7 +17,7 @@
 
 const u1 C_VLQ_MORE_BIT = 7;
 const u1 C_VLQ_NULL_BIT = 6;
-//const u1 C_VLQ_SIGN_BIT = 5;
+const u1 C_VLQ_SIGN_BIT = 5;
 
 
 /*----------------------------------------------------------------------------*/
@@ -39,6 +39,64 @@ i8 IntLib::iDecile(i8 iValue, i8 iMax)
 /*----------------------------------------------------------------------------*/
 /* convert i8 to vlq (varying length quantity)                                */
 /*----------------------------------------------------------------------------*/
+i8 IntLib::iIntToVlq(i8 iInt, byte yVlqVec[16])
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // explicitly handle null
+  if (C_NULL_INT == iInt) {
+    u8 yByte;
+    BitLib::vSetOn(yByte,C_VLQ_NULL_BIT);
+    yVlqVec[0] = yByte;
+    return 1;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // explicitly handle numbers between 0 - 31 (that fit in 5 bits)
+  if (iInt <= C_5_BITS) {              // its 0..31
+    
+    u8 yByte = iInt;
+    if (iInt < 0) {;
+      yByte = iInt*-1;
+      BitLib::vSetOn(yByte,C_VLQ_SIGN_BIT);
+    }
+    yVlqVec[0] = yByte;
+    
+    return 1;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // handle all other cases generally
+  
+  // number of bytes in the vlq vector
+  i8 nBytes = 0;
+  
+  // remainder yet to be processed
+  u8 uRemainder = (u8)iInt;
+  
+  // get lowest 5 bits
+  u8 uLowFiveBits = BitLib::uCutRight(uRemainder,5);
+  
+  // set the C_VLQ_MORE_BIT
+  BitLib::vSetOn(uLowFiveBits,C_VLQ_MORE_BIT);
+  
+  // set the sign bit if negative
+  if (iInt < 0)
+    BitLib::vSetOn(uLowFiveBits,C_VLQ_SIGN_BIT);
+  
+  // now set the lower 5 bits in the yVlqVec
+  yVlqVec[nBytes++] = uLowFiveBits;
+  
+  // process chunks of 7 bits
+  while (uRemainder) {
+    u8 uMidSevenBits = BitLib::uCutRight(uRemainder,7);
+    if (uRemainder)
+      BitLib::vSetOn(uMidSevenBits,C_VLQ_MORE_BIT);
+    yVlqVec[nBytes++] = uMidSevenBits;
+  }
+  
+  return nBytes;
+}
+/*
 i8 IntLib::iIntToVlq(i8 iInt, byte yVlqVec[16])
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -77,10 +135,61 @@ i8 IntLib::iIntToVlq(i8 iInt, byte yVlqVec[16])
   
   return nBytes;
 }
+*/
 
 /*----------------------------------------------------------------------------*/
 /* convert vlq (varying length quantity) to i8                                */
 /*----------------------------------------------------------------------------*/
+i8 IntLib::iVlqToInt(byte yVlqVec[])
+{
+  bool bContinue;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // explicity handle null
+  if (BitLib::bIsOn(yVlqVec[0],C_VLQ_NULL_BIT))
+    return C_NULL_INT;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // explicity handle 0
+  if (0 == yVlqVec[0])
+    return 0;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // handle all other cases generally
+  
+  bool bNegative = false;
+  
+  // first byte has five data bits
+  byte* aByte = yVlqVec;
+  byte yByte = *aByte++;
+  
+  // check sign bit
+  if (BitLib::bIsOn(yByte,C_VLQ_SIGN_BIT)) {
+    yByte = BitLib::uSetOff(yByte,C_VLQ_SIGN_BIT);
+    bNegative = true;
+  }
+  
+  // simple case of single five bit data byte
+  if (BitLib::bIsOff(yByte,C_VLQ_MORE_BIT)) {
+    i8 iInt = (i8)yByte;
+    return bNegative ? iInt*-1 : iInt;
+  }
+  
+  // five bits followed by multiple seven bits
+  i8 iInt = BitLib::uSetOff(yByte,C_VLQ_MORE_BIT);
+  i8 iShiftBy = 5;
+  do {
+    yByte = *aByte++;
+    bContinue = BitLib::bIsOn(yByte,C_VLQ_MORE_BIT);
+    u8 uAdd = BitLib::uSetOff(yByte,C_VLQ_MORE_BIT);
+    BitLib::vShiftLeft(uAdd,iShiftBy);
+    iInt += uAdd;
+    iShiftBy += 7;
+  } while (bContinue);
+  
+  return bNegative ? iInt*-1 : iInt;
+}
+/*
 i8 IntLib::iVlqToInt(byte yVlqVec[])
 {
   bool bContinue;
@@ -119,6 +228,7 @@ i8 IntLib::iVlqToInt(byte yVlqVec[])
   
   return iInt;
 }
+*/
 
 /*----------------------------------------------------------------------------*/
 /* convert integer argument to text                                           */
