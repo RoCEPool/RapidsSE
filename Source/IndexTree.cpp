@@ -182,7 +182,7 @@ void IndexTree::vCompact(void)
       TRACE_COMPACT( if (pSubList) pSubList->vShowSubList(); )
       
       // copy contents of right L0 leftwards
-      vCopyLeft2(&pLeftL0,pRightL0);
+      vCopyLeft(&pLeftL0,pRightL0);
       
       // delete the right L0
       delete pRightL0;
