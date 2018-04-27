@@ -703,8 +703,19 @@ i8 Table::iRowPartition(Stz* pRow)
     Row* aRow = (Row*)pRow;
     char* sCursor = aRow->aColumnDatum(iColumnNo);
     
+#ifdef _VLQ
+    if (pColumn->eDatumType() == DM_INT) {
+      i8 iValue = IntLib::iVlqToInt((byte*)sCursor);
+      DtmLib::vHash(pColumn->eDatumType(),iHash,(Stz*)&iValue);
+    }
+    else {
+      DtmLib::vHash(pColumn->eDatumType(),iHash,(Stz*)sCursor);
+    }
+    
+#else
     // hash the column value
     DtmLib::vHash(pColumn->eDatumType(),iHash,(Stz*)sCursor);
+#endif
   }
   
   // modulo to get partition number

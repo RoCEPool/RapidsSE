@@ -46,6 +46,7 @@ namespace Datums
     static bool bExtract(char** aaSrc, Int* aInt,
                          DBobjects::Column* pColumn, Formatters* pFormatters);
     static void vSprint(Stz* aDst, Stz* aSrc);
+    static void vSprintVLQ(Stz* aDst, Stz* aSrc);
     
     static bool bLessThan(char* aArgA, char* aArgB);
     static bool bLessEqual(char* aArgA, char* aArgB);

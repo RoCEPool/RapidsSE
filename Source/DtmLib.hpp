@@ -23,9 +23,15 @@ namespace Datums
     static void vHash(eDM eDatum, i8& iHash, Stz* aSrc);
     static void vSprint(eDM eDatum, Stz* aDst, Stz* aSrc,
                         DBobjects::Column* pColumn);
+    static void vSprintVLQ(eDM eDatum, Stz* aDst, Stz* aSrc,
+                        DBobjects::Column* pColumn);
     static void vSprintQuotes(eDM eDatum, Stz* aDst, Stz* aSrc,
                         DBobjects::Column* pColumn);
+    static void vSprintQuotesVLQ(eDM eDatum, Stz* aDst, Stz* aSrc,
+                              DBobjects::Column* pColumn);
     static void vSprintEscaped(eDM eDatum, Stz* aDst, Stz* aSrc,
+                               DBobjects::Column* pColumn);
+    static void vSprintEscapedVLQ(eDM eDatum, Stz* aDst, Stz* aSrc,
                                DBobjects::Column* pColumn);
     static bool bLessThan(eDM eDatum, char* aArgA, char* aArgB);
     static bool bLessEqual(eDM eDatum, char* aArgA, char* aArgB);

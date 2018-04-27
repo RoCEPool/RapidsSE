@@ -291,6 +291,21 @@ bool Int::bExtract(char** aaSrc, Int* aInt, Column* pColumn, Formatters* pFormat
 }
 
 /*----------------------------------------------------------------------------*/
+/* sprint vlq int datum                                                       */
+/*----------------------------------------------------------------------------*/
+void Int::vSprintVLQ(Stz* aDst, Stz* aSrc)
+{
+  i8 iInt = IntLib::iVlqToInt((byte*)aSrc);
+  Int* aInt = (Int*)&iInt;
+  
+  if (aInt->bIsNull())
+    StrLib::vSprint(aDst,"null%c"_Stz,
+                    '\0');
+  else
+    StrLib::vSprint(aDst,"%lld%c"_Stz,iInt,'\0');
+}
+
+/*----------------------------------------------------------------------------*/
 /* sprint int datum                                                           */
 /*----------------------------------------------------------------------------*/
 void Int::vSprint(Stz* aDst, Stz* aSrc)
@@ -416,7 +431,7 @@ bool Int::bGreaterEqual(char* aArgA, char* aArgB)
 //    bGreaterEqual = true;
   
   if (((Int*)aArgA)->bIsNull()) {
-    if (((Int*)aArgA)->bIsNull())
+    if (((Int*)aArgB)->bIsNull())
       return true;
     else
       return false;
