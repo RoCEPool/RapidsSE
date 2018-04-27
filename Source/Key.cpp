@@ -625,6 +625,30 @@ bool Key::bJuxtaAfter(Key* pSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
 /*----------------------------------------------------------------------------*/
 /* show the contents of this key                                              */
 /*----------------------------------------------------------------------------*/
+#ifdef _VLQ
+void Key::vShow(IdxColVec* pIdxColVec)
+{
+  i8 nBytes;
+  i8 iKey;
+  Stz* pKey;
+  char* aCursor = aWspArea();
+  
+  char aLiteral[64];
+  
+  for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
+    
+    Column* pColumn = pIdxColVec->pGet(i_Column);
+    
+    char* aDatum = this->aEachDatum(pColumn,nBytes,&aCursor);
+    
+    eDM eDatum = pColumn->eDatumType();
+    DtmLib::vSprintVLQ(eDatum,(Stz*)aLiteral,(Stz*)aDatum,pColumn);
+    vTrace("Elm %lld:(size %lld value:%s) "_Stz,i_Column,nBytes,aLiteral);
+  }
+  
+  //vTrace("%s)\n"_Stz, sKeyString.aStr());
+}
+#else
 void Key::vShow(IdxColVec* pIdxColVec)
 {
   i8 nBytes;
@@ -647,10 +671,12 @@ void Key::vShow(IdxColVec* pIdxColVec)
 
   //vTrace("%s)\n"_Stz, sKeyString.aStr());
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* sprint sort key into given string variable                                 */
 /*----------------------------------------------------------------------------*/
+#ifdef _VLQ
 void Key::vSprintSortKey(s48K& sVar, IdxColVec* pIdxColVec)
 {
   i8 nBytes;
@@ -674,12 +700,41 @@ void Key::vSprintSortKey(s48K& sVar, IdxColVec* pIdxColVec)
     if (DM_VCH == eDatum)
       aDatum = *((char**)aDatum);
     
+    DtmLib::vSprintVLQ(eDatum,(Stz*)aLiteral,(Stz*)aDatum,pColumn);
+    sVar.vConcat((Stz*)aLiteral);
+  }
+  
+}
+#else
+void Key::vSprintSortKey(s48K& sVar, IdxColVec* pIdxColVec)
+{
+  i8 nBytes;
+  char* aWspCursor = aWspArea();
+  
+  sVar = ""_Stz;
+  
+  char aLiteral[64];
+  
+  for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
+    
+    if (i_Column)
+      sVar.vAppend(',');
+    
+    Column* pColumn = pIdxColVec->pGet(i_Column);
+    eDM eDatum = pColumn->eDatumType();
+    
+    char* aDatum = aWspCursor;
+    aWspCursor = pAdd<char*>(aWspCursor,sizeof(w8));
+    
+    if (DM_VCH == eDatum)
+      aDatum = *((char**)aDatum);
+    
     DtmLib::vSprint(eDatum,(Stz*)aLiteral,(Stz*)aDatum,pColumn);
     sVar.vConcat((Stz*)aLiteral);
   }
   
 }
-
+#endif
 /*----------------------------------------------------------------------------*/
 /* get first datum (assuming int)                                             */
 /*----------------------------------------------------------------------------*/
