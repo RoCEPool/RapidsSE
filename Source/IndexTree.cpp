@@ -172,12 +172,11 @@ void IndexTree::vCompact(void)
     
     // copy each key entry in each L0 of sublist leftwards into (new) L0 buffers
     
-    EntryBuffer* pLeftL0 = pFirstL0;
-    
     // reinit the L1 buffer
     vCopyReInitL1(pL1,pFirstL0);
     
     // each right L0 in sublist
+    EntryBuffer* pLeftL0 = pFirstL0;
     while (EntryBuffer* pRightL0 = pPopSubList(&pL0SubList)) {
       
       TRACE_COMPACT( if (pSubList) pSubList->vShowSubList(); )
@@ -240,9 +239,119 @@ void IndexTree::vCopyReInitL1(EntryBuffer* pL1, EntryBuffer* pFirstL0)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy all the elements of the right buffer to the left                      */
+/* copy all keys of right buffer to left buffer; create new left when needed  */
 /*----------------------------------------------------------------------------*/
 void IndexTree::vCopyLeft(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  
+  TRACE_COMPACT( vTrace("IndexTree::vCopyLeft (right %lld)\n"_Stz,
+                        pRightL0->iBufferNo()); )
+  vTrace("IndexTree::vCopyLeft (right %lld)\n"_Stz,
+         pRightL0->iBufferNo());
+  
+  KeyWrk xLeftKeyWrk;
+  
+  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // assert the parameters are sensible
+  
+  EntryBuffer* pLeftL0 = *ppLeftL0;
+  ASSERT(0 == pLeftL0->iBufferLevel());
+  ASSERT(0 == pRightL0->iBufferLevel());
+  EntryBuffer* pL1 = pLeftL0->pHigherBuffer();
+  ASSERT(1 == pL1->iBufferLevel());
+  ASSERT(pRightL0->pHigherBuffer() == pLeftL0->pHigherBuffer());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // iterate thru each key in right L0
+  
+  TRACE_COMPACT( pRightL0->vShow(); )
+  
+  for (Entry* pRightKeyL0 = pRightL0->pFirstEntry();
+       pRightKeyL0;
+       pRightKeyL0 = pRightL0->pNextEntry(pRightKeyL0,0)) {
+    
+    TRACE_COMPACT( pRightKeyEntryL0->vShow(0, m_pIndex, true); )
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the elements of the right key
+    
+    i8 iTxId = pRightKeyL0->iTxId();
+    Id xId = pRightKeyL0->xId();
+    Key* aKey = pRightKeyL0->aKey();
+    i8 nKeySize = aKey->nKeySize(pIdxColVec);
+    i8 nOffsets = pRightKeyL0->nOffsets();
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // form the working version of the left key
+    
+    xLeftKeyWrk.vTxId(iTxId);
+    xLeftKeyWrk.vId(xId);
+    xLeftKeyWrk.vEmbedded((char*)aKey);
+    xLeftKeyWrk.vKeySize(nKeySize);
+    xLeftKeyWrk.vOffsets(nOffsets);
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // compute the size of the left key
+    
+    i8 nEntryBytes = xLeftKeyWrk.nEntrySize();
+    i8 nOffsetBytes = xLeftKeyWrk.nOffsetSize();
+    i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get a new left buffer if not enough space in current left buffer
+    
+    if (! pLeftL0->bHasSpace(nEntryPlusOffsets)) {
+      
+      // new left buffer
+      EntryBuffer* pNewLeftL0 = new EntryBuffer;
+      pNewLeftL0->vIndex(m_pIndex);
+      pNewLeftL0->vHigherBuffer(pL1);
+      
+      // splice the new left buffer into the L0 list
+      pLeftL0->vSpliceAfter(pNewLeftL0);
+      
+      // adjust variables
+      *ppLeftL0 = pNewLeftL0;
+      pLeftL0 = pNewLeftL0;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // insert a copy of the right key into left buffer
+    
+    TRACE_COMPACT( pLeftL0->vShow(); )
+    Entry* pLeftKeyEntryL0 = pLeftL0->pInsertKeyAbs(xLeftKeyWrk);
+    TRACE_COMPACT( pLeftKeyEntryL0->vShow(0, m_pIndex, true); )
+    TRACE_COMPACT( pLeftL0->vShow(); )
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // insert a first L0 key entry into L1
+    
+    if (1 == pLeftL0->nItems()) {
+      
+      i8 iLeftL0BufferNo = pLeftL0->iBufferNo();
+      xId.vBuffer(iLeftL0BufferNo);
+      xLeftKeyWrk.vId(xId);
+      
+      TRACE_COMPACT( pL1->vShow(); )
+      RASSERT(pL1->bVerifySkipListEntry());
+      Entry* pLeftEntryL1 = pL1->pInsertKeyAbs(xLeftKeyWrk);
+      RASSERT(pL1->bVerifySkipListEntry());
+      TRACE_COMPACT( pLeftEntryL1->vShow(0, m_pIndex, true); )
+      TRACE_COMPACT( pL1->vShow(); )
+    }
+    
+  } // for
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy all the elements of the right buffer to the left                      */
+/*----------------------------------------------------------------------------*/
+/*
+void IndexTree::vCopyLeftV1(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
 
@@ -348,127 +457,7 @@ void IndexTree::vCopyLeft(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
   } // for
 
 }
-
-/*----------------------------------------------------------------------------*/
-/* copy all the elements of the right buffer to the left                      */
-/*----------------------------------------------------------------------------*/
-void IndexTree::vCopyLeft2(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
-  
-  TRACE_COMPACT( vTrace("IndexTree::vCopyLeft (right %lld)\n"_Stz,
-                        pRightL0->iBufferNo()); )
-  vTrace("IndexTree::vCopyLeft (right %lld)\n"_Stz,
-         pRightL0->iBufferNo());
-  
-  KeyWrk xLeftKeyWrk;
-  
-  
-  EntryBuffer* pLeftL0 = *ppLeftL0;
-  ASSERT(0 == pLeftL0->iBufferLevel());
-  ASSERT(0 == pRightL0->iBufferLevel());
-  EntryBuffer* pL1 = pLeftL0->pHigherBuffer();
-  ASSERT(1 == pL1->iBufferLevel());
-  ASSERT(pRightL0->pHigherBuffer() == pLeftL0->pHigherBuffer());
-  
-  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  TRACE_COMPACT( pRightL0->vShow(); )
-  
-  // iterate thru each key entry in right L0
-  for (Entry* pRightKeyEntryL0 = pRightL0->pFirstEntry();
-       pRightKeyEntryL0;
-       pRightKeyEntryL0 = pRightL0->pNextEntry(pRightKeyEntryL0,0)) {
-    
-    TRACE_COMPACT( pRightKeyEntryL0->vShow(0, m_pIndex, true); )
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // get the elements of the right key entry
-    
-    i8 iTxId = pRightKeyEntryL0->iTxId();
-    Id xId = pRightKeyEntryL0->xId();
-    Key* aKey = pRightKeyEntryL0->aKey();
-    i8 nKeySize = aKey->nKeySize(pIdxColVec);
-    i8 nOffsets = pRightKeyEntryL0->nOffsets();
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // form the working version of the left key entry
-    
-    xLeftKeyWrk.vTxId(iTxId);
-    xLeftKeyWrk.vId(xId);
-    xLeftKeyWrk.vEmbedded((char*)aKey);
-    xLeftKeyWrk.vKeySize(nKeySize);
-    xLeftKeyWrk.vOffsets(nOffsets);
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // compute the size of the left key entry
-    
-    i8 nEntryBytes = xLeftKeyWrk.nEntrySize();
-    i8 nOffsetBytes = xLeftKeyWrk.nOffsetSize();
-    i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // get a new left buffer if not enough space in current left buffer
-    
-    if (! pLeftL0->bHasSpace(nEntryPlusOffsets)) {
-      
-      // new left buffer
-      EntryBuffer* pNewLeftL0 = new EntryBuffer;
-      pNewLeftL0->vIndex(m_pIndex);
-      pNewLeftL0->vHigherBuffer(pL1);
-      
-      // splice the new left buffer into the L0 list
-      pLeftL0->vSpliceAfter(pNewLeftL0);
-      
-      // adjust variables
-      *ppLeftL0 = pNewLeftL0;
-      pLeftL0 = pNewLeftL0;
-    }
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // remove a first L0 key entry from L1
-    
-    /*
-     if (pRightKeyEntryL0 == pRightL0->pFirstEntry()) {
-     TRACE_COMPACT( pL1->vShow(); )
-     RASSERT(pL1->bVerifySkipListEntry());
-     bool bDeleted = pL1->bDeleteKey(aKey,pRightL0);
-     RASSERT(bDeleted);
-     RASSERT(pL1->bVerifySkipListEntry());
-     TRACE_COMPACT( pL1->vShow(); )
-     }
-     */
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // insert a copy of the right key entry into left buffer
-    
-    TRACE_COMPACT( pLeftL0->vShow(); )
-    Entry* pLeftKeyEntryL0 = pLeftL0->pInsertKeyAbs(xLeftKeyWrk);
-    TRACE_COMPACT( pLeftKeyEntryL0->vShow(0, m_pIndex, true); )
-    TRACE_COMPACT( pLeftL0->vShow(); )
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // insert a first L0 key entry into L1
-    
-    if (1 == pLeftL0->nItems()) {
-      
-      i8 iLeftL0BufferNo = pLeftL0->iBufferNo();
-      xId.vBuffer(iLeftL0BufferNo);
-      xLeftKeyWrk.vId(xId);
-      
-      TRACE_COMPACT( pL1->vShow(); )
-      RASSERT(pL1->bVerifySkipListEntry());
-      Entry* pLeftEntryL1 = pL1->pInsertKeyAbs(xLeftKeyWrk);
-      RASSERT(pL1->bVerifySkipListEntry());
-      TRACE_COMPACT( pLeftEntryL1->vShow(0, m_pIndex, true); )
-      TRACE_COMPACT( pL1->vShow(); )
-    }
-    
-  } // for
-  
-}
+*/
 
 /*----------------------------------------------------------------------------*/
 /* dump the index                                                             */
