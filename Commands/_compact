@@ -2,22 +2,41 @@
 /* _compact -- index compaction testing                                       */
 /*============================================================================*/
 
-create table j100 (
-  j100_key   INTEGER NOT NULL,
-  j100_name  VARCHAR(32) NOT NULL,
-  j100_j10   INTEGER NOT NULL
+create table lineitem (
+  L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B
+  L_PARTKEY       INTEGER NOT NULL,         //  1)  8B
+  L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B
+  L_LINENUMBER    INTEGER NOT NULL,         //  3)  8B
+  L_QUANTITY      DECIMAL(15,2) NOT NULL,   //  4)  8B
+  L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,   //  5)  8B
+  L_DISCOUNT      DECIMAL(15,2) NOT NULL,   //  6)  8B
+  L_TAX           DECIMAL(15,2) NOT NULL,   //  7)  8B
+  L_RETURNFLAG    CHAR(1) NOT NULL,         //  8)  2B
+  L_LINESTATUS    CHAR(1) NOT NULL,         //  9)  2B
+  L_SHIPDATE      TIMESTAMP NOT NULL,       // 10)  8B
+  L_COMMITDATE    TIMESTAMP NOT NULL,       // 11)  8B
+  L_RECEIPTDATE   TIMESTAMP NOT NULL,       // 12)  8B
+  L_SHIPINSTRUCT  CHAR(25) NOT NULL,        // 13) 26B
+  L_SHIPMODE      CHAR(10) NOT NULL,        // 14) 11B
+  L_COMMENT       VARCHAR(44) NOT NULL      // 15) 45B
 );
 
-create index idx1 on j100 (j100_key);
+//CREATE INDEX idx1 ON lineitem(l_partkey);
+CREATE INDEX idx2 ON lineitem(l_shipdate);
 
-print "loading j100.csv..." ;
-ld j100 "../JTEST/j100.csv" ;
+print "loading lineitem.tbl..." ;
+ld lineitem "/tpch/lineitem.tbl" ;
 
-visidx j100 idx1 ;
+vfyidx lineitem idx2;
+visidx lineitem idx2 ;
+space;
 
-compactidx j100 idx1;
+compactidx lineitem idx2;
 
-visidx j100 idx1 ;
+vfyidx lineitem idx2;
+visidx lineitem idx2 ;
+space;
+
 
 /*
  
@@ -50,15 +69,14 @@ print "loading lineitem.tbl..." ;
 ld lineitem "/tpch/lineitem.tbl" ;
 
 vfyidx lineitem idx2;
+visidx lineitem idx2;
+space;
  
-visidx lineitem idx2 ;
-
 compactidx lineitem idx2;
 
 vfyidx lineitem idx2;
- 
-visidx lineitem idx2 ;
-
+visidx lineitem idx2;
+space;
 
 print "-----------------------------------------------------------------------";
 print "fetch lineitem";
@@ -161,11 +179,15 @@ CREATE INDEX idx1 ON supplier(s_suppkey);
 print "loading supplier.tbl..." ;
 ld supplier "/tpch/supplier.tbl" ;
 
-visidx supplier idx1 ;
-
+vfyidx supplier idx1;
+visidx supplier idx1;
+space;
+ 
 compactidx supplier idx1;
 
-visidx supplier idx1 ;
+vfyidx supplier idx1;
+visidx supplier idx1;
+space;
 
 print "\nSelecting rows from supplier (idx1) where S_SUPPKEY >= 500 and S_SUPPKEY <= 1000 ...\n" ;
 fetch supplier "S_SUPPKEY 500 >= S_SUPPKEY 1000 <= and";
@@ -178,17 +200,21 @@ create table j100 (
   j100_name  VARCHAR(32) NOT NULL,
   j100_j10   INTEGER NOT NULL
 );
-
+ 
 create index idx1 on j100 (j100_key);
 
 print "loading j100_dup.csv..." ;
 ld j100 "../JTEST/j100_dup.csv" ;
 
-visidx j100 idx1 ;
+vfyidx j100 idx1;
+visidx j100 idx1;
+space;
 
 compactidx j100 idx1;
 
-visidx j100 idx1 ;
+vfyidx j100 idx1;
+visidx j100 idx1;
+space;
  
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -204,11 +230,16 @@ create index idx1 on j100 (j100_key);
 print "loading j100.csv..." ;
 ld j100 "../JTEST/j100.csv" ;
 
-visidx j100 idx1 ;
+vfyidx j100 idx1;
+visidx j100 idx1;
+space;
 
 compactidx j100 idx1;
 
-visidx j100 idx1 ;
+vfyidx j100 idx1;
+visidx j100 idx1;
+space;
+
 */
 
 /*============================================================================*/

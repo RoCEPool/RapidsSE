@@ -816,6 +816,29 @@ Entry* EntryBuffer::pInsertKeyTree(KeyWrk& xKeyWrk,
 }
 
 /*----------------------------------------------------------------------------*/
+/* get length of sublist of buffers                                           */
+/*----------------------------------------------------------------------------*/
+i8 EntryBuffer::iLengthSubList(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  i8 iLength = 0;
+  
+  EntryBuffer* pThisL0 = this;
+  EntryBuffer* pThisL1 = pThisL0->pHigherBuffer();
+  
+  EntryBuffer* pL0;
+  for (pL0 = pThisL0;
+       pL0 && pL0->pHigherBuffer() == pThisL1;
+       pL0 = pL0->pNextBuffer()) {
+  
+    iLength++;
+  }
+
+  return iLength;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get next entry                                                             */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::pNextEntry(Entry* pCurrent, i8 i_Offset)

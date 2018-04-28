@@ -157,7 +157,7 @@ void IndexTree::vCompact(void)
     TRACE_COMPACT( vTrace("  Compacting L1 %lld\n"_Stz,pL1->iBufferNo()); )
     //vTrace("  Compacting L1 %lld\n"_Stz,pL1->iBufferNo());
     
-    RASSERT(pL1->bVerifySkipListEntry());
+    //RASSERT(pL1->bVerifySkipListEntry());
     
     //continue;
     
@@ -174,6 +174,8 @@ void IndexTree::vCompact(void)
     if (! pL0SubList)
       continue;
     
+    i8 iSubListLength = pL0SubList->iLengthSubList();
+    
     TRACE_COMPACT( pL0SubList->vShowSubList(); )
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -188,14 +190,17 @@ void IndexTree::vCompact(void)
       
       TRACE_COMPACT( if (pSubList) pSubList->vShowSubList(); )
       
+      //vTrace("Sublist: %lld\n"_Stz,--iSubListLength);
+      
       // copy contents of right L0 leftwards
       vCopyLeft(&pLeftL0,pRightL0);
       
       // delete the right L0
       delete pRightL0;
+      
     }
     
-    pL1->bVerifyKeyBufferOrder();
+    //pL1->bVerifyKeyBufferOrder();
   }
   
 }
@@ -350,9 +355,9 @@ void IndexTree::vCopyLeft(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
       xLeftKeyWrk.vId(xId);
       
       TRACE_COMPACT( pL1->vShow(); )
-      RASSERT(pL1->bVerifySkipListEntry());
+      //RASSERT(pL1->bVerifySkipListEntry());
       Entry* pLeftEntryL1 = pL1->pInsertKeyAbs(xLeftKeyWrk);
-      RASSERT(pL1->bVerifySkipListEntry());
+      //RASSERT(pL1->bVerifySkipListEntry());
       TRACE_COMPACT( pLeftEntryL1->vShow(0, m_pIndex, true); )
       TRACE_COMPACT( pL1->vShow(); )
       
@@ -364,12 +369,12 @@ void IndexTree::vCopyLeft(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
       
       //pL1->vShowTree();
       
-      pL1->bVerifyKeyBufferOrder();
+      //pL1->bVerifyKeyBufferOrder();
       
       // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
     }
     
-    pL1->bVerifyKeyBufferOrder();
+    //pL1->bVerifyKeyBufferOrder();
     
   } // for
   
