@@ -258,6 +258,46 @@ void Bcd::vSprint(Stz* aDst, Stz* aSrc, DBobjects::Column* pColumn)
 }
 
 /*----------------------------------------------------------------------------*/
+/* sprint bcd datum                                                           */
+/*----------------------------------------------------------------------------*/
+void Bcd::vSprintVLQ(Stz* aDst, Stz* aSrc, DBobjects::Column* pColumn)
+{
+  
+  i8 iInt = IntLib::iVlqToInt((byte*)aSrc);
+  Bcd* aBcd = (Bcd*)&iInt;
+  
+  bool bNegative = false;
+  
+  if (aBcd->bIsNull())
+    StrLib::vSprint(aDst,"null%c"_Stz,
+                    '\0');
+  else {
+    i8 iBcd = iInt;
+    i8 iDigits = 1;
+    for (i8 i_Digit = 0; i_Digit < pColumn->iColumnScale(); i_Digit++)
+      iDigits *= 10;
+    
+    i8 iBcd_Whole = iBcd / iDigits;
+    i8 iBcd_Fraction = iBcd % iDigits;
+    
+    if (iBcd_Fraction < 0 || iBcd_Whole < 0) {
+      bNegative = true;
+      iBcd_Fraction = iBcd_Fraction * -1;
+      iBcd_Whole = iBcd_Whole * -1;
+    }
+    
+    if (pColumn->iColumnScale())
+      StrLib::vSprint(aDst,"%s%lld.%.*lld%c"_Stz,
+                      bNegative ? "-" : "",
+                      iBcd_Whole,
+                      pColumn->iColumnScale(),
+                      iBcd_Fraction,'\0');
+    else
+      StrLib::vSprint(aDst,"%s%lld%c"_Stz, bNegative ? "-" : "",iBcd_Whole, '\0');
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* is the size valid ?                                                        */
 /*----------------------------------------------------------------------------*/
 bool Bcd::bIsValidSize(i8 iPrecision, i8 iScale)

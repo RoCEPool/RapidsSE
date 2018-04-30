@@ -521,9 +521,16 @@ void Entry::vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
       }
         
       case DM_BCD: {
+#ifdef _VLQ
+        i8 iInt = IntLib::iVlqToInt((byte*)pDst);
+        Bcd xBcd = *((Bcd*)&iInt);
+        xValWrk = xBcd;
+        break;
+#else
         Bcd xBcd = *((Bcd*)pDst);
         xValWrk = xBcd;
         break;
+#endif
       }
         
       case DM_FLT: {
