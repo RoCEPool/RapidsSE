@@ -704,7 +704,8 @@ i8 Table::iRowPartition(Stz* pRow)
     char* sCursor = aRow->aColumnDatum(iColumnNo);
     
 #ifdef _VLQ
-    if (pColumn->eDatumType() == DM_INT) {
+    if (pColumn->eDatumType() == DM_INT ||
+        pColumn->eDatumType() == DM_BCD) {
       i8 iValue = IntLib::iVlqToInt((byte*)sCursor);
       DtmLib::vHash(pColumn->eDatumType(),iHash,(Stz*)&iValue);
     }

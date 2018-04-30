@@ -226,7 +226,7 @@ void DtmLib::vSprintVLQ(eDM eDatum, Stz* aDst, Stz* aSrc,
                      DBobjects::Column* pColumn)
 {
   switch (eDatum) {
-    case DM_BCD: Bcd::vSprint(aDst,aSrc,pColumn); break;
+    case DM_BCD: Bcd::vSprintVLQ(aDst,aSrc,pColumn); break;
     case DM_BOL: Bol::vSprint(aDst,aSrc); break;
     case DM_CHR: Vch::vSprint(aDst,aSrc); break;
     case DM_DTE: Dte::vSprint(aDst,aSrc); break;
@@ -272,7 +272,7 @@ void DtmLib::vSprintQuotesVLQ(eDM eDatum, Stz* aDst, Stz* aSrc,
                      DBobjects::Column* pColumn)
 {
   switch (eDatum) {
-    case DM_BCD: Bcd::vSprint(aDst,aSrc,pColumn); break;
+    case DM_BCD: Bcd::vSprintVLQ(aDst,aSrc,pColumn); break;
     case DM_BOL: Bol::vSprint(aDst,aSrc); break;
     case DM_CHR: Vch::vSprint(aDst,aSrc); break;
     case DM_DTE: Dte::vSprint(aDst,aSrc); break;
@@ -319,7 +319,7 @@ void DtmLib::vSprintEscapedVLQ(eDM eDatum, Stz* aDst, Stz* aSrc,
                             DBobjects::Column* pColumn)
 {
   switch (eDatum) {
-    case DM_BCD: Bcd::vSprint(aDst,aSrc,pColumn); break;
+    case DM_BCD: Bcd::vSprintVLQ(aDst,aSrc,pColumn); break;
     case DM_BOL: Bol::vSprint(aDst,aSrc);         break;
     case DM_CHR: Vch::vSprint(aDst,aSrc);         break;
     case DM_DTE: Dte::vSprintEscaped(aDst,aSrc);  break;

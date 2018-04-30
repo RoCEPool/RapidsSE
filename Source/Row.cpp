@@ -106,7 +106,8 @@ bool Row::bFormatRow(ColumnVec* pColVec,
     bool bValid;
     i8 iInt;
     
-    if (eDatumType == DM_INT) {
+    if (eDatumType == DM_INT ||
+        eDatumType == DM_BCD) {
       
       bValid = DtmLib::bExtract(eDatumType, (Stz*)&iInt, &aSrc,
                                      pColumn, bLastColumn,
@@ -137,7 +138,8 @@ bool Row::bFormatRow(ColumnVec* pColVec,
     
     i8 iColumnLength;
     
-    if (eDatumType == DM_INT) {
+    if (eDatumType == DM_INT ||
+        eDatumType == DM_BCD) {
       iColumnLength = IntLib::iIntToVlq(iInt, (byte*)aDst);
     }
     else {
