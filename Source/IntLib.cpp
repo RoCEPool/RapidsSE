@@ -50,15 +50,24 @@ i8 IntLib::iIntToVlq(i8 iInt, byte yVlqVec[16])
     return 1;
   }
   
+  bool bNegative = false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // handle negative numbers
+  if (iInt < 0) {;
+    iInt = iInt*-1;
+    bNegative = true;
+  }
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // explicitly handle numbers between 0 - 31 (that fit in 5 bits)
   if (iInt <= C_5_BITS) {              // its 0..31
     
     u8 yByte = iInt;
-    if (iInt < 0) {;
-      yByte = iInt*-1;
+    
+    if (bNegative)
       BitLib::vSetOn(yByte,C_VLQ_SIGN_BIT);
-    }
+    
     yVlqVec[0] = yByte;
     
     return 1;
@@ -80,7 +89,7 @@ i8 IntLib::iIntToVlq(i8 iInt, byte yVlqVec[16])
   BitLib::vSetOn(uLowFiveBits,C_VLQ_MORE_BIT);
   
   // set the sign bit if negative
-  if (iInt < 0)
+  if (bNegative)
     BitLib::vSetOn(uLowFiveBits,C_VLQ_SIGN_BIT);
   
   // now set the lower 5 bits in the yVlqVec
