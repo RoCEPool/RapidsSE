@@ -561,13 +561,10 @@ void vTest8(void)
   
   
   
-  char m_cI3[3];
-
   
-  i3i8::vToI3(123,m_cI3);
+  i3i8::vToI3(123,i3B_1);
   
-  i8 iConverted = i3i8::iToI8(m_cI3);
-  
+  i8 iConverted = i3i8::iToI8(i3B_1);
   
   
   return;

@@ -5,26 +5,11 @@
 
 namespace Base
 {
-  class i3i8
-  {
-  public:
-    union {
-      int  m_iValue;
-      char m_cValue[4];
-    };
-  
-    static i8 iToI8(char* aI3);
-    static void vToI3(i8 iArg, char* aI3);
-  };
-  
-  
   class i3
   {
   public:
-    union {
-      i8   m_iValue;
-      char m_cValue[8];
-    };
+    i8   m_iValue;
+    char m_cValue[3];
   
   public:
     i3(void);
@@ -60,6 +45,21 @@ namespace Base
   };
   
   i3 operator "" _i3(u8 uArg);
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  class i3i8
+  {
+  public:
+    union {
+      int  m_iValue;
+      char m_cValue[4];
+    };
+  
+    static i8 iToI8(i3& xI3);
+    static void vToI3(i8 iArg, i3& xI3);
+  };
 }
 
 /*============================================================================*/

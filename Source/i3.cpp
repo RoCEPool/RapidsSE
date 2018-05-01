@@ -282,16 +282,16 @@ i3 Base::operator "" _i3(u8 uArg)
 /*----------------------------------------------------------------------------*/
 /* convert an 3-byte integer into an i8                                       */
 /*----------------------------------------------------------------------------*/
-i8 i3i8::iToI8(char* aI3)
+i8 i3i8::iToI8(i3& xI3)
 {
   i8 i = 0;
   
   i3i8 xI3I8;
   
   xI3I8.m_cValue[3] = 0;
-  xI3I8.m_cValue[2] = aI3[2];
-  xI3I8.m_cValue[1] = aI3[1];
-  xI3I8.m_cValue[0] = aI3[0];
+  xI3I8.m_cValue[2] = xI3.m_cValue[2];
+  xI3I8.m_cValue[1] = xI3.m_cValue[1];
+  xI3I8.m_cValue[0] = xI3.m_cValue[0];
   
   i = xI3I8.m_iValue;
   
@@ -301,15 +301,15 @@ i8 i3i8::iToI8(char* aI3)
 /*----------------------------------------------------------------------------*/
 /* convert an i8 into a 3-byte integer                                        */
 /*----------------------------------------------------------------------------*/
-void i3i8::vToI3(i8 iArg, char* aI3)
+void i3i8::vToI3(i8 iArg, i3& xI3)
 {
   i3i8 xI3I8;
 
   xI3I8.m_iValue = static_cast<int>(iArg);
   
-  aI3[2] = xI3I8.m_cValue[2];
-  aI3[1] = xI3I8.m_cValue[1];
-  aI3[0] = xI3I8.m_cValue[0];
+  xI3.m_cValue[2] = xI3I8.m_cValue[2];
+  xI3.m_cValue[1] = xI3I8.m_cValue[1];
+  xI3.m_cValue[0] = xI3I8.m_cValue[0];
 }
 
 /*============================================================================*/
