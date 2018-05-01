@@ -18,17 +18,27 @@ namespace Base
     i3(i8 iArg);
     ~i3(void);
   
+    explicit operator i8() const; // { return m_iValue; }
+  
     i8 operator *(void);
     void operator =(i8 iArg);
   
+    bool operator >(i3 iArg);
     bool operator >(i8 iArg);
+    bool operator >=(i3 iArg);
     bool operator >=(i8 iArg);
+    bool operator ==(i3 iArg);
     bool operator ==(i8 iArg);
+    bool operator !=(i3 iArg);
     bool operator !=(i8 iArg);
+    bool operator <=(i3 iArg);
     bool operator <=(i8 iArg);
+    bool operator <(i3 iArg);
     bool operator <(i8 iArg);
   
+    i8 operator +(i3 iArg);
     i8 operator +(i8 iArg);
+    i8 operator -(i3 iArg);
     i8 operator -(i8 iArg);
     i8 operator ++(void);
     i8 operator ++(int);

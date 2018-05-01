@@ -60,7 +60,7 @@ int main(int argc, const char* argv[])
   //vTest5();
   //vTest6();
   //vTest7();
-  //vTest8();
+  vTest8();
   //vTest9();
 
   StorageEngine::vCheckAllAssumptions();
@@ -531,6 +531,35 @@ void vTest7(void)
 /*----------------------------------------------------------------------------*/
 void vTest8(void)
 {
+  i3 i3B_1;
+  i3 i3B_2;
+  
+  i3B_1 = 1;
+  vTrace("i3B_1 %lld\n"_Stz,(i8)i3B_1);
+  
+  i3B_2 = i3B_1;
+  vTrace("i3B_2 %lld\n"_Stz,(i8)i3B_2);
+  
+  i3B_2 = i3B_1 + 1;
+  vTrace("i3B_2 %lld\n"_Stz,(i8)i3B_2);
+  
+  i3B_2 = i3B_1 + i3B_1 + 1;
+  vTrace("i3B_2 %lld\n"_Stz,(i8)i3B_2);
+  
+  i3B_1 = 1;
+  i3B_2 = 2;
+  if (i3B_2 > i3B_1)
+    vTrace("i3B_2 %lld > i3B_1 %lld\n"_Stz,(i8)i3B_2,(i8)i3B_1);
+  
+  i3B_1 = 0;
+  vTrace("i3B_1 %lld\n"_Stz,(i8)i3B_1++);
+  vTrace("i3B_1 %lld\n"_Stz,(i8)i3B_1);
+  
+  i3B_1 = 0;
+  vTrace("i3B_1 %lld\n"_Stz,(i8)++i3B_1);
+  vTrace("i3B_1 %lld\n"_Stz,(i8)i3B_1);
+  
+  return;
 }
 
 /*----------------------------------------------------------------------------*/
