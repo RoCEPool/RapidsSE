@@ -559,6 +559,17 @@ void vTest8(void)
   vTrace("i3B_1 %lld\n"_Stz,(i8)++i3B_1);
   vTrace("i3B_1 %lld\n"_Stz,(i8)i3B_1);
   
+  
+  
+  char m_cI3[3];
+
+  
+  i3i8::vToI3(123,m_cI3);
+  
+  i8 iConverted = i3i8::iToI8(m_cI3);
+  
+  
+  
   return;
 }
 

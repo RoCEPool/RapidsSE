@@ -5,9 +5,22 @@
 
 namespace Base
 {
+  class i3i8
+  {
+  public:
+    union {
+      int  m_iValue;
+      char m_cValue[4];
+    };
+  
+    static i8 iToI8(char* aI3);
+    static void vToI3(i8 iArg, char* aI3);
+  };
+  
+  
   class i3
   {
-  private:
+  public:
     union {
       i8   m_iValue;
       char m_cValue[8];
