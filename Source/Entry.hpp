@@ -3,6 +3,9 @@
 /*============================================================================*/
 #pragma once
 
+#pragma pack(push)
+#pragma pack(1)
+
 namespace DBobjects
 {
   class EntWrk;
@@ -15,14 +18,15 @@ namespace DBobjects
     i4 m_iOffset[1];  // offset where the entry is
   };
   
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Entry : public Item
   {
   protected:
     Id  m_xId;        // id
     i8  m_iTxId;      // transaction id
-    i8  m_nOffsets;   // no of offsets for this entry (0..3)
-    i8  m_iIntKey;    // key debug hack
+    char  m_nOffsets;   // no of offsets for this entry (0..3)
+    //i8  m_iIntKey;    // key debug hack
   
   public:
     i8  m_iEntryNo;   // verify of entry order
@@ -132,6 +136,7 @@ namespace DBobjects
   }
 
 }
+#pragma pack(pop)
 
 /*============================================================================*/
 /* end                                                                        */

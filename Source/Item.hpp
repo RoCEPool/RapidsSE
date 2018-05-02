@@ -8,7 +8,7 @@ namespace DBobjects
   class Item : public Object
   {
   protected:
-    i8  m_nSizeItem; // size of this item
+    i3  m_nSizeItem; // size of this item
 
   public:
     void* operator new(size_t);

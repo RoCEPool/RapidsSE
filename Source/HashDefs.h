@@ -4,7 +4,7 @@
 
 #pragma once
 
-//#define _VLQ
+#define _VLQ
 
 #define REPORT_INFO
 #define REPORT_TRACE

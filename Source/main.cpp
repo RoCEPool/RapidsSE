@@ -51,6 +51,18 @@ int main(int argc, const char* argv[])
     vPrintSizes();
   
   vSetSignalHandlers();
+
+  vTrace("sizeof(short) %lld\n"_Stz,(i8)sizeof(short));
+  vTrace("sizeof(int) %lld\n"_Stz,(i8)sizeof(int));
+  vTrace("sizeof(long) %lld\n"_Stz,(i8)sizeof(long));
+  vTrace("sizeof(long long) %lld\n"_Stz,(i8)sizeof(long long));
+  
+  vTrace("sizeof(i3) %lld\n"_Stz,(i8)sizeof(i3));
+  vTrace("sizeof(Item) %lld\n"_Stz,(i8)sizeof(Item));
+  vTrace("sizeof(Entry) %lld\n"_Stz,(i8)sizeof(Entry));
+  
+  vTrace("alignof(i3) %lld\n"_Stz,(i8)alignof(i3));
+  vTrace("alignof(Entry) %lld\n"_Stz,(i8)alignof(Entry));
   
   
   //vTest1();

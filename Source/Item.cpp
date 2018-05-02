@@ -58,7 +58,7 @@ i8 Item::nSizeItem(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_); 
   
-  return m_nSizeItem;
+  return (i8)m_nSizeItem;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -68,7 +68,7 @@ char* Item::aAddressAfter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  char* aAfter = pAdd<char*>(this,m_nSizeItem);
+  char* aAfter = pAdd<char*>(this,(i8)m_nSizeItem);
   
   return aAfter;
 }

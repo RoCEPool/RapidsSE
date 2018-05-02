@@ -346,7 +346,7 @@ void Entry::vSetEntry(i8 xTxId, Id xId, i8 nOffsets, Stz* aData, i8 nDataSize)
   if (nDataSize)
     MemLib::vCopy(aEntryData,aData,nDataSize,eClass());
   
-  m_iIntKey = aKey()->iGetInt();
+  //m_iIntKey = aKey()->iGetInt();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
 }
