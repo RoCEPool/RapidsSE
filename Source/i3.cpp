@@ -369,7 +369,7 @@ void i3i8::vToI3(i3* pI3, i8 iArg)
 {
   i3i8 xI3I8;
 
-  xI3I8.m_iValue = static_cast<int>(iArg);
+  xI3I8.m_iValue = static_cast<unsigned int>(iArg);
   
   pI3->m_cValue[2] = xI3I8.m_cValue[2];
   pI3->m_cValue[1] = xI3I8.m_cValue[1];

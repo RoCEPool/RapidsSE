@@ -562,6 +562,9 @@ void vTest8(void)
   i3B_1 = 8388608;
   vTrace("i3B_1 %lld\n"_Stz,(i8)i3B_1);
   
+  i3B_1 = 16777216 - 1;
+  vTrace("i3B_1 %lld\n"_Stz,(i8)i3B_1);
+  
   return;
 }
 
