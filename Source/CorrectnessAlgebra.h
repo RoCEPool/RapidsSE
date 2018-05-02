@@ -23,6 +23,7 @@ using namespace CorrectnessAlgebra;
 #include "Magic.hpp"
 #include "Magic_Emb.hpp"
 #include "Object.hpp"
+#include "Object2.hpp"
 #include "Object_Emb.hpp"
 #include "Wsp.hpp"
 #include "WspFxd.hpp"
