@@ -57,7 +57,16 @@ int main(int argc, const char* argv[])
   vTrace("sizeof(long) %lld\n"_Stz,(i8)sizeof(long));
   vTrace("sizeof(long long) %lld\n"_Stz,(i8)sizeof(long long));
   
+  vTrace("sizeof(i1) %lld\n"_Stz,(i8)sizeof(i1));
+  vTrace("sizeof(i2) %lld\n"_Stz,(i8)sizeof(i2));
   vTrace("sizeof(i3) %lld\n"_Stz,(i8)sizeof(i3));
+  vTrace("sizeof(i4) %lld\n"_Stz,(i8)sizeof(i4));
+  vTrace("sizeof(i8) %lld\n"_Stz,(i8)sizeof(i8));
+  
+  vTrace("sizeof(Class) %lld\n"_Stz,(i8)sizeof(Class));
+  vTrace("sizeof(Magic) %lld\n"_Stz,(i8)sizeof(Magic));
+  vTrace("sizeof(Object) %lld\n"_Stz,(i8)sizeof(Object));
+  
   vTrace("sizeof(Item) %lld\n"_Stz,(i8)sizeof(Item));
   vTrace("sizeof(Entry) %lld\n"_Stz,(i8)sizeof(Entry));
   

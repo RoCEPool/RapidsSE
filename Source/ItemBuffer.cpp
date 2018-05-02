@@ -206,11 +206,11 @@ void ItemBuffer::vResetUsed(Item* pUptil)
 /*----------------------------------------------------------------------------*/
 /* calculate the absolute offset within workspace for given item              */
 /*----------------------------------------------------------------------------*/
-i8 ItemBuffer::iToOffset(Item* pItem)
+i4 ItemBuffer::iToOffset(Item* pItem)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  i8 iOffset = nSub(pItem,m_xWsp.aArea());
+  i4 iOffset = static_cast<i4>(nSub(pItem,m_xWsp.aArea()));
   
   ASSERT(iOffset >= 0 && iOffset < m_xWsp.nSize());
   

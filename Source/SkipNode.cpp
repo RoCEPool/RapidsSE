@@ -19,7 +19,7 @@ SkipNode* Structures::_pSkipNode(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* new                                                                        */
 /*----------------------------------------------------------------------------*/
-void* SkipNode::operator new(size_t iSize, i4 iLevel, SlabAllocator* pSlabAllocator)
+void* SkipNode::operator new(size_t iSize, i8 iLevel, SlabAllocator* pSlabAllocator)
 {
   RASSERT(iSize);
   
