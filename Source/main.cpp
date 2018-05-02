@@ -72,7 +72,7 @@ int main(int argc, const char* argv[])
   //vTest5();
   //vTest6();
   //vTest7();
-  vTest8();
+  //vTest8();
   //vTest9();
 
   StorageEngine::vCheckAllAssumptions();

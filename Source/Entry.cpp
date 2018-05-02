@@ -43,7 +43,10 @@ Entry::Entry(eCN eClassNo, i8 nThisBytes, i8 nOffsets)
   //m_xId
   //m_iTxId    = -1;
   m_nOffsets = nOffsets;
+  
+#ifdef _DEBUG
   m_iEntryNo = -1;
+#endif
   
   aFooter()->vSetFooter();
   

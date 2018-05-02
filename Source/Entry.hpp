@@ -29,8 +29,9 @@ namespace DBobjects
     //i8  m_iIntKey;    // key debug hack
   
   public:
+#ifdef _DEBUG
     i8  m_iEntryNo;   // verify of entry order
-  
+#endif
     // ..embedded object..
 
   public:

@@ -3637,6 +3637,8 @@ EntryBuffer* EntryBuffer::pSplit2(void)
 /*----------------------------------------------------------------------------*/
 /* check prior vec ordering                                                   */
 /*----------------------------------------------------------------------------*/
+#ifdef _DEBUG
+
 bool EntryBuffer::bCheckPriorVec(Entry* pPriorVec[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
@@ -3674,10 +3676,12 @@ bool EntryBuffer::bCheckPriorVec(Entry* pPriorVec[])
   
   return true;
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* number entries                                                             */
 /*----------------------------------------------------------------------------*/
+#ifdef _DEBUG
 void EntryBuffer::vNumberEntries(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
@@ -3693,6 +3697,7 @@ void EntryBuffer::vNumberEntries(void)
     pTestEntry_0->m_iEntryNo = iEntryNo++;
   
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* quick verify                                                               */
@@ -3830,9 +3835,11 @@ bool EntryBuffer::bVerifyL0Hidden(void)
   if (! bValid)
     return false;
   
+#ifdef _DEBUG
   bValid = bVerifySkipListLevels();
   if (! bValid)
     return false;
+#endif
   
   return true;
 }
@@ -3934,9 +3941,11 @@ bool EntryBuffer::bVerifyLnAny(void)
   if (! bValid)
     return false;
   
+#ifdef _DEBUG
   bValid = bVerifySkipListLevels();
   if (! bValid)
     return false;
+#endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // verify the contents of child buffers
@@ -4493,8 +4502,10 @@ bool EntryBuffer::bVerifySkipListEntry(bool bShowKeys)
     }
   }
   
+#ifdef _DEBUG
   if (! bVerifySkipListLevels())
     return false;
+#endif
   
   return true;
 }
@@ -4502,6 +4513,8 @@ bool EntryBuffer::bVerifySkipListEntry(bool bShowKeys)
 /*----------------------------------------------------------------------------*/
 /* verify the skip list levels                                                */
 /*----------------------------------------------------------------------------*/
+#ifdef _DEBUG
+
 bool EntryBuffer::bVerifySkipListLevels(bool bShowKeys)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
@@ -4562,6 +4575,7 @@ bool EntryBuffer::bVerifySkipListLevels(bool bShowKeys)
   
   return true;
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* verify has detected a fault                                                */
