@@ -418,7 +418,7 @@ Entry* EntryBuffer::pAppendRow(RowWrk& xRowWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set entry offsets
   
-  i8 iEntryOffset = iToOffset(pRowEntry);
+  i4 iEntryOffset = iToOffset(pRowEntry);
   m_pEntryOffset[i_RowNo] = iEntryOffset;
   
   if (m_pLastEntry)
@@ -1627,7 +1627,7 @@ void EntryBuffer::vBuildSkipListSorted(void)
        pEntry = pNextEntry(pEntry, 0)) {
   
     // where is this entry in the buffer (offset-wise)?
-    i8 iEntryOffset = iToOffset(pEntry);
+    i4 iEntryOffset = iToOffset(pEntry);
     
     // get the number of offsets for this entry
     i8 nOffsets = pEntry->nOffsets();
@@ -1737,8 +1737,8 @@ void EntryBuffer::vCompact(void)
       int iDebug = 1;
     }
     
-    i8 iWasOffset = iToOffset(pMoveEntry);
-    i8 iNowOffset = iToOffset(pFreeEntry);
+    i4 iWasOffset = iToOffset(pMoveEntry);
+    i4 iNowOffset = iToOffset(pFreeEntry);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // now copy move entry left onto free entry
@@ -1765,7 +1765,7 @@ void EntryBuffer::vCompact(void)
     //vDumpPriorVec(xPriorVec);
     for (i8 i_Offset = 0; i_Offset < 3; i_Offset++) {
       Entry* pPriorEntry = xPriorVec[i_Offset];
-      i8 iPriorOffset = pPriorEntry->iNEO(i_Offset);
+      i4 iPriorOffset = pPriorEntry->iNEO(i_Offset);
       if (iWasOffset == iPriorOffset)
         pPriorEntry->vNEO(i_Offset,iNowOffset);
     }
@@ -1846,7 +1846,7 @@ void EntryBuffer::vCompactLeft(void)
     MemLib::vMove(aAfterAddr, pNextEntry, nCopyBytes, CN_ENTRYBUFFER);
     
     // reset the L0 offset in this entry
-    i8 iRevisedNextOffset = iToOffset((Entry*)aAfterAddr);
+    i4 iRevisedNextOffset = iToOffset((Entry*)aAfterAddr);
     pThisEntry->vNEO(0,iRevisedNextOffset);
     
     //vResetUsed(pAdd<Item*>(pLastEntry,nCopyBytes));
@@ -2428,7 +2428,7 @@ Entry* EntryBuffer::pInsertKeyAbsLazy(KeyWrk& xKeyWrk)
   // form lazy chain
   
   if (m_pLazyChain) {
-    i8 iLazyOffset = iToOffset(m_pLazyChain);
+    i4 iLazyOffset = iToOffset(m_pLazyChain);
     pKeyEntry->vNEO(0,iLazyOffset);
   }
   else {
@@ -2482,7 +2482,7 @@ Entry* EntryBuffer::pInsertKeyAbsL0(KeyWrk& xKeyWrk, Entry** ppPriorEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append to prior entry at L0 only
 
-  i8 iOffset = iToOffset(pKeyEntry);
+  i4 iOffset = iToOffset(pKeyEntry);
   
   (*ppPriorEntry)->vNEO(0,iOffset);
 
@@ -2526,11 +2526,11 @@ void EntryBuffer::vInsertKeySkip(Entry* pKeyEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set prior offsets
   
-  i8 iKeyEntryOffset = iToOffset(pKeyEntry);
+  i4 iKeyEntryOffset = iToOffset(pKeyEntry);
   
   i8 nOffsets = pKeyEntry->nOffsets();
   for (i8 iNextOffset = 0; iNextOffset < nOffsets; iNextOffset++) {
-    i8 iPriorOffset = xPriorVec[iNextOffset]->iNEO(iNextOffset);
+    i4 iPriorOffset = xPriorVec[iNextOffset]->iNEO(iNextOffset);
     pKeyEntry->vNEO(iNextOffset,iPriorOffset);
     xPriorVec[iNextOffset]->vNEO(iNextOffset,iKeyEntryOffset);
   }

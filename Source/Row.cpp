@@ -104,7 +104,7 @@ bool Row::bFormatRow(ColumnVec* pColVec,
     eDM eDatumType = pColumn->eDatumType();
     bool bLastColumn = (i_Column + 1 == nColumns) ? true : false;
     bool bValid;
-    i8 iInt;
+    i8 iInt=0;
     
     if (eDatumType == DM_INT ||
         eDatumType == DM_BCD) {

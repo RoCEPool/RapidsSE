@@ -28,7 +28,7 @@ namespace DBobjects
     Item*  pNextItem(Item* pCurrentItem);
     void   vResetUsed(void);
     void   vResetUsed(Item* pUptil);
-    i8     iToOffset(Item* pItem);
+    i4     iToOffset(Item* pItem);
     i8     nUsedBytes(void);
   
   //private:
