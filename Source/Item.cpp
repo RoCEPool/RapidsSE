@@ -40,7 +40,7 @@ Item::Item(eCN eClassNo, i8 nSizeItem)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
-  m_nSizeItem = nSizeItem;
+  m_nSizeItem = static_cast<i4>(nSizeItem);
 }
 
 /*----------------------------------------------------------------------------*/
