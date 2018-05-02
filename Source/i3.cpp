@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 i3::i3(void)
 {
-  m_iValue = 0;
+  vSet(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -21,7 +21,7 @@ i3::i3(void)
 /*----------------------------------------------------------------------------*/
 i3::i3(i8 iArg)
 {
-  m_iValue = iArg;
+  vSet(iArg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -38,9 +38,11 @@ i3::~i3(void)
 /*----------------------------------------------------------------------------*/
 /* conversion                                                                 */
 /*----------------------------------------------------------------------------*/
-i3::operator i8() const
+i3::operator i8()
 {
-  return m_iValue;
+  i8 iValue = iGet();
+  
+  return iValue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -48,7 +50,9 @@ i3::operator i8() const
 /*----------------------------------------------------------------------------*/
 i8 i3::operator *(void)
 {
-  return m_iValue;
+  i8 iValue = iGet();
+
+  return iValue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -56,7 +60,17 @@ i8 i3::operator *(void)
 /*----------------------------------------------------------------------------*/
 void i3::operator =(i8 iArg)
 {
-  m_iValue = iArg;
+  vSet(iArg);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get value                                                                  */
+/*----------------------------------------------------------------------------*/
+i8 i3::iGet(void)
+{
+  i8 iValue = i3i8::iToI8(this);
+  
+  return iValue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -76,7 +90,9 @@ void i3::vSet(i8 iArg)
 /*----------------------------------------------------------------------------*/
 bool i3::operator >(i3 iArg)
 {
-  bool b = m_iValue > (i8)iArg;
+  i8 iValue = iGet();
+
+  bool b = (iValue > (i8)iArg);
   
   return b;
 }
@@ -86,7 +102,9 @@ bool i3::operator >(i3 iArg)
 /*----------------------------------------------------------------------------*/
 bool i3::operator >(i8 iArg)
 {
-  bool b = m_iValue > (i8)iArg;
+  i8 iValue = iGet();
+  
+  bool b = (iValue > (i8)iArg);
   
   return b;
 }
@@ -96,7 +114,9 @@ bool i3::operator >(i8 iArg)
 /*----------------------------------------------------------------------------*/
 bool i3::operator >=(i3 iArg)
 {
-  bool b = m_iValue >= (i8)iArg;
+  i8 iValue = iGet();
+  
+  bool b = (iValue >= (i8)iArg);
   
   return b;
 }
@@ -106,7 +126,9 @@ bool i3::operator >=(i3 iArg)
 /*----------------------------------------------------------------------------*/
 bool i3::operator >=(i8 iArg)
 {
-  bool b = m_iValue >= (i8)iArg;
+  i8 iValue = iGet();
+  
+  bool b = (iValue >= (i8)iArg);
   
   return b;
 }
@@ -116,7 +138,9 @@ bool i3::operator >=(i8 iArg)
 /*----------------------------------------------------------------------------*/
 bool i3::operator ==(i3 iArg)
 {
-  bool b = m_iValue == (i8)iArg;
+  i8 iValue = iGet();
+  
+  bool b = (iValue == (i8)iArg);
   
   return b;
 }
@@ -126,7 +150,9 @@ bool i3::operator ==(i3 iArg)
 /*----------------------------------------------------------------------------*/
 bool i3::operator ==(i8 iArg)
 {
-  bool b = m_iValue == (i8)iArg;
+  i8 iValue = iGet();
+  
+  bool b = (iValue == (i8)iArg);
   
   return b;
 }
@@ -136,7 +162,9 @@ bool i3::operator ==(i8 iArg)
 /*----------------------------------------------------------------------------*/
 bool i3::operator !=(i3 iArg)
 {
-  bool b = m_iValue != (i8)iArg;
+  i8 iValue = iGet();
+  
+  bool b = (iValue != (i8)iArg);
   
   return b;
 }
@@ -146,7 +174,9 @@ bool i3::operator !=(i3 iArg)
 /*----------------------------------------------------------------------------*/
 bool i3::operator !=(i8 iArg)
 {
-  bool b = m_iValue != (i8)iArg;
+  i8 iValue = iGet();
+  
+  bool b = (iValue != (i8)iArg);
   
   return b;
 }
@@ -156,7 +186,9 @@ bool i3::operator !=(i8 iArg)
 /*----------------------------------------------------------------------------*/
 bool i3::operator <=(i3 iArg)
 {
-  bool b = m_iValue <= (i8)iArg;
+  i8 iValue = iGet();
+  
+  bool b = (iValue <= (i8)iArg);
   
   return b;
 }
@@ -166,7 +198,9 @@ bool i3::operator <=(i3 iArg)
 /*----------------------------------------------------------------------------*/
 bool i3::operator <=(i8 iArg)
 {
-  bool b = m_iValue <= (i8)iArg;
+  i8 iValue = iGet();
+  
+  bool b = (iValue <= (i8)iArg);
   
   return b;
 }
@@ -176,7 +210,9 @@ bool i3::operator <=(i8 iArg)
 /*----------------------------------------------------------------------------*/
 bool i3::operator <(i3 iArg)
 {
-  bool b = m_iValue < (i8)iArg;
+  i8 iValue = iGet();
+  
+  bool b = (iValue < (i8)iArg);
   
   return b;
 }
@@ -186,7 +222,9 @@ bool i3::operator <(i3 iArg)
 /*----------------------------------------------------------------------------*/
 bool i3::operator <(i8 iArg)
 {
-  bool b = m_iValue < (i8)iArg;
+  i8 iValue = iGet();
+  
+  bool b = (iValue < (i8)iArg);
   
   return b;
 }
@@ -200,9 +238,11 @@ bool i3::operator <(i8 iArg)
 /*----------------------------------------------------------------------------*/
 i8 i3::operator +(i3 iArg)
 {
-  i8 i = m_iValue + (i8)iArg;
+  i8 iValue = iGet();
   
-  return i;
+  i8 iNewValue = iValue + (i8)iArg;
+  
+  return iNewValue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -210,9 +250,11 @@ i8 i3::operator +(i3 iArg)
 /*----------------------------------------------------------------------------*/
 i8 i3::operator +(i8 iArg)
 {
-  i8 i = m_iValue + (i8)iArg;
+  i8 iValue = iGet();
   
-  return i;
+  i8 iNewValue = iValue + (i8)iArg;
+  
+  return iNewValue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -220,9 +262,11 @@ i8 i3::operator +(i8 iArg)
 /*----------------------------------------------------------------------------*/
 i8 i3::operator -(i3 iArg)
 {
-  i8 i = m_iValue - (i8)iArg;
+  i8 iValue = iGet();
   
-  return i;
+  i8 iNewValue = iValue - (i8)iArg;
+  
+  return iNewValue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -230,9 +274,11 @@ i8 i3::operator -(i3 iArg)
 /*----------------------------------------------------------------------------*/
 i8 i3::operator -(i8 iArg)
 {
-  i8 i = m_iValue - (i8)iArg;
+  i8 iValue = iGet();
   
-  return i;
+  i8 iNewValue = iValue - (i8)iArg;
+  
+  return iNewValue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -240,9 +286,12 @@ i8 i3::operator -(i8 iArg)
 /*----------------------------------------------------------------------------*/
 i8 i3::operator ++(void)
 {
-  i8 i = ++m_iValue;
+  i8 iValue = iGet();
   
-  return i;
+  i8 iFixValue = ++iValue;
+  vSet(iValue);
+  
+  return iFixValue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -250,9 +299,12 @@ i8 i3::operator ++(void)
 /*----------------------------------------------------------------------------*/
 i8 i3::operator ++(int)
 {
-  i8 i = m_iValue++;
+  i8 iValue = iGet();
   
-  return i;
+  i8 iFixValue = iValue++;
+  vSet(iValue);
+  
+  return iFixValue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -260,9 +312,12 @@ i8 i3::operator ++(int)
 /*----------------------------------------------------------------------------*/
 i8 i3::operator --(void)
 {
-  i8 i = --m_iValue;
+  i8 iValue = iGet();
   
-  return i;
+  i8 iFixValue = --iValue;
+  vSet(iValue);
+  
+  return iFixValue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -270,9 +325,12 @@ i8 i3::operator --(void)
 /*----------------------------------------------------------------------------*/
 i8 i3::operator --(int)
 {
-  i8 i = m_iValue--;
+  i8 iValue = iGet();
   
-  return i;
+  i8 iFixValue = iValue--;
+  vSet(iValue);
+  
+  return iFixValue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -292,8 +350,6 @@ i3 Base::operator "" _i3(u8 uArg)
 /*----------------------------------------------------------------------------*/
 i8 i3i8::iToI8(i3* pI3)
 {
-  i8 i = 0;
-  
   i3i8 xI3I8;
   
   xI3I8.m_cValue[3] = 0;
@@ -301,9 +357,9 @@ i8 i3i8::iToI8(i3* pI3)
   xI3I8.m_cValue[1] = pI3->m_cValue[1];
   xI3I8.m_cValue[0] = pI3->m_cValue[0];
   
-  i = xI3I8.m_iValue;
+  i8 iValue = xI3I8.m_iValue;
   
-  return i;
+  return iValue;
 }
 
 /*----------------------------------------------------------------------------*/

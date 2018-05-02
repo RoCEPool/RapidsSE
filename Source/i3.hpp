@@ -8,7 +8,6 @@ namespace Base
   class i3
   {
   public:
-    i8   m_iValue;
     char m_cValue[3];
   
   public:
@@ -16,10 +15,12 @@ namespace Base
     i3(i8 iArg);
     ~i3(void);
   
-    explicit operator i8() const; // { return m_iValue; }
+    explicit operator i8(); // { return m_iValue; }
   
     i8 operator *(void);
     void operator =(i8 iArg);
+
+    i8   iGet(void);
     void vSet(i8 iArg);
   
     bool operator >(i3 iArg);
