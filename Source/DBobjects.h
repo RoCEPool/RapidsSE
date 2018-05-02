@@ -47,7 +47,6 @@ typedef Vector<CN_PTNCOLVEC,Column,CN_COLUMN,1024,u8> PtnColVec;
 #include "RowWrk.hpp"
 typedef Vector<CN_ENTRYVEC,Entry,CN_ENTRY,C_FLAT_LEVELS_MAX,i8> EntryVec;
 #include "Item.hpp"
-#include "Item2.hpp"
 #include "ItemBuffer.hpp"
 #include "Entry.hpp"
 #include "EntryBuffer.hpp"
