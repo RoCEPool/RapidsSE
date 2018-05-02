@@ -35,6 +35,13 @@ anidx lineitem hidden;
 anidx lineitem idx;
 visidx lineitem idx;
 
+timerStart;
+compactidx lineitem idx;
+timerEnd;
+
+anidx lineitem idx;
+visidx lineitem idx;
+space;
 //                                              ----
 // 16 columns                                   174B
 //
