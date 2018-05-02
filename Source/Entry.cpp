@@ -38,7 +38,7 @@ void* Entry::operator new(size_t iSize, Entry* pEntry)
 Entry::Entry(eCN eClassNo, i8 nThisBytes, i8 nOffsets)
 : Item(eClassNo, nThisBytes)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY);
   
   //m_xId
   //m_iTxId    = -1;
@@ -54,7 +54,7 @@ Entry::Entry(eCN eClassNo, i8 nThisBytes, i8 nOffsets)
   
   _checkInitialised_(eClassNo);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo); LW_FOOTER_CHECK();
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
 }
 
 /*----------------------------------------------------------------------------*/

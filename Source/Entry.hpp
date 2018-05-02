@@ -140,7 +140,7 @@ namespace DBobjects
   /*----------------------------------------------------------------------------*/
   inline Key* Entry::aKey(void)
   {
-    _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+    _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
     
     Key* aKey = reinterpret_cast<Key*>(aEmbeddedObject());
     
