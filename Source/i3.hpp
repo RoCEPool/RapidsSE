@@ -20,6 +20,7 @@ namespace Base
   
     i8 operator *(void);
     void operator =(i8 iArg);
+    void vSet(i8 iArg);
   
     bool operator >(i3 iArg);
     bool operator >(i8 iArg);
@@ -42,6 +43,7 @@ namespace Base
     i8 operator ++(int);
     i8 operator --(void);
     i8 operator --(int);
+  
   };
   
   i3 operator "" _i3(u8 uArg);
@@ -57,8 +59,8 @@ namespace Base
       char m_cValue[4];
     };
   
-    static i8 iToI8(i3& xI3);
-    static void vToI3(i8 iArg, i3& xI3);
+    static i8 iToI8(i3* pI3);
+    static void vToI3(i3* pI3, i8 iArg);
   };
 }
 

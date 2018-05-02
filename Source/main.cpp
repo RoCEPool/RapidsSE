@@ -562,9 +562,9 @@ void vTest8(void)
   
   
   
-  i3i8::vToI3(123,i3B_1);
+  i3i8::vToI3(&i3B_1,123);
   
-  i8 iConverted = i3i8::iToI8(i3B_1);
+  i8 iConverted = i3i8::iToI8(&i3B_1);
   
   
   return;
