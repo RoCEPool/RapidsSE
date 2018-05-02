@@ -41,7 +41,7 @@ Entry::Entry(eCN eClassNo, i8 nThisBytes, i8 nOffsets)
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
   //m_xId
-  m_iTxId    = -1;
+  //m_iTxId    = -1;
   m_nOffsets = nOffsets;
   m_iEntryNo = -1;
   
@@ -336,7 +336,7 @@ void Entry::vSetEntry(i8 xTxId, Id xId, i8 nOffsets, Stz* aData, i8 nDataSize)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set id, transaction and offsets
   m_xId = xId;
-  m_iTxId = xTxId;
+  //m_iTxId = xTxId;
   m_nOffsets = nOffsets;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -362,7 +362,7 @@ void Entry::vSetEntry(KeyWrk& xKeyWrk)
   // set id, transaction and offsets
   
   m_xId = xKeyWrk.xId();
-  m_iTxId = xKeyWrk.iTxId();
+  //m_iTxId = xKeyWrk.iTxId();
   m_nOffsets = xKeyWrk.nOffsets();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -388,7 +388,7 @@ void Entry::vSetEntry(RowWrk& xRowWrk)
   // set id, transaction and offsets
   
   m_xId = xRowWrk.xId();
-  m_iTxId = xRowWrk.iTxId();
+  //m_iTxId = xRowWrk.iTxId();
   m_nOffsets = xRowWrk.nOffsets();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -424,10 +424,10 @@ void Entry::vShow(i8 iOffset, Index* pIndex, bool bShowKey)
          m_xId.iRow()
          );
   
-  vTrace("Tx: %lld.%03lld "_Stz,
-         Tx::iTxNode(m_iTxId),
-         Tx::iTxNo(m_iTxId)
-         );
+  //vTrace("Tx: %lld.%03lld "_Stz,
+  //       Tx::iTxNode(m_iTxId),
+  //       Tx::iTxNo(m_iTxId)
+  //       );
   
   if (bShowKey && ! pIndex->bIsHidden())
     aKey->vShow(pIndex->pIdxColVec());
@@ -758,7 +758,9 @@ i8 Entry::iTxId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_); 
   
-  return m_iTxId;
+  //return m_iTxId;
+  
+  return -1;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -768,7 +770,7 @@ void Entry::vTxId(i8 iTxId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_); 
   
-  m_iTxId = iTxId;
+  //m_iTxId = iTxId;
 }
 
 /*----------------------------------------------------------------------------*/
