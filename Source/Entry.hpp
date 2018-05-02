@@ -6,6 +6,15 @@
 #pragma pack(push)
 #pragma pack(1)
 
+
+//#define LW_FOOTER
+
+#ifdef LW_FOOTER
+  #define LW_FOOTER_CHECK() aFooter()->vAssertFooter();
+#else
+  #define LW_FOOTER_CHECK()
+#endif
+
 namespace DBobjects
 {
   class EntWrk;
