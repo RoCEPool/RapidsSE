@@ -24,7 +24,7 @@ void Values::vCheckAssumptions(void)
          ==  sizeof(ValSet));
 
 
-  ASSERT(24 == sizeof(StrVal));
+  ASSERT(sizeof(Value) + sizeof(WspVbl) == sizeof(StrVal));
   
   ASSERT(sizeof(StrVal) + sizeof(Footer) + 32    == sizeof(s32));
   ASSERT(sizeof(StrVal) + sizeof(Footer) + 256   == sizeof(s256));

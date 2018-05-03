@@ -10,19 +10,19 @@ namespace Pool
 
 namespace CorrectnessAlgebra
 {
-  static const u8 C_MAGIC = 0x4F4E434947414D5E; // ^MAGICNO
+  static const u8 C_MAGIC   = 0x4B696A4D; // MjiK
+                              //K i j M
   
   class Object
   {
   protected:
     union {
-      u8   m_uMagic;
-      char m_sMagic[8];
+      u4   m_uMagic;
+      char m_sMagic[4];
     };
   private:
     eCN  m_eClass;
     bool m_bWordBody;
-    char m_sFiller[3];
   
   public:
     Object(eCN eClass);
