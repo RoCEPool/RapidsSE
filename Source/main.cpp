@@ -206,8 +206,6 @@ void vPrintSizes(void)
   vInfo("sizeof(Object) %lu; \n"_Stz, sizeof(Object));
   assert(sizeof(Object) == 16);
   
-  vInfo("sizeof(Object_Emb) %lu; \n"_Stz, sizeof(Object_Emb));
-  assert(sizeof(Object_Emb) == 2);
 }
 
 /*----------------------------------------------------------------------------*/
