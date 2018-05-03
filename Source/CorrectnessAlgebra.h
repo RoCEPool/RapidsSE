@@ -17,7 +17,6 @@ using namespace CorrectnessAlgebra;
 //-----------------------------------------------------------------------------
 
 #include "Footer.hpp"
-#include "Magic.hpp"
 #include "Object.hpp"
 #include "Object2.hpp"
 #include "Wsp.hpp"

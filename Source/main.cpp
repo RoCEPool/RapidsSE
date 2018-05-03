@@ -63,8 +63,6 @@ int main(int argc, const char* argv[])
   vTrace("sizeof(i4) %lld\n"_Stz,(i8)sizeof(i4));
   vTrace("sizeof(i8) %lld\n"_Stz,(i8)sizeof(i8));
   
-  //vTrace("sizeof(Class) %lld\n"_Stz,(i8)sizeof(Class));
-  vTrace("sizeof(Magic) %lld\n"_Stz,(i8)sizeof(Magic));
   vTrace("sizeof(Object) %lld\n"_Stz,(i8)sizeof(Object));
   vTrace("sizeof(Object2) %lld\n"_Stz,(i8)sizeof(Object2));
   vTrace("sizeof(eCN) %lld\n"_Stz,(i8)sizeof(eCN));

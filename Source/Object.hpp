@@ -10,8 +10,15 @@ namespace Pool
 
 namespace CorrectnessAlgebra
 {
-  class Object : public Magic
+  static const u8 C_MAGIC = 0x4F4E434947414D5E; // ^MAGICNO
+  
+  class Object
   {
+  protected:
+    union {
+      u8   m_uMagic;
+      char m_sMagic[8];
+    };
   private:
     eCN  m_eClass;
     bool m_bWordBody;
@@ -22,6 +29,10 @@ namespace CorrectnessAlgebra
   
     i8  iBufferNo(void);
     Pool::bn nBufferNo(void);
+  
+    i8    iMagic(void) const;
+    void  vAssertMagic(void);
+    bool  bValidMagic(void);
   
     Stz* aClass(void);
   
@@ -35,7 +46,7 @@ namespace CorrectnessAlgebra
   /*--------------------------------------------------------------------------*/
   inline eCN eClass(void)
   {
-  return m_eClass;
+    return m_eClass;
   }
   
   /*----------------------------------------------------------------------------*/
@@ -43,7 +54,15 @@ namespace CorrectnessAlgebra
   /*----------------------------------------------------------------------------*/
   inline void vSetClass(eCN eClass)
   {
-  m_eClass = eClass;
+    m_eClass = eClass;
+  }
+  
+  /*----------------------------------------------------------------------------*/
+  /* set magic                                                                  */
+  /*----------------------------------------------------------------------------*/
+  inline void vSetMagic(void)
+  {
+    m_uMagic = C_MAGIC;
   }
   
   };
@@ -141,6 +160,14 @@ namespace CorrectnessAlgebra
 
 #endif
 
+/*--------------------------------------------------------------------------*/
+/* check the object has a magic marker as its first word                    */
+/*--------------------------------------------------------------------------*/
+#ifdef __MAGIC_CHECK
+#define _magic_() ASSERT(iMagic() == C_MAGIC);
+#else
+#define _magic_()
+#endif
 
 /*============================================================================*/
 /* end                                                                        */
