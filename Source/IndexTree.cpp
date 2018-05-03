@@ -209,6 +209,9 @@ void IndexTree::vCompact(void)
     //pL1->bVerifyKeyBufferOrder();
   }
   
+#ifdef IT_COPYLEFTV3
+  pLeftL0->vBuildSkipListSorted();
+#endif
 }
 
 /*----------------------------------------------------------------------------*/

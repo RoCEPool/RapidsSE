@@ -495,6 +495,72 @@ void EntryBuffer::vBufferCount(i8& nBuffers)
 }
 
 /*----------------------------------------------------------------------------*/
+/* build skip list based on existing L0 offset chain being in sorted order    */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vBuildSkipListSorted(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  //
+  //  H:
+  //  [p]..[ ].................[ ]
+  //  [p]..[ ]..[ ].......[ ]..[ ]
+  //  [p]--[ ]--[ ]--[ ]--[ ]--[ ]  (L0 is a-priori in sorted order)
+  //
+  
+  /*
+   // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
+   // temp: clear out all l1 and l2 offsets for testing purpoes
+   
+   for (Entry* pEntry = m_pHeadEntry;
+   pEntry != nullptr;
+   pEntry = pNextEntry(pEntry, 0)) {
+   
+   // get the number of offsets for this entry
+   i8 nOffsets = pEntry->nOffsets();
+   
+   // connect the dots
+   for (i8 i_Offset = 1; i_Offset < nOffsets; i_Offset++)
+   pEntry->vNEO(i_Offset,-1);
+   }
+   vShow();
+   */
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Entry* xPrevVec[gpAttachMap->m_nIndexOffsets];
+  
+  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexOffsets; i_Offset++)
+    xPrevVec[i_Offset] = m_pHeadEntry;
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // go through each entry in L0 order and
+  //   correct the prior offset to that entry for each level
+  
+  for (Entry* pEntry = pFirstEntry();
+       pEntry != nullptr;
+       pEntry = pNextEntry(pEntry, 0)) {
+    
+    // where is this entry in the buffer (offset-wise)?
+    i4 iEntryOffset = iToOffset(pEntry);
+    
+    // get the number of offsets for this entry
+    i8 nOffsets = pEntry->nOffsets();
+    
+    // connect the dots
+    for (i8 i_Offset = 1; i_Offset < nOffsets; i_Offset++) {
+      
+      // set previous entry at this level to refer to this entry
+      xPrevVec[i_Offset]->vNEO(i_Offset,iEntryOffset);
+      
+      // the previous entry at this level now becomes this entry
+      xPrevVec[i_Offset] = pEntry;
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get decile full of the buffer                                              */
 /*----------------------------------------------------------------------------*/
 i8 EntryBuffer::iDecile(void)
@@ -754,6 +820,66 @@ Entry* EntryBuffer::pInsertKeyAbs(KeyWrk& xKeyWrk)
   //  bVerifyAdjacent();
   
   //vShow();
+  
+  return pKeyEntry;
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert a key entry specifically into this buffer (L0 chain only)           */
+/*----------------------------------------------------------------------------*/
+Entry* EntryBuffer::pInsertKeyAbsL0(KeyWrk& xKeyWrk, Entry** ppPriorEntry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // trace
+  
+  //vTrace("Inserting key:\n"_Stz);
+  //IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  //aKey->vShow(pIdxColVec);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compute required entry space
+  
+  RASSERT(xKeyWrk.nOffsets());
+  
+  i8 nEntryBytes = xKeyWrk.nEntrySize();
+  i8 nOffsetBytes = xKeyWrk.nOffsetSize();
+  i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
+  
+  RASSERT(bHasSpace(nEntryPlusOffsets));
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // allocate space for the key and next offsets in this buffer
+  
+  Entry* pKeyEntry = pAllotEntry(nEntryBytes);
+  ASSERT(pKeyEntry);
+  
+  NEO* aNEO = aAllotNEO(nOffsetBytes);
+  ASSERT(aNEO);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the key entry
+  
+  pKeyEntry->vSetEntry(xKeyWrk);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append to prior entry at L0 only
+  
+  i4 iOffset = iToOffset(pKeyEntry);
+  
+  (*ppPriorEntry)->vNEO(0,iOffset);
+  
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+  // for the moment we set L1 & L2 offsets in prior entry to -1
+  
+  i8 nPriorOffsets = pKeyEntry->nOffsets();
+  for (i8 i_Offset = 0; i_Offset < nPriorOffsets; i_Offset++)
+    pKeyEntry->vNEO(i_Offset,-1);
+  
+  // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
+  
+  *ppPriorEntry = pKeyEntry;
   
   return pKeyEntry;
 }
@@ -1588,72 +1714,6 @@ void EntryBuffer::vBuildSkipList(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* build skip list based on existing L0 offset chain being in sorted order    */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vBuildSkipListSorted(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  //
-  //  H:
-  //  [p]..[ ].................[ ]
-  //  [p]..[ ]..[ ].......[ ]..[ ]
-  //  [p]--[ ]--[ ]--[ ]--[ ]--[ ]  (L0 is a-priori in sorted order)
-  //
-  
-  /*
-  // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
-  // temp: clear out all l1 and l2 offsets for testing purpoes
-  
-  for (Entry* pEntry = m_pHeadEntry;
-       pEntry != nullptr;
-       pEntry = pNextEntry(pEntry, 0)) {
-  
-    // get the number of offsets for this entry
-    i8 nOffsets = pEntry->nOffsets();
-    
-    // connect the dots
-    for (i8 i_Offset = 1; i_Offset < nOffsets; i_Offset++)
-      pEntry->vNEO(i_Offset,-1);
-  }
-  vShow();
-  */
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  Entry* xPrevVec[gpAttachMap->m_nIndexOffsets];
-  
-  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexOffsets; i_Offset++)
-    xPrevVec[i_Offset] = m_pHeadEntry;
-
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // go through each entry in L0 order and
-  //   correct the prior offset to that entry for each level
-  
-  for (Entry* pEntry = pFirstEntry();
-       pEntry != nullptr;
-       pEntry = pNextEntry(pEntry, 0)) {
-  
-    // where is this entry in the buffer (offset-wise)?
-    i4 iEntryOffset = iToOffset(pEntry);
-    
-    // get the number of offsets for this entry
-    i8 nOffsets = pEntry->nOffsets();
-    
-    // connect the dots
-    for (i8 i_Offset = 1; i_Offset < nOffsets; i_Offset++) {
-      
-      // set previous entry at this level to refer to this entry
-      xPrevVec[i_Offset]->vNEO(i_Offset,iEntryOffset);
-      
-      // the previous entry at this level now becomes this entry
-      xPrevVec[i_Offset] = pEntry;
-    }
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* compact this buffer                                                        */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vCompact(void)
@@ -2445,66 +2505,6 @@ Entry* EntryBuffer::pInsertKeyAbsLazy(KeyWrk& xKeyWrk)
   }
 
   m_pLazyChain = pKeyEntry;
-  
-  return pKeyEntry;
-}
-
-/*----------------------------------------------------------------------------*/
-/* insert a key entry specifically into this buffer (L0 chain only)           */
-/*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pInsertKeyAbsL0(KeyWrk& xKeyWrk, Entry** ppPriorEntry)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // trace
-  
-  //vTrace("Inserting key:\n"_Stz);
-  //IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  //aKey->vShow(pIdxColVec);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // compute required entry space
-  
-  RASSERT(xKeyWrk.nOffsets());
-  
-  i8 nEntryBytes = xKeyWrk.nEntrySize();
-  i8 nOffsetBytes = xKeyWrk.nOffsetSize();
-  i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
-  
-  RASSERT(bHasSpace(nEntryPlusOffsets));
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // allocate space for the key and next offsets in this buffer
-  
-  Entry* pKeyEntry = pAllotEntry(nEntryBytes);
-  ASSERT(pKeyEntry);
-  
-  NEO* aNEO = aAllotNEO(nOffsetBytes);
-  ASSERT(aNEO);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set the key entry
-  
-  pKeyEntry->vSetEntry(xKeyWrk);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // append to prior entry at L0 only
-
-  i4 iOffset = iToOffset(pKeyEntry);
-  
-  (*ppPriorEntry)->vNEO(0,iOffset);
-
-  // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
-  // for the moment we set L1 & L2 offsets in prior entry to -1
-  
-  i8 nPriorOffsets = pKeyEntry->nOffsets();
-  for (i8 i_Offset = 0; i_Offset < nPriorOffsets; i_Offset++)
-    pKeyEntry->vNEO(i_Offset,-1);
-  
-  // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
-  
-  *ppPriorEntry = pKeyEntry;
   
   return pKeyEntry;
 }

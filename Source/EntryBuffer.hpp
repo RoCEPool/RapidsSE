@@ -82,7 +82,7 @@ namespace DBobjects
     void         vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries);
     Entry*       pAppendRow(RowWrk& xRowWrk);
     void         vBufferCount(i8& nBufferCount);
-
+    void         vBuildSkipListSorted(void);
     i8           iDecile(void);
     void         vDeleteEntry(Entry** ppEntry);
     bool         bDeleteKey(Key* aDeleteKey, EntryBuffer* pToBuffer);
@@ -92,6 +92,7 @@ namespace DBobjects
     Entry*       pGetEntryNo(i8 i_Entry);
     bool         bHasSpace(i8 nBytes);
     Entry*       pInsertKeyAbs(KeyWrk& xKeyWrk);
+    Entry*       pInsertKeyAbsL0(KeyWrk& xKeyWrk, Entry** ppPriorEntry);
     static Entry* pInsertKeyTree(KeyWrk& xKeyWrk,
                                  EntryBuffer** ppRootKeyBuffer);
     void         vLazyBuild(void);
@@ -121,7 +122,6 @@ namespace DBobjects
     void         vAddFreeList(Entry* pEntry);
     void         vBuildOffsetL0(void);
     void         vBuildSkipList(void);
-    void         vBuildSkipListSorted(void);
     void         vCompact(void);
     void         vCompactLeft(void);
     void         vCompactLeft2(void);
@@ -149,7 +149,6 @@ namespace DBobjects
     EntryBuffer* pInsertableBuffer(KeyWrk& xKeyWrk,
                                    EntryBuffer** ppRootKeyBuffer);
     Entry*       pInsertKeyAbsLazy(KeyWrk& xKeyWrk);
-    Entry*       pInsertKeyAbsL0(KeyWrk& xKeyWrk, Entry** ppPriorEntry);
     void         vInsertKeySkip(Entry* pKeyEntry);
     Entry*       pInsertKeyBuffer(KeyWrk& xKeyWrk,
                                   EntryBuffer** ppRootKeyBuffer);
