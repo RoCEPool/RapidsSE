@@ -763,6 +763,7 @@ namespace Tasks
     static void vLoaderSubEnd(MP_Task mpTask);
     static void vLoaderSubFetchRecord(MP_Task mpTask);
     static void vLoaderSubFetchRecordDist(MP_Task mpTask);
+    static void vLoaderSubFieldDelimiterStore(MP_Task mpTask);
     static void vLoaderSubHashPartition(MP_Task mpTask);
     static void vLoaderSubHashRecord(MP_Task mpTask);
     static void vLoaderSubInit(MP_Task mpTask);
@@ -1050,6 +1051,7 @@ namespace Tasks
     static void vSEitfEntryFetch(MP_Task mpTask);
     static void vSEitfEntryStore(MP_Task mpTask);
     static void vSEitfFetchTaskEnded(MP_Task mpTask);
+    static void vSEitfFieldDelimiterFetch(MP_Task mpTask);
     static void vSEitfGroupByFetch(MP_Task mpTask);
     static void vSEitfGroupByStore(MP_Task mpTask);
     static void vSEitfIndexBufferFetch(MP_Task mpTask);

@@ -28,6 +28,7 @@ void Task::vAddPrimitives_SEitf(void)
   vAddPrimitive("seitf.display@"_Stz,         &vSEitfDisplayFetch,     false);
   vAddPrimitive("seitf.display!"_Stz,         &vSEitfDisplayStore,     false);
   vAddPrimitive("seitf.dump"_Stz,             &vSEitfDump,             false);
+  vAddPrimitive("seitf.fieldDelimiter@"_Stz,  &vSEitfFieldDelimiterFetch,   false);
   vAddPrimitive("seitf.entry@"_Stz,           &vSEitfEntryFetch,       false);
   vAddPrimitive("seitf.entry!"_Stz,           &vSEitfEntryStore,       false);
   vAddPrimitive("seitf.fetchTaskEnded"_Stz,   &vSEitfFetchTaskEnded,   false);
@@ -392,6 +393,29 @@ void Task::vSEitfFetchTaskEnded(MP_Task mpTask)
   --pSEitf->m_ziFetchTasks;
   //vTrace("Fetch task ended %s %lld\n"_Stz,
   //       pSEitf->m_pCurrentTable->aTableName(), *pSEitf->m_ziFetchTasks);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* seitf.fieldDelimiter@ -- get field delimiter                               */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfFieldDelimiterFetch(MP_Task mpTask)
+{
+  ENTRY("vSEitfFieldDelimiterFetch"_Stz);
+  
+  Object* pPtrSEitf;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
+    THROW_INVALID_DSTACK("seitf.fieldDelimiter@"_Stz);
+  
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  ASSERT(CN_SEITF == pSEitf->eClass());
+  
+  s32 sFieldDelimiter;
+  Stz* s = (Stz*)(&pSEitf->m_xFormatters.m_cFieldDelimiter);
+  sFieldDelimiter = s;
+  
+  mpTask->m_pDataStack->vPushS32(sFieldDelimiter);
   
   EXIT();
 }

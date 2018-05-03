@@ -21,6 +21,7 @@ const Stz* C_CMD_CD         = "cd"_Stz;
 const Stz* C_CMD_CREATE     = "create"_Stz;
 const Stz* C_CMD_DANTBL     = "dantbl"_Stz;
 const Stz* C_CMD_DOCOL      = "docol"_Stz;
+const Stz* C_CMD_DISTPARLOAD = "dpld"_Stz;
 const Stz* C_CMD_DROP       = "drop"_Stz;
 const Stz* C_CMD_END        = "end"_Stz;
 const Stz* C_CMD_FIRST      = "first"_Stz;
@@ -64,6 +65,7 @@ CmdTable SePromptCommands[] =
   { C_CMD_CREATE,     C_ONE_UNIQUE,  &SePrompt::bCmd_CreateUnique  },
   { C_CMD_DANTBL,     nullptr,       &SePrompt::bCmd_DanalyzeTable },
   { C_CMD_DOCOL,      nullptr,       &SePrompt::bCmd_Docol         },
+  { C_CMD_DISTPARLOAD,nullptr,       &SePrompt::bCmd_DistParLoadTable},
   { C_CMD_DROP,       C_ONE_CATALOG, &SePrompt::bCmd_DropCatalog   },
   { C_CMD_DROP,       C_ONE_INDEX,   &SePrompt::bCmd_DropIndex     },
   { C_CMD_DROP,       C_ONE_SCHEMA,  &SePrompt::bCmd_DropSchema    },
@@ -1138,6 +1140,77 @@ bool SePrompt::bCmd_Docol(void)
   
   ASSERT(m_xTokenVec[0]->bSame("docol"_Stz));
   return bExecuteRequest();
+}
+
+/*----------------------------------------------------------------------------*/
+/* load a table from a file  (distributed and parallel)                       */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bCmd_DistParLoadTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  bool bResult = false;
+  i8 iIndex;
+  i8 iCurrentIndex;
+  
+  ASSERT(m_xTokenVec[0]->bSame("dpld"_Stz));
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy tokens from m_xTokenVec to m_xTokenVec2
+  i8 iNumTokens = iCopyTokens(m_xTokenVec, m_xTokenVec2);
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // there should be at least 3 tokens
+  if (iNumTokens < 3) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    goto resetFormatter;
+  }
+  
+  iIndex = 0;
+  m_xTokenVec[iIndex++]->vCopy(m_xTokenVec2[0]);
+  m_xTokenVec[iIndex++]->vCopy(m_xTokenVec2[1]);
+  m_xTokenVec[iIndex++]->vCopy(m_xTokenVec2[2]);
+  
+  iCurrentIndex = 3;
+  
+  while (iNumTokens > iCurrentIndex) {
+    
+    if (iNumTokens < iCurrentIndex + 2) {
+      m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+      goto resetFormatter;
+    }
+    
+    //--------------------------------------------------------------------------
+    // C_FIELD_DELIMITER
+    if (m_xTokenVec2[iCurrentIndex]->bSame(C_FIELD_DELIMITER)) {
+      m_pSEitf->m_xFormatters.m_cFieldDelimiter = *m_xTokenVec2[++iCurrentIndex]->sText().aChar();
+      if (m_pSEitf->m_xFormatters.m_cFieldDelimiter == '0')
+        m_pSEitf->m_xFormatters.m_cFieldDelimiter = '\0';
+    }
+    else {
+      m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+      goto resetFormatter;
+    }
+    iCurrentIndex++;
+  }
+  
+  //m_pSEitf->m_xFormatters.vShow();
+  
+  //
+  // clear the last error
+  m_pSEitf->vClearLastError();
+  
+  if (!bExecuteRequest())
+    goto resetFormatter;
+  
+  bResult = true;
+  
+resetFormatter:
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // reset seitf formatters
+  
+  m_pSEitf->m_xFormatters.vReset(&gpAttachMap->m_xFormatters);
+  return bResult;
 }
 
 /*----------------------------------------------------------------------------*/

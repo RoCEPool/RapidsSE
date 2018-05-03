@@ -94,6 +94,7 @@ public:
   bool bCmd_CreateUnique(void);
   bool bCmd_DanalyzeTable(void);
   bool bCmd_Docol(void);
+  bool bCmd_DistParLoadTable(void);
   bool bCmd_DropTenant(void);
   bool bCmd_DropCatalog(void);
   bool bCmd_DropIndex(void);

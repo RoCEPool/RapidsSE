@@ -22,6 +22,8 @@ namespace DBobjects
     
     WorkingBuffer* m_pWorkingBuffer[C_MAX_PARTITIONS]; // working row buffers
     
+    Formatters  m_xFormatters;
+    
     // must be last
     Footer m_xFooter;
     
@@ -49,6 +51,7 @@ namespace DBobjects
     i8   iPartition(void);
     void vPartition(i8 iPartition);
     bool bReadChunk(void);
+    void vSetDistFormatter(char cFieldSeparator);
     WorkingBuffer* pWorkingBuffer(void);
     void vWorkingBuffer(WorkingBuffer* pWorkingBuffer);
     Table* pTable(void);

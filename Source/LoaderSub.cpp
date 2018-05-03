@@ -207,16 +207,13 @@ bool LoaderSub::bFetchRecordDist(void)
   bool bValid = false;
   bool bBlankLine;
   
-  Interface::SEitf* pSEitf = m_pLoader->pSEitf();
-  Formatters* pFormatters = &gpAttachMap->m_xFormatters;
-  
   if (! m_bMoreChunks)
     return false;
   
   while (true) {
     
     // fetch next record from current chunk
-    aRawData = m_pLoadChunk->aNextRecord(iLength,pFormatters);
+    aRawData = m_pLoadChunk->aNextRecord(iLength,&m_xFormatters);
     
     if (! aRawData) {
       // read next chunk
@@ -228,7 +225,7 @@ bool LoaderSub::bFetchRecordDist(void)
     
     // format the raw data into a row
     bValid = Row::bFormatRow(m_pTable->pColumnVec(),
-                             pFormatters,
+                             &m_xFormatters,
                              aRawData, iLength,
                              m_aRecord.aStr(), m_iLength,
                              bBlankLine,
@@ -434,6 +431,16 @@ bool LoaderSub::bReadChunk(void)
   m_pLoadChunk->vReadChunk(iSeek,nBytes);
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set formatter                                                              */
+/*----------------------------------------------------------------------------*/
+void LoaderSub::vSetDistFormatter(char cFieldDelimiter)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+  
+  m_xFormatters.m_cFieldDelimiter = cFieldDelimiter;
 }
 
 /*----------------------------------------------------------------------------*/

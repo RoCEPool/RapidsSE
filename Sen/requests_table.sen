@@ -635,17 +635,20 @@ snap1:
   // push originating node no
   grid.thisNode@ ( "seitf" iNode )
 
+  // push field delimiter
+  pSEitf seitf.fieldDelimiter@ ( "seitf" iNode "<fieldDelimiter>" )
+
   // push file path
-  sFileNm  ( "seitf" iNode "<fileNm>" )
+  sFileNm  ( "seitf" iNode "<fieldDelimiter>" "<fileNm>" )
 
   // push table name
-  sTableNm ( "seitf" iNode "<fileNm>" "<tableNm>" )
+  sTableNm ( "seitf" iNode "<fieldDelimiter>" "<fileNm>" "<tableNm>" )
 
   // push schema name
-  2 pathPick dic.name  ( "seitf" iNode "<fileNm>" "<tableNm>" "<schemaNm>" )
+  2 pathPick dic.name  ( "seitf" iNode "<fieldDelimiter>" "<fileNm>" "<tableNm>" "<schemaNm>" )
 
   // push catalog name
-  4 pathPick dic.name  ( "seitf" iNode "<fileNm>" "<tableNm>" "<schemaNm>" "<catalogNm>" )
+  4 pathPick dic.name  ( "seitf" iNode "<fieldDelimiter>" "<fileNm>" "<tableNm>" "<schemaNm>" "<catalogNm>" )
 
   // set acks remaining to be no of nodes
   grid.nodes pSEitf seitf.acksRemaining!

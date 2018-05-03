@@ -20,6 +20,7 @@ void Task::vAddPrimitives_LoaderSub(void)
   vAddPrimitive("loaderSub.end"_Stz,          &vLoaderSubEnd,           false);
   vAddPrimitive("loaderSub.fetchRecord"_Stz,  &vLoaderSubFetchRecord,   false);
   vAddPrimitive("loaderSub.fetchRecordDist"_Stz,  &vLoaderSubFetchRecordDist, false);
+  vAddPrimitive("loaderSub.fieldDelimiter!"_Stz,  &vLoaderSubFieldDelimiterStore, false);
   vAddPrimitive("loaderSub.hashPartition"_Stz,&vLoaderSubHashPartition, false);
   vAddPrimitive("loaderSub.hashRecord"_Stz,   &vLoaderSubHashRecord,    false);
   vAddPrimitive("loaderSub.init"_Stz,         &vLoaderSubInit,          false);
@@ -143,6 +144,27 @@ void Task::vLoaderSubFetchRecordDist(MP_Task mpTask)
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   
   mpTask->m_pDataStack->vPushInt(bFetched);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loaderSub.fieldDelimiter! -- store field delimiter in sub loader           */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderSubFieldDelimiterStore(MP_Task mpTask)
+{
+  ENTRY("vLoaderSubFieldDelimiterStore"_Stz);
+  
+  Object* pPtrLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
+    THROW_INVALID_DSTACK("loaderSub.fieldDelimiter!"_Stz);
+  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoader);
+  
+  s32 sFieldDelimiter;
+  if ( ! mpTask->m_pDataStack->bPop(sFieldDelimiter) )
+    THROW_INVALID_DSTACK("loaderSub.fieldDelimiter!"_Stz);
+  
+  pLoaderSub->vSetDistFormatter(*(sFieldDelimiter.aChar()));
   
   EXIT();
 }

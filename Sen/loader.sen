@@ -28,10 +28,10 @@ timer: loadTimer
 /*----------------------------------------------------------------------------*/
 /* parallel loading of file into table (on a node)                            */
 /*----------------------------------------------------------------------------*/
-: parallelTableLoader ( "<seif>" "<iNode>" "<catalog>" "<schema" "<tableNm>" "<path>"  -- t|f )
+: parallelTableLoader ( "<seif>" "<iNode>" "fieldDelimiter>" "<catalog>" "<schema" "<tableNm>" "<path>"  -- t|f )
 
-  assert::stack_5+ ( "<seif>" "<iNode>" "<catalog>" "<schema" "<tableNm>" "<path>" )
-  locals|  sPath sTableNm  sSchema sCatalog iNode pSeitf |
+  assert::stack_5+ ( "<seif>" "<iNode>" "<fieldDelimiter>" "<catalog>" "<schema" "<tableNm>" "<path>" )
+  locals|  sPath sTableNm  sSchema sCatalog sFldDel iNode pSeitf |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the dictionary path for this table loader on this node
@@ -107,7 +107,7 @@ timer: loadTimer
   servers 0 do
 
     << pTblLoader loader.newSub >>
-    pathGet >>
+    pathGet sFldDel >>
 
     1 "distLoadSub" task::this I >loadSubNm TK_LOADSUB_SERVER spawnServerTask to pSubTask
 
@@ -162,18 +162,17 @@ timer: loadTimer
 /*----------------------------------------------------------------------------*/
 /* distributed parallel loading of file into table                            */
 /*----------------------------------------------------------------------------*/
-: distParallelTableLoader allParticipants 6 checkResult ( "<seitf>" iNode "<path>" "<tableNm>" "<schema>" "<catalog>" -- t|f )
+: distParallelTableLoader allParticipants 7 checkResult ( "<seitf>" iNode "<fieldDelimiter>" """<path>" "<tableNm>" "<schema>" "<catalog>" -- t|f )
 
   args.tracepoint if
   dup "LOADING TABLE " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
   then
 
-  0 locals| tableLoader sCat sSch sTableNm sPath iNode pSeitf |
+  0 locals| tableLoader sCat sSch sTableNm sPath sFldDel iNode pSeitf |
 
   tp: distParallelTableLoader
-  //pSeitf "distTableLoader seitf %v" str.format .
 
-  pSeitf iNode sCat sSch sTableNm sPath 6 "parallelTableLoader" task::this "distLoader" TK_LOADSUB_SERVER  spawnServerTask to tableLoader
+  pSeitf iNode sFldDel sCat sSch sTableNm sPath 7 "parallelTableLoader" task::this "distLoader" TK_LOADSUB_SERVER  spawnServerTask to tableLoader
   "distLoad done" .verbose
 
   true <SUCCESS_RESULT>
