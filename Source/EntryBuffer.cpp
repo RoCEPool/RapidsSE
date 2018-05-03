@@ -83,10 +83,10 @@ EntryBuffer::EntryBuffer(void)
   m_iBufferNo     = *nBufferNo();
   m_iBufferLevel  = 0;
   
-  m_pEntryOffset    =
-    reinterpret_cast<i4*>(aAllotSpace(sizeof(i4) * C_ENTRIES_0));
+  m_pEntryOffset  = nullptr;
+  //  reinterpret_cast<i4*>(aAllotSpace(sizeof(i4) * C_ENTRIES_0));
   m_i_FreeOffsetHead = C_ENTRY_NONE;
-  vFreeChains();
+  //vFreeChains();
   
   m_pHeadEntry  = nullptr;
   m_pLastEntry  = nullptr;
@@ -209,6 +209,14 @@ void EntryBuffer::vIndex(Index* pIndex)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   m_pIndex = pIndex;
+
+  if (m_pIndex->bIsHidden()) {
+    m_pEntryOffset  =
+      reinterpret_cast<i4*>(aAllotSpace(sizeof(i4) * C_ENTRIES_0));
+    m_i_FreeOffsetHead = C_ENTRY_NONE;
+    vFreeChains();
+  }
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1019,12 +1027,13 @@ void EntryBuffer::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+  RASSERT(nullptr == m_pEntryOffset);
+  RASSERT(! m_pIndex->bIsHidden());
+  RASSERT(1 == m_iBufferLevel);
+  
   vResetUsed();
   
-  m_pEntryOffset =
-    reinterpret_cast<i4*>(aAllotSpace(sizeof(i4) * C_ENTRIES_0));
   m_i_FreeOffsetHead = C_ENTRY_NONE;
-  vFreeChains();
   
   m_pHeadEntry  = nullptr;
   m_pLastEntry  = nullptr;
@@ -2324,10 +2333,10 @@ void EntryBuffer::vHeadEntryNew(void)
   
   m_pHeadEntry = reinterpret_cast<Entry*>(aAllotSpace(nEntryBytes));
   ASSERT(m_pHeadEntry);
-  char* aData = aDataArea();
-  char* aHead = pAdd<char *>(aData,sizeof(i4) * C_ENTRIES_0);
+  //char* aData = aDataArea();                                //! RAY to look at
+  //char* aHead = pAdd<char *>(aData,sizeof(i4) * C_ENTRIES_0);
   
-  ASSERT((char*)m_pHeadEntry == aHead);
+  //ASSERT((char*)m_pHeadEntry == aHead);
   
   new(m_pHeadEntry) Entry(CN_ENTRY,nEntryBytes,0);
   
