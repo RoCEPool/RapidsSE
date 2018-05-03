@@ -11,8 +11,9 @@ namespace DBobjects
   {
   private:
   struct {
-    u8 m_uBuffer : 48; // which buffer                  could be: 24
+    u8 m_uBuffer : 45; // which buffer                  could be: 24
     u8 m_uRow    : 16; // which row in buffer                   : 16
+    u8 m_uOffsets:  3; // number of offsets
   };                   //                                         --
                        //                                         40 bits
   public:
@@ -41,7 +42,12 @@ namespace DBobjects
     Entry*  pRow(void);
   
     EntryBuffer* pReferencedEntryBuffer(void);
-
+  
+  
+    // offsets
+    i8   nOffsets(void);
+    void vOffsets(i8 nOffsets);
+  
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

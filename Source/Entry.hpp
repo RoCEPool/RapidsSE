@@ -34,7 +34,7 @@ namespace DBobjects
   protected:
     Id  m_xId;        // id
   //i8  m_iTxId;      // transaction id
-    char  m_nOffsets;   // no of offsets for this entry (0..3)
+  //char  m_nOffsets;   // no of offsets for this entry (0..3)
 #ifdef _DEBUG
     i8  m_iIntKey;    // key debug hack
 #endif

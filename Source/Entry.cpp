@@ -42,7 +42,7 @@ Entry::Entry(eCN eClassNo, i8 nThisBytes, i8 nOffsets)
   
   //m_xId
   //m_iTxId    = -1;
-  m_nOffsets = nOffsets;
+  m_xId.vOffsets(nOffsets);
   
 #ifdef _DEBUG
   m_iEntryNo = -1;
@@ -245,7 +245,7 @@ char* Entry::aRowData(void)                   //! this function just seems wrong
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK(); 
   
-  i8 nOffsetBytes = RightVec::nBytesRequired(m_nOffsets);
+  i8 nOffsetBytes = RightVec::nBytesRequired(nOffsets());
 
   char* aKey = pAdd<char*>(aEmbeddedObject(),nOffsetBytes);
   // assuming key is CT_INTEGER for hidden index
@@ -314,7 +314,7 @@ i8 Entry::nOffsets(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK(); 
   
-  return m_nOffsets;
+  return m_xId.nOffsets();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -324,7 +324,7 @@ void Entry::vOffsets(i8 nOffsets)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
   
-  m_nOffsets = nOffsets;
+  m_xId.vOffsets(nOffsets);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -349,7 +349,7 @@ void Entry::vSetEntry(i8 xTxId, Id xId, i8 nOffsets, Stz* aData, i8 nDataSize)
   // set id, transaction and offsets
   m_xId = xId;
   //m_iTxId = xTxId;
-  m_nOffsets = nOffsets;
+  vOffsets(nOffsets);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy row
@@ -377,7 +377,7 @@ void Entry::vSetEntry(KeyWrk& xKeyWrk)
   
   m_xId = xKeyWrk.xId();
   //m_iTxId = xKeyWrk.iTxId();
-  m_nOffsets = xKeyWrk.nOffsets();
+  vOffsets(xKeyWrk.nOffsets());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy key into this entry
@@ -403,7 +403,7 @@ void Entry::vSetEntry(RowWrk& xRowWrk)
   
   m_xId = xRowWrk.xId();
   //m_iTxId = xRowWrk.iTxId();
-  m_nOffsets = xRowWrk.nOffsets();
+  vOffsets(xRowWrk.nOffsets());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy row into this entry
@@ -430,7 +430,7 @@ void Entry::vShow(i8 iOffset, Index* pIndex, bool bShowKey)
          iOffset,
          this,
          nSizeEntry(),
-         m_nOffsets
+         nOffsets()
          );
   
   vTrace("Id: %3lli.%03lli "_Stz,
@@ -458,7 +458,7 @@ void Entry::vShow(i8 iOffset, Index* pIndex, bool bShowKey)
   
   
   vTrace(" offsets:"_Stz);
-  for (i8 i_Offset = 0; i_Offset < m_nOffsets; i_Offset++)
+  for (i8 i_Offset = 0; i_Offset < nOffsets(); i_Offset++)
     vTrace(" %lld"_Stz,aNEO()[i_Offset]);
 
   vTrace("\n"_Stz);
@@ -863,9 +863,9 @@ void Entry::vNEOdump(void)
 
   NEO* aNEO = this->aNEO();
   vTrace("Entry %p offsets: %lld NEO: %p"_Stz,
-         this,m_nOffsets,aNEO);
+         this,nOffsets(),aNEO);
   
-  for (i8 i_Offset = 0; i_Offset < m_nOffsets; i_Offset++)
+  for (i8 i_Offset = 0; i_Offset < nOffsets(); i_Offset++)
     vTrace(" %lld: %lld"_Stz,i_Offset,aNEO->m_iOffset[i_Offset]);
   
   vTrace("\n"_Stz);
@@ -878,7 +878,7 @@ i8 Entry::iNEOsize(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
 
-  i8 nBytes = sizeof(i4) * m_nOffsets;
+  i8 nBytes = sizeof(i4) * nOffsets();
   
   return nBytes;
 }
