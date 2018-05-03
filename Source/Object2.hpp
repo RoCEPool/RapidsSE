@@ -10,22 +10,22 @@ namespace Pool
 
 namespace CorrectnessAlgebra
 {
-  class Object2 : public Magic,
-                 public Class
+  class Object2
   {
-  private:
+  protected:
+    union {
+      u4   m_uMagic;
+      char m_sMagic[4];
+    };
+    eCN  m_eClass;
     bool m_bWordBody;
-    char m_sFiller[3];
-  
+
   public:
     Object2(eCN eClass);
   
     i8  iBufferNo(void);
     Pool::bn nBufferNo(void);
   
-    bool bWordBody(void);
-    void vWordBody(bool bIsWordBody);
-    
     Footer* aFooter(void);
   };
 }

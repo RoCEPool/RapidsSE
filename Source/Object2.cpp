@@ -11,12 +11,6 @@
 /*----------------------------------------------------------------------------*/
 Object2::Object2(eCN eClassNo)
 {
-  vSetMagic();
-  vSetClass(eClassNo);
-  
-  m_bWordBody = false;
-  
-  _precondition_(_MAGIC_,eClassNo);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -24,8 +18,6 @@ Object2::Object2(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 i8 Object2::iBufferNo(void)
 {
-  _precondition_(_MAGIC_);
-  
   i8 iBufferNo = *(this->nBufferNo());
   
   return iBufferNo;
@@ -35,36 +27,13 @@ i8 Object2::iBufferNo(void)
 /* get the buffer no of the buffer that the object is within                  */
 /*----------------------------------------------------------------------------*/
 Pool::bn Object2::nBufferNo(void)
-{
-  _precondition_(_MAGIC_);
-  
+{  
   Buffer* pBuffer = Buffer::pGetBuffer((Object*)this);
   
   bn nBufferNo = pBuffer->nBufferNo();
   
   return nBufferNo;
 }
-
-/*----------------------------------------------------------------------------*/
-/* set is word body                                                           */
-/*----------------------------------------------------------------------------*/
-void Object2::vWordBody(bool bWordBody)
-{
-  _precondition_(_MAGIC_);
-  
-  m_bWordBody = bWordBody;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get is word body                                                           */
-/*----------------------------------------------------------------------------*/
-bool Object2::bWordBody(void)
-{
-  _precondition_(_MAGIC_);
-  
-  return m_bWordBody;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
