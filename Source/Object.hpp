@@ -10,10 +10,10 @@ namespace Pool
 
 namespace CorrectnessAlgebra
 {
-  class Object : public Magic,
-                 public Class
+  class Object : public Magic
   {
   private:
+    eCN  m_eClass;
     bool m_bWordBody;
     char m_sFiller[3];
   
@@ -23,10 +23,29 @@ namespace CorrectnessAlgebra
     i8  iBufferNo(void);
     Pool::bn nBufferNo(void);
   
+    Stz* aClass(void);
+  
     bool bWordBody(void);
     void vWordBody(bool bIsWordBody);
     
     Footer* aFooter(void);
+  
+  /*--------------------------------------------------------------------------*/
+  /* get class                                                                */
+  /*--------------------------------------------------------------------------*/
+  inline eCN eClass(void)
+  {
+  return m_eClass;
+  }
+  
+  /*----------------------------------------------------------------------------*/
+  /* set class                                                                  */
+  /*----------------------------------------------------------------------------*/
+  inline void vSetClass(eCN eClass)
+  {
+  m_eClass = eClass;
+  }
+  
   };
 }
 
@@ -126,3 +145,19 @@ namespace CorrectnessAlgebra
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
+
+
+
+/*--------------------------------------------------------------------------*/
+/* check the object is of a known class                                     */
+/*--------------------------------------------------------------------------*/
+#ifdef __CLASS_CHECK
+#define _class_(arg) ASSERT(eClass() == arg);
+#define _class2_(arg1,arg2) ASSERT(eClass() == arg1 || eClass() == arg2);
+#define _class3_(arg1,arg2,arg3) \
+ASSERT(eClass() == arg1 || eClass() == arg2 || eClass() == arg3);
+#else
+#define _class_(arg)
+#define _class2_(arg1,arg2)
+#define _class3_(arg1,arg2,arg3)
+#endif

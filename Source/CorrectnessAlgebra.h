@@ -16,7 +16,7 @@ using namespace CorrectnessAlgebra;
 
 //-----------------------------------------------------------------------------
 
-#include "Class.hpp"
+//#include "Class.hpp"
 #include "Class_Emb.hpp"
 #include "Footer.hpp"
 #include "Footer_Emb.hpp"

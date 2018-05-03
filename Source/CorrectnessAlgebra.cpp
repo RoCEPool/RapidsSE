@@ -11,7 +11,7 @@ void CorrectnessAlgebra::vCheckAssumptions(void)
 {
   ASSERT(4  == sizeof(eCN));
   
-  ASSERT(4  == sizeof(Class));
+  //ASSERT(4  == sizeof(Class));
   ASSERT(8  == sizeof(Magic));
   ASSERT(16 == sizeof(Object));
   ASSERT(8  == sizeof(Footer));
