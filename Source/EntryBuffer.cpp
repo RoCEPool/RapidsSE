@@ -950,6 +950,32 @@ Entry* EntryBuffer::pInsertKeyTree(KeyWrk& xKeyWrk,
 }
 
 /*----------------------------------------------------------------------------*/
+/* get last entry                                                             */
+/*----------------------------------------------------------------------------*/
+Entry* EntryBuffer::pLastEntry(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+#ifdef EB_LAZY_CHAIN
+  RASSERT( ! m_pLazyChain );
+  
+  //if (m_pLazyChain)
+  //  vBuildSkipList();
+#endif
+  
+  Entry* pLast = m_pHeadEntry;
+  
+  for (;;) {
+    Entry* pNext = pNextEntry(pLast,0);
+    if (! pNext)
+      break;
+    pLast = pNext;
+  }
+  
+  return pLast;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get length of sublist of buffers                                           */
 /*----------------------------------------------------------------------------*/
 i8 EntryBuffer::iLengthSubList(void)

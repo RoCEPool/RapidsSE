@@ -95,6 +95,7 @@ namespace DBobjects
     Entry*       pInsertKeyAbsL0(KeyWrk& xKeyWrk, Entry** ppPriorEntry);
     static Entry* pInsertKeyTree(KeyWrk& xKeyWrk,
                                  EntryBuffer** ppRootKeyBuffer);
+    Entry*       pLastEntry(void);
     void         vLazyBuild(void);
     i8           iLengthSubList(void);
     Entry*       pNextEntry(Entry* pEntry, i8 i_Offset);

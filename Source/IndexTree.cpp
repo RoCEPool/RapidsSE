@@ -12,7 +12,7 @@ extern AttachMap* gpAttachMap;
 
 bool mbCheckPriorVec = false;
 
-#define IT_VCOPYLEFTV3
+//#define IT_VCOPYLEFTV3
 
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
@@ -270,6 +270,7 @@ void IndexTree::vCopyLeftV3(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
                         pRightL0->iBufferNo()); )
   
   KeyWrk xLeftKeyWrk;
+  Entry* pPriorEntry = nullptr;
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
@@ -327,6 +328,9 @@ void IndexTree::vCopyLeftV3(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
     
     if (! pLeftL0->bHasSpace(nEntryPlusOffsets)) {
       
+      // build the skip list for left L0
+      pLeftL0->vBuildSkipListSorted();
+      
       // new left buffer
       EntryBuffer* pNewLeftL0 = new EntryBuffer;
       pNewLeftL0->vIndex(m_pIndex);
@@ -350,7 +354,7 @@ void IndexTree::vCopyLeftV3(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
     // insert a copy of the right key into left buffer
     
     TRACE_COMPACT( pLeftL0->vShow(); )
-    Entry* pLeftKeyEntryL0 = pLeftL0->pInsertKeyAbs(xLeftKeyWrk);
+    Entry* pLeftKeyEntryL0 = pLeftL0->pInsertKeyAbsL0(xLeftKeyWrk,&pPriorEntry);
     TRACE_COMPACT( pLeftKeyEntryL0->vShow(0, m_pIndex, true); )
     TRACE_COMPACT( pLeftL0->vShow(); )
     
