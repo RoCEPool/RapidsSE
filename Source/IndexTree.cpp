@@ -270,10 +270,9 @@ void IndexTree::vCopyLeftV3(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
                         pRightL0->iBufferNo()); )
   
   KeyWrk xLeftKeyWrk;
-  Entry* pPriorEntry = nullptr;
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert the parameters are sensible
   
@@ -286,6 +285,11 @@ void IndexTree::vCopyLeftV3(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
   
   //vTrace("IndexTree::vCopyLeft (left %lld right %lld)\n"_Stz,
   //       pLeftL0->iBufferNo(),pRightL0->iBufferNo());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set up for using pInsertKeyAbsL0
+  
+  Entry* pPriorEntry = pLeftL0->pLastEntry();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate thru each key in right L0
