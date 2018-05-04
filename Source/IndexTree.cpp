@@ -12,7 +12,7 @@ extern AttachMap* gpAttachMap;
 
 bool mbCheckPriorVec = false;
 
-//#define IT_VCOPYLEFTV3
+//#define IT_COPYLEFTV3
 
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
@@ -205,13 +205,14 @@ void IndexTree::vCompact(void)
       delete pRightL0;
       
     }
+#ifdef IT_COPYLEFTV3
+    // build the skip list for dangling left L0
+    pLeftL0->vBuildSkipListSorted();
+#endif
     
     //pL1->bVerifyKeyBufferOrder();
   }
   
-#ifdef IT_COPYLEFTV3
-  pLeftL0->vBuildSkipListSorted();
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -332,7 +333,7 @@ void IndexTree::vCopyLeftV3(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
     
     if (! pLeftL0->bHasSpace(nEntryPlusOffsets)) {
       
-      // build the skip list for left L0
+      // build the skip list for left L0 thats now full
       pLeftL0->vBuildSkipListSorted();
       
       // new left buffer

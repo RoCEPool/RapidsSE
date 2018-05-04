@@ -50,10 +50,10 @@ print "loading lineitem.tbl..." ;
 //docol locksReset;
 
 space;
-timerStart;
-ld lineitem "/tpch/lineitem.tbl" ;
-//ld lineitem "/tpchSF10/lineitem.tbl" ;
-timerEnd;
+//timerStart;
+//ld lineitem "/tpch/lineitem.tbl" ;
+ld lineitem "/tpchSF10/lineitem.tbl" ;
+//timerEnd;
 
 //print "lazily building lineitem_idx2 on l_shipdate" ;
 //timerStart;
@@ -69,7 +69,11 @@ space;
 antbl lineitem;
 
 anidx lineitem lineitem_idx1;
+
+timerStart;
 compactidx lineitem lineitem_idx1;
+timerEnd;
+
 anidx lineitem lineitem_idx1;
 
 /*
