@@ -12,7 +12,7 @@ extern AttachMap* gpAttachMap;
 
 bool mbCheckPriorVec = false;
 
-//#define IT_COPYLEFTV3
+#define IT_COPYLEFTV3
 
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
