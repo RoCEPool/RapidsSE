@@ -29,7 +29,7 @@ OBJECTS = $(SOURCES:.cpp=.o)
 DEPFILES = $(SOURCES:.cpp=.d)
 
 #Include directories
-INCLUDES = -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2
+INCLUDES = -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash
 
 #Libraries
 THIRDPARTY_LIBS = -llz4 -lbz2
