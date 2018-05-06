@@ -15,6 +15,7 @@ TARGET_LIBRARY = $(TARGET_PATH)/libRapidsSEv0.4.1.so
 #Source Files
 SOURCES = $(wildcard *.cpp)
 SOURCES += $(wildcard ../Munge/*.cpp)
+SOURCES += $(wildcard ../ThirdParty/xxhash/*.cpp)
 SOURCES := $(filter-out main.cpp, $(SOURCES))
 #S_SOURCES = $(wildcard *.s)
 
@@ -29,7 +30,7 @@ OBJECTS = $(SOURCES:.cpp=.o)
 DEPFILES = $(SOURCES:.cpp=.d)
 
 #Include directories
-INCLUDES = -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2
+INCLUDES = -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash
 
 #Libraries
 THIRDPARTY_LIBS = -llz4 -lbz2
