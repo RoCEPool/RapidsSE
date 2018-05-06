@@ -15,6 +15,7 @@ TARGET_LIBRARY = $(TARGET_PATH)/libRapidsSEv0.4.1.so
 #Source Files
 SOURCES = $(wildcard *.cpp)
 SOURCES += $(wildcard ../Munge/*.cpp)
+SOURCES += $(wildcard ../ThirdParty/xxhash/*.cpp)
 SOURCES := $(filter-out main.cpp, $(SOURCES))
 #S_SOURCES = $(wildcard *.s)
 
