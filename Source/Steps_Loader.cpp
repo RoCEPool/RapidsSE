@@ -24,6 +24,7 @@ void Task::vAddPrimitives_Loader(void)
   vAddPrimitive("loader::new"_Stz,              &vLoaderNew,             false);
   vAddPrimitive("loader.newSub"_Stz,            &vLoaderNewSub,          false);
   vAddPrimitive("loader.path!"_Stz,             &vLoaderPathStore,       false);
+  vAddPrimitive("loader.pathDistributed!"_Stz,  &vLoaderPathDistributedStore,false);
   vAddPrimitive("loader.recordsInvalid@"_Stz,   &vLoaderRecordsInvalidFetch, false);
   vAddPrimitive("loader.recordsValid@"_Stz,     &vLoaderRecordsValidFetch,   false);
   vAddPrimitive("loader.seitf@"_Stz,            &vLoaderSEitfFetch,      false);
@@ -216,6 +217,32 @@ void Task::vLoaderPathStore(MP_Task mpTask)
   
   pLoader->vPath(sPath);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loader.pathDistributed! -- store file path into loader                     */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderPathDistributedStore(MP_Task mpTask)
+{
+  ENTRY("vLoaderPathStore"_Stz);
+  
+  ValWrk xWspPath;
+  Object* pPtrLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader,xWspPath) )
+    THROW_INVALID_DSTACK("loader.pathDistributed!"_Stz);
+  
+  Loader* pLoader = _pLoader(pPtrLoader);
+  ASSERT(CN_LOADER == pLoader->eClass());
+  
+  s256 sPath;
+  sPath = _pStrVal(xWspPath.pNestedValueSelf());
+  
+  s256 sNewPath;
+  sprintf(sNewPath.aChar(), "%s_%lld", sPath.aChar(),gpAttachMap->m_pGrid->iThisNode());
+  pLoader->vPath(sNewPath);
+  vTrace("LOADER opening file %s\n"_Stz, sNewPath.aChar());
+
   EXIT();
 }
 

@@ -751,6 +751,7 @@ namespace Tasks
     static void vLoaderNew(MP_Task mpTask);
     static void vLoaderNewSub(MP_Task mpTask);
     static void vLoaderPathStore(MP_Task mpTask);
+    static void vLoaderPathDistributedStore(MP_Task mpTask);
     static void vLoaderRecordsInvalidFetch(MP_Task mpTask);
     static void vLoaderRecordsValidFetch(MP_Task mpTask);
     static void vLoaderSEitfFetch(MP_Task mpTask);
