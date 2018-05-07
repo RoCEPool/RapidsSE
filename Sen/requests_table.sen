@@ -607,11 +607,13 @@ snap1:
 /*----------------------------------------------------------------------------*/
 /* parallel load a table                                                      */
 /*----------------------------------------------------------------------------*/
-: distParallelLoadTable_req ( "<fileNm>" "<tableNm>" -- <R> )
+: distParallelLoadTable_req ( "<sameMachine>" "<fileNm>" "<tableNm>" -- <R> )
 
   ddlLock::grabRead
 
-  0 locals| pSEitf sTableNm sFileNm |
+  0 locals| pSEitf sTableNm sFileNm sSameMachine |
+
+tp: distParallelLoadTable_req
 
   // should be in the tables folder
   checkInTables       not if <NIP+ERROR> exit then
@@ -641,14 +643,17 @@ snap1:
   // push file path
   sFileNm  ( "seitf" iNode "<fieldDelimiter>" "<fileNm>" )
 
+  // push whether running on same machine ?
+  sSameMachine  ( "seitf" iNode "<fieldDelimiter>" "<fileNm>" "<sameMachine>")
+
   // push table name
-  sTableNm ( "seitf" iNode "<fieldDelimiter>" "<fileNm>" "<tableNm>" )
+  sTableNm ( "seitf" iNode "<fieldDelimiter>" "<fileNm>" "<sameMachine>" "<tableNm>" )
 
   // push schema name
-  2 pathPick dic.name  ( "seitf" iNode "<fieldDelimiter>" "<fileNm>" "<tableNm>" "<schemaNm>" )
+  2 pathPick dic.name  ( "seitf" iNode "<fieldDelimiter>" "<fileNm>" "<sameMachine>" "<tableNm>" "<schemaNm>" )
 
   // push catalog name
-  4 pathPick dic.name  ( "seitf" iNode "<fieldDelimiter>" "<fileNm>" "<tableNm>" "<schemaNm>" "<catalogNm>" )
+  4 pathPick dic.name  ( "seitf" iNode "<fieldDelimiter>" "<fileNm>" "<sameMachine>" "<tableNm>" "<schemaNm>" "<catalogNm>" )
 
   // set acks remaining to be no of nodes
   grid.nodes pSEitf seitf.acksRemaining!

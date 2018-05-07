@@ -2849,10 +2849,14 @@ bool SEitf::bDistParallelLoadTable(TokenVec& xTokenVec, i8 iReqNo)
   
   s256 sRequest;
   
-  if (xTokenVec.nTokens() != 3) {
+  if (xTokenVec.nTokens() != 4) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
+  
+  sRequest.vConcat(" \""_Stz);
+  sRequest.vConcat(xTokenVec[3]->aText());
+  sRequest.vConcat("\""_Stz);
   
   sRequest.vConcat(" \""_Stz);
   sRequest.vConcat(xTokenVec[2]->aText());

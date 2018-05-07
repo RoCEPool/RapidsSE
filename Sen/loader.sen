@@ -28,11 +28,12 @@ timer: loadTimer
 /*----------------------------------------------------------------------------*/
 /* parallel loading of file into table (on a node)                            */
 /*----------------------------------------------------------------------------*/
-: parallelTableLoader ( "<seif>" "<iNode>" "fieldDelimiter>" "<catalog>" "<schema" "<tableNm>" "<path>"  -- t|f )
+: parallelTableLoader ( "<seif>" "<iNode>" "fieldDelimiter>" "<catalog>" "<schema" "<tableNm>" "<sameMachine>" "<path>"  -- t|f )
 
-  assert::stack_5+ ( "<seif>" "<iNode>" "<fieldDelimiter>" "<catalog>" "<schema" "<tableNm>" "<path>" )
-  locals|  sPath sTableNm  sSchema sCatalog sFldDel iNode pSeitf |
+  assert::stack_5+ ( "<seif>" "<iNode>" "<fieldDelimiter>" "<catalog>" "<schema" "<tableNm>" "<sameMachine>" "<path>" )
+  0 locals| iSameMachine sPath sSameMachine sTableNm  sSchema sCatalog sFldDel iNode pSeitf |
 
+tp: parallelTableLoader
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the dictionary path for this table loader on this node
 
@@ -65,15 +66,15 @@ timer: loadTimer
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if file path exists                                 //! refactor this
 
-  file::new locals| fp |
-  sPath fp file.path!
+  //file::new locals| fp |
+  //sPath fp file.path!
 
-  OPEN_READ fp file.open ( t|f )
-  not if
-  fp file.delete assert::stack_0 EC_INVALID_FILE false exit
-  then
+  //OPEN_READ fp file.open ( t|f )
+  //not if
+  //fp file.delete assert::stack_0 EC_INVALID_FILE false exit
+  //then
 
-  fp file.close fp file.delete assert::stack_0
+  //fp file.close fp file.delete assert::stack_0
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create table loader object
@@ -88,7 +89,13 @@ timer: loadTimer
   sTableNm find execute locals| pTable |
 
   pTable pTblLoader loader.table!
-  sPath  pTblLoader loader.path!
+
+  sSameMachine str.tailInt assert to iSameMachine
+  iSameMachine if
+    sPath  pTblLoader loader.pathDistributed!
+  else
+    sPath  pTblLoader loader.path!
+  then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create sub loaders
@@ -162,17 +169,17 @@ timer: loadTimer
 /*----------------------------------------------------------------------------*/
 /* distributed parallel loading of file into table                            */
 /*----------------------------------------------------------------------------*/
-: distParallelTableLoader allParticipants 7 checkResult ( "<seitf>" iNode "<fieldDelimiter>" """<path>" "<tableNm>" "<schema>" "<catalog>" -- t|f )
+: distParallelTableLoader allParticipants 8 checkResult ( "<seitf>" iNode "<fieldDelimiter>" "<path>" "<sameMachine>" "<tableNm>" "<schema>" "<catalog>" -- t|f )
 
   args.tracepoint if
   dup "LOADING TABLE " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
   then
 
-  0 locals| tableLoader sCat sSch sTableNm sPath sFldDel iNode pSeitf |
+  0 locals| tableLoader sCat sSch sTableNm sSameMachine sPath sFldDel iNode pSeitf |
 
   tp: distParallelTableLoader
 
-  pSeitf iNode sFldDel sCat sSch sTableNm sPath 7 "parallelTableLoader" task::this "distLoader" TK_LOADSUB_SERVER  spawnServerTask to tableLoader
+  pSeitf iNode sFldDel sCat sSch sTableNm sSameMachine sPath 8 "parallelTableLoader" task::this "distLoader" TK_LOADSUB_SERVER  spawnServerTask to tableLoader
   "distLoad done" .verbose
 
   true <SUCCESS_RESULT>

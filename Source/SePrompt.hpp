@@ -18,6 +18,8 @@ static Stz* C_FIELD_DELIMITER      = "field_delimiter"_Stz;
 static Stz* C_RECORD_ENDS          = "record_ends"_Stz;
 static Stz* C_RECORD_TERMINATOR    = "record_terminator"_Stz;
 
+static Stz* C_SAME_MACHINE         = "same_machine"_Stz;
+
 class SePrompt : public Object
 {
 private:

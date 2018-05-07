@@ -1152,6 +1152,7 @@ bool SePrompt::bCmd_DistParLoadTable(void)
   bool bResult = false;
   i8 iIndex;
   i8 iCurrentIndex;
+  bool bSameMachine = false;
   
   ASSERT(m_xTokenVec[0]->bSame("dpld"_Stz));
   
@@ -1175,17 +1176,23 @@ bool SePrompt::bCmd_DistParLoadTable(void)
   
   while (iNumTokens > iCurrentIndex) {
     
-    if (iNumTokens < iCurrentIndex + 2) {
-      m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-      goto resetFormatter;
-    }
-    
     //--------------------------------------------------------------------------
     // C_FIELD_DELIMITER
     if (m_xTokenVec2[iCurrentIndex]->bSame(C_FIELD_DELIMITER)) {
+      
+      if (iNumTokens < iCurrentIndex + 2) {
+        m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+        goto resetFormatter;
+      }
+      
       m_pSEitf->m_xFormatters.m_cFieldDelimiter = *m_xTokenVec2[++iCurrentIndex]->sText().aChar();
       if (m_pSEitf->m_xFormatters.m_cFieldDelimiter == '0')
         m_pSEitf->m_xFormatters.m_cFieldDelimiter = '\0';
+    }
+    //--------------------------------------------------------------------------
+    // C_SAME_MACHINE
+    else if (m_xTokenVec2[iCurrentIndex]->bSame(C_SAME_MACHINE)) {
+      bSameMachine = true;
     }
     else {
       m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
@@ -1193,6 +1200,8 @@ bool SePrompt::bCmd_DistParLoadTable(void)
     }
     iCurrentIndex++;
   }
+  
+  m_xTokenVec[iIndex++]->vCopy(bSameMachine ? "1"_Stz : "0"_Stz);
   
   //m_pSEitf->m_xFormatters.vShow();
   
