@@ -22,24 +22,33 @@ create table lineitem (
 
 );
 
-print "creating index on l_partkey...";
-CREATE INDEX idx ON lineitem(l_partkey);
+print "creating index on l_orderkey...";
+CREATE INDEX idx ON lineitem(l_orderkey);
 
 print "loading lineitem.tbl..." ;
 
 timerStart;
-dpld lineitem "/tpchSF100/lineitem.tbl" field_delimiter "|" record_ends "|" ;
+dpld lineitem "/Users/alkayamarti/sf10000/lineitem.tbl" field_delimiter "|" same_machine;
 timerEnd;
 
+print "analyzing hidden index..." ;
 anidx lineitem hidden;
+
+print "analyzing idx index..." ;
 anidx lineitem idx;
+
+print "visualizing idx index..." ;
 visidx lineitem idx;
 
+print "compacting idx index..." ;
 timerStart;
 compactidx lineitem idx;
 timerEnd;
 
+print "analyzing idx index after compaction..." ;
 anidx lineitem idx;
+
+print "visualizing idx index  after compaction..." ;
 visidx lineitem idx;
 space;
 //                                              ----
