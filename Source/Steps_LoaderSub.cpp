@@ -287,8 +287,9 @@ void Task::vLoaderSubLoadNodeData(MP_Task mpTask)
     
     // skip records not for this node
     if (Partition::iPartitionToNode(iPartition) != iNode) {
-      //vTrace("Node: %lld skipping row for partition %lld\n"_Stz, iNode, iPartition);
-      continue;
+      //vTrace("Node: %lld skipping row %s for partition %lld\n"_Stz, iNode, pLoaderSub->aRecord(), iPartition);
+      // we should come across data only for this node
+      RASSERT(Partition::iPartitionToNode(iPartition) == iNode);
     }
     
     // attempt to insert the record
