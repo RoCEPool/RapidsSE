@@ -1237,7 +1237,7 @@ void EntryBuffer::vShow(Entry* pMarkEntry)
   vTrace("  entryOffset: %p freeOffsetHead: %lld\n"_Stz,
          m_pEntryOffset,m_i_FreeOffsetHead);
 
-  vTrace("  headEntry: %p[%lld,%lld,%lld] lastEntry: %p firstFree: %p\n"_Stz,
+  vTrace("  headEntry: %p[%d,%d,%d] lastEntry: %p firstFree: %p\n"_Stz,
          m_pHeadEntry,m_pHeadEntry ? m_pHeadEntry->iNEO(0) : 0,
                       m_pHeadEntry ? m_pHeadEntry->iNEO(1) : 0,
                       m_pHeadEntry ? m_pHeadEntry->iNEO(2) : 0,
@@ -2433,6 +2433,8 @@ void EntryBuffer::vHeadEntryNew(void)
   m_pHeadEntry->vNEO(0,-1);
   m_pHeadEntry->vNEO(1,-1);
   m_pHeadEntry->vNEO(2,-1);
+  
+  //m_pHeadEntry->vNEOdump();
   
 }
 
@@ -4156,12 +4158,17 @@ bool EntryBuffer::bVerifyFirstKeys(void)
   
   RASSERT(m_iBufferLevel >= 1);
   
+  vShow();
+  
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
   for (Entry* pEntry = pFirstEntry(); pEntry; pEntry = pNextEntry(pEntry,0)) {
     
     // get the entry buffer that this entry references
     EntryBuffer* pChildEntryBuffer = pEntry->pReferencedEntryBuffer();
+    
+    pChildEntryBuffer->vShow();
+
     
     // get the first entry of the child buffer
     Entry* pChildFirstEntry = pChildEntryBuffer->pFirstEntry();

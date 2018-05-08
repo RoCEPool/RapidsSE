@@ -459,7 +459,7 @@ void Entry::vShow(i8 iOffset, Index* pIndex, bool bShowKey)
   
   vTrace(" offsets:"_Stz);
   for (i8 i_Offset = 0; i_Offset < nOffsets(); i_Offset++)
-    vTrace(" %lld"_Stz,aNEO()[i_Offset]);
+    vTrace(" %d"_Stz,aNEO()[i_Offset]);
 
   vTrace("\n"_Stz);
 }
@@ -866,7 +866,7 @@ void Entry::vNEOdump(void)
          this,nOffsets(),aNEO);
   
   for (i8 i_Offset = 0; i_Offset < nOffsets(); i_Offset++)
-    vTrace(" %lld: %lld"_Stz,i_Offset,aNEO->m_iOffset[i_Offset]);
+    vTrace(" %lld: %d"_Stz,i_Offset,aNEO->m_iOffset[i_Offset]);
   
   vTrace("\n"_Stz);
 }

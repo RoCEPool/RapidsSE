@@ -18,11 +18,11 @@ space;
 
 fetch j10 "j10_key 2 =";
 
-//compactidx j10 idx1;
+compactidx j10 idx1;
 
 //fetch j10 "j10_key 2 =";
 
-//vfyidx j10 idx1;
+vfyidx j10 idx1;
 //visidx j10 idx1;
 //space;
 
