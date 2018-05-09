@@ -1,0 +1,24 @@
+/*============================================================================*/
+/* _k100 -- load and query duplicates                                         */
+/*============================================================================*/
+
+create table k100 (
+  k100_key        INTEGER NOT NULL,  // 1) 0..99
+  j100_1value     INTEGER NOT NULL,  // 2) 0 only
+  j100_2values    INTEGER NOT NULL,  // 3) 0,1
+  j100_4values    INTEGER NOT NULL,  // 4) 0..3
+  j100_5values    INTEGER NOT NULL,  // 5) 0..4
+  j100_10values   INTEGER NOT NULL,  // 6) 0..9
+  j100_20values   INTEGER NOT NULL,  // 7) 0..19
+  j100_50values   INTEGER NOT NULL,  // 8) 0..49
+  j100_100values  INTEGER NOT NULL   // 9) 0..99
+);
+
+print "loading k100.tbl..." ;
+ld k100 "../JTEST/k100.csv" ;
+
+fetch k100 ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
