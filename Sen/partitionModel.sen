@@ -117,8 +117,17 @@ nPartitionThreads constant N_PARTITION_THREADS
   iPtnNo >partitionThreadNm findActorTaskSet locals| pTaskSet |
   pTask pTaskSet taskSet.append
 */
+  iPtnNo scheduler::partition locals| pPartitionScheduler |
 
-  pTask iPtnNo scheduler::partition partitionScheduler.enqueueTask
+  begin
+    iPtnNo pPartitionScheduler partitionScheduler.queueLength@ 100 >=
+    while
+      iPtnNo "Partition %v queue building up ... stalling" str.format .
+      1 thread.sleep_s
+  repeat
+
+
+  pTask iPtnNo pPartitionScheduler partitionScheduler.enqueueTask
 ;
 
 /*============================================================================*/

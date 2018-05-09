@@ -50,7 +50,7 @@ void Task::vPartitionSchedulerEnqueueTask(MP_Task mpTask)
   PartitionScheduler* pPartitionScheduler = _pPartitionScheduler(pObject);
   
   if ( ! mpTask->m_pDataStack->bPop(iPtnNo) )
-    THROW_INVALID_DSTACK("PartitionScheduler.taskQueueStore"_Stz);
+    THROW_INVALID_DSTACK("PartitionScheduler.enqueueTask"_Stz);
 
   if ( ! mpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("PartitionScheduler.enqueueTask"_Stz);
