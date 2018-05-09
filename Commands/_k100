@@ -14,6 +14,16 @@ create table k100 (
   j100_100values  INTEGER NOT NULL   // 9) 0..99
 );
 
+create index idx1 on k100 (k100_key);
+create index idx2 on k100 (j100_1value);
+create index idx3 on k100 (j100_2values);
+create index idx4 on k100 (j100_4values);
+create index idx5 on k100 (j100_5values);
+create index idx6 on k100 (j100_10values);
+create index idx7 on k100 (j100_20values);
+create index idx8 on k100 (j100_50values);
+create index idx9 on k100 (j100_100values);
+
 print "loading k100.tbl..." ;
 ld k100 "../JTEST/k100.csv" ;
 
