@@ -24,10 +24,10 @@ create table lineitem (
 create index idx1 ON lineitem(L_ORDERKEY);
 
 print "loading lineitem.tbl..." ;
-ld lineitem "/tpch/lineitem.tbl" ;
+ld lineitem "/tpchSF10/lineitem.tbl" ;
 
 vfyidx lineitem idx1;
-visidx lineitem idx1 ;
+visidx lineitem idx1;
 space;
 
 fetch lineitem "L_ORDERKEY 2 =";
@@ -71,7 +71,7 @@ print "loading lineitem.tbl..." ;
 ld lineitem "/tpch/lineitem.tbl" ;
 
 vfyidx lineitem idx1;
-visidx lineitem idx1 ;
+visidx lineitem idx1;
 space;
 
 fetch lineitem "L_ORDERKEY 2 =";
