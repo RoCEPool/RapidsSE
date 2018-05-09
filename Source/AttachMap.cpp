@@ -112,10 +112,11 @@ void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize, i8 iJumboSize)
   ASSERT(m_pStepArray);
   ASSERT(m_pSEitfList);
   
-  //m_nIndexEntries = 0;
+  //m_nMaxQueue = 0;
   m_nIndexLevels  = 3;
   m_nIndexOffsets = 3;
   //m_nSplitRatio   = 2;
+  //m_nBuffersPending;
   
   m_iStop       = 0;
   m_iQuit       = 0;

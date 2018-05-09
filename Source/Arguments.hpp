@@ -57,6 +57,7 @@ namespace StorageEngine
     bool  m_bReload;    // relaod from checkpoint files
     i8    m_nEntries;   // no of entries per buffer
     i8    m_nSplitRatio; // split ratio of indexes
+    i8    m_nMaxQueue;   // max queue partition thread can build up
   
     bool  m_bStrictMode;// are we in strict (or relaxed mode)?
   

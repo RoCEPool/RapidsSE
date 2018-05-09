@@ -118,11 +118,12 @@ nPartitionThreads constant N_PARTITION_THREADS
   pTask pTaskSet taskSet.append
 */
   iPtnNo scheduler::partition locals| pPartitionScheduler |
+  attachMap::maxQueue@ locals| iMaxQueue |
 
   begin
-    iPtnNo pPartitionScheduler partitionScheduler.queueLength@ 100 >=
+    iPtnNo pPartitionScheduler partitionScheduler.queueLength@ iMaxQueue >=
     while
-      iPtnNo "Partition %v queue building up ... stalling" str.format .
+      iPtnNo "Partition %v stalling..." str.format .
       1 thread.sleep_s
   repeat
 

@@ -74,6 +74,7 @@ namespace StorageEngine
     i8            m_nIndexOffsets;  // no of offsets per index buffer entry
     
     i8            m_nSplitRatio;
+    i8            m_nMaxQueue;
     
     i8            m_iQuit;
     i8            m_iStop;
