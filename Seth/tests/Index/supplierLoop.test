@@ -33,6 +33,9 @@ lsidxcol supplier idx;
 rows:
   ('S_SUPPKEY', 'INTEGER')
 
+compactidx supplier idx;
+success
+
 //------------------------------------------------------------------------------
 // exact key fetches
 
