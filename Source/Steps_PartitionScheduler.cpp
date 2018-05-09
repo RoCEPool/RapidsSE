@@ -18,6 +18,9 @@ void Task::vAddPrimitives_PartitionScheduler(void)
   vAddPrimitive("PartitionScheduler.enqueueTask"_Stz,
                 &vPartitionSchedulerEnqueueTask, false);
   
+  vAddPrimitive("PartitionScheduler.queueLength@"_Stz,
+                &vPartitionSchedulerQueueLengthFetch, false);
+  
   vAddPrimitive("PartitionScheduler.semaphore!"_Stz,
                 &vPartitionSchedulerSemaphoreStore, false);
   
@@ -56,6 +59,28 @@ void Task::vPartitionSchedulerEnqueueTask(MP_Task mpTask)
   pTask->m_iPartition = iPtnNo;
   
   pPartitionScheduler->vEnqueueTask_Mutex(iPtnNo,pTask);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* PartitionScheduler.queueLength@ -- task queue fetch                        */
+/*----------------------------------------------------------------------------*/
+void Task::vPartitionSchedulerQueueLengthFetch(MP_Task mpTask)
+{
+  ENTRY("vPartitionSchedulerQueueLengthFetch"_Stz);
+  
+  i8 iPtnNo;
+  Object* pObject;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pObject) )
+    THROW_INVALID_DSTACK("PartitionScheduler.queueLength@"_Stz);
+  PartitionScheduler* pPartitionScheduler = _pPartitionScheduler(pObject);
+  
+  if ( ! mpTask->m_pDataStack->bPop(iPtnNo) )
+    THROW_INVALID_DSTACK("PartitionScheduler.queueLength"_Stz);
+  
+  mpTask->m_pDataStack->vPushInt(pPartitionScheduler->iTaskQueueLength(iPtnNo));
   
   EXIT();
 }

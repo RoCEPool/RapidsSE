@@ -31,6 +31,7 @@ namespace Schedulers
     PartitionScheduler(void);
     ~PartitionScheduler(void);
   
+    i8   iTaskQueueLength(i8 i_PtnNo);
     void vSempahore(i8 i_PtnNo, Semaphore* pSemaphore);
     void vTaskQueue(i8 i_PtnNo, TaskQueue* pTaskQueue);
     void vThreadQueue(i8 i_PtnNo, ThreadQueue* pThreadQueue);

@@ -78,6 +78,16 @@ PartitionScheduler::PartitionScheduler(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get task queue length                                                      */
+/*----------------------------------------------------------------------------*/
+i8 PartitionScheduler::iTaskQueueLength(i8 i_PtnNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITIONSCHEDULER,_FOOTER_);
+  
+  return m_xSlots[i_PtnNo].m_pTaskQueue->iCount();
+}
+
+/*----------------------------------------------------------------------------*/
 /* set semaphore                                                              */
 /*----------------------------------------------------------------------------*/
 void PartitionScheduler::vSempahore(i8 i_PtnNo, Semaphore* mpSemaphore)
