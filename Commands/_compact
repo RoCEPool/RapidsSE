@@ -30,16 +30,16 @@ vfyidx lineitem idx1;
 visidx lineitem idx1;
 space;
 
-fetch lineitem "L_ORDERKEY 2 =";
+fetch lineitem "L_ORDERKEY 1 =";
 
-print "compacting lineitem.tbl..." ;
+print "compacting lineitem.tbl idx1..." ;
 compactidx lineitem idx1;
 
 vfyidx lineitem idx1;
 visidx lineitem idx1;
 space;
 
-fetch lineitem "L_ORDERKEY 2 =";
+fetch lineitem "L_ORDERKEY 1 =";
 
 /*
  
@@ -64,26 +64,26 @@ create table lineitem (
   L_SHIPMODE      CHAR(10) NOT NULL,        // 14) 11B
   L_COMMENT       VARCHAR(44) NOT NULL      // 15) 45B
 );
- 
+
 create index idx1 ON lineitem(L_ORDERKEY);
 
 print "loading lineitem.tbl..." ;
-ld lineitem "/tpch/lineitem.tbl" ;
+ld lineitem "/tpchSF10/lineitem.tbl" ;
 
 vfyidx lineitem idx1;
 visidx lineitem idx1;
 space;
 
-fetch lineitem "L_ORDERKEY 2 =";
+fetch lineitem "L_ORDERKEY 1 =";
 
-print "compacting lineitem.tbl..." ;
+print "compacting lineitem.tbl idx1..." ;
 compactidx lineitem idx1;
 
 vfyidx lineitem idx1;
 visidx lineitem idx1;
 space;
 
-fetch lineitem "L_ORDERKEY 2 =";
+fetch lineitem "L_ORDERKEY 1 =";
  
 
 print "-----------------------------------------------------------------------";
