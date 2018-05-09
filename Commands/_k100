@@ -14,23 +14,57 @@ create table k100 (
   j100_100values  INTEGER NOT NULL   // 9) 0..99
 );
 
-create index idx1 on k100 (k100_key);
-create index idx2 on k100 (j100_1value);
-create index idx3 on k100 (j100_2values);
-create index idx4 on k100 (j100_4values);
-create index idx5 on k100 (j100_5values);
-create index idx6 on k100 (j100_10values);
-create index idx7 on k100 (j100_20values);
-create index idx8 on k100 (j100_50values);
-create index idx9 on k100 (j100_100values);
+create index idx_key       on k100 (k100_key);
+create index idx_1value    on k100 (j100_1value);
+create index idx_2values   on k100 (j100_2values);
+create index idx_4values   on k100 (j100_4values);
+create index idx_5values   on k100 (j100_5values);
+create index idx_10values  on k100 (j100_10values);
+create index idx_20values  on k100 (j100_20values);
+create index idx_50values  on k100 (j100_50values);
+create index idx_100values on k100 (j100_100values);
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 print "loading k100.tbl..." ;
 ld k100 "../JTEST/k100.csv" ;
 
 fetch k100 ;
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+print "\nIndex: idx_key";
+dumpidx k100 idx_key;
+
+print "\nIndex: idx_1value";
+dumpidx k100 idx_1value;
+
+print "\nIndex: idx_2values";
+dumpidx k100 idx_2values;
+
+print "\nIndex: idx_4values";
+dumpidx k100 idx_4values;
+
+print "\nIndex: idx_5values";
+dumpidx k100 idx_5values;
+
+print "\nIndex: idx_10values";
+dumpidx k100 idx_10values;
+
+print "\nIndex: idx_20values";
+dumpidx k100 idx_20values;
+
+print "\nIndex: idx_50values";
+dumpidx k100 idx_50values;
+
+print "\nIndex: idx_100values";
+dumpidx k100 idx_100values;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 displayOff;
 
+print "";
 print "=======================================================================";
 print "fetch k100";
 fetch k100;
@@ -108,6 +142,8 @@ fetch k100 "j100_50values 49 =";
 print "-----------------------------------------------------------------------";
 print "fetch k100 j100_100values 99 =";
 fetch k100 "j100_100values 99 =";
+
+print "=======================================================================";
 
 /*============================================================================*/
 /* end                                                                        */
