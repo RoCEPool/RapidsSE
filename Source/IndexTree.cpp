@@ -296,6 +296,8 @@ void IndexTree::vCopyLeftV3(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
   // iterate thru each key in right L0
   
   TRACE_COMPACT( pRightL0->vShow(); )
+
+  //pLeftL0->vShow();
   
   for (Entry* pRightL0_Key = pRightL0->pFirstEntry();
        pRightL0_Key;
@@ -336,6 +338,8 @@ void IndexTree::vCopyLeftV3(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
       // build the skip list for left L0 thats now full
       pLeftL0->vBuildSkipListSorted();
       
+      //pLeftL0->vShow();
+      
       // new left buffer
       EntryBuffer* pNewLeftL0 = new EntryBuffer;
       pNewLeftL0->vIndex(m_pIndex);
@@ -346,13 +350,11 @@ void IndexTree::vCopyLeftV3(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
       
       // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
       
-      
-      
-      // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-      
       // adjust variables
       *ppLeftL0 = pNewLeftL0;
       pLeftL0 = pNewLeftL0;
+      
+      pPriorEntry = pLeftL0->pLastEntry();
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -362,6 +364,8 @@ void IndexTree::vCopyLeftV3(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
     Entry* pLeftKeyEntryL0 = pLeftL0->pInsertKeyAbsL0(xLeftKeyWrk,&pPriorEntry);
     TRACE_COMPACT( pLeftKeyEntryL0->vShow(0, m_pIndex, true); )
     TRACE_COMPACT( pLeftL0->vShow(); )
+    
+    //pLeftL0->vShow();
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // insert a first L0 key into L1

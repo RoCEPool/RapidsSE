@@ -4158,7 +4158,7 @@ bool EntryBuffer::bVerifyFirstKeys(void)
   
   RASSERT(m_iBufferLevel >= 1);
   
-  vShow();
+  //vShow();
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
@@ -4167,7 +4167,7 @@ bool EntryBuffer::bVerifyFirstKeys(void)
     // get the entry buffer that this entry references
     EntryBuffer* pChildEntryBuffer = pEntry->pReferencedEntryBuffer();
     
-    pChildEntryBuffer->vShow();
+    //pChildEntryBuffer->vShow();
 
     
     // get the first entry of the child buffer
