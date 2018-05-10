@@ -1262,6 +1262,7 @@ void EntryBuffer::vShow(Entry* pMarkEntry)
     iOffset = pEntry->iNEO(0);
   }
   
+  /*
   if (gpAttachMap->m_nIndexEntries) {
     vTrace("\n"_Stz);
     vTrace("Free Entry Chain:\n"_Stz);
@@ -1324,6 +1325,7 @@ void EntryBuffer::vShow(Entry* pMarkEntry)
     }
     vTrace("\n"_Stz);
   }
+  */
   
   vTrace("\n"_Stz);
   vTrace("=================================================="
