@@ -202,7 +202,7 @@ void vPrintSizes(void)
    */
   
   vInfo("sizeof(Object) %lu; \n"_Stz, sizeof(Object));
-  assert(sizeof(Object) == 16);
+  assert(sizeof(Object) == 8);
   
 }
 

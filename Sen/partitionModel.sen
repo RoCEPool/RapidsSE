@@ -119,11 +119,15 @@ nPartitionThreads constant N_PARTITION_THREADS
 */
   iPtnNo scheduler::partition locals| pPartitionScheduler |
   attachMap::maxQueue@ locals| iMaxQueue |
+  true locals| notPrinted |
 
   begin
     iPtnNo pPartitionScheduler partitionScheduler.queueLength@ iMaxQueue >=
     while
-      iPtnNo "Partition %v stalling..." str.format .
+      notPrinted if
+        iPtnNo "Partition %v stalling..." str.format .verbose
+        false to notPrinted
+      then
       1 thread.sleep_s
   repeat
 
