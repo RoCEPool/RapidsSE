@@ -75,7 +75,7 @@ Arguments::Arguments(void)
   m_bReload        = false;
   m_nEntries       = 0;
   m_nSplitRatio    = 50;
-  m_nMaxQueue      = 1000;
+  m_nMaxQueue      = 0;
   
   m_bStrictMode    = false;
   

@@ -121,16 +121,20 @@ nPartitionThreads constant N_PARTITION_THREADS
   attachMap::maxQueue@ locals| iMaxQueue |
   true locals| notPrinted |
 
-  begin
-    iPtnNo pPartitionScheduler partitionScheduler.queueLength@ iMaxQueue >=
-    while
-      notPrinted if
-        iPtnNo "Partition %v stalling..." str.format .verbose
-        false to notPrinted
-      then
-      1 thread.sleep_s
-  repeat
 
+  iMaxQueue 0 != if
+
+    begin
+      iPtnNo pPartitionScheduler partitionScheduler.queueLength@ iMaxQueue >=
+      while
+        notPrinted if
+          iPtnNo "Partition %v stalling..." str.format .verbose
+          false to notPrinted
+        then
+        10 thread.sleep_ms
+    repeat
+
+  then
 
   pTask iPtnNo pPartitionScheduler partitionScheduler.enqueueTask
 ;
