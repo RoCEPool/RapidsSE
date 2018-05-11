@@ -344,6 +344,7 @@ bool Socket::bRecvBytes(i8 nBytes, void* pWS, SysCall& SysCall)
     }
     
     if (0 == nRecv) {
+      vTrace("Received 0 bytes; errno %lld\n"_Stz, errno);
       SysCall.vError(errno);
       return false;
     }
