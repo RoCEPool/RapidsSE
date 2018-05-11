@@ -317,7 +317,7 @@ void Tsp::vSprint(Stz* aDst, Stz* aSrc)
     char sFraction[16];
     StrLib::vFormatFraction(sFraction,uMicro,6);
     
-    StrLib::vSprint(aDst,"TIMESTAMP '%02lld-%02lld-%02lld %02lld:%02lld:%02lld.%s [%lld]'%c"_Stz,
+    StrLib::vSprint(aDst,"TIMESTAMP '%02lld-%02lld-%02lld %02lld:%02lld:%02lld.%s'%c"_Stz,
                          (i8)aTsp->x.m_uYear,
                          (i8)aTsp->x.m_uMonth,
                          (i8)aTsp->x.m_uDay,
@@ -325,19 +325,17 @@ void Tsp::vSprint(Stz* aDst, Stz* aSrc)
                          (i8)aTsp->x.m_uMinute,
                          (i8)aTsp->x.m_uSecond,
                          sFraction,
-                         (i8)aTsp->x.m_uSpare,
                          '\0');
     return;
   }
 
-  StrLib::vSprint(aDst,"TIMESTAMP '%02lld-%02lld-%02lld %02lld:%02lld:%02lld [%lld]'%c"_Stz,
+  StrLib::vSprint(aDst,"TIMESTAMP '%02lld-%02lld-%02lld %02lld:%02lld:%02lld'%c"_Stz,
                        (i8)aTsp->x.m_uYear,
                        (i8)aTsp->x.m_uMonth,
                        (i8)aTsp->x.m_uDay,
                        (i8)aTsp->x.m_uHour,
                        (i8)aTsp->x.m_uMinute,
                        (i8)aTsp->x.m_uSecond,
-                       (i8)aTsp->x.m_uSpare,
                        '\0');
 }
 
