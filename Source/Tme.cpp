@@ -248,6 +248,7 @@ bool Tme::bExtract(char** aaSrc, Tme* aTme, Column* pColumn, Formatters* pFormat
   aTme->x.m_uMinute = iMinute;
   aTme->x.m_uSecond = iSecond;
   aTme->x.m_uMicro  = iMicro;
+  aTme->x.m_uSpare  = 0;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing

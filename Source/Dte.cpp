@@ -240,6 +240,7 @@ bool Dte::bExtract(char** aaSrc, Dte* aDte, Column* pColumn, Formatters* pFormat
   aDte->x.m_uYear   = iYear;
   aDte->x.m_uMonth  = iMonth;
   aDte->x.m_uDay    = iDay;
+  aDte->x.m_uSpare  = 0;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
