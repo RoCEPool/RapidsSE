@@ -332,6 +332,11 @@ bool Socket::bRecvBytes(i8 nBytes, void* pWS, SysCall& SysCall)
   
   SysCall.vClear();
   
+  if (nBytes == 0) {
+    vTrace("bRecvBytes() asked to recv 0 bytes\n"_Stz);
+    RASSERT(nBytes == 0);
+  }
+  
   while (nSoFar != nBytes)
   {
     pSoFar = (char*)pWS + nSoFar;
@@ -642,7 +647,7 @@ bool Socket::bSendTo(i8 nBytes, void* pBuffer, SysCall& SysCall)
   
   if (nBytes == 0) {
     vTrace("sendto() sending 0 bytes\n"_Stz);
-    RASSERT(nBytes = 0);
+    RASSERT(nBytes == 0);
   }
   
   i8 iResult = sendto(m_iSocketId

@@ -385,6 +385,9 @@ void Task::vSocketRecv(MP_Task mpTask)
   if ( ! bResult )
     THROW("Unable to recvFrom socket: Errno %d!"_Stz, xSysCall.iError());
   
+  if (iBytes == 0) {
+    vTrace("Valset size 0 to be received\n"_Stz);
+  }
   //******************************************************************
   // Receive the valset
   //******************************************************************
