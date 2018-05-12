@@ -227,6 +227,9 @@ void Task::vSocketSend(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // send the size of valset
   i8 iBytes = xValSet.nSize();
+  if (iBytes == 0)
+    vTrace("xValset of size 0 being sent\n"_Stz);
+  
   bResult = pSocket->bSendTo(sizeof(iBytes), &iBytes, xSysCall);
   
   if ( ! bResult ) {
@@ -405,6 +408,10 @@ void Task::vSocketRecv(MP_Task mpTask)
     if ( ! bResult )
       THROW("Unable to recvFrom socket: Errno %d!"_Stz, xSysCall.iError());
     
+    if (iBytes == 0) {
+      vTrace("EntryBuffer size 0 to be received\n"_Stz);
+    }
+             
     //******************************************************************
     // receive entryBuffer
     //******************************************************************

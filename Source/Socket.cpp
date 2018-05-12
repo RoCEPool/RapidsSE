@@ -640,6 +640,11 @@ bool Socket::bSendTo(i8 nBytes, void* pBuffer, SysCall& SysCall)
   
   SysCall.vClear();
   
+  if (nBytes == 0) {
+    vTrace("sendto() sending 0 bytes\n"_Stz);
+    RASSERT(nBytes = 0);
+  }
+  
   i8 iResult = sendto(m_iSocketId
                        ,pBuffer
                        ,nBytes
