@@ -9,7 +9,7 @@ namespace DBobjects
   class Table;
   class FreeEntry;
   
-  static const i8 C_ENTRIES_0 = C_8KB;
+  static const i8 C_ENTRIES_L0 = C_8KB;
   static const i4 C_ENTRY_NONE = C_16KB;
   static const EntryBuffer* C_ENTRYBUFFER_MARKER = (EntryBuffer*)0xFFFFFFFFFFFFFFFF;
   static const WorkingBuffer* C_WORKINGBUFFER_MARKER = (WorkingBuffer*)0xFFFFFFFFFFFFFFFE;
@@ -89,7 +89,7 @@ namespace DBobjects
     void         vDump(void);
     EntryBuffer* pFirstChildBuffer(void);
     Entry*       pFirstEntry(void);
-    Entry*       pGetEntryNo(i8 i_Entry);
+    Entry*       pGetEntryRowNo(i8 i_RowNo);
     bool         bHasSpace(i8 nBytes);
     Entry*       pInsertKeyAbs(KeyWrk& xKeyWrk);
     Entry*       pInsertKeyAbsL0(KeyWrk& xKeyWrk, Entry** ppPriorEntry);
