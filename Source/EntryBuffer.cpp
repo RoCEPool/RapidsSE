@@ -83,7 +83,7 @@ EntryBuffer::EntryBuffer(void)
   m_iBufferNo     = *nBufferNo();
   m_iBufferLevel  = 0;
   
-  m_pEntryOffset  = nullptr;
+  m_pRowEntryOffset  = nullptr;
   //  reinterpret_cast<i4*>(aAllotSpace(sizeof(i4) * C_ENTRIES_0));
   m_i_FreeOffsetHead = C_ENTRY_NONE;
   //vFreeChains();
@@ -211,7 +211,7 @@ void EntryBuffer::vIndex(Index* pIndex)
   m_pIndex = pIndex;
 
   if (m_pIndex->bIsHidden()) {
-    m_pEntryOffset  =
+    m_pRowEntryOffset  =
       reinterpret_cast<i4*>(aAllotSpace(sizeof(i4) * C_ENTRIES_L0));
     m_i_FreeOffsetHead = C_ENTRY_NONE;
     vFreeChains();
@@ -438,7 +438,7 @@ Entry* EntryBuffer::pAppendRow(RowWrk& xRowWrk)
   
   i4 iEntryOffset = iToOffset(pRowEntry);
   RASSERT(i_RowNo >= 0 && i_RowNo < C_ENTRIES_L0);
-  m_pEntryOffset[i_RowNo] = iEntryOffset;
+  m_pRowEntryOffset[i_RowNo] = iEntryOffset;
   
   if (m_pLastEntry)
     m_pLastEntry->vNEO(0,iEntryOffset);
@@ -739,7 +739,7 @@ Entry* EntryBuffer::pGetEntryRowNo(i8 i_RowNo)
     return nullptr;
   
   RASSERT(i_RowNo >= 0 && i_RowNo < C_ENTRIES_L0);
-  i4 iOffset = m_pEntryOffset[i_RowNo];
+  i4 iOffset = m_pRowEntryOffset[i_RowNo];
   
   char* aAddress = pAdd<char*>(aDataArea(), iOffset);
   
@@ -1192,7 +1192,7 @@ void EntryBuffer::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  RASSERT(nullptr == m_pEntryOffset);
+  RASSERT(nullptr == m_pRowEntryOffset);
   RASSERT(! m_pIndex->bIsHidden());
   RASSERT(1 == m_iBufferLevel);
   
@@ -1248,7 +1248,7 @@ void EntryBuffer::vShow(Entry* pMarkEntry)
          m_pIndex ? m_pIndex->aIndexName() : "NULL"_Stz,m_nPartitionNo,m_iBufferLevel);
   
   vTrace("  entryOffset: %p freeOffsetHead: %lld\n"_Stz,
-         m_pEntryOffset,m_i_FreeOffsetHead);
+         m_pRowEntryOffset,m_i_FreeOffsetHead);
 
   vTrace("  headEntry: %p[%d,%d,%d] lastEntry: %p firstFree: %p\n"_Stz,
          m_pHeadEntry,m_pHeadEntry ? m_pHeadEntry->iNEO(0) : 0,
@@ -1281,9 +1281,9 @@ void EntryBuffer::vShow(Entry* pMarkEntry)
     vTrace("Free Entry Chain:\n"_Stz);
     for (i4 i_RowNo = m_i_FreeOffsetHead;
          i_RowNo != C_ENTRY_NONE;
-         i_RowNo = - m_pEntryOffset[i_RowNo]) {
+         i_RowNo = - m_pRowEntryOffset[i_RowNo]) {
       vTrace("  %lld: %lld\n"_Stz,
-             i_RowNo,m_pEntryOffset[i_RowNo]);
+             i_RowNo,m_pRowEntryOffset[i_RowNo]);
     }
   }
   
@@ -2245,9 +2245,10 @@ void EntryBuffer::vFreeChains(void)
   // L0 free chain
   for (i4 i_RowNo = 0; i_RowNo < (L_ENTRIES_0 - 1); i_RowNo++) {
     RASSERT(i_RowNo >= 0 && i_RowNo < C_ENTRIES_L0);
-    m_pEntryOffset[i_RowNo] = - (i_RowNo+1);
+    m_pRowEntryOffset[i_RowNo] = - (i_RowNo+1);
   }
-  m_pEntryOffset[L_ENTRIES_0 - 1] = - C_ENTRY_NONE;
+  RASSERT((L_ENTRIES_0 - 1) >= 0 && (L_ENTRIES_0 - 1) < C_ENTRIES_L0);
+  m_pRowEntryOffset[L_ENTRIES_0 - 1] = - C_ENTRY_NONE;
   
   m_i_FreeOffsetHead = 0;
 }
@@ -2308,7 +2309,7 @@ i4 EntryBuffer::iGetFreeEntry(void)
   i4 i_FreeEntry = m_i_FreeOffsetHead;
   
   RASSERT(i_FreeEntry < C_ENTRIES_L0);
-  m_i_FreeOffsetHead = - m_pEntryOffset[i_FreeEntry];
+  m_i_FreeOffsetHead = - m_pRowEntryOffset[i_FreeEntry];
   
   return i_FreeEntry;
 }
@@ -4129,7 +4130,7 @@ bool EntryBuffer::bVerifyEntryOffset(void)
   for (i8 i_RowNo = 0; i_RowNo < gpAttachMap->m_nIndexEntries; i_RowNo++) {
 
     RASSERT(i_RowNo < C_ENTRIES_L0);
-    i8 i_RowEntryOffset = m_pEntryOffset[i_RowNo];
+    i8 i_RowEntryOffset = m_pRowEntryOffset[i_RowNo];
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // validate free offset element
@@ -4141,7 +4142,7 @@ bool EntryBuffer::bVerifyEntryOffset(void)
         continue;
       
       // get the next offset in free chain
-      i8 i_NextRowEntryOffset = m_pEntryOffset[ - i_RowEntryOffset ];
+      i8 i_NextRowEntryOffset = m_pRowEntryOffset[ - i_RowEntryOffset ];
       
       // next offset should be free (or end of free chain)
       if (i_NextRowEntryOffset >= 0) {
