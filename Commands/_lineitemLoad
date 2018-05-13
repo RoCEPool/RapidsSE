@@ -70,12 +70,9 @@ antbl lineitem;
 
 anidx lineitem lineitem_idx2;
 
-timerStart;
-compactidx lineitem lineitem_idx2;
-timerEnd;
 
-anidx lineitem lineitem_idx2;
-space;
+//anidx lineitem lineitem_idx2;
+//space;
 
 displayOff;
 
@@ -161,7 +158,10 @@ fetch lineitem "l_shipdate '2000-06-02 00:00:00' <=";
 timerEnd;
 print "-----------------------------------------------------------------------";
 
-/*
+timerStart;
+compactidx lineitem lineitem_idx2;
+timerEnd;
+
 print "REPEATING QUERIES";
 
 print "-----------------------------------------------------------------------";
@@ -247,6 +247,7 @@ fetch lineitem "l_shipdate '2000-06-02 00:00:00' <=";
 timerEnd;
 print "-----------------------------------------------------------------------";
 
+/*
 
 //docol locksList;
 //docol stepsList;

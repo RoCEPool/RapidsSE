@@ -396,8 +396,18 @@ Entry* EntryBuffer::pAppendRow(RowWrk& xRowWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if this buffer has enough space
   
-  if ( ! bHasSpace(nEntryPlusOffsets) )
+  if ( ! bHasSpace(nEntryPlusOffsets)) {
+    //if (nItems() > 7260)
+    //vTrace("Row entries %lld\n"_Stz,nItems());
     return nullptr;
+  }
+  
+  if (nItems() >= C_ENTRIES_0 - 16) {
+    vTrace("Too many row entries %lld\n"_Stz,nItems());
+    return nullptr;
+  }
+  
+  RASSERT(nItems() < C_ENTRIES_0 - 16);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the rowId
