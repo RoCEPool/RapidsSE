@@ -84,9 +84,7 @@ EntryBuffer::EntryBuffer(void)
   m_iBufferLevel  = 0;
   
   m_pRowEntryOffset  = nullptr;
-  //  reinterpret_cast<i4*>(aAllotSpace(sizeof(i4) * C_ENTRIES_0));
   m_i_FreeOffsetHead = C_ENTRY_NONE;
-  //vFreeChains();
   
   m_pHeadEntry  = nullptr;
   m_pLastEntry  = nullptr;
@@ -210,13 +208,15 @@ void EntryBuffer::vIndex(Index* pIndex)
   
   m_pIndex = pIndex;
 
-  if (m_pIndex->bIsHidden()) {
-    m_pRowEntryOffset  =
-      reinterpret_cast<i4*>(aAllotSpace(sizeof(i4) * C_ENTRIES_L0));
-    m_i_FreeOffsetHead = C_ENTRY_NONE;
-    vFreeChains();
-  }
+  if (! m_pIndex->bIsHidden())
+    return;
   
+  m_pRowEntryOffset  =
+    reinterpret_cast<i4*>(aAllotSpace(sizeof(i4) * C_ENTRIES_L0));
+  
+  m_i_FreeOffsetHead = C_ENTRY_NONE;
+  
+  vFreeChains();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -413,7 +413,10 @@ Entry* EntryBuffer::pAppendRow(RowWrk& xRowWrk)
   // form the rowId
   
   bn nBufferNo = this->nBufferNo();
+  
   i8 i_RowNo = iGetFreeEntry(); //nItems();
+  RASSERT(i_RowNo >=0 and i_RowNo < C_ENTRIES_L0);
+  
   Id xRowId(*nBufferNo, i_RowNo);
   
   xRowWrk.vId(xRowId);
@@ -2247,6 +2250,7 @@ void EntryBuffer::vFreeChains(void)
     RASSERT(i_RowNo >= 0 && i_RowNo < C_ENTRIES_L0);
     m_pRowEntryOffset[i_RowNo] = - (i_RowNo+1);
   }
+  
   RASSERT((L_ENTRIES_0 - 1) >= 0 && (L_ENTRIES_0 - 1) < C_ENTRIES_L0);
   m_pRowEntryOffset[L_ENTRIES_0 - 1] = - C_ENTRY_NONE;
   
