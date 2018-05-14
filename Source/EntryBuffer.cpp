@@ -414,7 +414,12 @@ Entry* EntryBuffer::pAppendRow(RowWrk& xRowWrk)
   
   bn nBufferNo = this->nBufferNo();
   
-  i8 i_RowNo = iGetFreeEntry(); //nItems();
+  i8 i_RowNo = iGetFreeRowEntry(); //nItems();
+  if (C_ENTRY_NONE == i_RowNo) {
+    vTrace("No free row entries\n"_Stz);
+    return nullptr;
+  }
+  
   RASSERT(i_RowNo >=0 and i_RowNo < C_ENTRIES_L0);
   
   Id xRowId(*nBufferNo, i_RowNo);
@@ -2305,8 +2310,11 @@ Entry* EntryBuffer::pGetEntrySplit(i8 iSplitEntryNo,Entry** ppPriorEntry)
 /*----------------------------------------------------------------------------*/
 /* get a free entry (or C_ENTRY_NONE if none)                                 */
 /*----------------------------------------------------------------------------*/
-i4 EntryBuffer::iGetFreeEntry(void)
+i4 EntryBuffer::iGetFreeRowEntry(void)
 {
+  RASSERT( (m_i_FreeOffsetHead >= 0 && m_i_FreeOffsetHead < C_ENTRIES_L0) ||
+           (C_ENTRY_NONE == m_i_FreeOffsetHead) );
+  
   if (C_ENTRY_NONE == m_i_FreeOffsetHead)
     return C_ENTRY_NONE;
   

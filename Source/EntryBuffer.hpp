@@ -137,7 +137,7 @@ namespace DBobjects
     void         vFreeChains(void);
     Entry*       pGetEntryOffset(i8 iOffset);
     Entry*       pGetEntrySplit(i8 iSplitEntryNo, Entry** ppPriorEntry);
-    i4           iGetFreeEntry(void);
+    i4           iGetFreeRowEntry(void);
     void         vHandleFirstInsert(Entry* pInsertedKeyEntry,
                                     Entry* pOriginalFirstEntry,
                                     EntryBuffer** ppRootKeyBuffer);
