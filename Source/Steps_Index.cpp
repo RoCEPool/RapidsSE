@@ -2058,6 +2058,7 @@ void Task::vIndexUpperBound(MP_Task mpTask)
   
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
+  IdxColVec* pIdxColVec = pIndex->pIdxColVec();
   
   Partition* pPartition = pTable->pPartition(iPartition);
   IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
@@ -2125,11 +2126,20 @@ void Task::vIndexUpperBound(MP_Task mpTask)
     
     bIsEqual = false;
     bBefore = pUpperEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrkUpper.aKey(),
-                                                      pIndex->pIdxColVec(), 1,
-                                                      bIsEqual, eUpperRelnOp);
+                                                 pIdxColVec, 1,
+                                                 bIsEqual, eUpperRelnOp);
     
-    if (! bBefore)
+    if (! bBefore) {
+      
+      //Entry* pDataRowEntry = pUpperEntry->pDataEntry();
+      //pDataRowEntry->vShow(0,pIndex->pTable()->pHiddenIndex(),true);
+      
+      //xKeyWrkUpper.vShow(pIdxColVec);
+      //bBefore = pUpperEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrkUpper.aKey(),
+      //                                             pIdxColVec, 1,
+      //                                             bIsEqual, eUpperRelnOp);
       break;
+    }
     
     // move to next entry in the buffer
     pUpperEntry = pUpperEntryBuffer->pNextEntry(pUpperEntry, 0);
