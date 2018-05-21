@@ -9,12 +9,13 @@ namespace System
   {
   public:
     static void vGetInfo(void);
+    static void vTraceInfo(void);
   
-    char* aMachine(void);
-    char* aNodeName(void);
-    char* aRelease(void);
-    char* aSysName(void);
-    char* aVersion(void);
+    static char* aMachine(void);
+    static char* aNodeName(void);
+    static char* aRelease(void);
+    static char* aSysName(void);
+    static char* aVersion(void);
   };
 }
 

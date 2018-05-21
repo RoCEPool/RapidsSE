@@ -47,6 +47,9 @@ int main(int argc, const char* argv[])
   if (gxArguments.m_bWelcome && gxArguments.m_bStart)
     gxArguments.vPrintStartupInfo();
   
+  OpSys::vGetInfo();
+  OpSys::vTraceInfo();
+  
   if (gxArguments.m_bVerbose)
     vPrintSizes();
   
@@ -85,8 +88,6 @@ int main(int argc, const char* argv[])
   //vTest9();
 
   StorageEngine::vCheckAllAssumptions();
-
-  OpSys::vGetInfo();
   
   vWriteRegionName();
   vChangeDirectory();
