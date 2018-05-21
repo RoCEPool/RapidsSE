@@ -85,6 +85,8 @@ int main(int argc, const char* argv[])
   //vTest9();
 
   StorageEngine::vCheckAllAssumptions();
+
+  OpSys::vGetInfo();
   
   vWriteRegionName();
   vChangeDirectory();
