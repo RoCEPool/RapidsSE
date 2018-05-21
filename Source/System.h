@@ -30,6 +30,7 @@ using namespace System;
 #include "Locks.hpp"
 #include "Magnitudes.hpp"
 #include "Semaphore.hpp"
+#include "OpSys.hpp"
 #include "PosixThread.hpp"
 #include "Process.hpp"
 #include "Random.hpp"
