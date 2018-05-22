@@ -705,6 +705,9 @@ void Thread::vLoop_Server(void)
       continue;
     }
 
+    vTrace("vLoop_Server: NEVER_REACH point; m_npTask->eState() %lld\n"_Stz,
+           (i8)m_npTask->eState());
+    
     NEVER_REACH;
     
   } // while
