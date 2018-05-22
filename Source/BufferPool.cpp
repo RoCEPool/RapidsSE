@@ -107,14 +107,65 @@ Buffer* BufferPool::pAllocBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   static i8 nAllocs = 0;
+  static s32 sMagSmall;  Magnitudes::vMagnitude(C_SIZE_SMALL_OBJECT, sMagSmall);
+  static s32 sMagMedium; Magnitudes::vMagnitude(C_SIZE_MEDIUM_OBJECT,sMagMedium);
+  static s32 sMagLarge;  Magnitudes::vMagnitude(C_SIZE_LARGE_OBJECT, sMagLarge);
+  static s32 sMagJumbo;  Magnitudes::vMagnitude(C_SIZE_JUMBO_OBJECT, sMagJumbo);
   
   m_zFreeLock.vGrabWrite();
   
   nAllocs++;
   
-  if (nAllocs % 1000 == 0) {
+  if (nAllocs % 5000 == 0) {
     vWarn("BufferPool::nAllocs: %lld; nBuffers: %lld; AllocCount: %lld; nFreeHead: %p; iFreeCount: %lld\n"_Stz,
           nAllocs, m_nBuffers, m_iAllocCount, *m_nFreeHead, m_iFreeCount);
+    vTrace("   Transitent SmallHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+           sMagSmall.aChar(),
+           gpAttachMap->m_pTransientSmallHeap->iBufferCount(),
+           gpAttachMap->m_pTransientSmallHeap->iAllocCount(),
+           gpAttachMap->m_pTransientSmallHeap->iFreeCount());
+    
+    vTrace("  Transitent MediumHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+           sMagMedium.aChar(),
+           gpAttachMap->m_pTransientMediumHeap->iBufferCount(),
+           gpAttachMap->m_pTransientMediumHeap->iAllocCount(),
+           gpAttachMap->m_pTransientMediumHeap->iFreeCount());
+    
+    vTrace("   Transitent LargeHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+           sMagLarge.aChar(),
+           gpAttachMap->m_pTransientLargeHeap->iBufferCount(),
+           gpAttachMap->m_pTransientLargeHeap->iAllocCount(),
+           gpAttachMap->m_pTransientLargeHeap->iFreeCount());
+    
+    vTrace("   Transitent JumboHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+           sMagJumbo.aChar(),
+           gpAttachMap->m_pTransientJumboHeap->iBufferCount(),
+           gpAttachMap->m_pTransientJumboHeap->iAllocCount(),
+           gpAttachMap->m_pTransientJumboHeap->iFreeCount());
+    
+    vTrace("   Persistent SmallHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+           sMagSmall.aChar(),
+           gpAttachMap->m_pCarryOver->m_pPersistentSmallHeap->iBufferCount(),
+           gpAttachMap->m_pCarryOver->m_pPersistentSmallHeap->iAllocCount(),
+           gpAttachMap->m_pCarryOver->m_pPersistentSmallHeap->iFreeCount());
+    
+    vTrace("  Persistent MediumHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+           sMagMedium.aChar(),
+           gpAttachMap->m_pCarryOver->m_pPersistentMediumHeap->iBufferCount(),
+           gpAttachMap->m_pCarryOver->m_pPersistentMediumHeap->iAllocCount(),
+           gpAttachMap->m_pCarryOver->m_pPersistentMediumHeap->iFreeCount());
+    
+    vTrace("   Persistent LargeHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+           sMagJumbo.aChar(),
+           gpAttachMap->m_pCarryOver->m_pPersistentLargeHeap->iBufferCount(),
+           gpAttachMap->m_pCarryOver->m_pPersistentLargeHeap->iAllocCount(),
+           gpAttachMap->m_pCarryOver->m_pPersistentLargeHeap->iFreeCount());
+    
+    vTrace("   Persistent JumboHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+           sMagJumbo.aChar(),
+           gpAttachMap->m_pCarryOver->m_pPersistentJumboHeap->iBufferCount(),
+           gpAttachMap->m_pCarryOver->m_pPersistentJumboHeap->iAllocCount(),
+           gpAttachMap->m_pCarryOver->m_pPersistentJumboHeap->iFreeCount());
   }
   //vVerifyPool();
   
