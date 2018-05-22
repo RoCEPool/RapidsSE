@@ -106,8 +106,16 @@ Buffer* BufferPool::pAllocBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
+  static i8 nAllocs = 0;
+  
   m_zFreeLock.vGrabWrite();
   
+  nAllocs++;
+  
+  if (nAllocs % 1000 == 0) {
+    vWarn("BufferPool::nAllocs: %lld; nBuffers: %lld; AllocCount: %lld; nFreeHead: %p; iFreeCount: %lld\n"_Stz,
+          nAllocs, m_nBuffers, m_iAllocCount, *m_nFreeHead, m_iFreeCount);
+  }
   //vVerifyPool();
   
   // test for empty free chain
