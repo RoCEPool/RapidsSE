@@ -73,10 +73,11 @@ void AttachMap::vPrintAttachMap(void)
   vInfo("Pid: %lld; \n"_Stz,   gpAttachMap->m_iPid);
   vInfo("UTC: %s; \n"_Stz,     gpAttachMap->m_sUTC.aStr());
   
-  vInfo("RegionName: %s; \n"_Stz,     gpAttachMap->m_sRegionName.aStr());
-  vInfo("RegionSize: %lld; \n"_Stz,   gpAttachMap->m_iRegionSize);
-  vInfo("JumboSize : %lld; \n"_Stz,   gpAttachMap->m_iJumboSize);
-  vInfo("Epoch     : %lld; \n"_Stz,   gpAttachMap->m_iEpoch);
+  vInfo("RegionName : %s; \n"_Stz,     gpAttachMap->m_sRegionName.aStr());
+  vInfo("RegionSize : %lld; \n"_Stz,   gpAttachMap->m_iRegionSize);
+  vInfo("JumboSize  : %lld; \n"_Stz,   gpAttachMap->m_iJumboSize);
+  vInfo("Epoch      : %lld; \n"_Stz,   gpAttachMap->m_iEpoch);
+  vInfo("MaxQueue   : %lld; \n"_Stz,     gpAttachMap->m_nMaxQueue);
   
   vInfo("\nBufferPool         : %p; \n"_Stz,     gpAttachMap->m_pBufferPool);
   vInfo("TransientJumboHeap : %p; \n"_Stz,     gpAttachMap->m_pTransientJumboHeap);
@@ -84,7 +85,7 @@ void AttachMap::vPrintAttachMap(void)
   vInfo("TransientLargeHeap : %p; \n"_Stz,     gpAttachMap->m_pTransientLargeHeap);
   vInfo("TransientSmallHeap : %p; \n"_Stz,     gpAttachMap->m_pTransientSmallHeap);
   
-  vInfo("MaxQueue : %lld; \n"_Stz,     gpAttachMap->m_nMaxQueue);
+
   /*
   Grid*         m_pGrid;
   
