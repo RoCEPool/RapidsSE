@@ -127,10 +127,10 @@ nPartitionThreads constant N_PARTITION_THREADS
     begin
       iPtnNo pPartitionScheduler partitionScheduler.queueLength@ iMaxQueue >=
       while
-        notPrinted if
-          iPtnNo "Partition %v stalling..." str.format .verbose
-          false to notPrinted
-        then
+        //notPrinted if
+        //  iPtnNo "Partition %v stalling..." str.format .verbose
+        //  false to notPrinted
+        //then
         10 thread.sleep_ms
     repeat
 
