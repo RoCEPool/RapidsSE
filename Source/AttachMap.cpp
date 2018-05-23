@@ -65,6 +65,59 @@ void AttachMap::vGetGlobals(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print atachmap                                                             */
+/*----------------------------------------------------------------------------*/
+void AttachMap::vPrintAttachMap(void)
+{
+  vInfo("\n****ATTACH MAP****\n\n"_Stz);
+  vInfo("Pid: %lld; \n"_Stz,   gpAttachMap->m_iPid);
+  vInfo("UTC: %s; \n"_Stz,     gpAttachMap->m_sUTC.aStr());
+  
+  vInfo("RegionName: %s; \n"_Stz,     gpAttachMap->m_sRegionName.aStr());
+  vInfo("RegionSize: %lld; \n"_Stz,   gpAttachMap->m_iRegionSize);
+  vInfo("JumboSize : %lld; \n"_Stz,   gpAttachMap->m_iJumboSize);
+  vInfo("Epoch     : %lld; \n"_Stz,   gpAttachMap->m_iEpoch);
+  
+  vInfo("\nBufferPool         : %p; \n"_Stz,     gpAttachMap->m_pBufferPool);
+  vInfo("TransientJumboHeap : %p; \n"_Stz,     gpAttachMap->m_pTransientJumboHeap);
+  vInfo("TransientMediumHeap: %p; \n"_Stz,     gpAttachMap->m_pTransientMediumHeap);
+  vInfo("TransientLargeHeap : %p; \n"_Stz,     gpAttachMap->m_pTransientLargeHeap);
+  vInfo("TransientSmallHeap : %p; \n"_Stz,     gpAttachMap->m_pTransientSmallHeap);
+  
+  /*
+  Grid*         m_pGrid;
+  
+  bool          m_bVerbose;
+  bool          m_bTracepoint;
+  bool          m_bProgress;
+  bool          m_bMetadata;
+  
+  i8            m_nIndexEntries;  // no of entries per buffer
+  i8            m_nIndexLevels;   // no of levels per index buffer entry
+  i8            m_nIndexOffsets;  // no of offsets per index buffer entry
+  
+  i8            m_nSplitRatio;
+  i8            m_nMaxQueue;
+  
+  i8            m_iQuit;
+  i8            m_iStop;
+  
+  Locks         m_xLocks;
+  
+  Lock          m_xDdlLock;
+  Lock          m_xDicLock;
+  
+  BitMap*       m_pBitMap;
+  
+  Atomic        m_zPlanId;
+  
+  Formatters    m_xFormatters; // record formatters
+  
+  vInfo("\n****ATTACH MAP END****\n\n"_Stz);
+   */
+}
+
+/*----------------------------------------------------------------------------*/
 /* record all the needed globals                                              */
 /*----------------------------------------------------------------------------*/
 void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize, i8 iJumboSize)

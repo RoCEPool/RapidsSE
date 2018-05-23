@@ -116,9 +116,12 @@ Buffer* BufferPool::pAllocBuffer(void)
   
   nAllocs++;
   
-  if (nAllocs % 5000 == 0) {
+  if ((bn::nNil() == m_nFreeHead) || (nAllocs % 5000 == 0)) {
+    
     vWarn("BufferPool::nAllocs: %lld; nBuffers: %lld; AllocCount: %lld; nFreeHead: %p; iFreeCount: %lld\n"_Stz,
           nAllocs, m_nBuffers, m_iAllocCount, *m_nFreeHead, m_iFreeCount);
+    vTrace("Partiton loopQ %lld, maxQ %lld\n"_Stz, gpAttachMap->m_pPartitionScheduler->iTaskQueueLength(0),
+           gpAttachMap->m_nMaxQueue);
     vTrace("   Transitent SmallHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
            sMagSmall.aChar(),
            gpAttachMap->m_pTransientSmallHeap->iBufferCount(),
