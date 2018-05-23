@@ -84,6 +84,7 @@ void AttachMap::vPrintAttachMap(void)
   vInfo("TransientLargeHeap : %p; \n"_Stz,     gpAttachMap->m_pTransientLargeHeap);
   vInfo("TransientSmallHeap : %p; \n"_Stz,     gpAttachMap->m_pTransientSmallHeap);
   
+  vInfo("MaxQueue : %lld; \n"_Stz,     gpAttachMap->m_nMaxQueue);
   /*
   Grid*         m_pGrid;
   
@@ -113,8 +114,8 @@ void AttachMap::vPrintAttachMap(void)
   
   Formatters    m_xFormatters; // record formatters
   
+  */
   vInfo("\n****ATTACH MAP END****\n\n"_Stz);
-   */
 }
 
 /*----------------------------------------------------------------------------*/
