@@ -33,6 +33,8 @@ timerStart;
 dpld lineitem "/Users/alkayamarti/sf10000/lineitem.tbl" field_delimiter "|" same_machine;
 timerEnd;
 
+space;
+
 print "analyzing hidden index..." ;
 anidx lineitem hidden;
 
