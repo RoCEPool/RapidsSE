@@ -33,6 +33,8 @@ timerStart;
 dpld lineitem "/home/rapids/sf10000_current/lineitem.tbl" field_delimiter "|";
 timerEnd;
 
+space;
+
 print "analyzing hidden index..." ;
 anidx lineitem hidden;
 

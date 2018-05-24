@@ -94,14 +94,19 @@ int main(int argc, const char* argv[])
   vKillPrev();
   
   RapidsSE::vPoolOpen();
-  vSetGlobals();
+  
+  if (gxArguments.m_bStart)
+     vSetGlobals();
+  
   RapidsSE::vCheckPort();
   
   if (gxArguments.m_bPrompt && !gxArguments.m_bStart)
     gpAttachMap->vPrintStartupInfo();
-    
+  
   RapidsSE::vExecuteCmdLine();
 
+  gpAttachMap->vPrintAttachMap();
+  
   //vSkipListTest();
   
 //  ResultBuffer* pRB = new ResultBuffer;

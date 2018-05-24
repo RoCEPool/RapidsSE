@@ -119,6 +119,7 @@ namespace StorageEngine
     ~AttachMap(void);
     
     void vGetGlobals(void);
+    void vPrintAttachMap(void);
     void vRecordGlobals(Stz* sRegionName, i8 iRegionSize, i8 iJumboSize);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
