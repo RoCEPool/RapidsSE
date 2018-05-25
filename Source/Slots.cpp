@@ -262,10 +262,10 @@ void Slots::vTidyUpIndex(i8 iIndexNo)
 void Slots::vTruncate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
-  ASSERT(0);
-//  i8 i_Partn;
-//  for (i_Partn = 0; i_Partn < gpAttachMap->m_pGrid->iSlots(); i_Partn++)
-//    m_pPartitionVec->pGet(i_Partn)->pData()->vTruncate();
+
+  i8 i_Partn;
+  for (i_Partn = 0; i_Partn < gpAttachMap->m_pGrid->iSlots(); i_Partn++)
+    m_pPartitionVec->pGet(i_Partn)->pHiddenIndexTree()->vTruncate();
 }
 
 /*----------------------------------------------------------------------------*/

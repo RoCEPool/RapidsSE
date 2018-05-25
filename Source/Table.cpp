@@ -853,6 +853,15 @@ void Table::vTruncate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
+  // truncate all other indices
+  for (i8 iIndexNo = 0; iIndexNo < m_pIdxVec->nItems(); iIndexNo++) {
+    Index* pIndex = m_pIdxVec->pGet(iIndexNo);
+    if (pIndex->bIsHidden())
+      continue;
+    m_xSlots.vTruncateIndex(pIndex->iIndexNo());
+  }
+    
+  // truncate hidden index
   m_xSlots.vTruncate();
 }
 
