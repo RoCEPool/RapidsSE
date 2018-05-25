@@ -97,6 +97,7 @@ namespace DBobjects
                                  EntryBuffer** ppRootKeyBuffer);
     Entry*       pLastEntry(void);
     void         vLazyBuild(void);
+    i8           iLengthList(void);
     i8           iLengthSubList(void);
     Entry*       pNextEntry(Entry* pEntry, i8 i_Offset);
   

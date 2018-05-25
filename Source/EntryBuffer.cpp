@@ -997,6 +997,20 @@ Entry* EntryBuffer::pLastEntry(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get length of list of buffers                                               */
+/*----------------------------------------------------------------------------*/
+i8 EntryBuffer::iLengthList(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  i8 iLength = 0;
+  for (EntryBuffer* pLn = this; pLn; pLn = pLn->pNextBuffer())
+    iLength++;
+  
+  return iLength;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get length of sublist of buffers                                           */
 /*----------------------------------------------------------------------------*/
 i8 EntryBuffer::iLengthSubList(void)
