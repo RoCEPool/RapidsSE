@@ -21,10 +21,10 @@ LOG 'Entries per buffer: 2000';
 INCLUDE 'lineitemLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 2000;
+setAttachMap AM_INDEXENTRIES 3000;
 affected: 0
 
-LOG 'Entries per buffer: 2000';
+LOG 'Entries per buffer: 3000';
 INCLUDE 'lineitemLoop.test';
 
 //------------------------------------------------------------------------------
