@@ -332,11 +332,13 @@
 /*----------------------------------------------------------------------------*/
 /* truncate table                                                             */
 /*----------------------------------------------------------------------------*/
-: truncateTable ( "<tableNm>" -- )
+: truncateTable allParticipants 1 checkResult ( "<tableNm>" -- true n# true )
 
   find execute ( table )
 
   table.truncate
+
+  <SUCCESS_RESULT>
 ;
 
 ////////////////////////////////////////////////////////////////////////////////

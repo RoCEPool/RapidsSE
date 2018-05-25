@@ -841,7 +841,7 @@ ddlLock::grabRead
   // check it is a table
   checkIsTable  not if <NIP+ERROR> exit then
 
-  truncateTable
+  truncateTable assert::stack_0
 
   // pop table dictionary
   popTable
