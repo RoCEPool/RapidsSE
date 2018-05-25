@@ -14,6 +14,8 @@ bool mbCheckPriorVec = false;
 
 #define IT_COPYLEFTV3
 
+#define IT_COMPACT_P1_TRACE 10
+
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -152,9 +154,27 @@ void IndexTree::vCompact(void)
   mbCheckPriorVec = true;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the number of L1 buffers 
+  
+#ifdef IT_COMPACT_P1_TRACE
+  EntryBuffer* pL1First = pFirstL1Buffer();
+  i8 nP1Buffers = pL1First ? pL1First->iLengthList() : 0;
+#endif
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // step thru each L1 buffer in the index
   
+  i8 iL1BufferNo = -1;
+  
   for (EntryBuffer* pL1 = pFirstL1Buffer(); pL1; pL1 = pL1->pNextBuffer()) {
+    
+    iL1BufferNo++;
+    
+#ifdef IT_COMPACT_P1_TRACE
+     if (0 == iL1BufferNo % IT_COMPACT_P1_TRACE)
+      vTrace("Compactiion Progress: Partition %lld: L1 Buffer %lld of %lld\n"_Stz,
+             m_iPartitionNo,iL1BufferNo,nP1Buffers);
+#endif
     
     TRACE_COMPACT( vTrace("  Compacting L1 %lld\n"_Stz,pL1->iBufferNo()); )
     //vTrace("  Compacting L1 %lld\n"_Stz,pL1->iBufferNo());
