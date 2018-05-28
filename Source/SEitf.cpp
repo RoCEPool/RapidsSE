@@ -86,7 +86,6 @@ ReqTable SeRequests[] =
  { "sz"_Stz,             &SEitf::bSizeTable,            "sizeTable_req"_Stz       },
  { "tableSizes"_Stz,     &SEitf::bSizeTables,           "sizeTables_req"_Stz      },
  { "tr"_Stz,             &SEitf::bTruncateTable,        "truncateTable_req"_Stz   },
- { "tridx"_Stz,          &SEitf::bTruncateIndex,        "truncateIndex_req"_Stz   },
  { "txBeg"_Stz,          &SEitf::bTxBegin,              "txBegin_req"_Stz         },
  { "txCmt"_Stz,          &SEitf::bTxCommit,             "txCommit_req"_Stz        },
  { "txDmp"_Stz,          &SEitf::bTxDumpAll,            "txDumpAll_req"_Stz       },
@@ -3037,34 +3036,6 @@ bool SEitf::bSizeTables(TokenVec& xTokenVec, i8 iReqNo)
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
-  
-  sRequest.vConcat(" "_Stz);
-  sRequest.vConcat(SeRequests[iReqNo].aRequest);
-  
-  return bAppendRequest(sRequest);
-}
-
-/*----------------------------------------------------------------------------*/
-/* truncate an index                                                          */
-/*----------------------------------------------------------------------------*/
-bool SEitf::bTruncateIndex(TokenVec& xTokenVec, i8 iReqNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  s256 sRequest;
-  
-  if (xTokenVec.nTokens() != 3) {
-    vSetLastError(EC_INVALID_PARAMETERS);
-    return false;
-  }
-  
-  sRequest.vCopy("\""_Stz);
-  sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat("\""_Stz);
-  sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Stz);
   
   sRequest.vConcat(" "_Stz);
   sRequest.vConcat(SeRequests[iReqNo].aRequest);
