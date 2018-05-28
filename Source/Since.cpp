@@ -38,6 +38,20 @@ void Since::vAdd(i8 iMicroseconds)
   _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
   
   m_iMicroseconds += iMicroseconds;
+  
+  if (m_iMicroseconds < C_1M)
+    return;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // correction needed
+  
+  i8 iMultiples = m_iMicroseconds;
+  
+  m_iMicroseconds = iMultiples % C_1M;
+  
+  i8 iSecondsDelta = iMultiples / C_1M;
+  
+  m_iSeconds += iSecondsDelta;
 }
 
 /*----------------------------------------------------------------------------*/
