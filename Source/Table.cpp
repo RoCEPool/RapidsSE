@@ -849,30 +849,25 @@ void Table::vTidyUpIndex(i8 iIndexNo)
 /*----------------------------------------------------------------------------*/
 /* release all rows/buffers                                                   */
 /*----------------------------------------------------------------------------*/
-void Table::vTruncate(void)
+void Table::vTruncate(i8 iPartition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   // truncate all other indices
   for (i8 iIndexNo = 0; iIndexNo < m_pIdxVec->nItems(); iIndexNo++) {
     Index* pIndex = m_pIdxVec->pGet(iIndexNo);
-    if (pIndex->bIsHidden())
-      continue;
-    m_xSlots.vTruncateIndex(pIndex->iIndexNo());
+    m_xSlots.vTruncateIndex(iPartition, pIndex->iIndexNo());
   }
-    
-  // truncate hidden index
-  m_xSlots.vTruncate();
 }
 
 /*----------------------------------------------------------------------------*/
 /* truncate the index                                                         */
 /*----------------------------------------------------------------------------*/
-void Table::vTruncateIndex(i8 iIndexNo)
+void Table::vTruncateIndex(i8 iPartitionNo, i8 iIndexNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  m_xSlots.vTruncateIndex(iIndexNo);
+  m_xSlots.vTruncateIndex(iPartitionNo, iIndexNo);
 }
 
 /*----------------------------------------------------------------------------*/

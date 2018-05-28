@@ -85,8 +85,8 @@ namespace DBobjects
     Stz* aTableName(void);
     void vTidyUp(void);
     void vTidyUpIndex(i8 iIndexNo);
-    void vTruncate(void);
-    void vTruncateIndex(i8 iIndexNo);
+    void vTruncate(i8 iPartitionNo);
+    void vTruncateIndex(i8 iPartitionNo, i8 iIndexNo);
     bool bVerifyIndexes(void);
     bool bVerifyIndex(Index* pIndex);
     

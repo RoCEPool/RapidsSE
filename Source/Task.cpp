@@ -830,6 +830,7 @@ void Task::vAddConstants(void)
   /*  0 */ vAddConstant("TK_SENDER_WORKER"_Stz,           TK_SENDER_WORKER);
   /*  0 */ vAddConstant("TK_LOADSUB_PART"_Stz,            TK_LOADSUB_PART);
   /*  0 */ vAddConstant("TK_SELECT_PART"_Stz,             TK_SELECT_PART);
+  /*  0 */ vAddConstant("TK_TRUNCATE_PART"_Stz,           TK_TRUNCATE_PART);
   /*  0 */ vAddConstant("TK_ENUMS"_Stz,                   TK_ENUMS );
   
   // TS_ : task state

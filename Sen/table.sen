@@ -330,13 +330,56 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* partition task truncate table                                              */
+/*----------------------------------------------------------------------------*/
+: partitionTruncate ( slotNo table^ -- )
+
+  locals| pTable iSlotNo |
+
+  iSlotNo pTable table.truncate
+
+  //iSlotNo grid::toPartition "Partition %v truncated" str.format .
+
+  // ack the parent task
+  task.parent@ ack
+;
+
+/*----------------------------------------------------------------------------*/
+/* form truncate task name                                                    */
+/*----------------------------------------------------------------------------*/
+: >truncateTaskNm ( i -- s )
+
+  "TT" swap >str str.cat ".task" str.cat
+;
+
+/*----------------------------------------------------------------------------*/
 /* truncate table                                                             */
 /*----------------------------------------------------------------------------*/
 : truncateTable allParticipants 1 checkResult ( "<tableNm>" -- true n# true )
 
-  find execute ( table )
+  0 locals| pTable sTableNm |
 
-  table.truncate
+  sTableNm find execute ( table )
+  to pTable
+
+  // set acks to no of slots
+  grid.slots setAcks
+
+  // spawn a partition task for each partition
+  grid.slots 0
+  do
+
+    I pTable 2 "partitionTruncate" I I >truncateTaskNm
+    TK_TRUNCATE_PART
+
+    spawnPartitionTask
+
+  loop
+
+  // wait for all partition tasks to complete
+  ackWait
+
+  //"All partitions truncated" .
 
   <SUCCESS_RESULT>
 ;

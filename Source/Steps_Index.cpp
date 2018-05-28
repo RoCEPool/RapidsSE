@@ -1934,7 +1934,8 @@ void Task::vIndexTruncate(MP_Task mpTask)
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
   
-  pTable->vTruncateIndex(iIndexNo);
+  for (i8 iSlot = 0; iSlot < gpAttachMap->m_pGrid->m_nSlots; iSlot++)
+    pTable->vTruncateIndex(iSlot, iIndexNo);
   
   EXIT();
 }

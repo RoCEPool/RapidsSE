@@ -55,7 +55,8 @@ namespace Tasks
   /* 13 */ TK_SENDER_WORKER,
   /* 14 */ TK_LOADSUB_PART,
   /* 15 */ TK_SELECT_PART,
-  /* 16 */ TK_ENUMS
+  /* 16 */ TK_TRUNCATE_PART,
+  /* 17 */ TK_ENUMS
   };
   
   static Stz* aTK[]
@@ -76,6 +77,7 @@ namespace Tasks
   /* 13 */ "SENDER_WORKER"_Stz,
   /* 14 */ "LOADSUB_PART"_Stz,
   /* 15 */ "SELECT_PART"_Stz,
+  /* 16 */ "TRUNCATE_PART"_Stz,
   /* 16 */ "ENUMS"_Stz
   };
   enum eTS // Task State
