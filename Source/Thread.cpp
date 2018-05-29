@@ -343,6 +343,49 @@ void Thread::vContentDump(void) const
 }
 
 /*----------------------------------------------------------------------------*/
+/* thread loop (RDP R3.5 model)                                               */
+/*----------------------------------------------------------------------------*/
+void Thread::vLoop(void)
+{
+  //
+  // this is the thread loop for the new thread model
+  //
+  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  /*
+
+  vGrabMutex();
+
+  for (;;) {
+   
+   // get next task
+     if (! m_pTask)
+      if (! bPopTask())
+        vTaskWait();
+   
+    // will have a task
+    ASSERT(m_pTask);
+   
+    // record time of call
+    // ...
+   
+   // call the task
+    (*m_pTaskFun)();
+   
+    // record time of return
+    // ...
+   
+    // handle thread level event
+    vThreadHandler(m_pTask);
+  }
+  
+  */
+  
+  NEVER_REACH;
+}
+
+/*----------------------------------------------------------------------------*/
 /* drone loop (calls task loop just once)                                     */
 /*----------------------------------------------------------------------------*/
 void Thread::vLoop_Drone(void)
