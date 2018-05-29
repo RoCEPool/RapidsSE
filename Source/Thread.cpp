@@ -6,10 +6,10 @@
 
 #include "StorageEngine.h"
 
-extern AttachMap*   gpAttachMap;
+extern AttachMap*    gpAttachMap;
 
-extern pthread_key_t  giTLS_TaskKey;
-extern pthread_key_t  giTLS_ThreadKey;
+extern pthread_key_t giTLS_TaskKey;
+extern pthread_key_t giTLS_ThreadKey;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

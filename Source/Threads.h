@@ -21,6 +21,8 @@ using namespace Threads;
 #include "ThreadQueue.hpp"
 #include "ThreadCursor.hpp"
 
+#include "Handlers.hpp"
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
