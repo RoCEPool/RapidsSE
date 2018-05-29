@@ -605,13 +605,18 @@ void Task::vTableTruncate(MP_Task mpTask)
   ENTRY("vTableTruncate"_Stz);
   
   Object* pPtrTable;
+  i8 iSlot;
+  
   if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
     THROW_INVALID_DSTACK("table.truncate"_Stz);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
-  pTable->vTruncate();
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iSlot) )
+    THROW_INVALID_DSTACK("table.truncate"_Stz);
+  
+  pTable->vTruncate(iSlot);
   
   EXIT();
 }

@@ -271,13 +271,11 @@ void Slots::vTruncate(void)
 /*----------------------------------------------------------------------------*/
 /* tuncate all partitions                                                     */
 /*----------------------------------------------------------------------------*/
-void Slots::vTruncateIndex(i8 iIndexNo)
+void Slots::vTruncateIndex(i8 iPartitionNO, i8 iIndexNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   
-  i8 i_Partn;
-  for (i_Partn = 0; i_Partn < gpAttachMap->m_pGrid->iSlots(); i_Partn++)
-    m_pPartitionVec->pGet(i_Partn)->pIndexTree(iIndexNo)->vTruncate();
+  m_pPartitionVec->pGet(iPartitionNO)->pIndexTree(iIndexNo)->vTruncate();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -37,7 +37,7 @@ namespace DBobjects
     void       vTidyUp(void);
     void       vTidyUpIndex(i8 iIndexNo);
     void       vTruncate(void);
-    void       vTruncateIndex(i8 iIndexNo);
+    void       vTruncateIndex(i8 iPartitionNo, i8 iIndexNo);
     
     Footer*    aFooter(void);
   };
