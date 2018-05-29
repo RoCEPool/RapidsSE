@@ -261,6 +261,18 @@ void* Thread::vEntry_Worker(void* pArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* thread entry point (R3.5 model)                                            */
+/*----------------------------------------------------------------------------*/
+void* Thread::pEntryPoint(void* pArg)
+{
+  //
+  // this is the entry point for the new thread model
+  //
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get this thread                                                            */
 /*----------------------------------------------------------------------------*/
 Thread* Thread::pThread(void)

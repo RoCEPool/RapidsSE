@@ -85,6 +85,9 @@ namespace Threads
     static void* vEntry_Partition(void* pArg);
     static void* vEntry_Server(void* pArg);
     static void* vEntry_Worker(void* pArg);
+  
+    static void* pEntryPoint(void* pArg);
+  
     static Thread* pThread(void);
     static void vRunTask(MP_Task mpTask);
   
@@ -92,6 +95,7 @@ namespace Threads
     void vBind(i8 iCpu);
     i8   iCpu(void);
     void vContentDump(void) const;
+    void vLoop(void);
     void vLoop_Drone(void);
     void vLoop_Partition(void);
     void vLoop_Partition2(void);
