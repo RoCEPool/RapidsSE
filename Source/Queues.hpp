@@ -5,10 +5,17 @@
 
 namespace Threads
 {
-  class Queues
+  class Queues : public Object
   {
   public:
+    void* operator new(size_t, Queues* pQueues);
+    void  operator delete(void*);
+    
+    Queues(void);
+    ~Queues(void);
   };
+  
+  Queues* _pQueues(void* aAddr);
 }
 
 /*============================================================================*/
