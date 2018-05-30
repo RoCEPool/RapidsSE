@@ -51,6 +51,17 @@ void Queues::operator delete(void* aAddr)
 Queues::Queues(void)
 : Object(CN_QUEUES)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
+  
+  for (i8 i_Slot = 0; i_Slot < C_SLOTS_PER_NODE; i_Slot++)
+    m_pSlotQueues[i_Slot] = nullptr;
+  
+  m_pGeneralQueue = nullptr;
+  m_pBlockedQueue = nullptr;
+  m_pSuspendedQueue = nullptr;
+  
+  _checkInitialised_(CN_QUEUES);
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
 }
 
@@ -60,10 +71,20 @@ Queues::Queues(void)
 Queues::~Queues(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* Queues::aFooter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  _checkInitialised_(CN_QUEUES);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
+  return &m_xFooter;
 }
 
 /*============================================================================*/
