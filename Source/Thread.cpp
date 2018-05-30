@@ -353,13 +353,13 @@ void Thread::vLoop(void)
   
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  /*
-
-  vGrabMutex();
+  vMutexLock();
 
   for (;;) {
    
-   // get next task
+    /*
+     
+    // get next task
      if (! m_pTask)
       if (! bPopTask())
         vTaskWait();
@@ -370,17 +370,19 @@ void Thread::vLoop(void)
     // record time of call
     // ...
    
-   // call the task
+    // call the task
     (*m_pTaskFun)();
    
     // record time of return
     // ...
    
+    */
+    
     // handle thread level event
-    vThreadHandler(m_pTask);
+    Handlers::bThreadHandler(*m_npTask);
+
   }
   
-  */
   
   NEVER_REACH;
 }
