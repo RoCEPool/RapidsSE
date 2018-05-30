@@ -16,7 +16,7 @@ namespace Tasks
     
   public:
     void* operator new(size_t);
-    void* operator new(size_t, TaskFifo* pTaskFifo);
+    void* operator new(size_t, TaskQueue* pTaskQueue);
     void  operator delete(void*);
     
     TaskQueue(cmpFun fCompare);

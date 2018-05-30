@@ -181,6 +181,8 @@ namespace Tasks
     i8  m_iDdlLocked;
     bool m_bDestructorTrace;
     
+    Since  m_xWakeupTime;       // wakeup time
+    
     // always last
     Footer m_xFooter;
 
@@ -242,6 +244,7 @@ namespace Tasks
     void vSeedDicCompileSen(void);
     void vSeedDocol(void);
     void vSeedWord(Stz *aWord);
+    void vSleep(i8 iMicroSeconds);
     void vSprint(s48K& sFormat, s48K& sString);
     void vStackContents(Stack* pStack, StrVal& sStackContents);
     eTS  eState(void);
@@ -255,7 +258,7 @@ namespace Tasks
     void vTracePoint(Stz* aMark);
     i8   iTxId(void);
     void vTxId(i8 iTxId);
-    
+    i8   iWakeupTime(void);
     
     void vAddPrimitives(void);
     void vAddPrimitives_AccessPath(void);
@@ -1550,6 +1553,7 @@ namespace Tasks
 }
 
 bool bTaskCompareTaskNo(void* pObjectInsert, void* pObjectScan, bool& bMatch);
+bool bTaskCompareWakeupTime(void* pObjectInsert, void* pObjectScan, bool& bMatch);
 
 /*============================================================================*/
 /* end                                                                        */

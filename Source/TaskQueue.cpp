@@ -32,10 +32,10 @@ void* TaskQueue::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* TaskQueue::operator new(size_t iSize, TaskFifo* pTaskFifo)
+void* TaskQueue::operator new(size_t iSize, TaskQueue* pTaskQueue)
 {
   RASSERT(iSize);
-  return pTaskFifo;
+  return pTaskQueue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -59,7 +59,7 @@ TaskQueue::TaskQueue(cmpFun fCompare)
   m_xLock.vInitLock(LK_TASK_QUEUE);
   m_pTaskSkipList = new SkipList(true, fCompare);
   
-  _checkInitialised_(CN_TASKFIFO);
+  _checkInitialised_(CN_TASKQUEUE);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
 }
@@ -168,7 +168,7 @@ void TaskQueue::vRemoveTask(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void TaskQueue::vContentDump(void)
 {
-  vDump(CN_TASKFIFO, this, aSingleTab());
+  vDump(CN_TASKQUEUE, this, aSingleTab());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -194,7 +194,7 @@ void TaskQueue::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 Footer* TaskQueue::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKFIFO);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE);
   
   return &m_xFooter;
 }
