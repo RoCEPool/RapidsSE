@@ -249,6 +249,7 @@ namespace Tasks
     eTK  eTaskKind(void);
     void vTaskKind(eTK eTaskKind);
     void vTaskLoop(void);
+    i8   iTaskNo(void);
     Threads::Thread* pThread(void);
     void vThread(Threads::Thread* pThread);
     void vTracePoint(Stz* aMark);
@@ -1547,6 +1548,8 @@ namespace Tasks
   Task* _pTask(void* aAddr);
   Task* _pTask(i8 iAddr);
 }
+
+bool bTaskCompareTaskNo(void* pObjectInsert, void* pObjectScan, bool& bMatch);
 
 /*============================================================================*/
 /* end                                                                        */

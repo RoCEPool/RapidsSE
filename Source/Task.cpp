@@ -12,6 +12,28 @@ extern AttachMap*      gpAttachMap;
 extern Arguments       gxArguments;
 
 /*----------------------------------------------------------------------------*/
+/* compare two tasks by their taskNo                                          */
+/*----------------------------------------------------------------------------*/
+bool bTaskCompareTaskNo(void* pObjectInsert, void* pObjectScan, bool& bMatch)
+{
+  Task* pInsertEntry = _pTask(pObjectInsert);
+  Task* pScanEntry   = _pTask(pObjectScan);
+  
+  if ( ! pObjectScan )
+    return false;
+  
+  if (pInsertEntry->iTaskNo() == pScanEntry->iTaskNo())
+    bMatch = true;
+  else
+    bMatch = false;
+  
+  if (pInsertEntry->iTaskNo() > pScanEntry->iTaskNo())
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
 Task* Tasks::_pTask(void* aAddr)
@@ -2008,6 +2030,15 @@ void Task::vTxId(i8 iTxId)
   m_iTxId = iTxId;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get task no                                                                */
+/*----------------------------------------------------------------------------*/
+i8 Task::iTaskNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  return m_iTaskNo;
+}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
