@@ -61,7 +61,9 @@ namespace StorageEngine
     ThreadList*      m_pThreadList;
     Plans::PlanList* m_pPlanList;
     SEitfList*       m_pSEitfList;
-    
+  
+    Queues*       m_pQueues;
+  
     StepArray*    m_pStepArray;
     
     bool          m_bVerbose;
