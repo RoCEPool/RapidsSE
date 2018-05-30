@@ -107,7 +107,48 @@ void TaskQueue::vGrabWrite(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove a task from the queue                                               */
+/* peek at a task at the front of the queue                                   */
+/*----------------------------------------------------------------------------*/
+Task* TaskQueue::pPeekTask(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
+  
+  Task* pTask;
+  
+  m_xLock.vGrabWrite();
+  
+  SkipNode* pNode = m_pTaskSkipList->pFirst(0);
+  pTask = _pTask(pNode->m_pObject);
+  
+  m_xLock.vDropWrite();
+  
+  return pTask;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop a task from the front of the queue                                     */
+/*----------------------------------------------------------------------------*/
+Task* TaskQueue::pPopTask(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
+  
+  bool bRemoved;
+  Task* pTask;
+  
+  m_xLock.vGrabWrite();
+  
+  SkipNode* pNode = m_pTaskSkipList->pFirst(0);
+  pTask = _pTask(pNode->m_pObject);
+  bRemoved = m_pTaskSkipList->bRemove(pTask);
+  RASSERT(bRemoved);
+  
+  m_xLock.vDropWrite();
+  
+  return pTask;
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove a task from queue                                                   */
 /*----------------------------------------------------------------------------*/
 void TaskQueue::vRemoveTask(Task* pTask)
 {

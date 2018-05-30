@@ -22,10 +22,12 @@ namespace Tasks
     TaskQueue(cmpFun fCompare);
     ~TaskQueue(void);
     
-    void vAddTask(Task* pTask);
-    void vDropWrite(void);
-    void vGrabWrite(void);
-    void vRemoveTask(Task* pTask);
+    void   vAddTask(Task* pTask);
+    void   vDropWrite(void);
+    void   vGrabWrite(void);
+    Task*  pPeekTask(void);
+    Task*  pPopTask(void);
+    void   vRemoveTask(Task* pTask);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
