@@ -354,10 +354,13 @@ void Thread::vLoop(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   vMutexLock();
+  
+  // will not have a task
+  ASSERT(! *m_npTask);
 
   for (;;) {
    
-    // will not have a task
+    // wont have a task
     ASSERT(! *m_npTask);
     
     // get next task
@@ -367,24 +370,14 @@ void Thread::vLoop(void)
    
     // will have a task
     ASSERT(*m_npTask);
-   
-    // record time of call
-    // ...
-   
-    /*
-     
-    // call the task
-    (*m_pTaskFun)();
-   
-    // record time of return
-    // ...
-   
-    */
-    
-    // handle thread level event
-    Handlers::bThreadHandler(*m_npTask);
 
-    // will not have a task
+    // call the task
+    vTaskCall();
+   
+    // handle thread level event
+    Handlers::bThreadLevelHandler(&m_npTask);
+
+    // wont have a task
     ASSERT(! *m_npTask);
   }
   
@@ -951,6 +944,25 @@ bool Thread::bQueuePeek(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* call the assocated task                                                    */
+/*----------------------------------------------------------------------------*/
+void Thread::vTaskCall(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  ASSERT(*m_npTask);
+  
+  // record time of call
+  // ...
+  
+  // call the task
+  // (*m_pTaskFun)();
+ 
+  // record time of return
+  // ...
 }
 
 /*----------------------------------------------------------------------------*/

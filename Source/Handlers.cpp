@@ -11,7 +11,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* queue level handler                                                        */
 /*----------------------------------------------------------------------------*/
-bool Handlers::bQueueHandler(Task* pTask)
+bool Handlers::bQueueLevelHandler(Task* pTask)
 {
   
   return true;
@@ -20,7 +20,7 @@ bool Handlers::bQueueHandler(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* system level handler                                                       */
 /*----------------------------------------------------------------------------*/
-bool Handlers::bSystemHandler(Task* pTask)
+bool Handlers::bSystemLevelHandler(Task* pTask)
 {
   
   return true;
@@ -29,8 +29,10 @@ bool Handlers::bSystemHandler(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* thread level handler                                                       */
 /*----------------------------------------------------------------------------*/
-bool Handlers::bThreadHandler(Task* pTask)
+bool Handlers::bThreadLevelHandler(NP_Task* pNpTask)
 {
+  
+  *pNpTask = nullptr;
   
   return true;
 }

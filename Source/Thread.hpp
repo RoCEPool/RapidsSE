@@ -123,6 +123,8 @@ namespace Threads
     void  vSignalThread(void);
   
     bool  bQueuePeek(void);
+
+    void  vTaskCall(void);
     TaskQueue* pTaskQueue(void);
     void  vTaskQueue(TaskQueue* pTaskQueue);
     void  vTaskWait(void);

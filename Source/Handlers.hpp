@@ -8,9 +8,9 @@ namespace Threads
   class Handlers
   {
   public:
-    static bool bQueueHandler(Task* pTask);
-    static bool bSystemHandler(Task* pTask);
-    static bool bThreadHandler(Task* pTask);
+    static bool bQueueLevelHandler(Task* pTask);
+    static bool bSystemLevelHandler(Task* pTask);
+    static bool bThreadLevelHandler(NP_Task* pNpTask);
   };
 }
 
