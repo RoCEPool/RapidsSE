@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Handlers.hpp -- Queue/Task/Thread Event Handlers                           */
+/* Handlers.hpp -- Queue/System/Thread Event Handlers                         */
 /*============================================================================*/
 #pragma once
 

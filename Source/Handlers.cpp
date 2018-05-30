@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Handlers.cpp -- Queue/Task/Thread Event Handlers                           */
+/* Handlers.cpp -- Queue/System/Thread Event Handlers                         */
 /*============================================================================*/
 
 #include "Threads.h"
