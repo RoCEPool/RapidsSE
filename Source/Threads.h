@@ -15,6 +15,8 @@ using namespace Threads;
 
 //-----------------------------------------------------------------------------
 
+#include "Queues.hpp"
+
 #include "TlsKeys.hpp"
 #include "Thread.hpp"
 #include "ThreadList.hpp"

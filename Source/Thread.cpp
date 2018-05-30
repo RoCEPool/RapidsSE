@@ -958,23 +958,19 @@ void Thread::vTaskCall(void)
   
   ASSERT(*m_npTask);
   
-  // record time of call
-  // ...
-  
-  // call the task
-  // (*m_pTaskFun)();
- 
-  // record time of return
-  // ...
-  
   PosixThread::vTlsSet(giTLS_TaskKey,*m_npTask);
   ASSERT(PosixThread::pTlsGet(giTLS_TaskKey));
   
   m_npTask->vState(TS_RUNNING);
   m_npTask->vThread(this);
   
+  // record time of call
+  // ...
+  
   m_npTask->vTaskLoop();
 
+  // record time of return & calculate running total times
+  // ...
 }
 
 /*----------------------------------------------------------------------------*/
