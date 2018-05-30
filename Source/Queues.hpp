@@ -8,7 +8,7 @@ namespace Threads
   class Queues : public Object
   {
   public:
-    void* operator new(size_t, Queues* pQueues);
+    void* operator new(size_t);
     void  operator delete(void*);
     
     Queues(void);

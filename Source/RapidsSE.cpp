@@ -408,6 +408,8 @@ void RapidsSE::vSystemInit(void)
   
   new StepArray;
   
+  gpAttachMap->m_pQueues = new Queues;
+  
   // create the plan list here
   gpAttachMap->m_pPlanList = new PlanList;
   

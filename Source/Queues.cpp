@@ -25,12 +25,13 @@ Queues* Threads::_pQueues(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* new a queue from existing memory                                           */
+/* new a queues from existing memory                                          */
 /*----------------------------------------------------------------------------*/
-void* Queues::operator new(size_t iSize, Queues* pQueues)
+void* Queues::operator new(size_t iSize)
 {
-  RASSERT(iSize);
-  return pQueues;
+  void* pObject = Heap::pAllocate(CN_QUEUES);
+  
+  return pObject;
 }
 
 /*----------------------------------------------------------------------------*/
