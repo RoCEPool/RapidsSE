@@ -357,19 +357,22 @@ void Thread::vLoop(void)
 
   for (;;) {
    
-    /*
-     
+    // will not have a task
+    ASSERT(! *m_npTask);
+    
     // get next task
-     if (! m_pTask)
-      if (! bPopTask())
+     if (! *m_npTask)
+      if (! bQueuePeek())
         vTaskWait();
    
     // will have a task
-    ASSERT(m_pTask);
+    ASSERT(*m_npTask);
    
     // record time of call
     // ...
    
+    /*
+     
     // call the task
     (*m_pTaskFun)();
    
@@ -381,8 +384,9 @@ void Thread::vLoop(void)
     // handle thread level event
     Handlers::bThreadHandler(*m_npTask);
 
+    // will not have a task
+    ASSERT(! *m_npTask);
   }
-  
   
   NEVER_REACH;
 }
@@ -940,6 +944,16 @@ i8 Thread::iThreadNo(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* atetmpt to get a task to run by peeking at the queues                      */
+/*----------------------------------------------------------------------------*/
+bool Thread::bQueuePeek(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get this threads task queue                                                */
 /*----------------------------------------------------------------------------*/
 TaskQueue* Thread::pTaskQueue(void)
@@ -957,6 +971,15 @@ void Thread::vTaskQueue(TaskQueue* pTaskQueue)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   m_pTaskQueue = pTaskQueue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* this thread waits till its given a task by a handler                       */
+/*----------------------------------------------------------------------------*/
+void Thread::vTaskWait(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+
 }
 
 /*----------------------------------------------------------------------------*/

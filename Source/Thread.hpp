@@ -122,8 +122,10 @@ namespace Threads
     void  vMutexUnlock(void);
     void  vSignalThread(void);
   
+    bool  bQueuePeek(void);
     TaskQueue* pTaskQueue(void);
     void  vTaskQueue(TaskQueue* pTaskQueue);
+    void  vTaskWait(void);
   
     Footer* aFooter(void);
   };
