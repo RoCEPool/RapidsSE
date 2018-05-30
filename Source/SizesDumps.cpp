@@ -172,7 +172,7 @@ pDUMPFUN *gpDump[]
   /*132 */ &Dump::vUndefined,       // CN_TASKCURSOR
   /*    */ &Dump::vUndefined,       // CN_TASKFIFO
   /*133 */ &TaskList::vDump,        // CN_TASKLIST
-  /*134 */ //&Dump::vUndefined,       // CN_TASKQUEUE
+  /*134 */ &Dump::vUndefined,       // CN_TASKQUEUE
   /*134 */ &Dump::vUndefined,       // CN_SERVERSCHEDULER
   /*136 */ &Dump::vUndefined,       // CN_TASKSET
   /*137 */ &Dump::vUndefined,       // CN_THREAD
@@ -363,7 +363,7 @@ i8 giClassSize[]
   /*132 */ sizeof(TaskCursor),         // CN_TASKCURSOR
   /*    */ sizeof(TaskFifo),           // CN_TASKFIFO
   /*133 */ sizeof(TaskList),           // CN_TASKLIST
-  /*134 */ //sizeof(TaskQueue),          // CN_TASKQUEUE
+  /*134 */ sizeof(TaskQueue),          // CN_TASKQUEUE
   /*135 */ sizeof(ServerScheduler),    // CN_SERVERSCHEDULER
   /*136 */ sizeof(TaskSet),            // CN_TASKSET
   /*137 */ sizeof(Thread),             // CN_THREAD
@@ -554,7 +554,7 @@ eHT geWhichHeap[]
   /*132 */ HT_INVALID,           // CN_TASKCURSOR
   /*    */ HT_TRANSIENT_SMALL,   // CN_TASKFIFO
   /*133 */ HT_TRANSIENT_SMALL,   // CN_TASKLIST
-  /*134 */ //HT_TRANSIENT_SMALL,   // CN_TASKQUEUE
+  /*134 */ HT_TRANSIENT_SMALL,   // CN_TASKQUEUE
   /*135 */ HT_TRANSIENT_MEDIUM,  // CN_SERVERSCHEDULER
   /*136 */ HT_TRANSIENT_SMALL,   // CN_TASKSET
   /*137 */ HT_INVALID,           // CN_THREAD
