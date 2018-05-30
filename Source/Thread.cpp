@@ -353,6 +353,9 @@ void Thread::vLoop(void)
   
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
+  PosixThread::vTlsSet(giTLS_ThreadKey,this);
+  ASSERT(PosixThread::pTlsGet(giTLS_ThreadKey) == this);
+  
   vMutexLock();
   
   // will not have a task
@@ -963,6 +966,15 @@ void Thread::vTaskCall(void)
  
   // record time of return
   // ...
+  
+  PosixThread::vTlsSet(giTLS_TaskKey,*m_npTask);
+  ASSERT(PosixThread::pTlsGet(giTLS_TaskKey));
+  
+  m_npTask->vState(TS_RUNNING);
+  m_npTask->vThread(this);
+  
+  m_npTask->vTaskLoop();
+
 }
 
 /*----------------------------------------------------------------------------*/
