@@ -131,7 +131,8 @@ enum eCN : u2 // Class Number
   
     /* 95 */ CN_QUEUE,
     /* 96 */ CN_QUEUEBUFFER,
-    
+    /*    */ CN_QUEUES,
+  
     /* 97 */ CN_RBCURSOR,
     /*    */ CN_REGFRAME,
     
@@ -320,6 +321,7 @@ enum eCN : u2 // Class Number
     
     /* 95 */ "QUEUE"_Stz,
     /* 96 */ "QUEUEBUFFER"_Stz,
+    /*    */ "QUEUES"_Stz,
   
     /* 97 */ "RBCURSOR"_Stz,
     /*    */ "REGFRAME"_Stz,

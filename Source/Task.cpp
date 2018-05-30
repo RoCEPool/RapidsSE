@@ -546,6 +546,7 @@ void Task::vAddConstants(void)
   
   /* 45 */ vAddConstant("CN_QUEUE"_Stz,        CN_QUEUE);
   /* 46 */ vAddConstant("CN_QUEUEBUFFER"_Stz,  CN_QUEUEBUFFER);
+  /*    */ vAddConstant("CN_QUEUES"_Stz,       CN_QUEUES);
   
   /*    */ vAddConstant("CN_RBCURSOR"_Stz,     CN_RBCURSOR);
   /* 47 */ vAddConstant("CN_REGFRAME"_Stz,     CN_REGFRAME);

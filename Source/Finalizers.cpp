@@ -127,6 +127,7 @@ pFINALIZE *gpFinalize[]
   
   /* 95 */ &Finalize::vUndefined,         // CN_QUEUE
   /* 96 */ &Finalize::vUndefined,         // CN_QUEUEBUFFER
+  /*    */ &Finalize::vUndefined,         // CN_QUEUES
   
   /* 97 */ &Finalize::vUndefined,         // CN_RBCURSOR
   /*    */ &Finalize::vUndefined,         // CN_REGFRAME
