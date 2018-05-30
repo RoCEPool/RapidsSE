@@ -56,7 +56,8 @@ TaskQueue::TaskQueue(cmpFun fCompare)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
-  m_pSkipList = new SkipList(true, fCompare);
+  m_xLock.vInitLock(LK_TASK_QUEUE);
+  m_pTaskSkipList = new SkipList(true, fCompare);
   
   _checkInitialised_(CN_TASKFIFO);
 
@@ -69,6 +70,56 @@ TaskQueue::TaskQueue(cmpFun fCompare)
 TaskQueue::~TaskQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add task to the queue                                                      */
+/*----------------------------------------------------------------------------*/
+void TaskQueue::vAddTask(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
+  
+  m_xLock.vGrabWrite();
+  
+  m_pTaskSkipList->bInsert(pTask);
+  
+  m_xLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop lock for write                                                        */
+/*----------------------------------------------------------------------------*/
+void TaskQueue::vDropWrite(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
+  
+  m_xLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab lock for write                                                        */
+/*----------------------------------------------------------------------------*/
+void TaskQueue::vGrabWrite(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
+  
+  m_xLock.vGrabWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove a task from the queue                                               */
+/*----------------------------------------------------------------------------*/
+void TaskQueue::vRemoveTask(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
+  
+  bool bRemoved;
+  
+  m_xLock.vGrabWrite();
+  
+  bRemoved = m_pTaskSkipList->bRemove(pTask);
+  
+  m_xLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/

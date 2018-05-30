@@ -8,8 +8,8 @@ namespace Tasks
   class TaskQueue : public Object
   {
   private:
-    
-    SkipList* m_pSkipList;
+    Lock      m_xLock;
+    SkipList* m_pTaskSkipList;
     
     // must be last
     Footer m_xFooter;
@@ -21,6 +21,11 @@ namespace Tasks
     
     TaskQueue(cmpFun fCompare);
     ~TaskQueue(void);
+    
+    void vAddTask(Task* pTask);
+    void vDropWrite(void);
+    void vGrabWrite(void);
+    void vRemoveTask(Task* pTask);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
