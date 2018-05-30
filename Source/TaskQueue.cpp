@@ -51,12 +51,12 @@ void TaskQueue::operator delete(void* pTaskQueueAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-TaskQueue::TaskQueue(void)
+TaskQueue::TaskQueue(cmpFun fCompare)
 : Object(CN_TASKQUEUE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
-  m_pSkipList = nullptr;
+  m_pSkipList = new SkipList(true, fCompare);
   
   _checkInitialised_(CN_TASKFIFO);
 

@@ -19,7 +19,7 @@ namespace Tasks
     void* operator new(size_t, TaskFifo* pTaskFifo);
     void  operator delete(void*);
     
-    TaskQueue(void);
+    TaskQueue(cmpFun fCompare);
     ~TaskQueue(void);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

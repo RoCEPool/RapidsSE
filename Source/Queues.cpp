@@ -58,11 +58,11 @@ Queues::Queues(void)
     m_pSlotQueues[i_Slot] = nullptr;
 
   for (i8 i_Slot = 0; i_Slot < gxArguments.m_nSlots; i_Slot++)
-    m_pSlotQueues[i_Slot] = new TaskQueue;
+    m_pSlotQueues[i_Slot] = new TaskQueue(bTaskCompareTaskNo);
   
-  m_pGeneralQueue   = new TaskQueue;
-  m_pBlockedQueue   = new TaskQueue;
-  m_pSuspendedQueue = new TaskQueue;
+  m_pGeneralQueue   = new TaskQueue(bTaskCompareTaskNo);
+  m_pBlockedQueue   = new TaskQueue(bTaskCompareTaskNo);
+  m_pSuspendedQueue = new TaskQueue(bTaskCompareTaskNo);
   
   _checkInitialised_(CN_QUEUES);
   
