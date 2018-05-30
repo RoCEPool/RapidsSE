@@ -7,7 +7,7 @@
 #include "ShmUtility.hpp"
 
 extern AttachMap* gpAttachMap;
-extern Arguments gxArguments;
+extern Arguments  gxArguments;
 
 extern bool gbSHM;
 

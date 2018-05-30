@@ -7,6 +7,7 @@
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
+extern Arguments  gxArguments;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -55,10 +56,13 @@ Queues::Queues(void)
   
   for (i8 i_Slot = 0; i_Slot < C_SLOTS_PER_NODE; i_Slot++)
     m_pSlotQueues[i_Slot] = nullptr;
+
+  for (i8 i_Slot = 0; i_Slot < gxArguments.m_nSlots; i_Slot++)
+    m_pSlotQueues[i_Slot] = new TaskSet;
   
-  m_pGeneralQueue = nullptr;
-  m_pBlockedQueue = nullptr;
-  m_pSuspendedQueue = nullptr;
+  m_pGeneralQueue   = new TaskSet;
+  m_pBlockedQueue   = new TaskSet;
+  m_pSuspendedQueue = new TaskSet;
   
   _checkInitialised_(CN_QUEUES);
   
