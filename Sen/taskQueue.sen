@@ -8,10 +8,10 @@
 
   create
   WT_OBJECT word.this word.type!
-  sizeof_taskQueue allot
+  sizeof_taskFifo allot
   word.this >body object.magic!
-  CN_TASKQUEUE word.this >body object.class!
-  word.this >body taskQueue.init
+  CN_TASKFIFO word.this >body object.class!
+  word.this >body taskFifo.init
   true word.this >body object.wordbody!
   does> 
 ;
@@ -20,10 +20,10 @@
 
   >createInMain
   WT_OBJECT word.this word.type!
-  sizeof_taskQueue allot
+  sizeof_taskFifo allot
   word.this >body object.magic!
-  CN_TASKQUEUE word.this >body object.class!
-  word.this >body taskQueue.init
+  CN_TASKFIFO word.this >body object.class!
+  word.this >body taskFifo.init
   true word.this >body object.wordbody!
   word.this
   does>

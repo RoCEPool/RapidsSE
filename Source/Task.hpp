@@ -337,7 +337,7 @@ namespace Tasks
     void vAddPrimitives_Task(void);
     void vAddPrimitives_TaskCursor(void);
     void vAddPrimitives_TaskList(void);
-    void vAddPrimitives_TaskQueue(void);
+    void vAddPrimitives_TaskFifo(void);
     void vAddPrimitives_TaskSet(void);
     void vAddPrimitives_Thread(void);
     void vAddPrimitives_ThreadCursor(void);
@@ -859,7 +859,7 @@ namespace Tasks
     static void vPartitionSchedulerEnqueueTask(MP_Task mpTask);
     static void vPartitionSchedulerQueueLengthFetch(MP_Task mpTask);
     static void vPartitionSchedulerSemaphoreStore(MP_Task mpTask);
-    static void vPartitionSchedulerTaskQueueStore(MP_Task mpTask);
+    static void vPartitionSchedulerTaskFifoStore(MP_Task mpTask);
     static void vPartitionSchedulerThreadQueueStore(MP_Task mpTask);
   
     // persistence
@@ -1251,10 +1251,10 @@ namespace Tasks
     static void vTaskListInit(MP_Task mpTask);
     
     // taskQueue
-    static void vTaskQueueAppend(MP_Task mpTask);
-    static void vTaskQueueDump(MP_Task mpTask);
-    static void vTaskQueueInit(MP_Task mpTask);
-    static void vTaskQueueNew(MP_Task mpTask);
+    static void vTaskFifoAppend(MP_Task mpTask);
+    static void vTaskFifoDump(MP_Task mpTask);
+    static void vTaskFifoInit(MP_Task mpTask);
+    static void vTaskFifoNew(MP_Task mpTask);
   
     // taskSet
     static void vTaskSetAppend(MP_Task mpTask); 

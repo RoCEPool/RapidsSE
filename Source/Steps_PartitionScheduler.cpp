@@ -24,8 +24,8 @@ void Task::vAddPrimitives_PartitionScheduler(void)
   vAddPrimitive("PartitionScheduler.semaphore!"_Stz,
                 &vPartitionSchedulerSemaphoreStore, false);
   
-  vAddPrimitive("PartitionScheduler.taskQueue!"_Stz,
-                &vPartitionSchedulerTaskQueueStore, false);
+  vAddPrimitive("PartitionScheduler.taskFifo!"_Stz,
+                &vPartitionSchedulerTaskFifoStore, false);
 
   vAddPrimitive("PartitionScheduler.threadQueue!"_Stz,
                 &vPartitionSchedulerThreadQueueStore, false);
@@ -80,7 +80,7 @@ void Task::vPartitionSchedulerQueueLengthFetch(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(iPtnNo) )
     THROW_INVALID_DSTACK("PartitionScheduler.queueLength"_Stz);
   
-  mpTask->m_pDataStack->vPushInt(pPartitionScheduler->iTaskQueueLength(iPtnNo));
+  mpTask->m_pDataStack->vPushInt(pPartitionScheduler->iTaskFifoLength(iPtnNo));
   
   EXIT();
 }
@@ -112,27 +112,27 @@ void Task::vPartitionSchedulerSemaphoreStore(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* PartitionScheduler.taskQueueStore -- task queue store                      */
+/* PartitionScheduler.taskFifo! -- task fifo store                            */
 /*----------------------------------------------------------------------------*/
-void Task::vPartitionSchedulerTaskQueueStore(MP_Task mpTask)
+void Task::vPartitionSchedulerTaskFifoStore(MP_Task mpTask)
 {
-  ENTRY("vPartitionSchedulerTaskQueueStore"_Stz);
+  ENTRY("vPartitionSchedulerTaskFifoStore"_Stz);
   
   i8 iPtnNo;
   Object* pObject;
   
   if ( ! mpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("PartitionScheduler.taskQueueStore"_Stz);
+    THROW_INVALID_DSTACK("PartitionScheduler.taskFifo!"_Stz);
   PartitionScheduler* pPartitionScheduler = _pPartitionScheduler(pObject);
   
   if ( ! mpTask->m_pDataStack->bPop(iPtnNo) )
-    THROW_INVALID_DSTACK("PartitionScheduler.taskQueueStore"_Stz);
+    THROW_INVALID_DSTACK("PartitionScheduler.taskFifo!"_Stz);
   
   if ( ! mpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("PartitionScheduler.taskQueueStore"_Stz);
-  TaskQueue* pTaskQueue = _pTaskQueue(pObject);
+    THROW_INVALID_DSTACK("PartitionScheduler.taskFifo!"_Stz);
+  TaskFifo* pTaskFifo = _pTaskFifo(pObject);
   
-  pPartitionScheduler->vTaskQueue(iPtnNo,pTaskQueue);
+  pPartitionScheduler->vTaskFifo(iPtnNo,pTaskFifo);
 
   EXIT();
 }

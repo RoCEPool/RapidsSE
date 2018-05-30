@@ -111,8 +111,8 @@ void ServerScheduler::vEnqueueTask_Mutex(Task* mpTask)
   // no available threads, so queue the task
 //  vTrace("Queueing task %p as no threads...%lld\n"_Stz,
 //         mpTask,
-//         m_xTaskQueue.iCount());
-  m_xTaskQueue.vAppend(mpTask);
+//         m_xTaskFifo.iCount());
+  m_xTaskFifo.vAppend(mpTask);
   
   gpAttachMap->m_iSchEnqueueTaskWait++;
   
@@ -139,11 +139,11 @@ bool ServerScheduler::bGetTask_Mutex(Threads::Thread* mpThread, bool bWait)
   // **there will be no threads in vEnqueueTask()**
   //
   
-  i8 nTasksInQueue = m_xTaskQueue.iCount();
+  i8 nTasksInFifo = m_xTaskFifo.iCount();
   
   // when there are queued tasks, hand the first task to this thread
-  if (nTasksInQueue) {
-    mpTask = m_xTaskQueue.npPop();
+  if (nTasksInFifo) {
+    mpTask = m_xTaskFifo.npPop();
     ASSERT(mpTask);
 //    vTrace("Available thread %p:%lld handed task %p\n"_Stz,
 //           mpThread,
@@ -184,7 +184,7 @@ i8 ServerScheduler::iQueuedTasks(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SERVERSCHEDULER,_FOOTER_);
   
-  i8 nTasks = m_xTaskQueue.iCount();
+  i8 nTasks = m_xTaskFifo.iCount();
   
   return nTasks;
 }

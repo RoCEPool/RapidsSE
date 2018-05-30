@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* TaskQueue.hpp - Queue of tasks                                             */
+/* TaskFifo.hpp - fifo of tasks                                               */
 /*============================================================================*/
 #pragma once
 
 namespace Tasks
 {
-  class TaskQueue : public Object,
-                    public List_t<Task>
+  class TaskFifo : public Object,
+                   public List_t<Task>
   {
   private:
     
@@ -15,11 +15,11 @@ namespace Tasks
     
   public:
     void* operator new(size_t);
-    void* operator new(size_t, TaskQueue* pTaskQueue);
+    void* operator new(size_t, TaskFifo* pTaskFifo);
     void  operator delete(void*);
     
-    TaskQueue(void);
-    ~TaskQueue(void);
+    TaskFifo(void);
+    ~TaskFifo(void);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
@@ -28,7 +28,7 @@ namespace Tasks
     Footer* aFooter(void);
   };
   
-  TaskQueue* _pTaskQueue(void* aAddr);
+  TaskFifo* _pTaskFifo(void* aAddr);
 }
 
 /*============================================================================*/

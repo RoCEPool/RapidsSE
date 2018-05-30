@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* TaskQueue.cpp - task queue                                                 */
+/* TaskFifo.cpp - task fifo                                                   */
 /*============================================================================*/
 
 #include "Tasks.h"
@@ -8,23 +8,23 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-TaskQueue* Tasks::_pTaskQueue(void* aAddr)
+TaskFifo* Tasks::_pTaskFifo(void* aAddr)
 {
-  TaskQueue* pTaskQueue = reinterpret_cast<TaskQueue*>(aAddr);
+  TaskFifo* pTaskFifo = reinterpret_cast<TaskFifo*>(aAddr);
   
-  RASSERT( !pTaskQueue || CN_TASKQUEUE == pTaskQueue->eClass() );
+  RASSERT( !pTaskFifo || CN_TASKFIFO == pTaskFifo->eClass() );
   
-  return pTaskQueue;
+  return pTaskFifo;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* TaskQueue::operator new(size_t iSize)
+void* TaskFifo::operator new(size_t iSize)
 {
   RASSERT(iSize);
 
-  void* pObject = Heap::pAllocate(CN_TASKQUEUE);
+  void* pObject = Heap::pAllocate(CN_TASKFIFO);
   
   return pObject;
 }
@@ -32,60 +32,60 @@ void* TaskQueue::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* TaskQueue::operator new(size_t iSize, TaskQueue* pTaskQueue)
+void* TaskFifo::operator new(size_t iSize, TaskFifo* pTaskFifo)
 {
   RASSERT(iSize);
-  return pTaskQueue;
+  return pTaskFifo;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void TaskQueue::operator delete(void* pTaskQueueAddress)
+void TaskFifo::operator delete(void* pTaskFifoAddress)
 {
-  TaskQueue* pTaskQueue = reinterpret_cast<TaskQueue*>(pTaskQueueAddress);
+  TaskFifo* pTaskFifo = reinterpret_cast<TaskFifo*>(pTaskFifoAddress);
   
-  Heap::vFree(pTaskQueue);
+  Heap::vFree(pTaskFifo);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-TaskQueue::TaskQueue(void)
-: Object(CN_TASKQUEUE)
+TaskFifo::TaskFifo(void)
+: Object(CN_TASKFIFO)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKFIFO,_FOOTER_);
   
-  _checkInitialised_(CN_TASKQUEUE);
+  _checkInitialised_(CN_TASKFIFO);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TASKFIFO,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-TaskQueue::~TaskQueue(void)
+TaskFifo::~TaskFifo(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKFIFO,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void TaskQueue::vContentDump(void)
+void TaskFifo::vContentDump(void)
 {
-  vDump(CN_TASKQUEUE, this, aSingleTab());
+  vDump(CN_TASKFIFO, this, aSingleTab());
 }
 
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void TaskQueue::vDump(eCN eClass, Object* pObject, Stz* aTab)
+void TaskFifo::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(eClass == CN_TASKQUEUE);
-  RASSERT(pObject->eClass() == CN_TASKQUEUE);
+  RASSERT(eClass == CN_TASKFIFO);
+  RASSERT(pObject->eClass() == CN_TASKFIFO);
   
-  TaskQueue* pTaskQueue = reinterpret_cast<TaskQueue*>(pObject);
+  TaskFifo* pTaskFifo = reinterpret_cast<TaskFifo*>(pObject);
   
   vTrace("\n"_Stz);
   //pTaskQueue->List_t<Task>::vContentDump("TaskQueue::"_Stz, aTab);
@@ -98,9 +98,9 @@ void TaskQueue::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* TaskQueue::aFooter(void)
+Footer* TaskFifo::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKFIFO);
   
   return &m_xFooter;
 }

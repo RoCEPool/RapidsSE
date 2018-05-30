@@ -16,7 +16,7 @@ namespace Schedulers
   
     struct {
       Semaphore*   m_pSemaphore;
-      TaskQueue*   m_pTaskQueue;
+      TaskFifo*    m_pTaskFifo;
       ThreadQueue* m_pThreadQueue;
     } m_xSlots[C_SLOTS_PER_NODE];
   
@@ -31,9 +31,9 @@ namespace Schedulers
     PartitionScheduler(void);
     ~PartitionScheduler(void);
   
-    i8   iTaskQueueLength(i8 i_PtnNo);
+    i8   iTaskFifoLength(i8 i_PtnNo);
     void vSempahore(i8 i_PtnNo, Semaphore* pSemaphore);
-    void vTaskQueue(i8 i_PtnNo, TaskQueue* pTaskQueue);
+    void vTaskFifo(i8 i_PtnNo, TaskFifo* pTaskFifo);
     void vThreadQueue(i8 i_PtnNo, ThreadQueue* pThreadQueue);
   
     void vEnqueueTask_Mutex(i8 i_PtnNo, Task* mpTask);

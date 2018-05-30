@@ -23,7 +23,7 @@ using namespace Tasks;
 
 #include "Task.hpp"
 #include "TaskList.hpp"
-#include "TaskQueue.hpp"
+#include "TaskFifo.hpp"
 #include "TaskSet.hpp"
 
 #include "TaskCursor.hpp"

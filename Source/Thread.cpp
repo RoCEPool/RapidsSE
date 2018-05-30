@@ -67,7 +67,7 @@ Thread::Thread(void)
   m_pPosixThread = new PosixThread;
   m_pSemaphore   = new Semaphore;
   m_pScheduler   = gpAttachMap->m_pServerScheduler;
-  m_pTaskQueue   = nullptr;
+  m_pTaskFifo   = nullptr;
   m_pTaskSet     = nullptr;
   m_npTask       = nullptr;
 
@@ -974,23 +974,23 @@ void Thread::vTaskCall(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get this threads task queue                                                */
+/* get this threads task fifo                                                 */
 /*----------------------------------------------------------------------------*/
-TaskQueue* Thread::pTaskQueue(void)
+TaskFifo* Thread::pTaskFifo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  return m_pTaskQueue;
+  return m_pTaskFifo;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get this threads task queue                                                */
+/* get this threads task fifo                                                 */
 /*----------------------------------------------------------------------------*/
-void Thread::vTaskQueue(TaskQueue* pTaskQueue)
+void Thread::vTaskFifo(TaskFifo* pTaskFifo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  m_pTaskQueue = pTaskQueue;
+  m_pTaskFifo = pTaskFifo;
 }
 
 /*----------------------------------------------------------------------------*/

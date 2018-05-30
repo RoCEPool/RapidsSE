@@ -14,7 +14,7 @@ namespace Schedulers
   {
   private:
     Semaphore    m_xSemaphore;
-    TaskQueue    m_xTaskQueue;
+    TaskFifo    m_xTaskFifo;
     ThreadQueue  m_xThreadQueue;
   
     // must be last

@@ -64,7 +64,7 @@ PartitionScheduler::PartitionScheduler(void)
   
   for (i8 i_PtnNo = 0; i_PtnNo < C_SLOTS_PER_NODE; i_PtnNo++) {
     m_xSlots[i_PtnNo].m_pSemaphore = nullptr;
-    m_xSlots[i_PtnNo].m_pTaskQueue = nullptr;
+    m_xSlots[i_PtnNo].m_pTaskFifo  = nullptr;
     m_xSlots[i_PtnNo].m_pThreadQueue = nullptr;
   }
   
@@ -78,13 +78,13 @@ PartitionScheduler::PartitionScheduler(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get task queue length                                                      */
+/* get task fifo length                                                       */
 /*----------------------------------------------------------------------------*/
-i8 PartitionScheduler::iTaskQueueLength(i8 i_PtnNo)
+i8 PartitionScheduler::iTaskFifoLength(i8 i_PtnNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITIONSCHEDULER,_FOOTER_);
   
-  return m_xSlots[i_PtnNo].m_pTaskQueue->iCount();
+  return m_xSlots[i_PtnNo].m_pTaskFifo->iCount();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -100,11 +100,11 @@ void PartitionScheduler::vSempahore(i8 i_PtnNo, Semaphore* mpSemaphore)
 /*----------------------------------------------------------------------------*/
 /* set task queue                                                             */
 /*----------------------------------------------------------------------------*/
-void PartitionScheduler::vTaskQueue(i8 i_PtnNo, TaskQueue* mpTaskQueue)
+void PartitionScheduler::vTaskFifo(i8 i_PtnNo, TaskFifo* mpTaskFifo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITIONSCHEDULER,_FOOTER_);
   
-  m_xSlots[i_PtnNo].m_pTaskQueue = mpTaskQueue;
+  m_xSlots[i_PtnNo].m_pTaskFifo = mpTaskFifo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -148,7 +148,7 @@ void PartitionScheduler::vEnqueueTask_Mutex(i8 i_PtnNo, Task* mpTask)
   }
 
   // no available threads, so queue the task
-  m_xSlots[i_PtnNo].m_pTaskQueue->vAppend(mpTask);
+  m_xSlots[i_PtnNo].m_pTaskFifo->vAppend(mpTask);
  
   gpAttachMap->m_iSchEnqueueTaskWait++;
   
@@ -175,11 +175,11 @@ bool PartitionScheduler::bGetTask_Mutex(i8 i_PtnNo, Threads::Thread* mpThread, b
   // **there will be no threads in vEnqueueTask()**
   //
   
-  i8 nTasksInQueue = m_xSlots[i_PtnNo].m_pTaskQueue->iCount();
+  i8 nTasksInQueue = m_xSlots[i_PtnNo].m_pTaskFifo->iCount();
   
   // when there are queued tasks, hand the first task to this thread
   if (nTasksInQueue) {
-    mpTask = m_xSlots[i_PtnNo].m_pTaskQueue->npPop();
+    mpTask = m_xSlots[i_PtnNo].m_pTaskFifo->npPop();
     ASSERT(mpTask);
     mpThread->m_npTask = mpTask;
     m_xSlots[i_PtnNo].m_pSemaphore->vMutexUnlock();

@@ -166,8 +166,9 @@ pFINALIZE *gpFinalize[]
   /*130 */ &Table::vFinalize,             // CN_TABLE
   /*131 */ &Finalize::vUndefined,         // CN_TASK
   /*132 */ &Finalize::vUndefined,         // CN_TASKCURSOR
+  /*    */ &Finalize::vUndefined,         // CN_TASKFIFO
   /*133 */ &Finalize::vUndefined,         // CN_TASKLIST
-  /*134 */ &Finalize::vUndefined,         // CN_TASKQUEUE
+  /*134 */ //&Finalize::vUndefined,         // CN_TASKQUEUE
   /*135 */ &Finalize::vUndefined,         // CN_SERVERSCHEDULER
   /*136 */ &Finalize::vUndefined,         // CN_TASKSET
   /*137 */ &Finalize::vUndefined,         // CN_THREAD

@@ -502,11 +502,11 @@ void Task::vThreadTaskQueueFetch(MP_Task mpTask)
   
   Thread* pThread = static_cast<Thread*>(pThreadEmb);
   
-  TaskQueue* pTaskQueue = pThread->m_pTaskQueue;
+  TaskFifo* pTaskFifo = pThread->m_pTaskFifo;
   
-  Object* pTaskQueueEmb = static_cast<Object*>(pTaskQueue);
+  Object* pTaskFifoEmb = static_cast<Object*>(pTaskFifo);
   
-  mpTask->m_pDataStack->vPushObject(pTaskQueueEmb);
+  mpTask->m_pDataStack->vPushObject(pTaskFifoEmb);
   
   EXIT();
 }
@@ -527,16 +527,16 @@ void Task::vThreadTaskQueueStore(MP_Task mpTask)
   
   Thread* pThread = static_cast<Thread*>(pThreadEmb);
   
-  Object* pTaskQueueEmb;
+  Object* pTaskFifoEmb;
   
-  if ( ! mpTask->m_pDataStack->bPop(pTaskQueueEmb) )
+  if ( ! mpTask->m_pDataStack->bPop(pTaskFifoEmb) )
     THROW_INVALID_DSTACK("thread.taskqueue!"_Stz);
   
-  ASSERT(CN_TASKQUEUE == pTaskQueueEmb->eClass());
+  ASSERT(CN_TASKFIFO == pTaskFifoEmb->eClass());
   
-  TaskQueue* pTaskQueue = _pTaskQueue(pTaskQueueEmb);
+  TaskFifo* pTaskFifo = _pTaskFifo(pTaskFifoEmb);
   
-  pThread->m_pTaskQueue = pTaskQueue;
+  pThread->m_pTaskFifo = pTaskFifo;
   
   EXIT();
 }

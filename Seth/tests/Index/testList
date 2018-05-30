@@ -2,6 +2,8 @@ create.test
 createLoop.test
 createUnique.test
 emptyTable.test
-indexEntry.test
 rangeQuery.test
 supplierLoop.test
+lineitemLoop.test
+lineitemEntry.test
+indexEntry.test

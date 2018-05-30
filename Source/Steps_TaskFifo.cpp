@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_TaskQueue.cpp - task queue step group                                */
+/* Steps_TaskFifo.cpp - task fifo step group                                  */
 /*============================================================================*/
 
 #include "StorageEngine.h"
@@ -8,97 +8,97 @@
 
 extern AttachMap*      gpAttachMap;
 
-// TaskQueue: //////////////////////////////////////////////////////////////////
+// TaskFifo: ///////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_TaskQueue(void)
+void Task::vAddPrimitives_TaskFifo(void)
 {
-  vAddPrimitive("TaskQueue.append"_Stz,  &vTaskQueueAppend,    false);
-  vAddPrimitive("TaskQueue.dump"_Stz,    &vTaskQueueDump,      false);
-  vAddPrimitive("TaskQueue.init"_Stz,    &vTaskQueueInit,      false);
-  vAddPrimitive("TaskQueue::new"_Stz,    &vTaskQueueNew,       false);
+  vAddPrimitive("TaskFifo.append"_Stz,   &vTaskFifoAppend,    false);
+  vAddPrimitive("TaskFifo.dump"_Stz,     &vTaskFifoDump,      false);
+  vAddPrimitive("TaskFifo.init"_Stz,     &vTaskFifoInit,      false);
+  vAddPrimitive("TaskFifo::new"_Stz,     &vTaskFifoNew,       false);
 }
 
 /*----------------------------------------------------------------------------*/
-/* TaskQueue.append -- TaskQueue append                                       */
+/* TaskFifo.append -- TaskQueue append                                       */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskQueueAppend(MP_Task mpTask)
+void Task::vTaskFifoAppend(MP_Task mpTask)
 {
-ENTRY("vTaskQueueAppend"_Stz);
+ENTRY("vTaskFifoAppend"_Stz);
   
   Object* pObject;
   
   if ( ! mpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("TaskQueue.append"_Stz);
+    THROW_INVALID_DSTACK("TaskFifo.append"_Stz);
   
-  ASSERT(CN_TASKQUEUE == pObject->eClass());
+  ASSERT(CN_TASKFIFO == pObject->eClass());
   
-  TaskQueue* pTaskQueue = static_cast<TaskQueue*>(pObject);
+  TaskFifo* pTaskFifo = static_cast<TaskFifo*>(pObject);
   
   Object* pTaskObject;
   if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
-    THROW_INVALID_DSTACK("TaskQueue.append"_Stz);
+    THROW_INVALID_DSTACK("TaskFifo.append"_Stz);
   Task* pThatTask = _pTask(pTaskObject);
   
-  pTaskQueue->vAppend(pThatTask);
+  pTaskFifo->vAppend(pThatTask);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* TaskQueue.dump -- TaskQueue dump                                           */
+/* TaskFifo.dump -- TaskQueue dump                                           */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskQueueDump(MP_Task mpTask)
+void Task::vTaskFifoDump(MP_Task mpTask)
 {
-ENTRY("vTaskQueueDump"_Stz);
+ENTRY("vTaskFifoDump"_Stz);
   
   Object* pObject;
   
   if ( ! mpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("TaskQueue.dump"_Stz);
+    THROW_INVALID_DSTACK("TaskFifo.dump"_Stz);
   
-  ASSERT(CN_TASKQUEUE == pObject->eClass());
+  ASSERT(CN_TASKFIFO == pObject->eClass());
   
-  TaskQueue* pTaskQueue = static_cast<TaskQueue*>(pObject);
+  TaskFifo* pTaskFifo = static_cast<TaskFifo*>(pObject);
   
-  pTaskQueue->vContentDump();
+  pTaskFifo->vContentDump();
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* TaskQueue.init -- TaskQueue init                                           */
+/* TaskFifo.init -- TaskFifo init                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskQueueInit(MP_Task mpTask)
+void Task::vTaskFifoInit(MP_Task mpTask)
 {
-ENTRY("vTaskQueueInit"_Stz);
+ENTRY("vTaskFifoInit"_Stz);
   
   Object* pObject;
   
   if ( ! mpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("TaskQueue.init"_Stz);
+    THROW_INVALID_DSTACK("TaskFifo.init"_Stz);
   
-  ASSERT(CN_TASKQUEUE == pObject->eClass());
+  ASSERT(CN_TASKFIFO == pObject->eClass());
   
-  TaskQueue* pTaskQueue = static_cast<TaskQueue*>(pObject);
+  TaskFifo* pTaskFifo = static_cast<TaskFifo*>(pObject);
   
-  new(pTaskQueue) TaskQueue;
+  new(pTaskFifo) TaskFifo;
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* TaskQueue::new -- create new TaskQueue                                     */
+/* TaskFifo::new -- create new TaskQueue                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskQueueNew(MP_Task mpTask)
+void Task::vTaskFifoNew(MP_Task mpTask)
 {
-  ENTRY("vTaskQueueNew"_Stz);
+  ENTRY("vTaskFifoNew"_Stz);
 
-  TaskQueue* mpTaskQueue = new TaskQueue;
+  TaskFifo* pTaskFifo = new TaskFifo;
   
-  mpTask->m_pDataStack->vPushObject(mpTaskQueue);
+  mpTask->m_pDataStack->vPushObject(pTaskFifo);
   
   EXIT();
 }
