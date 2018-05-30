@@ -8,10 +8,10 @@ namespace Threads
   class Queues : public Object
   {
   private:
-    TaskSet*  m_pSlotQueues[C_SLOTS_PER_NODE];
-    TaskSet*  m_pGeneralQueue;
-    TaskSet*  m_pBlockedQueue;
-    TaskSet*  m_pSuspendedQueue;
+    TaskQueue*  m_pSlotQueues[C_SLOTS_PER_NODE];
+    TaskQueue*  m_pGeneralQueue;
+    TaskQueue*  m_pBlockedQueue;
+    TaskQueue*  m_pSuspendedQueue;
   
     // must be last
     Footer m_xFooter;
