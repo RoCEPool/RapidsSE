@@ -179,6 +179,7 @@ pDUMPFUN *gpDump[]
   /*138 */ &Dump::vUndefined,       // CN_THREADCURSOR
   /*139 */ &Dump::vUndefined,       // CN_THREADLIST
   /*140 */ &Dump::vUndefined,       // CN_THREADQUEUE
+  /*    */ &Dump::vUndefined,       // CN_THREADVECTOR
   /*141 */ &Dump::vUndefined,       // CN_TIME
   /*142 */ &Dump::vInvalid,         // CN_TIMER
   /*143 */ &Token::vDump,           // CN_TOKEN
@@ -370,6 +371,7 @@ i8 giClassSize[]
   /*138 */ sizeof(ThreadCursor),       // CN_THREADCURSOR
   /*139 */ sizeof(ThreadList),         // CN_THREADLIST
   /*140 */ sizeof(ThreadQueue),        // CN_THREADQUEUE
+  /*    */ 0,                          // CN_THREADVECTOR        //! to be fixed
   /*141 */ sizeof(Time),               // CN_TIME
   /*142 */ sizeof(Timer),              // CN_TIMER
   /*143 */ sizeof(Token),              // CN_TOKEN
@@ -561,6 +563,7 @@ eHT geWhichHeap[]
   /*138 */ HT_TRANSIENT_SMALL,   // CN_THREADCURSOR
   /*139 */ HT_INVALID,           // CN_THREADLIST
   /*140 */ HT_INVALID,           // CN_THREADQUEUE
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_THREADVECTOR
   /*141 */ HT_INVALID,           // CN_TIME
   /*142 */ HT_TRANSIENT_SMALL,   // CN_TIMER
   /*143 */ HT_TRANSIENT_SMALL,   // CN_TOKEN

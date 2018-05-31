@@ -633,6 +633,7 @@ void Task::vAddConstants(void)
   /* 77 */ vAddConstant("CN_THREADCURSOR"_Stz, CN_THREADCURSOR);
   /* 78 */ vAddConstant("CN_THREADLIST"_Stz,   CN_THREADLIST);
   /*    */ vAddConstant("CN_THREADQUEUE"_Stz,  CN_THREADQUEUE);
+  /*    */ vAddConstant("CN_THREADVECTOR"_Stz, CN_THREADVECTOR);
   /* 79 */ vAddConstant("CN_TIME"_Stz,         CN_TIME);
   /* 80 */ vAddConstant("CN_TIMER"_Stz,        CN_TIMER);
   /* 81 */ vAddConstant("CN_TOKENISER"_Stz,    CN_TOKENISER);

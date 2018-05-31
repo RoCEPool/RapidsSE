@@ -175,6 +175,7 @@ pFINALIZE *gpFinalize[]
   /*138 */ &Finalize::vUndefined,         // CN_THREADCURSOR
   /*139 */ &Finalize::vUndefined,         // CN_THREADLIST
   /*140 */ &Finalize::vUndefined,         // CN_THREADQUEUE
+  /*    */ &Finalize::vUndefined,         // CN_THREADVECTOR
   /*141 */ &Finalize::vUndefined,         // CN_TIME
   /*142 */ &Finalize::vUndefined,         // CN_TIMER
   /*143 */ &Finalize::vUndefined,         // CN_TOKEN
