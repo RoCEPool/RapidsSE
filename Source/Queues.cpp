@@ -92,9 +92,9 @@ void Queues::vAddThread(Thread* pThread)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  //m_pThreadVector->vGrabLock();
+  m_pThreadVector->vGrabLock();
   m_pThreadVector->vAdd(pThread);
-  //m_pThreadVector->vDropLock();
+  m_pThreadVector->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -114,9 +114,9 @@ void Queues::vRemoveThread(Thread* pThread)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  //m_pThreadVector->vGrabLock();
+  m_pThreadVector->vGrabLock();
   m_pThreadVector->vRemove(pThread);
-  //m_pThreadVector->vDropLock();
+  m_pThreadVector->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/

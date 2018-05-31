@@ -44,7 +44,9 @@ void ThreadVector::operator delete(void* pAddr)
 ThreadVector::ThreadVector(void)
 {
   _precondition_(_MAGIC_,CN_THREADVECTOR,_FOOTER_);
-    
+  
+  m_xLock.vInitLock(LK_THREAD_VECTOR);
+  
   _checkInitialised_(CN_THREADVECTOR);
   
   _postcondition_(_MAGIC_,CN_THREADVECTOR,_FOOTER_);
@@ -56,6 +58,26 @@ ThreadVector::ThreadVector(void)
 ThreadVector::~ThreadVector(void)
 {
   _precondition_(_MAGIC_,CN_THREADVECTOR,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop write lock                                                            */
+/*----------------------------------------------------------------------------*/
+void ThreadVector::vDropLock(void)
+{
+  _precondition_(_MAGIC_,CN_THREADVECTOR,_FOOTER_);
+  
+  m_xLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab write lock                                                            */
+/*----------------------------------------------------------------------------*/
+void ThreadVector::vGrabLock(void)
+{
+  _precondition_(_MAGIC_,CN_THREADVECTOR,_FOOTER_);
+  
+  m_xLock.vGrabWrite();
 }
 
 /*----------------------------------------------------------------------------*/

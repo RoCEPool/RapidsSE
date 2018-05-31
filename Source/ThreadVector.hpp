@@ -9,6 +9,8 @@ namespace Threads
   {
   private:
     
+    Lock m_xLock;
+    
     // must be last
     Footer m_xFooter;    
     
@@ -19,6 +21,9 @@ namespace Threads
     ThreadVector(void);
     ~ThreadVector(void);
   
+    void vDropLock(void);
+    void vGrabLock(void);
+    
     static ThreadVector* _pThreadVector(void* aAddr);
   
     Footer* aFooter(void);

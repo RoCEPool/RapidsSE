@@ -29,6 +29,7 @@ namespace System
   /* 14 */ LK_TASK,
   /*    */ LK_TASK_QUEUE,
   /* 15 */ LK_TASK_SET,
+  /*    */ LK_THREAD_VECTOR,
   /* 16 */ LK_TX_SET,
   /* 17 */ LK_UNKNOWN,
   /* 18 */ LK_ENUMS
@@ -53,6 +54,7 @@ namespace System
   /* 14 */ "TASK"_Stz,
   /*    */ "TASK_QUEUE"_Stz,
   /* 15 */ "TASK_SET"_Stz,
+  /*    */ "THREAD_VECTOR"_Stz,
   /* 16 */ "TX_SET"_Stz,
   /* 17 */ "UNKNOWN"_Stz,
   /* 18 */ "ENUMS"_Stz
