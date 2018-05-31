@@ -9,7 +9,7 @@ namespace Threads
                       public List_t<Thread>
   {
   private:
-
+  
     // must be last
     Footer m_xFooter;
 

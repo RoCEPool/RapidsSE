@@ -417,6 +417,8 @@ void Thread::vLoop(void)
   PosixThread::vTlsSet(giTLS_ThreadKey,this);
   ASSERT(PosixThread::pTlsGet(giTLS_ThreadKey) == this);
   
+  // sleep infinite
+  
   vMutexLock();
   
   // will not have a task
