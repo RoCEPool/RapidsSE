@@ -71,6 +71,9 @@ namespace Threads
                                  //   its not in task set
     Schedulers::Scheduler*  m_pScheduler; // scheduler
   
+    i8           m_iLastRRqueue; // last round robin queue this thread
+                                 // had popped a task
+
     // must be last
     Footer m_xFooter;
     
@@ -95,6 +98,8 @@ namespace Threads
     void vBind(i8 iCpu);
     i8   iCpu(void);
     void vContentDump(void) const;
+    i8   iLastRRqueue(void);
+    void vLastRRqueue(i8 iLastRRqueue);
     void vLoop(void);
     void vLoop_Drone(void);
     void vLoop_Partition(void);

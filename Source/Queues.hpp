@@ -45,6 +45,8 @@ namespace Threads
     Queues(void);
     ~Queues(void);
   
+    bool bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread);
+  
     Footer* aFooter(void);
   };
   

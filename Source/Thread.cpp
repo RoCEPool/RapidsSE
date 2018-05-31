@@ -74,6 +74,8 @@ Thread::Thread(void)
   Thread* pThread = this;
   //gpAttachMap->m_pThreadList->vAppend(pThread);
   
+   m_iLastRRqueue = QR_NONE;
+  
   _checkInitialised_(CN_THREAD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
@@ -340,6 +342,26 @@ void Thread::vContentDump(void) const
          this,
          m_pPosixThread->m_iOpSysThreadId,
          m_pPosixThread->m_iPosixThreadId);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get last round robin queue                                                 */
+/*----------------------------------------------------------------------------*/
+i8 Thread::iLastRRqueue(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  return m_iLastRRqueue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set last round robin queue                                                 */
+/*----------------------------------------------------------------------------*/
+void Thread::vLastRRqueue(i8 iLastRRqueue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  m_iLastRRqueue = iLastRRqueue;
 }
 
 /*----------------------------------------------------------------------------*/

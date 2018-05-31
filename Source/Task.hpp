@@ -182,7 +182,7 @@ namespace Tasks
     bool m_bDestructorTrace;
     
     Since  m_xWakeupTime;       // wakeup time
-    
+  
     // always last
     Footer m_xFooter;
 
