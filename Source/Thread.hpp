@@ -78,6 +78,7 @@ namespace Threads
     Footer m_xFooter;
     
   public:
+    void* operator new(size_t);
     void* operator new(size_t, Thread* pThread);
     void  operator delete(void*);
     
@@ -113,6 +114,7 @@ namespace Threads
     void vSpawn_Drone(void);
     void vSpawn_Partition(void);
     void vSpawn_Server(void);
+    void vSpawn_Thread(void);
     void vSpawn_Worker(void);
     i8   iThreadNo(void);
   

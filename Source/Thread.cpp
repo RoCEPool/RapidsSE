@@ -30,6 +30,17 @@ Thread* Threads::_pThread(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* new a thread from existing memory                                          */
 /*----------------------------------------------------------------------------*/
+void* Thread::operator new(size_t iSize)
+{
+  RASSERT(iSize);
+  void* pObject = Heap::pAllocate(CN_THREAD);
+  
+  return pObject;
+}
+
+/*----------------------------------------------------------------------------*/
+/* new a thread from existing memory                                          */
+/*----------------------------------------------------------------------------*/
 void* Thread::operator new(size_t iSize, Thread* pThread)
 {
   RASSERT(iSize);
@@ -276,8 +287,8 @@ void* Thread::pEntryPoint(void* pArg)
   
   gpAttachMap->m_pQueues->vAddThread(pThread);
   
-  if (gpAttachMap->m_bVerbose)
-    vTrace("[[%s]] Thread::vEntry %p\n"_Stz,pThread->sName().aChar(),pThread);
+  //if (gpAttachMap->m_bVerbose)
+    vTrace("\n[[%s]] Thread::vEntryPoint %p\n"_Stz,pThread->sName().aChar(),pThread);
   
   try {
     pThread->vLoop();
@@ -418,6 +429,7 @@ void Thread::vLoop(void)
   ASSERT(PosixThread::pTlsGet(giTLS_ThreadKey) == this);
   
   // sleep infinite
+  m_pPosixThread->vSleepSec(100000000);
   
   vMutexLock();
   
@@ -976,6 +988,19 @@ void Thread::vSpawn_Server(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   bool bResult = m_pPosixThread->bSpawnThread(Thread::vEntry_Server,this);
+  
+  
+  ASSERT(bResult);
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn the os/posix thread associated with this thread                      */
+/*----------------------------------------------------------------------------*/
+void Thread::vSpawn_Thread(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  bool bResult = m_pPosixThread->bSpawnThread(Thread::pEntryPoint,this);
   
   
   ASSERT(bResult);
