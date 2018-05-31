@@ -306,7 +306,9 @@ void* Thread::pEntryPoint(void* pArg)
     vTrace("[[%s]] Thread::vEntry_Worker %p exiting\n"_Stz,
            pThread->sName().aChar(),pThread);
   
-  delete pThread;                         //! what about entry in thread vector?
+  gpAttachMap->m_pQueues->vRemoveThread(pThread);
+  
+  delete pThread;
   
   return nullptr;
 }
