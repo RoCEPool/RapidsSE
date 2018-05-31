@@ -29,6 +29,7 @@ Arguments::Arguments(void)
   m_nSlots      = 4;
   m_sNodeName   = "node"_Stz;
   m_nNodes      = 0;
+  m_nThreads    = 1;
   m_iThisNode   = -1;
   m_bTracepoint = false;
   
@@ -202,6 +203,18 @@ bool Arguments::bParse(int argc, Stz* argv[])
       if (m_nSlots > C_SLOTS_PER_NODE) {
         vError("Maximum number of partitions allowed per node is %lld\n"_Stz,
           C_SLOTS_PER_NODE);
+        return false;
+      }
+      
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--threads"_Stz)) {
+      m_nThreads = argv[++i_Arg]->iToI8();
+      if (m_nThreads > C_THREADS) {
+        vError("Maximum number of thread allowed is %lld\n"_Stz,
+               C_THREADS);
         return false;
       }
       
@@ -590,6 +603,8 @@ void Arguments::vPrintStartupInfo(void)
   }
   
   vTrace("  --partitionsPerNode %lld\n"_Stz,m_nSlots);
+  vTrace("  --threads %lld\n"_Stz,m_nThreads);
+
 #ifdef _DEBUG
   vTrace("  --commands %s\n"_Stz,m_sCommands.aChar());
   vTrace("  --sen %s\n"_Stz,m_sSen.aChar());

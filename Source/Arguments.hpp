@@ -17,6 +17,7 @@ namespace StorageEngine
     s256  m_sNodeName;   // this node name
     i8    m_nNodes;      // out of this number of nodes
     i8    m_iThisNode;   // this node no in the m_xNode list
+    i8    m_nThreads;    // number of general threads
     bool  m_bTracepoint; // print tracepoint
     s256  m_sCommands;   // commands dir
     s256  m_sSen;        // sen dir
