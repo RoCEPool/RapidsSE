@@ -5,6 +5,12 @@
 
 #include "Tasks.h"
 
+enum eQR // queue round robin
+{
+  /* -2 */ QR_SLEEPING_QUEUE=-2,
+  /* -1 */ QR_GENERAL_QUEUE,
+};
+
 //-----------------------------------------------------------------------------
 namespace Threads
 {

@@ -8,10 +8,32 @@ namespace Threads
   class Queues : public Object
   {
   private:
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // the queues which are checked in round robin fashion
+  
+    TaskQueue*  m_pSleepingQueue;   // queue of sleeping tasks
+                                    // (ordered by wakeup time)
+                                    // these tasks have been partially executed
+  
+    TaskQueue*  m_pGeneralQueue;    // queue of ordinary tasks waiting to be
+                                    // executed (ordered by arrival)
+                                    // these tasks have not been executed
+  
+                                    // set of tasks queued for partitoned
+                                    // execution (ordered by arrival)
+                                    // these tasks have not been executed
     TaskQueue*  m_pSlotQueues[C_SLOTS_PER_NODE];
-    TaskQueue*  m_pGeneralQueue;
-    TaskQueue*  m_pBlockedQueue;
-    TaskQueue*  m_pSuspendedQueue;
+  
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // the queues which are not checked in the round robin
+  
+    TaskQueue*  m_pBlockedQueue;    // set of tasks which are currently blocked
+                                    // (ordered by arrival)
+                                    // these tasks have been partially executed
+  
+    TaskQueue*  m_pSuspendedQueue;  // set of tasks which are currently
+                                    // susended (ordered by arrival)
+                                    // these tasks have been partially executed
   
     // must be last
     Footer m_xFooter;

@@ -54,13 +54,15 @@ Queues::Queues(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
+  m_pSleepingQueue = new TaskQueue(bTaskCompareWakeupTime);
+  m_pGeneralQueue  = new TaskQueue(bTaskCompareTaskNo);
+  
   for (i8 i_Slot = 0; i_Slot < C_SLOTS_PER_NODE; i_Slot++)
     m_pSlotQueues[i_Slot] = nullptr;
 
   for (i8 i_Slot = 0; i_Slot < gxArguments.m_nSlots; i_Slot++)
     m_pSlotQueues[i_Slot] = new TaskQueue(bTaskCompareTaskNo);
   
-  m_pGeneralQueue   = new TaskQueue(bTaskCompareTaskNo);
   m_pBlockedQueue   = new TaskQueue(bTaskCompareTaskNo);
   m_pSuspendedQueue = new TaskQueue(bTaskCompareTaskNo);
   
