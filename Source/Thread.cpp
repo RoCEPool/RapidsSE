@@ -271,6 +271,43 @@ void* Thread::pEntryPoint(void* pArg)
   // this is the entry point for the new thread model
   //
   
+  
+  Thread* pThread = static_cast<Thread*>(pArg);
+  
+  gpAttachMap->m_pQueues->vAddThread(pThread);
+  
+  if (gpAttachMap->m_bVerbose)
+    vTrace("[[%s]] Thread::vEntry %p\n"_Stz,pThread->sName().aChar(),pThread);
+  
+  try {
+    pThread->vLoop();
+  }
+  
+  catch (Error* pError) {
+    
+    char wFileName[256];
+    const char* ps;
+    
+    ps = StrLib::sLast(pError->aFileName()->aChar());
+    bool bBackSlash = StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');
+    if (bBackSlash) {
+      StrLib::vCopy(wFileName,ps+1);
+    }
+    else {
+      StrLib::vCopy(wFileName, pError->aFileName()->aChar());
+    }
+    vFatal("ERROR: [ThreadLoop] %s: line %lld in %s\n"_Stz,
+           pError->aErrorMsg(),
+           pError->iLineNo(),
+           wFileName);
+  }
+  
+  if (gpAttachMap->m_bVerbose)
+    vTrace("[[%s]] Thread::vEntry_Worker %p exiting\n"_Stz,
+           pThread->sName().aChar(),pThread);
+  
+  delete pThread;                         //! what about entry in thread vector?
+  
   return nullptr;
 }
 

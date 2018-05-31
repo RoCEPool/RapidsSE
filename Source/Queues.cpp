@@ -86,6 +86,16 @@ Queues::~Queues(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* add thread to thread vector                                                */
+/*----------------------------------------------------------------------------*/
+void Queues::vAddThread(Thread* pThread)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  m_pThreadVector->vAdd(pThread);
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop next task in round robin fashion                                       */
 /*----------------------------------------------------------------------------*/
 bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)

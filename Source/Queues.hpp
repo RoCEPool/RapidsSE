@@ -50,6 +50,7 @@ namespace Threads
     Queues(void);
     ~Queues(void);
   
+    void vAddThread(Thread* pThread);
     bool bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread);
   
     Footer* aFooter(void);
