@@ -371,7 +371,7 @@ i8 giClassSize[]
   /*138 */ sizeof(ThreadCursor),       // CN_THREADCURSOR
   /*139 */ sizeof(ThreadList),         // CN_THREADLIST
   /*140 */ sizeof(ThreadQueue),        // CN_THREADQUEUE
-  /*    */ 0,                          // CN_THREADVECTOR        //! to be fixed
+  /*    */ sizeof(ThreadVector),       // CN_THREADVECTOR
   /*141 */ sizeof(Time),               // CN_TIME
   /*142 */ sizeof(Timer),              // CN_TIMER
   /*143 */ sizeof(Token),              // CN_TOKEN

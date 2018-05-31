@@ -12,6 +12,8 @@ enum eQR // queue round robin
   /* -1 */ QR_GENERAL_QUEUE,
 };
 
+static const i8 C_THREADS = 256;
+
 //-----------------------------------------------------------------------------
 namespace Threads
 {
@@ -22,13 +24,14 @@ using namespace Threads;
 
 //-----------------------------------------------------------------------------
 
-#include "Queues.hpp"
-
 #include "TlsKeys.hpp"
 #include "Thread.hpp"
 #include "ThreadList.hpp"
 #include "ThreadQueue.hpp"
 #include "ThreadCursor.hpp"
+#include "ThreadVector.hpp"
+
+#include "Queues.hpp"
 
 #include "Handlers.hpp"
 

@@ -54,6 +54,8 @@ Queues::Queues(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
+  m_pThreadVector  = new ThreadVector;
+  
   m_pSleepingQueue = new TaskQueue(bTaskCompareWakeupTime);
   m_pGeneralQueue  = new TaskQueue(bTaskCompareTaskNo);
   

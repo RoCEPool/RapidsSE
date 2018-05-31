@@ -9,7 +9,12 @@ namespace Threads
   {
   private:
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // the queues which are checked in round robin fashion
+    // threads
+
+    ThreadVector* m_pThreadVector;  // vector of threads in the system
+  
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // queues which are checked in round robin fashion
   
     TaskQueue*  m_pSleepingQueue;   // queue of sleeping tasks
                                     // (ordered by wakeup time)
@@ -25,7 +30,7 @@ namespace Threads
     TaskQueue*  m_pSlotQueues[C_SLOTS_PER_NODE];
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // the queues which are not checked in the round robin
+    // queues which are not checked in the round robin
   
     TaskQueue*  m_pBlockedQueue;    // set of tasks which are currently blocked
                                     // (ordered by arrival)
