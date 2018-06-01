@@ -81,7 +81,52 @@ bool Handlers::bSystemLevelHandler(Task* pTask)
 bool Handlers::bThreadLevelHandler(NP_Task* pNpTask)
 {
   
+  Task* pTask = **pNpTask;
   *pNpTask = nullptr;
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  switch (pTask->eState()) {
+      
+    case TS_BLOCKED:
+      // should never come to thread handler with a blocked task
+      ASSERT(0);
+      
+    case TS_EXITED:
+      // task has exited, just delete it
+      if ( (*gpAttachMap->m_npBootTask != pTask)  && ( ! pTask->bWordBody()) ) {
+        delete pTask;
+      }
+      break;
+      
+    case TS_RUNNING:
+      // should never come to thread handler with a running task
+      ASSERT(0);
+      
+    case TS_SLEEPING:
+      // add task to sleeoping queue
+      pQueues->vAddToSleepingQueue(pTask);
+      break;
+      
+    case TS_WAITING_ACK:
+      // add task to waiting queue
+      pQueues->vAddToSuspendedQueue(pTask);
+      break;
+      
+    case TS_WAITING_SIGNAL:
+      // whats the difference between WAITING_ACK and WAITING_SIGNAL ?
+      ASSERT(0);
+      
+    case TS_YIELDED:
+      // add task back to the general/slot queue
+      if (pTask->iPartition() == -1)
+        pQueues->vAddToGeneralQueue(pTask);
+      else
+        pQueues->vAddToSlotQueue(pTask);
+      break;
+      
+    default:
+      break;
+  }
   
   return true;
 }
