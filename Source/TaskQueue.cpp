@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "Tasks.h"
+#include "Threads.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -80,7 +81,7 @@ void TaskQueue::vAddTask(Task* pTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
   // see if queue handler can handle the task
-  bool bTaskHandled = Threads::bQueueLevelHandler(pTask);
+  bool bTaskHandled = Handlers::bQueueLevelHandler(pTask);
   
   // need to insert task in queue
   if ( ! bTaskHandled ) {
