@@ -2081,7 +2081,7 @@ i8 Task::iWakeupTime(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  i8 iMicroseconds = m_xWakeupTime.iMicroseconds() + m_xWakeupTime.iSeconds()*1000;
+  i8 iMicroseconds = m_xWakeupTime.iGetAsMicroseconds();
   
   return iMicroseconds;
 }

@@ -105,6 +105,7 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   Task* pTask;
+  Since xNow;
   
   // set popped task to be null to start wit
   *ppPoppedTask = NULL;
@@ -146,9 +147,8 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
       pTask = m_pSleepingQueue->pPeekTask();
       
       // check if task wakeup time is now
-      Since xNow;
       xNow.vSet();
-      i8 iMicroseconds = xNow.iMicroseconds() + xNow.iSeconds()*1000;
+      i8 iMicroseconds = xNow.iGetAsMicroseconds();
       if (pTask->iWakeupTime() == iMicroseconds) {
         
         // clear wakeup time of the task
