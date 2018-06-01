@@ -452,18 +452,14 @@ void Thread::vLoop(void)
   
   vMutexLock();
   
-  // will not have a task
-  ASSERT(! *m_npTask);
-
   for (;;) {
    
     // wont have a task
     ASSERT(! *m_npTask);
     
     // get next task
-     if (! *m_npTask)
-      if (! bQueuePeek())
-        vTaskWait();
+    if (! bQueuePeek())
+      vTaskWait();
    
     // will have a task
     ASSERT(*m_npTask);
