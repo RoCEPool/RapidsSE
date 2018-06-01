@@ -107,7 +107,7 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
   Task* pTask;
   Since xNow;
   
-  // set popped task to be null to start wit
+  // set popped task to be null to start with
   *ppPoppedTask = NULL;
   
   // save lastQueue we started with
@@ -151,9 +151,6 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
       i8 iMicroseconds = xNow.iGetAsMicroseconds();
       if (pTask->iWakeupTime() == iMicroseconds) {
         
-        // clear wakeup time of the task
-        pTask->vWakeupTask();
-        
         // pop the task off the queue
         Task* pPoppedTask = m_pSleepingQueue->pPopTask();
         
@@ -161,6 +158,9 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
         m_pSleepingQueue->vDropWrite();
         
         ASSERT(pPoppedTask == pTask);
+        
+        // clear wakeup time of the task
+        pTask->vWakeupTask();
         
         // return the popped task
         *ppPoppedTask = pTask;
