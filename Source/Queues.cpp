@@ -170,7 +170,9 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  Task* pTask;
+  Task* pPeekedTask;
+  Task* pPoppedTask;
+  
   Since xNow;
   
   // set popped task to be null to start with
@@ -210,12 +212,12 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
       }
       
       // peek at the first task in the sleeping queue
-      pTask = m_pSleepingQueue->pPeekTask();
+      pPeekedTask = m_pSleepingQueue->pPeekTask();
       
       // check if task wakeup time is now
       xNow.vSet();
       i8 iMicroseconds = xNow.iGetAsMicroseconds();
-      if (pTask->iWakeupTime() == iMicroseconds) {
+      if (pPeekedTask->iWakeupTime() == iMicroseconds) {
         
         // pop the task off the sleeping queue
         Task* pPoppedTask = m_pSleepingQueue->pPopTask();
@@ -223,10 +225,10 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
         // drop lock on queue
         m_pSleepingQueue->vDropLock();
         
-        ASSERT(pPoppedTask == pTask);
+        ASSERT(pPoppedTask == pPeekedTask);
         
         // clear wakeup time of the task
-        pTask->vWakeupTask();
+        pPoppedTask->vWakeupTask();
         
         // return the popped task
         *ppPoppedTask = pPoppedTask;
@@ -258,13 +260,13 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
       }
       
       // pop task off the general queue
-      pTask = m_pGeneralQueue->pPopTask();
+      pPoppedTask = m_pGeneralQueue->pPopTask();
       
       // drop the lock
       m_pGeneralQueue->vDropLock();
       
-      if (pTask) {
-        *ppPoppedTask = pTask;
+      if (pPoppedTask) {
+        *ppPoppedTask = pPoppedTask;
         ASSERT( ! m_pGeneralQueue->bIsLocked());
         return true;
       }
@@ -285,13 +287,13 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
     }
     
     // pop a task off the partition queues
-    pTask = m_pSlotQueues[pCallingThread->m_iLastRRqueue]->pPopTask();
+    pPoppedTask = m_pSlotQueues[pCallingThread->m_iLastRRqueue]->pPopTask();
     
     // drop lock on the queue
     m_pSlotQueues[pCallingThread->m_iLastRRqueue]->vDropLock();
     
-    if (pTask) {
-      *ppPoppedTask = pTask;
+    if (pPoppedTask) {
+      *ppPoppedTask = pPoppedTask;
       ASSERT( ! m_pSlotQueues[pCallingThread->m_iLastRRqueue]->bIsLocked());
       return true;
     }
