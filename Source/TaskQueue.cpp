@@ -79,11 +79,15 @@ void TaskQueue::vAddTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
-  m_xLock.vGrabWrite();
+  // see if queue handler can handle the task
+  bool bTaskHandled = Threads::bQueueLevelHandler(pTask);
   
-  m_pTaskSkipList->bInsert(pTask);
-  
-  m_xLock.vDropWrite();
+  // need to insert task in queue
+  if ( ! bTaskHandled ) {
+    m_xLock.vGrabWrite();
+    m_pTaskSkipList->bInsert(pTask);
+    m_xLock.vDropWrite();
+  }
 }
 
 /*----------------------------------------------------------------------------*/
