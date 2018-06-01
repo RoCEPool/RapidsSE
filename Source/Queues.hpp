@@ -60,7 +60,8 @@ namespace Threads
     
     bool bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread);
     void vRemoveThread(Thread* pThread);
-
+    void vRemoveFromRunningQueue(Task* pTask);
+    
     ThreadVector* pThreadVector(void);
     
     Footer* aFooter(void);

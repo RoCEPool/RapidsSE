@@ -85,6 +85,10 @@ bool Handlers::bThreadLevelHandler(NP_Task* pNpTask)
   *pNpTask = nullptr;
   Queues* pQueues = gpAttachMap->m_pQueues;
   
+  // first remove this task from the running queue
+  pQueues->vRemoveFromRunningQueue(pTask);
+  
+  // now add the task to another appropriate queue depending on its state
   switch (pTask->eState()) {
       
     case TS_BLOCKED:

@@ -94,7 +94,7 @@ void TaskQueue::vAddTask(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* drop lock for write                                                        */
 /*----------------------------------------------------------------------------*/
-void TaskQueue::vDropWrite(void)
+void TaskQueue::vDropLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
@@ -104,7 +104,7 @@ void TaskQueue::vDropWrite(void)
 /*----------------------------------------------------------------------------*/
 /* grab lock for write                                                        */
 /*----------------------------------------------------------------------------*/
-void TaskQueue::vGrabWrite(void)
+void TaskQueue::vGrabLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
@@ -114,7 +114,7 @@ void TaskQueue::vGrabWrite(void)
 /*----------------------------------------------------------------------------*/
 /* grab lock for write                                                        */
 /*----------------------------------------------------------------------------*/
-bool TaskQueue::bGrabWrite(void)
+bool TaskQueue::bGrabLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   

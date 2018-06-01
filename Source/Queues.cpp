@@ -104,8 +104,9 @@ void Queues::vAddToGeneralQueue(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  ASSERT(m_pGeneralQueue->bIsLocked());
+  m_pGeneralQueue->vGrabLock();
   m_pGeneralQueue->vAddTask(pTask);
+  m_pGeneralQueue->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -115,8 +116,9 @@ void Queues::vAddToRunningQueue(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  ASSERT(m_pRunningQueue->bIsLocked());
+  m_pRunningQueue->vGrabLock();
   m_pRunningQueue->vAddTask(pTask);
+  m_pRunningQueue->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -126,8 +128,9 @@ void Queues::vAddToSleepingQueue(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  ASSERT(m_pSleepingQueue->bIsLocked());
+  m_pSleepingQueue->vGrabLock();
   m_pSleepingQueue->vAddTask(pTask);
+  m_pSleepingQueue->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -137,8 +140,9 @@ void Queues::vAddToSuspendedQueue(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  ASSERT(m_pSuspendedQueue->bIsLocked());
+  m_pSuspendedQueue->vGrabLock();
   m_pSuspendedQueue->vAddTask(pTask);
+  m_pSuspendedQueue->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -154,8 +158,9 @@ void Queues::vAddToSlotQueue(Task* pTask)
   // get slot no of the task
   i8 iSlot = Partition::iPartitionToSlot(pTask->iPartition());
                                                   
-  ASSERT(m_pSlotQueues[iSlot]->bIsLocked());
+  m_pSlotQueues[iSlot]->vGrabLock();
   m_pSlotQueues[iSlot]->vAddTask(pTask);
+  m_pSlotQueues[iSlot]->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -197,7 +202,7 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
     if (pCallingThread->m_iLastRRqueue == QR_SLEEPING_QUEUE) {
       
       // grab a write lock on the queue
-      if ( ! m_pSleepingQueue->bGrabWrite()) {
+      if ( ! m_pSleepingQueue->bGrabLock()) {
         // unable to lock queue
         // another thread must be processing it
         // move on to the next queue
@@ -216,7 +221,7 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
         Task* pPoppedTask = m_pSleepingQueue->pPopTask();
         
         // drop lock on queue
-        m_pSleepingQueue->vDropWrite();
+        m_pSleepingQueue->vDropLock();
         
         ASSERT(pPoppedTask == pTask);
         
@@ -232,7 +237,7 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
       }
       
       // drop lock on queue
-      m_pSleepingQueue->vDropWrite();
+      m_pSleepingQueue->vDropLock();
       
       // didn't find a task, move to next queue
       ASSERT( ! m_pSleepingQueue->bIsLocked());
@@ -246,7 +251,7 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
     if (pCallingThread->m_iLastRRqueue == QR_GENERAL_QUEUE) {
       
       // grab a write lock on the queue
-      if (!m_pGeneralQueue->bGrabWrite()) {
+      if (!m_pGeneralQueue->bGrabLock()) {
         // unable to lock queue
         // another thread must be processing it
         // move on to the next queue
@@ -256,7 +261,7 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
       pTask = m_pGeneralQueue->pPopTask();
       
       // drop the lock
-      m_pGeneralQueue->vDropWrite();
+      m_pGeneralQueue->vDropLock();
       
       if (pTask) {
         *ppPoppedTask = pTask;
@@ -273,7 +278,7 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
     // SLOT QUEUES
     
     // grab a write lock on the queue
-    if (!m_pSlotQueues[pCallingThread->m_iLastRRqueue]->bGrabWrite()) {
+    if (!m_pSlotQueues[pCallingThread->m_iLastRRqueue]->bGrabLock()) {
       // unable to lock queue
       // another thread must be processing it
       // move on to the next queue
@@ -284,7 +289,7 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
     pTask = m_pSlotQueues[pCallingThread->m_iLastRRqueue]->pPopTask();
     
     // drop lock on the queue
-    m_pSlotQueues[pCallingThread->m_iLastRRqueue]->vDropWrite();
+    m_pSlotQueues[pCallingThread->m_iLastRRqueue]->vDropLock();
     
     if (pTask) {
       *ppPoppedTask = pTask;
@@ -311,6 +316,18 @@ void Queues::vRemoveThread(Thread* pThread)
   m_pThreadVector->vGrabLock();
   m_pThreadVector->vRemove(pThread);
   m_pThreadVector->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove task from running queue                                             */
+/*----------------------------------------------------------------------------*/
+void Queues::vRemoveFromRunningQueue(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  m_pRunningQueue->vGrabLock();
+  m_pRunningQueue->vRemoveTask(pTask);
+  m_pRunningQueue->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/

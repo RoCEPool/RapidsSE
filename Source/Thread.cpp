@@ -1106,6 +1106,9 @@ void Thread::vTaskCall(void)
   m_npTask->vState(TS_RUNNING);
   m_npTask->vThread(this);
   
+  // add this task to the running task queue
+  gpAttachMap->m_pQueues->vAddToRunningQueue(*m_npTask);
+  
   // record time of call
   // ...
   
