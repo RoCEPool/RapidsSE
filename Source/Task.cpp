@@ -2009,6 +2009,13 @@ void Task::vTracePoint(Stz* aMark)
   
   vTrace("%s\n"_Stz,sStackContents.aChar());
 }
+/*----------------------------------------------------------------------------*/
+/* get partiton this tasks nelongs to                                         */
+/*----------------------------------------------------------------------------*/
+i8 Task::iPartition(void)
+{
+  return m_iPartition;
+}
 
 /*----------------------------------------------------------------------------*/
 /* trace performance point                                                    */

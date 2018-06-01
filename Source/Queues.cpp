@@ -65,7 +65,7 @@ Queues::Queues(void)
   for (i8 i_Slot = 0; i_Slot < gxArguments.m_nSlots; i_Slot++)
     m_pSlotQueues[i_Slot] = new TaskQueue(bTaskCompareTaskNo);
   
-  m_pBlockedQueue   = new TaskQueue(bTaskCompareTaskNo);
+  m_pRunningQueue   = new TaskQueue(bTaskCompareTaskNo);
   m_pSuspendedQueue = new TaskQueue(bTaskCompareTaskNo);
   
   _checkInitialised_(CN_QUEUES);
@@ -95,6 +95,67 @@ void Queues::vAddThread(Thread* pThread)
   m_pThreadVector->vGrabLock();
   m_pThreadVector->vAdd(pThread);
   m_pThreadVector->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* add task to general queue                                                  */
+/*----------------------------------------------------------------------------*/
+void Queues::vAddToGeneralQueue(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  ASSERT(m_pGeneralQueue->bIsLocked());
+  m_pGeneralQueue->vAddTask(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add task to running queue                                                  */
+/*----------------------------------------------------------------------------*/
+void Queues::vAddToRunningQueue(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  ASSERT(m_pRunningQueue->bIsLocked());
+  m_pRunningQueue->vAddTask(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add task to sleeping queue                                                 */
+/*----------------------------------------------------------------------------*/
+void Queues::vAddToSleepingQueue(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  ASSERT(m_pSleepingQueue->bIsLocked());
+  m_pSleepingQueue->vAddTask(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add task to suspended queue                                                */
+/*----------------------------------------------------------------------------*/
+void Queues::vAddToSuspendedQueue(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  ASSERT(m_pSuspendedQueue->bIsLocked());
+  m_pSuspendedQueue->vAddTask(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add task to a slot queue                                                   */
+/*----------------------------------------------------------------------------*/
+void Queues::vAddToSlotQueue(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  // NOTE: Task has a m_iPartition... not being set
+  // this needs to set for partition tasks
+  
+  // get slot no of the task
+  i8 iSlot = Partition::iPartitionToSlot(pTask->iPartition());
+                                                  
+  ASSERT(m_pSlotQueues[iSlot]->bIsLocked());
+  m_pSlotQueues[iSlot]->vAddTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/

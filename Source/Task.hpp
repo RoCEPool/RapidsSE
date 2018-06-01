@@ -226,6 +226,7 @@ namespace Tasks
     StrVal&   sName(void);
     void vName(StrVal& sName);
     void vNextInSet(NP_Task npNext);
+    i8   iPartition(void);
     void vPerformancePoint(Stz* aWordName, Stz* aPointNote);
     void vPerformancePrint(void);
     bool bPopInt(i8& iInt);

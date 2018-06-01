@@ -24,15 +24,15 @@ namespace Threads
                                     // executed (ordered by arrival)
                                     // these tasks have not been executed
   
+    TaskQueue*  m_pSlotQueues[C_SLOTS_PER_NODE];
                                     // set of tasks queued for partitoned
                                     // execution (ordered by arrival)
                                     // these tasks have not been executed
-    TaskQueue*  m_pSlotQueues[C_SLOTS_PER_NODE];
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // queues which are not checked in the round robin
   
-    TaskQueue*  m_pBlockedQueue;    // set of tasks which are currently blocked
+    TaskQueue*  m_pRunningQueue;    // set of tasks which are currently running
                                     // (ordered by arrival)
                                     // these tasks have been partially executed
   
@@ -51,6 +51,13 @@ namespace Threads
     ~Queues(void);
   
     void vAddThread(Thread* pThread);
+    
+    void vAddToGeneralQueue(Task* pTask);
+    void vAddToRunningQueue(Task* pTask);
+    void vAddToSleepingQueue(Task* pTask);
+    void vAddToSlotQueue(Task* pTask);
+    void vAddToSuspendedQueue(Task* pTask);
+    
     bool bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread);
     void vRemoveThread(Thread* pThread);
 
