@@ -259,6 +259,7 @@ namespace Tasks
     i8   iTxId(void);
     void vTxId(i8 iTxId);
     i8   iWakeupTime(void);
+    void vWakeupTask(void);
     
     void vAddPrimitives(void);
     void vAddPrimitives_AccessPath(void);

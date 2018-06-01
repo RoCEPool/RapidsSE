@@ -104,6 +104,84 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
+  Task* pTask;
+  
+  while (true) {
+    
+    // move to the next queue
+    pCallingThread->m_iLastRRqueue++;
+    
+    // have we reached the end of the queues
+    if (pCallingThread->m_iLastRRqueue == gpAttachMap->m_pGrid->m_nSlots) {
+      
+      // start all over
+      pCallingThread->m_iLastRRqueue = QR_NONE;
+      continue;
+    }
+    
+    //--------------------------------------------------------------------------
+    // QR_SLEEPING_QUEUE
+    
+    if (pCallingThread->m_iLastRRqueue == QR_SLEEPING_QUEUE) {
+      
+      // peek at the next task in the queue
+      pTask = m_pSleepingQueue->pPeekTask();
+      
+      // check if task wakeup time is now
+      Since xNow;
+      xNow.vSet();
+      i8 iMicrosections = xNow.iMicroseconds() + xNow.iSeconds()*1000;
+      if (pTask->iWakeupTime() == iMicrosections) {
+        
+        // clear wakeup time of the task
+        pTask->vWakeupTask();
+        
+        // pop the task off the queue
+        Task* pPoppedTask = m_pSleepingQueue->pPopTask();
+        ASSERT(pPoppedTask == pTask);
+        
+        // return the popped task
+        *ppPoppedTask = pTask;
+        
+        // thread has a task to run
+        return true;
+      }
+      
+      // didn't find a task, move to next queue
+      continue;
+    
+    }
+    
+    //--------------------------------------------------------------------------
+    // QR_GENERAL_QUEUE
+    
+    if (pCallingThread->m_iLastRRqueue == QR_GENERAL_QUEUE) {
+      // pop task off the general queue
+      pTask = m_pGeneralQueue->pPopTask();
+      if (pTask) {
+        *ppPoppedTask = pTask;
+        return true;
+      }
+      
+      // didn't find a task, move to next queue
+      continue;
+    }
+    
+    //--------------------------------------------------------------------------
+    // SLOT QUEUES
+    
+    // pop a task off the partition queues
+    pTask = m_pSlotQueues[pCallingThread->m_iLastRRqueue]->pPopTask();
+    if (pTask) {
+      *ppPoppedTask = pTask;
+      return true;
+    }
+    
+    // didn't find a task to run, move to next queue
+    continue;
+  }
+  
+  NEVER_REACH;
   return false;
 }
 
