@@ -33,7 +33,7 @@ namespace Threads
   
   static Stz* aTH[]
   {
-  /*  0 */ "none"_Stz,
+  /*  0 */ "NONE"_Stz,
   /*  1 */ "ANSWER"_Stz,
   /*  2 */ "COORDINATOR"_Stz,
   /*  3 */ "COORDINATOR_PROXY"_Stz,
@@ -48,7 +48,25 @@ namespace Threads
   /* 12 */ "SCANOP"_Stz,
   /* 13 */ "SINKOP"_Stz,
   /* 14 */ "WRITEOP"_Stz,
-  /* 15 */ "enums"_Stz
+  /* 15 */ "ENUMS"_Stz
+  };
+  
+  enum eTC // thread condition/state
+  {
+    /*  0 */ TC_NONE=0,
+    /*  1 */ TC_READYTORUN,
+    /*  2 */ TC_RUNNING,
+    /*  3 */ TC_WAITING,
+    /*  4 */ TC_ENUMS,
+  };
+  
+  static Stz* aTC[]
+  {
+    /*  0 */ "NONE"_Stz,
+    /*  1 */ "READYTORUN"_Stz,
+    /*  2 */ "RUNNING"_Stz,
+    /*  3 */ "WAITING"_Stz,
+    /*  4 */ "ENUMS"_Stz,
   };
   
   class Thread : public Object,
@@ -59,8 +77,10 @@ namespace Threads
   public:
     i8           m_iThreadNo;    // our thread no
     s32          m_sName;        // thread name
+    Lock         m_xLock;        // thread lock
     eAC          m_eActorModel;  // actor model
     eTH          m_eThread;      // thread kind
+    eTC          m_eThreadState; // thread state
     i8           m_iPartition;   // specific partition? 
     PosixThread* m_pPosixThread; // its posix structure
     Semaphore*   m_pSemaphore;   // this threads semaphore
@@ -99,6 +119,8 @@ namespace Threads
     void vBind(i8 iCpu);
     i8   iCpu(void);
     void vContentDump(void) const;
+    bool bGrabLock(void);
+    void vDropLock(void);
     i8   iLastRRqueue(void);
     void vLastRRqueue(i8 iLastRRqueue);
     void vLoop(void);
@@ -116,8 +138,11 @@ namespace Threads
     void vSpawn_Server(void);
     void vSpawn_Thread(void);
     void vSpawn_Worker(void);
+    void vTask(Task* pTask);
     i8   iThreadNo(void);
-  
+    eTC  eThreadState(void);
+    void vThreadState(eTC eThreadState);
+    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
     void  vCondBroadcast(void);

@@ -72,8 +72,10 @@ Thread::Thread(void)
   
   m_iThreadNo    = ++zThreadNo;
   m_sName        = "<no thread name>"_Stz;
+  m_xLock.vInitLock(LK_THREAD);
   m_eActorModel  = AC_NONE;
   m_eThread      = TH_NONE;
+  m_eThreadState = TC_NONE;
   m_iPartition   = -1;
   m_pPosixThread = new PosixThread;
   m_pSemaphore   = new Semaphore;
@@ -392,6 +394,23 @@ void Thread::vContentDump(void) const
          this,
          m_pPosixThread->m_iOpSysThreadId,
          m_pPosixThread->m_iPosixThreadId);
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop thea write lock on this thread                                        */
+/*----------------------------------------------------------------------------*/
+void Thread::vDropLock(void)
+{
+  ASSERT(m_xLock.bIsLocked());
+  m_xLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab a write lock on this thread                                           */
+/*----------------------------------------------------------------------------*/
+bool Thread::bGrabLock(void)
+{
+  return m_xLock.bGrabWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -939,6 +958,20 @@ void Thread::vPartition(i8 iPartition)
 }
 
 /*----------------------------------------------------------------------------*/
+/* atetmpt to get a task to run by peeking at the queues                      */
+/*---------------------------------------------------------------------------*/
+bool Thread::bQueuePeek(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  Task* pPoppedTask;
+  bool bPopped = gpAttachMap->m_pQueues->bPopQueuedTask(&pPoppedTask,this);
+  
+  m_npTask = pPoppedTask;
+  return bPopped;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get name of this thread                                                    */
 /*----------------------------------------------------------------------------*/
 StrVal& Thread::sName(void)
@@ -1028,17 +1061,33 @@ i8 Thread::iThreadNo(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* atetmpt to get a task to run by peeking at the queues                      */
+/* get thread state                                                           */
 /*----------------------------------------------------------------------------*/
-bool Thread::bQueuePeek(void)
+eTC Thread::eThreadState(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  Task* pPoppedTask;
-  bool bPopped = gpAttachMap->m_pQueues->bPopQueuedTask(&pPoppedTask,this);
+  return m_eThreadState;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the thread state                                                       */
+/*----------------------------------------------------------------------------*/
+void Thread::vThreadState(eTC eThreadState)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  m_npTask = pPoppedTask;
-  return bPopped;
+  m_eThreadState = eThreadState;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the task in the thread                                                 */
+/*----------------------------------------------------------------------------*/
+void Thread::vTask(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  m_npTask = pTask;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1048,6 +1097,7 @@ void Thread::vTaskCall(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
+  m_eThreadState = TC_RUNNING;
   ASSERT(*m_npTask);
   
   PosixThread::vTlsSet(giTLS_TaskKey,*m_npTask);
@@ -1095,6 +1145,7 @@ void Thread::vTaskWait(void)
   // will not have a task
   ASSERT(! *m_npTask);
 
+  m_eThreadState = TC_WAITING;
   vCondWait();
   
   // will have a task
