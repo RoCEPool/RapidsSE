@@ -35,6 +35,8 @@ private:
   Tokeniser* m_pTokeniser; // input stream tokeniser
   Timer      m_xTimer;     // timer
   
+  PosixThread m_xPosixThread; // posix thread structure
+  
   // must be last
   Footer m_xFooter;
   

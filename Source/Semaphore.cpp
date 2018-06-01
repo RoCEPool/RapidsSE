@@ -6,6 +6,8 @@
 
 #include "StorageEngine.h"
 
+extern pthread_key_t giTLS_ThreadKey;
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -226,6 +228,10 @@ bool Semaphore::bMutexLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE,_FOOTER_);
   
+  PosixThread* pCallingThread =
+    static_cast<PosixThread*>(PosixThread::pTlsGet(giTLS_ThreadKey));
+  RASSERT(pCallingThread);
+  
   i8 rCode = pthread_mutex_trylock(&m_xMutex);
   
   if (0 == rCode) {
@@ -248,6 +254,10 @@ void Semaphore::vMutexLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE,_FOOTER_);
   
+  PosixThread* pCallingThread =
+  static_cast<PosixThread*>(PosixThread::pTlsGet(giTLS_ThreadKey));
+  RASSERT(pCallingThread);
+  
   // this is a blocking call
   i8 rCode = pthread_mutex_lock(&m_xMutex);
   //vTrace("MutexLock %p\n"_Stz,this);
@@ -267,6 +277,10 @@ void Semaphore::vMutexLock(void)
 void Semaphore::vMutexUnlock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE,_FOOTER_);
+  
+  PosixThread* pCallingThread =
+  static_cast<PosixThread*>(PosixThread::pTlsGet(giTLS_ThreadKey));
+  RASSERT(pCallingThread);
   
   //vTrace("MutexUnlock %p\n"_Stz,this);
   
