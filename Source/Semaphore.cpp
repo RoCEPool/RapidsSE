@@ -63,7 +63,8 @@ Semaphore::Semaphore()
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE,_FOOTER_);
   
-  m_bLocked        = false;
+  m_bLocked = false;
+  m_pLockingThread = nullptr;
 
   // initialise attribute to mutex
   MemLib::vZero(&m_xMutexAttr,sizeof(m_xMutexAttr),CN_SEMAPHORE);
@@ -136,6 +137,16 @@ void Semaphore::vCondSignal(void)
   // **calling thread must have the mutex**
   //
   
+  PosixThread* pCallingThread =
+    static_cast<PosixThread*>(PosixThread::pTlsGet(giTLS_ThreadKey));
+  RASSERT(pCallingThread);
+  
+  // the mutex should be locked by the calling thread
+  ASSERT(m_bLocked);
+  RASSERT(m_pLockingThread);
+  RASSERT(pCallingThread == m_pLockingThread);
+  ASSERT(bMutexIsLocked());
+  
   i8 rCode = pthread_cond_signal(&m_xCond);
   
   if (0 == rCode)
@@ -145,7 +156,7 @@ void Semaphore::vCondSignal(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* condition wait (thread to wait will be calling thread)                     */
+/* this thread waits for signal (blocking call)                               */
 /*----------------------------------------------------------------------------*/
 void Semaphore::vCondWait_Mutex(void)
 {
@@ -159,14 +170,26 @@ void Semaphore::vCondWait_Mutex(void)
   // The mutex must be explicitly unlocked by the caller.
   //
   
+  PosixThread* pCallingThread =
+    static_cast<PosixThread*>(PosixThread::pTlsGet(giTLS_ThreadKey));
+  RASSERT(pCallingThread);
+  
+  // the mutex should be locked by the calling thread
+  ASSERT(m_bLocked);
+  RASSERT(m_pLockingThread);
+  RASSERT(pCallingThread == m_pLockingThread);
   ASSERT(bMutexIsLocked());
   
+  // clear this threads tracking of the mutex
+  m_pLockingThread = nullptr;
   m_bLocked = false;
   
   i8 rCode = pthread_cond_wait(&m_xCond,&m_xMutex);
   
   if (0 == rCode) {
-    ASSERT(bMutexIsLocked());
+    RASSERT(! m_bLocked);
+    RASSERT(! m_pLockingThread);
+    m_pLockingThread = pCallingThread;
     m_bLocked = true;
     return;
   }
@@ -175,12 +198,22 @@ void Semaphore::vCondWait_Mutex(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* this thread waits for signal (should be calling thread)                    */
+/* this thread waits for signal (time limited blocking call)                  */
 /*----------------------------------------------------------------------------*/
 void Semaphore::vCondTimedWait(i8 iMicroSeconds)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE,_FOOTER_);
   
+  PosixThread* pCallingThread =
+    static_cast<PosixThread*>(PosixThread::pTlsGet(giTLS_ThreadKey));
+  RASSERT(pCallingThread);
+  
+  // the mutex should be locked by the calling thread
+  RASSERT(m_bLocked);
+  RASSERT(m_pLockingThread);
+  RASSERT(pCallingThread == m_pLockingThread);
+  RASSERT(bMutexIsLocked());
+
   Since xSince;
   
   xSince.vSet();
@@ -191,32 +224,39 @@ void Semaphore::vCondTimedWait(i8 iMicroSeconds)
   xTimeSpec.tv_sec  = xSince.m_iSeconds;
   xTimeSpec.tv_nsec = xSince.m_iMicroseconds * 1000;
   
-  ASSERT(m_bLocked);
+  // clear this threads tracking of the mutex
+  m_pLockingThread = nullptr;
+  m_bLocked = false;
   
+  // this is a time limited blocking call
   i8 rCode = pthread_cond_timedwait(&m_xCond,&m_xMutex,&xTimeSpec);
   
-  if (0 == rCode || ETIMEDOUT == rCode)
+  if (0 == rCode || ETIMEDOUT == rCode) {
+    RASSERT(! m_bLocked);
+    RASSERT(! m_pLockingThread);
+    m_pLockingThread = pCallingThread;
+    m_bLocked = true;
     return;
+  }
   
   vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
 }
 
 /*----------------------------------------------------------------------------*/
-/* test if a threads mutex is locked                                          */
+/* test if a threads mutex is locked (non-blocking)                           */
 /*----------------------------------------------------------------------------*/
 bool Semaphore::bMutexIsLocked(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE,_FOOTER_);
   
+  // this is a non-blocking call
   i8 rCode = pthread_mutex_trylock(&m_xMutex);
   
-  if (EBUSY == rCode) {
+  if (EBUSY == rCode)
     return true;
-  }
   
-  if (0 == rCode) {
+  if (0 == rCode)
     vMutexUnlock();
-  }
   
   return false;
 }
@@ -232,9 +272,18 @@ bool Semaphore::bMutexLock(void)
     static_cast<PosixThread*>(PosixThread::pTlsGet(giTLS_ThreadKey));
   RASSERT(pCallingThread);
   
+  // the calling thread cannot already have the mutex
+  RASSERT(pCallingThread != m_pLockingThread);
+  
+  // DO NOT TOUCH m_bLocked or m_pLockingThread
+  
+  // this is a non-blocking call
   i8 rCode = pthread_mutex_trylock(&m_xMutex);
   
   if (0 == rCode) {
+    RASSERT(! m_bLocked);
+    RASSERT(! m_pLockingThread);
+    m_pLockingThread = pCallingThread;
     m_bLocked = true;
     return true;
   }
@@ -255,15 +304,22 @@ void Semaphore::vMutexLock(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE,_FOOTER_);
   
   PosixThread* pCallingThread =
-  static_cast<PosixThread*>(PosixThread::pTlsGet(giTLS_ThreadKey));
+    static_cast<PosixThread*>(PosixThread::pTlsGet(giTLS_ThreadKey));
   RASSERT(pCallingThread);
+  
+  // the calling thread cannot already have the mutex
+  RASSERT(pCallingThread != m_pLockingThread);
+  
+  // DO NOT TOUCH m_bLocked or m_pLockingThread
   
   // this is a blocking call
   i8 rCode = pthread_mutex_lock(&m_xMutex);
   //vTrace("MutexLock %p\n"_Stz,this);
   
   if (0 == rCode) {
-    ASSERT( ! m_bLocked );
+    RASSERT(! m_bLocked);
+    RASSERT(! m_pLockingThread);
+    m_pLockingThread = pCallingThread;
     m_bLocked = true;
     return;
   }
@@ -272,27 +328,34 @@ void Semaphore::vMutexLock(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* unlock a threads mutex                                                     */
+/* unlock a threads mutex (non-blocking)                                      */
 /*----------------------------------------------------------------------------*/
 void Semaphore::vMutexUnlock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE,_FOOTER_);
   
   PosixThread* pCallingThread =
-  static_cast<PosixThread*>(PosixThread::pTlsGet(giTLS_ThreadKey));
+    static_cast<PosixThread*>(PosixThread::pTlsGet(giTLS_ThreadKey));
   RASSERT(pCallingThread);
+  
+  // the mutex should be locked by the calling thread
+  RASSERT(m_bLocked);
+  RASSERT(m_pLockingThread);
+  RASSERT(pCallingThread == m_pLockingThread);
+  RASSERT(bMutexIsLocked());
   
   //vTrace("MutexUnlock %p\n"_Stz,this);
   
-  ASSERT( m_bLocked );
+  // clear this threads tracking of the mutex
+  m_pLockingThread = nullptr;
   m_bLocked = false;
   
   i8 rCode = pthread_mutex_unlock(&m_xMutex);
   
-  if (0 == rCode) {
-    //m_bLocked = false;
+  // DO NOT TOUCH m_bLocked or m_pLockingThread
+  
+  if (0 == rCode)
     return;
-  }
   
   vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Stz,rCode);
 }
@@ -308,6 +371,10 @@ void Semaphore::vSignalThread(void)
   vCondSignal();
   vMutexUnlock();
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */

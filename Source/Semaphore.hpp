@@ -9,6 +9,8 @@ namespace System
   {
   public:
     bool                m_bLocked;    // true if mutex is locked (debugging)
+    PosixThread*        m_pLockingThread; // thread which acquired locking thread
+  
     pthread_mutex_t     m_xMutex;     // mutex variable
     pthread_mutexattr_t m_xMutexAttr; // mutex shared attribute
     pthread_cond_t      m_xCond;      // condition variable
