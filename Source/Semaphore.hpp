@@ -28,6 +28,7 @@ namespace System
     void vCondSignal(void);
     void vCondWait_Mutex(void);
     void vCondTimedWait(i8 iMicroSeconds);
+    bool bMutexIsLocked(void);
     bool bMutexLock(void);
     void vMutexLock(void);
     void vMutexUnlock(void);

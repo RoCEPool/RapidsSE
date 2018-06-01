@@ -157,13 +157,14 @@ void Semaphore::vCondWait_Mutex(void)
   // The mutex must be explicitly unlocked by the caller.
   //
   
-  ASSERT(m_bLocked);
+  ASSERT(bMutexIsLocked());
   
   m_bLocked = false;
   
   i8 rCode = pthread_cond_wait(&m_xCond,&m_xMutex);
   
   if (0 == rCode) {
+    ASSERT(bMutexIsLocked());
     m_bLocked = true;
     return;
   }
@@ -199,23 +200,23 @@ void Semaphore::vCondTimedWait(i8 iMicroSeconds)
 }
 
 /*----------------------------------------------------------------------------*/
-/* lock a threads mutex (blocking)                                            */
+/* test if a threads mutex is locked                                          */
 /*----------------------------------------------------------------------------*/
-void Semaphore::vMutexLock(void)
+bool Semaphore::bMutexIsLocked(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE,_FOOTER_);
   
-  // this is a blocking call
-  i8 rCode = pthread_mutex_lock(&m_xMutex);
-  //vTrace("MutexLock %p\n"_Stz,this);
+  i8 rCode = pthread_mutex_trylock(&m_xMutex);
   
-  if (0 == rCode) {
-    ASSERT( ! m_bLocked );
-    m_bLocked = true;
-    return;
+  if (EBUSY == rCode) {
+    return true;
   }
   
-  vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
+  if (0 == rCode) {
+    vMutexUnlock();
+  }
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -238,6 +239,26 @@ bool Semaphore::bMutexLock(void)
   vWarn("pthread_mutex_trylock() error; rCode=%lld\n"_Stz,rCode);
   
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* lock a threads mutex (blocking)                                            */
+/*----------------------------------------------------------------------------*/
+void Semaphore::vMutexLock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE,_FOOTER_);
+  
+  // this is a blocking call
+  i8 rCode = pthread_mutex_lock(&m_xMutex);
+  //vTrace("MutexLock %p\n"_Stz,this);
+  
+  if (0 == rCode) {
+    ASSERT( ! m_bLocked );
+    m_bLocked = true;
+    return;
+  }
+  
+  vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
 }
 
 /*----------------------------------------------------------------------------*/

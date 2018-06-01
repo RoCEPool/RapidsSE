@@ -1088,6 +1088,13 @@ void Thread::vTaskWait(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
 
+  // will not have a task
+  ASSERT(! *m_npTask);
+
+  vCondWait();
+  
+  // will have a task
+  ASSERT(*m_npTask);
 }
 
 /*----------------------------------------------------------------------------*/
