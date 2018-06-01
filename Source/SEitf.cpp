@@ -47,7 +47,7 @@ ReqTable SeRequests[] =
  { "gettblNew"_Stz,      &SEitf::bGetTableNew,          "getTableNew_req"_Stz     },
  { "gettsk"_Stz,         &SEitf::bGetTask,              "getTask_req"_Stz         },
  { "getTotalSpace"_Stz,  &SEitf::bGetTotalSpace,        "getTotalSpace"_Stz       },
- { "TblInUse"_Stz,       &SEitf::bInUseTable,           "tableInuse_req"_Stz      },
+ { "g35"_Stz,            &SEitf::bG35,                  "g35_req"_Stz             },
  { "ld"_Stz,             &SEitf::bLoadTable,            "loadTable_req"_Stz       },
  { "lds"_Stz,            &SEitf::bLoadTableStream,      "loadTableStream_req"_Stz },
  { "lf"_Stz,             &SEitf::bListFolder,           "lf_req"_Stz              },
@@ -65,9 +65,11 @@ ReqTable SeRequests[] =
  { "mktbl"_Stz,          &SEitf::bCreateTable,          "createTable_req"_Stz     },
  { "mkten"_Stz,          &SEitf::bCreateTenant,         "createTenant_req"_Stz    },
  { "mon"_Stz,            &SEitf::bGetMonitor,           "getMonitor_req"_Stz      },
+ { "n35"_Stz,            &SEitf::bN35,                  "n35_req"_Stz             },
  { "ping"_Stz,           &SEitf::bPing,                 "ping_req"_Stz            },
  { "print"_Stz,          &SEitf::bPrint,                nullptr                   },
  { "pwf"_Stz,            &SEitf::bPrintWorkingFolder,   "pwf_req"_Stz             },
+ { "p35"_Stz,            &SEitf::bP35,                  "p35_req"_Stz             },
  { "reload"_Stz,         &SEitf::bReload,               "reload_req"_Stz          },
  { "retidx"_Stz,         &SEitf::bRetIndex,             "returnIndex_req"_Stz     },
  { "rettbl"_Stz,         &SEitf::bRetTable,             "returnTable_req"_Stz     },
@@ -89,6 +91,7 @@ ReqTable SeRequests[] =
  { "szidx"_Stz,          &SEitf::bSizeIndex,            "sizeIndex_req"_Stz       },
  { "sz"_Stz,             &SEitf::bSizeTable,            "sizeTable_req"_Stz       },
  { "tableSizes"_Stz,     &SEitf::bSizeTables,           "sizeTables_req"_Stz      },
+ { "tblInUse"_Stz,       &SEitf::bInUseTable,           "tableInuse_req"_Stz      },
  { "tr"_Stz,             &SEitf::bTruncateTable,        "truncateTable_req"_Stz   },
  { "txBeg"_Stz,          &SEitf::bTxBegin,              "txBegin_req"_Stz         },
  { "txCmt"_Stz,          &SEitf::bTxCommit,             "txCommit_req"_Stz        },
@@ -3449,6 +3452,54 @@ bool SEitf::bPing(TokenVec& xTokenVec, i8 iReqNo)
   s256 sRequest;
   
   ASSERT(xTokenVec[0]->bSame("ping"_Stz));
+  
+  sRequest = SeRequests[iReqNo].aRequest;
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* R3.5 node-level command test                                               */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bN35(TokenVec& xTokenVec, i8 iReqNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  ASSERT(xTokenVec[0]->bSame("n35"_Stz));
+  
+  sRequest = SeRequests[iReqNo].aRequest;
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* R3.5 grid-level command test                                               */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bG35(TokenVec& xTokenVec, i8 iReqNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  ASSERT(xTokenVec[0]->bSame("g35"_Stz));
+  
+  sRequest = SeRequests[iReqNo].aRequest;
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* R3.5 partition-level command test                                          */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bP35(TokenVec& xTokenVec, i8 iReqNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  ASSERT(xTokenVec[0]->bSame("p35"_Stz));
   
   sRequest = SeRequests[iReqNo].aRequest;
   

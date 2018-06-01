@@ -149,6 +149,9 @@ displayOff displayOff_req
 mon        getMonitor_req
 object     object_req
 ping       ping_req
+n35        n35_req
+g35        g35_req
+p35        p35_req
 seitf      seitfCount_req
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

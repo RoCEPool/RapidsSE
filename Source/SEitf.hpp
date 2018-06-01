@@ -234,6 +234,9 @@ namespace Interface
     bool bSeitfCount(TokenVec& xTokenVec, i8 iReqNo);
     
     bool bPing(TokenVec& xTokenVec, i8 iReqNo);
+    bool bN35(TokenVec& xTokenVec, i8 iReqNo);
+    bool bG35(TokenVec& xTokenVec, i8 iReqNo);
+    bool bP35(TokenVec& xTokenVec, i8 iReqNo);
 
     bool bPrint(TokenVec& xTokenVec, i8 iReqNo);
  
