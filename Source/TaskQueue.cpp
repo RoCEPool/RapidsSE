@@ -107,6 +107,26 @@ void TaskQueue::vGrabWrite(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* grab lock for write                                                        */
+/*----------------------------------------------------------------------------*/
+bool TaskQueue::bGrabWrite(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
+  
+  return m_xLock.bGrabWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* is locked ?                                                                */
+/*----------------------------------------------------------------------------*/
+bool TaskQueue::bIsLocked(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
+  
+  return m_xLock.bIsLocked();
+}
+
+/*----------------------------------------------------------------------------*/
 /* peek at a task at the front of the queue                                   */
 /*----------------------------------------------------------------------------*/
 Task* TaskQueue::pPeekTask(void)
@@ -115,12 +135,11 @@ Task* TaskQueue::pPeekTask(void)
   
   Task* pTask;
   
-  m_xLock.vGrabWrite();
+   ASSERT(m_xLock.bIsLocked());
   
   SkipNode* pNode = m_pTaskSkipList->pFirst(0);
   pTask = _pTask(pNode->m_pObject);
   
-  m_xLock.vDropWrite();
   
   return pTask;
 }
@@ -135,15 +154,13 @@ Task* TaskQueue::pPopTask(void)
   bool bRemoved;
   Task* pTask;
   
-  m_xLock.vGrabWrite();
+  ASSERT(m_xLock.bIsLocked());
   
   SkipNode* pNode = m_pTaskSkipList->pFirst(0);
   pTask = _pTask(pNode->m_pObject);
   bRemoved = m_pTaskSkipList->bRemove(pTask);
   RASSERT(bRemoved);
-  
-  m_xLock.vDropWrite();
-  
+
   return pTask;
 }
 
@@ -156,11 +173,9 @@ void TaskQueue::vRemoveTask(Task* pTask)
   
   bool bRemoved;
   
-  m_xLock.vGrabWrite();
+  ASSERT(m_xLock.bIsLocked());
   
   bRemoved = m_pTaskSkipList->bRemove(pTask);
-  
-  m_xLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/

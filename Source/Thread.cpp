@@ -1034,7 +1034,11 @@ bool Thread::bQueuePeek(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  return false;
+  Task* pPoppedTask;
+  bool bPopped = gpAttachMap->m_pQueues->bPopQueuedTask(&pPoppedTask,this);
+  
+  m_npTask = pPoppedTask;
+  return bPopped;
 }
 
 /*----------------------------------------------------------------------------*/

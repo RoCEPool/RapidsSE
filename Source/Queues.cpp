@@ -106,10 +106,20 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
   
   Task* pTask;
   
+  // set popped task to be null to start wit
+  *ppPoppedTask = NULL;
+  
+  // save lastQueue we started with
+  i8 iStartRRQueue = pCallingThread->m_iLastRRqueue;
+  
   while (true) {
     
     // move to the next queue
     pCallingThread->m_iLastRRqueue++;
+    
+    // have we round robined around the queues once ?
+    if (iStartRRQueue == pCallingThread->m_iLastRRqueue)
+      return false;
     
     // have we reached the end of the queues
     if (pCallingThread->m_iLastRRqueue == gpAttachMap->m_pGrid->m_nSlots) {
@@ -124,30 +134,47 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
     
     if (pCallingThread->m_iLastRRqueue == QR_SLEEPING_QUEUE) {
       
+      // grab a write lock on the queue
+      if ( ! m_pSleepingQueue->bGrabWrite()) {
+        // unable to lock queue
+        // another thread must be processing it
+        // move on to the next queue
+        continue;
+      }
+      
       // peek at the next task in the queue
       pTask = m_pSleepingQueue->pPeekTask();
       
       // check if task wakeup time is now
       Since xNow;
       xNow.vSet();
-      i8 iMicrosections = xNow.iMicroseconds() + xNow.iSeconds()*1000;
-      if (pTask->iWakeupTime() == iMicrosections) {
+      i8 iMicroseconds = xNow.iMicroseconds() + xNow.iSeconds()*1000;
+      if (pTask->iWakeupTime() == iMicroseconds) {
         
         // clear wakeup time of the task
         pTask->vWakeupTask();
         
         // pop the task off the queue
         Task* pPoppedTask = m_pSleepingQueue->pPopTask();
+        
+        // drop lock on queue
+        m_pSleepingQueue->vDropWrite();
+        
         ASSERT(pPoppedTask == pTask);
         
         // return the popped task
         *ppPoppedTask = pTask;
         
         // thread has a task to run
+        ASSERT( ! m_pSleepingQueue->bIsLocked());
         return true;
       }
       
+      // drop lock on queue
+      m_pSleepingQueue->vDropWrite();
+      
       // didn't find a task, move to next queue
+      ASSERT( ! m_pSleepingQueue->bIsLocked());
       continue;
     
     }
@@ -156,28 +183,56 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
     // QR_GENERAL_QUEUE
     
     if (pCallingThread->m_iLastRRqueue == QR_GENERAL_QUEUE) {
+      
+      // grab a write lock on the queue
+      if (!m_pGeneralQueue->bGrabWrite()) {
+        // unable to lock queue
+        // another thread must be processing it
+        // move on to the next queue
+        continue;
+      }
       // pop task off the general queue
       pTask = m_pGeneralQueue->pPopTask();
+      
+      // drop the lock
+      m_pGeneralQueue->vDropWrite();
+      
       if (pTask) {
         *ppPoppedTask = pTask;
+        ASSERT( ! m_pGeneralQueue->bIsLocked());
         return true;
       }
       
       // didn't find a task, move to next queue
+      ASSERT( ! m_pGeneralQueue->bIsLocked());
       continue;
     }
     
     //--------------------------------------------------------------------------
     // SLOT QUEUES
     
+    // grab a write lock on the queue
+    if (!m_pSlotQueues[pCallingThread->m_iLastRRqueue]->bGrabWrite()) {
+      // unable to lock queue
+      // another thread must be processing it
+      // move on to the next queue
+      continue;
+    }
+    
     // pop a task off the partition queues
     pTask = m_pSlotQueues[pCallingThread->m_iLastRRqueue]->pPopTask();
+    
+    // drop lock on the queue
+    m_pSlotQueues[pCallingThread->m_iLastRRqueue]->vDropWrite();
+    
     if (pTask) {
       *ppPoppedTask = pTask;
+      ASSERT( ! m_pSlotQueues[pCallingThread->m_iLastRRqueue]->bIsLocked());
       return true;
     }
     
     // didn't find a task to run, move to next queue
+    ASSERT( ! m_pSlotQueues[pCallingThread->m_iLastRRqueue]->bIsLocked());
     continue;
   }
   

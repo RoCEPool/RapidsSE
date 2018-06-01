@@ -25,6 +25,8 @@ namespace Tasks
     void   vAddTask(Task* pTask);
     void   vDropWrite(void);
     void   vGrabWrite(void);
+    bool   bGrabWrite(void);
+    bool   bIsLocked(void);
     Task*  pPeekTask(void);
     Task*  pPopTask(void);
     void   vRemoveTask(Task* pTask);
