@@ -98,6 +98,38 @@ void Queues::vAddThread(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add task to queue                                                          */
+/*----------------------------------------------------------------------------*/
+void Queues::vAddToQueue(Task* pTask)                        //! RAY TO COMPLETE
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  eQR eQueue = pTask->eWhichQueue();
+   
+  if (QR_RUNNING_QUEUE == eQueue) {
+    m_pRunningQueue->vAddTask(pTask);
+    return;
+  }
+  
+  if (QR_WAITING_QUEUE == eQueue) {
+    m_pSuspendedQueue->vAddTask(pTask);
+    return;
+  }
+  
+  if (QR_SLEEPING_QUEUE == eQueue) {
+    m_pSleepingQueue->vAddTask(pTask);
+    return;
+  }
+  
+  if (QR_GENERAL_QUEUE == eQueue) {
+    m_pGeneralQueue->vAddTask(pTask);
+    return;
+  }
+  
+  m_pSlotQueues[eQueue]->vAddTask(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
 /* add task to general queue                                                  */
 /*----------------------------------------------------------------------------*/
 void Queues::vAddToGeneralQueue(Task* pTask)

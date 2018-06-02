@@ -5,12 +5,6 @@
 
 #include "Tasks.h"
 
-enum eQR // queue round robin
-{
-  /* -3 */ QR_NONE=-3,
-  /* -2 */ QR_SLEEPING_QUEUE,
-  /* -1 */ QR_GENERAL_QUEUE,
-};
 
 static const i8 C_THREADS = 256;
 

@@ -264,7 +264,8 @@ namespace Tasks
     void vTxId(i8 iTxId);
     i8   iWakeupTime(void);
     void vWakeupTask(void);
-    
+    eQR  eWhichQueue(void);
+  
     void vAddPrimitives(void);
     void vAddPrimitives_AccessPath(void);
     void vAddPrimitives_Accum(void);

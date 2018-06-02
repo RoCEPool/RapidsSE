@@ -13,6 +13,11 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 bool Handlers::bQueueLevelHandler(Task* pTask)
 {
+  //
+  // this handler is called from Thread::vLoop()
+  // after a task returns to the thread
+  //
+  
   // get the thread vector
   ThreadVector* pThreadVector = gpAttachMap->m_pQueues->pThreadVector();
   
@@ -71,6 +76,7 @@ bool Handlers::bQueueLevelHandler(Task* pTask)
 /*----------------------------------------------------------------------------*/
 bool Handlers::bSystemLevelHandler(Task* pTask)
 {
+  gpAttachMap->m_pQueues->vAddToQueue(pTask);
   
   return true;
 }
@@ -102,7 +108,7 @@ bool Handlers::bThreadLevelHandler(NP_Task* pNpTask)
       
     case TS_EXITED:
       // task has exited, just delete it
-      if ( (*gpAttachMap->m_npBootTask != pTask)  && ( ! pTask->bWordBody()) ) {
+      if ( (*gpAttachMap->m_npBootTask != pTask) && (! pTask->bWordBody()) ) {
         delete pTask;
       }
       break;

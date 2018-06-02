@@ -5,6 +5,15 @@
 
 #include "Utilities.h"
 
+enum eQR // queue round robin
+{
+  /* -5 */ QR_NONE=-5,
+  /* -4 */ QR_RUNNING_QUEUE,
+  /* -3 */ QR_WAITING_QUEUE,
+  /* -2 */ QR_SLEEPING_QUEUE,
+  /* -1 */ QR_GENERAL_QUEUE,
+};
+
 //-----------------------------------------------------------------------------
 
 namespace Tasks

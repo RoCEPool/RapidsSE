@@ -3699,7 +3699,11 @@ bool SEitf::bAppendRequest_R35(StrVal& sRequest)
   MP_Task nnpNewTask = new Task(&xValSet);
   nnpNewTask->vSeedWord("requestLoop"_Stz);
   
+  nnpNewTask->vR35model(true);
+  
   gpAttachMap->m_pServerScheduler->vEnqueueTask_Mutex(*nnpNewTask);
+  //bool bResult = Handlers::bSystemLevelHandler(*nnpNewTask);
+  
   return true;
 }
 
