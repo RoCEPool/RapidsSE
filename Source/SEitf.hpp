@@ -256,7 +256,9 @@ namespace Interface
     
     //--------------------------------------------------------------------------
     bool bAppendRequest(StrVal& sRequest);
-    
+
+    bool bAppendRequest_R35(StrVal& sRequest);
+  
     eEC  eGetResponse(void);
     
     bool bPopResponse(eEC& eResult, StrVal& sResponse);

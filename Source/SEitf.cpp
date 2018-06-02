@@ -3471,7 +3471,7 @@ bool SEitf::bN35(TokenVec& xTokenVec, i8 iReqNo)
   
   sRequest = SeRequests[iReqNo].aRequest;
   
-  return bAppendRequest(sRequest);
+  return bAppendRequest_R35(sRequest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3487,7 +3487,7 @@ bool SEitf::bG35(TokenVec& xTokenVec, i8 iReqNo)
   
   sRequest = SeRequests[iReqNo].aRequest;
   
-  return bAppendRequest(sRequest);
+  return bAppendRequest_R35(sRequest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3503,7 +3503,7 @@ bool SEitf::bP35(TokenVec& xTokenVec, i8 iReqNo)
   
   sRequest = SeRequests[iReqNo].aRequest;
   
-  return bAppendRequest(sRequest);
+  return bAppendRequest_R35(sRequest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3601,6 +3601,59 @@ bool SEitf::bSpawnFetchRows(TokenVec& xTokenVec, i8 iReqNo)
 /* append request to request queue                                            */
 /*----------------------------------------------------------------------------*/
 bool SEitf::bAppendRequest(StrVal& sRequest)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s48K sWorkspace;
+  Stz* aCursor = nullptr;
+  
+  ValWrk xValWrk;
+  ValSet xValSet;
+  
+  // Before appending request for se, ensure that se is running
+  // get the se pid from the attachmap
+  i8 iPid = gpAttachMap->m_iPid;
+  if (!Process::bTestPid(iPid)) {
+    // SE is not running anymore!
+    vError("Cannot find pid %lld\n"_Stz, gpAttachMap->m_iPid);
+    vSetLastError(EC_SE_NOT_RUNNING);
+    return false;
+  }
+  
+  sWorkspace = (i8)this;
+  sWorkspace.vConcat(" >seitf task::this task.seitf! "_Stz);
+  xValWrk = sWorkspace;
+  //vTrace("%s\n"_Stz,xVal.aChar());
+  xValSet.vAppend(aCursor,xValWrk.pNestedValueSelf());
+  
+  xValWrk = sRequest;
+  //vTrace("%s\n"_Stz,xVal.aChar());
+  xValSet.vAppend(aCursor,xValWrk.pNestedValueSelf());
+  
+  // if the current request id matches the next request id, it means
+  // we have not read a response of the previous request
+  if (m_iCurrentRequestId == m_iNextRequestId) {
+    vError("Response for previous request not retrieved. Out-Of-Sync request-response.\n"_Stz);
+    vSetLastError(EC_RESPONSE_PENDING);
+    return false;
+  }
+  
+  // set the new current request id to the next one sent by previous response
+  m_iCurrentRequestId = m_iNextRequestId;
+  
+  // spawn a request task, passing the request to it
+  // create new task (will be automatically appended to task list)
+  MP_Task nnpNewTask = new Task(&xValSet);
+  nnpNewTask->vSeedWord("requestLoop"_Stz);
+  
+  gpAttachMap->m_pServerScheduler->vEnqueueTask_Mutex(*nnpNewTask);
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* append request to request queue (RDP R3.5)                                 */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bAppendRequest_R35(StrVal& sRequest)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
