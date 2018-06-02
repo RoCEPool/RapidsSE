@@ -226,7 +226,6 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
         m_pSleepingQueue->vDropLock();
         
         // didn't find a task, move to next queue
-        ASSERT( ! m_pSleepingQueue->bIsLocked());
         continue;
       }
 
@@ -246,7 +245,6 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
       *ppPoppedTask = pPoppedTask;
       
       // thread has a task to run
-      ASSERT( ! m_pSleepingQueue->bIsLocked());
       return true;
     }
     
@@ -279,7 +277,6 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
       *ppPoppedTask = pPoppedTask;
       
       // thread has a task to run
-      ASSERT( ! m_pGeneralQueue->bIsLocked());
       return true;
     }
     
@@ -310,7 +307,6 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
     *ppPoppedTask = pPoppedTask;
 
     // thread has a task to run
-    ASSERT( ! m_pSlotQueues[pCallingThread->m_iLastRRqueue]->bIsLocked());
     return true;
   }
   
