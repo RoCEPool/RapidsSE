@@ -211,14 +211,15 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
         continue;
       }
       
-      // peek at the first task in the sleeping queue
-      pPeekedTask = m_pSleepingQueue->pPeekTask();
-      
-      // check if task wakeup time is now (or before)
+      // get current time
       xNow.vSet();
       i8 iTimeNow = xNow.iGetAsMicroseconds();
       
-      if (pPeekedTask->iWakeupTime() > iTimeNow) {
+      // peek at the first task in the sleeping queue
+      pPeekedTask = m_pSleepingQueue->pPeekTask();
+      
+      // check if peeked task's wakeup time is after now
+      if (! pPeekedTask || pPeekedTask->iWakeupTime() > iTimeNow) {
         
         // - peeked task is to be woken up in the future
         
