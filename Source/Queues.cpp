@@ -121,7 +121,7 @@ void Queues::vAddToQueue(Task* pTask)                        //! RAY TO COMPLETE
     return;
   }
   
-  if (QR_GENERAL_QUEUE == eQueue) {
+  if (QR_READY_QUEUE == eQueue) {
     m_pReadyQueue->vAddTask(pTask);
     return;
   }
@@ -282,9 +282,9 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // inspect the general queue
+    // inspect the ready queue
     
-    if (QR_GENERAL_QUEUE == pCallingThread->m_iLastRRqueue) {
+    if (QR_READY_QUEUE == pCallingThread->m_iLastRRqueue) {
       
       // attempt to grab a write lock on the general queue
       if (! m_pReadyQueue->bGrabLock()) {
@@ -314,7 +314,7 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // inspect a slot queue
+    // inspect a ready slot queue
     
     // attempt to grab a write lock on the queue
     if (! m_pReadySlotQueues[pCallingThread->m_iLastRRqueue]->bGrabLock()) {
@@ -341,7 +341,9 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
 
     // thread has a task to run
     return true;
-  }
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+  } // while (true) 
   
   NEVER_REACH;
   return false;
