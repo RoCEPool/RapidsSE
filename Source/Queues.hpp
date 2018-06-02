@@ -58,7 +58,11 @@ namespace Threads
     void vAddToRunningQueue(Task* pTask);
     void vAddToSleepingQueue(Task* pTask);
     void vAddToWaitingQueue(Task* pTask);
-    
+  
+    Task* pInspectReadyQueue(Thread* pCallingThread);
+    Task* pInspectReadySlotQueue(Thread* pCallingThread);
+    Task* pInspectSleepingQueue(Thread* pCallingThread);
+  
     bool bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread);
   
     void vRemoveFromQueue(Task* pTask); //! RAY TO COMPLETE
