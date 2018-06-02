@@ -216,36 +216,38 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
       
       // check if task wakeup time is now (or before)
       xNow.vSet();
-      i8 iMicroseconds = xNow.iGetAsMicroseconds();
+      i8 iTimeNow = xNow.iGetAsMicroseconds();
       
-      if (pPeekedTask->iWakeupTime() <= iMicroseconds) {
+      if (pPeekedTask->iWakeupTime() > iTimeNow) {
         
-        // pop the task off the sleeping queue
-        Task* pPoppedTask = m_pSleepingQueue->pPopTask();
+        // - peeked task is to be woken up in the future
         
-        // drop lock on queue
+        // drop lock on sleeping queue
         m_pSleepingQueue->vDropLock();
         
-        ASSERT(pPoppedTask == pPeekedTask);
-        
-        // clear wakeup time of the task
-        pPoppedTask->vWakeupTask();
-        
-        // return the popped task
-        *ppPoppedTask = pPoppedTask;
-        
-        // thread has a task to run
+        // didn't find a task, move to next queue
         ASSERT( ! m_pSleepingQueue->bIsLocked());
-        return true;
+        continue;
       }
+
+      // - peeked task can be be woken up
       
-      // drop lock on queue
+      // pop the task off the sleeping queue
+      Task* pPoppedTask = m_pSleepingQueue->pPopTask();
+      ASSERT(pPoppedTask == pPeekedTask);
+      
+      // drop lock on sleeping queue
       m_pSleepingQueue->vDropLock();
       
-      // didn't find a task, move to next queue
+      // clear wakeup time of the task
+      pPoppedTask->vWakeupTask();
+      
+      // return the popped task
+      *ppPoppedTask = pPoppedTask;
+      
+      // thread has a task to run
       ASSERT( ! m_pSleepingQueue->bIsLocked());
-      continue;
-    
+      return true;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
