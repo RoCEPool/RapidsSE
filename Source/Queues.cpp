@@ -178,7 +178,7 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
   // set popped task to be null to start with
   *ppPoppedTask = NULL;
   
-  // save lastQueue we started with
+  // save last RR queue we started with
   i8 iStartRRQueue = pCallingThread->m_iLastRRqueue;
   
   // round robin at most once through the queues looking for a task to run
@@ -194,7 +194,7 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
     // have we reached the end of the queues
     if (pCallingThread->m_iLastRRqueue == gpAttachMap->m_pGrid->m_nSlots) {
       
-      // start all over
+      // start all over again at the first queue
       pCallingThread->m_iLastRRqueue = QR_NONE;
       continue;
     }
@@ -214,10 +214,11 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
       // peek at the first task in the sleeping queue
       pPeekedTask = m_pSleepingQueue->pPeekTask();
       
-      // check if task wakeup time is now
+      // check if task wakeup time is now (or before)
       xNow.vSet();
       i8 iMicroseconds = xNow.iGetAsMicroseconds();
-      if (pPeekedTask->iWakeupTime() == iMicroseconds) {
+      
+      if (pPeekedTask->iWakeupTime() <= iMicroseconds) {
         
         // pop the task off the sleeping queue
         Task* pPoppedTask = m_pSleepingQueue->pPopTask();
