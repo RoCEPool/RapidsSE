@@ -242,7 +242,7 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
       // clear wakeup time of the task
       pPoppedTask->vWakeupTask();
       
-      // return the popped task
+      // return the task popped from the sleeping queue
       *ppPoppedTask = pPoppedTask;
       
       // thread has a task to run
@@ -268,15 +268,19 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
       // drop the lock
       m_pGeneralQueue->vDropLock();
       
-      if (pPoppedTask) {
-        *ppPoppedTask = pPoppedTask;
+      // is there a task to run?
+      if (! pPoppedTask) {
+        // didn't find a task, move to next queue
         ASSERT( ! m_pGeneralQueue->bIsLocked());
-        return true;
+        continue;
       }
       
-      // didn't find a task, move to next queue
+      // return the task popped from the general queue
+      *ppPoppedTask = pPoppedTask;
+      
+      // thread has a task to run
       ASSERT( ! m_pGeneralQueue->bIsLocked());
-      continue;
+      return true;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -295,15 +299,19 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
     // drop lock on the queue
     m_pSlotQueues[pCallingThread->m_iLastRRqueue]->vDropLock();
     
-    if (pPoppedTask) {
-      *ppPoppedTask = pPoppedTask;
+    // is there a task to run?
+    if (! pPoppedTask) {
+      // didn't find a task to run, move to next queue
       ASSERT( ! m_pSlotQueues[pCallingThread->m_iLastRRqueue]->bIsLocked());
-      return true;
+      continue;
     }
     
-    // didn't find a task to run, move to next queue
+    // return the task popped from the slot queue
+    *ppPoppedTask = pPoppedTask;
+
+    // thread has a task to run
     ASSERT( ! m_pSlotQueues[pCallingThread->m_iLastRRqueue]->bIsLocked());
-    continue;
+    return true;
   }
   
   NEVER_REACH;
