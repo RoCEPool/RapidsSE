@@ -57,16 +57,16 @@ Queues::Queues(void)
   m_pThreadVector  = new ThreadVector;
   
   m_pSleepingQueue = new TaskQueue(bTaskCompareWakeupTime);
-  m_pGeneralQueue  = new TaskQueue(bTaskCompareTaskNo);
+  m_pReadyQueue  = new TaskQueue(bTaskCompareTaskNo);
   
   for (i8 i_Slot = 0; i_Slot < C_SLOTS_PER_NODE; i_Slot++)
-    m_pSlotQueues[i_Slot] = nullptr;
+    m_pReadySlotQueues[i_Slot] = nullptr;
 
   for (i8 i_Slot = 0; i_Slot < gxArguments.m_nSlots; i_Slot++)
-    m_pSlotQueues[i_Slot] = new TaskQueue(bTaskCompareTaskNo);
+    m_pReadySlotQueues[i_Slot] = new TaskQueue(bTaskCompareTaskNo);
   
-  m_pRunningQueue   = new TaskQueue(bTaskCompareTaskNo);
-  m_pSuspendedQueue = new TaskQueue(bTaskCompareTaskNo);
+  m_pRunningQueue = new TaskQueue(bTaskCompareTaskNo);
+  m_pWaitingQueue = new TaskQueue(bTaskCompareTaskNo);
   
   _checkInitialised_(CN_QUEUES);
   
@@ -112,7 +112,7 @@ void Queues::vAddToQueue(Task* pTask)                        //! RAY TO COMPLETE
   }
   
   if (QR_WAITING_QUEUE == eQueue) {
-    m_pSuspendedQueue->vAddTask(pTask);
+    m_pWaitingQueue->vAddTask(pTask);
     return;
   }
   
@@ -122,11 +122,11 @@ void Queues::vAddToQueue(Task* pTask)                        //! RAY TO COMPLETE
   }
   
   if (QR_GENERAL_QUEUE == eQueue) {
-    m_pGeneralQueue->vAddTask(pTask);
+    m_pReadyQueue->vAddTask(pTask);
     return;
   }
   
-  m_pSlotQueues[eQueue]->vAddTask(pTask);
+  m_pReadySlotQueues[eQueue]->vAddTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -136,9 +136,9 @@ void Queues::vAddToGeneralQueue(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  m_pGeneralQueue->vGrabLock();
-  m_pGeneralQueue->vAddTask(pTask);
-  m_pGeneralQueue->vDropLock();
+  m_pReadyQueue->vGrabLock();
+  m_pReadyQueue->vAddTask(pTask);
+  m_pReadyQueue->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -172,9 +172,9 @@ void Queues::vAddToSuspendedQueue(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  m_pSuspendedQueue->vGrabLock();
-  m_pSuspendedQueue->vAddTask(pTask);
-  m_pSuspendedQueue->vDropLock();
+  m_pWaitingQueue->vGrabLock();
+  m_pWaitingQueue->vAddTask(pTask);
+  m_pWaitingQueue->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -190,9 +190,9 @@ void Queues::vAddToSlotQueue(Task* pTask)
   // get slot no of the task
   i8 iSlot = Partition::iPartitionToSlot(pTask->iPartition());
                                                   
-  m_pSlotQueues[iSlot]->vGrabLock();
-  m_pSlotQueues[iSlot]->vAddTask(pTask);
-  m_pSlotQueues[iSlot]->vDropLock();
+  m_pReadySlotQueues[iSlot]->vGrabLock();
+  m_pReadySlotQueues[iSlot]->vAddTask(pTask);
+  m_pReadySlotQueues[iSlot]->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -287,22 +287,22 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
     if (QR_GENERAL_QUEUE == pCallingThread->m_iLastRRqueue) {
       
       // attempt to grab a write lock on the general queue
-      if (! m_pGeneralQueue->bGrabLock()) {
+      if (! m_pReadyQueue->bGrabLock()) {
         // unable to lock queue (another thread must be processing it)
         // so move on to the next queue
         continue;
       }
       
       // pop task off the general queue
-      pPoppedTask = m_pGeneralQueue->pPopTask();
+      pPoppedTask = m_pReadyQueue->pPopTask();
       
       // drop the lock
-      m_pGeneralQueue->vDropLock();
+      m_pReadyQueue->vDropLock();
       
       // is there a task to run?
       if (! pPoppedTask) {
         // didn't find a task, move to next queue
-        ASSERT( ! m_pGeneralQueue->bIsLocked());
+        ASSERT( ! m_pReadyQueue->bIsLocked());
         continue;
       }
       
@@ -317,22 +317,22 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
     // inspect a slot queue
     
     // attempt to grab a write lock on the queue
-    if (! m_pSlotQueues[pCallingThread->m_iLastRRqueue]->bGrabLock()) {
+    if (! m_pReadySlotQueues[pCallingThread->m_iLastRRqueue]->bGrabLock()) {
       // unable to lock queue (another thread must be processing it)
       // so move on to the next queue
       continue;
     }
     
     // pop a task off the partition queues
-    pPoppedTask = m_pSlotQueues[pCallingThread->m_iLastRRqueue]->pPopTask();
+    pPoppedTask = m_pReadySlotQueues[pCallingThread->m_iLastRRqueue]->pPopTask();
     
     // drop lock on the queue
-    m_pSlotQueues[pCallingThread->m_iLastRRqueue]->vDropLock();
+    m_pReadySlotQueues[pCallingThread->m_iLastRRqueue]->vDropLock();
     
     // is there a task to run?
     if (! pPoppedTask) {
       // didn't find a task to run, move to next queue
-      ASSERT( ! m_pSlotQueues[pCallingThread->m_iLastRRqueue]->bIsLocked());
+      ASSERT( ! m_pReadySlotQueues[pCallingThread->m_iLastRRqueue]->bIsLocked());
       continue;
     }
     

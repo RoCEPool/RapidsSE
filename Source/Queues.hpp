@@ -16,32 +16,29 @@ namespace Threads
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // queues which are checked in round robin fashion
   
-    TaskQueue*  m_pSleepingQueue;   // queue of sleeping tasks
-                                    // (ordered by wakeup time)
-                                    // these tasks have been partially executed
+    TaskQueue* m_pSleepingQueue;   // queue of sleeping tasks
+                                   // (ordered by wakeup time)
+                                   // these tasks have been partially executed
   
-    //! m_pReadyQueue
-    TaskQueue*  m_pGeneralQueue;    // queue of ordinary tasks waiting to be
-                                    // executed (ordered by arrival)
-                                    // these tasks have not been executed
+    TaskQueue* m_pReadyQueue;      // queue of ordinary tasks ready to be
+                                   // executed (ordered by arrival)
+                                   // these tasks have not been executed
   
-    //! m_pReadySlotQueue
-    TaskQueue*  m_pSlotQueues[C_SLOTS_PER_NODE];
-                                    // set of tasks queued for partitoned
-                                    // execution (ordered by arrival)
-                                    // these tasks have not been executed
+    TaskQueue* m_pReadySlotQueues[C_SLOTS_PER_NODE];
+                                   // set of tasks queued for partitoned
+                                   // execution (ordered by arrival)
+                                   // these tasks have not been executed
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // queues which are not checked in the round robin
   
-    TaskQueue*  m_pRunningQueue;    // set of tasks which are currently running
-                                    // (ordered by arrival)
-                                    // these tasks have been partially executed
+    TaskQueue* m_pRunningQueue;    // queue of partition tasks ready to be
+                                   // executed (ordered by arrival)
+                                   // these tasks have been partially executed
   
-    //! m_pWaitingQueue
-    TaskQueue*  m_pSuspendedQueue;  // set of tasks which are currently
-                                    // susended (ordered by arrival)
-                                    // these tasks have been partially executed
+    TaskQueue* m_pWaitingQueue;    // set of suspended tasks which are
+                                   // waiting to be signaled (ordered by arrival)
+                                   // these tasks have been partially executed
   
     // must be last
     Footer m_xFooter;
@@ -56,7 +53,7 @@ namespace Threads
     void vAddThread(Thread* pThread);
     
     void vAddToQueue(Task* pTask);
-  void vRemoveFromQueue(Task* pTask); //! RAY TO COMPLETE
+    void vRemoveFromQueue(Task* pTask); //! RAY TO COMPLETE
   
     void vAddToGeneralQueue(Task* pTask);
     void vAddToRunningQueue(Task* pTask);
