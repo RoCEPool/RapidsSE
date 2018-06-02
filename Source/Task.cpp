@@ -304,6 +304,8 @@ void Task::vInit(Stz* aLambda)
   m_iDdlLocked = 0;
   
   m_bDestructorTrace = false;
+  
+  m_bR35model = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1723,6 +1725,26 @@ void Task::vRetry(void)
   
   m_pDataStack->vRetry();
   m_pReturnStack->vRetry();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get destructor trace                                                       */
+/*----------------------------------------------------------------------------*/
+bool Task::bR35model(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  return m_bR35model;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set R35 model                                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vR35model(bool bR35model)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  m_bR35model = bR35model;
 }
 
 /*----------------------------------------------------------------------------*/

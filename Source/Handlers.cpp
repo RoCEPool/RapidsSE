@@ -80,10 +80,15 @@ bool Handlers::bSystemLevelHandler(Task* pTask)
 /*----------------------------------------------------------------------------*/
 bool Handlers::bThreadLevelHandler(NP_Task* pNpTask)
 {
+  //
+  // this handler is called from Thread::vLoop()
+  // after a task returns to the thread
+  //
+  
+  Queues* pQueues = gpAttachMap->m_pQueues;
   
   Task* pTask = **pNpTask;
   *pNpTask = nullptr;
-  Queues* pQueues = gpAttachMap->m_pQueues;
   
   // first remove this task from the running queue
   pQueues->vRemoveFromRunningQueue(pTask);
@@ -107,7 +112,7 @@ bool Handlers::bThreadLevelHandler(NP_Task* pNpTask)
       ASSERT(0);
       
     case TS_SLEEPING:
-      // add task to sleeoping queue
+      // add task to sleeping queue
       pQueues->vAddToSleepingQueue(pTask);
       break;
       

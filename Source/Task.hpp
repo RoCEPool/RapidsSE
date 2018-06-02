@@ -183,6 +183,8 @@ namespace Tasks
     
     Since  m_xWakeupTime;       // wakeup time
   
+    bool   m_bR35model;         // task is running R3.5 model
+  
     // always last
     Footer m_xFooter;
 
@@ -205,7 +207,6 @@ namespace Tasks
     void vAdjustNext(i8 iBytes);
     void vAddConstant(Stz* aName, i8 iVal);
     void vAddConstant(Stz* aName, Stz* aValue);
-
     void vAddConstants(void);
     void vAddMunged(MP_Task mpTask);
     void vAddPrimitive(Stz* aName, TaskStep pStep, bool bImmediate);
@@ -242,6 +243,8 @@ namespace Tasks
     Value* pRequest(void);
     void vReset(void);
     void vRetry(void);
+    void vR35model(bool bR35model);
+    bool bR35model(void);
     void vSeedDicCompileSen(void);
     void vSeedDocol(void);
     void vSeedWord(Stz *aWord);
