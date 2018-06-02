@@ -130,15 +130,33 @@ void Queues::vAddToQueue(Task* pTask)                        //! RAY TO COMPLETE
 }
 
 /*----------------------------------------------------------------------------*/
-/* add task to general queue                                                  */
+/* add task to ready queue                                                    */
 /*----------------------------------------------------------------------------*/
-void Queues::vAddToGeneralQueue(Task* pTask)
+void Queues::vAddToReadyQueue(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   m_pReadyQueue->vGrabLock();
   m_pReadyQueue->vAddTask(pTask);
   m_pReadyQueue->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* add task to a slot queue                                                   */
+/*----------------------------------------------------------------------------*/
+void Queues::vAddToReadySlotQueue(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  // NOTE: Task has a m_iPartition... not being set
+  // this needs to set for partition tasks
+  
+  // get slot no of the task
+  i8 iSlot = Partition::iPartitionToSlot(pTask->iPartition());
+  
+  m_pReadySlotQueues[iSlot]->vGrabLock();
+  m_pReadySlotQueues[iSlot]->vAddTask(pTask);
+  m_pReadySlotQueues[iSlot]->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -166,33 +184,15 @@ void Queues::vAddToSleepingQueue(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add task to suspended queue                                                */
+/* add task to waiting queue                                                  */
 /*----------------------------------------------------------------------------*/
-void Queues::vAddToSuspendedQueue(Task* pTask)
+void Queues::vAddToWaitingQueue(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   m_pWaitingQueue->vGrabLock();
   m_pWaitingQueue->vAddTask(pTask);
   m_pWaitingQueue->vDropLock();
-}
-
-/*----------------------------------------------------------------------------*/
-/* add task to a slot queue                                                   */
-/*----------------------------------------------------------------------------*/
-void Queues::vAddToSlotQueue(Task* pTask)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  // NOTE: Task has a m_iPartition... not being set
-  // this needs to set for partition tasks
-  
-  // get slot no of the task
-  i8 iSlot = Partition::iPartitionToSlot(pTask->iPartition());
-                                                  
-  m_pReadySlotQueues[iSlot]->vGrabLock();
-  m_pReadySlotQueues[iSlot]->vAddTask(pTask);
-  m_pReadySlotQueues[iSlot]->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/

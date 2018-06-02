@@ -118,13 +118,13 @@ bool Handlers::bThreadLevelHandler(NP_Task* pNpTask)
       ASSERT(0);
       
     case TS_SLEEPING:
-      // add task to sleeping queue
+      // put task into sleeping queue
       pQueues->vAddToSleepingQueue(pTask);
       break;
       
     case TS_WAITING_ACK:
-      // add task to waiting queue
-      pQueues->vAddToSuspendedQueue(pTask);
+      // put task into waiting queue
+      pQueues->vAddToWaitingQueue(pTask);
       break;
       
     case TS_WAITING_SIGNAL:
@@ -132,11 +132,11 @@ bool Handlers::bThreadLevelHandler(NP_Task* pNpTask)
       ASSERT(0);
       
     case TS_YIELDED:
-      // add task back to the general/slot queue
+      // put task into a ready queue
       if (pTask->iPartition() == -1)
-        pQueues->vAddToGeneralQueue(pTask);
+        pQueues->vAddToReadyQueue(pTask);
       else
-        pQueues->vAddToSlotQueue(pTask);
+        pQueues->vAddToReadySlotQueue(pTask);
       break;
       
     default:
