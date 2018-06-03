@@ -443,8 +443,17 @@ void Queues::vScheduleSleepingTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
+  if (! pTask->bWakeupNow()) {
+    vAddToSleepingQueue(pTask);
+    return;
+  }
   
-  vAddToSleepingQueue(pTask);
+  Thread* pThread = pFindIdleThread();
+
+  if (pThread)
+    pThread->vRunTask(pTask);
+  else
+    vAddToReadyQueue(pTask);
 }
 
 /*----------------------------------------------------------------------------*/

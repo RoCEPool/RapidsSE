@@ -138,6 +138,7 @@ namespace Threads
     void vName(StrVal& sName);
     bool bRRnext(void);
     void vRRstart(void);
+    void vRunTask(Task* pTask);
     void vSpawn_Drone(void);
     void vSpawn_Partition(void);
     void vSpawn_Server(void);
