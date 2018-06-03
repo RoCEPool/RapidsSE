@@ -7,6 +7,7 @@
 #include "StorageEngine.h"
 
 extern AttachMap*    gpAttachMap;
+extern Arguments     gxArguments;
 
 extern pthread_key_t giTLS_TaskKey;
 extern pthread_key_t giTLS_ThreadKey;
@@ -88,6 +89,7 @@ Thread::Thread(void)
   //gpAttachMap->m_pThreadList->vAppend(pThread);
   
    m_iLastRRqueue = QR_NONE;
+   m_iStartRRqueue = QR_NONE;
   
   _checkInitialised_(CN_THREAD);
   
@@ -988,6 +990,33 @@ void Thread::vName(StrVal& sName)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   m_sName = sName;
+}
+
+/*----------------------------------------------------------------------------*/
+/* advance to next queue in round robin sequence                              */
+/*----------------------------------------------------------------------------*/
+bool Thread::bRRnext(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  m_iLastRRqueue++;
+  if (m_iLastRRqueue == gxArguments.m_nSlots)
+    m_iLastRRqueue = QR_SLEEPING_QUEUE;
+    
+  if (m_iLastRRqueue == m_iStartRRqueue)
+    return false; // end of round robin sequence
+  else
+    return true;  // have advanced to next queue
+}
+
+/*----------------------------------------------------------------------------*/
+/* start another round robin sequence                                         */
+/*----------------------------------------------------------------------------*/
+void Thread::vRRstart(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+ 
+  m_iStartRRqueue = m_iLastRRqueue;
 }
 
 /*----------------------------------------------------------------------------*/

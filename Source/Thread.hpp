@@ -93,6 +93,8 @@ namespace Threads
   
     i8           m_iLastRRqueue; // last round robin queue this thread
                                  // had popped a task
+  
+    i8           m_iStartRRqueue;// last RR queue we started with
 
     // must be last
     Footer m_xFooter;
@@ -133,6 +135,8 @@ namespace Threads
     void vPartition(i8 iPartition);
     StrVal&   sName(void);
     void vName(StrVal& sName);
+    bool bRRnext(void);
+    void vRRstart(void);
     void vSpawn_Drone(void);
     void vSpawn_Partition(void);
     void vSpawn_Server(void);
