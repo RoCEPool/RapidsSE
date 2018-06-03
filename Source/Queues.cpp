@@ -325,7 +325,7 @@ Task* Queues::pInspectSleepingQueue(Thread* pCallingThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop next task in round robin fashion                                       */
+/* pop next queued task in round robin fashion                                */
 /*----------------------------------------------------------------------------*/
 bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
 {
@@ -336,31 +336,11 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
   // set popped task to be null to start with
   *ppPoppedTask = NULL;
   
-  // save last RR queue we started with
-  i8 iStartRRQueue = pCallingThread->m_iLastRRqueue;
+  // start a round robin sequence
+  pCallingThread->vRRstart();
   
-  // round robin at most once through the queues looking for a task to run
-  while (true) {
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // inspect the queues
-    
-    // move to the next queue
-    pCallingThread->m_iLastRRqueue++;
-    
-    // have we round robined around the queues once ?
-    if (iStartRRQueue == pCallingThread->m_iLastRRqueue) {
-      ASSERT(NULL == *ppPoppedTask);
-      return false;
-    }
-    
-    // have we reached the end of the queues
-    if (pCallingThread->m_iLastRRqueue == gpAttachMap->m_pGrid->m_nSlots) {
-      
-      // start all over again at the first queue
-      pCallingThread->m_iLastRRqueue = QR_NONE;
-      continue;
-    }
+  // round robin thru the queues
+  while (pCallingThread->bRRnext()) {
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // inspect the queues
