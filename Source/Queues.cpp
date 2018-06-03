@@ -399,6 +399,46 @@ void Queues::vRemoveFromRunningQueue(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* schedule ready task                                                        */
+/*----------------------------------------------------------------------------*/
+void Queues::vScheduleReadyTask(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  vAddToReadyQueue(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* schedule ready slot task                                                   */
+/*----------------------------------------------------------------------------*/
+void Queues::vScheduleReadySlotTask(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  vAddToReadySlotQueue(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* schedule ready sleeping task                                               */
+/*----------------------------------------------------------------------------*/
+void Queues::vScheduleSleepingTask(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  vAddToSleepingQueue(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* schedule ready waiting task                                                */
+/*----------------------------------------------------------------------------*/
+void Queues::vScheduleWaitingTask(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  vAddToWaitingQueue(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the thread vector                                                      */
 /*----------------------------------------------------------------------------*/
 ThreadVector* Queues::pThreadVector(void)

@@ -9,7 +9,7 @@
 extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
-/* queue level handler                                                        */
+/* queue level event handler                                                  */
 /*----------------------------------------------------------------------------*/
 bool Handlers::bQueueLevelHandler(Task* pTask)
 {
@@ -72,17 +72,37 @@ bool Handlers::bQueueLevelHandler(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* system level handler                                                       */
+/* system level event handler                                                 */
 /*----------------------------------------------------------------------------*/
 bool Handlers::bSystemLevelHandler(Task* pTask)
 {
   gpAttachMap->m_pQueues->vAddToQueue(pTask);
+
+  Queues* pQueues = gpAttachMap->m_pQueues;
+
+  eQR eQueue = pTask->eWhichQueue();
+    
+  if (QR_SLEEPING_QUEUE == eQueue) {
+    pQueues->vScheduleSleepingTask(pTask);
+    return true;
+  }
   
+  if (QR_WAITING_QUEUE == eQueue) {
+    pQueues->vScheduleWaitingTask(pTask);
+    return true;
+  }
+  
+  if (QR_READY_QUEUE == eQueue) {
+    pQueues->vScheduleReadyTask(pTask);
+    return true;
+  }
+  
+  pQueues->vScheduleReadySlotTask(pTask);
   return true;
 }
 
 /*----------------------------------------------------------------------------*/
-/* thread level handler                                                       */
+/* thread level event handler                                                 */
 /*----------------------------------------------------------------------------*/
 bool Handlers::bThreadLevelHandler(NP_Task* pNpTask)
 {
