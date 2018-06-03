@@ -2135,6 +2135,24 @@ eQR Task::eWhichQueue(void)  //! RAY TO FINISH
 
   // examine the state and determine which queue
   
+  switch (m_eState) {
+    
+    case TS_RUNNING:
+    case TS_YIELDED:
+      return QR_READY_QUEUE;
+      
+    case TS_SLEEPING:
+      return QR_SLEEPING_QUEUE;
+      
+    case TS_WAITING_ACK: //! whats the difference between these two?
+    case TS_WAITING_SIGNAL:
+      return QR_WAITING_QUEUE;
+      
+    default:
+      vFatal("Task::eWhichQueue: Unexpected task state: %lld\n"_Stz,
+             (i8)m_eState);
+  }
+  
   return QR_NONE;
 }
 
