@@ -2104,6 +2104,25 @@ i8 Task::iTaskNo(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* can task to be woken?                                                      */
+/*----------------------------------------------------------------------------*/
+bool Task::bWakeupNow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  Since xNow;
+  
+  xNow.vSet();
+  
+  i8 iTimeNow = xNow.iGetAsMicroseconds();
+
+  if (iWakeupTime() <= iTimeNow)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get wakeup time                                                            */
 /*----------------------------------------------------------------------------*/
 i8 Task::iWakeupTime(void)

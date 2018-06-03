@@ -262,6 +262,7 @@ namespace Tasks
     void vTracePoint(Stz* aMark);
     i8   iTxId(void);
     void vTxId(i8 iTxId);
+    bool bWakeupNow(void);
     i8   iWakeupTime(void);
     void vWakeupTask(void);
     eQR  eWhichQueue(void);

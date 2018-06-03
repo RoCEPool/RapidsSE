@@ -425,6 +425,7 @@ void Queues::vScheduleSleepingTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
+  
   vAddToSleepingQueue(pTask);
 }
 
