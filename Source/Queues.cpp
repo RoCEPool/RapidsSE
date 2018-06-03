@@ -276,8 +276,6 @@ Task* Queues::pInspectSleepingQueue(Thread* pCallingThread)
   Task* pPeekedTask;
   Task* pPoppedTask;
   
-  Since xNow;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // lock queue and peek at task
   
@@ -288,15 +286,11 @@ Task* Queues::pInspectSleepingQueue(Thread* pCallingThread)
     return nullptr;
   }
   
-  // get current time
-  xNow.vSet();
-  i8 iTimeNow = xNow.iGetAsMicroseconds();
-  
   // peek at the first task in the sleeping queue
   pPeekedTask = m_pSleepingQueue->pPeekTask();
   
   // check if peeked task's wakeup time is after now
-  if (! pPeekedTask || pPeekedTask->iWakeupTime() > iTimeNow) {
+  if (! pPeekedTask || ! pPeekedTask->bWakeupNow()) {
     
     // - peeked task is to be woken up in the future
     
