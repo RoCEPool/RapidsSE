@@ -123,6 +123,7 @@ namespace Threads
     void vContentDump(void) const;
     bool bGrabLock(void);
     void vDropLock(void);
+    bool bIsIdle(void);
     i8   iLastRRqueue(void);
     void vLastRRqueue(i8 iLastRRqueue);
     void vLoop(void);

@@ -59,6 +59,8 @@ namespace Threads
     void vAddToSleepingQueue(Task* pTask);
     void vAddToWaitingQueue(Task* pTask);
   
+    Thread* pFindIdleThread(void);
+  
     Task* pInspectReadyQueue(Thread* pCallingThread);
     Task* pInspectReadySlotQueue(Thread* pCallingThread);
     Task* pInspectSleepingQueue(Thread* pCallingThread);

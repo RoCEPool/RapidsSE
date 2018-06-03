@@ -196,6 +196,30 @@ void Queues::vAddToWaitingQueue(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* attempt to find idle thread                                                */
+/*----------------------------------------------------------------------------*/
+Thread* Queues::pFindIdleThread(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  m_pThreadVector->vGrabLock();
+
+  i8 nThreads = m_pThreadVector->nItems();
+  for (i8 i_Thread = 0; i_Thread < nThreads; i_Thread++) {
+
+    Thread* pThread = m_pThreadVector->pGet(i_Thread);
+    
+    if (pThread->bIsIdle()) {
+      m_pThreadVector->vDropLock();
+      return pThread;
+    }
+  }
+  
+  m_pThreadVector->vDropLock();
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* inspect the ready queue                                                    */
 /*----------------------------------------------------------------------------*/
 Task* Queues::pInspectReadyQueue(Thread* pCallingThread)
