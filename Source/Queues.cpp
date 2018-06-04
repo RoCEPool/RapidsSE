@@ -106,12 +106,8 @@ void Queues::vAddToExecutingQueue(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  RASSERT(TS_EXECUTING == pTask->eState());
-  
-  pTask->vQueue(QR_EXECUTING_QUEUE);
-  
   m_pExecutingQueue->vGrabLock();
-  m_pExecutingQueue->vAddTask(pTask);
+  vAddToExecutingQueue_NL(pTask);
   m_pExecutingQueue->vDropLock();
 }
 
@@ -122,12 +118,8 @@ void Queues::vAddToReadyQueue(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  RASSERT(TS_READY == pTask->eState());
-  
-  pTask->vQueue(QR_READY_QUEUE);
-  
   m_pReadyQueue->vGrabLock();
-  m_pReadyQueue->vAddTask(pTask);
+  vAddToReadyQueue_NL(pTask);
   m_pReadyQueue->vDropLock();
 }
 
@@ -141,15 +133,11 @@ void Queues::vAddToReadySlotQueue(Task* pTask)
   // NOTE: Task has a m_iPartition... not being set
   // this needs to set for partition tasks
   
-  RASSERT(TS_READY == pTask->eState());
-  
   // get slot no of the task
-  i8 iSlot = Partition::iPartitionToSlot(pTask->iPartition());
-  
-  pTask->vQueue((eQR)iSlot);
+  i8 iSlot = pTask->iSlot();
   
   m_pReadySlotQueues[iSlot]->vGrabLock();
-  m_pReadySlotQueues[iSlot]->vAddTask(pTask);
+  vAddToReadySlotQueue_NL(pTask);
   m_pReadySlotQueues[iSlot]->vDropLock();
 }
 
@@ -160,12 +148,8 @@ void Queues::vAddToSleepingQueue(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  RASSERT(TS_SLEEPING == pTask->eState());
-  
-  pTask->vQueue(QR_SLEEPING_QUEUE);
-  
   m_pSleepingQueue->vGrabLock();
-  m_pSleepingQueue->vAddTask(pTask);
+  vAddToSleepingQueue_NL(pTask);
   m_pSleepingQueue->vDropLock();
 }
 
@@ -176,14 +160,86 @@ void Queues::vAddToWaitingQueue(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
+  m_pWaitingQueue->vGrabLock();
+  vAddToWaitingQueue(pTask);
+  m_pWaitingQueue->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* add task to executing queue                                                */
+/*----------------------------------------------------------------------------*/
+void Queues::vAddToExecutingQueue_NL(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  RASSERT(TS_EXECUTING == pTask->eState());
+  
+  pTask->vQueue(QR_EXECUTING_QUEUE);
+  
+  m_pExecutingQueue->vAddTask(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add task to ready queue                                                    */
+/*----------------------------------------------------------------------------*/
+void Queues::vAddToReadyQueue_NL(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  RASSERT(TS_READY == pTask->eState());
+  
+  pTask->vQueue(QR_READY_QUEUE);
+  
+  m_pReadyQueue->vAddTask(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add task to a slot queue                                                   */
+/*----------------------------------------------------------------------------*/
+void Queues::vAddToReadySlotQueue_NL(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  // NOTE: Task has a m_iPartition... not being set
+  // this needs to set for partition tasks
+  
+  RASSERT(TS_READY == pTask->eState());
+  
+  // get slot no of the task
+  i8 iSlot = Partition::iPartitionToSlot(pTask->iPartition());
+  
+  pTask->vQueue((eQR)iSlot);
+  
+  m_pReadySlotQueues[iSlot]->vAddTask(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add task to sleeping queue                                                 */
+/*----------------------------------------------------------------------------*/
+void Queues::vAddToSleepingQueue_NL(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  RASSERT(TS_SLEEPING == pTask->eState());
+  
+  pTask->vQueue(QR_SLEEPING_QUEUE);
+  
+  m_pSleepingQueue->vAddTask(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add task to waiting queue                                                  */
+/*----------------------------------------------------------------------------*/
+void Queues::vAddToWaitingQueue_NL(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
   RASSERT(TS_WAITING_ACK == pTask->eState() ||
           TS_WAITING_SIGNAL == pTask->eState());
   
   pTask->vQueue(QR_WAITING_QUEUE);
   
-  m_pWaitingQueue->vGrabLock();
   m_pWaitingQueue->vAddTask(pTask);
-  m_pWaitingQueue->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
