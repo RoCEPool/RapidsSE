@@ -580,11 +580,13 @@ void Queues::vScheduleYieldedTask(Task* pTask)
       //     continue to execute the yield task.
       //   Otherwise we add the task to the ready queue
       
+      m_pReadyQueue->vGrabLock();
       i8 iLengthReadyQueue = m_pReadyQueue->nTasks();
       if (0 == iLengthReadyQueue)
         pCallingThread->vReExecuteTask(pTask);
       else
-        vAddToReadyQueue(pTask);
+        vAddToReadyQueue_NL(pTask);
+      m_pReadyQueue->vDropLock();
     }
     else {
       

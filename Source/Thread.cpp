@@ -1134,7 +1134,6 @@ void Thread::vReExecuteTask(Task* pTask)
   
   // set task to be executed
   m_npTask = pTask;
-
 }
 
 /*----------------------------------------------------------------------------*/

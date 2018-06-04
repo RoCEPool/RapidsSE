@@ -84,8 +84,8 @@
   0 task.sleep
   "awake" .
 
-  "sleeping for 5 seconds" .
-  5000000 task.sleep
+  "sleeping for 3 seconds" .
+  3000000 task.sleep
   "awake" .
 
   "n35"
