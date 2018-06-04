@@ -7,6 +7,7 @@
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
+extern Arguments  gxArguments;
 
 /*----------------------------------------------------------------------------*/
 /* queue level event handler                                                  */
@@ -76,8 +77,6 @@ bool Handlers::bQueueLevelHandler(Task* pTask)
 /*----------------------------------------------------------------------------*/
 bool Handlers::bSystemLevelHandler(Task* pTask)
 {
-  gpAttachMap->m_pQueues->vAddToQueue(pTask);
-
   Queues* pQueues = gpAttachMap->m_pQueues;
 
   eQR eQueue = pTask->eWhichQueue();
@@ -97,6 +96,7 @@ bool Handlers::bSystemLevelHandler(Task* pTask)
     return true;
   }
   
+  RASSERT(eQueue >= 0 && eQueue < gxArguments.m_nSlots);
   pQueues->vScheduleReadySlotTask(pTask);
   return true;
 }
