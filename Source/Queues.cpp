@@ -200,10 +200,18 @@ Thread* Queues::pGrabIdleThread(void)
 
     Thread* pThread = m_pThreadVector->pGet(i_Thread);
     
+    // attempt to grab threads mutex
+    //if (! pThread->bMutexLock())
+    //  continue;
+    
+    //ASSERT(pThread->bMutexIsLocked());
+    
     if (pThread->bIsIdle()) {
       m_pThreadVector->vDropLock();
       return pThread;
     }
+    
+    //pThread->vMutexUnlock();
   }
   
   m_pThreadVector->vDropLock();
@@ -480,7 +488,7 @@ void Queues::vScheduleSleepingTask(Task* pTask)
   
   Thread* pIdleThread = pGrabIdleThread();
   
-  //! pIdleThread mutex is held by calling thread 
+  //! pIdleThread mutex is held by calling thread
 
   if (pIdleThread)
     pIdleThread->vExecuteTask(pTask);
