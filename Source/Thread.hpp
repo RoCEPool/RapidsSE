@@ -159,7 +159,7 @@ namespace Threads
     void  vMutexLock(void);
     void  vMutexUnlock(void);
     void  vSignalThread(void);
-  
+ 
     bool  bQueuePeek(void);
 
     void  vTaskCall(void);
