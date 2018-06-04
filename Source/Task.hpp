@@ -105,9 +105,10 @@ namespace Tasks
     /* 3 */ "EXITED"_Stz,
     /* 4 */ "SLEEPING"_Stz,
     /* 5 */ "SUSPENDED"_Stz,
-    /* 6 */ "WAITING"_Stz,
-    /* 7 */ "YIELDED"_Stz,
-    /* 8 */ "ENUMS"_Stz,
+    /* 6 */ "WAITING_ACK"_Stz,
+    /* 7 */ "WAITING_SIGNAL"_Stz,
+    /* 8 */ "YIELDED"_Stz,
+    /* 9 */ "ENUMS"_Stz,
   };
   
   typedef NP<Task,CN_TASK> NP_Task;
