@@ -1845,6 +1845,16 @@ void Task::vSleep(i8 iMicroseconds)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get slot this tasks belongs to                                             */
+/*----------------------------------------------------------------------------*/
+i8 Task::iSlot(void)
+{
+  i8 iSlot = Partition::iPartitionToSlot(m_iPartition);
+  
+  return iSlot;
+}
+
+/*----------------------------------------------------------------------------*/
 /* stack contents as string                                                   */
 /*----------------------------------------------------------------------------*/
 void Task::vStackContents(Stack* pStack, StrVal& sStackContents)
@@ -2157,6 +2167,8 @@ void Task::vWakeupTask(void)
   
   // clear the wakeup time
   m_xWakeupTime.vSet(0,0);
+
+  m_eState = TS_READY;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2170,10 +2182,10 @@ eQR Task::eWhichQueue(void)  //! RAY TO FINISH
   
   switch (m_eState) {
     
-    case TS_EXECUTING:
+    case TS_READY:
     case TS_YIELDED:
       if (bIsPartitioned())
-        return (eQR)iPartition();
+        return (eQR)iSlot();
       else
         return QR_READY_QUEUE;
       

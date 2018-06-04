@@ -3698,7 +3698,7 @@ bool SEitf::bAppendRequest_R35(StrVal& sRequest)
   // create new task (will be automatically appended to task list)
   MP_Task nnpNewTask = new Task(&xValSet);
   nnpNewTask->vSeedWord("requestLoop"_Stz);
-  nnpNewTask->vState(TS_EXECUTING);
+  nnpNewTask->vState(TS_READY);
   nnpNewTask->vR35model(true);
   
   //gpAttachMap->m_pServerScheduler->vEnqueueTask_Mutex(*nnpNewTask);

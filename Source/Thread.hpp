@@ -121,6 +121,7 @@ namespace Threads
     void vContentDump(void) const;
     bool bGrabLock(void);
     void vDropLock(void);
+    void vExecuteTask(Task* pTask);
     bool bIsIdle(void);
     i8   iLastRRqueue(void);
     void vLastRRqueue(i8 iLastRRqueue);
@@ -136,7 +137,6 @@ namespace Threads
     void vName(StrVal& sName);
     bool bRRnext(void);
     void vRRstart(void);
-    void vRunTask(Task* pTask);
     void vSpawn_Drone(void);
     void vSpawn_Partition(void);
     void vSpawn_Server(void);

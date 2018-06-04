@@ -408,6 +408,28 @@ void Thread::vDropLock(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* signal thread to execute given task                                        */
+/*----------------------------------------------------------------------------*/
+void Thread::vExecuteTask(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  // task should be ready
+  RASSERT(TS_READY == pTask->eState());
+  pTask->vState(TS_EXECUTING);
+  
+  // thread should have no task
+  RASSERT(! *m_npTask);
+  m_npTask = pTask;
+  
+  // thread should be idle
+  RASSERT(TC_IDLE == m_eThreadState);
+  
+  // signal the thread
+  vSignalThread();
+}
+
+/*----------------------------------------------------------------------------*/
 /* grab a write lock on this thread                                           */
 /*----------------------------------------------------------------------------*/
 bool Thread::bGrabLock(void)
@@ -1048,24 +1070,6 @@ void Thread::vRRstart(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
  
   m_iStartRRqueue = m_iLastRRqueue;
-}
-
-/*----------------------------------------------------------------------------*/
-/* signal thread to run given task                                            */
-/*----------------------------------------------------------------------------*/
-void Thread::vRunTask(Task* pTask)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
-  RASSERT(! *m_npTask);
-  m_npTask = pTask;
-  
-  // thread should be idle
-  
-  RASSERT(TC_IDLE == m_eThreadState);
-  
-  // signal the thread
-  vSignalThread();
 }
 
 /*----------------------------------------------------------------------------*/

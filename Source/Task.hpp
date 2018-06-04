@@ -86,11 +86,12 @@ namespace Tasks
   /* 1 */ TS_BLOCKED,       // task is blocked by another transaction
   /* 2 */ TS_EXECUTING,     // task is currenty being executed by Thread::vLoop
   /* 3 */ TS_EXITED,        // task has completed
-  /* 4 */ TS_SLEEPING,      // task is sleeping (not yet used)
-  /* 5 */ TS_WAITING_ACK,   // task is waiting on ack from cooperating task
-  /* 6 */ TS_WAITING_SIGNAL,// task is waiting on signal indicating queue arrival
-  /* 7 */ TS_YIELDED,       // task is yielded, not running and is in a TaskSet
-  /* 8 */ TS_ENUMS
+  /* 4 */ TS_READY,         // task is ready
+  /* 5 */ TS_SLEEPING,      // task is sleeping
+  /* 6 */ TS_WAITING_ACK,   // task is waiting on ack from cooperating task
+  /* 7 */ TS_WAITING_SIGNAL,// task is waiting on signal indicating queue arrival
+  /* 8 */ TS_YIELDED,       // task is yielded, not running and is in a TaskSet
+  /* 9 */ TS_ENUMS
   };
   
   static Stz* aTS[]
@@ -250,6 +251,7 @@ namespace Tasks
     void vSeedDocol(void);
     void vSeedWord(Stz *aWord);
     void vSleep(i8 iMicroSeconds);
+    i8   iSlot(void);
     void vSprint(s48K& sFormat, s48K& sString);
     void vStackContents(Stack* pStack, StrVal& sStackContents);
     eTS  eState(void);

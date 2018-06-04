@@ -136,6 +136,8 @@ void Queues::vAddToReadyQueue(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
+  RASSERT(TS_READY == pTask->eState());
+  
   m_pReadyQueue->vGrabLock();
   m_pReadyQueue->vAddTask(pTask);
   m_pReadyQueue->vDropLock();
@@ -150,6 +152,8 @@ void Queues::vAddToReadySlotQueue(Task* pTask)
   
   // NOTE: Task has a m_iPartition... not being set
   // this needs to set for partition tasks
+  
+  RASSERT(TS_READY == pTask->eState());
   
   // get slot no of the task
   i8 iSlot = Partition::iPartitionToSlot(pTask->iPartition());
@@ -166,6 +170,8 @@ void Queues::vAddToRunningQueue(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
+  RASSERT(TS_READY == pTask->eState());
+  
   m_pRunningQueue->vGrabLock();
   m_pRunningQueue->vAddTask(pTask);
   m_pRunningQueue->vDropLock();
@@ -178,6 +184,8 @@ void Queues::vAddToSleepingQueue(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
+  RASSERT(TS_SLEEPING == pTask->eState());
+  
   m_pSleepingQueue->vGrabLock();
   m_pSleepingQueue->vAddTask(pTask);
   m_pSleepingQueue->vDropLock();
@@ -189,6 +197,9 @@ void Queues::vAddToSleepingQueue(Task* pTask)
 void Queues::vAddToWaitingQueue(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  RASSERT(TS_WAITING_ACK == pTask->eState() ||
+          TS_WAITING_SIGNAL == pTask->eState());
   
   m_pWaitingQueue->vGrabLock();
   m_pWaitingQueue->vAddTask(pTask);
@@ -423,10 +434,12 @@ void Queues::vScheduleReadyTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
+  RASSERT(TS_READY == pTask->eState());
+  
   Thread* pIdleThread = pFindIdleThread();
   
   if (pIdleThread)
-    pIdleThread->vRunTask(pTask);
+    pIdleThread->vExecuteTask(pTask);
   else
     vAddToReadyQueue(pTask);
 }
@@ -438,30 +451,39 @@ void Queues::vScheduleReadySlotTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  Thread* pThread = pFindIdleThread();
+  RASSERT(TS_READY == pTask->eState());
   
-  if (pThread)
-    pThread->vRunTask(pTask);
+  Thread* pIdleThread = pFindIdleThread();
+  
+  if (pIdleThread)
+    pIdleThread->vExecuteTask(pTask);
   else
     vAddToReadySlotQueue(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
-/* schedule ready sleeping task                                               */
+/* schedule sleeping task                                                     */
 /*----------------------------------------------------------------------------*/
 void Queues::vScheduleSleepingTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
+  RASSERT(TS_SLEEPING == pTask->eState());
+  
+  // is the task still actually sleeping
   if (! pTask->bWakeupNow()) {
     vAddToSleepingQueue(pTask);
     return;
   }
   
-  Thread* pThread = pFindIdleThread();
+  // - tasks wake up time has arrived. run it
+  
+  pTask->vWakeupTask();
+  
+  Thread* pIdleThread = pFindIdleThread();
 
-  if (pThread)
-    pThread->vRunTask(pTask);
+  if (pIdleThread)
+    pIdleThread->vExecuteTask(pTask);
   else
     vAddToReadyQueue(pTask);
 }
@@ -472,6 +494,9 @@ void Queues::vScheduleSleepingTask(Task* pTask)
 void Queues::vScheduleWaitingTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  RASSERT(TS_WAITING_ACK    == pTask->eState() ||
+          TS_WAITING_SIGNAL == pTask->eState());
   
   vAddToWaitingQueue(pTask);
 }

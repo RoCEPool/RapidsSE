@@ -85,7 +85,7 @@ bool Handlers::bSystemLevelHandler(Task* pTask)
   Queues* pQueues = gpAttachMap->m_pQueues;
 
   RASSERT(pTask->bR35model());
-  RASSERT(TS_EXECUTING == pTask->eState());
+  RASSERT(TS_READY == pTask->eState());
   
   eQR eQueue = pTask->eWhichQueue();
   
