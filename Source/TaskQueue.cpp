@@ -79,7 +79,8 @@ TaskQueue::~TaskQueue(void)
 void TaskQueue::vAddTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
-  
+ 
+  /*
   // see if queue handler can handle the task
   bool bTaskHandled = Handlers::bQueueLevelHandler(pTask);
   
@@ -89,6 +90,11 @@ void TaskQueue::vAddTask(Task* pTask)
     m_pTaskSkipList->bInsert(pTask);
     m_xLock.vDropWrite();
   }
+  */
+  
+  m_xLock.vGrabWrite();
+  m_pTaskSkipList->bInsert(pTask);
+  m_xLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
