@@ -1111,13 +1111,13 @@ bool Thread::bRRnext(void)
   if (m_iLastRRqueue == gxArguments.m_nSlots)
     m_iLastRRqueue = QR_SLEEPING_QUEUE;
   
-  if (m_iStartRRqueue == QR_SLEEPING_QUEUE - 1)
-    m_iStartRRqueue = QR_SLEEPING_QUEUE;
-  
   if (m_iLastRRqueue == m_iStartRRqueue)
     return false; // end of round robin sequence
-  else
+  else {
+    if (m_iLastRRqueue == QR_SLEEPING_QUEUE)
+      m_iStartRRqueue = QR_SLEEPING_QUEUE;
     return true;  // have advanced to next queue
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1127,7 +1127,7 @@ void Thread::vRRstart(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
  
-  m_iStartRRqueue = m_iLastRRqueue;
+  m_iStartRRqueue = m_iLastRRqueue - 1;
 }
 
 /*----------------------------------------------------------------------------*/
