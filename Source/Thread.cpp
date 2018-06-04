@@ -1250,7 +1250,7 @@ void Thread::vTaskFifo(TaskFifo* pTaskFifo)
 /*----------------------------------------------------------------------------*/
 void Thread::vSignalThread(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   m_pSemaphore->vSignalThread();
 }
@@ -1260,7 +1260,7 @@ void Thread::vSignalThread(void)
 /*----------------------------------------------------------------------------*/
 void Thread::vCondBroadcast(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   m_pSemaphore->vCondBroadcast();
 }
@@ -1270,7 +1270,7 @@ void Thread::vCondBroadcast(void)
 /*----------------------------------------------------------------------------*/
 void Thread::vCondSignal(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   m_pSemaphore->vCondSignal();
 }
@@ -1280,7 +1280,7 @@ void Thread::vCondSignal(void)
 /*----------------------------------------------------------------------------*/
 void Thread::vCondWait(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   m_pSemaphore->vCondWait_Mutex();
 }
@@ -1290,7 +1290,7 @@ void Thread::vCondWait(void)
 /*----------------------------------------------------------------------------*/
 void Thread::vCondTimedWait(i8 iMicroSeconds)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   m_pSemaphore->vCondTimedWait(iMicroSeconds);
 }
@@ -1300,7 +1300,7 @@ void Thread::vCondTimedWait(i8 iMicroSeconds)
 /*----------------------------------------------------------------------------*/
 void Thread::vMutexLock(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   m_pSemaphore->vMutexLock();
 }
@@ -1310,7 +1310,7 @@ void Thread::vMutexLock(void)
 /*----------------------------------------------------------------------------*/
 bool Thread::bMutexLock(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   bool b = m_pSemaphore->bMutexLock();
   
