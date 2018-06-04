@@ -1079,12 +1079,15 @@ bool Thread::bRRnext(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  if (m_iStartRRqueue == QR_SLEEPING_QUEUE - 1)
-    m_iStartRRqueue = QR_SLEEPING_QUEUE;
-  
   m_iLastRRqueue++;
-  if (m_iLastRRqueue == gxArguments.m_nSlots)
+  
+  if (m_iLastRRqueue == gxArguments.m_nSlots) {
+    
     m_iLastRRqueue = QR_SLEEPING_QUEUE;
+  
+    if (m_iStartRRqueue == QR_SLEEPING_QUEUE - 1)
+      m_iStartRRqueue = QR_SLEEPING_QUEUE;
+  }
     
   if (m_iLastRRqueue == m_iStartRRqueue)
     return false; // end of round robin sequence
