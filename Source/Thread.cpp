@@ -1037,11 +1037,13 @@ void Thread::vRunTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
+  RASSERT(! *m_npTask);
   m_npTask = pTask;
   
-  //! thread should be waiting
-  //! need to signal the thread
-  //...
+  //! thread should be idle
+  
+  // signal the thread
+  vSignalThread();
 }
 
 /*----------------------------------------------------------------------------*/
