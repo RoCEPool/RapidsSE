@@ -423,7 +423,12 @@ void Queues::vScheduleReadyTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  vAddToReadyQueue(pTask);
+  Thread* pThread = pFindIdleThread();
+  
+  if (pThread)
+    pThread->vRunTask(pTask);
+  else
+    vAddToReadyQueue(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -433,7 +438,12 @@ void Queues::vScheduleReadySlotTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  vAddToReadySlotQueue(pTask);
+  Thread* pThread = pFindIdleThread();
+  
+  if (pThread)
+    pThread->vRunTask(pTask);
+  else
+    vAddToReadySlotQueue(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
