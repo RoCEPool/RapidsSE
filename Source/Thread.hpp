@@ -135,6 +135,7 @@ namespace Threads
     void vPartition(i8 iPartition);
     StrVal&   sName(void);
     void vName(StrVal& sName);
+    void vReExecuteTask(Task* pTask);
     bool bRRnext(void);
     void vRRstart(void);
     void vSpawn_Drone(void);

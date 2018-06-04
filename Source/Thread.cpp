@@ -467,7 +467,7 @@ void Thread::vHandlerWait(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  vCondWait(); // while waiting the mutex is dropped  
+  vCondTimedWait(5000); // while waiting the mutex is dropped
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // under mutex lock
@@ -476,9 +476,10 @@ void Thread::vHandlerWait(void)
   ASSERT(m_pSemaphore->bMutexIsLocked());
   
   // will have a task
-  ASSERT(*m_npTask);
+  //ASSERT(*m_npTask);
   
-  m_eThreadState = TC_RUNNING;
+  if (*m_npTask)
+    m_eThreadState = TC_RUNNING;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -537,11 +538,15 @@ void Thread::vLoop(void)
   for (;;) {
    
     // wont have a task
-    ASSERT(! *m_npTask);
+    //ASSERT(! *m_npTask);
     
     // get next task
-    if (! bQueuePeek())
+    if (! *m_npTask && ! bQueuePeek()) {
       vHandlerWait();
+      
+      if ( ! *m_npTask)
+        continue;
+    }
    
     // will have a task
     ASSERT(*m_npTask);
@@ -556,7 +561,7 @@ void Thread::vLoop(void)
     Handlers::bThreadLevelHandler(&m_npTask);
 
     // wont have a task
-    ASSERT(! *m_npTask);
+    //ASSERT(! *m_npTask);
   }
   
   NEVER_REACH;
@@ -1073,6 +1078,28 @@ void Thread::vName(StrVal& sName)
 }
 
 /*----------------------------------------------------------------------------*/
+/* re-excute same task                                                        */
+/*----------------------------------------------------------------------------*/
+void Thread::vReExecuteTask(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  // task should be ready
+  RASSERT(TS_READY == pTask->eState());
+  pTask->vState(TS_EXECUTING);
+  
+  // thread should be idle
+  RASSERT(TC_RUNNING == m_eThreadState);
+  
+  // thread should have no task
+  RASSERT(! *m_npTask);
+  
+  // set task to be executed
+  m_npTask = pTask;
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* advance to next queue in round robin sequence                              */
 /*----------------------------------------------------------------------------*/
 bool Thread::bRRnext(void)
@@ -1081,10 +1108,9 @@ bool Thread::bRRnext(void)
   
   m_iLastRRqueue++;
   
-  if (m_iLastRRqueue == gxArguments.m_nSlots) {
+  if (m_iLastRRqueue == gxArguments.m_nSlots)
     m_iLastRRqueue = QR_SLEEPING_QUEUE;
-  }
-    
+  
   if (m_iStartRRqueue == QR_SLEEPING_QUEUE - 1)
     m_iStartRRqueue = QR_SLEEPING_QUEUE;
   

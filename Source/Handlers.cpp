@@ -150,7 +150,7 @@ bool Handlers::bThreadLevelHandler(NP_Task* pNpTask)
       
     case TS_SLEEPING:
       // put task into sleeping queue
-      pQueues->vAddToSleepingQueue(pTask);
+      pQueues->vScheduleSleepingTask(pTask);
       break;
       
     case TS_WAITING_ACK:
