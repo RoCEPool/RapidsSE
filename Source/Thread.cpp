@@ -1040,7 +1040,9 @@ void Thread::vRunTask(Task* pTask)
   RASSERT(! *m_npTask);
   m_npTask = pTask;
   
-  //! thread should be idle
+  // thread should be idle
+  
+  RASSERT(TC_READYTORUN == m_eThreadState);
   
   // signal the thread
   vSignalThread();
@@ -1204,10 +1206,13 @@ void Thread::vTaskWait(void)
   ASSERT(! *m_npTask);
 
   m_eThreadState = TC_WAITING;
-  vCondWait();
   
+  vCondWait();
+
   // will have a task
   ASSERT(*m_npTask);
+
+  m_eThreadState = TC_RUNNING;
 }
 
 /*----------------------------------------------------------------------------*/

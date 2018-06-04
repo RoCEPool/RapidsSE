@@ -3701,8 +3701,8 @@ bool SEitf::bAppendRequest_R35(StrVal& sRequest)
   
   nnpNewTask->vR35model(true);
   
-  gpAttachMap->m_pServerScheduler->vEnqueueTask_Mutex(*nnpNewTask);
-  //bool bResult = Handlers::bSystemLevelHandler(*nnpNewTask);
+  //gpAttachMap->m_pServerScheduler->vEnqueueTask_Mutex(*nnpNewTask);
+  bool bResult = Handlers::bSystemLevelHandler(*nnpNewTask);
   
   return true;
 }
