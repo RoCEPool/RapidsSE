@@ -126,6 +126,7 @@ namespace Threads
     void vGeneralThread(bool bGeneralThread);
     bool bGrabLock(void);
     bool bIsIdle(void);
+    bool bIsTLSThread(void);
     i8   iLastRRqueue(void);
     void vLastRRqueue(i8 iLastRRqueue);
     void vLoop(void);

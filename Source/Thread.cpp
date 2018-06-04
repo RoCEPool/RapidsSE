@@ -518,6 +518,21 @@ bool Thread::bIsIdle(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this thread the tsl thread ?                                            */
+/*----------------------------------------------------------------------------*/
+bool Thread::bIsTLSThread(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  Thread* pTLSThread = pThisTLSThread();
+  
+  if (this == pThisTLSThread())
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get last round robin queue                                                 */
 /*----------------------------------------------------------------------------*/
 i8 Thread::iLastRRqueue(void)
