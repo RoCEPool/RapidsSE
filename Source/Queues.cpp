@@ -485,7 +485,7 @@ void Queues::vScheduleSleepingTask(Task* pTask)
   
   pTask->vWakeupTask();
   
-  Thread* pCallingThread = Thread::pThread();
+  Thread* pCallingThread = Thread::pThisTLSThread();
   
   pCallingThread->vReExecuteTask(pTask);
 }
@@ -512,7 +512,7 @@ void Queues::vScheduleYieldedTask(Task* pTask)
   
   if (! pTask->bIsPartitioned()) {
     
-    Thread* pCallingThread = Thread::pThread();
+    Thread* pCallingThread = Thread::pThisTLSThread();
     pCallingThread->vReExecuteTask(pTask);
   }
   else {

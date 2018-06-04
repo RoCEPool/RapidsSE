@@ -333,7 +333,7 @@ void* Thread::pEntryPoint(void* pArg)
 /*----------------------------------------------------------------------------*/
 /* get this thread                                                            */
 /*----------------------------------------------------------------------------*/
-Thread* Thread::pThread(void)
+Thread* Thread::pThisTLSThread(void)
 {
   Thread *pThread = static_cast<Thread*>(PosixThread::pTlsGet(giTLS_ThreadKey));
   

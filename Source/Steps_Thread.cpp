@@ -608,7 +608,7 @@ ENTRY("vThreadSleep_s"_Stz);
   if ( ! mpTask->m_pDataStack->bPop(nSeconds) )
     THROW_INVALID_DSTACK("sleep_s"_Stz);
   
-  Thread* pThread = Thread::pThread();
+  Thread* pThread = Thread::pThisTLSThread();
   
   pThread->m_pPosixThread->vSleepSec(nSeconds);
   
@@ -627,7 +627,7 @@ ENTRY("vThreadSleep_ms"_Stz);
   if ( ! mpTask->m_pDataStack->bPop(nMilliseconds) )
     THROW_INVALID_DSTACK("sleep_ms"_Stz);
   
-  Thread* pThread = Thread::pThread();
+  Thread* pThread = Thread::pThisTLSThread();
   
   pThread->m_pPosixThread->vSleepMilli(nMilliseconds);
   
@@ -646,7 +646,7 @@ ENTRY("vThreadSleep_us"_Stz);
   if ( ! mpTask->m_pDataStack->bPop(nMicroseconds) )
     THROW_INVALID_DSTACK("sleep_us"_Stz);
   
-  Thread* pThread = Thread::pThread();
+  Thread* pThread = Thread::pThisTLSThread();
   
   pThread->m_pPosixThread->vSleepMicro(nMicroseconds);
   
@@ -665,7 +665,7 @@ ENTRY("vThreadSleep_ns"_Stz);
   if ( ! mpTask->m_pDataStack->bPop(nNanoseconds) )
     THROW_INVALID_DSTACK("sleep_ns"_Stz);
   
-  Thread* pThread = Thread::pThread();
+  Thread* pThread = Thread::pThisTLSThread();
   
   pThread->m_pPosixThread->vSleepNano(nNanoseconds);
   

@@ -112,7 +112,7 @@ namespace Threads
   
     static void* pEntryPoint(void* pArg);
   
-    static Thread* pThread(void);
+    static Thread* pThisTLSThread(void);
     static void vRunTask(MP_Task mpTask);
   
     void vAppend(MP_Task mpTask);
