@@ -201,7 +201,7 @@ Thread* Queues::pGrabIdleThread(void)
     Thread* pThread = m_pThreadVector->pGet(i_Thread);
     
     // attempt to grab threads mutex
-    //if (! pThread->bMutexGrab())
+    //if (! pThread->bMutexLock())
     //  continue;
     
     //ASSERT(pThread->bMutexIsLocked());
@@ -210,6 +210,8 @@ Thread* Queues::pGrabIdleThread(void)
       m_pThreadVector->vDropLock();
       return pThread;
     }
+    
+    //pThread->vMutexUnlock();
   }
   
   m_pThreadVector->vDropLock();
