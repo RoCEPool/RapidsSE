@@ -510,16 +510,42 @@ void Queues::vScheduleYieldedTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  if (! pTask->bIsPartitioned()) {
-    
-    //i8 iLengthReadyQueue = m_pReadyQueue->nTasks();
-    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // non-partitioned task yield
+  
+  if (pTask->bIsNonPartitioned()) {
+
     Thread* pCallingThread = Thread::pThisTLSThread();
-    pCallingThread->vReExecuteTask(pTask);
+    
+    if (pCallingThread->bGeneralThread()) {
+    
+      // - A general thread has executed a task which retured TS_YIELDED.
+      //   If the ready queue is empty then this general thread can
+      //     continue to execute the yield task.
+      //   Otherwise we add the task to the ready queue
+      
+      i8 iLengthReadyQueue = m_pReadyQueue->nTasks();
+      if (0 == iLengthReadyQueue)
+        pCallingThread->vReExecuteTask(pTask);
+      else
+        vAddToReadyQueue(pTask);
+    }
+    else {
+      
+      // - case where task is spawned by non-general task in yield state
+      
+      //pTask->vState(TS_READY);
+      //vScheduleReadyTask(pTask);
+      NEVER_REACH;
+    }
+
+    return;
   }
-  else {
-    NEVER_REACH; // r35.5 temp
-  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // partitioned task yield
+  
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/

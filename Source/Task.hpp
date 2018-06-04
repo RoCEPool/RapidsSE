@@ -226,6 +226,7 @@ namespace Tasks
     void vException(StrVal& sFile, StrVal& eException);
     void vInitialiseMain(void);
     bool bIsName(StrVal& sName);
+    bool bIsNonPartitioned(void);
     bool bIsPartitioned(void);
     void vLocalsPop(void);
     void vLocalsPush(void);

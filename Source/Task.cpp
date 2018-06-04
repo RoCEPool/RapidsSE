@@ -1488,6 +1488,19 @@ bool Task::bIsName(StrVal& sName)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this a non-partitioned task?                                            */
+/*----------------------------------------------------------------------------*/
+bool Task::bIsNonPartitioned(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  if (-1 == m_iPartition)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this a partitioned task?                                                */
 /*----------------------------------------------------------------------------*/
 bool Task::bIsPartitioned(void)
