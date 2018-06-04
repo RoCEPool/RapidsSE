@@ -131,6 +131,7 @@ namespace Tasks
     s32     m_sName;       // task name
     s32     m_sComment;    // comment
     eTS     m_eState;      // state (running, sleeping, ...)
+    eQR     m_eQueue;      // which queue the task is in
     i8      m_iTxId;       // transaction id
     i8      m_iWakeAt;     // time at which to wake this tx
     Task*   m_pParentTask; // parent of this task
@@ -245,6 +246,8 @@ namespace Tasks
     void vPushObject(Object* pObject);
     void vPushStr(Stz* aStr);
     void vPushStr(s48K& sStr);
+    eQR  eQueue(void);
+    void vQueue(eQR eQueue);
     Value* pRequest(void);
     void vReset(void);
     void vRetry(void);

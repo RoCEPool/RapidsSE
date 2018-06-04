@@ -254,6 +254,7 @@ void Task::vInit(Stz* aLambda)
   m_iPartition  = -1;
   m_sName       = "<no task name>"_Stz;
   m_eState      = TS_NONE;
+  m_eQueue      = QR_NONE;
   m_iTxId       = -1;
   m_npNextInSet = nullptr;
   m_npPrevInSet = nullptr;
@@ -1696,6 +1697,26 @@ void Task::vPushStr(s48K& sStr)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   m_pDataStack->vPushS48K(sStr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get task queue                                                             */
+/*----------------------------------------------------------------------------*/
+eQR Task::eQueue(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  return m_eQueue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set task queue                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vQueue(eQR eQueue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  m_eQueue = eQueue;
 }
 
 /*----------------------------------------------------------------------------*/
