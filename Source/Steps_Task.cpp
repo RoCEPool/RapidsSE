@@ -47,6 +47,7 @@ void Task::vAddPrimitives_Task(void)
   vAddPrimitive("task.seed"_Stz,      &vTaskSeed,          false);
   vAddPrimitive("task.seitf@"_Stz,    &vTaskSeitfFetch,    false);
   vAddPrimitive("task.seitf!"_Stz,    &vTaskSeitfStore,    false);
+  vAddPrimitive("task.sleep"_Stz,     &vTaskSleep,         false);
   vAddPrimitive("task.socket@"_Stz,   &vTaskSocketFetch,   false);
   vAddPrimitive("task.socket!"_Stz,   &vTaskSocketStore,   false);
   vAddPrimitive("task.state@"_Stz,    &vTaskStateFetch,    false);
@@ -753,6 +754,24 @@ void Task::vTaskSeitfStore(MP_Task mpTask)
   ASSERT(! pSEitf || CN_SEITF == pSEitf->eClass());
   
   pThatTask->m_pSEitf = pSEitf;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.sleep -- this task sleeps                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskSleep(MP_Task mpTask)
+{
+  ENTRY("vTaskSleep"_Stz);
+  
+  i8 nMicroSeconds;
+  
+  if ( ! mpTask->m_pDataStack->bPop(nMicroSeconds) )
+    THROW_INVALID_DSTACK("sleep_s"_Stz);
+  
+  mpTask->vSleep(nMicroSeconds);
+  mpTask->vState(TS_SLEEPING);
   
   EXIT();
 }

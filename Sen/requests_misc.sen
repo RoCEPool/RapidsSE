@@ -76,6 +76,13 @@
 /*----------------------------------------------------------------------------*/
 : n35_req ( -- <R> )
 
+  //"sleeping for 10 microseconds" .
+  //10 task.sleep
+  //"awake" .
+  //"sleeping for 5 milliseconds" .
+  //5000 task.sleep
+  //"awake" .
+
   "n35"
 
   <SUCCESS>
