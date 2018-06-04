@@ -68,7 +68,7 @@ namespace Threads
   
     void vRemoveFromQueue(Task* pTask); //! RAY TO COMPLETE
     void vRemoveThread(Thread* pThread);
-    void vRemoveFromRunningQueue(Task* pTask);
+    void vRemoveFromExecutingQueue(Task* pTask);
   
     void vScheduleReadyTask(Task* pTask);
     void vScheduleReadySlotTask(Task* pTask);

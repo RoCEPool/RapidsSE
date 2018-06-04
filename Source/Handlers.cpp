@@ -133,7 +133,7 @@ bool Handlers::bThreadLevelHandler(NP_Task* pNpTask)
   *pNpTask = nullptr;
   
   // first remove this task from the running queue
-  pQueues->vRemoveFromRunningQueue(pTask);
+  pQueues->vRemoveFromExecutingQueue(pTask);
   
   // now add the task to another appropriate queue depending on its state
   switch (pTask->eState()) {

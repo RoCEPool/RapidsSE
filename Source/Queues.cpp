@@ -108,6 +108,8 @@ void Queues::vAddToExecutingQueue(Task* pTask)
   
   RASSERT(TS_EXECUTING == pTask->eState());
   
+  pTask->vQueue(QR_EXECUTING_QUEUE);
+  
   m_pExecutingQueue->vGrabLock();
   m_pExecutingQueue->vAddTask(pTask);
   m_pExecutingQueue->vDropLock();
@@ -121,6 +123,8 @@ void Queues::vAddToReadyQueue(Task* pTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   RASSERT(TS_READY == pTask->eState());
+  
+  pTask->vQueue(QR_READY_QUEUE);
   
   m_pReadyQueue->vGrabLock();
   m_pReadyQueue->vAddTask(pTask);
@@ -142,6 +146,8 @@ void Queues::vAddToReadySlotQueue(Task* pTask)
   // get slot no of the task
   i8 iSlot = Partition::iPartitionToSlot(pTask->iPartition());
   
+  pTask->vQueue((eQR)iSlot);
+  
   m_pReadySlotQueues[iSlot]->vGrabLock();
   m_pReadySlotQueues[iSlot]->vAddTask(pTask);
   m_pReadySlotQueues[iSlot]->vDropLock();
@@ -155,6 +161,8 @@ void Queues::vAddToSleepingQueue(Task* pTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   RASSERT(TS_SLEEPING == pTask->eState());
+  
+  pTask->vQueue(QR_SLEEPING_QUEUE);
   
   m_pSleepingQueue->vGrabLock();
   m_pSleepingQueue->vAddTask(pTask);
@@ -170,6 +178,8 @@ void Queues::vAddToWaitingQueue(Task* pTask)
   
   RASSERT(TS_WAITING_ACK == pTask->eState() ||
           TS_WAITING_SIGNAL == pTask->eState());
+  
+  pTask->vQueue(QR_WAITING_QUEUE);
   
   m_pWaitingQueue->vGrabLock();
   m_pWaitingQueue->vAddTask(pTask);
@@ -386,15 +396,17 @@ void Queues::vRemoveThread(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove task from running queue                                             */
+/* remove task from executing queue                                           */
 /*----------------------------------------------------------------------------*/
-void Queues::vRemoveFromRunningQueue(Task* pTask)
+void Queues::vRemoveFromExecutingQueue(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   m_pExecutingQueue->vGrabLock();
   m_pExecutingQueue->vRemoveTask(pTask);
   m_pExecutingQueue->vDropLock();
+  
+  pTask->vQueue(QR_NONE);
 }
 
 /*----------------------------------------------------------------------------*/
