@@ -289,6 +289,8 @@ void* Thread::pEntryPoint(void* pArg)
   
   Thread* pThread = static_cast<Thread*>(pArg);
   
+  pThread->vThreadState(TC_IDLE);
+  
   gpAttachMap->m_pQueues->vAddThread(pThread);
   
   //if (gpAttachMap->m_bVerbose)
@@ -418,12 +420,16 @@ void Thread::vExecuteTask(Task* pTask)
   RASSERT(TS_READY == pTask->eState());
   pTask->vState(TS_EXECUTING);
   
-  // thread should have no task
-  RASSERT(! *m_npTask);
-  m_npTask = pTask;
-  
   // thread should be idle
   RASSERT(TC_IDLE == m_eThreadState);
+  
+  // thread should have no task
+  RASSERT(! *m_npTask);
+  
+  // set task to be executed
+  m_npTask = pTask;
+  
+  m_eThreadState = TC_RUNNING;
   
   // signal the thread
   vSignalThread();
@@ -444,12 +450,26 @@ void Thread::vHandlerWait(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // under mutex lock
+  
   // will not have a task
   ASSERT(! *m_npTask);
   
+  // this thread's mutex should be locked
+  ASSERT(m_pSemaphore->bMutexIsLocked());
+  
   m_eThreadState = TC_IDLE;
   
-  vCondWait();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  vCondWait(); // while waiting the mutex is dropped  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // under mutex lock
+  
+  // this thread's mutex should be locked
+  ASSERT(m_pSemaphore->bMutexIsLocked());
   
   // will have a task
   ASSERT(*m_npTask);
@@ -462,6 +482,7 @@ void Thread::vHandlerWait(void)
 /*----------------------------------------------------------------------------*/
 bool Thread::bIsIdle(void)
 {
+  
   if (TC_IDLE == m_eThreadState)
     return true;
   else
@@ -1187,8 +1208,8 @@ void Thread::vTaskCall(void)
   m_npTask->vState(TS_EXECUTING);
   m_npTask->vThread(this);
   
-  // add this task to the running task queue
-  gpAttachMap->m_pQueues->vAddToRunningQueue(*m_npTask);
+  // add this task to the executing task queue
+  gpAttachMap->m_pQueues->vAddToExecutingQueue(*m_npTask);
   
   // record time of call
   // ...

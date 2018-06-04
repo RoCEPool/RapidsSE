@@ -32,8 +32,8 @@ namespace Threads
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // queues which are not checked in the round robin
   
-    TaskQueue* m_pRunningQueue;    // queue of partition tasks ready to be
-                                   // executed (ordered by arrival)
+    TaskQueue* m_pExecutingQueue;  // queue of partition tasks currently
+                                   // executing (ordered by arrival)
                                    // these tasks have been partially executed
   
     TaskQueue* m_pWaitingQueue;    // set of suspended tasks which are
@@ -52,14 +52,13 @@ namespace Threads
   
     void vAddThread(Thread* pThread);
     
-    void vAddToQueue(Task* pTask);
+    void vAddToExecutingQueue(Task* pTask);
     void vAddToReadyQueue(Task* pTask);
     void vAddToReadySlotQueue(Task* pTask);
-    void vAddToRunningQueue(Task* pTask);
     void vAddToSleepingQueue(Task* pTask);
     void vAddToWaitingQueue(Task* pTask);
   
-    Thread* pFindIdleThread(void);
+    Thread* pGrabIdleThread(void);
   
     Task* pInspectReadyQueue(Thread* pCallingThread);
     Task* pInspectReadySlotQueue(Thread* pCallingThread);

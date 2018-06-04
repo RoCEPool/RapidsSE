@@ -73,7 +73,7 @@ bool Handlers::bQueueLevelHandler(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* system level event handler                                                 */
+/* system level event handler (put task into system)                          */
 /*----------------------------------------------------------------------------*/
 bool Handlers::bSystemLevelHandler(Task* pTask)
 {
@@ -86,6 +86,7 @@ bool Handlers::bSystemLevelHandler(Task* pTask)
 
   RASSERT(pTask->bR35model());
   RASSERT(TS_READY == pTask->eState());
+  //RASSERT(QR_NONE == pTask->eQueue());
   
   eQR eQueue = pTask->eWhichQueue();
   

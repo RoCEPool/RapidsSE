@@ -86,10 +86,13 @@ namespace Tasks
   /* 1 */ TS_BLOCKED,       // task is blocked by another transaction
   /* 2 */ TS_EXECUTING,     // task is currenty being executed by Thread::vLoop
   /* 3 */ TS_EXITED,        // task has completed
-  /* 4 */ TS_READY,         // task is ready
+  /* 4 */ TS_READY,         // task is ready to be executed
   /* 5 */ TS_SLEEPING,      // task is sleeping
+  
+  // task is waiting for signal 
   /* 6 */ TS_WAITING_ACK,   // task is waiting on ack from cooperating task
   /* 7 */ TS_WAITING_SIGNAL,// task is waiting on signal indicating queue arrival
+  
   /* 8 */ TS_YIELDED,       // task is yielded, not running and is in a TaskSet
   /* 9 */ TS_ENUMS
   };

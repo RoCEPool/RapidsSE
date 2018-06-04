@@ -65,8 +65,8 @@ Queues::Queues(void)
   for (i8 i_Slot = 0; i_Slot < gxArguments.m_nSlots; i_Slot++)
     m_pReadySlotQueues[i_Slot] = new TaskQueue(bTaskCompareTaskNo);
   
-  m_pRunningQueue = new TaskQueue(bTaskCompareTaskNo);
-  m_pWaitingQueue = new TaskQueue(bTaskCompareTaskNo);
+  m_pExecutingQueue = new TaskQueue(bTaskCompareTaskNo);
+  m_pWaitingQueue   = new TaskQueue(bTaskCompareTaskNo);
   
   _checkInitialised_(CN_QUEUES);
   
@@ -92,41 +92,25 @@ void Queues::vAddThread(Thread* pThread)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
+  RASSERT(TC_IDLE == pThread->eThreadState());
+  
   m_pThreadVector->vGrabLock();
   m_pThreadVector->vAdd(pThread);
   m_pThreadVector->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
-/* add task to queue                                                          */
+/* add task to executing queue                                                */
 /*----------------------------------------------------------------------------*/
-void Queues::vAddToQueue(Task* pTask)                        //! RAY TO COMPLETE
+void Queues::vAddToExecutingQueue(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  eQR eQueue = pTask->eWhichQueue();
-   
-  if (QR_RUNNING_QUEUE == eQueue) {
-    m_pRunningQueue->vAddTask(pTask);
-    return;
-  }
+  RASSERT(TS_EXECUTING == pTask->eState());
   
-  if (QR_WAITING_QUEUE == eQueue) {
-    m_pWaitingQueue->vAddTask(pTask);
-    return;
-  }
-  
-  if (QR_SLEEPING_QUEUE == eQueue) {
-    m_pSleepingQueue->vAddTask(pTask);
-    return;
-  }
-  
-  if (QR_READY_QUEUE == eQueue) {
-    m_pReadyQueue->vAddTask(pTask);
-    return;
-  }
-  
-  m_pReadySlotQueues[eQueue]->vAddTask(pTask);
+  m_pExecutingQueue->vGrabLock();
+  m_pExecutingQueue->vAddTask(pTask);
+  m_pExecutingQueue->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -164,20 +148,6 @@ void Queues::vAddToReadySlotQueue(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add task to running queue                                                  */
-/*----------------------------------------------------------------------------*/
-void Queues::vAddToRunningQueue(Task* pTask)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  RASSERT(TS_READY == pTask->eState());
-  
-  m_pRunningQueue->vGrabLock();
-  m_pRunningQueue->vAddTask(pTask);
-  m_pRunningQueue->vDropLock();
-}
-
-/*----------------------------------------------------------------------------*/
 /* add task to sleeping queue                                                 */
 /*----------------------------------------------------------------------------*/
 void Queues::vAddToSleepingQueue(Task* pTask)
@@ -209,7 +179,7 @@ void Queues::vAddToWaitingQueue(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* attempt to find idle thread                                                */
 /*----------------------------------------------------------------------------*/
-Thread* Queues::pFindIdleThread(void)
+Thread* Queues::pGrabIdleThread(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
@@ -422,13 +392,13 @@ void Queues::vRemoveFromRunningQueue(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  m_pRunningQueue->vGrabLock();
-  m_pRunningQueue->vRemoveTask(pTask);
-  m_pRunningQueue->vDropLock();
+  m_pExecutingQueue->vGrabLock();
+  m_pExecutingQueue->vRemoveTask(pTask);
+  m_pExecutingQueue->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
-/* schedule ready task                                                        */
+/* schedule a ready to execute task                                           */
 /*----------------------------------------------------------------------------*/
 void Queues::vScheduleReadyTask(Task* pTask)
 {
@@ -436,7 +406,7 @@ void Queues::vScheduleReadyTask(Task* pTask)
   
   RASSERT(TS_READY == pTask->eState());
   
-  Thread* pIdleThread = pFindIdleThread();
+  Thread* pIdleThread = pGrabIdleThread();
   
   if (pIdleThread)
     pIdleThread->vExecuteTask(pTask);
@@ -453,7 +423,7 @@ void Queues::vScheduleReadySlotTask(Task* pTask)
   
   RASSERT(TS_READY == pTask->eState());
   
-  Thread* pIdleThread = pFindIdleThread();
+  Thread* pIdleThread = pGrabIdleThread();
   
   if (pIdleThread)
     pIdleThread->vExecuteTask(pTask);
@@ -480,7 +450,7 @@ void Queues::vScheduleSleepingTask(Task* pTask)
   
   pTask->vWakeupTask();
   
-  Thread* pIdleThread = pFindIdleThread();
+  Thread* pIdleThread = pGrabIdleThread();
 
   if (pIdleThread)
     pIdleThread->vExecuteTask(pTask);
