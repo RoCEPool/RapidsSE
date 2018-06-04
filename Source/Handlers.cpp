@@ -149,7 +149,6 @@ bool Handlers::bThreadLevelHandler(NP_Task* pNpTask)
       ASSERT(0);
       
     case TS_SLEEPING:
-      // put task into sleeping queue
       pQueues->vScheduleSleepingTask(pTask);
       break;
       
@@ -163,12 +162,8 @@ bool Handlers::bThreadLevelHandler(NP_Task* pNpTask)
       ASSERT(0);
       
     case TS_YIELDED:
-      // put task into a ready queue
-      if (pTask->iPartition() == -1)
-        pQueues->vAddToReadyQueue(pTask);
-      else
-        pQueues->vAddToReadySlotQueue(pTask);
-      break;
+      pQueues->vScheduleYieldedTask(pTask);
+     break;
       
     default:
       break;

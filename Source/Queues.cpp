@@ -504,6 +504,23 @@ void Queues::vScheduleWaitingTask(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* schedule yielded task                                                      */
+/*----------------------------------------------------------------------------*/
+void Queues::vScheduleYieldedTask(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  if (! pTask->bIsPartitioned()) {
+    
+    Thread* pCallingThread = Thread::pThread();
+    pCallingThread->vReExecuteTask(pTask);
+  }
+  else {
+    NEVER_REACH; // r35.5 temp
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the thread vector                                                      */
 /*----------------------------------------------------------------------------*/
 ThreadVector* Queues::pThreadVector(void)

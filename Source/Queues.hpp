@@ -76,7 +76,8 @@ namespace Threads
     void vScheduleReadySlotTask(Task* pTask);
     void vScheduleSleepingTask(Task* pTask);
     void vScheduleWaitingTask(Task* pTask);
-  
+    void vScheduleYieldedTask(Task* pTask);
+ 
     ThreadVector* pThreadVector(void);
     
     Footer* aFooter(void);

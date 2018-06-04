@@ -1085,7 +1085,7 @@ void Thread::vReExecuteTask(Task* pTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   // task should be ready
-  RASSERT(TS_READY == pTask->eState());
+  RASSERT(TS_READY == pTask->eState() || TS_YIELDED == pTask->eState());
   pTask->vState(TS_EXECUTING);
   
   // thread should be idle

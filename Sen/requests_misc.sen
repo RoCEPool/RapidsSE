@@ -76,6 +76,10 @@
 /*----------------------------------------------------------------------------*/
 : n35_req ( -- <R> )
 
+  "yielding" .
+  task.yield
+  "running" .
+
   "sleeping for 0 microseconds" .
   0 task.sleep
   "awake" .
