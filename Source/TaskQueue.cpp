@@ -138,12 +138,13 @@ Task* TaskQueue::pPeekTask(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
-  Task* pTask;
+  Task* pTask = nullptr;
   
    ASSERT(m_xLock.bIsLocked());
   
   SkipNode* pNode = m_pTaskSkipList->pFirst(0);
-  pTask = _pTask(pNode->m_pObject);
+  if (pNode)
+    pTask = _pTask(pNode->m_pObject);
   
   
   return pTask;
@@ -157,14 +158,16 @@ Task* TaskQueue::pPopTask(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
   bool bRemoved;
-  Task* pTask;
+  Task* pTask = nullptr;
   
   ASSERT(m_xLock.bIsLocked());
   
   SkipNode* pNode = m_pTaskSkipList->pFirst(0);
-  pTask = _pTask(pNode->m_pObject);
-  bRemoved = m_pTaskSkipList->bRemove(pTask);
-  RASSERT(bRemoved);
+  if (pNode) {
+    pTask = _pTask(pNode->m_pObject);
+    bRemoved = m_pTaskSkipList->bRemove(pTask);
+    RASSERT(bRemoved);
+  }
 
   return pTask;
 }

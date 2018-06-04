@@ -88,7 +88,7 @@ Thread::Thread(void)
   Thread* pThread = this;
   //gpAttachMap->m_pThreadList->vAppend(pThread);
   
-   m_iLastRRqueue = QR_NONE;
+   m_iLastRRqueue = QR_SLEEPING_QUEUE - 1;
    m_iStartRRqueue = QR_NONE;
   
   _checkInitialised_(CN_THREAD);
@@ -524,7 +524,7 @@ void Thread::vLoop(void)
   ASSERT(PosixThread::pTlsGet(giTLS_ThreadKey) == this);
   
   // sleep infinite
-  m_pPosixThread->vSleepSec(100000000);
+  //m_pPosixThread->vSleepSec(100000000);
   
   vMutexLock();
   
