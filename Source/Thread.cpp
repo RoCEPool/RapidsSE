@@ -81,14 +81,15 @@ Thread::Thread(void)
   m_pPosixThread = new PosixThread;
   m_pSemaphore   = new Semaphore;
   m_pScheduler   = gpAttachMap->m_pServerScheduler;
-  m_pTaskFifo   = nullptr;
+  m_pTaskFifo    = nullptr;
   m_pTaskSet     = nullptr;
   m_npTask       = nullptr;
 
   Thread* pThread = this;
   //gpAttachMap->m_pThreadList->vAppend(pThread);
   
-   m_iLastRRqueue = QR_SLEEPING_QUEUE - 1;
+   m_bGeneralThead = false;
+   m_iLastRRqueue  = QR_SLEEPING_QUEUE - 1;
    m_iStartRRqueue = QR_NONE;
   
   _checkInitialised_(CN_THREAD);
@@ -436,10 +437,32 @@ void Thread::vExecuteTask(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this a general thread                                                   */
+/*----------------------------------------------------------------------------*/
+bool Thread::bGeneralThread(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  return m_bGeneralThead;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set general thread                                                         */
+/*----------------------------------------------------------------------------*/
+void Thread::vGeneralThread(bool bGeneralThread)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  m_bGeneralThead = bGeneralThread;
+}
+
+/*----------------------------------------------------------------------------*/
 /* grab a write lock on this thread                                           */
 /*----------------------------------------------------------------------------*/
 bool Thread::bGrabLock(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
   bool b = m_pSemaphore->bMutexLock();
 
   ASSERT( ! b || m_pSemaphore->bMutexIsLocked() );

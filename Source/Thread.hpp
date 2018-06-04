@@ -89,6 +89,7 @@ namespace Threads
                                  //   its not in task set
     Schedulers::Scheduler*  m_pScheduler; // scheduler
   
+    bool         m_bGeneralThead;// is this a general thread
     i8           m_iLastRRqueue; // last round robin queue this thread
                                  // had popped a task
   
@@ -121,6 +122,8 @@ namespace Threads
     void vContentDump(void) const;
     void vDropLock(void);
     void vExecuteTask(Task* pTask);
+    bool bGeneralThread(void);
+    void vGeneralThread(bool bGeneralThread);
     bool bGrabLock(void);
     bool bIsIdle(void);
     i8   iLastRRqueue(void);

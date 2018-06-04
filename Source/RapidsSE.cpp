@@ -440,13 +440,14 @@ void RapidsSE::vSystemInit(void)
   if (gpAttachMap->m_bVerbose)
     vTrace("Shm region initialised at: %s\n"_Stz,gpAttachMap->m_sUTC.aChar());
   
-  // spawn v3.5 threads
+  // spawn v3.5 general threads
   for (i8 iThreads = 0; iThreads < gxArguments.m_nThreads; iThreads++) {
     Thread* pThread = new Thread;
     gpAttachMap->m_pThreadList->vAppend(pThread);
     s32 s;
     s = "Thread3.5"_Stz;
     pThread->vName(s);
+    pThread->vGeneralThread(true);
     pThread->vSpawn_Thread();
   }
 }
