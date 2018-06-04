@@ -524,6 +524,8 @@ void Thread::vLoop(void)
   
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
   PosixThread::vTlsSet(giTLS_ThreadKey,this);
   ASSERT(PosixThread::pTlsGet(giTLS_ThreadKey) == this);
   

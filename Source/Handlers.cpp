@@ -138,10 +138,10 @@ bool Handlers::bThreadLevelHandler(NP_Task* pNpTask)
       ASSERT(0);
       
     case TS_EXITED:
-      // task has exited, just delete it
-      if ( (*gpAttachMap->m_npBootTask != pTask) && (! pTask->bWordBody()) ) {
-        delete pTask;
-      }
+      // task has exited
+      // now delete task
+      ASSERT( (*gpAttachMap->m_npBootTask != pTask) && (! pTask->bWordBody()) );
+      delete pTask;
       break;
       
     case TS_EXECUTING:
