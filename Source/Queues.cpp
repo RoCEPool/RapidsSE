@@ -480,7 +480,7 @@ void Queues::vScheduleSleepingTask(Task* pTask)
   
   Thread* pIdleThread = pGrabIdleThread();
   
-  //! pIdleThread mutex is held by calling thread 
+  //! pIdleThread mutex is held by calling thread
 
   if (pIdleThread)
     pIdleThread->vExecuteTask(pTask);

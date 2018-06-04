@@ -401,12 +401,22 @@ void Thread::vContentDump(void) const
 }
 
 /*----------------------------------------------------------------------------*/
-/* drop thea write lock on this thread                                        */
+/* drop the write lock on this thread                                         */
 /*----------------------------------------------------------------------------*/
 void Thread::vDropLock(void)
 {
   ASSERT(m_xLock.bIsLocked());
   m_xLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop the mutex lock on this thread                                         */
+/*----------------------------------------------------------------------------*/
+void Thread::vDropMutex(void)
+{
+  ASSERT(m_pSemaphore->bMutexIsLocked());
+  
+  m_pSemaphore->vMutexUnlock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -440,7 +450,30 @@ void Thread::vExecuteTask(Task* pTask)
 /*----------------------------------------------------------------------------*/
 bool Thread::bGrabLock(void)
 {
-  return m_xLock.bGrabWrite();
+  bool b = m_pSemaphore->bMutexLock();
+
+  ASSERT( ! b || m_pSemaphore->bMutexIsLocked() );
+  
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt to grab the mutex for the thread                                   */
+/*----------------------------------------------------------------------------*/
+bool Thread::bGrabMutex(void)
+{
+  bool b = m_pSemaphore->bMutexLock();
+  
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab the mutex lock for the thread                                         */
+/*----------------------------------------------------------------------------*/
+void Thread::vGrabMutex(void)
+{
+  m_pSemaphore->vMutexLock();
+
 }
 
 /*----------------------------------------------------------------------------*/
