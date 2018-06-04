@@ -155,6 +155,7 @@ namespace Threads
     void  vCondSignal(void);
     void  vCondWait(void);
     void  vCondTimedWait(i8 iNanoSeconds);
+    void  vHandlerWait(void);
     bool  bMutexLock(void);
     void  vMutexLock(void);
     void  vMutexUnlock(void);
@@ -165,7 +166,6 @@ namespace Threads
     void  vTaskCall(void);
     TaskFifo* pTaskFifo(void);
     void  vTaskFifo(TaskFifo* pTaskFifo);
-    void  vTaskWait(void);
   
     Footer* aFooter(void);
   };

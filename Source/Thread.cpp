@@ -416,6 +416,25 @@ bool Thread::bGrabLock(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* this thread waits till its given a task by a handler                       */
+/*----------------------------------------------------------------------------*/
+void Thread::vHandlerWait(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  // will not have a task
+  ASSERT(! *m_npTask);
+  
+  m_eThreadState = TC_WAITING;
+  
+  vCondWait();
+  
+  // will have a task
+  ASSERT(*m_npTask);
+  
+  m_eThreadState = TC_RUNNING;
+}
+/*----------------------------------------------------------------------------*/
 /* is thread idle?                                                            */
 /*----------------------------------------------------------------------------*/
 bool Thread::bIsIdle(void)
@@ -472,7 +491,7 @@ void Thread::vLoop(void)
     
     // get next task
     if (! bQueuePeek())
-      vTaskWait();
+      vHandlerWait();
    
     // will have a task
     ASSERT(*m_npTask);
@@ -1195,25 +1214,6 @@ void Thread::vTaskFifo(TaskFifo* pTaskFifo)
   m_pTaskFifo = pTaskFifo;
 }
 
-/*----------------------------------------------------------------------------*/
-/* this thread waits till its given a task by a handler                       */
-/*----------------------------------------------------------------------------*/
-void Thread::vTaskWait(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-
-  // will not have a task
-  ASSERT(! *m_npTask);
-
-  m_eThreadState = TC_WAITING;
-  
-  vCondWait();
-
-  // will have a task
-  ASSERT(*m_npTask);
-
-  m_eThreadState = TC_RUNNING;
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Semaphore ---------------------------------------------------------------*/
