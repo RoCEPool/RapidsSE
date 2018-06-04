@@ -4,7 +4,7 @@
 
 "ipc.sen" .verbose
 
-: isRunning   ( task -- ) task.state@ TS_RUNNING == ;
+: isRunning   ( task -- ) task.state@ TS_EXECUTING == ;
 
 : getState    ( -- ) task::this task.state@ ;
 : setState    ( -- ) task::this task.state! ;
@@ -31,7 +31,7 @@ tp: nowWaiting
 
   waitSignal
 
-TS_RUNNING setState
+TS_EXECUTING setState
 
   tp: nowRunning
 ;

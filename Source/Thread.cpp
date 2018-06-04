@@ -345,7 +345,7 @@ void Thread::vRunTask(MP_Task mpTask)
 {
   PosixThread::vTlsSet(giTLS_TaskKey,*mpTask);
   ASSERT(PosixThread::pTlsGet(giTLS_TaskKey));
-  mpTask->vState(TS_RUNNING);
+  mpTask->vState(TS_EXECUTING);
   mpTask->vThread(nullptr);
   mpTask->vTaskLoop();
 }
@@ -425,7 +425,7 @@ void Thread::vHandlerWait(void)
   // will not have a task
   ASSERT(! *m_npTask);
   
-  m_eThreadState = TC_WAITING;
+  m_eThreadState = TC_IDLE;
   
   vCondWait();
   
@@ -434,12 +434,13 @@ void Thread::vHandlerWait(void)
   
   m_eThreadState = TC_RUNNING;
 }
+
 /*----------------------------------------------------------------------------*/
 /* is thread idle?                                                            */
 /*----------------------------------------------------------------------------*/
 bool Thread::bIsIdle(void)
 {
-  if (TC_READYTORUN == m_eThreadState)
+  if (TC_IDLE == m_eThreadState)
     return true;
   else
     return false;
@@ -558,7 +559,7 @@ void Thread::vLoop_Drone(void)
   PosixThread::vTlsSet(giTLS_TaskKey,*m_npTask);
   ASSERT(PosixThread::pTlsGet(giTLS_TaskKey));
   
-  m_npTask->vState(TS_RUNNING);
+  m_npTask->vState(TS_EXECUTING);
   m_npTask->vThread(this);
   m_npTask->vTaskLoop();
   
@@ -621,7 +622,7 @@ void Thread::vLoop_Partition(void)
     
     PosixThread::vTlsSet(giTLS_TaskKey,*m_npTask);
     ASSERT(PosixThread::pTlsGet(giTLS_TaskKey));
-    m_npTask->vState(TS_RUNNING);
+    m_npTask->vState(TS_EXECUTING);
     m_npTask->vThread(this);
     m_npTask->vTaskLoop();
     
@@ -713,7 +714,7 @@ void Thread::vLoop_Partition2(void)
     PosixThread::vTlsSet(giTLS_TaskKey,*m_npTask);
     ASSERT(PosixThread::pTlsGet(giTLS_TaskKey));
     
-    m_npTask->vState(TS_RUNNING);
+    m_npTask->vState(TS_EXECUTING);
     m_npTask->vThread(this);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -839,7 +840,7 @@ void Thread::vLoop_Server(void)
     PosixThread::vTlsSet(giTLS_TaskKey,*m_npTask);
     ASSERT(PosixThread::pTlsGet(giTLS_TaskKey));
     
-    m_npTask->vState(TS_RUNNING);
+    m_npTask->vState(TS_EXECUTING);
     m_npTask->vThread(this);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -943,7 +944,7 @@ void Thread::vLoop_Worker(void)
     
     PosixThread::vTlsSet(giTLS_TaskKey,*m_npTask);
     ASSERT(PosixThread::pTlsGet(giTLS_TaskKey));
-    m_npTask->vState(TS_RUNNING);
+    m_npTask->vState(TS_EXECUTING);
     m_npTask->vThread(this);
     m_npTask->vTaskLoop();
     
@@ -1061,7 +1062,7 @@ void Thread::vRunTask(Task* pTask)
   
   // thread should be idle
   
-  RASSERT(TC_READYTORUN == m_eThreadState);
+  RASSERT(TC_IDLE == m_eThreadState);
   
   // signal the thread
   vSignalThread();
@@ -1179,7 +1180,7 @@ void Thread::vTaskCall(void)
   PosixThread::vTlsSet(giTLS_TaskKey,*m_npTask);
   ASSERT(PosixThread::pTlsGet(giTLS_TaskKey));
   
-  m_npTask->vState(TS_RUNNING);
+  m_npTask->vState(TS_EXECUTING);
   m_npTask->vThread(this);
   
   // add this task to the running task queue

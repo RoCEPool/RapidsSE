@@ -54,19 +54,17 @@ namespace Threads
   enum eTC // thread condition/state
   {
     /*  0 */ TC_NONE=0,
-    /*  1 */ TC_READYTORUN,
+    /*  1 */ TC_IDLE,
     /*  2 */ TC_RUNNING,
-    /*  3 */ TC_WAITING,
-    /*  4 */ TC_ENUMS,
+    /*  3 */ TC_ENUMS,
   };
   
   static Stz* aTC[]
   {
     /*  0 */ "NONE"_Stz,
-    /*  1 */ "READYTORUN"_Stz,
+    /*  1 */ "IDLE"_Stz,
     /*  2 */ "RUNNING"_Stz,
-    /*  3 */ "WAITING"_Stz,
-    /*  4 */ "ENUMS"_Stz,
+    /*  3 */ "ENUMS"_Stz,
   };
   
   class Thread : public Object,

@@ -423,10 +423,10 @@ void Queues::vScheduleReadyTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  Thread* pThread = pFindIdleThread();
+  Thread* pIdleThread = pFindIdleThread();
   
-  if (pThread)
-    pThread->vRunTask(pTask);
+  if (pIdleThread)
+    pIdleThread->vRunTask(pTask);
   else
     vAddToReadyQueue(pTask);
 }

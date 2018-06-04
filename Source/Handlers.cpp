@@ -41,10 +41,10 @@ bool Handlers::bQueueLevelHandler(Task* pTask)
       continue;
     
     // see if thread is waiting for a task
-    if (pThread->eThreadState() == TC_WAITING) {
+    if (pThread->eThreadState() == TC_IDLE) {
       
-      // set task state to READYTORUN
-      pThread->vThreadState(TC_READYTORUN);
+      // set task state to RUNNING
+      pThread->vThreadState(TC_RUNNING);
       
       // set the task in the thread
       pThread->vTask(pTask);
@@ -84,7 +84,8 @@ bool Handlers::bSystemLevelHandler(Task* pTask)
   
   Queues* pQueues = gpAttachMap->m_pQueues;
 
-  RASSERT(TS_RUNNING == pTask->eState());
+  RASSERT(pTask->bR35model());
+  RASSERT(TS_EXECUTING == pTask->eState());
   
   eQR eQueue = pTask->eWhichQueue();
   
@@ -147,7 +148,7 @@ bool Handlers::bThreadLevelHandler(NP_Task* pNpTask)
       }
       break;
       
-    case TS_RUNNING:
+    case TS_EXECUTING:
       // should never come to thread handler with a running task
       ASSERT(0);
       

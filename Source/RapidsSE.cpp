@@ -473,7 +473,7 @@ void RapidsSE::vStartActors(void)
   //while (TS_EXITED != gpAttachMap->m_npBootTask->eState())
   //  PosixThread::vSleepMilli(1000);
   
-  gpAttachMap->m_npBootTask->vState(TS_RUNNING);
+  gpAttachMap->m_npBootTask->vState(TS_EXECUTING);
   gpAttachMap->m_npBootTask->vTaskLoop();
   // the system is now running
 }

@@ -84,8 +84,8 @@ namespace Tasks
   {
   /* 0 */ TS_NONE=0,
   /* 1 */ TS_BLOCKED,       // task is blocked by another transaction
-  /* 2 */ TS_EXITED,        // task has completed
-  /* 3 */ TS_RUNNING,       // task is currenty being executed by Thread::vLoop
+  /* 2 */ TS_EXECUTING,     // task is currenty being executed by Thread::vLoop
+  /* 3 */ TS_EXITED,        // task has completed
   /* 4 */ TS_SLEEPING,      // task is sleeping (not yet used)
   /* 5 */ TS_WAITING_ACK,   // task is waiting on ack from cooperating task
   /* 6 */ TS_WAITING_SIGNAL,// task is waiting on signal indicating queue arrival
@@ -97,8 +97,8 @@ namespace Tasks
   {
     /* 0 */ "NONE"_Stz,
     /* 1 */ "BLOCKED"_Stz,
-    /* 2 */ "EXITED"_Stz,
-    /* 3 */ "RUNNING"_Stz,
+    /* 2 */ "EXECUTING"_Stz,
+    /* 3 */ "EXITED"_Stz,
     /* 4 */ "SLEEPING"_Stz,
     /* 5 */ "SUSPENDED"_Stz,
     /* 6 */ "WAITING"_Stz,

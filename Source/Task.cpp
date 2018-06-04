@@ -886,8 +886,8 @@ void Task::vAddConstants(void)
   // TS_ : task state
   /*  0 */ vAddConstant("TS_NONE"_Stz,           TS_NONE);
   /*  1 */ vAddConstant("TS_BLOCKED"_Stz,        TS_BLOCKED);
-  /*  2 */ vAddConstant("TS_EXITED"_Stz,         TS_EXITED);
-  /*  3 */ vAddConstant("TS_RUNNING"_Stz,        TS_RUNNING);
+  /*  2 */ vAddConstant("TS_EXECUTING"_Stz,      TS_EXECUTING);
+  /*  3 */ vAddConstant("TS_EXITED"_Stz,         TS_EXITED);
   /*  4 */ vAddConstant("TS_SLEEPING"_Stz,       TS_SLEEPING);
   /*  5 */ vAddConstant("TS_WAITING_ACK"_Stz,    TS_WAITING_ACK);
   /*  6 */ vAddConstant("TS_WAITING_SIGNAL"_Stz, TS_WAITING_SIGNAL);
@@ -1775,7 +1775,7 @@ void Task::vSeedDicCompileSen(void)
   
   IP.m_pCell = pBootSen->pFirstCell();
   
-  m_eState = TS_RUNNING;
+  m_eState = TS_EXECUTING;
   
   m_pDataStack->vReset();
   m_pReturnStack->vReset();
@@ -2170,7 +2170,7 @@ eQR Task::eWhichQueue(void)  //! RAY TO FINISH
   
   switch (m_eState) {
     
-    case TS_RUNNING:
+    case TS_EXECUTING:
     case TS_YIELDED:
       if (bIsPartitioned())
         return (eQR)iPartition();
@@ -2203,7 +2203,7 @@ void Task::vTaskLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  while (TS_RUNNING == m_eState || TS_WAITING_SIGNAL == m_eState) {
+  while (TS_EXECUTING == m_eState || TS_WAITING_SIGNAL == m_eState) {
     
     //assert(0 == m_iTaskNo || m_pThread);
     
