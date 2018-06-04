@@ -79,11 +79,13 @@ bool Handlers::bSystemLevelHandler(Task* pTask)
 {
   //
   // this handler is called from SEitf::bAppendRequest_R35()
-  // task should be ready to run
+  // we want to run given task. task should be ready to run
   //
   
   Queues* pQueues = gpAttachMap->m_pQueues;
 
+  RASSERT(TS_RUNNING == pTask->eState());
+  
   eQR eQueue = pTask->eWhichQueue();
   
   if (QR_READY_QUEUE == eQueue) {

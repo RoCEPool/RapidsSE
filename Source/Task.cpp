@@ -1487,6 +1487,19 @@ bool Task::bIsName(StrVal& sName)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this a partitioned task?                                                */
+/*----------------------------------------------------------------------------*/
+bool Task::bIsPartitioned(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  if (-1 != m_iPartition)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop locals frame                                                           */
 /*----------------------------------------------------------------------------*/
 void Task::vLocalsPop(void)
@@ -2031,6 +2044,7 @@ void Task::vTracePoint(Stz* aMark)
   
   vTrace("%s\n"_Stz,sStackContents.aChar());
 }
+
 /*----------------------------------------------------------------------------*/
 /* get partiton this tasks nelongs to                                         */
 /*----------------------------------------------------------------------------*/
@@ -2158,7 +2172,10 @@ eQR Task::eWhichQueue(void)  //! RAY TO FINISH
     
     case TS_RUNNING:
     case TS_YIELDED:
-      return QR_READY_QUEUE;
+      if (bIsPartitioned())
+        return (eQR)iPartition();
+      else
+        return QR_READY_QUEUE;
       
     case TS_SLEEPING:
       return QR_SLEEPING_QUEUE;

@@ -220,9 +220,10 @@ namespace Tasks
     bool bDestructorTrace(void);
     void vException(StrVal& sFile, StrVal& eException);
     void vInitialiseMain(void);
-    bool  bIsName(StrVal& sName);
-    void  vLocalsPop(void);
-    void  vLocalsPush(void);
+    bool bIsName(StrVal& sName);
+    bool bIsPartitioned(void);
+    void vLocalsPop(void);
+    void vLocalsPush(void);
     NP_Task npNextInSet(void);
     StrVal&   sName(void);
     void vName(StrVal& sName);
