@@ -120,11 +120,8 @@ namespace Threads
     i8   iCpu(void);
     void vContentDump(void) const;
     void vDropLock(void);
-    void vDropMutex(void);
     void vExecuteTask(Task* pTask);
     bool bGrabLock(void);
-    bool bGrabMutex(void);
-    void vGrabMutex(void);
     bool bIsIdle(void);
     i8   iLastRRqueue(void);
     void vLastRRqueue(i8 iLastRRqueue);
@@ -157,6 +154,7 @@ namespace Threads
     void  vCondWait(void);
     void  vCondTimedWait(i8 iNanoSeconds);
     void  vHandlerWait(void);
+    bool  bMutexIsLocked(void);
     bool  bMutexLock(void);
     void  vMutexLock(void);
     void  vMutexUnlock(void);

@@ -410,16 +410,6 @@ void Thread::vDropLock(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* drop the mutex lock on this thread                                         */
-/*----------------------------------------------------------------------------*/
-void Thread::vDropMutex(void)
-{
-  ASSERT(m_pSemaphore->bMutexIsLocked());
-  
-  m_pSemaphore->vMutexUnlock();
-}
-
-/*----------------------------------------------------------------------------*/
 /* signal thread to execute given task                                        */
 /*----------------------------------------------------------------------------*/
 void Thread::vExecuteTask(Task* pTask)
@@ -455,25 +445,6 @@ bool Thread::bGrabLock(void)
   ASSERT( ! b || m_pSemaphore->bMutexIsLocked() );
   
   return b;
-}
-
-/*----------------------------------------------------------------------------*/
-/* attempt to grab the mutex for the thread                                   */
-/*----------------------------------------------------------------------------*/
-bool Thread::bGrabMutex(void)
-{
-  bool b = m_pSemaphore->bMutexLock();
-  
-  return b;
-}
-
-/*----------------------------------------------------------------------------*/
-/* grab the mutex lock for the thread                                         */
-/*----------------------------------------------------------------------------*/
-void Thread::vGrabMutex(void)
-{
-  m_pSemaphore->vMutexLock();
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1329,6 +1300,18 @@ void Thread::vCondTimedWait(i8 iMicroSeconds)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test if a threads mutex is locked (non-blocking)                           */
+/*----------------------------------------------------------------------------*/
+bool Thread::bMutexIsLocked(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  bool b = m_pSemaphore->bMutexIsLocked();
+  
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
 /* lock a threads mutex (blocking)                                            */
 /*----------------------------------------------------------------------------*/
 void Thread::vMutexLock(void)
@@ -1336,6 +1319,8 @@ void Thread::vMutexLock(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   m_pSemaphore->vMutexLock();
+  
+  ASSERT(m_pSemaphore->bMutexIsLocked());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1347,6 +1332,8 @@ bool Thread::bMutexLock(void)
   
   bool b = m_pSemaphore->bMutexLock();
   
+  ASSERT( ! b || m_pSemaphore->bMutexIsLocked() );
+  
   return b;
 }
 
@@ -1356,6 +1343,8 @@ bool Thread::bMutexLock(void)
 void Thread::vMutexUnlock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
+  
+  ASSERT(m_pSemaphore->bMutexIsLocked());
   
   m_pSemaphore->vMutexUnlock();
 }
