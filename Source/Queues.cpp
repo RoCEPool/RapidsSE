@@ -512,6 +512,8 @@ void Queues::vScheduleYieldedTask(Task* pTask)
   
   if (! pTask->bIsPartitioned()) {
     
+    //i8 iLengthReadyQueue = m_pReadyQueue->nTasks();
+    
     Thread* pCallingThread = Thread::pThisTLSThread();
     pCallingThread->vReExecuteTask(pTask);
   }

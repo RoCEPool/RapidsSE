@@ -191,6 +191,18 @@ void TaskQueue::vRemoveTask(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get number of tasks in queue                                               */
+/*----------------------------------------------------------------------------*/
+i8 TaskQueue::nTasks(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
+
+  i8 nTasks = m_pTaskSkipList->nObjects();
+  
+  return nTasks;
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
 void TaskQueue::vContentDump(void)
