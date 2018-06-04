@@ -77,10 +77,26 @@ bool Handlers::bQueueLevelHandler(Task* pTask)
 /*----------------------------------------------------------------------------*/
 bool Handlers::bSystemLevelHandler(Task* pTask)
 {
+  //
+  // this handler is called from SEitf::bAppendRequest_R35()
+  // task should be ready to run
+  //
+  
   Queues* pQueues = gpAttachMap->m_pQueues;
 
   eQR eQueue = pTask->eWhichQueue();
-    
+  
+  if (QR_READY_QUEUE == eQueue) {
+    pQueues->vScheduleReadyTask(pTask);
+    return true;
+  }
+  
+  if (eQueue >= 0 && eQueue < gxArguments.m_nSlots) {
+    pQueues->vScheduleReadySlotTask(pTask);
+    return true;
+  }
+  
+  /*
   if (QR_SLEEPING_QUEUE == eQueue) {
     pQueues->vScheduleSleepingTask(pTask);
     return true;
@@ -90,15 +106,11 @@ bool Handlers::bSystemLevelHandler(Task* pTask)
     pQueues->vScheduleWaitingTask(pTask);
     return true;
   }
+  */
   
-  if (QR_READY_QUEUE == eQueue) {
-    pQueues->vScheduleReadyTask(pTask);
-    return true;
-  }
-  
-  RASSERT(eQueue >= 0 && eQueue < gxArguments.m_nSlots);
-  pQueues->vScheduleReadySlotTask(pTask);
-  return true;
+  vFatal("Handlers::bSystemLevelHandler: Invalid eQueue %lld"_Stz,
+         (i8)eQueue);
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
