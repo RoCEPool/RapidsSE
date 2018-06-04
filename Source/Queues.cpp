@@ -410,6 +410,20 @@ void Queues::vRemoveFromExecutingQueue(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* remove task from waiting queue                                             */
+/*----------------------------------------------------------------------------*/
+void Queues::vRemoveFromWaitingQueue(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  m_pWaitingQueue->vGrabLock();
+  m_pWaitingQueue->vRemoveTask(pTask);
+  m_pWaitingQueue->vDropLock();
+  
+  pTask->vQueue(QR_NONE);
+}
+
+/*----------------------------------------------------------------------------*/
 /* schedule a ready to execute task                                           */
 /*----------------------------------------------------------------------------*/
 void Queues::vScheduleReadyTask(Task* pTask)
