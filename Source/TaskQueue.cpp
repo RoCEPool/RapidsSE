@@ -92,9 +92,7 @@ void TaskQueue::vAddTask(Task* pTask)
   }
   */
   
-  m_xLock.vGrabWrite();
   m_pTaskSkipList->bInsert(pTask);
-  m_xLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
