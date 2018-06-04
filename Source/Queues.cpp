@@ -436,8 +436,10 @@ void Queues::vScheduleReadyTask(Task* pTask)
   
   if (pIdleThread)
     pIdleThread->vExecuteTask(pTask);
-  else
-    vAddToReadyQueue(pTask);
+  else {
+    NEVER_REACH; // E1 temp
+  //vAddToReadyQueue(pTask);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -477,6 +479,8 @@ void Queues::vScheduleSleepingTask(Task* pTask)
   pTask->vWakeupTask();
   
   Thread* pIdleThread = pGrabIdleThread();
+  
+  //! pIdleThread mutex is held by calling thread 
 
   if (pIdleThread)
     pIdleThread->vExecuteTask(pTask);
