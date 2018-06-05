@@ -153,8 +153,7 @@ bool Handlers::bThreadLevelHandler(NP_Task* pNpTask)
       break;
       
     case TS_WAITING_ACK:
-      // put task into waiting queue
-      pQueues->vAddToWaitingQueue(pTask);
+      pQueues->vScheduleWaitingTask(pTask);
       break;
       
     case TS_WAITING_SIGNAL:
