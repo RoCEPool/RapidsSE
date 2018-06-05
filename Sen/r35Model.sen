@@ -27,9 +27,10 @@
 
   0 locals| pChildTask |
 
-  // grabTaskLock
+  // grab task lock
+  task::this task.grabLock
 
-  // 1 child will ack
+  // 1 child will ack this parent
   1 setAcks
 
   // spawn the n35 child task

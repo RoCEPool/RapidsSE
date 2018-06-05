@@ -241,6 +241,7 @@ namespace Tasks
     void vException(StrVal& sFile, StrVal& eException);
     void vGrabLock(void);
     void vInitialiseMain(void);
+    bool bIsLocked(void);
     bool bIsName(StrVal& sName);
     bool bIsNonPartitioned(void);
     bool bIsPartitioned(void);
@@ -1247,7 +1248,9 @@ namespace Tasks
     static void vTaskDestructorTraceFetch(MP_Task mpTask);
     static void vTaskDestructorTraceStore(MP_Task mpTask);
     static void vTaskDicStack(MP_Task mpTask);
+    static void vTaskDropLock(MP_Task mpTask);
     static void vTaskDump(MP_Task mpTask);
+    static void vTaskGrabLock(MP_Task mpTask);
     static void vTaskInit(MP_Task mpTask);
     static void vTaskJobQueueFetch(MP_Task mpTask);
     static void vTaskJobQueueStore(MP_Task mpTask);

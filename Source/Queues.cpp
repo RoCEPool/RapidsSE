@@ -234,12 +234,24 @@ void Queues::vAddToWaitingQueue_NL(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
+  // task must be in the waiting state
   RASSERT(TS_WAITING_ACK == pTask->eState() ||
           TS_WAITING_SIGNAL == pTask->eState());
   
+  // task must be locked
+  RASSERT(pTask->bIsLocked());
+
+  // task must not be in any queue
+  RASSERT(QR_NONE != pTask->eQueue());
+  
+  // mark task as being in the waiting queue
   pTask->vQueue(QR_WAITING_QUEUE);
   
+  // put task inyo the waiting queue
   m_pWaitingQueue->vAddTask(pTask);
+  
+  // drop task lock
+  pTask->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/

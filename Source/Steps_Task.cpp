@@ -30,6 +30,8 @@ void Task::vAddPrimitives_Task(void)
   
   vAddPrimitive("task.dicStack"_Stz,  &vTaskDicStack,      false);
   vAddPrimitive("task.dump"_Stz,      &vTaskDump,          false);
+  vAddPrimitive("task.dropLock"_Stz,  &vTaskDropLock,      false);
+  vAddPrimitive("task.grabLock"_Stz,  &vTaskGrabLock,      false);
   vAddPrimitive("task.init"_Stz,      &vTaskInit,          false);
   vAddPrimitive("task.jobQueue@"_Stz, &vTaskJobQueueFetch, false);
   vAddPrimitive("task.jobQueue!"_Stz, &vTaskJobQueueStore, false);
@@ -164,7 +166,12 @@ void Task::vTaskAcksStore(MP_Task mpTask)
   
   ASSERT(0 == *pGivenTask->m_zAcks);
 
+  if (pGivenTask->bR35model()) {
+    RASSERT(pGivenTask->bIsLocked());
+  }
+  
   pGivenTask->m_zAcks = iInt;
+
   
   EXIT();
 }
@@ -338,6 +345,23 @@ void Task::vTaskDicStack(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* task.dropLock -- drop lock of task on data stack                           */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskDropLock(MP_Task mpTask)
+{
+  ENTRY("vTaskDrop"_Stz);
+  
+  Object* pObject;
+  if ( ! mpTask->m_pDataStack->bPop(pObject) )
+    THROW_INVALID_DSTACK("task.dump"_Stz);
+  Task* pThatTask = _pTask(pObject);
+  
+  pThatTask->vDropLock();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* task.dump -- dump of task on data stack                                    */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskDump(MP_Task mpTask)
@@ -350,6 +374,23 @@ ENTRY("vTaskDump"_Stz);
   Task* pThatTask = _pTask(pObject);
   
   pThatTask->vContentDump();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.grabLock -- grab lock of task on data stack                           */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskGrabLock(MP_Task mpTask)
+{
+  ENTRY("vTaskGrab"_Stz);
+  
+  Object* pObject;
+  if ( ! mpTask->m_pDataStack->bPop(pObject) )
+    THROW_INVALID_DSTACK("task.dump"_Stz);
+  Task* pThatTask = _pTask(pObject);
+  
+  pThatTask->vGrabLock();
   
   EXIT();
 }
