@@ -521,11 +521,11 @@ void Queues::vScheduleAckedTask(Task* pTask)
   RASSERT(TS_WAITING_ACK == pTask->eState());
   RASSERT(QR_WAITING_QUEUE == pTask->eQueue());
   
+  pTask->vDropLock();
+  
   vRemoveFromWaitingQueue(pTask);
 
   RASSERT(QR_NONE == pTask->eQueue());
-  
-  pTask->vDropLock();
   
   pTask->vState(TS_READY);
   

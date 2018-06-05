@@ -181,10 +181,16 @@ bool Handlers::bAckTaskHandler(Task* pTask)
   // this handler is called from
   //
   
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
   bool bDecider = pTask->bDecAck();
   
-  if (bDecider)
+  if (bDecider) {
+    
+    pQueues->vScheduleAckedTask(pTask);
+    
     return true;
+  }
   
   return true;
 }
