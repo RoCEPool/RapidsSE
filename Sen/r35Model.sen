@@ -1,0 +1,25 @@
+/*============================================================================*/
+/* r35Model.sen -- R35 actor model                                            */
+/*============================================================================*/
+
+"r35Model.sen" .verbose
+
+//*----------------------------------------------------------------------------*/
+/* create a task using given arguments and append to server task queue        */
+/*----------------------------------------------------------------------------*/
+: spawnR35ChildTask ( ... nArgs sSeedWord pParentTask sTaskNm eTaskKind -- pTask )
+
+  nullptr locals| pTask eTaskKind sTaskNm pParent sSeedWord nArgs |
+
+  // create a new task
+  nArgs sSeedWord pParent AC_R35 sTaskNm eTaskKind task::new to pTask
+
+  // append task onto server task queue
+  pTask scheduler::server serverScheduler.enqueueTask
+
+  pTask  // return the task
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

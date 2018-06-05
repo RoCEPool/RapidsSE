@@ -10,6 +10,7 @@ int:  queryCount
 "serverModel.sen" include
 "workerModel.sen" include
 "partitionModel.sen" include
+"r35Model.sen" include
 
 
 "actorPrimitives.sen" include
