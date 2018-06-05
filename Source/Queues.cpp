@@ -493,6 +493,25 @@ void Queues::vScheduleAckedTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
+  pTask->vGrabLock();
+
+  // having got the lock, the task should be TS_WAITING_ACK and QR_WAITING_QUEUE
+
+  RASSERT(TS_WAITING_ACK == pTask->eState());
+  RASSERT(QR_WAITING_QUEUE == pTask->eQueue());
+  
+  vRemoveFromWaitingQueue(pTask);
+
+  RASSERT(QR_NONE == pTask->eQueue());
+  
+  pTask->vDropLock();
+  
+  pTask->vState(TS_READY);
+  
+  if (pTask->bIsNonPartitioned())
+    vScheduleReadyTask(pTask);
+  else
+    vScheduleReadySlotTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
