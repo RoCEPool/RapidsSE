@@ -129,7 +129,7 @@ void Semaphore::vCondBroadcast(void)
 /*----------------------------------------------------------------------------*/
 /* condition signal                                                           */
 /*----------------------------------------------------------------------------*/
-#define _OLD_RELEASE
+//#define _OLD_RELEASE
 
 #ifdef _OLD_RELEASE
 void Semaphore::vCondSignal(void)

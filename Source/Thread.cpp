@@ -294,7 +294,7 @@ void* Thread::pEntryPoint(void* pArg)
   
   gpAttachMap->m_pQueues->vAddThread(pThread);
   
-  if (gpAttachMap->m_bVerbose)
+  //if (gpAttachMap->m_bVerbose)
     vTrace("\n[[%s]] Thread::vEntryPoint %p\n"_Stz,pThread->sName().aChar(),pThread);
   
   try {
