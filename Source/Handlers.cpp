@@ -178,11 +178,14 @@ bool Handlers::bThreadLevelHandler(NP_Task* pNpTask)
 bool Handlers::bAckTaskHandler(Task* pTask)
 {
   //
-  // this handler is called from 
+  // this handler is called from
   //
   
   bool bDecider = pTask->bDecAck();
-
+  
+  if (bDecider)
+    return true;
+  
   return true;
 }
 

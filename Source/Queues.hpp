@@ -78,6 +78,7 @@ namespace Threads
     void vRemoveFromExecutingQueue(Task* pTask);
     void vRemoveFromWaitingQueue(Task* pTask);
   
+    void vScheduleAckedTask(Task* pTask);
     void vScheduleReadyTask(Task* pTask);
     void vScheduleReadySlotTask(Task* pTask);
     void vScheduleSleepingTask(Task* pTask);

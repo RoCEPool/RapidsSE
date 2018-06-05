@@ -136,7 +136,7 @@ namespace Tasks
     static const i8 C_TRACE_STEPS    = 0x1;
     static const i8 C_TRACE_ROUTINES = 0x2;
 
-    Lock    m_xLock;
+    Lock    m_xLock;       // lock for this task
     i8      m_iTaskNo;     // task
     eTK     m_eTaskKind;   // task kind
     eAC     m_eActorModel; // actor model

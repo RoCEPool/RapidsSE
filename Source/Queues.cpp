@@ -487,6 +487,15 @@ void Queues::vRemoveFromWaitingQueue(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* schedule a fully acked task                                                */
+/*----------------------------------------------------------------------------*/
+void Queues::vScheduleAckedTask(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* schedule a ready to execute task                                           */
 /*----------------------------------------------------------------------------*/
 void Queues::vScheduleReadyTask(Task* pTask)
