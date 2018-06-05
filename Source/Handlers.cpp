@@ -178,12 +178,14 @@ bool Handlers::bThreadLevelHandler(NP_Task* pNpTask)
 bool Handlers::bAckTaskHandler(Task* pTask)
 {
   //
-  // this handler is called from Thread::vLoop()
-  // after a task returns to the thread
+  // this handler is called from 
   //
+  
+  bool bDecider = pTask->bDecAck();
 
   return true;
 }
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

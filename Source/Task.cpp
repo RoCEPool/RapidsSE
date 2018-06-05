@@ -1448,6 +1448,21 @@ void Task::vContentDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* decrement ack and return if caller is decider                              */
+/*----------------------------------------------------------------------------*/
+bool Task::bDecAck(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  i8 iMore = --m_zAcks;
+
+  if (iMore)
+    return false;
+  else
+    return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set destructor trace                                                       */
 /*----------------------------------------------------------------------------*/
 void Task::vDestructorTrace(bool bDestructorTrace)

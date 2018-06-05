@@ -234,6 +234,7 @@ namespace Tasks
     void  vCompileConstant(StrVal& sDefinition);
     static void vDebug(void);
     void vContentDump(void);
+    bool bDecAck(void);
     void vDestructorTrace(bool bDestructorTrace);
     bool bDestructorTrace(void);
     void vException(StrVal& sFile, StrVal& eException);
