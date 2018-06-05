@@ -172,7 +172,7 @@ void IndexTree::vCompact(void)
     
 #ifdef IT_COMPACT_P1_TRACE
      if (0 == iL1BufferNo % IT_COMPACT_P1_TRACE)
-      vTrace("Compactiion Progress: Partition %lld: L1 Buffer %lld of %lld\n"_Stz,
+      vTrace("Compaction Progress: Partition %lld: L1 Buffer %lld of %lld\n"_Stz,
              m_iPartitionNo,iL1BufferNo,nP1Buffers);
 #endif
     
