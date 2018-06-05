@@ -326,6 +326,7 @@ namespace Tasks
     void vAddPrimitives_Flow(void);
     void vAddPrimitives_Grid(void);
     void vAddPrimitives_GroupBy(void);
+    void vAddPrimitives_Handler(void);
     void vAddPrimitives_Index(void);
     void vAddPrimitives_Input(void);
     void vAddPrimitives_Int(void);
@@ -711,6 +712,9 @@ namespace Tasks
     static void vGroupByEnd(MP_Task mpTask);
     static void vGroupByNew(MP_Task mpTask);
     static void vGroupByStart(MP_Task mpTask);
+  
+    // handler
+    static void vHandlerSystemEvent(MP_Task mpTask);
   
     // index
     static void vIndexAnalyze(MP_Task mpTask);
