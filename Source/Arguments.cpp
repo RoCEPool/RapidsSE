@@ -603,7 +603,7 @@ void Arguments::vPrintStartupInfo(void)
   }
   
   vTrace("  --partitionsPerNode %lld\n"_Stz,m_nSlots);
-  vTrace("  --threads %lld\n"_Stz,m_nThreads);
+  //vTrace("  --threads %lld\n"_Stz,m_nThreads);
 
 #ifdef _DEBUG
   vTrace("  --commands %s\n"_Stz,m_sCommands.aChar());
