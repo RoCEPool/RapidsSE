@@ -452,7 +452,7 @@ void Entry::vShow(i8 iOffset, Index* pIndex, bool bShowKey)
     vTrace("Row: "_Stz);
     i8 iRowSize = nRowSize();
     if (iRowSize > 0) {
-      aThisRow->vShow(pIndex->pTable()->pColumnVec());
+      aThisRow->vShow(pIndex->pTable()->pColumnVec(), true);
     }
   }
   

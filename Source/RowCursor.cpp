@@ -159,7 +159,7 @@ Stz* RowCursor::aRowAsStr(void)
   s48K sRow;
   ColumnVec* pColVec = m_pTable->pColumnVec();
   Row* aRow = m_pRow->aRow();
-  aRow->vAsBinaryString(sRow,pColVec);
+  aRow->vAsBinaryStringVLQ(sRow,pColVec);
   
   return sRow;
 }

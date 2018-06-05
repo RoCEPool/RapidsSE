@@ -26,10 +26,11 @@ namespace DBobjects
   
 
     void vAsBinaryString(s48K& sDataString, ColumnVec* pColVec);
+    void vAsBinaryStringVLQ(s48K& sDataString, ColumnVec* pColVec);
     void vAsEscapedString(s48K& sDataString, ColumnVec* pColVec);
     char* aColumnDatum(i8 iColumnNo);
     void vDump(ColumnVec* pColVec);
-    void vShow(ColumnVec* pColVec);
+    void vShow(ColumnVec* pColVec, bool bCompressed);
   };
   
   Row* _pRow(void* aAddr);

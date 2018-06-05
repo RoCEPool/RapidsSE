@@ -15,13 +15,15 @@ namespace DBobjects
     void* operator new(size_t);
     void* operator new(size_t, WorkingRow*);
   
-    WorkingRow(Row* aSrcRow, i8 nWorkingRowSize, i8 nRowSize);
+    WorkingRow(Row* aSrcRow, ColumnVec* pColumnVec, i8 nWorkingRowSize,
+               i8 nRowSize, bool bComressed);
     ~WorkingRow(void);
   
+    static i8 nBytesRequired(Row* aRow, ColumnVec* pColumnVec, i8 nRowSize);
     static i8 nBytesRequired(i8 nRowSize);
   
     Row* aRow(void);
-    void vShow(ColumnVec* pColVec);
+    void vShow(ColumnVec* pColVec, bool bCompressed);
     i8   nRowSize(void);
   };
   

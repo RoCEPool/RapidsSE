@@ -40,7 +40,7 @@ namespace DBobjects
     i8          nPartitionNo(void);
     void        vRestore(void);
     i8          nWorkingRows(void);
-    void        vShow(void);
+    void        vShow(bool bCompressed);
     i8          nUsedBytes(void);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
