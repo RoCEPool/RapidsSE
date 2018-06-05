@@ -25,7 +25,7 @@
 /*----------------------------------------------------------------------------*/
 : n35spawnChildren
 
-  1 locals| nChildren |
+  3 locals| nChildren |
   0 locals| pChildTask |
 
   // grab task lock
