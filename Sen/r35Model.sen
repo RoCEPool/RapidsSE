@@ -21,13 +21,37 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* spawn n35 child task                                                       */
+/*----------------------------------------------------------------------------*/
+: n35spawnChild
+
+  0 locals| pSubTask |
+
+  // set number of acks to be 1 child
+  1 setAcks
+
+  // spawn the n35 child task
+  0               // nArgs
+  "n35"           // sSeedWord
+  task::this      // pParentWord
+  "R35Child"      // task name
+  TK_R35_CHILD    // task kind
+    spawnR35ChildTask to pSubTask
+
+  // wait for child task to complete
+  ackWait
+
+;
+
+/*----------------------------------------------------------------------------*/
 /* n35 child task test                                                        */
 /*----------------------------------------------------------------------------*/
 : n35child
 
   "n35child" .
 
-  ack
+  // ack the parent task
+  task.parent@ ack
 ;
 
 /*============================================================================*/
