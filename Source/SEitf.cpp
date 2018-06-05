@@ -3700,6 +3700,7 @@ bool SEitf::bAppendRequest_R35(StrVal& sRequest)
   nnpNewTask->vSeedWord("requestLoop"_Stz);
   nnpNewTask->vState(TS_READY);
   nnpNewTask->vR35model(true);
+  nnpNewTask->vActorModel(AC_R35);
   
   //gpAttachMap->m_pServerScheduler->vEnqueueTask_Mutex(*nnpNewTask);
   bool bResult = Handlers::bSystemLevelHandler(*nnpNewTask);
