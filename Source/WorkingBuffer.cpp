@@ -89,17 +89,27 @@ bool WorkingBuffer::bAppendRow(Row* aRow, i8 nRowSize)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORKINGBUFFER,_FOOTER_);
   
+  // Note: This append appends rows in compressed form aRow into
+  // the working buffer in the uncompressed form itself.
+  // This append is uesd by the queries.
+  // So that all query results are returned in an uncompressed form
+  
+  // get the column vector
   ColumnVec* pColVec = m_pTable->pColumnVec();
   
-  i8 nWorkingRowSize = WorkingRow::nBytesRequired(aRow, pColVec, nRowSize);
+  // get size of uncompressed row
+  i8 nUncompressedRowSize = WorkingRow::nUncompressedBytesRequired(aRow, pColVec, nRowSize);
   
+  // do we have enough space for this row ?
   i8 nFreeSpace = nFreeBytes();
-  if (nFreeSpace < nWorkingRowSize)
+  if (nFreeSpace < nUncompressedRowSize)
     return false;
   
-  WorkingRow* aWorkingRow = pAllotRow(nWorkingRowSize);
+  // allocate row
+  WorkingRow* aWorkingRow = pAllotRow(nUncompressedRowSize);
   
-  new(aWorkingRow) WorkingRow(aRow,pColVec,nWorkingRowSize,nRowSize,false);
+  // copy the compressed row to working row in uncompressed form
+  new(aWorkingRow) WorkingRow(aRow,pColVec,nUncompressedRowSize,nRowSize,false);
   
   return true;
 }
@@ -111,14 +121,22 @@ bool WorkingBuffer::bAppendRow(RowWrk xRowWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORKINGBUFFER,_FOOTER_);
   
+  // Note: This append appends rows in compressed form cRowWrk into
+  // the working buffer in the compressed form itself.
+  // This append is uesd by the loader and insert
+  
+  // get bytes required for row
   i8 nWorkingRowSize = WorkingRow::nBytesRequired(xRowWrk.nRowSize());
   
+  // do we have space ?
   i8 nFreeSpace = nFreeBytes();
   if (nFreeSpace < nWorkingRowSize)
     return false;
   
+  // allocate row
   WorkingRow* aWorkingRow = pAllotRow(nWorkingRowSize);
   
+  // copy the cpmpressed row in compressed form into workingRow
   new(aWorkingRow) WorkingRow(xRowWrk.aRow(),m_pTable->pColumnVec(),
                               nWorkingRowSize,xRowWrk.nRowSize(),true);
   

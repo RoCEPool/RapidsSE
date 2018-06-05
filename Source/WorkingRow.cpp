@@ -101,9 +101,9 @@ WorkingRow::~WorkingRow(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get bytes required for row incl Item & Footer                              */
+/* get bytes required for uncompressed row given the compressed size          */
 /*----------------------------------------------------------------------------*/
-i8 WorkingRow::nBytesRequired(Row* aRow, ColumnVec *pColumnVec, i8 nRowSize)
+i8 WorkingRow::nUncompressedBytesRequired(Row* aRow, ColumnVec *pColumnVec, i8 nCompressedRowSize)
 {
   i8 iVlqColumns = 0;
   
@@ -134,16 +134,16 @@ i8 WorkingRow::nBytesRequired(Row* aRow, ColumnVec *pColumnVec, i8 nRowSize)
   }
   
   if (bVlqColumn) {
-    i_VlqLength += 8 - (nRowSize - iOffset);
+    i_VlqLength += 8 - (nCompressedRowSize - iOffset);
   }
   
-  i8 nBytes =  nBytesRequired( nRowSize + i_VlqLength);
+  i8 nBytes =  nBytesRequired( nCompressedRowSize + i_VlqLength);
   
   return nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get bytes required for row incl Item & rowSize                             */
+/* get bytes required for row incl rowSize                                    */
 /*----------------------------------------------------------------------------*/
 i8 WorkingRow::nBytesRequired(i8 nRowSize)
 {
