@@ -582,11 +582,14 @@ void Queues::vScheduleYieldedTask(Task* pTask)
       
       m_pReadyQueue->vGrabLock();
       i8 iLengthReadyQueue = m_pReadyQueue->nTasks();
-      if (0 == iLengthReadyQueue)
+      if (0 == iLengthReadyQueue) {
+        m_pReadyQueue->vDropLock();
         pCallingThread->vReExecuteTask(pTask);
-      else
+      }
+      else {
         vAddToReadyQueue_NL(pTask);
-      m_pReadyQueue->vDropLock();
+        m_pReadyQueue->vDropLock();
+      }
     }
     else {
       

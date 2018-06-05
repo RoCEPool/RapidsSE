@@ -84,9 +84,19 @@
   0 task.sleep
   "awake" .
 
+  "yielding" .
+  task.yield
+  "running" .
+
   "sleeping for 3 seconds" .
   3000000 task.sleep
   "awake" .
+
+  // spawn n35 child
+  //n35spawnChild
+
+  // wait for child task to complete
+  //ackWait
 
   "n35"
 

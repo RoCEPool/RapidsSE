@@ -14,8 +14,8 @@
   // create a new task
   nArgs sSeedWord pParent AC_R35 sTaskNm eTaskKind task::new to pTask
 
-  // append task onto server task queue
-  pTask scheduler::server serverScheduler.enqueueTask
+  // put task into system
+  pTask handler::systemEvent
 
   pTask  // return the task
 ;
@@ -37,10 +37,6 @@
   "R35Child"      // task name
   TK_R35_CHILD    // task kind
     spawnR35ChildTask to pSubTask
-
-  // wait for child task to complete
-  ackWait
-
 ;
 
 /*----------------------------------------------------------------------------*/
