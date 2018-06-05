@@ -160,8 +160,8 @@ void Task::vTaskAcksStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("task.acks!"_Stz);
   Task* pGivenTask = _pTask(pPtrTask);
   
-  i8 iInt;
-  if ( ! mpTask->m_pDataStack->bPopAsInt(iInt) )
+  i8 nAcksRequired;
+  if ( ! mpTask->m_pDataStack->bPopAsInt(nAcksRequired) )
     THROW_INVALID_DSTACK("task.acks!"_Stz);
   
   ASSERT(0 == *pGivenTask->m_zAcks);
@@ -170,7 +170,7 @@ void Task::vTaskAcksStore(MP_Task mpTask)
     RASSERT(pGivenTask->bIsLocked());
   }
   
-  pGivenTask->m_zAcks = iInt;
+  pGivenTask->m_zAcks = nAcksRequired;
 
   EXIT();
 }

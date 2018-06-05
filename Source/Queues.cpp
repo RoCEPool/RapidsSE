@@ -242,7 +242,7 @@ void Queues::vAddToWaitingQueue_NL(Task* pTask)
   RASSERT(pTask->bIsLocked());
 
   // task must not be in any queue
-  RASSERT(QR_NONE != pTask->eQueue());
+  RASSERT(QR_NONE == pTask->eQueue());
   
   // mark task as being in the waiting queue
   pTask->vQueue(QR_WAITING_QUEUE);
@@ -316,7 +316,10 @@ Task* Queues::pInspectReadyQueue(Thread* pCallingThread)
     return nullptr;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+  
+  // task no longer in queue
+  pPoppedTask->vQueue(QR_NONE);
+  
   // return the task popped from the ready queue
   return pPoppedTask;
 }
@@ -352,6 +355,9 @@ Task* Queues::pInspectReadySlotQueue(Thread* pCallingThread)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // there is a task to run
+  
+  // task no longer in queue
+  pPoppedTask->vQueue(QR_NONE);
   
   // return the task popped from the slot queue
   return pPoppedTask;
@@ -401,6 +407,9 @@ Task* Queues::pInspectSleepingQueue(Thread* pCallingThread)
   
   // drop lock on sleeping queue
   m_pSleepingQueue->vDropLock();
+  
+  // task no longer in queue
+  pPoppedTask->vQueue(QR_NONE);
   
   // clear wakeup time of the task
   pPoppedTask->vWakeupTask();

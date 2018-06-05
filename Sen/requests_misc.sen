@@ -93,10 +93,10 @@
   //"awake" .
 
   // spawn n35 child
-  //n35spawnChild
+  n35spawnChild
 
   // wait for child task to complete
-  //ackWait
+  ackWait
 
   "n35"
 
