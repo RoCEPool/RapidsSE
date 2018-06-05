@@ -24,7 +24,10 @@ namespace Tasks
     /*  2 */ AC_PARTITION,
     /*  3 */ AC_SERVER,
     /*  4 */ AC_WORKER,
-    /*  5 */ AC_ENUMS
+
+    /*  5 */ AC_R35,
+  
+    /*  6 */ AC_ENUMS
   };
   
   static Stz* aAC[]
@@ -34,7 +37,8 @@ namespace Tasks
     /*  2 */ "PARTITION"_Stz,
     /*  3 */ "SERVER"_Stz,
     /*  4 */ "WORKER"_Stz,
-    /*  5 */ "ENUMS"_Stz
+    /*  5 */ "R35"_Stz,
+    /*  6 */ "ENUMS"_Stz
   };
   
   enum eTK // task kind
@@ -56,7 +60,11 @@ namespace Tasks
   /* 14 */ TK_LOADSUB_PART,
   /* 15 */ TK_SELECT_PART,
   /* 16 */ TK_TRUNCATE_PART,
-  /* 17 */ TK_ENUMS
+  
+  /* 17 */ TK_R35_COMMAND,
+  /* 18 */ TK_R35_CHILD,
+  
+  /* 19 */ TK_ENUMS
   };
   
   static Stz* aTK[]
@@ -78,7 +86,11 @@ namespace Tasks
   /* 14 */ "LOADSUB_PART"_Stz,
   /* 15 */ "SELECT_PART"_Stz,
   /* 16 */ "TRUNCATE_PART"_Stz,
-  /* 16 */ "ENUMS"_Stz
+
+  /* 17 */ "R35_COMMAND"_Stz,
+  /* 18 */ "R35_CHILD"_Stz,
+  
+  /* 19 */ "ENUMS"_Stz
   };
   enum eTS // Task State
   {

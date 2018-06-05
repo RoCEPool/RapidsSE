@@ -520,7 +520,8 @@ void Task::vAddConstants(void)
   /*  2 */ vAddConstant("AC_PARTITION"_Stz,    AC_PARTITION);
   /*  3 */ vAddConstant("AC_SERVER"_Stz,       AC_SERVER);
   /*  4 */ vAddConstant("AC_WORKER"_Stz,       AC_WORKER);
-  /*  5 */ vAddConstant("AC_ENUMS"_Stz,        AC_ENUMS);
+  /*  5 */ vAddConstant("AC_R35"_Stz,          AC_WORKER);
+  /*  6 */ vAddConstant("AC_ENUMS"_Stz,        AC_ENUMS);
 
   // AM_ : attach map numbers
   /*  0 */ vAddConstant("AM_NONE"_Stz,         AM_NONE);
@@ -866,23 +867,25 @@ void Task::vAddConstants(void)
 
   // TK_ : task kind
   /*  0 */ vAddConstant("TK_NONE"_Stz,                    TK_NONE);
-  /*  0 */ vAddConstant("TK_ANSWER_DRONE"_Stz,            TK_ANSWER_DRONE);
-  /*  0 */ vAddConstant("TK_LISTER_DRONE"_Stz,            TK_LISTER_DRONE);
-  /*  0 */ vAddConstant("TK_CONNECTOR_DRONE"_Stz,         TK_CONNECTOR_DRONE);
-  /*  0 */ vAddConstant("TK_MONITOR_DRONE"_Stz,           TK_MONITOR_DRONE);
-  /*  0 */ vAddConstant("TK_RECLAIM_DRONE"_Stz,           TK_RECLAIM_DRONE);
-  /*  0 */ vAddConstant("TK_RECEIVER_DRONE"_Stz,          TK_RECEIVER_DRONE );
-  /*  0 */ vAddConstant("TK_REQUEST_SERVER"_Stz,          TK_REQUEST_SERVER);
-  /*  0 */ vAddConstant("TK_LOADSUB_SERVER"_Stz,          TK_LOADSUB_SERVER);
-  /*  0 */ vAddConstant("TK_COORDINATOR_WORKER"_Stz,      TK_COORDINATOR_WORKER);
-  /*  0 */ vAddConstant("TK_COORDINATOR_PROXY_WORKER"_Stz,TK_COORDINATOR_PROXY_WORKER);
-  /*  0 */ vAddConstant("TK_PARTICIPANT_WORKER"_Stz,      TK_PARTICIPANT_WORKER);
-  /*  0 */ vAddConstant("TK_PARTICIPANT_PROXY_WORKER"_Stz,TK_PARTICIPANT_PROXY_WORKER);
-  /*  0 */ vAddConstant("TK_SENDER_WORKER"_Stz,           TK_SENDER_WORKER);
-  /*  0 */ vAddConstant("TK_LOADSUB_PART"_Stz,            TK_LOADSUB_PART);
-  /*  0 */ vAddConstant("TK_SELECT_PART"_Stz,             TK_SELECT_PART);
-  /*  0 */ vAddConstant("TK_TRUNCATE_PART"_Stz,           TK_TRUNCATE_PART);
-  /*  0 */ vAddConstant("TK_ENUMS"_Stz,                   TK_ENUMS );
+  /*  1 */ vAddConstant("TK_ANSWER_DRONE"_Stz,            TK_ANSWER_DRONE);
+  /*  2 */ vAddConstant("TK_LISTER_DRONE"_Stz,            TK_LISTER_DRONE);
+  /*  3 */ vAddConstant("TK_CONNECTOR_DRONE"_Stz,         TK_CONNECTOR_DRONE);
+  /*  4 */ vAddConstant("TK_MONITOR_DRONE"_Stz,           TK_MONITOR_DRONE);
+  /*  5 */ vAddConstant("TK_RECLAIM_DRONE"_Stz,           TK_RECLAIM_DRONE);
+  /*  6 */ vAddConstant("TK_RECEIVER_DRONE"_Stz,          TK_RECEIVER_DRONE );
+  /*  7 */ vAddConstant("TK_REQUEST_SERVER"_Stz,          TK_REQUEST_SERVER);
+  /*  8 */ vAddConstant("TK_LOADSUB_SERVER"_Stz,          TK_LOADSUB_SERVER);
+  /*  9 */ vAddConstant("TK_COORDINATOR_WORKER"_Stz,      TK_COORDINATOR_WORKER);
+  /* 10 */ vAddConstant("TK_COORDINATOR_PROXY_WORKER"_Stz,TK_COORDINATOR_PROXY_WORKER);
+  /* 11 */ vAddConstant("TK_PARTICIPANT_WORKER"_Stz,      TK_PARTICIPANT_WORKER);
+  /* 12 */ vAddConstant("TK_PARTICIPANT_PROXY_WORKER"_Stz,TK_PARTICIPANT_PROXY_WORKER);
+  /* 13 */ vAddConstant("TK_SENDER_WORKER"_Stz,           TK_SENDER_WORKER);
+  /* 14 */ vAddConstant("TK_LOADSUB_PART"_Stz,            TK_LOADSUB_PART);
+  /* 15 */ vAddConstant("TK_SELECT_PART"_Stz,             TK_SELECT_PART);
+  /* 16 */ vAddConstant("TK_TRUNCATE_PART"_Stz,           TK_TRUNCATE_PART);
+  /* 17 */ vAddConstant("TK_R35_COMMAND"_Stz,             TK_R35_COMMAND);
+  /* 18 */ vAddConstant("TK_R35_CHILD"_Stz,               TK_R35_CHILD);
+  /* 19 */ vAddConstant("TK_ENUMS"_Stz,                   TK_ENUMS );
   
   // TS_ : task state
   /*  0 */ vAddConstant("TS_NONE"_Stz,           TS_NONE);
