@@ -172,7 +172,6 @@ void Task::vTaskAcksStore(MP_Task mpTask)
   
   pGivenTask->m_zAcks = iInt;
 
-  
   EXIT();
 }
 
@@ -905,6 +904,11 @@ ENTRY("vTaskStateStore"_Stz);
   
   if ( ! mpTask->m_pDataStack->bPop(iState) )
     THROW_INVALID_DSTACK("task.state!"_Stz);
+  
+  // an r35 task being set to waiting state must be locked
+  if (pThatTask->bR35model() && TS_WAITING_ACK == iState) {
+    RASSERT(pThatTask->bIsLocked());
+  }
   
   pThatTask->m_eState = (eTS)iState;
   

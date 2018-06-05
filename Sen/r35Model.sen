@@ -36,7 +36,7 @@
   // spawn the n35 child task
   0               // nArgs
   "n35child"      // sSeedWord
-  task::this      // pParentWord
+  task::this      // pParentTask
   "R35Child"      // task name
   TK_R35_CHILD    // task kind
     spawnR35ChildTask to pChildTask
