@@ -548,10 +548,8 @@ void Queues::vScheduleReadyTask(Task* pTask)
   
   if (pIdleThread)
     pIdleThread->vExecuteTask(pTask);
-  else {
-    NEVER_REACH; // E1 temp
-  //vAddToReadyQueue(pTask);
-  }
+  else
+    vAddToReadyQueue(pTask);
 }
 
 /*----------------------------------------------------------------------------*/

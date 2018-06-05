@@ -17,7 +17,7 @@ void Task::vAddPrimitives_Handler(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Handler::systemEvent::list -- call system level event handler              */
+/* Handler::systemEvent -- call system level event handler                    */
 /*----------------------------------------------------------------------------*/
 void Task::vHandlerSystemEvent(MP_Task mpTask)
 {
