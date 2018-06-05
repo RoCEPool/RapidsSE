@@ -47,14 +47,14 @@ int main(int argc, const char* argv[])
   if (gxArguments.m_bWelcome && gxArguments.m_bStart)
     gxArguments.vPrintStartupInfo();
   
-  OpSys::vGetInfo();
-  OpSys::vTraceInfo();
+  //OpSys::vGetInfo();
+ // OpSys::vTraceInfo();
   
   if (gxArguments.m_bVerbose)
     vPrintSizes();
   
   vSetSignalHandlers();
-
+/*
   vTrace("sizeof(short) %lld\n"_Stz,(i8)sizeof(short));
   vTrace("sizeof(int) %lld\n"_Stz,(i8)sizeof(int));
   vTrace("sizeof(long) %lld\n"_Stz,(i8)sizeof(long));
@@ -75,7 +75,7 @@ int main(int argc, const char* argv[])
   
   vTrace("alignof(i3) %lld\n"_Stz,(i8)alignof(i3));
   vTrace("alignof(Entry) %lld\n"_Stz,(i8)alignof(Entry));
-  
+  */
   
   //vTest1();
   //vTest2();
@@ -105,7 +105,7 @@ int main(int argc, const char* argv[])
   
   RapidsSE::vExecuteCmdLine();
 
-  gpAttachMap->vPrintAttachMap();
+  //gpAttachMap->vPrintAttachMap();
   
   //vSkipListTest();
   

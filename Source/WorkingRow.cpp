@@ -48,42 +48,48 @@ WorkingRow::WorkingRow(Row* aSrcRow, ColumnVec *pColumnVec, i8 nWorkingRowSize, 
   m_nWorkingRowSize = nWorkingRowSize;
   Row* aDstRow = this->aRow();
   
+  //----------------------------------------------------------------------------
+  // To copy a compressed row as is
   if (bCompressed) {
     MemLib::vCopy(aDstRow,aSrcRow,nRowSize,CN_WORKINGBUFFER);
+    return;
   }
-  else {
+  
+  //----------------------------------------------------------------------------
+  // To copy a compressed row as uncompressed row
+  
+  i8 nColumns = pColumnVec->nItems() - 1;
+  Stz* pOffset = (Stz*)aDstRow;
+  Stz* aDst = pOffset + C_COLUMN_OFFSET_SIZE * nColumns;
+  
+  i8 iRowLength = C_COLUMN_OFFSET_SIZE * nColumns;
+  
+  for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
     
-    i8 nColumns = pColumnVec->nItems() - 1;
-    Stz* pOffset = (Stz*)aDstRow;
-    Stz* aDst = pOffset + C_COLUMN_OFFSET_SIZE * nColumns;
+    Column* pColumn = pColumnVec->pGet(i_Column);
+    eDM eDatumType = pColumn->eDatumType();
     
-    i8 iRowLength = C_COLUMN_OFFSET_SIZE * nColumns;
+    char* pSrcOffset = (char*)(aSrcRow) + i_Column*C_COLUMN_OFFSET_SIZE;
+    unsigned char iSrcOffset = *(pSrcOffset);
     
-    for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
-      
-      Column* pColumn = pColumnVec->pGet(i_Column);
-      eDM eDatumType = pColumn->eDatumType();
-      
-      char* pSrcOffset = (char*)(aSrcRow) + i_Column*C_COLUMN_OFFSET_SIZE;
-      unsigned char iSrcOffset = *(pSrcOffset);
-      
-      // move to offset
-      Stz* aSrcData = (Stz*)((unsigned char*)(aSrcRow) + iSrcOffset);
-      i8 iColumnLength = DtmLib::nCopyVLQ(eDatumType, aDst, aSrcData);
-      
-      // save the offset
-      *(pOffset->aChar()) = iRowLength;
-      
-      // move to next offset location
-      pOffset += C_COLUMN_OFFSET_SIZE;
-      
-      // increment row length
-      iRowLength += iColumnLength;
-      
-      // move to next column location
-      aDst += iColumnLength;
-      
-    }
+    // move to offset
+    Stz* aSrcData = (Stz*)((unsigned char*)(aSrcRow) + iSrcOffset);
+    
+    // copy column data (nCopyVLQ will convert VLQ to non-VLQ
+    i8 iColumnLength = DtmLib::nCopyVLQ(eDatumType, aDst, aSrcData);
+    
+    // save the offset
+    *(pOffset->aChar()) = iRowLength;
+    
+    // move to next offset location
+    pOffset += C_COLUMN_OFFSET_SIZE;
+    
+    // increment row length
+    iRowLength += iColumnLength;
+    
+    // move to next column location
+    aDst += iColumnLength;
+    
   }
 }
 
@@ -101,17 +107,13 @@ WorkingRow::~WorkingRow(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get bytes required for row incl Item & Footer                              */
+/* get bytes required for uncompressed row given the compressed size          */
 /*----------------------------------------------------------------------------*/
-i8 WorkingRow::nBytesRequired(Row* aRow, ColumnVec *pColumnVec, i8 nRowSize)
+i8 WorkingRow::nUncompressedBytesRequired(Row* aRow, ColumnVec *pColumnVec, i8 nCompressedRowSize)
 {
-  i8 iVlqColumns = 0;
-  
-  i8 i_VlqLength = 0;
+  i8 i_VlqAdjustment = 0;
   unsigned char iOffset = -1;
   unsigned char iOffsetPrev = -1;
-  char* pOffset;
-  Stz* aData;
   
   i8 nColumns = pColumnVec->nItems();
   bool bVlqColumn = false;
@@ -124,26 +126,29 @@ i8 WorkingRow::nBytesRequired(Row* aRow, ColumnVec *pColumnVec, i8 nRowSize)
     iOffsetPrev = iOffset;
     iOffset = *(pOffset);
     
+    // was the previous column vlq column ?
     if (bVlqColumn) {
       bVlqColumn = false;
-      i_VlqLength += 8 - (iOffset - iOffsetPrev);
+      i_VlqAdjustment += 8 - (iOffset - iOffsetPrev);
     }
     
+    // check if vlq column
     if (pColumn->eDatumType() == DM_INT || pColumn->eDatumType() == DM_BCD)
       bVlqColumn = true;
   }
   
+  // if last column was a vlq column, do the vlq adjustment
   if (bVlqColumn) {
-    i_VlqLength += 8 - (nRowSize - iOffset);
+    i_VlqAdjustment += 8 - (nCompressedRowSize - iOffset);
   }
   
-  i8 nBytes =  nBytesRequired( nRowSize + i_VlqLength);
+  i8 nBytes =  nBytesRequired( nCompressedRowSize + i_VlqAdjustment);
   
   return nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get bytes required for row incl Item & rowSize                             */
+/* get bytes required for row incl rowSize                                    */
 /*----------------------------------------------------------------------------*/
 i8 WorkingRow::nBytesRequired(i8 nRowSize)
 {
