@@ -172,6 +172,18 @@ bool Handlers::bThreadLevelHandler(NP_Task* pNpTask)
   return true;
 }
 
+/*----------------------------------------------------------------------------*/
+/* ack task handler                                                           */
+/*----------------------------------------------------------------------------*/
+bool Handlers::bAckTaskHandler(Task* pTask)
+{
+  //
+  // this handler is called from Thread::vLoop()
+  // after a task returns to the thread
+  //
+
+  return true;
+}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

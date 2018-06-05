@@ -520,7 +520,7 @@ void Task::vAddConstants(void)
   /*  2 */ vAddConstant("AC_PARTITION"_Stz,    AC_PARTITION);
   /*  3 */ vAddConstant("AC_SERVER"_Stz,       AC_SERVER);
   /*  4 */ vAddConstant("AC_WORKER"_Stz,       AC_WORKER);
-  /*  5 */ vAddConstant("AC_R35"_Stz,          AC_WORKER);
+  /*  5 */ vAddConstant("AC_R35"_Stz,          AC_R35);
   /*  6 */ vAddConstant("AC_ENUMS"_Stz,        AC_ENUMS);
 
   // AM_ : attach map numbers
@@ -2311,6 +2311,69 @@ void Task::vTaskLoop(void)
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* task loop (R3.5 model)                                                     */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskLoop_R35(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  while (TS_EXECUTING == m_eState) {
+    
+    //assert(0 == m_iTaskNo || m_pThread);
+    
+    TaskStep pTaskStep = *IP.m_pCell->m_ppEntryStep;
+    
+    m_pEntryCell = IP.m_pCell->m_ppEntryStep + 1;
+    
+    //vTrace("pTaskStep %p\n"_Stz,pTaskStep);
+    
+    IP.m_pCell++;
+    
+    try {
+      (pTaskStep)(this);
+    }
+    
+    catch (i8 iException) {
+      char wFileName[256];
+      
+      const char* ps;
+      
+      ps = StrLib::sLast(m_sFile.aChar());
+      StrLib::bBackward(&ps,m_sFile.aChar(),'/');
+      bool bBackSlash = StrLib::bBackward(&ps,m_sFile.aChar(),'/');
+      if (bBackSlash) {
+        StrLib::vCopy(wFileName,ps+1);
+      }
+      else {
+        StrLib::vCopy(wFileName, m_sFile.aChar());
+      }
+      vError("[%s] %s : line %lld in %s\n"_Stz,
+             m_sName.aChar(),
+             m_sException.aChar(),
+             iException,
+             wFileName);
+      vRetry();
+    }
+    
+    catch (Error* pError) {
+      char wFileName[256];
+      
+      const char* ps;
+      
+      ps = StrLib::sLast(pError->aFileName()->aChar());
+      StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');
+      StrLib::vCopy(wFileName,ps+1);
+      vError("[%s] %s: line %lld in %s\n"_Stz,
+             m_sName.aChar(),
+             pError->aErrorMsg(),
+             pError->iLineNo(),
+             wFileName);
+      vRetry();
+    }
+    
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

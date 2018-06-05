@@ -28,6 +28,11 @@ void Task::vHandlerSystemEvent(MP_Task mpTask)
     THROW_INVALID_DSTACK("task.ack"_Stz);
   Task* pThatTask = _pTask(pTaskObject);
 
+  // correct this task to R35 model
+  
+  pThatTask->vR35model(true);
+  pThatTask->vState(TS_READY);
+  
   Handlers::bSystemLevelHandler(pThatTask);
   
   EXIT();

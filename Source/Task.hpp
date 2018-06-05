@@ -279,6 +279,7 @@ namespace Tasks
     eTK  eTaskKind(void);
     void vTaskKind(eTK eTaskKind);
     void vTaskLoop(void);
+    void vTaskLoop_R35(void);
     i8   iTaskNo(void);
     Threads::Thread* pThread(void);
     void vThread(Threads::Thread* pThread);

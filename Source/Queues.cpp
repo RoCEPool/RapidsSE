@@ -161,7 +161,7 @@ void Queues::vAddToWaitingQueue(Task* pTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   m_pWaitingQueue->vGrabLock();
-  vAddToWaitingQueue(pTask);
+  vAddToWaitingQueue_NL(pTask);
   m_pWaitingQueue->vDropLock();
 }
 

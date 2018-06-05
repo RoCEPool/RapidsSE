@@ -11,6 +11,9 @@ namespace Threads
     static bool bQueueLevelHandler(Task* pTask);
     static bool bSystemLevelHandler(Task* pTask);
     static bool bThreadLevelHandler(NP_Task* pNpTask);
+  
+    static bool bAckTaskHandler(Task* pTask);
+  
   };
 }
 

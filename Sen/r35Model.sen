@@ -25,18 +25,20 @@
 /*----------------------------------------------------------------------------*/
 : n35spawnChild
 
-  0 locals| pSubTask |
+  0 locals| pChildTask |
 
-  // set number of acks to be 1 child
+  // grabTaskLock
+
+  // 1 child will ack
   1 setAcks
 
   // spawn the n35 child task
   0               // nArgs
-  "n35"           // sSeedWord
+  "n35child"      // sSeedWord
   task::this      // pParentWord
   "R35Child"      // task name
   TK_R35_CHILD    // task kind
-    spawnR35ChildTask to pSubTask
+    spawnR35ChildTask to pChildTask
 ;
 
 /*----------------------------------------------------------------------------*/

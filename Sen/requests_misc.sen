@@ -76,21 +76,21 @@
 /*----------------------------------------------------------------------------*/
 : n35_req ( -- <R> )
 
-  "yielding" .
-  task.yield
-  "running" .
+  //"yielding" .
+  //task.yield
+  //"running" .
 
-  "sleeping for 0 microseconds" .
-  0 task.sleep
-  "awake" .
+  //"sleeping for 0 microseconds" .
+  //0 task.sleep
+  //"awake" .
 
-  "yielding" .
-  task.yield
-  "running" .
+  //"yielding" .
+  //task.yield
+  //"running" .
 
-  "sleeping for 3 seconds" .
-  3000000 task.sleep
-  "awake" .
+  //"sleeping for 3 seconds" .
+  //3000000 task.sleep
+  //"awake" .
 
   // spawn n35 child
   //n35spawnChild
