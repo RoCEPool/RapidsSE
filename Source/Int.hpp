@@ -42,6 +42,7 @@ namespace Datums
     void vVlqToInt(char* aVlq);
  
     static i8   nCopy(void* aDst, void* aSrc);
+    static i8   nCopyVLQ(void* aDst, void* aSrc);
     static void vCopy(void* aDst, void* aSrc);
     static bool bExtract(char** aaSrc, Int* aInt,
                          DBobjects::Column* pColumn, Formatters* pFormatters);

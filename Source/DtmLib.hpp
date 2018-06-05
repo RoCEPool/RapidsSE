@@ -16,6 +16,7 @@ namespace Datums
   
   public:
     static i8   nCopy(eDM eDatum, void* pDst, void* pSrc);
+    static i8   nCopyVLQ(eDM eDatum, void* pDst, void* pSrc);
     static void vCopy(eDM eDatum,  void* aDst, void* aSrc);
     static bool bExtract(eDM eDatum, Stz* aDst, char** aSrc,
                          DBobjects::Column* pColumn, bool bLastColumn,

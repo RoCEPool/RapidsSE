@@ -51,6 +51,30 @@ void DtmLib::vCopy(eDM eDatum, void* aDst, void* aSrc)
 }
 
 /*----------------------------------------------------------------------------*/
+/* copy datum (return the number of bytes copied)                             */
+/*----------------------------------------------------------------------------*/
+i8 DtmLib::nCopyVLQ(eDM eDatum, void* pDst, void* pSrc)
+{
+  switch (eDatum) {
+      
+    case DM_BCD: return Bcd::nCopyVLQ(pDst,pSrc);
+    case DM_BOL: return Bol::nCopy(pDst,pSrc);
+    case DM_DTE: return Dte::nCopy(pDst,pSrc);
+    case DM_FLT: return Flt::nCopy(pDst,pSrc);
+    case DM_INT: return Int::nCopyVLQ(pDst,pSrc);
+    case DM_IVL: return Ivl::nCopy(pDst,pSrc);
+    case DM_TME: return Tme::nCopy(pDst,pSrc);
+    case DM_TSP: return Tsp::nCopy(pDst,pSrc);
+    case DM_VCH: return Vch::nCopy(pDst,pSrc);
+      
+    default:
+      vFatal("ValLib::vCopyDatum: Invalid copy: eDatum %lld\n"_Stz,
+             eDatum);
+      return -1;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Extract -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
