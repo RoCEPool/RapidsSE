@@ -1600,8 +1600,9 @@ void Task::vIndexScan(MP_Task mpTask)
   
   // iterate thru the buffer till no more entries
   while (pEntry) {
+    
     Row* aRow = pEntry->aRow();
-    //aRow->vShow(pColVec);
+    //aRow->vShow(pTable->pColumnVec(), true);
     //vTrace("\n"_Stz);
 
     i8 nRowSize = pEntry->nRowSize();
@@ -1623,7 +1624,9 @@ void Task::vIndexScan(MP_Task mpTask)
       bool bResult = pWorkingBuffer->bAppendRow(aRow, nRowSize);
       RASSERT(bResult);
     }
-      
+    
+    //pWorkingBuffer->vShow(false);
+    
     // move to next entry in the buffer
     pEntry = pEntryBuffer->pNextEntry(pEntry, 0);
 

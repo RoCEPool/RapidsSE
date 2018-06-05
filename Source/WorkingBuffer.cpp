@@ -89,7 +89,9 @@ bool WorkingBuffer::bAppendRow(Row* aRow, i8 nRowSize)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORKINGBUFFER,_FOOTER_);
   
-  i8 nWorkingRowSize = WorkingRow::nBytesRequired(nRowSize);
+  ColumnVec* pColVec = m_pTable->pColumnVec();
+  
+  i8 nWorkingRowSize = WorkingRow::nBytesRequired(aRow, pColVec, nRowSize);
   
   i8 nFreeSpace = nFreeBytes();
   if (nFreeSpace < nWorkingRowSize)
@@ -97,7 +99,7 @@ bool WorkingBuffer::bAppendRow(Row* aRow, i8 nRowSize)
   
   WorkingRow* aWorkingRow = pAllotRow(nWorkingRowSize);
   
-  new(aWorkingRow) WorkingRow(aRow,nWorkingRowSize,nRowSize);
+  new(aWorkingRow) WorkingRow(aRow,pColVec,nWorkingRowSize,nRowSize,false);
   
   return true;
 }
@@ -117,7 +119,8 @@ bool WorkingBuffer::bAppendRow(RowWrk xRowWrk)
   
   WorkingRow* aWorkingRow = pAllotRow(nWorkingRowSize);
   
-  new(aWorkingRow) WorkingRow(xRowWrk.aRow(),nWorkingRowSize,xRowWrk.nRowSize());
+  new(aWorkingRow) WorkingRow(xRowWrk.aRow(),m_pTable->pColumnVec(),
+                              nWorkingRowSize,xRowWrk.nRowSize(),true);
   
   //vShow();
   
@@ -224,7 +227,7 @@ i8 WorkingBuffer::nWorkingRows(void)
 /*----------------------------------------------------------------------------*/
 /* show the contents of the buffer                                            */
 /*----------------------------------------------------------------------------*/
-void WorkingBuffer::vShow(void)
+void WorkingBuffer::vShow(bool bCompressed)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORKINGBUFFER,_FOOTER_);
   
@@ -235,7 +238,7 @@ void WorkingBuffer::vShow(void)
        pWorkingRow;
        pWorkingRow = pNextRow(pWorkingRow)) {
     
-    pWorkingRow->vShow(pColVec);
+    pWorkingRow->vShow(pColVec, bCompressed);
     vTrace("\n"_Stz);
   }
 }

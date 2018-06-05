@@ -26,6 +26,9 @@ void Task::vRowString(MP_Task mpTask)
 {
   ENTRY("vRowString"_Stz);
   
+  ASSERT(0);
+  
+  /*
   Object* pPtrRow;
   Object* pPtrTable;
   if ( ! mpTask->m_pDataStack->bPop(pPtrRow) )
@@ -45,6 +48,7 @@ void Task::vRowString(MP_Task mpTask)
   aRow->vAsBinaryString(sRow,pTable->pColumnVec());
   
   mpTask->m_pDataStack->vPushS48K(sRow);
+  */
   
   EXIT();
 }
