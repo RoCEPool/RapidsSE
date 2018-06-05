@@ -92,10 +92,10 @@
   //3000000 task.sleep
   //"awake" .
 
-  // spawn n35 child
-  n35spawnChild
+  // spawn n35 children
+  n35spawnChildren
 
-  // wait for child task to complete
+  // wait for child tasks to complete
   ackWait
 
   "n35"

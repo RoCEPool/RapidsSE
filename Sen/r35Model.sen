@@ -23,23 +23,29 @@
 /*----------------------------------------------------------------------------*/
 /* spawn n35 child task                                                       */
 /*----------------------------------------------------------------------------*/
-: n35spawnChild
+: n35spawnChildren
 
-  0 locals| pChildTask |
+  0 0 locals| pChildTask nChildren |
 
   // grab task lock
   task::this task.grabLock
 
   // 1 child will ack this parent
-  1 setAcks
+  1 to nChildren
 
-  // spawn the n35 child task
-  0               // nArgs
-  "n35child"      // sSeedWord
-  task::this      // pParentTask
-  "R35Child"      // task name
-  TK_R35_CHILD    // task kind
-    spawnR35ChildTask to pChildTask
+  nChildren setAcks
+
+  nChildren 0 do
+
+    // spawn an n35 child task
+    0               // nArgs
+    "n35child"      // sSeedWord
+    task::this      // pParentTask
+    "R35Child"      // task name
+    TK_R35_CHILD    // task kind
+      spawnR35ChildTask to pChildTask
+
+  loop
 ;
 
 /*----------------------------------------------------------------------------*/
