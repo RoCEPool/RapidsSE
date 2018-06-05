@@ -536,6 +536,20 @@ void Queues::vScheduleAckedTask(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* schedule an exited task                                                    */
+/*----------------------------------------------------------------------------*/
+void Queues::vScheduleExitedTask(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+
+  RASSERT(TS_EXITED == pTask->eState());
+  
+  ASSERT( (*gpAttachMap->m_npBootTask != pTask) && (! pTask->bWordBody()) );
+  
+  delete pTask;
+}
+
+/*----------------------------------------------------------------------------*/
 /* schedule a ready to execute task                                           */
 /*----------------------------------------------------------------------------*/
 void Queues::vScheduleReadyTask(Task* pTask)

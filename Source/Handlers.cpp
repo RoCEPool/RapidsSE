@@ -133,36 +133,24 @@ bool Handlers::bThreadLevelHandler(NP_Task* pNpTask)
   // now add the task to another appropriate queue depending on its state
   switch (pTask->eState()) {
       
+    case TS_EXITED:      pQueues->vScheduleExitedTask(pTask);    break;
+    case TS_SLEEPING:    pQueues->vScheduleSleepingTask(pTask);  break;
+    case TS_WAITING_ACK: pQueues->vScheduleWaitingTask(pTask);   break;
+    case TS_YIELDED:     pQueues->vScheduleYieldedTask(pTask);   break;
+      
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
     case TS_BLOCKED:
       // should never come to thread handler with a blocked task
       ASSERT(0);
-      
-    case TS_EXITED:
-      // task has exited
-      // now delete task
-      ASSERT( (*gpAttachMap->m_npBootTask != pTask) && (! pTask->bWordBody()) );
-      delete pTask;
-      break;
       
     case TS_EXECUTING:
       // should never come to thread handler with a running task
       ASSERT(0);
       
-    case TS_SLEEPING:
-      pQueues->vScheduleSleepingTask(pTask);
-      break;
-      
-    case TS_WAITING_ACK:
-      pQueues->vScheduleWaitingTask(pTask);
-      break;
-      
     case TS_WAITING_SIGNAL:
       // whats the difference between WAITING_ACK and WAITING_SIGNAL ?
       ASSERT(0);
-      
-    case TS_YIELDED:
-      pQueues->vScheduleYieldedTask(pTask);
-     break;
       
     default:
       break;
