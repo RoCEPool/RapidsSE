@@ -4,4 +4,5 @@ decimalColumn.test
 integerColumn.test
 timestampColumn.test
 varcharColumn.test
+truncate.test
 
