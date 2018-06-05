@@ -237,7 +237,9 @@ namespace Tasks
     bool bDecAck(void);
     void vDestructorTrace(bool bDestructorTrace);
     bool bDestructorTrace(void);
+    void vDropLock(void);
     void vException(StrVal& sFile, StrVal& eException);
+    void vGrabLock(void);
     void vInitialiseMain(void);
     bool bIsName(StrVal& sName);
     bool bIsNonPartitioned(void);

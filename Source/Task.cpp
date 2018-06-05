@@ -1096,7 +1096,7 @@ void Task::vAddRoutines(void)
   
   pCompileColon(sDefinition);
   
-  //--------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   sDefinition =
   ": docol"
   
@@ -1186,7 +1186,7 @@ void Task::vAddRoutines(void)
   
   pCompileColon(sDefinition);
   
-  //-----------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   sDefinition =
   ": ::task_exit"
   "  TS_EXITED task::this task.state!"
@@ -1194,7 +1194,7 @@ void Task::vAddRoutines(void)
   
   pCompileColon(sDefinition);
   
-  //-----------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   sDefinition =
   ": ::docmd"
   //  "  input.text"
@@ -1204,8 +1204,7 @@ void Task::vAddRoutines(void)
   
   pCompileColon(sDefinition);
   
-  //-----------------------------------------------------
-  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   sDefinition =
   ": ::enter"
   "  input.stdin"
@@ -1215,7 +1214,7 @@ void Task::vAddRoutines(void)
   
   pCompileColon(sDefinition);
   
-  //-----------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   sDefinition =
   ": include-file"
   "  input.push"
@@ -1228,7 +1227,7 @@ void Task::vAddRoutines(void)
   
   pCompileColon(sDefinition);
   
-  //-----------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   sDefinition =
   ": include-string"
   "  input.push"
@@ -1240,7 +1239,7 @@ void Task::vAddRoutines(void)
   
   pCompileColon(sDefinition);
   
-  //-----------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   sDefinition =
   ": include"
 //  "  traceon"
@@ -1256,7 +1255,7 @@ void Task::vAddRoutines(void)
   
   pCompileColon(sDefinition);
   
-  //-----------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Temporary ifdef till we get sen files embedded in the executable
 #ifdef __APPLE__
   sDefinition =
@@ -1485,6 +1484,16 @@ bool Task::bDestructorTrace(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* drop lock                                                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vDropLock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  m_xLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
 /* set exception                                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vException(StrVal& sFile, StrVal& eException)
@@ -1493,6 +1502,16 @@ void Task::vException(StrVal& sFile, StrVal& eException)
   
   m_sFile = sFile;
   m_sException = eException;
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab lock                                                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vGrabLock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  m_xLock.vGrabWrite();
 }
 
 /*----------------------------------------------------------------------------*/
