@@ -581,7 +581,17 @@ ENTRY("vTaskNew"_Stz);
   if ( ! mpTask->m_pDataStack->bGuard(nTaskArgs) )
     THROW_INVALID_DSTACK("task::new"_Stz);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // verify spawn arguments
+  
+  // if we are a parent spawning a child there must be at least 1 ack remaining
+  if (AC_R35 == eModel && pParentTask) {
+    RASSERT(*pParentTask->m_zAcks);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create new task (will be automatically appended to task list)
+  
   MP_Task nnpNewTask = new Task;
   
   nnpNewTask->m_sName = sName;
