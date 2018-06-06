@@ -138,6 +138,7 @@ namespace Tasks
 
     Lock    m_xLock;       // lock for this task
     i8      m_iTaskNo;     // task
+    i8      m_iTaskOrderNo;// task order no. (ready queue)
     eTK     m_eTaskKind;   // task kind
     eAC     m_eActorModel; // actor model
     i8      m_iPartition;  // which partition if a partition task
@@ -285,6 +286,8 @@ namespace Tasks
     void vTaskLoop(void);
     void vTaskLoop_R35(void);
     i8   iTaskNo(void);
+    void vTaskOrderNo(i8 iTaskOrder);
+    i8   iTaskOrderNo(void);
     Threads::Thread* pThread(void);
     void vThread(Threads::Thread* pThread);
     void vTracePoint(Stz* aMark);
@@ -1595,7 +1598,7 @@ namespace Tasks
   Task* _pTask(i8 iAddr);
 }
 
-bool bTaskCompareTaskNo(void* pObjectInsert, void* pObjectScan, bool& bMatch);
+bool bTaskCompareTaskOrderNo(void* pObjectInsert, void* pObjectScan, bool& bMatch);
 bool bTaskCompareWakeupTime(void* pObjectInsert, void* pObjectScan, bool& bMatch);
 
 /*============================================================================*/

@@ -14,6 +14,10 @@ namespace Threads
     ThreadVector* m_pThreadVector;  // vector of threads in the system
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // tasks
+    Atomic  m_ziTaskOrderNo;       // task ordering no
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // queues which are checked in round robin fashion
   
     TaskQueue* m_pSleepingQueue;   // queue of sleeping tasks

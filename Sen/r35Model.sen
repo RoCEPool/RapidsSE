@@ -38,7 +38,8 @@
   nChildren 0 do
 
     // spawn an n35 child task
-    0               // nArgs
+    I
+    i               // nArgs
     "n35child"      // sSeedWord
     task::this      // pParentTask
     "R35Child"      // task name
@@ -51,12 +52,24 @@
 /*----------------------------------------------------------------------------*/
 /* n35 child task test                                                        */
 /*----------------------------------------------------------------------------*/
-: n35child
+: n35child ( childNo -- )
+
+  locals| iChildNo |
 
   "n35child" .
 
+  iChildNo "child %v yielding" str.format .
+  task.yield
+  iChildNo "child %v running" str.format .
+
+  iChildNo "child %v sleeping for 3 seconds" str.format .
+  3000000 task.sleep
+  iChildNo "child %v awake" str.format .
+
   // ack the parent task
   task.parent@ ack
+
+  iChildNo "child %v exiting" str.format .
 ;
 
 /*============================================================================*/
