@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Handlers.cpp -- Queue/System/Thread Event Handlers                         */
+/* Handlers.cpp -- Thread/Task Event Handlers                                 */
 /*============================================================================*/
 
 #include "Threads.h"
@@ -10,72 +10,26 @@ extern AttachMap* gpAttachMap;
 extern Arguments  gxArguments;
 
 /*----------------------------------------------------------------------------*/
-/* queue level event handler                                                  */
+/* ack task handler                                                           */
 /*----------------------------------------------------------------------------*/
-bool Handlers::bQueueLevelHandler(Task* pTask)
+void Handlers::vAckTaskHandler(Task* pTask)
 {
   //
-  // this handler is called from Thread::vLoop()
-  // after a task returns to the thread
+  // this handler is called from Task::vTaskAck()
   //
   
-  // get the thread vector
-  ThreadVector* pThreadVector = gpAttachMap->m_pQueues->pThreadVector();
+  Queues* pQueues = gpAttachMap->m_pQueues;
   
-  // grab the thread vector lock
-  pThreadVector->vGrabLock();
+  bool bDecider = pTask->bDecAck();
   
-  i8 iThreads = pThreadVector->nItems();
-  
-  // find a thread that can run the task
-  for (i8 iThread = 0; iThread < iThreads; iThread++) {
-    
-    // get the thread
-    Thread* pThread = pThreadVector->pGet(iThread);
-    
-    // try and lock the thread
-    bool bLocked = pThread->bGrabLock();
-    
-    // if unable to lock, move on to the next thread
-    if ( ! bLocked )
-      continue;
-    
-    // see if thread is waiting for a task
-    if (pThread->eThreadState() == TC_IDLE) {
-      
-      // set task state to RUNNING
-      pThread->vThreadState(TC_RUNNING);
-      
-      // set the task in the thread
-      pThread->vTask(pTask);
-      
-      // notify the thread
-      pThread->vSignalThread();
-      
-      // drop the thread lock
-      pThread->vDropLock();
-      
-      // drop the thread vector lock
-      pThreadVector->vDropLock();
-      
-      return true;
-    }
-    
-    // drop the thread lock
-    pThread->vDropLock();
-  }
-  
-  // drop the thread vector lock
-  pThreadVector->vDropLock();
-  
-  // didn't find a thread
-  return false;
+  if (bDecider)
+    pQueues->vScheduleAckedTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
-/* system level event handler (put task into system)                          */
+/* spawned handler                                                            */
 /*----------------------------------------------------------------------------*/
-bool Handlers::bSpawnedTaskHandler(Task* pTask)
+void Handlers::vSpawnedTaskHandler(Task* pTask)
 {
   //
   // this handler is called from SEitf::bAppendRequest_R35()
@@ -85,14 +39,12 @@ bool Handlers::bSpawnedTaskHandler(Task* pTask)
   Queues* pQueues = gpAttachMap->m_pQueues;
 
   pQueues->vScheduleSpawnedTask(pTask);
-  
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/
-/* thread loop event handler                                                  */
+/* thread loop handler                                                        */
 /*----------------------------------------------------------------------------*/
-bool Handlers::bThreadLoopHandler(NP_Task* pNpTask)
+void Handlers::vThreadLoopHandler(NP_Task* pNpTask)
 {
   //
   // this handler is called from Thread::vLoop()
@@ -116,47 +68,15 @@ bool Handlers::bThreadLoopHandler(NP_Task* pNpTask)
     case TS_YIELDED:     pQueues->vScheduleYieldedTask(pTask);   break;
       
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // should never come to thread handler for these states
 
-    case TS_BLOCKED:
-      // should never come to thread handler with a blocked task
-      ASSERT(0);
-      
-    case TS_EXECUTING:
-      // should never come to thread handler with a running task
-      ASSERT(0);
-      
-    case TS_WAITING_SIGNAL:
-      // whats the difference between WAITING_ACK and WAITING_SIGNAL ?
-      ASSERT(0);
+    case TS_BLOCKED:     ASSERT(0);
+    case TS_EXECUTING:   ASSERT(0);
+    case TS_WAITING_SIGNAL: ASSERT(0);
       
     default:
       break;
   }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* ack task handler                                                           */
-/*----------------------------------------------------------------------------*/
-bool Handlers::bAckTaskHandler(Task* pTask)
-{
-  //
-  // this handler is called from Task::vTaskAck()
-  //
-  
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
-  bool bDecider = pTask->bDecAck();
-  
-  if (bDecider) {
-    
-    pQueues->vScheduleAckedTask(pTask);
-    
-    return true;
-  }
-  
-  return true;
 }
 
 /*============================================================================*/

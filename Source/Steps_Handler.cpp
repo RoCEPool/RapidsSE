@@ -33,7 +33,7 @@ void Task::vHandlerSpawnedTask(MP_Task mpTask)
   pThatTask->vR35model(true);
   pThatTask->vState(TS_READY);
   
-  Handlers::bSpawnedTaskHandler(pThatTask);
+  Handlers::vSpawnedTaskHandler(pThatTask);
   
   EXIT();
 }

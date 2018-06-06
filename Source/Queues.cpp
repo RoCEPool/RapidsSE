@@ -513,29 +513,29 @@ void Queues::vRemoveFromWaitingQueue(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* schedule a fully acked task                                                */
 /*----------------------------------------------------------------------------*/
-void Queues::vScheduleAckedTask(Task* pTask)
+void Queues::vScheduleAckedTask(Task* pTaskToBeAcked)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  pTask->vGrabLock();
+  pTaskToBeAcked->vGrabLock();
 
   // having got the lock, the task should be TS_WAITING_ACK and QR_WAITING_QUEUE
 
-  RASSERT(TS_WAITING_ACK == pTask->eState());
-  RASSERT(QR_WAITING_QUEUE == pTask->eQueue());
+  RASSERT(TS_WAITING_ACK == pTaskToBeAcked->eState());
+  RASSERT(QR_WAITING_QUEUE == pTaskToBeAcked->eQueue());
   
-  pTask->vDropLock();
+  pTaskToBeAcked->vDropLock();
   
-  vRemoveFromWaitingQueue(pTask);
+  vRemoveFromWaitingQueue(pTaskToBeAcked);
 
-  RASSERT(QR_NONE == pTask->eQueue());
+  RASSERT(QR_NONE == pTaskToBeAcked->eQueue());
   
-  pTask->vState(TS_READY);
+  pTaskToBeAcked->vState(TS_READY);
   
-  if (pTask->bIsNonPartitioned())
-    vScheduleReadyTask(pTask);
+  if (pTaskToBeAcked->bIsNonPartitioned())
+    vScheduleReadyTask(pTaskToBeAcked);
   else
-    vScheduleReadySlotTask(pTask);
+    vScheduleReadySlotTask(pTaskToBeAcked);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -638,7 +638,7 @@ void Queues::vScheduleWaitingTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  RASSERT(TS_WAITING_ACK    == pTask->eState());
+  RASSERT(TS_WAITING_ACK == pTask->eState());
           //|| TS_WAITING_SIGNAL == pTask->eState());
   
   vAddToWaitingQueue(pTask);

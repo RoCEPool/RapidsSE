@@ -1265,7 +1265,8 @@ namespace Tasks
     static void vTaskThis(MP_Task mpTask);
     static void vTaskParentFetch(MP_Task mpTask);
     static void vTaskParentStore(MP_Task mpTask);
-    static void vTaskPartition(MP_Task mpTask);
+    static void vTaskPartitionFetch(MP_Task mpTask);
+    static void vTaskPartitionStore(MP_Task mpTask);
     static void vTaskPlanFetch(MP_Task mpTask);
     static void vTaskPlanStore(MP_Task mpTask);
     static void vTaskRequest(MP_Task mpTask);
