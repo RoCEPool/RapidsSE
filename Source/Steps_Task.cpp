@@ -76,7 +76,7 @@ void Task::vTaskAck(MP_Task mpTask)
   
   if (pThatTask->bR35model()) {
     
-    Handlers::bAckTaskHandler(pThatTask);
+    Handlers::vAckTaskHandler(pThatTask);
     
     EXIT();
     return;

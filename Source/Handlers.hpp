@@ -8,9 +8,9 @@ namespace Threads
   class Handlers
   {
   public:
-    static bool bAckTaskHandler(Task* pTask);
-    static bool bSpawnedTaskHandler(Task* pTask);
-    static bool bThreadLoopHandler(NP_Task* pNpTask); 
+    static void vAckTaskHandler(Task* pTask);
+    static void vSpawnedTaskHandler(Task* pTask);
+    static void vThreadLoopHandler(NP_Task* pNpTask);
   };
 }
 

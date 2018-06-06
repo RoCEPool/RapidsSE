@@ -12,7 +12,7 @@ extern Arguments  gxArguments;
 /*----------------------------------------------------------------------------*/
 /* ack task handler                                                           */
 /*----------------------------------------------------------------------------*/
-bool Handlers::bAckTaskHandler(Task* pTask)
+void Handlers::vAckTaskHandler(Task* pTask)
 {
   //
   // this handler is called from Task::vTaskAck()
@@ -22,20 +22,14 @@ bool Handlers::bAckTaskHandler(Task* pTask)
   
   bool bDecider = pTask->bDecAck();
   
-  if (bDecider) {
-    
+  if (bDecider)
     pQueues->vScheduleAckedTask(pTask);
-    
-    return true;
-  }
-  
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/
 /* spawned handler                                                            */
 /*----------------------------------------------------------------------------*/
-bool Handlers::bSpawnedTaskHandler(Task* pTask)
+void Handlers::vSpawnedTaskHandler(Task* pTask)
 {
   //
   // this handler is called from SEitf::bAppendRequest_R35()
@@ -45,14 +39,12 @@ bool Handlers::bSpawnedTaskHandler(Task* pTask)
   Queues* pQueues = gpAttachMap->m_pQueues;
 
   pQueues->vScheduleSpawnedTask(pTask);
-  
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/
 /* thread loop handler                                                        */
 /*----------------------------------------------------------------------------*/
-bool Handlers::bThreadLoopHandler(NP_Task* pNpTask)
+void Handlers::vThreadLoopHandler(NP_Task* pNpTask)
 {
   //
   // this handler is called from Thread::vLoop()
@@ -85,8 +77,6 @@ bool Handlers::bThreadLoopHandler(NP_Task* pNpTask)
     default:
       break;
   }
-  
-  return true;
 }
 
 /*============================================================================*/
