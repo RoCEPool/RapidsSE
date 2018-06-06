@@ -417,6 +417,8 @@ void Thread::vExecuteTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
+  ASSERT(bMutexIsLocked());
+  
   // task should be ready
   RASSERT(TS_READY == pTask->eState());
   pTask->vState(TS_EXECUTING);
@@ -1326,6 +1328,7 @@ void Thread::vSignalThread(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
+  ASSERT(bMutexIsLocked());
   m_pSemaphore->vSignalThread();
 }
 

@@ -603,7 +603,7 @@ void Semaphore::vSignalThread(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE,_FOOTER_);
   
-  vMutexLock();
+  ASSERT(bMutexIsLocked());
   vCondSignal();
   vMutexUnlock();
 }

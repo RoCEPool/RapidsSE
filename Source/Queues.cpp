@@ -175,6 +175,7 @@ void Queues::vAddToExecutingQueue_NL(Task* pTask)
   RASSERT(TS_EXECUTING == pTask->eState());
   
   pTask->vQueue(QR_EXECUTING_QUEUE);
+  pTask->vTaskOrderNo(++m_ziTaskOrderNo);
   
   m_pExecutingQueue->vAddTask(pTask);
 }
@@ -192,7 +193,7 @@ void Queues::vAddToReadyQueue_NL(Task* pTask)
   pTask->vTaskOrderNo(++m_ziTaskOrderNo);
   
   m_pReadyQueue->vAddTask(pTask);
-  vTrace("ReadyQ %lld\n"_Stz, m_pReadyQueue->nTasks());
+  //vTrace("ReadyQ %lld\n"_Stz, m_pReadyQueue->nTasks());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -249,6 +250,7 @@ void Queues::vAddToWaitingQueue_NL(Task* pTask)
   
   // mark task as being in the waiting queue
   pTask->vQueue(QR_WAITING_QUEUE);
+  pTask->vTaskOrderNo(++m_ziTaskOrderNo);
   
   // put task inyo the waiting queue
   m_pWaitingQueue->vAddTask(pTask);
@@ -264,6 +266,8 @@ Thread* Queues::pGrabIdleThread(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
+  Thread* pThisThread = Thread::pThisTLSThread();
+  
   m_pThreadVector->vGrabLock();
 
   i8 nThreads = m_pThreadVector->nItems();
@@ -271,18 +275,22 @@ Thread* Queues::pGrabIdleThread(void)
 
     Thread* pThread = m_pThreadVector->pGet(i_Thread);
     
-    // attempt to grab threads mutex
-    //if (! pThread->bMutexLock())
-    //  continue;
+    // skip this thread
+    if (pThread == pThisThread)
+      continue;
     
-    //ASSERT(pThread->bMutexIsLocked());
+    // attempt to grab threads mutex
+    if (! pThread->bMutexLock())
+      continue;
+    
+    ASSERT(pThread->bMutexIsLocked());
     
     if (pThread->bIsIdle()) {
       m_pThreadVector->vDropLock();
       return pThread;
     }
     
-    //pThread->vMutexUnlock();
+    pThread->vMutexUnlock();
   }
   
   m_pThreadVector->vDropLock();
@@ -565,8 +573,10 @@ void Queues::vScheduleReadyTask(Task* pTask)
   
   Thread* pIdleThread = pGrabIdleThread();
   
-  if (pIdleThread)
+  if (pIdleThread) {
+    ASSERT(pIdleThread->bMutexIsLocked());
     pIdleThread->vExecuteTask(pTask);
+  }
   else
     vAddToReadyQueue(pTask);
 }
@@ -582,8 +592,10 @@ void Queues::vScheduleReadySlotTask(Task* pTask)
   
   Thread* pIdleThread = pGrabIdleThread();
   
-  if (pIdleThread)
+  if (pIdleThread) {
+    ASSERT(pIdleThread->bMutexIsLocked());
     pIdleThread->vExecuteTask(pTask);
+  }
   else
     vAddToReadySlotQueue(pTask);
 }
@@ -668,7 +680,6 @@ void Queues::vScheduleYieldedTask(Task* pTask)
       m_pReadyQueue->vGrabLock();
       i8 iLengthReadyQueue = m_pReadyQueue->nTasks();
       if (0 == iLengthReadyQueue) {
-        vTrace("Reexecuting yielded task\n"_Stz);
         m_pReadyQueue->vDropLock();
         pCallingThread->vReExecuteTask(pTask);
       }
