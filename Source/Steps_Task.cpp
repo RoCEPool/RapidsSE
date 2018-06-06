@@ -659,23 +659,33 @@ void Task::vTaskPartitionFetch(MP_Task mpTask)
 {
   ENTRY("vTaskPartitionFetch"_Stz);
   
-  mpTask->m_pDataStack->vPushInt(mpTask->m_iPartition);
+  Object* pTaskObject;
+  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
+    THROW_INVALID_DSTACK("task.name!"_Stz);
+  Task* pThatTask = _pTask(pTaskObject);
+  
+  mpTask->m_pDataStack->vPushInt(pThatTask->m_iPartition);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.partition@ -- store partition of task                                 */
+/* task.partition! -- store partition of task                                 */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskPartitionStore(MP_Task mpTask)
 {
   ENTRY("vTaskPartitionStore"_Stz);
   
+  Object* pTaskObject;
+  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
+    THROW_INVALID_DSTACK("task.name!"_Stz);
+  Task* pThatTask = _pTask(pTaskObject);
+  
   i8 iPartition;
   if ( ! mpTask->m_pDataStack->bPop(iPartition) )
-    THROW_INVALID_DSTACK("task.partition@"_Stz);
+    THROW_INVALID_DSTACK("task.partition!"_Stz);
   
-  mpTask->m_iPartition = iPartition;
+  pThatTask->m_iPartition = iPartition;
   
   EXIT();
 }

@@ -636,7 +636,7 @@ void Queues::vScheduleSpawnedTask(Task* pTask)
   RASSERT(QR_NONE == pTask->eQueue());
   
   eQR eQueue = pTask->eWhichQueue();
-  RASSERT(QR_READY_QUEUE == eQueue);
+  RASSERT(eQueue >= QR_READY_QUEUE  || eQueue < gpAttachMap->m_pGrid->m_nSlots);
   
   //vTrace("Spawned Task %p\n"_Stz,pTask);
   

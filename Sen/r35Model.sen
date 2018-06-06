@@ -21,6 +21,25 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* create a task using given arguments and append to server task queue        */
+/*----------------------------------------------------------------------------*/
+: spawnR35PartitionChildTask ( ... nArgs iPartition sSeedWord pParentTask sTaskNm eTaskKind -- pTask )
+
+  nullptr locals| pTask eTaskKind sTaskNm pParent sSeedWord iPartition nArgs |
+
+  // create a new task
+  nArgs sSeedWord pParent AC_R35 sTaskNm eTaskKind task::new to pTask
+
+  // set the partition no n the task
+  iPartition pTask task.partition!
+
+  // put task into system
+  pTask handler::spawnedTask
+
+  pTask  // return the task
+;
+
+/*----------------------------------------------------------------------------*/
 /* spawn n35 child task                                                       */
 /*----------------------------------------------------------------------------*/
 : n35spawnChildren
@@ -39,12 +58,41 @@
 
     // spawn an n35 child task
     I
-    i               // nArgs
+    1               // nArgs
     "n35child"      // sSeedWord
     task::this      // pParentTask
     "R35Child"      // task name
     TK_R35_CHILD    // task kind
       spawnR35ChildTask to pChildTask
+
+  loop
+;
+
+/*----------------------------------------------------------------------------*/
+/* spawn p35 partition child task                                             */
+/*----------------------------------------------------------------------------*/
+: p35spawnPartitionChildren
+
+  0 locals| pChildTask |
+
+  // grab task lock
+  task::this task.grabLock
+
+  // set number of children to ack this parent
+  grid.slots setAcks
+
+  // loop from 0 to nChildren-1
+  grid.slots 0
+  do
+
+    // spawn an n35 child task
+    0                        // nArgs
+    I grid::toPartition      // partition
+    "p35child"               // sSeedWord
+    task::this               // pParentTask
+    "R35PartitionChild"      // task name
+    TK_R35_CHILD             // task kind
+      spawnR35PartitionChildTask to pChildTask
 
   loop
 ;
@@ -70,6 +118,31 @@
   task.parent@ ack
 
   iChildNo "child %v exiting" str.format .
+;
+
+/*----------------------------------------------------------------------------*/
+/* p35 child task test                                                        */
+/*----------------------------------------------------------------------------*/
+: p35child ( -- )
+
+  locals| iPartitionNo |
+
+  "p35child" .
+
+  task::this task.partition@ to iPartitionNo
+
+  //iPartitionNo "partitionTask %v yielding" str.format .
+  //task.yield
+  //iPartitionNo "partitionTask %v running" str.format .
+
+  //iPartitionNo "partitionTask %v sleeping for 3 seconds" str.format .
+  //3000000 task.sleep
+  //iPartitionNo "partitionTask %v awake" str.format .
+
+  // ack the parent task
+  task.parent@ ack
+
+  iPartitionNo "partitionTask %v exiting" str.format .
 ;
 
 /*============================================================================*/
