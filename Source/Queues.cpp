@@ -55,18 +55,18 @@ Queues::Queues(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
   m_pThreadVector  = new ThreadVector;
-  
+  m_ziTaskOrderNo  = 0;
   m_pSleepingQueue = new TaskQueue(bTaskCompareWakeupTime);
-  m_pReadyQueue  = new TaskQueue(bTaskCompareTaskNo);
+  m_pReadyQueue    = new TaskQueue(bTaskCompareTaskOrderNo);
   
   for (i8 i_Slot = 0; i_Slot < C_SLOTS_PER_NODE; i_Slot++)
     m_pReadySlotQueues[i_Slot] = nullptr;
 
   for (i8 i_Slot = 0; i_Slot < gxArguments.m_nSlots; i_Slot++)
-    m_pReadySlotQueues[i_Slot] = new TaskQueue(bTaskCompareTaskNo);
+    m_pReadySlotQueues[i_Slot] = new TaskQueue(bTaskCompareTaskOrderNo);
   
-  m_pExecutingQueue = new TaskQueue(bTaskCompareTaskNo);
-  m_pWaitingQueue   = new TaskQueue(bTaskCompareTaskNo);
+  m_pExecutingQueue = new TaskQueue(bTaskCompareTaskOrderNo);
+  m_pWaitingQueue   = new TaskQueue(bTaskCompareTaskOrderNo);
   
   _checkInitialised_(CN_QUEUES);
   
@@ -189,8 +189,10 @@ void Queues::vAddToReadyQueue_NL(Task* pTask)
   RASSERT(TS_READY == pTask->eState());
   
   pTask->vQueue(QR_READY_QUEUE);
+  pTask->vTaskOrderNo(++m_ziTaskOrderNo);
   
   m_pReadyQueue->vAddTask(pTask);
+  vTrace("ReadyQ %lld\n"_Stz, m_pReadyQueue->nTasks());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -209,6 +211,7 @@ void Queues::vAddToReadySlotQueue_NL(Task* pTask)
   i8 iSlot = Partition::iPartitionToSlot(pTask->iPartition());
   
   pTask->vQueue((eQR)iSlot);
+  pTask->vTaskOrderNo(++m_ziTaskOrderNo);
   
   m_pReadySlotQueues[iSlot]->vAddTask(pTask);
 }
@@ -665,10 +668,12 @@ void Queues::vScheduleYieldedTask(Task* pTask)
       m_pReadyQueue->vGrabLock();
       i8 iLengthReadyQueue = m_pReadyQueue->nTasks();
       if (0 == iLengthReadyQueue) {
+        vTrace("Reexecuting yielded task\n"_Stz);
         m_pReadyQueue->vDropLock();
         pCallingThread->vReExecuteTask(pTask);
       }
       else {
+        pTask->vState(TS_READY);
         vAddToReadyQueue_NL(pTask);
         m_pReadyQueue->vDropLock();
       }

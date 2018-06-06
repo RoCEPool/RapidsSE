@@ -14,7 +14,7 @@ extern Arguments       gxArguments;
 /*----------------------------------------------------------------------------*/
 /* compare two tasks by their taskNo                                          */
 /*----------------------------------------------------------------------------*/
-bool bTaskCompareTaskNo(void* pObjectInsert, void* pObjectScan, bool& bMatch)
+bool bTaskCompareTaskOrderNo(void* pObjectInsert, void* pObjectScan, bool& bMatch)
 {
   Task* pInsertEntry = _pTask(pObjectInsert);
   Task* pScanEntry   = _pTask(pObjectScan);
@@ -22,12 +22,12 @@ bool bTaskCompareTaskNo(void* pObjectInsert, void* pObjectScan, bool& bMatch)
   if ( ! pObjectScan )
     return false;
   
-  if (pInsertEntry->iTaskNo() == pScanEntry->iTaskNo())
+  if (pInsertEntry->iTaskOrderNo() == pScanEntry->iTaskOrderNo())
     bMatch = true;
   else
     bMatch = false;
   
-  if (pInsertEntry->iTaskNo() > pScanEntry->iTaskNo())
+  if (pInsertEntry->iTaskOrderNo() > pScanEntry->iTaskOrderNo())
     return true;
   else
     return false;
@@ -248,7 +248,9 @@ void Task::vInit(Stz* aLambda)
   // basic state
   m_xLock.vInitLock(LK_TASK);
   
-  m_iTaskNo     = iTaskNo++;
+  m_iTaskNo      = iTaskNo++;
+  m_iTaskOrderNo = 0;
+  
   m_eTaskKind   = TK_NONE;
   m_eActorModel = AC_NONE;
   m_iPartition  = -1;
@@ -2210,6 +2212,26 @@ i8 Task::iTaskNo(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   return m_iTaskNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get task order no                                                          */
+/*----------------------------------------------------------------------------*/
+i8 Task::iTaskOrderNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  return m_iTaskOrderNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set task order no                                                          */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskOrderNo(i8 iTaskOrderNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  m_iTaskOrderNo = iTaskOrderNo;
 }
 
 /*----------------------------------------------------------------------------*/
