@@ -188,6 +188,7 @@ void Queues::vAddToReadyQueue_NL(Task* pTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   RASSERT(TS_READY == pTask->eState());
+  RASSERT( ! pTask->bIsPartitioned());
   
   pTask->vQueue(QR_READY_QUEUE);
   pTask->vTaskOrderNo(++m_ziTaskOrderNo);
@@ -207,6 +208,7 @@ void Queues::vAddToReadySlotQueue_NL(Task* pTask)
   // this needs to set for partition tasks
   
   RASSERT(TS_READY == pTask->eState());
+  RASSERT(pTask->bIsPartitioned());
   
   // get slot no of the task
   i8 iSlot = Partition::iPartitionToSlot(pTask->iPartition());
@@ -331,6 +333,8 @@ Task* Queues::pInspectReadyQueue(Thread* pCallingThread)
   // task no longer in queue
   pPoppedTask->vQueue(QR_NONE);
   
+  RASSERT( ! pPoppedTask->bIsPartitioned());
+  
   // return the task popped from the ready queue
   return pPoppedTask;
 }
@@ -369,6 +373,8 @@ Task* Queues::pInspectReadySlotQueue(Thread* pCallingThread)
   
   // task no longer in queue
   pPoppedTask->vQueue(QR_NONE);
+  
+  RASSERT(pPoppedTask->bIsPartitioned());
   
   // return the task popped from the slot queue
   return pPoppedTask;
@@ -577,8 +583,12 @@ void Queues::vScheduleReadyTask(Task* pTask)
     ASSERT(pIdleThread->bMutexIsLocked());
     pIdleThread->vExecuteTask(pTask);
   }
-  else
-    vAddToReadyQueue(pTask);
+  else {
+    if (pTask->bIsNonPartitioned())
+      vAddToReadyQueue(pTask);
+    else
+      vAddToReadySlotQueue(pTask);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
