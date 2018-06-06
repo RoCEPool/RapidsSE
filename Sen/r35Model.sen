@@ -69,6 +69,28 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* spawn n35 task                                                             */
+/*----------------------------------------------------------------------------*/
+: n35spawnTask ( nTasks -- )
+
+  0 locals| pTask nTasks |
+
+  // loop from 0 to nChildren-1
+  nTasks 0 do
+
+    // spawn an n35 task
+    I
+    1                // nArgs
+    "n35spawnedTask" // sSeedWord
+    nullPtr          // pParentTask
+    "R35SpawnedTask" // task name
+    TK_R35_CHILD     // task kind
+      spawnR35ChildTask to pTask
+
+  loop
+;
+
+/*----------------------------------------------------------------------------*/
 /* spawn p35 partition child task                                             */
 /*----------------------------------------------------------------------------*/
 : p35spawnPartitionChildren
@@ -119,6 +141,33 @@
 
   iChildNo "child %v exiting" str.format .
 ;
+
+/*----------------------------------------------------------------------------*/
+/* n35 spawned task test                                                      */
+/*----------------------------------------------------------------------------*/
+: n35SpawnedTask ( taskNo -- )
+
+  0 locals| iSleep iTaskNo |
+
+  "n35SpawnedTask" .
+
+  10 0
+  do
+    // yield
+    iTaskNo "task %v yielding" str.format .
+    task.yield
+    iTaskNo "task %v running" str.format .
+
+    //sleep
+    I 1000000 * to iSleep
+    I iTaskNo "task %v sleeping for %v seconds" str.format .
+    iSleep task.sleep
+    iTaskNo "task %v awake" str.format .
+  loop
+
+  iTaskNo "task %v exiting" str.format .
+;
+
 
 /*----------------------------------------------------------------------------*/
 /* p35 child task test                                                        */
