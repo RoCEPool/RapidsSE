@@ -84,6 +84,12 @@ bool Handlers::bSystemLevelHandler(Task* pTask)
   
   Queues* pQueues = gpAttachMap->m_pQueues;
 
+  pQueues->vScheduleSpawnedTask(pTask);
+  
+  return true;
+  
+  /*
+   
   RASSERT(pTask->bR35model());
   RASSERT(TS_READY == pTask->eState());
   RASSERT(QR_NONE == pTask->eQueue());
@@ -97,6 +103,7 @@ bool Handlers::bSystemLevelHandler(Task* pTask)
   }
   
   NEVER_REACH; // E1 temp
+  */
   
   /*
   if (eQueue >= 0 && eQueue < gxArguments.m_nSlots) {
@@ -107,9 +114,10 @@ bool Handlers::bSystemLevelHandler(Task* pTask)
   
   vFatal("Handlers::bSystemLevelHandler: Invalid eQueue %lld"_Stz,
          (i8)eQueue);
-  */
-  
+   
   return false;
+
+  */
 }
 
 /*----------------------------------------------------------------------------*/

@@ -83,6 +83,7 @@ namespace Threads
     void vScheduleReadyTask(Task* pTask);
     void vScheduleReadySlotTask(Task* pTask);
     void vScheduleSleepingTask(Task* pTask);
+    void vScheduleSpawnedTask(Task* pTask);
     void vScheduleWaitingTask(Task* pTask);
     void vScheduleYieldedTask(Task* pTask);
  

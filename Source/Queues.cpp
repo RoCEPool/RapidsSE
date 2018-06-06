@@ -608,6 +608,28 @@ void Queues::vScheduleSleepingTask(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* schedule a newly spawned task                                              */
+/*----------------------------------------------------------------------------*/
+void Queues::vScheduleSpawnedTask(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  RASSERT(pTask->bR35model());
+  RASSERT(TS_READY == pTask->eState());
+  RASSERT(QR_NONE == pTask->eQueue());
+  
+  eQR eQueue = pTask->eWhichQueue();
+  RASSERT(QR_READY_QUEUE == eQueue);
+  
+  if (QR_READY_QUEUE == eQueue) {
+    vScheduleReadyTask(pTask);
+    return;
+  }
+  
+  NEVER_REACH; // temp
+}
+
+/*----------------------------------------------------------------------------*/
 /* schedule ready waiting task                                                */
 /*----------------------------------------------------------------------------*/
 void Queues::vScheduleWaitingTask(Task* pTask)
