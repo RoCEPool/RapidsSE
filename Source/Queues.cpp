@@ -546,6 +546,8 @@ void Queues::vScheduleExitedTask(Task* pTask)
   
   ASSERT( (*gpAttachMap->m_npBootTask != pTask) && (! pTask->bWordBody()) );
   
+  //vTrace("Exited Task %p\n"_Stz,pTask);
+  
   delete pTask;
 }
 
@@ -621,12 +623,9 @@ void Queues::vScheduleSpawnedTask(Task* pTask)
   eQR eQueue = pTask->eWhichQueue();
   RASSERT(QR_READY_QUEUE == eQueue);
   
-  if (QR_READY_QUEUE == eQueue) {
-    vScheduleReadyTask(pTask);
-    return;
-  }
+  //vTrace("Spawned Task %p\n"_Stz,pTask);
   
-  NEVER_REACH; // temp
+  vScheduleReadyTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
