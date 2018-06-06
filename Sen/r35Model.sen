@@ -135,9 +135,9 @@
   task.yield
   iPartitionNo "partitionTask %v running" str.format .
 
-  //iPartitionNo "partitionTask %v sleeping for 3 seconds" str.format .
-  //3000000 task.sleep
-  //iPartitionNo "partitionTask %v awake" str.format .
+  iPartitionNo "partitionTask %v sleeping for 3 seconds" str.format .
+  3000000 task.sleep
+  iPartitionNo "partitionTask %v awake" str.format .
 
   // ack the parent task
   task.parent@ ack
