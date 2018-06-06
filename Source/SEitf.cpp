@@ -3703,7 +3703,7 @@ bool SEitf::bAppendRequest_R35(StrVal& sRequest)
   nnpNewTask->vActorModel(AC_R35);
   
   //gpAttachMap->m_pServerScheduler->vEnqueueTask_Mutex(*nnpNewTask);
-  bool bResult = Handlers::bSystemLevelHandler(*nnpNewTask);
+  bool bResult = Handlers::bSpawnedTaskHandler(*nnpNewTask);
   
   return true;
 }

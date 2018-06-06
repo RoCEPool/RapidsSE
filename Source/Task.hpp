@@ -719,7 +719,7 @@ namespace Tasks
     static void vGroupByStart(MP_Task mpTask);
   
     // handler
-    static void vHandlerSystemEvent(MP_Task mpTask);
+    static void vHandlerSpawnedTask(MP_Task mpTask);
   
     // index
     static void vIndexAnalyze(MP_Task mpTask);

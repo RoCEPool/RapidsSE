@@ -75,7 +75,7 @@ bool Handlers::bQueueLevelHandler(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* system level event handler (put task into system)                          */
 /*----------------------------------------------------------------------------*/
-bool Handlers::bSystemLevelHandler(Task* pTask)
+bool Handlers::bSpawnedTaskHandler(Task* pTask)
 {
   //
   // this handler is called from SEitf::bAppendRequest_R35()
@@ -90,9 +90,9 @@ bool Handlers::bSystemLevelHandler(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* thread level event handler                                                 */
+/* thread loop event handler                                                  */
 /*----------------------------------------------------------------------------*/
-bool Handlers::bThreadLevelHandler(NP_Task* pNpTask)
+bool Handlers::bThreadLoopHandler(NP_Task* pNpTask)
 {
   //
   // this handler is called from Thread::vLoop()

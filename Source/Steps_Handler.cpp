@@ -13,13 +13,13 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Handler(void)
 {
-  vAddPrimitive("Handler::systemEvent"_Stz, &vHandlerSystemEvent, false);
+  vAddPrimitive("Handler::spawnedTask"_Stz, &vHandlerSpawnedTask, false);
 }
 
 /*----------------------------------------------------------------------------*/
-/* Handler::systemEvent -- call system level event handler                    */
+/* Handler::spawnedTask -- call spawned task handler                          */
 /*----------------------------------------------------------------------------*/
-void Task::vHandlerSystemEvent(MP_Task mpTask)
+void Task::vHandlerSpawnedTask(MP_Task mpTask)
 {
   ENTRY("vHandlerSystemEvent"_Stz);
   
@@ -33,7 +33,7 @@ void Task::vHandlerSystemEvent(MP_Task mpTask)
   pThatTask->vR35model(true);
   pThatTask->vState(TS_READY);
   
-  Handlers::bSystemLevelHandler(pThatTask);
+  Handlers::bSpawnedTaskHandler(pThatTask);
   
   EXIT();
 }

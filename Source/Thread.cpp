@@ -596,7 +596,7 @@ void Thread::vLoop(void)
     vTaskCall();
    
     // handle thread level event
-    Handlers::bThreadLevelHandler(&m_npTask);
+    Handlers::bThreadLoopHandler(&m_npTask);
 
     // wont have a task
     //ASSERT(! *m_npTask);

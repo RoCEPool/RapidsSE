@@ -15,7 +15,7 @@
   nArgs sSeedWord pParent AC_R35 sTaskNm eTaskKind task::new to pTask
 
   // put task into system
-  pTask handler::systemEvent
+  pTask handler::spawnedTask
 
   pTask  // return the task
 ;
