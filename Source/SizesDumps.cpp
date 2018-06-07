@@ -78,8 +78,8 @@ pDUMPFUN *gpDump[]
   
   /* 51 */ &Dump::vDummy,           // CN_INDEX
   /* 52 */ &Dump::vDummy,           // CN_INDEXTREE
-  /* 53 */ &Dump::vDummy,           // CN_IDXCOLVEC
-  /* 54 */ &Dump::vDummy,           // CN_IDXDATAVEC
+  /* 53 */ &Dump::vDummy,           // CN_INDEXTREEVEC
+  /* 54 */ &Dump::vDummy,           // CN_IDXCOLVEC
   /* 55 */ &Dump::vDummy,           // CN_IDXVEC
   /* 56 */ &Dump::vDummy,           // CN_INDEXLEVELS
   /* 57 */ &Dump::vInvalid,         // CN_ITEM
@@ -270,8 +270,8 @@ i8 giClassSize[]
   
   /* 51 */ sizeof(Index),              // CN_INDEX
   /* 52 */ sizeof(IndexTree),          // CN_INDEXTREE
-  /* 53 */ sizeof(IdxColVec),          // CN_IDXCOLVEC
-  /* 54 */ sizeof(IdxDataVec),         // CN_IDXDATAVEC
+  /* 53 */ sizeof(IndexTreeVec),       // CN_INDEXTREEVEC
+  /* 54 */ sizeof(IdxColVec),          // CN_IDXCOLVEC
   /* 55 */ sizeof(IdxVec),             // CN_IDXVEC
   /* 56 */ 0,                          // CN_INDEXLEVELS
   /* 57 */ sizeof(Item),               // CN_ITEM
@@ -462,8 +462,8 @@ eHT geWhichHeap[]
   
   /* 51 */ HT_INVALID,           // CN_INDEX
   /* 52 */ HT_TRANSIENT_SMALL,   // CN_INDEXTREE
-  /* 53 */ HT_TRANSIENT_MEDIUM,  // CN_IDXCOLVEC
-  /* 54 */ HT_TRANSIENT_MEDIUM,  // CN_IDXDATAVEC
+  /* 53 */ HT_TRANSIENT_MEDIUM,  // CN_INDEXTREEVEC
+  /* 54 */ HT_TRANSIENT_MEDIUM,  // CN_IDXCOLVEC
   /* 55 */ HT_TRANSIENT_MEDIUM,  // CN_IDXVEC
   /* 56 */ HT_TRANSIENT_MEDIUM,  // CN_INDEXLEVELS
   /* 57 */ HT_INVALID,           // CN_ITEM

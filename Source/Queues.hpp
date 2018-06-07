@@ -8,14 +8,16 @@ namespace Threads
   class Queues : public Object
   {
   private:
+  
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // threads
 
-    ThreadVector* m_pThreadVector;  // vector of threads in the system
+    ThreadVector* m_pThreadVector; // vector of threads in the system
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // tasks
-    Atomic  m_ziTaskOrderNo;       // task ordering no
+
+    Atomic m_ziTaskOrderNo;        // task ordering no
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // queues which are checked in round robin fashion
@@ -43,6 +45,8 @@ namespace Threads
     TaskQueue* m_pWaitingQueue;    // set of suspended tasks which are
                                    // waiting to be signaled (ordered by arrival)
                                    // these tasks have been partially executed
+  
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
     // must be last
     Footer m_xFooter;

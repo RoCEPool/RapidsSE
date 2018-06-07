@@ -78,8 +78,8 @@ enum eCN : u2 // Class Number
     
     /* 51 */ CN_INDEX,
     /* 52 */ CN_INDEXTREE,
-    /* 53 */ CN_IDXCOLVEC,
-    /* 54 */ CN_IDXDATAVEC,
+    /* 53 */ CN_INDEXTREEVEC,
+    /* 54 */ CN_IDXCOLVEC,
     /* 55 */ CN_IDXVEC,
     /* 56 */ CN_INDEXLEVELS,
     /* 57 */ CN_ITEM,
@@ -270,8 +270,8 @@ enum eCN : u2 // Class Number
     
     /* 51 */ "INDEX"_Stz,
     /* 52 */ "INDEXTREE"_Stz,
-    /* 53 */ "IDXCOLVEC"_Stz,
-    /* 54 */ "IDXDATAVEC"_Stz,
+    /* 53 */ "INDEXTREEVEC"_Stz,
+    /* 54 */ "IDXCOLVEC"_Stz,
     /* 55 */ "IDXVEC"_Stz,
     /* 56 */ "INDEXLEVELS"_Stz,
     /* 57 */ "ITEM"_Stz,

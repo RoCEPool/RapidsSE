@@ -14,7 +14,8 @@ namespace DBobjects
   {
   private:
     i8           m_iPartitionId;   // partition number
-    IdxDataVec*  m_pIdxDataVec;
+  
+    IndexTreeVec*  m_pIndexTreeVec;
   
     // must be last
     Footer m_xFooter;
@@ -37,11 +38,11 @@ namespace DBobjects
     void        vPartitionId(i8 iPartitionId);
     bool        bPopulateIndex(i8 iIndexNo);
   
-    IndexTree*  pIndexTree(i8 iIndexNo);
-    IndexTree*  pHiddenIndexTree(void);
-    IdxDataVec* pIdxDataVec(void);
-    void        vTidyUp(void);
-    void        vTidyUpIndex(i8 iIndexNo);
+    IndexTree*    pIndexTree(i8 iIndexNo);
+    IndexTree*    pHiddenIndexTree(void);
+    IndexTreeVec* pIndexTreeVec(void);
+    void          vTidyUp(void);
+    void          vTidyUpIndex(i8 iIndexNo);
     
   private:
     Footer* aFooter(void);

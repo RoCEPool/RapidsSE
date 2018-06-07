@@ -316,14 +316,14 @@ void Table::vLazyBuildIndexes(i8 iSlot)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   Partition* pPartition = this->pPartition(iSlot);
-  IdxDataVec* pIdxDataVec = pPartition->pIdxDataVec();
-  i8 nIndexes = pIdxDataVec->nItems();
+  IndexTreeVec* pInedexTreeVec = pPartition->pIndexTreeVec();
+  i8 nIndexes = pInedexTreeVec->nItems();
   
   // iterate all indexes of the table
   for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
     
     // get index
-    IndexTree* pNewIndexTree = pIdxDataVec->pGet(i_Index);
+    IndexTree* pNewIndexTree = pInedexTreeVec->pGet(i_Index);
     
     // skip the hidden index
     Index* pIndex = pNewIndexTree->pIndex();
@@ -460,14 +460,14 @@ void Table::vInsertEntries(i8 iTxId, i8 iSlot, WorkingBuffer* pWorkingBuffer)
   // into all other indexes of the table
   
   // get no of indexes of the table
-  IdxDataVec* pIdxDataVec = pPartition->pIdxDataVec();
-  i8 nIndexes = pIdxDataVec->nItems();
+  IndexTreeVec* pIndexTreeVec = pPartition->pIndexTreeVec();
+  i8 nIndexes = pIndexTreeVec->nItems();
   
   // iterate all indexes of the table
   for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
     
     // get index
-    IndexTree* pNewIndexTree = pIdxDataVec->pGet(i_Index);
+    IndexTree* pNewIndexTree = pIndexTreeVec->pGet(i_Index);
     
     // skip the hidden index
     Index* pIndex = pNewIndexTree->pIndex();
@@ -878,11 +878,11 @@ bool Table::bVerifyIndexes(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   Partition* pPartition = this->pPartition(0);             //# discuss with Alka
-  IdxDataVec* pIdxDataVec = pPartition->pIdxDataVec();
-  i8 nIndexes = pIdxDataVec->nItems();
+  IndexTreeVec* pIdxTreeVec = pPartition->pIndexTreeVec();
+  i8 nIndexes = pIdxTreeVec->nItems();
 
   for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
-    IndexTree* pIndexTree = pIdxDataVec->pGet(i_Index);
+    IndexTree* pIndexTree = pIdxTreeVec->pGet(i_Index);
     bool bValid = pIndexTree->bVerifyIndex();
     if (! bValid)
       return false;

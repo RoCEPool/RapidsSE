@@ -74,8 +74,8 @@ pFINALIZE *gpFinalize[]
   
   /* 51 */ &Index::vFinalize,             // CN_INDEX
   /* 52 */ &Finalize::vUndefined,         // CN_INDEXTREE
-  /* 53 */ &Finalize::vUndefined,         // CN_IDXCOLVEC
-  /* 54 */ &Finalize::vUndefined,         // CN_IDXDATAVEC
+  /* 53 */ &Finalize::vUndefined,         // CN_INDEXTREEVEC
+  /* 54 */ &Finalize::vUndefined,         // CN_IDXCOLVEC
   /* 55 */ &Finalize::vUndefined,         // CN_IDXVEC
   /* 56 */ &Finalize::vUndefined,         // CN_INDEXLEVELS
   /* 57 */ &Finalize::vUndefined,         // CN_ITEM

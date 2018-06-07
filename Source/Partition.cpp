@@ -23,7 +23,7 @@ void Partition::vDump(eCN eClass, Object* pObject, Stz* aTab)
   Partition* pPartition = reinterpret_cast<Partition*>(pObject);
   
   vTrace("m_iPartitionId %lld, DataVec %p\n"_Stz,
-         pPartition->m_iPartitionId, pPartition->m_pIdxDataVec);
+         pPartition->m_iPartitionId, pPartition->m_pIndexTreeVec);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -90,7 +90,7 @@ Partition::Partition(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
   m_iPartitionId = -1;
-  m_pIdxDataVec  = new IdxDataVec;
+  m_pIndexTreeVec  = new IndexTreeVec;
   
   _checkInitialised_(CN_PARTITION);
   
@@ -118,8 +118,8 @@ void Partition::vAddIndex(IndexTree* pIndexTree)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
-  ASSERT(m_pIdxDataVec->nItems() < C_INDEXES_PER_TABLE);
-  m_pIdxDataVec->vAdd(pIndexTree);
+  ASSERT(m_pIndexTreeVec->nItems() < C_INDEXES_PER_TABLE);
+  m_pIndexTreeVec->vAdd(pIndexTree);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -185,10 +185,10 @@ IndexTree* Partition::pIndexTree(i8 iIndexNo)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
   IndexTree* pIndexTree = nullptr;
-  i8 nIndexes = m_pIdxDataVec->nItems();
+  i8 nIndexes = m_pIndexTreeVec->nItems();
   
   for (i8 i_Index=0; i_Index < nIndexes; i_Index++) {
-    pIndexTree = m_pIdxDataVec->pGet(i_Index);
+    pIndexTree = m_pIndexTreeVec->pGet(i_Index);
     Index* pIndex = pIndexTree->pIndex();
     if (pIndex->iIndexNo() == iIndexNo)
       break;
@@ -205,7 +205,7 @@ IndexTree* Partition::pHiddenIndexTree(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
   IndexTree* pIndexTree = nullptr;
-  pIndexTree = m_pIdxDataVec->pGet(0);
+  pIndexTree = m_pIndexTreeVec->pGet(0);
   
   return pIndexTree;
 }
@@ -213,11 +213,11 @@ IndexTree* Partition::pHiddenIndexTree(void)
 /*----------------------------------------------------------------------------*/
 /* get index data vector                                                      */
 /*----------------------------------------------------------------------------*/
-IdxDataVec* Partition::pIdxDataVec(void)
+IndexTreeVec* Partition::pIndexTreeVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
-  return m_pIdxDataVec;
+  return m_pIndexTreeVec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -228,14 +228,14 @@ IdxDataVec* Partition::pIdxDataVec(void)
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
 //  
 //  IndexTree* pIndexTree = nullptr;
-//  i8 nIndexes = m_pIdxDataVec->nItems();
+//  i8 nIndexes = m_pIndexTreeVec->nItems();
 //  
 //  for (i8 i_Index=0; i_Index < nIndexes; i_Index++) {
-//    pIndexTree = m_pIdxDataVec->pGet(i_Index);
+//    pIndexTree = m_pIndexTreeVec->pGet(i_Index);
 //    Index* pIndex = pIndexTree->pIndex();
 //    if (pIndex->iIndexNo() == iIndexNo) {
 //      delete pIndexTree;
-//      m_pIdxDataVec->vRemove(pIndexTree);
+//      m_pIndexTreeVec->vRemove(pIndexTree);
 //      break;
 //    }
 //  }
@@ -250,7 +250,7 @@ void Partition::vTidyUp(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
   // delete the index data vector
-  delete m_pIdxDataVec;
+  delete m_pIndexTreeVec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -263,7 +263,7 @@ void Partition::vTidyUpIndex(i8 iIndexNo)
   IndexTree* pIndexTree = this->pIndexTree(iIndexNo);
   
   // remove the index from the IdxDataVec
-  m_pIdxDataVec->vRemove(pIndexTree);
+  m_pIndexTreeVec->vRemove(pIndexTree);
   delete pIndexTree;
 }
 

@@ -223,8 +223,8 @@ void Slots::vTidyUp(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   
   // get IdxDataVec from any one partition
-  IdxDataVec* pIdxDataVec = m_pPartitionVec->pGet(0)->pIdxDataVec();
-  i8 nItems = pIdxDataVec->nItems();
+  IndexTreeVec* pIndexTreeVec = m_pPartitionVec->pGet(0)->pIndexTreeVec();
+  i8 nItems = pIndexTreeVec->nItems();
   
   // run the finalize for the partitions
   for (i8 i_Slot = 0; i_Slot < gpAttachMap->m_pGrid->iSlots(); i_Slot++) {
