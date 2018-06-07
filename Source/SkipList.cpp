@@ -333,6 +333,22 @@ SkipNode* SkipList::pNext(SkipNode* pPrev, i8 iLevel)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the nth node of this skiplist                                          */
+/*----------------------------------------------------------------------------*/
+SkipNode* SkipList::pNth(i8 iNth)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+
+  SkipNode* pNth = m_pHead->m_pRight[0];
+  
+  i8 i_SkipNode = 0;
+  while (i_SkipNode++ < iNth)
+    pNth = pNth->m_pRight[0];
+
+  return pNth;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- private: ----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
