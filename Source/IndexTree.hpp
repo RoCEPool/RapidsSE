@@ -13,6 +13,8 @@ namespace DBobjects
   class Index;
   class WorkingBuffer;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   class IndexTree : public Object
   {
     
@@ -80,6 +82,13 @@ namespace DBobjects
   };
   
   IndexTree* _pIndexTree(void* pAddr);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // allow for maximum 1025 indexes per table
+  static const i8 C_INDEXES_PER_TABLE = 1025;
+  
+  typedef Vector<CN_IDXDATAVEC,IndexTree,CN_INDEXTREE,C_INDEXES_PER_TABLE,u8> IdxDataVec;
 }
 
 /*============================================================================*/

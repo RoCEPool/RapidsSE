@@ -8,16 +8,12 @@ namespace DBobjects
   class Index;
   class EntWrk;
   
-  // allow for maximum 8 indexes per table
-  static const i8 C_INDEXES_PER_TABLE = 1025;
-
-  typedef Vector<CN_IDXDATAVEC,IndexTree,CN_INDEXTREE,C_INDEXES_PER_TABLE,u8> IdxDataVec;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   class Partition : public Object
   {
   private:
     i8           m_iPartitionId;   // partition number
-    //Data*        m_pData;
     IdxDataVec*  m_pIdxDataVec;
   
     // must be last
@@ -35,23 +31,25 @@ namespace DBobjects
     Partition(void);
     ~Partition(void);
   
-    void    vAddIndex(IndexTree* pIndexTree);
+    void        vAddIndex(IndexTree* pIndexTree);
     
-    i8      iPartitionId(void);
-    void    vPartitionId(i8 iPartitionId);
-    bool    bPopulateIndex(i8 iIndexNo);
-    //Data*   pData(void);
-    
+    i8          iPartitionId(void);
+    void        vPartitionId(i8 iPartitionId);
+    bool        bPopulateIndex(i8 iIndexNo);
+  
     IndexTree*  pIndexTree(i8 iIndexNo);
     IndexTree*  pHiddenIndexTree(void);
     IdxDataVec* pIdxDataVec(void);
-    //void        vRemoveIndex(i8 iIndexNo);
     void        vTidyUp(void);
     void        vTidyUpIndex(i8 iIndexNo);
     
   private:
     Footer* aFooter(void);
   };
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  typedef Vector<CN_PARTITIONVEC,Partition,CN_PATHVEC,C_SLOTS_PER_NODE,u8> PartitionVec;
 }
 
 /*============================================================================*/

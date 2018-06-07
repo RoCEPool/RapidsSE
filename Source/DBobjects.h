@@ -58,7 +58,7 @@ typedef Vector<CN_ENTRYVEC,Entry,CN_ENTRY,C_FLAT_LEVELS_MAX,i8> EntryVec;
 #include "WorkingBuffer.hpp"
 
 #include "Partition.hpp"
-typedef Vector<CN_PARTITIONVEC,Partition,CN_PATHVEC,C_SLOTS_PER_NODE,u8> PartitionVec;
+
 
 #include "Slots.hpp"
 
