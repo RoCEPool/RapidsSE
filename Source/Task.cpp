@@ -1056,6 +1056,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_Str();
   
   vAddPrimitives_Table();
+  vAddPrimitives_TablePartition();
   vAddPrimitives_Task();
   vAddPrimitives_TaskCursor();
   vAddPrimitives_TaskList();

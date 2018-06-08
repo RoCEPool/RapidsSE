@@ -115,6 +115,55 @@ tp: checkPartitionTable1
   table.slots slots.subDic forgetAll
 ;
 
+/*----------------------------------------------------------------------------*/
+/* attempt grab read lock on partition of the table                          */
+/*----------------------------------------------------------------------------*/
+: partitionAttemptGrabRead ( iPartition pTable -- )
+
+  locals| pTable iPartition |
+
+  begin
+    iPartition pTable partition::attemptGrabRead
+    not while
+      task.yield
+  repeat
+;
+
+/*----------------------------------------------------------------------------*/
+/* attempt grab write lock on partition of the table                          */
+/*----------------------------------------------------------------------------*/
+: partitionAttemptGrabWrite ( iPartition pTable -- )
+
+  locals| pTable iPartition |
+
+  begin
+    iPartition pTable partition::attemptGrabWrite
+    not while
+      task.yield
+  repeat
+;
+
+/*----------------------------------------------------------------------------*/
+/* drop read lock on partition of the table                                  */
+/*----------------------------------------------------------------------------*/
+: partitionDropRead ( iPartition pTable -- )
+
+  locals| pTable iPartition |
+
+  iPartition pTable partition::dropRead
+;
+
+/*----------------------------------------------------------------------------*/
+/* drop write lock on partition of the table                                  */
+/*----------------------------------------------------------------------------*/
+: partitionDropWrite ( iPartition pTable -- )
+
+  locals| pTable iPartition |
+
+  iPartition pTable partition::dropWrite
+;
+
+
 ////////////////////////////////////////////////////////////////////////////////
 
 
