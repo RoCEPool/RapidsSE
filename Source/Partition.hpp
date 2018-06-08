@@ -13,7 +13,7 @@ namespace DBobjects
   class Partition : public Object
   {
   private:
-    i8           m_iPartitionId;   // partition number
+    i8             m_iPartitionId;   // partition number
   
     IndexTreeVec*  m_pIndexTreeVec;
   

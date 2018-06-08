@@ -94,7 +94,7 @@ IndexTree::IndexTree(Index* pIndex, i8 iPartitionNo)
   m_zLock.vInitLock(LK_INDEX_DATA);
   m_pIndex = pIndex;
   m_iPartitionNo = iPartitionNo;
-  
+  m_pPartition   = nullptr;
   m_pRoot = nullptr;
   m_pCurrentBuffer = nullptr;
   
