@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* KeyVal.hpp -- key value                                                    */
+/* KeyVal.hpp -- Key Value                                                    */
 /*============================================================================*/
 #pragma once
 
@@ -14,8 +14,6 @@ namespace DBobjects
     void* operator new(size_t);
     void  operator delete(void*);
   
-//    KeyVal(void);
-//    KeyVal(i8 iInt);
     KeyVal(KeyWrk& xKeyWrk);
     ~KeyVal(void);
   
@@ -38,6 +36,11 @@ namespace DBobjects
   };
   
   KeyVal* _aKeyVal(void* aAddr);
+  
+  /*--------------------------------------------------------------------------*/
+  /* KeyVec -- Key Vector                                                     */
+  /*--------------------------------------------------------------------------*/
+  typedef Vector<CN_KEYVEC,KeyVal,CN_KEYVAL,1024,u8> KeyVec;
 }
 
 /*============================================================================*/

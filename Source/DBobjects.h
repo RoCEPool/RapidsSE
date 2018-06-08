@@ -58,13 +58,9 @@ typedef Vector<CN_PTNCOLVEC,Column,CN_COLUMN,1024,u8> PtnColVec;
 
 #include "TablePtn.hpp"
 
-
 #include "Slots.hpp"
 
 #include "Ring.hpp"
-
-
-typedef Vector<CN_KEYVEC,KeyVal,CN_KEYVAL,1024,u8> KeyVec;
 
 #include "Table.hpp"
 #include "Index.hpp"
