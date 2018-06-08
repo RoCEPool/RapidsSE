@@ -475,12 +475,12 @@ tp: keySelectIdx
 
   pSeitf task::this task.seitf!
 
-  i_Ptn pIndex index.table@ partitionAttemptGrabRead  //! partitionLock
+  i_Ptn pIndex index.table@ tablePtnAttemptGrabRead  //! partitionLock
 
   // iterate thru the index and find matching rows
   key i_Phrase pPlanner pBufferQueue i_Ptn pIndex index.exactKey
 
-  i_Ptn pIndex index.table@ partitionDropRead
+  i_Ptn pIndex index.table@ tablePtnDropRead
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -527,12 +527,12 @@ tp: loadIndexes
 
   pSeitf task::this task.seitf!
 
-  i_Ptn pIndex index.table@ partitionAttemptGrabRead  //! partitionLock
+  i_Ptn pIndex index.table@ tablePtnAttemptGrabRead  //! partitionLock
 
   // iterate thru the index and fetch lower bound rows
   lower i_Phrase pPlanner pBufferQueue i_Ptn pIndex index.lowerBound
 
-  i_Ptn pIndex index.table@ partitionDropRead
+  i_Ptn pIndex index.table@ tablePtnDropRead
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -549,12 +549,12 @@ tp: loadIndexes
 
   pSeitf task::this task.seitf!
 
-  i_Ptn pIndex index.table@ partitionAttemptGrabRead  //! partitionLock
+  i_Ptn pIndex index.table@ tablePtnAttemptGrabRead  //! partitionLock
 
   // iterate thru the index and fetch lower bound rows
   upper lower i_Phrase pPlanner pBufferQueue i_Ptn pIndex index.range
 
-  i_Ptn pIndex index.table@ partitionDropRead
+  i_Ptn pIndex index.table@ tablePtnDropRead
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -651,12 +651,12 @@ tp: populateIndex
 
   pSeitf task::this task.seitf!
 
-  i_Ptn pIndex index.table@ partitionAttemptGrabRead  //! partitionLock
+  i_Ptn pIndex index.table@ tablePtnAttemptGrabRead  //! partitionLock
 
   // now scan the index
   pBufferQueue i_Ptn pIndex index.scan
 
-  i_Ptn pIndex index.table@ partitionDropRead
+  i_Ptn pIndex index.table@ tablePtnDropRead
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -787,12 +787,12 @@ tp: populateIndex
 
   pSeitf task::this task.seitf!
 
-  i_Ptn pIndex index.table@ partitionAttemptGrabRead  //! partitionLock
+  i_Ptn pIndex index.table@ tablePtnAttemptGrabRead  //! partitionLock
 
   // iterate thru the index and fetch lower bound rows
   upper i_Phrase pPlanner pBufferQueue i_Ptn pIndex index.upperBound
 
-  i_Ptn pIndex index.table@ partitionDropRead
+  i_Ptn pIndex index.table@ tablePtnDropRead
 ;
 
 

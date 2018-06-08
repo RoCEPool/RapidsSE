@@ -118,7 +118,7 @@ tp: checkPartitionTable1
 /*----------------------------------------------------------------------------*/
 /* attempt to grab read lock on a partition of given table                    */
 /*----------------------------------------------------------------------------*/
-: partitionAttemptGrabRead ( i_Partition pTable -- )
+: tablePtnAttemptGrabRead ( i_Partition pTable -- )
 
   locals| pTable |      // given table
   locals| i_Partition | // which partition
@@ -133,7 +133,7 @@ tp: checkPartitionTable1
 /*----------------------------------------------------------------------------*/
 /* attempt to grab write lock on a partition of given table                   */
 /*----------------------------------------------------------------------------*/
-: partitionAttemptGrabWrite ( i_Partition pTable -- )
+: tablePtnAttemptGrabWrite ( i_Partition pTable -- )
 
   locals| pTable |      // given table
   locals| i_Partition | // which partition
@@ -148,7 +148,7 @@ tp: checkPartitionTable1
 /*----------------------------------------------------------------------------*/
 /* drop read lock on a partition of given table                               */
 /*----------------------------------------------------------------------------*/
-: partitionDropRead ( i_Partition pTable -- )
+: tablePtnDropRead ( i_Partition pTable -- )
 
   locals| pTable |      // given table
   locals| i_Partition | // which partition
@@ -159,7 +159,7 @@ tp: checkPartitionTable1
 /*----------------------------------------------------------------------------*/
 /* drop write lock on a partition of given table                              */
 /*----------------------------------------------------------------------------*/
-: partitionDropWrite ( i_Partition pTable -- )
+: tablePtnDropWrite ( i_Partition pTable -- )
 
   locals| pTable |      // given table
   locals| i_Partition | // which partition

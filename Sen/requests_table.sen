@@ -168,12 +168,12 @@ tp: insertBufferEntries$
   //"partitionInsertBufferEntries" .
   //iTxId .
 
-  iPartitionNo pTable partitionAttemptGrabWrite  //! partitionLock
+  iPartitionNo pTable tablePtnAttemptGrabWrite  //! partitionLock
 
   iTxId >str iPartitionNo grid::toSlot >str pWorkingBuffer >str pTable >str table.insertEntries ( )
 
   bIsLast not if
-    iPartitionNo pTable partitionDropWrite
+    iPartitionNo pTable tablePtnDropWrite
     exit
   then
 
@@ -188,7 +188,7 @@ tp: insertBufferEntries$
   // lazy build of index
   iPartitionNo grid::toSlot >str pTable >str table.lazyBuildIndexes ( )
 
-  iPartitionNo pTable partitionDropWrite
+  iPartitionNo pTable tablePtnDropWrite
 
   <<
   13
@@ -223,12 +223,12 @@ tp: insertBufferEntries$
 
   pWorkingBuffer workingBuffer.isLast@ to bIsLast
 
-  iPartitionNo pTable partitionAttemptGrabWrite  //! partitionLock
+  iPartitionNo pTable tablePtnAttemptGrabWrite  //! partitionLock
 
   iTxId >str iPartitionNo grid::toSlot >str pWorkingBuffer >str pTable >str table.insertEntries ( )
 
   bIsLast not if
-    iPartitionNo pTable partitionDropWrite
+    iPartitionNo pTable tablePtnDropWrite
     exit
   then
 
@@ -236,7 +236,7 @@ tp: insertBufferEntries$
   iPartitionNo "Building indexes on partition %v" str.format .verbose
   iPartitionNo grid::toSlot >str pTable >str table.lazyBuildIndexes ( )
 
-  iPartitionNo pTable partitionDropWrite
+  iPartitionNo pTable tablePtnDropWrite
 
   iPartitionNo "Partition task on partition %v acking subLoader" str.format .verbose
   task.parent@ ack
