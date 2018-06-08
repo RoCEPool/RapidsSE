@@ -116,51 +116,55 @@ tp: checkPartitionTable1
 ;
 
 /*----------------------------------------------------------------------------*/
-/* attempt grab read lock on partition of the table                          */
+/* attempt to grab read lock on a partition of given table                    */
 /*----------------------------------------------------------------------------*/
-: partitionAttemptGrabRead ( iPartition pTable -- )
+: partitionAttemptGrabRead ( i_Partition pTable -- )
 
-  locals| pTable iPartition |
+  locals| pTable |      // given table
+  locals| i_Partition | // which partition
 
   begin
-    iPartition pTable tablePtn::attemptGrabRead
+    i_Partition pTable tablePtn::attemptGrabRead
     not while
       task.yield
   repeat
 ;
 
 /*----------------------------------------------------------------------------*/
-/* attempt grab write lock on partition of the table                          */
+/* attempt to grab write lock on a partition of given table                   */
 /*----------------------------------------------------------------------------*/
-: partitionAttemptGrabWrite ( iPartition pTable -- )
+: partitionAttemptGrabWrite ( i_Partition pTable -- )
 
-  locals| pTable iPartition |
+  locals| pTable |      // given table
+  locals| i_Partition | // which partition
 
   begin
-    iPartition pTable tablePtn::attemptGrabWrite
+    i_Partition pTable tablePtn::attemptGrabWrite
     not while
       task.yield
   repeat
 ;
 
 /*----------------------------------------------------------------------------*/
-/* drop read lock on partition of the table                                  */
+/* drop read lock on a partition of given table                               */
 /*----------------------------------------------------------------------------*/
-: partitionDropRead ( iPartition pTable -- )
+: partitionDropRead ( i_Partition pTable -- )
 
-  locals| pTable iPartition |
+  locals| pTable |      // given table
+  locals| i_Partition | // which partition
 
-  iPartition pTable tablePtn::dropRead
+  i_Partition pTable tablePtn::dropRead
 ;
 
 /*----------------------------------------------------------------------------*/
-/* drop write lock on partition of the table                                  */
+/* drop write lock on a partition of given table                              */
 /*----------------------------------------------------------------------------*/
-: partitionDropWrite ( iPartition pTable -- )
+: partitionDropWrite ( i_Partition pTable -- )
 
-  locals| pTable iPartition |
+  locals| pTable |      // given table
+  locals| i_Partition | // which partition
 
-  iPartition pTable tablePtn::dropWrite
+  i_Partition pTable tablePtn::dropWrite
 ;
 
 
