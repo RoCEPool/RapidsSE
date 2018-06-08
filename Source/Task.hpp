@@ -377,6 +377,7 @@ namespace Tasks
     void vAddPrimitives_Steps(void);
     void vAddPrimitives_Str(void);
     void vAddPrimitives_Table(void);
+    void vAddPrimitives_TablePartition(void);
     void vAddPrimitives_Task(void);
     void vAddPrimitives_TaskCursor(void);
     void vAddPrimitives_TaskList(void);
