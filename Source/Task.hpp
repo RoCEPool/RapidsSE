@@ -902,12 +902,6 @@ namespace Tasks
     static void vOpFrameDic(MP_Task mpTask);
     static void vOpFrameName(MP_Task mpTask);
     
-    // partition
-    static void vPartitionDropRead(MP_Task mpTask);
-    static void vPartitionDropWrite(MP_Task mpTask);
-    static void vPartitionAttemptGrabRead(MP_Task mpTask);
-    static void vPartitionAttemptGrabWrite(MP_Task mpTask);
-    
     // partition scheduler
     static void vPartitionSchedulerEnqueueTask(MP_Task mpTask);
     static void vPartitionSchedulerQueueLengthFetch(MP_Task mpTask);
@@ -1244,6 +1238,12 @@ namespace Tasks
     static void vTableSubDic(MP_Task mpTask);
     static void vTableSubLoaders(MP_Task mpTask);
     static void vTableTruncate(MP_Task mpTask);
+    
+    // table partition
+    static void vTablePtnDropRead(MP_Task mpTask);
+    static void vTablePtnDropWrite(MP_Task mpTask);
+    static void vTablePtnAttemptGrabRead(MP_Task mpTask);
+    static void vTablePtnAttemptGrabWrite(MP_Task mpTask);
     
     // task
     static void vTaskAck(MP_Task mpTask);
