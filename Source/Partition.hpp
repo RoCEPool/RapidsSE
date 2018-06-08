@@ -54,7 +54,7 @@ namespace DBobjects
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  typedef Vector<CN_PARTITIONVEC,Partition,CN_PATHVEC,C_SLOTS_PER_NODE,u8> PartitionVec;
+  typedef Vector<CN_PARTITIONVEC,Partition,CN_PARTITION,C_SLOTS_PER_NODE,u8> PartitionVec;
 }
 
 /*============================================================================*/
