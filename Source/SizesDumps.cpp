@@ -306,7 +306,7 @@ i8 giClassSize[]
   /* 78 */ sizeof(Parser),             // CN_PARSER
   /* 79 */ sizeof(Partition),          // CN_PARTITION
   /* 80 */ sizeof(PartitionScheduler), // CN_PARTITIONSCHEDULER
-  /* 81 */ sizeof(PartitionVec),       // CN_PARTITIONVEC
+  /* 81 */ sizeof(TablePtnVec),        // CN_PARTITIONVEC
   /* 82 */ sizeof(PathVec),            // CN_PATHVEC
   /* 83 */ sizeof(PerformanceBuffer),  // CN_PERFORMANCEBUFFER
   /* 84 */ sizeof(PerformanceEntry),   // CN_PERFORMANCEENTRY

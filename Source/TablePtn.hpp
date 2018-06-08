@@ -50,9 +50,10 @@ namespace DBobjects
     Footer* aFooter(void);
   };
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  typedef Vector<CN_PARTITIONVEC,Partition,CN_PARTITION,C_SLOTS_PER_NODE,u8> PartitionVec;
+  /*--------------------------------------------------------------------------*/
+  /* TablePtnVec -- Table Partition Vector                                    */
+  /*--------------------------------------------------------------------------*/
+  typedef Vector<CN_PARTITIONVEC,Partition,CN_PARTITION,C_SLOTS_PER_NODE,u8> TablePtnVec;
 }
 
 /*============================================================================*/
