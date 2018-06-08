@@ -462,11 +462,11 @@ tp: makingIndex
 /*----------------------------------------------------------------------------*/
 /* position key select cursor for table (called by keySelectIndex request)    */
 /*----------------------------------------------------------------------------*/
-: exactSelectIdxTask ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf iPartitionNo -- )
+: exactSelectIdxTask ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf i_Ptn -- )
 
 tp: keySelectIdx
 
-  locals| iPartitionNo pSeitf pIndex pBufferQueue upper lower key pPlanner i_Phrase |
+  locals| i_Ptn pSeitf pIndex pBufferQueue upper lower key pPlanner i_Phrase |
   0 0 0 locals| entry pTempEntryBuffer pEntryBuffer |
 
   // task is a select participant running on server thread
@@ -475,12 +475,12 @@ tp: keySelectIdx
 
   pSeitf task::this task.seitf!
 
-  iPartitionNo pIndex index.table@ partitionAttemptGrabRead  //! partitionLock
+  i_Ptn pIndex index.table@ partitionAttemptGrabRead  //! partitionLock
 
   // iterate thru the index and find matching rows
-  key i_Phrase pPlanner pBufferQueue iPartitionNo pIndex index.exactKey
+  key i_Phrase pPlanner pBufferQueue i_Ptn pIndex index.exactKey
 
-  iPartitionNo pIndex index.table@ partitionDropRead
+  i_Ptn pIndex index.table@ partitionDropRead
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -516,8 +516,9 @@ tp: loadIndexes
 /*----------------------------------------------------------------------------*/
 /* position key select cursor for table (called by selectIndex request)       */
 /*----------------------------------------------------------------------------*/
-: lowerSelectIdxTask ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf partition -- )
-  locals| iPartitionNo pSeitf pIndex pBufferQueue upper lower key pPlanner i_Phrase |
+: lowerSelectIdxTask ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf i_Ptn -- )
+
+  locals| i_Ptn pSeitf pIndex pBufferQueue upper lower key pPlanner i_Phrase |
   0 0 0 locals| entry tempEntryBuffer indexBuffer |
 
   // task is a select participant running on server thread
@@ -526,19 +527,20 @@ tp: loadIndexes
 
   pSeitf task::this task.seitf!
 
-  iPartitionNo pIndex index.table@ partitionAttemptGrabRead  //! partitionLock
+  i_Ptn pIndex index.table@ partitionAttemptGrabRead  //! partitionLock
 
   // iterate thru the index and fetch lower bound rows
-  lower i_Phrase pPlanner pBufferQueue iPartitionNo pIndex index.lowerBound
+  lower i_Phrase pPlanner pBufferQueue i_Ptn pIndex index.lowerBound
 
-  iPartitionNo pIndex index.table@ partitionDropRead
+  i_Ptn pIndex index.table@ partitionDropRead
 ;
 
 /*----------------------------------------------------------------------------*/
 /* range select task (c++)                                                    */
 /*----------------------------------------------------------------------------*/
-: rangeSelectIdxTask ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf partition -- )
-  locals| iPartitionNo pSeitf pIndex pBufferQueue upper lower key pPlanner i_Phrase |
+: rangeSelectIdxTask ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf i_Ptn -- )
+
+  locals| i_Ptn pSeitf pIndex pBufferQueue upper lower key pPlanner i_Phrase |
   0 0 0 locals| entry tempEntryBuffer indexBuffer |
 
   // task is a select participant running on server thread
@@ -547,12 +549,12 @@ tp: loadIndexes
 
   pSeitf task::this task.seitf!
 
-  iPartitionNo pIndex index.table@ partitionAttemptGrabRead  //! partitionLock
+  i_Ptn pIndex index.table@ partitionAttemptGrabRead  //! partitionLock
 
   // iterate thru the index and fetch lower bound rows
-  upper lower i_Phrase pPlanner pBufferQueue iPartitionNo pIndex index.range
+  upper lower i_Phrase pPlanner pBufferQueue i_Ptn pIndex index.range
 
-  iPartitionNo pIndex index.table@ partitionDropRead
+  i_Ptn pIndex index.table@ partitionDropRead
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -636,9 +638,9 @@ tp: populateIndex
 /*----------------------------------------------------------------------------*/
 /* position key select cursor for table (called by selectIndex request)       */
 /*----------------------------------------------------------------------------*/
-: scanSelectIdxTask ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf iPartitionNo -- )
+: scanSelectIdxTask ( i_Phrase pPlanner "<key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf i_Ptn -- )
 
-  locals| iPartitionNo pSeitf pIndex pBufferQueue upper lower key pPlanner i_Phrase |
+  locals| i_Ptn pSeitf pIndex pBufferQueue upper lower key pPlanner i_Phrase |
   0 0 0 0 locals| count entry tempEntryBuffer indexBuffer |
 
   tp: scanSelectIdxTask
@@ -649,12 +651,12 @@ tp: populateIndex
 
   pSeitf task::this task.seitf!
 
-  iPartitionNo pIndex index.table@ partitionAttemptGrabRead  //! partitionLock
+  i_Ptn pIndex index.table@ partitionAttemptGrabRead  //! partitionLock
 
   // now scan the index
-  pBufferQueue iPartitionNo pIndex index.scan
+  pBufferQueue i_Ptn pIndex index.scan
 
-  iPartitionNo pIndex index.table@ partitionDropRead
+  i_Ptn pIndex index.table@ partitionDropRead
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -774,8 +776,9 @@ tp: populateIndex
 /*----------------------------------------------------------------------------*/
 /* upper bound select task (c++)                                              */
 /*----------------------------------------------------------------------------*/
-: upperSelectIdxTask ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf partition -- )
-  locals| iPartitionNo pSeitf pIndex pBufferQueue upper lower key pPlanner i_Phrase |
+: upperSelectIdxTask ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf i_Ptn -- )
+
+  locals| i_Ptn pSeitf pIndex pBufferQueue upper lower key pPlanner i_Phrase |
   0 0 0 locals| entry tempEntryBuffer indexBuffer |
 
   // task is a select participant running on server thread
@@ -784,13 +787,12 @@ tp: populateIndex
 
   pSeitf task::this task.seitf!
 
-  iPartitionNo pIndex index.table@ partitionAttemptGrabRead  //! partitionLock
+  i_Ptn pIndex index.table@ partitionAttemptGrabRead  //! partitionLock
 
   // iterate thru the index and fetch lower bound rows
-  upper i_Phrase pPlanner pBufferQueue iPartitionNo pIndex index.upperBound
+  upper i_Phrase pPlanner pBufferQueue i_Ptn pIndex index.upperBound
 
-  iPartitionNo pIndex index.table@ partitionDropRead
-
+  i_Ptn pIndex index.table@ partitionDropRead
 ;
 
 
