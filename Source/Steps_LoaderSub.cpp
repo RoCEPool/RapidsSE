@@ -201,7 +201,7 @@ void Task::vLoaderSubHashPartition(MP_Task mpTask)
   
   i8 iPartition = pLoaderSub->iPartition();
   
-  i8 iNode = Partition::iPartitionToNode(iPartition);
+  i8 iNode = TablePtn::iPartitionToNode(iPartition);
   
   mpTask->m_pDataStack->vPushInt(iNode);
   
@@ -286,10 +286,10 @@ void Task::vLoaderSubLoadNodeData(MP_Task mpTask)
     i8 iPartition = pLoaderSub->iPartition();
     
     // skip records not for this node
-    if (Partition::iPartitionToNode(iPartition) != iNode) {
+    if (TablePtn::iPartitionToNode(iPartition) != iNode) {
       //vTrace("Node: %lld skipping row %s for partition %lld\n"_Stz, iNode, pLoaderSub->aRecord(), iPartition);
       // we should come across data only for this node
-      RASSERT(Partition::iPartitionToNode(iPartition) == iNode);
+      RASSERT(TablePtn::iPartitionToNode(iPartition) == iNode);
     }
     
     // attempt to insert the record

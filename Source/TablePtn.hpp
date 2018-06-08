@@ -10,7 +10,7 @@ namespace DBobjects
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  class Partition : public Object
+  class TablePtn : public Object
   {
   private:
     Lock  m_xLock;          // lock on the partition                      UNUSED
@@ -29,8 +29,8 @@ namespace DBobjects
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Partition(void);
-    ~Partition(void);
+    TablePtn(void);
+    ~TablePtn(void);
   
     void vAddIndex(IndexTree* pIndexTree);
     void vDropRead(void);
@@ -53,7 +53,7 @@ namespace DBobjects
   /*--------------------------------------------------------------------------*/
   /* TablePtnVec -- Table Partition Vector                                    */
   /*--------------------------------------------------------------------------*/
-  typedef Vector<CN_PARTITIONVEC,Partition,CN_PARTITION,C_SLOTS_PER_NODE,u8> TablePtnVec;
+  typedef Vector<CN_PARTITIONVEC,TablePtn,CN_PARTITION,C_SLOTS_PER_NODE,u8> TablePtnVec;
 }
 
 /*============================================================================*/

@@ -68,7 +68,7 @@ namespace DBobjects
     IdxVec* pIdxVec(void);
     void  vIsLoading(bool bIsLoading);
     bool  bIsLoading(void);
-    Partition* pPartition(i8 iSlot);
+    TablePtn* pPartition(i8 iSlot);
     bool bPopulateIndex(i8 iIndexNo);
     void vRefDec(void);
     void vRefInc(void);

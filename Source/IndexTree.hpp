@@ -9,7 +9,7 @@ namespace DBobjects
   static const i8 C_HIGHER_LEVEL_ID = 0xFFFF;
   
   class Table;
-  class Partition;
+  class TablePtn;
   class Index;
   class WorkingBuffer;
   
@@ -22,7 +22,7 @@ namespace DBobjects
     Lock         m_zLock;          // lock on the buffer tree
     Index*       m_pIndex;         // which index
     i8           m_iPartitionNo;   // which partition no
-    Partition*   m_pPartition;     // which partition                     UNUSED
+    TablePtn*    m_pPartition;     // which partition                     UNUSED
     EntryBuffer* m_pRoot;          // the root buffer
     EntryBuffer* m_pCurrentBuffer; // current buffer for insert hidden index
   

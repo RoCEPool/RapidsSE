@@ -107,7 +107,7 @@ void AccessPath::vTable(Table* pTable)
 /*----------------------------------------------------------------------------*/
 /* get partition                                                              */
 /*----------------------------------------------------------------------------*/
-Partition* AccessPath::pPartition(void)
+TablePtn* AccessPath::pPartition(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
   
@@ -117,7 +117,7 @@ Partition* AccessPath::pPartition(void)
 /*----------------------------------------------------------------------------*/
 /* set partition                                                              */
 /*----------------------------------------------------------------------------*/
-void AccessPath::vPartition(Partition* pPartition)
+void AccessPath::vPartition(TablePtn* pPartition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
   

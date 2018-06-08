@@ -108,7 +108,7 @@ void Grid::vDumpPartitioning(void)
   
   for (i8 i_Index = 0; i_Index < m_nPartitions; i_Index++)
     vTrace("Partition: %lld; Node: %lld\n"_Stz, i_Index,
-           Partition::iPartitionToNode(i_Index));
+           TablePtn::iPartitionToNode(i_Index));
   vTrace("\n"_Stz);
 }
 
@@ -234,7 +234,7 @@ void Grid::vThisNode(i8 iNode)
   
   // now initialize the array of partition numbers on this node
   for (i8 i_Slot = 0; i_Slot < m_nSlots; i_Slot++) {
-    m_iPartition[i_Slot] = Partition::iSlotToPartition(i_Slot);
+    m_iPartition[i_Slot] = TablePtn::iSlotToPartition(i_Slot);
   }
 
 }

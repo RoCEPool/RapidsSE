@@ -11,7 +11,7 @@ namespace DBobjects
     Table*     m_pTable;
     i8         m_iPartition;
     
-    Partition* m_pPartition;
+    TablePtn*  m_pPartition;
     //EbStrand* m_pEbStrand;
     EntryBuffer* m_pRowBuffer;
     Entry*       m_pRow;

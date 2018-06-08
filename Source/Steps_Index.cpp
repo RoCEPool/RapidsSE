@@ -107,7 +107,7 @@ void Task::vIndexBuffer(MP_Task mpTask)
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
   
-  Partition* pPartition = pTable->pPartition(iPartition);
+  TablePtn* pPartition = pTable->pPartition(iPartition);
   IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
   
   KeyWrk xKeyWrk;
@@ -264,7 +264,7 @@ void Task::vIndexDump(MP_Task mpTask)
   Table* pTable = pIndex->pTable();
   
   for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nSlots; iPartition++) {
-    Partition* pPartition = pTable->pPartition(iPartition);
+    TablePtn* pPartition = pTable->pPartition(iPartition);
     IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
     vTrace("Partition %lld\n"_Stz, iPartition);
     
@@ -327,7 +327,7 @@ void Task::vIndexExactKey(MP_Task mpTask)
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
   
-  Partition* pPartition = pTable->pPartition(iPartition);
+  TablePtn* pPartition = pTable->pPartition(iPartition);
   IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
   
   // create a result buffer for the results
@@ -679,7 +679,7 @@ void Task::vIndexLowerBound(MP_Task mpTask)
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
   
-  Partition* pPartition = pTable->pPartition(iPartition);
+  TablePtn* pPartition = pTable->pPartition(iPartition);
   IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
   
   //----------------------------------------------------------------------------
@@ -902,7 +902,7 @@ void Task::vIndexPositionFirst(MP_Task mpTask)
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
   
-  Partition* pPartition = pTable->pPartition(iPartition);
+  TablePtn* pPartition = pTable->pPartition(iPartition);
   IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
   
   mpTask->m_pDataStack->vPushObject(pIndexTree->pFirstL0Buffer());
@@ -980,7 +980,7 @@ void Task::vIndexRange(MP_Task mpTask)
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
   
-  Partition* pPartition = pTable->pPartition(iPartition);
+  TablePtn* pPartition = pTable->pPartition(iPartition);
   IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
   
   //----------------------------------------------------------------------------
@@ -1569,7 +1569,7 @@ void Task::vIndexScan(MP_Task mpTask)
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
   
-  Partition* pPartition = pTable->pPartition(iPartition);
+  TablePtn* pPartition = pTable->pPartition(iPartition);
   IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
   
   // create a result buffer for the results
@@ -2064,7 +2064,7 @@ void Task::vIndexUpperBound(MP_Task mpTask)
   Table* pTable = pIndex->pTable();
   IdxColVec* pIdxColVec = pIndex->pIdxColVec();
   
-  Partition* pPartition = pTable->pPartition(iPartition);
+  TablePtn* pPartition = pTable->pPartition(iPartition);
   IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
   
   //----------------------------------------------------------------------------
@@ -2410,9 +2410,9 @@ void Task::vIndexVisualize(MP_Task mpTask)
   Table* pTable = pIndex->pTable();
   
   for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nSlots; iPartition++) {
-    Partition* pPartition = pTable->pPartition(iPartition);
+    TablePtn* pPartition = pTable->pPartition(iPartition);
     IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
-    vTrace("Partition %lld\n"_Stz, iPartition);
+    vTrace("Table Partition %lld\n"_Stz, iPartition);
     pIndexTree->vVisualize();
   }
   

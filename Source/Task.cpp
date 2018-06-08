@@ -815,7 +815,7 @@ void Task::vAddConstants(void)
   /* 26 */ vAddConstant("SIZEOF_NODE"_Stz,         sizeof(Node));
   /* 27 */ vAddConstant("SIZEOF_NODECURSOR"_Stz,   sizeof(NodeCursor));
   /* 28 */ vAddConstant("SIZEOF_PARSER"_Stz,       sizeof(Parser));
-  /* 29 */ vAddConstant("SIZEOF_PARTITION"_Stz,    sizeof(Partition));
+  /* 29 */ vAddConstant("SIZEOF_PARTITION"_Stz,    sizeof(TablePtn));
   /*    */ vAddConstant("SIZEOF_PROXY"_Stz,        sizeof(Proxy));
   /* 32 */ vAddConstant("SIZEOF_PROXYSET"_Stz,     sizeof(ProxySet));
   /* 33 */ vAddConstant("SIZEOF_QUEUE"_Stz,        sizeof(Queue));
@@ -1937,7 +1937,7 @@ void Task::vSleep(i8 iMicroseconds)
 /*----------------------------------------------------------------------------*/
 i8 Task::iSlot(void)
 {
-  i8 iSlot = Partition::iPartitionToSlot(m_iPartition);
+  i8 iSlot = TablePtn::iPartitionToSlot(m_iPartition);
   
   return iSlot;
 }

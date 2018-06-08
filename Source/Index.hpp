@@ -37,7 +37,7 @@ namespace DBobjects
   };
   
   class Table;
-  class Partition;
+  class TablePtn;
   
   class Index : public Object
   {

@@ -15,12 +15,12 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* dump partition                                                             */
 /*----------------------------------------------------------------------------*/
-void Partition::vDump(eCN eClass, Object* pObject, Stz* aTab)
+void TablePtn::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   RASSERT(eClass == CN_PARTITION);
   RASSERT(pObject->eClass() == CN_PARTITION);
   
-  Partition* pPartition = reinterpret_cast<Partition*>(pObject);
+  TablePtn* pPartition = reinterpret_cast<TablePtn*>(pObject);
   
   vTrace("m_iPartitionId %lld, DataVec %p\n"_Stz,
          pPartition->m_iPartitionId, pPartition->m_pIndexTreeVec);
@@ -29,7 +29,7 @@ void Partition::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* convert partition number to node number                                    */
 /*----------------------------------------------------------------------------*/
-i8 Partition::iPartitionToNode(i8 iPartition)
+i8 TablePtn::iPartitionToNode(i8 iPartition)
 {
   i8 iNode = iPartition % gpAttachMap->m_pGrid->iNodes();
   
@@ -39,7 +39,7 @@ i8 Partition::iPartitionToNode(i8 iPartition)
 /*----------------------------------------------------------------------------*/
 /* convert partition number to slot number                                    */
 /*----------------------------------------------------------------------------*/
-i8 Partition::iPartitionToSlot(i8 iPartition)
+i8 TablePtn::iPartitionToSlot(i8 iPartition)
 {
   i8 iSlot = iPartition / gpAttachMap->m_pGrid->iNodes();
   
@@ -49,7 +49,7 @@ i8 Partition::iPartitionToSlot(i8 iPartition)
 /*----------------------------------------------------------------------------*/
 /* convert slot number to partition number                                    */
 /*----------------------------------------------------------------------------*/
-i8 Partition::iSlotToPartition(i8 iSlot)
+i8 TablePtn::iSlotToPartition(i8 iSlot)
 {
   i8 iPartition = (iSlot * gpAttachMap->m_pGrid->iNodes()) + gpAttachMap->m_pGrid->iThisNode();
   return iPartition;
@@ -62,7 +62,7 @@ i8 Partition::iSlotToPartition(i8 iSlot)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Partition::operator new(size_t iSize)
+void* TablePtn::operator new(size_t iSize)
 {
   RASSERT(iSize);
   void* pObject = Heap::pAllocate(CN_PARTITION);
@@ -73,7 +73,7 @@ void* Partition::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void Partition::operator delete(void* pBufferAddress)
+void TablePtn::operator delete(void* pBufferAddress)
 {
   RASSERT(pBufferAddress);
   Object* pObject = reinterpret_cast<Object*>(pBufferAddress);
@@ -84,7 +84,7 @@ void Partition::operator delete(void* pBufferAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Partition::Partition(void)
+TablePtn::TablePtn(void)
 : Object(CN_PARTITION)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
@@ -101,7 +101,7 @@ Partition::Partition(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Partition::~Partition(void)
+TablePtn::~TablePtn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
@@ -115,7 +115,7 @@ Partition::~Partition(void)
 /*----------------------------------------------------------------------------*/
 /* drop a read lock on the partition                                          */
 /*----------------------------------------------------------------------------*/
-void Partition::vDropRead(void)
+void TablePtn::vDropRead(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
@@ -126,7 +126,7 @@ void Partition::vDropRead(void)
 /*----------------------------------------------------------------------------*/
 /* drop a write lock on the partition                                          */
 /*----------------------------------------------------------------------------*/
-void Partition::vDropWrite(void)
+void TablePtn::vDropWrite(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
@@ -137,7 +137,7 @@ void Partition::vDropWrite(void)
 /*----------------------------------------------------------------------------*/
 /* attempt at grabbing a read lock on the partition                           */
 /*----------------------------------------------------------------------------*/
-bool Partition::bGrabRead(void)
+bool TablePtn::bGrabRead(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
 
@@ -147,7 +147,7 @@ bool Partition::bGrabRead(void)
 /*----------------------------------------------------------------------------*/
 /* attempt at grabbing a write lock on the partition                          */
 /*----------------------------------------------------------------------------*/
-bool Partition::bGrabWrite(void)
+bool TablePtn::bGrabWrite(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
@@ -157,7 +157,7 @@ bool Partition::bGrabWrite(void)
 /*----------------------------------------------------------------------------*/
 /* insert a row into this strand                                              */
 /*----------------------------------------------------------------------------*/
-void Partition::vAddIndex(IndexTree* pIndexTree)
+void TablePtn::vAddIndex(IndexTree* pIndexTree)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
@@ -168,7 +168,7 @@ void Partition::vAddIndex(IndexTree* pIndexTree)
 /*----------------------------------------------------------------------------*/
 /* get this partitions partitionId                                            */
 /*----------------------------------------------------------------------------*/
-i8 Partition::iPartitionId(void)
+i8 TablePtn::iPartitionId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
@@ -178,7 +178,7 @@ i8 Partition::iPartitionId(void)
 /*----------------------------------------------------------------------------*/
 /* set this partitions partitionId                                            */
 /*----------------------------------------------------------------------------*/
-void Partition::vPartitionId(i8 iPartitionId)
+void TablePtn::vPartitionId(i8 iPartitionId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
@@ -188,7 +188,7 @@ void Partition::vPartitionId(i8 iPartitionId)
 /*----------------------------------------------------------------------------*/
 /* insert entries into given index for all rows in this partition             */
 /*----------------------------------------------------------------------------*/
-bool Partition::bPopulateIndex(i8 iIndexNo)
+bool TablePtn::bPopulateIndex(i8 iIndexNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
@@ -223,7 +223,7 @@ bool Partition::bPopulateIndex(i8 iIndexNo)
 /*----------------------------------------------------------------------------*/
 /* get IndexTree                                                              */
 /*----------------------------------------------------------------------------*/
-IndexTree* Partition::pIndexTree(i8 iIndexNo)
+IndexTree* TablePtn::pIndexTree(i8 iIndexNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
@@ -243,7 +243,7 @@ IndexTree* Partition::pIndexTree(i8 iIndexNo)
 /*----------------------------------------------------------------------------*/
 /* get hidden IndexTree                                                       */
 /*----------------------------------------------------------------------------*/
-IndexTree* Partition::pHiddenIndexTree(void)
+IndexTree* TablePtn::pHiddenIndexTree(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
@@ -256,7 +256,7 @@ IndexTree* Partition::pHiddenIndexTree(void)
 /*----------------------------------------------------------------------------*/
 /* get index data vector                                                      */
 /*----------------------------------------------------------------------------*/
-IndexTreeVec* Partition::pIndexTreeVec(void)
+IndexTreeVec* TablePtn::pIndexTreeVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
@@ -266,7 +266,7 @@ IndexTreeVec* Partition::pIndexTreeVec(void)
 /*----------------------------------------------------------------------------*/
 /* remove an index                                                            */
 /*----------------------------------------------------------------------------*/
-//void Partition::vRemoveIndex(i8 iIndexNo)
+//void TablePtn::vRemoveIndex(i8 iIndexNo)
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
 //  
@@ -288,7 +288,7 @@ IndexTreeVec* Partition::pIndexTreeVec(void)
 /*----------------------------------------------------------------------------*/
 /* tidy up                                                                    */
 /*----------------------------------------------------------------------------*/
-void Partition::vTidyUp(void)
+void TablePtn::vTidyUp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
@@ -299,7 +299,7 @@ void Partition::vTidyUp(void)
 /*----------------------------------------------------------------------------*/
 /* tidy up                                                                    */
 /*----------------------------------------------------------------------------*/
-void Partition::vTidyUpIndex(i8 iIndexNo)
+void TablePtn::vTidyUpIndex(i8 iIndexNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
@@ -317,7 +317,7 @@ void Partition::vTidyUpIndex(i8 iIndexNo)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Partition::aFooter(void)
+Footer* TablePtn::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION);
   

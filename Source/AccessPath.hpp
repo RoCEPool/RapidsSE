@@ -37,7 +37,7 @@ namespace Plans
   
   private:
     Table*     m_pTable;      // table
-    Partition* m_pPartition;  // partition
+    TablePtn*  m_pPartition;  // partition
 
     bool       m_bIsCandidate; // is this path a candidate
     i8         m_iPathScore;   // its score
@@ -63,8 +63,8 @@ namespace Plans
     Table* pTable(void);
     void vTable(Table* pTable);
     
-    Partition* pPartition(void);
-    void vPartition(Partition* pPartition);
+    TablePtn* pPartition(void);
+    void vPartition(TablePtn* pPartition);
     
     bool bIsCandidate(void);
     void vIsCandidate(bool bIsCandidate);

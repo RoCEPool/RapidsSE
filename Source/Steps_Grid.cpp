@@ -271,7 +271,7 @@ void Task::vGridToNode(MP_Task mpTask)
   // for the moment its always node 0                      //! DISCUSS WITH ALKA
   //mpTask->m_pDataStack->vPush((i8)0);
   
-  i8 iNodeNo = Partition::iPartitionToNode(iParitionId);
+  i8 iNodeNo = TablePtn::iPartitionToNode(iParitionId);
   
   mpTask->m_pDataStack->vPushInt(iNodeNo);
   
@@ -289,7 +289,7 @@ void Task::vGridToPartition(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(iSlot) )
     THROW_INVALID_DSTACK("grid::toPartition"_Stz);
   
-  i8 iPartitionId = Partition::iSlotToPartition(iSlot);
+  i8 iPartitionId = TablePtn::iSlotToPartition(iSlot);
   
   mpTask->m_pDataStack->vPushInt(iPartitionId);              //! DISCUSS WITH ALKA
   
@@ -307,7 +307,7 @@ void Task::vGridToSlot(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(iPartitionId) )
     THROW_INVALID_DSTACK("grid::toSlot"_Stz);
   
-  i8 iSlot = Partition::iPartitionToSlot(iPartitionId);
+  i8 iSlot = TablePtn::iPartitionToSlot(iPartitionId);
   
   mpTask->m_pDataStack->vPushInt(iSlot);                     //! DISCUSS WITH ALKA
   

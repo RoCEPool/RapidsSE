@@ -112,7 +112,7 @@ pDUMPFUN *gpDump[]
   /* 77 */ &Dump::vUndefined,       // CN_OP
   
   /* 78 */ &Parser::vDump,          // CN_PARSER
-  /* 79 */ &Partition::vDump,       // CN_PARTITION
+  /* 79 */ &TablePtn::vDump,        // CN_PARTITION
   /* 80 */ &Dump::vDummy,           // CN_PARTITIONSCHEDULER
   /* 81 */ &Dump::vDummy,           // CN_PARTITIONVEC
   /* 82 */ &Dump::vInvalid,         // CN_PATHVEC
@@ -304,7 +304,7 @@ i8 giClassSize[]
   /* 77 */ sizeof(Op),                 // CN_OP
   
   /* 78 */ sizeof(Parser),             // CN_PARSER
-  /* 79 */ sizeof(Partition),          // CN_PARTITION
+  /* 79 */ sizeof(TablePtn),           // CN_PARTITION
   /* 80 */ sizeof(PartitionScheduler), // CN_PARTITIONSCHEDULER
   /* 81 */ sizeof(TablePtnVec),        // CN_PARTITIONVEC
   /* 82 */ sizeof(PathVec),            // CN_PATHVEC

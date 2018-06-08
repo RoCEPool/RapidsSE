@@ -672,7 +672,7 @@ bool SEitf::bInsertRow(Stz* aRow, i8 iLength)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   // convert the seitf partition to node slot
-  i8 iSlot = Partition::iPartitionToSlot(m_iPartition);
+  i8 iSlot = TablePtn::iPartitionToSlot(m_iPartition);
   
   //vTrace("Inserting into slot %lld partition %lld\n"_Stz, iSlot, m_iPartition);
   
@@ -818,7 +818,7 @@ bool SEitf::bInsertBuffer(void)
   
   //vTrace("inserting entries from row buffer into table...\n"_Stz);
   
-  i8 iSlot = Partition::iPartitionToSlot(m_iPartition);
+  i8 iSlot = TablePtn::iPartitionToSlot(m_iPartition);
   
   if (! m_pWorkingBuffer[iSlot]) {
     return false;
@@ -1369,7 +1369,7 @@ i8 SEitf::iSlot(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
-  return Partition::iPartitionToSlot(m_iPartition);
+  return TablePtn::iPartitionToSlot(m_iPartition);
 }
 
 /*----------------------------------------------------------------------------*/

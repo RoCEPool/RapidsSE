@@ -91,10 +91,10 @@ Slots::Slots(void)
   // initialize the partitionId's in the slots
   for (i8 i_Slot = 0; i_Slot < gpAttachMap->m_pGrid->iSlots(); i_Slot++) {
     
-    Partition* pPartition = new Partition;
+    TablePtn* pPartition = new TablePtn;
     m_pTablePtnVec->vAdd(pPartition);
     
-    i8 iPartition = Partition::iSlotToPartition(i_Slot);
+    i8 iPartition = TablePtn::iSlotToPartition(i_Slot);
     m_pTablePtnVec->pGet(i_Slot)->vPartitionId(iPartition);
     
   }
@@ -146,7 +146,7 @@ void Slots::vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn)
 /*----------------------------------------------------------------------------*/
 /* get partition                                                              */
 /*----------------------------------------------------------------------------*/
-Partition* Slots::pPartition(i8 iSlot)
+TablePtn* Slots::pPartition(i8 iSlot)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   

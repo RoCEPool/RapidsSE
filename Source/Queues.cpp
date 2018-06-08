@@ -211,7 +211,7 @@ void Queues::vAddToReadySlotQueue_NL(Task* pTask)
   RASSERT(pTask->bIsPartitioned());
   
   // get slot no of the task
-  i8 iSlot = Partition::iPartitionToSlot(pTask->iPartition());
+  i8 iSlot = TablePtn::iPartitionToSlot(pTask->iPartition());
   
   pTask->vQueue((eQR)iSlot);
   pTask->vTaskOrderNo(++m_ziTaskOrderNo);
