@@ -89,7 +89,7 @@ Partition::Partition(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
-  m_zLock.vInitLock(LK_PARTITION);
+  m_xLock.vInitLock(LK_PARTITION);
   m_iPartitionId = -1;
   m_pIndexTreeVec  = new IndexTreeVec;
   
@@ -111,6 +111,48 @@ Partition::~Partition(void)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* drop a read lock on the partition                                          */
+/*----------------------------------------------------------------------------*/
+void Partition::vDropRead(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+  
+  ASSERT(m_xLock.bIsLocked());
+  m_xLock.vDropRead();
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop a write lock on the partition                                          */
+/*----------------------------------------------------------------------------*/
+void Partition::vDropWrite(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+  
+  ASSERT(m_xLock.bIsLocked());
+  m_xLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt at grabbing a read lock on the partition                           */
+/*----------------------------------------------------------------------------*/
+bool Partition::bGrabRead(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+
+  return m_xLock.bGrabRead();
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt at grabbing a write lock on the partition                          */
+/*----------------------------------------------------------------------------*/
+bool Partition::bGrabWrite(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+  
+  return m_xLock.bGrabWrite();
+}
 
 /*----------------------------------------------------------------------------*/
 /* insert a row into this strand                                              */

@@ -13,7 +13,7 @@ namespace DBobjects
   class Partition : public Object
   {
   private:
-    Lock  m_zLock;          // lock on the partition                      UNUSED
+    Lock  m_xLock;          // lock on the partition                      UNUSED
     i8    m_iPartitionId;   // partition number
     IndexTreeVec* m_pIndexTreeVec; // vector of index trees
   
@@ -33,6 +33,10 @@ namespace DBobjects
     ~Partition(void);
   
     void        vAddIndex(IndexTree* pIndexTree);
+    void        vDropRead(void);
+    void        vDropWrite();
+    bool        bGrabRead(void);
+    bool        bGrabWrite(void);
     
     i8          iPartitionId(void);
     void        vPartitionId(i8 iPartitionId);
