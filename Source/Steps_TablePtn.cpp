@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_TablePtn.cpp - table partition step group                            */
+/* Steps_TablePtn.cpp -- Table Partition Step Group                           */
 /*============================================================================*/
 
 #include "StorageEngine.h"
@@ -18,7 +18,7 @@ void Task::vAddPrimitives_TablePartition(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* tablePtn::dropRead -- drop a read lock on the partition of a table        */
+/* tablePtn::dropRead -- drop a read lock on the partition of a table         */
 /*----------------------------------------------------------------------------*/
 void Task::vTablePtnDropRead(MP_Task mpTask)
 {
@@ -36,14 +36,20 @@ void Task::vTablePtnDropRead(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(iPartition) )
     THROW_INVALID_DSTACK("tablePtn::dropRead"_Stz);
   
-  i8 iSlot = Partition::iPartitionToSlot(iPartition);
-  pTable->pPartition(iSlot)->vDropRead();
+  // get the slot no
+  i8 i_Slot = Partition::iPartitionToSlot(iPartition);
+  
+  // get the table partition
+  Partition* pTablePtn = pTable->pPartition(i_Slot);
+  
+  // drop the read lock
+  pTablePtn->vDropRead();
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* tablePtn::dropWrite -- drop a write lock on the partition of a table      */
+/* tablePtn::dropWrite -- drop a write lock on the partition of a table       */
 /*----------------------------------------------------------------------------*/
 void Task::vTablePtnDropWrite(MP_Task mpTask)
 {
@@ -61,8 +67,14 @@ void Task::vTablePtnDropWrite(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(iPartition) )
     THROW_INVALID_DSTACK("tablePtn::dropWrite"_Stz);
   
-  i8 iSlot = Partition::iPartitionToSlot(iPartition);
-  pTable->pPartition(iSlot)->vDropWrite();
+  // get the slot no
+  i8 i_Slot = Partition::iPartitionToSlot(iPartition);
+  
+  // get the table partition
+  Partition* pTablePtn = pTable->pPartition(i_Slot);
+  
+  // drop the write lock
+  pTablePtn->vDropWrite();
   
   EXIT();
 }
@@ -86,10 +98,16 @@ void Task::vTablePtnAttemptGrabRead(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(iPartition) )
     THROW_INVALID_DSTACK("tablePtn::attemptGrabRead"_Stz);
   
-  i8 iSlot = Partition::iPartitionToSlot(iPartition);
-  bool bGrabRead = pTable->pPartition(iSlot)->bGrabRead();
+  // get the slot no
+  i8 i_Slot = Partition::iPartitionToSlot(iPartition);
   
-  mpTask->m_pDataStack->vPushInt(bGrabRead);
+  // get the table partition
+  Partition* pTablePtn = pTable->pPartition(i_Slot);
+  
+  // attempt to grab the read lock
+  bool bSuccess = pTablePtn->bGrabRead();
+  
+  mpTask->m_pDataStack->vPushInt(bSuccess);
   
   EXIT();
 }
@@ -113,10 +131,16 @@ void Task::vTablePtnAttemptGrabWrite(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(iPartition) )
     THROW_INVALID_DSTACK("tablePtn::attemptGrabWrite"_Stz);
   
-  i8 iSlot = Partition::iPartitionToSlot(iPartition);
-  bool bGrabWrite = pTable->pPartition(iSlot)->bGrabWrite();
+  // get the slot no
+  i8 i_Slot = Partition::iPartitionToSlot(iPartition);
   
-  mpTask->m_pDataStack->vPushInt(bGrabWrite);
+  // get the table partition
+  Partition* pTablePtn = pTable->pPartition(i_Slot);
+  
+  // attempt to grab the write lock
+  bool bSuccess = pTablePtn->bGrabWrite();
+  
+  mpTask->m_pDataStack->vPushInt(bSuccess);
   
   EXIT();
 }

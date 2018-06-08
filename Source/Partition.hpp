@@ -32,21 +32,19 @@ namespace DBobjects
     Partition(void);
     ~Partition(void);
   
-    void        vAddIndex(IndexTree* pIndexTree);
-    void        vDropRead(void);
-    void        vDropWrite();
-    bool        bGrabRead(void);
-    bool        bGrabWrite(void);
-    
-    i8          iPartitionId(void);
-    void        vPartitionId(i8 iPartitionId);
-    bool        bPopulateIndex(i8 iIndexNo);
-  
+    void vAddIndex(IndexTree* pIndexTree);
+    void vDropRead(void);
+    void vDropWrite();
+    bool bGrabRead(void);
+    bool bGrabWrite(void);
+    i8   iPartitionId(void);
+    void vPartitionId(i8 iPartitionId);
+    bool bPopulateIndex(i8 iIndexNo);
     IndexTree*    pIndexTree(i8 iIndexNo);
     IndexTree*    pHiddenIndexTree(void);
     IndexTreeVec* pIndexTreeVec(void);
-    void          vTidyUp(void);
-    void          vTidyUpIndex(i8 iIndexNo);
+    void vTidyUp(void);
+    void vTidyUpIndex(i8 iIndexNo);
     
   private:
     Footer* aFooter(void);
