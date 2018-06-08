@@ -108,9 +108,7 @@ pFINALIZE *gpFinalize[]
   /* 77 */ &Finalize::vUndefined,         // CN_OP
   
   /* 78 */ &Finalize::vUndefined,         // CN_PARSER
-  /* 79 */ &Finalize::vUndefined,         // CN_TABLEPTN
   /* 80 */ &Finalize::vUndefined,         // CN_PARTITIONSCHEDULER
-  /* 81 */ &Finalize::vUndefined,         // CN_TABLEPTNVEC
   /* 82 */ &Finalize::vUndefined,         // CN_PATHVEC
   /* 83 */ &Finalize::vUndefined,         // CN_PERFORMANCEBUFFER
   /* 84 */ &Finalize::vUndefined,         // CN_PERFORMANCEENTRY
@@ -164,6 +162,8 @@ pFINALIZE *gpFinalize[]
   /*129 */ &Finalize::vUndefined,         // CN_SYSCALL
   
   /*130 */ &Table::vFinalize,             // CN_TABLE
+  /*    */ &Finalize::vUndefined,         // CN_TABLEPTN
+  /*    */ &Finalize::vUndefined,         // CN_TABLEPTNVEC
   /*131 */ &Finalize::vUndefined,         // CN_TASK
   /*132 */ &Finalize::vUndefined,         // CN_TASKCURSOR
   /*    */ &Finalize::vUndefined,         // CN_TASKFIFO

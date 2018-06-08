@@ -112,9 +112,7 @@ pDUMPFUN *gpDump[]
   /* 77 */ &Dump::vUndefined,       // CN_OP
   
   /* 78 */ &Parser::vDump,          // CN_PARSER
-  /* 79 */ &TablePtn::vDump,        // CN_TABLEPTN
   /* 80 */ &Dump::vDummy,           // CN_PARTITIONSCHEDULER
-  /* 81 */ &Dump::vDummy,           // CN_TABLEPTNVEC
   /* 82 */ &Dump::vInvalid,         // CN_PATHVEC
   /* 83 */ &Dump::vInvalid,         // CN_PERFORMANCEBUFFER
   /* 84 */ &Dump::vInvalid,         // CN_PERFORMANCEENTRY
@@ -168,6 +166,8 @@ pDUMPFUN *gpDump[]
   /*129 */ &Dump::vInvalid,         // CN_SYSCALL
 
   /*130 */ &Table::vDump,           // CN_TABLE
+  /*    */ &TablePtn::vDump,        // CN_TABLEPTN
+  /*    */ &Dump::vDummy,           // CN_TABLEPTNVEC
   /*131 */ &Task::vDump,            // CN_TASK
   /*132 */ &Dump::vUndefined,       // CN_TASKCURSOR
   /*    */ &Dump::vUndefined,       // CN_TASKFIFO
@@ -304,9 +304,7 @@ i8 giClassSize[]
   /* 77 */ sizeof(Op),                 // CN_OP
   
   /* 78 */ sizeof(Parser),             // CN_PARSER
-  /* 79 */ sizeof(TablePtn),           // CN_PARTITION
   /* 80 */ sizeof(PartitionScheduler), // CN_PARTITIONSCHEDULER
-  /* 81 */ sizeof(TablePtnVec),        // CN_TABLEPTNVEC
   /* 82 */ sizeof(PathVec),            // CN_PATHVEC
   /* 83 */ sizeof(PerformanceBuffer),  // CN_PERFORMANCEBUFFER
   /* 84 */ sizeof(PerformanceEntry),   // CN_PERFORMANCEENTRY
@@ -360,6 +358,8 @@ i8 giClassSize[]
   /*129 */ sizeof(SysCall),            // CN_SYSCALL
 
   /*130 */ sizeof(Table),              // CN_TABLE
+  /*    */ sizeof(TablePtn),           // CN_TABLEPTN
+  /*    */ sizeof(TablePtnVec),        // CN_TABLEPTNVEC
   /*131 */ sizeof(Task),               // CN_TASK
   /*132 */ sizeof(TaskCursor),         // CN_TASKCURSOR
   /*    */ sizeof(TaskFifo),           // CN_TASKFIFO
@@ -496,9 +496,7 @@ eHT geWhichHeap[]
   /* 77 */ HT_TRANSIENT_SMALL,   // CN_OP
   
   /* 78 */ HT_TRANSIENT_MEDIUM,  // CN_PARSER
-  /* 79 */ HT_TRANSIENT_SMALL,   // CN_TABLEPTN
   /* 80 */ HT_TRANSIENT_SMALL,   // CN_PARTITIONSCHEDULER
-  /* 81 */ HT_TRANSIENT_MEDIUM,  // CN_TABLEPTNVEC
   /* 82 */ HT_TRANSIENT_MEDIUM,  // CN_PATHVEC
   /* 83 */ HT_TRANSIENT_LARGE,   // CN_PERFORMANCEBUFFER
   /* 84 */ HT_INVALID,           // CN_PERFORMANCEENTRY
@@ -552,6 +550,8 @@ eHT geWhichHeap[]
   /*129 */ HT_INVALID,           // CN_SYSCALL
   
   /*130 */ HT_INVALID,           // CN_TABLE
+  /*    */ HT_TRANSIENT_SMALL,   // CN_TABLEPTN
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_TABLEPTNVEC
   /*131 */ HT_TRANSIENT_MEDIUM,  // CN_TASK
   /*132 */ HT_INVALID,           // CN_TASKCURSOR
   /*    */ HT_TRANSIENT_SMALL,   // CN_TASKFIFO

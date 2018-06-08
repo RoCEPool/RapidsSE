@@ -112,9 +112,8 @@ enum eCN : u2 // Class Number
     /* 77 */ CN_OP,
 
     /* 78 */ CN_PARSER,
-    /* 79 */ CN_TABLEPTN,
     /* 80 */ CN_PARTITIONSCHEDULER,
-    /* 81 */ CN_TABLEPTNVEC,
+
     /* 82 */ CN_PATHVEC,
     /* 83 */ CN_PERFORMANCEBUFFER,
     /* 84 */ CN_PERFORMANCEENTRY,
@@ -168,6 +167,8 @@ enum eCN : u2 // Class Number
     /*129 */ CN_SYSCALL,
     
     /*130 */ CN_TABLE,
+    /*    */ CN_TABLEPTN,
+    /*    */ CN_TABLEPTNVEC,
     /*131 */ CN_TASK,
     /*132 */ CN_TASKCURSOR,
     /*    */ CN_TASKFIFO,
