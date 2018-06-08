@@ -637,8 +637,12 @@ tp: populateIndex
 
   pSeitf task::this task.seitf!
 
+  //iPartition pIndex partitionAttemptGrabRead
+
   // now scan the index
   pBufferQueue iPartitionNo pIndex index.scan
+
+  //iPartition pIndex partitionDropRead
 ;
 
 /*----------------------------------------------------------------------------*/
