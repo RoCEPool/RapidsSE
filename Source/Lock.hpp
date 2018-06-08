@@ -21,19 +21,20 @@ namespace System
   /*  6 */ LK_DIC,
   /*  7 */ LK_EB_STRAND,
   /*  8 */ LK_HEAP,
-  /*  9 */ LK_INDEX_DATA,
+  /*  9 */ LK_INDEX_TREE,
   /* 10 */ LK_LIST,
   /* 11 */ LK_LOAD_MAP,
-  /* 12 */ LK_QUEUE,
-  /* 13 */ LK_STEP_ARRAY,
-  /* 14 */ LK_TASK,
-  /*    */ LK_TASK_QUEUE,
-  /* 15 */ LK_TASK_SET,
-  /*    */ LK_THREAD,
-  /*    */ LK_THREAD_VECTOR,
-  /* 16 */ LK_TX_SET,
-  /* 17 */ LK_UNKNOWN,
-  /* 18 */ LK_ENUMS
+  /* 12 */ LK_PARTITION,
+  /* 13 */ LK_QUEUE,
+  /* 14 */ LK_STEP_ARRAY,
+  /* 15 */ LK_TASK,
+  /* 16 */ LK_TASK_QUEUE,
+  /* 17 */ LK_TASK_SET,
+  /* 18 */ LK_THREAD,
+  /* 19 */ LK_THREAD_VECTOR,
+  /* 20 */ LK_TX_SET,
+  /* 21 */ LK_UNKNOWN,
+  /* 22 */ LK_ENUMS
   };
   
   static Stz* aLK[]
@@ -47,19 +48,20 @@ namespace System
   /*  6 */ "DIC"_Stz,
   /*  7 */ "EB_STRAND"_Stz,
   /*  8 */ "HEAP"_Stz,
-  /*  9 */ "INDEX_DATA"_Stz,
+  /*  9 */ "INDEX_TREE"_Stz,
   /* 10 */ "LIST"_Stz,
   /* 11 */ "LOAD_MAP"_Stz,
-  /* 12 */ "QUEUE"_Stz,
-  /* 13 */ "STEP_ARRAY"_Stz,
-  /* 14 */ "TASK"_Stz,
-  /*    */ "TASK_QUEUE"_Stz,
-  /* 15 */ "TASK_SET"_Stz,
-  /*    */ "THREAD"_Stz,
-  /*    */ "THREAD_VECTOR"_Stz,
-  /* 16 */ "TX_SET"_Stz,
-  /* 17 */ "UNKNOWN"_Stz,
-  /* 18 */ "ENUMS"_Stz
+  /* 12 */ "PARTITION"_Stz,
+  /* 13 */ "QUEUE"_Stz,
+  /* 14 */ "STEP_ARRAY"_Stz,
+  /* 15 */ "TASK"_Stz,
+  /* 16 */ "TASK_QUEUE"_Stz,
+  /* 17 */ "TASK_SET"_Stz,
+  /* 18 */ "THREAD"_Stz,
+  /* 19 */ "THREAD_VECTOR"_Stz,
+  /* 20 */ "TX_SET"_Stz,
+  /* 21 */ "UNKNOWN"_Stz,
+  /* 22 */ "ENUMS"_Stz
   };
 
   class Lock : public Object

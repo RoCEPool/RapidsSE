@@ -22,7 +22,7 @@ namespace DBobjects
     Lock         m_zLock;          // lock on the buffer tree
     Index*       m_pIndex;         // which index
     i8           m_iPartitionNo;   // which partition no
-    Partition*   m_pPartition;     // which partition
+    Partition*   m_pPartition;     // which partition                     UNUSED
     EntryBuffer* m_pRoot;          // the root buffer
     EntryBuffer* m_pCurrentBuffer; // current buffer for insert hidden index
   

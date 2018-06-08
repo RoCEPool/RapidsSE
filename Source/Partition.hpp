@@ -13,9 +13,9 @@ namespace DBobjects
   class Partition : public Object
   {
   private:
-    i8             m_iPartitionId;   // partition number
-  
-    IndexTreeVec*  m_pIndexTreeVec;
+    Lock  m_zLock;          // lock on the partition                      UNUSED
+    i8    m_iPartitionId;   // partition number
+    IndexTreeVec* m_pIndexTreeVec; // vector of index trees
   
     // must be last
     Footer m_xFooter;

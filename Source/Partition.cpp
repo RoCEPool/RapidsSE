@@ -89,6 +89,7 @@ Partition::Partition(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
+  m_zLock.vInitLock(LK_PARTITION);
   m_iPartitionId = -1;
   m_pIndexTreeVec  = new IndexTreeVec;
   
