@@ -588,7 +588,7 @@ void Task::vAddConstants(void)
   /* 39 */ vAddConstant("CN_NODECURSOR"_Stz,   CN_NODECURSOR);
   
   /* 40 */ vAddConstant("CN_PARSER"_Stz,       CN_PARSER);
-  /* 41 */ vAddConstant("CN_PARTITION"_Stz,    CN_PARTITION);
+  /* 41 */ vAddConstant("CN_TABLEPTN"_Stz,     CN_TABLEPTN);
   /*    */ vAddConstant("CN_PLAN"_Stz,         CN_PLAN);
   /*    */ vAddConstant("CN_PLANLIST"_Stz,     CN_PLANLIST);
   /* 43 */ vAddConstant("CN_PROXY"_Stz,        CN_PROXY);

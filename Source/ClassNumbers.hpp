@@ -112,7 +112,7 @@ enum eCN : u2 // Class Number
     /* 77 */ CN_OP,
 
     /* 78 */ CN_PARSER,
-    /* 79 */ CN_PARTITION,
+    /* 79 */ CN_TABLEPTN,
     /* 80 */ CN_PARTITIONSCHEDULER,
     /* 81 */ CN_PARTITIONVEC,
     /* 82 */ CN_PATHVEC,

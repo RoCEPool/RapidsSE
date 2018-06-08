@@ -17,8 +17,8 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void TablePtn::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(eClass == CN_PARTITION);
-  RASSERT(pObject->eClass() == CN_PARTITION);
+  RASSERT(eClass == CN_TABLEPTN);
+  RASSERT(pObject->eClass() == CN_TABLEPTN);
   
   TablePtn* pPartition = reinterpret_cast<TablePtn*>(pObject);
   
@@ -65,7 +65,7 @@ i8 TablePtn::iSlotToPartition(i8 iSlot)
 void* TablePtn::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  void* pObject = Heap::pAllocate(CN_PARTITION);
+  void* pObject = Heap::pAllocate(CN_TABLEPTN);
   
   return pObject;
 }
@@ -85,17 +85,17 @@ void TablePtn::operator delete(void* pBufferAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 TablePtn::TablePtn(void)
-: Object(CN_PARTITION)
+: Object(CN_TABLEPTN)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
   m_xLock.vInitLock(LK_PARTITION);
   m_iPartitionId = -1;
   m_pIndexTreeVec  = new IndexTreeVec;
   
-  _checkInitialised_(CN_PARTITION);
+  _checkInitialised_(CN_TABLEPTN);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -103,7 +103,7 @@ TablePtn::TablePtn(void)
 /*----------------------------------------------------------------------------*/
 TablePtn::~TablePtn(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
   vTidyUp();
 }
@@ -117,7 +117,7 @@ TablePtn::~TablePtn(void)
 /*----------------------------------------------------------------------------*/
 void TablePtn::vDropRead(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
   ASSERT(m_xLock.bIsLocked());
   m_xLock.vDropRead();
@@ -128,7 +128,7 @@ void TablePtn::vDropRead(void)
 /*----------------------------------------------------------------------------*/
 void TablePtn::vDropWrite(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
   ASSERT(m_xLock.bIsLocked());
   m_xLock.vDropWrite();
@@ -139,7 +139,7 @@ void TablePtn::vDropWrite(void)
 /*----------------------------------------------------------------------------*/
 bool TablePtn::bGrabRead(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
 
   return m_xLock.bGrabRead();
 }
@@ -149,7 +149,7 @@ bool TablePtn::bGrabRead(void)
 /*----------------------------------------------------------------------------*/
 bool TablePtn::bGrabWrite(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
   return m_xLock.bGrabWrite();
 }
@@ -159,7 +159,7 @@ bool TablePtn::bGrabWrite(void)
 /*----------------------------------------------------------------------------*/
 void TablePtn::vAddIndex(IndexTree* pIndexTree)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
   ASSERT(m_pIndexTreeVec->nItems() < C_INDEXES_PER_TABLE);
   m_pIndexTreeVec->vAdd(pIndexTree);
@@ -170,7 +170,7 @@ void TablePtn::vAddIndex(IndexTree* pIndexTree)
 /*----------------------------------------------------------------------------*/
 i8 TablePtn::iPartitionId(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
   return m_iPartitionId;
 }
@@ -180,7 +180,7 @@ i8 TablePtn::iPartitionId(void)
 /*----------------------------------------------------------------------------*/
 void TablePtn::vPartitionId(i8 iPartitionId)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
   m_iPartitionId = iPartitionId;
 }
@@ -190,7 +190,7 @@ void TablePtn::vPartitionId(i8 iPartitionId)
 /*----------------------------------------------------------------------------*/
 bool TablePtn::bPopulateIndex(i8 iIndexNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
   IndexTree* pHiddenIndexTree = this->pHiddenIndexTree();
   IndexTree* pIndexTree = this->pIndexTree(iIndexNo);
@@ -225,7 +225,7 @@ bool TablePtn::bPopulateIndex(i8 iIndexNo)
 /*----------------------------------------------------------------------------*/
 IndexTree* TablePtn::pIndexTree(i8 iIndexNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
   IndexTree* pIndexTree = nullptr;
   i8 nIndexes = m_pIndexTreeVec->nItems();
@@ -245,7 +245,7 @@ IndexTree* TablePtn::pIndexTree(i8 iIndexNo)
 /*----------------------------------------------------------------------------*/
 IndexTree* TablePtn::pHiddenIndexTree(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
   IndexTree* pIndexTree = nullptr;
   pIndexTree = m_pIndexTreeVec->pGet(0);
@@ -258,7 +258,7 @@ IndexTree* TablePtn::pHiddenIndexTree(void)
 /*----------------------------------------------------------------------------*/
 IndexTreeVec* TablePtn::pIndexTreeVec(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
   return m_pIndexTreeVec;
 }
@@ -268,7 +268,7 @@ IndexTreeVec* TablePtn::pIndexTreeVec(void)
 /*----------------------------------------------------------------------------*/
 //void TablePtn::vRemoveIndex(i8 iIndexNo)
 //{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
 //  
 //  IndexTree* pIndexTree = nullptr;
 //  i8 nIndexes = m_pIndexTreeVec->nItems();
@@ -290,7 +290,7 @@ IndexTreeVec* TablePtn::pIndexTreeVec(void)
 /*----------------------------------------------------------------------------*/
 void TablePtn::vTidyUp(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
   // delete the index data vector
   delete m_pIndexTreeVec;
@@ -301,7 +301,7 @@ void TablePtn::vTidyUp(void)
 /*----------------------------------------------------------------------------*/
 void TablePtn::vTidyUpIndex(i8 iIndexNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
   IndexTree* pIndexTree = this->pIndexTree(iIndexNo);
   
@@ -319,7 +319,7 @@ void TablePtn::vTidyUpIndex(i8 iIndexNo)
 /*----------------------------------------------------------------------------*/
 Footer* TablePtn::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN);
   
   return &m_xFooter;
 }

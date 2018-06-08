@@ -112,7 +112,7 @@ pDUMPFUN *gpDump[]
   /* 77 */ &Dump::vUndefined,       // CN_OP
   
   /* 78 */ &Parser::vDump,          // CN_PARSER
-  /* 79 */ &TablePtn::vDump,        // CN_PARTITION
+  /* 79 */ &TablePtn::vDump,        // CN_TABLEPTN
   /* 80 */ &Dump::vDummy,           // CN_PARTITIONSCHEDULER
   /* 81 */ &Dump::vDummy,           // CN_PARTITIONVEC
   /* 82 */ &Dump::vInvalid,         // CN_PATHVEC
@@ -496,7 +496,7 @@ eHT geWhichHeap[]
   /* 77 */ HT_TRANSIENT_SMALL,   // CN_OP
   
   /* 78 */ HT_TRANSIENT_MEDIUM,  // CN_PARSER
-  /* 79 */ HT_TRANSIENT_SMALL,   // CN_PARTITION
+  /* 79 */ HT_TRANSIENT_SMALL,   // CN_TABLEPTN
   /* 80 */ HT_TRANSIENT_SMALL,   // CN_PARTITIONSCHEDULER
   /* 81 */ HT_TRANSIENT_MEDIUM,  // CN_PARTITIONVEC
   /* 82 */ HT_TRANSIENT_MEDIUM,  // CN_PATHVEC

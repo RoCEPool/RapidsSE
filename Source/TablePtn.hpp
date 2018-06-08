@@ -13,8 +13,8 @@ namespace DBobjects
   class TablePtn : public Object
   {
   private:
-    Lock  m_xLock;          // lock on the partition                      UNUSED
-    i8    m_iPartitionId;   // partition number
+    Lock  m_xLock;        // lock on the partition
+    i8    m_iPartitionId; // partition number
     IndexTreeVec* m_pIndexTreeVec; // vector of index trees
   
     // must be last
@@ -53,7 +53,7 @@ namespace DBobjects
   /*--------------------------------------------------------------------------*/
   /* TablePtnVec -- Table Partition Vector                                    */
   /*--------------------------------------------------------------------------*/
-  typedef Vector<CN_PARTITIONVEC,TablePtn,CN_PARTITION,C_SLOTS_PER_NODE,u8> TablePtnVec;
+  typedef Vector<CN_PARTITIONVEC,TablePtn,CN_TABLEPTN,C_SLOTS_PER_NODE,u8> TablePtnVec;
 }
 
 /*============================================================================*/

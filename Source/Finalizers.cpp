@@ -108,7 +108,7 @@ pFINALIZE *gpFinalize[]
   /* 77 */ &Finalize::vUndefined,         // CN_OP
   
   /* 78 */ &Finalize::vUndefined,         // CN_PARSER
-  /* 79 */ &Finalize::vUndefined,         // CN_PARTITION
+  /* 79 */ &Finalize::vUndefined,         // CN_TABLEPTN
   /* 80 */ &Finalize::vUndefined,         // CN_PARTITIONSCHEDULER
   /* 81 */ &Finalize::vUndefined,         // CN_PARTITIONVEC
   /* 82 */ &Finalize::vUndefined,         // CN_PATHVEC
