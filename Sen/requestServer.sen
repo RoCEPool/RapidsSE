@@ -138,6 +138,17 @@ tp: !req_exit
 ;
 
 /*----------------------------------------------------------------------------*/
+/* drop response                                                              */
+/*----------------------------------------------------------------------------*/
+: responseDrop
+
+  // check stack
+  depth 3 != if "incorrect response stack depth" . process.quit then
+
+  drop drop drop
+;
+
+/*----------------------------------------------------------------------------*/
 /* request processing                                                         */
 /*----------------------------------------------------------------------------*/
 : requestLoop
@@ -153,6 +164,27 @@ tp: !req_exit
   !req
 
   >rsp
+
+  exit
+;
+
+/*----------------------------------------------------------------------------*/
+/* process a detached request (no response)                                   */
+/*----------------------------------------------------------------------------*/
+: processRequest_detached
+
+  requestQueue task::this task.jobQueue!  //! is this need in R3.5?
+
+  requestServerPrint if
+    "Request Server (detached) running..." .
+  then
+
+  depth 0 != if "request task has grown" . debug::trap then
+
+  !req
+
+  // drop the response
+  responseDrop
 
   exit
 ;
