@@ -721,8 +721,12 @@ void Queues::vScheduleYieldedTask(Task* pTask)
     //     continue to execute the yield task.
     //   Otherwise we add the task to the ready slot queue
 
-    for (i8 iSlot = 0; iSlot < gpAttachMap->m_pGrid->iSlots(); iSlot++)
+    //for (i8 iSlot = 0; iSlot < gpAttachMap->m_pGrid->iSlots(); iSlot++)
+    
+    i8 i_Slot = pTask->iSlot();
+    
     m_pReadySlotQueues[pTask->iSlot()]->vGrabLock();
+    
     i8 iLengthReadySlotQueue = m_pReadyQueue->nTasks();
     if (0 == iLengthReadySlotQueue) {
       m_pReadySlotQueues[pTask->iSlot()]->vDropLock();

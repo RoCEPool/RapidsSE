@@ -355,6 +355,9 @@ bool SePrompt::bExecuteRequest(void)
   
   bool bResult = RapidsSE_ExecuteRequest(m_pSEitf,m_xTokenVec,&aResponse);
   
+  if (m_xTokenVec.bDetachedRequest())
+    return bResult;
+  
   if (bResult)
     m_sResponse = aResponse ? (Stz*)aResponse : ""_Stz;
   else

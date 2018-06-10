@@ -76,43 +76,38 @@
 /*----------------------------------------------------------------------------*/
 : n35_req ( -- <R> )
 
-  //"yielding" .
-  //task.yield
-  //"running" .
+  "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" .
+  "n35_req entry" .
+  "" .
 
-  //"sleeping for 0 microseconds" .
-  //0 task.sleep
-  //"awake" .
+  r35_node_e1
+  r35_node_e2
+  r35_node_e3
+  r35_node_e4
+  r35_node_e5
+  r35_node_e6
 
-  //"yielding" .
-  //task.yield
-  //"running" .
-
-  //"sleeping for 3 seconds" .
-  //3000000 task.sleep
-  //"awake" .
-
-  //"parent spawning children" .
-
-  // spawn n35 children
-  //100 n35spawnChildren
-
-  //"parent waiting for acks" .
-
-  // wait for child tasks to complete
-  //ackWait
-
-
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   //"task spawning 100 tasks" .
 
   // spawn n35 tasks
-  //100 n35spawnTask
+  //100 n35spawnGeneralTasks
 
   //"parent waiting for acks" .
 
   // wait for child tasks to complete
   //ackWait
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  //"task spawning 100 independant tasks" .
+
+  // 100 n35spawnGeneralTasks
+
+  "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" .
+  "n35_req exits" .
+  "" .
 
   "n35"
 
@@ -136,8 +131,8 @@
 
   "parent spawning children" .
 
-  // spawn n35 children
-  p35spawnPartitionChildren
+  // spawn p35 children
+  p35spawnChildren
 
   "parent waiting for acks" .
 

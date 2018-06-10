@@ -3471,7 +3471,7 @@ bool SEitf::bN35(TokenVec& xTokenVec, i8 iReqNo)
   
   sRequest = SeRequests[iReqNo].aRequest;
   
-  return bAppendRequest_R35(sRequest);
+  return bAppendRequest_R35(sRequest,xTokenVec.bDetachedRequest());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3487,7 +3487,7 @@ bool SEitf::bG35(TokenVec& xTokenVec, i8 iReqNo)
   
   sRequest = SeRequests[iReqNo].aRequest;
   
-  return bAppendRequest_R35(sRequest);
+  return bAppendRequest_R35(sRequest,xTokenVec.bDetachedRequest());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3503,7 +3503,7 @@ bool SEitf::bP35(TokenVec& xTokenVec, i8 iReqNo)
   
   sRequest = SeRequests[iReqNo].aRequest;
   
-  return bAppendRequest_R35(sRequest);
+  return bAppendRequest_R35(sRequest,xTokenVec.bDetachedRequest());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3653,7 +3653,7 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
 /*----------------------------------------------------------------------------*/
 /* append request to request queue (RDP R3.5)                                 */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bAppendRequest_R35(StrVal& sRequest)
+bool SEitf::bAppendRequest_R35(StrVal& sRequest, bool bDetached)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -3697,7 +3697,12 @@ bool SEitf::bAppendRequest_R35(StrVal& sRequest)
   // spawn a request task, passing the request to it
   // create new task (will be automatically appended to task list)
   MP_Task nnpNewTask = new Task(&xValSet);
-  nnpNewTask->vSeedWord("requestLoop"_Stz);
+  
+  if (bDetached)
+    nnpNewTask->vSeedWord("processRequest_detached"_Stz);
+  else
+    nnpNewTask->vSeedWord("requestLoop"_Stz);
+  
   nnpNewTask->vState(TS_READY);
   nnpNewTask->vR35model(true);
   nnpNewTask->vActorModel(AC_R35);

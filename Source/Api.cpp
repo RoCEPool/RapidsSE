@@ -2360,10 +2360,13 @@ bool RapidsSE_ExecuteRequest(SEitf* pSEitf, TokenVec& xTokenVec, Stz** ppRespons
   
   // send request to se
   bResult = bExecuteRequest(pSEitf, xTokenVec);
-  if (!bResult) {
+  if (! bResult) {
     *ppResponse = nullptr;
     return bResult;
   }
+  
+  if (xTokenVec.bDetachedRequest())
+    return true;
   
   // get response from se
   eEC eResult = eGetResponse(pSEitf);
