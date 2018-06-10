@@ -390,7 +390,10 @@ void SePrompt::vGetCommand(void)
     
     // stip off ;
     m_xTokenVec.vStripSemicolon();
-    
+
+    // stip off &
+    m_xTokenVec.vStripAmpersand();
+
   }
 }
 

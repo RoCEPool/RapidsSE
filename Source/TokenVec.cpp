@@ -50,6 +50,8 @@ TokenVec::TokenVec(void)
   
   vReset();
   
+  m_bDetachedRequest = false;
+  
   _checkInitialised_(CN_TOKENVEC);
   
   _postcondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
@@ -85,6 +87,26 @@ void TokenVec::vAppendVector(TokenVec* pTokenVec)
     Token* pToken = pTokenVec->pGet(i_Token);
     vAddToken(pToken->aText());
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get detached request                                                       */
+/*----------------------------------------------------------------------------*/
+bool TokenVec::bDetachedRequest(void)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  return m_bDetachedRequest;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set detached request                                                       */
+/*----------------------------------------------------------------------------*/
+void TokenVec::vDetachedRequest(bool bDetachedRequest)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  m_bDetachedRequest = bDetachedRequest;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -134,6 +156,8 @@ void TokenVec::vReset(void)
   
   for (i8 i_Token = 0; i_Token < C_TOKENS; i_Token++)
     m_pItem[i_Token]->vReset();
+  
+  m_bDetachedRequest = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -161,6 +185,23 @@ void TokenVec::vSetTokens(void)
   }
   
   m_nItems = i_Token;
+}
+
+/*----------------------------------------------------------------------------*/
+/* strip off '&'                                                              */
+/*----------------------------------------------------------------------------*/
+void TokenVec::vStripAmpersand(void)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  for (i8 i_Token = 0; i_Token < C_TOKENS; i_Token++) {
+    Token* pToken = m_pItem[i_Token];
+    if (TN_OTHER == pToken->eToken() && pToken->bSame("&"_Stz)) {
+      m_bDetachedRequest = true;
+      pToken->vReset();
+      break;
+    }
+  }
 }
 
 /*----------------------------------------------------------------------------*/

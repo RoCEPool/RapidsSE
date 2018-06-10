@@ -102,10 +102,12 @@
   // wait for child tasks to complete
   //ackWait
 
-  "task spawning 100 tasks" .
+
+
+  //"task spawning 100 tasks" .
 
   // spawn n35 tasks
-  100 n35spawnTask
+  //100 n35spawnTask
 
   //"parent waiting for acks" .
 
