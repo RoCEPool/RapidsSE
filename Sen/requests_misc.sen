@@ -87,24 +87,6 @@
   r35_node_e5
   r35_node_e6
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  //"task spawning 100 tasks" .
-
-  // spawn n35 tasks
-  //100 n35spawnGeneralTasks
-
-  //"parent waiting for acks" .
-
-  // wait for child tasks to complete
-  //ackWait
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  //"task spawning 100 independant tasks" .
-
-  // 100 n35spawnGeneralTasks
-
   "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" .
   "n35_req exits" .
   "" .
