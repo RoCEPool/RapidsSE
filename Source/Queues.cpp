@@ -725,17 +725,18 @@ void Queues::vScheduleYieldedTask(Task* pTask)
     
     i8 i_Slot = pTask->iSlot();
     
-    m_pReadySlotQueues[pTask->iSlot()]->vGrabLock();
+    m_pReadySlotQueues[i_Slot]->vGrabLock();
     
-    i8 iLengthReadySlotQueue = m_pReadyQueue->nTasks();
+    i8 iLengthReadySlotQueue = m_pReadySlotQueues[i_Slot]->nTasks();
+    vTrace("SlotQ[%lld] %lld\n"_Stz, i_Slot, iLengthReadySlotQueue);
     if (0 == iLengthReadySlotQueue) {
-      m_pReadySlotQueues[pTask->iSlot()]->vDropLock();
+      m_pReadySlotQueues[i_Slot]->vDropLock();
       pCallingThread->vReExecuteTask(pTask);
     }
     else {
       pTask->vState(TS_READY);
       vAddToReadySlotQueue_NL(pTask);
-      m_pReadySlotQueues[pTask->iSlot()]->vDropLock();
+      m_pReadySlotQueues[i_Slot]->vDropLock();
     }
   }
   else {
