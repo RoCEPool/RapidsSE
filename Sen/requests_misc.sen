@@ -112,7 +112,7 @@
 : p35_req ( sTableNm -- <R> )
 
   locals| sTableNm |
-  1000000 task.sleep
+  //1000000 task.sleep
 
   "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" .
   "p35_req entry" .
