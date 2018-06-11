@@ -429,18 +429,24 @@
 /*----------------------------------------------------------------------------*/
 : r35_partition_e2 ( sTableNm -- )
 
-  0 locals| pTable sTableNm |
+  locals| sTableNm |
+
+  0 locals| pTable |
+
   "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" .
   "r35_partition_e2" .
   "" .
+
   sTableNm .
 
   // push named table folder onto path
   // i.e. task.dicStack will be ../tables/<sTableNm>
-  sTableNm "pushTable" find execute assert                                // ../tables/sTableNm
+  sTableNm pushTable assert                               // ../tables/sTableNm
   sTableNm find execute to pTable
-  pTable  p35SpawnChildTasksTableFetch
-  "popTable" find execute
+
+  pTable p35SpawnChildTasksTableFetch
+
+  popTable
 
   "parent waiting for acks" .
   ackWait
