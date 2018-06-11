@@ -194,7 +194,7 @@ void Queues::vAddToReadyQueue_NL(Task* pTask)
   pTask->vTaskOrderNo(++m_ziTaskOrderNo);
   
   m_pReadyQueue->vAddTask(pTask);
-  //vTrace("ReadyQ %lld\n"_Stz, m_pReadyQueue->nTasks());
+  //vTrace("vAddToReadyQueue_NL: ReadyQ %lld\n"_Stz, m_pReadyQueue->nTasks());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -717,27 +717,45 @@ void Queues::vScheduleYieldedTask(Task* pTask)
   if (pCallingThread->bGeneralThread()) {
 
     // - A general thread has executed a partition task which retured TS_YIELDED.
-    //   If the ready slot queue is empty then this general thread can
+    //   If the ready queue and ready slot queue is empty then this general thread can
     //     continue to execute the yield task.
     //   Otherwise we add the task to the ready slot queue
 
     //for (i8 iSlot = 0; iSlot < gpAttachMap->m_pGrid->iSlots(); iSlot++)
     
     i8 i_Slot = pTask->iSlot();
+
+    // first check if any tasks in ready queue
+    i8 iLengthReadyQueue = m_pReadyQueue->nTasks();
+    vTrace("ReadyQ %lld\n"_Stz, i_Slot, iLengthReadyQueue);
     
-    m_pReadySlotQueues[i_Slot]->vGrabLock();
-    
-    i8 iLengthReadySlotQueue = m_pReadySlotQueues[i_Slot]->nTasks();
-    vTrace("SlotQ[%lld] %lld\n"_Stz, i_Slot, iLengthReadySlotQueue);
-    if (0 == iLengthReadySlotQueue) {
-      m_pReadySlotQueues[i_Slot]->vDropLock();
-      pCallingThread->vReExecuteTask(pTask);
-    }
-    else {
+    if (0 == iLengthReadyQueue) {
+      
+      // now check if any ready tasks in ready slot queue
+      m_pReadySlotQueues[i_Slot]->vGrabLock();
+      i8 iLengthReadySlotQueue = m_pReadySlotQueues[i_Slot]->nTasks();
+      
+      vTrace("SlotQ[%lld] %lld\n"_Stz, i_Slot, iLengthReadySlotQueue);
+      
+      if (0 == iLengthReadySlotQueue) {
+        m_pReadySlotQueues[i_Slot]->vDropLock();
+        pCallingThread->vReExecuteTask(pTask);
+        return;
+      }
+      
       pTask->vState(TS_READY);
       vAddToReadySlotQueue_NL(pTask);
       m_pReadySlotQueues[i_Slot]->vDropLock();
+      return;
+    
     }
+    
+    // just add task to ready slot queue
+    m_pReadySlotQueues[i_Slot]->vGrabLock();
+    pTask->vState(TS_READY);
+    vAddToReadySlotQueue_NL(pTask);
+    m_pReadySlotQueues[i_Slot]->vDropLock();
+    
   }
   else {
     
