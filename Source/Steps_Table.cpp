@@ -20,6 +20,7 @@ void Task::vAddPrimitives_Table(void)
   vAddPrimitive("table.drop"_Stz,               &vTableDrop,             false);
   vAddPrimitive("table.dump"_Stz,               &vTableDump,             false);
   vAddPrimitive("table.getColumns"_Stz,         &vTableGetColumns,       false);
+  vAddPrimitive("table.getPtn"_Stz,             &vTableGetPtn,           false);
   vAddPrimitive("table.hiddenIndex@"_Stz,       &vTableHiddenIndexFetch, false);
   vAddPrimitive("table.hiddenIndex!"_Stz,       &vTableHiddenIndexStore, false);
   vAddPrimitive("table.indexCount"_Stz,         &vTableIndexCount,       false);
@@ -27,7 +28,7 @@ void Task::vAddPrimitives_Table(void)
   vAddPrimitive("table.insert"_Stz,             &vTableInsert,           false);
   vAddPrimitive("table.insertEntries"_Stz,      &vTableInsertEntries,    false);
   vAddPrimitive("table.lazyBuildIndexes"_Stz,   &vTableLazyBuildIndexes, false);
-  vAddPrimitive("table.isLoading!"_Stz,         &vTableIsLoadingStore,     false);
+  vAddPrimitive("table.isLoading!"_Stz,         &vTableIsLoadingStore,   false);
   vAddPrimitive("table.name"_Stz,               &vTableName,             false);
   vAddPrimitive("table.ref"_Stz,                &vTableRef,              false);
   vAddPrimitive("table.removeIndex"_Stz,        &vTableRemoveIndex,      false);
@@ -319,6 +320,30 @@ void Task::vTableGetColumns(MP_Task mpTask)
   }
   
   mpTask->m_pDataStack->vPushS4K(s);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.getPtn -- get table partition given slot no                          */
+/*----------------------------------------------------------------------------*/
+void Task::vTableGetPtn(MP_Task mpTask)
+{
+  ENTRY("vTableGetPtn"_Stz);
+  
+  Object* pPtrTable;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+    THROW_INVALID_DSTACK("table.getColumns"_Stz);
+  Table* pTable = _pTable(pPtrTable);
+  
+  i8 i_Slot;
+  if ( ! mpTask->m_pDataStack->bPopAsInt(i_Slot) )
+    THROW_INVALID_DSTACK("table.getPtn"_Stz);
+  
+  // get the table partition
+  TablePtn* pTablePtn = pTable->pPartition(i_Slot);
+
+  mpTask->m_pDataStack->vPushObject(pTablePtn);
   
   EXIT();
 }
