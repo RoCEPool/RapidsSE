@@ -1253,7 +1253,8 @@ namespace Tasks
     static void vTablePtnAttemptGrabWrite(MP_Task mpTask);
     static void vTablePtnDropRead(MP_Task mpTask);
     static void vTablePtnDropWrite(MP_Task mpTask);
-    
+    static void vTablePtnIsLocked(MP_Task mpTask);
+  
     // task
     static void vTaskAck(MP_Task mpTask);
     static void vTaskAcksFetch(MP_Task mpTask);

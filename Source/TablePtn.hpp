@@ -37,6 +37,7 @@ namespace DBobjects
     void vDropWrite();
     bool bGrabRead(void);
     bool bGrabWrite(void);
+    bool bIsLocked(void);
     i8   iPartitionId(void);
     void vPartitionId(i8 iPartitionId);
     bool bPopulateIndex(i8 iIndexNo);

@@ -326,6 +326,8 @@
 
     iPartitionNo pTable tablePtnGrabRead
 
+    iPartitionNo pTable tablePtn::IsLocked assert
+
     // dump the table partition no
     iPartitionNo pTable tablePtn::dump
 

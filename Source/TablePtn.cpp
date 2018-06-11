@@ -155,6 +155,16 @@ bool TablePtn::bGrabWrite(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is the table partition locked?                                             */
+/*----------------------------------------------------------------------------*/
+bool TablePtn::bIsLocked(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  return m_xLock.bIsLocked();
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert a row into this strand                                              */
 /*----------------------------------------------------------------------------*/
 void TablePtn::vAddIndex(IndexTree* pIndexTree)
