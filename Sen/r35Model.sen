@@ -394,11 +394,11 @@
     // spawn an n35 child task
     pTable
     1                              // no. of args
-    I grid::toPartition            // partition
     "_p35ChildTableFetch_"         // seed word
     task::this                     // parent task
     "R35PartitionChildTableFetch"  // task name
     TK_R35_CHILD                   // task kind
+    I grid::toPartition            // partition
     spawnR35PartitionedChildTask to pChildTask
 
   loop
