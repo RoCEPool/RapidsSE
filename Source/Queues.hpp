@@ -72,8 +72,14 @@ namespace Threads
     void vAddToSleepingQueue_NL(Task* pTask);
     void vAddToWaitingQueue_NL(Task* pTask);
   
+    i8   nExecutingQueueTasks(void);
+    i8   nReadyQueueTasks(void);
+    i8   nReadySlotQueueTasks(i8 iSlot);
+    i8   nSleepingQueueTasks(void);
+    i8   nQWaitingQueueTasks(void);
+    
     Thread* pGrabIdleThread(void);
-  
+
     Task* pInspectReadyQueue(Thread* pCallingThread);
     Task* pInspectReadySlotQueue(Thread* pCallingThread);
     Task* pInspectSleepingQueue(Thread* pCallingThread);

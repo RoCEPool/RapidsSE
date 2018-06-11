@@ -262,6 +262,56 @@ void Queues::vAddToWaitingQueue_NL(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get no of tasks in the executing queue                                     */
+/*----------------------------------------------------------------------------*/
+i8 Queues::nExecutingQueueTasks(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  return m_pExecutingQueue->nTasks();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get no of tasks in the ready queue                                         */
+/*----------------------------------------------------------------------------*/
+i8 Queues::nReadyQueueTasks(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  return m_pReadyQueue->nTasks();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get no of tasks in the ready slot queue                                    */
+/*----------------------------------------------------------------------------*/
+i8 Queues::nReadySlotQueueTasks(i8 iSlot)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  return m_pReadySlotQueues[iSlot]->nTasks();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get no of tasks in the sleeping queue                                      */
+/*----------------------------------------------------------------------------*/
+i8 Queues::nSleepingQueueTasks(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  return m_pSleepingQueue->nTasks();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get no of tasks in the waiting queue                                       */
+/*----------------------------------------------------------------------------*/
+i8 Queues::nQWaitingQueueTasks(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  return m_pWaitingQueue->nTasks();
+}
+
+/*----------------------------------------------------------------------------*/
 /* attempt to find idle thread                                                */
 /*----------------------------------------------------------------------------*/
 Thread* Queues::pGrabIdleThread(void)
