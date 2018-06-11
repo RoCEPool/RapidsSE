@@ -43,9 +43,9 @@
 /*----------------------------------------------------------------------------*/
 /* create a partitioned child task and append to slot ready queue             */
 /*----------------------------------------------------------------------------*/
-: spawnR35PartitionedChildTask ( ... nArgs iPartition sSeedWord pParentTask sTaskNm eTaskKind -- pTask )
+: spawnR35PartitionedChildTask ( ... nArgs sSeedWord pParentTask sTaskNm eTaskKind iPartition -- pTask )
 
-  locals| eTaskKind sTaskNm pParent sSeedWord iPartition nArgs |
+  locals| iPartition eTaskKind sTaskNm pParent sSeedWord nArgs |
 
   nullptr locals| pTask |
 
@@ -276,7 +276,6 @@
   "" .
 
   100 n35spawnGeneralTasks
-
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -330,11 +329,11 @@
 
     // spawn an n35 child task
     0                        // no. of args
-    I grid::toPartition      // partition
     "_p35Child_"             // seed word
     task::this               // parent task
     "R35PartitionChild"      // task name
     TK_R35_CHILD             // task kind
+    I grid::toPartition      // partition no.
     spawnR35PartitionedChildTask to pChildTask
 
   loop
