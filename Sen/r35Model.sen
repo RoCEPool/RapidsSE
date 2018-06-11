@@ -70,23 +70,25 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* a n35 spawned child task                                                   */
+/* n35 child task entry point                                                 */
 /*----------------------------------------------------------------------------*/
-: n35SpawnedChild ( childNo -- )
+: _n35Child_ ( childNo -- )
 
   locals| iChildNo |
 
-  "n35SpawnedChild" .
+  "_n35Child_" .
 
+  // child task yields
   iChildNo "child %v yielding" str.format .
   task.yield
   iChildNo "child %v running" str.format .
 
+  // child task sleeps
   iChildNo "child %v sleeping for 3 seconds" str.format .
   3000000 task.sleep
   iChildNo "child %v awake" str.format .
 
-  // ack the parent task
+  // child task acks it's parent
   task.parent@ ack
 
   iChildNo "child %v exiting" str.format .
@@ -101,7 +103,7 @@
 
   0 locals| pChildTask |
 
-  // grab task lock
+  // grab this task's lock
   task::this task.grabLock
 
   // set number of children to ack this parent
@@ -111,10 +113,9 @@
   nChildren 0 do
 
     // spawn an n35 child task
-
     I                 // argument
     1                 // no. of args
-    "n35SpawnedChild" // seed word
+    "_n35Child_"      // seed word
     task::this        // parent task
     "R35Child"        // task name
     TK_R35_CHILD      // task kind
@@ -128,24 +129,24 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* an n35 spawned general task                                                */
+/* n35 general task                                                           */
 /*----------------------------------------------------------------------------*/
-: n35SpawnedGeneral ( taskNo -- )
+: _n35General_ ( taskNo -- )
 
   locals| iTaskNo |
 
   0 locals| iSleep |
 
-  "n35SpawnedGeneral" .
+  "_n35General_" .
 
   10 0
   do
-    // yield
+    // general task yields
     iTaskNo "task %v yielding" str.format .
     task.yield
     iTaskNo "task %v running" str.format .
 
-    //sleep
+    // general task sleeps for I seconds
     I 1000000 * to iSleep
     I iTaskNo "task %v sleeping for %v seconds" str.format .
     iSleep task.sleep
@@ -166,10 +167,9 @@
   nTasks 0 do
 
     // spawn an n35 general child task
-
     I                   // argument
     1                   // no. of args
-    "n35SpawnedGeneral" // seed word
+    "_n35General_"      // seed word
     nullPtr             // no parent task
     "R35SpawnedTask"    // task name
     TK_R35_CHILD        // task kind
@@ -183,11 +183,11 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* node e1 is a yield test                                                    */
 /*----------------------------------------------------------------------------*/
 : r35_node_e1
 
-  "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" .
+  "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" .
   "r35_node_e1" .
   "" .
 
@@ -197,11 +197,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* node e2 is a sleeping test (0 microsecond sleep)                           */
 /*----------------------------------------------------------------------------*/
 : r35_node_e2
 
-  "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" .
+  "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" .
   "r35_node_e2" .
   "" .
 
@@ -211,11 +211,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* node e3 is a sleeping test (3 second sleep)                                */
 /*----------------------------------------------------------------------------*/
 : r35_node_e3
 
-  "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" .
+  "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" .
   "r35_node_e3" .
   "" .
 
@@ -225,11 +225,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* node e4 is a yield, sleep, yield, sleep test                               */
 /*----------------------------------------------------------------------------*/
 : r35_node_e4
 
-  "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" .
+  "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" .
   "r35_node_e4" .
   "" .
 
@@ -251,11 +251,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* node e5 is a spawn children ; parent ack wait test                         */
 /*----------------------------------------------------------------------------*/
 : r35_node_e5
 
-  "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" .
+  "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" .
   "r35_node_e5" .
   "" .
 
@@ -267,11 +267,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* node e6 is a spawn children ; no wait test                                 */
 /*----------------------------------------------------------------------------*/
 : r35_node_e6
 
-  "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" .
+  "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" .
   "r35_node_e6" .
   "" .
 
@@ -285,38 +285,40 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* p35 child task test                                                        */
+/* p35 child task entry point                                                 */
 /*----------------------------------------------------------------------------*/
-: p35SpawnedChild ( -- )
+: _p35Child_ ( -- )
 
   locals| iPartitionNo |
 
-  "p35SpawnedChild" .
+  "p35Child" .
 
   task::this task.partition@ to iPartitionNo
 
+  // partition child yields
   iPartitionNo "partitionTask %v yielding" str.format .
   task.yield
   iPartitionNo "partitionTask %v running" str.format .
 
+  // partition child sleeps 3 seconds
   iPartitionNo "partitionTask %v sleeping for 3 seconds" str.format .
   3000000 task.sleep
   iPartitionNo "partitionTask %v awake" str.format .
 
-  // ack the parent task
+  // partition child acks it's parent
   task.parent@ ack
 
   iPartitionNo "partitionTask %v exiting" str.format .
 ;
 
 /*----------------------------------------------------------------------------*/
-/* spawn p35 partition child task                                             */
+/* spawn p35 partitioned child tasks                                          */
 /*----------------------------------------------------------------------------*/
 : p35SpawnChildTasks
 
   0 locals| pChildTask |
 
-  // grab task lock
+  // grab this task's lock
   task::this task.grabLock
 
   // set number of children to ack this parent
@@ -329,7 +331,7 @@
     // spawn an n35 child task
     0                        // no. of args
     I grid::toPartition      // partition
-    "p35SpawnedChild"        // seed word
+    "_p35Child_"             // seed word
     task::this               // parent task
     "R35PartitionChild"      // task name
     TK_R35_CHILD             // task kind
@@ -343,11 +345,11 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* partition e1 is a spawn children ; ack wait test                           */
 /*----------------------------------------------------------------------------*/
 : r35_partition_e1
 
-  "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" .
+  "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" .
   "r35_partition_e1" .
   "" .
 
