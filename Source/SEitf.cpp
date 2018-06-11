@@ -3501,7 +3501,12 @@ bool SEitf::bP35(TokenVec& xTokenVec, i8 iReqNo)
   
   ASSERT(xTokenVec[0]->bSame("p35"_Stz));
   
-  sRequest = SeRequests[iReqNo].aRequest;
+  sRequest.vCopy("\""_Stz);
+  sRequest.vConcat(xTokenVec[1]->aText());
+  sRequest.vConcat("\""_Stz);
+  
+  sRequest.vConcat(" "_Stz);
+  sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest_R35(sRequest,xTokenVec.bDetachedRequest());
 }
@@ -3685,7 +3690,7 @@ bool SEitf::bAppendRequest_R35(StrVal& sRequest, bool bDetached)
   
   // if the current request id matches the next request id, it means
   // we have not read a response of the previous request
-  if (m_iCurrentRequestId == m_iNextRequestId) {
+  if (m_iCurrentRequestId == m_iNextRequestId && ! bDetached) {
     vError("Response for previous request not retrieved. Out-Of-Sync request-response.\n"_Stz);
     vSetLastError(EC_RESPONSE_PENDING);
     return false;

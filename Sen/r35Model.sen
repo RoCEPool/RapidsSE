@@ -311,6 +311,41 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* p35 child task entry point                                                 */
+/*----------------------------------------------------------------------------*/
+: _p35ChildTableFetch_ ( tablePtr -- )
+
+  0 locals| iPartitionNo pTable |
+
+  "_p35ChildTableFetch_" .
+
+  task::this task.partition@ to iPartitionNo
+
+  3 0
+  do
+
+    iPartitionNo pTable "tablePtnAttemptGrabRead" find execute
+      // dump the table partition no
+      iPartitionNo pTable tablePtn::dump
+      pTable table.name
+      I
+      "Loop %v Table %v got partition no %v under lock" str.format .
+    iPartitionNo pTable "tablePtnDropRead" find execute
+
+    pTable table.name
+    I
+    "Loop %v Table %v yield" str.format .
+    task.yield
+
+  loop
+
+  // partition child acks it's parent
+  task.parent@ ack
+
+  iPartitionNo "partitionTask %v exiting" str.format .
+;
+
+/*----------------------------------------------------------------------------*/
 /* spawn p35 partitioned child tasks                                          */
 /*----------------------------------------------------------------------------*/
 : p35SpawnChildTasks
@@ -340,6 +375,36 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* spawn p35 partitioned child tasks                                          */
+/*----------------------------------------------------------------------------*/
+: p35SpawnChildTasksTableFetch ( tablePtr --- )
+
+  0 locals| pChildTask pTable |
+
+  // grab this task's lock
+  task::this task.grabLock
+
+  // set number of children to ack this parent
+  grid.slots setAcks
+
+  // loop from 0 to nChildren-1
+  grid.slots 0
+  do
+
+    // spawn an n35 child task
+    pTable
+    1                              // no. of args
+    I grid::toPartition            // partition
+    "_p35ChildTableFetch_"         // seed word
+    task::this                     // parent task
+    "R35PartitionChildTableFetch"  // task name
+    TK_R35_CHILD                   // task kind
+    spawnR35PartitionedChildTask to pChildTask
+
+  loop
+  ;
+
+/*----------------------------------------------------------------------------*/
 /*-- partition experiments ---------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -353,6 +418,29 @@
   "" .
 
   p35SpawnChildTasks
+
+  "parent waiting for acks" .
+  ackWait
+  "parent received all acks" .
+;
+
+/*----------------------------------------------------------------------------*/
+/* partition e2 is a spawn children ; child fetchs from table; ack wait test  */
+/*----------------------------------------------------------------------------*/
+: r35_partition_e2 ( sTableNm -- )
+
+  0 locals| pTable sTableNm |
+  "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" .
+  "r35_partition_e2" .
+  "" .
+  sTableNm .
+
+  // push named table folder onto path
+  // i.e. task.dicStack will be ../tables/<sTableNm>
+  sTableNm "pushTable" find execute assert                                // ../tables/sTableNm
+  sTableNm find execute to pTable
+  pTable  p35SpawnChildTasksTableFetch
+  "popTable" find execute
 
   "parent waiting for acks" .
   ackWait
