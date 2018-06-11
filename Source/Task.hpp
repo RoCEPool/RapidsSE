@@ -1240,10 +1240,11 @@ namespace Tasks
     static void vTableTruncate(MP_Task mpTask);
     
     // table partition
-    static void vTablePtnDropRead(MP_Task mpTask);
-    static void vTablePtnDropWrite(MP_Task mpTask);
+    static void vTablePtnDump(MP_Task mpTask);
     static void vTablePtnAttemptGrabRead(MP_Task mpTask);
     static void vTablePtnAttemptGrabWrite(MP_Task mpTask);
+    static void vTablePtnDropRead(MP_Task mpTask);
+    static void vTablePtnDropWrite(MP_Task mpTask);
     
     // task
     static void vTaskAck(MP_Task mpTask);
