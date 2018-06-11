@@ -358,6 +358,7 @@ namespace Tasks
     void vAddPrimitives_Process(void);
     void vAddPrimitives_Push(void);
     void vAddPrimitives_Queue(void);
+    void vAddPrimitives_Queues(void);
     void vAddPrimitives_RbCursor(void);
     void vAddPrimitives_Reg(void);
     void vAddPrimitives_Row(void);
@@ -974,7 +975,14 @@ namespace Tasks
     static void vQueueDump(MP_Task mpTask);
     static void vQueueInit(MP_Task mpTask);
     static void vQueueNew(MP_Task mpTask);
-    static void vQueuePop(MP_Task mpTask);      
+    static void vQueuePop(MP_Task mpTask);
+    
+    // queues
+    static void vQueuesExecutingLength(MP_Task mpTask);
+    static void vQueuesReadyLength(MP_Task mpTask);
+    static void vQueuesReadySlotLength(MP_Task mpTask);
+    static void vQueuesSleepingLength(MP_Task mpTask);
+    static void vQueuesWaitingLength(MP_Task mpTask);
 
     // rbCursor
     static void vRbCursorBegin(MP_Task mpTask);

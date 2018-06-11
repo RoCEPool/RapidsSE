@@ -1034,6 +1034,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_Push();
   
   vAddPrimitives_Queue();
+  vAddPrimitives_Queues();
   
   vAddPrimitives_RbCursor();
   vAddPrimitives_Row();
