@@ -1,29 +1,37 @@
 /*============================================================================*/
 /* _scratch -- scratch test                                                   */
 /*============================================================================*/
-create table TABLE1 (
-PCOL1   INTEGER NOT NULL,
-tcol1   INTEGER NOT NULL,
-cola1   INTEGER,
-COLB1   VARCHAR(20),
-colc1   TIMESTAMP,
-cold1   FLOAT,
-cole1   DECIMAL(15, 2),
-colf1   INTEGER,
-colg1   INTEGER,
-ucol    INTEGER,
-ucolvc  VARCHAR(5)
+create table tableA (
+  col1   INTEGER NOT NULL,
+  col2   INTEGER NOT NULL
 );
 
-create index tbl1idx3 on table1(colb1);
+create table tableB (
+  col1   INTEGER NOT NULL,
+  col2   INTEGER NOT NULL
+);
 
-//create index idx on table1(colb1);
-ld TABLE1 "../Seth/tests/Load/tbl1data.csv" ;
+create table tableC (
+  col1   INTEGER NOT NULL,
+  col2   INTEGER NOT NULL
+);
 
-print "BLUE or blue or BLACK...";
-fetch table1 "colb1 'BLUE' = colb1 'blue' = OR colb1 'BLACK' = OR";
-print "BLUE or blue or BLACK or black...";
-fetch table1 "colb1 'BLUE' = colb1 'blue' = OR colb1 'BLACK' = OR colb1 'black' = OR";
+create table tableD (
+  col1   INTEGER NOT NULL,
+  col2   INTEGER NOT NULL
+);
+
+print "p35 tableA";
+p35 "tableA" &;
+
+print "p35 tableB";
+p35 "tableB" &;
+
+print "p35 tableC";
+p35 "tableC" &;
+
+print "p35 tableD";
+p35 "tableD" &;
 
 // table1 "colb1 'BLUE' = colb1 'blue' = OR 'BLACK' colb1 = OR";
 /*
