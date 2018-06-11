@@ -168,7 +168,7 @@ tp: insertBufferEntries$
   //"partitionInsertBufferEntries" .
   //iTxId .
 
-  iPartitionNo pTable tablePtnAttemptGrabWrite  //! partitionLock
+  iPartitionNo pTable tablePtnGrabWrite  //! partitionLock
 
   iTxId >str iPartitionNo grid::toSlot >str pWorkingBuffer >str pTable >str table.insertEntries ( )
 
@@ -223,7 +223,7 @@ tp: insertBufferEntries$
 
   pWorkingBuffer workingBuffer.isLast@ to bIsLast
 
-  iPartitionNo pTable tablePtnAttemptGrabWrite  //! partitionLock
+  iPartitionNo pTable tablePtnGrabWrite  //! partitionLock
 
   iTxId >str iPartitionNo grid::toSlot >str pWorkingBuffer >str pTable >str table.insertEntries ( )
 

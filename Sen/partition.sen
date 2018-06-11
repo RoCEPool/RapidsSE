@@ -116,9 +116,9 @@ tp: checkPartitionTable1
 ;
 
 /*----------------------------------------------------------------------------*/
-/* attempt to grab read lock on a partition of given table                    */
+/* grab read lock on a partition of given table                               */
 /*----------------------------------------------------------------------------*/
-: tablePtnAttemptGrabRead ( i_Partition pTable -- )
+: tablePtnGrabRead ( i_Partition pTable -- )
 
   locals| pTable |      // given table
   locals| i_Partition | // which partition
@@ -131,9 +131,9 @@ tp: checkPartitionTable1
 ;
 
 /*----------------------------------------------------------------------------*/
-/* attempt to grab write lock on a partition of given table                   */
+/* grab write lock on a partition of given table                              */
 /*----------------------------------------------------------------------------*/
-: tablePtnAttemptGrabWrite ( i_Partition pTable -- )
+: tablePtnGrabWrite ( i_Partition pTable -- )
 
   locals| pTable |      // given table
   locals| i_Partition | // which partition

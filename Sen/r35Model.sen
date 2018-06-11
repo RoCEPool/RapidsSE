@@ -324,7 +324,7 @@
   3 0
   do
 
-    iPartitionNo pTable "tablePtnAttemptGrabRead" find execute
+    iPartitionNo pTable "tablePtnGrabRead" find execute
       // dump the table partition no
       iPartitionNo pTable tablePtn::dump
       pTable table.name

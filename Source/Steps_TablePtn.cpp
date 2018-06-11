@@ -11,11 +11,11 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_TablePartition(void)
 {
-  vAddPrimitive("tablePtn::dump"_Stz,            &vTablePtnDump,           false);
-  vAddPrimitive("tablePtn::attemptGrabRead"_Stz, &vTablePtnAttemptGrabRead,false);
+  vAddPrimitive("tablePtn::dump"_Stz,            &vTablePtnDump,            false);
+  vAddPrimitive("tablePtn::attemptGrabRead"_Stz, &vTablePtnAttemptGrabRead, false);
   vAddPrimitive("tablePtn::attemptGrabWrite"_Stz,&vTablePtnAttemptGrabWrite,false);
-  vAddPrimitive("tablePtn::dropRead"_Stz,        &vTablePtnDropRead,    false);
-  vAddPrimitive("tablePtn::dropWrite"_Stz,       &vTablePtnDropWrite,   false);
+  vAddPrimitive("tablePtn::dropRead"_Stz,        &vTablePtnDropRead,        false);
+  vAddPrimitive("tablePtn::dropWrite"_Stz,       &vTablePtnDropWrite,       false);
 }
 
 /*----------------------------------------------------------------------------*/
