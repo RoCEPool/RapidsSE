@@ -4,6 +4,40 @@
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+create table tableA (
+  col1   INTEGER NOT NULL,
+  col2   INTEGER NOT NULL
+);
+
+create table tableB (
+  col1   INTEGER NOT NULL,
+  col2   INTEGER NOT NULL
+);
+
+create table tableC (
+  col1   INTEGER NOT NULL,
+  col2   INTEGER NOT NULL
+);
+
+create table tableD (
+  col1   INTEGER NOT NULL,
+  col2   INTEGER NOT NULL
+);
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+print "p35 tableA";
+p35 "tableA" &;
+
+print "p35 tableB";
+p35 "tableB" &;
+
+print "p35 tableC";
+p35 "tableC" &;
+
+print "p35 tableD";
+p35 "tableD" &;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
