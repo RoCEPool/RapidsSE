@@ -313,7 +313,7 @@
 /*----------------------------------------------------------------------------*/
 /* p35 child task entry point                                                 */
 /*----------------------------------------------------------------------------*/
-: _p35ChildTableFetch_ ( tablePtr -- )
+: _p35ChildTableFetch_ ( pTable -- )
 
   0 locals| iPartitionNo pTable |
 
@@ -324,17 +324,19 @@
   3 0
   do
 
-    iPartitionNo pTable "tablePtnGrabRead" find execute
-      // dump the table partition no
-      iPartitionNo pTable tablePtn::dump
-      pTable table.name
-      I
-      "Loop %v Table %v got partition no %v under lock" str.format .
-    iPartitionNo pTable "tablePtnDropRead" find execute
+    iPartitionNo pTable tablePtnGrabRead
 
-    pTable table.name
-    I
-    "Loop %v Table %v yield" str.format .
+    // dump the table partition no
+    iPartitionNo pTable tablePtn::dump
+
+    pTable table.name I
+      "Loop %v Table %v got partition no %v under lock" str.format .
+
+    iPartitionNo pTable tablePtnDropRead
+
+    pTable table.name I
+      "Loop %v Table %v yield" str.format .
+
     task.yield
 
   loop
