@@ -22,6 +22,9 @@
 "operators.sen" include
 "planners.sen" include
 "utilities.sen" include
+
+"r35Model.sen" include
+
 "testing.sen" include
 "munge.sen" include
 
