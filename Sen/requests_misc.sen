@@ -129,15 +129,15 @@
 /*----------------------------------------------------------------------------*/
 : p35_req ( -- <R> )
 
-  "parent spawning children" .
+  "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" .
+  "p35_req entry" .
+  "" .
 
-  // spawn p35 children
-  p35spawnChildren
+  r35_partition_e1
 
-  "parent waiting for acks" .
-
-  // wait for child tasks to complete
-  ackWait
+  "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" .
+  "p35_req exits" .
+  "" .
 
   "p35"
 

@@ -93,7 +93,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* spawn given number of n35 child tasks                                      */
+/* spawn given number of n35 child tasks (have this task as parent)           */
 /*----------------------------------------------------------------------------*/
 : n35spawnChildTasks ( nChildren -- )
 
@@ -111,10 +111,11 @@
   nChildren 0 do
 
     // spawn an n35 child task
+
     I                 // argument
-    1                 // nArgs
-    "n35SpawnedChild" // sSeedWord
-    task::this        // pParentTask
+    1                 // no. of args
+    "n35SpawnedChild" // seed word
+    task::this        // parent task
     "R35Child"        // task name
     TK_R35_CHILD      // task kind
       spawnR35GeneralChildTask to pChildTask
@@ -127,7 +128,7 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* n35 spawned general task test                                              */
+/* an n35 spawned general task                                                */
 /*----------------------------------------------------------------------------*/
 : n35SpawnedGeneral ( taskNo -- )
 
@@ -155,7 +156,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* spawn given number of n35 general tasks                                    */
+/* spawn given number of n35 general tasks (have no parent)                   */
 /*----------------------------------------------------------------------------*/
 : n35spawnGeneralTasks ( nTasks -- )
 
@@ -164,11 +165,12 @@
   // loop from 0 to nChildren-1
   nTasks 0 do
 
-    // spawn an n35 task
+    // spawn an n35 general child task
+
     I                   // argument
-    1                   // nArgs
-    "n35SpawnedGeneral" // sSeedWord
-    nullPtr             // pParentTask
+    1                   // no. of args
+    "n35SpawnedGeneral" // seed word
+    nullPtr             // no parent task
     "R35SpawnedTask"    // task name
     TK_R35_CHILD        // task kind
       spawnR35GeneralChildTask to pTask
@@ -260,10 +262,8 @@
   3 n35spawnChildTasks
 
   "parent waiting for acks" .
-
   ackWait
-
-  "parent waiting for acks" .
+  "parent received all acks" .
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -278,48 +278,20 @@
   100 n35spawnGeneralTasks
 
 ;
+
 ////////////////////////////////////////////////////////////////////////////////
 //                           Partition Level Testing                          //
 ////////////////////////////////////////////////////////////////////////////////
 
 
 /*----------------------------------------------------------------------------*/
-/* spawn p35 partition child task                                             */
-/*----------------------------------------------------------------------------*/
-: p35spawnChildren
-
-  0 locals| pChildTask |
-
-  // grab task lock
-  task::this task.grabLock
-
-  // set number of children to ack this parent
-  grid.slots setAcks
-
-  // loop from 0 to nChildren-1
-  grid.slots 0
-  do
-
-    // spawn an n35 child task
-    0                        // nArgs
-    I grid::toPartition      // partition
-    "p35child"               // sSeedWord
-    task::this               // pParentTask
-    "R35PartitionChild"      // task name
-    TK_R35_CHILD             // task kind
-    spawnR35PartitionedChildTask to pChildTask
-
-  loop
-;
-
-/*----------------------------------------------------------------------------*/
 /* p35 child task test                                                        */
 /*----------------------------------------------------------------------------*/
-: p35child ( -- )
+: p35SpawnedChild ( -- )
 
   locals| iPartitionNo |
 
-  "p35child" .
+  "p35SpawnedChild" .
 
   task::this task.partition@ to iPartitionNo
 
@@ -338,10 +310,55 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* spawn p35 partition child task                                             */
+/*----------------------------------------------------------------------------*/
+: p35SpawnChildTasks
+
+  0 locals| pChildTask |
+
+  // grab task lock
+  task::this task.grabLock
+
+  // set number of children to ack this parent
+  grid.slots setAcks
+
+  // loop from 0 to nChildren-1
+  grid.slots 0
+  do
+
+    // spawn an n35 child task
+    0                        // no. of args
+    I grid::toPartition      // partition
+    "p35SpawnedChild"        // seed word
+    task::this               // parent task
+    "R35PartitionChild"      // task name
+    TK_R35_CHILD             // task kind
+    spawnR35PartitionedChildTask to pChildTask
+
+  loop
+;
+
+/*----------------------------------------------------------------------------*/
 /*-- partition experiments ---------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: r35_partition_e1
+
+  "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" .
+  "r35_partition_e1" .
+  "" .
+
+  p35SpawnChildTasks
+
+  "parent waiting for acks" .
+  ackWait
+  "parent received all acks" .
+;
+
+////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
