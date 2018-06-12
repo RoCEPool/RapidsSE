@@ -9,6 +9,28 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* compare two jobs by their jobId                                            */
+/*----------------------------------------------------------------------------*/
+bool bJobCompare(void* pObjectInsert, void* pObjectScan, bool& bMatch)
+{
+  Job* pInsertEntry = _pJob(pObjectInsert);
+  Job* pScanEntry   = _pJob(pObjectScan);
+  
+  if ( ! pObjectScan )
+    return false;
+  
+  if (pInsertEntry->iJobId() == pScanEntry->iJobId())
+    bMatch = true;
+  else
+    bMatch = false;
+  
+  if (pInsertEntry->iJobId() > pScanEntry->iJobId())
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
 Job* JobsModel::_pJob(void* aAddr)

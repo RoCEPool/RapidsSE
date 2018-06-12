@@ -63,6 +63,7 @@ namespace StorageEngine
     SEitfList*       m_pSEitfList;
   
     Queues*       m_pQueues;
+    Jobs*         m_pJobs; 
   
     StepArray*    m_pStepArray;
     

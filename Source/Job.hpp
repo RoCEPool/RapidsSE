@@ -33,6 +33,9 @@ namespace JobsModel
   
   Job* _pJob(void* aAddr);
 }
+
+bool bJobCompare(void* pObjectInsert, void* pObjectScan, bool& bMatch);
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
