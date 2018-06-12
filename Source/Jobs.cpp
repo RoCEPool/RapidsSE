@@ -3,6 +3,9 @@
 /*============================================================================*/
 
 #include "JobsModel.h"
+#include "StorageEngine.h"
+
+extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -50,6 +53,7 @@ Jobs::Jobs(cmpFun fCompare)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBS,_FOOTER_);
   
   m_xLock.vInitLock(LK_TASK_QUEUE);
+  m_iNextJobId = gpAttachMap->m_pGrid->iThisNode() << 48;
   m_pJobsSkipList = new SkipList(true, fCompare);
   
   _checkInitialised_(CN_JOBS);
@@ -75,6 +79,14 @@ Jobs::~Jobs(void)
 void Jobs::vAddJob(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBS,_FOOTER_);
+  
+  ASSERT(bIsLocked());
+  
+  // generate next jobId
+  i8 iJobId = m_iNextJobId++;
+  
+  // set jobId in job
+  pJob->vJobId(iJobId);
   
   m_pJobsSkipList->bInsert(pJob);
 }

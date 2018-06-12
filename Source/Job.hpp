@@ -21,8 +21,9 @@ namespace JobsModel
     Job(void);
     ~Job(void);
     
-    i8 iJobId(void);
+    i8   iJobId(void);
     void vJobId(i8 iJobId);
+    i8   iJobNode(void);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     

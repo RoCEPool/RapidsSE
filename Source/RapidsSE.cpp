@@ -409,7 +409,6 @@ void RapidsSE::vSystemInit(void)
   new StepArray;
   
   gpAttachMap->m_pQueues = new Queues;
-  gpAttachMap->m_pJobs   = new Jobs(bJobCompare);
   
   // create the plan list here
   gpAttachMap->m_pPlanList = new PlanList;
@@ -429,6 +428,8 @@ void RapidsSE::vSystemInit(void)
   gpAttachMap->m_xDicLock.vInitLock(LK_DIC);
   
   vDicCompile(gpAttachMap->m_npBootTask);
+  
+  gpAttachMap->m_pJobs   = new Jobs(bJobCompare);
   
   gpAttachMap->vRecordGlobals(gxArguments.m_sRegionName,
                               gxArguments.m_iRegionSize,

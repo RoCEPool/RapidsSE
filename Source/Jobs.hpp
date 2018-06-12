@@ -10,6 +10,7 @@ namespace JobsModel
   private:
   
     Lock      m_xLock;
+    i8        m_iNextJobId;    // next job id
     SkipList* m_pJobsSkipList;
   
     // must be last
