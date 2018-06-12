@@ -51,6 +51,8 @@ namespace DBobjects
     Footer* aFooter(void);
   };
   
+  TablePtn* _pTablePtn(void* aAddr);
+
   /*--------------------------------------------------------------------------*/
   /* TablePtnVec -- Table Partition Vector                                    */
   /*--------------------------------------------------------------------------*/

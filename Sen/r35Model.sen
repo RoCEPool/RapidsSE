@@ -317,6 +317,8 @@
 
   0 locals| iPartitionNo pTable |
 
+  0 locals| pTablePtn |
+
   "_p35ChildTableFetch_" .
 
   task::this task.partition@ to iPartitionNo
@@ -324,9 +326,11 @@
   3 0
   do
 
+    iPartitionNo pTable table.getPtn to pTablePtn
+
     iPartitionNo pTable tablePtnGrabRead
 
-    iPartitionNo pTable tablePtn::IsLocked assert
+    pTablePtn tablePtn.isLocked assert
 
     // dump the table partition no
     iPartitionNo pTable tablePtn::dump

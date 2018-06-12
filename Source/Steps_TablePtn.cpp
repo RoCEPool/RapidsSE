@@ -16,7 +16,7 @@ void Task::vAddPrimitives_TablePartition(void)
   vAddPrimitive("tablePtn::attemptGrabWrite"_Stz,&vTablePtnAttemptGrabWrite,false);
   vAddPrimitive("tablePtn::dropRead"_Stz,        &vTablePtnDropRead,        false);
   vAddPrimitive("tablePtn::dropWrite"_Stz,       &vTablePtnDropWrite,       false);
-  vAddPrimitive("tablePtn::isLocked"_Stz,        &vTablePtnIsLocked,        false);
+  vAddPrimitive("tablePtn.isLocked"_Stz,         &vTablePtnIsLocked,        false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -178,30 +178,17 @@ void Task::vTablePtnDropWrite(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* tablePtn::isLocked -- test if a table partition is locked                  */
+/* tablePtn.isLocked -- test if a table partition is locked                   */
 /*----------------------------------------------------------------------------*/
 void Task::vTablePtnIsLocked(MP_Task mpTask)
 {
   ENTRY("vTablePtnIsLocked"_Stz);
   
-  Object* pPtrTable;
+  Object* pPtrTablePtn;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTablePtn) )
+    THROW_INVALID_DSTACK("tablePtn.isLocked"_Stz);
+  TablePtn* pTablePtn = _pTablePtn(pPtrTablePtn);
   
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("tablePtn::dropWrite"_Stz);
-  
-  Table* pTable = _pTable(pPtrTable);
-  ASSERT(CN_TABLE == pTable->eClass());
-  
-  i8 iPartition;
-  if ( ! mpTask->m_pDataStack->bPop(iPartition) )
-    THROW_INVALID_DSTACK("tablePtn::dropWrite"_Stz);
-  
-  // get the slot no
-  i8 i_Slot = TablePtn::iPartitionToSlot(iPartition);
-  
-  // get the table partition
-  TablePtn* pTablePtn = pTable->pPartition(i_Slot);
-
   bool bIsLocked = pTablePtn->bIsLocked();
   
   mpTask->m_pDataStack->vPushInt(bIsLocked);

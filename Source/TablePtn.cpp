@@ -13,6 +13,18 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+TablePtn* DBobjects::_pTablePtn(void* aAddr)
+{
+  TablePtn* pTablePtn = reinterpret_cast<TablePtn*>(aAddr);
+  
+  RASSERT( !pTablePtn || CN_TABLEPTN == pTablePtn->eClass() );
+  
+  return pTablePtn;
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump partition                                                             */
 /*----------------------------------------------------------------------------*/
 void TablePtn::vDump(eCN eClass, Object* pObject, Stz* aTab)
