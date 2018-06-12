@@ -84,7 +84,9 @@ pDUMPFUN *gpDump[]
   /* 56 */ &Dump::vDummy,           // CN_INDEXLEVELS
   /* 57 */ &Dump::vInvalid,         // CN_ITEM
   /* 58 */ &Dump::vInvalid,         // CN_ITEMBUFFER
-
+  /*    */ &Job::vDump,             // CN_JOB
+  /*    */ &Jobs::vDump,            // CN_JOBS
+  
   /* 59 */ &Heap::vDump,            // CN_JUMBOPERSISTENT
   /* 60 */ &Heap::vDump,            // CN_JUMBOTRANSIENT
   
@@ -276,6 +278,9 @@ i8 giClassSize[]
   /* 56 */ 0,                          // CN_INDEXLEVELS
   /* 57 */ sizeof(Item),               // CN_ITEM
   /* 58 */ sizeof(ItemBuffer),         // CN_ITEMBUFFER
+  
+  /*    */ sizeof(Job),                // CN_JOB
+  /*    */ sizeof(Jobs),               // CN_JOBS
   
   /* 59 */ sizeof(Heap), // correct    // CN_JUMBOPERSISTENT
   /* 60 */ sizeof(Heap), // correct    // CN_JUMBOTRANSIENT
@@ -469,6 +474,9 @@ eHT geWhichHeap[]
   /* 57 */ HT_INVALID,           // CN_ITEM
   /* 58 */ HT_INVALID,           // CN_ITEMBUFFER
 
+  /*    */ HT_TRANSIENT_SMALL,   // CN_JOB
+  /*    */ HT_TRANSIENT_SMALL,   // CN_JOBS
+  
   /* 59 */ HT_INVALID,           // CN_JUMBOPERSISTENT
   /* 60 */ HT_INVALID,           // CN_JUMBOTRANSIENT
   

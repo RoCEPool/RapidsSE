@@ -80,6 +80,8 @@ pFINALIZE *gpFinalize[]
   /* 56 */ &Finalize::vUndefined,         // CN_INDEXLEVELS
   /* 57 */ &Finalize::vUndefined,         // CN_ITEM
   /* 58 */ &Finalize::vUndefined,         // CN_ITEMBUFFER
+  /*    */ &Finalize::vUndefined,         // CN_JOB
+  /*    */ &Finalize::vUndefined,         // CN_JOBS
   
   /* 59 */ &Finalize::vUndefined,         // CN_JUMBOPERSISTENT
   /* 60 */ &Finalize::vUndefined,         // CN_JUMBOTRANSIENT

@@ -84,6 +84,9 @@ enum eCN : u2 // Class Number
     /* 56 */ CN_INDEXLEVELS,
     /* 57 */ CN_ITEM,
     /* 58 */ CN_ITEMBUFFER,
+    
+    /*    */ CN_JOB,
+    /*    */ CN_JOBS,
   
     /* 59 */ CN_JUMBOPERSISTENT,
     /* 60 */ CN_JUMBOTRANSIENT,
@@ -277,6 +280,9 @@ enum eCN : u2 // Class Number
     /* 56 */ "INDEXLEVELS"_Stz,
     /* 57 */ "ITEM"_Stz,
     /* 58 */ "ITEMBUFFER"_Stz,
+    
+    /*    */ "JOB"_Stz,
+    /*    */ "JOBS"_Stz,
 
     /* 59 */ "JUMBOPERSISTENT"_Stz,
     /* 60 */ "JUMBOTRANSIENT"_Stz,
