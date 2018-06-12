@@ -11,7 +11,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_TablePartition(void)
 {
-  vAddPrimitive("tablePtn::dump"_Stz,            &vTablePtnDump,            false);
+  vAddPrimitive("tablePtn.dump"_Stz,             &vTablePtnDump,            false);
   vAddPrimitive("tablePtn::attemptGrabRead"_Stz, &vTablePtnAttemptGrabRead, false);
   vAddPrimitive("tablePtn::attemptGrabWrite"_Stz,&vTablePtnAttemptGrabWrite,false);
   vAddPrimitive("tablePtn::dropRead"_Stz,        &vTablePtnDropRead,        false);
@@ -20,29 +20,16 @@ void Task::vAddPrimitives_TablePartition(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* tablePtn::dump -- dump partition id                                        */
+/* tablePtn.dump -- dump partition id                                         */
 /*----------------------------------------------------------------------------*/
 void Task::vTablePtnDump(MP_Task mpTask)
 {
   ENTRY("vTablePtnDump"_Stz);
   
-  Object* pPtrTable;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("tablePtn::dump"_Stz);
-  
-  Table* pTable = _pTable(pPtrTable);
-  ASSERT(CN_TABLE == pTable->eClass());
-  
-  i8 iPartition;
-  if ( ! mpTask->m_pDataStack->bPop(iPartition) )
-    THROW_INVALID_DSTACK("tablePtn::dump"_Stz);
-  
-  // get the slot no
-  i8 i_Slot = TablePtn::iPartitionToSlot(iPartition);
-  
-  // get the table partition
-  TablePtn* pTablePtn = pTable->pPartition(i_Slot);
+  Object* pPtrTablePtn;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTablePtn) )
+    THROW_INVALID_DSTACK("tablePtn.dump"_Stz);
+  TablePtn* pTablePtn = _pTablePtn(pPtrTablePtn);
   
   mpTask->m_pDataStack->vPushInt(pTablePtn->iPartitionId());
   

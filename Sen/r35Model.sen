@@ -333,7 +333,7 @@
     pTablePtn tablePtn.isLocked assert
 
     // dump the table partition no
-    iPartitionNo pTable tablePtn::dump
+    pTablePtn tablePtn.dump
 
     pTable table.name I
       "Loop %v Table %v got partition no %v under lock" str.format .
