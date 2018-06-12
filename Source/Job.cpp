@@ -37,8 +37,6 @@ Job* JobsModel::_pJob(void* aAddr)
 {
   Job* pJob = reinterpret_cast<Job*>(aAddr);
   
-  RASSERT( !pJob || CN_JOB == pJob->eClass() );
-  
   return pJob;
 }
 
@@ -51,8 +49,6 @@ Job::Job(eCN eClassNo)
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
   m_iJobId = -1;
-  
-  _checkInitialised_(CN_JOB);
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
 }
@@ -74,7 +70,7 @@ Job::~Job(void)
 /*----------------------------------------------------------------------------*/
 i8 Job::iJobId(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   return m_iJobId;
 }
@@ -84,7 +80,7 @@ i8 Job::iJobId(void)
 /*----------------------------------------------------------------------------*/
 void Job::vJobId(i8 iJobId)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   m_iJobId = iJobId;
 }
@@ -94,7 +90,7 @@ void Job::vJobId(i8 iJobId)
 /*----------------------------------------------------------------------------*/
 i8 Job::iJobNode(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   i8 iMaskOffLower48Bits = 0xFFFF000000000000;
   

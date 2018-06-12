@@ -84,7 +84,13 @@ pDUMPFUN *gpDump[]
   /* 56 */ &Dump::vDummy,           // CN_INDEXLEVELS
   /* 57 */ &Dump::vInvalid,         // CN_ITEM
   /* 58 */ &Dump::vInvalid,         // CN_ITEMBUFFER
-  /*    */ &Dump::vDummy,           // CN_JOB
+  /*    */ &Dump::vDummy,           // CN_JOB__BEGIN
+  /*    */ &Dump::vDummy,           // CN_JOB__BEGUN
+  /*    */ &Dump::vDummy,           // CN_JOB__END
+  /*    */ &Dump::vDummy,           // CN_JOB__ENDED
+  /*    */ &Dump::vDummy,           // CN_JOB__EXECUTE
+  /*    */ &Dump::vDummy,           // CN_JOB__EXECUTED
+  /*    */ &Dump::vDummy,           // CN_JOB_CREATETABLE
   /*    */ &Jobs::vDump,            // CN_JOBS
   
   /* 59 */ &Heap::vDump,            // CN_JUMBOPERSISTENT
@@ -279,7 +285,13 @@ i8 giClassSize[]
   /* 57 */ sizeof(Item),               // CN_ITEM
   /* 58 */ sizeof(ItemBuffer),         // CN_ITEMBUFFER
   
-  /*    */ sizeof(Job),                // CN_JOB
+  /*    */ sizeof(Job),                // CN_JOB__BEGIN
+  /*    */ sizeof(Job),                // CN_JOB__BEGUN
+  /*    */ sizeof(Job),                // CN_JOB__END
+  /*    */ sizeof(Job),                // CN_JOB__ENDED
+  /*    */ sizeof(Job),                // CN_JOB__EXECUTE
+  /*    */ sizeof(Job),                // CN_JOB__EXECUTED
+  /*    */ sizeof(Job_CreateTable),    // CN_JOB_CREATETABLE
   /*    */ sizeof(Jobs),               // CN_JOBS
   
   /* 59 */ sizeof(Heap), // correct    // CN_JUMBOPERSISTENT
@@ -474,7 +486,13 @@ eHT geWhichHeap[]
   /* 57 */ HT_INVALID,           // CN_ITEM
   /* 58 */ HT_INVALID,           // CN_ITEMBUFFER
 
-  /*    */ HT_TRANSIENT_SMALL,   // CN_JOB
+  /*    */ HT_TRANSIENT_SMALL,   // CN_JOB__BEGIN
+  /*    */ HT_TRANSIENT_SMALL,   // CN_JOB__BEGUN
+  /*    */ HT_TRANSIENT_SMALL,   // CN_JOB__END
+  /*    */ HT_TRANSIENT_SMALL,   // CN_JOB__ENDED
+  /*    */ HT_TRANSIENT_SMALL,   // CN_JOB__EXECUTE
+  /*    */ HT_TRANSIENT_SMALL,   // CN_JOB__EXECUTED
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CREATETABLE
   /*    */ HT_TRANSIENT_SMALL,   // CN_JOBS
   
   /* 59 */ HT_INVALID,           // CN_JUMBOPERSISTENT

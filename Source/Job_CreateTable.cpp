@@ -15,7 +15,7 @@ Job_CreateTable* JobsModel::_pJob_CreateTable(void* aAddress)
 {
   Job_CreateTable* pJob_CreateTable = reinterpret_cast<Job_CreateTable*>(aAddress);
   
-  RASSERT( !pJob_CreateTable || CN_JOB == pJob_CreateTable->eClass());
+  RASSERT( !pJob_CreateTable || CN_JOB_CREATETABLE == pJob_CreateTable->eClass());
   
   return pJob_CreateTable;
 }
@@ -28,7 +28,7 @@ void* Job_CreateTable::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_CreateTable* pJob_CreateTable =
-    static_cast<Job_CreateTable*>(Heap::pAllocate(CN_JOB));
+    static_cast<Job_CreateTable*>(Heap::pAllocate(CN_JOB_CREATETABLE));
   
   return pJob_CreateTable;
 }
@@ -57,13 +57,13 @@ void Job_CreateTable::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_CreateTable::Job_CreateTable(void)
-: Job(CN_JOB)
+: Job(CN_JOB_CREATETABLE)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
   
-  _checkInitialised_(CN_JOB);
+  _checkInitialised_(CN_JOB_CREATETABLE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -71,7 +71,7 @@ Job_CreateTable::Job_CreateTable(void)
 /*----------------------------------------------------------------------------*/
 Job_CreateTable::~Job_CreateTable(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
 }
 
 
@@ -84,8 +84,8 @@ Job_CreateTable::~Job_CreateTable(void)
 /*----------------------------------------------------------------------------*/
 void Job_CreateTable::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB == eClass);
-  RASSERT(pObject->eClass() == CN_JOB);
+  RASSERT(CN_JOB_CREATETABLE == eClass);
+  RASSERT(pObject->eClass() == CN_JOB_CREATETABLE);
   
   Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pObject);
 
@@ -115,7 +115,7 @@ void Job_CreateTable::vShow(void)
 /*----------------------------------------------------------------------------*/
 Footer* Job_CreateTable::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE);
   
   return &m_xFooter;
 }

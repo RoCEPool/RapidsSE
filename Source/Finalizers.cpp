@@ -80,7 +80,13 @@ pFINALIZE *gpFinalize[]
   /* 56 */ &Finalize::vUndefined,         // CN_INDEXLEVELS
   /* 57 */ &Finalize::vUndefined,         // CN_ITEM
   /* 58 */ &Finalize::vUndefined,         // CN_ITEMBUFFER
-  /*    */ &Finalize::vUndefined,         // CN_JOB
+  /*    */ &Finalize::vUndefined,         // CN_JOB__BEGIN
+  /*    */ &Finalize::vUndefined,         // CN_JOB__BEGUN
+  /*    */ &Finalize::vUndefined,         // CN_JOB__END
+  /*    */ &Finalize::vUndefined,         // CN_JOB__ENDED
+  /*    */ &Finalize::vUndefined,         // CN_JOB__EXECUTE
+  /*    */ &Finalize::vUndefined,         // CN_JOB__EXECUTED
+  /*    */ &Finalize::vUndefined,         // CN_JOB_CREATETABLE
   /*    */ &Finalize::vUndefined,         // CN_JOBS
   
   /* 59 */ &Finalize::vUndefined,         // CN_JUMBOPERSISTENT

@@ -85,9 +85,14 @@ enum eCN : u2 // Class Number
     /* 57 */ CN_ITEM,
     /* 58 */ CN_ITEMBUFFER,
     
-    /*    */ CN_JOB,
+    /*    */ CN_JOB__BEGIN,
+    /*    */ CN_JOB__BEGUN,
+    /*    */ CN_JOB__END,
+    /*    */ CN_JOB__ENDED,
+    /*    */ CN_JOB__EXECUTE,
+    /*    */ CN_JOB__EXECUTED,
+    /*    */ CN_JOB_CREATETABLE,
     /*    */ CN_JOBS,
-  
     /* 59 */ CN_JUMBOPERSISTENT,
     /* 60 */ CN_JUMBOTRANSIENT,
   
@@ -281,7 +286,13 @@ enum eCN : u2 // Class Number
     /* 57 */ "ITEM"_Stz,
     /* 58 */ "ITEMBUFFER"_Stz,
     
-    /*    */ "JOB"_Stz,
+    /*    */ "JOB__BEGIN"_Stz,
+    /*    */ "JOB__BEGUN"_Stz,
+    /*    */ "JOB__END"_Stz,
+    /*    */ "JOB__ENDED"_Stz,
+    /*    */ "JOB__EXECUTE"_Stz,
+    /*    */ "JOB__EXECUTED"_Stz,
+    /*    */ "JOB_CREATETABLE"_Stz,
     /*    */ "JOBS"_Stz,
 
     /* 59 */ "JUMBOPERSISTENT"_Stz,
