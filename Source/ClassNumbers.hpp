@@ -85,7 +85,6 @@ enum eCN : u2 // Class Number
     /* 57 */ CN_ITEM,
     /* 58 */ CN_ITEMBUFFER,
     
-    /*    */ CN_JOB__BEGIN,
     /*    */ CN_JOB__BEGUN,
     /*    */ CN_JOB__END,
     /*    */ CN_JOB__ENDED,
@@ -286,7 +285,6 @@ enum eCN : u2 // Class Number
     /* 57 */ "ITEM"_Stz,
     /* 58 */ "ITEMBUFFER"_Stz,
     
-    /*    */ "JOB__BEGIN"_Stz,
     /*    */ "JOB__BEGUN"_Stz,
     /*    */ "JOB__END"_Stz,
     /*    */ "JOB__ENDED"_Stz,

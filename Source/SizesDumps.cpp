@@ -84,7 +84,6 @@ pDUMPFUN *gpDump[]
   /* 56 */ &Dump::vDummy,           // CN_INDEXLEVELS
   /* 57 */ &Dump::vInvalid,         // CN_ITEM
   /* 58 */ &Dump::vInvalid,         // CN_ITEMBUFFER
-  /*    */ &Dump::vDummy,           // CN_JOB__BEGIN
   /*    */ &Dump::vDummy,           // CN_JOB__BEGUN
   /*    */ &Dump::vDummy,           // CN_JOB__END
   /*    */ &Dump::vDummy,           // CN_JOB__ENDED
@@ -285,12 +284,11 @@ i8 giClassSize[]
   /* 57 */ sizeof(Item),               // CN_ITEM
   /* 58 */ sizeof(ItemBuffer),         // CN_ITEMBUFFER
   
-  /*    */ sizeof(Job),                // CN_JOB__BEGIN
-  /*    */ sizeof(Job),                // CN_JOB__BEGUN
-  /*    */ sizeof(Job),                // CN_JOB__END
-  /*    */ sizeof(Job),                // CN_JOB__ENDED
-  /*    */ sizeof(Job),                // CN_JOB__EXECUTE
-  /*    */ sizeof(Job),                // CN_JOB__EXECUTED
+  /*    */ sizeof(Job__Begun),         // CN_JOB__BEGUN
+  /*    */ sizeof(Job__End),           // CN_JOB__END
+  /*    */ sizeof(Job__Ended),         // CN_JOB__ENDED
+  /*    */ sizeof(Job__Execute),       // CN_JOB__EXECUTE
+  /*    */ sizeof(Job__Executed),      // CN_JOB__EXECUTED
   /*    */ sizeof(Job_CreateTable),    // CN_JOB_CREATETABLE
   /*    */ sizeof(Jobs),               // CN_JOBS
   
@@ -486,7 +484,6 @@ eHT geWhichHeap[]
   /* 57 */ HT_INVALID,           // CN_ITEM
   /* 58 */ HT_INVALID,           // CN_ITEMBUFFER
 
-  /*    */ HT_TRANSIENT_SMALL,   // CN_JOB__BEGIN
   /*    */ HT_TRANSIENT_SMALL,   // CN_JOB__BEGUN
   /*    */ HT_TRANSIENT_SMALL,   // CN_JOB__END
   /*    */ HT_TRANSIENT_SMALL,   // CN_JOB__ENDED
