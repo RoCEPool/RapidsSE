@@ -84,7 +84,7 @@ pDUMPFUN *gpDump[]
   /* 56 */ &Dump::vDummy,           // CN_INDEXLEVELS
   /* 57 */ &Dump::vInvalid,         // CN_ITEM
   /* 58 */ &Dump::vInvalid,         // CN_ITEMBUFFER
-  /*    */ &Job::vDump,             // CN_JOB
+  /*    */ &Dump::vDummy,           // CN_JOB
   /*    */ &Jobs::vDump,            // CN_JOBS
   
   /* 59 */ &Heap::vDump,            // CN_JUMBOPERSISTENT
