@@ -26,6 +26,7 @@ using namespace JobsModel;
 
 #include "Job_CreateTable.hpp"
 #include "Job_CreateSchema.hpp"
+#include "Job_DropSchema.hpp"
 
 #include "Jobs.hpp"
 
