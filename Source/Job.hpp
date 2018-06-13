@@ -32,6 +32,7 @@ namespace JobsModel
     i8     m_iJobId;      // job id
     eJS    m_eState;      // job state
     s32    m_sExecute;    // word to be executed
+    i8     m_iParticipantNode; // participant node no
   
   public:
     Job(eCN eClassNo);
@@ -42,6 +43,8 @@ namespace JobsModel
     i8   iJobId(void);
     void vJobId(i8 iJobId);
     i8   iJobNode(void);
+    i8   iParticipantNode(void);
+    void vParticipantNode(i8 iNode);
     eJS  eJobState(void);
     void vJobState(eJS eJobState);
       
