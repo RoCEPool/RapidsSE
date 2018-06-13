@@ -89,7 +89,21 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB__ENDED
   /*    */ &Dump::vDummy,           // CN_JOB__EXECUTE
   /*    */ &Dump::vDummy,           // CN_JOB__EXECUTED
+  
+  /*    */ &Dump::vDummy,           // CN_JOB_ANALYZEINDEX
+  /*    */ &Dump::vDummy,           // CN_JOB_ANALYZETABLE
+  /*    */ &Dump::vDummy,           // CN_JOB_CREATECATALOG
+  /*    */ &Dump::vDummy,           // CN_JOB_CREATEINDEX
+  /*    */ &Dump::vDummy,           // CN_JOB_CREATESCHEMA
   /*    */ &Dump::vDummy,           // CN_JOB_CREATETABLE
+  /*    */ &Dump::vDummy,           // CN_JOB_CREATETENANT
+  /*    */ &Dump::vDummy,           // CN_JOB_DROPCATALOG
+  /*    */ &Dump::vDummy,           // CN_JOB_DROPINDEX
+  /*    */ &Dump::vDummy,           // CN_JOB_DROPSCHEMA
+  /*    */ &Dump::vDummy,           // CN_JOB_DROPTABLE
+  /*    */ &Dump::vDummy,           // CN_JOB_DROPTENANT
+  /*    */ &Dump::vDummy,           // CN_JOB_LOADTABLE
+  
   /*    */ &Jobs::vDump,            // CN_JOBS
   
   /* 59 */ &Heap::vDump,            // CN_JUMBOPERSISTENT
@@ -289,7 +303,21 @@ i8 giClassSize[]
   /*    */ sizeof(Job__Ended),         // CN_JOB__ENDED
   /*    */ sizeof(Job__Execute),       // CN_JOB__EXECUTE
   /*    */ sizeof(Job__Executed),      // CN_JOB__EXECUTED
-  /*    */ sizeof(Job_CreateTable),    // CN_JOB_CREATETABLE
+
+  /*    */ sizeof(Job_CreateTable),   // CN_JOB_ANALYZEINDEX
+  /*    */ sizeof(Job_CreateTable),   // CN_JOB_ANALYZETABLE
+  /*    */ sizeof(Job_CreateTable),   // CN_JOB_CREATECATALOG
+  /*    */ sizeof(Job_CreateTable),   // CN_JOB_CREATEINDEX
+  /*    */ sizeof(Job_CreateSchema),  // CN_JOB_CREATESCHEMA
+  /*    */ sizeof(Job_CreateTable),   // CN_JOB_CREATETABLE
+  /*    */ sizeof(Job_CreateTable),   // CN_JOB_CREATETENANT
+  /*    */ sizeof(Job_CreateTable),   // CN_JOB_DROPCATALOG
+  /*    */ sizeof(Job_CreateTable),   // CN_JOB_DROPINDEX
+  /*    */ sizeof(Job_CreateTable),   // CN_JOB_DROPSCHEMA
+  /*    */ sizeof(Job_CreateTable),   // CN_JOB_DROPTABLE
+  /*    */ sizeof(Job_CreateTable),   // CN_JOB_DROPTENANT
+  /*    */ sizeof(Job_CreateTable),   // CN_JOB_LOADTABLE
+                  
   /*    */ sizeof(Jobs),               // CN_JOBS
   
   /* 59 */ sizeof(Heap), // correct    // CN_JUMBOPERSISTENT
@@ -489,7 +517,21 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_SMALL,   // CN_JOB__ENDED
   /*    */ HT_TRANSIENT_SMALL,   // CN_JOB__EXECUTE
   /*    */ HT_TRANSIENT_SMALL,   // CN_JOB__EXECUTED
+  
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_ANALYZEINDEX
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_ANALYZETABLE
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CREATECATALOG
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CREATEINDEX
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CREATESCHEMA
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CREATETABLE
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CREATETENANT
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_DROPCATALOG
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_DROPINDEX
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_DROPSCHEMA
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_DROPTABLE
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_DROPTENANT
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LOADTABLE
+  
   /*    */ HT_TRANSIENT_SMALL,   // CN_JOBS
   
   /* 59 */ HT_INVALID,           // CN_JUMBOPERSISTENT

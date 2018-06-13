@@ -85,7 +85,21 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB__ENDED
   /*    */ &Finalize::vUndefined,         // CN_JOB__EXECUTE
   /*    */ &Finalize::vUndefined,         // CN_JOB__EXECUTED
+  
+  /*    */ &Finalize::vUndefined,         // CN_JOB_ANALYZEINDEX
+  /*    */ &Finalize::vUndefined,         // CN_JOB_ANALYZETABLE
+  /*    */ &Finalize::vUndefined,         // CN_JOB_CREATECATALOG
+  /*    */ &Finalize::vUndefined,         // CN_JOB_CREATEINDEX
+  /*    */ &Finalize::vUndefined,         // CN_JOB_CREATESCHEMA
   /*    */ &Finalize::vUndefined,         // CN_JOB_CREATETABLE
+  /*    */ &Finalize::vUndefined,         // CN_JOB_CREATETENANT
+  /*    */ &Finalize::vUndefined,         // CN_JOB_DROPCATALOG
+  /*    */ &Finalize::vUndefined,         // CN_JOB_DROPINDEX
+  /*    */ &Finalize::vUndefined,         // CN_JOB_DROPSCHEMA
+  /*    */ &Finalize::vUndefined,         // CN_JOB_DROPTABLE
+  /*    */ &Finalize::vUndefined,         // CN_JOB_DROPTENANT
+  /*    */ &Finalize::vUndefined,         // CN_JOB_LOADTABLE
+  
   /*    */ &Finalize::vUndefined,         // CN_JOBS
   
   /* 59 */ &Finalize::vUndefined,         // CN_JUMBOPERSISTENT
