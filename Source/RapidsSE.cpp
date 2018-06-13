@@ -72,6 +72,7 @@ void RapidsSE::vExecuteCmdLine(void)
       ASSERT(gpBufferPool);
       vSystemInit();
       vStartActors();
+      vStartR35Tasks();
       if (gxArguments.m_bVerbose) {
         vInfo("RapidsSE instance %s started\n"_Stz,gxArguments.m_sRegionName.aChar());
         gpAttachMap->m_pGrid->vDumpPartitioning();
@@ -479,6 +480,27 @@ void RapidsSE::vStartActors(void)
   gpAttachMap->m_npBootTask->vState(TS_EXECUTING);
   gpAttachMap->m_npBootTask->vTaskLoop();
   // the system is now running
+}
+
+/*----------------------------------------------------------------------------*/
+/* start the R35 tasks                                                        */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vStartR35Tasks(void)
+{
+  if (gxArguments.m_bVerbose)
+    vInfo("\n*\n* Start R35 Tasks\n*\n"_Stz);
+  
+  // seed root task to start the system
+  gpAttachMap->m_npBootTask->vSeedWord("startR35Tasks"_Stz);
+  
+  if (gpAttachMap->m_bVerbose)
+    vTrace("[[mainThread]] RapidsSE::vStartR35Tasks launching: task %s %p\n"_Stz,
+           gpAttachMap->m_npBootTask->sName().aChar(),
+           *gpAttachMap->m_npBootTask);
+  
+  gpAttachMap->m_npBootTask->vState(TS_EXECUTING);
+  gpAttachMap->m_npBootTask->vTaskLoop();
+
 }
 
 /*----------------------------------------------------------------------------*/
