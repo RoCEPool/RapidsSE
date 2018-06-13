@@ -12,7 +12,8 @@ namespace JobsModel
   {
     s32    m_sTableName;   // table name
     eTT    m_eTableType;   // table type
-  
+    i8     m_iColumns;     // no of columns
+    
     struct {
       
       i8    m_iColumnNo;     // column no )within this table)
