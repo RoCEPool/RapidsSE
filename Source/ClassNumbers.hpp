@@ -88,6 +88,7 @@ enum eCN : u2 // Class Number
     /*    */ CN_JOB__BEGUN,
     /*    */ CN_JOB__END,
     /*    */ CN_JOB__ENDED,
+    /*    */ CN_JOB__ERROR,
     /*    */ CN_JOB__EXECUTE,
     /*    */ CN_JOB__EXECUTED,
     
@@ -302,6 +303,7 @@ enum eCN : u2 // Class Number
     /*    */ "JOB__BEGUN"_Stz,
     /*    */ "JOB__END"_Stz,
     /*    */ "JOB__ENDED"_Stz,
+    /*    */ "JOB__ERROR"_Stz,
     /*    */ "JOB__EXECUTE"_Stz,
     /*    */ "JOB__EXECUTED"_Stz,
     

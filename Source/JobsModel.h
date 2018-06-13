@@ -20,6 +20,7 @@ using namespace JobsModel;
 #include "Job__Begun.hpp"
 #include "Job__End.hpp"
 #include "Job__Ended.hpp"
+#include "Job__Error.hpp"
 #include "Job__Execute.hpp"
 #include "Job__Executed.hpp"
 

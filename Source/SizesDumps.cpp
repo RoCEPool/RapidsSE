@@ -87,6 +87,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB__BEGUN
   /*    */ &Dump::vDummy,           // CN_JOB__END
   /*    */ &Dump::vDummy,           // CN_JOB__ENDED
+  /*    */ &Dump::vDummy,           // CN_JOB__ERROR
   /*    */ &Dump::vDummy,           // CN_JOB__EXECUTE
   /*    */ &Dump::vDummy,           // CN_JOB__EXECUTED
   
@@ -301,6 +302,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job__Begun),         // CN_JOB__BEGUN
   /*    */ sizeof(Job__End),           // CN_JOB__END
   /*    */ sizeof(Job__Ended),         // CN_JOB__ENDED
+  /*    */ sizeof(Job__Error),         // CN_JOB__ERROR
   /*    */ sizeof(Job__Execute),       // CN_JOB__EXECUTE
   /*    */ sizeof(Job__Executed),      // CN_JOB__EXECUTED
 
@@ -515,6 +517,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_SMALL,   // CN_JOB__BEGUN
   /*    */ HT_TRANSIENT_SMALL,   // CN_JOB__END
   /*    */ HT_TRANSIENT_SMALL,   // CN_JOB__ENDED
+  /*    */ HT_TRANSIENT_SMALL,   // CN_JOB__ERROR
   /*    */ HT_TRANSIENT_SMALL,   // CN_JOB__EXECUTE
   /*    */ HT_TRANSIENT_SMALL,   // CN_JOB__EXECUTED
   

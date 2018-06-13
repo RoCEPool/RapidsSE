@@ -32,9 +32,10 @@ void Task::vJobErrorFetch(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job.error@"_Stz);
   
-  Job* pJob = _pJob(pJobPtr);
+  Job__Error* pJob = _pJob__Error(pJobPtr);
+  ASSERT(CN_JOB__ERROR == pJob->eClass());
   
-  mpTask->m_pDataStack->vPushInt(pJob->eJobError());
+  mpTask->m_pDataStack->vPushInt(pJob->eErrorCode());
   
   EXIT();
 }
@@ -56,9 +57,10 @@ void Task::vJobErrorStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iJobError) )
     THROW_INVALID_DSTACK("job.error!"_Stz);
   
-  Job* pJob = _pJob(pJobPtr);
+  Job__Error* pJob = _pJob__Error(pJobPtr);
+  ASSERT(CN_JOB__ERROR == pJob->eClass());
   
-  pJob->vJobError((eEC)iJobError);
+  pJob->vErrorCode((eEC)iJobError);
   
   EXIT();
 }
