@@ -9,13 +9,15 @@
 /*----------------------------------------------------------------------------*/
 : spawnR35AnswerTask
 
-  0 "r35answerLoop" "AnswerDrone" TK_ANSWER_DRONE spawnDroneActor
+  //0 "r35answerLoop" "AnswerDrone" TK_ANSWER_DRONE spawnR35GeneralTask
 ;
 
 /*----------------------------------------------------------------------------*/
 /* accept new sockets, ???                                                    */
 /*----------------------------------------------------------------------------*/
 : r35answerLoop
+
+  300000000000 task.sleep
 
   begin
 

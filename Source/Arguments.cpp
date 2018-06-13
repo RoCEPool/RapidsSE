@@ -29,7 +29,7 @@ Arguments::Arguments(void)
   m_nSlots      = 4;
   m_sNodeName   = "node"_Stz;
   m_nNodes      = 0;
-  m_nThreads    = 1;
+  m_nThreads    = 4;
   m_iThisNode   = -1;
   m_bTracepoint = false;
   
