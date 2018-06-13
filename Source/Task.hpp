@@ -338,6 +338,7 @@ namespace Tasks
     void vAddPrimitives_Index(void);
     void vAddPrimitives_Input(void);
     void vAddPrimitives_Int(void);
+    void vAddPrimitives_Job(void);
     void vAddPrimitives_Loader(void);
     void vAddPrimitives_LoaderSub(void);
     void vAddPrimitives_Locals(void);
@@ -791,6 +792,9 @@ namespace Tasks
     static void vIntNeg(MP_Task mpTask);
     static void vIntNotEqual(MP_Task mpTask);
     static void vIntSubtract(MP_Task mpTask);
+    
+    // job
+    static void vJobExecuteFetch(MP_Task mpTask);
     
     // loader
     static void vLoaderAddRecordsInvalid(MP_Task mpTask);
