@@ -26,14 +26,17 @@ namespace JobsModel
   class Job : public Object
   {
   private:
-    i8     m_iJobId;   // job id
-    eJS    m_eState;   // job state
-    s32    m_sExecute; // word to be executed
+    i8     m_iJobId;      // job id
+    eJS    m_eState;      // job state
+    s32    m_sExecute;    // word to be executed
+    eEC    m_eErrorCode;  // error code
   
   public:
     Job(eCN eClassNo);
     ~Job(void);
     
+    eEC  eJobError(void);
+    void vJobError(eEC eErrorCode);
     Stz* sJobExecute(void);
     void vJobExecute(Stz* sExecute);
     i8   iJobId(void);
