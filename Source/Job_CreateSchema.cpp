@@ -57,13 +57,19 @@ void Job_CreateSchema::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_CreateSchema::Job_CreateSchema(void)
-: Job(CN_JOB_CREATETABLE)
+: Job(CN_JOB_CREATESCHEMA)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATESCHEMA,_FOOTER_);
   
+  m_sSchemaName = ""_Stz;
+  m_iDicDepth = -1;
+  
+  for (i8 i_Depth = 0; i_Depth < C_MAX_FOLDERS; i_Depth++)
+    m_sDicPath[i_Depth] = ""_Stz;
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATESCHEMA,_FOOTER_);
   
-  _checkInitialised_(CN_JOB_CREATETABLE);
+  _checkInitialised_(CN_JOB_CREATESCHEMA);
 }
 
 /*----------------------------------------------------------------------------*/

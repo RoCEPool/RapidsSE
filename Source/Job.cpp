@@ -3,6 +3,9 @@
 /*============================================================================*/
 
 #include "JobsModel.h"
+#include "StorageEngine.h"
+
+extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -51,6 +54,7 @@ Job::Job(eCN eClassNo)
   m_iJobId   = -1;
   m_eState   = JS_NONE;
   m_sExecute = ""_Stz;
+  m_iParticipantNode = gpAttachMap->m_pGrid->iThisNode();
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
 }
@@ -84,7 +88,7 @@ void Job::vJobExecute(Stz* sExecute)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_sExecute = sExecute;
+  m_sExecute.vCopy(sExecute);
 }
 
 /*----------------------------------------------------------------------------*/
