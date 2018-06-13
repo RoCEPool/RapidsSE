@@ -1,0 +1,479 @@
+/*============================================================================*/
+/* r35Tasking.sen -- R35 tasking model                                        */
+/*============================================================================*/
+
+"r35Tasking.sen" .verbose
+
+////////////////////////////////////////////////////////////////////////////////
+//                             R35 Task Spawning                              //
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* create a general task and append to ready queue                            */
+/*----------------------------------------------------------------------------*/
+: spawnR35GeneralTask ( ... nArgs sSeedWord sTaskNm eTaskKind -- pTask )
+
+  locals| eTaskKind sTaskNm sSeedWord nArgs |
+
+  nullptr locals| pTask |
+
+  // create a new task
+  nArgs sSeedWord nullptr AC_R35 sTaskNm eTaskKind task::new to pTask
+
+  // put task into system
+  pTask handler::spawnedTask
+
+  pTask  // return the task
+;
+
+/*----------------------------------------------------------------------------*/
+/* create a general child task and append to ready queue                      */
+/*----------------------------------------------------------------------------*/
+: spawnR35GeneralChildTask ( ... nArgs sSeedWord pParentTask sTaskNm eTaskKind -- pTask )
+
+  locals| eTaskKind sTaskNm pParent sSeedWord nArgs |
+
+  nullptr locals| pTask |
+
+  // create a new task
+  nArgs sSeedWord pParent AC_R35 sTaskNm eTaskKind task::new to pTask
+
+  // put task into system
+  pTask handler::spawnedTask
+
+  pTask  // return the task
+;
+
+/*----------------------------------------------------------------------------*/
+/* create a partitioned child task and append to slot ready queue             */
+/*----------------------------------------------------------------------------*/
+: spawnR35PartitionedChildTask ( ... nArgs sSeedWord pParentTask sTaskNm eTaskKind iPartition -- pTask )
+
+  locals| iPartition eTaskKind sTaskNm pParent sSeedWord nArgs |
+
+  nullptr locals| pTask |
+
+  // create a new task
+  nArgs sSeedWord pParent AC_R35 sTaskNm eTaskKind task::new to pTask
+
+  // set the partition no n the task
+  iPartition pTask task.partition!
+
+  // put task into system
+  pTask handler::spawnedTask
+
+  pTask  // return the task
+;
+
+////////////////////////////////////////////////////////////////////////////////
+//                             Node Level Testing                             //
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/*-- child -------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* n35 child task entry point                                                 */
+/*----------------------------------------------------------------------------*/
+: _n35Child_ ( childNo -- )
+
+  locals| iChildNo |
+
+  "_n35Child_" .
+
+  // child task yields
+  iChildNo "child %v yielding" str.format .
+  task.yield
+  iChildNo "child %v running" str.format .
+
+  // child task sleeps
+  iChildNo "child %v sleeping for 3 seconds" str.format .
+  3000000 task.sleep
+  iChildNo "child %v awake" str.format .
+
+  // child task acks it's parent
+  task.parent@ ack
+
+  iChildNo "child %v exiting" str.format .
+;
+
+/*----------------------------------------------------------------------------*/
+/* spawn given number of n35 child tasks (have this task as parent)           */
+/*----------------------------------------------------------------------------*/
+: n35spawnChildTasks ( nChildren -- )
+
+  locals| nChildren |
+
+  0 locals| pChildTask |
+
+  // grab this task's lock
+  task::this task.grabLock
+
+  // set number of children to ack this parent
+  nChildren setAcks
+
+  // loop from 0 to nChildren-1
+  nChildren 0 do
+
+    // spawn an n35 child task
+    I                 // argument
+    1                 // no. of args
+    "_n35Child_"      // seed word
+    task::this        // parent task
+    "R35Child"        // task name
+    TK_R35_CHILD      // task kind
+      spawnR35GeneralChildTask to pChildTask
+
+  loop
+;
+
+/*----------------------------------------------------------------------------*/
+/*-- general -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* n35 general task                                                           */
+/*----------------------------------------------------------------------------*/
+: _n35General_ ( taskNo -- )
+
+  locals| iTaskNo |
+
+  0 locals| iSleep |
+
+  "_n35General_" .
+
+  10 0
+  do
+    // general task yields
+    iTaskNo "task %v yielding" str.format .
+    task.yield
+    iTaskNo "task %v running" str.format .
+
+    // general task sleeps for I seconds
+    I 1000000 * to iSleep
+    I iTaskNo "task %v sleeping for %v seconds" str.format .
+    iSleep task.sleep
+    iTaskNo "task %v awake" str.format .
+  loop
+
+  iTaskNo "task %v exiting" str.format .
+;
+
+/*----------------------------------------------------------------------------*/
+/* spawn given number of n35 general tasks (have no parent)                   */
+/*----------------------------------------------------------------------------*/
+: n35spawnGeneralTasks ( nTasks -- )
+
+  0 locals| pTask nTasks |
+
+  // loop from 0 to nChildren-1
+  nTasks 0 do
+
+    // spawn an n35 general child task
+    I                   // argument
+    1                   // no. of args
+    "_n35General_"      // seed word
+    nullPtr             // no parent task
+    "R35SpawnedTask"    // task name
+    TK_R35_CHILD        // task kind
+      spawnR35GeneralChildTask to pTask
+
+  loop
+;
+
+/*----------------------------------------------------------------------------*/
+/*-- node experiments --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* node e1 is a yield test                                                    */
+/*----------------------------------------------------------------------------*/
+: r35_node_e1
+
+  "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" .
+  "r35_node_e1" .
+  "" .
+
+  "yielding" .
+  task.yield
+  "running" .
+;
+
+/*----------------------------------------------------------------------------*/
+/* node e2 is a sleeping test (0 microsecond sleep)                           */
+/*----------------------------------------------------------------------------*/
+: r35_node_e2
+
+  "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" .
+  "r35_node_e2" .
+  "" .
+
+  "sleeping for 0 microseconds" .
+  0 task.sleep
+  "awake" .
+;
+
+/*----------------------------------------------------------------------------*/
+/* node e3 is a sleeping test (3 second sleep)                                */
+/*----------------------------------------------------------------------------*/
+: r35_node_e3
+
+  "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" .
+  "r35_node_e3" .
+  "" .
+
+  "sleeping for 3 seconds" .
+  3000000 task.sleep
+  "awake" .
+;
+
+/*----------------------------------------------------------------------------*/
+/* node e4 is a yield, sleep, yield, sleep test                               */
+/*----------------------------------------------------------------------------*/
+: r35_node_e4
+
+  "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" .
+  "r35_node_e4" .
+  "" .
+
+  "yielding" .
+  task.yield
+  "running" .
+
+  "sleeping for 0 microseconds" .
+  0 task.sleep
+  "awake" .
+
+  "yielding" .
+  task.yield
+  "running" .
+
+  "sleeping for 3 seconds" .
+  3000000 task.sleep
+  "awake" .
+;
+
+/*----------------------------------------------------------------------------*/
+/* node e5 is a spawn children ; parent ack wait test                         */
+/*----------------------------------------------------------------------------*/
+: r35_node_e5
+
+  "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" .
+  "r35_node_e5" .
+  "" .
+
+  3 n35spawnChildTasks
+
+  "parent waiting for acks" .
+  ackWait
+  "parent received all acks" .
+;
+
+/*----------------------------------------------------------------------------*/
+/* node e6 is a spawn children ; no wait test                                 */
+/*----------------------------------------------------------------------------*/
+: r35_node_e6
+
+  "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" .
+  "r35_node_e6" .
+  "" .
+
+  100 n35spawnGeneralTasks
+;
+
+////////////////////////////////////////////////////////////////////////////////
+//                           Partition Level Testing                          //
+////////////////////////////////////////////////////////////////////////////////
+
+
+/*----------------------------------------------------------------------------*/
+/* p35 child task entry point                                                 */
+/*----------------------------------------------------------------------------*/
+: _p35Child_ ( -- )
+
+  locals| iPartitionNo |
+
+  "p35Child" .
+
+  task::this task.partition@ to iPartitionNo
+
+  // partition child yields
+  iPartitionNo "partitionTask %v yielding" str.format .
+  task.yield
+  iPartitionNo "partitionTask %v running" str.format .
+
+  // partition child sleeps 3 seconds
+  iPartitionNo "partitionTask %v sleeping for 3 seconds" str.format .
+  3000000 task.sleep
+  iPartitionNo "partitionTask %v awake" str.format .
+
+  // partition child acks it's parent
+  task.parent@ ack
+
+  iPartitionNo "partitionTask %v exiting" str.format .
+;
+
+/*----------------------------------------------------------------------------*/
+/* p35 child task entry point                                                 */
+/*----------------------------------------------------------------------------*/
+: _p35ChildTableFetch_ ( pTable -- )
+
+  0 locals| iPartitionNo pTable |
+
+  0 locals| pTablePtn |
+
+  "_p35ChildTableFetch_" .
+
+  task::this task.partition@ to iPartitionNo
+
+  3 0
+  do
+
+    iPartitionNo pTable table.getPtn to pTablePtn
+
+    iPartitionNo pTable tablePtnGrabRead
+
+    pTablePtn tablePtn.isLocked assert
+
+    // dump the table partition no
+    pTablePtn tablePtn.dump
+
+    pTable table.name I
+      "Loop %v Table %v got partition no %v under lock" str.format .
+
+    iPartitionNo pTable tablePtnDropRead
+
+    pTable table.name I
+      "Loop %v Table %v yield" str.format .
+
+    task.yield
+
+  loop
+
+  // partition child acks it's parent
+  task.parent@ ack
+
+  iPartitionNo "partitionTask %v exiting" str.format .
+;
+
+/*----------------------------------------------------------------------------*/
+/* spawn p35 partitioned child tasks                                          */
+/*----------------------------------------------------------------------------*/
+: p35SpawnChildTasks
+
+  0 locals| pChildTask |
+
+  // grab this task's lock
+  task::this task.grabLock
+
+  // set number of children to ack this parent
+  grid.slots setAcks
+
+  // loop from 0 to nChildren-1
+  grid.slots 0
+  do
+
+    // spawn an n35 child task
+    0                        // no. of args
+    "_p35Child_"             // seed word
+    task::this               // parent task
+    "R35PartitionChild"      // task name
+    TK_R35_CHILD             // task kind
+    I grid::toPartition      // partition no.
+    spawnR35PartitionedChildTask to pChildTask
+
+  loop
+;
+
+/*----------------------------------------------------------------------------*/
+/* spawn p35 partitioned child tasks                                          */
+/*----------------------------------------------------------------------------*/
+: p35SpawnChildTasksTableFetch ( tablePtr --- )
+
+  0 locals| pChildTask pTable |
+
+  // grab this task's lock
+  task::this task.grabLock
+
+  // set number of children to ack this parent
+  grid.slots setAcks
+
+  // loop from 0 to nChildren-1
+  grid.slots 0
+  do
+
+    // spawn an n35 child task
+    pTable
+    1                              // no. of args
+    "_p35ChildTableFetch_"         // seed word
+    task::this                     // parent task
+    "R35PartitionChildTableFetch"  // task name
+    TK_R35_CHILD                   // task kind
+    I grid::toPartition            // partition
+    spawnR35PartitionedChildTask to pChildTask
+
+  loop
+  ;
+
+/*----------------------------------------------------------------------------*/
+/*-- partition experiments ---------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* partition e1 is a spawn children ; ack wait test                           */
+/*----------------------------------------------------------------------------*/
+: r35_partition_e1
+
+  "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" .
+  "r35_partition_e1" .
+  "" .
+
+  p35SpawnChildTasks
+
+  "parent waiting for acks" .
+  ackWait
+  "parent received all acks" .
+;
+
+/*----------------------------------------------------------------------------*/
+/* partition e2 is a spawn children ; child fetchs from table; ack wait test  */
+/*----------------------------------------------------------------------------*/
+: r35_partition_e2 ( sTableNm -- )
+
+  locals| sTableNm |
+
+  0 locals| pTable |
+
+  "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" .
+  "r35_partition_e2" .
+  "" .
+
+  sTableNm .
+
+  // push named table folder onto path
+  // i.e. task.dicStack will be ../tables/<sTableNm>
+  sTableNm pushTable assert                               // ../tables/sTableNm
+  sTableNm find execute to pTable
+
+  pTable p35SpawnChildTasksTableFetch
+
+  popTable
+
+  "parent waiting for acks" .
+  ackWait
+  "parent received all acks" .
+;
+
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: r35_e
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
