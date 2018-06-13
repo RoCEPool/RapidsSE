@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Job_CreateSchema.cpp -- Create Scema Job                                   */
+/* Job_DropSchema.cpp -- Drop Schema Job                                      */
 /*============================================================================*/
 
 #include "JobsModel.h"
@@ -57,7 +57,7 @@ void Job_DropSchema::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_DropSchema::Job_DropSchema(void)
-: Job(CN_JOB_CREATESCHEMA)
+: Job(CN_JOB_DROPSCHEMA)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPSCHEMA,_FOOTER_);
   
@@ -69,7 +69,7 @@ Job_DropSchema::Job_DropSchema(void)
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPSCHEMA,_FOOTER_);
   
-  _checkInitialised_(CN_JOB_CREATESCHEMA);
+  _checkInitialised_(CN_JOB_DROPSCHEMA);
 }
 
 /*----------------------------------------------------------------------------*/
