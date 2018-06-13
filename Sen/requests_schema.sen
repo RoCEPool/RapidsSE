@@ -34,8 +34,7 @@
 
   checkEnoughBuffers not if <NIP+ERROR> exit then
   checkMakeSchema    not if <NIP+ERROR> exit then
-
-  makeSchemaExe ( ) assert::stack_0
+  makeSchemaExe      not if <NIP+ERROR> exit then
 
   tp: createdSchema
 
