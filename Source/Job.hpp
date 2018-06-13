@@ -5,6 +5,9 @@
 
 namespace JobsModel
 {
+  
+  static const i8 C_MAX_FOLDERS = 16;
+  
   enum eJS // job state
   {
     /*  0 */ JS_NONE=0,

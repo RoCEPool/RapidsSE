@@ -27,6 +27,9 @@ namespace JobsModel
       
     } m_xColumns[C_MAX_COLUMNS];
 
+    i8   m_iDicDepth;               // depth of dictionary path
+    s256 m_sDicPath[C_MAX_FOLDERS]; // dictionary path
+    
     // must be last
     Footer m_xFooter;
   
