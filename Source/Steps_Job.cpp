@@ -15,7 +15,52 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Job(void)
 {
+  vAddPrimitive("job.error@"_Stz,     &vJobErrorFetch,     false);
+  vAddPrimitive("job.error!"_Stz,     &vJobErrorStore,     false);
   vAddPrimitive("job.execute@"_Stz,   &vJobExecuteFetch,   false);
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.error@ -- fetch the job error                                          */
+/*----------------------------------------------------------------------------*/
+void Task::vJobErrorFetch(MP_Task mpTask)
+{
+  ENTRY("vJobErrorFetch"_Stz);
+  
+  Object* pJobPtr;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.error@"_Stz);
+  
+  Job* pJob = _pJob(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushInt(pJob->eJobError());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.error! -- store the job error                                          */
+/*----------------------------------------------------------------------------*/
+void Task::vJobErrorStore(MP_Task mpTask)
+{
+  ENTRY("vJobErrorStore"_Stz);
+  
+  Object* pJobPtr;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.error!"_Stz);
+  
+  i8 iJobError;
+  
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iJobError) )
+    THROW_INVALID_DSTACK("job.error!"_Stz);
+  
+  Job* pJob = _pJob(pJobPtr);
+  
+  pJob->vJobError((eEC)iJobError);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -39,7 +84,6 @@ void Task::vJobExecuteFetch(MP_Task mpTask)
   
   EXIT();
 }
-
 
 /*============================================================================*/
 /* end                                                                        */
