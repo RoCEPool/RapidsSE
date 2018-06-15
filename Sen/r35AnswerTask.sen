@@ -17,9 +17,64 @@
 /*----------------------------------------------------------------------------*/
 : r35answerLoop
 
-  300000000000 task.sleep
+  //300000000000 task.sleep
 
+  answerDronePrint if
+    task::this task.name@ " running..." str.cat .
+  then
+
+  // get the listening port of this node
+  grid.thisNode@ grid.node node.port locals| iPort |
+
+  args.verbose if
+    "waiting for connections on port "  iPort >str str.cat .
+    iPort >str "Listening on port " swap str.cat .
+  then
+
+  iPort socket.listen locals| pListeningSocket |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  0 nConnections !
   begin
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // wait for next socket
+
+    tp: waitingOnAccept
+
+    pListeningSocket socket.accept
+
+    tp: socketAccepted
+
+    args.verbose if
+      "answered connection on port " iPort >str str.cat .
+    then
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // start receiver drone for the new socket
+
+    ddlLock::grabWrite
+
+    nConnections spawnR35ReceiverTask
+
+    ddlLock::dropWrite
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // increment connection counter
+
+    nConnections @          ( connection# )
+    1 +                    ( nConnections# 1 )
+    dup                    ( nConnections# nConnections# )
+    nConnections !          ( nConnections# )
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // if very first socket start connector drone
+
+    1 == if               ( connection# )
+      grid.thisNode@ grid.startNode@ != if
+        spawnR35ConnectorTask
+      then
+    then
 
   again
 ;

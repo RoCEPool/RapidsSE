@@ -7,7 +7,18 @@
 /*----------------------------------------------------------------------------*/
 /* spawn the receiver task                                                    */
 /*----------------------------------------------------------------------------*/
-: spawnR35ReceiverTask
+: spawnR35ReceiverTask ( connectionNo -- )
+
+  locals| nConnection |
+
+  // set up the seed
+  1 "r35ReceiverLoop" ( socket 1 "receiverLoop" )
+
+  // form name of the receiver
+  "rr" nConnection @ >str str.cat ( socket 1 "r35ReceiverLoop" "rrI" )
+
+  // spawn the actors os thread
+  TK_RECEIVER_DRONE spawnR35GeneralTask
 
 ;
 
@@ -16,6 +27,23 @@
 /*----------------------------------------------------------------------------*/
 : r35ReceiverLoop
 
+  tp: r35rvc.loop
+
+  task::this task.socket!
+
+  "r35ReceiverLoop" task::this task.comment!
+
+  receiverDronePrint if "Receiver Drone R35 running on node" grid.thisNode@ >str str.cat . then
+
+  begin
+    depth 0 != if stk "stack of receiver task has grown" . debug::trap then
+
+    socket>
+
+    //exeOne
+    "received something..." .
+
+  again
 ;
 
 /*============================================================================*/
