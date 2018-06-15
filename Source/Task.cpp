@@ -515,6 +515,9 @@ void Task::vAddConstants(void)
   vAddConstant("C_256KB"_Stz, C_256KB);
   
   vAddConstant("C_INDEXES_PER_TABLE"_Stz, C_INDEXES_PER_TABLE);
+  vAddConstant("C_SLOTS_PER_NODE"_Stz,    C_SLOTS_PER_NODE);
+  vAddConstant("C_MAX_NODES"_Stz,         C_MAX_NODES);
+  vAddConstant("C_MAX_PARTITIONS"_Stz,    C_MAX_PARTITIONS);
   
   // AC_ : actor models
   /*  0 */ vAddConstant("AC_NONE"_Stz,         AC_NONE);
