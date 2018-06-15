@@ -573,7 +573,12 @@ void Thread::vLoop(void)
   // sleep infinite
   //m_pPosixThread->vSleepSec(100000000);
   
+  
   vMutexLock();
+
+  if (++gpAttachMap->m_ziR35Threads == gxArguments.m_nThreads) {
+    RapidsSE::vStartR35Tasks();
+  }
   
   for (;;) {
    

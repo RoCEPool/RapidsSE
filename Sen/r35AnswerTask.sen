@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : spawnR35AnswerTask
 
-  //0 "r35answerLoop" "AnswerDrone" TK_ANSWER_DRONE spawnR35GeneralTask
+  0 "r35answerLoop" "AnswerDrone" TK_ANSWER_DRONE spawnR35GeneralTask
 ;
 
 /*----------------------------------------------------------------------------*/
