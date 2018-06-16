@@ -6,7 +6,7 @@
 namespace JobsModel
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class Job_CreateSchema : public Job, public JobPath
+  class Job_CreateSchema : public Job, public JobDicPath
   {
   public:
     s32  m_sSchemaName;             // schema name

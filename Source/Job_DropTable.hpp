@@ -6,7 +6,7 @@
 namespace JobsModel
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class Job_DropTable : public Job, public JobPath
+  class Job_DropTable : public Job, public JobDicPath
   {
   public:
     s32  m_sTableName;              // table name

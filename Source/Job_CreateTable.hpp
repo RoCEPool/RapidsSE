@@ -6,7 +6,7 @@
 namespace JobsModel
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class Job_CreateTable : public Job, public JobPath
+  class Job_CreateTable : public Job, public JobDicPath
   {
     s32    m_sTableName;   // table name
     eTT    m_eTableType;   // table type
