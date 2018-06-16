@@ -61,6 +61,20 @@ Job_CreateTable::Job_CreateTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
   
+  m_eTableType = TT_NONE;
+  m_iColumns   = 0;
+  
+  for (i8 i_Column = 0; i_Column < C_MAX_INDEX_COLUMNS; i_Column++) {
+    m_xColumns[i_Column].m_iColumnNo = -1;
+    m_xColumns[i_Column].m_sColumnName = ""_Stz;
+    m_xColumns[i_Column].m_eColumnType = CT_NONE;
+    m_xColumns[i_Column].m_iColumnLength = -1;
+    m_xColumns[i_Column].m_iColumnScale = -1;
+    m_xColumns[i_Column].m_bIsNullable = false;
+    m_xColumns[i_Column].m_bIsPartitionKey = false;
+    m_xColumns[i_Column].m_eDatumType = DM_NONE;
+  }
+  
   _checkInitialised_(CN_JOB_CREATETABLE);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
