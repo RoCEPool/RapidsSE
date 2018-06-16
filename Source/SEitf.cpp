@@ -3663,7 +3663,6 @@ bool SEitf::bAppendRequest_R35(StrVal& sRequest, bool bDetached)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
-  s48K sWorkspace;
   Stz* aCursor = nullptr;
   
   ValWrk xValWrk;
@@ -3679,11 +3678,16 @@ bool SEitf::bAppendRequest_R35(StrVal& sRequest, bool bDetached)
     return false;
   }
   
+  //----------------------------------------------------------------------------
+  // can't remove this block until we dont try and execute this
+  s48K sWorkspace;
   sWorkspace = (i8)this;
   sWorkspace.vConcat(" >seitf task::this task.seitf! "_Stz);
   xValWrk = sWorkspace;
   //vTrace("%s\n"_Stz,xVal.aChar());
   xValSet.vAppend(aCursor,xValWrk.pNestedValueSelf());
+  // end block
+  //----------------------------------------------------------------------------
   
   xValWrk = sRequest;
   //vTrace("%s\n"_Stz,xVal.aChar());
@@ -3712,6 +3716,7 @@ bool SEitf::bAppendRequest_R35(StrVal& sRequest, bool bDetached)
   nnpNewTask->vState(TS_READY);
   nnpNewTask->vR35model(true);
   nnpNewTask->vActorModel(AC_R35);
+  nnpNewTask->vSEitf(this);
   
   //gpAttachMap->m_pServerScheduler->vEnqueueTask_Mutex(*nnpNewTask);
   Handlers::vSpawnedTaskHandler(*nnpNewTask);
