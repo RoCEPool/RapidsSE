@@ -6,10 +6,9 @@
 namespace JobsModel
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class Job_DropTable : public Job, public JobDicPath
+  class Job_DropTable : public Job, public JobDicPath, public JobObjectName
   {
   public:
-    s32  m_sTableName;              // table name
   
     // must be last
     Footer m_xFooter;

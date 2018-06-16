@@ -6,9 +6,8 @@
 namespace JobsModel
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class Job_CreateTable : public Job, public JobDicPath
+  class Job_CreateTable : public Job, public JobDicPath, public JobObjectName
   {
-    s32    m_sTableName;   // table name
     eTT    m_eTableType;   // table type
     i8     m_iColumns;     // no of columns
     

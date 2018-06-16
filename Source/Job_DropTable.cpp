@@ -60,9 +60,7 @@ Job_DropTable::Job_DropTable(void)
 : Job(CN_JOB_DROPTABLE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPTABLE,_FOOTER_);
-  
-  m_sTableName = ""_Stz;
-  
+    
   _checkInitialised_(CN_JOB_DROPTABLE);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPTABLE,_FOOTER_);

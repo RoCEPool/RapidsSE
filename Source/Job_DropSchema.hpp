@@ -7,10 +7,9 @@ namespace JobsModel
 {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class Job_DropSchema : public Job, public JobDicPath
+  class Job_DropSchema : public Job, public JobDicPath, public JobObjectName
   {
   public:
-    s32  m_sSchemaName;             // schema name
   
     // must be last
     Footer m_xFooter;

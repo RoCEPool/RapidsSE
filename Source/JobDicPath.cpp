@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* JobDicPath.hpp -- Dictionary Path part for a job                           */
+/* JobDicPath.hpp -- Dictionary Path part for a Job                           */
 /*============================================================================*/
 
 #include "JobsModel.h"
