@@ -10,8 +10,6 @@ namespace Interface
   class SEitf : public Object,
                 public ListNode_t<SEitf>
   {
-    static const i8 C_INPUT_ARRAY = 4;
-    
   public:
     i8     m_iPid;             // process which created this seitf
     i8     m_iSlots;           // number of partition slots in each node
@@ -69,6 +67,8 @@ namespace Interface
     Formatters m_xFormatters; // record formatters
   
     PerformanceTrace* m_pPerformanceTrace;
+  
+    Job* m_pJob;  // job to be performed
   
     // must be last
     Footer m_xFooter;
