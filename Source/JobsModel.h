@@ -17,6 +17,8 @@ using namespace JobsModel;
 
 #include "Job.hpp"
 
+#include "JobPath.hpp"
+
 #include "Job__Begun.hpp"
 #include "Job__End.hpp"
 #include "Job__Ended.hpp"
