@@ -796,6 +796,7 @@ namespace Tasks
     static void vIntSubtract(MP_Task mpTask);
     
     // job
+    static void vJobAddOriginator(MP_Task mpTask);
     static void vJobErrorFetch(MP_Task mpTask);
     static void vJobErrorStore(MP_Task mpTask);
     static void vJobExecuteFetch(MP_Task mpTask);

@@ -3716,7 +3716,7 @@ bool SEitf::bAppendRequest_R35(StrVal& sRequest, bool bDetached)
   nnpNewTask->vState(TS_READY);
   nnpNewTask->vR35model(true);
   nnpNewTask->vActorModel(AC_R35);
-  nnpNewTask->vSEitf(this);
+  //nnpNewTask->vSEitf(this);
   
   //gpAttachMap->m_pServerScheduler->vEnqueueTask_Mutex(*nnpNewTask);
   Handlers::vSpawnedTaskHandler(*nnpNewTask);

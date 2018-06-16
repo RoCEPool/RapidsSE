@@ -6,7 +6,7 @@
 //#include "Tasks.h"
 #include "SePrompt.hpp"
 
-extern AttachMap*      gpAttachMap;
+extern AttachMap* gpAttachMap;
 
 // job: ////////////////////////////////////////////////////////////////////////
 
@@ -15,9 +15,27 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Job(void)
 {
-  vAddPrimitive("job.error@"_Stz,     &vJobErrorFetch,     false);
-  vAddPrimitive("job.error!"_Stz,     &vJobErrorStore,     false);
-  vAddPrimitive("job.execute@"_Stz,   &vJobExecuteFetch,   false);
+  vAddPrimitive("job.addOriginator"_Stz, &vJobAddOriginator,  false);
+  vAddPrimitive("job.error@"_Stz,        &vJobErrorFetch,     false);
+  vAddPrimitive("job.error!"_Stz,        &vJobErrorStore,     false);
+  vAddPrimitive("job.execute@"_Stz,      &vJobExecuteFetch,   false);
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.addOriginator -- add job to originator job set                         */
+/*----------------------------------------------------------------------------*/
+void Task::vJobAddOriginator(MP_Task mpTask)
+{
+  ENTRY("vJobAddOriginator"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.execute@"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  gpAttachMap->m_pOriginatingJobs->vGrabLock();
+  gpAttachMap->m_pOriginatingJobs->vAddJob(pJob);
+  gpAttachMap->m_pOriginatingJobs->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -28,14 +46,11 @@ void Task::vJobErrorFetch(MP_Task mpTask)
   ENTRY("vJobErrorFetch"_Stz);
   
   Object* pJobPtr;
-  
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job.error@"_Stz);
+  Job__Error* pJob__Error = _pJob__Error(pJobPtr);
   
-  Job__Error* pJob = _pJob__Error(pJobPtr);
-  ASSERT(CN_JOB__ERROR == pJob->eClass());
-  
-  mpTask->m_pDataStack->vPushInt(pJob->eErrorCode());
+  mpTask->m_pDataStack->vPushInt(pJob__Error->eErrorCode());
   
   EXIT();
 }
@@ -48,19 +63,15 @@ void Task::vJobErrorStore(MP_Task mpTask)
   ENTRY("vJobErrorStore"_Stz);
   
   Object* pJobPtr;
-  
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job.error!"_Stz);
+  Job__Error* pJob__Error = _pJob__Error(pJobPtr);
   
   i8 iJobError;
-  
   if ( ! mpTask->m_pDataStack->bPopAsInt(iJobError) )
     THROW_INVALID_DSTACK("job.error!"_Stz);
   
-  Job__Error* pJob = _pJob__Error(pJobPtr);
-  ASSERT(CN_JOB__ERROR == pJob->eClass());
-  
-  pJob->vErrorCode((eEC)iJobError);
+  pJob__Error->vErrorCode((eEC)iJobError);
   
   EXIT();
 }
@@ -73,10 +84,8 @@ void Task::vJobExecuteFetch(MP_Task mpTask)
   ENTRY("vJobExecuteFetch"_Stz);
   
   Object* pJobPtr;
-  
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job.execute@"_Stz);
-  
   Job* pJob = _pJob(pJobPtr);
   
   s32 sExecute;
