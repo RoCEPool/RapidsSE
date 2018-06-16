@@ -61,9 +61,13 @@ Queues::Queues(void)
   
   for (i8 i_Slot = 0; i_Slot < C_SLOTS_PER_NODE; i_Slot++)
     m_pReadySlotQueues[i_Slot] = nullptr;
-
   for (i8 i_Slot = 0; i_Slot < gxArguments.m_nSlots; i_Slot++)
     m_pReadySlotQueues[i_Slot] = new TaskQueue(bTaskCompareTaskOrderNo);
+  
+  for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++)
+    m_pReadySendQueues[i_Node] = nullptr;
+  for (i8 i_Node = 0; i_Node < gxArguments.m_nNodes; i_Node++)
+    m_pReadySendQueues[i_Node] = new TaskQueue(bTaskCompareTaskOrderNo);
   
   m_pExecutingQueue = new TaskQueue(bTaskCompareTaskOrderNo);
   m_pWaitingQueue   = new TaskQueue(bTaskCompareTaskOrderNo);

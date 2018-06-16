@@ -22,29 +22,28 @@ namespace Threads
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // queues which are checked in round robin fashion
   
-    TaskQueue* m_pSleepingQueue;   // queue of sleeping tasks
+    TaskQueue* m_pSleepingQueue;   // set of queued sleeping tasks
                                    // (ordered by wakeup time)
-                                   // these tasks have been partially executed
   
-    TaskQueue* m_pReadyQueue;      // queue of ordinary tasks ready to be
-                                   // executed (ordered by arrival)
-                                   // these tasks have not been executed
+    TaskQueue* m_pReadyQueue;      // set of queued tasks ready to be executed
+                                   // (ordered by arrival)
   
     TaskQueue* m_pReadySlotQueues[C_SLOTS_PER_NODE];
-                                   // set of tasks queued for partitoned
-                                   // execution (ordered by arrival)
-                                   // these tasks have not been executed
+                                   // tasks queued for partitioned execution
+                                   // (ordered by arrival)
+  
+    TaskQueue* m_pReadySendQueues[C_MAX_NODES];
+                                   // set of tasks queued for socket sending
+                                   // (ordered by arrival)
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // queues which are not checked in the round robin
   
-    TaskQueue* m_pExecutingQueue;  // queue of partition tasks currently
-                                   // executing (ordered by arrival)
-                                   // these tasks have been partially executed
+    TaskQueue* m_pExecutingQueue;  // queue of tasks currently executing
+                                   // (ordered by arrival)
   
-    TaskQueue* m_pWaitingQueue;    // set of suspended tasks which are
-                                   // waiting to be signaled (ordered by arrival)
-                                   // these tasks have been partially executed
+    TaskQueue* m_pWaitingQueue;    // suspended tasks which waiting to be signaled
+                                   // (ordered by arrival)
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
