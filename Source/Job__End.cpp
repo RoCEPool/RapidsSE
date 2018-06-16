@@ -61,6 +61,8 @@ Job__End::Job__End(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__END,_FOOTER_);
   
+  m_sExecute = "Job__End_Exe"_Stz;
+  
   _checkInitialised_(CN_JOB__END);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB__END,_FOOTER_);

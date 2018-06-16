@@ -61,6 +61,8 @@ Job_CreateSchema::Job_CreateSchema(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATESCHEMA,_FOOTER_);
     
+  m_sExecute = "Job_CreateSchema_Exe"_Stz;
+  
   _checkInitialised_(CN_JOB_CREATESCHEMA);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATESCHEMA,_FOOTER_);

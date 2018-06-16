@@ -61,9 +61,11 @@ Job__Error::Job__Error(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__ERROR,_FOOTER_);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB__ERROR,_FOOTER_);
+  m_sExecute = "Job__Error_Exe"_Stz;
   
   _checkInitialised_(CN_JOB__BEGUN);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB__ERROR,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

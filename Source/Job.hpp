@@ -29,7 +29,7 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job : public Object
   {
-  private:
+  public:
     i8  m_iJobId;   // job id
     eJS m_eState;   // job state
     s32 m_sExecute; // word to be executed

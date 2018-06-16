@@ -61,6 +61,8 @@ Job_CreateTable::Job_CreateTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
   
+  m_sExecute = "Job_CreateTable_Exe"_Stz;
+  
   m_eTableType = TT_NONE;
   m_iColumns   = 0;
   
