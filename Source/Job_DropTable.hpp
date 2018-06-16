@@ -6,14 +6,11 @@
 namespace JobsModel
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class Job_DropTable : public Job
+  class Job_DropTable : public Job, public JobPath
   {
   public:
     s32  m_sTableName;              // table name
-
-    i8   m_iDicDepth;               // depth of dictionary path
-    s256 m_sDicPath[C_MAX_FOLDERS]; // dictionary path
-    
+  
     // must be last
     Footer m_xFooter;
   

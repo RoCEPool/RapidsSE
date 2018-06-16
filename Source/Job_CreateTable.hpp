@@ -6,7 +6,7 @@
 namespace JobsModel
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class Job_CreateTable : public Job
+  class Job_CreateTable : public Job, public JobPath
   {
     s32    m_sTableName;   // table name
     eTT    m_eTableType;   // table type
@@ -25,10 +25,7 @@ namespace JobsModel
       eDM   m_eDatumType;    // SE datum type
       
     } m_xColumns[C_MAX_COLUMNS];
-
-    i8   m_iDicDepth;               // depth of dictionary path
-    s256 m_sDicPath[C_MAX_FOLDERS]; // dictionary path
-    
+  
     // must be last
     Footer m_xFooter;
   

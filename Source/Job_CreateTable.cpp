@@ -61,9 +61,9 @@ Job_CreateTable::Job_CreateTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
-  
   _checkInitialised_(CN_JOB_CREATETABLE);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
