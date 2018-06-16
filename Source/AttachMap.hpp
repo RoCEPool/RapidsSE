@@ -64,7 +64,8 @@ namespace StorageEngine
     Atomic        m_ziR35Threads;
   
     Queues*       m_pQueues;
-    Jobs*         m_pJobs; 
+    Jobs*         m_pOriginatingJobs;
+    Jobs*         m_pParticipatingJobs;
   
     StepArray*    m_pStepArray;
     

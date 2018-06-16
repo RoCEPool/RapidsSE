@@ -429,7 +429,8 @@ void RapidsSE::vSystemInit(void)
   
   vDicCompile(gpAttachMap->m_npBootTask);
   
-  gpAttachMap->m_pJobs   = new Jobs(bJobCompare);
+  gpAttachMap->m_pOriginatingJobs   = new Jobs(bJobCompare);
+  gpAttachMap->m_pParticipatingJobs = new Jobs(bJobCompare);
   
   gpAttachMap->vRecordGlobals(gxArguments.m_sRegionName,
                               gxArguments.m_iRegionSize,
