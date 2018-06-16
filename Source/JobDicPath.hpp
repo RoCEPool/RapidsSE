@@ -13,6 +13,8 @@ namespace JobsModel
     s256 m_sDicPath[C_MAX_FOLDERS]; // dictionary path
   
   public:
+    void* operator new(size_t);
+  
     JobDicPath(void);
    ~JobDicPath(void);
   };
