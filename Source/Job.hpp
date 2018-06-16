@@ -5,7 +5,7 @@
 
 namespace JobsModel
 {
-  
+  static const i8 C_MAX_COLUMNS = 128;
   static const i8 C_MAX_FOLDERS = 16;
   
   enum eJS // job state
@@ -26,13 +26,14 @@ namespace JobsModel
     /*  4 */ "ENUMS"_Stz
   };
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job : public Object
   {
   private:
-    i8     m_iJobId;      // job id
-    eJS    m_eState;      // job state
-    s32    m_sExecute;    // word to be executed
-    i8     m_iParticipantNode; // participant node no
+    i8  m_iJobId;   // job id
+    eJS m_eState;   // job state
+    s32 m_sExecute; // word to be executed
+    i8  m_iParticipantNode; // participant node no
   
   public:
     Job(eCN eClassNo);
@@ -47,9 +48,9 @@ namespace JobsModel
     void vParticipantNode(i8 iNode);
     eJS  eJobState(void);
     void vJobState(eJS eJobState);
-      
   };
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job* _pJob(void* aAddr);
 }
 

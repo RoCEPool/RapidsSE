@@ -61,9 +61,9 @@ Job__Begun::Job__Begun(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__BEGUN,_FOOTER_);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB__BEGUN,_FOOTER_);
-  
   _checkInitialised_(CN_JOB__BEGUN);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB__BEGUN,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

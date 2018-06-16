@@ -5,7 +5,6 @@
 
 namespace JobsModel
 {
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job__Begun : public Job
   {
@@ -30,6 +29,7 @@ namespace JobsModel
   
   };
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job__Begun* _pJob__Begun(void* aAddr);
 }
 

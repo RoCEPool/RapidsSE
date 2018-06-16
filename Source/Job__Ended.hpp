@@ -5,7 +5,6 @@
 
 namespace JobsModel
 {
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job__Ended : public Job
   {
@@ -30,6 +29,7 @@ namespace JobsModel
   
   };
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job__Ended* _pJob__Ended(void* aAddr);
 }
 

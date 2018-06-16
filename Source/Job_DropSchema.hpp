@@ -10,7 +10,7 @@ namespace JobsModel
   class Job_DropSchema : public Job
   {
   public:
-    s32    m_sSchemaName;           // schema name
+    s32  m_sSchemaName;             // schema name
 
     i8   m_iDicDepth;               // depth of dictionary path
     s256 m_sDicPath[C_MAX_FOLDERS]; // dictionary path

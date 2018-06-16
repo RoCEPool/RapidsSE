@@ -49,12 +49,11 @@ int:  queryCount
     snooze spawnMonitorDrone
     //snooze spawnReclaimDrone
 
-    snooze spawnAnswerDrone
+    //snooze spawnAnswerDrone
 
   then
 
   //dic.main true dic.frozen!
-
 ;
 
 /*============================================================================*/

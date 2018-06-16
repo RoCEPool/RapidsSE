@@ -9,9 +9,9 @@ namespace JobsModel
   {
   private:
   
-    Lock      m_xLock;
+    Lock      m_xLock;         // lock
     i8        m_iNextJobId;    // next job id
-    SkipList* m_pJobsSkipList;
+    SkipList* m_pJobsSkipList; // skip list of jobs
   
     // must be last
     Footer m_xFooter;
