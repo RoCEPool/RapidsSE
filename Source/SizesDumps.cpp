@@ -319,7 +319,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_CreateTable),   // CN_JOB_DROPSCHEMA
   /*    */ sizeof(Job_CreateTable),   // CN_JOB_DROPTABLE
   /*    */ sizeof(Job_CreateTable),   // CN_JOB_DROPTENANT
-  /*    */ 0,                         // CN_JOB_G35
+  /*    */ sizeof(Job_G35),           // CN_JOB_G35
   /*    */ sizeof(Job_CreateTable),   // CN_JOB_LOADTABLE
                   
   /*    */ sizeof(Jobs),               // CN_JOBS

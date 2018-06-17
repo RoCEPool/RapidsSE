@@ -53,6 +53,8 @@ void Task::vAddPrimitives_Task(void)
   vAddPrimitive("task.seitf@"_Stz,    &vTaskSeitfFetch,    false);
   vAddPrimitive("task.seitf!"_Stz,    &vTaskSeitfStore,    false);
   vAddPrimitive("task.sleep"_Stz,     &vTaskSleep,         false);
+  vAddPrimitive("task.sendNode@"_Stz, &vTaskSendNodeFetch, false);
+  vAddPrimitive("task.sendNode!"_Stz, &vTaskSendNodeStore, false);
   vAddPrimitive("task.socket@"_Stz,   &vTaskSocketFetch,   false);
   vAddPrimitive("task.socket!"_Stz,   &vTaskSocketStore,   false);
   vAddPrimitive("task.state@"_Stz,    &vTaskStateFetch,    false);

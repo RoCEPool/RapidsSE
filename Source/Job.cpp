@@ -54,7 +54,7 @@ Job::Job(eCN eClassNo)
   m_iJobId   = -1;
   m_eState   = JS_NONE;
   m_sExecute = ""_Stz;
-  m_iParticipantNode = gpAttachMap->m_pGrid->iThisNode();
+  m_iParticipantNode = -1;
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
 }
