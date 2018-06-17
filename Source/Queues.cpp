@@ -428,6 +428,47 @@ Task* Queues::pInspectReadyQueue(Thread* pCallingThread)
 }
 
 /*----------------------------------------------------------------------------*/
+/* inspect a ready send queue                                                 */
+/*----------------------------------------------------------------------------*/
+Task* Queues::pInspectReadySendQueue(Thread* pCallingThread)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  Task* pPoppedTask;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // lock queue and check for task
+  
+  // attempt to grab a write lock on the queue
+  if (! m_pReadySendQueues[pCallingThread->m_iLastRRqueue]->bGrabLock()) {
+    // unable to lock queue (another thread must be processing it)
+    // so move on to the next queue
+    return nullptr;
+  }
+  
+  // pop a task off the partition queues
+  pPoppedTask = m_pReadySendQueues[pCallingThread->m_iLastRRqueue]->pPopTask();
+  
+  // drop lock on the queue
+  m_pReadySendQueues[pCallingThread->m_iLastRRqueue]->vDropLock();
+  
+  // is there a task to run?
+  if (! pPoppedTask)
+  return nullptr;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // there is a task to run
+  
+  // task no longer in queue
+  pPoppedTask->vQueue(QR_NONE);
+  
+  RASSERT(pPoppedTask->pSendNode() != nullptr);
+  
+  // return the task popped from the slot queue
+  return pPoppedTask;
+}
+
+/*----------------------------------------------------------------------------*/
 /* inspect a ready slot queue                                                 */
 /*----------------------------------------------------------------------------*/
 Task* Queues::pInspectReadySlotQueue(Thread* pCallingThread)
@@ -560,7 +601,16 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
       return true;
     }
     
-    if ( ! (pPoppedTask = pInspectReadySlotQueue(pCallingThread)) )
+    if (QR_READY_QUEUE > pCallingThread->m_iLastRRqueue &&
+        C_SLOTS_PER_NODE < pCallingThread->m_iLastRRqueue) {
+      
+      if ( ! (pPoppedTask = pInspectReadySlotQueue(pCallingThread)) )
+        continue;
+      *ppPoppedTask = pPoppedTask;
+      return true;
+    }
+    
+    if ( ! (pPoppedTask = pInspectReadySendQueue(pCallingThread)) )
       continue;
     *ppPoppedTask = pPoppedTask;
     return true;

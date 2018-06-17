@@ -82,6 +82,7 @@ namespace Threads
     Thread* pGrabIdleThread(void);
 
     Task* pInspectReadyQueue(Thread* pCallingThread);
+    Task* pInspectReadySendQueue(Thread* pCallingThread);
     Task* pInspectReadySlotQueue(Thread* pCallingThread);
     Task* pInspectSleepingQueue(Thread* pCallingThread);
   
