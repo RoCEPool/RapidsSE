@@ -99,14 +99,15 @@ namespace Tasks
   /* 2 */ TS_EXECUTING,     // task is currenty being executed by Thread::vLoop
   /* 3 */ TS_EXITED,        // task has completed
   /* 4 */ TS_READY,         // task is ready to be executed
-  /* 5 */ TS_SLEEPING,      // task is sleeping
+  /* 5 */ TS_SEND,          // task is wants to send
+  /* 6 */ TS_SLEEPING,      // task is sleeping
   
   // task is waiting for signal 
-  /* 6 */ TS_WAITING_ACK,   // task is waiting on ack from cooperating task
-  /* 7 */ TS_WAITING_SIGNAL,// task is waiting on signal indicating queue arrival
+  /* 7 */ TS_WAITING_ACK,   // task is waiting on ack from cooperating task
+  /* 8 */ TS_WAITING_SIGNAL,// task is waiting on signal indicating queue arrival
   
-  /* 8 */ TS_YIELDED,       // task is yielded, not running and is in a TaskSet
-  /* 9 */ TS_ENUMS
+  /* 9 */ TS_YIELDED,       // task is yielded, not running and is in a TaskSet
+  /*10 */ TS_ENUMS
   };
   
   static Stz* aTS[]
@@ -115,12 +116,13 @@ namespace Tasks
     /* 1 */ "BLOCKED"_Stz,
     /* 2 */ "EXECUTING"_Stz,
     /* 3 */ "EXITED"_Stz,
-    /* 4 */ "SLEEPING"_Stz,
-    /* 5 */ "SUSPENDED"_Stz,
-    /* 6 */ "WAITING_ACK"_Stz,
-    /* 7 */ "WAITING_SIGNAL"_Stz,
-    /* 8 */ "YIELDED"_Stz,
-    /* 9 */ "ENUMS"_Stz,
+    /* 4 */ "READY"_Stz,
+    /* 5 */ "SEND"_Stz,
+    /* 6 */ "SLEEPING"_Stz,
+    /* 7 */ "WAITING_ACK"_Stz,
+    /* 8 */ "WAITING_SIGNAL"_Stz,
+    /* 9 */ "YIELDED"_Stz,
+    /*10 */ "ENUMS"_Stz,
   };
   
   typedef NP<Task,CN_TASK> NP_Task;
