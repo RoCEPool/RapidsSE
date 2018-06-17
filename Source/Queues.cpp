@@ -146,6 +146,21 @@ void Queues::vAddToReadySlotQueue(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add task to send queue                                                     */
+/*----------------------------------------------------------------------------*/
+void Queues::vAddToSendQueue(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  // get send node no of the task
+  i8 iSendNode = pTask->pSendNode()->iNodeNo();
+  
+  m_pReadySendQueues[iSendNode]->vGrabLock();
+  vAddToSendQueue_NL(pTask);
+  m_pReadySendQueues[iSendNode]->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
 /* add task to sleeping queue                                                 */
 /*----------------------------------------------------------------------------*/
 void Queues::vAddToSleepingQueue(Task* pTask)
@@ -221,6 +236,25 @@ void Queues::vAddToReadySlotQueue_NL(Task* pTask)
   pTask->vTaskOrderNo(++m_ziTaskOrderNo);
   
   m_pReadySlotQueues[iSlot]->vAddTask(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add task to a slot queue                                                   */
+/*----------------------------------------------------------------------------*/
+void Queues::vAddToSendQueue_NL(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  RASSERT(TS_SEND == pTask->eState());
+  RASSERT(pTask->pSendNode()->iNodeNo() != -1);
+  
+  // get send node from the task
+  i8 iSendNode = pTask->pSendNode()->iNodeNo();
+  
+  pTask->vQueue((eQR)(C_SLOTS_PER_NODE + iSendNode));
+  pTask->vTaskOrderNo(++m_ziTaskOrderNo);
+  
+  m_pReadySendQueues[iSendNode]->vAddTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -662,6 +696,19 @@ void Queues::vScheduleReadySlotTask(Task* pTask)
   }
   else
     vAddToReadySlotQueue(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* schedule sleeping task                                                     */
+/*----------------------------------------------------------------------------*/
+void Queues::vScheduleSendTask(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  RASSERT(TS_SEND == pTask->eState());
+  
+  // add task to send queue
+  vAddToSendQueue(pTask);
 }
 
 /*----------------------------------------------------------------------------*/

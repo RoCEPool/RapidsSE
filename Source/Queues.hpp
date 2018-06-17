@@ -62,12 +62,14 @@ namespace Threads
     void vAddToExecutingQueue(Task* pTask);
     void vAddToReadyQueue(Task* pTask);
     void vAddToReadySlotQueue(Task* pTask);
+    void vAddToSendQueue(Task* pTask);
     void vAddToSleepingQueue(Task* pTask);
     void vAddToWaitingQueue(Task* pTask);
   
     void vAddToExecutingQueue_NL(Task* pTask);
     void vAddToReadyQueue_NL(Task* pTask);
     void vAddToReadySlotQueue_NL(Task* pTask);
+    void vAddToSendQueue_NL(Task* pTask);
     void vAddToSleepingQueue_NL(Task* pTask);
     void vAddToWaitingQueue_NL(Task* pTask);
   
@@ -95,6 +97,7 @@ namespace Threads
     void vScheduleExitedTask(Task* pTask);
     void vScheduleReadyTask(Task* pTask);
     void vScheduleReadySlotTask(Task* pTask);
+    void vScheduleSendTask(Task* pTask);
     void vScheduleSleepingTask(Task* pTask);
     void vScheduleSpawnedTask(Task* pTask);
     void vScheduleWaitingTask(Task* pTask);

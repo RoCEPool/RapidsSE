@@ -287,6 +287,7 @@ namespace Tasks
     void vSeedDicCompileSen(void);
     void vSeedDocol(void);
     void vSeedWord(Stz *aWord);
+    GridModel::Node* pSendNode(void);
     Interface::SEitf* pSEitf(void);
     void vSEitf(Interface::SEitf* pSEitf);
     void vSleep(i8 iMicroSeconds);
