@@ -105,7 +105,10 @@ namespace Threads
     void vScheduleYieldedTask(Task* pTask);
  
     ThreadVector* pThreadVector(void);
-    
+  
+    i8   i_ToReadySendQueue(i8 iRRqueue);
+    i8   i_ToReadySlotQueue(i8 iRRqueue);
+  
     Footer* aFooter(void);
   };
   

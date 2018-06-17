@@ -930,6 +930,34 @@ ThreadVector* Queues::pThreadVector(void)
   return m_pThreadVector;
 }
 
+/*----------------------------------------------------------------------------*/
+/* convert iRRqueue to a ready send queue subscript                           */
+/*----------------------------------------------------------------------------*/
+i8 Queues::i_ToReadySendQueue(i8 iRRqueue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  i8 i_ReadySendQueue = iRRqueue - gxArguments.m_nSlots;
+  
+  RASSERT(i_ReadySendQueue >= 0 and i_ReadySendQueue < gxArguments.m_nNodes);
+  
+  return i_ReadySendQueue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert iRRqueue to a ready slot queue subscript                           */
+/*----------------------------------------------------------------------------*/
+i8 Queues::i_ToReadySlotQueue(i8 iRRqueue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  i8 i_ReadySlotQueue = iRRqueue;
+  
+  RASSERT(i_ReadySlotQueue >= 0 and i_ReadySlotQueue < gxArguments.m_nSlots);
+  
+  return i_ReadySlotQueue;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
