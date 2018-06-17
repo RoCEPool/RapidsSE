@@ -3660,7 +3660,7 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
 /*----------------------------------------------------------------------------*/
 /* append request to request queue (RDP R3.5)                                 */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bAppendRequest_R35(StrVal& sRequest, bool bDetached)
+bool SEitf::bAppendRequest_R35(StrVal& sRequest, bool bDetached, Job** ppJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -3718,6 +3718,11 @@ bool SEitf::bAppendRequest_R35(StrVal& sRequest, bool bDetached)
   nnpNewTask->vR35model(true);
   nnpNewTask->vActorModel(AC_R35);
   //nnpNewTask->vSEitf(this);
+  
+  if (*ppJob) {
+    Job* pJob = *ppJob;
+    *ppJob = nullptr;
+  }
   
   //gpAttachMap->m_pServerScheduler->vEnqueueTask_Mutex(*nnpNewTask);
   Handlers::vSpawnedTaskHandler(*nnpNewTask);

@@ -309,6 +309,8 @@ void Task::vInit(Stz* aLambda)
   m_bDestructorTrace = false;
   
   m_bR35model = false;
+  
+  m_pJob = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1571,6 +1573,26 @@ bool Task::bIsPartitioned(void)
     return true;
   else
     return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the job of this task                                                   */
+/*----------------------------------------------------------------------------*/
+Job* Task::pJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  return m_pJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the job of this task                                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vJob(Job* pJob)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  m_pJob = pJob;
 }
 
 /*----------------------------------------------------------------------------*/

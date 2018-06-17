@@ -204,6 +204,8 @@ namespace Tasks
   
     bool   m_bR35model;         // task is running R3.5 model
   
+    Job*   m_pJob;              // the job for this task
+  
     // always last
     Footer m_xFooter;
 
@@ -246,6 +248,8 @@ namespace Tasks
     bool bIsName(StrVal& sName);
     bool bIsNonPartitioned(void);
     bool bIsPartitioned(void);
+    Job* pJob(void);
+    void vJob(Job* pJob);
     void vLocalsPop(void);
     void vLocalsPush(void);
     NP_Task npNextInSet(void);
