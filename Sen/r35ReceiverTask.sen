@@ -39,9 +39,10 @@
     depth 0 != if stk "stack of receiver task has grown" . debug::trap then
 
     socket>
+    valset> drop
 
     //exeOne
-    "received something..." .
+    "received something...%v" str.format .
 
   again
 ;

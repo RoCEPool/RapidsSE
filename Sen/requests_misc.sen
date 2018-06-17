@@ -108,11 +108,21 @@
   "g35"
 
   task::this to pTask
+
   // get the job from the task
   pTask task.job@ to pJob
   pJob .
 
-  0 pTask task.sendNode!
+  0 grid.node pTask task.sendNode!
+
+  0 grid.socket@ pTask task.socket!
+
+  task.send
+
+  "hello" 1
+  >valset
+
+  >socket
 
   <SUCCESS>
 ;
