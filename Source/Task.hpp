@@ -1315,6 +1315,8 @@ namespace Tasks
     static void vTaskSeed(MP_Task mpTask);
     static void vTaskSeitfFetch(MP_Task mpTask);
     static void vTaskSeitfStore(MP_Task mpTask);
+    static void vTaskSendNodeFetch(MP_Task mpTask);
+    static void vTaskSendNodeStore(MP_Task mpTask);
     static void vTaskSleep(MP_Task mpTask);
     static void vTaskSocketFetch(MP_Task mpTask);
     static void vTaskSocketStore(MP_Task mpTask);

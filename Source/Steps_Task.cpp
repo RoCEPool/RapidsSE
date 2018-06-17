@@ -887,6 +887,49 @@ void Task::vTaskSeitfStore(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* task.sendNode@ -- fetch send node of task on data stack                    */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskSendNodeFetch(MP_Task mpTask)
+{
+  ENTRY("vTaskSendNodeFetch"_Stz);
+  
+  Object* pObject;
+  if ( ! mpTask->m_pDataStack->bPop(pObject) )
+    THROW_INVALID_DSTACK("task.sendNode@"_Stz);
+  Task* pThatTask = _pTask(pObject);
+  
+  Node* pSendNode = pThatTask->m_pSendNode;
+  
+  Object* pPtrSendNode = pSendNode;
+  
+  mpTask->m_pDataStack->vPushObject(pPtrSendNode);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.sendNode! -- store send node on data stack into task on data stack    */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskSendNodeStore(MP_Task mpTask)
+{
+  ENTRY("vTaskSendNodeStore"_Stz);
+  
+  Object* pTaskObject;
+  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
+    THROW_INVALID_DSTACK("task.sendNode!"_Stz);
+  Task* pThatTask = _pTask(pTaskObject);
+  
+  Object* pPtrSendNode;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSendNode) )
+    THROW_INVALID_DSTACK("task.sendNode!"_Stz);
+  Node* pSendNode = _pNode(pPtrSendNode);
+  
+  pThatTask->m_pSendNode = pSendNode;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* task.sleep -- this task sleeps                                             */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskSleep(MP_Task mpTask)
