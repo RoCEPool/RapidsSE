@@ -690,6 +690,30 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the first queue                                                        */
+/*----------------------------------------------------------------------------*/
+i8 Queues::i_QueueFirst(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  return QR_SLEEPING_QUEUE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the last queue                                                         */
+/*----------------------------------------------------------------------------*/
+i8 Queues::i_QueueLast(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  i8 i_Last = gpAttachMap->m_pGrid->m_nSlots
+               + gpAttachMap->m_pGrid->m_nNodes
+               - 1;
+  
+  return i_Last;
+}
+
+/*----------------------------------------------------------------------------*/
 /* remove thread from thread vector                                           */
 /*----------------------------------------------------------------------------*/
 void Queues::vRemoveThread(Thread* pThread)

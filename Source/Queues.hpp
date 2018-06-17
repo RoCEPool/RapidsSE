@@ -92,7 +92,10 @@ namespace Threads
     bool  bIsReadySlotQueue(i8 iRRqueue);
     bool  bIsSleepingQueue(i8 iRRqueue);
   
-    bool bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread);
+    bool  bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread);
+
+    i8    i_QueueFirst(void);
+    i8    i_QueueLast(void);
   
     void vRemoveFromQueue(Task* pTask); //! RAY TO COMPLETE
     void vRemoveThread(Thread* pThread);
