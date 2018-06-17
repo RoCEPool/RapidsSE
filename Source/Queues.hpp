@@ -29,8 +29,8 @@ namespace Threads
     // QR_READY_QUEUE              // (ordered by arrival)
   
     TaskQueue* m_pReadySlotQueues[C_SLOTS_PER_NODE];
-    // 0 .. gxArguments.m_nSlots-1 // tasks queued for partitioned execution
-    //                             // (ordered by arrival)
+    // QR_READY_QUEUE + 1 ..       // tasks queued for partitioned execution
+    //   gxArguments.m_nSlots - 1  // (ordered by arrival)
   
     TaskQueue* m_pReadySendQueues[C_MAX_NODES];
     // gxArguments.m_nSlots ..     // set of tasks queued for socket sending
@@ -86,6 +86,11 @@ namespace Threads
     Task* pInspectReadySendQueue(Thread* pCallingThread);
     Task* pInspectReadySlotQueue(Thread* pCallingThread);
     Task* pInspectSleepingQueue(Thread* pCallingThread);
+
+    bool  bIsReadyQueue(i8 iRRqueue);
+    bool  bIsReadySendQueue(i8 iRRqueue);
+    bool  bIsReadySlotQueue(i8 iRRqueue);
+    bool  bIsSleepingQueue(i8 iRRqueue);
   
     bool bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread);
   

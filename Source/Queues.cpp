@@ -565,6 +565,73 @@ Task* Queues::pInspectSleepingQueue(Thread* pCallingThread)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is iRRqueue refering to the ready queue ?                                  */
+/*----------------------------------------------------------------------------*/
+bool Queues::bIsReadyQueue(i8 iRRqueue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  if (iRRqueue == QR_READY_QUEUE)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is iRRqueue refering to a ready send queue ?                               */
+/*----------------------------------------------------------------------------*/
+bool Queues::bIsReadySendQueue(i8 iRRqueue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+
+  /*
+   
+      The send queues are logically after the slot queues, and
+      the slot queues are 0 .. nSlots - 1
+
+      As an example, let's say nSlots = 2, nNodes = 3
+
+      .: an iRRqueue of 2 .. 4 refers to a send queue
+
+      which rebased (by subtracting nSlots) is 0 .. 2
+   
+   */
+  
+  if (iRRqueue >= gxArguments.m_nSlots &&
+      iRRqueue <  gxArguments.m_nSlots + gxArguments.m_nNodes)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is iRRqueue refering to a ready slot queue ?                               */
+/*----------------------------------------------------------------------------*/
+bool Queues::bIsReadySlotQueue(i8 iRRqueue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  if (iRRqueue >= QR_READY_QUEUE + 1 &&
+      iRRqueue <  gxArguments.m_nSlots)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is iRRqueue refering to the sleeping queue ?                               */
+/*----------------------------------------------------------------------------*/
+bool Queues::bIsSleepingQueue(i8 iRRqueue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  if (iRRqueue == QR_SLEEPING_QUEUE)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop next queued task in round robin fashion                                */
 /*----------------------------------------------------------------------------*/
 bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
@@ -938,14 +1005,15 @@ i8 Queues::i_ToReadySendQueue(i8 iRRqueue)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   /*
-       The send queues are logically after the slot queues, and
-       the slot queues are 0 .. nSlots - 1
    
-       As an example, let's say nSlots = 2, nNodes = 3
-   
-       .: an iRRqueue of 2 .. 4 refers to a send queue
-   
-       which rebased (by subtracting nSlots) is 0 .. 2
+      The send queues are logically after the slot queues, and
+      the slot queues are 0 .. nSlots - 1
+
+      As an example, let's say nSlots = 2, nNodes = 3
+
+      .: an iRRqueue of 2 .. 4 refers to a send queue
+
+      which rebased (by subtracting nSlots) is 0 .. 2
    
    */
   
