@@ -99,6 +99,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_DROPSCHEMA
   /*    */ &Finalize::vUndefined,         // CN_JOB_DROPTABLE
   /*    */ &Finalize::vUndefined,         // CN_JOB_DROPTENANT
+  /*    */ &Finalize::vUndefined,         // CN_JOB_G35
   /*    */ &Finalize::vUndefined,         // CN_JOB_LOADTABLE
   
   /*    */ &Finalize::vUndefined,         // CN_JOBS

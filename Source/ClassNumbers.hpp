@@ -104,6 +104,7 @@ enum eCN : u2 // Class Number
     /*    */ CN_JOB_DROPSCHEMA,
     /*    */ CN_JOB_DROPTABLE,
     /*    */ CN_JOB_DROPTENANT,
+    /*    */ CN_JOB_G35,
     /*    */ CN_JOB_LOADTABLE,
     
     /*    */ CN_JOBS,
@@ -300,28 +301,29 @@ enum eCN : u2 // Class Number
     /* 57 */ "ITEM"_Stz,
     /* 58 */ "ITEMBUFFER"_Stz,
     
-    /*    */ "JOB__BEGUN"_Stz,
-    /*    */ "JOB__END"_Stz,
-    /*    */ "JOB__ENDED"_Stz,
-    /*    */ "JOB__ERROR"_Stz,
-    /*    */ "JOB__EXECUTE"_Stz,
-    /*    */ "JOB__EXECUTED"_Stz,
+    /*    */ "JOB__BEGUN"_Stz,         // CN_JOB__BEGUN
+    /*    */ "JOB__END"_Stz,           // CN_JOB__END
+    /*    */ "JOB__ENDED"_Stz,         // CN_JOB__ENDED
+    /*    */ "JOB__ERROR"_Stz,         // CN_JOB__ERROR
+    /*    */ "JOB__EXECUTE"_Stz,       // CN_JOB__EXECUTE
+    /*    */ "JOB__EXECUTED"_Stz,      // CN_JOB__EXECUTED
     
-    /*    */ "JOB_ANALYZEINDEX"_Stz,
-    /*    */ "JOB_ANALYZETABLE"_Stz,
-    /*    */ "JOB_CREATECATALOG"_Stz,
-    /*    */ "JOB_CREATEINDEX"_Stz,
-    /*    */ "JOB_CREATESCHEMA"_Stz,
-    /*    */ "JOB_CREATETABLE"_Stz,
-    /*    */ "JOB_CREATETENANT"_Stz,
-    /*    */ "JOB_DROPCATALOG"_Stz,
-    /*    */ "JOB_DROPINDEX"_Stz,
-    /*    */ "JOB_DROPSCHEMA"_Stz,
-    /*    */ "JOB_DROPTABLE"_Stz,
-    /*    */ "JOB_DROPTENANT"_Stz,
-    /*    */ "JOB_LOADTABLE"_Stz,
+    /*    */ "JOB_ANALYZEINDEX"_Stz,   // CN_JOB_ANALYZEINDEX
+    /*    */ "JOB_ANALYZETABLE"_Stz,   // CN_JOB_ANALYZETABLE
+    /*    */ "JOB_CREATECATALOG"_Stz,  // CN_JOB_CREATECATALOG
+    /*    */ "JOB_CREATEINDEX"_Stz,    // CN_JOB_CREATEINDEX
+    /*    */ "JOB_CREATESCHEMA"_Stz,   // CN_JOB_CREATESCHEMA
+    /*    */ "JOB_CREATETABLE"_Stz,    // CN_JOB_CREATETABLE
+    /*    */ "JOB_CREATETENANT"_Stz,   // CN_JOB_CREATETENANT
+    /*    */ "JOB_DROPCATALOG"_Stz,    // CN_JOB_DROPCATALOG
+    /*    */ "JOB_DROPINDEX"_Stz,      // CN_JOB_DROPINDEX
+    /*    */ "JOB_DROPSCHEMA"_Stz,     // CN_JOB_DROPSCHEMA
+    /*    */ "JOB_DROPTABLE"_Stz,      // CN_JOB_DROPTABLE
+    /*    */ "JOB_DROPTENANT"_Stz,     // CN_JOB_DROPTENANT
+    /*    */ "JOB_G35"_Stz,            // CN_JOB_G35
+    /*    */ "JOB_LOADTABLE"_Stz,      // CN_JOB_LOADTABLE
     
-    /*    */ "JOBS"_Stz,
+    /*    */ "JOBS"_Stz,               // CN_JOBS
 
     /* 59 */ "JUMBOPERSISTENT"_Stz,
     /* 60 */ "JUMBOTRANSIENT"_Stz,
