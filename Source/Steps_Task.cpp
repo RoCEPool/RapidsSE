@@ -33,6 +33,8 @@ void Task::vAddPrimitives_Task(void)
   vAddPrimitive("task.dropLock"_Stz,  &vTaskDropLock,      false);
   vAddPrimitive("task.grabLock"_Stz,  &vTaskGrabLock,      false);
   vAddPrimitive("task.init"_Stz,      &vTaskInit,          false);
+  vAddPrimitive("task.job@"_Stz,      &vTaskJobFetch,      false);
+  vAddPrimitive("task.job!"_Stz,      &vTaskJobStore,      false);
   vAddPrimitive("task.jobQueue@"_Stz, &vTaskJobQueueFetch, false);
   vAddPrimitive("task.jobQueue!"_Stz, &vTaskJobQueueStore, false);
   vAddPrimitive("task.kind@"_Stz,     &vTaskKindFetch,     false);
@@ -460,6 +462,47 @@ void Task::vTaskKindStore(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* task.job@ -- push job of given task                                        */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskJobFetch(MP_Task mpTask)
+{
+  ENTRY("vTaskJobFetch"_Stz);
+  
+  Object* pTaskObject;
+  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
+    THROW_INVALID_DSTACK("task.job@"_Stz);
+  Task* pThatTask = _pTask(pTaskObject);
+  
+  Job* pJob = pThatTask->m_pJob;
+  
+  mpTask->m_pDataStack->vPushObject(pJob);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.job! -- store job into given task                                     */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskJobStore(MP_Task mpTask)
+{
+  ENTRY("vTaskJobStore"_Stz);
+  
+  Object* pTaskObject;
+  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
+    THROW_INVALID_DSTACK("task.job!"_Stz);
+  Task* pThatTask = _pTask(pTaskObject);
+  
+  Object* pJobObject;
+  if ( ! mpTask->m_pDataStack->bPop(pJobObject) )
+    THROW_INVALID_DSTACK("task.job!"_Stz);
+  Job* pJob = _pJob(pJobObject);
+  
+  pThatTask->m_pJob = pJob;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* task.jobQueue@ -- push job queue of given task                             */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskJobQueueFetch(MP_Task mpTask)
@@ -481,7 +524,7 @@ void Task::vTaskJobQueueFetch(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.jobQueue! -- store job quueue into given task                         */
+/* task.jobQueue! -- store job queue into given task                          */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskJobQueueStore(MP_Task mpTask)
 {
