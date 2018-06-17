@@ -3489,7 +3489,9 @@ bool SEitf::bG35(TokenVec& xTokenVec, i8 iReqNo)
   
   sRequest = SeRequests[iReqNo].aRequest;
   
-  return bAppendRequest_R35(sRequest,xTokenVec.bDetachedRequest());
+  Job_G35* pJob_G35 = new Job_G35;
+  
+  return bAppendRequest_R35(sRequest,xTokenVec.bDetachedRequest(),(Job**)&pJob_G35);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3722,6 +3724,8 @@ bool SEitf::bAppendRequest_R35(StrVal& sRequest, bool bDetached, Job** ppJob)
   if (*ppJob) {
     Job* pJob = *ppJob;
     *ppJob = nullptr;
+    
+    nnpNewTask->vJob(pJob);
   }
   
   //gpAttachMap->m_pServerScheduler->vEnqueueTask_Mutex(*nnpNewTask);

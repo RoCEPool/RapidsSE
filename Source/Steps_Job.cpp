@@ -15,10 +15,11 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Job(void)
 {
-  vAddPrimitive("job.addOriginator"_Stz, &vJobAddOriginator,  false);
-  vAddPrimitive("job.error@"_Stz,        &vJobErrorFetch,     false);
-  vAddPrimitive("job.error!"_Stz,        &vJobErrorStore,     false);
-  vAddPrimitive("job.execute@"_Stz,      &vJobExecuteFetch,   false);
+  vAddPrimitive("job.addOriginator"_Stz,    &vJobAddOriginator,   false);
+  vAddPrimitive("job.error@"_Stz,           &vJobErrorFetch,      false);
+  vAddPrimitive("job.error!"_Stz,           &vJobErrorStore,      false);
+  vAddPrimitive("job.execute@"_Stz,         &vJobExecuteFetch,    false);
+  vAddPrimitive("job.removeOriginator"_Stz, &vJobRemoveOriginator,false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -30,7 +31,7 @@ void Task::vJobAddOriginator(MP_Task mpTask)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.execute@"_Stz);
+    THROW_INVALID_DSTACK("job.addOriginator"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
   gpAttachMap->m_pOriginatingJobs->vGrabLock();
@@ -94,6 +95,23 @@ void Task::vJobExecuteFetch(MP_Task mpTask)
   mpTask->m_pDataStack->vPushS32(sExecute);
   
   EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.removeOriginator -- remove job from originator job set                 */
+/*----------------------------------------------------------------------------*/
+void Task::vJobRemoveOriginator(MP_Task mpTask)
+{
+  ENTRY("vJobRemoveOriginator"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.removeOriginator"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  gpAttachMap->m_pOriginatingJobs->vGrabLock();
+  gpAttachMap->m_pOriginatingJobs->vRemoveJob(pJob);
+  gpAttachMap->m_pOriginatingJobs->vDropLock();
 }
 
 /*============================================================================*/

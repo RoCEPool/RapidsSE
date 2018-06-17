@@ -804,7 +804,8 @@ namespace Tasks
     static void vJobErrorFetch(MP_Task mpTask);
     static void vJobErrorStore(MP_Task mpTask);
     static void vJobExecuteFetch(MP_Task mpTask);
-    
+    static void vJobRemoveOriginator(MP_Task mpTask);
+  
     // loader
     static void vLoaderAddRecordsInvalid(MP_Task mpTask);
     static void vLoaderAddRecordsValid(MP_Task mpTask);
