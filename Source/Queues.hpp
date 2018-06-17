@@ -23,18 +23,19 @@ namespace Threads
     // queues which are checked in round robin fashion
   
     TaskQueue* m_pSleepingQueue;   // set of queued sleeping tasks
-                                   // (ordered by wakeup time)
+    // QR_SLEEPING_QUEUE           // (ordered by wakeup time)
   
     TaskQueue* m_pReadyQueue;      // set of queued tasks ready to be executed
-                                   // (ordered by arrival)
+    // QR_READY_QUEUE              // (ordered by arrival)
   
     TaskQueue* m_pReadySlotQueues[C_SLOTS_PER_NODE];
-                                   // tasks queued for partitioned execution
-                                   // (ordered by arrival)
+    // 0 .. gxArguments.m_nSlots-1 // tasks queued for partitioned execution
+    //                             // (ordered by arrival)
   
     TaskQueue* m_pReadySendQueues[C_MAX_NODES];
-                                   // set of tasks queued for socket sending
-                                   // (ordered by arrival)
+    // gxArguments.m_nSlots ..     // set of tasks queued for socket sending
+    //   gxArguments.m_nSlots +    // (ordered by arrival)
+    //   gxArguments.m_nNodes - 1
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // queues which are not checked in the round robin

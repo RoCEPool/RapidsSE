@@ -937,6 +937,18 @@ i8 Queues::i_ToReadySendQueue(i8 iRRqueue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
+  /*
+       The send queues are logically after the slot queues, and
+       the slot queues are 0 .. nSlots - 1
+   
+       As an example, let's say nSlots = 2, nNodes = 3
+   
+       .: an iRRqueue of 2 .. 4 refers to a send queue
+   
+       which rebased (by subtracting nSlots) is 0 .. 2
+   
+   */
+  
   i8 i_ReadySendQueue = iRRqueue - gxArguments.m_nSlots;
   
   RASSERT(i_ReadySendQueue >= 0 and i_ReadySendQueue < gxArguments.m_nNodes);
