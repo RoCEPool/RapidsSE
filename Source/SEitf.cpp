@@ -1804,6 +1804,7 @@ bool SEitf::bCreateSchema(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(" "_Stz);
   sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
+  //! Hey Alka, this is odd!
   return bAppendRequest(sRequest);
   
   return bAppendRequest(sRequest);
