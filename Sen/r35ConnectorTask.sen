@@ -17,6 +17,7 @@
 /*----------------------------------------------------------------------------*/
 : r35connectorLoop
 
+  0 locals| pSocket |
   connectorDronePrint if
     task::this task.name@ " running..." str.cat .
   then
@@ -35,7 +36,7 @@
       node.port swap  ( port ^node )
       node.IP         ( port IP )
 
-      socket.open  socket.connect
+      socket.open  socket.connect to pSocket
 
       args.verbose if
         "Node" grid.thisNode@ >str str.cat
@@ -43,6 +44,9 @@
         I >str str.cat
         .
       then
+
+      // set the socket in the grid
+      pSocket I grid.socket!
 
       // start sender
       //"starting sender" .

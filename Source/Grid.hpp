@@ -16,6 +16,8 @@ namespace GridModel
     bool   m_bHasStarted;// has the cluster started ?
     i8     m_nSlots;     // no of partition slots on each node
     i8     m_nPartitions;  // total no of partitions in the grid
+    
+    Socket* m_pSockets[C_MAX_NODES];  // socket connections to nodes
    
     // NOT HAPPY WITH NAME - alka
     i8     m_iPartition[C_SLOTS_PER_NODE]; // partition no's on this node

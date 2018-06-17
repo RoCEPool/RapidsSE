@@ -53,6 +53,7 @@ void Task::vAddPrimitives_Task(void)
   vAddPrimitive("task.seitf@"_Stz,    &vTaskSeitfFetch,    false);
   vAddPrimitive("task.seitf!"_Stz,    &vTaskSeitfStore,    false);
   vAddPrimitive("task.sleep"_Stz,     &vTaskSleep,         false);
+  vAddPrimitive("task.send"_Stz,      &vTaskSend,          false);
   vAddPrimitive("task.sendNode@"_Stz, &vTaskSendNodeFetch, false);
   vAddPrimitive("task.sendNode!"_Stz, &vTaskSendNodeStore, false);
   vAddPrimitive("task.socket@"_Stz,   &vTaskSocketFetch,   false);
@@ -884,6 +885,18 @@ void Task::vTaskSeitfStore(MP_Task mpTask)
   ASSERT(! pSEitf || CN_SEITF == pSEitf->eClass());
   
   pThatTask->m_pSEitf = pSEitf;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.send -- this task sends                                               */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskSend(MP_Task mpTask)
+{
+  ENTRY("vTaskSend"_Stz);
+  
+  mpTask->vState(TS_SEND);
   
   EXIT();
 }

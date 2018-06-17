@@ -84,6 +84,12 @@ void Grid::vInit(i8 nNodes, i8 nSlots)
   for (i8 i_Partition = 0; i_Partition < C_SLOTS_PER_NODE; i_Partition++) {
     m_iPartition[i_Partition] = -1;
   }
+  
+  // initialize the socket connections
+  for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++) {
+    m_pSockets[i_Node] = nullptr;
+  }
+  
 }
 
 /*----------------------------------------------------------------------------*/
