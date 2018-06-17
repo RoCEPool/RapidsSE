@@ -311,6 +311,8 @@ void Task::vInit(Stz* aLambda)
   m_bR35model = false;
   
   m_pJob = nullptr;
+  
+  m_pSendNode = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

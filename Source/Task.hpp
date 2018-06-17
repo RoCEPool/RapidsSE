@@ -10,6 +10,11 @@ namespace Interface
   class SEitf;
 }
 
+namespace GridModel
+{
+  class Node;
+}
+
 namespace Threads
 {
   class Thread;
@@ -206,7 +211,8 @@ namespace Tasks
   
     bool   m_bR35model;         // task is running R3.5 model
   
-    Job*   m_pJob;              // the job for this task
+    Job*   m_pJob;                // the job for this task
+    GridModel::Node* m_pSendNode; // node to send to
   
     // always last
     Footer m_xFooter;
