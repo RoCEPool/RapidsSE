@@ -2,7 +2,7 @@
 /* Job.cpp -- a job in the system                                             */
 /*============================================================================*/
 
-#include "JobsModel.h"
+#include "JobModel.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
