@@ -101,9 +101,18 @@
 /*----------------------------------------------------------------------------*/
 : g35_req ( -- <R> )
 
+  0 0 locals| pJob pTask |
+
   "pSEitf: " .put task::this task.seitf@ .put .\n
 
   "g35"
+
+  task::this to pTask
+  // get the job from the task
+  pTask task.job@ to pJob
+  pJob .
+
+  0 pTask task.sendNode!
 
   <SUCCESS>
 ;
