@@ -276,29 +276,29 @@ enum eCN : u2 // Class Number
     /* 37 */ "ENTRYBUFFER"_Stz,   // CN_
     /* 38 */ "ENTRYVEC"_Stz,   // CN_
   
-    /* 39 */ "FILE"_Stz,   // CN_
-    /* 40 */ "FORMATTERS"_Stz,   // CN_
-    /* 41 */ "FREEBUFFER"_Stz,   // CN_
-    /* 42 */ "FREECHUNK"_Stz,   // CN_
-    /* 43 */ "FREEDNOT"_Stz,   // CN_
-    /* 44 */ "FREEENTRY"_Stz,   // CN_
+    /* 39 */ "FILE"_Stz,               // CN_FILE
+    /* 40 */ "FORMATTERS"_Stz,         // CN_FORMATTERS
+    /* 41 */ "FREEBUFFER"_Stz,         // CN_FREEBUFFER
+    /* 42 */ "FREECHUNK"_Stz,          // CN_FREECHUNK
+    /* 43 */ "FREEDNOT"_Stz,           // CN_FREEDNOT
+    /* 44 */ "FREEENTRY"_Stz,          // CN_FREEENTRY
     
-    /* 45 */ "GRAPH"_Stz,   // CN_
-    /* 46 */ "GRAPHCURSOR"_Stz,   // CN_
-    /* 47 */ "GRAPHNODE"_Stz,     // CN_
-    /* 48 */ "GRID"_Stz,          // CN_
-    /* 49 */ "GROUPBY"_Stz,       // CN_
+    /* 45 */ "GRAPH"_Stz,              // CN_GRAPH
+    /* 46 */ "GRAPHCURSOR"_Stz,        // CN_GRAPHCURSOR
+    /* 47 */ "GRAPHNODE"_Stz,          // CN_GRAPHNODE
+    /* 48 */ "GRID"_Stz,               // CN_GRID
+    /* 49 */ "GROUPBY"_Stz,            // CN_GROUPBY
   
-    /* 50 */ "HEAPBUFFER"_Stz,   // CN_
+    /* 50 */ "HEAPBUFFER"_Stz,         // CN_HEAPBUFFER
     
-    /* 51 */ "INDEX"_Stz,   // CN_
-    /* 52 */ "INDEXTREE"_Stz,   // CN_
-    /* 53 */ "INDEXTREEVEC"_Stz,   // CN_
-    /* 54 */ "IDXCOLVEC"_Stz,   // CN_
-    /* 55 */ "IDXVEC"_Stz,   // CN_
-    /* 56 */ "INDEXLEVELS"_Stz,   // CN_
-    /* 57 */ "ITEM"_Stz,   // CN_
-    /* 58 */ "ITEMBUFFER"_Stz,   // CN_
+    /* 51 */ "INDEX"_Stz,              // CN_INDEX
+    /* 52 */ "INDEXTREE"_Stz,          // CN_INDEXTREE
+    /* 53 */ "INDEXTREEVEC"_Stz,       // CN_INDEXTREEVEC
+    /* 54 */ "IDXCOLVEC"_Stz,          // CN_IDXCOLVEC
+    /* 55 */ "IDXVEC"_Stz,             // CN_IDXVEC
+    /* 56 */ "INDEXLEVELS"_Stz,        // CN_INDEXLEVELS
+    /* 57 */ "ITEM"_Stz,               // CN_ITEM
+    /* 58 */ "ITEMBUFFER"_Stz,         // CN_ITEMBUFFER
     
     /*    */ "JOB__BEGUN"_Stz,         // CN_JOB__BEGUN
     /*    */ "JOB__END"_Stz,           // CN_JOB__END
@@ -306,7 +306,6 @@ enum eCN : u2 // Class Number
     /*    */ "JOB__ERROR"_Stz,         // CN_JOB__ERROR
     /*    */ "JOB__EXECUTE"_Stz,       // CN_JOB__EXECUTE
     /*    */ "JOB__EXECUTED"_Stz,      // CN_JOB__EXECUTED
-    
     /*    */ "JOB_ANALYZEINDEX"_Stz,   // CN_JOB_ANALYZEINDEX
     /*    */ "JOB_ANALYZETABLE"_Stz,   // CN_JOB_ANALYZETABLE
     /*    */ "JOB_CREATECATALOG"_Stz,  // CN_JOB_CREATECATALOG
@@ -321,11 +320,9 @@ enum eCN : u2 // Class Number
     /*    */ "JOB_DROPTENANT"_Stz,     // CN_JOB_DROPTENANT
     /*    */ "JOB_G35"_Stz,            // CN_JOB_G35
     /*    */ "JOB_LOADTABLE"_Stz,      // CN_JOB_LOADTABLE
-    
     /*    */ "JOBS"_Stz,               // CN_JOBS
-
-    /* 59 */ "JUMBOPERSISTENT"_Stz,    // CN_
-    /* 60 */ "JUMBOTRANSIENT"_Stz,     // CN_
+    /* 59 */ "JUMBOPERSISTENT"_Stz,    // CN_JUMBOPERSISTENT
+    /* 60 */ "JUMBOTRANSIENT"_Stz,     // CN_JUMBOTRANSIENT
     
     /* 61 */ "KEY"_Stz,                // CN_
     /* 62 */ "KEYVAL"_Stz,             // CN_

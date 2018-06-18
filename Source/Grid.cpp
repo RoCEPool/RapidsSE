@@ -27,6 +27,18 @@ Grid* GridModel::_pGrid(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
+void* Grid::operator new(size_t iSize)
+{
+  RASSERT(iSize);
+  
+  Grid* pGrid = reinterpret_cast<Grid*>(Heap::pAllocate(CN_GRID));
+  
+  return pGrid;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
 void* Grid::operator new(size_t iSize, Grid* pGrid)
 {
   RASSERT(iSize);

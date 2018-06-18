@@ -500,7 +500,7 @@ eHT geWhichHeap[]
   /* 45 */ HT_TRANSIENT_SMALL,   // CN_GRAPH
   /* 46 */ HT_TRANSIENT_SMALL,   // CN_GRAPHCURSOR
   /* 47 */ HT_TRANSIENT_SMALL,   // CN_GRAPHNODE
-  /* 48 */ HT_INVALID,           // CN_GRID
+  /* 48 */ HT_TRANSIENT_LARGE,   // CN_GRID
   /* 49 */ HT_TRANSIENT_SMALL,   // CN_GROUPBY
 
   /* 50 */ HT_INVALID,           // CN_HEAPBUFFER
