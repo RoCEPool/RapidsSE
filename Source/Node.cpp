@@ -77,6 +77,7 @@ Node::Node(i8 iNodeNo, Stz* pName, Stz* pIpAddress, i8 iPortNo)
   m_sNodeName = (Stz*)pName;
   m_sNodeIP   = (Stz*)pIpAddress;
   m_iPortNo   = iPortNo;
+  m_pSocket   = nullptr;
   
   _checkInitialised_(CN_NODE);
   
@@ -121,6 +122,7 @@ void Node::vDump(eCN eClass, Object* pObject, Stz* aTab)
 Stz* Node::aNodeIP(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  
   return m_sNodeIP;
 }
 
@@ -130,6 +132,7 @@ Stz* Node::aNodeIP(void)
 Stz* Node::aNodeName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  
   return m_sNodeName;
 }
 
@@ -139,6 +142,7 @@ Stz* Node::aNodeName(void)
 i8 Node::iNodeNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  
   return m_iNodeNo;
 }
 
@@ -148,6 +152,7 @@ i8 Node::iNodeNo(void)
 void Node::vNodeNo(i8 iNodeNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  
   m_iNodeNo = iNodeNo;
 }
 
@@ -157,7 +162,28 @@ void Node::vNodeNo(i8 iNodeNo)
 i8 Node::iNodePortNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  
   return m_iPortNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get socket to node                                                         */
+/*----------------------------------------------------------------------------*/
+Socket* Node::pSocket(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  
+  return m_pSocket;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set socket to node                                                         */
+/*----------------------------------------------------------------------------*/
+void Node::vSocket(Socket* pSocket)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  
+  m_pSocket = pSocket;
 }
 
 /*----------------------------------------------------------------------------*/

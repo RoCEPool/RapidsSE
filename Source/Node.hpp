@@ -9,11 +9,12 @@ namespace GridModel
                public ListNode_t<Node>
   {
   private:
-    i8    m_iNodeNo;
+    i8    m_iNodeNo;    // node number
     s256  m_sNodeName;
-    s256  m_sNodeIP;
-    i8    m_iPortNo;
-    
+    s256  m_sNodeIP;    // ip address of node
+    i8    m_iPortNo;    // port number of node
+    Socket* m_pSocket;  // socket connection to node
+  
     // must be last
     Footer m_xFooter;
     
@@ -35,7 +36,9 @@ namespace GridModel
     void vNodeNo(i8 iNodeNo);
     i8   iNodePortNo(void);
     
-    
+    Socket* pSocket(void);
+    void vSocket(Socket* pSocket);
+  
     Footer* aFooter(void);
   };
   
