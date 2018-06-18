@@ -113,13 +113,16 @@
   pTask task.job@ to pJob
   pJob .
 
-  0 grid::node pTask task.sendNode!
+  // add job to originator jobs
+  pJob.addOriginator
 
+  // set the send node
+  0 grid::node pTask task.sendNode!
   task.send
 
+  // send job to node 0
   pJob 1
   >valset
-
   >socketR35
 
   <SUCCESS>

@@ -44,7 +44,9 @@
 
     to pJob
 
-    //exeOne
+    // add job as participant job
+    pJob job.addParticipant
+
     pJob job.execute@ "received job to execute ...%v" str.format .
 
   again
