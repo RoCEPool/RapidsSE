@@ -16,8 +16,6 @@ namespace GridModel
     i8     m_nSlots;     // no of partition slots on each node
     i8     m_nPartitions;  // total no of partitions in the grid
     
-    Socket* m_pSockets[C_MAX_NODES];  // socket connections to nodes
-   
     // NOT HAPPY WITH NAME - alka
     i8     m_iPartition[C_SLOTS_PER_NODE]; // partition no's on this node
   
@@ -42,14 +40,14 @@ namespace GridModel
     Node* pFindNode(Stz* pName);
     Node* pGetNode(i8 i_Node);
     void vInit(i8 nNodes, i8 nSlots);
-    i8   iNodes(void);
-    i8   iSlots(void);
+    i8   nNodes(void);
+    i8   nSlots(void);
     void vStartNode(i8 iStartNode);
     i8   iStartNode(void);
-    void vThisNode(i8 iNode);
     i8   iThisNode(void);
     Node* pThisNode(void);
-    
+    void vThisNode(i8 iNode);
+  
     Footer* aFooter(void);
   };
     

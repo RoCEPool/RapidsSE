@@ -826,7 +826,7 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf, i8 iTraceLevel)
     Grid* pGrid = gpAttachMap->m_pGrid;
     
     // before sending buffers set no of remaining acks to no of partitons
-    pSEitf->vSetAcksRemaining(pGrid->iSlots() * pGrid->iNodes());
+    pSEitf->vSetAcksRemaining(pGrid->nSlots() * pGrid->nNodes());
     //vTrace("Seitf:%p Setting acksRemaining : %lld\n"_Stz, pSEitf, *pSEitf->m_ziAcksRemaining);
     
     for (i8 iPartition = 0; iPartition < pGrid->m_nPartitions; iPartition++) {
@@ -1827,7 +1827,7 @@ eEC RapidsSE_HashRowPartition(SEitf* pSEitf, Stz* pRow, void** ppPartition, i8 i
 i8 RapidsSE_HashIntegerNode(i8 iInt)
 {
   // get no of nodes in the grid
-  i8 iNodes = gpAttachMap->m_pGrid->iNodes();
+  i8 iNodes = gpAttachMap->m_pGrid->nNodes();
   
   // get the hash of the integer
   i8 iHash = XXH32(&iInt,sizeof(i8),0);

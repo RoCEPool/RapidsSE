@@ -720,7 +720,9 @@ i8 Table::iRowPartition(Stz* pRow)
   }
   
   // modulo to get partition number
-  i8 iPartition = iHash % (gpAttachMap->m_pGrid->m_nSlots * gpAttachMap->m_pGrid->iNodes());
+  i8 iPartition =
+       iHash
+         % (gpAttachMap->m_pGrid->m_nSlots * gpAttachMap->m_pGrid->nNodes());
   //vTrace("Hashed to Partition: %lld\n"_Stz,iPartition);
   
   return iPartition;

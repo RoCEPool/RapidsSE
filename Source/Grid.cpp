@@ -88,12 +88,7 @@ void Grid::vInit(i8 nNodes, i8 nSlots)
   for (i8 i_Partition = 0; i_Partition < C_SLOTS_PER_NODE; i_Partition++) {
     m_iPartition[i_Partition] = -1;
   }
-  
-  // initialize the socket connections
-  for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++) {
-    m_pSockets[i_Node] = nullptr;
-  }
-  
+    
   // initialize the node array
   for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++) {
     m_pNodes[i_Node] = nullptr;
@@ -197,7 +192,7 @@ Node* Grid::pGetNode(i8 i_Node)
 /*----------------------------------------------------------------------------*/
 /* get number of nodes in the grid                                            */
 /*----------------------------------------------------------------------------*/
-i8 Grid::iNodes(void)
+i8 Grid::nNodes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
@@ -207,7 +202,7 @@ i8 Grid::iNodes(void)
 /*----------------------------------------------------------------------------*/
 /* get number of partition slots per node in the grid                         */
 /*----------------------------------------------------------------------------*/
-i8 Grid::iSlots(void)
+i8 Grid::nSlots(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   

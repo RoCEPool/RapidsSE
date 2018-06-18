@@ -1472,7 +1472,7 @@ bool SePrompt::bCmd_EndInsert(void)
   Grid* pGrid = gpAttachMap->m_pGrid;
   
   // before sending buffers set no of remaining acks to no of partitons
-  m_pSEitf->vSetAcksRemaining(pGrid->iSlots() * pGrid->iNodes());
+  m_pSEitf->vSetAcksRemaining(pGrid->nSlots() * pGrid->nNodes());
   
   for (i8 iPartition = 0; iPartition < pGrid->m_nPartitions; iPartition++) {
     bool bResult = m_pSEitf->bInsertLastBuffer(iPartition);

@@ -167,7 +167,9 @@ void Task::vGridSocketStore(MP_Task mpTask)
   Socket* pSocket = reinterpret_cast<Socket*>(pSocketPtr);
   ASSERT(pSocket->eClass() == CN_SOCKET);
   
-  gpAttachMap->m_pGrid->m_pSockets[iNode] = pSocket;
+  Node* pNode = gpAttachMap->m_pGrid->pGetNode(iNode);
+  
+  pNode->vSocket(pSocket);
   
   EXIT();
 }
@@ -184,7 +186,10 @@ void Task::vGridSocketFetch(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(iNode) )
   THROW_INVALID_DSTACK("grid.socket@"_Stz);
 
-  mpTask->m_pDataStack->vPushObject(gpAttachMap->m_pGrid->m_pSockets[iNode]);
+  Node* pNode = gpAttachMap->m_pGrid->pGetNode(iNode);
+  Socket* pSocket = pNode->pSocket();
+  
+  mpTask->m_pDataStack->vPushObject(pSocket);
   
   EXIT();
 }

@@ -168,7 +168,7 @@ SEitf::SEitf(i8 iPartition)
   // pid
   m_iPid = Process::iGetPid();
 
-  m_iSlots = gpAttachMap->m_pGrid->iSlots();
+  m_iSlots = gpAttachMap->m_pGrid->nSlots();
   m_iPartition  = iPartition;
   
   //m_xPathStack;
