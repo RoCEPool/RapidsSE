@@ -29,6 +29,7 @@
 
   tp: r35rvc.loop
 
+  0 locals| pJob |
   task::this task.socket!
 
   "r35ReceiverLoop" task::this task.comment!
@@ -41,8 +42,10 @@
     socketR35>
     valset> drop
 
+    to pJob
+
     //exeOne
-    "received something...%v" str.format .
+    pJob job.execute@ "received job to execute ...%v" str.format .
 
   again
 ;
