@@ -130,7 +130,7 @@ pDUMPFUN *gpDump[]
   /* 74 */ &Heap::vDump,            // CN_MEDIUMTRANSIENT
   
   /* 75 */ &Node::vDump,            // CN_NODE
-  /* 76 */ &NodeCursor::vDump,      // CN_NODECURSOR
+  /* 76 */ &Dump::vDummy,           // CN_NODECURSOR
   
   /* 77 */ &Dump::vUndefined,       // CN_OP
   
@@ -346,7 +346,7 @@ i8 giClassSize[]
   /* 74 */ sizeof(Heap), // correct    // CN_MEDIUMTRANSIENT
   
   /* 75 */ sizeof(Node),               // CN_NODE
-  /* 76 */ sizeof(NodeCursor),         // CN_NODECURSOR
+  /* 76 */ 0,                          // CN_NODECURSOR
   
   /* 77 */ sizeof(Op),                 // CN_OP
   

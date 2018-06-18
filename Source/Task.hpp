@@ -363,7 +363,6 @@ namespace Tasks
     void vAddPrimitives_Magnitude(void);
     void vAddPrimitives_Memory(void);
     void vAddPrimitives_Node(void);
-    void vAddPrimitives_NodeCursor(void);
     void vAddPrimitives_Object(void);
     void vAddPrimitives_OpFrame(void);
     void vAddPrimitives_PartitionScheduler(void);

@@ -8,8 +8,6 @@ int:  queryCount
 
 "node.sen" include
 "grid.sen" include
-"nodeCursor.sen" include
-
 
 /*============================================================================*/
 /* end                                                                        */

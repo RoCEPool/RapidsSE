@@ -820,7 +820,7 @@ void Task::vAddConstants(void)
   /* 24 */ vAddConstant("SIZEOF_LOCK"_Stz,         sizeof(Lock));
   /* 25 */ vAddConstant("SIZEOF_MEDIUMHEAP"_Stz,   sizeof(Heap));
   /* 26 */ vAddConstant("SIZEOF_NODE"_Stz,         sizeof(Node));
-  /* 27 */ vAddConstant("SIZEOF_NODECURSOR"_Stz,   sizeof(NodeCursor));
+
   /* 28 */ vAddConstant("SIZEOF_PARSER"_Stz,       sizeof(Parser));
   /* 29 */ vAddConstant("SIZEOF_PARTITION"_Stz,    sizeof(TablePtn));
   /*    */ vAddConstant("SIZEOF_PROXY"_Stz,        sizeof(Proxy));
@@ -1029,7 +1029,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_Memory();
   
   vAddPrimitives_Node();
-  vAddPrimitives_NodeCursor();
   
   vAddPrimitives_Object();
   vAddPrimitives_OpFrame();
