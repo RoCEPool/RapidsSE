@@ -17,7 +17,7 @@
 /*----------------------------------------------------------------------------*/
 : r35connectorLoop
 
-  0 locals| pSocket |
+  0 0 locals| pNode pSocket |
 
   connectorDronePrint if
     task::this task.name@ " running..." str.cat .
@@ -25,10 +25,11 @@
 
   grid::nodes 0 do
 
-      I grid::node     ( ^node )
-      dup             ( ^node ^node )
-      node.port swap  ( port ^node )
-      node.IP         ( port IP )
+      // get the node
+      I grid::node to pNode
+
+      pNode node.port ( port ^node )
+      pNode node.IP   ( port IP )
 
       socket::open socket.connect to pSocket
 
@@ -47,8 +48,6 @@
   // set grid as started
   true grid::started!
   grid::thisNodeName@ "Node %v : SE cluster started" str.format .
-
-  //1000000 thread.sleep_s
 
 ;
 

@@ -27,8 +27,6 @@
 /*----------------------------------------------------------------------------*/
 : r35answerLoop
 
-  //300000000000 task.sleep
-
   answerDronePrint if
     task::this task.name@ " running..." str.cat .
   then
@@ -73,8 +71,8 @@
     // increment connection counter
 
     nConnections @          ( connection# )
-    1 +                    ( nConnections# 1 )
-    dup                    ( nConnections# nConnections# )
+    1 +                     ( nConnections# 1 )
+    dup                     ( nConnections# nConnections# )
     nConnections !          ( nConnections# )
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
