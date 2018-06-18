@@ -5,11 +5,10 @@
 "r35Model.sen" .verbose
 
 "r35Tasking.sen" include
+"r35Sockets.sen" include
 "r35ReceiverTask.sen" include
 "r35ConnectorTask.sen" include
 "r35AnswerTask.sen" include
-
-"r35Sockets.sen" include
 
 "r35Start.sen" include
 

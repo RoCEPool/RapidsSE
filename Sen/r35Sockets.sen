@@ -5,13 +5,33 @@
 "r35Sockets.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* start R35 socket tasks                                                     */
+/* send valset across the socket                                              */
 /*----------------------------------------------------------------------------*/
-: startR35Sockets
+: >socketR35 ( valset -- )
 
-  "startR35Sockets" .
+  task::this task.socket@
 
-  spawnR35AnswerTask
+  tp: sending
+
+  socket.send ( bool )
+
+  not if
+  "send failure" . ( 0/1 )
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/* recv valset from the socket                                                */
+/*----------------------------------------------------------------------------*/
+: socketR35> ( -- valset )
+
+  task::this task.socket@
+
+  tp: receiving
+
+  socket.recv
+
+  tp: received
 ;
 
 /*============================================================================*/
