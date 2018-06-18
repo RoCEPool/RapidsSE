@@ -10,15 +10,15 @@
 /*----------------------------------------------------------------------------*/
 /* task and queue arrays                                                      */
 /*----------------------------------------------------------------------------*/
-grid.nodes ptrArray: ppTasks
-grid.nodes ptrArray: cpTasks
-grid.nodes ptrArray: pTasks
-grid.nodes ptrArray: senderTasks
+grid::nodes ptrArray: ppTasks
+grid::nodes ptrArray: cpTasks
+grid::nodes ptrArray: pTasks
+grid::nodes ptrArray: senderTasks
 
-grid.nodes ptrArray: ppQueues
-grid.nodes ptrArray: cpQueues
-grid.nodes ptrArray: pQueues
-grid.nodes ptrArray: senderQueues
+grid::nodes ptrArray: ppQueues
+grid::nodes ptrArray: cpQueues
+grid::nodes ptrArray: pQueues
+grid::nodes ptrArray: senderQueues
 
 
 /*----------------------------------------------------------------------------*/
@@ -27,7 +27,7 @@ grid.nodes ptrArray: senderQueues
 : ppQueuesDump
 
   "{ " .put
-  grid.nodes 0 do
+  grid::nodes 0 do
     I ppQueues @ .put " " .put
   loop
 
@@ -40,7 +40,7 @@ grid.nodes ptrArray: senderQueues
 : cpQueuesDump
 
   "{ " .put
-  grid.nodes 0 do
+  grid::nodes 0 do
     I cpQueues @ .put " " .put
   loop
 
@@ -53,7 +53,7 @@ grid.nodes ptrArray: senderQueues
 : pQueuesDump
 
   "{ " .put
-  grid.nodes 0 do
+  grid::nodes 0 do
     I pQueues @ .put " " .put
   loop
 
@@ -66,7 +66,7 @@ grid.nodes ptrArray: senderQueues
 : senderQDump
 
   "{ " .put
-  grid.nodes 0 do
+  grid::nodes 0 do
     I senderQueues tp: @ .put " " .put
   loop
 
@@ -483,7 +483,7 @@ tp: addingPassOnToCP
 : spawnNodes ( -- )
 
   // test for single node
-  grid.nodes 1 == if exit then
+  grid::nodes 1 == if exit then
 
   // form the --node parameter string
   locals| clusterString |
@@ -491,7 +491,7 @@ tp: addingPassOnToCP
 
   ""
 
-  grid.nodes 0 do
+  grid::nodes 0 do
     I grid.node   ( node )
     to node
     node node.port
@@ -504,7 +504,7 @@ tp: addingPassOnToCP
   to clusterString
 
   // spawn all other nodes
-  grid.nodes 0 do
+  grid::nodes 0 do
 
     // skip this node
     I grid.thisNode@ != if

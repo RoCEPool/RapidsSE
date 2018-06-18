@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* lock array                                                                 */
 /*----------------------------------------------------------------------------*/
-grid.nodes intArray: ddlInts
+grid::nodes intArray: ddlInts
 
 /*----------------------------------------------------------------------------*/
 /* dump the ddlInts array                                                     */
@@ -15,7 +15,7 @@ grid.nodes intArray: ddlInts
 : ddlDump
 
   "{ " .put
-  grid.nodes 0 do
+  grid::nodes 0 do
     I ddlInts @ .put " " .put
   loop
 
@@ -92,7 +92,7 @@ grid.nodes intArray: ddlInts
 
   // dispatch grab of lock I to all other nodes
 
-  grid.nodes 1 do
+  grid::nodes 1 do
     I            // participant is to grab lock I
     "grabDDL_n"  // the word to execute
     2            // there are 2 indirect values
@@ -116,7 +116,7 @@ grid.nodes intArray: ddlInts
 
   // dispatch drop to all other nodes
 
-  grid.nodes 1 do
+  grid::nodes 1 do
     I            // participant is to drop lock 0
     "dropDDL_n"  // the word to execute
     2            // there are 2 args now on stack
@@ -153,7 +153,7 @@ grid.nodes intArray: ddlInts
 : dl
 
   // put 0 into all ddlInts
-  grid.nodes 0 do
+  grid::nodes 0 do
     0 I ddlInts !
   loop
 

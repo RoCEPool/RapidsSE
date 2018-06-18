@@ -20,7 +20,7 @@ void Task::vAddPrimitives_Grid(void)
   vAddPrimitive("grid::findNode"_Stz,     &vGridFindNode,          false);
   vAddPrimitive("grid.init"_Stz,          &vGridInit,              false);
   vAddPrimitive("grid.node"_Stz,          &vGridNode,              false);
-  vAddPrimitive("grid.nodes"_Stz,         &vGridNodes,             false);
+  vAddPrimitive("grid::nodes"_Stz,        &vGridNodes,             false);
   vAddPrimitive("grid.partitions"_Stz,    &vGridPartitions,        false);
   vAddPrimitive("grid.slots"_Stz,         &vGridSlots,             false);
   vAddPrimitive("grid.socket!"_Stz,       &vGridSocketStore,       false);
@@ -113,7 +113,7 @@ void Task::vGridNode(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* grid.nodes -- get number of nodes in the grid                              */
+/* grid::nodes -- get number of nodes in the grid                              */
 /*----------------------------------------------------------------------------*/
 void Task::vGridNodes(MP_Task mpTask)
 {

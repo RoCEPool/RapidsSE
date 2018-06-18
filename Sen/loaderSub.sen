@@ -325,7 +325,7 @@ tp: theIndirectResult
   then
 
   // calculate total partitions in the cluster
-  grid.slots grid.nodes *
+  grid.slots grid::nodes *
   to iTotalPartitions
 
   // check for dangling buffers

@@ -23,7 +23,7 @@
     task::this task.name@ " running..." str.cat .
   then
 
-  grid.nodes 0 do
+  grid::nodes 0 do
 
     I grid.thisNode@ == if
 

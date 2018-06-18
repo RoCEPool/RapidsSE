@@ -671,7 +671,7 @@ tp: distParallelLoadTable_req
   4 pathPick dic.name  ( "seitf" iNode "<fieldDelimiter>" "<fileNm>" "<sameMachine>" "<tableNm>" "<schemaNm>" "<catalogNm>" )
 
   // set acks remaining to be no of nodes
-  grid.nodes pSEitf seitf.acksRemaining!
+  grid::nodes pSEitf seitf.acksRemaining!
 
   // invoke the disParallelTableLoader that spawn the parallel loader on each node
   distParallelTableLoader
