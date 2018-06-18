@@ -9,6 +9,10 @@
 extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
 Grid* GridModel::_pGrid(void* aAddr)
@@ -90,7 +94,15 @@ void Grid::vInit(i8 nNodes, i8 nSlots)
     m_pSockets[i_Node] = nullptr;
   }
   
+  // initialize the node array
+  for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++) {
+    m_pNodes[i_Node] = nullptr;
+  }
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* dump grid                                                                  */
@@ -103,6 +115,22 @@ void Grid::vDump(eCN eClass, Object* pObject, Stz* aTab)
   Grid* pGrid = reinterpret_cast<Grid*>(pObject);
   
   vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* dump grid                                                                  */
+/*----------------------------------------------------------------------------*/
+void Grid::vAddNode(Node* pNode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+
+  m_pNodes[pNode->iNodeNo()] = pNode;
+  
+  vAppend(pNode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -145,6 +173,16 @@ Node* Grid::pFindNode(Stz* sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
+  /*
+  for (i8 i_Node = 0; i_Node < m_nNodes; i_Node++) {
+    Node* pNode = m_pNodes[i_Node];
+    if (pNode && pNode->aNodeName()->bSame(sName))
+      return pNode;
+  }
+  
+  return nullptr;
+  */
+  
   NodeCursor* pNodeCursor = new NodeCursor(this);
   pNodeCursor->vBegin();
   pNodeCursor->vFirst();
@@ -183,6 +221,20 @@ Node* Grid::pFindNode(i8 iNodeNo)
   pNodeCursor->vEnd();
   
   delete pNodeCursor;
+  
+  return pNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get node                                                                  */
+/*----------------------------------------------------------------------------*/
+Node* Grid::pGetNode(i8 i_Node)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+
+  RASSERT(i_Node >= 0 and i_Node < m_nNodes);
+  
+  Node* pNode = m_pNodes[i_Node];
   
   return pNode;
 }

@@ -21,7 +21,9 @@ namespace GridModel
    
     // NOT HAPPY WITH NAME - alka
     i8     m_iPartition[C_SLOTS_PER_NODE]; // partition no's on this node
-    
+  
+    Node*  m_pNodes[C_MAX_NODES]; // array of nodes
+  
     // must be last
     Footer m_xFooter;
     
@@ -33,11 +35,14 @@ namespace GridModel
     ~Grid(void);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
+  
+    void vAddNode(Node* pNode);
     void vDumpPartitioning(void);
     void vHasStarted(bool bHasStarted);
     bool bHasStarted(void);
     Node* pFindNode(Stz* pName);
     Node* pFindNode(i8 iNode);
+    Node* pGetNode(i8 i_Node);
     void vInit(i8 nNodes, i8 nSlots);
     i8   iNodes(void);
     i8   iSlots(void);
