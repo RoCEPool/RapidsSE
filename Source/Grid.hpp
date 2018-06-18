@@ -41,7 +41,6 @@ namespace GridModel
     void vHasStarted(bool bHasStarted);
     bool bHasStarted(void);
     Node* pFindNode(Stz* pName);
-    Node* pFindNode(i8 iNode);
     Node* pGetNode(i8 i_Node);
     void vInit(i8 nNodes, i8 nSlots);
     i8   iNodes(void);

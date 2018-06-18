@@ -201,31 +201,6 @@ Node* Grid::pFindNode(Stz* sName)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find node                                                                  */
-/*----------------------------------------------------------------------------*/
-Node* Grid::pFindNode(i8 iNodeNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  
-  NodeCursor* pNodeCursor = new NodeCursor(this);
-  pNodeCursor->vBegin();
-  pNodeCursor->vFirst();
-  Node* pNode = pNodeCursor->pObject();
-  while (pNode) {
-    if (pNode->iNodeNo() == iNodeNo) {
-      break;
-    }
-    pNodeCursor->vNext();
-    pNode = pNodeCursor->pObject();
-  }
-  pNodeCursor->vEnd();
-  
-  delete pNodeCursor;
-  
-  return pNode;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get node                                                                  */
 /*----------------------------------------------------------------------------*/
 Node* Grid::pGetNode(i8 i_Node)
@@ -288,7 +263,7 @@ void Grid::vThisNode(i8 iNode)
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
   m_iThisNode = iNode;
-  m_pThisNode = pFindNode(iNode);
+  m_pThisNode = pGetNode(iNode);
   
   // now initialize the array of partition numbers on this node
   for (i8 i_Slot = 0; i_Slot < m_nSlots; i_Slot++) {

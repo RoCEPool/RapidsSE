@@ -102,11 +102,12 @@ void Task::vGridNode(MP_Task mpTask)
   ENTRY("vGridNode"_Stz);
   
   i8 iNode;
-  
   if ( ! mpTask->m_pDataStack->bPop(iNode) )
     THROW_INVALID_DSTACK("grid.node"_Stz);
   
-  mpTask->m_pDataStack->vPushObject(gpAttachMap->m_pGrid->pFindNode(iNode));
+  Node* pNode = gpAttachMap->m_pGrid->pGetNode(iNode);
+  
+  mpTask->m_pDataStack->vPushObject(pNode);
   
   EXIT();
 }
