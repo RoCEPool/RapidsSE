@@ -70,7 +70,7 @@
 tp: dump_all_tx
 
   args.tracepoint if
-    "DUMPING TX'S on NODE "grid.thisNodeName@ str.cat .
+    "DUMPING TX'S on NODE "grid::thisNodeName@ str.cat .
   then
 
   tx::dumpAll

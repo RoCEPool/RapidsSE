@@ -157,7 +157,7 @@
 : addColumn allParticipants 3 checkResult ( "<columnType>" "<columnNm>" "<tableNm>" -- <result> )
 
   args.tracepoint if
-    dup "ADDING COLUMN " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
+    dup "ADDING COLUMN " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
   then
 
   tp: addingColumn

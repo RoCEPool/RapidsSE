@@ -12,7 +12,7 @@
 tp: gettingStatus
 
   args.tracepoint if
-  "GETTING STATUS on NODE "grid.thisNode@ >str str.cat .
+  "GETTING STATUS on NODE "grid::thisNode@ >str str.cat .
   then
 
   node.status
@@ -30,7 +30,7 @@ tp: gettingPartitions
   locals| iPartitions iSize |
 
   args.tracepoint if
-    "GETTING PARTITIONS on NODE " grid.thisNode@ >str str.cat .
+    "GETTING PARTITIONS on NODE " grid::thisNode@ >str str.cat .
   then
 
   iPartitions node.partitions == not if
@@ -38,13 +38,13 @@ tp: gettingPartitions
   else
 
     args.tracepoint if
-      "GETTING SIZE on NODE "grid.thisNode@ >str str.cat .
+      "GETTING SIZE on NODE "grid::thisNode@ >str str.cat .
     then
 
     iSize node.size == not if
       EC_CLUSTER_SIZE_MISMATCH <FAILURE_RESULT>
     else
-      grid.thisNode@ >str "NODE %v: sanity check passed" str.format
+      grid::thisNode@ >str "NODE %v: sanity check passed" str.format
       <SUCCESS_RESULT>
     then
     

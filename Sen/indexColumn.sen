@@ -186,7 +186,7 @@
   0 locals| indexPtr indexNm columnNm |
 
   args.tracepoint if
-    "ADDING COLUMN " indexNm str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
+    "ADDING COLUMN " indexNm str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
   then
 
   tp: addingIndexColumn

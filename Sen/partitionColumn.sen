@@ -160,7 +160,7 @@
   locals| tableNm columnNm |
 
   args.tracepoint if
-    "ADDING PARTITION COLUMN " columnNm str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
+    "ADDING PARTITION COLUMN " columnNm str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
   then
 
   tp: addingPartitionColumn

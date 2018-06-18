@@ -106,7 +106,7 @@ tp: >>jobQueue_otherNode
 
     //nodeNo partitionId profile "Profile %v: partition %v on node %v" str.format .
 
-    nodeNo grid.thisNode@ ==
+    nodeNo grid::thisNode@ ==
     if
       op.task >>jobQueue_sameNode
     else
@@ -119,7 +119,7 @@ tp: >>jobQueue_otherNode
     //profile "Profile %v: on originating node" str.format .
     planId ho16 to nodeNo
     //nodeNo >str "node %v" str.format .
-    grid.thisNode@ nodeNo ==
+    grid::thisNode@ nodeNo ==
     if
       op.task >>jobQueue_sameNode
     else
@@ -202,7 +202,7 @@ tp: distributePlan
 
 tp: distPlanDone
 
-  //"NODE %V" grid.thisNodeName@ str.format .
+  //"NODE %V" grid::thisNodeName@ str.format .
 
   //planList::show
 

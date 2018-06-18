@@ -124,7 +124,7 @@ common/ scan rbCrs /
     // wait for next job
     jobQueue> ( valset )
 
-    //grid.thisNode@ "SCANOP: NODE %V" str.format .
+    //grid::thisNode@ "SCANOP: NODE %V" str.format .
 
     // unpack it
     valset> ( profile planId nValues )

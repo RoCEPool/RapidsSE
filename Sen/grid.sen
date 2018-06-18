@@ -11,9 +11,9 @@
 
 : isGrid word.kind@ tick grid eql ;
 
-: <SUCCESS_RESULT> grid.thisNode@ true ( v n# true ) ;
+: <SUCCESS_RESULT> grid::thisNode@ true ( v n# true ) ;
 
-: <FAILURE_RESULT> grid.thisNode@ false ( ec n# false ) ;
+: <FAILURE_RESULT> grid::thisNode@ false ( ec n# false ) ;
 
 /*----------------------------------------------------------------------------*/
 /* check grid result                                                          */
@@ -266,11 +266,11 @@ tp: printResult
 
 ////////////////////////////////////////////////////////////////////////////////
 
-grid: grid.this
+grid: grid::this
 
 grid::addNodes
 
-grid.thisNode!
+grid::thisNode!
 
 /*============================================================================*/
 /* end                                                                        */

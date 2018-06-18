@@ -17,7 +17,7 @@
 : makeTables ( "<schemaNm>" -- )
 
   args.tracepoint if
-    dup "MAKING TABLES FOR SCHEMA " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
+    dup "MAKING TABLES FOR SCHEMA " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
   then
 
   find execute ( dic )
@@ -32,7 +32,7 @@
 : makeTableDic ( "<tableNm>" -- )
 
   args.tracepoint if
-    dup "MAKING TABLE DIC " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
+    dup "MAKING TABLE DIC " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
   then
 
   0 pathPick
@@ -426,7 +426,7 @@ tp: makingTable
   0 locals| indexPtr sTableNm |
 
   args.tracepoint if
-  sTableNm "MAKING TABLE " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
+  sTableNm "MAKING TABLE " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
   then
 
   sTableNm makeTableDic

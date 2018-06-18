@@ -48,12 +48,12 @@
 tp: gettingSpace
 
   args.tracepoint if
-    "GETTING SPACE on NODE "grid.thisNodeName@ str.cat .
+    "GETTING SPACE on NODE "grid::thisNodeName@ str.cat .
   then
 
   args.metadata if
     "row: ('"
-    grid.thisNodeName@ str.cat
+    grid::thisNodeName@ str.cat
     "', '" str.cat
     2 bp::totalSpace number.magnitude str.cat
     "', '" str.cat

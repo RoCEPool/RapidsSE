@@ -68,7 +68,7 @@
 : makeCatalogs ( "<tenantNm>" -- )
 
   args.tracepoint if
-    dup "MAKING CATALOGS FOR TENANT " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
+    dup "MAKING CATALOGS FOR TENANT " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
   then
 
   find execute ( dic )
@@ -87,7 +87,7 @@
 tp: makeCatalog
 
   args.tracepoint if
-    dup "MAKING CATALOG " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
+    dup "MAKING CATALOG " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
   then
 
   dup ( "<catalogNm>" "<catalogNm>" )
@@ -109,7 +109,7 @@ tp: makeCatalog
 tp: removeCatalog
 
   args.tracepoint if
-    dup "REMOVING CATALOG " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
+    dup "REMOVING CATALOG " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
   then
 
   :forget ( )

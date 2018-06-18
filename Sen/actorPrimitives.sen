@@ -405,7 +405,7 @@ tp: addingSetDicPath
 /*----------------------------------------------------------------------------*/
 : addSetSender ( valset -- valset )
 
-  grid.thisNodeName@ "setSender"
+  grid::thisNodeName@ "setSender"
 
 tp: addingSetSender
 
@@ -417,7 +417,7 @@ tp: addingSetSender
 /*----------------------------------------------------------------------------*/
 : addPassBackToPP ( valset -- valset )
 
-  grid.thisNodeName@ "passBackToPP"
+  grid::thisNodeName@ "passBackToPP"
 
   tp: addingPassBackToPP
 
@@ -507,7 +507,7 @@ tp: addingPassOnToCP
   grid::nodes 0 do
 
     // skip this node
-    I grid.thisNode@ != if
+    I grid::thisNode@ != if
       
       // form the shell command to spawn node I
       clusterString I grid::node node.name se_command
@@ -525,7 +525,7 @@ tp: addingPassOnToCP
 
   loop
 
-  //grid.thisNode@ grid::startNode!
+  //grid::thisNode@ grid::startNode!
   grid::startNode@ "Cluster Start node: %v" str.format .
 ;
 
@@ -534,7 +534,7 @@ tp: addingPassOnToCP
 /*----------------------------------------------------------------------------*/
 : setStartNode ( -- )
   // set this node as the grid start node
-  grid.thisNode@ grid::startNode!
+  grid::thisNode@ grid::startNode!
 ;
 
 /*============================================================================*/

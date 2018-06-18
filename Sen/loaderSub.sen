@@ -235,14 +235,14 @@ tp: ~loadInsertBufferEntries
 
   //"~loadAppendBuffer" .
   //pLoaderSEitf .
-  //grid.thisNode@ .
+  //grid::thisNode@ .
 
   // get tx id from loader
   pLoaderSub loaderSub.loader@ loader.seitf@ seitf.tx@ tx.id locals| iDistTxId |
 
   <<
     pLoaderSEitf
-    grid.thisNode@
+    grid::thisNode@
     pWorkingBuffer                                    ( << rb )
     pWorkingBuffer workingBuffer.isLast@
     pLoaderSEitf seitf.tx@ tx.id

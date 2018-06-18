@@ -23,7 +23,7 @@
     "send failure" . ( 0/1 )
   then
 
-  //"Node " grid.thisNode@ >str str.cat " sent word to another node " str.cat .
+  //"Node " grid::thisNode@ >str str.cat " sent word to another node " str.cat .
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -38,7 +38,7 @@ tp: senderLoop
   "senderLoop" task::this task.comment!
 
   senderWorkerPrint if
-    "Sender running on node" grid.thisNode@ >str str.cat .
+    "Sender running on node" grid::thisNode@ >str str.cat .
   then
 
   begin

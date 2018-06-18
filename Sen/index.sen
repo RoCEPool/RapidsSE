@@ -121,7 +121,7 @@ pResultBuffer pSeitf seitf.bufferQueue@ queue.append
 : makeIndexes ( "<tableNm>" -- )
 
   args.tracepoint if
-    dup "MAKING INDEXES FOR TABLE " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
+    dup "MAKING INDEXES FOR TABLE " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
   then
 
   find execute ( dic )
@@ -446,7 +446,7 @@ tp: makingIndex
   locals| indexNm tableNm |
 
   args.tracepoint if
-  "MAKING INDEX " indexNm str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
+  "MAKING INDEX " indexNm str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
   then
 
   tableNm
@@ -491,7 +491,7 @@ tp: keySelectIdx
 tp: loadIndexes
 
   args.tracepoint if
-    "LOADING INDEXES on NODE " grid.thisNode@ >str str.cat .
+    "LOADING INDEXES on NODE " grid::thisNode@ >str str.cat .
   then
 
   "indexes"

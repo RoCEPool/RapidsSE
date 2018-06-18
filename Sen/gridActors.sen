@@ -46,7 +46,7 @@
     // partitipant proxy for node I
     //
 
-    I grid.thisNode@ == if
+    I grid::thisNode@ == if
       I I pTasks  @ 2 "ppLoop"
     else
       I I cpTasks @ 2 "ppLoop"
@@ -187,7 +187,7 @@ tp: >>allParticipants>
 
   // determine which queue to forward to
   dup ( ... #values actorNo actorNo )
-  grid.thisNode@ ( ... #values actorNo actorNo grid.thisNode@ )
+  grid::thisNode@ ( ... #values actorNo actorNo grid::thisNode@ )
   == ( ... #values actorNo true|false )
   if ( ... #values actorNo )
 

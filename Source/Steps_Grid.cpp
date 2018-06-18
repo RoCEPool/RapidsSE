@@ -28,9 +28,9 @@ void Task::vAddPrimitives_Grid(void)
   vAddPrimitive("grid::started@"_Stz,     &vGridStartedFetch,      false);
   vAddPrimitive("grid::startNode!"_Stz,   &vGridStartNodeStore,    false);
   vAddPrimitive("grid::startNode@"_Stz,   &vGridStartNodeFetch,    false);
-  vAddPrimitive("grid.thisNode!"_Stz,     &vGridThisNodeStore,     false);
-  vAddPrimitive("grid.thisNode@"_Stz,     &vGridThisNodeFetch,     false);
-  vAddPrimitive("grid.thisNodeName@"_Stz, &vGridThisNodeNameFetch, false);
+  vAddPrimitive("grid::thisNode!"_Stz,    &vGridThisNodeStore,     false);
+  vAddPrimitive("grid::thisNode@"_Stz,    &vGridThisNodeFetch,     false);
+  vAddPrimitive("grid::thisNodeName@"_Stz,&vGridThisNodeNameFetch, false);
   vAddPrimitive("grid::toNode"_Stz,       &vGridToNode,            false);
   vAddPrimitive("grid::toPartition"_Stz,  &vGridToPartition,       false);
   vAddPrimitive("grid::toSlot"_Stz,       &vGridToSlot,            false);
@@ -196,7 +196,7 @@ void Task::vGridSocketFetch(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* grid.thisNode! -- set this node  in the grid                               */
+/* grid::thisNode! -- set this node  in the grid                               */
 /*----------------------------------------------------------------------------*/
 void Task::vGridThisNodeStore(MP_Task mpTask)
 {
@@ -219,7 +219,7 @@ void Task::vGridThisNodeStore(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* grid.thisNode@ -- get this node from the grid                              */
+/* grid::thisNode@ -- get this node from the grid                              */
 /*----------------------------------------------------------------------------*/
 void Task::vGridThisNodeFetch(MP_Task mpTask)
 {
@@ -235,7 +235,7 @@ void Task::vGridThisNodeFetch(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* grid.thisNodeName@ -- get this node name from the grid                     */
+/* grid::thisNodeName@ -- get this node name from the grid                     */
 /*----------------------------------------------------------------------------*/
 void Task::vGridThisNodeNameFetch(MP_Task mpTask)
 {

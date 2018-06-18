@@ -141,7 +141,7 @@ tp: parallelTableLoader
   <<
   13
   pSEitf  >str      ( << pSEitf )
-  grid.thisNode@
+  grid::thisNode@
   "ackSEitf$"   ( << pSEitf "ackSEitf$" )
 
   tp: theIndirectCall
@@ -172,7 +172,7 @@ tp: parallelTableLoader
 : distParallelTableLoader allParticipants 8 checkResult ( "<seitf>" iNode "<fieldDelimiter>" "<path>" "<sameMachine>" "<tableNm>" "<schema>" "<catalog>" -- t|f )
 
   args.tracepoint if
-  dup "LOADING TABLE " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
+  dup "LOADING TABLE " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
   then
 
   0 locals| tableLoader sCat sSch sTableNm sSameMachine sPath sFldDel iNode pSeitf |

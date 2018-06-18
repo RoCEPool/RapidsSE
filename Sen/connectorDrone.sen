@@ -25,7 +25,7 @@ tp: spawnConnectorDrone
 
   grid::nodes 0 do
 
-    I grid.thisNode@ == if
+    I grid::thisNode@ == if
 
       nullptr I senderQueues !
       nullptr I senderTasks  !
@@ -40,7 +40,7 @@ tp: spawnConnectorDrone
       socket::open  socket.connect
 
       args.verbose if
-        "Node" grid.thisNode@ >str str.cat
+        "Node" grid::thisNode@ >str str.cat
         " connected to node" str.cat
         I >str str.cat
         .
@@ -72,7 +72,7 @@ ddlLock::dropWrite
 
   // set grid as started
   true grid::started!
-  grid.thisNodeName@ "Node %v : SE cluster started" str.format .
+  grid::thisNodeName@ "Node %v : SE cluster started" str.format .
 
   //1000000 thread.sleep_s
 
