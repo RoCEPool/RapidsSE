@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : >socketR35 ( valset -- )
 
-  task::this task.socket@
+  task::this task.sendNode@ node.socket@
 
   tp: sending
 
