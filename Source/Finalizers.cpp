@@ -126,7 +126,6 @@ pFINALIZE *gpFinalize[]
   /* 74 */ &Finalize::vUndefined,         // CN_MEDIUMTRANSIENT
   
   /* 75 */ &Finalize::vUndefined,         // CN_NODE
-  /* 76 */ &Finalize::vUndefined,         // CN_NODECURSOR
   
   /* 77 */ &Finalize::vUndefined,         // CN_OP
   

@@ -592,7 +592,6 @@ void Task::vAddConstants(void)
   /*    */ vAddConstant("CN_MEDIUMTRANSIENT"_Stz,  CN_MEDIUMTRANSIENT);
   
   /* 38 */ vAddConstant("CN_NODE"_Stz,         CN_NODE);
-  /* 39 */ vAddConstant("CN_NODECURSOR"_Stz,   CN_NODECURSOR);
   
   /* 40 */ vAddConstant("CN_PARSER"_Stz,       CN_PARSER);
   /* 41 */ vAddConstant("CN_TABLEPTN"_Stz,     CN_TABLEPTN);

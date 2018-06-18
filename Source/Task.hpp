@@ -903,17 +903,7 @@ namespace Tasks
     static void vNodePort(MP_Task mpTask);
     static void vNodeSize(MP_Task mpTask);
     static void vNodeStatus(MP_Task mpTask);
-    
-    // nodeCursor
-    static void vNodeCursorBegin(MP_Task mpTask);
-    static void vNodeCursorDelete(MP_Task mpTask);
-    static void vNodeCursorEnd(MP_Task mpTask);
-    static void vNodeCursorFirst(MP_Task mpTask);
-    static void vNodeCursorGet(MP_Task mpTask);
-    static void vNodeCursorInit(MP_Task mpTask);
-    static void vNodeCursorNew(MP_Task mpTask);
-    static void vNodeCursorNext(MP_Task mpTask);
-    
+        
     // object
     static void vObjectClassFetch(MP_Task mpTask);
     static void vObjectClassStore(MP_Task mpTask);
