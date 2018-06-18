@@ -809,10 +809,12 @@ namespace Tasks
     
     // job
     static void vJobAddOriginator(MP_Task mpTask);
+    static void vJobAddParticipant(MP_Task mpTask);
     static void vJobErrorFetch(MP_Task mpTask);
     static void vJobErrorStore(MP_Task mpTask);
     static void vJobExecuteFetch(MP_Task mpTask);
     static void vJobRemoveOriginator(MP_Task mpTask);
+    static void vJobRemoveParticipant(MP_Task mpTask);
   
     // loader
     static void vLoaderAddRecordsInvalid(MP_Task mpTask);

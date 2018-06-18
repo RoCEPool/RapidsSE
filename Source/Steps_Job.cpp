@@ -15,11 +15,13 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Job(void)
 {
-  vAddPrimitive("job.addOriginator"_Stz,    &vJobAddOriginator,   false);
-  vAddPrimitive("job.error@"_Stz,           &vJobErrorFetch,      false);
-  vAddPrimitive("job.error!"_Stz,           &vJobErrorStore,      false);
-  vAddPrimitive("job.execute@"_Stz,         &vJobExecuteFetch,    false);
-  vAddPrimitive("job.removeOriginator"_Stz, &vJobRemoveOriginator,false);
+  vAddPrimitive("job.addOriginator"_Stz,    &vJobAddOriginator,    false);
+  vAddPrimitive("job.addParticipant"_Stz,   &vJobAddParticipant,   false);
+  vAddPrimitive("job.error@"_Stz,           &vJobErrorFetch,       false);
+  vAddPrimitive("job.error!"_Stz,           &vJobErrorStore,       false);
+  vAddPrimitive("job.execute@"_Stz,         &vJobExecuteFetch,     false);
+  vAddPrimitive("job.removeOriginator"_Stz, &vJobRemoveOriginator, false);
+  vAddPrimitive("job.removeParticipant"_Stz,&vJobRemoveParticipant,false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -37,6 +39,27 @@ void Task::vJobAddOriginator(MP_Task mpTask)
   gpAttachMap->m_pOriginatingJobs->vGrabLock();
   gpAttachMap->m_pOriginatingJobs->vAddJob(pJob);
   gpAttachMap->m_pOriginatingJobs->vDropLock();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.addParticipant -- add job to participant job set                       */
+/*----------------------------------------------------------------------------*/
+void Task::vJobAddParticipant(MP_Task mpTask)
+{
+  ENTRY("vJobAddParticipant"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.addParticipant"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  gpAttachMap->m_pParticipatingJobs->vGrabLock();
+  gpAttachMap->m_pParticipatingJobs->vAddJob(pJob);
+  gpAttachMap->m_pParticipatingJobs->vDropLock();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -112,6 +135,27 @@ void Task::vJobRemoveOriginator(MP_Task mpTask)
   gpAttachMap->m_pOriginatingJobs->vGrabLock();
   gpAttachMap->m_pOriginatingJobs->vRemoveJob(pJob);
   gpAttachMap->m_pOriginatingJobs->vDropLock();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.removePartcipant -- remove job from participant job set                */
+/*----------------------------------------------------------------------------*/
+void Task::vJobRemoveParticipant(MP_Task mpTask)
+{
+  ENTRY("vJobRemoveParticipant"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.removePartcipant"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  gpAttachMap->m_pParticipatingJobs->vGrabLock();
+  gpAttachMap->m_pParticipatingJobs->vRemoveJob(pJob);
+  gpAttachMap->m_pParticipatingJobs->vDropLock();
+  
+  EXIT();
 }
 
 /*============================================================================*/
