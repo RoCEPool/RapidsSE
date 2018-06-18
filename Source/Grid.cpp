@@ -173,7 +173,6 @@ Node* Grid::pFindNode(Stz* sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  /*
   for (i8 i_Node = 0; i_Node < m_nNodes; i_Node++) {
     Node* pNode = m_pNodes[i_Node];
     if (pNode && pNode->aNodeName()->bSame(sName))
@@ -181,23 +180,6 @@ Node* Grid::pFindNode(Stz* sName)
   }
   
   return nullptr;
-  */
-  
-  NodeCursor* pNodeCursor = new NodeCursor(this);
-  pNodeCursor->vBegin();
-  pNodeCursor->vFirst();
-  Node* pNode = pNodeCursor->pObject();
-  while (pNode) {
-    if (pNode->aNodeName()->bSame(sName))
-      break;
-    pNodeCursor->vNext();
-    pNode = pNodeCursor->pObject();
-  }
-  pNodeCursor->vEnd();
-  
-  delete pNodeCursor;
-  
-  return pNode;
 }
 
 /*----------------------------------------------------------------------------*/
