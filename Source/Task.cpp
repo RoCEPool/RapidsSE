@@ -577,6 +577,28 @@ void Task::vAddConstants(void)
   /* 28 */ vAddConstant("CN_INDEX"_Stz,        CN_INDEX);
   /*    */ //vAddConstant("CN_INDEXDEFN"_Stz,    CN_INDEXDEFN);
 
+  /*    */ vAddConstant("CN_JOB__BEGUN"_Stz,         CN_JOB__BEGUN);
+  /*    */ vAddConstant("CN_JOB__END"_Stz,           CN_JOB__END);
+  /*    */ vAddConstant("CN_JOB__ENDED"_Stz,         CN_JOB__ENDED);
+  /*    */ vAddConstant("CN_JOB__ERROR"_Stz,         CN_JOB__ERROR);
+  /*    */ vAddConstant("CN_JOB__EXECUTE"_Stz,       CN_JOB__EXECUTE);
+  /*    */ vAddConstant("CN_JOB__EXECUTED"_Stz,      CN_JOB__EXECUTED);
+  
+  /*    */ vAddConstant("CN_JOB_ANALYZEINDEX"_Stz,   CN_JOB_ANALYZEINDEX);
+  /*    */ vAddConstant("CN_JOB_ANALYZETABLE"_Stz,   CN_JOB_ANALYZETABLE);
+  /*    */ vAddConstant("CN_JOB_CREATECATALOG"_Stz,  CN_JOB_CREATECATALOG);
+  /*    */ vAddConstant("CN_JOB_CREATEINDEX"_Stz,    CN_JOB_CREATEINDEX);
+  /*    */ vAddConstant("CN_JOB_CREATESCHEMA"_Stz,   CN_JOB_CREATESCHEMA);
+  /*    */ vAddConstant("CN_JOB_CREATETABLE"_Stz,    CN_JOB_CREATETABLE);
+  /*    */ vAddConstant("CN_JOB_CREATETENANT"_Stz,   CN_JOB_CREATETENANT);
+  /*    */ vAddConstant("CN_JOB_DROPCATALOG"_Stz,    CN_JOB_DROPCATALOG);
+  /*    */ vAddConstant("CN_JOB_DROPINDEX"_Stz,     CN_JOB_DROPINDEX);
+  /*    */ vAddConstant("CN_JOB_DROPSCHEMA"_Stz,    CN_JOB_DROPSCHEMA);
+  /*    */ vAddConstant("CN_JOB_DROPTABLE"_Stz,     CN_JOB_DROPTABLE);
+  /*    */ vAddConstant("CN_JOB_DROPTENANT"_Stz,    CN_JOB_DROPTENANT);
+  /*    */ vAddConstant("CN_JOB_G35"_Stz,           CN_JOB_G35);
+  /*    */ vAddConstant("CN_JOB_LOADTABLE"_Stz,     CN_JOB_LOADTABLE);
+  
   /*    */ vAddConstant("CN_JUMBOPERSISTENT"_Stz, CN_JUMBOPERSISTENT);
   /*    */ vAddConstant("CN_JUMBOTRANSIENT"_Stz,  CN_JUMBOTRANSIENT);
   
