@@ -114,7 +114,7 @@
   pJob .
 
   // add job to originator jobs
-  pJob.addOriginator
+  pJob job.addOriginator
 
   // set the send node
   0 grid::node pTask task.sendNode!
