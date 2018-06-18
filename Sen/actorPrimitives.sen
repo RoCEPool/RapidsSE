@@ -466,7 +466,7 @@ tp: addingPassOnToCP
   " --regionPrefix " str.cat args.regionPrefix str.cat
   " --partitionsPerNode " str.cat args.partitionsPerNode >str str.cat
   " --name  " str.cat nodeName str.cat
-  //" --partitionsPerNode " str.cat grid.slots >str str.cat
+  //" --partitionsPerNode " str.cat grid::slots >str str.cat
   " --sleep " str.cat args.sleep >str str.cat
   args.tracepoint if " --tracepoint " str.cat then
   args.verbose if " --verbose " str.cat then
@@ -525,8 +525,8 @@ tp: addingPassOnToCP
 
   loop
 
-  //grid.thisNode@ grid.startNode!
-  grid.startNode@ "Cluster Start node: %v" str.format .
+  //grid.thisNode@ grid::startNode!
+  grid::startNode@ "Cluster Start node: %v" str.format .
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -534,7 +534,7 @@ tp: addingPassOnToCP
 /*----------------------------------------------------------------------------*/
 : setStartNode ( -- )
   // set this node as the grid start node
-  grid.thisNode@ grid.startNode!
+  grid.thisNode@ grid::startNode!
 ;
 
 /*============================================================================*/

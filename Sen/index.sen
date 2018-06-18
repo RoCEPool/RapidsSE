@@ -834,7 +834,7 @@ tp: populateIndex
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 
   // get slots
-  grid.slots to iSlots
+  grid::slots to iSlots
 
   1
   begin
@@ -876,7 +876,7 @@ tp: populateIndex
   then
 
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-  grid.slots 0
+  grid::slots 0
   do
     I pSeitf seitf.groupBy@ to pPartialGroupBy
     pPartialGroupBy pGroupby groupBy.applyPartial
@@ -942,7 +942,7 @@ tp: populateIndex
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // for each slot
-  grid.slots to iSlots
+  grid::slots to iSlots
   iSlots 0
   do
 

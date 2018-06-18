@@ -305,7 +305,7 @@
   // r0 ^selCursor
 
   r0 selCursor.table!
-  grid.slots 0
+  grid::slots 0
   do
     // r2 ^selCursor
     I r2 selCursor.begin
@@ -363,10 +363,10 @@
   to pTable
 
   // set acks to no of slots
-  grid.slots setAcks
+  grid::slots setAcks
 
   // spawn a partition task for each partition
-  grid.slots 0
+  grid::slots 0
   do
 
     I pTable 2 "partitionTruncate" I I >truncateTaskNm

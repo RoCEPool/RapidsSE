@@ -26,7 +26,7 @@
   "triggerScanOp" str.format dexPlan plan.opFrame++ drop
 
   // create the named opFrames in plan and any fame-level symbolic arguments
-  grid.slots 0 do
+  grid::slots 0 do
 
     I grid::toPartition to partitionid
 
@@ -40,7 +40,7 @@
   "writeOp#" dexPlan plan.opFrame++ drop
     // frame-level symbolic arguments
     fileNm            dexPlan ##: $$fileNm      // file to be exported to
-    grid.slots        dexPlan ##: $$nStreams    // number of streams in pipeline
+    grid::slots        dexPlan ##: $$nStreams    // number of streams in pipeline
     "responseOp.task" dexPlan ##: $$nextOp      // pipe to next operator
     "responseOp#"     dexPlan ##: $$nextProfile // pipe to next profile
 

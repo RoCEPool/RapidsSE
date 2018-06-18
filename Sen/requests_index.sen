@@ -602,7 +602,7 @@ timer: pIdxSelectTimer
   0 locals| iSlots pPlanner bGroupBy pBufferQueue iPhrase |
 
   // for each slot
-  grid.slots to iSlots
+  grid::slots to iSlots
   iSlots 0
   do
     pBufferQueue I bGroupBy iPhrase pPlanner spawnFetch
@@ -675,7 +675,7 @@ timer: pIdxSelectTimer
   pPlanner assert
 
   // set the no of last buffers to no pf phrases in plan
-  pPlanner planner.phrases@ grid.slots * pSeitf seitf.lastBuffers!
+  pPlanner planner.phrases@ grid::slots * pSeitf seitf.lastBuffers!
 
   // create the buffer queue in the seitf
   "selectTask.queue" queue::new to pBufferQueue

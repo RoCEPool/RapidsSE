@@ -16,7 +16,7 @@ common/ triggerScan rbCrs /
   //thePlan plan.id@ "Triggering plan: %v" str.format .
 
   // trigger scanOp by piping the plan to it
-  grid.slots 0 do
+  grid::slots 0 do
 
     I grid::toPartition to partitionid
 

@@ -47,7 +47,7 @@
       then
 
       // set the socket in the grid
-      pSocket I grid.socket!
+      pSocket I grid::socket!
 
       // start sender
       //"starting sender" .
@@ -74,7 +74,7 @@
   loop
 
   // set grid as started
-  true grid.started!
+  true grid::started!
   grid.thisNodeName@ "Node %v : SE cluster started" str.format .
 
   //1000000 thread.sleep_s

@@ -245,7 +245,7 @@ tp: parallelTableLoader
   N_SERVER_THREADS setAcks
 
   // set acks remaining to be (no partitions)* subLoaders
-  grid.slots grid::nodes N_SERVER_THREADS * * pSEitf seitf.acksRemaining!
+  grid::slots grid::nodes N_SERVER_THREADS * * pSEitf seitf.acksRemaining!
 
   0 locals| pSubTask |
   0 locals| servers |

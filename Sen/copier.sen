@@ -33,7 +33,7 @@
   // r2 ^toTable
   // r3 ^fromTable
 
-  grid.slots 0
+  grid::slots 0
   do
     // r0 partition
     // r1 partitions

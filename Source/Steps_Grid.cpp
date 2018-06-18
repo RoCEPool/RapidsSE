@@ -21,13 +21,13 @@ void Task::vAddPrimitives_Grid(void)
   vAddPrimitive("grid::node"_Stz,         &vGridNode,              false);
   vAddPrimitive("grid::nodes"_Stz,        &vGridNodes,             false);
   vAddPrimitive("grid::partitions"_Stz,   &vGridPartitions,        false);
-  vAddPrimitive("grid.slots"_Stz,         &vGridSlots,             false);
-  vAddPrimitive("grid.socket!"_Stz,       &vGridSocketStore,       false);
-  vAddPrimitive("grid.socket@"_Stz,       &vGridSocketFetch,       false);
-  vAddPrimitive("grid.started!"_Stz,      &vGridStartedStore,      false);
-  vAddPrimitive("grid.started@"_Stz,      &vGridStartedFetch,      false);
-  vAddPrimitive("grid.startNode!"_Stz,    &vGridStartNodeStore,    false);
-  vAddPrimitive("grid.startNode@"_Stz,    &vGridStartNodeFetch,    false);
+  vAddPrimitive("grid::slots"_Stz,        &vGridSlots,             false);
+  vAddPrimitive("grid::socket!"_Stz,      &vGridSocketStore,       false);
+  vAddPrimitive("grid::socket@"_Stz,      &vGridSocketFetch,       false);
+  vAddPrimitive("grid::started!"_Stz,     &vGridStartedStore,      false);
+  vAddPrimitive("grid::started@"_Stz,     &vGridStartedFetch,      false);
+  vAddPrimitive("grid::startNode!"_Stz,   &vGridStartNodeStore,    false);
+  vAddPrimitive("grid::startNode@"_Stz,   &vGridStartNodeFetch,    false);
   vAddPrimitive("grid.thisNode!"_Stz,     &vGridThisNodeStore,     false);
   vAddPrimitive("grid.thisNode@"_Stz,     &vGridThisNodeFetch,     false);
   vAddPrimitive("grid.thisNodeName@"_Stz, &vGridThisNodeNameFetch, false);
@@ -138,7 +138,7 @@ void Task::vGridPartitions(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* grid.slots -- get number of slots of partitions per node in the grid       */
+/* grid::slots -- get number of slots of partitions per node in the grid       */
 /*----------------------------------------------------------------------------*/
 void Task::vGridSlots(MP_Task mpTask)
 {
@@ -150,7 +150,7 @@ void Task::vGridSlots(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* grid.socket! -- set grid socket for node                                   */
+/* grid::socket! -- set grid socket for node                                   */
 /*----------------------------------------------------------------------------*/
 void Task::vGridSocketStore(MP_Task mpTask)
 {
@@ -160,10 +160,10 @@ void Task::vGridSocketStore(MP_Task mpTask)
   Object* pSocketPtr;
   
   if ( ! mpTask->m_pDataStack->bPop(iNode) )
-  THROW_INVALID_DSTACK("grid.socket!"_Stz);
+  THROW_INVALID_DSTACK("grid::socket!"_Stz);
   
   if ( ! mpTask->m_pDataStack->bPop(pSocketPtr) )
-    THROW_INVALID_DSTACK("grid.socket!"_Stz);
+    THROW_INVALID_DSTACK("grid::socket!"_Stz);
   
   Socket* pSocket = reinterpret_cast<Socket*>(pSocketPtr);
   ASSERT(pSocket->eClass() == CN_SOCKET);
@@ -176,7 +176,7 @@ void Task::vGridSocketStore(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* grid.socket@ -- get grid socket for node                                   */
+/* grid::socket@ -- get grid socket for node                                   */
 /*----------------------------------------------------------------------------*/
 void Task::vGridSocketFetch(MP_Task mpTask)
 {
@@ -185,7 +185,7 @@ void Task::vGridSocketFetch(MP_Task mpTask)
   i8 iNode;
   
   if ( ! mpTask->m_pDataStack->bPop(iNode) )
-  THROW_INVALID_DSTACK("grid.socket@"_Stz);
+  THROW_INVALID_DSTACK("grid::socket@"_Stz);
 
   Node* pNode = gpAttachMap->m_pGrid->pGetNode(iNode);
   Socket* pSocket = pNode->pSocket();
@@ -250,7 +250,7 @@ void Task::vGridThisNodeNameFetch(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* grid.started! -- set grid started                                          */
+/* grid::started! -- set grid started                                          */
 /*----------------------------------------------------------------------------*/
 void Task::vGridStartedStore(MP_Task mpTask)
 {
@@ -259,7 +259,7 @@ void Task::vGridStartedStore(MP_Task mpTask)
   i8 iStarted;
   
   if ( ! mpTask->m_pDataStack->bPop(iStarted) )
-    THROW_INVALID_DSTACK("grid.started!"_Stz);
+    THROW_INVALID_DSTACK("grid::started!"_Stz);
   
   gpAttachMap->m_pGrid->vHasStarted(iStarted == 1 ? true : false);
   
@@ -267,7 +267,7 @@ void Task::vGridStartedStore(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* grid.startNode@ -- get grid start node                                     */
+/* grid::startNode@ -- get grid start node                                     */
 /*----------------------------------------------------------------------------*/
 void Task::vGridStartNodeFetch(MP_Task mpTask)
 {
@@ -279,7 +279,7 @@ void Task::vGridStartNodeFetch(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* grid.startNode! -- set grid start node                                     */
+/* grid::startNode! -- set grid start node                                     */
 /*----------------------------------------------------------------------------*/
 void Task::vGridStartNodeStore(MP_Task mpTask)
 {
@@ -288,7 +288,7 @@ void Task::vGridStartNodeStore(MP_Task mpTask)
   i8 iStartNode;
   
   if ( ! mpTask->m_pDataStack->bPop(iStartNode) )
-    THROW_INVALID_DSTACK("grid.startNode!"_Stz);
+    THROW_INVALID_DSTACK("grid::startNode!"_Stz);
   
   gpAttachMap->m_pGrid->vStartNode(iStartNode);
   
@@ -296,7 +296,7 @@ void Task::vGridStartNodeStore(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* grid.started@ -- get grid started                                          */
+/* grid::started@ -- get grid started                                          */
 /*----------------------------------------------------------------------------*/
 void Task::vGridStartedFetch(MP_Task mpTask)
 {

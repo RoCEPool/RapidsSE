@@ -111,7 +111,7 @@ tp: resumedbyCoord
 
   // check if grid has been started if number of nodes > 1
   grid::nodes 1 > if
-    grid.started@ true != if
+    grid::started@ true != if
       "GRID NOT STARTED ..." . false
     then
   then
@@ -152,7 +152,7 @@ tp: >>allParticipants>
 
    // check if grid has been started if number of nodes > 1
    grid::nodes 1 > if
-     grid.started@ true != if
+     grid::started@ true != if
        drop ( ) // drop the valsetr
        EC_CLUSTER_NOT_STARTED <FAILURE_RESULT> 1 false exit
      then

@@ -71,7 +71,7 @@
     // if very first socket start connector drone
 
     1 == if               ( connection# )
-      grid.thisNode@ grid.startNode@ != if
+      grid.thisNode@ grid::startNode@ != if
         spawnR35ConnectorTask
       then
     then

@@ -115,7 +115,7 @@
 
   0 grid::node pTask task.sendNode!
 
-  0 grid.socket@ pTask task.socket!
+  0 grid::socket@ pTask task.socket!
 
   task.send
 

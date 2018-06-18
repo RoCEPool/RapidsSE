@@ -137,7 +137,7 @@
   then
 
   // set total partitions in the node
-  grid.slots to iTotalPartitions
+  grid::slots to iTotalPartitions
 
   // set acks to no of totalPartitions
   iTotalPartitions setAcks
@@ -325,7 +325,7 @@ tp: theIndirectResult
   then
 
   // calculate total partitions in the cluster
-  grid.slots grid::nodes *
+  grid::slots grid::nodes *
   to iTotalPartitions
 
   // check for dangling buffers

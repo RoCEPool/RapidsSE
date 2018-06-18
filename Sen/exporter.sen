@@ -25,7 +25,7 @@
 
   r0 selCursor.table!
 
-  grid.slots 0
+  grid::slots 0
   do
     // r2 ^selCursor
     // r3 ^file

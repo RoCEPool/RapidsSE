@@ -81,7 +81,7 @@ int: nConnections
     // if very first socket start connector drone
 
     1 == if               ( connection# )
-      grid.thisNode@ grid.startNode@ != if
+      grid.thisNode@ grid::startNode@ != if
         spawnConnectorDrone assert
       then
     then
