@@ -20,7 +20,7 @@ void Values::vCheckAssumptions(void)
   ASSERT(sizeof(Value) + C_8KB          == sizeof(ValReg));
   ASSERT(sizeof(Value) + C_64K + 16     == sizeof(ValWrk));
   
-  ASSERT(sizeof(Value) + sizeof(i8)*3 + sizeof(void*)*2 + (C_1K*63)
+  ASSERT(sizeof(Value) + sizeof(i8)*3 + sizeof(void*)*3 + (C_1K*63)
          ==  sizeof(ValSet));
 
 
