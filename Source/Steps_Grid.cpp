@@ -50,7 +50,7 @@ void Task::vGridAppendNodes(MP_Task mpTask)
                            gxArguments.m_xNodes[iNode].m_sIPAddress,
                            gxArguments.m_xNodes[iNode].m_iPortNo);
     ASSERT(CN_NODE == pNode->eClass());
-    gpAttachMap->m_pGrid->vAppend(pNode);
+    gpAttachMap->m_pGrid->vAddNode(pNode);
   }
   EXIT();
 }
