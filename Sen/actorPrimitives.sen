@@ -492,7 +492,7 @@ tp: addingPassOnToCP
   ""
 
   grid::nodes 0 do
-    I grid.node   ( node )
+    I grid::node   ( node )
     to node
     node node.port
     node node.IP
@@ -510,7 +510,7 @@ tp: addingPassOnToCP
     I grid.thisNode@ != if
       
       // form the shell command to spawn node I
-      clusterString I grid.node node.name se_command
+      clusterString I grid::node node.name se_command
 
       // print the shell command
       dup .

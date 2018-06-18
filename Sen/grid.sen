@@ -35,7 +35,7 @@ tp: checkResult
       false == if  ( ... ec n# )
 
         swap error.msg swap
-        grid.node node.name
+        grid::node node.name
         "%v ERROR: %v" str.format .
 
       else
@@ -63,7 +63,7 @@ tp: printResult
     0 do  ( s n# t | s n# f .... )
 
       assert // should be true
-      grid.node node.name "%v: %v"  str.format .
+      grid::node node.name "%v: %v"  str.format .
     loop
 
   else
@@ -74,7 +74,7 @@ tp: printResult
       false == if ( s n# t | ec n# )
 
         swap error.msg swap
-        grid.node node.name
+        grid::node node.name
         "%v ERROR: %v" str.format .
 
       else
@@ -122,7 +122,7 @@ tp: printResult
           drop
           "\n" str.cat
         else
-          grid.node node.name  ( " " s nodeName )
+          grid::node node.name  ( " " s nodeName )
           "%v: %v\n" str.format
         then
         str.cat
@@ -136,7 +136,7 @@ tp: printResult
 
       false == if ( s n# t | ec n# )
         //swap error.msg swap
-        //grid.node node.name
+        //grid::node node.name
         //"error: %v %v" str.format
         drop false
       else
@@ -178,7 +178,7 @@ tp: printResult
       to iNodeNumber
       to iErrorCode
       iErrorCode error.msg
-      iNodeNumber grid.node node.name
+      iNodeNumber grid::node node.name
       "error: %v %v" str.format .
       iErrorCode false
     else

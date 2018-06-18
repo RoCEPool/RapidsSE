@@ -113,7 +113,7 @@
   pTask task.job@ to pJob
   pJob .
 
-  0 grid.node pTask task.sendNode!
+  0 grid::node pTask task.sendNode!
 
   0 grid.socket@ pTask task.socket!
 

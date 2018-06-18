@@ -32,7 +32,7 @@
 
     else
 
-      I grid.node     ( ^node )
+      I grid::node     ( ^node )
       dup             ( ^node ^node )
       node.port swap  ( port ^node )
       node.IP         ( port IP )

@@ -39,7 +39,7 @@ ddlLock::grabRead
   analyzeTable ( )
 
   // set no of rows processed equal to total no of partitions
-  grid.partitions task::this task.seitf@ seitf.rowsProcessed
+  grid::partitions task::this task.seitf@ seitf.rowsProcessed
 
   // pop table dictionary
   popTable

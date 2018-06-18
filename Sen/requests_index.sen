@@ -49,7 +49,7 @@ timer: pIdxSelectTimer
   bDetailed sIndexNm analyzeIndex ( )
 
   // set no of rows processed equal to total no of partitions
-  grid.partitions task::this task.seitf@ seitf.rowsProcessed
+  grid::partitions task::this task.seitf@ seitf.rowsProcessed
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // restore path 
@@ -125,7 +125,7 @@ timer: pIdxSelectTimer
   bDetailed sIndexNm compactIndex ( )
 
   // set no of rows processed equal to total no of partitions
-  grid.partitions task::this task.seitf@ seitf.rowsProcessed
+  grid::partitions task::this task.seitf@ seitf.rowsProcessed
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // restore path
@@ -885,7 +885,7 @@ timer: pIdxSelectTimer
   sIndexNm verifyIndex ( )
 
   // set no of rows processed equal to total no of partitions
-  grid.partitions task::this task.seitf@ seitf.rowsProcessed
+  grid::partitions task::this task.seitf@ seitf.rowsProcessed
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // restore path

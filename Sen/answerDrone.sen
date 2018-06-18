@@ -27,7 +27,7 @@ int: nConnections
   then
 
   // get the listening port of this node
-  grid.thisNode@ grid.node node.port locals| iPort |
+  grid.thisNode@ grid::node node.port locals| iPort |
 
   args.verbose if
     "waiting for connections on port "  iPort >str str.cat .
