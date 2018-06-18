@@ -7,6 +7,18 @@
 Atomic gzSocketOpenCount;
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+Socket* System::_pSocket(void* aAddr)
+{
+  Socket* pSocket = reinterpret_cast<Socket*>(aAddr);
+  
+  RASSERT( !pSocket || CN_SOCKET == pSocket->eClass() );
+  
+  return pSocket;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* Socket::operator new(size_t iSize)

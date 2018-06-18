@@ -56,6 +56,8 @@ namespace System
     Footer* aFooter(void);
   };
   
+  Socket* _pSocket(void* aAddr);
+
 }
 /*============================================================================*/
 /* end                                                                        */

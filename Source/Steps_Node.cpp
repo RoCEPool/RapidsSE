@@ -24,6 +24,8 @@ void Task::vAddPrimitives_Node(void)
   vAddPrimitive("node.partitions"_Stz, &vNodePartitions,   false);
   vAddPrimitive("node.port"_Stz,       &vNodePort,         false);
   vAddPrimitive("node.size"_Stz,       &vNodeSize,         false);
+  vAddPrimitive("node.socket!"_Stz,    &vNodeSocketStore,  false);
+  vAddPrimitive("node.socket@"_Stz,    &vNodeSocketFetch,  false);
   vAddPrimitive("node.status"_Stz,     &vNodeStatus,       false);
 }
 
@@ -154,12 +156,9 @@ void Task::vNodePort(MP_Task mpTask)
   ENTRY("vNodeNo"_Stz);
   
   Object* pPtrNode;
-  
   if ( ! mpTask->m_pDataStack->bPop(pPtrNode) )
     THROW_INVALID_DSTACK("node.port"_Stz);
-  
   Node* pNode = _pNode(pPtrNode);
-  ASSERT(CN_NODE == pNode->eClass());
   
   mpTask->m_pDataStack->vPushInt(pNode->iNodePortNo());
   
@@ -174,6 +173,47 @@ void Task::vNodeSize(MP_Task mpTask)
   ENTRY("vNodeSize"_Stz);
   
   mpTask->m_pDataStack->vPushInt(gpAttachMap->m_iRegionSize);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* node.socket! -- set socket for node                                        */
+/*----------------------------------------------------------------------------*/
+void Task::vNodeSocketStore(MP_Task mpTask)
+{
+  ENTRY("vNodeSocketStore"_Stz);
+  
+  Object* pPtrNode;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrNode) )
+    THROW_INVALID_DSTACK("node.socket"_Stz);
+  Node* pNode = _pNode(pPtrNode);
+
+  Object* pSocketPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pSocketPtr) )
+    THROW_INVALID_DSTACK("node.socket!"_Stz);
+  Socket* pSocket = _pSocket(pSocketPtr);
+    
+  pNode->vSocket(pSocket);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* node.socket@ -- get socket for node                                        */
+/*----------------------------------------------------------------------------*/
+void Task::vNodeSocketFetch(MP_Task mpTask)
+{
+  ENTRY("vNodeSocketFetch"_Stz);
+  
+  Object* pPtrNode;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrNode) )
+    THROW_INVALID_DSTACK("node.socket"_Stz);
+  Node* pNode = _pNode(pPtrNode);
+  
+  Socket* pSocket = pNode->pSocket();
+  
+  mpTask->m_pDataStack->vPushObject(pSocket);
   
   EXIT();
 }

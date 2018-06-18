@@ -902,6 +902,8 @@ namespace Tasks
     static void vNodePartitions(MP_Task mpTask);
     static void vNodePort(MP_Task mpTask);
     static void vNodeSize(MP_Task mpTask);
+    static void vNodeSocketStore(MP_Task mpTask);
+    static void vNodeSocketFetch(MP_Task mpTask);
     static void vNodeStatus(MP_Task mpTask);
         
     // object
