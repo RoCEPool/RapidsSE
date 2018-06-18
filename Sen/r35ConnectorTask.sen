@@ -40,8 +40,8 @@
         .
       then
 
-      // set the socket in the grid
-      pSocket I grid::socket!
+      // set the socket in the node
+      pSocket pNode node.socket!
 
   loop
 

@@ -22,8 +22,6 @@ void Task::vAddPrimitives_Grid(void)
   vAddPrimitive("grid::nodes"_Stz,        &vGridNodes,             false);
   vAddPrimitive("grid::partitions"_Stz,   &vGridPartitions,        false);
   vAddPrimitive("grid::slots"_Stz,        &vGridSlots,             false);
-  vAddPrimitive("grid::socket!"_Stz,      &vGridSocketStore,       false);
-  vAddPrimitive("grid::socket@"_Stz,      &vGridSocketFetch,       false);
   vAddPrimitive("grid::started!"_Stz,     &vGridStartedStore,      false);
   vAddPrimitive("grid::started@"_Stz,     &vGridStartedFetch,      false);
   vAddPrimitive("grid::startNode!"_Stz,   &vGridStartNodeStore,    false);
@@ -145,52 +143,6 @@ void Task::vGridSlots(MP_Task mpTask)
   ENTRY("vGridNode"_Stz);
   
   mpTask->m_pDataStack->vPushInt(gpAttachMap->m_pGrid->m_nSlots);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* grid::socket! -- set grid socket for node                                   */
-/*----------------------------------------------------------------------------*/
-void Task::vGridSocketStore(MP_Task mpTask)
-{
-  ENTRY("vGridSocketStore"_Stz);
-  
-  i8 iNode;
-  Object* pSocketPtr;
-  
-  if ( ! mpTask->m_pDataStack->bPop(iNode) )
-  THROW_INVALID_DSTACK("grid::socket!"_Stz);
-  
-  if ( ! mpTask->m_pDataStack->bPop(pSocketPtr) )
-    THROW_INVALID_DSTACK("grid::socket!"_Stz);
-  
-  Socket* pSocket = reinterpret_cast<Socket*>(pSocketPtr);
-  ASSERT(pSocket->eClass() == CN_SOCKET);
-  
-  Node* pNode = gpAttachMap->m_pGrid->pGetNode(iNode);
-  
-  pNode->vSocket(pSocket);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* grid::socket@ -- get grid socket for node                                   */
-/*----------------------------------------------------------------------------*/
-void Task::vGridSocketFetch(MP_Task mpTask)
-{
-  ENTRY("vGridSocketFetch"_Stz);
-  
-  i8 iNode;
-  
-  if ( ! mpTask->m_pDataStack->bPop(iNode) )
-  THROW_INVALID_DSTACK("grid::socket@"_Stz);
-
-  Node* pNode = gpAttachMap->m_pGrid->pGetNode(iNode);
-  Socket* pSocket = pNode->pSocket();
-  
-  mpTask->m_pDataStack->vPushObject(pSocket);
   
   EXIT();
 }
