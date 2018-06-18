@@ -17,6 +17,8 @@ void Task::vAddPrimitives_Job(void)
 {
   vAddPrimitive("job.addOriginator"_Stz,    &vJobAddOriginator,    false);
   vAddPrimitive("job.addParticipant"_Stz,   &vJobAddParticipant,   false);
+  vAddPrimitive("job.begun"_Stz,            &vJobBegun,            false);
+  vAddPrimitive("job.class"_Stz,            &vJobClass,            false);
   vAddPrimitive("job.error@"_Stz,           &vJobErrorFetch,       false);
   vAddPrimitive("job.error!"_Stz,           &vJobErrorStore,       false);
   vAddPrimitive("job.execute@"_Stz,         &vJobExecuteFetch,     false);
@@ -58,6 +60,45 @@ void Task::vJobAddParticipant(MP_Task mpTask)
   gpAttachMap->m_pParticipatingJobs->vGrabLock();
   gpAttachMap->m_pParticipatingJobs->vAddJob(pJob);
   gpAttachMap->m_pParticipatingJobs->vDropLock();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.jobBegun -- get a job__begun for this job                              */
+/*----------------------------------------------------------------------------*/
+void Task::vJobBegun(MP_Task mpTask)
+{
+  ENTRY("vJobBegun"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.jobBegun"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  pJob->m_eState = JS_BEGUN;
+  
+  Job* pJobBegun = new Job__Begun;
+  pJobBegun->m_iJobId = pJob->m_iJobId;
+  
+  mpTask->m_pDataStack->vPushObject(pJobBegun);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.class -- get the class of the job                                      */
+/*----------------------------------------------------------------------------*/
+void Task::vJobClass(MP_Task mpTask)
+{
+  ENTRY("vJobClass"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.class"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushInt(pJob->eClass());
   
   EXIT();
 }

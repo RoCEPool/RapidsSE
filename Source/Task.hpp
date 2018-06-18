@@ -810,6 +810,8 @@ namespace Tasks
     // job
     static void vJobAddOriginator(MP_Task mpTask);
     static void vJobAddParticipant(MP_Task mpTask);
+    static void vJobBegun(MP_Task mpTask);
+    static void vJobClass(MP_Task mpTask);
     static void vJobErrorFetch(MP_Task mpTask);
     static void vJobErrorStore(MP_Task mpTask);
     static void vJobExecuteFetch(MP_Task mpTask);
