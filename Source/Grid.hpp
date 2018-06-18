@@ -5,8 +5,7 @@
 
 namespace GridModel
 {
-  class Grid : public Object,
-               public List_t<Node>
+  class Grid : public Object
   {
   public:
     i8     m_nNodes;     // number of nodes in the grid

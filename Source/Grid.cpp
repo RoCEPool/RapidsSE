@@ -129,8 +129,6 @@ void Grid::vAddNode(Node* pNode)
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
   m_pNodes[pNode->iNodeNo()] = pNode;
-  
-  vAppend(pNode);
 }
 
 /*----------------------------------------------------------------------------*/
