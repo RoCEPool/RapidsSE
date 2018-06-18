@@ -909,7 +909,7 @@ void Queues::vScheduleReadySlotTask(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* schedule sleeping task                                                     */
+/* schedule a task which wants to send                                        */
 /*----------------------------------------------------------------------------*/
 void Queues::vScheduleSendTask(Task* pTask)
 {
