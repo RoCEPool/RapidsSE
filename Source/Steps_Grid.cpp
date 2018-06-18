@@ -16,8 +16,8 @@ extern Arguments       gxArguments;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Grid(void)
 {
-  vAddPrimitive("grid.appendNodes"_Stz,   &vGridAppendNodes,       false);
-  vAddPrimitive("grid.find"_Stz,          &vGridFindNode,          false);
+  vAddPrimitive("grid::addNodes"_Stz,     &vGridAddNodes,          false);
+  vAddPrimitive("grid::findNode"_Stz,     &vGridFindNode,          false);
   vAddPrimitive("grid.init"_Stz,          &vGridInit,              false);
   vAddPrimitive("grid.node"_Stz,          &vGridNode,              false);
   vAddPrimitive("grid.nodes"_Stz,         &vGridNodes,             false);
@@ -38,17 +38,17 @@ void Task::vAddPrimitives_Grid(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* grid.appendNodes -- append grid nodes into grid                            */
+/* grid::addNodes -- add nodes into the grid                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vGridAppendNodes(MP_Task mpTask)
+void Task::vGridAddNodes(MP_Task mpTask)
 {
-  ENTRY("vGridAppendNodes"_Stz);
+  ENTRY("vGridAddNodes"_Stz);
   
-  for (i8 iNode = 0; iNode < gpAttachMap->m_pGrid->m_nNodes; iNode++) {
-    Node* pNode = new Node(iNode,
-                           gxArguments.m_xNodes[iNode].m_sNodeName,
-                           gxArguments.m_xNodes[iNode].m_sIPAddress,
-                           gxArguments.m_xNodes[iNode].m_iPortNo);
+  for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+    Node* pNode = new Node(i_Node,
+                           gxArguments.m_xNodes[i_Node].m_sNodeName,
+                           gxArguments.m_xNodes[i_Node].m_sIPAddress,
+                           gxArguments.m_xNodes[i_Node].m_iPortNo);
     ASSERT(CN_NODE == pNode->eClass());
     gpAttachMap->m_pGrid->vAddNode(pNode);
   }
@@ -56,16 +56,16 @@ void Task::vGridAppendNodes(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* grid.find -- find node from grid                                           */
+/* grid::findNode -- find node in grid by name                                */
 /*----------------------------------------------------------------------------*/
 void Task::vGridFindNode(MP_Task mpTask)
 {
-  ENTRY("vGridNode"_Stz);
+  ENTRY("vGridFindNode"_Stz);
   
   s256 sPtrNodeName;
   
   if ( ! mpTask->m_pDataStack->bPop(sPtrNodeName) )
-    THROW_INVALID_DSTACK("grid.find"_Stz);
+    THROW_INVALID_DSTACK("grid::findNode"_Stz);
   
   Node* pNode = gpAttachMap->m_pGrid->pFindNode(sPtrNodeName);
   

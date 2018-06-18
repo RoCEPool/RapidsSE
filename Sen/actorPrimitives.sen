@@ -228,7 +228,8 @@ tp: >callerAux
 
 tp: setSender_name
 
-  grid.find
+  grid::findNode
+
   node.no
 
 tp: setSender_nodeNo
@@ -257,7 +258,8 @@ tp: setSender_nodeNo
 
 tp: passBackToPP_name
 
-  grid.find
+  grid::findNode
+
   node.no
 
 tp: passBackToPP_nodeNo

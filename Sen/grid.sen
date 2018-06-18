@@ -268,7 +268,8 @@ tp: printResult
 
 grid: grid.this
 
-grid.appendNodes
+grid::addNodes
+
 grid.thisNode!
 
 /*============================================================================*/
