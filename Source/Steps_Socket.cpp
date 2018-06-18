@@ -15,11 +15,12 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Socket(void)
 {
+  vAddPrimitive("socket::open"_Stz,    &vSocketOpen,       false);
+  
   vAddPrimitive("socket.accept"_Stz,   &vSocketAccept,     false);
   vAddPrimitive("socket.close"_Stz,    &vSocketClose,      false);
   vAddPrimitive("socket.connect"_Stz,  &vSocketConnect,    false);
   vAddPrimitive("socket.listen"_Stz,   &vSocketListen,     false);
-  vAddPrimitive("socket.open"_Stz,     &vSocketOpen,       false);
   vAddPrimitive("socket.recv"_Stz,     &vSocketRecv,       false);
   vAddPrimitive("socket.send"_Stz,     &vSocketSend,       false);
 }
@@ -181,7 +182,7 @@ void Task::vSocketListen(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* socket.open: open a socket                                                 */
+/* socket::open: open a socket                                                */
 /*----------------------------------------------------------------------------*/
 void Task::vSocketOpen(MP_Task mpTask)
 {
@@ -194,9 +195,8 @@ void Task::vSocketOpen(MP_Task mpTask)
   bool bResult = pSocket->bSocket(xSysCall);
   
   if ( ! bResult )
-    THROW("Unable to create socker: Errno %d!"_Stz, xSysCall.iError());
+    THROW("Unable to create socket: Errno %d!"_Stz, xSysCall.iError());
   
-  // return pSocket
   Object* pPtrSocket = pSocket;
   mpTask->m_pDataStack->vPushObject(pPtrSocket);
   
