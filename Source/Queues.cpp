@@ -56,7 +56,9 @@ Queues::Queues(void)
   
   m_pThreadVector  = new ThreadVector;
   m_ziTaskOrderNo  = 0;
+  
   m_pSleepingQueue = new TaskQueue(bTaskCompareWakeupTime);
+  
   m_pReadyQueue    = new TaskQueue(bTaskCompareTaskOrderNo);
   
   for (i8 i_Slot = 0; i_Slot < C_SLOTS_PER_NODE; i_Slot++)
@@ -70,6 +72,7 @@ Queues::Queues(void)
     m_pReadySendQueues[i_Node] = new TaskQueue(bTaskCompareTaskOrderNo);
   
   m_pExecutingQueue = new TaskQueue(bTaskCompareTaskOrderNo);
+  
   m_pWaitingQueue   = new TaskQueue(bTaskCompareTaskOrderNo);
   
   _checkInitialised_(CN_QUEUES);
@@ -436,21 +439,25 @@ Task* Queues::pInspectReadySendQueue(Thread* pCallingThread)
   
   Task* pPoppedTask;
   
+  i8 i_Queue = i_ToReadySendQueue(pCallingThread->m_iLastRRqueue);
+  
+  TaskQueue* pReadySendQueue = m_pReadySendQueues[i_Queue];
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // lock queue and check for task
   
   // attempt to grab a write lock on the queue
-  if (! m_pReadySendQueues[pCallingThread->m_iLastRRqueue]->bGrabLock()) {
+  if (! pReadySendQueue->bGrabLock()) {
     // unable to lock queue (another thread must be processing it)
     // so move on to the next queue
     return nullptr;
   }
   
   // pop a task off the partition queues
-  pPoppedTask = m_pReadySendQueues[pCallingThread->m_iLastRRqueue]->pPopTask();
+  pPoppedTask = pReadySendQueue->pPopTask();
   
   // drop lock on the queue
-  m_pReadySendQueues[pCallingThread->m_iLastRRqueue]->vDropLock();
+  pReadySendQueue->vDropLock();
   
   // is there a task to run?
   if (! pPoppedTask)
@@ -477,21 +484,25 @@ Task* Queues::pInspectReadySlotQueue(Thread* pCallingThread)
   
   Task* pPoppedTask;
   
+  i8 i_Queue = i_ToReadySlotQueue(pCallingThread->m_iLastRRqueue);
+  
+  TaskQueue* pReadySlotQueue = m_pReadySlotQueues[i_Queue];
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // lock queue and check for task
   
   // attempt to grab a write lock on the queue
-  if (! m_pReadySlotQueues[pCallingThread->m_iLastRRqueue]->bGrabLock()) {
+  if (! pReadySlotQueue->bGrabLock()) {
     // unable to lock queue (another thread must be processing it)
     // so move on to the next queue
     return nullptr;
   }
   
   // pop a task off the partition queues
-  pPoppedTask = m_pReadySlotQueues[pCallingThread->m_iLastRRqueue]->pPopTask();
+  pPoppedTask = pReadySlotQueue->pPopTask();
   
   // drop lock on the queue
-  m_pReadySlotQueues[pCallingThread->m_iLastRRqueue]->vDropLock();
+  pReadySlotQueue->vDropLock();
   
   // is there a task to run?
   if (! pPoppedTask)
@@ -634,6 +645,7 @@ bool Queues::bIsSleepingQueue(i8 iRRqueue)
 /*----------------------------------------------------------------------------*/
 /* pop next queued task in round robin fashion                                */
 /*----------------------------------------------------------------------------*/
+/*
 bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
@@ -682,6 +694,63 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
     *ppPoppedTask = pPoppedTask;
     return true;
     
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+  } // while (true)
+  
+  return false;
+}
+*/
+//------------------------------------------------------------------------------
+bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  Task* pPoppedTask;
+  
+  // set popped task to be null to start with
+  *ppPoppedTask = NULL;
+  
+  // start a round robin sequence
+  pCallingThread->vRRstart();
+  
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  // round robin thru the queues
+  while (pCallingThread->bRRnext()) {
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // inspect the queues
+    
+    if (pQueues->bIsSleepingQueue(pCallingThread->m_iLastRRqueue)) {
+      if ( ! (pPoppedTask = pInspectSleepingQueue(pCallingThread)) )
+        continue;
+      *ppPoppedTask = pPoppedTask;
+      return true;
+    }
+    
+    if (pQueues->bIsReadyQueue(pCallingThread->m_iLastRRqueue)) {
+      if ( ! (pPoppedTask = pInspectReadyQueue(pCallingThread)) )
+        continue;
+      *ppPoppedTask = pPoppedTask;
+      return true;
+    }
+    
+    if (pQueues->bIsReadySlotQueue(pCallingThread->m_iLastRRqueue)) {
+      if ( ! (pPoppedTask = pInspectReadySlotQueue(pCallingThread)) )
+        continue;
+      *ppPoppedTask = pPoppedTask;
+      return true;
+    }
+    
+    if (pQueues->bIsReadySendQueue(pCallingThread->m_iLastRRqueue)) {
+      if ( ! (pPoppedTask = pInspectReadySendQueue(pCallingThread)) )
+        continue;
+      *ppPoppedTask = pPoppedTask;
+      return true;
+    }
+    
+    RASSERT(0);
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
   } // while (true)

@@ -1152,14 +1152,14 @@ bool Thread::bRRnext(void)
   
   m_iLastRRqueue++;
   
-  if (m_iLastRRqueue == gxArguments.m_nSlots)
-    m_iLastRRqueue = QR_SLEEPING_QUEUE;
+  if (m_iLastRRqueue > gpAttachMap->m_pQueues->i_QueueLast())
+    m_iLastRRqueue = gpAttachMap->m_pQueues->i_QueueFirst();
   
   if (m_iLastRRqueue == m_iStartRRqueue)
     return false; // end of round robin sequence
   else {
-    if (m_iLastRRqueue == QR_SLEEPING_QUEUE)
-      m_iStartRRqueue = QR_SLEEPING_QUEUE;
+    if (m_iLastRRqueue == gpAttachMap->m_pQueues->i_QueueFirst())
+      m_iStartRRqueue = gpAttachMap->m_pQueues->i_QueueFirst();
     return true;  // have advanced to next queue
   }
 }
