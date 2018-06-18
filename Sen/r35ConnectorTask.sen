@@ -25,13 +25,6 @@
 
   grid::nodes 0 do
 
-    I grid::thisNode@ == if
-
-      nullptr I senderQueues !
-      nullptr I senderTasks  !
-
-    else
-
       I grid::node     ( ^node )
       dup             ( ^node ^node )
       node.port swap  ( port ^node )
@@ -48,28 +41,6 @@
 
       // set the socket in the grid
       pSocket I grid::socket!
-
-      // start sender
-      //"starting sender" .
-/*
-      ddlLock::grabWrite
-
-      // set up the seed
-      1 "senderLoop" ( socket 1 "senderLoop" )
-
-      // create the actor
-      "sr" I >str str.cat :createWorkerActor ( socket 1 "senderLoop" "srI" )
-
-      // record the senderQueue
-      dup findActorQueue I senderQueues ! ( socket 1 "senderLoop" "srI" )
-      dup findActorTask  I senderTasks  ! ( socket 1 "senderLoop" "srI" )
-
-      // spawn the actors os thread
-      spawnWorkerActor
-
-      ddlLock::dropWrite
-*/
-    then
 
   loop
 
