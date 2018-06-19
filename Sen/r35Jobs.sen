@@ -11,7 +11,7 @@
 
   locals| pJob |
 
-  pJob job.Id@ "Job_G35_Exe jobId %v executed" str.format .
+  pJob job.participant@ pJob job.Id@ "Job_G35_Exe jobId %v executed on node %v" str.format .
 ;
 
 /*----------------------------------------------------------------------------*/
