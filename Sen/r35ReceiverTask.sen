@@ -80,6 +80,9 @@
       CN_JOB_G35 of
         "CN_JOB_G35" .
 
+        // set partcipant node in job
+        grid::thisNode@ pJob job.participant!
+
         // add job as participant job
         pJob job.addParticipant
 
@@ -98,7 +101,7 @@
         >valset
         >socketR35
 
-    endof
+      endof
 
     endcase
 
