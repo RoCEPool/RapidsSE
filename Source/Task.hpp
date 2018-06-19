@@ -822,6 +822,9 @@ namespace Tasks
     static void vJobErrorStore(MP_Task mpTask);
     static void vJobExecuteFetch(MP_Task mpTask);
     static void vJobIdFetch(MP_Task mpTask);
+    static void vJobOriginatorFetch(MP_Task mpTask);
+    static void vJobParticipantFetch(MP_Task mpTask);
+    static void vJobParticipantStore(MP_Task mpTask);
     static void vJobRemoveOriginator(MP_Task mpTask);
     static void vJobRemoveParticipant(MP_Task mpTask);
   

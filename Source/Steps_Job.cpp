@@ -29,6 +29,9 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.findOriginator"_Stz,   &vJobFindOriginator,   false);
   vAddPrimitive("job.findParticipant"_Stz,  &vJobFindParticipant,  false);
   vAddPrimitive("job.id@"_Stz,              &vJobIdFetch,          false);
+  vAddPrimitive("job.originator@"_Stz,      &vJobOriginatorFetch,  false);
+  vAddPrimitive("job.participant@"_Stz,     &vJobParticipantFetch, false);
+  vAddPrimitive("job.participant!"_Stz,     &vJobParticipantStore, false);
   vAddPrimitive("job.removeOriginator"_Stz, &vJobRemoveOriginator, false);
   vAddPrimitive("job.removeParticipant"_Stz,&vJobRemoveParticipant,false);
 }
@@ -84,6 +87,7 @@ void Task::vJobBegun(MP_Task mpTask)
   
   Job* pJobBegun = new Job__Begun;
   pJobBegun->m_iJobId = iJobId;
+  pJobBegun->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
   
   mpTask->m_pDataStack->vPushObject(pJobBegun);
   
@@ -120,6 +124,7 @@ void Task::vJobEnd(MP_Task mpTask)
   
   Job* pJobEnd = new Job__End;
   pJobEnd->m_iJobId = iJobId;
+  pJobEnd->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
   
   mpTask->m_pDataStack->vPushObject(pJobEnd);
   
@@ -139,6 +144,7 @@ void Task::vJobEnded(MP_Task mpTask)
   
   Job* pJobEnded = new Job__Ended;
   pJobEnded->m_iJobId = iJobId;
+  pJobEnded->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
   
   mpTask->m_pDataStack->vPushObject(pJobEnded);
   
@@ -158,6 +164,7 @@ void Task::vJobExecute(MP_Task mpTask)
   
   Job* pJobExecute = new Job__Execute;
   pJobExecute->m_iJobId = iJobId;
+  pJobExecute->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
   
   mpTask->m_pDataStack->vPushObject(pJobExecute);
   
@@ -177,6 +184,7 @@ void Task::vJobExecuted(MP_Task mpTask)
   
   Job* pJobExecuted = new Job__Executed;
   pJobExecuted->m_iJobId = iJobId;
+  pJobExecuted->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
   
   mpTask->m_pDataStack->vPushObject(pJobExecuted);
   
@@ -275,8 +283,10 @@ void Task::vJobFindParticipant(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.findPartcipant"_Stz);
   
   gpAttachMap->m_pParticipatingJobs->vGrabLock();
+  
   Job* pFindJob = new Job__Begun;
   pFindJob->m_iJobId = iJobId;
+  
   Job* pJob = gpAttachMap->m_pParticipatingJobs->pFindJob(pFindJob);
   gpAttachMap->m_pParticipatingJobs->vDropLock();
   
@@ -298,6 +308,61 @@ void Task::vJobIdFetch(MP_Task mpTask)
   Job* pJob = _pJob(pJobPtr);
   
   mpTask->m_pDataStack->vPushInt(pJob->m_iJobId);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.originator@ -- fetch the originator node from the job                  */
+/*----------------------------------------------------------------------------*/
+void Task::vJobOriginatorFetch(MP_Task mpTask)
+{
+  ENTRY("vJobOriginatorFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.originator@@"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushInt(pJob->iOriginatorNode());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.partcipant@ -- fetch the participant node from the job                 */
+/*----------------------------------------------------------------------------*/
+void Task::vJobParticipantFetch(MP_Task mpTask)
+{
+  ENTRY("vJobRemoveParticipant"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.partcipant@"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushInt(pJob->m_iParticipantNode);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.partcipant! -- stote the participant node in the job                   */
+/*----------------------------------------------------------------------------*/
+void Task::vJobParticipantStore(MP_Task mpTask)
+{
+  ENTRY("vJobParticipantStore"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.partcipant!"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  i8 iParticipantNode;
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iParticipantNode) )
+    THROW_INVALID_DSTACK("job.partcipant!"_Stz);
+  
+  pJob->m_iParticipantNode = iParticipantNode;
   
   EXIT();
 }
