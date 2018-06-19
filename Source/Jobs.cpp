@@ -102,6 +102,20 @@ void Jobs::vDropLock(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find a job in the jobs skip list                                           */
+/*----------------------------------------------------------------------------*/
+Job* Jobs::pFindJob(Job* pFindJob)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBS,_FOOTER_);
+  
+  ASSERT(m_xLock.bIsLocked());
+  
+  Job* pJob = reinterpret_cast<Job*>(m_pJobsSkipList->pFind((void*)pFindJob));
+  
+  return pJob;
+}
+
+/*----------------------------------------------------------------------------*/
 /* grab lock for write                                                        */
 /*----------------------------------------------------------------------------*/
 void Jobs::vGrabLock(void)
