@@ -46,7 +46,7 @@ namespace JobsModel
     void vJobExecute(Stz* sExecute);
     i8   iJobId(void);
     void vJobId(i8 iJobId);
-    i8   iJobNode(void);
+    i8   iOriginatorNode(void);
     i8   iParticipantNode(void);
     void vParticipantNode(i8 iNode);
     eJS  eJobState(void);

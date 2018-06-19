@@ -112,18 +112,18 @@ void Job::vJobId(i8 iJobId)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the node no of this job from the job id                                */
+/* get the originator node no of this job from the job id                     */
 /*----------------------------------------------------------------------------*/
-i8 Job::iJobNode(void)
+i8 Job::iOriginatorNode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
   i8 iMaskOffLower48Bits = 0xFFFF000000000000;
   
-  i8 iJobNode = m_iJobId & iMaskOffLower48Bits;
-  iJobNode >>= 48;
+  i8 iOriginatorNode = m_iJobId & iMaskOffLower48Bits;
+  iOriginatorNode >>= 48;
   
-  return iJobNode;
+  return iOriginatorNode;
 }
 
 /*----------------------------------------------------------------------------*/
