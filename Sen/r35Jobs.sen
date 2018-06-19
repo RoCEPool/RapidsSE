@@ -1,0 +1,141 @@
+/*============================================================================*/
+/* r35Jobs.sen -- R35 job related words                                       */
+/*============================================================================*/
+
+"r35Jobs.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* Job_G35_Exe job                                                            */
+/*----------------------------------------------------------------------------*/
+: Job_G35_Exe ( job -- )
+
+  locals| pJob |
+
+  pJob job.Id@ "Job_G35_Exe jobId %v executed" str.format .
+;
+
+/*----------------------------------------------------------------------------*/
+/* begun job                                                                  */
+/*----------------------------------------------------------------------------*/
+: Job__Begun_Exe ( jobId -- )
+
+  0 locals| pJobExecute iJobId |
+
+  // send execute to other node
+  iJobId job.execute to pJobExecute
+
+  // set the send node to be the originating node
+  0 grid::node task::this task.sendNode!
+  task.send
+
+  // send the execute job
+  pJobExecute 1
+  >valset
+  >socketR35
+;
+
+/*----------------------------------------------------------------------------*/
+/* end job                                                                    */
+/*----------------------------------------------------------------------------*/
+: Job__End_Exe ( jobId -- )
+
+  0 0 locals| pJob pJobEnded iJobId |
+
+   // find the job in the participating jobs
+   iJobId job.findParticipant to pJob
+
+  // remove the job from the participant jobs
+  pJob job.removeParticipant
+
+  // send ended to other node
+  iJobId job.ended to pJobEnded
+
+  // set the send node to be the originating node
+  0 grid::node task::this task.sendNode!
+  task.send
+
+  // send the ended job
+  pJobEnded 1
+  >valset
+  >socketR35
+;
+
+/*----------------------------------------------------------------------------*/
+/* ended job                                                                  */
+/*----------------------------------------------------------------------------*/
+: Job__Ended_Exe ( jobId -- )
+
+  0 locals| pJob iJobId |
+
+  // find the job in the originator jobs
+  iJobId job.findOriginator to pJob
+
+  // remove the job from the originator jobs
+  pJob job.removeOriginator
+
+  "All Done" .
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute job                                                                */
+/*----------------------------------------------------------------------------*/
+: Job__Execute_Exe ( jobId -- )
+
+  0 0 locals| pJob pJobExecuted iJobId |
+
+  // find the job in the participating jobs
+  iJobId job.findParticipant to pJob
+
+  // execute the job
+  pJob pJob job.execute@ find execute
+
+  // send executed to other node
+  iJobId job.executed to pJobExecuted
+
+  // set the send node to be the originating node
+  0 grid::node task::this task.sendNode!
+  task.send
+
+  // send the executed job
+  pJobExecuted 1
+  >valset
+  >socketR35
+;
+
+/*----------------------------------------------------------------------------*/
+/* executed job                                                               */
+/*----------------------------------------------------------------------------*/
+: Job__Executed_Exe ( jobId -- )
+
+  0 locals| pJobEnd iJobId |
+
+  // send end to other node
+  iJobId job.end to pJobEnd
+
+  // set the send node to be the originating node
+  0 grid::node task::this task.sendNode!
+  task.send
+
+  // send the end job
+  pJobEnd 1
+  >valset
+  >socketR35
+;
+
+/*----------------------------------------------------------------------------*/
+/* recv valset from the socket                                                */
+/*----------------------------------------------------------------------------*/
+: socketR35> ( -- valset )
+
+  task::this task.socket@
+
+  tp: receiving
+
+  socket.recv
+
+  tp: received
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

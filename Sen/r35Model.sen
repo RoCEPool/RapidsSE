@@ -6,6 +6,7 @@
 
 "r35Tasking.sen" include
 "r35Sockets.sen" include
+"r35Jobs.sen" include
 "r35ReceiverTask.sen" include
 "r35ConnectorTask.sen" include
 "r35AnswerTask.sen" include
