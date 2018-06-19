@@ -16,7 +16,7 @@
   socket.send ( bool )
 
   not if
-  "send failure" . ( 0/1 )
+    "send failure" . ( 0/1 )
   then
 ;
 

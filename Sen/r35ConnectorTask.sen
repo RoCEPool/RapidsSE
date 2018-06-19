@@ -17,7 +17,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* connector loop                                                             */
+/* connector loop: establish a connection to all nodes in the grid            */
 /*----------------------------------------------------------------------------*/
 : r35connectorLoop
 
@@ -35,7 +35,7 @@
     I grid::node to pNode
 
     // get the nodes port and IP address
-    pNode node.port ( port ^node )
+    pNode node.port ( port pNode )
     pNode node.IP   ( port IP )
 
     // connect to that node

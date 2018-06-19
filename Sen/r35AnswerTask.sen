@@ -9,7 +9,11 @@
 /*----------------------------------------------------------------------------*/
 : spawnR35AnswerTask
 
-  0 "r35answerLoop" "AnswerDrone" TK_ANSWER_DRONE spawnR35GeneralTask
+    0                  // no. of args
+    "r35answerLoop"    // seed word
+    "AnswerTask"       // task name
+    TK_ANSWER_DRONE    // task kind
+  spawnR35GeneralTask
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -23,7 +27,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* accept new sockets, ???                                                    */
+/* answer loop: accept new sockets, spawn receiver task                       */
 /*----------------------------------------------------------------------------*/
 : r35answerLoop
 
@@ -38,14 +42,15 @@
   grid::thisNode@ grid::node node.port to iPort
 
   args.verbose if
-    "Waiting for connections on port "  iPort >str str.cat .
+    "Waiting for connections on port " iPort >str str.cat .
   then
 
   // now create a listening socket
   iPort socket::listen to pListeningSocket
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // number of connections to be zero
   0 nConnections !
+
   begin
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -58,11 +63,11 @@
     tp: socketAccepted
 
     args.verbose if
-      "answered connection on port " iPort >str str.cat .
+      "Answered connection on port " iPort >str str.cat .
     then
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // start receiver drone for the new socket
+    // spawn receiver task for the new socket
 
     ddlLock::grabWrite
 
@@ -75,13 +80,12 @@
 
     nConnections @          ( connection# )
     1 +                     ( nConnections# 1 )
-    dup                     ( nConnections# nConnections# )
     nConnections !          ( nConnections# )
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // if very first socket start connector drone
+    // if first socket on non-start node then start the connector task
 
-    1 == if               ( connection# )
+    nConnections @ 1 == if
       grid::thisNode@ grid::startNode@ != if
         spawnR35ConnectorTask
       then
