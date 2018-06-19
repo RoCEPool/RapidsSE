@@ -19,9 +19,16 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.addParticipant"_Stz,   &vJobAddParticipant,   false);
   vAddPrimitive("job.begun"_Stz,            &vJobBegun,            false);
   vAddPrimitive("job.class"_Stz,            &vJobClass,            false);
+  vAddPrimitive("job.end"_Stz,              &vJobEnd,              false);
+  vAddPrimitive("job.ended"_Stz,            &vJobEnded,            false);
   vAddPrimitive("job.error@"_Stz,           &vJobErrorFetch,       false);
   vAddPrimitive("job.error!"_Stz,           &vJobErrorStore,       false);
+  vAddPrimitive("job.execute"_Stz,          &vJobExecute,          false);
+  vAddPrimitive("job.executed"_Stz,         &vJobExecuted,         false);
   vAddPrimitive("job.execute@"_Stz,         &vJobExecuteFetch,     false);
+  vAddPrimitive("job.findOriginator"_Stz,   &vJobFindOriginator,   false);
+  vAddPrimitive("job.findParticipant"_Stz,  &vJobFindParticipant,  false);
+  vAddPrimitive("job.id@"_Stz,              &vJobIdFetch,          false);
   vAddPrimitive("job.removeOriginator"_Stz, &vJobRemoveOriginator, false);
   vAddPrimitive("job.removeParticipant"_Stz,&vJobRemoveParticipant,false);
 }
@@ -71,15 +78,12 @@ void Task::vJobBegun(MP_Task mpTask)
 {
   ENTRY("vJobBegun"_Stz);
   
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+  i8 iJobId;
+  if ( ! mpTask->m_pDataStack->bPop(iJobId) )
     THROW_INVALID_DSTACK("job.jobBegun"_Stz);
-  Job* pJob = _pJob(pJobPtr);
-  
-  pJob->m_eState = JS_BEGUN;
   
   Job* pJobBegun = new Job__Begun;
-  pJobBegun->m_iJobId = pJob->m_iJobId;
+  pJobBegun->m_iJobId = iJobId;
   
   mpTask->m_pDataStack->vPushObject(pJobBegun);
   
@@ -99,6 +103,82 @@ void Task::vJobClass(MP_Task mpTask)
   Job* pJob = _pJob(pJobPtr);
   
   mpTask->m_pDataStack->vPushInt(pJob->eClass());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.jobEnd-- get a job__end for this job                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vJobEnd(MP_Task mpTask)
+{
+  ENTRY("vJobEnd"_Stz);
+  
+  i8 iJobId;
+  if ( ! mpTask->m_pDataStack->bPop(iJobId) )
+    THROW_INVALID_DSTACK("job.jobBegun"_Stz);
+  
+  Job* pJobEnd = new Job__End;
+  pJobEnd->m_iJobId = iJobId;
+  
+  mpTask->m_pDataStack->vPushObject(pJobEnd);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.jobEnded -- get a job__ended for this job                              */
+/*----------------------------------------------------------------------------*/
+void Task::vJobEnded(MP_Task mpTask)
+{
+  ENTRY("vJobEnded"_Stz);
+  
+  i8 iJobId;
+  if ( ! mpTask->m_pDataStack->bPop(iJobId) )
+    THROW_INVALID_DSTACK("job.jobBegun"_Stz);
+  
+  Job* pJobEnded = new Job__Ended;
+  pJobEnded->m_iJobId = iJobId;
+  
+  mpTask->m_pDataStack->vPushObject(pJobEnded);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.jobExecute -- get a job__execute for this job                          */
+/*----------------------------------------------------------------------------*/
+void Task::vJobExecute(MP_Task mpTask)
+{
+  ENTRY("vJobExecute"_Stz);
+  
+  i8 iJobId;
+  if ( ! mpTask->m_pDataStack->bPop(iJobId) )
+    THROW_INVALID_DSTACK("job.jobBegun"_Stz);
+  
+  Job* pJobExecute = new Job__Execute;
+  pJobExecute->m_iJobId = iJobId;
+  
+  mpTask->m_pDataStack->vPushObject(pJobExecute);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.jobExecuted -- get a job__executed for this job                        */
+/*----------------------------------------------------------------------------*/
+void Task::vJobExecuted(MP_Task mpTask)
+{
+  ENTRY("vJobExecuted"_Stz);
+  
+  i8 iJobId;
+  if ( ! mpTask->m_pDataStack->bPop(iJobId) )
+    THROW_INVALID_DSTACK("job.jobBegun"_Stz);
+  
+  Job* pJobExecuted = new Job__Executed;
+  pJobExecuted->m_iJobId = iJobId;
+  
+  mpTask->m_pDataStack->vPushObject(pJobExecuted);
   
   EXIT();
 }
@@ -162,6 +242,67 @@ void Task::vJobExecuteFetch(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* job.findOriginator -- find job from originator job set                     */
+/*----------------------------------------------------------------------------*/
+void Task::vJobFindOriginator(MP_Task mpTask)
+{
+  ENTRY("vJobFindOriginatort"_Stz);
+  
+  i8 iJobId;
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iJobId) )
+    THROW_INVALID_DSTACK("job.findOriginator"_Stz);
+  
+  gpAttachMap->m_pOriginatingJobs->vGrabLock();
+  Job* pFindJob = new Job__Begun;
+  pFindJob->m_iJobId = iJobId;
+  Job* pJob = gpAttachMap->m_pOriginatingJobs->pFindJob(pFindJob);
+  gpAttachMap->m_pOriginatingJobs->vDropLock();
+  
+  mpTask->m_pDataStack->vPushObject(pJob);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.findPartcipant -- find job from participant job set                    */
+/*----------------------------------------------------------------------------*/
+void Task::vJobFindParticipant(MP_Task mpTask)
+{
+  ENTRY("vJobFindParticipant"_Stz);
+  
+  i8 iJobId;
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iJobId) )
+    THROW_INVALID_DSTACK("job.findPartcipant"_Stz);
+  
+  gpAttachMap->m_pParticipatingJobs->vGrabLock();
+  Job* pFindJob = new Job__Begun;
+  pFindJob->m_iJobId = iJobId;
+  Job* pJob = gpAttachMap->m_pParticipatingJobs->pFindJob(pFindJob);
+  gpAttachMap->m_pParticipatingJobs->vDropLock();
+  
+  mpTask->m_pDataStack->vPushObject(pJob);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.id@ -- fetch the job id of the job                                     */
+/*----------------------------------------------------------------------------*/
+void Task::vJobIdFetch(MP_Task mpTask)
+{
+  ENTRY("vJobIdFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.id@"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushInt(pJob->m_iJobId);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* job.removeOriginator -- remove job from originator job set                 */
 /*----------------------------------------------------------------------------*/
 void Task::vJobRemoveOriginator(MP_Task mpTask)
@@ -170,7 +311,7 @@ void Task::vJobRemoveOriginator(MP_Task mpTask)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.removeOriginator"_Stz);
+    THROW_INVALID_DSTACK("job.id@"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
   gpAttachMap->m_pOriginatingJobs->vGrabLock();
@@ -189,7 +330,7 @@ void Task::vJobRemoveParticipant(MP_Task mpTask)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.removePartcipant"_Stz);
+    THROW_INVALID_DSTACK("job.id@"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
   gpAttachMap->m_pParticipatingJobs->vGrabLock();
