@@ -15,7 +15,8 @@
   1 "r35ReceiverLoop" ( socket 1 "receiverLoop" )
 
   // form name of the receiver
-  "rr" nConnection @ >str str.cat ( socket 1 "r35ReceiverLoop" "rrI" )
+  "node" grid::thisNode@ >str str.cat
+   "_rr" str.cat nConnection @ >str str.cat ( socket 1 "r35ReceiverLoop" "rrI" )
 
   // spawn the actors os thread
   TK_RECEIVER_DRONE spawnR35GeneralTask
@@ -34,7 +35,8 @@
 
   "r35ReceiverLoop" task::this task.comment!
 
-  receiverDronePrint if "Receiver Drone R35 running on node" grid::thisNode@ >str str.cat . then
+  //receiverDronePrint if "Receiver Drone R35 running on node" grid::thisNode@ >str str.cat . then
+  "Receiver Drone R35 running on node" grid::thisNode@ >str str.cat .
 
   begin
     depth 0 != if stk "stack of receiver task has grown" . debug::trap then
@@ -48,37 +50,37 @@
 
     case
       CN_JOB__BEGUN of
-        "CN_JOB__BEGUN" .
+        grid::thisNode@ "Node %v CN_JOB__BEGUN" str.format .
         pJob job.execute@ find execute
       endof
 
       CN_JOB__END of
-        "CN_JOB__END" .
+        grid::thisNode@ "Node %v CN_JOB__END"str.format .
         pJob job.execute@ find execute
       endof
 
       CN_JOB__ENDED of
-        "CN_JOB__ENDED" .
+        grid::thisNode@ "Node %v CN_JOB__ENDED"str.format .
         pJob job.execute@ find execute
       endof
 
       CN_JOB__ERROR of
-        "CN_JOB__ERROR" .
+        grid::thisNode@ "Node %v CN_JOB__ERROR"str.format .
         pJob job.execute@ find execute
       endof
 
       CN_JOB__EXECUTE of
-        "CN_JOB__EXECUTE" .
+        grid::thisNode@ "Node %v CN_JOB__EXECUTE"str.format .
         pJob job.execute@ find execute
       endof
 
       CN_JOB__EXECUTED of
-        "CN_JOB__EXECUTED" .
+        grid::thisNode@ "Node %v CN_JOB__EXECUTED"str.format .
         pJob job.execute@ find execute
       endof
 
       CN_JOB_G35 of
-        "CN_JOB_G35" .
+        grid::thisNode@ "Node %v CN_JOB_G35" str.format .
 
         // set partcipant node in job
         grid::thisNode@ pJob job.participant!
