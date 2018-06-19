@@ -29,7 +29,7 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.findOriginator"_Stz,   &vJobFindOriginator,   false);
   vAddPrimitive("job.findParticipant"_Stz,  &vJobFindParticipant,  false);
   vAddPrimitive("job.id@"_Stz,              &vJobIdFetch,          false);
-  vAddPrimitive("job.originator@"_Stz,      &vJobOriginatorFetch,  false);
+  vAddPrimitive("job::originator@"_Stz,     &vJobOriginatorFetch,  false);
   vAddPrimitive("job.participant@"_Stz,     &vJobParticipantFetch, false);
   vAddPrimitive("job.participant!"_Stz,     &vJobParticipantStore, false);
   vAddPrimitive("job.removeOriginator"_Stz, &vJobRemoveOriginator, false);
@@ -313,18 +313,17 @@ void Task::vJobIdFetch(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.originator@ -- fetch the originator node from the job                  */
+/* job::originator@ -- fetch the originator node from the job                  */
 /*----------------------------------------------------------------------------*/
 void Task::vJobOriginatorFetch(MP_Task mpTask)
 {
   ENTRY("vJobOriginatorFetch"_Stz);
   
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.originator@@"_Stz);
-  Job* pJob = _pJob(pJobPtr);
+  i8 iJobId;
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iJobId) )
+    THROW_INVALID_DSTACK("job::originator@@"_Stz);
   
-  mpTask->m_pDataStack->vPushInt(pJob->iOriginatorNode());
+  mpTask->m_pDataStack->vPushInt(Job::iOriginatorNode(iJobId));
   
   EXIT();
 }
