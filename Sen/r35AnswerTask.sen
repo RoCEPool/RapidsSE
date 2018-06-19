@@ -42,7 +42,7 @@
   then
 
   // now create a listening socket
-  iPort socket.listen to pListeningSocket
+  iPort socket::listen to pListeningSocket
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   0 nConnections !

@@ -16,11 +16,11 @@ extern AttachMap*      gpAttachMap;
 void Task::vAddPrimitives_Socket(void)
 {
   vAddPrimitive("socket::open"_Stz,    &vSocketOpen,       false);
+  vAddPrimitive("socket::listen"_Stz,  &vSocketListen,     false);
   
   vAddPrimitive("socket.accept"_Stz,   &vSocketAccept,     false);
   vAddPrimitive("socket.close"_Stz,    &vSocketClose,      false);
   vAddPrimitive("socket.connect"_Stz,  &vSocketConnect,    false);
-  vAddPrimitive("socket.listen"_Stz,   &vSocketListen,     false);
   vAddPrimitive("socket.recv"_Stz,     &vSocketRecv,       false);
   vAddPrimitive("socket.send"_Stz,     &vSocketSend,       false);
 }
@@ -149,7 +149,7 @@ void Task::vSocketConnect(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* socket.listen: listen in for socket connections                            */
+/* socket::listen: listen in for socket connections                           */
 /*----------------------------------------------------------------------------*/
 void Task::vSocketListen(MP_Task mpTask)
 {

@@ -34,7 +34,7 @@ int: nConnections
     iPort >str "Listening on port " swap str.cat .
   then
 
-  iPort socket.listen locals| pListeningSocket |
+  iPort socket::listen locals| pListeningSocket |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   0 nConnections !
