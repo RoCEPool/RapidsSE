@@ -2,7 +2,7 @@
 /* r35ReceiverTask.sen -- R35 receiver task                                   */
 /*============================================================================*/
 
-"r35ConnectorTask.sen" .verbose
+"r35ReceiverTask.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* spawn the receiver task                                                    */
@@ -49,31 +49,45 @@
     case
       CN_JOB__BEGUN of
         "CN_JOB__BEGUN" .
-        pJob job.execute@ .
+        pJob job.execute@ find execute
       endof
 
       CN_JOB__END of
+        "CN_JOB__END" .
+        pJob job.execute@ find execute
       endof
 
       CN_JOB__ENDED of
+        "CN_JOB__ENDED" .
+        pJob job.execute@ find execute
       endof
 
       CN_JOB__ERROR of
+        "CN_JOB__ERROR" .
+        pJob job.execute@ find execute
       endof
 
       CN_JOB__EXECUTE of
+        "CN_JOB__EXECUTE" .
+        pJob job.execute@ find execute
       endof
 
       CN_JOB__EXECUTED of
+        "CN_JOB__EXECUTED" .
+        pJob job.execute@ find execute
       endof
 
       CN_JOB_G35 of
         "CN_JOB_G35" .
+
         // add job as participant job
         pJob job.addParticipant
 
+        // change state of job to begun
+        //pJob job.begun
+
         // create a job__begun
-        pJob job.begun to pJobBegun
+        pJob job.Id@ job.begun to pJobBegun
 
         // set the send node to be the originating node
         0 grid::node task::this task.sendNode!
@@ -87,10 +101,6 @@
     endof
 
     endcase
-
-
-
-    pJob job.execute@ "received job to execute ...%v" str.format .
 
   again
 ;
