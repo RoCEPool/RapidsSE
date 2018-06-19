@@ -42,6 +42,8 @@ namespace JobsModel
     Job(eCN eClassNo);
     ~Job(void);
     
+    static i8 iOriginatorNode(i8 iJobId);
+    
     Stz* sJobExecute(void);
     void vJobExecute(Stz* sExecute);
     i8   iJobId(void);

@@ -127,6 +127,19 @@ i8 Job::iOriginatorNode(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the originator node no of this job from the job id                     */
+/*----------------------------------------------------------------------------*/
+i8 Job::iOriginatorNode(i8 iJobId)
+{
+  i8 iMaskOffLower48Bits = 0xFFFF000000000000;
+  
+  i8 iOriginatorNode = iJobId & iMaskOffLower48Bits;
+  iOriginatorNode >>= 48;
+  
+  return iOriginatorNode;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set the job id                                                             */
 /*----------------------------------------------------------------------------*/
 void Job::vParticipantNode(i8 iNode)
