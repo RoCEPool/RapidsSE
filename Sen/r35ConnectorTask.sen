@@ -9,7 +9,11 @@
 /*----------------------------------------------------------------------------*/
 : spawnR35ConnectorTask
 
-  0 "r35connectorLoop" "ConnectorDrone" TK_CONNECTOR_DRONE spawnR35GeneralTask
+    0                    // no. of args
+    "r35connectorLoop"   // seed word
+    "ConnectorTask"      // task name
+    TK_CONNECTOR_DRONE   // task kind
+  spawnR35GeneralTask
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -17,38 +21,43 @@
 /*----------------------------------------------------------------------------*/
 : r35connectorLoop
 
-  0 0 locals| pNode pSocket |
+  0 locals| pNode |
+  0 locals| pSocket |
 
   connectorDronePrint if
     task::this task.name@ " running..." str.cat .
   then
 
-  grid::nodes 0 do
+  grid::nodes 0
+  do
 
-      // get the node
-      I grid::node to pNode
+    // get the node
+    I grid::node to pNode
 
-      pNode node.port ( port ^node )
-      pNode node.IP   ( port IP )
+    // get the nodes port and IP address
+    pNode node.port ( port ^node )
+    pNode node.IP   ( port IP )
 
-      socket::open socket.connect to pSocket
+    // connect to that node
+    socket::open socket.connect to pSocket
 
-      args.verbose if
-        "Node" grid::thisNode@ >str str.cat
-        " connected to node" str.cat
-        I >str str.cat
-        .
-      then
+    // set the socket in the node
+    pSocket pNode node.socket!
 
-      // set the socket in the node
-      pSocket pNode node.socket!
+    args.verbose if
+      "Node" grid::thisNode@ >str str.cat
+      " connected to node" str.cat
+      I >str str.cat
+      .
+    then
 
   loop
 
   // set grid as started
   true grid::started!
-  grid::thisNodeName@ "Node %v : SE cluster started" str.format .
 
+  // print started message
+  grid::thisNodeName@ "Node %v : SE cluster started" str.format .
 ;
 
 /*============================================================================*/

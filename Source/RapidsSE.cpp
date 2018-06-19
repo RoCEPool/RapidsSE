@@ -427,6 +427,9 @@ void RapidsSE::vSystemInit(void)
   gpAttachMap->m_xDdlLock.vInitLock(LK_DDL);
   gpAttachMap->m_xDicLock.vInitLock(LK_DIC);
   
+  // create grid
+  //gpAttachMap->m_pGrid = new Grid(gxArguments.m_nNodes, gxArguments.m_nSlots);
+  
   vDicCompile(gpAttachMap->m_npBootTask);
   
   gpAttachMap->m_pOriginatingJobs   = new Jobs(bJobCompare);
