@@ -180,9 +180,15 @@ bool ValSet::bExtractValue(Stz*& pCursor, Value*& pValue)
   // test for binary value
   if (CN_BINVAL == pValue->eClass()) {
     Object* pObjectVal = _pBinVal(pValue)->pNewObject();
-    ASSERT(pObjectVal->eClass() == CN_PLAN);
-    Plan* pPlan = reinterpret_cast<Plan*>(pObjectVal);
-    pPlan->vNullifyPointers();
+    ASSERT( pObjectVal->eClass() == CN_PLAN ||
+            (CN_JOB__BEGUN <= pObjectVal->eClass() &&
+             CN_JOBS       > pObjectVal->eClass())
+           );
+    
+    if (pObjectVal->eClass() == CN_PLAN) {
+      Plan* pPlan = reinterpret_cast<Plan*>(pObjectVal);
+      pPlan->vNullifyPointers();
+    }
     pValue->vSetClass(CN_PTRVAL);
     *_pPtrVal(pValue) = pObjectVal;
   }
