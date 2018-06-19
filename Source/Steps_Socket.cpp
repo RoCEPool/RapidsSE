@@ -49,10 +49,10 @@ void Task::vSocketAccept(MP_Task mpTask)
   if ( ! bResult )
     THROW("Unable to accept connection: Errno %d!"_Stz, xSysCall.iError());
   
-  Task* pTask = (Task*)0x208f500c8;
-  
   // return the new socket
-  mpTask->m_pDataStack->vPushObject(new Socket(iSocketId));
+  Socket* pNewSocket = new Socket(iSocketId);
+  
+  mpTask->m_pDataStack->vPushObject(pNewSocket);
   
   EXIT();
 }
