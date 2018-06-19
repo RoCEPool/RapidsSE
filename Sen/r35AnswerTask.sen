@@ -27,19 +27,22 @@
 /*----------------------------------------------------------------------------*/
 : r35answerLoop
 
+  0 locals| iPort |
+  0 locals| pListeningSocket |
+
   answerDronePrint if
     task::this task.name@ " running..." str.cat .
   then
 
   // get the listening port of this node
-  grid::thisNode@ grid::node node.port locals| iPort |
+  grid::thisNode@ grid::node node.port to iPort
 
   args.verbose if
-    "waiting for connections on port "  iPort >str str.cat .
-    iPort >str "Listening on port " swap str.cat .
+    "Waiting for connections on port "  iPort >str str.cat .
   then
 
-  iPort socket.listen locals| pListeningSocket |
+  // now create a listening socket
+  iPort socket.listen to pListeningSocket
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   0 nConnections !
