@@ -44,11 +44,9 @@
     // set the socket in the node
     pSocket pNode node.socket!
 
+    // print connection message
     args.verbose if
-      "Node" grid::thisNode@ >str str.cat
-      " connected to node" str.cat
-      I >str str.cat
-      .
+      grid::thisNode@ I "Node%v connected to node%v" str.format .
     then
 
   loop
