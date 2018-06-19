@@ -547,6 +547,7 @@ void Task::vSocketRecv(MP_Task mpTask)
     JobModel::Job* pJob = (JobModel::Job*)new Job__Begun();
     
     ASSERT(iBytes == C_SIZE_SMALL_OBJECT);
+    
     //vTrace("Recvd EntryBuffer: %p\n"_Stz,pEntryBuffer);
     bResult = pSocket->bRecvBytes(iBytes, reinterpret_cast<void*>(pJob), xSysCall);
     
