@@ -41,6 +41,7 @@
   begin
     depth 0 != if stk "stack of receiver task has grown" . debug::trap then
 
+    //task::this task.socket@ >str "receiving on socket %v" str.format .
     socketR35>
     valset> drop
 
@@ -51,32 +52,32 @@
     case
       CN_JOB__BEGUN of
         grid::thisNode@ "Node %v CN_JOB__BEGUN" str.format .
-        pJob job.execute@ find execute
+        pjob job.id@ pJob job.execute@ find execute
       endof
 
       CN_JOB__END of
         grid::thisNode@ "Node %v CN_JOB__END"str.format .
-        pJob job.execute@ find execute
+        pjob job.id@ pJob job.execute@ find execute
       endof
 
       CN_JOB__ENDED of
         grid::thisNode@ "Node %v CN_JOB__ENDED"str.format .
-        pJob job.execute@ find execute
+        pjob job.id@ pJob job.execute@ find execute
       endof
 
       CN_JOB__ERROR of
         grid::thisNode@ "Node %v CN_JOB__ERROR"str.format .
-        pJob job.execute@ find execute
+        pJob job.id@ pJob job.execute@ find execute
       endof
 
       CN_JOB__EXECUTE of
         grid::thisNode@ "Node %v CN_JOB__EXECUTE"str.format .
-        pJob job.execute@ find execute
+        pjob job.id@ pJob job.execute@ find execute
       endof
 
       CN_JOB__EXECUTED of
         grid::thisNode@ "Node %v CN_JOB__EXECUTED"str.format .
-        pJob job.execute@ find execute
+        pjob job.id@ pJob job.execute@ find execute
       endof
 
       CN_JOB_G35 of
@@ -95,7 +96,7 @@
         pJob job.Id@ job.begun to pJobBegun
 
         // set the send node to be the originating node
-        0 grid::node task::this task.sendNode!
+        pJob job::originator@ grid::node task::this task.sendNode!
         task.send
 
         // send the begun job
