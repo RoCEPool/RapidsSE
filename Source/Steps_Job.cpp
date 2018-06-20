@@ -17,8 +17,10 @@ void Task::vAddPrimitives_Job(void)
 {
   vAddPrimitive("job.addOriginator"_Stz,    &vJobAddOriginator,    false);
   vAddPrimitive("job.addParticipant"_Stz,   &vJobAddParticipant,   false);
+  vAddPrimitive("job.acksRemaining!"_Stz,   &vJobAcksRemaining,    false);
   vAddPrimitive("job.begun"_Stz,            &vJobBegun,            false);
   vAddPrimitive("job.class"_Stz,            &vJobClass,            false);
+  vAddPrimitive("job.decAcksRemaining"_Stz, &vJobDecAcksRemaining, false);
   vAddPrimitive("job.end"_Stz,              &vJobEnd,              false);
   vAddPrimitive("job.ended"_Stz,            &vJobEnded,            false);
   vAddPrimitive("job.error@"_Stz,           &vJobErrorFetch,       false);
@@ -75,6 +77,27 @@ void Task::vJobAddParticipant(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* job.acksRemaining! -- set acks remaining for this job                      */
+/*----------------------------------------------------------------------------*/
+void Task::vJobAcksRemaining(MP_Task mpTask)
+{
+  ENTRY("vJobAcksRemaining"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+  THROW_INVALID_DSTACK("job.acksRemaining!"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  i8 iAcksRemaing;
+  if ( ! mpTask->m_pDataStack->bPop(iAcksRemaing) )
+  THROW_INVALID_DSTACK("job.acksRemaining!"_Stz);
+  
+  pJob->m_ziAcksRemaining = iAcksRemaing;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* job.jobBegun -- get a job__begun for this job                              */
 /*----------------------------------------------------------------------------*/
 void Task::vJobBegun(MP_Task mpTask)
@@ -107,6 +130,29 @@ void Task::vJobClass(MP_Task mpTask)
   Job* pJob = _pJob(pJobPtr);
   
   mpTask->m_pDataStack->vPushInt(pJob->eClass());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.decAcksRemaining -- decrement acks remaining for this job              */
+/*----------------------------------------------------------------------------*/
+void Task::vJobDecAcksRemaining(MP_Task mpTask)
+{
+  ENTRY("vJobDecAcksRemaining"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+  THROW_INVALID_DSTACK("job.decAcksRemaining"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  i8 iAcksRemaing;
+  if ( ! mpTask->m_pDataStack->bPop(iAcksRemaing) )
+  THROW_INVALID_DSTACK("job.decAcksRemaining"_Stz);
+  
+  --pJob->m_ziAcksRemaining;
+  
+  mpTask->m_pDataStack->vPushInt(*pJob->m_ziAcksRemaining);
   
   EXIT();
 }

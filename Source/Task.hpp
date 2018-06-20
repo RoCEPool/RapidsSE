@@ -810,7 +810,9 @@ namespace Tasks
     // job
     static void vJobAddOriginator(MP_Task mpTask);
     static void vJobAddParticipant(MP_Task mpTask);
+    static void vJobAcksRemaining(MP_Task mpTask);
     static void vJobBegun(MP_Task mpTask);
+    static void vJobDecAcksRemaining(MP_Task mpTask);
     static void vJobEnd(MP_Task mpTask);
     static void vJobEnded(MP_Task mpTask);
     static void vJobExecute(MP_Task mpTask);

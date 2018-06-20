@@ -45,8 +45,6 @@ namespace JobsModel
     
     static i8 iOriginatorNode(i8 iJobId);
     
-    void vAcksRemaining(i8 iAcksRemaining);
-    i8   iDecAcksRemaining(void);
     Stz* sJobExecute(void);
     void vJobExecute(Stz* sExecute);
     i8   iJobId(void);
