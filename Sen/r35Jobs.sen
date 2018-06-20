@@ -194,82 +194,132 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* executed job                                                               */
+/* received job__begun                                                        */
+/*----------------------------------------------------------------------------*/
+: job__begun_received ( pJob -- )
+
+  locals| pJob |
+
+  grid::thisNode@ "Node %v CN_JOB__BEGUN" str.format .
+  pJob job.id@ pJob job.execute@ find execute
+  pJob job.delete
+;
+
+/*----------------------------------------------------------------------------*/
+/* received job__end                                                          */
+/*----------------------------------------------------------------------------*/
+: job__end_received ( pJob -- )
+
+  locals| pJob |
+
+  grid::thisNode@ "Node %v CN_JOB__END"str.format .
+  pJob job.id@ pJob job.execute@ find execute
+  pJob job.delete
+;
+
+/*----------------------------------------------------------------------------*/
+/* received job__ended                                                        */
+/*----------------------------------------------------------------------------*/
+: job__ended_received ( pJob -- )
+
+  locals| pJob |
+
+  grid::thisNode@ "Node %v CN_JOB__ENDED"str.format .
+  pJob job.id@ pJob job.execute@ find execute
+  pJob job.delete
+;
+
+/*----------------------------------------------------------------------------*/
+/* received job__error                                                        */
+/*----------------------------------------------------------------------------*/
+: job__error_received ( pJob -- )
+
+  locals| pJob |
+
+  grid::thisNode@ "Node %v CN_JOB__ERROR"str.format .
+  pJob job.id@ pJob job.execute@ find execute
+  pJob job.delete
+;
+
+/*----------------------------------------------------------------------------*/
+/* received job__execute                                                      */
+/*----------------------------------------------------------------------------*/
+: job__execute_received ( pJob -- )
+
+  locals| pJob |
+
+  grid::thisNode@ "Node %v CN_JOB__EXECUTE"str.format .
+  pJob job.id@ pJob job.execute@ find execute
+  pJob job.delete
+;
+
+/*----------------------------------------------------------------------------*/
+/* received job__executed                                                     */
+/*----------------------------------------------------------------------------*/
+: job__executed_received ( pJob -- )
+
+  locals| pJob |
+
+  grid::thisNode@ "Node %v CN_JOB__EXECUTED"str.format .
+  pJob job.id@ pJob job.execute@ find execute
+  pJob job.delete
+;
+
+/*----------------------------------------------------------------------------*/
+/* received job_g35                                                           */
+/*----------------------------------------------------------------------------*/
+: job_g35_received ( pJob -- )
+
+  locals| pJob |
+
+  0 locals| pJobBegun |
+
+  grid::thisNode@ "Node %v CN_JOB_G35" str.format .
+
+  // set partcipant node in job
+  grid::thisNode@ pJob job.participant!
+
+  // add job as participant job
+  pJob job.addParticipant
+
+  // change state of job to begun
+  //pJob job.begun
+
+  // new a job__begun
+  pJob job.Id@ job.newBegun to pJobBegun
+
+  // set the send node to be the originating node
+  pJob job::originator@ grid::node task::this task.sendNode!
+  task.send
+
+  // send the begun job
+  pJobBegun 1
+  >valset
+  >socketR35
+
+  // now delete the begun job
+  pJobBegun job.delete
+;
+
+/*----------------------------------------------------------------------------*/
+/* decode job                                                                 */
 /*----------------------------------------------------------------------------*/
 : jobDecode ( pJob -- )
 
   locals| pJob |
 
   0 locals| eJobClass |
-  0 locals| pJobBegun |
 
   pJob job.class to eJobClass
 
   eJobClass case
-    CN_JOB__BEGUN of
-      grid::thisNode@ "Node %v CN_JOB__BEGUN" str.format .
-      pJob job.id@ pJob job.execute@ find execute
-      pJob job.delete
-    endof
-
-    CN_JOB__END of
-      grid::thisNode@ "Node %v CN_JOB__END"str.format .
-      pJob job.id@ pJob job.execute@ find execute
-      pJob job.delete
-    endof
-
-    CN_JOB__ENDED of
-      grid::thisNode@ "Node %v CN_JOB__ENDED"str.format .
-      pJob job.id@ pJob job.execute@ find execute
-      pJob job.delete
-    endof
-
-    CN_JOB__ERROR of
-      grid::thisNode@ "Node %v CN_JOB__ERROR"str.format .
-      pJob job.id@ pJob job.execute@ find execute
-      pJob job.delete
-    endof
-
-    CN_JOB__EXECUTE of
-      grid::thisNode@ "Node %v CN_JOB__EXECUTE"str.format .
-      pJob job.id@ pJob job.execute@ find execute
-      pJob job.delete
-    endof
-
-    CN_JOB__EXECUTED of
-      grid::thisNode@ "Node %v CN_JOB__EXECUTED"str.format .
-      pJob job.id@ pJob job.execute@ find execute
-      pJob job.delete
-    endof
-
-    CN_JOB_G35 of
-      grid::thisNode@ "Node %v CN_JOB_G35" str.format .
-
-      // set partcipant node in job
-      grid::thisNode@ pJob job.participant!
-
-      // add job as participant job
-      pJob job.addParticipant
-
-      // change state of job to begun
-      //pJob job.begun
-
-      // new a job__begun
-      pJob job.Id@ job.newBegun to pJobBegun
-
-      // set the send node to be the originating node
-      pJob job::originator@ grid::node task::this task.sendNode!
-      task.send
-
-      // send the begun job
-      pJobBegun 1
-      >valset
-      >socketR35
-
-      // now delete the begun job
-      pJobBegun job.delete
-
-    endof
+    CN_JOB__BEGUN    of pJob job__begun_received    endof
+    CN_JOB__END      of pJob job__end_received      endof
+    CN_JOB__ENDED    of pJob job__ended_received    endof
+    CN_JOB__ERROR    of pJob job__error_received    endof
+    CN_JOB__EXECUTE  of pJob job__execute_received  endof
+    CN_JOB__EXECUTED of pJob job__executed_received endof
+    CN_JOB_G35       of pJob job_g35_received       endof
   endcase
 ;
 
