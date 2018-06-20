@@ -19,6 +19,7 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.addParticipant"_Stz,   &vJobAddParticipant,   false);
   vAddPrimitive("job.acksRemaining!"_Stz,   &vJobAcksRemaining,    false);
   vAddPrimitive("job.class"_Stz,            &vJobClass,            false);
+  vAddPrimitive("job.delete"_Stz,           &vJobDelete,           false);
   vAddPrimitive("job.decAcksRemaining"_Stz, &vJobDecAcksRemaining, false);
   vAddPrimitive("job.error@"_Stz,           &vJobErrorFetch,       false);
   vAddPrimitive("job.error!"_Stz,           &vJobErrorStore,       false);
@@ -112,6 +113,77 @@ void Task::vJobClass(MP_Task mpTask)
   Job* pJob = _pJob(pJobPtr);
   
   mpTask->m_pDataStack->vPushInt(pJob->eClass());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.delete -- delete the job                                               */
+/*----------------------------------------------------------------------------*/
+void Task::vJobDelete(MP_Task mpTask)
+{
+  ENTRY("vJobDelete"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+  THROW_INVALID_DSTACK("job.class"_Stz);
+  
+  Job* pJob = _pJob(pJobPtr);
+  
+  switch (pJob->eClass()) {
+    
+    case CN_JOB__BEGUN:
+    {
+      Job__Begun* pJobBegun = _pJob__Begun(pJobPtr);
+      delete pJobBegun;
+      break;
+    }
+    
+    case CN_JOB__END:
+    {
+      Job__End* pJobEnd = _pJob__End(pJobPtr);
+      delete pJobEnd;
+      break;
+    }
+    
+    case CN_JOB__ENDED:
+    {
+      Job__Ended* pJobEnded = _pJob__Ended(pJobPtr);
+      delete pJobEnded;
+      break;
+    }
+    
+    case CN_JOB__ERROR:
+    {
+      Job__Error* pJobError = _pJob__Error(pJobPtr);
+      delete pJobError;
+      break;
+    }
+    
+    case CN_JOB__EXECUTE:
+    {
+      Job__Execute* pJobExecute = _pJob__Execute(pJobPtr);
+      delete pJobExecute;
+      break;
+    }
+    
+    case CN_JOB__EXECUTED:
+    {
+      Job__Executed* pJobExecuted = _pJob__Executed(pJobPtr);
+      delete pJobExecuted;
+      break;
+    }
+    
+    case CN_JOB_G35:
+    {
+      Job_G35* pJobG35 = _pJob_G35(pJobPtr);
+      delete pJobG35;
+      break;
+    }
+    
+    default:
+      ASSERT(0);
+  }
   
   EXIT();
 }

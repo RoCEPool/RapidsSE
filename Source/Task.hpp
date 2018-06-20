@@ -812,6 +812,7 @@ namespace Tasks
     static void vJobAddParticipant(MP_Task mpTask);
     static void vJobAcksRemaining(MP_Task mpTask);
     static void vJobClass(MP_Task mpTask);
+    static void vJobDelete(MP_Task mpTask);
     static void vJobDecAcksRemaining(MP_Task mpTask);
     static void vJobErrorFetch(MP_Task mpTask);
     static void vJobErrorStore(MP_Task mpTask);
