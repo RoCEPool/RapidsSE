@@ -133,6 +133,9 @@
 
   loop
 
+  // now delete this job
+  //pJob job.delete
+
   <SUCCESS>
 ;
 

@@ -54,6 +54,9 @@
       >socketR35
     loop
 
+  // now delete the execute job
+  pJobExecute job.delete
+
   then
 ;
 
@@ -70,6 +73,11 @@
   // remove the job from the participant jobs
   pJob job.removeParticipant
 
+  // delete the job
+  iJobId job::originator@ grid::thisNode@ != if
+    pJob job.delete
+  then
+
   // send ended to originating node
   iJobId job.newEnded to pJobEnded
 
@@ -81,6 +89,10 @@
   pJobEnded 1
   >valset
   >socketR35
+
+  // now delete the ended job
+  pJobEnded job.delete
+
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -103,6 +115,9 @@
 
   // remove the job from the originator jobs
   pJob job.removeOriginator
+
+  // delete the job
+  pjob job.delete
 
   "All Done" .
 ;
@@ -132,6 +147,8 @@
   >valset
   >socketR35
 
+  // now delete the executed job
+  pJobExecuted job.delete
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -168,6 +185,9 @@
     >valset
     >socketR35
   loop
+
+  // now delete the end job
+  pJobEnd job.delete
 ;
 
 /*============================================================================*/

@@ -276,12 +276,14 @@ void Task::vJobFindOriginator(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iJobId) )
     THROW_INVALID_DSTACK("job.findOriginator"_Stz);
   
-  gpAttachMap->m_pOriginatingJobs->vGrabLock();
-  Job* pFindJob = new Job__Begun;
+  Job__Begun* pFindJob = new Job__Begun;
   pFindJob->m_iJobId = iJobId;
+  
+  gpAttachMap->m_pOriginatingJobs->vGrabLock();
   Job* pJob = gpAttachMap->m_pOriginatingJobs->pFindJob(pFindJob);
   gpAttachMap->m_pOriginatingJobs->vDropLock();
   
+  delete pFindJob;
   ASSERT(pJob);
   mpTask->m_pDataStack->vPushObject(pJob);
   
@@ -299,13 +301,14 @@ void Task::vJobFindParticipant(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iJobId) )
     THROW_INVALID_DSTACK("job.findPartcipant"_Stz);
   
-  gpAttachMap->m_pParticipatingJobs->vGrabLock();
-  
-  Job* pFindJob = new Job__Begun;
+  Job__Begun* pFindJob = new Job__Begun;
   pFindJob->m_iJobId = iJobId;
   
+  gpAttachMap->m_pParticipatingJobs->vGrabLock();
   Job* pJob = gpAttachMap->m_pParticipatingJobs->pFindJob(pFindJob);
   gpAttachMap->m_pParticipatingJobs->vDropLock();
+  
+  delete pFindJob;
   
   mpTask->m_pDataStack->vPushObject(pJob);
   
