@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* spawn the receiver task                                                    */
 /*----------------------------------------------------------------------------*/
-: spawnR35ReceiverTask ( pSocket connectionNo  -- )
+: spawnR35ReceiverTask ( pSocket connectionNo -- )
 
   locals| nConnection |
   locals| pSocket |
@@ -29,30 +29,37 @@
 /*----------------------------------------------------------------------------*/
 /* receiver loop                                                              */
 /*----------------------------------------------------------------------------*/
-: r35ReceiverLoop
+: r35ReceiverLoop ( pSocket -- )
 
   tp: r35rvc.loop
 
-  0 0 locals| pJob pJobBegun |
-  task::this task.socket!
+  locals| pSocket |
 
+  0 locals| pJob |
+  0 locals| eClass |
+  0 locals| pJobBegun |
+
+  // set socket in task (task socket should go)
+  pSocket task::this task.socket!
+
+  // set task comment (this should go, never really used it)
   "r35ReceiverLoop" task::this task.comment!
 
-  //receiverDronePrint if "Receiver Drone R35 running on node" grid::thisNode@ >str str.cat . then
-  "Receiver Drone R35 running on node" grid::thisNode@ >str str.cat .
+  "Receiver Task R35 running on node" grid::thisNode@ >str str.cat .
 
   begin
+
+                                                            //! make this a word
     depth 0 != if stk "stack of receiver task has grown" . debug::trap then
 
     //task::this task.socket@ >str "receiving on socket %v" str.format .
     socketR35>
-    valset> drop
 
-    to pJob
+    valset> drop to pJob
 
-    pJob job.class
+    pJob job.class to eClass
 
-    case
+    eClass case
       CN_JOB__BEGUN of
         grid::thisNode@ "Node %v CN_JOB__BEGUN" str.format .
         pjob job.id@ pJob job.execute@ find execute
