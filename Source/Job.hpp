@@ -33,10 +33,11 @@ namespace JobsModel
   class Job : public Object
   {
   public:
-    i8  m_iJobId;   // job id
-    eJS m_eState;   // job state
-    s32 m_sExecute; // word to be executed
-    i8  m_iParticipantNode; // participant node no
+    i8  m_iJobId;              // job id
+    eJS m_eState;              // job state
+    s32 m_sExecute;            // word to be executed
+    i8  m_iParticipantNode;    // participant node no
+    Atomic m_ziAcksRemaining;  // acks remaining
   
   public:
     Job(eCN eClassNo);
@@ -44,6 +45,8 @@ namespace JobsModel
     
     static i8 iOriginatorNode(i8 iJobId);
     
+    void vAcksRemaining(i8 iAcksRemaining);
+    i8   iDecAcksRemaining(void);
     Stz* sJobExecute(void);
     void vJobExecute(Stz* sExecute);
     i8   iJobId(void);

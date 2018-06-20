@@ -55,6 +55,7 @@ Job::Job(eCN eClassNo)
   m_eState   = JS_NONE;
   m_sExecute = ""_Stz;
   m_iParticipantNode = -1;
+  m_ziAcksRemaining  = 0;
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
 }
@@ -70,6 +71,26 @@ Job::~Job(void)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* set the acks remaining in this job                                         */
+/*----------------------------------------------------------------------------*/
+void Job::vAcksRemaining(i8 iAcksRemaining)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_ziAcksRemaining = iAcksRemaining;
+}
+
+/*----------------------------------------------------------------------------*/
+/* det the acks remaining in this job                                         */
+/*----------------------------------------------------------------------------*/
+i8 Job::iDecAcksRemaining(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return --m_ziAcksRemaining;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get the job word to be executed                                            */
