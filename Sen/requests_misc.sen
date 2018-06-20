@@ -116,7 +116,10 @@
   // add job to originator jobs
   pJob job.addOriginator
 
-  grid::nodes .
+  // set the no of acks expected in originator job to nodes in the grid
+  grid::nodes pJob job.acksRemaining!
+
+  // send the job to each node in the grid
   grid::nodes 0 do
 
     // set the send node
