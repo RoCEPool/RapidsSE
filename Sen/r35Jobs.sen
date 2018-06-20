@@ -41,7 +41,7 @@
     grid::nodes pJob job.acksRemaining!
 
     // new job__execute
-    iJobId job.execute to pJobExecute
+    iJobId job.newExecute to pJobExecute
 
     // send job__execute to all nodes
     grid::nodes 0 do
@@ -71,7 +71,7 @@
   pJob job.removeParticipant
 
   // send ended to originating node
-  iJobId job.ended to pJobEnded
+  iJobId job.newEnded to pJobEnded
 
   // send job__end to originating node
   iJobId job::originator@ grid::node task::this task.sendNode!
@@ -121,7 +121,7 @@
   pJob pJob job.execute@ find execute
 
   // new a job__executed
-  iJobId job.executed to pJobExecuted
+  iJobId job.newExecuted to pJobExecuted
 
   // send job__executed back to the originator
   iJobId job::originator@ grid::node task::this task.sendNode!
@@ -156,7 +156,7 @@
   grid::nodes pJob job.acksRemaining!
 
   // send end to other node
-  iJobId job.end to pJobEnd
+  iJobId job.newEnd to pJobEnd
 
   // set the send node to all the nodes
   grid::nodes 0 do

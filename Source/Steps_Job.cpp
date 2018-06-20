@@ -18,19 +18,19 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.addOriginator"_Stz,    &vJobAddOriginator,    false);
   vAddPrimitive("job.addParticipant"_Stz,   &vJobAddParticipant,   false);
   vAddPrimitive("job.acksRemaining!"_Stz,   &vJobAcksRemaining,    false);
-  vAddPrimitive("job.begun"_Stz,            &vJobBegun,            false);
   vAddPrimitive("job.class"_Stz,            &vJobClass,            false);
   vAddPrimitive("job.decAcksRemaining"_Stz, &vJobDecAcksRemaining, false);
-  vAddPrimitive("job.end"_Stz,              &vJobEnd,              false);
-  vAddPrimitive("job.ended"_Stz,            &vJobEnded,            false);
   vAddPrimitive("job.error@"_Stz,           &vJobErrorFetch,       false);
   vAddPrimitive("job.error!"_Stz,           &vJobErrorStore,       false);
-  vAddPrimitive("job.execute"_Stz,          &vJobExecute,          false);
-  vAddPrimitive("job.executed"_Stz,         &vJobExecuted,         false);
   vAddPrimitive("job.execute@"_Stz,         &vJobExecuteFetch,     false);
   vAddPrimitive("job.findOriginator"_Stz,   &vJobFindOriginator,   false);
   vAddPrimitive("job.findParticipant"_Stz,  &vJobFindParticipant,  false);
   vAddPrimitive("job.id@"_Stz,              &vJobIdFetch,          false);
+  vAddPrimitive("job.newBegun"_Stz,         &vJobNewBegun,         false);
+  vAddPrimitive("job.newEnd"_Stz,           &vJobNewEnd,           false);
+  vAddPrimitive("job.newEnded"_Stz,         &vJobNewEnded,         false);
+  vAddPrimitive("job.newExecute"_Stz,       &vJobNewExecute,       false);
+  vAddPrimitive("job.newExecuted"_Stz,      &vJobNewExecuted,      false);
   vAddPrimitive("job::originator@"_Stz,     &vJobOriginatorFetch,  false);
   vAddPrimitive("job.participant@"_Stz,     &vJobParticipantFetch, false);
   vAddPrimitive("job.participant!"_Stz,     &vJobParticipantStore, false);
@@ -100,26 +100,6 @@ void Task::vJobAcksRemaining(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.begun -- get a job__begun for this job                              */
-/*----------------------------------------------------------------------------*/
-void Task::vJobBegun(MP_Task mpTask)
-{
-  ENTRY("vJobBegun"_Stz);
-  
-  i8 iJobId;
-  if ( ! mpTask->m_pDataStack->bPop(iJobId) )
-    THROW_INVALID_DSTACK("job.jobBegun"_Stz);
-  
-  Job* pJobBegun = new Job__Begun;
-  pJobBegun->m_iJobId = iJobId;
-  pJobBegun->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
-  
-  mpTask->m_pDataStack->vPushObject(pJobBegun);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* job.class -- get the class of the job                                      */
 /*----------------------------------------------------------------------------*/
 void Task::vJobClass(MP_Task mpTask)
@@ -151,86 +131,6 @@ void Task::vJobDecAcksRemaining(MP_Task mpTask)
   --pJob->m_ziAcksRemaining;
   
   mpTask->m_pDataStack->vPushInt(*pJob->m_ziAcksRemaining);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.jobEnd-- get a job__end for this job                                   */
-/*----------------------------------------------------------------------------*/
-void Task::vJobEnd(MP_Task mpTask)
-{
-  ENTRY("vJobEnd"_Stz);
-  
-  i8 iJobId;
-  if ( ! mpTask->m_pDataStack->bPop(iJobId) )
-    THROW_INVALID_DSTACK("job.jobBegun"_Stz);
-  
-  Job* pJobEnd = new Job__End;
-  pJobEnd->m_iJobId = iJobId;
-  pJobEnd->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
-  
-  mpTask->m_pDataStack->vPushObject(pJobEnd);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.jobEnded -- get a job__ended for this job                              */
-/*----------------------------------------------------------------------------*/
-void Task::vJobEnded(MP_Task mpTask)
-{
-  ENTRY("vJobEnded"_Stz);
-  
-  i8 iJobId;
-  if ( ! mpTask->m_pDataStack->bPop(iJobId) )
-    THROW_INVALID_DSTACK("job.jobBegun"_Stz);
-  
-  Job* pJobEnded = new Job__Ended;
-  pJobEnded->m_iJobId = iJobId;
-  pJobEnded->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
-  
-  mpTask->m_pDataStack->vPushObject(pJobEnded);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.jobExecute -- get a job__execute for this job                          */
-/*----------------------------------------------------------------------------*/
-void Task::vJobExecute(MP_Task mpTask)
-{
-  ENTRY("vJobExecute"_Stz);
-  
-  i8 iJobId;
-  if ( ! mpTask->m_pDataStack->bPop(iJobId) )
-    THROW_INVALID_DSTACK("job.jobBegun"_Stz);
-  
-  Job* pJobExecute = new Job__Execute;
-  pJobExecute->m_iJobId = iJobId;
-  pJobExecute->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
-  
-  mpTask->m_pDataStack->vPushObject(pJobExecute);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.jobExecuted -- get a job__executed for this job                        */
-/*----------------------------------------------------------------------------*/
-void Task::vJobExecuted(MP_Task mpTask)
-{
-  ENTRY("vJobExecuted"_Stz);
-  
-  i8 iJobId;
-  if ( ! mpTask->m_pDataStack->bPop(iJobId) )
-    THROW_INVALID_DSTACK("job.jobBegun"_Stz);
-  
-  Job* pJobExecuted = new Job__Executed;
-  pJobExecuted->m_iJobId = iJobId;
-  pJobExecuted->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
-  
-  mpTask->m_pDataStack->vPushObject(pJobExecuted);
   
   EXIT();
 }
@@ -353,6 +253,106 @@ void Task::vJobIdFetch(MP_Task mpTask)
   Job* pJob = _pJob(pJobPtr);
   
   mpTask->m_pDataStack->vPushInt(pJob->m_iJobId);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.newBegun -- new a job__begun for this job                              */
+/*----------------------------------------------------------------------------*/
+void Task::vJobNewBegun(MP_Task mpTask)
+{
+  ENTRY("vJobNewBegun"_Stz);
+  
+  i8 iJobId;
+  if ( ! mpTask->m_pDataStack->bPop(iJobId) )
+  THROW_INVALID_DSTACK("job.newBegun"_Stz);
+  
+  Job* pJobBegun = new Job__Begun;
+  pJobBegun->m_iJobId = iJobId;
+  pJobBegun->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
+  
+  mpTask->m_pDataStack->vPushObject(pJobBegun);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.newEnd - new a job__end for this job                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vJobNewEnd(MP_Task mpTask)
+{
+  ENTRY("vJobNewEnd"_Stz);
+  
+  i8 iJobId;
+  if ( ! mpTask->m_pDataStack->bPop(iJobId) )
+  THROW_INVALID_DSTACK("job.newEnd"_Stz);
+  
+  Job* pJobEnd = new Job__End;
+  pJobEnd->m_iJobId = iJobId;
+  pJobEnd->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
+  
+  mpTask->m_pDataStack->vPushObject(pJobEnd);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.newEnded -- new a job__ended for this job                              */
+/*----------------------------------------------------------------------------*/
+void Task::vJobNewEnded(MP_Task mpTask)
+{
+  ENTRY("vJobNewEnded"_Stz);
+  
+  i8 iJobId;
+  if ( ! mpTask->m_pDataStack->bPop(iJobId) )
+  THROW_INVALID_DSTACK("job.newEnded"_Stz);
+  
+  Job* pJobEnded = new Job__Ended;
+  pJobEnded->m_iJobId = iJobId;
+  pJobEnded->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
+  
+  mpTask->m_pDataStack->vPushObject(pJobEnded);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.newExecute -- new a job__execute for this job                          */
+/*----------------------------------------------------------------------------*/
+void Task::vJobNewExecute(MP_Task mpTask)
+{
+  ENTRY("vJobNewExecute"_Stz);
+  
+  i8 iJobId;
+  if ( ! mpTask->m_pDataStack->bPop(iJobId) )
+  THROW_INVALID_DSTACK("job.newExecute"_Stz);
+  
+  Job* pJobExecute = new Job__Execute;
+  pJobExecute->m_iJobId = iJobId;
+  pJobExecute->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
+  
+  mpTask->m_pDataStack->vPushObject(pJobExecute);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.newExecuted -- new a job__executed for this job                        */
+/*----------------------------------------------------------------------------*/
+void Task::vJobNewExecuted(MP_Task mpTask)
+{
+  ENTRY("vJobNewExecuted"_Stz);
+  
+  i8 iJobId;
+  if ( ! mpTask->m_pDataStack->bPop(iJobId) )
+  THROW_INVALID_DSTACK("job.newExecuted"_Stz);
+  
+  Job* pJobExecuted = new Job__Executed;
+  pJobExecuted->m_iJobId = iJobId;
+  pJobExecuted->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
+  
+  mpTask->m_pDataStack->vPushObject(pJobExecuted);
   
   EXIT();
 }
