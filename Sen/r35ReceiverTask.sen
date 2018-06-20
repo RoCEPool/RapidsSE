@@ -7,20 +7,23 @@
 /*----------------------------------------------------------------------------*/
 /* spawn the receiver task                                                    */
 /*----------------------------------------------------------------------------*/
-: spawnR35ReceiverTask ( connectionNo -- )
+: spawnR35ReceiverTask ( pSocket connectionNo  -- )
 
   locals| nConnection |
+  locals| pSocket |
 
-  // set up the seed
-  1 "r35ReceiverLoop" ( socket 1 "receiverLoop" )
+  0 locals| sTaskName |
 
-  // form name of the receiver
-  "node" grid::thisNode@ >str str.cat
-   "_rr" str.cat nConnection @ >str str.cat ( socket 1 "r35ReceiverLoop" "rrI" )
+  // form the task name
+  nConnection @ grid::thisNode@ "Node%v_rr%v" str.format to sTaskName
 
-  // spawn the actors os thread
-  TK_RECEIVER_DRONE spawnR35GeneralTask
-
+  // spawn the receiver
+    pSocket             // socket
+    1                   // no. of args
+    "r35ReceiverLoop"   // seed word
+    sTaskName           // task name
+    TK_RECEIVER_DRONE   // task kind
+  spawnR35GeneralTask
 ;
 
 /*----------------------------------------------------------------------------*/
