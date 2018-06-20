@@ -36,8 +36,6 @@
   locals| pSocket |
 
   0 locals| pJob |
-  0 locals| eJobClass |
-  0 locals| pJobBegun |
 
   // set socket in task (task socket should go)
   pSocket task::this task.socket!
@@ -57,74 +55,7 @@
 
     valset> drop to pJob
 
-    pJob job.class to eJobClass
-
-    eJobClass case
-      CN_JOB__BEGUN of
-        grid::thisNode@ "Node %v CN_JOB__BEGUN" str.format .
-        pjob job.id@ pJob job.execute@ find execute
-        pjob job.delete
-      endof
-
-      CN_JOB__END of
-        grid::thisNode@ "Node %v CN_JOB__END"str.format .
-        pjob job.id@ pJob job.execute@ find execute
-        pjob job.delete
-      endof
-
-      CN_JOB__ENDED of
-        grid::thisNode@ "Node %v CN_JOB__ENDED"str.format .
-        pjob job.id@ pJob job.execute@ find execute
-        pjob job.delete
-      endof
-
-      CN_JOB__ERROR of
-        grid::thisNode@ "Node %v CN_JOB__ERROR"str.format .
-        pJob job.id@ pJob job.execute@ find execute
-        pjob job.delete
-      endof
-
-      CN_JOB__EXECUTE of
-        grid::thisNode@ "Node %v CN_JOB__EXECUTE"str.format .
-        pjob job.id@ pJob job.execute@ find execute
-        pjob job.delete
-      endof
-
-      CN_JOB__EXECUTED of
-        grid::thisNode@ "Node %v CN_JOB__EXECUTED"str.format .
-        pjob job.id@ pJob job.execute@ find execute
-        pjob job.delete
-      endof
-
-      CN_JOB_G35 of
-        grid::thisNode@ "Node %v CN_JOB_G35" str.format .
-
-        // set partcipant node in job
-        grid::thisNode@ pJob job.participant!
-
-        // add job as participant job
-        pJob job.addParticipant
-
-        // change state of job to begun
-        //pJob job.begun
-
-        // new a job__begun
-        pJob job.Id@ job.newBegun to pJobBegun
-
-        // set the send node to be the originating node
-        pJob job::originator@ grid::node task::this task.sendNode!
-        task.send
-
-        // send the begun job
-        pJobBegun 1
-        >valset
-        >socketR35
-
-        // now delete the begun job
-        pJobBegun job.delete
-
-      endof
-    endcase
+    pJob jobDecode
 
   again
 ;
