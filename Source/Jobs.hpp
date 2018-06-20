@@ -30,6 +30,7 @@ namespace JobsModel
     void   vGrabLock(void);
     bool   bGrabLock(void);
     bool   bIsLocked(void);
+    i8     iNextJobId(void);
     Job*   pPopJob(void);
     void   vRemoveJob(Job* pJob);
     i8     nJobs(void);

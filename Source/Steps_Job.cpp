@@ -52,6 +52,8 @@ void Task::vJobAddOriginator(MP_Task mpTask)
   
   gpAttachMap->m_pOriginatingJobs->vGrabLock();
   gpAttachMap->m_pOriginatingJobs->vAddJob(pJob);
+  i8 iJobId = gpAttachMap->m_pOriginatingJobs->iNextJobId();
+  pJob->m_iJobId = iJobId;
   gpAttachMap->m_pOriginatingJobs->vDropLock();
   
   EXIT();
@@ -98,7 +100,7 @@ void Task::vJobAcksRemaining(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.jobBegun -- get a job__begun for this job                              */
+/* job.begun -- get a job__begun for this job                              */
 /*----------------------------------------------------------------------------*/
 void Task::vJobBegun(MP_Task mpTask)
 {
@@ -308,6 +310,7 @@ void Task::vJobFindOriginator(MP_Task mpTask)
   Job* pJob = gpAttachMap->m_pOriginatingJobs->pFindJob(pFindJob);
   gpAttachMap->m_pOriginatingJobs->vDropLock();
   
+  ASSERT(pJob);
   mpTask->m_pDataStack->vPushObject(pJob);
   
   EXIT();
@@ -371,7 +374,7 @@ void Task::vJobOriginatorFetch(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.partcipant@ -- fetch the participant node from the job                 */
+/* job.participant@ -- fetch the participant node from the job                */
 /*----------------------------------------------------------------------------*/
 void Task::vJobParticipantFetch(MP_Task mpTask)
 {

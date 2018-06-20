@@ -82,12 +82,6 @@ void Jobs::vAddJob(Job* pJob)
   
   ASSERT(bIsLocked());
   
-  // generate next jobId
-  i8 iJobId = m_iNextJobId++;
-  
-  // set jobId in job
-  pJob->vJobId(iJobId);
-  
   m_pJobsSkipList->bInsert(pJob);
 }
 
@@ -143,6 +137,21 @@ bool Jobs::bIsLocked(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBS,_FOOTER_);
   
   return m_xLock.bIsLocked();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next job id                                                            */
+/*----------------------------------------------------------------------------*/
+i8 Jobs::iNextJobId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBS,_FOOTER_);
+  
+  ASSERT(bIsLocked());
+  
+  // generate next jobId
+  i8 iJobId = m_iNextJobId++;
+  
+  return iJobId;
 }
 
 /*----------------------------------------------------------------------------*/
