@@ -333,15 +333,15 @@ void Task::vTableGetPtn(MP_Task mpTask)
   
   Object* pPtrTable;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.getColumns"_Stz);
+    THROW_INVALID_DSTACK("table.getPtn"_Stz);
   Table* pTable = _pTable(pPtrTable);
   
-  i8 i_Slot;
-  if ( ! mpTask->m_pDataStack->bPopAsInt(i_Slot) )
+  i8 i_Ptn;
+  if ( ! mpTask->m_pDataStack->bPopAsInt(i_Ptn) )
     THROW_INVALID_DSTACK("table.getPtn"_Stz);
   
   // get the table partition
-  TablePtn* pTablePtn = pTable->pPartition(i_Slot);
+  TablePtn* pTablePtn = pTable->pPartition(TablePtn::iPartitionToSlot(i_Ptn));
 
   mpTask->m_pDataStack->vPushObject(pTablePtn);
   
