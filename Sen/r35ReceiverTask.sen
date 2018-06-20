@@ -36,7 +36,7 @@
   locals| pSocket |
 
   0 locals| pJob |
-  0 locals| eClass |
+  0 locals| eJobClass |
   0 locals| pJobBegun |
 
   // set socket in task (task socket should go)
@@ -57,9 +57,9 @@
 
     valset> drop to pJob
 
-    pJob job.class to eClass
+    pJob job.class to eJobClass
 
-    eClass case
+    eJobClass case
       CN_JOB__BEGUN of
         grid::thisNode@ "Node %v CN_JOB__BEGUN" str.format .
         pjob job.id@ pJob job.execute@ find execute
