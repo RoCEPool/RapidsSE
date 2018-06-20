@@ -19,7 +19,21 @@
 /*----------------------------------------------------------------------------*/
 : Job__Begun_Exe ( jobId -- )
 
-  0 locals| pJobExecute iJobId |
+  0 0 0 locals| iAcksReamining pJob pJobExecute iJobId |
+
+  // find the job in the originator jobs
+  iJobId job.findOriginator to pJob
+
+  // decrement the acks remaining
+  pJob job.decAcksRemaining to iAcksReamining
+
+  // if there are acks remaining just exit
+  iAcksReamining 0 != if exit then
+
+  "received job__begun from all nodes" .
+
+  // received job__begun from all nodes
+  // this is the decider job
 
   // send execute to other node
   iJobId job.execute to pJobExecute
