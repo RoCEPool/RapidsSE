@@ -13,7 +13,8 @@
 
     pJob job.participant@
     pJob job.Id@
-  "Job_G35_Exe jobId %v executed on node %v" str.format .
+    pJob object.class@ class::name
+  "%v jobId %v executed on node %v" str.format .
 ;
 
 /*============================================================================*/
