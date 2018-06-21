@@ -74,7 +74,7 @@
 
   0 do
     dup 0 != if
-      I class.name "%v %v" str.format .
+      I class::name "%v %v" str.format .
     else
      drop
     then

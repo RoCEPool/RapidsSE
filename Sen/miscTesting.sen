@@ -170,7 +170,7 @@ traceon
   reg0
   valset>
   0 do
-    I class.name
+    I class::name
     "%v %v" str.format .
   loop
 
@@ -183,7 +183,7 @@ traceon
   reg1
   valset>
   0 do
-    I class.name
+    I class::name
    "%v %v" str.format .
   loop
 
@@ -191,7 +191,7 @@ traceon
 
   "Differnce of Snapshots..." .
   0 do
-    I class.name
+    I class::name
     "%v %v" str.format .
   loop
 

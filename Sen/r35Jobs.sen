@@ -274,7 +274,7 @@
 
   0 locals| pJobBegun |
 
-    pJob object.class@ class.name
+    pJob object.class@ class::name
     grid::thisNode@
     "Node %v Job %v Received"
   str.format .
