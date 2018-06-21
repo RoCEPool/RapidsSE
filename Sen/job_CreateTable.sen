@@ -11,7 +11,7 @@
 
   locals| pJob |
 
-  CN_job_CreateTable pJob object.assertClass
+  CN_JOB_CREATETABLE pJob object.assertClass
 
   pJob job.notice
 ;

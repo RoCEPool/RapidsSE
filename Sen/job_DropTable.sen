@@ -11,7 +11,7 @@
 
   locals| pJob |
 
-  CN_job_DropTable pJob object.assertClass
+  CN_JOB_DROPTABLE pJob object.assertClass
 
   pJob job.notice
 ;

@@ -11,7 +11,7 @@
 
   locals| pJob |
 
-  CN_job_DropSchema pJob object.assertClass
+  CN_JOB_DROPSCHEMA pJob object.assertClass
 
   pJob job.notice
 ;

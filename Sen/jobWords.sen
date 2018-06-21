@@ -5,22 +5,6 @@
 "jobWords.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* execute generic job                                                        */
-/*----------------------------------------------------------------------------*/
-: job.genericExecute ( pJob -- )
-
-  locals| pJob |
-
-    pJob object.class@ class::name
-    grid::thisNode@
-  "Node %v %v" str.format .
-
-  pJob job.id@ pJob job.execute@ find execute
-
-  pJob job.delete
-;
-
-/*----------------------------------------------------------------------------*/
 /* print job notice                                                           */
 /*----------------------------------------------------------------------------*/
 : job.notice ( pJob -- )
