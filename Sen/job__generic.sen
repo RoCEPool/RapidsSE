@@ -7,11 +7,11 @@
 /*----------------------------------------------------------------------------*/
 /* begun job                                                                  */
 /*----------------------------------------------------------------------------*/
-: Job__Begun_Exe ( jobId -- )
+: Job__Begun.execute ( jobId -- )
 
   0 0 0 locals| iAcksRemaining pJob pJobExecute iJobId |
 
-  //iJobId "excuting Job__Begun_Exe %v" str.format .
+  //iJobId "excuting Job__Begun.execute %v" str.format .
 
   // find the job in the originator jobs
   iJobId job.findOriginator to pJob
@@ -53,7 +53,7 @@
 /*----------------------------------------------------------------------------*/
 /* end job                                                                    */
 /*----------------------------------------------------------------------------*/
-: Job__End_Exe ( jobId -- )
+: Job__End.execute ( jobId -- )
 
   0 0 locals| pJob pJobEnded iJobId |
 
@@ -88,7 +88,7 @@
 /*----------------------------------------------------------------------------*/
 /* ended job                                                                  */
 /*----------------------------------------------------------------------------*/
-: Job__Ended_Exe ( jobId -- )
+: Job__Ended.execute ( jobId -- )
 
   0 0 locals| pJob iAcksRemaining iJobId |
 
@@ -101,7 +101,7 @@
   // if there are acks remaining just exit
   iAcksRemaining 0 != if exit then
 
-  "received Job__Ended_Exe from all nodes" .
+  "received Job__Ended.execute from all nodes" .
 
   // remove the job from the originator jobs
   pJob job.removeOriginator
@@ -115,7 +115,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute job                                                                */
 /*----------------------------------------------------------------------------*/
-: Job__Execute_Exe ( jobId -- )
+: Job__Execute.execute ( jobId -- )
 
   0 0 locals| pJob pJobExecuted iJobId |
 
@@ -144,7 +144,7 @@
 /*----------------------------------------------------------------------------*/
 /* executed job                                                               */
 /*----------------------------------------------------------------------------*/
-: Job__Executed_Exe ( jobId -- )
+: Job__Executed.execute ( jobId -- )
 
   0 0 0 locals| pJob pJobEnd iAcksRemaining iJobId |
 
@@ -157,7 +157,7 @@
   // if there are acks remaining just exit
   iAcksRemaining 0 != if exit then
 
-  "received Job__Executed_Exe from all nodes" .
+  "received Job__Executed.execute from all nodes" .
 
   // set the no of acks expected in originator job
   grid::nodes pJob job.acksRemaining!

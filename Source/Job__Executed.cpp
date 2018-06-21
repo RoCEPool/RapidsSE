@@ -61,7 +61,7 @@ Job__Executed::Job__Executed(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__EXECUTED,_FOOTER_);
   
-  m_sExecute = "Job__Executed_Exe"_Stz;
+  m_sExecute = "Job__Executed.execute"_Stz;
   
   _checkInitialised_(CN_JOB__EXECUTED);
   
