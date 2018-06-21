@@ -266,15 +266,15 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* received job_g35                                                           */
+/* received an actual job                                                     */
 /*----------------------------------------------------------------------------*/
-: job_g35_received ( pJob -- )
+: job_job_received ( pJob -- )
 
   locals| pJob |
 
   0 locals| pJobBegun |
 
-  grid::thisNode@ "Node %v CN_JOB_G35" str.format .
+  grid::thisNode@ "Node %v Job JOB Recieved" str.format .
 
   // set partcipant node in job
   grid::thisNode@ pJob job.participant!
@@ -323,7 +323,7 @@
     CN_JOB__EXECUTED of pJob job__executed_received endof
 
     // default case
-    pJob job_g35_received
+    pJob job_job_received
   endcase
 ;
 
