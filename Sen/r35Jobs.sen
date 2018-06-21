@@ -292,9 +292,10 @@
   pJob job::originator@ grid::node task::this task.sendNode!
   task.send
 
+  // form the valset to send
+  pJobBegun 1 >valset
+
   // send the begun job
-  pJobBegun 1
-  >valset
   >socketR35
 
   // now delete the begun job
