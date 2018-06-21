@@ -18,7 +18,7 @@ void Task::vAddPrimitives_Object(void)
   vAddPrimitive("object.class@"_Stz,     &vObjectClassFetch, false);
   vAddPrimitive("object.class!"_Stz,     &vObjectClassStore, false);
   vAddPrimitive("object@"_Stz,           &vObjectFetch,      false);
-  vAddPrimitive("object.magic!"_Stz,    &vObjectMagicMark,  false);
+  vAddPrimitive("object.magic!"_Stz,     &vObjectMagicMark,  false);
   vAddPrimitive("object!"_Stz,           &vObjectStore,      false);
   vAddPrimitive("object.wordbody!"_Stz,  &vObjectWordBodySet,false);
 }

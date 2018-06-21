@@ -274,7 +274,10 @@
 
   0 locals| pJobBegun |
 
-  grid::thisNode@ "Node %v Job JOB Recieved" str.format .
+    pJob object.class@ class.name
+    grid::thisNode@
+    "Node %v Job %v Received"
+  str.format .
 
   // set partcipant node in job
   grid::thisNode@ pJob job.participant!
