@@ -2,16 +2,18 @@
 /* job_g35.sen -- Job g35                                                     */
 /*============================================================================*/
 
-"r35Decoder.sen" .verbose
+"job_g35.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* Job_G35_Exe job                                                            */
 /*----------------------------------------------------------------------------*/
-: Job_G35_Exe ( job -- )
+: Job_G35_Exe ( pJob -- )
 
   locals| pJob |
 
-  pJob job.participant@ pJob job.Id@ "Job_G35_Exe jobId %v executed on node %v" str.format .
+    pJob job.participant@
+    pJob job.Id@
+  "Job_G35_Exe jobId %v executed on node %v" str.format .
 ;
 
 /*============================================================================*/
