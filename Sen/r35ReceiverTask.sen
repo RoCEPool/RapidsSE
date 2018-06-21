@@ -55,7 +55,7 @@
 
     valset> drop to pJob
 
-    pJob job.decode
+    pJob job.execute
 
   again
 ;
