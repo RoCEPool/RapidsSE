@@ -7,13 +7,13 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_CreateSchema job                                               */
 /*----------------------------------------------------------------------------*/
-: Job_CreateSchema.execute ( pJob -- )
+: Job_CreateSchema.execute ( pJob_CreateSchema -- )
 
-  locals| pJob |
+  locals| pJob_CreateSchema |
 
-  CN_JOB_CREATESCHEMA pJob object.assertClass
+  CN_JOB_CREATESCHEMA pJob_CreateSchema object.assertClass
 
-  pJob job.notice
+  pJob_CreateSchema job.notice
 ;
 
 /*============================================================================*/

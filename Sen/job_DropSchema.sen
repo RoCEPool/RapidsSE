@@ -7,13 +7,13 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropSchema job                                                 */
 /*----------------------------------------------------------------------------*/
-: Job_DropSchema.execute ( pJob -- )
+: Job_DropSchema.execute ( pJob_DropSchema -- )
 
-  locals| pJob |
+  locals| pJob_DropSchema |
 
-  CN_JOB_DROPSCHEMA pJob object.assertClass
+  CN_JOB_DROPSCHEMA pJob_DropSchema object.assertClass
 
-  pJob job.notice
+  pJob_DropSchema job.notice
 ;
 
 /*============================================================================*/

@@ -7,13 +7,13 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_G35 job                                                        */
 /*----------------------------------------------------------------------------*/
-: Job_G35.execute ( pJob -- )
+: Job_G35.execute ( pJob_G35 -- )
 
-  locals| pJob |
+  locals| pJob_G35 |
 
-  CN_JOB_G35 pJob object.assertClass
+  CN_JOB_G35 pJob_G35 object.assertClass
 
-  pJob job.notice
+  pJob_G35 job.notice
 ;
 
 /*============================================================================*/

@@ -7,13 +7,13 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropTable job                                                  */
 /*----------------------------------------------------------------------------*/
-: Job_DropTable.execute ( pJob -- )
+: Job_DropTable.execute ( pJob_DropTable -- )
 
-  locals| pJob |
+  locals| pJob_DropTable |
 
-  CN_JOB_DROPTABLE pJob object.assertClass
+  CN_JOB_DROPTABLE pJob_DropTable object.assertClass
 
-  pJob job.notice
+  pJob_DropTable job.notice
 ;
 
 /*============================================================================*/
