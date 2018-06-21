@@ -2,12 +2,14 @@
 /* job_Set.sen -- Job set                                                     */
 /*============================================================================*/
 
-"jobSet.sen" .verbose
+"job_Set.sen" .verbose
 
 "job_CreateSchema.sen" include
 "job_CreateTable.sen" include
 "job_DropSchema.sen" include
 "job_DropTable.sen" include
+
+"job_G35.sen" include
 
 /*============================================================================*/
 /* end                                                                        */
