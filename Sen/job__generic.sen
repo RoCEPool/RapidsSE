@@ -7,7 +7,11 @@
 /*----------------------------------------------------------------------------*/
 /* distribute Job__Execute to all participants                                */
 /*----------------------------------------------------------------------------*/
-: Job__Execute.distribute ( pJob -- )
+: Job__Execute::distribute ( pJob -- )
+
+  //
+  // where:  On the originator node.
+  //
 
   locals| pJob |
 
@@ -40,7 +44,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job__Begun job                                                     */
+/* execute Job__Begun job on originating node                                 */
 /*----------------------------------------------------------------------------*/
 : Job__Begun.execute ( iJobId -- )
 
@@ -77,7 +81,7 @@
   // this is the decider job.
 
   // distribute Job__Execute to all participants
-  pJob Job__Execute.distribute
+  pJob Job__Execute::distribute
 ;
 
 /*----------------------------------------------------------------------------*/
