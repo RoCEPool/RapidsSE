@@ -5,9 +5,9 @@
 "r35Decoder.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* received an actual job                                                     */
+/* execute/begin a new job                                                    */
 /*----------------------------------------------------------------------------*/
-: job_job_received ( pJob -- )
+: job.beginExecute ( pJob -- )
 
   locals| pJob |
 
@@ -66,7 +66,7 @@
     CN_JOB__EXECUTED of pJob job.genericExecute endof
 
     // default case
-    pJob job_job_received
+    pJob job.beginExecute
   endcase
 ;
 
