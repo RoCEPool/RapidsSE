@@ -81,22 +81,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job__End job                                                       */
+/* send Job__Ended job to originating node                                    */
 /*----------------------------------------------------------------------------*/
-: Job__End.execute ( jobId -- )
+: Job__Ended::send ( iJobId -- )
 
-  0 0 locals| pJob pJobEnded iJobId |
+  locals| iJobId |
 
-   // find the job in the participating jobs
-   iJobId job.findParticipant to pJob
-
-  // remove the job from the participant jobs
-  pJob job.removeParticipant
-
-  // delete the job
-  iJobId job::originator@ grid::thisNode@ != if
-    pJob job.delete
-  then
+  0 locals| pJobEnded |
 
   // send ended to originating node
   iJobId job.newEnded to pJobEnded
@@ -112,7 +103,29 @@
 
   // now delete the ended job
   pJobEnded job.delete
+;
 
+/*----------------------------------------------------------------------------*/
+/* execute Job__End job on participating node                                 */
+/*----------------------------------------------------------------------------*/
+: Job__End.execute ( iJobId -- )
+
+  locals| iJobId |
+
+  0 locals| pJob |
+
+  // find the job in the participating jobs
+  iJobId job.findParticipant to pJob
+
+  // remove the job from the participant jobs
+  pJob job.removeParticipant
+
+  // delete the job
+  iJobId job::originator@ grid::thisNode@ != if
+    pJob job.delete
+  then
+
+  iJobId Job__Ended::send
 ;
 
 /*----------------------------------------------------------------------------*/
