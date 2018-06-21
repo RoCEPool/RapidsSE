@@ -130,12 +130,12 @@
   eJobClass case
 
    // specific cases
-    CN_JOB__BEGUN    of pJob job__begun_received    endof
-    CN_JOB__END      of pJob job__end_received      endof
-    CN_JOB__ENDED    of pJob job__ended_received    endof
-    CN_JOB__ERROR    of pJob job__error_received    endof
-    CN_JOB__EXECUTE  of pJob job__execute_received  endof
-    CN_JOB__EXECUTED of pJob job__executed_received endof
+    CN_JOB__BEGUN    of pJob job.genericExecute endof
+    CN_JOB__END      of pJob job.genericExecute endof
+    CN_JOB__ENDED    of pJob job.genericExecute endof
+    CN_JOB__ERROR    of pJob job.genericExecute endof
+    CN_JOB__EXECUTE  of pJob job.genericExecute endof
+    CN_JOB__EXECUTED of pJob job.genericExecute endof
 
     // default case
     pJob job_job_received
