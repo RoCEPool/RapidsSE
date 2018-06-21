@@ -31,7 +31,7 @@
 /*----------------------------------------------------------------------------*/
 : _r35ReceiverLoop_ ( pSocket -- )
 
-  tp: r35rvc.loop
+  tp: _r35ReceiverLoop_
 
   locals| pSocket |
 
@@ -51,10 +51,14 @@
     depth 0 != if stk "stack of receiver task has grown" . debug::trap then
 
     //task::this task.socket@ >str "receiving on socket %v" str.format .
+
+    // receive valset from socket
     socketR35>
 
+    // unpack valset into pJob
     valset> drop to pJob
 
+    // execute received job
     pJob job.execute
 
   again
