@@ -10,7 +10,7 @@
 : spawnR35AnswerTask ( -- )
 
     0                  // no. of args
-    "r35answerLoop"    // seed word
+    "_r35answerLoop_"  // seed word
     "AnswerTask"       // task name
     TK_ANSWER_DRONE    // task kind
   spawnR35GeneralTask
@@ -29,7 +29,7 @@
 /*----------------------------------------------------------------------------*/
 /* answer loop: accept new sockets, spawn receiver task                       */
 /*----------------------------------------------------------------------------*/
-: r35answerLoop ( -- )
+: _r35AnswerLoop_ ( -- )
 
   0 locals| iPort |
   0 locals| pListeningSocket |

@@ -20,16 +20,16 @@
   // spawn the receiver
     pSocket             // socket
     1                   // no. of args
-    "r35ReceiverLoop"   // seed word
+    "_r35ReceiverLoop_" // seed word
     sTaskName           // task name
     TK_RECEIVER_DRONE   // task kind
   spawnR35GeneralTask
 ;
 
 /*----------------------------------------------------------------------------*/
-/* receiver loop                                                              */
+/* receiver loop: receive a job, execute it                                   */
 /*----------------------------------------------------------------------------*/
-: r35ReceiverLoop ( pSocket -- )
+: _r35ReceiverLoop_ ( pSocket -- )
 
   tp: r35rvc.loop
 

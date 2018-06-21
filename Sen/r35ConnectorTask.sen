@@ -10,7 +10,7 @@
 : spawnR35ConnectorTask ( -- )
 
     0                    // no. of args
-    "r35connectorLoop"   // seed word
+    "_r35connectorLoop_" // seed word
     "ConnectorTask"      // task name
     TK_CONNECTOR_DRONE   // task kind
   spawnR35GeneralTask
@@ -19,7 +19,7 @@
 /*----------------------------------------------------------------------------*/
 /* connector loop: establish a connection to all nodes in the grid            */
 /*----------------------------------------------------------------------------*/
-: r35connectorLoop ( -- )
+: _r35ConnectorLoop_ ( -- )
 
   0 locals| pNode |
   0 locals| pSocket |
