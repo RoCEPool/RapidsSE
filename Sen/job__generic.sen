@@ -51,13 +51,14 @@
   //         participating jobs list.
   // data:   The job will exist in the originating jobs list.
   // action: 1) find the job in the originating list;
-  //         2) decrement its ack remaining
+  //         2) decrement its ack's remaining
   //         3) if all acks received distribute Job_Execute
   //
 
   locals| iJobId |
 
-  0 0 0 locals| iAcksRemaining pJob pJobExecute |
+  0 locals| pJob  |
+  0 locals| iAcksRemaining |
 
   //iJobId "excuting Job__Begun.execute %v" str.format .
 
@@ -73,27 +74,10 @@
   "received job__begun from all nodes" .
 
   // received job__begun from all nodes
-  // this is the decider job
+  // this is the decider job.
 
-  // set the no of acks expected in originator job
-  grid::nodes pJob job.acksRemaining!
-
-  // new job__execute
-  iJobId job.newExecute to pJobExecute
-
-  // send job__execute to all nodes
-  grid::nodes 0 do
-    I grid::node task::this task.sendNode!
-    task.send
-
-    // send the execute job
-    pJobExecute 1
-    >valset
-    >socketR35
-  loop
-
-  // now delete the execute job
-  pJobExecute job.delete
+  // distribute Job__Execute to all participants
+  pJob Job__Execute.distribute
 ;
 
 /*----------------------------------------------------------------------------*/
