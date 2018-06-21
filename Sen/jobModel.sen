@@ -4,6 +4,7 @@
 
 "jobModel.sen" .verbose
 
+"jobWords.sen" include
 "job_g35.sen" include
 
 /*============================================================================*/
