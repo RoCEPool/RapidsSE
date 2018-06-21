@@ -21,6 +21,7 @@
 "dbObjects.sen" include
 "operators.sen" include
 "planners.sen" include
+"jobModel.sen" include
 "utilities.sen" include
 
 "r35Model.sen" include
