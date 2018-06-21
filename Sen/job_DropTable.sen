@@ -1,17 +1,17 @@
 /*============================================================================*/
-/* job_g35.sen -- Job g35                                                     */
+/* job_DropTable.sen -- Job g35                                               */
 /*============================================================================*/
 
-"job_g35.sen" .verbose
+"job_DropTable.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* Job_G35_Exe job                                                            */
+/* job_DropTable_Exe job                                                      */
 /*----------------------------------------------------------------------------*/
-: Job_G35_Exe ( pJob -- )
+: job_DropTable_Exe ( pJob -- )
 
   locals| pJob |
 
-  CN_JOB_G35 pJob object.assertClass
+  CN_job_DropTable pJob object.assertClass
 
   pJob job.notice
 ;

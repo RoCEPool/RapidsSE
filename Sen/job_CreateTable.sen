@@ -1,17 +1,17 @@
 /*============================================================================*/
-/* job_g35.sen -- Job g35                                                     */
+/* job_CreateTable.sen -- Job Create Table                                    */
 /*============================================================================*/
 
-"job_g35.sen" .verbose
+"job_CreateTable.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* Job_G35_Exe job                                                            */
+/* job_CreateTable_Exe job                                                    */
 /*----------------------------------------------------------------------------*/
-: Job_G35_Exe ( pJob -- )
+: job_CreateTable_Exe ( pJob -- )
 
   locals| pJob |
 
-  CN_JOB_G35 pJob object.assertClass
+  CN_job_CreateTable pJob object.assertClass
 
   pJob job.notice
 ;
