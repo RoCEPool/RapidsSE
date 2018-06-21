@@ -313,13 +313,17 @@
   pJob job.class to eJobClass
 
   eJobClass case
+
+   // specific cases
     CN_JOB__BEGUN    of pJob job__begun_received    endof
     CN_JOB__END      of pJob job__end_received      endof
     CN_JOB__ENDED    of pJob job__ended_received    endof
     CN_JOB__ERROR    of pJob job__error_received    endof
     CN_JOB__EXECUTE  of pJob job__execute_received  endof
     CN_JOB__EXECUTED of pJob job__executed_received endof
-    CN_JOB_G35       of pJob job_g35_received       endof
+
+    // default case
+    pJob job_g35_received
   endcase
 ;
 
