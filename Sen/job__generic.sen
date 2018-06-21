@@ -7,9 +7,22 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job__Begun job                                                     */
 /*----------------------------------------------------------------------------*/
-: Job__Begun.execute ( jobId -- )
+: Job__Begun.execute ( iJobId -- )
 
-  0 0 0 locals| iAcksRemaining pJob pJobExecute iJobId |
+  //
+  // where:  On the originator node.
+  // event:  A Job__Begun has been received from a participating node
+  //         indicating the job has been received and put into the
+  //         participating jobs list.
+  // data:   The job will exist in the originating jobs list.
+  // action: 1) find the job in the originating list;
+  //         2) decrement its ack remaining
+  //         3) if all acks received distribute Job_Execute
+  //
+
+  locals| iJobId |
+
+  0 0 0 locals| iAcksRemaining pJob pJobExecute |
 
   //iJobId "excuting Job__Begun.execute %v" str.format .
 
@@ -44,8 +57,8 @@
       >socketR35
     loop
 
-  // now delete the execute job
-  pJobExecute job.delete
+    // now delete the execute job
+    pJobExecute job.delete
 
   then
 ;
