@@ -61,7 +61,7 @@ Job_G35::Job_G35(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_G35,_FOOTER_);
     
-  m_sExecute = "Job_G35_Exe"_Stz;
+  m_sExecute = "Job_G35.execute"_Stz;
   
   _checkInitialised_(CN_JOB_G35);
   
