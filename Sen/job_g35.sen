@@ -11,6 +11,8 @@
 
   locals| pJob |
 
+  CN_JOB_G35 pJob object.assertClass
+
   pJob job.notice
 ;
 

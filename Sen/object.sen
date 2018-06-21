@@ -12,6 +12,13 @@
   locals| pObject |
   locals| eClassNo |
 
+  pObject object.class@ eClassNo !=
+  if
+      pObject object.class@
+      eClassNo
+    "Expecting class %v; actual class %v\n" str.format .
+    assert
+  then
 ;
 
 /*============================================================================*/
