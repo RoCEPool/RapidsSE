@@ -15,13 +15,13 @@
 
   locals| pJob |
 
-  0 locals| pJobExecute |
+  0 locals| pJob__Execute |
 
   // set the no of acks expected in originator job
   grid::nodes pJob job.acksRemaining!
 
   // create a new job__execute
-  pJob job.id@ job.newExecute to pJobExecute
+  pJob job.id@ job.newExecute to pJob__Execute
 
   // send job__execute to all nodes
   grid::nodes 0
@@ -33,14 +33,14 @@
     task.send
 
     // pack d-stack into a valset
-    pJobExecute 1 >valset
+    pJob__Execute 1 >valset
 
     // send the execute job
     >socketR35
   loop
 
   // now delete the execute job
-  pJobExecute job.delete
+  pJob__Execute job.delete
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -91,22 +91,22 @@
 
   locals| iJobId |
 
-  0 locals| pJobEnded |
+  0 locals| pJob__Ended |
 
   // send ended to originating node
-  iJobId job.newEnded to pJobEnded
+  iJobId job.newEnded to pJob__Ended
 
   // send job__end to originating node
   iJobId job::originator@ grid::node task::this task.sendNode!
   task.send
 
   // send the ended job
-  pJobEnded 1
+  pJob__Ended 1
   >valset
   >socketR35
 
   // now delete the ended job
-  pJobEnded job.delete
+  pJob__Ended job.delete
 ;
 
 /*----------------------------------------------------------------------------*/
