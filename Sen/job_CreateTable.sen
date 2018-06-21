@@ -5,9 +5,9 @@
 "job_CreateTable.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* job_CreateTable_Exe job                                                    */
+/* execute Job_CreateTable job                                                */
 /*----------------------------------------------------------------------------*/
-: job_CreateTable_Exe ( pJob -- )
+: Job_CreateTable.execute ( pJob -- )
 
   locals| pJob |
 

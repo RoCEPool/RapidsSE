@@ -5,9 +5,9 @@
 "job_DropTable.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* job_DropTable_Exe job                                                      */
+/* execute Job_DropTable job                                                  */
 /*----------------------------------------------------------------------------*/
-: job_DropTable_Exe ( pJob -- )
+: Job_DropTable.execute ( pJob -- )
 
   locals| pJob |
 

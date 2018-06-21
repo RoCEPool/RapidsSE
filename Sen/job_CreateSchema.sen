@@ -5,9 +5,9 @@
 "job_CreateSchema.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* job_CreateSchema_Exe job                                                   */
+/* execute Job_CreateSchema job                                               */
 /*----------------------------------------------------------------------------*/
-: job_CreateSchema_Exe ( pJob -- )
+: Job_CreateSchema.execute ( pJob -- )
 
   locals| pJob |
 

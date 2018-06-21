@@ -5,9 +5,9 @@
 "job_DropSchema.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* job_DropSchema_Exe job                                                     */
+/* execute Job_DropSchema job                                                 */
 /*----------------------------------------------------------------------------*/
-: job_DropSchema_Exe ( pJob -- )
+: Job_DropSchema.execute ( pJob -- )
 
   locals| pJob |
 

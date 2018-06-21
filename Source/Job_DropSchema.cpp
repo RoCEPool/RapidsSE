@@ -61,7 +61,7 @@ Job_DropSchema::Job_DropSchema(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPSCHEMA,_FOOTER_);
     
-  m_sExecute = "Job_DropSchema_Exe"_Stz;
+  m_sExecute = "Job_DropSchema.execute"_Stz;
   
   _checkInitialised_(CN_JOB_DROPSCHEMA);
   
