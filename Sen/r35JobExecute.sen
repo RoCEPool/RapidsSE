@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : job.beginExecute ( pJob -- )
 
-  locals| pJob |
+  params| pJob |
 
   0 locals| pJobBegun |
 
@@ -49,7 +49,7 @@
 /*----------------------------------------------------------------------------*/
 : job.genericExecute ( pJob -- )
 
-  locals| pJob |
+  params| pJob |
 
     pJob object.class@ class::name
     grid::thisNode@
@@ -68,7 +68,7 @@
 /*----------------------------------------------------------------------------*/
 : job.execute ( pJob -- )
 
-  locals| pJob |
+  params| pJob |
 
   0 locals| eJobClass |
 

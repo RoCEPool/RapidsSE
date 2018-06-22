@@ -9,8 +9,8 @@
 /*----------------------------------------------------------------------------*/
 : spawnR35ReceiverTask ( pSocket connectionNo -- )
 
-  locals| nConnection |
-  locals| pSocket |
+  params| nConnection |
+  params| pSocket |
 
   0 locals| sTaskName |
 
@@ -33,7 +33,7 @@
 
   tp: _r35ReceiverLoop_
 
-  locals| pSocket |
+  params| pSocket |
 
   0 locals| pJob |
 

@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 : Job__Ended::execute ( iJobId -- )
 
-  locals| iJobId |
+  params| iJobId |
 
   0 0 locals| pJob iAcksRemaining |
 
@@ -42,7 +42,7 @@
 /*----------------------------------------------------------------------------*/
 : Job__Ended::send ( iJobId -- )
 
-  locals| iJobId |
+  params| iJobId |
 
   0 locals| pJob__Ended |
 
@@ -71,7 +71,7 @@
 /*----------------------------------------------------------------------------*/
 : Job__End::execute ( iJobId -- )
 
-  locals| iJobId |
+  params| iJobId |
 
   0 locals| pJob |
 
@@ -98,7 +98,7 @@
   // where:  On the originator node.
   //
 
-  locals| pJob |
+  params| pJob |
 
   0 locals| pJob__End |
 
@@ -137,7 +137,7 @@
 /*----------------------------------------------------------------------------*/
 : Job__Executed::send ( iJobId -- )
 
-  locals| iJobId |
+  params| iJobId |
 
   0 locals| pJob pJob__Executed |
 
@@ -165,7 +165,7 @@
 /*----------------------------------------------------------------------------*/
 : Job__Executed::execute ( iJobId -- )
 
-  locals| iJobId |
+  params| iJobId |
 
   0 0 locals| pJob iAcksRemaining |
 
@@ -196,7 +196,7 @@
   // where:  On the originator node.
   //
 
-  locals| pJob |
+  params| pJob |
 
   0 locals| pJob__Execute |
 
@@ -231,7 +231,7 @@
 /*----------------------------------------------------------------------------*/
 : Job__Execute::execute ( iJobId -- )
 
-  locals| iJobId |
+  params| iJobId |
 
   0 0 locals| pJob pJobExecuted |
 
@@ -265,7 +265,7 @@
   //         3) if all acks received distribute Job_Execute
   //
 
-  locals| iJobId |
+  params| iJobId |
 
   0 locals| pJob  |
   0 locals| iAcksRemaining |

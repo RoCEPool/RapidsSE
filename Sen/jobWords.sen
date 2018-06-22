@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : job.notice ( pJob -- )
 
-  locals| pJob |
+  params| pJob |
 
     pJob job.participant@
     pJob job.Id@

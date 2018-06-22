@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : Job_CreateTable.execute ( pJob_CreateTable -- )
 
-  locals| pJob_CreateTable |
+  params| pJob_CreateTable |
 
   CN_JOB_CREATETABLE pJob_CreateTable object.assertClass
 
