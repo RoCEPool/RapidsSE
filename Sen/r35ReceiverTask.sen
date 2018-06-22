@@ -47,10 +47,8 @@
 
   begin
 
-                                                            //! make this a word
-    depth 0 != if stk "stack of receiver task has grown" . debug::trap then
-
-    //task::this task.socket@ >str "receiving on socket %v" str.format .
+    // check the d-stack depth is zero
+    assertStackDepthZero
 
     // receive valset from socket
     socketR35>

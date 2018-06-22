@@ -51,7 +51,8 @@
 
     tp: waitingOnAccept
 
-    depth 0 != if "Stack of task has grown" . debug::trap then
+    // check the d-stack depth is zero
+    assertStackDepthZero
 
     pListeningSocket socket.accept to pAcceptedSocket
 
