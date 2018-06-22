@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* r35Decoder.sen -- Decode and execute received jobs                         */
+/* r35Execute.sen -- Decode and execute received jobs                         */
 /*============================================================================*/
 
-"r35Decoder.sen" .verbose
+"r35Execute.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* execute/begin a new job                                                    */
@@ -16,7 +16,7 @@
     pJob object.class@ class::name
     grid::thisNode@
     "Node %v Job %v Received"
-  str.format .
+  fmt.print
 
   // set partcipant node in job
   grid::thisNode@ pJob job.participant!
@@ -53,7 +53,7 @@
 
     pJob object.class@ class::name
     grid::thisNode@
-  "Node %v %v" str.format .
+  "Node %v %v" fmt.print
 
   pJob job.id@ pJob job.execute@ find execute
 
