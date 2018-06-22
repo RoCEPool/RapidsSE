@@ -68,16 +68,12 @@
 
     ddlLock::grabWrite
 
+    // increment connection counter
+    nConnections @ 1 + nConnections !
+
     pAcceptedSocket nConnections spawnR35ReceiverTask to pReceiverTask
 
     ddlLock::dropWrite
-
-    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-    // increment connection counter
-
-    nConnections @          ( connection# )
-    1 +                     ( nConnections# 1 )
-    nConnections !          ( nConnections# )
 
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // if first socket on non-start node then start the connector task
@@ -89,6 +85,11 @@
     then
 
   again
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // should never exit
+  hazard
 ;
 
 /*============================================================================*/
