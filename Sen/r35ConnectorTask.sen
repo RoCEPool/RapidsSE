@@ -24,10 +24,6 @@
   0 locals| pNode |
   0 locals| pSocket |
 
-  connectorDronePrint if
-    task::this task.name@ "%v running..." fmt.print
-  then
-
   grid::nodes 0
   do
 

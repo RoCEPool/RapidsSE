@@ -43,7 +43,9 @@
   // set task comment (this should go, never really used it)
   "r35ReceiverLoop" task::this task.comment!
 
-  grid::thisNode@ "Receiver Task R35 running on node %v" fmt.print
+  args.verbose if
+    grid::thisNode@ "Receiver Task R35 running on node %v" fmt.print
+  then
 
   begin
 
