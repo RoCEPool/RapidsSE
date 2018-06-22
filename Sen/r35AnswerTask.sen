@@ -71,7 +71,9 @@
     // increment connection counter
     nConnections @ 1 + nConnections !
 
-    pAcceptedSocket nConnections spawnR35ReceiverTask to pReceiverTask
+      pAcceptedSocket
+      nConnections @
+    spawnR35ReceiverTask to pReceiverTask
 
     ddlLock::dropWrite
 

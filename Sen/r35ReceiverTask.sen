@@ -15,7 +15,7 @@
   0 locals| sTaskName |
 
   // form the task name
-  iConnNo @ grid::thisNode@ "Node%v_rr%v" str.format to sTaskName
+  iConnNo grid::thisNode@ "Node%v_rr%v" str.format to sTaskName
 
   // spawn the receiver
     pSocket             // socket
