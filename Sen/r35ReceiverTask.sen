@@ -35,7 +35,11 @@
 
   params| pSocket |
 
+  assertStackDepthZero
+
   0 locals| pJob |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // set socket in task (task socket should go)
   pSocket task::this task.socket!
@@ -46,6 +50,8 @@
   args.verbose if
     grid::thisNode@ "Receiver Task R35 running on node %v" fmt.print
   then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   begin
 

@@ -21,11 +21,15 @@
 /*----------------------------------------------------------------------------*/
 : _r35AnswerLoop_ ( -- )
 
+  assertStackDepthZero
+
   0 locals| iPort |
   0 locals| pListeningSocket |
   0 locals| pAcceptedSocket |
   0 locals| pReceiverTask |
   0 locals| pConnectorTask |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // get the listening port of this node
   grid::thisNode@ grid::node node.port to iPort
@@ -40,14 +44,15 @@
   // number of connections to be zero
   0 nConnections !
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   begin
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // wait for next socket
 
     tp: waitingOnAccept
 
-    // check the d-stack depth is zero
     assertStackDepthZero
 
     pListeningSocket socket.accept to pAcceptedSocket
@@ -58,7 +63,7 @@
       iPort "Answered connection on port %v" fmt.print
     then
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // spawn receiver task for the new socket
 
     ddlLock::grabWrite
@@ -67,14 +72,14 @@
 
     ddlLock::dropWrite
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // increment connection counter
 
     nConnections @          ( connection# )
     1 +                     ( nConnections# 1 )
     nConnections !          ( nConnections# )
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // if first socket on non-start node then start the connector task
 
     nConnections @ 1 == if

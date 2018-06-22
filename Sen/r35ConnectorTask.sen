@@ -21,11 +21,17 @@
 /*----------------------------------------------------------------------------*/
 : _r35ConnectorLoop_ ( -- )
 
+  assertStackDepthZero
+
   0 locals| pNode |
   0 locals| pSocket |
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   grid::nodes 0
   do
+
+    assertStackDepthZero
 
     // get the node
     I grid::node to pNode
@@ -47,13 +53,14 @@
 
   loop
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // set grid as started
   true grid::started!
 
   // print started message
   grid::thisNodeName@ "Node %v : SE cluster started" fmt.print
 
-  // check the d-stack depth is zero
   assertStackDepthZero
 ;
 
