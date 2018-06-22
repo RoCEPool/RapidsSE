@@ -32,7 +32,7 @@
     // move this task through send state/queue
     task.send
 
-    // pack d-stack into a valset
+    // pack Job__Execute into a valset
     pJob__Execute 1 >valset
 
     // send the execute job
@@ -44,7 +44,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job__Begun job on originating node                                 */
+/* execute Job__Begun on originating node                                     */
 /*----------------------------------------------------------------------------*/
 : Job__Begun.execute ( iJobId -- )
 
@@ -85,7 +85,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* send Job__Ended job to originating node                                    */
+/* send Job__Ended to originating node                                        */
 /*----------------------------------------------------------------------------*/
 : Job__Ended::send ( iJobId -- )
 
@@ -110,7 +110,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job__End job on participating node                                 */
+/* execute Job__End on participating node                                     */
 /*----------------------------------------------------------------------------*/
 : Job__End.execute ( iJobId -- )
 
@@ -133,11 +133,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job__Ended job                                                     */
+/* execute Job__Ended on originating node                                     */
 /*----------------------------------------------------------------------------*/
-: Job__Ended.execute ( jobId -- )
+: Job__Ended.execute ( iJobId -- )
 
-  0 0 locals| pJob iAcksRemaining iJobId |
+  locals| iJobId |
+
+  0 0 locals| pJob iAcksRemaining |
 
   // find the job in the originator jobs
   iJobId job.findOriginator to pJob
@@ -159,33 +161,53 @@
   "All Done" .
 ;
 
-/*----------------------------------------------------------------------------*/
-/* execute Job__Execute job                                                   */
-/*----------------------------------------------------------------------------*/
-: Job__Execute.execute ( jobId -- )
+//??????????????????????????????????????????????????????????????????????????????
 
-  0 0 locals| pJob pJobExecuted iJobId |
+/*----------------------------------------------------------------------------*/
+/* send Job__Executed back to originating node                                */
+/*----------------------------------------------------------------------------*/
+: Job__Executed::send ( iJobId -- )
+
+  locals| iJobId |
+
+  0 locals| pJob pJob__Executed |
+
+  // new a temporary Job__Executed
+  iJobId job.newExecuted to pJob__Executed
+
+  // set the originator node as the send target node
+  iJobId job::originator@ grid::node task::this task.sendNode!
+
+  // move this task through send state/queue
+  task.send
+
+  // pack Job__Executed into a valset
+  pJob__Executed 1 >valset
+
+  // send Job__Executed
+  >socketR35
+
+  // delete the Job__Executed
+  pJob__Executed job.delete
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job__Execute on participating node                                 */
+/*----------------------------------------------------------------------------*/
+: Job__Execute.execute ( iJobId -- )
+
+  locals| iJobId |
+
+  0 0 locals| pJob pJobExecuted |
 
   // find the job in the participating jobs
   iJobId job.findParticipant to pJob
 
-  // execute the job
+  // execute the job on this participating node
   pJob pJob job.execute@ find execute
 
-  // new a job__executed
-  iJobId job.newExecuted to pJobExecuted
-
-  // send job__executed back to the originator
-  iJobId job::originator@ grid::node task::this task.sendNode!
-  task.send
-
-  // send the executed job
-  pJobExecuted 1
-  >valset
-  >socketR35
-
-  // now delete the executed job
-  pJobExecuted job.delete
+  // send job__executed back to originating node
+  iJobId Job__Executed::send
 ;
 
 /*----------------------------------------------------------------------------*/
