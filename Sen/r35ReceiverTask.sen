@@ -43,7 +43,7 @@
   // set task comment (this should go, never really used it)
   "r35ReceiverLoop" task::this task.comment!
 
-  "Receiver Task R35 running on node" grid::thisNode@ >str str.cat .
+  grid::thisNode@ "Receiver Task R35 running on node %v" fmt.print
 
   begin
 
