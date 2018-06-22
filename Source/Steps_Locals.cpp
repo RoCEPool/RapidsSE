@@ -21,6 +21,8 @@ void Task::vAddPrimitives_Locals(void)
   vAddPrimitive("locals.pop"_Stz,      &vLocalsPop,        false);
   vAddPrimitive("locals.push"_Stz,     &vLocalsPush,       false);
   vAddPrimitive("to"_Stz,              &vLocalsTo,         true);
+  
+  vAddPrimitive("params|"_Stz,         &vLocalsBar,        true);
 }
 
 /*----------------------------------------------------------------------------*/

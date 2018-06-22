@@ -21,15 +21,17 @@
 /*----------------------------------------------------------------------------*/
 : _r35ConnectorLoop_ ( -- )
 
+  assertStackDepthZero
+
   0 locals| pNode |
   0 locals| pSocket |
 
-  connectorDronePrint if
-    task::this task.name@ " running..." str.cat .
-  then
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   grid::nodes 0
   do
+
+    assertStackDepthZero
 
     // get the node
     I grid::node to pNode
@@ -46,16 +48,20 @@
 
     // print connection message
     args.verbose if
-      grid::thisNode@ I "R35Node%v connected to node%v" str.format .
+      grid::thisNode@ I "R35 Node%v connected to node%v" fmt.print
     then
 
   loop
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // set grid as started
   true grid::started!
 
   // print started message
-  grid::thisNodeName@ "Node %v : SER35 cluster started" str.format .
+  grid::thisNodeName@ "Node %v : SE R35 cluster started" fmt.print
+
+  assertStackDepthZero
 ;
 
 /*============================================================================*/

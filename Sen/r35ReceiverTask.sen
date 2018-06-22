@@ -7,15 +7,15 @@
 /*----------------------------------------------------------------------------*/
 /* spawn the receiver task                                                    */
 /*----------------------------------------------------------------------------*/
-: spawnR35ReceiverTask ( pSocket connectionNo -- )
+: spawnR35ReceiverTask ( pSocket iConnNo -- )
 
-  locals| nConnection |
-  locals| pSocket |
+  params| iConnNo |
+  params| pSocket |
 
   0 locals| sTaskName |
 
   // form the task name
-  nConnection @ grid::thisNode@ "Node%v_rr%v" str.format to sTaskName
+  iConnNo grid::thisNode@ "Node%v_rr%v" str.format to sTaskName
 
   // spawn the receiver
     pSocket             // socket
@@ -33,9 +33,13 @@
 
   tp: _r35ReceiverLoop_
 
-  locals| pSocket |
+  params| pSocket |
+
+  assertStackDepthZero
 
   0 locals| pJob |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // set socket in task (task socket should go)
   pSocket task::this task.socketR35!
@@ -43,14 +47,16 @@
   // set task comment (this should go, never really used it)
   "r35ReceiverLoop" task::this task.comment!
 
-  "Receiver Task R35 running on node" grid::thisNode@ >str str.cat .
+  args.verbose if
+    grid::thisNode@ "Receiver Task R35 running on node %v" fmt.print
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   begin
 
-                                                            //! make this a word
-    depth 0 != if stk "stack of receiverR35 task has grown" . debug::trap then
-
-    //task::this task.socket@ >str "receiving on socket %v" str.format .
+    // check the d-stack depth is zero
+    assertStackDepthZero
 
    "r35 recv" .
     // receive valset from socket
@@ -63,6 +69,11 @@
     pJob job.execute
 
   again
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // should never exit
+  hazard
 ;
 
 /*============================================================================*/

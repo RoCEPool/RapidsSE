@@ -1,22 +1,22 @@
 /*============================================================================*/
-/* r35Decoder.sen -- Decode and execute received jobs                         */
+/* r35Execute.sen -- Decode and execute received jobs                         */
 /*============================================================================*/
 
-"r35Decoder.sen" .verbose
+"r35Execute.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* execute/begin a new job                                                    */
 /*----------------------------------------------------------------------------*/
 : job.beginExecute ( pJob -- )
 
-  locals| pJob |
+  params| pJob |
 
   0 locals| pJobBegun |
 
     pJob object.class@ class::name
     grid::thisNode@
     "Node %v Job %v Received"
-  str.format .
+  fmt.print
 
   // set partcipant node in job
   grid::thisNode@ pJob job.participant!
@@ -49,11 +49,11 @@
 /*----------------------------------------------------------------------------*/
 : job.genericExecute ( pJob -- )
 
-  locals| pJob |
+  params| pJob |
 
     pJob object.class@ class::name
     grid::thisNode@
-  "Node %v %v" str.format .
+  "Node %v %v" fmt.print
 
   pJob job.id@ pJob job.execute@ find execute
 
@@ -68,7 +68,7 @@
 /*----------------------------------------------------------------------------*/
 : job.execute ( pJob -- )
 
-  locals| pJob |
+  params| pJob |
 
   0 locals| eJobClass |
 
@@ -76,7 +76,7 @@
 
   eJobClass case
 
-   // specific cases
+    // specific cases
     CN_JOB__BEGUN    of pJob job.genericExecute endof
     CN_JOB__END      of pJob job.genericExecute endof
     CN_JOB__ENDED    of pJob job.genericExecute endof

@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : Job_G35.execute ( pJob_G35 -- )
 
-  locals| pJob_G35 |
+  params| pJob_G35 |
 
   CN_JOB_G35 pJob_G35 object.assertClass
 

@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : Job_DropSchema.execute ( pJob_DropSchema -- )
 
-  locals| pJob_DropSchema |
+  params| pJob_DropSchema |
 
   CN_JOB_DROPSCHEMA pJob_DropSchema object.assertClass
 

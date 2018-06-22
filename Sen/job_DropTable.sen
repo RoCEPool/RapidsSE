@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : Job_DropTable.execute ( pJob_DropTable -- )
 
-  locals| pJob_DropTable |
+  params| pJob_DropTable |
 
   CN_JOB_DROPTABLE pJob_DropTable object.assertClass
 

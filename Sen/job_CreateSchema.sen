@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : Job_CreateSchema.execute ( pJob_CreateSchema -- )
 
-  locals| pJob_CreateSchema |
+  params| pJob_CreateSchema |
 
   CN_JOB_CREATESCHEMA pJob_CreateSchema object.assertClass
 
