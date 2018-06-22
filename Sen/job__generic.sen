@@ -161,8 +161,6 @@
   "All Done" .
 ;
 
-//??????????????????????????????????????????????????????????????????????????????
-
 /*----------------------------------------------------------------------------*/
 /* send Job__Executed back to originating node                                */
 /*----------------------------------------------------------------------------*/
@@ -210,12 +208,55 @@
   iJobId Job__Executed::send
 ;
 
-/*----------------------------------------------------------------------------*/
-/* execute Job__Executed job                                                  */
-/*----------------------------------------------------------------------------*/
-: Job__Executed.execute ( jobId -- )
+//??????????????????????????????????????????????????????????????????????????????
 
-  0 0 0 locals| pJob pJobEnd iAcksRemaining iJobId |
+/*----------------------------------------------------------------------------*/
+/* distribute Job__End to all participants                                    */
+/*----------------------------------------------------------------------------*/
+: Job__End::distribute ( pJob -- )
+
+  //
+  // where:  On the originator node.
+  //
+
+  locals| pJob |
+
+  0 locals| pJob__End |
+
+  // set the no of acks expected in originator job
+  grid::nodes pJob job.acksRemaining!
+
+  // new a temporary Job__End
+  pJob job.id@ job.newEnd to pJob__End
+
+  // send Job__End to all nodes
+  grid::nodes 0
+  do
+    // set which node this task will to send to
+    I grid::node task::this task.sendNode!
+
+    // move this task through send state/queue
+    task.send
+
+    // pack Job__End into a valset
+    pJob__End 1 >valset
+
+    // send the end job
+    >socketR35
+  loop
+
+  // now delete the end job
+  pJob__End job.delete
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job__Executed on originating node                                  */
+/*----------------------------------------------------------------------------*/
+: Job__Executed.execute ( iJobId -- )
+
+  locals| iJobId |
+
+  0 0 locals| pJob iAcksRemaining |
 
   // find the job in the originator jobs
   iJobId job.findOriginator to pJob
@@ -228,25 +269,7 @@
 
   "received Job__Executed.execute from all nodes" .
 
-  // set the no of acks expected in originator job
-  grid::nodes pJob job.acksRemaining!
-
-  // send end to other node
-  iJobId job.newEnd to pJobEnd
-
-  // set the send node to all the nodes
-  grid::nodes 0 do
-    I grid::node task::this task.sendNode!
-    task.send
-
-    // send the end job
-    pJobEnd 1
-    >valset
-    >socketR35
-  loop
-
-  // now delete the end job
-  pJobEnd job.delete
+  pJob Job__End::distribute
 ;
 
 /*============================================================================*/
