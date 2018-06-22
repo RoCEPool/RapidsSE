@@ -1,0 +1,20 @@
+/*============================================================================*/
+/* _startClusterBoth -- start cluster using both tasking model                */
+/*============================================================================*/
+
+docol spawnNodes ;
+
+docol setStartNode ;
+docol spawnConnectorDrone ;
+
+docol setStartNodeR35 ;
+docol spawnR35ConnectorTask ;
+
+
+//sleep 5 ;
+
+//print "SE R35 cluster started" ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

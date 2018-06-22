@@ -92,6 +92,7 @@ void Grid::vInit(i8 nNodes, i8 nSlots)
   m_iThisNode   = -1;
   m_pThisNode   = nullptr;
   m_iStartNode  = -1;
+  m_iStartNodeR35 = -1;
   m_bHasStarted = false;
   m_nSlots      = nSlots;
   m_nPartitions = m_nSlots * m_nNodes;
@@ -231,7 +232,6 @@ void Grid::vStartNode(i8 iStartNode)
   m_iStartNode = iStartNode;
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* get grid node where cluster was started                                    */
 /*----------------------------------------------------------------------------*/
@@ -240,6 +240,26 @@ i8 Grid::iStartNode(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
   return m_iStartNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get grid node where cluster was started                                    */
+/*----------------------------------------------------------------------------*/
+i8 Grid::iStartNodeR35(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  
+  return m_iStartNodeR35;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set grid node wher ecluster was started                                    */
+/*----------------------------------------------------------------------------*/
+void Grid::vStartNodeR35(i8 iStartNode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  
+  m_iStartNodeR35 = iStartNode;
 }
 
 /*----------------------------------------------------------------------------*/

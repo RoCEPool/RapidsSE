@@ -4,6 +4,8 @@
 
 "r35AnswerTask.sen" .verbose
 
+int: nTotalConnections
+
 /*----------------------------------------------------------------------------*/
 /* spawn the answer task                                                      */
 /*----------------------------------------------------------------------------*/
@@ -42,7 +44,7 @@
   iPort socket::listen to pListeningSocket
 
   // number of connections to be zero
-  0 nConnections !
+  0 nTotalConnections !
 
   begin
 
@@ -66,22 +68,23 @@
 
     ddlLock::grabWrite
 
-    pAcceptedSocket nConnections spawnR35ReceiverTask to pReceiverTask
+    pAcceptedSocket nTotalConnections spawnR35ReceiverTask to pReceiverTask
 
     ddlLock::dropWrite
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // increment connection counter
 
-    nConnections @          ( connection# )
-    1 +                     ( nConnections# 1 )
-    nConnections !          ( nConnections# )
+    nTotalConnections  @    ( nTotalConnections# )
+    1 +                     ( nTotalConnections# 1 )
+    dup                     ( nTotalConnections# nTotalConnections# )
+    nTotalConnections !     ( nTotalConnections# )
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // if first socket on non-start node then start the connector task
 
-    nConnections @ 1 == if
-      grid::thisNode@ grid::startNode@ != if
+    1 == if
+      grid::thisNode@ grid::startNodeR35@ != if
         spawnR35ConnectorTask to pConnectorTask
       then
     then

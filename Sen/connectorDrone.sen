@@ -34,7 +34,7 @@ tp: spawnConnectorDrone
 
       I grid::node     ( ^node )
       dup             ( ^node ^node )
-      node.port swap  ( port ^node )
+      node.port 10 + swap  ( port ^node )
       node.IP         ( port IP )
 
       socket::open  socket.connect

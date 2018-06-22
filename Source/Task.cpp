@@ -302,6 +302,7 @@ void Task::vInit(Stz* aLambda)
   
   m_pSEitf   = nullptr;
   m_pSocket  = nullptr;
+  m_pSocketR35 = nullptr;
   m_pPlan    = nullptr;
   
   m_iDdlLocked = 0;

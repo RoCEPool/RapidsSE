@@ -202,6 +202,7 @@ namespace Tasks
     Queue*  m_pJobQueue;        // job queue that this task serves
                                 //   may or may not be shared
     Socket* m_pSocket;          // socket associated with task
+    Socket* m_pSocketR35;       // R35 socket associated with task
     Plan*   m_pPlan;            // the plan associated with task
     
     i8  m_iDdlLocked;
@@ -722,6 +723,8 @@ namespace Tasks
     static void vGridStartedFetch(MP_Task mpTask);
     static void vGridStartNodeStore(MP_Task mpTask);
     static void vGridStartNodeFetch(MP_Task mpTask);
+    static void vGridStartNodeR35Store(MP_Task mpTask);
+    static void vGridStartNodeR35Fetch(MP_Task mpTask);
     static void vGridThisNodeStore(MP_Task mpTask);
     static void vGridThisNodeFetch(MP_Task mpTask);
     static void vGridThisNodeNameFetch(MP_Task mpTask);
@@ -1330,6 +1333,8 @@ namespace Tasks
     static void vTaskSleep(MP_Task mpTask);
     static void vTaskSocketFetch(MP_Task mpTask);
     static void vTaskSocketStore(MP_Task mpTask);
+    static void vTaskSocketR35Fetch(MP_Task mpTask);
+    static void vTaskSocketR35Store(MP_Task mpTask);
     static void vTaskStateFetch(MP_Task mpTask);
     static void vTaskStateStore(MP_Task mpTask);
     static void vTaskTaskSetFetch(MP_Task mpTask);

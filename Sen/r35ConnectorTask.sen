@@ -46,7 +46,7 @@
 
     // print connection message
     args.verbose if
-      grid::thisNode@ I "Node%v connected to node%v" str.format .
+      grid::thisNode@ I "R35Node%v connected to node%v" str.format .
     then
 
   loop
@@ -55,7 +55,7 @@
   true grid::started!
 
   // print started message
-  grid::thisNodeName@ "Node %v : SE cluster started" str.format .
+  grid::thisNodeName@ "Node %v : SER35 cluster started" str.format .
 ;
 
 /*============================================================================*/

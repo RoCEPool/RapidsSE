@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 docol spawnNodes ;
-docol setStartNode ;
+docol setStartNodeR35 ;
 docol spawnR35ConnectorTask ;
 
 //sleep 5 ;

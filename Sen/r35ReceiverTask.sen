@@ -38,7 +38,7 @@
   0 locals| pJob |
 
   // set socket in task (task socket should go)
-  pSocket task::this task.socket!
+  pSocket task::this task.socketR35!
 
   // set task comment (this should go, never really used it)
   "r35ReceiverLoop" task::this task.comment!
@@ -48,10 +48,11 @@
   begin
 
                                                             //! make this a word
-    depth 0 != if stk "stack of receiver task has grown" . debug::trap then
+    depth 0 != if stk "stack of receiverR35 task has grown" . debug::trap then
 
     //task::this task.socket@ >str "receiving on socket %v" str.format .
 
+   "r35 recv" .
     // receive valset from socket
     socketR35>
 

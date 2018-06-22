@@ -12,6 +12,7 @@ namespace GridModel
     i8     m_iThisNode;  // this node number
     Node*  m_pThisNode;  // this node pointer
     i8     m_iStartNode; // node that started the cluster
+    i8     m_iStartNodeR35; // node that started the cluster
     bool   m_bHasStarted;// has the cluster started ?
     i8     m_nSlots;     // no of partition slots on each node
     i8     m_nPartitions;  // total no of partitions in the grid
@@ -45,6 +46,8 @@ namespace GridModel
     i8   nSlots(void);
     void vStartNode(i8 iStartNode);
     i8   iStartNode(void);
+    void vStartNodeR35(i8 iStartNode);
+    i8   iStartNodeR35(void);
     i8   iThisNode(void);
     Node* pThisNode(void);
     void vThisNode(i8 iNode);

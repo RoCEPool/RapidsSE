@@ -58,6 +58,8 @@ void Task::vAddPrimitives_Task(void)
   vAddPrimitive("task.sendNode!"_Stz, &vTaskSendNodeStore, false);
   vAddPrimitive("task.socket@"_Stz,   &vTaskSocketFetch,   false);
   vAddPrimitive("task.socket!"_Stz,   &vTaskSocketStore,   false);
+  vAddPrimitive("task.socketR35@"_Stz,&vTaskSocketR35Fetch,false);
+  vAddPrimitive("task.socketR35!"_Stz,&vTaskSocketR35Store,false);
   vAddPrimitive("task.state@"_Stz,    &vTaskStateFetch,    false);
   vAddPrimitive("task.state!"_Stz,    &vTaskStateStore,    false);
   vAddPrimitive("task.taskset@"_Stz,  &vTaskTaskSetFetch,  false);
@@ -1003,6 +1005,51 @@ void Task::vTaskSocketStore(MP_Task mpTask)
   Socket* pSocket = static_cast<Socket*>(ptrSocket);
   
   pThatTask->m_pSocket = pSocket;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.socketR35@ -- fetch socket of task on data stack                      */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskSocketR35Fetch(MP_Task mpTask)
+{
+  ENTRY("vTaskSocketR35Fetch"_Stz);
+  
+  Object* pTaskObject;
+  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
+    THROW_INVALID_DSTACK("task.socketR35@"_Stz);
+  Task* pThatTask = _pTask(pTaskObject);
+  
+  Socket* pSocket = pThatTask->m_pSocketR35;
+  
+  Object* pSocketEmb = static_cast<Object*>(pSocket);
+  
+  mpTask->m_pDataStack->vPushObject(pSocketEmb);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.socketR35! -- store socket on data stack into task                    */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskSocketR35Store(MP_Task mpTask)
+{
+  ENTRY("vTaskSocketStoreR35"_Stz);
+  
+  Object* pTaskObject;
+  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
+    THROW_INVALID_DSTACK("task.socketR35!"_Stz);
+  Task* pThatTask = _pTask(pTaskObject);
+  
+  Object* ptrSocket;
+  
+  if ( ! mpTask->m_pDataStack->bPop(ptrSocket) )
+    THROW_INVALID_DSTACK("task.socketR35!"_Stz);
+  
+  Socket* pSocket = static_cast<Socket*>(ptrSocket);
+  
+  pThatTask->m_pSocketR35 = pSocket;
   
   EXIT();
 }

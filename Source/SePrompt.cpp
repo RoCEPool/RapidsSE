@@ -214,7 +214,7 @@ void SePrompt::vLoop(void)
   
   m_xPosixThread.vSetOSThreadId();
   PosixThread::vTlsSet(giTLS_ThreadKey,&m_xPosixThread);
-  ASSERT(PosixThread::pTlsGet(giTLS_ThreadKey) == &m_xPosixThread);
+  //ASSERT(PosixThread::pTlsGet(giTLS_ThreadKey) == &m_xPosixThread);
 
   // get and process commands
   while (m_bContinue) {
