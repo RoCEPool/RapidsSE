@@ -4,133 +4,9 @@
 
 "job__generic.sen" .verbose
 
-/*----------------------------------------------------------------------------*/
-/* distribute Job__Execute to all participants                                */
-/*----------------------------------------------------------------------------*/
-: Job__Execute::distribute ( pJob -- )
-
-  //
-  // where:  On the originator node.
-  //
-
-  locals| pJob |
-
-  0 locals| pJob__Execute |
-
-  // set the no of acks expected in originator job
-  grid::nodes pJob job.acksRemaining!
-
-  // create a new job__execute
-  pJob job.id@ job.newExecute to pJob__Execute
-
-  // send job__execute to all nodes
-  grid::nodes 0
-  do
-    // set which node this task will to send to
-    I grid::node task::this task.sendNode!
-
-    // move this task through send state/queue
-    task.send
-
-    // pack Job__Execute into a valset
-    pJob__Execute 1 >valset
-
-    // send the execute job
-    >socketR35
-  loop
-
-  // now delete the execute job
-  pJob__Execute job.delete
-;
-
-/*----------------------------------------------------------------------------*/
-/* execute Job__Begun on originating node                                     */
-/*----------------------------------------------------------------------------*/
-: Job__Begun.execute ( iJobId -- )
-
-  //
-  // where:  On the originator node.
-  // event:  A Job__Begun has been received from a participating node
-  //         indicating the job has been received and put into the
-  //         participating jobs list.
-  // data:   The job will exist in the originating jobs list.
-  // action: 1) find the job in the originating list;
-  //         2) decrement its ack's remaining
-  //         3) if all acks received distribute Job_Execute
-  //
-
-  locals| iJobId |
-
-  0 locals| pJob  |
-  0 locals| iAcksRemaining |
-
-  //iJobId "excuting Job__Begun.execute %v" str.format .
-
-  // find the job in the originator jobs
-  iJobId job.findOriginator to pJob
-
-  // decrement the acks remaining
-  pJob job.decAcksRemaining to iAcksRemaining
-
-  // test for all acks received all
-  iAcksRemaining 0 != if exit then
-
-  "received job__begun from all nodes" .
-
-  // received job__begun from all nodes
-  // this is the decider job.
-
-  // distribute Job__Execute to all participants
-  pJob Job__Execute::distribute
-;
-
-/*----------------------------------------------------------------------------*/
-/* send Job__Ended to originating node                                        */
-/*----------------------------------------------------------------------------*/
-: Job__Ended::send ( iJobId -- )
-
-  locals| iJobId |
-
-  0 locals| pJob__Ended |
-
-  // send ended to originating node
-  iJobId job.newEnded to pJob__Ended
-
-  // send job__end to originating node
-  iJobId job::originator@ grid::node task::this task.sendNode!
-  task.send
-
-  // send the ended job
-  pJob__Ended 1
-  >valset
-  >socketR35
-
-  // now delete the ended job
-  pJob__Ended job.delete
-;
-
-/*----------------------------------------------------------------------------*/
-/* execute Job__End on participating node                                     */
-/*----------------------------------------------------------------------------*/
-: Job__End.execute ( iJobId -- )
-
-  locals| iJobId |
-
-  0 locals| pJob |
-
-  // find the job in the participating jobs
-  iJobId job.findParticipant to pJob
-
-  // remove the job from the participant jobs
-  pJob job.removeParticipant
-
-  // delete the job
-  iJobId job::originator@ grid::thisNode@ != if
-    pJob job.delete
-  then
-
-  iJobId Job__Ended::send
-;
+////////////////////////////////////////////////////////////////////////////////
+//                              Job__Ended                                    //
+////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /* execute Job__Ended on originating node                                     */
@@ -162,53 +38,56 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* send Job__Executed back to originating node                                */
+/* send Job__Ended back to originating node                                   */
 /*----------------------------------------------------------------------------*/
-: Job__Executed::send ( iJobId -- )
+: Job__Ended::send ( iJobId -- )
 
   locals| iJobId |
 
-  0 locals| pJob pJob__Executed |
+  0 locals| pJob__Ended |
 
-  // new a temporary Job__Executed
-  iJobId job.newExecuted to pJob__Executed
+  // send ended to originating node
+  iJobId job.newEnded to pJob__Ended
 
-  // set the originator node as the send target node
+  // send job__end to originating node
   iJobId job::originator@ grid::node task::this task.sendNode!
-
-  // move this task through send state/queue
   task.send
 
-  // pack Job__Executed into a valset
-  pJob__Executed 1 >valset
+  // send the ended job
+  pJob__Ended 1 >valset
 
-  // send Job__Executed
   >socketR35
 
-  // delete the Job__Executed
-  pJob__Executed job.delete
+  // now delete the ended job
+  pJob__Ended job.delete
 ;
 
+////////////////////////////////////////////////////////////////////////////////
+//                               Job__End                                     //
+////////////////////////////////////////////////////////////////////////////////
+
 /*----------------------------------------------------------------------------*/
-/* execute Job__Execute on participating node                                 */
+/* execute Job__End on participating node                                     */
 /*----------------------------------------------------------------------------*/
-: Job__Execute.execute ( iJobId -- )
+: Job__End.execute ( iJobId -- )
 
   locals| iJobId |
 
-  0 0 locals| pJob pJobExecuted |
+  0 locals| pJob |
 
   // find the job in the participating jobs
   iJobId job.findParticipant to pJob
 
-  // execute the job on this participating node
-  pJob pJob job.execute@ find execute
+  // remove the job from the participant jobs
+  pJob job.removeParticipant
 
-  // send job__executed back to originating node
-  iJobId Job__Executed::send
+  // delete the job
+  iJobId job::originator@ grid::thisNode@ != if
+    pJob job.delete
+  then
+
+  iJobId Job__Ended::send
 ;
-
-//??????????????????????????????????????????????????????????????????????????????
 
 /*----------------------------------------------------------------------------*/
 /* distribute Job__End to all participants                                    */
@@ -249,6 +128,38 @@
   pJob__End job.delete
 ;
 
+////////////////////////////////////////////////////////////////////////////////
+//                             Job__Executed                                  //
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* send Job__Executed back to originating node                                */
+/*----------------------------------------------------------------------------*/
+: Job__Executed::send ( iJobId -- )
+
+  locals| iJobId |
+
+  0 locals| pJob pJob__Executed |
+
+  // new a temporary Job__Executed
+  iJobId job.newExecuted to pJob__Executed
+
+  // set the originator node as the send target node
+  iJobId job::originator@ grid::node task::this task.sendNode!
+
+  // move this task through send state/queue
+  task.send
+
+  // pack Job__Executed into a valset
+  pJob__Executed 1 >valset
+
+  // send Job__Executed
+  >socketR35
+
+  // delete the Job__Executed
+  pJob__Executed job.delete
+;
+
 /*----------------------------------------------------------------------------*/
 /* execute Job__Executed on originating node                                  */
 /*----------------------------------------------------------------------------*/
@@ -270,6 +181,113 @@
   "received Job__Executed.execute from all nodes" .
 
   pJob Job__End::distribute
+;
+
+////////////////////////////////////////////////////////////////////////////////
+//                             Job__Execute                                   //
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* distribute Job__Execute to all participants                                */
+/*----------------------------------------------------------------------------*/
+: Job__Execute::distribute ( pJob -- )
+
+  //
+  // where:  On the originator node.
+  //
+
+  locals| pJob |
+
+  0 locals| pJob__Execute |
+
+  // set the no of acks expected in originator job
+  grid::nodes pJob job.acksRemaining!
+
+  // create a new job__execute
+  pJob job.id@ job.newExecute to pJob__Execute
+
+  // send job__execute to all nodes
+  grid::nodes 0
+  do
+    // set which node this task will to send to
+    I grid::node task::this task.sendNode!
+
+    // move this task through send state/queue
+    task.send
+
+    // pack Job__Execute into a valset
+    pJob__Execute 1 >valset
+
+    // send the execute job
+    >socketR35
+  loop
+
+  // now delete the execute job
+  pJob__Execute job.delete
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job__Execute on participating node                                 */
+/*----------------------------------------------------------------------------*/
+: Job__Execute.execute ( iJobId -- )
+
+  locals| iJobId |
+
+  0 0 locals| pJob pJobExecuted |
+
+  // find the job in the participating jobs
+  iJobId job.findParticipant to pJob
+
+  // execute the job on this participating node
+  pJob pJob job.execute@ find execute
+
+  // send job__executed back to originating node
+  iJobId Job__Executed::send
+;
+
+////////////////////////////////////////////////////////////////////////////////
+//                             Job__Begun                                     //
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* execute Job__Begun on originating node                                     */
+/*----------------------------------------------------------------------------*/
+: Job__Begun.execute ( iJobId -- )
+
+  //
+  // where:  On the originator node.
+  // event:  A Job__Begun has been received from a participating node
+  //         indicating the job has been received and put into the
+  //         participating jobs list.
+  // data:   The job will exist in the originating jobs list.
+  // action: 1) find the job in the originating list;
+  //         2) decrement its ack's remaining
+  //         3) if all acks received distribute Job_Execute
+  //
+
+  locals| iJobId |
+
+  0 locals| pJob  |
+  0 locals| iAcksRemaining |
+
+  //iJobId "excuting Job__Begun.execute %v" str.format .
+
+  // find the job in the originator jobs
+  iJobId job.findOriginator to pJob
+
+  // decrement the acks remaining
+  pJob job.decAcksRemaining to iAcksRemaining
+
+  // test for all acks received all
+  iAcksRemaining 0 != if exit then
+
+  "received job__begun from all nodes" .
+
+  // received job__begun from all nodes
+  // this is the decider job.
+
+  // distribute Job__Execute to all participants
+  pJob Job__Execute::distribute
 ;
 
 /*============================================================================*/
