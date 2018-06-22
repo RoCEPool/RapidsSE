@@ -76,7 +76,7 @@
 
   eJobClass case
 
-   // specific cases
+    // specific cases
     CN_JOB__BEGUN    of pJob job.genericExecute endof
     CN_JOB__END      of pJob job.genericExecute endof
     CN_JOB__ENDED    of pJob job.genericExecute endof

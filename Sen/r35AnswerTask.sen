@@ -28,14 +28,14 @@
   0 locals| pConnectorTask |
 
   answerDronePrint if
-    task::this task.name@ " running..." str.cat .
+    task::this task.name@ "%v running..." fmt.print
   then
 
   // get the listening port of this node
   grid::thisNode@ grid::node node.port to iPort
 
   args.verbose if
-    "Waiting for connections on port " iPort >str str.cat .
+    iPort "Waiting for connections on port %v" fmt.print
   then
 
   // now create a listening socket
@@ -58,7 +58,7 @@
     tp: socketAccepted
 
     args.verbose if
-      "Answered connection on port " iPort >str str.cat .
+      iPort "Answered connection on port %v" fmt.print
     then
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
