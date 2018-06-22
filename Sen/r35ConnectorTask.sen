@@ -25,7 +25,7 @@
   0 locals| pSocket |
 
   connectorDronePrint if
-    task::this task.name@ " running..." str.cat .
+    task::this task.name@ "%v running..." fmt.print
   then
 
   grid::nodes 0
@@ -46,7 +46,7 @@
 
     // print connection message
     args.verbose if
-      grid::thisNode@ I "Node%v connected to node%v" str.format .
+      grid::thisNode@ I "Node%v connected to node%v" fmt.print
     then
 
   loop
@@ -55,7 +55,7 @@
   true grid::started!
 
   // print started message
-  grid::thisNodeName@ "Node %v : SE cluster started" str.format .
+  grid::thisNodeName@ "Node %v : SE cluster started" fmt.print
 ;
 
 /*============================================================================*/
