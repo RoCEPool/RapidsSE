@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job__Ended on originating node                                     */
 /*----------------------------------------------------------------------------*/
-: Job__Ended.execute ( iJobId -- )
+: Job__Ended::execute ( iJobId -- )
 
   locals| iJobId |
 
@@ -26,7 +26,7 @@
   // if there are acks remaining just exit
   iAcksRemaining 0 != if exit then
 
-  "received Job__Ended.execute from all nodes" .
+  "received Job__Ended from all nodes" .
 
   // remove the job from the originator jobs
   pJob job.removeOriginator
@@ -69,7 +69,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job__End on participating node                                     */
 /*----------------------------------------------------------------------------*/
-: Job__End.execute ( iJobId -- )
+: Job__End::execute ( iJobId -- )
 
   locals| iJobId |
 
@@ -163,7 +163,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job__Executed on originating node                                  */
 /*----------------------------------------------------------------------------*/
-: Job__Executed.execute ( iJobId -- )
+: Job__Executed::execute ( iJobId -- )
 
   locals| iJobId |
 
@@ -178,7 +178,7 @@
   // if there are acks remaining just exit
   iAcksRemaining 0 != if exit then
 
-  "received Job__Executed.execute from all nodes" .
+  "received Job__Executed from all nodes" .
 
   pJob Job__End::distribute
 ;
@@ -229,7 +229,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job__Execute on participating node                                 */
 /*----------------------------------------------------------------------------*/
-: Job__Execute.execute ( iJobId -- )
+: Job__Execute::execute ( iJobId -- )
 
   locals| iJobId |
 
@@ -252,7 +252,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job__Begun on originating node                                     */
 /*----------------------------------------------------------------------------*/
-: Job__Begun.execute ( iJobId -- )
+: Job__Begun::execute ( iJobId -- )
 
   //
   // where:  On the originator node.
@@ -269,8 +269,6 @@
 
   0 locals| pJob  |
   0 locals| iAcksRemaining |
-
-  //iJobId "excuting Job__Begun.execute %v" str.format .
 
   // find the job in the originator jobs
   iJobId job.findOriginator to pJob
