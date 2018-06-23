@@ -15,20 +15,20 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_DicStack(void)
 {
-  vAddPrimitive("dicPath.depth"_Stz,    &vDicPathDepth,    false);
-  vAddPrimitive("dicPath.drop"_Stz,     &vDicPathDrop,     false);
-  vAddPrimitive("dicPath.dump"_Stz,     &vDicPathDump,     false);
-  vAddPrimitive("dicPath.pick"_Stz,     &vDicPathPick,     false);
-  vAddPrimitive("dicPath.pop"_Stz,      &vDicPathPop,      false);
-  vAddPrimitive("dicPath.push"_Stz,     &vDicPathPush,     false);
+  vAddPrimitive("dicPath.depth"_Stz,    &vDicStackDepth,    false);
+  vAddPrimitive("dicPath.drop"_Stz,     &vDicStackDrop,     false);
+  vAddPrimitive("dicPath.dump"_Stz,     &vDicStackDump,     false);
+  vAddPrimitive("dicPath.pick"_Stz,     &vDicStackPick,     false);
+  vAddPrimitive("dicPath.pop"_Stz,      &vDicStackPop,      false);
+  vAddPrimitive("dicPath.push"_Stz,     &vDicStackPush,     false);
 }
 
 /*----------------------------------------------------------------------------*/
 /* dicPath.depth -- get number of dictionaries on dictionary stack            */
 /*----------------------------------------------------------------------------*/
-void Task::vDicPathDepth(MP_Task mpTask)
+void Task::vDicStackDepth(MP_Task mpTask)
 {
-  ENTRY("vDicPathDepth"_Stz);
+  ENTRY("vDicStackDepth"_Stz);
   
   Object* pPtrDicStack;
   if ( ! mpTask->m_pDataStack->bPop(pPtrDicStack) )
@@ -47,9 +47,9 @@ void Task::vDicPathDepth(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* dicPath.drop -- discard top of dictionary stack                            */
 /*----------------------------------------------------------------------------*/
-void Task::vDicPathDrop(MP_Task mpTask)
+void Task::vDicStackDrop(MP_Task mpTask)
 {
-  ENTRY("vDicPathDrop"_Stz);
+  ENTRY("vDicStackDrop"_Stz);
   
   Object* pPtrDicStack;
   if ( ! mpTask->m_pDataStack->bPop(pPtrDicStack) )
@@ -66,9 +66,9 @@ void Task::vDicPathDrop(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* dicPath.dump -- dump dictionary stack                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vDicPathDump(MP_Task mpTask)
+void Task::vDicStackDump(MP_Task mpTask)
 {
-  ENTRY("vDicPathDump"_Stz);
+  ENTRY("vDicStackDump"_Stz);
   
   Object* pPtrDicStack;
   if ( ! mpTask->m_pDataStack->bPop(pPtrDicStack) )
@@ -85,9 +85,9 @@ void Task::vDicPathDump(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* dicPath.pick -- pick a dic from dic stack and push onto data stack         */
 /*----------------------------------------------------------------------------*/
-void Task::vDicPathPick(MP_Task mpTask)
+void Task::vDicStackPick(MP_Task mpTask)
 {
-  ENTRY("vDicPathPick"_Stz);
+  ENTRY("vDicStackPick"_Stz);
   
   Object* pPtrDicStack;
   if ( ! mpTask->m_pDataStack->bPop(pPtrDicStack) )
@@ -110,9 +110,9 @@ void Task::vDicPathPick(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* dicPath.pop -- pop top of dictionary stack                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vDicPathPop(MP_Task mpTask)
+void Task::vDicStackPop(MP_Task mpTask)
 {
-  ENTRY("vDicPathPop"_Stz);
+  ENTRY("vDicStackPop"_Stz);
   
   Object* pPtrDicStack;
   if ( ! mpTask->m_pDataStack->bPop(pPtrDicStack) )
@@ -129,9 +129,9 @@ void Task::vDicPathPop(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* dicPath.push -- push a dictionary onto given dictionary stack              */
 /*----------------------------------------------------------------------------*/
-void Task::vDicPathPush(MP_Task mpTask)
+void Task::vDicStackPush(MP_Task mpTask)
 {
-  ENTRY("vDicPathPush"_Stz);
+  ENTRY("vDicStackPush"_Stz);
   
   Object* pPtrDicStack;
   if ( ! mpTask->m_pDataStack->bPop(pPtrDicStack) )

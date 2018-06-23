@@ -570,12 +570,12 @@ namespace Tasks
     static void vDicWordCount(MP_Task mpTask);
     
     // dicPath
-    static void vDicPathDepth(MP_Task mpTask);
-    static void vDicPathDrop(MP_Task mpTask);
-    static void vDicPathDump(MP_Task mpTask);
-    static void vDicPathPick(MP_Task mpTask);
-    static void vDicPathPop(MP_Task mpTask);
-    static void vDicPathPush(MP_Task mpTask);
+    static void vDicStackDepth(MP_Task mpTask);
+    static void vDicStackDrop(MP_Task mpTask);
+    static void vDicStackDump(MP_Task mpTask);
+    static void vDicStackPick(MP_Task mpTask);
+    static void vDicStackPop(MP_Task mpTask);
+    static void vDicStackPush(MP_Task mpTask);
 
     // dir
     static void vDirChangeCurrent(MP_Task mpTask);
