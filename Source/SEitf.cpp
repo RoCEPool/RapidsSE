@@ -3489,7 +3489,7 @@ bool SEitf::bG35(TokenVec& xTokenVec, i8 iReqNo)
   
   sRequest = SeRequests[iReqNo].aRequest;
   
-  Job_G35* pJob_G35 = new Job_G35;
+  Job_G35* pJob_G35 = new Job_G35(nullptr);
   
   return bAppendRequest_R35(sRequest,xTokenVec.bDetachedRequest(),(Job**)&pJob_G35);
 }

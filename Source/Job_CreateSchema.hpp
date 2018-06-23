@@ -6,7 +6,9 @@
 namespace JobsModel
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class Job_CreateSchema : public Job, public JobDicPath, public JobObjectName
+  class Job_CreateSchema : public Job,
+                           public JobDicPath,
+                           public JobObjectName
   {
   public:
     
@@ -18,7 +20,7 @@ namespace JobsModel
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_CreateSchema(void);
+    Job_CreateSchema(Interface::SEitf* pSEitf);
     ~Job_CreateSchema(void);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

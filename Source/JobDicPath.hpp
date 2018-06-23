@@ -15,7 +15,7 @@ namespace JobsModel
   public:
     void* operator new(size_t);
   
-    JobDicPath(void);
+    JobDicPath(Interface::SEitf* pSEitf);
    ~JobDicPath(void);
   };
 }

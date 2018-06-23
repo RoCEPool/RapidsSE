@@ -6,7 +6,9 @@
 namespace JobsModel
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class Job_DropTable : public Job, public JobDicPath, public JobObjectName
+  class Job_DropTable : public Job,
+                        public JobDicPath,
+                        public JobObjectName
   {
   public:
   
@@ -18,7 +20,7 @@ namespace JobsModel
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_DropTable(void);
+    Job_DropTable(Interface::SEitf* pSEitf);
     ~Job_DropTable(void);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

@@ -466,7 +466,7 @@ void Task::vJobParticipantFetch(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.partcipant! -- stote the participant node in the job                   */
+/* job.partcipant! -- store the participant node in the job                   */
 /*----------------------------------------------------------------------------*/
 void Task::vJobParticipantStore(MP_Task mpTask)
 {

@@ -56,8 +56,8 @@ void Job_CreateTable::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_CreateTable::Job_CreateTable(void)
-: Job(CN_JOB_CREATETABLE)
+Job_CreateTable::Job_CreateTable(Interface::SEitf* pSEitf)
+: Job(CN_JOB_CREATETABLE), JobDicPath(pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
   

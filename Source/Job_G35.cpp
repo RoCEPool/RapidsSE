@@ -56,8 +56,8 @@ void Job_G35::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_G35::Job_G35(void)
-: Job(CN_JOB_G35)
+Job_G35::Job_G35(Interface::SEitf* pSEitf)
+: Job(CN_JOB_G35), JobDicPath(pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_G35,_FOOTER_);
     

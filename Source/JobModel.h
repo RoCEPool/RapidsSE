@@ -6,6 +6,12 @@
 #include "Plans.h"
 
 //-----------------------------------------------------------------------------
+namespace Interface
+{
+  class SEitf;
+}
+
+//-----------------------------------------------------------------------------
 namespace JobsModel
 {
   void vCheckAssumptions(void);

@@ -23,7 +23,7 @@ void* JobDicPath::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-JobDicPath::JobDicPath(void)
+JobDicPath::JobDicPath(Interface::SEitf* pSEitf)
 {
   m_iDicDepth = -1;
   for (i8 i_Depth = 0; i_Depth < C_MAX_FOLDERS; i_Depth++)

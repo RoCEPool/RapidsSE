@@ -6,7 +6,9 @@
 namespace JobsModel
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class Job_CreateTable : public Job, public JobDicPath, public JobObjectName
+  class Job_CreateTable : public Job,
+                          public JobDicPath,
+                          public JobObjectName
   {
     eTT    m_eTableType;   // table type
     i8     m_iColumns;     // no of columns
@@ -33,7 +35,7 @@ namespace JobsModel
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_CreateTable(void);
+    Job_CreateTable(Interface::SEitf* pSEitf);
     ~Job_CreateTable(void);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
