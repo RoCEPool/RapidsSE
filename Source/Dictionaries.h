@@ -28,6 +28,7 @@ using namespace Dictionaries;
 
 #include "Cell.hpp"
 #include "Dic.hpp"
+#include "DicPath.hpp"
 #include "DicStack.hpp"
 #include "Word.hpp"
 
