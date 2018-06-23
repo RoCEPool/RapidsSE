@@ -8,7 +8,6 @@ namespace JobsModel
   class Job;
   
   static const i8 C_MAX_COLUMNS = 128;
-  static const i8 C_MAX_FOLDERS = 16;
   static const Job* C_JOB_MARKER = (Job*)0xFFFFFFFFFFFFFFFD;
   
   enum eJS // job state

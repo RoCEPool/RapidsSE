@@ -26,7 +26,7 @@ void* JobDicPath::operator new(size_t iSize)
 JobDicPath::JobDicPath(Interface::SEitf* pSEitf)
 {
   m_iDicDepth = -1;
-  for (i8 i_Depth = 0; i_Depth < C_MAX_FOLDERS; i_Depth++)
+  for (i8 i_Depth = 0; i_Depth < C_DIC_STACK; i_Depth++)
     m_sDicPath[i_Depth] = ""_Stz;
 }
 

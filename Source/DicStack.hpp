@@ -8,11 +8,10 @@ namespace Dictionaries
   class DicStack : public Object
   {
   private:
-    static const i8 C_DICTIONARY_STACK = 32;
     
   private:
     i8    m_iTop;
-    Dic*  m_pDic[C_DICTIONARY_STACK];
+    Dic*  m_pDic[C_DIC_STACK];
     
     // must be last
     Footer m_xFooter;
