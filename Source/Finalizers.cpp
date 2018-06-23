@@ -50,6 +50,7 @@ pFINALIZE *gpFinalize[]
   /* 32 */ &Finalize::vUndefined,         // CN_COLUMNVEC
   
   /* 33 */ &Dic::vFinalize,               // CN_DIC
+  /*    */ &Finalize::vUndefined,         // CN_DICPATH
   /* 34 */ &Finalize::vUndefined,         // CN_DICSTACK
   /* 35 */ &Finalize::vUndefined,         // CN_DIR
   

@@ -54,6 +54,7 @@ enum eCN : u2 // Class Number
     /* 32 */ CN_COLUMNVEC,
   
     /* 33 */ CN_DIC,
+    /*    */ CN_DICPATH,
     /* 34 */ CN_DICSTACK,
     /* 35 */ CN_DIR,
   
@@ -230,7 +231,7 @@ enum eCN : u2 // Class Number
 /*----------------------------------------------------------------------------*/
   static Stz* aCN[]
   {
-    /*  0 */ "NONE"_Stz,   // CN_
+    /*  0 */ "NONE"_Stz,     // CN_
   
     /*  1 */ "BCDVAL"_Stz,   // CN_
     /*  2 */ "BINVAL"_Stz,   // CN_
@@ -239,7 +240,7 @@ enum eCN : u2 // Class Number
     /*  5 */ "ENTWRK"_Stz,   // CN_
     /*  6 */ "FLTVAL"_Stz,   // CN_
     /*  7 */ "INTVAL"_Stz,   // CN_
-    /*  8 */ "IPVAL"_Stz,   // CN_
+    /*  8 */ "IPVAL"_Stz,    // CN_
     /*  9 */ "IVLVAL"_Stz,   // CN_
     /* 10 */ "OBJVAL"_Stz,   // CN_
     /* 11 */ "PTRVAL"_Stz,   // CN_
@@ -269,6 +270,7 @@ enum eCN : u2 // Class Number
     /* 32 */ "COLUMNVEC"_Stz,          // CN_COLUMNVEC
     
     /* 33 */ "DIC"_Stz,                // CN_DIC
+    /*    */ "DICPATH"_Stz,            // CN_DICPATH
     /* 34 */ "DICSTACK"_Stz,           // CN_DICSTACK
     /* 35 */ "DIR"_Stz,                // CN_DIR
     
@@ -364,22 +366,22 @@ enum eCN : u2 // Class Number
     /* 93 */ "PROXYSET"_Stz,           // CN_
     /* 94 */ "PTNCOLVEC"_Stz,          // CN_
     
-    /* 95 */ "QUEUE"_Stz,   // CN_
-    /* 96 */ "QUEUEBUFFER"_Stz,   // CN_
-    /*    */ "QUEUES"_Stz,   // CN_
+    /* 95 */ "QUEUE"_Stz,              // CN_
+    /* 96 */ "QUEUEBUFFER"_Stz,        // CN_
+    /*    */ "QUEUES"_Stz,             // CN_
   
-    /* 97 */ "RBCURSOR"_Stz,   // CN_
-    /*    */ "REGFRAME"_Stz,   // CN_
+    /* 97 */ "RBCURSOR"_Stz,           // CN_
+    /*    */ "REGFRAME"_Stz,           // CN_
     
-    /*101 */ "RING"_Stz,   // CN_
-    /*102 */ "ROARRAY"_Stz,   // CN_
-    /*103 */ "ROWBUFFER"_Stz,   // CN_
-    /*104 */ "ROWCURSOR"_Stz,   // CN_
-    /*105 */ "ROWONCE"_Stz,   // CN_
-    /*106 */ "ROWWRK"_Stz,   // CN_
+    /*101 */ "RING"_Stz,               // CN_
+    /*102 */ "ROARRAY"_Stz,            // CN_
+    /*103 */ "ROWBUFFER"_Stz,          // CN_
+    /*104 */ "ROWCURSOR"_Stz,          // CN_
+    /*105 */ "ROWONCE"_Stz,            // CN_
+    /*106 */ "ROWWRK"_Stz,             // CN_
   
-    /*107 */ "SCANBUFFER"_Stz,   // CN_
-    /*108 */ "SCRATCH"_Stz,   // CN_
+    /*107 */ "SCANBUFFER"_Stz,         // CN_
+    /*108 */ "SCRATCH"_Stz,            // CN_
     /*109 */ "SEHISTORY"_Stz,   // CN_
     /*110 */ "SEITF"_Stz,   // CN_
     /*111 */ "SEITFCURSOR"_Stz,   // CN_
