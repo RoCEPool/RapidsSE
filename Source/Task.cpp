@@ -561,7 +561,7 @@ void Task::vAddConstants(void)
   /* 17 */ vAddConstant("CN_BPA"_Stz,          CN_BPA);
   
   /* 18 */ vAddConstant("CN_DIC"_Stz,          CN_DIC);
-  /* 19 */ vAddConstant("CN_DICPATH"_Stz,      CN_DICPATH);
+  /* 19 */ vAddConstant("CN_DICSTACK"_Stz,      CN_DICSTACK);
   /* 20 */ vAddConstant("CN_DIR"_Stz,          CN_DIR);
   
   /* 21 */ vAddConstant("CN_FILE"_Stz,         CN_FILE);

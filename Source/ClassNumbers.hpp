@@ -54,7 +54,7 @@ enum eCN : u2 // Class Number
     /* 32 */ CN_COLUMNVEC,
   
     /* 33 */ CN_DIC,
-    /* 34 */ CN_DICPATH,
+    /* 34 */ CN_DICSTACK,
     /* 35 */ CN_DIR,
   
     /* 36 */ CN_ENTRY,
@@ -251,30 +251,30 @@ enum eCN : u2 // Class Number
     /* 17 */ "VALSET"_Stz,   // CN_
     /* 18 */ "VALWRK"_Stz,   // CN_
     
-    /* 19 */ "ACCESSPATH"_Stz,   // CN_
-    /* 20 */ "ACCUM"_Stz,   // CN_
-    /* 21 */ "ACCUMVEC"_Stz,   // CN_
-    /* 22 */ "ARG"_Stz,   // CN_
-    /* 23 */ "ARGUMENTS"_Stz,   // CN_
-    /* 24 */ "ATOMIC"_Stz,   // CN_
-    /* 25 */ "ATTACHMAP"_Stz,   // CN_
+    /* 19 */ "ACCESSPATH"_Stz,         // CN_ACCESSPATH
+    /* 20 */ "ACCUM"_Stz,              // CN_ACCUM
+    /* 21 */ "ACCUMVEC"_Stz,           // CN_ACCUMVEC
+    /* 22 */ "ARG"_Stz,                // CN_ARG
+    /* 23 */ "ARGUMENTS"_Stz,          // CN_ARGUMENTS
+    /* 24 */ "ATOMIC"_Stz,             // CN_ATOMIC
+    /* 25 */ "ATTACHMAP"_Stz,          // CN_ATTACHMAP
     
-    /* 26 */ "BITARRAY"_Stz,   // CN_
-    /* 27 */ "BITMAP"_Stz,   // CN_
-    /* 28 */ "BUFFERPOOL"_Stz,   // CN_
-    /* 29 */ "BPA"_Stz,   // CN_
+    /* 26 */ "BITARRAY"_Stz,           // CN_BITARRAY
+    /* 27 */ "BITMAP"_Stz,             // CN_BITMAP
+    /* 28 */ "BUFFERPOOL"_Stz,         // CN_BUFFERPOOL
+    /* 29 */ "BPA"_Stz,                // CN_BPA
   
-    /* 30 */ "CARRYOVER"_Stz,   // CN_
-    /* 31 */ "COLUMN"_Stz,   // CN_
-    /* 32 */ "COLUMNVEC"_Stz,   // CN_
+    /* 30 */ "CARRYOVER"_Stz,          // CN_CARRYOVER
+    /* 31 */ "COLUMN"_Stz,             // CN_COLUMN
+    /* 32 */ "COLUMNVEC"_Stz,          // CN_COLUMNVEC
     
-    /* 33 */ "DIC"_Stz,   // CN_
-    /* 34 */ "DICPATH"_Stz,   // CN_
-    /* 35 */ "DIR"_Stz,   // CN_
+    /* 33 */ "DIC"_Stz,                // CN_DIC
+    /* 34 */ "DICSTACK"_Stz,           // CN_DICSTACK
+    /* 35 */ "DIR"_Stz,                // CN_DIR
     
-    /* 36 */ "ENTRY"_Stz,   // CN_
-    /* 37 */ "ENTRYBUFFER"_Stz,   // CN_
-    /* 38 */ "ENTRYVEC"_Stz,   // CN_
+    /* 36 */ "ENTRY"_Stz,              // CN_ENTRY
+    /* 37 */ "ENTRYBUFFER"_Stz,        // CN_ENTRYBUFFER
+    /* 38 */ "ENTRYVEC"_Stz,           // CN_ENTRYVEC
   
     /* 39 */ "FILE"_Stz,               // CN_FILE
     /* 40 */ "FORMATTERS"_Stz,         // CN_FORMATTERS
@@ -358,11 +358,11 @@ enum eCN : u2 // Class Number
     /* 87 */ "PLANNER"_Stz,            // CN_
     /* 88 */ "PLANLIST"_Stz,           // CN_
     /* 89 */ "POSIXTHREAD"_Stz,        // CN_
-    /* 90 */ "PREDICATE"_Stz,   // CN_
-    /* 91 */ "PREDICATEVEC"_Stz,   // CN_
-    /* 92 */ "PROXY"_Stz,   // CN_
-    /* 93 */ "PROXYSET"_Stz,   // CN_
-    /* 94 */ "PTNCOLVEC"_Stz,   // CN_
+    /* 90 */ "PREDICATE"_Stz,          // CN_
+    /* 91 */ "PREDICATEVEC"_Stz,       // CN_
+    /* 92 */ "PROXY"_Stz,              // CN_
+    /* 93 */ "PROXYSET"_Stz,           // CN_
+    /* 94 */ "PTNCOLVEC"_Stz,          // CN_
     
     /* 95 */ "QUEUE"_Stz,   // CN_
     /* 96 */ "QUEUEBUFFER"_Stz,   // CN_

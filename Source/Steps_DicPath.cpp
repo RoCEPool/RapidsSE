@@ -35,7 +35,7 @@ void Task::vDicPathDepth(MP_Task mpTask)
     THROW_INVALID_DSTACK("dicPath.depth"_Stz);
   
   DicStack* pDicPath = (DicStack*)(pPtrDicStack);
-  ASSERT(CN_DICPATH == pDicPath->eClass());
+  ASSERT(CN_DICSTACK == pDicPath->eClass());
   
   i8 iDepth = pDicPath->iCount();
   
@@ -56,7 +56,7 @@ void Task::vDicPathDrop(MP_Task mpTask)
     THROW_INVALID_DSTACK("dicPath.drop"_Stz);
   
   DicStack* pDicPath = (DicStack*)(pPtrDicStack);
-  ASSERT(CN_DICPATH == pDicPath->eClass());
+  ASSERT(CN_DICSTACK == pDicPath->eClass());
   
   pDicPath->vDiscard();
   
@@ -75,7 +75,7 @@ void Task::vDicPathDump(MP_Task mpTask)
     THROW_INVALID_DSTACK("dicPath.dump"_Stz);
   
   DicStack* pDicPath = (DicStack*)(pPtrDicStack);
-  ASSERT(CN_DICPATH == pDicPath->eClass());
+  ASSERT(CN_DICSTACK == pDicPath->eClass());
   
   pDicPath->vContentDump();
   
@@ -94,7 +94,7 @@ void Task::vDicPathPick(MP_Task mpTask)
     THROW_INVALID_DSTACK("dicPath.pick"_Stz);
   
   DicStack* pDicPath = (DicStack*)(pPtrDicStack);
-  ASSERT(CN_DICPATH == pDicPath->eClass());
+  ASSERT(CN_DICSTACK == pDicPath->eClass());
   
   i8 iDic;
   if ( ! mpTask->m_pDataStack->bPop(iDic) )
@@ -119,7 +119,7 @@ void Task::vDicPathPop(MP_Task mpTask)
     THROW_INVALID_DSTACK("dicPath.pop"_Stz);
   
   DicStack* pDicPath = (DicStack*)(pPtrDicStack);
-  ASSERT(CN_DICPATH == pDicPath->eClass());
+  ASSERT(CN_DICSTACK == pDicPath->eClass());
   
   pDicPath->vPop();
   
@@ -138,7 +138,7 @@ void Task::vDicPathPush(MP_Task mpTask)
     THROW_INVALID_DSTACK("dicPath.push"_Stz);
   
   DicStack* pDicPath = DicStack::_pDicStack(pPtrDicStack);
-  ASSERT(CN_DICPATH == pDicPath->eClass());
+  ASSERT(CN_DICSTACK == pDicPath->eClass());
   
   Object* pPtrDic;
   
