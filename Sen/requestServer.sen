@@ -28,17 +28,17 @@ queue: requestQueue
   locals| pDicStackTask |
 
   // copy the path from seitf dic stack onto data stack
-  pDicStackSEitf dicPath.depth 0 ?do
-    I pDicStackSEitf dicPath.pick
+  pDicStackSEitf dicStack.depth 0 ?do
+    I pDicStackSEitf dicStack.pick
   loop
 
   // clear this tasks dic stack
-  pDicStackTask dicPath.dropAll
-  //dicStackTask dicPath.dump
+  pDicStackTask dicStack.dropAll
+  //dicStackTask dicStack.dump
 
   // copy the path from data stack onto this task dic stack
-  pDicStackSEitf dicPath.depth 0 ?do
-    pDicStackTask dicPath.push
+  pDicStackSEitf dicStack.depth 0 ?do
+    pDicStackTask dicStack.push
   loop
 ;
 
@@ -56,16 +56,16 @@ queue: requestQueue
   locals| pDicStackTask |
 
   // copy the path from task dic stack onto data stack
-  pDicStackTask dicPath.depth 0 ?do
-    I pDicStackTask dicPath.pick
+  pDicStackTask dicStack.depth 0 ?do
+    I pDicStackTask dicStack.pick
   loop
 
   // clear seitf dic stack
-  pDicStackSEitf dicPath.dropAll
+  pDicStackSEitf dicStack.dropAll
 
   // copy the path from data stack onto seitf dic stack
-  pDicStackTask dicPath.depth 0 ?do
-    pDicStackSEitf dicPath.push
+  pDicStackTask dicStack.depth 0 ?do
+    pDicStackSEitf dicStack.push
   loop
 ;
 
@@ -102,7 +102,7 @@ tp: valset
   task::this task.seitf@ assert
 
   // assert no dictionary path
-  task::this task.dicStack dicPath.depth not assert
+  task::this task.dicStack dicStack.depth not assert
 
   // copy dictionary path from seitf to this request task
   getPath
@@ -128,7 +128,7 @@ tp: !req_exit
 
   savePath
 
-  dicPath.clear
+  dicStack.clear
 
   //"rspque" find execute queue.append
   task::this task.seitf@ seitf.responseQueue queue.append

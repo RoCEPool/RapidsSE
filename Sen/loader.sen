@@ -37,7 +37,7 @@ tp: parallelTableLoader
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the dictionary path for this table loader on this node
 
-  "tenants" 1 dicPath.set
+  "tenants" 1 dicStack.set
 
   "boray" find execute
   pathPush

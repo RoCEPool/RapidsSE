@@ -106,7 +106,7 @@
 
   // expand dic stack valset and set
   valset> drop to sFldDel
-  dicPath.set
+  dicStack.set
 
   // expand args valset
   valset> drop
@@ -293,7 +293,7 @@ tp: theIndirectResult
   task::this task.taskset!
 
   // expand dic stack valset and set
-  valset> drop dicPath.set
+  valset> drop dicStack.set
 
   // expand args valset
   valset> drop

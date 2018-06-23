@@ -25,9 +25,9 @@ common/ write nStreams    /
   then
 
   // get file name
-  thePlan plan.dic task::this task.dicStack dicPath.push
+  thePlan plan.dic task::this task.dicStack dicStack.push
   $$fileNm //dup .
-  task::this task.dicStack dicPath.drop
+  task::this task.dicStack dicStack.drop
 
   // create a file pointer
   file::new toCommon filePointer
@@ -118,7 +118,7 @@ common/ write nStreams    /
   // record the plan and profile
   0 locals| pTablePtr thePlan profile pSeitf |
 
-  "tenants" 1 dicPath.set
+  "tenants" 1 dicStack.set
 
   // [0] push thePlan's dictionary onto path stack
   thePlan plan.dic pathPush
@@ -202,7 +202,7 @@ common/ write nStreams    /
   // first pop the plan dic as plan may have gotten deleted
   pathPop
 
-  dicPath.clear
+  dicStack.clear
 ;
 
 /*----------------------------------------------------------------------------*/

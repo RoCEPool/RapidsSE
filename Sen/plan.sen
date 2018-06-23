@@ -138,13 +138,13 @@ tp: >>jobQueue_otherNode
 
   dup ( plan plan )
 
-  plan.dic task::this task.dicStack dicPath.push ( plan )
+  plan.dic task::this task.dicStack dicStack.push ( plan )
   //pathDump
 
   //plan.lambda@ .
   plan.lambda@ >:
 
-  task::this task.dicStack dicPath.drop
+  task::this task.dicStack dicStack.drop
 
   0 task::this task.plan!
 ;

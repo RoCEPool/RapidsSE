@@ -110,7 +110,7 @@
   CN_STRVAL assert::class_0
 
   // assert dictionary path
-  task::this task.dicStack dicPath.depth assert
+  task::this task.dicStack dicStack.depth assert
 
   0 pathPick dic.name str.equal
 ;

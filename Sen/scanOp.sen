@@ -20,8 +20,8 @@ common/ scan rbCrs /
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set path (hardcoded for the moment)
 
-  //"tables" "tpchSchema" "schemas" "rapidsse" "catalogs" "boray" "tenants" 7 dicPath.set
-  "tenants" 1 dicPath.set
+  //"tables" "tpchSchema" "schemas" "rapidsse" "catalogs" "boray" "tenants" 7 dicStack.set
+  "tenants" 1 dicStack.set
 
   // [0] push thePlan's dictionary onto path stack
   thePlan plan.dic pathPush
@@ -38,7 +38,7 @@ common/ scan rbCrs /
   pathDrop
 
   // now create the dictionary path again with the catalog and schemaNm
-  "catalogs" "boray" "tenants" 3 dicPath.set
+  "catalogs" "boray" "tenants" 3 dicStack.set
 
   // push tableNm folder on the dictionary path
   catalogNm find execute
@@ -109,7 +109,7 @@ common/ scan rbCrs /
   // pop the plan dic as plan may have gotten deleted
   pathPop
 
-  dicPath.clear
+  dicStack.clear
 ;
 
 /*----------------------------------------------------------------------------*/

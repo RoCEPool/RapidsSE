@@ -220,7 +220,7 @@
   pushIndexColumns assert
 
   // double check the path
-  //task::this task.dicStack dicPath.dump
+  //task::this task.dicStack dicStack.dump
 
   // iterate contents of columns dictionary 
   0 pathPick dic.lastWord dup

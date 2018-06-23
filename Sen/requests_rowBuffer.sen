@@ -101,7 +101,7 @@ tp: printRB$
 
   drop
 
-  //dup "dicPath.set" str.equal
+  //dup "dicStack.set" str.equal
   //if
 //tp: settingDicStack
   //  !indirect drop

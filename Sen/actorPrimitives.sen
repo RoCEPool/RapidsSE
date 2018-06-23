@@ -389,13 +389,13 @@ tp: addingSetCaller
 /*----------------------------------------------------------------------------*/
 /* add call to set dic path                                                   */
 /*----------------------------------------------------------------------------*/
-: addSetDicPath ( valset -- valset )
+: addSetDicStack ( valset -- valset )
 
-  // add dicPath.set indirect
+  // add dicStack.set indirect
   pathGet ( valset path... #folders )
-  "dicPath.set" ( valset path... #folders "dicPath.set" )
+  "dicStack.set" ( valset path... #folders "dicStack.set" )
 
-tp: addingSetDicPath
+tp: addingSetDicStack
 
   >> ( valset )
 ;

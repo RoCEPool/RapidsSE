@@ -17,7 +17,7 @@ common/ print nFetchPartitions /
   // record the plan and profile
   0 0 locals| pIndexBuffer pBufferQueue bFetchStarted thePlan profile pSeitf |
 
-  "tenants" 1 dicPath.set
+  "tenants" 1 dicStack.set
 
   // [0] push thePlan's dictionary onto path stack
   thePlan plan.dic pathPush
@@ -80,9 +80,9 @@ common/ print nFetchPartitions /
   opFrame.drop
 
   // first pop the plan dic as plan may have gotten deleted
-  dicPath.pop
+  dicStack.pop
 
-  dicPath.clear
+  dicStack.clear
 
   // return fetch started
   bFetchStarted

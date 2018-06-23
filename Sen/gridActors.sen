@@ -122,8 +122,8 @@ tp: resumedbyCoord
   // save the node number
   >r
 
-  // add call to setDicPath to be same as this req.task (run by participant)
-  addSetDicPath ( <<call>> )
+  // add call to setDicStack to be same as this req.task (run by participant)
+  addSetDicStack ( <<call>> )
 
   // add indirect call to participant on given node
   r> addSendParticipant ( <<call>> )
@@ -160,8 +160,8 @@ tp: >>allParticipants>
 
   task::this task.name@ "req.task" str.equal assert
 
-  // add call to setDicPath to be same as this req.task (run by participant)
-  addSetDicPath ( <<call>> )
+  // add call to setDicStack to be same as this req.task (run by participant)
+  addSetDicStack ( <<call>> )
 
   // add indirect call to participants
   addSendParticipants ( <<call>> )

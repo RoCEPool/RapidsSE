@@ -569,7 +569,7 @@ namespace Tasks
     static void vDicRef(MP_Task mpTask);
     static void vDicWordCount(MP_Task mpTask);
     
-    // dicPath
+    // dicStack
     static void vDicStackDepth(MP_Task mpTask);
     static void vDicStackDrop(MP_Task mpTask);
     static void vDicStackDump(MP_Task mpTask);
