@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* DicPath.cpp - dictionary stack                                            */
+/* DicStack.cpp - dictionary stack                                            */
 /*============================================================================*/
 
 #include "Dictionaries.h"
@@ -10,19 +10,19 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-DicPath* DicPath::_pDicStack(void* aAddr)
+DicStack* DicStack::_pDicStack(void* aAddr)
 {
-  DicPath* pDicPath = reinterpret_cast<DicPath*>(aAddr);
+  DicStack* pDicStack = reinterpret_cast<DicStack*>(aAddr);
   
-  RASSERT( !pDicPath || CN_DICPATH == pDicPath->eClass() );
+  RASSERT( !pDicStack || CN_DICPATH == pDicStack->eClass() );
   
-  return pDicPath;
+  return pDicStack;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* DicPath::operator new(size_t iSize)
+void* DicStack::operator new(size_t iSize)
 {
   RASSERT(iSize);
   vFatal("fatal: DictionaryStack class cannot be new'd"_Stz);
@@ -33,7 +33,7 @@ void* DicPath::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void DicPath::operator delete(void* aAddress)
+void DicStack::operator delete(void* aAddress)
 {
   RASSERT(aAddress);
   vFatal("fatal: DictionaryStack class cannot be deleted"_Stz);
@@ -44,7 +44,7 @@ void DicPath::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-DicPath::DicPath(void)
+DicStack::DicStack(void)
 : Object(CN_DICPATH)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
@@ -62,7 +62,7 @@ DicPath::DicPath(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-DicPath::~DicPath(void)
+DicStack::~DicStack(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
   
@@ -73,7 +73,7 @@ DicPath::~DicPath(void)
 /*----------------------------------------------------------------------------*/
 /* get number of dictionaries in the stack                                    */
 /*----------------------------------------------------------------------------*/
-i8 DicPath::iCount(void)
+i8 DicStack::iCount(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
   
@@ -83,7 +83,7 @@ i8 DicPath::iCount(void)
 /*----------------------------------------------------------------------------*/
 /* dump stack of dictionaries                                                 */
 /*----------------------------------------------------------------------------*/
-void DicPath::vContentDump(void)
+void DicStack::vContentDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
   
@@ -94,7 +94,7 @@ void DicPath::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 /* discard top dictionary                                                     */
 /*----------------------------------------------------------------------------*/
-void DicPath::vDiscard(void)
+void DicStack::vDiscard(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
   
@@ -114,22 +114,22 @@ void DicPath::vDiscard(void)
 /*----------------------------------------------------------------------------*/
 /* dump dictionary                                                            */
 /*----------------------------------------------------------------------------*/
-void DicPath::vDump(eCN eClass, Object* pObject, Stz* aTab)
+void DicStack::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   RASSERT(eClass == CN_DICPATH);
   RASSERT(pObject->eClass() == CN_DICPATH);
   
-  DicPath* pDicPath = reinterpret_cast<DicPath*>(pObject);
+  DicStack* pDicStack = reinterpret_cast<DicStack*>(pObject);
   
-  vTrace("top %p:"_Stz,pDicPath->m_iTop);
-  //for (i8 i_Dic = pDicPath->m_iTop; i_Dic >= 0; i_Dic --)
-    //vTrace("%s  Dic %p %lld %s\n"_Stz,aTab, pDicPath->m_pDic[i_Dic],i,
-           //pDicPath->m_pDic[i_Dic]->sName().s());
+  vTrace("top %p:"_Stz,pDicStack->m_iTop);
+  //for (i8 i_Dic = pDicStack->m_iTop; i_Dic >= 0; i_Dic --)
+    //vTrace("%s  Dic %p %lld %s\n"_Stz,aTab, pDicStack->m_pDic[i_Dic],i,
+           //pDicStack->m_pDic[i_Dic]->sName().s());
   
-  for (i8 i_Dic = pDicPath->m_iTop; i_Dic >= 0; i_Dic--) {
-    vTrace(" dic %p %lld %s"_Stz,aTab, pDicPath->m_pDic[i_Dic],i_Dic,
-           pDicPath->m_pDic[i_Dic]->sName().aChar());
-    //Dic::vDump(CN_DIC, pDicPath->m_pDic[i], aTab);
+  for (i8 i_Dic = pDicStack->m_iTop; i_Dic >= 0; i_Dic--) {
+    vTrace(" dic %p %lld %s"_Stz,aTab, pDicStack->m_pDic[i_Dic],i_Dic,
+           pDicStack->m_pDic[i_Dic]->sName().aChar());
+    //Dic::vDump(CN_DIC, pDicStack->m_pDic[i], aTab);
   }
 
   vTrace("\n"_Stz);
@@ -141,7 +141,7 @@ void DicPath::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* find word in stack of dictionaries                                         */
 /*----------------------------------------------------------------------------*/
-Word* DicPath::pFindWord(StrVal& sName)
+Word* DicStack::pFindWord(StrVal& sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
   
@@ -153,7 +153,7 @@ Word* DicPath::pFindWord(StrVal& sName)
 /*----------------------------------------------------------------------------*/
 /* find word in stack of dictionaries                                         */
 /*----------------------------------------------------------------------------*/
-Word* DicPath::pFindWord(Stz* aName)
+Word* DicStack::pFindWord(Stz* aName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
   
@@ -176,7 +176,7 @@ Word* DicPath::pFindWord(Stz* aName)
 /*----------------------------------------------------------------------------*/
 /* find word in current dictionary                                            */
 /*----------------------------------------------------------------------------*/
-Word* DicPath::pFindInCurrent(Stz* aName)
+Word* DicStack::pFindInCurrent(Stz* aName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
   
@@ -193,7 +193,7 @@ Word* DicPath::pFindInCurrent(Stz* aName)
 /*----------------------------------------------------------------------------*/
 /* find a word given step                                                     */
 /*----------------------------------------------------------------------------*/
-Word* DicPath::pFindStep(TaskStep pStep)
+Word* DicStack::pFindStep(TaskStep pStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
   
@@ -214,7 +214,7 @@ Word* DicPath::pFindStep(TaskStep pStep)
 /*----------------------------------------------------------------------------*/
 /* locate word in stack of dictionaries                                       */
 /*----------------------------------------------------------------------------*/
-Word* DicPath::pLocate(Cell* pCell)
+Word* DicStack::pLocate(Cell* pCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
 
@@ -236,7 +236,7 @@ Word* DicPath::pLocate(Cell* pCell)
 /*----------------------------------------------------------------------------*/
 /* get a particular dictionary on the stack                                   */
 /*----------------------------------------------------------------------------*/
-Dic* DicPath::pPick(i8 iPick)
+Dic* DicStack::pPick(i8 iPick)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
   
@@ -248,7 +248,7 @@ Dic* DicPath::pPick(i8 iPick)
 /*----------------------------------------------------------------------------*/
 /* pop top dictionary                                                         */
 /*----------------------------------------------------------------------------*/
-void DicPath::vPop(void)
+void DicStack::vPop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
   
@@ -264,7 +264,7 @@ void DicPath::vPop(void)
 /*----------------------------------------------------------------------------*/
 /* push dictionary onto stack                                                 */
 /*----------------------------------------------------------------------------*/
-void DicPath::vPush(Dic* pDic)
+void DicStack::vPush(Dic* pDic)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
   
@@ -283,7 +283,7 @@ void DicPath::vPush(Dic* pDic)
 /*----------------------------------------------------------------------------*/
 /* forget word in stack of dictionaries                                       */
 /*----------------------------------------------------------------------------*/
-Word* DicPath::pRemoveWord(StrVal& sName)
+Word* DicStack::pRemoveWord(StrVal& sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
   
@@ -302,7 +302,7 @@ Word* DicPath::pRemoveWord(StrVal& sName)
 /*----------------------------------------------------------------------------*/
 /* get topmost dictionary                                                     */
 /*----------------------------------------------------------------------------*/
-Dic* DicPath::pTop(void)
+Dic* DicStack::pTop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
 
@@ -321,7 +321,7 @@ Dic* DicPath::pTop(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* DicPath::aFooter(void)
+Footer* DicStack::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH);
   

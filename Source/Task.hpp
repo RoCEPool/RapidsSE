@@ -166,7 +166,7 @@ namespace Tasks
     Stack*  m_pDataStack;   // data stack
     Stack*  m_pReturnStack; // return stack
     Stack*  m_pAuxStack;    // auxiliary stack
-    DicPath m_xPathStack;   // path stack
+    DicStack m_xPathStack;   // dictionary stack
     
     RegFrame* m_pRegFrame;    // register frame chain
     RegFrame* m_pLocalsFrame; // local register frame chain

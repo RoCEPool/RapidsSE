@@ -829,7 +829,7 @@ void Task::vAddConstants(void)
   /* 12 */ vAddConstant("SIZEOF_BUFFERPOOL"_Stz,   sizeof(BufferPool));
   /* 13 */ vAddConstant("SIZEOF_BPA"_Stz,          sizeof(BPA));
   /* 14 */ vAddConstant("SIZEOF_DIC"_Stz,          sizeof(Dic));
-  /* 15 */ vAddConstant("SIZEOF_DICPATH"_Stz,      sizeof(DicPath));
+  /* 15 */ vAddConstant("SIZEOF_DICSTACK"_Stz,     sizeof(DicStack));
   /* 16 */ vAddConstant("SIZEOF_DIR"_Stz,          sizeof(Dir));
   /* 17 */ vAddConstant("SIZEOF_FILE"_Stz,         sizeof(File));
   /* 18 */ vAddConstant("SIZEOF_FREECHUNK"_Stz,    sizeof(FreeChunk));

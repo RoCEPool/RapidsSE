@@ -15,7 +15,7 @@ namespace Interface
     i8     m_iSlots;           // number of partition slots in each node
     i8     m_iPartition;       // which partition this seitf connects to
     
-    DicPath m_xPathStack;      // path stack
+    DicStack m_xPathStack;      // dictionary stack
     
     Queue* m_pRequestQueue;    // request queue
     Queue* m_pResponseQueue;   // response queue
@@ -100,7 +100,7 @@ namespace Interface
     i8     nLastBuffers(void);
     void   vLastBuffers(i8 nLastBuffer);
   
-    DicPath* pPathStack(void);
+    DicStack* pPathStack(void);
     
     void   vRequestQueue(Queue* pRequestQueue);
     Queue* pRequestQueue(void);

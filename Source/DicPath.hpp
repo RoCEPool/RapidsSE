@@ -5,7 +5,7 @@
 
 namespace Dictionaries
 {
-  class DicPath : public Object
+  class DicStack : public Object
   {
   private:
     static const i8 C_DICTIONARY_STACK = 32;
@@ -21,26 +21,25 @@ namespace Dictionaries
     void* operator new(size_t);
     void  operator delete(void*);
     
-    DicPath(void);
-    ~DicPath(void);
+    DicStack(void);
+    ~DicStack(void);
     
-    static DicPath* _pDicStack(void* aAddr);
+    static DicStack* _pDicStack(void* aAddr);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
-    i8   iCount(void);
-
-    void vContentDump(void);
-    void vDiscard(void);
+    i8    iCount(void);
+    void  vContentDump(void);
+    void  vDiscard(void);
     Word* pFindWord(StrVal& sName);
     Word* pFindWord(Stz* aName);
     Word* pFindInCurrent(Stz* aName);
     Word* pFindStep(TaskStep pStep);
     Word* pRemoveWord(StrVal& sName);
     Word* pLocate(Cell* pCell);
-    Dic* pPick(i8 iDic);
-    void vPop(void);
-    void vPush(Dic* pDic);
-    Dic* pTop(void);
+    Dic*  pPick(i8 iDic);
+    void  vPop(void);
+    void  vPush(Dic* pDic);
+    Dic*  pTop(void);
     
     Footer* aFooter(void);
   };

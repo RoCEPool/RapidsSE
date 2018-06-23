@@ -268,7 +268,7 @@ void SEitf::vBufferQueue(Queue* pBufferQueue)
 /*----------------------------------------------------------------------------*/
 /* get path stack                                                             */
 /*----------------------------------------------------------------------------*/
-DicPath* SEitf::pPathStack(void)
+DicStack* SEitf::pPathStack(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
 
