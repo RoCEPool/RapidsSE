@@ -9,8 +9,7 @@ namespace JobsModel
   class JobDicPath
   {
   public:
-    i8   m_iDicDepth;               // depth of dictionary path
-    s256 m_sDicPath[C_DIC_STACK];   // dictionary path
+    DicPath m_xDicPath; // dictionary path
   
   public:
     void* operator new(size_t);
