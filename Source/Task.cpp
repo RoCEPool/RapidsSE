@@ -1013,6 +1013,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_Debug();
   vAddPrimitives_Dic();
   vAddPrimitives_DicLock();
+  vAddPrimitives_DicPath();
   vAddPrimitives_DicStack();
   vAddPrimitives_Dir();
   vAddPrimitives_Docol();

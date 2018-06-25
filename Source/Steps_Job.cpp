@@ -21,6 +21,7 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.class"_Stz,            &vJobClass,            false);
   vAddPrimitive("job.delete"_Stz,           &vJobDelete,           false);
   vAddPrimitive("job.decAcksRemaining"_Stz, &vJobDecAcksRemaining, false);
+  vAddPrimitive("job.dicPath"_Stz,          &vJobDicPath,          false);
   vAddPrimitive("job.error@"_Stz,           &vJobErrorFetch,       false);
   vAddPrimitive("job.error!"_Stz,           &vJobErrorStore,       false);
   vAddPrimitive("job.execute@"_Stz,         &vJobExecuteFetch,     false);
@@ -189,6 +190,13 @@ void Task::vJobDelete(MP_Task mpTask)
       break;
     }
       
+    case CN_JOB_DROPSCHEMA:
+    {
+      Job_DropSchema* pJobDropSchema = _pJob_DropSchema(pJobPtr);
+      delete pJobDropSchema;
+      break;
+    }
+      
     default:
       ASSERT(0);
   }
@@ -211,6 +219,23 @@ void Task::vJobDecAcksRemaining(MP_Task mpTask)
   --pJob->m_ziAcksRemaining;
   
   mpTask->m_pDataStack->vPushInt(*pJob->m_ziAcksRemaining);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.dicPath -- get job dic path                                            */
+/*----------------------------------------------------------------------------*/
+void Task::vJobDicPath(MP_Task mpTask)
+{
+  ENTRY("vJobDicPath"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.dicPath"_Stz);
+  Job_CreateSchema* pJob = _pJob_CreateSchema(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushObject(&pJob->m_xDicPath);
   
   EXIT();
 }

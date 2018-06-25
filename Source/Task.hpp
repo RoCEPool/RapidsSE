@@ -333,6 +333,7 @@ namespace Tasks
     void vAddPrimitives_Debug(void);
     void vAddPrimitives_Dic(void);
     void vAddPrimitives_DicLock(void);
+    void vAddPrimitives_DicPath(void);
     void vAddPrimitives_DicStack(void);
     void vAddPrimitives_Dir(void);
     void vAddPrimitives_Docol(void);
@@ -568,6 +569,11 @@ namespace Tasks
     static void vDicName(MP_Task mpTask);
     static void vDicRef(MP_Task mpTask);
     static void vDicWordCount(MP_Task mpTask);
+    
+    // dicPath
+    static void vDicPathDepth(MP_Task mpTask);
+    static void vDicPathDump(MP_Task mpTask);
+    static void vDicPathPick(MP_Task mpTask);
     
     // dicStack
     static void vDicStackDepth(MP_Task mpTask);
@@ -817,6 +823,7 @@ namespace Tasks
     static void vJobClass(MP_Task mpTask);
     static void vJobDelete(MP_Task mpTask);
     static void vJobDecAcksRemaining(MP_Task mpTask);
+    static void vJobDicPath(MP_Task mpTask);
     static void vJobErrorFetch(MP_Task mpTask);
     static void vJobErrorStore(MP_Task mpTask);
     static void vJobExecuteFetch(MP_Task mpTask);
