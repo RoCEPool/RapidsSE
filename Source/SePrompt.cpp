@@ -1420,7 +1420,7 @@ bool SePrompt::bCmd_DropSchemaR35(void)
   i8 iNumTokens;
   
   ASSERT(m_xTokenVec[0]->bSame("drop"_Stz));
-  ASSERT(m_xTokenVec[1]->bSame("schemaR35"_Stz));
+  ASSERT(m_xTokenVec[1]->bSame("R35schema"_Stz));
   
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
     if (! m_xTokenVec[i_Token]->bHasText())

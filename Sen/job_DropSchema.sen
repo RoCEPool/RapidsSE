@@ -13,6 +13,16 @@
 
   CN_JOB_DROPSCHEMA pJob_DropSchema object.assertClass
 
+  ddlLock::grabWrite
+
+  pJob_DropSchema getPathR35
+  dicStack.set
+  pJob_DropSchema job.objectName@   ( schemaNm )
+
+  removeSchemaR35 ( )  not if "got error" . exit then
+
+  ddlLock::testDrop
+
   pJob_DropSchema job.notice
 ;
 

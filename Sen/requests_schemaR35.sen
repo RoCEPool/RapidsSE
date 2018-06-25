@@ -60,16 +60,44 @@
 /*----------------------------------------------------------------------------*/
 : dropSchemaR35_req ( "<schemaNm>" -- <R> )
 
+  0 0 locals| pJob pTask |
+
   tp: dropSchema
 
-  ddlLock::grabWrite
+  // get the task
+  task::this to pTask
 
-  checkRemoveSchema not if <NIP+ERROR> exit then
-  removeSchema ( )  not if <NIP+ERROR> exit then
+  // get the job from the task
+  pTask task.job@ to pJob
 
-  tp: droppedSchema
+  // get the schema name from the kob
+  pJob job.objectName@
+  checkRemoveSchema  not if <NIP+ERROR> exit then
 
-  <OK>
+  // add job to originator jobs
+  pJob job.addOriginator
+
+  // set the no of acks expected in originator job to nodes in the grid
+  grid::nodes pJob job.acksRemaining!
+
+  // send the job to each node in the grid
+  grid::nodes 0 do
+
+  // set the send node
+  I grid::node pTask task.sendNode!
+  task.send
+
+  // send job to each node
+  pJob 1
+  >valset
+  >socketR35
+
+  loop
+
+  // now delete this job
+  //pJob job.delete
+
+  <SUCCESS>
 ;
 
 /*----------------------------------------------------------------------------*/
