@@ -62,6 +62,7 @@ ReqTable SeRequests[] =
  { "mkcat"_Stz,          &SEitf::bCreateCatalog,        "createCatalog_req"_Stz   },
  { "mkidx"_Stz,          &SEitf::bCreateIndex,          "createIndex_req"_Stz     },
  { "mksch"_Stz,          &SEitf::bCreateSchema,         "createSchema_req"_Stz    },
+ { "mkschR35"_Stz,       &SEitf::bCreateSchemaR35,      "createSchemaR35_req"_Stz    },
  { "mktbl"_Stz,          &SEitf::bCreateTable,          "createTable_req"_Stz     },
  { "mkten"_Stz,          &SEitf::bCreateTenant,         "createTenant_req"_Stz    },
  { "mon"_Stz,            &SEitf::bGetMonitor,           "getMonitor_req"_Stz      },
@@ -79,6 +80,7 @@ ReqTable SeRequests[] =
  { "rmdic"_Stz,          &SEitf::bRemoveFolder,         "remove_folder"_Stz       },
  { "rmidx"_Stz,          &SEitf::bDropIndex,            "dropIndex_req"_Stz       },
  { "rmsch"_Stz,          &SEitf::bDropSchema,           "dropSchema_req"_Stz      },
+ { "rmschR35"_Stz,       &SEitf::bDropSchemaR35,         "dropSchema_reqR35"_Stz      },
  { "rmtbl"_Stz,          &SEitf::bDropTable,            "dropTable_req"_Stz       },
  { "rmten"_Stz,          &SEitf::bDropTenant,           "dropTenant_req"_Stz      },
  { "sanity"_Stz,         &SEitf::bNodeSanity,           "nodeSanity_req"_Stz      },
@@ -1786,6 +1788,30 @@ bool SEitf::bDropCatalog(TokenVec& xTokenVec, i8 iReqNo)
 /*----------------------------------------------------------------------------*/
 /* create a schema                                                            */
 /*----------------------------------------------------------------------------*/
+bool SEitf::bCreateSchemaR35(TokenVec& xTokenVec, i8 iReqNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  if (xTokenVec.nTokens() != 2) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  ASSERT(xTokenVec[0]->bSame("mkschR35"_Stz));
+  
+  sRequest = SeRequests[iReqNo].aRequest;
+  
+  Job_CreateSchema* pJob_CreateSchema = new Job_CreateSchema(this);
+  pJob_CreateSchema->m_sObjectName = xTokenVec[1]->aText();
+  
+  return bAppendRequest_R35(sRequest,xTokenVec.bDetachedRequest(),(Job**)&pJob_CreateSchema);
+}
+
+/*----------------------------------------------------------------------------*/
+/* create a schema                                                            */
+/*----------------------------------------------------------------------------*/
 bool SEitf::bCreateSchema(TokenVec& xTokenVec, i8 iReqNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
@@ -1853,6 +1879,30 @@ bool SEitf::bDropSchema(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop a schema                                                              */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bDropSchemaR35(TokenVec& xTokenVec, i8 iReqNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  if (xTokenVec.nTokens() != 2) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  ASSERT(xTokenVec[0]->bSame("rmschR35"_Stz));
+  
+  sRequest = SeRequests[iReqNo].aRequest;
+  
+  Job_DropSchema* pJob_DropSchema = new Job_DropSchema(this);
+  pJob_DropSchema->m_sObjectName = xTokenVec[1]->aText();
+  
+  return bAppendRequest_R35(sRequest,xTokenVec.bDetachedRequest(),(Job**)&pJob_DropSchema);
 }
 
 /*----------------------------------------------------------------------------*/
