@@ -90,7 +90,7 @@
 tp: makingSchema
 
   args.tracepoint if
-  dup "MAKING SCHEMA " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
+    dup "MAKING SCHEMA " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
   then
 
   dup ( "<schemaNm>" )
@@ -107,7 +107,7 @@ tp: makingSchema
 /*----------------------------------------------------------------------------*/
 /* make a schema folder (run by participant)                                  */
 /*----------------------------------------------------------------------------*/
-: makeSchemaExe ( "<schemaNm>" -- true n# true )
+: makeSchemaR35 ( "<schemaNm>" -- true/false )
 
   tp: makingSchema
 
@@ -134,7 +134,23 @@ tp: makingSchema
 tp: removeSchema
 
   args.tracepoint if
-  dup "REMOVING TENANT " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
+    dup "REMOVING TENANT " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
+  then
+
+  :forget ( )
+
+  true <SUCCESS_RESULT>
+;
+
+/*----------------------------------------------------------------------------*/
+/* remove a schema folder                                                     */
+/*----------------------------------------------------------------------------*/
+: removeSchemaR35 ( "<schemaNm>" -- true/false )
+
+  tp: removeSchema
+
+  args.tracepoint if
+    dup "REMOVING TENANT " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
   then
 
   :forget ( )

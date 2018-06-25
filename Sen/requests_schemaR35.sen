@@ -1,0 +1,132 @@
+/*============================================================================*/
+/* requests_schemaR35.sen -- the set of schema related requests                  */
+/*============================================================================*/
+
+"requests_schemaR35.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* create a schema                                                            */
+/*----------------------------------------------------------------------------*/
+: createSchemaR35_req ( -- <R> )
+
+  0 0 locals| pJob pTask |
+
+  tp: createSchema
+
+  //ddlLock::grabWrite
+
+  // get the task
+  task::this to pTask
+
+  // get the job from the task
+  pTask task.job@ to pJob
+
+  // check if we have enough buffers
+  checkEnoughBuffers not if <NIP+ERROR> exit then
+
+  // get the schema name from the kob
+  pJob job.objectName@
+  checkMakeSchema    not if <NIP+ERROR> exit then
+
+  // add job to originator jobs
+  pJob job.addOriginator
+
+  // set the no of acks expected in originator job to nodes in the grid
+  grid::nodes pJob job.acksRemaining!
+
+  // send the job to each node in the grid
+  grid::nodes 0 do
+
+    // set the send node
+    I grid::node pTask task.sendNode!
+    task.send
+
+    // send job to each node
+    pJob 1
+    >valset
+    >socketR35
+
+  loop
+
+  // now delete this job
+  //pJob job.delete
+
+  <SUCCESS>
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* drop a schema                                                              */
+/*----------------------------------------------------------------------------*/
+: dropSchemaR35_req ( "<schemaNm>" -- <R> )
+
+  tp: dropSchema
+
+  ddlLock::grabWrite
+
+  checkRemoveSchema not if <NIP+ERROR> exit then
+  removeSchema ( )  not if <NIP+ERROR> exit then
+
+  tp: droppedSchema
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* get list of schemas                                                        */
+/*----------------------------------------------------------------------------*/
+: listSchemas_req ( -- sSchemaList <R> )
+
+  ddlLock::grabRead
+
+  checkInSchemas not if <NIP+ERROR> exit then
+
+  listContents
+
+  <SUCCESS>
+;
+
+/*----------------------------------------------------------------------------*/
+/* use given schema                                                           */
+/*----------------------------------------------------------------------------*/
+: useSchema_req ( "<schemaNm>" -- <R> )
+
+  tp: useSchema
+
+  // pop path till we get to tenants
+  begin
+    0 pathPick dic.name "tenants" str.equal not while pathDrop
+  repeat
+
+  // find the boray folder
+  "boray" findInCurrent
+  execute pathPush
+
+  // find the catalogs folder
+  "catalogs" findInCurrent
+  execute pathPush
+
+  // find the rapidssecatalogs folder
+  "rapidsse" findInCurrent
+  execute pathPush
+
+  // find the schemas folder
+  "schemas" findInCurrent
+  execute pathPush
+
+  checkIsWord   not if EC_NO_SUCH_SCHEMA <NIP+ERROR> exit then
+  checkIsSchema not if <NIP+ERROR> exit then
+  execute pathPush
+
+  // find the tables folder
+  "tables" findInCurrent
+  execute pathPush
+
+  tp: usingSchema
+
+  <OK>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

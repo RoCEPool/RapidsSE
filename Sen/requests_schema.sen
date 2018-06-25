@@ -24,24 +24,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* create a schema                                                            */
-/*----------------------------------------------------------------------------*/
-: createSchema_exe ( "<schemaNm>" -- <R> )
-
-  tp: createSchema
-
-  ddlLock::grabWrite
-
-  checkEnoughBuffers not if <NIP+ERROR> exit then
-  checkMakeSchema    not if <NIP+ERROR> exit then
-  makeSchemaExe      not if <NIP+ERROR> exit then
-
-  tp: createdSchema
-
-  <OK>
-;
-
-/*----------------------------------------------------------------------------*/
 /* drop a schema                                                              */
 /*----------------------------------------------------------------------------*/
 : dropSchema_req ( "<schemaNm>" -- <R> )
