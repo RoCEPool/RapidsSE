@@ -46,6 +46,15 @@ const Stz* C_ONE_TABLE   = "table"_Stz;
 const Stz* C_ONE_TENANT  = "tenant"_Stz;
 const Stz* C_ONE_UNIQUE  = "unique"_Stz;
 
+const Stz* C_R35_ONE_CATALOG = "catalog"_Stz;
+const Stz* C_R35_ONE_INDEX   = "index"_Stz;
+const Stz* C_R35_ONE_INSERT  = "insert"_Stz;
+const Stz* C_R35_ONE_ROW     = "row"_Stz;
+const Stz* C_R35_ONE_SCHEMA  = "R35schema"_Stz;
+const Stz* C_R35_ONE_TABLE   = "table"_Stz;
+const Stz* C_R35_ONE_TENANT  = "tenant"_Stz;
+const Stz* C_R35_ONE_UNIQUE  = "unique"_Stz;
+
 struct CmdTable {
   const Stz* aCommand;
   const Stz* aAlternate;
@@ -61,6 +70,7 @@ CmdTable SePromptCommands[] =
   { C_CMD_CREATE,     C_ONE_CATALOG, &SePrompt::bCmd_CreateCatalog },
   { C_CMD_CREATE,     C_ONE_INDEX,   &SePrompt::bCmd_CreateIndex   },
   { C_CMD_CREATE,     C_ONE_SCHEMA,  &SePrompt::bCmd_CreateSchema  },
+  { C_CMD_CREATE,     C_R35_ONE_SCHEMA,  &SePrompt::bCmd_CreateSchemaR35  },
   { C_CMD_CREATE,     C_ONE_TABLE,   &SePrompt::bCmd_CreateTable   },
   { C_CMD_CREATE,     C_ONE_TENANT,  &SePrompt::bCmd_CreateTenant  },
   { C_CMD_CREATE,     C_ONE_UNIQUE,  &SePrompt::bCmd_CreateUnique  },
@@ -70,6 +80,7 @@ CmdTable SePromptCommands[] =
   { C_CMD_DROP,       C_ONE_CATALOG, &SePrompt::bCmd_DropCatalog   },
   { C_CMD_DROP,       C_ONE_INDEX,   &SePrompt::bCmd_DropIndex     },
   { C_CMD_DROP,       C_ONE_SCHEMA,  &SePrompt::bCmd_DropSchema    },
+  { C_CMD_DROP,       C_R35_ONE_SCHEMA,  &SePrompt::bCmd_DropSchemaR35    },
   { C_CMD_DROP,       C_ONE_TABLE,   &SePrompt::bCmd_DropTable     },
   { C_CMD_DROP,       C_ONE_TENANT,  &SePrompt::bCmd_DropTenant    },
   { C_CMD_END,        C_ONE_INSERT,  &SePrompt::bCmd_EndInsert     },
@@ -1010,6 +1021,47 @@ bool SePrompt::bCmd_CreateSchema(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* create schema                                                              */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bCmd_CreateSchemaR35(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  ASSERT(m_xTokenVec[0]->bSame("create"_Stz));
+  ASSERT(m_xTokenVec[1]->bSame("R35schema"_Stz));
+  
+  i8 i_Token;
+  
+  // copy tokens from m_xTokenVec to m_xTokenVec2
+  // while doing that also validate the create statament
+  for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
+    if (! m_xTokenVec[i_Token]->bHasText())
+      break;
+    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
+    m_xTokenVec[i_Token]->vCopy(""_Stz);
+  }
+  
+  i8 iNumTokens = i_Token;
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // there should be 3 tokens
+  if (iNumTokens != 3) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  // create a schema
+  m_xTokenVec[0]->vCopy("mkschR35"_Stz);
+  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]);
+  
+  if (!bExecuteRequest())
+    return false;
+  
+  //vTrace("Schema created: %s\n"_Stz, m_xTokenVec2[2]);
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* create table                                                               */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bCmd_CreateTable(void)
@@ -1349,6 +1401,45 @@ bool SePrompt::bCmd_DropSchema(void)
   
   // drop a schema
   m_xTokenVec[0]->vCopy("rmsch"_Stz);
+  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]);
+  if (!bExecuteRequest())
+    return false;
+  
+  //vTrace("Schema dropped: %s\n"_Stz, m_xTokenVec2[2]);
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop schema                                                                */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bCmd_DropSchemaR35(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  i8 i_Token;
+  i8 iNumTokens;
+  
+  ASSERT(m_xTokenVec[0]->bSame("drop"_Stz));
+  ASSERT(m_xTokenVec[1]->bSame("schemaR35"_Stz));
+  
+  for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
+    if (! m_xTokenVec[i_Token]->bHasText())
+      break;
+    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
+    m_xTokenVec[i_Token]->vCopy(""_Stz);
+  }
+  
+  iNumTokens = i_Token;
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // there should be 3 tokens
+  if (iNumTokens != 3) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  // drop a schema
+  m_xTokenVec[0]->vCopy("rmschR35"_Stz);
   m_xTokenVec[1]->vCopy(m_xTokenVec2[2]);
   if (!bExecuteRequest())
     return false;

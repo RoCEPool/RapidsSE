@@ -117,6 +117,9 @@ public:
   bool bCmd_TimerStart(void);
   bool bCmd_TimerEnd(void);
   
+  bool bCmd_CreateSchemaR35(void);
+  bool bCmd_DropSchemaR35(void);
+  
   Footer* aFooter(void);
   
 private:
