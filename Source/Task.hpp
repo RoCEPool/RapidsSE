@@ -823,6 +823,7 @@ namespace Tasks
     static void vJobFindOriginator(MP_Task mpTask);
     static void vJobFindParticipant(MP_Task mpTask);    
     static void vJobIdFetch(MP_Task mpTask);
+    static void vJobObjectNameFetch(MP_Task mpTask);
     static void vJobNewEnd(MP_Task mpTask);
     static void vJobNewEnded(MP_Task mpTask);
     static void vJobNewExecute(MP_Task mpTask);

@@ -27,6 +27,7 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.findOriginator"_Stz,   &vJobFindOriginator,   false);
   vAddPrimitive("job.findParticipant"_Stz,  &vJobFindParticipant,  false);
   vAddPrimitive("job.id@"_Stz,              &vJobIdFetch,          false);
+  vAddPrimitive("job.objectName@"_Stz,      &vJobObjectNameFetch,  false);
   vAddPrimitive("job.newBegun"_Stz,         &vJobNewBegun,         false);
   vAddPrimitive("job.newEnd"_Stz,           &vJobNewEnd,           false);
   vAddPrimitive("job.newEnded"_Stz,         &vJobNewEnded,         false);
@@ -181,6 +182,13 @@ void Task::vJobDelete(MP_Task mpTask)
       break;
     }
     
+    case CN_JOB_CREATESCHEMA:
+    {
+      Job_CreateSchema* pJobCreateSchema = _pJob_CreateSchema(pJobPtr);
+      delete pJobCreateSchema;
+      break;
+    }
+      
     default:
       ASSERT(0);
   }
@@ -328,6 +336,23 @@ void Task::vJobIdFetch(MP_Task mpTask)
   Job* pJob = _pJob(pJobPtr);
   
   mpTask->m_pDataStack->vPushInt(pJob->m_iJobId);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.objectNamed@ -- fetch the object name of the job                       */
+/*----------------------------------------------------------------------------*/
+void Task::vJobObjectNameFetch(MP_Task mpTask)
+{
+  ENTRY("vJobObjectNameFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.objectNamed@"_Stz);
+  Job_CreateSchema* pJob = _pJob_CreateSchema(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushS32(pJob->m_sObjectName);
   
   EXIT();
 }
