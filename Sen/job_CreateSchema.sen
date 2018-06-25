@@ -15,6 +15,8 @@
 
   ddlLock::grabWrite
 
+  pJob_CreateSchema getPathR35
+  dicStack.set
   pJob_CreateSchema job.objectName@   ( schemaNm )
   makeSchemaR35 ( )     not if "got error" . exit then
 
