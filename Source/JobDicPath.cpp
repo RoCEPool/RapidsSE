@@ -2,6 +2,7 @@
 /* JobDicPath.hpp -- Dictionary Path part for a Job                           */
 /*============================================================================*/
 
+#include "StorageEngine.h"
 #include "JobModel.h"
 
 /*----------------------------------------------------------------------------*/
@@ -25,6 +26,9 @@ void* JobDicPath::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 JobDicPath::JobDicPath(Interface::SEitf* pSEitf)
 {
+  m_xDicPath.m_iDicDepth = pSEitf->m_xPathStack.iCount();
+  for (i8 i_DicStack = 0; i_DicStack < m_xDicPath.m_iDicDepth; i_DicStack++)
+    m_xDicPath.m_sDicPath[i_DicStack] = pSEitf->m_xPathStack.pPick(i_DicStack)->sName();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -32,6 +36,7 @@ JobDicPath::JobDicPath(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 JobDicPath::~JobDicPath(void)
 {
+  
 }
 
 /*============================================================================*/
