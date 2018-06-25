@@ -17,6 +17,8 @@ namespace Dictionaries
   
     DicPath(void);
    ~DicPath(void);
+    
+    void vContentDump(void);
   };
 }
 
