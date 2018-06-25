@@ -13,7 +13,7 @@
   task::this task.dicStack
 
   // drop the top dictionary
-  dicPath.drop
+  dicStack.drop
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -25,7 +25,7 @@
   task::this task.dicStack
 
   // dump the dic stack
-  dicPath.dump
+  dicStack.dump
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -37,7 +37,7 @@
   task::this task.dicStack
 
   // pick the dictionary from dic stack
-  dicPath.pick
+  dicStack.pick
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -49,7 +49,7 @@
   task::this task.dicStack
 
   // pop the top dictionary
-  dicPath.pop
+  dicStack.pop
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -61,7 +61,7 @@
   task::this task.dicStack
 
   // push the dictionary onto dic stack
-  dicPath.push
+  dicStack.push
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -261,7 +261,7 @@
 /*----------------------------------------------------------------------------*/
 /* clear task dictionary stack                                                */
 /*----------------------------------------------------------------------------*/
-: dicPath.clear
+: dicStack.clear
 
   pathDepth 0 ?do
     pathDrop
@@ -271,26 +271,26 @@
 /*----------------------------------------------------------------------------*/
 /* drop all dictionaries from given stack                                     */
 /*----------------------------------------------------------------------------*/
-: dicPath.dropAll ( dicStack -- )
+: dicStack.dropAll ( dicStack -- )
 
   locals| dicStack |
 
-  dicStack dicPath.depth 0 ?do
-    dicStack dicPath.drop
+  dicStack dicStack.depth 0 ?do
+    dicStack dicStack.drop
   loop
 ;
 
 /*----------------------------------------------------------------------------*/
 /* set task dictionary stack                                                  */
 /*----------------------------------------------------------------------------*/
-: dicPath.set ( ... #dics -- )
+: dicStack.set ( ... #dics -- )
 
   // this word puts the folder path on the stack into task dictionary stack
   // ( ... "<subFolderC>"  "<subFolderB>"  "<subFolderA>" "main" 4 )
 
-  tp: dicPath.set
+  tp: dicStack.set
 
-  dicPath.clear
+  dicStack.clear
 
   dup not if drop exit then
 
@@ -329,7 +329,7 @@
   task::this task.dicStack
 
   // drop the top dictionary
-  dicPath.dropAll
+  dicStack.dropAll
 ;
 
 
