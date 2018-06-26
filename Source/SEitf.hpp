@@ -197,7 +197,6 @@ namespace Interface
     bool bDistFetchRowsIndex(TokenVec& xTokenVec, i8 iReqNo);
     bool bLoadTable(TokenVec& xTokenVec, i8 iReqNo);
     bool bLoadTableStream(TokenVec& xTokenVec, i8 iReqNo);
-    bool bGetTable(TokenVec& xTokenVec, i8 iReqNo);
     bool bGetTableNew(TokenVec& xTokenVec, i8 iReqNo);
     bool bInUseTable(TokenVec& xTokenVec, i8 iReqNo);
     bool bRetTable(TokenVec& xTokenVec, i8 iReqNo);

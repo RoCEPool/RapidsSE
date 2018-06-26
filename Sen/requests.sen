@@ -74,7 +74,6 @@ dex     distExport_table
 dump    dumpTable_req
 endmktbl endCreateTable_req
 ex      exportTable_req
-gettbl  getTable_req
 gettblNew getTableNew_req
 ld      loadTable_req
 lstbl   listTables_req
