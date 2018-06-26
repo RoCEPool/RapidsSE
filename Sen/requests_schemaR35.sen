@@ -48,9 +48,6 @@
 
   loop
 
-  // now delete this job
-  //pJob job.delete
-
   <SUCCESS>
 
 ;
@@ -93,9 +90,6 @@
   >socketR35
 
   loop
-
-  // now delete this job
-  //pJob job.delete
 
   <SUCCESS>
 ;

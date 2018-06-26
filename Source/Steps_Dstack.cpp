@@ -503,7 +503,7 @@ void Task::vDstackToValSet(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* >values -- expand valset to values on dstack                               */
+/* valset> -- expand valset to values on dstack                               */
 /*----------------------------------------------------------------------------*/
 void Task::vDstackToValues(MP_Task mpTask)
 {

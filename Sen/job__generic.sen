@@ -82,9 +82,7 @@
   pJob job.removeParticipant
 
   // delete the job
-  iJobId job::originator@ grid::thisNode@ != if
-    pJob job.delete
-  then
+  pJob job.delete
 
   iJobId Job__Ended::send
 ;
