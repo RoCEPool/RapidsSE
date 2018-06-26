@@ -53,8 +53,6 @@ ValSet::ValSet(void)
   
   m_iBytes = 0;
   
-  m_pJob       = nullptr;
-  
   m_pRowBuffer = nullptr;
   m_iRowBufferBytes = 0;
   
@@ -111,17 +109,6 @@ void ValSet::vAppend(Stz*& pCursor, Value* pValue)
       MemLib::vCopy(pCursor,&xPtrVal,sizeof(xPtrVal),CN_VALSET);
       //vTrace("APPEND C_ENTRYBUFFER_MARKER\n"_Stz);
     }
-    else if (pPtrVal->pPtr() &&
-             CN_JOB__BEGUN <= ((Object*)pPtrVal->pPtr())->eClass() &&
-                 CN_JOBS       > ((Object*)pPtrVal->pPtr())->eClass()) {
-      m_pJob = (JobModel::Job*)pPtrVal->pPtr();
-      
-      //xValWrk = (Object*)C_ENTRYBUFFER_MARKER;
-      PtrVal xPtrVal;
-      xPtrVal = (Object*)C_JOB_MARKER;
-      MemLib::vCopy(pCursor,&xPtrVal,sizeof(xPtrVal),CN_VALSET);
-      //vTrace("APPEND C_ENTRYBUFFER_MARKER\n"_Stz);
-    }
     else {
       MemLib::vCopy(pCursor,pValue,iSize,CN_VALSET);
     }
@@ -169,12 +156,6 @@ bool ValSet::bExtractValue(Stz*& pCursor, Value*& pValue)
       //vTrace("EXTRACT C_WORKINGBUFFER_MARKER\n"_Stz);
       *_pPtrVal(pValue) = m_pWorkingBuffer;
     }
-    
-    if ((i8)C_JOB_MARKER == _pPtrVal(pValue)->iAsInt()) {
-      //vTrace("EXTRACT C_JOB_MARKER\n"_Stz);
-      *_pPtrVal(pValue) = (Object*)m_pJob;
-    }
-    
   }
   
   // test for binary value
@@ -226,10 +207,6 @@ bool ValSet::bExtractValue(Stz*& pCursor, eCN& eClassNo, Value*& pValue)
       eClassNo = CN_WORKINGBUFFER;
       return true;
     }
-    else if ((i8)C_JOB_MARKER == _pPtrVal(pValue)->iAsInt()) {
-      eClassNo = ((Job__Begun*)m_pJob)->eClass();
-      return true;
-    }
   }
   
   eClassNo = pValue->eClass();
@@ -269,39 +246,6 @@ DBobjects::EntryBuffer* ValSet::pGetRowBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* recursively check for and get job                                          */
-/*----------------------------------------------------------------------------*/
-JobModel::Job* ValSet::pGetJob(void)
-{
-  eCN eClassNo;
-  Stz* pCursor = nullptr;
-  Value* pValue;
-  JobModel::Job* pJob;
-  
-  while (bExtractValue(pCursor, eClassNo, pValue)) {
-    
-    if (CN_JOB__BEGUN <= eClassNo &&
-        CN_JOBS       > eClassNo) {
-      pJob = m_pJob;
-      return pJob;
-    }
-    
-    if (CN_VALSET == eClassNo) {
-      ValSet* pValSet = (ValSet*)pValue;
-      
-      // check if this valset has a job
-      pJob = pValSet->pGetJob();
-      
-      if (pJob)
-        return pJob;
-    }
-  }
-  
-  return nullptr;
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /* recursively check for and get working buffer                               */
 /*----------------------------------------------------------------------------*/
 DBobjects::WorkingBuffer* ValSet::pGetWorkingBuffer(void)
@@ -330,36 +274,6 @@ DBobjects::WorkingBuffer* ValSet::pGetWorkingBuffer(void)
   }
   
   return nullptr;
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/* recursively check for and get job                                          */
-/*----------------------------------------------------------------------------*/
-bool ValSet::bHasJob(void)
-{
-  Stz* pCursor = nullptr;
-  eCN eClassNo;
-  Value* pValue;
-  bool bHasJob;
-  
-  while (bExtractValue(pCursor, eClassNo, pValue)) {
-    
-    if (CN_JOB__BEGUN <= eClassNo &&
-        CN_JOBS       > eClassNo) {
-      if (gpAttachMap->m_bTracepoint)
-        vTrace("HAS JOB\n"_Stz);
-      return true;
-    }
-    
-    if (CN_VALSET == eClassNo) {
-      ValSet* pValSet = (ValSet*)pValue;
-      bHasJob = pValSet->bHasJob();
-      if (bHasJob)
-        return bHasJob;
-    }
-  }
-  return false;
   
 }
 
@@ -437,36 +351,6 @@ void ValSet::vRowBuffer(DBobjects::EntryBuffer* pRowBuffer)
     m_pRowBuffer = pRowBuffer;
 }
 
-/*----------------------------------------------------------------------------*/
-/* set job                                                                    */
-/*----------------------------------------------------------------------------*/
-bool ValSet::bSetJob(JobModel::Job* pJob)
-{
-  eCN eClassNo;
-  Stz* pCursor = nullptr;
-  Value* pValue;
-  bool bSet;
-  
-  while (bExtractValue(pCursor, eClassNo, pValue)) {
-    
-    if (CN_JOB__BEGUN <= eClassNo &&
-        CN_JOBS       > eClassNo) {
-      PtrVal* pPtrVal = (PtrVal*)pValue;
-      //vTrace("SETTING ROW BUFFER\n"_Stz);
-      m_pJob = pJob;
-      return true;
-    }
-    
-    if (CN_VALSET == eClassNo) {
-      ValSet* pValSet = (ValSet*)pValue;
-      bSet = pValSet->bSetJob(pJob);
-      if (bSet)
-        return true;
-    }
-  }
-  return false;
-  
-}
 /*----------------------------------------------------------------------------*/
 /* set row buffer                                                             */
 /*----------------------------------------------------------------------------*/

@@ -23,8 +23,6 @@ namespace Values
     DBobjects::EntryBuffer*   m_pRowBuffer;
     i8  m_iRowBufferBytes;
     
-    JobModel::Job* m_pJob;
-    
     DBobjects::WorkingBuffer* m_pWorkingBuffer;
     i8  m_iWorkingBufferBytes;
     
@@ -39,15 +37,12 @@ namespace Values
     void vAppend(Stz*& pCursor, Value* pValue);
     bool bExtractValue(Stz*& pCursor, Value*& pValue);
     bool bExtractValue(Stz*& pCursor, eCN& eClassNo, Value*& pValue);
-    JobModel::Job* pGetJob();
     DBobjects::EntryBuffer* pGetRowBuffer();
     DBobjects::WorkingBuffer* pGetWorkingBuffer();
-    bool bHasJob(void);
     bool bHasRowBuffer(void);
     bool bHasWorkingBuffer(void);
     DBobjects::EntryBuffer* pRowBuffer(void);
     void vRowBuffer(DBobjects::EntryBuffer* pRowBuffer);
-    bool bSetJob(JobModel::Job* pJob);
     bool bSetRowBuffer(DBobjects::EntryBuffer* pRowBuffer);
     bool bSetWorkingBuffer(DBobjects::WorkingBuffer* pWorkingBuffer);
     i8   nSize(void);

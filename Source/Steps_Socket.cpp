@@ -344,41 +344,6 @@ void Task::vSocketSend(MP_Task mpTask)
     delete pWorkingBuffer;
   }
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get jobPtr if any in valset
-  JobModel::Job* pJob = xValSet.pGetJob();
-  
-  if (pJob) {
-
-    iBytes = C_SIZE_SMALL_OBJECT;
-    bResult = pSocket->bSendTo(sizeof(iBytes), &iBytes, xSysCall);
-    
-    if ( ! bResult ) {
-      
-      //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
-      mpTask->m_pDataStack->vPushInt((i8)0);
-      
-      //goto exit;
-      EXIT();
-    }
-    
-    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-    // send job itself
-    bResult = pSocket->bSendTo(iBytes, pJob, xSysCall);
-
-    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-    // test send result
-    if ( ! bResult ) {
-
-      //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
-      mpTask->m_pDataStack->vPushInt((i8)0);
-
-      //goto exit;
-      EXIT();
-    }
-    
-  }
-  
   mpTask->m_pDataStack->vPushInt((i8)1);
   
   EXIT();
@@ -523,43 +488,6 @@ void Task::vSocketRecv(MP_Task mpTask)
     // set workingBuffer in valset
     //******************************************************************
     bool bSet = xValSet.bSetWorkingBuffer(pWorkingBuffer);
-    ASSERT(bSet);
-  }
-  
-  //******************************************************************
-  // Check if valset has a job
-  //******************************************************************
-  bool bHasJob = xValSet.bHasJob();
-  
-  if (bHasJob) {
-    
-    //******************************************************************
-    // receive workingBuffer size
-    //******************************************************************
-    bResult = pSocket->bRecvBytes(sizeof(iBytes), reinterpret_cast<void*>(&iBytes), xSysCall);
-    
-    if ( ! bResult )
-      THROW("Unable to recvFrom socket: Errno %d!"_Stz, xSysCall.iError());
-    
-    //******************************************************************
-    // receive job
-    //******************************************************************
-    JobModel::Job* pJob = (JobModel::Job*)new Job__Begun();
-    
-    ASSERT(iBytes == C_SIZE_SMALL_OBJECT);
-    
-    //vTrace("Recvd EntryBuffer: %p\n"_Stz,pEntryBuffer);
-    bResult = pSocket->bRecvBytes(iBytes, reinterpret_cast<void*>(pJob), xSysCall);
-    
-    if ( ! bResult )
-      THROW("Unable to recvFrom socket: Errno %d!"_Stz, xSysCall.iError());
-    
-    //pEntryBuffer->vShow();
-    
-    //******************************************************************
-    // set job in valset
-    //******************************************************************
-    bool bSet = xValSet.bSetJob(pJob);
     ASSERT(bSet);
   }
   
