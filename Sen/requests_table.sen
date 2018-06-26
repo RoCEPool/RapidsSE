@@ -500,16 +500,6 @@ ddlLock::grabRead
 /*----------------------------------------------------------------------------*/
 : getTable_req ( "<tableNm>" -- <R> )
 
-  getTableRef not if <NIP+ERROR> exit then
-
-  <OK>
-;
-
-/*----------------------------------------------------------------------------*/
-/* get a table ref                                                            */
-/*----------------------------------------------------------------------------*/
-: getTableNew_req ( "<tableNm>" -- <R> )
-
   // should be in the tables folder
   checkInTables       not if <NIP+ERROR> exit then
 

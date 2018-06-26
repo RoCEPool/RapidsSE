@@ -43,7 +43,7 @@ ReqTable SeRequests[] =
  { "getFreeSpace"_Stz,   &SEitf::bGetFreeSpace,         "getFreeSpace"_Stz        },
  { "getInUseSpace"_Stz,  &SEitf::bGetInUseSpace,        "getInUseSpace"_Stz       },
  { "getidx"_Stz,         &SEitf::bGetIndex,             "getIndex_req"_Stz        },
- { "gettblNew"_Stz,      &SEitf::bGetTableNew,          "getTableNew_req"_Stz     },
+ { "gettbl"_Stz,         &SEitf::bGetTable,             "getTable_req"_Stz     },
  { "gettsk"_Stz,         &SEitf::bGetTask,              "getTask_req"_Stz         },
  { "getTotalSpace"_Stz,  &SEitf::bGetTotalSpace,        "getTotalSpace"_Stz       },
  { "g35"_Stz,            &SEitf::bG35,                  "g35_req"_Stz             },
@@ -2824,7 +2824,7 @@ bool SEitf::bGetIndex(TokenVec& xTokenVec, i8 iReqNo)
 /*----------------------------------------------------------------------------*/
 /* get address/reference of a table                                           */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bGetTableNew(TokenVec& xTokenVec, i8 iReqNo)
+bool SEitf::bGetTable(TokenVec& xTokenVec, i8 iReqNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   

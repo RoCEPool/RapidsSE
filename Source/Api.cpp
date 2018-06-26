@@ -253,7 +253,7 @@ eEC RapidsSE_BeginInsert(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable
     CF_TABLES("e"_Stz);
     
     // get a reference to the table
-    eResult = eExecuteRequest(pSEitf, "gettblNew"_Stz, (Stz*)pTable);
+    eResult = eExecuteRequest(pSEitf, "gettbl"_Stz, (Stz*)pTable);
     CHECK_RESULT("f"_Stz);
     CHECK_RESPONSE("g"_Stz);
     
@@ -308,7 +308,7 @@ eEC RapidsSE_BeginInsertPartition(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, St
     CF_TABLES("e"_Stz);
     
     // get a reference to the table
-    eResult = eExecuteRequest(pSEitf, "gettblNew"_Stz, (Stz*)pTable);
+    eResult = eExecuteRequest(pSEitf, "gettbl"_Stz, (Stz*)pTable);
     CHECK_RESULT("f"_Stz);
     CHECK_RESPONSE("g"_Stz);
     
@@ -410,7 +410,7 @@ eEC RapidsSE_CreateIndex(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable
     CF_TABLES("f"_Stz);
     
     // get pTable
-    eResult = eExecuteRequest(pSEitf, "gettblNew"_Stz, pTable);
+    eResult = eExecuteRequest(pSEitf, "gettbl"_Stz, pTable);
     CHECK_RESPONSE("g"_Stz);
     VALIDATE_TABLE("h"_Stz);
     
@@ -479,7 +479,7 @@ eEC RapidsSE_CreateTable(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable
     CHECK_RESULT("f"_Stz);
     CHECK_RESPONSE("g"_Stz);
     
-    eEC eGetResult = eExecuteRequest(pSEitf, "gettblNew"_Stz, (Stz*)pTable);
+    eEC eGetResult = eExecuteRequest(pSEitf, "gettbl"_Stz, (Stz*)pTable);
 
     if (EC_NONE != eGetResult) {
       
@@ -1338,7 +1338,7 @@ eEC RapidsSE_GetColumns(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema,
     *ppColumns = pSEitf->m_sResponse.aChar();
  */
     // get a reference to the table
-    eResult = eExecuteRequest(pSEitf, "gettblNew"_Stz, (Stz*)pTable);
+    eResult = eExecuteRequest(pSEitf, "gettbl"_Stz, (Stz*)pTable);
     CHECK_RESULT("f"_Stz);
     CHECK_RESPONSE("g"_Stz);
     

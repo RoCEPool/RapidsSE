@@ -739,7 +739,7 @@ bool SePrompt::bCmd_BeginInsert(void)
   }
   
   // get table pointer
-  m_xTokenVec[0]->vCopy("gettblNew"_Stz);
+  m_xTokenVec[0]->vCopy("gettbl"_Stz);
   m_xTokenVec[1]->vCopy(m_xTokenVec2[2]);
   if (!bExecuteRequest()) {
     vTrace("SePrompt::bBeginInsert : gettbl FAILED!!!\n"_Stz);
@@ -864,7 +864,7 @@ bool SePrompt::bCmd_CreateIndex(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get reference to pTable
-  m_xTokenVec[0]->vCopy("gettblNew"_Stz);
+  m_xTokenVec[0]->vCopy("gettbl"_Stz);
   m_xTokenVec[1]->vCopy(m_xTokenVec2[4 + iIfUnique]);
   
   if (!bExecuteRequest()) {
@@ -2540,7 +2540,7 @@ bool SePrompt::bMakeTable()
 //  }
   
   // get reference to pTable
-  m_xTokenVec[0]->vCopy("gettblNew"_Stz);
+  m_xTokenVec[0]->vCopy("gettbl"_Stz);
   m_xTokenVec[1]->vCopy(m_xTokenVec2[2]);
   
   if (!bExecuteRequest()) {
