@@ -852,7 +852,6 @@ bool SePrompt::bCmd_CreateIndex(void)
   
   // copy tokens from m_xTokenVec to m_xTokenVec2
   i8 iNumTokens = iCopyTokens(m_xTokenVec, m_xTokenVec2);
-  i8 iValue;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // some validations
@@ -1030,8 +1029,6 @@ bool SePrompt::bCmd_CreateTable(void)
   
   ASSERT(m_xTokenVec[0]->bSame("create"_Stz));
   ASSERT(m_xTokenVec[1]->bSame("table"_Stz));
-  
-  i8 i_Token;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy tokens from m_xTokenVec to m_xTokenVec2
@@ -2708,13 +2705,10 @@ bool SePrompt::bCmd_CreateSchemaR35(void)
   
   i8 i_Token;
   
-  // copy tokens from m_xTokenVec to m_xTokenVec2
-  // while doing that also validate the create statament
+  // validate the create statament
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
     if (! m_xTokenVec[i_Token]->bHasText())
       break;
-    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
-    m_xTokenVec[i_Token]->vCopy(""_Stz);
   }
   
   i8 iNumTokens = i_Token;
@@ -2728,7 +2722,14 @@ bool SePrompt::bCmd_CreateSchemaR35(void)
   
   // create a schema
   m_xTokenVec[0]->vCopy("mkschR35"_Stz);
-  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]);
+  m_xTokenVec[1]->vCopy(""_Stz);
+  
+  // create the job
+  Job_CreateSchema* pJob_CreateSchema = new Job_CreateSchema(m_pSEitf);
+  pJob_CreateSchema->m_sObjectName = m_xTokenVec[1]->aText();
+  
+  // set the job in SEitf
+  m_pSEitf->m_pJob = pJob_CreateSchema;
   
   if (!bExecuteRequest())
     return false;
@@ -2746,8 +2747,6 @@ bool SePrompt::bCmd_CreateTableR35(void)
   
   ASSERT(m_xTokenVec[0]->bSame("create"_Stz));
   ASSERT(m_xTokenVec[1]->bSame("R35table"_Stz));
-  
-  i8 i_Token;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy tokens from m_xTokenVec to m_xTokenVec2

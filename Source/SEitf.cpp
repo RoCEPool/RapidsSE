@@ -1793,19 +1793,12 @@ bool SEitf::bCreateSchemaR35(TokenVec& xTokenVec, i8 iReqNo)
   
   s256 sRequest;
   
-  if (xTokenVec.nTokens() != 2) {
-    vSetLastError(EC_INVALID_PARAMETERS);
-    return false;
-  }
-  
   ASSERT(xTokenVec[0]->bSame("mkschR35"_Stz));
+  ASSERT(m_pJob);
   
   sRequest = SeRequests[iReqNo].aRequest;
   
-  Job_CreateSchema* pJob_CreateSchema = new Job_CreateSchema(this);
-  pJob_CreateSchema->m_sObjectName = xTokenVec[1]->aText();
-  
-  return bAppendRequest_R35(sRequest,xTokenVec.bDetachedRequest(),(Job**)&pJob_CreateSchema);
+  return bAppendRequest_R35(sRequest,xTokenVec.bDetachedRequest(),(Job**)&m_pJob);
 }
 
 /*----------------------------------------------------------------------------*/
