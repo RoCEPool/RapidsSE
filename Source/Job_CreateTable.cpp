@@ -66,13 +66,14 @@ Job_CreateTable::Job_CreateTable(Interface::SEitf* pSEitf)
   m_eTableType = TT_NONE;
   m_iColumns   = 0;
   
-  for (i8 i_Column = 0; i_Column < C_MAX_INDEX_COLUMNS; i_Column++) {
+  for (i8 i_Column = 0; i_Column < C_MAX_COLUMNS; i_Column++) {
     m_xColumns[i_Column].m_iColumnNo = -1;
     m_xColumns[i_Column].m_sColumnName = ""_Stz;
-    m_xColumns[i_Column].m_eColumnType = CT_NONE;
+    m_xColumns[i_Column].m_sColumnType = ""_Stz;
     m_xColumns[i_Column].m_iColumnLength = -1;
     m_xColumns[i_Column].m_iColumnScale = -1;
-    m_xColumns[i_Column].m_bIsNullable = false;
+    m_xColumns[i_Column].m_bIsNullable = true;
+    m_xColumns[i_Column].m_bIsUnique = false;
     m_xColumns[i_Column].m_bIsPartitionKey = false;
     m_xColumns[i_Column].m_eDatumType = DM_NONE;
   }
@@ -119,7 +120,23 @@ void Job_CreateTable::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
   
-                                                               //! Alka to write
+  vTrace("Job_CreateTable: %p\n"_Stz, this);
+  
+  vTrace("m_sExecute = %s\n"_Stz,m_sExecute.aChar());
+  vTrace("m_eTableType = %s\n"_Stz,aTT[m_eTableType]);
+  vTrace("m_iColumns = %lld\n"_Stz,m_iColumns);
+  
+  for (i8 i_Column = 0; i_Column < m_iColumns; i_Column++) {
+    vTrace("m_xColumns[%lld].m_iColumnNo = %lld\n"_Stz, i_Column, m_xColumns[i_Column].m_iColumnNo);
+    vTrace("m_xColumns[%lld].m_sColumnName = %s\n"_Stz, i_Column, m_xColumns[i_Column].m_sColumnName.aChar());
+    vTrace("m_xColumns[%lld].m_sColumnType = %s\n"_Stz, i_Column, m_xColumns[i_Column].m_sColumnType.aChar());
+    vTrace("m_xColumns[%lld].m_iColumnLength = %lld\n"_Stz, i_Column, m_xColumns[i_Column].m_iColumnLength);
+    vTrace("m_xColumns[%lld].m_iColumnScale = %lld\n"_Stz, i_Column, m_xColumns[i_Column].m_iColumnScale);
+    vTrace("m_xColumns[%lld].m_bIsNullable = %s\n"_Stz, i_Column, m_xColumns[i_Column].m_bIsNullable ? "true" : "false");
+    vTrace("m_xColumns[%lld].m_bIsUnique = %s\n"_Stz, i_Column, m_xColumns[i_Column].m_bIsUnique ? "true" : "false");
+    vTrace("m_xColumns[%lld].m_bIsPartitionKey = %s\n"_Stz, i_Column, m_xColumns[i_Column].m_bIsPartitionKey ? "true" : "false");
+    vTrace("m_xColumns[%lld].m_eDatumType = %s\n"_Stz, i_Column, aDT[m_xColumns[i_Column].m_eDatumType]);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
