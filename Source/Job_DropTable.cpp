@@ -86,7 +86,7 @@ Job_DropTable::~Job_DropTable(void)
 /*----------------------------------------------------------------------------*/
 void Job_DropTable::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_CREATESCHEMA == eClass);
+  RASSERT(CN_JOB_DROPTABLE == eClass);
   RASSERT(pObject->eClass() == CN_JOB_DROPTABLE);
   
   Job_DropTable* pJob_DropTable = _pJob_DropTable(pObject);

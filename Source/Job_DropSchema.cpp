@@ -28,7 +28,7 @@ void* Job_DropSchema::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_DropSchema* pJob_DropSchema =
-    static_cast<Job_DropSchema*>(Heap::pAllocate(CN_JOB_CREATESCHEMA));
+    static_cast<Job_DropSchema*>(Heap::pAllocate(CN_JOB_DROPSCHEMA));
   
   return pJob_DropSchema;
 }
@@ -86,7 +86,7 @@ Job_DropSchema::~Job_DropSchema(void)
 /*----------------------------------------------------------------------------*/
 void Job_DropSchema::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_CREATESCHEMA == eClass);
+  RASSERT(CN_JOB_DROPSCHEMA == eClass);
   RASSERT(pObject->eClass() == CN_JOB_DROPSCHEMA);
   
   Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pObject);
