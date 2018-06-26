@@ -1,0 +1,911 @@
+/*============================================================================*/
+/* requests_table.sen -- the set of table related requests                    */
+/*============================================================================*/
+
+"requests.sen" .verbose
+
+timer: selectTimer
+
+/*----------------------------------------------------------------------------*/
+/* analyse a table                                                            */
+/*----------------------------------------------------------------------------*/
+: analyzeTable_req ( "<tableNm>" -- <R> )
+
+tp: analyzeTable
+
+ddlLock::grabRead
+
+  // should be in the tables folder
+  checkInTables       not if <NIP+ERROR> exit then
+
+  // there should be a table folder
+  dup checkIsTableFolder not if <NIP+ERROR> exit then
+
+  // push table dictionary
+  dup pushTable assert
+
+  // check it is a table
+  checkIsTable not if <NIP+ERROR> popTable assertInTables exit then     //REVIEW
+
+  tp ( "<tableNm>" )
+
+  args.metadata if
+    args.metadata if
+       "(nodeName VARCHAR, partition INTEGER, buffers INTEGER, entries INTEGER)"
+       metadata!
+    then
+  then
+
+  analyzeTable ( )
+
+  // set no of rows processed equal to total no of partitions
+  grid::partitions task::this task.seitf@ seitf.rowsProcessed
+
+  // pop table dictionary
+  popTable
+
+  // assert we are still in tables folder
+  assertInTables
+
+  tp: analyzedTable
+
+  not if <NIP+ERROR> else <SUCCESS> then
+;
+
+/*----------------------------------------------------------------------------*/
+/* detailed analysis of a table                                               */
+/*----------------------------------------------------------------------------*/
+: danalyzeTable_req ( "<tableNm>" -- <R> )
+
+  tp: danalyzeTable_req
+
+  ddlLock::grabRead
+
+  // should be in the tables folder
+  checkInTables       not if <NIP+ERROR> exit then
+
+  // there should be a table folder
+  dup checkIsTableFolder not if <NIP+ERROR> exit then
+
+  // push table dictionary
+  dup pushTable assert
+
+  // check it is a table
+  checkIsTable       not if <NIP+ERROR> popTable assertInTables exit then
+
+  tp ( "<tableNm>" )
+
+  danalyzeTable ( )
+
+  // pop table dictionary
+  popTable
+
+  // assert we are still in tables folder
+  assertInTables
+
+  tp: danalyzedTable
+
+  not if <NIP+ERROR> else <SUCCESS> then
+;
+
+/*----------------------------------------------------------------------------*/
+/* insert entries from row buffer into table                                  */
+/*----------------------------------------------------------------------------*/
+: insertTableEntriesSlot_req ( tablePtr, bufferPtr, slot, txIdx -- <R> )
+
+  ddlLock::grabRead
+
+  table.insertEntries
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* insert buffer entries to partition of given named table                    */
+/*----------------------------------------------------------------------------*/
+: insertBufferEntries$ ( pSEitf iNode workingBuffer bIsLast txId partitionNo "<tableNm>" -- true )
+
+tp: insertBufferEntries$
+  0 locals| pTable sTableNm iPartitionNo iTxId bIsLast pWorkingBuffer iNode pSEitf |
+
+  // why:
+  //   we have forwarded a full entryBuffer whose entries need to be
+  //   inserted to partition of table
+
+  // where:
+  //   in participant task running pLoop on participant thread;
+
+  // what:
+  //   find named table to get pointer to table
+  //   then append row buffer to partition of table
+
+  //1 task::this task.thread thread.name@ str.left "p" str.equal assert
+
+  args.tracepoint if
+    sTableNm "INSERTING WORKINGBUFFER ENTRIES " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
+  then
+
+  //"insertBufferEntries$" .
+  //iTxId .
+
+  // get ^table
+  sTableNm pushTable assert
+  sTableNm find execute ( rb ptn table )
+  to pTable
+  popTable
+
+  // is it the last buffer ?
+  bIsLast if
+    pWorkingBuffer workingBuffer.isLast!
+  then
+
+  // set the partition in the row buffer
+  //iPartitionNo pWorkingBuffer resultBuffer.partition!
+
+  pSEitf iTxId iNode pWorkingBuffer iPartitionNo pTable    ( rb ptn tablePtr )
+
+  6 "partitionInsertBufferEntries" iPartitionNo grid::toSlot dup >partitionTaskNm
+  TK_LOADSUB_PART
+
+  spawnPartitionTask
+
+  true <SUCCESS_RESULT>
+;
+
+/*----------------------------------------------------------------------------*/
+/* partition task inserts the entry buffer entries to the table               */
+/*----------------------------------------------------------------------------*/
+: partitionInsertBufferEntries ( pSEitf iTxId iNode workingBuffer partitionNo table^ -- )
+
+  tp: partitionInsertBufferEntries
+  0 locals| bIsLast pTable iPartitionNo pWorkingBuffer iNode iTxId pSEitf |
+
+  //"partitionInsertBufferEntries" .
+
+  //pEntryBuffer .
+
+  pWorkingBuffer workingBuffer.isLast@ to bIsLast
+  //"partitionInsertBufferEntries" .
+  //iTxId .
+
+  iPartitionNo pTable tablePtnGrabWrite  //! partitionLock
+
+  iTxId >str iPartitionNo grid::toSlot >str pWorkingBuffer >str pTable >str table.insertEntries ( )
+
+  bIsLast not if
+    iPartitionNo pTable tablePtnDropWrite
+    exit
+  then
+
+  //drop exit
+
+  //1 pTable table.dataLoaded!
+
+  //"sending got for last buffer..." .
+  //iPartitionNo grid::toSlot .
+
+  //----------------------------------------------------------------------------
+  // lazy build of index
+  iPartitionNo grid::toSlot >str pTable >str table.lazyBuildIndexes ( )
+
+  iPartitionNo pTable tablePtnDropWrite
+
+  <<
+  13
+  pSEitf >str       ( << pSEitf )
+  grid::thisNode@
+  "ackSEitf$"   ( << pSEitf "ackSEitf$" )
+
+  tp: theIndirectCall
+
+  >>            ( <<ackSEitf$>> )
+
+
+  // to which node/participant
+  iNode  ( <<ackSEitf$>> node )
+
+  //"forwarding ackSEitf$ to coordinator..." .
+  // forward to coordinator and wait
+  >>oneParticipant> ( bool )
+  //"got reply from ackSEitf$..." .
+
+  checkResult
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* partition task inserts the entry buffer entries to the table               */
+/*----------------------------------------------------------------------------*/
+: partitionInsertBufferEntries2 ( iTxId workingBuffer partitionNo table^ -- )
+
+  tp: partitionInsertBufferEntries2
+  0 locals| bIsLast pTable iPartitionNo pWorkingBuffer iNode iTxId pSEitf |
+
+  pWorkingBuffer workingBuffer.isLast@ to bIsLast
+
+  iPartitionNo pTable tablePtnGrabWrite  //! partitionLock
+
+  iTxId >str iPartitionNo grid::toSlot >str pWorkingBuffer >str pTable >str table.insertEntries ( )
+
+  bIsLast not if
+    iPartitionNo pTable tablePtnDropWrite
+    exit
+  then
+
+  // lazy build of indexes
+  iPartitionNo "Building indexes on partition %v" str.format .verbose
+  iPartitionNo grid::toSlot >str pTable >str table.lazyBuildIndexes ( )
+
+  iPartitionNo pTable tablePtnDropWrite
+
+  iPartitionNo "Partition task on partition %v acking subLoader" str.format .verbose
+  task.parent@ ack
+;
+
+/*----------------------------------------------------------------------------*/
+/* insert entries from row buffer into table                                  */
+/*----------------------------------------------------------------------------*/
+: insertTableEntries_req ( txId, partition, workingBuffer, tableName -- <R> )
+
+  0 0 0 locals| pWorkingBuffer iPartitionNo iTxId pTableName sWorkingBuffer sPartitionNo sTxId |
+
+tp: insertTableEntries_req
+
+  sPartitionNo str.tailInt assert to iPartitionNo
+  sTxId str.tailInt assert to iTxId
+  sWorkingBuffer WorkingBuffer::toWorkingBuffer to pWorkingBuffer
+
+  //"insertTableEntries_req" .
+  //sTxId .
+
+  <<
+  task::this task.seitf@ 
+  grid::thisNode@
+  pWorkingBuffer
+  pWorkingBuffer workingBuffer.isLast@
+  iTxId
+  iPartitionNo                       ( << rb ptn )
+  pTableName                         ( << rb ptn "<tableNm>" )
+  "insertBufferEntries$"             ( << rb ptn "<tableNm>" "insertBufferEntries$" )
+
+  tp: theIndirectCall
+
+  >>                       ( <<insertBufferEntries$>> )
+
+  //
+  // b) <<insertBufferEntries$>> to be forwarded to one participant
+  //    via sendParticipant in the coordinatoor
+  //
+
+  // to which node/participant
+  iPartitionNo grid::toNode  ( <<insertBufferEntries$>> node )
+
+  // forward to coordinator and wait
+  >>oneParticipant> ( bool )
+
+  tp: theIndirectResult
+
+  checkResult
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* copy a table. from-table must exist & to-table is created                  */
+/*----------------------------------------------------------------------------*/
+: copyTable_req ( "<to-tableNm>" "<from-tableNm>" -- <R> )
+
+ddlLock::grabRead
+
+  checkEnoughBuffers not if <NIP+ERROR> exit then
+
+  // should be in the tables folder
+  checkInTables       not if <NIP+ERROR> exit then
+
+  // there should be a table folder
+  dup checkIsTableFolder not if <NIP+ERROR> exit then
+
+  // push table dictionary
+  dup pushTable assert
+
+  // check it is a table
+  checkIsTable       not if <NIP+ERROR> popTable assertInTables exit then
+
+  //bp::freeSpace .
+
+  tableCopier
+
+  //bp::freeSpace .
+
+  // pop table dictionary
+  popTable
+
+  // assert we are still in tables folder
+  assertInTables
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* create a table                                                             */
+/*----------------------------------------------------------------------------*/
+: createTableR35_req ( "<tableNm>" -- <R> )
+
+  0 0 locals| pJob pTask |
+
+  tp: createSchema
+
+  //ddlLock::grabWrite
+
+  // get the task
+  task::this to pTask
+
+  // get the job from the task
+  pTask task.job@ to pJob
+
+  // check if we have enough buffers
+  checkEnoughBuffers not if <NIP+ERROR> exit then
+
+  // get the table name from the job
+  pJob job.objectName@
+  checkMakeTable    not if <NIP+ERROR> exit then
+  drop // tableNm on stack
+
+  pTask pJob job::distribute
+
+  <OK>
+
+
+  //ddlLock::grabWrite
+
+  //makeTable ( ) assert::stack_0
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* distributed export of a table                                              */
+/*----------------------------------------------------------------------------*/
+: distExport_table ( "<fileNm>" "<tableNm>" -- <R> )
+
+ddlLock::grabRead
+
+  // should be in the tables folder
+  checkInTables       not if <NIP+ERROR> exit then
+
+  // there should be a table folder
+  dup checkIsTableFolder not if <NIP+ERROR> exit then
+
+  // push table dictionary
+  dup pushTable assert
+
+  // check it is a table
+  checkIsTable  not if <NIP+ERROR> exit then
+
+  // call the distributed exporter
+  distTableExporter not if <NIP+ERROR> exit then
+
+  // pop table dictionary
+  popTable
+
+  // assert we are still in tables folder
+  assertInTables
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* drop a table                                                               */
+/*----------------------------------------------------------------------------*/
+: dropTable_req ( "<tableNm>" -- <R> )
+
+tp: dropTable
+
+ddlLock::grabWrite
+
+  checkRemoveTable not if <NIP+ERROR> exit then
+
+  tp ( "<tableNm>" )
+
+  removeTable ( ) assert::stack_0
+
+  tp: droppedTable
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* dump table                                                                 */
+/*----------------------------------------------------------------------------*/
+: dumpTable_req ( "<tableNm>" -- <R> )
+
+  locals| sTableNm |
+
+  ddlLock::grabRead
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // checks
+
+  // should be in the tables folder
+  checkInTables not if <NIP+ERROR> exit then
+
+  // there should be a table folder
+  sTableNm checkIsTableFolder not if <NIP+ERROR> exit then
+
+  // push table dictionary
+  sTableNm pushTable assert                                // ../tables/sTableNm
+
+  // push indexes folder
+  pushIndexes assert                               // ../tables/sTableNm/indexes
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // dump index
+
+  "hidden" find execute
+  index.dump
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // restore path
+
+  popIndexes popTable assertInTables                                // ../tables
+
+  tp: dumpedTable
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* end of create table sequence                                               */
+/*----------------------------------------------------------------------------*/
+: endCreateTable_req ( "<tableNm>" -- <R> )
+
+tp: endCreateTable_req
+
+ddlLock::grabWrite
+
+  // should be in the tables folder
+  checkInTables not if <NIP+ERROR> exit then
+
+  // there should be a table folder
+  dup checkIsTableFolder not if <NIP+ERROR> exit then
+
+  // push table dictionary
+  dup pushTable assert
+
+  // check it is a table
+  checkIsTable  not if <NIP+ERROR> popTable exit then
+
+  //"endCreateTable_req" .
+
+  // create column vector of table and partition
+  columnVecTable
+
+  assert::stack_0
+
+  // pop table dictionary
+  popTable
+
+  assertInTables
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* export a table                                                             */
+/*----------------------------------------------------------------------------*/
+: exportTable_req ( "<fileNm>" "<tableNm>" -- <R> )
+
+ddlLock::grabRead
+
+  // should be in the tables folder
+  checkInTables       not if <NIP+ERROR> exit then
+
+  // there should be a table folder
+  dup checkIsTableFolder not if <NIP+ERROR> exit then
+
+  // push table dictionary
+  dup pushTable assert
+
+  // check it is a table
+  checkIsTable       not if <NIP+ERROR> exit then
+
+  tableExporter not if popTable <NIP+ERROR> exit then
+
+  // pop table dictionary
+  popTable
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* get a table ref                                                            */
+/*----------------------------------------------------------------------------*/
+: getTable_req ( "<tableNm>" -- <R> )
+
+  // should be in the tables folder
+  checkInTables       not if <NIP+ERROR> exit then
+
+  // there should be a table folder
+  dup checkIsTableFolder not if <NIP+ERROR> exit then
+
+  // push table dictionary
+  dup pushTable assert
+
+  // check it is a table
+  checkIsTable       not if <NIP+ERROR> exit then
+
+  getTableRef not if <NIP+ERROR> exit then
+
+  // pop table dictionary
+  popTable
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* get list of tables                                                         */
+/*----------------------------------------------------------------------------*/
+: listTables_req ( -- <R> )
+
+ddlLock::grabRead
+
+  checkInTables not if <NIP+ERROR> exit then
+
+  listContents
+
+  <SUCCESS>
+;
+
+/*----------------------------------------------------------------------------*/
+/* load a table                                                               */
+/*----------------------------------------------------------------------------*/
+: loadTable_req ( "<fileNm>" "<tableNm>" -- <R> )
+
+ddlLock::grabRead
+
+  locals| sTableNm sFileNm |
+
+  //sRT "record terminator %v" str.format .
+  //sFS "field separator %v" str.format .
+  //sENC "enclosed by %v" str.format .
+  //sESC "escape character %v" str.format .
+
+  // should be in the tables folder
+  checkInTables       not if <NIP+ERROR> exit then
+
+  // there should be a table folder
+  sTableNm checkIsTableFolder not if <NIP+ERROR> exit then
+
+  // push table dictionary
+  sTableNm pushTable assert
+
+  // check it is a table
+  sTableNm checkIsTable  not if <NIP+ERROR> exit then
+  drop
+
+  //bp::freeSpace .
+
+snap0:
+ 
+   sFileNm sTableNm tableLoader not if popTable <NIP+ERROR> exit then
+  //loadIndexes
+
+  //bp::freeSpace .
+
+  // pop table dictionary
+  popTable
+
+snap1:
+  printClassCounts
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* load a table from a stream                                                 */
+/*----------------------------------------------------------------------------*/
+: loadTableStream_req ( "<fileNm>" "<tableNm>" -- <R> )
+
+  ddlLock::grabRead
+
+  // should be in the tables folder
+  checkInTables       not if <NIP+ERROR> exit then
+
+  // there should be a table folder
+  dup checkIsTableFolder not if <NIP+ERROR> exit then
+
+  // push table dictionary
+  dup pushTable assert
+
+  // check it is a table
+  checkIsTable  not if <NIP+ERROR> exit then
+
+  //bp::freeSpace .
+
+  tableLoaderStream2 not if <NIP+ERROR> exit then
+
+  //bp::freeSpace .
+
+  // pop table dictionary
+  popTable
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* parallel load a table                                                      */
+/*----------------------------------------------------------------------------*/
+: distParallelLoadTable_req ( "<sameMachine>" "<fileNm>" "<tableNm>" -- <R> )
+
+  ddlLock::grabRead
+
+  0 locals| pSEitf sTableNm sFileNm sSameMachine |
+
+tp: distParallelLoadTable_req
+
+  // should be in the tables folder
+  checkInTables       not if <NIP+ERROR> exit then
+
+  // there should be a table folder
+  sTableNm checkIsTableFolder not if <NIP+ERROR> exit then
+
+  // push table dictionary
+  sTableNm pushTable assert
+
+  // check it is a table
+  sTableNm checkIsTable  not if <NIP+ERROR> exit then
+  drop
+
+  // get this tasks seitf
+  task::this task.seitf@ to pSEitf
+
+  // push originating tasks seitf
+  pSEitf >str ( "seitf" )
+
+  // push originating node no
+  grid::thisNode@ ( "seitf" iNode )
+
+  // push field delimiter
+  pSEitf seitf.fieldDelimiter@ ( "seitf" iNode "<fieldDelimiter>" )
+
+  // push file path
+  sFileNm  ( "seitf" iNode "<fieldDelimiter>" "<fileNm>" )
+
+  // push whether running on same machine ?
+  sSameMachine  ( "seitf" iNode "<fieldDelimiter>" "<fileNm>" "<sameMachine>")
+
+  // push table name
+  sTableNm ( "seitf" iNode "<fieldDelimiter>" "<fileNm>" "<sameMachine>" "<tableNm>" )
+
+  // push schema name
+  2 pathPick dic.name  ( "seitf" iNode "<fieldDelimiter>" "<fileNm>" "<sameMachine>" "<tableNm>" "<schemaNm>" )
+
+  // push catalog name
+  4 pathPick dic.name  ( "seitf" iNode "<fieldDelimiter>" "<fileNm>" "<sameMachine>" "<tableNm>" "<schemaNm>" "<catalogNm>" )
+
+  // set acks remaining to be no of nodes
+  grid::nodes pSEitf seitf.acksRemaining!
+
+  // invoke the disParallelTableLoader that spawn the parallel loader on each node
+  distParallelTableLoader
+
+  // wait for all distributed loaders to finish and ack
+  begin
+    pSEitf seitf.acksRemaining@
+    while
+      1 thread.sleep_s
+  repeat
+
+  // pop table dictionary
+  popTable
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* return a table ref                                                         */
+/*----------------------------------------------------------------------------*/
+: returnTable_req ( -- <R> )
+
+  assert::stack_0
+
+  // dec and return table reference and clear task.seitf.currentTable
+  returnTableRef not if <NIP+ERROR> exit then
+
+  // assert no seitf.table
+  task::this task.seitf@ seitf.table@ not assert
+
+  assert::stack_0
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* get size of table                                                          */
+/*----------------------------------------------------------------------------*/
+: sizeTable_req ( "<tableNm>" -- <R> )
+
+ddlLock::grabRead
+
+  // should be in the tables folder
+  checkInTables       not if <NIP+ERROR> exit then
+
+  // there should be a table folder
+  dup checkIsTableFolder not if <NIP+ERROR> exit then
+
+  // push table folder
+  dup pushTable assert
+
+  // check it is a table
+  checkIsTable  not if <NIP+ERROR> exit then
+  drop
+
+  sizeTable ( "<size>" )
+
+  args.metadata if
+    "(size INTEGER)" metadata!
+    display@ if
+      "row: (" swap str.cat
+      ")\n" str.cat
+    then
+    1 task::this task.seitf@ seitf.rowsProcessed
+  then
+
+  // pop table folder
+  popTable
+
+  <SUCCESS>
+;
+
+/*----------------------------------------------------------------------------*/
+/* get size of tables in the tables folder                                    */
+/*----------------------------------------------------------------------------*/
+: sizeTables_req (  )
+
+  0 locals| iCount |
+
+  ddlLock::grabRead
+
+  // should be in the tables folder
+  checkInTables       not if <NIP+ERROR> exit then
+
+  args.metadata if
+    "(tableName VARCHAR, size VARCHAR)" metadata!
+
+    ""
+    0 pathPick dic.lastWord dup iterate
+    1 iCount + to iCount
+    "row: ('" str.cat
+
+    object@ word.name str.cat
+
+    "', '" str.cat
+
+    // push table dictionary
+    object@ word.name pushTable assert
+
+    // check it is a table
+    object@ word.name
+    checkIsTable  not if <NIP+ERROR> exit then
+    drop
+
+    // push indexes folder
+    pushIndexes assert
+
+    //get size of hidden index
+    "hidden" sizeIndex str.cat
+
+    // pop indexes folder
+    popIndexes
+
+    // pop table folder
+    popTable
+
+    "')\n" str.cat
+
+    object@ word.prev object!
+
+    next
+    iCount task::this task.seitf@ seitf.rowsProcessed
+  else
+
+    ""
+    0 pathPick dic.lastWord dup iterate
+
+      dup str.length if "\n" str.cat then
+
+      object@ word.name 12 str.pad str.cat
+
+      "(" str.cat
+
+      "table " str.cat
+
+      // push table dictionary
+      object@ word.name pushTable assert
+
+      // check it is a table
+      object@ word.name
+      checkIsTable  not if <NIP+ERROR> exit then
+      drop
+
+      // push indexes folder
+      pushIndexes assert
+
+      // get size if hidden index
+      "hidden" sizeIndex str.cat
+
+      // pop indexes folder
+      popIndexes
+
+      // pop table dictionary
+      popTable
+
+      ")" str.cat
+
+      object@ word.prev object!
+
+    next
+  then
+
+  <SUCCESS>
+;
+
+/*----------------------------------------------------------------------------*/
+/* truncate table                                                             */
+/*----------------------------------------------------------------------------*/
+: truncateTable_req ( "<tableNm>" -- <R> )
+
+ddlLock::grabRead
+
+  // should be in the tables folder
+  checkInTables       not if <NIP+ERROR> exit then
+
+  // there should be a table folder
+  dup checkIsTableFolder not if <NIP+ERROR> exit then
+
+  // push table dictionary
+  dup pushTable assert
+
+  // check it is a table
+  checkIsTable  not if <NIP+ERROR> exit then
+
+  truncateTable assert::stack_0
+
+  // pop table dictionary
+  popTable
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* any outstanding table references                                           */
+/*----------------------------------------------------------------------------*/
+: tableInuse_req ( "<tableNm>" -- <R> )
+
+  // should be in the tables folder
+  checkInTables       not if <NIP+ERROR> exit then
+
+  // there should be a table folder
+  dup checkIsTableFolder not if <NIP+ERROR> exit then
+
+  // push table dictionary
+  dup pushTable assert
+
+  // check it is a table
+  checkIsTable  not if <NIP+ERROR> exit then
+
+  tableInUse
+  if
+    "table in use" .
+  else
+    "table not in use" .
+  then
+
+  // pop table dictionary
+  popTable
+
+   <OK>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

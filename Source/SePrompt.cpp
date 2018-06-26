@@ -72,6 +72,7 @@ CmdTable SePromptCommands[] =
   { C_CMD_CREATE,     C_ONE_SCHEMA,  &SePrompt::bCmd_CreateSchema  },
   { C_CMD_CREATE,     C_R35_ONE_SCHEMA,  &SePrompt::bCmd_CreateSchemaR35  },
   { C_CMD_CREATE,     C_ONE_TABLE,   &SePrompt::bCmd_CreateTable   },
+  { C_CMD_CREATE,     C_R35_ONE_TABLE,   &SePrompt::bCmd_CreateTableR35   },
   { C_CMD_CREATE,     C_ONE_TENANT,  &SePrompt::bCmd_CreateTenant  },
   { C_CMD_CREATE,     C_ONE_UNIQUE,  &SePrompt::bCmd_CreateUnique  },
   { C_CMD_DANTBL,     nullptr,       &SePrompt::bCmd_DanalyzeTable },
@@ -1011,47 +1012,6 @@ bool SePrompt::bCmd_CreateSchema(void)
   
   // create a schema
   m_xTokenVec[0]->vCopy("mksch"_Stz);
-  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]);
-  
-  if (!bExecuteRequest())
-    return false;
-  
-  //vTrace("Schema created: %s\n"_Stz, m_xTokenVec2[2]);
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* create schema                                                              */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bCmd_CreateSchemaR35(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  ASSERT(m_xTokenVec[0]->bSame("create"_Stz));
-  ASSERT(m_xTokenVec[1]->bSame("R35schema"_Stz));
-  
-  i8 i_Token;
-  
-  // copy tokens from m_xTokenVec to m_xTokenVec2
-  // while doing that also validate the create statament
-  for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if (! m_xTokenVec[i_Token]->bHasText())
-      break;
-    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
-    m_xTokenVec[i_Token]->vCopy(""_Stz);
-  }
-  
-  i8 iNumTokens = i_Token;
-  
-  // - - - - - - - - - - - - - - - - - - - - -
-  // there should be 3 tokens
-  if (iNumTokens != 3) {
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return false;
-  }
-  
-  // create a schema
-  m_xTokenVec[0]->vCopy("mkschR35"_Stz);
   m_xTokenVec[1]->vCopy(m_xTokenVec2[2]);
   
   if (!bExecuteRequest())
@@ -2735,3 +2695,108 @@ bool SePrompt::bValidateCreateTable(i8 iNumTokens)
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/* create schema                                                              */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bCmd_CreateSchemaR35(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  ASSERT(m_xTokenVec[0]->bSame("create"_Stz));
+  ASSERT(m_xTokenVec[1]->bSame("R35schema"_Stz));
+  
+  i8 i_Token;
+  
+  // copy tokens from m_xTokenVec to m_xTokenVec2
+  // while doing that also validate the create statament
+  for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
+    if (! m_xTokenVec[i_Token]->bHasText())
+      break;
+    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
+    m_xTokenVec[i_Token]->vCopy(""_Stz);
+  }
+  
+  i8 iNumTokens = i_Token;
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // there should be 3 tokens
+  if (iNumTokens != 3) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  // create a schema
+  m_xTokenVec[0]->vCopy("mkschR35"_Stz);
+  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]);
+  
+  if (!bExecuteRequest())
+    return false;
+  
+  //vTrace("Schema created: %s\n"_Stz, m_xTokenVec2[2]);
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* create table                                                               */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bCmd_CreateTableR35(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  ASSERT(m_xTokenVec[0]->bSame("create"_Stz));
+  ASSERT(m_xTokenVec[1]->bSame("R35table"_Stz));
+  
+  i8 i_Token;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy tokens from m_xTokenVec to m_xTokenVec2
+  i8 iNumTokens = iCopyTokens(m_xTokenVec, m_xTokenVec2);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // some validations
+  bool bValid = bValidateCreateTable(iNumTokens);
+  if ( ! bValid )
+    return false;
+  
+  // make the table
+  if ( ! bMakeTable() )
+    return false;
+  
+  // mark current toen
+  i8 iCurrentToken = 4;
+  
+  // save current token as the first column of the table
+  Stz* pFirstColumn = m_xTokenVec2[iCurrentToken]->aText();
+  
+  // add columns to the table
+  if ( ! bAddTableColumns(iCurrentToken, iNumTokens) )
+    return false;
+  
+  // current token should be at ')'
+  if ( ! m_xTokenVec2[iCurrentToken++]->bSame(")"_Stz)) {
+    bool bRemove = bRemoveTable(m_xTokenVec2[2]->aText());
+    ASSERT(bRemove);
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  // check if we have a partition by clause
+  if ( m_xTokenVec2[iCurrentToken++]->bSame("partition"_Stz)) {
+    
+    if ( ! bPartitionTable(iCurrentToken, iNumTokens) )
+      return false;
+    
+  }
+  else {
+    // no partition by clause
+    // we will create partitioning using the first column
+    bPartitionTable(pFirstColumn);
+  }
+  
+  if ( ! bEndMakeTable() )
+    return false;
+  
+  //vTrace("Table created: %s\n"_Stz, m_xTokenVec2[2]);
+  return true;
+}

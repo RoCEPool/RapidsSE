@@ -119,6 +119,7 @@ public:
   
   bool bCmd_CreateSchemaR35(void);
   bool bCmd_DropSchemaR35(void);
+  bool bCmd_CreateTableR35(void);
   
   Footer* aFooter(void);
   

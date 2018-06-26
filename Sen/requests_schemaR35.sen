@@ -24,7 +24,7 @@
   // check if we have enough buffers
   checkEnoughBuffers not if <NIP+ERROR> exit then
 
-  // get the schema name from the kob
+  // get the schema name from the job
   pJob job.objectName@
   checkMakeSchema    not if <NIP+ERROR> exit then
   drop // schemaNm on stack
