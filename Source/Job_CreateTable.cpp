@@ -120,7 +120,7 @@ void Job_CreateTable::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
   
-  vTrace("Job_CreateTable: %p\n"_Stz, this);
+  vTrace("\nJob_CreateTable: %s\n"_Stz, m_sObjectName.aChar());
   
   vTrace("m_sExecute = %s\n"_Stz,m_sExecute.aChar());
   vTrace("m_eTableType = %s\n"_Stz,aTT[m_eTableType]);
