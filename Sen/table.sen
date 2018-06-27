@@ -426,7 +426,7 @@ tp: makingTable
   0 locals| indexPtr sTableNm |
 
   args.tracepoint if
-  sTableNm "MAKING TABLE " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
+    sTableNm "MAKING TABLE " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
   then
 
   sTableNm makeTableDic
@@ -477,10 +477,10 @@ tp: makingTable
 /*----------------------------------------------------------------------------*/
 /* make a table (run by all participants)                                     */
 /*----------------------------------------------------------------------------*/
-: makeTableR35 ( "<tableNm>" -- true/false )
+: makeTableR35 ( "<tableNm>" )
 
   tp: makingTable
-  0 locals| indexPtr sTableNm |
+  0 0 locals| pTable indexPtr sTableNm |
 
   args.tracepoint if
   sTableNm "MAKING TABLE " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
@@ -488,7 +488,8 @@ tp: makingTable
 
   sTableNm makeTableDic
 
-  sTableNm pushTable assert
+  sTableNm find execute to pTable
+  sTableNm pushTable
 
   sTableNm "makeIndexes" find execute
 
@@ -527,15 +528,6 @@ tp: makingTable
 
   // store the hidden index in the table
   indexPtr sTableNm find execute table.hiddenIndex!
-
-  // get a table reference
-  sTableNm pushTable assert
-  getTableRef not if <NIP+ERROR> exit then
-  popTable
-
-  returnTableRef not if <NIP+ERROR> exit then
-
-  true
 ;
 /*----------------------------------------------------------------------------*/
 /* remove a table folder                                                      */
