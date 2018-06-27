@@ -3039,7 +3039,7 @@ bool SePrompt::bCmd_CreateTableR35(void)
   Job_CreateTable* pJob_CreateTable = new Job_CreateTable(m_pSEitf);
   
   // set the table name
-  pJob_CreateTable->m_sObjectName = m_xTokenVec[1]->aText();
+  pJob_CreateTable->m_sObjectName = m_xTokenVec[2]->aText();
   
   // set the job in SEitf
   m_pSEitf->m_pJob = pJob_CreateTable;

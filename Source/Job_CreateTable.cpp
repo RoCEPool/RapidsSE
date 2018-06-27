@@ -120,14 +120,14 @@ void Job_CreateTable::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
   
-  vTrace("\nJob_CreateTable: %s\n"_Stz, m_sObjectName.aChar());
+  vTrace("\n\nJob_CreateTable: %s\n"_Stz, m_sObjectName.aChar());
   
   vTrace("m_sExecute = %s\n"_Stz,m_sExecute.aChar());
   vTrace("m_eTableType = %s\n"_Stz,aTT[m_eTableType]);
   vTrace("m_iColumns = %lld\n"_Stz,m_iColumns);
   
   for (i8 i_Column = 0; i_Column < m_iColumns; i_Column++) {
-    vTrace("m_xColumns[%lld].m_iColumnNo = %lld\n"_Stz, i_Column, m_xColumns[i_Column].m_iColumnNo);
+    vTrace("\nm_xColumns[%lld].m_iColumnNo = %lld\n"_Stz, i_Column, m_xColumns[i_Column].m_iColumnNo);
     vTrace("m_xColumns[%lld].m_sColumnName = %s\n"_Stz, i_Column, m_xColumns[i_Column].m_sColumnName.aChar());
     vTrace("m_xColumns[%lld].m_sColumnType = %s\n"_Stz, i_Column, m_xColumns[i_Column].m_sColumnType.aChar());
     vTrace("m_xColumns[%lld].m_iColumnLength = %lld\n"_Stz, i_Column, m_xColumns[i_Column].m_iColumnLength);
