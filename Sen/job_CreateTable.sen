@@ -11,18 +11,69 @@
 
   params| pJob_CreateTable |
 
+  0 0 locals| pTable sTableNm |
+
   CN_JOB_CREATETABLE pJob_CreateTable object.assertClass
+  pJob_CreateTable job.objectName@ to sTableNm
 
   ddlLock::grabWrite
 
+  //----------------------------------------------------------------------------
+  // set dictionary stack
   pJob_CreateTable getPathR35
   dicStack.set
-  pJob_CreateTable job.objectName@   ( schemaNm )
-  makeTableR35 ( )     not if "got error" . exit then
+
+  //----------------------------------------------------------------------------
+  // make table
+  sTableNm makeTableR35 ( )     not if "got error" . exit then
+
+  //----------------------------------------------------------------------------
+  // get a table reference
+  sTableNm find execute to pTable
+  pTable table.getRef
+
+  //----------------------------------------------------------------------------
+  // add table columns
+  sTableNm pushTableSub   assert
+  pushColumns assert
+  pJob_CreateTable job.columnCount@  0 ?do
+   I pJob_CreateTable job.columnType@ I pJob_CreateTable job.columnName@ :column
+  loop
+  popColumns
+  popTableSub
+
+
+  //----------------------------------------------------------------------------
+  // add partition columns
+  // push partitions and partition columns sub folders
+  sTableNm pushPartitionSub assert
+  pushPartitionColumns assert
+
+  pJob_CreateTable job.columnCount@  0 ?do
+    I pJob_CreateTable job.columnIsPartKey 1 == if
+      I pJob_CreateTable job.columnName@ dup ( "<columnNm>" )
+      :partitionColumn
+    then
+  loop
+
+  // pop partition columns and partitionsfolder
+  popPartitionColumns
+  popPartitionSub
+
+  //----------------------------------------------------------------------------
+  // end create table
+  sTableNm columnVecTableR35
+  popTable
+
+  //----------------------------------------------------------------------------
+  // return table reference
+  pTable table.retRef
 
   ddlLock::testDrop
 
+  assertInTables
   pJob_CreateTable job.notice
+
 ;
 
 /*============================================================================*/
