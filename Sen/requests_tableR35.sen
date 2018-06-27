@@ -354,13 +354,6 @@ ddlLock::grabRead
   pTask pJob job::distribute
 
   <OK>
-
-
-  //ddlLock::grabWrite
-
-  //makeTable ( ) assert::stack_0
-
-  <OK>
 ;
 
 /*----------------------------------------------------------------------------*/

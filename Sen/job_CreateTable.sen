@@ -13,6 +13,15 @@
 
   CN_JOB_CREATETABLE pJob_CreateTable object.assertClass
 
+  ddlLock::grabWrite
+
+  pJob_CreateTable getPathR35
+  dicStack.set
+  pJob_CreateTable job.objectName@   ( schemaNm )
+  makeTableR35 ( )     not if "got error" . exit then
+
+  ddlLock::testDrop
+
   pJob_CreateTable job.notice
 ;
 

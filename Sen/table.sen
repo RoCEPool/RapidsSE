@@ -475,6 +475,69 @@ tp: makingTable
 ;
 
 /*----------------------------------------------------------------------------*/
+/* make a table (run by all participants)                                     */
+/*----------------------------------------------------------------------------*/
+: makeTableR35 ( "<tableNm>" -- true/false )
+
+  tp: makingTable
+  0 locals| indexPtr sTableNm |
+
+  args.tracepoint if
+  sTableNm "MAKING TABLE " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
+  then
+
+  sTableNm makeTableDic
+
+  sTableNm pushTable assert
+
+  sTableNm "makeIndexes" find execute
+
+  sTableNm "makePartitions" find execute
+
+  sTableNm :table ( ^table ) drop
+
+  // make partition columns
+  sTableNm "makePartitionColumns" find execute
+
+  // forward reference :-(
+  sTableNm "makeColumns" find execute
+
+  // create the hidden index for the row data
+  sTableNm "hidden" "make_index" find execute
+
+  // make the index as hidden
+  "indexes" find execute pathPush
+  "hidden" findInCurrent execute to indexPtr
+  true indexPtr index.isHidden!
+
+  // now add a column to the hidden index
+  "hidden_column" "hidden"
+  "add_indexColumn" find execute
+
+  // create the column vector of the index
+  indexPtr index.subDic pathPush
+
+  "columns" find execute pathPush
+
+  "integer" "hidden_column" indexPtr index.createColumnVec
+
+  pathDrop  // step out of columns
+  pathDrop  // step out of subdic
+  pathDrop  // step out of indexes
+
+  // store the hidden index in the table
+  indexPtr sTableNm find execute table.hiddenIndex!
+
+  // get a table reference
+  sTableNm pushTable assert
+  getTableRef not if <NIP+ERROR> exit then
+  popTable
+
+  returnTableRef not if <NIP+ERROR> exit then
+
+  true
+;
+/*----------------------------------------------------------------------------*/
 /* remove a table folder                                                      */
 /*----------------------------------------------------------------------------*/
 : removeTable allParticipants 1 checkResult ( "<tableNm>" -- true n# true )
