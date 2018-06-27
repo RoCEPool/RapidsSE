@@ -33,10 +33,16 @@ using namespace JobsModel;
 #include "Job__Execute.hpp"
 #include "Job__Executed.hpp"
 
-#include "Job_CreateTable.hpp"
+#include "Job_CreateCatalog.hpp"
 #include "Job_CreateSchema.hpp"
+#include "Job_CreateTable.hpp"
+#include "Job_CreateTenant.hpp"
+
+#include "Job_DropCatalog.hpp"
 #include "Job_DropSchema.hpp"
 #include "Job_DropTable.hpp"
+#include "Job_DropTenant.hpp"
+
 #include "Job_G35.hpp"
 
 #include "Jobs.hpp"

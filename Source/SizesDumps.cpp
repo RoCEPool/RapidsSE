@@ -310,11 +310,11 @@ i8 giClassSize[]
 
   /*    */ sizeof(Job_CreateTable),   // CN_JOB_ANALYZEINDEX
   /*    */ sizeof(Job_CreateTable),   // CN_JOB_ANALYZETABLE
-  /*    */ sizeof(Job_CreateTable),   // CN_JOB_CREATECATALOG
+  /*    */ sizeof(Job_CreateCatalog),   // CN_JOB_CREATECATALOG
   /*    */ sizeof(Job_CreateTable),   // CN_JOB_CREATEINDEX
   /*    */ sizeof(Job_CreateSchema),  // CN_JOB_CREATESCHEMA
   /*    */ sizeof(Job_CreateTable),   // CN_JOB_CREATETABLE
-  /*    */ sizeof(Job_CreateTable),   // CN_JOB_CREATETENANT
+  /*    */ sizeof(Job_CreateTenant),   // CN_JOB_CREATETENANT
   /*    */ sizeof(Job_CreateTable),   // CN_JOB_DROPCATALOG
   /*    */ sizeof(Job_CreateTable),   // CN_JOB_DROPINDEX
   /*    */ sizeof(Job_DropSchema),    // CN_JOB_DROPSCHEMA

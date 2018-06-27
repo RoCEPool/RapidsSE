@@ -1,10 +1,18 @@
 /*============================================================================*/
 /* _R35 -- R35 requests                                                       */
 /*============================================================================*/
-
 _startClusterR35
 sleep 10;
+
 docol epochTake;
+create R35table j10 (
+  j10_key   INTEGER NOT NULL,
+  j10_name  VARCHAR(32) NOT NULL
+);
+
+sleep 10;
+drop R35Table j10;
+ 
 cf ..;
 cf ..;
 pwf;
@@ -16,9 +24,61 @@ cf x;
 rf tables;
 cf ..;
 drop R35Schema x;
+sleep 10;
 lf;
 
+docol epochDump;
 /*
+create R35table dataTable (
+key     INTEGER NOT NULL,
+name    VARCHAR(32) NOT NULL,
+value1  INTEGER,
+value2  INTEGER
+) partition by (valuex);
+
+create R35table dataTable (
+key     INTEGER NOT NULL,
+name    VARCHAR(32) NOT NULL,
+value1  INTEGER,
+value2  INTEGER
+) partition by (key);
+
+create R35table j10 (
+j10_key   INTEGER NOT NULL,
+j10_name  VARCHAR(32) NOT NULL
+);
+
+create R35table RDP (
+
+rdp_testno   INTEGER       NOT NULL, // col 0
+rdp_comment  VARCHAR(64)   NOT NULL, // col 1
+
+rdp_bol_NN   BOOLEAN       NOT NULL, // col 2
+rdp_bol      BOOLEAN       ,         // col 3
+
+rdp_bcd_NN   DECIMAL(19,0) NOT NULL, // col 4
+rdp_bcd      DECIMAL(19,0) ,         // col 5
+
+rdp_flt_NN   FLOAT         NOT NULL, // col 6
+rdp_flt      FLOAT         ,         // col 7
+
+rdp_int_NN   INTEGER       NOT NULL, // col 8
+rdp_int      INTEGER       ,         // col 9
+
+rdp_tsp_NN   TIMESTAMP     NOT NULL, // col 10
+rdp_tsp      TIMESTAMP     ,         // col 11
+
+rdp_vch_NN   VARCHAR(32)   NOT NULL, // col 12
+rdp_vch      VARCHAR(32)             // col 13
+
+);
+
+
+
+
+
+
+
 create table j10 (
   j10_key   INTEGER NOT NULL,
   j10_name  VARCHAR(32) NOT NULL

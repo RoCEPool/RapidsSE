@@ -89,9 +89,9 @@ void Job_DropSchema::vDump(eCN eClass, Object* pObject, Stz* aTab)
   RASSERT(CN_JOB_DROPSCHEMA == eClass);
   RASSERT(pObject->eClass() == CN_JOB_DROPSCHEMA);
   
-  Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pObject);
+  Job_DropSchema* pJob_DropSchema = _pJob_DropSchema(pObject);
 
-  pJob_CreateTable->vShow();
+  pJob_DropSchema->vShow();
 }
 
 /*----------------------------------------------------------------------------*/

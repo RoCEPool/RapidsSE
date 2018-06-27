@@ -68,23 +68,27 @@ CmdTable SePromptCommands[] =
   { C_CMD_BYE,        nullptr,       &SePrompt::bCmd_Bye           },
   { C_CMD_CD,         nullptr,       &SePrompt::bCmd_ChangeDir     },
   { C_CMD_CREATE,     C_ONE_CATALOG, &SePrompt::bCmd_CreateCatalog },
+  { C_CMD_CREATE,     C_R35_ONE_CATALOG, &SePrompt::bCmd_CreateCatalogR35 },
   { C_CMD_CREATE,     C_ONE_INDEX,   &SePrompt::bCmd_CreateIndex   },
   { C_CMD_CREATE,     C_ONE_SCHEMA,  &SePrompt::bCmd_CreateSchema  },
   { C_CMD_CREATE,     C_R35_ONE_SCHEMA,  &SePrompt::bCmd_CreateSchemaR35  },
   { C_CMD_CREATE,     C_ONE_TABLE,   &SePrompt::bCmd_CreateTable   },
   { C_CMD_CREATE,     C_R35_ONE_TABLE,   &SePrompt::bCmd_CreateTableR35   },
   { C_CMD_CREATE,     C_ONE_TENANT,  &SePrompt::bCmd_CreateTenant  },
+  { C_CMD_CREATE,     C_R35_ONE_TENANT,  &SePrompt::bCmd_CreateTenantR35  },
   { C_CMD_CREATE,     C_ONE_UNIQUE,  &SePrompt::bCmd_CreateUnique  },
   { C_CMD_DANTBL,     nullptr,       &SePrompt::bCmd_DanalyzeTable },
   { C_CMD_DOCOL,      nullptr,       &SePrompt::bCmd_Docol         },
   { C_CMD_DISTPARLOAD,nullptr,       &SePrompt::bCmd_DistParLoadTable},
   { C_CMD_DROP,       C_ONE_CATALOG, &SePrompt::bCmd_DropCatalog   },
+  { C_CMD_DROP,       C_R35_ONE_CATALOG, &SePrompt::bCmd_DropCatalogR35  },
   { C_CMD_DROP,       C_ONE_INDEX,   &SePrompt::bCmd_DropIndex     },
   { C_CMD_DROP,       C_ONE_SCHEMA,  &SePrompt::bCmd_DropSchema    },
   { C_CMD_DROP,       C_R35_ONE_SCHEMA,  &SePrompt::bCmd_DropSchemaR35    },
   { C_CMD_DROP,       C_ONE_TABLE,   &SePrompt::bCmd_DropTable     },
   { C_CMD_DROP,       C_R35_ONE_TABLE,   &SePrompt::bCmd_DropTableR35     },
-  { C_CMD_DROP,       C_ONE_TENANT,  &SePrompt::bCmd_DropTenant    },
+  { C_CMD_DROP,       C_R35_ONE_TENANT,  &SePrompt::bCmd_DropTenant    },
+  { C_CMD_DROP,       C_ONE_TENANT,  &SePrompt::bCmd_DropTenantR35    },
   { C_CMD_END,        C_ONE_INSERT,  &SePrompt::bCmd_EndInsert     },
   { C_CMD_HELP1,      nullptr,       &SePrompt::bCmd_Help          },
   { C_CMD_HELP2,      nullptr,       &SePrompt::bCmd_Help          },
@@ -2927,6 +2931,51 @@ bool SePrompt::bValidateCreateTableR35(i8 iNumTokens)
 /*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
+/* create catalog                                                             */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bCmd_CreateCatalogR35(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  ASSERT(m_xTokenVec[0]->bSame("create"_Stz));
+  ASSERT(m_xTokenVec[1]->bSame("R35catalog"_Stz));
+  
+  i8 i_Token;
+  
+  // validate the create statament
+  for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
+    if (! m_xTokenVec[i_Token]->bHasText())
+      break;
+  }
+  
+  i8 iNumTokens = i_Token;
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // there should be 3 tokens
+  if (iNumTokens != 3) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  // create the job
+  Job_CreateCatalog* pJob_CreateCatalog = new Job_CreateCatalog(m_pSEitf);
+  pJob_CreateCatalog->m_sObjectName = m_xTokenVec[2]->aText();
+  
+  // set the job in SEitf
+  m_pSEitf->m_pJob = pJob_CreateCatalog;
+  
+  // create a schema
+  m_xTokenVec[0]->vCopy("mkcatR35"_Stz);
+  m_xTokenVec[1]->vCopy(""_Stz);
+  
+  if (!bExecuteRequest())
+    return false;
+  
+  //vTrace("Schema created: %s\n"_Stz, m_xTokenVec2[2]);
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* create schema                                                              */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bCmd_CreateSchemaR35(void)
@@ -3046,6 +3095,95 @@ bool SePrompt::bCmd_CreateTableR35(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* create tenant                                                              */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bCmd_CreateTenantR35(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  ASSERT(m_xTokenVec[0]->bSame("create"_Stz));
+  ASSERT(m_xTokenVec[1]->bSame("R35tenant"_Stz));
+  
+  i8 i_Token;
+  
+  // validate the create statament
+  for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
+    if (! m_xTokenVec[i_Token]->bHasText())
+      break;
+  }
+  
+  i8 iNumTokens = i_Token;
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // there should be 3 tokens
+  if (iNumTokens != 3) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  // create the job
+  Job_CreateTenant* pJob_CreateTenant = new Job_CreateTenant(m_pSEitf);
+  pJob_CreateTenant->m_sObjectName = m_xTokenVec[2]->aText();
+  
+  // set the job in SEitf
+  m_pSEitf->m_pJob = pJob_CreateTenant;
+  
+  // create a schema
+  m_xTokenVec[0]->vCopy("mktenR35"_Stz);
+  m_xTokenVec[1]->vCopy(""_Stz);
+  
+  if (!bExecuteRequest())
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop catalog                                                               */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bCmd_DropCatalogR35(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  i8 i_Token;
+  i8 iNumTokens;
+  
+  ASSERT(m_xTokenVec[0]->bSame("drop"_Stz));
+  ASSERT(m_xTokenVec[1]->bSame("R35catalog"_Stz));
+  
+  for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
+    if (! m_xTokenVec[i_Token]->bHasText())
+      break;
+  }
+  
+  iNumTokens = i_Token;
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // there should be 3 tokens
+  if (iNumTokens != 3) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  // create the job
+  Job_DropCatalog* pJob_DropCatalog = new Job_DropCatalog(m_pSEitf);
+  
+  // set the table name
+  pJob_DropCatalog->m_sObjectName = m_xTokenVec[2]->aText();
+  
+  // set the job in SEitf
+  m_pSEitf->m_pJob = pJob_DropCatalog;
+  
+  // drop a schema
+  m_xTokenVec[0]->vCopy("rmcatR35"_Stz);
+  m_xTokenVec[1]->vCopy(""_Stz"");
+  if (!bExecuteRequest())
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* drop schema                                                                */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bCmd_DropSchemaR35(void)
@@ -3087,7 +3225,6 @@ bool SePrompt::bCmd_DropSchemaR35(void)
   if (!bExecuteRequest())
     return false;
   
-  //vTrace("Schema dropped: %s\n"_Stz, m_xTokenVec2[2]);
   return true;
 }
 
@@ -3133,6 +3270,50 @@ bool SePrompt::bCmd_DropTableR35(void)
   if (!bExecuteRequest())
     return false;
   
-  //vTrace("Table dropped: %s\n"_Stz, m_xTokenVec2[2]);
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop tenant                                                                */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bCmd_DropTenantR35(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  i8 i_Token;
+  i8 iNumTokens;
+  
+  ASSERT(m_xTokenVec[0]->bSame("drop"_Stz));
+  ASSERT(m_xTokenVec[1]->bSame("R35tenant"_Stz));
+  
+  for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
+    if (! m_xTokenVec[i_Token]->bHasText())
+      break;
+  }
+  
+  iNumTokens = i_Token;
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // there should be 3 tokens
+  if (iNumTokens != 3) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  // create the job
+  Job_DropTenant* pJob_DropTenant = new Job_DropTenant(m_pSEitf);
+  
+  // set the table name
+  pJob_DropTenant->m_sObjectName = m_xTokenVec[2]->aText();
+  
+  // set the job in SEitf
+  m_pSEitf->m_pJob = pJob_DropTenant;
+  
+  // drop a schema
+  m_xTokenVec[0]->vCopy("rmtenR35"_Stz);
+  m_xTokenVec[1]->vCopy(""_Stz"");
+  if (!bExecuteRequest())
+    return false;
+  
   return true;
 }

@@ -117,10 +117,15 @@ public:
   bool bCmd_TimerStart(void);
   bool bCmd_TimerEnd(void);
   
+  bool bCmd_CreateCatalogR35(void);
   bool bCmd_CreateSchemaR35(void);
   bool bCmd_CreateTableR35(void);
+  bool bCmd_CreateTenantR35(void);
+  
+  bool bCmd_DropCatalogR35(void);
   bool bCmd_DropSchemaR35(void);
   bool bCmd_DropTableR35(void);
+  bool bCmd_DropTenantR35(void);
   
   Footer* aFooter(void);
   

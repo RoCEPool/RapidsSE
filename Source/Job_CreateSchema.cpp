@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Job_CreateSchema.cpp -- Create Scema Job                                   */
+/* Job_CreateSchema.cpp -- Create Schema Job                                  */
 /*============================================================================*/
 
 #include "JobModel.h"
@@ -48,9 +48,9 @@ void* Job_CreateSchema::operator new(size_t iSize, void* aAddress)
 /*----------------------------------------------------------------------------*/
 void Job_CreateSchema::operator delete(void* aAddress)
 {
-  Job_CreateTable* pJob_CreateTable = static_cast<Job_CreateTable*>(aAddress);
+  Job_CreateSchema* pJob_CreateSchema = static_cast<Job_CreateSchema*>(aAddress);
   
-  Heap::vFree(pJob_CreateTable);
+  Heap::vFree(pJob_CreateSchema);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -89,9 +89,9 @@ void Job_CreateSchema::vDump(eCN eClass, Object* pObject, Stz* aTab)
   RASSERT(CN_JOB_CREATESCHEMA == eClass);
   RASSERT(pObject->eClass() == CN_JOB_CREATESCHEMA);
   
-  Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pObject);
+  Job_CreateSchema* pJob_CreateSchema = _pJob_CreateSchema(pObject);
 
-  pJob_CreateTable->vShow();
+  pJob_CreateSchema->vShow();
 }
 
 /*----------------------------------------------------------------------------*/
