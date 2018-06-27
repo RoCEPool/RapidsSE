@@ -80,8 +80,9 @@ ReqTable SeRequests[] =
  { "rmdic"_Stz,          &SEitf::bRemoveFolder,         "remove_folder"_Stz       },
  { "rmidx"_Stz,          &SEitf::bDropIndex,            "dropIndex_req"_Stz       },
  { "rmsch"_Stz,          &SEitf::bDropSchema,           "dropSchema_req"_Stz      },
- { "rmschR35"_Stz,       &SEitf::bDropSchemaR35,        "dropSchemaR35_req"_Stz   },
+ { "rmschR35"_Stz,       &SEitf::bR35Request,        "dropSchemaR35_req"_Stz   },
  { "rmtbl"_Stz,          &SEitf::bDropTable,            "dropTable_req"_Stz       },
+ { "rmtblR35"_Stz,       &SEitf::bR35Request,         "dropTableR35_req"_Stz    },
  { "rmten"_Stz,          &SEitf::bDropTenant,           "dropTenant_req"_Stz      },
  { "sanity"_Stz,         &SEitf::bNodeSanity,           "nodeSanity_req"_Stz      },
  { "setAttachMap"_Stz,   &SEitf::bSetAttachMap,         "setAttachMap_req"_Stz    },
@@ -1855,30 +1856,6 @@ bool SEitf::bDropSchema(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
-}
-
-/*----------------------------------------------------------------------------*/
-/* drop a schema                                                              */
-/*----------------------------------------------------------------------------*/
-bool SEitf::bDropSchemaR35(TokenVec& xTokenVec, i8 iReqNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  s256 sRequest;
-  
-  if (xTokenVec.nTokens() != 2) {
-    vSetLastError(EC_INVALID_PARAMETERS);
-    return false;
-  }
-  
-  ASSERT(xTokenVec[0]->bSame("rmschR35"_Stz));
-  
-  sRequest = SeRequests[iReqNo].aRequest;
-  
-  Job_DropSchema* pJob_DropSchema = new Job_DropSchema(this);
-  pJob_DropSchema->m_sObjectName = xTokenVec[1]->aText();
-  
-  return bAppendRequest_R35(sRequest,xTokenVec.bDetachedRequest(),(Job**)&pJob_DropSchema);
 }
 
 /*----------------------------------------------------------------------------*/

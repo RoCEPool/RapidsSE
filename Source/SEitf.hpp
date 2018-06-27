@@ -153,7 +153,6 @@ namespace Interface
     bool bCreateSchema(TokenVec& xTokenVec, i8 iReqNo);
     bool bListSchemas(TokenVec& xTokenVec, i8 iReqNo);
     bool bDropSchema(TokenVec& xTokenVec, i8 iReqNo);
-    bool bDropSchemaR35(TokenVec& xTokenVec, i8 iReqNo);
     bool bUseSchema(TokenVec& xTokenVec, i8 iReqNo);
     
     bool bCreateIndex(TokenVec& xTokenVec, i8 iReqNo);

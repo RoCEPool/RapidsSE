@@ -13,6 +13,16 @@
 
   CN_JOB_DROPTABLE pJob_DropTable object.assertClass
 
+  ddlLock::grabWrite
+
+  pJob_DropTable getPathR35
+  dicStack.set
+  pJob_DropTable job.objectName@   ( tableNm )
+
+  removeTableR35 ( )  not if "got error" . exit then
+
+  ddlLock::testDrop
+
   pJob_DropTable job.notice
 ;
 

@@ -290,8 +290,8 @@ void Task::vJobDelete(MP_Task mpTask)
       
     case CN_JOB_DROPTABLE:
     {
-      Job_DropSchema* pJobDropSchema = _pJob_DropSchema(pJobPtr);
-      delete pJobDropSchema;
+      Job_DropTable* pJobDropTable = _pJob_DropTable(pJobPtr);
+      delete pJobDropTable;
       break;
     }
       

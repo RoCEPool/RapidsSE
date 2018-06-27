@@ -83,6 +83,7 @@ CmdTable SePromptCommands[] =
   { C_CMD_DROP,       C_ONE_SCHEMA,  &SePrompt::bCmd_DropSchema    },
   { C_CMD_DROP,       C_R35_ONE_SCHEMA,  &SePrompt::bCmd_DropSchemaR35    },
   { C_CMD_DROP,       C_ONE_TABLE,   &SePrompt::bCmd_DropTable     },
+  { C_CMD_DROP,       C_R35_ONE_TABLE,   &SePrompt::bCmd_DropTableR35     },
   { C_CMD_DROP,       C_ONE_TENANT,  &SePrompt::bCmd_DropTenant    },
   { C_CMD_END,        C_ONE_INSERT,  &SePrompt::bCmd_EndInsert     },
   { C_CMD_HELP1,      nullptr,       &SePrompt::bCmd_Help          },
@@ -1358,45 +1359,6 @@ bool SePrompt::bCmd_DropSchema(void)
   
   // drop a schema
   m_xTokenVec[0]->vCopy("rmsch"_Stz);
-  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]);
-  if (!bExecuteRequest())
-    return false;
-  
-  //vTrace("Schema dropped: %s\n"_Stz, m_xTokenVec2[2]);
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* drop schema                                                                */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bCmd_DropSchemaR35(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  i8 i_Token;
-  i8 iNumTokens;
-  
-  ASSERT(m_xTokenVec[0]->bSame("drop"_Stz));
-  ASSERT(m_xTokenVec[1]->bSame("R35schema"_Stz));
-  
-  for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if (! m_xTokenVec[i_Token]->bHasText())
-      break;
-    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
-    m_xTokenVec[i_Token]->vCopy(""_Stz);
-  }
-  
-  iNumTokens = i_Token;
-  
-  // - - - - - - - - - - - - - - - - - - - - -
-  // there should be 3 tokens
-  if (iNumTokens != 3) {
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return false;
-  }
-  
-  // drop a schema
-  m_xTokenVec[0]->vCopy("rmschR35"_Stz);
   m_xTokenVec[1]->vCopy(m_xTokenVec2[2]);
   if (!bExecuteRequest())
     return false;
@@ -3044,7 +3006,7 @@ bool SePrompt::bCmd_CreateTableR35(void)
   // set the job in SEitf
   m_pSEitf->m_pJob = pJob_CreateTable;
   
-  // mark current toen
+  // mark current token
   i8 iCurrentToken = 4;
   
   // add columns to the table
@@ -3080,5 +3042,97 @@ bool SePrompt::bCmd_CreateTableR35(void)
   if (!bExecuteRequest())
     return false;
 
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop schema                                                                */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bCmd_DropSchemaR35(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  i8 i_Token;
+  i8 iNumTokens;
+  
+  ASSERT(m_xTokenVec[0]->bSame("drop"_Stz));
+  ASSERT(m_xTokenVec[1]->bSame("R35schema"_Stz));
+  
+  for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
+    if (! m_xTokenVec[i_Token]->bHasText())
+      break;
+  }
+  
+  iNumTokens = i_Token;
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // there should be 3 tokens
+  if (iNumTokens != 3) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  // create the job
+  Job_DropSchema* pJob_DropSchema = new Job_DropSchema(m_pSEitf);
+  
+  // set the table name
+  pJob_DropSchema->m_sObjectName = m_xTokenVec[2]->aText();
+  
+  // set the job in SEitf
+  m_pSEitf->m_pJob = pJob_DropSchema;
+  
+  // drop a schema
+  m_xTokenVec[0]->vCopy("rmschR35"_Stz);
+  m_xTokenVec[1]->vCopy(""_Stz"");
+  if (!bExecuteRequest())
+    return false;
+  
+  //vTrace("Schema dropped: %s\n"_Stz, m_xTokenVec2[2]);
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop table                                                                 */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bCmd_DropTableR35(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  i8 i_Token;
+  i8 iNumTokens;
+  
+  ASSERT(m_xTokenVec[0]->bSame("drop"_Stz));
+  ASSERT(m_xTokenVec[1]->bSame("R35table"_Stz));
+  
+  for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
+    if (! m_xTokenVec[i_Token]->bHasText())
+      break;
+  }
+  
+  iNumTokens = i_Token;
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // there should be 3 tokens
+  if (iNumTokens != 3) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  // create the job
+  Job_DropTable* pJob_DropTable = new Job_DropTable(m_pSEitf);
+  
+  // set the table name
+  pJob_DropTable->m_sObjectName = m_xTokenVec[2]->aText();
+  
+  // set the job in SEitf
+  m_pSEitf->m_pJob = pJob_DropTable;
+  
+  // drop a table
+  m_xTokenVec[0]->vCopy("rmtblR35"_Stz);
+  m_xTokenVec[1]->vCopy(""_Stz);
+  if (!bExecuteRequest())
+    return false;
+  
+  //vTrace("Table dropped: %s\n"_Stz, m_xTokenVec2[2]);
   return true;
 }
