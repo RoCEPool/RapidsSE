@@ -63,7 +63,7 @@ ReqTable SeRequests[] =
  { "mksch"_Stz,          &SEitf::bCreateSchema,         "createSchema_req"_Stz    },
  { "mkschR35"_Stz,       &SEitf::bR35Request,           "createSchemaR35_req"_Stz },
  { "mktbl"_Stz,          &SEitf::bCreateTable,          "createTable_req"_Stz     },
- { "mktblR35"_Stz,       &SEitf::bR35Request,       "createTableR35_req"_Stz  },
+ { "mktblR35"_Stz,       &SEitf::bR35Request,           "createTableR35_req"_Stz  },
  { "mkten"_Stz,          &SEitf::bCreateTenant,         "createTenant_req"_Stz    },
  { "mon"_Stz,            &SEitf::bGetMonitor,           "getMonitor_req"_Stz      },
  { "n35"_Stz,            &SEitf::bN35,                  "n35_req"_Stz             },
@@ -3867,7 +3867,7 @@ bool SEitf::bR35Request(TokenVec& xTokenVec, i8 iReqNo)
   
   s256 sRequest;
   
-  ASSERT(xTokenVec[0]->bSame("mkschR35"_Stz));
+  //ASSERT(xTokenVec[0]->bSame("mkschR35"_Stz));
   ASSERT(m_pJob);
   
   sRequest = SeRequests[iReqNo].aRequest;
