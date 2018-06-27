@@ -32,7 +32,6 @@
   pTask pJob job::distribute
 
   <OK>
-
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -55,25 +54,7 @@
   checkRemoveSchema  not if <NIP+ERROR> exit then
   drop // schemaNm on stck
 
-  // add job to originator jobs
-  pJob job.addOriginator
-
-  // set the no of acks expected in originator job to nodes in the grid
-  grid::nodes pJob job.acksRemaining!
-
-  // send the job to each node in the grid
-  grid::nodes 0 do
-
-  // set the send node
-  I grid::node pTask task.sendNode!
-  task.send
-
-  // send job to each node
-  pJob 1
-  >valset
-  >socketR35
-
-  loop
+  pTask pJob job::distribute
 
   <OK>
 ;
