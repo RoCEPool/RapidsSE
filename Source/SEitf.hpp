@@ -128,6 +128,7 @@ namespace Interface
     void vEndTx(void);
     
     bool bDecode(TokenVec& xTokenVec);
+    bool bR35Request(TokenVec& xTokenVec, i8 iReqNo);
     
     bool bCheckpoint(TokenVec& xTokenVec, i8 iReqNo);
     
@@ -150,7 +151,6 @@ namespace Interface
     bool bDropCatalog(TokenVec& xTokenVec, i8 iReqNo);
     
     bool bCreateSchema(TokenVec& xTokenVec, i8 iReqNo);
-    bool bCreateSchemaR35(TokenVec& xTokenVec, i8 iReqNo);
     bool bListSchemas(TokenVec& xTokenVec, i8 iReqNo);
     bool bDropSchema(TokenVec& xTokenVec, i8 iReqNo);
     bool bDropSchemaR35(TokenVec& xTokenVec, i8 iReqNo);

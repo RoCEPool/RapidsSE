@@ -2991,16 +2991,16 @@ bool SePrompt::bCmd_CreateSchemaR35(void)
     return false;
   }
   
-  // create a schema
-  m_xTokenVec[0]->vCopy("mkschR35"_Stz);
-  m_xTokenVec[1]->vCopy(""_Stz);
-  
   // create the job
   Job_CreateSchema* pJob_CreateSchema = new Job_CreateSchema(m_pSEitf);
-  pJob_CreateSchema->m_sObjectName = m_xTokenVec[1]->aText();
+  pJob_CreateSchema->m_sObjectName = m_xTokenVec[2]->aText();
   
   // set the job in SEitf
   m_pSEitf->m_pJob = pJob_CreateSchema;
+  
+  // create a schema
+  m_xTokenVec[0]->vCopy("mkschR35"_Stz);
+  m_xTokenVec[1]->vCopy(""_Stz);
   
   if (!bExecuteRequest())
     return false;
@@ -3077,8 +3077,8 @@ bool SePrompt::bCmd_CreateTableR35(void)
   m_xTokenVec[1]->vCopy(""_Stz);
   
   // excute mktbl request
-  //if (!bExecuteRequest())
-  //  return false;
+  if (!bExecuteRequest())
+    return false;
 
   return true;
 }

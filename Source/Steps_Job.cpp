@@ -366,7 +366,7 @@ void Task::vJobIdFetch(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.objectNamed@ -- fetch the object name of the job                       */
+/* job.objectName@ -- fetch the object name of the job                        */
 /*----------------------------------------------------------------------------*/
 void Task::vJobObjectNameFetch(MP_Task mpTask)
 {

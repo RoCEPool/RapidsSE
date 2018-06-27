@@ -61,8 +61,9 @@ ReqTable SeRequests[] =
  { "mkcat"_Stz,          &SEitf::bCreateCatalog,        "createCatalog_req"_Stz   },
  { "mkidx"_Stz,          &SEitf::bCreateIndex,          "createIndex_req"_Stz     },
  { "mksch"_Stz,          &SEitf::bCreateSchema,         "createSchema_req"_Stz    },
- { "mkschR35"_Stz,       &SEitf::bCreateSchemaR35,      "createSchemaR35_req"_Stz },
+ { "mkschR35"_Stz,       &SEitf::bR35Request,           "createSchemaR35_req"_Stz },
  { "mktbl"_Stz,          &SEitf::bCreateTable,          "createTable_req"_Stz     },
+ { "mktblR35"_Stz,       &SEitf::bR35Request,       "createTableR35_req"_Stz  },
  { "mkten"_Stz,          &SEitf::bCreateTenant,         "createTenant_req"_Stz    },
  { "mon"_Stz,            &SEitf::bGetMonitor,           "getMonitor_req"_Stz      },
  { "n35"_Stz,            &SEitf::bN35,                  "n35_req"_Stz             },
@@ -1782,23 +1783,6 @@ bool SEitf::bDropCatalog(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
   return bAppendRequest(sRequest);
-}
-
-/*----------------------------------------------------------------------------*/
-/* create a schema                                                            */
-/*----------------------------------------------------------------------------*/
-bool SEitf::bCreateSchemaR35(TokenVec& xTokenVec, i8 iReqNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  s256 sRequest;
-  
-  ASSERT(xTokenVec[0]->bSame("mkschR35"_Stz));
-  ASSERT(m_pJob);
-  
-  sRequest = SeRequests[iReqNo].aRequest;
-  
-  return bAppendRequest_R35(sRequest,xTokenVec.bDetachedRequest(),(Job**)&m_pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3873,3 +3857,22 @@ Footer* SEitf::aFooter(void)
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/* R35 request                                                                */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bR35Request(TokenVec& xTokenVec, i8 iReqNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  ASSERT(xTokenVec[0]->bSame("mkschR35"_Stz));
+  ASSERT(m_pJob);
+  
+  sRequest = SeRequests[iReqNo].aRequest;
+  
+  return bAppendRequest_R35(sRequest,xTokenVec.bDetachedRequest(),(Job**)&m_pJob);
+}
+
+
