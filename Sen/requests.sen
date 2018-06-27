@@ -11,6 +11,7 @@
 "requests_schema.sen"      include
 "requests_schemaR35.sen"   include
 "requests_table.sen"       include
+"requests_tableR35.sen"    include
 "requests_index.sen"       include
 
 "requests_column.sen"      include
