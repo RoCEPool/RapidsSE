@@ -19,6 +19,10 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.addParticipant"_Stz,   &vJobAddParticipant,   false);
   vAddPrimitive("job.acksRemaining!"_Stz,   &vJobAcksRemaining,    false);
   vAddPrimitive("job.class"_Stz,            &vJobClass,            false);
+  vAddPrimitive("job.columnCount@"_Stz,     &vJobColumnCountFetch, false);
+  vAddPrimitive("job.columnName@"_Stz,      &vJobColumnNameFetch,  false);
+  vAddPrimitive("job.ColumnIsPartKey"_Stz,  &vJobColumnIsPartKey,  false);
+  vAddPrimitive("job.columnType@"_Stz,      &vJobColumnTypeFetch,  false);
   vAddPrimitive("job.delete"_Stz,           &vJobDelete,           false);
   vAddPrimitive("job.decAcksRemaining"_Stz, &vJobDecAcksRemaining, false);
   vAddPrimitive("job.dicPath"_Stz,          &vJobDicPath,          false);
@@ -120,6 +124,86 @@ void Task::vJobClass(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* job.columnCount@ -- fetch the no of columns of the create table job        */
+/*----------------------------------------------------------------------------*/
+void Task::vJobColumnCountFetch(MP_Task mpTask)
+{
+  ENTRY("vJobColumnCountFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.error@"_Stz);
+  Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushInt(pJob_CreateTable->m_iColumns);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.columnName@ -- fetch the name of the column of the create table job    */
+/*----------------------------------------------------------------------------*/
+void Task::vJobColumnNameFetch(MP_Task mpTask)
+{
+  ENTRY("vJobColumnNameFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.error@"_Stz);
+  Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJobPtr);
+  
+  i8 iColumnNo;
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iColumnNo) )
+    THROW_INVALID_DSTACK("job.error@"_Stz);
+  
+  mpTask->m_pDataStack->vPushS32(pJob_CreateTable->m_xColumns[iColumnNo].m_sColumnName);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.columnIsPartKey -- return true if column is a partition by key        */
+/*----------------------------------------------------------------------------*/
+void Task::vJobColumnIsPartKey(MP_Task mpTask)
+{
+  ENTRY("vJobColumnIsPartKey"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.columnIsPartKey"_Stz);
+  Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJobPtr);
+  
+  i8 iColumnNo;
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iColumnNo) )
+    THROW_INVALID_DSTACK("job.columnIsPartKey@"_Stz);
+  
+  mpTask->m_pDataStack->vPushInt(pJob_CreateTable->m_xColumns[iColumnNo].m_bIsPartitionKey);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.columnType@ -- fetch column type from create table job                 */
+/*----------------------------------------------------------------------------*/
+void Task::vJobColumnTypeFetch(MP_Task mpTask)
+{
+  ENTRY("vJobColumnTypeFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.columnType@"_Stz);
+  Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJobPtr);
+  
+  i8 iColumnNo;
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iColumnNo) )
+    THROW_INVALID_DSTACK("job.columnType@"_Stz);
+  
+  mpTask->m_pDataStack->vPushS32(pJob_CreateTable->m_xColumns[iColumnNo].m_sColumnType);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* job.delete -- delete the job                                               */
 /*----------------------------------------------------------------------------*/
 void Task::vJobDelete(MP_Task mpTask)
@@ -191,6 +275,20 @@ void Task::vJobDelete(MP_Task mpTask)
     }
       
     case CN_JOB_DROPSCHEMA:
+    {
+      Job_DropSchema* pJobDropSchema = _pJob_DropSchema(pJobPtr);
+      delete pJobDropSchema;
+      break;
+    }
+   
+    case CN_JOB_CREATETABLE:
+    {
+      Job_CreateTable* pJobCreateTable = _pJob_CreateTable(pJobPtr);
+      delete pJobCreateTable;
+      break;
+    }
+      
+    case CN_JOB_DROPTABLE:
     {
       Job_DropSchema* pJobDropSchema = _pJob_DropSchema(pJobPtr);
       delete pJobDropSchema;
