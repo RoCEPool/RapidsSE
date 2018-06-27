@@ -251,6 +251,81 @@
   true <SUCCESS_RESULT>
 ;
 
+/*----------------------------------------------------------------------------*/
+/* create the column vector of the table                                      */
+/*----------------------------------------------------------------------------*/
+: columnVecTableR35 ( "<tableNm>" )
+
+  0 locals| tablePtr tableNm |
+ assert::stack_0
+  //"columnVecTable" . tableNm .
+
+  // get table ptr
+  tableNm find execute to tablePtr
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // double check we can see the table
+  //tableNm find execute stk drop
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // push the table sub dic and then the columns sub dic
+  tableNm pushTableSub  assert
+  pushColumns assert
+
+  // double check the path
+  //task::this task.dicStack dicStack.dump
+
+  // iterate contents of columns dictionary
+  0 pathPick dic.lastWord dup
+  iterate                        // iterate word cursor
+    object@ execute              ( value )
+    object@ word.name            ( value wordNm )
+    tablePtr                     ( value wordNm ^table )
+    table.createColumnVec
+    object@ word.prev object!    // advance cursor backwards thru words
+  next
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  //tablePtr table.showColumnVec
+
+  assert::stack_0
+
+  popColumns
+
+  popTableSub
+
+  // push the partition sub dic and then the columns sub dic
+  tableNm pushPartitionSub assert
+
+  pushPartitionColumns assert
+
+  // double check the path
+  //task::this task.dicStack dicStack.dump
+
+  // iterate contents of columns dictionary
+  0 pathPick dic.lastWord dup
+  iterate                        // iterate word cursor
+    object@ execute              ( value )
+    object@ word.name            ( value wordNm )
+    tablePtr                     ( value wordNm ^table )
+    table.slots slots.createColumnVec
+    object@ word.prev object!    // advance cursor backwards thru words
+  next
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  //indexPtr index.showColumnVec
+
+  assert::stack_0
+
+  popPartitionColumns
+
+  popPartitionSub
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
