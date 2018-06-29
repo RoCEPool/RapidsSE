@@ -1,0 +1,42 @@
+/*============================================================================*/
+/* job_Space.sen -- Job Space                                                 */
+/*============================================================================*/
+
+"job_CreateSchema.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_Space job                                                      */
+/*----------------------------------------------------------------------------*/
+: Job_Space.execute ( pJob_Space -- )
+
+  params| pJob_Space |
+
+  CN_JOB_SPACE pJob_Space object.assertClass
+
+  args.metadata if
+    "row: ('"
+    grid::thisNodeName@ str.cat
+    "', '" str.cat
+    2 bp::totalSpace number.magnitude str.cat
+    "', '" str.cat
+    2 bp::inUseSpace number.magnitude str.cat
+    "', '" str.cat
+    2 bp::freeSpace number.magnitude str.cat
+    "')" str.cat
+
+  else
+    "Pool - Size(" 2 bp::totalSpace number.magnitude str.cat ")" str.cat
+    " InUse(" 2 bp::inUseSpace number.magnitude str.cat ")" str.cat
+    " Free(" 2 bp::freeSpace number.magnitude str.cat ")" str.cat
+    str.cat str.cat
+  then
+
+  .
+
+  pJob_Space job.notice
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+
