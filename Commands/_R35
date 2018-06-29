@@ -3,7 +3,8 @@
 /*============================================================================*/
 _startClusterR35
 sleep 10;
-
+spaceR35;
+/*
 docol epochTake;
 create R35table j10 (
   j10_key   INTEGER NOT NULL,
@@ -28,7 +29,7 @@ sleep 10;
 lf;
 
 docol epochDump;
-/*
+
 create R35table dataTable (
 key     INTEGER NOT NULL,
 name    VARCHAR(32) NOT NULL,
