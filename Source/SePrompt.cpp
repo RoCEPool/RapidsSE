@@ -46,14 +46,14 @@ const Stz* C_ONE_TABLE   = "table"_Stz;
 const Stz* C_ONE_TENANT  = "tenant"_Stz;
 const Stz* C_ONE_UNIQUE  = "unique"_Stz;
 
-const Stz* C_R35_ONE_CATALOG = "catalog"_Stz;
-const Stz* C_R35_ONE_INDEX   = "index"_Stz;
-const Stz* C_R35_ONE_INSERT  = "insert"_Stz;
-const Stz* C_R35_ONE_ROW     = "row"_Stz;
+const Stz* C_R35_ONE_CATALOG = "R35catalog"_Stz;
+const Stz* C_R35_ONE_INDEX   = "R35index"_Stz;
+const Stz* C_R35_ONE_INSERT  = "R35insert"_Stz;
+const Stz* C_R35_ONE_ROW     = "R35row"_Stz;
 const Stz* C_R35_ONE_SCHEMA  = "R35schema"_Stz;
 const Stz* C_R35_ONE_TABLE   = "R35table"_Stz;
-const Stz* C_R35_ONE_TENANT  = "tenant"_Stz;
-const Stz* C_R35_ONE_UNIQUE  = "unique"_Stz;
+const Stz* C_R35_ONE_TENANT  = "R35tenant"_Stz;
+const Stz* C_R35_ONE_UNIQUE  = "R35unique"_Stz;
 
 struct CmdTable {
   const Stz* aCommand;

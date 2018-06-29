@@ -295,6 +295,13 @@ void Task::vJobDelete(MP_Task mpTask)
       break;
     }
       
+    case CN_JOB_SPACE:
+    {
+      Job_Space* pJobSpace = _pJob_Space(pJobPtr);
+      delete pJobSpace;
+      break;
+    }
+      
     default:
       ASSERT(0);
   }

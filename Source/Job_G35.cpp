@@ -27,8 +27,8 @@ void* Job_G35::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  Job_CreateTable* pJob_G35 =
-    static_cast<Job_CreateTable*>(Heap::pAllocate(CN_JOB_G35));
+  Job_G35* pJob_G35 =
+    static_cast<Job_G35*>(Heap::pAllocate(CN_JOB_G35));
   
   return pJob_G35;
 }
@@ -48,9 +48,9 @@ void* Job_G35::operator new(size_t iSize, void* aAddress)
 /*----------------------------------------------------------------------------*/
 void Job_G35::operator delete(void* aAddress)
 {
-  Job_CreateTable* pJob_CreateTable = static_cast<Job_CreateTable*>(aAddress);
+  Job_G35* pJob_G35 = static_cast<Job_G35*>(aAddress);
   
-  Heap::vFree(pJob_CreateTable);
+  Heap::vFree(pJob_G35);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -89,9 +89,9 @@ void Job_G35::vDump(eCN eClass, Object* pObject, Stz* aTab)
   RASSERT(CN_JOB_G35 == eClass);
   RASSERT(pObject->eClass() == CN_JOB_G35);
   
-  Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pObject);
+  Job_G35* pJob_G35 = _pJob_G35(pObject);
 
-  pJob_CreateTable->vShow();
+  pJob_G35->vShow();
 }
 
 /*----------------------------------------------------------------------------*/
