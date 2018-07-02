@@ -94,7 +94,7 @@ tp: gettingSpace
 
   0 0 locals| pJob pTask |
 
-  tp: createTable
+  tp: poolSpaceR35_req
 
   //ddlLock::grabWrite
 

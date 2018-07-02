@@ -107,6 +107,7 @@ enum eCN : u2 // Class Number
     /*    */ CN_JOB_G35,
     /*    */ CN_JOB_LOADTABLE,
     /*    */ CN_JOB_SPACE,
+    /*    */ CN_JOB_STATUS,
     
     /*    */ CN_JOBS,
     /* 59 */ CN_JUMBOPERSISTENT,
@@ -322,6 +323,7 @@ enum eCN : u2 // Class Number
     /*    */ "JOB_G35"_Stz,            // CN_JOB_G35
     /*    */ "JOB_LOADTABLE"_Stz,      // CN_JOB_LOADTABLE
     /*    */ "JOB_SPACE"_Stz,          // CN_JOB_SPACE
+    /*    */ "JOB_STATUS"_Stz,         // CN_JOB_STATUS
     /*    */ "JOBS"_Stz,               // CN_JOBS
     /* 59 */ "JUMBOPERSISTENT"_Stz,    // CN_JUMBOPERSISTENT
     /* 60 */ "JUMBOTRANSIENT"_Stz,     // CN_JUMBOTRANSIENT

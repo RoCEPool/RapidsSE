@@ -1,0 +1,28 @@
+/*============================================================================*/
+/* job_Status.sen -- Job Status                                               */
+/*============================================================================*/
+
+"job_Status.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_Status job                                                     */
+/*----------------------------------------------------------------------------*/
+: Job_Status.execute ( pJob_Status -- str t/f )
+
+  params| pJob_Status |
+
+  CN_JOB_STATUS pJob_Status object.assertClass
+
+  "GETTING STATUS on NODE " grid::thisNode@ >str str.cat .
+
+  node.status
+
+  grid::thisNode@ pJob_Status job.response!
+
+  pJob_Status job.notice
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+

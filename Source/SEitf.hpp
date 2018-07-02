@@ -201,6 +201,7 @@ namespace Interface
     bool bRetTable(TokenVec& xTokenVec, i8 iReqNo);
     bool bNodeSanity(TokenVec& xTokenVec, i8 iReqNo);
     bool bNodeStatus(TokenVec& xTokenVec, i8 iReqNo);
+    bool bNodeStatusR35(TokenVec& xTokenVec, i8 iReqNo);
     bool bDistParallelLoadTable(TokenVec& xTokenVec, i8 iReqNo);
     bool bPoolSpace(TokenVec& xTokenVec, i8 iReqNo);
     bool bPoolSpaceR35(TokenVec& xTokenVec, i8 iReqNo);

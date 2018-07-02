@@ -11,6 +11,7 @@
 
 "job_G35.sen" include
 "job_space.sen" include
+"job_status.sen" include
 
 /*============================================================================*/
 /* end                                                                        */

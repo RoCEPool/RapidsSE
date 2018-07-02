@@ -80,17 +80,18 @@ ReqTable SeRequests[] =
  { "rmdic"_Stz,          &SEitf::bRemoveFolder,         "remove_folder"_Stz       },
  { "rmidx"_Stz,          &SEitf::bDropIndex,            "dropIndex_req"_Stz       },
  { "rmsch"_Stz,          &SEitf::bDropSchema,           "dropSchema_req"_Stz      },
- { "rmschR35"_Stz,       &SEitf::bR35Request,        "dropSchemaR35_req"_Stz   },
+ { "rmschR35"_Stz,       &SEitf::bR35Request,           "dropSchemaR35_req"_Stz   },
  { "rmtbl"_Stz,          &SEitf::bDropTable,            "dropTable_req"_Stz       },
- { "rmtblR35"_Stz,       &SEitf::bR35Request,         "dropTableR35_req"_Stz    },
+ { "rmtblR35"_Stz,       &SEitf::bR35Request,           "dropTableR35_req"_Stz    },
  { "rmten"_Stz,          &SEitf::bDropTenant,           "dropTenant_req"_Stz      },
  { "sanity"_Stz,         &SEitf::bNodeSanity,           "nodeSanity_req"_Stz      },
  { "setAttachMap"_Stz,   &SEitf::bSetAttachMap,         "setAttachMap_req"_Stz    },
  { "setidxunique"_Stz,   &SEitf::bIndexSetUnique,       "indexSetUnique_req"_Stz  },
  { "space"_Stz,          &SEitf::bPoolSpace,            "poolSpace_req"_Stz       },
- { "spaceR35"_Stz,       &SEitf::bPoolSpaceR35,           "poolSpaceR35_req"_Stz    },
+ { "spaceR35"_Stz,       &SEitf::bPoolSpaceR35,         "poolSpaceR35_req"_Stz    },
  { "spnFetch"_Stz,       &SEitf::bSpawnFetchRows,       "spawnfetchRows_apiReq"_Stz },
  { "status"_Stz,         &SEitf::bNodeStatus,           "nodeStatus_req"_Stz      },
+ { "statusR35"_Stz,      &SEitf::bNodeStatusR35,        "nodeStatusR35_req"_Stz      },
  { "seitf"_Stz,          &SEitf::bSeitfCount,           "seitfCount_req"_Stz      },
  { "szidx"_Stz,          &SEitf::bSizeIndex,            "sizeIndex_req"_Stz       },
  { "sz"_Stz,             &SEitf::bSizeTable,            "sizeTable_req"_Stz       },
@@ -3849,6 +3850,26 @@ bool SEitf::bPoolSpaceR35(TokenVec& xTokenVec, i8 iReqNo)
   m_pJob = new Job_Space(this);
   
   ASSERT(xTokenVec[0]->bSame("spaceR35"_Stz));
+  ASSERT(m_pJob);
+  
+  sRequest = SeRequests[iReqNo].aRequest;
+  
+  return bAppendRequest_R35(sRequest,xTokenVec.bDetachedRequest(),(Job**)&m_pJob);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get status                                                                 */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bNodeStatusR35(TokenVec& xTokenVec, i8 iReqNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  // create the job
+  m_pJob = new Job_Status(this);
+  
+  ASSERT(xTokenVec[0]->bSame("statusR35"_Stz));
   ASSERT(m_pJob);
   
   sRequest = SeRequests[iReqNo].aRequest;

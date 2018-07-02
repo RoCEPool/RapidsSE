@@ -27,10 +27,10 @@ void* Job_Space::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  Job_Space* pJob_CreateTenant =
+  Job_Space* pJob_Space =
     static_cast<Job_Space*>(Heap::pAllocate(CN_JOB_SPACE));
   
-  return pJob_CreateTenant;
+  return pJob_Space;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -63,7 +63,7 @@ Job_Space::Job_Space(Interface::SEitf* pSEitf)
     
   m_sExecute = "Job_Space.execute"_Stz;
   
-  _checkInitialised_(CN_JOB_CREATETENANT);
+  _checkInitialised_(CN_JOB_SPACE);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_SPACE,_FOOTER_);
 }
@@ -86,7 +86,7 @@ Job_Space::~Job_Space(void)
 /*----------------------------------------------------------------------------*/
 void Job_Space::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_CREATETENANT == eClass);
+  RASSERT(CN_JOB_SPACE == eClass);
   RASSERT(pObject->eClass() == CN_JOB_SPACE);
   
   Job_Space* pJob_Space = _pJob_Space(pObject);

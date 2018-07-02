@@ -301,6 +301,13 @@ void Task::vJobDelete(MP_Task mpTask)
       break;
     }
       
+    case CN_JOB_STATUS:
+    {
+      Job_Status* pJobStatus = _pJob_Status(pJobPtr);
+      delete pJobStatus;
+      break;
+    }
+      
     default:
       ASSERT(0);
   }

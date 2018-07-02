@@ -102,6 +102,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_G35
   /*    */ &Finalize::vUndefined,         // CN_JOB_LOADTABLE
   /*    */ &Finalize::vUndefined,         // CN_JOB_SPACE
+  /*    */ &Finalize::vUndefined,         // CN_JOB_STATUS
   
   /*    */ &Finalize::vUndefined,         // CN_JOBS
   
