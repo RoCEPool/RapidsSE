@@ -44,9 +44,9 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job__Ended on originating node                                     */
 /*----------------------------------------------------------------------------*/
-: Job__Ended::execute ( iJobId -- )
+: Job__Ended::execute ( iJobId pJob__Ended -- )
 
-  params| iJobId |
+  params| pJob__Ended iJobId |
 
   0 0 locals| pJob iAcksRemaining |
 
@@ -60,6 +60,11 @@
   iAcksRemaining 0 != if exit then
 
   "received Job__Ended from all nodes" .
+
+  grid::nodes 0
+  do
+    I pJob job.response@ .
+  loop
 
   // remove the job from the originator jobs
   pJob job.removeOriginator
@@ -102,9 +107,9 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job__End on participating node                                     */
 /*----------------------------------------------------------------------------*/
-: Job__End::execute ( iJobId -- )
+: Job__End::execute ( iJobId pJob__End -- )
 
-  params| iJobId |
+  params| pJob__End iJobId |
 
   0 locals| pJob |
 
@@ -166,17 +171,27 @@
 /*----------------------------------------------------------------------------*/
 /* send Job__Executed back to originating node                                */
 /*----------------------------------------------------------------------------*/
-: Job__Executed::send ( iJobId -- )
+: Job__Executed::send ( iJobId pJobParticipant -- )
 
-  params| iJobId |
+  params| pJobParticipant iJobId |
 
-  0 locals| pJob pJob__Executed |
+  0 0 0 locals| pJob pJob__Executed error |
 
   // new a temporary Job__Executed
   iJobId job.newExecuted to pJob__Executed
 
   // set the originator node as the send target node
   iJobId job::originator@ grid::node task::this task.sendNode!
+
+  grid::thisNode@ pJobParticipant job.error@ to error
+
+  error EC_NONE == if
+    // get the response from participant job and set it in executed job
+    grid::thisNode@  pJobParticipant job.response@ pJob__Executed job.participantResponse!
+  else
+     // set error in executed job
+     error pJob__Executed job.participantError!
+  then
 
   // move this task through send state/queue
   task.send
@@ -194,14 +209,32 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job__Executed on originating node                                  */
 /*----------------------------------------------------------------------------*/
-: Job__Executed::execute ( iJobId -- )
+: Job__Executed::execute ( iJobId pJob__Executed -- )
 
-  params| iJobId |
+  params| pJob__Executed iJobId |
 
-  0 0 locals| pJob iAcksRemaining |
+  0 0 0 0 0 0 locals| sResponse pJobParticipant iParticipantNode error pJob iAcksRemaining |
+
+  // get participant node that executed the job
+  iJobId job.findParticipant to pJobParticipant
+  pJob__Executed job.participant@ to iParticipantNode
 
   // find the job in the originator jobs
   iJobId job.findOriginator to pJob
+
+  // get the error code from job__executed
+  pJob__Executed job.participantError@ to error
+
+  // set the error code in pJob
+  error iParticipantNode pJob job.error!
+
+  error EC_NONE == if
+    // get the response string from job__executed
+    pJob__Executed job.participantResponse@ to sResponse
+
+    // set the error code in pJob
+    sResponse iParticipantNode pJob job.response!
+  then
 
   // decrement the acks remaining
   pJob job.decAcksRemaining to iAcksRemaining
@@ -212,6 +245,7 @@
   "received Job__Executed from all nodes" .
 
   pJob Job__End::distribute
+
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -260,9 +294,9 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job__Execute on participating node                                 */
 /*----------------------------------------------------------------------------*/
-: Job__Execute::execute ( iJobId -- )
+: Job__Execute::execute ( iJobId pJob__Execute -- )
 
-  params| iJobId |
+  params| pJob__Execute iJobId |
 
   0 0 locals| pJob pJobExecuted |
 
@@ -273,7 +307,7 @@
   pJob pJob job.execute@ find execute
 
   // send job__executed back to originating node
-  iJobId Job__Executed::send
+  iJobId pJob Job__Executed::send
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -283,7 +317,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job__Begun on originating node                                     */
 /*----------------------------------------------------------------------------*/
-: Job__Begun::execute ( iJobId -- )
+: Job__Begun::execute ( iJobId Job__Begun -- )
 
   //
   // where:  On the originator node.
@@ -296,7 +330,7 @@
   //         3) if all acks received distribute Job_Execute
   //
 
-  params| iJobId |
+  params| Job__Begun iJobId |
 
   0 locals| pJob  |
   0 locals| iAcksRemaining |

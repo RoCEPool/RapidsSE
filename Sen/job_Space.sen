@@ -2,16 +2,18 @@
 /* job_Space.sen -- Job Space                                                 */
 /*============================================================================*/
 
-"job_CreateSchema.sen" .verbose
+"job_Space.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* execute Job_Space job                                                      */
 /*----------------------------------------------------------------------------*/
-: Job_Space.execute ( pJob_Space -- )
+: Job_Space.execute ( pJob_Space -- str t/f )
 
   params| pJob_Space |
 
   CN_JOB_SPACE pJob_Space object.assertClass
+
+  "GETTING SPACE on NODE " grid::thisNode@ >str str.cat .
 
   args.metadata if
     "row: ('"
@@ -23,7 +25,6 @@
     "', '" str.cat
     2 bp::freeSpace number.magnitude str.cat
     "')" str.cat
-
   else
     "Pool - Size(" 2 bp::totalSpace number.magnitude str.cat ")" str.cat
     " InUse(" 2 bp::inUseSpace number.magnitude str.cat ")" str.cat
@@ -31,7 +32,7 @@
     str.cat str.cat
   then
 
-  .
+  grid::thisNode@ pJob_Space job.response!
 
   pJob_Space job.notice
 ;

@@ -18,7 +18,7 @@
     "Node %v Job %v Received"
   fmt.print
 
-  // set partcipant node in job
+  // set participant node in job
   grid::thisNode@ pJob job.participant!
 
   // add job as participant job
@@ -55,7 +55,7 @@
     grid::thisNode@
   "Node %v %v" fmt.print
 
-  pJob job.id@ pJob job.execute@ find execute
+  pJob job.id@ pJob pJob job.execute@ find execute
 
   pJob job.delete
 ;
@@ -80,7 +80,6 @@
     CN_JOB__BEGUN    of pJob job.genericExecute endof
     CN_JOB__END      of pJob job.genericExecute endof
     CN_JOB__ENDED    of pJob job.genericExecute endof
-    CN_JOB__ERROR    of pJob job.genericExecute endof
     CN_JOB__EXECUTE  of pJob job.genericExecute endof
     CN_JOB__EXECUTED of pJob job.genericExecute endof
 
