@@ -582,7 +582,6 @@ void Task::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB__BEGUN"_Stz,         CN_JOB__BEGUN);
   /*    */ vAddConstant("CN_JOB__END"_Stz,           CN_JOB__END);
   /*    */ vAddConstant("CN_JOB__ENDED"_Stz,         CN_JOB__ENDED);
-  /*    */ vAddConstant("CN_JOB__ERROR"_Stz,         CN_JOB__ERROR);
   /*    */ vAddConstant("CN_JOB__EXECUTE"_Stz,       CN_JOB__EXECUTE);
   /*    */ vAddConstant("CN_JOB__EXECUTED"_Stz,      CN_JOB__EXECUTED);
   

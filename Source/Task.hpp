@@ -828,8 +828,10 @@ namespace Tasks
     static void vJobDelete(MP_Task mpTask);
     static void vJobDecAcksRemaining(MP_Task mpTask);
     static void vJobDicPath(MP_Task mpTask);
-    static void vJobErrorFetch(MP_Task mpTask);
+    static void vJobParticipantErrorFetch(MP_Task mpTask);
+    static void vJobParticipantErrorStore(MP_Task mpTask);
     static void vJobErrorStore(MP_Task mpTask);
+    static void vJobErrorFetch(MP_Task mpTask);
     static void vJobExecuteFetch(MP_Task mpTask);
     static void vJobFindOriginator(MP_Task mpTask);
     static void vJobFindParticipant(MP_Task mpTask);    
@@ -845,7 +847,11 @@ namespace Tasks
     static void vJobParticipantStore(MP_Task mpTask);
     static void vJobRemoveOriginator(MP_Task mpTask);
     static void vJobRemoveParticipant(MP_Task mpTask);
-  
+    static void vJobParticipantResponseFetch(MP_Task mpTask);
+    static void vJobParticipantResponseStore(MP_Task mpTask);
+    static void vJobResponseStore(MP_Task mpTask);
+    static void vJobResponseFetch(MP_Task mpTask);
+    
     // loader
     static void vLoaderAddRecordsInvalid(MP_Task mpTask);
     static void vLoaderAddRecordsValid(MP_Task mpTask);

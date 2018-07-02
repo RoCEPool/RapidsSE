@@ -21,13 +21,15 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.class"_Stz,            &vJobClass,            false);
   vAddPrimitive("job.columnCount@"_Stz,     &vJobColumnCountFetch, false);
   vAddPrimitive("job.columnName@"_Stz,      &vJobColumnNameFetch,  false);
-  vAddPrimitive("job.ColumnIsPartKey"_Stz,  &vJobColumnIsPartKey,  false);
+  vAddPrimitive("job.columnIsPartKey"_Stz,  &vJobColumnIsPartKey,  false);
   vAddPrimitive("job.columnType@"_Stz,      &vJobColumnTypeFetch,  false);
   vAddPrimitive("job.delete"_Stz,           &vJobDelete,           false);
   vAddPrimitive("job.decAcksRemaining"_Stz, &vJobDecAcksRemaining, false);
   vAddPrimitive("job.dicPath"_Stz,          &vJobDicPath,          false);
-  vAddPrimitive("job.error@"_Stz,           &vJobErrorFetch,       false);
+  vAddPrimitive("job.participantError@"_Stz, &vJobParticipantErrorFetch, false);
+  vAddPrimitive("job.participantError!"_Stz, &vJobParticipantErrorStore, false);
   vAddPrimitive("job.error!"_Stz,           &vJobErrorStore,       false);
+  vAddPrimitive("job.error@"_Stz,           &vJobErrorFetch,       false);
   vAddPrimitive("job.execute@"_Stz,         &vJobExecuteFetch,     false);
   vAddPrimitive("job.findOriginator"_Stz,   &vJobFindOriginator,   false);
   vAddPrimitive("job.findParticipant"_Stz,  &vJobFindParticipant,  false);
@@ -43,6 +45,10 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.participant!"_Stz,     &vJobParticipantStore, false);
   vAddPrimitive("job.removeOriginator"_Stz, &vJobRemoveOriginator, false);
   vAddPrimitive("job.removeParticipant"_Stz,&vJobRemoveParticipant,false);
+  vAddPrimitive("job.participantresponse@"_Stz, &vJobParticipantResponseFetch, false);
+  vAddPrimitive("job.participantresponse!"_Stz, &vJobParticipantResponseStore, false);
+  vAddPrimitive("job.response@"_Stz,        &vJobResponseFetch,    false);
+  vAddPrimitive("job.response!"_Stz,        &vJobResponseStore,    false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -132,7 +138,7 @@ void Task::vJobColumnCountFetch(MP_Task mpTask)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.error@"_Stz);
+    THROW_INVALID_DSTACK("job.columnCount@"_Stz);
   Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJobPtr);
   
   mpTask->m_pDataStack->vPushInt(pJob_CreateTable->m_iColumns);
@@ -149,12 +155,12 @@ void Task::vJobColumnNameFetch(MP_Task mpTask)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.error@"_Stz);
+    THROW_INVALID_DSTACK("job.columnName@"_Stz);
   Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJobPtr);
   
   i8 iColumnNo;
   if ( ! mpTask->m_pDataStack->bPopAsInt(iColumnNo) )
-    THROW_INVALID_DSTACK("job.error@"_Stz);
+    THROW_INVALID_DSTACK("job.columnName@"_Stz);
   
   mpTask->m_pDataStack->vPushS32(pJob_CreateTable->m_xColumns[iColumnNo].m_sColumnName);
   
@@ -236,13 +242,6 @@ void Task::vJobDelete(MP_Task mpTask)
     {
       Job__Ended* pJobEnded = _pJob__Ended(pJobPtr);
       delete pJobEnded;
-      break;
-    }
-    
-    case CN_JOB__ERROR:
-    {
-      Job__Error* pJobError = _pJob__Error(pJobPtr);
-      delete pJobError;
       break;
     }
     
@@ -346,7 +345,46 @@ void Task::vJobDicPath(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.error@ -- fetch the job error                                          */
+/* job.participantError@ -- fetch job error of participant from job__executed */
+/*----------------------------------------------------------------------------*/
+void Task::vJobParticipantErrorFetch(MP_Task mpTask)
+{
+  ENTRY("vJobParticipantErrorFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("vJobParticipantErrorFetch@"_Stz);
+  
+  Job__Executed* pJob__Executed = _pJob__Executed(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushInt(pJob__Executed->m_eErrorCode);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.participantError! -- store job error of participant in job__executed   */
+/*----------------------------------------------------------------------------*/
+void Task::vJobParticipantErrorStore(MP_Task mpTask)
+{
+  ENTRY("vJobParticipantErrorFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.participantError!"_Stz);
+  Job__Executed* pJob__Executed = _pJob__Executed(pJobPtr);
+  
+  i8 iErrorCode;
+  if ( ! mpTask->m_pDataStack->bPop(iErrorCode) )
+    THROW_INVALID_DSTACK("job.participantError!"_Stz);
+  
+  pJob__Executed->m_eErrorCode = (eEC)iErrorCode;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.error@ -- fetch the job error for the node                             */
 /*----------------------------------------------------------------------------*/
 void Task::vJobErrorFetch(MP_Task mpTask)
 {
@@ -355,15 +393,19 @@ void Task::vJobErrorFetch(MP_Task mpTask)
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job.error@"_Stz);
-  Job__Error* pJob__Error = _pJob__Error(pJobPtr);
+  Job_Space* pJob = _pJob_Space(pJobPtr);
   
-  mpTask->m_pDataStack->vPushInt(pJob__Error->eErrorCode());
+  i8 iNode;
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
+    THROW_INVALID_DSTACK("job.error@"_Stz);
+  
+  mpTask->m_pDataStack->vPushInt(pJob->m_xNode[iNode].m_eErrorCode);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.error! -- store the job error                                          */
+/* job.error! -- store the job error for the node                             */
 /*----------------------------------------------------------------------------*/
 void Task::vJobErrorStore(MP_Task mpTask)
 {
@@ -372,13 +414,17 @@ void Task::vJobErrorStore(MP_Task mpTask)
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job.error!"_Stz);
-  Job__Error* pJob__Error = _pJob__Error(pJobPtr);
+  Job_Space* pJob = _pJob_Space(pJobPtr);
+  
+  i8 iNode;
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
+    THROW_INVALID_DSTACK("job.error!"_Stz);
   
   i8 iJobError;
   if ( ! mpTask->m_pDataStack->bPopAsInt(iJobError) )
     THROW_INVALID_DSTACK("job.error!"_Stz);
   
-  pJob__Error->vErrorCode((eEC)iJobError);
+  pJob->m_xNode[iNode].m_eErrorCode = (eEC)iJobError;
   
   EXIT();
 }
@@ -429,7 +475,7 @@ void Task::vJobFindOriginator(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.findPartcipant -- find job from participant job set                    */
+/* job.findParticipant -- find job from participant job set                   */
 /*----------------------------------------------------------------------------*/
 void Task::vJobFindParticipant(MP_Task mpTask)
 {
@@ -580,6 +626,7 @@ void Task::vJobNewExecuted(MP_Task mpTask)
   
   Job* pJobExecuted = new Job__Executed;
   pJobExecuted->m_iJobId = iJobId;
+  
   pJobExecuted->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
   
   mpTask->m_pDataStack->vPushObject(pJobExecuted);
@@ -675,6 +722,90 @@ void Task::vJobRemoveParticipant(MP_Task mpTask)
   gpAttachMap->m_pParticipatingJobs->vGrabLock();
   gpAttachMap->m_pParticipatingJobs->vRemoveJob(pJob);
   gpAttachMap->m_pParticipatingJobs->vDropLock();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.participantResponse@ -- fetch participant response from job__executed  */
+/*----------------------------------------------------------------------------*/
+void Task::vJobParticipantResponseFetch(MP_Task mpTask)
+{
+  ENTRY("vJobParticipantResponseFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("vJobParticipantResponseFetch@"_Stz);
+  Job__Executed* pJob__Executed = _pJob__Executed(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushS256(pJob__Executed->m_sResponse);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.participantResponse! -- store participant response in job__executed    */
+/*----------------------------------------------------------------------------*/
+void Task::vJobParticipantResponseStore(MP_Task mpTask)
+{
+  ENTRY("vJobParticipantResponseFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("vJobParticipantResponseFetch@"_Stz);
+  Job__Executed* pJob__Executed = _pJob__Executed(pJobPtr);
+  
+  s256 sResponse;
+  if ( ! mpTask->m_pDataStack->bPop(sResponse) )
+    THROW_INVALID_DSTACK("vJobParticipantResponseFetch@"_Stz);
+  
+  pJob__Executed->m_sResponse = sResponse;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.response@ -- fetch the job response from a node                        */
+/*----------------------------------------------------------------------------*/
+void Task::vJobResponseFetch(MP_Task mpTask)
+{
+  ENTRY("vJobResponseFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.response@"_Stz);
+  Job_Space* pJob = _pJob_Space(pJobPtr);
+  
+  i8 iNode;
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
+    THROW_INVALID_DSTACK("job.response@"_Stz);
+  
+  mpTask->m_pDataStack->vPushS256(pJob->m_xNode[iNode].m_sResponse);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.response! -- store the job response from a node                        */
+/*----------------------------------------------------------------------------*/
+void Task::vJobResponseStore(MP_Task mpTask)
+{
+  ENTRY("vJobResponseStore"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.response!"_Stz);
+  Job_Space* pJob = _pJob_Space(pJobPtr);
+  
+  i8 iNode;
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
+    THROW_INVALID_DSTACK("job.response!"_Stz);
+  
+  s256 sResponse;
+  if ( ! mpTask->m_pDataStack->bPop(sResponse) )
+    THROW_INVALID_DSTACK("job.response!"_Stz);
+  
+  pJob->m_xNode[iNode].m_sResponse = sResponse;
   
   EXIT();
 }

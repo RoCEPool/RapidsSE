@@ -8,6 +8,10 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job__Executed : public Job
   {
+  public:
+    s256 m_sResponse;   // response string
+    eEC  m_eErrorCode;  // error code
+    
     // must be last
     Footer m_xFooter;
   
