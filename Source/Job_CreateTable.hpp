@@ -8,7 +8,8 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_CreateTable : public Job,
                           public JobDicPath,
-                          public JobObjectName
+                          public JobObjectName,
+                          public JobResult
   {
   public:
     

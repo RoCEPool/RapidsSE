@@ -7,9 +7,9 @@ namespace JobsModel
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_Space : public Job,
-                           public JobDicPath,
-                           public JobObjectName,
-                           public JobResult
+                    public JobDicPath,
+                    public JobObjectName,
+                    public JobResult
   {
   public:
     

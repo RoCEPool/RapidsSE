@@ -9,7 +9,8 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_DropSchema : public Job,
                          public JobDicPath,
-                         public JobObjectName
+                         public JobObjectName,
+                         public JobResult
   {
   public:
   
