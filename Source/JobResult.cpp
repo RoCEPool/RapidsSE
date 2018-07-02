@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Job__Error.cpp -- Job Error                                                */
+/* JobResult.cpp -- Job Result                                                */
 /*============================================================================*/
 
 #include "JobModel.h"
@@ -9,138 +9,51 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-Job__Error* JobsModel::_pJob__Error(void* aAddress)
-{
-  Job__Error* pJob__Error = reinterpret_cast<Job__Error*>(aAddress);
-  
-  RASSERT( !pJob__Error || CN_JOB__ERROR == pJob__Error->eClass());
-  
-  return pJob__Error;
-}
-
-/*----------------------------------------------------------------------------*/
 /* allocate a new entry buffer from heap                                      */
 /*----------------------------------------------------------------------------*/
-void* Job__Error::operator new(size_t iSize)
+void* JobResult::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  Job__Error* pJob__Error =
-    static_cast<Job__Error*>(Heap::pAllocate(CN_JOB__ERROR));
+  vFatal("fatal: JobResult class cannot be new'd\n"_Stz);
   
-  return pJob__Error;
-}
-
-/*----------------------------------------------------------------------------*/
-/* perform new of entry buffer for given address                              */
-/*----------------------------------------------------------------------------*/
-void* Job__Error::operator new(size_t iSize, void* aAddress)
-{
-  RASSERT(iSize);
-  
-  return aAddress;
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/
 /* free an entry buffer back to the heap                                      */
 /*----------------------------------------------------------------------------*/
-void Job__Error::operator delete(void* aAddress)
+void JobResult::operator delete(void* aAddress)
 {
-  Job__Error* pJob__Error = static_cast<Job__Error*>(aAddress);
-  
-  Heap::vFree(pJob__Error);
+
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job__Error::Job__Error(void)
-: Job(CN_JOB__BEGUN)
+JobResult::JobResult(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__ERROR,_FOOTER_);
-  
-  m_sExecute = "Job__Error_Exe"_Stz;
-  
-  _checkInitialised_(CN_JOB__BEGUN);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB__ERROR,_FOOTER_);
+  for (i8 i_Node = 0;i_Node < C_MAX_NODES; i_Node++) {
+    m_xNode[i_Node].m_sResponse = ""_Stz;
+    m_xNode[i_Node].m_eErrorCode = EC_NONE;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job__Error::~Job__Error(void)
+JobResult::~JobResult(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__BEGUN,_FOOTER_);
-}
 
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Static Functions --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* dump                                                                       */
-/*----------------------------------------------------------------------------*/
-void Job__Error::vDump(eCN eClass, Object* pObject, Stz* aTab)
-{
-  RASSERT(CN_JOB__BEGUN == eClass);
-  RASSERT(pObject->eClass() == CN_JOB__ERROR);
-  
-  Job__Error* pJob__Error = _pJob__Error(pObject);
-
-  pJob__Error->vShow();
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Member Functions --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* show                                                                       */
-/*----------------------------------------------------------------------------*/
-void Job__Error::vShow(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__ERROR,_FOOTER_);
-  
-                                                               //! Alka to write
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the job error                                                          */
-/*----------------------------------------------------------------------------*/
-eEC Job__Error::eErrorCode(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_eErrorCode;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the job state                                                          */
-/*----------------------------------------------------------------------------*/
-void Job__Error::vErrorCode(eEC eErrorCode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_eErrorCode = eErrorCode;
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* Job__Error::aFooter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__ERROR);
-  
-  return &m_xFooter;
-}
 
 /*============================================================================*/
 /* end                                                                        */

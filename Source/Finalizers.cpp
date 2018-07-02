@@ -84,7 +84,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB__BEGUN
   /*    */ &Finalize::vUndefined,         // CN_JOB__END
   /*    */ &Finalize::vUndefined,         // CN_JOB__ENDED
-  /*    */ &Finalize::vUndefined,         // CN_JOB__ERROR
   /*    */ &Finalize::vUndefined,         // CN_JOB__EXECUTE
   /*    */ &Finalize::vUndefined,         // CN_JOB__EXECUTED
   

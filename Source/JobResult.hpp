@@ -1,40 +1,26 @@
 /*============================================================================*/
-/* Job__Error.hpp -- Job Begun                                                */
+/* JobResult.hpp -- Job Result                                                */
 /*============================================================================*/
 #pragma once
 
 namespace JobsModel
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class Job__Error : public Job
+  class JobResult
   {
-    eEC  m_eErrorCode;  // error code
-    
-    // must be last
-    Footer m_xFooter;
+  public:
+    struct {
+      s256 m_sResponse;   // response string
+      eEC  m_eErrorCode;  // error code
+    } m_xNode[C_MAX_NODES];
   
   public:
     void* operator new(size_t);
-    void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job__Error(void);
-    ~Job__Error(void);
-  
-    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-
-  public:
-    eEC  eErrorCode(void);
-    void vErrorCode(eEC eErrorCode);
-    void vShow(void);
-  
-  public:
-    Footer* aFooter(void);
-  
+    JobResult(void);
+    ~JobResult(void);
   };
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  Job__Error* _pJob__Error(void* aAddr);
 }
 
 /*============================================================================*/
