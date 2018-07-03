@@ -1,0 +1,31 @@
+/*============================================================================*/
+/* job_DropCatalog.sen -- Job Drop Catalog                                    */
+/*============================================================================*/
+
+"job_DropCatalog.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_DropCatalog job                                                 */
+/*----------------------------------------------------------------------------*/
+: pob_DropCatalog.execute ( pJob_DropCatalog -- )
+
+  params| pJob_DropCatalog |
+
+  CN_JOB_DROPCATALOG pJob_DropCatalog object.assertClass
+
+  ddlLock::grabWrite
+
+  pJob_DropCatalog getPathR35
+  dicStack.set
+  pJob_DropCatalog job.objectName@   ( catalogNm )
+
+  removeCatalogR35 ( )  not if "got error" . exit then
+
+  ddlLock::testDrop
+
+  pJob_DropCatalog job.notice
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

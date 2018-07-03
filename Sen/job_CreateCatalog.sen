@@ -1,0 +1,31 @@
+/*============================================================================*/
+/* job_CreateCatalog.sen -- Job Create Catalog                                */
+/*============================================================================*/
+
+"job_CreateCatalog.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_CreateCatalog job                                              */
+/*----------------------------------------------------------------------------*/
+: Job_CreateCatalog.execute ( pJob_CreateCatalog -- )
+
+  params| pJob_CreateCatalog |
+
+  CN_JOB_CREATECATALOG pJob_CreateCatalog object.assertClass
+
+  ddlLock::grabWrite
+
+  pJob_CreateCatalog getPathR35
+  dicStack.set
+  pJob_CreateCatalog job.objectName@   ( catalogNm )
+  makeCatalogR35 ( )     not if "got error" . exit then
+
+  ddlLock::testDrop
+
+  pJob_CreateCatalog job.notice
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+
