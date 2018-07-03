@@ -15,40 +15,61 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Job(void)
 {
+  vAddPrimitive("job.acksRemaining!"_Stz,   &vJobAcksRemaining,    false);
   vAddPrimitive("job.addOriginator"_Stz,    &vJobAddOriginator,    false);
   vAddPrimitive("job.addParticipant"_Stz,   &vJobAddParticipant,   false);
-  vAddPrimitive("job.acksRemaining!"_Stz,   &vJobAcksRemaining,    false);
   vAddPrimitive("job.class"_Stz,            &vJobClass,            false);
   vAddPrimitive("job.columnCount@"_Stz,     &vJobColumnCountFetch, false);
-  vAddPrimitive("job.columnName@"_Stz,      &vJobColumnNameFetch,  false);
   vAddPrimitive("job.columnIsPartKey"_Stz,  &vJobColumnIsPartKey,  false);
+  vAddPrimitive("job.columnName@"_Stz,      &vJobColumnNameFetch,  false);
   vAddPrimitive("job.columnType@"_Stz,      &vJobColumnTypeFetch,  false);
-  vAddPrimitive("job.delete"_Stz,           &vJobDelete,           false);
   vAddPrimitive("job.decAcksRemaining"_Stz, &vJobDecAcksRemaining, false);
+  vAddPrimitive("job.delete"_Stz,           &vJobDelete,           false);
   vAddPrimitive("job.dicPath"_Stz,          &vJobDicPath,          false);
-  vAddPrimitive("job.participantError@"_Stz, &vJobParticipantErrorFetch, false);
-  vAddPrimitive("job.participantError!"_Stz, &vJobParticipantErrorStore, false);
   vAddPrimitive("job.error!"_Stz,           &vJobErrorStore,       false);
   vAddPrimitive("job.error@"_Stz,           &vJobErrorFetch,       false);
   vAddPrimitive("job.execute@"_Stz,         &vJobExecuteFetch,     false);
   vAddPrimitive("job.findOriginator"_Stz,   &vJobFindOriginator,   false);
   vAddPrimitive("job.findParticipant"_Stz,  &vJobFindParticipant,  false);
   vAddPrimitive("job.id@"_Stz,              &vJobIdFetch,          false);
-  vAddPrimitive("job.objectName@"_Stz,      &vJobObjectNameFetch,  false);
   vAddPrimitive("job.newBegun"_Stz,         &vJobNewBegun,         false);
   vAddPrimitive("job.newEnd"_Stz,           &vJobNewEnd,           false);
   vAddPrimitive("job.newEnded"_Stz,         &vJobNewEnded,         false);
   vAddPrimitive("job.newExecute"_Stz,       &vJobNewExecute,       false);
   vAddPrimitive("job.newExecuted"_Stz,      &vJobNewExecuted,      false);
+  vAddPrimitive("job.objectName@"_Stz,      &vJobObjectNameFetch,  false);
   vAddPrimitive("job::originator@"_Stz,     &vJobOriginatorFetch,  false);
   vAddPrimitive("job.participant@"_Stz,     &vJobParticipantFetch, false);
   vAddPrimitive("job.participant!"_Stz,     &vJobParticipantStore, false);
+  vAddPrimitive("job.participantError@"_Stz,   &vJobParticipantErrorFetch,   false);
+  vAddPrimitive("job.participantError!"_Stz,   &vJobParticipantErrorStore,   false);
+  vAddPrimitive("job.participantResponse@"_Stz,&vJobParticipantResponseFetch,false);
+  vAddPrimitive("job.participantResponse!"_Stz,&vJobParticipantResponseStore,false);
   vAddPrimitive("job.removeOriginator"_Stz, &vJobRemoveOriginator, false);
   vAddPrimitive("job.removeParticipant"_Stz,&vJobRemoveParticipant,false);
-  vAddPrimitive("job.participantresponse@"_Stz, &vJobParticipantResponseFetch, false);
-  vAddPrimitive("job.participantresponse!"_Stz, &vJobParticipantResponseStore, false);
   vAddPrimitive("job.response@"_Stz,        &vJobResponseFetch,    false);
   vAddPrimitive("job.response!"_Stz,        &vJobResponseStore,    false);
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.acksRemaining! -- set acks remaining for this job                      */
+/*----------------------------------------------------------------------------*/
+void Task::vJobAcksRemaining(MP_Task mpTask)
+{
+  ENTRY("vJobAcksRemaining"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.acksRemaining!"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  i8 iAcksRemaing;
+  if ( ! mpTask->m_pDataStack->bPop(iAcksRemaing) )
+    THROW_INVALID_DSTACK("job.acksRemaining!"_Stz);
+  
+  pJob->m_ziAcksRemaining = iAcksRemaing;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -92,27 +113,6 @@ void Task::vJobAddParticipant(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.acksRemaining! -- set acks remaining for this job                      */
-/*----------------------------------------------------------------------------*/
-void Task::vJobAcksRemaining(MP_Task mpTask)
-{
-  ENTRY("vJobAcksRemaining"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-  THROW_INVALID_DSTACK("job.acksRemaining!"_Stz);
-  Job* pJob = _pJob(pJobPtr);
-  
-  i8 iAcksRemaing;
-  if ( ! mpTask->m_pDataStack->bPop(iAcksRemaing) )
-  THROW_INVALID_DSTACK("job.acksRemaining!"_Stz);
-  
-  pJob->m_ziAcksRemaining = iAcksRemaing;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* job.class -- get the class of the job                                      */
 /*----------------------------------------------------------------------------*/
 void Task::vJobClass(MP_Task mpTask)
@@ -147,27 +147,6 @@ void Task::vJobColumnCountFetch(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.columnName@ -- fetch the name of the column of the create table job    */
-/*----------------------------------------------------------------------------*/
-void Task::vJobColumnNameFetch(MP_Task mpTask)
-{
-  ENTRY("vJobColumnNameFetch"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.columnName@"_Stz);
-  Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJobPtr);
-  
-  i8 iColumnNo;
-  if ( ! mpTask->m_pDataStack->bPopAsInt(iColumnNo) )
-    THROW_INVALID_DSTACK("job.columnName@"_Stz);
-  
-  mpTask->m_pDataStack->vPushS32(pJob_CreateTable->m_xColumns[iColumnNo].m_sColumnName);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* job.columnIsPartKey -- return true if column is a partition by key        */
 /*----------------------------------------------------------------------------*/
 void Task::vJobColumnIsPartKey(MP_Task mpTask)
@@ -189,6 +168,27 @@ void Task::vJobColumnIsPartKey(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* job.columnName@ -- fetch the name of the column of the create table job    */
+/*----------------------------------------------------------------------------*/
+void Task::vJobColumnNameFetch(MP_Task mpTask)
+{
+  ENTRY("vJobColumnNameFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.columnName@"_Stz);
+  Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJobPtr);
+  
+  i8 iColumnNo;
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iColumnNo) )
+    THROW_INVALID_DSTACK("job.columnName@"_Stz);
+  
+  mpTask->m_pDataStack->vPushS32(pJob_CreateTable->m_xColumns[iColumnNo].m_sColumnName);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* job.columnType@ -- fetch column type from create table job                 */
 /*----------------------------------------------------------------------------*/
 void Task::vJobColumnTypeFetch(MP_Task mpTask)
@@ -205,6 +205,25 @@ void Task::vJobColumnTypeFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.columnType@"_Stz);
   
   mpTask->m_pDataStack->vPushS32(pJob_CreateTable->m_xColumns[iColumnNo].m_sColumnType);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.decAcksRemaining -- decrement acks remaining for this job              */
+/*----------------------------------------------------------------------------*/
+void Task::vJobDecAcksRemaining(MP_Task mpTask)
+{
+  ENTRY("vJobDecAcksRemaining"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.decAcksRemaining"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  --pJob->m_ziAcksRemaining;
+  
+  mpTask->m_pDataStack->vPushInt(*pJob->m_ziAcksRemaining);
   
   EXIT();
 }
@@ -316,25 +335,6 @@ void Task::vJobDelete(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.decAcksRemaining -- decrement acks remaining for this job              */
-/*----------------------------------------------------------------------------*/
-void Task::vJobDecAcksRemaining(MP_Task mpTask)
-{
-  ENTRY("vJobDecAcksRemaining"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.decAcksRemaining"_Stz);
-  Job* pJob = _pJob(pJobPtr);
-  
-  --pJob->m_ziAcksRemaining;
-  
-  mpTask->m_pDataStack->vPushInt(*pJob->m_ziAcksRemaining);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* job.dicPath -- get job dic path                                            */
 /*----------------------------------------------------------------------------*/
 void Task::vJobDicPath(MP_Task mpTask)
@@ -347,45 +347,6 @@ void Task::vJobDicPath(MP_Task mpTask)
   Job_CreateSchema* pJob = _pJob_CreateSchema(pJobPtr);
   
   mpTask->m_pDataStack->vPushObject(&pJob->m_xDicPath);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.participantError@ -- fetch job error of participant from job__executed */
-/*----------------------------------------------------------------------------*/
-void Task::vJobParticipantErrorFetch(MP_Task mpTask)
-{
-  ENTRY("vJobParticipantErrorFetch"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("vJobParticipantErrorFetch@"_Stz);
-  
-  Job__Executed* pJob__Executed = _pJob__Executed(pJobPtr);
-  
-  mpTask->m_pDataStack->vPushInt(pJob__Executed->m_eErrorCode);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.participantError! -- store job error of participant in job__executed   */
-/*----------------------------------------------------------------------------*/
-void Task::vJobParticipantErrorStore(MP_Task mpTask)
-{
-  ENTRY("vJobParticipantErrorFetch"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.participantError!"_Stz);
-  Job__Executed* pJob__Executed = _pJob__Executed(pJobPtr);
-  
-  i8 iErrorCode;
-  if ( ! mpTask->m_pDataStack->bPop(iErrorCode) )
-    THROW_INVALID_DSTACK("job.participantError!"_Stz);
-  
-  pJob__Executed->m_eErrorCode = (eEC)iErrorCode;
   
   EXIT();
 }
@@ -524,23 +485,6 @@ void Task::vJobIdFetch(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.objectName@ -- fetch the object name of the job                        */
-/*----------------------------------------------------------------------------*/
-void Task::vJobObjectNameFetch(MP_Task mpTask)
-{
-  ENTRY("vJobObjectNameFetch"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.objectNamed@"_Stz);
-  Job_CreateSchema* pJob = _pJob_CreateSchema(pJobPtr);
-  
-  mpTask->m_pDataStack->vPushS32(pJob->m_sObjectName);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* job.newBegun -- new a job__begun for this job                              */
 /*----------------------------------------------------------------------------*/
 void Task::vJobNewBegun(MP_Task mpTask)
@@ -642,6 +586,23 @@ void Task::vJobNewExecuted(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* job.objectName@ -- fetch the object name of the job                        */
+/*----------------------------------------------------------------------------*/
+void Task::vJobObjectNameFetch(MP_Task mpTask)
+{
+  ENTRY("vJobObjectNameFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.objectNamed@"_Stz);
+  Job_CreateSchema* pJob = _pJob_CreateSchema(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushS32(pJob->m_sObjectName);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* job::originator@ -- fetch the originator node from the job                  */
 /*----------------------------------------------------------------------------*/
 void Task::vJobOriginatorFetch(MP_Task mpTask)
@@ -696,39 +657,40 @@ void Task::vJobParticipantStore(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.removeOriginator -- remove job from originator job set                 */
+/* job.participantError@ -- fetch job error of participant from job__executed */
 /*----------------------------------------------------------------------------*/
-void Task::vJobRemoveOriginator(MP_Task mpTask)
+void Task::vJobParticipantErrorFetch(MP_Task mpTask)
 {
-  ENTRY("vJobRemoveOriginator"_Stz);
+  ENTRY("vJobParticipantErrorFetch"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.id@"_Stz);
-  Job* pJob = _pJob(pJobPtr);
+    THROW_INVALID_DSTACK("vJobParticipantErrorFetch@"_Stz);
   
-  gpAttachMap->m_pOriginatingJobs->vGrabLock();
-  gpAttachMap->m_pOriginatingJobs->vRemoveJob(pJob);
-  gpAttachMap->m_pOriginatingJobs->vDropLock();
+  Job__Executed* pJob__Executed = _pJob__Executed(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushInt(pJob__Executed->m_eErrorCode);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.removePartcipant -- remove job from participant job set                */
+/* job.participantError! -- store job error of participant in job__executed   */
 /*----------------------------------------------------------------------------*/
-void Task::vJobRemoveParticipant(MP_Task mpTask)
+void Task::vJobParticipantErrorStore(MP_Task mpTask)
 {
-  ENTRY("vJobRemoveParticipant"_Stz);
+  ENTRY("vJobParticipantErrorFetch"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.id@"_Stz);
-  Job* pJob = _pJob(pJobPtr);
+    THROW_INVALID_DSTACK("job.participantError!"_Stz);
+  Job__Executed* pJob__Executed = _pJob__Executed(pJobPtr);
   
-  gpAttachMap->m_pParticipatingJobs->vGrabLock();
-  gpAttachMap->m_pParticipatingJobs->vRemoveJob(pJob);
-  gpAttachMap->m_pParticipatingJobs->vDropLock();
+  i8 iErrorCode;
+  if ( ! mpTask->m_pDataStack->bPop(iErrorCode) )
+    THROW_INVALID_DSTACK("job.participantError!"_Stz);
+  
+  pJob__Executed->m_eErrorCode = (eEC)iErrorCode;
   
   EXIT();
 }
@@ -767,6 +729,44 @@ void Task::vJobParticipantResponseStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("vJobParticipantResponseFetch@"_Stz);
   
   pJob__Executed->m_sResponse = sResponse;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.removeOriginator -- remove job from originator job set                 */
+/*----------------------------------------------------------------------------*/
+void Task::vJobRemoveOriginator(MP_Task mpTask)
+{
+  ENTRY("vJobRemoveOriginator"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.id@"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  gpAttachMap->m_pOriginatingJobs->vGrabLock();
+  gpAttachMap->m_pOriginatingJobs->vRemoveJob(pJob);
+  gpAttachMap->m_pOriginatingJobs->vDropLock();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.removePartcipant -- remove job from participant job set                */
+/*----------------------------------------------------------------------------*/
+void Task::vJobRemoveParticipant(MP_Task mpTask)
+{
+  ENTRY("vJobRemoveParticipant"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.id@"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  gpAttachMap->m_pParticipatingJobs->vGrabLock();
+  gpAttachMap->m_pParticipatingJobs->vRemoveJob(pJob);
+  gpAttachMap->m_pParticipatingJobs->vDropLock();
   
   EXIT();
 }

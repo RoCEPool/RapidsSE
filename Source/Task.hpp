@@ -817,38 +817,38 @@ namespace Tasks
     static void vIntSubtract(MP_Task mpTask);
     
     // job
+    static void vJobAcksRemaining(MP_Task mpTask);
     static void vJobAddOriginator(MP_Task mpTask);
     static void vJobAddParticipant(MP_Task mpTask);
-    static void vJobAcksRemaining(MP_Task mpTask);
     static void vJobClass(MP_Task mpTask);
     static void vJobColumnCountFetch(MP_Task mpTask);
     static void vJobColumnNameFetch(MP_Task mpTask);
     static void vJobColumnIsPartKey(MP_Task mpTask);
     static void vJobColumnTypeFetch(MP_Task mpTask);
-    static void vJobDelete(MP_Task mpTask);
     static void vJobDecAcksRemaining(MP_Task mpTask);
+    static void vJobDelete(MP_Task mpTask);
     static void vJobDicPath(MP_Task mpTask);
-    static void vJobParticipantErrorFetch(MP_Task mpTask);
-    static void vJobParticipantErrorStore(MP_Task mpTask);
     static void vJobErrorStore(MP_Task mpTask);
     static void vJobErrorFetch(MP_Task mpTask);
     static void vJobExecuteFetch(MP_Task mpTask);
     static void vJobFindOriginator(MP_Task mpTask);
     static void vJobFindParticipant(MP_Task mpTask);    
     static void vJobIdFetch(MP_Task mpTask);
-    static void vJobObjectNameFetch(MP_Task mpTask);
+    static void vJobNewBegun(MP_Task mpTask);
     static void vJobNewEnd(MP_Task mpTask);
     static void vJobNewEnded(MP_Task mpTask);
     static void vJobNewExecute(MP_Task mpTask);
     static void vJobNewExecuted(MP_Task mpTask);
-    static void vJobNewBegun(MP_Task mpTask);
+    static void vJobObjectNameFetch(MP_Task mpTask);
     static void vJobOriginatorFetch(MP_Task mpTask);
     static void vJobParticipantFetch(MP_Task mpTask);
     static void vJobParticipantStore(MP_Task mpTask);
-    static void vJobRemoveOriginator(MP_Task mpTask);
-    static void vJobRemoveParticipant(MP_Task mpTask);
+    static void vJobParticipantErrorFetch(MP_Task mpTask);
+    static void vJobParticipantErrorStore(MP_Task mpTask);
     static void vJobParticipantResponseFetch(MP_Task mpTask);
     static void vJobParticipantResponseStore(MP_Task mpTask);
+    static void vJobRemoveOriginator(MP_Task mpTask);
+    static void vJobRemoveParticipant(MP_Task mpTask);
     static void vJobResponseStore(MP_Task mpTask);
     static void vJobResponseFetch(MP_Task mpTask);
     
