@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* dicPath.sen -- dictionary stack related words                             */
+/* dicStack.sen -- dictionary stack related words                             */
 /*============================================================================*/
 
-"dicPath.sen" .verbose
+"dicStack.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* drop top dictionary from path                                              */

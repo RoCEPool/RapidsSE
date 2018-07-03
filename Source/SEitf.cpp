@@ -46,7 +46,7 @@ ReqTable SeRequests[] =
  { "gettbl"_Stz,         &SEitf::bGetTable,             "getTable_req"_Stz     },
  { "gettsk"_Stz,         &SEitf::bGetTask,              "getTask_req"_Stz         },
  { "getTotalSpace"_Stz,  &SEitf::bGetTotalSpace,        "getTotalSpace"_Stz       },
- { "g35"_Stz,            &SEitf::bG35,                  "g35_req"_Stz             },
+ 
  { "ld"_Stz,             &SEitf::bLoadTable,            "loadTable_req"_Stz       },
  { "lds"_Stz,            &SEitf::bLoadTableStream,      "loadTableStream_req"_Stz },
  { "lf"_Stz,             &SEitf::bListFolder,           "lf_req"_Stz              },
@@ -61,9 +61,7 @@ ReqTable SeRequests[] =
  { "mkcat"_Stz,          &SEitf::bCreateCatalog,        "createCatalog_req"_Stz   },
  { "mkidx"_Stz,          &SEitf::bCreateIndex,          "createIndex_req"_Stz     },
  { "mksch"_Stz,          &SEitf::bCreateSchema,         "createSchema_req"_Stz    },
- { "mkschR35"_Stz,       &SEitf::bR35Request,           "createSchemaR35_req"_Stz },
  { "mktbl"_Stz,          &SEitf::bCreateTable,          "createTable_req"_Stz     },
- { "mktblR35"_Stz,       &SEitf::bR35Request,           "createTableR35_req"_Stz  },
  { "mkten"_Stz,          &SEitf::bCreateTenant,         "createTenant_req"_Stz    },
  { "mon"_Stz,            &SEitf::bGetMonitor,           "getMonitor_req"_Stz      },
  { "n35"_Stz,            &SEitf::bN35,                  "n35_req"_Stz             },
@@ -80,18 +78,17 @@ ReqTable SeRequests[] =
  { "rmdic"_Stz,          &SEitf::bRemoveFolder,         "remove_folder"_Stz       },
  { "rmidx"_Stz,          &SEitf::bDropIndex,            "dropIndex_req"_Stz       },
  { "rmsch"_Stz,          &SEitf::bDropSchema,           "dropSchema_req"_Stz      },
- { "rmschR35"_Stz,       &SEitf::bR35Request,           "dropSchemaR35_req"_Stz   },
+ 
  { "rmtbl"_Stz,          &SEitf::bDropTable,            "dropTable_req"_Stz       },
- { "rmtblR35"_Stz,       &SEitf::bR35Request,           "dropTableR35_req"_Stz    },
+ 
  { "rmten"_Stz,          &SEitf::bDropTenant,           "dropTenant_req"_Stz      },
  { "sanity"_Stz,         &SEitf::bNodeSanity,           "nodeSanity_req"_Stz      },
  { "setAttachMap"_Stz,   &SEitf::bSetAttachMap,         "setAttachMap_req"_Stz    },
  { "setidxunique"_Stz,   &SEitf::bIndexSetUnique,       "indexSetUnique_req"_Stz  },
  { "space"_Stz,          &SEitf::bPoolSpace,            "poolSpace_req"_Stz       },
- { "spaceR35"_Stz,       &SEitf::bPoolSpaceR35,         "poolSpaceR35_req"_Stz    },
  { "spnFetch"_Stz,       &SEitf::bSpawnFetchRows,       "spawnfetchRows_apiReq"_Stz },
  { "status"_Stz,         &SEitf::bNodeStatus,           "nodeStatus_req"_Stz      },
- { "statusR35"_Stz,      &SEitf::bNodeStatusR35,        "nodeStatusR35_req"_Stz      },
+ 
  { "seitf"_Stz,          &SEitf::bSeitfCount,           "seitfCount_req"_Stz      },
  { "szidx"_Stz,          &SEitf::bSizeIndex,            "sizeIndex_req"_Stz       },
  { "sz"_Stz,             &SEitf::bSizeTable,            "sizeTable_req"_Stz       },
@@ -107,7 +104,21 @@ ReqTable SeRequests[] =
  { "version"_Stz,        &SEitf::bGetVersion,           "getVersion_req"_Stz      },
  { "vfyidx"_Stz,         &SEitf::bVerifyIndex,          "verifyIndex_req"_Stz     },
  { "visidx"_Stz,         &SEitf::bVisualizeIndex,       "visualizeIndex_req"_Stz  },
- { nullptr,              nullptr,                       nullptr }
+ 
+ { "g35"_Stz,            &SEitf::bG35,                  "g35_req"_Stz             },
+ { "mkcatR35"_Stz,       &SEitf::bR35Request,           "createCatalogR35_req"_Stz},
+ { "mkschR35"_Stz,       &SEitf::bR35Request,           "createSchemaR35_req"_Stz },
+ { "mktblR35"_Stz,       &SEitf::bR35Request,           "createTableR35_req"_Stz  },
+ { "mktenR35"_Stz,       &SEitf::bR35Request,           "createTenant_req"_Stz    },
+ { "rmcatR35"_Stz,       &SEitf::bR35Request,           "dropCatalogR35_req"_Stz  },
+ { "rmschR35"_Stz,       &SEitf::bR35Request,           "dropSchemaR35_req"_Stz   },
+ { "rmtblR35"_Stz,       &SEitf::bR35Request,           "dropTableR35_req"_Stz    },
+ { "rmcat"_Stz,          &SEitf::bDropCatalog,          "dropTenantR35_req"_Stz   },
+ { "statusR35"_Stz,      &SEitf::bNodeStatusR35,        "nodeStatusR35_req"_Stz   },
+ { "spaceR35"_Stz,       &SEitf::bPoolSpaceR35,         "poolSpaceR35_req"_Stz    },
+  
+ { nullptr,              nullptr,                       nullptr                   }
+  
 };
 
 /*----------------------------------------------------------------------------*/
