@@ -48,9 +48,9 @@ void* Job_DropTable::operator new(size_t iSize, void* aAddress)
 /*----------------------------------------------------------------------------*/
 void Job_DropTable::operator delete(void* aAddress)
 {
-  Job_DropTable* pJob_DropSchema = static_cast<Job_DropTable*>(aAddress);
+  Job_DropTable* pJob_DropTable = static_cast<Job_DropTable*>(aAddress);
   
-  Heap::vFree(pJob_DropSchema);
+  Heap::vFree(pJob_DropTable);
 }
 
 /*----------------------------------------------------------------------------*/

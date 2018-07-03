@@ -96,10 +96,12 @@ CmdTable SePromptCommands[] =
   { C_CMD_TIMEREND,   nullptr,       &SePrompt::bCmd_TimerEnd      },
   
   { C_CMD_CREATE,     C_R35_ONE_CATALOG, &SePrompt::bCmd_CreateCatalogR35 },
+  { C_CMD_CREATE,     C_R35_ONE_INDEX,   &SePrompt::bCmd_CreateIndexR35   },
   { C_CMD_CREATE,     C_R35_ONE_SCHEMA,  &SePrompt::bCmd_CreateSchemaR35  },
   { C_CMD_CREATE,     C_R35_ONE_TABLE,   &SePrompt::bCmd_CreateTableR35   },
   { C_CMD_CREATE,     C_R35_ONE_TENANT,  &SePrompt::bCmd_CreateTenantR35  },
   { C_CMD_DROP,       C_R35_ONE_CATALOG, &SePrompt::bCmd_DropCatalogR35   },
+  { C_CMD_DROP,       C_R35_ONE_INDEX,   &SePrompt::bCmd_DropIndexR35     },
   { C_CMD_DROP,       C_R35_ONE_SCHEMA,  &SePrompt::bCmd_DropSchemaR35    },
   { C_CMD_DROP,       C_R35_ONE_TABLE,   &SePrompt::bCmd_DropTableR35     },  
   { C_CMD_DROP,       C_R35_ONE_TENANT,  &SePrompt::bCmd_DropTenantR35    },
@@ -2873,6 +2875,56 @@ bool SePrompt::bValidateCreateIndex(i8 iNumTokens)
 }
 
 /*----------------------------------------------------------------------------*/
+/* validate a create index request                                            */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bValidateCreateIndexR35(i8 iNumTokens)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  i8 iIfUnique = 0;
+  
+  if (m_xTokenVec[1]->bSame("unique"_Stz)) {
+    iIfUnique = 1;
+    if ( ! m_xTokenVec[2]->bSame("R35index"_Stz)) {
+      m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+      return false;
+    }
+  }
+  else {
+    if ( ! m_xTokenVec[1]->bSame("R35index"_Stz)) {
+      m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+      return false;
+    }
+  }
+  
+  // there should be a minumum of 8 tokens
+  if (iNumTokens < 8 + iIfUnique) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  // token[3] should be 'on'
+  if (!m_xTokenVec[3 + iIfUnique]->bSame("on"_Stz)) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  // token[5] should be '('
+  if (!m_xTokenVec[5 + iIfUnique]->bSame("("_Stz)) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  // last-1 token should be ')'
+  if (!m_xTokenVec[iNumTokens - 1]->bSame(")"_Stz)) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* validate a create table request                                            */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bValidateCreateTable(i8 iNumTokens)
@@ -2974,6 +3026,78 @@ bool SePrompt::bCmd_CreateCatalogR35(void)
     return false;
   
   //vTrace("Schema created: %s\n"_Stz, m_xTokenVec2[2]);
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* create index                                                               */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bCmd_CreateIndexR35(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  i8 iIfUnique = 0;
+  
+  ASSERT(m_xTokenVec[0]->bSame("create"_Stz));
+  
+  // validate the create statament
+  i8 i_Token;
+  for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
+    if (! m_xTokenVec[i_Token]->bHasText())
+      break;
+  }
+  
+  i8 iNumTokens = i_Token;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // some validations
+  bool bValid = bValidateCreateIndexR35(iNumTokens);
+  if ( ! bValid )
+    return false;
+  
+  if (m_xTokenVec[1]->bSame("unique"_Stz))
+    iIfUnique = 1;
+  
+  
+  // create the job
+  Job_CreateIndex* pJob_CreateIndex = new Job_CreateIndex(m_pSEitf);
+  
+  // set the index name
+  pJob_CreateIndex->m_sObjectName = m_xTokenVec[2 + iIfUnique]->aText();
+  
+  // set the table name
+  pJob_CreateIndex->m_sTableName = m_xTokenVec[4 + iIfUnique]->aText();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the index columns
+  
+  // now collect the column names and their types
+  i8 iCurrentToken = 6 + iIfUnique;
+  i8 iColumn = 0;
+  while (iCurrentToken < iNumTokens - 1) {
+    
+    if (iCurrentToken != 6 + iIfUnique && !m_xTokenVec2[iCurrentToken++]->bSame(","_Stz)) {
+      m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+      return false;
+    }
+    pJob_CreateIndex->m_sColumnName[iColumn] = m_xTokenVec[iCurrentToken++]->aText();
+  }
+  pJob_CreateIndex->m_iColumns = iColumn;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // uniqueness
+  
+  if (iIfUnique) {
+    pJob_CreateIndex->m_bIsUnique = true;
+  }
+  
+  // create a schema
+  m_xTokenVec[0]->vCopy("mkidxR35"_Stz);
+  m_xTokenVec[1]->vCopy(""_Stz);
+  
+  if (!bExecuteRequest())
+    return false;
+  
   return true;
 }
 
@@ -3182,6 +3306,58 @@ bool SePrompt::bCmd_DropCatalogR35(void)
   if (!bExecuteRequest())
     return false;
   
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop index                                                                 */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bCmd_DropIndexR35(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  i8 i_Token;
+  i8 iNumTokens;
+  
+  ASSERT(m_xTokenVec[0]->bSame("drop"_Stz));
+  ASSERT(m_xTokenVec[1]->bSame("R35index"_Stz));
+  
+  for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
+    if (! m_xTokenVec[i_Token]->bHasText())
+      break;
+  }
+  
+  iNumTokens = i_Token;
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // there should be 5 tokens
+  if (iNumTokens != 5) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  // 4th token should be '.'
+  if (!m_xTokenVec[3]->bSame("."_Stz)) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  // create the job
+  Job_DropIndex* pJob_DropIndex = new Job_DropIndex(m_pSEitf);
+  
+  // set the table name
+  pJob_DropIndex->m_sObjectName = m_xTokenVec[2]->aText();
+  
+  // set the job in SEitf
+  m_pSEitf->m_pJob = pJob_DropIndex;
+  
+  // drop a table
+  m_xTokenVec[0]->vCopy("rmidxR35"_Stz);
+  m_xTokenVec[1]->vCopy(""_Stz);
+  if (!bExecuteRequest())
+    return false;
+  
+  //vTrace("Table dropped: %s\n"_Stz, m_xTokenVec2[2]);
   return true;
 }
 

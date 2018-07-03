@@ -287,17 +287,24 @@ void Task::vJobDelete(MP_Task mpTask)
       break;
     }
     
+    case CN_JOB_CREATECATALOG:
+    {
+      Job_CreateCatalog* pJobCreateCatalog = _pJob_CreateCatalog(pJobPtr);
+      delete pJobCreateCatalog;
+      break;
+    }
+      
+    case CN_JOB_CREATEINDEX:
+    {
+      Job_CreateIndex* pJobCreateIndex = _pJob_CreateIndex(pJobPtr);
+      delete pJobCreateIndex;
+      break;
+    }
+      
     case CN_JOB_CREATESCHEMA:
     {
       Job_CreateSchema* pJobCreateSchema = _pJob_CreateSchema(pJobPtr);
       delete pJobCreateSchema;
-      break;
-    }
-      
-    case CN_JOB_DROPSCHEMA:
-    {
-      Job_DropSchema* pJobDropSchema = _pJob_DropSchema(pJobPtr);
-      delete pJobDropSchema;
       break;
     }
    
@@ -307,11 +314,46 @@ void Task::vJobDelete(MP_Task mpTask)
       delete pJobCreateTable;
       break;
     }
+     
+    case CN_JOB_CREATETENANT:
+    {
+      Job_CreateTenant* pJobCreateTenant = _pJob_CreateTenant(pJobPtr);
+      delete pJobCreateTenant;
+      break;
+    }
+      
+    case CN_JOB_DROPCATALOG:
+    {
+      Job_DropCatalog* pJobDropCatalog = _pJob_DropCatalog(pJobPtr);
+      delete pJobDropCatalog;
+      break;
+    }
+      
+    case CN_JOB_DROPINDEX:
+    {
+      Job_DropIndex* pJobDropIndex = _pJob_DropIndex(pJobPtr);
+      delete pJobDropIndex;
+      break;
+    }
+      
+    case CN_JOB_DROPSCHEMA:
+    {
+      Job_DropSchema* pJobDropSchema = _pJob_DropSchema(pJobPtr);
+      delete pJobDropSchema;
+      break;
+    }
       
     case CN_JOB_DROPTABLE:
     {
       Job_DropTable* pJobDropTable = _pJob_DropTable(pJobPtr);
       delete pJobDropTable;
+      break;
+    }
+     
+    case CN_JOB_DROPTENANT:
+    {
+      Job_DropTenant* pJobDropTenant = _pJob_DropTenant(pJobPtr);
+      delete pJobDropTenant;
       break;
     }
       
