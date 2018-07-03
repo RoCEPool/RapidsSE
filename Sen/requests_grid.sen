@@ -94,6 +94,19 @@ tp: gettingPartitions
 
   pTask pJob job::distribute
 
+  //wait for job to finish
+
+  //grid::nodes 0
+  //do
+  //  I pJob job.response@ .
+  //loop
+
+  // remove the job from the originator jobs
+  //pJob job.removeOriginator
+
+  // delete the job
+  //pJob job.delete
+
   <OK>
 ;
 
