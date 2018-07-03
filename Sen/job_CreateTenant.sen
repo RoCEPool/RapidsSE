@@ -1,0 +1,31 @@
+/*============================================================================*/
+/* job_CreateTenant.sen -- Job Create Tenant                                  */
+/*============================================================================*/
+
+"job_CreateSchema.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_CreateTenant job                                               */
+/*----------------------------------------------------------------------------*/
+: Job_CreateTenant.execute ( pJob_CreateTenant -- )
+
+  params| pJob_CreateTenant |
+
+  CN_JOB_CREATETenant pJob_CreateTenant object.assertClass
+
+  ddlLock::grabWrite
+
+  pJob_CreateTenant getPathR35
+  dicStack.set
+  pJob_CreateTenant job.objectName@   ( tenantNm )
+  makeTenantR35 ( )     not if "got error" . exit then
+
+  ddlLock::testDrop
+
+  pJob_CreateTenant job.notice
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+

@@ -102,6 +102,28 @@ tp: makingTenant
 ;
 
 /*----------------------------------------------------------------------------*/
+/* make a tenant folder (run by participant)                                  */
+/*----------------------------------------------------------------------------*/
+: makeTenantR35 ( "<tenantNm>" -- true/false )
+
+  tp: makingTenant
+
+  args.tracepoint if
+    dup "MAKING TENANT " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
+  then
+
+  dup ( "<tenantNm>" "<tenantNm>" )
+
+  :tenant ( "<tenantNm>" ^tenant )
+
+  drop ( "<tenantNm>" )
+
+  makeCatalogs ( )
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* remove a tenant folder                                                     */
 /*----------------------------------------------------------------------------*/
 : removeTenant allParticipants 1 checkResult ( "<tenantNm>" -- true n# true )
@@ -116,6 +138,23 @@ tp: removetenant
 
   true <SUCCESS_RESULT>
 ;
+
+/*----------------------------------------------------------------------------*/
+/* remove a tenant folder                                                     */
+/*----------------------------------------------------------------------------*/
+: removeTenantR35 ( "<tenantNm>" -- true/false )
+
+  tp: removetenant
+
+  args.tracepoint if
+    dup "REMOVING TENANT " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
+  then
+
+  :forget ( )
+
+  true
+;
+
 
 /*============================================================================*/
 /* end                                                                        */

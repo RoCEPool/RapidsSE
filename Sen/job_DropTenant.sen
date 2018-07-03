@@ -1,0 +1,31 @@
+/*============================================================================*/
+/* job_DropTenant.sen -- Job Drop Tenant                                      */
+/*============================================================================*/
+
+"job_DropTenant.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* execute job_DropTenant job                                                 */
+/*----------------------------------------------------------------------------*/
+: Job_DropTenant.execute ( pJob_DropTenant -- )
+
+  params| pJob_DropTenant |
+
+  CN_JOB_DROPTENANT pJob_DropTenant object.assertClass
+
+  ddlLock::grabWrite
+
+  pJob_DropTenant getPathR35
+  dicStack.set
+  pJob_DropTenant job.objectName@   ( tenantNm )
+
+  removeTenantR35 ( )  not if "got error" . exit then
+
+  ddlLock::testDrop
+
+  pJob_DropTenant job.notice
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
