@@ -1,0 +1,54 @@
+/*============================================================================*/
+/* job_Sanity.sen -- Job Sanity                                               */
+/*============================================================================*/
+
+"job_Sanity.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_Sanity job                                                     */
+/*----------------------------------------------------------------------------*/
+: Job_Sanity.execute ( pJob_Sanity -- str t/f )
+
+  params| pJob_Sanity |
+  0 0 locals| iSize iPartitions |
+
+  CN_JOB_SANITY pJob_Sanity object.assertClass
+
+  "GETTING SPACE on NODE " grid::thisNode@ >str str.cat .
+
+  // get the node size of originating node from the job
+  pJob_Sanity job.regionSize@ to iSize
+
+  // get the no of partitions of originating node from the job
+  pJob_Sanity job.partitions@ to iPartitions
+
+  args.tracepoint if
+    "GETTING PARTITIONS on NODE " grid::thisNode@ >str str.cat .
+  then
+
+  iPartitions node.partitions == not if
+    EC_CLUSTER_PARTITIONS_MISMATCH
+    grid::thisNode@ pJob_Sanity job.error!
+  else
+
+    args.tracepoint if
+      "GETTING SIZE on NODE "grid::thisNode@ >str str.cat .
+    then
+
+    iSize node.size == not if
+      EC_CLUSTER_SIZE_MISMATCH
+      grid::thisNode@ pJob_Sanity job.error!
+    else
+      grid::thisNode@ >str "NODE %v: sanity check passed" str.format
+      grid::thisNode@ pJob_Sanity job.response!
+    then
+
+  then
+
+  pJob_Sanity job.notice
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+

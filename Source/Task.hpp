@@ -847,6 +847,8 @@ namespace Tasks
     static void vJobParticipantErrorStore(MP_Task mpTask);
     static void vJobParticipantResponseFetch(MP_Task mpTask);
     static void vJobParticipantResponseStore(MP_Task mpTask);
+    static void vJobPartitionsFetch(MP_Task mpTask);
+    static void vJobRegionSizeFetch(MP_Task mpTask);
     static void vJobRemoveOriginator(MP_Task mpTask);
     static void vJobRemoveParticipant(MP_Task mpTask);
     static void vJobResponseStore(MP_Task mpTask);

@@ -45,6 +45,8 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.participantError!"_Stz,   &vJobParticipantErrorStore,   false);
   vAddPrimitive("job.participantResponse@"_Stz,&vJobParticipantResponseFetch,false);
   vAddPrimitive("job.participantResponse!"_Stz,&vJobParticipantResponseStore,false);
+  vAddPrimitive("job.partitions@"_Stz,      &vJobPartitionsFetch,false);
+  vAddPrimitive("job.regionSize@"_Stz,      &vJobRegionSizeFetch,false);
   vAddPrimitive("job.removeOriginator"_Stz, &vJobRemoveOriginator, false);
   vAddPrimitive("job.removeParticipant"_Stz,&vJobRemoveParticipant,false);
   vAddPrimitive("job.response@"_Stz,        &vJobResponseFetch,    false);
@@ -310,6 +312,13 @@ void Task::vJobDelete(MP_Task mpTask)
     {
       Job_DropTable* pJobDropTable = _pJob_DropTable(pJobPtr);
       delete pJobDropTable;
+      break;
+    }
+      
+    case CN_JOB_SANITY:
+    {
+      Job_Sanity* pJobSanity = _pJob_Sanity(pJobPtr);
+      delete pJobSanity;
       break;
     }
       
@@ -665,7 +674,7 @@ void Task::vJobParticipantErrorFetch(MP_Task mpTask)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("vJobParticipantErrorFetch@"_Stz);
+    THROW_INVALID_DSTACK("job.participantError@"_Stz);
   
   Job__Executed* pJob__Executed = _pJob__Executed(pJobPtr);
   
@@ -767,6 +776,40 @@ void Task::vJobRemoveParticipant(MP_Task mpTask)
   gpAttachMap->m_pParticipatingJobs->vGrabLock();
   gpAttachMap->m_pParticipatingJobs->vRemoveJob(pJob);
   gpAttachMap->m_pParticipatingJobs->vDropLock();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.partitions@ -- fetch partitions from job_sanity                        */
+/*----------------------------------------------------------------------------*/
+void Task::vJobPartitionsFetch(MP_Task mpTask)
+{
+  ENTRY("vJobParticipantResponseFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.partitions@"_Stz);
+  Job_Sanity* pJob_Sanity = _pJob_Sanity(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushInt(pJob_Sanity->m_iPartitions);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.regionSizeResponse@ -- fetch region size from job_sanity               */
+/*----------------------------------------------------------------------------*/
+void Task::vJobRegionSizeFetch(MP_Task mpTask)
+{
+  ENTRY("vJobRegionSizeFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.regionSize@"_Stz);
+  Job_Sanity* pJob_Sanity = _pJob_Sanity(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushInt(pJob_Sanity->m_iRegionSize);
   
   EXIT();
 }

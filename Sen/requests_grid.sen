@@ -62,6 +62,26 @@ tp: gettingPartitions
 ;
 
 /*----------------------------------------------------------------------------*/
+/* check sanity of the nodes                                                  */
+/*----------------------------------------------------------------------------*/
+: nodeSanityR35_req ( -- <R> )
+
+  0 0 locals| pJob pTask |
+
+  tp: nodeSanityR35_req
+
+  // get the task
+  task::this to pTask
+
+  // get the job from the task
+  pTask task.job@ to pJob
+
+  pTask pJob job::distribute
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
 /* get status of the nodes                                                    */
 /*----------------------------------------------------------------------------*/
 : nodeStatus_req ( -- <R> )

@@ -45,6 +45,7 @@ using namespace JobsModel;
 
 #include "Job_G35.hpp"
 
+#include "Job_Sanity.hpp"
 #include "Job_Space.hpp"
 #include "Job_Status.hpp"
 

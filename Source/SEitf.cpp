@@ -109,11 +109,12 @@ ReqTable SeRequests[] =
  { "mkcatR35"_Stz,       &SEitf::bR35Request,           "createCatalogR35_req"_Stz},
  { "mkschR35"_Stz,       &SEitf::bR35Request,           "createSchemaR35_req"_Stz },
  { "mktblR35"_Stz,       &SEitf::bR35Request,           "createTableR35_req"_Stz  },
- { "mktenR35"_Stz,       &SEitf::bR35Request,           "createTenant_req"_Stz    },
+ { "mktenR35"_Stz,       &SEitf::bR35Request,           "createTenantR35_req"_Stz },
  { "rmcatR35"_Stz,       &SEitf::bR35Request,           "dropCatalogR35_req"_Stz  },
  { "rmschR35"_Stz,       &SEitf::bR35Request,           "dropSchemaR35_req"_Stz   },
  { "rmtblR35"_Stz,       &SEitf::bR35Request,           "dropTableR35_req"_Stz    },
  { "rmcat"_Stz,          &SEitf::bDropCatalog,          "dropTenantR35_req"_Stz   },
+ { "sanityR35"_Stz,      &SEitf::bNodeSanityR35,        "nodeSanityR35_req"_Stz   },
  { "statusR35"_Stz,      &SEitf::bNodeStatusR35,        "nodeStatusR35_req"_Stz   },
  { "spaceR35"_Stz,       &SEitf::bPoolSpaceR35,         "poolSpaceR35_req"_Stz    },
   
@@ -3861,6 +3862,26 @@ bool SEitf::bPoolSpaceR35(TokenVec& xTokenVec, i8 iReqNo)
   m_pJob = new Job_Space(this);
   
   ASSERT(xTokenVec[0]->bSame("spaceR35"_Stz));
+  ASSERT(m_pJob);
+  
+  sRequest = SeRequests[iReqNo].aRequest;
+  
+  return bAppendRequest_R35(sRequest,xTokenVec.bDetachedRequest(),(Job**)&m_pJob);
+}
+
+/*----------------------------------------------------------------------------*/
+/* check node sanity                                                          */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bNodeSanityR35(TokenVec& xTokenVec, i8 iReqNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  // create the job
+  m_pJob = new Job_Sanity(this);
+  
+  ASSERT(xTokenVec[0]->bSame("sanityR35"_Stz));
   ASSERT(m_pJob);
   
   sRequest = SeRequests[iReqNo].aRequest;

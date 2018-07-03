@@ -200,6 +200,7 @@ namespace Interface
     bool bInUseTable(TokenVec& xTokenVec, i8 iReqNo);
     bool bRetTable(TokenVec& xTokenVec, i8 iReqNo);
     bool bNodeSanity(TokenVec& xTokenVec, i8 iReqNo);
+    bool bNodeSanityR35(TokenVec& xTokenVec, i8 iReqNo);
     bool bNodeStatus(TokenVec& xTokenVec, i8 iReqNo);
     bool bNodeStatusR35(TokenVec& xTokenVec, i8 iReqNo);
     bool bDistParallelLoadTable(TokenVec& xTokenVec, i8 iReqNo);
