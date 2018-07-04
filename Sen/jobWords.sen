@@ -17,6 +17,40 @@
   "NOTICE: %v jobId %v executed on node %v" fmt.print
 ;
 
+/*----------------------------------------------------------------------------*/
+/* return from job execution                                                  */
+/*----------------------------------------------------------------------------*/
+: <DONE> ( --  )
+
+  ddlLock::testDrop
+;
+
+/*----------------------------------------------------------------------------*/
+/* return an error response                                                   */
+/*----------------------------------------------------------------------------*/
+: <ERROR_JOB> ( errorCode pJob -- )
+
+  locals| pJob errorCode |
+
+  errorCode grid::thisNode@ pJob job.error!
+
+  ddlLock::testDrop
+;
+
+/*----------------------------------------------------------------------------*/
+/* check system has enough buffers                                            */
+/*----------------------------------------------------------------------------*/
+: checkEnoughBuffersR35
+
+  // return true if enough buffers, others return error code
+  bp::freeBuffers 100 >
+  if
+    true exit
+  else
+    EC_LOW_BUFFERS false
+  then
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
