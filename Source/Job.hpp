@@ -34,6 +34,7 @@ namespace JobsModel
     i8  m_iJobId;              // job id
     eJS m_eState;              // job state
     s32 m_sExecute;            // word to be executed
+    s32 m_sCheckResources;     // check resources word to be executed
     i8  m_iParticipantNode;    // participant node no
     Atomic m_ziAcksRemaining;  // acks remaining
   
