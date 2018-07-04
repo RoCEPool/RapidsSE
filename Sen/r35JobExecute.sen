@@ -30,7 +30,7 @@
   // execute the job's checkResources command
   pJob pJob job.checkResources@ find execute
 
-  // send job__executed back to originating node
+  // send job__begun back to originating node
   pJob job.id@ pJob "Job__Begun::send" find execute
 
 /*
