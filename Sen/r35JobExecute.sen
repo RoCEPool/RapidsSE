@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* r35Execute.sen -- Decode and execute received jobs                         */
+/* r35JobExecute.sen -- Decode and execute received jobs                      */
 /*============================================================================*/
 
-"r35Execute.sen" .verbose
+"r35JobExecute.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* execute/begin a new job                                                    */
@@ -30,6 +30,10 @@
   // execute the job's checkResources command
   pJob pJob job.checkResources@ find execute
 
+  // send job__executed back to originating node
+  pJob job.id@ pJob "Job__Begun::send" find execute
+
+/*
   // new a job__begun
   pJob job.Id@ job.newBegun to pJobBegun
 
@@ -45,6 +49,7 @@
 
   // now delete the begun job
   pJobBegun job.delete
+ */
 ;
 
 /*----------------------------------------------------------------------------*/

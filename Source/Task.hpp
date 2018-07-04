@@ -820,6 +820,8 @@ namespace Tasks
     static void vJobAcksRemaining(MP_Task mpTask);
     static void vJobAddOriginator(MP_Task mpTask);
     static void vJobAddParticipant(MP_Task mpTask);
+    static void vJobBegunErrorFetch(MP_Task mpTask);
+    static void vJobBegunErrorStore(MP_Task mpTask);
     static void vJobCheckResourcesFetch(MP_Task mpTask);
     static void vJobClass(MP_Task mpTask);
     static void vJobColumnCountFetch(MP_Task mpTask);
@@ -832,6 +834,10 @@ namespace Tasks
     static void vJobErrorStore(MP_Task mpTask);
     static void vJobErrorFetch(MP_Task mpTask);
     static void vJobExecuteFetch(MP_Task mpTask);
+    static void vJobExecutedErrorFetch(MP_Task mpTask);
+    static void vJobExecutedErrorStore(MP_Task mpTask);
+    static void vJobExecutedResponseFetch(MP_Task mpTask);
+    static void vJobExecutedResponseStore(MP_Task mpTask);
     static void vJobFindOriginator(MP_Task mpTask);
     static void vJobFindParticipant(MP_Task mpTask);    
     static void vJobIdFetch(MP_Task mpTask);
@@ -844,10 +850,6 @@ namespace Tasks
     static void vJobOriginatorFetch(MP_Task mpTask);
     static void vJobParticipantFetch(MP_Task mpTask);
     static void vJobParticipantStore(MP_Task mpTask);
-    static void vJobParticipantErrorFetch(MP_Task mpTask);
-    static void vJobParticipantErrorStore(MP_Task mpTask);
-    static void vJobParticipantResponseFetch(MP_Task mpTask);
-    static void vJobParticipantResponseStore(MP_Task mpTask);
     static void vJobPartitionsFetch(MP_Task mpTask);
     static void vJobRegionSizeFetch(MP_Task mpTask);
     static void vJobRemoveOriginator(MP_Task mpTask);

@@ -189,10 +189,10 @@
 
   error EC_NONE == if
     // get the response from participant job and set it in executed job
-    grid::thisNode@  pJobParticipant job.response@ pJob__Executed job.participantResponse!
+    grid::thisNode@  pJobParticipant job.response@ pJob__Executed jobExecuted.response!
   else
      // set error in executed job
-     error pJob__Executed job.participantError!
+     error pJob__Executed jobExecuted.error!
   then
 
   // move this task through send state/queue
@@ -225,14 +225,14 @@
   iJobId job.findOriginator to pJob
 
   // get the error code from job__executed
-  pJob__Executed job.participantError@ to error
+  pJob__Executed jobExecuted.error@ to error
 
   // set the error code in pJob
   error iParticipantNode pJob job.error!
 
   error EC_NONE == if
     // get the response string from job__executed
-    pJob__Executed job.participantResponse@ to sResponse
+    pJob__Executed jobExecuted.response@ to sResponse
 
     // set the error code in pJob
     sResponse iParticipantNode pJob job.response!
@@ -315,6 +315,42 @@
 ////////////////////////////////////////////////////////////////////////////////
 //                             Job__Begun                                     //
 ////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* send Job__Begun back to originating node                                   */
+/*----------------------------------------------------------------------------*/
+: Job__Begun::send ( iJobId pJobParticipant -- )
+
+  params| pJobParticipant iJobId |
+
+  0 0 0 locals| pJob pJob__Begun error |
+
+  // new a temporary Job__Executed
+  iJobId job.newBegun to pJob__Begun
+
+  // set the originator node as the send target node
+  iJobId job::originator@ grid::node task::this task.sendNode!
+
+  // get error if any
+  grid::thisNode@ pJobParticipant job.error@ to error
+
+  error EC_NONE != if
+    // set error in executed job
+    error pJob__Begun jobBegun.error!
+  then
+
+  // move this task through send state/queue
+  task.send
+
+  // pack Job__Executed into a valset
+  pJob__Begun 1 >valset
+
+  // send Job__Executed
+  >socketR35
+
+  // delete the Job__Executed
+  pJob__Begun job.delete
+;
 
 /*----------------------------------------------------------------------------*/
 /* execute Job__Begun on originating node                                     */
