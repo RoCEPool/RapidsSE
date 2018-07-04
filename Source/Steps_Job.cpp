@@ -18,6 +18,7 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.acksRemaining!"_Stz,   &vJobAcksRemaining,    false);
   vAddPrimitive("job.addOriginator"_Stz,    &vJobAddOriginator,    false);
   vAddPrimitive("job.addParticipant"_Stz,   &vJobAddParticipant,   false);
+  vAddPrimitive("job.checkResources@"_Stz,  &vJobCheckResourcesFetch,false);
   vAddPrimitive("job.class"_Stz,            &vJobClass,            false);
   vAddPrimitive("job.columnCount@"_Stz,     &vJobColumnCountFetch, false);
   vAddPrimitive("job.columnIsPartKey"_Stz,  &vJobColumnIsPartKey,  false);
@@ -110,6 +111,26 @@ void Task::vJobAddParticipant(MP_Task mpTask)
   gpAttachMap->m_pParticipatingJobs->vGrabLock();
   gpAttachMap->m_pParticipatingJobs->vAddJob(pJob);
   gpAttachMap->m_pParticipatingJobs->vDropLock();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.checkResources@ -- fetch the word to be executed for checking resources*/
+/*----------------------------------------------------------------------------*/
+void Task::vJobCheckResourcesFetch(MP_Task mpTask)
+{
+  ENTRY("vJobCheckResourcesFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.checkResources@"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  s32 sExecute;
+  sExecute = pJob->m_sCheckResources;
+  
+  mpTask->m_pDataStack->vPushS32(sExecute);
   
   EXIT();
 }
