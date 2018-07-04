@@ -20,6 +20,8 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.addParticipant"_Stz,   &vJobAddParticipant,   false);
   vAddPrimitive("jobBegun.error@"_Stz,      &vJobBegunErrorFetch,  false);
   vAddPrimitive("jobBegun.error!"_Stz,      &vJobBegunErrorStore,  false);
+  vAddPrimitive("jobCancelled.error@"_Stz,  &vJobCancelledErrorFetch, false);
+  vAddPrimitive("jobCancelled.error!"_Stz,  &vJobCancelledErrorStore, false);
   vAddPrimitive("job.checkResources@"_Stz,  &vJobCheckResourcesFetch,false);
   vAddPrimitive("job.class"_Stz,            &vJobClass,            false);
   vAddPrimitive("job.columnCount@"_Stz,     &vJobColumnCountFetch, false);
@@ -40,6 +42,8 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.findParticipant"_Stz,  &vJobFindParticipant,  false);
   vAddPrimitive("job.id@"_Stz,              &vJobIdFetch,          false);
   vAddPrimitive("job.newBegun"_Stz,         &vJobNewBegun,         false);
+  vAddPrimitive("job.newCancel"_Stz,        &vJobNewCancel,        false);
+  vAddPrimitive("job.newCancelled"_Stz,     &vJobNewCancelled,     false);
   vAddPrimitive("job.newEnd"_Stz,           &vJobNewEnd,           false);
   vAddPrimitive("job.newEnded"_Stz,         &vJobNewEnded,         false);
   vAddPrimitive("job.newExecute"_Stz,       &vJobNewExecute,       false);
@@ -152,6 +156,45 @@ void Task::vJobBegunErrorStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("jobBegun.error!"_Stz);
   
   pJob__Begun->m_eErrorCode = (eEC)iErrorCode;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* jobCancelled.error@ -- fetch job error of participant from job__cancelled  */
+/*----------------------------------------------------------------------------*/
+void Task::vJobCancelledErrorFetch(MP_Task mpTask)
+{
+  ENTRY("vJobCancelledErrorFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("jobCancelled.error@"_Stz);
+  
+  Job__Cancelled* pJob__Cancelled = _pJob__Cancelled(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushInt(pJob__Cancelled->m_eErrorCode);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* jobCancelled.error! -- store job error of participant in job__cancelled    */
+/*----------------------------------------------------------------------------*/
+void Task::vJobCancelledErrorStore(MP_Task mpTask)
+{
+  ENTRY("vJobCancelledErrorStore"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("jobCancelled.error!"_Stz);
+  Job__Cancelled* pJob__Cancelled = _pJob__Cancelled(pJobPtr);
+  
+  i8 iErrorCode;
+  if ( ! mpTask->m_pDataStack->bPop(iErrorCode) )
+    THROW_INVALID_DSTACK("jobCancelled.error!"_Stz);
+  
+  pJob__Cancelled->m_eErrorCode = (eEC)iErrorCode;
   
   EXIT();
 }
@@ -704,6 +747,46 @@ void Task::vJobNewBegun(MP_Task mpTask)
   pJobBegun->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
   
   mpTask->m_pDataStack->vPushObject(pJobBegun);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.newCancel -- new a job__cancel for this job                            */
+/*----------------------------------------------------------------------------*/
+void Task::vJobNewCancel(MP_Task mpTask)
+{
+  ENTRY("vJobNewCancel"_Stz);
+  
+  i8 iJobId;
+  if ( ! mpTask->m_pDataStack->bPop(iJobId) )
+    THROW_INVALID_DSTACK("job.newCancel"_Stz);
+  
+  Job* pJobCancel = new Job__Cancel;
+  pJobCancel->m_iJobId = iJobId;
+  pJobCancel->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
+  
+  mpTask->m_pDataStack->vPushObject(pJobCancel);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.newCancelled -- new a job__cancelled for this job                      */
+/*----------------------------------------------------------------------------*/
+void Task::vJobNewCancelled(MP_Task mpTask)
+{
+  ENTRY("vJobNewCancelled"_Stz);
+  
+  i8 iJobId;
+  if ( ! mpTask->m_pDataStack->bPop(iJobId) )
+    THROW_INVALID_DSTACK("job.newCancelled"_Stz);
+  
+  Job* pJobCancelled = new Job__Cancelled;
+  pJobCancelled->m_iJobId = iJobId;
+  pJobCancelled->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
+  
+  mpTask->m_pDataStack->vPushObject(pJobCancelled);
   
   EXIT();
 }
