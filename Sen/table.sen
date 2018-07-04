@@ -168,6 +168,14 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* check word is not a table                                                  */
+/*----------------------------------------------------------------------------*/
+: checkIsNotTableR35 ( "<wordNm" -- t|f )
+  findInCurrent not if true exit then
+  EC_TABLE_EXISTS false
+;
+
+/*----------------------------------------------------------------------------*/
 /* check there is a table folder                                              */
 /*----------------------------------------------------------------------------*/
 : checkIsTableFolder  ( "<tableName>" -- )
@@ -250,6 +258,17 @@
 
   checkInTables   not if false exit then
   checkIsNotTable not if false exit then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* check if word is a makeable table                                          */
+/*----------------------------------------------------------------------------*/
+: checkMakeTableR35 ( "<tableNm>" -- true | errorCode false )
+
+  checkInTables   not if false exit then
+  checkIsNotTableR35 not if false exit then
 
   true
 ;
