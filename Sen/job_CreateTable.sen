@@ -5,6 +5,36 @@
 "job_CreateTable.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* execute Job_CreateTable job check resources                                */
+/*----------------------------------------------------------------------------*/
+: Job_CreateTable.checkResources ( pJob_CreateTable -- )
+
+  locals| pJob_CreateTable  |
+
+  "checkResources received" .
+  tp: Job_CreateTable.checkResources
+
+  ddlLock::grabWrite
+
+  //----------------------------------------------------------------------------
+  // set dictionary stack
+  pJob_CreateTable getPathR35
+  dicStack.set
+
+  // check if we have enough buffers
+  checkEnoughBuffersR35 not if pJob_CreateTable <ERROR_JOB> exit then
+
+  // get the table name from the job
+  pJob_CreateTable job.objectName@
+  "checking table" .
+  checkMakeTableR35 not if pJob_CreateTable <ERROR_JOB> exit then
+
+  "checkResources executed" .
+
+  <DONE>
+;
+
+/*----------------------------------------------------------------------------*/
 /* execute Job_CreateTable job                                                */
 /*----------------------------------------------------------------------------*/
 : Job_CreateTable.execute ( pJob_CreateTable -- )
@@ -13,10 +43,14 @@
 
   0 0 locals| pTable sTableNm |
 
+  tp: Job_CreateTable.execute
+
+  ddlLock::grabWrite
+
   CN_JOB_CREATETABLE pJob_CreateTable object.assertClass
   pJob_CreateTable job.objectName@ to sTableNm
 
-  ddlLock::grabWrite
+  //ddlLock::grabWrite
 
   //----------------------------------------------------------------------------
   // set dictionary stack
@@ -69,11 +103,12 @@
   // return table reference
   pTable table.retRef
 
-  ddlLock::testDrop
+  //ddlLock::testDrop
 
   assertInTables
   pJob_CreateTable job.notice
 
+  <DONE>
 ;
 
 /*============================================================================*/

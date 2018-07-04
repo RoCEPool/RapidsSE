@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : job.beginExecute ( pJob -- )
 
-  params| pJob |
+  locals| pJob |
 
   0 locals| pJobBegun |
 
@@ -26,6 +26,9 @@
 
   // change state of job to begun
   //pJob job.begun
+
+  // execute the job's checkResources command
+  pJob pJob job.checkResources@ find execute
 
   // new a job__begun
   pJob job.Id@ job.newBegun to pJobBegun
@@ -85,6 +88,7 @@
 
     // default case
     pJob job.beginExecute
+
   endcase
 ;
 

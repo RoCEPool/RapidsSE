@@ -329,13 +329,11 @@ ddlLock::grabRead
 /*----------------------------------------------------------------------------*/
 /* create a table                                                             */
 /*----------------------------------------------------------------------------*/
-: createTableR35_req ( "<tableNm>" -- <R> )
+: createTableR35_req (  -- <R> )
 
   0 0 locals| pJob pTask |
 
   tp: createTable
-
-  //ddlLock::grabWrite
 
   // get the task
   task::this to pTask
@@ -344,12 +342,12 @@ ddlLock::grabRead
   pTask task.job@ to pJob
 
   // check if we have enough buffers
-  checkEnoughBuffers not if <NIP+ERROR> exit then
+  //checkEnoughBuffers not if <NIP+ERROR> exit then
 
   // get the table name from the job
-  pJob job.objectName@
-  checkMakeTable    not if <NIP+ERROR> exit then
-  drop // tableNm on stack
+  //pJob job.objectName@
+  //checkMakeTable    not if <NIP+ERROR> exit then
+  //drop // tableNm on stack
 
   pTask pJob job::distribute
 
