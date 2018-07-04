@@ -314,6 +314,20 @@ void Task::vJobDelete(MP_Task mpTask)
       break;
     }
     
+    case CN_JOB__CANCEL:
+    {
+      Job__Cancel* pJobCancel = _pJob__Cancel(pJobPtr);
+      delete pJobCancel;
+      break;
+    }
+      
+    case CN_JOB__CANCELLED:
+    {
+      Job__Cancelled* pJobCancelled = _pJob__Cancelled(pJobPtr);
+      delete pJobCancelled;
+      break;
+    }
+      
     case CN_JOB__END:
     {
       Job__End* pJobEnd = _pJob__End(pJobPtr);

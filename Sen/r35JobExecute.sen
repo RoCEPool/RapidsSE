@@ -85,11 +85,13 @@
   eJobClass case
 
     // specific cases
-    CN_JOB__BEGUN    of pJob job.genericExecute endof
-    CN_JOB__END      of pJob job.genericExecute endof
-    CN_JOB__ENDED    of pJob job.genericExecute endof
-    CN_JOB__EXECUTE  of pJob job.genericExecute endof
-    CN_JOB__EXECUTED of pJob job.genericExecute endof
+    CN_JOB__BEGUN     of pJob job.genericExecute endof
+    CN_JOB__CANCEL    of pJob job.genericExecute endof
+    CN_JOB__CANCELLED of pJob job.genericExecute endof
+    CN_JOB__END       of pJob job.genericExecute endof
+    CN_JOB__ENDED     of pJob job.genericExecute endof
+    CN_JOB__EXECUTE   of pJob job.genericExecute endof
+    CN_JOB__EXECUTED  of pJob job.genericExecute endof
 
     // default case
     pJob job.beginExecute

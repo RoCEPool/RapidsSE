@@ -28,6 +28,8 @@ using namespace JobsModel;
 #include "JobResult.hpp"
 
 #include "Job__Begun.hpp"
+#include "Job__Cancel.hpp"
+#include "Job__Cancelled.hpp"
 #include "Job__End.hpp"
 #include "Job__Ended.hpp"
 #include "Job__Execute.hpp"

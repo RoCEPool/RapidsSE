@@ -87,6 +87,8 @@ enum eCN : u2 // Class Number
     /* 58 */ CN_ITEMBUFFER,
     
     /*    */ CN_JOB__BEGUN,
+    /*    */ CN_JOB__CANCEL,
+    /*    */ CN_JOB__CANCELLED,
     /*    */ CN_JOB__END,
     /*    */ CN_JOB__ENDED,
     /*    */ CN_JOB__EXECUTE,
@@ -305,6 +307,8 @@ enum eCN : u2 // Class Number
     /* 58 */ "ITEMBUFFER"_Stz,         // CN_ITEMBUFFER
     
     /*    */ "JOB__BEGUN"_Stz,         // CN_JOB__BEGUN
+    /*    */ "JOB__CANCEL"_Stz,        // CN_JOB__CANCEL
+    /*    */ "JOB__CANCELLED"_Stz,     // CN_JOB__CANCELLED
     /*    */ "JOB__END"_Stz,           // CN_JOB__END
     /*    */ "JOB__ENDED"_Stz,         // CN_JOB__ENDED
     /*    */ "JOB__EXECUTE"_Stz,       // CN_JOB__EXECUTE

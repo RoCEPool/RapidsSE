@@ -580,6 +580,8 @@ void Task::vAddConstants(void)
   /*    */ //vAddConstant("CN_INDEXDEFN"_Stz,    CN_INDEXDEFN);
 
   /*    */ vAddConstant("CN_JOB__BEGUN"_Stz,         CN_JOB__BEGUN);
+  /*    */ vAddConstant("CN_JOB__CANCEL"_Stz,        CN_JOB__CANCEL);
+  /*    */ vAddConstant("CN_JOB__CANCELLED"_Stz,     CN_JOB__CANCELLED);
   /*    */ vAddConstant("CN_JOB__END"_Stz,           CN_JOB__END);
   /*    */ vAddConstant("CN_JOB__ENDED"_Stz,         CN_JOB__ENDED);
   /*    */ vAddConstant("CN_JOB__EXECUTE"_Stz,       CN_JOB__EXECUTE);

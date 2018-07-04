@@ -86,6 +86,8 @@ pDUMPFUN *gpDump[]
   /* 57 */ &Dump::vInvalid,         // CN_ITEM
   /* 58 */ &Dump::vInvalid,         // CN_ITEMBUFFER
   /*    */ &Dump::vDummy,           // CN_JOB__BEGUN
+  /*    */ &Dump::vDummy,           // CN_JOB__CANCEL
+  /*    */ &Dump::vDummy,           // CN_JOB__CANCELLED
   /*    */ &Dump::vDummy,           // CN_JOB__END
   /*    */ &Dump::vDummy,           // CN_JOB__ENDED
   /*    */ &Dump::vDummy,           // CN_JOB__EXECUTE
@@ -304,6 +306,8 @@ i8 giClassSize[]
   /* 58 */ sizeof(ItemBuffer),         // CN_ITEMBUFFER
   
   /*    */ sizeof(Job__Begun),         // CN_JOB__BEGUN
+  /*    */ sizeof(Job__Cancel),        // CN_JOB__CANCEL
+  /*    */ sizeof(Job__Cancelled),     // CN_JOB__CANCELLED
   /*    */ sizeof(Job__End),           // CN_JOB__END
   /*    */ sizeof(Job__Ended),         // CN_JOB__ENDED
   /*    */ sizeof(Job__Execute),       // CN_JOB__EXECUTE
@@ -522,6 +526,8 @@ eHT geWhichHeap[]
   /* 58 */ HT_INVALID,           // CN_ITEMBUFFER
 
   /*    */ HT_TRANSIENT_SMALL,   // CN_JOB__BEGUN
+  /*    */ HT_TRANSIENT_SMALL,   // CN_JOB__CANCEL
+  /*    */ HT_TRANSIENT_SMALL,   // CN_JOB__CANCELLED
   /*    */ HT_TRANSIENT_SMALL,   // CN_JOB__END
   /*    */ HT_TRANSIENT_SMALL,   // CN_JOB__ENDED
   /*    */ HT_TRANSIENT_SMALL,   // CN_JOB__EXECUTE
