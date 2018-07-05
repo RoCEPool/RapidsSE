@@ -26,10 +26,20 @@
 
   // get the table name from the job
   pJob_CreateTable job.objectName@
-  "checking table" .
+
   checkMakeTableR35 not if pJob_CreateTable <ERROR_JOB> exit then
 
-  "checkResources executed" .
+  <DONE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_CreateTable job release resources                              */
+/*----------------------------------------------------------------------------*/
+: Job_CreateTable.relResources ( pJob_CreateTable -- )
+
+  locals| pJob_CreateTable  |
+
+  "releaseResources received" .
 
   <DONE>
 ;

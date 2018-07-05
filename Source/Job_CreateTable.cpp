@@ -63,6 +63,7 @@ Job_CreateTable::Job_CreateTable(Interface::SEitf* pSEitf)
   
   m_sExecute = "Job_CreateTable.execute"_Stz;
   m_sCheckResources = "Job_CreateTable.checkResources"_Stz;
+  m_sReleaseResources = "Job_CreateTable.relResources"_Stz;
   
   m_eTableType = TT_NONE;
   m_iColumns   = 0;

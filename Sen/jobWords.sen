@@ -32,6 +32,7 @@
 
   locals| pJob errorCode |
 
+  errorCode error.msg "Setting error '%v' in job" str.format .
   errorCode grid::thisNode@ pJob job.error!
 
   ddlLock::testDrop

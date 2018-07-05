@@ -54,6 +54,7 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.participant!"_Stz,     &vJobParticipantStore, false);
   vAddPrimitive("job.partitions@"_Stz,      &vJobPartitionsFetch,false);
   vAddPrimitive("job.regionSize@"_Stz,      &vJobRegionSizeFetch,false);
+  vAddPrimitive("job.releaseResources@"_Stz,  &vJobReleaseResourcesFetch,false);
   vAddPrimitive("job.removeOriginator"_Stz, &vJobRemoveOriginator, false);
   vAddPrimitive("job.removeParticipant"_Stz,&vJobRemoveParticipant,false);
   vAddPrimitive("job.response@"_Stz,        &vJobResponseFetch,    false);
@@ -943,6 +944,25 @@ void Task::vJobParticipantStore(MP_Task mpTask)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* job.releaseResources@ -- fetch the word to execute for releasing resources */
+/*----------------------------------------------------------------------------*/
+void Task::vJobReleaseResourcesFetch(MP_Task mpTask)
+{
+  ENTRY("vJobReleaseResourcesFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.releaseResources@"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  s32 sExecute;
+  sExecute = pJob->m_sReleaseResources;
+  
+  mpTask->m_pDataStack->vPushS32(sExecute);
+  
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /* job.removeOriginator -- remove job from originator job set                 */

@@ -11,7 +11,7 @@
 
   locals| pJob |
 
-  0 locals| pJobBegun |
+  0 0 locals| sCheckResources pJobBegun |
 
     pJob object.class@ class::name
     grid::thisNode@
@@ -28,7 +28,10 @@
   //pJob job.begun
 
   // execute the job's checkResources command
-  //pJob pJob job.checkResources@ find execute
+  pJob job.checkResources@ to sCheckResources
+  sCheckResources "" str.equal not if 
+    pJob sCheckResources find execute
+  then
 
   // send job__begun back to originating node
   pJob job.id@ pJob "Job__Begun::send" find execute

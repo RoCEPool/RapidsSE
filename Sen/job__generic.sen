@@ -8,7 +8,7 @@
 //                              Job                                           //
 ////////////////////////////////////////////////////////////////////////////////
 /*----------------------------------------------------------------------------*/
-/* execute Job__Ended on originating node                                     */
+/* distribute the job to all the nodes                                        */
 /*----------------------------------------------------------------------------*/
 : Job::distribute ( ^task ^job -- )
 
@@ -36,7 +36,6 @@
   loop
 ;
 
-
 ////////////////////////////////////////////////////////////////////////////////
 //                              Job__Ended                                    //
 ////////////////////////////////////////////////////////////////////////////////
@@ -60,6 +59,12 @@
   iAcksRemaining 0 != if exit then
 
   "received Job__Ended from all nodes" .
+
+  // all the lines below get moved to nodeStatusR35_req
+  grid::nodes 0
+  do
+    I pJob job.error@ error.msg .
+  loop
 
   // somehow notify the request task that job is ended
   // all the lines below get moved to nodeStatusR35_req
@@ -149,21 +154,159 @@
   // send Job__End to all nodes
   grid::nodes 0
   do
+  // set which node this task will to send to
+  I grid::node task::this task.sendNode!
+
+  // move this task through send state/queue
+  task.send
+
+  // pack Job__End into a valset
+  pJob__End 1 >valset
+
+  // send the end job
+  >socketR35
+  loop
+
+  // now delete the end job
+  pJob__End job.delete
+;
+
+
+////////////////////////////////////////////////////////////////////////////////
+//                             Job__Cancelled                                 //
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* send Job__Cancelled back to originating node                                */
+/*----------------------------------------------------------------------------*/
+: Job__Cancelled::send ( iJobId pJobParticipant -- )
+
+  params| pJobParticipant iJobId |
+
+  0 0 0 locals| pJob pJob__Cancelled error |
+
+  // new a temporary Job__Cancelled
+  iJobId job.newCancelled to pJob__Cancelled
+
+  // set the originator node as the send target node
+  iJobId job::originator@ grid::node task::this task.sendNode!
+
+  grid::thisNode@ pJobParticipant job.error@ to error
+
+  error EC_NONE != if
+  // set error in executed job
+  error pJob__Cancelled jobCancelled.error!
+  then
+
+  // move this task through send state/queue
+  task.send
+
+  // pack Job__Cancelled into a valset
+  pJob__Cancelled 1 >valset
+
+  // send Job__Executed
+  >socketR35
+
+  // delete the pJob__Cancelled
+  pJob__Cancelled job.delete
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job__Cancelled on originating node                                  */
+/*----------------------------------------------------------------------------*/
+: Job__Cancelled::execute ( iJobId pJob__Cancelled -- )
+
+  params| pJob__Cancelled iJobId |
+
+  0 0 0 0 0 locals| pJobParticipant iParticipantNode error pJob iAcksRemaining |
+
+  // get participant node that executed the job
+  iJobId job.findParticipant to pJobParticipant
+  pJob__Cancelled job.participant@ to iParticipantNode
+
+  // find the job in the originator jobs
+  iJobId job.findOriginator to pJob
+
+  // get the error code from job__executed
+  pJob__Cancelled jobCancelled.error@ to error
+
+  // set the error code in pJob
+  error iParticipantNode pJob job.error!
+
+  // decrement the acks remaining
+  pJob job.decAcksRemaining to iAcksRemaining
+
+  // if there are acks remaining just exit
+  iAcksRemaining 0 != if exit then
+
+  "received Job__Executed from all nodes" .
+
+  pJob Job__End::distribute
+;
+
+////////////////////////////////////////////////////////////////////////////////
+//                             Job__Cancel                                    //
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* distribute Job__Cancel to all participants                                 */
+/*----------------------------------------------------------------------------*/
+: Job__Cancel::distribute ( pJob -- )
+
+  //
+  // where:  On the originator node.
+  //
+
+  params| pJob |
+
+  0 locals| pJob__Cancel |
+
+  // set the no of acks expected in originator job
+  grid::nodes pJob job.acksRemaining!
+
+  // create a new Job__Cancel
+  pJob job.id@ job.newCancel to pJob__Cancel
+
+  // send job__execute to all nodes
+  grid::nodes 0
+  do
     // set which node this task will to send to
     I grid::node task::this task.sendNode!
 
     // move this task through send state/queue
     task.send
 
-    // pack Job__End into a valset
-    pJob__End 1 >valset
+    // pack Job__Cancel into a valset
+    pJob__Cancel 1 >valset
 
-    // send the end job
+    // send the execute job
     >socketR35
   loop
 
-  // now delete the end job
-  pJob__End job.delete
+  // now delete the cancel job
+  pJob__Cancel job.delete
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job__Cancel on participating node                                 */
+/*----------------------------------------------------------------------------*/
+: Job__Cancel::execute ( iJobId pJob__Execute -- )
+
+  params| pJob__Cancel iJobId |
+
+  0 0 0 locals| sReleaseResources pJob pJobCancelled |
+
+  // find the job in the participating jobs
+  iJobId job.findParticipant to pJob
+
+  // execute the job's releaseResources command
+  pJob job.releaseResources@ to sReleaseResources
+  sReleaseResources "" str.equal not if 
+    pJob sReleaseResources find execute
+  then
+
+  // send job__executed back to originating node
+  iJobId pJob Job__Cancelled::send
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -334,6 +477,8 @@
   // get error if any
   grid::thisNode@ pJobParticipant job.error@ to error
 
+  error error.msg "Setting error %v in Job__Begun" str.format .
+
   error EC_NONE != if
     // set error in executed job
     error pJob__Begun jobBegun.error!
@@ -368,13 +513,23 @@
   //         3) if all acks received distribute Job_Execute
   //
 
-  params| Job__Begun iJobId |
+  params| pJob__Begun iJobId |
 
   0 locals| pJob  |
-  0 locals| iAcksRemaining |
+  0 0 0 0 locals| iAcksRemaining error pJobParticipant iParticipantNode |
+
+  // get participant node that executed the job
+  iJobId job.findParticipant to pJobParticipant
+  pJob__Begun job.participant@ to iParticipantNode
 
   // find the job in the originator jobs
   iJobId job.findOriginator to pJob
+
+  // get the error code from job__executed
+  pJob__Begun jobBegun.error@ to error
+
+  // set the error code in pJob
+  error iParticipantNode pJob job.error!
 
   // decrement the acks remaining
   pJob job.decAcksRemaining to iAcksRemaining
@@ -386,6 +541,16 @@
 
   // received job__begun from all nodes
   // this is the decider job.
+
+  // check if any node returned an error
+  grid::nodes 0 do
+    I pJob job.error@ EC_NONE != if
+      // distribute Job__Cancel to all participants
+      pJob Job__Cancel::distribute
+      unloop
+      exit
+    then
+  loop
 
   // distribute Job__Execute to all participants
   pJob Job__Execute::distribute
