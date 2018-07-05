@@ -261,6 +261,13 @@ void vRunPrompt(void)
     SePrompt* pSePrompt = new SePrompt();
     pSePrompt->vLoop();
     delete pSePrompt;
+    
+    return;
+  }
+  
+  if (gxArguments.m_bPromptR35) {
+    vTrace("\n\n se R35> \n"_Stz);
+    exit(0);
   }
 }
 

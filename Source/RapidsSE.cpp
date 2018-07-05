@@ -82,7 +82,9 @@ void RapidsSE::vExecuteCmdLine(void)
         vRunDocol();
         vWaitFlag();
       }
-      else if (gxArguments.m_bPrompt || gxArguments.m_bScript) {
+      else if (gxArguments.m_bPrompt
+               || gxArguments.m_bPromptR35
+               || gxArguments.m_bScript) {
         ASSERT(gpBufferPool);
         return;
       }
