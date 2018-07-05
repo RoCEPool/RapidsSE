@@ -10,9 +10,7 @@
 char* StrLib::wAllocate(i8 nBytes)
 {
   char* w = static_cast<char*>(malloc(nBytes));
-  
   *w = '\0';
-  
   return w;
 }
 
