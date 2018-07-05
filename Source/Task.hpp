@@ -142,27 +142,28 @@ namespace Tasks
     
     static const i8 C_TRACE_STEPS    = 0x1;
     static const i8 C_TRACE_ROUTINES = 0x2;
+  
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // keep
 
-    Lock    m_xLock;       // lock for this task
-    i8      m_iTaskNo;     // task
-    i8      m_iTaskOrderNo;// task order no. (ready queue)
-    eTK     m_eTaskKind;   // task kind
-    eAC     m_eActorModel; // actor model
-    i8      m_iPartition;  // which partition if a partition task
-    s32     m_sName;       // task name
-    s32     m_sComment;    // comment
-    eTS     m_eState;      // state (running, sleeping, ...)
-    eQR     m_eQueue;      // which queue the task is in
-    i8      m_iTxId;       // transaction id
-    i8      m_iWakeAt;     // time at which to wake this tx
-    Task*   m_pParentTask; // parent of this task
-    Atomic  m_zAcks;       // number of acks still waiting for
+    i8      m_iTaskNo;      // task
+    bool    m_bDestructorTrace;
+    bool    m_bR35model;    // task is running R3.5 model
+    Job*    m_pJob;         // the job for this task
+    Task*   m_pParentTask;  // parent of this task
+
+    i8      m_iTaskOrderNo; // task order no. (ready queue)
+    i8      m_iPartition;   // which partition if a partition task
+    eTS     m_eState;       // state (running, sleeping, ...)
+    eQR     m_eQueue;       // which queue the task is in
+    Atomic  m_zAcks;        // number of acks still waiting for
+    Since   m_xWakeupTime;  // wakeup time
+    i8      m_iDdlLocked;   // ? has the ddl lock?
+ 
+    Socket* m_pSocketR35;       // R35 socket associated with task
+
     Threads::Thread* m_pThread; // current thread
 
-    TaskSet* m_pTaskSet;   // which set this task belongs to
-    NP_Task m_npNextInSet; // next task in set
-    NP_Task m_npPrevInSet; // prev task in set
-    
     Stack*  m_pDataStack;   // data stack
     Stack*  m_pReturnStack; // return stack
     Stack*  m_pAuxStack;    // auxiliary stack
@@ -172,10 +173,6 @@ namespace Tasks
     RegFrame* m_pLocalsFrame; // local register frame chain
     RegFrame* m_pOpFrame;     // op frame chain
 
-    ValSet*    m_pRequest;   // request as a value set
-    s256       m_sLambda;    // lambda input
-    Tokeniser* m_pTokeniser; // input stream tokenizer
-    
     union {
       Cell*   m_pCell;      // points to cell inside a word
       Value*  m_pValue;     // points to an embedded value within a word
@@ -183,8 +180,7 @@ namespace Tasks
       //Header* m_pHeader;    // points to an embbeded header within a word
     } IP;
     TaskStep* m_pEntryCell; // points to does arg (entry cell of word)
-    
-    
+  
     Cell* m_pResetIP;
     Cell* m_pBeginIP;
     Word* m_pWord;
@@ -198,24 +194,44 @@ namespace Tasks
     s256  m_sFile;
     s256  m_sException;
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // goes somewhere else
+  
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // questionable
+    Lock    m_xLock;       // lock for this task
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // remove
+    eTK     m_eTaskKind;   // task kind
+    eAC     m_eActorModel; // actor model
+  
+    s32     m_sName;       // task name
+    s32     m_sComment;    // comment
+  
+    i8      m_iTxId;       // transaction id
+    i8      m_iWakeAt;     // time at which to wake this tx
+
+    TaskSet* m_pTaskSet;   // which set this task belongs to
+    NP_Task  m_npNextInSet; // next task in set
+    NP_Task  m_npPrevInSet; // prev task in set
+  
+    ValSet*    m_pRequest;   // request as a value set
+    s256       m_sLambda;    // lambda input
+    Tokeniser* m_pTokeniser; // input stream tokenizer
+  
     Interface::SEitf* m_pSEitf; // the seitf for this task
+  
     Queue*  m_pJobQueue;        // job queue that this task serves
                                 //   may or may not be shared
+  
     Socket* m_pSocket;          // socket associated with task
-    Socket* m_pSocketR35;       // R35 socket associated with task
-    Plan*   m_pPlan;            // the plan associated with task
-    
-    i8  m_iDdlLocked;
-    bool m_bDestructorTrace;
-    
-    Since  m_xWakeupTime;       // wakeup time
-  
-    bool   m_bR35model;         // task is running R3.5 model
-  
-    Job*   m_pJob;                // the job for this task
     GridModel::Node* m_pSendNode; // node to send to
-  
+    Plan*   m_pPlan;            // the plan associated with task
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // always last
+  
     Footer m_xFooter;
 
   public:
