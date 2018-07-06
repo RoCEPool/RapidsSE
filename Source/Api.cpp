@@ -2177,6 +2177,7 @@ eEC RapidsSE_Prompt(i8 iTraceLevel)
   Stz*   aApiCall = "RapidsSE_Prompt"_Stz;
   SEitf* pSEitf = nullptr;
   s256   sRequest;
+  sRequest = "promptR35_req"_Stz;
 
   try {
     

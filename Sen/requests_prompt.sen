@@ -11,6 +11,8 @@
 
   tp: poolSpaceR35_req
 
+  "promptR35_req" .
+
   <OK>
 ;
 

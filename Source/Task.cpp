@@ -2477,7 +2477,7 @@ void Task::vTaskLoop_R35(void)
   
   if (m_pJob && m_pJob->eClass() == CN_JOB_PROMPT) {
     int iDebug = 1;
-    m_iTracing = 1;
+    //m_iTracing = 1;
   }
   
   while (TS_EXECUTING == m_eState) {

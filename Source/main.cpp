@@ -262,13 +262,15 @@ void vRunPrompt(void)
     // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
     // start prompt R35
     
-//    PosixThread::vTlsSet(giTLS_ThreadKey,(void*)-1);
-//
-//    i8 iTraceLevel = 0;
-//    eEC eError = RapidsSE_Prompt(iTraceLevel);
-//    ASSERT(EC_NONE == eError);
-//    vTrace("RapidsSE_Prompt() called\n"_Stz);
+    if (gxArguments.m_bPromptR35) {
+      PosixThread::vTlsSet(giTLS_ThreadKey,(void*)-1);
 
+      i8 iTraceLevel = 0;
+      eEC eError = RapidsSE_Prompt(iTraceLevel);
+      ASSERT(EC_NONE == eError);
+      vTrace("RapidsSE_Prompt() called\n"_Stz);
+    }
+    
     // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 
     SePrompt* pSePrompt = new SePrompt();

@@ -15,7 +15,7 @@
 
   "PromptR35" .
 
-  grid::thisNode@ pJob_Space job.response!
+  grid::thisNode@ pJob_Prompt job.response!
 
   pJob_Prompt job.notice
 ;
