@@ -2179,6 +2179,11 @@ eEC RapidsSE_Prompt(i8 iTraceLevel)
 
   try {
     
+    eEC eError = RapidsSE_SEitfNew((void**)&pSEitf, 0, 0);
+    ASSERT(EC_NONE == eError);
+    
+    Job_Prompt* pJob_Prompt = new Job_Prompt(pSEitf);
+    
     return EC_NONE;
     
   }
