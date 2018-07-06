@@ -8,6 +8,7 @@
 
 extern AttachMap* gpAttachMap;
 extern Arguments  gxArguments;
+extern pthread_key_t giTLS_ThreadKey;
 
 extern bool gbSHM;
 
@@ -261,10 +262,12 @@ void vRunPrompt(void)
     // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
     // start prompt R35
     
-    i8 iTraceLevel = 0;
-    eEC eError = RapidsSE_Prompt(iTraceLevel);
-    ASSERT(EC_NONE == eError);
-    vTrace("RapidsSE_Prompt() called\n"_Stz);
+//    PosixThread::vTlsSet(giTLS_ThreadKey,(void*)-1);
+//
+//    i8 iTraceLevel = 0;
+//    eEC eError = RapidsSE_Prompt(iTraceLevel);
+//    ASSERT(EC_NONE == eError);
+//    vTrace("RapidsSE_Prompt() called\n"_Stz);
 
     // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 

@@ -2174,8 +2174,9 @@ eEC RapidsSE_PoolOpen(Stz* pInstanceName, void** ppInstance, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_Prompt(i8 iTraceLevel)
 {
-  Stz* aApiCall = "RapidsSE_Prompt"_Stz;
+  Stz*   aApiCall = "RapidsSE_Prompt"_Stz;
   SEitf* pSEitf = nullptr;
+  s256   sRequest;
 
   try {
     
@@ -2183,6 +2184,8 @@ eEC RapidsSE_Prompt(i8 iTraceLevel)
     ASSERT(EC_NONE == eError);
     
     Job_Prompt* pJob_Prompt = new Job_Prompt(pSEitf);
+    
+    bool b = pSEitf->bAppendRequest_R35(sRequest,true,(Job**)&pJob_Prompt);
     
     return EC_NONE;
     

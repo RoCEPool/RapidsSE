@@ -3704,6 +3704,9 @@ bool SEitf::bAppendRequest_R35(StrVal& sRequest, bool bDetached, Job** ppJob)
   // create new task (will be automatically appended to task list)
   MP_Task nnpNewTask = new Task(&xValSet);
   
+  //if (CN_JOB_PROMPT == (*ppJob)->eClass())
+  //  nnpNewTask->vSeedWord("Job_Prompt.execute"_Stz);
+  //else
   if (bDetached)
     nnpNewTask->vSeedWord("processRequest_detached"_Stz);
   else

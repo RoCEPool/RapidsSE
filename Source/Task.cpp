@@ -2475,6 +2475,11 @@ void Task::vTaskLoop_R35(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
+  if (m_pJob && m_pJob->eClass() == CN_JOB_PROMPT) {
+    int iDebug = 1;
+    m_iTracing = 1;
+  }
+  
   while (TS_EXECUTING == m_eState) {
     
     //assert(0 == m_iTaskNo || m_pThread);
