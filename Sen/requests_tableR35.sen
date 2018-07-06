@@ -341,14 +341,7 @@ ddlLock::grabRead
   // get the job from the task
   pTask task.job@ to pJob
 
-  // check if we have enough buffers
-  //checkEnoughBuffers not if <NIP+ERROR> exit then
-
-  // get the table name from the job
-  //pJob job.objectName@
-  //checkMakeTable    not if <NIP+ERROR> exit then
-  //drop // tableNm on stack
-
+  // distribute the job
   pTask pJob job::distribute
 
   <OK>
@@ -816,7 +809,7 @@ ddlLock::grabRead
 /*----------------------------------------------------------------------------*/
 : truncateTable_req ( "<tableNm>" -- <R> )
 
-ddlLock::grabRead
+  ddlLock::grabRead
 
   // should be in the tables folder
   checkInTables       not if <NIP+ERROR> exit then

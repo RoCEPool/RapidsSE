@@ -28,6 +28,7 @@ namespace DBobjects
     ~Slots(void);
     
     void       vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn);
+    void       vCreateColumnVec(void);
     TablePtn*  pPartition(i8 iSlot);
     bool       bPopulateIndex(i8 iIndexNo);
     PtnColVec* pPtnColVec(void);

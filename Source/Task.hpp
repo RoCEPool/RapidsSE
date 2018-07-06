@@ -1262,6 +1262,7 @@ namespace Tasks
     static void vSlotsColumnCount(MP_Task mpTask);
     static void vSlotsColumnName(MP_Task mpTask);
     static void vSlotsCreateColumnVec(MP_Task mpTask);
+    static void vSlotsCreateColumnVecR35(MP_Task mpTask);
     static void vSlotsSubDic(MP_Task mpTask);
     
     // socket
@@ -1303,6 +1304,7 @@ namespace Tasks
     static void vTableAnalyze(MP_Task mpTask);
     static void vTableAppendBuffer(MP_Task mpTask);
     static void vTableCreateColumnVec(MP_Task mpTask);
+    static void vTableCreateColumnVecR35(MP_Task mpTask);
     static void vTableDrop(MP_Task mpTask);
     static void vTableDump(MP_Task mpTask);
     static void vTableFirstBuffer(MP_Task mpTask);

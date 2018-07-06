@@ -2334,10 +2334,11 @@ bool SePrompt::bAddTableColumnsR35(i8& i_Token, i8 iNumTokens)
         m_xTokenVec[iCurrentToken]->bSame("varbinary"_Stz) ||
         m_xTokenVec[iCurrentToken]->bSame("char"_Stz)) {
       
-      pJob->m_xColumns[iColumn].m_sColumnType = m_xTokenVec[iCurrentToken++]->aText();
-      pJob->m_xColumns[iColumn].m_sColumnType.vToLower();
+      pJob->m_xColumns[iColumn].m_eColumnType = CT_VARCHAR;
+      pJob->m_xColumns[iColumn].m_eDatumType = DM_VCH;
+      iCurrentToken++;
       
-      i8 iSize = -1;
+      i8 iSize = C_64K;
 
       if (m_xTokenVec[iCurrentToken]->bSame("("_Stz)) {
         
@@ -2361,15 +2362,17 @@ bool SePrompt::bAddTableColumnsR35(i8& i_Token, i8 iNumTokens)
           m_pSEitf->vSetLastError(EC_INVALID_SIZE);
           return false;
         }
-        pJob->m_xColumns[iColumn].m_iColumnLength = iSize;
       }
+      pJob->m_xColumns[iColumn].m_iColumnLength = iSize;
       
     }
     else if (m_xTokenVec[iCurrentToken]->bSame("float"_Stz)) {
       
-      i8 iSize = -1;
+      i8 iSize = C_MAX_PRECISION_FLT;
     
-      pJob->m_xColumns[iColumn].m_sColumnType = m_xTokenVec[iCurrentToken++]->aText();
+      pJob->m_xColumns[iColumn].m_eColumnType = CT_FLOAT;
+      pJob->m_xColumns[iColumn].m_eDatumType = DM_FLT;
+      iCurrentToken++;
       
       if (m_xTokenVec[iCurrentToken]->bSame("("_Stz)) {
         
@@ -2390,16 +2393,17 @@ bool SePrompt::bAddTableColumnsR35(i8& i_Token, i8 iNumTokens)
           m_pSEitf->vSetLastError(EC_INVALID_SIZE);
           return false;
         }
-        pJob->m_xColumns[iColumn].m_iColumnLength = iSize;;
       }
-      
+      pJob->m_xColumns[iColumn].m_iColumnLength = iSize;
     }
     else if (m_xTokenVec[iCurrentToken]->bSame("decimal"_Stz)) {
       
-      i8 iPrecision = -1;
-      i8 iScale = -1;
+      i8 iPrecision = C_MAX_PRECISION_BCD;
+      i8 iScale = 0;
       
-      pJob->m_xColumns[iColumn].m_sColumnType = m_xTokenVec[iCurrentToken++]->aText();
+      pJob->m_xColumns[iColumn].m_eColumnType = CT_DECIMAL;
+      pJob->m_xColumns[iColumn].m_eDatumType = DM_BCD;
+      iCurrentToken++;
       
       if (m_xTokenVec[iCurrentToken++]->bSame("("_Stz)) {
         
@@ -2437,13 +2441,36 @@ bool SePrompt::bAddTableColumnsR35(i8& i_Token, i8 iNumTokens)
       pJob->m_xColumns[iColumn].m_iColumnLength = iPrecision;
       pJob->m_xColumns[iColumn].m_iColumnScale  = iScale;
     }
-    else if (m_xTokenVec[iCurrentToken]->bSame("integer"_Stz) ||
-             m_xTokenVec[iCurrentToken]->bSame("date"_Stz) ||
-             m_xTokenVec[iCurrentToken]->bSame("time"_Stz) ||
-             m_xTokenVec[iCurrentToken]->bSame("timestamp"_Stz) ||
-             m_xTokenVec[iCurrentToken]->bSame("interval"_Stz) ||
-             m_xTokenVec[iCurrentToken]->bSame("boolean"_Stz)) {
-      pJob->m_xColumns[iColumn].m_sColumnType = m_xTokenVec[iCurrentToken++]->aText();
+    else if (m_xTokenVec[iCurrentToken]->bSame("integer"_Stz)) {
+      pJob->m_xColumns[iColumn].m_eColumnType = CT_INTEGER;
+      pJob->m_xColumns[iColumn].m_eDatumType = DM_INT;
+      pJob->m_xColumns[iColumn].m_iColumnLength = C_MAX_PRECISION_INT;
+      iCurrentToken++;
+    }
+    else if (m_xTokenVec[iCurrentToken]->bSame("date"_Stz)) {
+      pJob->m_xColumns[iColumn].m_eColumnType = CT_DATE;
+      pJob->m_xColumns[iColumn].m_eDatumType = DM_DTE;
+      iCurrentToken++;
+    }
+    else if (m_xTokenVec[iCurrentToken]->bSame("time"_Stz)) {
+      pJob->m_xColumns[iColumn].m_eColumnType = CT_TIME;
+      pJob->m_xColumns[iColumn].m_eDatumType = DM_TME;
+      iCurrentToken++;
+    }
+    else if (m_xTokenVec[iCurrentToken]->bSame("timestamp"_Stz)) {
+      pJob->m_xColumns[iColumn].m_eColumnType = CT_TIMESTAMP;
+      pJob->m_xColumns[iColumn].m_eDatumType = DM_TSP;
+      iCurrentToken++;
+    }
+    else if (m_xTokenVec[iCurrentToken]->bSame("interval"_Stz)) {
+      pJob->m_xColumns[iColumn].m_eColumnType = CT_INTERVAL;
+      pJob->m_xColumns[iColumn].m_eDatumType = DM_IVL;
+      iCurrentToken++;
+    }
+    else if (m_xTokenVec[iCurrentToken]->bSame("boolean"_Stz)) {
+      pJob->m_xColumns[iColumn].m_eColumnType = CT_BOOLEAN;
+      pJob->m_xColumns[iColumn].m_eDatumType = DM_BOL;
+      iCurrentToken++;
     }
     else {
       m_pSEitf->vSetLastError(EC_INVALID_COMMAND);

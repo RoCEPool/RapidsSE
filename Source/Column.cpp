@@ -2,6 +2,7 @@
 /* Column.cpp - Column                                                        */
 /*============================================================================*/
 
+#include "StorageEngine.h"
 #include "DBobjects.h"
 
 /*----------------------------------------------------------------------------*/
@@ -113,6 +114,31 @@ Column::Column(Stz* aName, Stz* aDefinition)
   m_fGreaterThan  = nullptr;
   
   vSet(aDefinition);
+  
+  _checkInitialised_(CN_COLUMN);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Column::Column(JobsModel::Job_CreateTable* pJob, i8 iColumnNo)
+: Object(CN_COLUMN)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  
+  m_iColumnNo     = iColumnNo;
+  m_sColumnName   = pJob->m_xColumns[iColumnNo].m_sColumnName;
+  m_eColumnType   = pJob->m_xColumns[iColumnNo].m_eColumnType;
+  m_iColumnLength = pJob->m_xColumns[iColumnNo].m_iColumnLength;
+  m_iColumnScale  = pJob->m_xColumns[iColumnNo].m_iColumnScale;
+  m_eDatumType    = pJob->m_xColumns[iColumnNo].m_eDatumType;
+  m_bIsNullable   = pJob->m_xColumns[iColumnNo].m_bIsNullable;
+  m_bIsPartitionKey = pJob->m_xColumns[iColumnNo].m_bIsPartitionKey;
+  
+  m_fGreaterEqual = nullptr;
+  m_fGreaterThan  = nullptr;
   
   _checkInitialised_(CN_COLUMN);
   

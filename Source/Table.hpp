@@ -63,6 +63,7 @@ namespace DBobjects
     ColumnVec* pColumnVec(void);
     void vContentDump(void);
     void vCreateColumnVec(s32& sName, s48K& sDefinition);
+    void vCreateColumnVec(JobsModel::Job_CreateTable* pJob);
     Index* pHiddenIndex(void);
     void vHiddenIndex(Index* pHiddenIndex);
     IdxVec* pIdxVec(void);

@@ -6,6 +6,11 @@
 
 #include "Dictionaries.h"
 
+namespace JobsModel
+{
+  class Job_CreateTable;
+}
+
 //------------------------------------------------------------------------------
 
 namespace DBobjects

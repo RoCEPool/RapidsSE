@@ -65,6 +65,7 @@ namespace DBobjects
     Column(void);
     Column(Stz* aName);
     Column(Stz* aName, Stz* aDefinition);
+    Column(JobsModel::Job_CreateTable* pJob, i8 iColumnNo);
     ~Column(void);
   
     i8   iColumnLength(void);

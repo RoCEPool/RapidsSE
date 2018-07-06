@@ -20,7 +20,7 @@ namespace JobsModel
       
       i8    m_iColumnNo;     // column no )within this table)
       s32   m_sColumnName;   // name of column
-      s32   m_sColumnType;   // column type
+      eCT   m_eColumnType;   // column type
       i8    m_iColumnLength; // length of column
       i8    m_iColumnScale;  // column scale
       bool  m_bIsNullable;   // is allowed to be null

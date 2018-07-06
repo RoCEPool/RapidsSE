@@ -507,46 +507,31 @@ tp: makingTable
 
   sTableNm makeTableDic
 
-  sTableNm find execute to pTable
   sTableNm pushTable
-
   sTableNm "makeIndexes" find execute
 
-  sTableNm "makePartitions" find execute
-
+  // create the table
   sTableNm :table ( ^table ) drop
-
-  // make partition columns
-  sTableNm "makePartitionColumns" find execute
-
-  // forward reference :-(
-  sTableNm "makeColumns" find execute
+  sTableNm find execute to pTable
 
   // create the hidden index for the row data
-  sTableNm "hidden" "make_index" find execute
+  sTableNm "hidden" "make_indexR35" find execute
 
   // make the index as hidden
   "indexes" find execute pathPush
   "hidden" findInCurrent execute to indexPtr
   true indexPtr index.isHidden!
-
-  // now add a column to the hidden index
-  "hidden_column" "hidden"
-  "add_indexColumn" find execute
-
-  // create the column vector of the index
-  indexPtr index.subDic pathPush
-
-  "columns" find execute pathPush
-
   "integer" "hidden_column" indexPtr index.createColumnVec
 
-  pathDrop  // step out of columns
-  pathDrop  // step out of subdic
-  pathDrop  // step out of indexes
+  // step out of indexes
+  pathDrop
 
   // store the hidden index in the table
   indexPtr sTableNm find execute table.hiddenIndex!
+  pathDump
+
+  // return table pointer
+  pTable
 ;
 
 /*----------------------------------------------------------------------------*/

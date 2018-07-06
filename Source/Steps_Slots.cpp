@@ -16,6 +16,7 @@ void Task::vAddPrimitives_Slots(void)
   vAddPrimitive("slots.columnCount"_Stz,     &vSlotsColumnCount,     false);
   vAddPrimitive("slots.columnName"_Stz,      &vSlotsColumnName,      false);
   vAddPrimitive("slots.createColumnVec"_Stz, &vSlotsCreateColumnVec, false);
+  vAddPrimitive("slots.createColumnVecR35"_Stz, &vSlotsCreateColumnVecR35, false);
   vAddPrimitive("slots.subDic"_Stz,          &vSlotsSubDic,          false);
 }
 
@@ -84,6 +85,24 @@ void Task::vSlotsCreateColumnVec(MP_Task mpTask)
     THROW_INVALID_DSTACK("slots.createColumnVec"_Stz);
   
   pSlots->vCreateColumnVec(sColumnNm, sColumnDef);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* slots.createColumnVecR35 -- create slots column vector from subdic         */
+/*----------------------------------------------------------------------------*/
+void Task::vSlotsCreateColumnVecR35(MP_Task mpTask)
+{
+  ENTRY("vSlotsCreateColumnVecR35"_Stz);
+  
+  Object* pPtrSlots;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSlots) )
+    THROW_INVALID_DSTACK("slots.createColumnVecR35"_Stz);
+  Slots* pSlots = _pSlots(pPtrSlots);
+  ASSERT(CN_SLOTS == pSlots->eClass());
+  
+  pSlots->vCreateColumnVec();
   
   EXIT();
 }
