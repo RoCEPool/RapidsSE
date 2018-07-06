@@ -258,6 +258,16 @@ void vRunPrompt(void)
     //       vInfo("dir: %s\n"_Stz,sCurrent.aStr());
     //    }
     
+    // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+    // start prompt R35
+    
+    i8 iTraceLevel = 0;
+    eEC eError = RapidsSE_Prompt(iTraceLevel);
+    ASSERT(EC_NONE == eError);
+    vTrace("RapidsSE_Prompt() called\n"_Stz);
+
+    // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+
     SePrompt* pSePrompt = new SePrompt();
     pSePrompt->vLoop();
     delete pSePrompt;

@@ -55,6 +55,7 @@ extern "C" eEC RapidsSE_LoadData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath,
                                  Stz* pEscapeChar, Stz* pDateFormat,
                                  void** ppValidRows, void** ppInvalidRows, i8 iTraceLevel);
 extern "C" eEC RapidsSE_PoolOpen(Stz* pInstanceName, void** ppInstance, i8 iTraceLevel);
+extern "C" eEC RapidsSE_Prompt(i8 iTraceLevel);
 extern "C" eEC RapidsSE_SEitfDelete(SEitf* pSEitf, i8 iTraceLevel);
 extern "C" eEC RapidsSE_SEitfNew(void** ppSEitf, i8 iPartition, i8 iTraceLevel);
 extern "C" bool RapidsSE_SEitfInvalid(int eError, i8 iTraceLevel);

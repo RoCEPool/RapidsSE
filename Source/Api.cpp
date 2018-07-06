@@ -2170,6 +2170,31 @@ eEC RapidsSE_PoolOpen(Stz* pInstanceName, void** ppInstance, i8 iTraceLevel)
 }
 
 /*----------------------------------------------------------------------------*/
+/* launch a prompt job                                                        */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_Prompt(i8 iTraceLevel)
+{
+  Stz* aApiCall = "RapidsSE_Prompt"_Stz;
+  SEitf* pSEitf = nullptr;
+
+  try {
+    
+    return EC_NONE;
+    
+  }
+  catch (Error* pError) {
+    RapidsSE::vErrorHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
+    return pError->eErrorCode();
+  }
+  catch (...) {
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
+    return EC_SE_UNKNOWN_ERROR;
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* delete an seitf instance                                                   */
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_SEitfDelete(SEitf* pSEitf, i8 iTraceLevel)
