@@ -2,7 +2,7 @@
 /* _R35 -- R35 requests                                                       */
 /*============================================================================*/
 _startClusterR35
-sleep 10;
+sleep 20;
 
 spaceR35;
 sleep 10;
@@ -11,12 +11,9 @@ create R35table j10 (
   j10_key   INTEGER NOT NULL,
   j10_name  VARCHAR(32) NOT NULL
 );
-sleep 10;
+//sleep 10;
 
-create R35table j10 (
-  j10_key   INTEGER NOT NULL,
-  j10_name  VARCHAR(32) NOT NULL
-);
+//ld j10 "../JTEST/j10.csv";
 
 /*
 
