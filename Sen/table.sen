@@ -507,7 +507,7 @@ tp: makingTable
 
   sTableNm makeTableDic
 
-  sTableNm pushTable
+  sTableNm pushTable assert
   sTableNm "makeIndexes" find execute
 
   // create the table
