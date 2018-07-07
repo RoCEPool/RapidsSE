@@ -1068,6 +1068,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_PlanList();
   vAddPrimitives_Planner();
   vAddPrimitives_Process();
+  vAddPrimitives_Prompt();
   vAddPrimitives_Push();
   
   vAddPrimitives_Queue();

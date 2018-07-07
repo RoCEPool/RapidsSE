@@ -389,6 +389,7 @@ namespace Tasks
     void vAddPrimitives_PlanList(void);
     void vAddPrimitives_Planner(void);
     void vAddPrimitives_Process(void);
+    void vAddPrimitives_Prompt(void);
     void vAddPrimitives_Push(void);
     void vAddPrimitives_Queue(void);
     void vAddPrimitives_Queues(void);
@@ -1041,6 +1042,10 @@ namespace Tasks
     static void vProcessQuit(MP_Task mpTask);
     static void vProcessTestPid(MP_Task mpTask);
     
+    // prompt
+    static void vPromptLoop(MP_Task mpTask);
+    static void vPromptNew(MP_Task mpTask);
+  
     // push
     static void vPushI(MP_Task mpTask);
     static void vPushJ(MP_Task mpTask);
