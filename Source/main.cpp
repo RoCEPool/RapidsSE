@@ -269,6 +269,8 @@ void vRunPrompt(void)
       eEC eError = RapidsSE_Prompt(iTraceLevel);
       ASSERT(EC_NONE == eError);
       vTrace("RapidsSE_Prompt() called\n"_Stz);
+      
+      PosixThread::vSleepSec(10000000);
     }
     
     // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
@@ -281,8 +283,14 @@ void vRunPrompt(void)
   }
   
   if (gxArguments.m_bPromptR35) {
-    vTrace("\n\n se R35> \n"_Stz);
-    exit(0);
+    PosixThread::vTlsSet(giTLS_ThreadKey,(void*)-1);
+    
+    i8 iTraceLevel = 0;
+    eEC eError = RapidsSE_Prompt(iTraceLevel);
+    ASSERT(EC_NONE == eError);
+    vTrace("RapidsSE_Prompt() called\n"_Stz);
+    
+    PosixThread::vSleepSec(10000000);
   }
 }
 

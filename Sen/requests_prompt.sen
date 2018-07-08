@@ -9,9 +9,13 @@
 /*----------------------------------------------------------------------------*/
 : promptR35_req ( -- <R> )
 
-  tp: poolSpaceR35_req
+  0 locals| pPrompt |
 
   "promptR35_req" .
+
+  prompt::new to pPrompt
+
+  pPrompt prompt.loop
 
   <OK>
 ;
