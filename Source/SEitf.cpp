@@ -3704,26 +3704,20 @@ bool SEitf::bAppendRequest_R35(StrVal& sRequest, bool bDetached, Job** ppJob)
 
   if (CN_JOB_PROMPT == (*ppJob)->eClass()) {
     
-    // spawn a request task, passing the request to it
-    // create new task (will be automatically appended to task list)
-    MP_Task nnpNewTask = new Task(&xValSet);
+    Task* pNewTask = new Task;
     
-    nnpNewTask->vSeedWord("requestLoop"_Stz);
+    pNewTask->vSeedWord("promptR35_req"_Stz);
     
-    nnpNewTask->vState(TS_READY);
-    nnpNewTask->vR35model(true);
-    nnpNewTask->vActorModel(AC_R35);
-    //nnpNewTask->vSEitf(this);
+    pNewTask->vState(TS_READY);
+    pNewTask->vR35model(true);
+    pNewTask->vActorModel(AC_R35);
+    pNewTask->vSEitf(this);
     
-    if (*ppJob) {
-      Job* pJob = *ppJob;
-      *ppJob = nullptr;
-      
-      nnpNewTask->vJob(pJob);
-    }
+    Job* pJob = *ppJob;
+    *ppJob = nullptr;
+    pNewTask->vJob(pJob);
     
-    //gpAttachMap->m_pServerScheduler->vEnqueueTask_Mutex(*nnpNewTask);
-    Handlers::vSpawnedTaskHandler(*nnpNewTask);
+    Handlers::vSpawnedTaskHandler(pNewTask);
     
     return true;
   }
