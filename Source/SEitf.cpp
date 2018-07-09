@@ -3700,13 +3700,40 @@ bool SEitf::bAppendRequest_R35(StrVal& sRequest, bool bDetached, Job** ppJob)
   // set the new current request id to the next one sent by previous response
   m_iCurrentRequestId = m_iNextRequestId;
   
+  //----------------------------------------------------------------------------
+
+  if (CN_JOB_PROMPT == (*ppJob)->eClass()) {
+    
+    // spawn a request task, passing the request to it
+    // create new task (will be automatically appended to task list)
+    MP_Task nnpNewTask = new Task(&xValSet);
+    
+    nnpNewTask->vSeedWord("requestLoop"_Stz);
+    
+    nnpNewTask->vState(TS_READY);
+    nnpNewTask->vR35model(true);
+    nnpNewTask->vActorModel(AC_R35);
+    //nnpNewTask->vSEitf(this);
+    
+    if (*ppJob) {
+      Job* pJob = *ppJob;
+      *ppJob = nullptr;
+      
+      nnpNewTask->vJob(pJob);
+    }
+    
+    //gpAttachMap->m_pServerScheduler->vEnqueueTask_Mutex(*nnpNewTask);
+    Handlers::vSpawnedTaskHandler(*nnpNewTask);
+    
+    return true;
+  }
+  
+  //----------------------------------------------------------------------------
+
   // spawn a request task, passing the request to it
   // create new task (will be automatically appended to task list)
   MP_Task nnpNewTask = new Task(&xValSet);
   
-  //if (CN_JOB_PROMPT == (*ppJob)->eClass())
-  //  nnpNewTask->vSeedWord("Job_Prompt.execute"_Stz);
-  //else
   if (bDetached)
     nnpNewTask->vSeedWord("processRequest_detached"_Stz);
   else
