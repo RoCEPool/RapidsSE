@@ -36,6 +36,9 @@ namespace JobsModel
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Status* _pJob_Status(void* aAddr);
+  
+  bool bJob_Status_pre(TokenVec* pTokenVec);
+  void vJob_Status_post(void);
 }
 
 /*============================================================================*/

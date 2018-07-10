@@ -36,6 +36,9 @@ namespace JobsModel
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_DropTable* _pJob_DropTable(void* aAddr);
+  
+  bool bJob_DropTable_pre(TokenVec* pTokenVec);
+  void vJob_DropTable_post(void);
 }
 
 /*============================================================================*/

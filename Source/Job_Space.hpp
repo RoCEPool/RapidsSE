@@ -36,6 +36,9 @@ namespace JobsModel
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Space* _pJob_Space(void* aAddr);
+  
+  bool bJob_Space_pre(TokenVec* pTokenVec);
+  void vJob_Space_post(void);
 }
 
 /*============================================================================*/

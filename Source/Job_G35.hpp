@@ -36,6 +36,9 @@ namespace JobsModel
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_G35* _pJob_G35(void* aAddr);
+  
+  bool bJob_G35_pre(TokenVec* pTokenVec);
+  void vJob_G35_post(void);
 }
 
 /*============================================================================*/

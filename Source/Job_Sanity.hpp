@@ -39,6 +39,9 @@ namespace JobsModel
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Sanity* _pJob_Sanity(void* aAddr);
+  
+  bool bJob_Sanity_pre(TokenVec* pTokenVec);
+  void vJob_Sanity_post(void);
 }
 
 /*============================================================================*/

@@ -8,7 +8,9 @@ JobNote mJobNote_DropTable (
   "Job_DropTable"_Stz,  // name of the job class
   "comment"_Stz,        // comment about the job
   "drop table"_Stz,     // the prompt command
-  "seed"_Stz            // the task seed for this job
+  "seed"_Stz,           // the task seed for this job
+  bJob_DropTable_pre,   // prompt pre-process function
+  vJob_DropTable_post   // prompt post-process function
   );
 
 
@@ -128,6 +130,21 @@ Footer* Job_DropTable::aFooter(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPTABLE);
   
   return &m_xFooter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* prompt pre execute function                                                */
+/*----------------------------------------------------------------------------*/
+bool JobsModel::bJob_DropTable_pre(TokenVec* pTokenVec)
+{
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* prompt post execute function                                               */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_DropTable_post(void)
+{
 }
 
 /*============================================================================*/

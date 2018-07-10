@@ -36,6 +36,9 @@ namespace JobsModel
   };
   
   Job_DropSchema* _pJob_DropSchema(void* aAddr);
+  
+  bool bJob_DropSchema_pre(TokenVec* pTokenVec);
+  void vJob_DropSchema_post(void);
 }
 
 /*============================================================================*/

@@ -8,7 +8,9 @@ JobNote mJobNote_CreateIndex (
   "Job_CreateIndex"_Stz, // name of the job class
   "comment"_Stz,         // comment about the job
   "create index "_Stz,   // the prompt command
-  "seed"_Stz             // the task seed for this job
+  "seed"_Stz,            // the task seed for this job
+  bJob_CreateIndex_pre,  // prompt pre-process function
+  vJob_CreateIndex_post  // promot post-process function
 );
 
 /*----------------------------------------------------------------------------*/
@@ -143,6 +145,21 @@ Footer* Job_CreateIndex::aFooter(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATEINDEX);
   
   return &m_xFooter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* prompt pre execute function                                                */
+/*----------------------------------------------------------------------------*/
+bool JobsModel::bJob_CreateIndex_pre(TokenVec* pTokenVec)
+{
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* prompt post execute function                                               */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_CreateIndex_post(void)
+{
 }
 
 /*============================================================================*/

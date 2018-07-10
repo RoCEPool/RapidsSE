@@ -8,7 +8,9 @@ JobNote mJobNote_CreateCatalog (
   "Job_CreateCatalog"_Stz, // name of the job class
   "comment"_Stz,           // comment about the job
   "create catalog"_Stz,    // the prompt command
-  "seed"_Stz               // the task seed for this job
+  "seed"_Stz,              // the task seed for this job
+  bJob_CreateCatalog_pre,  // prompt pre-process function
+  vJob_CreateCatalog_post  // promot post-process function
 );
 
 /*----------------------------------------------------------------------------*/
@@ -127,6 +129,25 @@ Footer* Job_CreateCatalog::aFooter(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATECATALOG);
   
   return &m_xFooter;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Prompt ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* prompt pre execute function                                                */
+/*----------------------------------------------------------------------------*/
+bool JobsModel::bJob_CreateCatalog_pre(TokenVec* pTokenVec)
+{
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* prompt post execute function                                               */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_CreateCatalog_post(void)
+{
 }
 
 /*============================================================================*/

@@ -8,8 +8,10 @@ JobNote mJobNote_DropTenant (
   "Job_DropTenant"_Stz, // name of the job class
   "comment"_Stz,        // comment about the job
   "drop tenant"_Stz,    // the prompt command
-  "seed"_Stz            // the task seed for this job
-);
+  "seed"_Stz,           // the task seed for this job
+  bJob_DropTenant_pre,  // prompt pre-process function
+  vJob_DropTenant_post  // prompt post-process function
+  );
 
 
 /*----------------------------------------------------------------------------*/
@@ -128,6 +130,21 @@ Footer* Job_DropTenant::aFooter(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPTENANT);
   
   return &m_xFooter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* prompt pre execute function                                                */
+/*----------------------------------------------------------------------------*/
+bool JobsModel::bJob_DropTenant_pre(TokenVec* pTokenVec)
+{
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* prompt post execute function                                               */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_DropTenant_post(void)
+{
 }
 
 /*============================================================================*/

@@ -8,7 +8,9 @@ JobNote mJobNote_G35 (
   "g35"_Stz,     // name of the job class
   "comment"_Stz, // comment about the job
   "g35"_Stz,     // the prompt command
-  "seed"_Stz     // the task seed for this job
+  "seed"_Stz,    // the task seed for this job
+  bJob_G35_pre,  // prompt pre-process function
+  vJob_G35_post  // promot post-process function
 );
 
 /*----------------------------------------------------------------------------*/
@@ -127,6 +129,21 @@ Footer* Job_G35::aFooter(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_G35);
   
   return &m_xFooter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* prompt pre execute function                                                */
+/*----------------------------------------------------------------------------*/
+bool JobsModel::bJob_G35_pre(TokenVec* pTokenVec)
+{
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* prompt post execute function                                               */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_G35_post(void)
+{
 }
 
 /*============================================================================*/

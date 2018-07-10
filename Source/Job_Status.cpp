@@ -8,8 +8,10 @@ JobNote mJobNote_Status (
   "Job_Status"_Stz, // name of the job class
   "comment"_Stz,    // comment about the job
   "status"_Stz,     // the prompt command
-  "seed"_Stz        // the task seed for this job
-);
+  "seed"_Stz,       // the task seed for this job
+  bJob_Status_pre,  // prompt pre-process function
+  vJob_Status_post  // promot post-process function
+  );
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -127,6 +129,21 @@ Footer* Job_Status::aFooter(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_STATUS);
   
   return &m_xFooter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* prompt pre execute function                                                */
+/*----------------------------------------------------------------------------*/
+bool JobsModel::bJob_Status_pre(TokenVec* pTokenVec)
+{
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* prompt post execute function                                               */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_Status_post(void)
+{
 }
 
 /*============================================================================*/

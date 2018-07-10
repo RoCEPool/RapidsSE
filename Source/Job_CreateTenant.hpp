@@ -36,6 +36,9 @@ namespace JobsModel
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_CreateTenant* _pJob_CreateTenant(void* aAddr);
+  
+  bool bJob_CreateTenant_pre(TokenVec* pTokenVec);
+  void vJob_CreateTenant_post(void);
 }
 
 /*============================================================================*/

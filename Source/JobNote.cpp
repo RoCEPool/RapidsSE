@@ -12,7 +12,9 @@ extern JobCatalog gxJobCatalog;
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-JobNote::JobNote(Stz* aName, Stz* aComment, Stz* aCommand, Stz* aSeed)
+JobNote::JobNote(Stz* aName, Stz* aComment, Stz* aCommand, Stz* aSeed,
+                 bool (*pre)(TokenVec* pTokenVec),
+                 void (*post)(void))
 {
   vTrace("JobNote: %s %s %s %s\n"_Stz,
          aName, aComment, aCommand, aSeed);

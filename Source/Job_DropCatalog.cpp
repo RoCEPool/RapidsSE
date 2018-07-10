@@ -8,7 +8,9 @@ JobNote mJobNote_DropCatalog (
   "Job_DropCatalog"_Stz, // name of the job class
   "comment"_Stz,         // comment about the job
   "drop catalog"_Stz,    // the prompt command
-  "seed"_Stz             // the task seed for this job
+  "seed"_Stz,            // the task seed for this job
+  bJob_DropCatalog_pre,  // prompt pre-process function
+  vJob_DropCatalog_post  // promot post-process function
 );
 
 
@@ -128,6 +130,21 @@ Footer* Job_DropCatalog::aFooter(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPCATALOG);
   
   return &m_xFooter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* prompt pre execute function                                                */
+/*----------------------------------------------------------------------------*/
+bool JobsModel::bJob_DropCatalog_pre(TokenVec* pTokenVec)
+{
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* prompt post execute function                                               */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_DropCatalog_post(void)
+{
 }
 
 /*============================================================================*/

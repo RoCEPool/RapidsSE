@@ -5,10 +5,12 @@
 #include "JobModel.h"
 
 JobNote mJobNote_Space (
-  "space"_Stz,   // name of the job class
-  "comment"_Stz, // comment about the job
-  "space"_Stz,   // the prompt command
-  "seed"_Stz     // the task seed for this job
+  "space"_Stz,     // name of the job class
+  "comment"_Stz,   // comment about the job
+  "space"_Stz,     // the prompt command
+  "seed"_Stz,      // the task seed for this job
+  bJob_Space_pre,  // prompt pre-process function
+  vJob_Space_post  // promot post-process function
 );
 
 /*----------------------------------------------------------------------------*/
@@ -127,6 +129,21 @@ Footer* Job_Space::aFooter(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SPACE);
   
   return &m_xFooter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* prompt pre execute function                                                */
+/*----------------------------------------------------------------------------*/
+bool JobsModel::bJob_Space_pre(TokenVec* pTokenVec)
+{
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* prompt post execute function                                               */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_Space_post(void)
+{
 }
 
 /*============================================================================*/
