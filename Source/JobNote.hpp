@@ -15,8 +15,8 @@ namespace JobsModel
             Stz* aComment,
             Stz* aCommand,
             Stz* aSeed,
-            bool (*pre)(TokenVec* pTokenVec),
-            void (*post)(void));
+            bool (*fPre)(TokenVec* pTokenVec),
+            void (*fPost)(void));
   };
 }
 
