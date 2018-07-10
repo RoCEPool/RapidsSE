@@ -12,17 +12,8 @@ extern pthread_key_t giTLS_ThreadKey;
 
 extern bool gbSHM;
 
-void vTest1(void);
-void vTest2(void);
-void vTest3(void);
-void vTest4(void);
-void vTest5(void);
-void vTest6(void);
-void vTest7(void);
-void vTest8(void);
-void vTest9(void);
-
 void vChangeDirectory(void);
+void vExecuteSystem(void);
 void vKillPrev(void);
 void vPrintSizes(void);
 void vPrintWelcome(void);
@@ -35,88 +26,27 @@ void vWriteRegionName(void);
 /*----------------------------------------------------------------------------*/
 int main(int argc, const char* argv[])
 {
+  // parse the command line arguments
   if ( ! gxArguments.bParse(argc,(Stz**)argv) )
     exit(EXIT_FAILURE);
   
+  // potentially run the shm utility
   if (gbSHM) {
     ShmUtility::vRun(argc,(Stz**)argv);
     exit(EXIT_SUCCESS);
   }
   
+  // print welcome message
   vPrintWelcome();
   
+  // print startup information
   if (gxArguments.m_bWelcome && gxArguments.m_bStart)
     gxArguments.vPrintStartupInfo();
   
-  //OpSys::vGetInfo();
- // OpSys::vTraceInfo();
-  
-  if (gxArguments.m_bVerbose)
-    vPrintSizes();
-  
-  vSetSignalHandlers();
-/*
-  vTrace("sizeof(short) %lld\n"_Stz,(i8)sizeof(short));
-  vTrace("sizeof(int) %lld\n"_Stz,(i8)sizeof(int));
-  vTrace("sizeof(long) %lld\n"_Stz,(i8)sizeof(long));
-  vTrace("sizeof(long long) %lld\n"_Stz,(i8)sizeof(long long));
-  
-  vTrace("sizeof(i1) %lld\n"_Stz,(i8)sizeof(i1));
-  vTrace("sizeof(i2) %lld\n"_Stz,(i8)sizeof(i2));
-  vTrace("sizeof(i3) %lld\n"_Stz,(i8)sizeof(i3));
-  vTrace("sizeof(i4) %lld\n"_Stz,(i8)sizeof(i4));
-  vTrace("sizeof(i8) %lld\n"_Stz,(i8)sizeof(i8));
-  
-  vTrace("sizeof(Object) %lld\n"_Stz,(i8)sizeof(Object));
-  vTrace("sizeof(Object2) %lld\n"_Stz,(i8)sizeof(Object2));
-  vTrace("sizeof(eCN) %lld\n"_Stz,(i8)sizeof(eCN));
-  
-  vTrace("sizeof(Item) %lld\n"_Stz,(i8)sizeof(Item));
-  vTrace("sizeof(Entry) %lld\n"_Stz,(i8)sizeof(Entry));
-  
-  vTrace("alignof(i3) %lld\n"_Stz,(i8)alignof(i3));
-  vTrace("alignof(Entry) %lld\n"_Stz,(i8)alignof(Entry));
-  */
-  
-  //vTest1();
-  //vTest2();
-  //vTest3();
-  //vTest4();
-  //vTest5();
-  //vTest6();
-  //vTest7();
-  //vTest8();
-  //vTest9();
+  // execute
+  vExecuteSystem();
 
-  StorageEngine::vCheckAllAssumptions();
-  
-  vWriteRegionName();
-  vChangeDirectory();
-  vKillPrev();
-  
-  RapidsSE::vPoolOpen();
-  
-  if (gxArguments.m_bStart)
-     vSetGlobals();
-  
-  RapidsSE::vCheckPort();
-  
-  if (gxArguments.m_bPrompt && !gxArguments.m_bStart)
-    gpAttachMap->vPrintStartupInfo();
-  
-  RapidsSE::vExecuteCmdLine();
-
-  //gpAttachMap->vPrintAttachMap();
-  
-  //vSkipListTest();
-  
-//  ResultBuffer* pRB = new ResultBuffer;
-//  delete pRB;
-  
-  vRunPrompt();
-  
-  RapidsSE::vPoolClose();
-
+  // print exit message
   if (gxArguments.m_bVerbose)
     vInfo("RapidsSE exits\n"_Stz);
     
@@ -137,6 +67,49 @@ void vChangeDirectory(void)
   bool bResult = xDir.bChangeCurrent(gxArguments.m_sCommands);
   if (xDir.bGetCurrent(sCurrent) && gxArguments.m_bVerbose)
     vInfo("CURRENT WORKING DIRECTORY: %s\n"_Stz,sCurrent.aStr());
+}
+
+/*----------------------------------------------------------------------------*/
+/* execute system                                                             */
+/*----------------------------------------------------------------------------*/
+void vExecuteSystem(void)
+{
+  //OpSys::vGetInfo();
+  // OpSys::vTraceInfo();
+  
+  if (gxArguments.m_bVerbose)
+    vPrintSizes();
+  
+  vSetSignalHandlers();
+  
+  StorageEngine::vCheckAllAssumptions();
+  
+  vWriteRegionName();
+  vChangeDirectory();
+  vKillPrev();
+  
+  RapidsSE::vPoolOpen();
+  
+  if (gxArguments.m_bStart)
+    vSetGlobals();
+  
+  RapidsSE::vCheckPort();
+  
+  if (gxArguments.m_bPrompt && !gxArguments.m_bStart)
+    gpAttachMap->vPrintStartupInfo();
+  
+  RapidsSE::vExecuteCmdLine();
+  
+  //gpAttachMap->vPrintAttachMap();
+  
+  //vSkipListTest();
+  
+  //  ResultBuffer* pRB = new ResultBuffer;
+  //  delete pRB;
+  
+  vRunPrompt();
+  
+  RapidsSE::vPoolClose();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -209,7 +182,29 @@ void vPrintSizes(void)
    sizeof(Value),sizeof(IntVal),sizeof(ValWrk)
    );
    */
-  
+  /*
+   vTrace("sizeof(short) %lld\n"_Stz,(i8)sizeof(short));
+   vTrace("sizeof(int) %lld\n"_Stz,(i8)sizeof(int));
+   vTrace("sizeof(long) %lld\n"_Stz,(i8)sizeof(long));
+   vTrace("sizeof(long long) %lld\n"_Stz,(i8)sizeof(long long));
+   
+   vTrace("sizeof(i1) %lld\n"_Stz,(i8)sizeof(i1));
+   vTrace("sizeof(i2) %lld\n"_Stz,(i8)sizeof(i2));
+   vTrace("sizeof(i3) %lld\n"_Stz,(i8)sizeof(i3));
+   vTrace("sizeof(i4) %lld\n"_Stz,(i8)sizeof(i4));
+   vTrace("sizeof(i8) %lld\n"_Stz,(i8)sizeof(i8));
+   
+   vTrace("sizeof(Object) %lld\n"_Stz,(i8)sizeof(Object));
+   vTrace("sizeof(Object2) %lld\n"_Stz,(i8)sizeof(Object2));
+   vTrace("sizeof(eCN) %lld\n"_Stz,(i8)sizeof(eCN));
+   
+   vTrace("sizeof(Item) %lld\n"_Stz,(i8)sizeof(Item));
+   vTrace("sizeof(Entry) %lld\n"_Stz,(i8)sizeof(Entry));
+   
+   vTrace("alignof(i3) %lld\n"_Stz,(i8)alignof(i3));
+   vTrace("alignof(Entry) %lld\n"_Stz,(i8)alignof(Entry));
+   */
+
   vInfo("sizeof(Object) %lu; \n"_Stz, sizeof(Object));
   assert(sizeof(Object) == 8);
   
