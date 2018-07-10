@@ -6,6 +6,14 @@
 
 extern AttachMap*      gpAttachMap;
 
+JobNote mJobNote_Sanity (
+  "Job_Sanity"_Stz, // name of the job class
+  "comment"_Stz,    // comment about the job
+  "sanity"_Stz,     // the prompt command
+  "seed"_Stz        // the task seed for this job
+  );
+
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

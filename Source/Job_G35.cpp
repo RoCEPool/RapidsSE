@@ -4,10 +4,10 @@
 
 #include "JobModel.h"
 
-JobNote mJobNote(
-  "name"_Stz,    // name of the job class
+JobNote mJobNote_G35 (
+  "g35"_Stz,     // name of the job class
   "comment"_Stz, // comment about the job
-  "command"_Stz, // the prompt command
+  "g35"_Stz,     // the prompt command
   "seed"_Stz     // the task seed for this job
 );
 

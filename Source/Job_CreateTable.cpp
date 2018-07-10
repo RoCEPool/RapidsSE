@@ -4,6 +4,14 @@
 
 #include "JobModel.h"
 
+JobNote mJobNote_CreateTable (
+  "Job_CreateTable"_Stz,  // name of the job class
+  "comment"_Stz,          // comment about the job
+  "create table"_Stz,     // the prompt command
+  "seed"_Stz              // the task seed for this job
+);
+
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

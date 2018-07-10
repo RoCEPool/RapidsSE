@@ -4,6 +4,14 @@
 
 #include "JobModel.h"
 
+JobNote mJobNote_DropCatalog (
+  "Job_DropCatalog"_Stz, // name of the job class
+  "comment"_Stz,         // comment about the job
+  "drop catalog"_Stz,    // the prompt command
+  "seed"_Stz             // the task seed for this job
+);
+
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

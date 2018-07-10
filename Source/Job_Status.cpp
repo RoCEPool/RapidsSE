@@ -4,6 +4,13 @@
 
 #include "JobModel.h"
 
+JobNote mJobNote_Status (
+  "Job_Status"_Stz, // name of the job class
+  "comment"_Stz,    // comment about the job
+  "status"_Stz,     // the prompt command
+  "seed"_Stz        // the task seed for this job
+);
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

@@ -1,8 +1,16 @@
 /*============================================================================*/
-/* Job_CreateSchema.cpp -- Create Scema Job                                   */
+/* Job_CreateTenant.cpp -- Create Tennant Job                                 */
 /*============================================================================*/
 
 #include "JobModel.h"
+
+JobNote mJobNote_CreateTenant (
+  "Job_CreateTenant"_Stz,  // name of the job class
+  "comment"_Stz,           // comment about the job
+  "create tenant"_Stz,     // the prompt command
+  "seed"_Stz               // the task seed for this job
+);
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
