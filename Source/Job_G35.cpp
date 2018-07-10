@@ -10,7 +10,7 @@ JobNote mJobNote_G35 (
   "g35"_Stz,     // the prompt command
   "seed"_Stz,    // the task seed for this job
   bJob_G35_pre,  // prompt pre-process function
-  vJob_G35_post  // promot post-process function
+  vJob_G35_post  // prompt post-process function
 );
 
 /*----------------------------------------------------------------------------*/

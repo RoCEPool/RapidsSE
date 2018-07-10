@@ -10,7 +10,7 @@ JobNote mJobNote_DropSchema (
   "drop schema"_Stz,    // the prompt command
   "seed"_Stz,           // the task seed for this job
   bJob_DropSchema_pre,  // prompt pre-process function
-  vJob_DropSchema_post  // promot post-process function
+  vJob_DropSchema_post  // prompt post-process function
   );
 
 /*----------------------------------------------------------------------------*/

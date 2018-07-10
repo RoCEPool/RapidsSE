@@ -10,7 +10,7 @@ JobNote mJobNote_DropIndex (
   "drop index"_Stz,     // the prompt command
   "seed"_Stz,           // the task seed for this job
   bJob_DropIndex_pre,   // prompt pre-process function
-  vJob_DropIndex_post   // promot post-process function
+  vJob_DropIndex_post   // prompt post-process function
 );
 
 

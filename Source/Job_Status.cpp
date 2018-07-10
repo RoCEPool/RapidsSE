@@ -10,7 +10,7 @@ JobNote mJobNote_Status (
   "status"_Stz,     // the prompt command
   "seed"_Stz,       // the task seed for this job
   bJob_Status_pre,  // prompt pre-process function
-  vJob_Status_post  // promot post-process function
+  vJob_Status_post  // prompt post-process function
   );
 
 /*----------------------------------------------------------------------------*/

@@ -10,7 +10,7 @@ JobNote mJobNote_DropCatalog (
   "drop catalog"_Stz,    // the prompt command
   "seed"_Stz,            // the task seed for this job
   bJob_DropCatalog_pre,  // prompt pre-process function
-  vJob_DropCatalog_post  // promot post-process function
+  vJob_DropCatalog_post  // prompt post-process function
 );
 
 

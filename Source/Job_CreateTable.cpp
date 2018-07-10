@@ -10,7 +10,7 @@ JobNote mJobNote_CreateTable (
   "create table"_Stz,     // the prompt command
   "seed"_Stz,             // the task seed for this job
   bJob_CreateTable_pre,   // prompt pre-process function
-  vJob_CreateTable_post   // promot post-process function
+  vJob_CreateTable_post   // prompt post-process function
 );
 
 

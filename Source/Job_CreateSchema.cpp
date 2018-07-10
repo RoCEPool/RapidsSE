@@ -10,7 +10,7 @@ JobNote mJobNote_CreateSchema (
   "create schema"_Stz,    // the prompt command
   "seed"_Stz,             // the task seed for this job
   bJob_CreateSchema_pre,  // prompt pre-process function
-  vJob_CreateSchema_post  // promot post-process function
+  vJob_CreateSchema_post  // prompt post-process function
 );
 
 /*----------------------------------------------------------------------------*/

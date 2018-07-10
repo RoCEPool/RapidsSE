@@ -10,7 +10,7 @@ JobNote mJobNote_CreateCatalog (
   "create catalog"_Stz,    // the prompt command
   "seed"_Stz,              // the task seed for this job
   bJob_CreateCatalog_pre,  // prompt pre-process function
-  vJob_CreateCatalog_post  // promot post-process function
+  vJob_CreateCatalog_post  // prompt post-process function
 );
 
 /*----------------------------------------------------------------------------*/

@@ -10,7 +10,7 @@ JobNote mJobNote_CreateIndex (
   "create index "_Stz,   // the prompt command
   "seed"_Stz,            // the task seed for this job
   bJob_CreateIndex_pre,  // prompt pre-process function
-  vJob_CreateIndex_post  // promot post-process function
+  vJob_CreateIndex_post  // prompt post-process function
 );
 
 /*----------------------------------------------------------------------------*/
