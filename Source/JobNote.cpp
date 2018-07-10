@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* JobDesc.cpp -- a description of a job class                                */
+/* JobNote.cpp -- the class which populates the job catalog                   */
 /*============================================================================*/
 
 #include "JobModel.h"
