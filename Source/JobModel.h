@@ -56,7 +56,7 @@ using namespace JobsModel;
 
 #include "Jobs.hpp"
 
-#include "JobDesc.hpp"
+#include "JobClass.hpp"
 #include "JobCatalog.hpp"
 
 /*============================================================================*/

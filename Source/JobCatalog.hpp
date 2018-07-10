@@ -9,8 +9,8 @@ namespace JobsModel
   class JobCatalog
   {
   public:
-    i8      m_nClasses;       // number of job classes
-    JobDesc m_xJobClass[128]; // array of job class descriptions
+    i8       m_nClasses;       // number of job classes
+    JobClass m_xJobClass[128]; // array of job class descriptions
   
   public:
   
