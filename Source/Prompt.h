@@ -17,7 +17,7 @@ using namespace Prompt;
 
 #include "PromptFun.hpp"
 #include "PromptCatalog.hpp"
-//#include "PromptNote.hpp"
+#include "PromptNote.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

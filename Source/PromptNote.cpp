@@ -1,0 +1,40 @@
+/*============================================================================*/
+/* PromptNote.cpp -- the class which populates the prompt catalog             */
+/*============================================================================*/
+
+#include "Prompt.h"
+#include "StorageEngine.h"
+
+extern AttachMap* gpAttachMap;
+
+extern PromptCatalog gxPromptCatalog;
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+PromptNote::PromptNote(Stz* aName,
+                       Stz* aComment,
+                       Stz* aCommand1,
+                       Stz* aCommand2,
+                       bool (*fPrompt)(TokenVec* pTokenVec))
+{
+  vTrace("PromptNote: %s %s %s\n"_Stz,
+         aName, aComment, aCommand1);
+  
+  // add the prompt class to the catalog
+  i8 i_Prompt = gxPromptCatalog.m_nFunctions;
+  
+  gxPromptCatalog.m_xPromptFun[i_Prompt].m_sName     = aName;
+  gxPromptCatalog.m_xPromptFun[i_Prompt].m_sComment  = aComment;
+  gxPromptCatalog.m_xPromptFun[i_Prompt].m_sCommand1 = aCommand1;
+  if (aCommand2)
+    gxPromptCatalog.m_xPromptFun[i_Prompt].m_sCommand2 = aCommand2;
+  gxPromptCatalog.m_xPromptFun[i_Prompt].m_fPrompt     = fPrompt;
+
+  // we have one more class in the prompt catalog
+  gxPromptCatalog.m_nFunctions++;
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
