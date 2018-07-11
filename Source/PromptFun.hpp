@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace JobsModel
+namespace Prompt
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class PromptFun
@@ -14,7 +14,7 @@ namespace JobsModel
     s32  m_sCommand1; // first word of prompt command
     s32  m_sCommand2; // optional second word of prompt command
   
-    bool (*m_fPrompt)(TokenVec* pTokenVec);
+    void (*m_fPrompt)(SePrompt* pPrompt);
   
   public:
   

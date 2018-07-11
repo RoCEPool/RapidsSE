@@ -16,7 +16,7 @@ PromptNote::PromptNote(Stz* aName,
                        Stz* aComment,
                        Stz* aCommand1,
                        Stz* aCommand2,
-                       bool (*fPrompt)(TokenVec* pTokenVec))
+                       void (*fPrompt)(SePrompt* pPrompt))
 {
   vTrace("PromptNote: %s %s %s\n"_Stz,
          aName, aComment, aCommand1);

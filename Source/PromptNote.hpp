@@ -16,7 +16,7 @@ namespace Prompt
                Stz* aCommand1,
                Stz* aCommand2,
             
-               bool (*fPrompt)(TokenVec* pTokenVec));
+               void (*fPrompt)(SePrompt* pPrompt));
   };
 }
 
