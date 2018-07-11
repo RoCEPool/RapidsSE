@@ -13,7 +13,8 @@ namespace JobsModel
   public:
     JobNote(Stz* aName,
             Stz* aComment,
-            Stz* aCommand,
+            Stz* aCommand1,
+            Stz* aCommand2,
             Stz* aSeed,
             bool (*fPre)(TokenVec* pTokenVec),
             void (*fPost)(void));

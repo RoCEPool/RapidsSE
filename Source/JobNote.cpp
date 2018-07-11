@@ -12,7 +12,11 @@ extern JobCatalog gxJobCatalog;
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-JobNote::JobNote(Stz* aName, Stz* aComment, Stz* aCommand1, Stz* aSeed,
+JobNote::JobNote(Stz* aName,
+                 Stz* aComment,
+                 Stz* aCommand1,
+                 Stz* aCommand2,
+                 Stz* aSeed,
                  bool (*fPre)(TokenVec* pTokenVec),
                  void (*fPost)(void))
 {
@@ -25,7 +29,8 @@ JobNote::JobNote(Stz* aName, Stz* aComment, Stz* aCommand1, Stz* aSeed,
   gxJobCatalog.m_xJobClass[i_Job].m_sName     = aName;
   gxJobCatalog.m_xJobClass[i_Job].m_sComment  = aComment;
   gxJobCatalog.m_xJobClass[i_Job].m_sCommand1 = aCommand1;
-  gxJobCatalog.m_xJobClass[i_Job].m_sCommand2 = ""_Stz;
+  if (aCommand2)
+    gxJobCatalog.m_xJobClass[i_Job].m_sCommand2 = aCommand2;
   gxJobCatalog.m_xJobClass[i_Job].m_sSeed     = aSeed;
   gxJobCatalog.m_xJobClass[i_Job].m_fPre      = fPre;
   gxJobCatalog.m_xJobClass[i_Job].m_fPost     = fPost;

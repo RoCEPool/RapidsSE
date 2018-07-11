@@ -7,7 +7,8 @@
 JobNote mJobNote_DropCatalog (
   "Job_DropCatalog"_Stz, // name of the job class
   "comment"_Stz,         // comment about the job
-  "drop catalog"_Stz,    // the prompt command
+  "drop"_Stz,            // the prompt command
+  "catalog"_Stz,         // the second word
   "seed"_Stz,            // the task seed for this job
   bJob_DropCatalog_pre,  // prompt pre-process function
   vJob_DropCatalog_post  // prompt post-process function

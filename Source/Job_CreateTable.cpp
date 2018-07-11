@@ -7,7 +7,8 @@
 JobNote mJobNote_CreateTable (
   "Job_CreateTable"_Stz,  // name of the job class
   "comment"_Stz,          // comment about the job
-  "create table"_Stz,     // the prompt command
+  "create"_Stz,           // the prompt command
+  "table"_Stz,            // the second word
   "seed"_Stz,             // the task seed for this job
   bJob_CreateTable_pre,   // prompt pre-process function
   vJob_CreateTable_post   // prompt post-process function

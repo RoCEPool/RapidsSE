@@ -7,7 +7,8 @@
 JobNote mJobNote_CreateCatalog (
   "Job_CreateCatalog"_Stz, // name of the job class
   "comment"_Stz,           // comment about the job
-  "create catalog"_Stz,    // the prompt command
+  "create"_Stz,            // the prompt command
+  "catalog"_Stz,           // the second word
   "seed"_Stz,              // the task seed for this job
   bJob_CreateCatalog_pre,  // prompt pre-process function
   vJob_CreateCatalog_post  // prompt post-process function

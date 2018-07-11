@@ -8,6 +8,7 @@ JobNote mJobNote_Status (
   "Job_Status"_Stz, // name of the job class
   "comment"_Stz,    // comment about the job
   "status"_Stz,     // the prompt command
+  nullptr,          // the second word
   "seed"_Stz,       // the task seed for this job
   bJob_Status_pre,  // prompt pre-process function
   vJob_Status_post  // prompt post-process function

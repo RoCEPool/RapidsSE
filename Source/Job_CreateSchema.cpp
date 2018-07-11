@@ -7,7 +7,8 @@
 JobNote mJobNote_CreateSchema (
   "Job_CreateSchema"_Stz, // name of the job class
   "comment"_Stz,          // comment about the job
-  "create schema"_Stz,    // the prompt command
+  "create"_Stz,           // the prompt command
+  "schema"_Stz,           // the second word
   "seed"_Stz,             // the task seed for this job
   bJob_CreateSchema_pre,  // prompt pre-process function
   vJob_CreateSchema_post  // prompt post-process function

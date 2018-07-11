@@ -7,7 +7,8 @@
 JobNote mJobNote_DropSchema (
   "g35"_Stz,            // name of the job class
   "comment"_Stz,        // comment about the job
-  "drop schema"_Stz,    // the prompt command
+  "drop"_Stz,           // the prompt command
+  "schema"_Stz,         // the second word
   "seed"_Stz,           // the task seed for this job
   bJob_DropSchema_pre,  // prompt pre-process function
   vJob_DropSchema_post  // prompt post-process function

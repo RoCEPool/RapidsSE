@@ -7,7 +7,8 @@
 JobNote mJobNote_DropTable (
   "Job_DropTable"_Stz,  // name of the job class
   "comment"_Stz,        // comment about the job
-  "drop table"_Stz,     // the prompt command
+  "drop"_Stz,           // the prompt command
+  "table"_Stz,          // the second word
   "seed"_Stz,           // the task seed for this job
   bJob_DropTable_pre,   // prompt pre-process function
   vJob_DropTable_post   // prompt post-process function

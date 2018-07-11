@@ -7,7 +7,8 @@
 JobNote mJobNote_DropIndex (
   "Job_DropIndex"_Stz,  // name of the job class
   "comment"_Stz,        // comment about the job
-  "drop index"_Stz,     // the prompt command
+  "drop"_Stz,           // the prompt command
+  "index"_Stz,          // the second word
   "seed"_Stz,           // the task seed for this job
   bJob_DropIndex_pre,   // prompt pre-process function
   vJob_DropIndex_post   // prompt post-process function

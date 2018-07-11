@@ -8,6 +8,7 @@ JobNote mJobNote_Space (
   "space"_Stz,     // name of the job class
   "comment"_Stz,   // comment about the job
   "space"_Stz,     // the prompt command
+  nullptr,         // the second word
   "seed"_Stz,      // the task seed for this job
   bJob_Space_pre,  // prompt pre-process function
   vJob_Space_post  // prompt post-process function
