@@ -16,7 +16,7 @@ using namespace Prompt;
 //-----------------------------------------------------------------------------
 
 #include "SEprompt.hpp"
-#include "Prompt_pwf.hpp"
+#include "Prompt_pwd.hpp"
 
 #include "PromptFun.hpp"
 #include "PromptCatalog.hpp"
