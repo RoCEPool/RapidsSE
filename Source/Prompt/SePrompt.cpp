@@ -699,12 +699,19 @@ bool SePrompt::bOneIs(Stz* aArg)
 /*----------------------------------------------------------------------------*/
 /* potentially execute a prompt function                                      */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bPromptFunction(void)
+bool SePrompt::bExecuteFunction(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-
-  return false;
+  PromptFun* pPromptFun =
+    gxPromptCatalog.pFindFun(m_xTokenVec[0]->aText(), m_xTokenVec[1]->aText());
+  
+  if (! pPromptFun)
+    return false;
+  
+  (*pPromptFun->m_fPrompt)(this);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

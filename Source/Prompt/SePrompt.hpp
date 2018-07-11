@@ -152,7 +152,7 @@ private:
   bool bValidateCreateIndexR35(i8 iNumTokens);
   bool bValidateCreateTableR35(i8 iNumTokens);
   
-  bool bPromptFunction(void);
+  bool bExecuteFunction(void);
 };
 
 SePrompt* _pSePrompt(void* aAddr);
