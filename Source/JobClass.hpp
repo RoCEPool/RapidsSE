@@ -9,11 +9,11 @@ namespace JobsModel
   class JobClass
   {
   public:
-    s32  m_sName;     // name of the job class
-    s256 m_sComment;  // comment about the job
-    s32  m_sCommand1; // first word of prompt command
-    s32  m_sCommand2; // optional second word of prompt command
-    s32  m_sSeed;     // the task seed for this job
+    Stz* m_aName;     // name of the job class
+    Stz* m_aComment;  // comment about the job
+    Stz* m_aCommand1; // first word of prompt command
+    Stz* m_aCommand2; // optional second word of prompt command
+    Stz* m_aSeed;     // the task seed for this job
   
     bool (*m_fPre)(TokenVec* pTokenVec);
   
