@@ -9,10 +9,10 @@ namespace Prompt
   class PromptFun
   {
   public:
-    s32  m_sName;     // name of the prompt function
-    s256 m_sComment;  // comment about the function
-    s32  m_sCommand1; // first word of prompt command
-    s32  m_sCommand2; // optional second word of prompt command
+    Stz* m_aName;     // name of the prompt function
+    Stz* m_aComment;  // comment about the function
+    Stz* m_aCommand1; // first word of prompt command
+    Stz* m_aCommand2; // optional second word of prompt command
   
     void (*m_fPrompt)(SePrompt* pPrompt);
   

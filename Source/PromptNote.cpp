@@ -24,11 +24,11 @@ PromptNote::PromptNote(Stz* aName,
   // add the prompt class to the catalog
   i8 i_Prompt = gxPromptCatalog.m_nFunctions;
   
-  gxPromptCatalog.m_xPromptFun[i_Prompt].m_sName     = aName;
-  gxPromptCatalog.m_xPromptFun[i_Prompt].m_sComment  = aComment;
-  gxPromptCatalog.m_xPromptFun[i_Prompt].m_sCommand1 = aCommand1;
+  gxPromptCatalog.m_xPromptFun[i_Prompt].m_aName     = aName;
+  gxPromptCatalog.m_xPromptFun[i_Prompt].m_aComment  = aComment;
+  gxPromptCatalog.m_xPromptFun[i_Prompt].m_aCommand1 = aCommand1;
   if (aCommand2)
-    gxPromptCatalog.m_xPromptFun[i_Prompt].m_sCommand2 = aCommand2;
+    gxPromptCatalog.m_xPromptFun[i_Prompt].m_aCommand2 = aCommand2;
   gxPromptCatalog.m_xPromptFun[i_Prompt].m_fPrompt     = fPrompt;
 
   // we have one more class in the prompt catalog

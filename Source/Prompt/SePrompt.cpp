@@ -2,12 +2,14 @@
 /* SePrompt.cpp -- se> prompt                                                 */
 /*============================================================================*/
 
-#include "SePrompt.hpp"
+#include "Prompt.h"
 
 extern AttachMap*    gpAttachMap;
 extern BufferPool*   gpBufferPool;
 extern Arguments     gxArguments;
 extern pthread_key_t giTLS_ThreadKey;
+
+PromptCatalog gxPromptCatalog;
 
 //
 // list of commands which need intercept processing by SePrompt
