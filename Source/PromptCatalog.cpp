@@ -7,6 +7,29 @@
 
 extern AttachMap* gpAttachMap;
 
+/*----------------------------------------------------------------------------*/
+/* find prompt function given command                                         */
+/*----------------------------------------------------------------------------*/
+PromptFun* PromptCatalog::pFindFun(Stz* aCommand1, Stz* aCommand2)
+{
+  for (i8 i_Fun = 0; i_Fun < m_nFunctions; i_Fun++) {
+    
+    if ( ! m_xPromptFun[i_Fun].m_aCommand1->bSame(aCommand1) )
+      continue;
+    
+    if (aCommand2) {
+      if ( ! m_xPromptFun[i_Fun].m_aCommand2 )
+        continue;
+      if ( ! m_xPromptFun[i_Fun].m_aCommand2->bSame(aCommand2) )
+        continue;
+    }
+    
+    return &m_xPromptFun[i_Fun];
+  }
+
+  return nullptr;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

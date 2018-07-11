@@ -13,7 +13,7 @@ namespace Prompt
     PromptFun m_xPromptFun[128]; // array of prompt function descriptions
   
   public:
-  
+    PromptFun* pFindFun(Stz* aCommand1, Stz* aCommand2);
   };
 }
 
