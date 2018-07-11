@@ -1,0 +1,22 @@
+/*============================================================================*/
+/* PromptCatalog.hpp -- the catalog of prompt functions                       */
+/*============================================================================*/
+#pragma once
+
+namespace Prompt
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  class PromptCatalog
+  {
+  public:
+    i8        m_nFunctions;      // number of prompt functions
+    PromptFun m_xPromptFun[128]; // array of prompt function descriptions
+  
+  public:
+  
+  };
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
