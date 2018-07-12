@@ -25,7 +25,7 @@ void Prompt::vPrompt_pwd(SePrompt* pPrompt)
   ASSERT((*pTokenVec)[0]->bSame("pwd"_Stz));
   
   if (xDir.bGetCurrent(sDir)) {
-    vTrace("%s"_Stz, sDir.aChar());
+    vTrace("%s\n"_Stz, sDir.aChar());
   }
 }
 

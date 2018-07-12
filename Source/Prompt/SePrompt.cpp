@@ -248,6 +248,10 @@ void SePrompt::vLoop(void)
     if (0 == m_xTokenVec[0]->iLength())
       continue;
     
+    // attempt to execute internal command
+    if (bExecuteFunction())
+      continue;
+    
     bool bProcessResult = bProcessCommand();
     
     if (m_bEcho) {
