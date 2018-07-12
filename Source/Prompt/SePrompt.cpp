@@ -10,6 +10,7 @@ extern Arguments     gxArguments;
 extern pthread_key_t giTLS_ThreadKey;
 
 PromptCatalog gxPromptCatalog;
+extern JobCatalog gxJobCatalog;
 
 //
 // list of commands which need intercept processing by SePrompt
@@ -714,6 +715,24 @@ bool SePrompt::bExecuteFunction(void)
     return false;
   
   (*pPromptFun->m_fPrompt)(this);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* potentially execute a job                                                  */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bExecuteJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  JobClass* pJobClass =
+    gxJobCatalog.pFindJob(m_xTokenVec[0]->aText(), m_xTokenVec[1]->aText());
+  
+  if (! pJobClass)
+    return false;
+  
+  bool bProcessResult = bProcessCommand();
   
   return true;
 }
