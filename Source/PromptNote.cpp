@@ -16,7 +16,8 @@ PromptNote::PromptNote(Stz* aName,
                        Stz* aComment,
                        Stz* aCommand1,
                        Stz* aCommand2,
-                       void (*fPrompt)(SePrompt* pPrompt))
+                       void (*fPrompt)(SePrompt* pPrompt),
+                       bool bEnabled)
 {
   vTrace("PromptNote: %s %s %s\n"_Stz,
          aName, aComment, aCommand1);
@@ -30,6 +31,7 @@ PromptNote::PromptNote(Stz* aName,
   if (aCommand2)
     gxPromptCatalog.m_xPromptFun[i_Prompt].m_aCommand2 = aCommand2;
   gxPromptCatalog.m_xPromptFun[i_Prompt].m_fPrompt     = fPrompt;
+  gxPromptCatalog.m_xPromptFun[i_Prompt].m_bEnabled    = bEnabled;
 
   // we have one more class in the prompt catalog
   gxPromptCatalog.m_nFunctions++;

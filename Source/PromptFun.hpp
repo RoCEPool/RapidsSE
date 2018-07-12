@@ -16,6 +16,8 @@ namespace Prompt
   
     void (*m_fPrompt)(SePrompt* pPrompt);
   
+    bool m_bEnabled;  // is this function enabled
+  
   public:
   
   };

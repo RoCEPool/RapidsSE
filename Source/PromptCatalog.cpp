@@ -24,7 +24,10 @@ PromptFun* PromptCatalog::pFindFun(Stz* aCommand1, Stz* aCommand2)
         continue;
     }
     
-    return &m_xPromptFun[i_Fun];
+    if (m_xPromptFun[i_Fun].m_bEnabled)
+      return &m_xPromptFun[i_Fun];
+    else
+      return nullptr;
   }
 
   return nullptr;
