@@ -16,8 +16,9 @@ namespace JobsModel
     Stz* m_aSeed;     // the task seed for this job
   
     bool (*m_fPre)(TokenVec* pTokenVec);
-  
     void (*m_fPost)(void);
+  
+    bool m_bEnabled;  // is this job enabled?
 
   public:
   

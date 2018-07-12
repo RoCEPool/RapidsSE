@@ -26,7 +26,10 @@ JobClass* JobCatalog::pFindJob(Stz* aCommand1, Stz* aCommand2)
         continue;
     }
     
-    return &m_xJobClass[i_Job];
+    if (m_xJobClass[i_Job].m_bEnabled)
+      return &m_xJobClass[i_Job];
+    else
+      return nullptr;
   }
   
   return nullptr;

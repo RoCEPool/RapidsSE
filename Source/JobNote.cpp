@@ -18,7 +18,8 @@ JobNote::JobNote(Stz* aName,
                  Stz* aCommand2,
                  Stz* aSeed,
                  bool (*fPre)(TokenVec* pTokenVec),
-                 void (*fPost)(void))
+                 void (*fPost)(void),
+                 bool bEnabled)
 {
   vTrace("JobNote: %s %s %s %s\n"_Stz,
          aName, aComment, aCommand1, aSeed);
@@ -34,6 +35,7 @@ JobNote::JobNote(Stz* aName,
   gxJobCatalog.m_xJobClass[i_Job].m_aSeed     = aSeed;
   gxJobCatalog.m_xJobClass[i_Job].m_fPre      = fPre;
   gxJobCatalog.m_xJobClass[i_Job].m_fPost     = fPost;
+  gxJobCatalog.m_xJobClass[i_Job].m_bEnabled  = bEnabled;
 
   // we have one more class in the job catalog
   gxJobCatalog.m_nClasses++;
