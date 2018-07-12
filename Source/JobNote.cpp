@@ -17,7 +17,7 @@ JobNote::JobNote(Stz* aName,
                  Stz* aCommand1,
                  Stz* aCommand2,
                  Stz* aSeed,
-                 bool (*fPre)(TokenVec* pTokenVec),
+                 Job* (*fPre)(TokenVec* pTokenVec),
                  void (*fPost)(void),
                  bool bEnabled)
 {

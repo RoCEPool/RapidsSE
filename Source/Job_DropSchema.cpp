@@ -10,7 +10,7 @@ JobNote mJobNote_DropSchema (
   "drop"_Stz,           // the prompt command
   "schema"_Stz,         // the second word
   "seed"_Stz,           // the task seed for this job
-  bJob_DropSchema_pre,  // prompt pre-process function
+  pJob_DropSchema_pre,  // prompt pre-process function
   vJob_DropSchema_post  // prompt post-process function
   );
 
@@ -135,9 +135,9 @@ Footer* Job_DropSchema::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-bool JobsModel::bJob_DropSchema_pre(TokenVec* pTokenVec)
+Job* JobsModel::pJob_DropSchema_pre(TokenVec* pTokenVec)
 {
-  return true;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

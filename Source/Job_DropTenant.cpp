@@ -10,7 +10,7 @@ JobNote mJobNote_DropTenant (
   "drop"_Stz,           // the prompt command
   "tenant"_Stz,         // the second word
   "seed"_Stz,           // the task seed for this job
-  bJob_DropTenant_pre,  // prompt pre-process function
+  pJob_DropTenant_pre,  // prompt pre-process function
   vJob_DropTenant_post  // prompt post-process function
   );
 
@@ -136,9 +136,9 @@ Footer* Job_DropTenant::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-bool JobsModel::bJob_DropTenant_pre(TokenVec* pTokenVec)
+Job* JobsModel::pJob_DropTenant_pre(TokenVec* pTokenVec)
 {
-  return true;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

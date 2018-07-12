@@ -10,7 +10,7 @@ JobNote mJobNote_Space (
   "space"_Stz,     // the prompt command
   nullptr,         // the second word
   "seed"_Stz,      // the task seed for this job
-  bJob_Space_pre,  // prompt pre-process function
+  pJob_Space_pre,  // prompt pre-process function
   vJob_Space_post  // prompt post-process function
 );
 
@@ -135,9 +135,9 @@ Footer* Job_Space::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-bool JobsModel::bJob_Space_pre(TokenVec* pTokenVec)
+Job* JobsModel::pJob_Space_pre(TokenVec* pTokenVec)
 {
-  return true;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

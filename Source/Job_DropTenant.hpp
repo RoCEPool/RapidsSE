@@ -37,7 +37,7 @@ namespace JobsModel
   
   Job_DropTenant* _pJob_DropTenant(void* aAddr);
   
-  bool bJob_DropTenant_pre(TokenVec* pTokenVec);
+  Job* pJob_DropTenant_pre(TokenVec* pTokenVec);
   void vJob_DropTenant_post(void);
 }
 

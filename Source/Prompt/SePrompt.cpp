@@ -253,6 +253,10 @@ void SePrompt::vLoop(void)
     if (bExecuteFunction())
       continue;
     
+    // attempt to execute se job
+    if (bExecuteJob())
+      continue;
+    
     bool bProcessResult = bProcessCommand();
     
     if (m_bEcho) {

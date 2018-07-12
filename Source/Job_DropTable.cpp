@@ -10,7 +10,7 @@ JobNote mJobNote_DropTable (
   "drop"_Stz,           // the prompt command
   "table"_Stz,          // the second word
   "seed"_Stz,           // the task seed for this job
-  bJob_DropTable_pre,   // prompt pre-process function
+  pJob_DropTable_pre,   // prompt pre-process function
   vJob_DropTable_post   // prompt post-process function
   );
 
@@ -136,9 +136,9 @@ Footer* Job_DropTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-bool JobsModel::bJob_DropTable_pre(TokenVec* pTokenVec)
+Job* JobsModel::pJob_DropTable_pre(TokenVec* pTokenVec)
 {
-  return true;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

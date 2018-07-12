@@ -10,7 +10,7 @@ JobNote mJobNote_CreateSchema (
   "create"_Stz,           // the prompt command
   "schema"_Stz,           // the second word
   "seed"_Stz,             // the task seed for this job
-  bJob_CreateSchema_pre,  // prompt pre-process function
+  pJob_CreateSchema_pre,  // prompt pre-process function
   vJob_CreateSchema_post  // prompt post-process function
 );
 
@@ -135,9 +135,9 @@ Footer* Job_CreateSchema::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-bool JobsModel::bJob_CreateSchema_pre(TokenVec* pTokenVec)
+Job* JobsModel::pJob_CreateSchema_pre(TokenVec* pTokenVec)
 {
-  return true;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

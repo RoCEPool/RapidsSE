@@ -10,7 +10,7 @@ JobNote mJobNote_CreateCatalog (
   "create"_Stz,            // the prompt command
   "catalog"_Stz,           // the second word
   "seed"_Stz,              // the task seed for this job
-  bJob_CreateCatalog_pre,  // prompt pre-process function
+  pJob_CreateCatalog_pre,  // prompt pre-process function
   vJob_CreateCatalog_post  // prompt post-process function
 );
 
@@ -139,9 +139,9 @@ Footer* Job_CreateCatalog::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-bool JobsModel::bJob_CreateCatalog_pre(TokenVec* pTokenVec)
+Job* JobsModel::pJob_CreateCatalog_pre(TokenVec* pTokenVec)
 {
-  return true;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

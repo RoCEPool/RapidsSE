@@ -37,7 +37,7 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_CreateCatalog* _pJob_CreateCatalog(void* aAddr);
   
-  bool bJob_CreateCatalog_pre(TokenVec* pTokenVec);
+  Job* pJob_CreateCatalog_pre(TokenVec* pTokenVec);
   void vJob_CreateCatalog_post(void);
 }
 

@@ -10,7 +10,7 @@ JobNote mJobNote_G35 (
   "g35"_Stz,     // the prompt command
   nullptr,       // the second word
   "seed"_Stz,    // the task seed for this job
-  bJob_G35_pre,  // prompt pre-process function
+  pJob_G35_pre,  // prompt pre-process function
   vJob_G35_post  // prompt post-process function
 );
 
@@ -135,9 +135,9 @@ Footer* Job_G35::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-bool JobsModel::bJob_G35_pre(TokenVec* pTokenVec)
+Job* JobsModel::pJob_G35_pre(TokenVec* pTokenVec)
 {
-  return true;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

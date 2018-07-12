@@ -10,7 +10,7 @@ JobNote mJobNote_CreateIndex (
   "create"_Stz,          // the prompt command
   "index"_Stz,           // the second word
   "seed"_Stz,            // the task seed for this job
-  bJob_CreateIndex_pre,  // prompt pre-process function
+  pJob_CreateIndex_pre,  // prompt pre-process function
   vJob_CreateIndex_post  // prompt post-process function
 );
 
@@ -151,9 +151,9 @@ Footer* Job_CreateIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-bool JobsModel::bJob_CreateIndex_pre(TokenVec* pTokenVec)
+Job* JobsModel::pJob_CreateIndex_pre(TokenVec* pTokenVec)
 {
-  return true;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
