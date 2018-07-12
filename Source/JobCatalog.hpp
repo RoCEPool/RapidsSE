@@ -13,7 +13,8 @@ namespace JobsModel
     JobClass m_xJobClass[128]; // array of job class descriptions
   
   public:
-  
+    JobClass* pFindJob(Stz* aCommand1, Stz* aCommand2);
+
   };
 }
 
