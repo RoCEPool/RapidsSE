@@ -16,8 +16,8 @@ namespace JobsModel
             Stz* aCommand1,
             Stz* aCommand2,
             Stz* aSeed,
-            Job* (*fPre)(TokenVec* pTokenVec),
-            void (*fPost)(void),
+            Job* (*fPre)(SePrompt* pPrompt),
+            void (*fPost)(SePrompt* pPrompt),
             bool bEnabled=false);
   };
 }

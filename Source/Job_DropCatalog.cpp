@@ -136,7 +136,7 @@ Footer* Job_DropCatalog::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_DropCatalog_pre(TokenVec* pTokenVec)
+Job* JobsModel::pJob_DropCatalog_pre(SePrompt* pPrompt)
 {
   return nullptr;
 }
@@ -144,7 +144,7 @@ Job* JobsModel::pJob_DropCatalog_pre(TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_DropCatalog_post(void)
+void JobsModel::vJob_DropCatalog_post(SePrompt* pPrompt)
 {
 }
 

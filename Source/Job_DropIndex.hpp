@@ -37,8 +37,8 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_DropIndex* _pJob_DropIndex(void* aAddr);
   
-  Job* pJob_DropIndex_pre(TokenVec* pTokenVec);
-  void vJob_DropIndex_post(void);
+  Job* pJob_DropIndex_pre(SePrompt* pPrompt);
+  void vJob_DropIndex_post(SePrompt* pPrompt);
 }
 
 /*============================================================================*/

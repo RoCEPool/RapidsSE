@@ -37,8 +37,8 @@ namespace JobsModel
   
   Job_DropSchema* _pJob_DropSchema(void* aAddr);
   
-  Job* pJob_DropSchema_pre(TokenVec* pTokenVec);
-  void vJob_DropSchema_post(void);
+  Job* pJob_DropSchema_pre(SePrompt* pPrompt);
+  void vJob_DropSchema_post(SePrompt* pPrompt);
 }
 
 /*============================================================================*/

@@ -17,8 +17,8 @@ JobNote::JobNote(Stz* aName,
                  Stz* aCommand1,
                  Stz* aCommand2,
                  Stz* aSeed,
-                 Job* (*fPre)(TokenVec* pTokenVec),
-                 void (*fPost)(void),
+                 Job* (*fPre)(SePrompt* pPrompt),
+                 void (*fPost)(SePrompt* pPrompt),
                  bool bEnabled)
 {
   vTrace("JobNote: %s %s %s %s\n"_Stz,

@@ -136,7 +136,7 @@ Footer* Job_DropIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_DropIndex_pre(TokenVec* pTokenVec)
+Job* JobsModel::pJob_DropIndex_pre(SePrompt* pPrompt)
 {
   return nullptr;
 }
@@ -144,7 +144,7 @@ Job* JobsModel::pJob_DropIndex_pre(TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_DropIndex_post(void)
+void JobsModel::vJob_DropIndex_post(SePrompt* pPrompt)
 {
 }
 

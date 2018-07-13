@@ -135,7 +135,7 @@ Footer* Job_Space::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_Space_pre(TokenVec* pTokenVec)
+Job* JobsModel::pJob_Space_pre(SePrompt* pPrompt)
 {
   return nullptr;
 }
@@ -143,7 +143,7 @@ Job* JobsModel::pJob_Space_pre(TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Space_post(void)
+void JobsModel::vJob_Space_post(SePrompt* pPrompt)
 {
 }
 

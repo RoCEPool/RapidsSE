@@ -135,7 +135,7 @@ Footer* Job_CreateSchema::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_CreateSchema_pre(TokenVec* pTokenVec)
+Job* JobsModel::pJob_CreateSchema_pre(SePrompt* pPrompt)
 {
   return nullptr;
 }
@@ -143,7 +143,7 @@ Job* JobsModel::pJob_CreateSchema_pre(TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_CreateSchema_post(void)
+void JobsModel::vJob_CreateSchema_post(SePrompt* pPrompt)
 {
 }
 

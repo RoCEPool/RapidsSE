@@ -40,8 +40,8 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Sanity* _pJob_Sanity(void* aAddr);
   
-  Job* pJob_Sanity_pre(TokenVec* pTokenVec);
-  void vJob_Sanity_post(void);
+  Job* pJob_Sanity_pre(SePrompt* pPrompt);
+  void vJob_Sanity_post(SePrompt* pPrompt);
 }
 
 /*============================================================================*/

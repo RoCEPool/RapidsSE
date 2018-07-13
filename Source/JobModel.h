@@ -19,6 +19,8 @@ namespace JobsModel
 
 using namespace JobsModel;
 
+class SePrompt;
+
 //-----------------------------------------------------------------------------
 
 #include "Job.hpp"

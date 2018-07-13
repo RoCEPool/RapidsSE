@@ -151,7 +151,7 @@ Footer* Job_CreateIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_CreateIndex_pre(TokenVec* pTokenVec)
+Job* JobsModel::pJob_CreateIndex_pre(SePrompt* pPrompt)
 {
   return nullptr;
 }
@@ -159,7 +159,7 @@ Job* JobsModel::pJob_CreateIndex_pre(TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_CreateIndex_post(void)
+void JobsModel::vJob_CreateIndex_post(SePrompt* pPrompt)
 {
 }
 

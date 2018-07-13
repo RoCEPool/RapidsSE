@@ -37,8 +37,8 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_CreateTenant* _pJob_CreateTenant(void* aAddr);
   
-  Job* pJob_CreateTenant_pre(TokenVec* pTokenVec);
-  void vJob_CreateTenant_post(void);
+  Job* pJob_CreateTenant_pre(SePrompt* pPrompt);
+  void vJob_CreateTenant_post(SePrompt* pPrompt);
 }
 
 /*============================================================================*/

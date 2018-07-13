@@ -15,8 +15,8 @@ namespace JobsModel
     Stz* m_aCommand2; // optional second word of prompt command
     Stz* m_aSeed;     // the task seed for this job
   
-    Job* (*m_fPre)(TokenVec* pTokenVec);
-    void (*m_fPost)(void);
+    Job* (*m_fPre)(SePrompt* pPrompt);
+    void (*m_fPost)(SePrompt* pPrompt);
   
     bool m_bEnabled;  // is this job enabled?
 

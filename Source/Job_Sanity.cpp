@@ -140,7 +140,7 @@ Footer* Job_Sanity::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_Sanity_pre(TokenVec* pTokenVec)
+Job* JobsModel::pJob_Sanity_pre(SePrompt* pPrompt)
 {
   return nullptr;
 }
@@ -148,7 +148,7 @@ Job* JobsModel::pJob_Sanity_pre(TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Sanity_post(void)
+void JobsModel::vJob_Sanity_post(SePrompt* pPrompt)
 {
 }
 

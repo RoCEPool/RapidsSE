@@ -42,8 +42,8 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_CreateIndex* _pJob_CreateIndex(void* aAddr);
   
-  Job* pJob_CreateIndex_pre(TokenVec* pTokenVec);
-  void vJob_CreateIndex_post(void);
+  Job* pJob_CreateIndex_pre(SePrompt* pPrompt);
+  void vJob_CreateIndex_post(SePrompt* pPrompt);
 }
 
 /*============================================================================*/
