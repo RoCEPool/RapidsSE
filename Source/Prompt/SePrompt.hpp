@@ -60,7 +60,8 @@ private:
   
   //----------------------------------------------------------------------------
   bool bProcessCommand(bool bPostProcess = true);
-  
+  bool bProcessJob(JobClass* pJobClass, bool bPostProcess = true);
+
   void vSetEcho(void);
   void vClearEcho(void);
   

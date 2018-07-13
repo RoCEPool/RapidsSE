@@ -597,6 +597,78 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
 }
 
 /*----------------------------------------------------------------------------*/
+/* process job                                                                */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bProcessJob(JobClass* pJobClass, bool bPostProcess)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for echo prefix
+  if (bCmdIs("echo"_Stz))
+    vSetEcho();
+  else
+    vClearEcho();
+  
+  //vTrace("command: %s\n"_Stz,m_xTokenVec[0]->sText().aChar());
+  
+  for (i8 i_Cmd = 0; SePromptCommands[i_Cmd].aCommand; i_Cmd++) {
+    
+    if ( ! bCmdIs((Stz*)SePromptCommands[i_Cmd].aCommand))
+      continue;
+    
+    if (! SePromptCommands[i_Cmd].aAlternate)
+      return (this->*SePromptCommands[i_Cmd].aFunc)();
+    
+    if (bOneIs((Stz*)SePromptCommands[i_Cmd].aAlternate)) {
+      return (this->*SePromptCommands[i_Cmd].aFunc)();
+    }
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append to history
+  m_xHistory.vAppend(m_xTokenVec);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for command file
+  if (bTestFile(m_xTokenVec[0]->aText()))
+    return bRunFile();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // execute seitf request
+  if (! bExecuteRequest())
+    return false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // post process requests
+  if (! bPostProcess)
+    return true;
+  
+  if ( bCmdIs("fetch"_Stz) || bCmdIs("dfetch"_Stz)) {
+    vIterateBuffers();
+    return false;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // the following never return
+  
+  if (m_xTokenVec[0]->bSame("mon"_Stz)) {
+    while (true) {
+      PosixThread::vSleepSec(10);
+      if (!bExecuteRequest())
+        return true;
+    }
+  }
+  
+  if (m_xTokenVec[0]->bSame("x"_Stz)) {
+    while (true)
+      bExecuteRequest();
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* push command file                                                          */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vPushFile(Stz* aFileName)
@@ -771,7 +843,7 @@ bool SePrompt::bExecuteJob(void)
   if (! pJobClass)
     return false;
   
-  bool bProcessResult = bProcessCommand();
+  bool bProcessResult = bProcessJob(pJobClass);
     
   if (bProcessResult) {
     if (gpAttachMap->m_bMetadata ) {
