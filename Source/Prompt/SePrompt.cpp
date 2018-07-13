@@ -257,6 +257,7 @@ void SePrompt::vLoop(void)
     if (bExecuteJob())
       continue;
     
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     bool bProcessResult = bProcessCommand();
     
     if (m_bEcho) {
@@ -737,7 +738,25 @@ bool SePrompt::bExecuteJob(void)
     return false;
   
   bool bProcessResult = bProcessCommand();
+    
+  if (bProcessResult) {
+    if (gpAttachMap->m_bMetadata ) {
+      vMetaFormat();
+    }
+    else {
+      if ( !m_sResponse.bEqual("<ok>"_Stz) ) {
+        vTrace("%s\n"_Stz,m_sResponse.aChar());
+      }
+    }
+  }
+  else {
+    if (m_pSEitf->eGetLastError() != EC_NONE)
+      vTrace("error: %s\n"_Stz,m_pSEitf->pGetLastError());
+  }
   
+  // clear the response
+  m_sResponse = ""_Stz;
+
   return true;
 }
 
