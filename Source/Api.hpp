@@ -62,6 +62,7 @@ extern "C" bool RapidsSE_SEitfInvalid(int eError, i8 iTraceLevel);
 extern "C" eEC RapidsSE_TruncateTable(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable, i8 iTraceLevel);
 
 bool RapidsSE_ExecuteRequest(SEitf* pSEitf,TokenVec& xTokenVec, Stz** ppResponse);
+bool RapidsSE_ExecuteRequestR35(SEitf* pSEitf,TokenVec& xTokenVec, Stz** ppResponse);
 
 // private calls
 eEC eExecuteRequest(SEitf* pSEitf, Stz* aCommand);

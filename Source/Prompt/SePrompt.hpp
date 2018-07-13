@@ -152,6 +152,9 @@ private:
   bool bValidateCreateIndexR35(i8 iNumTokens);
   bool bValidateCreateTableR35(i8 iNumTokens);
   
+  bool bBlankLine(void);
+  
+  bool bExecuteFile(void);
   bool bExecuteFunction(void);
   bool bExecuteJob(void);
 };

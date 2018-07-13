@@ -9,7 +9,7 @@ JobNote mJobNote_Space (
   "comment"_Stz,   // comment about the job
   "spaceR35"_Stz,  // the prompt command
   nullptr,         // the second word
-  "seed"_Stz,      // the task seed for this job
+  "poolSpaceR35_req"_Stz, // the task seed for this job
   pJob_Space_pre,  // prompt pre-process function
   vJob_Space_post, // prompt post-process function
   true     

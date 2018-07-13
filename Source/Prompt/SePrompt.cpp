@@ -245,8 +245,13 @@ void SePrompt::vLoop(void)
   while (m_bContinue) {
     
     vGetCommand();
+  
+    // test for blank line
+    if (bBlankLine())
+      continue;
     
-    if (0 == m_xTokenVec[0]->iLength())
+    // attempt to execute command file
+    if (bExecuteFile())
       continue;
     
     // attempt to execute internal command
@@ -704,6 +709,35 @@ bool SePrompt::bOneIs(Stz* aArg)
     return true;
   else
     return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for blank line                                                        */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bBlankLine(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  if (0 != m_xTokenVec[0]->iLength())
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* potentially execute a command file                                         */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bExecuteFile(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  if (! bTestFile(m_xTokenVec[0]->aText()))
+    return false;
+  
+  bool b = bRunFile();
+  ASSERT(b);
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

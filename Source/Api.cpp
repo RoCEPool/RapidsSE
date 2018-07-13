@@ -2415,6 +2415,38 @@ bool RapidsSE_ExecuteRequest(SEitf* pSEitf, TokenVec& xTokenVec, Stz** ppRespons
 }
 
 /*----------------------------------------------------------------------------*/
+/* Execute a request                                                          */
+/*----------------------------------------------------------------------------*/
+bool RapidsSE_ExecuteRequestR35(SEitf* pSEitf, TokenVec& xTokenVec, Stz** ppResponse)
+{
+  bool bResult;
+  
+  // clear the last error
+  pSEitf->vClearLastError();
+  
+  // send request to se
+  bResult = bExecuteRequest(pSEitf, xTokenVec);
+  if (! bResult) {
+    *ppResponse = nullptr;
+    return bResult;
+  }
+  
+  if (xTokenVec.bDetachedRequest())
+    return true;
+  
+  // get response from se
+  eEC eResult = eGetResponse(pSEitf);
+  
+  // put response into caller
+  *ppResponse = pSEitf->m_sResponse;
+  
+  if (eResult == EC_NONE)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* execute command                                                            */
 /*----------------------------------------------------------------------------*/
 eEC eExecuteRequest(SEitf* pSEitf, Stz* aCommand)
