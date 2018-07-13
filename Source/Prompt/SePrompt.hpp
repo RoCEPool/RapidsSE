@@ -68,6 +68,7 @@ private:
   bool bRunFile(void);
   
   bool bExecuteRequest(void);
+  bool bDispatchJob(void);
   bool bTestFile(Stz* aPath);
   void vPushFile(Stz* aPath);
 

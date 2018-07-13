@@ -408,6 +408,38 @@ bool SePrompt::bExecuteRequest(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dispatch job into SE                                                       */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bDispatchJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  Timer xTimer;
+  Stz* aResponse = nullptr;
+  
+  xTimer.vStart();
+  
+  m_xTokenVec.vSetTokens();
+  
+  //! make this part of verbose??
+  //m_pTokeniser->vDumpTokens("Command : "_Stz,m_xTokenVec,C_TOKENS);
+  
+  bool bResult = RapidsSE_ExecuteRequest(m_pSEitf,m_xTokenVec,&aResponse);
+  
+  if (m_xTokenVec.bDetachedRequest())
+    return bResult;
+  
+  if (bResult)
+    m_sResponse = aResponse ? (Stz*)aResponse : ""_Stz;
+  else
+    m_sResponse = aResponse ? (Stz*)aResponse : ""_Stz;
+  
+  xTimer.vUpdate();
+  
+  return bResult;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get command                                                                */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vGetCommand(void)
@@ -636,7 +668,7 @@ bool SePrompt::bProcessJob(JobClass* pJobClass, bool bPostProcess)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // execute seitf request
-  if (! bExecuteRequest())
+  if (! bDispatchJob())
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
