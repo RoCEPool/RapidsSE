@@ -53,6 +53,7 @@ public:
 
 private:
   void vGetCommand(void);
+  void vExecuteCommand(void);
   void vGetCommandArgument(void);
   void vGetCommandInput(void);
   

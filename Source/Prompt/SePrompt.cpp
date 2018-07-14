@@ -245,7 +245,10 @@ void SePrompt::vLoop(void)
   while (m_bContinue) {
     
     vGetCommand();
-  
+
+    vExecuteCommand();
+
+ /*
     // test for blank line
     if (bBlankLine())
       continue;
@@ -293,6 +296,7 @@ void SePrompt::vLoop(void)
     
     // clear the response
     m_sResponse = ""_Stz;
+*/
   }
   
   // close history file
@@ -424,7 +428,7 @@ bool SePrompt::bDispatchJob(void)
   //! make this part of verbose??
   //m_pTokeniser->vDumpTokens("Command : "_Stz,m_xTokenVec,C_TOKENS);
   
-  bool bResult = RapidsSE_ExecuteRequest(m_pSEitf,m_xTokenVec,&aResponse);
+  bool bResult = RapidsSE_DispatchJob(m_pSEitf,m_xTokenVec,&aResponse);
   
   if (m_xTokenVec.bDetachedRequest())
     return bResult;
@@ -469,6 +473,62 @@ void SePrompt::vGetCommand(void)
     m_xTokenVec.vStripAmpersand();
 
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* execute command                                                            */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vExecuteCommand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  // test for blank line
+  if (bBlankLine())
+    return;
+  
+  // attempt to execute command file
+  if (bExecuteFile())
+    return;
+  
+  // attempt to execute internal command
+  if (bExecuteFunction())
+    return;
+  
+  // attempt to execute se job
+  if (bExecuteJob())
+    return;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  bool bProcessResult = bProcessCommand();
+  
+  if (m_bEcho) {
+    vTrace("cmd: "_Stz);
+    for (i8 i_Token = 0; i_Token < C_TOKENS; i_Token++) {
+      if ( ! m_xTokenVec[i_Token]->bHasText() )
+        break;
+      vTrace("%s "_Stz,m_xTokenVec[i_Token]);
+    }
+    vTrace(": got: %s\n"_Stz,m_sResponse.aChar());
+    return;
+  }
+  
+  if (bProcessResult) {
+    if (gpAttachMap->m_bMetadata ) {
+      vMetaFormat();
+    }
+    else {
+      if ( !m_sResponse.bEqual("<ok>"_Stz) ) {
+        vTrace("%s\n"_Stz,m_sResponse.aChar());
+      }
+    }
+  }
+  else {
+    if (m_pSEitf->eGetLastError() != EC_NONE)
+      vTrace("error: %s\n"_Stz,m_pSEitf->pGetLastError());
+  }
+  
+  // clear the response
+  m_sResponse = ""_Stz;
 }
 
 /*----------------------------------------------------------------------------*/

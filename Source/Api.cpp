@@ -2417,7 +2417,7 @@ bool RapidsSE_ExecuteRequest(SEitf* pSEitf, TokenVec& xTokenVec, Stz** ppRespons
 /*----------------------------------------------------------------------------*/
 /* Execute a request                                                          */
 /*----------------------------------------------------------------------------*/
-bool RapidsSE_ExecuteRequestR35(SEitf* pSEitf, TokenVec& xTokenVec, Stz** ppResponse)
+bool RapidsSE_DispatchJob(SEitf* pSEitf, TokenVec& xTokenVec, Stz** ppResponse)
 {
   bool bResult;
   
@@ -2425,7 +2425,7 @@ bool RapidsSE_ExecuteRequestR35(SEitf* pSEitf, TokenVec& xTokenVec, Stz** ppResp
   pSEitf->vClearLastError();
   
   // send request to se
-  bResult = bExecuteRequest(pSEitf, xTokenVec);
+  bResult = bDispatchJob(pSEitf, xTokenVec);
   if (! bResult) {
     *ppResponse = nullptr;
     return bResult;
@@ -2554,6 +2554,20 @@ bool bExecuteRequest(SEitf* pSEitf, TokenVec& xTokenVec)
   
   return bResult;
 }
+
+/*----------------------------------------------------------------------------*/
+/* dispatch job                                                               */
+/*----------------------------------------------------------------------------*/
+bool bDispatchJob(SEitf* pSEitf, TokenVec& xTokenVec)
+{
+  bool bResult;
+  
+  // execute command
+  bResult = pSEitf->bDecode(xTokenVec);
+  
+  return bResult;
+}
+
 
 
 /*----------------------------------------------------------------------------*/
