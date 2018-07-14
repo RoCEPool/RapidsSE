@@ -2186,7 +2186,7 @@ eEC RapidsSE_Prompt(i8 iTraceLevel)
     
     Job_Prompt* pJob_Prompt = new Job_Prompt(pSEitf);
     
-    bool b = pSEitf->bAppendRequest_R35(sRequest,true,(Job**)&pJob_Prompt);
+    bool b = pSEitf->bAppendJob(sRequest,true,(Job**)&pJob_Prompt);
     
     return EC_NONE;
     

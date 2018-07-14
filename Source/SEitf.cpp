@@ -3466,7 +3466,7 @@ bool SEitf::bN35(TokenVec& xTokenVec, i8 iReqNo)
   
   sRequest = SeRequests[iReqNo].aRequest;
   
-  return bAppendRequest_R35(sRequest,xTokenVec.bDetachedRequest());
+  return bAppendJob(sRequest,xTokenVec.bDetachedRequest());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3484,7 +3484,7 @@ bool SEitf::bG35(TokenVec& xTokenVec, i8 iReqNo)
   
   Job_G35* pJob_G35 = new Job_G35(nullptr);
   
-  return bAppendRequest_R35(sRequest,xTokenVec.bDetachedRequest(),(Job**)&pJob_G35);
+  return bAppendJob(sRequest,xTokenVec.bDetachedRequest(),(Job**)&pJob_G35);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3505,7 +3505,7 @@ bool SEitf::bP35(TokenVec& xTokenVec, i8 iReqNo)
   sRequest.vConcat(" "_Stz);
   sRequest.vConcat(SeRequests[iReqNo].aRequest);
   
-  return bAppendRequest_R35(sRequest,xTokenVec.bDetachedRequest());
+  return bAppendJob(sRequest,xTokenVec.bDetachedRequest());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3655,7 +3655,7 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
 /*----------------------------------------------------------------------------*/
 /* append request to request queue (RDP R3.5)                                 */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bAppendRequest_R35(StrVal& sRequest, bool bDetached, Job** ppJob)
+bool SEitf::bAppendJob(StrVal& sRequest, bool bDetached, Job** ppJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -3890,7 +3890,7 @@ bool SEitf::bPoolSpaceR35(TokenVec& xTokenVec, i8 iReqNo)
   
   sRequest = SeRequests[iReqNo].aRequest;
   
-  return bAppendRequest_R35(sRequest,xTokenVec.bDetachedRequest(),(Job**)&m_pJob);
+  return bAppendJob(sRequest,xTokenVec.bDetachedRequest(),(Job**)&m_pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3910,7 +3910,7 @@ bool SEitf::bNodeSanityR35(TokenVec& xTokenVec, i8 iReqNo)
   
   sRequest = SeRequests[iReqNo].aRequest;
   
-  return bAppendRequest_R35(sRequest,xTokenVec.bDetachedRequest(),(Job**)&m_pJob);
+  return bAppendJob(sRequest,xTokenVec.bDetachedRequest(),(Job**)&m_pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3930,7 +3930,7 @@ bool SEitf::bNodeStatusR35(TokenVec& xTokenVec, i8 iReqNo)
   
   sRequest = SeRequests[iReqNo].aRequest;
   
-  return bAppendRequest_R35(sRequest,xTokenVec.bDetachedRequest(),(Job**)&m_pJob);
+  return bAppendJob(sRequest,xTokenVec.bDetachedRequest(),(Job**)&m_pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3946,7 +3946,7 @@ bool SEitf::bR35Request(TokenVec& xTokenVec, i8 iReqNo)
   
   sRequest = SeRequests[iReqNo].aRequest;
   
-  return bAppendRequest_R35(sRequest,xTokenVec.bDetachedRequest(),(Job**)&m_pJob);
+  return bAppendJob(sRequest,xTokenVec.bDetachedRequest(),(Job**)&m_pJob);
 }
 
 
