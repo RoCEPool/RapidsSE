@@ -935,6 +935,8 @@ bool SePrompt::bExecuteJob(void)
   if (! pJobClass)
     return false;
   
+  Job* pJob = pJobClass->pNewJob(this);
+  
   bool bProcessResult = bProcessJob(pJobClass);
     
   if (bProcessResult) {

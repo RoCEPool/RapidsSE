@@ -21,7 +21,7 @@ namespace JobsModel
     bool m_bEnabled;  // is this job enabled?
 
   public:
-  
+    Job* pNewJob(SePrompt* pPrompt); 
   };
 }
 
