@@ -6,6 +6,12 @@
 #include "Plans.h"
 
 //-----------------------------------------------------------------------------
+namespace Prompt
+{
+  class SePrompt;
+}
+
+//-----------------------------------------------------------------------------
 namespace Interface
 {
   class SEitf;
@@ -18,8 +24,6 @@ namespace JobsModel
 }
 
 using namespace JobsModel;
-
-class SePrompt;
 
 //-----------------------------------------------------------------------------
 

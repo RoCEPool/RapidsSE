@@ -136,7 +136,7 @@ Footer* Job_DropTenant::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_DropTenant_pre(SePrompt* pPrompt)
+Job* JobsModel::pJob_DropTenant_pre(Prompt::SePrompt* pPrompt)
 {
   return nullptr;
 }
@@ -144,7 +144,7 @@ Job* JobsModel::pJob_DropTenant_pre(SePrompt* pPrompt)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_DropTenant_post(SePrompt* pPrompt)
+void JobsModel::vJob_DropTenant_post(Prompt::SePrompt* pPrompt)
 {
 }
 

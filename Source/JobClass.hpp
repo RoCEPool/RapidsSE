@@ -15,13 +15,13 @@ namespace JobsModel
     Stz* m_aCommand2; // optional second word of prompt command
     Stz* m_aSeed;     // the task seed for this job
   
-    Job* (*m_fPre)(SePrompt* pPrompt);
-    void (*m_fPost)(SePrompt* pPrompt);
+    Job* (*m_fPre)(Prompt::SePrompt* pPrompt);
+    void (*m_fPost)(Prompt::SePrompt* pPrompt);
   
     bool m_bEnabled;  // is this job enabled?
 
   public:
-    Job* pNewJob(SePrompt* pPrompt); 
+    Job* pNewJob(Prompt::SePrompt* pPrompt); 
   };
 }
 

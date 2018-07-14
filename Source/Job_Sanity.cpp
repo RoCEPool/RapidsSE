@@ -140,7 +140,7 @@ Footer* Job_Sanity::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_Sanity_pre(SePrompt* pPrompt)
+Job* JobsModel::pJob_Sanity_pre(Prompt::SePrompt* pPrompt)
 {
   return nullptr;
 }
@@ -148,7 +148,7 @@ Job* JobsModel::pJob_Sanity_pre(SePrompt* pPrompt)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Sanity_post(SePrompt* pPrompt)
+void JobsModel::vJob_Sanity_post(Prompt::SePrompt* pPrompt)
 {
 }
 

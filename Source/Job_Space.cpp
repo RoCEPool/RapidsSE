@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "JobModel.h"
+#include "StorageEngine.h"
 
 JobNote mJobNote_Space (
   "space"_Stz,     // name of the job class
@@ -136,15 +137,18 @@ Footer* Job_Space::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_Space_pre(SePrompt* pPrompt)
+Job* JobsModel::pJob_Space_pre(Prompt::SePrompt* pPrompt)
 {
+  //SEitf* pSEitf = pPrompt->pSEitf();
+  
+  
   return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Space_post(SePrompt* pPrompt)
+void JobsModel::vJob_Space_post(Prompt::SePrompt* pPrompt)
 {
 }
 

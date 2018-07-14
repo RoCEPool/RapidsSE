@@ -37,8 +37,8 @@ namespace JobsModel
   
   Job_DropCatalog* _pJob_DropCatalog(void* aAddr);
   
-  Job* pJob_DropCatalog_pre(SePrompt* pPrompt);
-  void vJob_DropCatalog_post(SePrompt* pPrompt);
+  Job* pJob_DropCatalog_pre(Prompt::SePrompt* pPrompt);
+  void vJob_DropCatalog_post(Prompt::SePrompt* pPrompt);
 }
 
 /*============================================================================*/

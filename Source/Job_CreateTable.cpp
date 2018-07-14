@@ -169,7 +169,7 @@ Footer* Job_CreateTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_CreateTable_pre(SePrompt* pPrompt)
+Job* JobsModel::pJob_CreateTable_pre(Prompt::SePrompt* pPrompt)
 {
   return nullptr;
 }
@@ -177,7 +177,7 @@ Job* JobsModel::pJob_CreateTable_pre(SePrompt* pPrompt)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_CreateTable_post(SePrompt* pPrompt)
+void JobsModel::vJob_CreateTable_post(Prompt::SePrompt* pPrompt)
 {
 }
 

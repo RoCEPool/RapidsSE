@@ -135,7 +135,7 @@ Footer* Job_G35::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_G35_pre(SePrompt* pPrompt)
+Job* JobsModel::pJob_G35_pre(Prompt::SePrompt* pPrompt)
 {
   return nullptr;
 }
@@ -143,7 +143,7 @@ Job* JobsModel::pJob_G35_pre(SePrompt* pPrompt)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_G35_post(SePrompt* pPrompt)
+void JobsModel::vJob_G35_post(Prompt::SePrompt* pPrompt)
 {
 }
 

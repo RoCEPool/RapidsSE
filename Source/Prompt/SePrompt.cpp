@@ -3291,7 +3291,7 @@ bool SePrompt::bValidateCreateTableR35(i8 iNumTokens)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-SePrompt* _pSePrompt(void* aAddr)
+SePrompt* Prompt::_pSePrompt(void* aAddr)
 {
   SePrompt* pSePrompt = reinterpret_cast<SePrompt*>(aAddr);
   

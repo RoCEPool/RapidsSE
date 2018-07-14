@@ -139,7 +139,7 @@ Footer* Job_CreateCatalog::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_CreateCatalog_pre(SePrompt* pPrompt)
+Job* JobsModel::pJob_CreateCatalog_pre(Prompt::SePrompt* pPrompt)
 {
   return nullptr;
 }
@@ -147,7 +147,7 @@ Job* JobsModel::pJob_CreateCatalog_pre(SePrompt* pPrompt)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_CreateCatalog_post(SePrompt* pPrompt)
+void JobsModel::vJob_CreateCatalog_post(Prompt::SePrompt* pPrompt)
 {
 }
 

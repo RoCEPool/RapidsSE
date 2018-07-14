@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "Interface.h"
+#include "Prompt.h"
 #include "SeHistory.hpp"
 #include "Error.hpp"
 
@@ -20,149 +20,153 @@ static Stz* C_RECORD_TERMINATOR    = "record_terminator"_Stz;
 
 static Stz* C_SAME_MACHINE         = "same_machine"_Stz;
 
-class SePrompt : public Object
+namespace Prompt
 {
-private:
-  i8         m_iPartition; // which partition
-  SEitf*     m_pSEitf;     // interface into rapidsse
-  bool       m_bContinue;  // continue processing commands?
-  bool       m_bEcho;      // echo response?
-  s32        m_sPrompt;    // prompt
-  s48K       m_sResponse;  // response from seitf
-  SeHistory  m_xHistory;   // command history
-  TokenVec   m_xTokenVec;  // token vector
-  TokenVec   m_xTokenVec2; // another token vector
-  Tokeniser* m_pTokeniser; // input stream tokeniser
-  Timer      m_xTimer;     // timer
+  class SePrompt : public Object
+  {
+  private:
+    i8         m_iPartition; // which partition
+    SEitf*     m_pSEitf;     // interface into rapidsse
+    bool       m_bContinue;  // continue processing commands?
+    bool       m_bEcho;      // echo response?
+    s32        m_sPrompt;    // prompt
+    s48K       m_sResponse;  // response from seitf
+    SeHistory  m_xHistory;   // command history
+    TokenVec   m_xTokenVec;  // token vector
+    TokenVec   m_xTokenVec2; // another token vector
+    Tokeniser* m_pTokeniser; // input stream tokeniser
+    Timer      m_xTimer;     // timer
   
-  PosixThread m_xPosixThread; // posix thread structure
+    PosixThread m_xPosixThread; // posix thread structure
   
-  // must be last
-  Footer m_xFooter;
+    // must be last
+    Footer m_xFooter;
   
-public:
-  void* operator new(size_t);
-  void  operator delete(void*);
+  public:
+    void* operator new(size_t);
+    void  operator delete(void*);
 
-  SePrompt(void);
-  ~SePrompt(void);
+    SePrompt(void);
+    ~SePrompt(void);
   
-  static void vDump(eCN eClass, Object* pObject, Stz* aTab);
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
-  void vLoop(void);
+    void vLoop(void);
 
-private:
-  void vGetCommand(void);
-  void vExecuteCommand(void);
-  void vGetCommandArgument(void);
-  void vGetCommandInput(void);
+  private:
+    void vGetCommand(void);
+    void vExecuteCommand(void);
+    void vGetCommandArgument(void);
+    void vGetCommandInput(void);
   
-  void vMetaFormat(void);
+    void vMetaFormat(void);
   
-  //----------------------------------------------------------------------------
-  bool bProcessCommand(bool bPostProcess = true);
-  bool bProcessJob(JobClass* pJobClass, bool bPostProcess = true);
+    //----------------------------------------------------------------------------
+    bool bProcessCommand(bool bPostProcess = true);
+    bool bProcessJob(JobClass* pJobClass, bool bPostProcess = true);
 
-  void vSetEcho(void);
-  void vClearEcho(void);
+    void vSetEcho(void);
+    void vClearEcho(void);
   
-  bool bRunFile(void);
+    bool bRunFile(void);
   
-  bool bExecuteRequest(void);
-  bool bDispatchJob(void);
-  bool bTestFile(Stz* aPath);
-  void vPushFile(Stz* aPath);
+    bool bExecuteRequest(void);
+    bool bDispatchJob(void);
+    bool bTestFile(Stz* aPath);
+    void vPushFile(Stz* aPath);
 
-  bool bDocol(void);
+    bool bDocol(void);
   
-  bool bIndexReturnTable(Stz* aTableName, Stz* aIndexName);
-  void vIterateBuffers(void);
+    bool bIndexReturnTable(Stz* aTableName, Stz* aIndexName);
+    void vIterateBuffers(void);
   
-  bool bPartitionTable(void);
-  bool bReturnTable(void);
+    bool bPartitionTable(void);
+    bool bReturnTable(void);
   
-  //----------------------------------------------------------------------------
-  void vClipTokens(i8 i_FromToken);
-  void vCollectStatement(void);
-  bool bTokenCheck(i8 nTokens);
-  bool bCmdIs(Stz* aArg);
-  bool bOneIs(Stz* aArg);
+    //----------------------------------------------------------------------------
+    void vClipTokens(i8 i_FromToken);
+    void vCollectStatement(void);
+    bool bTokenCheck(i8 nTokens);
+    bool bCmdIs(Stz* aArg);
+    bool bOneIs(Stz* aArg);
   
-public:
-  bool bCmd_AnalyzeTable(void);
-  bool bCmd_BeginInsert(void);
-  bool bCmd_Bye(void);
-  bool bCmd_ChangeDir(void);
-  bool bCmd_CreateCatalog(void);
-  bool bCmd_CreateIndex(void);
-  bool bCmd_CreateSchema(void);
-  bool bCmd_CreateTable(void);
-  bool bCmd_CreateTenant(void);
-  bool bCmd_CreateUnique(void);
-  bool bCmd_DanalyzeTable(void);
-  bool bCmd_Docol(void);
-  bool bCmd_DistParLoadTable(void);
-  bool bCmd_DropTenant(void);
-  bool bCmd_DropCatalog(void);
-  bool bCmd_DropIndex(void);
-  bool bCmd_DropSchema(void);
-  bool bCmd_DropTable(void);
-  bool bCmd_EndInsert(void);
-  bool bCmd_Help(void);
-  bool bCmd_History(void);
-  bool bCmd_InsertRow(void);
-  bool bCmd_LoadTable(void);
-  bool bCmd_ListDir(void);
-  bool bCmd_PrintDir(void);
-  bool bCmd_RecallCommand(void);
-  bool bCmd_Sleep(void);
-  bool bCmd_UseSchema(void);
-  bool bCmd_TimerStart(void);
-  bool bCmd_TimerEnd(void);
+  public:
+    bool bCmd_AnalyzeTable(void);
+    bool bCmd_BeginInsert(void);
+    bool bCmd_Bye(void);
+    bool bCmd_ChangeDir(void);
+    bool bCmd_CreateCatalog(void);
+    bool bCmd_CreateIndex(void);
+    bool bCmd_CreateSchema(void);
+    bool bCmd_CreateTable(void);
+    bool bCmd_CreateTenant(void);
+    bool bCmd_CreateUnique(void);
+    bool bCmd_DanalyzeTable(void);
+    bool bCmd_Docol(void);
+    bool bCmd_DistParLoadTable(void);
+    bool bCmd_DropTenant(void);
+    bool bCmd_DropCatalog(void);
+    bool bCmd_DropIndex(void);
+    bool bCmd_DropSchema(void);
+    bool bCmd_DropTable(void);
+    bool bCmd_EndInsert(void);
+    bool bCmd_Help(void);
+    bool bCmd_History(void);
+    bool bCmd_InsertRow(void);
+    bool bCmd_LoadTable(void);
+    bool bCmd_ListDir(void);
+    bool bCmd_PrintDir(void);
+    bool bCmd_RecallCommand(void);
+    bool bCmd_Sleep(void);
+    bool bCmd_UseSchema(void);
+    bool bCmd_TimerStart(void);
+    bool bCmd_TimerEnd(void);
   
-  TokenVec* pTokenVec(void);
+    TokenVec* pTokenVec(void);
 
-  bool bCmd_CreateCatalogR35(void);
-  bool bCmd_CreateIndexR35(void);
-  bool bCmd_CreateSchemaR35(void);
-  bool bCmd_CreateTableR35(void);
-  bool bCmd_CreateTenantR35(void);
+    bool bCmd_CreateCatalogR35(void);
+    bool bCmd_CreateIndexR35(void);
+    bool bCmd_CreateSchemaR35(void);
+    bool bCmd_CreateTableR35(void);
+    bool bCmd_CreateTenantR35(void);
   
-  bool bCmd_DropCatalogR35(void);
-  bool bCmd_DropIndexR35(void);
-  bool bCmd_DropSchemaR35(void);
-  bool bCmd_DropTableR35(void);
-  bool bCmd_DropTenantR35(void);
+    bool bCmd_DropCatalogR35(void);
+    bool bCmd_DropIndexR35(void);
+    bool bCmd_DropSchemaR35(void);
+    bool bCmd_DropTableR35(void);
+    bool bCmd_DropTenantR35(void);
   
   
-  Footer* aFooter(void);
+    Footer* aFooter(void);
   
-private:
-  bool bAddTableColumns(i8& i_Token, i8 iNumTokens);
-  bool bAddTableColumnsR35(i8& i_Token, i8 iNumTokens);
-  bool bAddPartitionColumn(Stz* pTable, Stz* pColumn);
-  i8   iCopyTokens(TokenVec& xFromTokenVec, TokenVec& xToTokenVec);
-  bool bDropReturnTable(Stz* aTableName);
-  bool bEndMakeTable(void);
-  bool bMakeTable(void);
-  bool bPartitionTable(i8 i_Token, i8 iNumTokens);
-  bool bPartitionTableR35(i8 i_Token, i8 iNumTokens);
-  bool bPartitionTable(Stz* pColumnName);
-  bool bRemoveTable(Stz* pTableName);
-  bool bValidateCreateIndex(i8 iNumTokens);
-  bool bValidateCreateTable(i8 iNumTokens);
+  private:
+    bool bAddTableColumns(i8& i_Token, i8 iNumTokens);
+    bool bAddTableColumnsR35(i8& i_Token, i8 iNumTokens);
+    bool bAddPartitionColumn(Stz* pTable, Stz* pColumn);
+    i8   iCopyTokens(TokenVec& xFromTokenVec, TokenVec& xToTokenVec);
+    bool bDropReturnTable(Stz* aTableName);
+    bool bEndMakeTable(void);
+    bool bMakeTable(void);
+    bool bPartitionTable(i8 i_Token, i8 iNumTokens);
+    bool bPartitionTableR35(i8 i_Token, i8 iNumTokens);
+    bool bPartitionTable(Stz* pColumnName);
+    bool bRemoveTable(Stz* pTableName);
+    bool bValidateCreateIndex(i8 iNumTokens);
+    bool bValidateCreateTable(i8 iNumTokens);
   
-  bool bValidateCreateIndexR35(i8 iNumTokens);
-  bool bValidateCreateTableR35(i8 iNumTokens);
+    bool bValidateCreateIndexR35(i8 iNumTokens);
+    bool bValidateCreateTableR35(i8 iNumTokens);
   
-  bool bBlankLine(void);
+    bool bBlankLine(void);
   
-  bool bExecuteFile(void);
-  bool bExecuteFunction(void);
-  bool bExecuteJob(void);
-};
+    bool bExecuteFile(void);
+    bool bExecuteFunction(void);
+    bool bExecuteJob(void);
+  };
 
-SePrompt* _pSePrompt(void* aAddr);
+  SePrompt* _pSePrompt(void* aAddr);
+  
+}
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
