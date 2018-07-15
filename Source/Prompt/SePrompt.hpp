@@ -90,6 +90,7 @@ namespace Prompt
     bool bCmdIs(Stz* aArg);
     bool bOneIs(Stz* aArg);
   
+  
   public:
     bool bCmd_AnalyzeTable(void);
     bool bCmd_BeginInsert(void);
@@ -136,7 +137,8 @@ namespace Prompt
     bool bCmd_DropTableR35(void);
     bool bCmd_DropTenantR35(void);
   
-  
+    SEitf* pSEitf(void);
+
     Footer* aFooter(void);
   
   private:
