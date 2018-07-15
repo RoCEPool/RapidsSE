@@ -6,6 +6,7 @@
 
 JobNote mJobNote_Status (
   "Job_Status"_Stz, // name of the job class
+  CN_JOB_STATUS,    // class enum
   "comment"_Stz,    // comment about the job
   "status"_Stz,     // the prompt command
   nullptr,          // the second word

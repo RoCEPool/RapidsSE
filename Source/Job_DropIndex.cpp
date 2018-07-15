@@ -6,6 +6,7 @@
 
 JobNote mJobNote_DropIndex (
   "Job_DropIndex"_Stz,  // name of the job class
+  CN_JOB_DROPINDEX,     // class enum
   "comment"_Stz,        // comment about the job
   "drop"_Stz,           // the prompt command
   "index"_Stz,          // the second word

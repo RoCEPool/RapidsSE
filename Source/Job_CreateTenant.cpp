@@ -6,6 +6,7 @@
 
 JobNote mJobNote_CreateTenant (
   "Job_CreateTenant"_Stz,  // name of the job class
+  CN_JOB_CREATETABLE,      // class enum
   "comment"_Stz,           // comment about the job
   "create"_Stz,            // the prompt command
   "tenant"_Stz,            // the second word

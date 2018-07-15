@@ -6,6 +6,7 @@
 
 JobNote mJobNote_CreateCatalog (
   "Job_CreateCatalog"_Stz, // name of the job class
+  CN_JOB_CREATECATALOG,    // class enum
   "comment"_Stz,           // comment about the job
   "create"_Stz,            // the prompt command
   "catalog"_Stz,           // the second word

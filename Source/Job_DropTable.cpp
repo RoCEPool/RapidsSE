@@ -6,6 +6,7 @@
 
 JobNote mJobNote_DropTable (
   "Job_DropTable"_Stz,  // name of the job class
+  CN_JOB_DROPTABLE,     // class enum
   "comment"_Stz,        // comment about the job
   "drop"_Stz,           // the prompt command
   "table"_Stz,          // the second word

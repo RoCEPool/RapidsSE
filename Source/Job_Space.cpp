@@ -6,13 +6,14 @@
 #include "StorageEngine.h"
 
 JobNote mJobNote_Space (
-  "space"_Stz,     // name of the job class
-  "comment"_Stz,   // comment about the job
-  "spaceR35"_Stz,  // the prompt command
-  nullptr,         // the second word
+  "space"_Stz,      // name of the job class
+  CN_JOB_SPACE,     // class enum
+  "comment"_Stz,    // comment about the job
+  "spaceR35"_Stz,   // the prompt command
+  nullptr,          // the second word
   "poolSpaceR35_req"_Stz, // the task seed for this job
-  pJob_Space_pre,  // prompt pre-process function
-  vJob_Space_post, // prompt post-process function
+  pJob_Space_pre,   // prompt pre-process function
+  vJob_Space_post,  // prompt post-process function
   true     
 );
 

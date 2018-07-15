@@ -10,6 +10,7 @@ namespace JobsModel
   {
   public:
     Stz* m_aName;     // name of the job class
+    eCN  m_eClass;    // enum of the class
     Stz* m_aComment;  // comment about the job
     Stz* m_aCommand1; // first word of prompt command
     Stz* m_aCommand2; // optional second word of prompt command

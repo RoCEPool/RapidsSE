@@ -6,6 +6,7 @@
 
 JobNote mJobNote_G35 (
   "g35"_Stz,     // name of the job class
+  CN_JOB_G35,    // class enum
   "comment"_Stz, // comment about the job
   "g35"_Stz,     // the prompt command
   nullptr,       // the second word

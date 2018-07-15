@@ -12,6 +12,7 @@ namespace JobsModel
 
   public:
     JobNote(Stz* aName,
+            eCN  eClass,
             Stz* aComment,
             Stz* aCommand1,
             Stz* aCommand2,

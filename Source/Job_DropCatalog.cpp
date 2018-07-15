@@ -6,6 +6,7 @@
 
 JobNote mJobNote_DropCatalog (
   "Job_DropCatalog"_Stz, // name of the job class
+  CN_JOB_DROPCATALOG,    // class enum
   "comment"_Stz,         // comment about the job
   "drop"_Stz,            // the prompt command
   "catalog"_Stz,         // the second word

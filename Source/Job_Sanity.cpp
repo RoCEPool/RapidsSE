@@ -8,6 +8,7 @@ extern AttachMap*      gpAttachMap;
 
 JobNote mJobNote_Sanity (
   "Job_Sanity"_Stz, // name of the job class
+  CN_JOB_SANITY,    // class enum
   "comment"_Stz,    // comment about the job
   "sanity"_Stz,     // the prompt command
   nullptr,          // the second word

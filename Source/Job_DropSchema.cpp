@@ -6,6 +6,7 @@
 
 JobNote mJobNote_DropSchema (
   "g35"_Stz,            // name of the job class
+  CN_JOB_DROPSCHEMA,    // class enum
   "comment"_Stz,        // comment about the job
   "drop"_Stz,           // the prompt command
   "schema"_Stz,         // the second word

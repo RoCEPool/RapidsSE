@@ -6,6 +6,7 @@
 
 JobNote mJobNote_CreateSchema (
   "Job_CreateSchema"_Stz, // name of the job class
+  CN_JOB_CREATESCHEMA,    // class enum
   "comment"_Stz,          // comment about the job
   "create"_Stz,           // the prompt command
   "schema"_Stz,           // the second word

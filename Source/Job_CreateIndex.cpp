@@ -6,6 +6,7 @@
 
 JobNote mJobNote_CreateIndex (
   "Job_CreateIndex"_Stz, // name of the job class
+  CN_JOB_CREATEINDEX,    // class enum
   "comment"_Stz,         // comment about the job
   "create"_Stz,          // the prompt command
   "index"_Stz,           // the second word
