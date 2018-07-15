@@ -691,7 +691,7 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
 /*----------------------------------------------------------------------------*/
 /* process job                                                                */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bProcessJob(Job* pJob, bool bPostProcess)
+bool SePrompt::bPrepareJob(Job* pJob, bool bPostProcess)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -937,7 +937,7 @@ bool SePrompt::bExecuteJob(void)
   
   Job* pJob = pJobClass->pNewJob(this);
   
-  bool bProcessResult = bProcessJob(pJob);
+  bool bProcessResult = bPrepareJob(pJob);
     
   if (bProcessResult) {
     if (gpAttachMap->m_bMetadata ) {

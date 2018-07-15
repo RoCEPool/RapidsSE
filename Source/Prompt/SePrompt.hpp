@@ -63,7 +63,7 @@ namespace Prompt
   
     //----------------------------------------------------------------------------
     bool bProcessCommand(bool bPostProcess = true);
-    bool bProcessJob(Job* pJob, bool bPostProcess = true);
+    bool bPrepareJob(Job* pJob, bool bPostProcess = true);
 
     void vSetEcho(void);
     void vClearEcho(void);
