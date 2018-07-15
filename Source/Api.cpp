@@ -2417,15 +2417,15 @@ bool RapidsSE_ExecuteRequest(SEitf* pSEitf, TokenVec& xTokenVec, Stz** ppRespons
 /*----------------------------------------------------------------------------*/
 /* Execute a request                                                          */
 /*----------------------------------------------------------------------------*/
-bool RapidsSE_DispatchJob(SEitf* pSEitf, TokenVec& xTokenVec, Stz** ppResponse)
+bool RapidsSE_DispatchJob(Job* pJob, SEitf* pSEitf, TokenVec& xTokenVec, Stz** ppResponse)
 {
   bool bResult;
   
   // clear the last error
   pSEitf->vClearLastError();
   
-  // send request to se
-  bResult = bDispatchJob(pSEitf, xTokenVec);
+  // dispatch job to se
+  bResult = bDispatchJob(pJob, pSEitf, xTokenVec);
   if (! bResult) {
     *ppResponse = nullptr;
     return bResult;
@@ -2558,7 +2558,7 @@ bool bExecuteRequest(SEitf* pSEitf, TokenVec& xTokenVec)
 /*----------------------------------------------------------------------------*/
 /* dispatch job                                                               */
 /*----------------------------------------------------------------------------*/
-bool bDispatchJob(SEitf* pSEitf, TokenVec& xTokenVec)
+bool bDispatchJob(Job* pJob, SEitf* pSEitf, TokenVec& xTokenVec)
 {
   bool bResult;
   

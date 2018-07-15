@@ -63,7 +63,7 @@ namespace Prompt
   
     //----------------------------------------------------------------------------
     bool bProcessCommand(bool bPostProcess = true);
-    bool bProcessJob(JobClass* pJobClass, bool bPostProcess = true);
+    bool bProcessJob(Job* pJob, bool bPostProcess = true);
 
     void vSetEcho(void);
     void vClearEcho(void);
@@ -71,7 +71,7 @@ namespace Prompt
     bool bRunFile(void);
   
     bool bExecuteRequest(void);
-    bool bDispatchJob(void);
+    bool bDispatchJob(Job* pJob);
     bool bTestFile(Stz* aPath);
     void vPushFile(Stz* aPath);
 

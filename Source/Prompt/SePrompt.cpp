@@ -414,7 +414,7 @@ bool SePrompt::bExecuteRequest(void)
 /*----------------------------------------------------------------------------*/
 /* dispatch job into SE                                                       */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bDispatchJob(void)
+bool SePrompt::bDispatchJob(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -428,7 +428,7 @@ bool SePrompt::bDispatchJob(void)
   //! make this part of verbose??
   //m_pTokeniser->vDumpTokens("Command : "_Stz,m_xTokenVec,C_TOKENS);
   
-  bool bResult = RapidsSE_DispatchJob(m_pSEitf,m_xTokenVec,&aResponse);
+  bool bResult = RapidsSE_DispatchJob(pJob,m_pSEitf,m_xTokenVec,&aResponse);
   
   if (m_xTokenVec.bDetachedRequest())
     return bResult;
@@ -691,7 +691,7 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
 /*----------------------------------------------------------------------------*/
 /* process job                                                                */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bProcessJob(JobClass* pJobClass, bool bPostProcess)
+bool SePrompt::bProcessJob(Job* pJob, bool bPostProcess)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -728,7 +728,7 @@ bool SePrompt::bProcessJob(JobClass* pJobClass, bool bPostProcess)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // execute seitf request
-  if (! bDispatchJob())
+  if (! bDispatchJob(pJob))
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -937,7 +937,7 @@ bool SePrompt::bExecuteJob(void)
   
   Job* pJob = pJobClass->pNewJob(this);
   
-  bool bProcessResult = bProcessJob(pJobClass);
+  bool bProcessResult = bProcessJob(pJob);
     
   if (bProcessResult) {
     if (gpAttachMap->m_bMetadata ) {

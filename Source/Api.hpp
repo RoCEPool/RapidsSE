@@ -62,7 +62,7 @@ extern "C" bool RapidsSE_SEitfInvalid(int eError, i8 iTraceLevel);
 extern "C" eEC RapidsSE_TruncateTable(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable, i8 iTraceLevel);
 
 bool RapidsSE_ExecuteRequest(SEitf* pSEitf,TokenVec& xTokenVec, Stz** ppResponse);
-bool RapidsSE_DispatchJob(SEitf* pSEitf,TokenVec& xTokenVec, Stz** ppResponse);
+bool RapidsSE_DispatchJob(Job* pJob, SEitf* pSEitf,TokenVec& xTokenVec, Stz** ppResponse);
 
 // private calls
 eEC eExecuteRequest(SEitf* pSEitf, Stz* aCommand);
@@ -72,7 +72,7 @@ eEC eExecuteRequest(SEitf* pSEitf, Stz* aCommand, Stz* aParameter1,
 eEC eExecuteRequest(SEitf* pSEitf, Stz* aCommand, Stz* aParameter1,
                     Stz* aParameter2, Stz* aParameter3);
 bool bExecuteRequest(SEitf* pSEitf, TokenVec& xTokenVec);
-bool bDispatchJob(SEitf* pSEitf, TokenVec& xTokenVec);
+bool bDispatchJob(Job* pJob, SEitf* pSEitf, TokenVec& xTokenVec);
 eEC eGetResponse(SEitf* pSEitf);
 
 /*----------------------------------------------------------------------------*/
