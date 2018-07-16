@@ -29,7 +29,7 @@
 
   checkMakeTableR35 not if pJob_CreateTable <ERROR_JOB> exit then
 
-  <DONE>
+  <DONE_NODE>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -41,7 +41,7 @@
 
   "releaseResources received" .
 
-  <DONE>
+  <DONE_NODE>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -93,7 +93,7 @@
   assertInTables
   pJob_CreateTable job.notice
 
-  <DONE>
+  <DONE_NODE>
 ;
 
 /*============================================================================*/
