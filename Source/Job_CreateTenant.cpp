@@ -74,7 +74,7 @@ Job_CreateTenant::Job_CreateTenant(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETENANT,_FOOTER_);
     
-  m_sExecute = "Job_CreateTenant.execute"_Stz;
+  //m_sExecute = "Job_CreateTenant.execute"_Stz;
   
   _checkInitialised_(CN_JOB_CREATETENANT);
   

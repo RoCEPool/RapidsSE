@@ -61,7 +61,7 @@ Job__Cancelled::Job__Cancelled(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__CANCELLED,_FOOTER_);
   
-  m_sExecute = "Job__Cancelled::execute"_Stz;
+  m_sSeed = "Job__Cancelled::execute"_Stz;
   m_eErrorCode = EC_NONE;
   
   _checkInitialised_(CN_JOB__CANCELLED);

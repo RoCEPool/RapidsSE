@@ -76,7 +76,7 @@ Job_Sanity::Job_Sanity(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SANITY,_FOOTER_);
     
-  m_sExecute = "Job_Sanity.execute"_Stz;
+  //m_sExecute = "Job_Sanity.execute"_Stz;
   m_iRegionSize = gpAttachMap->m_iRegionSize;
   m_iPartitions = gpAttachMap->m_pGrid->m_nSlots;
   

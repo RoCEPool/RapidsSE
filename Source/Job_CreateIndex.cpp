@@ -73,7 +73,7 @@ Job_CreateIndex::Job_CreateIndex(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATEINDEX,_FOOTER_);
   
-  m_sExecute = "Job_CreateIndex.execute"_Stz;
+  //m_sExecute = "Job_CreateIndex.execute"_Stz;
   
   m_sTableName = ""_Stz;
   m_bIsUnique  = false;
@@ -127,7 +127,7 @@ void Job_CreateIndex::vShow(void)
   
   vTrace("\n\nJob_CreateIndex: %s\n"_Stz, m_sObjectName.aChar());
   
-  vTrace("m_sExecute = %s\n"_Stz,m_sExecute.aChar());
+  //vTrace("m_sExecute = %s\n"_Stz,m_sExecute.aChar());
   vTrace("m_sTableName = %s\n"_Stz,m_sTableName.aChar());
   vTrace("m_iColumns = %lld\n"_Stz,m_iColumns);
   

@@ -61,7 +61,7 @@ Job__End::Job__End(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__END,_FOOTER_);
   
-  m_sExecute = "Job__End::execute"_Stz;
+  m_sSeed = "Job__End::execute"_Stz;
   
   _checkInitialised_(CN_JOB__END);
   

@@ -61,7 +61,7 @@ Job__Begun::Job__Begun(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__BEGUN,_FOOTER_);
   
-  m_sExecute = "Job__Begun::execute"_Stz;
+  m_sSeed = "Job__Begun::execute"_Stz;
   m_eErrorCode = EC_NONE;
   
   _checkInitialised_(CN_JOB__BEGUN);

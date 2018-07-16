@@ -78,8 +78,6 @@ Job_Space::Job_Space(Interface::SEitf* pSEitf)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SPACE,_FOOTER_);
   
   m_sSeed    = mJobNote_Space.pJobClass()->m_aSeed;
-  m_sExecute = m_sSeed;
-  m_sExecute.vConcat("_node"_Stz);
 
   _checkInitialised_(CN_JOB_SPACE);
   

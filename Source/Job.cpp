@@ -53,7 +53,6 @@ Job::Job(eCN eClassNo)
   
   m_iJobId   = -1;
   m_eState   = JS_NONE;
-  m_sExecute = ""_Stz;
   m_sSeed    = ""_Stz;
   m_bDetached = false;
   m_sCheckResources   = ""_Stz;
@@ -84,17 +83,7 @@ Stz* Job::sJobExecute(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_sExecute;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the job word to be executed                                            */
-/*----------------------------------------------------------------------------*/
-void Job::vJobExecute(Stz* sExecute)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_sExecute.vCopy(sExecute);
+  return m_sSeed;
 }
 
 /*----------------------------------------------------------------------------*/
