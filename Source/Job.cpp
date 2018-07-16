@@ -55,6 +55,7 @@ Job::Job(eCN eClassNo)
   m_eState   = JS_NONE;
   m_sExecute = ""_Stz;
   m_sSeed    = ""_Stz;
+  m_bDetached = false;
   m_sCheckResources   = ""_Stz;
   m_sReleaseResources = ""_Stz;
   m_iParticipantNode  = -1;

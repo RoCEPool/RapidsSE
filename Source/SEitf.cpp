@@ -3660,11 +3660,12 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
 /*----------------------------------------------------------------------------*/
 /* append request to request queue (RDP R3.5)                                 */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bAppendJob(bool bDetached, Job** ppJob)
+bool SEitf::bAppendJob(Job** ppJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
  
   Job* pJob = *ppJob;
+  bool bDetached = pJob->m_bDetached;
 
   Stz* aCursor = nullptr;
   

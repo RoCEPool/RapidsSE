@@ -15,7 +15,7 @@ JobNote mJobNote_Space (
   false,            // detached job?
   pJob_Space_pre,   // prompt pre-process function
   vJob_Space_post,  // prompt post-process function
-  true     
+  true              // job is enabled
 );
 
 /*----------------------------------------------------------------------------*/

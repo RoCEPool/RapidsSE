@@ -2186,8 +2186,9 @@ eEC RapidsSE_Prompt(i8 iTraceLevel)
     Job_Prompt* pJob_Prompt = new Job_Prompt(pSEitf);
     
     pJob_Prompt->m_sSeed = "promptR35_req"_Stz;
+    pJob_Prompt->m_bDetached = true;
     
-    bool b = pSEitf->bAppendJob(true,(Job**)&pJob_Prompt);
+    bool b = pSEitf->bAppendJob((Job**)&pJob_Prompt);
     
     return EC_NONE;
     
@@ -2418,7 +2419,7 @@ bool RapidsSE_ExecuteRequest(SEitf* pSEitf, TokenVec& xTokenVec, Stz** ppRespons
 /*----------------------------------------------------------------------------*/
 /* Execute a request                                                          */
 /*----------------------------------------------------------------------------*/
-bool RapidsSE_DispatchJob(Job* pJob, SEitf* pSEitf, TokenVec& xTokenVec, Stz** ppResponse)
+bool RapidsSE_DispatchJob(Job* pJob, SEitf* pSEitf, Stz** ppResponse)
 {
   bool bResult;
   
@@ -2426,13 +2427,13 @@ bool RapidsSE_DispatchJob(Job* pJob, SEitf* pSEitf, TokenVec& xTokenVec, Stz** p
   pSEitf->vClearLastError();
   
   // dispatch job to se
-  bResult = bDispatchJob(pJob, pSEitf, xTokenVec);
+  bResult = bDispatchJob(pJob, pSEitf);
   if (! bResult) {
     *ppResponse = nullptr;
     return bResult;
   }
   
-  if (xTokenVec.bDetachedRequest())
+  if (pJob->m_bDetached)
     return true;
   
   // get response from se
@@ -2559,7 +2560,7 @@ bool bExecuteRequest(SEitf* pSEitf, TokenVec& xTokenVec)
 /*----------------------------------------------------------------------------*/
 /* dispatch job                                                               */
 /*----------------------------------------------------------------------------*/
-bool bDispatchJob(Job* pJob, SEitf* pSEitf, TokenVec& xTokenVec)
+bool bDispatchJob(Job* pJob, SEitf* pSEitf)
 {
   bool bResult;
   
@@ -2571,7 +2572,7 @@ bool bDispatchJob(Job* pJob, SEitf* pSEitf, TokenVec& xTokenVec)
   
   //sRequest = pJob->m_sSeed; //"poolSpaceR35_req"_Stz; //! hack
   
-  bResult = pSEitf->bAppendJob(false, &pJob);
+  bResult = pSEitf->bAppendJob(&pJob);
   
   
   return bResult;

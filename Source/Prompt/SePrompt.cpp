@@ -428,7 +428,7 @@ bool SePrompt::bDispatchJob(Job* pJob)
   //! make this part of verbose??
   //m_pTokeniser->vDumpTokens("Command : "_Stz,m_xTokenVec,C_TOKENS);
   
-  bool bResult = RapidsSE_DispatchJob(pJob,m_pSEitf,m_xTokenVec,&aResponse);
+  bool bResult = RapidsSE_DispatchJob(pJob,m_pSEitf,&aResponse);
   
   if (m_xTokenVec.bDetachedRequest())
     return bResult;
@@ -936,6 +936,7 @@ bool SePrompt::bExecuteJob(void)
     return false;
   
   Job* pJob = pJobClass->pNewJob(this);
+  pJob->m_bDetached = m_xTokenVec.bDetachedRequest();
   
   bool bProcessResult = bPrepareJob(pJob);
   
