@@ -584,7 +584,7 @@ void Task::vJobExecuteFetch(MP_Task mpTask)
   
   s32 sExecute;
   
-  sExecute = pJob->sJobExecute();
+  sExecute = pJob->sJobSeed();
   
   switch (pJob->eClass()) {
       
@@ -598,7 +598,6 @@ void Task::vJobExecuteFetch(MP_Task mpTask)
       break;
       
     default:
-      sExecute = pJob->sJobExecute();
       sExecute.vConcat("_node"_Stz);
       break;
   }

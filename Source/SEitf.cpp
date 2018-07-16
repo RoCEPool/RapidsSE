@@ -3694,7 +3694,7 @@ bool SEitf::bAppendJob(Job** ppJob)
   //----------------------------------------------------------------------------
   
   s32 sRequest;
-  sRequest = pJob->m_sSeed;
+  sRequest = pJob->sJobSeed();
   sRequest.vConcat("_origin"_Stz);
   //xValWrk = pJob->m_sSeed; //sRequest;
   xValWrk = sRequest;
