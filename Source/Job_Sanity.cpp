@@ -150,7 +150,7 @@ Job* JobsModel::pJob_Sanity_pre(Prompt::SePrompt* pPrompt)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Sanity_post(Prompt::SePrompt* pPrompt)
+void JobsModel::vJob_Sanity_post(Prompt::SePrompt* pPrompt, Job* pJob)
 {
 }
 

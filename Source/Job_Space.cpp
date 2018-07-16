@@ -5,6 +5,8 @@
 #include "JobModel.h"
 #include "StorageEngine.h"
 
+extern AttachMap* gpAttachMap;
+
 JobNote mJobNote_Space (
   "space"_Stz,      // name of the job class
   CN_JOB_SPACE,     // class enum
@@ -152,8 +154,17 @@ Job* JobsModel::pJob_Space_pre(Prompt::SePrompt* pPrompt)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Space_post(Prompt::SePrompt* pPrompt)
+void JobsModel::vJob_Space_post(Prompt::SePrompt* pPrompt, Job* pJob)
 {
+  Job_Space* pJob_Space = _pJob_Space(pJob);
+  
+  // Note: take care of errors / meta data ????
+  for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+    vTrace("%s\n"_Stz, pJob_Space->m_xNode[i_Node].m_sResponse.aChar());
+  }
+
+  // now delete the job
+  delete pJob_Space;
 }
 
 /*============================================================================*/

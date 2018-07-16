@@ -145,7 +145,7 @@ Job* JobsModel::pJob_Status_pre(Prompt::SePrompt* pPrompt)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Status_post(Prompt::SePrompt* pPrompt)
+void JobsModel::vJob_Status_post(Prompt::SePrompt* pPrompt, Job* pJob)
 {
 }
 

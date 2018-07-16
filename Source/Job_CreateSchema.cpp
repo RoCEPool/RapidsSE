@@ -145,7 +145,7 @@ Job* JobsModel::pJob_CreateSchema_pre(Prompt::SePrompt* pPrompt)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_CreateSchema_post(Prompt::SePrompt* pPrompt)
+void JobsModel::vJob_CreateSchema_post(Prompt::SePrompt* pPrompt, Job* pJob)
 {
 }
 

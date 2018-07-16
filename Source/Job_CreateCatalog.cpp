@@ -149,7 +149,7 @@ Job* JobsModel::pJob_CreateCatalog_pre(Prompt::SePrompt* pPrompt)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_CreateCatalog_post(Prompt::SePrompt* pPrompt)
+void JobsModel::vJob_CreateCatalog_post(Prompt::SePrompt* pPrompt, Job* pJob)
 {
 }
 

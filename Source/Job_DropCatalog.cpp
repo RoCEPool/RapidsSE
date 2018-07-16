@@ -146,7 +146,7 @@ Job* JobsModel::pJob_DropCatalog_pre(Prompt::SePrompt* pPrompt)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_DropCatalog_post(Prompt::SePrompt* pPrompt)
+void JobsModel::vJob_DropCatalog_post(Prompt::SePrompt* pPrompt, Job* pJob)
 {
 }
 

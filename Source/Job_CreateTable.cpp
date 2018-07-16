@@ -179,7 +179,7 @@ Job* JobsModel::pJob_CreateTable_pre(Prompt::SePrompt* pPrompt)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_CreateTable_post(Prompt::SePrompt* pPrompt)
+void JobsModel::vJob_CreateTable_post(Prompt::SePrompt* pPrompt, Job* pJob)
 {
 }
 

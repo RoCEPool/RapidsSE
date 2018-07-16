@@ -161,7 +161,7 @@ Job* JobsModel::pJob_CreateIndex_pre(Prompt::SePrompt* pPrompt)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_CreateIndex_post(Prompt::SePrompt* pPrompt)
+void JobsModel::vJob_CreateIndex_post(Prompt::SePrompt* pPrompt, Job* pJob)
 {
 }
 

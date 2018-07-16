@@ -145,7 +145,7 @@ Job* JobsModel::pJob_DropSchema_pre(Prompt::SePrompt* pPrompt)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_DropSchema_post(Prompt::SePrompt* pPrompt)
+void JobsModel::vJob_DropSchema_post(Prompt::SePrompt* pPrompt, Job* pJob)
 {
 }
 

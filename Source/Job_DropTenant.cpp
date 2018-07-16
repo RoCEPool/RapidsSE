@@ -146,7 +146,7 @@ Job* JobsModel::pJob_DropTenant_pre(Prompt::SePrompt* pPrompt)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_DropTenant_post(Prompt::SePrompt* pPrompt)
+void JobsModel::vJob_DropTenant_post(Prompt::SePrompt* pPrompt, Job* pJob)
 {
 }
 
