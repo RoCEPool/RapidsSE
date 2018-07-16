@@ -13,7 +13,7 @@ JobNote mJobNote_Space (
   "comment"_Stz,    // comment about the job
   "spaceR35"_Stz,   // the prompt command
   nullptr,          // the second word
-  "poolSpaceR35_req"_Stz, // the task seed for this job
+  "poolSpaceR35_origin"_Stz, // the task seed for this job
   false,            // detached job?
   pJob_Space_pre,   // prompt pre-process function
   vJob_Space_post,  // prompt post-process function
@@ -77,7 +77,7 @@ Job_Space::Job_Space(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SPACE,_FOOTER_);
     
-  m_sExecute = "Job_Space.execute"_Stz;
+  m_sExecute = "poolSpaceR35_node"_Stz;
   m_sSeed    = mJobNote_Space.pJobClass()->m_aSeed;
 
   _checkInitialised_(CN_JOB_SPACE);
