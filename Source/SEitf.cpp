@@ -3695,7 +3695,7 @@ bool SEitf::bAppendJob(Job** ppJob)
   
   s32 sRequest;
   sRequest = pJob->sJobSeed();
-  sRequest.vConcat("_origin"_Stz);
+  sRequest.vConcat("_req"_Stz);
   //xValWrk = pJob->m_sSeed; //sRequest;
   xValWrk = sRequest;
   //vTrace("%s\n"_Stz,xVal.aChar());
@@ -3718,7 +3718,7 @@ bool SEitf::bAppendJob(Job** ppJob)
     
     Task* pNewTask = new Task;
     
-    pNewTask->vSeedWord("promptR35_origin"_Stz);
+    pNewTask->vSeedWord("promptR35_req"_Stz);
     
     pNewTask->vState(TS_READY);
     pNewTask->vR35model(true);

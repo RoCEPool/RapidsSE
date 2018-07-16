@@ -5,13 +5,13 @@
 "job_Space.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* get space in the pool                                                      */
+/* request to get space in the pool (executed on originating node)            */
 /*----------------------------------------------------------------------------*/
-: poolSpaceR35_origin ( -- <R> )
+: poolSpaceR35_req ( -- <R> )
 
   0 0 locals| pJob pTask |
 
-  tp: poolSpaceR35_origin
+  tp: poolSpaceR35_req
 
   // get the task
   task::this to pTask
@@ -21,7 +21,7 @@
 
   pTask pJob "job::distribute" find execute
 
-  <DONE_ORIGIN>
+  <DONE_REQUEST>
 ;
 
 /*----------------------------------------------------------------------------*/

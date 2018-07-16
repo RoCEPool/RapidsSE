@@ -5,13 +5,13 @@
 "requests_prompt.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* run the prompt                                                             */
+/* run the prompt request                                                     */
 /*----------------------------------------------------------------------------*/
-: promptR35_origin ( -- <R> )
+: promptR35_req ( -- <R> )
 
   0 locals| pPrompt |
 
-  "promptR35_origin" .
+  "promptR35_req" .
 
   prompt::new to pPrompt
 
