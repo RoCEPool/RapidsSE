@@ -12,6 +12,7 @@ JobNote mJobNote_Space (
   "spaceR35"_Stz,   // the prompt command
   nullptr,          // the second word
   "poolSpaceR35_req"_Stz, // the task seed for this job
+  false,            // detached job?
   pJob_Space_pre,   // prompt pre-process function
   vJob_Space_post,  // prompt post-process function
   true     

@@ -11,6 +11,7 @@ JobNote mJobNote_DropTable (
   "drop"_Stz,           // the prompt command
   "table"_Stz,          // the second word
   "dropTableR35_req"_Stz, // the task seed for this job
+  false,                // detached job?
   pJob_DropTable_pre,   // prompt pre-process function
   vJob_DropTable_post   // prompt post-process function
   );

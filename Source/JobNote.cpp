@@ -18,6 +18,7 @@ JobNote::JobNote(Stz* aName,
                  Stz* aCommand1,
                  Stz* aCommand2,
                  Stz* aSeed,
+                 bool bDetached,
                  Job* (*fPre)(SePrompt* pPrompt),
                  void (*fPost)(SePrompt* pPrompt),
                  bool bEnabled)
@@ -35,6 +36,7 @@ JobNote::JobNote(Stz* aName,
   if (aCommand2)
     gxJobCatalog.m_xJobClass[i_Job].m_aCommand2 = aCommand2;
   gxJobCatalog.m_xJobClass[i_Job].m_aSeed     = aSeed;
+  gxJobCatalog.m_xJobClass[i_Job].m_bDetached = bDetached;
   gxJobCatalog.m_xJobClass[i_Job].m_fPre      = fPre;
   gxJobCatalog.m_xJobClass[i_Job].m_fPost     = fPost;
   gxJobCatalog.m_xJobClass[i_Job].m_bEnabled  = bEnabled;

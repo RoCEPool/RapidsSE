@@ -938,7 +938,11 @@ bool SePrompt::bExecuteJob(void)
   Job* pJob = pJobClass->pNewJob(this);
   
   bool bProcessResult = bPrepareJob(pJob);
-    
+  
+  // wait for job signal
+  
+  // call the job post function (includes deleting the job)
+  
   if (bProcessResult) {
     if (gpAttachMap->m_bMetadata ) {
       vMetaFormat();

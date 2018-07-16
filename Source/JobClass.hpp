@@ -15,7 +15,8 @@ namespace JobsModel
     Stz* m_aCommand1; // first word of prompt command
     Stz* m_aCommand2; // optional second word of prompt command
     Stz* m_aSeed;     // the task seed for this job
-  
+    bool m_bDetached; // is this job detached?
+
     Job* (*m_fPre)(Prompt::SePrompt* pPrompt);
     void (*m_fPost)(Prompt::SePrompt* pPrompt);
   

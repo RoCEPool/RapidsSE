@@ -11,6 +11,7 @@ JobNote mJobNote_CreateTenant (
   "create"_Stz,            // the prompt command
   "tenant"_Stz,            // the second word
   "createTenantR35_req"_Stz, // the task seed for this job
+  false,                   // detached job?
   pJob_CreateTenant_pre,   // prompt pre-process function
   vJob_CreateTenant_post   // prompt post-process function
 );

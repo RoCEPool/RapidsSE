@@ -11,6 +11,7 @@ JobNote mJobNote_DropIndex (
   "drop"_Stz,           // the prompt command
   "index"_Stz,          // the second word
   "dropIndexR35_req"_Stz, // the task seed for this job
+  false,                // detached job?
   pJob_DropIndex_pre,   // prompt pre-process function
   vJob_DropIndex_post   // prompt post-process function
 );

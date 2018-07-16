@@ -11,6 +11,7 @@ JobNote mJobNote_CreateIndex (
   "create"_Stz,          // the prompt command
   "index"_Stz,           // the second word
   "createIndexR35_req"_Stz, // the task seed for this job
+  false,                 // detached job?
   pJob_CreateIndex_pre,  // prompt pre-process function
   vJob_CreateIndex_post  // prompt post-process function
 );

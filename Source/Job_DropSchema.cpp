@@ -11,6 +11,7 @@ JobNote mJobNote_DropSchema (
   "drop"_Stz,           // the prompt command
   "schema"_Stz,         // the second word
   "dropSchemaR35_req"_Stz, // the task seed for this job
+  false,                // detached job?
   pJob_DropSchema_pre,  // prompt pre-process function
   vJob_DropSchema_post  // prompt post-process function
   );
