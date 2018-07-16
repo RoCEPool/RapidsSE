@@ -72,7 +72,6 @@ eEC eExecuteRequest(SEitf* pSEitf, Stz* aCommand, Stz* aParameter1,
 eEC eExecuteRequest(SEitf* pSEitf, Stz* aCommand, Stz* aParameter1,
                     Stz* aParameter2, Stz* aParameter3);
 bool bExecuteRequest(SEitf* pSEitf, TokenVec& xTokenVec);
-bool bDispatchJob(Job* pJob, SEitf* pSEitf);
 eEC eGetResponse(SEitf* pSEitf);
 
 /*----------------------------------------------------------------------------*/

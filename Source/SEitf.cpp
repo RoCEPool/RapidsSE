@@ -3746,12 +3746,7 @@ bool SEitf::bAppendJob(Job** ppJob)
   nnpNewTask->vActorModel(AC_R35);
   //nnpNewTask->vSEitf(this);
   
-  if (*ppJob) {
-    Job* pJob = *ppJob;
-    *ppJob = nullptr;
-    
-    nnpNewTask->vJob(pJob);
-  }
+  nnpNewTask->vJob(pJob);
   
   //gpAttachMap->m_pServerScheduler->vEnqueueTask_Mutex(*nnpNewTask);
   Handlers::vSpawnedTaskHandler(*nnpNewTask);

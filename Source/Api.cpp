@@ -2427,7 +2427,8 @@ bool RapidsSE_DispatchJob(Job* pJob, SEitf* pSEitf, Stz** ppResponse)
   pSEitf->vClearLastError();
   
   // dispatch job to se
-  bResult = bDispatchJob(pJob, pSEitf);
+  bResult = pSEitf->bAppendJob(&pJob);
+  
   if (! bResult) {
     *ppResponse = nullptr;
     return bResult;
@@ -2556,28 +2557,6 @@ bool bExecuteRequest(SEitf* pSEitf, TokenVec& xTokenVec)
   
   return bResult;
 }
-
-/*----------------------------------------------------------------------------*/
-/* dispatch job                                                               */
-/*----------------------------------------------------------------------------*/
-bool bDispatchJob(Job* pJob, SEitf* pSEitf)
-{
-  bool bResult;
-  
-  // execute command
-  //bResult = pSEitf->bDecode(xTokenVec);
-  
-  
-  //s256 sRequest;
-  
-  //sRequest = pJob->m_sSeed; //"poolSpaceR35_req"_Stz; //! hack
-  
-  bResult = pSEitf->bAppendJob(&pJob);
-  
-  
-  return bResult;
-}
-
 
 
 /*----------------------------------------------------------------------------*/
