@@ -10,7 +10,7 @@ JobNote mJobNote_DropCatalog (
   "comment"_Stz,         // comment about the job
   "drop"_Stz,            // the prompt command
   "catalog"_Stz,         // the second word
-  "seed"_Stz,            // the task seed for this job
+  "dropCatalogR35_req"_Stz, // the task seed for this job
   pJob_DropCatalog_pre,  // prompt pre-process function
   vJob_DropCatalog_post  // prompt post-process function
 );

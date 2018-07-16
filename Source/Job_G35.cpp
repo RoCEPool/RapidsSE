@@ -5,14 +5,14 @@
 #include "JobModel.h"
 
 JobNote mJobNote_G35 (
-  "g35"_Stz,     // name of the job class
-  CN_JOB_G35,    // class enum
-  "comment"_Stz, // comment about the job
-  "g35"_Stz,     // the prompt command
-  nullptr,       // the second word
-  "seed"_Stz,    // the task seed for this job
-  pJob_G35_pre,  // prompt pre-process function
-  vJob_G35_post  // prompt post-process function
+  "g35"_Stz,      // name of the job class
+  CN_JOB_G35,     // class enum
+  "comment"_Stz,  // comment about the job
+  "g35"_Stz,      // the prompt command
+  nullptr,        // the second word
+  "g35_req"_Stz,  // the task seed for this job
+  pJob_G35_pre,   // prompt pre-process function
+  vJob_G35_post   // prompt post-process function
 );
 
 /*----------------------------------------------------------------------------*/

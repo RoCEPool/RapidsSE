@@ -10,7 +10,7 @@ JobNote mJobNote_DropTenant (
   "comment"_Stz,        // comment about the job
   "drop"_Stz,           // the prompt command
   "tenant"_Stz,         // the second word
-  "seed"_Stz,           // the task seed for this job
+  "dropTenantR35_req"_Stz, // the task seed for this job
   pJob_DropTenant_pre,  // prompt pre-process function
   vJob_DropTenant_post  // prompt post-process function
   );

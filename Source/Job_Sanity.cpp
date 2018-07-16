@@ -12,7 +12,7 @@ JobNote mJobNote_Sanity (
   "comment"_Stz,    // comment about the job
   "sanity"_Stz,     // the prompt command
   nullptr,          // the second word
-  "seed"_Stz,       // the task seed for this job
+  "nodeSanityR35_req"_Stz, // the task seed for this job
   pJob_Sanity_pre,  // prompt pre-process function
   vJob_Sanity_post  // prompt post-process function
   );

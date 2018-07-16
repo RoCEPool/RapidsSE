@@ -10,7 +10,7 @@ JobNote mJobNote_DropTable (
   "comment"_Stz,        // comment about the job
   "drop"_Stz,           // the prompt command
   "table"_Stz,          // the second word
-  "seed"_Stz,           // the task seed for this job
+  "dropTableR35_req"_Stz, // the task seed for this job
   pJob_DropTable_pre,   // prompt pre-process function
   vJob_DropTable_post   // prompt post-process function
   );

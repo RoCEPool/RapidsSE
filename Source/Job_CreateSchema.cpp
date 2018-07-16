@@ -10,7 +10,7 @@ JobNote mJobNote_CreateSchema (
   "comment"_Stz,          // comment about the job
   "create"_Stz,           // the prompt command
   "schema"_Stz,           // the second word
-  "seed"_Stz,             // the task seed for this job
+  "createSchemaR35_req"_Stz, // the task seed for this job
   pJob_CreateSchema_pre,  // prompt pre-process function
   vJob_CreateSchema_post  // prompt post-process function
 );

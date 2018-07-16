@@ -10,7 +10,7 @@ JobNote mJobNote_CreateCatalog (
   "comment"_Stz,           // comment about the job
   "create"_Stz,            // the prompt command
   "catalog"_Stz,           // the second word
-  "seed"_Stz,              // the task seed for this job
+  "createCatalogR35_req"_Stz, // the task seed for this job
   pJob_CreateCatalog_pre,  // prompt pre-process function
   vJob_CreateCatalog_post  // prompt post-process function
 );

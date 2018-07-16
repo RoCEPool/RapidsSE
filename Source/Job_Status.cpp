@@ -10,7 +10,7 @@ JobNote mJobNote_Status (
   "comment"_Stz,    // comment about the job
   "status"_Stz,     // the prompt command
   nullptr,          // the second word
-  "seed"_Stz,       // the task seed for this job
+  "nodeStatusR35_req"_Stz, // the task seed for this job
   pJob_Status_pre,  // prompt pre-process function
   vJob_Status_post  // prompt post-process function
   );

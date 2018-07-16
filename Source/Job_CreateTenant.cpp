@@ -10,7 +10,7 @@ JobNote mJobNote_CreateTenant (
   "comment"_Stz,           // comment about the job
   "create"_Stz,            // the prompt command
   "tenant"_Stz,            // the second word
-  "seed"_Stz,              // the task seed for this job
+  "createTenantR35_req"_Stz, // the task seed for this job
   pJob_CreateTenant_pre,   // prompt pre-process function
   vJob_CreateTenant_post   // prompt post-process function
 );

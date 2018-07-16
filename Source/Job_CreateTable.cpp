@@ -10,7 +10,7 @@ JobNote mJobNote_CreateTable (
   "comment"_Stz,          // comment about the job
   "create"_Stz,           // the prompt command
   "table"_Stz,            // the second word
-  "seed"_Stz,             // the task seed for this job
+  "createTableR35_req"_Stz, // the task seed for this job
   pJob_CreateTable_pre,   // prompt pre-process function
   vJob_CreateTable_post   // prompt post-process function
 );
