@@ -186,6 +186,8 @@ SePrompt::SePrompt(void)
   m_pTokeniser->vLineMode(true);
   m_pTokeniser->vNormal(true);
   
+  m_eCommand = CK_NONE;
+  
   // open the command history file
   m_xHistory.vOpen();
 
@@ -483,21 +485,29 @@ void SePrompt::vExecuteCommand(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   // test for blank line
-  if (bBlankLine())
+  if (bBlankLine()) {
+    m_eCommand = CK_BLANK_LINE;
     return;
+  }
   
   // attempt to execute command file
-  if (bExecuteFile())
+  if (bExecuteFile()) {
+    m_eCommand = CK_COMMAND_FILE;
     return;
+  }
   
   // attempt to execute internal command
-  if (bExecuteFunction())
+  if (bExecuteFunction()) {
+    m_eCommand = CK_PROMPT_FUNCTION;
     return;
+  }
   
   // attempt to execute se job
-  if (bExecuteJob())
+  if (bExecuteJob()) {
+    m_eCommand = CK_SE_JOB;
     return;
-
+  }
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   bool bProcessResult = bProcessCommand();
   

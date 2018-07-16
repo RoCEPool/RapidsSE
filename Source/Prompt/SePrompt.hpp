@@ -22,6 +22,16 @@ static Stz* C_SAME_MACHINE         = "same_machine"_Stz;
 
 namespace Prompt
 {
+  enum eCK // command kind
+  {
+  /*  0 */ CK_NONE=0,
+  /*  1 */ CK_BLANK_LINE,
+  /*  2 */ CK_COMMAND_FILE,
+  /*  3 */ CK_PROMPT_FUNCTION,
+  /*  4 */ CK_SE_JOB,
+  /*  5 */ CK_ENUMS
+  };
+
   class SePrompt : public Object
   {
   private:
@@ -36,6 +46,7 @@ namespace Prompt
     TokenVec   m_xTokenVec2; // another token vector
     Tokeniser* m_pTokeniser; // input stream tokeniser
     Timer      m_xTimer;     // timer
+    eCK        m_eCommand;   // kind of last command
   
     PosixThread m_xPosixThread; // posix thread structure
   
