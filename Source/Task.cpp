@@ -2140,9 +2140,9 @@ void Task::vState(eTS eState)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_xLock.vGrabWrite();
+  //m_xLock.vGrabWrite();
   m_eState = eState;
-  m_xLock.vDropWrite();
+  //m_xLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/

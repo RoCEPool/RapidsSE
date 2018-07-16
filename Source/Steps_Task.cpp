@@ -1092,7 +1092,7 @@ ENTRY("vTaskStateStore"_Stz);
   
   // an r35 task being set to waiting state must be locked
   if (pThatTask->bR35model() && TS_WAITING_ACK == iState) {
-    RASSERT(pThatTask->bIsLocked());
+    //RASSERT(pThatTask->bIsLocked());
   }
   
   pThatTask->m_eState = (eTS)iState;

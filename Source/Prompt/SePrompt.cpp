@@ -943,24 +943,25 @@ bool SePrompt::bExecuteJob(void)
   // wait for job signal
   
   // call the job post function (includes deleting the job)
+  pJobClass->vEndJob(this, pJob);
   
-  if (bProcessResult) {
-    if (gpAttachMap->m_bMetadata ) {
-      vMetaFormat();
-    }
-    else {
-      if ( !m_sResponse.bEqual("<ok>"_Stz) ) {
-        vTrace("%s\n"_Stz,m_sResponse.aChar());
-      }
-    }
-  }
-  else {
-    if (m_pSEitf->eGetLastError() != EC_NONE)
-      vTrace("error: %s\n"_Stz,m_pSEitf->pGetLastError());
-  }
-  
-  // clear the response
-  m_sResponse = ""_Stz;
+//  if (bProcessResult) {
+//    if (gpAttachMap->m_bMetadata ) {
+//      vMetaFormat();
+//    }
+//    else {
+//      if ( !m_sResponse.bEqual("<ok>"_Stz) ) {
+//        vTrace("%s\n"_Stz,m_sResponse.aChar());
+//      }
+//    }
+//  }
+//  else {
+//    if (m_pSEitf->eGetLastError() != EC_NONE)
+//      vTrace("error: %s\n"_Stz,m_pSEitf->pGetLastError());
+//  }
+//
+//  // clear the response
+//  m_sResponse = ""_Stz;
 
   return true;
 }
