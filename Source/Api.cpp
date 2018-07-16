@@ -2185,7 +2185,7 @@ eEC RapidsSE_Prompt(i8 iTraceLevel)
     
     Job_Prompt* pJob_Prompt = new Job_Prompt(pSEitf);
     
-    pJob_Prompt->m_sSeed = "promptR35_req"_Stz;
+    pJob_Prompt->m_sSeed = "promptR35"_Stz;
     pJob_Prompt->m_bDetached = true;
     
     bool b = pSEitf->bAppendJob((Job**)&pJob_Prompt);
