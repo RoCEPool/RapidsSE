@@ -237,8 +237,8 @@ void SePrompt::vLoop(void)
   // open the command history file
   //m_xHistory.vOpen();
   
-  m_xPosixThread.vSetOSThreadId();
-  PosixThread::vTlsSet(giTLS_ThreadKey,&m_xPosixThread);
+  //m_xPosixThread.vSetOSThreadId();
+  //PosixThread::vTlsSet(giTLS_ThreadKey,&m_xPosixThread);
   //ASSERT(PosixThread::pTlsGet(giTLS_ThreadKey) == &m_xPosixThread);
 
   // get and process commands
