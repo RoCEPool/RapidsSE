@@ -15,7 +15,15 @@
 
   prompt::new to pPrompt
 
-  pPrompt prompt.loop
+  //pPrompt prompt.loop
+
+  begin
+
+    pPrompt prompt.getCommand
+
+    pPrompt prompt.executeCommand
+
+  again
 
   <OK>
 ;
