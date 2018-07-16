@@ -66,6 +66,7 @@ namespace Prompt
 
     void vGetCommand(void);
     void vExecuteCommand(void);
+    eCK  eCommand(void);
   
   private:
     void vGetCommandArgument(void);

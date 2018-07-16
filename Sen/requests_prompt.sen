@@ -23,6 +23,8 @@
 
     pPrompt prompt.executeCommand
 
+    drop
+
   again
 
   <OK>

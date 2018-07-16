@@ -542,6 +542,16 @@ void SePrompt::vExecuteCommand(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get command kind                                                           */
+/*----------------------------------------------------------------------------*/
+eCK SePrompt::eCommand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_eCommand;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get command from arguments                                                 */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vGetCommandArgument(void)
