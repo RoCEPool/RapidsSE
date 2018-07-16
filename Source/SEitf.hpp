@@ -260,7 +260,7 @@ namespace Interface
     //--------------------------------------------------------------------------
     bool bAppendRequest(StrVal& sRequest);
 
-    bool bAppendJob(Job** ppJob = nullptr);
+    bool bAppendJob(Job* pJob);
   
     eEC  eGetResponse(void);
     

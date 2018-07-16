@@ -2188,7 +2188,7 @@ eEC RapidsSE_Prompt(i8 iTraceLevel)
     pJob_Prompt->m_sSeed = "promptR35_req"_Stz;
     pJob_Prompt->m_bDetached = true;
     
-    bool b = pSEitf->bAppendJob((Job**)&pJob_Prompt);
+    bool b = pSEitf->bAppendJob(pJob_Prompt);
     
     return EC_NONE;
     
@@ -2427,7 +2427,7 @@ bool RapidsSE_DispatchJob(Job* pJob, SEitf* pSEitf, Stz** ppResponse)
   pSEitf->vClearLastError();
   
   // dispatch job to se
-  bResult = pSEitf->bAppendJob(&pJob);
+  bResult = pSEitf->bAppendJob(pJob);
   
   if (! bResult) {
     *ppResponse = nullptr;

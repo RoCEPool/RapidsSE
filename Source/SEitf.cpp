@@ -3660,11 +3660,10 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
 /*----------------------------------------------------------------------------*/
 /* append request to request queue (RDP R3.5)                                 */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bAppendJob(Job** ppJob)
+bool SEitf::bAppendJob(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
  
-  Job* pJob = *ppJob;
   bool bDetached = pJob->m_bDetached;
 
   Stz* aCursor = nullptr;
@@ -3710,7 +3709,7 @@ bool SEitf::bAppendJob(Job** ppJob)
   
   //----------------------------------------------------------------------------
 
-  if (CN_JOB_PROMPT == (*ppJob)->eClass()) {
+  if (CN_JOB_PROMPT == pJob->eClass()) {
     
     Task* pNewTask = new Task;
     
@@ -3721,8 +3720,6 @@ bool SEitf::bAppendJob(Job** ppJob)
     pNewTask->vActorModel(AC_R35);
     pNewTask->vSEitf(this);
     
-    Job* pJob = *ppJob;
-    *ppJob = nullptr;
     pNewTask->vJob(pJob);
     
     Handlers::vSpawnedTaskHandler(pNewTask);
