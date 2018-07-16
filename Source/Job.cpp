@@ -54,10 +54,11 @@ Job::Job(eCN eClassNo)
   m_iJobId   = -1;
   m_eState   = JS_NONE;
   m_sExecute = ""_Stz;
-  m_sCheckResources = ""_Stz;
+  m_sSeed    = ""_Stz;
+  m_sCheckResources   = ""_Stz;
   m_sReleaseResources = ""_Stz;
-  m_iParticipantNode = -1;
-  m_ziAcksRemaining  = 0;
+  m_iParticipantNode  = -1;
+  m_ziAcksRemaining   = 0;
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
 }
