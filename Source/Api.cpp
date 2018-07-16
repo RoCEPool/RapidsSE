@@ -2568,7 +2568,7 @@ bool bDispatchJob(Job* pJob, SEitf* pSEitf, TokenVec& xTokenVec)
   
   s256 sRequest;
   
-  sRequest = "poolSpaceR35_req"_Stz; //! hack
+  sRequest = pJob->m_sSeed; //"poolSpaceR35_req"_Stz; //! hack
   
   bResult = pSEitf->bAppendJob(sRequest, false, &pJob);
   

@@ -75,7 +75,7 @@ Job_Space::Job_Space(Interface::SEitf* pSEitf)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SPACE,_FOOTER_);
     
   m_sExecute = "Job_Space.execute"_Stz;
-  //m_sExecute = mJobNote_Space.pJobClass()->m_aSeed;//"Job_Space.execute"_Stz;
+  m_sSeed    = mJobNote_Space.pJobClass()->m_aSeed;
 
   _checkInitialised_(CN_JOB_SPACE);
   
