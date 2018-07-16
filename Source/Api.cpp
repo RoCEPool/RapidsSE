@@ -2177,7 +2177,6 @@ eEC RapidsSE_Prompt(i8 iTraceLevel)
   Stz*   aApiCall = "RapidsSE_Prompt"_Stz;
   SEitf* pSEitf = nullptr;
   s256   sRequest;
-  sRequest = "promptR35_req"_Stz;
 
   try {
     
@@ -2186,7 +2185,9 @@ eEC RapidsSE_Prompt(i8 iTraceLevel)
     
     Job_Prompt* pJob_Prompt = new Job_Prompt(pSEitf);
     
-    bool b = pSEitf->bAppendJob(sRequest,true,(Job**)&pJob_Prompt);
+    pJob_Prompt->m_sSeed = "promptR35_req"_Stz;
+    
+    bool b = pSEitf->bAppendJob(true,(Job**)&pJob_Prompt);
     
     return EC_NONE;
     
@@ -2566,11 +2567,11 @@ bool bDispatchJob(Job* pJob, SEitf* pSEitf, TokenVec& xTokenVec)
   //bResult = pSEitf->bDecode(xTokenVec);
   
   
-  s256 sRequest;
+  //s256 sRequest;
   
-  sRequest = pJob->m_sSeed; //"poolSpaceR35_req"_Stz; //! hack
+  //sRequest = pJob->m_sSeed; //"poolSpaceR35_req"_Stz; //! hack
   
-  bResult = pSEitf->bAppendJob(sRequest, false, &pJob);
+  bResult = pSEitf->bAppendJob(false, &pJob);
   
   
   return bResult;

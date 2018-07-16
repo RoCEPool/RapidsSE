@@ -64,11 +64,11 @@ ReqTable SeRequests[] =
  { "mktbl"_Stz,          &SEitf::bCreateTable,          "createTable_req"_Stz     },
  { "mkten"_Stz,          &SEitf::bCreateTenant,         "createTenant_req"_Stz    },
  { "mon"_Stz,            &SEitf::bGetMonitor,           "getMonitor_req"_Stz      },
- { "n35"_Stz,            &SEitf::bN35,                  "n35_req"_Stz             },
+ //{ "n35"_Stz,            &SEitf::bN35,                  "n35_req"_Stz             },
  { "ping"_Stz,           &SEitf::bPing,                 "ping_req"_Stz            },
  { "print"_Stz,          &SEitf::bPrint,                nullptr                   },
  { "pwf"_Stz,            &SEitf::bPrintWorkingFolder,   "pwf_req"_Stz             },
- { "p35"_Stz,            &SEitf::bP35,                  "p35_req"_Stz             },
+ //{ "p35"_Stz,            &SEitf::bP35,                  "p35_req"_Stz             },
  { "reload"_Stz,         &SEitf::bReload,               "reload_req"_Stz          },
  { "retidx"_Stz,         &SEitf::bRetIndex,             "returnIndex_req"_Stz     },
  { "rettbl"_Stz,         &SEitf::bRetTable,             "returnTable_req"_Stz     },
@@ -105,18 +105,18 @@ ReqTable SeRequests[] =
  { "vfyidx"_Stz,         &SEitf::bVerifyIndex,          "verifyIndex_req"_Stz     },
  { "visidx"_Stz,         &SEitf::bVisualizeIndex,       "visualizeIndex_req"_Stz  },
  
- { "g35"_Stz,            &SEitf::bG35,                  "g35_req"_Stz             },
- { "mkcatR35"_Stz,       &SEitf::bR35Request,           "createCatalogR35_req"_Stz},
- { "mkschR35"_Stz,       &SEitf::bR35Request,           "createSchemaR35_req"_Stz },
- { "mktblR35"_Stz,       &SEitf::bR35Request,           "createTableR35_req"_Stz  },
- { "mktenR35"_Stz,       &SEitf::bR35Request,           "createTenantR35_req"_Stz },
- { "rmcatR35"_Stz,       &SEitf::bR35Request,           "dropCatalogR35_req"_Stz  },
- { "rmschR35"_Stz,       &SEitf::bR35Request,           "dropSchemaR35_req"_Stz   },
- { "rmtblR35"_Stz,       &SEitf::bR35Request,           "dropTableR35_req"_Stz    },
- { "rmcat"_Stz,          &SEitf::bDropCatalog,          "dropTenantR35_req"_Stz   },
- { "sanityR35"_Stz,      &SEitf::bNodeSanityR35,        "nodeSanityR35_req"_Stz   },
- { "statusR35"_Stz,      &SEitf::bNodeStatusR35,        "nodeStatusR35_req"_Stz   },
- { "spaceR35"_Stz,       &SEitf::bPoolSpaceR35,         "poolSpaceR35_req"_Stz    },
+ //{ "g35"_Stz,            &SEitf::bG35,                  "g35_req"_Stz             },
+ //{ "mkcatR35"_Stz,       &SEitf::bR35Request,           "createCatalogR35_req"_Stz},
+ //{ "mkschR35"_Stz,       &SEitf::bR35Request,           "createSchemaR35_req"_Stz },
+ //{ "mktblR35"_Stz,       &SEitf::bR35Request,           "createTableR35_req"_Stz  },
+ //{ "mktenR35"_Stz,       &SEitf::bR35Request,           "createTenantR35_req"_Stz },
+ //{ "rmcatR35"_Stz,       &SEitf::bR35Request,           "dropCatalogR35_req"_Stz  },
+ //{ "rmschR35"_Stz,       &SEitf::bR35Request,           "dropSchemaR35_req"_Stz   },
+ //{ "rmtblR35"_Stz,       &SEitf::bR35Request,           "dropTableR35_req"_Stz    },
+ //{ "rmcat"_Stz,          &SEitf::bDropCatalog,          "dropTenantR35_req"_Stz   },
+ //{ "sanityR35"_Stz,      &SEitf::bNodeSanityR35,        "nodeSanityR35_req"_Stz   },
+ //{ "statusR35"_Stz,      &SEitf::bNodeStatusR35,        "nodeStatusR35_req"_Stz   },
+ //{ "spaceR35"_Stz,       &SEitf::bPoolSpaceR35,         "poolSpaceR35_req"_Stz    },
   
  { nullptr,              nullptr,                       nullptr                   }
   
@@ -3456,6 +3456,7 @@ bool SEitf::bPing(TokenVec& xTokenVec, i8 iReqNo)
 /*----------------------------------------------------------------------------*/
 /* R3.5 node-level command test                                               */
 /*----------------------------------------------------------------------------*/
+/*
 bool SEitf::bN35(TokenVec& xTokenVec, i8 iReqNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
@@ -3468,10 +3469,11 @@ bool SEitf::bN35(TokenVec& xTokenVec, i8 iReqNo)
   
   return bAppendJob(sRequest,xTokenVec.bDetachedRequest());
 }
-
+*/
 /*----------------------------------------------------------------------------*/
 /* R3.5 grid-level command test                                               */
 /*----------------------------------------------------------------------------*/
+/*
 bool SEitf::bG35(TokenVec& xTokenVec, i8 iReqNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
@@ -3486,10 +3488,12 @@ bool SEitf::bG35(TokenVec& xTokenVec, i8 iReqNo)
   
   return bAppendJob(sRequest,xTokenVec.bDetachedRequest(),(Job**)&pJob_G35);
 }
+*/
 
 /*----------------------------------------------------------------------------*/
 /* R3.5 partition-level command test                                          */
 /*----------------------------------------------------------------------------*/
+/*
 bool SEitf::bP35(TokenVec& xTokenVec, i8 iReqNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
@@ -3507,6 +3511,7 @@ bool SEitf::bP35(TokenVec& xTokenVec, i8 iReqNo)
   
   return bAppendJob(sRequest,xTokenVec.bDetachedRequest());
 }
+*/
 
 /*----------------------------------------------------------------------------*/
 /* get seitf count                                                            */
@@ -3655,10 +3660,12 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
 /*----------------------------------------------------------------------------*/
 /* append request to request queue (RDP R3.5)                                 */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bAppendJob(StrVal& sRequest, bool bDetached, Job** ppJob)
+bool SEitf::bAppendJob(bool bDetached, Job** ppJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
+ 
+  Job* pJob = *ppJob;
+
   Stz* aCursor = nullptr;
   
   ValWrk xValWrk;
@@ -3685,7 +3692,7 @@ bool SEitf::bAppendJob(StrVal& sRequest, bool bDetached, Job** ppJob)
   // end block
   //----------------------------------------------------------------------------
   
-  xValWrk = sRequest;
+  xValWrk = pJob->m_sSeed; //sRequest;
   //vTrace("%s\n"_Stz,xVal.aChar());
   xValSet.vAppend(aCursor,xValWrk.pNestedValueSelf());
   
@@ -3876,6 +3883,7 @@ Footer* SEitf::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* get pool space                                                             */
 /*----------------------------------------------------------------------------*/
+/*
 bool SEitf::bPoolSpaceR35(TokenVec& xTokenVec, i8 iReqNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
@@ -3892,10 +3900,12 @@ bool SEitf::bPoolSpaceR35(TokenVec& xTokenVec, i8 iReqNo)
   
   return bAppendJob(sRequest,xTokenVec.bDetachedRequest(),(Job**)&m_pJob);
 }
+*/
 
 /*----------------------------------------------------------------------------*/
 /* check node sanity                                                          */
 /*----------------------------------------------------------------------------*/
+/*
 bool SEitf::bNodeSanityR35(TokenVec& xTokenVec, i8 iReqNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
@@ -3912,10 +3922,12 @@ bool SEitf::bNodeSanityR35(TokenVec& xTokenVec, i8 iReqNo)
   
   return bAppendJob(sRequest,xTokenVec.bDetachedRequest(),(Job**)&m_pJob);
 }
+*/
 
 /*----------------------------------------------------------------------------*/
 /* get status                                                                 */
 /*----------------------------------------------------------------------------*/
+/*
 bool SEitf::bNodeStatusR35(TokenVec& xTokenVec, i8 iReqNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
@@ -3932,10 +3944,12 @@ bool SEitf::bNodeStatusR35(TokenVec& xTokenVec, i8 iReqNo)
   
   return bAppendJob(sRequest,xTokenVec.bDetachedRequest(),(Job**)&m_pJob);
 }
+*/
 
 /*----------------------------------------------------------------------------*/
 /* R35 request                                                                */
 /*----------------------------------------------------------------------------*/
+/*
 bool SEitf::bR35Request(TokenVec& xTokenVec, i8 iReqNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
@@ -3948,5 +3962,4 @@ bool SEitf::bR35Request(TokenVec& xTokenVec, i8 iReqNo)
   
   return bAppendJob(sRequest,xTokenVec.bDetachedRequest(),(Job**)&m_pJob);
 }
-
-
+*/
