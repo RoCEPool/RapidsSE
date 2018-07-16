@@ -38,9 +38,20 @@ JobNote::JobNote(Stz* aName,
   gxJobCatalog.m_xJobClass[i_Job].m_fPre      = fPre;
   gxJobCatalog.m_xJobClass[i_Job].m_fPost     = fPost;
   gxJobCatalog.m_xJobClass[i_Job].m_bEnabled  = bEnabled;
+  
+  // record the job class
+  m_pJobClass = &gxJobCatalog.m_xJobClass[i_Job];
 
   // we have one more class in the job catalog
   gxJobCatalog.m_nClasses++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get job class                                                              */
+/*----------------------------------------------------------------------------*/
+JobClass* JobNote::pJobClass(void)
+{
+  return m_pJobClass;
 }
 
 /*============================================================================*/

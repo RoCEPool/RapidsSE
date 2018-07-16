@@ -2565,11 +2565,13 @@ bool bDispatchJob(Job* pJob, SEitf* pSEitf, TokenVec& xTokenVec)
   // execute command
   //bResult = pSEitf->bDecode(xTokenVec);
   
+  
   s256 sRequest;
   
   sRequest = "poolSpaceR35_req"_Stz; //! hack
   
   bResult = pSEitf->bAppendJob(sRequest, false, &pJob);
+  
   
   return bResult;
 }

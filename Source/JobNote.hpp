@@ -9,7 +9,8 @@ namespace JobsModel
   class JobNote
   {
   public:
-
+    JobClass* m_pJobClass; // the job class created by this note
+  
   public:
     JobNote(Stz* aName,
             eCN  eClass,
@@ -20,6 +21,8 @@ namespace JobsModel
             Job* (*fPre)(Prompt::SePrompt* pPrompt),
             void (*fPost)(Prompt::SePrompt* pPrompt),
             bool bEnabled=false);
+  
+    JobClass* pJobClass(void);
   };
 }
 
