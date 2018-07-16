@@ -60,6 +60,7 @@ Job::Job(eCN eClassNo)
   m_sReleaseResources = ""_Stz;
   m_iParticipantNode  = -1;
   m_ziAcksRemaining   = 0;
+  m_pOriginatingTask  = nullptr;
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
 }

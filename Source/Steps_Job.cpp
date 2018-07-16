@@ -49,6 +49,8 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.newExecute"_Stz,       &vJobNewExecute,       false);
   vAddPrimitive("job.newExecuted"_Stz,      &vJobNewExecuted,      false);
   vAddPrimitive("job.objectName@"_Stz,      &vJobObjectNameFetch,  false);
+  vAddPrimitive("job.originatingTask@"_Stz, &vJobOriginatingTaskFetch, false);
+  vAddPrimitive("job.originatingTask!"_Stz, &vJobOriginatingTaskStore, false);
   vAddPrimitive("job::originator@"_Stz,     &vJobOriginatorFetch,  false);
   vAddPrimitive("job.participant@"_Stz,     &vJobParticipantFetch, false);
   vAddPrimitive("job.participant!"_Stz,     &vJobParticipantStore, false);
@@ -886,6 +888,46 @@ void Task::vJobObjectNameFetch(MP_Task mpTask)
   Job_CreateSchema* pJob = _pJob_CreateSchema(pJobPtr);
   
   mpTask->m_pDataStack->vPushS32(pJob->m_sObjectName);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.originatingTask@ -- fetch the originating task from the job            */
+/*----------------------------------------------------------------------------*/
+void Task::vJobOriginatingTaskFetch(MP_Task mpTask)
+{
+  ENTRY("vJobOriginatingTaskFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.originatingTask@"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushObject(pJob->m_pOriginatingTask);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.originatingTask! -- store the originating task in the job              */
+/*----------------------------------------------------------------------------*/
+void Task::vJobOriginatingTaskStore(MP_Task mpTask)
+{
+  ENTRY("vJobOriginatingTaskStore"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.originatingTask!"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  Object* pOriginatingTaskPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pOriginatingTaskPtr) )
+    THROW_INVALID_DSTACK("job.originatingTask!"_Stz);
+  Task* pOriginatingTask = _pTask(pOriginatingTaskPtr);
+  ASSERT(CN_TASK == pOriginatingTask->eClass());
+  
+  pJob->m_pOriginatingTask = pOriginatingTask;
   
   EXIT();
 }

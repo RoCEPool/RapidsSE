@@ -31,16 +31,17 @@ namespace JobsModel
   class Job : public Object
   {
   public:
-    i8   m_iJobId;           // job id
-    eJS  m_eState;           // job state
-    s32  m_sExecute;         // word to be executed
-    s32  m_sSeed;            // task seed (to be merged with above)
+    i8  m_iJobId;              // job id
+    eJS m_eState;              // job state
+    s32 m_sExecute;            // word to be executed
+    s32 m_sSeed;               // task seed (to be merged with above)
     bool m_bDetached;        // is this job detached?
-    s32  m_sCheckResources;  // check resources word to be executed
-    s32  m_sReleaseResources; // release resources word to be executed
-    i8   m_iParticipantNode;  // participant node no
-    Atomic m_ziAcksRemaining; // acks remaining
-  
+    s32 m_sCheckResources;     // check resources word to be executed
+    s32 m_sReleaseResources;   // release resources word to be executed
+    i8  m_iParticipantNode;    // participant node no
+    Atomic m_ziAcksRemaining;  // acks remaining
+    Tasks::Task* m_pOriginatingTask;  // originating task of the request
+    
   public:
     Job(eCN eClassNo);
     ~Job(void);
