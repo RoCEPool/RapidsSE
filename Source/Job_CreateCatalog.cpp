@@ -73,7 +73,7 @@ Job_CreateCatalog::Job_CreateCatalog(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATECATALOG,_FOOTER_);
     
-  m_sExecute = "Job_CreateCatalog.execute"_Stz;
+  //m_sExecute = "Job_CreateCatalog.execute"_Stz;
   
   _checkInitialised_(CN_JOB_CREATECATALOG);
   
@@ -149,7 +149,7 @@ Job* JobsModel::pJob_CreateCatalog_pre(Prompt::SePrompt* pPrompt)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_CreateCatalog_post(Prompt::SePrompt* pPrompt)
+void JobsModel::vJob_CreateCatalog_post(Prompt::SePrompt* pPrompt, Job* pJob)
 {
 }
 

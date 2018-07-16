@@ -18,9 +18,25 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* return from job execution                                                  */
+/* return from job execution on origin                                        */
 /*----------------------------------------------------------------------------*/
-: <DONE> ( --  )
+: <DONE_REQUEST> ( --  )
+
+  // push "<ok>" as the return str
+  "<ok>"
+
+  // push 0 to indicate success / no error
+  0
+
+  // there are two return arguments
+  2
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* return from job execution on node                                          */
+/*----------------------------------------------------------------------------*/
+: <DONE_NODE> ( --  )
 
   ddlLock::testDrop
 ;

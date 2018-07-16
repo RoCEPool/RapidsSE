@@ -73,7 +73,7 @@ Job_Status::Job_Status(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_STATUS,_FOOTER_);
     
-  m_sExecute = "Job_Status.execute"_Stz;
+  //m_sSeed = "Job_Status.execute"_Stz;
   
   _checkInitialised_(CN_JOB_STATUS);
   
@@ -87,7 +87,6 @@ Job_Status::~Job_Status(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_STATUS,_FOOTER_);
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Static Functions --------------------------------------------------------*/
@@ -145,7 +144,7 @@ Job* JobsModel::pJob_Status_pre(Prompt::SePrompt* pPrompt)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Status_post(Prompt::SePrompt* pPrompt)
+void JobsModel::vJob_Status_post(Prompt::SePrompt* pPrompt, Job* pJob)
 {
 }
 

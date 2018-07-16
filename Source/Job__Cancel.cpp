@@ -61,7 +61,7 @@ Job__Cancel::Job__Cancel(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__CANCEL,_FOOTER_);
   
-  m_sExecute = "Job__Cancel::execute"_Stz;
+  m_sSeed = "Job__Cancel::execute"_Stz;
   
   _checkInitialised_(CN_JOB__EXECUTE);
   

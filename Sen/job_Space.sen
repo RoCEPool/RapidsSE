@@ -5,9 +5,29 @@
 "job_Space.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* request to get space in the pool (executed on originating node)            */
+/*----------------------------------------------------------------------------*/
+: poolSpaceR35_req ( -- <R> )
+
+  0 0 locals| pJob pTask |
+
+  tp: poolSpaceR35_req
+
+  // get the task
+  task::this to pTask
+
+  // get the job from the task
+  pTask task.job@ to pJob
+
+  pTask pJob "job::distribute" find execute
+
+  <DONE_REQUEST>
+;
+
+/*----------------------------------------------------------------------------*/
 /* execute Job_Space job                                                      */
 /*----------------------------------------------------------------------------*/
-: Job_Space.execute ( pJob_Space -- str t/f )
+: poolSpaceR35_node ( pJob_Space -- str t/f )
 
   params| pJob_Space |
 

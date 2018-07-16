@@ -74,7 +74,7 @@ Job_CreateTable::Job_CreateTable(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
   
-  m_sExecute = "Job_CreateTable.execute"_Stz;
+  //m_sExecute = "Job_CreateTable.execute"_Stz;
   m_sCheckResources = "Job_CreateTable.checkResources"_Stz;
   m_sReleaseResources = "Job_CreateTable.relResources"_Stz;
   
@@ -137,7 +137,7 @@ void Job_CreateTable::vShow(void)
   
   vTrace("\n\nJob_CreateTable: %s\n"_Stz, m_sObjectName.aChar());
   
-  vTrace("m_sExecute = %s\n"_Stz,m_sExecute.aChar());
+  //vTrace("m_sExecute = %s\n"_Stz,m_sExecute.aChar());
   vTrace("m_eTableType = %s\n"_Stz,aTT[m_eTableType]);
   vTrace("m_iColumns = %lld\n"_Stz,m_iColumns);
   
@@ -179,7 +179,7 @@ Job* JobsModel::pJob_CreateTable_pre(Prompt::SePrompt* pPrompt)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_CreateTable_post(Prompt::SePrompt* pPrompt)
+void JobsModel::vJob_CreateTable_post(Prompt::SePrompt* pPrompt, Job* pJob)
 {
 }
 

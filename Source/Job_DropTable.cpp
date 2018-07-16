@@ -74,7 +74,7 @@ Job_DropTable::Job_DropTable(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPTABLE,_FOOTER_);
     
-  m_sExecute = "Job_DropTable.execute"_Stz;
+  //m_sExecute = "Job_DropTable.execute"_Stz;
   
   _checkInitialised_(CN_JOB_DROPTABLE);
   
@@ -146,7 +146,7 @@ Job* JobsModel::pJob_DropTable_pre(Prompt::SePrompt* pPrompt)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_DropTable_post(Prompt::SePrompt* pPrompt)
+void JobsModel::vJob_DropTable_post(Prompt::SePrompt* pPrompt, Job* pJob)
 {
 }
 

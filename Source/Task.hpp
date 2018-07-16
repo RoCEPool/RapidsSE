@@ -868,6 +868,8 @@ namespace Tasks
     static void vJobNewExecute(MP_Task mpTask);
     static void vJobNewExecuted(MP_Task mpTask);
     static void vJobObjectNameFetch(MP_Task mpTask);
+    static void vJobOriginatingTaskFetch(MP_Task mpTask);
+    static void vJobOriginatingTaskStore(MP_Task mpTask);
     static void vJobOriginatorFetch(MP_Task mpTask);
     static void vJobParticipantFetch(MP_Task mpTask);
     static void vJobParticipantStore(MP_Task mpTask);

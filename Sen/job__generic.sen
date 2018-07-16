@@ -14,11 +14,20 @@
 
   locals| pJob pTask |
 
+  // set originating task
+  pTask pJob job.originatingTask!
+
   // add job to originator jobs
   pJob job.addOriginator
 
   // set the no of acks expected in originator job to nodes in the grid
   grid::nodes pJob job.acksRemaining!
+
+  // grab this task's lock
+  task::this task.grabLock
+
+  // set acks for originator task
+  1 setAcks
 
   // send the job to each node in the grid
   grid::nodes 0 do
@@ -34,6 +43,9 @@
     >socketR35
 
   loop
+
+  // wait for ack from deciding job__Ended
+  ackWait
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -61,6 +73,7 @@
   "received Job__Ended from all nodes" .
 
   // all the lines below get moved to nodeStatusR35_req
+/*
   grid::nodes 0
   do
     I pJob job.error@ error.msg .
@@ -78,6 +91,13 @@
 
   // delete the job
   pJob job.delete
+*/
+
+  // remove the job from the originator jobs
+  pJob job.removeOriginator
+
+  // notify the originating task
+  pJob job.originatingTask@ ack
 
   "All Done" .
 ;

@@ -3692,7 +3692,11 @@ bool SEitf::bAppendJob(Job* pJob)
   // end block
   //----------------------------------------------------------------------------
   
-  xValWrk = pJob->m_sSeed; //sRequest;
+  s32 sRequest;
+  sRequest = pJob->sJobSeed();
+  sRequest.vConcat("_req"_Stz);
+  //xValWrk = pJob->m_sSeed; //sRequest;
+  xValWrk = sRequest;
   //vTrace("%s\n"_Stz,xVal.aChar());
   xValSet.vAppend(aCursor,xValWrk.pNestedValueSelf());
   

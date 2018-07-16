@@ -73,7 +73,7 @@ Job_CreateSchema::Job_CreateSchema(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATESCHEMA,_FOOTER_);
     
-  m_sExecute = "Job_CreateSchema.execute"_Stz;
+  //m_sExecute = "Job_CreateSchema.execute"_Stz;
   
   _checkInitialised_(CN_JOB_CREATESCHEMA);
   
@@ -145,7 +145,7 @@ Job* JobsModel::pJob_CreateSchema_pre(Prompt::SePrompt* pPrompt)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_CreateSchema_post(Prompt::SePrompt* pPrompt)
+void JobsModel::vJob_CreateSchema_post(Prompt::SePrompt* pPrompt, Job* pJob)
 {
 }
 

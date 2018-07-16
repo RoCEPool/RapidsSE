@@ -53,13 +53,13 @@ Job::Job(eCN eClassNo)
   
   m_iJobId   = -1;
   m_eState   = JS_NONE;
-  m_sExecute = ""_Stz;
   m_sSeed    = ""_Stz;
   m_bDetached = false;
   m_sCheckResources   = ""_Stz;
   m_sReleaseResources = ""_Stz;
   m_iParticipantNode  = -1;
   m_ziAcksRemaining   = 0;
+  m_pOriginatingTask  = nullptr;
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
 }
@@ -77,23 +77,13 @@ Job::~Job(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get the job word to be executed                                            */
+/* get the job seed to be executed                                            */
 /*----------------------------------------------------------------------------*/
-Stz* Job::sJobExecute(void)
+Stz* Job::sJobSeed(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_sExecute;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the job word to be executed                                            */
-/*----------------------------------------------------------------------------*/
-void Job::vJobExecute(Stz* sExecute)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_sExecute.vCopy(sExecute);
+  return m_sSeed;
 }
 
 /*----------------------------------------------------------------------------*/

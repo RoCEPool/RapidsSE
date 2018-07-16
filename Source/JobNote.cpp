@@ -20,7 +20,7 @@ JobNote::JobNote(Stz* aName,
                  Stz* aSeed,
                  bool bDetached,
                  Job* (*fPre)(SePrompt* pPrompt),
-                 void (*fPost)(SePrompt* pPrompt),
+                 void (*fPost)(SePrompt* pPrompt, Job* pJob),
                  bool bEnabled)
 {
   vTrace("JobNote: %s %s %s %s\n"_Stz,

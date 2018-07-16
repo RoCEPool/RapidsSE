@@ -74,7 +74,7 @@ Job_DropTenant::Job_DropTenant(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPTENANT,_FOOTER_);
     
-  m_sExecute = "Job_DropSchema.execute"_Stz;
+  //m_sExecute = "Job_DropSchema.execute"_Stz;
   
   _checkInitialised_(CN_JOB_DROPTENANT);
   
@@ -146,7 +146,7 @@ Job* JobsModel::pJob_DropTenant_pre(Prompt::SePrompt* pPrompt)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_DropTenant_post(Prompt::SePrompt* pPrompt)
+void JobsModel::vJob_DropTenant_post(Prompt::SePrompt* pPrompt, Job* pJob)
 {
 }
 
