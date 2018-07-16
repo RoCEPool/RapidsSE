@@ -53,9 +53,10 @@ namespace Prompt
   
     void vLoop(void);
 
-  private:
     void vGetCommand(void);
     void vExecuteCommand(void);
+  
+  private:
     void vGetCommandArgument(void);
     void vGetCommandInput(void);
   

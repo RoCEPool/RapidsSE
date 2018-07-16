@@ -1046,6 +1046,8 @@ namespace Tasks
     
     // prompt
     static void vPromptLoop(MP_Task mpTask);
+    static void vPromptExecuteCommand(MP_Task mpTask);
+    static void vPromptGetCommand(MP_Task mpTask);
     static void vPromptNew(MP_Task mpTask);
   
     // push
