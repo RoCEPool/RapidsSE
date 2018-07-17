@@ -100,17 +100,10 @@ namespace Prompt
     bool bTestFile(Stz* aPath);
     bool bTokenCheck(i8 nTokens);
 
-    //----------------------------------------------------------------------------
-    bool bProcessCommand(bool bPostProcess = true);
-    bool bExecuteRequest(void);
-    bool bDocol(void);
-    bool bIndexReturnTable(Stz* aTableName, Stz* aIndexName);
-    void vIterateBuffers(void);
-    bool bPartitionTable(void);
-    bool bReturnTable(void);
+    Footer* aFooter(void);
   
-    //----------------------------------------------------------------------------
-  
+  //----------------------------------------------------------------------------
+  // to be removed
   public:
     bool bCmd_AnalyzeTable(void);
     bool bCmd_BeginInsert(void);
@@ -157,8 +150,6 @@ namespace Prompt
   
     bool bCreateTableR35(Job_CreateTable* pJob);
  
-    Footer* aFooter(void);
-  
   private:
     bool bAddTableColumns(i8& i_Token, i8 iNumTokens);
     bool bAddTableColumnsR35(i8& i_Token, i8 iNumTokens);
@@ -177,16 +168,17 @@ namespace Prompt
     bool bValidateCreateIndexR35(i8 iNumTokens);
     bool bValidateCreateTableR35(i8 iNumTokens);
   
+    bool bReturnTable(void);
+    bool bPartitionTable(void);
+    bool bIndexReturnTable(Stz* aTableName, Stz* aIndexName);
+    void vIterateBuffers(void);
+    bool bProcessCommand(bool bPostProcess = true);
+    bool bExecuteRequest(void);
+
   };
 
   SePrompt* _pSePrompt(void* aAddr);
-  
 }
-
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-
 
 /*============================================================================*/
 /* end                                                                        */
