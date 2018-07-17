@@ -25,6 +25,8 @@
     pPrompt prompt.executeCommand to eCommand
 
     eCommand CK_SE_JOB == if
+      pPrompt prompt.newJob
+      pPrompt prompt.prepareJob
       pPrompt prompt.endJob
     then
 

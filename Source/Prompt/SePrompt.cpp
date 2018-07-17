@@ -505,7 +505,7 @@ void SePrompt::vExecuteCommand(void)
   }
   
   // attempt to execute se job
-  if (bExecuteJob()) {
+  if (bFindJobClass()) {
     m_eCommand = CK_SE_JOB;
     return;
   }
