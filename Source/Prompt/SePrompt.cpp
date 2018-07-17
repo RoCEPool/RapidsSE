@@ -460,6 +460,16 @@ Job* SePrompt::pJob(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the seitf                                                              */
+/*----------------------------------------------------------------------------*/
+SEitf* SePrompt::pSEitf(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_pSEitf;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the token vector                                                       */
 /*----------------------------------------------------------------------------*/
 TokenVec* SePrompt::pTokenVec(void)
@@ -474,22 +484,17 @@ TokenVec* SePrompt::pTokenVec(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* attempt to find job class for command                                      */
+/* test for blank line                                                        */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bFindJobClass(void)
+bool SePrompt::bBlankLine(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_pJobClass =
-  gxJobCatalog.pFindJob(m_xTokenVec[0]->aText(), m_xTokenVec[1]->aText());
+  if (0 != m_xTokenVec[0]->iLength())
+    return false;
   
-  return m_pJobClass ? true : false;
+  return true;
 }
-
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* clear echo result                                                          */
@@ -513,6 +518,19 @@ void SePrompt::vClipTokens(i8 i_FromToken)
       break;
   }
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* check if command token 0 is given argument                                 */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bCmdIs(Stz* aArg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  if (m_xTokenVec[0]->bSame(aArg))
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -562,38 +580,6 @@ void SePrompt::vCollectStatement(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* execute an se request                                                      */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bExecuteRequest(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  Timer xTimer;
-  Stz* aResponse = nullptr;
-  
-  xTimer.vStart();
-  
-  m_xTokenVec.vSetTokens();
-  
-  //! make this part of verbose??
-  //m_pTokeniser->vDumpTokens("Command : "_Stz,m_xTokenVec,C_TOKENS);
-  
-  bool bResult = RapidsSE_ExecuteRequest(m_pSEitf,m_xTokenVec,&aResponse);
-  
-  if (m_xTokenVec.bDetachedRequest())
-    return bResult;
-  
-  if (bResult)
-    m_sResponse = aResponse ? (Stz*)aResponse : ""_Stz;
-  else
-    m_sResponse = aResponse ? (Stz*)aResponse : ""_Stz;
-  
-  xTimer.vUpdate();
-  
-  return bResult;
-}
-
-/*----------------------------------------------------------------------------*/
 /* dispatch job into SE                                                       */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bDispatchJob(Job* pJob)
@@ -623,6 +609,53 @@ bool SePrompt::bDispatchJob(Job* pJob)
   xTimer.vUpdate();
   
   return bResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* potentially execute a command file                                         */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bExecuteFile(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  if (! bTestFile(m_xTokenVec[0]->aText()))
+    return false;
+  
+  bool b = bRunFile();
+  ASSERT(b);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* potentially execute a prompt function                                      */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bExecuteFunction(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  PromptFun* pPromptFun =
+  gxPromptCatalog.pFindFun(m_xTokenVec[0]->aText(), m_xTokenVec[1]->aText());
+  
+  if (! pPromptFun)
+    return false;
+  
+  (*pPromptFun->m_fPrompt)(this);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt to find job class for command                                      */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bFindJobClass(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  m_pJobClass =
+  gxJobCatalog.pFindJob(m_xTokenVec[0]->aText(), m_xTokenVec[1]->aText());
+  
+  return m_pJobClass ? true : false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -659,19 +692,19 @@ void SePrompt::vGetCommandInput(void)
     m_xTokenVec2.vReset();
     
     for (;;) {
-
+      
       Token* pToken = m_xTokenVec[m_xTokenVec.nTokens()];
-    
+      
       eTN eToken = m_pTokeniser->eNextToken((char*)pToken->aText());
       
       if (TN_NONE == eToken)
         break;
-
+      
       pToken->vToken(eToken);
-                     
-//      vTrace("vGetCommand : token %lld ]%s[\n"_Stz,
-//             m_xTokenVec.nTokens(),
-//             m_xTokenVec[m_xTokenVec.nTokens()]->aText());
+      
+      //      vTrace("vGetCommand : token %lld ]%s[\n"_Stz,
+      //             m_xTokenVec.nTokens(),
+      //             m_xTokenVec[m_xTokenVec.nTokens()]->aText());
       
       m_xTokenVec.vIncTokens();
       ASSERT(m_xTokenVec.nTokens() < C_TOKENS);
@@ -708,6 +741,136 @@ void SePrompt::vMetaFormat(void)
   // reset counters
   m_pSEitf->m_iRowsProcessed = 0;
   m_pSEitf->m_sMetadata      = ""_Stz;
+}
+
+/*----------------------------------------------------------------------------*/
+/* check if command token 1 is given argument                                 */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bOneIs(Stz* aArg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  if (m_xTokenVec[1]->bSame(aArg))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* push command file                                                          */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vPushFile(Stz* aFileName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  s256 sPath;
+  
+  sPath = aFileName;
+  
+  m_pTokeniser->vPush();
+  
+  bool b = m_pTokeniser->bUseFile(sPath);
+  ASSERT(b);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set file to run                                                            */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bRunFile(void)
+{
+  if ( ! bTokenCheck(1) )
+    return false;
+  
+  vPushFile(m_xTokenVec[0]->aText());
+  m_pTokeniser->vLineMode(true);
+  m_sResponse = "<ok>"_Stz;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set echo result                                                            */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vSetEcho(void)
+{
+  m_bEcho = true;
+  
+  vClipTokens(1);
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for command file                                                      */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bTestFile(Stz* aFileName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  File xFile;
+  
+  if (xFile.bExists(aFileName))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* check for a specific number of tokens                                      */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bTokenCheck(i8 nTokens)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  if (m_xTokenVec[nTokens]->bHasText()) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  return true;
+}
+
+
+
+
+
+
+
+
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* execute an se request                                                      */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bExecuteRequest(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  Timer xTimer;
+  Stz* aResponse = nullptr;
+  
+  xTimer.vStart();
+  
+  m_xTokenVec.vSetTokens();
+  
+  //! make this part of verbose??
+  //m_pTokeniser->vDumpTokens("Command : "_Stz,m_xTokenVec,C_TOKENS);
+  
+  bool bResult = RapidsSE_ExecuteRequest(m_pSEitf,m_xTokenVec,&aResponse);
+  
+  if (m_xTokenVec.bDetachedRequest())
+    return bResult;
+  
+  if (bResult)
+    m_sResponse = aResponse ? (Stz*)aResponse : ""_Stz;
+  else
+    m_sResponse = aResponse ? (Stz*)aResponse : ""_Stz;
+  
+  xTimer.vUpdate();
+  
+  return bResult;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -783,23 +946,6 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push command file                                                          */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vPushFile(Stz* aFileName)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  s256 sPath;
-  
-  sPath = aFileName;
-  
-  m_pTokeniser->vPush();
-  
-  bool b = m_pTokeniser->bUseFile(sPath);
-  ASSERT(b);
-}
-
-/*----------------------------------------------------------------------------*/
 /* return table                                                               */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bReturnTable(void)
@@ -813,134 +959,6 @@ bool SePrompt::bReturnTable(void)
     vTrace("bReturnTable: (%s) Return Table FAILED!!! : %s\n"_Stz, m_sResponse.aChar());
     return false;
   }
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set file to run                                                            */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bRunFile(void)
-{
-  if ( ! bTokenCheck(1) )
-    return false;
-  
-  vPushFile(m_xTokenVec[0]->aText());
-  m_pTokeniser->vLineMode(true);
-  m_sResponse = "<ok>"_Stz;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set echo result                                                            */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vSetEcho(void)
-{
-  m_bEcho = true;
-  
-  vClipTokens(1);
-}
-
-/*----------------------------------------------------------------------------*/
-/* test for command file                                                      */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bTestFile(Stz* aFileName)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  File xFile;
-  
-  if (xFile.bExists(aFileName))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* check for a specific number of tokens                                      */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bTokenCheck(i8 nTokens)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-
-  if (m_xTokenVec[nTokens]->bHasText()) {
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return false;
-  }
-  
-  return true;
-}
-  
-/*----------------------------------------------------------------------------*/
-/* check if command token 0 is given argument                                 */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bCmdIs(Stz* aArg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  if (m_xTokenVec[0]->bSame(aArg))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* check if command token 1 is given argument                                 */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bOneIs(Stz* aArg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  if (m_xTokenVec[1]->bSame(aArg))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test for blank line                                                        */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bBlankLine(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  if (0 != m_xTokenVec[0]->iLength())
-    return false;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* potentially execute a command file                                         */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bExecuteFile(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  if (! bTestFile(m_xTokenVec[0]->aText()))
-    return false;
-  
-  bool b = bRunFile();
-  ASSERT(b);
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* potentially execute a prompt function                                      */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bExecuteFunction(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  PromptFun* pPromptFun =
-    gxPromptCatalog.pFindFun(m_xTokenVec[0]->aText(), m_xTokenVec[1]->aText());
-  
-  if (! pPromptFun)
-    return false;
-  
-  (*pPromptFun->m_fPrompt)(this);
-  
   return true;
 }
 
@@ -3256,16 +3274,6 @@ bool SePrompt::bValidateCreateTableR35(i8 iNumTokens)
   }
   
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the seitf                                                              */
-/*----------------------------------------------------------------------------*/
-SEitf* SePrompt::pSEitf(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  return m_pSEitf;
 }
 
 /*----------------------------------------------------------------------------*/

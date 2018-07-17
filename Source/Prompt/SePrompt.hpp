@@ -75,49 +75,41 @@ namespace Prompt
     // other
     eCK  eCommand(void);
     Job* pJob(void);
+    SEitf* pSEitf(void);
     TokenVec* pTokenVec(void);
   
 
   private:
   
+    bool bBlankLine(void);
+    void vClearEcho(void);
+    void vClipTokens(i8 i_FromToken);
+    bool bCmdIs(Stz* aArg);
+    void vCollectStatement(void);
+    bool bDispatchJob(Job* pJob);
+    bool bExecuteFile(void);
+    bool bExecuteFunction(void);
     bool bFindJobClass(void);
-
-  
-  
-  
     void vGetCommandArgument(void);
     void vGetCommandInput(void);
-  
     void vMetaFormat(void);
-  
+    bool bOneIs(Stz* aArg);
+    void vPushFile(Stz* aPath);
+    bool bRunFile(void);
+    void vSetEcho(void);
+    bool bTestFile(Stz* aPath);
+    bool bTokenCheck(i8 nTokens);
+
     //----------------------------------------------------------------------------
     bool bProcessCommand(bool bPostProcess = true);
-
-    void vSetEcho(void);
-    void vClearEcho(void);
-  
-    bool bRunFile(void);
-  
     bool bExecuteRequest(void);
-    bool bDispatchJob(Job* pJob);
-    bool bTestFile(Stz* aPath);
-    void vPushFile(Stz* aPath);
-
     bool bDocol(void);
-  
     bool bIndexReturnTable(Stz* aTableName, Stz* aIndexName);
     void vIterateBuffers(void);
-  
     bool bPartitionTable(void);
     bool bReturnTable(void);
   
     //----------------------------------------------------------------------------
-    void vClipTokens(i8 i_FromToken);
-    void vCollectStatement(void);
-    bool bTokenCheck(i8 nTokens);
-    bool bCmdIs(Stz* aArg);
-    bool bOneIs(Stz* aArg);
-  
   
   public:
     bool bCmd_AnalyzeTable(void);
@@ -164,9 +156,7 @@ namespace Prompt
     bool bCmd_DropTenantR35(void);
   
     bool bCreateTableR35(Job_CreateTable* pJob);
-    
-    SEitf* pSEitf(void);
-
+ 
     Footer* aFooter(void);
   
   private:
@@ -187,10 +177,6 @@ namespace Prompt
     bool bValidateCreateIndexR35(i8 iNumTokens);
     bool bValidateCreateTableR35(i8 iNumTokens);
   
-    bool bBlankLine(void);
-  
-    bool bExecuteFile(void);
-    bool bExecuteFunction(void);
   };
 
   SePrompt* _pSePrompt(void* aAddr);
