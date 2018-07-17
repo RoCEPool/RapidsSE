@@ -69,9 +69,11 @@ namespace Prompt
     void vGetCommand(void);
     void vEndJob(void);
     void vExecuteCommand(void);
-    void vFindJobClass(void);
+    bool bFindJobClass(void);
     eCK  eCommand(void);
     JobClass*  pJobClass(void);
+    void vNewJob(void);
+    bool bPrepareJob(void);
 
   private:
     void vGetCommandArgument(void);
@@ -81,7 +83,6 @@ namespace Prompt
   
     //----------------------------------------------------------------------------
     bool bProcessCommand(bool bPostProcess = true);
-    bool bPrepareJob(Job* pJob, bool bPostProcess = true);
 
     void vSetEcho(void);
     void vClearEcho(void);

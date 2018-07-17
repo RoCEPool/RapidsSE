@@ -20,6 +20,8 @@ void Task::vAddPrimitives_Prompt(void)
   vAddPrimitive("prompt.getCommand"_Stz,     &vPromptGetCommand,     false);
   vAddPrimitive("prompt.jobClass"_Stz,       &vPromptJobClass,       false);
   vAddPrimitive("prompt::new"_Stz,           &vPromptNew,            false);
+  vAddPrimitive("prompt.newJob"_Stz,         &vPromptNewJob,         false);
+  vAddPrimitive("prompt.prepareJob"_Stz,     &vPromptPrepareJob,     false);
 
   vAddPrimitive("prompt.loop"_Stz,    &vPromptLoop, false);
 }
@@ -125,6 +127,41 @@ void Task::vPromptNew(MP_Task mpTask)
   SePrompt* pSePrompt = new SePrompt;
   
   mpTask->m_pDataStack->vPushObject(pSePrompt);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* prompt.newJob -- new a job from job class                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vPromptNewJob(MP_Task mpTask)
+{
+  ENTRY("vPromptNewJob"_Stz);
+  
+  Object* pSePromptObject;
+  if ( ! mpTask->m_pDataStack->bPop(pSePromptObject) )
+    THROW_INVALID_DSTACK("prompt.newJob"_Stz);
+  SePrompt* pSePrompt = _pSePrompt(pSePromptObject);
+  
+  pSePrompt->vNewJob();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* prompt.prepareJob -- prepare and dispatch job                              */
+/*----------------------------------------------------------------------------*/
+void Task::vPromptPrepareJob(MP_Task mpTask)
+{
+  ENTRY("vPromptPrepareJob"_Stz);
+  
+  Object* pSePromptObject;
+  if ( ! mpTask->m_pDataStack->bPop(pSePromptObject) )
+    THROW_INVALID_DSTACK("prompt.prepareJob"_Stz);
+  SePrompt* pSePrompt = _pSePrompt(pSePromptObject);
+  
+  bool b = pSePrompt->bPrepareJob();
+  ASSERT(b);
   
   EXIT();
 }

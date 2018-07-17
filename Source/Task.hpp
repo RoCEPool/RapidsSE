@@ -1051,7 +1051,9 @@ namespace Tasks
     static void vPromptGetCommand(MP_Task mpTask);
     static void vPromptJobClass(MP_Task mpTask);
     static void vPromptNew(MP_Task mpTask);
-  
+    static void vPromptNewJob(MP_Task mpTask);
+    static void vPromptPrepareJob(MP_Task mpTask);
+
     // push
     static void vPushI(MP_Task mpTask);
     static void vPushJ(MP_Task mpTask);

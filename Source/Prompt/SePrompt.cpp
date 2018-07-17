@@ -723,7 +723,7 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
 /*----------------------------------------------------------------------------*/
 /* process job                                                                */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bPrepareJob(Job* pJob, bool bPostProcess)
+bool SePrompt::bPrepareJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -760,13 +760,13 @@ bool SePrompt::bPrepareJob(Job* pJob, bool bPostProcess)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // execute seitf request
-  if (! bDispatchJob(pJob))
+  if (! bDispatchJob(m_pJob))
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // post process requests
-  if (! bPostProcess)
-    return true;
+  //if (! bPostProcess)
+    //return true;
   
   if ( bCmdIs("fetch"_Stz) || bCmdIs("dfetch"_Stz)) {
     vIterateBuffers();
@@ -973,17 +973,13 @@ void SePrompt::vEndJob(void)
 bool SePrompt::bExecuteJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  m_pJobClass =
-    gxJobCatalog.pFindJob(m_xTokenVec[0]->aText(), m_xTokenVec[1]->aText());
-  
-  if (! m_pJobClass)
+    
+  if (! bFindJobClass())
     return false;
   
-  m_pJob = m_pJobClass->pNewJob(this);
-  m_pJob->m_bDetached = m_xTokenVec.bDetachedRequest();
+  vNewJob();
   
-  bool bProcessResult = bPrepareJob(m_pJob);
+  bool bProcessResult = bPrepareJob();
   
   // wait for job signal
   
@@ -1013,14 +1009,27 @@ bool SePrompt::bExecuteJob(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* potentially execute a job                                                  */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vNewJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  m_pJob = m_pJobClass->pNewJob(this);
+  m_pJob->m_bDetached = m_xTokenVec.bDetachedRequest();
+}
+
+/*----------------------------------------------------------------------------*/
 /* attempt to find job class for command                                      */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vFindJobClass(void)
+bool SePrompt::bFindJobClass(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   m_pJobClass =
     gxJobCatalog.pFindJob(m_xTokenVec[0]->aText(), m_xTokenVec[1]->aText());
+  
+  return m_pJobClass ? true : false;
 }
 
 /*----------------------------------------------------------------------------*/
