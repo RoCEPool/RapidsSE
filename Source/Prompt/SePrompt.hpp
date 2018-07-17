@@ -63,8 +63,6 @@ namespace Prompt
     ~SePrompt(void);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-  
-    void vLoop(void);
 
     void vGetCommand(void);
     void vEndJob(void);

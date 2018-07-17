@@ -22,8 +22,6 @@ void Task::vAddPrimitives_Prompt(void)
   vAddPrimitive("prompt.jobClass"_Stz,       &vPromptJobClass,       false);
   vAddPrimitive("prompt::new"_Stz,           &vPromptNew,            false);
   vAddPrimitive("prompt.newJob"_Stz,         &vPromptNewJob,         false);
-
-  vAddPrimitive("prompt.loop"_Stz,    &vPromptLoop, false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -114,23 +112,6 @@ void Task::vPromptJobClass(MP_Task mpTask)
   JobClass* pJobClass = pSePrompt->pJobClass();
   
   mpTask->m_pDataStack->vPushInt((i8)pJobClass);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt.loop -- execute the prompt                                          */
-/*----------------------------------------------------------------------------*/
-void Task::vPromptLoop(MP_Task mpTask)
-{
-ENTRY("vPromptLoop"_Stz);
-  
-  Object* pSePromptObject;
-  if ( ! mpTask->m_pDataStack->bPop(pSePromptObject) )
-    THROW_INVALID_DSTACK("prompt.execute"_Stz);
-  SePrompt* pSePrompt = _pSePrompt(pSePromptObject);
-  
-  pSePrompt->vLoop();
   
   EXIT();
 }

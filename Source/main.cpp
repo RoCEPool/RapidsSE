@@ -269,10 +269,6 @@ void vRunPrompt(void)
     }
     
     // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-
-    SePrompt* pSePrompt = new SePrompt();
-    pSePrompt->vLoop();
-    delete pSePrompt;
     
     return;
   }
