@@ -3702,11 +3702,11 @@ bool SEitf::bAppendJob(Job* pJob)
   
   // if the current request id matches the next request id, it means
   // we have not read a response of the previous request
-  if (m_iCurrentRequestId == m_iNextRequestId && ! bDetached) {
-    vError("Response for previous request not retrieved. Out-Of-Sync request-response.\n"_Stz);
-    vSetLastError(EC_RESPONSE_PENDING);
-    return false;
-  }
+//  if (m_iCurrentRequestId == m_iNextRequestId && ! bDetached) {
+//    vError("Response for previous request not retrieved. Out-Of-Sync request-response.\n"_Stz);
+//    vSetLastError(EC_RESPONSE_PENDING);
+//    return false;
+//  }
   
   // set the new current request id to the next one sent by previous response
   m_iCurrentRequestId = m_iNextRequestId;

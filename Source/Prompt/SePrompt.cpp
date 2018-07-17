@@ -1,3 +1,4 @@
+
 /*============================================================================*/
 /* SePrompt.cpp -- se> prompt                                                 */
 /*============================================================================*/
@@ -101,7 +102,7 @@ CmdTable SePromptCommands[] =
   { C_CMD_CREATE,     C_R35_ONE_CATALOG, &SePrompt::bCmd_CreateCatalogR35 },
   { C_CMD_CREATE,     C_R35_ONE_INDEX,   &SePrompt::bCmd_CreateIndexR35   },
   { C_CMD_CREATE,     C_R35_ONE_SCHEMA,  &SePrompt::bCmd_CreateSchemaR35  },
-  { C_CMD_CREATE,     C_R35_ONE_TABLE,   &SePrompt::bCmd_CreateTableR35   },
+  //{ C_CMD_CREATE,     C_R35_ONE_TABLE,   &SePrompt::bCmd_CreateTableR35   },
   { C_CMD_CREATE,     C_R35_ONE_TENANT,  &SePrompt::bCmd_CreateTenantR35  },
   { C_CMD_DROP,       C_R35_ONE_CATALOG, &SePrompt::bCmd_DropCatalogR35   },
   { C_CMD_DROP,       C_R35_ONE_INDEX,   &SePrompt::bCmd_DropIndexR35     },
@@ -3631,6 +3632,70 @@ bool SePrompt::bCmd_CreateTableR35(void)
   if (!bExecuteRequest())
     return false;
 
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* create table                                                               */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bCreateTableR35(Job_CreateTable* pJob_CreateTable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  ASSERT(m_xTokenVec[0]->bSame("create"_Stz));
+  ASSERT(m_xTokenVec[1]->bSame("R35table"_Stz));
+  
+  i8 i_Tokens;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // validate the create statament
+  for (i_Tokens = 0; i_Tokens < C_TOKENS; i_Tokens++) {
+    if (! m_xTokenVec[i_Tokens]->bHasText())
+      break;
+  }
+  i8 iNumTokens = i_Tokens;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // some validations
+  bool bValid = bValidateCreateTableR35(iNumTokens);
+  if ( ! bValid )
+    return false;
+  
+  // set the table name
+  pJob_CreateTable->m_sObjectName = m_xTokenVec[2]->aText();
+  
+  // set the job in SEitf
+  m_pSEitf->m_pJob = pJob_CreateTable;
+  
+  // mark current token
+  i8 iCurrentToken = 4;
+  
+  // add columns to the table
+  if ( ! bAddTableColumnsR35(iCurrentToken, iNumTokens) ) {
+    delete pJob_CreateTable;
+    return false;
+  }
+  
+  // current token should be at ')'
+  if ( ! m_xTokenVec[iCurrentToken++]->bSame(")"_Stz)) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  // check if we have a partition by clause
+  if ( m_xTokenVec[iCurrentToken++]->bSame("partition"_Stz)) {
+    
+    if ( ! bPartitionTableR35(iCurrentToken, iNumTokens) )
+      return false;
+  }
+  else {
+    // no partition by clause
+    // we will create partitioning using the first column
+    pJob_CreateTable->m_xColumns[0].m_bIsPartitionKey = true;
+  }
+  
+  pJob_CreateTable->vShow();
+  
   return true;
 }
 

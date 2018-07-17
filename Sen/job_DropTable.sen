@@ -5,9 +5,43 @@
 "job_DropTable.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* drop a table                                                               */
+/*----------------------------------------------------------------------------*/
+: dropTableR35_req ( "<tableNm>" -- <R> )
+
+  0 0 locals| pJob pTask |
+
+  tp: droTable
+
+  //ddlLock::grabWrite
+
+  // get the task
+  task::this to pTask
+
+  // get the job from the task
+  pTask task.job@ to pJob
+
+  // NOTE: needs to go in check resources
+  // get the table name from the job
+  //pJob job.objectName@
+  //checkRemoveTable not if "<NIP+ERROR>" exit then
+  //drop // tableNm on stack
+
+  // distribute the job
+  pTask pJob "job::distribute" find execute
+
+  // ack the waiting prompt task
+  "Acking parent" .
+  pJob job.promptTask@ ack
+  "Acked parent" .
+
+  <DONE_REQUEST>
+;
+
+/*----------------------------------------------------------------------------*/
 /* execute Job_DropTable job                                                  */
 /*----------------------------------------------------------------------------*/
-: Job_DropTable.execute ( pJob_DropTable -- )
+: Job_DropTable_node ( pJob_DropTable -- )
 
   params| pJob_DropTable |
 

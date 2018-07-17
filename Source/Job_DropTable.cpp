@@ -10,7 +10,7 @@ JobNote mJobNote_DropTable (
   "comment"_Stz,        // comment about the job
   "drop"_Stz,           // the prompt command
   "table"_Stz,          // the second word
-  "dropTableR35_req"_Stz, // the task seed for this job
+  "dropTableR35"_Stz,   // the task seed for this job
   false,                // detached job?
   pJob_DropTable_pre,   // prompt pre-process function
   vJob_DropTable_post   // prompt post-process function
@@ -74,7 +74,7 @@ Job_DropTable::Job_DropTable(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPTABLE,_FOOTER_);
     
-  //m_sExecute = "Job_DropTable.execute"_Stz;
+  m_sSeed = mJobNote_DropTable.pJobClass()->m_aSeed;
   
   _checkInitialised_(CN_JOB_DROPTABLE);
   

@@ -327,27 +327,6 @@ ddlLock::grabRead
 ;
 
 /*----------------------------------------------------------------------------*/
-/* create a table                                                             */
-/*----------------------------------------------------------------------------*/
-: createTableR35_req (  -- <R> )
-
-  0 0 locals| pJob pTask |
-
-  tp: createTable
-
-  // get the task
-  task::this to pTask
-
-  // get the job from the task
-  pTask task.job@ to pJob
-
-  // distribute the job
-  pTask pJob job::distribute
-
-  <OK>
-;
-
-/*----------------------------------------------------------------------------*/
 /* distributed export of a table                                              */
 /*----------------------------------------------------------------------------*/
 : distExport_table ( "<fileNm>" "<tableNm>" -- <R> )
@@ -378,32 +357,6 @@ ddlLock::grabRead
   <OK>
 ;
 
-/*----------------------------------------------------------------------------*/
-/* drop a table                                                               */
-/*----------------------------------------------------------------------------*/
-: dropTableR35_req ( "<tableNm>" -- <R> )
-
-  0 0 locals| pJob pTask |
-
-  tp: droTable
-
-  //ddlLock::grabWrite
-
-  // get the task
-  task::this to pTask
-
-  // get the job from the task
-  pTask task.job@ to pJob
-
-  // get the table name from the job
-  pJob job.objectName@
-  checkRemoveTable not if <NIP+ERROR> exit then
-  drop // tableNm on stack
-
-  pTask pJob job::distribute
-
-  <OK>
-;
 
 /*----------------------------------------------------------------------------*/
 /* dump table                                                                 */

@@ -265,7 +265,7 @@ void vRunPrompt(void)
       ASSERT(EC_NONE == eError);
       vTrace("RapidsSE_Prompt() called\n"_Stz);
       
-      PosixThread::vSleepSec(10000000);
+      PosixThread::vSleepSec(1000000000);
     }
     
     // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +

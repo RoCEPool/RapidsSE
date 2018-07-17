@@ -3,17 +3,21 @@
 /*============================================================================*/
 
 #include "JobModel.h"
+#include "StorageEngine.h"
+
+extern AttachMap* gpAttachMap;
 
 JobNote mJobNote_CreateTable (
   "Job_CreateTable"_Stz,  // name of the job class
   CN_JOB_CREATETABLE,     // class enum
   "comment"_Stz,          // comment about the job
   "create"_Stz,           // the prompt command
-  "table"_Stz,            // the second word
-  "createTableR35_req"_Stz, // the task seed for this job
+  "R35table"_Stz,         // the second word
+  "createTableR35"_Stz,   // the task seed for this job
   false,                  // detached job?
   pJob_CreateTable_pre,   // prompt pre-process function
-  vJob_CreateTable_post   // prompt post-process function
+  vJob_CreateTable_post,  // prompt post-process function
+  true
 );
 
 
@@ -74,8 +78,8 @@ Job_CreateTable::Job_CreateTable(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
   
-  //m_sExecute = "Job_CreateTable.execute"_Stz;
-  m_sCheckResources = "Job_CreateTable.checkResources"_Stz;
+  m_sSeed             = mJobNote_CreateTable.pJobClass()->m_aSeed;
+  m_sCheckResources   = "Job_CreateTable.checkResources"_Stz;
   m_sReleaseResources = "Job_CreateTable.relResources"_Stz;
   
   m_eTableType = TT_NONE;
@@ -173,7 +177,17 @@ Footer* Job_CreateTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* JobsModel::pJob_CreateTable_pre(Prompt::SePrompt* pPrompt)
 {
-  return nullptr;
+  SEitf* pSEitf = pPrompt->pSEitf();
+  Job_CreateTable* pJob_CreateTable = new Job_CreateTable(pSEitf);
+  
+  bool bResult = pPrompt->bCreateTableR35(pJob_CreateTable);
+  
+  if (!bResult) {
+    vTrace("invalid command\n"_Stz);
+    return nullptr;
+  }
+  
+  return pJob_CreateTable;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -181,6 +195,15 @@ Job* JobsModel::pJob_CreateTable_pre(Prompt::SePrompt* pPrompt)
 /*----------------------------------------------------------------------------*/
 void JobsModel::vJob_CreateTable_post(Prompt::SePrompt* pPrompt, Job* pJob)
 {
+  Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJob);
+  
+  // Note: take care of errors / meta data ????
+  for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+    vTrace("NODE%lld: %s\n"_Stz, i_Node, aEC[pJob_CreateTable->m_xNode[i_Node].m_eErrorCode]);
+  }
+  
+  // now delete the job
+  delete pJob_CreateTable;
 }
 
 /*============================================================================*/

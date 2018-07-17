@@ -45,9 +45,35 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* create a table                                                             */
+/*----------------------------------------------------------------------------*/
+: createTableR35_req (  -- <R> )
+
+  0 0 locals| pJob pTask |
+
+  tp: createTable
+
+  // get the task
+  task::this to pTask
+
+  // get the job from the task
+  pTask task.job@ to pJob
+
+  // distribute the job
+   pTask pJob "job::distribute" find execute
+
+  // ack the waiting prompt task
+  "Acking parent" .
+  pJob job.promptTask@ ack
+  "Acked parent" .
+
+  <DONE_REQUEST>
+;
+
+/*----------------------------------------------------------------------------*/
 /* execute Job_CreateTable job                                                */
 /*----------------------------------------------------------------------------*/
-: Job_CreateTable.execute ( pJob_CreateTable -- )
+: createTableR35_node ( pJob_CreateTable -- )
 
   params| pJob_CreateTable |
 

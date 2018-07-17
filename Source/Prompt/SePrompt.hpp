@@ -157,6 +157,8 @@ namespace Prompt
     bool bCmd_DropTableR35(void);
     bool bCmd_DropTenantR35(void);
   
+    bool bCreateTableR35(Job_CreateTable* pJob);
+    
     SEitf* pSEitf(void);
 
     Footer* aFooter(void);
