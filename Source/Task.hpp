@@ -1047,13 +1047,13 @@ namespace Tasks
     
     // prompt
     static void vPromptLoop(MP_Task mpTask);
+    static void vPromptDispatchJob(MP_Task mpTask);
     static void vPromptEndJob(MP_Task mpTask);
     static void vPromptExecuteCommand(MP_Task mpTask);
     static void vPromptGetCommand(MP_Task mpTask);
     static void vPromptJobClass(MP_Task mpTask);
     static void vPromptNew(MP_Task mpTask);
     static void vPromptNewJob(MP_Task mpTask);
-    static void vPromptPrepareJob(MP_Task mpTask);
 
     // push
     static void vPushI(MP_Task mpTask);

@@ -22,7 +22,9 @@
   pTask pJob "job::distribute" find execute
 
   // ack the waiting prompt task
-  //pJob job.promptTask@ ack
+  "Acking parent" .
+  pJob job.promptTask@ ack
+  "Acked parent" .
 
   <DONE_REQUEST>
 ;

@@ -16,29 +16,35 @@
 
   prompt::new to pPrompt
 
-  //pPrompt prompt.loop
-
   begin
 
+    // get the next command
     pPrompt prompt.getCommand
 
+    // check and execute the command
     pPrompt prompt.executeCommand to eCommand
 
+    // job commands have had their job class identified
     eCommand CK_SE_JOB == if
 
-      // grab this task's lock
-      //task::this task.grabLock
+      // grab this prompt task's lock
+      task::this task.grabLock
 
       // set 1 ack required from the job
-      //1 setAcks
+      1 setAcks
 
+      // create the job for the command
       pPrompt prompt.newJob
-      pPrompt prompt.prepareJob
+
+      // dispatch the job
+      pPrompt prompt.dispatchJob
 
       // wait for ack from job
-      //ackWait
+      "prompt waiting for ack" .
+      ackWait
 
-      pPrompt prompt.endJob
+     // post process and delete the job
+     pPrompt prompt.endJob
 
     then
 

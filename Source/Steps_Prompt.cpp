@@ -15,15 +15,33 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Prompt(void)
 {
+  vAddPrimitive("prompt.dispatchJob"_Stz,    &vPromptDispatchJob,    false);
   vAddPrimitive("prompt.endJob"_Stz,         &vPromptEndJob,         false);
   vAddPrimitive("prompt.executeCommand"_Stz, &vPromptExecuteCommand, false);
   vAddPrimitive("prompt.getCommand"_Stz,     &vPromptGetCommand,     false);
   vAddPrimitive("prompt.jobClass"_Stz,       &vPromptJobClass,       false);
   vAddPrimitive("prompt::new"_Stz,           &vPromptNew,            false);
   vAddPrimitive("prompt.newJob"_Stz,         &vPromptNewJob,         false);
-  vAddPrimitive("prompt.prepareJob"_Stz,     &vPromptPrepareJob,     false);
 
   vAddPrimitive("prompt.loop"_Stz,    &vPromptLoop, false);
+}
+
+/*----------------------------------------------------------------------------*/
+/* prompt.dispatchJob -- prepare and dispatch job                             */
+/*----------------------------------------------------------------------------*/
+void Task::vPromptDispatchJob(MP_Task mpTask)
+{
+  ENTRY("vPromptDispatchJob"_Stz);
+  
+  Object* pSePromptObject;
+  if ( ! mpTask->m_pDataStack->bPop(pSePromptObject) )
+    THROW_INVALID_DSTACK("prompt.dispatchJob"_Stz);
+  SePrompt* pSePrompt = _pSePrompt(pSePromptObject);
+  
+  bool b = pSePrompt->bPrepareJob();
+  ASSERT(b);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -148,24 +166,6 @@ void Task::vPromptNewJob(MP_Task mpTask)
   Job* pJob = pSePrompt->pJob();
   
   pJob->m_pPromptTask = *mpTask;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt.prepareJob -- prepare and dispatch job                              */
-/*----------------------------------------------------------------------------*/
-void Task::vPromptPrepareJob(MP_Task mpTask)
-{
-  ENTRY("vPromptPrepareJob"_Stz);
-  
-  Object* pSePromptObject;
-  if ( ! mpTask->m_pDataStack->bPop(pSePromptObject) )
-    THROW_INVALID_DSTACK("prompt.prepareJob"_Stz);
-  SePrompt* pSePrompt = _pSePrompt(pSePromptObject);
-  
-  bool b = pSePrompt->bPrepareJob();
-  ASSERT(b);
   
   EXIT();
 }

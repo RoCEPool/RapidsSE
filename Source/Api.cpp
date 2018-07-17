@@ -2434,6 +2434,10 @@ bool RapidsSE_DispatchJob(Job* pJob, SEitf* pSEitf, Stz** ppResponse)
     return bResult;
   }
   
+  return true;
+  
+  /*
+  
   if (pJob->m_bDetached)
     return true;
   
@@ -2447,6 +2451,7 @@ bool RapidsSE_DispatchJob(Job* pJob, SEitf* pSEitf, Stz** ppResponse)
     return true;
   else
     return false;
+  */
 }
 
 /*----------------------------------------------------------------------------*/
