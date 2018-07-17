@@ -5,10 +5,6 @@
 
 #include "Prompt.h"
 #include "SeHistory.hpp"
-#include "Error.hpp"
-
-using namespace CorrectnessAlgebra;
-
 
 static Stz* C_DATE_FORMAT          = "date_format"_Stz;
 static Stz* C_ENCLOSED_BY_LEADING  = "enclosed_by_leading"_Stz;
@@ -17,7 +13,6 @@ static Stz* C_ESCAPE_CHAR          = "escape_char"_Stz;
 static Stz* C_FIELD_DELIMITER      = "field_delimiter"_Stz;
 static Stz* C_RECORD_ENDS          = "record_ends"_Stz;
 static Stz* C_RECORD_TERMINATOR    = "record_terminator"_Stz;
-
 static Stz* C_SAME_MACHINE         = "same_machine"_Stz;
 
 namespace Prompt
