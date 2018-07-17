@@ -979,7 +979,7 @@ bool SePrompt::bExecuteJob(void)
   
   // call the job post function (includes deleting the job)
   //m_pJobClass->vEndJob(this, pJob);
-  vEndJob();
+  //vEndJob();
   
 //  if (bProcessResult) {
 //    if (gpAttachMap->m_bMetadata ) {
