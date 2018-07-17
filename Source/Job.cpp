@@ -60,7 +60,8 @@ Job::Job(eCN eClassNo)
   m_iParticipantNode  = -1;
   m_ziAcksRemaining   = 0;
   m_pOriginatingTask  = nullptr;
-  
+  m_pPromptTask = nullptr;
+
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
 }
 

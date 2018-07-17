@@ -40,7 +40,9 @@ namespace JobsModel
     i8  m_iParticipantNode;    // participant node no
     Atomic m_ziAcksRemaining;  // acks remaining
     Tasks::Task* m_pOriginatingTask;  // originating task of the request
-    
+
+    Tasks::Task* m_pPromptTask;  // prompt task
+
   public:
     Job(eCN eClassNo);
     ~Job(void);

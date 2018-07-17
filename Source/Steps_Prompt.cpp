@@ -145,6 +145,10 @@ void Task::vPromptNewJob(MP_Task mpTask)
   
   pSePrompt->vNewJob();
   
+  Job* pJob = pSePrompt->pJob();
+  
+  pJob->m_pPromptTask = *mpTask;
+  
   EXIT();
 }
 

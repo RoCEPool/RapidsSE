@@ -54,9 +54,10 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job::originator@"_Stz,     &vJobOriginatorFetch,  false);
   vAddPrimitive("job.participant@"_Stz,     &vJobParticipantFetch, false);
   vAddPrimitive("job.participant!"_Stz,     &vJobParticipantStore, false);
-  vAddPrimitive("job.partitions@"_Stz,      &vJobPartitionsFetch,false);
-  vAddPrimitive("job.regionSize@"_Stz,      &vJobRegionSizeFetch,false);
-  vAddPrimitive("job.releaseResources@"_Stz,  &vJobReleaseResourcesFetch,false);
+  vAddPrimitive("job.partitions@"_Stz,      &vJobPartitionsFetch,  false);
+  vAddPrimitive("job.promptTask@"_Stz,      &vJobPromptTaskFetch,  false);
+  vAddPrimitive("job.regionSize@"_Stz,      &vJobRegionSizeFetch,  false);
+  vAddPrimitive("job.releaseResources@"_Stz,&vJobReleaseResourcesFetch,false);
   vAddPrimitive("job.removeOriginator"_Stz, &vJobRemoveOriginator, false);
   vAddPrimitive("job.removeParticipant"_Stz,&vJobRemoveParticipant,false);
   vAddPrimitive("job.response@"_Stz,        &vJobResponseFetch,    false);
@@ -999,6 +1000,23 @@ void Task::vJobParticipantStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.partcipant!"_Stz);
   
   pJob->m_iParticipantNode = iParticipantNode;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.promptTask@ -- fetch the prompt task from the job                      */
+/*----------------------------------------------------------------------------*/
+void Task::vJobPromptTaskFetch(MP_Task mpTask)
+{
+  ENTRY("vJobPromptTaskFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.originatingTask@"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushObject(pJob->m_pPromptTask);
   
   EXIT();
 }

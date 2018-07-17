@@ -71,7 +71,8 @@ namespace Prompt
     void vExecuteCommand(void);
     bool bFindJobClass(void);
     eCK  eCommand(void);
-    JobClass*  pJobClass(void);
+    JobClass* pJobClass(void);
+    Job*  pJob(void);
     void vNewJob(void);
     bool bPrepareJob(void);
 
