@@ -47,6 +47,8 @@ namespace Prompt
     Tokeniser* m_pTokeniser; // input stream tokeniser
     Timer      m_xTimer;     // timer
     eCK        m_eCommand;   // kind of last command
+    JobClass*  m_pJobClass;  // job class
+    Job*       m_pJob;       // job
   
     PosixThread m_xPosixThread; // posix thread structure
   
@@ -65,6 +67,7 @@ namespace Prompt
     void vLoop(void);
 
     void vGetCommand(void);
+    void vEndJob(void);
     void vExecuteCommand(void);
     eCK  eCommand(void);
   

@@ -187,7 +187,9 @@ SePrompt::SePrompt(void)
   m_pTokeniser->vNormal(true);
   
   m_eCommand = CK_NONE;
-  
+  m_pJobClass = nullptr;
+  m_pJob = nullptr;
+
   // open the command history file
   m_xHistory.vOpen();
 
@@ -943,27 +945,41 @@ bool SePrompt::bExecuteFunction(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* end a job                                                                  */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vEndJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  // call the job post function (includes deleting the job)
+  m_pJobClass->vEndJob(this, m_pJob);
+  
+  m_pJob = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* potentially execute a job                                                  */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bExecuteJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  JobClass* pJobClass =
+  m_pJobClass =
     gxJobCatalog.pFindJob(m_xTokenVec[0]->aText(), m_xTokenVec[1]->aText());
   
-  if (! pJobClass)
+  if (! m_pJobClass)
     return false;
   
-  Job* pJob = pJobClass->pNewJob(this);
-  pJob->m_bDetached = m_xTokenVec.bDetachedRequest();
+  m_pJob = m_pJobClass->pNewJob(this);
+  m_pJob->m_bDetached = m_xTokenVec.bDetachedRequest();
   
-  bool bProcessResult = bPrepareJob(pJob);
+  bool bProcessResult = bPrepareJob(m_pJob);
   
   // wait for job signal
   
   // call the job post function (includes deleting the job)
-  pJobClass->vEndJob(this, pJob);
+  //m_pJobClass->vEndJob(this, pJob);
+  vEndJob();
   
 //  if (bProcessResult) {
 //    if (gpAttachMap->m_bMetadata ) {

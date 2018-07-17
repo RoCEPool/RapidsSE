@@ -10,6 +10,7 @@
 : promptR35_req ( -- <R> )
 
   0 locals| pPrompt |
+  0 locals| eCommand |
 
   "promptR35_req" .
 
@@ -21,9 +22,9 @@
 
     pPrompt prompt.getCommand
 
-    pPrompt prompt.executeCommand
+    pPrompt prompt.executeCommand to eCommand
 
-    drop
+    eCommand CK_SE_JOB == if "CK_SE_JOB" . then
 
   again
 
