@@ -439,6 +439,53 @@ void SePrompt::vNewJob(void)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* get command kind                                                           */
+/*----------------------------------------------------------------------------*/
+eCK SePrompt::eCommand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_eCommand;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get job                                                                    */
+/*----------------------------------------------------------------------------*/
+Job* SePrompt::pJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_pJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the token vector                                                       */
+/*----------------------------------------------------------------------------*/
+TokenVec* SePrompt::pTokenVec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return &m_xTokenVec;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* attempt to find job class for command                                      */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bFindJobClass(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  m_pJobClass =
+  gxJobCatalog.pFindJob(m_xTokenVec[0]->aText(), m_xTokenVec[1]->aText());
+  
+  return m_pJobClass ? true : false;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -576,26 +623,6 @@ bool SePrompt::bDispatchJob(Job* pJob)
   xTimer.vUpdate();
   
   return bResult;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get command kind                                                           */
-/*----------------------------------------------------------------------------*/
-eCK SePrompt::eCommand(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  return m_eCommand;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get job                                                                    */
-/*----------------------------------------------------------------------------*/
-Job* SePrompt::pJob(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  return m_pJob;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -753,16 +780,6 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
   }
   
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the token vector                                                       */
-/*----------------------------------------------------------------------------*/
-TokenVec* SePrompt::pTokenVec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  return &m_xTokenVec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -925,60 +942,6 @@ bool SePrompt::bExecuteFunction(void)
   (*pPromptFun->m_fPrompt)(this);
   
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* potentially execute a job                                                  */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bExecuteJob(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-    
-  if (! bFindJobClass())
-    return false;
-  
-  vNewJob();
-  
-  bool bProcessResult = bPrepareJob();
-  
-  // wait for job signal
-  
-  // call the job post function (includes deleting the job)
-  //m_pJobClass->vEndJob(this, pJob);
-  //vEndJob();
-  
-//  if (bProcessResult) {
-//    if (gpAttachMap->m_bMetadata ) {
-//      vMetaFormat();
-//    }
-//    else {
-//      if ( !m_sResponse.bEqual("<ok>"_Stz) ) {
-//        vTrace("%s\n"_Stz,m_sResponse.aChar());
-//      }
-//    }
-//  }
-//  else {
-//    if (m_pSEitf->eGetLastError() != EC_NONE)
-//      vTrace("error: %s\n"_Stz,m_pSEitf->pGetLastError());
-//  }
-//
-//  // clear the response
-//  m_sResponse = ""_Stz;
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* attempt to find job class for command                                      */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bFindJobClass(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  m_pJobClass =
-    gxJobCatalog.pFindJob(m_xTokenVec[0]->aText(), m_xTokenVec[1]->aText());
-  
-  return m_pJobClass ? true : false;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -72,14 +72,19 @@ namespace Prompt
     JobClass* pJobClass(void);
     void vNewJob(void);
   
-  
+    // other
+    eCK  eCommand(void);
+    Job* pJob(void);
+    TokenVec* pTokenVec(void);
   
 
-    bool bFindJobClass(void);
-    eCK  eCommand(void);
-    Job*  pJob(void);
-  
   private:
+  
+    bool bFindJobClass(void);
+
+  
+  
+  
     void vGetCommandArgument(void);
     void vGetCommandInput(void);
   
@@ -146,8 +151,6 @@ namespace Prompt
     bool bCmd_TimerStart(void);
     bool bCmd_TimerEnd(void);
   
-    TokenVec* pTokenVec(void);
-
     bool bCmd_CreateCatalogR35(void);
     bool bCmd_CreateIndexR35(void);
     bool bCmd_CreateSchemaR35(void);
@@ -188,7 +191,6 @@ namespace Prompt
   
     bool bExecuteFile(void);
     bool bExecuteFunction(void);
-    bool bExecuteJob(void);
   };
 
   SePrompt* _pSePrompt(void* aAddr);
