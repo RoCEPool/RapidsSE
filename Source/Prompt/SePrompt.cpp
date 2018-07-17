@@ -229,6 +229,213 @@ void SePrompt::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Task Primitives ---------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* prepare and dispatch job                                                   */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bPrepareJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for echo prefix
+  if (bCmdIs("echo"_Stz))
+    vSetEcho();
+  else
+    vClearEcho();
+  
+  //vTrace("command: %s\n"_Stz,m_xTokenVec[0]->sText().aChar());
+  
+  for (i8 i_Cmd = 0; SePromptCommands[i_Cmd].aCommand; i_Cmd++) {
+    
+    if ( ! bCmdIs((Stz*)SePromptCommands[i_Cmd].aCommand))
+      continue;
+    
+    if (! SePromptCommands[i_Cmd].aAlternate)
+      return (this->*SePromptCommands[i_Cmd].aFunc)();
+    
+    if (bOneIs((Stz*)SePromptCommands[i_Cmd].aAlternate)) {
+      return (this->*SePromptCommands[i_Cmd].aFunc)();
+    }
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append to history
+  m_xHistory.vAppend(m_xTokenVec);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for command file
+  if (bTestFile(m_xTokenVec[0]->aText()))
+    return bRunFile();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // execute seitf request
+  if (! bDispatchJob(m_pJob))
+    return false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // post process requests
+  //if (! bPostProcess)
+  //return true;
+  
+  if ( bCmdIs("fetch"_Stz) || bCmdIs("dfetch"_Stz)) {
+    vIterateBuffers();
+    return false;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // the following never return
+  
+  if (m_xTokenVec[0]->bSame("mon"_Stz)) {
+    while (true) {
+      PosixThread::vSleepSec(10);
+      if (!bExecuteRequest())
+        return true;
+    }
+  }
+  
+  if (m_xTokenVec[0]->bSame("x"_Stz)) {
+    while (true)
+      bExecuteRequest();
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* end a job                                                                  */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vEndJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  // call the job post function (includes deleting the job)
+  m_pJobClass->vEndJob(this, m_pJob);
+  
+  m_pJob = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* execute command                                                            */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vExecuteCommand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  // test for blank line
+  if (bBlankLine()) {
+    m_eCommand = CK_BLANK_LINE;
+    return;
+  }
+  
+  // attempt to execute command file
+  if (bExecuteFile()) {
+    m_eCommand = CK_COMMAND_FILE;
+    return;
+  }
+  
+  // attempt to execute internal command
+  if (bExecuteFunction()) {
+    m_eCommand = CK_PROMPT_FUNCTION;
+    return;
+  }
+  
+  // attempt to execute se job
+  if (bFindJobClass()) {
+    m_eCommand = CK_SE_JOB;
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  bool bProcessResult = bProcessCommand();
+  
+  if (m_bEcho) {
+    vTrace("cmd: "_Stz);
+    for (i8 i_Token = 0; i_Token < C_TOKENS; i_Token++) {
+      if ( ! m_xTokenVec[i_Token]->bHasText() )
+        break;
+      vTrace("%s "_Stz,m_xTokenVec[i_Token]);
+    }
+    vTrace(": got: %s\n"_Stz,m_sResponse.aChar());
+    return;
+  }
+  
+  if (bProcessResult) {
+    if (gpAttachMap->m_bMetadata ) {
+      vMetaFormat();
+    }
+    else {
+      if ( !m_sResponse.bEqual("<ok>"_Stz) ) {
+        vTrace("%s\n"_Stz,m_sResponse.aChar());
+      }
+    }
+  }
+  else {
+    if (m_pSEitf->eGetLastError() != EC_NONE)
+      vTrace("error: %s\n"_Stz,m_pSEitf->pGetLastError());
+  }
+  
+  // clear the response
+  m_sResponse = ""_Stz;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get command                                                                */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vGetCommand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  if (gxArguments.m_bCommand)
+    vGetCommandArgument();
+  else {
+    vGetCommandInput();
+    
+    // if empty line just return
+    if ( ! m_xTokenVec[0]->bHasText() )
+      return;
+    
+    // if its a command file just return
+    if (bTestFile(m_xTokenVec[0]->aText()))
+      return;
+    
+    // collect till ;
+    vCollectStatement();
+    
+    // stip off ;
+    m_xTokenVec.vStripSemicolon();
+    
+    // stip off &
+    m_xTokenVec.vStripAmpersand();
+    
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get job class                                                              */
+/*----------------------------------------------------------------------------*/
+JobClass* SePrompt::pJobClass(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_pJobClass;
+}
+
+/*----------------------------------------------------------------------------*/
+/* potentially execute a job                                                  */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vNewJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  m_pJob = m_pJobClass->pNewJob(this);
+  m_pJob->m_bDetached = m_xTokenVec.bDetachedRequest();
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -372,102 +579,6 @@ bool SePrompt::bDispatchJob(Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get command                                                                */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vGetCommand(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  if (gxArguments.m_bCommand)
-    vGetCommandArgument();
-  else {
-    vGetCommandInput();
-    
-    // if empty line just return
-    if ( ! m_xTokenVec[0]->bHasText() )
-      return;
-    
-    // if its a command file just return
-    if (bTestFile(m_xTokenVec[0]->aText()))
-      return;
-    
-    // collect till ;
-    vCollectStatement();
-    
-    // stip off ;
-    m_xTokenVec.vStripSemicolon();
-
-    // stip off &
-    m_xTokenVec.vStripAmpersand();
-
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* execute command                                                            */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vExecuteCommand(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  // test for blank line
-  if (bBlankLine()) {
-    m_eCommand = CK_BLANK_LINE;
-    return;
-  }
-  
-  // attempt to execute command file
-  if (bExecuteFile()) {
-    m_eCommand = CK_COMMAND_FILE;
-    return;
-  }
-  
-  // attempt to execute internal command
-  if (bExecuteFunction()) {
-    m_eCommand = CK_PROMPT_FUNCTION;
-    return;
-  }
-  
-  // attempt to execute se job
-  if (bFindJobClass()) {
-    m_eCommand = CK_SE_JOB;
-    return;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  bool bProcessResult = bProcessCommand();
-  
-  if (m_bEcho) {
-    vTrace("cmd: "_Stz);
-    for (i8 i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-      if ( ! m_xTokenVec[i_Token]->bHasText() )
-        break;
-      vTrace("%s "_Stz,m_xTokenVec[i_Token]);
-    }
-    vTrace(": got: %s\n"_Stz,m_sResponse.aChar());
-    return;
-  }
-  
-  if (bProcessResult) {
-    if (gpAttachMap->m_bMetadata ) {
-      vMetaFormat();
-    }
-    else {
-      if ( !m_sResponse.bEqual("<ok>"_Stz) ) {
-        vTrace("%s\n"_Stz,m_sResponse.aChar());
-      }
-    }
-  }
-  else {
-    if (m_pSEitf->eGetLastError() != EC_NONE)
-      vTrace("error: %s\n"_Stz,m_pSEitf->pGetLastError());
-  }
-  
-  // clear the response
-  m_sResponse = ""_Stz;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get command kind                                                           */
 /*----------------------------------------------------------------------------*/
 eCK SePrompt::eCommand(void)
@@ -485,16 +596,6 @@ Job* SePrompt::pJob(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   return m_pJob;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get job class                                                              */
-/*----------------------------------------------------------------------------*/
-JobClass* SePrompt::pJobClass(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  return m_pJobClass;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -629,78 +730,6 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
   // post process requests
   if (! bPostProcess)
     return true;
-  
-  if ( bCmdIs("fetch"_Stz) || bCmdIs("dfetch"_Stz)) {
-    vIterateBuffers();
-    return false;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // the following never return
-  
-  if (m_xTokenVec[0]->bSame("mon"_Stz)) {
-    while (true) {
-      PosixThread::vSleepSec(10);
-      if (!bExecuteRequest())
-        return true;
-    }
-  }
-  
-  if (m_xTokenVec[0]->bSame("x"_Stz)) {
-    while (true)
-      bExecuteRequest();
-  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* process job                                                                */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bPrepareJob(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for echo prefix
-  if (bCmdIs("echo"_Stz))
-    vSetEcho();
-  else
-    vClearEcho();
-  
-  //vTrace("command: %s\n"_Stz,m_xTokenVec[0]->sText().aChar());
-  
-  for (i8 i_Cmd = 0; SePromptCommands[i_Cmd].aCommand; i_Cmd++) {
-    
-    if ( ! bCmdIs((Stz*)SePromptCommands[i_Cmd].aCommand))
-      continue;
-    
-    if (! SePromptCommands[i_Cmd].aAlternate)
-      return (this->*SePromptCommands[i_Cmd].aFunc)();
-    
-    if (bOneIs((Stz*)SePromptCommands[i_Cmd].aAlternate)) {
-      return (this->*SePromptCommands[i_Cmd].aFunc)();
-    }
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // append to history
-  m_xHistory.vAppend(m_xTokenVec);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for command file
-  if (bTestFile(m_xTokenVec[0]->aText()))
-    return bRunFile();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // execute seitf request
-  if (! bDispatchJob(m_pJob))
-    return false;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // post process requests
-  //if (! bPostProcess)
-    //return true;
   
   if ( bCmdIs("fetch"_Stz) || bCmdIs("dfetch"_Stz)) {
     vIterateBuffers();
@@ -899,19 +928,6 @@ bool SePrompt::bExecuteFunction(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* end a job                                                                  */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vEndJob(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  // call the job post function (includes deleting the job)
-  m_pJobClass->vEndJob(this, m_pJob);
-  
-  m_pJob = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* potentially execute a job                                                  */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bExecuteJob(void)
@@ -950,17 +966,6 @@ bool SePrompt::bExecuteJob(void)
 //  m_sResponse = ""_Stz;
 
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* potentially execute a job                                                  */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vNewJob(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  m_pJob = m_pJobClass->pNewJob(this);
-  m_pJob->m_bDetached = m_xTokenVec.bDetachedRequest();
 }
 
 /*----------------------------------------------------------------------------*/

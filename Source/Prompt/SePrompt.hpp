@@ -64,16 +64,21 @@ namespace Prompt
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
-    void vGetCommand(void);
+    // these are the prompt.xyz task primitives
+    bool bPrepareJob(void);
     void vEndJob(void);
     void vExecuteCommand(void);
+    void vGetCommand(void);
+    JobClass* pJobClass(void);
+    void vNewJob(void);
+  
+  
+  
+
     bool bFindJobClass(void);
     eCK  eCommand(void);
-    JobClass* pJobClass(void);
     Job*  pJob(void);
-    void vNewJob(void);
-    bool bPrepareJob(void);
-
+  
   private:
     void vGetCommandArgument(void);
     void vGetCommandInput(void);
