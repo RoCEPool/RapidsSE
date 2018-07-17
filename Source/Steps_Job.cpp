@@ -41,6 +41,7 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.findOriginator"_Stz,   &vJobFindOriginator,   false);
   vAddPrimitive("job.findParticipant"_Stz,  &vJobFindParticipant,  false);
   vAddPrimitive("job.id@"_Stz,              &vJobIdFetch,          false);
+  vAddPrimitive("job.isPromptCommand"_Stz,  &vJobIsPromptCommand,  false);
   vAddPrimitive("job.newBegun"_Stz,         &vJobNewBegun,         false);
   vAddPrimitive("job.newCancel"_Stz,        &vJobNewCancel,        false);
   vAddPrimitive("job.newCancelled"_Stz,     &vJobNewCancelled,     false);
@@ -62,6 +63,7 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.removeParticipant"_Stz,&vJobRemoveParticipant,false);
   vAddPrimitive("job.response@"_Stz,        &vJobResponseFetch,    false);
   vAddPrimitive("job.response!"_Stz,        &vJobResponseStore,    false);
+  vAddPrimitive("job.signalConnector"_Stz,  &vJobSignalConnector,  false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -753,6 +755,23 @@ void Task::vJobIdFetch(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* job.isPromptCpmmand -- is this job a prompt command job ?                 */
+/*----------------------------------------------------------------------------*/
+void Task::vJobIsPromptCommand(MP_Task mpTask)
+{
+  ENTRY("vJobIdFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.isPromptCpmmand"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushInt(pJob->m_pPromptTask ? true : false);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* job.newBegun -- new a job__begun for this job                              */
 /*----------------------------------------------------------------------------*/
 void Task::vJobNewBegun(MP_Task mpTask)
@@ -1013,7 +1032,7 @@ void Task::vJobPromptTaskFetch(MP_Task mpTask)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.originatingTask@"_Stz);
+    THROW_INVALID_DSTACK("job.promptTask@"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
   mpTask->m_pDataStack->vPushObject(pJob->m_pPromptTask);
@@ -1159,6 +1178,29 @@ void Task::vJobResponseStore(MP_Task mpTask)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* job.signalConnector -- signal the connector thread                         */
+/*----------------------------------------------------------------------------*/
+void Task::vJobSignalConnector(MP_Task mpTask)
+{
+  ENTRY("vJobSignalConnector"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.signalConnector"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  // there should not be a prompt task
+  ASSERT( ! pJob->m_pPromptTask);
+  
+  i8 rCode = pthread_cond_signal(&pJob->m_xThreadCond);
+  
+  if (0 != rCode) {
+    vWarn("pthread_cond_signal() error; rCode=%lld\n"_Stz,rCode);
+  }
+  
+  EXIT();
+}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

@@ -318,13 +318,13 @@ pResultBuffer pSeitf seitf.bufferQueue@ queue.append
    dup index.truncate
    
    // forget all column names
-   dup index.subDic
-   pathPush
-   "columns" find execute forgetAll
-   pathDrop
+   //dup index.subDic
+   //pathPush
+   //"columns" find execute forgetAll
+   //pathDrop
 
   // forget the sub dictionary
-   index.subDic forgetAll
+  // index.subDic forgetAll
 ;
 
 ////////////////////////////////////////////////////////////////////////////////

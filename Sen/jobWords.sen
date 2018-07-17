@@ -20,7 +20,17 @@
 /*----------------------------------------------------------------------------*/
 /* return from job execution on origin                                        */
 /*----------------------------------------------------------------------------*/
-: <DONE_REQUEST> ( --  )
+: <DONE_REQUEST> ( job --  )
+
+  locals| pJob |
+
+  pJob job.isPromptCommand true == if
+    "Acking prompt task" .
+    pJob job.promptTask@ ack
+  else
+    "Signalling connector thread" .
+    pJob job.signalConnector
+  then
 
   // push "<ok>" as the return str
   "<ok>"

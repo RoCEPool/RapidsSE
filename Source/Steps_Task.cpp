@@ -71,7 +71,7 @@ void Task::vAddPrimitives_Task(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ack -- acknowledge that task of this tasks completion                      */
+/* task.ack -- acknowledge that task of this tasks completion                 */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskAck(MP_Task mpTask)
 {

@@ -107,7 +107,7 @@ CmdTable SePromptCommands[] =
   { C_CMD_DROP,       C_R35_ONE_CATALOG, &SePrompt::bCmd_DropCatalogR35   },
   { C_CMD_DROP,       C_R35_ONE_INDEX,   &SePrompt::bCmd_DropIndexR35     },
   { C_CMD_DROP,       C_R35_ONE_SCHEMA,  &SePrompt::bCmd_DropSchemaR35    },
-  { C_CMD_DROP,       C_R35_ONE_TABLE,   &SePrompt::bCmd_DropTableR35     },  
+  //{ C_CMD_DROP,       C_R35_ONE_TABLE,   &SePrompt::bCmd_DropTableR35     },  
   { C_CMD_DROP,       C_R35_ONE_TENANT,  &SePrompt::bCmd_DropTenantR35    },
   
   { nullptr,          nullptr,       nullptr                              }
@@ -801,6 +801,16 @@ bool SePrompt::bPrepareJob(void)
   }
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the token vector                                                       */
+/*----------------------------------------------------------------------------*/
+TokenVec* SePrompt::pTokenVec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return &m_xTokenVec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2360,16 +2370,6 @@ bool SePrompt::bCmd_TimerEnd(void)
   vTrace("duration %lldms\n"_Stz,m_xTimer.iMilliseconds());
   
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get token vector                                                           */
-/*----------------------------------------------------------------------------*/
-TokenVec* SePrompt::pTokenVec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  return &m_xTokenVec;
 }
 
 /*----------------------------------------------------------------------------*/

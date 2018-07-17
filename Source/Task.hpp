@@ -860,6 +860,7 @@ namespace Tasks
     static void vJobFindOriginator(MP_Task mpTask);
     static void vJobFindParticipant(MP_Task mpTask);    
     static void vJobIdFetch(MP_Task mpTask);
+    static void vJobIsPromptCommand(MP_Task mpTask);
     static void vJobNewBegun(MP_Task mpTask);
     static void vJobNewCancel(MP_Task mpTask);
     static void vJobNewCancelled(MP_Task mpTask);
@@ -881,6 +882,7 @@ namespace Tasks
     static void vJobRemoveParticipant(MP_Task mpTask);
     static void vJobResponseStore(MP_Task mpTask);
     static void vJobResponseFetch(MP_Task mpTask);
+    static void vJobSignalConnector(MP_Task mpTask);
     
     // loader
     static void vLoaderAddRecordsInvalid(MP_Task mpTask);

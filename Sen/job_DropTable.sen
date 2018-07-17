@@ -5,6 +5,81 @@
 "job_DropTable.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* remove a table folder                                                      */
+/*----------------------------------------------------------------------------*/
+: removeTableR35 ( "<tableNm>" )
+
+  tp: removeTable
+
+  locals| sTableNm |
+
+  sTableNm pushTable assert
+  sTableNm find execute ( ^table )
+
+  //----------------------------------------------------------------------------
+  // drop all rows
+  //dup table.truncate ( ^table )
+
+  //----------------------------------------------------------------------------
+  // drop all indexes
+  "indexes" find execute pathPush
+
+  // iterate thru all indexes and tidyUp
+  0 pathPick dic.lastWord dup
+  iterate                        // setup iteration of words
+  object@ word.name
+  dup .
+  // forward reference :-(
+  "indexTidyUp" find execute
+
+  object@ word.prev object!     // step backwards thru words
+  next
+
+  pathDrop
+
+  // forget the indexes in the indexes dictionary
+  "indexes" find execute forgetAll
+
+  // forget the indexes dictionary itself
+  "indexes" :forget
+
+  //----------------------------------------------------------------------------
+  // drop all partition keys etc
+
+  // forget all column names in the columns dictionary of partitions sub-dictionary
+  //dup table.slots slots.subDic
+  //pathPush
+  //"columns" find execute forgetAll
+  //pathDrop
+
+  //dup table.slots slots.subDic forgetAll
+
+  // forget the partitions in the partitions dictionary
+  //"partitions" find execute forgetAll
+
+  // forget the partitions dictionary itself
+  "partitions" :forget
+
+  //----------------------------------------------------------------------------
+  // drop all table columns etc
+  // forget all column names in the columns dictionary of table sub-dictionary
+  //dup table.subDic
+  //pathPush
+  //"columns" find execute forgetAll
+  //pathDrop
+
+  // forget the columns dictionary in the table sub-dictionary
+  //table.subDic forgetAll
+
+  sTableNm :forget
+
+  popTable
+
+  sTableNm :forget
+
+  true
+;
+/*----------------------------------------------------------------------------*/
 /* drop a table                                                               */
 /*----------------------------------------------------------------------------*/
 : dropTableR35_req ( "<tableNm>" -- <R> )
@@ -30,34 +105,30 @@
   // distribute the job
   pTask pJob "job::distribute" find execute
 
-  // ack the waiting prompt task
-  "Acking parent" .
-  pJob job.promptTask@ ack
-  "Acked parent" .
-
-  <DONE_REQUEST>
+  pJob <DONE_REQUEST>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropTable job                                                  */
 /*----------------------------------------------------------------------------*/
-: Job_DropTable_node ( pJob_DropTable -- )
+: DropTableR35_node ( pJob_DropTable -- )
 
   params| pJob_DropTable |
 
   CN_JOB_DROPTABLE pJob_DropTable object.assertClass
 
   ddlLock::grabWrite
-
+"t2" .
   pJob_DropTable getPathR35
   dicStack.set
   pJob_DropTable job.objectName@   ( tableNm )
-
+  dup .
   removeTableR35 ( )  not if "got error" . exit then
-
+  "t2" .
   ddlLock::testDrop
 
   pJob_DropTable job.notice
+"t2" .
 ;
 
 /*============================================================================*/

@@ -42,6 +42,11 @@ namespace JobsModel
     Tasks::Task* m_pOriginatingTask;  // originating task of the request
 
     Tasks::Task* m_pPromptTask;  // prompt task
+    
+    pthread_mutex_t     m_xThreadMutex;     // connector thread mutex variable
+    pthread_mutexattr_t m_xThreadMutexAttr; // connector thread mutex shared attribute
+    pthread_cond_t      m_xThreadCond;      // connector thread condition variable
+    pthread_condattr_t  m_xThreadCondAttr;  // connector thread condition shared attribute
 
   public:
     Job(eCN eClassNo);

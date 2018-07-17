@@ -577,7 +577,7 @@ eEC RapidsSE_DropTable(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable, 
   eEC eResponse;
   
   Stz* aApiCall = "RapidsSE_DropTable"_Stz;
-  
+/*
   try {
     
     // trace entry
@@ -604,6 +604,76 @@ eEC RapidsSE_DropTable(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable, 
     
     // trace exit
     TRACE_EXIT("ea"_Stz);
+    
+    return EC_NONE;
+  }
+  catch (Error* pError) {
+    RapidsSE::vErrorHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
+    return pError->eErrorCode();
+  }
+  catch (...) {
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
+    return EC_SE_UNKNOWN_ERROR;
+  }
+ */
+  
+  try {
+//    Word* pTenants = gpAttachMap->m_pTenants;
+//    ASSERT(pTenants);
+//    Cell* pCell = pTenants->pFirstCell();
+//    m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
+//
+//    // /tenants/boray
+//    Word* pTenant = m_xPathStack.pFindInCurrent("boray"_Stz);
+//    ASSERT(pTenant);
+//    pCell = pTenant->pFirstCell();
+//    m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
+    
+    // trace entry
+    TRACE_ENTRY_P3(pCatalog, pSchema, pTable);
+    
+    // validate the SEitf
+    VALIDATE_SEITF("a"_Stz);
+    
+    // clear the last error
+    CLEAR_LASTERROR();
+    
+    // validate parameters
+    VALIDATE_PARAM("b"_Stz, pCatalog);
+    VALIDATE_PARAM("c"_Stz, pSchema);
+    VALIDATE_PARAM("d"_Stz, pTable);
+    
+    //ASSERT seitf PathStack is in tables
+    
+    // create the job
+    Job_DropTable* pJob_DropTable = new Job_DropTable(pSEitf);
+    
+    // set the table name in the job
+    pJob_DropTable->m_sObjectName = pTable;
+    
+    // set the job in SEitf
+    pSEitf->m_pJob = pJob_DropTable;
+    Stz* aResponse = nullptr;
+    
+    RapidsSE_DispatchJob(pJob_DropTable, pSEitf, &aResponse);
+    
+    i8 rCode = pthread_mutex_lock(&pJob_DropTable->m_xThreadMutex);
+    //vTrace("MutexLock %p\n"_Stz,this);
+    
+    if (0 != rCode) {
+      vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
+    }
+    
+    // wait for condition
+    rCode = pthread_cond_wait(&pJob_DropTable->m_xThreadCond,
+                              &pJob_DropTable->m_xThreadMutex);
+    
+    if (0 != rCode) {
+      vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
+    }
+    
+    vTrace("Error: %s\n"_Stz, aEC[pJob_DropTable->m_xNode[0].m_eErrorCode]);
     
     return EC_NONE;
   }

@@ -61,7 +61,7 @@ Job_Prompt::Job_Prompt(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PROMPT,_FOOTER_);
     
-  //m_sExecute = "Job_Prompt.execute"_Stz;
+  //m_sSeed = "Job_Prompt.execute"_Stz;
   
   _checkInitialised_(CN_JOB_PROMPT);
   
