@@ -554,6 +554,16 @@ eCK SePrompt::eCommand(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get job class                                                              */
+/*----------------------------------------------------------------------------*/
+JobClass* SePrompt::pJobClass(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_pJobClass;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get command from arguments                                                 */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vGetCommandArgument(void)
@@ -1000,6 +1010,17 @@ bool SePrompt::bExecuteJob(void)
 //  m_sResponse = ""_Stz;
 
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt to find job class for command                                      */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vFindJobClass(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  m_pJobClass =
+    gxJobCatalog.pFindJob(m_xTokenVec[0]->aText(), m_xTokenVec[1]->aText());
 }
 
 /*----------------------------------------------------------------------------*/

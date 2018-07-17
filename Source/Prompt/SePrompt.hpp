@@ -69,8 +69,10 @@ namespace Prompt
     void vGetCommand(void);
     void vEndJob(void);
     void vExecuteCommand(void);
+    void vFindJobClass(void);
     eCK  eCommand(void);
-  
+    JobClass*  pJobClass(void);
+
   private:
     void vGetCommandArgument(void);
     void vGetCommandInput(void);

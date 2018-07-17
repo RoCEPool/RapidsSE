@@ -18,6 +18,7 @@ void Task::vAddPrimitives_Prompt(void)
   vAddPrimitive("prompt.endJob"_Stz,         &vPromptEndJob,         false);
   vAddPrimitive("prompt.executeCommand"_Stz, &vPromptExecuteCommand, false);
   vAddPrimitive("prompt.getCommand"_Stz,     &vPromptGetCommand,     false);
+  vAddPrimitive("prompt.jobClass"_Stz,       &vPromptJobClass,       false);
   vAddPrimitive("prompt::new"_Stz,           &vPromptNew,            false);
 
   vAddPrimitive("prompt.loop"_Stz,    &vPromptLoop, false);
@@ -74,6 +75,25 @@ void Task::vPromptGetCommand(MP_Task mpTask)
   SePrompt* pSePrompt = _pSePrompt(pSePromptObject);
   
   pSePrompt->vGetCommand();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* prompt.jobClass -- get job class                                           */
+/*----------------------------------------------------------------------------*/
+void Task::vPromptJobClass(MP_Task mpTask)
+{
+  ENTRY("vPromptJobClass"_Stz);
+  
+  Object* pSePromptObject;
+  if ( ! mpTask->m_pDataStack->bPop(pSePromptObject) )
+    THROW_INVALID_DSTACK("prompt.jobClass"_Stz);
+  SePrompt* pSePrompt = _pSePrompt(pSePromptObject);
+  
+  JobClass* pJobClass = pSePrompt->pJobClass();
+  
+  mpTask->m_pDataStack->vPushInt((i8)pJobClass);
   
   EXIT();
 }
