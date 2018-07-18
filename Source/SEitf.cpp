@@ -3708,6 +3708,8 @@ eEC SEitf::eGetResponse(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
+  ASSERT(0);
+  /*
   while (! bPopResponse(m_eErrorCode, m_sResponse))
     ;
   
@@ -3719,7 +3721,7 @@ eEC SEitf::eGetResponse(void)
   } while (m_iNextRequestId == m_iCurrentRequestId);
 
   //vTrace("NextRequest %lld\n"_Stz, m_iNextRequestId);
-  
+  */
   return m_eErrorCode;
 }
 
@@ -3730,6 +3732,8 @@ bool SEitf::bPopResponse(eEC& eResult, StrVal& sResponse)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
+  ASSERT(0);
+  /*
   bool b;
   ValSet xValSet;
   Stz* aCursor = nullptr;
@@ -3752,6 +3756,7 @@ bool SEitf::bPopResponse(eEC& eResult, StrVal& sResponse)
   
   //  vTrace("sResponse: >>>\n%s\n<<<\n\n"_Stz,sResponse.aChar());
   //  vTrace("\n---\n\n"_Stz,sResponse.aChar());
+  */
   
   return true;
 }
