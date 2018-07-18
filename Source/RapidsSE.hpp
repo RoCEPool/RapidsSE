@@ -27,6 +27,7 @@ namespace StorageEngine
     static void vPrintExit(void);
     static void vPrintWelcome(void);
     static void vRunPrompt(void);
+    static bool bRunUtilities(int argc, Stz* argv[]);
     static void vSetGlobals(void);
     static void vWriteRegionName(void);
 

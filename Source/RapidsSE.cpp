@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "StorageEngine.h"
+#include "ShmUtility.hpp"
 
 Arguments     gxArguments;
 
@@ -205,6 +206,20 @@ void RapidsSE::vPrintWelcome(void)
   // print startup information
   if (gxArguments.m_bWelcome && gxArguments.m_bStart)
     gxArguments.vPrintStartupInfo();
+}
+
+/*----------------------------------------------------------------------------*/
+/* run utilities                                                              */
+/*----------------------------------------------------------------------------*/
+bool RapidsSE::bRunUtilities(int argc, Stz* argv[])
+{
+  // potentially run the shm utility
+  if (gbSHM) {
+    ShmUtility::vRun(argc,(Stz**)argv);
+    return true;
+  }
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -3,11 +3,8 @@
 /*============================================================================*/
 
 #include "StorageEngine.h"
-#include "ShmUtility.hpp"
 
 extern Arguments  gxArguments;
-
-extern bool gbSHM;
 
 /*----------------------------------------------------------------------------*/
 /* main                                                                       */
@@ -18,11 +15,9 @@ int main(int argc, const char* argv[])
   if ( ! gxArguments.bParse(argc,(Stz**)argv) )
     exit(EXIT_FAILURE);
   
-  // potentially run the shm utility
-  if (gbSHM) {
-    ShmUtility::vRun(argc,(Stz**)argv);
+  // potentially run utilities
+  if (RapidsSE::bRunUtilities(argc,(Stz**)argv))
     exit(EXIT_SUCCESS);
-  }
   
   // welcome message
   RapidsSE::vPrintWelcome();
