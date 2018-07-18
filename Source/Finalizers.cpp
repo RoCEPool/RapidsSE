@@ -167,7 +167,7 @@ pFINALIZE *gpFinalize[]
   
   /*107 */ &Finalize::vUndefined,         // CN_SCANBUFFER
   /*108 */ &Finalize::vUndefined,         // CN_SCRATCH
-  /*109 */ &Finalize::vUndefined,         // CN_SEHISTORY
+
   /*110 */ &Finalize::vUndefined,         // CN_SEITF
   /*111 */ &Finalize::vUndefined,         // CN_SEITFCURSOR
   /*112 */ &Finalize::vUndefined,         // CN_SEITFLIST

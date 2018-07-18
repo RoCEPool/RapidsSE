@@ -171,7 +171,7 @@ pDUMPFUN *gpDump[]
   
   /*107 */ &Dump::vUndefined,       // CN_SCANBUFFER
   /*108 */ &Dump::vUndefined,       // CN_SCRATCH
-  /*109 */ &Dump::vUndefined,       // CN_SEHISTORY
+
   /*110 */ &SEitf::vDump,           // CN_SEITF
   /*111 */ &Dump::vUndefined,       // CN_SEITFCURSOR
   /*112 */ &Dump::vUndefined,       // CN_SEITFLIST
@@ -392,7 +392,7 @@ i8 giClassSize[]
   
   /*107 */ sizeof(ScanBuffer),         // CN_SCANBUFFER
   /*108 */ sizeof(Scratch),            // CN_SCRATCH
-  /*109 */ sizeof(SeHistory),          // CN_SEHISTORY
+
   /*110 */ sizeof(SEitf),              // CN_SEITF
   /*111 */ sizeof(SEitfCursor),        // CN_SEITFCURSOR
   /*112 */ sizeof(SEitfList),          // CN_SEITFLIST
@@ -613,7 +613,7 @@ eHT geWhichHeap[]
   
   /*107 */ HT_TRANSIENT_LARGE,   // CN_SCANBUFFER
   /*108 */ HT_TRANSIENT_LARGE,   // CN_SCRATCH
-  /*109 */ HT_INVALID,           // CN_SEHISTORY
+
   /*110 */ HT_TRANSIENT_MEDIUM,  // CN_SEITF
   /*111 */ HT_TRANSIENT_SMALL,   // CN_SEITFCURSOR
   /*112 */ HT_INVALID,           // CN_SEITFLIST

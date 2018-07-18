@@ -4,7 +4,7 @@
 #pragma once
 
 #include "Prompt.h"
-#include "SeHistory.hpp"
+
 
 static Stz* C_DATE_FORMAT          = "date_format"_Stz;
 static Stz* C_ENCLOSED_BY_LEADING  = "enclosed_by_leading"_Stz;
@@ -36,7 +36,6 @@ namespace Prompt
     bool       m_bEcho;      // echo response?
     s32        m_sPrompt;    // prompt
     s48K       m_sResponse;  // response from seitf
-    SeHistory  m_xHistory;   // command history
     TokenVec   m_xTokenVec;  // token vector
     TokenVec   m_xTokenVec2; // another token vector
     Tokeniser* m_pTokeniser; // input stream tokeniser
@@ -120,12 +119,10 @@ namespace Prompt
     bool bCmd_DropTable(void);
     bool bCmd_EndInsert(void);
     bool bCmd_Help(void);
-    bool bCmd_History(void);
     bool bCmd_InsertRow(void);
     bool bCmd_LoadTable(void);
     bool bCmd_ListDir(void);
     bool bCmd_PrintDir(void);
-    bool bCmd_RecallCommand(void);
     bool bCmd_Sleep(void);
     bool bCmd_UseSchema(void);
     bool bCmd_TimerStart(void);

@@ -650,7 +650,7 @@ void Task::vAddConstants(void)
   
   /* 54 */ vAddConstant("CN_SCANBUFFER"_Stz,   CN_SCANBUFFER);
   /* 55 */ vAddConstant("CN_SCRATCH"_Stz,      CN_SCRATCH);
-  /* 56 */ vAddConstant("CN_SEHISTORY"_Stz,    CN_SEHISTORY);
+
   /* 57 */ vAddConstant("CN_SEITF"_Stz,        CN_SEITF);
   /* 58 */ vAddConstant("CN_SEITFCURSOR"_Stz,  CN_SEITFCURSOR);
   /* 59 */ vAddConstant("CN_SEITFLIST"_Stz,    CN_SEITFLIST);
@@ -870,7 +870,7 @@ void Task::vAddConstants(void)
   /* 38 */ vAddConstant("SIZEOF_ROWCURSOR"_Stz,    (i8)0);
 
   /* 41 */ vAddConstant("SIZEOF_SCANBUFFER"_Stz,   sizeof(ScanBuffer));
-  /* 42 */ vAddConstant("SIZEOF_SEHISTORY"_Stz,    sizeof(SeHistory));
+
   /* 43 */ vAddConstant("SIZEOF_SEITF"_Stz,        sizeof(SEitf));
   /* 44 */ vAddConstant("SIZEOF_SEITFCURSOR"_Stz,  sizeof(SEitfCursor));
   /* 45 */ vAddConstant("SIZEOF_SEITFLIST"_Stz,    sizeof(SEitfList));

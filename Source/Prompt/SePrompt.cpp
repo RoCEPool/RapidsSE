@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "Prompt.h"
+#include "StorageEngine.h"
 
 extern AttachMap*    gpAttachMap;
 extern BufferPool*   gpBufferPool;
@@ -17,7 +18,7 @@ extern JobCatalog gxJobCatalog;
 //
 const Stz* C_CMD_HELP1      = "?"_Stz;
 const Stz* C_CMD_HELP2      = "help"_Stz;
-const Stz* C_CMD_RECALL     = "!!"_Stz;
+//const Stz* C_CMD_RECALL     = "!!"_Stz;
 const Stz* C_CMD_ANTBL      = "antbl"_Stz;
 const Stz* C_CMD_BEGIN      = "begin"_Stz;
 const Stz* C_CMD_BYE        = "bye"_Stz;
@@ -87,12 +88,12 @@ CmdTable SePromptCommands[] =
   { C_CMD_END,        C_ONE_INSERT,  &SePrompt::bCmd_EndInsert     },
   { C_CMD_HELP1,      nullptr,       &SePrompt::bCmd_Help          },
   { C_CMD_HELP2,      nullptr,       &SePrompt::bCmd_Help          },
-  { C_CMD_HISTORY,    nullptr,       &SePrompt::bCmd_History       },
+  //{ C_CMD_HISTORY,    nullptr,       &SePrompt::bCmd_History       },
   { C_CMD_INSERT,     C_ONE_ROW,     &SePrompt::bCmd_InsertRow     },
   { C_CMD_LOAD,       nullptr,       &SePrompt::bCmd_LoadTable     },
   { C_CMD_LS,         nullptr,       &SePrompt::bCmd_ListDir       },
   { C_CMD_PWD,        nullptr,       &SePrompt::bCmd_PrintDir      },
-  { C_CMD_RECALL,     nullptr,       &SePrompt::bCmd_RecallCommand },
+  //{ C_CMD_RECALL,     nullptr,       &SePrompt::bCmd_RecallCommand },
   { C_CMD_SLEEP,      nullptr,       &SePrompt::bCmd_Sleep         },
   { C_CMD_USE,        nullptr,       &SePrompt::bCmd_UseSchema     },
   { C_CMD_TIMERSTART, nullptr,       &SePrompt::bCmd_TimerStart    },
@@ -190,9 +191,6 @@ SePrompt::SePrompt(void)
   m_pJobClass = nullptr;
   m_pJob = nullptr;
 
-  // open the command history file
-  m_xHistory.vOpen();
-
   _checkInitialised_(CN_SEPROMPT);
 }
 
@@ -259,10 +257,6 @@ bool SePrompt::bPrepareJob(void)
       return (this->*SePromptCommands[i_Cmd].aFunc)();
     }
   }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // append to history
-  m_xHistory.vAppend(m_xTokenVec);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for command file
@@ -927,10 +921,6 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
       return (this->*SePromptCommands[i_Cmd].aFunc)();
     }
   }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // append to history
-  m_xHistory.vAppend(m_xTokenVec);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for command file
@@ -1876,21 +1866,6 @@ bool SePrompt::bCmd_Help(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print history                                                              */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bCmd_History(void)
-{
-  if ( ! bTokenCheck(1) )
-    return false;
-  
-  m_xHistory.vPrint();
-  
-  m_sResponse = "<ok>"_Stz;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* insert a row                                                               */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bCmd_InsertRow(void)
@@ -2194,20 +2169,6 @@ bool SePrompt::bCmd_PrintDir(void)
   m_sResponse = "<ok>"_Stz;
   
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* recall command                                                             */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bCmd_RecallCommand(void)
-{
-  if ( ! bTokenCheck(1) )
-    return false;
-  
-  if (! m_xHistory.bRecall(m_xTokenVec))
-    return true;
-  
-  return false;
 }
 
 /*----------------------------------------------------------------------------*/
