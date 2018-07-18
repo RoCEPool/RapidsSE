@@ -3611,6 +3611,10 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
+  ASSERT(0);
+  return true;
+  
+  /*
   s48K sWorkspace;
   Stz* aCursor = nullptr;
   
@@ -3655,6 +3659,7 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
   
   gpAttachMap->m_pServerScheduler->vEnqueueTask_Mutex(*nnpNewTask);
   return true;
+  */
 }
 
 /*----------------------------------------------------------------------------*/
