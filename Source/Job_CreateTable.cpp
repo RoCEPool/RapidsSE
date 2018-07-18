@@ -182,11 +182,11 @@ Job* JobsModel::pJob_CreateTable_pre(Prompt::SePrompt* pPrompt)
   
   bool bResult = pPrompt->bCreateTableR35(pJob_CreateTable);
   
-  if (!bResult) {
-    vTrace("invalid command\n"_Stz);
-    return nullptr;
+  if ( !bResult) {
+    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
+    pJob_CreateTable->m_bHasError = true;
+    pJob_CreateTable->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
   }
-  
   return pJob_CreateTable;
 }
 
@@ -197,9 +197,13 @@ void JobsModel::vJob_CreateTable_post(Prompt::SePrompt* pPrompt, Job* pJob)
 {
   Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJob);
   
-  // Note: take care of errors / meta data ????
-  for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-    vTrace("NODE%lld: %s\n"_Stz, i_Node, aEC[pJob_CreateTable->m_xNode[i_Node].m_eErrorCode]);
+  if ( pJob_CreateTable->m_bHasError ) {
+  
+    // Note: take care of errors / meta data ????
+    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+      vTrace("ERROR (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob_CreateTable->m_xNode[i_Node].m_eErrorCode]);
+    }
+    
   }
   
   // now delete the job

@@ -7,14 +7,22 @@ sleep 10;
 timerStart;
 spaceR35;
 timerEnd;
-/*
-sleep 10;
 
+// create a table with syntax error
+create R35table j10 (
+  j10_key   INTEGER NOT NULL,
+  j10_name  V(32) NOT NULL
+);
+
+// create a table
 create R35table j10 (
   j10_key   INTEGER NOT NULL,
   j10_name  VARCHAR(32) NOT NULL
 );
-//sleep 10;
+
+
+/*
+
 
 //ld j10 "../JTEST/j10.csv";
 

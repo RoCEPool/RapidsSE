@@ -146,6 +146,8 @@ void Task::vPromptNewJob(MP_Task mpTask)
   
   pJob->m_pPromptTask = *mpTask;
   
+  mpTask->m_pDataStack->vPushObject(pJob);
+  
   EXIT();
 }
 

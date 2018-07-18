@@ -11,6 +11,7 @@
 
   0 locals| pPrompt |
   0 locals| eCommand |
+  0 locals| pJob |
 
   "promptR35_req" .
 
@@ -27,14 +28,16 @@
     // job commands have had their job class identified
     eCommand CK_SE_JOB == if
 
+    // create the job for the command
+    pPrompt prompt.newJob to pJob
+
+    pJob job.hasError false == if
+
       // grab this prompt task's lock
       task::this task.grabLock
 
       // set 1 ack required from the job
       1 setAcks
-
-      // create the job for the command
-      pPrompt prompt.newJob
 
       // dispatch the job
       pPrompt prompt.dispatchJob
@@ -43,10 +46,14 @@
       "prompt waiting for ack" .
       ackWait
 
+    else
+      "job has error (maybe syntax error)" .
+    then
+
      // post process and delete the job
      pPrompt prompt.endJob
 
-    then
+  then
 
   again
 

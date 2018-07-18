@@ -40,6 +40,7 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("jobExecuted.response!"_Stz,&vJobExecutedResponseStore,false);
   vAddPrimitive("job.findOriginator"_Stz,   &vJobFindOriginator,   false);
   vAddPrimitive("job.findParticipant"_Stz,  &vJobFindParticipant,  false);
+  vAddPrimitive("job.hasError"_Stz,         &vJobHasError,         false);
   vAddPrimitive("job.id@"_Stz,              &vJobIdFetch,          false);
   vAddPrimitive("job.isPromptCommand"_Stz,  &vJobIsPromptCommand,  false);
   vAddPrimitive("job.newBegun"_Stz,         &vJobNewBegun,         false);
@@ -575,6 +576,7 @@ void Task::vJobErrorStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iJobError) )
     THROW_INVALID_DSTACK("job.error!"_Stz);
   
+  pJob->m_bHasError = true;
   pJob->m_xNode[iNode].m_eErrorCode = (eEC)iJobError;
   
   EXIT();
@@ -740,6 +742,23 @@ void Task::vJobFindParticipant(MP_Task mpTask)
   delete pFindJob;
   
   mpTask->m_pDataStack->vPushObject(pJob);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.hasError -- return true if job has error                               */
+/*----------------------------------------------------------------------------*/
+void Task::vJobHasError(MP_Task mpTask)
+{
+  ENTRY("vJobErrorFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.hasError"_Stz);
+  Job_Space* pJob = _pJob_Space(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushInt(pJob->m_bHasError);
   
   EXIT();
 }

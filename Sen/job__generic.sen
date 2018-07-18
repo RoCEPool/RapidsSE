@@ -214,8 +214,8 @@
   grid::thisNode@ pJobParticipant job.error@ to error
 
   error EC_NONE != if
-  // set error in executed job
-  error pJob__Cancelled jobCancelled.error!
+    // set error in executed job
+    error pJob__Cancelled jobCancelled.error!
   then
 
   // move this task through send state/queue

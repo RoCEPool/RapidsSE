@@ -3099,19 +3099,16 @@ bool SePrompt::bValidateCreateTableR35(i8 iNumTokens)
   
   // there should be a minumum of 7 tokens
   if (iNumTokens < 7) {
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // token[3] should be '('
   if ( ! m_xTokenVec[3]->bSame("("_Stz)) {
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // last-1 token should be ')'
   if ( ! m_xTokenVec[iNumTokens-1]->bSame(")"_Stz)) {
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
@@ -3377,8 +3374,9 @@ bool SePrompt::bCreateTableR35(Job_CreateTable* pJob_CreateTable)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // some validations
   bool bValid = bValidateCreateTableR35(iNumTokens);
-  if ( ! bValid )
+  if ( ! bValid ) {
     return false;
+  }
   
   // set the table name
   pJob_CreateTable->m_sObjectName = m_xTokenVec[2]->aText();
@@ -3391,13 +3389,11 @@ bool SePrompt::bCreateTableR35(Job_CreateTable* pJob_CreateTable)
   
   // add columns to the table
   if ( ! bAddTableColumnsR35(iCurrentToken, iNumTokens) ) {
-    delete pJob_CreateTable;
     return false;
   }
   
   // current token should be at ')'
   if ( ! m_xTokenVec[iCurrentToken++]->bSame(")"_Stz)) {
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
