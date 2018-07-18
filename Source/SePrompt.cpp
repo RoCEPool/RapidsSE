@@ -21,7 +21,6 @@ const Stz* C_CMD_HELP2      = "help"_Stz;
 const Stz* C_CMD_ANTBL      = "antbl"_Stz;
 const Stz* C_CMD_BEGIN      = "begin"_Stz;
 const Stz* C_CMD_BYE        = "bye"_Stz;
-const Stz* C_CMD_CD         = "cd"_Stz;
 const Stz* C_CMD_CREATE     = "create"_Stz;
 const Stz* C_CMD_DANTBL     = "dantbl"_Stz;
 const Stz* C_CMD_DOCOL      = "docol"_Stz;
@@ -66,7 +65,6 @@ CmdTable SePromptCommands[] =
   { C_CMD_ANTBL,      nullptr,       &SePrompt::bCmd_AnalyzeTable  },
   { C_CMD_BEGIN,      C_ONE_INSERT,  &SePrompt::bCmd_BeginInsert   },
   { C_CMD_BYE,        nullptr,       &SePrompt::bCmd_Bye           },
-  { C_CMD_CD,         nullptr,       &SePrompt::bCmd_ChangeDir     },
   { C_CMD_CREATE,     C_ONE_CATALOG, &SePrompt::bCmd_CreateCatalog },
   { C_CMD_CREATE,     C_ONE_INDEX,   &SePrompt::bCmd_CreateIndex   },
   { C_CMD_CREATE,     C_ONE_SCHEMA,  &SePrompt::bCmd_CreateSchema  },
@@ -1044,37 +1042,6 @@ bool SePrompt::bCmd_Bye(void)
     return false;
   
   m_bContinue = false;
-  
-  m_sResponse = "<ok>"_Stz;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* change working directory                                                   */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bCmd_ChangeDir(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  s256 sDir;
-  Dir xDir;
-  
-  ASSERT(m_xTokenVec[0]->bSame("cd"_Stz));
-  
-  sDir = m_xTokenVec[1]->aText();
-  
-  i8 i_Token;
-  for (i_Token = 2; i_Token < C_TOKENS; i_Token++) {
-    if (! m_xTokenVec[i_Token]->bHasText())
-      break;
-    sDir.vConcat(m_xTokenVec[i_Token]->aText());
-  }
-  
-  if ( ! xDir.bChangeCurrent(sDir) ) {
-    m_pSEitf->vSetLastError(EC_NO_SUCH_DIRECTORY);
-    return false;
-  }
   
   m_sResponse = "<ok>"_Stz;
   

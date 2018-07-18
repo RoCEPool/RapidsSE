@@ -102,7 +102,6 @@ namespace Prompt
     bool bCmd_AnalyzeTable(void);
     bool bCmd_BeginInsert(void);
     bool bCmd_Bye(void);
-    bool bCmd_ChangeDir(void);
     bool bCmd_CreateCatalog(void);
     bool bCmd_CreateIndex(void);
     bool bCmd_CreateSchema(void);
