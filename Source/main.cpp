@@ -24,19 +24,14 @@ int main(int argc, const char* argv[])
     exit(EXIT_SUCCESS);
   }
   
-  // print welcome message
+  // welcome message
   RapidsSE::vPrintWelcome();
-  
-  // print startup information
-  if (gxArguments.m_bWelcome && gxArguments.m_bStart)
-    gxArguments.vPrintStartupInfo();
   
   // execute
   RapidsSE::vExecuteSystem();
 
-  // print exit message
-  if (gxArguments.m_bVerbose)
-    vInfo("RapidsSE exits\n"_Stz);
+  // exit message
+  RapidsSE::vPrintExit();
     
   return EXIT_SUCCESS;
 }

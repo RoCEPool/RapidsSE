@@ -19,10 +19,12 @@ namespace StorageEngine
 
   public:
   
+    // from main.cpp
     static void vChangeDirectory(void);
     static void vExecuteSystem(void);
     static void vKillPrev(void);
     static void vPrintSizes(void);
+    static void vPrintExit(void);
     static void vPrintWelcome(void);
     static void vRunPrompt(void);
     static void vSetGlobals(void);

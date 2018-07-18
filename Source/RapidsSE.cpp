@@ -173,6 +173,15 @@ void RapidsSE::vPrintSizes(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print exit                                                                 */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vPrintExit(void)
+{
+  if (gxArguments.m_bVerbose)
+    vInfo("RapidsSE exits\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* print welcome                                                              */
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vPrintWelcome(void)
@@ -192,6 +201,10 @@ void RapidsSE::vPrintWelcome(void)
           aRelDbg,
           Process::iGetPid()
           );
+  
+  // print startup information
+  if (gxArguments.m_bWelcome && gxArguments.m_bStart)
+    gxArguments.vPrintStartupInfo();
 }
 
 /*----------------------------------------------------------------------------*/
