@@ -617,7 +617,7 @@ bool SePrompt::bExecuteFunction(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   PromptFun* pPromptFun =
-  gxPromptCatalog.pFindFun(m_xTokenVec[0]->aText(), m_xTokenVec[1]->aText());
+    gxPromptCatalog.pFindFun(m_xTokenVec[0]->aText(), m_xTokenVec[1]->aText());
   
   if (! pPromptFun)
     return false;

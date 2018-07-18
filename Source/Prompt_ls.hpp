@@ -6,7 +6,7 @@
 namespace Prompt
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  void vPrompt_ls(SePrompt* pPrompt);
+  bool bPrompt_ls(SePrompt* pPrompt);
 }
 
 /*============================================================================*/

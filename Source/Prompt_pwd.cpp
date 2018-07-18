@@ -9,14 +9,14 @@ PromptNote mPromptNote_pwd (
   "comment"_Stz,      // comment about the functopm
   "pwd"_Stz,          // the prompt command
   nullptr,            // the second word
-  vPrompt_pwd,        // prompt post-process function
+  bPrompt_pwd,        // prompt post-process function
   true                // enabled
 );
 
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-void Prompt::vPrompt_pwd(SePrompt* pPrompt)
+bool Prompt::bPrompt_pwd(SePrompt* pPrompt)
 {
   Dir xDir;
   s256 sDir;
@@ -28,6 +28,8 @@ void Prompt::vPrompt_pwd(SePrompt* pPrompt)
   if (xDir.bGetCurrent(sDir)) {
     vTrace("%s\n"_Stz, sDir.aChar());
   }
+  
+  return true;
 }
 
 /*============================================================================*/

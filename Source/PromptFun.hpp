@@ -14,7 +14,7 @@ namespace Prompt
     Stz* m_aCommand1; // first word of prompt command
     Stz* m_aCommand2; // optional second word of prompt command
   
-    void (*m_fPrompt)(SePrompt* pPrompt);
+    bool (*m_fPrompt)(SePrompt* pPrompt);
   
     bool m_bEnabled;  // is this function enabled
   

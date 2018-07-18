@@ -16,7 +16,7 @@ namespace Prompt
                Stz* aCommand1,
                Stz* aCommand2,
             
-               void (*fPrompt)(SePrompt* pPrompt),
+               bool (*fPrompt)(SePrompt* pPrompt),
                
                bool bEnabled = false);
   };

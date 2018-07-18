@@ -9,14 +9,14 @@ PromptNote mPromptNote_ls (
   "comment"_Stz,     // comment about the functopm
   "ls"_Stz,          // the prompt command
   nullptr,           // the second word
-  vPrompt_ls,        // prompt post-process function
+  bPrompt_ls,        // prompt post-process function
   true               // enabled
 );
 
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-void Prompt::vPrompt_ls(SePrompt* pPrompt)
+bool Prompt::bPrompt_ls(SePrompt* pPrompt)
 {
   Dir  xDir;
   s256 sDir;
@@ -30,13 +30,13 @@ void Prompt::vPrompt_ls(SePrompt* pPrompt)
   // get the current directory
   if (!xDir.bGetCurrent(sDir)) {
     //m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return;
+    return false;
   }
   
   // open the current directory
   if (!xDir.bOpen()) {
     //m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return;
+    return false;
   }
   
   // read the current directory
@@ -48,6 +48,8 @@ void Prompt::vPrompt_ls(SePrompt* pPrompt)
   
   // close the current directory
   xDir.vClose();
+  
+  return true;
 }
 
 /*============================================================================*/
