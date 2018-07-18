@@ -121,7 +121,6 @@ namespace Prompt
     bool bCmd_Help(void);
     bool bCmd_InsertRow(void);
     bool bCmd_LoadTable(void);
-    bool bCmd_ListDir(void);
     bool bCmd_PrintDir(void);
     bool bCmd_Sleep(void);
     bool bCmd_UseSchema(void);

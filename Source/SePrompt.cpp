@@ -18,7 +18,6 @@ extern JobCatalog gxJobCatalog;
 //
 const Stz* C_CMD_HELP1      = "?"_Stz;
 const Stz* C_CMD_HELP2      = "help"_Stz;
-//const Stz* C_CMD_RECALL     = "!!"_Stz;
 const Stz* C_CMD_ANTBL      = "antbl"_Stz;
 const Stz* C_CMD_BEGIN      = "begin"_Stz;
 const Stz* C_CMD_BYE        = "bye"_Stz;
@@ -30,10 +29,8 @@ const Stz* C_CMD_DISTPARLOAD = "dpld"_Stz;
 const Stz* C_CMD_DROP       = "drop"_Stz;
 const Stz* C_CMD_END        = "end"_Stz;
 const Stz* C_CMD_FIRST      = "first"_Stz;
-//const Stz* C_CMD_HISTORY    = "history"_Stz;
 const Stz* C_CMD_INSERT     = "insert"_Stz;
 const Stz* C_CMD_LOAD       = "ld"_Stz;
-const Stz* C_CMD_LS         = "ls"_Stz;
 const Stz* C_CMD_NEXT       = "next"_Stz;
 const Stz* C_CMD_PWD        = "pwd"_Stz;
 const Stz* C_CMD_SLEEP      = "sleep"_Stz;
@@ -88,12 +85,8 @@ CmdTable SePromptCommands[] =
   { C_CMD_END,        C_ONE_INSERT,  &SePrompt::bCmd_EndInsert     },
   { C_CMD_HELP1,      nullptr,       &SePrompt::bCmd_Help          },
   { C_CMD_HELP2,      nullptr,       &SePrompt::bCmd_Help          },
-  //{ C_CMD_HISTORY,    nullptr,       &SePrompt::bCmd_History       },
   { C_CMD_INSERT,     C_ONE_ROW,     &SePrompt::bCmd_InsertRow     },
   { C_CMD_LOAD,       nullptr,       &SePrompt::bCmd_LoadTable     },
-  { C_CMD_LS,         nullptr,       &SePrompt::bCmd_ListDir       },
-  { C_CMD_PWD,        nullptr,       &SePrompt::bCmd_PrintDir      },
-  //{ C_CMD_RECALL,     nullptr,       &SePrompt::bCmd_RecallCommand },
   { C_CMD_SLEEP,      nullptr,       &SePrompt::bCmd_Sleep         },
   { C_CMD_USE,        nullptr,       &SePrompt::bCmd_UseSchema     },
   { C_CMD_TIMERSTART, nullptr,       &SePrompt::bCmd_TimerStart    },
@@ -2099,51 +2092,6 @@ resetFormatter:
   
   m_pSEitf->m_xFormatters.vReset(&gpAttachMap->m_xFormatters);
   return bResult;
-}
-
-/*----------------------------------------------------------------------------*/
-/* list directory                                                             */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bCmd_ListDir(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  Dir  xDir;
-  s256 sDir;
-  s256 sDirEntry;
-  i8 iEntryType;
-  
-  ASSERT(m_xTokenVec[0]->bSame("ls"_Stz));
-  
-  if ( ! bTokenCheck(1) )
-    return false;
-  
-  // get the current directory
-  if (!xDir.bGetCurrent(sDir)) {
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return false;
-  }
-  
-  // open the current directory
-  if (!xDir.bOpen()) {
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return false;
-  }
-  
-  // read the current directory
-  while (xDir.bRead()) {
-    sDirEntry = xDir.sEntryName();
-    iEntryType = xDir.iEntryType();
-    vTrace("%c %s\n"_Stz, iEntryType == DT_DIR ? 'd' : 'f', sDirEntry.aChar());
-  }
-  
-  // close the current directory
-  xDir.vClose();
-  
-  // clear the response
-  m_sResponse = "<ok>"_Stz;
-  
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/
