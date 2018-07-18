@@ -54,7 +54,7 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_CreateTable* _pJob_CreateTable(void* aAddr);
   
-  bool bJob_CreateTable_pre(Prompt::SePrompt* pPrompt);
+  Job* pJob_CreateTable_pre(Prompt::SePrompt* pPrompt);
   void vJob_CreateTable_post(Prompt::SePrompt* pPrompt, Job* pJob);
 }
 

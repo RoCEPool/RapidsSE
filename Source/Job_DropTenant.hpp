@@ -37,7 +37,7 @@ namespace JobsModel
   
   Job_DropTenant* _pJob_DropTenant(void* aAddr);
   
-  bool bJob_DropTenant_pre(Prompt::SePrompt* pPrompt);
+  Job* pJob_DropTenant_pre(Prompt::SePrompt* pPrompt);
   void vJob_DropTenant_post(Prompt::SePrompt* pPrompt, Job* pJob);
 }
 

@@ -42,7 +42,7 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_CreateIndex* _pJob_CreateIndex(void* aAddr);
   
-  bool bJob_CreateIndex_pre(Prompt::SePrompt* pPrompt);
+  Job* pJob_CreateIndex_pre(Prompt::SePrompt* pPrompt);
   void vJob_CreateIndex_post(Prompt::SePrompt* pPrompt, Job* pJob);
 }
 

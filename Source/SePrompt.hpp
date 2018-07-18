@@ -64,12 +64,11 @@ namespace Prompt
     void vExecuteCommand(void);
     void vGetCommand(void);
     JobClass* pJobClass(void);
-    bool bNewJob(void);
+    void vNewJob(void);
   
     // other
     eCK  eCommand(void);
     void vContinue(bool bContinue);
-    void vJob(Job* pJob);
     Job* pJob(void);
     SEitf* pSEitf(void);
     Timer* pTimer(void);

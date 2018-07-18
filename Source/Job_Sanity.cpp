@@ -14,7 +14,7 @@ JobNote mJobNote_Sanity (
   nullptr,          // the second word
   "nodeSanityR35_req"_Stz, // the task seed for this job
   false,            // detached job?
-  bJob_Sanity_pre,  // prompt pre-process function
+  pJob_Sanity_pre,  // prompt pre-process function
   vJob_Sanity_post  // prompt post-process function
   );
 
@@ -142,9 +142,9 @@ Footer* Job_Sanity::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-bool JobsModel::bJob_Sanity_pre(Prompt::SePrompt* pPrompt)
+Job* JobsModel::pJob_Sanity_pre(Prompt::SePrompt* pPrompt)
 {
-  return false;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

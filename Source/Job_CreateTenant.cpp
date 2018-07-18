@@ -12,7 +12,7 @@ JobNote mJobNote_CreateTenant (
   "tenant"_Stz,            // the second word
   "createTenantR35_req"_Stz, // the task seed for this job
   false,                   // detached job?
-  bJob_CreateTenant_pre,   // prompt pre-process function
+  pJob_CreateTenant_pre,   // prompt pre-process function
   vJob_CreateTenant_post   // prompt post-process function
 );
 
@@ -138,9 +138,9 @@ Footer* Job_CreateTenant::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-bool JobsModel::bJob_CreateTenant_pre(Prompt::SePrompt* pPrompt)
+Job* JobsModel::pJob_CreateTenant_pre(Prompt::SePrompt* pPrompt)
 {
-  return false;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

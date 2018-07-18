@@ -18,11 +18,11 @@ void JobClass::vEndJob(SePrompt* pPrompt, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* create a new job by running the pre-function                                */
 /*----------------------------------------------------------------------------*/
-bool JobClass::bNewJob(SePrompt* pPrompt)
+Job* JobClass::pNewJob(SePrompt* pPrompt)
 {
-  bool bResult = (*m_fPre)(pPrompt);
+  Job* pJob = (*m_fPre)(pPrompt);
   
-  return bResult;
+  return pJob;
 }
 
 /*============================================================================*/

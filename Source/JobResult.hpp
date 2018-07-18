@@ -9,8 +9,6 @@ namespace JobsModel
   class JobResult
   {
   public:
-    bool   m_bResult;     // final result of job
-    eEC    m_eErrorCode;  // error code on originating node e.g EC_INVALID_COMMAND
     struct {
       s256 m_sResponse;   // response string
       eEC  m_eErrorCode;  // error code

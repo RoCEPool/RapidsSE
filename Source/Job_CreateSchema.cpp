@@ -12,7 +12,7 @@ JobNote mJobNote_CreateSchema (
   "schema"_Stz,           // the second word
   "createSchemaR35_req"_Stz, // the task seed for this job
   false,                   // detached job?
-  bJob_CreateSchema_pre,  // prompt pre-process function
+  pJob_CreateSchema_pre,  // prompt pre-process function
   vJob_CreateSchema_post  // prompt post-process function
 );
 
@@ -137,9 +137,9 @@ Footer* Job_CreateSchema::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-bool JobsModel::bJob_CreateSchema_pre(Prompt::SePrompt* pPrompt)
+Job* JobsModel::pJob_CreateSchema_pre(Prompt::SePrompt* pPrompt)
 {
-  return false;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

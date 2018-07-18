@@ -15,7 +15,7 @@ JobNote mJobNote_Docol (
   nullptr,          // the second word
   "docol"_Stz,      // the task seed for this job
   false,            // detached job?
-  bJob_Docol_pre,   // prompt pre-process function
+  pJob_Docol_pre,   // prompt pre-process function
   vJob_Docol_post,  // prompt post-process function
   true              // job is enabled
 );
@@ -141,7 +141,7 @@ Footer* Job_Docol::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-bool JobsModel::bJob_Docol_pre(Prompt::SePrompt* pPrompt)
+Job* JobsModel::pJob_Docol_pre(Prompt::SePrompt* pPrompt)
 {
   SEitf* pSEitf = pPrompt->pSEitf();
   
@@ -169,9 +169,8 @@ bool JobsModel::bJob_Docol_pre(Prompt::SePrompt* pPrompt)
   
   // set the table name
   pJob_Docol->m_sObjectName = pTokenVec->pGet(1)->aText();
-  pPrompt->vJob(pJob_Docol);
   
-  return true;
+  return pJob_Docol;
 }
 
 /*----------------------------------------------------------------------------*/
