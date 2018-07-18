@@ -9,8 +9,9 @@ namespace JobsModel
   class JobResult
   {
   public:
-    bool m_bHasError;     // has an error of one or more nodes
-    
+    s4K    m_sMetadata;     // meta data of job
+    bool   m_bHasError;     // has an error of one or more nodes
+
     struct {
       s256 m_sResponse;   // response string
       eEC  m_eErrorCode;  // error code
