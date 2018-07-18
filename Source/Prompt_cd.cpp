@@ -1,0 +1,45 @@
+/*============================================================================*/
+/* Prompt_cd.cpp -- change working directory                                  */
+/*============================================================================*/
+
+#include "Prompt.h"
+
+PromptNote mPromptNote_cd (
+  "Prompt_cd"_Stz,   // name of the prompt function
+  "comment"_Stz,     // comment about the functopm
+  "cd"_Stz,          // the prompt command
+  nullptr,           // the second word
+  vPrompt_ls,        // prompt post-process function
+  true               // enabled
+);
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+void Prompt::vPrompt_cd(SePrompt* pPrompt)
+{
+  s256 sDir;
+  Dir xDir;
+  
+  TokenVec* pTokenVec = pPrompt->pTokenVec();
+  
+  ASSERT((*pTokenVec)[0]->bSame("cd"_Stz));
+  
+  sDir = (*pTokenVec)[1]->aText();
+  
+  i8 i_Token;
+  for (i_Token = 2; i_Token < C_TOKENS; i_Token++) {
+    if (! (*pTokenVec)[i_Token]->bHasText())
+      break;
+    sDir.vConcat((*pTokenVec)[i_Token]->aText());
+  }
+  
+  if ( ! xDir.bChangeCurrent(sDir) ) {
+    //m_pSEitf->vSetLastError(EC_NO_SUCH_DIRECTORY);
+    return;
+  }
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
