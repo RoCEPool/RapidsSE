@@ -3668,14 +3668,8 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
 bool SEitf::bAppendJob(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
- 
-  bool bDetached = pJob->m_bDetached;
-
-  Stz* aCursor = nullptr;
   
-  ValWrk xValWrk;
-  ValSet xValSet;
-  
+  //----------------------------------------------------------------------------
   // Before appending request for se, ensure that se is running
   // get the se pid from the attachmap
   i8 iPid = gpAttachMap->m_iPid;
@@ -3687,77 +3681,22 @@ bool SEitf::bAppendJob(Job* pJob)
   }
   
   //----------------------------------------------------------------------------
-  // can't remove this block until we dont try and execute this
-  s48K sWorkspace;
-  sWorkspace = (i8)this;
-  sWorkspace.vConcat(" >seitf task::this task.seitf! "_Stz);
-  xValWrk = sWorkspace;
-  //vTrace("%s\n"_Stz,xVal.aChar());
-  xValSet.vAppend(aCursor,xValWrk.pNestedValueSelf());
-  // end block
-  //----------------------------------------------------------------------------
+  Task* pNewTask = new Task;
   
+  // form the word to execute for the request
   s32 sRequest;
   sRequest = pJob->sJobSeed();
   sRequest.vConcat("_req"_Stz);
-  //xValWrk = pJob->m_sSeed; //sRequest;
-  //xValWrk = sRequest;
-  //vTrace("%s\n"_Stz,xVal.aChar());
-  //xValSet.vAppend(aCursor,xValWrk.pNestedValueSelf());
   
-  // if the current request id matches the next request id, it means
-  // we have not read a response of the previous request
-//  if (m_iCurrentRequestId == m_iNextRequestId && ! bDetached) {
-//    vError("Response for previous request not retrieved. Out-Of-Sync request-response.\n"_Stz);
-//    vSetLastError(EC_RESPONSE_PENDING);
-//    return false;
-//  }
+  pNewTask->vSeedWord(sRequest);
+  pNewTask->vState(TS_READY);
+  pNewTask->vR35model(true);
+  pNewTask->vActorModel(AC_R35);
+  pNewTask->vSEitf(this);
   
-  // set the new current request id to the next one sent by previous response
-  m_iCurrentRequestId = m_iNextRequestId;
+  pNewTask->vJob(pJob);
   
-  //----------------------------------------------------------------------------
-
-  if (CN_JOB_PROMPT == pJob->eClass()) {
-    
-    Task* pNewTask = new Task;
-    
-    pNewTask->vSeedWord("promptR35_req"_Stz);
-    
-    pNewTask->vState(TS_READY);
-    pNewTask->vR35model(true);
-    pNewTask->vActorModel(AC_R35);
-    pNewTask->vSEitf(this);
-    
-    pNewTask->vJob(pJob);
-    
-    Handlers::vSpawnedTaskHandler(pNewTask);
-    
-    return true;
-  }
-  
-  //----------------------------------------------------------------------------
-
-  // spawn a request task, passing the request to it
-  // create new task (will be automatically appended to task list)
-  MP_Task nnpNewTask = new Task(&xValSet);
-  
-//  if (bDetached)
-//    nnpNewTask->vSeedWord("processRequest_detached"_Stz);
-//  else
-//    nnpNewTask->vSeedWord("requestLoop"_Stz);
-  
-  nnpNewTask->vSeedWord(sRequest);
-  
-  nnpNewTask->vState(TS_READY);
-  nnpNewTask->vR35model(true);
-  nnpNewTask->vActorModel(AC_R35);
-  nnpNewTask->vSEitf(this);
-  
-  nnpNewTask->vJob(pJob);
-  
-  //gpAttachMap->m_pServerScheduler->vEnqueueTask_Mutex(*nnpNewTask);
-  Handlers::vSpawnedTaskHandler(*nnpNewTask);
+  Handlers::vSpawnedTaskHandler(pNewTask);
   
   return true;
 }
