@@ -19,6 +19,12 @@
   // get the job from the task
   pTask task.job@ to pJob
 
+  // set metadata string in the job
+  args.metadata if
+    "(nodeName VARCHAR, poolSize STRING, inUse VARCHAR, free VARCHAR)"
+    pJob job.metadata!
+  then
+
   pTask pJob "job::distribute" find execute
 
   pJob <DONE_REQUEST>
