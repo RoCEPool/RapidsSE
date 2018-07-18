@@ -43,6 +43,7 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.hasError"_Stz,         &vJobHasError,         false);
   vAddPrimitive("job.id@"_Stz,              &vJobIdFetch,          false);
   vAddPrimitive("job.isPromptCommand"_Stz,  &vJobIsPromptCommand,  false);
+  vAddPrimitive("job.metadata!"_Stz,        &vJobMetadataStore,    false);
   vAddPrimitive("job.newBegun"_Stz,         &vJobNewBegun,         false);
   vAddPrimitive("job.newCancel"_Stz,        &vJobNewCancel,        false);
   vAddPrimitive("job.newCancelled"_Stz,     &vJobNewCancelled,     false);
@@ -793,6 +794,27 @@ void Task::vJobIsPromptCommand(MP_Task mpTask)
   Job* pJob = _pJob(pJobPtr);
   
   mpTask->m_pDataStack->vPushInt(pJob->m_pPromptTask ? true : false);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.metadata! -- store meta data string in the job                         */
+/*----------------------------------------------------------------------------*/
+void Task::vJobMetadataStore(MP_Task mpTask)
+{
+  ENTRY("vJobMetadataStore"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.metadata"_Stz);
+  Job_Space* pJob = _pJob_Space(pJobPtr);
+  
+  s4K sMetadata;
+  if ( ! mpTask->m_pDataStack->bPop(sMetadata) )
+    THROW_INVALID_DSTACK("seitf.metadata@"_Stz);
+  
+  pJob->m_sMetadata = sMetadata;
   
   EXIT();
 }
