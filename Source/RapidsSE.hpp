@@ -18,15 +18,26 @@ namespace StorageEngine
     Footer m_xFooter;
 
   public:
-    
-    static void   vExecuteCmdLine(void);
-    static void   vCheckPort(void);
-    static void   vPoolClose(void);
-    static void   vPoolOpen(void);
-    static bool   bPoolOpen(StrVal& sPoolName);
-    static void   vSEitfDelete(SEitf* pSEitf);
+  
+    static void vChangeDirectory(void);
+    static void vExecuteSystem(void);
+    static void vKillPrev(void);
+    static void vPrintSizes(void);
+    static void vPrintWelcome(void);
+    static void vRunPrompt(void);
+    static void vSetGlobals(void);
+    static void vWriteRegionName(void);
 
-    //-------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+  
+    static void vExecuteCmdLine(void);
+    static void vCheckPort(void);
+    static void vPoolClose(void);
+    static void vPoolOpen(void);
+    static bool bPoolOpen(StrVal& sPoolName);
+    static void vSEitfDelete(SEitf* pSEitf);
+
+    //--------------------------------------------------------------------------
     
     static void vAttachObjects(void);
     static void vCreateObjects(void);
