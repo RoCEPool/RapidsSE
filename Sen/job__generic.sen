@@ -390,15 +390,19 @@
   // get the error code from job__executed
   pJob__Executed jobExecuted.error@ to error
 
-  // set the error code in pJob
-  error iParticipantNode pJob job.error!
-
   error EC_NONE == if
+
     // get the response string from job__executed
     pJob__Executed jobExecuted.response@ to sResponse
 
     // set the error code in pJob
     sResponse iParticipantNode pJob job.response!
+
+  else
+
+    // set the error code in pJob
+    error iParticipantNode pJob job.error!
+
   then
 
   // decrement the acks remaining
@@ -548,8 +552,10 @@
   // get the error code from job__executed
   pJob__Begun jobBegun.error@ to error
 
-  // set the error code in pJob
-  error iParticipantNode pJob job.error!
+  error EC_NONE != if
+    // set the error code in pJob
+    error iParticipantNode pJob job.error!
+  then
 
   // decrement the acks remaining
   pJob job.decAcksRemaining to iAcksRemaining
