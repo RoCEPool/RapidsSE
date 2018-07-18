@@ -3701,9 +3701,9 @@ bool SEitf::bAppendJob(Job* pJob)
   sRequest = pJob->sJobSeed();
   sRequest.vConcat("_req"_Stz);
   //xValWrk = pJob->m_sSeed; //sRequest;
-  xValWrk = sRequest;
+  //xValWrk = sRequest;
   //vTrace("%s\n"_Stz,xVal.aChar());
-  xValSet.vAppend(aCursor,xValWrk.pNestedValueSelf());
+  //xValSet.vAppend(aCursor,xValWrk.pNestedValueSelf());
   
   // if the current request id matches the next request id, it means
   // we have not read a response of the previous request
@@ -3742,15 +3742,17 @@ bool SEitf::bAppendJob(Job* pJob)
   // create new task (will be automatically appended to task list)
   MP_Task nnpNewTask = new Task(&xValSet);
   
-  if (bDetached)
-    nnpNewTask->vSeedWord("processRequest_detached"_Stz);
-  else
-    nnpNewTask->vSeedWord("requestLoop"_Stz);
+//  if (bDetached)
+//    nnpNewTask->vSeedWord("processRequest_detached"_Stz);
+//  else
+//    nnpNewTask->vSeedWord("requestLoop"_Stz);
+  
+  nnpNewTask->vSeedWord(sRequest);
   
   nnpNewTask->vState(TS_READY);
   nnpNewTask->vR35model(true);
   nnpNewTask->vActorModel(AC_R35);
-  //nnpNewTask->vSEitf(this);
+  nnpNewTask->vSEitf(this);
   
   nnpNewTask->vJob(pJob);
   
