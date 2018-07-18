@@ -12,7 +12,7 @@ JobNote mJobNote_DropTenant (
   "tenant"_Stz,         // the second word
   "dropTenantR35_req"_Stz, // the task seed for this job
   false,                // detached job?
-  pJob_DropTenant_pre,  // prompt pre-process function
+  bJob_DropTenant_pre,  // prompt pre-process function
   vJob_DropTenant_post  // prompt post-process function
   );
 
@@ -138,9 +138,9 @@ Footer* Job_DropTenant::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_DropTenant_pre(Prompt::SePrompt* pPrompt)
+bool JobsModel::bJob_DropTenant_pre(Prompt::SePrompt* pPrompt)
 {
-  return nullptr;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

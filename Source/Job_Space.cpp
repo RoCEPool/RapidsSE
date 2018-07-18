@@ -15,7 +15,7 @@ JobNote mJobNote_Space (
   nullptr,          // the second word
   "poolSpaceR35"_Stz, // the task seed for this job
   false,            // detached job?
-  pJob_Space_pre,   // prompt pre-process function
+  bJob_Space_pre,   // prompt pre-process function
   vJob_Space_post,  // prompt post-process function
   true              // job is enabled
 );
@@ -141,13 +141,14 @@ Footer* Job_Space::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_Space_pre(Prompt::SePrompt* pPrompt)
+bool JobsModel::bJob_Space_pre(Prompt::SePrompt* pPrompt)
 {
   SEitf* pSEitf = pPrompt->pSEitf();
   
   Job_Space* pJob_Space = new Job_Space(pSEitf);
+  pPrompt->vJob(pJob_Space);
   
-  return pJob_Space;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -12,7 +12,7 @@ JobNote mJobNote_CreateIndex (
   "index"_Stz,           // the second word
   "createIndexR35_req"_Stz, // the task seed for this job
   false,                 // detached job?
-  pJob_CreateIndex_pre,  // prompt pre-process function
+  bJob_CreateIndex_pre,  // prompt pre-process function
   vJob_CreateIndex_post  // prompt post-process function
 );
 
@@ -153,9 +153,9 @@ Footer* Job_CreateIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_CreateIndex_pre(Prompt::SePrompt* pPrompt)
+bool JobsModel::bJob_CreateIndex_pre(Prompt::SePrompt* pPrompt)
 {
-  return nullptr;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

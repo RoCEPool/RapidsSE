@@ -27,21 +27,27 @@
     // job commands have had their job class identified
     eCommand CK_SE_JOB == if
 
+      // create the job for the command
+      pPrompt prompt.newJob true == if
+
       // grab this prompt task's lock
       task::this task.grabLock
 
       // set 1 ack required from the job
       1 setAcks
 
-      // create the job for the command
-      pPrompt prompt.newJob
+        // dispatch the job
+        pPrompt prompt.dispatchJob
 
-      // dispatch the job
-      pPrompt prompt.dispatchJob
+        // wait for ack from job
+        "prompt waiting for ack" .
+        ackWait
 
-      // wait for ack from job
-      "prompt waiting for ack" .
-      ackWait
+     else
+
+        "got error while creating job" .
+
+     then
 
      // post process and delete the job
      pPrompt prompt.endJob

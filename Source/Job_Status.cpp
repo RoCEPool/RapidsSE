@@ -12,7 +12,7 @@ JobNote mJobNote_Status (
   nullptr,          // the second word
   "nodeStatusR35_req"_Stz, // the task seed for this job
   false,            // detached job?
-  pJob_Status_pre,  // prompt pre-process function
+  bJob_Status_pre,  // prompt pre-process function
   vJob_Status_post  // prompt post-process function
   );
 
@@ -136,9 +136,9 @@ Footer* Job_Status::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_Status_pre(Prompt::SePrompt* pPrompt)
+bool JobsModel::bJob_Status_pre(Prompt::SePrompt* pPrompt)
 {
-  return nullptr;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

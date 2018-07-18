@@ -12,7 +12,7 @@ JobNote mJobNote_DropCatalog (
   "catalog"_Stz,         // the second word
   "dropCatalogR35_req"_Stz, // the task seed for this job
   false,                 // detached job?
-  pJob_DropCatalog_pre,  // prompt pre-process function
+  bJob_DropCatalog_pre,  // prompt pre-process function
   vJob_DropCatalog_post  // prompt post-process function
 );
 
@@ -138,9 +138,9 @@ Footer* Job_DropCatalog::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_DropCatalog_pre(Prompt::SePrompt* pPrompt)
+bool JobsModel::bJob_DropCatalog_pre(Prompt::SePrompt* pPrompt)
 {
-  return nullptr;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

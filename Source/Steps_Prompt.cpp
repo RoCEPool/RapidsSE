@@ -140,11 +140,13 @@ void Task::vPromptNewJob(MP_Task mpTask)
     THROW_INVALID_DSTACK("prompt.newJob"_Stz);
   SePrompt* pSePrompt = _pSePrompt(pSePromptObject);
   
-  pSePrompt->vNewJob();
+  bool bResult = pSePrompt->bNewJob();
   
   Job* pJob = pSePrompt->pJob();
   
   pJob->m_pPromptTask = *mpTask;
+  
+  mpTask->m_pDataStack->vPushInt(bResult);
   
   EXIT();
 }

@@ -12,7 +12,7 @@ JobNote mJobNote_CreateCatalog (
   "catalog"_Stz,           // the second word
   "createCatalogR35_req"_Stz, // the task seed for this job
   false,                   // detached job?
-  pJob_CreateCatalog_pre,  // prompt pre-process function
+  bJob_CreateCatalog_pre,  // prompt pre-process function
   vJob_CreateCatalog_post  // prompt post-process function
 );
 
@@ -141,9 +141,9 @@ Footer* Job_CreateCatalog::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_CreateCatalog_pre(Prompt::SePrompt* pPrompt)
+bool JobsModel::bJob_CreateCatalog_pre(Prompt::SePrompt* pPrompt)
 {
-  return nullptr;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

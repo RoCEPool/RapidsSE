@@ -400,12 +400,14 @@ JobClass* SePrompt::pJobClass(void)
 /*----------------------------------------------------------------------------*/
 /* potentially execute a job                                                  */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vNewJob(void)
+bool SePrompt::bNewJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_pJob = m_pJobClass->pNewJob(this);
+  bool bResult = m_pJobClass->bNewJob(this);
   m_pJob->m_bDetached = m_xTokenVec.bDetachedRequest();
+  
+  return bResult;
 }
 
 
@@ -431,6 +433,16 @@ void SePrompt::vContinue(bool bContinue)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   m_bContinue = bContinue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set job                                                                    */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vJob(Job* pJob)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  m_pJob = pJob;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2432,7 +2444,6 @@ bool SePrompt::bAddTableColumnsR35(i8& i_Token, i8 iNumTokens)
   while ( ! m_xTokenVec[iCurrentToken]->bSame(")"_Stz)) {
     
     if (iCurrentToken != i_Token && ! m_xTokenVec[iCurrentToken++]->bSame(","_Stz)) {
-      m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
       return false;
     }
     
@@ -2458,19 +2469,16 @@ bool SePrompt::bAddTableColumnsR35(i8& i_Token, i8 iNumTokens)
         
         // check if it was numeric
         if ( ! m_xTokenVec[iCurrentToken]->bIsNumeric() ) {
-          m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         } else {
           iSize = m_xTokenVec[iCurrentToken++]->iToI8();
         }
         
         if (!m_xTokenVec[iCurrentToken++]->bSame(")"_Stz)) {
-          m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
         
         if (!Vch::bIsValidSize(iSize)) {
-          m_pSEitf->vSetLastError(EC_INVALID_SIZE);
           return false;
         }
       }
@@ -2489,19 +2497,16 @@ bool SePrompt::bAddTableColumnsR35(i8& i_Token, i8 iNumTokens)
         
         // check if it was numeric
         if ( ! m_xTokenVec[iCurrentToken++]->bIsNumeric() ) {
-          m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         } else {
           iSize = m_xTokenVec[iCurrentToken++]->iToI8();
         }
         
         if (!m_xTokenVec[iCurrentToken++]->bSame(")"_Stz)) {
-          m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
         
         if (!Flt::bIsValidSize(iSize)) {
-          m_pSEitf->vSetLastError(EC_INVALID_SIZE);
           return false;
         }
       }
@@ -2520,32 +2525,27 @@ bool SePrompt::bAddTableColumnsR35(i8& i_Token, i8 iNumTokens)
         
         // check if it was numeric
         if ( ! m_xTokenVec[iCurrentToken]->bIsNumeric() ) {
-          m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         } else {
           iPrecision = m_xTokenVec[iCurrentToken++]->iToI8();
         }
         
         if (!m_xTokenVec[iCurrentToken++]->bSame(","_Stz)) {
-          m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
         
         // check if it was numeric
         if ( ! m_xTokenVec[iCurrentToken]->bIsNumeric() ) {
-          m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         } else {
           iScale = m_xTokenVec[iCurrentToken++]->iToI8();
         }
         
         if (!m_xTokenVec[iCurrentToken++]->bSame(")"_Stz)) {
-          m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
         
         if (!Bcd::bIsValidSize(iPrecision, iScale)) {
-          m_pSEitf->vSetLastError(EC_INVALID_SIZE);
           return false;
         }
       }
@@ -2592,7 +2592,6 @@ bool SePrompt::bAddTableColumnsR35(i8& i_Token, i8 iNumTokens)
     if (m_xTokenVec[iCurrentToken]->bSame("not"_Stz)) {
       iCurrentToken++;
       if (!m_xTokenVec[iCurrentToken++]->bSame("null"_Stz)) {
-        m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
         return false;
       }
       pJob->m_xColumns[iColumn].m_bIsNullable = false;
@@ -2879,13 +2878,11 @@ bool SePrompt::bPartitionTableR35(i8 i_Token, i8 iNumTokens)
   
   // next token should be 'by'
   if (!m_xTokenVec[iCurrentToken++]->bSame("by"_Stz)) {
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // next token should be '('
   if (!m_xTokenVec[iCurrentToken++]->bSame("("_Stz)) {
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
@@ -2899,7 +2896,6 @@ bool SePrompt::bPartitionTableR35(i8 i_Token, i8 iNumTokens)
     
     if ( (iCurrentToken != i_Token) &&
         !m_xTokenVec[iCurrentToken++]->bSame(","_Stz)) {
-      m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
       return false;
     }
     iPartKeys++;
@@ -2914,14 +2910,12 @@ bool SePrompt::bPartitionTableR35(i8 i_Token, i8 iNumTokens)
       }
     }
     if ( ! bFound) {
-      m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
       return false;
     }
     bFound = false;
   }
   
   if ( ! iPartKeys ) {
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
@@ -3099,19 +3093,16 @@ bool SePrompt::bValidateCreateTableR35(i8 iNumTokens)
   
   // there should be a minumum of 7 tokens
   if (iNumTokens < 7) {
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // token[3] should be '('
   if ( ! m_xTokenVec[3]->bSame("("_Stz)) {
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // last-1 token should be ')'
   if ( ! m_xTokenVec[iNumTokens-1]->bSame(")"_Stz)) {
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
@@ -3377,8 +3368,11 @@ bool SePrompt::bCreateTableR35(Job_CreateTable* pJob_CreateTable)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // some validations
   bool bValid = bValidateCreateTableR35(iNumTokens);
-  if ( ! bValid )
+  if ( ! bValid ) {
+    pJob_CreateTable->m_bResult = false;
+    pJob_CreateTable->m_eErrorCode = EC_INVALID_COMMAND;
     return false;
+  }
   
   // set the table name
   pJob_CreateTable->m_sObjectName = m_xTokenVec[2]->aText();
@@ -3391,21 +3385,26 @@ bool SePrompt::bCreateTableR35(Job_CreateTable* pJob_CreateTable)
   
   // add columns to the table
   if ( ! bAddTableColumnsR35(iCurrentToken, iNumTokens) ) {
-    delete pJob_CreateTable;
+    pJob_CreateTable->m_bResult = false;
+    pJob_CreateTable->m_eErrorCode = EC_INVALID_COMMAND;
     return false;
   }
   
   // current token should be at ')'
   if ( ! m_xTokenVec[iCurrentToken++]->bSame(")"_Stz)) {
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    pJob_CreateTable->m_bResult = false;
+    pJob_CreateTable->m_eErrorCode = EC_INVALID_COMMAND;
     return false;
   }
   
   // check if we have a partition by clause
   if ( m_xTokenVec[iCurrentToken++]->bSame("partition"_Stz)) {
     
-    if ( ! bPartitionTableR35(iCurrentToken, iNumTokens) )
+    if ( ! bPartitionTableR35(iCurrentToken, iNumTokens) ) {
+      pJob_CreateTable->m_bResult = false;
+      pJob_CreateTable->m_eErrorCode = EC_INVALID_COMMAND;
       return false;
+    }
   }
   else {
     // no partition by clause

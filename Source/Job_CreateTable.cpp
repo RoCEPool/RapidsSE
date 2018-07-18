@@ -15,7 +15,7 @@ JobNote mJobNote_CreateTable (
   "R35table"_Stz,         // the second word
   "createTableR35"_Stz,   // the task seed for this job
   false,                  // detached job?
-  pJob_CreateTable_pre,   // prompt pre-process function
+  bJob_CreateTable_pre,   // prompt pre-process function
   vJob_CreateTable_post,  // prompt post-process function
   true
 );
@@ -175,19 +175,15 @@ Footer* Job_CreateTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_CreateTable_pre(Prompt::SePrompt* pPrompt)
+bool JobsModel::bJob_CreateTable_pre(Prompt::SePrompt* pPrompt)
 {
   SEitf* pSEitf = pPrompt->pSEitf();
   Job_CreateTable* pJob_CreateTable = new Job_CreateTable(pSEitf);
   
   bool bResult = pPrompt->bCreateTableR35(pJob_CreateTable);
+  pPrompt->vJob(pJob_CreateTable);
   
-  if (!bResult) {
-    vTrace("invalid command\n"_Stz);
-    return nullptr;
-  }
-  
-  return pJob_CreateTable;
+  return bResult;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -197,9 +193,16 @@ void JobsModel::vJob_CreateTable_post(Prompt::SePrompt* pPrompt, Job* pJob)
 {
   Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJob);
   
-  // Note: take care of errors / meta data ????
-  for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-    vTrace("NODE%lld: %s\n"_Stz, i_Node, aEC[pJob_CreateTable->m_xNode[i_Node].m_eErrorCode]);
+  if ( ! pJob_CreateTable->m_bResult ) {
+    if (pJob_CreateTable->m_eErrorCode == EC_NONE) {
+      // Note: take care of errors / meta data ????
+      for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+        vTrace("ERROR (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob_CreateTable->m_xNode[i_Node].m_eErrorCode]);
+      }
+    }
+    else {
+      vTrace("ERROR: %s\n"_Stz, aEC[pJob_CreateTable->m_eErrorCode]);
+    }
   }
   
   // now delete the job

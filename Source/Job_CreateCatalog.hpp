@@ -37,7 +37,7 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_CreateCatalog* _pJob_CreateCatalog(void* aAddr);
   
-  Job* pJob_CreateCatalog_pre(Prompt::SePrompt* pPrompt);
+  bool bJob_CreateCatalog_pre(Prompt::SePrompt* pPrompt);
   void vJob_CreateCatalog_post(Prompt::SePrompt* pPrompt, Job* pJob);
 }
 

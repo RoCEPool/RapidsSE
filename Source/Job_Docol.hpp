@@ -37,7 +37,7 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Docol* _pJob_Docol(void* aAddr);
   
-  Job* pJob_Docol_pre(Prompt::SePrompt* pPrompt);
+  bool bJob_Docol_pre(Prompt::SePrompt* pPrompt);
   void vJob_Docol_post(Prompt::SePrompt* pPrompt, Job* pJob);
 }
 

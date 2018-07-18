@@ -12,7 +12,7 @@ JobNote mJobNote_DropIndex (
   "index"_Stz,          // the second word
   "dropIndexR35_req"_Stz, // the task seed for this job
   false,                // detached job?
-  pJob_DropIndex_pre,   // prompt pre-process function
+  bJob_DropIndex_pre,   // prompt pre-process function
   vJob_DropIndex_post   // prompt post-process function
 );
 
@@ -138,9 +138,9 @@ Footer* Job_DropIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_DropIndex_pre(Prompt::SePrompt* pPrompt)
+bool JobsModel::bJob_DropIndex_pre(Prompt::SePrompt* pPrompt)
 {
-  return nullptr;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

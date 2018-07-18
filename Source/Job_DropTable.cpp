@@ -15,7 +15,7 @@ JobNote mJobNote_DropTable (
   "R35Table"_Stz,       // the second word
   "dropTableR35"_Stz,   // the task seed for this job
   false,                // detached job?
-  pJob_DropTable_pre,   // prompt pre-process function
+  bJob_DropTable_pre,   // prompt pre-process function
   vJob_DropTable_post,  // prompt post-process function
   true
   );
@@ -142,7 +142,7 @@ Footer* Job_DropTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_DropTable_pre(Prompt::SePrompt* pPrompt)
+bool JobsModel::bJob_DropTable_pre(Prompt::SePrompt* pPrompt)
 {
   SEitf* pSEitf = pPrompt->pSEitf();
   Job_DropTable* pJob_DropTable = new Job_DropTable(pSEitf);
@@ -164,14 +164,15 @@ Job* JobsModel::pJob_DropTable_pre(Prompt::SePrompt* pPrompt)
   // - - - - - - - - - - - - - - - - - - - - -
   // there should be 3 tokens
   if (iNumTokens != 3) {
-    pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return nullptr;
+    pJob_DropTable->m_bResult = false;
+    pJob_DropTable->m_eErrorCode = EC_INVALID_COMMAND;
   }
   
   // set the table name
   pJob_DropTable->m_sObjectName = pTokenVec->pGet(2)->aText();
+  pPrompt->vJob(pJob_DropTable);
   
-  return pJob_DropTable;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

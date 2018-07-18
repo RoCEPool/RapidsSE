@@ -37,7 +37,7 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_CreateSchema* _pJob_CreateSchema(void* aAddr);
   
-  Job* pJob_CreateSchema_pre(Prompt::SePrompt* pPrompt);
+  bool bJob_CreateSchema_pre(Prompt::SePrompt* pPrompt);
   void vJob_CreateSchema_post(Prompt::SePrompt* pPrompt, Job* pJob);
 }
 

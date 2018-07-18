@@ -37,7 +37,7 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_DropTable* _pJob_DropTable(void* aAddr);
   
-  Job* pJob_DropTable_pre(Prompt::SePrompt* pPrompt);
+  bool bJob_DropTable_pre(Prompt::SePrompt* pPrompt);
   void vJob_DropTable_post(Prompt::SePrompt* pPrompt, Job* pJob);
 }
 
