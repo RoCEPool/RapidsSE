@@ -100,6 +100,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_CREATESCHEMA
   /*    */ &Dump::vDummy,           // CN_JOB_CREATETABLE
   /*    */ &Dump::vDummy,           // CN_JOB_CREATETENANT
+  /*    */ &Dump::vDummy,           // CN_JOB_DOCOL
   /*    */ &Dump::vDummy,           // CN_JOB_DROPCATALOG
   /*    */ &Dump::vDummy,           // CN_JOB_DROPINDEX
   /*    */ &Dump::vDummy,           // CN_JOB_DROPSCHEMA
@@ -321,11 +322,12 @@ i8 giClassSize[]
   /*    */ sizeof(Job_CreateSchema),  // CN_JOB_CREATESCHEMA
   /*    */ sizeof(Job_CreateTable),   // CN_JOB_CREATETABLE
   /*    */ sizeof(Job_CreateTenant),  // CN_JOB_CREATETENANT
-  /*    */ sizeof(Job_CreateTable),   // CN_JOB_DROPCATALOG
+  /*    */ sizeof(Job_Docol),         // CN_JOB_DOCOL
+  /*    */ sizeof(Job_DropCatalog),   // CN_JOB_DROPCATALOG
   /*    */ sizeof(Job_DropIndex),     // CN_JOB_DROPINDEX
   /*    */ sizeof(Job_DropSchema),    // CN_JOB_DROPSCHEMA
   /*    */ sizeof(Job_DropTable),     // CN_JOB_DROPTABLE
-  /*    */ sizeof(Job_CreateTable),   // CN_JOB_DROPTENANT
+  /*    */ sizeof(Job_DropTenant),    // CN_JOB_DROPTENANT
   /*    */ sizeof(Job_G35),           // CN_JOB_G35
   /*    */ sizeof(Job_CreateTable),   // CN_JOB_LOADTABLE
   /*    */ sizeof(Job_Prompt),        // CN_JOB_PROMPT
@@ -542,6 +544,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CREATESCHEMA
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CREATETABLE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CREATETENANT
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_DOCOL
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_DROPCATALOG
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_DROPINDEX
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_DROPSCHEMA

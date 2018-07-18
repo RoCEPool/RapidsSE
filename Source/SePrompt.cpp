@@ -72,7 +72,7 @@ CmdTable SePromptCommands[] =
   { C_CMD_CREATE,     C_ONE_TENANT,  &SePrompt::bCmd_CreateTenant  },
   { C_CMD_CREATE,     C_ONE_UNIQUE,  &SePrompt::bCmd_CreateUnique  },
   { C_CMD_DANTBL,     nullptr,       &SePrompt::bCmd_DanalyzeTable },
-  { C_CMD_DOCOL,      nullptr,       &SePrompt::bCmd_Docol         },
+  //{ C_CMD_DOCOL,      nullptr,       &SePrompt::bCmd_Docol         },
   { C_CMD_DISTPARLOAD,nullptr,       &SePrompt::bCmd_DistParLoadTable},
   { C_CMD_DROP,       C_ONE_CATALOG, &SePrompt::bCmd_DropCatalog   },
   { C_CMD_DROP,       C_ONE_INDEX,   &SePrompt::bCmd_DropIndex     },

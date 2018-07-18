@@ -446,6 +446,13 @@ void Task::vJobDelete(MP_Task mpTask)
       delete pJobCreateTenant;
       break;
     }
+    
+    case CN_JOB_DOCOL:
+    {
+      Job_Docol* pJobDocol = _pJob_Docol(pJobPtr);
+      delete pJobDocol;
+      break;
+    }
       
     case CN_JOB_DROPCATALOG:
     {

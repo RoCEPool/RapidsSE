@@ -9,6 +9,7 @@
 "job_DropSchema.sen" include
 "job_DropTable.sen" include
 
+"job_Docol.sen" include
 "job_G35.sen" include
 "Job_Prompt.sen" include
 "Job_Sanity.sen" include

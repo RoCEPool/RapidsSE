@@ -19,7 +19,8 @@ JobClass* JobCatalog::pFindJob(Stz* aCommand1, Stz* aCommand2)
     if ( ! m_xJobClass[i_Job].m_aCommand1->bSame(aCommand1) )
       continue;
     
-    if (aCommand2->iLength()) {
+    //if (aCommand2->iLength()) {
+    if (m_xJobClass[i_Job].m_aCommand2) {
       if ( ! m_xJobClass[i_Job].m_aCommand2->iLength() )
         continue;
       if ( ! m_xJobClass[i_Job].m_aCommand2->bSame(aCommand2) )

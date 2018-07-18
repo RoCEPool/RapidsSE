@@ -60,7 +60,7 @@
   pTask task.job@ to pJob
 
   // distribute the job
-   pTask pJob "job::distribute" find execute
+  pTask pJob "job::distribute" find execute
 
   pJob <DONE_REQUEST>
 ;

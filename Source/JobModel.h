@@ -47,6 +47,8 @@ using namespace JobsModel;
 #include "Job_CreateTable.hpp"
 #include "Job_CreateTenant.hpp"
 
+#include "Job_Docol.hpp"
+
 #include "Job_DropCatalog.hpp"
 #include "Job_DropIndex.hpp"
 #include "Job_DropSchema.hpp"

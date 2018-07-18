@@ -101,6 +101,7 @@ enum eCN : u2 // Class Number
     /*    */ CN_JOB_CREATESCHEMA,
     /*    */ CN_JOB_CREATETABLE,
     /*    */ CN_JOB_CREATETENANT,
+    /*    */ CN_JOB_DOCOL,
     /*    */ CN_JOB_DROPCATALOG,
     /*    */ CN_JOB_DROPINDEX,
     /*    */ CN_JOB_DROPSCHEMA,
@@ -321,6 +322,7 @@ enum eCN : u2 // Class Number
     /*    */ "JOB_CREATESCHEMA"_Stz,   // CN_JOB_CREATESCHEMA
     /*    */ "JOB_CREATETABLE"_Stz,    // CN_JOB_CREATETABLE
     /*    */ "JOB_CREATETENANT"_Stz,   // CN_JOB_CREATETENANT
+    /*    */ "JOB_DOCOL"_Stz,          // CN_JOB_DOCOL
     /*    */ "JOB_DROPCATALOG"_Stz,    // CN_JOB_DROPCATALOG
     /*    */ "JOB_DROPINDEX"_Stz,      // CN_JOB_DROPINDEX
     /*    */ "JOB_DROPSCHEMA"_Stz,     // CN_JOB_DROPSCHEMA
