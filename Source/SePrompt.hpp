@@ -68,8 +68,10 @@ namespace Prompt
   
     // other
     eCK  eCommand(void);
+    void vContinue(bool bContinue);
     Job* pJob(void);
     SEitf* pSEitf(void);
+    Timer* pTimer(void);
     TokenVec* pTokenVec(void);
   
 
@@ -101,7 +103,6 @@ namespace Prompt
   public:
     bool bCmd_AnalyzeTable(void);
     bool bCmd_BeginInsert(void);
-    bool bCmd_Bye(void);
     bool bCmd_CreateCatalog(void);
     bool bCmd_CreateIndex(void);
     bool bCmd_CreateSchema(void);
@@ -121,10 +122,7 @@ namespace Prompt
     bool bCmd_InsertRow(void);
     bool bCmd_LoadTable(void);
     bool bCmd_PrintDir(void);
-    bool bCmd_Sleep(void);
     bool bCmd_UseSchema(void);
-    bool bCmd_TimerStart(void);
-    bool bCmd_TimerEnd(void);
   
     bool bCmd_CreateCatalogR35(void);
     bool bCmd_CreateIndexR35(void);

@@ -1,0 +1,28 @@
+/*============================================================================*/
+/* Prompt_bye.cpp -- bye from prompt                                          */
+/*============================================================================*/
+
+#include "Prompt.h"
+
+PromptNote mPromptNote_bye (
+  "Prompt_bye"_Stz,  // name of the prompt function
+  "comment"_Stz,     // comment about the functopm
+  "bye"_Stz,         // the prompt command
+  nullptr,           // the second word
+  bPrompt_help,      // prompt post-process function
+  true               // enabled
+);
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool Prompt::bPrompt_bye(SePrompt* pPrompt)
+{
+  pPrompt->vContinue(false);
+  
+  return true;
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

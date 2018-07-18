@@ -4,7 +4,9 @@
 _startClusterR35
 sleep 10;
 
+timerStart;
 spaceR35;
+timerEnd;
 /*
 sleep 10;
 
