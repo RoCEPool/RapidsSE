@@ -32,7 +32,6 @@ const Stz* C_CMD_FIRST      = "first"_Stz;
 const Stz* C_CMD_INSERT     = "insert"_Stz;
 const Stz* C_CMD_LOAD       = "ld"_Stz;
 const Stz* C_CMD_NEXT       = "next"_Stz;
-const Stz* C_CMD_PWD        = "pwd"_Stz;
 const Stz* C_CMD_SLEEP      = "sleep"_Stz;
 const Stz* C_CMD_USE        = "use"_Stz;
 const Stz* C_CMD_TIMERSTART = "timerStart"_Stz;
