@@ -16,11 +16,8 @@ extern JobCatalog gxJobCatalog;
 //
 // list of commands which need intercept processing by SePrompt
 //
-const Stz* C_CMD_HELP1      = "?"_Stz;
-const Stz* C_CMD_HELP2      = "help"_Stz;
 const Stz* C_CMD_ANTBL      = "antbl"_Stz;
 const Stz* C_CMD_BEGIN      = "begin"_Stz;
-const Stz* C_CMD_BYE        = "bye"_Stz;
 const Stz* C_CMD_CREATE     = "create"_Stz;
 const Stz* C_CMD_DANTBL     = "dantbl"_Stz;
 const Stz* C_CMD_DOCOL      = "docol"_Stz;
@@ -31,10 +28,7 @@ const Stz* C_CMD_FIRST      = "first"_Stz;
 const Stz* C_CMD_INSERT     = "insert"_Stz;
 const Stz* C_CMD_LOAD       = "ld"_Stz;
 const Stz* C_CMD_NEXT       = "next"_Stz;
-const Stz* C_CMD_SLEEP      = "sleep"_Stz;
 const Stz* C_CMD_USE        = "use"_Stz;
-const Stz* C_CMD_TIMERSTART = "timerStart"_Stz;
-const Stz* C_CMD_TIMEREND   = "timerEnd"_Stz;
 
 const Stz* C_ONE_CATALOG = "catalog"_Stz;
 const Stz* C_ONE_INDEX   = "index"_Stz;
@@ -64,7 +58,6 @@ CmdTable SePromptCommands[] =
 {
   { C_CMD_ANTBL,      nullptr,       &SePrompt::bCmd_AnalyzeTable  },
   { C_CMD_BEGIN,      C_ONE_INSERT,  &SePrompt::bCmd_BeginInsert   },
-  { C_CMD_BYE,        nullptr,       &SePrompt::bCmd_Bye           },
   { C_CMD_CREATE,     C_ONE_CATALOG, &SePrompt::bCmd_CreateCatalog },
   { C_CMD_CREATE,     C_ONE_INDEX,   &SePrompt::bCmd_CreateIndex   },
   { C_CMD_CREATE,     C_ONE_SCHEMA,  &SePrompt::bCmd_CreateSchema  },
@@ -80,14 +73,9 @@ CmdTable SePromptCommands[] =
   { C_CMD_DROP,       C_ONE_TABLE,   &SePrompt::bCmd_DropTable     },
   { C_CMD_DROP,       C_ONE_TENANT,  &SePrompt::bCmd_DropTenant    },
   { C_CMD_END,        C_ONE_INSERT,  &SePrompt::bCmd_EndInsert     },
-  { C_CMD_HELP1,      nullptr,       &SePrompt::bCmd_Help          },
-  { C_CMD_HELP2,      nullptr,       &SePrompt::bCmd_Help          },
   { C_CMD_INSERT,     C_ONE_ROW,     &SePrompt::bCmd_InsertRow     },
   { C_CMD_LOAD,       nullptr,       &SePrompt::bCmd_LoadTable     },
-  { C_CMD_SLEEP,      nullptr,       &SePrompt::bCmd_Sleep         },
   { C_CMD_USE,        nullptr,       &SePrompt::bCmd_UseSchema     },
-  { C_CMD_TIMERSTART, nullptr,       &SePrompt::bCmd_TimerStart    },
-  { C_CMD_TIMEREND,   nullptr,       &SePrompt::bCmd_TimerEnd      },
   
   { C_CMD_CREATE,     C_R35_ONE_CATALOG, &SePrompt::bCmd_CreateCatalogR35 },
   { C_CMD_CREATE,     C_R35_ONE_INDEX,   &SePrompt::bCmd_CreateIndexR35   },
@@ -235,6 +223,7 @@ bool SePrompt::bPrepareJob(void)
   
   //vTrace("command: %s\n"_Stz,m_xTokenVec[0]->sText().aChar());
   
+  /*
   for (i8 i_Cmd = 0; SePromptCommands[i_Cmd].aCommand; i_Cmd++) {
     
     if ( ! bCmdIs((Stz*)SePromptCommands[i_Cmd].aCommand))
@@ -247,6 +236,7 @@ bool SePrompt::bPrepareJob(void)
       return (this->*SePromptCommands[i_Cmd].aFunc)();
     }
   }
+  */
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for command file
@@ -433,6 +423,16 @@ eCK SePrompt::eCommand(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set continue                                                               */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vContinue(bool bContinue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  m_bContinue = bContinue;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get job                                                                    */
 /*----------------------------------------------------------------------------*/
 Job* SePrompt::pJob(void)
@@ -450,6 +450,16 @@ SEitf* SePrompt::pSEitf(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   return m_pSEitf;
+}
+
+/*----------------------------------------------------------------------------*/
+/* timer start                                                                */
+/*----------------------------------------------------------------------------*/
+Timer* SePrompt::pTimer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return &m_xTimer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -898,7 +908,7 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
     vClearEcho();
   
   //vTrace("command: %s\n"_Stz,m_xTokenVec[0]->sText().aChar());
-  
+  /*
   for (i8 i_Cmd = 0; SePromptCommands[i_Cmd].aCommand; i_Cmd++) {
     
     if ( ! bCmdIs((Stz*)SePromptCommands[i_Cmd].aCommand))
@@ -911,6 +921,7 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
       return (this->*SePromptCommands[i_Cmd].aFunc)();
     }
   }
+  */
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for command file
@@ -1027,21 +1038,6 @@ bool SePrompt::bCmd_BeginInsert(void)
      m_pSEitf->vSetLastError(EC_TX_BEGIN_FAILED);
     return false;
   }
-  
-  m_sResponse = "<ok>"_Stz;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* bye                                                                        */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bCmd_Bye(void)
-{
-  if ( ! bTokenCheck(1) )
-    return false;
-  
-  m_bContinue = false;
   
   m_sResponse = "<ok>"_Stz;
   
@@ -2086,27 +2082,6 @@ bool SePrompt::bCmd_PrintDir(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* sleep n seconds                                                            */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bCmd_Sleep(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  ASSERT(m_xTokenVec[0]->bSame("sleep"_Stz));
-  
-  if ( ! bTokenCheck(2) )
-    return false;
-  
-  i8 nSeconds = m_xTokenVec[1]->iToI8();
-  
-  PosixThread::vSleepSec(nSeconds);
-  
-  m_sResponse = "<ok>"_Stz;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* use schema                                                                 */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bCmd_UseSchema(void)
@@ -2142,31 +2117,6 @@ bool SePrompt::bCmd_UseSchema(void)
     return false;
   
   //vTrace("Schema changed: %s\n"_Stz, m_xTokenVec2[2]);
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* timer start                                                                */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bCmd_TimerStart(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  m_xTimer.vStart();
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* timer end                                                                  */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bCmd_TimerEnd(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  m_xTimer.vUpdate();
-  vTrace("duration %lldms\n"_Stz,m_xTimer.iMilliseconds());
-  
   return true;
 }
 
