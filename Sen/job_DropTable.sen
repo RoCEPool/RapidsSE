@@ -82,7 +82,7 @@
 /*----------------------------------------------------------------------------*/
 /* drop a table                                                               */
 /*----------------------------------------------------------------------------*/
-: dropTableR35_req ( "<tableNm>" -- <R> )
+: dropTable_req ( "<tableNm>" -- <R> )
 
   0 0 locals| pJob pTask |
 
@@ -111,24 +111,23 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropTable job                                                  */
 /*----------------------------------------------------------------------------*/
-: DropTableR35_node ( pJob_DropTable -- )
+: DropTable_node ( pJob_DropTable -- )
 
   params| pJob_DropTable |
 
   CN_JOB_DROPTABLE pJob_DropTable object.assertClass
 
   ddlLock::grabWrite
-"t2" .
+
   pJob_DropTable getPathR35
   dicStack.set
   pJob_DropTable job.objectName@   ( tableNm )
-  dup .
+
   removeTableR35 ( )  not if "got error" . exit then
-  "t2" .
+
   ddlLock::testDrop
 
   pJob_DropTable job.notice
-"t2" .
 ;
 
 /*============================================================================*/

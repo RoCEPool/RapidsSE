@@ -130,6 +130,62 @@ void Job_CreateTable::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* populate table                                                             */
+/*----------------------------------------------------------------------------*/
+bool Job_CreateTable::bPopulateJob(TokenVec* pTokenVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // assert we got a create table
+  ASSERT(pTokenVec->pGet(0)->bSame("create"_Stz));
+  ASSERT(pTokenVec->pGet(1)->bSame("table"_Stz));
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get tokens in token vector
+  i8 iNumTokens = pTokenVec->nTokens();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // some validations
+  bool bValid = bValidateCreateTable(pTokenVec);
+  if ( ! bValid ) {
+    return false;
+  }
+  
+  // set the table name
+  m_sObjectName = pTokenVec->pGet(2)->aText();
+  
+  // mark current token
+  i8 iCurrentToken = 4;
+  
+  // add columns to the table
+  if ( ! bAddTableColumns(pTokenVec, iCurrentToken) ) {
+    return false;
+  }
+  
+  // current token should be at ')'
+  if ( ! pTokenVec->pGet(iCurrentToken++)->bSame(")"_Stz)) {
+    return false;
+  }
+  
+  // check if we have a partition by clause
+  if ( iCurrentToken < iNumTokens && pTokenVec->pGet(iCurrentToken++)->bSame("partition"_Stz)) {
+    
+    if ( ! bPartitionTable(pTokenVec, iCurrentToken) )
+      return false;
+  }
+  else {
+    // no partition by clause
+    // we will create partitioning using the first column
+    m_xColumns[0].m_bIsPartitionKey = true;
+  }
+  
+  vShow();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
 void Job_CreateTable::vShow(void)
@@ -461,62 +517,6 @@ bool Job_CreateTable::bPartitionTable(TokenVec* pTokenVec, i8 iCurrentToken)
 }
 
 /*----------------------------------------------------------------------------*/
-/* populate table                                                             */
-/*----------------------------------------------------------------------------*/
-bool Job_CreateTable::bPopulateJob(TokenVec* pTokenVec)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // assert we got a create table
-  ASSERT(pTokenVec->pGet(0)->bSame("create"_Stz));
-  ASSERT(pTokenVec->pGet(1)->bSame("table"_Stz));
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get tokens in token vector
-  i8 iNumTokens = pTokenVec->nTokens();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // some validations
-  bool bValid = bValidateCreateTable(pTokenVec);
-  if ( ! bValid ) {
-    return false;
-  }
-  
-  // set the table name
-  m_sObjectName = pTokenVec->pGet(2)->aText();
-  
-  // mark current token
-  i8 iCurrentToken = 4;
-  
-  // add columns to the table
-  if ( ! bAddTableColumns(pTokenVec, iCurrentToken) ) {
-    return false;
-  }
-  
-  // current token should be at ')'
-  if ( ! pTokenVec->pGet(iCurrentToken++)->bSame(")"_Stz)) {
-    return false;
-  }
-  
-  // check if we have a partition by clause
-  if ( iCurrentToken < iNumTokens && pTokenVec->pGet(iCurrentToken++)->bSame("partition"_Stz)) {
-    
-    if ( ! bPartitionTable(pTokenVec, iCurrentToken) )
-      return false;
-  }
-  else {
-    // no partition by clause
-    // we will create partitioning using the first column
-    m_xColumns[0].m_bIsPartitionKey = true;
-  }
-  
-  vShow();
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* validate a create table request                                            */
 /*----------------------------------------------------------------------------*/
 bool Job_CreateTable::bValidateCreateTable(TokenVec* pTokenVec)
@@ -586,7 +586,6 @@ void JobsModel::vJob_CreateTable_post(Prompt::SePrompt* pPrompt, Job* pJob)
   
   if ( pJob_CreateTable->m_bHasError ) {
   
-    // Note: take care of errors / meta data ????
     for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
       vTrace("ERROR (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob_CreateTable->m_xNode[i_Node].m_eErrorCode]);
     }

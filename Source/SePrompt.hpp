@@ -115,7 +115,6 @@ namespace Prompt
     bool bCmd_DropCatalog(void);
     bool bCmd_DropIndex(void);
     bool bCmd_DropSchema(void);
-    bool bCmd_DropTable(void);
     bool bCmd_EndInsert(void);
     bool bCmd_Help(void);
     bool bCmd_InsertRow(void);

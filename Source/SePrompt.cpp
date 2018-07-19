@@ -1527,45 +1527,6 @@ bool SePrompt::bCmd_DropSchema(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* drop table                                                                 */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bCmd_DropTable(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  i8 i_Token;
-  i8 iNumTokens;
-  
-  ASSERT(m_xTokenVec[0]->bSame("drop"_Stz));
-  ASSERT(m_xTokenVec[1]->bSame("table"_Stz));
-  
-  for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if (! m_xTokenVec[i_Token]->bHasText())
-      break;
-    m_xTokenVec2[i_Token]->vCopy(m_xTokenVec[i_Token]);
-    m_xTokenVec[i_Token]->vCopy(""_Stz);
-  }
-  
-  iNumTokens = i_Token;
-  
-  // - - - - - - - - - - - - - - - - - - - - -
-  // there should be 3 tokens
-  if (iNumTokens != 3) {
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return false;
-  }
-  
-  // drop a table
-  m_xTokenVec[0]->vCopy("rmtbl"_Stz);
-  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]);
-  if (!bExecuteRequest())
-    return false;
-  
-  //vTrace("Table dropped: %s\n"_Stz, m_xTokenVec2[2]);
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* drop tenant                                                                */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bCmd_DropTenant(void)
