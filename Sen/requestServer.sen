@@ -52,7 +52,7 @@ queue: requestQueue
   // local for job dic path
   pJob job.dicPath to pDicPathJob
 
-  pDicPathJob dicPath.dump
+  //pDicPathJob dicPath.dump
 
   // local for tasks dic stack
   task::this task.dicStack to pDicStackTask

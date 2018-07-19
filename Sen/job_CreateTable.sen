@@ -27,7 +27,7 @@
   // get the table name from the job
   pJob_CreateTable job.objectName@
 
-  checkMakeTableR35 not if pJob_CreateTable <ERROR_JOB> exit then
+  checkMakeTable not if pJob_CreateTable <ERROR_JOB> exit then
 
   <DONE_NODE>
 ;
@@ -76,12 +76,12 @@
 
   tp: Job_CreateTable.execute
 
+  //----------------------------------------------------------------------------
+  // grad a ddl lock
   ddlLock::grabWrite
 
   CN_JOB_CREATETABLE pJob_CreateTable object.assertClass
   pJob_CreateTable job.objectName@ to sTableNm
-
-  //ddlLock::grabWrite
 
   //----------------------------------------------------------------------------
   // set dictionary stack
@@ -90,7 +90,7 @@
 
   //----------------------------------------------------------------------------
   // make table
-  sTableNm makeTableR35 ( ) to pTable
+  sTableNm makeTable to pTable
 
   //----------------------------------------------------------------------------
   // get a table reference
@@ -105,12 +105,15 @@
   pTable table.slots slots.createColumnVecR35
 
   //----------------------------------------------------------------------------
+  // move back to tables
   popTable
 
   //----------------------------------------------------------------------------
   // return table reference
   pTable table.retRef
 
+  //----------------------------------------------------------------------------
+  // should be in tables
   assertInTables
   pJob_CreateTable job.notice
 

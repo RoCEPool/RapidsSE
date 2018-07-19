@@ -163,14 +163,6 @@
 /* check word is not a table                                                  */
 /*----------------------------------------------------------------------------*/
 : checkIsNotTable ( "<wordNm" -- t|f )
-  dup findInCurrent not if true exit then
-  EC_TABLE_EXISTS false
-;
-
-/*----------------------------------------------------------------------------*/
-/* check word is not a table                                                  */
-/*----------------------------------------------------------------------------*/
-: checkIsNotTableR35 ( "<wordNm" -- t|f )
   findInCurrent not if true exit then
   EC_TABLE_EXISTS false
 ;
@@ -254,21 +246,10 @@
 /*----------------------------------------------------------------------------*/
 /* check if word is a makeable table                                          */
 /*----------------------------------------------------------------------------*/
-: checkMakeTable ( "<tableNm>" -- "<tableNm>" true | "<tableNm>" errorCode false )
+: checkMakeTable ( "<tableNm>" -- true | errorCode false )
 
   checkInTables   not if false exit then
   checkIsNotTable not if false exit then
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* check if word is a makeable table                                          */
-/*----------------------------------------------------------------------------*/
-: checkMakeTableR35 ( "<tableNm>" -- true | errorCode false )
-
-  checkInTables   not if false exit then
-  checkIsNotTableR35 not if false exit then
 
   true
 ;
@@ -439,6 +420,7 @@ tp: analyzeTable
 /*----------------------------------------------------------------------------*/
 /* make a table (run by all participants)                                     */
 /*----------------------------------------------------------------------------*/
+/*
 : makeTable allParticipants 1 checkResult ( "<tableNm>" -- true n# true )
 
 tp: makingTable
@@ -491,44 +473,57 @@ tp: makingTable
   indexPtr sTableNm find execute table.hiddenIndex!
 
   true <SUCCESS_RESULT>
-;
 
+;
+ */
 /*----------------------------------------------------------------------------*/
 /* make a table (run by all participants)                                     */
 /*----------------------------------------------------------------------------*/
-: makeTableR35 ( "<tableNm>" )
+: makeTable ( "<tableNm>" )
 
   tp: makingTable
-  0 0 locals| pTable indexPtr sTableNm |
+
+  params| sTableNm |
+  0 0 locals| pTable pIndex |
 
   args.tracepoint if
-  sTableNm "MAKING TABLE " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
+    sTableNm "MAKING TABLE " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
   then
 
+  //----------------------------------------------------------------------------
+  // make the table dictionary
   sTableNm makeTableDic
 
+  //----------------------------------------------------------------------------
+  // make the indexes dictionary
   sTableNm pushTable assert
   sTableNm "makeIndexes" find execute
 
+  //----------------------------------------------------------------------------
   // create the table
   sTableNm :table ( ^table ) drop
   sTableNm find execute to pTable
 
+  //----------------------------------------------------------------------------
   // create the hidden index for the row data
   sTableNm "hidden" "make_indexR35" find execute
 
+  //----------------------------------------------------------------------------
   // make the index as hidden
   "indexes" find execute pathPush
-  "hidden" findInCurrent execute to indexPtr
-  true indexPtr index.isHidden!
-  "integer" "hidden_column" indexPtr index.createColumnVec
+  "hidden" findInCurrent execute to pIndex
+  true pIndex index.isHidden!
+
+  // now add a column to the hidden index
+  "integer" "hidden_column" pIndex index.createColumnVec
 
   // step out of indexes
   pathDrop
 
+  //----------------------------------------------------------------------------
   // store the hidden index in the table
-  indexPtr sTableNm find execute table.hiddenIndex!
-  pathDump
+  pIndex sTableNm find execute table.hiddenIndex!
+  //pathDump
 
   // return table pointer
   pTable
