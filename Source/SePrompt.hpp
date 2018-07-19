@@ -134,14 +134,12 @@ namespace Prompt
     bool bCmd_DropTenantR35(void);
  
   private:
-    bool bAddTableColumns(i8& i_Token, i8 iNumTokens);
     bool bAddPartitionColumn(Stz* pTable, Stz* pColumn);
     i8   iCopyTokens(TokenVec& xFromTokenVec, TokenVec& xToTokenVec);
     bool bDropReturnTable(Stz* aTableName);
     bool bEndMakeTable(void);
     bool bMakeTable(void);
-    bool bPartitionTable(i8 i_Token, i8 iNumTokens);
-    bool bPartitionTable(Stz* pColumnName);
+
     bool bRemoveTable(Stz* pTableName);
     bool bValidateCreateIndex(i8 iNumTokens);
     bool bValidateCreateTable(i8 iNumTokens);
@@ -149,7 +147,6 @@ namespace Prompt
     bool bValidateCreateIndexR35(i8 iNumTokens);
   
     bool bReturnTable(void);
-    bool bPartitionTable(void);
     bool bIndexReturnTable(Stz* aTableName, Stz* aIndexName);
     void vIterateBuffers(void);
     bool bProcessCommand(bool bPostProcess = true);
