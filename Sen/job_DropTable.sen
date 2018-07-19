@@ -5,9 +5,46 @@
 "job_DropTable.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* execute Job_DropTable job check resources                                  */
+/*----------------------------------------------------------------------------*/
+: dropTable_checkResources ( Job_DropTable -- )
+
+  params| pJob_DropTable  |
+
+  "checkResources received" .
+  tp: pJob_DropTable
+
+  ddlLock::grabWrite
+
+  //----------------------------------------------------------------------------
+  // set dictionary stack
+  pJob_DropTable getPathR35
+  dicStack.set
+
+  // get the table name from the job
+  pJob_DropTable job.objectName@
+
+  checkRemoveTable not if pJob_DropTable <ERROR_JOB> exit then
+
+  <DONE_NODE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_DropTable job release resources                                */
+/*----------------------------------------------------------------------------*/
+: createTable_relResources ( Job_DropTable -- )
+
+  params| pJob_DropTable  |
+
+  "releaseResources received" .
+
+  <DONE_NODE>
+;
+
+/*----------------------------------------------------------------------------*/
 /* remove a table folder                                                      */
 /*----------------------------------------------------------------------------*/
-: removeTableR35 ( "<tableNm>" )
+: removeTable ( "<tableNm>" )
 
   tp: removeTable
 
@@ -82,10 +119,11 @@
 /*----------------------------------------------------------------------------*/
 /* drop a table                                                               */
 /*----------------------------------------------------------------------------*/
-: dropTable_req ( "<tableNm>" -- <R> )
+: dropTable_req ( -- <R> )
 
   0 0 locals| pJob pTask |
-
+"dropTable_req" .
+stk
   tp: droTable
 
   //ddlLock::grabWrite
@@ -95,12 +133,6 @@
 
   // get the job from the task
   pTask task.job@ to pJob
-
-  // NOTE: needs to go in check resources
-  // get the table name from the job
-  //pJob job.objectName@
-  //checkRemoveTable not if "<NIP+ERROR>" exit then
-  //drop // tableNm on stack
 
   // distribute the job
   pTask pJob "job::distribute" find execute
@@ -123,7 +155,7 @@
   dicStack.set
   pJob_DropTable job.objectName@   ( tableNm )
 
-  removeTableR35 ( )  not if "got error" . exit then
+  removeTable ( )  not if "got error" . exit then
 
   ddlLock::testDrop
 

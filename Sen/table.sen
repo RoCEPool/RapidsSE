@@ -160,6 +160,38 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* check given name is a table                                                */
+/*----------------------------------------------------------------------------*/
+: checkIsTableR35 ( "<tableNm>" -- true | errorCode false )
+
+  find ( "<tableNm>" ^w:table )
+
+  dup ( "<tableNm>" ^w:table ^w:table )
+  not ( "<tableNm>" ^w:table bool )
+  if
+    drop ( "<tableNm>" )
+    drop ( )
+    EC_NO_SUCH_TABLE false ( errorCode false )
+    exit
+  then
+
+  dup ( "<tableNm>" ^w:table ^w:table )
+
+  word.kind@ ( "<tableNm>" ^w:table ^word )
+  tick table ( "<tableNm>" ^w:table ^word ^word )
+  eql ( "<tableNm>" ^w:table bool )
+  if
+    drop ( "<tableNm>" )
+    true ( "<tableNm>" true )
+    exit
+  then
+
+  drop ( "<tableNm>" )
+  drop ( )
+  EC_NOT_A_TABLE false ( errorCode false )
+;
+
+/*----------------------------------------------------------------------------*/
 /* check word is not a table                                                  */
 /*----------------------------------------------------------------------------*/
 : checkIsNotTable ( "<wordNm" -- t|f )
@@ -257,23 +289,28 @@
 /*----------------------------------------------------------------------------*/
 /* check if word is a removable table folder                                  */
 /*----------------------------------------------------------------------------*/
-: checkRemoveTable ( "<tableNm>" -- "<tableNm>" true | "<tableNm>" errorCode false )
+: checkRemoveTable ( "<tableNm>" -- "<tableNm>" true | errorCode false )
 
-  checkInTables not if false exit then ( "<tableNm>" )
+  params| sTableNm |
 
-  dup checkIsWord not if EC_NO_SUCH_TABLE false exit then ( "<tableNm>" )
+  checkInTables not if false exit then
+
+  sTableNm checkIsWord not if EC_NO_SUCH_TABLE false exit then
   drop
 
   // push table folder
-  dup pushTable assert
+  sTableNm pushTable assert
 
-  checkIsTable not if popTable false exit then ( "<tableNm>" )
-  dup tableInUse if popTable EC_TABLE_IN_USE false exit then ( "<tableNm>" )
+  sTableNm checkIsTableR35 not if popTable false exit then
+  sTableNm tableInUse if popTable EC_TABLE_IN_USE false exit then
 
-  // opo table folder
+  // pop table folder
   popTable
 
-  true ( "<tableNm>" true )
+  // assert in tables
+  assertInTables
+
+  true 
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -532,6 +569,7 @@ tp: makingTable
 /*----------------------------------------------------------------------------*/
 /* remove a table folder                                                      */
 /*----------------------------------------------------------------------------*/
+/*
 : removeTable allParticipants 1 checkResult ( "<tableNm>" -- true n# true )
 
 tp: removeTable
@@ -604,6 +642,7 @@ tp: removeTable
 
   true <SUCCESS_RESULT>
 ;
+*/
 
 /*----------------------------------------------------------------------------*/
 /* set no of subloaders in table on each participant                          */

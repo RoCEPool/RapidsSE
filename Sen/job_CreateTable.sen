@@ -9,9 +9,10 @@
 /*----------------------------------------------------------------------------*/
 : createTable_checkResources ( pJob_CreateTable -- )
 
-  locals| pJob_CreateTable  |
+  params| pJob_CreateTable  |
 
   "checkResources received" .
+
   tp: Job_CreateTable.checkResources
 
   ddlLock::grabWrite
@@ -37,7 +38,7 @@
 /*----------------------------------------------------------------------------*/
 : createTable_relResources ( pJob_CreateTable -- )
 
-  locals| pJob_CreateTable  |
+  params| pJob_CreateTable  |
 
   "releaseResources received" .
 

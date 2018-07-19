@@ -234,6 +234,7 @@ void Task::vJobCheckResourcesFetch(MP_Task mpTask)
       ASSERT(0);
     
     case CN_JOB_CREATETABLE:
+    case CN_JOB_DROPTABLE:
       sExecute = pJob->sJobSeed();
       sExecute.vConcat("_checkResources"_Stz);
       break;
