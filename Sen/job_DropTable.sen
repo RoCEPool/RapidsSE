@@ -5,31 +5,6 @@
 "job_DropTable.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_DropTable job check resources                                  */
-/*----------------------------------------------------------------------------*/
-: dropTable_checkResources ( Job_DropTable -- )
-
-  params| pJob_DropTable  |
-
-  "checkResources received" .
-  tp: pJob_DropTable
-
-  ddlLock::grabWrite
-
-  //----------------------------------------------------------------------------
-  // set dictionary stack
-  pJob_DropTable getPathR35
-  dicStack.set
-
-  // get the table name from the job
-  pJob_DropTable job.objectName@
-
-  checkRemoveTable not if pJob_DropTable <ERROR_JOB> exit then
-
-  <DONE_NODE>
-;
-
-/*----------------------------------------------------------------------------*/
 /* execute Job_DropTable job release resources                                */
 /*----------------------------------------------------------------------------*/
 : dropTable_releaseResources ( Job_DropTable -- )
@@ -39,6 +14,33 @@
   "releaseResources received" .
 
   <DONE_NODE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* check if word is a removable table folder                                  */
+/*----------------------------------------------------------------------------*/
+: checkRemoveTable ( "<tableNm>" -- "<tableNm>" true | errorCode false )
+
+  params| sTableNm |
+
+  checkInTables not if false exit then
+
+  sTableNm checkIsWord not if EC_NO_SUCH_TABLE false exit then
+  drop
+
+  // push table folder
+  sTableNm pushTable assert
+
+  sTableNm checkIsTableR35 not if popTable false exit then
+  sTableNm tableInUse if popTable EC_TABLE_IN_USE false exit then
+
+  // pop table folder
+  popTable
+
+  // assert in tables
+  assertInTables
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -148,6 +150,31 @@
   ddlLock::testDrop
 
   pJob_DropTable job.notice
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_DropTable job check resources                                  */
+/*----------------------------------------------------------------------------*/
+: dropTable_checkResources ( Job_DropTable -- )
+
+  params| pJob_DropTable  |
+
+  "checkResources received" .
+  tp: pJob_DropTable
+
+  ddlLock::grabWrite
+
+  //----------------------------------------------------------------------------
+  // set dictionary stack
+  pJob_DropTable getPathR35
+  dicStack.set
+
+  // get the table name from the job
+  pJob_DropTable job.objectName@
+
+  checkRemoveTable not if pJob_DropTable <ERROR_JOB> exit then
+
+  <DONE_NODE>
 ;
 
 /*============================================================================*/
