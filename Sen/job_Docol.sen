@@ -11,7 +11,7 @@
 
   0 0 locals| pJob_Docol pTask |
 
-  tp: poolSpaceR35_req
+  tp: docol_req
 
   // get the task
   task::this to pTask

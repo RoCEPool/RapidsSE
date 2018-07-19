@@ -102,7 +102,7 @@ tp: gettingPartitions
 
   0 0 locals| pJob pTask |
 
-  tp: poolSpaceR35_req
+  tp: nodeStatusR35_req
 
   //ddlLock::grabWrite
 
