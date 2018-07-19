@@ -2061,37 +2061,6 @@ bool SePrompt::bCmd_UseSchema(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add a partition column to the table                                        */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bAddPartitionColumn(Stz* pTable, Stz* pColumn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  i8 j = 0;
-  m_xTokenVec[j++]->vCopy("addpartcol"_Stz);
-  m_xTokenVec[j++]->vCopy(pTable);
-  m_xTokenVec[j++]->vCopy(pColumn);
-  m_xTokenVec[j++]->vCopy(""_Stz);
-  
-  // add the column
-  if (!bExecuteRequest()) {
-    
-    // save error returned by addColumn
-    eEC eError = m_pSEitf->eGetLastError();
-    
-    vTrace("SePrompt::bAddPartitionColumn : addpartcol FAILED!!!\n"_Stz);
-    bool bDrop = bDropReturnTable(m_xTokenVec2[2]->aText());
-    ASSERT(bDrop);
-    
-    // return error returned by addColumn
-    m_pSEitf->vSetLastError(eError);
-    return false;
-  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* copy tokens from a token vector to another                                 */
 /*----------------------------------------------------------------------------*/
 i8 SePrompt::iCopyTokens(TokenVec& xFromTokenVec, TokenVec& xToTokenVec)
@@ -2131,32 +2100,6 @@ bool SePrompt::bDropReturnTable(Stz* aTableName)
   return true;
 }
 
-/*----------------------------------------------------------------------------*/
-/* end a make table                                                           */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bEndMakeTable()
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  // end of make table
-  m_xTokenVec[0]->vCopy("endmktbl"_Stz);
-  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]);
-  m_xTokenVec[2]->vCopy(""_Stz);
-  
-  if (!bExecuteRequest()) {
-    vTrace("SePrompt::bEndMakeTable : endmktbl FAILED!!!\n"_Stz);
-    bool bRemove = bRemoveTable(m_xTokenVec2[2]->aText());
-    //ASSERT(bRemove);
-    return false;
-  }
-  
-  // derefernce and return the table first
-  bool bResult = bReturnTable();
-  ASSERT(bResult);
-  
-  return true;
-}
-  
 /*----------------------------------------------------------------------------*/
 /* index return table                                                         */
 /*----------------------------------------------------------------------------*/
@@ -2226,48 +2169,6 @@ void SePrompt::vIterateBuffers(void)
   
   bReturnTable();
   
-}
-
-/*----------------------------------------------------------------------------*/
-/* make a table                                                               */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bMakeTable()
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  // create the table
-  m_xTokenVec[0]->vCopy("mktbl"_Stz);
-  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]);
-  
-  if (!bExecuteRequest())
-    return false;
-  
-  // change folder to table
-//  m_xTokenVec[0]->vCopy("cf"_Stz);
-//  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]);
-//  
-//  if (!bExecuteRequest()) {
-//    vTrace("SePrompt::bCreateTable : cf FAILED!!!\n"_Stz);
-//    bool bRemove = bRemoveTable(m_xTokenVec2[2]->aText());
-//    //ASSERT(bRemove);
-//    return false;
-//  }
-  
-  // get reference to pTable
-  m_xTokenVec[0]->vCopy("gettbl"_Stz);
-  m_xTokenVec[1]->vCopy(m_xTokenVec2[2]);
-  
-  if (!bExecuteRequest()) {
-    vTrace("SePrompt::bCreateTable : gettbl FAILED!!!\n"_Stz);
-    bool bRemove = bRemoveTable(m_xTokenVec2[2]->aText());
-    
-    if ( ! bRemove )
-      vTrace("SePrompt::bCreateTable : remtbl FAILED!!!\n"_Stz);
-    
-    return false;
-  }
-  
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2382,34 +2283,6 @@ bool SePrompt::bValidateCreateIndexR35(i8 iNumTokens)
   
   // last-1 token should be ')'
   if (!m_xTokenVec[iNumTokens - 1]->bSame(")"_Stz)) {
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return false;
-  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* validate a create table request                                            */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bValidateCreateTable(i8 iNumTokens)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  // there should be a minumum of 7 tokens
-  if (iNumTokens < 7) {
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return false;
-  }
-
-  // token[3] should be '('
-  if ( ! m_xTokenVec2[3]->bSame("("_Stz)) {
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return false;
-  }
-  
-  // last-1 token should be ')'
-  if ( ! m_xTokenVec2[iNumTokens-1]->bSame(")"_Stz)) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
