@@ -12,7 +12,7 @@ JobNote mJobNote_DropTable (
   CN_JOB_DROPTABLE,     // class enum
   "comment"_Stz,        // comment about the job
   "drop"_Stz,           // the prompt command
-  "R35Table"_Stz,       // the second word
+  "table"_Stz,          // the second word
   "dropTableR35"_Stz,   // the task seed for this job
   false,                // detached job?
   pJob_DropTable_pre,   // prompt pre-process function
@@ -152,7 +152,7 @@ Job* JobsModel::pJob_DropTable_pre(Prompt::SePrompt* pPrompt)
   TokenVec* pTokenVec = pPrompt->pTokenVec();
   
   ASSERT(pTokenVec->pGet(0)->bSame("drop"_Stz));
-  ASSERT(pTokenVec->pGet(1)->bSame("R35Table"_Stz));
+  ASSERT(pTokenVec->pGet(1)->bSame("table"_Stz));
   
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
     if (! pTokenVec->pGet(i_Token)->bHasText())

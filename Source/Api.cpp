@@ -653,7 +653,7 @@ eEC RapidsSE_DropTable(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable, 
     pJob_DropTable->m_sObjectName = pTable;
     
     // set the job in SEitf
-    pSEitf->m_pJob = pJob_DropTable;
+    //pSEitf->m_pJob = pJob_DropTable;
     Stz* aResponse = nullptr;
     
     RapidsSE_DispatchJob(pJob_DropTable, pSEitf, &aResponse);

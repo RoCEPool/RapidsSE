@@ -12,14 +12,13 @@ JobNote mJobNote_CreateTable (
   CN_JOB_CREATETABLE,     // class enum
   "comment"_Stz,          // comment about the job
   "create"_Stz,           // the prompt command
-  "R35table"_Stz,         // the second word
+  "table"_Stz,            // the second word
   "createTableR35"_Stz,   // the task seed for this job
   false,                  // detached job?
   pJob_CreateTable_pre,   // prompt pre-process function
   vJob_CreateTable_post,  // prompt post-process function
   true
 );
-
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -159,6 +158,346 @@ void Job_CreateTable::vShow(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/* add columns of the table to the job                                        */
+/*----------------------------------------------------------------------------*/
+bool Job_CreateTable::bAddTableColumns(TokenVec* pTokenVec, i8& i_Token)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
+  
+  // now collect the column names and their types
+  i8 iColumn = 0;
+  i8 iCurrentToken = i_Token;
+  
+  while ( ! pTokenVec->pGet(iCurrentToken)->bSame(")"_Stz)) {
+    
+    if (iCurrentToken != i_Token && ! pTokenVec->pGet(iCurrentToken++)->bSame(","_Stz)) {
+      return false;
+    }
+    
+    // add columns to the table
+    
+    m_xColumns[iColumn].m_iColumnNo = iColumn;
+    m_xColumns[iColumn].m_sColumnName= pTokenVec->pGet(iCurrentToken++)->aText();
+    
+    if (pTokenVec->pGet(iCurrentToken)->bSame("varchar"_Stz) ||
+        pTokenVec->pGet(iCurrentToken)->bSame("varbinary"_Stz) ||
+        pTokenVec->pGet(iCurrentToken)->bSame("char"_Stz)) {
+      
+      m_xColumns[iColumn].m_eColumnType = CT_VARCHAR;
+      m_xColumns[iColumn].m_eDatumType = DM_VCH;
+      iCurrentToken++;
+      
+      i8 iSize = C_64K;
+      
+      if (pTokenVec->pGet(iCurrentToken)->bSame("("_Stz)) {
+        
+        m_xColumns[iColumn].m_iColumnLength = pTokenVec->pGet(iCurrentToken++)->iToI8();
+        
+        
+        // check if it was numeric
+        if ( ! pTokenVec->pGet(iCurrentToken)->bIsNumeric() ) {
+          return false;
+        }
+        
+        iSize = pTokenVec->pGet(iCurrentToken++)->iToI8();
+        
+        if (!pTokenVec->pGet(iCurrentToken++)->bSame(")"_Stz)) {
+          return false;
+        }
+        
+        if (!Vch::bIsValidSize(iSize)) {
+          return false;
+        }
+      }
+      m_xColumns[iColumn].m_iColumnLength = iSize;
+      
+    }
+    else if (pTokenVec->pGet(iCurrentToken)->bSame("float"_Stz)) {
+      
+      i8 iSize = C_MAX_PRECISION_FLT;
+      
+      m_xColumns[iColumn].m_eColumnType = CT_FLOAT;
+      m_xColumns[iColumn].m_eDatumType = DM_FLT;
+      iCurrentToken++;
+      
+      if (pTokenVec->pGet(iCurrentToken)->bSame("("_Stz)) {
+        
+        // check if it was numeric
+        if ( ! pTokenVec->pGet(iCurrentToken++)->bIsNumeric() ) {
+          return false;
+        }
+        
+        iSize = pTokenVec->pGet(iCurrentToken++)->iToI8();
+        
+        if (!pTokenVec->pGet(iCurrentToken++)->bSame(")"_Stz)) {
+          return false;
+        }
+        
+        if (!Flt::bIsValidSize(iSize)) {
+          return false;
+        }
+      }
+      m_xColumns[iColumn].m_iColumnLength = iSize;
+    }
+    else if (pTokenVec->pGet(iCurrentToken)->bSame("decimal"_Stz)) {
+      
+      i8 iPrecision = C_MAX_PRECISION_BCD;
+      i8 iScale = 0;
+      
+      m_xColumns[iColumn].m_eColumnType = CT_DECIMAL;
+      m_xColumns[iColumn].m_eDatumType = DM_BCD;
+      iCurrentToken++;
+      
+      if (pTokenVec->pGet(iCurrentToken++)->bSame("("_Stz)) {
+        
+        // check if it was numeric
+        if ( ! pTokenVec->pGet(iCurrentToken)->bIsNumeric() ) {
+          return false;
+        }
+        
+        iPrecision = pTokenVec->pGet(iCurrentToken++)->iToI8();
+        
+        if (!pTokenVec->pGet(iCurrentToken++)->bSame(","_Stz)) {
+          return false;
+        }
+        
+        // check if it was numeric
+        if ( ! pTokenVec->pGet(iCurrentToken)->bIsNumeric() ) {
+          return false;
+        }
+        
+        iScale = pTokenVec->pGet(iCurrentToken++)->iToI8();
+        
+        if (!pTokenVec->pGet(iCurrentToken++)->bSame(")"_Stz)) {
+          return false;
+        }
+        
+        if (!Bcd::bIsValidSize(iPrecision, iScale)) {
+          return false;
+        }
+      }
+      m_xColumns[iColumn].m_iColumnLength = iPrecision;
+      m_xColumns[iColumn].m_iColumnScale  = iScale;
+    }
+    else if (pTokenVec->pGet(iCurrentToken)->bSame("integer"_Stz)) {
+      m_xColumns[iColumn].m_eColumnType = CT_INTEGER;
+      m_xColumns[iColumn].m_eDatumType = DM_INT;
+      m_xColumns[iColumn].m_iColumnLength = C_MAX_PRECISION_INT;
+      iCurrentToken++;
+    }
+    else if (pTokenVec->pGet(iCurrentToken)->bSame("date"_Stz)) {
+      m_xColumns[iColumn].m_eColumnType = CT_DATE;
+      m_xColumns[iColumn].m_eDatumType = DM_DTE;
+      iCurrentToken++;
+    }
+    else if (pTokenVec->pGet(iCurrentToken)->bSame("time"_Stz)) {
+      m_xColumns[iColumn].m_eColumnType = CT_TIME;
+      m_xColumns[iColumn].m_eDatumType = DM_TME;
+      iCurrentToken++;
+    }
+    else if (pTokenVec->pGet(iCurrentToken)->bSame("timestamp"_Stz)) {
+      m_xColumns[iColumn].m_eColumnType = CT_TIMESTAMP;
+      m_xColumns[iColumn].m_eDatumType = DM_TSP;
+      iCurrentToken++;
+    }
+    else if (pTokenVec->pGet(iCurrentToken)->bSame("interval"_Stz)) {
+      m_xColumns[iColumn].m_eColumnType = CT_INTERVAL;
+      m_xColumns[iColumn].m_eDatumType = DM_IVL;
+      iCurrentToken++;
+    }
+    else if (pTokenVec->pGet(iCurrentToken)->bSame("boolean"_Stz)) {
+      m_xColumns[iColumn].m_eColumnType = CT_BOOLEAN;
+      m_xColumns[iColumn].m_eDatumType = DM_BOL;
+      iCurrentToken++;
+    }
+    else {
+     return false;
+    }
+    
+    // check for NOT NULL
+    if (pTokenVec->pGet(iCurrentToken)->bSame("not"_Stz)) {
+      iCurrentToken++;
+      if (!pTokenVec->pGet(iCurrentToken++)->bSame("null"_Stz)) {
+        return false;
+      }
+      m_xColumns[iColumn].m_bIsNullable = false;
+    }
+    
+    // check for PRIMARY KEY
+    //    if (m_xTokenVec2[iCurrentToken]->bSame("primary"_Stz)) {
+    //
+    //      pJob->m_xColumns[iColumn].m_sPrimaryKey = m_xTokenVec[iCurrentToken++]->aText();
+    //
+    //      if (!m_xTokenVec2[iCurrentToken]->bSame("key"_Stz)) {
+    //        m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    //        return false;
+    //      }
+    //    }
+    
+    // check for UNIQUE
+    if (pTokenVec->pGet(iCurrentToken)->bSame("unique"_Stz)) {
+      iCurrentToken++;
+      m_xColumns[iColumn].m_bIsUnique = true;
+    }
+    
+    iColumn++;
+    
+  }
+                              
+  m_iColumns = iColumn;
+  
+  i_Token = iCurrentToken;
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* partition the table                                                        */
+/*----------------------------------------------------------------------------*/
+bool Job_CreateTable::bPartitionTable(TokenVec* pTokenVec, i8 i_Token)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get tokens in token vector
+  i8 iNumTokens = pTokenVec->nTokens();
+  
+  // now collect the column names and their types
+  i8 iCurrentToken = i_Token;
+  
+  // next token should be 'by'
+  if (!pTokenVec->pGet(iCurrentToken++)->bSame("by"_Stz)) {
+    return false;
+  }
+  
+  // next token should be '('
+  if (!pTokenVec->pGet(iCurrentToken++)->bSame("("_Stz)) {
+    return false;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the partition columns
+  i_Token = iCurrentToken;
+  i8 iPartKeys = 0;
+  bool bFound = false;
+  while (iCurrentToken < iNumTokens - 1) {
+    
+    if ( (iCurrentToken != i_Token) &&
+        !pTokenVec->pGet(iCurrentToken++)->bSame(","_Stz)) {
+      return false;
+    }
+    iPartKeys++;
+    
+    // find column and set as partition column
+    for (i8 i_Column=0; i_Column< m_iColumns; i_Column++) {
+      if (m_xColumns[i_Column].m_sColumnName.bSame(pTokenVec->pGet(iCurrentToken)->aText())) {
+        m_xColumns[i_Column].m_bIsPartitionKey = true;
+        iCurrentToken++;
+        bFound = true;
+        break;
+      }
+    }
+    if ( ! bFound) {
+      return false;
+    }
+    bFound = false;
+  }
+  
+  if ( ! iPartKeys ) {
+    return false;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* populate table                                                             */
+/*----------------------------------------------------------------------------*/
+bool Job_CreateTable::bPopulateJob(TokenVec* pTokenVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // assert we got a create table
+  ASSERT(pTokenVec->pGet(0)->bSame("create"_Stz));
+  ASSERT(pTokenVec->pGet(1)->bSame("table"_Stz));
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get tokens in token vector
+  i8 iNumTokens = pTokenVec->nTokens();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // some validations
+  bool bValid = bValidateCreateTable(pTokenVec);
+  if ( ! bValid ) {
+    return false;
+  }
+  
+  // set the table name
+  m_sObjectName = pTokenVec->pGet(2)->aText();
+  
+  // mark current token
+  i8 iCurrentToken = 4;
+  
+  // add columns to the table
+  if ( ! bAddTableColumns(pTokenVec, iCurrentToken) ) {
+    return false;
+  }
+  
+  // current token should be at ')'
+  if ( ! pTokenVec->pGet(iCurrentToken++)->bSame(")"_Stz)) {
+    return false;
+  }
+  
+  // check if we have a partition by clause
+  if ( iCurrentToken < iNumTokens && pTokenVec->pGet(iCurrentToken++)->bSame("partition"_Stz)) {
+    
+    if ( ! bPartitionTable(pTokenVec, iCurrentToken) )
+      return false;
+  }
+  else {
+    // no partition by clause
+    // we will create partitioning using the first column
+    m_xColumns[0].m_bIsPartitionKey = true;
+  }
+  
+  vShow();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* validate a create table request                                            */
+/*----------------------------------------------------------------------------*/
+bool Job_CreateTable::bValidateCreateTable(TokenVec* pTokenVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get tokens in token vector
+  i8 iNumTokens = pTokenVec->nTokens();
+  
+  // there should be a minumum of 7 tokens
+  if (iNumTokens < 7) {
+    return false;
+  }
+  
+  // token[3] should be '('
+  if ( ! pTokenVec->pGet(3)->bSame("("_Stz)) {
+    return false;
+  }
+  
+  // last-1 token should be ')'
+  if ( ! pTokenVec->pGet(iNumTokens-1)->bSame(")"_Stz)) {
+    return false;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -180,7 +519,7 @@ Job* JobsModel::pJob_CreateTable_pre(Prompt::SePrompt* pPrompt)
   SEitf* pSEitf = pPrompt->pSEitf();
   Job_CreateTable* pJob_CreateTable = new Job_CreateTable(pSEitf);
   
-  bool bResult = pPrompt->bCreateTableR35(pJob_CreateTable);
+  bool bResult = pJob_CreateTable->bPopulateJob(pPrompt->pTokenVec());
   
   if ( !bResult) {
     i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;

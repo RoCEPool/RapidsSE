@@ -147,18 +147,14 @@ Job* JobsModel::pJob_Docol_pre(Prompt::SePrompt* pPrompt)
   
   Job_Docol* pJob_Docol = new Job_Docol(pSEitf);
   
-  i8 i_Token;
   i8 iNumTokens;
   TokenVec* pTokenVec = pPrompt->pTokenVec();
   
   ASSERT(pTokenVec->pGet(0)->bSame("docol"_Stz));
   
-  for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if (! pTokenVec->pGet(i_Token)->bHasText())
-      break;
-  }
-  
-  iNumTokens = i_Token;
+  // - - - - - - - - - - - - - - - - - - - - -
+  // get no of tokens in token vector
+  iNumTokens = pTokenVec->nTokens();;
   
   // - - - - - - - - - - - - - - - - - - - - -
   // there should be 2 tokens

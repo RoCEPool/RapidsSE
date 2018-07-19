@@ -127,34 +127,27 @@ namespace Prompt
     bool bCmd_CreateCatalogR35(void);
     bool bCmd_CreateIndexR35(void);
     bool bCmd_CreateSchemaR35(void);
-    bool bCmd_CreateTableR35(void);
     bool bCmd_CreateTenantR35(void);
   
     bool bCmd_DropCatalogR35(void);
     bool bCmd_DropIndexR35(void);
     bool bCmd_DropSchemaR35(void);
-    bool bCmd_DropTableR35(void);
     bool bCmd_DropTenantR35(void);
-  
-    bool bCreateTableR35(Job_CreateTable* pJob);
  
   private:
     bool bAddTableColumns(i8& i_Token, i8 iNumTokens);
-    bool bAddTableColumnsR35(i8& i_Token, i8 iNumTokens);
     bool bAddPartitionColumn(Stz* pTable, Stz* pColumn);
     i8   iCopyTokens(TokenVec& xFromTokenVec, TokenVec& xToTokenVec);
     bool bDropReturnTable(Stz* aTableName);
     bool bEndMakeTable(void);
     bool bMakeTable(void);
     bool bPartitionTable(i8 i_Token, i8 iNumTokens);
-    bool bPartitionTableR35(i8 i_Token, i8 iNumTokens);
     bool bPartitionTable(Stz* pColumnName);
     bool bRemoveTable(Stz* pTableName);
     bool bValidateCreateIndex(i8 iNumTokens);
     bool bValidateCreateTable(i8 iNumTokens);
   
     bool bValidateCreateIndexR35(i8 iNumTokens);
-    bool bValidateCreateTableR35(i8 iNumTokens);
   
     bool bReturnTable(void);
     bool bPartitionTable(void);
