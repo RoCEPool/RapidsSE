@@ -17,7 +17,6 @@
 "requests_column.sen"      include
 "requests_folder.sen"      include
 "requests_prompt.sen"       include
-"requests_space.sen"       include
 "requests_grid.sen"        include
 "requests_rowBuffer.sen"   include
 "requests_misc.sen"        include
