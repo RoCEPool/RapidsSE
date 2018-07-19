@@ -106,7 +106,6 @@ namespace Prompt
     bool bCmd_CreateCatalog(void);
     bool bCmd_CreateIndex(void);
     bool bCmd_CreateSchema(void);
-    bool bCmd_CreateTable(void);
     bool bCmd_CreateTenant(void);
     bool bCmd_CreateUnique(void);
     bool bCmd_DanalyzeTable(void);

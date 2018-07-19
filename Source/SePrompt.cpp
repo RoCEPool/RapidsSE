@@ -1252,68 +1252,6 @@ bool SePrompt::bCmd_CreateSchema(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* create table                                                               */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bCmd_CreateTable(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  ASSERT(m_xTokenVec[0]->bSame("create"_Stz));
-  ASSERT(m_xTokenVec[1]->bSame("table"_Stz));
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // copy tokens from m_xTokenVec to m_xTokenVec2
-  i8 iNumTokens = iCopyTokens(m_xTokenVec, m_xTokenVec2);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // some validations
-  bool bValid = bValidateCreateTable(iNumTokens);
-  if ( ! bValid )
-    return false;
-  
-  // make the table
-  if ( ! bMakeTable() )
-    return false;
-  
-  // mark current toen
-  i8 iCurrentToken = 4;
-  
-  // save current token as the first column of the table
-  Stz* pFirstColumn = m_xTokenVec2[iCurrentToken]->aText();
-  
-  // add columns to the table
-  if ( ! bAddTableColumns(iCurrentToken, iNumTokens) )
-    return false;
-  
-  // current token should be at ')'
-  if ( ! m_xTokenVec2[iCurrentToken++]->bSame(")"_Stz)) {
-    bool bRemove = bRemoveTable(m_xTokenVec2[2]->aText());
-    ASSERT(bRemove);
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return false;
-  }
-  
-  // check if we have a partition by clause
-  if ( m_xTokenVec2[iCurrentToken++]->bSame("partition"_Stz)) {
-    
-    if ( ! bPartitionTable(iCurrentToken, iNumTokens) )
-      return false;
-    
-  }
-  else {
-    // no partition by clause
-    // we will create partitioning using the first column
-    bPartitionTable(pFirstColumn);
-  }
-  
-  if ( ! bEndMakeTable() )
-    return false;
-  
-  //vTrace("Table created: %s\n"_Stz, m_xTokenVec2[2]);
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* create tenant                                                              */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bCmd_CreateTenant(void)
