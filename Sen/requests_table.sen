@@ -326,20 +326,6 @@ ddlLock::grabRead
   <OK>
 ;
 
-/*----------------------------------------------------------------------------*/
-/* create a table                                                             */
-/*----------------------------------------------------------------------------*/
-: createTable_req ( "<tableNm>" -- <R> )
-
-ddlLock::grabWrite
-
-  checkEnoughBuffers not if <NIP+ERROR> exit then
-  checkMakeTable     not if <NIP+ERROR> exit then
-
-  makeTable ( ) assert::stack_0
-
-  <OK>
-;
 
 /*----------------------------------------------------------------------------*/
 /* distributed export of a table                                              */
