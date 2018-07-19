@@ -6,7 +6,7 @@ sleep 10;
 
 // space
 timerStart;
-spaceR35;
+space;
 timerEnd;
 
 docol epochTake;

@@ -11,9 +11,9 @@ JobNote mJobNote_Space (
   "space"_Stz,      // name of the job class
   CN_JOB_SPACE,     // class enum
   "comment"_Stz,    // comment about the job
-  "spaceR35"_Stz,   // the prompt command
+  "space"_Stz,      // the prompt command
   nullptr,          // the second word
-  "poolSpaceR35"_Stz, // the task seed for this job
+  "poolSpace"_Stz,  // the task seed for this job
   false,            // detached job?
   pJob_Space_pre,   // prompt pre-process function
   vJob_Space_post,  // prompt post-process function

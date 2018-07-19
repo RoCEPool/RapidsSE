@@ -7,11 +7,11 @@
 /*----------------------------------------------------------------------------*/
 /* request to get space in the pool (executed on originating node)            */
 /*----------------------------------------------------------------------------*/
-: poolSpaceR35_req ( -- <R> )
+: poolSpace_req ( -- <R> )
 
   0 0 locals| pJob pTask |
 
-  tp: poolSpaceR35_req
+  tp: poolSpace_req
 
   // get the task
   task::this to pTask
@@ -31,9 +31,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_Space job                                                      */
+/* get space in the pool (executed on all participating nodes)                */
 /*----------------------------------------------------------------------------*/
-: poolSpaceR35_node ( pJob_Space -- str t/f )
+: poolSpace_node ( pJob_Space -- str t/f )
 
   params| pJob_Space |
 
