@@ -16,6 +16,59 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* make a table (run by all participants)                                     */
+/*----------------------------------------------------------------------------*/
+: makeTable ( "<tableNm>" )
+
+  tp: makingTable
+
+  params| sTableNm |
+  0 0 locals| pTable pIndex |
+
+  args.tracepoint if
+  sTableNm "MAKING TABLE " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
+  then
+
+  //----------------------------------------------------------------------------
+  // make the table dictionary
+  sTableNm makeTableDic
+
+  //----------------------------------------------------------------------------
+  // make the indexes dictionary
+  sTableNm pushTable assert
+  sTableNm "makeIndexes" find execute
+
+  //----------------------------------------------------------------------------
+  // create the table
+  sTableNm :table ( ^table ) drop
+  sTableNm find execute to pTable
+
+  //----------------------------------------------------------------------------
+  // create the hidden index for the row data
+  sTableNm "hidden" "make_indexR35" find execute
+
+  //----------------------------------------------------------------------------
+  // make the index as hidden
+  "indexes" find execute pathPush
+  "hidden" findInCurrent execute to pIndex
+  true pIndex index.isHidden!
+
+  // now add a column to the hidden index
+  "integer" "hidden_column" pIndex index.createColumnVec
+
+  // step out of indexes
+  pathDrop
+
+  //----------------------------------------------------------------------------
+  // store the hidden index in the table
+  pIndex sTableNm find execute table.hiddenIndex!
+  //pathDump
+
+  // return table pointer
+  pTable
+;
+
+/*----------------------------------------------------------------------------*/
 /* create a table                                                             */
 /*----------------------------------------------------------------------------*/
 : createTable_req (  -- <R> )
