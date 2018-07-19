@@ -4,9 +4,11 @@
 _startClusterR35
 sleep 10;
 
-
-
-
+// create a table with syntax error
+create table j10 (
+  j10_key   INTEGER NOT NULL,
+  j10_name  V(32) NOT NULL
+);
 
 // create a table
 create table j10 (
@@ -14,17 +16,14 @@ create table j10 (
   j10_name  VARCHAR(32) NOT NULL
 );
 
+drop table j10;
 
 /*
  timerStart;
  spaceR35;
  timerEnd;
 
- // create a table with syntax error
- create table j10 (
- j10_key   INTEGER NOT NULL,
- j10_name  V(32) NOT NULL
- );
+ 
 
 
 
@@ -38,7 +37,7 @@ create R35table j10 (
 );
 
 sleep 10;
-drop R35Table j10;
+
  
 cf ..;
 cf ..;
