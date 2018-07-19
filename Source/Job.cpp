@@ -55,8 +55,6 @@ Job::Job(eCN eClassNo)
   m_eState   = JS_NONE;
   m_sSeed    = ""_Stz;
   m_bDetached = false;
-  m_sCheckResources   = ""_Stz;
-  m_sReleaseResources = ""_Stz;
   m_iParticipantNode  = -1;
   m_ziAcksRemaining   = 0;
   m_pOriginatingTask  = nullptr;

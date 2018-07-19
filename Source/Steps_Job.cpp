@@ -220,7 +220,8 @@ void Task::vJobCheckResourcesFetch(MP_Task mpTask)
   Job* pJob = _pJob(pJobPtr);
   
   s32 sExecute;
-  sExecute = pJob->m_sCheckResources;
+  sExecute = pJob->sJobSeed();
+  sExecute.vConcat("_checkResources"_Stz);
   
   mpTask->m_pDataStack->vPushS32(sExecute);
   
@@ -1101,7 +1102,8 @@ void Task::vJobReleaseResourcesFetch(MP_Task mpTask)
   Job* pJob = _pJob(pJobPtr);
   
   s32 sExecute;
-  sExecute = pJob->m_sReleaseResources;
+  sExecute = pJob->sJobSeed();
+  sExecute.vConcat("_releaseResources"_Stz);
   
   mpTask->m_pDataStack->vPushS32(sExecute);
   

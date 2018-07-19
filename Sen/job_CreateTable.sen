@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_CreateTable job check resources                                */
 /*----------------------------------------------------------------------------*/
-: Job_CreateTable.checkResources ( pJob_CreateTable -- )
+: createTable_checkResources ( pJob_CreateTable -- )
 
   locals| pJob_CreateTable  |
 
@@ -35,7 +35,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_CreateTable job release resources                              */
 /*----------------------------------------------------------------------------*/
-: Job_CreateTable.relResources ( pJob_CreateTable -- )
+: createTable_relResources ( pJob_CreateTable -- )
 
   locals| pJob_CreateTable  |
 
