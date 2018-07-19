@@ -48,14 +48,15 @@
 
   tp: removeTable
 
-  locals| sTableNm |
+  params| sTableNm |
+  0 locals| pTable |
 
   sTableNm pushTable assert
-  sTableNm find execute ( ^table )
+  sTableNm find execute to pTable
 
   //----------------------------------------------------------------------------
   // drop all rows
-  //dup table.truncate ( ^table )
+  //pTable table.truncate ( ^table )
 
   //----------------------------------------------------------------------------
   // drop all indexes
@@ -113,17 +114,16 @@
   popTable
 
   sTableNm :forget
-
-  true
 ;
+
 /*----------------------------------------------------------------------------*/
 /* drop a table                                                               */
 /*----------------------------------------------------------------------------*/
 : dropTable_req ( -- <R> )
 
   0 0 locals| pJob pTask |
-"dropTable_req" .
-stk
+  "dropTable_req" .
+
   tp: droTable
 
   //ddlLock::grabWrite
