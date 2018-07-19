@@ -36,7 +36,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_CreateTable job release resources                              */
 /*----------------------------------------------------------------------------*/
-: createTable_relResources ( pJob_CreateTable -- )
+: createTable_releaseResources ( pJob_CreateTable -- )
 
   params| pJob_CreateTable  |
 

@@ -501,10 +501,9 @@
   // get error if any
   grid::thisNode@ pJobParticipant job.error@ to error
 
-  error error.msg "Setting error %v in Job__Begun" str.format .
-
   error EC_NONE != if
     // set error in executed job
+    error error.msg "Setting error %v in Job__Begun" str.format .
     error pJob__Begun jobBegun.error!
   then
 

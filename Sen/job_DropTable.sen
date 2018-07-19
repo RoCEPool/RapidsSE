@@ -32,7 +32,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropTable job release resources                                */
 /*----------------------------------------------------------------------------*/
-: createTable_relResources ( Job_DropTable -- )
+: dropTable_releaseResources ( Job_DropTable -- )
 
   params| pJob_DropTable  |
 

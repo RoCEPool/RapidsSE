@@ -1123,8 +1123,28 @@ void Task::vJobReleaseResourcesFetch(MP_Task mpTask)
   Job* pJob = _pJob(pJobPtr);
   
   s32 sExecute;
-  sExecute = pJob->sJobSeed();
-  sExecute.vConcat("_releaseResources"_Stz);
+  sExecute = ""_Stz;
+  
+  switch (pJob->eClass()) {
+      
+    case CN_JOB__BEGUN:
+    case CN_JOB__CANCEL:
+    case CN_JOB__CANCELLED:
+    case CN_JOB__END:
+    case CN_JOB__ENDED:
+    case CN_JOB__EXECUTE:
+    case CN_JOB__EXECUTED:
+      ASSERT(0);
+      
+    case CN_JOB_CREATETABLE:
+    case CN_JOB_DROPTABLE:
+      sExecute = pJob->sJobSeed();
+      sExecute.vConcat("_releaseResources"_Stz);
+      break;
+      
+    default:
+      break;
+  }
   
   mpTask->m_pDataStack->vPushS32(sExecute);
   
