@@ -48,10 +48,12 @@ namespace JobsModel
     void vShow(void);
   
   private:
+    bool bAddTableColumns(TokenVec* pTokenVec, i8& iCurrentToken);
+    bool bExtractDecimal(TokenVec* pTokenVec, i8 iColumn, i8& iCurrentToken);
+    bool bExtractFloat(TokenVec* pTokenVec, i8 iColumn, i8& iCurrentToken);
+    bool bExtractVarchar(TokenVec* pTokenVec, i8 iColumn, i8& iCurrentToken);
+    bool bPartitionTable(TokenVec* pTokenVec, i8 iCurrentToken);
     bool bValidateCreateTable(TokenVec* pTokenVec);
-    bool bAddTableColumns(TokenVec* pTokenVec, i8& i_Token);
-    bool bPartitionTable(TokenVec* pTokenVec, i8 i_Token);
-    
   public:
     Footer* aFooter(void);
   
