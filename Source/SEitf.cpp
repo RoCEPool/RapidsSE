@@ -85,7 +85,6 @@ ReqTable SeRequests[] =
  { "sanity"_Stz,         &SEitf::bNodeSanity,           "nodeSanity_req"_Stz      },
  { "setAttachMap"_Stz,   &SEitf::bSetAttachMap,         "setAttachMap_req"_Stz    },
  { "setidxunique"_Stz,   &SEitf::bIndexSetUnique,       "indexSetUnique_req"_Stz  },
- { "space"_Stz,          &SEitf::bPoolSpace,            "poolSpace_req"_Stz       },
  { "spnFetch"_Stz,       &SEitf::bSpawnFetchRows,       "spawnfetchRows_apiReq"_Stz },
  { "status"_Stz,         &SEitf::bNodeStatus,           "nodeStatus_req"_Stz      },
  
@@ -2897,26 +2896,6 @@ bool SEitf::bRetTable(TokenVec& xTokenVec, i8 iReqNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get pool space                                                             */
-/*----------------------------------------------------------------------------*/
-bool SEitf::bPoolSpace(TokenVec& xTokenVec, i8 iReqNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  s256 sRequest;
-  
-  if (xTokenVec.nTokens() != 1) {
-    vSetLastError(EC_INVALID_PARAMETERS);
-    return false;
-  }
-  
-  sRequest.vConcat(" "_Stz);
-  sRequest.vConcat(SeRequests[iReqNo].aRequest);
-  
-  return bAppendRequest(sRequest);
-}
-
-/*----------------------------------------------------------------------------*/
 /* check node sanity                                                          */
 /*----------------------------------------------------------------------------*/
 bool SEitf::bNodeSanity(TokenVec& xTokenVec, i8 iReqNo)
@@ -3814,28 +3793,6 @@ Footer* SEitf::aFooter(void)
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
-/* get pool space                                                             */
-/*----------------------------------------------------------------------------*/
-/*
-bool SEitf::bPoolSpaceR35(TokenVec& xTokenVec, i8 iReqNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  s256 sRequest;
-  
-  // create the job
-  m_pJob = new Job_Space(this);
-  
-  ASSERT(xTokenVec[0]->bSame("spaceR35"_Stz));
-  ASSERT(m_pJob);
-  
-  sRequest = SeRequests[iReqNo].aRequest;
-  
-  return bAppendJob(sRequest,xTokenVec.bDetachedRequest(),(Job**)&m_pJob);
-}
-*/
 
 /*----------------------------------------------------------------------------*/
 /* check node sanity                                                          */
