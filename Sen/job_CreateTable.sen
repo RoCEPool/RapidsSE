@@ -5,44 +5,14 @@
 "job_CreateTable.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_CreateTable job check resources                                */
+/* check if word is a makeable table                                          */
 /*----------------------------------------------------------------------------*/
-: createTable_checkResources ( pJob_CreateTable -- )
+: checkMakeTable ( "<tableNm>" -- true | errorCode false )
 
-  params| pJob_CreateTable  |
+  checkInTables   not if false exit then
+  checkIsNotTable not if false exit then
 
-  "checkResources received" .
-
-  tp: Job_CreateTable.checkResources
-
-  ddlLock::grabWrite
-
-  //----------------------------------------------------------------------------
-  // set dictionary stack
-  pJob_CreateTable getPathR35
-  dicStack.set
-
-  // check if we have enough buffers
-  checkEnoughBuffersR35 not if pJob_CreateTable <ERROR_JOB> exit then
-
-  // get the table name from the job
-  pJob_CreateTable job.objectName@
-
-  checkMakeTable not if pJob_CreateTable <ERROR_JOB> exit then
-
-  <DONE_NODE>
-;
-
-/*----------------------------------------------------------------------------*/
-/* execute Job_CreateTable job release resources                              */
-/*----------------------------------------------------------------------------*/
-: createTable_releaseResources ( pJob_CreateTable -- )
-
-  params| pJob_CreateTable  |
-
-  "releaseResources received" .
-
-  <DONE_NODE>
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -117,6 +87,47 @@
   // should be in tables
   assertInTables
   pJob_CreateTable job.notice
+
+  <DONE_NODE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_CreateTable job check resources                                */
+/*----------------------------------------------------------------------------*/
+: createTable_checkResources ( pJob_CreateTable -- )
+
+  params| pJob_CreateTable  |
+
+  "checkResources received" .
+
+  tp: Job_CreateTable.checkResources
+
+  ddlLock::grabWrite
+
+  //----------------------------------------------------------------------------
+  // set dictionary stack
+  pJob_CreateTable getPathR35
+  dicStack.set
+
+  // check if we have enough buffers
+  checkEnoughBuffersR35 not if pJob_CreateTable <ERROR_JOB> exit then
+
+  // get the table name from the job
+  pJob_CreateTable job.objectName@
+
+  checkMakeTable not if pJob_CreateTable <ERROR_JOB> exit then
+
+  <DONE_NODE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_CreateTable job release resources                              */
+/*----------------------------------------------------------------------------*/
+: createTable_releaseResources ( pJob_CreateTable -- )
+
+  params| pJob_CreateTable  |
+
+  "releaseResources received" .
 
   <DONE_NODE>
 ;
