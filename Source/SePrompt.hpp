@@ -35,7 +35,6 @@ namespace Prompt
     bool       m_bContinue;  // continue processing commands?
     bool       m_bEcho;      // echo response?
     s48K       m_sResponse;  // response from seitf
-    Tokeniser* m_pTokeniser; // input stream tokeniser
     Timer      m_xTimer;     // timer
     eCK        m_eCommand;   // kind of last command
     JobClass*  m_pJobClass;  // job class

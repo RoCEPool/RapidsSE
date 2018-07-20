@@ -5,6 +5,9 @@
 #include "Interface.h"
 #include "StorageEngine.h"
 
+extern AttachMap*    gpAttachMap;
+extern Arguments     gxArguments;
+
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
@@ -47,7 +50,33 @@ CommandProcessor::CommandProcessor(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
   
+  m_sPrompt.vSprint("[N%lld %lld] se %s%c%s> "_Stz,
+                    gpAttachMap->m_pGrid->iThisNode(),
+                    Process::iGetPid(),
+                    RAPIDSSE_VERSION_STRING,
+#ifdef _DEBUG
+                    'd',
+#else
+                    'r',
+#endif
+                    gxArguments.m_bPromptR35 ? " R35"_Stz : ""_Stz
+                   );
+
   m_pTokeniser = new Tokeniser;
+  
+  m_pTokeniser->vMalloc(false);
+  m_pTokeniser->vPush();
+  
+  if (gxArguments.m_bCommand) {
+    m_pTokeniser->vUseString(gxArguments.m_sCommand);
+  }
+  else if (gxArguments.m_bPromptR35 || gxArguments.m_bPrompt || gxArguments.m_bScript) {
+    m_pTokeniser->vPrompt(m_sPrompt);
+    m_pTokeniser->vUseStdin();
+  }
+  
+  m_pTokeniser->vLineMode(true);
+  m_pTokeniser->vNormal(true);
 
  _checkInitialised_(CN_COMMANDPROCESSOR);
   

@@ -121,42 +121,11 @@ SePrompt::SePrompt(void)
   //----
   m_pCommandProcessor = new CommandProcessor;
 
-  m_pTokeniser = new Tokeniser;
-  
-  m_pCommandProcessor->m_sPrompt.vSprint("[N%lld %lld] se %s%c%s> "_Stz,
-                    gpAttachMap->m_pGrid->iThisNode(),
-                    Process::iGetPid(),
-                    RAPIDSSE_VERSION_STRING,
-#ifdef _DEBUG
-                    'd',
-#else
-                    'r',
-#endif
-                    gxArguments.m_bPromptR35 ? " R35"_Stz : ""_Stz
-                    );
-
-  
-  
-  m_pTokeniser->vMalloc(false);
-  m_pTokeniser->vPush();
-  
-  
-  
-  if (gxArguments.m_bCommand) {
-    m_pTokeniser->vUseString(gxArguments.m_sCommand);
-  }
-  else if (gxArguments.m_bPromptR35 || gxArguments.m_bPrompt || gxArguments.m_bScript) {
-    m_pTokeniser->vPrompt(m_pCommandProcessor->m_sPrompt);
-    m_pTokeniser->vUseStdin();
-  }
-  
-  m_pTokeniser->vLineMode(true);
-  m_pTokeniser->vNormal(true);
   
   m_eCommand = CK_NONE;
   m_pJobClass = nullptr;
   m_pJob = nullptr;
-  
+
 
   _checkInitialised_(CN_SEPROMPT);
 }
@@ -172,8 +141,6 @@ SePrompt::~SePrompt(void)
   //m_xHistory.vClose();
   
   RapidsSE_SEitfDelete(m_pSEitf, /*trace*/ 0);
-  
-  delete m_pTokeniser;
   
   delete m_pCommandProcessor;
 }
@@ -538,26 +505,26 @@ void SePrompt::vCollectStatement(void)
   TokenVec* pTokenVec = pTknVec();
   
   // have we already seen the ';'
-  i8 i_Token = m_pTokeniser->iFindToken(";"_Stz,pTokenVec,C_TOKENS);
+  i8 i_Token = m_pCommandProcessor->m_pTokeniser->iFindToken(";"_Stz,pTokenVec,C_TOKENS);
   
   if (i_Token >= 0) {
-    //m_pTokeniser->vDumpTokens("\nCommand : "_Stz,m_xTokenVec,C_TOKENS);
+    //m_pCommandProcessor->m_pTokeniser->vDumpTokens("\nCommand : "_Stz,m_xTokenVec,C_TOKENS);
     return;
   }
   
-  i_Token = m_pTokeniser->iCountTokens(pTokenVec,C_TOKENS);
+  i_Token = m_pCommandProcessor->m_pTokeniser->iCountTokens(pTokenVec,C_TOKENS);
   
   // switch to terminal mode
-  m_pTokeniser->vLineMode(false);
+  m_pCommandProcessor->m_pTokeniser->vLineMode(false);
   
   s32 sContinuation("  > "_Stz);
-  m_pTokeniser->vPrompt(sContinuation);
+  m_pCommandProcessor->m_pTokeniser->vPrompt(sContinuation);
   
   // get tokens delimited by ';'
   for ( ; i_Token < C_TOKENS; i_Token++) {
     
     Token* pToken = pTkn(i_Token);
-    eTN eToken = m_pTokeniser->eNextToken((char*)pToken->aText());
+    eTN eToken = m_pCommandProcessor->m_pTokeniser->eNextToken((char*)pToken->aText());
     ASSERT(TN_NONE != eToken);
     pToken->vToken(eToken);
     
@@ -567,10 +534,10 @@ void SePrompt::vCollectStatement(void)
   }
   
   // switch back to line mode
-  m_pTokeniser->vLineMode(true);
-  m_pTokeniser->vPrompt(m_pCommandProcessor->m_sPrompt);
+  m_pCommandProcessor->m_pTokeniser->vLineMode(true);
+  m_pCommandProcessor->m_pTokeniser->vPrompt(m_pCommandProcessor->m_sPrompt);
   
-  //m_pTokeniser->vDumpTokens("Command : "_Stz,m_xTokenVec,C_TOKENS);
+  //m_pCommandProcessor->m_pTokeniser->vDumpTokens("Command : "_Stz,m_xTokenVec,C_TOKENS);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -588,7 +555,7 @@ bool SePrompt::bDispatchJob(Job* pJob)
   pTknVec()->vSetTokens();
   
   //! make this part of verbose??
-  //m_pTokeniser->vDumpTokens("Command : "_Stz,m_xTokenVec,C_TOKENS);
+  //m_pCommandProcessor->m_pTokeniser->vDumpTokens("Command : "_Stz,m_xTokenVec,C_TOKENS);
   
   bool bResult = RapidsSE_DispatchJob(pJob,m_pSEitf,&aResponse);
   
@@ -662,7 +629,7 @@ void SePrompt::vGetCommandArgument(void)
   pTknVec()->vReset();
   
   while (TN_NONE !=
-         m_pTokeniser->eNextToken((char*)pTkn(pTknVec()->nTokens())->aText())) {
+         m_pCommandProcessor->m_pTokeniser->eNextToken((char*)pTkn(pTknVec()->nTokens())->aText())) {
     
     //vTrace("vGetCommand : [%lld] %s\n"_Stz,i_Token,pTkn(i_Token));
     
@@ -689,7 +656,7 @@ void SePrompt::vGetCommandInput(void)
       
       Token* pToken = pTkn(pTknVec()->nTokens());
       
-      eTN eToken = m_pTokeniser->eNextToken((char*)pToken->aText());
+      eTN eToken = m_pCommandProcessor->m_pTokeniser->eNextToken((char*)pToken->aText());
       
       if (TN_NONE == eToken)
         break;
@@ -705,8 +672,8 @@ void SePrompt::vGetCommandInput(void)
     }
     
     // end of file? if so, pop and retry
-    if (! pTknVec()->nTokens() && m_pTokeniser->bEOF()) {
-      bool b = m_pTokeniser->bPop();
+    if (! pTknVec()->nTokens() && m_pCommandProcessor->m_pTokeniser->bEOF()) {
+      bool b = m_pCommandProcessor->m_pTokeniser->bPop();
       ASSERT(b);
       continue;
     }
@@ -761,9 +728,9 @@ void SePrompt::vPushFile(Stz* aFileName)
   
   sPath = aFileName;
   
-  m_pTokeniser->vPush();
+  m_pCommandProcessor->m_pTokeniser->vPush();
   
-  bool b = m_pTokeniser->bUseFile(sPath);
+  bool b = m_pCommandProcessor->m_pTokeniser->bUseFile(sPath);
   ASSERT(b);
 }
 
@@ -776,7 +743,7 @@ bool SePrompt::bRunFile(void)
     return false;
   
   vPushFile(pTkn(0)->aText());
-  m_pTokeniser->vLineMode(true);
+  m_pCommandProcessor->m_pTokeniser->vLineMode(true);
   m_sResponse = "<ok>"_Stz;
   
   return true;
@@ -926,7 +893,7 @@ bool SePrompt::bExecuteRequest(void)
   pTknVec()->vSetTokens();
   
   //! make this part of verbose??
-  //m_pTokeniser->vDumpTokens("Command : "_Stz,m_xTokenVec,C_TOKENS);
+  //m_pCommandProcessor->m_pTokeniser->vDumpTokens("Command : "_Stz,m_xTokenVec,C_TOKENS);
   
   TokenVec* pTokenVec = pTknVec();
 
