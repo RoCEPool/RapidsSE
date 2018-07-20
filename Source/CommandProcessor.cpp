@@ -47,6 +47,8 @@ CommandProcessor::CommandProcessor(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
   
+  m_pTokeniser = new Tokeniser;
+
  _checkInitialised_(CN_COMMANDPROCESSOR);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
@@ -58,6 +60,8 @@ CommandProcessor::CommandProcessor(void)
 CommandProcessor::~CommandProcessor(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
+  
+  delete m_pTokeniser;
 }
 
 /*----------------------------------------------------------------------------*/
