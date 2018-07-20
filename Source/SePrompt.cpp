@@ -365,13 +365,13 @@ void SePrompt::vGetCommand(void)
     vCollectStatement();
     
     // stip off ;
-    m_xTokenVec.vStripSemicolon();
+    pTknVec()->vStripSemicolon();
     
     // stip off &
-    m_xTokenVec.vStripAmpersand();
+    pTknVec()->vStripAmpersand();
     
     // set no of tokens in token vector
-    m_xTokenVec.vSetTokens();
+    pTknVec()->vSetTokens();
   }
 }
 
@@ -393,7 +393,7 @@ void SePrompt::vNewJob(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   m_pJob = m_pJobClass->pNewJob(this);
-  m_pJob->m_bDetached = m_xTokenVec.bDetachedRequest();
+  m_pJob->m_bDetached = pTknVec()->bDetachedRequest();
 }
 
 
@@ -572,14 +572,14 @@ bool SePrompt::bDispatchJob(Job* pJob)
   
   xTimer.vStart();
   
-  m_xTokenVec.vSetTokens();
+  pTknVec()->vSetTokens();
   
   //! make this part of verbose??
   //m_pTokeniser->vDumpTokens("Command : "_Stz,m_xTokenVec,C_TOKENS);
   
   bool bResult = RapidsSE_DispatchJob(pJob,m_pSEitf,&aResponse);
   
-  if (m_xTokenVec.bDetachedRequest())
+  if (pTknVec()->bDetachedRequest())
     return bResult;
   
   if (bResult)
@@ -646,15 +646,15 @@ void SePrompt::vGetCommandArgument(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_xTokenVec.vReset();
+  pTknVec()->vReset();
   
   while (TN_NONE !=
-         m_pTokeniser->eNextToken((char*)pTkn(m_xTokenVec.nTokens())->aText())) {
+         m_pTokeniser->eNextToken((char*)pTkn(pTknVec()->nTokens())->aText())) {
     
     //vTrace("vGetCommand : [%lld] %s\n"_Stz,i_Token,pTkn(i_Token));
     
-    m_xTokenVec.vIncTokens();
-    ASSERT(m_xTokenVec.nTokens() < C_TOKENS);
+    pTknVec()->vIncTokens();
+    ASSERT(pTknVec()->nTokens() < C_TOKENS);
   }
   
   m_bContinue = false;
@@ -669,12 +669,12 @@ void SePrompt::vGetCommandInput(void)
   
   while (true) {
     
-    m_xTokenVec.vReset();
+    pTknVec()->vReset();
     m_xTokenVec2.vReset();
     
     for (;;) {
       
-      Token* pToken = pTkn(m_xTokenVec.nTokens());
+      Token* pToken = pTkn(pTknVec()->nTokens());
       
       eTN eToken = m_pTokeniser->eNextToken((char*)pToken->aText());
       
@@ -684,15 +684,15 @@ void SePrompt::vGetCommandInput(void)
       pToken->vToken(eToken);
       
       //      vTrace("vGetCommand : token %lld ]%s[\n"_Stz,
-      //             m_xTokenVec.nTokens(),
-      //             pTkn(m_xTokenVec.nTokens())->aText());
+      //             pTknVec()->nTokens(),
+      //             pTkn(pTknVec()->nTokens())->aText());
       
-      m_xTokenVec.vIncTokens();
-      ASSERT(m_xTokenVec.nTokens() < C_TOKENS);
+      pTknVec()->vIncTokens();
+      ASSERT(pTknVec()->nTokens() < C_TOKENS);
     }
     
     // end of file? if so, pop and retry
-    if (! m_xTokenVec.nTokens() && m_pTokeniser->bEOF()) {
+    if (! pTknVec()->nTokens() && m_pTokeniser->bEOF()) {
       bool b = m_pTokeniser->bPop();
       ASSERT(b);
       continue;
@@ -910,14 +910,14 @@ bool SePrompt::bExecuteRequest(void)
   
   xTimer.vStart();
   
-  m_xTokenVec.vSetTokens();
+  pTknVec()->vSetTokens();
   
   //! make this part of verbose??
   //m_pTokeniser->vDumpTokens("Command : "_Stz,m_xTokenVec,C_TOKENS);
   
   bool bResult = RapidsSE_ExecuteRequest(m_pSEitf,m_xTokenVec,&aResponse);
   
-  if (m_xTokenVec.bDetachedRequest())
+  if (pTknVec()->bDetachedRequest())
     return bResult;
   
   if (bResult)
