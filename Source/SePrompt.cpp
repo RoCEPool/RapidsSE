@@ -112,17 +112,6 @@ SePrompt::SePrompt(void)
   m_bContinue = true;
   m_bEcho   = false;
   
-  m_sPrompt.vSprint("[N%lld %lld] se %s%c%s> "_Stz,
-                    gpAttachMap->m_pGrid->iThisNode(),
-                    Process::iGetPid(),
-                    RAPIDSSE_VERSION_STRING,
-    #ifdef _DEBUG
-                    'd',
-    #else
-                    'r',
-    #endif
-                    gxArguments.m_bPromptR35 ? " R35"_Stz : ""_Stz
-                    );
   
   
     
@@ -130,15 +119,34 @@ SePrompt::SePrompt(void)
   //m_xHistory
   
   //----
+  m_pCommandProcessor = new CommandProcessor;
+
   m_pTokeniser = new Tokeniser;
+  
+  m_pCommandProcessor->m_sPrompt.vSprint("[N%lld %lld] se %s%c%s> "_Stz,
+                    gpAttachMap->m_pGrid->iThisNode(),
+                    Process::iGetPid(),
+                    RAPIDSSE_VERSION_STRING,
+#ifdef _DEBUG
+                    'd',
+#else
+                    'r',
+#endif
+                    gxArguments.m_bPromptR35 ? " R35"_Stz : ""_Stz
+                    );
+
+  
+  
   m_pTokeniser->vMalloc(false);
   m_pTokeniser->vPush();
+  
+  
   
   if (gxArguments.m_bCommand) {
     m_pTokeniser->vUseString(gxArguments.m_sCommand);
   }
   else if (gxArguments.m_bPromptR35 || gxArguments.m_bPrompt || gxArguments.m_bScript) {
-    m_pTokeniser->vPrompt(m_sPrompt);
+    m_pTokeniser->vPrompt(m_pCommandProcessor->m_sPrompt);
     m_pTokeniser->vUseStdin();
   }
   
@@ -149,7 +157,6 @@ SePrompt::SePrompt(void)
   m_pJobClass = nullptr;
   m_pJob = nullptr;
   
-  m_pCommandProcessor = new CommandProcessor;
 
   _checkInitialised_(CN_SEPROMPT);
 }
@@ -561,7 +568,7 @@ void SePrompt::vCollectStatement(void)
   
   // switch back to line mode
   m_pTokeniser->vLineMode(true);
-  m_pTokeniser->vPrompt(m_sPrompt);
+  m_pTokeniser->vPrompt(m_pCommandProcessor->m_sPrompt);
   
   //m_pTokeniser->vDumpTokens("Command : "_Stz,m_xTokenVec,C_TOKENS);
 }

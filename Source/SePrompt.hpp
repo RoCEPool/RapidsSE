@@ -34,7 +34,6 @@ namespace Prompt
     SEitf*     m_pSEitf;     // interface into rapidsse
     bool       m_bContinue;  // continue processing commands?
     bool       m_bEcho;      // echo response?
-    s32        m_sPrompt;    // prompt
     s48K       m_sResponse;  // response from seitf
     Tokeniser* m_pTokeniser; // input stream tokeniser
     Timer      m_xTimer;     // timer
