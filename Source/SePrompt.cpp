@@ -670,7 +670,7 @@ void SePrompt::vGetCommandInput(void)
   while (true) {
     
     pTknVec()->vReset();
-    m_xTokenVec2.vReset();
+    pTknVec2()->vReset();
     
     for (;;) {
       
