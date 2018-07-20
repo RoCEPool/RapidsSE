@@ -36,8 +36,6 @@ namespace Prompt
     bool       m_bEcho;      // echo response?
     s32        m_sPrompt;    // prompt
     s48K       m_sResponse;  // response from seitf
-    TokenVec   m_xTokenVec;  // token vector
-    TokenVec   m_xTokenVec2; // another token vector
     Tokeniser* m_pTokeniser; // input stream tokeniser
     Timer      m_xTimer;     // timer
     eCK        m_eCommand;   // kind of last command
@@ -141,7 +139,7 @@ namespace Prompt
     bool bCmd_DropTenantR35(void);
  
   private:
-    i8   iCopyTokens(TokenVec& xFromTokenVec, TokenVec& xToTokenVec);
+    i8   iCopyTokens(TokenVec* pFromTokenVec, TokenVec* pToTokenVec);
     bool bDropReturnTable(Stz* aTableName);
 
     bool bRemoveTable(Stz* pTableName);

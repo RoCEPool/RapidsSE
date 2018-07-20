@@ -462,7 +462,7 @@ TokenVec* SePrompt::pTokenVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return &m_xTokenVec;
+  return pTknVec();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -528,15 +528,17 @@ void SePrompt::vCollectStatement(void)
   // we should have a first token (e.g. create or drop)
   ASSERT(pTkn(0)->bHasText());
   
+  TokenVec* pTokenVec = pTknVec();
+  
   // have we already seen the ';'
-  i8 i_Token = m_pTokeniser->iFindToken(";"_Stz,m_xTokenVec,C_TOKENS);
+  i8 i_Token = m_pTokeniser->iFindToken(";"_Stz,pTokenVec,C_TOKENS);
   
   if (i_Token >= 0) {
     //m_pTokeniser->vDumpTokens("\nCommand : "_Stz,m_xTokenVec,C_TOKENS);
     return;
   }
   
-  i_Token = m_pTokeniser->iCountTokens(m_xTokenVec,C_TOKENS);
+  i_Token = m_pTokeniser->iCountTokens(pTokenVec,C_TOKENS);
   
   // switch to terminal mode
   m_pTokeniser->vLineMode(false);
@@ -820,7 +822,7 @@ TokenVec* SePrompt::pTknVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return &m_xTokenVec;
+  return &m_pCommandProcessor->m_xTokenVec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -830,7 +832,7 @@ TokenVec* SePrompt::pTknVec2(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return &m_xTokenVec2;
+  return &m_pCommandProcessor->m_xTokenVec2;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -919,7 +921,9 @@ bool SePrompt::bExecuteRequest(void)
   //! make this part of verbose??
   //m_pTokeniser->vDumpTokens("Command : "_Stz,m_xTokenVec,C_TOKENS);
   
-  bool bResult = RapidsSE_ExecuteRequest(m_pSEitf,m_xTokenVec,&aResponse);
+  TokenVec* pTokenVec = pTknVec();
+
+  bool bResult = RapidsSE_ExecuteRequest(m_pSEitf,*pTokenVec,&aResponse);
   
   if (pTknVec()->bDetachedRequest())
     return bResult;
@@ -1056,7 +1060,7 @@ bool SePrompt::bCmd_BeginInsert(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy tokens from m_xTokenVec to m_xTokenVec2
-  i8 iNumTokens = iCopyTokens(m_xTokenVec, m_xTokenVec2);
+  i8 iNumTokens = iCopyTokens(pTknVec(), pTknVec2());
   
   // - - - - - - - - - - - - - - - - - - - - -
   // there should be 3 tokens
@@ -1099,7 +1103,7 @@ bool SePrompt::bCmd_CreateCatalog(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy tokens from m_xTokenVec to m_xTokenVec2
-  i8 iNumTokens = iCopyTokens(m_xTokenVec, m_xTokenVec2);
+  i8 iNumTokens = iCopyTokens(pTknVec(), pTknVec2());
   
   // - - - - - - - - - - - - - - - - - - - - -
   // there should be 3 tokens
@@ -1131,7 +1135,7 @@ bool SePrompt::bCmd_CreateIndex(void)
   ASSERT(pTkn(0)->bSame("create"_Stz));
   
   // copy tokens from m_xTokenVec to m_xTokenVec2
-  i8 iNumTokens = iCopyTokens(m_xTokenVec, m_xTokenVec2);
+  i8 iNumTokens = iCopyTokens(pTknVec(), pTknVec2());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // some validations
@@ -1396,7 +1400,7 @@ bool SePrompt::bCmd_DistParLoadTable(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy tokens from m_xTokenVec to m_xTokenVec2
-  i8 iNumTokens = iCopyTokens(m_xTokenVec, m_xTokenVec2);
+  i8 iNumTokens = iCopyTokens(pTknVec(), pTknVec2());
   
   // - - - - - - - - - - - - - - - - - - - - -
   // there should be at least 3 tokens
@@ -1847,7 +1851,7 @@ bool SePrompt::bCmd_LoadTable(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy tokens from m_xTokenVec to m_xTokenVec2
-  i8 iNumTokens = iCopyTokens(m_xTokenVec, m_xTokenVec2);
+  i8 iNumTokens = iCopyTokens(pTknVec(), pTknVec2());
 
   // - - - - - - - - - - - - - - - - - - - - -
   // there should be at least 3 tokens
@@ -2073,7 +2077,7 @@ bool SePrompt::bCmd_UseSchema(void)
 /*----------------------------------------------------------------------------*/
 /* copy tokens from a token vector to another                                 */
 /*----------------------------------------------------------------------------*/
-i8 SePrompt::iCopyTokens(TokenVec& xFromTokenVec, TokenVec& xToTokenVec)
+i8 SePrompt::iCopyTokens(TokenVec* pFromTokenVec, TokenVec* pToTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -2081,10 +2085,10 @@ i8 SePrompt::iCopyTokens(TokenVec& xFromTokenVec, TokenVec& xToTokenVec)
   // while doing that also validate the create statament
   i8 i_Token;
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-    if (! xFromTokenVec[i_Token]->bHasText())
+    if (! (*pFromTokenVec)[i_Token]->bHasText())
       break;
-    xToTokenVec[i_Token]->vCopy(xFromTokenVec[i_Token]);
-    xFromTokenVec[i_Token]->vCopy(""_Stz);
+    (*pToTokenVec)[i_Token]->vCopy((*pFromTokenVec)[i_Token]);
+    (*pFromTokenVec)[i_Token]->vCopy(""_Stz);
   }
   
   return i_Token;
