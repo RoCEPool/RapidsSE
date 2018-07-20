@@ -1063,7 +1063,7 @@ bool SePrompt::bCmd_BeginInsert(void)
   
   // get table pointer
   pTkn(0)->vCopy("gettbl"_Stz);
-  pTkn(1)->vCopy(m_xTokenVec2[2]);
+  pTkn(1)->vCopy(pTkn2(2));
   if (!bExecuteRequest()) {
     vTrace("SePrompt::bBeginInsert : gettbl FAILED!!!\n"_Stz);
     return false;
@@ -1106,12 +1106,12 @@ bool SePrompt::bCmd_CreateCatalog(void)
   
   // create a catalog
   pTkn(0)->vCopy("mkcat"_Stz);
-  pTkn(1)->vCopy(m_xTokenVec2[2]);
+  pTkn(1)->vCopy(pTkn2(2));
   
   if (!bExecuteRequest())
     return false;
   
-  //vTrace("Catalog created: %s\n"_Stz, m_xTokenVec2[2]);
+  //vTrace("Catalog created: %s\n"_Stz, pTkn2(2));
   return true;
 }
 
@@ -1135,13 +1135,13 @@ bool SePrompt::bCmd_CreateIndex(void)
   if ( ! bValid )
     return false;
   
-  if (m_xTokenVec2[1]->bSame("unique"_Stz))
+  if (pTkn2(1)->bSame("unique"_Stz))
     iIfUnique = 1;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get reference to pTable
   pTkn(0)->vCopy("gettbl"_Stz);
-  pTkn(1)->vCopy(m_xTokenVec2[4 + iIfUnique]);
+  pTkn(1)->vCopy(pTkn2(4 + iIfUnique));
   
   if (!bExecuteRequest()) {
     vTrace("SePrompt::bCreateIndex : gettbl FAILED!!!\n"_Stz);
@@ -1152,8 +1152,8 @@ bool SePrompt::bCmd_CreateIndex(void)
   // create the index
   
   pTkn(0)->vCopy("mkidx"_Stz);
-  pTkn(1)->vCopy(m_xTokenVec2[4 + iIfUnique]);
-  pTkn(2)->vCopy(m_xTokenVec2[2 + iIfUnique]);
+  pTkn(1)->vCopy(pTkn2(4 + iIfUnique));
+  pTkn(2)->vCopy(pTkn2(2 + iIfUnique));
   
   if (!bExecuteRequest()) {
     // save error returned by addColumn
@@ -1173,9 +1173,9 @@ bool SePrompt::bCmd_CreateIndex(void)
   i8 iCurrentToken = 6 + iIfUnique;
   while (iCurrentToken < iNumTokens - 1) {
     
-    if (iCurrentToken != 6 + iIfUnique && !m_xTokenVec2[iCurrentToken++]->bSame(","_Stz)) {
-      bIndexReturnTable(m_xTokenVec2[4 + iIfUnique]->aText(),
-                        m_xTokenVec2[2 + iIfUnique]->aText());
+    if (iCurrentToken != 6 + iIfUnique && !pTkn2(iCurrentToken++)->bSame(","_Stz)) {
+      bIndexReturnTable(pTkn2(4 + iIfUnique)->aText(),
+                        pTkn2(2 + iIfUnique)->aText());
       m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
       return false;
     }
@@ -1183,9 +1183,9 @@ bool SePrompt::bCmd_CreateIndex(void)
     // add columns to the table
     i8 j = 0;
     pTkn(j++)->vCopy("addidxcol"_Stz);
-    pTkn(j++)->vCopy(m_xTokenVec2[4 + iIfUnique]);
-    pTkn(j++)->vCopy(m_xTokenVec2[2 + iIfUnique]);
-    pTkn(j++)->vCopy(m_xTokenVec2[iCurrentToken++]);
+    pTkn(j++)->vCopy(pTkn2(4 + iIfUnique));
+    pTkn(j++)->vCopy(pTkn2(2 + iIfUnique));
+    pTkn(j++)->vCopy(pTkn2(iCurrentToken++));
     
     // add the column
     if (!bExecuteRequest()) {
@@ -1194,8 +1194,8 @@ bool SePrompt::bCmd_CreateIndex(void)
       eEC eError = m_pSEitf->eGetLastError();
       
       // drop the table that was created
-      bIndexReturnTable(m_xTokenVec2[4 + iIfUnique]->aText(),
-                        m_xTokenVec2[2 + iIfUnique]->aText());
+      bIndexReturnTable(pTkn2(4 + iIfUnique)->aText(),
+                        pTkn2(2 + iIfUnique)->aText());
       
       // return error returned by addColumn
       m_pSEitf->vSetLastError(eError);
@@ -1209,8 +1209,8 @@ bool SePrompt::bCmd_CreateIndex(void)
   if (iIfUnique) {
     
     pTkn(0)->vCopy("setidxunique"_Stz);
-    pTkn(1)->vCopy(m_xTokenVec2[4 + iIfUnique]);
-    pTkn(2)->vCopy(m_xTokenVec2[2 + iIfUnique]);
+    pTkn(1)->vCopy(pTkn2(4 + iIfUnique));
+    pTkn(2)->vCopy(pTkn2(2 + iIfUnique));
     pTkn(3)->vCopy("true"_Stz);
     pTkn(4)->vCopy(""_Stz);
     
@@ -1220,8 +1220,8 @@ bool SePrompt::bCmd_CreateIndex(void)
       eEC eError = m_pSEitf->eGetLastError();
       
       // drop the table that was created
-      bIndexReturnTable(m_xTokenVec2[4 + iIfUnique]->aText(),
-                        m_xTokenVec2[2 + iIfUnique]->aText());
+      bIndexReturnTable(pTkn2(4 + iIfUnique)->aText(),
+                        pTkn2(2 + iIfUnique)->aText());
       
       // return error returned by addColumn
       m_pSEitf->vSetLastError(eError);
@@ -1234,8 +1234,8 @@ bool SePrompt::bCmd_CreateIndex(void)
   // end of make index
   
   pTkn(0)->vCopy("endmkidx"_Stz);
-  pTkn(1)->vCopy(m_xTokenVec2[4 + iIfUnique]);
-  pTkn(2)->vCopy(m_xTokenVec2[2 + iIfUnique]);
+  pTkn(1)->vCopy(pTkn2(4 + iIfUnique));
+  pTkn(2)->vCopy(pTkn2(2 + iIfUnique));
   pTkn(3)->vCopy(""_Stz);
   
   if (!bExecuteRequest()) {
@@ -1244,8 +1244,8 @@ bool SePrompt::bCmd_CreateIndex(void)
     eEC eError = m_pSEitf->eGetLastError();
     
     // drop the table that was created
-    bIndexReturnTable(m_xTokenVec2[4 + iIfUnique]->aText(),
-                      m_xTokenVec2[2 + iIfUnique]->aText());
+    bIndexReturnTable(pTkn2(4 + iIfUnique)->aText(),
+                      pTkn2(2 + iIfUnique)->aText());
     
     // return error returned by addColumn
     m_pSEitf->vSetLastError(eError);
@@ -1272,7 +1272,7 @@ bool SePrompt::bCmd_CreateSchema(void)
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
     if (! pTkn(i_Token)->bHasText())
       break;
-    m_xTokenVec2[i_Token]->vCopy(pTkn(i_Token));
+    pTkn2(i_Token)->vCopy(pTkn(i_Token));
     pTkn(i_Token)->vCopy(""_Stz);
   }
   
@@ -1287,12 +1287,12 @@ bool SePrompt::bCmd_CreateSchema(void)
   
   // create a schema
   pTkn(0)->vCopy("mksch"_Stz);
-  pTkn(1)->vCopy(m_xTokenVec2[2]);
+  pTkn(1)->vCopy(pTkn2(2));
   
   if (!bExecuteRequest())
     return false;
   
-  //vTrace("Schema created: %s\n"_Stz, m_xTokenVec2[2]);
+  //vTrace("Schema created: %s\n"_Stz, pTkn2(2));
   return true;
 }
 
@@ -1313,7 +1313,7 @@ bool SePrompt::bCmd_CreateTenant(void)
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
     if (! pTkn(i_Token)->bHasText())
       break;
-    m_xTokenVec2[i_Token]->vCopy(pTkn(i_Token));
+    pTkn2(i_Token)->vCopy(pTkn(i_Token));
     pTkn(i_Token)->vCopy(""_Stz);
   }
   
@@ -1328,12 +1328,12 @@ bool SePrompt::bCmd_CreateTenant(void)
   
   // create a tenant
   pTkn(0)->vCopy("mkten"_Stz);
-  pTkn(1)->vCopy(m_xTokenVec2[2]);
+  pTkn(1)->vCopy(pTkn2(2));
   
   if (!bExecuteRequest())
     return false;
   
-  //vTrace("Tenant created: %s\n"_Stz, m_xTokenVec2[2]);
+  //vTrace("Tenant created: %s\n"_Stz, pTkn2(2));
   return true;
 }
 
@@ -1402,9 +1402,9 @@ bool SePrompt::bCmd_DistParLoadTable(void)
   }
   
   iIndex = 0;
-  pTkn(iIndex++)->vCopy(m_xTokenVec2[0]);
-  pTkn(iIndex++)->vCopy(m_xTokenVec2[1]);
-  pTkn(iIndex++)->vCopy(m_xTokenVec2[2]);
+  pTkn(iIndex++)->vCopy(pTkn2(0));
+  pTkn(iIndex++)->vCopy(pTkn2(1));
+  pTkn(iIndex++)->vCopy(pTkn2(2));
   
   iCurrentIndex = 3;
   
@@ -1412,20 +1412,20 @@ bool SePrompt::bCmd_DistParLoadTable(void)
     
     //--------------------------------------------------------------------------
     // C_FIELD_DELIMITER
-    if (m_xTokenVec2[iCurrentIndex]->bSame(C_FIELD_DELIMITER)) {
+    if (pTkn2(iCurrentIndex)->bSame(C_FIELD_DELIMITER)) {
       
       if (iNumTokens < iCurrentIndex + 2) {
         m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
         goto resetFormatter;
       }
       
-      m_pSEitf->m_xFormatters.m_cFieldDelimiter = *m_xTokenVec2[++iCurrentIndex]->sText().aChar();
+      m_pSEitf->m_xFormatters.m_cFieldDelimiter = *pTkn2(++iCurrentIndex)->sText().aChar();
       if (m_pSEitf->m_xFormatters.m_cFieldDelimiter == '0')
         m_pSEitf->m_xFormatters.m_cFieldDelimiter = '\0';
     }
     //--------------------------------------------------------------------------
     // C_SAME_MACHINE
-    else if (m_xTokenVec2[iCurrentIndex]->bSame(C_SAME_MACHINE)) {
+    else if (pTkn2(iCurrentIndex)->bSame(C_SAME_MACHINE)) {
       bSameMachine = true;
     }
     else {
@@ -1472,7 +1472,7 @@ bool SePrompt::bCmd_DropCatalog(void)
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
     if (! pTkn(i_Token)->bHasText())
       break;
-    m_xTokenVec2[i_Token]->vCopy(pTkn(i_Token));
+    pTkn2(i_Token)->vCopy(pTkn(i_Token));
     pTkn(i_Token)->vCopy(""_Stz);
   }
   
@@ -1487,11 +1487,11 @@ bool SePrompt::bCmd_DropCatalog(void)
   
   // drop a catalog
   pTkn(0)->vCopy("rmcat"_Stz);
-  pTkn(1)->vCopy(m_xTokenVec2[2]);
+  pTkn(1)->vCopy(pTkn2(2));
   if (!bExecuteRequest())
     return false;
   
-  //vTrace("Catalog dropped: %s\n"_Stz, m_xTokenVec2[2]);
+  //vTrace("Catalog dropped: %s\n"_Stz, pTkn2(2));
   return true;
 }
 
@@ -1511,7 +1511,7 @@ bool SePrompt::bCmd_DropIndex(void)
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
     if (! pTkn(i_Token)->bHasText())
       break;
-    m_xTokenVec2[i_Token]->vCopy(pTkn(i_Token));
+    pTkn2(i_Token)->vCopy(pTkn(i_Token));
     pTkn(i_Token)->vCopy(""_Stz);
   }
   
@@ -1525,19 +1525,19 @@ bool SePrompt::bCmd_DropIndex(void)
   }
   
   // 4th token should be '.'
-  if (!m_xTokenVec2[3]->bSame("."_Stz)) {
+  if (!pTkn2(3)->bSame("."_Stz)) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // drop a table
   pTkn(0)->vCopy("rmidx"_Stz);
-  pTkn(1)->vCopy(m_xTokenVec2[2]);
-  pTkn(2)->vCopy(m_xTokenVec2[4]);
+  pTkn(1)->vCopy(pTkn2(2));
+  pTkn(2)->vCopy(pTkn2(4));
   if (!bExecuteRequest())
     return false;
   
-  //vTrace("Table dropped: %s\n"_Stz, m_xTokenVec2[2]);
+  //vTrace("Table dropped: %s\n"_Stz, pTkn2(2));
   return true;
 }
 
@@ -1557,7 +1557,7 @@ bool SePrompt::bCmd_DropSchema(void)
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
     if (! pTkn(i_Token)->bHasText())
       break;
-    m_xTokenVec2[i_Token]->vCopy(pTkn(i_Token));
+    pTkn2(i_Token)->vCopy(pTkn(i_Token));
     pTkn(i_Token)->vCopy(""_Stz);
   }
   
@@ -1572,11 +1572,11 @@ bool SePrompt::bCmd_DropSchema(void)
   
   // drop a schema
   pTkn(0)->vCopy("rmsch"_Stz);
-  pTkn(1)->vCopy(m_xTokenVec2[2]);
+  pTkn(1)->vCopy(pTkn2(2));
   if (!bExecuteRequest())
     return false;
   
-  //vTrace("Schema dropped: %s\n"_Stz, m_xTokenVec2[2]);
+  //vTrace("Schema dropped: %s\n"_Stz, pTkn2(2));
   return true;
 }
 
@@ -1596,7 +1596,7 @@ bool SePrompt::bCmd_DropTenant(void)
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
     if (! pTkn(i_Token)->bHasText())
       break;
-    m_xTokenVec2[i_Token]->vCopy(pTkn(i_Token));
+    pTkn2(i_Token)->vCopy(pTkn(i_Token));
     pTkn(i_Token)->vCopy(""_Stz);
   }
   
@@ -1611,12 +1611,12 @@ bool SePrompt::bCmd_DropTenant(void)
   
   // drop a tenant
   pTkn(0)->vCopy("rmten"_Stz);
-  pTkn(1)->vCopy(m_xTokenVec2[2]);
+  pTkn(1)->vCopy(pTkn2(2));
   if (!bExecuteRequest()) {
     return false;
   }
   
-  //vTrace("Tenant dropped: %s\n"_Stz, m_xTokenVec2[2]);
+  //vTrace("Tenant dropped: %s\n"_Stz, pTkn2(2));
   
   return true;
 }
@@ -1637,7 +1637,7 @@ bool SePrompt::bCmd_EndInsert(void)
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
     if (! pTkn(i_Token)->bHasText())
       break;
-    m_xTokenVec2[i_Token]->vCopy(pTkn(i_Token));
+    pTkn2(i_Token)->vCopy(pTkn(i_Token));
     pTkn(i_Token)->vCopy(""_Stz);
   }
   
@@ -1775,7 +1775,7 @@ bool SePrompt::bCmd_InsertRow(void)
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
     if (! pTkn(i_Token)->bHasText())
       break;
-    m_xTokenVec2[i_Token]->vCopy(pTkn(i_Token));
+    pTkn2(i_Token)->vCopy(pTkn(i_Token));
     pTkn(i_Token)->vCopy(""_Stz);
   }
   
@@ -1796,7 +1796,7 @@ bool SePrompt::bCmd_InsertRow(void)
     return false;
   }
   
-  Stz* pRow = m_xTokenVec2[2]->aText();
+  Stz* pRow = pTkn2(2)->aText();
   s48K s;
   i8 iRowLength;
   
@@ -1853,9 +1853,9 @@ bool SePrompt::bCmd_LoadTable(void)
   }
   
   iIndex = 0;
-  pTkn(iIndex++)->vCopy(m_xTokenVec2[0]);
-  pTkn(iIndex++)->vCopy(m_xTokenVec2[1]);
-  pTkn(iIndex++)->vCopy(m_xTokenVec2[2]);
+  pTkn(iIndex++)->vCopy(pTkn2(0));
+  pTkn(iIndex++)->vCopy(pTkn2(1));
+  pTkn(iIndex++)->vCopy(pTkn2(2));
   
   iCurrentIndex = 3;
     
@@ -1868,18 +1868,18 @@ bool SePrompt::bCmd_LoadTable(void)
     
     //--------------------------------------------------------------------------
     // C_RECORD_TERMINATOR
-    if (m_xTokenVec2[iCurrentIndex]->bSame(C_RECORD_TERMINATOR)) {
-      m_pSEitf->m_xFormatters.m_cRecordTerminator = *m_xTokenVec2[++iCurrentIndex]->sText().aChar();
+    if (pTkn2(iCurrentIndex)->bSame(C_RECORD_TERMINATOR)) {
+      m_pSEitf->m_xFormatters.m_cRecordTerminator = *pTkn2(++iCurrentIndex)->sText().aChar();
       if (m_pSEitf->m_xFormatters.m_cRecordTerminator == '0')
         m_pSEitf->m_xFormatters.m_cRecordTerminator = '\0';
     }
     //--------------------------------------------------------------------------
     // C_RECORD_ENDS
-    else if (m_xTokenVec2[iCurrentIndex]->bSame(C_RECORD_ENDS)) {
-      char cRecordEnds = *m_xTokenVec2[++iCurrentIndex]->sText().aChar();
+    else if (pTkn2(iCurrentIndex)->bSame(C_RECORD_ENDS)) {
+      char cRecordEnds = *pTkn2(++iCurrentIndex)->sText().aChar();
       
       // is record_ends 1 character ?
-      if (m_xTokenVec2[iCurrentIndex]->iLength() == 1) {
+      if (pTkn2(iCurrentIndex)->iLength() == 1) {
         if (cRecordEnds == '0') {
           vWarn("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
@@ -1893,9 +1893,9 @@ bool SePrompt::bCmd_LoadTable(void)
         }
       }
       // record_ends is 2 characters
-      else if (m_xTokenVec2[iCurrentIndex]->iLength() == 2) {
+      else if (pTkn2(iCurrentIndex)->iLength() == 2) {
         
-        if (m_xTokenVec2[iCurrentIndex]->bSame("\r\n"_Stz)) {
+        if (pTkn2(iCurrentIndex)->bSame("\r\n"_Stz)) {
           m_pSEitf->m_xFormatters.m_eRecordEnds = RE_CRNL;
         }
         else {
@@ -1912,16 +1912,16 @@ bool SePrompt::bCmd_LoadTable(void)
     }
     //--------------------------------------------------------------------------
     // C_FIELD_DELIMITER
-    else if (m_xTokenVec2[iCurrentIndex]->bSame(C_FIELD_DELIMITER)) {
-      m_pSEitf->m_xFormatters.m_cFieldDelimiter = *m_xTokenVec2[++iCurrentIndex]->sText().aChar();
+    else if (pTkn2(iCurrentIndex)->bSame(C_FIELD_DELIMITER)) {
+      m_pSEitf->m_xFormatters.m_cFieldDelimiter = *pTkn2(++iCurrentIndex)->sText().aChar();
       if (m_pSEitf->m_xFormatters.m_cFieldDelimiter == '0')
         m_pSEitf->m_xFormatters.m_cFieldDelimiter = '\0';
     }
     //--------------------------------------------------------------------------
     // C_ENCLOSED_BY_LEADING
-    else if (m_xTokenVec2[iCurrentIndex]->bSame(C_ENCLOSED_BY_LEADING)) {
+    else if (pTkn2(iCurrentIndex)->bSame(C_ENCLOSED_BY_LEADING)) {
       m_pSEitf->m_xFormatters.m_cEnclosedBy_Leading =
-        *m_xTokenVec2[++iCurrentIndex]->sText().aChar();
+        *pTkn2(++iCurrentIndex)->sText().aChar();
       if (m_pSEitf->m_xFormatters.m_cEnclosedBy_Leading == '0')
         m_pSEitf->m_xFormatters.m_cEnclosedBy_Leading = '\0';
       
@@ -1931,7 +1931,7 @@ bool SePrompt::bCmd_LoadTable(void)
     }
     //--------------------------------------------------------------------------
     // C_ENCLOSED_BY_TRAILING
-    else if (m_xTokenVec2[iCurrentIndex]->bSame(C_ENCLOSED_BY_TRAILING)) {
+    else if (pTkn2(iCurrentIndex)->bSame(C_ENCLOSED_BY_TRAILING)) {
       
       // if trailing is specified, leading should also have been specified
       if (m_pSEitf->m_xFormatters.m_cEnclosedBy_Leading == '\0') {
@@ -1941,7 +1941,7 @@ bool SePrompt::bCmd_LoadTable(void)
         goto resetFormatter;
       }
       m_pSEitf->m_xFormatters.m_cEnclosedBy_Trailing =
-        *m_xTokenVec2[++iCurrentIndex]->sText().aChar();
+        *pTkn2(++iCurrentIndex)->sText().aChar();
       if (m_pSEitf->m_xFormatters.m_cEnclosedBy_Trailing == '0')
         m_pSEitf->m_xFormatters.m_cEnclosedBy_Trailing = '\0';
     }
@@ -1951,9 +1951,9 @@ bool SePrompt::bCmd_LoadTable(void)
 //
     //--------------------------------------------------------------------------
     // C_DATE_FORMAT
-    else if (m_xTokenVec2[iCurrentIndex]->bSame(C_DATE_FORMAT)) {
+    else if (pTkn2(iCurrentIndex)->bSame(C_DATE_FORMAT)) {
       // extract date format
-      if ( ! m_pSEitf->bExtractDateFormat(m_xTokenVec2[++iCurrentIndex]->sText()) ) {
+      if ( ! m_pSEitf->bExtractDateFormat(pTkn2(++iCurrentIndex)->sText()) ) {
         if ( ! gpAttachMap->m_bMetadata)
           vWarn("Invalid load : enclosed_by_trailing specified but no enclosed_by_leading\n"_Stz);
         m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
@@ -1963,8 +1963,8 @@ bool SePrompt::bCmd_LoadTable(void)
     
     //--------------------------------------------------------------------------
     // C_ESCAPE_CHAR
-    else if (m_xTokenVec2[iCurrentIndex]->bSame(C_ESCAPE_CHAR)) {
-      m_pSEitf->m_xFormatters.m_cEscapeChar = *m_xTokenVec2[++iCurrentIndex]->sText().aChar();
+    else if (pTkn2(iCurrentIndex)->bSame(C_ESCAPE_CHAR)) {
+      m_pSEitf->m_xFormatters.m_cEscapeChar = *pTkn2(++iCurrentIndex)->sText().aChar();
       if (m_pSEitf->m_xFormatters.m_cEscapeChar == '0')
         m_pSEitf->m_xFormatters.m_cEscapeChar = '\0';
     }
@@ -2035,7 +2035,7 @@ bool SePrompt::bCmd_UseSchema(void)
   for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
     if (! pTkn(i_Token)->bHasText())
       break;
-    m_xTokenVec2[i_Token]->vCopy(pTkn(i_Token));
+    pTkn2(i_Token)->vCopy(pTkn(i_Token));
     pTkn(i_Token)->vCopy(""_Stz);
   }
   
@@ -2050,11 +2050,11 @@ bool SePrompt::bCmd_UseSchema(void)
   
   // drop a schema
   pTkn(0)->vCopy("usesch"_Stz);
-  pTkn(1)->vCopy(m_xTokenVec2[2]);
+  pTkn(1)->vCopy(pTkn2(2));
   if (!bExecuteRequest())
     return false;
   
-  //vTrace("Schema changed: %s\n"_Stz, m_xTokenVec2[2]);
+  //vTrace("Schema changed: %s\n"_Stz, pTkn2(2));
   return true;
 }
 
@@ -2205,15 +2205,15 @@ bool SePrompt::bValidateCreateIndex(i8 iNumTokens)
   
   i8 iIfUnique = 0;
   
-  if (m_xTokenVec2[1]->bSame("unique"_Stz)) {
+  if (pTkn2(1)->bSame("unique"_Stz)) {
     iIfUnique = 1;
-    if ( ! m_xTokenVec2[2]->bSame("index"_Stz)) {
+    if ( ! pTkn2(2)->bSame("index"_Stz)) {
       m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
       return false;
     }
   }
   else {
-    if ( ! m_xTokenVec2[1]->bSame("index"_Stz)) {
+    if ( ! pTkn2(1)->bSame("index"_Stz)) {
       m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
       return false;
     }
@@ -2226,19 +2226,19 @@ bool SePrompt::bValidateCreateIndex(i8 iNumTokens)
   }
 
   // token[3] should be 'on'
-  if (!m_xTokenVec2[3 + iIfUnique]->bSame("on"_Stz)) {
+  if (!pTkn2(3 + iIfUnique)->bSame("on"_Stz)) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
 
   // token[5] should be '('
-  if (!m_xTokenVec2[5 + iIfUnique]->bSame("("_Stz)) {
+  if (!pTkn2(5 + iIfUnique)->bSame("("_Stz)) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
 
   // last-1 token should be ')'
-  if (!m_xTokenVec2[iNumTokens - 1]->bSame(")"_Stz)) {
+  if (!pTkn2(iNumTokens - 1)->bSame(")"_Stz)) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
@@ -2337,7 +2337,7 @@ bool SePrompt::bCmd_CreateCatalogR35(void)
   if (!bExecuteRequest())
     return false;
   
-  //vTrace("Schema created: %s\n"_Stz, m_xTokenVec2[2]);
+  //vTrace("Schema created: %s\n"_Stz, pTkn2(2));
   return true;
 }
 
@@ -2388,7 +2388,7 @@ bool SePrompt::bCmd_CreateIndexR35(void)
   i8 iColumn = 0;
   while (iCurrentToken < iNumTokens - 1) {
     
-    if (iCurrentToken != 6 + iIfUnique && !m_xTokenVec2[iCurrentToken++]->bSame(","_Stz)) {
+    if (iCurrentToken != 6 + iIfUnique && !pTkn2(iCurrentToken++)->bSame(","_Stz)) {
       m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
       return false;
     }
@@ -2454,7 +2454,7 @@ bool SePrompt::bCmd_CreateSchemaR35(void)
   if (!bExecuteRequest())
     return false;
   
-  //vTrace("Schema created: %s\n"_Stz, m_xTokenVec2[2]);
+  //vTrace("Schema created: %s\n"_Stz, pTkn2(2));
   return true;
 }
 
@@ -2595,7 +2595,7 @@ bool SePrompt::bCmd_DropIndexR35(void)
   if (!bExecuteRequest())
     return false;
   
-  //vTrace("Table dropped: %s\n"_Stz, m_xTokenVec2[2]);
+  //vTrace("Table dropped: %s\n"_Stz, pTkn2(2));
   return true;
 }
 
