@@ -27,6 +27,8 @@ namespace Interface
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
+    void vCollectStatement(void);
+
     Token* pTkn(i8 i_Token);
     TokenVec* pTknVec(void);
 
