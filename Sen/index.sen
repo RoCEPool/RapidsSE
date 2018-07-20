@@ -312,19 +312,14 @@ pResultBuffer pSeitf seitf.bufferQueue@ queue.append
 /*----------------------------------------------------------------------------*/
 : indexTidyUp ( "<indexNm>" -- )
 
-   find execute ( ^indexPtr )
+  params| sIndexNm |
+  0 locals| pIndex |
 
-   // truncate the index
-   dup index.truncate
-   
-   // forget all column names
-   //dup index.subDic
-   //pathPush
-   //"columns" find execute forgetAll
-   //pathDrop
+  // find the index
+  sIndexNm find execute to pIndex
 
-  // forget the sub dictionary
-  // index.subDic forgetAll
+  // truncate the index
+  pIndex index.truncate
 ;
 
 ////////////////////////////////////////////////////////////////////////////////

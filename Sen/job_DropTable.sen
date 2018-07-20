@@ -63,12 +63,13 @@
 
   //----------------------------------------------------------------------------
   // push indexes folder
-  pushIndexes
+  pushIndexes assert
 
   //----------------------------------------------------------------------------
   // iterate thru all indexes and tidyUp
   0 pathPick dic.lastWord dup
   iterate                        // setup iteration of words
+
     object@ word.name to sIndexNm
 
     //sIndexNm "Deleting index %v" str.format .
@@ -77,6 +78,7 @@
     sIndexNm "indexTidyUp" find execute
 
     object@ word.prev object!     // step backwards thru words
+
   next
 
   //----------------------------------------------------------------------------
@@ -100,10 +102,11 @@
   sTableNm :forget
 
   //----------------------------------------------------------------------------
-  //
+  // pop table
   popTable
 
   sTableNm :forget
+
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -143,13 +146,13 @@
 
   pJob_DropTable getPathR35
   dicStack.set
+
   pJob_DropTable job.objectName@   ( tableNm )
-
-  removeTable ( )  not if "got error" . exit then
-
-  ddlLock::testDrop
+  removeTable ( ) //not if "got error" . exit then
 
   pJob_DropTable job.notice
+
+  <DONE_NODE>
 ;
 
 /*----------------------------------------------------------------------------*/
