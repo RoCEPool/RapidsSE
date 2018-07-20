@@ -283,12 +283,12 @@ void Tokeniser::vNextToken(void)
 /*----------------------------------------------------------------------------*/
 /* find token in token array                                                  */
 /*----------------------------------------------------------------------------*/
-i8 Tokeniser::iFindToken(Stz* aLookFor, TokenVec& xTokenVec, i8 nTokens)
+i8 Tokeniser::iFindToken(Stz* aLookFor, TokenVec* pTokenVec, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   for (i8 i_Token = 0; i_Token < nTokens; i_Token++)
-    if (aLookFor->bSame(xTokenVec[i_Token]->aText()))
+    if (aLookFor->bSame((*pTokenVec)[i_Token]->aText()))
       return i_Token;
   
   return -1;
@@ -297,12 +297,12 @@ i8 Tokeniser::iFindToken(Stz* aLookFor, TokenVec& xTokenVec, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* count tokens in token array                                                */
 /*----------------------------------------------------------------------------*/
-i8 Tokeniser::iCountTokens(TokenVec& xTokenVec,i8 nTokens)
+i8 Tokeniser::iCountTokens(TokenVec* pTokenVec,i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   for (i8 i_Token = 0; i_Token < nTokens; i_Token++)
-    if ( ! xTokenVec[i_Token]->bHasText() )
+    if ( ! (*pTokenVec)[i_Token]->bHasText() )
       return i_Token;
   
   ASSERT("Should never be reached"_Stz);

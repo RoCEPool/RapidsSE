@@ -462,7 +462,7 @@ TokenVec* SePrompt::pTokenVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return &m_xTokenVec;
+  return pTknVec();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -528,15 +528,17 @@ void SePrompt::vCollectStatement(void)
   // we should have a first token (e.g. create or drop)
   ASSERT(pTkn(0)->bHasText());
   
+  TokenVec* pTokenVec = pTknVec();
+  
   // have we already seen the ';'
-  i8 i_Token = m_pTokeniser->iFindToken(";"_Stz,m_xTokenVec,C_TOKENS);
+  i8 i_Token = m_pTokeniser->iFindToken(";"_Stz,pTokenVec,C_TOKENS);
   
   if (i_Token >= 0) {
     //m_pTokeniser->vDumpTokens("\nCommand : "_Stz,m_xTokenVec,C_TOKENS);
     return;
   }
   
-  i_Token = m_pTokeniser->iCountTokens(m_xTokenVec,C_TOKENS);
+  i_Token = m_pTokeniser->iCountTokens(pTokenVec,C_TOKENS);
   
   // switch to terminal mode
   m_pTokeniser->vLineMode(false);
@@ -820,7 +822,7 @@ TokenVec* SePrompt::pTknVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return &m_xTokenVec;
+  return &m_pCommandProcessor->m_xTokenVec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -919,7 +921,9 @@ bool SePrompt::bExecuteRequest(void)
   //! make this part of verbose??
   //m_pTokeniser->vDumpTokens("Command : "_Stz,m_xTokenVec,C_TOKENS);
   
-  bool bResult = RapidsSE_ExecuteRequest(m_pSEitf,m_xTokenVec,&aResponse);
+  TokenVec* pTokenVec = pTknVec();
+
+  bool bResult = RapidsSE_ExecuteRequest(m_pSEitf,*pTokenVec,&aResponse);
   
   if (pTknVec()->bDetachedRequest())
     return bResult;
