@@ -25,6 +25,7 @@ using namespace Prompt;
 #include "Prompt_cd.hpp"
 #include "Prompt_help.hpp"
 #include "Prompt_ls.hpp"
+#include "Prompt_print.hpp"
 #include "Prompt_pwd.hpp"
 #include "Prompt_question.hpp"
 #include "Prompt_sleep.hpp"
