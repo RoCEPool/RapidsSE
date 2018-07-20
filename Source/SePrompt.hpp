@@ -44,6 +44,8 @@ namespace Prompt
     JobClass*  m_pJobClass;  // job class
     Job*       m_pJob;       // job
   
+    CommandProcessor* m_pCommandProcessor;
+
     PosixThread m_xPosixThread; // posix thread structure
   
     // must be last

@@ -148,6 +148,8 @@ SePrompt::SePrompt(void)
   m_eCommand = CK_NONE;
   m_pJobClass = nullptr;
   m_pJob = nullptr;
+  
+  m_pCommandProcessor = new CommandProcessor;
 
   _checkInitialised_(CN_SEPROMPT);
 }
@@ -165,6 +167,8 @@ SePrompt::~SePrompt(void)
   RapidsSE_SEitfDelete(m_pSEitf, /*trace*/ 0);
   
   delete m_pTokeniser;
+  
+  delete m_pCommandProcessor;
 }
 
 /*----------------------------------------------------------------------------*/
