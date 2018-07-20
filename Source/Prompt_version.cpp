@@ -1,0 +1,50 @@
+/*============================================================================*/
+/* Prompt_version.cpp -- get SE version                                       */
+/*============================================================================*/
+
+#include "Prompt.h"
+#include "StorageEngine.h"
+
+extern AttachMap* gpAttachMap;
+
+PromptNote mPromptNote_version (
+  "Prompt_version"_Stz, // name of the prompt function
+  "comment"_Stz,        // comment about the functopm
+  "version"_Stz,        // the prompt command
+  nullptr,              // the second word
+  bPrompt_version,      // prompt post-process function
+  true                  // enabled
+);
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool Prompt::bPrompt_version(SePrompt* pPrompt)
+{
+  TokenVec* pTokenVec = pPrompt->pTokenVec();
+  /*
+  args.metadata if
+    "(version VARCHAR)" metadata!
+    "')" version "row: ('" "%v%v%v\n" str.format
+    1 task::this task.seitf@ seitf.rowsProcessed
+    else
+      version
+      then
+   */
+  ASSERT((*pTokenVec)[0]->bSame("version"_Stz));
+  
+  if (gpAttachMap->m_bMetadata) {
+    vTrace("metadata: (version VARCHAR)\n"_Stz);
+    vInfo("row: ('%s')\n"_Stz, (Stz*)RAPIDSSE_VERSION_STRING);
+  }
+  else
+    vInfo("%s\n"_Stz, (Stz*)RAPIDSSE_VERSION_STRING);
+  
+  vTrace("success: 1 rows affected\n"_Stz);
+  
+  return true;
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

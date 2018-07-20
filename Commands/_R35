@@ -4,8 +4,12 @@
 _startClusterR35
 sleep 10;
 
+// get version of SE
+print "creating table j10 with syntax error";
+version;
+
 // space
-//print "getting space";
+print "getting space";
 timerStart;
 space;
 timerEnd;
