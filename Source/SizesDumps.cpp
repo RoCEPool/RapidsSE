@@ -52,6 +52,7 @@ pDUMPFUN *gpDump[]
   /* 30 */ &Dump::vDummy,           // CN_CARRYOVER
   /* 31 */ &Dump::vDummy,           // CN_COLUMN
   /* 32 */ &Dump::vDummy,           // CN_COLUMNVEC
+  /*    */ &Dump::vDummy,           // CN_COMMANDPROCESSOR
 
   /* 33 */ &Dic::vDump,             // CN_DIC
   /*    */ &Dump::vDummy,           // CN_DICPATH
@@ -273,6 +274,7 @@ i8 giClassSize[]
   /* 30 */ sizeof(CarryOver),          // CN_CARRYOVER
   /* 31 */ sizeof(Column),             // CN_COLUMN
   /* 32 */ sizeof(ColumnVec),          // CN_COLUMNVEC
+  /* 32 */ sizeof(CommandProcessor),   // CN_COMMANDPROCESSOR
   
   /* 33 */ sizeof(Dic),                // CN_DIC
   /* 34 */ sizeof(0),                  // CN_DICSTACK
@@ -495,7 +497,8 @@ eHT geWhichHeap[]
   /* 30 */ HT_INVALID,           // CN_CARRYOVER
   /* 31 */ HT_TRANSIENT_SMALL,   // CN_COLUMN
   /* 32 */ HT_TRANSIENT_MEDIUM,  // CN_COLUMNVEC
-  
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_COMMANDPROCESSOR
+
   /* 33 */ HT_TRANSIENT_MEDIUM,  // CN_DIC
   /*    */ HT_INVALID,           // CN_DICPATH
   /* 34 */ HT_INVALID,           // CN_DICSTACK

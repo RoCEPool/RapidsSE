@@ -33,7 +33,7 @@ create table j10 (
 drop table j10;
 
 // drop the table again
-//drop table j10;
+drop table j10;
 
 docol epochDump;
 

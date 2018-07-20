@@ -70,6 +70,8 @@ namespace Interface
   
     Job* m_pJob;  // job to be performed
   
+    CommandProcessor* m_pCommandProcessor;
+  
     // must be last
     Footer m_xFooter;
     
