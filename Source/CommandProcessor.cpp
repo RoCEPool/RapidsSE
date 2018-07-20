@@ -94,6 +94,30 @@ CommandProcessor::~CommandProcessor(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get token from token vector                                                */
+/*----------------------------------------------------------------------------*/
+Token* CommandProcessor::pTkn(i8 i_Token)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
+  
+  TokenVec* pTknVec = this->pTknVec();
+  
+  Token* pTkn = (*pTknVec)[i_Token];
+  
+  return pTkn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get token vector                                                           */
+/*----------------------------------------------------------------------------*/
+TokenVec* CommandProcessor::pTknVec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
+  
+  return &m_xTokenVec;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
