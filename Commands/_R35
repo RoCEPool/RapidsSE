@@ -67,7 +67,7 @@ drop table j10;
 
 // drop the table again
 print "\n=========================================";
-print "creating table j10 which doesn't exist...";
+print "dropping table j10 which doesn't exist...";
 print "=========================================";
 drop table j10;
 
