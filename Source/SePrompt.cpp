@@ -196,10 +196,10 @@ bool SePrompt::bPrepareJob(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for echo prefix
-  if (bCmdIs("echo"_Stz))
-    vSetEcho();
-  else
-    vClearEcho();
+  //if (bCmdIs("echo"_Stz))
+  //  vSetEcho();
+  //else
+  //  vClearEcho();
   
   //vTrace("command: %s\n"_Stz,m_xTokenVec[0]->sText().aChar());
   
@@ -220,8 +220,8 @@ bool SePrompt::bPrepareJob(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for command file
-  if (bTestFile(m_xTokenVec[0]->aText()))
-    return bRunFile();
+  //if (bTestFile(m_xTokenVec[0]->aText()))
+  //  return bRunFile();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // execute seitf request
@@ -282,6 +282,12 @@ void SePrompt::vExecuteCommand(void)
     m_eCommand = CK_BLANK_LINE;
     return;
   }
+  
+  // test for echo prefix
+  if (bCmdIs("echo"_Stz))
+    vSetEcho();
+  else
+    vClearEcho();
   
   // attempt to execute command file
   if (bExecuteFile()) {
