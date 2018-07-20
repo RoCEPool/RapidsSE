@@ -5,11 +5,27 @@ _startClusterR35
 sleep 10;
 
 // get version of SE
-print "getting SE version";
+print "\n=========================================";
+print "getting SE version...";
+print "=========================================";
 version;
 
+// turn display on
+print "\n======================================";
+print "setting display on...";
+print "======================================";
+displayOn;
+
+// turn display off
+print "\n======================================";
+print "setting display off...";
+print "======================================";
+displayOff;
+
 // space
-print "getting space";
+print "\n======================================";
+print "getting space...";
+print "======================================";
 timerStart;
 space;
 timerEnd;
@@ -17,32 +33,42 @@ timerEnd;
 docol epochTake;
 
 // create a table with syntax error
-print "creating table j10 with syntax error";
+print "\n=========================================";
+print "creating table j10 with syntax error...";
+print "=========================================";
 create table j10 (
   j10_key   INTEGER NOT NULL,
   j10_name  V(32) NOT NULL
 );
 
 // create a table
-//print "creating table j10";
+print "\n=========================================";
+print "creating table j10...";
+print "=========================================";
 create table j10 (
   j10_key   INTEGER NOT NULL,
   j10_name  VARCHAR(32) NOT NULL
 );
 
 // create same table again
-print "creating table j10 which already exists";
+print "\n=========================================";
+print "creating table j10 which already exists...";
+print "=========================================";
 create table j10 (
   j10_key   INTEGER NOT NULL,
   j10_name  VARCHAR(32) NOT NULL
 );
 
 // drop the table
-print "dropping table j10";
+print "\n=========================================";
+print "dropping table j10...";
+print "=========================================";
 drop table j10;
 
 // drop the table again
-print "creating table j10 which doesn't exist";
+print "\n=========================================";
+print "creating table j10 which doesn't exist...";
+print "=========================================";
 drop table j10;
 
 docol epochDump;
