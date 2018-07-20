@@ -974,24 +974,45 @@ void Stack::vContentDump(Stz* aPrefix, Stz* aTitle)
     ValLib::vToString(&xValWrk,sWorkspace);
     Stz* aClass = xValWrk.aClass();
     
-    eCN eClass = xValWrk.eClass();
+    Value* pNestedValue = xValWrk.pNestedValue();
+    eCN eClass = pNestedValue->eClass();
     
-    if (CN_PTRVAL == eClass) {
-      PtrVal* pPtrVal = _pPtrVal(&xValWrk);
-      Object* pObject = pPtrVal->pPtr();
-      eCN ePtdClass   = pObject->eClass();
-      vTrace("[%s] [%2lld] %s (%s %s)\n"_Stz,
-        aPrefix,iVal,sWorkspace.aChar(),aClass,aCN[ePtdClass]);
-    }
-    else if (CN_IPVAL == eClass) {                                       //RAY??
-      IpVal* pIpVal = _pIpVal(&xValWrk);
-      Cell* pCell = pIpVal->pIpPtr();
-      vTrace("[%s] [%2lld] nullptr\n"_Stz,aPrefix,iVal);  //RAY: should trace pIpVal
-//    vTrace("[%s] [%2lld] %p\n"_Stz,aPrefix,iVal,pIpVal);
-    }
-    else {
-      vTrace("[%s] [%2lld] %s (%s)\n"_Stz,
-             aPrefix,iVal,sWorkspace.aChar(),aClass);
+    switch(eClass) {
+        
+      case CN_IPVAL: {
+        IpVal* pIpVal = _pIpVal(pNestedValue);
+        Cell* pCell = pIpVal->pIpPtr();
+        vTrace("[%s] [%2lld] [%s] %p\n"_Stz,aPrefix,iVal,aCN[eClass],pCell);
+        break;
+      }
+        
+      case CN_INTVAL: {
+        i8 iIntVal = xValWrk.iNestedAsInt();
+        vTrace("[%s] [%2lld] [%s] %lld\n"_Stz,aPrefix,iVal,aCN[eClass],iIntVal);
+        break;
+      }
+        
+      case CN_PTRVAL: {
+        PtrVal* pPtrVal = xValWrk.pNestedPtrVal();
+        Object* pObject = pPtrVal->pPtr();
+        eCN ePtdClass   = pObject->eClass();
+        vTrace("[%s] [%2lld] [%s] %s (%s)\n"_Stz,
+               aPrefix,iVal,aCN[eClass],sWorkspace.aChar(),aCN[ePtdClass]);
+        break;
+      }
+        
+      case CN_STRVAL: {
+        StrVal* pStrVal = _pStrVal(pNestedValue);
+        vTrace("[%s] [%2lld] [%s]  %s\n"_Stz,aPrefix,iVal,aCN[eClass],pStrVal->aChar());
+        break;
+      }
+        
+      default: {
+        vTrace("[%s] [%2lld] [%s]  %s (%s)\n"_Stz,
+               aPrefix,iVal,aCN[eClass],sWorkspace.aChar(),aCN[eClass]);
+        break;
+      }
+        
     }
   }
   
