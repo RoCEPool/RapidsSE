@@ -50,6 +50,8 @@ CommandProcessor::CommandProcessor(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
   
+  m_bContinue = true;
+
   m_sPrompt.vSprint("[N%lld %lld] se %s%c%s> "_Stz,
                     gpAttachMap->m_pGrid->iThisNode(),
                     Process::iGetPid(),
@@ -142,6 +144,119 @@ void CommandProcessor::vCollectStatement(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get command                                                                */
+/*----------------------------------------------------------------------------*/
+void CommandProcessor::vGetCommand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
+  
+  if (gxArguments.m_bCommand)
+    vGetCommandArgument();
+  else {
+    vGetCommandInput();
+    
+    // if empty line just return
+    if ( ! pTkn(0)->bHasText() )
+      return;
+    
+    // if its a command file just return
+    if (bTestFile(pTkn(0)->aText()))
+      return;
+    
+    // collect till ;
+    vCollectStatement();
+    
+    // stip off ;
+    pTknVec()->vStripSemicolon();
+    
+    // stip off &
+    pTknVec()->vStripAmpersand();
+    
+    // set no of tokens in token vector
+    pTknVec()->vSetTokens();
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get command from arguments                                                 */
+/*----------------------------------------------------------------------------*/
+void CommandProcessor::vGetCommandArgument(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
+  
+  pTknVec()->vReset();
+  
+  while (TN_NONE !=
+         m_pTokeniser->eNextToken((char*)pTkn(pTknVec()->nTokens())->aText())) {
+    
+    //vTrace("vGetCommand : [%lld] %s\n"_Stz,i_Token,pTkn(i_Token));
+    
+    pTknVec()->vIncTokens();
+    ASSERT(pTknVec()->nTokens() < C_TOKENS);
+  }
+  
+  m_bContinue = false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get command from input                                                     */
+/*----------------------------------------------------------------------------*/
+void CommandProcessor::vGetCommandInput(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
+  
+  while (true) {
+    
+    pTknVec()->vReset();
+    pTknVec2()->vReset();
+    
+    for (;;) {
+      
+      Token* pToken = pTkn(pTknVec()->nTokens());
+      
+      eTN eToken = m_pTokeniser->eNextToken((char*)pToken->aText());
+      
+      if (TN_NONE == eToken)
+        break;
+      
+      pToken->vToken(eToken);
+      
+      //      vTrace("vGetCommand : token %lld ]%s[\n"_Stz,
+      //             pTknVec()->nTokens(),
+      //             pTkn(pTknVec()->nTokens())->aText());
+      
+      pTknVec()->vIncTokens();
+      ASSERT(pTknVec()->nTokens() < C_TOKENS);
+    }
+    
+    // end of file? if so, pop and retry
+    if (! pTknVec()->nTokens() && m_pTokeniser->bEOF()) {
+      bool b = m_pTokeniser->bPop();
+      ASSERT(b);
+      continue;
+    }
+    
+    break;
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for command file                                                      */
+/*----------------------------------------------------------------------------*/
+bool CommandProcessor::bTestFile(Stz* aFileName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
+  
+  File xFile;
+  
+  if (xFile.bExists(aFileName))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get token from token vector                                                */
 /*----------------------------------------------------------------------------*/
 Token* CommandProcessor::pTkn(i8 i_Token)
@@ -163,6 +278,16 @@ TokenVec* CommandProcessor::pTknVec(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
   
   return &m_xTokenVec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get token vector 2                                                         */
+/*----------------------------------------------------------------------------*/
+TokenVec* CommandProcessor::pTknVec2(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
+  
+  return &m_xTokenVec2;
 }
 
 /*----------------------------------------------------------------------------*/

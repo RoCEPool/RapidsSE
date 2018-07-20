@@ -10,6 +10,7 @@ namespace Interface
   class CommandProcessor : public Object
   {
   public:
+    bool       m_bContinue;  // continue processing commands?
     s32        m_sPrompt;    // prompt
     Tokeniser* m_pTokeniser; // input stream tokeniser
     TokenVec   m_xTokenVec;  // token vector
@@ -31,6 +32,12 @@ namespace Interface
 
     Token* pTkn(i8 i_Token);
     TokenVec* pTknVec(void);
+    TokenVec* pTknVec2(void);
+
+    void vGetCommand(void);
+    void vGetCommandArgument(void);
+    void vGetCommandInput(void);
+    bool bTestFile(Stz* aPath);
 
     Footer* aFooter(void);
   };

@@ -109,7 +109,6 @@ SePrompt::SePrompt(void)
   eEC eResult = RapidsSE_SEitfNew((void**)&m_pSEitf,m_iPartition, /*trace*/ 0);
   ASSERT(EC_NONE == eResult);
   
-  m_bContinue = true;
   m_bEcho   = false;
   
   
@@ -155,10 +154,9 @@ void SePrompt::vDump(eCN eClass, Object* pObject, Stz* aTab)
   
   SePrompt* pSePrompt = reinterpret_cast<SePrompt*>(pObject);
   
-  vTrace("partition %lld seitf %p continue %s\n"_Stz,
+  vTrace("partition %lld seitf %p \n"_Stz,
          pSePrompt->m_iPartition,
-         pSePrompt->m_pSEitf,
-         pSePrompt->m_bContinue ? "true"_Stz : "false"_Stz);
+         pSePrompt->m_pSEitf);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -320,40 +318,6 @@ void SePrompt::vExecuteCommand(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get command                                                                */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vGetCommand(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  if (gxArguments.m_bCommand)
-    vGetCommandArgument();
-  else {
-    vGetCommandInput();
-    
-    // if empty line just return
-    if ( ! pTkn(0)->bHasText() )
-      return;
-    
-    // if its a command file just return
-    if (bTestFile(pTkn(0)->aText()))
-      return;
-    
-    // collect till ;
-    m_pCommandProcessor->vCollectStatement();
-    
-    // stip off ;
-    pTknVec()->vStripSemicolon();
-    
-    // stip off &
-    pTknVec()->vStripAmpersand();
-    
-    // set no of tokens in token vector
-    pTknVec()->vSetTokens();
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* get job class                                                              */
 /*----------------------------------------------------------------------------*/
 JobClass* SePrompt::pJobClass(void)
@@ -396,7 +360,7 @@ void SePrompt::vContinue(bool bContinue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_bContinue = bContinue;
+  m_pCommandProcessor->m_bContinue = bContinue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -569,70 +533,6 @@ bool SePrompt::bFindJobClass(void)
   gxJobCatalog.pFindJob(pTkn(0)->aText(), pTkn(1)->aText());
   
   return m_pJobClass ? true : false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get command from arguments                                                 */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vGetCommandArgument(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  pTknVec()->vReset();
-  
-  while (TN_NONE !=
-         m_pCommandProcessor->m_pTokeniser->eNextToken((char*)pTkn(pTknVec()->nTokens())->aText())) {
-    
-    //vTrace("vGetCommand : [%lld] %s\n"_Stz,i_Token,pTkn(i_Token));
-    
-    pTknVec()->vIncTokens();
-    ASSERT(pTknVec()->nTokens() < C_TOKENS);
-  }
-  
-  m_bContinue = false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get command from input                                                     */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vGetCommandInput(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  while (true) {
-    
-    pTknVec()->vReset();
-    pTknVec2()->vReset();
-    
-    for (;;) {
-      
-      Token* pToken = pTkn(pTknVec()->nTokens());
-      
-      eTN eToken = m_pCommandProcessor->m_pTokeniser->eNextToken((char*)pToken->aText());
-      
-      if (TN_NONE == eToken)
-        break;
-      
-      pToken->vToken(eToken);
-      
-      //      vTrace("vGetCommand : token %lld ]%s[\n"_Stz,
-      //             pTknVec()->nTokens(),
-      //             pTkn(pTknVec()->nTokens())->aText());
-      
-      pTknVec()->vIncTokens();
-      ASSERT(pTknVec()->nTokens() < C_TOKENS);
-    }
-    
-    // end of file? if so, pop and retry
-    if (! pTknVec()->nTokens() && m_pCommandProcessor->m_pTokeniser->bEOF()) {
-      bool b = m_pCommandProcessor->m_pTokeniser->bPop();
-      ASSERT(b);
-      continue;
-    }
-    
-    break;
-  }
-  
 }
 
 /*----------------------------------------------------------------------------*/

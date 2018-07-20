@@ -29,10 +29,9 @@ namespace Prompt
 
   class SePrompt : public Object
   {
-  private:
+  public:
     i8         m_iPartition; // which partition
     SEitf*     m_pSEitf;     // interface into rapidsse
-    bool       m_bContinue;  // continue processing commands?
     bool       m_bEcho;      // echo response?
     s48K       m_sResponse;  // response from seitf
     Timer      m_xTimer;     // timer
@@ -60,7 +59,6 @@ namespace Prompt
     bool bPrepareJob(void);
     void vEndJob(void);
     void vExecuteCommand(void);
-    void vGetCommand(void);
     JobClass* pJobClass(void);
     void vNewJob(void);
   
@@ -83,8 +81,6 @@ namespace Prompt
     bool bExecuteFile(void);
     bool bExecuteFunction(void);
     bool bFindJobClass(void);
-    void vGetCommandArgument(void);
-    void vGetCommandInput(void);
     void vMetaFormat(void);
     bool bOneIs(Stz* aArg);
     void vPushFile(Stz* aPath);
