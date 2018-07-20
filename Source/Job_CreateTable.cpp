@@ -78,6 +78,7 @@ Job_CreateTable::Job_CreateTable(Interface::SEitf* pSEitf)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
   
   m_sSeed             = mJobNote_CreateTable.pJobClass()->m_aSeed;
+  m_bCheckResources   = true;
   
   m_eTableType = TT_NONE;
   m_iColumns   = 0;

@@ -34,6 +34,7 @@ namespace JobsModel
     i8  m_iJobId;              // job id
     eJS m_eState;              // job state
     s32 m_sSeed;               // task seed (to be merged with above)
+    bool m_bCheckResources;    // request requires to check resources
     bool m_bDetached;          // is this job detached?
     i8  m_iParticipantNode;    // participant node no
     Atomic m_ziAcksRemaining;  // acks remaining
