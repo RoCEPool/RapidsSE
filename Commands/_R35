@@ -5,7 +5,7 @@ _startClusterR35
 sleep 10;
 
 // get version of SE
-print "creating table j10 with syntax error";
+print "getting SE version";
 version;
 
 // space

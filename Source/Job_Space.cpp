@@ -170,7 +170,9 @@ void JobsModel::vJob_Space_post(Prompt::SePrompt* pPrompt, Job* pJob)
     for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
       vTrace("%s\n"_Stz, pJob_Space->m_xNode[i_Node].m_sResponse.aChar());
     }
-    vTrace("success: %lld rows affected\n"_Stz, gpAttachMap->m_pGrid->m_nNodes);
+    if (gpAttachMap->m_bMetadata) {
+      vTrace("success: %lld rows affected\n"_Stz, gpAttachMap->m_pGrid->m_nNodes);
+    }
   }
   
   // now delete the job
