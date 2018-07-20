@@ -10,7 +10,9 @@ namespace Interface
   class CommandProcessor : public Object
   {
   public:
-  
+    TokenVec   m_xTokenVec;  // token vector
+    TokenVec   m_xTokenVec2; // another token vector
+
     // must be last
     Footer m_xFooter;
 
