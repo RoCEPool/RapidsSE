@@ -95,6 +95,12 @@ namespace Prompt
     void vSetEcho(void);
     bool bTestFile(Stz* aPath);
     bool bTokenCheck(i8 nTokens);
+  
+    TokenVec* pTknVec(void);
+    TokenVec* pTknVec2(void);
+  
+    Token* pTkn(i8 i_Token);
+    Token* pTkn2(i8 i_Token);
 
     Footer* aFooter(void);
   

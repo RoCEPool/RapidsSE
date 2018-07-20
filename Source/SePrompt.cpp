@@ -810,6 +810,54 @@ bool SePrompt::bTokenCheck(i8 nTokens)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get token vector                                                           */
+/*----------------------------------------------------------------------------*/
+TokenVec* SePrompt::pTknVec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return &m_xTokenVec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get second token vector                                                    */
+/*----------------------------------------------------------------------------*/
+TokenVec* SePrompt::pTknVec2(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return &m_xTokenVec2;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get token from token vector                                                */
+/*----------------------------------------------------------------------------*/
+Token* SePrompt::pTkn(i8 i_Token)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  TokenVec* pTknVec = this->pTknVec();
+  
+  Token* pTkn = pTknVec->pGet(i_Token);
+  
+  return pTkn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get token from second token vector                                         */
+/*----------------------------------------------------------------------------*/
+Token* SePrompt::pTkn2(i8 i_Token)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  TokenVec* pTknVec2 = this->pTknVec2();
+  
+  Token* pTkn = pTknVec2->pGet(i_Token);
+  
+  return pTkn;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
