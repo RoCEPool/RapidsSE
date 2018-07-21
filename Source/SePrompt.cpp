@@ -376,7 +376,6 @@ bool SePrompt::bDispatchJob(Job* pJob)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   Timer xTimer;
-  Stz* aResponse = nullptr;
   
   xTimer.vStart();
   
@@ -385,16 +384,11 @@ bool SePrompt::bDispatchJob(Job* pJob)
   //! make this part of verbose??
   //m_pCommandProcessor->m_pTokeniser->vDumpTokens("Command : "_Stz,m_xTokenVec,C_TOKENS);
   
-  bool bResult = RapidsSE_DispatchJob(pJob,m_pSEitf,&aResponse);
+  bool bResult = RapidsSE_DispatchJob(pJob,m_pSEitf);
   
   if (pTknVec()->bDetachedRequest())
     return bResult;
-  
-  if (bResult)
-    m_sResponse = aResponse ? (Stz*)aResponse : ""_Stz;
-  else
-    m_sResponse = aResponse ? (Stz*)aResponse : ""_Stz;
-  
+    
   xTimer.vUpdate();
   
   return bResult;

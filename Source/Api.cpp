@@ -656,7 +656,7 @@ eEC RapidsSE_DropTable(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable, 
     //pSEitf->m_pJob = pJob_DropTable;
     Stz* aResponse = nullptr;
     
-    RapidsSE_DispatchJob(pJob_DropTable, pSEitf, &aResponse);
+    RapidsSE_DispatchJob(pJob_DropTable, pSEitf);
     
     i8 rCode = pthread_mutex_lock(&pJob_DropTable->m_xThreadMutex);
     //vTrace("MutexLock %p\n"_Stz,this);
@@ -2489,7 +2489,7 @@ bool RapidsSE_ExecuteRequest(SEitf* pSEitf, TokenVec& xTokenVec, Stz** ppRespons
 /*----------------------------------------------------------------------------*/
 /* Execute a request                                                          */
 /*----------------------------------------------------------------------------*/
-bool RapidsSE_DispatchJob(Job* pJob, SEitf* pSEitf, Stz** ppResponse)
+bool RapidsSE_DispatchJob(Job* pJob, SEitf* pSEitf)
 {
   bool bResult;
   
@@ -2499,10 +2499,8 @@ bool RapidsSE_DispatchJob(Job* pJob, SEitf* pSEitf, Stz** ppResponse)
   // dispatch job to se
   bResult = pSEitf->bAppendJob(pJob);
   
-  if (! bResult) {
-    *ppResponse = nullptr;
+  if (! bResult)
     return bResult;
-  }
   
   return true;
   
