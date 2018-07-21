@@ -232,9 +232,7 @@ void SePrompt::vEndJob(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   // call the job post function (includes deleting the job)
-  m_pCommandProcessor->m_pJobClass->vEndJob(this, m_pCommandProcessor->m_pJob);
-  
-  m_pCommandProcessor->m_pJob = nullptr;
+  m_pCommandProcessor->vEndJob(this);
 }
 
 /*----------------------------------------------------------------------------*/

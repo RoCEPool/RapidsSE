@@ -151,6 +151,19 @@ void CommandProcessor::vCollectStatement(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* end a job                                                                  */
+/*----------------------------------------------------------------------------*/
+void CommandProcessor::vEndJob(SePrompt* pPrompt)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
+  
+  // call the job post function (includes deleting the job)
+  m_pJobClass->vEndJob(pPrompt, m_pJob);
+  
+  m_pJob = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* attempt to find job class for command                                      */
 /*----------------------------------------------------------------------------*/
 bool CommandProcessor::bFindJobClass(void)
