@@ -48,9 +48,7 @@ namespace Prompt
     void vExecuteCommand(void);
   
     // other
-    //eCK  eCommand(void);
     void vContinue(bool bContinue);
-    Job* pJob(void);
     SEitf* pSEitf(void);
     Timer* pTimer(void);
     TokenVec* pTokenVec(void);
