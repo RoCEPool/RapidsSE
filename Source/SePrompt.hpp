@@ -26,7 +26,6 @@ namespace Prompt
     bool       m_bEcho;      // echo response?
     s48K       m_sResponse;  // response from seitf
     Timer      m_xTimer;     // timer
-    Job*       m_pJob;       // job
   
     CommandProcessor* m_pCommandProcessor;
 

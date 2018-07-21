@@ -120,8 +120,6 @@ SePrompt::SePrompt(void)
   //----
   m_pCommandProcessor = new CommandProcessor;
 
-  m_pJob = nullptr;
-
   _checkInitialised_(CN_SEPROMPT);
 }
 
@@ -194,7 +192,7 @@ bool SePrompt::bPrepareJob(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // execute seitf request
-  if (! bDispatchJob(m_pJob))
+  if (! bDispatchJob(m_pCommandProcessor->m_pJob))
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -234,9 +232,9 @@ void SePrompt::vEndJob(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   // call the job post function (includes deleting the job)
-  m_pCommandProcessor->m_pJobClass->vEndJob(this, m_pJob);
+  m_pCommandProcessor->m_pJobClass->vEndJob(this, m_pCommandProcessor->m_pJob);
   
-  m_pJob = nullptr;
+  m_pCommandProcessor->m_pJob = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -327,8 +325,8 @@ void SePrompt::vNewJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_pJob = m_pCommandProcessor->m_pJobClass->pNewJob(this);
-  m_pJob->m_bDetached = pTknVec()->bDetachedRequest();
+  m_pCommandProcessor->m_pJob = m_pCommandProcessor->m_pJobClass->pNewJob(this);
+  m_pCommandProcessor->m_pJob->m_bDetached = pTknVec()->bDetachedRequest();
 }
 
 
@@ -363,7 +361,7 @@ Job* SePrompt::pJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return m_pJob;
+  return m_pCommandProcessor->m_pJob;
 }
 
 /*----------------------------------------------------------------------------*/
