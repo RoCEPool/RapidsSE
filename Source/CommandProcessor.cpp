@@ -5,8 +5,9 @@
 #include "Interface.h"
 #include "StorageEngine.h"
 
-extern AttachMap*    gpAttachMap;
-extern Arguments     gxArguments;
+extern Arguments   gxArguments;
+extern AttachMap*  gpAttachMap;
+extern JobCatalog  gxJobCatalog;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -147,6 +148,19 @@ void CommandProcessor::vCollectStatement(void)
   m_pTokeniser->vPrompt(m_sPrompt);
   
   //m_pTokeniser->vDumpTokens("Command : "_Stz,m_xTokenVec,C_TOKENS);
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt to find job class for command                                      */
+/*----------------------------------------------------------------------------*/
+bool CommandProcessor::bFindJobClass(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
+  
+  m_pJobClass =
+    gxJobCatalog.pFindJob(pTkn(0)->aText(), pTkn(1)->aText());
+  
+  return m_pJobClass ? true : false;
 }
 
 /*----------------------------------------------------------------------------*/

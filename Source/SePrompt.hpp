@@ -69,7 +69,6 @@ namespace Prompt
     bool bDispatchJob(Job* pJob);
     bool bExecuteFile(void);
     bool bExecuteFunction(void);
-    bool bFindJobClass(void);
     void vMetaFormat(void);
     bool bOneIs(Stz* aArg);
     void vPushFile(Stz* aPath);

@@ -47,6 +47,7 @@ namespace Interface
     TokenVec* pTknVec(void);
     TokenVec* pTknVec2(void);
 
+    bool bFindJobClass(void);
     void vGetCommand(void);
     void vGetCommandArgument(void);
     void vGetCommandInput(void);

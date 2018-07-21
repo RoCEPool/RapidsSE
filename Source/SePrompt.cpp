@@ -271,7 +271,7 @@ void SePrompt::vExecuteCommand(void)
   }
   
   // attempt to execute se job
-  if (bFindJobClass()) {
+  if (m_pCommandProcessor->bFindJobClass()) {
     m_pCommandProcessor->m_eCommand = CK_SE_JOB;
     return;
   }
@@ -513,19 +513,6 @@ bool SePrompt::bExecuteFunction(void)
   (*pPromptFun->m_fPrompt)(this);
   
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* attempt to find job class for command                                      */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bFindJobClass(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  m_pCommandProcessor->m_pJobClass =
-    gxJobCatalog.pFindJob(pTkn(0)->aText(), pTkn(1)->aText());
-  
-  return m_pCommandProcessor->m_pJobClass ? true : false;
 }
 
 /*----------------------------------------------------------------------------*/
