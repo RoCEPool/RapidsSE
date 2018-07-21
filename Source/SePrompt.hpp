@@ -48,10 +48,8 @@ namespace Prompt
     void vExecuteCommand(void);
   
     // other
-    void vContinue(bool bContinue);
     SEitf* pSEitf(void);
     Timer* pTimer(void);
-    TokenVec* pTokenVec(void);
   
 
   private:

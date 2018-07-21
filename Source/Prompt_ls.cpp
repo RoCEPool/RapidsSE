@@ -23,8 +23,8 @@ bool Prompt::bPrompt_ls(SePrompt* pPrompt)
   s256 sDirEntry;
   i8 iEntryType;
   
-  TokenVec* pTokenVec = pPrompt->pTokenVec();
-  
+  TokenVec* pTokenVec = pPrompt->m_pCommandProcessor->pTknVec();
+
   ASSERT((*pTokenVec)[0]->bSame("ls"_Stz));
   
   // get the current directory

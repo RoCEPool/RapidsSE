@@ -176,7 +176,9 @@ Job* JobsModel::pJob_DropTable_pre(Prompt::SePrompt* pPrompt)
   SEitf* pSEitf = pPrompt->pSEitf();
   Job_DropTable* pJob_DropTable = new Job_DropTable(pSEitf);
   
-  bool bResult = pJob_DropTable->bPopulateJob(pPrompt->pTokenVec());
+  TokenVec* pTokenVec = pPrompt->m_pCommandProcessor->pTknVec();
+  
+  bool bResult = pJob_DropTable->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
     i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;

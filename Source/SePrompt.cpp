@@ -296,16 +296,6 @@ void SePrompt::vExecuteCommand(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* set continue                                                               */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vContinue(bool bContinue)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  m_pCommandProcessor->m_bContinue = bContinue;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get the seitf                                                              */
 /*----------------------------------------------------------------------------*/
 SEitf* SePrompt::pSEitf(void)
@@ -323,16 +313,6 @@ Timer* SePrompt::pTimer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   return &m_xTimer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the token vector                                                       */
-/*----------------------------------------------------------------------------*/
-TokenVec* SePrompt::pTokenVec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  return pTknVec();
 }
 
 /*----------------------------------------------------------------------------*/

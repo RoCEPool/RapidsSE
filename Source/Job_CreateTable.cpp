@@ -568,7 +568,9 @@ Job* JobsModel::pJob_CreateTable_pre(Prompt::SePrompt* pPrompt)
   SEitf* pSEitf = pPrompt->pSEitf();
   Job_CreateTable* pJob_CreateTable = new Job_CreateTable(pSEitf);
   
-  bool bResult = pJob_CreateTable->bPopulateJob(pPrompt->pTokenVec());
+  TokenVec* pTokenVec = pPrompt->m_pCommandProcessor->pTknVec();
+
+  bool bResult = pJob_CreateTable->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
     i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;

@@ -148,8 +148,8 @@ Job* JobsModel::pJob_Docol_pre(Prompt::SePrompt* pPrompt)
   Job_Docol* pJob_Docol = new Job_Docol(pSEitf);
   
   i8 iNumTokens;
-  TokenVec* pTokenVec = pPrompt->pTokenVec();
-  
+  TokenVec* pTokenVec = pPrompt->m_pCommandProcessor->pTknVec();
+
   ASSERT(pTokenVec->pGet(0)->bSame("docol"_Stz));
   
   // - - - - - - - - - - - - - - - - - - - - -
