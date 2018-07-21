@@ -70,7 +70,7 @@ void Task::vPromptEndJob(MP_Task mpTask)
   
   Object* pSePromptObject;
   if ( ! mpTask->m_pDataStack->bPop(pSePromptObject) )
-    THROW_INVALID_DSTACK("prompt.executeCommand"_Stz);
+    THROW_INVALID_DSTACK("prompt.endJob"_Stz);
   SePrompt* pSePrompt = _pSePrompt(pSePromptObject);
   
   pSePrompt->vEndJob();

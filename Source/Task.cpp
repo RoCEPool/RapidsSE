@@ -1018,6 +1018,7 @@ void Task::vAddPrimitives(void)
   
   vAddPrimitives_Cast();
   vAddPrimitives_Class();
+  vAddPrimitives_CommandProcessor();
   vAddPrimitives_Comment();
   vAddPrimitives_Common();
   vAddPrimitives_Cpu();

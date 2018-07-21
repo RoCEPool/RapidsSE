@@ -31,7 +31,7 @@
     eCommand CK_SE_JOB == if
 
     // create the job for the command
-    pPrompt prompt.newJob to pJob
+    pCommandProcessor commandProcessor.newJob to pJob
 
     pJob job.hasError false == if
 
@@ -53,7 +53,7 @@
     then
 
      // post process and delete the job
-     pPrompt prompt.endJob
+     pCommandProcessor commandProcessor.endJob
 
   then
 
