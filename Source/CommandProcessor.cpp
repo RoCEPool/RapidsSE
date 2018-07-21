@@ -275,6 +275,17 @@ void CommandProcessor::vGetCommandInput(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* potentially execute a job                                                  */
+/*----------------------------------------------------------------------------*/
+void CommandProcessor::vNewJob(SePrompt* pPrompt)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
+  
+  m_pJob = m_pJobClass->pNewJob(pPrompt);
+  m_pJob->m_bDetached = pTknVec()->bDetachedRequest();
+}
+
+/*----------------------------------------------------------------------------*/
 /* test for command file                                                      */
 /*----------------------------------------------------------------------------*/
 bool CommandProcessor::bTestFile(Stz* aFileName)

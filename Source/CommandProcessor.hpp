@@ -52,6 +52,7 @@ namespace Interface
     void vGetCommand(void);
     void vGetCommandArgument(void);
     void vGetCommandInput(void);
+    void vNewJob(Prompt::SePrompt* pPrompt);
     bool bTestFile(Stz* aPath);
 
     Footer* aFooter(void);

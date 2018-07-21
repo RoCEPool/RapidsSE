@@ -111,13 +111,8 @@ SePrompt::SePrompt(void)
   
   m_bEcho   = false;
   
-  
-  
-    
   m_sResponse  = ""_Stz;
-
   
-  //----
   m_pCommandProcessor = new CommandProcessor;
 
   _checkInitialised_(CN_SEPROMPT);
@@ -323,8 +318,7 @@ void SePrompt::vNewJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_pCommandProcessor->m_pJob = m_pCommandProcessor->m_pJobClass->pNewJob(this);
-  m_pCommandProcessor->m_pJob->m_bDetached = pTknVec()->bDetachedRequest();
+  m_pCommandProcessor->vNewJob(this);
 }
 
 
