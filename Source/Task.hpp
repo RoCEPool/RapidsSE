@@ -543,7 +543,8 @@ namespace Tasks
 
     // command processor
     static void vCommandProcessorEndJob(MP_Task mpTask);
-  
+    static void vCommandProcessorNewJob(MP_Task mpTask);
+
    // comment
     static void vComment(MP_Task mpTask);
     
