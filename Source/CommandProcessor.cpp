@@ -87,7 +87,8 @@ CommandProcessor::CommandProcessor(void)
   m_pJob = nullptr;
 
   m_pPrompt = nullptr;
-
+  m_pSEitf = nullptr;
+  
   _checkInitialised_(CN_COMMANDPROCESSOR);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
@@ -149,6 +150,32 @@ void CommandProcessor::vCollectStatement(void)
   m_pTokeniser->vPrompt(m_sPrompt);
   
   //m_pTokeniser->vDumpTokens("Command : "_Stz,m_xTokenVec,C_TOKENS);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dispatch job into SE                                                       */
+/*----------------------------------------------------------------------------*/
+bool CommandProcessor::bDispatchJob(Job* pJob)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  Timer xTimer;
+  
+  xTimer.vStart();
+  
+  pTknVec()->vSetTokens();
+  
+  //! make this part of verbose??
+  //m_pCommandProcessor->m_pTokeniser->vDumpTokens("Command : "_Stz,m_xTokenVec,C_TOKENS);
+  
+  bool bResult = RapidsSE_DispatchJob(pJob,m_pSEitf);
+  
+  if (pTknVec()->bDetachedRequest())
+    return bResult;
+  
+  xTimer.vUpdate();
+  
+  return bResult;
 }
 
 /*----------------------------------------------------------------------------*/

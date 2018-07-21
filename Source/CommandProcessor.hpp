@@ -30,7 +30,8 @@ namespace Interface
     Job*       m_pJob;       // job
 
     Prompt::SePrompt* m_pPrompt; // prompt (temporary)
-  
+    SEitf*     m_pSEitf;     // interface into rapidsse (temporary)
+
     // must be last
     Footer m_xFooter;
 
@@ -44,11 +45,7 @@ namespace Interface
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
     void vCollectStatement(void);
-
-    Token* pTkn(i8 i_Token);
-    TokenVec* pTknVec(void);
-    TokenVec* pTknVec2(void);
-
+    bool bDispatchJob(Job* pJob);
     void vEndJob(void);
     bool bFindJobClass(void);
     void vGetCommand(void);
@@ -57,6 +54,10 @@ namespace Interface
     void vNewJob(void);
     bool bTestFile(Stz* aPath);
 
+    Token* pTkn(i8 i_Token);
+    TokenVec* pTknVec(void);
+    TokenVec* pTknVec2(void);
+  
     Footer* aFooter(void);
   };
   
