@@ -115,15 +115,12 @@ SePrompt::SePrompt(void)
   
     
   m_sResponse  = ""_Stz;
-  //m_xHistory
+
   
   //----
   m_pCommandProcessor = new CommandProcessor;
 
-  
-  m_pJobClass = nullptr;
   m_pJob = nullptr;
-
 
   _checkInitialised_(CN_SEPROMPT);
 }
@@ -134,9 +131,6 @@ SePrompt::SePrompt(void)
 SePrompt::~SePrompt(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  // close history file
-  //m_xHistory.vClose();
   
   RapidsSE_SEitfDelete(m_pSEitf, /*trace*/ 0);
   
@@ -240,7 +234,7 @@ void SePrompt::vEndJob(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   // call the job post function (includes deleting the job)
-  m_pJobClass->vEndJob(this, m_pJob);
+  m_pCommandProcessor->m_pJobClass->vEndJob(this, m_pJob);
   
   m_pJob = nullptr;
 }
@@ -323,7 +317,7 @@ JobClass* SePrompt::pJobClass(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return m_pJobClass;
+  return m_pCommandProcessor->m_pJobClass;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -333,7 +327,7 @@ void SePrompt::vNewJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_pJob = m_pJobClass->pNewJob(this);
+  m_pJob = m_pCommandProcessor->m_pJobClass->pNewJob(this);
   m_pJob->m_bDetached = pTknVec()->bDetachedRequest();
 }
 
@@ -528,10 +522,10 @@ bool SePrompt::bFindJobClass(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_pJobClass =
+  m_pCommandProcessor->m_pJobClass =
     gxJobCatalog.pFindJob(pTkn(0)->aText(), pTkn(1)->aText());
   
-  return m_pJobClass ? true : false;
+  return m_pCommandProcessor->m_pJobClass ? true : false;
 }
 
 /*----------------------------------------------------------------------------*/
