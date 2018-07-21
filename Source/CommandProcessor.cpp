@@ -86,8 +86,9 @@ CommandProcessor::CommandProcessor(void)
   m_pJobClass = nullptr;
   m_pJob = nullptr;
 
+  m_pPrompt = nullptr;
 
- _checkInitialised_(CN_COMMANDPROCESSOR);
+  _checkInitialised_(CN_COMMANDPROCESSOR);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
 }
@@ -153,12 +154,12 @@ void CommandProcessor::vCollectStatement(void)
 /*----------------------------------------------------------------------------*/
 /* end a job                                                                  */
 /*----------------------------------------------------------------------------*/
-void CommandProcessor::vEndJob(SePrompt* pPrompt)
+void CommandProcessor::vEndJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
   
   // call the job post function (includes deleting the job)
-  m_pJobClass->vEndJob(pPrompt, m_pJob);
+  m_pJobClass->vEndJob(m_pPrompt, m_pJob);
   
   m_pJob = nullptr;
 }
@@ -277,11 +278,12 @@ void CommandProcessor::vGetCommandInput(void)
 /*----------------------------------------------------------------------------*/
 /* potentially execute a job                                                  */
 /*----------------------------------------------------------------------------*/
-void CommandProcessor::vNewJob(SePrompt* pPrompt)
+void CommandProcessor::vNewJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
   
-  m_pJob = m_pJobClass->pNewJob(pPrompt);
+  m_pJob = m_pJobClass->pNewJob(m_pPrompt);
+  
   m_pJob->m_bDetached = pTknVec()->bDetachedRequest();
 }
 

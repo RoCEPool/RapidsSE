@@ -341,6 +341,7 @@ namespace Tasks
     void vAddPrimitives_Bp(void);
     void vAddPrimitives_Cast(void);
     void vAddPrimitives_Class(void);
+    void vAddPrimitives_CommandProcessor(void);
     void vAddPrimitives_Comment(void);
     void vAddPrimitives_Common(void);
     void vAddPrimitives_Cpu(void);
@@ -540,7 +541,10 @@ namespace Tasks
     // class
     static void vClassName(MP_Task mpTask);
 
-    // comment
+    // command processor
+    static void vCommandProcessorEndJob(MP_Task mpTask);
+  
+   // comment
     static void vComment(MP_Task mpTask);
     
     // common
@@ -1050,6 +1054,7 @@ namespace Tasks
     static void vProcessTestPid(MP_Task mpTask);
     
     // prompt
+    static void vPromptCommandProcessor(MP_Task mpTask);
     static void vPromptDispatchJob(MP_Task mpTask);
     static void vPromptEndJob(MP_Task mpTask);
     static void vPromptExecuteCommand(MP_Task mpTask);

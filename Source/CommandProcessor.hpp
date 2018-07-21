@@ -29,6 +29,8 @@ namespace Interface
     JobClass*  m_pJobClass;  // job class
     Job*       m_pJob;       // job
 
+    Prompt::SePrompt* m_pPrompt; // prompt (temporary)
+  
     // must be last
     Footer m_xFooter;
 
@@ -47,12 +49,12 @@ namespace Interface
     TokenVec* pTknVec(void);
     TokenVec* pTknVec2(void);
 
-    void vEndJob(Prompt::SePrompt* pPrompt);
+    void vEndJob(void);
     bool bFindJobClass(void);
     void vGetCommand(void);
     void vGetCommandArgument(void);
     void vGetCommandInput(void);
-    void vNewJob(Prompt::SePrompt* pPrompt);
+    void vNewJob(void);
     bool bTestFile(Stz* aPath);
 
     Footer* aFooter(void);

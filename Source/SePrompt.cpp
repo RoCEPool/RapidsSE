@@ -114,6 +114,7 @@ SePrompt::SePrompt(void)
   m_sResponse  = ""_Stz;
   
   m_pCommandProcessor = new CommandProcessor;
+  m_pCommandProcessor->m_pPrompt = this;
 
   _checkInitialised_(CN_SEPROMPT);
 }
@@ -227,7 +228,7 @@ void SePrompt::vEndJob(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   // call the job post function (includes deleting the job)
-  m_pCommandProcessor->vEndJob(this);
+  m_pCommandProcessor->vEndJob();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -318,7 +319,7 @@ void SePrompt::vNewJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_pCommandProcessor->vNewJob(this);
+  m_pCommandProcessor->vNewJob();
 }
 
 

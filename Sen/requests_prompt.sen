@@ -10,12 +10,14 @@
 : promptR35_req ( -- <R> )
 
   0 locals| pPrompt |
+  0 locals| pCommandProcessor |
   0 locals| eCommand |
   0 locals| pJob |
 
   "promptR35_req" .
 
   prompt::new to pPrompt
+  pPrompt prompt.commandProcessor to pCommandProcessor
 
   begin
 
