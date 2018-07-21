@@ -121,7 +121,6 @@ SePrompt::SePrompt(void)
   m_pCommandProcessor = new CommandProcessor;
 
   
-  m_eCommand = CK_NONE;
   m_pJobClass = nullptr;
   m_pJob = nullptr;
 
@@ -255,7 +254,7 @@ void SePrompt::vExecuteCommand(void)
   
   // test for blank line
   if (bBlankLine()) {
-    m_eCommand = CK_BLANK_LINE;
+    m_pCommandProcessor->m_eCommand = CK_BLANK_LINE;
     return;
   }
   
@@ -267,19 +266,19 @@ void SePrompt::vExecuteCommand(void)
   
   // attempt to execute command file
   if (bExecuteFile()) {
-    m_eCommand = CK_COMMAND_FILE;
+    m_pCommandProcessor->m_eCommand = CK_COMMAND_FILE;
     return;
   }
   
   // attempt to execute internal command
   if (bExecuteFunction()) {
-    m_eCommand = CK_PROMPT_FUNCTION;
+    m_pCommandProcessor->m_eCommand = CK_PROMPT_FUNCTION;
     return;
   }
   
   // attempt to execute se job
   if (bFindJobClass()) {
-    m_eCommand = CK_SE_JOB;
+    m_pCommandProcessor->m_eCommand = CK_SE_JOB;
     return;
   }
  /*
@@ -350,7 +349,7 @@ eCK SePrompt::eCommand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return m_eCommand;
+  return m_pCommandProcessor->m_eCommand;
 }
 
 /*----------------------------------------------------------------------------*/
