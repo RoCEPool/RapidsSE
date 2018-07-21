@@ -72,7 +72,7 @@ void Task::vPromptExecuteCommand(MP_Task mpTask)
   
   pSePrompt->vExecuteCommand();
   
-  eCK eCommand = pSePrompt->eCommand();
+  eCK eCommand = pSePrompt->m_pCommandProcessor->m_eCommand;
   
   mpTask->m_pDataStack->vPushInt(eCommand);
   
