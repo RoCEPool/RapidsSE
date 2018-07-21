@@ -15,12 +15,9 @@ void Task::vAddPrimitives_Prompt(void)
 {
   vAddPrimitive("prompt.commandProcessor"_Stz, &vPromptCommandProcessor, false);
   vAddPrimitive("prompt.dispatchJob"_Stz,    &vPromptDispatchJob,    false);
-  vAddPrimitive("prompt.endJob"_Stz,         &vPromptEndJob,         false);
   vAddPrimitive("prompt.executeCommand"_Stz, &vPromptExecuteCommand, false);
   vAddPrimitive("prompt.getCommand"_Stz,     &vPromptGetCommand,     false);
-  vAddPrimitive("prompt.jobClass"_Stz,       &vPromptJobClass,       false);
   vAddPrimitive("prompt::new"_Stz,           &vPromptNew,            false);
-  vAddPrimitive("prompt.newJob"_Stz,         &vPromptNewJob,         false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -57,23 +54,6 @@ void Task::vPromptDispatchJob(MP_Task mpTask)
   
   bool b = pSePrompt->bPrepareJob();
   ASSERT(b);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt.endJob -- end job                                                   */
-/*----------------------------------------------------------------------------*/
-void Task::vPromptEndJob(MP_Task mpTask)
-{
-  ENTRY("vPromptEndJob"_Stz);
-  
-  Object* pSePromptObject;
-  if ( ! mpTask->m_pDataStack->bPop(pSePromptObject) )
-    THROW_INVALID_DSTACK("prompt.endJob"_Stz);
-  SePrompt* pSePrompt = _pSePrompt(pSePromptObject);
-  
-  pSePrompt->vEndJob();
   
   EXIT();
 }
@@ -117,25 +97,6 @@ void Task::vPromptGetCommand(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* prompt.jobClass -- get job class                                           */
-/*----------------------------------------------------------------------------*/
-void Task::vPromptJobClass(MP_Task mpTask)
-{
-  ENTRY("vPromptJobClass"_Stz);
-  
-  Object* pSePromptObject;
-  if ( ! mpTask->m_pDataStack->bPop(pSePromptObject) )
-    THROW_INVALID_DSTACK("prompt.jobClass"_Stz);
-  SePrompt* pSePrompt = _pSePrompt(pSePromptObject);
-  
-  JobClass* pJobClass = pSePrompt->pJobClass();
-  
-  mpTask->m_pDataStack->vPushInt((i8)pJobClass);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* prompt::new -- prompt new                                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vPromptNew(MP_Task mpTask)
@@ -145,29 +106,6 @@ void Task::vPromptNew(MP_Task mpTask)
   SePrompt* pSePrompt = new SePrompt;
   
   mpTask->m_pDataStack->vPushObject(pSePrompt);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt.newJob -- new a job from job class                                  */
-/*----------------------------------------------------------------------------*/
-void Task::vPromptNewJob(MP_Task mpTask)
-{
-  ENTRY("vPromptNewJob"_Stz);
-  
-  Object* pSePromptObject;
-  if ( ! mpTask->m_pDataStack->bPop(pSePromptObject) )
-    THROW_INVALID_DSTACK("prompt.newJob"_Stz);
-  SePrompt* pSePrompt = _pSePrompt(pSePromptObject);
-  
-  pSePrompt->vNewJob();
-  
-  Job* pJob = pSePrompt->pJob();
-  
-  pJob->m_pPromptTask = *mpTask;
-  
-  mpTask->m_pDataStack->vPushObject(pJob);
   
   EXIT();
 }

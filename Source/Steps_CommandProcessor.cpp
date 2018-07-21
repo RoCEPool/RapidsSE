@@ -13,12 +13,13 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_CommandProcessor(void)
 {
-  vAddPrimitive("commandProcessor.endJob"_Stz,&vCommandProcessorEndJob,false);
-  vAddPrimitive("commandProcessor.newJob"_Stz,&vCommandProcessorNewJob,false);
+  vAddPrimitive("commandProcessor.endJob"_Stz,  &vCommandProcessorEndJob,  false);
+  vAddPrimitive("commandProcessor.jobClass"_Stz,&vCommandProcessorJobClass,false);
+  vAddPrimitive("commandProcessor.newJob"_Stz,  &vCommandProcessorNewJob,  false);
 }
 
 /*----------------------------------------------------------------------------*/
-/* prompt.endJob -- end job                                                   */
+/* commandProcessor.endJob -- end job                                         */
 /*----------------------------------------------------------------------------*/
 void Task::vCommandProcessorEndJob(MP_Task mpTask)
 {
@@ -26,7 +27,7 @@ void Task::vCommandProcessorEndJob(MP_Task mpTask)
   
   Object* pCommandProcessorObject;
   if ( ! mpTask->m_pDataStack->bPop(pCommandProcessorObject) )
-    THROW_INVALID_DSTACK("prompt.executeCommand"_Stz);
+    THROW_INVALID_DSTACK("commandProcessor.endJob"_Stz);
   CommandProcessor*
     pCommandProcessor = _pCommandProcessor(pCommandProcessorObject);
   
@@ -36,7 +37,27 @@ void Task::vCommandProcessorEndJob(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* prompt.newJob -- new a job from job class                                  */
+/* commandProcessor.jobClass -- get job class                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vCommandProcessorJobClass(MP_Task mpTask)
+{
+  ENTRY("vCommandProcessorJobClass"_Stz);
+  
+  Object* pCommandProcessorObject;
+  if ( ! mpTask->m_pDataStack->bPop(pCommandProcessorObject) )
+    THROW_INVALID_DSTACK("commandProcessor.jobClass"_Stz);
+  CommandProcessor*
+    pCommandProcessor = _pCommandProcessor(pCommandProcessorObject);
+
+  JobClass* pJobClass = pCommandProcessor->m_pJobClass;
+  
+  mpTask->m_pDataStack->vPushInt((i8)pJobClass);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* commandProcessor.newJob -- new a job from job class                        */
 /*----------------------------------------------------------------------------*/
 void Task::vCommandProcessorNewJob(MP_Task mpTask)
 {

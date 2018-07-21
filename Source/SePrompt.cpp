@@ -221,17 +221,6 @@ bool SePrompt::bPrepareJob(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* end a job                                                                  */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vEndJob(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  // call the job post function (includes deleting the job)
-  m_pCommandProcessor->vEndJob();
-}
-
-/*----------------------------------------------------------------------------*/
 /* execute command                                                            */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vExecuteCommand(void)
@@ -310,16 +299,6 @@ JobClass* SePrompt::pJobClass(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   return m_pCommandProcessor->m_pJobClass;
-}
-
-/*----------------------------------------------------------------------------*/
-/* potentially execute a job                                                  */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vNewJob(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  m_pCommandProcessor->vNewJob();
 }
 
 

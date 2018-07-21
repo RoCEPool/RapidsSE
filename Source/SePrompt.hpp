@@ -45,10 +45,8 @@ namespace Prompt
 
     // these are the prompt.xyz task primitives
     bool bPrepareJob(void);
-    void vEndJob(void);
     void vExecuteCommand(void);
     JobClass* pJobClass(void);
-    void vNewJob(void);
   
     // other
     eCK  eCommand(void);
