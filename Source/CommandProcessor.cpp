@@ -80,6 +80,12 @@ CommandProcessor::CommandProcessor(void)
   m_pTokeniser->vLineMode(true);
   m_pTokeniser->vNormal(true);
 
+  
+  m_eCommand = CK_NONE;
+  m_pJobClass = nullptr;
+  m_pJob = nullptr;
+
+
  _checkInitialised_(CN_COMMANDPROCESSOR);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);

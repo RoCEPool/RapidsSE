@@ -530,7 +530,7 @@ bool SePrompt::bFindJobClass(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   m_pJobClass =
-  gxJobCatalog.pFindJob(pTkn(0)->aText(), pTkn(1)->aText());
+    gxJobCatalog.pFindJob(pTkn(0)->aText(), pTkn(1)->aText());
   
   return m_pJobClass ? true : false;
 }

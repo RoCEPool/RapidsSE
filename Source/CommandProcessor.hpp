@@ -7,6 +7,16 @@
 
 namespace Interface
 {
+  enum eCK // command kind
+  {
+  /*  0 */ CK_NONE=0,
+  /*  1 */ CK_BLANK_LINE,
+  /*  2 */ CK_COMMAND_FILE,
+  /*  3 */ CK_PROMPT_FUNCTION,
+  /*  4 */ CK_SE_JOB,
+  /*  5 */ CK_ENUMS
+  };
+  
   class CommandProcessor : public Object
   {
   public:
@@ -15,6 +25,9 @@ namespace Interface
     Tokeniser* m_pTokeniser; // input stream tokeniser
     TokenVec   m_xTokenVec;  // token vector
     TokenVec   m_xTokenVec2; // another token vector
+    eCK        m_eCommand;   // kind of last command
+    JobClass*  m_pJobClass;  // job class
+    Job*       m_pJob;       // job
 
     // must be last
     Footer m_xFooter;
