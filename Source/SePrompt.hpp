@@ -22,7 +22,6 @@ namespace Prompt
   {
   public:
     SEitf*     m_pSEitf;     // interface into rapidsse
-    bool       m_bEcho;      // echo response?
     s48K       m_sResponse;  // response from seitf
     Timer      m_xTimer;     // timer
   
@@ -54,7 +53,6 @@ namespace Prompt
   private:
   
     bool bBlankLine(void);
-    void vClearEcho(void);
     void vClipTokens(i8 i_FromToken);
     bool bCmdIs(Stz* aArg);
     bool bExecuteFile(void);
@@ -63,7 +61,6 @@ namespace Prompt
     bool bOneIs(Stz* aArg);
     void vPushFile(Stz* aPath);
     bool bRunFile(void);
-    void vSetEcho(void);
     bool bTestFile(Stz* aPath);
     bool bTokenCheck(i8 nTokens);
   

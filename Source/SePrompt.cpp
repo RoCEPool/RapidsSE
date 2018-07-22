@@ -109,8 +109,6 @@ SePrompt::SePrompt(void)
   eEC eResult = RapidsSE_SEitfNew((void**)&m_pSEitf,iPartition, /*trace*/ 0);
   ASSERT(EC_NONE == eResult);
   
-  m_bEcho   = false;
-  
   m_sResponse  = ""_Stz;
   
   m_pCommandProcessor = new CommandProcessor;
@@ -233,13 +231,7 @@ void SePrompt::vExecuteCommand(void)
     m_pCommandProcessor->m_eCommand = CK_BLANK_LINE;
     return;
   }
-  
-  // test for echo prefix
-  if (bCmdIs("echo"_Stz))
-    vSetEcho();
-  else
-    vClearEcho();
-  
+    
   // attempt to execute command file
   if (bExecuteFile()) {
     m_pCommandProcessor->m_eCommand = CK_COMMAND_FILE;
@@ -331,14 +323,6 @@ bool SePrompt::bBlankLine(void)
     return false;
   
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* clear echo result                                                          */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vClearEcho(void)
-{
-  m_bEcho = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -467,16 +451,6 @@ bool SePrompt::bRunFile(void)
   m_sResponse = "<ok>"_Stz;
   
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set echo result                                                            */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vSetEcho(void)
-{
-  m_bEcho = true;
-  
-  vClipTokens(1);
 }
 
 /*----------------------------------------------------------------------------*/
