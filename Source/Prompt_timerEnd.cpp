@@ -13,16 +13,16 @@ PromptNote mPromptNote_timerEnd (
   true                   // enabled
 );
 
+extern Timer gxPromptTimer;  // the timer
+
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_timerEnd(SePrompt* pPrompt)
 {
-  Timer* pTimer = pPrompt->pTimer();
+  gxPromptTimer.vUpdate();
   
-  pTimer->vUpdate();
-  
-  vTrace("duration %lldms\n"_Stz,pTimer->iMilliseconds());
+  vTrace("duration %lldms\n"_Stz,gxPromptTimer.iMilliseconds());
   
   return true;
 }

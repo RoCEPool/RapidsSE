@@ -23,7 +23,6 @@ namespace Prompt
   public:
     SEitf*     m_pSEitf;     // interface into rapidsse
     s48K       m_sResponse;  // response from seitf
-    Timer      m_xTimer;     // timer
   
     CommandProcessor* m_pCommandProcessor;
 
@@ -46,9 +45,7 @@ namespace Prompt
     void vExecuteCommand(void);
   
     // other
-    SEitf* pSEitf(void);
-    Timer* pTimer(void);
-  
+    SEitf* pSEitf(void);  
 
   private:
   

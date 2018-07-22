@@ -13,14 +13,14 @@ PromptNote mPromptNote_timerStart (
   true                     // enabled
 );
 
+Timer gxPromptTimer;  // the timer
+
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_timerStart(SePrompt* pPrompt)
 {
-  Timer* pTimer = pPrompt->pTimer();
-  
-  pTimer->vStart();
+  gxPromptTimer.vStart();
 
   return true;
 }
