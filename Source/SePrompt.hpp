@@ -21,7 +21,6 @@ namespace Prompt
   class SePrompt : public Object
   {
   public:
-    i8         m_iPartition; // which partition
     SEitf*     m_pSEitf;     // interface into rapidsse
     bool       m_bEcho;      // echo response?
     s48K       m_sResponse;  // response from seitf

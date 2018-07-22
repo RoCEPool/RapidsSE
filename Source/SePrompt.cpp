@@ -104,9 +104,9 @@ SePrompt::SePrompt(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_iPartition = 0;
+  i8 iPartition = 0;
 
-  eEC eResult = RapidsSE_SEitfNew((void**)&m_pSEitf,m_iPartition, /*trace*/ 0);
+  eEC eResult = RapidsSE_SEitfNew((void**)&m_pSEitf,iPartition, /*trace*/ 0);
   ASSERT(EC_NONE == eResult);
   
   m_bEcho   = false;
@@ -142,8 +142,8 @@ void SePrompt::vDump(eCN eClass, Object* pObject, Stz* aTab)
   
   SePrompt* pSePrompt = reinterpret_cast<SePrompt*>(pObject);
   
-  vTrace("partition %lld seitf %p \n"_Stz,
-         pSePrompt->m_iPartition,
+  vTrace("SePrompt %p seitf %p \n"_Stz,
+         pSePrompt,
          pSePrompt->m_pSEitf);
 }
 
