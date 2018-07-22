@@ -25,8 +25,6 @@ namespace Prompt
     s48K       m_sResponse;  // response from seitf
   
     CommandProcessor* m_pCommandProcessor;
-
-    PosixThread m_xPosixThread; // posix thread structure
   
     // must be last
     Footer m_xFooter;
