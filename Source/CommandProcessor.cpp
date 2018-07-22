@@ -155,9 +155,9 @@ void CommandProcessor::vCollectStatement(void)
 /*----------------------------------------------------------------------------*/
 /* dispatch job into SE                                                       */
 /*----------------------------------------------------------------------------*/
-bool CommandProcessor::bDispatchJob(Job* pJob)
+bool CommandProcessor::bDispatchJob(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
   
   Timer xTimer;
   
@@ -168,7 +168,7 @@ bool CommandProcessor::bDispatchJob(Job* pJob)
   //! make this part of verbose??
   //m_pCommandProcessor->m_pTokeniser->vDumpTokens("Command : "_Stz,m_xTokenVec,C_TOKENS);
   
-  bool bResult = RapidsSE_DispatchJob(pJob,m_pSEitf);
+  bool bResult = RapidsSE_DispatchJob(m_pJob,m_pSEitf);
   
   if (pTknVec()->bDetachedRequest())
     return bResult;

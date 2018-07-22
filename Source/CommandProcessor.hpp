@@ -45,7 +45,7 @@ namespace Interface
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
     void vCollectStatement(void);
-    bool bDispatchJob(Job* pJob);
+    bool bDispatchJob(void);
     void vEndJob(void);
     bool bFindJobClass(void);
     void vGetCommand(void);

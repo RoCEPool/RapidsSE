@@ -58,7 +58,6 @@ namespace Prompt
     void vClearEcho(void);
     void vClipTokens(i8 i_FromToken);
     bool bCmdIs(Stz* aArg);
-    bool bDispatchJob(Job* pJob);
     bool bExecuteFile(void);
     bool bExecuteFunction(void);
     void vMetaFormat(void);

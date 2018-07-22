@@ -189,7 +189,7 @@ bool SePrompt::bPrepareJob(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // execute seitf request
-  if (! bDispatchJob(m_pCommandProcessor->m_pJob))
+  if (! m_pCommandProcessor->bDispatchJob())
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -367,32 +367,6 @@ bool SePrompt::bCmdIs(Stz* aArg)
     return true;
   else
     return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* dispatch job into SE                                                       */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bDispatchJob(Job* pJob)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  Timer xTimer;
-  
-  xTimer.vStart();
-  
-  pTknVec()->vSetTokens();
-  
-  //! make this part of verbose??
-  //m_pCommandProcessor->m_pTokeniser->vDumpTokens("Command : "_Stz,m_xTokenVec,C_TOKENS);
-  
-  bool bResult = RapidsSE_DispatchJob(pJob,m_pSEitf);
-  
-  if (pTknVec()->bDetachedRequest())
-    return bResult;
-    
-  xTimer.vUpdate();
-  
-  return bResult;
 }
 
 /*----------------------------------------------------------------------------*/
