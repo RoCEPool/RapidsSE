@@ -38,32 +38,32 @@
     // job commands have had their job class identified
     eCommand CK_SE_JOB == if
 
-    // create the job for the command
-    pCommandProcessor commandProcessor.newJob to pJob
+      // create the job for the command
+      pCommandProcessor commandProcessor.newJob to pJob
 
-    pJob job.hasError false == if
+      pJob job.hasError false == if
 
-      // grab this prompt task's lock
-      task::this task.grabLock
+        // grab this prompt task's lock
+        task::this task.grabLock
 
-      // set 1 ack required from the job
-      1 setAcks
+        // set 1 ack required from the job
+        1 setAcks
 
-      // dispatch the job
-      pCommandProcessor commandProcessor.dispatchJob
+        // dispatch the job
+        pCommandProcessor commandProcessor.dispatchJob
 
-      // wait for ack from job
-      "prompt waiting for ack" .
-      ackWait
+        // wait for ack from job
+        "prompt waiting for ack" .
+        ackWait
 
-    else
-      "job has error (maybe syntax error)" .
+      else
+        "job has error (maybe syntax error)" .
+      then
+
+       // post process and delete the job
+       pCommandProcessor commandProcessor.endJob
+
     then
-
-     // post process and delete the job
-     pCommandProcessor commandProcessor.endJob
-
-  then
 
   again
 
