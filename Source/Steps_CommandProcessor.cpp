@@ -13,11 +13,32 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_CommandProcessor(void)
 {
-  vAddPrimitive("commandProcessor.DispatchJob"_Stz,&vCommandProcessorDispatchJob,false);
+  vAddPrimitive("commandProcessor.blankLine"_Stz,  &vCommandProcessorBlankLine,  false);
+  vAddPrimitive("commandProcessor.dispatchJob"_Stz,&vCommandProcessorDispatchJob,false);
   vAddPrimitive("commandProcessor.endJob"_Stz,     &vCommandProcessorEndJob,     false);
   vAddPrimitive("commandProcessor.getCommand"_Stz, &vCommandProcessorGetCommand, false);
   vAddPrimitive("commandProcessor.jobClass"_Stz,   &vCommandProcessorJobClass,   false);
   vAddPrimitive("commandProcessor.newJob"_Stz,     &vCommandProcessorNewJob,     false);
+}
+
+/*----------------------------------------------------------------------------*/
+/* commandProcessor.blankLine -- blank line test                              */
+/*----------------------------------------------------------------------------*/
+void Task::vCommandProcessorBlankLine(MP_Task mpTask)
+{
+  ENTRY("vCommandProcessorBlankLine"_Stz);
+  
+  Object* pCommandProcessorObject;
+  if ( ! mpTask->m_pDataStack->bPop(pCommandProcessorObject) )
+    THROW_INVALID_DSTACK("commandProcessor.blankLine"_Stz);
+  CommandProcessor*
+    pCommandProcessor = _pCommandProcessor(pCommandProcessorObject);
+  
+  bool bBlank = pCommandProcessor->bBlankLine();
+  
+  mpTask->m_pDataStack->vPushInt((i8)bBlank);
+
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

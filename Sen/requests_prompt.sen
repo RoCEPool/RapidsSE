@@ -29,6 +29,12 @@
     // check and execute the command
     pPrompt prompt.executeCommand to eCommand
 
+    // check for blank line
+    pCommandProcessor commandProcessor.blankLine if
+      //"A blank line" .
+      ifAgain
+    then
+
     // job commands have had their job class identified
     eCommand CK_SE_JOB == if
 

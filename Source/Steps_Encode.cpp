@@ -22,6 +22,7 @@ void Task::vAddPrimitives_Encode(void)
   vAddPrimitive("continue"_Stz,            &vEncodeContinue,      true);
   vAddPrimitive("here"_Stz,                &vEncodeHere,          false);
   vAddPrimitive("if"_Stz,                  &vEncodeIf,            true );
+  vAddPrimitive("ifAgain"_Stz,             &vEncodeIfAgain,       true );
   vAddPrimitive("loop"_Stz,                &vEncodeLoop,          true );
   vAddPrimitive("+loop"_Stz,               &vEncodeLoopPlus,      true );
   vAddPrimitive("next"_Stz,                &vEncodeNext,          true );
@@ -179,6 +180,37 @@ void Task::vEncodeIf(MP_Task mpTask)
   
   // cstack: push unknown forward address
   mpTask->m_pDataStack->vPushCell(pUnknownOrigin);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* ifAgain -- encode jump to known backward address (inside if)     immediate */
+/*----------------------------------------------------------------------------*/
+void Task::vEncodeIfAgain(MP_Task mpTask)
+{
+  ENTRY("vIfAgain"_Stz); // ( dest -- / -- )
+  
+  Word* pCurrentWord = mpTask->m_pCurrentWord;
+  
+  // cstack: pop known if address
+  Cell* pIfDestination;
+  if ( ! mpTask->m_pDataStack->bPop(pIfDestination) )
+    THROW_INVALID_DSTACK("andAgain"_Stz);
+  
+  // cstack: pop known backward address
+  Cell* pKnownDestination;
+  if ( ! mpTask->m_pDataStack->bPop(pKnownDestination) )
+    THROW_INVALID_DSTACK("andAgain"_Stz);
+  
+  // append : jump to known backward address
+  pCurrentWord->vEncode("jump"_Stz,pKnownDestination);
+  
+  // cstack: push known forward address
+  mpTask->m_pDataStack->vPushCell(pKnownDestination);
+  
+  // cstack: push known forward address
+  mpTask->m_pDataStack->vPushCell(pIfDestination);
   
   EXIT();
 }
