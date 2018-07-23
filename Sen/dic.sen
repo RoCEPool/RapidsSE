@@ -135,6 +135,16 @@ diclock.dropwrite
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+: checkIsDicR35 ( word )
+  params| pWord |
+
+  pWord not if EC_NO_SUCH_FOLDER false exit then
+  pWord word.kind@ tick folder eql if true exit then
+  EC_NOT_A_FOLDER false
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 : dicHasRef ( word )
 
   dup execute dic.ref

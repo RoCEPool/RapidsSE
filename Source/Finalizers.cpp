@@ -92,6 +92,7 @@ pFINALIZE *gpFinalize[]
   
   /*    */ &Finalize::vUndefined,         // CN_JOB_ANALYZEINDEX
   /*    */ &Finalize::vUndefined,         // CN_JOB_ANALYZETABLE
+  /*    */ &Finalize::vUndefined,         // CN_JOB_CHANGEFOLDER
   /*    */ &Finalize::vUndefined,         // CN_JOB_CREATECATALOG
   /*    */ &Finalize::vUndefined,         // CN_JOB_CREATEINDEX
   /*    */ &Finalize::vUndefined,         // CN_JOB_CREATESCHEMA

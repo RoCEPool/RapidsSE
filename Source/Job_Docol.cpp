@@ -8,7 +8,7 @@
 extern AttachMap* gpAttachMap;
 
 JobNote mJobNote_Docol (
-  "docol"_Stz,      // name of the job class
+  "Job_Docol"_Stz,  // name of the job class
   CN_JOB_DOCOL,     // class enum
   "comment"_Stz,    // comment about the job
   "docol"_Stz,      // the prompt command
@@ -115,6 +115,33 @@ void Job_Docol::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* populate the job                                                           */
+/*----------------------------------------------------------------------------*/
+bool Job_Docol::bPopulateJob(TokenVec* pTokenVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DOCOL,_FOOTER_);
+  
+  i8 iNumTokens;
+  
+  ASSERT(pTokenVec->pGet(0)->bSame("docol"_Stz));
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // get no of tokens in token vector
+  iNumTokens = pTokenVec->nTokens();;
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // there should be 2 tokens
+  if (iNumTokens != 2) {
+    return nullptr;
+  }
+  
+  // set the docol command name
+  m_sObjectName = pTokenVec->pGet(1)->aText();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
 void Job_Docol::vShow(void)
@@ -147,24 +174,15 @@ Job* JobsModel::pJob_Docol_pre(Prompt::SePrompt* pPrompt)
   
   Job_Docol* pJob_Docol = new Job_Docol(pSEitf);
   
-  i8 iNumTokens;
   TokenVec* pTokenVec = pPrompt->m_pCommandProcessor->pTknVec();
-
-  ASSERT(pTokenVec->pGet(0)->bSame("docol"_Stz));
   
-  // - - - - - - - - - - - - - - - - - - - - -
-  // get no of tokens in token vector
-  iNumTokens = pTokenVec->nTokens();;
+  bool bResult = pJob_Docol->bPopulateJob(pTokenVec);
   
-  // - - - - - - - - - - - - - - - - - - - - -
-  // there should be 2 tokens
-  if (iNumTokens != 2) {
-    pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return nullptr;
+  if ( !bResult) {
+    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
+    pJob_Docol->m_bHasError = true;
+    pJob_Docol->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
   }
-  
-  // set the table name
-  pJob_Docol->m_sObjectName = pTokenVec->pGet(1)->aText();
   
   return pJob_Docol;
 }

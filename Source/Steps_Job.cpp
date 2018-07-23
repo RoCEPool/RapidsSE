@@ -419,6 +419,13 @@ void Task::vJobDelete(MP_Task mpTask)
       break;
     }
     
+    case CN_JOB_CHANGEFOLDER:
+    {
+      Job_ChangeFolder* pJob_ChangeFolder = _pJob_ChangeFolder(pJobPtr);
+      delete pJob_ChangeFolder;
+      break;
+    }
+    
     case CN_JOB_CREATECATALOG:
     {
       Job_CreateCatalog* pJobCreateCatalog = _pJob_CreateCatalog(pJobPtr);

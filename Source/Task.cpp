@@ -597,6 +597,7 @@ void Task::vAddConstants(void)
   
   /*    */ vAddConstant("CN_JOB_ANALYZEINDEX"_Stz,   CN_JOB_ANALYZEINDEX);
   /*    */ vAddConstant("CN_JOB_ANALYZETABLE"_Stz,   CN_JOB_ANALYZETABLE);
+   /*    */ vAddConstant("CN_JOB_CHANGEFOLDER"_Stz,  CN_JOB_CHANGEFOLDER);
   /*    */ vAddConstant("CN_JOB_CREATECATALOG"_Stz,  CN_JOB_CREATECATALOG);
   /*    */ vAddConstant("CN_JOB_CREATEINDEX"_Stz,    CN_JOB_CREATEINDEX);
   /*    */ vAddConstant("CN_JOB_CREATESCHEMA"_Stz,   CN_JOB_CREATESCHEMA);

@@ -128,7 +128,8 @@ bool Job_DropCatalog::bPopulateJob(TokenVec* pTokenVec)
   ASSERT(pTokenVec->pGet(0)->bSame("drop"_Stz));
   ASSERT(pTokenVec->pGet(1)->bSame("catalog"_Stz));
   
-  // get number of items in token vector
+  // - - - - - - - - - - - - - - - - - - - - -
+  // get number of items in token
   iNumTokens = pTokenVec->nItems();
   
   // - - - - - - - - - - - - - - - - - - - - -
