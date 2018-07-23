@@ -19,14 +19,15 @@
 /*----------------------------------------------------------------------------*/
 /* check if word is a removable table folder                                  */
 /*----------------------------------------------------------------------------*/
-: checkRemoveTable ( "<tableNm>" -- "<tableNm>" true | errorCode false )
+: checkRemoveTable ( "<tableNm>" -- true | errorCode false )
 
   params| sTableNm |
 
+  // check in tables folder
   checkInTables not if false exit then
 
-  sTableNm checkIsWord not if EC_NO_SUCH_TABLE false exit then
-  drop
+  // check if tableNm is a word in tables folder
+  sTableNm checkIsWordR35 not if EC_NO_SUCH_TABLE false exit then
 
   // push table folder
   sTableNm pushTable assert
@@ -118,8 +119,6 @@
   "dropTable_req" .
 
   tp: droTable
-
-  //ddlLock::grabWrite
 
   // get the task
   task::this to pTask
