@@ -44,7 +44,7 @@
       1 setAcks
 
       // dispatch the job
-      pPrompt prompt.dispatchJob
+      pCommandProcessor commandProcessor.dispatchJob
 
       // wait for ack from job
       "prompt waiting for ack" .
