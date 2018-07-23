@@ -8,15 +8,15 @@
 extern AttachMap* gpAttachMap;
 
 JobNote mJobNote_DropTable (
-  "Job_DropTable"_Stz,  // name of the job class
-  CN_JOB_DROPTABLE,     // class enum
-  "comment"_Stz,        // comment about the job
-  "drop"_Stz,           // the prompt command
-  "table"_Stz,          // the second word
-  "dropTable"_Stz,      // the task seed for this job
-  false,                // detached job?
-  pJob_DropTable_pre,   // prompt pre-process function
-  vJob_DropTable_post,  // prompt post-process function
+  "Job_DropTable"_Stz,       // name of the job class
+  CN_JOB_DROPTABLE,          // class enum
+  "drop table tableNm"_Stz,  // comment about the job
+  "drop"_Stz,                // the prompt command
+  "table"_Stz,               // the second word
+  "dropTable"_Stz,           // the task seed for this job
+  false,                     // detached job?
+  pJob_DropTable_pre,        // prompt pre-process function
+  vJob_DropTable_post,       // prompt post-process function
   true
   );
 
