@@ -542,6 +542,7 @@ namespace Tasks
     static void vClassName(MP_Task mpTask);
 
     // command processor
+    static void vCommandProcessorBlankLine(MP_Task mpTask);
     static void vCommandProcessorDispatchJob(MP_Task mpTask);
     static void vCommandProcessorEndJob(MP_Task mpTask);
     static void vCommandProcessorGetCommand(MP_Task mpTask);
@@ -674,6 +675,7 @@ namespace Tasks
     static void vEncodeContinue(MP_Task mpTask);
     static void vEncodeHere(MP_Task mpTask);
     static void vEncodeIf(MP_Task mpTask);
+    static void vEncodeIfAgain(MP_Task mpTask);
     static void vEncodeLoop(MP_Task mpTask);
     static void vEncodeLoopPlus(MP_Task mpTask);
     static void vEncodeNext(MP_Task mpTask);

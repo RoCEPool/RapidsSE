@@ -105,6 +105,19 @@ CommandProcessor::~CommandProcessor(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test for blank line                                                        */
+/*----------------------------------------------------------------------------*/
+bool CommandProcessor::bBlankLine(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
+  
+  if (0 != pTkn(0)->iLength())
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* collect ';' delimited statement                                            */
 /*----------------------------------------------------------------------------*/
 void CommandProcessor::vCollectStatement(void)

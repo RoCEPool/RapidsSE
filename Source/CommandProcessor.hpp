@@ -44,6 +44,7 @@ namespace Interface
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
+    bool bBlankLine(void);
     void vCollectStatement(void);
     bool bDispatchJob(void);
     void vEndJob(void);
