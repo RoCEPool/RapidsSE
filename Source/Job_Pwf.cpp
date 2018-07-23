@@ -9,15 +9,15 @@ extern AttachMap* gpAttachMap;
 
 JobNote mJobNote_Pwf (
   "Job_Pwf"_Stz,         // name of the job class
-  CN_JOB_CHANGEFOLDER,        // class enum
-  "change folder"_Stz,        // comment about the job
-  "pwf"_Stz,                   // the prompt command
-  nullptr,                    // the second word
-  "pwf"_Stz,                   // the task seed for this job
-  false,                      // detached job?
-  pJob_Pwf_pre,         // prompt pre-process function
-  vJob_Pwf_post,     // prompt post-process function
-  true                        // job is enabled
+  CN_JOB_PWF,            // class enum
+  "change folder"_Stz,   // comment about the job
+  "pwf"_Stz,             // the prompt command
+  nullptr,               // the second word
+  "pwf"_Stz,             // the task seed for this job
+  false,                 // detached job?
+  pJob_Pwf_pre,          // prompt pre-process function
+  vJob_Pwf_post,         // prompt post-process function
+  true                   // job is enabled
 );
 
 /*----------------------------------------------------------------------------*/

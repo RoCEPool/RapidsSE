@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : cf_req ( -- <R> )
 
-  0 0 0 0 locals| pCurrentFolder sFolderNm pJob_ChangeFolder pTask |
+  0 0 0 0 locals| pCurrentFolder sFolderNm pJob_Cf pTask |
 
   tp: cf_req
 
@@ -19,15 +19,15 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the job from the task
-  pTask task.job@ to pJob_ChangeFolder
+  pTask task.job@ to pJob_Cf
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the objectName (folderNm) from the job
-  pJob_ChangeFolder job.objectName@ to sFolderNm
+  pJob_Cf job.objectName@ to sFolderNm
 
   //----------------------------------------------------------------------------
   // set dictionary stack
-  pJob_ChangeFolder getPathR35
+  pJob_Cf getPathR35
   dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -35,9 +35,10 @@
 
   // pop up one folder, but not into tenants
   sFolderNm ".." str.equal if
-  0 pathPick dic.name "tenants" str.equal not if pathDrop then
-  pJob_ChangeFolder <DONE_REQUEST>
-  exit
+    0 pathPick dic.name "tenants" str.equal not if pathDrop then
+    savePathR35
+    pJob_Cf <DONE_REQUEST>
+    exit
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -45,9 +46,10 @@
 
   // pop up to tenants
   sFolderNm "~" str.equal if
-  begin 0 pathPick dic.name "tenants" str.equal not while pathDrop repeat
-  pJob_ChangeFolder <DONE_REQUEST>
-  exit
+    begin 0 pathPick dic.name "tenants" str.equal not while pathDrop repeat
+    savePathR35
+    pJob_Cf <DONE_REQUEST>
+    exit
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -55,20 +57,22 @@
 
   // clear dic path and push tenants
   sFolderNm "tenants" str.equal if
-  pathDropAll
-  attachmap::tenants@ execute pathPush
-  pJob_ChangeFolder <DONE_REQUEST>
-  exit
+    pathDropAll
+    attachmap::tenants@ execute pathPush
+    savePathR35
+    pJob_Cf <DONE_REQUEST>
+    exit
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // otherwise we expect a name of a sub -folder to which we push path to
   // push sub-folder
   sFolderNm findInCurrent to pCurrentFolder
-  pCurrentFolder checkIsDicR35 not if pJob_ChangeFolder <ERROR_REQUEST> exit then
+  pCurrentFolder checkIsDicR35 not if pJob_Cf <ERROR_REQUEST> exit then
   pCurrentFolder execute pathPush
+  savePathR35
 
-  pJob_ChangeFolder <DONE_REQUEST>
+  pJob_Cf <DONE_REQUEST>
 ;
 
 /*============================================================================*/

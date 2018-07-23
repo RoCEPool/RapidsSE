@@ -4,7 +4,7 @@
 
 "job_Set.sen" .verbose
 
-"job_ChangeFolder.sen" include
+"job_Cf.sen" include
 "job_CreateSchema.sen" include
 "job_CreateTable.sen" include
 "job_DropSchema.sen" include

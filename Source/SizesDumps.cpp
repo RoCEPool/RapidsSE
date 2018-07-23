@@ -96,7 +96,7 @@ pDUMPFUN *gpDump[]
   
   /*    */ &Dump::vDummy,           // CN_JOB_ANALYZEINDEX
   /*    */ &Dump::vDummy,           // CN_JOB_ANALYZETABLE
-  /*    */ &Dump::vDummy,           // CN_JOB_CHANGEFOLDER
+  /*    */ &Dump::vDummy,           // CN_JOB_CF
   /*    */ &Dump::vDummy,           // CN_JOB_CREATECATALOG
   /*    */ &Dump::vDummy,           // CN_JOB_CREATEINDEX
   /*    */ &Dump::vDummy,           // CN_JOB_CREATESCHEMA
@@ -321,7 +321,7 @@ i8 giClassSize[]
 
   /*    */ sizeof(Job_CreateTable),   // CN_JOB_ANALYZEINDEX
   /*    */ sizeof(Job_CreateTable),   // CN_JOB_ANALYZETABLE
-  /*    */ sizeof(Job_ChangeFolder),  // CN_JOB_CHANGEFOLDER
+  /*    */ sizeof(Job_Cf),            // CN_JOB_CF
   /*    */ sizeof(Job_CreateCatalog), // CN_JOB_CREATECATALOG
   /*    */ sizeof(Job_CreateIndex),   // CN_JOB_CREATEINDEX
   /*    */ sizeof(Job_CreateSchema),  // CN_JOB_CREATESCHEMA
@@ -546,7 +546,7 @@ eHT geWhichHeap[]
   
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_ANALYZEINDEX
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_ANALYZETABLE
-  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CHANGEFOLDER
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CF
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CREATECATALOG
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CREATEINDEX
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CREATESCHEMA

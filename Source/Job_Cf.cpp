@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Job_ChangeFolder.cpp -- Change Folder Job                                  */
+/* Job_Cf.cpp -- Change Folder Job                                            */
 /*============================================================================*/
 
 #include "JobModel.h"
@@ -7,17 +7,17 @@
 
 extern AttachMap* gpAttachMap;
 
-JobNote mJobNote_ChangeFolder (
-  "Job_ChangeFolder"_Stz,     // name of the job class
-  CN_JOB_CHANGEFOLDER,        // class enum
-  "change folder"_Stz,        // comment about the job
-  "cf"_Stz,                   // the prompt command
-  nullptr,                    // the second word
-  "cf"_Stz,                   // the task seed for this job
-  false,                      // detached job?
-  pJob_ChangeFolder_pre,      // prompt pre-process function
-  vJob_ChangeFolder_post,     // prompt post-process function
-  true                        // job is enabled
+JobNote mJobNote_Cf (
+  "Job_f"_Stz,           // name of the job class
+  CN_JOB_CF,             // class enum
+  "change folder"_Stz,   // comment about the job
+  "cf"_Stz,              // the prompt command
+  nullptr,               // the second word
+  "cf"_Stz,              // the task seed for this job
+  false,                 // detached job?
+  pJob_Cf_pre,           // prompt pre-process function
+  vJob_Cf_post,          // prompt post-process function
+  true                   // job is enabled
 );
 
 /*----------------------------------------------------------------------------*/
@@ -27,32 +27,32 @@ JobNote mJobNote_ChangeFolder (
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_ChangeFolder* JobsModel::_pJob_ChangeFolder(void* aAddress)
+Job_Cf* JobsModel::_pJob_Cf(void* aAddress)
 {
-  Job_ChangeFolder* pJob_ChangeFolder = reinterpret_cast<Job_ChangeFolder*>(aAddress);
+  Job_Cf* pJob_Cf = reinterpret_cast<Job_Cf*>(aAddress);
   
-  //RASSERT( !pJob_ChangeFolder || CN_JOB_CHANGEFOLDER == pJob_ChangeFolder->eClass());
+  //RASSERT( !pJob_Cf || CN_JOB_CF == pJob_Cf->eClass());
   
-  return pJob_ChangeFolder;
+  return pJob_Cf;
 }
 
 /*----------------------------------------------------------------------------*/
 /* allocate a new entry buffer from heap                                      */
 /*----------------------------------------------------------------------------*/
-void* Job_ChangeFolder::operator new(size_t iSize)
+void* Job_Cf::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  Job_ChangeFolder* pJob_ChangeFolder =
-    static_cast<Job_ChangeFolder*>(Heap::pAllocate(CN_JOB_CHANGEFOLDER));
+  Job_Cf* pJob_Cf =
+    static_cast<Job_Cf*>(Heap::pAllocate(CN_JOB_CF));
   
-  return pJob_ChangeFolder;
+  return pJob_Cf;
 }
 
 /*----------------------------------------------------------------------------*/
 /* perform new of entry buffer for given address                              */
 /*----------------------------------------------------------------------------*/
-void* Job_ChangeFolder::operator new(size_t iSize, void* aAddress)
+void* Job_Cf::operator new(size_t iSize, void* aAddress)
 {
   RASSERT(iSize);
   
@@ -62,34 +62,34 @@ void* Job_ChangeFolder::operator new(size_t iSize, void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* free an entry buffer back to the heap                                      */
 /*----------------------------------------------------------------------------*/
-void Job_ChangeFolder::operator delete(void* aAddress)
+void Job_Cf::operator delete(void* aAddress)
 {
-  Job_ChangeFolder* pJob_ChangeFolder = static_cast<Job_ChangeFolder*>(aAddress);
+  Job_Cf* pJob_Cf = static_cast<Job_Cf*>(aAddress);
   
-  Heap::vFree(pJob_ChangeFolder);
+  Heap::vFree(pJob_Cf);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_ChangeFolder::Job_ChangeFolder(Interface::SEitf* pSEitf)
-: Job(CN_JOB_CHANGEFOLDER), JobDicPath(pSEitf)
+Job_Cf::Job_Cf(Interface::SEitf* pSEitf)
+: Job(CN_JOB_CF), JobDicPath(pSEitf)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CHANGEFOLDER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CF,_FOOTER_);
   
-  m_sSeed    = mJobNote_ChangeFolder.pJobClass()->m_aSeed;
+  m_sSeed    = mJobNote_Cf.pJobClass()->m_aSeed;
 
   _checkInitialised_(CN_JOB_DOCOL);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_CHANGEFOLDER,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_CF,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_ChangeFolder::~Job_ChangeFolder(void)
+Job_Cf::~Job_Cf(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CHANGEFOLDER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CF,_FOOTER_);
 }
 
 
@@ -100,14 +100,14 @@ Job_ChangeFolder::~Job_ChangeFolder(void)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void Job_ChangeFolder::vDump(eCN eClass, Object* pObject, Stz* aTab)
+void Job_Cf::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   RASSERT(CN_JOB_DOCOL == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_CHANGEFOLDER);
+  RASSERT(pObject->eClass() == CN_JOB_CF);
   
-  Job_ChangeFolder* pJob_ChangeFolder = _pJob_ChangeFolder(pObject);
+  Job_Cf* pJob_Cf = _pJob_Cf(pObject);
 
-  pJob_ChangeFolder->vShow();
+  pJob_Cf->vShow();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -117,9 +117,9 @@ void Job_ChangeFolder::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* populate the job                                                           */
 /*----------------------------------------------------------------------------*/
-bool Job_ChangeFolder::bPopulateJob(TokenVec* pTokenVec)
+bool Job_Cf::bPopulateJob(TokenVec* pTokenVec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CHANGEFOLDER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CF,_FOOTER_);
   
   i8 iNumTokens;
   
@@ -144,9 +144,9 @@ bool Job_ChangeFolder::bPopulateJob(TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
-void Job_ChangeFolder::vShow(void)
+void Job_Cf::vShow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CHANGEFOLDER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CF,_FOOTER_);
   
                                                                //! Alka to write
 }
@@ -158,9 +158,9 @@ void Job_ChangeFolder::vShow(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Job_ChangeFolder::aFooter(void)
+Footer* Job_Cf::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CHANGEFOLDER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CF);
   
   return &m_xFooter;
 }
@@ -168,39 +168,39 @@ Footer* Job_ChangeFolder::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_ChangeFolder_pre(Prompt::SePrompt* pPrompt)
+Job* JobsModel::pJob_Cf_pre(Prompt::SePrompt* pPrompt)
 {
   SEitf* pSEitf = pPrompt->pSEitf();
   
-  Job_ChangeFolder* pJob_ChangeFolder = new Job_ChangeFolder(pSEitf);
+  Job_Cf* pJob_Cf = new Job_Cf(pSEitf);
   
   TokenVec* pTokenVec = pPrompt->m_pCommandProcessor->pTknVec();
   
-  bool bResult = pJob_ChangeFolder->bPopulateJob(pTokenVec);
+  bool bResult = pJob_Cf->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
     i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_ChangeFolder->m_bHasError = true;
-    pJob_ChangeFolder->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+    pJob_Cf->m_bHasError = true;
+    pJob_Cf->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
   }
   
-  return pJob_ChangeFolder;
+  return pJob_Cf;
 }
 
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_ChangeFolder_post(Prompt::SePrompt* pPrompt, Job* pJob)
+void JobsModel::vJob_Cf_post(Prompt::SePrompt* pPrompt, Job* pJob)
 {
-  Job_ChangeFolder* pJob_ChangeFolder = _pJob_ChangeFolder(pJob);
+  Job_Cf* pJob_Cf = _pJob_Cf(pJob);
   
   // Note: take care of errors / meta data ????
   for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-    vTrace("%s\n"_Stz, pJob_ChangeFolder->m_xNode[i_Node].m_sResponse.aChar());
+    vTrace("%s\n"_Stz, pJob_Cf->m_xNode[i_Node].m_sResponse.aChar());
   }
 
   // now delete the job
-  delete pJob_ChangeFolder;
+  delete pJob_Cf;
 }
 
 /*============================================================================*/

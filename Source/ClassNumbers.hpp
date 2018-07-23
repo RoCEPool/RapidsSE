@@ -97,7 +97,7 @@ enum eCN : u2 // Class Number
     
     /*    */ CN_JOB_ANALYZEINDEX,
     /*    */ CN_JOB_ANALYZETABLE,
-    /*    */ CN_JOB_CHANGEFOLDER,
+    /*    */ CN_JOB_CF,
     /*    */ CN_JOB_CREATECATALOG,
     /*    */ CN_JOB_CREATEINDEX,
     /*    */ CN_JOB_CREATESCHEMA,
@@ -321,7 +321,7 @@ enum eCN : u2 // Class Number
     /*    */ "JOB__EXECUTED"_Stz,      // CN_JOB__EXECUTED
     /*    */ "JOB_ANALYZEINDEX"_Stz,   // CN_JOB_ANALYZEINDEX
     /*    */ "JOB_ANALYZETABLE"_Stz,   // CN_JOB_ANALYZETABLE
-    /*    */ "JOB_CHANGEFOLDER"_Stz,   // CN_JOB_CHANGEFOLDER
+    /*    */ "JOB_CF"_Stz,             // CN_JOB_CF
     /*    */ "JOB_CREATECATALOG"_Stz,  // CN_JOB_CREATECATALOG
     /*    */ "JOB_CREATEINDEX"_Stz,    // CN_JOB_CREATEINDEX
     /*    */ "JOB_CREATESCHEMA"_Stz,   // CN_JOB_CREATESCHEMA

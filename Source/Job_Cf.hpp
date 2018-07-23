@@ -1,15 +1,15 @@
 /*============================================================================*/
-/* Job_ChangeFolder.hpp -- Change Folder Job                                  */
+/* Job_Cfr.hpp -- Change Folder Job                                  */
 /*============================================================================*/
 #pragma once
 
 namespace JobsModel
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class Job_ChangeFolder : public Job,
-                           public JobDicPath,
-                           public JobObjectName,
-                           public JobResult
+  class Job_Cf : public Job,
+                 public JobDicPath,
+                 public JobObjectName,
+                 public JobResult
   {
   public:
     
@@ -21,8 +21,8 @@ namespace JobsModel
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_ChangeFolder(Interface::SEitf* pSEitf);
-    ~Job_ChangeFolder(void);
+    Job_Cf(Interface::SEitf* pSEitf);
+    ~Job_Cf(void);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
@@ -36,10 +36,10 @@ namespace JobsModel
   };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  Job_ChangeFolder* _pJob_ChangeFolder(void* aAddr);
+  Job_Cf* _pJob_Cf(void* aAddr);
   
-  Job* pJob_ChangeFolder_pre(Prompt::SePrompt* pPrompt);
-  void vJob_ChangeFolder_post(Prompt::SePrompt* pPrompt, Job* pJob);
+  Job* pJob_Cf_pre(Prompt::SePrompt* pPrompt);
+  void vJob_Cf_post(Prompt::SePrompt* pPrompt, Job* pJob);
 }
 
 /*============================================================================*/
