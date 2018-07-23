@@ -19,7 +19,7 @@
 
   prompt::new to pPrompt
   pPrompt prompt.SEitf to pSEitf
-  pPrompt prompt.commandProcessor to pCommandProcessor
+  pSEitf seitf.commandProcessor to pCommandProcessor
 
   begin
 
