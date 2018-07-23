@@ -46,7 +46,6 @@ namespace Prompt
 
   private:
   
-    bool bBlankLine(void);
     void vClipTokens(i8 i_FromToken);
     bool bCmdIs(Stz* aArg);
     bool bExecuteFile(void);

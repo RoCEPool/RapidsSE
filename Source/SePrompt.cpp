@@ -223,12 +223,6 @@ void SePrompt::vExecuteCommand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  // test for blank line
-  if (bBlankLine()) {
-    m_pCommandProcessor->m_eCommand = CK_BLANK_LINE;
-    return;
-  }
-    
   // attempt to execute command file
   if (bExecuteFile()) {
     m_pCommandProcessor->m_eCommand = CK_COMMAND_FILE;
@@ -298,19 +292,6 @@ SEitf* SePrompt::pSEitf(void)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* test for blank line                                                        */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bBlankLine(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  if (0 != pTkn(0)->iLength())
-    return false;
-  
-  return true;
-}
 
 /*----------------------------------------------------------------------------*/
 /* clip tokens                                                                */
