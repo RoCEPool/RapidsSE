@@ -1,0 +1,61 @@
+/*============================================================================*/
+/* job_Pwf.sen -- Job Present Working Folder                                  */
+/*============================================================================*/
+
+"job_Pwf.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* pwf command request                                                        */
+/*----------------------------------------------------------------------------*/
+: pwf_req ( -- <R> )
+
+  0 0 0 0 locals| pJob_Pwf pTask |
+
+  tp: cf_req
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob_Pwf
+
+  //----------------------------------------------------------------------------
+  // set dictionary stack
+  pJob_Pwf getPathR35
+  dicStack.set
+
+  // set metadata string in the job
+  args.metadata if
+    "(path VARCHAR)" pJob_Pwf job.metadata!
+
+    // start of working string
+    "row: ('/"
+  else
+     "/"
+  then
+
+  // iterate thru each folder in path and concat to end
+  pathDepth 0 do
+    // compute the path subscript
+    pathDepth 1 - I -
+    // pick the path, get its name and concat name to working string
+    pathPick dic.name str.cat
+    // concat "/" to end of working string
+    "/" str.cat
+  loop
+
+  args.metadata if
+    // end working string
+    "')\n" str.cat
+  then
+
+  grid::thisNode@ pJob_Pwf job.response!
+
+  pJob_Pwf <DONE_REQUEST>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

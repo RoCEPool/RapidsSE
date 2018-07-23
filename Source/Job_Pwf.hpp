@@ -1,0 +1,47 @@
+/*============================================================================*/
+/* Job_Pwf.hpp -- Present Working Folder Job                                  */
+/*============================================================================*/
+#pragma once
+
+namespace JobsModel
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  class Job_Pwf : public Job,
+                  public JobDicPath,
+                  public JobObjectName,
+                  public JobResult
+  {
+  public:
+    
+    // must be last
+    Footer m_xFooter;
+  
+  public:
+    void* operator new(size_t);
+    void* operator new(size_t, void* aAddress);
+    void  operator delete(void*);
+  
+    Job_Pwf(Interface::SEitf* pSEitf);
+    ~Job_Pwf(void);
+  
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
+
+  public:
+    bool bPopulateJob(TokenVec* pTokenVec);
+    void vShow(void);
+  
+  public:
+    Footer* aFooter(void);
+  
+  };
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  Job_Pwf* _pJob_Pwf(void* aAddr);
+  
+  Job* pJob_Pwf_pre(Prompt::SePrompt* pPrompt);
+  void vJob_Pwf_post(Prompt::SePrompt* pPrompt, Job* pJob);
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

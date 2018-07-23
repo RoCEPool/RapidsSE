@@ -112,6 +112,7 @@ enum eCN : u2 // Class Number
     /*    */ CN_JOB_G35,
     /*    */ CN_JOB_LOADTABLE,
     /*    */ CN_JOB_PROMPT,
+    /*    */ CN_JOB_PWF,
     /*    */ CN_JOB_SANITY,
     /*    */ CN_JOB_SPACE,
     /*    */ CN_JOB_STATUS,
@@ -335,6 +336,7 @@ enum eCN : u2 // Class Number
     /*    */ "JOB_G35"_Stz,            // CN_JOB_G35
     /*    */ "JOB_LOADTABLE"_Stz,      // CN_JOB_LOADTABLE
     /*    */ "JOB_PROMPT"_Stz,         // CN_JOB_PROMPT
+    /*    */ "JOB_PWF"_Stz,            // CN_JOB_PWF
     /*    */ "JOB_SANITY"_Stz,         // CN_JOB_SANITY
     /*    */ "JOB_SPACE"_Stz,          // CN_JOB_SPACE
     /*    */ "JOB_STATUS"_Stz,         // CN_JOB_STATUS
