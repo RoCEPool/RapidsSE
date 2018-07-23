@@ -24,7 +24,7 @@
   begin
 
     // get the next command
-    pPrompt prompt.getCommand
+    pCommandProcessor commandProcessor.getCommand
 
     // check and execute the command
     pPrompt prompt.executeCommand to eCommand
