@@ -5,9 +5,9 @@
 "job_Space.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* request to get space in the pool (executed on originating node)            */
+/* request to get space in the pool (on originating node)                     */
 /*----------------------------------------------------------------------------*/
-: poolSpace_req ( -- <R> )
+: space_req ( -- <R> )
 
   0 0 locals| pJob pTask |
 
@@ -33,7 +33,7 @@
 /*----------------------------------------------------------------------------*/
 /* get space in the pool (executed on all participating nodes)                */
 /*----------------------------------------------------------------------------*/
-: poolSpace_node ( pJob_Space -- str t/f )
+: space_node ( pJob_Space -- str t/f )
 
   params| pJob_Space |
 

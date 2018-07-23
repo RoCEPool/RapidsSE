@@ -10,10 +10,10 @@ extern AttachMap* gpAttachMap;
 JobNote mJobNote_Space (
   "space"_Stz,      // name of the job class
   CN_JOB_SPACE,     // class enum
-  "comment"_Stz,    // comment about the job
+  "space"_Stz,    // comment about the job
   "space"_Stz,      // the prompt command
   nullptr,          // the second word
-  "poolSpace"_Stz,  // the task seed for this job
+  "space"_Stz,      // the task seed for this job
   false,            // detached job?
   pJob_Space_pre,   // prompt pre-process function
   vJob_Space_post,  // prompt post-process function
@@ -115,6 +115,29 @@ void Job_Space::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* populate the job                                                           */
+/*----------------------------------------------------------------------------*/
+bool Job_Space::bPopulateJob(TokenVec* pTokenVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SPACE,_FOOTER_);
+  
+  i8 iNumTokens;
+  
+  ASSERT(pTokenVec->pGet(0)->bSame("space"_Stz));
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // get number of items in token
+  iNumTokens = pTokenVec->nItems();
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // there should be 1 token
+  if (iNumTokens != 1)
+  return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
 void Job_Space::vShow(void)
@@ -146,6 +169,16 @@ Job* JobsModel::pJob_Space_pre(Prompt::SePrompt* pPrompt)
   SEitf* pSEitf = pPrompt->pSEitf();
   
   Job_Space* pJob_Space = new Job_Space(pSEitf);
+  
+  TokenVec* pTokenVec = pPrompt->m_pCommandProcessor->pTknVec();
+  
+  bool bResult = pJob_Space->bPopulateJob(pTokenVec);
+  
+  if ( !bResult) {
+    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
+    pJob_Space->m_bHasError = true;
+    pJob_Space->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+  }
   
   return pJob_Space;
 }
