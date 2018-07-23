@@ -14,10 +14,11 @@ extern AttachMap*      gpAttachMap;
 void Task::vAddPrimitives_Prompt(void)
 {
   vAddPrimitive("prompt.commandProcessor"_Stz, &vPromptCommandProcessor, false);
-  vAddPrimitive("prompt.dispatchJob"_Stz,    &vPromptDispatchJob,    false);
-  vAddPrimitive("prompt.executeCommand"_Stz, &vPromptExecuteCommand, false);
-  vAddPrimitive("prompt.getCommand"_Stz,     &vPromptGetCommand,     false);
-  vAddPrimitive("prompt::new"_Stz,           &vPromptNew,            false);
+  vAddPrimitive("prompt.dispatchJob"_Stz,      &vPromptDispatchJob,      false);
+  vAddPrimitive("prompt.executeCommand"_Stz,   &vPromptExecuteCommand,   false);
+  vAddPrimitive("prompt.getCommand"_Stz,       &vPromptGetCommand,       false);
+  
+  vAddPrimitive("prompt::new"_Stz,             &vPromptNew,              false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -106,6 +107,25 @@ void Task::vPromptNew(MP_Task mpTask)
   SePrompt* pSePrompt = new SePrompt;
   
   mpTask->m_pDataStack->vPushObject(pSePrompt);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* prompt.SEitf -- get se interface                                           */
+/*----------------------------------------------------------------------------*/
+void Task::vPromptSEitf(MP_Task mpTask)
+{
+  ENTRY("vPromptSEitf"_Stz);
+  
+  Object* pSePromptObject;
+  if ( ! mpTask->m_pDataStack->bPop(pSePromptObject) )
+    THROW_INVALID_DSTACK("prompt.SEitf"_Stz);
+  SePrompt* pSePrompt = _pSePrompt(pSePromptObject);
+  
+  SEitf* pSEitf = pSePrompt->m_pSEitf;
+  
+  mpTask->m_pDataStack->vPushObject(pSEitf);
   
   EXIT();
 }
