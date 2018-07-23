@@ -149,6 +149,7 @@ void SePrompt::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* prepare and dispatch job                                                   */
 /*----------------------------------------------------------------------------*/
+/*
 bool SePrompt::bPrepareJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
@@ -162,7 +163,6 @@ bool SePrompt::bPrepareJob(void)
   
   //vTrace("command: %s\n"_Stz,pTkn(0)->sText().aChar());
   
-  /*
   for (i8 i_Cmd = 0; SePromptCommands[i_Cmd].aCommand; i_Cmd++) {
     
     if ( ! bCmdIs((Stz*)SePromptCommands[i_Cmd].aCommand))
@@ -175,8 +175,7 @@ bool SePrompt::bPrepareJob(void)
       return (this->*SePromptCommands[i_Cmd].aFunc)();
     }
   }
-  */
-  
+ 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for command file
   //if (bTestFile(pTkn(0)->aText()))
@@ -215,6 +214,7 @@ bool SePrompt::bPrepareJob(void)
   
   return true;
 }
+*/
 
 /*----------------------------------------------------------------------------*/
 /* execute command                                                            */

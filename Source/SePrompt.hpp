@@ -39,7 +39,6 @@ namespace Prompt
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
     // these are the prompt.xyz task primitives
-    bool bPrepareJob(void);
     void vExecuteCommand(void);
   
     // other

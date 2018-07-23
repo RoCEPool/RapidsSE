@@ -544,6 +544,7 @@ namespace Tasks
     // command processor
     static void vCommandProcessorDispatchJob(MP_Task mpTask);
     static void vCommandProcessorEndJob(MP_Task mpTask);
+    static void vCommandProcessorGetCommand(MP_Task mpTask);
     static void vCommandProcessorJobClass(MP_Task mpTask);
     static void vCommandProcessorNewJob(MP_Task mpTask);
 
@@ -1057,7 +1058,6 @@ namespace Tasks
     static void vProcessTestPid(MP_Task mpTask);
     
     // prompt
-    static void vPromptDispatchJob(MP_Task mpTask);
     static void vPromptExecuteCommand(MP_Task mpTask);
     static void vPromptGetCommand(MP_Task mpTask);
     static void vPromptNew(MP_Task mpTask);

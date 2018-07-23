@@ -13,29 +13,10 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Prompt(void)
 {
-  vAddPrimitive("prompt.dispatchJob"_Stz,      &vPromptDispatchJob,      false);
   vAddPrimitive("prompt.executeCommand"_Stz,   &vPromptExecuteCommand,   false);
   vAddPrimitive("prompt.getCommand"_Stz,       &vPromptGetCommand,       false);
   vAddPrimitive("prompt::new"_Stz,             &vPromptNew,              false);
   vAddPrimitive("prompt.SEitf"_Stz,            &vPromptSEitf,            false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt.dispatchJob -- prepare and dispatch job                             */
-/*----------------------------------------------------------------------------*/
-void Task::vPromptDispatchJob(MP_Task mpTask)
-{
-  ENTRY("vPromptDispatchJob"_Stz);
-  
-  Object* pSePromptObject;
-  if ( ! mpTask->m_pDataStack->bPop(pSePromptObject) )
-    THROW_INVALID_DSTACK("prompt.dispatchJob"_Stz);
-  SePrompt* pSePrompt = _pSePrompt(pSePromptObject);
-  
-  bool b = pSePrompt->bPrepareJob();
-  ASSERT(b);
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -14,9 +14,10 @@ extern AttachMap*      gpAttachMap;
 void Task::vAddPrimitives_CommandProcessor(void)
 {
   vAddPrimitive("commandProcessor.DispatchJob"_Stz,&vCommandProcessorDispatchJob,false);
-  vAddPrimitive("commandProcessor.endJob"_Stz,  &vCommandProcessorEndJob,  false);
-  vAddPrimitive("commandProcessor.jobClass"_Stz,&vCommandProcessorJobClass,false);
-  vAddPrimitive("commandProcessor.newJob"_Stz,  &vCommandProcessorNewJob,  false);
+  vAddPrimitive("commandProcessor.endJob"_Stz,     &vCommandProcessorEndJob,     false);
+  vAddPrimitive("commandProcessor.getCommand"_Stz, &vCommandProcessorGetCommand, false);
+  vAddPrimitive("commandProcessor.jobClass"_Stz,   &vCommandProcessorJobClass,   false);
+  vAddPrimitive("commandProcessor.newJob"_Stz,     &vCommandProcessorNewJob,     false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -51,6 +52,24 @@ void Task::vCommandProcessorEndJob(MP_Task mpTask)
     pCommandProcessor = _pCommandProcessor(pCommandProcessorObject);
   
   pCommandProcessor->vEndJob();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* commandProcessor.getCommand -- get command                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vCommandProcessorGetCommand(MP_Task mpTask)
+{
+  ENTRY("vCommandProcessorGetCommand"_Stz);
+  
+  Object* pCommandProcessorObject;
+  if ( ! mpTask->m_pDataStack->bPop(pCommandProcessorObject) )
+    THROW_INVALID_DSTACK("commandProcessor.getCommand"_Stz);
+  CommandProcessor*
+    pCommandProcessor = _pCommandProcessor(pCommandProcessorObject);
+  
+  pCommandProcessor->vGetCommand();
   
   EXIT();
 }
