@@ -59,6 +59,30 @@ print "pwd...";
 print "======================================";
 pwd;
 
+// change folder
+print "\n======================================";
+print "cf ..";
+print "======================================";
+cf ..;
+
+// present working folder
+print "\n======================================";
+print "pwf";
+print "======================================";
+pwf;
+
+// change folder to tables
+print "\n======================================";
+print "cf tables";
+print "======================================";
+cf tables;
+
+// present working folder
+print "\n======================================";
+print "pwf";
+print "======================================";
+pwf;
+
 // space
 print "\n======================================";
 print "getting space with timer...";
