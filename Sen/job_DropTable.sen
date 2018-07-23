@@ -104,9 +104,9 @@
 : dropTable_req ( -- <R> )
 
   0 0 locals| pJob pTask |
-  "dropTable_req" .
 
-  tp: droTable
+  tp: dropTable
+  "dropTable_req" .
 
   // get the task
   task::this to pTask
@@ -123,11 +123,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropTable job on a node                                        */
 /*----------------------------------------------------------------------------*/
-: DropTable_node ( pJob_DropTable -- )
+: dropTable_node ( pJob_DropTable -- )
 
   params| pJob_DropTable |
 
-  tp: DropTable_node
+  tp: dropTable_node
 
   //----------------------------------------------------------------------------
   // assert correct job
@@ -143,7 +143,7 @@
   dicStack.set
 
   //----------------------------------------------------------------------------
-  // remove table
+  // remove the table
   pJob_DropTable job.objectName@   ( tableNm )
   removeTable
 
