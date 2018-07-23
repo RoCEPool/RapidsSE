@@ -502,7 +502,21 @@ void Task::vJobDelete(MP_Task mpTask)
       delete pJobDropTenant;
       break;
     }
-      
+    
+    case CN_JOB_LF:
+    {
+      Job_Lf* pJob_Lf = _pJob_Lf(pJobPtr);
+      delete pJob_Lf;
+      break;
+    }
+    
+    case CN_JOB_PWF:
+    {
+      Job_Pwf* pJob_Pwf = _pJob_Pwf(pJobPtr);
+      delete pJob_Pwf;
+      break;
+    }
+    
     case CN_JOB_SANITY:
     {
       Job_Sanity* pJobSanity = _pJob_Sanity(pJobPtr);

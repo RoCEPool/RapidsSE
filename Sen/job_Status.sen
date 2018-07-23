@@ -5,18 +5,55 @@
 "job_Status.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_Status job                                                     */
+/* request to get status of all the nodes (on originating node)               */
 /*----------------------------------------------------------------------------*/
-: Job_Status.execute ( pJob_Status -- str t/f )
+: status_req ( -- <R> )
+
+  0 0 locals| pJob pTask |
+
+  tp: status_req
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set metadata string in the job
+  args.metadata if
+    "(nodeName VARCHAR, instanceName VARCHAR, status VARCHAR)"
+    pJob job.metadata!
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // distribute the job
+  pTask pJob "job::distribute" find execute
+
+  pJob <DONE_REQUEST>
+;
+
+/*----------------------------------------------------------------------------*/
+/* get status of a node (executed on all nodes)                               */
+/*----------------------------------------------------------------------------*/
+: status_node ( pJob_Status -- str t/f )
 
   params| pJob_Status |
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // assert its the status job
   CN_JOB_STATUS pJob_Status object.assertClass
 
   "GETTING STATUS on NODE " grid::thisNode@ >str str.cat .
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the status of this node
   node.status
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the status string in job response
   grid::thisNode@ pJob_Status job.response!
 
   pJob_Status job.notice

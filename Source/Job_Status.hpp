@@ -7,9 +7,9 @@ namespace JobsModel
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_Status : public Job,
-                    public JobDicPath,
-                    public JobObjectName,
-                    public JobResult
+                     public JobDicPath,
+                     public JobObjectName,
+                     public JobResult
   {
   public:
     
@@ -27,6 +27,7 @@ namespace JobsModel
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
   public:
+    bool bPopulateJob(TokenVec* pTokenVec);
     void vShow(void);
   
   public:

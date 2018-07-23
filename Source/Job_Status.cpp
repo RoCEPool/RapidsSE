@@ -3,17 +3,21 @@
 /*============================================================================*/
 
 #include "JobModel.h"
+#include "StorageEngine.h"
+
+extern AttachMap* gpAttachMap;
 
 JobNote mJobNote_Status (
-  "Job_Status"_Stz, // name of the job class
+  "status"_Stz,     // name of the job class
   CN_JOB_STATUS,    // class enum
-  "comment"_Stz,    // comment about the job
+  "status"_Stz,     // comment about the job
   "status"_Stz,     // the prompt command
   nullptr,          // the second word
-  "nodeStatusR35_req"_Stz, // the task seed for this job
+  "status"_Stz,     // the task seed for this job
   false,            // detached job?
   pJob_Status_pre,  // prompt pre-process function
-  vJob_Status_post  // prompt post-process function
+  vJob_Status_post, // prompt post-process function
+  true              // job is enabled
   );
 
 /*----------------------------------------------------------------------------*/
@@ -73,7 +77,7 @@ Job_Status::Job_Status(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_STATUS,_FOOTER_);
     
-  //m_sSeed = "Job_Status.execute"_Stz;
+   m_sSeed    = mJobNote_Status.pJobClass()->m_aSeed;
   
   _checkInitialised_(CN_JOB_STATUS);
   
@@ -110,6 +114,29 @@ void Job_Status::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* populate the job                                                           */
+/*----------------------------------------------------------------------------*/
+bool Job_Status::bPopulateJob(TokenVec* pTokenVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_STATUS,_FOOTER_);
+  
+  i8 iNumTokens;
+  
+  ASSERT(pTokenVec->pGet(0)->bSame("status"_Stz));
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // get number of items in token
+  iNumTokens = pTokenVec->nItems();
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // there should be 1 token
+  if (iNumTokens != 1)
+  return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
 void Job_Status::vShow(void)
@@ -138,7 +165,21 @@ Footer* Job_Status::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* JobsModel::pJob_Status_pre(Prompt::SePrompt* pPrompt)
 {
-  return nullptr;
+  SEitf* pSEitf = pPrompt->pSEitf();
+  
+  Job_Status* pJob_Status = new Job_Status(pSEitf);
+  
+  TokenVec* pTokenVec = pPrompt->m_pCommandProcessor->pTknVec();
+  
+  bool bResult = pJob_Status->bPopulateJob(pTokenVec);
+  
+  if ( !bResult) {
+    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
+    pJob_Status->m_bHasError = true;
+    pJob_Status->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+  }
+  
+  return pJob_Status;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -146,6 +187,28 @@ Job* JobsModel::pJob_Status_pre(Prompt::SePrompt* pPrompt)
 /*----------------------------------------------------------------------------*/
 void JobsModel::vJob_Status_post(Prompt::SePrompt* pPrompt, Job* pJob)
 {
+  Job_Status* pJob_Status = _pJob_Status(pJob);
+  
+  if ( pJob_Status->m_bHasError ) {
+    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+      vTrace("ERROR (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob_Status->m_xNode[i_Node].m_eErrorCode]);
+    }
+  }
+  else {
+    if (gpAttachMap->m_bMetadata) {
+      vTrace("metadata: %s\n"_Stz, pJob_Status->m_sMetadata.aStr());
+    }
+    
+    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+      vTrace("%s\n"_Stz, pJob_Status->m_xNode[i_Node].m_sResponse.aChar());
+    }
+    if (gpAttachMap->m_bMetadata) {
+      vTrace("success: %lld rows affected\n"_Stz, gpAttachMap->m_pGrid->m_nNodes);
+    }
+  }
+  
+  // now delete the job
+  delete pJob_Status;
 }
 
 /*============================================================================*/
