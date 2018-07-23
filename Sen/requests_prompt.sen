@@ -26,14 +26,20 @@
     // get the next command
     pCommandProcessor commandProcessor.getCommand
 
-    // check and execute the command
-    pPrompt prompt.executeCommand to eCommand
-
     // check for blank line
     pCommandProcessor commandProcessor.blankLine if
       //"A blank line" .
       ifAgain
     then
+
+    // possible prompt function
+    pPrompt prompt.executeFunction if
+      //"A prompt function" .
+      ifAgain
+   then
+
+    // check and execute the command
+    pPrompt prompt.executeCommand to eCommand
 
     // job commands have had their job class identified
     eCommand CK_SE_JOB == if

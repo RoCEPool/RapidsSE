@@ -40,7 +40,8 @@ namespace Prompt
 
     // these are the prompt.xyz task primitives
     void vExecuteCommand(void);
-  
+    bool bExecuteFunction(void);
+
     // other
     SEitf* pSEitf(void);  
 
@@ -49,7 +50,6 @@ namespace Prompt
     void vClipTokens(i8 i_FromToken);
     bool bCmdIs(Stz* aArg);
     bool bExecuteFile(void);
-    bool bExecuteFunction(void);
     void vMetaFormat(void);
     bool bOneIs(Stz* aArg);
     void vPushFile(Stz* aPath);

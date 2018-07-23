@@ -230,10 +230,10 @@ void SePrompt::vExecuteCommand(void)
   }
   
   // attempt to execute internal command
-  if (bExecuteFunction()) {
-    m_pCommandProcessor->m_eCommand = CK_PROMPT_FUNCTION;
-    return;
-  }
+  //if (bExecuteFunction()) {
+  //  m_pCommandProcessor->m_eCommand = CK_PROMPT_FUNCTION;
+  //  return;
+  //}
   
   // attempt to execute se job
   if (m_pCommandProcessor->bFindJobClass()) {
