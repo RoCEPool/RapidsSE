@@ -13,9 +13,28 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_CommandProcessor(void)
 {
+  vAddPrimitive("commandProcessor.DispatchJob"_Stz,&vCommandProcessorDispatchJob,false);
   vAddPrimitive("commandProcessor.endJob"_Stz,  &vCommandProcessorEndJob,  false);
   vAddPrimitive("commandProcessor.jobClass"_Stz,&vCommandProcessorJobClass,false);
   vAddPrimitive("commandProcessor.newJob"_Stz,  &vCommandProcessorNewJob,  false);
+}
+
+/*----------------------------------------------------------------------------*/
+/* commandProcessor.dispatchJob -- dispatch job                               */
+/*----------------------------------------------------------------------------*/
+void Task::vCommandProcessorDispatchJob(MP_Task mpTask)
+{
+  ENTRY("vCommandProcessorEndJob"_Stz);
+  
+  Object* pCommandProcessorObject;
+  if ( ! mpTask->m_pDataStack->bPop(pCommandProcessorObject) )
+    THROW_INVALID_DSTACK("commandProcessor.endJob"_Stz);
+  CommandProcessor*
+    pCommandProcessor = _pCommandProcessor(pCommandProcessorObject);
+  
+  pCommandProcessor->bDispatchJob();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
