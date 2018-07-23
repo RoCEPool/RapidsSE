@@ -10,6 +10,7 @@
 : promptR35_req ( -- <R> )
 
   0 locals| pPrompt |
+  0 locals| pSEitf |
   0 locals| pCommandProcessor |
   0 locals| eCommand |
   0 locals| pJob |
@@ -17,6 +18,7 @@
   "promptR35_req" .
 
   prompt::new to pPrompt
+  pPrompt prompt.SEitf to pSEitf
   pPrompt prompt.commandProcessor to pCommandProcessor
 
   begin

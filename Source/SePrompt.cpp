@@ -111,9 +111,8 @@ SePrompt::SePrompt(void)
   
   m_sResponse  = ""_Stz;
   
-  m_pCommandProcessor = new CommandProcessor;
+  m_pCommandProcessor = m_pSEitf->m_pCommandProcessor;
   m_pCommandProcessor->m_pPrompt = this;
-  m_pCommandProcessor->m_pSEitf = m_pSEitf;
 
   _checkInitialised_(CN_SEPROMPT);
 }

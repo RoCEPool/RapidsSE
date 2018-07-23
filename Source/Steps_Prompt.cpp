@@ -17,8 +17,8 @@ void Task::vAddPrimitives_Prompt(void)
   vAddPrimitive("prompt.dispatchJob"_Stz,      &vPromptDispatchJob,      false);
   vAddPrimitive("prompt.executeCommand"_Stz,   &vPromptExecuteCommand,   false);
   vAddPrimitive("prompt.getCommand"_Stz,       &vPromptGetCommand,       false);
-  
   vAddPrimitive("prompt::new"_Stz,             &vPromptNew,              false);
+  vAddPrimitive("prompt.SEitf"_Stz,            &vPromptSEitf,            false);
 }
 
 /*----------------------------------------------------------------------------*/
