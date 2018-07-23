@@ -1,0 +1,97 @@
+/*============================================================================*/
+/* job_Lf.sen -- Job list folder                                              */
+/*============================================================================*/
+
+"job_Lf.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* docol command request                                                      */
+/*----------------------------------------------------------------------------*/
+: lf_req ( -- <R> )
+
+  0 0 0 locals| iCount pJob_Lf pTask |
+
+  tp: lf_req
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob_Lf
+
+  //----------------------------------------------------------------------------
+  // set dictionary stack
+  pJob_Lf getPathR35
+  dicStack.set
+
+  args.metadata if
+    "(name VARCHAR, type VARCHAR)" pJob_Lf job.metadata!
+    ""
+    0 pathPick dic.lastWord dup iterate
+    1 iCount + to iCount
+    "row: ('" str.cat
+
+    object@ word.name str.cat
+
+    "', " str.cat
+
+    object@ isTable if
+      "'table'" str.cat
+    then
+
+    object@ isIndex if
+      "'index'" str.cat
+    then
+
+    object@ isFolder if
+      "'" str.cat
+      object@ execute dic.kind@ word.name str.cat
+      "'" str.cat
+    then
+
+    iCount if
+      ")\n" str.cat
+    then
+
+    object@ word.prev object!
+
+    next
+    //iCount task::this task.seitf@ seitf.rowsProcessed
+
+  else
+    ""
+    0 pathPick dic.lastWord dup iterate
+
+    dup str.length if "\n" str.cat then
+
+    object@ word.name 12 str.pad str.cat
+    1 iCount + to iCount
+    "(" str.cat
+
+    object@ isTable if
+      "table " str.cat
+    then
+
+    object@ isIndex if
+      "index" str.cat
+    then
+
+    object@ isFolder if
+      object@ execute dic.kind@ word.name str.cat
+    then
+
+    object@ word.prev object!
+    ")" str.cat
+    next
+
+  then
+
+  grid::thisNode@ pJob_Lf job.response!
+  pJob_Lf <DONE_REQUEST>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

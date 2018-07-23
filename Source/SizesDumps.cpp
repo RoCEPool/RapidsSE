@@ -109,6 +109,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_DROPTABLE
   /*    */ &Dump::vDummy,           // CN_JOB_DROPTENANT
   /*    */ &Dump::vDummy,           // CN_JOB_G35
+  /*    */ &Dump::vDummy,           // CN_JOB_LF
   /*    */ &Dump::vDummy,           // CN_JOB_LOADTABLE
   /*    */ &Dump::vDummy,           // CN_JOB_PROMPT
   /*    */ &Dump::vDummy,           // CN_JOB_PWF
@@ -334,6 +335,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_DropTable),     // CN_JOB_DROPTABLE
   /*    */ sizeof(Job_DropTenant),    // CN_JOB_DROPTENANT
   /*    */ sizeof(Job_G35),           // CN_JOB_G35
+  /*    */ sizeof(Job_Lf),            // CN_JOB_LF
   /*    */ sizeof(Job_CreateTable),   // CN_JOB_LOADTABLE
   /*    */ sizeof(Job_Prompt),        // CN_JOB_PROMPT
   /*    */ sizeof(Job_Pwf),           // CN_JOB_PWF
@@ -559,6 +561,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_DROPTABLE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_DROPTENANT
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_G35
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LF
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LOADTABLE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_PROMPT
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_PWF

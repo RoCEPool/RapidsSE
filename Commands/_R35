@@ -111,6 +111,12 @@ create table j10 (
   j10_name  VARCHAR(32) NOT NULL
 );
 
+// list folder
+print "\n======================================";
+print "lf";
+print "======================================";
+lf;
+
 // create same table again
 print "\n=========================================";
 print "creating table j10 which already exists...";
