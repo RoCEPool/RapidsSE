@@ -69,7 +69,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* create table request                                                       */
+/* create table request (on originating node)                                 */
 /*----------------------------------------------------------------------------*/
 : createTable_req (  -- <R> )
 
@@ -101,11 +101,12 @@
   tp: createTable_node
 
   //----------------------------------------------------------------------------
+  // assert correct job
+  CN_JOB_CREATETABLE pJob_CreateTable object.assertClass
+
+  //----------------------------------------------------------------------------
   // grad a ddl lock
   ddlLock::grabWrite
-
-  CN_JOB_CREATETABLE pJob_CreateTable object.assertClass
-  pJob_CreateTable job.objectName@ to sTableNm
 
   //----------------------------------------------------------------------------
   // set dictionary stack
@@ -114,6 +115,7 @@
 
   //----------------------------------------------------------------------------
   // make table
+  pJob_CreateTable job.objectName@ to sTableNm
   sTableNm makeTable to pTable
 
   //----------------------------------------------------------------------------
@@ -139,6 +141,7 @@
   //----------------------------------------------------------------------------
   // should be in tables
   assertInTables
+
   pJob_CreateTable job.notice
 
   <DONE_NODE>

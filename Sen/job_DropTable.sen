@@ -5,18 +5,6 @@
 "job_DropTable.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_DropTable job release resources                                */
-/*----------------------------------------------------------------------------*/
-: dropTable_releaseResources ( Job_DropTable -- )
-
-  params| pJob_DropTable  |
-
-  "releaseResources received" .
-
-  <DONE_NODE>
-;
-
-/*----------------------------------------------------------------------------*/
 /* check if word is a removable table folder                                  */
 /*----------------------------------------------------------------------------*/
 : checkRemoveTable ( "<tableNm>" -- true | errorCode false )
@@ -111,7 +99,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* drop a table                                                               */
+/* drop table request (on originating node)                                   */
 /*----------------------------------------------------------------------------*/
 : dropTable_req ( -- <R> )
 
@@ -133,21 +121,31 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_DropTable job                                                  */
+/* execute Job_DropTable job on a node                                        */
 /*----------------------------------------------------------------------------*/
 : DropTable_node ( pJob_DropTable -- )
 
   params| pJob_DropTable |
 
+  tp: DropTable_node
+
+  //----------------------------------------------------------------------------
+  // assert correct job
   CN_JOB_DROPTABLE pJob_DropTable object.assertClass
 
+  //----------------------------------------------------------------------------
+  // grad a ddl lock
   ddlLock::grabWrite
 
+  //----------------------------------------------------------------------------
+  // set dictionary stack
   pJob_DropTable getPathR35
   dicStack.set
 
+  //----------------------------------------------------------------------------
+  // remove table
   pJob_DropTable job.objectName@   ( tableNm )
-  removeTable ( ) //not if "got error" . exit then
+  removeTable
 
   pJob_DropTable job.notice
 
@@ -161,9 +159,11 @@
 
   params| pJob_DropTable  |
 
+  tp: dropTable_checkResources
   "checkResources received" .
-  tp: pJob_DropTable
 
+  //----------------------------------------------------------------------------
+  // grad a ddl lock
   ddlLock::grabWrite
 
   //----------------------------------------------------------------------------
@@ -171,10 +171,23 @@
   pJob_DropTable getPathR35
   dicStack.set
 
-  // get the table name from the job
+  //----------------------------------------------------------------------------
+  // check if we can remove the table
   pJob_DropTable job.objectName@
-
   checkRemoveTable not if pJob_DropTable <ERROR_JOB> exit then
+
+  <DONE_NODE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_DropTable job release resources                                */
+/*----------------------------------------------------------------------------*/
+: dropTable_releaseResources ( Job_DropTable -- )
+
+  params| pJob_DropTable  |
+
+  tp: dropTable_releaseResources
+  "releaseResources received" .
 
   <DONE_NODE>
 ;
