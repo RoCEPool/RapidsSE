@@ -69,7 +69,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* create a table                                                             */
+/* create table request                                                       */
 /*----------------------------------------------------------------------------*/
 : createTable_req (  -- <R> )
 
@@ -90,7 +90,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_CreateTable job                                                */
+/* execute Job_CreateTable job on a node                                      */
 /*----------------------------------------------------------------------------*/
 : createTable_node ( pJob_CreateTable -- )
 
@@ -98,7 +98,7 @@
 
   0 0 locals| pTable sTableNm |
 
-  tp: Job_CreateTable.execute
+  tp: createTable_node
 
   //----------------------------------------------------------------------------
   // grad a ddl lock
@@ -151,10 +151,11 @@
 
   params| pJob_CreateTable  |
 
+  tp: createTable_checkResources
   "checkResources received" .
 
-  tp: Job_CreateTable.checkResources
-
+  //----------------------------------------------------------------------------
+  // grad a ddl lock
   ddlLock::grabWrite
 
   //----------------------------------------------------------------------------
@@ -162,12 +163,13 @@
   pJob_CreateTable getPathR35
   dicStack.set
 
+  //----------------------------------------------------------------------------
   // check if we have enough buffers
   checkEnoughBuffersR35 not if pJob_CreateTable <ERROR_JOB> exit then
 
-  // get the table name from the job
+  //----------------------------------------------------------------------------
+  // check if we can make the table
   pJob_CreateTable job.objectName@
-
   checkMakeTable not if pJob_CreateTable <ERROR_JOB> exit then
 
   <DONE_NODE>
@@ -180,6 +182,7 @@
 
   params| pJob_CreateTable  |
 
+  tp: createTable_releaseResources
   "releaseResources received" .
 
   <DONE_NODE>

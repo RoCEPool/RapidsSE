@@ -29,19 +29,8 @@
 ;
 
 : checkIsNotCatalog ( word )
-    dup findInCurrent not if true exit then
+    findInCurrent not if true exit then
     EC_CATALOG_EXISTS false
-;
-
-/*----------------------------------------------------------------------------*/
-/* check if word is a makeable tenant folder                                  */
-/*----------------------------------------------------------------------------*/
-: checkMakeCatalog ( "<catalogNm>" -- "<catalogNm>" true | "<catalogNm>" errorCode false )
-
-  checkInCatalogs   not if false exit then
-  checkIsNotCatalog not if false exit then
-
-  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -99,28 +88,6 @@ tp: makeCatalog
   makeSchemas ( )
 
   true <SUCCESS_RESULT>
-;
-
-/*----------------------------------------------------------------------------*/
-/* make a named catalog folder (run by participant)                           */
-/*----------------------------------------------------------------------------*/
-: makeCatalogR35 ( "<catalogNm>" --  true/false)
-
-  tp: makeCatalog
-
-  args.tracepoint if
-    dup "MAKING CATALOG " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
-  then
-
-  dup ( "<catalogNm>" "<catalogNm>" )
-
-  :catalog ( "<catalogNm>" ^catalog )
-
-  drop ( "<catalogNm>" )
-
-  makeSchemas ( )
-
-  true
 ;
 
 /*----------------------------------------------------------------------------*/
