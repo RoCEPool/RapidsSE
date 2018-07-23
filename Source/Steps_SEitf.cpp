@@ -22,6 +22,7 @@ void Task::vAddPrimitives_SEitf(void)
   vAddPrimitive("seitf.acksRemaining!"_Stz,   &vSEitfAcksRemainingStore, false);
   vAddPrimitive("seitf.bufferQueue@"_Stz,     &vSEitfBufferQueueFetch, false);
   vAddPrimitive("seitf.bufferQueue!"_Stz,     &vSEitfBufferQueueStore, false);
+  vAddPrimitive("seitf.commandProcessor"_Stz, &vSEitfCommandProcessor, false);
   vAddPrimitive("seitf.count"_Stz,            &vSEitfCount,            false);
   vAddPrimitive("seitf.delete"_Stz,           &vSEitfDelete,           false);
   vAddPrimitive("seitf.dicStack"_Stz,         &vSEitfDicStack,         false);
@@ -216,6 +217,24 @@ void Task::vSEitfBufferQueueStore(MP_Task mpTask)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* seitf.commandProcessor -- get SEitf command processor                      */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfCommandProcessor(MP_Task mpTask)
+{
+  ENTRY("vSEitfDicStack"_Stz);
+  
+  Object* pPtrSEitf;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
+    THROW_INVALID_DSTACK("seitf.dicStack"_Stz);
+  
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  ASSERT(CN_SEITF == pSEitf->eClass());
+  
+  mpTask->m_pDataStack->vPushObject(pSEitf->m_pCommandProcessor);
+  
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /* seitf.count -- get count of SE interface's                                 */
