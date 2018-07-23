@@ -5,25 +5,113 @@
 "job_DropCatalog.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_DropCatalog job                                                 */
+/* check if word is a removable catalog folder                                */
 /*----------------------------------------------------------------------------*/
-: pob_DropCatalog.execute ( pJob_DropCatalog -- )
+: checkRemoveCatalog ( "<catalogNm>" -- true | errorCode false )
+
+  params| sCatalogNm |
+
+  checkInCatalogs not if false exit then
+  sCatalogNm checkIsWordR35 not if false exit then
+  checkIsCatalog  not if false exit then
+  checkIsEmpty    not if false exit then
+  checkNotUsed    not if false exit then
+
+  true 
+;
+
+/*----------------------------------------------------------------------------*/
+/* drop catalog request (on originating node)                                 */
+/*----------------------------------------------------------------------------*/
+: dropCatalog_req ( -- <R> )
+
+  0 0 locals| pJob pTask |
+
+  tp: dropCatalog
+  "dropCatalog_req" .
+
+  // get the task
+  task::this to pTask
+
+  // get the job from the task
+  pTask task.job@ to pJob
+
+  // distribute the job
+  pTask pJob "job::distribute" find execute
+
+  pJob <DONE_REQUEST>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_DropCataloge job on a node                                     */
+/*----------------------------------------------------------------------------*/
+: dropCatalog_node ( pJob_DropTable -- )
 
   params| pJob_DropCatalog |
 
+  tp: dropCatalog_node
+
+  //----------------------------------------------------------------------------
+  // assert correct job
   CN_JOB_DROPCATALOG pJob_DropCatalog object.assertClass
 
+  //----------------------------------------------------------------------------
+  // grad a ddl lock
   ddlLock::grabWrite
 
+  //----------------------------------------------------------------------------
+  // set dictionary stack
   pJob_DropCatalog getPathR35
   dicStack.set
+
+  //----------------------------------------------------------------------------
+  // remove the catalog
   pJob_DropCatalog job.objectName@   ( catalogNm )
-
-  removeCatalogR35 ( )  not if "got error" . exit then
-
-  ddlLock::testDrop
+  removeCatalog
 
   pJob_DropCatalog job.notice
+
+  <DONE_NODE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_DropCatalog job check resources                                */
+/*----------------------------------------------------------------------------*/
+: dropCatalog_checkResources ( Job_DropCatalog -- )
+
+  params| pJob_DropCatalog  |
+
+  tp: dropCatalog_checkResources
+  "checkResources received" .
+
+  //----------------------------------------------------------------------------
+  // grad a ddl lock
+  ddlLock::grabWrite
+
+  //----------------------------------------------------------------------------
+  // set dictionary stack
+  pJob_DropCatalog getPathR35
+  dicStack.set
+
+  //----------------------------------------------------------------------------
+  // check if we can remove the table
+  pJob_DropCatalog job.objectName@
+  checkRemoveCatalog not if pJob_DropTable <ERROR_JOB> exit then
+
+  <DONE_NODE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_DropCatalog job release resources                              */
+/*----------------------------------------------------------------------------*/
+: dropCatalog_releaseResources ( Job_DropTable -- )
+
+  params| pJob_DropTable  |
+
+  tp: dropCatalog_releaseResources
+  "releaseResources received" .
+
+  <DONE_NODE>
 ;
 
 /*============================================================================*/
