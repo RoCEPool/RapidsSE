@@ -103,7 +103,6 @@ namespace Prompt
     bool bReturnTable(void);
     bool bIndexReturnTable(Stz* aTableName, Stz* aIndexName);
     void vIterateBuffers(void);
-    bool bProcessCommand(bool bPostProcess = true);
     bool bExecuteRequest(void);
 
   };
