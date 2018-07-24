@@ -614,10 +614,10 @@ void Task::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_LISTCATALOGS"_Stz,   CN_JOB_LISTCATALOGS);
   /*    */ vAddConstant("CN_JOB_LISTCOLUMNS"_Stz,    CN_JOB_LISTCOLUMNS);
   /*    */ vAddConstant("CN_JOB_LISTIDXCOLUMNS"_Stz, CN_JOB_LISTIDXCOLUMNS);
-  /*    */ vAddConstant("CN_JOB_LISTPARTCOLUMNS"_Stz,   CN_JOB_LISTPARTCOLUMNS);
-  /*    */ vAddConstant("CN_JOB_LISTSCHEMACOLUMNS"_Stz, CN_JOB_LISTSCHEMACOLUMNS);
-  /*    */ vAddConstant("CN_JOB_LISTTABLECOLUMNS"_Stz,  CN_JOB_LISTTABLECOLUMNS);
-  /*    */ vAddConstant("CN_JOB_LISTTENANTCOLUMNS"_Stz, CN_JOB_LISTTENANTCOLUMNS);
+  /*    */ vAddConstant("CN_JOB_LISTPARTCOLUMNS"_Stz, CN_JOB_LISTPARTCOLUMNS);
+  /*    */ vAddConstant("CN_JOB_LISTSCHEMAS"_Stz,    CN_JOB_LISTSCHEMAS);
+  /*    */ vAddConstant("CN_JOB_LISTTABLES"_Stz,     CN_JOB_LISTTABLES);
+  /*    */ vAddConstant("CN_JOB_LISTTENANTS"_Stz,    CN_JOB_LISTTENANTS);
   /*    */ vAddConstant("CN_JOB_LOADTABLE"_Stz,      CN_JOB_LOADTABLE);
   /*    */ vAddConstant("CN_JOB_PROMPT"_Stz,         CN_JOB_PROMPT);
   /*    */ vAddConstant("CN_JOB_PWF"_Stz,            CN_JOB_PWF);

@@ -110,9 +110,9 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_LISTCOLUMNS
   /*    */ &Finalize::vUndefined,         // CN_JOB_LISTIDXCOLUMNS
   /*    */ &Finalize::vUndefined,         // CN_JOB_LISTPARTCOLUMNS
-  /*    */ &Finalize::vUndefined,         // CN_JOB_LISTSCHEMACOLUMNS
-  /*    */ &Finalize::vUndefined,         // CN_JOB_LISTTABLECOLUMNS
-  /*    */ &Finalize::vUndefined,         // CN_JOB_LISTTENANTCOLUMNS
+  /*    */ &Finalize::vUndefined,         // CN_JOB_LISTSCHEMAS
+  /*    */ &Finalize::vUndefined,         // CN_JOB_LISTTABLES
+  /*    */ &Finalize::vUndefined,         // CN_JOB_LISTTENANTS
   /*    */ &Finalize::vUndefined,         // CN_JOB_LOADTABLE
   /*    */ &Finalize::vUndefined,         // CN_JOB_PROMPT
   /*    */ &Finalize::vUndefined,         // CN_JOB_PWF

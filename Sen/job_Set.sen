@@ -13,7 +13,10 @@
 "job_Docol.sen" include
 "job_G35.sen" include
 "Job_Lf.sen" include
+
 "Job_ListColumns.sen" include
+"Job_ListTables.sen" include
+
 "Job_Prompt.sen" include
 "Job_Pwf.sen" include
 "Job_Sanity.sen" include

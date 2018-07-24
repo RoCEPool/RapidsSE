@@ -1,0 +1,45 @@
+/*============================================================================*/
+/* job_ListColumns.sen -- Job list Columns                                    */
+/*============================================================================*/
+
+"job_ListColumns.sen" .verbose
+
+
+/*----------------------------------------------------------------------------*/
+/* List Tables requests (on the originating node)                             */
+/*----------------------------------------------------------------------------*/
+: listTables_req ( -- <R> )
+
+  0 0 0 locals| iCount pJob_ListTables pTask |
+
+  tp: listTables_req
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob_ListTables
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
+  pJob_ListTables getPathR35
+  dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // should be in the tables folder
+  checkInTables not if <ERROR_JOB> exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // list tables folder contents
+  pJob_ListTables listContentsR35
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // return
+  pJob_ListTables <DONE_REQUEST>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

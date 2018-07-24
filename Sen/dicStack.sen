@@ -154,6 +154,40 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* get all words in the current dictionary as a single string                 */
+/*----------------------------------------------------------------------------*/
+: listContentsR35 ( job -- )
+
+  params| pJob |
+  0 locals| iCount |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  args.metadata if
+    "(name VARCHAR)" pJob job.metadata!
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  ""                               // initial contents string
+  0 pathPick dic.lastWord dup
+  iterate                          // setup iteration of words
+    1 iCount + to iCount
+    "row: ('" str.cat
+    object@ word.name str.cat      // add name of the word to contents string
+                                   // add word kind to ls string
+    "')\n" str.cat
+    object@ word.prev object!      // step backwards thru words
+  next                             //
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set response in the job
+  grid::thisNode@ pJob job.response!
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // sent rows Processed in the job
+  iCount grid::thisNode@ pJob job.rowsProcessed!
+;
+
+/*----------------------------------------------------------------------------*/
 /* get all words in the current dictionary as a single string (indexes)       */
 /*----------------------------------------------------------------------------*/
 : listIndexesContents ( -- )

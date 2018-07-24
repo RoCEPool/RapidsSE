@@ -133,6 +133,12 @@ create table j10 (
   j10_name  VARCHAR(32) NOT NULL
 );
 
+// list tables
+print "\n=========================================";
+print "lstbl...";
+print "=========================================";
+lstbl;
+
 // drop the table
 print "\n=========================================";
 print "dropping table j10...";

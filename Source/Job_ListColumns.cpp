@@ -44,7 +44,7 @@ void* Job_ListColumns::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_ListColumns* pJob_ListColumns =
-    static_cast<Job_ListColumns*>(Heap::pAllocate(CN_JOB_LF));
+    static_cast<Job_ListColumns*>(Heap::pAllocate(CN_JOB_LISTCOLUMNS));
   
   return pJob_ListColumns;
 }
@@ -75,13 +75,13 @@ void Job_ListColumns::operator delete(void* aAddress)
 Job_ListColumns::Job_ListColumns(Interface::SEitf* pSEitf)
 : Job(CN_JOB_LF), JobDicPath(pSEitf)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTCOLUMNS,_FOOTER_);
   
   m_sSeed    = mJobNote_ListColumns.pJobClass()->m_aSeed;
 
-  _checkInitialised_(CN_JOB_LF);
+  _checkInitialised_(CN_JOB_LISTCOLUMNS);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_LF,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTCOLUMNS,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -89,7 +89,7 @@ Job_ListColumns::Job_ListColumns(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 Job_ListColumns::~Job_ListColumns(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTCOLUMNS,_FOOTER_);
 }
 
 
@@ -102,8 +102,8 @@ Job_ListColumns::~Job_ListColumns(void)
 /*----------------------------------------------------------------------------*/
 void Job_ListColumns::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_DOCOL == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_LF);
+  RASSERT(CN_JOB_LISTCOLUMNS == eClass);
+  RASSERT(pObject->eClass() == CN_JOB_LISTCOLUMNS);
   
   Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(pObject);
 
@@ -119,11 +119,11 @@ void Job_ListColumns::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 bool Job_ListColumns::bPopulateJob(TokenVec* pTokenVec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTCOLUMNS,_FOOTER_);
   
   i8 iNumTokens;
   
-  ASSERT(pTokenVec->pGet(0)->bSame("lf"_Stz));
+  ASSERT(pTokenVec->pGet(0)->bSame("lscol"_Stz));
   
   // - - - - - - - - - - - - - - - - - - - - -
   // get no of tokens in token vector
@@ -143,7 +143,7 @@ bool Job_ListColumns::bPopulateJob(TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 void Job_ListColumns::vShow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTCOLUMNS,_FOOTER_);
   
                                                                //! Alka to write
 }
@@ -157,7 +157,7 @@ void Job_ListColumns::vShow(void)
 /*----------------------------------------------------------------------------*/
 Footer* Job_ListColumns::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LF);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTCOLUMNS);
   
   return &m_xFooter;
 }

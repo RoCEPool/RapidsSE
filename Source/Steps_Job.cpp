@@ -528,40 +528,40 @@ void Task::vJobDelete(MP_Task mpTask)
       break;
     }
     
-    case CN_JOB_LISTIDXCOLUMNS:
+//    case CN_JOB_LISTIDXCOLUMNS:
+//    {
+//      Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(pJobPtr);
+//      delete pJob_ListColumns;
+//      break;
+//    }
+//
+//    case CN_JOB_LISTPARTCOLUMNS:
+//    {
+//      Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(pJobPtr);
+//      delete pJob_ListColumns;
+//      break;
+//    }
+//
+//    case CN_JOB_LISTSCHEMAS:
+//    {
+//      Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(pJobPtr);
+//      delete pJob_ListColumns;
+//      break;
+//    }
+      
+    case CN_JOB_LISTTABLES:
     {
-      Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(pJobPtr);
-      delete pJob_ListColumns;
+      Job_ListTables* pJob_ListTables = _pJob_ListTables(pJobPtr);
+      delete pJob_ListTables;
       break;
     }
       
-    case CN_JOB_LISTPARTCOLUMNS:
-    {
-      Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(pJobPtr);
-      delete pJob_ListColumns;
-      break;
-    }
-      
-    case CN_JOB_LISTSCHEMACOLUMNS:
-    {
-      Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(pJobPtr);
-      delete pJob_ListColumns;
-      break;
-    }
-      
-    case CN_JOB_LISTTABLECOLUMNS:
-    {
-      Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(pJobPtr);
-      delete pJob_ListColumns;
-      break;
-    }
-      
-    case CN_JOB_LISTTENANTCOLUMNS:
-    {
-      Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(pJobPtr);
-      delete pJob_ListColumns;
-      break;
-    }
+//    case CN_JOB_LISTTENANTS:
+//    {
+//      Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(pJobPtr);
+//      delete pJob_ListColumns;
+//      break;
+//    }
       
     case CN_JOB_PWF:
     {

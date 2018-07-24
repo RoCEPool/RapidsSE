@@ -21,16 +21,18 @@
   // get the job from the task
   pTask task.job@ to pJob_Pwf
 
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set dictionary stack
   pJob_Pwf getPathR35
   dicStack.set
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set metadata string in the job
   args.metadata if
     "(path VARCHAR)" pJob_Pwf job.metadata!
   then
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // start of working string
   "row: ('/"
 
