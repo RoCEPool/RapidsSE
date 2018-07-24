@@ -60,6 +60,26 @@ void Task::vCommandProcessorDispatchJob(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* CommandProcessor.executeFile -- execute file                               */
+/*----------------------------------------------------------------------------*/
+void Task::vCommandProcessorExecuteFile(MP_Task mpTask)
+{
+  ENTRY("vCommandProcessorExecuteFile"_Stz);
+  
+  Object* pCommandProcessorObject;
+  if ( ! mpTask->m_pDataStack->bPop(pCommandProcessorObject) )
+    THROW_INVALID_DSTACK("commandProcessor.endJob"_Stz);
+  CommandProcessor*
+    pCommandProcessor = _pCommandProcessor(pCommandProcessorObject);
+
+  //bool bFile = pCommandProcessorObject->bExecuteFile();
+  
+  //mpTask->m_pDataStack->vPushInt(bFile);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* commandProcessor.endJob -- end job                                         */
 /*----------------------------------------------------------------------------*/
 void Task::vCommandProcessorEndJob(MP_Task mpTask)
