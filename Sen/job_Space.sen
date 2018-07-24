@@ -60,6 +60,8 @@
   1 grid::thisNode@ pJob_Space job.rowsProcessed!
 
   pJob_Space job.notice
+
+  <DONE_NODE>
 ;
 
 /*============================================================================*/

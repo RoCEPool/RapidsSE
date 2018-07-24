@@ -381,7 +381,7 @@
 
   params| pJob__Executed iJobId |
 
-  0 0 0 0 0 0 locals| pJobParticipant iParticipantNode error pJob iAcksRemaining |
+  0 0 0 0 0 locals| pJobParticipant iParticipantNode error pJob iAcksRemaining |
 
   // get participant node that executed the job
   iJobId job.findParticipant to pJobParticipant

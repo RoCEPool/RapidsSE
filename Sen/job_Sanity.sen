@@ -14,7 +14,7 @@
 
   CN_JOB_SANITY pJob_Sanity object.assertClass
 
-  "GETTING SPACE on NODE " grid::thisNode@ >str str.cat .
+  "GETTING STATUS on NODE " grid::thisNode@ >str str.cat .
 
   // get the node size of originating node from the job
   pJob_Sanity job.regionSize@ to iSize
