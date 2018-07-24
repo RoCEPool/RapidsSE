@@ -546,6 +546,7 @@ namespace Tasks
     static void vCommandProcessorDispatchJob(MP_Task mpTask);
     static void vCommandProcessorEndJob(MP_Task mpTask);
     static void vCommandProcessorExecuteFile(MP_Task mpTask);
+    static void vCommandProcessorFindJobClass(MP_Task mpTask);
     static void vCommandProcessorGetCommand(MP_Task mpTask);
     static void vCommandProcessorJobClass(MP_Task mpTask);
     static void vCommandProcessorNewJob(MP_Task mpTask);
