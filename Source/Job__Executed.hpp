@@ -9,8 +9,9 @@ namespace JobsModel
   class Job__Executed : public Job
   {
   public:
-    s256 m_sResponse;   // response string
-    eEC  m_eErrorCode;  // error code
+    s256 m_sResponse;      // response string
+    i8   m_iRowsProcessed; // rows processed
+    eEC  m_eErrorCode;     // error code
     
     // must be last
     Footer m_xFooter;

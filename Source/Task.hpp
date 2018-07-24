@@ -868,6 +868,8 @@ namespace Tasks
     static void vJobExecutedErrorStore(MP_Task mpTask);
     static void vJobExecutedResponseFetch(MP_Task mpTask);
     static void vJobExecutedResponseStore(MP_Task mpTask);
+    static void vJobExecutedRowsProcessedFetch(MP_Task mpTask);
+    static void vJobExecutedRowsProcessedStore(MP_Task mpTask);
     static void vJobFindOriginator(MP_Task mpTask);
     static void vJobFindParticipant(MP_Task mpTask);
     static void vJobHasError(MP_Task mpTask);
@@ -895,6 +897,8 @@ namespace Tasks
     static void vJobRemoveParticipant(MP_Task mpTask);
     static void vJobResponseStore(MP_Task mpTask);
     static void vJobResponseFetch(MP_Task mpTask);
+    static void vJobRowsProcessedFetch(MP_Task mpTask);
+    static void vJobRowsProcessedStore(MP_Task mpTask);
     static void vJobSignalConnector(MP_Task mpTask);
     
     // loader

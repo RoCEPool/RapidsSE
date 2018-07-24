@@ -38,6 +38,8 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("jobExecuted.error!"_Stz,   &vJobExecutedErrorStore,   false);
   vAddPrimitive("jobExecuted.response@"_Stz,&vJobExecutedResponseFetch,false);
   vAddPrimitive("jobExecuted.response!"_Stz,&vJobExecutedResponseStore,false);
+  vAddPrimitive("jobExecuted.rowsProcessed@"_Stz,&vJobExecutedRowsProcessedFetch,false);
+  vAddPrimitive("jobExecuted.rowsProcessed!"_Stz,&vJobExecutedRowsProcessedStore,false);
   vAddPrimitive("job.findOriginator"_Stz,   &vJobFindOriginator,   false);
   vAddPrimitive("job.findParticipant"_Stz,  &vJobFindParticipant,  false);
   vAddPrimitive("job.hasError"_Stz,         &vJobHasError,         false);
@@ -65,6 +67,8 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.removeParticipant"_Stz,&vJobRemoveParticipant,false);
   vAddPrimitive("job.response@"_Stz,        &vJobResponseFetch,    false);
   vAddPrimitive("job.response!"_Stz,        &vJobResponseStore,    false);
+  vAddPrimitive("job.rowsProcessed@"_Stz,   &vJobRowsProcessedFetch, false);
+  vAddPrimitive("job.rowsProcessed!"_Stz,   &vJobRowsProcessedStore, false);
   vAddPrimitive("job.signalConnector"_Stz,  &vJobSignalConnector,  false);
 }
 
@@ -710,6 +714,44 @@ void Task::vJobExecutedResponseFetch(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* jobExecuted.rowsProcessed! -- store rowsProcessed in job__executed         */
+/*----------------------------------------------------------------------------*/
+void Task::vJobExecutedRowsProcessedStore(MP_Task mpTask)
+{
+  ENTRY("vJobExecutedRowsProcessedStore"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("jobExecuted.rowsProcessed!"_Stz);
+  Job__Executed* pJob__Executed = _pJob__Executed(pJobPtr);
+  
+  i8 iRowsProcessed;
+  if ( ! mpTask->m_pDataStack->bPop(iRowsProcessed) )
+    THROW_INVALID_DSTACK("jobExecuted.rowsProcessed!"_Stz);
+  
+  pJob__Executed->m_iRowsProcessed = iRowsProcessed;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* jobExecuted.rowsProcessed@ -- store rowsProcessed in job__executed         */
+/*----------------------------------------------------------------------------*/
+void Task::vJobExecutedRowsProcessedFetch(MP_Task mpTask)
+{
+  ENTRY("vJobExecutedRowsProcessedFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("jobExecuted.rowsProcessed@"_Stz);
+  Job__Executed* pJob__Executed = _pJob__Executed(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushInt(pJob__Executed->m_iRowsProcessed);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* jobExecuted.response! -- store participant response in job__executed       */
 /*----------------------------------------------------------------------------*/
 void Task::vJobExecutedResponseStore(MP_Task mpTask)
@@ -1260,6 +1302,52 @@ void Task::vJobResponseStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.response!"_Stz);
   
   pJob->m_xNode[iNode].m_sResponse = sResponse;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.rowsProcessed@ -- fetch the rows processed by the job from a node      */
+/*----------------------------------------------------------------------------*/
+void Task::vJobRowsProcessedFetch(MP_Task mpTask)
+{
+  ENTRY("vJobRowsProcessedFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.rowsProcessed@"_Stz);
+  Job_Space* pJob = _pJob_Space(pJobPtr);
+  
+  i8 iNode;
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
+    THROW_INVALID_DSTACK("job.rowsProcessed@"_Stz);
+  
+  mpTask->m_pDataStack->vPushInt(pJob->m_xNode[iNode].m_iRowsProcessed);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.rowsProcessed! -- store the rows processed by the job from a node      */
+/*----------------------------------------------------------------------------*/
+void Task::vJobRowsProcessedStore(MP_Task mpTask)
+{
+  ENTRY("vJobRowsProcessedStore"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.rowsProcessed!"_Stz);
+  Job_Space* pJob = _pJob_Space(pJobPtr);
+  
+  i8 iNode;
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
+    THROW_INVALID_DSTACK("job.rowsProcessed!"_Stz);
+  
+  i8 iRowsProcessed;
+  if ( ! mpTask->m_pDataStack->bPop(iRowsProcessed) )
+    THROW_INVALID_DSTACK("job.rowsProcessed!"_Stz);
+  
+  pJob->m_xNode[iNode].m_iRowsProcessed = iRowsProcessed;
   
   EXIT();
 }

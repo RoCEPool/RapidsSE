@@ -46,24 +46,18 @@
 
   "GETTING SPACE on NODE " grid::thisNode@ >str str.cat .
 
-  args.metadata if
-    "row: ('"
-    grid::thisNodeName@ str.cat
-    "', '" str.cat
-    2 bp::totalSpace number.magnitude str.cat
-    "', '" str.cat
-    2 bp::inUseSpace number.magnitude str.cat
-    "', '" str.cat
-    2 bp::freeSpace number.magnitude str.cat
-    "')" str.cat
-  else
-    "Pool - Size(" 2 bp::totalSpace number.magnitude str.cat ")" str.cat
-    " InUse(" 2 bp::inUseSpace number.magnitude str.cat ")" str.cat
-    " Free(" 2 bp::freeSpace number.magnitude str.cat ")" str.cat
-    str.cat str.cat
-  then
+  "row: ('"
+  grid::thisNodeName@ str.cat
+  "', '" str.cat
+  2 bp::totalSpace number.magnitude str.cat
+  "', '" str.cat
+  2 bp::inUseSpace number.magnitude str.cat
+  "', '" str.cat
+  2 bp::freeSpace number.magnitude str.cat
+  "')" str.cat
 
   grid::thisNode@ pJob_Space job.response!
+  1 grid::thisNode@ pJob_Space job.rowsProcessed!
 
   pJob_Space job.notice
 ;

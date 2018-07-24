@@ -353,6 +353,9 @@
   error EC_NONE == if
     // get the response from participant job and set it in executed job
     grid::thisNode@  pJobParticipant job.response@ pJob__Executed jobExecuted.response!
+
+    // get the no of rows processed from participant job and set it in executed job
+    grid::thisNode@  pJobParticipant job.rowsProcessed@ pJob__Executed jobExecuted.rowsProcessed!
   else
      // set error in executed job
      error pJob__Executed jobExecuted.error!
@@ -378,7 +381,7 @@
 
   params| pJob__Executed iJobId |
 
-  0 0 0 0 0 0 locals| sResponse pJobParticipant iParticipantNode error pJob iAcksRemaining |
+  0 0 0 0 0 0 locals| pJobParticipant iParticipantNode error pJob iAcksRemaining |
 
   // get participant node that executed the job
   iJobId job.findParticipant to pJobParticipant
@@ -392,11 +395,11 @@
 
   error EC_NONE == if
 
-    // get the response string from job__executed
-    pJob__Executed jobExecuted.response@ to sResponse
+    // get the response string from job__executed and set in pJob
+    pJob__Executed jobExecuted.response@ iParticipantNode pJob job.response!
 
-    // set the error code in pJob
-    sResponse iParticipantNode pJob job.response!
+    // get the rows processed from job__executed and set in pJob
+    pJob__Executed jobExecuted.rowsProcessed@ iParticipantNode pJob job.rowsProcessed!
 
   else
 
