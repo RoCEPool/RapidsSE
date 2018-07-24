@@ -46,15 +46,11 @@ namespace Prompt
     SEitf* pSEitf(void);  
 
   private:
+
+    Footer* aFooter(void);
   
-    void vClipTokens(i8 i_FromToken);
-    bool bCmdIs(Stz* aArg);
-    bool bExecuteFile(void);
-    void vMetaFormat(void);
-    bool bOneIs(Stz* aArg);
-    void vPushFile(Stz* aPath);
-    bool bRunFile(void);
-    bool bTestFile(Stz* aPath);
+  //----------------------------------------------------------------------------
+  // to be removed
     bool bTokenCheck(i8 nTokens);
   
     TokenVec* pTknVec(void);
@@ -63,10 +59,6 @@ namespace Prompt
     Token* pTkn(i8 i_Token);
     Token* pTkn2(i8 i_Token);
 
-    Footer* aFooter(void);
-  
-  //----------------------------------------------------------------------------
-  // to be removed
   public:
     bool bCmd_AnalyzeTable(void);
     bool bCmd_BeginInsert(void);

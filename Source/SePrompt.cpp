@@ -223,118 +223,11 @@ void SePrompt::vExecuteCommand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  // attempt to execute command file
-  if (bExecuteFile()) {
-    m_pCommandProcessor->m_eCommand = CK_COMMAND_FILE;
-    return;
-  }
-  
-  // attempt to execute internal command
-  //if (bExecuteFunction()) {
-  //  m_pCommandProcessor->m_eCommand = CK_PROMPT_FUNCTION;
-  //  return;
-  //}
-  
   // attempt to execute se job
   if (m_pCommandProcessor->bFindJobClass()) {
     m_pCommandProcessor->m_eCommand = CK_SE_JOB;
     return;
   }
- /*
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  bool bProcessResult = bProcessCommand();
-  
-  if (m_bEcho) {
-    vTrace("cmd: "_Stz);
-    for (i8 i_Token = 0; i_Token < C_TOKENS; i_Token++) {
-      if ( ! pTkn(i_Token)->bHasText() )
-        break;
-      vTrace("%s "_Stz,pTkn(i_Token));
-    }
-    vTrace(": got: %s\n"_Stz,m_sResponse.aChar());
-    return;
-  }
-  
-  if (bProcessResult) {
-    if (gpAttachMap->m_bMetadata ) {
-      vMetaFormat();
-    }
-    else {
-      if ( !m_sResponse.bEqual("<ok>"_Stz) ) {
-        vTrace("%s\n"_Stz,m_sResponse.aChar());
-      }
-    }
-  }
-  else {
-    if (m_pSEitf->eGetLastError() != EC_NONE)
-      vTrace("error: %s\n"_Stz,m_pSEitf->pGetLastError());
-  }
-  
-  // clear the response
-  m_sResponse = ""_Stz;
-  */
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get the seitf                                                              */
-/*----------------------------------------------------------------------------*/
-SEitf* SePrompt::pSEitf(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  return m_pSEitf;
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* clip tokens                                                                */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vClipTokens(i8 i_FromToken)
-{
-  i8 i_ToToken = 0;
-  for ( ; i_FromToken < C_TOKENS; i_FromToken++) {
-    
-    pTkn(i_ToToken++)->vCopy(pTkn(i_FromToken));
-    
-    if ( ! pTkn(i_FromToken)->bHasText() )
-      break;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* check if command token 0 is given argument                                 */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bCmdIs(Stz* aArg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  if (pTkn(0)->bSame(aArg))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* potentially execute a command file                                         */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bExecuteFile(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  if (! bTestFile(pTkn(0)->aText()))
-    return false;
-  
-  bool b = bRunFile();
-  ASSERT(b);
-  
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -355,86 +248,24 @@ bool SePrompt::bExecuteFunction(void)
   return true;
 }
 
-/*----------------------------------------------------------------------------*/
-/* print output in metadata format                                            */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vMetaFormat(void)
-{
-  
-  if ( !m_sResponse.bEqual("<ok>"_Stz) ) {
-    if ( ! m_pSEitf->m_sMetadata.bEqual( ""_Stz))
-      vTrace("metadata: %s\n"_Stz, m_pSEitf->m_sMetadata.aStr());
-    vTrace("%s"_Stz,m_sResponse.aChar());
-    vTrace("success: %lld rows affected\n"_Stz, m_pSEitf->m_iRowsProcessed);
-  }
-  else {
-    vTrace("success: %lld rows affected\n"_Stz, m_pSEitf->m_iRowsProcessed);
-  }
-  
-  // reset counters
-  m_pSEitf->m_iRowsProcessed = 0;
-  m_pSEitf->m_sMetadata      = ""_Stz;
-}
 
 /*----------------------------------------------------------------------------*/
-/* check if command token 1 is given argument                                 */
+/*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bOneIs(Stz* aArg)
+
+/*----------------------------------------------------------------------------*/
+/* get the seitf                                                              */
+/*----------------------------------------------------------------------------*/
+SEitf* SePrompt::pSEitf(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  if (pTkn(1)->bSame(aArg))
-    return true;
-  else
-    return false;
+  return m_pSEitf;
 }
 
 /*----------------------------------------------------------------------------*/
-/* push command file                                                          */
+/*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void SePrompt::vPushFile(Stz* aFileName)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  s256 sPath;
-  
-  sPath = aFileName;
-  
-  m_pCommandProcessor->m_pTokeniser->vPush();
-  
-  bool b = m_pCommandProcessor->m_pTokeniser->bUseFile(sPath);
-  ASSERT(b);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set file to run                                                            */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bRunFile(void)
-{
-  if ( ! bTokenCheck(1) )
-    return false;
-  
-  vPushFile(pTkn(0)->aText());
-  m_pCommandProcessor->m_pTokeniser->vLineMode(true);
-  m_sResponse = "<ok>"_Stz;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test for command file                                                      */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bTestFile(Stz* aFileName)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  File xFile;
-  
-  if (xFile.bExists(aFileName))
-    return true;
-  else
-    return false;
-}
 
 /*----------------------------------------------------------------------------*/
 /* check for a specific number of tokens                                      */

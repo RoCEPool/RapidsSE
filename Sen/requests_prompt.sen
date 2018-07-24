@@ -40,7 +40,7 @@
 
     // check for file
     pCommandProcessor commandProcessor.executeFile if
-      "A file executed" .
+      //"A file executed" .
       ifAgain
     then
 
