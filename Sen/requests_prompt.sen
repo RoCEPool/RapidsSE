@@ -38,7 +38,13 @@
       ifAgain
    then
 
-    // check and execute the command
+    // check for file
+    pCommandProcessor commandProcessor.executeFile if
+      "A file executed" .
+      ifAgain
+    then
+
+   // check and execute the command
     pPrompt prompt.executeCommand to eCommand
 
     // job commands have had their job class identified

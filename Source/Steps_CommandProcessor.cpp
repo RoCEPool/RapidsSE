@@ -16,6 +16,7 @@ void Task::vAddPrimitives_CommandProcessor(void)
   vAddPrimitive("commandProcessor.blankLine"_Stz,  &vCommandProcessorBlankLine,  false);
   vAddPrimitive("commandProcessor.dispatchJob"_Stz,&vCommandProcessorDispatchJob,false);
   vAddPrimitive("commandProcessor.endJob"_Stz,     &vCommandProcessorEndJob,     false);
+  vAddPrimitive("commandProcessor.executeFile"_Stz,&vCommandProcessorExecuteFile,false);
   vAddPrimitive("commandProcessor.getCommand"_Stz, &vCommandProcessorGetCommand, false);
   vAddPrimitive("commandProcessor.jobClass"_Stz,   &vCommandProcessorJobClass,   false);
   vAddPrimitive("commandProcessor.newJob"_Stz,     &vCommandProcessorNewJob,     false);
