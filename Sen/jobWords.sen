@@ -31,16 +31,6 @@
     "Signalling connector thread" .
     pJob job.signalConnector
   then
-
-  // push "<ok>" as the return str
-  //"<ok>"
-
-  // push 0 to indicate success / no error
-  //0
-
-  // there are two return arguments
-  //2
-
 ;
 
 /*----------------------------------------------------------------------------*/

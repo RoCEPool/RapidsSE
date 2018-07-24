@@ -1,0 +1,50 @@
+/*============================================================================*/
+/* job_ListCatalogs.sen -- Job List Catalogs                                  */
+/*============================================================================*/
+
+"job_ListCatalogs.sen" .verbose
+
+
+/*----------------------------------------------------------------------------*/
+/* List Catalogs requests (on the originating node)                           */
+/*----------------------------------------------------------------------------*/
+: listCatalogs_req ( -- <R> )
+
+  0 0 locals| pJob_ListCatalogs pTask |
+
+  tp: listCatalogs_req
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob_ListCatalogs
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
+  pJob_ListCatalogs getPathR35
+  dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab ddl read lock
+  ddlLock::grabRead
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // should be in the catalogs folder
+  checkInCatalogs not if pJob_ListCatalogs <ERROR_REQUEST> exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // list tables folder contents
+  pJob_ListCatalogs listContentsR35
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // return
+  pJob_ListCatalogs <DONE_REQUEST>
+  ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+

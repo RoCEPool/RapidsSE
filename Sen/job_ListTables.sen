@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* job_ListColumns.sen -- Job list Columns                                    */
+/* job_ListTables.sen -- Job List Tables                                      */
 /*============================================================================*/
 
-"job_ListColumns.sen" .verbose
+"job_ListTables.sen" .verbose
 
 
 /*----------------------------------------------------------------------------*/
@@ -10,7 +10,7 @@
 /*----------------------------------------------------------------------------*/
 : listTables_req ( -- <R> )
 
-  0 0 0 locals| iCount pJob_ListTables pTask |
+  0 0 locals| pJob_ListTables pTask |
 
   tp: listTables_req
 
@@ -28,8 +28,12 @@
   dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab ddl read lock
+  ddlLock::grabRead
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in the tables folder
-  checkInTables not if <ERROR_JOB> exit then
+  checkInTables not if pJob_ListTables <ERROR_REQUEST> exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // list tables folder contents

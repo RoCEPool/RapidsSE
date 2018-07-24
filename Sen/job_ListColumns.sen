@@ -92,6 +92,10 @@
   pJob_ListColumns getPathR35
   dicStack.set
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab ddl read lock
+  ddlLock::grabRead
+
   //----------------------------------------------------------------------------
   // should be in the tables folder
   checkInTables not if <ERROR_JOB> exit then
@@ -112,6 +116,8 @@
     "(columnDefinition VARCHAR)" pJob_ListColumns job.metadata!
   then
 
+
+ 
   listColumns
 
   //----------------------------------------------------------------------------
@@ -120,6 +126,7 @@
 
   grid::thisNode@ pJob_ListColumns job.response!
 */
+
   pJob_ListColumns <DONE_REQUEST>
 ;
 

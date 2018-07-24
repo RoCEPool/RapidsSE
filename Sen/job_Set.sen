@@ -15,6 +15,7 @@
 "Job_Lf.sen" include
 
 "Job_ListColumns.sen" include
+"Job_ListCatalogs.sen" include
 "Job_ListTables.sen" include
 
 "Job_Prompt.sen" include

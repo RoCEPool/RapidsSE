@@ -167,16 +167,16 @@
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // form the row for each word
   ""                               // initial contents string
   0 pathPick dic.lastWord dup
   iterate                          // setup iteration of words
     1 iCount + to iCount
     "row: ('" str.cat
     object@ word.name str.cat      // add name of the word to contents string
-                                   // add word kind to ls string
     "')\n" str.cat
     object@ word.prev object!      // step backwards thru words
-  next                             //
+  next
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set response in the job
