@@ -1,0 +1,129 @@
+/*============================================================================*/
+/* job_ListColumns.sen -- Job list Columns                                    */
+/*============================================================================*/
+
+"job_ListColumns.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* list columns of a table                                                    */
+/*----------------------------------------------------------------------------*/
+/*
+: listColumns ( -- )
+
+  0 locals| count |
+
+  pushTableSub  assert
+  pushColumns   assert
+
+  args.metadata if
+  ""                             // initial ls string
+  0 pathPick dic.lastWord        // get last word of current dic
+  dup                            // setup iteration of words
+  iterate                        //
+
+  1 count + to count
+
+  object@ word.name            // column name
+
+  "row: ('" swap str.cat
+  " " str.cat
+  object@ execute str.cat       // column type
+
+  swap
+
+  "')\n" str.prepend            //
+
+  str.cat                       // append column to ls
+
+  object@ word.prev object!     // step backwards thru words
+
+  next                            //
+  count task::this task.seitf@ seitf.rowsProcessed
+
+  else
+  ""                               // initial ls string
+  0 pathPick dic.lastWord          // get last word of current dic
+  dup                            // setup iteration of words
+  iterate                        //
+
+  object@ word.name            // column name
+
+  " " str.cat
+  object@ execute str.cat       // column type
+
+  swap
+
+  dup str.length
+  if " , " str.prepend then     //
+
+  str.cat                       // append column to ls
+
+  object@ word.prev object!     // step backwards thru words
+
+  next                            //
+
+  then
+
+  //"\n" str.cat
+
+  popColumns
+  popTableSub
+;
+*/
+/*----------------------------------------------------------------------------*/
+/* List Columns requests (on the originating node)                            */
+/*----------------------------------------------------------------------------*/
+: listColumns_req ( -- <R> )
+
+  0 0 0 locals| iCount pJob_ListColumns pTask |
+
+  tp: listColumns_req
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob_ListColumns
+
+  //----------------------------------------------------------------------------
+  // set dictionary stack
+  pJob_ListColumns getPathR35
+  dicStack.set
+
+  //----------------------------------------------------------------------------
+  // should be in the tables folder
+  checkInTables not if <ERROR_JOB> exit then
+
+  //----------------------------------------------------------------------------
+  // there should be a table folder
+  dup checkIsTableFolder not if <ERROR_JOB> exit then
+/*
+  //----------------------------------------------------------------------------
+  // push table dictionary
+  dup pushTable assert
+
+  //----------------------------------------------------------------------------
+  // check it is a table
+  checkIsTable  not if popTable <NIP+ERROR> exit then
+
+  args.metadata if
+    "(columnDefinition VARCHAR)" pJob_ListColumns job.metadata!
+  then
+
+  listColumns
+
+  //----------------------------------------------------------------------------
+  // pop table dictionary
+  popTable
+
+  grid::thisNode@ pJob_ListColumns job.response!
+*/
+  pJob_ListColumns <DONE_REQUEST>
+;
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

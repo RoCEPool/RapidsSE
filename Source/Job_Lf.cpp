@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Job_ChangeFolder.cpp -- Change Folder Job                                  */
+/* Job_Lf.cpp -- List Folder Job                                              */
 /*============================================================================*/
 
 #include "JobModel.h"
@@ -64,9 +64,9 @@ void* Job_Lf::operator new(size_t iSize, void* aAddress)
 /*----------------------------------------------------------------------------*/
 void Job_Lf::operator delete(void* aAddress)
 {
-  Job_Lf* pJob_ChangeFolder = static_cast<Job_Lf*>(aAddress);
+  Job_Lf* pJob_Lf = static_cast<Job_Lf*>(aAddress);
   
-  Heap::vFree(pJob_ChangeFolder);
+  Heap::vFree(pJob_Lf);
 }
 
 /*----------------------------------------------------------------------------*/

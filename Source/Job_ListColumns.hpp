@@ -1,0 +1,47 @@
+/*============================================================================*/
+/* Job_Lfr.hpp -- List Folder Job                                             */
+/*============================================================================*/
+#pragma once
+
+namespace JobsModel
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  class Job_ListColumns : public Job,
+                          public JobDicPath,
+                          public JobObjectName,
+                          public JobResult
+  {
+  public:
+    
+    // must be last
+    Footer m_xFooter;
+  
+  public:
+    void* operator new(size_t);
+    void* operator new(size_t, void* aAddress);
+    void  operator delete(void*);
+  
+    Job_ListColumns(Interface::SEitf* pSEitf);
+    ~Job_ListColumns(void);
+  
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
+
+  public:
+    bool bPopulateJob(TokenVec* pTokenVec);
+    void vShow(void);
+  
+  public:
+    Footer* aFooter(void);
+  
+  };
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  Job_ListColumns* _pJob_ListColumns(void* aAddr);
+  
+  Job* pJob_ListColumns_pre(Prompt::SePrompt* pPrompt);
+  void vJob_ListColumns_post(Prompt::SePrompt* pPrompt, Job* pJob);
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -1,0 +1,205 @@
+/*============================================================================*/
+/* Job_ListColumns.cpp -- List Columns Job                                    */
+/*============================================================================*/
+
+#include "JobModel.h"
+#include "StorageEngine.h"
+
+extern AttachMap* gpAttachMap;
+
+JobNote mJobNote_ListColumns (
+  "Job_ListColumns"_Stz,  // name of the job class
+  CN_JOB_LISTCOLUMNS,     // class enum
+  "list columns"_Stz,     // comment about the job
+  "lscol"_Stz,            // the prompt command
+  nullptr,                // the second word
+  "listColumns"_Stz,      // the task seed for this job
+  false,                  // detached job?
+  pJob_ListColumns_pre,   // prompt pre-process function
+  vJob_ListColumns_post,  // prompt post-process function
+  true                    // job is enabled
+);
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+Job_ListColumns* JobsModel::_pJob_ListColumns(void* aAddress)
+{
+  Job_ListColumns* pJob_ListColumns = reinterpret_cast<Job_ListColumns*>(aAddress);
+  
+  //RASSERT( !pJob_ListColumns || CN_JOB_LF == pJob_ListColumns->eClass());
+  
+  return pJob_ListColumns;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allocate a new entry buffer from heap                                      */
+/*----------------------------------------------------------------------------*/
+void* Job_ListColumns::operator new(size_t iSize)
+{
+  RASSERT(iSize);
+  
+  Job_ListColumns* pJob_ListColumns =
+    static_cast<Job_ListColumns*>(Heap::pAllocate(CN_JOB_LF));
+  
+  return pJob_ListColumns;
+}
+
+/*----------------------------------------------------------------------------*/
+/* perform new of entry buffer for given address                              */
+/*----------------------------------------------------------------------------*/
+void* Job_ListColumns::operator new(size_t iSize, void* aAddress)
+{
+  RASSERT(iSize);
+  
+  return aAddress;
+}
+
+/*----------------------------------------------------------------------------*/
+/* free an entry buffer back to the heap                                      */
+/*----------------------------------------------------------------------------*/
+void Job_ListColumns::operator delete(void* aAddress)
+{
+  Job_ListColumns* pJob_ListColumns = static_cast<Job_ListColumns*>(aAddress);
+  
+  Heap::vFree(pJob_ListColumns);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Job_ListColumns::Job_ListColumns(Interface::SEitf* pSEitf)
+: Job(CN_JOB_LF), JobDicPath(pSEitf)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LF,_FOOTER_);
+  
+  m_sSeed    = mJobNote_ListColumns.pJobClass()->m_aSeed;
+
+  _checkInitialised_(CN_JOB_LF);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_LF,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+Job_ListColumns::~Job_ListColumns(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LF,_FOOTER_);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Static Functions --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* dump                                                                       */
+/*----------------------------------------------------------------------------*/
+void Job_ListColumns::vDump(eCN eClass, Object* pObject, Stz* aTab)
+{
+  RASSERT(CN_JOB_DOCOL == eClass);
+  RASSERT(pObject->eClass() == CN_JOB_LF);
+  
+  Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(pObject);
+
+  pJob_ListColumns->vShow();
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Member Functions --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* populate the job                                                           */
+/*----------------------------------------------------------------------------*/
+bool Job_ListColumns::bPopulateJob(TokenVec* pTokenVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LF,_FOOTER_);
+  
+  i8 iNumTokens;
+  
+  ASSERT(pTokenVec->pGet(0)->bSame("lf"_Stz));
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // get no of tokens in token vector
+  iNumTokens = pTokenVec->nTokens();;
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // there should be 1 tokens
+  if (iNumTokens != 1) {
+    return nullptr;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show                                                                       */
+/*----------------------------------------------------------------------------*/
+void Job_ListColumns::vShow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LF,_FOOTER_);
+  
+                                                               //! Alka to write
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* Job_ListColumns::aFooter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LF);
+  
+  return &m_xFooter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* prompt pre execute function                                                */
+/*----------------------------------------------------------------------------*/
+Job* JobsModel::pJob_ListColumns_pre(Prompt::SePrompt* pPrompt)
+{
+  SEitf* pSEitf = pPrompt->pSEitf();
+  
+  Job_ListColumns* pJob_ListColumns = new Job_ListColumns(pSEitf);
+  
+  TokenVec* pTokenVec = pPrompt->m_pCommandProcessor->pTknVec();
+  
+  bool bResult = pJob_ListColumns->bPopulateJob(pTokenVec);
+  
+  if ( !bResult) {
+    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
+    pJob_ListColumns->m_bHasError = true;
+    pJob_ListColumns->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+  }
+  
+  return pJob_ListColumns;
+}
+
+/*----------------------------------------------------------------------------*/
+/* prompt post execute function                                               */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_ListColumns_post(Prompt::SePrompt* pPrompt, Job* pJob)
+{
+  Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(pJob);
+  
+  // Note: take care of errors / meta data ????
+  for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+    vTrace("%s\n"_Stz, pJob_ListColumns->m_xNode[i_Node].m_sResponse.aChar());
+  }
+
+  // now delete the job
+  delete pJob_ListColumns;
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

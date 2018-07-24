@@ -510,6 +510,13 @@ void Task::vJobDelete(MP_Task mpTask)
       break;
     }
     
+    case CN_JOB_LISTCOLUMNS:
+    {
+      Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(pJobPtr);
+      delete pJob_ListColumns;
+      break;
+    }
+      
     case CN_JOB_PWF:
     {
       Job_Pwf* pJob_Pwf = _pJob_Pwf(pJobPtr);

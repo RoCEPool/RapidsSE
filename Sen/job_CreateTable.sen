@@ -69,7 +69,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* create table request (on originating node)                                 */
+/* Job_CreateTable request (on originating node)                              */
 /*----------------------------------------------------------------------------*/
 : createTable_req (  -- <R> )
 
@@ -90,7 +90,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_CreateTable job on a node                                      */
+/* execute Job_CreateTable job on each node                                   */
 /*----------------------------------------------------------------------------*/
 : createTable_node ( pJob_CreateTable -- )
 

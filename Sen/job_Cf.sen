@@ -25,7 +25,7 @@
   // get the objectName (folderNm) from the job
   pJob_Cf job.objectName@ to sFolderNm
 
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set dictionary stack
   pJob_Cf getPathR35
   dicStack.set

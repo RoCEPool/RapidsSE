@@ -59,6 +59,7 @@ using namespace JobsModel;
 #include "Job_G35.hpp"
 
 #include "Job_Lf.hpp"
+#include "Job_ListColumns.hpp"
 
 #include "Job_Prompt.hpp"
 #include "Job_Pwf.hpp"
