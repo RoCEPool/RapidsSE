@@ -207,6 +207,7 @@ void JobsModel::vJob_Lf_post(Prompt::SePrompt* pPrompt, Job* pJob)
       vTrace("success: %lld rows affected\n"_Stz, gpAttachMap->m_pGrid->m_nNodes);
     }
   }
+  
   // now delete the job
   delete pJob_Lf;
 }

@@ -29,12 +29,10 @@
   // set metadata string in the job
   args.metadata if
     "(path VARCHAR)" pJob_Pwf job.metadata!
-
-    // start of working string
-    "row: ('/"
-  else
-     "/"
   then
+
+  // start of working string
+  "row: ('/"
 
   // iterate thru each folder in path and concat to end
   pathDepth 0 do
@@ -46,12 +44,11 @@
     "/" str.cat
   loop
 
-  args.metadata if
-    // end working string
-    "')\n" str.cat
-  then
+  // end working string
+  "')\n" str.cat
 
   grid::thisNode@ pJob_Pwf job.response!
+  1 grid::thisNode@ pJob_Pwf job.rowsProcessed!
 
   pJob_Pwf <DONE_REQUEST>
 ;
