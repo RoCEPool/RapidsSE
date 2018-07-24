@@ -514,7 +514,49 @@ void Task::vJobDelete(MP_Task mpTask)
       break;
     }
     
+    case CN_JOB_LISTCATALOGS:
+    {
+      Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(pJobPtr);
+      delete pJob_ListColumns;
+      break;
+    }
+    
     case CN_JOB_LISTCOLUMNS:
+    {
+      Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(pJobPtr);
+      delete pJob_ListColumns;
+      break;
+    }
+    
+    case CN_JOB_LISTIDXCOLUMNS:
+    {
+      Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(pJobPtr);
+      delete pJob_ListColumns;
+      break;
+    }
+      
+    case CN_JOB_LISTPARTCOLUMNS:
+    {
+      Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(pJobPtr);
+      delete pJob_ListColumns;
+      break;
+    }
+      
+    case CN_JOB_LISTSCHEMACOLUMNS:
+    {
+      Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(pJobPtr);
+      delete pJob_ListColumns;
+      break;
+    }
+      
+    case CN_JOB_LISTTABLECOLUMNS:
+    {
+      Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(pJobPtr);
+      delete pJob_ListColumns;
+      break;
+    }
+      
+    case CN_JOB_LISTTENANTCOLUMNS:
     {
       Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(pJobPtr);
       delete pJob_ListColumns;

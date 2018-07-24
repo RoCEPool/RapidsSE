@@ -106,7 +106,13 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_DROPTENANT
   /*    */ &Finalize::vUndefined,         // CN_JOB_G35
   /*    */ &Finalize::vUndefined,         // CN_JOB_LF
+  /*    */ &Finalize::vUndefined,         // CN_JOB_LISTCATALOGS
   /*    */ &Finalize::vUndefined,         // CN_JOB_LISTCOLUMNS
+  /*    */ &Finalize::vUndefined,         // CN_JOB_LISTIDXCOLUMNS
+  /*    */ &Finalize::vUndefined,         // CN_JOB_LISTPARTCOLUMNS
+  /*    */ &Finalize::vUndefined,         // CN_JOB_LISTSCHEMACOLUMNS
+  /*    */ &Finalize::vUndefined,         // CN_JOB_LISTTABLECOLUMNS
+  /*    */ &Finalize::vUndefined,         // CN_JOB_LISTTENANTCOLUMNS
   /*    */ &Finalize::vUndefined,         // CN_JOB_LOADTABLE
   /*    */ &Finalize::vUndefined,         // CN_JOB_PROMPT
   /*    */ &Finalize::vUndefined,         // CN_JOB_PWF

@@ -110,7 +110,14 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_DROPTENANT
   /*    */ &Dump::vDummy,           // CN_JOB_G35
   /*    */ &Dump::vDummy,           // CN_JOB_LF
+  /*    */ &Dump::vDummy,           // CN_JOB_LISTCATALOGS
   /*    */ &Dump::vDummy,           // CN_JOB_LISTCOLUMNS
+  /*    */ &Dump::vDummy,           // CN_JOB_LISTIDXCOLUMNS
+  /*    */ &Dump::vDummy,           // CN_JOB_LISTPARTCOLUMNS
+  /*    */ &Dump::vDummy,           // CN_JOB_LISTSCHEMACOLUMNS
+  /*    */ &Dump::vDummy,           // CN_JOB_LISTTABLECOLUMNS
+  /*    */ &Dump::vDummy,           // CN_JOB_LISTTENANTCOLUMNS
+  
   /*    */ &Dump::vDummy,           // CN_JOB_LOADTABLE
   /*    */ &Dump::vDummy,           // CN_JOB_PROMPT
   /*    */ &Dump::vDummy,           // CN_JOB_PWF
@@ -337,7 +344,13 @@ i8 giClassSize[]
   /*    */ sizeof(Job_DropTenant),    // CN_JOB_DROPTENANT
   /*    */ sizeof(Job_G35),           // CN_JOB_G35
   /*    */ sizeof(Job_Lf),            // CN_JOB_LF
+  /*    */ sizeof(Job_ListColumns),   // CN_JOB_LISTCATALOGS
   /*    */ sizeof(Job_ListColumns),   // CN_JOB_LISTCOLUMNS
+  /*    */ sizeof(Job_ListColumns),   // CN_JOB_LISTIDXCOLUMNS
+  /*    */ sizeof(Job_ListColumns),   // CN_JOB_LISTPARTCOLUMNS
+  /*    */ sizeof(Job_ListColumns),   // CN_JOB_LISTSCHEMACOLUMNS
+  /*    */ sizeof(Job_ListColumns),   // CN_JOB_LISTTABLECOLUMNS
+  /*    */ sizeof(Job_ListColumns),   // CN_JOB_LISTTENANTCOLUMNS
   /*    */ sizeof(Job_CreateTable),   // CN_JOB_LOADTABLE
   /*    */ sizeof(Job_Prompt),        // CN_JOB_PROMPT
   /*    */ sizeof(Job_Pwf),           // CN_JOB_PWF
@@ -564,7 +577,13 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_DROPTENANT
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_G35
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LF
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LISTCATALOGS
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LISTCOLUMNS
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LISTIDXCOLUMNS
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LISTPARTCOLUMNS
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LISTSCHEMACOLUMNS
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LISTTABLECOLUMNS
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LISTTENANTCOLUMNS
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LOADTABLE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_PROMPT
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_PWF

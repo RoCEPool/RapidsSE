@@ -111,7 +111,13 @@ enum eCN : u2 // Class Number
     /*    */ CN_JOB_DROPTENANT,
     /*    */ CN_JOB_G35,
     /*    */ CN_JOB_LF,
+    /*    */ CN_JOB_LISTCATALOGS,
     /*    */ CN_JOB_LISTCOLUMNS,
+    /*    */ CN_JOB_LISTIDXCOLUMNS,
+    /*    */ CN_JOB_LISTPARTCOLUMNS,
+    /*    */ CN_JOB_LISTSCHEMACOLUMNS,
+    /*    */ CN_JOB_LISTTABLECOLUMNS,
+    /*    */ CN_JOB_LISTTENANTCOLUMNS,
     /*    */ CN_JOB_LOADTABLE,
     /*    */ CN_JOB_PROMPT,
     /*    */ CN_JOB_PWF,
@@ -337,7 +343,13 @@ enum eCN : u2 // Class Number
     /*    */ "JOB_DROPTENANT"_Stz,     // CN_JOB_DROPTENANT
     /*    */ "JOB_G35"_Stz,            // CN_JOB_G35
     /*    */ "JOB_LF"_Stz,             // CN_JOB_LF
+    /*    */ "JOB_LISTCATALOGS"_Stz,   // CN_JOB_LISTCATALOGS
     /*    */ "JOB_LISTCOLUMNS"_Stz,    // CN_JOB_LISTCOLUMNS
+    /*    */ "JOB_LISTIDXCOLUMNS"_Stz, // CN_JOB_LISTIDXCOLUMNS
+    /*    */ "JOB_LISTPARTCOLUMNS"_Stz,   // CN_JOB_LISTPARTCOLUMNS
+    /*    */ "JOB_LISTSCHEMACOLUMNS"_Stz, // CN_JOB_LISTSCHEMACOLUMNS
+    /*    */ "JOB_LISTTABLECOLUMNS"_Stz,  // CN_JOB_LISTTABLECOLUMNS
+    /*    */ "JOB_LISTTENANTCOLUMNS"_Stz, // CN_JOB_LISTTENANTCOLUMNS
     /*    */ "JOB_LOADTABLE"_Stz,      // CN_JOB_LOADTABLE
     /*    */ "JOB_PROMPT"_Stz,         // CN_JOB_PROMPT
     /*    */ "JOB_PWF"_Stz,            // CN_JOB_PWF
