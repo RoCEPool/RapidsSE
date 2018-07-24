@@ -229,24 +229,14 @@ void Task::vNodeStatus(MP_Task mpTask)
   
   Grid* pGrid = gpAttachMap->m_pGrid;
   
-  if (gpAttachMap->m_bMetadata ) {
-    if (Region::bTest(gxArguments.m_sRegionName))
-      s.vSprint("row: ('%s', '%s', 'running')"_Stz,
-              pGrid->pThisNode()->aNodeName(),
-              gxArguments.m_sRegionName.aChar());
-    else
-      s.vSprint("row: ('%s', '%s', 'not running')"_Stz,
-              pGrid->pThisNode()->aNodeName(),
-              gxArguments.m_sRegionName.aChar());
-  }
-  else {
-    if (Region::bTest(gxArguments.m_sRegionName))
-      s.vSprint("RapidsSE instance %s running"_Stz,
-                gxArguments.m_sRegionName.aChar());
-    else
-      s.vSprint("RapidsSE instance %s not running"_Stz,
-                gxArguments.m_sRegionName.aChar());
-  }
+  if (Region::bTest(gxArguments.m_sRegionName))
+    s.vSprint("row: ('%s', '%s', 'running')"_Stz,
+            pGrid->pThisNode()->aNodeName(),
+            gxArguments.m_sRegionName.aChar());
+  else
+    s.vSprint("row: ('%s', '%s', 'not running')"_Stz,
+            pGrid->pThisNode()->aNodeName(),
+            gxArguments.m_sRegionName.aChar());
   
   mpTask->m_pDataStack->vPushS256(s);
   
