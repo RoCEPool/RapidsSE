@@ -82,7 +82,6 @@ CommandProcessor::CommandProcessor(void)
   m_pTokeniser->vNormal(true);
 
   
-  m_eCommand = CK_NONE;
   m_pJobClass = nullptr;
   m_pJob = nullptr;
 

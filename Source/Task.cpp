@@ -539,14 +539,6 @@ void Task::vAddConstants(void)
   /*  2 */ vAddConstant("AM_INDEXLEVELS"_Stz,  AM_INDEXLEVELS);
   /*  3 */ vAddConstant("AM_ENUMS"_Stz,        AM_ENUMS);
   
-  // CK_ : command kind
-  /*  0 */ vAddConstant("CK_NONE"_Stz,            CK_NONE);
-  /*  1 */ vAddConstant("CK_BLANK_LINE"_Stz,      CK_BLANK_LINE);
-  /*  2 */ vAddConstant("CK_COMMAND_FILE"_Stz,    CK_COMMAND_FILE);
-  /*  3 */ vAddConstant("CK_PROMPT_FUNCTION"_Stz, CK_PROMPT_FUNCTION);
-  /*  4 */ vAddConstant("CK_SE_JOB"_Stz,          CK_SE_JOB);
-  /*  5 */ vAddConstant("CK_ENUMS"_Stz,           CK_ENUMS);
-
   // CN_ : class numbers
   /*  0 */ vAddConstant("CN_NONE"_Stz,         CN_NONE);
 
