@@ -44,6 +44,12 @@ namespace Interface
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
+    bool bExecuteFile(void);
+
+    void vPushFile(Stz* aPath);
+    bool bRunFile(void);
+    bool bTokenCheck(i8 nTokens);
+
     bool bBlankLine(void);
     void vCollectStatement(void);
     bool bDispatchJob(void);

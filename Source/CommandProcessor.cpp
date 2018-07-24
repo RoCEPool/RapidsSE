@@ -104,6 +104,77 @@ CommandProcessor::~CommandProcessor(void)
   delete m_pTokeniser;
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* potentially execute a command file                                         */
+/*----------------------------------------------------------------------------*/
+bool CommandProcessor::bExecuteFile(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
+  
+  if (! bTestFile(pTkn(0)->aText()))
+    return false;
+  
+  bool b = bRunFile();
+  ASSERT(b);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set file to run                                                            */
+/*----------------------------------------------------------------------------*/
+bool CommandProcessor::bRunFile(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
+  
+  if ( ! bTokenCheck(1) )
+    return false;
+  
+  vPushFile(pTkn(0)->aText());
+  m_pTokeniser->vLineMode(true);
+  
+  return true;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* push command file                                                          */
+/*----------------------------------------------------------------------------*/
+void CommandProcessor::vPushFile(Stz* aFileName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
+  
+  s256 sPath;
+  
+  sPath = aFileName;
+  
+  m_pTokeniser->vPush();
+  
+  bool b = m_pTokeniser->bUseFile(sPath);
+  ASSERT(b);
+}
+
+/*----------------------------------------------------------------------------*/
+/* check for a specific number of tokens                                      */
+/*----------------------------------------------------------------------------*/
+bool CommandProcessor::bTokenCheck(i8 nTokens)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
+  
+  if (pTkn(nTokens)->bHasText()) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  return true;
+}
+
+
+
+
+
+
 /*----------------------------------------------------------------------------*/
 /* test for blank line                                                        */
 /*----------------------------------------------------------------------------*/

@@ -72,9 +72,9 @@ void Task::vCommandProcessorExecuteFile(MP_Task mpTask)
   CommandProcessor*
     pCommandProcessor = _pCommandProcessor(pCommandProcessorObject);
 
-  //bool bFile = pCommandProcessorObject->bExecuteFile();
+  bool bFile = pCommandProcessor->bExecuteFile();
   
-  //mpTask->m_pDataStack->vPushInt(bFile);
+  mpTask->m_pDataStack->vPushInt(bFile);
   
   EXIT();
 }
