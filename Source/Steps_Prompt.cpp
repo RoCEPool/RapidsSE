@@ -13,32 +13,10 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Prompt(void)
 {
-  vAddPrimitive("prompt.executeCommand"_Stz,   &vPromptExecuteCommand,   false);
   vAddPrimitive("prompt.executeFunction"_Stz,  &vPromptExecuteFunction,  false);
   vAddPrimitive("prompt.getCommand"_Stz,       &vPromptGetCommand,       false);
   vAddPrimitive("prompt::new"_Stz,             &vPromptNew,              false);
   vAddPrimitive("prompt.SEitf"_Stz,            &vPromptSEitf,            false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt.executeCommand -- execute command                                   */
-/*----------------------------------------------------------------------------*/
-void Task::vPromptExecuteCommand(MP_Task mpTask)
-{
-  ENTRY("vPromptExecuteCommand"_Stz);
-  
-  Object* pSePromptObject;
-  if ( ! mpTask->m_pDataStack->bPop(pSePromptObject) )
-    THROW_INVALID_DSTACK("prompt.executeCommand"_Stz);
-  SePrompt* pSePrompt = _pSePrompt(pSePromptObject);
-  
-  pSePrompt->vExecuteCommand();
-  
-  eCK eCommand = pSePrompt->m_pCommandProcessor->m_eCommand;
-  
-  mpTask->m_pDataStack->vPushInt(eCommand);
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

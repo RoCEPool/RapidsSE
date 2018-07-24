@@ -147,20 +147,6 @@ void SePrompt::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* execute command                                                            */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vExecuteCommand(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  // attempt to execute se job
-  if (m_pCommandProcessor->bFindJobClass()) {
-    m_pCommandProcessor->m_eCommand = CK_SE_JOB;
-    return;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* potentially execute a prompt function                                      */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bExecuteFunction(void)
