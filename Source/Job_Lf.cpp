@@ -191,11 +191,22 @@ void JobsModel::vJob_Lf_post(Prompt::SePrompt* pPrompt, Job* pJob)
 {
   Job_Lf* pJob_Lf = _pJob_Lf(pJob);
   
-  // Note: take care of errors / meta data ????
-  for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-    vTrace("%s\n"_Stz, pJob_Lf->m_xNode[i_Node].m_sResponse.aChar());
+  if ( pJob_Lf->m_bHasError ) {
+    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+      vTrace("ERROR (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob_Lf->m_xNode[i_Node].m_eErrorCode]);
+    }
   }
-
+  else {
+    if (gpAttachMap->m_bMetadata) {
+      vTrace("metadata: %s\n"_Stz, pJob_Lf->m_sMetadata.aStr());
+    }
+    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+      vTrace("%s\n"_Stz, pJob_Lf->m_xNode[i_Node].m_sResponse.aChar());
+    }
+    if (gpAttachMap->m_bMetadata) {
+      vTrace("success: %lld rows affected\n"_Stz, gpAttachMap->m_pGrid->m_nNodes);
+    }
+  }
   // now delete the job
   delete pJob_Lf;
 }

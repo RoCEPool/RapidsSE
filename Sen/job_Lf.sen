@@ -28,67 +28,44 @@
 
   args.metadata if
     "(name VARCHAR, type VARCHAR)" pJob_Lf job.metadata!
-    ""
-    0 pathPick dic.lastWord dup iterate
-    1 iCount + to iCount
-    "row: ('" str.cat
-
-    object@ word.name str.cat
-
-    "', " str.cat
-
-    object@ isTable if
-      "'table'" str.cat
-    then
-
-    object@ isIndex if
-      "'index'" str.cat
-    then
-
-    object@ isFolder if
-      "'" str.cat
-      object@ execute dic.kind@ word.name str.cat
-      "'" str.cat
-    then
-
-    iCount if
-      ")\n" str.cat
-    then
-
-    object@ word.prev object!
-
-    next
-    //iCount task::this task.seitf@ seitf.rowsProcessed
-
-  else
-    ""
-    0 pathPick dic.lastWord dup iterate
-
-    dup str.length if "\n" str.cat then
-
-    object@ word.name 12 str.pad str.cat
-    1 iCount + to iCount
-    "(" str.cat
-
-    object@ isTable if
-      "table " str.cat
-    then
-
-    object@ isIndex if
-      "index" str.cat
-    then
-
-    object@ isFolder if
-      object@ execute dic.kind@ word.name str.cat
-    then
-
-    object@ word.prev object!
-    ")" str.cat
-    next
-
   then
 
+  ""
+  0 pathPick dic.lastWord dup iterate
+  1 iCount + to iCount
+  "row: ('" str.cat
+
+  object@ word.name str.cat
+
+  "', " str.cat
+
+  object@ isTable if
+    "'table'" str.cat
+  then
+
+  object@ isIndex if
+    "'index'" str.cat
+  then
+
+  object@ isFolder if
+    "'" str.cat
+    object@ execute dic.kind@ word.name str.cat
+    "'" str.cat
+  then
+
+  iCount if
+    ")\n" str.cat
+  then
+
+  object@ word.prev object!
+
+  next
+
+  iCount task::this task.seitf@ seitf.rowsProcessed
+
   grid::thisNode@ pJob_Lf job.response!
+  1 grid::thisNode@ pJob_Lf job.rowsProcessed!
+
   pJob_Lf <DONE_REQUEST>
 ;
 
