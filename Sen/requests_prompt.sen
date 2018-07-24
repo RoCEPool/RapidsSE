@@ -45,34 +45,35 @@
     then
 
     // is this a know job class?
-    pCommandProcessor commandProcessor.findJobClass if
-
-      // create the job for the command
-      pCommandProcessor commandProcessor.newJob to pJob
-
-      pJob job.hasError false == if
-
-        // grab this prompt task's lock
-        task::this task.grabLock
-
-        // set 1 ack required from the job
-        1 setAcks
-
-        // dispatch the job
-        pCommandProcessor commandProcessor.dispatchJob
-
-        // wait for ack from job
-        "prompt waiting for ack" .
-        ackWait
-
-      else
-        "job has error (maybe syntax error)" .
-      then
-
-       // post process and delete the job
-       pCommandProcessor commandProcessor.endJob
-
+    pCommandProcessor commandProcessor.findJobClass not if
+      "Unknown command" .
+      ifAgain
     then
+
+    // create the job for the command
+    pCommandProcessor commandProcessor.newJob to pJob
+
+    pJob job.hasError false == if
+
+      // grab this prompt task's lock
+      task::this task.grabLock
+
+      // set 1 ack required from the job
+      1 setAcks
+
+      // dispatch the job
+      pCommandProcessor commandProcessor.dispatchJob
+
+      // wait for ack from job
+      "prompt waiting for ack" .
+      ackWait
+
+    else
+      "job has error (maybe syntax error)" .
+    then
+
+    // post process and delete the job
+    pCommandProcessor commandProcessor.endJob
 
   again
 
