@@ -9,15 +9,16 @@
 extern AttachMap* gpAttachMap;
 
 JobNote mJobNote_DropCatalog (
-  "Job_DropCatalog"_Stz,        // name of the job class
-  CN_JOB_DROPCATALOG,           // class enum
-  "drop catalog catalogNm"_Stz, // comment about the job
-  "drop"_Stz,                   // the prompt command
-  "catalog"_Stz,                // the second word
-  "dropCatalog"_Stz,            // the task seed for this job
-  false,                        // detached job?
-  pJob_DropCatalog_pre,         // prompt pre-process function
-  vJob_DropCatalog_post         // prompt post-process function
+  "Job_DropCatalog"_Stz,          // name of the job class
+  CN_JOB_DROPCATALOG,             // class enum
+  "drop catalog catalogName"_Stz, // comment about the job
+  "drop"_Stz,                     // the prompt command
+  "catalog"_Stz,                  // the second word
+  "dropCatalog"_Stz,              // the task seed for this job
+  false,                          // detached job?
+  pJob_DropCatalog_pre,           // prompt pre-process function
+  vJob_DropCatalog_post,          // prompt post-process function
+  true
 );
 
 
@@ -74,7 +75,7 @@ void Job_DropCatalog::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_DropCatalog::Job_DropCatalog(Interface::SEitf* pSEitf)
-: Job(CN_JOB_DROPSCHEMA), JobDicPath(pSEitf)
+: Job(CN_JOB_DROPCATALOG), JobDicPath(pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPCATALOG,_FOOTER_);
     

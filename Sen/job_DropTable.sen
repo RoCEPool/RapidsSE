@@ -129,20 +129,20 @@
 
   tp: dropTable_node
 
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert correct job
   CN_JOB_DROPTABLE pJob_DropTable object.assertClass
 
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grad a ddl lock
   ddlLock::grabWrite
 
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set dictionary stack
   pJob_DropTable getPathR35
   dicStack.set
 
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the table
   pJob_DropTable job.objectName@   ( tableNm )
   removeTable
@@ -162,16 +162,16 @@
   tp: dropTable_checkResources
   "checkResources received" .
 
-  //----------------------------------------------------------------------------
-  // grad a ddl lock
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab a ddl lock
   ddlLock::grabWrite
 
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set dictionary stack
   pJob_DropTable getPathR35
   dicStack.set
 
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove the table
   pJob_DropTable job.objectName@
   checkRemoveTable not if pJob_DropTable <ERROR_JOB> exit then

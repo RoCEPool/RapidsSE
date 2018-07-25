@@ -45,26 +45,26 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropCataloge job on a node                                     */
 /*----------------------------------------------------------------------------*/
-: dropCatalog_node ( pJob_DropTable -- )
+: dropCatalog_node ( pJob_DropCatalog -- )
 
   params| pJob_DropCatalog |
 
   tp: dropCatalog_node
 
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert correct job
   CN_JOB_DROPCATALOG pJob_DropCatalog object.assertClass
 
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grad a ddl lock
   ddlLock::grabWrite
 
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set dictionary stack
   pJob_DropCatalog getPathR35
   dicStack.set
 
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the catalog
   pJob_DropCatalog job.objectName@   ( catalogNm )
   removeCatalog
@@ -84,19 +84,19 @@
   tp: dropCatalog_checkResources
   "checkResources received" .
 
-  //----------------------------------------------------------------------------
-  // grad a ddl lock
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - --
+  // grab a ddl lock
   ddlLock::grabWrite
 
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set dictionary stack
   pJob_DropCatalog getPathR35
   dicStack.set
 
-  //----------------------------------------------------------------------------
-  // check if we can remove the table
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if we can remove the catalog
   pJob_DropCatalog job.objectName@
-  checkRemoveCatalog not if pJob_DropTable <ERROR_JOB> exit then
+  checkRemoveCatalog not if pJob_DropCatalog <ERROR_JOB> exit then
 
   <DONE_NODE>
 ;
@@ -104,9 +104,9 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropCatalog job release resources                              */
 /*----------------------------------------------------------------------------*/
-: dropCatalog_releaseResources ( Job_DropTable -- )
+: dropCatalog_releaseResources ( Job_DropCatalog -- )
 
-  params| pJob_DropTable  |
+  params| pJob_DropCatalog  |
 
   tp: dropCatalog_releaseResources
   "releaseResources received" .
