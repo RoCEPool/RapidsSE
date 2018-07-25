@@ -274,7 +274,7 @@
           pathPush
 
           // create schema public (and tables sub-folder)
-          "public" makeSchema drop drop drop
+          "public" "makeSchema" find execute
 
           pathDrop
       pathDrop

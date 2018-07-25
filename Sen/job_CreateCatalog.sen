@@ -72,7 +72,7 @@
   tp: createCatalog_node
 
   //----------------------------------------------------------------------------
-  // grad a ddl lock
+  // grab a ddl lock
   ddlLock::grabWrite
 
   CN_JOB_CREATECATALOG pJob_CreateCatalog object.assertClass

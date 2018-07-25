@@ -3,17 +3,21 @@
 /*============================================================================*/
 
 #include "JobModel.h"
+#include "StorageEngine.h"
+
+extern AttachMap* gpAttachMap;
 
 JobNote mJobNote_CreateSchema (
-  "Job_CreateSchema"_Stz, // name of the job class
-  CN_JOB_CREATESCHEMA,    // class enum
-  "comment"_Stz,          // comment about the job
-  "create"_Stz,           // the prompt command
-  "schema"_Stz,           // the second word
-  "createSchemaR35_req"_Stz, // the task seed for this job
-  false,                   // detached job?
-  pJob_CreateSchema_pre,  // prompt pre-process function
-  vJob_CreateSchema_post  // prompt post-process function
+  "Job_CreateSchema"_Stz,         // name of the job class
+  CN_JOB_CREATESCHEMA,            // class enum
+  "create schema schemaName"_Stz, // comment about the job
+  "create"_Stz,                   // the prompt command
+  "schema"_Stz,                   // the second word
+  "createSchema"_Stz,             // the task seed for this job
+  false,                          // detached job?
+  pJob_CreateSchema_pre,          // prompt pre-process function
+  vJob_CreateSchema_post,         // prompt post-process function
+  true
 );
 
 /*----------------------------------------------------------------------------*/
@@ -73,7 +77,8 @@ Job_CreateSchema::Job_CreateSchema(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATESCHEMA,_FOOTER_);
     
-  //m_sExecute = "Job_CreateSchema.execute"_Stz;
+  m_sSeed = mJobNote_CreateSchema.pJobClass()->m_aSeed;
+  m_bCheckResources   = true;
   
   _checkInitialised_(CN_JOB_CREATESCHEMA);
   
@@ -111,6 +116,31 @@ void Job_CreateSchema::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* populate the job                                                           */
+/*----------------------------------------------------------------------------*/
+bool Job_CreateSchema::bPopulateJob(TokenVec* pTokenVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATESCHEMA,_FOOTER_);
+  
+  i8 iNumTokens;
+  
+  ASSERT(pTokenVec->pGet(0)->bSame("create"_Stz));
+  ASSERT(pTokenVec->pGet(1)->bSame("schema"_Stz));
+  
+  // get number of items in token vector
+  iNumTokens = pTokenVec->nItems();
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // there should be 3 tokens
+  if (iNumTokens != 3)
+  return false;
+  
+  // set the table name
+  m_sObjectName = pTokenVec->pGet(2)->aText();
+  
+  return true;
+}
+/*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
 void Job_CreateSchema::vShow(void)
@@ -139,7 +169,21 @@ Footer* Job_CreateSchema::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* JobsModel::pJob_CreateSchema_pre(Prompt::SePrompt* pPrompt)
 {
-  return nullptr;
+  SEitf* pSEitf = pPrompt->pSEitf();
+  
+  Job_CreateSchema* pJob_CreateSchema = new Job_CreateSchema(pSEitf);
+  
+  TokenVec* pTokenVec = pPrompt->m_pCommandProcessor->pTknVec();
+  
+  bool bResult = pJob_CreateSchema->bPopulateJob(pTokenVec);
+  
+  if ( !bResult) {
+    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
+    pJob_CreateSchema->m_bHasError = true;
+    pJob_CreateSchema->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+  }
+  
+  return pJob_CreateSchema;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -147,6 +191,18 @@ Job* JobsModel::pJob_CreateSchema_pre(Prompt::SePrompt* pPrompt)
 /*----------------------------------------------------------------------------*/
 void JobsModel::vJob_CreateSchema_post(Prompt::SePrompt* pPrompt, Job* pJob)
 {
+  Job_CreateSchema* pJob_CreateSchema = _pJob_CreateSchema(pJob);
+  
+  if ( pJob_CreateSchema->m_bHasError ) {
+    
+    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+      vTrace("ERROR (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob_CreateSchema->m_xNode[i_Node].m_eErrorCode]);
+    }
+    
+  }
+  
+  // now delete the job
+  delete pJob_CreateSchema;
 }
 
 /*============================================================================*/
