@@ -5,27 +5,144 @@
 "job_CreateSchema.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_CreateTenant job                                               */
+/* check word is not already a tenant                                         */
 /*----------------------------------------------------------------------------*/
-: Job_CreateTenant.execute ( pJob_CreateTenant -- )
+: checkIsNotTenant ( word )
+  findInCurrent not if true exit then
+  EC_TENANT_EXISTS false
+;
+
+/*----------------------------------------------------------------------------*/
+/* check if word is a makeable tenant folder                                  */
+/*----------------------------------------------------------------------------*/
+: checkMakeTenant ( "<tenantNm>" -- true | errorCode false )
+
+  checkInTenants    not if false exit then
+  checkIsNotTenant  not if false exit then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* make a tenant folder (run by participant)                                  */
+/*----------------------------------------------------------------------------*/
+: makeTenant ( "<tenantNm>" -- )
+
+  tp: makingTenant
+
+  params| sTenantNm |
+
+  args.tracepoint if
+    sTenantNm "MAKING TENANT " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // make the tenant
+  sTenantNm :tenant ( ^tenant )
+  drop
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // make catalogs folder
+  sTenantNm makeCatalogs ( )
+;
+
+/*----------------------------------------------------------------------------*/
+/* create tenant request (on originating node)                                */
+/*----------------------------------------------------------------------------*/
+: createTenant_req ( -- )
+
+  0 0 locals| pJob_CreateTenant pTask |
+
+  tp: createTenant_req
+
+  // get the task
+  task::this to pTask
+
+  // get the job from the task
+  pTask task.job@ to pJob_CreateTenant
+
+  // distribute the job
+  pTask pJob_CreateTenant "job::distribute" find execute
+
+  pJob_CreateTenant <DONE_REQUEST>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_CreateTenant job on a node                                     */
+/*----------------------------------------------------------------------------*/
+: createTenant_node ( pJob_CreateTenant -- )
 
   params| pJob_CreateTenant |
 
-  CN_JOB_CREATETenant pJob_CreateTenant object.assertClass
+  0 locals| sTenantNm |
 
+  tp: createTenant_node
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab a ddl lock
   ddlLock::grabWrite
 
+  CN_JOB_CREATETENANT pJob_CreateTenant object.assertClass
+  pJob_CreateTenant job.objectName@ to sTenantNm
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
   pJob_CreateTenant getPathR35
   dicStack.set
-  pJob_CreateTenant job.objectName@   ( tenantNm )
-  makeTenantR35 ( )     not if "got error" . exit then
 
-  ddlLock::testDrop
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // make the catalog
+  sTenantNm makeTenant ( )
 
   pJob_CreateTenant job.notice
+
+  <DONE_NODE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_CreateTenant job check resources                               */
+/*----------------------------------------------------------------------------*/
+: createTenant_checkResources ( pJob_CreateTenant -- )
+
+  params| pJob_CreateTenant  |
+
+  tp: createTenant_checkResources
+  "checkResources received" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grad a ddl lock
+  ddlLock::grabWrite
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
+  pJob_CreateTenant getPathR35
+  dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if we have enough buffers
+  checkEnoughBuffersR35 not if pJob_CreateTenant <ERROR_JOB> exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if we can make the catalog
+  pJob_CreateTenant job.objectName@
+  checkMakeTenant not if pJob_CreateTenant <ERROR_JOB> exit then
+
+  <DONE_NODE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_CreateTenant job release resources                             */
+/*----------------------------------------------------------------------------*/
+: createTenant_releaseResources ( pJob_CreateTenant -- )
+
+  params| pJob_CreateTenant  |
+
+  tp: createTenant_releaseResources
+  "releaseResources received" .
+
+  <DONE_NODE>
 ;
 
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
-

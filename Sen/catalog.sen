@@ -28,11 +28,6 @@
     EC_NOT_A_CATALOG false
 ;
 
-: checkIsNotCatalog ( word )
-    findInCurrent not if true exit then
-    EC_CATALOG_EXISTS false
-;
-
 /*----------------------------------------------------------------------------*/
 /* make a catalogs folder under given named tenant                            */
 /*----------------------------------------------------------------------------*/

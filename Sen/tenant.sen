@@ -40,24 +40,6 @@
   EC_NOT_A_TENANT false
 ;
 
-/*----------------------------------------------------------------------------*/
-/* check word is not already a tenant folder                                  */
-/*----------------------------------------------------------------------------*/
-: checkIsNotTenant ( word )
-  dup findInCurrent not if true exit then
-  EC_TENANT_EXISTS false
-;
-
-/*----------------------------------------------------------------------------*/
-/* check if word is a makeable tenant folder                                  */
-/*----------------------------------------------------------------------------*/
-: checkMakeTenant ( "<tenantNm>" -- "<tenantNm>" true | "<tenantNm>" errorCode false )
-
-  checkInTenants    not if false exit then
-  checkIsNotTenant  not if false exit then
-
-  true
-;
 
 /*----------------------------------------------------------------------------*/
 /* check if word is a removable tenant folder                                 */
@@ -78,50 +60,6 @@
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
-/* make a tenant folder (run by participant)                                  */
-/*----------------------------------------------------------------------------*/
-: makeTenant allParticipants 1 checkResult ( "<tenantNm>" -- true n# true )
-
-tp: makingTenant
-
-  args.tracepoint if
-    dup "MAKING TENANT " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
-  then
-
-    dup ( "<tenantNm>" "<tenantNm>" )
-
-    :tenant ( "<tenantNm>" ^tenant )
-
-    drop ( "<tenantNm>" )
-
-    makeCatalogs ( )
-
-    true <SUCCESS_RESULT>
-;
-
-/*----------------------------------------------------------------------------*/
-/* make a tenant folder (run by participant)                                  */
-/*----------------------------------------------------------------------------*/
-: makeTenantR35 ( "<tenantNm>" -- true/false )
-
-  tp: makingTenant
-
-  args.tracepoint if
-    dup "MAKING TENANT " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
-  then
-
-  dup ( "<tenantNm>" "<tenantNm>" )
-
-  :tenant ( "<tenantNm>" ^tenant )
-
-  drop ( "<tenantNm>" )
-
-  makeCatalogs ( )
-
-  true
-;
 
 /*----------------------------------------------------------------------------*/
 /* remove a tenant folder                                                     */

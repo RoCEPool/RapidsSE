@@ -5,6 +5,14 @@
 "job_CreateTable.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* check word is not a table                                                  */
+/*----------------------------------------------------------------------------*/
+: checkIsNotTable ( "<wordNm" -- t|f )
+  findInCurrent not if true exit then
+  EC_TABLE_EXISTS false
+;
+
+/*----------------------------------------------------------------------------*/
 /* check if word is a makeable table                                          */
 /*----------------------------------------------------------------------------*/
 : checkMakeTable ( "<tableNm>" -- true | errorCode false )

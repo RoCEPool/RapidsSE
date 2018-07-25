@@ -5,6 +5,14 @@
 "job_CreateSchema.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* check if word is not a schema                                              */
+/*----------------------------------------------------------------------------*/
+: checkIsNotSchema ( word )
+  findInCurrent not if true exit then
+  EC_SCHEMA_EXISTS false
+;
+
+/*----------------------------------------------------------------------------*/
 /* check if word is a makeable schema folder                                  */
 /*----------------------------------------------------------------------------*/
 : checkMakeSchema ( "<schemaNm>" -- "<schemaNm>" true | "<schemaNm>" errorCode false )

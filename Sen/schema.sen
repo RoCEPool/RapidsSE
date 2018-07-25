@@ -31,10 +31,7 @@
     EC_NOT_A_SCHEMA false
 ;
 
-: checkIsNotSchema ( word )
-  dup findInCurrent not if true exit then
-  EC_SCHEMA_EXISTS false
-;
+
 
 /*----------------------------------------------------------------------------*/
 /* make a schemas folder under given named catalog                            */

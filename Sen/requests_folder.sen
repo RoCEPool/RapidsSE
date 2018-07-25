@@ -252,7 +252,7 @@
   pathPush
 
     // create tenant boray (and catalogs sub-folder)
-    "boray" makeTenant drop drop drop
+    "boray" "makeTenant" find execute
 
     // push boray folder
     "boray" findInCurrent execute

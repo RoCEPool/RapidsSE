@@ -5,9 +5,17 @@
 "job_CreateCatalog.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* check if word is not a catalog                                             */
+/*----------------------------------------------------------------------------*/
+: checkIsNotCatalog ( word )
+  findInCurrent not if true exit then
+  EC_CATALOG_EXISTS false
+;
+
+/*----------------------------------------------------------------------------*/
 /* check if word is a makeable tenant folder                                  */
 /*----------------------------------------------------------------------------*/
-: checkMakeCatalog ( "<catalogNm>" -- "<catalogNm>" true | "<catalogNm>" errorCode false )
+: checkMakeCatalog ( "<catalogNm>" -- true | errorCode false )
 
   checkInCatalogs   not if false exit then
   checkIsNotCatalog not if false exit then
