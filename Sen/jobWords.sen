@@ -24,6 +24,8 @@
 
   locals| pJob |
 
+  ddlLock::testDrop
+
   pJob job.isPromptCommand true == if
     "Acking prompt task" .
     pJob job.promptTask@ ack
@@ -48,10 +50,10 @@
 
   params| pJob errorCode |
 
+  ddlLock::testDrop
+
   errorCode error.msg "Setting error '%v' in job" str.format .
   errorCode grid::thisNode@ pJob job.error!
-
-  ddlLock::testDrop
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -61,10 +63,10 @@
 
   params| pJob errorCode |
 
+  ddlLock::testDrop
+
   errorCode error.msg "Setting error '%v' in job" str.format .
   errorCode grid::thisNode@ pJob job.error!
-
-  ddlLock::testDrop
 
   pJob job.isPromptCommand true == if
     "Acking prompt task" .
