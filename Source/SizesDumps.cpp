@@ -344,13 +344,13 @@ i8 giClassSize[]
   /*    */ sizeof(Job_DropTenant),    // CN_JOB_DROPTENANT
   /*    */ sizeof(Job_G35),           // CN_JOB_G35
   /*    */ sizeof(Job_Lf),            // CN_JOB_LF
-  /*    */ sizeof(Job_ListColumns),   // CN_JOB_LISTCATALOGS
+  /*    */ sizeof(Job_ListCatalogs),  // CN_JOB_LISTCATALOGS
   /*    */ sizeof(Job_ListColumns),   // CN_JOB_LISTCOLUMNS
   /*    */ sizeof(Job_ListColumns),   // CN_JOB_LISTIDXCOLUMNS
   /*    */ sizeof(Job_ListColumns),   // CN_JOB_LISTPARTCOLUMNS
-  /*    */ sizeof(Job_ListColumns),   // CN_JOB_LISTSCHEMAS
+  /*    */ sizeof(Job_ListSchemas),   // CN_JOB_LISTSCHEMAS
   /*    */ sizeof(Job_ListTables),    // CN_JOB_LISTTABLES
-  /*    */ sizeof(Job_ListColumns),   // CN_JOB_LISTTENANTS
+  /*    */ sizeof(Job_ListTenants),   // CN_JOB_LISTTENANTS
   /*    */ sizeof(Job_CreateTable),   // CN_JOB_LOADTABLE
   /*    */ sizeof(Job_Prompt),        // CN_JOB_PROMPT
   /*    */ sizeof(Job_Pwf),           // CN_JOB_PWF
