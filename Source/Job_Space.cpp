@@ -166,8 +166,6 @@ Footer* Job_Space::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* JobsModel::pJob_Space_pre(Interface::SEitf* pSEitf)
 {
-  //SEitf* pSEitf = pPrompt->pSEitf();
-  
   Job_Space* pJob_Space = new Job_Space(pSEitf);
   
   TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();

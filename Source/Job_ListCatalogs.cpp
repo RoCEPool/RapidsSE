@@ -167,8 +167,6 @@ Footer* Job_ListCatalogs::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* JobsModel::pJob_ListCatalogs_pre(Interface::SEitf* pSEitf)
 {
-  //SEitf* pSEitf = pPrompt->pSEitf();
-  
   Job_ListCatalogs* pJob_ListCatalogs = new Job_ListCatalogs(pSEitf);
   
   TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();

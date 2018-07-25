@@ -174,7 +174,6 @@ Footer* Job_DropCatalog::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* JobsModel::pJob_DropCatalog_pre(Interface::SEitf* pSEitf)
 {
-  //SEitf* pSEitf = pPrompt->pSEitf();
   Job_DropCatalog* pJob_DropCatalog = new Job_DropCatalog(pSEitf);
   
   TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();

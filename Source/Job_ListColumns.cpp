@@ -167,8 +167,6 @@ Footer* Job_ListColumns::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* JobsModel::pJob_ListColumns_pre(Interface::SEitf* pSEitf)
 {
-  //SEitf* pSEitf = pPrompt->pSEitf();
-  
   Job_ListColumns* pJob_ListColumns = new Job_ListColumns(pSEitf);
   
   TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();

@@ -167,8 +167,6 @@ Footer* Job_ListTables::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* JobsModel::pJob_ListTables_pre(Interface::SEitf* pSEitf)
 {
-  //SEitf* pSEitf = pPrompt->pSEitf();
-  
   Job_ListTables* pJob_ListTables = new Job_ListTables(pSEitf);
   
   TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();

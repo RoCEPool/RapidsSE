@@ -170,8 +170,6 @@ Footer* Job_Docol::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* JobsModel::pJob_Docol_pre(Interface::SEitf* pSEitf)
 {
-  //SEitf* pSEitf = pPrompt->pSEitf();
-  
   Job_Docol* pJob_Docol = new Job_Docol(pSEitf);
   
   TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();

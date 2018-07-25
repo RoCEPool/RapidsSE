@@ -173,7 +173,6 @@ Footer* Job_DropTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* JobsModel::pJob_DropTable_pre(Interface::SEitf* pSEitf)
 {
-  //SEitf* pSEitf = pPrompt->pSEitf();
   Job_DropTable* pJob_DropTable = new Job_DropTable(pSEitf);
   
   TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();

@@ -165,8 +165,6 @@ Footer* Job_Status::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* JobsModel::pJob_Status_pre(Interface::SEitf* pSEitf)
 {
-  //SEitf* pSEitf = pPrompt->pSEitf();
-  
   Job_Status* pJob_Status = new Job_Status(pSEitf);
   
   TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
