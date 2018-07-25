@@ -37,17 +37,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* check if word is a makeable schema folder                                  */
-/*----------------------------------------------------------------------------*/
-: checkMakeSchema ( "<schemaNm>" -- "<schemaNm>" true | "<schemaNm>" errorCode false )
-
-  checkInSchemas   not if false exit then
-  checkIsNotSchema not if false exit then
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* make a schemas folder under given named catalog                            */
 /*----------------------------------------------------------------------------*/
 : makeSchemas ( "<catalogNm>" -- )

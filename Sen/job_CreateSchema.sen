@@ -5,6 +5,17 @@
 "job_CreateSchema.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* check if word is a makeable schema folder                                  */
+/*----------------------------------------------------------------------------*/
+: checkMakeSchema ( "<schemaNm>" -- "<schemaNm>" true | "<schemaNm>" errorCode false )
+
+  checkInSchemas   not if false exit then
+  checkIsNotSchema not if false exit then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* make a schema folder                                                       */
 /*----------------------------------------------------------------------------*/
 : makeSchema ( "<schemaNm>" --  )
@@ -29,27 +40,102 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_CreateSchema job                                               */
+/* create schema request (on originating node)                                */
 /*----------------------------------------------------------------------------*/
-: Job_CreateSchema.execute ( pJob_CreateSchema -- )
+: createSchema_req ( -- )
+
+  0 0 locals| pJob_CreateSchema pTask |
+
+  tp: createSchema_req
+
+  // get the task
+  task::this to pTask
+
+  // get the job from the task
+  pTask task.job@ to pJob_CreateSchema
+
+  // distribute the job
+  pTask pJob_CreateSchema "job::distribute" find execute
+
+  pJob_CreateSchema <DONE_REQUEST>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_CreateCatalog job on a node                                    */
+/*----------------------------------------------------------------------------*/
+: createSchema_node ( pJob_CreateSchema -- )
 
   params| pJob_CreateSchema |
+  0 locals| sSchemaNm |
 
-  CN_JOB_CREATESCHEMA pJob_CreateSchema object.assertClass
+  tp: createSchema_node
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab a ddl lock
   ddlLock::grabWrite
 
+  CN_JOB_CREATESCHEMA pJob_CreateSchema object.assertClass
+  pJob_CreateSchema job.objectName@ to sSchemaNm
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
   pJob_CreateSchema getPathR35
   dicStack.set
-  pJob_CreateSchema job.objectName@   ( schemaNm )
-  makeSchema ( )     not if "got error" . exit then
 
-  ddlLock::testDrop
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // make the schema
+  sSchemaNm makeSchema ( )
 
   pJob_CreateSchema job.notice
+
+  <DONE_NODE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_CreateSchema job check resources                              */
+/*----------------------------------------------------------------------------*/
+: createSchema_checkResources ( pJob_CreateSchema -- )
+
+  params| pJob_CreateSchema  |
+
+  tp: createSchema_checkResources
+  "checkResources received" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grad a ddl lock
+  ddlLock::grabWrite
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
+  pJob_CreateSchema getPathR35
+  dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if we have enough buffers
+  checkEnoughBuffersR35 not if pJob_CreateSchema <ERROR_JOB> exit then
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if we can make the catalog
+  pJob_CreateSchema job.objectName@
+  checkMakeSchema not if pJob_CreateSchema <ERROR_JOB> exit then
+
+  <DONE_NODE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_CreateSchema job release resources                             */
+/*----------------------------------------------------------------------------*/
+: createSchema_releaseResources ( pJob_CreateSchema -- )
+
+  params| pJob_CreateSchema  |
+
+  tp: createSchema_releaseResources
+  "releaseResources received" .
+
+  <DONE_NODE>
 ;
 
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
-

@@ -28,12 +28,12 @@
    sCatalogNm "MAKING CATALOG " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
   then
 
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the catalog
   sCatalogNm :catalog ( ^catalog )
   drop
 
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make schemas folder
   sCatalogNm makeSchemas ( )
 ;
@@ -44,20 +44,20 @@
 /*----------------------------------------------------------------------------*/
 : createCatalog_req ( -- )
 
-  0 0 locals| pJob pTask |
+  0 0 locals| pJob_CreateCatalog pTask |
 
-  tp: createCatalog
+  tp: createCatalog_req
 
   // get the task
   task::this to pTask
 
   // get the job from the task
-  pTask task.job@ to pJob
+  pTask task.job@ to pJob_CreateCatalog
 
   // distribute the job
-  pTask pJob "job::distribute" find execute
+  pTask pJob_CreateCatalog "job::distribute" find execute
 
-  pJob <DONE_REQUEST>
+  pJob_CreateCatalog <DONE_REQUEST>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -71,19 +71,19 @@
 
   tp: createCatalog_node
 
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
   ddlLock::grabWrite
 
   CN_JOB_CREATECATALOG pJob_CreateCatalog object.assertClass
   pJob_CreateCatalog job.objectName@ to sCatalogNm
 
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set dictionary stack
   pJob_CreateCatalog getPathR35
   dicStack.set
 
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the catalog
   sCatalogNm makeCatalog ( )
 
@@ -102,21 +102,21 @@
   tp: createCatalog_checkResources
   "checkResources received" .
 
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grad a ddl lock
   ddlLock::grabWrite
 
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set dictionary stack
   pJob_CreateCatalog getPathR35
   dicStack.set
 
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we have enough buffers
   checkEnoughBuffersR35 not if pJob_CreateCatalog <ERROR_JOB> exit then
 
 
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can make the catalog
   pJob_CreateCatalog job.objectName@
   checkMakeCatalog not if pJob_CreateCatalog <ERROR_JOB> exit then
