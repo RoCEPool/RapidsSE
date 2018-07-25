@@ -168,9 +168,9 @@ Footer* Job_CreateSchema::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_CreateSchema_pre(Prompt::SePrompt* pPrompt)
+Job* JobsModel::pJob_CreateSchema_pre(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt)
 {
-  SEitf* pSEitf = pPrompt->pSEitf();
+  //SEitf* pSEitf = pPrompt->pSEitf();
   
   Job_CreateSchema* pJob_CreateSchema = new Job_CreateSchema(pSEitf);
   

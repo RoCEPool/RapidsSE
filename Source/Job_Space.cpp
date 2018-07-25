@@ -164,9 +164,9 @@ Footer* Job_Space::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_Space_pre(Prompt::SePrompt* pPrompt)
+Job* JobsModel::pJob_Space_pre(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt)
 {
-  SEitf* pSEitf = pPrompt->pSEitf();
+  //SEitf* pSEitf = pPrompt->pSEitf();
   
   Job_Space* pJob_Space = new Job_Space(pSEitf);
   

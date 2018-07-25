@@ -169,9 +169,9 @@ Footer* Job_CreateTenant::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_CreateTenant_pre(Prompt::SePrompt* pPrompt)
+Job* JobsModel::pJob_CreateTenant_pre(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt)
 {
-  SEitf* pSEitf = pPrompt->pSEitf();
+  //SEitf* pSEitf = pPrompt->pSEitf();
   
   Job_CreateTenant* pJob_CreateTenant = new Job_CreateTenant(pSEitf);
   

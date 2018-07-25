@@ -38,7 +38,7 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_ListColumns* _pJob_ListColumns(void* aAddr);
   
-  Job* pJob_ListColumns_pre(Prompt::SePrompt* pPrompt);
+  Job* pJob_ListColumns_pre(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt);
   void vJob_ListColumns_post(Prompt::SePrompt* pPrompt, Job* pJob);
 }
 

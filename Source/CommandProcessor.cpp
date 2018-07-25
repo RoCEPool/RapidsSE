@@ -269,7 +269,7 @@ void CommandProcessor::vEndJob(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
   
   // call the job post function (includes deleting the job)
-  m_pJobClass->vEndJob(m_pPrompt, m_pJob);
+  m_pJobClass->vEndJob(m_pSEitf, m_pPrompt, m_pJob);
   
   m_pJob = nullptr;
 }
@@ -392,7 +392,7 @@ void CommandProcessor::vNewJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
   
-  m_pJob = m_pJobClass->pNewJob(m_pPrompt);
+  m_pJob = m_pJobClass->pNewJob(m_pSEitf,m_pPrompt);
   
   m_pJob->m_bDetached = pTknVec()->bDetachedRequest();
 }

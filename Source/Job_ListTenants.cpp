@@ -165,9 +165,9 @@ Footer* Job_ListTenants::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_ListTenants_pre(Prompt::SePrompt* pPrompt)
+Job* JobsModel::pJob_ListTenants_pre(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt)
 {
-  SEitf* pSEitf = pPrompt->pSEitf();
+  //SEitf* pSEitf = pPrompt->pSEitf();
   
   Job_ListTenants* pJob_ListTenants = new Job_ListTenants(pSEitf);
   

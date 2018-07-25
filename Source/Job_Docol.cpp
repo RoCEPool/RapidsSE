@@ -168,9 +168,9 @@ Footer* Job_Docol::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_Docol_pre(Prompt::SePrompt* pPrompt)
+Job* JobsModel::pJob_Docol_pre(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt)
 {
-  SEitf* pSEitf = pPrompt->pSEitf();
+  //SEitf* pSEitf = pPrompt->pSEitf();
   
   Job_Docol* pJob_Docol = new Job_Docol(pSEitf);
   

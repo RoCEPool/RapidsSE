@@ -10,7 +10,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* end the job by running the post-function                                   */
 /*----------------------------------------------------------------------------*/
-void JobClass::vEndJob(SePrompt* pPrompt, Job* pJob)
+void JobClass::vEndJob(Interface::SEitf* pSEitf, SePrompt* pPrompt, Job* pJob)
 {
   (*m_fPost)(pPrompt, pJob);
 }
@@ -18,9 +18,9 @@ void JobClass::vEndJob(SePrompt* pPrompt, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* create a new job by running the pre-function                                */
 /*----------------------------------------------------------------------------*/
-Job* JobClass::pNewJob(SePrompt* pPrompt)
+Job* JobClass::pNewJob(Interface::SEitf* pSEitf, SePrompt* pPrompt)
 {
-  Job* pJob = (*m_fPre)(pPrompt);
+  Job* pJob = (*m_fPre)(pSEitf, pPrompt);
   
   return pJob;
 }

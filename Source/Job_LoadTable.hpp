@@ -44,7 +44,7 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_LoadTable* _pJob_LoadTable(void* aAddr);
   
-  Job* pJob_LoadTable_pre(Prompt::SePrompt* pPrompt);
+  Job* pJob_LoadTable_pre(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt);
   void vJob_LoadTable_post(Prompt::SePrompt* pPrompt, Job* pJob);
 }
 

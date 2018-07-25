@@ -487,9 +487,9 @@ bool Job_LoadTable::bExtractDateFormat(Stz* dateFormat)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_LoadTable_pre(Prompt::SePrompt* pPrompt)
+Job* JobsModel::pJob_LoadTable_pre(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt)
 {
-  SEitf* pSEitf = pPrompt->pSEitf();
+  //SEitf* pSEitf = pPrompt->pSEitf();
   
   Job_LoadTable* pJob_LoadTable = new Job_LoadTable(pSEitf);
   

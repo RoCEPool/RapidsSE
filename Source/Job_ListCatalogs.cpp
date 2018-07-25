@@ -165,9 +165,9 @@ Footer* Job_ListCatalogs::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_ListCatalogs_pre(Prompt::SePrompt* pPrompt)
+Job* JobsModel::pJob_ListCatalogs_pre(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt)
 {
-  SEitf* pSEitf = pPrompt->pSEitf();
+  //SEitf* pSEitf = pPrompt->pSEitf();
   
   Job_ListCatalogs* pJob_ListCatalogs = new Job_ListCatalogs(pSEitf);
   

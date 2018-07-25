@@ -153,7 +153,7 @@ Footer* Job_CreateIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_CreateIndex_pre(Prompt::SePrompt* pPrompt)
+Job* JobsModel::pJob_CreateIndex_pre(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt)
 {
   return nullptr;
 }

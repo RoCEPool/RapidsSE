@@ -172,9 +172,9 @@ Footer* Job_CreateCatalog::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_CreateCatalog_pre(Prompt::SePrompt* pPrompt)
+Job* JobsModel::pJob_CreateCatalog_pre(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt)
 {
-  SEitf* pSEitf = pPrompt->pSEitf();
+  //SEitf* pSEitf = pPrompt->pSEitf();
   Job_CreateCatalog* pJob_CreateCatalog = new Job_CreateCatalog(pSEitf);
   
   TokenVec* pTokenVec = pPrompt->m_pCommandProcessor->pTknVec();

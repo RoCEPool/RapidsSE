@@ -171,9 +171,9 @@ Footer* Job_DropTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_DropTable_pre(Prompt::SePrompt* pPrompt)
+Job* JobsModel::pJob_DropTable_pre(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt)
 {
-  SEitf* pSEitf = pPrompt->pSEitf();
+  //SEitf* pSEitf = pPrompt->pSEitf();
   Job_DropTable* pJob_DropTable = new Job_DropTable(pSEitf);
   
   TokenVec* pTokenVec = pPrompt->m_pCommandProcessor->pTknVec();

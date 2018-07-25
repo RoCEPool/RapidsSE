@@ -165,9 +165,9 @@ Footer* Job_ListTables::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_ListTables_pre(Prompt::SePrompt* pPrompt)
+Job* JobsModel::pJob_ListTables_pre(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt)
 {
-  SEitf* pSEitf = pPrompt->pSEitf();
+  //SEitf* pSEitf = pPrompt->pSEitf();
   
   Job_ListTables* pJob_ListTables = new Job_ListTables(pSEitf);
   

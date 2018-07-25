@@ -165,9 +165,9 @@ Footer* Job_Pwf::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_Pwf_pre(Prompt::SePrompt* pPrompt)
+Job* JobsModel::pJob_Pwf_pre(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt)
 {
-  SEitf* pSEitf = pPrompt->pSEitf();
+  //SEitf* pSEitf = pPrompt->pSEitf();
   
   Job_Pwf* pJob_Pwf = new Job_Pwf(pSEitf);
   

@@ -38,7 +38,7 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_ListSchemas* _pJob_ListSchemas(void* aAddr);
   
-  Job* pJob_ListSchemas_pre(Prompt::SePrompt* pPrompt);
+  Job* pJob_ListSchemas_pre(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt);
   void vJob_ListSchemas_post(Prompt::SePrompt* pPrompt, Job* pJob);
 }
 

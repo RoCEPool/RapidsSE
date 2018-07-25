@@ -137,7 +137,7 @@ Footer* Job_DropSchema::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_DropSchema_pre(Prompt::SePrompt* pPrompt)
+Job* JobsModel::pJob_DropSchema_pre(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt)
 {
   return nullptr;
 }

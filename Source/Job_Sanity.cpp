@@ -142,7 +142,7 @@ Footer* Job_Sanity::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_Sanity_pre(Prompt::SePrompt* pPrompt)
+Job* JobsModel::pJob_Sanity_pre(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt)
 {
   return nullptr;
 }
