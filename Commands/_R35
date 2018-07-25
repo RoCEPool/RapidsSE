@@ -10,9 +10,9 @@ print "=========================================";
 _startClusterR35
 
 print "\n=========================================";
-print "sleeping for 10 secs...";
+print "sleeping for 5 secs...";
 print "=========================================";
-sleep 10;
+sleep 5;
 
 // get version of SE
 print "\n=========================================";
