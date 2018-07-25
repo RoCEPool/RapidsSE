@@ -159,6 +159,8 @@ namespace Tasks
     Atomic  m_zAcks;        // number of acks still waiting for
     Since   m_xWakeupTime;  // wakeup time
     i8      m_iDdlLocked;   // ? has the ddl lock?
+  
+    Object* m_pSeedObject;   // seed object
  
     Socket* m_pSocketR35;       // R35 socket associated with task
 
@@ -303,6 +305,8 @@ namespace Tasks
     bool bR35model(void);
     void vSeedDicCompileSen(void);
     void vSeedDocol(void);
+    Object* pSeedObject(void);
+    void vSeedObject(Object* pSeedObject);
     void vSeedWord(Stz *aWord);
     GridModel::Node* pSendNode(void);
     Interface::SEitf* pSEitf(void);

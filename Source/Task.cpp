@@ -265,6 +265,7 @@ void Task::vInit(Stz* aLambda)
   m_zAcks.vCheckInit();
   m_pThread     = nullptr;
   m_pTaskSet    = nullptr;
+  m_pSeedObject = nullptr;
   
   m_sComment    = ""_Stz;
   
@@ -1942,6 +1943,26 @@ void Task::vSeedDicCompileSen(void)
   m_sLambda = ""_Stz;
   
   m_pTokeniser->vUseString(m_sLambda);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get seed object                                                            */
+/*----------------------------------------------------------------------------*/
+Object* Task::pSeedObject(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  return m_pSeedObject;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set seed object                                                            */
+/*----------------------------------------------------------------------------*/
+void Task::vSeedObject(Object* pSeedObject)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  m_pSeedObject = pSeedObject;
 }
 
 /*----------------------------------------------------------------------------*/
