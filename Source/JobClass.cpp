@@ -12,7 +12,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void JobClass::vEndJob(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt, Job* pJob)
 {
-  (*m_fPost)(pPrompt, pJob);
+  (*m_fPost)(pSEitf, pPrompt, pJob);
 }
 
 /*----------------------------------------------------------------------------*/

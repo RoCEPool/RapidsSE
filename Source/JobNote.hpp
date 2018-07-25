@@ -20,7 +20,7 @@ namespace JobsModel
             Stz* aSeed,
             bool bDetached,
             Job* (*fPre)(Interface::SEitf* pSEitf),
-            void (*fPost)(Prompt::SePrompt* pPrompt, Job* pJob),
+            void (*fPost)(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt, Job* pJob),
             bool bEnabled=false);
   
     JobClass* pJobClass(void);

@@ -185,7 +185,7 @@ Job* JobsModel::pJob_Status_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Status_post(Prompt::SePrompt* pPrompt, Job* pJob)
+void JobsModel::vJob_Status_post(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt, Job* pJob)
 {
   Job_Status* pJob_Status = _pJob_Status(pJob);
   

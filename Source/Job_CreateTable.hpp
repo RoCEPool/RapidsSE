@@ -63,7 +63,7 @@ namespace JobsModel
   Job_CreateTable* _pJob_CreateTable(void* aAddr);
   
   Job* pJob_CreateTable_pre(Interface::SEitf* pSEitf);
-  void vJob_CreateTable_post(Prompt::SePrompt* pPrompt, Job* pJob);
+  void vJob_CreateTable_post(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt, Job* pJob);
 }
 
 /*============================================================================*/

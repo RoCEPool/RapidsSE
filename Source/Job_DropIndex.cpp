@@ -146,7 +146,7 @@ Job* JobsModel::pJob_DropIndex_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_DropIndex_post(Prompt::SePrompt* pPrompt, Job* pJob)
+void JobsModel::vJob_DropIndex_post(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt, Job* pJob)
 {
 }
 

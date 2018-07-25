@@ -18,7 +18,7 @@ namespace JobsModel
     bool m_bDetached; // is this job detached?
 
     Job* (*m_fPre)(Interface::SEitf* pSEitf);
-    void (*m_fPost)(Prompt::SePrompt* pPrompt, Job* pJob);
+    void (*m_fPost)(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt, Job* pJob);
   
     bool m_bEnabled;  // is this job enabled?
 

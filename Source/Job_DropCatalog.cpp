@@ -193,7 +193,7 @@ Job* JobsModel::pJob_DropCatalog_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_DropCatalog_post(Prompt::SePrompt* pPrompt, Job* pJob)
+void JobsModel::vJob_DropCatalog_post(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt, Job* pJob)
 {
   Job_DropCatalog* pJob_DropCatalog = _pJob_DropCatalog(pJob);
   

@@ -190,7 +190,7 @@ Job* JobsModel::pJob_CreateSchema_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_CreateSchema_post(Prompt::SePrompt* pPrompt, Job* pJob)
+void JobsModel::vJob_CreateSchema_post(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt, Job* pJob)
 {
   Job_CreateSchema* pJob_CreateSchema = _pJob_CreateSchema(pJob);
   

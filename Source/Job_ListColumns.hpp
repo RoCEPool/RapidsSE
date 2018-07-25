@@ -39,7 +39,7 @@ namespace JobsModel
   Job_ListColumns* _pJob_ListColumns(void* aAddr);
   
   Job* pJob_ListColumns_pre(Interface::SEitf* pSEitf);
-  void vJob_ListColumns_post(Prompt::SePrompt* pPrompt, Job* pJob);
+  void vJob_ListColumns_post(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt, Job* pJob);
 }
 
 /*============================================================================*/

@@ -193,7 +193,7 @@ Job* JobsModel::pJob_CreateCatalog_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_CreateCatalog_post(Prompt::SePrompt* pPrompt, Job* pJob)
+void JobsModel::vJob_CreateCatalog_post(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt, Job* pJob)
 {
   Job_CreateCatalog* pJob_CreateCatalog = _pJob_CreateCatalog(pJob);
   

@@ -39,7 +39,7 @@ namespace JobsModel
   Job_Docol* _pJob_Docol(void* aAddr);
   
   Job* pJob_Docol_pre(Interface::SEitf* pSEitf);
-  void vJob_Docol_post(Prompt::SePrompt* pPrompt, Job* pJob);
+  void vJob_Docol_post(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt, Job* pJob);
 }
 
 /*============================================================================*/

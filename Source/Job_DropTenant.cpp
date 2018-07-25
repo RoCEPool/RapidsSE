@@ -146,7 +146,7 @@ Job* JobsModel::pJob_DropTenant_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_DropTenant_post(Prompt::SePrompt* pPrompt, Job* pJob)
+void JobsModel::vJob_DropTenant_post(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt, Job* pJob)
 {
 }
 

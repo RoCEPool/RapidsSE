@@ -39,7 +39,7 @@ namespace JobsModel
   Job_DropTable* _pJob_DropTable(void* aAddr);
   
   Job* pJob_DropTable_pre(Interface::SEitf* pSEitf);
-  void vJob_DropTable_post(Prompt::SePrompt* pPrompt, Job* pJob);
+  void vJob_DropTable_post(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt, Job* pJob);
 }
 
 /*============================================================================*/

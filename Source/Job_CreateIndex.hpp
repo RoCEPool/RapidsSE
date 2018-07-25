@@ -43,7 +43,7 @@ namespace JobsModel
   Job_CreateIndex* _pJob_CreateIndex(void* aAddr);
   
   Job* pJob_CreateIndex_pre(Interface::SEitf* pSEitf);
-  void vJob_CreateIndex_post(Prompt::SePrompt* pPrompt, Job* pJob);
+  void vJob_CreateIndex_post(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt, Job* pJob);
 }
 
 /*============================================================================*/

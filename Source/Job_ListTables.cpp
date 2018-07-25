@@ -187,7 +187,7 @@ Job* JobsModel::pJob_ListTables_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_ListTables_post(Prompt::SePrompt* pPrompt, Job* pJob)
+void JobsModel::vJob_ListTables_post(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt, Job* pJob)
 {
   Job_ListTables* pJob_ListTables = _pJob_ListTables(pJob);
   
