@@ -190,7 +190,7 @@ Job* JobsModel::pJob_Docol_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Docol_post(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt, Job* pJob)
+void JobsModel::vJob_Docol_post(Interface::SEitf* pSEitf, Job* pJob)
 {
   Job_Docol* pJob_Docol = _pJob_Docol(pJob);
   

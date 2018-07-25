@@ -39,7 +39,7 @@ namespace JobsModel
   Job_CreateCatalog* _pJob_CreateCatalog(void* aAddr);
   
   Job* pJob_CreateCatalog_pre(Interface::SEitf* pSEitf);
-  void vJob_CreateCatalog_post(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt, Job* pJob);
+  void vJob_CreateCatalog_post(Interface::SEitf* pSEitf, Job* pJob);
 }
 
 /*============================================================================*/

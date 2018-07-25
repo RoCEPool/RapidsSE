@@ -583,7 +583,7 @@ Job* JobsModel::pJob_CreateTable_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_CreateTable_post(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt, Job* pJob)
+void JobsModel::vJob_CreateTable_post(Interface::SEitf* pSEitf, Job* pJob)
 {
   Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJob);
   

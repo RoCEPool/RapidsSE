@@ -18,12 +18,12 @@ namespace JobsModel
     bool m_bDetached; // is this job detached?
 
     Job* (*m_fPre)(Interface::SEitf* pSEitf);
-    void (*m_fPost)(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt, Job* pJob);
+    void (*m_fPost)(Interface::SEitf* pSEitf, Job* pJob);
   
     bool m_bEnabled;  // is this job enabled?
 
   public:
-    void vEndJob(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt, Job* pJob);
+    void vEndJob(Interface::SEitf* pSEitf, Job* pJob);
     Job* pNewJob(Interface::SEitf* pSEitf);
   };
 }

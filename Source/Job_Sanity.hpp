@@ -41,7 +41,7 @@ namespace JobsModel
   Job_Sanity* _pJob_Sanity(void* aAddr);
   
   Job* pJob_Sanity_pre(Interface::SEitf* pSEitf);
-  void vJob_Sanity_post(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt, Job* pJob);
+  void vJob_Sanity_post(Interface::SEitf* pSEitf, Job* pJob);
 }
 
 /*============================================================================*/

@@ -191,7 +191,7 @@ Job* JobsModel::pJob_CreateTenant_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_CreateTenant_post(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt, Job* pJob)
+void JobsModel::vJob_CreateTenant_post(Interface::SEitf* pSEitf, Job* pJob)
 {
   Job_CreateTenant* pJob_CreateTenant = _pJob_CreateTenant(pJob);
   

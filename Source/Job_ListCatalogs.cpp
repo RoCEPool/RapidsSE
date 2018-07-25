@@ -187,7 +187,7 @@ Job* JobsModel::pJob_ListCatalogs_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_ListCatalogs_post(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt, Job* pJob)
+void JobsModel::vJob_ListCatalogs_post(Interface::SEitf* pSEitf, Job* pJob)
 {
   Job_ListCatalogs* pJob_ListCatalogs = _pJob_ListCatalogs(pJob);
   

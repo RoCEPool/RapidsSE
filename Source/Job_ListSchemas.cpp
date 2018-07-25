@@ -187,7 +187,7 @@ Job* JobsModel::pJob_ListSchemas_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_ListSchemas_post(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt, Job* pJob)
+void JobsModel::vJob_ListSchemas_post(Interface::SEitf* pSEitf, Job* pJob)
 {
   Job_ListSchemas* pJob_ListSchemas = _pJob_ListSchemas(pJob);
   

@@ -39,7 +39,7 @@ namespace JobsModel
   Job_Status* _pJob_Status(void* aAddr);
   
   Job* pJob_Status_pre(Interface::SEitf* pSEitf);
-  void vJob_Status_post(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt, Job* pJob);
+  void vJob_Status_post(Interface::SEitf* pSEitf, Job* pJob);
 }
 
 /*============================================================================*/

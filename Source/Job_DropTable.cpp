@@ -192,7 +192,7 @@ Job* JobsModel::pJob_DropTable_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_DropTable_post(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt, Job* pJob)
+void JobsModel::vJob_DropTable_post(Interface::SEitf* pSEitf, Job* pJob)
 {
   Job_DropTable* pJob_DropTable = _pJob_DropTable(pJob);
   

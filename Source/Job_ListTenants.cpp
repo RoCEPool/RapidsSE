@@ -187,7 +187,7 @@ Job* JobsModel::pJob_ListTenants_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_ListTenants_post(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt, Job* pJob)
+void JobsModel::vJob_ListTenants_post(Interface::SEitf* pSEitf, Job* pJob)
 {
   Job_ListTenants* pJob_ListTenants = _pJob_ListTenants(pJob);
   

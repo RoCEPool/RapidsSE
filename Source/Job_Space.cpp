@@ -186,7 +186,7 @@ Job* JobsModel::pJob_Space_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Space_post(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt, Job* pJob)
+void JobsModel::vJob_Space_post(Interface::SEitf* pSEitf, Job* pJob)
 {
   Job_Space* pJob_Space = _pJob_Space(pJob);
 

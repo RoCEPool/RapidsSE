@@ -190,7 +190,7 @@ Job* JobsModel::pJob_Cf_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Cf_post(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt, Job* pJob)
+void JobsModel::vJob_Cf_post(Interface::SEitf* pSEitf, Job* pJob)
 {
   Job_Cf* pJob_Cf = _pJob_Cf(pJob);
   

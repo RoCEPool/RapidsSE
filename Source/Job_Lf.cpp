@@ -187,7 +187,7 @@ Job* JobsModel::pJob_Lf_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Lf_post(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt, Job* pJob)
+void JobsModel::vJob_Lf_post(Interface::SEitf* pSEitf, Job* pJob)
 {
   Job_Lf* pJob_Lf = _pJob_Lf(pJob);
   

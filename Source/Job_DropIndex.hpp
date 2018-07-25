@@ -38,7 +38,7 @@ namespace JobsModel
   Job_DropIndex* _pJob_DropIndex(void* aAddr);
   
   Job* pJob_DropIndex_pre(Interface::SEitf* pSEitf);
-  void vJob_DropIndex_post(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt, Job* pJob);
+  void vJob_DropIndex_post(Interface::SEitf* pSEitf, Job* pJob);
 }
 
 /*============================================================================*/

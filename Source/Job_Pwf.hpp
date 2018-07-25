@@ -39,7 +39,7 @@ namespace JobsModel
   Job_Pwf* _pJob_Pwf(void* aAddr);
   
   Job* pJob_Pwf_pre(Interface::SEitf* pSEitf);
-  void vJob_Pwf_post(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt, Job* pJob);
+  void vJob_Pwf_post(Interface::SEitf* pSEitf, Job* pJob);
 }
 
 /*============================================================================*/

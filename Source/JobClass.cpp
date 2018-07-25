@@ -10,9 +10,9 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* end the job by running the post-function                                   */
 /*----------------------------------------------------------------------------*/
-void JobClass::vEndJob(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt, Job* pJob)
+void JobClass::vEndJob(Interface::SEitf* pSEitf, Job* pJob)
 {
-  (*m_fPost)(pSEitf, pPrompt, pJob);
+  (*m_fPost)(pSEitf, pJob);
 }
 
 /*----------------------------------------------------------------------------*/
