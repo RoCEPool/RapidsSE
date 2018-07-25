@@ -3,17 +3,21 @@
 /*============================================================================*/
 
 #include "JobModel.h"
+#include "StorageEngine.h"
+
+extern AttachMap* gpAttachMap;
 
 JobNote mJobNote_CreateTenant (
-  "Job_CreateTenant"_Stz,  // name of the job class
-  CN_JOB_CREATETABLE,      // class enum
-  "comment"_Stz,           // comment about the job
-  "create"_Stz,            // the prompt command
-  "tenant"_Stz,            // the second word
-  "createTenantR35_req"_Stz, // the task seed for this job
-  false,                   // detached job?
-  pJob_CreateTenant_pre,   // prompt pre-process function
-  vJob_CreateTenant_post   // prompt post-process function
+  "Job_CreateTenant"_Stz,         // name of the job class
+  CN_JOB_CREATETABLE,             // class enum
+  "create tenant tenantName"_Stz, // comment about the job
+  "create"_Stz,                   // the prompt command
+  "tenant"_Stz,                   // the second word
+  "createTenant"_Stz,             // the task seed for this job
+  false,                          // detached job?
+  pJob_CreateTenant_pre,          // prompt pre-process function
+  vJob_CreateTenant_post,         // prompt post-process function
+  true
 );
 
 
@@ -70,11 +74,12 @@ void Job_CreateTenant::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_CreateTenant::Job_CreateTenant(Interface::SEitf* pSEitf)
-: Job(CN_JOB_CREATESCHEMA), JobDicPath(pSEitf)
+: Job(CN_JOB_CREATETENANT), JobDicPath(pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETENANT,_FOOTER_);
     
-  //m_sExecute = "Job_CreateTenant.execute"_Stz;
+  m_sSeed = mJobNote_CreateTenant.pJobClass()->m_aSeed;
+  m_bCheckResources   = true;
   
   _checkInitialised_(CN_JOB_CREATETENANT);
   
@@ -112,6 +117,32 @@ void Job_CreateTenant::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* populate the job                                                           */
+/*----------------------------------------------------------------------------*/
+bool Job_CreateTenant::bPopulateJob(TokenVec* pTokenVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETENANT,_FOOTER_);
+  
+  i8 iNumTokens;
+  
+  ASSERT(pTokenVec->pGet(0)->bSame("create"_Stz));
+  ASSERT(pTokenVec->pGet(1)->bSame("tenant"_Stz));
+  
+  // get number of items in token vector
+  iNumTokens = pTokenVec->nItems();
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // there should be 3 tokens
+  if (iNumTokens != 3)
+  return false;
+  
+  // set the table name
+  m_sObjectName = pTokenVec->pGet(2)->aText();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
 void Job_CreateTenant::vShow(void)
@@ -140,7 +171,21 @@ Footer* Job_CreateTenant::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* JobsModel::pJob_CreateTenant_pre(Prompt::SePrompt* pPrompt)
 {
-  return nullptr;
+  SEitf* pSEitf = pPrompt->pSEitf();
+  
+  Job_CreateTenant* pJob_CreateTenant = new Job_CreateTenant(pSEitf);
+  
+  TokenVec* pTokenVec = pPrompt->m_pCommandProcessor->pTknVec();
+  
+  bool bResult = pJob_CreateTenant->bPopulateJob(pTokenVec);
+  
+  if ( !bResult) {
+    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
+    pJob_CreateTenant->m_bHasError = true;
+    pJob_CreateTenant->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+  }
+  
+  return pJob_CreateTenant;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -148,6 +193,18 @@ Job* JobsModel::pJob_CreateTenant_pre(Prompt::SePrompt* pPrompt)
 /*----------------------------------------------------------------------------*/
 void JobsModel::vJob_CreateTenant_post(Prompt::SePrompt* pPrompt, Job* pJob)
 {
+  Job_CreateTenant* pJob_CreateTenant = _pJob_CreateTenant(pJob);
+  
+  if ( pJob_CreateTenant->m_bHasError ) {
+    
+    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+      vTrace("ERROR (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob_CreateTenant->m_xNode[i_Node].m_eErrorCode]);
+    }
+    
+  }
+  
+  // now delete the job
+  delete pJob_CreateTenant;
 }
 
 /*============================================================================*/
