@@ -21,7 +21,7 @@
   // get the job from the task
   pTask task.job@ to pJob_Lf
 
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set dictionary stack
   pJob_Lf getPathR35
   dicStack.set
