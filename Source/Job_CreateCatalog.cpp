@@ -16,7 +16,8 @@ JobNote mJobNote_CreateCatalog (
   "createCatalog"_Stz,               // the task seed for this job
   false,                             // detached job?
   pJob_CreateCatalog_pre,            // prompt pre-process function
-  vJob_CreateCatalog_post            // prompt post-process function
+  vJob_CreateCatalog_post,           // prompt post-process function
+  true
 );
 
 /*----------------------------------------------------------------------------*/
@@ -72,7 +73,7 @@ void Job_CreateCatalog::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_CreateCatalog::Job_CreateCatalog(Interface::SEitf* pSEitf)
-: Job(CN_JOB_CREATESCHEMA), JobDicPath(pSEitf)
+: Job(CN_JOB_CREATECATALOG), JobDicPath(pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATECATALOG,_FOOTER_);
     
@@ -119,7 +120,7 @@ void Job_CreateCatalog::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 bool Job_CreateCatalog::bPopulateJob(TokenVec* pTokenVec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPTABLE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATECATALOG,_FOOTER_);
   
   i8 iNumTokens;
   

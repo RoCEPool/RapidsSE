@@ -25,17 +25,19 @@
   params| sCatalogNm |
 
   args.tracepoint if
-    dup "MAKING CATALOG " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
+   sCatalogNm "MAKING CATALOG " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
   then
 
   //----------------------------------------------------------------------------
   // make the catalog
   sCatalogNm :catalog ( ^catalog )
+  drop
 
   //----------------------------------------------------------------------------
   // make schemas folder
-  makeSchemas ( )
+  sCatalogNm makeSchemas ( )
 ;
+
 
 /*----------------------------------------------------------------------------*/
 /* create catalog request (on originating node)                               */
@@ -69,14 +71,12 @@
 
   tp: createCatalog_node
 
-  params| pJob_CreateCatalog |
-
   //----------------------------------------------------------------------------
   // grad a ddl lock
   ddlLock::grabWrite
 
   CN_JOB_CREATECATALOG pJob_CreateCatalog object.assertClass
-  pJob_CreateCatalog job.objectName@  to sCatalogNm
+  pJob_CreateCatalog job.objectName@ to sCatalogNm
 
   //----------------------------------------------------------------------------
   // set dictionary stack
@@ -84,12 +84,9 @@
   dicStack.set
 
   //----------------------------------------------------------------------------
-  // make he catalog
-  makeCatalog ( )
+  // make the catalog
+  sCatalogNm makeCatalog ( )
 
-  //----------------------------------------------------------------------------
-  // should be in tables
-  assertInTables
   pJob_CreateCatalog job.notice
 
   <DONE_NODE>
@@ -111,7 +108,7 @@
 
   //----------------------------------------------------------------------------
   // set dictionary stack
-  pJob_CreateTable getPathR35
+  pJob_CreateCatalog getPathR35
   dicStack.set
 
   //----------------------------------------------------------------------------
@@ -121,7 +118,7 @@
 
   //----------------------------------------------------------------------------
   // check if we can make the catalog
-  pJob_CreateTable job.objectName@
+  pJob_CreateCatalog job.objectName@
   checkMakeCatalog not if pJob_CreateCatalog <ERROR_JOB> exit then
 
   <DONE_NODE>
@@ -139,6 +136,7 @@
 
   <DONE_NODE>
 ;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

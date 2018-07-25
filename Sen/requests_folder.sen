@@ -263,7 +263,7 @@
       pathPush
 
         // create catalog rapidsse (and schemas sub-folder)
-        "rapidsse" makeCatalog drop drop drop
+        "rapidsse" "makeCatalog" find execute
 
           // push rapidsse folder
           "rapidsse" findInCurrent execute
