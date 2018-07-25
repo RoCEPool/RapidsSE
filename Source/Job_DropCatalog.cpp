@@ -137,6 +137,7 @@ bool Job_DropCatalog::bPopulateJob(TokenVec* pTokenVec)
   if (iNumTokens != 3)
   return false;
   
+  // - - - - - - - - - - - - - - - - - - - - -
   // set the table name
   m_sObjectName = pTokenVec->pGet(2)->aText();
   

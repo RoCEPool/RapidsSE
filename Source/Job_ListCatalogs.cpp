@@ -102,7 +102,7 @@ Job_ListCatalogs::~Job_ListCatalogs(void)
 /*----------------------------------------------------------------------------*/
 void Job_ListCatalogs::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_DOCOL == eClass);
+  RASSERT(CN_JOB_LISTCATALOGS == eClass);
   RASSERT(pObject->eClass() == CN_JOB_LISTCATALOGS);
   
   Job_ListCatalogs* pJob_ListCatalogs = _pJob_ListCatalogs(pObject);

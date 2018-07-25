@@ -20,6 +20,7 @@
 "Job_ListTables.sen" include
 "Job_ListTenants.sen" include
 
+"Job_LoadTable.sen" include
 "Job_Prompt.sen" include
 "Job_Pwf.sen" include
 "Job_Sanity.sen" include

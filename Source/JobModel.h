@@ -65,6 +65,7 @@ using namespace JobsModel;
 #include "Job_ListTables.hpp"
 #include "Job_ListTenants.hpp"
 
+#include "Job_LoadTable.hpp"
 #include "Job_Prompt.hpp"
 #include "Job_Pwf.hpp"
 #include "Job_Sanity.hpp"

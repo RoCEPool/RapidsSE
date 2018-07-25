@@ -411,6 +411,8 @@ bool SEitf::bExtractDateFormat(Stz* dateFormat)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
+  ASSERT(0);
+  /*
   i8 iIndex = 0;
   
   // leading YYYY
@@ -595,7 +597,7 @@ bool SEitf::bExtractDateFormat(Stz* dateFormat)
   }
   else
     return false;
-  
+  */
   return true;
 }
 

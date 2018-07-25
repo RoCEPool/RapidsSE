@@ -65,7 +65,7 @@ CmdTable SePromptCommands[] =
   { C_CMD_DROP,       C_ONE_TENANT,  &SePrompt::bCmd_DropTenant    },
   { C_CMD_END,        C_ONE_INSERT,  &SePrompt::bCmd_EndInsert     },
   { C_CMD_INSERT,     C_ONE_ROW,     &SePrompt::bCmd_InsertRow     },
-  { C_CMD_LOAD,       nullptr,       &SePrompt::bCmd_LoadTable     },
+  //{ C_CMD_LOAD,       nullptr,       &SePrompt::bCmd_LoadTable     },
   { C_CMD_USE,        nullptr,       &SePrompt::bCmd_UseSchema     },
   
   { nullptr,          nullptr,       nullptr                              }
@@ -1151,6 +1151,7 @@ bool SePrompt::bCmd_InsertRow(void)
 /*----------------------------------------------------------------------------*/
 /* load a table from a file                                                   */
 /*----------------------------------------------------------------------------*/
+/*
 bool SePrompt::bCmd_LoadTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
@@ -1313,7 +1314,7 @@ resetFormatter:
   m_pSEitf->m_xFormatters.vReset(&gpAttachMap->m_xFormatters);
   return bResult;
 }
-
+*/
 /*----------------------------------------------------------------------------*/
 /* print working directory                                                    */
 /*----------------------------------------------------------------------------*/

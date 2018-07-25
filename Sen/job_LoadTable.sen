@@ -1,0 +1,71 @@
+/*============================================================================*/
+/* job_LoadTable.sen -- Job Load Table                                        */
+/*============================================================================*/
+
+"job_LoadTable.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* Job_LoadTable request (on originating node)                                */
+/*----------------------------------------------------------------------------*/
+: LoadTable_req (  -- <R> )
+
+  0 0 locals| pJob pTask |
+
+  tp: createTable
+
+  // get the task
+  task::this to pTask
+
+  // get the job from the task
+  pTask task.job@ to pJob
+
+  // distribute the job
+  //pTask pJob "job::distribute" find execute
+
+  pJob <DONE_REQUEST>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_LoadTable job check resources                                  */
+/*----------------------------------------------------------------------------*/
+: loadTable_checkResources ( pJob_LoadTable -- )
+
+  params| pJob_LoadTable  |
+
+  tp: loadTable_checkResources
+  "checkResources received" .
+
+  //----------------------------------------------------------------------------
+  // grad a ddl lock
+  ddlLock::grabWrite
+
+  //----------------------------------------------------------------------------
+  // set dictionary stack
+  pJob_LoadTable getPathR35
+  dicStack.set
+
+  //----------------------------------------------------------------------------
+  // check if we have enough buffers
+  //checkEnoughBuffersR35 not if pJob_LoadTable <ERROR_JOB> exit then
+
+  //......
+
+  <DONE_NODE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_LoadTable job release resources                                */
+/*----------------------------------------------------------------------------*/
+: loadTable_releaseResources ( pJob_LoadTable -- )
+
+  params| pJob_CreateTable  |
+
+  tp: loadTable_releaseResources
+  "releaseResources received" .
+
+  <DONE_NODE>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
