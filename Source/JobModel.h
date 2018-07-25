@@ -61,6 +61,7 @@ using namespace JobsModel;
 #include "Job_Lf.hpp"
 #include "Job_ListColumns.hpp"
 #include "Job_ListCatalogs.hpp"
+#include "Job_ListSchemas.hpp"
 #include "Job_ListTables.hpp"
 #include "Job_ListTenants.hpp"
 

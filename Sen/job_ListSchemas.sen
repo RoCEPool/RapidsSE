@@ -1,0 +1,49 @@
+/*============================================================================*/
+/* job_ListSchemas.sen -- Job List Schemas                                    */
+/*============================================================================*/
+
+"job_ListSchemas.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* List Schemas requests (on the originating node)                            */
+/*----------------------------------------------------------------------------*/
+: listSchemas_req ( -- <R> )
+
+  0 0 locals| pJob_ListSchemas pTask |
+
+  tp: listSchemas_req
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob_ListSchemas
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
+  pJob_ListSchemas getPathR35
+  dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab ddl read lock
+  ddlLock::grabRead
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // should be in the schemas folder
+  checkInSchemas not if pJob_ListSchemas <ERROR_REQUEST> exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // list tables folder contents
+  pJob_ListSchemas listContentsR35
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // return
+  pJob_ListSchemas <DONE_REQUEST>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+
