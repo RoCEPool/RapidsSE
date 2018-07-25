@@ -17,14 +17,14 @@ namespace JobsModel
     Stz* m_aSeed;     // the task seed for this job
     bool m_bDetached; // is this job detached?
 
-    Job* (*m_fPre)(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt);
+    Job* (*m_fPre)(Interface::SEitf* pSEitf);
     void (*m_fPost)(Prompt::SePrompt* pPrompt, Job* pJob);
   
     bool m_bEnabled;  // is this job enabled?
 
   public:
     void vEndJob(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt, Job* pJob);
-    Job* pNewJob(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt);
+    Job* pNewJob(Interface::SEitf* pSEitf);
   };
 }
 

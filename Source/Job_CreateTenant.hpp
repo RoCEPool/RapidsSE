@@ -38,7 +38,7 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_CreateTenant* _pJob_CreateTenant(void* aAddr);
   
-  Job* pJob_CreateTenant_pre(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt);
+  Job* pJob_CreateTenant_pre(Interface::SEitf* pSEitf);
   void vJob_CreateTenant_post(Prompt::SePrompt* pPrompt, Job* pJob);
 }
 

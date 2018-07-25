@@ -169,13 +169,13 @@ Footer* Job_CreateTenant::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_CreateTenant_pre(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt)
+Job* JobsModel::pJob_CreateTenant_pre(Interface::SEitf* pSEitf)
 {
   //SEitf* pSEitf = pPrompt->pSEitf();
   
   Job_CreateTenant* pJob_CreateTenant = new Job_CreateTenant(pSEitf);
   
-  TokenVec* pTokenVec = pPrompt->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
   
   bool bResult = pJob_CreateTenant->bPopulateJob(pTokenVec);
   

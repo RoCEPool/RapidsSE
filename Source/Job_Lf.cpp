@@ -165,13 +165,13 @@ Footer* Job_Lf::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_Lf_pre(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt)
+Job* JobsModel::pJob_Lf_pre(Interface::SEitf* pSEitf)
 {
   //SEitf* pSEitf = pPrompt->pSEitf();
   
   Job_Lf* pJob_Lf = new Job_Lf(pSEitf);
   
-  TokenVec* pTokenVec = pPrompt->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
   
   bool bResult = pJob_Lf->bPopulateJob(pTokenVec);
   

@@ -19,7 +19,7 @@ JobNote::JobNote(Stz* aName,
                  Stz* aCommand2,
                  Stz* aSeed,
                  bool bDetached,
-                 Job* (*fPre)(Interface::SEitf* pSEitf, SePrompt* pPrompt),
+                 Job* (*fPre)(Interface::SEitf* pSEitf),
                  void (*fPost)(SePrompt* pPrompt, Job* pJob),
                  bool bEnabled)
 {

@@ -172,12 +172,12 @@ Footer* Job_DropCatalog::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_DropCatalog_pre(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt)
+Job* JobsModel::pJob_DropCatalog_pre(Interface::SEitf* pSEitf)
 {
   //SEitf* pSEitf = pPrompt->pSEitf();
   Job_DropCatalog* pJob_DropCatalog = new Job_DropCatalog(pSEitf);
   
-  TokenVec* pTokenVec = pPrompt->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
   
   bool bResult = pJob_DropCatalog->bPopulateJob(pTokenVec);
   

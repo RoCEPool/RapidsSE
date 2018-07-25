@@ -38,7 +38,7 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Cf* _pJob_Cf(void* aAddr);
   
-  Job* pJob_Cf_pre(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt);
+  Job* pJob_Cf_pre(Interface::SEitf* pSEitf);
   void vJob_Cf_post(Prompt::SePrompt* pPrompt, Job* pJob);
 }
 

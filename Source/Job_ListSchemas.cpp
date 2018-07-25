@@ -165,13 +165,13 @@ Footer* Job_ListSchemas::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_ListSchemas_pre(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt)
+Job* JobsModel::pJob_ListSchemas_pre(Interface::SEitf* pSEitf)
 {
   //SEitf* pSEitf = pPrompt->pSEitf();
   
   Job_ListSchemas* pJob_ListSchemas = new Job_ListSchemas(pSEitf);
   
-  TokenVec* pTokenVec = pPrompt->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
   
   bool bResult = pJob_ListSchemas->bPopulateJob(pTokenVec);
   

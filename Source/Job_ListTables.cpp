@@ -165,13 +165,13 @@ Footer* Job_ListTables::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_ListTables_pre(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt)
+Job* JobsModel::pJob_ListTables_pre(Interface::SEitf* pSEitf)
 {
   //SEitf* pSEitf = pPrompt->pSEitf();
   
   Job_ListTables* pJob_ListTables = new Job_ListTables(pSEitf);
   
-  TokenVec* pTokenVec = pPrompt->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
   
   bool bResult = pJob_ListTables->bPopulateJob(pTokenVec);
   

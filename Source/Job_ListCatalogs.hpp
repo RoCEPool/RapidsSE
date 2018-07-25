@@ -38,7 +38,7 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_ListCatalogs* _pJob_ListCatalogs(void* aAddr);
   
-  Job* pJob_ListCatalogs_pre(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt);
+  Job* pJob_ListCatalogs_pre(Interface::SEitf* pSEitf);
   void vJob_ListCatalogs_post(Prompt::SePrompt* pPrompt, Job* pJob);
 }
 

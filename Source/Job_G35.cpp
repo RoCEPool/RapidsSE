@@ -137,7 +137,7 @@ Footer* Job_G35::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_G35_pre(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt)
+Job* JobsModel::pJob_G35_pre(Interface::SEitf* pSEitf)
 {
   return nullptr;
 }

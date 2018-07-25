@@ -138,7 +138,7 @@ Footer* Job_DropTenant::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_DropTenant_pre(Interface::SEitf* pSEitf, Prompt::SePrompt* pPrompt)
+Job* JobsModel::pJob_DropTenant_pre(Interface::SEitf* pSEitf)
 {
   return nullptr;
 }
