@@ -6,12 +6,11 @@
 #include "Interface.h"
 
 namespace Interface
-{  
+{
   class CommandProcessor : public Object
   {
   public:
-    bool       m_bContinue;  // continue processing commands?
-    s32        m_sPrompt;    // prompt
+     s32        m_sPrompt;    // prompt
     Tokeniser* m_pTokeniser; // input stream tokeniser
     TokenVec   m_xTokenVec;  // token vector
     TokenVec   m_xTokenVec2; // another token vector

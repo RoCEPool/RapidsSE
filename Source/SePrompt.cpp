@@ -105,6 +105,7 @@ SePrompt::SePrompt(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   i8 iPartition = 0;
+  m_bContinue = true;
 
   eEC eResult = RapidsSE_SEitfNew((void**)&m_pSEitf,iPartition, /*trace*/ 0);
   ASSERT(EC_NONE == eResult);

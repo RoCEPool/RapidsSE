@@ -18,7 +18,7 @@ PromptNote mPromptNote_bye (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_bye(SePrompt* pPrompt)
 {
-  pPrompt->m_pCommandProcessor->m_bContinue = false;
+  pPrompt->m_bContinue = false;
   
   return true;
 }

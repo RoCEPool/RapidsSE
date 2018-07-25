@@ -51,8 +51,6 @@ CommandProcessor::CommandProcessor(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
   
-  m_bContinue = true;
-
   m_sPrompt.vSprint("[N%lld %lld] se %s%c%s> "_Stz,
                     gpAttachMap->m_pGrid->iThisNode(),
                     Process::iGetPid(),
@@ -338,8 +336,6 @@ void CommandProcessor::vGetCommandArgument(void)
     pTknVec()->vIncTokens();
     ASSERT(pTknVec()->nTokens() < C_TOKENS);
   }
-  
-  m_bContinue = false;
 }
 
 /*----------------------------------------------------------------------------*/

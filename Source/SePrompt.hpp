@@ -21,6 +21,7 @@ namespace Prompt
   class SePrompt : public Object
   {
   public:
+    bool       m_bContinue;  // continue processing commands?
     SEitf*     m_pSEitf;     // interface into rapidsse
     s48K       m_sResponse;  // response from seitf
   
