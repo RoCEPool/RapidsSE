@@ -22,7 +22,7 @@
   pSEitf seitf.commandProcessor to pCommandProcessor
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  begin
+  begin pPrompt prompt.continue while
 
     // get the next command
     pCommandProcessor commandProcessor.getCommand
@@ -86,7 +86,7 @@
     // post process and delete the job
     pCommandProcessor commandProcessor.endJob
 
-  again
+  repeat
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   <OK>
