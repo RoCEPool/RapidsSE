@@ -1070,6 +1070,7 @@ namespace Tasks
     static void vProcessTestPid(MP_Task mpTask);
     
     // prompt
+    static void vPromptContinue(MP_Task mpTask);
     static void vPromptExecuteFunction(MP_Task mpTask);
     static void vPromptGetCommand(MP_Task mpTask);
     static void vPromptNew(MP_Task mpTask);
