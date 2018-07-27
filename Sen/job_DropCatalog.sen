@@ -12,12 +12,26 @@
   params| sCatalogNm |
 
   checkInCatalogs not if false exit then
-  sCatalogNm checkIsWordR35 not if false exit then
+  sCatalogNm checkIsWordR35 not if EC_NO_SUCH_CATALOG false exit then
   checkIsCatalog  not if false exit then
   checkIsEmpty    not if false exit then
   checkNotUsed    not if false exit then
 
   true 
+;
+
+/*----------------------------------------------------------------------------*/
+/* remove a catalog folder                                                    */
+/*----------------------------------------------------------------------------*/
+: removeCatalog ( "<catalogNm>" --  )
+
+  tp: removeCatalog
+
+  args.tracepoint if
+  dup "REMOVING CATALOG " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
+  then
+
+  :forget ( )
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -28,14 +42,16 @@
   0 0 locals| pJob pTask |
 
   tp: dropCatalog
-  "dropCatalog_req" .
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the task
   task::this to pTask
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the job from the task
   pTask task.job@ to pJob
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // distribute the job
   pTask pJob "job::distribute" find execute
 

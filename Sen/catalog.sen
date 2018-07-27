@@ -22,8 +22,7 @@
 ;
 
 : checkIsCatalog ( word )
-
-    word.kind@ tick folder eql not if EC_NOT_A_FOLDER false exit then
+    dup word.kind@ tick folder eql not if EC_NOT_A_FOLDER false exit then
     dup execute dic.kind@ tick catalog eql if true exit then
     EC_NOT_A_CATALOG false
 ;
@@ -73,6 +72,7 @@ tp: makeCatalog
 /*----------------------------------------------------------------------------*/
 /* remove a catalog folder                                                    */
 /*----------------------------------------------------------------------------*/
+/*
 : removeCatalog allParticipants 1 checkResult ( "<catalogNm>" -- true n# true )
 
 tp: removeCatalog
@@ -85,7 +85,7 @@ tp: removeCatalog
 
   true <SUCCESS_RESULT>
 ;
-
+*/
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
