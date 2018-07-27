@@ -1339,12 +1339,14 @@ namespace Tasks
     static void vTableAddIndex(MP_Task mpTask);
     static void vTableAnalyze(MP_Task mpTask);
     static void vTableAppendBuffer(MP_Task mpTask);
+    static void vTableColumnCountFetch(MP_Task mpTask);
     static void vTableCreateColumnVec(MP_Task mpTask);
     static void vTableCreateColumnVecR35(MP_Task mpTask);
     static void vTableDrop(MP_Task mpTask);
     static void vTableDump(MP_Task mpTask);
     static void vTableFirstBuffer(MP_Task mpTask);
-    static void vTableGetColumns(MP_Task mpTask);
+    static void vTableGetColumnsAsString(MP_Task mpTask);
+    static void vTableColumnFetch(MP_Task mpTask);
     static void vTableGetPtn(MP_Task mpTask);
     static void vTableGetRef(MP_Task mpTask);
     static void vTableHiddenIndexFetch(MP_Task mpTask);

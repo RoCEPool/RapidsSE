@@ -73,7 +73,7 @@ void Job_ListColumns::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_ListColumns::Job_ListColumns(Interface::SEitf* pSEitf)
-: Job(CN_JOB_LF), JobDicPath(pSEitf)
+: Job(CN_JOB_LISTCOLUMNS), JobDicPath(pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTCOLUMNS,_FOOTER_);
   
@@ -131,9 +131,13 @@ bool Job_ListColumns::bPopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // there should be 1 tokens
-  if (iNumTokens != 1) {
+  if (iNumTokens != 2) {
     return nullptr;
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // set the table name
+  m_sObjectName = pTokenVec->pGet(1)->aText();
   
   return true;
 }

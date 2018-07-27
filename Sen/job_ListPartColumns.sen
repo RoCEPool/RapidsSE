@@ -13,8 +13,12 @@
 
   0 0 0 locals| iPartitionCols pSlots pTable |
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get table
   sTableNm find execute to pTable
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get slots of table
   pTable table.slots to pSlots
   pSlots slots.columnCount to iPartitionCols
 
@@ -62,15 +66,19 @@
   // should be in the tables folder
   checkInTables not if pJob_ListPartColumns <ERROR_REQUEST> exit then
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get table name from job
   pJob_ListPartColumns job.objectName@ to sTableNm
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // there should be a table folder
   sTableNm checkIsTableFolder not if pJob_ListPartColumns <ERROR_REQUEST> exit then
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table dictionary
   sTableNm pushTable assert
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is a table
   sTableNm checkIsTableR35 not if popTable pJob_ListPartColumns <ERROR_REQUEST> exit then
 

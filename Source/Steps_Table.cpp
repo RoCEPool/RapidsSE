@@ -16,11 +16,13 @@ void Task::vAddPrimitives_Table(void)
   vAddPrimitive("table.addIndex"_Stz,           &vTableAddIndex,         false);
   vAddPrimitive("table.analyze"_Stz,            &vTableAnalyze,          false);
   vAddPrimitive("table.appendBuffer"_Stz,       &vTableAppendBuffer,     false);
+  vAddPrimitive("table.columnCount@"_Stz,       &vTableColumnCountFetch, false);
+  vAddPrimitive("table.column@"_Stz,            &vTableColumnFetch,      false);
   vAddPrimitive("table.createColumnVec"_Stz,    &vTableCreateColumnVec,  false);
-  vAddPrimitive("table.createColumnVecR35"_Stz, &vTableCreateColumnVecR35,  false);
+  vAddPrimitive("table.createColumnVecR35"_Stz, &vTableCreateColumnVecR35, false);
   vAddPrimitive("table.drop"_Stz,               &vTableDrop,             false);
   vAddPrimitive("table.dump"_Stz,               &vTableDump,             false);
-  vAddPrimitive("table.getColumns"_Stz,         &vTableGetColumns,       false);
+  vAddPrimitive("table.getColumnsAsString"_Stz, &vTableGetColumnsAsString, false);
   vAddPrimitive("table.getPtn"_Stz,             &vTableGetPtn,           false);
   vAddPrimitive("table.getRef"_Stz,             &vTableGetRef,           false);
   vAddPrimitive("table.hiddenIndex@"_Stz,       &vTableHiddenIndexFetch, false);
@@ -228,6 +230,51 @@ void Task::vTableAppendBuffer(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* table.coumn@ -- get the column from the table                              */
+/*----------------------------------------------------------------------------*/
+void Task::vTableColumnFetch(MP_Task mpTask)
+{
+  ENTRY("vTableColumnFetch"_Stz);
+  
+  Object* pPtrTable;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+  THROW_INVALID_DSTACK("table.coumn"_Stz);
+  Table* pTable = _pTable(pPtrTable);
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  i8 iColumnNo;
+  if ( ! mpTask->m_pDataStack->bPop(iColumnNo) )
+  THROW_INVALID_DSTACK("table.columnCount@"_Stz);
+  
+  ColumnVec* pColVec = pTable->pColumnVec();
+  
+  mpTask->m_pDataStack->vPushObject(pColVec->pGet(iColumnNo));
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.columnCount@ -- get column count                                     */
+/*----------------------------------------------------------------------------*/
+void Task::vTableColumnCountFetch(MP_Task mpTask)
+{
+  ENTRY("vTableColumnCountFetch"_Stz);
+  
+  Object* pPtrTable;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+  THROW_INVALID_DSTACK("table.columnCount@"_Stz);
+  Table* pTable = _pTable(pPtrTable);
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  ColumnVec* pColVec = pTable->pColumnVec();
+  i8 nColumns = pColVec->nItems();
+  
+  mpTask->m_pDataStack->vPushInt(nColumns);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* table.createColumnVec -- create column vector from sub dictionary          */
 /*----------------------------------------------------------------------------*/
 void Task::vTableCreateColumnVec(MP_Task mpTask)
@@ -316,15 +363,15 @@ ENTRY("vTableDump"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* table.getColumns -- get columns as a csv string                            */
+/* table.getColumnsAsString -- get columns as a csv string                    */
 /*----------------------------------------------------------------------------*/
-void Task::vTableGetColumns(MP_Task mpTask)
+void Task::vTableGetColumnsAsString(MP_Task mpTask)
 {
-  ENTRY("vTableGetColumns"_Stz);
+  ENTRY("vTableGetColumnsAsString"_Stz);
   
   Object* pPtrTable;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.getColumns"_Stz);
+  THROW_INVALID_DSTACK("table.getColumnsAsString"_Stz);
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
@@ -335,12 +382,12 @@ void Task::vTableGetColumns(MP_Task mpTask)
   for (i8 i_Column = 0; i_Column < nColumns - 1; i_Column++) {
     
     if (i_Column != 0)
-      s.vConcat(","_Stz);
-
+    s.vConcat(","_Stz);
+    
     if (i_Column == 0)
-      s.vCopy(pColVec->pGet(i_Column)->sColumnName());
+    s.vCopy(pColVec->pGet(i_Column)->sColumnName());
     else
-      s.vConcat(pColVec->pGet(i_Column)->sColumnName());
+    s.vConcat(pColVec->pGet(i_Column)->sColumnName());
     
     s.vConcat(" "_Stz);
     s.vConcat(DBobjects::aCT[pColVec->pGet(i_Column)->eColumnType()]);
