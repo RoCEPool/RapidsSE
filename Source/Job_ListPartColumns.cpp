@@ -193,11 +193,27 @@ void JobsModel::vJob_ListPartColumns_post(Interface::SEitf* pSEitf, Job* pJob)
 {
   Job_ListPartColumns* pJob_ListPartColumns = _pJob_ListPartColumns(pJob);
   
-  // Note: take care of errors / meta data ????
-  for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-    vTrace("%s\n"_Stz, pJob_ListPartColumns->m_xNode[i_Node].m_sResponse.aChar());
+  if ( pJob_ListPartColumns->m_bHasError ) {
+    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+      vTrace("ERROR (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob_ListPartColumns->m_xNode[i_Node].m_eErrorCode]);
+    }
   }
-
+  else {
+    if (gpAttachMap->m_bMetadata) {
+      vTrace("metadata: %s\n"_Stz, pJob_ListPartColumns->m_sMetadata.aStr());
+    }
+    
+    i8 iRowsProcessed = 0;
+    
+    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+      vTrace("%s\n"_Stz, pJob_ListPartColumns->m_xNode[i_Node].m_sResponse.aChar());
+      iRowsProcessed += pJob_ListPartColumns->m_xNode[i_Node].m_iRowsProcessed;
+    }
+    if (gpAttachMap->m_bMetadata) {
+      vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
+    }
+  }
+  
   // now delete the job
   delete pJob_ListPartColumns;
 }

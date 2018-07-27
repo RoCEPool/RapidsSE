@@ -190,16 +190,23 @@ void JobsModel::vJob_ListCatalogs_post(Interface::SEitf* pSEitf, Job* pJob)
   Job_ListCatalogs* pJob_ListCatalogs = _pJob_ListCatalogs(pJob);
   
   if ( pJob_ListCatalogs->m_bHasError ) {
-    
     for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
       vTrace("ERROR (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob_ListCatalogs->m_xNode[i_Node].m_eErrorCode]);
     }
-    
   }
   else {
-
+    if (gpAttachMap->m_bMetadata) {
+      vTrace("metadata: %s\n"_Stz, pJob_ListCatalogs->m_sMetadata.aStr());
+    }
+    
+    i8 iRowsProcessed = 0;
+    
     for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
       vTrace("%s\n"_Stz, pJob_ListCatalogs->m_xNode[i_Node].m_sResponse.aChar());
+      iRowsProcessed += pJob_ListCatalogs->m_xNode[i_Node].m_iRowsProcessed;
+    }
+    if (gpAttachMap->m_bMetadata) {
+      vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
     }
   }
 

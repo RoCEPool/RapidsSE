@@ -75,7 +75,7 @@
   sTableNm checkIsTableR35 not if popTable pJob_ListPartColumns <ERROR_REQUEST> exit then
 
   args.metadata if
-    "(columnName VARCHAR)" metadata!
+    "(columnName VARCHAR)" pJob_ListPartColumns job.metadata!
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
