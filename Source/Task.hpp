@@ -345,6 +345,7 @@ namespace Tasks
     void vAddPrimitives_Bp(void);
     void vAddPrimitives_Cast(void);
     void vAddPrimitives_Class(void);
+    void vAddPrimitives_Column(void);
     void vAddPrimitives_CommandProcessor(void);
     void vAddPrimitives_Comment(void);
     void vAddPrimitives_Common(void);
@@ -545,6 +546,14 @@ namespace Tasks
     // class
     static void vClassName(MP_Task mpTask);
 
+    // column
+    static void vColumnIsNullableFetch(MP_Task mpTask);
+    static void vColumnIsPartitionKeyFetch(MP_Task mpTask);
+    static void vColumnLengthFetch(MP_Task mpTask);
+    static void vColumnNameFetch(MP_Task mpTask);
+    static void vColumnScaleFetch(MP_Task mpTask);
+    static void vColumnTypeFetch(MP_Task mpTask);
+    
     // command processor
     static void vCommandProcessorBlankLine(MP_Task mpTask);
     static void vCommandProcessorDispatchJob(MP_Task mpTask);
