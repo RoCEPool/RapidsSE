@@ -1,0 +1,95 @@
+/*============================================================================*/
+/* job_ListPartColumns.sen -- Job list Partition Key Columns                  */
+/*============================================================================*/
+
+"job_ListPartColumns.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* list columns of table partitioning                                         */
+/*----------------------------------------------------------------------------*/
+: listPartitionColumns ( "<tableNm>" Job_ListPartColumns -- list )
+
+  params|  pJob_ListPartColumns sTableNm |
+
+  0 0 0 locals| iPartitionCols pSlots pTable |
+
+  sTableNm find execute to pTable
+
+  pTable table.slots to pSlots
+  pSlots slots.columnCount to iPartitionCols
+
+  ""                             // initial ls string
+  iPartitionCols 0 do
+    I pSlots slots.columnName
+    "row: ('%v')\n" str.format
+    str.cat
+  loop
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set response in the job
+  grid::thisNode@ pJob_ListPartColumns job.response!
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // sent rows Processed in the job
+  iPartitionCols grid::thisNode@ pJob_ListPartColumns job.rowsProcessed!
+;
+
+/*----------------------------------------------------------------------------*/
+/* get list of partition key columns (on originating node)                    */
+/*----------------------------------------------------------------------------*/
+: listPartColumns_req ( -- <R> )
+
+  0 0 0 locals| sTableNm pJob_ListPartColumns pTask |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob_ListPartColumns
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
+  pJob_ListPartColumns getPathR35
+  dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab ddl read lock
+  ddlLock::grabRead
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // should be in the tables folder
+  checkInTables not if pJob_ListPartColumns <ERROR_REQUEST> exit then
+
+  // get table name from job
+  pJob_ListPartColumns job.objectName@ to sTableNm
+
+  // there should be a table folder
+  sTableNm checkIsTableFolder not if pJob_ListPartColumns <ERROR_REQUEST> exit then
+
+  // push table dictionary
+  sTableNm pushTable assert
+
+  // check it is a table
+  sTableNm checkIsTableR35 not if popTable pJob_ListPartColumns <ERROR_REQUEST> exit then
+
+  args.metadata if
+    "(columnName VARCHAR)" metadata!
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // list partition columns
+  sTableNm pJob_ListPartColumns listPartitionColumns
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop table dictionary
+  popTable
+  assertInTables
+
+  pJob_ListPartColumns <DONE_REQUEST>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

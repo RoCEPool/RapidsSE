@@ -124,6 +124,12 @@ print "lf";
 print "======================================";
 lf;
 
+// list partition key columns
+print "\n======================================";
+print "lspartcol";
+print "======================================";
+lspartcol j10;
+
 // create same table again
 print "\n=========================================";
 print "creating table j10 which already exists...";

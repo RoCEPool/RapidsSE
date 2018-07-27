@@ -117,38 +117,6 @@
   true
 ;
 
-/*----------------------------------------------------------------------------*/
-/* list columns of table partitioning                                         */
-/*----------------------------------------------------------------------------*/
-: listPartitionColumns ( "<tableNm>" -- list )
-
-  find execute ( ^tablePtr )
-
-  0 0 locals| partitionCols slotsPtr tablePtr |
-
-  tablePtr table.slots to slotsPtr
-  slotsPtr slots.columnCount to partitionCols
-
-  ""                             // initial ls string
-  args.metadata if
-    partitionCols 0 do
-      I slotsPtr slots.columnName
-      "row: ('%v')\n" str.format
-      str.cat
-    loop
-    partitionCols task::this task.seitf@ seitf.rowsProcessed
-  else
-
-    partitionCols 0 do
-      I slotsPtr slots.columnName
-      I 1 + partitionCols < if
-        swap ", " str.cat
-      then
-      str.cat
-    loop
-  then
-
-;
 
 ////////////////////////////////////////////////////////////////////////////////
 
