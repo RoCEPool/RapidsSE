@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "JobModel.h"
-
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -18,7 +17,7 @@ JobNote mJobNote_DropCatalog (
   false,                          // detached job?
   pJob_DropCatalog_pre,           // prompt pre-process function
   vJob_DropCatalog_post,          // prompt post-process function
-  true
+  true                     // job is enabled
 );
 
 

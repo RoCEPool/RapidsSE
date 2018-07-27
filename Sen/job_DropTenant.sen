@@ -5,25 +5,129 @@
 "job_DropTenant.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* execute job_DropTenant job                                                 */
+/* check if word is a removable tenant folder                                 */
 /*----------------------------------------------------------------------------*/
-: Job_DropTenant.execute ( pJob_DropTenant -- )
+: checkRemoveTenant ( "<tenantNm>" -- true | errorCode false )
+
+  params| sTenantNm |
+
+  checkInTenants  not if false exit then ( "<tenantNm>" word )
+  sTenantNm checkIsWordR35  not if EC_NO_SUCH_Tenant false exit then ( "<tenantNm>" word )
+  checkIsTenant   not if false exit then ( "<tenantNm>" word )
+  checkIsEmpty    not if false exit then ( "<tenantNm>" word )
+  checkNotUsed    not if false exit then ( "<tenantNm>" word )
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* remove a tenant folder                                                     */
+/*----------------------------------------------------------------------------*/
+: removeTenant ( "<tenantNm>" --  )
+
+  tp: removetenant
+
+  args.tracepoint if
+  dup "REMOVING TENANT " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
+  then
+
+  :forget ( )
+;
+
+/*----------------------------------------------------------------------------*/
+/* drop tenant request (on originating node)                                  */
+/*----------------------------------------------------------------------------*/
+: dropTenant_req ( -- <R> )
+
+  0 0 locals| pJob pTask |
+
+  tp: dropTenant_req
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // distribute the job
+  pTask pJob "job::distribute" find execute
+
+  pJob <DONE_REQUEST>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_DropTenant job on a node                                       */
+/*----------------------------------------------------------------------------*/
+: dropTenant_node ( Job_DropTenant -- )
 
   params| pJob_DropTenant |
 
+  tp: dropTenant_node
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // assert correct job
   CN_JOB_DROPTENANT pJob_DropTenant object.assertClass
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grad a ddl lock
   ddlLock::grabWrite
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
   pJob_DropTenant getPathR35
   dicStack.set
-  pJob_DropTenant job.objectName@   ( tenantNm )
 
-  removeTenantR35 ( )  not if "got error" . exit then
-
-  ddlLock::testDrop
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // remove the catalog
+  pJob_DropTenant job.objectName@   ( catalogNm )
+  removeTenant
 
   pJob_DropTenant job.notice
+
+  <DONE_NODE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_DropTenant job check resources                                 */
+/*----------------------------------------------------------------------------*/
+: dropTenant_checkResources ( Job_DropTenant -- )
+
+  params| pJob_DropTenant  |
+
+  tp: dropTenant_checkResources
+  "checkResources received" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - --
+  // grab a ddl lock
+  ddlLock::grabWrite
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
+  pJob_DropTenant getPathR35
+  dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if we can remove the catalog
+  pJob_DropTenant job.objectName@
+  checkRemoveTenant not if pJob_DropTenant <ERROR_JOB> exit then
+
+  <DONE_NODE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_DropCatalog job release resources                              */
+/*----------------------------------------------------------------------------*/
+: dropTenant_releaseResources ( Job_DropTenant -- )
+
+  params| pJob_DropTenant  |
+
+  tp: dropTenant_releaseResources
+  "releaseResources received" .
+
+  <DONE_NODE>
 ;
 
 /*============================================================================*/

@@ -3,19 +3,22 @@
 /*============================================================================*/
 
 #include "JobModel.h"
+#include "StorageEngine.h"
+
+extern AttachMap* gpAttachMap;
 
 JobNote mJobNote_DropTenant (
-  "Job_DropTenant"_Stz, // name of the job class
-  CN_JOB_DROPTENANT,    // class enum
-  "comment"_Stz,        // comment about the job
-  "drop"_Stz,           // the prompt command
-  "tenant"_Stz,         // the second word
-  "dropTenantR35_req"_Stz, // the task seed for this job
-  false,                // detached job?
-  pJob_DropTenant_pre,  // prompt pre-process function
-  vJob_DropTenant_post  // prompt post-process function
-  );
-
+  "Job_DropTenant"_Stz,         // name of the job class
+  CN_JOB_DROPTENANT,            // class enum
+  "drop tenant tenantName"_Stz, // comment about the job
+  "drop"_Stz,                   // the prompt command
+  "tenant"_Stz,                 // the second word
+  "dropTenant"_Stz,             // the task seed for this job
+  false,                        // detached job?
+  pJob_DropTenant_pre,          // prompt pre-process function
+  vJob_DropTenant_post,         // prompt post-process function
+  true                          // job is enabled
+);
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -70,11 +73,12 @@ void Job_DropTenant::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_DropTenant::Job_DropTenant(Interface::SEitf* pSEitf)
-: Job(CN_JOB_DROPSCHEMA), JobDicPath(pSEitf)
+: Job(CN_JOB_DROPTENANT), JobDicPath(pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPTENANT,_FOOTER_);
     
-  //m_sExecute = "Job_DropSchema.execute"_Stz;
+  m_sSeed = mJobNote_DropTenant.pJobClass()->m_aSeed;
+  m_bCheckResources   = true;
   
   _checkInitialised_(CN_JOB_DROPTENANT);
   
@@ -112,6 +116,34 @@ void Job_DropTenant::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* populate the job                                                           */
+/*----------------------------------------------------------------------------*/
+bool Job_DropTenant::bPopulateJob(TokenVec* pTokenVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPTENANT,_FOOTER_);
+  
+  i8 iNumTokens;
+  
+  ASSERT(pTokenVec->pGet(0)->bSame("drop"_Stz));
+  ASSERT(pTokenVec->pGet(1)->bSame("tenant"_Stz));
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // get number of items in token
+  iNumTokens = pTokenVec->nItems();
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // there should be 3 tokens
+  if (iNumTokens != 3)
+  return false;
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // set the table name
+  m_sObjectName = pTokenVec->pGet(2)->aText();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
 void Job_DropTenant::vShow(void)
@@ -140,7 +172,19 @@ Footer* Job_DropTenant::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* JobsModel::pJob_DropTenant_pre(Interface::SEitf* pSEitf)
 {
-  return nullptr;
+  Job_DropTenant* pJob_DropTenant = new Job_DropTenant(pSEitf);
+  
+  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
+  
+  bool bResult = pJob_DropTenant->bPopulateJob(pTokenVec);
+  
+  if ( !bResult) {
+    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
+    pJob_DropTenant->m_bHasError = true;
+    pJob_DropTenant->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+  }
+  
+  return pJob_DropTenant;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -148,6 +192,18 @@ Job* JobsModel::pJob_DropTenant_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 void JobsModel::vJob_DropTenant_post(Interface::SEitf* pSEitf, Job* pJob)
 {
+  Job_DropTenant* pJob_DropTenant = _pJob_DropTenant(pJob);
+  
+  if ( pJob_DropTenant->m_bHasError ) {
+    
+    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+      vTrace("ERROR (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob_DropTenant->m_xNode[i_Node].m_eErrorCode]);
+    }
+    
+  }
+  
+  // now delete the job
+  delete pJob_DropTenant;
 }
 
 /*============================================================================*/

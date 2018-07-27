@@ -12,6 +12,7 @@
 "job_DropCatalog.sen" include
 "job_DropSchema.sen" include
 "job_DropTable.sen" include
+"job_DropTenant.sen" include
 
 "job_Docol.sen" include
 "job_G35.sen" include
