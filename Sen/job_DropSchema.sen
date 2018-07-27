@@ -5,25 +5,129 @@
 "job_DropSchema.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_DropSchema job                                                 */
+/* check if word is a removable schema folder                                 */
 /*----------------------------------------------------------------------------*/
-: Job_DropSchema.execute ( pJob_DropSchema -- )
+: checkRemoveSchema ( "<schemaNm>" --  true | errorCode false )
 
-  params| pJob_DropSchema |
+ params| sSchemaNm |
 
-  CN_JOB_DROPSCHEMA pJob_DropSchema object.assertClass
+  checkInSchemas not if false exit then
+  sSchemaNm checkIsWordR35 not if EC_NO_SUCH_SCHEMA false exit then
+  checkIsSchema  not if false exit then
+  checkIsEmpty   not if false exit then
+  checkNotUsed   not if false exit then
 
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* remove a schema folder                                                     */
+/*----------------------------------------------------------------------------*/
+: removeSchema allParticipants 1 checkResult ( "<schemaNm>" --  )
+
+  tp: removeSchema
+
+  args.tracepoint if
+  dup "REMOVING TENANT " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
+  then
+
+  :forget ( )
+;
+
+/*----------------------------------------------------------------------------*/
+/* drop schema request (on originating node)                                  */
+/*----------------------------------------------------------------------------*/
+: dropSchema_req ( -- <R> )
+
+  0 0 locals| pJob pTask |
+
+  tp: dropSchema_req
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // distribute the job
+  pTask pJob "job::distribute" find execute
+
+  pJob <DONE_REQUEST>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_DropSchema job on a node                                       */
+/*----------------------------------------------------------------------------*/
+: dropSchema_node ( Job_DropSchema -- )
+
+  params| pDropSchema_node |
+
+  tp: dropSchema_node
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // assert correct job
+  CN_JOB_DROPSCHEMA pDropSchema_node object.assertClass
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grad a ddl lock
   ddlLock::grabWrite
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
+  pDropSchema_node getPathR35
+  dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // remove the catalog
+  pDropSchema_node job.objectName@   ( catalogNm )
+  removeSchema
+
+  pDropSchema_node job.notice
+
+  <DONE_NODE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_DropSchema job check resources                                 */
+/*----------------------------------------------------------------------------*/
+: dropSchema_checkResources ( Job_DropSchema -- )
+
+  params| pJob_DropSchema  |
+
+  tp: dropSchema_checkResources
+  "checkResources received" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - --
+  // grab a ddl lock
+  ddlLock::grabWrite
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
   pJob_DropSchema getPathR35
   dicStack.set
-  pJob_DropSchema job.objectName@   ( schemaNm )
 
-  removeSchemaR35 ( )  not if "got error" . exit then
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if we can remove the catalog
+  pJob_DropSchema job.objectName@
+  checkRemoveSchema not if pJob_DropSchema <ERROR_JOB> exit then
 
-  ddlLock::testDrop
+  <DONE_NODE>
+;
 
-  pJob_DropSchema job.notice
+/*----------------------------------------------------------------------------*/
+/* execute Job_DropSchema job release resources                               */
+/*----------------------------------------------------------------------------*/
+: dropSchema_releaseResources ( Job_DropSchema -- )
+
+  params| pJob_DropSchema  |
+
+  tp: dropSchema_releaseResources
+  "releaseResources received" .
+
+  <DONE_NODE>
 ;
 
 /*============================================================================*/

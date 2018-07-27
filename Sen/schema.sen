@@ -48,23 +48,6 @@
   :folder      ( )
 ;
 
-/*----------------------------------------------------------------------------*/
-/* check if word is a removable schema folder                                 */
-/*----------------------------------------------------------------------------*/
-: checkRemoveSchema ( "<schemaNm>" -- "<schemaNm>" true | "<schemaNm>" errorCode false )
-
-  dup ( "<schemaNm>" "<schemaNm>" )
-
-  checkInSchemas not if false exit then ( "<schemaNm>" word )
-  checkIsWord    not if false exit then ( "<schemaNm>" word )
-  checkIsSchema  not if false exit then ( "<schemaNm>" word )
-  checkIsEmpty   not if false exit then ( "<schemaNm>" word )
-  checkNotUsed   not if false exit then ( "<schemaNm>" word )
-
-  drop ( "<schemaNm>" )
-
-  true ( "<schemaNm>" true )
-;
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -92,37 +75,6 @@ tp: makingSchema
 ;
 */
 
-/*----------------------------------------------------------------------------*/
-/* remove a schema folder                                                     */
-/*----------------------------------------------------------------------------*/
-: removeSchema allParticipants 1 checkResult ( "<schemaNm>" -- true n# true )
-
-tp: removeSchema
-
-  args.tracepoint if
-    dup "REMOVING TENANT " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
-  then
-
-  :forget ( )
-
-  true <SUCCESS_RESULT>
-;
-
-/*----------------------------------------------------------------------------*/
-/* remove a schema folder                                                     */
-/*----------------------------------------------------------------------------*/
-: removeSchemaR35 ( "<schemaNm>" -- true/false )
-
-  tp: removeSchema
-
-  args.tracepoint if
-    dup "REMOVING TENANT " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
-  then
-
-  :forget ( )
-
-  true <SUCCESS_RESULT>
-;
 
 /*============================================================================*/
 /* end                                                                        */

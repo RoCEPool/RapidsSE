@@ -41,7 +41,7 @@
 
   0 0 locals| pJob pTask |
 
-  tp: dropCatalog
+  tp: dropCatalog_req
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the task

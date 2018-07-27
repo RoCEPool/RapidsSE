@@ -4,17 +4,22 @@
 
 #include "JobModel.h"
 
+#include "StorageEngine.h"
+
+extern AttachMap* gpAttachMap;
+
 JobNote mJobNote_DropSchema (
-  "g35"_Stz,            // name of the job class
-  CN_JOB_DROPSCHEMA,    // class enum
-  "comment"_Stz,        // comment about the job
-  "drop"_Stz,           // the prompt command
-  "schema"_Stz,         // the second word
-  "dropSchemaR35_req"_Stz, // the task seed for this job
-  false,                // detached job?
-  pJob_DropSchema_pre,  // prompt pre-process function
-  vJob_DropSchema_post  // prompt post-process function
-  );
+  "Job_DropSchema"_Stz,         // name of the job class
+  CN_JOB_DROPSCHEMA,            // class enum
+  "drop schema schemaName"_Stz, // comment about the job
+  "drop"_Stz,                   // the prompt command
+  "schema"_Stz,                 // the second word
+  "dropSchema"_Stz,             // the task seed for this job
+  false,                        // detached job?
+  pJob_DropSchema_pre,          // prompt pre-process function
+  vJob_DropSchema_post,         // prompt post-process function
+  true
+);
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -73,7 +78,8 @@ Job_DropSchema::Job_DropSchema(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPSCHEMA,_FOOTER_);
     
-  //m_sExecute = "Job_DropSchema.execute"_Stz;
+  m_sSeed = mJobNote_DropSchema.pJobClass()->m_aSeed;
+  m_bCheckResources   = true;
   
   _checkInitialised_(CN_JOB_DROPSCHEMA);
   
@@ -111,6 +117,34 @@ void Job_DropSchema::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* populate the job                                                           */
+/*----------------------------------------------------------------------------*/
+bool Job_DropSchema::bPopulateJob(TokenVec* pTokenVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPSCHEMA,_FOOTER_);
+  
+  i8 iNumTokens;
+  
+  ASSERT(pTokenVec->pGet(0)->bSame("drop"_Stz));
+  ASSERT(pTokenVec->pGet(1)->bSame("schema"_Stz));
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // get number of items in token
+  iNumTokens = pTokenVec->nItems();
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // there should be 3 tokens
+  if (iNumTokens != 3)
+  return false;
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // set the table name
+  m_sObjectName = pTokenVec->pGet(2)->aText();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
 void Job_DropSchema::vShow(void)
@@ -139,7 +173,19 @@ Footer* Job_DropSchema::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* JobsModel::pJob_DropSchema_pre(Interface::SEitf* pSEitf)
 {
-  return nullptr;
+  Job_DropSchema* pJob_DropSchema = new Job_DropSchema(pSEitf);
+  
+  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
+  
+  bool bResult = pJob_DropSchema->bPopulateJob(pTokenVec);
+  
+  if ( !bResult) {
+    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
+    pJob_DropSchema->m_bHasError = true;
+    pJob_DropSchema->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+  }
+  
+  return pJob_DropSchema;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -147,6 +193,18 @@ Job* JobsModel::pJob_DropSchema_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 void JobsModel::vJob_DropSchema_post(Interface::SEitf* pSEitf, Job* pJob)
 {
+  Job_DropSchema* pJob_DropSchema = _pJob_DropSchema(pJob);
+  
+  if ( pJob_DropSchema->m_bHasError ) {
+    
+    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+      vTrace("ERROR (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob_DropSchema->m_xNode[i_Node].m_eErrorCode]);
+    }
+    
+  }
+  
+  // now delete the job
+  delete pJob_DropSchema;
 }
 
 /*============================================================================*/
