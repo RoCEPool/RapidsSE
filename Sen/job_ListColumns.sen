@@ -11,7 +11,7 @@
 
   params|  pJob_ListColumns sTableNm |
 
-  0 0 locals| iColumns pTable |
+  0 0 0 locals| pColumn iColumns pTable |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get table
@@ -19,10 +19,20 @@
 
   pTable table.columnCount@ to iColumns
 
+  // skip the hidden column
+  iColumns 1 - to iColumns
+
   ""                             // initial ls string
   iColumns 0 do
-    I pTable table.column@ >str
-    "row: ('%v')\n" str.format
+    I pTable table.column@ to pColumn
+    pColumn column.isPartitionKey@
+    pColumn column.isNullable@
+    pColumn column.Scale@
+    pColumn column.Length@
+    pColumn column.type@
+    pColumn column.name@
+    I
+    "row: (%v,'%v',%v,%v,%v,%v,%v)\n" str.format
     str.cat
   loop
 
@@ -82,13 +92,14 @@
   sTableNm checkIsTableR35 not if popTable pJob_ListColumns <ERROR_REQUEST> exit then
 
   args.metadata if
-    "(columnDefinition VARCHAR)" pJob_ListColumns job.metadata!
+    "(columnNo INTEGER, columnName VARCHAR, columnType VARCHAR, columnLength INTEGER, columnScale INTEGER, isNull boolean, isPartitionKey boolean)"
+        pJob_ListColumns job.metadata!
   then
-"t1" .
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // list table columns
   sTableNm pJob_ListColumns listColumns
-"t2" .
+
   //----------------------------------------------------------------------------
   // pop table dictionary
   popTable
