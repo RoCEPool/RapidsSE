@@ -7,9 +7,11 @@
 /*----------------------------------------------------------------------------*/
 /* use given schema                                                           */
 /*----------------------------------------------------------------------------*/
-: useSchema ( "<schemaNm>" --  )
+: useSchema ( job_UseSchema --  )
 
-  params| sSchemaNm |
+  params| pJob_UseSchema |
+  0 locals| sSchemaNm |
+
   tp: useSchema
 
   // pop path till we get to tenants
@@ -33,8 +35,12 @@
   "schemas" findInCurrent
   execute pathPush
 
-  sSchemaNm checkIsWordR35 not if EC_NO_SUCH_SCHEMA <ERROR_JOB> exit then
-  checkIsSchema not if <ERROR_JOB> exit then
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get schema name from job
+  pJob_UseSchema job.objectName@ to sSchemaNm
+
+  sSchemaNm checkIsWordR35 not if EC_NO_SUCH_SCHEMA pJob_UseSchema <ERROR_JOB> exit then
+  checkIsSchema not if pJob_UseSchema <ERROR_JOB> exit then
   execute pathPush
 
   // find the tables folder
@@ -72,12 +78,8 @@
   ddlLock::grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get schema name from job
-  pJob_UseSchema job.objectName@ to sSchemaNm
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // use schema
-  sSchemaNm useSchema
+  pJob_UseSchema useSchema
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // return
