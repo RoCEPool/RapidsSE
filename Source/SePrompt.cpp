@@ -180,6 +180,26 @@ CommandProcessor* SePrompt::pCommandProcessor(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get continue                                                                */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bContinue(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_bContinue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set continue                                                                */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vContinue(bool bContinue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  m_bContinue = bContinue;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get command                                                                */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vGetCommand(void)

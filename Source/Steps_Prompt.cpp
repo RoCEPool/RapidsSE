@@ -32,7 +32,9 @@ void Task::vPromptContinue(MP_Task mpTask)
     THROW_INVALID_DSTACK("prompt.continue"_Stz);
   SePrompt* pSePrompt = _pSePrompt(pSePromptObject);
   
-  mpTask->m_pDataStack->vPushInt(pSePrompt->m_bContinue);
+  bool bContinue = pSePrompt->bContinue();
+  
+  mpTask->m_pDataStack->vPushInt(bContinue);
   
   EXIT();
 }

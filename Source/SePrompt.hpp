@@ -21,11 +21,11 @@ namespace Prompt
   class SePrompt : public Object
   {
   public:
-    bool       m_bContinue;  // continue processing commands?
   
   private:
-    SEitf*     m_pSEitf;     // interface into rapidsse
-    s48K       m_sResponse;  // response from seitf
+    bool   m_bContinue;  // continue processing commands?
+    SEitf* m_pSEitf;     // interface into rapidsse
+    s48K   m_sResponse;  // response from seitf TO BE DELETED
   
     // must be last
     Footer m_xFooter;
@@ -44,6 +44,8 @@ namespace Prompt
 
     // other
     CommandProcessor* pCommandProcessor(void);
+    bool bContinue(void);
+    void vContinue(bool bContinue);
     void vGetCommand(void);
     SEitf* pSEitf(void);
     TokenVec* pTknVec(void);
