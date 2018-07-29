@@ -73,6 +73,7 @@ using namespace JobsModel;
 #include "Job_Sanity.hpp"
 #include "Job_Space.hpp"
 #include "Job_Status.hpp"
+#include "Job_UseSchema.hpp"
 
 #include "Jobs.hpp"
 

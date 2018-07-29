@@ -1,0 +1,90 @@
+/*============================================================================*/
+/* job_UseSchema.sen -- Job Use Schema                                        */
+/*============================================================================*/
+
+"job_UseSchema.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* use given schema                                                           */
+/*----------------------------------------------------------------------------*/
+: useSchema ( "<schemaNm>" --  )
+
+  params| sSchemaNm |
+  tp: useSchema
+
+  // pop path till we get to tenants
+  begin
+    0 pathPick dic.name "tenants" str.equal not while pathDrop
+  repeat
+
+  // find the boray folder
+  "boray" findInCurrent
+  execute pathPush
+
+  // find the catalogs folder
+  "catalogs" findInCurrent
+  execute pathPush
+
+  // find the rapidssecatalogs folder
+  "rapidsse" findInCurrent
+  execute pathPush
+
+  // find the schemas folder
+  "schemas" findInCurrent
+  execute pathPush
+
+  sSchemaNm checkIsWordR35 not if EC_NO_SUCH_SCHEMA <ERROR_JOB> exit then
+  checkIsSchema not if <ERROR_JOB> exit then
+  execute pathPush
+
+  // find the tables folder
+  "tables" findInCurrent
+  execute pathPush
+
+  // save the path
+  savePathR35
+;
+
+/*----------------------------------------------------------------------------*/
+/* Use Schema request (on the originating node)                               */
+/*----------------------------------------------------------------------------*/
+: UseSchema_req ( -- <R> )
+
+  0 0 locals| sSchemaNm pJob_UseSchema pTask |
+
+  tp: UseSchema_req
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob_UseSchema
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
+  pJob_UseSchema getPathR35
+  dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab ddl read lock
+  ddlLock::grabRead
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get schema name from job
+  pJob_UseSchema job.objectName@ to sSchemaNm
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // use schema
+  sSchemaNm useSchema
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // return
+  pJob_UseSchema <DONE_REQUEST>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+

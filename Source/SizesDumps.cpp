@@ -124,6 +124,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_SANITY
   /*    */ &Dump::vDummy,           // CN_JOB_SPACE
   /*    */ &Dump::vDummy,           // CN_JOB_STATUS
+  /*    */ &Dump::vDummy,           // CN_JOB_USESCHEMA
   
   /*    */ &Jobs::vDump,            // CN_JOBS
   
@@ -347,7 +348,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_ListCatalogs),  // CN_JOB_LISTCATALOGS
   /*    */ sizeof(Job_ListColumns),   // CN_JOB_LISTCOLUMNS
   /*    */ sizeof(Job_ListColumns),   // CN_JOB_LISTIDXCOLUMNS
-  /*    */ sizeof(Job_ListColumns),   // CN_JOB_LISTPARTCOLUMNS
+  /*    */ sizeof(Job_ListPartColumns), // CN_JOB_LISTPARTCOLUMNS
   /*    */ sizeof(Job_ListSchemas),   // CN_JOB_LISTSCHEMAS
   /*    */ sizeof(Job_ListTables),    // CN_JOB_LISTTABLES
   /*    */ sizeof(Job_ListTenants),   // CN_JOB_LISTTENANTS
@@ -357,7 +358,8 @@ i8 giClassSize[]
   /*    */ sizeof(Job_Sanity),        // CN_JOB_SANITY
   /*    */ sizeof(Job_Space),         // CN_JOB_SPACE
   /*    */ sizeof(Job_Status),        // CN_JOB_STATUS
-                  
+  /*    */ sizeof(Job_UseSchema),     // CN_JOB_USESCHEMA
+  
   /*    */ sizeof(Jobs),               // CN_JOBS
   
   /* 59 */ sizeof(Heap), // correct    // CN_JUMBOPERSISTENT
@@ -590,6 +592,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SANITY
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SPACE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_STATUS
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_USESCHEMA
   
   /*    */ HT_TRANSIENT_SMALL,   // CN_JOBS
   

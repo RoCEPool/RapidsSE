@@ -79,7 +79,7 @@ Job_ListCatalogs::Job_ListCatalogs(Interface::SEitf* pSEitf)
   
   m_sSeed    = mJobNote_ListCatalogs.pJobClass()->m_aSeed;
 
-  _checkInitialised_(CN_JOB_LF);
+  _checkInitialised_(CN_JOB_LISTCATALOGS);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTCATALOGS,_FOOTER_);
 }

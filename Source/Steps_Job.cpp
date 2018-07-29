@@ -590,7 +590,14 @@ void Task::vJobDelete(MP_Task mpTask)
       delete pJobStatus;
       break;
     }
-      
+    
+    case CN_JOB_USESCHEMA:
+    {
+      Job_UseSchema* pJob_UseSchema = _pJob_UseSchema(pJobPtr);
+      delete pJob_UseSchema;
+      break;
+    }
+    
     default:
       ASSERT(0);
   }
