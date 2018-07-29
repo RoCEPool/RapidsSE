@@ -245,7 +245,7 @@ TokenVec* SePrompt::pTknVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return &m_pSEitf->m_pCommandProcessor->m_xTokenVec;
+  return m_pSEitf->m_pCommandProcessor->pTknVec();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -255,7 +255,7 @@ TokenVec* SePrompt::pTknVec2(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return &m_pSEitf->m_pCommandProcessor->m_xTokenVec2;
+  return m_pSEitf->m_pCommandProcessor->pTknVec2();
 }
 
 /*----------------------------------------------------------------------------*/
