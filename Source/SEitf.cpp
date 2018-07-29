@@ -224,7 +224,6 @@ SEitf::SEitf(i8 iPartition)
   m_pJob = nullptr;
   
   m_pCommandProcessor = new CommandProcessor;
-  m_pCommandProcessor->m_pSEitf = this;
 
   _checkInitialised_(CN_SEITF);
   

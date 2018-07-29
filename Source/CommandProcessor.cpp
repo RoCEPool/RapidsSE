@@ -82,8 +82,6 @@ CommandProcessor::CommandProcessor(void)
   
   m_pJobClass = nullptr;
   m_pJob = nullptr;
-
-  m_pSEitf = nullptr;
   
   _checkInitialised_(CN_COMMANDPROCESSOR);
   
@@ -159,7 +157,7 @@ bool CommandProcessor::bTokenCheck(i8 nTokens)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
   
   if (pTkn(nTokens)->bHasText()) {
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    //m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
@@ -235,7 +233,7 @@ void CommandProcessor::vCollectStatement(void)
 /*----------------------------------------------------------------------------*/
 /* dispatch job into SE                                                       */
 /*----------------------------------------------------------------------------*/
-bool CommandProcessor::bDispatchJob(void)
+bool CommandProcessor::bDispatchJob(SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
   
@@ -248,7 +246,7 @@ bool CommandProcessor::bDispatchJob(void)
   //! make this part of verbose??
   //m_pCommandProcessor->m_pTokeniser->vDumpTokens("Command : "_Stz,m_xTokenVec,C_TOKENS);
   
-  bool bResult = RapidsSE_DispatchJob(m_pJob,m_pSEitf);
+  bool bResult = RapidsSE_DispatchJob(m_pJob,pSEitf);
   
   if (pTknVec()->bDetachedRequest())
     return bResult;
@@ -261,12 +259,12 @@ bool CommandProcessor::bDispatchJob(void)
 /*----------------------------------------------------------------------------*/
 /* end a job                                                                  */
 /*----------------------------------------------------------------------------*/
-void CommandProcessor::vEndJob(void)
+void CommandProcessor::vEndJob(SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
   
   // call the job post function (includes deleting the job)
-  m_pJobClass->vEndJob(m_pSEitf,m_pJob);
+  m_pJobClass->vEndJob(pSEitf,m_pJob);
   
   m_pJob = nullptr;
 }
@@ -383,11 +381,11 @@ void CommandProcessor::vGetCommandInput(void)
 /*----------------------------------------------------------------------------*/
 /* potentially execute a job                                                  */
 /*----------------------------------------------------------------------------*/
-void CommandProcessor::vNewJob(void)
+void CommandProcessor::vNewJob(SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
   
-  m_pJob = m_pJobClass->pNewJob(m_pSEitf);
+  m_pJob = m_pJobClass->pNewJob(pSEitf);
   
   m_pJob->m_bDetached = pTknVec()->bDetachedRequest();
 }

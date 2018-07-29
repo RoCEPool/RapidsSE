@@ -58,12 +58,12 @@
     then
 
     // create the job for the command
-    pCommandProcessor commandProcessor.newJob to pJob
+    pSEitf pCommandProcessor commandProcessor.newJob to pJob
 
     // test for error
     pJob job.hasError if
       "job has error (maybe syntax error)" .
-      pCommandProcessor commandProcessor.endJob
+      pSEitf pCommandProcessor commandProcessor.endJob
       ifAgain
     then
 
@@ -77,14 +77,14 @@
     1 setAcks
 
     // dispatch the job
-    pCommandProcessor commandProcessor.dispatchJob
+    pSEitf pCommandProcessor commandProcessor.dispatchJob
 
     // wait for ack from job
     "prompt waiting for ack" .
     ackWait
 
     // post process and delete the job
-    pCommandProcessor commandProcessor.endJob
+    pSEitf pCommandProcessor commandProcessor.endJob
 
   repeat
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

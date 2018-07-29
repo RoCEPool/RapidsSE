@@ -56,7 +56,13 @@ void Task::vCommandProcessorDispatchJob(MP_Task mpTask)
   CommandProcessor*
     pCommandProcessor = _pCommandProcessor(pCommandProcessorObject);
   
-  pCommandProcessor->bDispatchJob();
+  Object* pSEitfObject;
+  if ( ! mpTask->m_pDataStack->bPop(pSEitfObject) )
+    THROW_INVALID_DSTACK("commandProcessor.endJob"_Stz);
+  SEitf*
+    pSEitf = _pSEitf(pSEitfObject);
+
+  pCommandProcessor->bDispatchJob(pSEitf);
   
   EXIT();
 }
@@ -94,7 +100,13 @@ void Task::vCommandProcessorEndJob(MP_Task mpTask)
   CommandProcessor*
     pCommandProcessor = _pCommandProcessor(pCommandProcessorObject);
   
-  pCommandProcessor->vEndJob();
+  Object* pSEitfObject;
+  if ( ! mpTask->m_pDataStack->bPop(pSEitfObject) )
+    THROW_INVALID_DSTACK("commandProcessor.endJob"_Stz);
+  SEitf*
+    pSEitf = _pSEitf(pSEitfObject);
+ 
+  pCommandProcessor->vEndJob(pSEitf);
   
   EXIT();
 }
@@ -170,7 +182,13 @@ void Task::vCommandProcessorNewJob(MP_Task mpTask)
   CommandProcessor*
     pCommandProcessor = _pCommandProcessor(pCommandProcessorObject);
 
-  pCommandProcessor->vNewJob();
+  Object* pSEitfObject;
+  if ( ! mpTask->m_pDataStack->bPop(pSEitfObject) )
+    THROW_INVALID_DSTACK("commandProcessor.endJob"_Stz);
+  SEitf*
+    pSEitf = _pSEitf(pSEitfObject);
+  
+  pCommandProcessor->vNewJob(pSEitf);
   
   Job* pJob = pCommandProcessor->m_pJob;
   

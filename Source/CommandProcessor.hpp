@@ -13,9 +13,6 @@ namespace Interface
     JobClass*  m_pJobClass;  // job class
     Job*       m_pJob;       // job
 
-    //Prompt::SePrompt* m_pPrompt; // prompt (temporary)
-    SEitf*     m_pSEitf;     // interface into rapidsse (temporary)
-  
   private:
     s32        m_sPrompt;    // prompt
     Tokeniser* m_pTokeniser; // input stream tokeniser
@@ -42,13 +39,13 @@ namespace Interface
 
     bool bBlankLine(void);
     void vCollectStatement(void);
-    bool bDispatchJob(void);
-    void vEndJob(void);
+    bool bDispatchJob(SEitf* pSEitf);
+    void vEndJob(SEitf* pSEitf);
     bool bFindJobClass(void);
     void vGetCommand(void);
     void vGetCommandArgument(void);
     void vGetCommandInput(void);
-    void vNewJob(void);
+    void vNewJob(SEitf* pSEitf);
     bool bTestFile(Stz* aPath);
 
     Token* pTkn(i8 i_Token);
