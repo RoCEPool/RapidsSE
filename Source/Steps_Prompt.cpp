@@ -68,7 +68,7 @@ void Task::vPromptGetCommand(MP_Task mpTask)
     THROW_INVALID_DSTACK("prompt.getCommand"_Stz);
   SePrompt* pSePrompt = _pSePrompt(pSePromptObject);
   
-  pSePrompt->m_pCommandProcessor->vGetCommand();
+  pSePrompt->m_pSEitf->m_pCommandProcessor->vGetCommand();
   
   EXIT();
 }

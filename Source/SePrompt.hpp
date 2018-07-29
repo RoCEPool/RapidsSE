@@ -25,8 +25,6 @@ namespace Prompt
     SEitf*     m_pSEitf;     // interface into rapidsse
     s48K       m_sResponse;  // response from seitf
   
-    CommandProcessor* m_pCommandProcessor;
-  
     // must be last
     Footer m_xFooter;
   

@@ -23,7 +23,7 @@ bool Prompt::bPrompt_ls(SePrompt* pPrompt)
   s256 sDirEntry;
   i8 iEntryType;
   
-  TokenVec* pTokenVec = pPrompt->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pPrompt->m_pSEitf->m_pCommandProcessor->pTknVec();
 
   ASSERT((*pTokenVec)[0]->bSame("ls"_Stz));
   

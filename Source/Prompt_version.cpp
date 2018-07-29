@@ -21,7 +21,7 @@ PromptNote mPromptNote_version (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_version(SePrompt* pPrompt)
 {
-  TokenVec* pTokenVec = pPrompt->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pPrompt->m_pSEitf->m_pCommandProcessor->pTknVec();
   /*
   args.metadata if
     "(version VARCHAR)" metadata!
