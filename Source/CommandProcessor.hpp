@@ -10,15 +10,17 @@ namespace Interface
   class CommandProcessor : public Object
   {
   public:
-     s32        m_sPrompt;    // prompt
+    s32        m_sPrompt;    // prompt
     Tokeniser* m_pTokeniser; // input stream tokeniser
     TokenVec   m_xTokenVec;  // token vector
     TokenVec   m_xTokenVec2; // another token vector
     JobClass*  m_pJobClass;  // job class
     Job*       m_pJob;       // job
 
-    Prompt::SePrompt* m_pPrompt; // prompt (temporary)
+    //Prompt::SePrompt* m_pPrompt; // prompt (temporary)
     SEitf*     m_pSEitf;     // interface into rapidsse (temporary)
+  
+  private:
 
     // must be last
     Footer m_xFooter;

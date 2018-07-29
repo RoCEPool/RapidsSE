@@ -83,7 +83,6 @@ CommandProcessor::CommandProcessor(void)
   m_pJobClass = nullptr;
   m_pJob = nullptr;
 
-  m_pPrompt = nullptr;
   m_pSEitf = nullptr;
   
   _checkInitialised_(CN_COMMANDPROCESSOR);

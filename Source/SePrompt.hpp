@@ -17,11 +17,8 @@ static Stz* C_SAME_MACHINE         = "same_machine"_Stz;
 
 namespace Prompt
 {
-
   class SePrompt : public Object
   {
-  public:
-  
   private:
     bool   m_bContinue;  // continue processing commands?
     SEitf* m_pSEitf;     // interface into rapidsse
