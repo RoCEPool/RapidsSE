@@ -170,6 +170,28 @@ bool SePrompt::bExecuteFunction(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get command processor                                                      */
+/*----------------------------------------------------------------------------*/
+CommandProcessor* SePrompt::pCommandProcessor(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_pSEitf->m_pCommandProcessor;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get command                                                                */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vGetCommand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  CommandProcessor* pCommandProcessor = this->pCommandProcessor();
+  
+  pCommandProcessor->vGetCommand();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the seitf                                                              */
 /*----------------------------------------------------------------------------*/
 SEitf* SePrompt::pSEitf(void)

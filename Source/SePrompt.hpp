@@ -22,6 +22,8 @@ namespace Prompt
   {
   public:
     bool       m_bContinue;  // continue processing commands?
+  
+  private:
     SEitf*     m_pSEitf;     // interface into rapidsse
     s48K       m_sResponse;  // response from seitf
   
@@ -41,7 +43,9 @@ namespace Prompt
     bool bExecuteFunction(void);
 
     // other
-    SEitf* pSEitf(void);  
+    CommandProcessor* pCommandProcessor(void);
+    void vGetCommand(void);
+    SEitf* pSEitf(void);
     TokenVec* pTknVec(void);
 
   private:

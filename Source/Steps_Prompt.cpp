@@ -68,7 +68,7 @@ void Task::vPromptGetCommand(MP_Task mpTask)
     THROW_INVALID_DSTACK("prompt.getCommand"_Stz);
   SePrompt* pSePrompt = _pSePrompt(pSePromptObject);
   
-  pSePrompt->m_pSEitf->m_pCommandProcessor->vGetCommand();
+  pSePrompt->vGetCommand();
   
   EXIT();
 }
@@ -99,7 +99,7 @@ void Task::vPromptSEitf(MP_Task mpTask)
     THROW_INVALID_DSTACK("prompt.SEitf"_Stz);
   SePrompt* pSePrompt = _pSePrompt(pSePromptObject);
   
-  SEitf* pSEitf = pSePrompt->m_pSEitf;
+  SEitf* pSEitf = pSePrompt->pSEitf();
   
   mpTask->m_pDataStack->vPushObject(pSEitf);
   
