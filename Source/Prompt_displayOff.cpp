@@ -18,7 +18,7 @@ PromptNote mPromptNote_displayOff (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_displayOff(SePrompt* pPrompt)
 {
-  TokenVec* pTokenVec = pPrompt->m_pSEitf->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pPrompt->pTknVec();
   
   ASSERT((*pTokenVec)[0]->bSame("displayOff"_Stz));
   

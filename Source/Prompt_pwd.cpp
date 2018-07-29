@@ -21,7 +21,7 @@ bool Prompt::bPrompt_pwd(SePrompt* pPrompt)
   Dir xDir;
   s256 sDir;
   
-  TokenVec* pTokenVec = pPrompt->m_pSEitf->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pPrompt->pTknVec();
   
   ASSERT((*pTokenVec)[0]->bSame("pwd"_Stz));
   

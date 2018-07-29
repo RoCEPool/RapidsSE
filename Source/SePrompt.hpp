@@ -42,6 +42,7 @@ namespace Prompt
 
     // other
     SEitf* pSEitf(void);  
+    TokenVec* pTknVec(void);
 
   private:
 
@@ -51,7 +52,6 @@ namespace Prompt
   // to be removed
     bool bTokenCheck(i8 nTokens);
   
-    TokenVec* pTknVec(void);
     TokenVec* pTknVec2(void);
   
     Token* pTkn(i8 i_Token);

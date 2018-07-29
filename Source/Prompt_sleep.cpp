@@ -18,7 +18,7 @@ PromptNote mPromptNote_sleep (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_sleep(SePrompt* pPrompt)
 {
-  TokenVec* pTokenVec = pPrompt->m_pSEitf->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pPrompt->pTknVec();
 
   ASSERT((*pTokenVec)[0]->bSame("sleep"_Stz));
   

@@ -18,7 +18,7 @@ PromptNote mPromptNote_print (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_print(SePrompt* pPrompt)
 {
-  TokenVec* pTokenVec = pPrompt->m_pSEitf->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pPrompt->pTknVec();
 
   ASSERT((*pTokenVec)[0]->bSame("print"_Stz));
   
