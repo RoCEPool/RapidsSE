@@ -27,6 +27,7 @@ namespace JobsModel
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
   public:
+    bool bPopulateJob(TokenVec* pTokenVec);
     void vShow(void);
   
   public:

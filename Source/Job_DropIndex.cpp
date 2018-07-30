@@ -3,17 +3,21 @@
 /*============================================================================*/
 
 #include "JobModel.h"
+#include "StorageEngine.h"
+
+extern AttachMap* gpAttachMap;
 
 JobNote mJobNote_DropIndex (
-  "Job_DropIndex"_Stz,  // name of the job class
-  CN_JOB_DROPINDEX,     // class enum
-  "comment"_Stz,        // comment about the job
-  "drop"_Stz,           // the prompt command
-  "index"_Stz,          // the second word
-  "dropIndexR35_req"_Stz, // the task seed for this job
-  false,                // detached job?
-  pJob_DropIndex_pre,   // prompt pre-process function
-  vJob_DropIndex_post   // prompt post-process function
+  "Job_DropIndex"_Stz,        // name of the job class
+  CN_JOB_DROPINDEX,           // class enum
+  "drop index indexName"_Stz, // comment about the job
+  "drop"_Stz,                 // the prompt command
+  "index"_Stz,                // the second word
+  "dropIndex"_Stz,            // the task seed for this job
+  false,                      // detached job?
+  pJob_DropIndex_pre,         // prompt pre-process function
+  vJob_DropIndex_post,        // prompt post-process function
+  true
 );
 
 
@@ -112,6 +116,34 @@ void Job_DropIndex::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* populate the job                                                           */
+/*----------------------------------------------------------------------------*/
+bool Job_DropIndex::bPopulateJob(TokenVec* pTokenVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPINDEX,_FOOTER_);
+  
+  i8 iNumTokens;
+  
+  ASSERT(pTokenVec->pGet(0)->bSame("drop"_Stz));
+  ASSERT(pTokenVec->pGet(1)->bSame("index"_Stz));
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // get number of items in token
+  iNumTokens = pTokenVec->nItems();
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // there should be 3 tokens
+  if (iNumTokens != 3)
+    return false;
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // set the table name
+  m_sObjectName = pTokenVec->pGet(2)->aText();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
 void Job_DropIndex::vShow(void)
@@ -140,7 +172,19 @@ Footer* Job_DropIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* JobsModel::pJob_DropIndex_pre(Interface::SEitf* pSEitf)
 {
-  return nullptr;
+  Job_DropIndex* pJob_DropIndex = new Job_DropIndex(pSEitf);
+  
+  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
+  
+  bool bResult = pJob_DropIndex->bPopulateJob(pTokenVec);
+  
+  if ( !bResult) {
+    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
+    pJob_DropIndex->m_bHasError = true;
+    pJob_DropIndex->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+  }
+  
+  return pJob_DropIndex;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -148,6 +192,18 @@ Job* JobsModel::pJob_DropIndex_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 void JobsModel::vJob_DropIndex_post(Interface::SEitf* pSEitf, Job* pJob)
 {
+  Job_DropIndex* pJob_DropIndex = _pJob_DropIndex(pJob);
+  
+  if ( pJob_DropIndex->m_bHasError ) {
+    
+    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+      vTrace("ERROR (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob_DropIndex->m_xNode[i_Node].m_eErrorCode]);
+    }
+    
+  }
+  
+  // now delete the job
+  delete pJob_DropIndex;
 }
 
 /*============================================================================*/
