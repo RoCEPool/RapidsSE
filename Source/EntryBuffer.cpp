@@ -402,10 +402,10 @@ Entry* EntryBuffer::pAppendRow(RowWrk& xRowWrk)
     return nullptr;
   }
   
-  if (nItems() >= C_ENTRIES_L0 - 16) {
-    vTrace("Too many row entries %lld\n"_Stz,nItems());
-    return nullptr;
-  }
+//  if (nItems() >= C_ENTRIES_L0 - 16) {
+//    vTrace("Too many row entries %lld\n"_Stz,nItems());
+//    return nullptr;
+//  }
   
   RASSERT(nItems() < C_ENTRIES_L0 - 16);
   
@@ -764,6 +764,11 @@ bool EntryBuffer::bHasSpace(i8 nBytes)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   i8 nFree = m_xWsp.nFree() - sizeof(Wilderness);
+  
+  // we allow for only C_ENTRIES_L0 - 16 entries
+  if (nItems() >= C_ENTRIES_L0 - 16) {
+    return false;
+  }
   
   if (gpAttachMap->m_nIndexEntries > 0) {
     // has space calculation based on no of entries
