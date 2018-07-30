@@ -156,7 +156,7 @@ void Tokeniser::vCollectStatement(void)
   ASSERT(m_xTokenVec[0]->bHasText());
   
   // have we already seen the ';'
-  i8 i_Token = iFindToken(";"_Stz,&m_xTokenVec,C_TOKENS);
+  i8 i_Token = iFindToken(";"_Stz,C_TOKENS);
   
   if (i_Token >= 0) {
     //m_pTokeniser->vDumpTokens("\nCommand : "_Stz,m_xTokenVec,C_TOKENS);
@@ -348,12 +348,12 @@ void Tokeniser::vNextToken(void)
 /*----------------------------------------------------------------------------*/
 /* find token in token array                                                  */
 /*----------------------------------------------------------------------------*/
-i8 Tokeniser::iFindToken(Stz* aLookFor, TokenVec* pTokenVec, i8 nTokens)
+i8 Tokeniser::iFindToken(Stz* aLookFor, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   for (i8 i_Token = 0; i_Token < nTokens; i_Token++)
-    if (aLookFor->bSame((*pTokenVec)[i_Token]->aText()))
+    if (aLookFor->bSame(m_xTokenVec[i_Token]->aText()))
       return i_Token;
   
   return -1;
@@ -377,7 +377,7 @@ i8 Tokeniser::iCountTokens(TokenVec* pTokenVec,i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* dump token array                                                           */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vDumpTokens(Stz* pTitle, TokenVec& xTokenVec, i8 nTokens)
+void Tokeniser::vDumpTokens(Stz* pTitle, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
@@ -385,10 +385,10 @@ void Tokeniser::vDumpTokens(Stz* pTitle, TokenVec& xTokenVec, i8 nTokens)
   
   for (i8 i_Token = 0; i_Token < nTokens; i_Token++) {
     
-    if (! *(char*)xTokenVec[i_Token]->aText())
+    if (! *(char*)m_xTokenVec[i_Token]->aText())
       break;
     
-    vTrace("%s "_Stz, xTokenVec[i_Token]->aText());
+    vTrace("%s "_Stz, m_xTokenVec[i_Token]->aText());
   }
   vTrace("\n"_Stz);
 }
