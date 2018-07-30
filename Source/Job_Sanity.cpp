@@ -9,14 +9,15 @@ extern AttachMap*      gpAttachMap;
 JobNote mJobNote_Sanity (
   "Job_Sanity"_Stz, // name of the job class
   CN_JOB_SANITY,    // class enum
-  "comment"_Stz,    // comment about the job
+  "sanity"_Stz,     // comment about the job
   "sanity"_Stz,     // the prompt command
   nullptr,          // the second word
-  "nodeSanityR35_req"_Stz, // the task seed for this job
+  "sanity"_Stz,     // the task seed for this job
   false,            // detached job?
   pJob_Sanity_pre,  // prompt pre-process function
-  vJob_Sanity_post  // prompt post-process function
-  );
+  vJob_Sanity_post, // prompt post-process function
+  true
+);
 
 
 /*----------------------------------------------------------------------------*/
@@ -76,7 +77,8 @@ Job_Sanity::Job_Sanity(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SANITY,_FOOTER_);
     
-  //m_sExecute = "Job_Sanity.execute"_Stz;
+  m_sSeed    = mJobNote_Sanity.pJobClass()->m_aSeed;
+  
   m_iRegionSize = gpAttachMap->m_iRegionSize;
   m_iPartitions = gpAttachMap->m_pGrid->m_nSlots;
   
@@ -116,6 +118,29 @@ void Job_Sanity::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* populate the job                                                           */
+/*----------------------------------------------------------------------------*/
+bool Job_Sanity::bPopulateJob(TokenVec* pTokenVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SANITY,_FOOTER_);
+  
+  i8 iNumTokens;
+  
+  ASSERT(pTokenVec->pGet(0)->bSame("sanity"_Stz));
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // get number of items in token
+  iNumTokens = pTokenVec->nItems();
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // there should be 1 token
+  if (iNumTokens != 1)
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
 void Job_Sanity::vShow(void)
@@ -144,7 +169,19 @@ Footer* Job_Sanity::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* JobsModel::pJob_Sanity_pre(Interface::SEitf* pSEitf)
 {
-  return nullptr;
+  Job_Sanity* pJob_Sanity = new Job_Sanity(pSEitf);
+  
+  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
+  
+  bool bResult = pJob_Sanity->bPopulateJob(pTokenVec);
+  
+  if ( !bResult) {
+    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
+    pJob_Sanity->m_bHasError = true;
+    pJob_Sanity->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+  }
+  
+  return pJob_Sanity;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -152,6 +189,31 @@ Job* JobsModel::pJob_Sanity_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 void JobsModel::vJob_Sanity_post(Interface::SEitf* pSEitf, Job* pJob)
 {
+  Job_Sanity* pJob_Sanity = _pJob_Sanity(pJob);
+  
+  if ( pJob_Sanity->m_bHasError ) {
+    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+      vTrace("ERROR (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob_Sanity->m_xNode[i_Node].m_eErrorCode]);
+    }
+  }
+  else {
+    if (gpAttachMap->m_bMetadata) {
+      vTrace("metadata: %s\n"_Stz, pJob_Sanity->m_sMetadata.aStr());
+    }
+    
+    i8 iRowsProcessed = 0;
+    
+    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+      vTrace("%s\n"_Stz, pJob_Sanity->m_xNode[i_Node].m_sResponse.aChar());
+      iRowsProcessed += pJob_Sanity->m_xNode[i_Node].m_iRowsProcessed;
+    }
+    if (gpAttachMap->m_bMetadata) {
+      vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
+    }
+  }
+  
+  // now delete the job
+  delete pJob_Sanity;
 }
 
 /*============================================================================*/
