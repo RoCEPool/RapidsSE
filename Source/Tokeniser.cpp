@@ -199,6 +199,8 @@ void Tokeniser::vPush(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   m_pParser = new(m_bMalloc) Parser(m_pParser);
+  
+  m_pParser->vPrompt(m_sPrompt);
 }
 
 /*----------------------------------------------------------------------------*/
