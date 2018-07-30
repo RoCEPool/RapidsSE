@@ -34,7 +34,9 @@ namespace Parsing
     void vSetAllTokens(void);
     void vSetTokens(void);
     void vStripAmpersand(void);
+    void vStripSingleQuotes(void);
     void vStripSemicolon(void);
+
 
     Footer* aFooter(void);
   };

@@ -156,14 +156,14 @@ void Tokeniser::vCollectStatement(void)
   ASSERT(m_xTokenVec[0]->bHasText());
   
   // have we already seen the ';'
-  i8 i_Token = iFindToken(";"_Stz,C_TOKENS);
+  i8 i_Token = iFindToken(";"_Stz);
   
   if (i_Token >= 0) {
     //m_pTokeniser->vDumpTokens("\nCommand : "_Stz,m_xTokenVec,C_TOKENS);
     return;
   }
   
-  i_Token = iCountTokens(&m_xTokenVec,C_TOKENS);
+  i_Token = iCountTokens(&m_xTokenVec);
   
   // switch to terminal mode
   vLineMode(false);
@@ -348,11 +348,11 @@ void Tokeniser::vNextToken(void)
 /*----------------------------------------------------------------------------*/
 /* find token in token array                                                  */
 /*----------------------------------------------------------------------------*/
-i8 Tokeniser::iFindToken(Stz* aLookFor, i8 nTokens)
+i8 Tokeniser::iFindToken(Stz* aLookFor)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  for (i8 i_Token = 0; i_Token < nTokens; i_Token++)
+  for (i8 i_Token = 0; i_Token < C_TOKENS; i_Token++)
     if (aLookFor->bSame(m_xTokenVec[i_Token]->aText()))
       return i_Token;
   
@@ -362,11 +362,11 @@ i8 Tokeniser::iFindToken(Stz* aLookFor, i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* count tokens in token array                                                */
 /*----------------------------------------------------------------------------*/
-i8 Tokeniser::iCountTokens(TokenVec* pTokenVec,i8 nTokens)
+i8 Tokeniser::iCountTokens(TokenVec* pTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  for (i8 i_Token = 0; i_Token < nTokens; i_Token++)
+  for (i8 i_Token = 0; i_Token < C_TOKENS; i_Token++)
     if ( ! (*pTokenVec)[i_Token]->bHasText() )
       return i_Token;
   

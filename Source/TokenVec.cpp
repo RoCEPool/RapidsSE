@@ -205,6 +205,17 @@ void TokenVec::vStripAmpersand(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* strip any leading/trailing single quotes from all tokens                   */
+/*----------------------------------------------------------------------------*/
+void TokenVec::vStripSingleQuotes(void)
+{
+  for (i8 i_Token = 0; i_Token < nTokens(); i_Token++) {
+    Token* pToken = m_pItem[i_Token];
+    pToken->vStripSingleQuotes();
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* strip off ';'                                                              */
 /*----------------------------------------------------------------------------*/
 void TokenVec::vStripSemicolon(void)
