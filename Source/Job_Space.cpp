@@ -8,9 +8,9 @@
 extern AttachMap* gpAttachMap;
 
 JobNote mJobNote_Space (
-  "space"_Stz,      // name of the job class
+  "Job_space"_Stz,  // name of the job class
   CN_JOB_SPACE,     // class enum
-  "space"_Stz,    // comment about the job
+  "space"_Stz,      // comment about the job
   "space"_Stz,      // the prompt command
   nullptr,          // the second word
   "space"_Stz,      // the task seed for this job

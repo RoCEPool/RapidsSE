@@ -5,23 +5,58 @@
 "job_Sanity.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* request to get sanity of nodes in the grid (on originating node)           */
+/*----------------------------------------------------------------------------*/
+: sanity_req ( -- <R> )
+
+  0 0 locals| pJob pTask |
+
+  tp: space_req
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set metadata string in the job
+  args.metadata if
+    "(nodeName VARCHAR, sanity VARCHAR)"
+  pJob job.metadata!
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // distribute the job
+  pTask pJob "job::distribute" find execute
+
+  pJob <DONE_REQUEST>
+;
+
+/*----------------------------------------------------------------------------*/
 /* execute Job_Sanity job                                                     */
 /*----------------------------------------------------------------------------*/
-: Job_Sanity.execute ( pJob_Sanity -- str t/f )
+: sanity_node ( pJob_Sanity -- )
 
   params| pJob_Sanity |
+
   0 0 locals| iSize iPartitions |
 
   CN_JOB_SANITY pJob_Sanity object.assertClass
 
-  "GETTING STATUS on NODE " grid::thisNode@ >str str.cat .
+  "GETTING SANITY on NODE " grid::thisNode@ >str str.cat .
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the node size of originating node from the job
   pJob_Sanity job.regionSize@ to iSize
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the no of partitions of originating node from the job
   pJob_Sanity job.partitions@ to iPartitions
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   args.tracepoint if
     "GETTING PARTITIONS on NODE " grid::thisNode@ >str str.cat .
   then
@@ -31,6 +66,7 @@
     grid::thisNode@ pJob_Sanity job.error!
   else
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     args.tracepoint if
       "GETTING SIZE on NODE "grid::thisNode@ >str str.cat .
     then
@@ -39,13 +75,17 @@
       EC_CLUSTER_SIZE_MISMATCH
       grid::thisNode@ pJob_Sanity job.error!
     else
-      grid::thisNode@ >str "NODE %v: sanity check passed" str.format
+      "row: ('"
+      grid::thisNodeName@ str.cat
+       "','sanity check passed')" str.cat
       grid::thisNode@ pJob_Sanity job.response!
     then
 
   then
 
   pJob_Sanity job.notice
+
+  <DONE_NODE>
 ;
 
 /*============================================================================*/

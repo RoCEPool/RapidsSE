@@ -24,6 +24,7 @@ tp: gettingStatus
 /*----------------------------------------------------------------------------*/
 /* get partitions of nodes in the grid (run by participant)                   */
 /*----------------------------------------------------------------------------*/
+/*
 : check_sanity allParticipants 2 returnResult ( size partitions -- true n# true )
 
 tp: gettingPartitions
@@ -51,36 +52,18 @@ tp: gettingPartitions
     
   then
 ;
-
+*/
 /*----------------------------------------------------------------------------*/
 /* check sanity of the nodes                                                  */
 /*----------------------------------------------------------------------------*/
+/*
 : nodeSanity_req ( -- <R> )
 
   node.size node.partitions check_sanity ( bool )
 
   not if <NIP+ERROR> else <SUCCESS> then
 ;
-
-/*----------------------------------------------------------------------------*/
-/* check sanity of the nodes                                                  */
-/*----------------------------------------------------------------------------*/
-: nodeSanityR35_req ( -- <R> )
-
-  0 0 locals| pJob pTask |
-
-  tp: nodeSanityR35_req
-
-  // get the task
-  task::this to pTask
-
-  // get the job from the task
-  pTask task.job@ to pJob
-
-  pTask pJob job::distribute
-
-  <OK>
-;
+*/
 
 /*----------------------------------------------------------------------------*/
 /* get status of the nodes                                                    */
