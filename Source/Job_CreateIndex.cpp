@@ -3,18 +3,35 @@
 /*============================================================================*/
 
 #include "JobModel.h"
+#include "StorageEngine.h"
+
+extern AttachMap* gpAttachMap;
 
 JobNote mJobNote_CreateIndex (
   "Job_CreateIndex"_Stz, // name of the job class
   CN_JOB_CREATEINDEX,    // class enum
-  "comment"_Stz,         // comment about the job
+  "create index"_Stz,    // comment about the job
   "create"_Stz,          // the prompt command
   "index"_Stz,           // the second word
-  "createIndexR35_req"_Stz, // the task seed for this job
+  "createIndex"_Stz,     // the task seed for this job
   false,                 // detached job?
   pJob_CreateIndex_pre,  // prompt pre-process function
-  vJob_CreateIndex_post  // prompt post-process function
+  vJob_CreateIndex_post, // prompt post-process function
+  true
 );
+
+JobNote mJobNote_CreateIndex2 (
+  "Job_CreateIndex"_Stz, // name of the job class
+  CN_JOB_CREATEINDEX,    // class enum
+  "create unique"_Stz,   // comment about the job
+  "create"_Stz,          // the prompt command
+  "unique"_Stz,          // the second word
+  "createIndex"_Stz,     // the task seed for this job
+  false,                 // detached job?
+  pJob_CreateIndex_pre,  // prompt pre-process function
+  vJob_CreateIndex_post, // prompt post-process function
+  true
+  );
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -73,7 +90,8 @@ Job_CreateIndex::Job_CreateIndex(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATEINDEX,_FOOTER_);
   
-  //m_sExecute = "Job_CreateIndex.execute"_Stz;
+  m_sSeed             = mJobNote_CreateIndex.pJobClass()->m_aSeed;
+  m_bCheckResources   = true;
   
   m_sTableName = ""_Stz;
   m_bIsUnique  = false;
@@ -119,6 +137,69 @@ void Job_CreateIndex::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* populate table                                                             */
+/*----------------------------------------------------------------------------*/
+bool Job_CreateIndex::bPopulateJob(TokenVec* pTokenVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATEINDEX,_FOOTER_);
+  
+  i8 iIfUnique = 0;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // assert we got a create table
+  ASSERT(pTokenVec->pGet(0)->bSame("create"_Stz));
+  ASSERT((pTokenVec->pGet(1)->bSame("index"_Stz)) ||
+         (pTokenVec->pGet(1)->bSame("unique"_Stz) && pTokenVec->pGet(2)->bSame("index"_Stz)));
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get tokens in token vector
+  i8 iNumTokens = pTokenVec->nTokens();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // some validations
+  bool bValid = bValidateCreateIndex(pTokenVec, iNumTokens);
+  if ( ! bValid )
+    return false;
+  
+  if (pTokenVec->pGet(1)->bSame("unique"_Stz))
+    iIfUnique = 1;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the index name
+  m_sObjectName = pTokenVec->pGet(2 + iIfUnique)->aText();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // uniqueness
+  if (iIfUnique) {
+    m_bIsUnique = true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the table name
+  m_sTableName = pTokenVec->pGet(4 + iIfUnique)->aText();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the index columns
+  
+  // now collect the column names and their types
+  i8 iCurrentToken = 6 + iIfUnique;
+  i8 iColumn = 0;
+  while (iCurrentToken < iNumTokens - 1) {
+    
+    if (iCurrentToken != 6 + iIfUnique && !pTokenVec->pGet(iCurrentToken++)->bSame(","_Stz)) {
+      return false;
+    }
+    m_sColumnName[iColumn] = pTokenVec->pGet(iCurrentToken++)->aText();
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set no of columns
+  m_iColumns = iColumn;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
 void Job_CreateIndex::vShow(void)
@@ -136,6 +217,52 @@ void Job_CreateIndex::vShow(void)
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/* validate a create index request                                            */
+/*----------------------------------------------------------------------------*/
+bool Job_CreateIndex::bValidateCreateIndex(TokenVec* pTokenVec, i8 iNumTokens)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  i8 iIfUnique = 0;
+  
+  if (pTokenVec->pGet(1)->bSame("unique"_Stz)) {
+    iIfUnique = 1;
+    if ( ! pTokenVec->pGet(2)->bSame("index"_Stz)) {
+      return false;
+    }
+  }
+  else {
+    if ( ! pTokenVec->pGet(1)->bSame("index"_Stz)) {
+      return false;
+    }
+  }
+  
+  // there should be a minumum of 8 tokens
+  if (iNumTokens < 8 + iIfUnique) {
+    return false;
+  }
+  
+  // token[3] should be 'on'
+  if (!pTokenVec->pGet(3 + iIfUnique)->bSame("on"_Stz)) {
+    return false;
+  }
+  
+  // token[5] should be '('
+  if (!pTokenVec->pGet(5 + iIfUnique)->bSame("("_Stz)) {
+    return false;
+  }
+  
+  // last-1 token should be ')'
+  if (!pTokenVec->pGet(iNumTokens - 1)->bSame(")"_Stz)) {
+    return false;
+  }
+  
+  return true;
+}
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -155,7 +282,18 @@ Footer* Job_CreateIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* JobsModel::pJob_CreateIndex_pre(Interface::SEitf* pSEitf)
 {
-  return nullptr;
+  Job_CreateIndex* pJob_CreateIndex = new Job_CreateIndex(pSEitf);
+  
+  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
+  
+  bool bResult = pJob_CreateIndex->bPopulateJob(pTokenVec);
+  
+  if ( !bResult) {
+    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
+    pJob_CreateIndex->m_bHasError = true;
+    pJob_CreateIndex->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+  }
+  return pJob_CreateIndex;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -163,6 +301,18 @@ Job* JobsModel::pJob_CreateIndex_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 void JobsModel::vJob_CreateIndex_post(Interface::SEitf* pSEitf, Job* pJob)
 {
+  Job_CreateIndex* pJob_CreateIndex = _pJob_CreateIndex(pJob);
+  
+  if ( pJob_CreateIndex->m_bHasError ) {
+    
+    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+      vTrace("ERROR (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob_CreateIndex->m_xNode[i_Node].m_eErrorCode]);
+    }
+    
+  }
+  
+  // now delete the job
+  delete pJob_CreateIndex;
 }
 
 /*============================================================================*/

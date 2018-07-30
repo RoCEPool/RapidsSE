@@ -40,11 +40,11 @@ namespace JobsModel
   
     Job_CreateTable(Interface::SEitf* pSEitf);
     ~Job_CreateTable(void);
-    bool bPopulateJob(TokenVec* pTokenVec);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
   public:
+    bool bPopulateJob(TokenVec* pTokenVec);
     void vShow(void);
   
   private:
