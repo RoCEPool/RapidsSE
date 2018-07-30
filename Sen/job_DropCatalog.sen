@@ -100,7 +100,7 @@
   tp: dropCatalog_checkResources
   "checkResources received" .
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - --
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
   ddlLock::grabWrite
 

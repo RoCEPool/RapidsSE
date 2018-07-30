@@ -225,7 +225,7 @@ void Job_CreateIndex::vShow(void)
 /*----------------------------------------------------------------------------*/
 bool Job_CreateIndex::bValidateCreateIndex(TokenVec* pTokenVec, i8 iNumTokens)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATEINDEX,_FOOTER_);
   
   i8 iIfUnique = 0;
   

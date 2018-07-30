@@ -70,6 +70,8 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.rowsProcessed@"_Stz,   &vJobRowsProcessedFetch, false);
   vAddPrimitive("job.rowsProcessed!"_Stz,   &vJobRowsProcessedStore, false);
   vAddPrimitive("job.signalConnector"_Stz,  &vJobSignalConnector,  false);
+  vAddPrimitive("job.tableName@"_Stz,       &vJobTableNameFetch,   false);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1424,6 +1426,26 @@ void Task::vJobSignalConnector(MP_Task mpTask)
   
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* job.tableName@ -- fetch the table name from the job                        */
+/*----------------------------------------------------------------------------*/
+void Task::vJobTableNameFetch(MP_Task mpTask)
+{
+  ENTRY("vJobTableNameFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.tableName@"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  Job_CreateIndex* pJob_CreateIndex = _pJob_CreateIndex(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushS32(pJob_CreateIndex->m_sTableName);
+  
+  EXIT();
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

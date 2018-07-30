@@ -800,6 +800,7 @@ namespace Tasks
     static void vIndexColumnType(MP_Task mpTask);
     static void vIndexCompact(MP_Task mpTask);
     static void vIndexCreateColumnVec(MP_Task mpTask);
+    static void vIndexCreateColumnVecR35(MP_Task mpTask);
     static void vIndexDump(MP_Task mpTask);
     static void vIndexExactKey(MP_Task mpTask);
     static void vIndexInit(MP_Task mpTask);
@@ -914,6 +915,7 @@ namespace Tasks
     static void vJobRowsProcessedFetch(MP_Task mpTask);
     static void vJobRowsProcessedStore(MP_Task mpTask);
     static void vJobSignalConnector(MP_Task mpTask);
+    static void vJobTableNameFetch(MP_Task mpTask);
     
     // loader
     static void vLoaderAddRecordsInvalid(MP_Task mpTask);

@@ -72,6 +72,7 @@ namespace DBobjects
   
     Stz*   pAnalyze(void);
     void   vCreateColumnVec(s32& sName, s48K& sDefinition);
+    void   vCreateColumnVec(JobsModel::Job_CreateIndex* pJob);
     void   vDump(void);
   
     bool   bGreaterEqual(char* aDatumA, char* aDatumB);

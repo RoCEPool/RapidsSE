@@ -9,6 +9,7 @@
 namespace JobsModel
 {
   class Job_CreateTable;
+  class Job_CreateIndex;
 }
 
 //------------------------------------------------------------------------------

@@ -1,0 +1,250 @@
+/*============================================================================*/
+/* job_CreateIndex.sen -- Job Create Index                                    */
+/*============================================================================*/
+
+"job_CreateIndex.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* check in indexes folder                                                    */
+/*----------------------------------------------------------------------------*/
+: checkIsNotIndex ( "<word>" )
+
+  findInCurrent not if true exit then
+  EC_INDEX_EXISTS false
+;
+
+/*----------------------------------------------------------------------------*/
+/* check if word is a makeable index                                          */
+/*----------------------------------------------------------------------------*/
+: checkMakeIndex ( "<indexNm>" "<tableNm>" --  true | errorCode false )
+
+  locals| tableNm indexNm |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check in tables folder
+  checkInTables not if false exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check there is a table folder
+  tableNm checkIsTableFolder not if false exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push table
+  tableNm pushTable assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if max indexes already on table
+  tableNm find execute table.indexCount
+  C_INDEXES_PER_TABLE == if EC_MAX_INDEXES popTable assertInTables false exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push indexes
+  pushIndexes assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check index already exists
+  indexNm checkIsNotIndex not if popIndexes popTable assertInTables false exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop indexes
+  popIndexes
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop table
+  popTable
+
+  assertInTables
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* make an index (run by all participants)                                     */
+/*----------------------------------------------------------------------------*/
+: makeIndex ( Job_CreateIndex -- <R> )
+
+  params| pJob_CreateIndex |
+  0 0 0 0 locals| pTable pIndex sTableNm sIndexNm |
+
+  pJob_CreateIndex job.objectName@ to sIndexNm
+  pJob_CreateIndex job.tableName@ to sTableNm
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push table dictionary
+  sTableNm pushTable assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push indexes folder
+  pushIndexes assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the index
+  sIndexNm :index drop
+
+  // find the index
+  sIndexNm find execute to pIndex
+
+  // find the table
+  sTableNm find execute to pTable
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the table reference
+  //getTableRef
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the table in the index
+  pTable pIndex index.table!
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add the index in the table
+  pIndex pTable table.addIndex
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the column vector of the index
+  pJob_CreateIndex pIndex index.createColumnVecR35
+
+  // validate the unqiue index columns are a subset of the partition keys
+  pIndex index.isUnique@ if
+    pIndex index.isValidUniqueIndex
+    not if EC_INVALID_COLUMNS_UNIQUE_INDEX pJob_CreateIndex <ERROR_JOB>
+      popIndexes popTable exit
+    then
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set if single column
+  pIndex index.setSingleColumn
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // now populate the index
+  pIndex index.populate
+  not if pJob_CreateIndex <ERROR_JOB> popIndexes popTable
+    exit
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop indexes
+  popIndexes
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // return the table reference
+  //returnTableRef not if <NIP+ERROR> popTable exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop table folder
+  popTable
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* Job_CreateIndex request (on originating node)                              */
+/*----------------------------------------------------------------------------*/
+: createIndex_req (  -- <R> )
+
+  0 0 locals| pJob pTask |
+
+  tp: createIndex_req
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // distribute the job
+  pTask pJob "job::distribute" find execute
+
+  pJob <DONE_REQUEST>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_CreateIndex job on each node                                   */
+/*----------------------------------------------------------------------------*/
+: createIndex_node ( Job_CreateIndex -- )
+
+  params| pJob_CreateIndex |
+
+  0 0 locals| pTable sTableNm sIndexNm |
+
+  tp: createIndex_node
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // assert correct job
+  CN_JOB_CREATEINDEX pJob_CreateIndex object.assertClass
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grad a ddl lock
+  ddlLock::grabWrite
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
+  pJob_CreateIndex getPathR35
+  dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // make the index
+  pJob_CreateIndex makeIndex
+  assertInTables
+
+  //----------------------------------------------------------------------------
+  // should be in tables
+  assertInTables
+
+  pJob_CreateIndex job.notice
+
+  <DONE_NODE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_CreateIndex job check resources                                */
+/*----------------------------------------------------------------------------*/
+: createIndex_checkResources ( Job_CreateIndex -- )
+
+  params| pJob_CreateIndex  |
+  0 0 locals| sTableNm sIndexNm |
+
+  tp: createIndex_checkResources
+  "checkResources received" .
+
+  //----------------------------------------------------------------------------
+  // grad a ddl lock
+  ddlLock::grabWrite
+
+  //----------------------------------------------------------------------------
+  // set dictionary stack
+  pJob_CreateIndex getPathR35
+  dicStack.set
+
+  //----------------------------------------------------------------------------
+  // check if we have enough buffers
+  checkEnoughBuffersR35 not if pJob_CreateIndex <ERROR_JOB> exit then
+
+  //----------------------------------------------------------------------------
+  // check ok to make index
+  pJob_CreateIndex job.objectName@ to sIndexNm
+  pJob_CreateIndex job.tableName@ to sTableNm
+  sIndexNm sTableNm checkMakeIndex  not if pJob_CreateIndex <ERROR_JOB> exit then
+
+  <DONE_NODE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_CreateTable job release resources                              */
+/*----------------------------------------------------------------------------*/
+: createIndex_releaseResources ( Job_CreateIndex -- )
+
+  params| pJob_CreateIndex  |
+
+  tp: createIndex_releaseResources
+  "releaseResources received" .
+
+  <DONE_NODE>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

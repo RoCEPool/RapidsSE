@@ -151,6 +151,21 @@ print "lstbl...";
 print "=========================================";
 lstbl;
 
+// create an index on the table
+print "\n=========================================";
+print "creating index idx on j10...";
+print "=========================================";
+create index idx on j10 (j10_key);
+
+print "\n=========================================";
+print "lf in indexes folder...";
+print "=========================================";
+cf j10;
+cf indexes;
+lf;
+cf ..;
+cf ..;
+
 // drop the table
 print "\n=========================================";
 print "dropping table j10...";

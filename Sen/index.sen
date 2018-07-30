@@ -224,15 +224,6 @@ pResultBuffer pSeitf seitf.bufferQueue@ queue.append
 ;
 
 /*----------------------------------------------------------------------------*/
-/* check in indexes folder                                                    */
-/*----------------------------------------------------------------------------*/
-: checkIsNotIndex ( "<word>" )
-
-  findInCurrent not if true exit then
-  EC_INDEX_EXISTS false
-;
-
-/*----------------------------------------------------------------------------*/
 /* find the index sub folder and push it onto task dictionary                 */
 /*----------------------------------------------------------------------------*/
 : pushIndexSub ( "<indexNm>" -- )
@@ -261,34 +252,6 @@ pResultBuffer pSeitf seitf.bufferQueue@ queue.append
 /*----------------------------------------------------------------------------*/
 : popIndexes
   pathDrop
-;
-
-/*----------------------------------------------------------------------------*/
-/* check if word is a makeable index                                          */
-/*----------------------------------------------------------------------------*/
-: checkMakeIndex ( "<indexNm>" "<tableNm>" --  true | errorCode false )
-
-  locals| tableNm indexNm |
-
-  checkInTables not if false exit then
-
-  tableNm checkIsTableFolder not if false exit then
-
-  tableNm pushTable assert
-
-  tableNm find execute table.indexCount
-  C_INDEXES_PER_TABLE == if EC_MAX_INDEXES popTable assertInTables false exit then
-
-  pushIndexes assert
-
-  indexNm checkIsNotIndex not if popIndexes popTable assertInTables false exit then
-
-  popIndexes
-  popTable
-
-  assertInTables
-
-  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -475,6 +438,7 @@ pResultBuffer pSeitf seitf.bufferQueue@ queue.append
 /*----------------------------------------------------------------------------*/
 /* make an index (run by participant)                                         */
 /*----------------------------------------------------------------------------*/
+/*
 : makeIndex allParticipants 2 checkResult ( "<tableNm>" "<indexNm>"  -- true n# true )
 
 tp: makingIndex
@@ -494,7 +458,7 @@ tp: makingIndex
 
   true <SUCCESS_RESULT>
 ;
-
+*/
 /*----------------------------------------------------------------------------*/
 /* position key select cursor for table (called by keySelectIndex request)    */
 /*----------------------------------------------------------------------------*/
@@ -652,6 +616,7 @@ tp: loadIndexes
 /*----------------------------------------------------------------------------*/
 /* populate the index with data                                               */
 /*----------------------------------------------------------------------------*/
+/*
 : populateIndex allParticipants 1 returnFinalResult ( "<indexNm>" -- true n# true )
 
 tp: populateIndex
@@ -670,7 +635,7 @@ tp: populateIndex
     EC_DUPLICATE_KEY <FAILURE_RESULT>
   then
 ;
-
+*/
 /*----------------------------------------------------------------------------*/
 /* position key select cursor for table (called by selectIndex request)       */
 /*----------------------------------------------------------------------------*/

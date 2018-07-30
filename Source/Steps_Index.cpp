@@ -24,6 +24,7 @@ void Task::vAddPrimitives_Index(void)
   vAddPrimitive("index.columnType"_Stz,      &vIndexColumnType,      false);
   vAddPrimitive("index.compact"_Stz,         &vIndexCompact,         false);
   vAddPrimitive("index.createColumnVec"_Stz, &vIndexCreateColumnVec, false);
+  vAddPrimitive("index.createColumnVecR35"_Stz, &vIndexCreateColumnVecR35, false);
   vAddPrimitive("index.dump"_Stz,            &vIndexDump,            false);
   vAddPrimitive("index.exactKey"_Stz,        &vIndexExactKey,        false);
   vAddPrimitive("index.init"_Stz,            &vIndexInit,            false);
@@ -242,6 +243,30 @@ void Task::vIndexCreateColumnVec(MP_Task mpTask)
     THROW_INVALID_DSTACK("index.createColumnVec"_Stz);
   
   pIndex->vCreateColumnVec(sColumnNm,sColumnDef);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index.createColumnVecR35 -- create column vector from job_createIndex      */
+/*----------------------------------------------------------------------------*/
+void Task::vIndexCreateColumnVecR35(MP_Task mpTask)
+{
+  ENTRY("vIndexCreateColumnVecR35"_Stz);
+  
+  Object* pPtrIndex;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
+    THROW_INVALID_DSTACK("index.createColumnVecR35"_Stz);
+  Index* pIndex = _pIndex(pPtrIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  Object* pPtrJob;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJob) )
+    THROW_INVALID_DSTACK("index.createColumnVecR35"_Stz);
+  Job_CreateIndex* pJob_CreateIndex = _pJob_CreateIndex(pPtrJob);
+  ASSERT(CN_JOB_CREATEINDEX == pJob_CreateIndex->eClass());
+  
+  pIndex->vCreateColumnVec(pJob_CreateIndex);
   
   EXIT();
 }
