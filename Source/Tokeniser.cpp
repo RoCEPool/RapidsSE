@@ -70,7 +70,8 @@ Tokeniser::Tokeniser(void)
                     gxArguments.m_bPromptR35 ? " R35"_Stz : ""_Stz
                     );
 
-  
+  m_sContinue = "  > "_Stz;
+
   _checkInitialised_(CN_TOKENISER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
@@ -157,8 +158,7 @@ void Tokeniser::vCollectStatement(void)
   // switch to terminal mode
   vLineMode(false);
   
-  s32 sContinuation("  > "_Stz);
-  vPrompt(sContinuation);
+  vPrompt(m_sContinue);
   
   // get tokens delimited by ';'
   for ( ; i_Token < C_TOKENS; i_Token++) {

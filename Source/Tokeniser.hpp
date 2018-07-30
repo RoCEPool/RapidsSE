@@ -18,7 +18,8 @@ namespace Parsing
     s48K m_sToken;  // current token
     eTN  m_eToken;  // token type
 
-    s32  m_sPrompt;    // prompt
+    s32  m_sPrompt;    // normal prompt
+    s32  m_sContinue;  // continuation prompt
 
     // must be last
     Footer m_xFooter;    
