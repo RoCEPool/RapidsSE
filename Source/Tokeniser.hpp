@@ -50,11 +50,11 @@ namespace Parsing
     TokenVec* pTknVec(void);
     eTN  eToken(void);
     s48K& sToken(void);
+    void vUseEnd(void);
     bool bUseFile(StrVal& sPath);
     void vUseStdin(void);
     void vUseString(StrVal& sString);
-    void vUseEnd(void);
-
+ 
   private:
     eTN  eNextNormal(char* aToken);
     eTN  eNextSpecial(char* aToken);

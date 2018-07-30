@@ -136,6 +136,10 @@ void Tokeniser::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* collect ';' delimited statement                                            */
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vCollectStatement(void)
@@ -181,15 +185,97 @@ void Tokeniser::vCollectStatement(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push a parser                                                              */
+/* get depth of parser                                                        */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vPush(void)
+i8 Tokeniser::iDepth(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  m_pParser = new(m_bMalloc) Parser(m_pParser);
+  i8 iParserDepth = 0;
   
-  m_pParser->vPrompt(m_sPrompt);
+  if (m_pParser)
+    iParserDepth = m_pParser->iDepth();
+  
+  return iParserDepth;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get EOF?                                                                   */
+/*----------------------------------------------------------------------------*/
+bool Tokeniser::bEOF(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  bool bEOF = m_pParser->bEOF();
+  
+  return bEOF;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set line mode                                                              */
+/*----------------------------------------------------------------------------*/
+void Tokeniser::vLineMode(bool bLineMode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  m_pParser->vLineMode(bLineMode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get LineMode?                                                              */
+/*----------------------------------------------------------------------------*/
+bool Tokeniser::bLineMode(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  bool bLineMode = m_pParser->bLineMode();
+  
+  return bLineMode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set malloc flag                                                            */
+/*----------------------------------------------------------------------------*/
+void Tokeniser::vMalloc(bool bMalloc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  m_bMalloc = bMalloc;
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse next token into given buffer                                         */
+/*----------------------------------------------------------------------------*/
+eTN Tokeniser::eNextToken(char* aToken)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  if (m_bNormal)
+    m_eToken = eNextNormal(aToken);
+  else
+    m_eToken = eNextSpecial(aToken);
+  
+  return m_eToken;
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse next token                                                           */
+/*----------------------------------------------------------------------------*/
+void Tokeniser::vNextToken(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  eTN eToken = eNextToken(m_sToken.aChar());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set normal token flag                                                      */
+/*----------------------------------------------------------------------------*/
+void Tokeniser::vNormal(bool bNormal)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  m_bNormal = bNormal;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -213,58 +299,77 @@ bool Tokeniser::bPop(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get depth of parser                                                        */
-/*----------------------------------------------------------------------------*/
-i8 Tokeniser::iDepth(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  i8 iParserDepth = 0;
-  
-  if (m_pParser)
-    iParserDepth = m_pParser->iDepth();
-  
-  return iParserDepth;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set line mode                                                              */
-/*----------------------------------------------------------------------------*/
-void Tokeniser::vLineMode(bool bLineMode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  m_pParser->vLineMode(bLineMode);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set malloc flag                                                            */
-/*----------------------------------------------------------------------------*/
-void Tokeniser::vMalloc(bool bMalloc)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  m_bMalloc = bMalloc;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set normal token flag                                                      */
-/*----------------------------------------------------------------------------*/
-void Tokeniser::vNormal(bool bNormal)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  m_bNormal = bNormal;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set prompt                                                                 */
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vPrompt(StrVal& sPrompt)
-{  
+{
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   m_pParser->vPrompt(sPrompt);
+}
+
+/*----------------------------------------------------------------------------*/
+/* push a parser                                                              */
+/*----------------------------------------------------------------------------*/
+void Tokeniser::vPush(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  m_pParser = new(m_bMalloc) Parser(m_pParser);
+  
+  m_pParser->vPrompt(m_sPrompt);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stdin?                                                                 */
+/*----------------------------------------------------------------------------*/
+bool Tokeniser::bStdin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  bool bStdin = m_pParser->bStdin();
+  
+  return bStdin;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get token vector                                                           */
+/*----------------------------------------------------------------------------*/
+TokenVec* Tokeniser::pTknVec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  return &m_xTokenVec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get token type                                                             */
+/*----------------------------------------------------------------------------*/
+eTN Tokeniser::eToken(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  return m_eToken;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get token string                                                           */
+/*----------------------------------------------------------------------------*/
+s48K& Tokeniser::sToken(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  return m_sToken;
+}
+
+/*----------------------------------------------------------------------------*/
+/* end use of source                                                          */
+/*----------------------------------------------------------------------------*/
+void Tokeniser::vUseEnd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  m_pParser->vUseEnd();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -300,110 +405,8 @@ void Tokeniser::vUseString(StrVal& sString)
 }
 
 /*----------------------------------------------------------------------------*/
-/* end use of source                                                          */
+/*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vUseEnd(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  m_pParser->vUseEnd();
-}
-
-/*----------------------------------------------------------------------------*/
-/* parse next token into given buffer                                         */
-/*----------------------------------------------------------------------------*/
-eTN Tokeniser::eNextToken(char* aToken)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  if (m_bNormal)
-    m_eToken = eNextNormal(aToken);
-  else
-    m_eToken = eNextSpecial(aToken);
-  
-  return m_eToken;
-}
-
-/*----------------------------------------------------------------------------*/
-/* parse next token                                                           */
-/*----------------------------------------------------------------------------*/
-void Tokeniser::vNextToken(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-
-  eTN eToken = eNextToken(m_sToken.aChar());
-}
-
-/*----------------------------------------------------------------------------*/
-/* get EOF?                                                                   */
-/*----------------------------------------------------------------------------*/
-bool Tokeniser::bEOF(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  bool bEOF = m_pParser->bEOF();
-  
-  return bEOF;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get LineMode?                                                              */
-/*----------------------------------------------------------------------------*/
-bool Tokeniser::bLineMode(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  bool bLineMode = m_pParser->bLineMode();
-  
-  return bLineMode;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get stdin?                                                                 */
-/*----------------------------------------------------------------------------*/
-bool Tokeniser::bStdin(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  bool bStdin = m_pParser->bStdin();
-  
-  return bStdin;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* get token string                                                           */
-/*----------------------------------------------------------------------------*/
-s48K& Tokeniser::sToken(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  return m_sToken;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get token type                                                             */
-/*----------------------------------------------------------------------------*/
-eTN Tokeniser::eToken(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  return m_eToken;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get token vector                                                           */
-/*----------------------------------------------------------------------------*/
-TokenVec* Tokeniser::pTknVec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  return &m_xTokenVec;
-}
-
-
-// private: ////////////////////////////////////////////////////////////////////
-
 
 /*----------------------------------------------------------------------------*/
 /* parse next normal token into given buffer                                  */
