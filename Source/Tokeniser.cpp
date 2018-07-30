@@ -448,6 +448,16 @@ eTN Tokeniser::eToken(void)
   return m_eToken;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get token vector                                                           */
+/*----------------------------------------------------------------------------*/
+TokenVec* Tokeniser::pTknVec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  return &m_xTokenVec;
+}
+
 
 // private: ////////////////////////////////////////////////////////////////////
 

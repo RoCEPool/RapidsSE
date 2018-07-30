@@ -8,15 +8,17 @@ namespace Parsing
   class Tokeniser : public Object
   {
   private:
-    Parser* m_pParser; // parser
-    bool    m_bMalloc; // malloc or pool heap?
-    bool    m_bNormal; // normal tokens?
-    char    m_cParsedChar;   // character from parser
+    TokenVec  m_xTokenVec;  // token vector
+    Parser*   m_pParser; // parser
+  
+    bool m_bMalloc; // malloc or pool heap?
+    bool m_bNormal; // normal tokens?
+    char m_cParsedChar;   // character from parser
     
-    s48K    m_sToken;  // current token
-    eTN     m_eToken;  // token type
+    s48K m_sToken;  // current token
+    eTN  m_eToken;  // token type
 
-    s32     m_sPrompt;    // prompt
+    s32  m_sPrompt;    // prompt
 
     // must be last
     Footer m_xFooter;    
@@ -63,6 +65,8 @@ namespace Parsing
     
     s48K& sToken(void);
     eTN  eToken(void);
+  
+    TokenVec* pTknVec(void);
     
   private:
     eTN  eNextNormal(char* aToken);
