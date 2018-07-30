@@ -32,8 +32,12 @@ namespace JobsModel
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
   public:
+    bool bPopulateJob(TokenVec* pTokenVec);
     void vShow(void);
   
+  private:
+    bool bValidateCreateIndex(TokenVec* pTokenVec, i8 iNumTokens);
+    
   public:
     Footer* aFooter(void);
   
