@@ -148,22 +148,22 @@ void Tokeniser::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* collect ';' delimited statement                                            */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vCollectStatement(TokenVec* pTokenVec)
+void Tokeniser::vCollectStatement(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   // we should have a first token (e.g. create or drop)
-  ASSERT((*pTokenVec)[0]->bHasText());
+  ASSERT(m_xTokenVec[0]->bHasText());
   
   // have we already seen the ';'
-  i8 i_Token = iFindToken(";"_Stz,pTokenVec,C_TOKENS);
+  i8 i_Token = iFindToken(";"_Stz,&m_xTokenVec,C_TOKENS);
   
   if (i_Token >= 0) {
     //m_pTokeniser->vDumpTokens("\nCommand : "_Stz,m_xTokenVec,C_TOKENS);
     return;
   }
   
-  i_Token = iCountTokens(pTokenVec,C_TOKENS);
+  i_Token = iCountTokens(&m_xTokenVec,C_TOKENS);
   
   // switch to terminal mode
   vLineMode(false);
@@ -174,7 +174,7 @@ void Tokeniser::vCollectStatement(TokenVec* pTokenVec)
   // get tokens delimited by ';'
   for ( ; i_Token < C_TOKENS; i_Token++) {
     
-    Token* pToken = (*pTokenVec)[i_Token];
+    Token* pToken = m_xTokenVec[i_Token];
     eTN eToken = eNextToken((char*)pToken->aText());
     ASSERT(TN_NONE != eToken);
     pToken->vToken(eToken);

@@ -36,7 +36,7 @@ namespace Parsing
     static TokenVec* pTokenise(StrVal& sString);
     static void vStripSingleQuotes(TokenVec* pTokenVec);
   
-    void vCollectStatement(TokenVec* pTokenVec);
+    void vCollectStatement(void);
 
     void vPush(void);
     bool bPop(void);

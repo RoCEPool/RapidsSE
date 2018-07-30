@@ -11,12 +11,11 @@ namespace Interface
   {
   private:
     Tokeniser* m_pTokeniser; // input stream tokeniser
-    TokenVec   m_xTokenVec;  // token vector
-    TokenVec   m_xTokenVec2; // another token vector
     JobClass*  m_pJobClass;  // job class
     Job*       m_pJob;       // job
   
-
+    TokenVec   m_xTokenVec2; // another token vector TO BE DELETED
+  
     // must be last
     Footer m_xFooter;
 

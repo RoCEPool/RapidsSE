@@ -244,7 +244,7 @@ void CommandProcessor::vGetCommand(void)
       return;
     
     // collect till ;
-    m_pTokeniser->vCollectStatement(&m_xTokenVec);
+    m_pTokeniser->vCollectStatement();
     
     // stip off ;
     pTknVec()->vStripSemicolon();
@@ -387,7 +387,7 @@ TokenVec* CommandProcessor::pTknVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
   
-  return &m_xTokenVec;
+  return m_pTokeniser->pTknVec();
 }
 
 /*----------------------------------------------------------------------------*/
