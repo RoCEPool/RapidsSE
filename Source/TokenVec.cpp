@@ -127,6 +127,27 @@ void TokenVec::vDetachedRequest(bool bDetachedRequest)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump token array                                                           */
+/*----------------------------------------------------------------------------*/
+void TokenVec::vDumpTokens(Stz* pTitle, i8 nTokens)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  vTrace("%s"_Stz,pTitle);
+  
+  for (i8 i_Token = 0; i_Token < nTokens; i_Token++) {
+    
+    Token* pToken = m_pItem[i_Token];
+
+    if (! pToken->aText())
+      break;
+    
+    vTrace("%s "_Stz, pToken->aText());
+  }
+  vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* find token in token array                                                  */
 /*----------------------------------------------------------------------------*/
 i8 TokenVec::iFindToken(Stz* aLookFor)
