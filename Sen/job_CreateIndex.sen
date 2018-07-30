@@ -67,7 +67,7 @@
   0 0 0 0 locals| pTable pIndex sTableNm sIndexNm |
 
   pJob_CreateIndex job.objectName@ to sIndexNm
-  pJob_CreateIndex job.tableName@ to sTableNm
+  pJob_CreateIndex job_createIndex.tableName@ to sTableNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table dictionary
@@ -226,7 +226,7 @@
   //----------------------------------------------------------------------------
   // check ok to make index
   pJob_CreateIndex job.objectName@ to sIndexNm
-  pJob_CreateIndex job.tableName@ to sTableNm
+  pJob_CreateIndex job_createIndex.tableName@ to sTableNm
   sIndexNm sTableNm checkMakeIndex  not if pJob_CreateIndex <ERROR_JOB> exit then
 
   <DONE_NODE>

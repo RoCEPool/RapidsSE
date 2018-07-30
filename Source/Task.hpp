@@ -873,9 +873,11 @@ namespace Tasks
     static void vJobColumnNameFetch(MP_Task mpTask);
     static void vJobColumnIsPartKey(MP_Task mpTask);
     static void vJobColumnTypeFetch(MP_Task mpTask);
+    static void vJobCreateIndexTableNameFetch(MP_Task mpTask);
     static void vJobDecAcksRemaining(MP_Task mpTask);
     static void vJobDelete(MP_Task mpTask);
     static void vJobDicPath(MP_Task mpTask);
+    static void vJobDropIndexTableNameFetch(MP_Task mpTask);
     static void vJobErrorStore(MP_Task mpTask);
     static void vJobErrorFetch(MP_Task mpTask);
     static void vJobExecuteFetch(MP_Task mpTask);
@@ -915,7 +917,6 @@ namespace Tasks
     static void vJobRowsProcessedFetch(MP_Task mpTask);
     static void vJobRowsProcessedStore(MP_Task mpTask);
     static void vJobSignalConnector(MP_Task mpTask);
-    static void vJobTableNameFetch(MP_Task mpTask);
     
     // loader
     static void vLoaderAddRecordsInvalid(MP_Task mpTask);

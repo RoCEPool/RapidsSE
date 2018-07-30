@@ -254,37 +254,6 @@ pResultBuffer pSeitf seitf.bufferQueue@ queue.append
   pathDrop
 ;
 
-/*----------------------------------------------------------------------------*/
-/* check if word is a removable index folder                                  */
-/*----------------------------------------------------------------------------*/
-: checkRemoveIndex ( "<indexNm>" "<tableNm>" -- true | errorCode false )
-
-  locals| tableNm indexNm |
-
-  // should be in the tables folder
-  checkInTables       not if false exit then
-
-  // there should be a table folder
-  tableNm checkIsTableFolder not if false exit then
-
-  true ( "<indexNm>" true )
-;
-
-/*----------------------------------------------------------------------------*/
-/* tidy up of the index                                                       */
-/*----------------------------------------------------------------------------*/
-: indexTidyUp ( "<indexNm>" -- )
-
-  params| sIndexNm |
-  0 locals| pIndex |
-
-  // find the index
-  sIndexNm find execute to pIndex
-
-  // truncate the index
-  pIndex index.truncate
-;
-
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
@@ -756,6 +725,7 @@ tp: populateIndex
 /*----------------------------------------------------------------------------*/
 /* remove an index                                                            */
 /*----------------------------------------------------------------------------*/
+/*
 : removeIndex allParticipants 1 checkResult ( "<indexNm>" -- true n# true )
 
   tp: removeIndex
@@ -773,7 +743,7 @@ tp: populateIndex
 
   true <SUCCESS_RESULT>
 ;
-
+*/
 /*----------------------------------------------------------------------------*/
 /* upper bound select task (c++)                                              */
 /*----------------------------------------------------------------------------*/

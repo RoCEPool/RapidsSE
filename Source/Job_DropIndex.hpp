@@ -12,7 +12,9 @@ namespace JobsModel
                         public JobResult
   {
   public:
-  
+    
+    s32    m_sTableName;   // table name
+    
     // must be last
     Footer m_xFooter;
   

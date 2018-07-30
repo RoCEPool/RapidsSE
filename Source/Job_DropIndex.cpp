@@ -78,7 +78,9 @@ Job_DropIndex::Job_DropIndex(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPINDEX,_FOOTER_);
     
-  //m_sExecute = "Job_DropTable.execute"_Stz;
+  m_sSeed           = mJobNote_DropIndex.pJobClass()->m_aSeed;
+  m_bCheckResources = true;
+  m_sTableName      = ""_Stz;
   
   _checkInitialised_(CN_JOB_DROPINDEX);
   
@@ -132,13 +134,22 @@ bool Job_DropIndex::bPopulateJob(TokenVec* pTokenVec)
   iNumTokens = pTokenVec->nItems();
   
   // - - - - - - - - - - - - - - - - - - - - -
-  // there should be 3 tokens
-  if (iNumTokens != 3)
+  // there should be 5 tokens
+  if (iNumTokens != 5)
     return false;
+  
+  // 4th token should be '.'
+  if (!pTokenVec->pGet(3)->bSame("."_Stz)) {
+    return false;
+  }
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the table name
-  m_sObjectName = pTokenVec->pGet(2)->aText();
+  m_sTableName = pTokenVec->pGet(2)->aText();
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // set the index name
+  m_sObjectName = pTokenVec->pGet(4)->aText();
   
   return true;
 }

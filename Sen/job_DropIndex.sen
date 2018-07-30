@@ -1,0 +1,198 @@
+/*============================================================================*/
+/* job_DropIndex.sen -- Job Index Table                                       */
+/*============================================================================*/
+
+"job_DropIndex.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* tidy up of the index                                                       */
+/*----------------------------------------------------------------------------*/
+: indexTidyUp ( "<indexNm>" -- )
+
+  params| sIndexNm |
+  0 locals| pIndex |
+
+  // find the index
+  sIndexNm find execute to pIndex
+
+  // truncate the index
+  pIndex index.truncate
+;
+
+/*----------------------------------------------------------------------------*/
+/* check if word is a removable index folder                                  */
+/*----------------------------------------------------------------------------*/
+: checkRemoveIndex ( "<tableNm>" -- true | errorCode false )
+
+  params| sTableNm |
+
+  // should be in the tables folder
+  checkInTables not if false exit then
+
+  // there should be a table folder
+  sTableNm checkIsTableFolder not if false exit then
+
+  true 
+;
+
+/*----------------------------------------------------------------------------*/
+/* remove a table folder                                                      */
+/*----------------------------------------------------------------------------*/
+: removeIndex ( "<tableNm>" "<indexNm>" )
+
+  params| sIndexNm sTableNm |
+  0 locals| pIndex |
+"tt" .
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push table dictionary
+  sTableNm pushTable assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push indexes folder
+  pushIndexes assert ( "<sIndexNm>" )
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // remove the index from the table
+  sIndexNm find execute to pIndex
+  pIndex index.table@ table.removeIndex
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tidy up the index abd orget it
+  sIndexNm indexTidyUp
+  sIndexNm :forget
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop indexes folder
+  popIndexes
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop table folder
+  popTable
+;
+
+/*----------------------------------------------------------------------------*/
+/* drop index request (on originating node)                                   */
+/*----------------------------------------------------------------------------*/
+: dropIndex_req ( -- <R> )
+
+  0 0 locals| pJob pTask |
+
+  tp: dropIndex_req
+  "dropIndex_req" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // distribute the job
+  pTask pJob "job::distribute" find execute
+
+  pJob <DONE_REQUEST>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_DropIndex job on a node                                        */
+/*----------------------------------------------------------------------------*/
+: dropIndex_node ( Job_DropIndex -- )
+
+  params| pJob_DropIndex |
+
+  tp: dropIndex_node
+"ty" .
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // assert correct job
+  CN_JOB_DROPINDEX pJob_DropIndex object.assertClass
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grad a ddl lock
+  ddlLock::grabWrite
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
+  pJob_DropIndex getPathR35
+  dicStack.set
+"t4" .
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // remove the table
+  pJob_DropIndex removeIndex
+  assertInTables
+"t5" .
+  pJob_DropIndex job.notice
+
+  <DONE_NODE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_DropIndex job check resources                                  */
+/*----------------------------------------------------------------------------*/
+: dropIndex_checkResources ( Job_DropIndex -- )
+
+  params| pJob_DropIndex  |
+  locals| sIndexNm sTableNm |
+
+  tp: dropIndex_checkResources
+  "checkResources received" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab a ddl lock
+  ddlLock::grabWrite
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
+  pJob_DropIndex getPathR35
+  dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if we can remove the table
+  pJob_DropIndex job.objectName@ to sIndexNm
+  pJob_DropIndex job_dropIndex.tableName@ to sTableNm
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check remove index
+  sTableNm checkRemoveIndex not if pJob_DropIndex <ERROR_JOB> exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push table dictionary
+  sTableNm pushTable assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push indexes folder
+  pushIndexes assert
+"t1" .
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check it is an index we are dropping
+  sIndexNm checkIsIndex not if
+    popIndexes popTable assertInTables pJob_DropIndex <ERROR_JOB> exit
+  then
+"t2" .
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // cannot drop hidden index
+  sIndexNm "hidden" str.equal if
+    popIndexes popTable assertInTables EC_NO_SUCH_INDEX pJob_DropIndex <ERROR_JOB> exit
+  then
+"t3" .
+stk
+  <DONE_NODE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_DropIndex job release resources                                */
+/*----------------------------------------------------------------------------*/
+: dropIndex_releaseResources ( Job_DropIndex -- )
+
+  params| pJob_DropIndex  |
+
+  tp: dropIndex_releaseResources
+  "releaseResources received" .
+
+  <DONE_NODE>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
