@@ -15,7 +15,9 @@ namespace Parsing
     
     s48K    m_sToken;  // current token
     eTN     m_eToken;  // token type
-    
+
+    s32     m_sPrompt;    // prompt
+
     // must be last
     Footer m_xFooter;    
     
@@ -32,6 +34,8 @@ namespace Parsing
     static TokenVec* pTokenise(StrVal& sString);
     static void vStripSingleQuotes(TokenVec* pTokenVec);
   
+    void vCollectStatement(TokenVec* pTokenVec);
+
     void vPush(void);
     bool bPop(void);
     i8   iDepth(void);

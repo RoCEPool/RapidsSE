@@ -182,53 +182,6 @@ bool CommandProcessor::bBlankLine(void)
   return true;
 }
 
-/*----------------------------------------------------------------------------*/
-/* collect ';' delimited statement                                            */
-/*----------------------------------------------------------------------------*/
-void CommandProcessor::vCollectStatement(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
-  
-  // we should have a first token (e.g. create or drop)
-  ASSERT(pTkn(0)->bHasText());
-  
-  TokenVec* pTokenVec = pTknVec();
-  
-  // have we already seen the ';'
-  i8 i_Token = m_pTokeniser->iFindToken(";"_Stz,pTokenVec,C_TOKENS);
-  
-  if (i_Token >= 0) {
-    //m_pTokeniser->vDumpTokens("\nCommand : "_Stz,m_xTokenVec,C_TOKENS);
-    return;
-  }
-  
-  i_Token = m_pTokeniser->iCountTokens(pTokenVec,C_TOKENS);
-  
-  // switch to terminal mode
-  m_pTokeniser->vLineMode(false);
-  
-  s32 sContinuation("  > "_Stz);
-  m_pTokeniser->vPrompt(sContinuation);
-  
-  // get tokens delimited by ';'
-  for ( ; i_Token < C_TOKENS; i_Token++) {
-    
-    Token* pToken = pTkn(i_Token);
-    eTN eToken = m_pTokeniser->eNextToken((char*)pToken->aText());
-    ASSERT(TN_NONE != eToken);
-    pToken->vToken(eToken);
-    
-    // look for terminal
-    if (TN_OTHER == eToken && pToken->bSame(";"_Stz))
-      break;
-  }
-  
-  // switch back to line mode
-  m_pTokeniser->vLineMode(true);
-  m_pTokeniser->vPrompt(m_sPrompt);
-  
-  //m_pTokeniser->vDumpTokens("Command : "_Stz,m_xTokenVec,C_TOKENS);
-}
 
 /*----------------------------------------------------------------------------*/
 /* dispatch job into SE                                                       */
@@ -303,7 +256,7 @@ void CommandProcessor::vGetCommand(void)
       return;
     
     // collect till ;
-    vCollectStatement();
+    m_pTokeniser->vCollectStatement(&m_xTokenVec);
     
     // stip off ;
     pTknVec()->vStripSemicolon();
