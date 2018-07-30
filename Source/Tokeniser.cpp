@@ -11,7 +11,7 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Tokeniser* Tokeniser::_pTokeniser(void* aAddr)
+Tokeniser* Parsing::_pTokeniser(void* aAddr)
 {
   Tokeniser* pTokeniser = reinterpret_cast<Tokeniser*>(aAddr);
   

@@ -31,39 +31,30 @@ namespace Parsing
     Tokeniser(void);
     ~Tokeniser(void);
     
-    static Tokeniser* _pTokeniser(void* aAddr);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-  
     static TokenVec* pTokenise(StrVal& sString);
   
     void vCollectStatement(void);
-
-    void vPush(void);
-    bool bPop(void);
     i8   iDepth(void);
-    
+    bool bEOF(void);
     void vLineMode(bool bLineMode);
+    bool bLineMode(void);
     void vMalloc(bool bMalloc);
+    eTN  eNextToken(char* aToken);
+    void vNextToken(void);
     void vNormal(bool bNormal);
+    bool bPop(void);
     void vPrompt(StrVal& sPrompt);
-    
+    void vPush(void);
+    bool bStdin(void);
+    TokenVec* pTknVec(void);
+    eTN  eToken(void);
+    s48K& sToken(void);
     bool bUseFile(StrVal& sPath);
     void vUseStdin(void);
     void vUseString(StrVal& sString);
     void vUseEnd(void);
 
-    eTN  eNextToken(char* aToken);
-    void vNextToken(void);
-        
-    bool bEOF(void);
-    bool bLineMode(void);
-    bool bStdin(void);
-    
-    s48K& sToken(void);
-    eTN  eToken(void);
-  
-    TokenVec* pTknVec(void);
-    
   private:
     eTN  eNextNormal(char* aToken);
     eTN  eNextSpecial(char* aToken);
@@ -111,6 +102,8 @@ namespace Parsing
     
     Footer* aFooter(void);
   };
+  
+  static Tokeniser* _pTokeniser(void* aAddr);
 }
 
 /*============================================================================*/
