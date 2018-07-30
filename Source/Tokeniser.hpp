@@ -53,9 +53,7 @@ namespace Parsing
 
     eTN  eNextToken(char* aToken);
     void vNextToken(void);
-    
-   void vDumpTokens(Stz* pTitle, i8 nTokens);
-    
+        
     bool bEOF(void);
     bool bLineMode(void);
     bool bStdin(void);

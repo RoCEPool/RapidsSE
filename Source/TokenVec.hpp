@@ -28,6 +28,7 @@ namespace Parsing
     i8   iCountTokens(void);
     bool bDetachedRequest(void);
     void vDetachedRequest(bool bDetachedRequest);
+    void vDumpTokens(Stz* pTitle, i8 nTokens);
     i8   iFindToken(Stz* pLookFor);
     Token* pFindToken(Stz* aText, i8& i_Token);
     i8   nTokens(void);

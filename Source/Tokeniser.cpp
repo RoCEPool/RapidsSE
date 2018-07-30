@@ -335,25 +335,6 @@ void Tokeniser::vNextToken(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump token array                                                           */
-/*----------------------------------------------------------------------------*/
-void Tokeniser::vDumpTokens(Stz* pTitle, i8 nTokens)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  vTrace("%s"_Stz,pTitle);
-  
-  for (i8 i_Token = 0; i_Token < nTokens; i_Token++) {
-    
-    if (! *(char*)m_xTokenVec[i_Token]->aText())
-      break;
-    
-    vTrace("%s "_Stz, m_xTokenVec[i_Token]->aText());
-  }
-  vTrace("\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get EOF?                                                                   */
 /*----------------------------------------------------------------------------*/
 bool Tokeniser::bEOF(void)
