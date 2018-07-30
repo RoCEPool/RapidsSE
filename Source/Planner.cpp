@@ -608,7 +608,7 @@ void Planner::vParseWhere(s48K& sWhereClause)
   
   m_pWhereTknVec = Tokeniser::pTokenise(sWhereClause);
   
-  Tokeniser::vStripSingleQuotes(m_pWhereTknVec);
+  m_pWhereTknVec->vStripSingleQuotes();
 }
 
 /*----------------------------------------------------------------------------*/

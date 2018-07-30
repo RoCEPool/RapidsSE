@@ -110,14 +110,29 @@ void TokenVec::vDetachedRequest(bool bDetachedRequest)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find token in token array                                                  */
+/*----------------------------------------------------------------------------*/
+i8 TokenVec::iFindToken(Stz* aLookFor)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  for (i8 i_Token = 0; i_Token < C_TOKENS; i_Token++) {
+    Token* pToken = m_pItem[i_Token];
+    if (aLookFor->bSame(pToken->aText()))
+      return i_Token;
+  }
+  
+  return -1;
+}
+/*----------------------------------------------------------------------------*/
 /* find token given text                                                      */
 /*----------------------------------------------------------------------------*/
-Token* TokenVec::pFindToken(Stz* aText, i8& i_Cursor)
+Token* TokenVec::pFindToken(Stz* aText, i8& i_Token)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  for (i_Cursor++; i_Cursor < nTokens(); i_Cursor++) {
-    Token* pToken = m_pItem[i_Cursor];
+  for (i_Token++; i_Token < nTokens(); i_Token++) {
+    Token* pToken = m_pItem[i_Token];
     if (pToken->sText().bSame(aText))
       return pToken;
   }

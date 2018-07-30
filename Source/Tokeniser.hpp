@@ -34,7 +34,6 @@ namespace Parsing
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
     static TokenVec* pTokenise(StrVal& sString);
-    static void vStripSingleQuotes(TokenVec* pTokenVec);
   
     void vCollectStatement(void);
 
@@ -55,7 +54,6 @@ namespace Parsing
     eTN  eNextToken(char* aToken);
     void vNextToken(void);
     
-    i8   iFindToken(Stz* pLookFor);
     i8   iCountTokens(TokenVec* pTokenVec);
     void vDumpTokens(Stz* pTitle, i8 nTokens);
     

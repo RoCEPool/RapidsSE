@@ -120,17 +120,6 @@ TokenVec* Tokeniser::pTokenise(StrVal& sString)
 }
 
 /*----------------------------------------------------------------------------*/
-/* strip any leading/trailing single quotes from all tokens                   */
-/*----------------------------------------------------------------------------*/
-void Tokeniser::vStripSingleQuotes(TokenVec* pTokenVec)
-{
-  for (i8 i_Token = 0; i_Token < pTokenVec->nTokens(); i_Token++) {
-    Token* pToken = pTokenVec->pGet(i_Token);
-    pToken->vStripSingleQuotes();
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* dump tokeniser                                                             */
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vDump(eCN eClass, Object* pObject, Stz* aTab)
@@ -156,7 +145,7 @@ void Tokeniser::vCollectStatement(void)
   ASSERT(m_xTokenVec[0]->bHasText());
   
   // have we already seen the ';'
-  i8 i_Token = iFindToken(";"_Stz);
+  i8 i_Token = m_xTokenVec.iFindToken(";"_Stz);
   
   if (i_Token >= 0) {
     //m_pTokeniser->vDumpTokens("\nCommand : "_Stz,m_xTokenVec,C_TOKENS);
@@ -343,20 +332,6 @@ void Tokeniser::vNextToken(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
 
   eTN eToken = eNextToken(m_sToken.aChar());
-}
-
-/*----------------------------------------------------------------------------*/
-/* find token in token array                                                  */
-/*----------------------------------------------------------------------------*/
-i8 Tokeniser::iFindToken(Stz* aLookFor)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  for (i8 i_Token = 0; i_Token < C_TOKENS; i_Token++)
-    if (aLookFor->bSame(m_xTokenVec[i_Token]->aText()))
-      return i_Token;
-  
-  return -1;
 }
 
 /*----------------------------------------------------------------------------*/
