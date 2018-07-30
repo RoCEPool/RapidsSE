@@ -162,7 +162,7 @@ void Task::vCommandProcessorJobClass(MP_Task mpTask)
   CommandProcessor*
     pCommandProcessor = _pCommandProcessor(pCommandProcessorObject);
 
-  JobClass* pJobClass = pCommandProcessor->m_pJobClass;
+  JobClass* pJobClass = pCommandProcessor->pJobClass();
   
   mpTask->m_pDataStack->vPushInt((i8)pJobClass);
   
@@ -190,7 +190,7 @@ void Task::vCommandProcessorNewJob(MP_Task mpTask)
   
   pCommandProcessor->vNewJob(pSEitf);
   
-  Job* pJob = pCommandProcessor->m_pJob;
+  Job* pJob = pCommandProcessor->pJob();
   
   pJob->m_pPromptTask = *mpTask;
   

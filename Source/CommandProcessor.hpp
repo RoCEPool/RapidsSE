@@ -9,15 +9,14 @@ namespace Interface
 {
   class CommandProcessor : public Object
   {
-  public:
-    JobClass*  m_pJobClass;  // job class
-    Job*       m_pJob;       // job
-
   private:
     s32        m_sPrompt;    // prompt
     Tokeniser* m_pTokeniser; // input stream tokeniser
     TokenVec   m_xTokenVec;  // token vector
     TokenVec   m_xTokenVec2; // another token vector
+    JobClass*  m_pJobClass;  // job class
+    Job*       m_pJob;       // job
+  
 
     // must be last
     Footer m_xFooter;
@@ -45,6 +44,8 @@ namespace Interface
     void vGetCommand(void);
     void vGetCommandArgument(void);
     void vGetCommandInput(void);
+    Job* pJob(void);
+    JobClass* pJobClass(void);
     void vNewJob(SEitf* pSEitf);
     bool bTestFile(Stz* aPath);
 

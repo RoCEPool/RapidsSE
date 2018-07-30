@@ -379,6 +379,26 @@ void CommandProcessor::vGetCommandInput(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get job                                                                    */
+/*----------------------------------------------------------------------------*/
+Job* CommandProcessor::pJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
+  
+  return m_pJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get job class                                                              */
+/*----------------------------------------------------------------------------*/
+JobClass* CommandProcessor::pJobClass(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
+  
+  return m_pJobClass;
+}
+
+/*----------------------------------------------------------------------------*/
 /* potentially execute a job                                                  */
 /*----------------------------------------------------------------------------*/
 void CommandProcessor::vNewJob(SEitf* pSEitf)
