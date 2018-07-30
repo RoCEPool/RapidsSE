@@ -90,6 +90,23 @@ void TokenVec::vAppendVector(TokenVec* pTokenVec)
 }
 
 /*----------------------------------------------------------------------------*/
+/* count tokens in token array                                                */
+/*----------------------------------------------------------------------------*/
+i8 TokenVec::iCountTokens(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  for (i8 i_Token = 0; i_Token < C_TOKENS; i_Token++) {
+    Token* pToken = m_pItem[i_Token];
+    if ( ! pToken->bHasText() )
+      return i_Token;
+  }
+  
+  ASSERT("Should never be reached"_Stz);
+  return -1;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get detached request                                                       */
 /*----------------------------------------------------------------------------*/
 bool TokenVec::bDetachedRequest(void)

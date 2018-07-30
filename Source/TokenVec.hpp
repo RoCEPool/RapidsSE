@@ -25,6 +25,7 @@ namespace Parsing
   
     void vAddToken(Stz* aStr);
     void vAppendVector(TokenVec* pTokenVec);
+    i8   iCountTokens(void);
     bool bDetachedRequest(void);
     void vDetachedRequest(bool bDetachedRequest);
     i8   iFindToken(Stz* pLookFor);

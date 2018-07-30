@@ -152,7 +152,7 @@ void Tokeniser::vCollectStatement(void)
     return;
   }
   
-  i_Token = iCountTokens(&m_xTokenVec);
+  i_Token = m_xTokenVec.iCountTokens();
   
   // switch to terminal mode
   vLineMode(false);
@@ -332,21 +332,6 @@ void Tokeniser::vNextToken(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
 
   eTN eToken = eNextToken(m_sToken.aChar());
-}
-
-/*----------------------------------------------------------------------------*/
-/* count tokens in token array                                                */
-/*----------------------------------------------------------------------------*/
-i8 Tokeniser::iCountTokens(TokenVec* pTokenVec)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  for (i8 i_Token = 0; i_Token < C_TOKENS; i_Token++)
-    if ( ! (*pTokenVec)[i_Token]->bHasText() )
-      return i_Token;
-  
-  ASSERT("Should never be reached"_Stz);
-  return -1;
 }
 
 /*----------------------------------------------------------------------------*/
