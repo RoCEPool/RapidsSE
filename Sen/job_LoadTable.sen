@@ -13,6 +13,10 @@
 
   "Executing loader on this node" .
 
+  loader::new locals| pLoader |
+
+
+  pLoader loader.delete
 ;
 
 /*----------------------------------------------------------------------------*/

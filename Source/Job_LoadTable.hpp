@@ -9,12 +9,12 @@ namespace JobsModel
   class Job_LoadTable : public Job,
                         public JobDicPath,
                         public JobObjectName,
-                        public JobResult
+                        public JobResult,
+                        public JobFileName
   {
   public:
     
-    s256       m_sFileName;   // file to load table from
-    Formatters m_xFormatters; // record formatters
+     Formatters m_xFormatters; // record formatters
     
     // must be last
     Footer m_xFooter;
