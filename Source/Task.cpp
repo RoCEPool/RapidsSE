@@ -492,6 +492,7 @@ void Task::vAddConstants(void)
   vAddConstant("args.start"_Stz,             gxArguments.m_bStart);
   vAddConstant("args.status"_Stz,            gxArguments.m_bStatus);
   vAddConstant("args.stop"_Stz,              gxArguments.m_bStop);
+  vAddConstant("args.subLoaders"_Stz,        gxArguments.m_nSubLoaders);
   vAddConstant("args.touch"_Stz,             gxArguments.m_bTouch);
   vAddConstant("args.tracepoint"_Stz,        gxArguments.m_bTracepoint);
   vAddConstant("args.tracing"_Stz,           gxArguments.m_bTracing);

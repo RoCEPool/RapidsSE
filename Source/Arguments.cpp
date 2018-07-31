@@ -41,6 +41,8 @@ Arguments::Arguments(void)
   m_sSen        = "../Sen/"_Stz;
 #endif
   
+  m_nSubLoaders = m_nThreads - 2;
+  
   
   m_sCommand    = ""_Stz;
   
@@ -215,6 +217,18 @@ bool Arguments::bParse(int argc, Stz* argv[])
       m_nThreads = argv[++i_Arg]->iToI8();
       if (m_nThreads > C_THREADS) {
         vError("Maximum number of thread allowed is %lld\n"_Stz,
+               C_THREADS);
+        return false;
+      }
+      
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--subloaders"_Stz)) {
+      m_nSubLoaders = argv[++i_Arg]->iToI8();
+      if (m_nThreads > C_THREADS) {
+        vError("Maximum number of subloaders allowed is %lld\n"_Stz,
                C_THREADS);
         return false;
       }

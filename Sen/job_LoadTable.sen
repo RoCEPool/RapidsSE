@@ -19,6 +19,11 @@
 
   pLoader loader.dumpMap
 
+  args.subLoaders 0
+  do
+    I "Creating Job_SubLoader %v" fmt.print
+  loop
+
   pLoader loader.delete
 ;
 

@@ -21,6 +21,7 @@ namespace StorageEngine
     bool  m_bTracepoint; // print tracepoint
     s256  m_sCommands;   // commands dir
     s256  m_sSen;        // sen dir
+    i8    m_nSubLoaders; // number of subloaders
     
     // commands
     s256 m_sCommand;    // command to run
