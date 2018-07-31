@@ -5,6 +5,17 @@
 "job_LoadTable.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* execute loader on this node                                                */
+/*----------------------------------------------------------------------------*/
+: LoadTable_loader ( pJob_LoadTable --  )
+
+  params| pJob_LoadTable |
+
+  "Executing loader on this node" .
+
+;
+
+/*----------------------------------------------------------------------------*/
 /* Job_LoadTable request (on originating node)                                */
 /*----------------------------------------------------------------------------*/
 : LoadTable_req (  -- <R> )
@@ -44,7 +55,7 @@
     exit
   then
 
-  "Executing loader on this node" .
+  pJob_LoadTable LoadTable_loader
 
   <DONE_NODE>
 ;
