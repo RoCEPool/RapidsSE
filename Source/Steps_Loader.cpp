@@ -153,7 +153,7 @@ void Task::vLoaderInit(MP_Task mpTask)
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
   
-  new(pLoader) Loader;
+  new(pLoader) Loader(nullptr);
   
   EXIT();
 }
@@ -165,7 +165,7 @@ void Task::vLoaderNew(MP_Task mpTask)
 {
   ENTRY("vLoaderNew"_Stz);
   
-  Loader* pLoader = new Loader;
+  Loader* pLoader = new Loader(nullptr);
   ASSERT(CN_LOADER == pLoader->eClass());
   
   mpTask->m_pDataStack->vPushObject(pLoader);

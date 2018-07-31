@@ -52,18 +52,21 @@ void Loader::operator delete(void* pLoaderAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Loader::Loader(void)
+Loader::Loader(Job_LoadTable* pJob_LoadTable)
 : Object(CN_LOADER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   
-  m_pSEitf   = nullptr;
-  m_sPath    = "<none>"_Stz;
-  m_pTable   = nullptr;
+  m_pJob_LoadTable = pJob_LoadTable;
+  
   m_pLoadMap = new LoadMap;
   m_ziInvalidRecords = 0;
   m_ziValidRecords   = 0;
-  
+
+  m_pSEitf   = nullptr;
+  m_sPath    = "<none>"_Stz;
+  m_pTable   = nullptr;
+
   _checkInitialised_(CN_LOADER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);

@@ -13,14 +13,16 @@ namespace Utilities
   class Loader : public Object
   {
   private:
-    Interface::SEitf* m_pSEitf; // SE interface
+    Job_LoadTable* m_pJob_LoadTable; // job
   
-    Table*     m_pTable;       // table being load
-    s256       m_sPath;        // file being loaded
     LoadMap*   m_pLoadMap;     // load map
     Atomic     m_ziInvalidRecords;
     Atomic     m_ziValidRecords;
-    
+  
+    Interface::SEitf* m_pSEitf; // SE interface
+    Table*     m_pTable;       // table being load
+    s256       m_sPath;        // file being loaded
+  
     // must be last
     Footer m_xFooter;
     
@@ -29,7 +31,7 @@ namespace Utilities
     void* operator new(size_t, Loader* pLoader);
     void  operator delete(void* pLoaderAddress);
  
-    Loader(void);
+    Loader(Job_LoadTable* pJob_LoadTable);
     ~Loader(void);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
