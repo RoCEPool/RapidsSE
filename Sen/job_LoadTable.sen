@@ -5,6 +5,17 @@
 "job_LoadTable.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* execute loader on this node                                                */
+/*----------------------------------------------------------------------------*/
+: LoadTable_loader ( pJob_LoadTable --  )
+
+  params| pJob_LoadTable |
+
+  "Executing loader on this node" .
+
+;
+
+/*----------------------------------------------------------------------------*/
 /* Job_LoadTable request (on originating node)                                */
 /*----------------------------------------------------------------------------*/
 : LoadTable_req (  -- <R> )
@@ -44,7 +55,7 @@
     exit
   then
 
-  "Executing loader on this node" .
+  pJob_LoadTable LoadTable_loader
 
   <DONE_NODE>
 ;
@@ -56,23 +67,43 @@
 
   params| pJob_LoadTable  |
 
+  pJob_LoadTable job.objectName@ locals| sTableNm |
+
   tp: loadTable_checkResources
   "checkResources received" .
 
   //----------------------------------------------------------------------------
   // grad a ddl lock
+
   ddlLock::grabWrite
 
   //----------------------------------------------------------------------------
+  // path checks
+
   // set dictionary stack
-  pJob_LoadTable getPathR35
-  dicStack.set
+  pJob_LoadTable getPathR35 dicStack.set
+  pathDump
+
+  // there should be a table folder
+  sTableNm checkIsTableFolder not if pJob_LoadTable <ERROR_JOB> exit then
+  sTableNm "In table folder: %v" fmt.print
+
+  // push table dictionary
+  sTableNm pushTable assert
+  pathDump
+
+  // check it is a table
+  sTableNm checkIsTable not if pJob_LoadTable <ERROR_JOB> exit then
+  drop
+
+  // pop table dictionary
+  popTable
+  pathDump
 
   //----------------------------------------------------------------------------
   // check if we have enough buffers
-  //checkEnoughBuffersR35 not if pJob_LoadTable <ERROR_JOB> exit then
 
-  //......
+  checkEnoughBuffersR35 not if pJob_LoadTable <ERROR_JOB> exit then
 
   <DONE_NODE>
 ;

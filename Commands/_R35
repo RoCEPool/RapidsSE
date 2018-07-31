@@ -166,6 +166,12 @@ lf;
 cf ..;
 cf ..;
 
+// drop the index
+print "\n=========================================";
+print "dropping index idx of j10...";
+print "=========================================";
+drop index j10.idx;
+
 // drop the table
 print "\n=========================================";
 print "dropping table j10...";
