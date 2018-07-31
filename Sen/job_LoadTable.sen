@@ -56,6 +56,8 @@
 
   params| pJob_LoadTable  |
 
+  pJob_LoadTable job.objectName@ locals| sTableNm |
+
   tp: loadTable_checkResources
   "checkResources received" .
 
@@ -65,8 +67,24 @@
 
   //----------------------------------------------------------------------------
   // set dictionary stack
-  pJob_LoadTable getPathR35
-  dicStack.set
+  pJob_LoadTable getPathR35 dicStack.set
+  pathDump
+
+  // there should be a table folder
+  sTableNm checkIsTableFolder not if <ERROR_JOB> exit then
+  sTableNm "In table folder: %v" fmt.print
+
+  // push table dictionary
+  sTableNm pushTable assert
+  pathDump
+
+  // check it is a table
+  sTableNm checkIsTable  not if <ERROR_JOB> exit then
+  drop
+
+  // pop table dictionary
+  popTable
+  pathDump
 
   //----------------------------------------------------------------------------
   // check if we have enough buffers
