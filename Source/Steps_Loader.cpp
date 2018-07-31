@@ -165,9 +165,13 @@ void Task::vLoaderNew(MP_Task mpTask)
 {
   ENTRY("vLoaderNew"_Stz);
   
-  Loader* pLoader = new Loader(nullptr);
-  ASSERT(CN_LOADER == pLoader->eClass());
-  
+  Object* pPtrJob_LoadTable;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_LoadTable) )
+    THROW_INVALID_DSTACK("loader::new"_Stz);
+  Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
+
+  Loader* pLoader = new Loader(pJob_LoadTable);
+
   mpTask->m_pDataStack->vPushObject(pLoader);
   
   EXIT();

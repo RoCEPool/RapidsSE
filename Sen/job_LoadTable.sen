@@ -13,7 +13,7 @@
 
   "Executing loader on this node" .
 
-  loader::new locals| pLoader |
+  pJob_LoadTable loader::new locals| pLoader |
 
 
   pLoader loader.delete
