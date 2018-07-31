@@ -10,7 +10,7 @@ extern AttachMap* gpAttachMap;
 JobNote mJobNote_LoadTable (
   "Job_LoadTable"_Stz,    // name of the job class
   CN_JOB_LOADTABLE,       // class enum
-  "load table "_Stz,      // comment about the job
+  "load table"_Stz,       // comment about the job
   "ld"_Stz,               // the prompt command
   nullptr,                // the second word
   "loadTable"_Stz,        // the task seed for this job
@@ -19,6 +19,12 @@ JobNote mJobNote_LoadTable (
   vJob_LoadTable_post,    // prompt post-process function
   true                    // job is enabled
 );
+
+/* example:
+ 
+ ld lineitem "/tpch/lineitem.tbl" ;
+ 
+ */
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -43,10 +49,10 @@ void* Job_LoadTable::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  Job_LoadTable* pJob_ListCatalogs =
+  Job_LoadTable* pJob_LoadTable =
     static_cast<Job_LoadTable*>(Heap::pAllocate(CN_JOB_LOADTABLE));
   
-  return pJob_ListCatalogs;
+  return pJob_LoadTable;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -73,14 +79,14 @@ void Job_LoadTable::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_LoadTable::Job_LoadTable(Interface::SEitf* pSEitf)
-: Job(CN_JOB_LISTCATALOGS), JobDicPath(pSEitf)
+: Job(CN_JOB_LOADTABLE), JobDicPath(pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
   
-  m_sSeed    = mJobNote_LoadTable.pJobClass()->m_aSeed;
+  m_sSeed     = mJobNote_LoadTable.pJobClass()->m_aSeed;
   m_sFileName = ""_Stz;
   
-  _checkInitialised_(CN_JOB_LF);
+  _checkInitialised_(CN_JOB_LOADTABLE);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
 }
@@ -122,51 +128,45 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
   
-  i8 iNumTokens;
+  ASSERT(pTokenVec->pGet(0)->bSame("ld"_Stz));
   
-  ASSERT(pTokenVec->pGet(0)->bSame("lscat"_Stz));
-  
-  // - - - - - - - - - - - - - - - - - - - - -
   // get no of tokens in token vector
-  iNumTokens = pTokenVec->nTokens();;
+  i8 nTokens = pTokenVec->nTokens();;
   
-  // - - - - - - - - - - - - - - - - - - - - -
   // there should be at least 3 tokens
-  if (iNumTokens < 3) {
+  if (nTokens < 3)
     return nullptr;
-  }
   
-  // - - - - - - - - - - - - - - - - - - - - -
   // set the table name
   m_sObjectName = pTokenVec->pGet(1)->aText();
   
-  // - - - - - - - - - - - - - - - - - - - - -
   // set the file name
   m_sFileName = pTokenVec->pGet(2)->aText();
   
-  i8 iCurrentIndex = 3;
+  i8 i_Token = 3;
   
-  while (iNumTokens > iCurrentIndex) {
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  while (i_Token < nTokens) {
     
-    if (iNumTokens < iCurrentIndex + 2) {
+    if (i_Token + 2 > nTokens)
        return false;
-    }
     
     // - - - - - - - - - - - - - - - - - - - - -
     // C_RECORD_TERMINATOR
-    if (pTokenVec->pGet(iCurrentIndex)->bSame(C_RECORD_TERMINATOR)) {
-      m_xFormatters.m_cRecordTerminator = *pTokenVec->pGet(++iCurrentIndex)->sText().aChar();
+    if (pTokenVec->pGet(i_Token)->bSame(C_RECORD_TERMINATOR)) {
+      m_xFormatters.m_cRecordTerminator = *pTokenVec->pGet(++i_Token)->sText().aChar();
       if (m_xFormatters.m_cRecordTerminator == '0')
         m_xFormatters.m_cRecordTerminator = '\0';
     }
     
     // - - - - - - - - - - - - - - - - - - - - -
     // C_RECORD_ENDS
-    else if (pTokenVec->pGet(iCurrentIndex)->bSame(C_RECORD_ENDS)) {
-      char cRecordEnds = *pTokenVec->pGet(++iCurrentIndex)->sText().aChar();
+    else if (pTokenVec->pGet(i_Token)->bSame(C_RECORD_ENDS)) {
+      char cRecordEnds = *pTokenVec->pGet(++i_Token)->sText().aChar();
       
       // is record_ends 1 character ?
-      if (pTokenVec->pGet(iCurrentIndex)->iLength() == 1) {
+      if (pTokenVec->pGet(i_Token)->iLength() == 1) {
         if (cRecordEnds == '0') {
           vWarn("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
           return false;
@@ -179,9 +179,9 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
         }
       }
       // record_ends is 2 characters
-      else if (pTokenVec->pGet(iCurrentIndex)->iLength() == 2) {
+      else if (pTokenVec->pGet(i_Token)->iLength() == 2) {
         
-        if (pTokenVec->pGet(iCurrentIndex)->bSame("\r\n"_Stz)) {
+        if (pTokenVec->pGet(i_Token)->bSame("\r\n"_Stz)) {
           m_xFormatters.m_eRecordEnds = RE_CRNL;
         }
         else {
@@ -197,17 +197,17 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
     
     // - - - - - - - - - - - - - - - - - - - - -
     // C_FIELD_DELIMITER
-    else if (pTokenVec->pGet(iCurrentIndex)->bSame(C_FIELD_DELIMITER)) {
-      m_xFormatters.m_cFieldDelimiter = *pTokenVec->pGet(++iCurrentIndex)->sText().aChar();
+    else if (pTokenVec->pGet(i_Token)->bSame(C_FIELD_DELIMITER)) {
+      m_xFormatters.m_cFieldDelimiter = *pTokenVec->pGet(++i_Token)->sText().aChar();
       if (m_xFormatters.m_cFieldDelimiter == '0')
       m_xFormatters.m_cFieldDelimiter = '\0';
     }
     
     // - - - - - - - - - - - - - - - - - - - - -
     // C_ENCLOSED_BY_LEADING
-    else if (pTokenVec->pGet(iCurrentIndex)->bSame(C_ENCLOSED_BY_LEADING)) {
+    else if (pTokenVec->pGet(i_Token)->bSame(C_ENCLOSED_BY_LEADING)) {
       m_xFormatters.m_cEnclosedBy_Leading =
-      *pTokenVec->pGet(++iCurrentIndex)->sText().aChar();
+      *pTokenVec->pGet(++i_Token)->sText().aChar();
       if (m_xFormatters.m_cEnclosedBy_Leading == '0')
         m_xFormatters.m_cEnclosedBy_Leading = '\0';
       
@@ -218,7 +218,7 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
     
     // - - - - - - - - - - - - - - - - - - - - -
     // C_ENCLOSED_BY_TRAILING
-    else if (pTokenVec->pGet(iCurrentIndex)->bSame(C_ENCLOSED_BY_TRAILING)) {
+    else if (pTokenVec->pGet(i_Token)->bSame(C_ENCLOSED_BY_TRAILING)) {
       
       // if trailing is specified, leading should also have been specified
       if (m_xFormatters.m_cEnclosedBy_Leading == '\0') {
@@ -227,7 +227,7 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
         return false;
       }
       m_xFormatters.m_cEnclosedBy_Trailing =
-      *pTokenVec->pGet(++iCurrentIndex)->sText().aChar();
+      *pTokenVec->pGet(++i_Token)->sText().aChar();
       if (m_xFormatters.m_cEnclosedBy_Trailing == '0')
         m_xFormatters.m_cEnclosedBy_Trailing = '\0';
     }
@@ -237,9 +237,9 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
     //
     // - - - - - - - - - - - - - - - - - - - - -
     // C_DATE_FORMAT
-    else if (pTokenVec->pGet(iCurrentIndex)->bSame(C_DATE_FORMAT)) {
+    else if (pTokenVec->pGet(i_Token)->bSame(C_DATE_FORMAT)) {
       // extract date format
-      if ( ! bExtractDateFormat(pTokenVec->pGet(++iCurrentIndex)->sText()) ) {
+      if ( ! bExtractDateFormat(pTokenVec->pGet(++i_Token)->sText()) ) {
         if ( ! gpAttachMap->m_bMetadata)
         vWarn("Invalid load : enclosed_by_trailing specified but no enclosed_by_leading\n"_Stz);
         return false;
@@ -248,15 +248,16 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
     
     // - - - - - - - - - - - - - - - - - - - - -
     // C_ESCAPE_CHAR
-    else if (pTokenVec->pGet(iCurrentIndex)->bSame(C_ESCAPE_CHAR)) {
-      m_xFormatters.m_cEscapeChar = *pTokenVec->pGet(++iCurrentIndex)->sText().aChar();
+    else if (pTokenVec->pGet(i_Token)->bSame(C_ESCAPE_CHAR)) {
+      m_xFormatters.m_cEscapeChar = *pTokenVec->pGet(++i_Token)->sText().aChar();
       if (m_xFormatters.m_cEscapeChar == '0')
         m_xFormatters.m_cEscapeChar = '\0';
     }
     else {
       return false;
     }
-    iCurrentIndex++;
+    
+    i_Token++;
   }
   
   return true;
