@@ -60,6 +60,8 @@ Loader::Loader(Job_LoadTable* pJob_LoadTable)
   m_pJob_LoadTable = pJob_LoadTable;
   
   m_pLoadMap = new LoadMap;
+  m_pLoadMap->vFilePath(m_pJob_LoadTable->m_sFileName);
+  
   m_ziInvalidRecords = 0;
   m_ziValidRecords   = 0;
 
