@@ -934,6 +934,7 @@ namespace Tasks
     static void vLoaderRecordsValidFetch(MP_Task mpTask);
     static void vLoaderSEitfFetch(MP_Task mpTask);
     static void vLoaderSEitfStore(MP_Task mpTask);
+    static void vLoaderSpawnSubLoader(MP_Task mpTask);
     static void vLoaderTableStore(MP_Task mpTask);
     
     // loader sub

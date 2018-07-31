@@ -30,6 +30,7 @@ void Task::vAddPrimitives_Loader(void)
   vAddPrimitive("loader.recordsValid@"_Stz,     &vLoaderRecordsValidFetch,   false);
   vAddPrimitive("loader.seitf@"_Stz,            &vLoaderSEitfFetch,      false);
   vAddPrimitive("loader.seitf!"_Stz,            &vLoaderSEitfStore,      false);
+  vAddPrimitive("loader.spawnSubLoader"_Stz,    &vLoaderSpawnSubLoader,  false);
   vAddPrimitive("loader.table!"_Stz,            &vLoaderTableStore,      false);
 }
 
@@ -344,6 +345,32 @@ void Task::vLoaderSEitfStore(MP_Task mpTask)
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   
   pLoader->vSEitf(pSEitf);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loader.spawnSubLoader -- spawn a new subloader                             */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderSpawnSubLoader(MP_Task mpTask)
+{
+  ENTRY("vLoaderSpawnSubLoader"_Stz);
+  
+  Object* pPtrLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
+    THROW_INVALID_DSTACK("loader.spawnSubLoader"_Stz);
+  
+  Loader* pLoader = _pLoader(pPtrLoader);
+  ASSERT(CN_LOADER == pLoader->eClass());
+  
+  /*
+  LoaderSub* pLoaderSub = new LoaderSub;
+  ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
+  
+  pLoaderSub->vLoader(pLoader);
+  
+  mpTask->m_pDataStack->vPushObject(pLoaderSub);
+  */
   
   EXIT();
 }
