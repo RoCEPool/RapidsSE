@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace DBobjects
+namespace Utilities
 {
   static const i8 C_LOADCHUNK_LENGTH = C_1M; // its 1M not 1MB (i.e. < 1MB)
   

@@ -2,7 +2,7 @@
 /* LoaderSub.cpp -- Subordinate Parallel Table Loader                         */
 /*============================================================================*/
 
-#include "DBobjects.h"
+#include "Utilities.h"
 
 #include "StorageEngine.h"
 
@@ -11,7 +11,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-LoaderSub* DBobjects::_pLoaderSub(void* aAddr)
+LoaderSub* Utilities::_pLoaderSub(void* aAddr)
 {
   LoaderSub* pLoaderSub = reinterpret_cast<LoaderSub*>(aAddr);
   

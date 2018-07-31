@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace DBobjects
+namespace Utilities
 {
   class LoaderSub : public Object
   {

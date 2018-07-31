@@ -2,14 +2,14 @@
 /* Loader.cpp -- Parallel Table Loader                                        */
 /*============================================================================*/
 
-#include "DBobjects.h"
+#include "Utilities.h"
 
 #include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Loader* DBobjects::_pLoader(void* aAddr)
+Loader* Utilities::_pLoader(void* aAddr)
 {
   Loader* pLoader = reinterpret_cast<Loader*>(aAddr);
   

@@ -74,11 +74,7 @@ typedef Array<CN_ROARRAY,eRO,1024> RelOpAry;
 #include "RowCursor.hpp"
 #include "RowOnce.hpp"
 
-#include "LoadMap.hpp"
 
-#include "LoadChunk.hpp"
-#include "Loader.hpp"
-#include "LoaderSub.hpp"
 
 #include "User.hpp"
 
