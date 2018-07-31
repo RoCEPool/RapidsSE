@@ -63,15 +63,18 @@
 
   //----------------------------------------------------------------------------
   // grad a ddl lock
+
   ddlLock::grabWrite
 
   //----------------------------------------------------------------------------
+  // path checks
+
   // set dictionary stack
   pJob_LoadTable getPathR35 dicStack.set
   pathDump
 
   // there should be a table folder
-  sTableNm checkIsTableFolder not if <ERROR_JOB> exit then
+  sTableNm checkIsTableFolder not if pJob_LoadTable <ERROR_JOB> exit then
   sTableNm "In table folder: %v" fmt.print
 
   // push table dictionary
@@ -79,7 +82,7 @@
   pathDump
 
   // check it is a table
-  sTableNm checkIsTable  not if <ERROR_JOB> exit then
+  sTableNm checkIsTable not if pJob_LoadTable <ERROR_JOB> exit then
   drop
 
   // pop table dictionary
@@ -88,9 +91,8 @@
 
   //----------------------------------------------------------------------------
   // check if we have enough buffers
-  //checkEnoughBuffersR35 not if pJob_LoadTable <ERROR_JOB> exit then
 
-  //......
+  checkEnoughBuffersR35 not if pJob_LoadTable <ERROR_JOB> exit then
 
   <DONE_NODE>
 ;
