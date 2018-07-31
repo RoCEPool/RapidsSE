@@ -15,6 +15,7 @@
 
   pJob_LoadTable loader::new locals| pLoader |
 
+  pLoader loader.chunkFile
 
   pLoader loader.delete
 ;
