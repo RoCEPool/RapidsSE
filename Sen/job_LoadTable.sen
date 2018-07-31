@@ -9,8 +9,8 @@
 /*----------------------------------------------------------------------------*/
 : LoadTable_req (  -- <R> )
 
-  0 0 locals| pTask |
-  0 0 locals| pJob  |
+  0 locals| pTask |
+  0 locals| pJob  |
 
   tp: loadTable_req
 
@@ -21,9 +21,32 @@
   pTask task.job@ to pJob
 
   // distribute the job
-  //pTask pJob "job::distribute" find execute
+  pTask pJob "job::distribute" find execute
 
   pJob <DONE_REQUEST>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_LoadTable job on each node                                     */
+/*----------------------------------------------------------------------------*/
+: loadTable_node ( pJob_LoadTable -- )
+
+  params| pJob_LoadTable |
+
+  pJob_LoadTable job::originator@ locals| iOriginNode |
+  grid::thisNode@ locals| iThisNode |
+
+  iThisNode iOriginNode "Originating node %v; this node %v" fmt.print
+
+  iThisNode iOriginNode == not if
+    "Loader is not executed on this node" .
+    <DONE_NODE>
+    exit
+  then
+
+  "Executing loader on this node" .
+
+  <DONE_NODE>
 ;
 
 /*----------------------------------------------------------------------------*/

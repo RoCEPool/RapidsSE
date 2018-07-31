@@ -583,7 +583,14 @@ void Task::vJobDelete(MP_Task mpTask)
 //      break;
 //    }
       
-    case CN_JOB_PWF:
+    case CN_JOB_LOADTABLE:
+    {
+      Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pJobPtr);
+      delete pJob_LoadTable;
+      break;
+    }
+      
+   case CN_JOB_PWF:
     {
       Job_Pwf* pJob_Pwf = _pJob_Pwf(pJobPtr);
       delete pJob_Pwf;

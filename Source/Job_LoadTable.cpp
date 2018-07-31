@@ -86,6 +86,8 @@ Job_LoadTable::Job_LoadTable(Interface::SEitf* pSEitf)
   m_sSeed     = mJobNote_LoadTable.pJobClass()->m_aSeed;
   m_sFileName = ""_Stz;
   
+  m_bCheckResources = true;
+  
   _checkInitialised_(CN_JOB_LOADTABLE);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
