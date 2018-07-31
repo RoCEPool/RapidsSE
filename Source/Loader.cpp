@@ -136,6 +136,18 @@ void Loader::vAddValidRecords(i8 iValidRecords)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump the load map                                                          */
+/*----------------------------------------------------------------------------*/
+void Loader::vDumpMap(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  
+  vTrace("Load Map for: %s:\n"_Stz,m_pJob_LoadTable->m_sFileName.aStr());
+  
+  m_pLoadMap->vDumpMap();
+}
+
+/*----------------------------------------------------------------------------*/
 /* find next chunk in file being loaded                                       */
 /*----------------------------------------------------------------------------*/
 bool Loader::bFindChunk(void)

@@ -923,6 +923,7 @@ namespace Tasks
     static void vLoaderAddRecordsValid(MP_Task mpTask);
     static void vLoaderChunkFile(MP_Task mpTask);
     static void vLoaderDelete(MP_Task mpTask);
+    static void vLoaderDumpMap(MP_Task mpTask);
     static void vLoaderFindChunk(MP_Task mpTask);
     static void vLoaderInit(MP_Task mpTask);
     static void vLoaderNew(MP_Task mpTask);

@@ -17,6 +17,8 @@
 
   pLoader loader.chunkFile
 
+  pLoader loader.dumpMap
+
   pLoader loader.delete
 ;
 

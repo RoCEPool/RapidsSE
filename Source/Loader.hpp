@@ -39,6 +39,7 @@ namespace Utilities
 
     void     vAddInvalidRecords(i8 iInvalidRecords);
     void     vAddValidRecords(i8 iValidRecords);
+    void     vDumpMap(void);
     bool     bFindChunk(void);
     i8       iInvalidRecords(void);
     LoadMap* pLoadMap(void);

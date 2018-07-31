@@ -19,6 +19,7 @@ void Task::vAddPrimitives_Loader(void)
   vAddPrimitive("loader.addRecordsValid"_Stz,   &vLoaderAddRecordsValid, false);
   vAddPrimitive("loader.chunkFile"_Stz,         &vLoaderChunkFile,       false);
   vAddPrimitive("loader.delete"_Stz,            &vLoaderDelete,          false);
+  vAddPrimitive("loader.dumpMap"_Stz,           &vLoaderDumpMap,         false);
   vAddPrimitive("loader.findChunk"_Stz,         &vLoaderFindChunk,       false);
   vAddPrimitive("loader.init"_Stz,              &vLoaderInit,            false);
   vAddPrimitive("loader::new"_Stz,              &vLoaderNew,             false);
@@ -30,25 +31,6 @@ void Task::vAddPrimitives_Loader(void)
   vAddPrimitive("loader.seitf@"_Stz,            &vLoaderSEitfFetch,      false);
   vAddPrimitive("loader.seitf!"_Stz,            &vLoaderSEitfStore,      false);
   vAddPrimitive("loader.table!"_Stz,            &vLoaderTableStore,      false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* loader.delete -- delete a table loader                                     */
-/*----------------------------------------------------------------------------*/
-void Task::vLoaderDelete(MP_Task mpTask)
-{
-  ENTRY("vLoaderDelete"_Stz);
-  
-  Object* pPtrLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
-    THROW_INVALID_DSTACK("loader.delete"_Stz);
-  
-  Loader* pLoader = _pLoader(pPtrLoader);
-  ASSERT(CN_LOADER == pLoader->eClass());
-  
-  delete pLoader;
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -115,6 +97,44 @@ void Task::vLoaderChunkFile(MP_Task mpTask)
     bFoundChunk = pLoader->bFindChunk();
   } while (bFoundChunk);
     
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loader.delete -- delete a table loader                                     */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderDelete(MP_Task mpTask)
+{
+  ENTRY("vLoaderDelete"_Stz);
+  
+  Object* pPtrLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
+    THROW_INVALID_DSTACK("loader.delete"_Stz);
+  
+  Loader* pLoader = _pLoader(pPtrLoader);
+  ASSERT(CN_LOADER == pLoader->eClass());
+  
+  delete pLoader;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loader.dumpMap -- dump the load map                                        */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderDumpMap(MP_Task mpTask)
+{
+  ENTRY("vLoaderDUmpMap"_Stz);
+  
+  Object* pPtrLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
+    THROW_INVALID_DSTACK("loader.dumpMap"_Stz);
+  
+  Loader* pLoader = _pLoader(pPtrLoader);
+  ASSERT(CN_LOADER == pLoader->eClass());
+  
+  pLoader->vDumpMap();
+  
   EXIT();
 }
 

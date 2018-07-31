@@ -33,7 +33,8 @@ namespace Utilities
     ~LoadMap(void);
 
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    
+  
+    void vDumpMap(void);
     void vFilePath(StrVal& sPath);
     
     bool bFindChunk(void);
