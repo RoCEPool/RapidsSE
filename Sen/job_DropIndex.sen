@@ -38,23 +38,26 @@
 /*----------------------------------------------------------------------------*/
 /* remove a table folder                                                      */
 /*----------------------------------------------------------------------------*/
-: removeIndex ( "<tableNm>" "<indexNm>" )
+: removeIndex ( Job_DropIndex )
 
-  params| sIndexNm sTableNm |
-  0 locals| pIndex |
-"tt" .
+  params| pJob_DropIndex |
+  0 0 0 locals| pIndex sIndexNm sTableNm |
+
+  pJob_DropIndex job.objectName@ to sIndexNm
+  pJob_DropIndex job_dropIndex.tableName@ to sTableNm
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table dictionary
   sTableNm pushTable assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push indexes folder
-  pushIndexes assert ( "<sIndexNm>" )
+  pushIndexes assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the index from the table
   sIndexNm find execute to pIndex
-  pIndex index.table@ table.removeIndex
+  pIndex pIndex index.table@ table.removeIndex
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tidy up the index abd orget it
@@ -103,7 +106,7 @@
   params| pJob_DropIndex |
 
   tp: dropIndex_node
-"ty" .
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert correct job
   CN_JOB_DROPINDEX pJob_DropIndex object.assertClass
@@ -116,12 +119,12 @@
   // set dictionary stack
   pJob_DropIndex getPathR35
   dicStack.set
-"t4" .
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the table
   pJob_DropIndex removeIndex
   assertInTables
-"t5" .
+
   pJob_DropIndex job.notice
 
   <DONE_NODE>
@@ -133,7 +136,7 @@
 : dropIndex_checkResources ( Job_DropIndex -- )
 
   params| pJob_DropIndex  |
-  locals| sIndexNm sTableNm |
+  0 0 locals| sIndexNm sTableNm |
 
   tp: dropIndex_checkResources
   "checkResources received" .
@@ -163,20 +166,19 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push indexes folder
   pushIndexes assert
-"t1" .
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is an index we are dropping
   sIndexNm checkIsIndex not if
     popIndexes popTable assertInTables pJob_DropIndex <ERROR_JOB> exit
   then
-"t2" .
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cannot drop hidden index
   sIndexNm "hidden" str.equal if
     popIndexes popTable assertInTables EC_NO_SUCH_INDEX pJob_DropIndex <ERROR_JOB> exit
   then
-"t3" .
-stk
+
   <DONE_NODE>
 ;
 
