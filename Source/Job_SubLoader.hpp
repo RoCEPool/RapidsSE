@@ -13,6 +13,7 @@ namespace JobsModel
   {
   public:
     Job_LoadTable* m_pJob_LoadTable;
+    Utilities::LoaderSub* m_pLoaderSub;
   
     // must be last
     Footer m_xFooter;

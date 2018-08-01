@@ -13,8 +13,8 @@ namespace JobsModel
                         public JobFileName
   {
   public:
-    
-     Formatters m_xFormatters; // record formatters
+    Utilities::Loader* m_pLoader; // table loader
+    Formatters m_xFormatters; // record formatters
     
     // must be last
     Footer m_xFooter;

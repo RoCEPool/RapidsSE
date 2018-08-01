@@ -192,6 +192,7 @@ void Task::vLoaderNew(MP_Task mpTask)
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
 
   Loader* pLoader = new Loader(pJob_LoadTable);
+  pJob_LoadTable->m_pLoader = pLoader;
 
   mpTask->m_pDataStack->vPushObject(pLoader);
   
@@ -363,11 +364,14 @@ void Task::vLoaderSpawnSubLoader(MP_Task mpTask)
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
   
-  SEitf* pSEitf = pLoader->pJob_LoadTable()->m_pSEitf;
+  Job_LoadTable* pJob_LoadTable = pLoader->pJob_LoadTable();
+  SEitf* pSEitf = pJob_LoadTable->m_pSEitf;
   
   Job_SubLoader* pJob_SubLoader = new Job_SubLoader(pSEitf);
+  pJob_SubLoader->m_pJob_LoadTable = pJob_LoadTable;
 
   LoaderSub* pLoaderSub = new LoaderSub(pLoader);
+  pJob_SubLoader->m_pLoaderSub = pLoaderSub;
   
   Task* pSubLoaderTask = new Task;
   pSubLoaderTask->vParentTask(*mpTask);

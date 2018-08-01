@@ -86,6 +86,7 @@ Job_SubLoader::Job_SubLoader(Interface::SEitf* pSEitf)
   m_sSeed = mJobNote_SubLoader.pJobClass()->m_aSeed;
   
   m_pJob_LoadTable = nullptr;
+  m_pLoaderSub = nullptr;
   
   m_bCheckResources = true;
   
