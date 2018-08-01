@@ -3674,6 +3674,42 @@ bool SEitf::bAppendJob(Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append task into system                                                    */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bAppendTask(Task* pNewTask, Job* pJob)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  //----------------------------------------------------------------------------
+  // Before appending request for se, ensure that se is running
+  // get the se pid from the attachmap
+  i8 iPid = gpAttachMap->m_iPid;
+  if (!Process::bTestPid(iPid)) {
+    // SE is not running anymore!
+    vError("Cannot find pid %lld\n"_Stz, gpAttachMap->m_iPid);
+    vSetLastError(EC_SE_NOT_RUNNING);
+    return false;
+  }
+
+  // form the word to execute for the request
+  s32 sRequest;
+  sRequest = pJob->sJobSeed();
+  sRequest.vConcat("_req"_Stz);
+  
+  pNewTask->vSeedWord(sRequest);
+  pNewTask->vState(TS_READY);
+  pNewTask->vR35model(true);
+  pNewTask->vActorModel(AC_R35);
+  pNewTask->vSEitf(this);
+  
+  pNewTask->vJob(pJob);
+  
+  Handlers::vSpawnedTaskHandler(pNewTask);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop response from response queue (response is from pointer in seitf(shm))  */
 /*----------------------------------------------------------------------------*/
 eEC SEitf::eGetResponse(void)

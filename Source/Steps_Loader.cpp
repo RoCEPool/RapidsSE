@@ -212,7 +212,7 @@ void Task::vLoaderNewSub(MP_Task mpTask)
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
   
-  LoaderSub* pLoaderSub = new LoaderSub;
+  LoaderSub* pLoaderSub = new LoaderSub(pLoader);
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
   
   pLoaderSub->vLoader(pLoader);
@@ -367,11 +367,13 @@ void Task::vLoaderSpawnSubLoader(MP_Task mpTask)
   
   Job_SubLoader* pJob_SubLoader = new Job_SubLoader(pSEitf);
 
-  LoaderSub* pLoaderSub = new LoaderSub;
+  LoaderSub* pLoaderSub = new LoaderSub(pLoader);
   
   Task* pSubLoaderTask = new Task;
   pSubLoaderTask->vParentTask(*mpTask);
 
+  pSEitf->bAppendTask(pSubLoaderTask,pJob_SubLoader);
+  
   /*
   LoaderSub* pLoaderSub = new LoaderSub;
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());

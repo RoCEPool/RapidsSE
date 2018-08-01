@@ -9,6 +9,7 @@ namespace Utilities
   {
   private:
     Loader*  m_pLoader;    // loader parent
+  
     Table*   m_pTable;     // table being loaded
     LoadMap* m_pLoadMap;   // load map
     s256     m_aRecord;    // formatted row
@@ -32,7 +33,7 @@ namespace Utilities
     void* operator new(size_t, LoaderSub* pLoaderSub);
     void  operator delete(void* pLoaderAddress);
  
-    LoaderSub(void);
+    LoaderSub(Loader* pLoader);
     ~LoaderSub(void);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

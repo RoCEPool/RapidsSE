@@ -220,7 +220,7 @@ void Task::vLoaderSubInit(MP_Task mpTask)
     THROW_INVALID_DSTACK("loaderSub.init"_Stz);
   LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoader);
   
-  new(pLoaderSub) LoaderSub;
+  new(pLoaderSub) LoaderSub(nullptr);
   
   EXIT();
 }
@@ -361,7 +361,7 @@ void Task::vLoaderSubNew(MP_Task mpTask)
 {
   ENTRY("vLoaderSubNew"_Stz);
   
-  LoaderSub* pLoaderSub = new LoaderSub;
+  LoaderSub* pLoaderSub = new LoaderSub(nullptr);
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
   
   mpTask->m_pDataStack->vPushObject(pLoaderSub);

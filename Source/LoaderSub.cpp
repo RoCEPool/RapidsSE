@@ -55,12 +55,12 @@ void LoaderSub::operator delete(void* pLoaderAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-LoaderSub::LoaderSub(void)
+LoaderSub::LoaderSub(Loader* pLoader)
 : Object(CN_LOADERSUB)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
 
-  m_pLoader  = nullptr;
+  m_pLoader  = pLoader;
   m_pTable   = nullptr;
   m_pLoadMap = nullptr;
   //m_aRecord

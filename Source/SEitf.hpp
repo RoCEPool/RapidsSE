@@ -261,7 +261,8 @@ namespace Interface
     bool bAppendRequest(StrVal& sRequest);
 
     bool bAppendJob(Job* pJob);
-  
+    bool bAppendTask(Task* pTask, Job* pJob);
+
     eEC  eGetResponse(void);
     
     bool bPopResponse(eEC& eResult, StrVal& sResponse);
