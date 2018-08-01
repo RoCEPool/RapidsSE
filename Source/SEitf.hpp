@@ -35,9 +35,11 @@ namespace Interface
     AccessPath*   m_pAccessPath;
   
     WorkingBuffer* m_pResultBuffer;
+    FetchBuffer*  m_pFetchBuffer;
     Entry*        m_pEntry;
     WorkingRow*   m_pResultRow;
     Row*          m_aRow;
+    Id*           m_pFetchRowId;
   
     Tx*    m_pTx;
   

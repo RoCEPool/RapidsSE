@@ -554,6 +554,8 @@ void Task::vAddConstants(void)
   /* 19 */ vAddConstant("CN_DICPATH"_Stz,      CN_DICPATH);
   /* 20 */ vAddConstant("CN_DIR"_Stz,          CN_DIR);
   
+  /* 21 */ vAddConstant("CN_FETCHBUFFER"_Stz,  CN_FETCHBUFFER);
+  
   /* 21 */ vAddConstant("CN_FILE"_Stz,         CN_FILE);
   /* 15 */ vAddConstant("CN_FREEBUFFER"_Stz,   CN_FREEBUFFER);
   /* 22 */ vAddConstant("CN_FREECHUNK"_Stz,    CN_FREECHUNK);
