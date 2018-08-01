@@ -13,16 +13,23 @@
 
   "Executing loader on this node" .
 
+  //task::this locals| pThisTask |
+
   pJob_LoadTable loader::new locals| pLoader |
 
   pLoader loader.chunkFile
 
   pLoader loader.dumpMap
 
+  //args.subLoaders setAcks
+
   args.subLoaders 0
   do
     I "Creating Job_SubLoader %v" fmt.print
+    pLoader loader.spawnSubLoader
   loop
+
+  //ackWait
 
   pLoader loader.delete
 ;

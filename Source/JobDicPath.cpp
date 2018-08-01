@@ -26,6 +26,8 @@ void* JobDicPath::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 JobDicPath::JobDicPath(Interface::SEitf* pSEitf)
 {
+  m_pSEitf = pSEitf;
+  
   m_xDicPath.m_iDicDepth = pSEitf->m_xPathStack.iCount();
   for (i8 i_DicStack = 0; i_DicStack < m_xDicPath.m_iDicDepth; i_DicStack++)
     m_xDicPath.m_sDicPath[i_DicStack] = pSEitf->m_xPathStack.pPick(i_DicStack)->sName();

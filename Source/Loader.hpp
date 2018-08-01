@@ -42,6 +42,7 @@ namespace Utilities
     void     vDumpMap(void);
     bool     bFindChunk(void);
     i8       iInvalidRecords(void);
+    Job_LoadTable* pJob_LoadTable(void);
     LoadMap* pLoadMap(void);
     StrVal&  sPath(void);
     void     vPath(StrVal& sPath);
