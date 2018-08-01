@@ -97,8 +97,6 @@ bool Row::bFormatRow(ColumnVec* pColVec,
   for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
     
     Column* pColumn = pColVec->pGet(i_Column);
-    if (2 == pColumn->iColumnNo())
-      int iDebug = 1;
     
     // extract datum type
     eDM eDatumType = pColumn->eDatumType();
@@ -134,7 +132,7 @@ bool Row::bFormatRow(ColumnVec* pColVec,
     }
     
     // save offset
-    *(pOffset->aChar()) = iRowLength;
+    *((u2*)pOffset->aChar()) = iRowLength;
     
     i8 iColumnLength;
     
@@ -230,7 +228,7 @@ bool Row::bFormatRow(ColumnVec* pColVec,
     }
     
     // save offset
-    *(pOffset->aChar()) = iRowLength;
+    *((u2*)pOffset->aChar()) = iRowLength;
     
     i8 iColumnLength = DtmLib::iSize(eDatumType, aDst->aChar());
     
@@ -271,8 +269,8 @@ void Row::vAsBinaryString(s48K& sDataString, ColumnVec* pColVec)
     if (i_Column != 0)
       sDataString.vConcat(","_Stz);
     
-    unsigned char* pOffset = (unsigned char*)(this) + i_Column*C_COLUMN_OFFSET_SIZE;
-    unsigned char iOffset = *(pOffset);
+    char* pOffset = (char*)(this) + i_Column*C_COLUMN_OFFSET_SIZE;
+    u2 iOffset = *((u2*)(pOffset));
     
     // move to offset
     aData = (Stz*)((unsigned char*)(this) + iOffset);
@@ -305,8 +303,8 @@ void Row::vAsBinaryStringVLQ(s48K& sDataString, ColumnVec* pColVec)
     if (i_Column != 0)
       sDataString.vConcat(","_Stz);
     
-    unsigned char* pOffset = (unsigned char*)(this) + i_Column*C_COLUMN_OFFSET_SIZE;
-    unsigned char iOffset = *(pOffset);
+    char* pOffset = (char*)(this) + i_Column*C_COLUMN_OFFSET_SIZE;
+    u2 iOffset = *((u2*)(pOffset));
     
     // move to offset
     aData = (Stz*)((unsigned char*)(this) + iOffset);
@@ -341,8 +339,8 @@ void Row::vAsEscapedString(s48K& sDataString, ColumnVec* pColVec)
     if (i_Column != 0)
       sDataString.vConcat(","_Stz);
     
-    unsigned char* pOffset = (unsigned char*)(this) + i_Column*C_COLUMN_OFFSET_SIZE;
-    unsigned char iOffset = *(pOffset);
+    char* pOffset = (char*)(this) + i_Column*C_COLUMN_OFFSET_SIZE;
+    u2 iOffset = *((u2*)(pOffset));
     
     // move to offset
     aData = (Stz*)((unsigned char*)(this) + iOffset);
@@ -372,8 +370,8 @@ void Row::vAsEscapedString(s48K& sDataString, ColumnVec* pColVec)
     if (i_Column != 0)
       sDataString.vConcat(","_Stz);
     
-    unsigned char* pOffset = (unsigned char*)(this) + i_Column*C_COLUMN_OFFSET_SIZE;
-    unsigned char iOffset = *(pOffset);
+    char* pOffset = (char*)(this) + i_Column*C_COLUMN_OFFSET_SIZE;
+    u2 iOffset = *((u2*)(pOffset));
     
     // move to offset
     aData = (Stz*)((unsigned char*)(this) + iOffset);
@@ -396,7 +394,7 @@ char* Row::aColumnDatum(i8 iColumnNo)
   i8 iCurrentColumn = 0;
   
   char* aOffset = (char*)(this) + iColumnNo*C_COLUMN_OFFSET_SIZE;
-  unsigned char iOffset = *(aOffset);
+  u2 iOffset = *((u2*)(aOffset));
   
   // move to offset
   char* aCursor = ((char*)(this) + iOffset);
@@ -425,7 +423,7 @@ void Row::vDump(ColumnVec* pColVec)
     char* pOffset = (char*)(this) + i_Column*C_COLUMN_OFFSET_SIZE;
 
     // get the column offset
-    unsigned char iOffset = *(pOffset);
+    u2 iOffset = *((u2*)(pOffset));
 
     vTrace("%lld|"_Stz, iOffset);
   }
@@ -440,10 +438,10 @@ void Row::vDump(ColumnVec* pColVec)
     char* pOffset = (char*)(this) + i_Column*C_COLUMN_OFFSET_SIZE;
 
     // get the column offset
-    unsigned char iOffset = *(pOffset);
+    u2 iOffset = *((u2*)(pOffset));
 
     // let aData point to column data
-    aData = (Stz*)((unsigned char*)(this) + iOffset);
+    aData = (Stz*)((char*)(this) + iOffset);
 
     // dump the column value
     s256 s;
@@ -471,7 +469,7 @@ void Row::vDump(ColumnVec* pColVec)
     char* pOffset = (char*)(this) + i_Column*C_COLUMN_OFFSET_SIZE;
     
     // get the column offset
-    unsigned char iOffset = *(pOffset);
+    u2 iOffset = *((u2*)(pOffset));;
     
     vTrace("%lld|"_Stz, iOffset);
   }
@@ -486,7 +484,7 @@ void Row::vDump(ColumnVec* pColVec)
     char* pOffset = (char*)(this) + i_Column*C_COLUMN_OFFSET_SIZE;
     
     // get the column offset
-    unsigned char iOffset = *(pOffset);
+    u2 iOffset = *((u2*)(pOffset));;
     
     // let aData point to column data
     aData = (Stz*)((unsigned char*)(this) + iOffset);
@@ -517,7 +515,7 @@ void Row::vShow(ColumnVec* pColVec, bool bCompressed)
     Column* pColumn = pColVec->pGet(i_Column);
     
     char* pOffset = (char*)(this) + i_Column*C_COLUMN_OFFSET_SIZE;
-    unsigned char iOffset = *(pOffset);
+    u2 iOffset = *((u2*)(pOffset));;
     
     // move to offset
     aData = (Stz*)((unsigned char*)(this) + iOffset);

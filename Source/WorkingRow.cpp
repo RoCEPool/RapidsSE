@@ -70,7 +70,7 @@ WorkingRow::WorkingRow(Row* aSrcRow, ColumnVec *pColumnVec, i8 nWorkingRowSize, 
     eDM eDatumType = pColumn->eDatumType();
     
     char* pSrcOffset = (char*)(aSrcRow) + i_Column*C_COLUMN_OFFSET_SIZE;
-    unsigned char iSrcOffset = *(pSrcOffset);
+    u2 iSrcOffset = *((u2*)pSrcOffset);
     
     // move to offset
     Stz* aSrcData = (Stz*)((unsigned char*)(aSrcRow) + iSrcOffset);
@@ -79,7 +79,7 @@ WorkingRow::WorkingRow(Row* aSrcRow, ColumnVec *pColumnVec, i8 nWorkingRowSize, 
     i8 iColumnLength = DtmLib::nCopyVLQ(eDatumType, aDst, aSrcData);
     
     // save the offset
-    *(pOffset->aChar()) = iRowLength;
+    *((u2*)pOffset->aChar()) = iRowLength;
     
     // move to next offset location
     pOffset += C_COLUMN_OFFSET_SIZE;
@@ -112,8 +112,8 @@ WorkingRow::~WorkingRow(void)
 i8 WorkingRow::nUncompressedBytesRequired(Row* aRow, ColumnVec *pColumnVec, i8 nCompressedRowSize)
 {
   i8 i_VlqAdjustment = 0;
-  unsigned char iOffset = -1;
-  unsigned char iOffsetPrev = -1;
+  u2 iOffset = -1;
+  u2 iOffsetPrev = -1;
   
   i8 nColumns = pColumnVec->nItems();
   bool bVlqColumn = false;
@@ -124,7 +124,7 @@ i8 WorkingRow::nUncompressedBytesRequired(Row* aRow, ColumnVec *pColumnVec, i8 n
     
     char* pOffset = (char*)(aRow) + i_Column*C_COLUMN_OFFSET_SIZE;
     iOffsetPrev = iOffset;
-    iOffset = *(pOffset);
+    iOffset = *((u2*)(pOffset));
     
     // was the previous column vlq column ?
     if (bVlqColumn) {
