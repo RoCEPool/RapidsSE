@@ -1709,6 +1709,26 @@ void Task::vNextInSet(NP_Task npNextInSet)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get parent task                                                            */
+/*----------------------------------------------------------------------------*/
+Task* Task::pParentTask(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  return m_pParentTask;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set parent task                                                            */
+/*----------------------------------------------------------------------------*/
+void Task::vParentTask(Task* pParentTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  m_pParentTask = pParentTask;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop int                                                                    */
 /*----------------------------------------------------------------------------*/
 bool Task::bPopInt(i8& iInt)

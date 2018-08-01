@@ -283,6 +283,8 @@ namespace Tasks
     StrVal&   sName(void);
     void vName(StrVal& sName);
     void vNextInSet(NP_Task npNext);
+    Task*  pParentTask(void);
+    void vParentTask(Task* pParentTask);
     i8   iPartition(void);
     void vPerformancePoint(Stz* aWordName, Stz* aPointNote);
     void vPerformancePrint(void);
