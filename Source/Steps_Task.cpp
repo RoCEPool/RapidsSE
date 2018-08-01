@@ -394,7 +394,7 @@ void Task::vTaskGrabLock(MP_Task mpTask)
   
   Object* pObject;
   if ( ! mpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("task.dump"_Stz);
+    THROW_INVALID_DSTACK("task.grabLock"_Stz);
   Task* pThatTask = _pTask(pObject);
   
   pThatTask->vGrabLock();

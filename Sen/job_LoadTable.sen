@@ -13,7 +13,7 @@
 
   "Executing loader on this node" .
 
-  //task::this locals| pThisTask |
+  task::this locals| pThisTask |
 
   pJob_LoadTable loader::new locals| pLoader |
 
@@ -21,7 +21,10 @@
 
   pLoader loader.dumpMap
 
-  //args.subLoaders setAcks
+  // grab this task's lock
+  pThisTask task.grabLock
+
+  args.subLoaders setAcks
 
   args.subLoaders 0
   do
@@ -29,7 +32,9 @@
     pLoader loader.spawnSubLoader
   loop
 
-  //ackWait
+  "Loader ack waiting" .
+  ackWait
+  "Loader acked" .
 
   pLoader loader.delete
 ;
