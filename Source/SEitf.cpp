@@ -3694,7 +3694,7 @@ bool SEitf::bAppendTask(Task* pNewTask, Job* pJob)
   // form the word to execute for the request
   s32 sRequest;
   sRequest = pJob->sJobSeed();
-  sRequest.vConcat("_req"_Stz);
+  //sRequest.vConcat("_req"_Stz);
   
   pNewTask->vSeedWord(sRequest);
   pNewTask->vState(TS_READY);

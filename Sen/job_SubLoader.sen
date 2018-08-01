@@ -7,12 +7,12 @@
 /*----------------------------------------------------------------------------*/
 /* Job_SubLoader request (on originating node)                                */
 /*----------------------------------------------------------------------------*/
-: SubLoader_req (  -- <R> )
+: SubLoader (  -- <R> )
 
   0 locals| pTask |
   0 locals| pJob  |
 
-  tp: loadTable_req
+  tp: SubLoader
 
   // get the task
   task::this to pTask
@@ -20,7 +20,7 @@
   // get the job from the task
   pTask task.job@ to pJob
 
-  "SubLoader_req running" .
+  "SubLoader running" .
 
   pJob <DONE_CHILD>
 ;
