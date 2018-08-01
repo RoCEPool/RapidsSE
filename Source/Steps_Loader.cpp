@@ -372,7 +372,7 @@ void Task::vLoaderSpawnSubLoader(MP_Task mpTask)
   Task* pSubLoaderTask = new Task;
   pSubLoaderTask->vParentTask(*mpTask);
 
-  //pSEitf->bAppendTask(pSubLoaderTask,pJob_SubLoader);
+  pSEitf->bAppendTask(pSubLoaderTask,pJob_SubLoader);
   
   EXIT();
 }
