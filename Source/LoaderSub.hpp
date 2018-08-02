@@ -39,6 +39,7 @@ namespace Utilities
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     void vBegin(void);
+    void vBegin_Original(void);
     void vEnd(void);
     bool bFetchRecord(void);
     bool bFetchRecordDist(void);
