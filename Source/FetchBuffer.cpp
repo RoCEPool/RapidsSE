@@ -85,11 +85,11 @@ FetchBuffer::~FetchBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* append row                                                                 */
 /*----------------------------------------------------------------------------*/
-bool FetchBuffer::bAppendRow(Id xRowId)
+bool FetchBuffer::bAppendRow(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHBUFFER,_FOOTER_);
   
-  i8 iRowIdSize = sizeof(Id);
+  i8 iRowIdSize = sizeof(Row*);
   
   // do we have enough space for this row ?
   i8 nFreeSpace = nFreeBytes();
@@ -97,10 +97,13 @@ bool FetchBuffer::bAppendRow(Id xRowId)
     return false;
 
   // allocate row
-  Id* pRowId = pAllotRowId(iRowIdSize);
+  Row** ppFetchRow = pAllotRowPtr(iRowIdSize);
   
   // copy the row id
-  *pRowId = xRowId;
+  *ppFetchRow = pRow;
+  
+  pRow->vShow(m_pTable->pColumnVec(), true);
+  vTrace(" %p \n"_Stz, pRow);
   
   return true;
 }
@@ -130,14 +133,14 @@ i8 FetchBuffer::nFetchedRows(void)
 /*----------------------------------------------------------------------------*/
 /* first item                                                                 */
 /*----------------------------------------------------------------------------*/
-Id* FetchBuffer::pFirstRowId(void)
+Row** FetchBuffer::pFirstRowPtr(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHBUFFER,_FOOTER_);
   
   if (nUsedBytes() == 0)
     return nullptr;
   
-  Id* pFirstRowId = reinterpret_cast<Id*>(m_xWsp.aArea());
+  Row** ppFirstRow = reinterpret_cast<Row**>(m_xWsp.aArea());
   
   // get the referenced buffer
   //EntryBuffer* pEntryBuffer = xId.pReferencedEntryBuffer();
@@ -145,7 +148,7 @@ Id* FetchBuffer::pFirstRowId(void)
   // get the row entry
   //Entry* pRowEntry = pEntryBuffer->pGetEntryRowNo(xId.iRow());
   
-  return pFirstRowId;
+  return ppFirstRow;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -171,16 +174,16 @@ bool FetchBuffer::bIsLast(void)
 /*----------------------------------------------------------------------------*/
 /* get next item                                                              */
 /*----------------------------------------------------------------------------*/
-Id* FetchBuffer::pNextRowId(Id* pCurrentId)
+Row** FetchBuffer::pNextRowPtr(Row** ppCurrentRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHBUFFER,_FOOTER_);
   
-  Id* pNextRowId= pAdd<Id*>(pCurrentId,sizeof(Id));
+  Row** ppNextRow = pAdd<Row**>(ppCurrentRow,sizeof(Row*));
   
-  if ((char*)pNextRowId >= (char*)m_xWsp.aLatter())
+  if ((char**)ppNextRow >= (char**)m_xWsp.aLatter())
     return nullptr;
   
-  return pNextRowId;
+  return ppNextRow;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -210,21 +213,12 @@ void FetchBuffer::vShow(bool bCompressed)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHBUFFER,_FOOTER_);
 
-  Id* pRowId;
-  for (pRowId = pFirstRowId();
-       pRowId;
-       pRowId = pNextRowId(pRowId)) {
+  Row** ppRow;
+  for (ppRow = pFirstRowPtr();
+       ppRow;
+       ppRow = pNextRowPtr(ppRow)) {
     
-    Id xRowId = *pRowId;
-    
-    // get the referenced buffer
-    EntryBuffer* pEntryBuffer = xRowId.pReferencedEntryBuffer();
-    
-    // get the row entry
-    Entry* pEntry = pEntryBuffer->pGetEntryRowNo(xRowId.iRow());
-    
-    // dump the row
-    pEntry->vShow(0,m_pTable->pHiddenIndex(),false);
+    (*ppRow)->vShow(m_pTable->pColumnVec(),true);
     vTrace("\n"_Stz);
   }
 }
@@ -247,9 +241,9 @@ i8 FetchBuffer::nUsedBytes(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* allot an item of nBytes in this buffer                                     */
+/* allot space for a row ptr in this buffer                                   */
 /*----------------------------------------------------------------------------*/
-Id* FetchBuffer::pAllotRowId(i8 nBytes)
+Row** FetchBuffer::pAllotRowPtr(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHBUFFER,_FOOTER_);
   
@@ -257,11 +251,11 @@ Id* FetchBuffer::pAllotRowId(i8 nBytes)
   if (nFreeBytes() < nBytes)
     return nullptr;
   
-  Id* pRowId = reinterpret_cast<Id*>(m_xWsp.aAllot(nBytes));
+  Row** ppRow = reinterpret_cast<Row**>(m_xWsp.aAllot(nBytes));
   
   m_nFetchedRows++;
   
-  return pRowId;
+  return ppRow;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -284,7 +278,7 @@ void FetchBuffer::vItemCountRestore(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHBUFFER,_FOOTER_);
 
   m_nFetchedRows = 0;
-  for (Id* pRowId = pFirstRowId(); pRowId; pRowId = pNextRowId(pRowId))
+  for (Row** ppRow = pFirstRowPtr(); ppRow; ppRow = pNextRowPtr(ppRow))
     m_nFetchedRows++;
 
 }

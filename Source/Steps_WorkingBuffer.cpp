@@ -123,7 +123,7 @@ bool Task::bAppendRow(FetchBuffer* pFetchBuffer, Entry* pEntry, SEitf* pSEitf)
   Row* aRow = pEntry->aRow();
   i8 nRowSize = pEntry->nRowSize();
   
-  if (pFetchBuffer->bAppendRow(xId))
+  if (pFetchBuffer->bAppendRow(aRow))
     return true;
   else
     return false;

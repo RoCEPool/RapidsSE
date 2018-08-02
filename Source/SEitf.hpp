@@ -39,7 +39,7 @@ namespace Interface
     Entry*        m_pEntry;
     WorkingRow*   m_pResultRow;
     Row*          m_aRow;
-    Id*           m_pFetchRowId;
+    Row**         m_ppRow;
   
     Tx*    m_pTx;
   

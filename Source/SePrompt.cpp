@@ -2391,11 +2391,8 @@ void SePrompt::vIterateBuffers(void)
       
       //Entry* pEntry = m_pSEitf->m_pEntry;
       //Row* aRow = pEntry->aRow();
-      Id xId = *(m_pSEitf->m_pFetchRowId);
-      EntryBuffer* pEntryBuffer = xId.pReferencedEntryBuffer();
-      Entry* pRowEntry = pEntryBuffer->pGetEntryRowNo(xId.iRow());
       
-      Row* aRow = pRowEntry->aRow();
+      Row* aRow = *(m_pSEitf->m_ppRow);
       aRow->vAsBinaryStringVLQ(m_pSEitf->m_sResponse,
                             m_pSEitf->m_pCurrentTable->pColumnVec());
       if (gpAttachMap->m_bMetadata )

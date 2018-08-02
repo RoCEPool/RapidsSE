@@ -28,14 +28,14 @@ namespace DBobjects
  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public:
-    bool         bAppendRow(Id xRowId);
-    Id*          pAllotRowId(i8 nBytes);
+    bool         bAppendRow(Row* pRow);
+    Row**        pAllotRowPtr(i8 nBytes);
     char*        aDataArea(void);
     i8           nFetchedRows(void);
-    Id*          pFirstRowId(void);
+    Row**        pFirstRowPtr(void);
     void         vIsLast(bool bIsLast);
     bool         bIsLast(void);
-    Id*          pNextRowId(Id* pCurrentId);
+    Row**        pNextRowPtr(Row** ppRow);
     i8           nPartitionNo(void);
     void         vRestore(void);
     void         vShow(bool bCompressed);
