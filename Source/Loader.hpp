@@ -15,12 +15,12 @@ namespace Utilities
   private:
     Job_LoadTable* m_pJob_LoadTable; // job
   
-    LoadMap*   m_pLoadMap;     // load map
-    Atomic     m_ziInvalidRecords;
-    Atomic     m_ziValidRecords;
+    Table*    m_pTable;       // table being load
+    LoadMap*  m_pLoadMap;     // load map
+    Atomic    m_ziInvalidRecords;
+    Atomic    m_ziValidRecords;
   
     Interface::SEitf* m_pSEitf; // SE interface
-    Table*     m_pTable;       // table being load
     s256       m_sPath;        // file being loaded
   
     // must be last

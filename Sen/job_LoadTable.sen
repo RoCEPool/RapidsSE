@@ -17,6 +17,16 @@
 
   pJob_LoadTable loader::new locals| pLoader |
 
+
+  // initialise table loader
+  pJob_LoadTable job.objectName@ locals| sTableNm |
+  sTableNm "TableNm: %v" fmt.print
+  // push table dictionary
+  sTableNm pushTable assert
+  pathDump
+  sTableNm find execute locals| pTable |
+  pTable pLoader loader.table!
+
   pLoader loader.chunkFile
 
   pLoader loader.dumpMap
