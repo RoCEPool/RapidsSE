@@ -12,9 +12,15 @@ namespace DBobjects
   
   class TablePtn : public Object
   {
+    const i8 C_UNKNOWN = -1;
+  
   private:
-    Lock  m_xLock;        // lock on the partition
-    i8    m_iPartitionId; // partition number
+    Lock  m_xLock;          // lock on the partition
+    i8    m_iPartitionId;   // partition number
+  
+    i8    m_nBuffersLoadable;  // buffers to be loaded
+    i8    m_nBuffersLoaded;    // buffers loaded so far
+
     IndexTreeVec* m_pIndexTreeVec; // vector of index trees
   
     // must be last
@@ -33,17 +39,21 @@ namespace DBobjects
     ~TablePtn(void);
   
     void vAddIndex(IndexTree* pIndexTree);
+    void vBuffersLoadable(i8 nBuffersLoadable);
+    bool bBuffersLoaded(void);
     void vDropRead(void);
     void vDropWrite();
     bool bGrabRead(void);
     bool bGrabWrite(void);
+    IndexTree* pHiddenIndexTree(void);
+    void vIncBuffersLoaded(void);
+    IndexTree* pIndexTree(i8 iIndexNo);
+    IndexTreeVec* pIndexTreeVec(void);
     bool bIsLocked(void);
     i8   iPartitionId(void);
     void vPartitionId(i8 iPartitionId);
     bool bPopulateIndex(i8 iIndexNo);
-    IndexTree*    pIndexTree(i8 iIndexNo);
-    IndexTree*    pHiddenIndexTree(void);
-    IndexTreeVec* pIndexTreeVec(void);
+    void vResetLoad(void);
     void vTidyUp(void);
     void vTidyUpIndex(i8 iIndexNo);
     

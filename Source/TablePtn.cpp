@@ -105,6 +105,10 @@ TablePtn::TablePtn(void)
   
   m_xLock.vInitLock(LK_PARTITION);
   m_iPartitionId = -1;
+  
+  m_nBuffersLoadable = C_UNKNOWN;
+  m_nBuffersLoaded   = 0;
+
   m_pIndexTreeVec  = new IndexTreeVec;
   
   _checkInitialised_(CN_TABLEPTN);
@@ -125,6 +129,44 @@ TablePtn::~TablePtn(void)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* insert a row into this strand                                              */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vAddIndex(IndexTree* pIndexTree)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  ASSERT(m_pIndexTreeVec->nItems() < C_INDEXES_PER_TABLE);
+  m_pIndexTreeVec->vAdd(pIndexTree);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set number of loadable buffers                                             */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vBuffersLoadable(i8 nBuffersLoadable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  ASSERT(C_UNKNOWN == m_nBuffersLoadable);
+  
+  m_nBuffersLoadable = nBuffersLoadable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* have all buffers been loaded?                                              */
+/*----------------------------------------------------------------------------*/
+bool TablePtn::bBuffersLoaded(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  ASSERT(C_UNKNOWN == m_nBuffersLoadable);
+  
+  if (m_nBuffersLoaded == m_nBuffersLoadable)
+    return true;
+  else
+    return false;
+}
 
 /*----------------------------------------------------------------------------*/
 /* drop a read lock on the partition                                          */
@@ -169,6 +211,59 @@ bool TablePtn::bGrabWrite(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get hidden IndexTree                                                       */
+/*----------------------------------------------------------------------------*/
+IndexTree* TablePtn::pHiddenIndexTree(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  IndexTree* pIndexTree = nullptr;
+  pIndexTree = m_pIndexTreeVec->pGet(0);
+  
+  return pIndexTree;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get IndexTree                                                              */
+/*----------------------------------------------------------------------------*/
+IndexTree* TablePtn::pIndexTree(i8 iIndexNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  IndexTree* pIndexTree = nullptr;
+  i8 nIndexes = m_pIndexTreeVec->nItems();
+  
+  for (i8 i_Index=0; i_Index < nIndexes; i_Index++) {
+    pIndexTree = m_pIndexTreeVec->pGet(i_Index);
+    Index* pIndex = pIndexTree->pIndex();
+    if (pIndex->iIndexNo() == iIndexNo)
+      break;
+  }
+  
+  return pIndexTree;
+}
+
+/*----------------------------------------------------------------------------*/
+/* increment buffers loaded so far                                            */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vIncBuffersLoaded(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  m_nBuffersLoaded++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get index data vector                                                      */
+/*----------------------------------------------------------------------------*/
+IndexTreeVec* TablePtn::pIndexTreeVec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  return m_pIndexTreeVec;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is the table partition locked?                                             */
 /*----------------------------------------------------------------------------*/
 bool TablePtn::bIsLocked(void)
@@ -176,17 +271,6 @@ bool TablePtn::bIsLocked(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
   return m_xLock.bIsLocked();
-}
-
-/*----------------------------------------------------------------------------*/
-/* insert a row into this strand                                              */
-/*----------------------------------------------------------------------------*/
-void TablePtn::vAddIndex(IndexTree* pIndexTree)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  ASSERT(m_pIndexTreeVec->nItems() < C_INDEXES_PER_TABLE);
-  m_pIndexTreeVec->vAdd(pIndexTree);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -243,71 +327,16 @@ bool TablePtn::bPopulateIndex(i8 iIndexNo)
   return true;
 }
 
-
 /*----------------------------------------------------------------------------*/
-/* get IndexTree                                                              */
+/* reset the buffer load members                                              */
 /*----------------------------------------------------------------------------*/
-IndexTree* TablePtn::pIndexTree(i8 iIndexNo)
+void TablePtn::vResetLoad(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  IndexTree* pIndexTree = nullptr;
-  i8 nIndexes = m_pIndexTreeVec->nItems();
-  
-  for (i8 i_Index=0; i_Index < nIndexes; i_Index++) {
-    pIndexTree = m_pIndexTreeVec->pGet(i_Index);
-    Index* pIndex = pIndexTree->pIndex();
-    if (pIndex->iIndexNo() == iIndexNo)
-      break;
-  }
-  
-  return pIndexTree;
+  m_nBuffersLoadable = C_UNKNOWN;
+  m_nBuffersLoaded = 0;
 }
-
-/*----------------------------------------------------------------------------*/
-/* get hidden IndexTree                                                       */
-/*----------------------------------------------------------------------------*/
-IndexTree* TablePtn::pHiddenIndexTree(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  IndexTree* pIndexTree = nullptr;
-  pIndexTree = m_pIndexTreeVec->pGet(0);
-  
-  return pIndexTree;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get index data vector                                                      */
-/*----------------------------------------------------------------------------*/
-IndexTreeVec* TablePtn::pIndexTreeVec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  return m_pIndexTreeVec;
-}
-
-/*----------------------------------------------------------------------------*/
-/* remove an index                                                            */
-/*----------------------------------------------------------------------------*/
-//void TablePtn::vRemoveIndex(i8 iIndexNo)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-//  
-//  IndexTree* pIndexTree = nullptr;
-//  i8 nIndexes = m_pIndexTreeVec->nItems();
-//  
-//  for (i8 i_Index=0; i_Index < nIndexes; i_Index++) {
-//    pIndexTree = m_pIndexTreeVec->pGet(i_Index);
-//    Index* pIndex = pIndexTree->pIndex();
-//    if (pIndex->iIndexNo() == iIndexNo) {
-//      delete pIndexTree;
-//      m_pIndexTreeVec->vRemove(pIndexTree);
-//      break;
-//    }
-//  }
-//
-//}
 
 /*----------------------------------------------------------------------------*/
 /* tidy up                                                                    */
