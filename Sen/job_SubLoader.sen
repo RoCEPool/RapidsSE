@@ -11,14 +11,18 @@
 
   0 locals| pTask |
   0 locals| pJob_SubLoader  |
+  0 locals| pLoaderSub  |
 
   tp: SubLoader
 
   // get the task
   task::this to pTask
 
-  // get the job from the task
+  // get the sub-loader job from the task
   pTask task.job@ to pJob_SubLoader
+
+  // get the loaderSub object from the sub-loader job
+  pJob_SubLoader job.ancilliary@ to pLoaderSub
 
   "SubLoader running" .
 
