@@ -18,6 +18,7 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.acksRemaining!"_Stz,   &vJobAcksRemaining,    false);
   vAddPrimitive("job.addOriginator"_Stz,    &vJobAddOriginator,    false);
   vAddPrimitive("job.addParticipant"_Stz,   &vJobAddParticipant,   false);
+  vAddPrimitive("job.ancilliary@"_Stz,      &vJobAncilliaryFetch,  false);
   vAddPrimitive("jobBegun.error@"_Stz,      &vJobBegunErrorFetch,  false);
   vAddPrimitive("jobBegun.error!"_Stz,      &vJobBegunErrorStore,  false);
   vAddPrimitive("jobCancelled.error@"_Stz,  &vJobCancelledErrorFetch, false);
@@ -131,6 +132,24 @@ void Task::vJobAddParticipant(MP_Task mpTask)
   gpAttachMap->m_pParticipatingJobs->vGrabLock();
   gpAttachMap->m_pParticipatingJobs->vAddJob(pJob);
   gpAttachMap->m_pParticipatingJobs->vDropLock();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.Ancilliary@ -- fetch ancilliary object from job                        */
+/*----------------------------------------------------------------------------*/
+void Task::vJobAncilliaryFetch(MP_Task mpTask)
+{
+  ENTRY("vJobAncilliaryFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("jobBegun.error@"_Stz);
+  
+  Job* pJob = _pJob(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushObject(pJob->m_pAncillary);
   
   EXIT();
 }

@@ -11,7 +11,7 @@ namespace JobsModel
                         public JobObjectName,
                         public JobResult
   {
-  public:
+  private:
     Job_LoadTable* m_pJob_LoadTable;
     Utilities::LoaderSub* m_pLoaderSub;
   
@@ -30,6 +30,8 @@ namespace JobsModel
 
   public:
     void vJob_LoadTable(Job_LoadTable* pJob_LoadTable);
+    void vLoaderSub(Utilities::LoaderSub* pLoaderSub);
+
     void vShow(void);
     Footer* aFooter(void);
 

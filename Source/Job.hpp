@@ -39,6 +39,8 @@ namespace JobsModel
     i8  m_iParticipantNode;    // participant node no
     Atomic m_ziAcksRemaining;  // acks remaining
     Tasks::Task* m_pOriginatingTask;  // originating task of the request
+  
+    Object* m_pAncillary;        // ancilliary object (may not be proper proper object)
 
     Tasks::Task* m_pPromptTask;  // prompt task
     

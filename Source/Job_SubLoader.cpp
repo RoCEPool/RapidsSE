@@ -136,6 +136,17 @@ void Job_SubLoader::vJob_LoadTable(Job_LoadTable* pJob_LoadTable)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set loadersub                                                              */
+/*----------------------------------------------------------------------------*/
+void Job_SubLoader::vLoaderSub(LoaderSub* pLoaderSub)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
+  
+  m_pLoaderSub = pLoaderSub;
+  m_pAncillary = m_pLoaderSub;
+}
+
+/*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
 void Job_SubLoader::vShow(void)

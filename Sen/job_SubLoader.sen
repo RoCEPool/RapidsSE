@@ -10,7 +10,7 @@
 : SubLoader (  -- <R> )
 
   0 locals| pTask |
-  0 locals| pJob  |
+  0 locals| pJob_SubLoader  |
 
   tp: SubLoader
 
@@ -18,11 +18,11 @@
   task::this to pTask
 
   // get the job from the task
-  pTask task.job@ to pJob
+  pTask task.job@ to pJob_SubLoader
 
   "SubLoader running" .
 
-  pJob <DONE_CHILD>
+  pJob_SubLoader <DONE_CHILD>
 ;
 
 /*============================================================================*/
