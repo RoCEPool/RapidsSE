@@ -8,6 +8,7 @@ namespace Utilities
   class LoaderSub : public Object
   {
   private:
+    Job_SubLoader* m_pJob_SubLoader; // job
     Loader*  m_pLoader;    // loader parent
   
     Table*   m_pTable;     // table being loaded
@@ -33,7 +34,7 @@ namespace Utilities
     void* operator new(size_t, LoaderSub* pLoaderSub);
     void  operator delete(void* pLoaderAddress);
  
-    LoaderSub(Loader* pLoader);
+    LoaderSub(Job_SubLoader* pJob_SubLoader, Loader* pLoader);
     ~LoaderSub(void);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
