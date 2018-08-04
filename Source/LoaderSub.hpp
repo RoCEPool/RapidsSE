@@ -42,6 +42,7 @@ namespace Utilities
     void vBegin(void);
     void vBegin_Original(void);
     void vEnd(void);
+    void vEnd_Original(void);
     bool bFetchRecord(void);
     bool bFetchRecordDist(void);
     void vHashRecord(void);

@@ -24,7 +24,11 @@
   // get the loaderSub object from the sub-loader job
   pJob_SubLoader job.ancilliary@ to pLoaderSub
 
+  pLoaderSub loaderSub.begin
+
   "SubLoader running" .
+
+  pLoaderSub loaderSub.end
 
   pJob_SubLoader <DONE_CHILD>
 ;

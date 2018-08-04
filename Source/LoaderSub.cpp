@@ -115,20 +115,6 @@ void LoaderSub::vDump(eCN eClass, Object* pObject, Stz* aTab)
 void LoaderSub::vBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
-  
-  s256 sPath;
-  
-  // get table, tx and load map
-  m_pTable   = m_pLoader->pTable();
-  m_pLoadMap = m_pLoader->pLoadMap();
-  
-  sPath = m_pLoader->sPath();
-  
-  // open the chunked file
-  m_pLoadChunk->vOpenFile(sPath);
-  
-  // read first chunk
-  m_bMoreChunks = bReadChunk();
 }
 /*----------------------------------------------------------------------------*/
 void LoaderSub::vBegin_Original(void)
@@ -154,6 +140,11 @@ void LoaderSub::vBegin_Original(void)
 /* end loading                                                                */
 /*----------------------------------------------------------------------------*/
 void LoaderSub::vEnd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+}
+/*----------------------------------------------------------------------------*/
+void LoaderSub::vEnd_Original(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
   
