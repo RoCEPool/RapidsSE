@@ -10,9 +10,10 @@ namespace Utilities
   private:
     Job_SubLoader* m_pJob_SubLoader; // job
     Loader*  m_pLoader;    // loader parent
-  
-    Table*   m_pTable;     // table being loaded
+    LoadChunk* m_pLoadChunk;  // chunk loading buffer
     LoadMap* m_pLoadMap;   // load map
+
+    Table*   m_pTable;     // table being loaded
     s256     m_aRecord;    // formatted row
     i8       m_iLength;    // length of record
     i8       m_iPartition; // partition of record
@@ -20,8 +21,7 @@ namespace Utilities
     i8       m_iInvalidRecords; // invalid records
     
     bool       m_bMoreChunks; // continue while there are more chunks
-    LoadChunk* m_pLoadChunk;  // chunk loading buffer
-    
+  
     WorkingBuffer* m_pWorkingBuffer[C_MAX_PARTITIONS]; // working row buffers
     
     Formatters  m_xFormatters;

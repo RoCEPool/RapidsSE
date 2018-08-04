@@ -62,14 +62,14 @@ LoaderSub::LoaderSub(Job_SubLoader* pJob_SubLoader, Loader* pLoader)
 
   m_pJob_SubLoader = pJob_SubLoader;
   m_pLoader  = pLoader;
-  
+  m_pLoadChunk  = new LoadChunk;
+
   m_pTable   = nullptr;
   m_pLoadMap = nullptr;
   //m_aRecord
   m_iLength  = 0;
   m_iPartition  = 0;
   m_bMoreChunks = false;
-  m_pLoadChunk  = new LoadChunk;
   m_iValidRecords = 0;
   m_iInvalidRecords = 0;
   
@@ -115,6 +115,15 @@ void LoaderSub::vDump(eCN eClass, Object* pObject, Stz* aTab)
 void LoaderSub::vBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+  
+  s256 sPath;
+  sPath = m_pLoader->pJob_LoadTable()->m_sFileName;
+  
+  // open the chunked file
+  m_pLoadChunk->vOpenFile(sPath);
+  
+  // read first chunk
+  m_bMoreChunks = bReadChunk();
 }
 /*----------------------------------------------------------------------------*/
 void LoaderSub::vBegin_Original(void)
@@ -415,18 +424,21 @@ bool LoaderSub::bReadChunk(void)
   i8 nBytes;
   i8 iChunk;
   i8 nChunks;
+  
+  LoadMap* pLoadMap = m_pLoader->pLoadMap();
+
 
   // get information about next chunk
   for (;;) {
     
-    bool bDone = m_pLoadMap->bDone();
+    bool bMapLoaded = pLoadMap->bDone();
     
-    bool bNext = m_pLoadMap->bNextChunk(iSeek,nBytes,iChunk,nChunks);
+    bool bMoreChunks = pLoadMap->bNextChunk(iSeek,nBytes,iChunk,nChunks);
     
-    if (bDone && ! bNext)
+    if (bMapLoaded && ! bMoreChunks)
       return false;
     
-    if (bNext)
+    if (bMoreChunks)
       break;
     
     //vTrace("Waiting for map\n"_Stz);
