@@ -3,6 +3,9 @@
 /*============================================================================*/
 
 #include "DBobjects.h"
+#include "StorageEngine.h"
+
+extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
@@ -60,6 +63,16 @@ Formatters::Formatters(void)
 Formatters::~Formatters(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORMATTERS,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset the formatters to given set of defaults                              */
+/*----------------------------------------------------------------------------*/
+void Formatters::vReset(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMATTERS);
+  
+  vReset(&gpAttachMap->m_xFormatters);
 }
 
 /*----------------------------------------------------------------------------*/

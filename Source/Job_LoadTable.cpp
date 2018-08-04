@@ -87,6 +87,8 @@ Job_LoadTable::Job_LoadTable(Interface::SEitf* pSEitf)
   //m_sFileName = ""_Stz;
   m_pLoader = nullptr;
   
+  m_xFormatters.vReset(); // reset to defaults in attachmap 
+  
   m_bCheckResources = true;
   
   _checkInitialised_(CN_JOB_LOADTABLE);

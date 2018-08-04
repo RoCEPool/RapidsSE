@@ -959,7 +959,7 @@ namespace Tasks
     static void vLoaderSubNewWorkingBuffer(MP_Task mpTask);
     static void vLoaderSubPartitionFetch(MP_Task mpTask);
     static void vLoaderSubPartitionStore(MP_Task mpTask);
-    static void vLoaderSubReadRecords(MP_Task mpTask);
+    static void vLoaderSubProcessRecords(MP_Task mpTask);
     static void vLoaderSubRecordsInvalid(MP_Task mpTask);
     static void vLoaderSubRecordsValid(MP_Task mpTask);
     static void vLoaderSubTable(MP_Task mpTask);

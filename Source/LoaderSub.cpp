@@ -64,7 +64,7 @@ LoaderSub::LoaderSub(Job_SubLoader* pJob_SubLoader, Loader* pLoader)
   m_pLoader  = pLoader;
   m_pLoadChunk  = new LoadChunk;
 
-  m_pTable   = nullptr;
+  m_pTable   = pLoader->pTable();
   m_pLoadMap = nullptr;
   //m_aRecord
   m_iLength  = 0;
@@ -186,8 +186,13 @@ bool LoaderSub::bFetchRecord(void)
   bool bValid = false;
   bool bBlankLine;
   
-  Interface::SEitf* pSEitf = m_pLoader->pSEitf();
-  Formatters* pFormatters = &pSEitf->m_xFormatters;
+  //Interface::SEitf* pSEitf = m_pLoader->pSEitf();
+  //Formatters* pFormatters = &pSEitf->m_xFormatters;
+  
+  
+  Job_LoadTable* pJob_LoadTable = m_pLoader->pJob_LoadTable();
+  Formatters* pFormatters = &pJob_LoadTable->m_xFormatters;
+  Table* pTable = m_pLoader->pTable();
   
   if (! m_bMoreChunks)
     return false;
@@ -206,7 +211,7 @@ bool LoaderSub::bFetchRecord(void)
     }
     
     // format the raw data into a row
-    bValid = Row::bFormatRow(m_pTable->pColumnVec(),
+    bValid = Row::bFormatRow(pTable->pColumnVec(),
                              pFormatters,
                              aRawData, iLength,
                              m_aRecord.aStr(), m_iLength,
@@ -278,7 +283,9 @@ void LoaderSub::vHashRecord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
   
-  m_iPartition = m_pTable->iRowPartition(m_aRecord);
+  Table* pTable = m_pLoader->pTable();
+  
+  m_iPartition = pTable->iRowPartition(m_aRecord);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -304,10 +311,11 @@ bool LoaderSub::bInsertRow(void)
   WorkingBuffer* pWorkingBuffer = m_pWorkingBuffer[m_iPartition];
   
   // get the tx id
-  SEitf* pSEitf = m_pLoader->pSEitf();
-  Tx* pTx = pSEitf->pTx();
-  i8 iDistTxId = pTx->iDistTxId();
-  
+  //SEitf* pSEitf = m_pLoader->pSEitf();
+  //Tx* pTx = pSEitf->pTx();
+  //i8 iDistTxId = pTx->iDistTxId();
+  i8 iDistTxId = 0;
+
   RowWrk xRowWrk;
   
   xRowWrk.vTxId(iDistTxId);

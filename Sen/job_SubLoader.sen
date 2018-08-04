@@ -36,7 +36,7 @@
 
   "SubLoader running" .
 
-  begin pLoaderSub loaderSub.readRecords while
+  begin pLoaderSub loaderSub.processRecords while
 
     pLoaderSub SubLoader_sendBuffer
 

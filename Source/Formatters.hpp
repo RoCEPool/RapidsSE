@@ -42,6 +42,7 @@ namespace Datums
     Formatters(void);
     ~Formatters(void);
   
+    void vReset(void);
     void vReset(Formatters* pDefaults);
     void vShow(void);
     
