@@ -5,9 +5,17 @@
 "job_SubLoader.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* Job_SubLoader request (on originating node)                                */
+/* Job_SubLoader seed (on originating node)                                   */
 /*----------------------------------------------------------------------------*/
-: SubLoader (  -- <R> )
+: SubLoader_sendBuffer ( -- )
+
+  params| pLoaderSub  |
+;
+
+/*----------------------------------------------------------------------------*/
+/* SubLoader seed                                                             */
+/*----------------------------------------------------------------------------*/
+: SubLoader_seed (  -- <R> )
 
   0 locals| pTask |
   0 locals| pJob_SubLoader  |
@@ -29,6 +37,8 @@
   "SubLoader running" .
 
   begin pLoaderSub loaderSub.readRecords while
+
+    pLoaderSub SubLoader_sendBuffer
 
   repeat
 
