@@ -151,6 +151,14 @@ void LoaderSub::vBegin_Original(void)
 void LoaderSub::vEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+  
+  //for (i8 i_Partition = 0; i_Partition < C_MAX_PARTITIONS; i_Partition++) {
+  //  ASSERT(! m_pWorkingBuffer[i_Partition]);
+  //}
+  
+  // close the file being loaded
+  m_pLoadChunk->vCloseFile();
+
 }
 /*----------------------------------------------------------------------------*/
 void LoaderSub::vEnd_Original(void)
