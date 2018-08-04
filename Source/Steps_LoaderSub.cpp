@@ -32,6 +32,7 @@ void Task::vAddPrimitives_LoaderSub(void)
   vAddPrimitive("loaderSub.newWorkingBuffer"_Stz, &vLoaderSubNewWorkingBuffer,false);
   vAddPrimitive("loaderSub.partition@"_Stz,   &vLoaderSubPartitionFetch,false);
   vAddPrimitive("loaderSub.partition!"_Stz,   &vLoaderSubPartitionStore,false);
+  vAddPrimitive("loaderSub.readRecords"_Stz,  &vLoaderSubReadRecords,   false);
   vAddPrimitive("loaderSub.recordsInvalid"_Stz, &vLoaderSubRecordsInvalid, false);
   vAddPrimitive("loaderSub.recordsValid"_Stz, &vLoaderSubRecordsValid,  false);
   vAddPrimitive("loaderSub.workingBuffer@"_Stz, &vLoaderSubWorkingBufferFetch,false);
@@ -423,6 +424,23 @@ void Task::vLoaderSubPartitionStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("loaderSub.partition!"_Stz);
 
   pLoaderSub->vPartition(iPartition);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loaderSub.readRecords -- read and process records till a buffer full or eof*/
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderSubReadRecords(MP_Task mpTask)
+{
+  ENTRY("vLoaderSubReadRecords"_Stz);
+  
+  Object* pPtrLoaderSub;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoaderSub) )
+    THROW_INVALID_DSTACK("loaderSub.readRecords"_Stz);
+  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoaderSub);
+  
+  mpTask->m_pDataStack->vPushInt(false);
   
   EXIT();
 }

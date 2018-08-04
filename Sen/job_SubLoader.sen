@@ -28,6 +28,10 @@
 
   "SubLoader running" .
 
+  begin pLoaderSub loaderSub.readRecords while
+
+  repeat
+
   pLoaderSub loaderSub.end
 
   pJob_SubLoader <DONE_CHILD>
