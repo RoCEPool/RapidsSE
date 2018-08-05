@@ -148,6 +148,16 @@ void LoaderSub::vBegin_Original(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get buffers loadable for implicit partition                                */
+/*----------------------------------------------------------------------------*/
+i8 LoaderSub::nBuffersLoadable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+  
+  return m_nBuffersLoadable[m_iPartition];
+}
+
+/*----------------------------------------------------------------------------*/
 /* end loading                                                                */
 /*----------------------------------------------------------------------------*/
 void LoaderSub::vEnd(void)
@@ -378,6 +388,16 @@ i8 LoaderSub::iInvalidRecords(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
   
   return m_iInvalidRecords;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get loader                                                                 */
+/*----------------------------------------------------------------------------*/
+Job_SubLoader* LoaderSub::pJob_SubLoader(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+  
+  return m_pJob_SubLoader;
 }
 
 /*----------------------------------------------------------------------------*/

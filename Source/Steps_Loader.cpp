@@ -360,9 +360,9 @@ void Task::vLoaderSpawnSubLoader(MP_Task mpTask)
   Object* pPtrLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
     THROW_INVALID_DSTACK("loader.spawnSubLoader"_Stz);
-  
   Loader* pLoader = _pLoader(pPtrLoader);
-  ASSERT(CN_LOADER == pLoader->eClass());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Job_LoadTable* pJob_LoadTable = pLoader->pJob_LoadTable();
   SEitf* pSEitf = pJob_LoadTable->m_pSEitf;
@@ -376,6 +376,8 @@ void Task::vLoaderSpawnSubLoader(MP_Task mpTask)
   Task* pSubLoaderTask = new Task;
   pSubLoaderTask->vParentTask(*mpTask);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   pSEitf->bAppendTask(pSubLoaderTask,pJob_SubLoader);
   
   EXIT();

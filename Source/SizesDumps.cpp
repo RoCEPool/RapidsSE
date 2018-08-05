@@ -331,38 +331,38 @@ i8 giClassSize[]
   /*    */ sizeof(Job__Execute),       // CN_JOB__EXECUTE
   /*    */ sizeof(Job__Executed),      // CN_JOB__EXECUTED
 
-  /*    */ sizeof(Job_CreateTable),   // CN_JOB_ANALYZEINDEX
-  /*    */ sizeof(Job_CreateTable),   // CN_JOB_ANALYZETABLE
-  /*    */ sizeof(Job_Cf),            // CN_JOB_CF
-  /*    */ sizeof(Job_CreateCatalog), // CN_JOB_CREATECATALOG
-  /*    */ sizeof(Job_CreateIndex),   // CN_JOB_CREATEINDEX
-  /*    */ sizeof(Job_CreateSchema),  // CN_JOB_CREATESCHEMA
-  /*    */ sizeof(Job_CreateTable),   // CN_JOB_CREATETABLE
-  /*    */ sizeof(Job_CreateTenant),  // CN_JOB_CREATETENANT
-  /*    */ sizeof(Job_Docol),         // CN_JOB_DOCOL
-  /*    */ sizeof(Job_DropCatalog),   // CN_JOB_DROPCATALOG
-  /*    */ sizeof(Job_DropIndex),     // CN_JOB_DROPINDEX
-  /*    */ sizeof(Job_DropSchema),    // CN_JOB_DROPSCHEMA
-  /*    */ sizeof(Job_DropTable),     // CN_JOB_DROPTABLE
-  /*    */ sizeof(Job_DropTenant),    // CN_JOB_DROPTENANT
-  /*    */ sizeof(Job_G35),           // CN_JOB_G35
-  /*    */ sizeof(Job_Lf),            // CN_JOB_LF
-  /*    */ sizeof(Job_ListCatalogs),  // CN_JOB_LISTCATALOGS
-  /*    */ sizeof(Job_ListColumns),   // CN_JOB_LISTCOLUMNS
-  /*    */ sizeof(Job_ListColumns),   // CN_JOB_LISTIDXCOLUMNS
+  /*    */ sizeof(Job_CreateTable),    // CN_JOB_ANALYZEINDEX
+  /*    */ sizeof(Job_CreateTable),    // CN_JOB_ANALYZETABLE
+  /*    */ sizeof(Job_Cf),             // CN_JOB_CF
+  /*    */ sizeof(Job_CreateCatalog),  // CN_JOB_CREATECATALOG
+  /*    */ sizeof(Job_CreateIndex),    // CN_JOB_CREATEINDEX
+  /*    */ sizeof(Job_CreateSchema),   // CN_JOB_CREATESCHEMA
+  /*    */ sizeof(Job_CreateTable),    // CN_JOB_CREATETABLE
+  /*    */ sizeof(Job_CreateTenant),   // CN_JOB_CREATETENANT
+  /*    */ sizeof(Job_Docol),          // CN_JOB_DOCOL
+  /*    */ sizeof(Job_DropCatalog),    // CN_JOB_DROPCATALOG
+  /*    */ sizeof(Job_DropIndex),      // CN_JOB_DROPINDEX
+  /*    */ sizeof(Job_DropSchema),     // CN_JOB_DROPSCHEMA
+  /*    */ sizeof(Job_DropTable),      // CN_JOB_DROPTABLE
+  /*    */ sizeof(Job_DropTenant),     // CN_JOB_DROPTENANT
+  /*    */ sizeof(Job_G35),            // CN_JOB_G35
+  /*    */ sizeof(Job_Lf),             // CN_JOB_LF
+  /*    */ sizeof(Job_ListCatalogs),   // CN_JOB_LISTCATALOGS
+  /*    */ sizeof(Job_ListColumns),    // CN_JOB_LISTCOLUMNS
+  /*    */ sizeof(Job_ListColumns),    // CN_JOB_LISTIDXCOLUMNS
   /*    */ sizeof(Job_ListPartColumns), // CN_JOB_LISTPARTCOLUMNS
-  /*    */ sizeof(Job_ListSchemas),   // CN_JOB_LISTSCHEMAS
-  /*    */ sizeof(Job_ListTables),    // CN_JOB_LISTTABLES
-  /*    */ sizeof(Job_ListTenants),   // CN_JOB_LISTTENANTS
-  /*    */ 0,                         // CN_JOB_LOADBUFFER
-  /*    */ sizeof(Job_LoadTable),     // CN_JOB_LOADTABLE
-  /*    */ sizeof(Job_Prompt),        // CN_JOB_PROMPT
-  /*    */ sizeof(Job_Pwf),           // CN_JOB_PWF
-  /*    */ sizeof(Job_Sanity),        // CN_JOB_SANITY
-  /*    */ sizeof(Job_Space),         // CN_JOB_SPACE
-  /*    */ sizeof(Job_Status),        // CN_JOB_STATUS
-  /*    */ sizeof(Job_Status),        // CN_JOB_SUBLOADER
-  /*    */ sizeof(Job_UseSchema),     // CN_JOB_USESCHEMA
+  /*    */ sizeof(Job_ListSchemas),    // CN_JOB_LISTSCHEMAS
+  /*    */ sizeof(Job_ListTables),     // CN_JOB_LISTTABLES
+  /*    */ sizeof(Job_ListTenants),    // CN_JOB_LISTTENANTS
+  /*    */ sizeof(Job_LoadBuffer),     // CN_JOB_LOADBUFFER
+  /*    */ sizeof(Job_LoadTable),      // CN_JOB_LOADTABLE
+  /*    */ sizeof(Job_Prompt),         // CN_JOB_PROMPT
+  /*    */ sizeof(Job_Pwf),            // CN_JOB_PWF
+  /*    */ sizeof(Job_Sanity),         // CN_JOB_SANITY
+  /*    */ sizeof(Job_Space),          // CN_JOB_SPACE
+  /*    */ sizeof(Job_Status),         // CN_JOB_STATUS
+  /*    */ sizeof(Job_Status),         // CN_JOB_SUBLOADER
+  /*    */ sizeof(Job_UseSchema),      // CN_JOB_USESCHEMA
   
   /*    */ sizeof(Jobs),               // CN_JOBS
   
@@ -415,7 +415,7 @@ i8 giClassSize[]
   /*    */ sizeof(RegFrame),           // CN_REGFRAME
   
   /*101 */ sizeof(Ring),               // CN_RING
-  /*102 */ 0,                          // CN_ROARRAY
+  /*102 */ 0,                          // CN_ROWARRAY
   /*103 */ 0,                          // CN_ROWBUFFER
   /*104 */ sizeof(RowCursor),          // CN_ROWCURSOR
   /*105 */ sizeof(RowOnce),            // CN_ROWONCE

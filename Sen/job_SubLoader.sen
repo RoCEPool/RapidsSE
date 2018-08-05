@@ -12,7 +12,7 @@
   params| pLoaderSub  |
   params| bFinal  |
 
-  pLoaderSub loaderSub.spawnLoadBuffer
+  bFinal pLoaderSub loaderSub.spawnLoadBuffer
 ;
 
 /*----------------------------------------------------------------------------*/
