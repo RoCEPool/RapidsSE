@@ -1,0 +1,30 @@
+/*============================================================================*/
+/* job_LoadBuffer.sen -- Load Buffer Job                                      */
+/*============================================================================*/
+
+"job_LoadBuffer.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* LoadBuffer seed                                                             */
+/*----------------------------------------------------------------------------*/
+: LoadBuffer_seed (  -- <R> )
+
+  0 locals| pTask |
+  0 locals| pJob_LoadBuffer  |
+
+  tp: LoadBuffer
+
+  // get the task
+  task::this to pTask
+
+  // get the load buffer job from the task
+  pTask task.job@ to pJob_LoadBuffer
+
+  "LoadBuffer running" .
+
+  pJob_LoadBuffer <DONE_CHILD>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
