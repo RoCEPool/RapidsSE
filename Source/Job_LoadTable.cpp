@@ -15,7 +15,7 @@ JobNote mJobNote_LoadTable (
   "ld"_Stz,               // the prompt command
   nullptr,                // the second word
   "loadTable"_Stz,        // the task seed for this job
-  false,                  // check resources?
+  true,                   // check resources?
   false,                  // detached job?
   pJob_LoadTable_pre,     // prompt pre-process function
   vJob_LoadTable_post,    // prompt post-process function

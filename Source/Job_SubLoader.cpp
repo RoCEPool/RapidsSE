@@ -89,9 +89,7 @@ Job_SubLoader::Job_SubLoader(Interface::SEitf* pSEitf)
   
   m_pJob_LoadTable = nullptr;
   m_pLoaderSub = nullptr;
-  
-  m_bCheckResources = true;
-  
+    
   _checkInitialised_(CN_JOB_SUBLOADER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);

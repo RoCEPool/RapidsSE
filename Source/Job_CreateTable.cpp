@@ -15,7 +15,7 @@ JobNote mJobNote_CreateTable (
   "create"_Stz,           // the prompt command
   "table"_Stz,            // the second word
   "createTable"_Stz,      // the task seed for this job
-  false,                  // check resources?
+  true,                   // check resources?
   false,                  // detached job?
   pJob_CreateTable_pre,   // prompt pre-process function
   vJob_CreateTable_post,  // prompt post-process function
