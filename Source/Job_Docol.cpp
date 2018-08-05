@@ -15,6 +15,7 @@ JobNote mJobNote_Docol (
   "docol"_Stz,      // the prompt command
   nullptr,          // the second word
   "docol"_Stz,      // the task seed for this job
+  false,            // check resources?
   false,            // detached job?
   pJob_Docol_pre,   // prompt pre-process function
   vJob_Docol_post,  // prompt post-process function

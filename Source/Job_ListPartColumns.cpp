@@ -15,6 +15,7 @@ JobNote mJobNote_ListPartColumns (
   "lspartcol"_Stz,                  // the prompt command
   nullptr,                          // the second word
   "listPartColumns"_Stz,            // the task seed for this job
+  false,                            // check resources?
   false,                            // detached job?
   pJob_ListPartColumns_pre,         // prompt pre-process function
   vJob_ListPartColumns_post,        // prompt post-process function

@@ -15,6 +15,7 @@ JobNote mJobNote_ListTables (
   "lstbl"_Stz,            // the prompt command
   nullptr,                // the second word
   "listTables"_Stz,       // the task seed for this job
+  false,                  // check resources?
   false,                  // detached job?
   pJob_ListTables_pre,    // prompt pre-process function
   vJob_ListTables_post,   // prompt post-process function

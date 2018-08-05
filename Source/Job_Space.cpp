@@ -15,6 +15,7 @@ JobNote mJobNote_Space (
   "space"_Stz,      // the prompt command
   nullptr,          // the second word
   "space"_Stz,      // the task seed for this job
+  false,            // check resources?
   false,            // detached job?
   pJob_Space_pre,   // prompt pre-process function
   vJob_Space_post,  // prompt post-process function

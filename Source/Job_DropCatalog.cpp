@@ -15,6 +15,7 @@ JobNote mJobNote_DropCatalog (
   "drop"_Stz,                     // the prompt command
   "catalog"_Stz,                  // the second word
   "dropCatalog"_Stz,              // the task seed for this job
+  false,                          // check resources?
   false,                          // detached job?
   pJob_DropCatalog_pre,           // prompt pre-process function
   vJob_DropCatalog_post,          // prompt post-process function

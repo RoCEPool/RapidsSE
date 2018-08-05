@@ -15,6 +15,7 @@ JobNote mJobNote_Lf (
   "lf"_Stz,          // the prompt command
   nullptr,           // the second word
   "lf"_Stz,          // the task seed for this job
+  false,             // check resources?
   false,             // detached job?
   pJob_Lf_pre,       // prompt pre-process function
   vJob_Lf_post,      // prompt post-process function

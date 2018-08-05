@@ -15,6 +15,7 @@ JobNote mJobNote_Pwf (
   "pwf"_Stz,             // the prompt command
   nullptr,               // the second word
   "pwf"_Stz,             // the task seed for this job
+  false,                 // check resources?
   false,                 // detached job?
   pJob_Pwf_pre,          // prompt pre-process function
   vJob_Pwf_post,         // prompt post-process function

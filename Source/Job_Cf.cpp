@@ -15,6 +15,7 @@ JobNote mJobNote_Cf (
   "cf"_Stz,              // the prompt command
   nullptr,               // the second word
   "cf"_Stz,              // the task seed for this job
+  false,                 // check resources?
   false,                 // detached job?
   pJob_Cf_pre,           // prompt pre-process function
   vJob_Cf_post,          // prompt post-process function

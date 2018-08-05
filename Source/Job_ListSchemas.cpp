@@ -15,6 +15,7 @@ JobNote mJobNote_ListSchemas (
   "lssch"_Stz,            // the prompt command
   nullptr,                // the second word
   "listSchemas"_Stz,      // the task seed for this job
+  false,                  // check resources?
   false,                  // detached job?
   pJob_ListSchemas_pre,   // prompt pre-process function
   vJob_ListSchemas_post,  // prompt post-process function

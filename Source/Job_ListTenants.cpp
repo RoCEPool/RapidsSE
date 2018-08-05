@@ -15,6 +15,7 @@ JobNote mJobNote_ListTenants (
   "lsten"_Stz,            // the prompt command
   nullptr,                // the second word
   "listTenants"_Stz,      // the task seed for this job
+  false,                  // check resources?
   false,                  // detached job?
   pJob_ListTenants_pre,   // prompt pre-process function
   vJob_ListTenants_post,  // prompt post-process function

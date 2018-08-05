@@ -15,6 +15,7 @@ JobNote mJobNote_ListCatalogs (
   "lscat"_Stz,             // the prompt command
   nullptr,                 // the second word
   "listCatalogs"_Stz,      // the task seed for this job
+  false,                   // check resources?
   false,                   // detached job?
   pJob_ListCatalogs_pre,   // prompt pre-process function
   vJob_ListCatalogs_post,  // prompt post-process function

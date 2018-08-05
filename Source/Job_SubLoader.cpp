@@ -15,6 +15,7 @@ JobNote mJobNote_SubLoader (
   nullptr,                // the prompt command
   nullptr,                // the second word
   "SubLoader_seed"_Stz,   // the task seed for this job
+  false,                  // check resources?
   false,                  // detached job?
   pJob_SubLoader_pre,     // prompt pre-process function
   vJob_SubLoader_post,    // prompt post-process function

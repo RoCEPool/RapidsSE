@@ -19,6 +19,7 @@ JobNote::JobNote(Stz* aName,
                  Stz* aCommand1,
                  Stz* aCommand2,
                  Stz* aSeed,
+                 bool bResources,
                  bool bDetached,
                  Job* (*fPre)(Interface::SEitf* pSEitf),
                  void (*fPost)(Interface::SEitf* pSEitf, Job* pJob),
@@ -30,18 +31,19 @@ JobNote::JobNote(Stz* aName,
   // add the job class to the catalog
   i8 i_Job = gxJobCatalog.m_nClasses;
   
-  gxJobCatalog.m_xJobClass[i_Job].m_aName     = aName;
-  gxJobCatalog.m_xJobClass[i_Job].m_eClass    = eClass;
-  gxJobCatalog.m_xJobClass[i_Job].m_eKind     = eKind;
-  gxJobCatalog.m_xJobClass[i_Job].m_aComment  = aComment;
-  gxJobCatalog.m_xJobClass[i_Job].m_aCommand1 = aCommand1;
+  gxJobCatalog.m_xJobClass[i_Job].m_aName       = aName;
+  gxJobCatalog.m_xJobClass[i_Job].m_eClass      = eClass;
+  gxJobCatalog.m_xJobClass[i_Job].m_eKind       = eKind;
+  gxJobCatalog.m_xJobClass[i_Job].m_aComment    = aComment;
+  gxJobCatalog.m_xJobClass[i_Job].m_aCommand1   = aCommand1;
   if (aCommand2)
     gxJobCatalog.m_xJobClass[i_Job].m_aCommand2 = aCommand2;
-  gxJobCatalog.m_xJobClass[i_Job].m_aSeed     = aSeed;
-  gxJobCatalog.m_xJobClass[i_Job].m_bDetached = bDetached;
-  gxJobCatalog.m_xJobClass[i_Job].m_fPre      = fPre;
-  gxJobCatalog.m_xJobClass[i_Job].m_fPost     = fPost;
-  gxJobCatalog.m_xJobClass[i_Job].m_bEnabled  = bEnabled;
+  gxJobCatalog.m_xJobClass[i_Job].m_aSeed       = aSeed;
+  gxJobCatalog.m_xJobClass[i_Job].m_bResources  = bResources;
+  gxJobCatalog.m_xJobClass[i_Job].m_bDetached   = bDetached;
+  gxJobCatalog.m_xJobClass[i_Job].m_fPre        = fPre;
+  gxJobCatalog.m_xJobClass[i_Job].m_fPost       = fPost;
+  gxJobCatalog.m_xJobClass[i_Job].m_bEnabled    = bEnabled;
   
   // record the job class
   m_pJobClass = &gxJobCatalog.m_xJobClass[i_Job];

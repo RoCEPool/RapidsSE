@@ -15,6 +15,7 @@ JobNote mJobNote_ListColumns (
   "lscol"_Stz,            // the prompt command
   nullptr,                // the second word
   "listColumns"_Stz,      // the task seed for this job
+  false,                  // check resources?
   false,                  // detached job?
   pJob_ListColumns_pre,   // prompt pre-process function
   vJob_ListColumns_post,  // prompt post-process function

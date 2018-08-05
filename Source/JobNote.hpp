@@ -19,6 +19,7 @@ namespace JobsModel
             Stz* aCommand1,
             Stz* aCommand2,
             Stz* aSeed,
+            bool bResources,
             bool bDetached,
             Job* (*fPre)(Interface::SEitf* pSEitf),
             void (*fPost)(Interface::SEitf* pSEitf, Job* pJob),

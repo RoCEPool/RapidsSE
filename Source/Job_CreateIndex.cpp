@@ -15,6 +15,7 @@ JobNote mJobNote_CreateIndex (
   "create"_Stz,          // the prompt command
   "index"_Stz,           // the second word
   "createIndex"_Stz,     // the task seed for this job
+  false,                 // check resources?
   false,                 // detached job?
   pJob_CreateIndex_pre,  // prompt pre-process function
   vJob_CreateIndex_post, // prompt post-process function
@@ -29,6 +30,7 @@ JobNote mJobNote_CreateIndex2 (
   "create"_Stz,          // the prompt command
   "unique"_Stz,          // the second word
   "createIndex"_Stz,     // the task seed for this job
+  false,                 // check resources?
   false,                 // detached job?
   pJob_CreateIndex_pre,  // prompt pre-process function
   vJob_CreateIndex_post, // prompt post-process function

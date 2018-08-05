@@ -15,6 +15,7 @@ JobNote mJobNote_UseSchema (
   "use"_Stz,                   // the prompt command
   "schema"_Stz,                // the second word
   "useSchema"_Stz,             // the task seed for this job
+  false,                       // check resources?
   false,                       // detached job?
   pJob_UseSchema_pre,          // prompt pre-process function
   vJob_UseSchema_post,         // prompt post-process function

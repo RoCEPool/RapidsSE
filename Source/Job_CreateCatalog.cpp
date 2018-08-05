@@ -15,6 +15,7 @@ JobNote mJobNote_CreateCatalog (
   "create"_Stz,                      // the prompt command
   "catalog"_Stz,                     // the second word
   "createCatalog"_Stz,               // the task seed for this job
+  false,                             // check resources?
   false,                             // detached job?
   pJob_CreateCatalog_pre,            // prompt pre-process function
   vJob_CreateCatalog_post,           // prompt post-process function

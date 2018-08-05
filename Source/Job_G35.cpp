@@ -12,6 +12,7 @@ JobNote mJobNote_G35 (
   "g35"_Stz,      // the prompt command
   nullptr,        // the second word
   "g35_req"_Stz,  // the task seed for this job
+  false,          // check resources?
   false,          // detached job?
   pJob_G35_pre,   // prompt pre-process function
   vJob_G35_post,  // prompt post-process function

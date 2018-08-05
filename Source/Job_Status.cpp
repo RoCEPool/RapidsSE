@@ -15,6 +15,7 @@ JobNote mJobNote_Status (
   "status"_Stz,     // the prompt command
   nullptr,          // the second word
   "status"_Stz,     // the task seed for this job
+  false,            // check resources?
   false,            // detached job?
   pJob_Status_pre,  // prompt pre-process function
   vJob_Status_post, // prompt post-process function

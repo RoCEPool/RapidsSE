@@ -15,6 +15,7 @@ JobNote mJobNote_CreateSchema (
   "create"_Stz,                   // the prompt command
   "schema"_Stz,                   // the second word
   "createSchema"_Stz,             // the task seed for this job
+  false,                          // check resources?
   false,                          // detached job?
   pJob_CreateSchema_pre,          // prompt pre-process function
   vJob_CreateSchema_post,         // prompt post-process function
