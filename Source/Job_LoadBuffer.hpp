@@ -13,6 +13,7 @@ namespace JobsModel
   {
   private:
     i8 m_nBuffersLoadable;  // buffers to be loaded
+    i8 m_iPartition;        // which partition buffer is to be loaded into
 
     // must be last
     Footer m_xFooter;
@@ -30,6 +31,10 @@ namespace JobsModel
   public:
     i8   nBuffersLoadable(void);
     void vBuffersLoadable(i8 nBuffersLoadable);
+  
+    i8   iPartition(void);
+    void vPartition(i8 iPartition);
+
     void vShow(void);
   
     Footer* aFooter(void);

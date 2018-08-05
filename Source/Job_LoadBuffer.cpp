@@ -84,6 +84,7 @@ Job_LoadBuffer::Job_LoadBuffer(Interface::SEitf* pSEitf)
   m_sSeed = mJobNote_LoadBuffer.pJobClass()->m_aSeed;
   
   m_nBuffersLoadable = C_UNKNOWN;
+  m_iPartition = -1;
   
   _checkInitialised_(CN_JOB_LOADBUFFER);
   
@@ -138,6 +139,26 @@ void Job_LoadBuffer::vBuffersLoadable(i8 nBuffersLoadable)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
   
   m_nBuffersLoadable = nBuffersLoadable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of buffers loadable                                             */
+/*----------------------------------------------------------------------------*/
+i8 Job_LoadBuffer::iPartition(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
+  
+  return m_iPartition;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of buffers loadable                                             */
+/*----------------------------------------------------------------------------*/
+void Job_LoadBuffer::vPartition(i8 iPartition)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
+  
+  m_iPartition = iPartition;
 }
 
 /*----------------------------------------------------------------------------*/
