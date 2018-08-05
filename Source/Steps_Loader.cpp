@@ -373,10 +373,10 @@ void Task::vLoaderSpawnSubLoader(MP_Task mpTask)
   LoaderSub* pLoaderSub = new LoaderSub(pJob_SubLoader,pLoader);
   pJob_SubLoader->vLoaderSub(pLoaderSub);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   Task* pSubLoaderTask = new Task;
   pSubLoaderTask->vParentTask(*mpTask);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   pSEitf->bAppendTask(pSubLoaderTask,pJob_SubLoader);
   

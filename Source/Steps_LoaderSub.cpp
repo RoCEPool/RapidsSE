@@ -546,10 +546,19 @@ void Task::vLoaderSubSpawnLoadBuffer(MP_Task mpTask)
   
   WorkingBuffer* pWorkingBuffer = pLoaderSub->pWorkingBuffer();
   pLoaderSub->vWorkingBuffer(nullptr);
+
+  pJob_LoadBuffer->m_pWorkingBuffer = pWorkingBuffer;
   
   // temp
   //pLoaderSub->vDiscardBuffer();
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Task* pLoadBufferTask = new Task;
+  //pLoadBufferTask->vParentTask(*mpTask);
+
+  pSEitf->bAppendTask(pLoadBufferTask,pJob_LoadBuffer);
+
   EXIT();
 }
 
