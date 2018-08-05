@@ -61,6 +61,7 @@ Job::Job(eCN eClassNo)
   m_pOriginatingTask  = nullptr;
   m_pPromptTask = nullptr;
   m_pAncillary = nullptr;
+  m_pWorkingBuffer = nullptr;
   
   // initialise attribute to mutex
   MemLib::vZero(&m_xThreadMutexAttr,sizeof(m_xThreadMutexAttr),CN_SEMAPHORE);

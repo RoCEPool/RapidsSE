@@ -58,7 +58,9 @@ namespace JobsModel
     Atomic m_ziAcksRemaining;  // acks remaining
     Tasks::Task* m_pOriginatingTask;  // originating task of the request
   
-    Object* m_pAncillary;        // ancilliary object (may not be proper proper object)
+    Object* m_pAncillary;      // ancilliary object
+  
+    WorkingBuffer* m_pWorkingBuffer; // working buffer
 
     Tasks::Task* m_pPromptTask;  // prompt task
     
