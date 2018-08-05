@@ -22,7 +22,7 @@
 
   "LoadBuffer running" .
 
-  pJob_LoadBuffer <DONE_CHILD>
+  pJob_LoadBuffer <DONE_ONESHOT>
 ;
 
 /*============================================================================*/
