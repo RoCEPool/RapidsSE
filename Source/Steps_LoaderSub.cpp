@@ -35,6 +35,7 @@ void Task::vAddPrimitives_LoaderSub(void)
   vAddPrimitive("loaderSub.processRecords"_Stz,  &vLoaderSubProcessRecords, false);
   vAddPrimitive("loaderSub.recordsInvalid"_Stz, &vLoaderSubRecordsInvalid, false);
   vAddPrimitive("loaderSub.recordsValid"_Stz, &vLoaderSubRecordsValid,  false);
+  vAddPrimitive("loaderSub.spawnLoadBuffer"_Stz, &vLoaderSubSpawnLoadBuffer, false);
   vAddPrimitive("loaderSub.workingBuffer@"_Stz, &vLoaderSubWorkingBufferFetch,false);
   vAddPrimitive("loaderSub.workingBuffer!"_Stz, &vLoaderSubWorkingBufferStore,false);
   vAddPrimitive("loaderSub.table"_Stz,        &vLoaderSubTable,         false);
@@ -514,6 +515,21 @@ void Task::vLoaderSubTable(MP_Task mpTask)
   
   mpTask->m_pDataStack->vPushObject(pTable);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loaderSub.spawnLoadBuffer -- spawn Job_LoadBuffer                          */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderSubSpawnLoadBuffer(MP_Task mpTask)
+{
+  ENTRY("vLoaderSubSpawnLoadBuffer"_Stz);
+  
+  Object* pPtrLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
+    THROW_INVALID_DSTACK("loaderSub.spawnLoadBufferBuffer"_Stz);
+  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoader);
+    
   EXIT();
 }
 

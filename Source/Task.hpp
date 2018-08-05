@@ -962,6 +962,7 @@ namespace Tasks
     static void vLoaderSubProcessRecords(MP_Task mpTask);
     static void vLoaderSubRecordsInvalid(MP_Task mpTask);
     static void vLoaderSubRecordsValid(MP_Task mpTask);
+    static void vLoaderSubSpawnLoadBuffer(MP_Task mpTask);
     static void vLoaderSubTable(MP_Task mpTask);
     static void vLoaderSubWorkingBufferFetch(MP_Task mpTask);
     static void vLoaderSubWorkingBufferStore(MP_Task mpTask);
