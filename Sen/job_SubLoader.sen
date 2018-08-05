@@ -5,9 +5,9 @@
 "job_SubLoader.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* Job_SubLoader seed (on originating node)                                   */
+/* send buffer to node                                                        */
 /*----------------------------------------------------------------------------*/
-: SubLoader_sendBuffer ( -- )
+: SubLoader_sendBuffer ( pLoaderSub -- )
 
   params| pLoaderSub  |
 
@@ -15,9 +15,38 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* test for dangling buffers                                                  */
+/*----------------------------------------------------------------------------*/
+: SubLoader_testDangling ( pLoaderSub -- )
+
+  params| pLoaderSub  |
+
+  // calculate total partitions in the cluster
+  grid::slots grid::nodes * locals| nTotalPartitions |
+
+    // check for dangling buffers
+    nTotalPartitions 0 do
+
+    // set the partition we are using
+    I pLoaderSub loaderSub.partition!
+
+    // test for a dangling row buffer for parition I
+    pLoaderSub loaderSub.workingBuffer@
+
+    if
+      I "DANGLING %v" fmt.print
+
+      pLoaderSub SubLoader_sendBuffer
+
+    then
+
+  loop
+;
+
+/*----------------------------------------------------------------------------*/
 /* SubLoader seed                                                             */
 /*----------------------------------------------------------------------------*/
-: SubLoader_seed (  -- <R> )
+: SubLoader_seed ( -- <R> )
 
   0 locals| pTask |
   0 locals| pJob_SubLoader  |
@@ -43,6 +72,8 @@
     pLoaderSub SubLoader_sendBuffer
 
   repeat
+
+  pLoaderSub SubLoader_testDangling
 
   pLoaderSub loaderSub.end
 
