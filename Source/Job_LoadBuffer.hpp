@@ -12,7 +12,8 @@ namespace JobsModel
                          public JobResult
   {
   private:
-  
+    i8 m_nBuffersLoadable;  // buffers to be loaded
+
     // must be last
     Footer m_xFooter;
   
@@ -27,7 +28,10 @@ namespace JobsModel
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
   public:
+    i8   nBuffersLoadable(void);
+    void vBuffersLoadable(i8 nBuffersLoadable);
     void vShow(void);
+  
     Footer* aFooter(void);
 
   private:

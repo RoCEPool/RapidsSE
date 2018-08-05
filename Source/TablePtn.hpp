@@ -8,12 +8,12 @@ namespace DBobjects
   class Index;
   class EntWrk;
   
+  const i8 C_UNKNOWN = -1;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   class TablePtn : public Object
   {
-    const i8 C_UNKNOWN = -1;
-  
   private:
     Lock  m_xLock;          // lock on the partition
     i8    m_iPartitionId;   // partition number

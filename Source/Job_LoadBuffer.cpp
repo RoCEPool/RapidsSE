@@ -24,12 +24,6 @@ JobNote mJobNote_LoadBuffer (
   "<example>"_Stz          // example
 );
 
-/* example:
- 
- ld lineitem "/tpch/lineitem.tbl" ;
- 
- */
-
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -89,6 +83,8 @@ Job_LoadBuffer::Job_LoadBuffer(Interface::SEitf* pSEitf)
   
   m_sSeed = mJobNote_LoadBuffer.pJobClass()->m_aSeed;
   
+  m_nBuffersLoadable = C_UNKNOWN;
+  
   _checkInitialised_(CN_JOB_LOADBUFFER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
@@ -123,6 +119,26 @@ void Job_LoadBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /*-- Member Functions --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get number of buffers loadable                                             */
+/*----------------------------------------------------------------------------*/
+i8 Job_LoadBuffer::nBuffersLoadable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
+  
+  return m_nBuffersLoadable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of buffers loadable                                             */
+/*----------------------------------------------------------------------------*/
+void Job_LoadBuffer::vBuffersLoadable(i8 nBuffersLoadable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
+  
+  m_nBuffersLoadable = nBuffersLoadable;
+}
 
 /*----------------------------------------------------------------------------*/
 /* show                                                                       */
