@@ -73,8 +73,10 @@ LoaderSub::LoaderSub(Job_SubLoader* pJob_SubLoader, Loader* pLoader)
   m_iValidRecords = 0;
   m_iInvalidRecords = 0;
   
-  for (i8 i_Partition = 0; i_Partition < C_MAX_PARTITIONS; i_Partition++)
-    m_pWorkingBuffer[i_Partition] = nullptr;
+  for (i8 i_Partition = 0; i_Partition < C_MAX_PARTITIONS; i_Partition++) {
+    m_pWorkingBuffer[i_Partition]   = nullptr;
+    m_nBuffersLoadable[i_Partition] = 0;
+  }
   
   _checkInitialised_(CN_LOADERSUB);
   
@@ -534,8 +536,11 @@ void LoaderSub::vDiscardBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
 
+  // increment the number of buffers
+  m_nBuffersLoadable[m_iPartition]++;
+
+  // discard the buffer
   WorkingBuffer* pWorkingBuffer = m_pWorkingBuffer[m_iPartition];
-  
   m_pWorkingBuffer[m_iPartition] = nullptr;
   
   delete pWorkingBuffer;

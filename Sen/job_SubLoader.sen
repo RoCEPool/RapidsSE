@@ -7,9 +7,10 @@
 /*----------------------------------------------------------------------------*/
 /* send buffer to node                                                        */
 /*----------------------------------------------------------------------------*/
-: SubLoader_sendBuffer ( pLoaderSub -- )
+: SubLoader_sendBuffer ( bFinal pLoaderSub -- )
 
   params| pLoaderSub  |
+  params| bFinal  |
 
   pLoaderSub loaderSub.spawnLoadBuffer
 ;
@@ -36,7 +37,7 @@
     if
       I "DANGLING %v" fmt.print
 
-      pLoaderSub SubLoader_sendBuffer
+      true pLoaderSub SubLoader_sendBuffer
 
     then
 
@@ -69,7 +70,7 @@
 
   begin pLoaderSub loaderSub.processRecords while
 
-    pLoaderSub SubLoader_sendBuffer
+    false pLoaderSub SubLoader_sendBuffer
 
   repeat
 

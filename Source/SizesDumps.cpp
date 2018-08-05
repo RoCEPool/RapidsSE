@@ -610,13 +610,13 @@ eHT geWhichHeap[]
   /* 63 */ HT_TRANSIENT_MEDIUM,  // CN_KEYVEC
   /* 64 */ HT_INVALID,           // CN_KEYWRK
 
-  /* 65 */   HT_INVALID,           // CN_LARGEPERSISTENT
-  /* 66 */   HT_INVALID,           // CN_LARGETRANSIENT
+  /* 65 */   HT_INVALID,         // CN_LARGEPERSISTENT
+  /* 66 */   HT_INVALID,         // CN_LARGETRANSIENT
   
   /* 67 */ HT_INVALID,           // CN_LINEITEM
   /* 68 */ HT_TRANSIENT_LARGE,   // CN_LOADCHUNK
   /* 69 */ HT_TRANSIENT_MEDIUM,  // CN_LOADER
-  /* 70 */ HT_TRANSIENT_MEDIUM,  // CN_LOADERSUB
+  /* 70 */ HT_TRANSIENT_LARGE,   // CN_LOADERSUB
   /* 71 */ HT_TRANSIENT_JUMBO,   // CN_LOADMAP
   /* 72 */ HT_INVALID,           // CN_LOCK
   
