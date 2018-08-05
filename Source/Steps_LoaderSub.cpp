@@ -430,7 +430,7 @@ void Task::vLoaderSubPartitionStore(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loaderSub.readRecords -- read and process records till a buffer full or eof*/
+/* loaderSub.processRecords -- read & process records till buffer full or eof  */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubProcessRecords(MP_Task mpTask)
 {
@@ -529,7 +529,10 @@ void Task::vLoaderSubSpawnLoadBuffer(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
     THROW_INVALID_DSTACK("loaderSub.spawnLoadBufferBuffer"_Stz);
   LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoader);
-    
+  
+  // temp
+  pLoaderSub->vDiscardBuffer();
+  
   EXIT();
 }
 

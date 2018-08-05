@@ -10,6 +10,8 @@
 : SubLoader_sendBuffer ( -- )
 
   params| pLoaderSub  |
+
+  pLoaderSub loaderSub.spawnLoadBuffer
 ;
 
 /*----------------------------------------------------------------------------*/

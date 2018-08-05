@@ -63,6 +63,8 @@ namespace Utilities
   
     //void vTruncateRecord(i8 iField);
   
+    void vDiscardBuffer(void);
+  
     Footer* aFooter(void);
   };
   

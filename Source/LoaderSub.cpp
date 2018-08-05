@@ -189,7 +189,6 @@ bool LoaderSub::bFetchRecord(void)
   //Interface::SEitf* pSEitf = m_pLoader->pSEitf();
   //Formatters* pFormatters = &pSEitf->m_xFormatters;
   
-  
   Job_LoadTable* pJob_LoadTable = m_pLoader->pJob_LoadTable();
   Formatters* pFormatters = &pJob_LoadTable->m_xFormatters;
   Table* pTable = m_pLoader->pTable();
@@ -526,6 +525,20 @@ i8 LoaderSub::iValidRecords(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
   
   return m_iValidRecords;
+}
+
+/*----------------------------------------------------------------------------*/
+/* discard working buffer (TEMPORARY)                                         */
+/*----------------------------------------------------------------------------*/
+void LoaderSub::vDiscardBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+
+  WorkingBuffer* pWorkingBuffer = m_pWorkingBuffer[m_iPartition];
+  
+  m_pWorkingBuffer[m_iPartition] = nullptr;
+  
+  delete pWorkingBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
