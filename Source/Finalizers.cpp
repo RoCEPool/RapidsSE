@@ -113,6 +113,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_LISTSCHEMAS
   /*    */ &Finalize::vUndefined,         // CN_JOB_LISTTABLES
   /*    */ &Finalize::vUndefined,         // CN_JOB_LISTTENANTS
+  /*    */ &Finalize::vUndefined,         // CN_JOB_LOADBUFFER
   /*    */ &Finalize::vUndefined,         // CN_JOB_LOADTABLE
   /*    */ &Finalize::vUndefined,         // CN_JOB_PROMPT
   /*    */ &Finalize::vUndefined,         // CN_JOB_PWF

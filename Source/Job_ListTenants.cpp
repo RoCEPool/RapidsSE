@@ -19,7 +19,9 @@ JobNote mJobNote_ListTenants (
   false,                  // detached job?
   pJob_ListTenants_pre,   // prompt pre-process function
   vJob_ListTenants_post,  // prompt post-process function
-  true                    // job is enabled
+  true,                   // job is enabled
+  "<help>"_Stz,           // help
+  "<example>"_Stz         // example
 );
 
 /*----------------------------------------------------------------------------*/

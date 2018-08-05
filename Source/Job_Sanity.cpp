@@ -18,7 +18,9 @@ JobNote mJobNote_Sanity (
   false,            // detached job?
   pJob_Sanity_pre,  // prompt pre-process function
   vJob_Sanity_post, // prompt post-process function
-  true              // job is enabled
+  true,             // job is enabled
+  "<help>"_Stz,     // help
+  "<example>"_Stz   // example
 );
 
 

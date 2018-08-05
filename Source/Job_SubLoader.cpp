@@ -19,7 +19,9 @@ JobNote mJobNote_SubLoader (
   false,                  // detached job?
   pJob_SubLoader_pre,     // prompt pre-process function
   vJob_SubLoader_post,    // prompt post-process function
-  false                   // job is not prompt enabled
+  false,                  // job is not prompt enabled
+  "<help>"_Stz,           // help
+  "<example>"_Stz         // example
 );
 
 /* example:

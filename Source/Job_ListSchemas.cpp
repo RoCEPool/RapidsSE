@@ -19,7 +19,9 @@ JobNote mJobNote_ListSchemas (
   false,                  // detached job?
   pJob_ListSchemas_pre,   // prompt pre-process function
   vJob_ListSchemas_post,  // prompt post-process function
-  true                    // job is enabled
+  true,                   // job is enabled
+  "<help>"_Stz,           // help
+  "<example>"_Stz         // example
 );
 
 /*----------------------------------------------------------------------------*/

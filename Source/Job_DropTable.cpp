@@ -19,7 +19,9 @@ JobNote mJobNote_DropTable (
   false,                     // detached job?
   pJob_DropTable_pre,        // prompt pre-process function
   vJob_DropTable_post,       // prompt post-process function
-  true                       // job is enabled
+  true,                      // job is enabled
+  "<help>"_Stz,              // help
+  "<example>"_Stz            // example
   );
 
 

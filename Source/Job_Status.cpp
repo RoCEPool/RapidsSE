@@ -19,7 +19,9 @@ JobNote mJobNote_Status (
   false,            // detached job?
   pJob_Status_pre,  // prompt pre-process function
   vJob_Status_post, // prompt post-process function
-  true              // job is enabled
+  true,             // job is enabled
+  "<help>"_Stz,     // help
+  "<example>"_Stz   // example
   );
 
 /*----------------------------------------------------------------------------*/

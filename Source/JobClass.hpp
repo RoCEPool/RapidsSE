@@ -24,6 +24,9 @@ namespace JobsModel
   
     bool m_bEnabled;  // is this job enabled?
 
+    Stz* m_aHelp;     // help
+    Stz* m_aExample;  // example
+  
   public:
     void vEndJob(Interface::SEitf* pSEitf, Job* pJob);
     Job* pNewJob(Interface::SEitf* pSEitf);

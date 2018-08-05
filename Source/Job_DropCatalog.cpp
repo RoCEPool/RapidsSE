@@ -19,7 +19,9 @@ JobNote mJobNote_DropCatalog (
   false,                          // detached job?
   pJob_DropCatalog_pre,           // prompt pre-process function
   vJob_DropCatalog_post,          // prompt post-process function
-  true                            // job is enabled
+  true,                           // job is enabled
+  "<help>"_Stz,                   // help
+  "<example>"_Stz                 // example
 );
 
 

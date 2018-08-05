@@ -15,11 +15,13 @@ JobNote mJobNote_DropTenant (
   "drop"_Stz,                   // the prompt command
   "tenant"_Stz,                 // the second word
   "dropTenant"_Stz,             // the task seed for this job
-  true,                          // check resources?
+  true,                         // check resources?
   false,                        // detached job?
   pJob_DropTenant_pre,          // prompt pre-process function
   vJob_DropTenant_post,         // prompt post-process function
-  true                          // job is enabled
+  true,                         // job is enabled
+  "<help>"_Stz,                 // help
+  "<example>"_Stz               // example
 );
 
 /*----------------------------------------------------------------------------*/

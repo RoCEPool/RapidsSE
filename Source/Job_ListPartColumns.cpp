@@ -19,7 +19,9 @@ JobNote mJobNote_ListPartColumns (
   false,                            // detached job?
   pJob_ListPartColumns_pre,         // prompt pre-process function
   vJob_ListPartColumns_post,        // prompt post-process function
-  true                              // job is enabled
+  true,                             // job is enabled
+  "<help>"_Stz,                     // help
+  "<example>"_Stz                   // example
 );
 
 /*----------------------------------------------------------------------------*/

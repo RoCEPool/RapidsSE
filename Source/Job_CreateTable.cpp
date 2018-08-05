@@ -19,7 +19,9 @@ JobNote mJobNote_CreateTable (
   false,                  // detached job?
   pJob_CreateTable_pre,   // prompt pre-process function
   vJob_CreateTable_post,  // prompt post-process function
-  true                    // job is enabled
+  true,                   // job is enabled
+  "<help>"_Stz,           // help
+  "<example>"_Stz         // example
 );
 
 /*----------------------------------------------------------------------------*/

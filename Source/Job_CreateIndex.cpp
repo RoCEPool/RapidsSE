@@ -19,7 +19,9 @@ JobNote mJobNote_CreateIndex (
   false,                 // detached job?
   pJob_CreateIndex_pre,  // prompt pre-process function
   vJob_CreateIndex_post, // prompt post-process function
-  true                   // job is enabled
+  true,                  // job is enabled
+  "<help>"_Stz,          // help
+  "<example>"_Stz        // example
 );
 
 JobNote mJobNote_CreateIndex2 (
@@ -34,7 +36,9 @@ JobNote mJobNote_CreateIndex2 (
   false,                 // detached job?
   pJob_CreateIndex_pre,  // prompt pre-process function
   vJob_CreateIndex_post, // prompt post-process function
-  true
+  true,                  // job is enabled
+  "<help>"_Stz,          // help
+  "<example>"_Stz        // example
   );
 
 /*----------------------------------------------------------------------------*/

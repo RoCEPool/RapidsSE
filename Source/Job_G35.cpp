@@ -16,7 +16,9 @@ JobNote mJobNote_G35 (
   false,          // detached job?
   pJob_G35_pre,   // prompt pre-process function
   vJob_G35_post,  // prompt post-process function
-  false           // job is not enabled
+  false,          // job is not enabled
+  "<help>"_Stz,   // help
+  "<example>"_Stz // example
 );
 
 /*----------------------------------------------------------------------------*/

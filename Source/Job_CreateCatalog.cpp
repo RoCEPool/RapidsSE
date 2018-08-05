@@ -19,7 +19,9 @@ JobNote mJobNote_CreateCatalog (
   false,                             // detached job?
   pJob_CreateCatalog_pre,            // prompt pre-process function
   vJob_CreateCatalog_post,           // prompt post-process function
-  true                               // job is enabled
+  true,                              // job is enabled
+  "<help>"_Stz,                      // help
+  "<example>"_Stz                    // example
 );
 
 /*----------------------------------------------------------------------------*/

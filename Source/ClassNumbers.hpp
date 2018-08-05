@@ -118,6 +118,7 @@ enum eCN : u2 // Class Number
     /*    */ CN_JOB_LISTSCHEMAS,
     /*    */ CN_JOB_LISTTABLES,
     /*    */ CN_JOB_LISTTENANTS,
+    /*    */ CN_JOB_LOADBUFFER,
     /*    */ CN_JOB_LOADTABLE,
     /*    */ CN_JOB_PROMPT,
     /*    */ CN_JOB_PWF,
@@ -352,6 +353,7 @@ enum eCN : u2 // Class Number
     /*    */ "JOB_LISTSCHEMAS"_Stz,    // CN_JOB_LISTSCHEMAS
     /*    */ "JOB_LISTTABLES"_Stz,     // CN_JOB_LISTTABLES
     /*    */ "JOB_LISTTENANTS"_Stz,    // CN_JOB_LISTTENANTS
+    /*    */ "JOB_LOADBUFFER"_Stz,     // CN_JOB_LOADBUFFER
     /*    */ "JOB_LOADTABLE"_Stz,      // CN_JOB_LOADTABLE
     /*    */ "JOB_PROMPT"_Stz,         // CN_JOB_PROMPT
     /*    */ "JOB_PWF"_Stz,            // CN_JOB_PWF

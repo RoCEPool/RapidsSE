@@ -19,7 +19,9 @@ JobNote mJobNote_Lf (
   false,             // detached job?
   pJob_Lf_pre,       // prompt pre-process function
   vJob_Lf_post,      // prompt post-process function
-  true               // job is enabled
+  true,              // job is enabled
+  "<help>"_Stz,      // help
+  "<example>"_Stz    // example
 );
 
 /*----------------------------------------------------------------------------*/
