@@ -14,6 +14,7 @@ extern JobCatalog gxJobCatalog;
 /*----------------------------------------------------------------------------*/
 JobNote::JobNote(Stz* aName,
                  eCN  eClass,
+                 eJK  eKind,
                  Stz* aComment,
                  Stz* aCommand1,
                  Stz* aCommand2,
@@ -31,6 +32,7 @@ JobNote::JobNote(Stz* aName,
   
   gxJobCatalog.m_xJobClass[i_Job].m_aName     = aName;
   gxJobCatalog.m_xJobClass[i_Job].m_eClass    = eClass;
+  gxJobCatalog.m_xJobClass[i_Job].m_eKind     = eKind;
   gxJobCatalog.m_xJobClass[i_Job].m_aComment  = aComment;
   gxJobCatalog.m_xJobClass[i_Job].m_aCommand1 = aCommand1;
   if (aCommand2)

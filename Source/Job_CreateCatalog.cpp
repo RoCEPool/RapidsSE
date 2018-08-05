@@ -10,6 +10,7 @@ extern AttachMap* gpAttachMap;
 JobNote mJobNote_CreateCatalog (
   "Job_CreateCatalog"_Stz,           // name of the job class
   CN_JOB_CREATECATALOG,              // class enum
+  JK_DIST2PC,                        // job kind
   "create catalog catalogName"_Stz,  // comment about the job
   "create"_Stz,                      // the prompt command
   "catalog"_Stz,                     // the second word

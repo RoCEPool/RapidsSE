@@ -10,6 +10,7 @@ extern AttachMap* gpAttachMap;
 JobNote mJobNote_Status (
   "status"_Stz,     // name of the job class
   CN_JOB_STATUS,    // class enum
+  JK_DIST2PC,       // job kind
   "status"_Stz,     // comment about the job
   "status"_Stz,     // the prompt command
   nullptr,          // the second word

@@ -9,6 +9,7 @@ extern AttachMap*      gpAttachMap;
 JobNote mJobNote_Sanity (
   "Job_Sanity"_Stz, // name of the job class
   CN_JOB_SANITY,    // class enum
+  JK_DIST2PC,       // job kind
   "sanity"_Stz,     // comment about the job
   "sanity"_Stz,     // the prompt command
   nullptr,          // the second word
@@ -16,7 +17,7 @@ JobNote mJobNote_Sanity (
   false,            // detached job?
   pJob_Sanity_pre,  // prompt pre-process function
   vJob_Sanity_post, // prompt post-process function
-  true
+  true              // job is enabled
 );
 
 

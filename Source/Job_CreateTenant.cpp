@@ -10,6 +10,7 @@ extern AttachMap* gpAttachMap;
 JobNote mJobNote_CreateTenant (
   "Job_CreateTenant"_Stz,         // name of the job class
   CN_JOB_CREATETABLE,             // class enum
+  JK_DIST2PC,                     // job kind
   "create tenant tenantName"_Stz, // comment about the job
   "create"_Stz,                   // the prompt command
   "tenant"_Stz,                   // the second word
@@ -17,7 +18,7 @@ JobNote mJobNote_CreateTenant (
   false,                          // detached job?
   pJob_CreateTenant_pre,          // prompt pre-process function
   vJob_CreateTenant_post,         // prompt post-process function
-  true
+  true                            // job is enabled
 );
 
 

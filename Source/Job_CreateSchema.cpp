@@ -10,6 +10,7 @@ extern AttachMap* gpAttachMap;
 JobNote mJobNote_CreateSchema (
   "Job_CreateSchema"_Stz,         // name of the job class
   CN_JOB_CREATESCHEMA,            // class enum
+  JK_DIST2PC,                     // job kind
   "create schema schemaName"_Stz, // comment about the job
   "create"_Stz,                   // the prompt command
   "schema"_Stz,                   // the second word
@@ -17,7 +18,7 @@ JobNote mJobNote_CreateSchema (
   false,                          // detached job?
   pJob_CreateSchema_pre,          // prompt pre-process function
   vJob_CreateSchema_post,         // prompt post-process function
-  true
+  true                            // job is enabled
 );
 
 /*----------------------------------------------------------------------------*/

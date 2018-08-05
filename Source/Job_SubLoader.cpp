@@ -10,6 +10,7 @@ extern AttachMap* gpAttachMap;
 JobNote mJobNote_SubLoader (
   "Job_SubLoader"_Stz,    // name of the job class
   CN_JOB_SUBLOADER,       // class enum
+  JK_CHILD,               // job kind
   "table subloader"_Stz,  // comment about the job
   nullptr,                // the prompt command
   nullptr,                // the second word
@@ -17,7 +18,7 @@ JobNote mJobNote_SubLoader (
   false,                  // detached job?
   pJob_SubLoader_pre,     // prompt pre-process function
   vJob_SubLoader_post,    // prompt post-process function
-  false                    // job is not prompt enabled
+  false                   // job is not prompt enabled
 );
 
 /* example:

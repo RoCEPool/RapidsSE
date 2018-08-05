@@ -10,6 +10,7 @@ extern AttachMap* gpAttachMap;
 JobNote mJobNote_DropCatalog (
   "Job_DropCatalog"_Stz,          // name of the job class
   CN_JOB_DROPCATALOG,             // class enum
+  JK_DIST2PC,                     // job kind
   "drop catalog catalogName"_Stz, // comment about the job
   "drop"_Stz,                     // the prompt command
   "catalog"_Stz,                  // the second word
@@ -17,7 +18,7 @@ JobNote mJobNote_DropCatalog (
   false,                          // detached job?
   pJob_DropCatalog_pre,           // prompt pre-process function
   vJob_DropCatalog_post,          // prompt post-process function
-  true                     // job is enabled
+  true                            // job is enabled
 );
 
 

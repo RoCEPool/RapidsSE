@@ -11,6 +11,7 @@ extern AttachMap* gpAttachMap;
 JobNote mJobNote_DropSchema (
   "Job_DropSchema"_Stz,         // name of the job class
   CN_JOB_DROPSCHEMA,            // class enum
+  JK_DIST2PC,                   // job kind
   "drop schema schemaName"_Stz, // comment about the job
   "drop"_Stz,                   // the prompt command
   "schema"_Stz,                 // the second word
@@ -18,7 +19,7 @@ JobNote mJobNote_DropSchema (
   false,                        // detached job?
   pJob_DropSchema_pre,          // prompt pre-process function
   vJob_DropSchema_post,         // prompt post-process function
-  true
+  true                          // job is enabled
 );
 
 /*----------------------------------------------------------------------------*/

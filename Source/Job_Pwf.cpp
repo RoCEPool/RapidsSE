@@ -10,6 +10,7 @@ extern AttachMap* gpAttachMap;
 JobNote mJobNote_Pwf (
   "Job_Pwf"_Stz,         // name of the job class
   CN_JOB_PWF,            // class enum
+  JK_SINGLENODE,         // job kind
   "change folder"_Stz,   // comment about the job
   "pwf"_Stz,             // the prompt command
   nullptr,               // the second word

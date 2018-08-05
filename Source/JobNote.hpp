@@ -14,6 +14,7 @@ namespace JobsModel
   public:
     JobNote(Stz* aName,
             eCN  eClass,
+            eJK  eKind,
             Stz* aComment,
             Stz* aCommand1,
             Stz* aCommand2,
@@ -21,7 +22,7 @@ namespace JobsModel
             bool bDetached,
             Job* (*fPre)(Interface::SEitf* pSEitf),
             void (*fPost)(Interface::SEitf* pSEitf, Job* pJob),
-            bool bEnabled=false);
+            bool bEnabled);
   
     JobClass* pJobClass(void);
   };

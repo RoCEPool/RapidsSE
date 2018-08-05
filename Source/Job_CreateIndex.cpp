@@ -10,6 +10,7 @@ extern AttachMap* gpAttachMap;
 JobNote mJobNote_CreateIndex (
   "Job_CreateIndex"_Stz, // name of the job class
   CN_JOB_CREATEINDEX,    // class enum
+  JK_DIST2PC,            // job kind
   "create index"_Stz,    // comment about the job
   "create"_Stz,          // the prompt command
   "index"_Stz,           // the second word
@@ -17,12 +18,13 @@ JobNote mJobNote_CreateIndex (
   false,                 // detached job?
   pJob_CreateIndex_pre,  // prompt pre-process function
   vJob_CreateIndex_post, // prompt post-process function
-  true
+  true                   // job is enabled
 );
 
 JobNote mJobNote_CreateIndex2 (
   "Job_CreateIndex"_Stz, // name of the job class
   CN_JOB_CREATEINDEX,    // class enum
+  JK_DIST2PC,            // job kind
   "create unique"_Stz,   // comment about the job
   "create"_Stz,          // the prompt command
   "unique"_Stz,          // the second word

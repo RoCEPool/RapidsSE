@@ -10,6 +10,7 @@ extern AttachMap* gpAttachMap;
 JobNote mJobNote_ListCatalogs (
   "Job_ListCatalogs"_Stz,  // name of the job class
   CN_JOB_LISTCATALOGS,     // class enum
+  JK_SINGLENODE,           // job kind
   "list catalogs"_Stz,     // comment about the job
   "lscat"_Stz,             // the prompt command
   nullptr,                 // the second word

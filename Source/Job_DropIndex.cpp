@@ -10,6 +10,7 @@ extern AttachMap* gpAttachMap;
 JobNote mJobNote_DropIndex (
   "Job_DropIndex"_Stz,        // name of the job class
   CN_JOB_DROPINDEX,           // class enum
+  JK_DIST2PC,                 // job kind
   "drop index indexName"_Stz, // comment about the job
   "drop"_Stz,                 // the prompt command
   "index"_Stz,                // the second word
@@ -17,7 +18,7 @@ JobNote mJobNote_DropIndex (
   false,                      // detached job?
   pJob_DropIndex_pre,         // prompt pre-process function
   vJob_DropIndex_post,        // prompt post-process function
-  true
+  true                        // job is enabled
 );
 
 

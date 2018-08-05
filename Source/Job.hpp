@@ -9,6 +9,24 @@ namespace JobsModel
   
   static const i8 C_MAX_COLUMNS = 128;
   
+  enum eJK // job kind
+  {
+  /*  0 */ JK_NONE=0,
+  /*  1 */ JK_CHILD,
+  /*  2 */ JK_DIST2PC,
+  /*  3 */ JK_ONESHOT,
+  /*  4 */ JK_SINGLENODE,
+  };
+  
+  static Stz* aJK[]
+  {
+  /*  0 */ "NONE"_Stz,
+  /*  1 */ "CHILD"_Stz,
+  /*  2 */ "DIST2C"_Stz,
+  /*  3 */ "ONESHOT"_Stz,
+  /*  4 */ "SINGLENODE"_Stz,
+  };
+  
   enum eJS // job state
   {
     /*  0 */ JS_NONE=0,
@@ -18,7 +36,7 @@ namespace JobsModel
     /*  4 */ JS_ENUMS
   };
   
-  static Stz* aTH[]
+  static Stz* aJS[]
   {
     /*  0 */ "NONE"_Stz,
     /*  1 */ "BEGUN"_Stz,

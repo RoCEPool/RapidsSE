@@ -10,6 +10,7 @@ extern AttachMap* gpAttachMap;
 JobNote mJobNote_DropTenant (
   "Job_DropTenant"_Stz,         // name of the job class
   CN_JOB_DROPTENANT,            // class enum
+  JK_DIST2PC,                   // job kind
   "drop tenant tenantName"_Stz, // comment about the job
   "drop"_Stz,                   // the prompt command
   "tenant"_Stz,                 // the second word

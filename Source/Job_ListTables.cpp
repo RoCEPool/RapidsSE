@@ -10,6 +10,7 @@ extern AttachMap* gpAttachMap;
 JobNote mJobNote_ListTables (
   "Job_ListTables"_Stz,   // name of the job class
   CN_JOB_LISTTABLES,      // class enum
+  JK_SINGLENODE,          // job kind
   "list tables"_Stz,      // comment about the job
   "lstbl"_Stz,            // the prompt command
   nullptr,                // the second word

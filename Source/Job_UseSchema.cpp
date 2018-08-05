@@ -10,6 +10,7 @@ extern AttachMap* gpAttachMap;
 JobNote mJobNote_UseSchema (
   "Job_UseSchema"_Stz,         // name of the job class
   CN_JOB_USESCHEMA,            // class enum
+  JK_SINGLENODE,               // job kind
   "use schema schemaName"_Stz, // comment about the job
   "use"_Stz,                   // the prompt command
   "schema"_Stz,                // the second word
