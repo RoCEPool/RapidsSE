@@ -32,6 +32,8 @@
   sTableNm find execute locals| pTable |
   pTable pJob_LoadBuffer Job_LoadBuffer.table!
 
+  //pJob_LoadBuffer job_LoadBuffer.insertRows
+
   pJob_LoadBuffer <DONE_ONESHOT>
 ;
 

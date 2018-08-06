@@ -48,6 +48,7 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.hasError"_Stz,         &vJobHasError,         false);
   vAddPrimitive("job.id@"_Stz,              &vJobIdFetch,          false);
   vAddPrimitive("job.isPromptCommand"_Stz,  &vJobIsPromptCommand,  false);
+  vAddPrimitive("job_loadBuffer.insertRows"_Stz,   &vJobLoadBufferInsertRows,   false);
   vAddPrimitive("job_loadBuffer.table!"_Stz,   &vJobLoadBufferTableStore,   false);
   vAddPrimitive("job.metadata!"_Stz,        &vJobMetadataStore,    false);
   vAddPrimitive("job.newBegun"_Stz,         &vJobNewBegun,         false);
@@ -988,7 +989,35 @@ void Task::vJobIsPromptCommand(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* jobLoadBuffer.table! -- store table into job_loadBuffer                    */
+/* job_LoadBuffer.insertRows -- insert rows from working buffer into table    */
+/*----------------------------------------------------------------------------*/
+void Task::vJobLoadBufferInsertRows(MP_Task mpTask)
+{
+  ENTRY("vJobLoadBufferInsertRows"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_LoadBuffer.insertRows!"_Stz);
+  Job_LoadBuffer* pJob_LoadBuffer = _pJob_LoadBuffer(pJobPtr);
+  
+  // convert partition to node slot
+  i8 iPartition = pJob_LoadBuffer->iPartition();
+  i8 iSlot = TablePtn::iPartitionToSlot(iPartition);
+
+  Table* pTable = pJob_LoadBuffer->pTable();
+
+  WorkingBuffer* pWorkingBuffer = pJob_LoadBuffer->m_pWorkingBuffer;
+  
+  i8 iTxId = 0;
+  
+  pTable->vInsertEntries(iTxId, iSlot, pWorkingBuffer);
+
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_LoadBuffer.table! -- store table into job_loadBuffer                   */
 /*----------------------------------------------------------------------------*/
 void Task::vJobLoadBufferTableStore(MP_Task mpTask)
 {
