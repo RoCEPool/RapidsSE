@@ -551,6 +551,9 @@ void Task::vLoaderSubSpawnLoadBuffer(MP_Task mpTask)
 
   pJob_LoadBuffer->m_pWorkingBuffer = pWorkingBuffer;
   
+  i8 iPartition = pLoaderSub->iPartition();
+  pJob_LoadBuffer->vPartition(iPartition);
+  
   // temp
   //pLoaderSub->vDiscardBuffer();
   
