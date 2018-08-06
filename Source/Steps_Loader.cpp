@@ -368,8 +368,9 @@ void Task::vLoaderSpawnSubLoader(MP_Task mpTask)
   SEitf* pSEitf = pJob_LoadTable->m_pSEitf;
   
   Job_SubLoader* pJob_SubLoader = new Job_SubLoader(pSEitf);
+  pJob_SubLoader->m_sObjectName = pJob_LoadTable->m_sObjectName;
   pJob_SubLoader->vJob_LoadTable(pJob_LoadTable);
-
+  
   LoaderSub* pLoaderSub = new LoaderSub(pJob_SubLoader,pLoader);
   pJob_SubLoader->vLoaderSub(pLoaderSub);
   

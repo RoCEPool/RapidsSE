@@ -85,6 +85,7 @@ Job_LoadBuffer::Job_LoadBuffer(Interface::SEitf* pSEitf)
   
   m_nBuffersLoadable = C_UNKNOWN;
   m_iPartition = -1;
+  m_pTable = nullptr;
   
   _checkInitialised_(CN_JOB_LOADBUFFER);
   
@@ -142,7 +143,7 @@ void Job_LoadBuffer::vBuffersLoadable(i8 nBuffersLoadable)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of buffers loadable                                             */
+/* get partition being loaded                                                 */
 /*----------------------------------------------------------------------------*/
 i8 Job_LoadBuffer::iPartition(void)
 {
@@ -152,13 +153,33 @@ i8 Job_LoadBuffer::iPartition(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of buffers loadable                                             */
+/* set partition being loaded                                                 */
 /*----------------------------------------------------------------------------*/
 void Job_LoadBuffer::vPartition(i8 iPartition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
   
   m_iPartition = iPartition;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get table being loaded                                                     */
+/*----------------------------------------------------------------------------*/
+Table* Job_LoadBuffer::pTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
+  
+  return m_pTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set table being loaded                                                     */
+/*----------------------------------------------------------------------------*/
+void Job_LoadBuffer::vTable(Table* pTable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
+  
+  m_pTable = pTable;
 }
 
 /*----------------------------------------------------------------------------*/

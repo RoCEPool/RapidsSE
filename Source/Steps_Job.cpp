@@ -48,6 +48,7 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.hasError"_Stz,         &vJobHasError,         false);
   vAddPrimitive("job.id@"_Stz,              &vJobIdFetch,          false);
   vAddPrimitive("job.isPromptCommand"_Stz,  &vJobIsPromptCommand,  false);
+  vAddPrimitive("job_loadBuffer.table!"_Stz,   &vJobLoadBufferTableStore,   false);
   vAddPrimitive("job.metadata!"_Stz,        &vJobMetadataStore,    false);
   vAddPrimitive("job.newBegun"_Stz,         &vJobNewBegun,         false);
   vAddPrimitive("job.newCancel"_Stz,        &vJobNewCancel,        false);
@@ -982,6 +983,28 @@ void Task::vJobIsPromptCommand(MP_Task mpTask)
   Job* pJob = _pJob(pJobPtr);
   
   mpTask->m_pDataStack->vPushInt(pJob->m_pPromptTask ? true : false);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* jobLoadBuffer.table! -- store table into job_loadBuffer                    */
+/*----------------------------------------------------------------------------*/
+void Task::vJobLoadBufferTableStore(MP_Task mpTask)
+{
+  ENTRY("vJobLoadBufferTableStore"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("jobLoadBuffer.table!"_Stz);
+  Job_LoadBuffer* pJob_LoadBuffer = _pJob_LoadBuffer(pJobPtr);
+  
+  Object* pTablePtr;
+  if ( ! mpTask->m_pDataStack->bPop(pTablePtr) )
+    THROW_INVALID_DSTACK("job.originatingTask!"_Stz);
+  Table* pTable = _pTable(pTablePtr);
+  
+  pJob_LoadBuffer->vTable(pTable);
   
   EXIT();
 }
