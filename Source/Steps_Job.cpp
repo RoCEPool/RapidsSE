@@ -996,12 +996,12 @@ void Task::vJobLoadBufferTableStore(MP_Task mpTask)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("jobLoadBuffer.table!"_Stz);
+    THROW_INVALID_DSTACK("job_LoadBuffer.table!"_Stz);
   Job_LoadBuffer* pJob_LoadBuffer = _pJob_LoadBuffer(pJobPtr);
   
   Object* pTablePtr;
   if ( ! mpTask->m_pDataStack->bPop(pTablePtr) )
-    THROW_INVALID_DSTACK("job.originatingTask!"_Stz);
+    THROW_INVALID_DSTACK("job_LoadBuffer.table!"_Stz);
   Table* pTable = _pTable(pTablePtr);
   
   pJob_LoadBuffer->vTable(pTable);

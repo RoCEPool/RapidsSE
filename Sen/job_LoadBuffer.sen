@@ -20,9 +20,17 @@
   // get the load buffer job from the task
   pTask task.job@ to pJob_LoadBuffer
 
+  pJob_LoadBuffer job.objectName@ locals| sTableNm |
+
   "LoadBuffer running" .
   pJob_LoadBuffer getPathR35 dicStack.set
+
+  // push table dictionary
+  sTableNm pushTable assert
   pathDump
+
+  sTableNm find execute locals| pTable |
+  pTable pJob_LoadBuffer Job_LoadBuffer.table!
 
   pJob_LoadBuffer <DONE_ONESHOT>
 ;
