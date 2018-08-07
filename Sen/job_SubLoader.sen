@@ -5,7 +5,7 @@
 "job_SubLoader.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* send buffer to node                                                        */
+/* send working buffer to node                                                */
 /*----------------------------------------------------------------------------*/
 : SubLoader_sendBuffer ( bFinal pLoaderSub -- )
 
@@ -45,15 +45,31 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* read records from file, create working buffers, send to node               */
+/*----------------------------------------------------------------------------*/
+: SubLoader_process ( pLoaderSub -- )
+
+  params| pLoaderSub |
+
+  begin pLoaderSub loaderSub.processRecords while
+
+    false pLoaderSub SubLoader_sendBuffer
+
+  repeat
+;
+
+/*----------------------------------------------------------------------------*/
 /* SubLoader seed                                                             */
 /*----------------------------------------------------------------------------*/
-: SubLoader_seed ( -- <R> )
+: SubLoader_seed ( -- )
 
   0 locals| pTask |
   0 locals| pJob_SubLoader  |
   0 locals| pLoaderSub  |
 
   tp: SubLoader
+
+  "SubLoader running" .
 
   // get the task
   task::this to pTask
@@ -66,13 +82,7 @@
 
   pLoaderSub loaderSub.begin
 
-  "SubLoader running" .
-
-  begin pLoaderSub loaderSub.processRecords while
-
-    false pLoaderSub SubLoader_sendBuffer
-
-  repeat
+  pLoaderSub SubLoader_process
 
   pLoaderSub SubLoader_testDangling
 
