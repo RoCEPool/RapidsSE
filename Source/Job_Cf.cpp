@@ -19,6 +19,7 @@ JobNote mJobNote_Cf (
   false,                 // detached job?
   pJob_Cf_pre,           // prompt pre-process function
   vJob_Cf_post,          // prompt post-process function
+  vJob_Cf_delete,        // job delete function
   true,                  // job is enabled
   "<help>"_Stz,          // help
   "<example>"_Stz        // example
@@ -200,7 +201,15 @@ void JobsModel::vJob_Cf_post(Interface::SEitf* pSEitf, Job* pJob)
   for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
     vTrace("%s\n"_Stz, pJob_Cf->m_xNode[i_Node].m_sResponse.aChar());
   }
+}
 
+/*----------------------------------------------------------------------------*/
+/* prompt post execute function                                               */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_Cf_delete(Interface::SEitf* pSEitf, Job* pJob)
+{
+  Job_Cf* pJob_Cf = _pJob_Cf(pJob);
+  
   // now delete the job
   delete pJob_Cf;
 }

@@ -19,6 +19,7 @@ JobNote mJobNote_Docol (
   false,            // detached job?
   pJob_Docol_pre,   // prompt pre-process function
   vJob_Docol_post,  // prompt post-process function
+  vJob_Docol_delete,// job delete function
   true,             // job is enabled
   "<help>"_Stz,     // help
   "<example>"_Stz   // example
@@ -200,7 +201,15 @@ void JobsModel::vJob_Docol_post(Interface::SEitf* pSEitf, Job* pJob)
   for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
     vTrace("%s\n"_Stz, pJob_Docol->m_xNode[i_Node].m_sResponse.aChar());
   }
+}
 
+/*----------------------------------------------------------------------------*/
+/* job delete function                                                        */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_Docol_delete(Interface::SEitf* pSEitf, Job* pJob)
+{
+  Job_Docol* pJob_Docol = _pJob_Docol(pJob);
+  
   // now delete the job
   delete pJob_Docol;
 }

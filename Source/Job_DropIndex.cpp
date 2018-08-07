@@ -19,6 +19,7 @@ JobNote mJobNote_DropIndex (
   false,                      // detached job?
   pJob_DropIndex_pre,         // prompt pre-process function
   vJob_DropIndex_post,        // prompt post-process function
+  vJob_DropIndex_delete,      // job delete function
   true,                       // job is enabled
   "<help>"_Stz,               // help
   "<example>"_Stz             // example
@@ -216,6 +217,14 @@ void JobsModel::vJob_DropIndex_post(Interface::SEitf* pSEitf, Job* pJob)
     }
     
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* job delete function                                                        */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_DropIndex_delete(Interface::SEitf* pSEitf, Job* pJob)
+{
+  Job_DropIndex* pJob_DropIndex = _pJob_DropIndex(pJob);
   
   // now delete the job
   delete pJob_DropIndex;

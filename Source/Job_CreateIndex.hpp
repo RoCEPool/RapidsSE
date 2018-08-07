@@ -48,6 +48,7 @@ namespace JobsModel
   
   Job* pJob_CreateIndex_pre(Interface::SEitf* pSEitf);
   void vJob_CreateIndex_post(Interface::SEitf* pSEitf, Job* pJob);
+  void vJob_CreateIndex_delete(Interface::SEitf* pSEitf, Job* pJob);
 }
 
 /*============================================================================*/

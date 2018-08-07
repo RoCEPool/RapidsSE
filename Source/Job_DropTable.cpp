@@ -19,6 +19,7 @@ JobNote mJobNote_DropTable (
   false,                     // detached job?
   pJob_DropTable_pre,        // prompt pre-process function
   vJob_DropTable_post,       // prompt post-process function
+  vJob_DropTable_delete,     // job delete function
   true,                      // job is enabled
   "<help>"_Stz,              // help
   "<example>"_Stz            // example
@@ -206,6 +207,14 @@ void JobsModel::vJob_DropTable_post(Interface::SEitf* pSEitf, Job* pJob)
     }
     
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* job delete function                                                        */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_DropTable_delete(Interface::SEitf* pSEitf, Job* pJob)
+{
+  Job_DropTable* pJob_DropTable = _pJob_DropTable(pJob);
   
   // now delete the job
   delete pJob_DropTable;

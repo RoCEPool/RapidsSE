@@ -19,6 +19,7 @@ JobNote mJobNote_DropCatalog (
   false,                          // detached job?
   pJob_DropCatalog_pre,           // prompt pre-process function
   vJob_DropCatalog_post,          // prompt post-process function
+  vJob_DropCatalog_delete,        // job delete function
   true,                           // job is enabled
   "<help>"_Stz,                   // help
   "<example>"_Stz                 // example
@@ -206,6 +207,14 @@ void JobsModel::vJob_DropCatalog_post(Interface::SEitf* pSEitf, Job* pJob)
     }
     
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* job delete function                                                        */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_DropCatalog_delete(Interface::SEitf* pSEitf, Job* pJob)
+{
+  Job_DropCatalog* pJob_DropCatalog = _pJob_DropCatalog(pJob);
   
   // now delete the job
   delete pJob_DropCatalog;

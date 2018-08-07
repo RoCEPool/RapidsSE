@@ -16,6 +16,7 @@ JobNote mJobNote_G35 (
   false,          // detached job?
   pJob_G35_pre,   // prompt pre-process function
   vJob_G35_post,  // prompt post-process function
+  vJob_G35_delete,// job delete function
   false,          // job is not enabled
   "<help>"_Stz,   // help
   "<example>"_Stz // example
@@ -152,6 +153,17 @@ Job* JobsModel::pJob_G35_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 void JobsModel::vJob_G35_post(Interface::SEitf* pSEitf, Job* pJob)
 {
+}
+
+/*----------------------------------------------------------------------------*/
+/* job delete function                                                        */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_G35_delete(Interface::SEitf* pSEitf, Job* pJob)
+{
+  Job_G35* pJob_G35 = _pJob_G35(pJob);
+  
+  // now delete the job
+  delete pJob_G35;
 }
 
 /*============================================================================*/

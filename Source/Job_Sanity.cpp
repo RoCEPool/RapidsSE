@@ -18,6 +18,7 @@ JobNote mJobNote_Sanity (
   false,            // detached job?
   pJob_Sanity_pre,  // prompt pre-process function
   vJob_Sanity_post, // prompt post-process function
+  vJob_Sanity_delete,// job delete function
   true,             // job is enabled
   "<help>"_Stz,     // help
   "<example>"_Stz   // example
@@ -215,6 +216,14 @@ void JobsModel::vJob_Sanity_post(Interface::SEitf* pSEitf, Job* pJob)
       vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
     }
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* job delete function                                                        */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_Sanity_delete(Interface::SEitf* pSEitf, Job* pJob)
+{
+  Job_Sanity* pJob_Sanity = _pJob_Sanity(pJob);
   
   // now delete the job
   delete pJob_Sanity;

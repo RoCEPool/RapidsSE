@@ -19,6 +19,7 @@ JobNote mJobNote_ListTenants (
   false,                  // detached job?
   pJob_ListTenants_pre,   // prompt pre-process function
   vJob_ListTenants_post,  // prompt post-process function
+  vJob_ListTenants_delete,// job delete function
   true,                   // job is enabled
   "<help>"_Stz,           // help
   "<example>"_Stz         // example
@@ -205,7 +206,15 @@ void JobsModel::vJob_ListTenants_post(Interface::SEitf* pSEitf, Job* pJob)
       vTrace("%s\n"_Stz, pJob_ListTenants->m_xNode[i_Node].m_sResponse.aChar());
     }
   }
+}
 
+/*----------------------------------------------------------------------------*/
+/* job delete function                                                        */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_ListTenants_delete(Interface::SEitf* pSEitf, Job* pJob)
+{
+  Job_ListTenants* pJob_ListTenants = _pJob_ListTenants(pJob);
+  
   // now delete the job
   delete pJob_ListTenants;
 }

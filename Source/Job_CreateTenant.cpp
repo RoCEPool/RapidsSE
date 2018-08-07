@@ -19,6 +19,7 @@ JobNote mJobNote_CreateTenant (
   false,                          // detached job?
   pJob_CreateTenant_pre,          // prompt pre-process function
   vJob_CreateTenant_post,         // prompt post-process function
+  vJob_CreateTenant_delete,       // job delete function
   true,                           // job is enabled
   "<help>"_Stz,                   // help
   "<example>"_Stz                 // example
@@ -204,6 +205,14 @@ void JobsModel::vJob_CreateTenant_post(Interface::SEitf* pSEitf, Job* pJob)
     }
     
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* job delete function                                                        */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_CreateTenant_delete(Interface::SEitf* pSEitf, Job* pJob)
+{
+  Job_CreateTenant* pJob_CreateTenant = _pJob_CreateTenant(pJob);
   
   // now delete the job
   delete pJob_CreateTenant;

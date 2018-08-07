@@ -19,6 +19,7 @@ JobNote mJobNote_CreateIndex (
   false,                 // detached job?
   pJob_CreateIndex_pre,  // prompt pre-process function
   vJob_CreateIndex_post, // prompt post-process function
+  vJob_CreateIndex_delete, // job delete function
   true,                  // job is enabled
   "<help>"_Stz,          // help
   "<example>"_Stz        // example
@@ -36,6 +37,7 @@ JobNote mJobNote_CreateIndex2 (
   false,                 // detached job?
   pJob_CreateIndex_pre,  // prompt pre-process function
   vJob_CreateIndex_post, // prompt post-process function
+  vJob_CreateIndex_delete, // job delete function
   true,                  // job is enabled
   "<help>"_Stz,          // help
   "<example>"_Stz        // example
@@ -318,6 +320,14 @@ void JobsModel::vJob_CreateIndex_post(Interface::SEitf* pSEitf, Job* pJob)
     }
     
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* job delete function                                                        */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_CreateIndex_delete(Interface::SEitf* pSEitf, Job* pJob)
+{
+  Job_CreateIndex* pJob_CreateIndex = _pJob_CreateIndex(pJob);
   
   // now delete the job
   delete pJob_CreateIndex;

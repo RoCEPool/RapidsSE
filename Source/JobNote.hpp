@@ -23,6 +23,7 @@ namespace JobsModel
             bool bDetached,
             Job* (*fPre)(Interface::SEitf* pSEitf),
             void (*fPost)(Interface::SEitf* pSEitf, Job* pJob),
+            void (*fDelete)(Interface::SEitf* pSEitf, Job* pJob),
             bool bEnabled,
             Stz* aHelp,
             Stz* aExample

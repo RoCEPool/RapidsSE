@@ -19,6 +19,7 @@ JobNote mJobNote_ListColumns (
   false,                  // detached job?
   pJob_ListColumns_pre,   // prompt pre-process function
   vJob_ListColumns_post,  // prompt post-process function
+  vJob_ListColumns_delete,// job delete function
   true,                   // job is enabled
   "<help>"_Stz,           // help
   "<example>"_Stz         // example
@@ -217,6 +218,14 @@ void JobsModel::vJob_ListColumns_post(Interface::SEitf* pSEitf, Job* pJob)
       vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
     }
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* job delete function                                                        */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_ListColumns_delete(Interface::SEitf* pSEitf, Job* pJob)
+{
+  Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(pJob);
   
   // now delete the job
   delete pJob_ListColumns;

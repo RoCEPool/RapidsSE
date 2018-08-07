@@ -20,6 +20,7 @@ JobNote mJobNote_DropSchema (
   false,                        // detached job?
   pJob_DropSchema_pre,          // prompt pre-process function
   vJob_DropSchema_post,         // prompt post-process function
+  vJob_DropSchema_delete,       // job delete function
   true,                         // job is enabled
   "<help>"_Stz,                 // help
   "<example>"_Stz               // example
@@ -206,6 +207,14 @@ void JobsModel::vJob_DropSchema_post(Interface::SEitf* pSEitf, Job* pJob)
     }
     
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* job delete function                                                        */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_DropSchema_delete(Interface::SEitf* pSEitf, Job* pJob)
+{
+  Job_DropSchema* pJob_DropSchema = _pJob_DropSchema(pJob);
   
   // now delete the job
   delete pJob_DropSchema;

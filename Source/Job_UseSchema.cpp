@@ -19,6 +19,7 @@ JobNote mJobNote_UseSchema (
   false,                       // detached job?
   pJob_UseSchema_pre,          // prompt pre-process function
   vJob_UseSchema_post,         // prompt post-process function
+  vJob_UseSchema_delete,       // job delete function
   true,                        // job is enabled
   "<help>"_Stz,                // help
   "<example>"_Stz              // example
@@ -203,7 +204,15 @@ void JobsModel::vJob_UseSchema_post(Interface::SEitf* pSEitf, Job* pJob)
       vTrace("ERROR (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob_UseSchema->m_xNode[i_Node].m_eErrorCode]);
     }
   }
+}
 
+/*----------------------------------------------------------------------------*/
+/* job delete function                                                        */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_UseSchema_delete(Interface::SEitf* pSEitf, Job* pJob)
+{
+  Job_UseSchema* pJob_UseSchema = _pJob_UseSchema(pJob);
+  
   // now delete the job
   delete pJob_UseSchema;
 }

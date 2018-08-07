@@ -40,6 +40,7 @@ namespace JobsModel
   
   Job* pJob_UseSchema_pre(Interface::SEitf* pSEitf);
   void vJob_UseSchema_post(Interface::SEitf* pSEitf, Job* pJob);
+  void vJob_UseSchema_delete(Interface::SEitf* pSEitf, Job* pJob);
 }
 
 /*============================================================================*/

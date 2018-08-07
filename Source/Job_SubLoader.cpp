@@ -19,6 +19,7 @@ JobNote mJobNote_SubLoader (
   false,                  // detached job?
   pJob_SubLoader_pre,     // prompt pre-process function
   vJob_SubLoader_post,    // prompt post-process function
+  vJob_SubLoader_delete,  // job delete function
   false,                  // job is not prompt enabled
   "<help>"_Stz,           // help
   "<example>"_Stz         // example
@@ -191,9 +192,16 @@ Job* JobsModel::pJob_SubLoader_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 void JobsModel::vJob_SubLoader_post(Interface::SEitf* pSEitf, Job* pJob)
 {
+  // nothing to do
+}
+
+/*----------------------------------------------------------------------------*/
+/* job delete function                                                        */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_SubLoader_delete(Interface::SEitf* pSEitf, Job* pJob)
+{
   Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pJob);
   
-
   // now delete the job
   delete pJob_SubLoader;
 }

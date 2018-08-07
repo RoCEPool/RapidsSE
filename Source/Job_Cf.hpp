@@ -40,6 +40,7 @@ namespace JobsModel
   
   Job* pJob_Cf_pre(Interface::SEitf* pSEitf);
   void vJob_Cf_post(Interface::SEitf* pSEitf, Job* pJob);
+  void vJob_Cf_delete(Interface::SEitf* pSEitf, Job* pJob);
 }
 
 /*============================================================================*/

@@ -23,6 +23,7 @@ JobNote::JobNote(Stz* aName,
                  bool bDetached,
                  Job* (*fPre)(Interface::SEitf* pSEitf),
                  void (*fPost)(Interface::SEitf* pSEitf, Job* pJob),
+                 void (*fDelete)(Interface::SEitf* pSEitf, Job* pJob),
                  bool bEnabled,
                  Stz* aHelp,
                  Stz* aExample
@@ -46,6 +47,7 @@ JobNote::JobNote(Stz* aName,
   gxJobCatalog.m_xJobClass[i_Job].m_bDetached   = bDetached;
   gxJobCatalog.m_xJobClass[i_Job].m_fPre        = fPre;
   gxJobCatalog.m_xJobClass[i_Job].m_fPost       = fPost;
+  gxJobCatalog.m_xJobClass[i_Job].m_fDelete     = fDelete;
   gxJobCatalog.m_xJobClass[i_Job].m_bEnabled    = bEnabled;
   
   // record the job class

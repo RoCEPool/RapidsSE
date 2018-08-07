@@ -19,6 +19,7 @@ JobNote mJobNote_CreateSchema (
   false,                          // detached job?
   pJob_CreateSchema_pre,          // prompt pre-process function
   vJob_CreateSchema_post,         // prompt post-process function
+  vJob_CreateSchema_delete,       // job delete function
   true,                           // job is enabled
   "<help>"_Stz,                   // help
   "<example>"_Stz                 // example
@@ -204,6 +205,14 @@ void JobsModel::vJob_CreateSchema_post(Interface::SEitf* pSEitf, Job* pJob)
     }
     
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* job delete function                                                        */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_CreateSchema_delete(Interface::SEitf* pSEitf, Job* pJob)
+{
+  Job_CreateSchema* pJob_CreateSchema = _pJob_CreateSchema(pJob);
   
   // now delete the job
   delete pJob_CreateSchema;

@@ -21,6 +21,7 @@ namespace JobsModel
 
     Job* (*m_fPre)(Interface::SEitf* pSEitf);
     void (*m_fPost)(Interface::SEitf* pSEitf, Job* pJob);
+    void (*m_fDelete)(Interface::SEitf* pSEitf, Job* pJob);
   
     bool m_bEnabled;  // is this job enabled?
 

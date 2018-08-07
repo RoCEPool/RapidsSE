@@ -19,6 +19,7 @@ JobNote mJobNote_Lf (
   false,             // detached job?
   pJob_Lf_pre,       // prompt pre-process function
   vJob_Lf_post,      // prompt post-process function
+  vJob_Lf_delete,    // job delete function
   true,              // job is enabled
   "<help>"_Stz,      // help
   "<example>"_Stz    // example
@@ -209,6 +210,14 @@ void JobsModel::vJob_Lf_post(Interface::SEitf* pSEitf, Job* pJob)
       vTrace("success: %lld rows affected\n"_Stz, gpAttachMap->m_pGrid->m_nNodes);
     }
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* prompt post execute function                                               */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_Lf_delete(Interface::SEitf* pSEitf, Job* pJob)
+{
+  Job_Lf* pJob_Lf = _pJob_Lf(pJob);
   
   // now delete the job
   delete pJob_Lf;

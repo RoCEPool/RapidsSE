@@ -40,6 +40,7 @@ namespace JobsModel
   
   Job* pJob_CreateTenant_pre(Interface::SEitf* pSEitf);
   void vJob_CreateTenant_post(Interface::SEitf* pSEitf, Job* pJob);
+  void vJob_CreateTenant_delete(Interface::SEitf* pSEitf, Job* pJob);
 }
 
 /*============================================================================*/

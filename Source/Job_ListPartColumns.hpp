@@ -40,6 +40,7 @@ namespace JobsModel
   
   Job* pJob_ListPartColumns_pre(Interface::SEitf* pSEitf);
   void vJob_ListPartColumns_post(Interface::SEitf* pSEitf, Job* pJob);
+  void vJob_ListPartColumns_delete(Interface::SEitf* pSEitf, Job* pJob);
 }
 
 /*============================================================================*/

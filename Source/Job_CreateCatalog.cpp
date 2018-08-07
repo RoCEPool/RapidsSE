@@ -19,6 +19,7 @@ JobNote mJobNote_CreateCatalog (
   false,                             // detached job?
   pJob_CreateCatalog_pre,            // prompt pre-process function
   vJob_CreateCatalog_post,           // prompt post-process function
+  vJob_CreateCatalog_delete,         // job delete function
   true,                              // job is enabled
   "<help>"_Stz,                      // help
   "<example>"_Stz                    // example
@@ -207,11 +208,18 @@ void JobsModel::vJob_CreateCatalog_post(Interface::SEitf* pSEitf, Job* pJob)
     }
     
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* job delete function                                                        */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_CreateCatalog_delete(Interface::SEitf* pSEitf, Job* pJob)
+{
+  Job_CreateCatalog* pJob_CreateCatalog = _pJob_CreateCatalog(pJob);
   
   // now delete the job
   delete pJob_CreateCatalog;
 }
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

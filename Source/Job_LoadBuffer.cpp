@@ -19,6 +19,7 @@ JobNote mJobNote_LoadBuffer (
   false,                   // detached job?
   nullptr,                 // prompt pre-process function
   nullptr,                 // prompt post-process function
+  vJob_LoadBuffer_delete,  // job delete function
   false,                   // job is not prompt enabled
   "<help>"_Stz,            // help
   "<example>"_Stz          // example
@@ -209,6 +210,17 @@ Footer* Job_LoadBuffer::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* job delete function                                                        */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_LoadBuffer_delete(Interface::SEitf* pSEitf, Job* pJob)
+{
+  Job_LoadBuffer* pJob_LoadBuffer =  _pJob_LoadBuffer(pJob);
+  
+  // now delete the job
+  delete pJob_LoadBuffer;
+}
 
 /*============================================================================*/
 /* end                                                                        */

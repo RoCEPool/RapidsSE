@@ -19,6 +19,7 @@ JobNote mJobNote_DropTenant (
   false,                        // detached job?
   pJob_DropTenant_pre,          // prompt pre-process function
   vJob_DropTenant_post,         // prompt post-process function
+  vJob_DropTenant_delete,       // job delete function
   true,                         // job is enabled
   "<help>"_Stz,                 // help
   "<example>"_Stz               // example
@@ -205,6 +206,14 @@ void JobsModel::vJob_DropTenant_post(Interface::SEitf* pSEitf, Job* pJob)
     }
     
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* job delete function                                                        */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_DropTenant_delete(Interface::SEitf* pSEitf, Job* pJob)
+{
+  Job_DropTenant* pJob_DropTenant = _pJob_DropTenant(pJob);
   
   // now delete the job
   delete pJob_DropTenant;
