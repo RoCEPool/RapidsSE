@@ -8,6 +8,14 @@
 extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
+/* delete the job by running the delete-function                              */
+/*----------------------------------------------------------------------------*/
+void JobClass::vDeleteJob(Interface::SEitf* pSEitf, Job* pJob)
+{
+  (*m_fDelete)(pSEitf, pJob);
+}
+
+/*----------------------------------------------------------------------------*/
 /* end the job by running the post-function                                   */
 /*----------------------------------------------------------------------------*/
 void JobClass::vEndJob(Interface::SEitf* pSEitf, Job* pJob)

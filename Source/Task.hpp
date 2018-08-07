@@ -558,6 +558,7 @@ namespace Tasks
     
     // command processor
     static void vCommandProcessorBlankLine(MP_Task mpTask);
+    static void vCommandProcessorDeleteJob(MP_Task mpTask);
     static void vCommandProcessorDispatchJob(MP_Task mpTask);
     static void vCommandProcessorEndJob(MP_Task mpTask);
     static void vCommandProcessorExecuteFile(MP_Task mpTask);

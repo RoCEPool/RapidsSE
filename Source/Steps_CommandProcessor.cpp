@@ -14,6 +14,7 @@ extern AttachMap*      gpAttachMap;
 void Task::vAddPrimitives_CommandProcessor(void)
 {
   vAddPrimitive("commandProcessor.blankLine"_Stz,   &vCommandProcessorBlankLine,  false);
+  vAddPrimitive("commandProcessor.deleteJob"_Stz,   &vCommandProcessorDeleteJob,  false);
   vAddPrimitive("commandProcessor.dispatchJob"_Stz, &vCommandProcessorDispatchJob,false);
   vAddPrimitive("commandProcessor.endJob"_Stz,      &vCommandProcessorEndJob,     false);
   vAddPrimitive("commandProcessor.executeFile"_Stz, &vCommandProcessorExecuteFile,false);
@@ -40,6 +41,30 @@ void Task::vCommandProcessorBlankLine(MP_Task mpTask)
   
   mpTask->m_pDataStack->vPushInt((i8)bBlank);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* commandProcessor.deleteJob -- delete job                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vCommandProcessorDeleteJob(MP_Task mpTask)
+{
+  ENTRY("vCommandProcessorDeleteJob"_Stz);
+  
+  Object* pCommandProcessorObject;
+  if ( ! mpTask->m_pDataStack->bPop(pCommandProcessorObject) )
+    THROW_INVALID_DSTACK("commandProcessor.deleteJob"_Stz);
+  CommandProcessor*
+  pCommandProcessor = _pCommandProcessor(pCommandProcessorObject);
+  
+  Object* pSEitfObject;
+  if ( ! mpTask->m_pDataStack->bPop(pSEitfObject) )
+    THROW_INVALID_DSTACK("commandProcessor.deleteJob"_Stz);
+  SEitf*
+  pSEitf = _pSEitf(pSEitfObject);
+  
+  pCommandProcessor->vDeleteJob(pSEitf);
+  
   EXIT();
 }
 

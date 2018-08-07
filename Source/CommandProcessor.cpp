@@ -170,6 +170,18 @@ bool CommandProcessor::bBlankLine(void)
   return true;
 }
 
+/*----------------------------------------------------------------------------*/
+/* delete a job                                                               */
+/*----------------------------------------------------------------------------*/
+void CommandProcessor::vDeleteJob(SEitf* pSEitf)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
+  
+  // call the job delete function
+  m_pJobClass->vDeleteJob(pSEitf,m_pJob);
+  
+  m_pJob = nullptr;
+}
 
 /*----------------------------------------------------------------------------*/
 /* dispatch job into SE                                                       */
@@ -204,7 +216,7 @@ void CommandProcessor::vEndJob(SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
   
-  // call the job post function (includes deleting the job)
+  // call the job post function
   m_pJobClass->vEndJob(pSEitf,m_pJob);
   
   m_pJob = nullptr;

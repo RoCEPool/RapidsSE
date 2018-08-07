@@ -35,6 +35,7 @@ namespace Interface
     bool bTokenCheck(i8 nTokens);
 
     bool bBlankLine(void);
+    void vDeleteJob(SEitf* pSEitf);
     bool bDispatchJob(SEitf* pSEitf);
     void vEndJob(SEitf* pSEitf);
     bool bFindJobClass(void);

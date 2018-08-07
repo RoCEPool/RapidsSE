@@ -29,6 +29,7 @@ namespace JobsModel
     Stz* m_aExample;  // example
   
   public:
+    void vDeleteJob(Interface::SEitf* pSEitf, Job* pJob);
     void vEndJob(Interface::SEitf* pSEitf, Job* pJob);
     Job* pNewJob(Interface::SEitf* pSEitf);
   };
