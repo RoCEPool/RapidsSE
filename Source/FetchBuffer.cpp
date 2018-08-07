@@ -102,8 +102,8 @@ bool FetchBuffer::bAppendRow(Row* pRow)
   // copy the row id
   *ppFetchRow = pRow;
   
-  pRow->vShow(m_pTable->pColumnVec(), true);
-  vTrace(" %p \n"_Stz, pRow);
+  //pRow->vShow(m_pTable->pColumnVec(), true);
+  //vTrace(" %p \n"_Stz, pRow);
   
   return true;
 }

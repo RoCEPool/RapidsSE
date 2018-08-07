@@ -991,7 +991,7 @@ eEC RapidsSE_ExportData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath, i8 iTraceLev
 /*----------------------------------------------------------------------------*/
 /* fetch next buffer                                                          */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_FetchNextBuffer(SEitf* pSEitf, void** ppWorkingBuffer, i8 iTraceLevel)
+eEC RapidsSE_FetchNextBuffer(SEitf* pSEitf, void** ppFetchBuffer, i8 iTraceLevel)
 {
   eEC eResult;
   
@@ -1008,18 +1008,19 @@ eEC RapidsSE_FetchNextBuffer(SEitf* pSEitf, void** ppWorkingBuffer, i8 iTraceLev
     CLEAR_LASTERROR();
     
     // validate the reference pointer
-    VALIDATE_REFPOINTER("b"_Stz, ppWorkingBuffer);
+    VALIDATE_REFPOINTER("b"_Stz, ppFetchBuffer);
     
     bool bNextBuffer = pSEitf->bNextBuffer();
     
     if (bNextBuffer) {
-      *ppWorkingBuffer = pSEitf->m_pResultBuffer;
+      *ppFetchBuffer = pSEitf->m_pFetchBuffer;
       //pSEitf->m_pResultBuffer->vShow();
+      vTrace("Buffer %p Entries %lld\n"_Stz, pSEitf->m_pFetchBuffer,  pSEitf->m_pFetchBuffer->nFetchedRows());
     }
     else {
-      *ppWorkingBuffer = nullptr;
+      *ppFetchBuffer = nullptr;
     }
-    //vTrace("Buffer %p FirstRow %p Entries %lld\n"_Stz, *ppEntryBuffer, *ppFirstEntry, *ppEntries);
+    
     
     // trace exit
     TRACE_EXIT("ea"_Stz);

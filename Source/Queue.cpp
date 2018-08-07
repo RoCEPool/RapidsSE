@@ -266,7 +266,9 @@ void Queue::vDiscard(void)
   
   QueueBuffer* pQueueBufferTBD = m_pTopBuffer;
   
-  ASSERT(0 == pQueueBufferTBD->iCount());
+  //vTrace("Buffer %p Count:%lld\n"_Stz, pQueueBufferTBD, pQueueBufferTBD->iCount());
+  
+  //ASSERT(0 == pQueueBufferTBD->iCount());
  
   m_pTopBuffer = m_pTopBuffer->pNext();
   if ( ! m_pTopBuffer )
