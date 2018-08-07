@@ -99,6 +99,9 @@ Job_LoadBuffer::Job_LoadBuffer(Interface::SEitf* pSEitf)
 Job_LoadBuffer::~Job_LoadBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
+  
+  delete m_pWorkingBuffer;
+  m_pWorkingBuffer = nullptr;
 }
 
 
