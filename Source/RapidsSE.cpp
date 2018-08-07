@@ -255,7 +255,8 @@ void RapidsSE::vRunPrompt(void)
       ASSERT(EC_NONE == eError);
       vTrace("RapidsSE_Prompt() called\n"_Stz);
       
-      PosixThread::vSleepSec(1000000000);
+      while (true)
+        PosixThread::vSleepSec(1000000000);
     }
     
     // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
@@ -271,7 +272,8 @@ void RapidsSE::vRunPrompt(void)
     ASSERT(EC_NONE == eError);
     vTrace("RapidsSE_Prompt() called\n"_Stz);
     
-    PosixThread::vSleepSec(10000000);
+    while (true)
+      PosixThread::vSleepSec(10000000);
   }
 }
 

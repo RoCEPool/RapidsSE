@@ -604,7 +604,14 @@ void Task::vJobDelete(MP_Task mpTask)
 //      break;
 //    }
       
-    case CN_JOB_LOADTABLE:
+    case CN_JOB_LOADBUFFER:
+    {
+      Job_LoadBuffer* pJob_LoadBuffer = _pJob_LoadBuffer(pJobPtr);
+      delete pJob_LoadBuffer;
+      break;
+    }
+      
+   case CN_JOB_LOADTABLE:
     {
       Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pJobPtr);
       delete pJob_LoadTable;
@@ -639,6 +646,13 @@ void Task::vJobDelete(MP_Task mpTask)
       break;
     }
     
+    case CN_JOB_SUBLOADER:
+    {
+      Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pJobPtr);
+      delete pJob_SubLoader;
+      break;
+    }
+
     case CN_JOB_USESCHEMA:
     {
       Job_UseSchema* pJob_UseSchema = _pJob_UseSchema(pJobPtr);

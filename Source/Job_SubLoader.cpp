@@ -41,7 +41,7 @@ Job_SubLoader* JobsModel::_pJob_SubLoader(void* aAddress)
 {
   Job_SubLoader* pJob_SubLoader = reinterpret_cast<Job_SubLoader*>(aAddress);
   
-  //RASSERT( !pJob_SubLoader || CN_JOB_SUBLOADER == pJob_SubLoader->eClass());
+  RASSERT( !pJob_SubLoader || CN_JOB_SUBLOADER == pJob_SubLoader->eClass());
   
   return pJob_SubLoader;
 }
