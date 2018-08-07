@@ -51,6 +51,7 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.id@"_Stz,              &vJobIdFetch,          false);
   vAddPrimitive("job.isPromptCommand"_Stz,  &vJobIsPromptCommand,  false);
   vAddPrimitive("job_loadBuffer.insertRows"_Stz,   &vJobLoadBufferInsertRows,   false);
+  vAddPrimitive("job_loadBuffer.partition@"_Stz,   &vJobLoadBufferPartitionFetch,   false);
   vAddPrimitive("job_loadBuffer.table!"_Stz,   &vJobLoadBufferTableStore,   false);
   vAddPrimitive("job.metadata!"_Stz,        &vJobMetadataStore,    false);
   vAddPrimitive("job.newBegun"_Stz,         &vJobNewBegun,         false);
@@ -1048,6 +1049,24 @@ void Task::vJobLoadBufferInsertRows(MP_Task mpTask)
   
   pTable->vInsertEntries(iTxId, iSlot, pWorkingBuffer);
 
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_LoadBuffer.partition@ -- fetch partition no. from job_loadBuffer       */
+/*----------------------------------------------------------------------------*/
+void Task::vJobLoadBufferPartitionFetch(MP_Task mpTask)
+{
+  ENTRY("vJobLoadBufferPartitionFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_LoadBuffer.partition@"_Stz);
+  Job_LoadBuffer* pJob_LoadBuffer = _pJob_LoadBuffer(pJobPtr);
+  
+  i8 i_Partition = pJob_LoadBuffer->iPartition();
+  mpTask->m_pDataStack->vPushInt(i_Partition);
 
   EXIT();
 }

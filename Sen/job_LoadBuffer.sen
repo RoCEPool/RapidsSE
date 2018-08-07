@@ -11,6 +11,7 @@
 
   0 locals| pTask |
   0 locals| pJob_LoadBuffer  |
+  0 locals| sTableNm  |
 
   tp: LoadBuffer
 
@@ -20,7 +21,8 @@
   // get the load buffer job from the task
   pTask task.job@ to pJob_LoadBuffer
 
-  pJob_LoadBuffer job.objectName@ locals| sTableNm |
+  // get table name
+  pJob_LoadBuffer job.objectName@ to sTableNm
 
   "LoadBuffer running" .
   pJob_LoadBuffer getPathR35 dicStack.set

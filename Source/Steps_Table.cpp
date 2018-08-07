@@ -415,7 +415,8 @@ void Task::vTableGetPtn(MP_Task mpTask)
     THROW_INVALID_DSTACK("table.getPtn"_Stz);
   
   // get the table partition
-  TablePtn* pTablePtn = pTable->pPartition(TablePtn::iPartitionToSlot(i_Ptn));
+  i8 i_Slot = TablePtn::iPartitionToSlot(i_Ptn);
+  TablePtn* pTablePtn = pTable->pPartition(i_Slot);
 
   mpTask->m_pDataStack->vPushObject(pTablePtn);
   
