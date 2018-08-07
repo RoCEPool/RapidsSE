@@ -7,6 +7,7 @@
 #include "SePrompt.hpp"
 
 extern AttachMap* gpAttachMap;
+extern JobCatalog gxJobCatalog;
 
 // job: ////////////////////////////////////////////////////////////////////////
 
@@ -32,6 +33,7 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job_createIndex.tableName@"_Stz, &vJobCreateIndexTableNameFetch, false);
   vAddPrimitive("job.decAcksRemaining"_Stz, &vJobDecAcksRemaining, false);
   vAddPrimitive("job.delete"_Stz,           &vJobDelete,           false);
+  vAddPrimitive("job.deleteJob"_Stz,        &vJobDeleteJob,        false);
   vAddPrimitive("job.dicPath"_Stz,          &vJobDicPath,          false);
   vAddPrimitive("job_dropIndex.tableName@"_Stz,   &vJobDropIndexTableNameFetch,   false);
   vAddPrimitive("job.error!"_Stz,           &vJobErrorStore,       false);
@@ -258,24 +260,7 @@ void Task::vJobCheckResourcesFetch(MP_Task mpTask)
   
   EXIT();
 }
-
-/*----------------------------------------------------------------------------*/
-/* job.class -- get the class of the job                                      */
-/*----------------------------------------------------------------------------*/
-void Task::vJobClass(MP_Task mpTask)
-{
-  ENTRY("vJobClass"_Stz);
   
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.class"_Stz);
-  Job* pJob = _pJob(pJobPtr);
-  
-  mpTask->m_pDataStack->vPushInt(pJob->eClass());
-  
-  EXIT();
-}
-
 /*----------------------------------------------------------------------------*/
 /* job.columnCount@ -- fetch the no of columns of the create table job        */
 /*----------------------------------------------------------------------------*/
@@ -356,6 +341,43 @@ void Task::vJobColumnTypeFetch(MP_Task mpTask)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* job.class -- get the class of the job                                      */
+/*----------------------------------------------------------------------------*/
+void Task::vJobClass(MP_Task mpTask)
+{
+  ENTRY("vJobClass"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.class"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushInt(pJob->eClass());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.deleteJob -- delete the job                                            */
+/*----------------------------------------------------------------------------*/
+void Task::vJobDeleteJob(MP_Task mpTask)
+{
+  ENTRY("vJobDeleteJob"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.class"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  // find the job in the catalog
+  eCN eClass = pJob->eClass();
+  JobClass* pJobClass = gxJobCatalog.pFindJob(eClass);
+  
+  // call the job delete function
+  pJobClass->vDeleteJob(nullptr, pJob);  // come back to this, remove seitf as parameter to delete
+}
+  
 /*----------------------------------------------------------------------------*/
 /* job_createIndex.tableName@ -- fetch the table name from the job_createIndex*/
 /*----------------------------------------------------------------------------*/

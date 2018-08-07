@@ -9,7 +9,7 @@ extern AttachMap* gpAttachMap;
 
 JobNote mJobNote_CreateTenant (
   "Job_CreateTenant"_Stz,         // name of the job class
-  CN_JOB_CREATETABLE,             // class enum
+  CN_JOB_CREATETENANT,             // class enum
   JK_DIST2PC,                     // job kind
   "create tenant tenantName"_Stz, // comment about the job
   "create"_Stz,                   // the prompt command

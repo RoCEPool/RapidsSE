@@ -152,11 +152,6 @@ bool CommandProcessor::bTokenCheck(i8 nTokens)
   return true;
 }
 
-
-
-
-
-
 /*----------------------------------------------------------------------------*/
 /* test for blank line                                                        */
 /*----------------------------------------------------------------------------*/
@@ -218,8 +213,6 @@ void CommandProcessor::vEndJob(SEitf* pSEitf)
   
   // call the job post function
   m_pJobClass->vEndJob(pSEitf,m_pJob);
-  
-  m_pJob = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

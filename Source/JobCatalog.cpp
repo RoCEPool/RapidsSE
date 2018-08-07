@@ -37,6 +37,20 @@ JobClass* JobCatalog::pFindJob(Stz* aCommand1, Stz* aCommand2)
   return nullptr;
 }
 
+/*----------------------------------------------------------------------------*/
+/* find job class given command                                               */
+/*----------------------------------------------------------------------------*/
+JobClass* JobCatalog::pFindJob(eCN eClass)
+{
+  for (i8 i_Job = 0; i_Job < m_nClasses; i_Job++) {
+    
+    if (m_xJobClass[i_Job].m_eClass == eClass)
+      return &m_xJobClass[i_Job];
+  }
+  
+  return nullptr;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
