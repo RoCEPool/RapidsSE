@@ -527,12 +527,12 @@ void Task::vLoaderSubSpawnLoadBuffer(MP_Task mpTask)
   
   Object* pPtrLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
-    THROW_INVALID_DSTACK("loaderSub.spawnLoadBufferBuffer"_Stz);
+    THROW_INVALID_DSTACK("loaderSub.spawnLoadBuffer"_Stz);
   LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoader);
   
   i8 iFinal;
   if ( ! mpTask->m_pDataStack->bPop(iFinal) )
-    THROW_INVALID_DSTACK("loaderSub.spawnLoadBufferBuffer!"_Stz);
+    THROW_INVALID_DSTACK("loaderSub.spawnLoadBuffer"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   SEitf* pSEitf = pLoaderSub->pJob_SubLoader()->m_pSEitf;

@@ -17,8 +17,8 @@ JobNote mJobNote_SubLoader (
   "SubLoader_seed"_Stz,   // the task seed for this job
   false,                  // check resources?
   false,                  // detached job?
-  pJob_SubLoader_pre,     // prompt pre-process function
-  vJob_SubLoader_post,    // prompt post-process function
+  nullptr,                // prompt pre-process function
+  nullptr,                // prompt post-process function
   vJob_SubLoader_delete,  // job delete function
   false,                  // job is not prompt enabled
   "<help>"_Stz,           // help
@@ -176,24 +176,6 @@ Footer* Job_SubLoader::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* prompt pre execute function                                                */
-/*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_SubLoader_pre(Interface::SEitf* pSEitf)
-{
-  Job_SubLoader* pJob_SubLoader = new Job_SubLoader(pSEitf);
-  
-  return pJob_SubLoader;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void JobsModel::vJob_SubLoader_post(Interface::SEitf* pSEitf, Job* pJob)
-{
-  // nothing to do
-}
 
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
