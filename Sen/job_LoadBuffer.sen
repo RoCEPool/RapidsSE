@@ -12,6 +12,7 @@
   0 locals| pTask |
   0 locals| pJob_LoadBuffer  |
   0 locals| sTableNm  |
+  0 locals| i_Partition |
 
   tp: LoadBuffer
 
@@ -25,16 +26,25 @@
   pJob_LoadBuffer job.objectName@ to sTableNm
 
   "LoadBuffer running" .
-  pJob_LoadBuffer getPathR35 dicStack.set
 
   // push table dictionary
+  pJob_LoadBuffer getPathR35 dicStack.set
   sTableNm pushTable assert
   //pathDump
 
+  // use table name find and set target table
   sTableNm find execute locals| pTable |
   pTable pJob_LoadBuffer Job_LoadBuffer.table!
 
+  // grab write lock on table partition
+  pJob_LoadBuffer Job_LoadBuffer.partition@ to i_Partition
+  i_Partition pTable tablePtnGrabWrite
+
+  // now insert the buffer of rows
   pJob_LoadBuffer job_LoadBuffer.insertRows
+
+  // drop write lock on table partition
+  i_Partition pTable tablePtnDropWrite
 
   pJob_LoadBuffer <DONE_ONESHOT>
 
