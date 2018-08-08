@@ -58,7 +58,7 @@
   pJob_LoadBuffer <DONE_ONESHOT>
 
   // now delete the ended job
-  pJob_LoadBuffer job.delete
+  pJob_LoadBuffer job.deleteJob
 ;
 
 /*============================================================================*/
