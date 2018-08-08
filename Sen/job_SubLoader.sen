@@ -91,6 +91,9 @@
 
   // now delete the ended job
   pJob_SubLoader job.deleteJob
+
+  // null the job in the task
+  nullptr pTask task.job!
 ;
 
 /*============================================================================*/

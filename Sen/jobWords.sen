@@ -26,6 +26,9 @@
 
   ddlLock::testDrop
 
+  // null the job in the task
+  nullptr task::this task.job!
+
   pJob job.isPromptCommand true == if
     "Acking prompt task" .
     pJob job.promptTask@ ack

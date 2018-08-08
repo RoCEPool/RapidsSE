@@ -234,6 +234,8 @@ Task::~Task(void)
   //  Task* pTask = this;
   //  gpAttachMap->m_pTaskList->vRemove(pTask);
   //  gpAttachMap->m_pTaskList->vDump();
+  
+  ASSERT(!m_pJob);
 }
 
 /*----------------------------------------------------------------------------*/
