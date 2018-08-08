@@ -94,6 +94,8 @@ Job_LoadTable::Job_LoadTable(Interface::SEitf* pSEitf)
   
   m_xFormatters.vReset(); // reset to defaults in attachmap 
   
+  m_pTask = nullptr;
+  
   m_bCheckResources = true;
   
   _checkInitialised_(CN_JOB_LOADTABLE);
@@ -271,6 +273,26 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
   }
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get task                                                                   */
+/*----------------------------------------------------------------------------*/
+Tasks::Task* Job_LoadTable::pTask(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
+  
+  return m_pTask;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set task                                                                   */
+/*----------------------------------------------------------------------------*/
+void Job_LoadTable::vTask(Tasks::Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
+  
+  m_pTask = pTask;
 }
 
 /*----------------------------------------------------------------------------*/

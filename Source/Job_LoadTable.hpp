@@ -15,7 +15,9 @@ namespace JobsModel
   public:
     Utilities::Loader* m_pLoader; // table loader
     Formatters m_xFormatters; // record formatters
-    
+  
+    Tasks::Task* m_pTask; // task running this job
+  
     // must be last
     Footer m_xFooter;
   
@@ -31,6 +33,9 @@ namespace JobsModel
 
   public:
     bool bPopulateJob(TokenVec* pTokenVec);
+    Tasks::Task* pTask(void);
+    void vTask(Tasks::Task* pTask);
+
     void vShow(void);
     
   private:
