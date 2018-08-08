@@ -867,8 +867,11 @@ namespace Tasks
     static void vJobAddOriginator(MP_Task mpTask);
     static void vJobAddParticipant(MP_Task mpTask);
     static void vJobAncilliaryFetch(MP_Task mpTask);
+    static void vJobBegunDelete(MP_Task mpTask);
     static void vJobBegunErrorFetch(MP_Task mpTask);
     static void vJobBegunErrorStore(MP_Task mpTask);
+    static void vJobCancelDelete(MP_Task mpTask);
+    static void vJobCancelledDelete(MP_Task mpTask);
     static void vJobCancelledErrorFetch(MP_Task mpTask);
     static void vJobCancelledErrorStore(MP_Task mpTask);
     static void vJobCheckResourcesFetch(MP_Task mpTask);
@@ -879,12 +882,15 @@ namespace Tasks
     static void vJobColumnTypeFetch(MP_Task mpTask);
     static void vJobCreateIndexTableNameFetch(MP_Task mpTask);
     static void vJobDecAcksRemaining(MP_Task mpTask);
-    static void vJobDelete(MP_Task mpTask);
     static void vJobDeleteJob(MP_Task mpTask);
     static void vJobDicPath(MP_Task mpTask);
     static void vJobDropIndexTableNameFetch(MP_Task mpTask);
+    static void vJobEndDelete(MP_Task mpTask);
+    static void vJobEndedDelete(MP_Task mpTask);
     static void vJobErrorStore(MP_Task mpTask);
     static void vJobErrorFetch(MP_Task mpTask);
+    static void vJobExecuteDelete(MP_Task mpTask);
+    static void vJobExecutedDelete(MP_Task mpTask);
     static void vJobExecuteFetch(MP_Task mpTask);
     static void vJobExecutedErrorFetch(MP_Task mpTask);
     static void vJobExecutedErrorStore(MP_Task mpTask);

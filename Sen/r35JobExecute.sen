@@ -50,7 +50,7 @@
 
   pJob job.id@ pJob pJob job.execute@ find execute
 
-  pJob job.delete
+  //pJob job.delete
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -70,13 +70,13 @@
   eJobClass case
 
     // specific cases
-    CN_JOB__BEGUN     of pJob job.genericExecute endof
-    CN_JOB__CANCEL    of pJob job.genericExecute endof
-    CN_JOB__CANCELLED of pJob job.genericExecute endof
-    CN_JOB__END       of pJob job.genericExecute endof
-    CN_JOB__ENDED     of pJob job.genericExecute endof
-    CN_JOB__EXECUTE   of pJob job.genericExecute endof
-    CN_JOB__EXECUTED  of pJob job.genericExecute endof
+    CN_JOB__BEGUN     of pJob job.genericExecute pJob jobBegun.delete endof
+    CN_JOB__CANCEL    of pJob job.genericExecute pJob jobCancel.delete endof
+    CN_JOB__CANCELLED of pJob job.genericExecute pJob jobCancelled.delete endof
+    CN_JOB__END       of pJob job.genericExecute pJob jobEnd.delete endof
+    CN_JOB__ENDED     of pJob job.genericExecute pJob jobEnded.delete endof
+    CN_JOB__EXECUTE   of pJob job.genericExecute pJob jobExecute.delete endof
+    CN_JOB__EXECUTED  of pJob job.genericExecute pJob jobExecuted.delete endof
 
     // default case
     pJob job.beginExecute

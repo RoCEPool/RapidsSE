@@ -124,7 +124,7 @@
   >socketR35
 
   // now delete the ended job
-  pJob__Ended job.delete
+  pJob__Ended jobEnded.delete
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -188,7 +188,7 @@
   loop
 
   // now delete the end job
-  pJob__End job.delete
+  pJob__End jobEnd.delete
 ;
 
 
@@ -228,7 +228,7 @@
   >socketR35
 
   // delete the pJob__Cancelled
-  pJob__Cancelled job.delete
+  pJob__Cancelled jobCancelled.delete
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -304,7 +304,7 @@
   loop
 
   // now delete the cancel job
-  pJob__Cancel job.delete
+  pJob__Cancel jobCancel.delete
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -371,7 +371,7 @@
   >socketR35
 
   // delete the Job__Executed
-  pJob__Executed job.delete
+  pJob__Executed jobExecuted.delete
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -460,7 +460,7 @@
   loop
 
   // now delete the execute job
-  pJob__Execute job.delete
+  pJob__Execute jobExecute.delete
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -520,7 +520,7 @@
   >socketR35
 
   // delete the Job__Executed
-  pJob__Begun job.delete
+  pJob__Begun jobBegun.delete
 ;
 
 /*----------------------------------------------------------------------------*/
