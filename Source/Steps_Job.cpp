@@ -61,6 +61,8 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job_loadBuffer.loadJobId@"_Stz,   &vJobLoadBufferLoadJobIdFetch,   false);
   vAddPrimitive("job_loadBuffer.partition@"_Stz,   &vJobLoadBufferPartitionFetch,   false);
   vAddPrimitive("job_loadBuffer.table!"_Stz,   &vJobLoadBufferTableStore,   false);
+  vAddPrimitive("job_loadTable.task@"_Stz,  &vJobLoadTableTaskFetch,   false);
+  vAddPrimitive("job_loadTable.task!"_Stz,  &vJobLoadTableTaskStore,   false);
   vAddPrimitive("job.metadata!"_Stz,        &vJobMetadataStore,    false);
   vAddPrimitive("job.newBegun"_Stz,         &vJobNewBegun,         false);
   vAddPrimitive("job.newCancel"_Stz,        &vJobNewCancel,        false);
@@ -967,6 +969,46 @@ void Task::vJobLoadBufferTableStore(MP_Task mpTask)
   Table* pTable = _pTable(pTablePtr);
   
   pJob_LoadBuffer->vTable(pTable);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_LoadTable.task@ -- fetch task from job_loadTable                       */
+/*----------------------------------------------------------------------------*/
+void Task::vJobLoadTableTaskFetch(MP_Task mpTask)
+{
+  ENTRY("vJobLoadTableTaskFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_LoadTable.task@"_Stz);
+  Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pJobPtr);
+  
+  Task* pTask = pJob_LoadTable->pTask();
+  mpTask->m_pDataStack->vPushObject(pTask);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_LoadTable.task! -- store task into job_loadTable                       */
+/*----------------------------------------------------------------------------*/
+void Task::vJobLoadTableTaskStore(MP_Task mpTask)
+{
+  ENTRY("vJobLoadTableTaskStore"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_LoadBuffer.table@"_Stz);
+  Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pJobPtr);
+
+  Object* pTaskPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pTaskPtr) )
+    THROW_INVALID_DSTACK("job_LoadBuffer.table@"_Stz);
+  Task* pTask = _pTask(pTaskPtr);
+  
+  pJob_LoadTable->vTask(pTask);
   
   EXIT();
 }

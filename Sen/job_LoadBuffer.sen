@@ -13,6 +13,8 @@
   0 locals| pJob_LoadBuffer  |
   0 locals| sTableNm  |
   0 locals| i_Partition |
+  0 locals| iLoadJobId |
+  0 locals| pJob_LoadTable |
 
   tp: LoadBuffer
   "LoadBuffer running" .
@@ -22,6 +24,11 @@
 
   // get the load buffer job from the task
   pTask task.job@ to pJob_LoadBuffer
+
+  pJob_LoadBuffer job_loadBuffer.loadJobId@ to iLoadJobId
+  iLoadJobId "LoadJobId %v" fmt.print
+
+  iLoadJobId job.findParticipant to pJob_LoadTable
 
   // get table name
   pJob_LoadBuffer job.objectName@ to sTableNm
@@ -51,7 +58,7 @@
   pJob_LoadBuffer <DONE_ONESHOT>
 
   // now delete the ended job
-  pJob_LoadBuffer job.delete
+  pJob_LoadBuffer job.deleteJob
 ;
 
 /*============================================================================*/

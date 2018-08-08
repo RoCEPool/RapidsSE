@@ -10,13 +10,13 @@
 : LoadTable_loader ( pJob_LoadTable --  )
 
   params| pJob_LoadTable |
+  0 locals| pThisTask |
 
   "Executing loader on this node" .
 
-  task::this locals| pThisTask |
+  task::this to pThisTask
 
   pJob_LoadTable loader::new locals| pLoader |
-
 
   // initialise table loader
   pJob_LoadTable job.objectName@ locals| sTableNm |
@@ -54,21 +54,21 @@
 /*----------------------------------------------------------------------------*/
 : LoadTable_req (  -- <R> )
 
-  0 locals| pTask |
-  0 locals| pJob  |
+  0 locals| pThisTask |
+  0 locals| pJob_LoadTable  |
 
   tp: loadTable_req
 
   // get the task
-  task::this to pTask
+  task::this to pThisTask
 
   // get the job from the task
-  pTask task.job@ to pJob
+  pThisTask task.job@ to pJob_LoadTable
 
   // distribute the job
-  pTask pJob "job::distribute" find execute
+  pThisTask pJob_LoadTable "job::distribute" find execute
 
-  pJob <DONE_REQUEST>
+  pJob_LoadTable <DONE_REQUEST>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -77,6 +77,14 @@
 : loadTable_node ( pJob_LoadTable -- )
 
   params| pJob_LoadTable |
+
+  0 locals| pThisTask |
+
+  // get the task
+  task::this to pThisTask
+
+  // store task into Job_LoadTable
+  pThisTask pJob_LoadTable job_loadTable.task!
 
   pJob_LoadTable job::originator@ locals| iOriginNode |
   grid::thisNode@ locals| iThisNode |
