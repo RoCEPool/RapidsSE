@@ -13,6 +13,7 @@ namespace JobsModel
   {
   private:
     i8 m_nBuffersLoadable;  // buffers to be loaded
+    i8 m_iLoadJobId;        // the job id of the load table job
     i8 m_iPartition;        // which partition buffer is to be loaded into
     Table* m_pTable;        // which table
 
@@ -32,6 +33,9 @@ namespace JobsModel
   public:
     i8   nBuffersLoadable(void);
     void vBuffersLoadable(i8 nBuffersLoadable);
+  
+    i8   iLoadJobId(void);
+    void vLoadJobId(i8 iLoadJobId);
   
     i8   iPartition(void);
     void vPartition(i8 iPartition);

@@ -85,6 +85,7 @@ Job_LoadBuffer::Job_LoadBuffer(Interface::SEitf* pSEitf)
   m_sSeed = mJobNote_LoadBuffer.pJobClass()->m_aSeed;
   
   m_nBuffersLoadable = C_UNKNOWN;
+  m_iLoadJobId = -1;
   m_iPartition = -1;
   m_pTable = nullptr;
   
@@ -144,6 +145,26 @@ void Job_LoadBuffer::vBuffersLoadable(i8 nBuffersLoadable)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
   
   m_nBuffersLoadable = nBuffersLoadable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the job id of the load table job                                       */
+/*----------------------------------------------------------------------------*/
+i8 Job_LoadBuffer::iLoadJobId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
+  
+  return m_iLoadJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the job id of the load table job                                       */
+/*----------------------------------------------------------------------------*/
+void Job_LoadBuffer::vLoadJobId(i8 iLoadJobId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
+  
+  m_iLoadJobId = iLoadJobId;
 }
 
 /*----------------------------------------------------------------------------*/

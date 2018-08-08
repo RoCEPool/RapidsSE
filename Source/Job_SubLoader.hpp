@@ -14,7 +14,7 @@ namespace JobsModel
   private:
     Job_LoadTable* m_pJob_LoadTable;
     Utilities::LoaderSub* m_pLoaderSub;
-  
+
     // must be last
     Footer m_xFooter;
   
@@ -29,6 +29,7 @@ namespace JobsModel
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
   public:
+    Job_LoadTable* pJob_LoadTable(void);
     void vJob_LoadTable(Job_LoadTable* pJob_LoadTable);
     void vLoaderSub(Utilities::LoaderSub* pLoaderSub);
 

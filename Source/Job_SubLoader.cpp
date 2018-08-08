@@ -129,6 +129,16 @@ void Job_SubLoader::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get job_loadtable                                                          */
+/*----------------------------------------------------------------------------*/
+Job_LoadTable* Job_SubLoader::pJob_LoadTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
+  
+  return m_pJob_LoadTable;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set job_loadtable                                                          */
 /*----------------------------------------------------------------------------*/
 void Job_SubLoader::vJob_LoadTable(Job_LoadTable* pJob_LoadTable)
