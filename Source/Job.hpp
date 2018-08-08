@@ -46,7 +46,10 @@ namespace JobsModel
   };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class Job : public Object
+  class Job : public Object,
+              public JobDicPath,
+              public JobObjectName,
+              public JobResult
   {
   public:
     i8  m_iJobId;              // job id
@@ -71,6 +74,7 @@ namespace JobsModel
 
   public:
     Job(eCN eClassNo);
+    Job(eCN eClassNo, Interface::SEitf* pSEitf);
     ~Job(void);
     
     static i8 iOriginatorNode(i8 iJobId);
@@ -83,6 +87,9 @@ namespace JobsModel
     void vParticipantNode(i8 iNode);
     eJS  eJobState(void);
     void vJobState(eJS eJobState);
+    
+  private:
+    void vInit(void);
   };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

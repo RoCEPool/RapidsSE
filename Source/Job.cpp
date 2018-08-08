@@ -51,6 +51,42 @@ Job::Job(eCN eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
+  vInit();
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Job::Job(eCN eClassNo, SEitf* pSEitf)
+: Object(eClassNo), JobDicPath(pSEitf)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
+  
+  vInit();
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+Job::~Job(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  pthread_mutex_destroy(&m_xThreadMutex);
+  pthread_mutexattr_destroy(&m_xThreadMutexAttr);
+  
+  pthread_cond_destroy(&m_xThreadCond);
+  pthread_condattr_destroy(&m_xThreadCondAttr);
+}
+/*----------------------------------------------------------------------------*/
+/* initialize the job                                                         */
+/*----------------------------------------------------------------------------*/
+void Job::vInit(void)
+{
   m_iJobId   = -1;
   m_eState   = JS_NONE;
   m_sSeed    = ""_Stz;
@@ -86,22 +122,6 @@ Job::Job(eCN eClassNo)
   // initialize the mutex
   MemLib::vZero(&m_xThreadCond,sizeof(m_xThreadCond),CN_SEMAPHORE);
   pthread_cond_init(&m_xThreadCond, &m_xThreadCondAttr);
-
-  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
-}
-
-/*----------------------------------------------------------------------------*/
-/* destructor                                                                 */
-/*----------------------------------------------------------------------------*/
-Job::~Job(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  pthread_mutex_destroy(&m_xThreadMutex);
-  pthread_mutexattr_destroy(&m_xThreadMutexAttr);
-  
-  pthread_cond_destroy(&m_xThreadCond);
-  pthread_condattr_destroy(&m_xThreadCondAttr);
 }
 
 /*----------------------------------------------------------------------------*/

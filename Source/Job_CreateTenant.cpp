@@ -79,7 +79,7 @@ void Job_CreateTenant::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_CreateTenant::Job_CreateTenant(Interface::SEitf* pSEitf)
-: Job(CN_JOB_CREATETENANT), JobDicPath(pSEitf)
+: Job(CN_JOB_CREATETENANT, pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETENANT,_FOOTER_);
     

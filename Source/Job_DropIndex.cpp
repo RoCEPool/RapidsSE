@@ -79,7 +79,7 @@ void Job_DropIndex::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_DropIndex::Job_DropIndex(Interface::SEitf* pSEitf)
-: Job(CN_JOB_DROPINDEX), JobDicPath(pSEitf)
+: Job(CN_JOB_DROPINDEX, pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPINDEX,_FOOTER_);
     

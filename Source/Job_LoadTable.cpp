@@ -84,7 +84,7 @@ void Job_LoadTable::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_LoadTable::Job_LoadTable(Interface::SEitf* pSEitf)
-: Job(CN_JOB_LOADTABLE), JobDicPath(pSEitf)
+: Job(CN_JOB_LOADTABLE, pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
   

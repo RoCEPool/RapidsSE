@@ -6,10 +6,7 @@
 namespace JobsModel
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class Job_LoadBuffer : public Job,
-                         public JobDicPath,
-                         public JobObjectName,
-                         public JobResult
+  class Job_LoadBuffer : public Job
   {
   private:
     i8 m_iLoadJobId;        // the job id of the load table job

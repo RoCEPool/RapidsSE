@@ -57,7 +57,7 @@ void Job_Prompt::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_Prompt::Job_Prompt(Interface::SEitf* pSEitf)
-: Job(CN_JOB_PROMPT), JobDicPath(pSEitf)
+: Job(CN_JOB_PROMPT, pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PROMPT,_FOOTER_);
     

@@ -34,12 +34,12 @@ using namespace JobsModel;
 
 //-----------------------------------------------------------------------------
 
-#include "Job.hpp"
-
 #include "JobDicPath.hpp"
-#include "JobFileName.hpp"
 #include "JobObjectName.hpp"
 #include "JobResult.hpp"
+#include "Job.hpp"
+
+#include "JobFileName.hpp"
 #include "JobAbs.hpp"
 
 #include "Job__Begun.hpp"

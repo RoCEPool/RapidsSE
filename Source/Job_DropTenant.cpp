@@ -78,7 +78,7 @@ void Job_DropTenant::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_DropTenant::Job_DropTenant(Interface::SEitf* pSEitf)
-: Job(CN_JOB_DROPTENANT), JobDicPath(pSEitf)
+: Job(CN_JOB_DROPTENANT, pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPTENANT,_FOOTER_);
     

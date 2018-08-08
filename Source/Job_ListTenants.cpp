@@ -78,7 +78,7 @@ void Job_ListTenants::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_ListTenants::Job_ListTenants(Interface::SEitf* pSEitf)
-: Job(CN_JOB_LISTTENANTS), JobDicPath(pSEitf)
+: Job(CN_JOB_LISTTENANTS, pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTTENANTS,_FOOTER_);
   

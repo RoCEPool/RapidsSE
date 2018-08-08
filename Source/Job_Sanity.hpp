@@ -6,10 +6,7 @@
 namespace JobsModel
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class Job_Sanity : public Job,
-                    public JobDicPath,
-                    public JobObjectName,
-                    public JobResult
+  class Job_Sanity : public Job
   {
   public:
     

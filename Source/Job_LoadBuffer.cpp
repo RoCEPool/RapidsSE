@@ -78,7 +78,7 @@ void Job_LoadBuffer::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_LoadBuffer::Job_LoadBuffer(Interface::SEitf* pSEitf)
-: Job(CN_JOB_LOADBUFFER), JobDicPath(pSEitf)
+: Job(CN_JOB_LOADBUFFER, pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
   

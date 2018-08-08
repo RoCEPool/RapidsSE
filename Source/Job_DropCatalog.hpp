@@ -7,10 +7,7 @@ namespace JobsModel
 {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class Job_DropCatalog : public Job,
-                          public JobDicPath,
-                          public JobObjectName,
-                          public JobResult
+  class Job_DropCatalog : public Job
   {
   public:
   

@@ -7,9 +7,6 @@ namespace JobsModel
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_LoadTable : public Job,
-                        public JobDicPath,
-                        public JobObjectName,
-                        public JobResult,
                         public JobFileName
   {
   public:

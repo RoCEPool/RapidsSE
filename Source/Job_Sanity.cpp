@@ -78,7 +78,7 @@ void Job_Sanity::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_Sanity::Job_Sanity(Interface::SEitf* pSEitf)
-: Job(CN_JOB_SANITY), JobDicPath(pSEitf)
+: Job(CN_JOB_SANITY, pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SANITY,_FOOTER_);
     

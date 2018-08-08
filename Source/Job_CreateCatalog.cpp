@@ -78,7 +78,7 @@ void Job_CreateCatalog::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_CreateCatalog::Job_CreateCatalog(Interface::SEitf* pSEitf)
-: Job(CN_JOB_CREATECATALOG), JobDicPath(pSEitf)
+: Job(CN_JOB_CREATECATALOG, pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATECATALOG,_FOOTER_);
     

@@ -84,7 +84,7 @@ void Job_SubLoader::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_SubLoader::Job_SubLoader(Interface::SEitf* pSEitf)
-: Job(CN_JOB_SUBLOADER), JobDicPath(pSEitf)
+: Job(CN_JOB_SUBLOADER, pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
   

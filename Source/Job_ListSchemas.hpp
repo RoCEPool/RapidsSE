@@ -6,10 +6,7 @@
 namespace JobsModel
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class Job_ListSchemas : public Job,
-                          public JobDicPath,
-                          public JobObjectName,
-                          public JobResult
+  class Job_ListSchemas : public Job
   {
   public:
     

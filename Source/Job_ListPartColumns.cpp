@@ -78,7 +78,7 @@ void Job_ListPartColumns::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_ListPartColumns::Job_ListPartColumns(Interface::SEitf* pSEitf)
-: Job(CN_JOB_LISTPARTCOLUMNS), JobDicPath(pSEitf)
+: Job(CN_JOB_LISTPARTCOLUMNS, pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTPARTCOLUMNS,_FOOTER_);
   

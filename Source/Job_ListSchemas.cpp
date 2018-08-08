@@ -78,7 +78,7 @@ void Job_ListSchemas::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_ListSchemas::Job_ListSchemas(Interface::SEitf* pSEitf)
-: Job(CN_JOB_LISTSCHEMAS), JobDicPath(pSEitf)
+: Job(CN_JOB_LISTSCHEMAS, pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTSCHEMAS,_FOOTER_);
   
