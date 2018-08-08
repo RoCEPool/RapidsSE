@@ -901,6 +901,8 @@ namespace Tasks
     static void vJobLoadBufferLoadJobIdFetch(MP_Task mpTask);
     static void vJobLoadBufferPartitionFetch(MP_Task mpTask);
     static void vJobLoadBufferTableStore(MP_Task mpTask);
+    static void vJobLoadTableTaskFetch(MP_Task mpTask);
+    static void vJobLoadTableTaskStore(MP_Task mpTask);
     static void vJobMetadataStore(MP_Task mpTask);
     static void vJobNewBegun(MP_Task mpTask);
     static void vJobNewCancel(MP_Task mpTask);
