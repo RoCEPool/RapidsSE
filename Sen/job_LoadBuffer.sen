@@ -15,6 +15,7 @@
   0 locals| i_Partition |
 
   tp: LoadBuffer
+  "LoadBuffer running" .
 
   // get the task
   task::this to pTask
@@ -25,8 +26,6 @@
   // get table name
   pJob_LoadBuffer job.objectName@ to sTableNm
 
-  "LoadBuffer running" .
-
   // push table dictionary
   pJob_LoadBuffer getPathR35 dicStack.set
   sTableNm pushTable assert
@@ -36,6 +35,7 @@
   sTableNm find execute locals| pTable |
   pTable pJob_LoadBuffer Job_LoadBuffer.table!
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab write lock on table partition
   pJob_LoadBuffer Job_LoadBuffer.partition@ to i_Partition
   i_Partition pTable tablePtnGrabWrite
@@ -45,6 +45,8 @@
 
   // drop write lock on table partition
   i_Partition pTable tablePtnDropWrite
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pJob_LoadBuffer <DONE_ONESHOT>
 

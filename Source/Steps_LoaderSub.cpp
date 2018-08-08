@@ -535,33 +535,35 @@ void Task::vLoaderSubSpawnLoadBuffer(MP_Task mpTask)
     THROW_INVALID_DSTACK("loaderSub.spawnLoadBuffer"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  SEitf* pSEitf = pLoaderSub->pJob_SubLoader()->m_pSEitf;
+  // get info
+  
+  Job_SubLoader* pJob_SubLoader = pLoaderSub->pJob_SubLoader();
+  Job_LoadTable* pJob_LoadTable = pJob_SubLoader->pJob_LoadTable();
+  
+  i8 iLoadJobId = pJob_LoadTable->iJobId();
+  i8 iPartition = pLoaderSub->iPartition();
+  WorkingBuffer* pWorkingBuffer = pLoaderSub->pWorkingBuffer();
+  pLoaderSub->vWorkingBuffer(nullptr);
+  SEitf* pSEitf = pJob_SubLoader->m_pSEitf;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create a load buffer job
+  
   Job_LoadBuffer* pJob_LoadBuffer = new Job_LoadBuffer(pSEitf);
 
-  pJob_LoadBuffer->m_sObjectName = pLoaderSub->pJob_SubLoader()->m_sObjectName;
-  
+  pJob_LoadBuffer->vLoadJobId(iLoadJobId);
+  pJob_LoadBuffer->m_sObjectName = pJob_SubLoader->m_sObjectName;
+  pJob_LoadBuffer->vPartition(iPartition);
+  pJob_LoadBuffer->m_pWorkingBuffer = pWorkingBuffer;
   if (iFinal) {
     i8 nBuffersLoadable = pLoaderSub->nBuffersLoadable();
     pJob_LoadBuffer->vBuffersLoadable(nBuffersLoadable);
   }
   
-  WorkingBuffer* pWorkingBuffer = pLoaderSub->pWorkingBuffer();
-  pLoaderSub->vWorkingBuffer(nullptr);
-
-  pJob_LoadBuffer->m_pWorkingBuffer = pWorkingBuffer;
-  
-  i8 iPartition = pLoaderSub->iPartition();
-  pJob_LoadBuffer->vPartition(iPartition);
-  
-  // temp
-  //pLoaderSub->vDiscardBuffer();
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // spawn the load buffer job
   
   Task* pLoadBufferTask = new Task;
-  //pLoadBufferTask->vParentTask(*mpTask);
-
   pSEitf->bAppendTask(pLoadBufferTask,pJob_LoadBuffer);
 
   EXIT();

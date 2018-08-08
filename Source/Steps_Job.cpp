@@ -50,7 +50,8 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.hasError"_Stz,         &vJobHasError,         false);
   vAddPrimitive("job.id@"_Stz,              &vJobIdFetch,          false);
   vAddPrimitive("job.isPromptCommand"_Stz,  &vJobIsPromptCommand,  false);
-  vAddPrimitive("job_loadBuffer.insertRows"_Stz,   &vJobLoadBufferInsertRows,   false);
+  vAddPrimitive("job_loadBuffer.insertRows"_Stz,   &vJobLoadBufferInsertRows,       false);
+  vAddPrimitive("job_loadBuffer.loadJobId@"_Stz,   &vJobLoadBufferLoadJobIdFetch,   false);
   vAddPrimitive("job_loadBuffer.partition@"_Stz,   &vJobLoadBufferPartitionFetch,   false);
   vAddPrimitive("job_loadBuffer.table!"_Stz,   &vJobLoadBufferTableStore,   false);
   vAddPrimitive("job.metadata!"_Stz,        &vJobMetadataStore,    false);
@@ -1050,6 +1051,24 @@ void Task::vJobLoadBufferInsertRows(MP_Task mpTask)
   pTable->vInsertEntries(iTxId, iSlot, pWorkingBuffer);
 
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_LoadBuffer.loadJobId@ -- fetch load job id from job_loadBuffer         */
+/*----------------------------------------------------------------------------*/
+void Task::vJobLoadBufferLoadJobIdFetch(MP_Task mpTask)
+{
+  ENTRY("vJobLoadBufferLoadJobIdFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_LoadBuffer.loadJobId@"_Stz);
+  Job_LoadBuffer* pJob_LoadBuffer = _pJob_LoadBuffer(pJobPtr);
+  
+  i8 iLoadJobId = pJob_LoadBuffer->iLoadJobId();
+  mpTask->m_pDataStack->vPushInt(iLoadJobId);
+  
   EXIT();
 }
 

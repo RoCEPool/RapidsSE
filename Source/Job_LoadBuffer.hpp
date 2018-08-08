@@ -12,10 +12,11 @@ namespace JobsModel
                          public JobResult
   {
   private:
-    i8 m_nBuffersLoadable;  // buffers to be loaded
     i8 m_iLoadJobId;        // the job id of the load table job
-    i8 m_iPartition;        // which partition buffer is to be loaded into
     Table* m_pTable;        // which table
+    i8 m_iPartition;        // which partition buffer is to be loaded into
+  
+    i8 m_nBuffersLoadable;  // buffers to be loaded
 
     // must be last
     Footer m_xFooter;
