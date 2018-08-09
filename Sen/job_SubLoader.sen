@@ -16,30 +16,28 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* test for dangling buffers                                                  */
+/* send last buffers to all partitions                                        */
 /*----------------------------------------------------------------------------*/
-: SubLoader_testDangling ( pLoaderSub -- )
+: SubLoader_sendLast ( pLoaderSub -- )
 
   params| pLoaderSub  |
 
   // calculate total partitions in the cluster
   grid::slots grid::nodes * locals| nTotalPartitions |
 
-    // check for dangling buffers
-    nTotalPartitions 0 do
+  // for all partitions
+  nTotalPartitions 0 do
+
+    I "LAST BUFFER for partition %v" fmt.print
 
     // set the partition we are using
     I pLoaderSub loaderSub.partition!
 
-    // test for a dangling row buffer for parition I
-    pLoaderSub loaderSub.workingBuffer@
+    // ensure there's a dangling buffer for partition I
+    pLoaderSub loaderSub.danglingBuffer
 
-    if
-      I "DANGLING %v" fmt.print
-
-      true pLoaderSub SubLoader_sendBuffer
-
-    then
+    // send last buffer to node
+    true pLoaderSub SubLoader_sendBuffer
 
   loop
 ;
@@ -84,7 +82,7 @@
 
   pLoaderSub SubLoader_process
 
-  pLoaderSub SubLoader_testDangling
+  pLoaderSub SubLoader_sendLast
 
   pLoaderSub loaderSub.end
 
