@@ -956,6 +956,7 @@ namespace Tasks
     
     // loader sub
     static void vLoaderSubBegin(MP_Task mpTask);
+    static void vLoaderSubDanglingBuffer(MP_Task mpTask);
     static void vLoaderSubDelete(MP_Task mpTask);
     static void vLoaderSubEnd(MP_Task mpTask);
     static void vLoaderSubFetchRecord(MP_Task mpTask);

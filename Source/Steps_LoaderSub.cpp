@@ -15,7 +15,8 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_LoaderSub(void)
 {
-  vAddPrimitive("loaderSub.begin"_Stz,        &vLoaderSubBegin,         false);
+  vAddPrimitive("loaderSub.begin"_Stz,         &vLoaderSubBegin,         false);
+  vAddPrimitive("loaderSub.danglingBuffer"_Stz,&vLoaderSubDanglingBuffer,false);
   vAddPrimitive("loaderSub.delete"_Stz,       &vLoaderSubDelete,        false);
   vAddPrimitive("loaderSub.end"_Stz,          &vLoaderSubEnd,           false);
   vAddPrimitive("loaderSub.fetchRecord"_Stz,  &vLoaderSubFetchRecord,   false);
@@ -57,6 +58,24 @@ void Task::vLoaderSubBegin(MP_Task mpTask)
   
   pLoaderSub->vBegin();
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loaderSub.dangingBuffer -- ensure there's a dangling buffer for partition  */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderSubDanglingBuffer(MP_Task mpTask)
+{
+  ENTRY("vLoaderSubDanglingBuffer"_Stz);
+  
+  Object* pPtrLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
+    THROW_INVALID_DSTACK("loaderSub.delete"_Stz);
+  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoader);
+  
+  if ( ! pLoaderSub->pWorkingBuffer() )
+    pLoaderSub->vNewWorkingBuffer();
+
   EXIT();
 }
 
