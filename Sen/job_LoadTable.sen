@@ -61,6 +61,7 @@
 
   // get the task
   task::this to pThisTask
+  pThisTask "LoadTable_req task: %v" fmt.print
 
   // get the job from the task
   pThisTask task.job@ to pJob_LoadTable
@@ -82,6 +83,7 @@
 
   // get the task
   task::this to pThisTask
+  pThisTask "LoadTable_node task: %v" fmt.print
 
   // store task into Job_LoadTable
   pThisTask pJob_LoadTable job_loadTable.task!

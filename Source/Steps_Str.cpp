@@ -542,9 +542,10 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
     ASSERT('v' == *pf || 'V' == *pf);
     
     Value* pValue0 = m_pDataStack->pPeekValue(0);
+    eCN eClass = pValue0->eClass();
     
     // test for StrVal
-    if (CN_STRVAL == pValue0->eClass()) {
+    if (CN_STRVAL == eClass) {
       
       //*pf = 's';                                                    //! Defect??
       
@@ -566,7 +567,7 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
     }
     
     // test for intval
-    if (CN_INTVAL == pValue0->eClass()) {
+    if (CN_INTVAL == eClass) {
       
       //*pf = 'i';                                                    //! Defect??
       
@@ -584,6 +585,25 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
       continue;
     }
     
+    // test for ptrval
+    if (CN_PTRVAL == eClass) {
+      
+      //*pf = 'i';                                                    //! Defect??
+      
+      Object* pValue;
+      m_pDataStack->bPop(pValue);
+      
+      char aValue[32];
+      StrLib::wToPointer(pValue,aValue);
+      
+      for (char* pv = aValue; *pv; )
+        *ps++ = *pv++;
+      
+      pf++;
+      
+      continue;
+    }
+
     // just copy %?
     *ps++ = '%';
     *ps++ = *pf++;

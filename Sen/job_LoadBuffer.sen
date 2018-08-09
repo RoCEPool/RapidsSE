@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : LoadBuffer_seed (  -- <R> )
 
-  0 locals| pTask |
+  0 locals| pThisTask |
   0 locals| pJob_LoadBuffer  |
   0 locals| sTableNm  |
   0 locals| i_Partition |
@@ -20,10 +20,11 @@
   "LoadBuffer running" .
 
   // get the task
-  task::this to pTask
+  task::this to pThisTask
+  pThisTask "LoadBuffer_seed task: %v" fmt.print
 
   // get the load buffer job from the task
-  pTask task.job@ to pJob_LoadBuffer
+  pThisTask task.job@ to pJob_LoadBuffer
 
   pJob_LoadBuffer job_loadBuffer.loadJobId@ to iLoadJobId
   iLoadJobId "LoadJobId %v" fmt.print
@@ -61,7 +62,7 @@
   pJob_LoadBuffer job.deleteJob
 
   // null the job in the task
-  nullptr pTask task.job!
+  nullptr pThisTask task.job!
 ;
 
 /*============================================================================*/

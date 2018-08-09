@@ -63,7 +63,7 @@
 /*----------------------------------------------------------------------------*/
 : SubLoader_seed ( -- )
 
-  0 locals| pTask |
+  0 locals| pThisTask |
   0 locals| pJob_SubLoader  |
   0 locals| pLoaderSub  |
 
@@ -71,10 +71,11 @@
   "SubLoader running" .
 
   // get the task
-  task::this to pTask
+  task::this to pThisTask
+  pThisTask "SubLoader_seed task: %v" fmt.print
 
   // get the sub-loader job from the task
-  pTask task.job@ to pJob_SubLoader
+  pThisTask task.job@ to pJob_SubLoader
 
   // get the loaderSub object from the sub-loader job
   pJob_SubLoader job.ancilliary@ to pLoaderSub
@@ -93,7 +94,7 @@
   pJob_SubLoader job.deleteJob
 
   // null the job in the task
-  nullptr pTask task.job!
+  nullptr pThisTask task.job!
 ;
 
 /*============================================================================*/
