@@ -66,6 +66,8 @@
 
   bAllLoaded if
     pTask_LoadTable "All buffers loaded; Would ack task_LoadTable (node) %v" fmt.print
+
+    pTask_LoadTable ack
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

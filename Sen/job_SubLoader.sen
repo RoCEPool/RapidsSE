@@ -86,7 +86,7 @@
 
   pLoaderSub loaderSub.end
 
-  pJob_SubLoader <DONE_CHILD>
+  //pJob_SubLoader <DONE_CHILD>
 
   // now delete the ended job
   pJob_SubLoader job.deleteJob
