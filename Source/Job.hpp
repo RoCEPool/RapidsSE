@@ -29,11 +29,11 @@ namespace JobsModel
   
   enum eJS // job state
   {
-    /*  0 */ JS_NONE=0,
-    /*  1 */ JS_BEGUN,
-    /*  2 */ JS_EXECUTED,
-    /*  3 */ JS_ENDED,
-    /*  4 */ JS_ENUMS
+  /*  0 */ JS_NONE=0,
+  /*  1 */ JS_BEGUN,
+  /*  2 */ JS_EXECUTED,
+  /*  3 */ JS_ENDED,
+  /*  4 */ JS_ENUMS
   };
   
   static Stz* aJS[]
@@ -43,6 +43,22 @@ namespace JobsModel
     /*  2 */ "EXECUTED"_Stz,
     /*  3 */ "ENDED"_Stz,
     /*  4 */ "ENUMS"_Stz
+  };
+  
+  enum eJT // job trace
+  {
+  /*  0 */ JT_NONE=0,
+  /*  1 */ JT_ALL,
+  /*  2 */ JT_JOB,
+  /*  3 */ JT_TASK
+  };
+  
+  static Stz* aJT[]
+  {
+  /*  0 */ "NONE"_Stz,
+  /*  1 */ "ALL"_Stz,
+  /*  2 */ "JOB"_Stz,
+  /*  3 */ "TASK"_Stz
   };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -57,6 +73,8 @@ namespace JobsModel
     s32 m_sSeed;               // task seed (to be merged with above)
     bool m_bCheckResources;    // request requires to check resources
     bool m_bDetached;          // is this job detached?
+    eJT  m_eJobTrace;          // job trace
+  
     i8  m_iParticipantNode;    // participant node no
     Atomic m_ziAcksRemaining;  // acks remaining
     Tasks::Task* m_pOriginatingTask;  // originating task of the request
@@ -87,6 +105,8 @@ namespace JobsModel
     void vParticipantNode(i8 iNode);
     eJS  eJobState(void);
     void vJobState(eJS eJobState);
+    eJT  eJobTrace(void);
+    void vJobTrace(eJT eJobTrace);
     
   private:
     void vInit(void);

@@ -82,6 +82,7 @@ Job::~Job(void)
   pthread_cond_destroy(&m_xThreadCond);
   pthread_condattr_destroy(&m_xThreadCondAttr);
 }
+
 /*----------------------------------------------------------------------------*/
 /* initialize the job                                                         */
 /*----------------------------------------------------------------------------*/
@@ -92,6 +93,7 @@ void Job::vInit(void)
   m_sSeed    = ""_Stz;
   m_bCheckResources   = false;
   m_bDetached         = false;
+  m_eJobTrace   = JT_NONE;
   m_iParticipantNode  = -1;
   m_ziAcksRemaining   = 0;
   m_pOriginatingTask  = nullptr;
@@ -224,6 +226,26 @@ void Job::vJobState(eJS eState)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_eState = eState;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the job trace                                                          */
+/*----------------------------------------------------------------------------*/
+eJT Job::eJobTrace(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_eJobTrace;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the job trace                                                          */
+/*----------------------------------------------------------------------------*/
+void Job::vJobTrace(eJT eJobTrace)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_eJobTrace = eJobTrace;
 }
 
 /*============================================================================*/
