@@ -38,6 +38,7 @@ namespace JobsModel
   Job* pJob_ListTables_pre(Interface::SEitf* pSEitf);
   void vJob_ListTables_post(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_ListTables_delete(Interface::SEitf* pSEitf, Job* pJob);
+  void vJob_ListTables_show(Job* pJob);
 }
 
 /*============================================================================*/

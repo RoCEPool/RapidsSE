@@ -18,10 +18,12 @@ namespace JobsModel
     Stz* m_aSeed;     // the task seed for this job
     bool m_bDetached; // is this job detached?
     bool m_bResources;// check resources?
-
+    eJT  m_eTrace;    // job trace?
+  
     Job* (*m_fPre)(Interface::SEitf* pSEitf);
     void (*m_fPost)(Interface::SEitf* pSEitf, Job* pJob);
     void (*m_fDelete)(Interface::SEitf* pSEitf, Job* pJob);
+    void (*m_fShow)(Job* pJob);
   
     bool m_bEnabled;  // is this job enabled?
 
@@ -32,6 +34,7 @@ namespace JobsModel
     void vDeleteJob(Interface::SEitf* pSEitf, Job* pJob);
     void vEndJob(Interface::SEitf* pSEitf, Job* pJob);
     Job* pNewJob(Interface::SEitf* pSEitf);
+    void vShowJob(Job* pJob);
   };
 }
 

@@ -17,9 +17,11 @@ JobNote mJobNote_ListColumns (
   "listColumns"_Stz,      // the task seed for this job
   false,                  // check resources?
   false,                  // detached job?
+  JT_NONE,                // job trace
   pJob_ListColumns_pre,   // prompt pre-process function
   vJob_ListColumns_post,  // prompt post-process function
   vJob_ListColumns_delete,// job delete function
+  vJob_ListColumns_show,  // job show function
   true,                   // job is enabled
   "<help>"_Stz,           // help
   "<example>"_Stz         // example
@@ -233,6 +235,16 @@ void JobsModel::vJob_ListColumns_delete(Interface::SEitf* pSEitf, Job* pJob)
   
   // now delete the job
   delete pJob_ListColumns;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show job function                                                          */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_ListColumns_show(Job* pJob)
+{
+  Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(pJob);
+
+  pJob_ListColumns->vShow();
 }
 
 /*============================================================================*/

@@ -9,7 +9,7 @@ extern AttachMap* gpAttachMap;
 
 JobNote mJobNote_CreateTenant (
   "Job_CreateTenant"_Stz,         // name of the job class
-  CN_JOB_CREATETENANT,             // class enum
+  CN_JOB_CREATETENANT,            // class enum
   JK_DIST2PC,                     // job kind
   "create tenant tenantName"_Stz, // comment about the job
   "create"_Stz,                   // the prompt command
@@ -17,9 +17,11 @@ JobNote mJobNote_CreateTenant (
   "createTenant"_Stz,             // the task seed for this job
   true,                           // check resources?
   false,                          // detached job?
+  JT_NONE,                        // job trace
   pJob_CreateTenant_pre,          // prompt pre-process function
   vJob_CreateTenant_post,         // prompt post-process function
   vJob_CreateTenant_delete,       // job delete function
+  vJob_CreateTenant_show,         // job show function
   true,                           // job is enabled
   "<help>"_Stz,                   // help
   "<example>"_Stz                 // example
@@ -218,10 +220,18 @@ void JobsModel::vJob_CreateTenant_delete(Interface::SEitf* pSEitf, Job* pJob)
 {
   Job_CreateTenant* pJob_CreateTenant = _pJob_CreateTenant(pJob);
   
-  // now delete the job
   delete pJob_CreateTenant;
 }
 
+/*----------------------------------------------------------------------------*/
+/* show job function                                                          */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_CreateTenant_show(Job* pJob)
+{
+  Job_CreateTenant* pJob_CreateTenant = _pJob_CreateTenant(pJob);
+
+  pJob_CreateTenant->vShow();
+}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

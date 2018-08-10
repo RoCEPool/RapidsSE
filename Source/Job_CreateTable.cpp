@@ -17,9 +17,11 @@ JobNote mJobNote_CreateTable (
   "createTable"_Stz,      // the task seed for this job
   true,                   // check resources?
   false,                  // detached job?
+  JT_NONE,                // job trace
   pJob_CreateTable_pre,   // prompt pre-process function
   vJob_CreateTable_post,  // prompt post-process function
   vJob_CreateTable_delete,// job delete function
+  vJob_CreateTable_show,  // job show function
   true,                   // job is enabled
   "<help>"_Stz,           // help
   "<example>"_Stz         // example
@@ -611,8 +613,17 @@ void JobsModel::vJob_CreateTable_delete(Interface::SEitf* pSEitf, Job* pJob)
 {
   Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJob);
   
-  // now delete the job
   delete pJob_CreateTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show job function                                                          */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_CreateTable_show(Job* pJob)
+{
+  Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJob);
+
+  pJob_CreateTable->vShow();
 }
 
 /*============================================================================*/

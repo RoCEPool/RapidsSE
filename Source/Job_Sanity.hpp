@@ -41,6 +41,7 @@ namespace JobsModel
   Job* pJob_Sanity_pre(Interface::SEitf* pSEitf);
   void vJob_Sanity_post(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_Sanity_delete(Interface::SEitf* pSEitf, Job* pJob);
+  void vJob_Sanity_show(Job* pJob);
 }
 
 /*============================================================================*/

@@ -38,6 +38,7 @@ namespace JobsModel
   Job* pJob_DropTable_pre(Interface::SEitf* pSEitf);
   void vJob_DropTable_post(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_DropTable_delete(Interface::SEitf* pSEitf, Job* pJob);
+  void vJob_DropTable_show(Job* pJob);
 }
 
 /*============================================================================*/

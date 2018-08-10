@@ -14,9 +14,11 @@ JobNote mJobNote_G35 (
   "g35_req"_Stz,  // the task seed for this job
   false,          // check resources?
   false,          // detached job?
+  JT_NONE,        // job trace
   pJob_G35_pre,   // prompt pre-process function
   vJob_G35_post,  // prompt post-process function
   vJob_G35_delete,// job delete function
+  vJob_G35_show,  // job show function
   false,          // job is not enabled
   "<help>"_Stz,   // help
   "<example>"_Stz // example
@@ -166,8 +168,17 @@ void JobsModel::vJob_G35_delete(Interface::SEitf* pSEitf, Job* pJob)
 {
   Job_G35* pJob_G35 = _pJob_G35(pJob);
   
-  // now delete the job
   delete pJob_G35;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show job function                                                          */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_G35_show(Job* pJob)
+{
+  Job_G35* pJob_G35 = _pJob_G35(pJob);
+
+  pJob_G35->vShow();
 }
 
 /*============================================================================*/

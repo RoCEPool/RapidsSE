@@ -17,9 +17,11 @@ JobNote mJobNote_Lf (
   "lf"_Stz,          // the task seed for this job
   false,             // check resources?
   false,             // detached job?
+  JT_NONE,           // job trace
   pJob_Lf_pre,       // prompt pre-process function
   vJob_Lf_post,      // prompt post-process function
   vJob_Lf_delete,    // job delete function
+  vJob_Lf_show,      // job show function
   true,              // job is enabled
   "<help>"_Stz,      // help
   "<example>"_Stz    // example
@@ -223,8 +225,17 @@ void JobsModel::vJob_Lf_delete(Interface::SEitf* pSEitf, Job* pJob)
 {
   Job_Lf* pJob_Lf = _pJob_Lf(pJob);
   
-  // now delete the job
   delete pJob_Lf;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show job function                                                          */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_Lf_show(Job* pJob)
+{
+  Job_Lf* pJob_Lf = _pJob_Lf(pJob);
+
+  pJob_Lf->vShow();
 }
 
 /*============================================================================*/

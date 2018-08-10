@@ -17,9 +17,11 @@ JobNote mJobNote_Space (
   "space"_Stz,      // the task seed for this job
   false,            // check resources?
   false,            // detached job?
+  JT_NONE,          // job trace
   pJob_Space_pre,   // prompt pre-process function
   vJob_Space_post,  // prompt post-process function
   vJob_Space_delete,// job delete function
+  vJob_Space_show,  // job show function
   true,             // job is enabled
   "<help>"_Stz,     // help
   "<example>"_Stz   // example
@@ -226,8 +228,17 @@ void JobsModel::vJob_Space_delete(Interface::SEitf* pSEitf, Job* pJob)
 {
   Job_Space* pJob_Space = _pJob_Space(pJob);
   
-  // now delete the job
   delete pJob_Space;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show job function                                                          */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_Space_show(Job* pJob)
+{
+  Job_Space* pJob_Space = _pJob_Space(pJob);
+
+  pJob_Space->vShow();
 }
 
 /*============================================================================*/

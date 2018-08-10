@@ -8,39 +8,43 @@
 extern AttachMap* gpAttachMap;
 
 JobNote mJobNote_CreateIndex (
-  "Job_CreateIndex"_Stz, // name of the job class
-  CN_JOB_CREATEINDEX,    // class enum
-  JK_DIST2PC,            // job kind
-  "create index"_Stz,    // comment about the job
-  "create"_Stz,          // the prompt command
-  "index"_Stz,           // the second word
-  "createIndex"_Stz,     // the task seed for this job
-  true,                  // check resources?
-  false,                 // detached job?
-  pJob_CreateIndex_pre,  // prompt pre-process function
-  vJob_CreateIndex_post, // prompt post-process function
+  "Job_CreateIndex"_Stz,   // name of the job class
+  CN_JOB_CREATEINDEX,      // class enum
+  JK_DIST2PC,              // job kind
+  "create index"_Stz,      // comment about the job
+  "create"_Stz,            // the prompt command
+  "index"_Stz,             // the second word
+  "createIndex"_Stz,       // the task seed for this job
+  true,                    // check resources?
+  false,                   // detached job?
+  JT_NONE,                 // job trace
+  pJob_CreateIndex_pre,    // prompt pre-process function
+  vJob_CreateIndex_post,   // prompt post-process function
   vJob_CreateIndex_delete, // job delete function
-  true,                  // job is enabled
-  "<help>"_Stz,          // help
-  "<example>"_Stz        // example
+  vJob_CreateIndex_show,   // job show function
+  true,                    // job is enabled
+  "<help>"_Stz,            // help
+  "<example>"_Stz          // example
 );
 
 JobNote mJobNote_CreateIndex2 (
-  "Job_CreateIndex"_Stz, // name of the job class
-  CN_JOB_CREATEINDEX,    // class enum
-  JK_DIST2PC,            // job kind
-  "create unique"_Stz,   // comment about the job
-  "create"_Stz,          // the prompt command
-  "unique"_Stz,          // the second word
-  "createIndex"_Stz,     // the task seed for this job
-  true,                  // check resources?
-  false,                 // detached job?
-  pJob_CreateIndex_pre,  // prompt pre-process function
-  vJob_CreateIndex_post, // prompt post-process function
+  "Job_CreateIndex"_Stz,   // name of the job class
+  CN_JOB_CREATEINDEX,      // class enum
+  JK_DIST2PC,              // job kind
+  "create unique"_Stz,     // comment about the job
+  "create"_Stz,            // the prompt command
+  "unique"_Stz,            // the second word
+  "createIndex"_Stz,       // the task seed for this job
+  true,                    // check resources?
+  false,                   // detached job?
+  JT_NONE,                 // job trace
+  pJob_CreateIndex_pre,    // prompt pre-process function
+  vJob_CreateIndex_post,   // prompt post-process function
   vJob_CreateIndex_delete, // job delete function
-  true,                  // job is enabled
-  "<help>"_Stz,          // help
-  "<example>"_Stz        // example
+  vJob_CreateIndex_show,   // job show function
+  true,                    // job is enabled
+  "<help>"_Stz,            // help
+  "<example>"_Stz          // example
   );
 
 /*----------------------------------------------------------------------------*/
@@ -333,8 +337,17 @@ void JobsModel::vJob_CreateIndex_delete(Interface::SEitf* pSEitf, Job* pJob)
 {
   Job_CreateIndex* pJob_CreateIndex = _pJob_CreateIndex(pJob);
   
-  // now delete the job
   delete pJob_CreateIndex;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show job function                                                          */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_CreateIndex_show(Job* pJob)
+{
+  Job_CreateIndex* pJob_CreateIndex = _pJob_CreateIndex(pJob);
+
+  pJob_CreateIndex->vShow();
 }
 
 /*============================================================================*/

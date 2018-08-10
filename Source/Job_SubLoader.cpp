@@ -17,9 +17,11 @@ JobNote mJobNote_SubLoader (
   "SubLoader_seed"_Stz,   // the task seed for this job
   false,                  // check resources?
   false,                  // detached job?
+  JT_NONE,                // job trace
   nullptr,                // prompt pre-process function
   nullptr,                // prompt post-process function
   vJob_SubLoader_delete,  // job delete function
+  vJob_SubLoader_show,    // job show function
   false,                  // job is not prompt enabled
   "<help>"_Stz,           // help
   "<example>"_Stz         // example
@@ -194,8 +196,17 @@ void JobsModel::vJob_SubLoader_delete(Interface::SEitf* pSEitf, Job* pJob)
 {
   Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pJob);
   
-  // now delete the job
   delete pJob_SubLoader;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show job function                                                          */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_SubLoader_show(Job* pJob)
+{
+  Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pJob);
+
+  pJob_SubLoader->vShow();
 }
 
 /*============================================================================*/

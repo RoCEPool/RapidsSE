@@ -17,9 +17,11 @@ JobNote mJobNote_Pwf (
   "pwf"_Stz,             // the task seed for this job
   false,                 // check resources?
   false,                 // detached job?
+  JT_NONE,               // job trace
   pJob_Pwf_pre,          // prompt pre-process function
   vJob_Pwf_post,         // prompt post-process function
   vJob_Pwf_delete,       // job delete function
+  vJob_Pwf_show,         // job show function
   true,                  // job is enabled
   "<help>"_Stz,          // help
   "<example>"_Stz        // example
@@ -223,8 +225,17 @@ void JobsModel::vJob_Pwf_delete(Interface::SEitf* pSEitf, Job* pJob)
 {
   Job_Pwf* pJob_Pwf = _pJob_Pwf(pJob);
   
-  // now delete the job
   delete pJob_Pwf;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show job function                                                          */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_Pwf_show(Job* pJob)
+{
+  Job_Pwf* pJob_Pwf = _pJob_Pwf(pJob);
+
+  pJob_Pwf->vShow();
 }
 
 /*============================================================================*/

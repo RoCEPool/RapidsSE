@@ -17,9 +17,11 @@ JobNote mJobNote_Cf (
   "cf"_Stz,              // the task seed for this job
   false,                 // check resources?
   false,                 // detached job?
+  JT_NONE,               // job trace
   pJob_Cf_pre,           // prompt pre-process function
   vJob_Cf_post,          // prompt post-process function
   vJob_Cf_delete,        // job delete function
+  vJob_Cf_show,          // job show function
   true,                  // job is enabled
   "<help>"_Stz,          // help
   "<example>"_Stz        // example
@@ -204,14 +206,23 @@ void JobsModel::vJob_Cf_post(Interface::SEitf* pSEitf, Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
+/* delete job function                                                        */
 /*----------------------------------------------------------------------------*/
 void JobsModel::vJob_Cf_delete(Interface::SEitf* pSEitf, Job* pJob)
 {
   Job_Cf* pJob_Cf = _pJob_Cf(pJob);
   
-  // now delete the job
   delete pJob_Cf;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show job function                                                          */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_Cf_show(Job* pJob)
+{
+  Job_Cf* pJob_Cf = _pJob_Cf(pJob);
+  
+  pJob_Cf->vShow();
 }
 
 /*============================================================================*/

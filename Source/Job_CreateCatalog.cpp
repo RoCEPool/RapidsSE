@@ -17,9 +17,11 @@ JobNote mJobNote_CreateCatalog (
   "createCatalog"_Stz,               // the task seed for this job
   true,                              // check resources?
   false,                             // detached job?
+  JT_NONE,                           // job trace
   pJob_CreateCatalog_pre,            // prompt pre-process function
   vJob_CreateCatalog_post,           // prompt post-process function
   vJob_CreateCatalog_delete,         // job delete function
+  vJob_CreateCatalog_show,           // job show function
   true,                              // job is enabled
   "<help>"_Stz,                      // help
   "<example>"_Stz                    // example
@@ -217,9 +219,19 @@ void JobsModel::vJob_CreateCatalog_delete(Interface::SEitf* pSEitf, Job* pJob)
 {
   Job_CreateCatalog* pJob_CreateCatalog = _pJob_CreateCatalog(pJob);
   
-  // now delete the job
   delete pJob_CreateCatalog;
 }
+
+/*----------------------------------------------------------------------------*/
+/* show job function                                                          */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_CreateCatalog_show(Job* pJob)
+{
+  Job_CreateCatalog* pJob_CreateCatalog = _pJob_CreateCatalog(pJob);
+
+  pJob_CreateCatalog->vShow();
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

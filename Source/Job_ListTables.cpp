@@ -17,9 +17,11 @@ JobNote mJobNote_ListTables (
   "listTables"_Stz,       // the task seed for this job
   false,                  // check resources?
   false,                  // detached job?
+  JT_NONE,                // job trace
   pJob_ListTables_pre,    // prompt pre-process function
   vJob_ListTables_post,   // prompt post-process function
   vJob_ListTables_delete, // job delete function
+  vJob_ListTables_show,   // job show function
   true,                   // job is enabled
   "<help>"_Stz,           // help
   "<example>"_Stz         // example
@@ -219,8 +221,17 @@ void JobsModel::vJob_ListTables_delete(Interface::SEitf* pSEitf, Job* pJob)
 {
   Job_ListTables* pJob_ListTables = _pJob_ListTables(pJob);
   
-  // now delete the job
   delete pJob_ListTables;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show job function                                                          */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_ListTables_show(Job* pJob)
+{
+  Job_ListTables* pJob_ListTables = _pJob_ListTables(pJob);
+
+  pJob_ListTables->vShow();
 }
 
 /*============================================================================*/

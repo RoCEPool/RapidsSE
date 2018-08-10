@@ -8,21 +8,23 @@
 extern AttachMap* gpAttachMap;
 
 JobNote mJobNote_ListIdxColumns (
-  "Job_ListIdxColumns"_Stz, // name of the job class
-  CN_JOB_LISTIDXCOLUMNS,    // class enum
-  JK_SINGLENODE,            // job kind
-  "list index columns"_Stz, // comment about the job
-  "lsidxcol"_Stz,           // the prompt command
-  nullptr,                  // the second word
-  "listIdxColumns"_Stz,     // the task seed for this job
-  false,                    // check resources?
-  false,                    // detached job?
+  "Job_ListIdxColumns"_Stz,  // name of the job class
+  CN_JOB_LISTIDXCOLUMNS,     // class enum
+  JK_SINGLENODE,             // job kind
+  "list index columns"_Stz,  // comment about the job
+  "lsidxcol"_Stz,            // the prompt command
+  nullptr,                   // the second word
+  "listIdxColumns"_Stz,      // the task seed for this job
+  false,                     // check resources?
+  false,                     // detached job?
+  JT_NONE,                   // job trace
   pJob_ListIdxColumns_pre,   // prompt pre-process function
   vJob_ListIdxColumns_post,  // prompt post-process function
   vJob_ListIdxColumns_delete,// job delete function
-  true,                     // job is enabled
-  "<help>"_Stz,             // help
-  "<example>"_Stz           // example
+  vJob_ListIdxColumns_show,  // job show function
+  true,                      // job is enabled
+  "<help>"_Stz,              // help
+  "<example>"_Stz            // example
 );
 
 /*----------------------------------------------------------------------------*/
@@ -235,8 +237,17 @@ void JobsModel::vJob_ListIdxColumns_delete(Interface::SEitf* pSEitf, Job* pJob)
 {
   Job_ListIdxColumns* pJob_ListIdxColumns = _pJob_ListIdxColumns(pJob);
   
-  // now delete the job
   delete pJob_ListIdxColumns;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show job function                                                          */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_ListIdxColumns_show(Job* pJob)
+{
+  Job_ListIdxColumns* pJob_ListIdxColumns = _pJob_ListIdxColumns(pJob);
+
+  pJob_ListIdxColumns->vShow();
 }
 
 /*============================================================================*/

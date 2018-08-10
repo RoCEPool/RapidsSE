@@ -10,7 +10,7 @@ namespace JobsModel
   {
   public:
     
-    s32 m_sTableName;   // table name
+    s32 m_sTableName;   // table name                  //! Alka, is this needed?
     
     // must be last
     Footer m_xFooter;
@@ -40,6 +40,7 @@ namespace JobsModel
   Job* pJob_ListIdxColumns_pre(Interface::SEitf* pSEitf);
   void vJob_ListIdxColumns_post(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_ListIdxColumns_delete(Interface::SEitf* pSEitf, Job* pJob);
+  void vJob_ListIdxColumns_show(Job* pJob);
 }
 
 /*============================================================================*/

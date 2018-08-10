@@ -21,9 +21,13 @@ namespace JobsModel
             Stz* aSeed,
             bool bResources,
             bool bDetached,
+            eJT  eTrace,
+
             Job* (*fPre)(Interface::SEitf* pSEitf),
             void (*fPost)(Interface::SEitf* pSEitf, Job* pJob),
             void (*fDelete)(Interface::SEitf* pSEitf, Job* pJob),
+            void (*fShow)(Job* pJob),
+
             bool bEnabled,
             Stz* aHelp,
             Stz* aExample

@@ -17,9 +17,11 @@ JobNote mJobNote_DropTable (
   "dropTable"_Stz,           // the task seed for this job
   true,                      // check resources?
   false,                     // detached job?
+  JT_NONE,                   // job trace
   pJob_DropTable_pre,        // prompt pre-process function
   vJob_DropTable_post,       // prompt post-process function
   vJob_DropTable_delete,     // job delete function
+  vJob_DropTable_show,       // job show function
   true,                      // job is enabled
   "<help>"_Stz,              // help
   "<example>"_Stz            // example
@@ -217,8 +219,17 @@ void JobsModel::vJob_DropTable_delete(Interface::SEitf* pSEitf, Job* pJob)
 {
   Job_DropTable* pJob_DropTable = _pJob_DropTable(pJob);
   
-  // now delete the job
   delete pJob_DropTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show job function                                                          */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_DropTable_show(Job* pJob)
+{
+  Job_DropTable* pJob_DropTable = _pJob_DropTable(pJob);
+
+  pJob_DropTable->vShow();
 }
 
 /*============================================================================*/

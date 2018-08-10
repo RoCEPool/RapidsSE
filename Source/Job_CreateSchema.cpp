@@ -17,9 +17,11 @@ JobNote mJobNote_CreateSchema (
   "createSchema"_Stz,             // the task seed for this job
   true,                           // check resources?
   false,                          // detached job?
+  JT_NONE,                        // job trace
   pJob_CreateSchema_pre,          // prompt pre-process function
   vJob_CreateSchema_post,         // prompt post-process function
   vJob_CreateSchema_delete,       // job delete function
+  vJob_CreateSchema_show,         // job show function
   true,                           // job is enabled
   "<help>"_Stz,                   // help
   "<example>"_Stz                 // example
@@ -220,6 +222,16 @@ void JobsModel::vJob_CreateSchema_delete(Interface::SEitf* pSEitf, Job* pJob)
   
   // now delete the job
   delete pJob_CreateSchema;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show job function                                                          */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_CreateSchema_show(Job* pJob)
+{
+  Job_CreateSchema* pJob_CreateSchema = _pJob_CreateSchema(pJob);
+
+  pJob_CreateSchema->vShow();
 }
 
 /*============================================================================*/

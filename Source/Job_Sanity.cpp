@@ -7,21 +7,23 @@
 extern AttachMap*      gpAttachMap;
 
 JobNote mJobNote_Sanity (
-  "Job_Sanity"_Stz, // name of the job class
-  CN_JOB_SANITY,    // class enum
-  JK_DIST2PC,       // job kind
-  "sanity"_Stz,     // comment about the job
-  "sanity"_Stz,     // the prompt command
-  nullptr,          // the second word
-  "sanity"_Stz,     // the task seed for this job
-  false,            // check resources?
-  false,            // detached job?
-  pJob_Sanity_pre,  // prompt pre-process function
-  vJob_Sanity_post, // prompt post-process function
+  "Job_Sanity"_Stz,  // name of the job class
+  CN_JOB_SANITY,     // class enum
+  JK_DIST2PC,        // job kind
+  "sanity"_Stz,      // comment about the job
+  "sanity"_Stz,      // the prompt command
+  nullptr,           // the second word
+  "sanity"_Stz,      // the task seed for this job
+  false,             // check resources?
+  false,             // detached job?
+  JT_NONE,           // job trace
+  pJob_Sanity_pre,   // prompt pre-process function
+  vJob_Sanity_post,  // prompt post-process function
   vJob_Sanity_delete,// job delete function
-  true,             // job is enabled
-  "<help>"_Stz,     // help
-  "<example>"_Stz   // example
+  vJob_Sanity_show,  // job delete function
+  true,              // job is enabled
+  "<help>"_Stz,      // help
+  "<example>"_Stz    // example
 );
 
 
@@ -229,8 +231,17 @@ void JobsModel::vJob_Sanity_delete(Interface::SEitf* pSEitf, Job* pJob)
 {
   Job_Sanity* pJob_Sanity = _pJob_Sanity(pJob);
   
-  // now delete the job
   delete pJob_Sanity;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show job function                                                          */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_Sanity_show(Job* pJob)
+{
+  Job_Sanity* pJob_Sanity = _pJob_Sanity(pJob);
+
+  pJob_Sanity->vShow();
 }
 
 /*============================================================================*/

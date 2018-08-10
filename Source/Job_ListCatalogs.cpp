@@ -17,9 +17,11 @@ JobNote mJobNote_ListCatalogs (
   "listCatalogs"_Stz,      // the task seed for this job
   false,                   // check resources?
   false,                   // detached job?
+  JT_NONE,                 // job trace
   pJob_ListCatalogs_pre,   // prompt pre-process function
   vJob_ListCatalogs_post,  // prompt post-process function
   vJob_ListCatalogs_delete,// job delete function
+  vJob_ListCatalogs_show,  // job show function
   true,                    // job is enabled
   "<help>"_Stz,            // help
   "<example>"_Stz          // example
@@ -227,8 +229,17 @@ void JobsModel::vJob_ListCatalogs_delete(Interface::SEitf* pSEitf, Job* pJob)
 {
   Job_ListCatalogs* pJob_ListCatalogs = _pJob_ListCatalogs(pJob);
   
-  // now delete the job
   delete pJob_ListCatalogs;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show job function                                                          */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_ListCatalogs_show(Job* pJob)
+{
+  Job_ListCatalogs* pJob_ListCatalogs = _pJob_ListCatalogs(pJob);
+
+  pJob_ListCatalogs->vShow();
 }
 
 /*============================================================================*/

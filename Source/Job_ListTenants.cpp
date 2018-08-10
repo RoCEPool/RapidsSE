@@ -17,9 +17,11 @@ JobNote mJobNote_ListTenants (
   "listTenants"_Stz,      // the task seed for this job
   false,                  // check resources?
   false,                  // detached job?
+  JT_NONE,                // job trace
   pJob_ListTenants_pre,   // prompt pre-process function
   vJob_ListTenants_post,  // prompt post-process function
   vJob_ListTenants_delete,// job delete function
+  vJob_ListTenants_show,  // job show function
   true,                   // job is enabled
   "<help>"_Stz,           // help
   "<example>"_Stz         // example
@@ -219,8 +221,17 @@ void JobsModel::vJob_ListTenants_delete(Interface::SEitf* pSEitf, Job* pJob)
 {
   Job_ListTenants* pJob_ListTenants = _pJob_ListTenants(pJob);
   
-  // now delete the job
   delete pJob_ListTenants;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show job function                                                          */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_ListTenants_show(Job* pJob)
+{
+  Job_ListTenants* pJob_ListTenants = _pJob_ListTenants(pJob);
+
+  pJob_ListTenants->vShow();
 }
 
 /*============================================================================*/

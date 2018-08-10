@@ -17,9 +17,11 @@ JobNote mJobNote_Docol (
   "docol"_Stz,      // the task seed for this job
   false,            // check resources?
   false,            // detached job?
+  JT_NONE,          // job trace
   pJob_Docol_pre,   // prompt pre-process function
   vJob_Docol_post,  // prompt post-process function
   vJob_Docol_delete,// job delete function
+  vJob_Docol_show,  // job show function
   true,             // job is enabled
   "<help>"_Stz,     // help
   "<example>"_Stz   // example
@@ -214,8 +216,17 @@ void JobsModel::vJob_Docol_delete(Interface::SEitf* pSEitf, Job* pJob)
 {
   Job_Docol* pJob_Docol = _pJob_Docol(pJob);
   
-  // now delete the job
   delete pJob_Docol;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show job function                                                          */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_Docol_show(Job* pJob)
+{
+  Job_Docol* pJob_Docol = _pJob_Docol(pJob);
+
+  pJob_Docol->vShow();
 }
 
 /*============================================================================*/

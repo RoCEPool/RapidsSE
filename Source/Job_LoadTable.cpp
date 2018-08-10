@@ -17,9 +17,11 @@ JobNote mJobNote_LoadTable (
   "loadTable"_Stz,        // the task seed for this job
   true,                   // check resources?
   false,                  // detached job?
+  JT_NONE,                // job trace
   pJob_LoadTable_pre,     // prompt pre-process function
   vJob_LoadTable_post,    // prompt post-process function
   vJob_LoadTable_delete,  // job delete function
+  vJob_LoadTable_show,    // job show function
   true,                   // job is enabled
   "<help>"_Stz,           // help
   "<example>"_Stz         // example
@@ -570,8 +572,17 @@ void JobsModel::vJob_LoadTable_delete(Interface::SEitf* pSEitf, Job* pJob)
 {
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pJob);
   
-  // now delete the job
   delete pJob_LoadTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show job function                                                          */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_LoadTable_show(Job* pJob)
+{
+  Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pJob);
+
+  pJob_LoadTable->vShow();
 }
 
 /*============================================================================*/

@@ -8,21 +8,23 @@
 extern AttachMap* gpAttachMap;
 
 JobNote mJobNote_Status (
-  "status"_Stz,     // name of the job class
-  CN_JOB_STATUS,    // class enum
-  JK_DIST2PC,       // job kind
-  "status"_Stz,     // comment about the job
-  "status"_Stz,     // the prompt command
-  nullptr,          // the second word
-  "status"_Stz,     // the task seed for this job
-  false,            // check resources?
-  false,            // detached job?
-  pJob_Status_pre,  // prompt pre-process function
-  vJob_Status_post, // prompt post-process function
+  "status"_Stz,      // name of the job class
+  CN_JOB_STATUS,     // class enum
+  JK_DIST2PC,        // job kind
+  "status"_Stz,      // comment about the job
+  "status"_Stz,      // the prompt command
+  nullptr,           // the second word
+  "status"_Stz,      // the task seed for this job
+  false,             // check resources?
+  false,             // detached job?
+  JT_NONE,           // job trace
+  pJob_Status_pre,   // prompt pre-process function
+  vJob_Status_post,  // prompt post-process function
   vJob_Status_delete,// job delete function
-  true,             // job is enabled
-  "<help>"_Stz,     // help
-  "<example>"_Stz   // example
+  vJob_Status_show,  // job delete function
+  true,              // job is enabled
+  "<help>"_Stz,      // help
+  "<example>"_Stz    // example
   );
 
 /*----------------------------------------------------------------------------*/
@@ -224,6 +226,16 @@ void JobsModel::vJob_Status_delete(Interface::SEitf* pSEitf, Job* pJob)
   
   // now delete the job
   delete pJob_Status;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show job function                                                          */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_Status_show(Job* pJob)
+{
+  Job_Status* pJob_Status = _pJob_Status(pJob);
+
+  pJob_Status->vShow();
 }
 
 /*============================================================================*/

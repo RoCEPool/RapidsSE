@@ -38,6 +38,7 @@ namespace JobsModel
   Job* pJob_DropSchema_pre(Interface::SEitf* pSEitf);
   void vJob_DropSchema_post(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_DropSchema_delete(Interface::SEitf* pSEitf, Job* pJob);
+  void vJob_DropSchema_show(Job* pJob);
 }
 
 /*============================================================================*/

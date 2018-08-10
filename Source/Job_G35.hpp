@@ -37,6 +37,7 @@ namespace JobsModel
   Job* pJob_G35_pre(Interface::SEitf* pSEitf);
   void vJob_G35_post(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_G35_delete(Interface::SEitf* pSEitf, Job* pJob);
+  void vJob_G35_show(Job* pJob);
 }
 
 /*============================================================================*/

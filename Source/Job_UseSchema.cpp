@@ -17,9 +17,11 @@ JobNote mJobNote_UseSchema (
   "useSchema"_Stz,             // the task seed for this job
   false,                       // check resources?
   false,                       // detached job?
+  JT_NONE,                     // job trace
   pJob_UseSchema_pre,          // prompt pre-process function
   vJob_UseSchema_post,         // prompt post-process function
   vJob_UseSchema_delete,       // job delete function
+  vJob_UseSchema_show,         // job show function
   true,                        // job is enabled
   "<help>"_Stz,                // help
   "<example>"_Stz              // example
@@ -218,8 +220,17 @@ void JobsModel::vJob_UseSchema_delete(Interface::SEitf* pSEitf, Job* pJob)
 {
   Job_UseSchema* pJob_UseSchema = _pJob_UseSchema(pJob);
   
-  // now delete the job
   delete pJob_UseSchema;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show job function                                                          */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_UseSchema_show(Job* pJob)
+{
+  Job_UseSchema* pJob_UseSchema = _pJob_UseSchema(pJob);
+
+  pJob_UseSchema->vShow();
 }
 
 /*============================================================================*/

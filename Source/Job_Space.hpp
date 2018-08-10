@@ -38,6 +38,7 @@ namespace JobsModel
   Job* pJob_Space_pre(Interface::SEitf* pSEitf);
   void vJob_Space_post(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_Space_delete(Interface::SEitf* pSEitf, Job* pJob);
+  void vJob_Space_show(Job* pJob);
 }
 
 /*============================================================================*/

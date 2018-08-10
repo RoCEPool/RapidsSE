@@ -17,9 +17,11 @@ JobNote mJobNote_ListSchemas (
   "listSchemas"_Stz,      // the task seed for this job
   false,                  // check resources?
   false,                  // detached job?
+  JT_NONE,                // job trace
   pJob_ListSchemas_pre,   // prompt pre-process function
   vJob_ListSchemas_post,  // prompt post-process function
   vJob_ListSchemas_delete,// job delete function
+  vJob_ListSchemas_show,  // job show function
   true,                   // job is enabled
   "<help>"_Stz,           // help
   "<example>"_Stz         // example
@@ -218,9 +220,18 @@ void JobsModel::vJob_ListSchemas_post(Interface::SEitf* pSEitf, Job* pJob)
 void JobsModel::vJob_ListSchemas_delete(Interface::SEitf* pSEitf, Job* pJob)
 {
   Job_ListSchemas* pJob_ListSchemas = _pJob_ListSchemas(pJob);
-  
-  // now delete the job
+
   delete pJob_ListSchemas;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show job function                                                          */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_ListSchemas_show(Job* pJob)
+{
+  Job_ListSchemas* pJob_ListSchemas = _pJob_ListSchemas(pJob);
+
+  pJob_ListSchemas->vShow();
 }
 
 /*============================================================================*/

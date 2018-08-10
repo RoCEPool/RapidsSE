@@ -17,9 +17,11 @@ JobNote mJobNote_DropIndex (
   "dropIndex"_Stz,            // the task seed for this job
   true,                       // check resources?
   false,                      // detached job?
+  JT_NONE,                    // job trace
   pJob_DropIndex_pre,         // prompt pre-process function
   vJob_DropIndex_post,        // prompt post-process function
   vJob_DropIndex_delete,      // job delete function
+  vJob_DropIndex_show,        // job show function
   true,                       // job is enabled
   "<help>"_Stz,               // help
   "<example>"_Stz             // example
@@ -230,8 +232,17 @@ void JobsModel::vJob_DropIndex_delete(Interface::SEitf* pSEitf, Job* pJob)
 {
   Job_DropIndex* pJob_DropIndex = _pJob_DropIndex(pJob);
   
-  // now delete the job
   delete pJob_DropIndex;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show job function                                                          */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_DropIndex_show(Job* pJob)
+{
+  Job_DropIndex* pJob_DropIndex = _pJob_DropIndex(pJob);
+
+  pJob_DropIndex->vShow();
 }
 
 /*============================================================================*/

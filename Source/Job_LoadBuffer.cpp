@@ -17,9 +17,11 @@ JobNote mJobNote_LoadBuffer (
   "LoadBuffer_seed"_Stz,   // the task seed for this job
   false,                   // check resources?
   false,                   // detached job?
+  JT_NONE,                 // job trace
   nullptr,                 // prompt pre-process function
   nullptr,                 // prompt post-process function
   vJob_LoadBuffer_delete,  // job delete function
+  vJob_LoadBuffer_show,    // job show function
   false,                   // job is not prompt enabled
   "<help>"_Stz,            // help
   "<example>"_Stz          // example
@@ -240,10 +242,19 @@ Footer* Job_LoadBuffer::aFooter(void)
 /*----------------------------------------------------------------------------*/
 void JobsModel::vJob_LoadBuffer_delete(Interface::SEitf* pSEitf, Job* pJob)
 {
-  Job_LoadBuffer* pJob_LoadBuffer =  _pJob_LoadBuffer(pJob);
-  
-  // now delete the job
+  Job_LoadBuffer* pJob_LoadBuffer = _pJob_LoadBuffer(pJob);
+
   delete pJob_LoadBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show job function                                                          */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_LoadBuffer_show(Job* pJob)
+{
+  Job_LoadBuffer* pJob_LoadBuffer = _pJob_LoadBuffer(pJob);
+
+  pJob_LoadBuffer->vShow();
 }
 
 /*============================================================================*/
