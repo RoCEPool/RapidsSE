@@ -199,7 +199,7 @@ bool Job_CreateIndex::bPopulateJob(TokenVec* pTokenVec)
     if (iCurrentToken != 6 + iIfUnique && !pTokenVec->pGet(iCurrentToken++)->bSame(","_Stz)) {
       return false;
     }
-    m_sColumnName[iColumn] = pTokenVec->pGet(iCurrentToken++)->aText();
+    m_sColumnName[iColumn++] = pTokenVec->pGet(iCurrentToken++)->aText();
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -164,7 +164,7 @@ void Index::vCreateColumnVec(JobsModel::Job_CreateIndex* pJob)
   i8 iColumnsIndex = pJob->m_iColumns;
   s32 sColumnNm;
   
-  for (i8 i_ColumnIndex = 0; i_ColumnIndex < iColumnsIndex; i_ColumnIndex) {
+  for (i8 i_ColumnIndex = 0; i_ColumnIndex < iColumnsIndex; i_ColumnIndex++) {
  
     sColumnNm = pJob->m_sColumnName[i_ColumnIndex];
     

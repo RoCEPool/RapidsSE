@@ -238,7 +238,7 @@ void Task::vTableColumnFetch(MP_Task mpTask)
   
   Object* pPtrTable;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-  THROW_INVALID_DSTACK("table.coumn"_Stz);
+  THROW_INVALID_DSTACK("table.coumn@"_Stz);
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   

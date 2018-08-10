@@ -166,6 +166,11 @@ lf;
 cf ..;
 cf ..;
 
+print "\n=========================================";
+print "list index columns...";
+print "=========================================";
+lsidxcol j10 idx;
+
 // drop the index
 print "\n=========================================";
 print "dropping index idx of j10...";

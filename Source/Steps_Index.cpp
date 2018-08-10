@@ -19,7 +19,8 @@ void Task::vAddPrimitives_Index(void)
 {
   vAddPrimitive("index.analyze"_Stz,         &vIndexAnalyze,         false);
   vAddPrimitive("index.buffer"_Stz,          &vIndexBuffer,          false);
-  vAddPrimitive("index.columnCount"_Stz,     &vIndexColumnCount,     false);
+  vAddPrimitive("index.columnCount@"_Stz,    &vIndexColumnCountFetch,false);
+  vAddPrimitive("index.column@"_Stz,         &vIndexColumnFetch,     false);
   vAddPrimitive("index.columnName"_Stz,      &vIndexColumnName,      false);
   vAddPrimitive("index.columnType"_Stz,      &vIndexColumnType,      false);
   vAddPrimitive("index.compact"_Stz,         &vIndexCompact,         false);
@@ -127,11 +128,36 @@ void Task::vIndexBuffer(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* index.columnCount -- get column count                                      */
+/* index.column@ -- get the column from the index                             */
 /*----------------------------------------------------------------------------*/
-void Task::vIndexColumnCount(MP_Task mpTask)
+void Task::vIndexColumnFetch(MP_Task mpTask)
 {
-  ENTRY("vIndexColumnCount"_Stz);
+  ENTRY("vIndexColumnFetch"_Stz);
+  
+  Object* pPtrIndex;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
+    THROW_INVALID_DSTACK("index.column@"_Stz);
+  Index* pIndex = _pIndex(pPtrIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  i8 iColumnNo;
+  if ( ! mpTask->m_pDataStack->bPop(iColumnNo) )
+    THROW_INVALID_DSTACK("index.column@"_Stz);
+  
+  ASSERT(iColumnNo < pIndex->pIdxColVec()->nItems());
+  Column* pColumn = pIndex->pIdxColVec()->pGet(iColumnNo);
+  
+  mpTask->m_pDataStack->vPushObject(pColumn);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index.columnCount@ -- fetch index column count                             */
+/*----------------------------------------------------------------------------*/
+void Task::vIndexColumnCountFetch(MP_Task mpTask)
+{
+  ENTRY("vIndexColumnCountFetch"_Stz);
   
   Object* pPtrIndex;
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )

@@ -798,7 +798,8 @@ namespace Tasks
     // index
     static void vIndexAnalyze(MP_Task mpTask);
     static void vIndexBuffer(MP_Task mpTask);
-    static void vIndexColumnCount(MP_Task mpTask);
+    static void vIndexColumnFetch(MP_Task mpTask);
+    static void vIndexColumnCountFetch(MP_Task mpTask);
     static void vIndexColumnName(MP_Task mpTask);
     static void vIndexColumnType(MP_Task mpTask);
     static void vIndexCompact(MP_Task mpTask);
@@ -903,6 +904,7 @@ namespace Tasks
     static void vJobHasError(MP_Task mpTask);
     static void vJobIdFetch(MP_Task mpTask);
     static void vJobIsPromptCommand(MP_Task mpTask);
+    static void vJobListIdxColumnsTableNameFetch(MP_Task mpTask);
     static void vJobLoadBufferInsertRows(MP_Task mpTask);
     static void vJobLoadBufferLoadJobIdFetch(MP_Task mpTask);
     static void vJobLoadBufferPartitionFetch(MP_Task mpTask);

@@ -35,7 +35,6 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.columnType@"_Stz,      &vJobColumnTypeFetch,  false);
   vAddPrimitive("job_createIndex.tableName@"_Stz, &vJobCreateIndexTableNameFetch, false);
   vAddPrimitive("job.decAcksRemaining"_Stz, &vJobDecAcksRemaining, false);
-  
   vAddPrimitive("job.deleteJob"_Stz,        &vJobDeleteJob,        false);
   vAddPrimitive("job.dicPath"_Stz,          &vJobDicPath,          false);
   vAddPrimitive("job_dropIndex.tableName@"_Stz,   &vJobDropIndexTableNameFetch,   false);
@@ -57,6 +56,7 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.hasError"_Stz,         &vJobHasError,         false);
   vAddPrimitive("job.id@"_Stz,              &vJobIdFetch,          false);
   vAddPrimitive("job.isPromptCommand"_Stz,  &vJobIsPromptCommand,  false);
+  vAddPrimitive("job_listIdxColumns.tableName@"_Stz,   &vJobListIdxColumnsTableNameFetch,   false);
   vAddPrimitive("job_loadBuffer.insertRows"_Stz,   &vJobLoadBufferInsertRows,       false);
   vAddPrimitive("job_loadBuffer.loadJobId@"_Stz,   &vJobLoadBufferLoadJobIdFetch,   false);
   vAddPrimitive("job_loadBuffer.partition@"_Stz,   &vJobLoadBufferPartitionFetch,   false);
@@ -883,6 +883,24 @@ void Task::vJobIsPromptCommand(MP_Task mpTask)
   Job* pJob = _pJob(pJobPtr);
   
   mpTask->m_pDataStack->vPushInt(pJob->m_pPromptTask ? true : false);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_listIdxColumns.tableName@ -- fetch table name from the job_listIdxName */
+/*----------------------------------------------------------------------------*/
+void Task::vJobListIdxColumnsTableNameFetch(MP_Task mpTask)
+{
+  ENTRY("vJobListIdxColumnsTableNameFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_listIdxColumns.tableName@"_Stz);
+  
+  Job_ListIdxColumns* pJob_ListIdxColumns = _pJob_ListIdxColumns(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushS32(pJob_ListIdxColumns->m_sTableName);
   
   EXIT();
 }

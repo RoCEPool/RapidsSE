@@ -10,7 +10,7 @@ namespace JobsModel
   {
   public:
     
-    s32    m_sTableName;   // table name
+    s32 m_sTableName;   // table name
     
     // must be last
     Footer m_xFooter;

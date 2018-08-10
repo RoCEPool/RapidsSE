@@ -11,10 +11,9 @@
 "requests_schema.sen"      include
 "requests_table.sen"       include
 "requests_index.sen"       include
-
 "requests_column.sen"      include
 "requests_folder.sen"      include
-"requests_prompt.sen"       include
+"requests_prompt.sen"      include
 "requests_grid.sen"        include
 "requests_rowBuffer.sen"   include
 "requests_misc.sen"        include
