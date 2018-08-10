@@ -16,6 +16,7 @@
   0 locals| sTableNm  |
   0 locals| i_Partition |
   0 locals| pTask_LoadTable |
+  0 locals| bAllLoaded |
 
   tp: LoadBuffer
   "LoadBuffer running" .
@@ -56,10 +57,16 @@
   i_Partition pTable tablePtnGrabWrite
 
   // now insert the buffer of rows
-  pJob_LoadBuffer job_LoadBuffer.insertRows
+  pJob_LoadBuffer job_LoadBuffer.insertRows to bAllLoaded
 
   // drop write lock on table partition
   i_Partition pTable tablePtnDropWrite
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  bAllLoaded if
+    "All buffers loaded" .
+  then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

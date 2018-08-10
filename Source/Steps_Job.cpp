@@ -918,9 +918,11 @@ void Task::vJobLoadBufferInsertRows(MP_Task mpTask)
   if (C_UNKNOWN != nBuffersLoadable)
     pPartition->vBuffersLoadable(nBuffersLoadable);
   
-  if (pPartition->bBuffersLoaded()) {
+  bool bBuffersLoaded = pPartition->bBuffersLoaded();
+  if (bBuffersLoaded)
     vTrace("Buffers loaded\n"_Stz);
-  }
+
+  mpTask->m_pDataStack->vPushInt(bBuffersLoaded);
 
   EXIT();
 }
