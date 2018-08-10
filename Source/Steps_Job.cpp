@@ -88,6 +88,8 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.rowsProcessed@"_Stz,   &vJobRowsProcessedFetch, false);
   vAddPrimitive("job.rowsProcessed!"_Stz,   &vJobRowsProcessedStore, false);
   vAddPrimitive("job.signalConnector"_Stz,  &vJobSignalConnector,  false);
+  vAddPrimitive("job.trace!"_Stz,           &vJobErrorStore,       false);
+  vAddPrimitive("job.trace@"_Stz,           &vJobErrorFetch,       false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1542,6 +1544,46 @@ void Task::vJobSignalConnector(MP_Task mpTask)
   if (0 != rCode) {
     vWarn("pthread_cond_signal() error; rCode=%lld\n"_Stz,rCode);
   }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.trace@ -- fetch the job trace                                          */
+/*----------------------------------------------------------------------------*/
+void Task::vJobTraceFetch(MP_Task mpTask)
+{
+  ENTRY("vJobTraceFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.trace@"_Stz);
+  Job_Space* pJob = _pJob_Space(pJobPtr);
+  
+  eJT eJobTrace = pJob->eJobTrace();
+  
+  mpTask->m_pDataStack->vPushInt(eJobTrace);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.trace! -- store the job trace                                          */
+/*----------------------------------------------------------------------------*/
+void Task::vJobTraceStore(MP_Task mpTask)
+{
+  ENTRY("vJobTraceStore"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.trace!"_Stz);
+  Job_Space* pJob = _pJob_Space(pJobPtr);
+  
+  i8 iJobTrace;
+  if ( ! mpTask->m_pDataStack->bPop(iJobTrace) )
+    THROW_INVALID_DSTACK("job.trace!"_Stz);
+  
+  pJob->vJobTrace((eJT)iJobTrace);
   
   EXIT();
 }

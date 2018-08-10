@@ -543,6 +543,15 @@ void Task::vAddConstants(void)
   /*  2 */ vAddConstant("AM_INDEXLEVELS"_Stz,  AM_INDEXLEVELS);
   /*  3 */ vAddConstant("AM_ENUMS"_Stz,        AM_ENUMS);
   
+  // AT_ : fetch techniques
+  /*  0 */ vAddConstant("AT_NONE"_Stz,  AT_NONE);
+  /*  1 */ vAddConstant("AT_EXACT"_Stz, AT_EXACT);
+  /*  2 */ vAddConstant("AT_LOWER"_Stz, AT_LOWER);
+  /*  3 */ vAddConstant("AT_UPPER"_Stz, AT_UPPER);
+  /*  4 */ vAddConstant("AT_RANGE"_Stz, AT_RANGE);
+  /*  5 */ vAddConstant("AT_SCAN"_Stz,  AT_SCAN);
+  /*  6 */ vAddConstant("AT_ENUMS"_Stz, AT_ENUMS);
+  
   // CN_ : class numbers
   /*  0 */ vAddConstant("CN_NONE"_Stz,         CN_NONE);
 
@@ -593,7 +602,7 @@ void Task::vAddConstants(void)
   
   /*    */ vAddConstant("CN_JOB_ANALYZEINDEX"_Stz,   CN_JOB_ANALYZEINDEX);
   /*    */ vAddConstant("CN_JOB_ANALYZETABLE"_Stz,   CN_JOB_ANALYZETABLE);
-   /*    */ vAddConstant("CN_JOB_CF"_Stz,            CN_JOB_CF);
+  /*    */ vAddConstant("CN_JOB_CF"_Stz,            CN_JOB_CF);
   /*    */ vAddConstant("CN_JOB_CREATECATALOG"_Stz,  CN_JOB_CREATECATALOG);
   /*    */ vAddConstant("CN_JOB_CREATEINDEX"_Stz,    CN_JOB_CREATEINDEX);
   /*    */ vAddConstant("CN_JOB_CREATESCHEMA"_Stz,   CN_JOB_CREATESCHEMA);
@@ -803,15 +812,19 @@ void Task::vAddConstants(void)
   /* 60 */ vAddConstant("EC_VERSION_MISMATCH"_Stz,   EC_VERSION_MISMATCH);
   /* 61 */ vAddConstant("EC_ENUMS"_Stz,              EC_ENUMS);
 
-  // AT_ : fetch techniques
-  /*  0 */ vAddConstant("AT_NONE"_Stz,  AT_NONE);
-  /*  1 */ vAddConstant("AT_EXACT"_Stz, AT_EXACT);
-  /*  2 */ vAddConstant("AT_LOWER"_Stz, AT_LOWER);
-  /*  3 */ vAddConstant("AT_UPPER"_Stz, AT_UPPER);
-  /*  4 */ vAddConstant("AT_RANGE"_Stz, AT_RANGE);
-  /*  5 */ vAddConstant("AT_SCAN"_Stz,  AT_SCAN);
-  /*  6 */ vAddConstant("AT_ENUMS"_Stz, AT_ENUMS);
-  
+  // JK_ : job kind
+  /*  0 */ vAddConstant("JK_NONE"_Stz,       JK_NONE);
+  /*  1 */ vAddConstant("JK_CHILD"_Stz,      JK_CHILD);
+  /*  2 */ vAddConstant("JK_DIST2PC"_Stz,    JK_DIST2PC);
+  /*  3 */ vAddConstant("JK_ONESHOT"_Stz,    JK_ONESHOT);
+  /*  4 */ vAddConstant("JK_SINGLENODE"_Stz, JK_SINGLENODE);
+
+  // JT_ : job trace
+  /*  0 */ vAddConstant("JT_NONE"_Stz,    JT_NONE);
+  /*  1 */ vAddConstant("JT_ALL"_Stz,     JT_ALL);
+  /*  2 */ vAddConstant("JT_JOB"_Stz,     JT_JOB);
+  /*  3 */ vAddConstant("JT_TASK"_Stz,    JT_TASK);
+
   // TN_ : token types
   /*  0 */ vAddConstant("TN_NONE"_Stz,    TN_NONE);
   /*  1 */ vAddConstant("TN_NAME"_Stz,    TN_NAME);

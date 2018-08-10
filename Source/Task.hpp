@@ -936,7 +936,9 @@ namespace Tasks
     static void vJobRowsProcessedFetch(MP_Task mpTask);
     static void vJobRowsProcessedStore(MP_Task mpTask);
     static void vJobSignalConnector(MP_Task mpTask);
-    
+    static void vJobTraceStore(MP_Task mpTask);
+    static void vJobTraceFetch(MP_Task mpTask);
+
     // loader
     static void vLoaderAddRecordsInvalid(MP_Task mpTask);
     static void vLoaderAddRecordsValid(MP_Task mpTask);
