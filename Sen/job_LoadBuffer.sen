@@ -15,6 +15,7 @@
   0 locals| iLoadJobId |
   0 locals| sTableNm  |
   0 locals| i_Partition |
+  0 locals| pTask_LoadTable |
 
   tp: LoadBuffer
   "LoadBuffer running" .
@@ -31,7 +32,8 @@
   // get the load table job (node)
   pJob_LoadBuffer job_loadBuffer.loadJobId@ to iLoadJobId
   iLoadJobId job.findParticipant to pJob_LoadTable
-  pJob_LoadTable iLoadJobId "LoadJobId %v job_LoadTable (node) %v" fmt.print
+  pJob_LoadTable job_LoadTable.task@ to pTask_LoadTable
+  pTask_LoadTable pJob_LoadTable iLoadJobId "LoadJobId %v job_LoadTable (node) %v task_LoadTable %v" fmt.print
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
