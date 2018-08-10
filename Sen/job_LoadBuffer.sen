@@ -5,19 +5,21 @@
 "job_LoadBuffer.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* LoadBuffer seed                                                             */
+/* LoadBuffer seed                                                            */
 /*----------------------------------------------------------------------------*/
 : LoadBuffer_seed (  -- <R> )
 
   0 locals| pThisTask |
   0 locals| pJob_LoadBuffer  |
+  0 locals| pJob_LoadTable |
+  0 locals| iLoadJobId |
   0 locals| sTableNm  |
   0 locals| i_Partition |
-  0 locals| iLoadJobId |
-  0 locals| pJob_LoadTable |
 
   tp: LoadBuffer
   "LoadBuffer running" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // get the task
   task::this to pThisTask
@@ -26,10 +28,12 @@
   // get the load buffer job from the task
   pThisTask task.job@ to pJob_LoadBuffer
 
+  // get the load table job (node)
   pJob_LoadBuffer job_loadBuffer.loadJobId@ to iLoadJobId
-  iLoadJobId "LoadJobId %v" fmt.print
-
   iLoadJobId job.findParticipant to pJob_LoadTable
+  pJob_LoadTable iLoadJobId "LoadJobId %v job_LoadTable (node) %v" fmt.print
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // get table name
   pJob_LoadBuffer job.objectName@ to sTableNm
@@ -44,6 +48,7 @@
   pTable pJob_LoadBuffer Job_LoadBuffer.table!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // grab write lock on table partition
   pJob_LoadBuffer Job_LoadBuffer.partition@ to i_Partition
   i_Partition pTable tablePtnGrabWrite

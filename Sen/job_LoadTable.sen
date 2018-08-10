@@ -61,10 +61,10 @@
 
   // get the task
   task::this to pThisTask
-  pThisTask "LoadTable_req task: %v" fmt.print
 
   // get the job from the task
   pThisTask task.job@ to pJob_LoadTable
+  pJob_LoadTable pThisTask "LoadTable_req task: %v job_LoadTable %v" fmt.print
 
   // distribute the job
   pThisTask pJob_LoadTable "job::distribute" find execute
@@ -83,7 +83,7 @@
 
   // get the task
   task::this to pThisTask
-  pThisTask "LoadTable_node task: %v" fmt.print
+  pJob_LoadTable pThisTask "LoadTable_node task: %v job_LoadTable %v" fmt.print
 
   // store task into Job_LoadTable
   pThisTask pJob_LoadTable job_loadTable.task!
