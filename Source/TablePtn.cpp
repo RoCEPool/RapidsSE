@@ -160,8 +160,12 @@ bool TablePtn::bBuffersLoaded(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  ASSERT(C_UNKNOWN == m_nBuffersLoadable);
+  //ASSERT(C_UNKNOWN == m_nBuffersLoadable);
   
+  vTrace("m_nBuffersLoadable %lld m_nBuffersLoaded %lld\n"_Stz,
+         m_nBuffersLoadable,
+         m_nBuffersLoaded);
+
   if (m_nBuffersLoaded == m_nBuffersLoadable)
     return true;
   else

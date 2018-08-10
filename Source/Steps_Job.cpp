@@ -910,7 +910,17 @@ void Task::vJobLoadBufferInsertRows(MP_Task mpTask)
   i8 iTxId = 0;
   
   pTable->vInsertEntries(iTxId, iSlot, pWorkingBuffer);
-
+  
+  TablePtn* pPartition = pTable->pPartition(iSlot);
+  pPartition->vIncBuffersLoaded();
+  
+  i8 nBuffersLoadable = pJob_LoadBuffer->nBuffersLoadable();
+  if (C_UNKNOWN != nBuffersLoadable)
+    pPartition->vBuffersLoadable(nBuffersLoadable);
+  
+  if (pPartition->bBuffersLoaded()) {
+    vTrace("Buffers loaded\n"_Stz);
+  }
 
   EXIT();
 }

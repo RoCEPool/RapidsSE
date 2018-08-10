@@ -428,6 +428,7 @@ void LoaderSub::vNewWorkingBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
   
   m_pWorkingBuffer[m_iPartition] = new WorkingBuffer(m_pTable, m_iPartition);
+  m_nBuffersLoadable[m_iPartition]++;
 }
 
 /*----------------------------------------------------------------------------*/
