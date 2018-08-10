@@ -7,14 +7,14 @@
 /*----------------------------------------------------------------------------*/
 /* execute loader on this node                                                */
 /*----------------------------------------------------------------------------*/
-: LoadTable_loader ( pJob_LoadTable --  )
+: LoadTable_executeLoader ( pJob_LoadTable --  )
 
   params| pJob_LoadTable |
   0 locals| pThisTask |
 
   "Executing loader on this node" .
 
-  task::this to pThisTask
+task::this to pThisTask
 
   pJob_LoadTable loader::new locals| pLoader |
 
@@ -34,7 +34,7 @@
   // grab this task's lock
   pThisTask task.grabLock
 
-  args.subLoaders setAcks
+  grid::slots setAcks
 
   args.subLoaders 0
   do
@@ -42,11 +42,23 @@
     pLoader loader.spawnSubLoader
   loop
 
-  "Loader ack waiting" .
+  "LoadTable_executeLoader ack waiting" .
   ackWait
-  "Loader acked" .
+  "LoadTable_executeLoader acked" .
 
   pLoader loader.delete
+;
+
+/*----------------------------------------------------------------------------*/
+/* wait for ack only                                                          */
+/*----------------------------------------------------------------------------*/
+: LoadTable_waitOnly ( pJob_LoadTable --  )
+
+  grid::slots setAcks
+
+  "LoadTable_waitOnly waiting" .
+  ackWait
+  "LoadTable_waitOnly acked" .
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -93,13 +105,13 @@
 
   iThisNode iOriginNode "Originating node %v; this node %v" fmt.print
 
-  iThisNode iOriginNode == not if
+  iThisNode iOriginNode == if
+    "Loader is executing on this node" .
+    pJob_LoadTable LoadTable_executeLoader
+  else
     "Loader is not executed on this node" .
-    <DONE_NODE>
-    exit
+    LoadTable_waitOnly
   then
-
-  pJob_LoadTable LoadTable_loader
 
   <DONE_NODE>
 ;
