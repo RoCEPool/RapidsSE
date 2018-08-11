@@ -18,7 +18,7 @@ JobNote mJobNote_LoadBuffer (
   false,                   // check resources?
   false,                   // detached job?
   JT_NONE,                 // job trace
-  nullptr,                 // prompt pre-process function
+  vJob_LoadBuffer_pre,     // prompt pre-process function
   nullptr,                 // prompt post-process function
   vJob_LoadBuffer_delete,  // job delete function
   vJob_LoadBuffer_show,    // job show function
@@ -243,6 +243,16 @@ Footer* Job_LoadBuffer::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /*-- Catalog Functions -------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* prompt pre execute function                                                */
+/*----------------------------------------------------------------------------*/
+Job* JobsModel::vJob_LoadBuffer_pre(Interface::SEitf* pSEitf)
+{
+  Job_LoadBuffer* pJob_LoadBuffer = new Job_LoadBuffer(pSEitf);
+  
+  return pJob_LoadBuffer;
+}
 
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */

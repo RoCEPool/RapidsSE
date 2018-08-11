@@ -51,6 +51,7 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_LoadBuffer* _pJob_LoadBuffer(void* aAddr);
   
+  Job* vJob_LoadBuffer_pre(Interface::SEitf* pSEitf);
   void vJob_LoadBuffer_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_LoadBuffer_show(Job* pJob);
 }
