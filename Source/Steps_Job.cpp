@@ -87,6 +87,7 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.response!"_Stz,        &vJobResponseStore,    false);
   vAddPrimitive("job.rowsProcessed@"_Stz,   &vJobRowsProcessedFetch, false);
   vAddPrimitive("job.rowsProcessed!"_Stz,   &vJobRowsProcessedStore, false);
+  vAddPrimitive("job.show"_Stz,             &vJobShow,             false);
   vAddPrimitive("job.signalConnector"_Stz,  &vJobSignalConnector,  false);
   vAddPrimitive("job.trace!"_Stz,           &vJobErrorStore,       false);
   vAddPrimitive("job.trace@"_Stz,           &vJobErrorFetch,       false);
@@ -380,7 +381,7 @@ void Task::vJobDeleteJob(MP_Task mpTask)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.class"_Stz);
+    THROW_INVALID_DSTACK("job.jobDelete"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
   // find the job in the catalog
@@ -1520,6 +1521,28 @@ void Task::vJobRowsProcessedStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.rowsProcessed!"_Stz);
   
   pJob->m_xNode[iNode].m_iRowsProcessed = iRowsProcessed;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.show -- show the job                                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vJobShow(MP_Task mpTask)
+{
+  ENTRY("vJobShow"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.show"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  // find the job in the catalog
+  eCN eClass = pJob->eClass();
+  JobClass* pJobClass = gxJobCatalog.pFindJob(eClass);
+  
+  // call the job delete function
+  pJobClass->vShowJob(pJob);
   
   EXIT();
 }
