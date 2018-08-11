@@ -216,10 +216,14 @@ void Job_LoadBuffer::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
   
-  vTrace("LoadJobId %lld; Table %s; Partition %lld\n"_Stz,
-         m_iLoadJobId,
-         m_sObjectName.aStr(),
-         m_iPartition);
+  s48K sShow;
+  
+  sShow.vSprint("LoadJobId %lld; Table %s; Partition %lld\n"_Stz,
+                m_iLoadJobId,
+                m_sObjectName.aStr(),
+                m_iPartition);
+  
+  Job::vShow(sShow);
 }
 
 /*----------------------------------------------------------------------------*/

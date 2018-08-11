@@ -110,7 +110,10 @@ namespace JobsModel
     void vJobState(eJS eJobState);
     eJT  eJobTrace(void);
     void vJobTrace(eJT eJobTrace);
-    
+  
+  protected:
+    void vShow(s48K& s);
+  
   private:
     void vInit(void);
   };
