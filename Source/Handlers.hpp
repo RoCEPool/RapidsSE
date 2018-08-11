@@ -8,7 +8,7 @@ namespace Threads
   class Handlers
   {
   public:
-    static void vAckTaskHandler(Task* pTask);
+    static void vAckTaskHandler(Task* pTaskBeingAcked, Task* pTaskAcking);
     static void vSpawnedTaskHandler(Task* pTask);
     static void vThreadLoopHandler(NP_Task* pNpTask);
   };

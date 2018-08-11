@@ -12,7 +12,7 @@ extern Arguments  gxArguments;
 /*----------------------------------------------------------------------------*/
 /* ack task handler                                                           */
 /*----------------------------------------------------------------------------*/
-void Handlers::vAckTaskHandler(Task* pTask)
+void Handlers::vAckTaskHandler(Task* pTaskBeingAcked, Task* pTaskAcking)
 {
   //
   // this handler is called from Task::vTaskAck()
@@ -20,10 +20,23 @@ void Handlers::vAckTaskHandler(Task* pTask)
   
   Queues* pQueues = gpAttachMap->m_pQueues;
   
-  bool bDecider = pTask->bDecAck();
+  Job* pJobBeingAcked = pTaskBeingAcked->pJob();
+  Job* pJobAcking = pTaskAcking->pJob();
+  
+  bool bDecider = pTaskBeingAcked->bDecAck();
+  
+  if ( (pJobBeingAcked && JT_NONE != pJobBeingAcked->eJobTrace()) ||
+       (pJobAcking && JT_NONE != pJobAcking->eJobTrace())  ) {
+    vTrace("Ack of %s task %p by %s task %p (%s)\n"_Stz,
+           pJobBeingAcked ? pJobBeingAcked->m_pJobClass->m_aName : "<no job>"_Stz,
+           pTaskBeingAcked,
+           pJobAcking ? pJobAcking->m_pJobClass->m_aName : "<no job>"_Stz,
+           pJobAcking,
+           bDecider ? "decider" : "not decider");
+  }
   
   if (bDecider)
-    pQueues->vScheduleAckedTask(pTask);
+    pQueues->vScheduleAckedTask(pTaskBeingAcked);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -18,7 +18,7 @@ JobNote mJobNote_SubLoader (
   false,                  // check resources?
   false,                  // detached job?
   JT_NONE,                // job trace
-  nullptr,                // prompt pre-process function
+  vJob_SubLoader_pre,     // prompt pre-process function
   nullptr,                // prompt post-process function
   vJob_SubLoader_delete,  // job delete function
   vJob_SubLoader_show,    // job show function
@@ -186,6 +186,16 @@ Footer* Job_SubLoader::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /*-- Catalog Functions -------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* prompt pre execute function                                                */
+/*----------------------------------------------------------------------------*/
+Job* JobsModel::vJob_SubLoader_pre(Interface::SEitf* pSEitf)
+{
+  Job_SubLoader* pJob_SubLoader = new Job_SubLoader(pSEitf);
+  
+  return pJob_SubLoader;
+}
 
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */

@@ -17,7 +17,7 @@ JobNote mJobNote_LoadBuffer (
   "LoadBuffer_seed"_Stz,   // the task seed for this job
   false,                   // check resources?
   false,                   // detached job?
-  JT_NONE,                 // job trace
+  JT_ALL,                  // job trace
   vJob_LoadBuffer_pre,     // prompt pre-process function
   nullptr,                 // prompt post-process function
   vJob_LoadBuffer_delete,  // job delete function

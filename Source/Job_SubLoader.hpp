@@ -39,6 +39,7 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_SubLoader* _pJob_SubLoader(void* aAddr);
   
+  Job* vJob_SubLoader_pre(Interface::SEitf* pSEitf);
   void vJob_SubLoader_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_SubLoader_show(Job* pJob);
 }

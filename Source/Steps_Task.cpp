@@ -80,17 +80,17 @@ void Task::vTaskAck(MP_Task mpTask)
   Object* pTaskObject;
   if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
     THROW_INVALID_DSTACK("task.ack"_Stz);
-  Task* pThatTask = _pTask(pTaskObject);
+  Task* pTaskBeingAcked = _pTask(pTaskObject);
   
-  if (pThatTask->bR35model()) {
+  if (pTaskBeingAcked->bR35model()) {
     
-    Handlers::vAckTaskHandler(pThatTask);
+    Handlers::vAckTaskHandler(pTaskBeingAcked,*mpTask);
     
     EXIT();
     return;
   }
   
-  i8 iMore = --pThatTask->m_zAcks;
+  i8 iMore = --pTaskBeingAcked->m_zAcks;
   
   if (iMore) {
     //    vTrace("Task::vTaskSignal: task %p %s signalled task %p\\%lld %s\n"_Stz,
@@ -119,21 +119,21 @@ void Task::vTaskAck(MP_Task mpTask)
            *mpTask->m_zAcks,
            mpTask->m_sComment.aChar(),
            
-           pThatTask->m_sName.aChar(),
-           *pThatTask->m_zAcks);
+           pTaskBeingAcked->m_sName.aChar(),
+           *pTaskBeingAcked->m_zAcks);
   
-  while (TS_WAITING_ACK != pThatTask->m_eState)
+  while (TS_WAITING_ACK != pTaskBeingAcked->m_eState)
     PosixThread::vSleepMicro(10);
   
-  if (pThatTask->eActorModel() == AC_SERVER) {
-    gpAttachMap->m_pServerScheduler->vEnqueueTask_Mutex(pThatTask);
+  if (pTaskBeingAcked->eActorModel() == AC_SERVER) {
+    gpAttachMap->m_pServerScheduler->vEnqueueTask_Mutex(pTaskBeingAcked);
   }
-  else if (pThatTask->eActorModel() == AC_PARTITION) {
-    gpAttachMap->m_pPartitionScheduler->vEnqueueTask_Mutex(pThatTask->m_iPartition,pThatTask);
+  else if (pTaskBeingAcked->eActorModel() == AC_PARTITION) {
+    gpAttachMap->m_pPartitionScheduler->vEnqueueTask_Mutex(pTaskBeingAcked->m_iPartition,pTaskBeingAcked);
   }
   else {
-    Thread* pThread = pThatTask->pThread();
-    pThread->m_pTaskSet->vAppend(pThatTask);
+    Thread* pThread = pTaskBeingAcked->pThread();
+    pThread->m_pTaskSet->vAppend(pTaskBeingAcked);
   }
 
   EXIT();
