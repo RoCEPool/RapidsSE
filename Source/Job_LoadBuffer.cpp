@@ -218,10 +218,11 @@ void Job_LoadBuffer::vShow(void)
   
   s48K sShow;
   
-  sShow.vSprint("LoadJobId %lld; Table %s; Partition %lld\n"_Stz,
+  sShow.vSprint("LoadJobId %lld; Table %s; Partition %lld; Rows %lld\n"_Stz,
                 m_iLoadJobId,
                 m_sObjectName.aStr(),
-                m_iPartition);
+                m_iPartition,
+                m_pWorkingBuffer->nWorkingRows());
   
   Job::vShow(sShow);
 }
