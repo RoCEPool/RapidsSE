@@ -156,8 +156,6 @@ bool Job_DropTenant::bPopulateJob(TokenVec* pTokenVec)
 void Job_DropTenant::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPTENANT,_FOOTER_);
-  
-                                                               //! Alka to write
 }
 
 /*----------------------------------------------------------------------------*/

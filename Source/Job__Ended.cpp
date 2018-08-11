@@ -104,8 +104,6 @@ void Job__Ended::vDump(eCN eClass, Object* pObject, Stz* aTab)
 void Job__Ended::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__ENDED,_FOOTER_);
-  
-                                                               //! Alka to write
 }
 
 /*----------------------------------------------------------------------------*/

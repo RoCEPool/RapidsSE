@@ -215,8 +215,6 @@ void Job_LoadBuffer::vTable(Table* pTable)
 void Job_LoadBuffer::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
-  
-                                                               //! Alka to write
 }
 
 /*----------------------------------------------------------------------------*/

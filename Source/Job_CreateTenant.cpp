@@ -155,8 +155,6 @@ bool Job_CreateTenant::bPopulateJob(TokenVec* pTokenVec)
 void Job_CreateTenant::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETENANT,_FOOTER_);
-  
-                                                               //! Alka to write
 }
 
 /*----------------------------------------------------------------------------*/

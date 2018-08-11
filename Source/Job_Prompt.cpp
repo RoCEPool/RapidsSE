@@ -104,8 +104,6 @@ void Job_Prompt::vDump(eCN eClass, Object* pObject, Stz* aTab)
 void Job_Prompt::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PROMPT,_FOOTER_);
-  
-                                                               //! Alka to write
 }
 
 /*----------------------------------------------------------------------------*/

@@ -154,8 +154,6 @@ bool Job_CreateCatalog::bPopulateJob(TokenVec* pTokenVec)
 void Job_CreateCatalog::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATECATALOG,_FOOTER_);
-  
-                                                               //! Alka to write
 }
 
 /*----------------------------------------------------------------------------*/

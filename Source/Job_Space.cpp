@@ -150,8 +150,6 @@ bool Job_Space::bPopulateJob(TokenVec* pTokenVec)
 void Job_Space::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SPACE,_FOOTER_);
-  
-                                                               //! Alka to write
 }
 
 /*----------------------------------------------------------------------------*/

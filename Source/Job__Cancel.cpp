@@ -104,8 +104,6 @@ void Job__Cancel::vDump(eCN eClass, Object* pObject, Stz* aTab)
 void Job__Cancel::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__CANCEL,_FOOTER_);
-  
-                                                               //! Alka to write
 }
 
 /*----------------------------------------------------------------------------*/

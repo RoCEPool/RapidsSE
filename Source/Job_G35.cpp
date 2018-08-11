@@ -124,8 +124,6 @@ void Job_G35::vDump(eCN eClass, Object* pObject, Stz* aTab)
 void Job_G35::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_G35,_FOOTER_);
-  
-                                                               //! Alka to write
 }
 
 /*----------------------------------------------------------------------------*/

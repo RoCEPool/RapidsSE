@@ -155,8 +155,6 @@ bool Job_ListColumns::bPopulateJob(TokenVec* pTokenVec)
 void Job_ListColumns::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTCOLUMNS,_FOOTER_);
-  
-                                                               //! Alka to write
 }
 
 /*----------------------------------------------------------------------------*/

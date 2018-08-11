@@ -167,8 +167,6 @@ bool Job_DropIndex::bPopulateJob(TokenVec* pTokenVec)
 void Job_DropIndex::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPINDEX,_FOOTER_);
-  
-                                                               //! Alka to write
 }
 
 /*----------------------------------------------------------------------------*/

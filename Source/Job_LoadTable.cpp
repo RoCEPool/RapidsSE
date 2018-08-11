@@ -303,8 +303,6 @@ void Job_LoadTable::vTask(Tasks::Task* pTask)
 void Job_LoadTable::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
-  
-                                                               //! Alka to write
 }
 
 /*----------------------------------------------------------------------------*/

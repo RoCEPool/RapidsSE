@@ -153,8 +153,6 @@ bool Job_Sanity::bPopulateJob(TokenVec* pTokenVec)
 void Job_Sanity::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SANITY,_FOOTER_);
-  
-                                                               //! Alka to write
 }
 
 /*----------------------------------------------------------------------------*/

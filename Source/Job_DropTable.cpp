@@ -154,8 +154,6 @@ bool Job_DropTable::bPopulateJob(TokenVec* pTokenVec)
 void Job_DropTable::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPTABLE,_FOOTER_);
-  
-                                                               //! Alka to write
 }
 
 /*----------------------------------------------------------------------------*/

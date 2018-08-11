@@ -159,8 +159,6 @@ bool Job_ListIdxColumns::bPopulateJob(TokenVec* pTokenVec)
 void Job_ListIdxColumns::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTIDXCOLUMNS,_FOOTER_);
-  
-                                                               //! Alka to write
 }
 
 /*----------------------------------------------------------------------------*/

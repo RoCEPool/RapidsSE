@@ -167,8 +167,6 @@ void Job_SubLoader::vLoaderSub(LoaderSub* pLoaderSub)
 void Job_SubLoader::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
-  
-                                                               //! Alka to write
 }
 
 /*----------------------------------------------------------------------------*/
