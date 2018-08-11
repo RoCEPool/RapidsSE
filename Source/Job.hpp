@@ -5,6 +5,8 @@
 
 namespace JobsModel
 {
+  class JobClass; // forward definition
+  
   class Job;
   
   static const i8 C_MAX_COLUMNS = 128;
@@ -69,6 +71,7 @@ namespace JobsModel
   {
   public:
     i8  m_iJobId;              // job id
+    JobClass* m_pJobClass;     // job class
     eJS m_eState;              // job state
     s32 m_sSeed;               // task seed (to be merged with above)
     bool m_bCheckResources;    // request requires to check resources

@@ -29,6 +29,9 @@ void JobClass::vEndJob(Interface::SEitf* pSEitf, Job* pJob)
 Job* JobClass::pNewJob(Interface::SEitf* pSEitf)
 {
   Job* pJob = (*m_fPre)(pSEitf);
+
+  pJob->m_pJobClass = this;
+  pJob->m_eJobTrace = m_eTrace;
   
   return pJob;
 }

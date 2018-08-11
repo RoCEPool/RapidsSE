@@ -47,9 +47,11 @@ JobNote::JobNote(Stz* aName,
   gxJobCatalog.m_xJobClass[i_Job].m_aSeed       = aSeed;
   gxJobCatalog.m_xJobClass[i_Job].m_bResources  = bResources;
   gxJobCatalog.m_xJobClass[i_Job].m_bDetached   = bDetached;
+  gxJobCatalog.m_xJobClass[i_Job].m_eTrace      = eTrace;
   gxJobCatalog.m_xJobClass[i_Job].m_fPre        = fPre;
   gxJobCatalog.m_xJobClass[i_Job].m_fPost       = fPost;
   gxJobCatalog.m_xJobClass[i_Job].m_fDelete     = fDelete;
+  gxJobCatalog.m_xJobClass[i_Job].m_fShow       = fShow;
   gxJobCatalog.m_xJobClass[i_Job].m_bEnabled    = bEnabled;
   
   // record the job class

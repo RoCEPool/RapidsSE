@@ -89,6 +89,7 @@ Job::~Job(void)
 void Job::vInit(void)
 {
   m_iJobId   = -1;
+  m_pJobClass = nullptr;
   m_eState   = JS_NONE;
   m_sSeed    = ""_Stz;
   m_bCheckResources   = false;

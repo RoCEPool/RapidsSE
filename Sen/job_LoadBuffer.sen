@@ -30,6 +30,8 @@
   // get the load buffer job from the task
   pThisTask task.job@ to pJob_LoadBuffer
 
+  pJob_LoadBuffer job.show
+
   // get the load table job (node)
   pJob_LoadBuffer job_loadBuffer.loadJobId@ to iLoadJobId
   iLoadJobId job.findParticipant to pJob_LoadTable
