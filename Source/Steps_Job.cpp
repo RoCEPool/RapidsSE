@@ -89,8 +89,9 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.rowsProcessed!"_Stz,   &vJobRowsProcessedStore, false);
   vAddPrimitive("job.show"_Stz,             &vJobShow,             false);
   vAddPrimitive("job.signalConnector"_Stz,  &vJobSignalConnector,  false);
-  vAddPrimitive("job.trace!"_Stz,           &vJobErrorStore,       false);
-  vAddPrimitive("job.trace@"_Stz,           &vJobErrorFetch,       false);
+  vAddPrimitive("job.spawn"_Stz,            &vJobSpawn,            false);
+  vAddPrimitive("job.trace!"_Stz,           &vJobTraceStore,       false);
+  vAddPrimitive("job.trace@"_Stz,           &vJobTraceFetch,       false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1567,6 +1568,46 @@ void Task::vJobSignalConnector(MP_Task mpTask)
   if (0 != rCode) {
     vWarn("pthread_cond_signal() error; rCode=%lld\n"_Stz,rCode);
   }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.spawn -- spawn the job on the stack                                    */
+/*----------------------------------------------------------------------------*/
+void Task::vJobSpawn(MP_Task mpTask)
+{
+  ENTRY("vJobSpawn"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.spawn"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  // there should not be a prompt task
+  ASSERT( ! pJob->m_pPromptTask);
+ 
+//  Object* pSEitfPtr;
+//  if ( ! mpTask->m_pDataStack->bPop(pSEitfPtr) )
+//    THROW_INVALID_DSTACK("job.spawn"_Stz);
+//  SEitf* pSEitf = _pSEitf(pSEitfPtr);
+
+  // form the word to execute for the request
+  s32 sRequest;
+  sRequest = pJob->sJobSeed();
+  
+  Task* pNewTask = new Task;
+
+  pNewTask->vSeedWord(sRequest);
+  pNewTask->vState(TS_READY);
+  pNewTask->vR35model(true);
+  pNewTask->vActorModel(AC_R35);
+//  pNewTask->vSEitf(pSEitf);
+  
+  pNewTask->vJob(pJob);
+  
+  Handlers::vSpawnedTaskHandler(pNewTask);
+
   
   EXIT();
 }
