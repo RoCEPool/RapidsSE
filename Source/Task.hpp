@@ -264,7 +264,7 @@ namespace Tasks
     void  vCompileConstant(StrVal& sDefinition);
     static void vDebug(void);
     void vContentDump(void);
-    bool bDecAck(void);
+    bool bDecAck(i8& iRemaining);
     void vDestructorTrace(bool bDestructorTrace);
     bool bDestructorTrace(void);
     void vDropLock(void);

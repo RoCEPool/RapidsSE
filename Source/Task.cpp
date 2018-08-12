@@ -1523,13 +1523,13 @@ void Task::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 /* decrement ack and return if caller is decider                              */
 /*----------------------------------------------------------------------------*/
-bool Task::bDecAck(void)
+bool Task::bDecAck(i8& iRemaining)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  i8 iMore = --m_zAcks;
+  iRemaining = --m_zAcks;
 
-  if (iMore)
+  if (iRemaining)
     return false;
   else
     return true;
