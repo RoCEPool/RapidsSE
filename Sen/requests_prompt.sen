@@ -58,7 +58,7 @@
     then
 
     // create the job for the command
-    pSEitf pCommandProcessor commandProcessor.newJob to pJob
+    pSEitf pCommandProcessor commandProcessor.preJob to pJob
 
     // test for error
     pJob job.hasError if

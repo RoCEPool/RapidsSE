@@ -20,8 +20,8 @@ void Task::vAddPrimitives_CommandProcessor(void)
   vAddPrimitive("commandProcessor.findJobClass"_Stz,&vCommandProcessorFindJobClass,false);
   vAddPrimitive("commandProcessor.getCommand"_Stz,  &vCommandProcessorGetCommand, false);
   vAddPrimitive("commandProcessor.jobClass"_Stz,    &vCommandProcessorJobClass,   false);
-  vAddPrimitive("commandProcessor.newJob"_Stz,      &vCommandProcessorNewJob,     false);
   vAddPrimitive("commandProcessor.postJob"_Stz,     &vCommandProcessorPostJob,    false);
+  vAddPrimitive("commandProcessor.preJob"_Stz,      &vCommandProcessorPreJob,     false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -171,37 +171,7 @@ void Task::vCommandProcessorJobClass(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* commandProcessor.newJob -- new a job from job class                        */
-/*----------------------------------------------------------------------------*/
-void Task::vCommandProcessorNewJob(MP_Task mpTask)
-{
-  ENTRY("vCommandProcessorNewJob"_Stz);
-  
-  Object* pCommandProcessorObject;
-  if ( ! mpTask->m_pDataStack->bPop(pCommandProcessorObject) )
-    THROW_INVALID_DSTACK("commandProcessor.newJob"_Stz);
-  CommandProcessor*
-    pCommandProcessor = _pCommandProcessor(pCommandProcessorObject);
-
-  Object* pSEitfObject;
-  if ( ! mpTask->m_pDataStack->bPop(pSEitfObject) )
-    THROW_INVALID_DSTACK("commandProcessor.postJob"_Stz);
-  SEitf*
-    pSEitf = _pSEitf(pSEitfObject);
-  
-  pCommandProcessor->vPreJob(pSEitf);
-  
-  Job* pJob = pCommandProcessor->pJob();
-  
-  pJob->m_pPromptTask = *mpTask;
-  
-  mpTask->m_pDataStack->vPushObject(pJob);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* commandProcessor.postJob -- end job                                         */
+/* commandProcessor.postJob -- post process job                               */
 /*----------------------------------------------------------------------------*/
 void Task::vCommandProcessorPostJob(MP_Task mpTask)
 {
@@ -220,6 +190,36 @@ void Task::vCommandProcessorPostJob(MP_Task mpTask)
   pSEitf = _pSEitf(pSEitfObject);
   
   pCommandProcessor->vPostJob(pSEitf);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* commandProcessor.preJob -- pre process a job                               */
+/*----------------------------------------------------------------------------*/
+void Task::vCommandProcessorPreJob(MP_Task mpTask)
+{
+  ENTRY("vCommandProcessorPreJob"_Stz);
+  
+  Object* pCommandProcessorObject;
+  if ( ! mpTask->m_pDataStack->bPop(pCommandProcessorObject) )
+    THROW_INVALID_DSTACK("commandProcessor.preJob"_Stz);
+  CommandProcessor*
+  pCommandProcessor = _pCommandProcessor(pCommandProcessorObject);
+  
+  Object* pSEitfObject;
+  if ( ! mpTask->m_pDataStack->bPop(pSEitfObject) )
+    THROW_INVALID_DSTACK("commandProcessor.postJob"_Stz);
+  SEitf*
+  pSEitf = _pSEitf(pSEitfObject);
+  
+  pCommandProcessor->vPreJob(pSEitf);
+  
+  Job* pJob = pCommandProcessor->pJob();
+  
+  pJob->m_pPromptTask = *mpTask;
+  
+  mpTask->m_pDataStack->vPushObject(pJob);
   
   EXIT();
 }
