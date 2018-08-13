@@ -52,6 +52,8 @@ using namespace JobsModel;
 
 #include "Job_Answer.hpp"
 
+#include "Job_Boot.hpp"
+
 #include "Job_Cf.hpp"
 #include "Job_CreateCatalog.hpp"
 #include "Job_CreateIndex.hpp"
