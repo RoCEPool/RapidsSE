@@ -20,6 +20,7 @@ JobNote mJobNote_Connector (
   JT_NONE,                // job trace
   nullptr,                // prompt pre-process function
   nullptr,                // prompt post-process function
+  nullptr,                // job new function
   vJob_Connector_delete,  // job delete function
   vJob_Connector_show,    // job show function
   false,                  // job is not prompt enabled

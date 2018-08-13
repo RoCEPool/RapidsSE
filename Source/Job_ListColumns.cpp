@@ -20,6 +20,7 @@ JobNote mJobNote_ListColumns (
   JT_NONE,                // job trace
   pJob_ListColumns_pre,   // prompt pre-process function
   vJob_ListColumns_post,  // prompt post-process function
+  nullptr,                // job new function
   vJob_ListColumns_delete,// job delete function
   vJob_ListColumns_show,  // job show function
   true,                   // job is enabled

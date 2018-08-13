@@ -20,6 +20,7 @@ JobNote mJobNote_SubLoader (
   JT_NONE,                // job trace
   vJob_SubLoader_pre,     // prompt pre-process function
   nullptr,                // prompt post-process function
+  nullptr,                // job new function
   vJob_SubLoader_delete,  // job delete function
   vJob_SubLoader_show,    // job show function
   false,                  // job is not prompt enabled

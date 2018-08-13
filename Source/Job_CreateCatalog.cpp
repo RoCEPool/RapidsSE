@@ -8,23 +8,24 @@
 extern AttachMap* gpAttachMap;
 
 JobNote mJobNote_CreateCatalog (
-  "Job_CreateCatalog"_Stz,           // name of the job class
-  CN_JOB_CREATECATALOG,              // class enum
-  JK_DIST2PC,                        // job kind
-  "create catalog catalogName"_Stz,  // comment about the job
-  "create"_Stz,                      // the prompt command
-  "catalog"_Stz,                     // the second word
-  "createCatalog"_Stz,               // the task seed for this job
-  true,                              // check resources?
-  false,                             // detached job?
-  JT_NONE,                           // job trace
-  pJob_CreateCatalog_pre,            // prompt pre-process function
-  vJob_CreateCatalog_post,           // prompt post-process function
-  vJob_CreateCatalog_delete,         // job delete function
-  vJob_CreateCatalog_show,           // job show function
-  true,                              // job is enabled
-  "<help>"_Stz,                      // help
-  "<example>"_Stz                    // example
+  "Job_CreateCatalog"_Stz,  // name of the job class
+  CN_JOB_CREATECATALOG,     // class enum
+  JK_DIST2PC,               // job kind
+  "create catalog"_Stz,     // comment about the job
+  "create"_Stz,             // the prompt command
+  "catalog"_Stz,            // the second word
+  "createCatalog"_Stz,      // the task seed for this job
+  true,                     // check resources?
+  false,                    // detached job?
+  JT_NONE,                  // job trace
+  pJob_CreateCatalog_pre,   // prompt pre-process function
+  vJob_CreateCatalog_post,  // prompt post-process function
+  nullptr,                  // job new function
+  vJob_CreateCatalog_delete,// job delete function
+  vJob_CreateCatalog_show,  // job show function
+  true,                     // job is enabled
+  "<help>"_Stz,             // help
+  "<example>"_Stz           // example
 );
 
 /*----------------------------------------------------------------------------*/

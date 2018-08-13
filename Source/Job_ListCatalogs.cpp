@@ -20,6 +20,7 @@ JobNote mJobNote_ListCatalogs (
   JT_NONE,                 // job trace
   pJob_ListCatalogs_pre,   // prompt pre-process function
   vJob_ListCatalogs_post,  // prompt post-process function
+  nullptr,                 // job new function
   vJob_ListCatalogs_delete,// job delete function
   vJob_ListCatalogs_show,  // job show function
   true,                    // job is enabled

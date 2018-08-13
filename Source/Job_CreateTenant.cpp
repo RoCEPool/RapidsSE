@@ -20,6 +20,7 @@ JobNote mJobNote_CreateTenant (
   JT_NONE,                        // job trace
   pJob_CreateTenant_pre,          // prompt pre-process function
   vJob_CreateTenant_post,         // prompt post-process function
+  nullptr,                        // job new function
   vJob_CreateTenant_delete,       // job delete function
   vJob_CreateTenant_show,         // job show function
   true,                           // job is enabled

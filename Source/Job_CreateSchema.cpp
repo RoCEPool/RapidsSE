@@ -20,6 +20,7 @@ JobNote mJobNote_CreateSchema (
   JT_NONE,                        // job trace
   pJob_CreateSchema_pre,          // prompt pre-process function
   vJob_CreateSchema_post,         // prompt post-process function
+  nullptr,                        // job new function
   vJob_CreateSchema_delete,       // job delete function
   vJob_CreateSchema_show,         // job show function
   true,                           // job is enabled

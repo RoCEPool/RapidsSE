@@ -20,6 +20,7 @@ JobNote mJobNote_LoadTable (
   JT_NONE,                // job trace
   pJob_LoadTable_pre,     // prompt pre-process function
   vJob_LoadTable_post,    // prompt post-process function
+  nullptr,                // job new function
   vJob_LoadTable_delete,  // job delete function
   vJob_LoadTable_show,    // job show function
   true,                   // job is enabled

@@ -20,6 +20,7 @@ JobNote mJobNote_ListTenants (
   JT_NONE,                // job trace
   pJob_ListTenants_pre,   // prompt pre-process function
   vJob_ListTenants_post,  // prompt post-process function
+  nullptr,                // job new function
   vJob_ListTenants_delete,// job delete function
   vJob_ListTenants_show,  // job show function
   true,                   // job is enabled

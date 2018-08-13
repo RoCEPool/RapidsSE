@@ -20,6 +20,7 @@ JobNote mJobNote_Lf (
   JT_NONE,           // job trace
   pJob_Lf_pre,       // prompt pre-process function
   vJob_Lf_post,      // prompt post-process function
+  nullptr,           // job new function
   vJob_Lf_delete,    // job delete function
   vJob_Lf_show,      // job show function
   true,              // job is enabled

@@ -24,6 +24,7 @@ JobNote::JobNote(Stz* aName,
                  eJT  eTrace,
                  Job* (*fPre)(Interface::SEitf* pSEitf),
                  void (*fPost)(Interface::SEitf* pSEitf, Job* pJob),
+                 Job* (*fNew)(Job* pArg),
                  void (*fDelete)(Interface::SEitf* pSEitf, Job* pJob),
                  void (*fShow)(Job* pJob),
                  bool bEnabled,
@@ -50,6 +51,7 @@ JobNote::JobNote(Stz* aName,
   gxJobCatalog.m_xJobClass[i_Job].m_eTrace      = eTrace;
   gxJobCatalog.m_xJobClass[i_Job].m_fPre        = fPre;
   gxJobCatalog.m_xJobClass[i_Job].m_fPost       = fPost;
+  gxJobCatalog.m_xJobClass[i_Job].m_fNew        = fNew;
   gxJobCatalog.m_xJobClass[i_Job].m_fDelete     = fDelete;
   gxJobCatalog.m_xJobClass[i_Job].m_fShow       = fShow;
   gxJobCatalog.m_xJobClass[i_Job].m_bEnabled    = bEnabled;

@@ -20,6 +20,7 @@ JobNote mJobNote_CreateTable (
   JT_NONE,                // job trace
   pJob_CreateTable_pre,   // prompt pre-process function
   vJob_CreateTable_post,  // prompt post-process function
+  nullptr,                // job new function
   vJob_CreateTable_delete,// job delete function
   vJob_CreateTable_show,  // job show function
   true,                   // job is enabled

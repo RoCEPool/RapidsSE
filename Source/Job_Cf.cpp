@@ -20,6 +20,7 @@ JobNote mJobNote_Cf (
   JT_NONE,               // job trace
   pJob_Cf_pre,           // prompt pre-process function
   vJob_Cf_post,          // prompt post-process function
+  nullptr,               // job new function
   vJob_Cf_delete,        // job delete function
   vJob_Cf_show,          // job show function
   true,                  // job is enabled

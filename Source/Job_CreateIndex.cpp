@@ -20,6 +20,7 @@ JobNote mJobNote_CreateIndex (
   JT_NONE,                 // job trace
   pJob_CreateIndex_pre,    // prompt pre-process function
   vJob_CreateIndex_post,   // prompt post-process function
+  nullptr,                 // job new function
   vJob_CreateIndex_delete, // job delete function
   vJob_CreateIndex_show,   // job show function
   true,                    // job is enabled
@@ -40,6 +41,7 @@ JobNote mJobNote_CreateIndex2 (
   JT_NONE,                 // job trace
   pJob_CreateIndex_pre,    // prompt pre-process function
   vJob_CreateIndex_post,   // prompt post-process function
+  nullptr,                  // job new function
   vJob_CreateIndex_delete, // job delete function
   vJob_CreateIndex_show,   // job show function
   true,                    // job is enabled

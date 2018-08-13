@@ -19,8 +19,9 @@ JobNote mJobNote_Sanity (
   JT_NONE,           // job trace
   pJob_Sanity_pre,   // prompt pre-process function
   vJob_Sanity_post,  // prompt post-process function
+  nullptr,           // job new function
   vJob_Sanity_delete,// job delete function
-  vJob_Sanity_show,  // job delete function
+  vJob_Sanity_show,  // job show function
   true,              // job is enabled
   "<help>"_Stz,      // help
   "<example>"_Stz    // example

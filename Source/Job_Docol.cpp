@@ -20,6 +20,7 @@ JobNote mJobNote_Docol (
   JT_NONE,          // job trace
   pJob_Docol_pre,   // prompt pre-process function
   vJob_Docol_post,  // prompt post-process function
+  nullptr,          // job new function
   vJob_Docol_delete,// job delete function
   vJob_Docol_show,  // job show function
   true,             // job is enabled

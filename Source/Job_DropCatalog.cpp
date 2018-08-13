@@ -20,6 +20,7 @@ JobNote mJobNote_DropCatalog (
   JT_NONE,                        // job trace
   pJob_DropCatalog_pre,           // prompt pre-process function
   vJob_DropCatalog_post,          // prompt post-process function
+  nullptr,                        // job new function
   vJob_DropCatalog_delete,        // job delete function
   vJob_DropCatalog_show,          // job show function
   true,                           // job is enabled

@@ -20,6 +20,7 @@ JobNote mJobNote_LoadBuffer (
   JT_ALL,                  // job trace
   vJob_LoadBuffer_pre,     // prompt pre-process function
   nullptr,                 // prompt post-process function
+  nullptr,                 // job new function
   vJob_LoadBuffer_delete,  // job delete function
   vJob_LoadBuffer_show,    // job show function
   false,                   // job is not prompt enabled

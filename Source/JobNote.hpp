@@ -25,6 +25,7 @@ namespace JobsModel
 
             Job* (*fPre)(Interface::SEitf* pSEitf),
             void (*fPost)(Interface::SEitf* pSEitf, Job* pJob),
+            Job* (*fNew)(Job* pArg),
             void (*fDelete)(Interface::SEitf* pSEitf, Job* pJob),
             void (*fShow)(Job* pJob),
 

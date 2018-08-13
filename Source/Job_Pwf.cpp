@@ -20,6 +20,7 @@ JobNote mJobNote_Pwf (
   JT_NONE,               // job trace
   pJob_Pwf_pre,          // prompt pre-process function
   vJob_Pwf_post,         // prompt post-process function
+  nullptr,               // job new function
   vJob_Pwf_delete,       // job delete function
   vJob_Pwf_show,         // job show function
   true,                  // job is enabled

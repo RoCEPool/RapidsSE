@@ -20,6 +20,7 @@ JobNote mJobNote_Space (
   JT_NONE,          // job trace
   pJob_Space_pre,   // prompt pre-process function
   vJob_Space_post,  // prompt post-process function
+  nullptr,          // job new function
   vJob_Space_delete,// job delete function
   vJob_Space_show,  // job show function
   true,             // job is enabled

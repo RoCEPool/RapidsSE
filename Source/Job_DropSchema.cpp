@@ -21,6 +21,7 @@ JobNote mJobNote_DropSchema (
   JT_NONE,                      // job trace
   pJob_DropSchema_pre,          // prompt pre-process function
   vJob_DropSchema_post,         // prompt post-process function
+  nullptr,                      // job new function
   vJob_DropSchema_delete,       // job delete function
   vJob_DropSchema_show,         // job show function
   true,                         // job is enabled

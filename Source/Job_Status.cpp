@@ -20,6 +20,7 @@ JobNote mJobNote_Status (
   JT_NONE,           // job trace
   pJob_Status_pre,   // prompt pre-process function
   vJob_Status_post,  // prompt post-process function
+  nullptr,           // job new function
   vJob_Status_delete,// job delete function
   vJob_Status_show,  // job delete function
   true,              // job is enabled
