@@ -1078,7 +1078,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_Int();
   
   vAddPrimitives_Job();
-  
+  vAddPrimitives_JobClass();
+
   vAddPrimitives_Loader();
   vAddPrimitives_LoaderSub();
   vAddPrimitives_Locals();
