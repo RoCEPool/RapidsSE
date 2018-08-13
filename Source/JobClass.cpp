@@ -8,6 +8,19 @@
 extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
+/* create a new job by running the new-function                               */
+/*----------------------------------------------------------------------------*/
+Job* JobClass::pNewJob(Job* pArg)
+{
+  Job* pNewJob = (*m_fNew)(pArg);
+  
+  pNewJob->m_pJobClass = this;
+  pNewJob->m_eJobTrace = m_eTrace;
+
+  return pNewJob;
+}
+
+/*----------------------------------------------------------------------------*/
 /* delete the job by running the delete-function                              */
 /*----------------------------------------------------------------------------*/
 void JobClass::vDeleteJob(Interface::SEitf* pSEitf, Job* pJob)
