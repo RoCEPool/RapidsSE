@@ -63,7 +63,7 @@
     // test for error
     pJob job.hasError if
       "job has error (maybe syntax error)" .
-      pSEitf pCommandProcessor commandProcessor.endJob
+      pSEitf pCommandProcessor commandProcessor.postJob
       pSEitf pCommandProcessor commandProcessor.deleteJob
       ifAgain
     then
@@ -85,7 +85,7 @@
     ackWait
 
     // post process and delete the job
-    pSEitf pCommandProcessor commandProcessor.endJob
+    pSEitf pCommandProcessor commandProcessor.postJob
     pSEitf pCommandProcessor commandProcessor.deleteJob
     nullptr task::this task.job!
   repeat

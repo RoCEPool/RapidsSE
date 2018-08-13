@@ -16,12 +16,12 @@ void Task::vAddPrimitives_CommandProcessor(void)
   vAddPrimitive("commandProcessor.blankLine"_Stz,   &vCommandProcessorBlankLine,  false);
   vAddPrimitive("commandProcessor.deleteJob"_Stz,   &vCommandProcessorDeleteJob,  false);
   vAddPrimitive("commandProcessor.dispatchJob"_Stz, &vCommandProcessorDispatchJob,false);
-  vAddPrimitive("commandProcessor.endJob"_Stz,      &vCommandProcessorEndJob,     false);
   vAddPrimitive("commandProcessor.executeFile"_Stz, &vCommandProcessorExecuteFile,false);
   vAddPrimitive("commandProcessor.findJobClass"_Stz,&vCommandProcessorFindJobClass,false);
   vAddPrimitive("commandProcessor.getCommand"_Stz,  &vCommandProcessorGetCommand, false);
   vAddPrimitive("commandProcessor.jobClass"_Stz,    &vCommandProcessorJobClass,   false);
   vAddPrimitive("commandProcessor.newJob"_Stz,      &vCommandProcessorNewJob,     false);
+  vAddPrimitive("commandProcessor.postJob"_Stz,     &vCommandProcessorPostJob,    false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -77,13 +77,13 @@ void Task::vCommandProcessorDispatchJob(MP_Task mpTask)
   
   Object* pCommandProcessorObject;
   if ( ! mpTask->m_pDataStack->bPop(pCommandProcessorObject) )
-    THROW_INVALID_DSTACK("commandProcessor.endJob"_Stz);
+    THROW_INVALID_DSTACK("commandProcessor.postJob"_Stz);
   CommandProcessor*
     pCommandProcessor = _pCommandProcessor(pCommandProcessorObject);
   
   Object* pSEitfObject;
   if ( ! mpTask->m_pDataStack->bPop(pSEitfObject) )
-    THROW_INVALID_DSTACK("commandProcessor.endJob"_Stz);
+    THROW_INVALID_DSTACK("commandProcessor.postJob"_Stz);
   SEitf*
     pSEitf = _pSEitf(pSEitfObject);
 
@@ -101,37 +101,13 @@ void Task::vCommandProcessorExecuteFile(MP_Task mpTask)
   
   Object* pCommandProcessorObject;
   if ( ! mpTask->m_pDataStack->bPop(pCommandProcessorObject) )
-    THROW_INVALID_DSTACK("commandProcessor.endJob"_Stz);
+    THROW_INVALID_DSTACK("commandProcessor.postJob"_Stz);
   CommandProcessor*
     pCommandProcessor = _pCommandProcessor(pCommandProcessorObject);
 
   bool bFile = pCommandProcessor->bExecuteFile();
   
   mpTask->m_pDataStack->vPushInt(bFile);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* commandProcessor.endJob -- end job                                         */
-/*----------------------------------------------------------------------------*/
-void Task::vCommandProcessorEndJob(MP_Task mpTask)
-{
-  ENTRY("vCommandProcessorEndJob"_Stz);
-  
-  Object* pCommandProcessorObject;
-  if ( ! mpTask->m_pDataStack->bPop(pCommandProcessorObject) )
-    THROW_INVALID_DSTACK("commandProcessor.endJob"_Stz);
-  CommandProcessor*
-    pCommandProcessor = _pCommandProcessor(pCommandProcessorObject);
-  
-  Object* pSEitfObject;
-  if ( ! mpTask->m_pDataStack->bPop(pSEitfObject) )
-    THROW_INVALID_DSTACK("commandProcessor.endJob"_Stz);
-  SEitf*
-    pSEitf = _pSEitf(pSEitfObject);
- 
-  pCommandProcessor->vPostJob(pSEitf);
   
   EXIT();
 }
@@ -145,7 +121,7 @@ void Task::vCommandProcessorFindJobClass(MP_Task mpTask)
   
   Object* pCommandProcessorObject;
   if ( ! mpTask->m_pDataStack->bPop(pCommandProcessorObject) )
-    THROW_INVALID_DSTACK("commandProcessor.endJob"_Stz);
+    THROW_INVALID_DSTACK("commandProcessor.postJob"_Stz);
   CommandProcessor*
   pCommandProcessor = _pCommandProcessor(pCommandProcessorObject);
   
@@ -209,7 +185,7 @@ void Task::vCommandProcessorNewJob(MP_Task mpTask)
 
   Object* pSEitfObject;
   if ( ! mpTask->m_pDataStack->bPop(pSEitfObject) )
-    THROW_INVALID_DSTACK("commandProcessor.endJob"_Stz);
+    THROW_INVALID_DSTACK("commandProcessor.postJob"_Stz);
   SEitf*
     pSEitf = _pSEitf(pSEitfObject);
   
@@ -220,6 +196,30 @@ void Task::vCommandProcessorNewJob(MP_Task mpTask)
   pJob->m_pPromptTask = *mpTask;
   
   mpTask->m_pDataStack->vPushObject(pJob);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* commandProcessor.postJob -- end job                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vCommandProcessorPostJob(MP_Task mpTask)
+{
+  ENTRY("vCommandProcessorPostJob"_Stz);
+  
+  Object* pCommandProcessorObject;
+  if ( ! mpTask->m_pDataStack->bPop(pCommandProcessorObject) )
+    THROW_INVALID_DSTACK("commandProcessor.postJob"_Stz);
+  CommandProcessor*
+  pCommandProcessor = _pCommandProcessor(pCommandProcessorObject);
+  
+  Object* pSEitfObject;
+  if ( ! mpTask->m_pDataStack->bPop(pSEitfObject) )
+    THROW_INVALID_DSTACK("commandProcessor.postJob"_Stz);
+  SEitf*
+  pSEitf = _pSEitf(pSEitfObject);
+  
+  pCommandProcessor->vPostJob(pSEitf);
   
   EXIT();
 }
