@@ -128,6 +128,46 @@ void Job_Receiver::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get connection number                                                      */
+/*----------------------------------------------------------------------------*/
+i8 Job_Receiver::iConnNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_RECEIVER,_FOOTER_);
+  
+  return m_iConnNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set connection number                                                      */
+/*----------------------------------------------------------------------------*/
+void Job_Receiver::vConnNo(i8 iConnNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_RECEIVER,_FOOTER_);
+  
+  m_iConnNo = iConnNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get socket                                                                 */
+/*----------------------------------------------------------------------------*/
+Socket* Job_Receiver::pSocket(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_RECEIVER,_FOOTER_);
+  
+  return m_pSocket;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set socket                                                                 */
+/*----------------------------------------------------------------------------*/
+void Job_Receiver::vSocket(Socket* pSocket)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_RECEIVER,_FOOTER_);
+
+  m_pSocket = pSocket;
+}
+
+/*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
 void Job_Receiver::vShow(void)

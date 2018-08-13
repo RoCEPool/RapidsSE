@@ -9,7 +9,7 @@ namespace JobsModel
   class Job_Receiver : public Job
   {
   private:
-    i8 m_iConnNo;      
+    i8 m_iConnNo;
     Socket* m_pSocket;
   
     // must be last
@@ -26,6 +26,11 @@ namespace JobsModel
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
   public:
+    i8 iConnNo(void);
+    void vConnNo(i8 iConnNo);
+
+    Socket* pSocket(void);
+    void vSocket(Socket* pSocket);
 
     void vShow(void);
     Footer* aFooter(void);
