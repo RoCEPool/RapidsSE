@@ -8,24 +8,25 @@
 extern AttachMap* gpAttachMap;
 
 JobNote mJobNote_CreateTenant (
-  "Job_CreateTenant"_Stz,         // name of the job class
-  CN_JOB_CREATETENANT,            // class enum
-  JK_DIST2PC,                     // job kind
-  "create tenant tenantName"_Stz, // comment about the job
-  "create"_Stz,                   // the prompt command
-  "tenant"_Stz,                   // the second word
-  "createTenant"_Stz,             // the task seed for this job
-  true,                           // check resources?
-  false,                          // detached job?
-  JT_NONE,                        // job trace
-  pJob_CreateTenant_pre,          // prompt pre-process function
-  vJob_CreateTenant_post,         // prompt post-process function
-  nullptr,                        // job new function
-  vJob_CreateTenant_delete,       // job delete function
-  vJob_CreateTenant_show,         // job show function
-  true,                           // job is enabled
-  "<help>"_Stz,                   // help
-  "<example>"_Stz                 // example
+  "Job_CreateTenant"_Stz,    // name of the job class
+  CN_JOB_CREATETENANT,       // class enum
+  JK_DIST2PC,                // job kind
+  "create tenant"_Stz,       // comment about the job
+  "create"_Stz,              // the prompt command
+  "tenant"_Stz,              // the second word
+  "createTenant"_Stz,        // the task seed for this job
+  true,                      // check resources?
+  false,                     // detached job?
+  JT_NONE,                   // job trace
+  pJob_CreateTenant_pre,     // prompt pre-process function
+  vJob_CreateTenant_post,    // prompt post-process function
+  nullptr,                   // job new function
+  vJob_CreateTenant_delete,  // job delete function
+  nullptr,                   // job receive function
+  vJob_CreateTenant_show,    // job show function
+  true,                      // job is enabled
+  "<help>"_Stz,              // help
+  "<example>"_Stz            // example
 );
 
 

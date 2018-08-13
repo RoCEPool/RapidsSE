@@ -22,17 +22,12 @@ JobNote mJobNote_SubLoader (
   nullptr,                // prompt post-process function
   nullptr,                // job new function
   vJob_SubLoader_delete,  // job delete function
+  nullptr,                // job receive function
   vJob_SubLoader_show,    // job show function
   false,                  // job is not prompt enabled
   "<help>"_Stz,           // help
   "<example>"_Stz         // example
 );
-
-/* example:
- 
- ld lineitem "/tpch/lineitem.tbl" ;
- 
- */
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

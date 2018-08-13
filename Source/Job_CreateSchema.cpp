@@ -8,24 +8,25 @@
 extern AttachMap* gpAttachMap;
 
 JobNote mJobNote_CreateSchema (
-  "Job_CreateSchema"_Stz,         // name of the job class
-  CN_JOB_CREATESCHEMA,            // class enum
-  JK_DIST2PC,                     // job kind
-  "create schema schemaName"_Stz, // comment about the job
-  "create"_Stz,                   // the prompt command
-  "schema"_Stz,                   // the second word
-  "createSchema"_Stz,             // the task seed for this job
-  true,                           // check resources?
-  false,                          // detached job?
-  JT_NONE,                        // job trace
-  pJob_CreateSchema_pre,          // prompt pre-process function
-  vJob_CreateSchema_post,         // prompt post-process function
-  nullptr,                        // job new function
-  vJob_CreateSchema_delete,       // job delete function
-  vJob_CreateSchema_show,         // job show function
-  true,                           // job is enabled
-  "<help>"_Stz,                   // help
-  "<example>"_Stz                 // example
+  "Job_CreateSchema"_Stz,   // name of the job class
+  CN_JOB_CREATESCHEMA,      // class enum
+  JK_DIST2PC,               // job kind
+  "create schema"_Stz,      // comment about the job
+  "create"_Stz,             // the prompt command
+  "schema"_Stz,             // the second word
+  "createSchema"_Stz,       // the task seed for this job
+  true,                     // check resources?
+  false,                    // detached job?
+  JT_NONE,                  // job trace
+  pJob_CreateSchema_pre,    // prompt pre-process function
+  vJob_CreateSchema_post,   // prompt post-process function
+  nullptr,                  // job new function
+  vJob_CreateSchema_delete, // job delete function
+  nullptr,                  // job receive function
+  vJob_CreateSchema_show,   // job show function
+  true,                     // job is enabled
+  "<help>"_Stz,             // help
+  "<example>"_Stz           // example
 );
 
 /*----------------------------------------------------------------------------*/

@@ -22,6 +22,7 @@ JobNote mJobNote_CreateCatalog (
   vJob_CreateCatalog_post,  // prompt post-process function
   nullptr,                  // job new function
   vJob_CreateCatalog_delete,// job delete function
+  nullptr,                  // job receive function
   vJob_CreateCatalog_show,  // job show function
   true,                     // job is enabled
   "<help>"_Stz,             // help

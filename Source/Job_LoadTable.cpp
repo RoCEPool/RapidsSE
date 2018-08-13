@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Job_ListCatalogs.cpp -- List Catalogs Job                                  */
+/* Job_ListTable.cpp -- List Table Job                                        */
 /*============================================================================*/
 
 #include "JobModel.h"
@@ -22,6 +22,7 @@ JobNote mJobNote_LoadTable (
   vJob_LoadTable_post,    // prompt post-process function
   nullptr,                // job new function
   vJob_LoadTable_delete,  // job delete function
+  nullptr,                // job receive function
   vJob_LoadTable_show,    // job show function
   true,                   // job is enabled
   "<help>"_Stz,           // help

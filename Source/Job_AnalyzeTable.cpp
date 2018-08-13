@@ -11,7 +11,7 @@ JobNote mJobNote_AnalyzeTable (
   "Job_AnalyzeTable"_Stz,    // name of the job class
   CN_JOB_ANALYZETABLE,       // class enum
   JK_DIST2PC,                // job kind
-  "antbl tableNm [0/1]"_Stz,   // comment about the job
+  "antbl tableNm [0/1]"_Stz, // comment about the job
   "antbl"_Stz,               // the prompt command
   nullptr,                   // the second word
   "analyzeTable"_Stz,        // the task seed for this job
@@ -20,8 +20,9 @@ JobNote mJobNote_AnalyzeTable (
   JT_NONE,                   // job trace
   pJob_AnalyzeTable_pre,     // prompt pre-process function
   vJob_AnalyzeTable_post,    // prompt post-process function
-  nullptr,                        // job new function
+  nullptr,                   // job new function
   vJob_AnalyzeTable_delete,  // job delete function
+  nullptr,                   // job receive function
   vJob_AnalyzeTable_show,    // job show function
   true,                      // job is enabled
   "<help>"_Stz,              // help

@@ -8,24 +8,25 @@
 extern AttachMap* gpAttachMap;
 
 JobNote mJobNote_DropTenant (
-  "Job_DropTenant"_Stz,         // name of the job class
-  CN_JOB_DROPTENANT,            // class enum
-  JK_DIST2PC,                   // job kind
-  "drop tenant tenantName"_Stz, // comment about the job
-  "drop"_Stz,                   // the prompt command
-  "tenant"_Stz,                 // the second word
-  "dropTenant"_Stz,             // the task seed for this job
-  true,                         // check resources?
-  false,                        // detached job?
-  JT_NONE,                      // job trace
-  pJob_DropTenant_pre,          // prompt pre-process function
-  vJob_DropTenant_post,         // prompt post-process function
-  nullptr,                      // job new function
-  vJob_DropTenant_delete,       // job delete function
-  vJob_DropTenant_show,         // job show function
-  true,                         // job is enabled
-  "<help>"_Stz,                 // help
-  "<example>"_Stz               // example
+  "Job_DropTenant"_Stz,   // name of the job class
+  CN_JOB_DROPTENANT,      // class enum
+  JK_DIST2PC,             // job kind
+  "drop tenant"_Stz,      // comment about the job
+  "drop"_Stz,             // the prompt command
+  "tenant"_Stz,           // the second word
+  "dropTenant"_Stz,       // the task seed for this job
+  true,                   // check resources?
+  false,                  // detached job?
+  JT_NONE,                // job trace
+  pJob_DropTenant_pre,    // prompt pre-process function
+  vJob_DropTenant_post,   // prompt post-process function
+  nullptr,                // job new function
+  vJob_DropTenant_delete, // job delete function
+  nullptr,                // job receive function
+  vJob_DropTenant_show,   // job show function
+  true,                   // job is enabled
+  "<help>"_Stz,           // help
+  "<example>"_Stz         // example
 );
 
 /*----------------------------------------------------------------------------*/

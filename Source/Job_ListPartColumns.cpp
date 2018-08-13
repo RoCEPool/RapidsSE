@@ -22,6 +22,7 @@ JobNote mJobNote_ListPartColumns (
   vJob_ListPartColumns_post,        // prompt post-process function
   nullptr,                          // job new function
   vJob_ListPartColumns_delete,      // job delete function
+  nullptr,                          // job receive function
   vJob_ListPartColumns_show,        // job show function
   true,                             // job is enabled
   "<help>"_Stz,                     // help

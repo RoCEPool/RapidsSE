@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Job_ListTenants.cpp -- List Columns Job                                    */
+/* Job_ListTenants.cpp -- List Tenants Job                                    */
 /*============================================================================*/
 
 #include "JobModel.h"
@@ -22,6 +22,7 @@ JobNote mJobNote_ListTenants (
   vJob_ListTenants_post,  // prompt post-process function
   nullptr,                // job new function
   vJob_ListTenants_delete,// job delete function
+  nullptr,                // job receive function
   vJob_ListTenants_show,  // job show function
   true,                   // job is enabled
   "<help>"_Stz,           // help

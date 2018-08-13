@@ -22,11 +22,12 @@ JobNote mJobNote_Status (
   vJob_Status_post,  // prompt post-process function
   nullptr,           // job new function
   vJob_Status_delete,// job delete function
-  vJob_Status_show,  // job delete function
+  nullptr,           // job receive function
+  vJob_Status_show,  // job status function
   true,              // job is enabled
   "<help>"_Stz,      // help
   "<example>"_Stz    // example
-  );
+);
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

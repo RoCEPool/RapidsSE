@@ -8,26 +8,26 @@
 extern AttachMap* gpAttachMap;
 
 JobNote mJobNote_DropCatalog (
-  "Job_DropCatalog"_Stz,          // name of the job class
-  CN_JOB_DROPCATALOG,             // class enum
-  JK_DIST2PC,                     // job kind
-  "drop catalog catalogName"_Stz, // comment about the job
-  "drop"_Stz,                     // the prompt command
-  "catalog"_Stz,                  // the second word
-  "dropCatalog"_Stz,              // the task seed for this job
-  true,                           // check resources?
-  false,                          // detached job?
-  JT_NONE,                        // job trace
-  pJob_DropCatalog_pre,           // prompt pre-process function
-  vJob_DropCatalog_post,          // prompt post-process function
-  nullptr,                        // job new function
-  vJob_DropCatalog_delete,        // job delete function
-  vJob_DropCatalog_show,          // job show function
-  true,                           // job is enabled
-  "<help>"_Stz,                   // help
-  "<example>"_Stz                 // example
+  "Job_DropCatalog"_Stz,   // name of the job class
+  CN_JOB_DROPCATALOG,      // class enum
+  JK_DIST2PC,              // job kind
+  "drop catalog"_Stz,      // comment about the job
+  "drop"_Stz,              // the prompt command
+  "catalog"_Stz,           // the second word
+  "dropCatalog"_Stz,       // the task seed for this job
+  true,                    // check resources?
+  false,                   // detached job?
+  JT_NONE,                 // job trace
+  pJob_DropCatalog_pre,    // prompt pre-process function
+  vJob_DropCatalog_post,   // prompt post-process function
+  nullptr,                 // job new function
+  vJob_DropCatalog_delete, // job delete function
+  nullptr,                 // job receive function
+  vJob_DropCatalog_show,   // job show function
+  true,                    // job is enabled
+  "<help>"_Stz,            // help
+  "<example>"_Stz          // example
 );
-
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

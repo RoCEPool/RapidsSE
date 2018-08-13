@@ -9,24 +9,25 @@
 extern AttachMap* gpAttachMap;
 
 JobNote mJobNote_DropSchema (
-  "Job_DropSchema"_Stz,         // name of the job class
-  CN_JOB_DROPSCHEMA,            // class enum
-  JK_DIST2PC,                   // job kind
-  "drop schema schemaName"_Stz, // comment about the job
-  "drop"_Stz,                   // the prompt command
-  "schema"_Stz,                 // the second word
-  "dropSchema"_Stz,             // the task seed for this job
-  true,                         // check resources?
-  false,                        // detached job?
-  JT_NONE,                      // job trace
-  pJob_DropSchema_pre,          // prompt pre-process function
-  vJob_DropSchema_post,         // prompt post-process function
-  nullptr,                      // job new function
-  vJob_DropSchema_delete,       // job delete function
-  vJob_DropSchema_show,         // job show function
-  true,                         // job is enabled
-  "<help>"_Stz,                 // help
-  "<example>"_Stz               // example
+  "Job_DropSchema"_Stz,   // name of the job class
+  CN_JOB_DROPSCHEMA,      // class enum
+  JK_DIST2PC,             // job kind
+  "drop schema"_Stz,      // comment about the job
+  "drop"_Stz,             // the prompt command
+  "schema"_Stz,           // the second word
+  "dropSchema"_Stz,       // the task seed for this job
+  true,                   // check resources?
+  false,                  // detached job?
+  JT_NONE,                // job trace
+  pJob_DropSchema_pre,    // prompt pre-process function
+  vJob_DropSchema_post,   // prompt post-process function
+  nullptr,                // job new function
+  vJob_DropSchema_delete, // job delete function
+  nullptr,                // job receive function
+  vJob_DropSchema_show,   // job show function
+  true,                   // job is enabled
+  "<help>"_Stz,           // help
+  "<example>"_Stz         // example
 );
 
 /*----------------------------------------------------------------------------*/

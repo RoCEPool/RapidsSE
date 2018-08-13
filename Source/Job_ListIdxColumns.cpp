@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Job_ListIdxColumns.cpp -- List Columns Job                                    */
+/* Job_ListIdxColumns.cpp -- List Index Columns Job                           */
 /*============================================================================*/
 
 #include "JobModel.h"
@@ -22,6 +22,7 @@ JobNote mJobNote_ListIdxColumns (
   vJob_ListIdxColumns_post,  // prompt post-process function
   nullptr,                   // job new function
   vJob_ListIdxColumns_delete,// job delete function
+  nullptr,                   // job receive function
   vJob_ListIdxColumns_show,  // job show function
   true,                      // job is enabled
   "<help>"_Stz,              // help

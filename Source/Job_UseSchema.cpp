@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Job_UseSchema.cpp -- List Catalogs Job                                  */
+/* Job_UseSchema.cpp -- Use Schema Job                                        */
 /*============================================================================*/
 
 #include "JobModel.h"
@@ -8,24 +8,25 @@
 extern AttachMap* gpAttachMap;
 
 JobNote mJobNote_UseSchema (
-  "Job_UseSchema"_Stz,         // name of the job class
-  CN_JOB_USESCHEMA,            // class enum
-  JK_SINGLENODE,               // job kind
-  "use schema schemaName"_Stz, // comment about the job
-  "use"_Stz,                   // the prompt command
-  "schema"_Stz,                // the second word
-  "useSchema"_Stz,             // the task seed for this job
-  false,                       // check resources?
-  false,                       // detached job?
-  JT_NONE,                     // job trace
-  pJob_UseSchema_pre,          // prompt pre-process function
-  vJob_UseSchema_post,         // prompt post-process function
-  nullptr,                     // job new function
-  vJob_UseSchema_delete,       // job delete function
-  vJob_UseSchema_show,         // job show function
-  true,                        // job is enabled
-  "<help>"_Stz,                // help
-  "<example>"_Stz              // example
+  "Job_UseSchema"_Stz,   // name of the job class
+  CN_JOB_USESCHEMA,      // class enum
+  JK_SINGLENODE,         // job kind
+  "use schema"_Stz,      // comment about the job
+  "use"_Stz,             // the prompt command
+  "schema"_Stz,          // the second word
+  "useSchema"_Stz,       // the task seed for this job
+  false,                 // check resources?
+  false,                 // detached job?
+  JT_NONE,               // job trace
+  pJob_UseSchema_pre,    // prompt pre-process function
+  vJob_UseSchema_post,   // prompt post-process function
+  nullptr,               // job new function
+  vJob_UseSchema_delete, // job delete function
+  nullptr,               // job receive function
+  vJob_UseSchema_show,   // job show function
+  true,                  // job is enabled
+  "<help>"_Stz,          // help
+  "<example>"_Stz        // example
 );
 
 /*----------------------------------------------------------------------------*/

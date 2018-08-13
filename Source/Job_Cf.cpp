@@ -8,24 +8,25 @@
 extern AttachMap* gpAttachMap;
 
 JobNote mJobNote_Cf (
-  "Job_f"_Stz,           // name of the job class
-  CN_JOB_CF,             // class enum
-  JK_SINGLENODE,         // job kind
-  "change folder"_Stz,   // comment about the job
-  "cf"_Stz,              // the prompt command
-  nullptr,               // the second word
-  "cf"_Stz,              // the task seed for this job
-  false,                 // check resources?
-  false,                 // detached job?
-  JT_NONE,               // job trace
-  pJob_Cf_pre,           // prompt pre-process function
-  vJob_Cf_post,          // prompt post-process function
-  nullptr,               // job new function
-  vJob_Cf_delete,        // job delete function
-  vJob_Cf_show,          // job show function
-  true,                  // job is enabled
-  "<help>"_Stz,          // help
-  "<example>"_Stz        // example
+  "Job_f"_Stz,         // name of the job class
+  CN_JOB_CF,           // class enum
+  JK_SINGLENODE,       // job kind
+  "change folder"_Stz, // comment about the job
+  "cf"_Stz,            // the prompt command
+  nullptr,             // the second word
+  "cf"_Stz,            // the task seed for this job
+  false,               // check resources?
+  false,               // detached job?
+  JT_NONE,             // job trace
+  pJob_Cf_pre,         // prompt pre-process function
+  vJob_Cf_post,        // prompt post-process function
+  nullptr,             // job new function
+  vJob_Cf_delete,      // job delete function
+  nullptr,             // job receive function
+  vJob_Cf_show,        // job show function
+  true,                // job is enabled
+  "<help>"_Stz,        // help
+  "<example>"_Stz      // example
 );
 
 /*----------------------------------------------------------------------------*/

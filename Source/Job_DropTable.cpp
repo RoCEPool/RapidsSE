@@ -8,26 +8,26 @@
 extern AttachMap* gpAttachMap;
 
 JobNote mJobNote_DropTable (
-  "Job_DropTable"_Stz,       // name of the job class
-  CN_JOB_DROPTABLE,          // class enum
-  JK_DIST2PC,                // job kind
-  "drop table tableNm"_Stz,  // comment about the job
-  "drop"_Stz,                // the prompt command
-  "table"_Stz,               // the second word
-  "dropTable"_Stz,           // the task seed for this job
-  true,                      // check resources?
-  false,                     // detached job?
-  JT_NONE,                   // job trace
-  pJob_DropTable_pre,        // prompt pre-process function
-  vJob_DropTable_post,       // prompt post-process function
-  nullptr,                   // job new function
-  vJob_DropTable_delete,     // job delete function
-  vJob_DropTable_show,       // job show function
-  true,                      // job is enabled
-  "<help>"_Stz,              // help
-  "<example>"_Stz            // example
-  );
-
+  "Job_DropTable"_Stz,   // name of the job class
+  CN_JOB_DROPTABLE,      // class enum
+  JK_DIST2PC,            // job kind
+  "drop table"_Stz,      // comment about the job
+  "drop"_Stz,            // the prompt command
+  "table"_Stz,           // the second word
+  "dropTable"_Stz,       // the task seed for this job
+  true,                  // check resources?
+  false,                 // detached job?
+  JT_NONE,               // job trace
+  pJob_DropTable_pre,    // prompt pre-process function
+  vJob_DropTable_post,   // prompt post-process function
+  nullptr,               // job new function
+  vJob_DropTable_delete, // job delete function
+  nullptr,               // job receive function
+  vJob_DropTable_show,   // job show function
+  true,                  // job is enabled
+  "<help>"_Stz,          // help
+  "<example>"_Stz        // example
+);
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

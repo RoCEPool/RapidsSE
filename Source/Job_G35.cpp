@@ -5,24 +5,25 @@
 #include "JobModel.h"
 
 JobNote mJobNote_G35 (
-  "g35"_Stz,      // name of the job class
-  CN_JOB_G35,     // class enum
-  JK_DIST2PC,     // job kind
-  "comment"_Stz,  // comment about the job
-  "g35"_Stz,      // the prompt command
-  nullptr,        // the second word
-  "g35_req"_Stz,  // the task seed for this job
-  false,          // check resources?
-  false,          // detached job?
-  JT_NONE,        // job trace
-  pJob_G35_pre,   // prompt pre-process function
-  vJob_G35_post,  // prompt post-process function
-  nullptr,        // job new function
-  vJob_G35_delete,// job delete function
-  vJob_G35_show,  // job show function
-  false,          // job is not enabled
-  "<help>"_Stz,   // help
-  "<example>"_Stz // example
+  "g35"_Stz,       // name of the job class
+  CN_JOB_G35,      // class enum
+  JK_DIST2PC,      // job kind
+  "comment"_Stz,   // comment about the job
+  "g35"_Stz,       // the prompt command
+  nullptr,         // the second word
+  "g35_req"_Stz,   // the task seed for this job
+  false,           // check resources?
+  false,           // detached job?
+  JT_NONE,         // job trace
+  pJob_G35_pre,    // prompt pre-process function
+  vJob_G35_post,   // prompt post-process function
+  nullptr,         // job new function
+  vJob_G35_delete, // job delete function
+  nullptr,         // job receive function
+  vJob_G35_show,   // job show function
+  false,           // job is not enabled
+  "<help>"_Stz,    // help
+  "<example>"_Stz  // example
 );
 
 /*----------------------------------------------------------------------------*/

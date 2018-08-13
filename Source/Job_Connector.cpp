@@ -22,6 +22,7 @@ JobNote mJobNote_Connector (
   nullptr,                // prompt post-process function
   nullptr,                // job new function
   vJob_Connector_delete,  // job delete function
+  nullptr,                // job receive function
   vJob_Connector_show,    // job show function
   false,                  // job is not prompt enabled
   "<help>"_Stz,           // help

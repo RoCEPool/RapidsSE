@@ -8,26 +8,26 @@
 extern AttachMap* gpAttachMap;
 
 JobNote mJobNote_DropIndex (
-  "Job_DropIndex"_Stz,        // name of the job class
-  CN_JOB_DROPINDEX,           // class enum
-  JK_DIST2PC,                 // job kind
-  "drop index indexName"_Stz, // comment about the job
-  "drop"_Stz,                 // the prompt command
-  "index"_Stz,                // the second word
-  "dropIndex"_Stz,            // the task seed for this job
-  true,                       // check resources?
-  false,                      // detached job?
-  JT_NONE,                    // job trace
-  pJob_DropIndex_pre,         // prompt pre-process function
-  vJob_DropIndex_post,        // prompt post-process function
-  nullptr,                    // job new function
-  vJob_DropIndex_delete,      // job delete function
-  vJob_DropIndex_show,        // job show function
-  true,                       // job is enabled
-  "<help>"_Stz,               // help
-  "<example>"_Stz             // example
+  "Job_DropIndex"_Stz,   // name of the job class
+  CN_JOB_DROPINDEX,      // class enum
+  JK_DIST2PC,            // job kind
+  "drop index"_Stz,      // comment about the job
+  "drop"_Stz,            // the prompt command
+  "index"_Stz,           // the second word
+  "dropIndex"_Stz,       // the task seed for this job
+  true,                  // check resources?
+  false,                 // detached job?
+  JT_NONE,               // job trace
+  pJob_DropIndex_pre,    // prompt pre-process function
+  vJob_DropIndex_post,   // prompt post-process function
+  nullptr,               // job new function
+  vJob_DropIndex_delete, // job delete function
+  nullptr,               // job receive function
+  vJob_DropIndex_show,   // job show function
+  true,                  // job is enabled
+  "<help>"_Stz,          // help
+  "<example>"_Stz        // example
 );
-
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
