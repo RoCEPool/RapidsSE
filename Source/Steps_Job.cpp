@@ -82,6 +82,7 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.participant!"_Stz,     &vJobParticipantStore, false);
   vAddPrimitive("job.partitions@"_Stz,      &vJobPartitionsFetch,  false);
   vAddPrimitive("job.promptTask@"_Stz,      &vJobPromptTaskFetch,  false);
+  vAddPrimitive("job.recv"_Stz,             &vJobRecv,             false);
   vAddPrimitive("job.regionSize@"_Stz,      &vJobRegionSizeFetch,  false);
   vAddPrimitive("job.releaseResources@"_Stz,&vJobReleaseResourcesFetch,false);
   vAddPrimitive("job.removeOriginator"_Stz, &vJobRemoveOriginator, false);
@@ -394,6 +395,8 @@ void Task::vJobDelete(MP_Task mpTask)
   
   // call the job delete function
   pJobClass->vDeleteJob(nullptr, pJob);  // come back to this, remove seitf as parameter to delete
+  
+  EXIT();
 }
   
 /*----------------------------------------------------------------------------*/
@@ -1393,6 +1396,28 @@ void Task::vJobPromptTaskFetch(MP_Task mpTask)
   Job* pJob = _pJob(pJobPtr);
   
   mpTask->m_pDataStack->vPushObject(pJob->m_pPromptTask);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.recv -- receive the job                                                */
+/*----------------------------------------------------------------------------*/
+void Task::vJobRecv(MP_Task mpTask)
+{
+  ENTRY("vJobRecv"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.recv"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  // find the job in the catalog
+  eCN eClass = pJob->eClass();
+  JobClass* pJobClass = gxJobCatalog.pFindJob(eClass);
+  
+  // call the job receive function
+  pJobClass->vRecvJob(pJob);  // come back to this, remove seitf as parameter to delete
   
   EXIT();
 }
