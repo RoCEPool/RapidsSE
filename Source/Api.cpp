@@ -2027,7 +2027,7 @@ eEC RapidsSE_InsertRowPartition(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel)
     // validate table
     VALIDATE_TABLE("c"_Stz);
     
-    s48K s;
+    s48K sRecord;
     i8 iRowLength;
     bool bBlankLine;
     
@@ -2035,7 +2035,7 @@ eEC RapidsSE_InsertRowPartition(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel)
     bool bValid = Row::bFormatRow(pSEitf->m_pCurrentTable->pColumnVec(),
                                   &pSEitf->m_xFormatters,
                                   pRow, StrLib::iSize(pRow->aChar()),
-                                  s, iRowLength, bBlankLine,
+                                  sRecord, iRowLength, bBlankLine,
                                   true /* allowNonPrintable */);
     if (! bValid) {
       pSEitf->vSetLastError(EC_INVALID_VALUE);
@@ -2044,7 +2044,7 @@ eEC RapidsSE_InsertRowPartition(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel)
     }
     
     // get the partition this row hashes to
-    i8 iRowPartition = pSEitf->pCurrentTable()->iRowPartition(s);
+    i8 iRowPartition = pSEitf->pCurrentTable()->iRowPartition(sRecord);
     
     //vTrace("%p(%lld) got row %s\n"_Stz,  
     //       pSEitf, pSEitf ? pSEitf->iPartition() : -1, pRow);
@@ -2056,7 +2056,7 @@ eEC RapidsSE_InsertRowPartition(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel)
       TRACE_INSERT("e"_Stz, pRow);
       
       // insert the row in this partition
-      bool bResult = pSEitf->bInsertRow(s, iRowLength);
+      bool bResult = pSEitf->bInsertRow(sRecord, iRowLength);
       
       if (!bResult) {
         pSEitf->vSetLastError(pSEitf->m_eErrorCode);

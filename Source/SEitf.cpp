@@ -16,9 +16,9 @@ struct ReqTable {
 ReqTable SeRequests[] =
 {
  //{ "addcol"_Stz,         &SEitf::bAddColumn,            "addColumn_req"_Stz       },
- { "antbl"_Stz,          &SEitf::bAnalyzeTable,         "analyzeTable_req"_Stz    },
+ //{ "antbl"_Stz,          &SEitf::bAnalyzeTable,         "analyzeTable_req"_Stz    },
  { "anidx"_Stz,          &SEitf::bAnalyzeIndex,         "analyzeIndex_req"_Stz    },
- { "addidxcol"_Stz,      &SEitf::bAddIndexColumn,       "addIdxColumn_req"_Stz    },
+ //{ "addidxcol"_Stz,      &SEitf::bAddIndexColumn,       "addIdxColumn_req"_Stz    },
  //{ "addpartcol"_Stz,     &SEitf::bAddPartitionColumn,   "addPartColumn_req"_Stz   },
  //{ "cf"_Stz,             &SEitf::bChangeFolder,         "cf_req"_Stz              },
  { "checkpoint"_Stz,     &SEitf::bCheckpoint,           "checkpoint_req"_Stz      },
@@ -76,7 +76,7 @@ ReqTable SeRequests[] =
  //{ "rf"_Stz,             &SEitf::bRemoveFolder,         "remove_folder"_Stz       },
  //{ "rmcat"_Stz,          &SEitf::bDropCatalog,          "dropCatalog_req"_Stz     },
  //{ "rmdic"_Stz,          &SEitf::bRemoveFolder,         "remove_folder"_Stz       },
- { "rmidx"_Stz,          &SEitf::bDropIndex,            "dropIndex_req"_Stz       },
+ //{ "rmidx"_Stz,          &SEitf::bDropIndex,            "dropIndex_req"_Stz       },
  //{ "rmsch"_Stz,          &SEitf::bDropSchema,           "dropSchema_req"_Stz      },
  
  //{ "rmtbl"_Stz,          &SEitf::bDropTable,            "dropTable_req"_Stz       },

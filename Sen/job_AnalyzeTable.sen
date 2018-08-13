@@ -1,0 +1,150 @@
+/*============================================================================*/
+/* job_AnalyzeTable.sen -- Job Analyze Table                                  */
+/*============================================================================*/
+
+"job_AnalyzeTable.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* check if word is a analyzable table folder                                 */
+/*----------------------------------------------------------------------------*/
+: checkAnalyzeTable ( "<tableNm>" -- true | errorCode false )
+
+  params| sTableNm |
+
+  // check in tables folder
+  checkInTables not if false exit then
+
+  // check if tableNm is a word in tables folder
+  sTableNm checkIsWordR35 not if EC_NO_SUCH_TABLE false exit then
+
+  // push table folder
+  sTableNm pushTable assert
+
+  sTableNm checkIsTableR35 not if popTable false exit then
+
+  // pop table folder
+  popTable
+
+  // assert in tables
+  assertInTables
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* anakyze table request (on originating node)                                */
+/*----------------------------------------------------------------------------*/
+: analyzeTable_req ( -- <R> )
+
+  0 0 locals| pJob pTask |
+
+  tp: analyzeTable
+  "analyzeTable_req" .
+
+  // get the task
+  task::this to pTask
+
+  // get the job from the task
+  pTask task.job@ to pJob
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set metadata string in the job
+  args.metadata if
+    "(nodeName VARCHAR, partition INTEGER, buffers INTEGER, entries INTEGER)"
+    pJob job.metadata!
+  then
+
+  // distribute the job
+  pTask pJob "job::distribute" find execute
+
+  pJob <DONE_REQUEST>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_AnalyzeTable job on a node                                     */
+/*----------------------------------------------------------------------------*/
+: analyzeTable_node ( Job_AnalyzeTable -- )
+
+  params| pJob_AnalyzeTable |
+  0 locals| sTableNm |
+
+  tp: analyzeTable_node
+stk
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // assert correct job
+  CN_JOB_ANALYZETABLE pJob_AnalyzeTable object.assertClass
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grad a ddl lock
+  ddlLock::grabWrite
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
+  pJob_AnalyzeTable getPathR35
+  dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push table
+  pJob_AnalyzeTable job.objectName@ to sTableNm
+  sTableNm pushTable assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // analyze the table
+  0 // non-detailed table analysis
+  sTableNm find execute
+  table.analyze
+  grid::thisNode@ pJob_AnalyzeTable job.response!
+  1 grid::thisNode@ pJob_AnalyzeTable job.rowsProcessed!
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop table
+  popTable
+
+  pJob_AnalyzeTable job.notice
+stk
+  <DONE_NODE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_AnalyzeTable job check resources                               */
+/*----------------------------------------------------------------------------*/
+: analyzeTable_checkResources ( Job_AnalyzeTable -- )
+
+  params| pJob_AnalyzeTable  |
+
+  tp: analyzeTable_checkResources
+  "checkResources received" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab a ddl lock
+  ddlLock::grabWrite
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
+  pJob_AnalyzeTable getPathR35
+  dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if we can remove the table
+  pJob_AnalyzeTable job.objectName@
+  checkAnalyzeTable not if pJob_AnalyzeTable <ERROR_JOB> exit then
+
+  <DONE_NODE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_AnalyzeTable job release resources                             */
+/*----------------------------------------------------------------------------*/
+: analyzeTable_releaseResources ( Job_AnalyzeTable -- )
+
+  params| pJob_AnalyzeTable  |
+
+  tp: dropTable_releaseResources
+  "releaseResources received" .
+
+  <DONE_NODE>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -1,0 +1,46 @@
+/*============================================================================*/
+/* Job_AnalyzeTable.hpp -- Analyze Table Job                                  */
+/*============================================================================*/
+#pragma once
+
+namespace JobsModel
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  class Job_AnalyzeTable : public Job
+  {
+  public:
+  
+    // must be last
+    Footer m_xFooter;
+  
+  public:
+    void* operator new(size_t);
+    void* operator new(size_t, void* aAddress);
+    void  operator delete(void*);
+  
+    Job_AnalyzeTable(Interface::SEitf* pSEitf);
+    ~Job_AnalyzeTable(void);
+  
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
+
+  public:
+    bool bPopulateJob(TokenVec* pTokenVec);
+    void vShow(void);
+  
+  public:
+    Footer* aFooter(void);
+  
+  };
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  Job_AnalyzeTable* _pJob_AnalyzeTable(void* aAddr);
+  
+  Job* pJob_AnalyzeTable_pre(Interface::SEitf* pSEitf);
+  void vJob_AnalyzeTable_post(Interface::SEitf* pSEitf, Job* pJob);
+  void vJob_AnalyzeTable_delete(Interface::SEitf* pSEitf, Job* pJob);
+  void vJob_AnalyzeTable_show(Job* pJob);
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -329,7 +329,7 @@ true tick CASE word.immediate!
 /*----------------------------------------------------------------------------*/
 : checkIsWordR35 ( <"wordNm"> )
   find
-  dup not if drop EC_NO_SUCH_WORD false exit then
+  not if drop EC_NO_SUCH_WORD false exit then
   true
 ;
 

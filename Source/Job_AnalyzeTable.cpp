@@ -1,0 +1,250 @@
+/*============================================================================*/
+/* Job_DropTable.cpp -- drop table Job                                        */
+/*============================================================================*/
+
+#include "JobModel.h"
+#include "StorageEngine.h"
+
+extern AttachMap* gpAttachMap;
+
+JobNote mJobNote_AnalyzeTable (
+  "Job_AnalyzeTable"_Stz,    // name of the job class
+  CN_JOB_ANALYZETABLE,       // class enum
+  JK_DIST2PC,                // job kind
+  "antbl tableNm"_Stz,       // comment about the job
+  "antbl"_Stz,               // the prompt command
+  nullptr,                   // the second word
+  "analyzeTable"_Stz,        // the task seed for this job
+  true,                      // check resources?
+  false,                     // detached job?
+  JT_NONE,                   // job trace
+  pJob_AnalyzeTable_pre,     // prompt pre-process function
+  vJob_AnalyzeTable_post,    // prompt post-process function
+  nullptr,                        // job new function
+  vJob_AnalyzeTable_delete,  // job delete function
+  vJob_AnalyzeTable_show,    // job show function
+  true,                      // job is enabled
+  "<help>"_Stz,              // help
+  "<example>"_Stz            // example
+  );
+
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+Job_AnalyzeTable* JobsModel::_pJob_AnalyzeTable(void* aAddress)
+{
+  Job_AnalyzeTable* pJob_AnalyzeTable = reinterpret_cast<Job_AnalyzeTable*>(aAddress);
+  
+  RASSERT( !pJob_AnalyzeTable || CN_JOB_ANALYZETABLE == pJob_AnalyzeTable->eClass());
+  
+  return pJob_AnalyzeTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allocate a new entry buffer from heap                                      */
+/*----------------------------------------------------------------------------*/
+void* Job_AnalyzeTable::operator new(size_t iSize)
+{
+  RASSERT(iSize);
+  
+  Job_AnalyzeTable* pJob_AnalyzeTable =
+    static_cast<Job_AnalyzeTable*>(Heap::pAllocate(CN_JOB_ANALYZETABLE));
+  
+  return pJob_AnalyzeTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* perform new of entry buffer for given address                              */
+/*----------------------------------------------------------------------------*/
+void* Job_AnalyzeTable::operator new(size_t iSize, void* aAddress)
+{
+  RASSERT(iSize);
+  
+  return aAddress;
+}
+
+/*----------------------------------------------------------------------------*/
+/* free an entry buffer back to the heap                                      */
+/*----------------------------------------------------------------------------*/
+void Job_AnalyzeTable::operator delete(void* aAddress)
+{
+  Job_AnalyzeTable* pJob_AnalyzeTable = static_cast<Job_AnalyzeTable*>(aAddress);
+  
+  Heap::vFree(pJob_AnalyzeTable);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Job_AnalyzeTable::Job_AnalyzeTable(Interface::SEitf* pSEitf)
+: Job(CN_JOB_ANALYZETABLE, pSEitf)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_ANALYZETABLE,_FOOTER_);
+    
+  m_sSeed = mJobNote_AnalyzeTable.pJobClass()->m_aSeed;
+  m_bCheckResources   = true;
+  
+  _checkInitialised_(CN_JOB_ANALYZETABLE);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_ANALYZETABLE,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+Job_AnalyzeTable::~Job_AnalyzeTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_ANALYZETABLE,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Static Functions --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* dump                                                                       */
+/*----------------------------------------------------------------------------*/
+void Job_AnalyzeTable::vDump(eCN eClass, Object* pObject, Stz* aTab)
+{
+  RASSERT(CN_JOB_ANALYZETABLE == eClass);
+  RASSERT(pObject->eClass() == CN_JOB_ANALYZETABLE);
+  
+  Job_AnalyzeTable* pJob_AnalyzeTable = _pJob_AnalyzeTable(pObject);
+
+  pJob_AnalyzeTable->vShow();
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Member Functions --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* populate the job                                                           */
+/*----------------------------------------------------------------------------*/
+bool Job_AnalyzeTable::bPopulateJob(TokenVec* pTokenVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_ANALYZETABLE,_FOOTER_);
+  
+  i8 iNumTokens;
+  
+  ASSERT(pTokenVec->pGet(0)->bSame("antbl"_Stz));
+  
+  // get number of items in token vector
+  iNumTokens = pTokenVec->nItems();
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // there should be 2 tokens
+  if (iNumTokens != 2)
+    return false;
+  
+  // set the table name
+  m_sObjectName = pTokenVec->pGet(1)->aText();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show                                                                       */
+/*----------------------------------------------------------------------------*/
+void Job_AnalyzeTable::vShow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_ANALYZETABLE,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* Job_AnalyzeTable::aFooter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_ANALYZETABLE);
+  
+  return &m_xFooter;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Catalog Functions -------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* prompt pre execute function                                                */
+/*----------------------------------------------------------------------------*/
+Job* JobsModel::pJob_AnalyzeTable_pre(Interface::SEitf* pSEitf)
+{
+  Job_AnalyzeTable* pJob_AnalyzeTable = new Job_AnalyzeTable(pSEitf);
+  
+  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
+  
+  bool bResult = pJob_AnalyzeTable->bPopulateJob(pTokenVec);
+  
+  if ( !bResult) {
+    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
+    pJob_AnalyzeTable->m_bHasError = true;
+    pJob_AnalyzeTable->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+  }
+  
+  return pJob_AnalyzeTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* prompt post execute function                                               */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_AnalyzeTable_post(Interface::SEitf* pSEitf, Job* pJob)
+{
+  Job_AnalyzeTable* pJob_AnalyzeTable = _pJob_AnalyzeTable(pJob);
+  
+  if ( pJob_AnalyzeTable->m_bHasError ) {
+    
+    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+      vTrace("ERROR (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob_AnalyzeTable->m_xNode[i_Node].m_eErrorCode]);
+    }
+    
+  }
+  else {
+    if (gpAttachMap->m_bMetadata) {
+      vTrace("metadata: %s\n"_Stz, pJob_AnalyzeTable->m_sMetadata.aStr());
+    }
+    
+    i8 iRowsProcessed = 0;
+    
+    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+      vTrace("%s\n"_Stz, pJob_AnalyzeTable->m_xNode[i_Node].m_sResponse.aChar());
+      iRowsProcessed += pJob_AnalyzeTable->m_xNode[i_Node].m_iRowsProcessed;
+    }
+    if (gpAttachMap->m_bMetadata) {
+      vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* job delete function                                                        */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_AnalyzeTable_delete(Interface::SEitf* pSEitf, Job* pJob)
+{
+  Job_AnalyzeTable* pJob_AnalyzeTable = _pJob_AnalyzeTable(pJob);
+  
+  delete pJob_AnalyzeTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show job function                                                          */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_AnalyzeTable_show(Job* pJob)
+{
+  Job_AnalyzeTable* pJob_AnalyzeTable = _pJob_AnalyzeTable(pJob);
+
+  pJob_AnalyzeTable->vShow();
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

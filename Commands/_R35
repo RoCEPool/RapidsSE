@@ -171,6 +171,16 @@ print "list index columns...";
 print "=========================================";
 lsidxcol j10 idx;
 
+//print "\n=========================================";
+//print "loading table j10";
+//print "=========================================";
+//ld j10 "../JTEST/j10.csv" ;
+
+print "\n=========================================";
+print "analysing table j10";
+print "=========================================";
+antbl j10;
+
 // drop the index
 print "\n=========================================";
 print "dropping index idx of j10...";
