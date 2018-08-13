@@ -602,7 +602,10 @@ void Task::vAddConstants(void)
   
   /*    */ vAddConstant("CN_JOB_ANALYZEINDEX"_Stz,   CN_JOB_ANALYZEINDEX);
   /*    */ vAddConstant("CN_JOB_ANALYZETABLE"_Stz,   CN_JOB_ANALYZETABLE);
-  /*    */ vAddConstant("CN_JOB_CF"_Stz,            CN_JOB_CF);
+  /*    */ vAddConstant("CN_JOB_ANSWER"_Stz,         CN_JOB_ANSWER);
+  /*    */ vAddConstant("CN_JOB_BOOT"_Stz,           CN_JOB_BOOT);
+  /*    */ vAddConstant("CN_JOB_CF"_Stz,             CN_JOB_CF);
+  /*    */ vAddConstant("CN_JOB_CONNECTOR"_Stz,      CN_JOB_CONNECTOR);
   /*    */ vAddConstant("CN_JOB_CREATECATALOG"_Stz,  CN_JOB_CREATECATALOG);
   /*    */ vAddConstant("CN_JOB_CREATEINDEX"_Stz,    CN_JOB_CREATEINDEX);
   /*    */ vAddConstant("CN_JOB_CREATESCHEMA"_Stz,   CN_JOB_CREATESCHEMA);
@@ -627,6 +630,7 @@ void Task::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_LOADTABLE"_Stz,      CN_JOB_LOADTABLE);
   /*    */ vAddConstant("CN_JOB_PROMPT"_Stz,         CN_JOB_PROMPT);
   /*    */ vAddConstant("CN_JOB_PWF"_Stz,            CN_JOB_PWF);
+  /*    */ vAddConstant("CN_JOB_RECEIVER"_Stz,       CN_JOB_RECEIVER);
   /*    */ vAddConstant("CN_JOB_SANITY"_Stz,         CN_JOB_SANITY);
   /*    */ vAddConstant("CN_JOB_SPACE"_Stz,          CN_JOB_SPACE);
   /*    */ vAddConstant("CN_JOB_STATUS"_Stz,         CN_JOB_STATUS);

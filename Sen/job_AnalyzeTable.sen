@@ -101,7 +101,7 @@ stk
   popTable
 
   pJob_AnalyzeTable job.notice
-stk
+
   <DONE_NODE>
 ;
 
