@@ -20,7 +20,7 @@
   // spawn the receiver
     pSocket             // socket
     1                   // no. of args
-    "_r35ReceiverLoop_" // seed word
+    "Receiver_seed"     // seed word
     sTaskName           // task name
     TK_RECEIVER_DRONE   // task kind
   spawnR35GeneralTask
@@ -47,9 +47,9 @@
 /*----------------------------------------------------------------------------*/
 /* receiver loop: receive a job, execute it                                   */
 /*----------------------------------------------------------------------------*/
-: _r35ReceiverLoop_ ( pSocket -- )
+: Receiver_seed ( pSocket -- )
 
-  tp: _r35ReceiverLoop_
+  tp: Receiver_seed
 
   params| pSocket |
 
@@ -63,10 +63,10 @@
   pSocket task::this task.socketR35!
 
   // set task comment (this should go, never really used it)
-  "r35ReceiverLoop" task::this task.comment!
+  "Receiver_seed" task::this task.comment!
 
   args.verbose if
-    grid::thisNode@ "Receiver Task R35 running on node %v" fmt.print
+    grid::thisNode@ "Receiver running on node %v" fmt.print
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -76,7 +76,7 @@
     // check the d-stack depth is zero
     assertStackDepthZero
 
-   "r35 recv" .
+   "Receiver_seed recv" .
     // receive valset from socket
     socketR35>
 
