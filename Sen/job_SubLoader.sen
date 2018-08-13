@@ -16,6 +16,24 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* send working buffer to node                                                */
+/*----------------------------------------------------------------------------*/
+: SubLoader_sendBuffer2 ( bFinal pLoaderSub -- )
+
+  params| pLoaderSub  |
+  params| bFinal  |
+
+  0 locals| pJobClass_LoadBuffer |
+  0 locals| pJob_LoadBuffer |
+
+  CN_JOB_LOADBUFFER jobClass::find to pJobClass_LoadBuffer
+
+  nullptr pJobClass_LoadBuffer jobClass.new to pJob_LoadBuffer
+
+  pJob_LoadBuffer job.spawn
+;
+
+/*----------------------------------------------------------------------------*/
 /* send last buffers to all partitions                                        */
 /*----------------------------------------------------------------------------*/
 : SubLoader_sendLast ( pLoaderSub -- )
