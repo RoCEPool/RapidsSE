@@ -131,7 +131,7 @@ void Task::vCommandProcessorEndJob(MP_Task mpTask)
   SEitf*
     pSEitf = _pSEitf(pSEitfObject);
  
-  pCommandProcessor->vEndJob(pSEitf);
+  pCommandProcessor->vPostJob(pSEitf);
   
   EXIT();
 }
@@ -213,7 +213,7 @@ void Task::vCommandProcessorNewJob(MP_Task mpTask)
   SEitf*
     pSEitf = _pSEitf(pSEitfObject);
   
-  pCommandProcessor->vNewJob(pSEitf);
+  pCommandProcessor->vPreJob(pSEitf);
   
   Job* pJob = pCommandProcessor->pJob();
   

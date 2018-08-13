@@ -573,7 +573,7 @@ void Task::vLoaderSubSpawnLoadBuffer(MP_Task mpTask)
   JobClass* pJobClass_LoadBuffer = gxJobCatalog.pFindJob(CN_JOB_LOADBUFFER);
   
   Job_LoadBuffer* pJob_LoadBuffer =
-    static_cast<Job_LoadBuffer*>(pJobClass_LoadBuffer->pNewJob(pSEitf));
+    static_cast<Job_LoadBuffer*>(pJobClass_LoadBuffer->pPreJob(pSEitf));
 
   pJob_LoadBuffer->vLoadJobId(iLoadJobId);
   pJob_LoadBuffer->m_sObjectName = pJob_SubLoader->m_sObjectName;

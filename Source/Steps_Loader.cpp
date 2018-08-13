@@ -372,7 +372,7 @@ void Task::vLoaderSpawnSubLoader(MP_Task mpTask)
   JobClass* pJobClass_SubLoader = gxJobCatalog.pFindJob(CN_JOB_SUBLOADER);
   
   Job_SubLoader* pJob_SubLoader =
-    static_cast<Job_SubLoader*>(pJobClass_SubLoader->pNewJob(pSEitf));
+    static_cast<Job_SubLoader*>(pJobClass_SubLoader->pPreJob(pSEitf));
 
   pJob_SubLoader->m_sObjectName = pJob_LoadTable->m_sObjectName;
   pJob_SubLoader->vJob_LoadTable(pJob_LoadTable);

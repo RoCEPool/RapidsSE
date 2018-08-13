@@ -37,14 +37,14 @@ namespace Interface
     bool bBlankLine(void);
     void vDeleteJob(SEitf* pSEitf);
     bool bDispatchJob(SEitf* pSEitf);
-    void vEndJob(SEitf* pSEitf);
     bool bFindJobClass(void);
     void vGetCommand(void);
     void vGetCommandArgument(void);
     void vGetCommandInput(void);
     Job* pJob(void);
     JobClass* pJobClass(void);
-    void vNewJob(SEitf* pSEitf);
+    void vPostJob(SEitf* pSEitf);
+    void vPreJob(SEitf* pSEitf);
     bool bTestFile(Stz* aPath);
 
     Token* pTkn(i8 i_Token);

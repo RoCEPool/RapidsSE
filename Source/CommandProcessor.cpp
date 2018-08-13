@@ -205,17 +205,6 @@ bool CommandProcessor::bDispatchJob(SEitf* pSEitf)
 }
 
 /*----------------------------------------------------------------------------*/
-/* end a job                                                                  */
-/*----------------------------------------------------------------------------*/
-void CommandProcessor::vEndJob(SEitf* pSEitf)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
-  
-  // call the job post function
-  m_pJobClass->vEndJob(pSEitf,m_pJob);
-}
-
-/*----------------------------------------------------------------------------*/
 /* attempt to find job class for command                                      */
 /*----------------------------------------------------------------------------*/
 bool CommandProcessor::bFindJobClass(void)
@@ -345,13 +334,24 @@ JobClass* CommandProcessor::pJobClass(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* potentially execute a job                                                  */
+/* end a job                                                                  */
 /*----------------------------------------------------------------------------*/
-void CommandProcessor::vNewJob(SEitf* pSEitf)
+void CommandProcessor::vPostJob(SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
   
-  m_pJob = m_pJobClass->pNewJob(pSEitf);
+  // call the job post function
+  m_pJobClass->vPostJob(pSEitf,m_pJob);
+}
+
+/*----------------------------------------------------------------------------*/
+/* potentially execute a job                                                  */
+/*----------------------------------------------------------------------------*/
+void CommandProcessor::vPreJob(SEitf* pSEitf)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
+  
+  m_pJob = m_pJobClass->pPreJob(pSEitf);
   
   m_pJob->m_bDetached = pTknVec()->bDetachedRequest();
 }

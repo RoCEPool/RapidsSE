@@ -18,7 +18,7 @@ void JobClass::vDeleteJob(Interface::SEitf* pSEitf, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* end the job by running the post-function                                   */
 /*----------------------------------------------------------------------------*/
-void JobClass::vEndJob(Interface::SEitf* pSEitf, Job* pJob)
+void JobClass::vPostJob(Interface::SEitf* pSEitf, Job* pJob)
 {
   (*m_fPost)(pSEitf, pJob);
 }
@@ -26,7 +26,7 @@ void JobClass::vEndJob(Interface::SEitf* pSEitf, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* create a new job by running the pre-function                                */
 /*----------------------------------------------------------------------------*/
-Job* JobClass::pNewJob(Interface::SEitf* pSEitf)
+Job* JobClass::pPreJob(Interface::SEitf* pSEitf)
 {
   Job* pJob = (*m_fPre)(pSEitf);
 

@@ -33,8 +33,8 @@ namespace JobsModel
   
   public:
     void vDeleteJob(Interface::SEitf* pSEitf, Job* pJob);
-    void vEndJob(Interface::SEitf* pSEitf, Job* pJob);
-    Job* pNewJob(Interface::SEitf* pSEitf);
+    void vPostJob(Interface::SEitf* pSEitf, Job* pJob);
+    Job* pPreJob(Interface::SEitf* pSEitf);
     void vShowJob(Job* pJob);
   };
 }
