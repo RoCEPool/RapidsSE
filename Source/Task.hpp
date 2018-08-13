@@ -947,7 +947,8 @@ namespace Tasks
 
     // jobClass
     static void vJobClassFind(MP_Task mpTask);
-  
+    static void vJobClassNew(MP_Task mpTask);
+
     // loader
     static void vLoaderAddRecordsInvalid(MP_Task mpTask);
     static void vLoaderAddRecordsValid(MP_Task mpTask);

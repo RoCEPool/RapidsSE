@@ -38,6 +38,10 @@ namespace JobsModel
     Job* pPreJob(Interface::SEitf* pSEitf);
     void vShowJob(Job* pJob);
   };
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  JobClass* _pJobClass(i8 iAddr);
+
 }
 
 /*============================================================================*/

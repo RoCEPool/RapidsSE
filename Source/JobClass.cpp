@@ -8,6 +8,16 @@
 extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+JobClass* JobsModel::_pJobClass(i8 iAddr)
+{
+  JobClass* pJobClass = reinterpret_cast<JobClass*>(iAddr);
+  
+  return pJobClass;
+}
+
+/*----------------------------------------------------------------------------*/
 /* create a new job by running the new-function                               */
 /*----------------------------------------------------------------------------*/
 Job* JobClass::pNewJob(Job* pArg)
