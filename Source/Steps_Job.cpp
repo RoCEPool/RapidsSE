@@ -20,6 +20,7 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.addOriginator"_Stz,    &vJobAddOriginator,    false);
   vAddPrimitive("job.addParticipant"_Stz,   &vJobAddParticipant,   false);
   vAddPrimitive("job.ancilliary@"_Stz,      &vJobAncilliaryFetch,  false);
+  vAddPrimitive("jobAnalyzeTable.isDetailed"_Stz, &vJobAnalyzeTableIsDetailed, false);
   vAddPrimitive("jobBegun.delete"_Stz,      &vJobBegunDelete,      false);
   vAddPrimitive("jobBegun.error@"_Stz,      &vJobBegunErrorFetch,  false);
   vAddPrimitive("jobBegun.error!"_Stz,      &vJobBegunErrorStore,  false);
@@ -426,6 +427,25 @@ void Task::vJobDecAcksRemaining(MP_Task mpTask)
   --pJob->m_ziAcksRemaining;
   
   mpTask->m_pDataStack->vPushInt(*pJob->m_ziAcksRemaining);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* jobAnalyzeTaile.isDetailed -- is it a detailed analysis of the table       */
+/*----------------------------------------------------------------------------*/
+void Task::vJobAnalyzeTableIsDetailed(MP_Task mpTask)
+{
+  ENTRY("vJobAnalyzeTableIsDetailed"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("jobAnalyzeTaile.isDetailed"_Stz);
+  
+  Job_AnalyzeTable* pJoAnalyzeTable = _pJob_AnalyzeTable(pJobPtr);
+  ASSERT(pJoAnalyzeTable->eClass() == CN_JOB_ANALYZETABLE);
+  
+  mpTask->m_pDataStack->vPushInt(pJoAnalyzeTable->m_bIsDetailed);
   
   EXIT();
 }

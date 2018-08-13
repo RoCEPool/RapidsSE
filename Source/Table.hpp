@@ -55,7 +55,7 @@ namespace DBobjects
     static void vFinalize(eCN eClass, Object* pObject);
     
     void vAddIndex(Index* pIndex);
-    Stz* pAnalyzeIndex(Index* pIndex, bool bDetailed);
+    Stz* pAnalyzeIndex(Index* pIndex, bool bDetailed, i8& nRows);
     Stz* pCompactIndex(Index* pIndex, bool bDetailed);
     void vLazyBuildIndexes(i8 iSlot);
     

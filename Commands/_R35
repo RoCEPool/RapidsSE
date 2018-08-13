@@ -181,6 +181,16 @@ print "analysing table j10";
 print "=========================================";
 antbl j10;
 
+print "\n=========================================";
+print "analysing table j10";
+print "=========================================";
+antbl j10 0;
+
+print "\n=========================================";
+print "detailed analysing table j10";
+print "=========================================";
+antbl j10 1;
+
 // drop the index
 print "\n=========================================";
 print "dropping index idx of j10...";

@@ -174,7 +174,7 @@ void Table::vAddIndex(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /* analyze index                                                              */
 /*----------------------------------------------------------------------------*/
-Stz* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed)
+Stz* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed, i8 &nRows)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
  
@@ -209,20 +209,14 @@ Stz* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed)
     nEntriesTotal += nEntries;
     nBuffersTotal += nBuffers;
     
-//    if ( !gpAttachMap->m_bMetadata  || bDetailed ) {
-//      sAnalysis.vCatSprint("partition %lld:  %3lld buffers; %5lld entries\n\n"_Stz,
-//                           iPartition,
-//                           nBuffers,
-//                           nEntries);
-//    } else {
+    if ( ! bDetailed ) {
       sAnalysis.vCatSprint("row: ('%s',%lld,%lld,%lld)\n"_Stz,
                            gpAttachMap->m_pGrid->pThisNode()->aNodeName(),
                            iPartition,
                            nBuffers,
                            nEntries);
 
- //   }
-    
+    }
   }
   
 //  if ( ! gpAttachMap->m_bMetadata   || bDetailed)
@@ -230,6 +224,11 @@ Stz* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed)
 //                         "        total: %3lld buffers; %5lld entries\n"_Stz,
 //                         nBuffersTotal,
 //                         nEntriesTotal);
+  
+  if (bDetailed)
+    nRows = nBuffersTotal;
+  else
+    nRows = 1;
   
   return sAnalysis;
 }

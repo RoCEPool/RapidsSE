@@ -9,7 +9,9 @@ namespace JobsModel
   class Job_AnalyzeTable : public Job
   {
   public:
-  
+   
+    bool m_bIsDetailed; // detailed analysis
+    
     // must be last
     Footer m_xFooter;
   

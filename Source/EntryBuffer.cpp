@@ -333,7 +333,9 @@ void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
       iEntries += (pNextBuffer->m_nItems);
       
       if (bDetailed)
-        sAnalysis.vCatSprint("     buffer %5lld (L%lld) : %lld entries\n"_Stz,
+        sAnalysis.vCatSprint("row: (%s, %lld, %5lld, 'L%lld', %lld )\n"_Stz,
+                             gpAttachMap->m_pGrid->pThisNode()->aNodeName(),
+                             pNextBuffer->m_nPartitionNo,
                              iBuffers,
                              pNextBuffer->m_iBufferLevel,
                              pNextBuffer->m_nItems);
@@ -348,7 +350,9 @@ void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
   iEntries += m_nItems;
   
   if (bDetailed)
-    sAnalysis.vCatSprint("     buffer %5lld (L%lld) : %lld entries\n"_Stz,
+    sAnalysis.vCatSprint(" row: (%s, %lld, %5lld,' L%lld', %lld)\n"_Stz,
+                         gpAttachMap->m_pGrid->pThisNode()->aNodeName(),
+                         m_nPartitionNo,
                          iBuffers,
                          m_iBufferLevel,
                          m_nItems);

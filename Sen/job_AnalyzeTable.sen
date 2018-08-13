@@ -36,7 +36,7 @@
 /*----------------------------------------------------------------------------*/
 : analyzeTable_req ( -- <R> )
 
-  0 0 locals| pJob pTask |
+  0 0 0 locals| pJob pTask bIsDetailed |
 
   tp: analyzeTable
   "analyzeTable_req" .
@@ -47,11 +47,18 @@
   // get the job from the task
   pTask task.job@ to pJob
 
+  pJob jobAnalyzeTable.isDetailed to bIsDetailed
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set metadata string in the job
   args.metadata if
-    "(nodeName VARCHAR, partition INTEGER, buffers INTEGER, entries INTEGER)"
+    bIsDetailed 1 == if
+      "(nodeName VARCHAR, partition INTEGER, buffers INTEGER, bufferLevel VARCHAR, entries INTEGER)"
+    else
+      "(nodeName VARCHAR, partition INTEGER, buffers INTEGER, entries INTEGER)"
+    then
     pJob job.metadata!
+
   then
 
   // distribute the job
@@ -66,10 +73,10 @@
 : analyzeTable_node ( Job_AnalyzeTable -- )
 
   params| pJob_AnalyzeTable |
-  0 locals| sTableNm |
+  0 0 locals| sTableNm bIsDetailed |
 
   tp: analyzeTable_node
-stk
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert correct job
   CN_JOB_ANALYZETABLE pJob_AnalyzeTable object.assertClass
@@ -90,9 +97,13 @@ stk
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // analyze the table
-  0 // non-detailed table analysis
+  pJob_AnalyzeTable jobAnalyzeTable.isDetailed to bIsDetailed
+  bIsDetailed
   sTableNm find execute
   table.analyze
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // put response in the job
   grid::thisNode@ pJob_AnalyzeTable job.response!
   1 grid::thisNode@ pJob_AnalyzeTable job.rowsProcessed!
 

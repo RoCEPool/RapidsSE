@@ -11,7 +11,7 @@ JobNote mJobNote_AnalyzeTable (
   "Job_AnalyzeTable"_Stz,    // name of the job class
   CN_JOB_ANALYZETABLE,       // class enum
   JK_DIST2PC,                // job kind
-  "antbl tableNm"_Stz,       // comment about the job
+  "antbl tableNm [0/1]"_Stz,   // comment about the job
   "antbl"_Stz,               // the prompt command
   nullptr,                   // the second word
   "analyzeTable"_Stz,        // the task seed for this job
@@ -27,7 +27,6 @@ JobNote mJobNote_AnalyzeTable (
   "<help>"_Stz,              // help
   "<example>"_Stz            // example
   );
-
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -88,6 +87,7 @@ Job_AnalyzeTable::Job_AnalyzeTable(Interface::SEitf* pSEitf)
     
   m_sSeed = mJobNote_AnalyzeTable.pJobClass()->m_aSeed;
   m_bCheckResources   = true;
+  m_bIsDetailed = false;
   
   _checkInitialised_(CN_JOB_ANALYZETABLE);
   
@@ -138,12 +138,15 @@ bool Job_AnalyzeTable::bPopulateJob(TokenVec* pTokenVec)
   iNumTokens = pTokenVec->nItems();
   
   // - - - - - - - - - - - - - - - - - - - - -
-  // there should be 2 tokens
-  if (iNumTokens != 2)
+  // there should be 2 or 3 tokens
+  if (iNumTokens != 2 && iNumTokens != 3)
     return false;
   
   // set the table name
   m_sObjectName = pTokenVec->pGet(1)->aText();
+  
+  if (iNumTokens == 3)
+    m_bIsDetailed = pTokenVec->pGet(2)->aText()->iToI8();
   
   return true;
 }

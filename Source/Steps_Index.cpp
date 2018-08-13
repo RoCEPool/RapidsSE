@@ -76,7 +76,8 @@ void Task::vIndexAnalyze(MP_Task mpTask)
     THROW_INVALID_DSTACK("index.analyze"_Stz);
   
   s48K sAnalysis;
-  sAnalysis = (Stz*)pIndex->pTable()->pAnalyzeIndex(pIndex, iDetailed == 1 ? true : false);
+  i8 nRows;
+  sAnalysis = (Stz*)pIndex->pTable()->pAnalyzeIndex(pIndex, iDetailed == 1 ? true : false, nRows);
   mpTask->m_pDataStack->vPushS48K(sAnalysis);
   
   EXIT();

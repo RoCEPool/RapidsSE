@@ -91,8 +91,10 @@ void Task::vTableAnalyze(MP_Task mpTask)
     THROW_INVALID_DSTACK("table.analyze"_Stz);
   
   s48K sAnalysis;
+  i8 nRows;
   sAnalysis = (Stz*)pTable->pAnalyzeIndex(pTable->pHiddenIndex(),
-                                          iDetailed == 1 ? true : false);
+                                          iDetailed == 1 ? true : false, nRows);
+
   mpTask->m_pDataStack->vPushS48K(sAnalysis);
     
   EXIT();
