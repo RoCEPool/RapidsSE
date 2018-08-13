@@ -1350,7 +1350,7 @@ eEC RapidsSE_GetColumns(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema,
     ColumnVec* pColumnVec = pSEitf->m_pCurrentTable->pColumnVec();
     i8 iColumns = pColumnVec->nItems();
     
-    s48K sColumns;
+    s4K sColumns;
     
     sColumns.vCopy(""_Stz);
     s32 sValue;
@@ -1872,7 +1872,7 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel)
     // validate table
     VALIDATE_TABLE("c"_Stz);
     
-    s48K s;
+    s4K s;
     i8 iRowLength;
     bool bBlankLine;
     
@@ -1958,7 +1958,7 @@ eEC RapidsSE_InsertRowPartition(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel)
     // validate table
     VALIDATE_TABLE("c"_Stz);
     
-    s48K s;
+    s4K s;
     i8 iRowLength;
     bool bBlankLine;
     

@@ -3604,7 +3604,7 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
-  s48K sWorkspace;
+  s256 sWorkspace;
   Stz* aCursor = nullptr;
   
   ValWrk xValWrk;
@@ -3657,7 +3657,7 @@ bool SEitf::bAppendRequest_R35(StrVal& sRequest)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
-  s48K sWorkspace;
+  s256 sWorkspace;
   Stz* aCursor = nullptr;
   
   ValWrk xValWrk;
