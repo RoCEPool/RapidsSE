@@ -17,7 +17,7 @@ ReqTable SeRequests[] =
 {
  //{ "addcol"_Stz,         &SEitf::bAddColumn,            "addColumn_req"_Stz       },
  //{ "antbl"_Stz,          &SEitf::bAnalyzeTable,         "analyzeTable_req"_Stz    },
- { "anidx"_Stz,          &SEitf::bAnalyzeIndex,         "analyzeIndex_req"_Stz    },
+ //{ "anidx"_Stz,          &SEitf::bAnalyzeIndex,         "analyzeIndex_req"_Stz    },
  //{ "addidxcol"_Stz,      &SEitf::bAddIndexColumn,       "addIdxColumn_req"_Stz    },
  //{ "addpartcol"_Stz,     &SEitf::bAddPartitionColumn,   "addPartColumn_req"_Stz   },
  //{ "cf"_Stz,             &SEitf::bChangeFolder,         "cf_req"_Stz              },

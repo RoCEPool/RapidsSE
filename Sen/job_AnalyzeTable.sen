@@ -150,7 +150,7 @@
 
   params| pJob_AnalyzeTable  |
 
-  tp: dropTable_releaseResources
+  tp: analyzeTable_releaseResources
   "releaseResources received" .
 
   <DONE_NODE>

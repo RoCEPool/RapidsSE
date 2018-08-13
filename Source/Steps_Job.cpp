@@ -20,6 +20,8 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.addOriginator"_Stz,    &vJobAddOriginator,    false);
   vAddPrimitive("job.addParticipant"_Stz,   &vJobAddParticipant,   false);
   vAddPrimitive("job.ancilliary@"_Stz,      &vJobAncilliaryFetch,  false);
+  vAddPrimitive("jobAnalyzeIndex.tableName@"_Stz, &vJobAnalyzeIndexTableNameFetch, false);
+  vAddPrimitive("jobAnalyzeIndex.isDetailed"_Stz, &vJobAnalyzeIndexIsDetailed, false);
   vAddPrimitive("jobAnalyzeTable.isDetailed"_Stz, &vJobAnalyzeTableIsDetailed, false);
   vAddPrimitive("jobBegun.delete"_Stz,      &vJobBegunDelete,      false);
   vAddPrimitive("jobBegun.error@"_Stz,      &vJobBegunErrorFetch,  false);
@@ -432,7 +434,45 @@ void Task::vJobDecAcksRemaining(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* jobAnalyzeTaile.isDetailed -- is it a detailed analysis of the table       */
+/* jobAnalyzeIndex.isDetailed -- is it a detailed analysis of the index       */
+/*----------------------------------------------------------------------------*/
+void Task::vJobAnalyzeIndexIsDetailed(MP_Task mpTask)
+{
+  ENTRY("vJobAnalyzeIndexIsDetailed"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("jobAnalyzeIndex.isDetailed"_Stz);
+  
+  Job_AnalyzeIndex* pJoAnalyzeIndex = _pJob_AnalyzeIndex(pJobPtr);
+  ASSERT(pJoAnalyzeIndex->eClass() == CN_JOB_ANALYZEINDEX);
+  
+  mpTask->m_pDataStack->vPushInt(pJoAnalyzeIndex->m_bIsDetailed);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* jobAnalyzeIndex.tableName@ -- fetch table name of anayze index             */
+/*----------------------------------------------------------------------------*/
+void Task::vJobAnalyzeIndexTableNameFetch(MP_Task mpTask)
+{
+  ENTRY("vJobAnalyzeIndexTableNameFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("jobAnalyzeIndex.tableName"_Stz);
+  
+  Job_AnalyzeIndex* pJoAnalyzeIndex = _pJob_AnalyzeIndex(pJobPtr);
+  ASSERT(pJoAnalyzeIndex->eClass() == CN_JOB_ANALYZEINDEX);
+  
+  mpTask->m_pDataStack->vPushS32(pJoAnalyzeIndex->m_sTableName);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* jobAnalyzeTable.isDetailed -- is it a detailed analysis of the index       */
 /*----------------------------------------------------------------------------*/
 void Task::vJobAnalyzeTableIsDetailed(MP_Task mpTask)
 {
@@ -440,7 +480,7 @@ void Task::vJobAnalyzeTableIsDetailed(MP_Task mpTask)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("jobAnalyzeTaile.isDetailed"_Stz);
+    THROW_INVALID_DSTACK("jobAnalyzeTable.isDetailed"_Stz);
   
   Job_AnalyzeTable* pJoAnalyzeTable = _pJob_AnalyzeTable(pJobPtr);
   ASSERT(pJoAnalyzeTable->eClass() == CN_JOB_ANALYZETABLE);

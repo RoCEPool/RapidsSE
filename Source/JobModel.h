@@ -51,6 +51,7 @@ using namespace JobsModel;
 #include "Job__Executed.hpp"
 
 #include "Job_AnalyzeTable.hpp"
+#include "Job_AnalyzeIndex.hpp"
 #include "Job_Answer.hpp"
 
 #include "Job_Boot.hpp"

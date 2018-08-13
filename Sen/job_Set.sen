@@ -4,6 +4,7 @@
 
 "job_Set.sen" .verbose
 
+"job_AnalyzeIndex.sen" include
 "job_AnalyzeTable.sen" include
 "job_Cf.sen" include
 
