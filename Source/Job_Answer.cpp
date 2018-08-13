@@ -22,6 +22,7 @@ JobNote mJobNote_Answer (
   nullptr,             // prompt post-process function
   nullptr,             // job new function
   vJob_Answer_delete,  // job delete function
+  nullptr,             // job send function
   nullptr,             // job receive function
   vJob_Answer_show,    // job show function
   false,               // job is not prompt enabled

@@ -22,6 +22,7 @@ JobNote mJobNote_Boot (
   nullptr,           // prompt post-process function
   nullptr,           // job new function
   vJob_Boot_delete,  // job delete function
+  nullptr,           // job send function
   nullptr,           // job receive function
   vJob_Boot_show,    // job show function
   false,             // job is not prompt enabled

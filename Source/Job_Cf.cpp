@@ -22,6 +22,7 @@ JobNote mJobNote_Cf (
   vJob_Cf_post,        // prompt post-process function
   nullptr,             // job new function
   vJob_Cf_delete,      // job delete function
+  nullptr,             // job send function
   nullptr,             // job receive function
   vJob_Cf_show,        // job show function
   true,                // job is enabled

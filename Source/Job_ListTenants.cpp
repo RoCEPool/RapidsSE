@@ -22,6 +22,7 @@ JobNote mJobNote_ListTenants (
   vJob_ListTenants_post,  // prompt post-process function
   nullptr,                // job new function
   vJob_ListTenants_delete,// job delete function
+  nullptr,                // job send function
   nullptr,                // job receive function
   vJob_ListTenants_show,  // job show function
   true,                   // job is enabled

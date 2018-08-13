@@ -22,6 +22,7 @@ JobNote mJobNote_Receiver (
   nullptr,               // prompt post-process function
   nullptr,               // job new function
   vJob_Receiver_delete,  // job delete function
+  nullptr,               // job send function
   nullptr,               // job receive function
   vJob_Receiver_show,    // job show function
   false,                 // job is not prompt enabled

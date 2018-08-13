@@ -22,6 +22,7 @@ JobNote mJobNote_AnalyzeIndex (
   vJob_AnalyzeIndex_post,    // prompt post-process function
   nullptr,                   // job new function
   vJob_AnalyzeIndex_delete,  // job delete function
+  nullptr,                   // job send function
   nullptr,                   // job receive function
   vJob_AnalyzeIndex_show,    // job show function
   true,                      // job is enabled

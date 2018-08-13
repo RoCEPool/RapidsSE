@@ -24,6 +24,7 @@ namespace JobsModel
     void (*m_fPost)(Interface::SEitf* pSEitf, Job* pJob);
     Job* (*m_fNew)(Job* pArg);
     void (*m_fDelete)(Interface::SEitf* pSEitf, Job* pJob);
+    void (*m_fSend)(Job* pJob);
     void (*m_fRecv)(Job* pJob);
     void (*m_fShow)(Job* pJob);
   

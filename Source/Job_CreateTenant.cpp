@@ -22,6 +22,7 @@ JobNote mJobNote_CreateTenant (
   vJob_CreateTenant_post,    // prompt post-process function
   nullptr,                   // job new function
   vJob_CreateTenant_delete,  // job delete function
+  nullptr,                   // job send function
   nullptr,                   // job receive function
   vJob_CreateTenant_show,    // job show function
   true,                      // job is enabled

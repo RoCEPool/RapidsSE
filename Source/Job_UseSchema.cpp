@@ -22,6 +22,7 @@ JobNote mJobNote_UseSchema (
   vJob_UseSchema_post,   // prompt post-process function
   nullptr,               // job new function
   vJob_UseSchema_delete, // job delete function
+  nullptr,               // job send function
   nullptr,               // job receive function
   vJob_UseSchema_show,   // job show function
   true,                  // job is enabled

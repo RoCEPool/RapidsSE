@@ -22,6 +22,7 @@ JobNote mJobNote_Docol (
   vJob_Docol_post,  // prompt post-process function
   nullptr,          // job new function
   vJob_Docol_delete,// job delete function
+  nullptr,          // job send function
   nullptr,          // job receive function
   vJob_Docol_show,  // job show function
   true,             // job is enabled

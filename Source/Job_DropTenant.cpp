@@ -22,6 +22,7 @@ JobNote mJobNote_DropTenant (
   vJob_DropTenant_post,   // prompt post-process function
   nullptr,                // job new function
   vJob_DropTenant_delete, // job delete function
+  nullptr,                // job send function
   nullptr,                // job receive function
   vJob_DropTenant_show,   // job show function
   true,                   // job is enabled

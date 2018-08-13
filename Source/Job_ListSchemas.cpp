@@ -22,6 +22,7 @@ JobNote mJobNote_ListSchemas (
   vJob_ListSchemas_post,  // prompt post-process function
   nullptr,                // job new function
   vJob_ListSchemas_delete,// job delete function
+  nullptr,                // job send function
   nullptr,                // job receive function
   vJob_ListSchemas_show,  // job show function
   true,                   // job is enabled

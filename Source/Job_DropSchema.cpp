@@ -23,6 +23,7 @@ JobNote mJobNote_DropSchema (
   vJob_DropSchema_post,   // prompt post-process function
   nullptr,                // job new function
   vJob_DropSchema_delete, // job delete function
+  nullptr,                // job send function
   nullptr,                // job receive function
   vJob_DropSchema_show,   // job show function
   true,                   // job is enabled

@@ -19,6 +19,7 @@ JobNote mJobNote_G35 (
   vJob_G35_post,   // prompt post-process function
   nullptr,         // job new function
   vJob_G35_delete, // job delete function
+  nullptr,         // job send function
   nullptr,         // job receive function
   vJob_G35_show,   // job show function
   false,           // job is not enabled
