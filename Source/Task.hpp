@@ -933,6 +933,10 @@ namespace Tasks
     static void vJobRecv(MP_Task mpTask);
     static void vJobReleaseResourcesFetch(MP_Task mpTask);
     static void vJobPartitionsFetch(MP_Task mpTask);
+    static void vJobReceiverConnNoFetch(MP_Task mpTask);
+    static void vJobReceiverConnNoStore(MP_Task mpTask);
+    static void vJobReceiverSocketFetch(MP_Task mpTask);
+    static void vJobReceiverSocketStore(MP_Task mpTask);
     static void vJobRegionSizeFetch(MP_Task mpTask);
     static void vJobRemoveOriginator(MP_Task mpTask);
     static void vJobRemoveParticipant(MP_Task mpTask);
