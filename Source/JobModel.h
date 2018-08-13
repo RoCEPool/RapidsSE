@@ -50,6 +50,8 @@ using namespace JobsModel;
 #include "Job__Execute.hpp"
 #include "Job__Executed.hpp"
 
+#include "Job_Answer.hpp"
+
 #include "Job_Cf.hpp"
 #include "Job_CreateCatalog.hpp"
 #include "Job_CreateIndex.hpp"
@@ -75,15 +77,17 @@ using namespace JobsModel;
 #include "Job_ListSchemas.hpp"
 #include "Job_ListTables.hpp"
 #include "Job_ListTenants.hpp"
-
 #include "Job_LoadBuffer.hpp"
 #include "Job_LoadTable.hpp"
+
 #include "Job_Prompt.hpp"
 #include "Job_Pwf.hpp"
+
 #include "Job_Sanity.hpp"
 #include "Job_Space.hpp"
 #include "Job_Status.hpp"
 #include "Job_SubLoader.hpp"
+
 #include "Job_UseSchema.hpp"
 
 #include "Jobs.hpp"
