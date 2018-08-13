@@ -149,6 +149,16 @@ Footer* Job_Connector::aFooter(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* job new function                                                           */
+/*----------------------------------------------------------------------------*/
+Job* JobsModel::pJob_Connector_new(Job* pArg)
+{
+  Job_Connector* pJob_Connector = new Job_Connector(nullptr);
+  
+  return pJob_Connector;
+}
+
+/*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
 void JobsModel::vJob_Connector_delete(Interface::SEitf* pSEitf, Job* pJob)

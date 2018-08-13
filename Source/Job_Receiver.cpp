@@ -149,6 +149,16 @@ Footer* Job_Receiver::aFooter(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* job new function                                                           */
+/*----------------------------------------------------------------------------*/
+Job* JobsModel::pJob_Receiver_new(Job* pArg)
+{
+  Job_Receiver* pJob_Receiver = new Job_Receiver(nullptr);
+  
+  return pJob_Receiver;
+}
+
+/*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
 void JobsModel::vJob_Receiver_delete(Interface::SEitf* pSEitf, Job* pJob)

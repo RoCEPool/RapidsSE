@@ -34,6 +34,7 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Answer* _pJob_Answer(void* aAddr);
   
+  Job* pJob_Answer_new(Job* pArg);
   void vJob_Answer_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_Answer_show(Job* pJob);
 }
