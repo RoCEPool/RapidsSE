@@ -96,7 +96,10 @@ pDUMPFUN *gpDump[]
   
   /*    */ &Dump::vDummy,           // CN_JOB_ANALYZEINDEX
   /*    */ &Dump::vDummy,           // CN_JOB_ANALYZETABLE
+  /*    */ &Dump::vDummy,           // CN_JOB_ANSWER
+  /*    */ &Dump::vDummy,           // CN_JOB_BOOT
   /*    */ &Dump::vDummy,           // CN_JOB_CF
+  /*    */ &Dump::vDummy,           // CN_JOB_CONNECTOR
   /*    */ &Dump::vDummy,           // CN_JOB_CREATECATALOG
   /*    */ &Dump::vDummy,           // CN_JOB_CREATEINDEX
   /*    */ &Dump::vDummy,           // CN_JOB_CREATESCHEMA
@@ -117,11 +120,11 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_LISTSCHEMAS
   /*    */ &Dump::vDummy,           // CN_JOB_LISTTABLES
   /*    */ &Dump::vDummy,           // CN_JOB_LISTTENANTS
-  
   /*    */ &Dump::vDummy,           // CN_JOB_LOADBUFFER
   /*    */ &Dump::vDummy,           // CN_JOB_LOADTABLE
   /*    */ &Dump::vDummy,           // CN_JOB_PROMPT
   /*    */ &Dump::vDummy,           // CN_JOB_PWF
+  /*    */ &Dump::vDummy,           // CN_JOB_RECEIVER
   /*    */ &Dump::vDummy,           // CN_JOB_SANITY
   /*    */ &Dump::vDummy,           // CN_JOB_SPACE
   /*    */ &Dump::vDummy,           // CN_JOB_STATUS
@@ -333,7 +336,10 @@ i8 giClassSize[]
 
   /*    */ sizeof(Job_CreateTable),    // CN_JOB_ANALYZEINDEX
   /*    */ sizeof(Job_CreateTable),    // CN_JOB_ANALYZETABLE
+  /*    */ 0,                          // CN_JOB_ANSWER
+  /*    */ 0,                          // CN_JOB_BOOT
   /*    */ sizeof(Job_Cf),             // CN_JOB_CF
+  /*    */ 0,                          // CN_JOB_CONNECTOR
   /*    */ sizeof(Job_CreateCatalog),  // CN_JOB_CREATECATALOG
   /*    */ sizeof(Job_CreateIndex),    // CN_JOB_CREATEINDEX
   /*    */ sizeof(Job_CreateSchema),   // CN_JOB_CREATESCHEMA
@@ -358,6 +364,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_LoadTable),      // CN_JOB_LOADTABLE
   /*    */ sizeof(Job_Prompt),         // CN_JOB_PROMPT
   /*    */ sizeof(Job_Pwf),            // CN_JOB_PWF
+  /*    */ 0,                          // CN_JOB_RECEIVER
   /*    */ sizeof(Job_Sanity),         // CN_JOB_SANITY
   /*    */ sizeof(Job_Space),          // CN_JOB_SPACE
   /*    */ sizeof(Job_Status),         // CN_JOB_STATUS
@@ -569,7 +576,10 @@ eHT geWhichHeap[]
   
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_ANALYZEINDEX
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_ANALYZETABLE
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_ANSWER
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_BOOT
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CF
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CONNECTOR
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CREATECATALOG
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CREATEINDEX
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CREATESCHEMA
@@ -594,6 +604,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LOADTABLE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_PROMPT
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_PWF
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_RECEIVER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SANITY
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SPACE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_STATUS

@@ -97,7 +97,10 @@ enum eCN : u2 // Class Number
     
     /*    */ CN_JOB_ANALYZEINDEX,
     /*    */ CN_JOB_ANALYZETABLE,
+    /*    */ CN_JOB_ANSWER,
+    /*    */ CN_JOB_BOOT,
     /*    */ CN_JOB_CF,
+    /*    */ CN_JOB_CONNECTOR,
     /*    */ CN_JOB_CREATECATALOG,
     /*    */ CN_JOB_CREATEINDEX,
     /*    */ CN_JOB_CREATESCHEMA,
@@ -122,6 +125,7 @@ enum eCN : u2 // Class Number
     /*    */ CN_JOB_LOADTABLE,
     /*    */ CN_JOB_PROMPT,
     /*    */ CN_JOB_PWF,
+    /*    */ CN_JOB_RECEIVER,
     /*    */ CN_JOB_SANITY,
     /*    */ CN_JOB_SPACE,
     /*    */ CN_JOB_STATUS,
@@ -332,7 +336,10 @@ enum eCN : u2 // Class Number
     /*    */ "JOB__EXECUTED"_Stz,      // CN_JOB__EXECUTED
     /*    */ "JOB_ANALYZEINDEX"_Stz,   // CN_JOB_ANALYZEINDEX
     /*    */ "JOB_ANALYZETABLE"_Stz,   // CN_JOB_ANALYZETABLE
+    /*    */ "JOB_ANSWER"_Stz,         // CN_JOB_ANSWER
+    /*    */ "JOB_BOOT"_Stz,           // CN_JOB_BOOT
     /*    */ "JOB_CF"_Stz,             // CN_JOB_CF
+    /*    */ "JOB_CONNECTOR"_Stz,      // CN_JOB_CONNECTOR
     /*    */ "JOB_CREATECATALOG"_Stz,  // CN_JOB_CREATECATALOG
     /*    */ "JOB_CREATEINDEX"_Stz,    // CN_JOB_CREATEINDEX
     /*    */ "JOB_CREATESCHEMA"_Stz,   // CN_JOB_CREATESCHEMA
@@ -357,6 +364,7 @@ enum eCN : u2 // Class Number
     /*    */ "JOB_LOADTABLE"_Stz,      // CN_JOB_LOADTABLE
     /*    */ "JOB_PROMPT"_Stz,         // CN_JOB_PROMPT
     /*    */ "JOB_PWF"_Stz,            // CN_JOB_PWF
+    /*    */ "JOB_RECEIVER"_Stz,       // CN_JOB_RECEIVER
     /*    */ "JOB_SANITY"_Stz,         // CN_JOB_SANITY
     /*    */ "JOB_SPACE"_Stz,          // CN_JOB_SPACE
     /*    */ "JOB_STATUS"_Stz,         // CN_JOB_STATUS

@@ -92,7 +92,10 @@ pFINALIZE *gpFinalize[]
   
   /*    */ &Finalize::vUndefined,         // CN_JOB_ANALYZEINDEX
   /*    */ &Finalize::vUndefined,         // CN_JOB_ANALYZETABLE
+  /*    */ &Finalize::vUndefined,         // CN_JOB_ANSWER
+  /*    */ &Finalize::vUndefined,         // CN_JOB_BOOT
   /*    */ &Finalize::vUndefined,         // CN_JOB_CF
+  /*    */ &Finalize::vUndefined,         // CN_JOB_CONNECTOR
   /*    */ &Finalize::vUndefined,         // CN_JOB_CREATECATALOG
   /*    */ &Finalize::vUndefined,         // CN_JOB_CREATEINDEX
   /*    */ &Finalize::vUndefined,         // CN_JOB_CREATESCHEMA
@@ -117,6 +120,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_LOADTABLE
   /*    */ &Finalize::vUndefined,         // CN_JOB_PROMPT
   /*    */ &Finalize::vUndefined,         // CN_JOB_PWF
+  /*    */ &Finalize::vUndefined,         // CN_JOB_RECEIVER
   /*    */ &Finalize::vUndefined,         // CN_JOB_SANITY
   /*    */ &Finalize::vUndefined,         // CN_JOB_SPACE
   /*    */ &Finalize::vUndefined,         // CN_JOB_STATUS
