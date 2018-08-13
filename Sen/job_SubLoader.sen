@@ -72,6 +72,8 @@
     false pLoaderSub SubLoader_sendBuffer
 
   repeat
+
+  pLoaderSub SubLoader_sendLast
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -100,14 +102,12 @@
 
   pLoaderSub SubLoader_process
 
-  pLoaderSub SubLoader_sendLast
-
   pLoaderSub loaderSub.end
 
   //pJob_SubLoader <DONE_CHILD>
 
   // now delete the ended job
-  pJob_SubLoader job.deleteJob
+  pJob_SubLoader job.delete
 
   // null the job in the task
   nullptr pThisTask task.job!

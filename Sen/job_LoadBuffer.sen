@@ -77,7 +77,7 @@
   pJob_LoadBuffer <DONE_ONESHOT>
 
   // now delete the ended job
-  pJob_LoadBuffer job.deleteJob
+  pJob_LoadBuffer job.delete
 
   // null the job in the task
   nullptr pThisTask task.job!

@@ -38,7 +38,7 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.columnType@"_Stz,      &vJobColumnTypeFetch,  false);
   vAddPrimitive("job_createIndex.tableName@"_Stz, &vJobCreateIndexTableNameFetch, false);
   vAddPrimitive("job.decAcksRemaining"_Stz, &vJobDecAcksRemaining, false);
-  vAddPrimitive("job.deleteJob"_Stz,        &vJobDeleteJob,        false);
+  vAddPrimitive("job.delete"_Stz,           &vJobDelete,           false);
   vAddPrimitive("job.dicPath"_Stz,          &vJobDicPath,          false);
   vAddPrimitive("job_dropIndex.tableName@"_Stz,   &vJobDropIndexTableNameFetch,   false);
   vAddPrimitive("jobEnd.delete"_Stz,        &vJobEndDelete,  false);
@@ -377,15 +377,15 @@ void Task::vJobClass(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.deleteJob -- delete the job                                            */
+/* job.delete -- delete the job                                               */
 /*----------------------------------------------------------------------------*/
-void Task::vJobDeleteJob(MP_Task mpTask)
+void Task::vJobDelete(MP_Task mpTask)
 {
-  ENTRY("vJobDeleteJob"_Stz);
+  ENTRY("vJobDelete"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.jobDelete"_Stz);
+    THROW_INVALID_DSTACK("job.delete"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
   // find the job in the catalog
@@ -1668,7 +1668,6 @@ void Task::vJobSpawn(MP_Task mpTask)
   
   Handlers::vSpawnedTaskHandler(pNewTask);
 
-  
   EXIT();
 }
 

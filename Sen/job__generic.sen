@@ -147,7 +147,7 @@
   pJob job.removeParticipant
 
   // delete the job
-  pJob job.deleteJob
+  pJob job.delete
 
   iJobId Job__Ended::send
 ;
