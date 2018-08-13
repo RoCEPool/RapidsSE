@@ -8,7 +8,8 @@
 "r35Sockets.sen" include
 "r35JobExecute.sen" include
 
-"r35ReceiverTask.sen" include
+"Job_Receiver.sen" include
+
 "r35ConnectorTask.sen" include
 "r35AnswerTask.sen" include
 
