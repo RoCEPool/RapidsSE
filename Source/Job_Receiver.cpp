@@ -89,6 +89,9 @@ Job_Receiver::Job_Receiver(Interface::SEitf* pSEitf)
   
   m_sSeed = mJobNote_Receiver.pJobClass()->m_aSeed;
   
+  m_iConnNo = -1;
+  m_pSocket = nullptr;
+
   _checkInitialised_(CN_JOB_RECEIVER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_RECEIVER,_FOOTER_);

@@ -37,6 +37,8 @@ using namespace System;
 #include "Semaphore.hpp"
 #include "Shell.hpp"
 #include "Shm.hpp"
+#include "Shm.hpp"
+#include "Socket.hpp"
 #include "Synch.hpp"
 #include "Time_se.hpp"
 #include "Timer.hpp"

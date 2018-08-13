@@ -2,7 +2,9 @@
 /* socket.cpp - tcp/ip sockets                                                */
 /*============================================================================*/
 
-#include "Tasks.h"
+#include "System.h"
+
+#include "Pool.h"
 
 Atomic gzSocketOpenCount;
 
