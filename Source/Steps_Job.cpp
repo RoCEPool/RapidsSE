@@ -91,6 +91,7 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.response!"_Stz,        &vJobResponseStore,    false);
   vAddPrimitive("job.rowsProcessed@"_Stz,   &vJobRowsProcessedFetch, false);
   vAddPrimitive("job.rowsProcessed!"_Stz,   &vJobRowsProcessedStore, false);
+  vAddPrimitive("job.send"_Stz,             &vJobRecv,             false);
   vAddPrimitive("job.show"_Stz,             &vJobShow,             false);
   vAddPrimitive("job.signalConnector"_Stz,  &vJobSignalConnector,  false);
   vAddPrimitive("job.spawn"_Stz,            &vJobSpawn,            false);
@@ -1384,6 +1385,23 @@ void Task::vJobParticipantStore(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* job.partitions@ -- fetch partitions from job_sanity                        */
+/*----------------------------------------------------------------------------*/
+void Task::vJobPartitionsFetch(MP_Task mpTask)
+{
+  ENTRY("vJobParticipantResponseFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.partitions@"_Stz);
+  Job_Sanity* pJob_Sanity = _pJob_Sanity(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushInt(pJob_Sanity->m_iPartitions);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* job.promptTask@ -- fetch the prompt task from the job                      */
 /*----------------------------------------------------------------------------*/
 void Task::vJobPromptTaskFetch(MP_Task mpTask)
@@ -1401,7 +1419,7 @@ void Task::vJobPromptTaskFetch(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.recv -- receive the job                                                */
+/* job.recv -- post-receive function                                          */
 /*----------------------------------------------------------------------------*/
 void Task::vJobRecv(MP_Task mpTask)
 {
@@ -1481,23 +1499,6 @@ void Task::vJobRemoveParticipant(MP_Task mpTask)
   gpAttachMap->m_pParticipatingJobs->vGrabLock();
   gpAttachMap->m_pParticipatingJobs->vRemoveJob(pJob);
   gpAttachMap->m_pParticipatingJobs->vDropLock();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.partitions@ -- fetch partitions from job_sanity                        */
-/*----------------------------------------------------------------------------*/
-void Task::vJobPartitionsFetch(MP_Task mpTask)
-{
-  ENTRY("vJobParticipantResponseFetch"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.partitions@"_Stz);
-  Job_Sanity* pJob_Sanity = _pJob_Sanity(pJobPtr);
-  
-  mpTask->m_pDataStack->vPushInt(pJob_Sanity->m_iPartitions);
   
   EXIT();
 }
@@ -1611,6 +1612,27 @@ void Task::vJobRowsProcessedStore(MP_Task mpTask)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* job.send -- pre-send of job                                                */
+/*----------------------------------------------------------------------------*/
+void Task::vJobSend(MP_Task mpTask)
+{
+  ENTRY("vJobSend"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.send"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  // find the job in the catalog
+  eCN eClass = pJob->eClass();
+  JobClass* pJobClass = gxJobCatalog.pFindJob(eClass);
+  
+  // call the job pre-send function
+  pJobClass->vSendJob(pJob);  // come back to this, remove seitf as parameter to delete
+  
+  EXIT();
+}
 /*----------------------------------------------------------------------------*/
 /* job.show -- show the job                                                   */
 /*----------------------------------------------------------------------------*/

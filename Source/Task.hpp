@@ -940,6 +940,7 @@ namespace Tasks
     static void vJobResponseFetch(MP_Task mpTask);
     static void vJobRowsProcessedFetch(MP_Task mpTask);
     static void vJobRowsProcessedStore(MP_Task mpTask);
+    static void vJobSend(MP_Task mpTask);
     static void vJobShow(MP_Task mpTask);
     static void vJobSignalConnector(MP_Task mpTask);
     static void vJobSpawn(MP_Task mpTask);
