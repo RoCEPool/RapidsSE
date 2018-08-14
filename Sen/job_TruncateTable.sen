@@ -62,15 +62,14 @@
 
   grid::slots 0
   do
-  I "Creating Job_SubTruncate %v" fmt.print
-  //pJob_TruncateTable JobTruncateTable.spawnJobSubTruncate
+    I "Creating Job_SubTruncate %v" fmt.print
+    pJob_TruncateTable job_truncateTable.spawnSub
   loop
 
   "truncateTable ack waiting" .
   ackWait
   "truncateTable acked" .
 
-  
   pJob_TruncateTable job.notice
 
   <DONE_NODE>

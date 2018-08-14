@@ -10,8 +10,7 @@ namespace JobsModel
   {
   public:
    
-    s32 m_sTableName;   // table name
-    bool m_bIsDetailed; // detailed analysis
+    i8 m_iSlot;  // slot this sub truncate truncates
     
     // must be last
     Footer m_xFooter;

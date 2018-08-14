@@ -89,8 +89,6 @@ Job_TruncateTable::Job_TruncateTable(Interface::SEitf* pSEitf)
     
   m_sSeed = mJobNote_TruncateTable.pJobClass()->m_aSeed;
   m_bCheckResources  = true;
-  m_sTableName       = ""_Stz;
-  m_bIsDetailed      = false;
   
   _checkInitialised_(CN_JOB_ANALYZETABLE);
   

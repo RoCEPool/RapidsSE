@@ -103,6 +103,7 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.spawn"_Stz,            &vJobSpawn,            false);
   vAddPrimitive("job.trace!"_Stz,           &vJobTraceStore,       false);
   vAddPrimitive("job.trace@"_Stz,           &vJobTraceFetch,       false);
+  vAddPrimitive("Job_truncateTable.spawnSub"_Stz, &vJobTruncateTableSpawnSub, false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1841,6 +1842,42 @@ void Task::vJobTraceStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.trace!"_Stz);
   
   pJob->vJobTrace((eJT)iJobTrace);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Job_truncateTable.spawnSub -- spawn sub truncate job                       */
+/*----------------------------------------------------------------------------*/
+void Task::vJobTruncateTableSpawnSub(MP_Task mpTask)
+{
+  ENTRY("vJobTruncateTableSpawnSub"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("Job_truncateTable.spawnSub"_Stz);
+  Job_TruncateTable* pJob_TruncateTable = _pJob_TruncateTable(pJobPtr);
+  
+  i8 iSlot;
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iSlot) )
+    THROW_INVALID_DSTACK("Job_truncateTable.spawnSub"_Stz);
+  
+  SEitf* pSEitf = pJob_TruncateTable->m_pSEitf;
+  
+  JobClass* pJobClass_SubTruncate = gxJobCatalog.pFindJob(CN_JOB_SUBTRUNCATE);
+  
+  Job_SubTruncate* pJob_SubTruncate =
+  static_cast<Job_SubTruncate*>(pJobClass_SubTruncate->pPreJob(pSEitf));
+  
+  pJob_SubTruncate->m_sObjectName = pJob_TruncateTable->m_sObjectName;
+  pJob_SubTruncate->m_iSlot = iSlot;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Task* pSubTruncateTask = new Task;
+  pSubTruncateTask->vParentTask(*mpTask);
+  
+  pSEitf->bAppendTask(pSubTruncateTask,pJob_SubTruncate);
   
   EXIT();
 }

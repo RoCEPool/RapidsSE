@@ -89,8 +89,7 @@ Job_SubTruncate::Job_SubTruncate(Interface::SEitf* pSEitf)
     
   m_sSeed = mJobNote_SubTruncate.pJobClass()->m_aSeed;
   m_bCheckResources  = true;
-  m_sTableName       = ""_Stz;
-  m_bIsDetailed      = false;
+  m_iSlot = -1;
   
   _checkInitialised_(CN_JOB_ANALYZETABLE);
   

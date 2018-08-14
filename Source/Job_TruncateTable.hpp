@@ -9,9 +9,6 @@ namespace JobsModel
   class Job_TruncateTable : public Job
   {
   public:
-   
-    s32 m_sTableName;   // table name
-    bool m_bIsDetailed; // detailed analysis
     
     // must be last
     Footer m_xFooter;
