@@ -10,7 +10,7 @@
 
 "Job_Receiver.sen" include
 
-"r35ConnectorTask.sen" include
+"job_Connector.sen" include
 "Job_Answer.sen" include
 
 "r35Start.sen" include
