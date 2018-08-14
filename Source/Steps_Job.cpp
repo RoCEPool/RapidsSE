@@ -101,6 +101,7 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.show"_Stz,             &vJobShow,             false);
   vAddPrimitive("job.signalConnector"_Stz,  &vJobSignalConnector,  false);
   vAddPrimitive("job.spawn"_Stz,            &vJobSpawn,            false);
+  vAddPrimitive("job_subTruncate.slot@"_Stz,&vJobSubTruncateSlotFetch, false);
   vAddPrimitive("job.trace!"_Stz,           &vJobTraceStore,       false);
   vAddPrimitive("job.trace@"_Stz,           &vJobTraceFetch,       false);
   vAddPrimitive("Job_truncateTable.spawnSub"_Stz, &vJobTruncateTableSpawnSub, false);
@@ -1803,6 +1804,23 @@ void Task::vJobSpawn(MP_Task mpTask)
   
   Handlers::vSpawnedTaskHandler(pNewTask);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_subTruncate.slot@ -- fetch the job slot                                */
+/*----------------------------------------------------------------------------*/
+void Task::vJobSubTruncateSlotFetch(MP_Task mpTask)
+{
+  ENTRY("vJobTraceStore"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.trace!"_Stz);
+  Job_SubTruncate* pJob = _pJob_SubTruncate(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushInt(pJob->m_iSlot);
+  
   EXIT();
 }
 

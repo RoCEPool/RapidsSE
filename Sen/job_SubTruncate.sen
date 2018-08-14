@@ -34,7 +34,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the slot this sub truncate is supposed to work on
-  //pJob_SubTruncate jobSubTruncate.slot@ to iSlot
+  pJob_SubTruncate job_subTruncate.slot@ to iSlot
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // truncate table for iSlot
