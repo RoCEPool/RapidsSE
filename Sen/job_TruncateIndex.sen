@@ -1,0 +1,177 @@
+/*============================================================================*/
+/* job_AnalyzeIndex.sen -- Job Analyze Index                                  */
+/*============================================================================*/
+
+"job_AnalyzeIndex.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* check if word is a analyzable table folder                                 */
+/*----------------------------------------------------------------------------*/
+: checkAnalyzeIndex ( "<tableNm>" "<indexNm>" -- true | errorCode false )
+
+  params| sIndexNm sTableNm |
+
+  // check in tables folder
+  checkInTables not if false exit then
+
+  // check if tableNm is a word in tables folder
+  sTableNm checkIsWordR35 not if EC_NO_SUCH_TABLE false exit then
+
+  // push table folder
+  sTableNm pushTable assert
+
+  sTableNm checkIsTableR35 not if popTable false exit then
+
+  // push indexes folder
+  pushIndexes assert                               // ../tables/sTableNm/indexes
+
+  sIndexNm checkIsIndex not if
+    popIndexes popTable                                            // ../tables
+    assertInTables exit
+  then
+
+  //pop indexes folder
+  popIndexes
+
+  // pop table folder
+  popTable
+
+  // assert in tables
+  assertInTables
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* anakyze index request (on originating node)                                */
+/*----------------------------------------------------------------------------*/
+: analyzeIndex_req ( -- <R> )
+
+  0 0 0 locals| pJob pTask bIsDetailed |
+
+  tp: analyzeIndex
+  "analyzeIndex_req" .
+
+  // get the task
+  task::this to pTask
+
+  // get the job from the task
+  pTask task.job@ to pJob
+
+  pJob jobAnalyzeIndex.isDetailed to bIsDetailed
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set metadata string in the job
+  args.metadata if
+    bIsDetailed 1 == if
+      "(nodeName VARCHAR, partition INTEGER, buffers INTEGER, bufferLevel VARCHAR, entries INTEGER)"
+    else
+      "(nodeName VARCHAR, partition INTEGER, buffers INTEGER, entries INTEGER)"
+    then
+    pJob job.metadata!
+
+  then
+
+  // distribute the job
+  pTask pJob "job::distribute" find execute
+
+  pJob <DONE_REQUEST>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_AnalyzeIndex job on a node                                     */
+/*----------------------------------------------------------------------------*/
+: analyzeIndex_node ( Job_AnalyzeIndex -- )
+
+  params| pJob_AnalyzeIndex |
+  0 0 locals| sTableNm bIsDetailed |
+
+  tp: analyzeIndex_node
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // assert correct job
+  CN_JOB_ANALYZEINDEX pJob_AnalyzeIndex object.assertClass
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grad a ddl lock
+  ddlLock::grabWrite
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
+  pJob_AnalyzeIndex getPathR35
+  dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push table
+  pJob_AnalyzeIndex jobAnalyzeIndex.tableName@ to sTableNm
+  sTableNm pushTable assert
+
+  //
+  // push indexes
+  pushIndexes assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // analyze the table
+  pJob_AnalyzeIndex jobAnalyzeIndex.isDetailed to bIsDetailed
+  bIsDetailed
+  pJob_AnalyzeIndex job.objectName@ find execute
+  index.analyze
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // put response in the job
+  grid::thisNode@ pJob_AnalyzeIndex job.response!
+  1 grid::thisNode@ pJob_AnalyzeIndex job.rowsProcessed!
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop table
+  popTable
+
+  pJob_AnalyzeIndex job.notice
+
+  <DONE_NODE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_AnalyzeIndex job check resources                               */
+/*----------------------------------------------------------------------------*/
+: analyzeIndex_checkResources ( Job_AnalyzeIndex -- )
+
+  params| pJob_AnalyzeIndex  |
+
+  tp: analyzeIndex_checkResources
+  "checkResources received" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab a ddl lock
+  ddlLock::grabWrite
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
+  pJob_AnalyzeIndex getPathR35
+  dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if we can remove the table
+  pJob_AnalyzeIndex jobAnalyzeIndex.tableName@
+  pJob_AnalyzeIndex job.objectName@
+  checkAnalyzeIndex not if pJob_AnalyzeIndex <ERROR_JOB> exit then
+
+  <DONE_NODE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_AnalyzeIndex job release resources                             */
+/*----------------------------------------------------------------------------*/
+: analyzeIndex_releaseResources ( Job_AnalyzeIndex -- )
+
+  params| pJob_AnalyzeIndex  |
+
+  tp: analyzeIndex_releaseResources
+  "releaseResources received" .
+
+  <DONE_NODE>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
