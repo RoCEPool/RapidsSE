@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* spawn the receiver task                                                    */
 /*----------------------------------------------------------------------------*/
-: spawnR35ReceiverTask ( pSocket iConnNo -- )
+: spawnR35ReceiverTask_2 ( pSocket iConnNo -- )
 
   params| iConnNo |
   params| pSocket |
@@ -29,7 +29,7 @@
 /*----------------------------------------------------------------------------*/
 /* spawn the receiver task                                                    */
 /*----------------------------------------------------------------------------*/
-: spawnR35ReceiverTask_2 ( pSocket iConnNo -- )
+: spawnR35ReceiverTask ( pSocket iConnNo -- )
 
   params| iConnNo |
   params| pSocket |
@@ -50,7 +50,7 @@
 /*----------------------------------------------------------------------------*/
 /* receiver loop: receive a job, execute it                                   */
 /*----------------------------------------------------------------------------*/
-: Receiver_seed ( pSocket -- )
+: Receiver_seed_2 ( pSocket -- )
 
   tp: Receiver_seed
 
@@ -100,7 +100,7 @@
 /*----------------------------------------------------------------------------*/
 /* receiver loop: receive a job, execute it                                   */
 /*----------------------------------------------------------------------------*/
-: Receiver_seed_2 ( -- )
+: Receiver_seed ( -- )
 
   tp: Receiver_seed
 
