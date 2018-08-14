@@ -379,7 +379,9 @@ void Task::vJobClass(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.class"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  mpTask->m_pDataStack->vPushInt(pJob->eClass());
+  eCN eClass = pJob->eClass();
+  
+  mpTask->m_pDataStack->vPushInt(eClass);
   
   EXIT();
 }

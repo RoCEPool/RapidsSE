@@ -26,17 +26,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* receiver loop: receive a job, execute it                                   */
+/* receiver init                                                              */
 /*----------------------------------------------------------------------------*/
-: Receiver_seed ( -- )
-
-  tp: Receiver_seed
+: Receiver_init ( -- )
 
   0 locals| pThisTask |
-  0 locals| pJob_Receiver |
-
+  0 locals| pJob_Receiver |.
   0 locals| pSocket |
-  0 locals| pJob |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -61,8 +57,15 @@
   args.verbose if
     grid::thisNode@ "Receiver running on node %v" fmt.print
   then
+;
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/*----------------------------------------------------------------------------*/
+/* receiver loop: receive a job, execute it                                   */
+/*----------------------------------------------------------------------------*/
+: Receiver_loop ( -- )
+
+  0 locals| pJob |
+  0 locals| eJobClass |
 
   begin
 
@@ -76,12 +79,29 @@
     // unpack valset into pJob
     valset> drop to pJob
 
+    pJob job.class to eJobClass
+
     // execute received job
-    pJob job.execute
+    eJobClass CN_JOB_LOADBUFFER == if
+      pJob job.spawn
+    else
+      pJob job.execute
+    then
 
   again
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+;
+
+/*----------------------------------------------------------------------------*/
+/* receiver seed                                                              */
+/*----------------------------------------------------------------------------*/
+: Receiver_seed ( -- )
+
+  // initialise
+  Receiver_init
+
+  // loop, receiving and executing jobs
+  Receiver_loop
 
   // should never exit
   hazard
