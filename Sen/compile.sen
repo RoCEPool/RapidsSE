@@ -24,14 +24,12 @@
 "r35Model.sen" include
 "jobModel.sen" include
 "utilities.sen" include
-
-
-
 "testing.sen" include
 "munge.sen" include
 
 // last
 "requests.sen" include
+"se.sen" include
 
 assert::stack_0
 
