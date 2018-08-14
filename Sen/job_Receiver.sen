@@ -2,7 +2,7 @@
 /* job_Receiver.sen -- receiver job                                           */
 /*============================================================================*/
 
-"r35ReceiverTask.sen" .verbose
+"job_Receiver.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* spawn the receiver                                                         */

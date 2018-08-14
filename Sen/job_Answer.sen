@@ -1,0 +1,101 @@
+/*============================================================================*/
+/* job_Answer.sen -- answer job                                               */
+/*============================================================================*/
+
+"job_Answer.sen" .verbose
+
+int: nTotalConnections
+
+/*----------------------------------------------------------------------------*/
+/* spawn the answer task                                                      */
+/*----------------------------------------------------------------------------*/
+: spawnR35AnswerTask ( -- )
+
+    0                  // no. of args
+    "_r35answerLoop_"  // seed word
+    "AnswerTask"       // task name
+    TK_ANSWER_DRONE    // task kind
+  spawnR35GeneralTask
+;
+
+/*----------------------------------------------------------------------------*/
+/* answer loop: accept new sockets, spawn receiver task                       */
+/*----------------------------------------------------------------------------*/
+: _r35AnswerLoop_ ( -- )
+
+  assertStackDepthZero
+
+  0 locals| iPort |
+  0 locals| pListeningSocket |
+  0 locals| pAcceptedSocket |
+  0 locals| pConnectorTask |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // get the listening port of this node
+  grid::thisNode@ grid::node node.port to iPort
+
+  args.verbose if
+    iPort "Waiting for connections on port %v" fmt.print
+  then
+
+  // now create a listening socket
+  iPort socket::listen to pListeningSocket
+
+  // number of connections to be zero
+  0 nTotalConnections !
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  begin
+
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+    // wait for next socket
+
+    tp: waitingOnAccept
+
+    assertStackDepthZero
+
+    pListeningSocket socket.accept to pAcceptedSocket
+
+    tp: socketAccepted
+
+    args.verbose if
+      iPort "Answered connection on port %v" fmt.print
+    then
+
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+    // spawn receiver task for the new socket
+
+    ddlLock::grabWrite
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // increment connection counter
+    nTotalConnections @ 1 + nTotalConnections !
+
+      pAcceptedSocket
+      nTotalConnections @
+    spawn_Receiver
+
+    ddlLock::dropWrite
+
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+    // if first socket on non-start node then start the connector task
+
+    nTotalConnections @ 1 == if
+      grid::thisNode@ grid::startNodeR35@ != if
+        spawnR35ConnectorTask to pConnectorTask
+      then
+    then
+
+  again
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // should never exit
+  hazard
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
