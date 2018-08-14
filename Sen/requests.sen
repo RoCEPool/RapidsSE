@@ -5,7 +5,6 @@
 "requests.sen" .verbose
 
 "requests_basics.sen"      include
-"requests_connection.sen"  include
 "requests_tenant.sen"      include
 "requests_catalog.sen"     include
 "requests_schema.sen"      include

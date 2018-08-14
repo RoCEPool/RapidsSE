@@ -24,27 +24,6 @@
 
   "received Job__Ended from all nodes" .
 
-  // all the lines below get moved to nodeStatusR35_req
-/*
-  grid::nodes 0
-  do
-    I pJob job.error@ error.msg .
-  loop
-
-  // somehow notify the request task that job is ended
-  // all the lines below get moved to nodeStatusR35_req
-  grid::nodes 0
-  do
-    I pJob job.response@ .
-  loop
-
-  // remove the job from the originator jobs
-  pJob job.removeOriginator
-
-  // delete the job
-  pJob job.delete
-*/
-
   // remove the job from the originator jobs
   pJob job.removeOriginator
 

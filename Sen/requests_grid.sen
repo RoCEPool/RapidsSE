@@ -80,40 +80,6 @@ tp: gettingPartitions
   not if <NIP+ERROR> else <SUCCESS> then
 ;
 */
-/*----------------------------------------------------------------------------*/
-/* get status of the nodes                                                    */
-/*----------------------------------------------------------------------------*/
-: nodeStatusR35_req ( -- <R> )
-
-  0 0 locals| pJob pTask |
-
-  tp: nodeStatusR35_req
-
-  //ddlLock::grabWrite
-
-  // get the task
-  task::this to pTask
-
-  // get the job from the task
-  pTask task.job@ to pJob
-
-  pTask pJob job::distribute
-
-  //wait for job to finish
-
-  //grid::nodes 0
-  //do
-  //  I pJob job.response@ .
-  //loop
-
-  // remove the job from the originator jobs
-  //pJob job.removeOriginator
-
-  // delete the job
-  //pJob job.delete
-
-  <OK>
-;
 
 /*============================================================================*/
 /* end                                                                        */
