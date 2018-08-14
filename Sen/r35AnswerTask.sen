@@ -28,7 +28,6 @@ int: nTotalConnections
   0 locals| iPort |
   0 locals| pListeningSocket |
   0 locals| pAcceptedSocket |
-  0 locals| pReceiverTask |
   0 locals| pConnectorTask |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -76,7 +75,7 @@ int: nTotalConnections
 
       pAcceptedSocket
       nTotalConnections @
-    spawn_Receiver to pReceiverTask
+    spawn_Receiver
 
     ddlLock::dropWrite
 
