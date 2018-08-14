@@ -130,6 +130,7 @@ enum eCN : u2 // Class Number
     /*    */ CN_JOB_SPACE,
     /*    */ CN_JOB_STATUS,
     /*    */ CN_JOB_SUBLOADER,
+    /*    */ CN_JOB_SUBTRUNCATE,
     /*    */ CN_JOB_TRUNCATETABLE,
     /*    */ CN_JOB_USESCHEMA,
     
@@ -370,6 +371,7 @@ enum eCN : u2 // Class Number
     /*    */ "JOB_SPACE"_Stz,          // CN_JOB_SPACE
     /*    */ "JOB_STATUS"_Stz,         // CN_JOB_STATUS
     /*    */ "JOB_SUBLOADER"_Stz,      // CN_JOB_SUBLOADER
+    /*    */ "JOB_SUBTRUNCATE"_Stz,    // CN_JOB_SUBTRUNCATE
     /*    */ "JOB_TRUNCATETABLE"_Stz,  // CN_JOB_TRUNCATETABLE
     /*    */ "JOB_USESCHEMA"_Stz,      // CN_JOB_USESCHEMA
     

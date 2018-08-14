@@ -125,6 +125,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_SPACE
   /*    */ &Finalize::vUndefined,         // CN_JOB_STATUS
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBLOADER
+  /*    */ &Finalize::vUndefined,         // CN_JOB_SUBTRUNCATE
   /*    */ &Finalize::vUndefined,         // CN_JOB_TRUNCATETABLE
   /*    */ &Finalize::vUndefined,         // CN_JOB_USESCHEMA
   
