@@ -7,47 +7,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //                              Job                                           //
 ////////////////////////////////////////////////////////////////////////////////
-/*----------------------------------------------------------------------------*/
-/* distribute the job to all the nodes                                        */
-/*----------------------------------------------------------------------------*/
-: Job::distribute ( ^task ^job -- )
-
-  locals| pJob pTask |
-
-  // set originating task
-  pTask pJob job.originatingTask!
-
-  // add job to originator jobs
-  pJob job.addOriginator
-
-  // set the no of acks expected in originator job to nodes in the grid
-  grid::nodes pJob job.acksRemaining!
-
-  // grab this task's lock
-  task::this task.grabLock
-
-  // set acks for originator task
-  1 setAcks
-
-  // send the job to each node in the grid
-  grid::nodes 0 do
-
-    // set the send node
-    I grid::node pTask task.sendNode!
-    task.send
-
-    // add job to valset
-    pJob 1 >valset
-
-    // send job
-    >socketR35
-
-  loop
-
-  // wait for ack from deciding job__Ended
-  ackWait
-;
-
 ////////////////////////////////////////////////////////////////////////////////
 //                              Job__Ended                                    //
 ////////////////////////////////////////////////////////////////////////////////
