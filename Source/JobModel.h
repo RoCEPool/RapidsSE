@@ -95,6 +95,8 @@ using namespace JobsModel;
 #include "Job_Status.hpp"
 #include "Job_SubLoader.hpp"
 
+#include "Job_TruncateIndex.hpp"
+
 #include "Job_UseSchema.hpp"
 
 #include "Jobs.hpp"
