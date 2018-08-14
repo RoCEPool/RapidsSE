@@ -9,18 +9,6 @@
 /*----------------------------------------------------------------------------*/
 : spawn_Connector ( -- )
 
-    0                    // no. of args
-    "Connector_seed"     // seed word
-    "ConnectorTask"      // task name
-    TK_CONNECTOR_DRONE   // task kind
-  spawnR35GeneralTask
-;
-
-/*----------------------------------------------------------------------------*/
-/* spawn the connector task                                                   */
-/*----------------------------------------------------------------------------*/
-: spawn_Connector_2 ( -- )
-
   0 locals| pJobClass_Connector |
   0 locals| pJob_Connector |
 
@@ -38,8 +26,21 @@
 
   assertStackDepthZero
 
+  0 locals| pThisTask |
+  0 locals| pJob_Connector |
+
   0 locals| pNode |
   0 locals| pSocket |
+
+  "Connector_seed" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // get the task
+  task::this to pThisTask
+
+  // get the connectpr job from the task
+  pThisTask task.job@ to pJob_Connector
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -77,6 +78,12 @@
   grid::thisNodeName@ "Node %v : SE R35 cluster started" fmt.print
 
   assertStackDepthZero
+
+  // now delete the ended job
+  pJob_Connector job.delete
+
+  // null the job in the task
+  nullptr pThisTask task.job!
 ;
 
 /*============================================================================*/
