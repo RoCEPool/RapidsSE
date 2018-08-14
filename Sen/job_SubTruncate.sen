@@ -1,0 +1,52 @@
+/*============================================================================*/
+/* job_SubTruncate.sen -- Job SubTruncate                                     */
+/*============================================================================*/
+
+"job_SubTruncate.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* SubTruncate (on each node)                                                 */
+/*----------------------------------------------------------------------------*/
+: SubTruncate_seed ( -- <R> )
+
+  0 0 locals| pJob_SubTruncate pTask |
+  0 0 0 locals| iSlot pTable sTableNm |
+
+  tp: SubTruncate
+  "SubTruncate_seed" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob_SubTruncate
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push table
+  pJob_SubTruncate job.objectName@ to sTableNm
+  sTableNm pushTable assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // find the table
+  sTableNm find execute to pTable
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the slot this sub truncate is supposed to work on
+  //pJob_SubTruncate jobSubTruncate.slot@ to iSlot
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // truncate table for iSlot
+  iSlot pTable table.truncate
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop table
+  popTable
+
+  pJob_SubTruncate <DONE_REQUEST>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

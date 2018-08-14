@@ -53,11 +53,6 @@
   dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // push table
-  //pJob_TruncateTable job.objectName to sTableNm
-  //sTableNm pushTable assert
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab this task's lock
   task::this task.grabLock
 
@@ -75,10 +70,7 @@
   ackWait
   "truncateTable acked" .
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pop table
-  //popTable
-
+  
   pJob_TruncateTable job.notice
 
   <DONE_NODE>

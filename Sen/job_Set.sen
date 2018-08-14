@@ -45,6 +45,7 @@
 "job_Space.sen" include
 "job_Status.sen" include
 "job_SubLoader.sen" include
+"job_SubTruncate.sen" include
 
 "job_TruncateTable.sen" include
 
