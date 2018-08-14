@@ -11,18 +11,6 @@ int: nTotalConnections
 /*----------------------------------------------------------------------------*/
 : spawn_Answer ( -- )
 
-    0                  // no. of args
-    "Answer_seed"  // seed word
-    "AnswerTask"       // task name
-    TK_ANSWER_DRONE    // task kind
-  spawnR35GeneralTask
-;
-
-/*----------------------------------------------------------------------------*/
-/* spawn the answer task                                                      */
-/*----------------------------------------------------------------------------*/
-: spawn_Answer_2 ( -- )
-
   0 locals| pJobClass_Answer |
   0 locals| pJob_Answer |
 
