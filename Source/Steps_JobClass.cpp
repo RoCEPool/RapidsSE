@@ -31,7 +31,9 @@ void Task::vJobClassFind(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(iJobClass) )
     THROW_INVALID_DSTACK("jobClass::find"_Stz);
   
-  JobClass* pJobClass = gxJobCatalog.pFindJob((eCN)iJobClass);
+  eCN eClass = (eCN)iJobClass;
+  
+  JobClass* pJobClass = gxJobCatalog.pFindJob(eClass);
   
   mpTask->m_pDataStack->vPushInt((i8)pJobClass);
 

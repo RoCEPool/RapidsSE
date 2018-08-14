@@ -337,10 +337,10 @@ i8 giClassSize[]
 
   /*    */ sizeof(Job_AnalyzeIndex),   // CN_JOB_ANALYZEINDEX
   /*    */ sizeof(Job_AnalyzeTable),   // CN_JOB_ANALYZETABLE
-  /*    */ 0,                          // CN_JOB_ANSWER
-  /*    */ 0,                          // CN_JOB_BOOT
+  /*    */ sizeof(Job_Answer),         // CN_JOB_ANSWER
+  /*    */ sizeof(Job_Boot),           // CN_JOB_BOOT
   /*    */ sizeof(Job_Cf),             // CN_JOB_CF
-  /*    */ 0,                          // CN_JOB_CONNECTOR
+  /*    */ sizeof(Job_Connector),      // CN_JOB_CONNECTOR
   /*    */ sizeof(Job_CreateCatalog),  // CN_JOB_CREATECATALOG
   /*    */ sizeof(Job_CreateIndex),    // CN_JOB_CREATEINDEX
   /*    */ sizeof(Job_CreateSchema),   // CN_JOB_CREATESCHEMA
@@ -365,7 +365,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_LoadTable),      // CN_JOB_LOADTABLE
   /*    */ sizeof(Job_Prompt),         // CN_JOB_PROMPT
   /*    */ sizeof(Job_Pwf),            // CN_JOB_PWF
-  /*    */ 0,                          // CN_JOB_RECEIVER
+  /*    */ sizeof(Job_Receiver),       // CN_JOB_RECEIVER
   /*    */ sizeof(Job_Sanity),         // CN_JOB_SANITY
   /*    */ sizeof(Job_Space),          // CN_JOB_SPACE
   /*    */ sizeof(Job_Status),         // CN_JOB_STATUS

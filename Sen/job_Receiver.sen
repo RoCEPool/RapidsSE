@@ -97,6 +97,56 @@
   hazard
 ;
 
+/*----------------------------------------------------------------------------*/
+/* receiver loop: receive a job, execute it                                   */
+/*----------------------------------------------------------------------------*/
+: Receiver_seed_2 ( pSocket -- )
+
+  tp: Receiver_seed
+
+  params| pSocket |
+
+  assertStackDepthZero
+
+  0 locals| pJob |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // set socket in task (task socket should go)
+  pSocket task::this task.socketR35!
+
+  // set task comment (this should go, never really used it)
+  "Receiver_seed" task::this task.comment!
+
+  args.verbose if
+  grid::thisNode@ "Receiver running on node %v" fmt.print
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  begin
+
+    // check the d-stack depth is zero
+    assertStackDepthZero
+
+    "Receiver_seed recv" .
+    // receive valset from socket
+    socketR35>
+
+    // unpack valset into pJob
+    valset> drop to pJob
+
+    // execute received job
+    pJob job.execute
+
+  again
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // should never exit
+  hazard
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

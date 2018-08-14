@@ -20,7 +20,7 @@ JobNote mJobNote_Receiver (
   JT_NONE,               // job trace
   nullptr,               // prompt pre-process function
   nullptr,               // prompt post-process function
-  nullptr,               // job new function
+  pJob_Receiver_new,     // job new function
   vJob_Receiver_delete,  // job delete function
   nullptr,               // job send function
   nullptr,               // job receive function
