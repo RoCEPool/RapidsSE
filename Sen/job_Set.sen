@@ -46,6 +46,8 @@
 "job_Status.sen" include
 "job_SubLoader.sen" include
 
+"job_TruncateTable.sen" include
+
 "job_UseSchema.sen" include
 
 /*============================================================================*/

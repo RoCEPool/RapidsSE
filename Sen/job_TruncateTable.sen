@@ -1,0 +1,146 @@
+/*============================================================================*/
+/* job_TruncateTable.sen -- Job Truncate Table                                */
+/*============================================================================*/
+
+"job_TruncateTable.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* truncate table request (on originating node)                               */
+/*----------------------------------------------------------------------------*/
+: truncateTable_req ( -- <R> )
+
+  0 0 locals| pJob pTask |
+
+  tp: truncateTable
+  "truncateTable_req" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // distribute the job
+  pTask pJob "job::distribute" find execute
+
+  pJob <DONE_REQUEST>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_TruncateTable job on a node                                     */
+/*----------------------------------------------------------------------------*/
+: truncateTable_node ( Job_TruncateTable -- )
+
+  params| pJob_TruncateTable |
+  0 locals| sTableNm |
+
+  tp: truncateTable_node
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // assert correct job
+  CN_JOB_TRUNCATETABLE pJob_TruncateTable object.assertClass
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab a ddl lock
+  ddlLock::grabWrite
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
+  pJob_TruncateTable getPathR35
+  dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push table
+  //pJob_TruncateTable job.objectName to sTableNm
+  //sTableNm pushTable assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab this task's lock
+  task::this task.grabLock
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the acks
+  grid::slots setAcks
+
+  grid::slots 0
+  do
+  I "Creating Job_SubTruncate %v" fmt.print
+  //pJob_TruncateTable JobTruncateTable.spawnJobSubTruncate
+  loop
+
+  "truncateTable ack waiting" .
+  ackWait
+  "truncateTable acked" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop table
+  //popTable
+
+  pJob_TruncateTable job.notice
+
+  <DONE_NODE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_AnalyzeIndex job check resources                               */
+/*----------------------------------------------------------------------------*/
+: analyzeIndex_checkResources ( Job_AnalyzeIndex -- )
+
+  params| pJob_TruncateTable  |
+  locals| sTableNm |
+
+  tp: analyzeIndex_checkResources
+  "checkResources received" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab a ddl lock
+  ddlLock::grabWrite
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
+  pJob_TruncateTable getPathR35
+  dicStack.set
+
+  //----------------------------------------------------------------------------
+  // should be in the tables folder
+  checkInTables not if <ERROR_JOB> exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // there should be a table folder
+  pJob_TruncateTable job.objectName@ to sTableNm
+  sTableNm checkIsTableFolder not if pJob_TruncateTable <ERROR_REQUEST> exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push table dictionary
+  sTableNm pushTable assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check it is a table
+  sTableNm checkIsTableR35 not if popTable pJob_TruncateTable <ERROR_REQUEST> exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop table dictionary
+  popTable
+
+  <DONE_NODE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_AnalyzeIndex job release resources                             */
+/*----------------------------------------------------------------------------*/
+: truncateTable_releaseResources ( Job_TruncateTable -- )
+
+  params| pJob_TruncateTable  |
+
+  tp: truncateTable_releaseResources
+  "releaseResources received" .
+
+  <DONE_NODE>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

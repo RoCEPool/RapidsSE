@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Job_TruncateIndex.cpp -- analyze index Job                                  */
+/* Job_TruncateTable.cpp -- Truncate Table Job                                */
 /*============================================================================*/
 
 #include "JobModel.h"
@@ -7,24 +7,24 @@
 
 extern AttachMap* gpAttachMap;
 
-JobNote mJobNote_TruncateIndex (
-  "Job_TruncateIndex"_Stz,   // name of the job class
-  CN_JOB_TRUNCATEINDEX,      // class enum
+JobNote mJobNote_TruncateTable (
+  "Job_TruncateTable"_Stz,   // name of the job class
+  CN_JOB_TRUNCATETABLE,      // class enum
   JK_DIST2PC,                // job kind
   "tr tableNm"_Stz,          // comment about the job
   "tr"_Stz,                  // the prompt command
   nullptr,                   // the second word
-  "truncateIndex"_Stz,       // the task seed for this job
+  "truncateTable"_Stz,       // the task seed for this job
   true,                      // check resources?
   false,                     // detached job?
   JT_NONE,                   // job trace
-  pJob_TruncateIndex_pre,    // prompt pre-process function
-  vJob_TruncateIndex_post,   // prompt post-process function
+  pJob_TruncateTable_pre,    // prompt pre-process function
+  vJob_TruncateTable_post,   // prompt post-process function
   nullptr,                   // job new function
-  vJob_TruncateIndex_delete, // job delete function
+  vJob_TruncateTable_delete, // job delete function
   nullptr,                   // job send function
   nullptr,                   // job receive function
-  vJob_TruncateIndex_show,   // job show function
+  vJob_TruncateTable_show,   // job show function
   true,                      // job is enabled
   "<help>"_Stz,              // help
   "<example>"_Stz            // example
@@ -37,32 +37,32 @@ JobNote mJobNote_TruncateIndex (
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_TruncateIndex* JobsModel::_pJob_TruncateIndex(void* aAddress)
+Job_TruncateTable* JobsModel::_pJob_TruncateTable(void* aAddress)
 {
-  Job_TruncateIndex* pJob_TruncateIndex = reinterpret_cast<Job_TruncateIndex*>(aAddress);
+  Job_TruncateTable* pJob_TruncateTable = reinterpret_cast<Job_TruncateTable*>(aAddress);
   
-  RASSERT( !pJob_TruncateIndex || CN_JOB_TRUNCATEINDEX == pJob_TruncateIndex->eClass());
+  RASSERT( !pJob_TruncateTable || CN_JOB_TRUNCATETABLE == pJob_TruncateTable->eClass());
   
-  return pJob_TruncateIndex;
+  return pJob_TruncateTable;
 }
 
 /*----------------------------------------------------------------------------*/
 /* allocate a new entry buffer from heap                                      */
 /*----------------------------------------------------------------------------*/
-void* Job_TruncateIndex::operator new(size_t iSize)
+void* Job_TruncateTable::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  Job_TruncateIndex* pJob_TruncateIndex =
-    static_cast<Job_TruncateIndex*>(Heap::pAllocate(CN_JOB_TRUNCATEINDEX));
+  Job_TruncateTable* pJob_TruncateTable =
+    static_cast<Job_TruncateTable*>(Heap::pAllocate(CN_JOB_TRUNCATETABLE));
   
-  return pJob_TruncateIndex;
+  return pJob_TruncateTable;
 }
 
 /*----------------------------------------------------------------------------*/
 /* perform new of entry buffer for given address                              */
 /*----------------------------------------------------------------------------*/
-void* Job_TruncateIndex::operator new(size_t iSize, void* aAddress)
+void* Job_TruncateTable::operator new(size_t iSize, void* aAddress)
 {
   RASSERT(iSize);
   
@@ -72,37 +72,37 @@ void* Job_TruncateIndex::operator new(size_t iSize, void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* free an entry buffer back to the heap                                      */
 /*----------------------------------------------------------------------------*/
-void Job_TruncateIndex::operator delete(void* aAddress)
+void Job_TruncateTable::operator delete(void* aAddress)
 {
-  Job_TruncateIndex* pJob_TruncateIndex = static_cast<Job_TruncateIndex*>(aAddress);
+  Job_TruncateTable* pJob_TruncateTable = static_cast<Job_TruncateTable*>(aAddress);
   
-  Heap::vFree(pJob_TruncateIndex);
+  Heap::vFree(pJob_TruncateTable);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_TruncateIndex::Job_TruncateIndex(Interface::SEitf* pSEitf)
-: Job(CN_JOB_TRUNCATEINDEX, pSEitf)
+Job_TruncateTable::Job_TruncateTable(Interface::SEitf* pSEitf)
+: Job(CN_JOB_TRUNCATETABLE, pSEitf)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_TRUNCATEINDEX,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_TRUNCATETABLE,_FOOTER_);
     
-  m_sSeed = mJobNote_TruncateIndex.pJobClass()->m_aSeed;
+  m_sSeed = mJobNote_TruncateTable.pJobClass()->m_aSeed;
   m_bCheckResources  = true;
   m_sTableName       = ""_Stz;
   m_bIsDetailed      = false;
   
   _checkInitialised_(CN_JOB_ANALYZETABLE);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_TRUNCATEINDEX,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_TRUNCATETABLE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_TruncateIndex::~Job_TruncateIndex(void)
+Job_TruncateTable::~Job_TruncateTable(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_TRUNCATEINDEX,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_TRUNCATETABLE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -112,14 +112,14 @@ Job_TruncateIndex::~Job_TruncateIndex(void)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void Job_TruncateIndex::vDump(eCN eClass, Object* pObject, Stz* aTab)
+void Job_TruncateTable::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_ANALYZEINDEX == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_TRUNCATEINDEX);
+  RASSERT(CN_JOB_TRUNCATETABLE == eClass);
+  RASSERT(pObject->eClass() == CN_JOB_TRUNCATETABLE);
   
-  Job_TruncateIndex* pJob_TruncateIndex = _pJob_TruncateIndex(pObject);
+  Job_TruncateTable* pJob_TruncateTable = _pJob_TruncateTable(pObject);
 
-  pJob_TruncateIndex->vShow();
+  pJob_TruncateTable->vShow();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -129,9 +129,9 @@ void Job_TruncateIndex::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* populate the job                                                           */
 /*----------------------------------------------------------------------------*/
-bool Job_TruncateIndex::bPopulateJob(TokenVec* pTokenVec)
+bool Job_TruncateTable::bPopulateJob(TokenVec* pTokenVec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_TRUNCATEINDEX,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_TRUNCATETABLE,_FOOTER_);
   
   i8 iNumTokens;
   
@@ -155,9 +155,9 @@ bool Job_TruncateIndex::bPopulateJob(TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
-void Job_TruncateIndex::vShow(void)
+void Job_TruncateTable::vShow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_TRUNCATEINDEX,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_TRUNCATETABLE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -167,9 +167,9 @@ void Job_TruncateIndex::vShow(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Job_TruncateIndex::aFooter(void)
+Footer* Job_TruncateTable::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_TRUNCATEINDEX);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_TRUNCATETABLE);
   
   return &m_xFooter;
 }
@@ -181,34 +181,34 @@ Footer* Job_TruncateIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_TruncateIndex_pre(Interface::SEitf* pSEitf)
+Job* JobsModel::pJob_TruncateTable_pre(Interface::SEitf* pSEitf)
 {
-  Job_TruncateIndex* pJob_TruncateIndex = new Job_TruncateIndex(pSEitf);
+  Job_TruncateTable* pJob_TruncateTable = new Job_TruncateTable(pSEitf);
   
   TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
   
-  bool bResult = pJob_TruncateIndex->bPopulateJob(pTokenVec);
+  bool bResult = pJob_TruncateTable->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
     i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_TruncateIndex->m_bHasError = true;
-    pJob_TruncateIndex->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+    pJob_TruncateTable->m_bHasError = true;
+    pJob_TruncateTable->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
   }
   
-  return pJob_TruncateIndex;
+  return pJob_TruncateTable;
 }
 
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_TruncateIndex_post(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_TruncateTable_post(Interface::SEitf* pSEitf, Job* pJob)
 {
-  Job_TruncateIndex* pJob_TruncateIndex = _pJob_TruncateIndex(pJob);
+  Job_TruncateTable* pJob_TruncateTable = _pJob_TruncateTable(pJob);
   
-  if ( pJob_TruncateIndex->m_bHasError ) {
+  if ( pJob_TruncateTable->m_bHasError ) {
     
     for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("ERROR (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob_TruncateIndex->m_xNode[i_Node].m_eErrorCode]);
+      vTrace("ERROR (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob_TruncateTable->m_xNode[i_Node].m_eErrorCode]);
     }
     
   }
@@ -217,21 +217,21 @@ void JobsModel::vJob_TruncateIndex_post(Interface::SEitf* pSEitf, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_TruncateIndex_delete(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_TruncateTable_delete(Interface::SEitf* pSEitf, Job* pJob)
 {
-  Job_TruncateIndex* pJob_TruncateIndex = _pJob_TruncateIndex(pJob);
+  Job_TruncateTable* pJob_TruncateTable = _pJob_TruncateTable(pJob);
   
-  delete pJob_TruncateIndex;
+  delete pJob_TruncateTable;
 }
 
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_TruncateIndex_show(Job* pJob)
+void JobsModel::vJob_TruncateTable_show(Job* pJob)
 {
-  Job_TruncateIndex* pJob_TruncateIndex = _pJob_TruncateIndex(pJob);
+  Job_TruncateTable* pJob_TruncateTable = _pJob_TruncateTable(pJob);
 
-  pJob_TruncateIndex->vShow();
+  pJob_TruncateTable->vShow();
 }
 
 /*============================================================================*/
