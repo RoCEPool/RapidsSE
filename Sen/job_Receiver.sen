@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* r35ReceiverTask.sen -- R35 receiver task                                   */
+/* job_Receiver.sen -- receiver job                                           */
 /*============================================================================*/
 
 "r35ReceiverTask.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* spawn the receiver task                                                    */
+/* spawn the receiver                                                         */
 /*----------------------------------------------------------------------------*/
-: spawnR35ReceiverTask ( pSocket iConnNo -- )
+: spawn_Receiver ( pSocket iConnNo -- )
 
   params| iConnNo |
   params| pSocket |

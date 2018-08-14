@@ -76,7 +76,7 @@ int: nTotalConnections
 
       pAcceptedSocket
       nTotalConnections @
-    spawnR35ReceiverTask to pReceiverTask
+    spawn_Receiver to pReceiverTask
 
     ddlLock::dropWrite
 
