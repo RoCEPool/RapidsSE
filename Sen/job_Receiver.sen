@@ -41,6 +41,9 @@
 
   nullptr pJobClass_Receiver jobClass.new to pJob_Receiver
 
+  iConnNo pJob_Receiver job_receiver.connNo!
+  pSocket pJob_Receiver job_receiver.socket!
+
   pJob_Receiver job.spawn
 ;
 
