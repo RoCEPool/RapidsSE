@@ -12,7 +12,7 @@ int: nTotalConnections
 : spawn_Answer ( -- )
 
     0                  // no. of args
-    "_r35answerLoop_"  // seed word
+    "Answer_seed"  // seed word
     "AnswerTask"       // task name
     TK_ANSWER_DRONE    // task kind
   spawnR35GeneralTask
@@ -24,7 +24,7 @@ int: nTotalConnections
 : spawn_Answer_2 ( -- )
 
   0                  // no. of args
-  "_r35answerLoop_"  // seed word
+  "Answer_seed"  // seed word
   "AnswerTask"       // task name
   TK_ANSWER_DRONE    // task kind
   spawnR35GeneralTask
@@ -33,7 +33,7 @@ int: nTotalConnections
 /*----------------------------------------------------------------------------*/
 /* answer loop: accept new sockets, spawn receiver task                       */
 /*----------------------------------------------------------------------------*/
-: _r35AnswerLoop_ ( -- )
+: Answer_seed ( -- )
 
   assertStackDepthZero
 
