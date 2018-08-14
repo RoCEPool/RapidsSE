@@ -4,6 +4,10 @@
 
 "job_Set.sen" .verbose
 
+"Job_Receiver.sen" include
+"job_Connector.sen" include
+"Job_Answer.sen" include
+
 "job_AnalyzeIndex.sen" include
 "job_AnalyzeTable.sen" include
 

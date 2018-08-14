@@ -8,11 +8,6 @@
 "r35Sockets.sen" include
 "r35JobExecute.sen" include
 
-"Job_Receiver.sen" include
-
-"job_Connector.sen" include
-"Job_Answer.sen" include
-
 "job__generic.sen" include
 
 /*============================================================================*/
