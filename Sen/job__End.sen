@@ -1,0 +1,69 @@
+/*============================================================================*/
+/* job__End.sen -- generic job related words                                  */
+/*============================================================================*/
+
+"job__End.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* execute Job__End on participating node                                     */
+/*----------------------------------------------------------------------------*/
+: Job__End::execute ( iJobId pJob__End -- )
+
+  params| pJob__End iJobId |
+
+  0 locals| pJob |
+
+  // find the job in the participating jobs
+  iJobId job.findParticipant to pJob
+
+  // remove the job from the participant jobs
+  pJob job.removeParticipant
+
+  // delete the job
+  pJob job.delete
+
+  iJobId Job__Ended::send
+;
+
+/*----------------------------------------------------------------------------*/
+/* distribute Job__End to all participants                                    */
+/*----------------------------------------------------------------------------*/
+: Job__End::distribute ( pJob -- )
+
+  //
+  // where:  On the originator node.
+  //
+
+  params| pJob |
+
+  0 locals| pJob__End |
+
+  // set the no of acks expected in originator job
+  grid::nodes pJob job.acksRemaining!
+
+  // new a temporary Job__End
+  pJob job.id@ job.newEnd to pJob__End
+
+  // send Job__End to all nodes
+  grid::nodes 0
+  do
+  // set which node this task will to send to
+  I grid::node task::this task.sendNode!
+
+  // move this task through send state/queue
+  task.send
+
+  // pack Job__End into a valset
+  pJob__End 1 >valset
+
+  // send the end job
+  >socketR35
+  loop
+
+  // now delete the end job
+  pJob__End jobEnd.delete
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

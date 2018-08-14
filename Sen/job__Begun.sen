@@ -1,0 +1,107 @@
+/*============================================================================*/
+/* job__Begun.sen -- generic job related words                                */
+/*============================================================================*/
+
+"job__Begun.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* send Job__Begun back to originating node                                   */
+/*----------------------------------------------------------------------------*/
+: Job__Begun::send ( iJobId pJobParticipant -- )
+
+  params| pJobParticipant iJobId |
+
+  0 0 0 locals| pJob pJob__Begun error |
+
+  // new a temporary Job__Executed
+  iJobId job.newBegun to pJob__Begun
+
+  // set the originator node as the send target node
+  iJobId job::originator@ grid::node task::this task.sendNode!
+
+  // get error if any
+  grid::thisNode@ pJobParticipant job.error@ to error
+
+  error EC_NONE != if
+    // set error in executed job
+    error error.msg "Setting error '%v' in Job__Begun" str.format .
+    error pJob__Begun jobBegun.error!
+  then
+
+  // move this task through send state/queue
+  task.send
+
+  // pack Job__Executed into a valset
+  pJob__Begun 1 >valset
+
+  // send Job__Executed
+  >socketR35
+
+  // delete the Job__Executed
+  pJob__Begun jobBegun.delete
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job__Begun on originating node                                     */
+/*----------------------------------------------------------------------------*/
+: Job__Begun::execute ( iJobId Job__Begun -- )
+
+  //
+  // where:  On the originator node.
+  // event:  A Job__Begun has been received from a participating node
+  //         indicating the job has been received and put into the
+  //         participating jobs list.
+  // data:   The job will exist in the originating jobs list.
+  // action: 1) find the job in the originating list;
+  //         2) decrement its ack's remaining
+  //         3) if all acks received distribute Job_Execute
+  //
+
+  params| pJob__Begun iJobId |
+
+  0 locals| pJob  |
+  0 0 0 0 locals| iAcksRemaining error pJobParticipant iParticipantNode |
+
+  // get participant node that executed the job
+  iJobId job.findParticipant to pJobParticipant
+  pJob__Begun job.participant@ to iParticipantNode
+
+  // find the job in the originator jobs
+  iJobId job.findOriginator to pJob
+
+  // get the error code from job__executed
+  pJob__Begun jobBegun.error@ to error
+
+  error EC_NONE != if
+    // set the error code in pJob
+    error iParticipantNode pJob job.error!
+  then
+
+  // decrement the acks remaining
+  pJob job.decAcksRemaining to iAcksRemaining
+
+  // test for all acks received all
+  iAcksRemaining 0 != if exit then
+
+  "received job__begun from all nodes" .
+
+  // received job__begun from all nodes
+  // this is the decider job.
+
+  // check if any node returned an error
+  grid::nodes 0 do
+    I pJob job.error@ EC_NONE != if
+      // distribute Job__Cancel to all participants
+      pJob Job__Cancel::distribute
+      unloop
+      exit
+    then
+  loop
+
+  // distribute Job__Execute to all participants
+  pJob Job__Execute::distribute
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -1,0 +1,84 @@
+/*============================================================================*/
+/* job__Ended.sen -- generic job related words                                */
+/*============================================================================*/
+
+"job__Ended.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* execute Job__Ended on originating node                                     */
+/*----------------------------------------------------------------------------*/
+: Job__Ended::execute ( iJobId pJob__Ended -- )
+
+  params| pJob__Ended iJobId |
+
+  0 0 locals| pJob iAcksRemaining |
+
+  // find the job in the originator jobs
+  iJobId job.findOriginator to pJob
+
+  // decrement the acks remaining
+  pJob job.decAcksRemaining to iAcksRemaining
+
+  // if there are acks remaining just exit
+  iAcksRemaining 0 != if exit then
+
+  "received Job__Ended from all nodes" .
+
+  // all the lines below get moved to nodeStatusR35_req
+/*
+  grid::nodes 0
+  do
+    I pJob job.error@ error.msg .
+  loop
+
+  // somehow notify the request task that job is ended
+  // all the lines below get moved to nodeStatusR35_req
+  grid::nodes 0
+  do
+    I pJob job.response@ .
+  loop
+
+  // remove the job from the originator jobs
+  pJob job.removeOriginator
+
+  // delete the job
+  pJob job.delete
+*/
+
+  // remove the job from the originator jobs
+  pJob job.removeOriginator
+
+  // notify the originating task
+  pJob job.originatingTask@ ack
+
+  "All Done" .
+;
+
+/*----------------------------------------------------------------------------*/
+/* send Job__Ended back to originating node                                   */
+/*----------------------------------------------------------------------------*/
+: Job__Ended::send ( iJobId -- )
+
+  params| iJobId |
+
+  0 locals| pJob__Ended |
+
+  // send ended to originating node
+  iJobId job.newEnded to pJob__Ended
+
+  // send job__end to originating node
+  iJobId job::originator@ grid::node task::this task.sendNode!
+  task.send
+
+  // send the ended job
+  pJob__Ended 1 >valset
+
+  >socketR35
+
+  // now delete the ended job
+  pJob__Ended jobEnded.delete
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

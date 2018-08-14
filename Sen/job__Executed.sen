@@ -1,0 +1,96 @@
+/*============================================================================*/
+/* job__Executed.sen -- generic job related words                             */
+/*============================================================================*/
+
+"job__Executed.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* send Job__Executed back to originating node                                */
+/*----------------------------------------------------------------------------*/
+: Job__Executed::send ( iJobId pJobParticipant -- )
+
+  params| pJobParticipant iJobId |
+
+  0 0 0 locals| pJob pJob__Executed error |
+
+  // new a temporary Job__Executed
+  iJobId job.newExecuted to pJob__Executed
+
+  // set the originator node as the send target node
+  iJobId job::originator@ grid::node task::this task.sendNode!
+
+  grid::thisNode@ pJobParticipant job.error@ to error
+
+  error EC_NONE == if
+    // get the response from participant job and set it in executed job
+    grid::thisNode@  pJobParticipant job.response@ pJob__Executed jobExecuted.response!
+
+    // get the no of rows processed from participant job and set it in executed job
+    grid::thisNode@  pJobParticipant job.rowsProcessed@ pJob__Executed jobExecuted.rowsProcessed!
+  else
+     // set error in executed job
+     error pJob__Executed jobExecuted.error!
+  then
+
+  // move this task through send state/queue
+  task.send
+
+  // pack Job__Executed into a valset
+  pJob__Executed 1 >valset
+
+  // send Job__Executed
+  >socketR35
+
+  // delete the Job__Executed
+  pJob__Executed jobExecuted.delete
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job__Executed on originating node                                  */
+/*----------------------------------------------------------------------------*/
+: Job__Executed::execute ( iJobId pJob__Executed -- )
+
+  params| pJob__Executed iJobId |
+
+  0 0 0 0 0 locals| pJobParticipant iParticipantNode error pJob iAcksRemaining |
+
+  // get participant node that executed the job
+  iJobId job.findParticipant to pJobParticipant
+  pJob__Executed job.participant@ to iParticipantNode
+
+  // find the job in the originator jobs
+  iJobId job.findOriginator to pJob
+
+  // get the error code from job__executed
+  pJob__Executed jobExecuted.error@ to error
+
+  error EC_NONE == if
+
+    // get the response string from job__executed and set in pJob
+    pJob__Executed jobExecuted.response@ iParticipantNode pJob job.response!
+
+    // get the rows processed from job__executed and set in pJob
+    pJob__Executed jobExecuted.rowsProcessed@ iParticipantNode pJob job.rowsProcessed!
+
+  else
+
+    // set the error code in pJob
+    error iParticipantNode pJob job.error!
+
+  then
+
+  // decrement the acks remaining
+  pJob job.decAcksRemaining to iAcksRemaining
+
+  // if there are acks remaining just exit
+  iAcksRemaining 0 != if exit then
+
+  "received Job__Executed from all nodes" .
+
+  pJob Job__End::distribute
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

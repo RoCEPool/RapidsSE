@@ -1,0 +1,77 @@
+/*============================================================================*/
+/* job__Cancelled.sen -- generic job related words                            */
+/*============================================================================*/
+
+"job__Cancelled.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* send Job__Cancelled back to originating node                               */
+/*----------------------------------------------------------------------------*/
+: Job__Cancelled::send ( iJobId pJobParticipant -- )
+
+  params| pJobParticipant iJobId |
+
+  0 0 0 locals| pJob pJob__Cancelled error |
+
+  // new a temporary Job__Cancelled
+  iJobId job.newCancelled to pJob__Cancelled
+
+  // set the originator node as the send target node
+  iJobId job::originator@ grid::node task::this task.sendNode!
+
+  grid::thisNode@ pJobParticipant job.error@ to error
+
+  error EC_NONE != if
+    // set error in executed job
+    error pJob__Cancelled jobCancelled.error!
+  then
+
+  // move this task through send state/queue
+  task.send
+
+  // pack Job__Cancelled into a valset
+  pJob__Cancelled 1 >valset
+
+  // send Job__Executed
+  >socketR35
+
+  // delete the pJob__Cancelled
+  pJob__Cancelled jobCancelled.delete
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job__Cancelled on originating node                                 */
+/*----------------------------------------------------------------------------*/
+: Job__Cancelled::execute ( iJobId pJob__Cancelled -- )
+
+  params| pJob__Cancelled iJobId |
+
+  0 0 0 0 0 locals| pJobParticipant iParticipantNode error pJob iAcksRemaining |
+
+  // get participant node that executed the job
+  iJobId job.findParticipant to pJobParticipant
+  pJob__Cancelled job.participant@ to iParticipantNode
+
+  // find the job in the originator jobs
+  iJobId job.findOriginator to pJob
+
+  // get the error code from job__executed
+  pJob__Cancelled jobCancelled.error@ to error
+
+  // set the error code in pJob
+  error iParticipantNode pJob job.error!
+
+  // decrement the acks remaining
+  pJob job.decAcksRemaining to iAcksRemaining
+
+  // if there are acks remaining just exit
+  iAcksRemaining 0 != if exit then
+
+  "received Job__Executed from all nodes" .
+
+  pJob Job__End::distribute
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

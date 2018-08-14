@@ -4,7 +4,15 @@
 
 "job_Set.sen" .verbose
 
-"Job_Receiver.sen" include
+"job__Ended.sen" include
+"job__End.sen" include
+"job__Cancelled.sen" include
+"job__Cancel.sen" include
+"job__Executed.sen" include
+"job__Execute.sen" include
+"job__Begun.sen" include
+
+"job_Receiver.sen" include
 "job_Connector.sen" include
 "Job_Answer.sen" include
 

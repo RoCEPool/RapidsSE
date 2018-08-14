@@ -1,0 +1,70 @@
+/*============================================================================*/
+/* job__Cancel.sen -- generic job related words                               */
+/*============================================================================*/
+
+"job__Cancel.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* distribute Job__Cancel to all participants                                 */
+/*----------------------------------------------------------------------------*/
+: Job__Cancel::distribute ( pJob -- )
+
+  //
+  // where:  On the originator node.
+  //
+
+  params| pJob |
+
+  0 locals| pJob__Cancel |
+
+  // set the no of acks expected in originator job
+  grid::nodes pJob job.acksRemaining!
+
+  // create a new Job__Cancel
+  pJob job.id@ job.newCancel to pJob__Cancel
+
+  // send job__execute to all nodes
+  grid::nodes 0
+  do
+    // set which node this task will to send to
+    I grid::node task::this task.sendNode!
+
+    // move this task through send state/queue
+    task.send
+
+    // pack Job__Cancel into a valset
+    pJob__Cancel 1 >valset
+
+    // send the execute job
+    >socketR35
+  loop
+
+  // now delete the cancel job
+  pJob__Cancel jobCancel.delete
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job__Cancel on participating node                                 */
+/*----------------------------------------------------------------------------*/
+: Job__Cancel::execute ( iJobId pJob__Execute -- )
+
+  params| pJob__Cancel iJobId |
+
+  0 0 0 locals| sReleaseResources pJob pJobCancelled |
+
+  // find the job in the participating jobs
+  iJobId job.findParticipant to pJob
+
+  // execute the job's releaseResources command
+  pJob job.releaseResources@ to sReleaseResources
+  sReleaseResources "" str.equal not if 
+    pJob sReleaseResources find execute
+  then
+
+  // send job__executed back to originating node
+  iJobId pJob Job__Cancelled::send
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
