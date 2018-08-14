@@ -43,54 +43,6 @@ queue: requestQueue
 ;
 
 /*----------------------------------------------------------------------------*/
-/* copy dictionary path from job to datastack                                 */
-/*----------------------------------------------------------------------------*/
-: getPathR35 ( pJob -- )
-
-  0 0 locals| pDicPathJob pDicStackTask pJob |
-
-  // get job dic path
-  pJob job.dicPath to pDicPathJob
-
-  // get task dic stack
-  task::this task.dicStack to pDicStackTask
-
-  // copy the path from job dic path onto data stack
-  pDicPathJob dicPath.depth 0 ?do
-    I pDicPathJob dicPath.pick
-  loop
-
-  pDicPathJob dicPath.depth
-;
-
-/*----------------------------------------------------------------------------*/
-/* set dictionary path of this task back into seitf                           */
-/*----------------------------------------------------------------------------*/
-: savePathR35 ( -- )
-
-  0 0 locals| pDicStackSEitf pDicStackTask |
-
-  // get seitf dic stack
-  task::this task.seitf@ seitf.dicStack to pDicStackSEitf
-
-  // get task dic stack
-  task::this task.dicStack to pDicStackTask
-
-  // copy the path from task dic stack onto data stack
-  pDicStackTask dicStack.depth 0 ?do
-    I pDicStackTask dicStack.pick
-  loop
-
-  // clear seitf dic stack
-  pDicStackSEitf dicStack.dropAll
-
-  // copy the path from data stack onto seitf dic stack
-  pDicStackTask dicStack.depth 0 ?do
-    pDicStackSEitf dicStack.push
-  loop
-;
-
-/*----------------------------------------------------------------------------*/
 /* save dictionary path of this request task back into seitf                  */
 /*----------------------------------------------------------------------------*/
 : savePath
