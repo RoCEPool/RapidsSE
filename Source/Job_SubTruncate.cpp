@@ -83,15 +83,15 @@ void Job_SubTruncate::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_SubTruncate::Job_SubTruncate(Interface::SEitf* pSEitf)
-: Job(CN_JOB_TRUNCATETABLE, pSEitf)
+: Job(CN_JOB_SUBTRUNCATE, pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBTRUNCATE,_FOOTER_);
     
   m_sSeed = mJobNote_SubTruncate.pJobClass()->m_aSeed;
-  m_bCheckResources  = true;
-  m_iSlot = -1;
+  m_bCheckResources = false;
+  m_iSlot           = -1;
   
-  _checkInitialised_(CN_JOB_ANALYZETABLE);
+  _checkInitialised_(CN_JOB_SUBTRUNCATE);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBTRUNCATE,_FOOTER_);
 }
@@ -126,32 +126,6 @@ void Job_SubTruncate::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* populate the job                                                           */
-/*----------------------------------------------------------------------------*/
-bool Job_SubTruncate::bPopulateJob(TokenVec* pTokenVec)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBTRUNCATE,_FOOTER_);
-  
-  i8 iNumTokens;
-  
-  ASSERT(pTokenVec->pGet(0)->bSame("anidx"_Stz));
-  
-  // get number of items in token vector
-  iNumTokens = pTokenVec->nItems();
-  
-  // - - - - - - - - - - - - - - - - - - - - -
-  // there should be 2 tokens
-  if (iNumTokens != 2)
-    return false;
-  
-  // - - - - - - - - - - - - - - - - - - - - -
-  // set the table name
-  m_sObjectName = pTokenVec->pGet(1)->aText();
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
 void Job_SubTruncate::vShow(void)
@@ -183,16 +157,6 @@ Footer* Job_SubTruncate::aFooter(void)
 Job* JobsModel::pJob_SubTruncate_pre(Interface::SEitf* pSEitf)
 {
   Job_SubTruncate* pJob_SubTruncate = new Job_SubTruncate(pSEitf);
-  
-  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
-  
-  bool bResult = pJob_SubTruncate->bPopulateJob(pTokenVec);
-  
-  if ( !bResult) {
-    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_SubTruncate->m_bHasError = true;
-    pJob_SubTruncate->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
-  }
   
   return pJob_SubTruncate;
 }

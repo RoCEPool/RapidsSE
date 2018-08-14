@@ -92,7 +92,7 @@ Job_AnalyzeIndex::Job_AnalyzeIndex(Interface::SEitf* pSEitf)
   m_sTableName       = ""_Stz;
   m_bIsDetailed      = false;
   
-  _checkInitialised_(CN_JOB_ANALYZETABLE);
+  _checkInitialised_(CN_JOB_ANALYZEINDEX);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_ANALYZEINDEX,_FOOTER_);
 }

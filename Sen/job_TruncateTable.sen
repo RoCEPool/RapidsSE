@@ -30,7 +30,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_TruncateTable job on a node                                     */
+/* execute Job_TruncateTable job on a node                                    */
 /*----------------------------------------------------------------------------*/
 : truncateTable_node ( Job_TruncateTable -- )
 
@@ -38,11 +38,11 @@
   0 locals| sTableNm |
 
   tp: truncateTable_node
-
+"t1" .
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert correct job
   CN_JOB_TRUNCATETABLE pJob_TruncateTable object.assertClass
-
+"t2" .
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
   ddlLock::grabWrite
@@ -63,7 +63,7 @@
   grid::slots 0
   do
     I "Creating Job_SubTruncate %v" fmt.print
-    pJob_TruncateTable job_truncateTable.spawnSub
+    I pJob_TruncateTable job_truncateTable.spawnSub
   loop
 
   "truncateTable ack waiting" .
@@ -78,12 +78,12 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_AnalyzeIndex job check resources                               */
 /*----------------------------------------------------------------------------*/
-: analyzeIndex_checkResources ( Job_AnalyzeIndex -- )
+: truncateTable_checkResources ( Job_AnalyzeIndex -- )
 
   params| pJob_TruncateTable  |
-  locals| sTableNm |
+  0 locals| sTableNm |
 
-  tp: analyzeIndex_checkResources
+  tp: truncateTable_checkResources
   "checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -95,7 +95,7 @@
   pJob_TruncateTable getPathR35
   dicStack.set
 
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in the tables folder
   checkInTables not if <ERROR_JOB> exit then
 

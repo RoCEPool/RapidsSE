@@ -90,7 +90,7 @@ Job_TruncateTable::Job_TruncateTable(Interface::SEitf* pSEitf)
   m_sSeed = mJobNote_TruncateTable.pJobClass()->m_aSeed;
   m_bCheckResources  = true;
   
-  _checkInitialised_(CN_JOB_ANALYZETABLE);
+  _checkInitialised_(CN_JOB_TRUNCATETABLE);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_TRUNCATETABLE,_FOOTER_);
 }
@@ -133,7 +133,7 @@ bool Job_TruncateTable::bPopulateJob(TokenVec* pTokenVec)
   
   i8 iNumTokens;
   
-  ASSERT(pTokenVec->pGet(0)->bSame("anidx"_Stz));
+  ASSERT(pTokenVec->pGet(0)->bSame("tr"_Stz));
   
   // get number of items in token vector
   iNumTokens = pTokenVec->nItems();
