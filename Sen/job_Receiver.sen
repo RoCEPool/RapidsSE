@@ -100,17 +100,29 @@
 /*----------------------------------------------------------------------------*/
 /* receiver loop: receive a job, execute it                                   */
 /*----------------------------------------------------------------------------*/
-: Receiver_seed_2 ( pSocket -- )
+: Receiver_seed_2 ( -- )
 
   tp: Receiver_seed
 
-  params| pSocket |
+  0 locals| pThisTask |
+  0 locals| pJob_Receiver |
 
-  assertStackDepthZero
-
+  0 locals| pSocket |
   0 locals| pJob |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // get the task
+  task::this to pThisTask
+
+  // get the job from the task
+  pThisTask task.job@ to pJob_Receiver
+  pJob_Receiver pThisTask "Receiver_seed task: %v job_Receiver %v" fmt.print
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // get socket
+  pJob_Receiver job_receiver.socket@ to pSocket
 
   // set socket in task (task socket should go)
   pSocket task::this task.socketR35!
@@ -119,7 +131,7 @@
   "Receiver_seed" task::this task.comment!
 
   args.verbose if
-  grid::thisNode@ "Receiver running on node %v" fmt.print
+    grid::thisNode@ "Receiver running on node %v" fmt.print
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
