@@ -9,12 +9,24 @@ int: nTotalConnections
 /*----------------------------------------------------------------------------*/
 /* spawn the answer task                                                      */
 /*----------------------------------------------------------------------------*/
-: spawnR35AnswerTask ( -- )
+: spawn_Answer ( -- )
 
     0                  // no. of args
     "_r35answerLoop_"  // seed word
     "AnswerTask"       // task name
     TK_ANSWER_DRONE    // task kind
+  spawnR35GeneralTask
+;
+
+/*----------------------------------------------------------------------------*/
+/* spawn the answer task                                                      */
+/*----------------------------------------------------------------------------*/
+: spawn_Answer_2 ( -- )
+
+  0                  // no. of args
+  "_r35answerLoop_"  // seed word
+  "AnswerTask"       // task name
+  TK_ANSWER_DRONE    // task kind
   spawnR35GeneralTask
 ;
 
