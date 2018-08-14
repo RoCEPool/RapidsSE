@@ -14,7 +14,6 @@
 "semaphores.sen" include
 "tasks.sen" include
 "threads.sen" include
-"transactions.sen" include
 "interface.sen" include
 "gridModel.sen" include
 "actorModels.sen" include
