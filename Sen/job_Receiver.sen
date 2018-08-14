@@ -7,28 +7,6 @@
 /*----------------------------------------------------------------------------*/
 /* spawn the receiver task                                                    */
 /*----------------------------------------------------------------------------*/
-: spawnR35ReceiverTask_2 ( pSocket iConnNo -- )
-
-  params| iConnNo |
-  params| pSocket |
-
-  0 locals| sTaskName |
-
-  // form the task name
-  iConnNo grid::thisNode@ "Node%v_rr%v" str.format to sTaskName
-
-  // spawn the receiver
-    pSocket             // socket
-    1                   // no. of args
-    "Receiver_seed"     // seed word
-    sTaskName           // task name
-    TK_RECEIVER_DRONE   // task kind
-  spawnR35GeneralTask
-;
-
-/*----------------------------------------------------------------------------*/
-/* spawn the receiver task                                                    */
-/*----------------------------------------------------------------------------*/
 : spawnR35ReceiverTask ( pSocket iConnNo -- )
 
   params| iConnNo |
@@ -45,56 +23,6 @@
   pSocket pJob_Receiver job_receiver.socket!
 
   pJob_Receiver job.spawn
-;
-
-/*----------------------------------------------------------------------------*/
-/* receiver loop: receive a job, execute it                                   */
-/*----------------------------------------------------------------------------*/
-: Receiver_seed_2 ( pSocket -- )
-
-  tp: Receiver_seed
-
-  params| pSocket |
-
-  assertStackDepthZero
-
-  0 locals| pJob |
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // set socket in task (task socket should go)
-  pSocket task::this task.socketR35!
-
-  // set task comment (this should go, never really used it)
-  "Receiver_seed" task::this task.comment!
-
-  args.verbose if
-    grid::thisNode@ "Receiver running on node %v" fmt.print
-  then
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  begin
-
-    // check the d-stack depth is zero
-    assertStackDepthZero
-
-   "Receiver_seed recv" .
-    // receive valset from socket
-    socketR35>
-
-    // unpack valset into pJob
-    valset> drop to pJob
-
-    // execute received job
-    pJob job.execute
-
-  again
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // should never exit
-  hazard
 ;
 
 /*----------------------------------------------------------------------------*/
