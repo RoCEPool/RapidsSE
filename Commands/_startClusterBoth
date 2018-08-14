@@ -8,7 +8,7 @@ docol setStartNode ;
 docol spawnConnectorDrone ;
 
 docol setStartNodeR35 ;
-docol spawnR35ConnectorTask ;
+docol spawn_Connector ;
 
 
 //sleep 5 ;

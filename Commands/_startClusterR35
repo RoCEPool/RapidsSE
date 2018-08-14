@@ -4,7 +4,7 @@
 
 docol spawnNodes ;
 docol setStartNodeR35 ;
-docol spawnR35ConnectorTask ;
+docol spawn_Connector ;
 
 //sleep 5 ;
 

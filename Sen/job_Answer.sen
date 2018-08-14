@@ -87,7 +87,7 @@ int: nTotalConnections
 
     nTotalConnections @ 1 == if
       grid::thisNode@ grid::startNodeR35@ != if
-        spawnR35ConnectorTask to pConnectorTask
+        spawn_Connector to pConnectorTask
       then
     then
 
