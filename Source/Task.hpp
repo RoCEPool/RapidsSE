@@ -952,7 +952,9 @@ namespace Tasks
     static void vJobTraceStore(MP_Task mpTask);
     static void vJobTraceFetch(MP_Task mpTask);
     static void vJobTruncateTableSpawnSub(MP_Task mpTask);
-    
+    static void vJobTruncateTableTaskFetch(MP_Task mpTask);
+    static void vJobTruncateTableTaskStore(MP_Task mpTask);
+                                           
     // jobClass
     static void vJobClassFind(MP_Task mpTask);
     static void vJobClassNew(MP_Task mpTask);

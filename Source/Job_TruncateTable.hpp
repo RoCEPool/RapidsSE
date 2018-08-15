@@ -10,6 +10,8 @@ namespace JobsModel
   {
   public:
     
+    Tasks::Task* m_pTask; // task running this job
+    
     // must be last
     Footer m_xFooter;
   
