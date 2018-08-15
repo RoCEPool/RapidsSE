@@ -352,11 +352,29 @@ void Task::vSocketRecvValSet(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* socket.endObject: send object via a socket                                 */
+/* socket.sendObject: send object via a socket                                */
 /*----------------------------------------------------------------------------*/
 void Task::vSocketSendObject(MP_Task mpTask)
 {
   ENTRY("vSocketSendObject"_Stz);
+  
+  Object* pSocketPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pSocketPtr) )
+    THROW_INVALID_DSTACK("socket.sendObject"_Stz);
+  Socket* pSocket = _pSocket(pSocketPtr);
+  
+  Object* pObject;
+  if ( ! mpTask->m_pDataStack->bPop(pObject) )
+  THROW_INVALID_DSTACK("socket.sendObject"_Stz);
+
+  eCN eClass = pObject->eClass();
+  i8 nObjectSize = giClassSize[eClass];
+  
+  SysCall xSysCall;
+  bool bResult = pSocket->bSendTo(nObjectSize, pObject, xSysCall);
+
+  mpTask->m_pDataStack->vPushInt((i8)bResult);
+
   EXIT();
 }
 
