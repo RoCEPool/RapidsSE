@@ -122,10 +122,10 @@
 
   tp: sending
 
-  socket.send ( bool )
+  socket.sendValSet ( bool )
 
   not if
-  "send failure" . ( 0/1 )
+    "send failure" . ( 0/1 )
   then
 ;
 
@@ -138,7 +138,7 @@
 
   tp: receiving
 
-  socket.recv
+  socket.recvValSet
 
   tp: received
 ;

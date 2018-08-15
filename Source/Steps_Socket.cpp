@@ -15,14 +15,14 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Socket(void)
 {
-  vAddPrimitive("socket::open"_Stz,    &vSocketOpen,       false);
-  vAddPrimitive("socket::listen"_Stz,  &vSocketListen,     false);
+  vAddPrimitive("socket::open"_Stz,      &vSocketOpen,       false);
+  vAddPrimitive("socket::listen"_Stz,    &vSocketListen,     false);
   
-  vAddPrimitive("socket.accept"_Stz,   &vSocketAccept,     false);
-  vAddPrimitive("socket.close"_Stz,    &vSocketClose,      false);
-  vAddPrimitive("socket.connect"_Stz,  &vSocketConnect,    false);
-  vAddPrimitive("socket.recv"_Stz,     &vSocketRecv,       false);
-  vAddPrimitive("socket.send"_Stz,     &vSocketSend,       false);
+  vAddPrimitive("socket.accept"_Stz,     &vSocketAccept,     false);
+  vAddPrimitive("socket.close"_Stz,      &vSocketClose,      false);
+  vAddPrimitive("socket.connect"_Stz,    &vSocketConnect,    false);
+  vAddPrimitive("socket.recvValSet"_Stz, &vSocketRecvValSet, false);
+  vAddPrimitive("socket.sendValSet"_Stz, &vSocketSendValSet, false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -204,11 +204,11 @@ void Task::vSocketOpen(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* socket.recv: recv from a socket                                            */
+/* socket.recvValSet: recv from a socket                                            */
 /*----------------------------------------------------------------------------*/
-void Task::vSocketRecv(MP_Task mpTask)
+void Task::vSocketRecvValSet(MP_Task mpTask)
 {
-  ENTRY("vSocketRecv"_Stz);
+  ENTRY("vSocketRecvValSet"_Stz);
   
   SysCall xSysCall;
   Socket* pSocket;
@@ -341,11 +341,11 @@ void Task::vSocketRecv(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* socket.send: send to a socket ( valset socket -- 1 )                       */
+/* socket.sendValSet: send to a socket ( valset socket -- 1 )                       */
 /*----------------------------------------------------------------------------*/
-void Task::vSocketSend(MP_Task mpTask)
+void Task::vSocketSendValSet(MP_Task mpTask)
 {
-  ENTRY("vSocketSend"_Stz);
+  ENTRY("vSocketSendValSet"_Stz);
   
   SysCall xSysCall;
   Socket* pSocket;
@@ -354,10 +354,10 @@ void Task::vSocketSend(MP_Task mpTask)
   bool    bResult;
   
   if ( ! mpTask->m_pDataStack->bPop(pObject) )
-  THROW_INVALID_DSTACK("socket.send"_Stz);
+  THROW_INVALID_DSTACK("socket.sendValSet"_Stz);
   
   if ( ! mpTask->m_pDataStack->bPop(xValSet) )
-  THROW_INVALID_DSTACK("socket.send"_Stz);
+  THROW_INVALID_DSTACK("socket.sendValSet"_Stz);
   
   pSocket = reinterpret_cast<Socket*>(pObject);
   
