@@ -11,6 +11,7 @@
 
   0 0 locals| pJob_SubTruncate pTask |
   0 0 0 locals| iSlot pTable sTableNm |
+  0 0 0 locals| iTrucateJobId pJob_TruncateTable pTask_TruncateTable |
 
   tp: SubTruncate
   "SubTruncate_seed" .
@@ -52,6 +53,13 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table
   popTable
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // notify the truncate job
+  pJob_SubTruncate job_SubTruncate.truncateJobId@ to iTrucateJobId
+  iTrucateJobId job.findParticipant to pJob_TruncateTable
+  pJob_TruncateTable job_truncateTable.task@ to pTask_TruncateTable
+  pTask_TruncateTable ack
 
   // now delete the ended job
   pJob_SubTruncate job.delete
