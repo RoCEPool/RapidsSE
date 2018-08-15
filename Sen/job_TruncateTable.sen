@@ -78,7 +78,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_AnalyzeIndex job check resources                               */
 /*----------------------------------------------------------------------------*/
-: truncateTable_checkResources ( Job_AnalyzeIndex -- )
+: truncateTable_checkResources ( Job_TruncateTable -- )
 
   params| pJob_TruncateTable  |
   0 locals| sTableNm |
