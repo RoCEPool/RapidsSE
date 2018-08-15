@@ -1076,8 +1076,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_Grid();
   vAddPrimitives_GroupBy();
   
-  vAddPrimitives_Handler();
-  
   vAddPrimitives_Index();
   vAddPrimitives_Input();
   vAddPrimitives_Int();
