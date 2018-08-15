@@ -17,7 +17,6 @@ int:  queryCount
 "participantProxyWorker.sen" include
 "coordinatorProxyWorker.sen" include
 "participantWorker.sen" include
-"receiverDrone.sen" include
 "senderWorker.sen" include
 
 "requestServer.sen" include
