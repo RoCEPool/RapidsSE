@@ -384,7 +384,6 @@ void RapidsSE::vExecuteCmdLine(void)
     else if (gxArguments.m_bStart) {
       ASSERT(gpBufferPool);
       vSystemInit();
-      vStartActors();
       if (gxArguments.m_bVerbose) {
         vInfo("RapidsSE instance %s started\n"_Stz,gxArguments.m_sRegionName.aChar());
         gpAttachMap->m_pGrid->vDumpPartitioning();
@@ -771,33 +770,6 @@ void RapidsSE::vSystemInit(void)
     pThread->vGeneralThread(true);
     pThread->vSpawn_Thread();
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* start the actors                                                           */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vStartActors(void)
-{
-  if (gxArguments.m_bVerbose)
-    vInfo("\n*\n* Start Actors\n*\n"_Stz);
-  
-  // seed root task to start the system
-  gpAttachMap->m_npBootTask->vSeedWord("startActors"_Stz);
-  
-  if (gpAttachMap->m_bVerbose)
-    vTrace("[[mainThread]] RapidsSE::vStartActors launching: task %s %p\n"_Stz,
-           gpAttachMap->m_npBootTask->sName().aChar(),
-           *gpAttachMap->m_npBootTask);
-  
-  //gpAttachMap->m_pServerScheduler->vEnqueueTask_Mutex(*gpAttachMap->m_npBootTask);
-  
-  // the primary thread waits here till root task exits
-  //while (TS_EXITED != gpAttachMap->m_npBootTask->eState())
-  //  PosixThread::vSleepMilli(1000);
-  
-  gpAttachMap->m_npBootTask->vState(TS_EXECUTING);
-  gpAttachMap->m_npBootTask->vTaskLoop();
-  // the system is now running
 }
 
 /*----------------------------------------------------------------------------*/

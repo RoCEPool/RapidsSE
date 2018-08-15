@@ -27,29 +27,6 @@ int:  queryCount
 "gridActors.sen" include
 "ddlLocking.sen" include
 
-/*----------------------------------------------------------------------------*/
-/* called by RapidsSE::vStartActors                                           */
-/*----------------------------------------------------------------------------*/
-: startActors
-
-  "startActors" .verbose
-
-  args.bgtasks if
-
-    snooze startServerThreads
-    snooze startPartitionThreads
-
-    //snooze spawnListerDrone
-    //snooze spawnMonitorDrone
-    //snooze spawnReclaimDrone
-
-    //snooze spawnAnswerDrone
-
-  then
-
-  //dic.main true dic.frozen!
-;
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
