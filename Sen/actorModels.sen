@@ -10,8 +10,6 @@ int:  queryCount
 "serverModel.sen" include
 "workerModel.sen" include
 "partitionModel.sen" include
-//"r35Model.sen" include
-
 
 "actorPrimitives.sen" include
 
@@ -23,10 +21,6 @@ int:  queryCount
 "senderWorker.sen" include
 
 "connectorDrone.sen" include
-"answerDrone.sen" include
-//"listerDrone.sen"  include
-//"monitorDrone.sen" include
-//"reclaimDrone.sen" include
 
 "requestServer.sen" include
 
@@ -49,7 +43,7 @@ int:  queryCount
     //snooze spawnMonitorDrone
     //snooze spawnReclaimDrone
 
-    snooze spawnAnswerDrone
+    //snooze spawnAnswerDrone
 
   then
 
