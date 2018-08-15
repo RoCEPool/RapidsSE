@@ -24,6 +24,15 @@
   pTask task.job@ to pJob_SubTruncate
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab a ddl lock
+  //ddlLock::grabWrite
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
+  pJob_SubTruncate getPathR35
+  dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table
   pJob_SubTruncate job.objectName@ to sTableNm
   sTableNm pushTable assert
@@ -44,7 +53,11 @@
   // pop table
   popTable
 
-  pJob_SubTruncate <DONE_REQUEST>
+  // now delete the ended job
+  pJob_SubTruncate job.delete
+
+  // null the job in the task
+  nullptr pTask task.job!
 ;
 
 /*============================================================================*/
