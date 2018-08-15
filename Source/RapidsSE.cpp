@@ -733,6 +733,10 @@ void RapidsSE::vSystemInit(void)
   
   gpAttachMap->m_npBootTask = new Task;
   
+  Job_Boot* pJob_Boot = new Job_Boot(nullptr);
+  
+  gpAttachMap->m_npBootTask->vJob(pJob_Boot);
+  
   s32 sName;
   sName = "bootTask"_Stz;
   gpAttachMap->m_npBootTask->vName(sName);
