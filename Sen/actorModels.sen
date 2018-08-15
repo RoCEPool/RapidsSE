@@ -6,7 +6,6 @@ int:  queryCount
 
 "actorModels.sen" .verbose
 
-"droneModel.sen" include
 "serverModel.sen" include
 "workerModel.sen" include
 "partitionModel.sen" include
