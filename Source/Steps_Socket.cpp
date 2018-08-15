@@ -204,6 +204,143 @@ void Task::vSocketOpen(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* socket.recv: recv from a socket                                            */
+/*----------------------------------------------------------------------------*/
+void Task::vSocketRecv(MP_Task mpTask)
+{
+  ENTRY("vSocketRecv"_Stz);
+  
+  SysCall xSysCall;
+  Socket* pSocket;
+  ValSet xValSet;
+  Object* pObject;
+  i8 iBytes;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pObject) )
+    THROW_INVALID_DSTACK("socketrecv"_Stz);
+  
+  pSocket = reinterpret_cast<Socket*>(pObject);
+  
+  if (gpAttachMap->m_bTracepoint)
+    vTrace("[N%lld:%8s\\%lld %-11s] receiving on %lld\n"_Stz,
+           gpAttachMap->m_pGrid->iThisNode(),
+           mpTask->m_sName.aChar(),
+           *mpTask->m_zAcks,
+           mpTask->m_sComment.aChar(),
+           
+           pSocket->m_iSocketId);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // receive the size of valset
+  bool bResult = pSocket->bRecvBytes(sizeof(iBytes), reinterpret_cast<void*>(&iBytes), xSysCall);
+  
+  if ( ! bResult )
+    THROW("Unable to recvFrom socket: Errno %d!"_Stz, xSysCall.iError());
+  
+  if (iBytes == 0) {
+    vTrace("Valset size 0 to be received\n"_Stz);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // receive the valset
+  bResult = pSocket->bRecvBytes(iBytes, reinterpret_cast<void*>(&xValSet), xSysCall);
+  
+  if ( ! bResult )
+    THROW("Unable to recvFrom socket: Errno %d!"_Stz, xSysCall.iError());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if valset has a entry buffer
+  bool bHasEntryBuffer = xValSet.bHasRowBuffer();
+  
+  if (bHasEntryBuffer) {
+    
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+    // receive entryBuffer size
+    bResult = pSocket->bRecvBytes(sizeof(iBytes), reinterpret_cast<void*>(&iBytes), xSysCall);
+    
+    if ( ! bResult )
+      THROW("Unable to recvFrom socket: Errno %d!"_Stz, xSysCall.iError());
+    
+    if (iBytes == 0) {
+      vTrace("EntryBuffer size 0 to be received\n"_Stz);
+    }
+             
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+    // receive entryBuffer
+    EntryBuffer* pEntryBuffer = (EntryBuffer*)new EntryBuffer();
+    pEntryBuffer->aAllotSpace(iBytes);
+    
+    //vTrace("Recvd EntryBuffer: %p\n"_Stz,pEntryBuffer);
+    bResult = pSocket->bRecvBytes(iBytes, reinterpret_cast<void*>(pEntryBuffer->aDataArea()), xSysCall);
+    
+    if ( ! bResult )
+      THROW("Unable to recvFrom socket: Errno %d!"_Stz, xSysCall.iError());
+    
+    pEntryBuffer->vRestore();
+    
+    //pEntryBuffer->vShow();
+    
+    //vTrace("%lld %lld %lld\n"_Stz, iBytes, *(pEntryBuffer->nBufferNo()), pEntryBuffer->nItems());
+    
+    // set the new entry buffer in each entry of the entry buffer
+    Id xId;
+    xId.vBuffer(*(pEntryBuffer->nBufferNo()));
+    for (Entry* pEntry = pEntryBuffer->pFirstEntry(); pEntry != nullptr;
+         pEntry = pEntryBuffer->pNextEntry(pEntry, 0)) {
+      xId.vRow(pEntry->xId().iRow());
+               
+      pEntry->vId(xId);
+    }
+    
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+    // set entryBuffer in valset
+    bool bSet = xValSet.bSetRowBuffer(pEntryBuffer);
+    ASSERT(bSet);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if valset has a working buffer
+  bool bHasWorkingBuffer = xValSet.bHasWorkingBuffer();
+  
+  if (bHasWorkingBuffer) {
+    
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+    // receive workingBuffer size
+    bResult = pSocket->bRecvBytes(sizeof(iBytes), reinterpret_cast<void*>(&iBytes), xSysCall);
+    
+    if ( ! bResult )
+      THROW("Unable to recvFrom socket: Errno %d!"_Stz, xSysCall.iError());
+    
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+    // receive workingBuffer
+    WorkingBuffer* pWorkingBuffer = (WorkingBuffer*)new WorkingBuffer(nullptr, -1);
+    
+    if (iBytes) {
+      pWorkingBuffer->pAllotSpace(iBytes);
+      
+      //vTrace("Recvd EntryBuffer: %p\n"_Stz,pEntryBuffer);
+      bResult = pSocket->bRecvBytes(iBytes, reinterpret_cast<void*>(pWorkingBuffer->aDataArea()), xSysCall);
+      
+      if ( ! bResult )
+        THROW("Unable to recvFrom socket: Errno %d!"_Stz, xSysCall.iError());
+      
+      pWorkingBuffer->vRestore();
+      
+      //pEntryBuffer->vShow();
+    }
+    
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+    // set workingBuffer in valset
+    bool bSet = xValSet.bSetWorkingBuffer(pWorkingBuffer);
+    ASSERT(bSet);
+  }
+  
+  mpTask->m_pDataStack->vPushValSet(xValSet);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* socket.send: send to a socket ( valset socket -- 1 )                       */
 /*----------------------------------------------------------------------------*/
 void Task::vSocketSend(MP_Task mpTask)
@@ -217,18 +354,18 @@ void Task::vSocketSend(MP_Task mpTask)
   bool    bResult;
   
   if ( ! mpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("socket.send"_Stz);
+  THROW_INVALID_DSTACK("socket.send"_Stz);
   
   if ( ! mpTask->m_pDataStack->bPop(xValSet) )
-    THROW_INVALID_DSTACK("socket.send"_Stz);
+  THROW_INVALID_DSTACK("socket.send"_Stz);
   
   pSocket = reinterpret_cast<Socket*>(pObject);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // send the size of valset
   i8 iBytes = xValSet.nSize();
   if (iBytes == 0)
-    vTrace("xValset of size 0 being sent\n"_Stz);
+  vTrace("xValset of size 0 being sent\n"_Stz);
   
   bResult = pSocket->bSendTo(sizeof(iBytes), &iBytes, xSysCall);
   
@@ -240,7 +377,7 @@ void Task::vSocketSend(MP_Task mpTask)
     EXIT();
   }
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now send the actual value set
   bResult = pSocket->bSendTo(iBytes, &xValSet, xSysCall);
   
@@ -252,7 +389,7 @@ void Task::vSocketSend(MP_Task mpTask)
     EXIT();
   }
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get entryBuffer if any in valset
   EntryBuffer* pEntryBuffer = xValSet.pGetRowBuffer();
   
@@ -262,7 +399,7 @@ void Task::vSocketSend(MP_Task mpTask)
     
     //vTrace("Sending EntryBuffer: %p\n"_Stz,pEntryBuffer);
     
-    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // send entryBuffer size
     i8 iBytes = pEntryBuffer->nUsedBytes();
     //vTrace("sending %lld bytes\n"_Stz, iBytes);
@@ -277,11 +414,11 @@ void Task::vSocketSend(MP_Task mpTask)
       EXIT();
     }
     
-    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // send entryBuffer itself
     bResult = pSocket->bSendTo(iBytes, pEntryBuffer->aDataArea(), xSysCall);
     
-    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // test send result
     if ( ! bResult ) {
       
@@ -293,7 +430,7 @@ void Task::vSocketSend(MP_Task mpTask)
     }
   }
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get workingBuffer if any in valset
   WorkingBuffer* pWorkingBuffer = xValSet.pGetWorkingBuffer();
   
@@ -303,11 +440,11 @@ void Task::vSocketSend(MP_Task mpTask)
     
     //vTrace("Sending WorkingBuffer: %p\n"_Stz,pWorkingBuffer);
     
-    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // send entryBuffer size
     i8 iBytes = pWorkingBuffer->nUsedBytes();
     //vTrace("sending %lld bytes\n"_Stz, iBytes);
-
+    
     bResult = pSocket->bSendTo(sizeof(iBytes), &iBytes, xSysCall);
     
     if ( ! bResult ) {
@@ -339,159 +476,12 @@ void Task::vSocketSend(MP_Task mpTask)
       }
     }
     
-    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // delete the working buffer
     delete pWorkingBuffer;
   }
   
   mpTask->m_pDataStack->vPushInt((i8)1);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* socket.recv: recv from a socket                                            */
-/*----------------------------------------------------------------------------*/
-void Task::vSocketRecv(MP_Task mpTask)
-{
-  ENTRY("vSocketRecv"_Stz);
-  
-  SysCall xSysCall;
-  Socket* pSocket;
-  ValSet xValSet;
-  //s48K   sWorkspace;
-  Object* pObject;
-  i8 iBytes;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("socketrecv"_Stz);
-  
-  pSocket = reinterpret_cast<Socket*>(pObject);
-  
-  if (gpAttachMap->m_bTracepoint)
-    vTrace("[N%lld:%8s\\%lld %-11s] receiving on %lld\n"_Stz,
-           gpAttachMap->m_pGrid->iThisNode(),
-           mpTask->m_sName.aChar(),
-           *mpTask->m_zAcks,
-           mpTask->m_sComment.aChar(),
-           
-           pSocket->m_iSocketId);
-  
-  //******************************************************************
-  // Receive the size of valset
-  //******************************************************************
-  bool bResult = pSocket->bRecvBytes(sizeof(iBytes), reinterpret_cast<void*>(&iBytes), xSysCall);
-  
-  if ( ! bResult )
-    THROW("Unable to recvFrom socket: Errno %d!"_Stz, xSysCall.iError());
-  
-  if (iBytes == 0) {
-    vTrace("Valset size 0 to be received\n"_Stz);
-  }
-  //******************************************************************
-  // Receive the valset
-  //******************************************************************
-  bResult = pSocket->bRecvBytes(iBytes, reinterpret_cast<void*>(&xValSet), xSysCall);
-  
-  if ( ! bResult )
-    THROW("Unable to recvFrom socket: Errno %d!"_Stz, xSysCall.iError());
-  
-  //******************************************************************
-  // Check if valset has a entry buffer
-  //******************************************************************
-  bool bHasEntryBuffer = xValSet.bHasRowBuffer();
-  
-  if (bHasEntryBuffer) {
-    
-    //******************************************************************
-    // receive entryBuffer size
-    //******************************************************************
-    bResult = pSocket->bRecvBytes(sizeof(iBytes), reinterpret_cast<void*>(&iBytes), xSysCall);
-    
-    if ( ! bResult )
-      THROW("Unable to recvFrom socket: Errno %d!"_Stz, xSysCall.iError());
-    
-    if (iBytes == 0) {
-      vTrace("EntryBuffer size 0 to be received\n"_Stz);
-    }
-             
-    //******************************************************************
-    // receive entryBuffer
-    //******************************************************************
-    EntryBuffer* pEntryBuffer = (EntryBuffer*)new EntryBuffer();
-    pEntryBuffer->aAllotSpace(iBytes);
-    
-    //vTrace("Recvd EntryBuffer: %p\n"_Stz,pEntryBuffer);
-    bResult = pSocket->bRecvBytes(iBytes, reinterpret_cast<void*>(pEntryBuffer->aDataArea()), xSysCall);
-    
-    if ( ! bResult )
-      THROW("Unable to recvFrom socket: Errno %d!"_Stz, xSysCall.iError());
-    
-    pEntryBuffer->vRestore();
-    
-    //pEntryBuffer->vShow();
-    
-    //vTrace("%lld %lld %lld\n"_Stz, iBytes, *(pEntryBuffer->nBufferNo()), pEntryBuffer->nItems());
-    
-    // set the new entry buffer in each entry of the entry buffer
-    Id xId;
-    xId.vBuffer(*(pEntryBuffer->nBufferNo()));
-    for (Entry* pEntry = pEntryBuffer->pFirstEntry(); pEntry != nullptr;
-         pEntry = pEntryBuffer->pNextEntry(pEntry, 0)) {
-      xId.vRow(pEntry->xId().iRow());
-               
-      pEntry->vId(xId);
-    }
-    
-    //******************************************************************
-    // set entryBuffer in valset
-    //******************************************************************
-    bool bSet = xValSet.bSetRowBuffer(pEntryBuffer);
-    ASSERT(bSet);
-  }
-
-  //******************************************************************
-  // Check if valset has a working buffer
-  //******************************************************************
-  bool bHasWorkingBuffer = xValSet.bHasWorkingBuffer();
-  
-  if (bHasWorkingBuffer) {
-    
-    //******************************************************************
-    // receive workingBuffer size
-    //******************************************************************
-    bResult = pSocket->bRecvBytes(sizeof(iBytes), reinterpret_cast<void*>(&iBytes), xSysCall);
-    
-    if ( ! bResult )
-      THROW("Unable to recvFrom socket: Errno %d!"_Stz, xSysCall.iError());
-    
-    //******************************************************************
-    // receive workingBuffer
-    //******************************************************************
-    WorkingBuffer* pWorkingBuffer = (WorkingBuffer*)new WorkingBuffer(nullptr, -1);
-    
-    if (iBytes) {
-      pWorkingBuffer->pAllotSpace(iBytes);
-      
-      //vTrace("Recvd EntryBuffer: %p\n"_Stz,pEntryBuffer);
-      bResult = pSocket->bRecvBytes(iBytes, reinterpret_cast<void*>(pWorkingBuffer->aDataArea()), xSysCall);
-      
-      if ( ! bResult )
-        THROW("Unable to recvFrom socket: Errno %d!"_Stz, xSysCall.iError());
-      
-      pWorkingBuffer->vRestore();
-      
-      //pEntryBuffer->vShow();
-    }
-    
-    //******************************************************************
-    // set workingBuffer in valset
-    //******************************************************************
-    bool bSet = xValSet.bSetWorkingBuffer(pWorkingBuffer);
-    ASSERT(bSet);
-  }
-  
-  mpTask->m_pDataStack->vPushValSet(xValSet);
   
   EXIT();
 }
