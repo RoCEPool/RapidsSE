@@ -24,9 +24,9 @@ int:  queryCount
 
 "connectorDrone.sen" include
 "answerDrone.sen" include
-"listerDrone.sen"  include
-"monitorDrone.sen" include
-"reclaimDrone.sen" include
+//"listerDrone.sen"  include
+//"monitorDrone.sen" include
+//"reclaimDrone.sen" include
 
 "requestServer.sen" include
 
@@ -45,8 +45,8 @@ int:  queryCount
     snooze startServerThreads
     snooze startPartitionThreads
 
-    snooze spawnListerDrone
-    snooze spawnMonitorDrone
+    //snooze spawnListerDrone
+    //snooze spawnMonitorDrone
     //snooze spawnReclaimDrone
 
     snooze spawnAnswerDrone

@@ -63,7 +63,7 @@ ReqTable SeRequests[] =
  //{ "mksch"_Stz,          &SEitf::bCreateSchema,         "createSchema_req"_Stz    },
  //{ "mktbl"_Stz,          &SEitf::bCreateTable,          "createTable_req"_Stz     },
  //{ "mkten"_Stz,          &SEitf::bCreateTenant,         "createTenant_req"_Stz    },
- { "mon"_Stz,            &SEitf::bGetMonitor,           "getMonitor_req"_Stz      },
+ //{ "mon"_Stz,            &SEitf::bGetMonitor,           "getMonitor_req"_Stz      },
  { "ping"_Stz,           &SEitf::bPing,                 "ping_req"_Stz            },
  //{ "print"_Stz,          &SEitf::bPrint,                nullptr                   },
  //{ "pwf"_Stz,            &SEitf::bPrintWorkingFolder,   "pwf_req"_Stz             },
