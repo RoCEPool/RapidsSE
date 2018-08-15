@@ -116,7 +116,7 @@
 /*----------------------------------------------------------------------------*/
 /* send valset across the socket                                              */
 /*----------------------------------------------------------------------------*/
-: >socketR35 ( valset -- )
+: >socketValSet ( valset -- )
 
   task::this task.sendNode@ node.socket@
 
@@ -132,7 +132,7 @@
 /*----------------------------------------------------------------------------*/
 /* recv valset from the socket                                                */
 /*----------------------------------------------------------------------------*/
-: socketR35> ( -- valset )
+: socketValSet> ( -- valset )
 
   task::this task.socketR35@
 
@@ -176,7 +176,7 @@
     pJob 1 >valset
 
     // send job
-    >socketR35
+    >socketValSet
 
   loop
 

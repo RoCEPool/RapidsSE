@@ -36,7 +36,7 @@
     pJob__Execute 1 >valset
 
     // send the execute job
-    >socketR35
+    >socketValSet
   loop
 
   // now delete the execute job

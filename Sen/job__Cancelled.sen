@@ -33,7 +33,7 @@
   pJob__Cancelled 1 >valset
 
   // send Job__Executed
-  >socketR35
+  >socketValSet
 
   // delete the pJob__Cancelled
   pJob__Cancelled jobCancelled.delete

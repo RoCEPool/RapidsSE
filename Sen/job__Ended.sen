@@ -52,7 +52,7 @@
   // send the ended job
   pJob__Ended 1 >valset
 
-  >socketR35
+  >socketValSet
 
   // now delete the ended job
   pJob__Ended jobEnded.delete

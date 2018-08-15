@@ -74,7 +74,7 @@
 
     "Receiver_seed recv" .
     // receive valset from socket
-    socketR35>
+    socketValSet>
 
     // unpack valset into pJob
     valset> drop to pJob
@@ -90,6 +90,38 @@
 
   again
 
+;
+
+/*----------------------------------------------------------------------------*/
+/* receiver loop: receive a job, execute it                                   */
+/*----------------------------------------------------------------------------*/
+: Receiver_loop_2 ( -- )
+
+  0 locals| pJob |
+  0 locals| eJobClass |
+
+  begin
+
+    // check the d-stack depth is zero
+    assertStackDepthZero
+
+    "Receiver_seed recv" .
+    // receive valset from socket
+    socketValSet>
+
+    // unpack valset into pJob
+    valset> drop to pJob
+
+    pJob job.class to eJobClass
+
+    // execute received job
+    eJobClass CN_JOB_LOADBUFFER == if
+      pJob job.spawn
+    else
+      pJob job.execute
+    then
+
+  again
 ;
 
 /*----------------------------------------------------------------------------*/
