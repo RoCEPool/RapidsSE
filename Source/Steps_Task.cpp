@@ -591,9 +591,9 @@ ENTRY("vTaskNameStore"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* task::new -- create and seed a new task                                     */
+/* task::new -- create and seed a new task                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskNew(MP_Task mpTask)
+void Task::vTaskNew(MP_Task mpTask)                                   //! delete
 {
 ENTRY("vTaskNew"_Stz);
 

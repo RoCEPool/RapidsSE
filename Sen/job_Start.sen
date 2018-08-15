@@ -19,13 +19,19 @@
 /*----------------------------------------------------------------------------*/
 : Start_seed ( -- <R> )
 
+  task::this           locals| pThisTask |
+  pThisTask task.job@  locals| pThisJob  |
+
   "Start_seed" .
 
   args.bgtasks if
 
-   snooze startR35Sockets
+   snooze Start_Sockets
 
   then
+
+  nullptr pThisTask task.job!
+  pThisJob job.delete
 ;
 
 /*============================================================================*/

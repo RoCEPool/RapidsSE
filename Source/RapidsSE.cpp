@@ -6,6 +6,7 @@
 #include "ShmUtility.hpp"
 
 Arguments     gxArguments;
+extern JobCatalog gxJobCatalog;
 
 BufferPool*   gpBufferPool   = nullptr;
 AttachMap *   gpAttachMap    = nullptr;
@@ -786,9 +787,17 @@ void RapidsSE::vStartR35Tasks(void)
   
   s32 sName = "startR35Task"_Stz;
   
-  Task* pStartTask = new Task;
-  pStartTask->vSeedWord("startR35Tasks"_Stz);
+  JobClass* pJobClass_Start = gxJobCatalog.pFindJob(CN_JOB_START);
+  Job_Start* pJob_Start
+    = static_cast<Job_Start*>(pJobClass_Start->pNewJob(nullptr));
   
+  Task* pStartTask = new Task;
+  
+  pStartTask->vJob(pJob_Start);
+  s32 sRequest;
+  sRequest = pJob_Start->sJobSeed();
+  pStartTask->vSeedWord(sRequest);
+
   pStartTask->vState(TS_READY);
   pStartTask->vR35model(true);
   pStartTask->vActorModel(AC_R35);
