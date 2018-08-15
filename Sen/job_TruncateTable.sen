@@ -102,7 +102,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // there should be a table folder
   pJob_TruncateTable job.objectName@ to sTableNm
-  sTableNm checkIsTableFolder not if pJob_TruncateTable <ERROR_REQUEST> exit then
+  sTableNm checkIsTableFolder not if pJob_TruncateTable <ERROR_JOB> exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table dictionary
@@ -110,7 +110,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is a table
-  sTableNm checkIsTableR35 not if popTable pJob_TruncateTable <ERROR_REQUEST> exit then
+  sTableNm checkIsTableR35 not if popTable pJob_TruncateTable <ERROR_JOB> exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table dictionary
