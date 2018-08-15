@@ -20,8 +20,6 @@ int:  queryCount
 "receiverDrone.sen" include
 "senderWorker.sen" include
 
-"connectorDrone.sen" include
-
 "requestServer.sen" include
 
 "gridActors.sen" include
