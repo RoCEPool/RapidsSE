@@ -105,6 +105,8 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.trace!"_Stz,           &vJobTraceStore,       false);
   vAddPrimitive("job.trace@"_Stz,           &vJobTraceFetch,       false);
   vAddPrimitive("Job_truncateTable.spawnSub"_Stz, &vJobTruncateTableSpawnSub, false);
+  vAddPrimitive("Job_truncateTable.task@"_Stz, &vJobTruncateTableTaskFetch, false);
+  vAddPrimitive("Job_truncateTable.task!"_Stz, &vJobTruncateTableTaskStore, false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1899,6 +1901,47 @@ void Task::vJobTruncateTableSpawnSub(MP_Task mpTask)
   
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* Job_truncateTable.task@ -- fetch task from job_truncateTable               */
+/*----------------------------------------------------------------------------*/
+void Task::vJobTruncateTableTaskFetch(MP_Task mpTask)
+{
+  ENTRY("vJobTruncateTableTaskFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("Job_truncateTable.task@"_Stz);
+  Job_TruncateTable* pJob_TruncateTable = _pJob_TruncateTable(pJobPtr);
+  
+  Task* pTask = pJob_TruncateTable->m_pTask;
+  mpTask->m_pDataStack->vPushObject(pTask);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Job_truncateTable.task! -- store task in job_truncateTable                 */
+/*----------------------------------------------------------------------------*/
+void Task::vJobTruncateTableTaskStore(MP_Task mpTask)
+{
+  ENTRY("vJobTruncateTableTaskStore"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("Job_truncateTable.task!"_Stz);
+  Job_TruncateTable* pJob_TruncateTable = _pJob_TruncateTable(pJobPtr);
+  
+  Object* pTaskPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pTaskPtr) )
+    THROW_INVALID_DSTACK("Job_truncateTable.task!"_Stz);
+  Task* pTask = _pTask(pTaskPtr);
+  
+  pJob_TruncateTable->m_pTask = pTask;
+  
+  EXIT();
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

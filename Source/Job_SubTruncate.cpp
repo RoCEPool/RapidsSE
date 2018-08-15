@@ -89,6 +89,7 @@ Job_SubTruncate::Job_SubTruncate(Interface::SEitf* pSEitf)
     
   m_sSeed = mJobNote_SubTruncate.pJobClass()->m_aSeed;
   m_bCheckResources = false;
+  m_iTruncateJobId  = -1;
   m_iSlot           = -1;
   
   _checkInitialised_(CN_JOB_SUBTRUNCATE);
