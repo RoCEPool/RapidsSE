@@ -21,7 +21,9 @@ void Task::vAddPrimitives_Socket(void)
   vAddPrimitive("socket.accept"_Stz,     &vSocketAccept,     false);
   vAddPrimitive("socket.close"_Stz,      &vSocketClose,      false);
   vAddPrimitive("socket.connect"_Stz,    &vSocketConnect,    false);
+  vAddPrimitive("socket.recvObject"_Stz, &vSocketRecvObject, false);
   vAddPrimitive("socket.recvValSet"_Stz, &vSocketRecvValSet, false);
+  vAddPrimitive("socket.sendObject"_Stz, &vSocketSendObject, false);
   vAddPrimitive("socket.sendValSet"_Stz, &vSocketSendValSet, false);
 }
 
@@ -204,7 +206,16 @@ void Task::vSocketOpen(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* socket.recvValSet: recv from a socket                                            */
+/* socket.recvObject: recv object from a socket                               */
+/*----------------------------------------------------------------------------*/
+void Task::vSocketRecvObject(MP_Task mpTask)
+{
+  ENTRY("vSocketRecvObject"_Stz);
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* socket.recvValSet: recv from a socket                                      */
 /*----------------------------------------------------------------------------*/
 void Task::vSocketRecvValSet(MP_Task mpTask)
 {
@@ -341,7 +352,16 @@ void Task::vSocketRecvValSet(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* socket.sendValSet: send to a socket ( valset socket -- 1 )                       */
+/* socket.endObject: send object via a socket                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vSocketSendObject(MP_Task mpTask)
+{
+  ENTRY("vSocketSendObject"_Stz);
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* socket.sendValSet: send to a socket ( valset socket -- 1 )                 */
 /*----------------------------------------------------------------------------*/
 void Task::vSocketSendValSet(MP_Task mpTask)
 {
