@@ -122,10 +122,13 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_PWF
   /*    */ &Finalize::vUndefined,         // CN_JOB_RECEIVER
   /*    */ &Finalize::vUndefined,         // CN_JOB_SANITY
+  /*    */ &Finalize::vUndefined,         // CN_JOB_SIZEINDEX
+  /*    */ &Finalize::vUndefined,         // CN_JOB_SIZETABLE
   /*    */ &Finalize::vUndefined,         // CN_JOB_SPACE
   /*    */ &Finalize::vUndefined,         // CN_JOB_STATUS
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBLOADER
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBTRUNCATE
+  /*    */ &Finalize::vUndefined,         // CN_JOB_TABLESIZES
   /*    */ &Finalize::vUndefined,         // CN_JOB_TRUNCATETABLE
   /*    */ &Finalize::vUndefined,         // CN_JOB_USESCHEMA
   

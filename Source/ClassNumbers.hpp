@@ -127,10 +127,13 @@ enum eCN : u2 // Class Number
     /*    */ CN_JOB_PWF,
     /*    */ CN_JOB_RECEIVER,
     /*    */ CN_JOB_SANITY,
+    /*    */ CN_JOB_SIZEINDEX,
+    /*    */ CN_JOB_SIZETABLE,
     /*    */ CN_JOB_SPACE,
     /*    */ CN_JOB_STATUS,
     /*    */ CN_JOB_SUBLOADER,
     /*    */ CN_JOB_SUBTRUNCATE,
+    /*    */ CN_JOB_TABLESIZES,
     /*    */ CN_JOB_TRUNCATETABLE,
     /*    */ CN_JOB_USESCHEMA,
     
@@ -368,10 +371,13 @@ enum eCN : u2 // Class Number
     /*    */ "JOB_PWF"_Stz,            // CN_JOB_PWF
     /*    */ "JOB_RECEIVER"_Stz,       // CN_JOB_RECEIVER
     /*    */ "JOB_SANITY"_Stz,         // CN_JOB_SANITY
+    /*    */ "JOB_SIZEINDEX"_Stz,      // CN_JOB_SIZEINDEX
+    /*    */ "JOB_SIZETABLE"_Stz,      // CN_JOB_SIZETABLE
     /*    */ "JOB_SPACE"_Stz,          // CN_JOB_SPACE
     /*    */ "JOB_STATUS"_Stz,         // CN_JOB_STATUS
     /*    */ "JOB_SUBLOADER"_Stz,      // CN_JOB_SUBLOADER
     /*    */ "JOB_SUBTRUNCATE"_Stz,    // CN_JOB_SUBTRUNCATE
+    /*    */ "JOB_TABLESIZES"_Stz,     // CN_JOB_TABLESIZES
     /*    */ "JOB_TRUNCATETABLE"_Stz,  // CN_JOB_TRUNCATETABLE
     /*    */ "JOB_USESCHEMA"_Stz,      // CN_JOB_USESCHEMA
     

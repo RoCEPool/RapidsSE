@@ -632,8 +632,11 @@ void Task::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_PWF"_Stz,            CN_JOB_PWF);
   /*    */ vAddConstant("CN_JOB_RECEIVER"_Stz,       CN_JOB_RECEIVER);
   /*    */ vAddConstant("CN_JOB_SANITY"_Stz,         CN_JOB_SANITY);
+  /*    */ vAddConstant("CN_JOB_SIZEINDEX"_Stz,      CN_JOB_SIZEINDEX);
+  /*    */ vAddConstant("CN_JOB_SIZETABLE"_Stz,      CN_JOB_SIZETABLE);
   /*    */ vAddConstant("CN_JOB_SPACE"_Stz,          CN_JOB_SPACE);
   /*    */ vAddConstant("CN_JOB_STATUS"_Stz,         CN_JOB_STATUS);
+  /*    */ vAddConstant("CN_JOB_TABLESIZES"_Stz,     CN_JOB_TABLESIZES);
   /*    */ vAddConstant("CN_JOB_TRUNCATETABLE"_Stz,  CN_JOB_TRUNCATETABLE);
   /*    */ vAddConstant("CN_JOB_USESCHEMA"_Stz,      CN_JOB_USESCHEMA);
   
