@@ -209,6 +209,21 @@ void JobsModel::vJob_SizeTable_post(Interface::SEitf* pSEitf, Job* pJob)
     }
     
   }
+  else {
+    if (gpAttachMap->m_bMetadata) {
+      vTrace("metadata: %s\n"_Stz, pJob_SizeTable->m_sMetadata.aStr());
+    }
+    
+    i8 iRowsProcessed = 0;
+    
+    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+      vTrace("%s\n"_Stz, pJob_SizeTable->m_xNode[i_Node].m_sResponse.aChar());
+      iRowsProcessed += pJob_SizeTable->m_xNode[i_Node].m_iRowsProcessed;
+    }
+    if (gpAttachMap->m_bMetadata) {
+      vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
+    }
+  }
 }
 
 /*----------------------------------------------------------------------------*/

@@ -372,8 +372,8 @@ i8 giClassSize[]
   /*    */ sizeof(Job_Pwf),            // CN_JOB_PWF
   /*    */ sizeof(Job_Receiver),       // CN_JOB_RECEIVER
   /*    */ sizeof(Job_Sanity),         // CN_JOB_SANITY
-  /*    */ sizeof(Job_SizeTable),      // CN_JOB_SIZEINDEX
-  /*    */ 0,                          // CN_JOB_SIZETABLE
+  /*    */ 0,                          // CN_JOB_SIZEINDEX
+  /*    */ sizeof(Job_SizeTable),      // CN_JOB_SIZETABLE
   /*    */ sizeof(Job_Space),          // CN_JOB_SPACE
   /*    */ sizeof(Job_Status),         // CN_JOB_STATUS
   /*    */ sizeof(Job_SubLoader),      // CN_JOB_SUBLOADER

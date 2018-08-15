@@ -1,0 +1,225 @@
+/*============================================================================*/
+/* job_SizeTable.sen -- Job Size Table                                        */
+/*============================================================================*/
+
+"job_SizeTable.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* check if word is a valid table folder                                      */
+/*----------------------------------------------------------------------------*/
+: checkSizeTable ( "<tableNm>" -- true | errorCode false )
+
+  params| sTableNm |
+
+  // check in tables folder
+  checkInTables not if false exit then
+
+  // check if tableNm is a word in tables folder
+  sTableNm checkIsWordR35 not if EC_NO_SUCH_TABLE false exit then
+
+  // push table folder
+  sTableNm pushTable assert
+
+  sTableNm checkIsTableR35 not if popTable false exit then
+  sTableNm tableInUse if popTable EC_TABLE_IN_USE false exit then
+
+  // pop table folder
+  popTable
+
+  // assert in tables
+  assertInTables
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* remove a table folder                                                      */
+/*----------------------------------------------------------------------------*/
+: removeTable ( "<tableNm>" )
+
+  tp: removeTable
+
+  params| sTableNm |
+  0 0 locals| sIndexNm pTable |
+
+  //----------------------------------------------------------------------------
+  // move to table folder
+  sTableNm pushTable assert
+
+  //----------------------------------------------------------------------------
+  // find the table
+  sTableNm find execute to pTable
+
+  //----------------------------------------------------------------------------
+  // push indexes folder
+  pushIndexes assert
+
+  //----------------------------------------------------------------------------
+  // iterate thru all indexes and tidyUp
+  0 pathPick dic.lastWord dup
+  iterate                        // setup iteration of words
+
+    object@ word.name to sIndexNm
+
+    //sIndexNm "Deleting index %v" str.format .
+
+    // forward reference :-(
+    sIndexNm "indexTidyUp" find execute
+
+    object@ word.prev object!     // step backwards thru words
+
+  next
+
+  //----------------------------------------------------------------------------
+  // pop indexes folder
+  popIndexes
+
+  //----------------------------------------------------------------------------
+  // forget the indexes in the indexes dictionary
+  "indexes" find execute forgetAll
+
+  //----------------------------------------------------------------------------
+  // forget the indexes dictionary itself
+  "indexes" :forget
+
+  //----------------------------------------------------------------------------
+  // forget the partitions dictionary itself
+  "partitions" :forget
+
+  //----------------------------------------------------------------------------
+  // forget the table dictionary itself
+  sTableNm :forget
+
+  //----------------------------------------------------------------------------
+  // pop table
+  popTable
+
+  sTableNm :forget
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* size table request (on originating node)                                   */
+/*----------------------------------------------------------------------------*/
+: sizeTable_req ( -- <R> )
+
+  0 0 locals| pJob pTask |
+
+  tp: sizeTable
+  "sizeTable_req" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set metadata string in the job
+  args.metadata if
+    "(nodeName VARCHAR, size VARCHAR)" 
+    pJob job.metadata!
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // distribute the job
+  pTask pJob "job::distribute" find execute
+
+  pJob <DONE_REQUEST>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_SizeTable job on a node                                        */
+/*----------------------------------------------------------------------------*/
+: sizeTable_node ( Job_SizeTable -- )
+
+  params| pJob_SizeTable |
+  0 0 locals| pIndex iSize |
+
+  tp: sizeTable_node
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // assert correct job
+  CN_JOB_SIZETABLE pJob_SizeTable object.assertClass
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grad a ddl lock
+  ddlLock::grabWrite
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
+  pJob_SizeTable getPathR35
+  dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // remove the table
+  pJob_SizeTable job.objectName@   ( tableNm )
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push table and indexes folder
+  dup pushTable assert
+  pushIndexes assert
+
+  "hidden" find execute to pIndex
+  pIndex index.space 0 swap number.magnitude to iSize
+
+  iSize grid::thisNodeName@ "row: ( %v %v )" str.format
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop indexes and table folder
+  popIndexes
+  popTable
+
+  grid::thisNode@ pJob_SizeTable job.response!
+  1 grid::thisNode@ pJob_SizeTable job.rowsProcessed!
+
+  pJob_SizeTable job.notice
+
+  <DONE_NODE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_SizeTable job check resources                                  */
+/*----------------------------------------------------------------------------*/
+: sizeTable_checkResources ( Job_SizeTable -- )
+
+  params| pJob_SizeTable  |
+
+  tp: sizeTable_checkResources
+  "checkResources received" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab a ddl lock
+  ddlLock::grabWrite
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
+  pJob_SizeTable getPathR35
+  dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if we can remove the table
+  pJob_SizeTable job.objectName@
+  checkSizeTable not if pJob_SizeTable <ERROR_JOB> exit then
+
+  <DONE_NODE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_SizeTable job release resources                                */
+/*----------------------------------------------------------------------------*/
+: sizeTable_releaseResources ( Job_SizeTable -- )
+
+  params| pJob_SizeTable  |
+
+  tp: sizeTable_releaseResources
+  "releaseResources received" .
+
+  <DONE_NODE>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -206,6 +206,16 @@ print "detailed analysing index idx of j10";
 print "=========================================";
 anidx j10 idx 1;
 
+print "\n=========================================";
+print "size of table j10";
+print "=========================================";
+sz j10;
+
+print "\n=========================================";
+print "truncating table j10";
+print "=========================================";
+tr j10;
+
 // drop the index
 print "\n=========================================";
 print "dropping index idx of j10...";

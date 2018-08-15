@@ -669,6 +669,7 @@ tp: distParallelLoadTable_req
 /*----------------------------------------------------------------------------*/
 /* get size of table                                                          */
 /*----------------------------------------------------------------------------*/
+/*
 : sizeTable_req ( "<tableNm>" -- <R> )
 
 ddlLock::grabRead
@@ -681,6 +682,7 @@ ddlLock::grabRead
 
   // push table folder
   dup pushTable assert
+ 
 
   // check it is a table
   checkIsTable  not if <NIP+ERROR> exit then
@@ -702,7 +704,7 @@ ddlLock::grabRead
 
   <SUCCESS>
 ;
-
+*/
 /*----------------------------------------------------------------------------*/
 /* get size of tables in the tables folder                                    */
 /*----------------------------------------------------------------------------*/
