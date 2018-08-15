@@ -21,7 +21,6 @@ int:  queryCount
 "requestServer.sen" include
 
 "gridActors.sen" include
-"ddlLocking.sen" include
 
 /*============================================================================*/
 /* end                                                                        */
