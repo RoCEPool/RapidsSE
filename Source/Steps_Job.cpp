@@ -101,6 +101,7 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.show"_Stz,             &vJobShow,             false);
   vAddPrimitive("job.signalConnector"_Stz,  &vJobSignalConnector,  false);
   vAddPrimitive("job.spawn"_Stz,            &vJobSpawn,            false);
+  vAddPrimitive("job_subTruncate.truncateJobId@"_Stz,&vJobSubTruncateTruncateJobIdFetch, false);
   vAddPrimitive("job_subTruncate.slot@"_Stz,&vJobSubTruncateSlotFetch, false);
   vAddPrimitive("job.trace!"_Stz,           &vJobTraceStore,       false);
   vAddPrimitive("job.trace@"_Stz,           &vJobTraceFetch,       false);
@@ -1814,14 +1815,31 @@ void Task::vJobSpawn(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vJobSubTruncateSlotFetch(MP_Task mpTask)
 {
-  ENTRY("vJobTraceStore"_Stz);
+  ENTRY("vJobSubTruncateSlotFetch"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.trace!"_Stz);
+    THROW_INVALID_DSTACK("job_subTruncate.slot@"_Stz);
   Job_SubTruncate* pJob = _pJob_SubTruncate(pJobPtr);
   
   mpTask->m_pDataStack->vPushInt(pJob->m_iSlot);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_subTruncate.truncateJobId@ -- fetch the truncate job id                */
+/*----------------------------------------------------------------------------*/
+void Task::vJobSubTruncateTruncateJobIdFetch(MP_Task mpTask)
+{
+  ENTRY("vJobSubTruncateTruncateJobIdFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_subTruncate.truncateJobId@"_Stz);
+  Job_SubTruncate* pJob = _pJob_SubTruncate(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushInt(pJob->m_iTruncateJobId);
   
   EXIT();
 }
@@ -1883,12 +1901,14 @@ void Task::vJobTruncateTableSpawnSub(MP_Task mpTask)
     THROW_INVALID_DSTACK("Job_truncateTable.spawnSub"_Stz);
   
   SEitf* pSEitf = pJob_TruncateTable->m_pSEitf;
+  i8 iTruncateJobId = pJob_TruncateTable->m_iJobId;
   
   JobClass* pJobClass_SubTruncate = gxJobCatalog.pFindJob(CN_JOB_SUBTRUNCATE);
   
   Job_SubTruncate* pJob_SubTruncate =
   static_cast<Job_SubTruncate*>(pJobClass_SubTruncate->pPreJob(pSEitf));
   
+  pJob_SubTruncate->m_iTruncateJobId = iTruncateJobId;
   pJob_SubTruncate->m_sObjectName = pJob_TruncateTable->m_sObjectName;
   pJob_SubTruncate->m_iSlot = iSlot;
   

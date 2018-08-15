@@ -35,26 +35,34 @@
 : truncateTable_node ( Job_TruncateTable -- )
 
   params| pJob_TruncateTable |
-  0 locals| sTableNm |
+  0 0 locals| sTableNm pThisTask |
 
   tp: truncateTable_node
-"t1" .
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert correct job
   CN_JOB_TRUNCATETABLE pJob_TruncateTable object.assertClass
-"t2" .
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grab a ddl lock
-  ddlLock::grabWrite
+  // get the task
+  task::this to pThisTask
+  pJob_TruncateTable pThisTask "truncateTable_node task: %v Job_TruncateTable %v" fmt.print
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set dictionary stack
   pJob_TruncateTable getPathR35
   dicStack.set
 
+  // store task into Job_LoadTable
+  pThisTask pJob_TruncateTable job_truncateTable.task!
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab a ddl lock
+  ddlLock::grabWrite
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab this task's lock
-  task::this task.grabLock
+  pThisTask task.grabLock
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the acks
