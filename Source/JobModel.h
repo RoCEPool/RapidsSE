@@ -91,6 +91,7 @@ using namespace JobsModel;
 #include "Job_Receiver.hpp"
 
 #include "Job_Sanity.hpp"
+#include "Job_SizeTable.hpp"
 #include "Job_Space.hpp"
 #include "Job_Status.hpp"
 #include "Job_SubLoader.hpp"
