@@ -82,6 +82,7 @@ pFINALIZE *gpFinalize[]
   /* 56 */ &Finalize::vUndefined,         // CN_INDEXLEVELS
   /* 57 */ &Finalize::vUndefined,         // CN_ITEM
   /* 58 */ &Finalize::vUndefined,         // CN_ITEMBUFFER
+  
   /*    */ &Finalize::vUndefined,         // CN_JOB__BEGUN
   /*    */ &Finalize::vUndefined,         // CN_JOB__CANCEL
   /*    */ &Finalize::vUndefined,         // CN_JOB__CANCELLED
@@ -89,7 +90,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB__ENDED
   /*    */ &Finalize::vUndefined,         // CN_JOB__EXECUTE
   /*    */ &Finalize::vUndefined,         // CN_JOB__EXECUTED
-  
   /*    */ &Finalize::vUndefined,         // CN_JOB_ANALYZEINDEX
   /*    */ &Finalize::vUndefined,         // CN_JOB_ANALYZETABLE
   /*    */ &Finalize::vUndefined,         // CN_JOB_ANSWER
@@ -125,6 +125,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_SIZEINDEX
   /*    */ &Finalize::vUndefined,         // CN_JOB_SIZETABLE
   /*    */ &Finalize::vUndefined,         // CN_JOB_SPACE
+  /*    */ &Finalize::vUndefined,         // CN_JOB_START
   /*    */ &Finalize::vUndefined,         // CN_JOB_STATUS
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBLOADER
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBTRUNCATE

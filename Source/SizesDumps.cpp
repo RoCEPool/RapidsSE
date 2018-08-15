@@ -86,6 +86,7 @@ pDUMPFUN *gpDump[]
   /* 56 */ &Dump::vDummy,           // CN_INDEXLEVELS
   /* 57 */ &Dump::vInvalid,         // CN_ITEM
   /* 58 */ &Dump::vInvalid,         // CN_ITEMBUFFER
+  
   /*    */ &Dump::vDummy,           // CN_JOB__BEGUN
   /*    */ &Dump::vDummy,           // CN_JOB__CANCEL
   /*    */ &Dump::vDummy,           // CN_JOB__CANCELLED
@@ -120,7 +121,6 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_LISTSCHEMAS
   /*    */ &Dump::vDummy,           // CN_JOB_LISTTABLES
   /*    */ &Dump::vDummy,           // CN_JOB_LISTTENANTS
-  
   /*    */ &Dump::vDummy,           // CN_JOB_LOADBUFFER
   /*    */ &Dump::vDummy,           // CN_JOB_LOADTABLE
   /*    */ &Dump::vDummy,           // CN_JOB_PROMPT
@@ -130,6 +130,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_SPACE
   /*    */ &Dump::vDummy,           // CN_JOB_SIZEINDEX
   /*    */ &Dump::vDummy,           // CN_JOB_SIZETABLE
+  /*    */ &Dump::vDummy,           // CN_JOB_START
   /*    */ &Dump::vDummy,           // CN_JOB_STATUS
   /*    */ &Dump::vDummy,           // CN_JOB_SUBLOADER
   /*    */ &Dump::vDummy,           // CN_JOB_SUBTRUNCATE
@@ -362,7 +363,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_ListCatalogs),   // CN_JOB_LISTCATALOGS
   /*    */ sizeof(Job_ListColumns),    // CN_JOB_LISTCOLUMNS
   /*    */ sizeof(Job_ListIdxColumns), // CN_JOB_LISTIDXCOLUMNS
-  /*    */ sizeof(Job_ListPartColumns), // CN_JOB_LISTPARTCOLUMNS
+  /*    */ sizeof(Job_ListPartColumns),// CN_JOB_LISTPARTCOLUMNS
   /*    */ sizeof(Job_ListSchemas),    // CN_JOB_LISTSCHEMAS
   /*    */ sizeof(Job_ListTables),     // CN_JOB_LISTTABLES
   /*    */ sizeof(Job_ListTenants),    // CN_JOB_LISTTENANTS
@@ -375,6 +376,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_SizeIndex),      // CN_JOB_SIZEINDEX
   /*    */ sizeof(Job_SizeTable),      // CN_JOB_SIZETABLE
   /*    */ sizeof(Job_Space),          // CN_JOB_SPACE
+  /*    */ 0,                          // CN_JOB_START
   /*    */ sizeof(Job_Status),         // CN_JOB_STATUS
   /*    */ sizeof(Job_SubLoader),      // CN_JOB_SUBLOADER
   /*    */ sizeof(Job_SubTruncate),    // CN_JOB_SUBTRUNCATE
@@ -617,13 +619,14 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_PWF
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_RECEIVER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SANITY
-   /*    */ HT_TRANSIENT_LARGE,  // CN_JOB_SIZEINDEX
-   /*    */ HT_TRANSIENT_LARGE,  // CN_JOB_SIZETABLE
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SIZEINDEX
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SIZETABLE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SPACE
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_START
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_STATUS
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SUBLOADER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SUBTRUNCATE
-   /*    */ HT_TRANSIENT_LARGE,  // CN_JOB_TABLESIZES
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_TABLESIZES
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_TRUNCATETABLE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_USESCHEMA
   

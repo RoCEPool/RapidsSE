@@ -130,6 +130,7 @@ enum eCN : u2 // Class Number
     /*    */ CN_JOB_SIZEINDEX,
     /*    */ CN_JOB_SIZETABLE,
     /*    */ CN_JOB_SPACE,
+    /*    */ CN_JOB_START,
     /*    */ CN_JOB_STATUS,
     /*    */ CN_JOB_SUBLOADER,
     /*    */ CN_JOB_SUBTRUNCATE,
@@ -339,6 +340,7 @@ enum eCN : u2 // Class Number
     /*    */ "JOB__ENDED"_Stz,         // CN_JOB__ENDED
     /*    */ "JOB__EXECUTE"_Stz,       // CN_JOB__EXECUTE
     /*    */ "JOB__EXECUTED"_Stz,      // CN_JOB__EXECUTED
+    
     /*    */ "JOB_ANALYZEINDEX"_Stz,   // CN_JOB_ANALYZEINDEX
     /*    */ "JOB_ANALYZETABLE"_Stz,   // CN_JOB_ANALYZETABLE
     /*    */ "JOB_ANSWER"_Stz,         // CN_JOB_ANSWER
@@ -374,6 +376,7 @@ enum eCN : u2 // Class Number
     /*    */ "JOB_SIZEINDEX"_Stz,      // CN_JOB_SIZEINDEX
     /*    */ "JOB_SIZETABLE"_Stz,      // CN_JOB_SIZETABLE
     /*    */ "JOB_SPACE"_Stz,          // CN_JOB_SPACE
+    /*    */ "JOB_START"_Stz,          // CN_JOB_START
     /*    */ "JOB_STATUS"_Stz,         // CN_JOB_STATUS
     /*    */ "JOB_SUBLOADER"_Stz,      // CN_JOB_SUBLOADER
     /*    */ "JOB_SUBTRUNCATE"_Stz,    // CN_JOB_SUBTRUNCATE
@@ -442,60 +445,60 @@ enum eCN : u2 // Class Number
     /*107 */ "SCANBUFFER"_Stz,         // CN_
     /*108 */ "SCRATCH"_Stz,            // CN_
 
-    /*110 */ "SEITF"_Stz,   // CN_
-    /*111 */ "SEITFCURSOR"_Stz,   // CN_
-    /*112 */ "SEITFLIST"_Stz,   // CN_
-    /*113 */ "SELCURSOR"_Stz,   // CN_
-    /*114 */ "SEMAPHORE"_Stz,   // CN_
-    /*115 */ "SEPROMPT"_Stz,   // CN_
-    /*116 */ "SINCE"_Stz,   // CN_
-    /*117 */ "SKIPCURSOR"_Stz,   // CN_
-    /*118 */ "SKIPLIST"_Stz,   // CN_
-    /*119 */ "SKIPNODE"_Stz,   // CN_
-    /*120 */ "SLAB"_Stz,   // CN_
-    /*121 */ "SLABALLOCATOR"_Stz,   // CN_
-    /*122 */ "SLOTS"_Stz,   // CN_
-    /*123 */ "SMALLPERSISTENT"_Stz,   // CN_
-    /*124 */ "SMALLTRANSIENT"_Stz,   // CN_
-    /*125 */ "SOCKET"_Stz,   // CN_
-    /*126 */ "STACK"_Stz,   // CN_
-    /*127 */ "STEPACCUM"_Stz,   // CN_
-    /*128 */ "STEPARRAY"_Stz,   // CN_
-    /*129 */ "SYSCALL"_Stz,   // CN_
+    /*110 */ "SEITF"_Stz,              // CN_
+    /*111 */ "SEITFCURSOR"_Stz,        // CN_
+    /*112 */ "SEITFLIST"_Stz,          // CN_
+    /*113 */ "SELCURSOR"_Stz,          // CN_
+    /*114 */ "SEMAPHORE"_Stz,          // CN_
+    /*115 */ "SEPROMPT"_Stz,           // CN_
+    /*116 */ "SINCE"_Stz,              // CN_
+    /*117 */ "SKIPCURSOR"_Stz,         // CN_
+    /*118 */ "SKIPLIST"_Stz,           // CN_
+    /*119 */ "SKIPNODE"_Stz,           // CN_
+    /*120 */ "SLAB"_Stz,               // CN_
+    /*121 */ "SLABALLOCATOR"_Stz,      // CN_
+    /*122 */ "SLOTS"_Stz,              // CN_
+    /*123 */ "SMALLPERSISTENT"_Stz,    // CN_
+    /*124 */ "SMALLTRANSIENT"_Stz,     // CN_
+    /*125 */ "SOCKET"_Stz,             // CN_
+    /*126 */ "STACK"_Stz,              // CN_
+    /*127 */ "STEPACCUM"_Stz,          // CN_
+    /*128 */ "STEPARRAY"_Stz,          // CN_
+    /*129 */ "SYSCALL"_Stz,            // CN_
   
-    /*130 */ "TABLE"_Stz,   // CN_
-    /*131 */ "TASK"_Stz,   // CN_
-    /*132 */ "TASKCURSOR"_Stz,   // CN_
-    /*    */ "TASKFIFO"_Stz,   // CN_
-    /*133 */ "TASKLIST"_Stz,   // CN_
-    /*134 */ "TASKQUEUE"_Stz,   // CN_
-    /*135 */ "SERVERSCHEDULER"_Stz,   // CN_
-    /*136 */ "TASKSET"_Stz,   // CN_
-    /*137 */ "THREAD"_Stz,   // CN_
-    /*138 */ "THREADCURSOR"_Stz,   // CN_
-    /*139 */ "THREADLIST"_Stz,   // CN_
-    /*140 */ "THREADQUEUE"_Stz,   // CN_
-    /*    */ "THREADVECTOR"_Stz,   // CN_
-    /*141 */ "TIME"_Stz,   // CN_
-    /*142 */ "TIMER"_Stz,   // CN_
-    /*143 */ "TOKEN"_Stz,   // CN_
-    /*144 */ "TOKENISER"_Stz,   // CN_
-    /*145 */ "TOKENARY"_Stz,   // CN_
-    /*146 */ "TOKENVEC"_Stz,   // CN_
-    /*147 */ "TX"_Stz,   // CN_
-    /*148 */ "TXSET"_Stz,   // CN_
+    /*130 */ "TABLE"_Stz,              // CN_
+    /*131 */ "TASK"_Stz,               // CN_
+    /*132 */ "TASKCURSOR"_Stz,         // CN_
+    /*    */ "TASKFIFO"_Stz,           // CN_
+    /*133 */ "TASKLIST"_Stz,           // CN_
+    /*134 */ "TASKQUEUE"_Stz,          // CN_
+    /*135 */ "SERVERSCHEDULER"_Stz,    // CN_
+    /*136 */ "TASKSET"_Stz,            // CN_
+    /*137 */ "THREAD"_Stz,             // CN_
+    /*138 */ "THREADCURSOR"_Stz,       // CN_
+    /*139 */ "THREADLIST"_Stz,         // CN_
+    /*140 */ "THREADQUEUE"_Stz,        // CN_
+    /*    */ "THREADVECTOR"_Stz,       // CN_
+    /*141 */ "TIME"_Stz,               // CN_
+    /*142 */ "TIMER"_Stz,              // CN_
+    /*143 */ "TOKEN"_Stz,              // CN_
+    /*144 */ "TOKENISER"_Stz,          // CN_
+    /*145 */ "TOKENARY"_Stz,           // CN_
+    /*146 */ "TOKENVEC"_Stz,           // CN_
+    /*147 */ "TX"_Stz,                 // CN_
+    /*148 */ "TXSET"_Stz,              // CN_
     
-    /*149 */ "WILDERNESS"_Stz,   // CN_
-    /*150 */ "WORD"_Stz,   // CN_
-    /*    */ "WORKINGBUFFER"_Stz,   // CN_
-    /*    */ "WORKINGROW"_Stz,   // CN_
+    /*149 */ "WILDERNESS"_Stz,         // CN_
+    /*150 */ "WORD"_Stz,               // CN_
+    /*    */ "WORKINGBUFFER"_Stz,      // CN_
+    /*    */ "WORKINGROW"_Stz,         // CN_
     
-    /*151 */ "ZSMALL_"_Stz,   // CN_
-    /*152 */ "ZMEDIUM_"_Stz,   // CN_
-    /*153 */ "ZLARGE_"_Stz,   // CN_
-    /*154 */ "ZJUMBO_"_Stz,   // CN_
+    /*151 */ "ZSMALL_"_Stz,            // CN_
+    /*152 */ "ZMEDIUM_"_Stz,           // CN_
+    /*153 */ "ZLARGE_"_Stz,            // CN_
+    /*154 */ "ZJUMBO_"_Stz,            // CN_
   
-    /*155 */ "ENUMS"_Stz   // CN_
+    /*155 */ "ENUMS"_Stz               // CN_ENUMS
   };
 }
 
