@@ -44,7 +44,7 @@ ReqTable SeRequests[] =
  //{ "getInUseSpace"_Stz,  &SEitf::bGetInUseSpace,        "getInUseSpace"_Stz       },
  { "getidx"_Stz,         &SEitf::bGetIndex,             "getIndex_req"_Stz        },
  { "gettbl"_Stz,         &SEitf::bGetTable,             "getTable_req"_Stz     },
- { "gettsk"_Stz,         &SEitf::bGetTask,              "getTask_req"_Stz         },
+ //{ "gettsk"_Stz,         &SEitf::bGetTask,              "getTask_req"_Stz         },
  //{ "getTotalSpace"_Stz,  &SEitf::bGetTotalSpace,        "getTotalSpace"_Stz       },
  
  { "ld"_Stz,             &SEitf::bLoadTable,            "loadTable_req"_Stz       },
@@ -70,7 +70,7 @@ ReqTable SeRequests[] =
  //{ "reload"_Stz,         &SEitf::bReload,               "reload_req"_Stz          },
  { "retidx"_Stz,         &SEitf::bRetIndex,             "returnIndex_req"_Stz     },
  { "rettbl"_Stz,         &SEitf::bRetTable,             "returnTable_req"_Stz     },
- { "rettsk"_Stz,         &SEitf::bRetTask,              "returnTask_req"_Stz      },
+ //{ "rettsk"_Stz,         &SEitf::bRetTask,              "returnTask_req"_Stz      },
  //{ "rf"_Stz,             &SEitf::bRemoveFolder,         "remove_folder"_Stz       },
  //{ "rmcat"_Stz,          &SEitf::bDropCatalog,          "dropCatalog_req"_Stz     },
  //{ "rmdic"_Stz,          &SEitf::bRemoveFolder,         "remove_folder"_Stz       },
