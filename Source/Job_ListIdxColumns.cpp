@@ -17,6 +17,7 @@ JobNote mJobNote_ListIdxColumns (
   "listIdxColumns"_Stz,      // the task seed for this job
   false,                     // check resources?
   false,                     // detached job?
+  false,                     // buffer attached?
   JT_NONE,                   // job trace
   pJob_ListIdxColumns_pre,   // prompt pre-process function
   vJob_ListIdxColumns_post,  // prompt post-process function

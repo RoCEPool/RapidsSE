@@ -18,6 +18,7 @@ namespace JobsModel
     Stz* m_aSeed;     // the task seed for this job
     bool m_bDetached; // is this job detached?
     bool m_bResources;// check resources?
+    bool m_bBuffer;   // buffer attached?
     eJT  m_eTrace;    // job trace?
   
     Job* (*m_fPre)(Interface::SEitf* pSEitf);

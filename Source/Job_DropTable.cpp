@@ -17,6 +17,7 @@ JobNote mJobNote_DropTable (
   "dropTable"_Stz,       // the task seed for this job
   true,                  // check resources?
   false,                 // detached job?
+  false,                 // buffer attached?
   JT_NONE,               // job trace
   pJob_DropTable_pre,    // prompt pre-process function
   vJob_DropTable_post,   // prompt post-process function

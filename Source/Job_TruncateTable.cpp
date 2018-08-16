@@ -17,6 +17,7 @@ JobNote mJobNote_TruncateTable (
   "truncateTable"_Stz,       // the task seed for this job
   true,                      // check resources?
   false,                     // detached job?
+  false,                     // buffer attached?
   JT_NONE,                   // job trace
   pJob_TruncateTable_pre,    // prompt pre-process function
   vJob_TruncateTable_post,   // prompt post-process function

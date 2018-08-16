@@ -18,6 +18,7 @@ JobNote mJobNote_DropSchema (
   "dropSchema"_Stz,       // the task seed for this job
   true,                   // check resources?
   false,                  // detached job?
+  false,                  // buffer attached?
   JT_NONE,                // job trace
   pJob_DropSchema_pre,    // prompt pre-process function
   vJob_DropSchema_post,   // prompt post-process function

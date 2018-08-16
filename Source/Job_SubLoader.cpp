@@ -17,6 +17,7 @@ JobNote mJobNote_SubLoader (
   "SubLoader_seed"_Stz,   // the task seed for this job
   false,                  // check resources?
   false,                  // detached job?
+  false,                  // buffer attached?
   JT_NONE,                // job trace
   vJob_SubLoader_pre,     // prompt pre-process function
   nullptr,                // prompt post-process function

@@ -21,6 +21,7 @@ JobNote::JobNote(Stz* aName,
                  Stz* aSeed,
                  bool bResources,
                  bool bDetached,
+                 bool bBuffer,
                  eJT  eTrace,
                  Job* (*fPre)(Interface::SEitf* pSEitf),
                  void (*fPost)(Interface::SEitf* pSEitf, Job* pJob),
@@ -50,6 +51,7 @@ JobNote::JobNote(Stz* aName,
   gxJobCatalog.m_xJobClass[i_Job].m_aSeed       = aSeed;
   gxJobCatalog.m_xJobClass[i_Job].m_bResources  = bResources;
   gxJobCatalog.m_xJobClass[i_Job].m_bDetached   = bDetached;
+  gxJobCatalog.m_xJobClass[i_Job].m_bBuffer     = bBuffer;
   gxJobCatalog.m_xJobClass[i_Job].m_eTrace      = eTrace;
   gxJobCatalog.m_xJobClass[i_Job].m_fPre        = fPre;
   gxJobCatalog.m_xJobClass[i_Job].m_fPost       = fPost;

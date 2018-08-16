@@ -17,6 +17,7 @@ JobNote mJobNote_AnalyzeTable (
   "analyzeTable"_Stz,        // the task seed for this job
   true,                      // check resources?
   false,                     // detached job?
+  false,                     // buffer attached?
   JT_NONE,                   // job trace
   pJob_AnalyzeTable_pre,     // prompt pre-process function
   vJob_AnalyzeTable_post,    // prompt post-process function

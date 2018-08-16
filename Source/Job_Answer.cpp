@@ -17,6 +17,7 @@ JobNote mJobNote_Answer (
   "Answer_seed"_Stz,   // the task seed for this job
   false,               // check resources?
   false,               // detached job?
+  false,               // buffer attached?
   JT_NONE,             // job trace
   nullptr,             // prompt pre-process function
   nullptr,             // prompt post-process function

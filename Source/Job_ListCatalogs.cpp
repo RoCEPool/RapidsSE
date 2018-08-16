@@ -17,6 +17,7 @@ JobNote mJobNote_ListCatalogs (
   "listCatalogs"_Stz,      // the task seed for this job
   false,                   // check resources?
   false,                   // detached job?
+  false,                   // buffer attached?
   JT_NONE,                 // job trace
   pJob_ListCatalogs_pre,   // prompt pre-process function
   vJob_ListCatalogs_post,  // prompt post-process function

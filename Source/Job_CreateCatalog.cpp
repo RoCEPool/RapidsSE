@@ -17,6 +17,7 @@ JobNote mJobNote_CreateCatalog (
   "createCatalog"_Stz,      // the task seed for this job
   true,                     // check resources?
   false,                    // detached job?
+  false,                    // buffer attached?
   JT_NONE,                  // job trace
   pJob_CreateCatalog_pre,   // prompt pre-process function
   vJob_CreateCatalog_post,  // prompt post-process function

@@ -17,6 +17,7 @@ JobNote mJobNote_DropTenant (
   "dropTenant"_Stz,       // the task seed for this job
   true,                   // check resources?
   false,                  // detached job?
+  false,                  // buffer attached?
   JT_NONE,                // job trace
   pJob_DropTenant_pre,    // prompt pre-process function
   vJob_DropTenant_post,   // prompt post-process function
