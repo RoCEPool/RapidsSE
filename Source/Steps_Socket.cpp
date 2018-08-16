@@ -7,6 +7,7 @@
 #include "SePrompt.hpp"
 
 extern AttachMap*      gpAttachMap;
+extern JobCatalog gxJobCatalog;
 
 // socket: /////////////////////////////////////////////////////////////////////
 
@@ -211,6 +212,89 @@ void Task::vSocketOpen(MP_Task mpTask)
 void Task::vSocketRecvObject(MP_Task mpTask)
 {
   ENTRY("vSocketRecvObject"_Stz);
+  
+  Object* pSocketPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pSocketPtr) )
+    THROW_INVALID_DSTACK("socket.recvObject"_Stz);
+  Socket* pSocket = _pSocket(pSocketPtr);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // receiver the object header
+  
+  char xBuffer[C_1K];
+  i8 nObjectBytes = sizeof(Object);
+  SysCall xSysCall;
+
+  bool bResult = pSocket->bRecvBytes(nObjectBytes,xBuffer, xSysCall);
+  if (! bResult) {
+    mpTask->m_pDataStack->vPushInt((i8)0);
+    EXIT();
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the details about the received object
+  
+  Object* pObject = reinterpret_cast<Object*>(&xBuffer);
+  eCN eClass = pObject->eClass();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // receive rest a job
+  
+  if (eClass >= CN_JOB__BEGUN && eClass <= CN_JOB_USESCHEMA) {
+    
+    JobClass* pJobClass = gxJobCatalog.pFindJob(eClass);
+    Job* pJob = pJobClass->pNewJob(nullptr);
+    
+    MemLib::vCopy(pJob,pObject,sizeof(pObject),eClass);
+    
+    void* aBody = pAdd<void*>(pObject,sizeof(pObject));
+    i8 nRemainingBytes = giClassSize[eClass] - sizeof(Object);
+
+    bResult = pSocket->bRecvBytes(nRemainingBytes,aBody,xSysCall);
+    if (! bResult) {
+      mpTask->m_pDataStack->vPushInt((i8)0);
+      EXIT();
+      return;
+    }
+
+    mpTask->m_pDataStack->vPushObject(pJob);
+    mpTask->m_pDataStack->vPushInt((i8)1);
+    EXIT();
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // receive rest of working buffer
+  
+  if (eClass == CN_WORKINGBUFFER) {
+    
+    WorkingBuffer* pWorkingBuffer = (WorkingBuffer*)new WorkingBuffer(nullptr, -1);
+    
+    MemLib::vCopy(pWorkingBuffer,pObject,sizeof(pObject),CN_WORKINGBUFFER);
+
+    void* aBody = pAdd<void*>(pObject,sizeof(pObject));
+    i8 nRemainingBytes = giClassSize[CN_WORKINGBUFFER] - sizeof(Object);
+    
+    bResult = pSocket->bRecvBytes(nRemainingBytes,aBody,xSysCall);
+    if (! bResult) {
+      mpTask->m_pDataStack->vPushInt((i8)0);
+      EXIT();
+      return;
+    }
+
+    mpTask->m_pDataStack->vPushObject(pWorkingBuffer);
+    mpTask->m_pDataStack->vPushInt((i8)1);
+    EXIT();
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // unknown object
+  
+  vTrace("socket.recvObject: unknown object; class %lld\n"_Stz,eClass);
+  mpTask->m_pDataStack->vPushInt((i8)0);
+  
   EXIT();
 }
 
