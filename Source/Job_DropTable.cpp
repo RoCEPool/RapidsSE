@@ -15,7 +15,7 @@ JobNote mJobNote_DropTable (
   "drop"_Stz,            // the prompt command
   "table"_Stz,           // the second word
   "dropTable"_Stz,       // the task seed for this job
-  nullptr,               // the second task seed for this job
+  "dropTable_node"_Stz,  // the second task seed for this job
   true,                  // check resources?
   false,                 // detached job?
   false,                 // buffer attached?

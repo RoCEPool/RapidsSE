@@ -15,7 +15,7 @@ JobNote mJobNote_Status (
   "status"_Stz,      // the prompt command
   nullptr,           // the second word
   "status"_Stz,      // the task seed for this job
-  nullptr,           // the second task seed for this job
+  "status_node"_Stz, // the second task seed for this job
   false,             // check resources?
   false,             // detached job?
   false,             // buffer attached?

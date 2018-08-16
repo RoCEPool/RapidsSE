@@ -15,7 +15,7 @@ JobNote mJobNote_SizeIndex (
   "szidx"_Stz,           // the prompt command
   nullptr,               // the second word
   "sizeIndex"_Stz,       // the task seed for this job
-  nullptr,               // the second task seed for this job
+  "sizeIndex_node"_Stz,  // the second task seed for this job
   true,                  // check resources?
   false,                 // detached job?
   false,                 // buffer attached?

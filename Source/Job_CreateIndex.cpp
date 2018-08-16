@@ -15,7 +15,7 @@ JobNote mJobNote_CreateIndex (
   "create"_Stz,            // the prompt command
   "index"_Stz,             // the second word
   "createIndex"_Stz,       // the task seed for this job
-  nullptr,                 // the second task seed for this job
+  "createIndex_node"_Stz,  // the second task seed for this job
   true,                    // check resources?
   false,                   // detached job?
   false,                   // buffer attached?

@@ -15,7 +15,7 @@ JobNote mJobNote_DropCatalog (
   "drop"_Stz,              // the prompt command
   "catalog"_Stz,           // the second word
   "dropCatalog"_Stz,       // the task seed for this job
-  nullptr,                 // the second task seed for this job
+  "dropCatalog_node"_Stz,  // the second task seed for this job
   true,                    // check resources?
   false,                   // detached job?
   false,                   // buffer attached?

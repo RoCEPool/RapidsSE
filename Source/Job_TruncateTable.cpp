@@ -15,7 +15,7 @@ JobNote mJobNote_TruncateTable (
   "tr"_Stz,                  // the prompt command
   nullptr,                   // the second word
   "truncateTable"_Stz,       // the task seed for this job
-  nullptr,                   // the second task seed for this job
+  "truncateTable_node"_Stz,  // the second task seed for this job
   true,                      // check resources?
   false,                     // detached job?
   false,                     // buffer attached?
