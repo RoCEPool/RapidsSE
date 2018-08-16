@@ -54,10 +54,11 @@
   task.send
 
   // pack Job__End into a valset
-  pJob__End 1 >valset
+  pJob__End
+  1 >valset
 
   // send the end job
-  >socketValSet
+  >socket
   loop
 
   // now delete the end job

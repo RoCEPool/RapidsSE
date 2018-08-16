@@ -50,9 +50,10 @@
   task.send
 
   // send the ended job
-  pJob__Ended 1 >valset
+  pJob__Ended
+  1 >valset
 
-  >socketValSet
+  >socket
 
   // now delete the ended job
   pJob__Ended jobEnded.delete

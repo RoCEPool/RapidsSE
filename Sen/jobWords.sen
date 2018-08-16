@@ -219,10 +219,11 @@
     task.send
 
     // add job to valset
-    pJob 1 >valset
+    pJob
+    1 >valset
 
     // send job
-    >socketValSet
+    >socket
 
   loop
 

@@ -36,10 +36,11 @@
   task.send
 
   // pack Job__Executed into a valset
-  pJob__Executed 1 >valset
+  pJob__Executed
+  1 >valset
 
   // send Job__Executed
-  >socketValSet
+  >socket
 
   // delete the Job__Executed
   pJob__Executed jobExecuted.delete

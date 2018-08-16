@@ -30,10 +30,11 @@
   task.send
 
   // pack Job__Cancelled into a valset
-  pJob__Cancelled 1 >valset
+  pJob__Cancelled
+  1 >valset
 
   // send Job__Executed
-  >socketValSet
+  >socket
 
   // delete the pJob__Cancelled
   pJob__Cancelled jobCancelled.delete
