@@ -974,6 +974,7 @@ namespace Tasks
     static void vJobTruncateTableTaskStore(MP_Task mpTask);
                                            
     // jobClass
+    static void vJobClassBuffer(MP_Task mpTask);
     static void vJobClassFind(MP_Task mpTask);
     static void vJobClassNew(MP_Task mpTask);
 
