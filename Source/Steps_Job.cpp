@@ -1781,6 +1781,10 @@ void Task::vJobSpawn(MP_Task mpTask)
 {
   ENTRY("vJobSpawn"_Stz);
   
+  i8 i_Seed;
+  if ( ! mpTask->m_pDataStack->bPop(i_Seed) )
+    THROW_INVALID_DSTACK("job.spawn"_Stz);
+
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job.spawn"_Stz);
@@ -1789,18 +1793,15 @@ void Task::vJobSpawn(MP_Task mpTask)
   // there should not be a prompt task
   ASSERT( ! pJob->m_pPromptTask);
  
-//  Object* pSEitfPtr;
-//  if ( ! mpTask->m_pDataStack->bPop(pSEitfPtr) )
-//    THROW_INVALID_DSTACK("job.spawn"_Stz);
-//  SEitf* pSEitf = _pSEitf(pSEitfPtr);
-
   // form the word to execute for the request
-  s32 sRequest;
-  sRequest = pJob->sJobSeed();
+  s32 sSeed;
+  sSeed = (i_Seed == 1)
+               ? pJob->m_pJobClass->m_aSeed1
+               : pJob->m_pJobClass->m_aSeed2;
   
   Task* pNewTask = new Task;
 
-  pNewTask->vSeedWord(sRequest);
+  pNewTask->vSeedWord(sSeed);
   pNewTask->vState(TS_READY);
   pNewTask->vR35model(true);
   pNewTask->vActorModel(AC_R35);

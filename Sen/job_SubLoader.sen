@@ -30,7 +30,7 @@
 
   nullptr pJobClass_LoadBuffer jobClass.new to pJob_LoadBuffer
 
-  pJob_LoadBuffer job.spawn
+  pJob_LoadBuffer SEED1 job.spawn
 ;
 
 /*----------------------------------------------------------------------------*/
