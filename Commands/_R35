@@ -12,7 +12,7 @@ _startClusterR35
 print "\n=========================================";
 print "sleeping for 5 secs...";
 print "=========================================";
-sleep 5;
+sleep 10;
 
 // get version of SE
 print "\n=========================================";
@@ -206,11 +206,10 @@ print "detailed analysing index idx of j10";
 print "=========================================";
 anidx j10 idx 1;
 
-//print "\n=========================================";
-//print "size of table j10";
-//print "=========================================";
-//
-//sz j10;
+print "\n=========================================";
+print "size of table j10";
+print "=========================================";
+sz j10;
 
 print "\n=========================================";
 print "size of index idx on table j10";

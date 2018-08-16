@@ -33,72 +33,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* remove a table folder                                                      */
-/*----------------------------------------------------------------------------*/
-: removeTable ( "<tableNm>" )
-
-  tp: removeTable
-
-  params| sTableNm |
-  0 0 locals| sIndexNm pTable |
-
-  //----------------------------------------------------------------------------
-  // move to table folder
-  sTableNm pushTable assert
-
-  //----------------------------------------------------------------------------
-  // find the table
-  sTableNm find execute to pTable
-
-  //----------------------------------------------------------------------------
-  // push indexes folder
-  pushIndexes assert
-
-  //----------------------------------------------------------------------------
-  // iterate thru all indexes and tidyUp
-  0 pathPick dic.lastWord dup
-  iterate                        // setup iteration of words
-
-    object@ word.name to sIndexNm
-
-    //sIndexNm "Deleting index %v" str.format .
-
-    // forward reference :-(
-    sIndexNm "indexTidyUp" find execute
-
-    object@ word.prev object!     // step backwards thru words
-
-  next
-
-  //----------------------------------------------------------------------------
-  // pop indexes folder
-  popIndexes
-
-  //----------------------------------------------------------------------------
-  // forget the indexes in the indexes dictionary
-  "indexes" find execute forgetAll
-
-  //----------------------------------------------------------------------------
-  // forget the indexes dictionary itself
-  "indexes" :forget
-
-  //----------------------------------------------------------------------------
-  // forget the partitions dictionary itself
-  "partitions" :forget
-
-  //----------------------------------------------------------------------------
-  // forget the table dictionary itself
-  sTableNm :forget
-
-  //----------------------------------------------------------------------------
-  // pop table
-  popTable
-
-  sTableNm :forget
-
-;
-
-/*----------------------------------------------------------------------------*/
 /* size table request (on originating node)                                   */
 /*----------------------------------------------------------------------------*/
 : sizeTable_req ( -- <R> )
@@ -136,7 +70,7 @@
 : sizeTable_node ( Job_SizeTable -- )
 
   params| pJob_SizeTable |
-  0 0 locals| pIndex iSize |
+  0 0 0 locals| sTableNm pIndex iSize |
 
   tp: sizeTable_node
 
@@ -155,11 +89,11 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the table
-  pJob_SizeTable job.objectName@   ( tableNm )
+  pJob_SizeTable job.objectName@ to sTableNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table and indexes folder
-  dup pushTable assert
+  sTableNm pushTable assert
   pushIndexes assert
 
   "hidden" find execute to pIndex
