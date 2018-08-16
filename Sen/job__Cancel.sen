@@ -34,7 +34,7 @@
 
     // pack Job__Cancel into a valset
     pJob__Cancel
-    1 >valset
+    //1 >valset
 
     // send the execute job
     >socket

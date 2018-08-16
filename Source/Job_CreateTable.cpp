@@ -21,7 +21,7 @@ JobNote mJobNote_CreateTable (
   JT_NONE,                // job trace
   pJob_CreateTable_pre,   // prompt pre-process function
   vJob_CreateTable_post,  // prompt post-process function
-  nullptr,                // job new function
+  pJob_CreateTable_new,   // job new function
   vJob_CreateTable_delete,// job delete function
   nullptr,                // job send function
   nullptr,                // job receive function
@@ -608,6 +608,16 @@ void JobsModel::vJob_CreateTable_post(Interface::SEitf* pSEitf, Job* pJob)
     }
     
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* job new function                                                           */
+/*----------------------------------------------------------------------------*/
+Job* JobsModel::pJob_CreateTable_new(Job* pArg)
+{
+  Job_CreateTable* pJob_CreateTable = new Job_CreateTable(nullptr);
+  
+  return pJob_CreateTable;
 }
 
 /*----------------------------------------------------------------------------*/

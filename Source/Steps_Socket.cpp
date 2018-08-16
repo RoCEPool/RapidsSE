@@ -221,11 +221,11 @@ void Task::vSocketRecvObject(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receiver the object header
   
-  char xBuffer[C_1K];
+  char xObjectHeader[sizeof(Object)+C_1K];
   i8 nObjectBytes = sizeof(Object);
   SysCall xSysCall;
 
-  bool bResult = pSocket->bRecvBytes(nObjectBytes,xBuffer, xSysCall);
+  bool bResult = pSocket->bRecvBytes(nObjectBytes,xObjectHeader, xSysCall);
   if (! bResult) {
     mpTask->m_pDataStack->vPushInt((i8)0);
     EXIT();
@@ -235,7 +235,7 @@ void Task::vSocketRecvObject(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the details about the received object
   
-  Object* pObject = reinterpret_cast<Object*>(&xBuffer);
+  Object* pObject = reinterpret_cast<Object*>(&xObjectHeader);
   eCN eClass = pObject->eClass();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -243,12 +243,15 @@ void Task::vSocketRecvObject(MP_Task mpTask)
   
   if (eClass >= CN_JOB__BEGUN && eClass <= CN_JOB_USESCHEMA) {
     
-    JobClass* pJobClass = gxJobCatalog.pFindJob(eClass);
-    Job* pJob = pJobClass->pNewJob(nullptr);
+    //JobClass* pJobClass = gxJobCatalog.pFindJob(eClass);
+    //Job* pJob = pJobClass->pNewJob(nullptr);
     
-    MemLib::vCopy(pJob,pObject,sizeof(pObject),eClass);
+    //! temp. to be fixed
+    Job* pJob = static_cast<Job*>(Heap::pAllocate(CN_JOB_CREATETABLE));
+
+    MemLib::vCopy(pJob,pObject,sizeof(Object),eClass);
     
-    void* aBody = pAdd<void*>(pObject,sizeof(pObject));
+    void* aBody = pAdd<void*>(pJob,sizeof(Object));
     i8 nRemainingBytes = giClassSize[eClass] - sizeof(Object);
 
     bResult = pSocket->bRecvBytes(nRemainingBytes,aBody,xSysCall);
@@ -271,9 +274,9 @@ void Task::vSocketRecvObject(MP_Task mpTask)
     
     WorkingBuffer* pWorkingBuffer = (WorkingBuffer*)new WorkingBuffer(nullptr, -1);
     
-    MemLib::vCopy(pWorkingBuffer,pObject,sizeof(pObject),CN_WORKINGBUFFER);
+    MemLib::vCopy(pWorkingBuffer,pObject,sizeof(Object),CN_WORKINGBUFFER);
 
-    void* aBody = pAdd<void*>(pObject,sizeof(pObject));
+    void* aBody = pAdd<void*>(pObject,sizeof(Object));
     i8 nRemainingBytes = giClassSize[CN_WORKINGBUFFER] - sizeof(Object);
     
     bResult = pSocket->bRecvBytes(nRemainingBytes,aBody,xSysCall);

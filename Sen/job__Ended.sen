@@ -51,7 +51,7 @@
 
   // send the ended job
   pJob__Ended
-  1 >valset
+  //1 >valset
 
   >socket
 

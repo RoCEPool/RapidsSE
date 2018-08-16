@@ -61,6 +61,7 @@ namespace JobsModel
   
   Job* pJob_CreateTable_pre(Interface::SEitf* pSEitf);
   void vJob_CreateTable_post(Interface::SEitf* pSEitf, Job* pJob);
+  Job* pJob_CreateTable_new(Job* pArg);
   void vJob_CreateTable_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_CreateTable_show(Job* pJob);
 }

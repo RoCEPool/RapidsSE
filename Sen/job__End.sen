@@ -55,7 +55,7 @@
 
   // pack Job__End into a valset
   pJob__End
-  1 >valset
+  //1 >valset
 
   // send the end job
   >socket

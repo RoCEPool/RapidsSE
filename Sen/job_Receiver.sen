@@ -106,11 +106,17 @@
 
     "Receiver_seed recv" .
 
-    socketObject> to pJob
+    socketObject> drop to pJob
+
+    stk
 
     pJob job.class to eJobClass
 
+    stk
+
     pJob job.execute
+
+    stk
 
   again
 ;
@@ -124,7 +130,7 @@
   Receiver_init
 
   // loop, receiving and executing jobs
-  Receiver_loop
+  Receiver_loop_2
 
   // should never exit
   hazard
