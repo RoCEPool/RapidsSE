@@ -17,6 +17,7 @@ JobNote mJobNote_CreateTenant (
   "createTenant"_Stz,        // the task seed for this job
   true,                      // check resources?
   false,                     // detached job?
+  false,                     // buffer attached?
   JT_NONE,                   // job trace
   pJob_CreateTenant_pre,     // prompt pre-process function
   vJob_CreateTenant_post,    // prompt post-process function

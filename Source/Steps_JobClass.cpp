@@ -17,6 +17,8 @@ extern JobCatalog gxJobCatalog;
 void Task::vAddPrimitives_JobClass(void)
 {
   vAddPrimitive("jobClass::find"_Stz,   &vJobClassFind,    false);
+  
+  vAddPrimitive("jobClass.buffer@"_Stz, &vJobClassBuffer,  false);
   vAddPrimitive("jobClass.new"_Stz,     &vJobClassNew,     false);
 }
 
@@ -37,6 +39,25 @@ void Task::vJobClassFind(MP_Task mpTask)
   
   mpTask->m_pDataStack->vPushInt((i8)pJobClass);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* jobClass.buffer@ -- get JobClass::m_bBuffer                                */
+/*----------------------------------------------------------------------------*/
+void Task::vJobClassBuffer(MP_Task mpTask)
+{
+  ENTRY("vJobClassBuffer"_Stz);
+  
+  i8 iJobClass_p;
+  if ( ! mpTask->m_pDataStack->bPop(iJobClass_p) )
+    THROW_INVALID_DSTACK("jobClass.buffer@"_Stz);
+  JobClass* pJobClass = _pJobClass(iJobClass_p);
+  
+  bool bBuffer = pJobClass->m_bBuffer;
+  
+  mpTask->m_pDataStack->vPushInt((i8)bBuffer);
+  
   EXIT();
 }
 

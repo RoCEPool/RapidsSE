@@ -21,6 +21,7 @@ namespace JobsModel
             Stz* aSeed,
             bool bResources,
             bool bDetached,
+            bool bBuffer,
             eJT  eTrace,
 
             Job* (*fPre)(Interface::SEitf* pSEitf),

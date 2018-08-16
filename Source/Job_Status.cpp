@@ -17,6 +17,7 @@ JobNote mJobNote_Status (
   "status"_Stz,      // the task seed for this job
   false,             // check resources?
   false,             // detached job?
+  false,             // buffer attached?
   JT_NONE,           // job trace
   pJob_Status_pre,   // prompt pre-process function
   vJob_Status_post,  // prompt post-process function

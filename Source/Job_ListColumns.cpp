@@ -17,6 +17,7 @@ JobNote mJobNote_ListColumns (
   "listColumns"_Stz,      // the task seed for this job
   false,                  // check resources?
   false,                  // detached job?
+  false,                  // buffer attached?
   JT_NONE,                // job trace
   pJob_ListColumns_pre,   // prompt pre-process function
   vJob_ListColumns_post,  // prompt post-process function
