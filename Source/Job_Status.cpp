@@ -15,6 +15,7 @@ JobNote mJobNote_Status (
   "status"_Stz,      // the prompt command
   nullptr,           // the second word
   "status"_Stz,      // the task seed for this job
+  nullptr,           // the second task seed for this job
   false,             // check resources?
   false,             // detached job?
   false,             // buffer attached?
@@ -88,7 +89,7 @@ Job_Status::Job_Status(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_STATUS,_FOOTER_);
     
-   m_sSeed    = mJobNote_Status.pJobClass()->m_aSeed;
+   m_sSeed    = mJobNote_Status.pJobClass()->m_aSeed1;
   
   _checkInitialised_(CN_JOB_STATUS);
   

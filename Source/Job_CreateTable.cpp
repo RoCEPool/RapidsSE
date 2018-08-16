@@ -15,6 +15,7 @@ JobNote mJobNote_CreateTable (
   "create"_Stz,           // the prompt command
   "table"_Stz,            // the second word
   "createTable"_Stz,      // the task seed for this job
+  nullptr,                // the second task seed for this job
   true,                   // check resources?
   false,                  // detached job?
   false,                  // buffer attached?
@@ -88,7 +89,7 @@ Job_CreateTable::Job_CreateTable(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
   
-  m_sSeed             = mJobNote_CreateTable.pJobClass()->m_aSeed;
+  m_sSeed             = mJobNote_CreateTable.pJobClass()->m_aSeed1;
   m_bCheckResources   = true;
   
   m_eTableType = TT_NONE;

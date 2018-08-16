@@ -12,6 +12,7 @@ JobNote mJobNote_G35 (
   "g35"_Stz,       // the prompt command
   nullptr,         // the second word
   "g35_req"_Stz,   // the task seed for this job
+  nullptr,         // the second task seed for this job
   false,           // check resources?
   false,           // detached job?
   false,           // buffer attached?

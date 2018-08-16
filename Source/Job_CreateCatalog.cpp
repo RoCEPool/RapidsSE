@@ -15,6 +15,7 @@ JobNote mJobNote_CreateCatalog (
   "create"_Stz,             // the prompt command
   "catalog"_Stz,            // the second word
   "createCatalog"_Stz,      // the task seed for this job
+  nullptr,                  // the second task seed for this job
   true,                     // check resources?
   false,                    // detached job?
   false,                    // buffer attached?
@@ -88,7 +89,7 @@ Job_CreateCatalog::Job_CreateCatalog(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATECATALOG,_FOOTER_);
     
-  m_sSeed = mJobNote_CreateCatalog.pJobClass()->m_aSeed;
+  m_sSeed = mJobNote_CreateCatalog.pJobClass()->m_aSeed1;
   m_bCheckResources   = true;
   
   _checkInitialised_(CN_JOB_CREATECATALOG);

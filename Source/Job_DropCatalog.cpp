@@ -15,6 +15,7 @@ JobNote mJobNote_DropCatalog (
   "drop"_Stz,              // the prompt command
   "catalog"_Stz,           // the second word
   "dropCatalog"_Stz,       // the task seed for this job
+  nullptr,                 // the second task seed for this job
   true,                    // check resources?
   false,                   // detached job?
   false,                   // buffer attached?
@@ -88,7 +89,7 @@ Job_DropCatalog::Job_DropCatalog(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPCATALOG,_FOOTER_);
     
-  m_sSeed = mJobNote_DropCatalog.pJobClass()->m_aSeed;
+  m_sSeed = mJobNote_DropCatalog.pJobClass()->m_aSeed1;
   m_bCheckResources   = true;
   
   _checkInitialised_(CN_JOB_DROPCATALOG);

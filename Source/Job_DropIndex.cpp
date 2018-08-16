@@ -15,6 +15,7 @@ JobNote mJobNote_DropIndex (
   "drop"_Stz,            // the prompt command
   "index"_Stz,           // the second word
   "dropIndex"_Stz,       // the task seed for this job
+  nullptr,               // the second task seed for this job
   true,                  // check resources?
   false,                 // detached job?
   false,                 // buffer attached?
@@ -88,7 +89,7 @@ Job_DropIndex::Job_DropIndex(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPINDEX,_FOOTER_);
     
-  m_sSeed           = mJobNote_DropIndex.pJobClass()->m_aSeed;
+  m_sSeed           = mJobNote_DropIndex.pJobClass()->m_aSeed1;
   m_bCheckResources = true;
   m_sTableName      = ""_Stz;
   

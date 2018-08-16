@@ -15,6 +15,7 @@ JobNote mJobNote_LoadBuffer (
   nullptr,                 // the prompt command
   nullptr,                 // the second word
   "LoadBuffer_seed"_Stz,   // the task seed for this job
+  nullptr,                 // the second task seed for this job
   false,                   // check resources?
   false,                   // detached job?
   true,                    // buffer attached?
@@ -88,7 +89,7 @@ Job_LoadBuffer::Job_LoadBuffer(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
   
-  m_sSeed = mJobNote_LoadBuffer.pJobClass()->m_aSeed;
+  m_sSeed = mJobNote_LoadBuffer.pJobClass()->m_aSeed1;
   
   m_nBuffersLoadable = C_UNKNOWN;
   m_iLoadJobId = -1;

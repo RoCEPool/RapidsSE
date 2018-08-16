@@ -15,6 +15,7 @@ JobNote mJobNote_ListColumns (
   "lscol"_Stz,            // the prompt command
   nullptr,                // the second word
   "listColumns"_Stz,      // the task seed for this job
+  nullptr,                // the second task seed for this job
   false,                  // check resources?
   false,                  // detached job?
   false,                  // buffer attached?
@@ -88,7 +89,7 @@ Job_ListColumns::Job_ListColumns(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTCOLUMNS,_FOOTER_);
   
-  m_sSeed    = mJobNote_ListColumns.pJobClass()->m_aSeed;
+  m_sSeed    = mJobNote_ListColumns.pJobClass()->m_aSeed1;
 
   _checkInitialised_(CN_JOB_LISTCOLUMNS);
   

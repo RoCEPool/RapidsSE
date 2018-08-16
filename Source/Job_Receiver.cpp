@@ -15,6 +15,7 @@ JobNote mJobNote_Receiver (
   nullptr,               // the prompt command
   nullptr,               // the second word
   "Receiver_seed"_Stz,   // the task seed for this job
+  nullptr,               // the second task seed for this job
   false,                 // check resources?
   false,                 // detached job?
   false,                 // buffer attached?
@@ -88,7 +89,7 @@ Job_Receiver::Job_Receiver(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_RECEIVER,_FOOTER_);
   
-  m_sSeed = mJobNote_Receiver.pJobClass()->m_aSeed;
+  m_sSeed = mJobNote_Receiver.pJobClass()->m_aSeed1;
   
   m_iConnNo = -1;
   m_pSocket = nullptr;

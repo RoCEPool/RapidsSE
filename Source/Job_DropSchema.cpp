@@ -16,6 +16,7 @@ JobNote mJobNote_DropSchema (
   "drop"_Stz,             // the prompt command
   "schema"_Stz,           // the second word
   "dropSchema"_Stz,       // the task seed for this job
+  nullptr,                // the second task seed for this job
   true,                   // check resources?
   false,                  // detached job?
   false,                  // buffer attached?
@@ -89,7 +90,7 @@ Job_DropSchema::Job_DropSchema(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPSCHEMA,_FOOTER_);
     
-  m_sSeed = mJobNote_DropSchema.pJobClass()->m_aSeed;
+  m_sSeed = mJobNote_DropSchema.pJobClass()->m_aSeed1;
   m_bCheckResources   = true;
   
   _checkInitialised_(CN_JOB_DROPSCHEMA);

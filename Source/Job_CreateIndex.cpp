@@ -15,6 +15,7 @@ JobNote mJobNote_CreateIndex (
   "create"_Stz,            // the prompt command
   "index"_Stz,             // the second word
   "createIndex"_Stz,       // the task seed for this job
+  nullptr,                 // the second task seed for this job
   true,                    // check resources?
   false,                   // detached job?
   false,                   // buffer attached?
@@ -39,6 +40,7 @@ JobNote mJobNote_CreateIndex2 (
   "create"_Stz,            // the prompt command
   "unique"_Stz,            // the second word
   "createIndex"_Stz,       // the task seed for this job
+  nullptr,                 // the second task seed for this job
   true,                    // check resources?
   false,                   // detached job?
   false,                   // buffer attached?
@@ -112,7 +114,7 @@ Job_CreateIndex::Job_CreateIndex(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATEINDEX,_FOOTER_);
   
-  m_sSeed             = mJobNote_CreateIndex.pJobClass()->m_aSeed;
+  m_sSeed             = mJobNote_CreateIndex.pJobClass()->m_aSeed1;
   m_bCheckResources   = true;
   
   m_sTableName = ""_Stz;

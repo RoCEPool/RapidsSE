@@ -15,6 +15,7 @@ JobNote mJobNote_Connector (
   nullptr,                // the prompt command
   nullptr,                // the second word
   "Connector_seed"_Stz,   // the task seed for this job
+  nullptr,                // the second task seed for this job
   false,                  // check resources?
   false,                  // detached job?
   false,                  // buffer attached?
@@ -88,7 +89,7 @@ Job_Connector::Job_Connector(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CONNECTOR,_FOOTER_);
   
-  m_sSeed = mJobNote_Connector.pJobClass()->m_aSeed;
+  m_sSeed = mJobNote_Connector.pJobClass()->m_aSeed1;
   
   _checkInitialised_(CN_JOB_CONNECTOR);
   

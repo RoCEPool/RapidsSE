@@ -15,6 +15,7 @@ JobNote mJobNote_ListTables (
   "lstbl"_Stz,            // the prompt command
   nullptr,                // the second word
   "listTables"_Stz,       // the task seed for this job
+  nullptr,                // the second task seed for this job
   false,                  // check resources?
   false,                  // detached job?
   false,                  // buffer attached?
@@ -88,7 +89,7 @@ Job_ListTables::Job_ListTables(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTTABLES,_FOOTER_);
   
-  m_sSeed    = mJobNote_ListTables.pJobClass()->m_aSeed;
+  m_sSeed    = mJobNote_ListTables.pJobClass()->m_aSeed1;
 
   _checkInitialised_(CN_JOB_LF);
   
