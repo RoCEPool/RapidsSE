@@ -101,6 +101,7 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.show"_Stz,             &vJobShow,             false);
   vAddPrimitive("job.signalConnector"_Stz,  &vJobSignalConnector,  false);
   vAddPrimitive("job.spawn"_Stz,            &vJobSpawn,            false);
+  vAddPrimitive("job_sizeIndex.tableName@"_Stz,&vJobSizeIndexTableNameFetch, false);
   vAddPrimitive("job_subTruncate.truncateJobId@"_Stz,&vJobSubTruncateTruncateJobIdFetch, false);
   vAddPrimitive("job_subTruncate.slot@"_Stz,&vJobSubTruncateSlotFetch, false);
   vAddPrimitive("job.trace!"_Stz,           &vJobTraceStore,       false);
@@ -1823,6 +1824,23 @@ void Task::vJobSubTruncateSlotFetch(MP_Task mpTask)
   Job_SubTruncate* pJob = _pJob_SubTruncate(pJobPtr);
   
   mpTask->m_pDataStack->vPushInt(pJob->m_iSlot);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_sizeIndex.tableName@ -- fetch the size index job table name            */
+/*----------------------------------------------------------------------------*/
+void Task::vJobSizeIndexTableNameFetch(MP_Task mpTask)
+{
+  ENTRY("vJobSizeIndexTableNameFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_sizeIndex.tableName@"_Stz);
+  Job_SizeIndex* pJob = _pJob_SizeIndex(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushS32(pJob->m_sTableName);
   
   EXIT();
 }

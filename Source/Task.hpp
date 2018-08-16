@@ -965,6 +965,7 @@ namespace Tasks
     static void vJobShow(MP_Task mpTask);
     static void vJobSignalConnector(MP_Task mpTask);
     static void vJobSpawn(MP_Task mpTask);
+    static void vJobSizeIndexTableNameFetch(MP_Task mpTask);
     static void vJobSubTruncateSlotFetch(MP_Task mpTask);
     static void vJobSubTruncateTruncateJobIdFetch(MP_Task mpTask);
     static void vJobTraceStore(MP_Task mpTask);

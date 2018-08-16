@@ -50,6 +50,7 @@
 "Job_Pwf.sen" include
 
 "Job_Sanity.sen" include
+"Job_SizeIndex.sen" include
 "Job_SizeTable.sen" include
 "job_Space.sen" include
 "job_Start.sen" include

@@ -146,11 +146,11 @@ bool Job_SizeIndex::bPopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the index name
-  m_sObjectName = pTokenVec->pGet(1)->aText();
+  m_sObjectName = pTokenVec->pGet(2)->aText();
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the table name
-  m_sTableName = pTokenVec->pGet(2)->aText();
+  m_sTableName = pTokenVec->pGet(1)->aText();
   
   return true;
 }
