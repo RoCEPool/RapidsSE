@@ -261,26 +261,26 @@ enum eCN : u2 // Class Number
 /*----------------------------------------------------------------------------*/
   static Stz* aCN[]
   {
-    /*  0 */ "NONE"_Stz,     // CN_
+    /*  0 */ "NONE"_Stz,     // CN_NONE
   
-    /*  1 */ "BCDVAL"_Stz,   // CN_
-    /*  2 */ "BINVAL"_Stz,   // CN_
-    /*  3 */ "BOLVAL"_Stz,   // CN_
-    /*  4 */ "DTEVAL"_Stz,   // CN_
-    /*  5 */ "ENTWRK"_Stz,   // CN_
-    /*  6 */ "FLTVAL"_Stz,   // CN_
-    /*  7 */ "INTVAL"_Stz,   // CN_
-    /*  8 */ "IPVAL"_Stz,    // CN_
-    /*  9 */ "IVLVAL"_Stz,   // CN_
-    /* 10 */ "OBJVAL"_Stz,   // CN_
-    /* 11 */ "PTRVAL"_Stz,   // CN_
-    /* 12 */ "STRVAL"_Stz,   // CN_
-    /* 13 */ "STRVAR"_Stz,   // CN_
-    /* 14 */ "TMEVAL"_Stz,   // CN_
-    /* 15 */ "TSPVAL"_Stz,   // CN_
-    /* 16 */ "VALREG"_Stz,   // CN_
-    /* 17 */ "VALSET"_Stz,   // CN_
-    /* 18 */ "VALWRK"_Stz,   // CN_
+    /*  1 */ "BCDVAL"_Stz,   // CN_BCDVAL
+    /*  2 */ "BINVAL"_Stz,   // CN_BINVAL
+    /*  3 */ "BOLVAL"_Stz,   // CN_BOLVAL
+    /*  4 */ "DTEVAL"_Stz,   // CN_DTEVAL
+    /*  5 */ "ENTWRK"_Stz,   // CN_ENTWRK
+    /*  6 */ "FLTVAL"_Stz,   // CN_FLTVAL
+    /*  7 */ "INTVAL"_Stz,   // CN_INTVAL
+    /*  8 */ "IPVAL"_Stz,    // CN_IPVAL
+    /*  9 */ "IVLVAL"_Stz,   // CN_IVLVAL
+    /* 10 */ "OBJVAL"_Stz,   // CN_OBJVAL
+    /* 11 */ "PTRVAL"_Stz,   // CN_PTRVAL
+    /* 12 */ "STRVAL"_Stz,   // CN_STRVAL
+    /* 13 */ "STRVAR"_Stz,   // CN_STRVAR
+    /* 14 */ "TMEVAL"_Stz,   // CN_TMEVAL
+    /* 15 */ "TSPVAL"_Stz,   // CN_TSPVAL
+    /* 16 */ "VALREG"_Stz,   // CN_VALREG
+    /* 17 */ "VALSET"_Stz,   // CN_VALSET
+    /* 18 */ "VALWRK"_Stz,   // CN_VALWRK
     
     /* 19 */ "ACCESSPATH"_Stz,         // CN_ACCESSPATH
     /* 20 */ "ACCUM"_Stz,              // CN_ACCUM
@@ -388,20 +388,19 @@ enum eCN : u2 // Class Number
     /* 59 */ "JUMBOPERSISTENT"_Stz,    // CN_JUMBOPERSISTENT
     /* 60 */ "JUMBOTRANSIENT"_Stz,     // CN_JUMBOTRANSIENT
     
-    /* 61 */ "KEY"_Stz,                // CN_
-    /* 62 */ "KEYVAL"_Stz,             // CN_
-    /* 63 */ "KEYVEC"_Stz,             // CN_
-    /* 64 */ "KEYWRK"_Stz,             // CN_
+    /* 61 */ "KEY"_Stz,                // CN_KEY
+    /* 62 */ "KEYVAL"_Stz,             // CN_KEYVAL
+    /* 63 */ "KEYVEC"_Stz,             // CN_KEYVEC
+    /* 64 */ "KEYVEC"_Stz,             // CN_KEYVEC
   
-    /* 65 */ "LARGEPERSISTENT"_Stz,    // CN_
-    /* 66 */ "LARGETRANSIENT"_Stz,     // CN_
-    
-    /* 67 */ "LINEITEM"_Stz,           // CN_
-    /* 68 */ "LOADCHUNK"_Stz,          // CN_
-    /* 69 */ "LOADER"_Stz,             // CN_
-    /* 70 */ "LOADERSUB"_Stz,          // CN_
-    /* 71 */ "LOADMAP"_Stz,            // CN_
-    /* 72 */ "LOCK"_Stz,               // CN_
+    /* 65 */ "LARGEPERSISTENT"_Stz,    // CN_LARGEPERSISTENT
+    /* 66 */ "LARGETRANSIENT"_Stz,     // CN_LARGETRANSIENT
+    /* 67 */ "LINEITEM"_Stz,           // CN_LINEITEM
+    /* 68 */ "LOADCHUNK"_Stz,          // CN_LOADCHUNK
+    /* 69 */ "LOADER"_Stz,             // CN_LOADER
+    /* 70 */ "LOADERSUB"_Stz,          // CN_LOADERSUB
+    /* 71 */ "LOADMAP"_Stz,            // CN_LOADMAP
+    /* 72 */ "LOCK"_Stz,               // CN_LOCK
 
     /* 73 */ "MEDIUMPERSISTENT"_Stz,   // CN_MEDIUMPERSISTENT
     /* 74 */ "MEDIUMTRANSIENT"_Stz,    // CN_MEDIUMTRANSIENT
@@ -410,93 +409,91 @@ enum eCN : u2 // Class Number
   
     /* 77 */ "OP"_Stz,                 // CN_OP
   
-    /* 78 */ "PARSER"_Stz,             // CN_
-    /* 79 */ "PARTITION"_Stz,          // CN_
-    /* 80 */ "PARTITIONSCHEDULER"_Stz, // CN_
-    /* 81 */ "PARTITIONVEC"_Stz,       // CN_
-    /* 82 */ "PATHVEC"_Stz,            // CN_
-    /* 83 */ "PERFORMANCEBUFFER"_Stz,  // CN_
-    /* 84 */ "PERFORMANCEENTRY"_Stz,   // CN_
-    /* 85 */ "PERFORMANCETRACE"_Stz,   // CN_
-    /* 86 */ "PLAN"_Stz,               // CN_
-    /* 87 */ "PLANNER"_Stz,            // CN_
-    /* 88 */ "PLANLIST"_Stz,           // CN_
-    /* 89 */ "POSIXTHREAD"_Stz,        // CN_
-    /* 90 */ "PREDICATE"_Stz,          // CN_
-    /* 91 */ "PREDICATEVEC"_Stz,       // CN_
-    /* 92 */ "PROXY"_Stz,              // CN_
-    /* 93 */ "PROXYSET"_Stz,           // CN_
-    /* 94 */ "PTNCOLVEC"_Stz,          // CN_
+    /* 78 */ "PARSER"_Stz,             // CN_PARSER
+    /* 79 */ "PARTITION"_Stz,          // CN_PARTITION
+    /* 80 */ "PARTITIONSCHEDULER"_Stz, // CN_PARTITIONSCHEDULER
+    /* 81 */ "PARTITIONVEC"_Stz,       // CN_PARTITIONVEC
+    /* 82 */ "PATHVEC"_Stz,            // CN_PATHVEC
+    /* 83 */ "PERFORMANCEBUFFER"_Stz,  // CN_PERFORMANCEBUFFER
+    /* 84 */ "PERFORMANCEENTRY"_Stz,   // CN_PERFORMANCEENTRY
+    /* 85 */ "PERFORMANCETRACE"_Stz,   // CN_PERFORMANCETRACE
+    /* 86 */ "PLAN"_Stz,               // CN_PLAN
+    /* 87 */ "PLANNER"_Stz,            // CN_PLANNER
+    /* 88 */ "PLANLIST"_Stz,           // CN_PLANNER
+    /* 89 */ "POSIXTHREAD"_Stz,        // CN_POSIXTHREAD
+    /* 90 */ "PREDICATE"_Stz,          // CN_PREDICATE
+    /* 91 */ "PREDICATEVEC"_Stz,       // CN_PREDICATEVEC
+    /* 92 */ "PROXY"_Stz,              // CN_PROXY
+    /* 93 */ "PROXYSET"_Stz,           // CN_PROXYSET
+    /* 94 */ "PTNCOLVEC"_Stz,          // CN_PTNCOLVEC
     
-    /* 95 */ "QUEUE"_Stz,              // CN_
-    /* 96 */ "QUEUEBUFFER"_Stz,        // CN_
-    /*    */ "QUEUES"_Stz,             // CN_
+    /* 95 */ "QUEUE"_Stz,              // CN_QUEUE
+    /* 96 */ "QUEUEBUFFER"_Stz,        // CN_QUEUEBUFFER
+    /*    */ "QUEUES"_Stz,             // CN_QUEUES
+    
+    /* 97 */ "RBCURSOR"_Stz,           // CN_RBCURSOR
+    /*    */ "REGFRAME"_Stz,           // CN_REGFRAME
+    /*101 */ "RING"_Stz,               // CN_RING
+    /*102 */ "ROARRAY"_Stz,            // CN_ROARRAY
+    /*103 */ "ROWBUFFER"_Stz,          // CN_ROWBUFFER
+    /*104 */ "ROWCURSOR"_Stz,          // CN_ROWCURSOR
+    /*105 */ "ROWONCE"_Stz,            // CN_ROWONCE
+    /*106 */ "ROWWRK"_Stz,             // CN_ROWWRK
   
-    /* 97 */ "RBCURSOR"_Stz,           // CN_
-    /*    */ "REGFRAME"_Stz,           // CN_
-    
-    /*101 */ "RING"_Stz,               // CN_
-    /*102 */ "ROARRAY"_Stz,            // CN_
-    /*103 */ "ROWBUFFER"_Stz,          // CN_
-    /*104 */ "ROWCURSOR"_Stz,          // CN_
-    /*105 */ "ROWONCE"_Stz,            // CN_
-    /*106 */ "ROWWRK"_Stz,             // CN_
+    /*107 */ "SCANBUFFER"_Stz,         // CN_SCANBUFFER
+    /*108 */ "SCRATCH"_Stz,            // CN_SCRATCH
+    /*110 */ "SEITF"_Stz,              // CN_SEITF
+    /*111 */ "SEITFCURSOR"_Stz,        // CN_SEITFCURSOR
+    /*112 */ "SEITFLIST"_Stz,          // CN_SEITFLIST
+    /*113 */ "SELCURSOR"_Stz,          // CN_SELCURSOR
+    /*114 */ "SEMAPHORE"_Stz,          // CN_SEMAPHORE
+    /*115 */ "SEPROMPT"_Stz,           // CN_SEPROMPT
+    /*116 */ "SINCE"_Stz,              // CN_SINCE
+    /*117 */ "SKIPCURSOR"_Stz,         // CN_SKIPCURSOR
+    /*118 */ "SKIPLIST"_Stz,           // CN_SKIPLIST
+    /*119 */ "SKIPNODE"_Stz,           // CN_SKIPNODE
+    /*120 */ "SLAB"_Stz,               // CN_SLAB
+    /*121 */ "SLABALLOCATOR"_Stz,      // CN_SLABALLOCATOR
+    /*122 */ "SLOTS"_Stz,              // CN_SLOTS
+    /*123 */ "SMALLPERSISTENT"_Stz,    // CN_SMALLPERSISTENT
+    /*124 */ "SMALLTRANSIENT"_Stz,     // CN_SMALLTRANSIENT
+    /*125 */ "SOCKET"_Stz,             // CN_SOCKET
+    /*126 */ "STACK"_Stz,              // CN_STACK
+    /*127 */ "STEPACCUM"_Stz,          // CN_STEPACCUM
+    /*128 */ "STEPARRAY"_Stz,          // CN_STEPARRAY
+    /*129 */ "SYSCALL"_Stz,            // CN_SYSCALL
   
-    /*107 */ "SCANBUFFER"_Stz,         // CN_
-    /*108 */ "SCRATCH"_Stz,            // CN_
-
-    /*110 */ "SEITF"_Stz,              // CN_
-    /*111 */ "SEITFCURSOR"_Stz,        // CN_
-    /*112 */ "SEITFLIST"_Stz,          // CN_
-    /*113 */ "SELCURSOR"_Stz,          // CN_
-    /*114 */ "SEMAPHORE"_Stz,          // CN_
-    /*115 */ "SEPROMPT"_Stz,           // CN_
-    /*116 */ "SINCE"_Stz,              // CN_
-    /*117 */ "SKIPCURSOR"_Stz,         // CN_
-    /*118 */ "SKIPLIST"_Stz,           // CN_
-    /*119 */ "SKIPNODE"_Stz,           // CN_
-    /*120 */ "SLAB"_Stz,               // CN_
-    /*121 */ "SLABALLOCATOR"_Stz,      // CN_
-    /*122 */ "SLOTS"_Stz,              // CN_
-    /*123 */ "SMALLPERSISTENT"_Stz,    // CN_
-    /*124 */ "SMALLTRANSIENT"_Stz,     // CN_
-    /*125 */ "SOCKET"_Stz,             // CN_
-    /*126 */ "STACK"_Stz,              // CN_
-    /*127 */ "STEPACCUM"_Stz,          // CN_
-    /*128 */ "STEPARRAY"_Stz,          // CN_
-    /*129 */ "SYSCALL"_Stz,            // CN_
-  
-    /*130 */ "TABLE"_Stz,              // CN_
-    /*131 */ "TASK"_Stz,               // CN_
-    /*132 */ "TASKCURSOR"_Stz,         // CN_
-    /*    */ "TASKFIFO"_Stz,           // CN_
-    /*133 */ "TASKLIST"_Stz,           // CN_
-    /*134 */ "TASKQUEUE"_Stz,          // CN_
-    /*135 */ "SERVERSCHEDULER"_Stz,    // CN_
-    /*136 */ "TASKSET"_Stz,            // CN_
-    /*137 */ "THREAD"_Stz,             // CN_
-    /*138 */ "THREADCURSOR"_Stz,       // CN_
-    /*139 */ "THREADLIST"_Stz,         // CN_
-    /*140 */ "THREADQUEUE"_Stz,        // CN_
-    /*    */ "THREADVECTOR"_Stz,       // CN_
-    /*141 */ "TIME"_Stz,               // CN_
-    /*142 */ "TIMER"_Stz,              // CN_
-    /*143 */ "TOKEN"_Stz,              // CN_
-    /*144 */ "TOKENISER"_Stz,          // CN_
-    /*145 */ "TOKENARY"_Stz,           // CN_
-    /*146 */ "TOKENVEC"_Stz,           // CN_
-    /*147 */ "TX"_Stz,                 // CN_
-    /*148 */ "TXSET"_Stz,              // CN_
+    /*130 */ "TABLE"_Stz,              // CN_TABLE
+    /*131 */ "TASK"_Stz,               // CN_TASK
+    /*132 */ "TASKCURSOR"_Stz,         // CN_TASKCURSOR
+    /*    */ "TASKFIFO"_Stz,           // CN_TASKFIFO
+    /*133 */ "TASKLIST"_Stz,           // CN_TASKLIST
+    /*134 */ "TASKQUEUE"_Stz,          // CN_TASKQUEUE
+    /*135 */ "SERVERSCHEDULER"_Stz,    // CN_SERVERSCHEDULER
+    /*136 */ "TASKSET"_Stz,            // CN_TASKSET
+    /*137 */ "THREAD"_Stz,             // CN_THREAD
+    /*138 */ "THREADCURSOR"_Stz,       // CN_THREADCURSOR
+    /*139 */ "THREADLIST"_Stz,         // CN_THREADLIST
+    /*140 */ "THREADQUEUE"_Stz,        // CN_THREADQUEUE
+    /*    */ "THREADVECTOR"_Stz,       // CN_THREADVECTOR
+    /*141 */ "TIME"_Stz,               // CN_TIME
+    /*142 */ "TIMER"_Stz,              // CN_TIMER
+    /*143 */ "TOKEN"_Stz,              // CN_TOKEN
+    /*144 */ "TOKENISER"_Stz,          // CN_TOKENISER
+    /*145 */ "TOKENARY"_Stz,           // CN_TOKENARY
+    /*146 */ "TOKENVEC"_Stz,           // CN_TOKENVEC
+    /*147 */ "TX"_Stz,                 // CN_TX
+    /*148 */ "TXSET"_Stz,              // CN_TXSET
     
-    /*149 */ "WILDERNESS"_Stz,         // CN_
-    /*150 */ "WORD"_Stz,               // CN_
-    /*    */ "WORKINGBUFFER"_Stz,      // CN_
-    /*    */ "WORKINGROW"_Stz,         // CN_
+    /*149 */ "WILDERNESS"_Stz,         // CN_WILDERNESS
+    /*150 */ "WORD"_Stz,               // CN_WORD
+    /*    */ "WORKINGBUFFER"_Stz,      // CN_WORKINGBUFFER
+    /*    */ "WORKINGROW"_Stz,         // CN_"WORKINGROW"
     
-    /*151 */ "ZSMALL_"_Stz,            // CN_
-    /*152 */ "ZMEDIUM_"_Stz,           // CN_
-    /*153 */ "ZLARGE_"_Stz,            // CN_
-    /*154 */ "ZJUMBO_"_Stz,            // CN_
+    /*151 */ "ZSMALL_"_Stz,            // CN_ZSMALL_
+    /*152 */ "ZMEDIUM_"_Stz,           // CN_ZMEDIUM_
+    /*153 */ "ZLARGE_"_Stz,            // CN_ZLARGE_
+    /*154 */ "ZJUMBO_"_Stz,            // CN_ZJUMBO_
   
     /*155 */ "ENUMS"_Stz               // CN_ENUMS
   };
