@@ -1791,7 +1791,7 @@ void Task::vJobSpawn(MP_Task mpTask)
   Job* pJob = _pJob(pJobPtr);
   
   // there should not be a prompt task
-  ASSERT( ! pJob->m_pPromptTask);
+  //ASSERT( ! pJob->m_pPromptTask);
  
   // form the word to execute for the request
   s32 sSeed;
