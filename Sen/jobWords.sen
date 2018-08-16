@@ -5,6 +5,23 @@
 "jobWords.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* delete this task's job                                                     */
+/*----------------------------------------------------------------------------*/
+: delete_task_job ( -- )
+
+  0 locals| pThisTask |
+  0 locals| pThisJob  |
+
+  // get this task and job
+  task::this to pThisTask
+  pThisTask task.job@ to pThisJob
+
+  // now delete the ended job
+  nullptr pThisTask task.job!
+  pThisJob job.delete
+;
+
+/*----------------------------------------------------------------------------*/
 /* print job notice                                                           */
 /*----------------------------------------------------------------------------*/
 : job.notice ( pJob -- )

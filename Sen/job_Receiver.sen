@@ -108,15 +108,9 @@
 
     socketObject> drop to pJob
 
-    stk
-
     pJob job.class to eJobClass
 
-    stk
-
     pJob job.execute
-
-    stk
 
   again
 ;
