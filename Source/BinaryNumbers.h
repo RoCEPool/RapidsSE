@@ -16,6 +16,7 @@ const i8 C_2KB    = C_1KB * 2;    // 2 kilobytes   = 2,048
 const i8 C_4KB    = C_1KB * 4;    // 4 kilobytes   = 4,096
 const i8 C_8KB    = C_1KB * 8;    // 8 kilobytes   = 8,192
 const i8 C_16KB   = C_1KB * 16;   // 16 kilobytes  = 16,384
+const i8 C_17KB   = C_1KB * 17;   // 17 kilobytes  = 17,408
 const i8 C_32KB   = C_1KB * 32;   // 32 kilobytes  = 32,768
 const i8 C_48KB   = C_1KB * 48;   // 48 kilobytes  = 49,152
 const i8 C_64KB   = C_1KB * 64;   // 64 kilobytes  = 65,536
