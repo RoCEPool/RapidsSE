@@ -102,24 +102,15 @@
 
   begin
 
-    // check the d-stack depth is zero
     assertStackDepthZero
 
     "Receiver_seed recv" .
-    // receive valset from socket
-    socketValSet>
 
-    // unpack valset into pJob
-    valset> drop to pJob
+    socketObject> to pJob
 
     pJob job.class to eJobClass
 
-    // execute received job
-    eJobClass CN_JOB_LOADBUFFER == if
-      pJob job.spawn
-    else
-      pJob job.execute
-    then
+    pJob job.execute
 
   again
 ;
