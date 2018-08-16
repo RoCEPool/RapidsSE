@@ -39,7 +39,8 @@ namespace Debugging
   /* 23 */ EC_LOW_BUFFERS,
   
   /* 24 */ EC_MAX_INDEXES,
-    
+  /*    */ EC_MAX_COLUMNS,
+  /*    */ EC_MAX_ROW_LENGTH,
   /* 25 */ EC_NO_COLUMNS_DIC,
   
   /* 26 */ EC_NO_SUCH_CATALOG,
@@ -123,6 +124,8 @@ namespace Debugging
   
   /* 23 */ "low buffers"_Stz,
   /* 24 */ "max allowed indexes already created"_Stz,
+  /*    */ "max 100 columns supported in a table"_Stz,
+  /*    */ "max row length allowed is 16k bytes"_Stz,
     
   /* 25 */ "no columns dictionary"_Stz,
   
