@@ -239,8 +239,6 @@ void Task::vSocketRecvObject(MP_Task mpTask)
   eCN eClass = pObject->eClass();
   i8 nObjectSize = giClassSize[eClass];
 
-  vTrace("vSocketRecvObject: recv %lld %s %lld bytes\n"_Stz,
-         eClass,aCN[eClass],nObjectSize);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive rest a job
@@ -264,6 +262,9 @@ void Task::vSocketRecvObject(MP_Task mpTask)
       EXIT();
       return;
     }
+
+    vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
+           pJob,eClass,aCN[eClass],nObjectSize);
 
     mpTask->m_pDataStack->vPushObject(pJob);
     mpTask->m_pDataStack->vPushInt((i8)1);
@@ -290,6 +291,9 @@ void Task::vSocketRecvObject(MP_Task mpTask)
       return;
     }
 
+    vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
+           pWorkingBuffer,eClass,aCN[eClass],nObjectSize);
+    
     mpTask->m_pDataStack->vPushObject(pWorkingBuffer);
     mpTask->m_pDataStack->vPushInt((i8)1);
     EXIT();
@@ -461,8 +465,8 @@ void Task::vSocketSendObject(MP_Task mpTask)
   eCN eClass = pObject->eClass();
   i8 nObjectSize = giClassSize[eClass];
   
-  vTrace("vSocketSendObject: send %lld %s %lld bytes\n"_Stz,
-         eClass,aCN[eClass],nObjectSize);
+  vTrace("vSocketSendObject: send %p %lld %s %lld bytes\n"_Stz,
+         pObject,eClass,aCN[eClass],nObjectSize);
 
   SysCall xSysCall;
   bool bResult = pSocket->bSendTo(nObjectSize, pObject, xSysCall);
