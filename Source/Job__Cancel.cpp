@@ -20,7 +20,7 @@ JobNote mJobNote__Cancel (
   nullptr,                 // prompt pre-process function
   nullptr,                 // prompt post-process function
   nullptr,                 // job new function
-  nullptr,                 // job delete function
+  vJob__Cancel_delete,     // job delete function
   nullptr,                 // job send function
   nullptr,                 // job receive function
   nullptr,                 // job show function
