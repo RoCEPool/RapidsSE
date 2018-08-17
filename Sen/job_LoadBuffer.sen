@@ -5,40 +5,31 @@
 "job_LoadBuffer.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* LoadBuffer seed                                                            */
+/* LoadBuffer node                                                            */
 /*----------------------------------------------------------------------------*/
-: LoadBuffer_seed (  -- <R> )
+: LoadBuffer_node ( pJob_LoadBuffer -- )
 
-  0 locals| pThisTask |
-  0 locals| pJob_LoadBuffer  |
-  0 locals| pJob_LoadTable |
-  0 locals| iLoadJobId |
-  0 locals| sTableNm  |
-  0 locals| i_Partition |
+  params| pJob_LoadBuffer |
+
+  0 locals| iLoadJobId      |
+  0 locals| pJob_LoadTable  |
   0 locals| pTask_LoadTable |
-  0 locals| bAllLoaded |
 
-  tp: LoadBuffer
-  "LoadBuffer running" .
+  0 locals| sTableNm    |
+  0 locals| i_Partition |
+  0 locals| bAllLoaded  |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // get the task
-  task::this to pThisTask
-  pThisTask "LoadBuffer_seed task: %v" fmt.print
-
-  // get the load buffer job from the task
-  pThisTask task.job@ to pJob_LoadBuffer
-
-  pJob_LoadBuffer job.show
 
   // get the load table job (node)
   pJob_LoadBuffer job_loadBuffer.loadJobId@ to iLoadJobId
   iLoadJobId job.findParticipant to pJob_LoadTable
   pJob_LoadTable job_LoadTable.task@ to pTask_LoadTable
-  pTask_LoadTable pJob_LoadTable iLoadJobId "LoadJobId %v job_LoadTable (node) %v task_LoadTable %v" fmt.print
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pTask_LoadTable pJob_LoadTable iLoadJobId
+  "LoadJobId %v job_LoadTable (node) %v task_LoadTable %v"
+  fmt.print
+
 
   // get table name
   pJob_LoadBuffer job.objectName@ to sTableNm
@@ -67,10 +58,39 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   bAllLoaded if
-    pTask_LoadTable "All buffers loaded; Would ack task_LoadTable (node) %v" fmt.print
+      pTask_LoadTable
+      "All buffers loaded; Would ack task_LoadTable (node) %v"
+    fmt.print
 
     pTask_LoadTable ack
   then
+;
+
+/*----------------------------------------------------------------------------*/
+/* LoadBuffer seed                                                            */
+/*----------------------------------------------------------------------------*/
+: LoadBuffer_seed (  -- )
+
+  0 locals| pThisTask |
+  0 locals| pJob_LoadBuffer  |
+
+  tp: LoadBuffer
+  "LoadBuffer running" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // get the task
+  task::this to pThisTask
+  pThisTask "LoadBuffer_seed task: %v" fmt.print
+
+  // get the load buffer job from the task
+  pThisTask task.job@ to pJob_LoadBuffer
+
+  pJob_LoadBuffer job.show
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pJob_LoadBuffer LoadBuffer_node
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
