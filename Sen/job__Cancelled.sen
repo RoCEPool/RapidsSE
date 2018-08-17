@@ -45,7 +45,8 @@
 /*----------------------------------------------------------------------------*/
 : Job__Cancelled::execute ( iJobId pJob__Cancelled -- )
 
-  params| pJob__Cancelled iJobId |
+  params| pJob__Cancelled |
+  params| iJobId |
 
   0 0 0 0 0 locals| pJobParticipant iParticipantNode error pJob iAcksRemaining |
 

@@ -45,11 +45,12 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job__Cancel on participating node                                 */
+/* execute Job__Cancel on participating node                                  */
 /*----------------------------------------------------------------------------*/
-: Job__Cancel::execute ( iJobId pJob__Execute -- )
+: Job__Cancel::execute ( iJobId pJob__Cancel -- )
 
-  params| pJob__Cancel iJobId |
+  params| pJob__Cancel |
+  params| iJobId |
 
   0 0 0 locals| sReleaseResources pJob pJobCancelled |
 

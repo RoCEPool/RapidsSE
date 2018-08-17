@@ -9,7 +9,8 @@
 /*----------------------------------------------------------------------------*/
 : Job__Ended::execute ( iJobId pJob__Ended -- )
 
-  params| pJob__Ended iJobId |
+  params| pJob__Ended |
+  params| iJobId |
 
   0 0 locals| pJob iAcksRemaining |
 
