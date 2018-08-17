@@ -30,7 +30,10 @@ namespace JobsModel
   
   };
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job__Cancel* _pJob__Cancel(void* aAddr);
+  
+  void vJob__Cancel_delete(Interface::SEitf* pSEitf, Job* pJob);
 }
 
 /*============================================================================*/
