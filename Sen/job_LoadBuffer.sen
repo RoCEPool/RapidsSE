@@ -86,9 +86,9 @@
   i_Partition grid::toNode locals| i_Node |
   i_Partition i_Node "LoadBuffer_seed : Node %v Partition %v" fmt.print
 
-  i_Node task::this task.sendNode!
+  i_Node grid::node task::this task.sendNode!
 
-  // >socket
+  //pJob_LoadBuffer >socket
   pJob_LoadBuffer LoadBuffer_node
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

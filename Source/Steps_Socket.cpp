@@ -237,6 +237,10 @@ void Task::vSocketRecvObject(MP_Task mpTask)
   
   Object* pObject = reinterpret_cast<Object*>(&xObjectHeader);
   eCN eClass = pObject->eClass();
+  i8 nObjectSize = giClassSize[eClass];
+
+  vTrace("vSocketRecvObject: recv %lld %s %lld bytes\n"_Stz,
+         eClass,aCN[eClass],nObjectSize);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive rest a job
@@ -457,6 +461,9 @@ void Task::vSocketSendObject(MP_Task mpTask)
   eCN eClass = pObject->eClass();
   i8 nObjectSize = giClassSize[eClass];
   
+  vTrace("vSocketSendObject: send %lld %s %lld bytes\n"_Stz,
+         eClass,aCN[eClass],nObjectSize);
+
   SysCall xSysCall;
   bool bResult = pSocket->bSendTo(nObjectSize, pObject, xSysCall);
 
