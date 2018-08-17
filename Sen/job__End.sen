@@ -7,10 +7,10 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job__End on participating node                                     */
 /*----------------------------------------------------------------------------*/
-: Job__End::execute ( iJobId pJob__End -- )
+: Job__End::execute ( pJob__End -- )
 
   params| pJob__End |
-  params| iJobId |
+  pJob__End job.id@ params| iJobId |
 
   0 locals| pJob |
 

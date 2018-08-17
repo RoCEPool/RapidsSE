@@ -45,7 +45,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job__Begun on originating node                                     */
 /*----------------------------------------------------------------------------*/
-: Job__Begun::execute ( iJobId Job__Begun -- )
+: Job__Begun::execute ( Job__Begun -- )
 
   //
   // where:  On the originator node.
@@ -59,7 +59,7 @@
   //
 
   params| pJob__Begun |
-  params| iJobId |
+  pJob__Begun job.id@ params| iJobId |
 
   0 locals| pJob  |
   0 0 0 0 locals| iAcksRemaining error pJobParticipant iParticipantNode |

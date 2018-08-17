@@ -49,10 +49,10 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job__Executed on originating node                                  */
 /*----------------------------------------------------------------------------*/
-: Job__Executed::execute ( iJobId pJob__Executed -- )
+: Job__Executed::execute ( pJob__Executed -- )
 
   params| pJob__Executed |
-  params| iJobId |
+  pJob__Executed job.id@ params| iJobId |
 
   0 0 0 0 0 locals| pJobParticipant iParticipantNode error pJob iAcksRemaining |
 

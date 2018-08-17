@@ -47,10 +47,10 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job__Execute on participating node                                 */
 /*----------------------------------------------------------------------------*/
-: Job__Execute::execute ( iJobId pJob__Execute -- )
+: Job__Execute::execute ( pJob__Execute -- )
 
   params| pJob__Execute |
-  params| iJobId |
+  pJob__Execute job.id@ params| iJobId |
 
   0 0 locals| pJob pJobExecuted |
 

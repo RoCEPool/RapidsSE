@@ -7,10 +7,10 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job__Ended on originating node                                     */
 /*----------------------------------------------------------------------------*/
-: Job__Ended::execute ( iJobId pJob__Ended -- )
+: Job__Ended::execute ( pJob__Ended -- )
 
   params| pJob__Ended |
-  params| iJobId |
+  pJob__Ended job.id@ params| iJobId |
 
   0 0 locals| pJob iAcksRemaining |
 

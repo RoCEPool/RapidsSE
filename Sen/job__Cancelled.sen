@@ -43,10 +43,10 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job__Cancelled on originating node                                 */
 /*----------------------------------------------------------------------------*/
-: Job__Cancelled::execute ( iJobId pJob__Cancelled -- )
+: Job__Cancelled::execute ( pJob__Cancelled -- )
 
   params| pJob__Cancelled |
-  params| iJobId |
+  pJob__Cancelled job.id@ params| iJobId |
 
   0 0 0 0 0 locals| pJobParticipant iParticipantNode error pJob iAcksRemaining |
 
