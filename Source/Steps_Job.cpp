@@ -104,6 +104,7 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job_sizeIndex.tableName@"_Stz,&vJobSizeIndexTableNameFetch, false);
   vAddPrimitive("job_subTruncate.truncateJobId@"_Stz,&vJobSubTruncateTruncateJobIdFetch, false);
   vAddPrimitive("job_subTruncate.slot@"_Stz,&vJobSubTruncateSlotFetch, false);
+  vAddPrimitive("job::this"_Stz,            &vJobThis,             false);
   vAddPrimitive("job.trace!"_Stz,           &vJobTraceStore,       false);
   vAddPrimitive("job.trace@"_Stz,           &vJobTraceFetch,       false);
   vAddPrimitive("Job_truncateTable.spawnSub"_Stz, &vJobTruncateTableSpawnSub, false);
@@ -1902,6 +1903,20 @@ void Task::vJobTraceFetch(MP_Task mpTask)
   
   mpTask->m_pDataStack->vPushInt(eJobTrace);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job::this -- get this job from this task                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vJobThis(MP_Task mpTask)
+{
+  ENTRY("vJobThis"_Stz);
+  
+  Job* pJob = mpTask->m_pJob;
+  
+  mpTask->m_pDataStack->vPushObject(pJob);
+
   EXIT();
 }
 

@@ -21,15 +21,17 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  "LoadBuffer_node :" .
+  pJob_LoadBuffer job.show
+
   // get the load table job (node)
   pJob_LoadBuffer job_loadBuffer.loadJobId@ to iLoadJobId
   iLoadJobId job.findParticipant to pJob_LoadTable
   pJob_LoadTable job_LoadTable.task@ to pTask_LoadTable
 
-  pTask_LoadTable pJob_LoadTable iLoadJobId
-  "LoadJobId %v job_LoadTable (node) %v task_LoadTable %v"
+    pTask_LoadTable pJob_LoadTable iLoadJobId
+    "LoadJobId %v job_LoadTable (node) %v task_LoadTable %v"
   fmt.print
-
 
   // get table name
   pJob_LoadBuffer job.objectName@ to sTableNm
@@ -71,22 +73,9 @@
 /*----------------------------------------------------------------------------*/
 : LoadBuffer_seed (  -- )
 
-  0 locals| pThisTask |
-  0 locals| pJob_LoadBuffer  |
+  job::this locals| pJob_LoadBuffer  |
 
-  tp: LoadBuffer
-  "LoadBuffer running" .
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // get the task
-  task::this to pThisTask
-  pThisTask "LoadBuffer_seed task: %v" fmt.print
-
-  // get the load buffer job from the task
-  pThisTask task.job@ to pJob_LoadBuffer
-
-  pJob_LoadBuffer job.show
+  "LoadBuffer_seed :" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -97,10 +86,7 @@
   pJob_LoadBuffer <DONE_ONESHOT>
 
   // now delete the ended job
-  pJob_LoadBuffer job.delete
-
-  // null the job in the task
-  nullptr pThisTask task.job!
+  delete_task_job
 ;
 
 /*============================================================================*/
