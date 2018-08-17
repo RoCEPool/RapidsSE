@@ -51,8 +51,8 @@
 /*----------------------------------------------------------------------------*/
 : Job__Executed::execute ( pJob__Executed -- )
 
-  params| pJob__Executed |
-  // job::this locals| pJob__Executed |
+  //params| pJob__Executed |
+  job::this locals| pJob__Executed |
   pJob__Executed job.id@ locals| iJobId |
 
   0 0 0 0 0 locals| pJobParticipant iParticipantNode error pJob iAcksRemaining |
@@ -89,7 +89,8 @@
 
   // if there are acks remaining just exit
   iAcksRemaining 0 != if
-    exit
+    delete_ended_job
+    exit                                                         // *EARLY EXIT*
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -97,6 +98,8 @@
   "received Job__Executed from all nodes" .
 
   pJob Job__End::distribute
+
+  delete_ended_job
 ;
 
 /*============================================================================*/
