@@ -66,6 +66,9 @@
 
     pTask_LoadTable ack
   then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //delete_ended_job
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -79,6 +82,13 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  pJob_LoadBuffer job_loadBuffer.partition@ locals| i_Partition |
+  i_Partition grid::toNode locals| i_Node |
+  i_Partition i_Node "LoadBuffer_seed : Node %v Partition %v" fmt.print
+
+  i_Node task::this task.sendNode!
+
+  // >socket
   pJob_LoadBuffer LoadBuffer_node
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
