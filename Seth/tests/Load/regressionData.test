@@ -326,6 +326,40 @@ success
 ld RETURNS "../Seth/tests/Load/returns.csv";
 success
 
+// tests row limits
+create table limitRow (col0 VARCHAR(20000));
+success;
+
+ld limitRow "../Seth/tests/Load/largeRow1.tbl";
+success;
+
+fetch limitRow;
+rows: 0;
+
+ld limitRow "../Seth/tests/Load/largeRow2.tbl";
+success;
+
+fetch limitRow;
+rows: 0;
+
+ld limitRow "../Seth/tests/Load/largeRow3.tbl";
+
+fetch limitRow;
+rows: 0;
+
+ld limitRow "../Seth/tests/Load/15KRow.tbl";
+
+fetch limitRow;
+rows: 1;
+
+ld limitRow "../Seth/tests/Load/16KRow.tbl";
+
+fetch limitRow;
+rows: 2;
+
+drop table limitRow;
+success;
+
 CLEANUP {
   
   drop table table1;
