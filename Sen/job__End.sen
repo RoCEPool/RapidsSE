@@ -5,29 +5,6 @@
 "job__End.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* execute Job__End on participating node                                     */
-/*----------------------------------------------------------------------------*/
-: Job__End::execute ( pJob__End -- )
-
-  params| pJob__End |
-  // job::this locals| pJob__End |
-  pJob__End job.id@ locals| iJobId |
-
-  0 locals| pJob |
-
-  // find the job in the participating jobs
-  iJobId job.findParticipant to pJob
-
-  // remove the job from the participant jobs
-  pJob job.removeParticipant
-
-  // delete the job
-  pJob job.delete
-
-  iJobId Job__Ended::send
-;
-
-/*----------------------------------------------------------------------------*/
 /* distribute Job__End to all participants                                    */
 /*----------------------------------------------------------------------------*/
 : Job__End::distribute ( pJob -- )
@@ -65,6 +42,29 @@
 
   // now delete the end job
   pJob__End jobEnd.delete
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job__End on participating node                                     */
+/*----------------------------------------------------------------------------*/
+: Job__End::execute ( pJob__End -- )
+
+  params| pJob__End |
+  // job::this locals| pJob__End |
+  pJob__End job.id@ locals| iJobId |
+
+  0 locals| pJob |
+
+  // find the job in the participating jobs
+  iJobId job.findParticipant to pJob
+
+  // remove the job from the participant jobs
+  pJob job.removeParticipant
+
+  // delete the job
+  pJob job.delete
+
+  iJobId Job__Ended::send
 ;
 
 /*============================================================================*/

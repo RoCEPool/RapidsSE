@@ -11,7 +11,7 @@
 
   params| pJobParticipant iJobId |
 
-  0 0 0 locals| pJob pJob__Begun error |
+  0 0 locals| pJob__Begun error |
 
   // new a temporary Job__Executed
   iJobId job.newBegun to pJob__Begun
@@ -62,7 +62,7 @@
   // job::this locals| pJob__Begun |
   pJob__Begun job.id@ locals| iJobId |
 
-  0 locals| pJob  |
+  0 locals| pJobOriginator  |
   0 0 0 0 locals| iAcksRemaining error pJobParticipant iParticipantNode |
 
   // get participant node that executed the job
@@ -72,7 +72,7 @@
   "-- a" .
 
   // find the job in the originator jobs
-  iJobId job.findOriginator to pJob
+  iJobId job.findOriginator to pJobOriginator
 
   "-- b" .
 
@@ -82,17 +82,22 @@
   "-- c" .
 
   error EC_NONE != if
-    // set the error code in pJob
-    error iParticipantNode pJob job.error!
+    // set the error code in pJobOriginator
+    error iParticipantNode pJobOriginator job.error!
   then
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   "-- d" .
 
   // decrement the acks remaining
-  pJob job.decAcksRemaining to iAcksRemaining
+  pJobOriginator job.decAcksRemaining to iAcksRemaining
 
   // test for all acks received all
-  iAcksRemaining 0 != if exit then
+  iAcksRemaining 0 != if
+    exit                                                         // *EARLY EXIT*
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   "received job__begun from all nodes" .
 
@@ -103,18 +108,18 @@
 
   // check if any node returned an error
   grid::nodes 0 do
-    I pJob job.error@ EC_NONE != if
+    I pJobOriginator job.error@ EC_NONE != if
       // distribute Job__Cancel to all participants
-      pJob Job__Cancel::distribute
+      pJobOriginator Job__Cancel::distribute
       unloop
-      exit
+      exit                                                       // *EARLY EXIT*
     then
   loop
 
   "-- f" .
 
   // distribute Job__Execute to all participants
-  pJob Job__Execute::distribute
+  pJobOriginator Job__Execute::distribute
 ;
 
 /*============================================================================*/

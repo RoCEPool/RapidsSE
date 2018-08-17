@@ -82,16 +82,21 @@
 
   then
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // decrement the acks remaining
   pJob job.decAcksRemaining to iAcksRemaining
 
   // if there are acks remaining just exit
-  iAcksRemaining 0 != if exit then
+  iAcksRemaining 0 != if
+    exit
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   "received Job__Executed from all nodes" .
 
   pJob Job__End::distribute
-
 ;
 
 /*============================================================================*/

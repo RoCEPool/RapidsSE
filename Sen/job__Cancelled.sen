@@ -64,11 +64,17 @@
   // set the error code in pJob
   error iParticipantNode pJob job.error!
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // decrement the acks remaining
   pJob job.decAcksRemaining to iAcksRemaining
 
   // if there are acks remaining just exit
-  iAcksRemaining 0 != if exit then
+  iAcksRemaining 0 != if
+    exit                                                         // *EARLY EXIT*
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   "received Job__Executed from all nodes" .
 
