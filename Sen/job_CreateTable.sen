@@ -152,7 +152,7 @@
 
   pJob_CreateTable job.notice
 
-  // delete_task_job
+  // delete_ended_job
 
   <DONE_NODE>
 ;

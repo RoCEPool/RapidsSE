@@ -85,8 +85,7 @@
 
   pJob_LoadBuffer <DONE_ONESHOT>
 
-  // now delete the ended job
-  delete_task_job
+  delete_ended_job
 ;
 
 /*============================================================================*/
