@@ -1163,6 +1163,9 @@ void Task::vJobNewBegun(MP_Task mpTask)
   pJobBegun->m_iJobId = iJobId;
   pJobBegun->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
   
+  JobClass* pJobClass__Begun = gxJobCatalog.pFindJob(CN_JOB__BEGUN);
+  pJobBegun->m_pJobClass = pJobClass__Begun;
+  
   mpTask->m_pDataStack->vPushObject(pJobBegun);
   
   EXIT();
@@ -1182,6 +1185,9 @@ void Task::vJobNewCancel(MP_Task mpTask)
   Job* pJobCancel = new Job__Cancel;
   pJobCancel->m_iJobId = iJobId;
   pJobCancel->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
+  
+  JobClass* pJobClass__Cancel = gxJobCatalog.pFindJob(CN_JOB__CANCEL);
+  pJobCancel->m_pJobClass = pJobClass__Cancel;
   
   mpTask->m_pDataStack->vPushObject(pJobCancel);
   
@@ -1203,6 +1209,9 @@ void Task::vJobNewCancelled(MP_Task mpTask)
   pJobCancelled->m_iJobId = iJobId;
   pJobCancelled->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
   
+  JobClass* pJobClass__Cancelled = gxJobCatalog.pFindJob(CN_JOB__CANCELLED);
+  pJobCancelled->m_pJobClass = pJobClass__Cancelled;
+  
   mpTask->m_pDataStack->vPushObject(pJobCancelled);
   
   EXIT();
@@ -1222,6 +1231,9 @@ void Task::vJobNewEnd(MP_Task mpTask)
   Job* pJobEnd = new Job__End;
   pJobEnd->m_iJobId = iJobId;
   pJobEnd->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
+  
+  JobClass* pJobClass__End = gxJobCatalog.pFindJob(CN_JOB__END);
+  pJobEnd->m_pJobClass = pJobClass__End;
   
   mpTask->m_pDataStack->vPushObject(pJobEnd);
   
@@ -1243,6 +1255,9 @@ void Task::vJobNewEnded(MP_Task mpTask)
   pJobEnded->m_iJobId = iJobId;
   pJobEnded->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
   
+  JobClass* pJobClass__Ended = gxJobCatalog.pFindJob(CN_JOB__ENDED);
+  pJobEnded->m_pJobClass = pJobClass__Ended;
+  
   mpTask->m_pDataStack->vPushObject(pJobEnded);
   
   EXIT();
@@ -1262,6 +1277,9 @@ void Task::vJobNewExecute(MP_Task mpTask)
   Job* pJobExecute = new Job__Execute;
   pJobExecute->m_iJobId = iJobId;
   pJobExecute->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
+  
+  JobClass* pJobClass__Execute = gxJobCatalog.pFindJob(CN_JOB__EXECUTE);
+  pJobExecute->m_pJobClass = pJobClass__Execute;
   
   mpTask->m_pDataStack->vPushObject(pJobExecute);
   
@@ -1283,6 +1301,9 @@ void Task::vJobNewExecuted(MP_Task mpTask)
   pJobExecuted->m_iJobId = iJobId;
   
   pJobExecuted->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
+  
+  JobClass* pJobClass__Executed = gxJobCatalog.pFindJob(CN_JOB__EXECUTED);
+  pJobExecuted->m_pJobClass = pJobClass__Executed;
   
   mpTask->m_pDataStack->vPushObject(pJobExecuted);
   
