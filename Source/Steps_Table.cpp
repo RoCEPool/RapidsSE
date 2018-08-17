@@ -303,7 +303,7 @@ void Task::vTableGetColumns(MP_Task mpTask)
   ColumnVec* pColVec = pTable->pColumnVec();
   i8 nColumns = pColVec->nItems();
   
-  s4K s;
+  s16KB s;
   for (i8 i_Column = 0; i_Column < nColumns - 1; i_Column++) {
     
     if (i_Column != 0)
@@ -318,7 +318,7 @@ void Task::vTableGetColumns(MP_Task mpTask)
     s.vConcat(DBobjects::aCT[pColVec->pGet(i_Column)->eColumnType()]);
   }
   
-  mpTask->m_pDataStack->vPushS4K(s);
+  mpTask->m_pDataStack->vPushS16KB(s);
   
   EXIT();
 }

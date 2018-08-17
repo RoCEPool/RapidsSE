@@ -595,7 +595,7 @@ void Entry::vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
       }
         
       case DM_VCH: {
-        s4K s;
+        s17KB s;
         s = (Stz*)pDst;
         xValWrk = s;
         break;

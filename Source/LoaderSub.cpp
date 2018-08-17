@@ -176,6 +176,13 @@ bool LoaderSub::bFetchRecord(void)
       continue;
     }
     
+    if (iLength > C_16KB) {
+      m_iInvalidRecords++;
+      vWarn("Skipping row %.20s... - record in file > 16KB\n"_Stz,
+            aRawData);
+      return false;
+    }
+    
     // format the raw data into a row
     bValid = Row::bFormatRow(m_pTable->pColumnVec(),
                              pFormatters,
@@ -221,6 +228,13 @@ bool LoaderSub::bFetchRecordDist(void)
       if (! m_bMoreChunks)
         return false;
       continue;
+    }
+    
+    if (iLength > C_16KB) {
+      m_iInvalidRecords++;
+      vWarn("Skipping row %20s... - record in file > 16KB\n"_Stz,
+            aRawData);
+      return false;
     }
     
     // format the raw data into a row

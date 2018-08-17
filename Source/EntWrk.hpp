@@ -10,7 +10,7 @@ namespace DBobjects
   friend class Entry;
   friend class Table;
   
-  static const i8 C_AREA_BYTES = C_1KB*15;
+  static const i8 C_AREA_BYTES = C_17KB;
   
   private:
     Id    m_xId;       // id of row, or referenced entry in another buffer

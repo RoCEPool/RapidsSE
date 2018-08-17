@@ -73,6 +73,7 @@ namespace Structures
     bool bPop(s256& sArg1);
     bool bPop(s4K&  sArg1);
     bool bPop(s48K& sArg1);
+    bool bPop(s16KB& sArg1);
     bool bPop(s48K& sArg1, i8& iArg2);
     bool bPop(s48K& sArg1, i8& iArg2, i8& iArg3);
     bool bPop(s48K& sArg1, s48K& sArg2);
@@ -90,6 +91,7 @@ namespace Structures
     void vPushS256(s256& s256);
     void vPushS48K(s48K& s48K);
     void vPushS4K(s4K& s4K);
+    void vPushS16KB(s16KB& s16KB);
     void vPushValue(Value* pValue);
     void vPushValue(ValReg* pValue);
     void vPushValWrk(ValWrk* pValue);

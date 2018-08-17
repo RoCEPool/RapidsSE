@@ -1,29 +1,121 @@
 /*============================================================================*/
 /* _scratch -- scratch test                                                   */
 /*============================================================================*/
-create table TABLE1 (
-PCOL1   INTEGER NOT NULL,
-tcol1   INTEGER NOT NULL,
-cola1   INTEGER,
-COLB1   VARCHAR(20),
-colc1   TIMESTAMP,
-cold1   FLOAT,
-cole1   DECIMAL(15, 2),
-colf1   INTEGER,
-colg1   INTEGER,
-ucol    INTEGER,
-ucolvc  VARCHAR(5)
+// (9) create table with 160 columns
+
+create table x(col0 VARCHAR(20000));
+ld x "/tpch/x2.tbl";
+ld x "/tpch/x.tbl";
+ld x "/tpch/x_15K.tbl";
+ld x "/tpch/x_16+.tbl";
+/*
+create table T1 (
+c0 boolean NOT NULL,
+c1 boolean NOT NULL,
+c2 boolean NOT NULL,
+c3 boolean NOT NULL,
+c4 boolean NOT NULL,
+c5 boolean NOT NULL,
+c6 boolean NOT NULL,
+c7 boolean NOT NULL,
+c8 boolean NOT NULL,
+c9 boolean NOT NULL,
+c10 boolean NOT NULL,
+c11 boolean NOT NULL,
+c12 boolean NOT NULL,
+c13 boolean NOT NULL,
+c14 boolean NOT NULL,
+c15 boolean NOT NULL,
+c16 boolean NOT NULL,
+c17 boolean NOT NULL,
+c18 boolean NOT NULL,
+c19 boolean NOT NULL,
+c20 boolean NOT NULL,
+c21 boolean NOT NULL,
+c22 boolean NOT NULL,
+c23 boolean NOT NULL,
+c24 boolean NOT NULL,
+c25 boolean NOT NULL,
+c26 boolean NOT NULL,
+c27 boolean NOT NULL,
+c28 boolean NOT NULL,
+c29 boolean NOT NULL,
+c30 boolean NOT NULL,
+c31 boolean NOT NULL,
+c32 boolean NOT NULL,
+c33 boolean NOT NULL,
+c34 boolean NOT NULL,
+c35 boolean NOT NULL,
+c36 boolean NOT NULL,
+c37 boolean NOT NULL,
+c38 boolean NOT NULL,
+c39 boolean NOT NULL,
+c40 boolean NOT NULL,
+c41 boolean NOT NULL,
+c42 boolean NOT NULL,
+c43 boolean NOT NULL,
+c44 boolean NOT NULL,
+c45 boolean NOT NULL,
+c46 boolean NOT NULL,
+c47 boolean NOT NULL,
+c48 boolean NOT NULL,
+c49 boolean NOT NULL,
+c50 boolean NOT NULL,
+c51 boolean NOT NULL,
+c52 boolean NOT NULL,
+c53 boolean NOT NULL,
+c54 boolean NOT NULL,
+c55 boolean NOT NULL,
+c56 boolean NOT NULL,
+c57 boolean NOT NULL,
+c58 boolean NOT NULL,
+c59 boolean NOT NULL,
+c60 boolean NOT NULL,
+c61 boolean NOT NULL,
+c62 boolean NOT NULL,
+c63 boolean NOT NULL,
+c64 boolean NOT NULL,
+c65 boolean NOT NULL,
+c66 boolean NOT NULL,
+c67 boolean NOT NULL,
+c68 boolean NOT NULL,
+c69 boolean NOT NULL,
+c70 boolean NOT NULL,
+c71 boolean NOT NULL,
+c72 boolean NOT NULL,
+c73 boolean NOT NULL,
+c74 boolean NOT NULL,
+c75 boolean NOT NULL,
+c76 boolean NOT NULL,
+c77 boolean NOT NULL,
+c78 boolean NOT NULL,
+c79 boolean NOT NULL,
+c80 boolean NOT NULL,
+c81 boolean NOT NULL,
+c82 boolean NOT NULL,
+c83 boolean NOT NULL,
+c84 boolean NOT NULL,
+c85 boolean NOT NULL,
+c86 boolean NOT NULL,
+c87 boolean NOT NULL,
+c88 boolean NOT NULL,
+c89 boolean NOT NULL,
+c90 boolean NOT NULL,
+c91 boolean NOT NULL,
+c92 boolean NOT NULL,
+c93 boolean NOT NULL,
+c94 boolean NOT NULL,
+c95 boolean NOT NULL,
+c96 boolean NOT NULL,
+c97 boolean NOT NULL,
+c98 boolean NOT NULL,
+c99 boolean NOT NULL
 );
 
-create index tbl1idx3 on table1(colb1);
+lstbl;
 
-//create index idx on table1(colb1);
-ld TABLE1 "../Seth/tests/Load/tbl1data.csv" ;
+lscol T1;
 
-print "BLUE or blue or BLACK...";
-fetch table1 "colb1 'BLUE' = colb1 'blue' = OR colb1 'BLACK' = OR";
-print "BLUE or blue or BLACK or black...";
-fetch table1 "colb1 'BLUE' = colb1 'blue' = OR colb1 'BLACK' = OR colb1 'black' = OR";
 
 // table1 "colb1 'BLUE' = colb1 'blue' = OR 'BLACK' colb1 = OR";
 /*

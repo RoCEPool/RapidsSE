@@ -2038,12 +2038,21 @@ bool SePrompt::bAddTableColumns(i8& i_Token, i8 iNumTokens)
   
   // now collect the column names and their types
   i8 iCurrentToken = i_Token;
+  i8 iColumns = 0;
   
   while ( ! m_xTokenVec2[iCurrentToken]->bSame(")"_Stz)) {
     
     if (iCurrentToken != i_Token && ! m_xTokenVec2[iCurrentToken++]->bSame(","_Stz)) {
       bDropReturnTable(m_xTokenVec2[2]->aText());
       m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+      return false;
+    }
+    
+    iColumns++;
+    
+    if (iColumns == 101) {
+      bDropReturnTable(m_xTokenVec2[2]->aText());
+      m_pSEitf->vSetLastError(EC_MAX_COLUMNS);
       return false;
     }
     
