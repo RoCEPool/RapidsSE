@@ -58,8 +58,8 @@
   //         3) if all acks received distribute Job_Execute
   //
 
-  params| pJob__Begun |
-  // job::this locals| pJob__Begun |
+  //params| pJob__Begun |
+  job::this locals| pJob__Begun |
   pJob__Begun job.id@ locals| iJobId |
 
   0 locals| pJobOriginator  |
@@ -94,6 +94,7 @@
 
   // test for all acks received all
   iAcksRemaining 0 != if
+    delete_ended_job
     exit                                                         // *EARLY EXIT*
   then
 
@@ -112,6 +113,7 @@
       // distribute Job__Cancel to all participants
       pJobOriginator Job__Cancel::distribute
       unloop
+      delete_ended_job
       exit                                                       // *EARLY EXIT*
     then
   loop
@@ -120,6 +122,8 @@
 
   // distribute Job__Execute to all participants
   pJobOriginator Job__Execute::distribute
+
+  delete_ended_job
 ;
 
 /*============================================================================*/

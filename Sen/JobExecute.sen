@@ -76,7 +76,7 @@
   eJobClass case
 
     // specific cases
-    CN_JOB__BEGUN     of pJob job.genericExecute pJob jobBegun.delete     endof
+    CN_JOB__BEGUN     of pJob SEED2 job.spawn endof
     CN_JOB__CANCEL    of pJob job.genericExecute pJob jobCancel.delete    endof
     CN_JOB__CANCELLED of pJob job.genericExecute pJob jobCancelled.delete endof
     CN_JOB__END       of pJob job.genericExecute pJob jobEnd.delete       endof
