@@ -4,6 +4,31 @@
 
 #include "JobModel.h"
 
+JobNote mJobNote__Cancelled (
+  "Job__Cancelled"_Stz,    // name of the job class
+  CN_JOB__CANCELLED,       // class enum
+  JK_ONESHOT,              // job kind
+  "job cancelled"_Stz,     // comment about the job
+  nullptr,                 // the prompt command
+  nullptr,                 // the second word
+  nullptr,                 // the task seed for this job
+  nullptr,                 // the second task seed for this job
+  false,                   // check resources?
+  false,                   // detached job?
+  false,                   // buffer attached?
+  JT_NONE,                 // job trace
+  nullptr,                 // prompt pre-process function
+  nullptr,                 // prompt post-process function
+  nullptr,                 // job new function
+  nullptr,                 // job delete function
+  nullptr,                 // job send function
+  nullptr,                 // job receive function
+  nullptr,                 // job show function
+  false,                   // job is not prompt enabled
+  "<help>"_Stz,            // help
+  "<example>"_Stz          // example
+);
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
