@@ -2050,7 +2050,7 @@ bool SePrompt::bAddTableColumns(i8& i_Token, i8 iNumTokens)
     
     iColumns++;
     
-    if (iColumns == 101) {
+    if (iColumns == 151) {
       bDropReturnTable(m_xTokenVec2[2]->aText());
       m_pSEitf->vSetLastError(EC_MAX_COLUMNS);
       return false;

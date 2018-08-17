@@ -124,7 +124,7 @@ namespace Debugging
   
   /* 23 */ "low buffers"_Stz,
   /* 24 */ "max allowed indexes already created"_Stz,
-  /*    */ "max 100 columns supported in a table"_Stz,
+  /*    */ "max 150 columns supported in a table"_Stz,
   /*    */ "max row length allowed is 16k bytes"_Stz,
     
   /* 25 */ "no columns dictionary"_Stz,
