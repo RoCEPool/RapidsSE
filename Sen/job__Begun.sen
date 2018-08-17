@@ -59,7 +59,8 @@
   //
 
   params| pJob__Begun |
-  pJob__Begun job.id@ params| iJobId |
+  // job::this locals| pJob__Begun |
+  pJob__Begun job.id@ locals| iJobId |
 
   0 locals| pJob  |
   0 0 0 0 locals| iAcksRemaining error pJobParticipant iParticipantNode |

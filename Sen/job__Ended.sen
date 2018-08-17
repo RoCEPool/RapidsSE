@@ -10,7 +10,8 @@
 : Job__Ended::execute ( pJob__Ended -- )
 
   params| pJob__Ended |
-  pJob__Ended job.id@ params| iJobId |
+  // job::this locals| pJob__Ended |
+  pJob__Ended job.id@ locals| iJobId |
 
   0 0 locals| pJob iAcksRemaining |
 

@@ -50,7 +50,8 @@
 : Job__Cancel::execute ( pJob__Cancel -- )
 
   params| pJob__Cancel |
-  pJob__Cancel job.id@ params| iJobId |
+  // job::this locals| pJob__Cancel |
+  pJob__Cancel job.id@ locals| iJobId |
 
   0 0 0 locals| sReleaseResources pJob pJobCancelled |
 

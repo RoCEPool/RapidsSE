@@ -52,7 +52,8 @@
 : Job__Executed::execute ( pJob__Executed -- )
 
   params| pJob__Executed |
-  pJob__Executed job.id@ params| iJobId |
+  // job::this locals| pJob__Executed |
+  pJob__Executed job.id@ locals| iJobId |
 
   0 0 0 0 0 locals| pJobParticipant iParticipantNode error pJob iAcksRemaining |
 
