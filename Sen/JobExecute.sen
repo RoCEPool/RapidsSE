@@ -77,8 +77,8 @@
 
     // specific cases
     CN_JOB__BEGUN     of pJob SEED2 job.spawn endof
-    CN_JOB__CANCEL    of pJob job.genericExecute pJob jobCancel.delete    endof
-    CN_JOB__CANCELLED of pJob job.genericExecute pJob jobCancelled.delete endof
+    CN_JOB__CANCEL    of pJob SEED2 job.spawn endof
+    CN_JOB__CANCELLED of pJob SEED2 job.spawn endof
     CN_JOB__END       of pJob SEED2 job.spawn endof
     CN_JOB__ENDED     of pJob SEED2 job.spawn endof
     CN_JOB__EXECUTE   of pJob job.genericExecute pJob jobExecute.delete   endof

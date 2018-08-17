@@ -49,8 +49,8 @@
 /*----------------------------------------------------------------------------*/
 : Job__Cancel::execute ( pJob__Cancel -- )
 
-  params| pJob__Cancel |
-  // job::this locals| pJob__Cancel |
+  //params| pJob__Cancel |
+  job::this locals| pJob__Cancel |
   pJob__Cancel job.id@ locals| iJobId |
 
   0 0 0 locals| sReleaseResources pJob pJobCancelled |
@@ -66,6 +66,8 @@
 
   // send job__executed back to originating node
   iJobId pJob Job__Cancelled::send
+
+  delete_ended_job
 ;
 
 /*============================================================================*/
