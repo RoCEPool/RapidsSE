@@ -35,8 +35,8 @@
 /*----------------------------------------------------------------------------*/
 : Job__Ended::execute ( pJob__Ended -- )
 
-  params| pJob__Ended |
-  // job::this locals| pJob__Ended |
+  //params| pJob__Ended |
+  job::this locals| pJob__Ended |
   pJob__Ended job.id@ locals| iJobId |
 
   0 0 locals| pJob iAcksRemaining |
@@ -50,8 +50,9 @@
   pJob job.decAcksRemaining to iAcksRemaining
 
   // if there are acks remaining just exit
-  iAcksRemaining 0 != if                                         // *EARLY EXIT*
-    exit
+  iAcksRemaining 0 != if
+    delete_ended_job
+    exit                                                         // *EARLY EXIT*
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -65,6 +66,8 @@
   pJob job.originatingTask@ ack
 
   "All Done" .
+
+  delete_ended_job
 ;
 
 /*============================================================================*/

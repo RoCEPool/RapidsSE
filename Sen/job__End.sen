@@ -49,8 +49,8 @@
 /*----------------------------------------------------------------------------*/
 : Job__End::execute ( pJob__End -- )
 
-  params| pJob__End |
-  // job::this locals| pJob__End |
+  //params| pJob__End |
+  job::this locals| pJob__End |
   pJob__End job.id@ locals| iJobId |
 
   0 locals| pJob |
@@ -65,6 +65,8 @@
   pJob job.delete
 
   iJobId Job__Ended::send
+
+  delete_ended_job
 ;
 
 /*============================================================================*/
