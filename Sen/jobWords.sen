@@ -4,8 +4,9 @@
 
 "jobWords.sen" .verbose
 
-1 constant SEED1
-2 constant SEED2
+1 constant SEED_REQ
+2 constant SEED_EXE
+3 constant SEED_RCV
 
 /*----------------------------------------------------------------------------*/
 /* begin a new job                                                            */
@@ -54,19 +55,19 @@
   eJobClass case
 
     // specific cases
-    CN_JOB__BEGUN     of pJob SEED2 job.spawn endof
-    CN_JOB__CANCEL    of pJob SEED2 job.spawn endof
-    CN_JOB__CANCELLED of pJob SEED2 job.spawn endof
-    CN_JOB__END       of pJob SEED2 job.spawn endof
-    CN_JOB__ENDED     of pJob SEED2 job.spawn endof
+    CN_JOB__BEGUN     of pJob SEED_EXE job.spawn endof
+    CN_JOB__CANCEL    of pJob SEED_EXE job.spawn endof
+    CN_JOB__CANCELLED of pJob SEED_EXE job.spawn endof
+    CN_JOB__END       of pJob SEED_EXE job.spawn endof
+    CN_JOB__ENDED     of pJob SEED_EXE job.spawn endof
     CN_JOB__EXECUTE of
       pJob pJob job.execute@ find execute
       pJob job.delete
     endof
-    CN_JOB__EXECUTED  of pJob SEED2 job.spawn endof
+    CN_JOB__EXECUTED  of pJob SEED_EXE job.spawn endof
 
     // load buffer
-    CN_JOB_LOADBUFFER of pJob SEED2 job.spawn endof
+    CN_JOB_LOADBUFFER of pJob SEED_EXE job.spawn endof
 
     // default case
     pJob job.begin

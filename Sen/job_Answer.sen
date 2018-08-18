@@ -18,7 +18,7 @@ int: nTotalConnections
 
   nullptr pJobClass_Answer jobClass.new to pJob_Answer
 
-  pJob_Answer SEED1 job.spawn
+  pJob_Answer SEED_REQ job.spawn
 ;
 
 /*----------------------------------------------------------------------------*/

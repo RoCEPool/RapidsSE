@@ -16,7 +16,7 @@
 
   nullptr pJobClass_Connector jobClass.new to pJob_Connector
 
-  pJob_Connector SEED1 job.spawn
+  pJob_Connector SEED_REQ job.spawn
 ;
 
 /*----------------------------------------------------------------------------*/

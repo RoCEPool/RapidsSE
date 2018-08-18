@@ -22,7 +22,7 @@
   iConnNo pJob_Receiver job_receiver.connNo!
   pSocket pJob_Receiver job_receiver.socket!
 
-  pJob_Receiver SEED1 job.spawn
+  pJob_Receiver SEED_REQ job.spawn
 ;
 
 /*----------------------------------------------------------------------------*/
