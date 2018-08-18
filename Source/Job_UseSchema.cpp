@@ -15,8 +15,8 @@ JobNote mJobNote_UseSchema (
   "use"_Stz,             // the prompt command
   "schema"_Stz,          // the second word
   "useSchema"_Stz,       // the _req task seed 
-  nullptr,               // the _exe task seed 
-  nullptr,               // the _rcv task seed
+  nullptr,               // the _rcv task seed 
+  nullptr,               // the _exe task seed
   false,                 // check resources?
   false,                 // detached job?
   false,                 // buffer attached?

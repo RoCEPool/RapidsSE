@@ -15,8 +15,8 @@ JobNote mJobNote_SubLoader (
   nullptr,                // the prompt command
   nullptr,                // the second word
   "SubLoader_seed"_Stz,   // the _req task seed 
-  nullptr,                // the _exe task seed 
-  nullptr,                // the _rcv task seed
+  nullptr,                // the _rcv task seed 
+  nullptr,                // the _exe task seed
   false,                  // check resources?
   false,                  // detached job?
   false,                  // buffer attached?

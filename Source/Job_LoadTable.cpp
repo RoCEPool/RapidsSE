@@ -15,8 +15,8 @@ JobNote mJobNote_LoadTable (
   "ld"_Stz,               // the prompt command
   nullptr,                // the second word
   "loadTable"_Stz,        // the _req task seed 
-  "loadTable_node"_Stz,   // the _exe task seed 
-  nullptr,                // the _rcv task seed
+  "loadTable_node"_Stz,   // the _rcv task seed 
+  nullptr,                // the _exe task seed
   true,                   // check resources?
   false,                  // detached job?
   false,                  // buffer attached?

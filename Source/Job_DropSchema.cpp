@@ -16,8 +16,8 @@ JobNote mJobNote_DropSchema (
   "drop"_Stz,             // the prompt command
   "schema"_Stz,           // the second word
   "dropSchema"_Stz,       // the _req task seed 
-  "dropSchema_node"_Stz,  // the _exe task seed 
-  nullptr,                // the _rcv task seed
+  "dropSchema_node"_Stz,  // the _rcv task seed 
+  nullptr,                // the _exe task seed
   true,                   // check resources?
   false,                  // detached job?
   false,                  // buffer attached?

@@ -15,8 +15,8 @@ JobNote mJobNote_Boot (
   nullptr,           // the prompt command
   nullptr,           // the second word
   "Boot_seed"_Stz,   // the _req task seed 
-  nullptr,           // the _exe task seed 
-  nullptr,           // the _rcv task seed
+  nullptr,           // the _rcv task seed 
+  nullptr,           // the _exe task seed
   false,             // check resources?
   false,             // detached job?
   false,             // buffer attached?

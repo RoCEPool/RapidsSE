@@ -15,8 +15,8 @@ JobNote mJobNote_DropIndex (
   "drop"_Stz,            // the prompt command
   "index"_Stz,           // the second word
   "dropIndex"_Stz,       // the _req task seed 
-  "dropIndex_node"_Stz,  // the _exe task seed 
-  nullptr,               // the _rcv task seed
+  "dropIndex_node"_Stz,  // the _rcv task seed 
+  nullptr,               // the _exe task seed
   true,                  // check resources?
   false,                 // detached job?
   false,                 // buffer attached?

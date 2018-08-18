@@ -15,8 +15,8 @@ JobNote mJobNote_DropCatalog (
   "drop"_Stz,              // the prompt command
   "catalog"_Stz,           // the second word
   "dropCatalog"_Stz,       // the _req task seed 
-  "dropCatalog_node"_Stz,  // the _exe task seed 
-  nullptr,                 // the _rcv task seed
+  "dropCatalog_node"_Stz,  // the _rcv task seed 
+  nullptr,                 // the _exe task seed
   true,                    // check resources?
   false,                   // detached job?
   false,                   // buffer attached?

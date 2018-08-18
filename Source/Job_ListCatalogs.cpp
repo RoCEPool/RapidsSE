@@ -15,8 +15,8 @@ JobNote mJobNote_ListCatalogs (
   "lscat"_Stz,             // the prompt command
   nullptr,                 // the second word
   "listCatalogs"_Stz,      // the _req task seed 
-  nullptr,                 // the _exe task seed 
-  nullptr,                 // the _rcv task seed
+  nullptr,                 // the _rcv task seed 
+  nullptr,                 // the _exe task seed
   false,                   // check resources?
   false,                   // detached job?
   false,                   // buffer attached?
