@@ -37,25 +37,6 @@
   pJob job.id@ pJob "Job__Begun::send" find execute
 ;
 
-/*----------------------------------------------------------------------------*/
-/* execute generic job                                                        */
-/*----------------------------------------------------------------------------*/
-: job.genericExecute ( pJob -- )
-
-  params| pJob |
-
-    pJob object.class@ class::name
-    grid::thisNode@
-  "Node %v %v" fmt.print
-
-  //pJob job.id@
-    pJob pJob
-    job.execute@ find execute
-    //SEED2 job.spawn
-
-  //pJob job.delete
-;
-
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -78,7 +59,10 @@
     CN_JOB__CANCELLED of pJob SEED2 job.spawn endof
     CN_JOB__END       of pJob SEED2 job.spawn endof
     CN_JOB__ENDED     of pJob SEED2 job.spawn endof
-    CN_JOB__EXECUTE   of pJob job.genericExecute pJob jobExecute.delete   endof
+    CN_JOB__EXECUTE of
+      pJob pJob job.execute@ find execute
+      pJob job.delete
+    endof
     CN_JOB__EXECUTED  of pJob SEED2 job.spawn endof
 
     // load buffer
