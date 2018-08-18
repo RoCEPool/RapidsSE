@@ -1817,9 +1817,13 @@ void Task::vJobSpawn(MP_Task mpTask)
  
   // form the word to execute for the request
   s32 sSeed;
-  sSeed = (i_Seed == 1)
-               ? pJob->m_pJobClass->m_aSeed1
-               : pJob->m_pJobClass->m_aSeed2;
+  
+  switch (i_Seed) {
+    case C_SEED_1: sSeed = pJob->m_pJobClass->m_aSeed1; break;
+    case C_SEED_2: sSeed = pJob->m_pJobClass->m_aSeed2; break;
+    case C_SEED_3: sSeed = pJob->m_pJobClass->m_aSeed3; break;
+    default: NEVER_REACH;
+  }
   
   Task* pNewTask = new Task;
 
