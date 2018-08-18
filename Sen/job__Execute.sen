@@ -50,19 +50,15 @@
 : Job__Execute_rcv ( pJob__Execute -- )
 
   params| pJob__Execute |
-  // job::this locals| pJob__Execute |
+
+  0 locals| pJobToBeExe |
+
+  // find the job to be executed in the participating jobs
   pJob__Execute job.id@ locals| iJobId |
-
-  0 locals| pJobParticipant |
-
-  // find the job in the participating jobs
-  iJobId job.findParticipant to pJobParticipant
+  iJobId job.findParticipant to pJobToBeExe
 
   // execute the job on this participating node
-  pJobParticipant pJobParticipant job.execute@ find execute
-
-  // send job__executed back to originating node
-  //pJobParticipant Job__Executed::send
+  pJobToBeExe pJobToBeExe job.execute@ find execute
 ;
 
 /*============================================================================*/
