@@ -14,7 +14,7 @@
 
   locals| pJob |
 
-  0 0 locals| sCheckResources pJobBegun |
+  0 locals| sCheckResources |
 
     pJob object.class@ class::name
     grid::thisNode@
@@ -26,9 +26,6 @@
 
   // add job as participant job
   pJob job.addParticipant
-
-  // change state of job to begun
-  //pJob job.begun
 
   // execute the job's checkResources command
   pJob job.checkResources@ to sCheckResources
