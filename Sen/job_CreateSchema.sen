@@ -96,6 +96,8 @@
 
   pJob_CreateSchema job.notice
 
+  pJob_CreateSchema send_job__executed
+
   <DONE_NODE>
 ;
 

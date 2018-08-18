@@ -124,6 +124,8 @@
 
   pJob_SizeIndex job.notice
 
+  pJob_SizeIndex send_job__executed
+
   <DONE_NODE>
 ;
 

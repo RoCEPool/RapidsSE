@@ -85,6 +85,8 @@
 
   pJob_Sanity job.notice
 
+  pJob_Sanity send_job__executed
+
   <DONE_NODE>
 ;
 

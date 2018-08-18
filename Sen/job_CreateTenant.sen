@@ -96,6 +96,8 @@
 
   pJob_CreateTenant job.notice
 
+  pJob_CreateTenant send_job__executed
+
   <DONE_NODE>
 ;
 

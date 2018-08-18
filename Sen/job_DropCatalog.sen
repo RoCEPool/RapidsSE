@@ -87,6 +87,8 @@
 
   pJob_DropCatalog job.notice
 
+  pJob_DropCatalog send_job__executed
+
   <DONE_NODE>
 ;
 

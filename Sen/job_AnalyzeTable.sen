@@ -113,6 +113,8 @@
 
   pJob_AnalyzeTable job.notice
 
+  pJob_AnalyzeTable send_job__executed
+
   <DONE_NODE>
 ;
 

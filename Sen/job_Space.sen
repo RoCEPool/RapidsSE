@@ -61,6 +61,8 @@
 
   pJob_Space job.notice
 
+  pJob_Space send_job__executed
+
   <DONE_NODE>
 ;
 

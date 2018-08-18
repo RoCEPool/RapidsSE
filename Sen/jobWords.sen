@@ -92,11 +92,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* call Job_Executed::send for the current job                                */
+/* call Job__Executed::send for the current job                               */
 /*----------------------------------------------------------------------------*/
-: send_job_executed ( -- )
+: send_job__executed ( pJobParticipant -- )
 
-  job::this Job__Executed::send
+  pJobParticipant "Job__Executed::send" find execute
 ;
 
 /*----------------------------------------------------------------------------*/

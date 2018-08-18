@@ -61,15 +61,15 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropSchema job on a node                                       */
 /*----------------------------------------------------------------------------*/
-: dropSchema_node ( Job_DropSchema -- )
+: dropSchema_node ( pJob_DropSchema -- )
 
-  params| pDropSchema_node |
+  params| pJob_DropSchema |
 
   tp: dropSchema_node
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert correct job
-  CN_JOB_DROPSCHEMA pDropSchema_node object.assertClass
+  CN_JOB_DROPSCHEMA pJob_DropSchema object.assertClass
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grad a ddl lock
@@ -77,15 +77,17 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set dictionary stack
-  pDropSchema_node getPathR35
+  pJob_DropSchema getPathR35
   dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the catalog
-  pDropSchema_node job.objectName@   ( catalogNm )
+  pJob_DropSchema job.objectName@   ( catalogNm )
   removeSchema
 
-  pDropSchema_node job.notice
+  pJob_DropSchema job.notice
+
+  pJob_DropSchema send_job__executed
 
   <DONE_NODE>
 ;

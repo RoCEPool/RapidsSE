@@ -111,6 +111,8 @@
 
   pJob_SizeTable job.notice
 
+  pJob_SizeTable send_job__executed
+
   <DONE_NODE>
 ;
 

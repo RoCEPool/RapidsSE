@@ -193,6 +193,8 @@
 
   pJob_CreateIndex job.notice
 
+  pJob_CreateIndex send_job__executed
+
   <DONE_NODE>
 ;
 

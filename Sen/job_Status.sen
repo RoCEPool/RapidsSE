@@ -38,7 +38,7 @@
 /*----------------------------------------------------------------------------*/
 /* get status of a node (executed on all nodes)                               */
 /*----------------------------------------------------------------------------*/
-: status_node ( pJob_Status -- str t/f )
+: status_node ( pJob_Status -- )
 
   params| pJob_Status |
 
@@ -58,6 +58,8 @@
   1 grid::thisNode@ pJob_Status job.rowsProcessed!
 
   pJob_Status job.notice
+
+  pJob_Status send_job__executed
 ;
 
 /*============================================================================*/

@@ -100,6 +100,8 @@
 
   pJob_CreateCatalog job.notice
 
+  pJob_CreateCatalog send_job__executed
+
   <DONE_NODE>
 ;
 

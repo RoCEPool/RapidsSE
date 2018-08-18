@@ -149,6 +149,8 @@
 
   pJob_DropTable job.notice
 
+  pJob_DropTable send_job__executed
+
   <DONE_NODE>
 ;
 

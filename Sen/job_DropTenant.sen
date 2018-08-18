@@ -61,7 +61,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropTenant job on a node                                       */
 /*----------------------------------------------------------------------------*/
-: dropTenant_node ( Job_DropTenant -- )
+: dropTenant_node ( pJob_DropTenant -- )
 
   params| pJob_DropTenant |
 
@@ -86,6 +86,8 @@
   removeTenant
 
   pJob_DropTenant job.notice
+
+  pJob_DropTenant send_job__executed
 
   <DONE_NODE>
 ;

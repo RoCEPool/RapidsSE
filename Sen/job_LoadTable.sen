@@ -113,6 +113,8 @@ task::this to pThisTask
     LoadTable_waitOnly
   then
 
+  pJob_LoadTable send_job__executed
+
   <DONE_NODE>
 ;
 

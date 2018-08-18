@@ -80,6 +80,8 @@
 
   pJob_TruncateTable job.notice
 
+  pJob_TruncateTable send_job__executed
+
   <DONE_NODE>
 ;
 
