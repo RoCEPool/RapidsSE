@@ -24,8 +24,8 @@ JobNote mJobNote_CreateIndex (
   vJob_CreateIndex_post,   // prompt post-process function
   nullptr,                 // job new function
   vJob_CreateIndex_delete, // job delete function
-  nullptr,                 // job send function
-  nullptr,                 // job receive function
+  nullptr,                 // job pre-send function
+  nullptr,                 // job post-receive function
   vJob_CreateIndex_show,   // job show function
   true,                    // job is enabled
   "<help>"_Stz,            // help
@@ -49,8 +49,8 @@ JobNote mJobNote_CreateIndex2 (
   vJob_CreateIndex_post,   // prompt post-process function
   nullptr,                 // job new function
   vJob_CreateIndex_delete, // job delete function
-  nullptr,                 // job send function
-  nullptr,                 // job receive function
+  nullptr,                 // job pre-send function
+  nullptr,                 // job post-receive function
   vJob_CreateIndex_show,   // job show function
   true,                    // job is enabled
   "<help>"_Stz,            // help

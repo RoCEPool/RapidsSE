@@ -24,8 +24,8 @@ JobNote mJobNote_ListIdxColumns (
   vJob_ListIdxColumns_post,  // prompt post-process function
   nullptr,                   // job new function
   vJob_ListIdxColumns_delete,// job delete function
-  nullptr,                   // job send function
-  nullptr,                   // job receive function
+  nullptr,                   // job pre-send function
+  nullptr,                   // job post-receive function
   vJob_ListIdxColumns_show,  // job show function
   true,                      // job is enabled
   "<help>"_Stz,              // help

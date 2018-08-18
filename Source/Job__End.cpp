@@ -21,8 +21,8 @@ JobNote mJobNote__End (
   nullptr,                 // prompt post-process function
   nullptr,                 // job new function
   vJob__End_delete,        // job delete function
-  nullptr,                 // job send function
-  nullptr,                 // job receive function
+  nullptr,                 // job pre-send function
+  nullptr,                 // job post-receive function
   nullptr,                 // job show function
   false,                   // job is not prompt enabled
   "<help>"_Stz,            // help

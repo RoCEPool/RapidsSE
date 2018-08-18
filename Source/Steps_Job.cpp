@@ -1551,7 +1551,7 @@ void Task::vJobRecv(MP_Task mpTask)
   eCN eClass = pJob->eClass();
   JobClass* pJobClass = gxJobCatalog.pFindJob(eClass);
   
-  // call the job receive function
+  // call the job post-receive function
   pJobClass->vRecvJob(pJob);  // come back to this, remove seitf as parameter to delete
   
   EXIT();

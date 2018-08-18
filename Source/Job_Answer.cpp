@@ -24,8 +24,8 @@ JobNote mJobNote_Answer (
   nullptr,             // prompt post-process function
   pJob_Answer_new,     // job new function
   vJob_Answer_delete,  // job delete function
-  nullptr,             // job send function
-  nullptr,             // job receive function
+  nullptr,             // job pre-send function
+  nullptr,             // job post-receive function
   vJob_Answer_show,    // job show function
   false,               // job is not prompt enabled
   "<help>"_Stz,        // help
