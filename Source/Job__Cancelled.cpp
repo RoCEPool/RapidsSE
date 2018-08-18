@@ -12,7 +12,7 @@ JobNote mJobNote__Cancelled (
   nullptr,                 // the prompt command
   nullptr,                 // the second word
   nullptr,                 // the _req task seed 
-  "Job__Cancelled_rcv"_Stz,                 // the _exe task seed 
+  "Job__Cancelled_rcv"_Stz,// the _exe task seed 
   nullptr,                 // the _rcv task seed
   false,                   // check resources?
   false,                   // detached job?
