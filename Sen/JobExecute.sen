@@ -8,9 +8,9 @@
 2 constant SEED2
 
 /*----------------------------------------------------------------------------*/
-/* execute/begin a new job                                                    */
+/* begin a new job                                                            */
 /*----------------------------------------------------------------------------*/
-: job.beginExecute ( pJob -- )
+: job.begin ( pJob -- )
 
   locals| pJob |
 
@@ -85,7 +85,7 @@
     CN_JOB_LOADBUFFER of pJob SEED2 job.spawn endof
 
     // default case
-    pJob job.beginExecute
+    pJob job.begin
 
   endcase
 ;
