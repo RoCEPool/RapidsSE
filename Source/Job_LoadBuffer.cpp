@@ -16,6 +16,7 @@ JobNote mJobNote_LoadBuffer (
   nullptr,                 // the second word
   "LoadBuffer_seed"_Stz,   // the task seed for this job
   "LoadBuffer_node"_Stz,   // the second task seed for this job
+  nullptr,                 // the third task seed for this job
   false,                   // check resources?
   false,                   // detached job?
   true,                    // buffer attached?

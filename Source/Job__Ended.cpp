@@ -13,6 +13,7 @@ JobNote mJobNote__Ended (
   nullptr,                 // the second word
   nullptr,                 // the task seed for this job
   "Job__Ended::execute"_Stz,                 // the second task seed for this job
+  nullptr,                 // the third task seed for this job
   false,                   // check resources?
   false,                   // detached job?
   false,                   // buffer attached?

@@ -15,6 +15,7 @@ JobNote mJobNote_Sanity (
   nullptr,           // the second word
   "sanity"_Stz,      // the task seed for this job
   "sanity_node"_Stz, // the second task seed for this job
+  nullptr,           // the third task seed for this job
   false,             // check resources?
   false,             // detached job?
   false,             // buffer attached?

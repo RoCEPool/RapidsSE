@@ -16,6 +16,7 @@ JobNote mJobNote_ListCatalogs (
   nullptr,                 // the second word
   "listCatalogs"_Stz,      // the task seed for this job
   nullptr,                 // the second task seed for this job
+  nullptr,                 // the third task seed for this job
   false,                   // check resources?
   false,                   // detached job?
   false,                   // buffer attached?

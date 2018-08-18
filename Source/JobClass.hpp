@@ -17,6 +17,7 @@ namespace JobsModel
     Stz* m_aCommand2; // optional second word of prompt command
     Stz* m_aSeed1;    // the task seed for this job
     Stz* m_aSeed2;    // the second task seed for this job
+    Stz* m_aSeed3;    // the third task seed for this job
     bool m_bDetached; // is this job detached?
     bool m_bResources;// check resources?
     bool m_bBuffer;   // buffer attached?

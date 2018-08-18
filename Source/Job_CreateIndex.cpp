@@ -16,6 +16,7 @@ JobNote mJobNote_CreateIndex (
   "index"_Stz,             // the second word
   "createIndex"_Stz,       // the task seed for this job
   "createIndex_node"_Stz,  // the second task seed for this job
+  nullptr,                 // the third task seed for this job
   true,                    // check resources?
   false,                   // detached job?
   false,                   // buffer attached?
@@ -41,6 +42,7 @@ JobNote mJobNote_CreateIndex2 (
   "unique"_Stz,            // the second word
   "createIndex"_Stz,       // the task seed for this job
   nullptr,                 // the second task seed for this job
+  nullptr,                 // the third task seed for this job
   true,                    // check resources?
   false,                   // detached job?
   false,                   // buffer attached?

@@ -16,6 +16,7 @@ JobNote mJobNote_Space (
   nullptr,          // the second word
   "space"_Stz,      // the task seed for this job
   "space_node"_Stz, // the second task seed for this job
+  nullptr,          // the third task seed for this job
   false,            // check resources?
   false,            // detached job?
   false,            // buffer attached?

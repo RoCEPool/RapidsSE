@@ -16,6 +16,7 @@ JobNote mJobNote_Lf (
   nullptr,           // the second word
   "lf"_Stz,          // the task seed for this job
   nullptr,           // the second task seed for this job
+  nullptr,           // the third task seed for this job
   false,             // check resources?
   false,             // detached job?
   false,             // buffer attached?

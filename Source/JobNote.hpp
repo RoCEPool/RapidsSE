@@ -20,6 +20,7 @@ namespace JobsModel
             Stz* aCommand2,
             Stz* aSeed1,
             Stz* aSeed2,
+            Stz* aSeed3,
             bool bResources,
             bool bDetached,
             bool bBuffer,

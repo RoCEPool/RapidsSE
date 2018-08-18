@@ -17,6 +17,7 @@ JobNote mJobNote_DropSchema (
   "schema"_Stz,           // the second word
   "dropSchema"_Stz,       // the task seed for this job
   "dropSchema_node"_Stz,  // the second task seed for this job
+  nullptr,                // the third task seed for this job
   true,                   // check resources?
   false,                  // detached job?
   false,                  // buffer attached?
