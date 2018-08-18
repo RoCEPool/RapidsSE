@@ -22,20 +22,32 @@
   "Node %v Job %v Received"
   fmt.print
 
+  " ++ a" .
+
   // set participant node in job
   grid::thisNode@ pJob job.participant!
 
   // add job as participant job
   pJob job.addParticipant
 
+  " ++ b" .
+
   // execute the job's checkResources command
   pJob job.checkResources@ to sCheckResources
-    sCheckResources "" str.equal not if
+  sCheckResources "" str.equal not if
+    " ++ b1" .
+    sCheckResources .
     pJob sCheckResources find execute
+    " ++ b2" .
   then
+
+  " ++ c" .
 
   // send job__begun back to originating node
   pJob job.id@ pJob "Job__Begun::send" find execute
+
+  " ++ d" .
+
 ;
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -14,7 +14,7 @@ JobNote mJobNote_LoadTable (
   "load table"_Stz,       // comment about the job
   "ld"_Stz,               // the prompt command
   nullptr,                // the second word
-  "loadTable"_Stz,        // the _req task seed 
+  "loadTable_req"_Stz, // the _req task seed 
   "loadTable_node"_Stz,   // the _rcv task seed 
   nullptr,                // the _exe task seed
   true,                   // check resources?

@@ -3655,9 +3655,14 @@ bool SEitf::bAppendJob(Job* pJob)
   
   // form the word to execute for the request
   s32 sRequest;
-  sRequest = pJob->sJobSeed();
-  sRequest.vConcat("_req"_Stz);
+  //sRequest = pJob->sJobSeed();
+  //sRequest.vConcat("_req"_Stz);
   
+  if (CN_JOB_PROMPT == pJob->eClass())
+    sRequest = "promptR35_Req"_Stz;
+  else
+    sRequest = pJob->m_pJobClass->m_aSeed1;
+
   pNewTask->vSeedWord(sRequest);
   pNewTask->vState(TS_READY);
   pNewTask->vR35model(true);

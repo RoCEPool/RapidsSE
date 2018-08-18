@@ -283,15 +283,15 @@ void Task::vJobCheckResourcesFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.checkResources@"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  s32 sExecute;
+  s256 sExecute;
   sExecute = ""_Stz;
   
   if (pJob->m_bCheckResources) {
-    sExecute = pJob->sJobSeed();
+    sExecute = pJob->m_pJobClass->m_aName + 4;// EEK! pJob->sJobSeed();
     sExecute.vConcat("_checkResources"_Stz);
   }
   
-  mpTask->m_pDataStack->vPushS32(sExecute);
+  mpTask->m_pDataStack->vPushS256(sExecute);
   
   EXIT();
 }
@@ -1569,15 +1569,15 @@ void Task::vJobReleaseResourcesFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.releaseResources@"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  s32 sExecute;
+  s256 sExecute;
   sExecute = ""_Stz;
   
   if (pJob->m_bCheckResources) {
-    sExecute = pJob->sJobSeed();
+    sExecute = pJob->m_pJobClass->m_aName+4;//EEK! pJob->sJobSeed();
     sExecute.vConcat("_releaseResources"_Stz);
   }
   
-  mpTask->m_pDataStack->vPushS32(sExecute);
+  mpTask->m_pDataStack->vPushS256(sExecute);
   
   EXIT();
 }

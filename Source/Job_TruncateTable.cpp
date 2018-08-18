@@ -14,7 +14,7 @@ JobNote mJobNote_TruncateTable (
   "tr tableNm"_Stz,          // comment about the job
   "tr"_Stz,                  // the prompt command
   nullptr,                   // the second word
-  "truncateTable"_Stz,       // the _req task seed 
+  "truncateTable_req"_Stz, // the _req task seed 
   "truncateTable_node"_Stz,  // the _rcv task seed 
   nullptr,                   // the _exe task seed
   true,                      // check resources?

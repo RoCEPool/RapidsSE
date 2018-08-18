@@ -15,7 +15,7 @@ JobNote mJobNote_DropSchema (
   "drop schema"_Stz,      // comment about the job
   "drop"_Stz,             // the prompt command
   "schema"_Stz,           // the second word
-  "dropSchema"_Stz,       // the _req task seed 
+  "dropSchema_req"_Stz, // the _req task seed 
   "dropSchema_node"_Stz,  // the _rcv task seed 
   nullptr,                // the _exe task seed
   true,                   // check resources?

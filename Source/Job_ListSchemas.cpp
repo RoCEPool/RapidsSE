@@ -14,7 +14,7 @@ JobNote mJobNote_ListSchemas (
   "list schemas"_Stz,     // comment about the job
   "lssch"_Stz,            // the prompt command
   nullptr,                // the second word
-  "listSchemas"_Stz,      // the _req task seed 
+  "listSchemas_req"_Stz, // the _req task seed 
   nullptr,                // the _rcv task seed 
   nullptr,                // the _exe task seed
   false,                  // check resources?

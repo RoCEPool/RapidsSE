@@ -14,7 +14,7 @@ JobNote mJobNote_ListCatalogs (
   "list catalogs"_Stz,     // comment about the job
   "lscat"_Stz,             // the prompt command
   nullptr,                 // the second word
-  "listCatalogs"_Stz,      // the _req task seed 
+  "listCatalogs_req"_Stz, // the _req task seed 
   nullptr,                 // the _rcv task seed 
   nullptr,                 // the _exe task seed
   false,                   // check resources?

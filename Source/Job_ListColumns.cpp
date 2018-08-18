@@ -14,7 +14,7 @@ JobNote mJobNote_ListColumns (
   "list columns"_Stz,     // comment about the job
   "lscol"_Stz,            // the prompt command
   nullptr,                // the second word
-  "listColumns"_Stz,      // the _req task seed 
+  "listColumns_req"_Stz, // the _req task seed 
   nullptr,                // the _rcv task seed 
   nullptr,                // the _exe task seed
   false,                  // check resources?

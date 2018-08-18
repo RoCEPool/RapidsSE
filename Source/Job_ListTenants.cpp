@@ -14,7 +14,7 @@ JobNote mJobNote_ListTenants (
   "list tenants"_Stz,     // comment about the job
   "lsten"_Stz,            // the prompt command
   nullptr,                // the second word
-  "listTenants"_Stz,      // the _req task seed 
+  "listTenants_req"_Stz, // the _req task seed 
   nullptr,                // the _rcv task seed 
   nullptr,                // the _exe task seed
   false,                  // check resources?

@@ -14,7 +14,7 @@ JobNote mJobNote_Start (
   "System Start"_Stz, // comment about the job
   nullptr,            // the prompt command
   nullptr,            // the second word
-  "Start_seed"_Stz,   // the _req task seed 
+  "Start_seed"_Stz, // the _req task seed 
   nullptr,            // the _rcv task seed 
   nullptr,            // the _exe task seed
   false,              // check resources?

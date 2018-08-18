@@ -14,7 +14,7 @@ JobNote mJobNote_DropTable (
   "drop table"_Stz,      // comment about the job
   "drop"_Stz,            // the prompt command
   "table"_Stz,           // the second word
-  "dropTable"_Stz,       // the _req task seed 
+  "dropTable_req"_Stz, // the _req task seed 
   "dropTable_node"_Stz,  // the _rcv task seed 
   nullptr,               // the _exe task seed
   true,                  // check resources?

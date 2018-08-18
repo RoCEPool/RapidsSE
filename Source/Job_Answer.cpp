@@ -14,7 +14,7 @@ JobNote mJobNote_Answer (
   "Socket Answer"_Stz, // comment about the job
   nullptr,             // the prompt command
   nullptr,             // the second word
-  "Answer_seed"_Stz,   // the _req task seed 
+  "Answer_seed"_Stz, // the _req task seed 
   nullptr,             // the _rcv task seed 
   nullptr,             // the _exe task seed
   false,               // check resources?

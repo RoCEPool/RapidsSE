@@ -13,7 +13,7 @@ JobNote mJobNote_Sanity (
   "sanity"_Stz,      // comment about the job
   "sanity"_Stz,      // the prompt command
   nullptr,           // the second word
-  "sanity"_Stz,      // the _req task seed 
+  "sanity_req"_Stz, // the _req task seed 
   "sanity_node"_Stz, // the _rcv task seed 
   nullptr,           // the _exe task seed
   false,             // check resources?

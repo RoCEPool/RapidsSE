@@ -14,7 +14,7 @@ JobNote mJobNote_UseSchema (
   "use schema"_Stz,      // comment about the job
   "use"_Stz,             // the prompt command
   "schema"_Stz,          // the second word
-  "useSchema"_Stz,       // the _req task seed 
+  "useSchema_req"_Stz, // the _req task seed 
   nullptr,               // the _rcv task seed 
   nullptr,               // the _exe task seed
   false,                 // check resources?
