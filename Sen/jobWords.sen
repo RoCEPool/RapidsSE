@@ -96,6 +96,8 @@
 /*----------------------------------------------------------------------------*/
 : send_job__executed ( pJobParticipant -- )
 
+  params| pJobParticipant  |
+
   pJobParticipant "Job__Executed::send" find execute
 ;
 
