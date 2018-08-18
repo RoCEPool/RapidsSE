@@ -152,7 +152,7 @@
 
   pJob_CreateTable job.notice
 
-  // delete_ended_job
+  // delete_completed_job
 
   <DONE_NODE>
 ;

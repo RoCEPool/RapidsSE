@@ -5,9 +5,9 @@
 "jobWords.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* delete this task's job                                                     */
+/* delete this task's job (it's completed)                                    */
 /*----------------------------------------------------------------------------*/
-: delete_ended_job ( -- )
+: delete_completed_job ( -- )
 
   0 locals| pThisTask |
   0 locals| pThisJob  |

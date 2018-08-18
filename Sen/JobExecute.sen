@@ -85,9 +85,7 @@
     CN_JOB__EXECUTED  of pJob SEED2 job.spawn endof
 
     // load buffer
-    CN_JOB_LOADBUFFER of pJob
-      pJob SEED2 job.spawn
-    endof
+    CN_JOB_LOADBUFFER of pJob SEED2 job.spawn endof
 
     // default case
     pJob job.beginExecute

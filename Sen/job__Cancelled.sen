@@ -71,7 +71,7 @@
 
   // if there are acks remaining just exit
   iAcksRemaining 0 != if
-    delete_ended_job
+    delete_completed_job
     exit                                                         // *EARLY EXIT*
   then
 
@@ -81,7 +81,7 @@
 
   pJob Job__End::distribute
 
-  delete_ended_job
+  delete_completed_job
 ;
 
 /*============================================================================*/

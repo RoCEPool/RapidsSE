@@ -67,7 +67,7 @@
   // send job__executed back to originating node
   iJobId pJob Job__Cancelled::send
 
-  delete_ended_job
+  delete_completed_job
 ;
 
 /*============================================================================*/
