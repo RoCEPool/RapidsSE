@@ -62,7 +62,7 @@
   pJobParticipant pJobParticipant job.execute@ find execute
 
   // send job__executed back to originating node
-  iJobId pJobParticipant Job__Executed::send
+  pJobParticipant Job__Executed::send
 ;
 
 /*============================================================================*/
