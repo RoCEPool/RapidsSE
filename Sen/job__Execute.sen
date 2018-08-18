@@ -53,16 +53,16 @@
   // job::this locals| pJob__Execute |
   pJob__Execute job.id@ locals| iJobId |
 
-  0 0 locals| pJob pJobExecuted |
+  0 locals| pJobParticipant |
 
   // find the job in the participating jobs
-  iJobId job.findParticipant to pJob
+  iJobId job.findParticipant to pJobParticipant
 
   // execute the job on this participating node
-  pJob pJob job.execute@ find execute
+  pJobParticipant pJobParticipant job.execute@ find execute
 
   // send job__executed back to originating node
-  iJobId pJob Job__Executed::send
+  iJobId pJobParticipant Job__Executed::send
 ;
 
 /*============================================================================*/
