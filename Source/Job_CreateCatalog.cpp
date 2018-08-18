@@ -14,9 +14,9 @@ JobNote mJobNote_CreateCatalog (
   "create catalog"_Stz,     // comment about the job
   "create"_Stz,             // the prompt command
   "catalog"_Stz,            // the second word
-  "createCatalog"_Stz,      // the task seed for this job
-  "createCatalog_node"_Stz, // the second task seed for this job
-  nullptr,                  // the third task seed for this job
+  "createCatalog"_Stz,      // the _req task seed 
+  "createCatalog_node"_Stz, // the _exe task seed 
+  nullptr,                  // the _rcv task seed
   true,                     // check resources?
   false,                    // detached job?
   false,                    // buffer attached?

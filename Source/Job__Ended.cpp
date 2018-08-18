@@ -11,9 +11,9 @@ JobNote mJobNote__Ended (
   "job ended"_Stz,         // comment about the job
   nullptr,                 // the prompt command
   nullptr,                 // the second word
-  nullptr,                 // the task seed for this job
-  "Job__Ended::execute"_Stz,                 // the second task seed for this job
-  nullptr,                 // the third task seed for this job
+  nullptr,                 // the _req task seed 
+  "Job__Ended::execute"_Stz,                 // the _exe task seed 
+  nullptr,                 // the _rcv task seed
   false,                   // check resources?
   false,                   // detached job?
   false,                   // buffer attached?

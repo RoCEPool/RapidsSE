@@ -14,9 +14,9 @@ JobNote mJobNote_LoadBuffer (
   "table load buffer"_Stz, // comment about the job
   nullptr,                 // the prompt command
   nullptr,                 // the second word
-  "LoadBuffer_seed"_Stz,   // the task seed for this job
-  "LoadBuffer_node"_Stz,   // the second task seed for this job
-  nullptr,                 // the third task seed for this job
+  "LoadBuffer_seed"_Stz,   // the _req task seed 
+  "LoadBuffer_node"_Stz,   // the _exe task seed 
+  nullptr,                 // the _rcv task seed
   false,                   // check resources?
   false,                   // detached job?
   true,                    // buffer attached?

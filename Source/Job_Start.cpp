@@ -14,9 +14,9 @@ JobNote mJobNote_Start (
   "System Start"_Stz, // comment about the job
   nullptr,            // the prompt command
   nullptr,            // the second word
-  "Start_seed"_Stz,   // the task seed for this job
-  nullptr,            // the second task seed for this job
-  nullptr,            // the third task seed for this job
+  "Start_seed"_Stz,   // the _req task seed 
+  nullptr,            // the _exe task seed 
+  nullptr,            // the _rcv task seed
   false,              // check resources?
   false,              // detached job?
   false,              // buffer attached?

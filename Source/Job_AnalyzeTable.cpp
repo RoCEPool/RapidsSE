@@ -14,9 +14,9 @@ JobNote mJobNote_AnalyzeTable (
   "antbl tableNm [0/1]"_Stz, // comment about the job
   "antbl"_Stz,               // the prompt command
   nullptr,                   // the second word
-  "analyzeTable"_Stz,        // the task seed for this job
-  "analyzeTable_node"_Stz,   // the second task seed for this job
-  nullptr,                   // the third task seed for this job
+  "analyzeTable"_Stz,        // the _req task seed 
+  "analyzeTable_node"_Stz,   // the _exe task seed 
+  nullptr,                   // the _rcv task seed
   true,                      // check resources?
   false,                     // detached job?
   false,                     // buffer attached?

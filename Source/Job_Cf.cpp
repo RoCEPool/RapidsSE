@@ -14,9 +14,9 @@ JobNote mJobNote_Cf (
   "change folder"_Stz, // comment about the job
   "cf"_Stz,            // the prompt command
   nullptr,             // the second word
-  "cf"_Stz,            // the task seed for this job
-  nullptr,             // the second task seed for this job
-  nullptr,             // the third task seed for this job
+  "cf"_Stz,            // the _req task seed 
+  nullptr,             // the _exe task seed 
+  nullptr,             // the _rcv task seed
   false,               // check resources?
   false,               // detached job?
   false,               // buffer attached?

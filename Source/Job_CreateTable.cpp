@@ -14,9 +14,9 @@ JobNote mJobNote_CreateTable (
   "create table"_Stz,     // comment about the job
   "create"_Stz,           // the prompt command
   "table"_Stz,            // the second word
-  "createTable"_Stz,      // the task seed for this job
-  "createTable_node"_Stz, // the second task seed for this job
-  nullptr,                 // the third task seed for this job
+  "createTable"_Stz,      // the _req task seed 
+  "createTable_node"_Stz, // the _exe task seed 
+  nullptr,                 // the _rcv task seed
   true,                   // check resources?
   false,                  // detached job?
   false,                  // buffer attached?

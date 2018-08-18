@@ -13,9 +13,9 @@ JobNote mJobNote_Sanity (
   "sanity"_Stz,      // comment about the job
   "sanity"_Stz,      // the prompt command
   nullptr,           // the second word
-  "sanity"_Stz,      // the task seed for this job
-  "sanity_node"_Stz, // the second task seed for this job
-  nullptr,           // the third task seed for this job
+  "sanity"_Stz,      // the _req task seed 
+  "sanity_node"_Stz, // the _exe task seed 
+  nullptr,           // the _rcv task seed
   false,             // check resources?
   false,             // detached job?
   false,             // buffer attached?
