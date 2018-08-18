@@ -64,6 +64,7 @@
 : dropCatalog_node ( pJob_DropCatalog -- )
 
   params| pJob_DropCatalog |
+  // job::this locals| pJob_DropCatalog |
 
   tp: dropCatalog_node
 

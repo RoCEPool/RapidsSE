@@ -77,6 +77,7 @@
 : createCatalog_node ( pJob_CreateCatalog -- )
 
   params| pJob_CreateCatalog |
+  // job::this locals| pJob_CreateCatalog |
 
   0 locals| sCatalogNm |
 

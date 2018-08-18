@@ -103,6 +103,7 @@
 : createTable_node ( pJob_CreateTable -- )
 
   params| pJob_CreateTable |
+  // job::this locals| pJob_CreateTable |
 
   0 0 locals| pTable sTableNm |
 

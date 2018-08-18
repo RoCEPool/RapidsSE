@@ -82,6 +82,8 @@
 : sizeIndex_node ( Job_SizeIndex -- )
 
   params| pJob_SizeIndex |
+  // job::this locals| pJob_SizeIndex |
+
   0 0 0 0 locals| pIndex iSize sTableNm sIndexNm |
 
   tp: sizeIndex_node

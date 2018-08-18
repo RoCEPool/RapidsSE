@@ -41,6 +41,7 @@
 : sanity_node ( pJob_Sanity -- )
 
   params| pJob_Sanity |
+  // job::this locals| pJob_Sanity |
 
   0 0 locals| iSize iPartitions |
 

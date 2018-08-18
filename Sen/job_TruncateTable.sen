@@ -35,6 +35,8 @@
 : truncateTable_node ( Job_TruncateTable -- )
 
   params| pJob_TruncateTable |
+  // job::this locals| pJob_TruncateTable |
+
   0 0 locals| sTableNm pThisTask |
 
   tp: truncateTable_node

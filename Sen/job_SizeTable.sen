@@ -70,6 +70,8 @@
 : sizeTable_node ( Job_SizeTable -- )
 
   params| pJob_SizeTable |
+  // job::this locals| pJob_SizeTable |
+
   0 0 0 locals| sTableNm pIndex iSize |
 
   tp: sizeTable_node

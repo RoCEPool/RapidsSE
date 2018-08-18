@@ -165,6 +165,7 @@
 : createIndex_node ( Job_CreateIndex -- )
 
   params| pJob_CreateIndex |
+  // job::this locals| pJob_CreateIndex |
 
   0 0 locals| pTable sTableNm sIndexNm |
 

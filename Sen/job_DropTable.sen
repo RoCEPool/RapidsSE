@@ -126,6 +126,7 @@
 : dropTable_node ( pJob_DropTable -- )
 
   params| pJob_DropTable |
+  // job::this locals| pJob_DropTable |
 
   tp: dropTable_node
 

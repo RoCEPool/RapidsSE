@@ -74,6 +74,8 @@
 : createSchema_node ( pJob_CreateSchema -- )
 
   params| pJob_CreateSchema |
+  // job::this locals| pJob_CreateSchema |
+
   0 locals| sSchemaNm |
 
   tp: createSchema_node

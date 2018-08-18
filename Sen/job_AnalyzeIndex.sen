@@ -84,6 +84,8 @@
 : analyzeIndex_node ( Job_AnalyzeIndex -- )
 
   params| pJob_AnalyzeIndex |
+  // job::this locals| pJob_AnalyzeIndex |
+
   0 0 locals| sTableNm bIsDetailed |
 
   tp: analyzeIndex_node

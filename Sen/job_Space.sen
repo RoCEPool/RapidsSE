@@ -41,6 +41,7 @@
 : space_node ( pJob_Space -- )
 
   params| pJob_Space |
+  // job::this locals| pJob_Space |
 
   CN_JOB_SPACE pJob_Space object.assertClass
 

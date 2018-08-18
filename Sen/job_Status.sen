@@ -41,6 +41,7 @@
 : status_node ( pJob_Status -- )
 
   params| pJob_Status |
+  // job::this locals| pJob__Begun |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert its the status job
