@@ -43,9 +43,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job__Begun on originating node                                     */
+/* run received Job__Begun on originating node                                */
 /*----------------------------------------------------------------------------*/
-: Job__Begun::execute ( Job__Begun -- )
+: Job__Begun_rcv ( Job__Begun -- )
 
   //
   // where:  On the originator node.

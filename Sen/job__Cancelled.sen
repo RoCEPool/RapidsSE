@@ -41,9 +41,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job__Cancelled on originating node                                 */
+/* run recieved Job__Cancelled on originating node                            */
 /*----------------------------------------------------------------------------*/
-: Job__Cancelled::execute ( pJob__Cancelled -- )
+: Job__Cancelled_rcv ( pJob__Cancelled -- )
 
   //params| pJob__Cancelled |
   job::this locals| pJob__Cancelled |

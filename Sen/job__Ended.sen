@@ -31,9 +31,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job__Ended on originating node                                     */
+/* run received Job__Ended on originating node                                */
 /*----------------------------------------------------------------------------*/
-: Job__Ended::execute ( pJob__Ended -- )
+: Job__Ended_rcv ( pJob__Ended -- )
 
   //params| pJob__Ended |
   job::this locals| pJob__Ended |

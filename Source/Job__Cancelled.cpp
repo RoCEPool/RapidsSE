@@ -12,7 +12,7 @@ JobNote mJobNote__Cancelled (
   nullptr,                 // the prompt command
   nullptr,                 // the second word
   nullptr,                 // the _req task seed 
-  "Job__Cancelled::execute"_Stz,                 // the _exe task seed 
+  "Job__Cancelled_rcv"_Stz,                 // the _exe task seed 
   nullptr,                 // the _rcv task seed
   false,                   // check resources?
   false,                   // detached job?
@@ -87,7 +87,7 @@ Job__Cancelled::Job__Cancelled(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__CANCELLED,_FOOTER_);
   
-  m_sSeed = "Job__Cancelled::execute"_Stz;
+  m_sSeed = "Job__Cancelled_rcv"_Stz;
   m_eErrorCode = EC_NONE;
   
   _checkInitialised_(CN_JOB__CANCELLED);

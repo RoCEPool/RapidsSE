@@ -12,7 +12,7 @@ JobNote mJobNote__Execute (
   nullptr,                 // the prompt command
   nullptr,                 // the second word
   nullptr,                 // the _req task seed 
-  "Job__Execute::execute"_Stz, // the _exe task seed 
+  "Job__Execute_rcv"_Stz, // the _exe task seed 
   nullptr,                 // the _rcv task seed
   false,                   // check resources?
   false,                   // detached job?
@@ -87,7 +87,7 @@ Job__Execute::Job__Execute(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__EXECUTE,_FOOTER_);
   
-  m_sSeed = "Job__Execute::execute"_Stz;
+  m_sSeed = "Job__Execute_rcv"_Stz;
   
   _checkInitialised_(CN_JOB__EXECUTE);
   

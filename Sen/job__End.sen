@@ -45,9 +45,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job__End on participating node                                     */
+/* run received Job__End on participating node                                */
 /*----------------------------------------------------------------------------*/
-: Job__End::execute ( pJob__End -- )
+: Job__End_rcv ( pJob__End -- )
 
   //params| pJob__End |
   job::this locals| pJob__End |

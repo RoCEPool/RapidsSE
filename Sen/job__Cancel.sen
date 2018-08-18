@@ -45,9 +45,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job__Cancel on participating node                                  */
+/* run received Job__Cancel on participating node                             */
 /*----------------------------------------------------------------------------*/
-: Job__Cancel::execute ( pJob__Cancel -- )
+: Job__Cancel_rcv ( pJob__Cancel -- )
 
   //params| pJob__Cancel |
   job::this locals| pJob__Cancel |
