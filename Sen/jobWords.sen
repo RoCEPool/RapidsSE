@@ -60,11 +60,12 @@
     CN_JOB__CANCELLED of pJob SEED_RCV job.spawn endof
     CN_JOB__END       of pJob SEED_RCV job.spawn endof
     CN_JOB__ENDED     of pJob SEED_RCV job.spawn endof
+    CN_JOB__EXECUTED  of pJob SEED_RCV job.spawn endof
+
     CN_JOB__EXECUTE of
-      pJob pJob job.execute@ find execute
+      pJob "Job__Execute_rcv" find execute
       pJob job.delete
     endof
-    CN_JOB__EXECUTED  of pJob SEED_RCV job.spawn endof
 
     // load buffer
     CN_JOB_LOADBUFFER of pJob SEED_RCV job.spawn endof

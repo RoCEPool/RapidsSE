@@ -732,9 +732,7 @@ void Task::vJobExecuteFetch(MP_Task mpTask)
   Job* pJob = _pJob(pJobPtr);
   
   s32 sExecute;
-  
-  sExecute = pJob->sJobSeed();
-  
+
   switch (pJob->eClass()) {
       
     case CN_JOB__BEGUN:
@@ -742,11 +740,13 @@ void Task::vJobExecuteFetch(MP_Task mpTask)
     case CN_JOB__CANCELLED:
     case CN_JOB__END:
     case CN_JOB__ENDED:
-    case CN_JOB__EXECUTE:
     case CN_JOB__EXECUTED:
+    case CN_JOB__EXECUTE:
+      ASSERT(0);
       break;
       
     default:
+      sExecute = pJob->sJobSeed();
       sExecute.vConcat("_node"_Stz);
       break;
   }
