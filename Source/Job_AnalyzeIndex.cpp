@@ -14,9 +14,9 @@ JobNote mJobNote_AnalyzeIndex (
   "anidx tableNm indexNm [0/1]"_Stz,   // comment about the job
   "anidx"_Stz,               // the prompt command
   nullptr,                   // the second word
-  "analyzeIndex_req"_Stz, // the _req task seed 
-  "analyzeIndex_node"_Stz,   // the _rcv task seed 
-  nullptr,                   // the _exe task seed
+  "analyzeIndex_req"_Stz,    // the _req task seed
+  nullptr,                   // the _rcv task seed
+  "analyzeIndex_node"_Stz,   // the _exe task seed
   true,                      // check resources?
   false,                     // detached job?
   false,                     // buffer attached?

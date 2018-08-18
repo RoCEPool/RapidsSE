@@ -14,7 +14,7 @@ JobNote mJobNote_Connector (
   "Socket Connector"_Stz, // comment about the job
   nullptr,                // the prompt command
   nullptr,                // the second word
-  "Connector_seed"_Stz, // the _req task seed 
+  "Connector_seed"_Stz,   // the _req task seed 
   nullptr,                // the _rcv task seed 
   nullptr,                // the _exe task seed
   false,                  // check resources?

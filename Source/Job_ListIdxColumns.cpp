@@ -14,7 +14,7 @@ JobNote mJobNote_ListIdxColumns (
   "list index columns"_Stz,  // comment about the job
   "lsidxcol"_Stz,            // the prompt command
   nullptr,                   // the second word
-  "listIdxColumns_req"_Stz, // the _req task seed 
+  "listIdxColumns_req"_Stz,  // the _req task seed 
   nullptr,                   // the _rcv task seed 
   nullptr,                   // the _exe task seed
   false,                     // check resources?

@@ -14,9 +14,9 @@ JobNote mJobNote_CreateSchema (
   "create schema"_Stz,      // comment about the job
   "create"_Stz,             // the prompt command
   "schema"_Stz,             // the second word
-  "createSchema_req"_Stz, // the _req task seed 
-  "createSchema_node"_Stz,  // the _rcv task seed 
-  nullptr,                  // the _exe task seed
+  "createSchema_req"_Stz,   // the _req task seed
+  nullptr,                  // the _rcv task seed
+  "createSchema_node"_Stz,  // the _exe task seed
   true,                     // check resources?
   false,                    // detached job?
   false,                    // buffer attached?

@@ -14,9 +14,9 @@ JobNote mJobNote_SizeTable (
   "size table"_Stz,      // comment about the job
   "sz"_Stz,              // the prompt command
   nullptr,               // the second word
-  "sizeTable_req"_Stz, // the _req task seed 
-  "sizeTable_node"_Stz,  // the _rcv task seed 
-  nullptr,               // the _exe task seed
+  "sizeTable_req"_Stz,   // the _req task seed
+  nullptr,               // the _rcv task seed
+  "sizeTable_node"_Stz,  // the _exe task seed
   true,                  // check resources?
   false,                 // detached job?
   false,                 // buffer attached?
