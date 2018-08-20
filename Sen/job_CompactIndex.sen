@@ -98,8 +98,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the table and index names
-  pJob_CompactIndex job.objectName@ to sIndexNm
-  pJob_CompactIndex job_CompactIndex.tableName@ to sTableNm
+  pJob_CompactIndex job.indexName@ to sIndexNm
+  pJob_CompactIndex job.objectName@ to sTableNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table and indexes folder
@@ -143,8 +143,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get index and table name
-  pJob_CompactIndex job.objectName@ to sIndexNm
-  pJob_CompactIndex job_CompactIndex.tableName@ to sTableNm
+  pJob_CompactIndex job.indexName@ to sIndexNm
+  pJob_CompactIndex job.objectName@ to sTableNm
 
   sTableNm sIndexNm checkCompactIndex not if pJob_CompactIndex <ERROR_JOB> exit then
 
