@@ -94,9 +94,6 @@
   popIndexes
   popTable
 
-  grid::thisNode@ pJob_VisualizeIndex job.response!
-  1 grid::thisNode@ pJob_VisualizeIndex job.rowsProcessed!
-
   pJob_VisualizeIndex job.notice
 
   pJob_VisualizeIndex send_job__executed

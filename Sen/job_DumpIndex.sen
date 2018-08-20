@@ -1,0 +1,150 @@
+/*============================================================================*/
+/* job_DumpIndex.sen -- Job Dump Table                                        */
+/*============================================================================*/
+
+"job_DumpIndex.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* check if word is a valid table folder                                      */
+/*----------------------------------------------------------------------------*/
+: checkDumpIndex ( "<tableNm>" "<indexNm>" -- true | errorCode false )
+
+  params| sIndexNm sTableNm |
+
+  // check in tables folder
+  checkInTables not if false exit then
+
+  // check if tableNm is a word in tables folder
+  sTableNm checkIsWordR35 not if EC_NO_SUCH_TABLE false exit then
+
+  // push table folder
+  sTableNm pushTable assert
+
+  sTableNm checkIsTableR35 not if popTable false exit then
+  sTableNm tableInUse if popTable EC_TABLE_IN_USE false exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push indexes folder
+  pushIndexes assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check it is an index we are dropping
+  sIndexNm checkIsIndex not if
+    popIndexes popTable assertInTables false exit
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop indexes and table folder
+  popIndexes
+  popTable
+
+  // assert in tables
+  assertInTables
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* dump index request (on originating node)                                   */
+/*----------------------------------------------------------------------------*/
+: dumpIndex_req ( -- <R> )
+
+  0 0 0 0 0 locals| pTask pIndex sTableNm sIndexNm pJob_DumpIndex |
+
+  tp: dumpIndex
+  "dumpIndex_req" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob_DumpIndex
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // assert correct job
+  CN_JOB_DUMPINDEX pJob_DumpIndex object.assertClass
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
+  pJob_DumpIndex getPathR35
+  dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grad a ddl lock
+  ddlLock::grabRead
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the table and index names
+  pJob_DumpIndex job.objectName@ to sIndexNm
+  //pJob_DumpIndex job_DumpIndex.tableName@ to sTableNm
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push table and indexes folder
+  sTableNm pushTable assert
+  pushIndexes assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // visualize
+  sIndexNm find execute index.dump
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop indexes and table folder
+  popIndexes
+  popTable
+
+  pJob_DumpIndex job.notice
+
+  pJob_DumpIndex send_job__executed
+
+  pJob_DumpIndex <DONE_REQUEST>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_DumpIndex job check resources                                  */
+/*----------------------------------------------------------------------------*/
+: dumpIndex_checkResources ( Job_DumpIndex -- )
+
+  params| pJob_DumpIndex  |
+  0 0 locals| sIndexNm sTableNm |
+
+  tp: dumpIndex_checkResources
+  "checkResources received" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab a ddl lock
+  ddlLock::grabRead
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
+  pJob_DumpIndex getPathR35
+  dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get index and table name
+  pJob_DumpIndex job.objectName@ to sIndexNm
+  //pJob_VisualizeIndex job_VisualizeIndex.tableName@ to sTableNm
+
+  sTableNm sIndexNm checkDumpIndex not if pJob_DumpIndex <ERROR_JOB> exit then
+
+  <DONE_NODE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_DumpIndexTable job release resources                           */
+/*----------------------------------------------------------------------------*/
+: dumpIndex_releaseResources ( Job_DumpIndex -- )
+
+  params| pJob_DumpIndex  |
+
+  tp: dumpIndex_releaseResources
+  "releaseResources received" .
+
+  <DONE_NODE>
+;
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
