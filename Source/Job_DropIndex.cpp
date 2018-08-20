@@ -92,7 +92,6 @@ Job_DropIndex::Job_DropIndex(Interface::SEitf* pSEitf)
     
   m_sSeed           = mJobNote_DropIndex.pJobClass()->m_aSeed1;
   m_bCheckResources = true;
-  m_sTableName      = ""_Stz;
   
   _checkInitialised_(CN_JOB_DROPINDEX);
   
@@ -157,11 +156,11 @@ bool Job_DropIndex::bPopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the table name
-  m_sTableName = pTokenVec->pGet(2)->aText();
+  m_sObjectName = pTokenVec->pGet(2)->aText();
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the index name
-  m_sObjectName = pTokenVec->pGet(4)->aText();
+  m_sIndexName = pTokenVec->pGet(4)->aText();
   
   return true;
 }

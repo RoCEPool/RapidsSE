@@ -35,11 +35,9 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.columnIsPartKey"_Stz,  &vJobColumnIsPartKey,  false);
   vAddPrimitive("job.columnName@"_Stz,      &vJobColumnNameFetch,  false);
   vAddPrimitive("job.columnType@"_Stz,      &vJobColumnTypeFetch,  false);
-  vAddPrimitive("job_createIndex.tableName@"_Stz, &vJobCreateIndexTableNameFetch, false);
   vAddPrimitive("job.decAcksRemaining"_Stz, &vJobDecAcksRemaining, false);
   vAddPrimitive("job.delete"_Stz,           &vJobDelete,           false);
   vAddPrimitive("job.dicPath"_Stz,          &vJobDicPath,          false);
-  vAddPrimitive("job_dropIndex.tableName@"_Stz,   &vJobDropIndexTableNameFetch,   false);
   vAddPrimitive("jobEnd.delete"_Stz,        &vJobEndDelete,  false);
   vAddPrimitive("jobEnded.delete"_Stz,      &vJobEndedDelete,  false);
   vAddPrimitive("job.error!"_Stz,           &vJobErrorStore,       false);
@@ -417,23 +415,6 @@ void Task::vJobDelete(MP_Task mpTask)
   EXIT();
 }
   
-/*----------------------------------------------------------------------------*/
-/* job_createIndex.tableName@ -- fetch the table name from the job_createIndex*/
-/*----------------------------------------------------------------------------*/
-void Task::vJobCreateIndexTableNameFetch(MP_Task mpTask)
-{
-  ENTRY("vJobCreateIndexTableNameFetch"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job_createIndex.tableName@"_Stz);
-  
-  Job_CreateIndex* pJob_CreateIndex = _pJob_CreateIndex(pJobPtr);
-  
-  mpTask->m_pDataStack->vPushS32(pJob_CreateIndex->m_sTableName);
-  
-  EXIT();
-}
 
 /*----------------------------------------------------------------------------*/
 /* job.decAcksRemaining -- decrement acks remaining for this job              */
@@ -631,24 +612,6 @@ void Task::vJobDicPath(MP_Task mpTask)
   Job_CreateSchema* pJob = _pJob_CreateSchema(pJobPtr);
   
   mpTask->m_pDataStack->vPushObject(&pJob->m_xDicPath);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job_dropIndex.tableName@ -- fetch the table name from the job_dropIndex    */
-/*----------------------------------------------------------------------------*/
-void Task::vJobDropIndexTableNameFetch(MP_Task mpTask)
-{
-  ENTRY("vJobDropIndexTableNameFetch"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job_dropIndex.tableName@"_Stz);
-  
-  Job_DropIndex* pJob_DropIndex = _pJob_DropIndex(pJobPtr);
-  
-  mpTask->m_pDataStack->vPushS32(pJob_DropIndex->m_sTableName);
   
   EXIT();
 }

@@ -10,7 +10,6 @@ namespace JobsModel
   {
   public:
     
-    s32    m_sTableName;   // table name
     bool   m_bIsUnique;     // is unique index
     i8     m_iColumns;     // no of columns
     s32    m_sColumnName[C_MAX_COLUMNS];   // name of column
