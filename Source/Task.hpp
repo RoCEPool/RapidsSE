@@ -887,7 +887,6 @@ namespace Tasks
     static void vJobAddParticipant(MP_Task mpTask);
     static void vJobAncilliaryFetch(MP_Task mpTask);
     static void vJobAnalyzeIndexIsDetailed(MP_Task mpTask);
-    static void vJobAnalyzeIndexTableNameFetch(MP_Task mpTask);
     static void vJobAnalyzeTableIsDetailed(MP_Task mpTask);
     static void vJobBegunDelete(MP_Task mpTask);
     static void vJobBegunErrorFetch(MP_Task mpTask);

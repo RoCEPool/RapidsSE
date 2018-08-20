@@ -10,7 +10,6 @@ namespace JobsModel
   {
   public:
    
-    s32 m_sTableName;   // table name
     bool m_bIsDetailed; // detailed analysis
     
     // must be last

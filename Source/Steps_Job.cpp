@@ -20,7 +20,6 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.addOriginator"_Stz,    &vJobAddOriginator,    false);
   vAddPrimitive("job.addParticipant"_Stz,   &vJobAddParticipant,   false);
   vAddPrimitive("job.ancilliary@"_Stz,      &vJobAncilliaryFetch,  false);
-  vAddPrimitive("jobAnalyzeIndex.tableName@"_Stz, &vJobAnalyzeIndexTableNameFetch, false);
   vAddPrimitive("jobAnalyzeIndex.isDetailed"_Stz, &vJobAnalyzeIndexIsDetailed, false);
   vAddPrimitive("jobAnalyzeTable.isDetailed"_Stz, &vJobAnalyzeTableIsDetailed, false);
   vAddPrimitive("jobBegun.delete"_Stz,      &vJobBegunDelete,      false);
@@ -488,25 +487,6 @@ void Task::vJobAnalyzeIndexIsDetailed(MP_Task mpTask)
   ASSERT(pJoAnalyzeIndex->eClass() == CN_JOB_ANALYZEINDEX);
   
   mpTask->m_pDataStack->vPushInt(pJoAnalyzeIndex->m_bIsDetailed);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* jobAnalyzeIndex.tableName@ -- fetch table name of anayze index             */
-/*----------------------------------------------------------------------------*/
-void Task::vJobAnalyzeIndexTableNameFetch(MP_Task mpTask)
-{
-  ENTRY("vJobAnalyzeIndexTableNameFetch"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("jobAnalyzeIndex.tableName"_Stz);
-  
-  Job_AnalyzeIndex* pJoAnalyzeIndex = _pJob_AnalyzeIndex(pJobPtr);
-  ASSERT(pJoAnalyzeIndex->eClass() == CN_JOB_ANALYZEINDEX);
-  
-  mpTask->m_pDataStack->vPushS32(pJoAnalyzeIndex->m_sTableName);
   
   EXIT();
 }

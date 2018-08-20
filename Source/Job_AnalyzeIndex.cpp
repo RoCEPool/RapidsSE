@@ -92,7 +92,6 @@ Job_AnalyzeIndex::Job_AnalyzeIndex(Interface::SEitf* pSEitf)
     
   m_sSeed = mJobNote_AnalyzeIndex.pJobClass()->m_aSeed1;
   m_bCheckResources  = true;
-  m_sTableName       = ""_Stz;
   m_bIsDetailed      = false;
   
   _checkInitialised_(CN_JOB_ANALYZEINDEX);
@@ -149,11 +148,11 @@ bool Job_AnalyzeIndex::bPopulateJob(TokenVec* pTokenVec)
     return false;
   
   // set the table name
-  m_sTableName = pTokenVec->pGet(1)->aText();
+  m_sObjectName = pTokenVec->pGet(1)->aText();
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the index name
-  m_sObjectName = pTokenVec->pGet(2)->aText();
+  m_sIndexName = pTokenVec->pGet(2)->aText();
   
   if (iNumTokens == 4)
     m_bIsDetailed = pTokenVec->pGet(3)->aText()->iToI8();
