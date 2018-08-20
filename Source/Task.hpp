@@ -925,6 +925,7 @@ namespace Tasks
     static void vJobFindParticipant(MP_Task mpTask);
     static void vJobHasError(MP_Task mpTask);
     static void vJobIdFetch(MP_Task mpTask);
+    static void vJobIndexNameFetch(MP_Task mpTask);
     static void vJobIsPromptCommand(MP_Task mpTask);
     static void vJobListIdxColumnsTableNameFetch(MP_Task mpTask);
     static void vJobLoadBufferInsertRows(MP_Task mpTask);

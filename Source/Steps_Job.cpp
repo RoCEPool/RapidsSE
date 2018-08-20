@@ -59,6 +59,7 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.findParticipant"_Stz,  &vJobFindParticipant,  false);
   vAddPrimitive("job.hasError"_Stz,         &vJobHasError,         false);
   vAddPrimitive("job.id@"_Stz,              &vJobIdFetch,          false);
+  vAddPrimitive("job.indexName@"_Stz,       &vJobIndexNameFetch,   false);
   vAddPrimitive("job.isPromptCommand"_Stz,  &vJobIsPromptCommand,  false);
   vAddPrimitive("job_listIdxColumns.tableName@"_Stz,   &vJobListIdxColumnsTableNameFetch,   false);
   vAddPrimitive("job_loadBuffer.insertRows"_Stz,   &vJobLoadBufferInsertRows,       false);
@@ -969,6 +970,23 @@ void Task::vJobIdFetch(MP_Task mpTask)
   Job* pJob = _pJob(pJobPtr);
   
   mpTask->m_pDataStack->vPushInt(pJob->m_iJobId);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.indexName@ -- fetch the index name of the job                          */
+/*----------------------------------------------------------------------------*/
+void Task::vJobIndexNameFetch(MP_Task mpTask)
+{
+  ENTRY("vJobIndexNameFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.indexName@"_Stz);
+  Job_CreateSchema* pJob = _pJob_CreateSchema(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushS32(pJob->m_sIndexName);
   
   EXIT();
 }
