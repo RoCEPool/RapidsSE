@@ -100,6 +100,7 @@ enum eCN : u2 // Class Number
     /*    */ CN_JOB_ANSWER,
     /*    */ CN_JOB_BOOT,
     /*    */ CN_JOB_CF,
+    /*    */ CN_JOB_COMPACTINDEX,
     /*    */ CN_JOB_CONNECTOR,
     /*    */ CN_JOB_CREATECATALOG,
     /*    */ CN_JOB_CREATEINDEX,
@@ -346,6 +347,7 @@ enum eCN : u2 // Class Number
     /*    */ "JOB_ANSWER"_Stz,         // CN_JOB_ANSWER
     /*    */ "JOB_BOOT"_Stz,           // CN_JOB_BOOT
     /*    */ "JOB_CF"_Stz,             // CN_JOB_CF
+    /*    */ "JOB_COMPACTINDEX"_Stz,   // CN_JOB_COMPACTINDEX
     /*    */ "JOB_CONNECTOR"_Stz,      // CN_JOB_CONNECTOR
     /*    */ "JOB_CREATECATALOG"_Stz,  // CN_JOB_CREATECATALOG
     /*    */ "JOB_CREATEINDEX"_Stz,    // CN_JOB_CREATEINDEX

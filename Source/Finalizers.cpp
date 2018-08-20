@@ -95,6 +95,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_ANSWER
   /*    */ &Finalize::vUndefined,         // CN_JOB_BOOT
   /*    */ &Finalize::vUndefined,         // CN_JOB_CF
+  /*    */ &Finalize::vUndefined,         // CN_JOB_COMPACTINDEX
   /*    */ &Finalize::vUndefined,         // CN_JOB_CONNECTOR
   /*    */ &Finalize::vUndefined,         // CN_JOB_CREATECATALOG
   /*    */ &Finalize::vUndefined,         // CN_JOB_CREATEINDEX
