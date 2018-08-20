@@ -10,7 +10,8 @@ namespace JobsModel
   {
   public:
   s32  m_sObjectName; // object name (e.g. schema, table etc)
-  
+  s32  m_sIndexName;  // index name
+    
   public:
     void* operator new(size_t);
   

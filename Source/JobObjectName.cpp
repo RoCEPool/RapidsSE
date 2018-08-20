@@ -26,6 +26,7 @@ void* JobObjectName::operator new(size_t iSize)
 JobObjectName::JobObjectName(void)
 {
   m_sObjectName = ""_Stz;
+  m_sIndexName = ""_Stz;
 }
 
 /*----------------------------------------------------------------------------*/
