@@ -18,9 +18,9 @@ JobNote::JobNote(Stz* aName,
                  Stz* aComment,
                  Stz* aCommand1,
                  Stz* aCommand2,
-                 Stz* aSeed1,
-                 Stz* aSeed2,
-                 Stz* aSeed3,
+                 Stz* aSeedReq,
+                 Stz* aSeedRcv,
+                 Stz* aSeedExe,
                  bool bResources,
                  bool bDetached,
                  bool bBuffer,
@@ -38,7 +38,7 @@ JobNote::JobNote(Stz* aName,
                  )
 {
   vTrace("JobNote: %s %s %s %s\n"_Stz,
-         aName, aComment, aCommand1, aSeed1);
+         aName, aComment, aCommand1, aSeedReq);
   
   // add the job class to the catalog
   i8 i_Job = gxJobCatalog.m_nClasses;
@@ -50,9 +50,9 @@ JobNote::JobNote(Stz* aName,
   gxJobCatalog.m_xJobClass[i_Job].m_aCommand1   = aCommand1;
   if (aCommand2)
     gxJobCatalog.m_xJobClass[i_Job].m_aCommand2 = aCommand2;
-  gxJobCatalog.m_xJobClass[i_Job].m_aSeed1      = aSeed1;
-  gxJobCatalog.m_xJobClass[i_Job].m_aSeed2      = aSeed2;
-  gxJobCatalog.m_xJobClass[i_Job].m_aSeed3      = aSeed3;
+  gxJobCatalog.m_xJobClass[i_Job].m_aSeedReq    = aSeedReq;
+  gxJobCatalog.m_xJobClass[i_Job].m_aSeedRcv    = aSeedRcv;
+  gxJobCatalog.m_xJobClass[i_Job].m_aSeedExe    = aSeedExe;
   gxJobCatalog.m_xJobClass[i_Job].m_bResources  = bResources;
   gxJobCatalog.m_xJobClass[i_Job].m_bDetached   = bDetached;
   gxJobCatalog.m_xJobClass[i_Job].m_bBuffer     = bBuffer;

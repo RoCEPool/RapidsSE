@@ -3661,7 +3661,7 @@ bool SEitf::bAppendJob(Job* pJob)
   if (CN_JOB_PROMPT == pJob->eClass())
     sRequest = "promptR35_Req"_Stz;
   else
-    sRequest = pJob->m_pJobClass->m_aSeed1;
+    sRequest = pJob->m_pJobClass->m_aSeedReq;
 
   pNewTask->vSeedWord(sRequest);
   pNewTask->vState(TS_READY);

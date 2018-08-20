@@ -91,7 +91,7 @@ Job_DropSchema::Job_DropSchema(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPSCHEMA,_FOOTER_);
     
-  m_sSeed = mJobNote_DropSchema.pJobClass()->m_aSeed1;
+  m_sSeed = mJobNote_DropSchema.pJobClass()->m_aSeedReq;
   m_bCheckResources   = true;
   
   _checkInitialised_(CN_JOB_DROPSCHEMA);

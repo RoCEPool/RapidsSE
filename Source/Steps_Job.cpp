@@ -688,7 +688,7 @@ void Task::vJobExecuteFetch(MP_Task mpTask)
       break;
       
     default:
-      sExecute = pJob->m_pJobClass->m_aSeed3;
+      sExecute = pJob->m_pJobClass->m_aSeedExe;
       //sExecute.vConcat("_node"_Stz);
       break;
   }
@@ -1760,9 +1760,9 @@ void Task::vJobSpawn(MP_Task mpTask)
   s32 sSeed;
   
   switch (i_Seed) {
-    case C_SEED_1: sSeed = pJob->m_pJobClass->m_aSeed1; break;
-    case C_SEED_2: sSeed = pJob->m_pJobClass->m_aSeed2; break;
-    case C_SEED_3: sSeed = pJob->m_pJobClass->m_aSeed3; break;
+    case C_SEED_1: sSeed = pJob->m_pJobClass->m_aSeedReq; break;
+    case C_SEED_2: sSeed = pJob->m_pJobClass->m_aSeedRcv; break;
+    case C_SEED_3: sSeed = pJob->m_pJobClass->m_aSeedExe; break;
     default: NEVER_REACH;
   }
   

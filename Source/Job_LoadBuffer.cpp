@@ -90,7 +90,7 @@ Job_LoadBuffer::Job_LoadBuffer(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
   
-  m_sSeed = mJobNote_LoadBuffer.pJobClass()->m_aSeed1;
+  m_sSeed = mJobNote_LoadBuffer.pJobClass()->m_aSeedReq;
   
   m_nBuffersLoadable = C_UNKNOWN;
   m_iLoadJobId = -1;
