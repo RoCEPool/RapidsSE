@@ -74,7 +74,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get table name from job
-  pJob_ListIdxColumns job_listIdxColumns.tableName@ to sTableNm
+  pJob_ListIdxColumns job.objectName@ to sTableNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // there should be a table folder
@@ -94,7 +94,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get index name from job
-  pJob_ListIdxColumns job.objectName@ to sIndexNm
+  pJob_ListIdxColumns job.indexName@ to sIndexNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is an index
