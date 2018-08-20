@@ -106,11 +106,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_CreateSchema job check resources                              */
 /*----------------------------------------------------------------------------*/
-: createSchema_checkResources ( pJob_CreateSchema -- )
+: createSchema_chk ( pJob_CreateSchema -- )
 
   params| pJob_CreateSchema  |
 
-  tp: createSchema_checkResources
+  tp: createSchema_chk
   "checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -138,11 +138,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_CreateSchema job release resources                             */
 /*----------------------------------------------------------------------------*/
-: createSchema_releaseResources ( pJob_CreateSchema -- )
+: createSchema_rel ( pJob_CreateSchema -- )
 
   params| pJob_CreateSchema  |
 
-  tp: createSchema_releaseResources
+  tp: createSchema_rel
   "releaseResources received" .
 
   <DONE_NODE>

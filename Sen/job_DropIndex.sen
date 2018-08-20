@@ -136,12 +136,12 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropIndex job check resources                                  */
 /*----------------------------------------------------------------------------*/
-: dropIndex_checkResources ( Job_DropIndex -- )
+: dropIndex_chk ( Job_DropIndex -- )
 
   params| pJob_DropIndex  |
   0 0 locals| sIndexNm sTableNm |
 
-  tp: dropIndex_checkResources
+  tp: dropIndex_chk
   "checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -188,11 +188,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropIndex job release resources                                */
 /*----------------------------------------------------------------------------*/
-: dropIndex_releaseResources ( Job_DropIndex -- )
+: dropIndex_rel ( Job_DropIndex -- )
 
   params| pJob_DropIndex  |
 
-  tp: dropIndex_releaseResources
+  tp: dropIndex_rel
   "releaseResources received" .
 
   <DONE_NODE>

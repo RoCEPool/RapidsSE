@@ -96,11 +96,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropSchema job check resources                                 */
 /*----------------------------------------------------------------------------*/
-: dropSchema_checkResources ( Job_DropSchema -- )
+: dropSchema_chk ( Job_DropSchema -- )
 
   params| pJob_DropSchema  |
 
-  tp: dropSchema_checkResources
+  tp: dropSchema_chk
   "checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - --
@@ -123,11 +123,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropSchema job release resources                               */
 /*----------------------------------------------------------------------------*/
-: dropSchema_releaseResources ( Job_DropSchema -- )
+: dropSchema_rel ( Job_DropSchema -- )
 
   params| pJob_DropSchema  |
 
-  tp: dropSchema_releaseResources
+  tp: dropSchema_rel
   "releaseResources received" .
 
   <DONE_NODE>

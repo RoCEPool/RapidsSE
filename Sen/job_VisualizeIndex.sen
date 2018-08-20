@@ -102,12 +102,12 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_VisualizeIndex job check resources                             */
 /*----------------------------------------------------------------------------*/
-: visualizeIndex_checkResources ( Job_VisualizeIndex -- )
+: visualizeIndex_chk ( Job_VisualizeIndex -- )
 
   params| pJob_VisualizeIndex  |
   0 0 locals| sIndexNm sTableNm |
 
-  tp: visualizeIndex_checkResources
+  tp: visualizeIndex_chk
   "checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -132,11 +132,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_VisualizeIndexTable job release resources                      */
 /*----------------------------------------------------------------------------*/
-: visualizeIndex_releaseResources ( Job_VisualizeIndex -- )
+: visualizeIndex_rel ( Job_VisualizeIndex -- )
 
   params| pJob_VisualizeIndex  |
 
-  tp: visualizeIndex_releaseResources
+  tp: visualizeIndex_rel
   "releaseResources received" .
 
   <DONE_NODE>

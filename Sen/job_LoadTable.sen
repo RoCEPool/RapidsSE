@@ -122,13 +122,13 @@ task::this to pThisTask
 /*----------------------------------------------------------------------------*/
 /* execute Job_LoadTable job check resources                                  */
 /*----------------------------------------------------------------------------*/
-: loadTable_checkResources ( pJob_LoadTable -- )
+: loadTable_chk ( pJob_LoadTable -- )
 
   params| pJob_LoadTable  |
 
   pJob_LoadTable job.objectName@ locals| sTableNm |
 
-  tp: loadTable_checkResources
+  tp: loadTable_chk
   "checkResources received" .
 
   //----------------------------------------------------------------------------
@@ -170,11 +170,11 @@ task::this to pThisTask
 /*----------------------------------------------------------------------------*/
 /* execute Job_LoadTable job release resources                                */
 /*----------------------------------------------------------------------------*/
-: loadTable_releaseResources ( pJob_LoadTable -- )
+: loadTable_rel ( pJob_LoadTable -- )
 
   params| pJob_LoadTable  |
 
-  tp: loadTable_releaseResources
+  tp: loadTable_rel
   "releaseResources received" .
 
   <DONE_NODE>

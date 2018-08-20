@@ -123,11 +123,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_AnalyzeTable job check resources                               */
 /*----------------------------------------------------------------------------*/
-: analyzeTable_checkResources ( Job_AnalyzeTable -- )
+: analyzeTable_chk ( Job_AnalyzeTable -- )
 
   params| pJob_AnalyzeTable  |
 
-  tp: analyzeTable_checkResources
+  tp: analyzeTable_chk
   "checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -150,11 +150,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_AnalyzeTable job release resources                             */
 /*----------------------------------------------------------------------------*/
-: analyzeTable_releaseResources ( Job_AnalyzeTable -- )
+: analyzeTable_rel ( Job_AnalyzeTable -- )
 
   params| pJob_AnalyzeTable  |
 
-  tp: analyzeTable_releaseResources
+  tp: analyzeTable_rel
   "releaseResources received" .
 
   <DONE_NODE>

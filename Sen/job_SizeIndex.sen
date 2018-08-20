@@ -134,12 +134,12 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_SizeIndex job check resources                                  */
 /*----------------------------------------------------------------------------*/
-: sizeIndex_checkResources ( Job_SizeIndex -- )
+: sizeIndex_chk ( Job_SizeIndex -- )
 
   params| pJob_SizeIndex  |
   0 0 locals| sIndexNm sTableNm |
 
-  tp: sizeIndex_checkResources
+  tp: sizeIndex_chk
   "checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -164,11 +164,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_SizeTable job release resources                                */
 /*----------------------------------------------------------------------------*/
-: sizeIndex_releaseResources ( Job_SizeIndex -- )
+: sizeIndex_rel ( Job_SizeIndex -- )
 
   params| pJob_SizeIndex  |
 
-  tp: sizeIndex_releaseResources
+  tp: sizeIndex_rel
   "releaseResources received" .
 
   <DONE_NODE>

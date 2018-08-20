@@ -202,12 +202,12 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_CreateIndex job check resources                                */
 /*----------------------------------------------------------------------------*/
-: createIndex_checkResources ( Job_CreateIndex -- )
+: createIndex_chk ( Job_CreateIndex -- )
 
   params| pJob_CreateIndex  |
   0 0 locals| sTableNm sIndexNm |
 
-  tp: createIndex_checkResources
+  tp: createIndex_chk
   "checkResources received" .
 
   //----------------------------------------------------------------------------
@@ -235,11 +235,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_CreateTable job release resources                              */
 /*----------------------------------------------------------------------------*/
-: createIndex_releaseResources ( Job_CreateIndex -- )
+: createIndex_rel ( Job_CreateIndex -- )
 
   params| pJob_CreateIndex  |
 
-  tp: createIndex_releaseResources
+  tp: createIndex_rel
   "releaseResources received" .
 
   <DONE_NODE>

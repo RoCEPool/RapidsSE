@@ -121,11 +121,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_SizeTable job check resources                                  */
 /*----------------------------------------------------------------------------*/
-: sizeTable_checkResources ( Job_SizeTable -- )
+: sizeTable_chk ( Job_SizeTable -- )
 
   params| pJob_SizeTable  |
 
-  tp: sizeTable_checkResources
+  tp: sizeTable_chk
   "checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -148,11 +148,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_SizeTable job release resources                                */
 /*----------------------------------------------------------------------------*/
-: sizeTable_releaseResources ( Job_SizeTable -- )
+: sizeTable_rel ( Job_SizeTable -- )
 
   params| pJob_SizeTable  |
 
-  tp: sizeTable_releaseResources
+  tp: sizeTable_rel
   "releaseResources received" .
 
   <DONE_NODE>

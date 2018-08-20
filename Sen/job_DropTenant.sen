@@ -96,11 +96,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropTenant job check resources                                 */
 /*----------------------------------------------------------------------------*/
-: dropTenant_checkResources ( Job_DropTenant -- )
+: dropTenant_chk ( Job_DropTenant -- )
 
   params| pJob_DropTenant  |
 
-  tp: dropTenant_checkResources
+  tp: dropTenant_chk
   "checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - --
@@ -123,11 +123,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropCatalog job release resources                              */
 /*----------------------------------------------------------------------------*/
-: dropTenant_releaseResources ( Job_DropTenant -- )
+: dropTenant_rel ( Job_DropTenant -- )
 
   params| pJob_DropTenant  |
 
-  tp: dropTenant_releaseResources
+  tp: dropTenant_rel
   "releaseResources received" .
 
   <DONE_NODE>

@@ -163,11 +163,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_CreateTable job check resources                                */
 /*----------------------------------------------------------------------------*/
-: createTable_checkResources ( pJob_CreateTable -- )
+: createTable_chk ( pJob_CreateTable -- )
 
   params| pJob_CreateTable  |
 
-  tp: createTable_checkResources
+  tp: createTable_chk
   "checkResources received" .
 
   //----------------------------------------------------------------------------
@@ -194,11 +194,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_CreateTable job release resources                              */
 /*----------------------------------------------------------------------------*/
-: createTable_releaseResources ( pJob_CreateTable -- )
+: createTable_rel ( pJob_CreateTable -- )
 
   params| pJob_CreateTable  |
 
-  tp: createTable_releaseResources
+  tp: createTable_rel
   "releaseResources received" .
 
   <DONE_NODE>

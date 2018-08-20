@@ -90,12 +90,12 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_AnalyzeIndex job check resources                               */
 /*----------------------------------------------------------------------------*/
-: truncateTable_checkResources ( Job_TruncateTable -- )
+: truncateTable_chk ( Job_TruncateTable -- )
 
   params| pJob_TruncateTable  |
   0 locals| sTableNm |
 
-  tp: truncateTable_checkResources
+  tp: truncateTable_chk
   "checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -134,11 +134,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_AnalyzeIndex job release resources                             */
 /*----------------------------------------------------------------------------*/
-: truncateTable_releaseResources ( Job_TruncateTable -- )
+: truncateTable_rel ( Job_TruncateTable -- )
 
   params| pJob_TruncateTable  |
 
-  tp: truncateTable_releaseResources
+  tp: truncateTable_rel
   "releaseResources received" .
 
   <DONE_NODE>

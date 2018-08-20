@@ -158,11 +158,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropTable job check resources                                  */
 /*----------------------------------------------------------------------------*/
-: dropTable_checkResources ( Job_DropTable -- )
+: dropTable_chk ( Job_DropTable -- )
 
   params| pJob_DropTable  |
 
-  tp: dropTable_checkResources
+  tp: dropTable_chk
   "checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -185,11 +185,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropTable job release resources                                */
 /*----------------------------------------------------------------------------*/
-: dropTable_releaseResources ( Job_DropTable -- )
+: dropTable_rel ( Job_DropTable -- )
 
   params| pJob_DropTable  |
 
-  tp: dropTable_releaseResources
+  tp: dropTable_rel
   "releaseResources received" .
 
   <DONE_NODE>

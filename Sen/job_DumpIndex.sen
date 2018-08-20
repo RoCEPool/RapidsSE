@@ -102,12 +102,12 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DumpIndex job check resources                                  */
 /*----------------------------------------------------------------------------*/
-: dumpIndex_checkResources ( Job_DumpIndex -- )
+: dumpIndex_chk ( Job_DumpIndex -- )
 
   params| pJob_DumpIndex  |
   0 0 locals| sIndexNm sTableNm |
 
-  tp: dumpIndex_checkResources
+  tp: dumpIndex_chk
   "checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -132,11 +132,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DumpIndexTable job release resources                           */
 /*----------------------------------------------------------------------------*/
-: dumpIndex_releaseResources ( Job_DumpIndex -- )
+: dumpIndex_rel ( Job_DumpIndex -- )
 
   params| pJob_DumpIndex  |
 
-  tp: dumpIndex_releaseResources
+  tp: dumpIndex_rel
   "releaseResources received" .
 
   <DONE_NODE>

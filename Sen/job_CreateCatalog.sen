@@ -109,11 +109,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_CreateCatalog job check resources                              */
 /*----------------------------------------------------------------------------*/
-: createCatalog_checkResources ( pJob_CreateCatalog -- )
+: createCatalog_chk ( pJob_CreateCatalog -- )
 
   params| pJob_CreateCatalog  |
 
-  tp: createCatalog_checkResources
+  tp: createCatalog_chk
   "checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -141,11 +141,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_CreateCatalog job release resources                            */
 /*----------------------------------------------------------------------------*/
-: createCatalog_releaseResources ( pJob_CreateCatalog -- )
+: createCatalog_rel ( pJob_CreateCatalog -- )
 
   params| pJob_CreateCatalog  |
 
-  tp: createCatalog_releaseResources
+  tp: createCatalog_rel
   "releaseResources received" .
 
   <DONE_NODE>

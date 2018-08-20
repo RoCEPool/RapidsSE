@@ -124,12 +124,12 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_CompactIndex job check resources                               */
 /*----------------------------------------------------------------------------*/
-: compactIndex_checkResources ( Job_CompactIndex -- )
+: compactIndex_chk ( Job_CompactIndex -- )
 
   params| pJob_CompactIndex  |
   0 0 locals| sIndexNm sTableNm |
 
-  tp: compactIndex_checkResources
+  tp: compactIndex_chk
   "checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -154,11 +154,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_SizeTable job release resources                                */
 /*----------------------------------------------------------------------------*/
-: compactIndex_releaseResources ( Job_CompactIndex -- )
+: compactIndex_rel ( Job_CompactIndex -- )
 
   params| pJob_CompactIndex  |
 
-  tp: compactIndex_releaseResources
+  tp: compactIndex_rel
   "releaseResources received" .
 
   <DONE_NODE>

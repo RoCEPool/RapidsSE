@@ -105,11 +105,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_CreateTenant job check resources                               */
 /*----------------------------------------------------------------------------*/
-: createTenant_checkResources ( pJob_CreateTenant -- )
+: createTenant_chk ( pJob_CreateTenant -- )
 
   params| pJob_CreateTenant  |
 
-  tp: createTenant_checkResources
+  tp: createTenant_chk
   "checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -136,11 +136,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_CreateTenant job release resources                             */
 /*----------------------------------------------------------------------------*/
-: createTenant_releaseResources ( pJob_CreateTenant -- )
+: createTenant_rel ( pJob_CreateTenant -- )
 
   params| pJob_CreateTenant  |
 
-  tp: createTenant_releaseResources
+  tp: createTenant_rel
   "releaseResources received" .
 
   <DONE_NODE>
