@@ -100,7 +100,8 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_ANSWER
   /*    */ &Dump::vDummy,           // CN_JOB_BOOT
   /*    */ &Dump::vDummy,           // CN_JOB_CF
-  /*    */ &Dump::vDummy,           // CN_JOB_CONNECTOR
+  /*    */ &Dump::vDummy,           // CN_JOB_COMPACT
+  /*    */ &Dump::vDummy,           // CN_JOB_COMPACTINDEX
   /*    */ &Dump::vDummy,           // CN_JOB_CREATECATALOG
   /*    */ &Dump::vDummy,           // CN_JOB_CREATEINDEX
   /*    */ &Dump::vDummy,           // CN_JOB_CREATESCHEMA
@@ -346,6 +347,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_Answer),         // CN_JOB_ANSWER
   /*    */ sizeof(Job_Boot),           // CN_JOB_BOOT
   /*    */ sizeof(Job_Cf),             // CN_JOB_CF
+  /*    */ sizeof(Job_CompactIndex),   // CN_JOB_COMPACTINDEX
   /*    */ sizeof(Job_Connector),      // CN_JOB_CONNECTOR
   /*    */ sizeof(Job_CreateCatalog),  // CN_JOB_CREATECATALOG
   /*    */ sizeof(Job_CreateIndex),    // CN_JOB_CREATEINDEX
@@ -592,6 +594,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_ANSWER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_BOOT
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CF
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_COMPACTINDEX
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CONNECTOR
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CREATECATALOG
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CREATEINDEX
