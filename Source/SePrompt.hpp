@@ -82,16 +82,6 @@ namespace Prompt
     bool bCmd_PrintDir(void);
     bool bCmd_UseSchema(void);
   
-    bool bCmd_CreateCatalogR35(void);
-    bool bCmd_CreateIndexR35(void);
-    bool bCmd_CreateSchemaR35(void);
-    bool bCmd_CreateTenantR35(void);
-  
-    bool bCmd_DropCatalogR35(void);
-    bool bCmd_DropIndexR35(void);
-    bool bCmd_DropSchemaR35(void);
-    bool bCmd_DropTenantR35(void);
- 
   private:
     i8   iCopyTokens(TokenVec* pFromTokenVec, TokenVec* pToTokenVec);
     bool bDropReturnTable(Stz* aTableName);
