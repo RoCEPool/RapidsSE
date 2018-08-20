@@ -77,8 +77,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the table and index names
-  pJob_VisualizeIndex job.objectName@ to sIndexNm
-  //pJob_VisualizeIndex job_VisualizeIndex.tableName@ to sTableNm
+  pJob_VisualizeIndex job.indexName@ to sIndexNm
+  pJob_VisualizeIndex job.objectName@ to sTableNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table and indexes folder
@@ -95,8 +95,6 @@
   popTable
 
   pJob_VisualizeIndex job.notice
-
-  pJob_VisualizeIndex send_job__executed
 
   pJob_VisualizeIndex <DONE_REQUEST>
 ;
@@ -123,8 +121,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get index and table name
-  pJob_VisualizeIndex job.objectName@ to sIndexNm
-  //pJob_VisualizeIndex job_VisualizeIndex.tableName@ to sTableNm
+  pJob_VisualizeIndex job.indexName@ to sIndexNm
+  pJob_VisualizeIndex job.objectName@ to sTableNm
 
   sTableNm sIndexNm checkVisualizeIndex not if pJob_VisualizeIndex <ERROR_JOB> exit then
 

@@ -9,8 +9,6 @@ namespace JobsModel
   class Job_SizeIndex : public Job
   {
   public:
-  
-    s32 m_sTableName;   // table name
     
     // must be last
     Footer m_xFooter;
