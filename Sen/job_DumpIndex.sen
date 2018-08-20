@@ -77,8 +77,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the table and index names
-  pJob_DumpIndex job.objectName@ to sIndexNm
-  //pJob_DumpIndex job_DumpIndex.tableName@ to sTableNm
+  pJob_DumpIndex job.indexName@ to sIndexNm
+  pJob_DumpIndex job.objectName@ to sTableNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table and indexes folder
@@ -95,8 +95,6 @@
   popTable
 
   pJob_DumpIndex job.notice
-
-  pJob_DumpIndex send_job__executed
 
   pJob_DumpIndex <DONE_REQUEST>
 ;
