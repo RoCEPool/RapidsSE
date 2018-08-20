@@ -133,6 +133,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_TABLESIZES
   /*    */ &Finalize::vUndefined,         // CN_JOB_TRUNCATETABLE
   /*    */ &Finalize::vUndefined,         // CN_JOB_USESCHEMA
+  /*    */ &Finalize::vUndefined,         // CN_JOB_VISUALIZEINDEX
   
   /*    */ &Finalize::vUndefined,         // CN_JOBS
   

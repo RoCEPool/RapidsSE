@@ -1,0 +1,260 @@
+/*============================================================================*/
+/* Job_VisualizeIndex.cpp -- visualize index Job                              */
+/*============================================================================*/
+
+#include "JobModel.h"
+#include "StorageEngine.h"
+
+extern AttachMap* gpAttachMap;
+
+JobNote mJobNote_VisualizeIndex (
+  "Job_VisualizeIndex"_Stz,   // name of the job class
+  CN_JOB_VISUALIZEINDEX,      // class enum
+  JK_DIST2PC,                 // job kind
+  "visualize index"_Stz,      // comment about the job
+  "visidx"_Stz,               // the prompt command
+  nullptr,                    // the second word
+  "visualizeIndex_req"_Stz,   // the _req task seed
+  nullptr,                    // the _rcv task seed
+  "visualizeIndex_node"_Stz,  // the _exe task seed
+  true,                       // check resources?
+  false,                      // detached job?
+  false,                      // buffer attached?
+  JT_NONE,                    // job trace
+  pJob_VisualizeIndex_pre,    // prompt pre-process function
+  vJob_VisualizeIndex_post,   // prompt post-process function
+  nullptr,                    // job new function
+  vJob_VisualizeIndex_delete, // job delete function
+  nullptr,                    // job pre-send function
+  nullptr,                    // job post-receive function
+  vJob_VisualizeIndex_show,   // job show function
+  true,                       // job is enabled
+  "<help>"_Stz,               // help
+  "<example>"_Stz             // example
+);
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+Job_VisualizeIndex* JobsModel::_pJob_VisualizeIndex(void* aAddress)
+{
+  Job_VisualizeIndex* pJob_VisualizeIndex = reinterpret_cast<Job_VisualizeIndex*>(aAddress);
+  
+  RASSERT( !pJob_VisualizeIndex || CN_JOB_VISUALIZEINDEX == pJob_VisualizeIndex->eClass());
+  
+  return pJob_VisualizeIndex;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allocate a new entry buffer from heap                                      */
+/*----------------------------------------------------------------------------*/
+void* Job_VisualizeIndex::operator new(size_t iSize)
+{
+  RASSERT(iSize);
+  
+  Job_VisualizeIndex* pJob_VisualizeIndex =
+    static_cast<Job_VisualizeIndex*>(Heap::pAllocate(CN_JOB_VISUALIZEINDEX));
+  
+  return pJob_VisualizeIndex;
+}
+
+/*----------------------------------------------------------------------------*/
+/* perform new of entry buffer for given address                              */
+/*----------------------------------------------------------------------------*/
+void* Job_VisualizeIndex::operator new(size_t iSize, void* aAddress)
+{
+  RASSERT(iSize);
+  
+  return aAddress;
+}
+
+/*----------------------------------------------------------------------------*/
+/* free an entry buffer back to the heap                                      */
+/*----------------------------------------------------------------------------*/
+void Job_VisualizeIndex::operator delete(void* aAddress)
+{
+  Job_VisualizeIndex* pJob_VisualizeIndex = static_cast<Job_VisualizeIndex*>(aAddress);
+  
+  Heap::vFree(pJob_VisualizeIndex);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Job_VisualizeIndex::Job_VisualizeIndex(Interface::SEitf* pSEitf)
+: Job(CN_JOB_VISUALIZEINDEX, pSEitf)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_VISUALIZEINDEX,_FOOTER_);
+    
+  m_sSeed = mJobNote_VisualizeIndex.pJobClass()->m_aSeed1;
+  m_bCheckResources = true;
+  m_sTableName      = ""_Stz;
+  
+  _checkInitialised_(CN_JOB_VISUALIZEINDEX);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_VISUALIZEINDEX,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+Job_VisualizeIndex::~Job_VisualizeIndex(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_VISUALIZEINDEX,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Static Functions --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* dump                                                                       */
+/*----------------------------------------------------------------------------*/
+void Job_VisualizeIndex::vDump(eCN eClass, Object* pObject, Stz* aTab)
+{
+  RASSERT(CN_JOB_VISUALIZEINDEX == eClass);
+  RASSERT(pObject->eClass() == CN_JOB_VISUALIZEINDEX);
+  
+  Job_VisualizeIndex* pJob_VisualizeIndex = _pJob_VisualizeIndex(pObject);
+
+  pJob_VisualizeIndex->vShow();
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Member Functions --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* populate the job                                                           */
+/*----------------------------------------------------------------------------*/
+bool Job_VisualizeIndex::bPopulateJob(TokenVec* pTokenVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_VISUALIZEINDEX,_FOOTER_);
+  
+  i8 iNumTokens;
+  
+  ASSERT(pTokenVec->pGet(0)->bSame("szidx"_Stz));
+  
+  // get number of items in token vector
+  iNumTokens = pTokenVec->nItems();
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // there should be 3 tokens
+  if (iNumTokens != 3)
+    return false;
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // set the index name
+  m_sObjectName = pTokenVec->pGet(2)->aText();
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // set the table name
+  m_sTableName = pTokenVec->pGet(1)->aText();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show                                                                       */
+/*----------------------------------------------------------------------------*/
+void Job_VisualizeIndex::vShow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_VISUALIZEINDEX,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* Job_VisualizeIndex::aFooter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_VISUALIZEINDEX);
+  
+  return &m_xFooter;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Catalog Functions -------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* prompt pre execute function                                                */
+/*----------------------------------------------------------------------------*/
+Job* JobsModel::pJob_VisualizeIndex_pre(Interface::SEitf* pSEitf)
+{
+  Job_VisualizeIndex* pJob_VisualizeIndex = new Job_VisualizeIndex(pSEitf);
+  
+  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
+  
+  bool bResult = pJob_VisualizeIndex->bPopulateJob(pTokenVec);
+  
+  if ( !bResult) {
+    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
+    pJob_VisualizeIndex->m_bHasError = true;
+    pJob_VisualizeIndex->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+  }
+  
+  return pJob_VisualizeIndex;
+}
+
+/*----------------------------------------------------------------------------*/
+/* prompt post execute function                                               */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_VisualizeIndex_post(Interface::SEitf* pSEitf, Job* pJob)
+{
+  Job_VisualizeIndex* pJob_VisualizeIndex = _pJob_VisualizeIndex(pJob);
+  
+  if ( pJob_VisualizeIndex->m_bHasError ) {
+    
+    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+      vTrace("ERROR (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob_VisualizeIndex->m_xNode[i_Node].m_eErrorCode]);
+    }
+    
+  }
+  else {
+    if (gpAttachMap->m_bMetadata) {
+      vTrace("metadata: %s\n"_Stz, pJob_VisualizeIndex->m_sMetadata.aStr());
+    }
+    
+    i8 iRowsProcessed = 0;
+    
+    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+      vTrace("%s\n"_Stz, pJob_VisualizeIndex->m_xNode[i_Node].m_sResponse.aChar());
+      iRowsProcessed += pJob_VisualizeIndex->m_xNode[i_Node].m_iRowsProcessed;
+    }
+    if (gpAttachMap->m_bMetadata) {
+      vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* job delete function                                                        */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_VisualizeIndex_delete(Interface::SEitf* pSEitf, Job* pJob)
+{
+  Job_VisualizeIndex* pJob_VisualizeIndex = _pJob_VisualizeIndex(pJob);
+  
+  delete pJob_VisualizeIndex;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show job function                                                          */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_VisualizeIndex_show(Job* pJob)
+{
+  Job_VisualizeIndex* pJob_VisualizeIndex = _pJob_VisualizeIndex(pJob);
+
+  pJob_VisualizeIndex->vShow();
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

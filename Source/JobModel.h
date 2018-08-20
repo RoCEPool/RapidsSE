@@ -105,6 +105,8 @@ using namespace JobsModel;
 
 #include "Job_UseSchema.hpp"
 
+#include "Job_VisualizeIndex.hpp"
+
 #include "Jobs.hpp"
 
 #include "JobClass.hpp"

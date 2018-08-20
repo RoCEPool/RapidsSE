@@ -138,6 +138,7 @@ enum eCN : u2 // Class Number
     /*    */ CN_JOB_TABLESIZES,
     /*    */ CN_JOB_TRUNCATETABLE,
     /*    */ CN_JOB_USESCHEMA,
+    /*    */ CN_JOB_VISUALIZEINDEX,
     
     /*    */ CN_JOBS,
     /* 59 */ CN_JUMBOPERSISTENT,
@@ -385,6 +386,7 @@ enum eCN : u2 // Class Number
     /*    */ "JOB_TABLESIZES"_Stz,     // CN_JOB_TABLESIZES
     /*    */ "JOB_TRUNCATETABLE"_Stz,  // CN_JOB_TRUNCATETABLE
     /*    */ "JOB_USESCHEMA"_Stz,      // CN_JOB_USESCHEMA
+    /*    */ "JOB_VISUALIZEINDEX"_Stz, // CN_JOB_VISUALIZEINDEX
     
     /*    */ "JOBS"_Stz,               // CN_JOBS
     /* 59 */ "JUMBOPERSISTENT"_Stz,    // CN_JUMBOPERSISTENT
