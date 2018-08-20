@@ -1,0 +1,153 @@
+/*============================================================================*/
+/* job_TableSizes.sen -- Job Table Sizes                                      */
+/*============================================================================*/
+
+"job_TableSizes.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* tableSizes request (on originating node)                                   */
+/*----------------------------------------------------------------------------*/
+: tableSizes_req ( -- <R> )
+
+  0 0 locals| pJob pTask |
+
+  tp: tableSizes
+  "tableSizes_req" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set metadata string in the job
+  args.metadata if
+    "(nodeName VARCHAR, tableName VARCHAR, size VARCHAR)"
+    pJob job.metadata!
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // distribute the job
+  pTask pJob "job::distribute" find execute
+
+  pJob <DONE_REQUEST>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_TableSizes job on a node                                       */
+/*----------------------------------------------------------------------------*/
+: tableSizes_node ( Job_TableSizes -- )
+
+  params| pJob_TableSizes |
+  0 0 0 0 locals| pIndex iSize iCount sTableNm |
+
+  tp: tableSizes_node
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // assert correct job
+  CN_JOB_TABLESIZES pJob_TableSizes object.assertClass
+"t1" .
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grad a ddl lock
+  ddlLock::grabRead
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
+  pJob_TableSizes getPathR35
+  dicStack.set
+
+  //"hidden" find execute to pIndex
+  //pIndex index.space 0 swap number.magnitude to iSize
+  //iSize grid::thisNodeName@ "row: ( %v %v )" str.format
+
+  ""
+  0 pathPick dic.lastWord dup iterate
+    1 iCount + to iCount
+    grid::thisNodeName@ "row: ('%v', '" str.format
+
+    object@ word.name to sTableNm
+    sTableNm str.cat
+
+    "', '" str.cat
+
+    // push table dictionary
+    sTableNm pushTable assert
+
+    // check it is a table
+    sTableNm checkIsTableR35 not if drop pJob_TableSizes <ERROR_JOB> exit then
+
+    // push indexes folder
+    pushIndexes assert
+
+    //get size of hidden index
+    "hidden" find execute index.space 0 swap number.magnitude to iSize
+    iSize >str
+    str.cat
+
+    // pop indexes folder
+    popIndexes
+
+    // pop table folder
+    popTable
+
+    "')\n" str.cat
+
+    object@ word.prev object!
+
+  next
+
+  grid::thisNode@ pJob_TableSizes job.response!
+  iCount grid::thisNode@ pJob_TableSizes job.rowsProcessed!
+
+  pJob_TableSizes job.notice
+
+  pJob_TableSizes send_job__executed
+
+  <DONE_NODE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_SizeTable job check resources                                  */
+/*----------------------------------------------------------------------------*/
+: tableSizes_checkResources ( Job_TableSizes -- )
+
+  params| pJob_TableSizes  |
+
+  tp: tableSizes_checkResources
+  "checkResources received" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab a ddl lock
+  ddlLock::grabWrite
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
+  pJob_TableSizes getPathR35
+  dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // should be in the tables folder
+  checkInTables not if pJob_TableSizes <ERROR_JOB> exit then
+
+  <DONE_NODE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_SizeTable job release resources                                */
+/*----------------------------------------------------------------------------*/
+: tableSizes_releaseResources ( Job_SizeTable -- )
+
+  params| pJob_SizeTable  |
+
+  tp: sizeTable_releaseResources
+  "releaseResources received" .
+
+  <DONE_NODE>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

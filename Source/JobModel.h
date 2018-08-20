@@ -99,6 +99,7 @@ using namespace JobsModel;
 #include "Job_SubLoader.hpp"
 #include "Job_SubTruncate.hpp"
 
+#include "Job_TableSizes.hpp"
 #include "Job_TruncateTable.hpp"
 
 #include "Job_UseSchema.hpp"

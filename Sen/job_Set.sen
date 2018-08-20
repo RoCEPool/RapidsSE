@@ -58,6 +58,7 @@
 "job_SubLoader.sen" include
 "job_SubTruncate.sen" include
 
+"job_TableSizes.sen" include
 "job_TruncateTable.sen" include
 
 "job_UseSchema.sen" include
