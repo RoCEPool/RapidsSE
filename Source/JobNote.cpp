@@ -21,6 +21,8 @@ JobNote::JobNote(Stz* aName,
                  Stz* aSeedReq,
                  Stz* aSeedRcv,
                  Stz* aSeedExe,
+                 Stz* aSeedEnd,
+                 Stz* aSeedCan,
                  bool bResources,
                  bool bDetached,
                  bool bBuffer,
@@ -53,6 +55,8 @@ JobNote::JobNote(Stz* aName,
   gxJobCatalog.m_xJobClass[i_Job].m_aSeedReq    = aSeedReq;
   gxJobCatalog.m_xJobClass[i_Job].m_aSeedRcv    = aSeedRcv;
   gxJobCatalog.m_xJobClass[i_Job].m_aSeedExe    = aSeedExe;
+  gxJobCatalog.m_xJobClass[i_Job].m_aSeedEnd    = aSeedEnd;
+  gxJobCatalog.m_xJobClass[i_Job].m_aSeedCan    = aSeedCan;
   gxJobCatalog.m_xJobClass[i_Job].m_bResources  = bResources;
   gxJobCatalog.m_xJobClass[i_Job].m_bDetached   = bDetached;
   gxJobCatalog.m_xJobClass[i_Job].m_bBuffer     = bBuffer;

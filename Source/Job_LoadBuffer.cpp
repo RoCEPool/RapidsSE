@@ -17,6 +17,8 @@ JobNote mJobNote_LoadBuffer (
   "LoadBuffer_seed"_Stz,   // the _req task seed
   nullptr,                 // the _rcv task seed
   "LoadBuffer_node"_Stz,   // the _exe task seed
+  nullptr,                 // the _end task seed
+  nullptr,                 // the _can task seed
   false,                   // check resources?
   false,                   // detached job?
   true,                    // buffer attached?

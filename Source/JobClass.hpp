@@ -18,6 +18,8 @@ namespace JobsModel
     Stz* m_aSeedReq;  // the _req task seed
     Stz* m_aSeedRcv;  // the _rcv task seed
     Stz* m_aSeedExe;  // the _exe task seed
+    Stz* m_aSeedEnd;  // the _end task seed
+    Stz* m_aSeedCan;  // the _can task seed
     bool m_bDetached; // is this job detached?
     bool m_bResources;// check resources?
     bool m_bBuffer;   // buffer attached?

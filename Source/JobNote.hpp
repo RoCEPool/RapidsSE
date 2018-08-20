@@ -21,6 +21,8 @@ namespace JobsModel
             Stz* aSeedReq,
             Stz* aSeedRcv,
             Stz* aSeedExe,
+            Stz* aSeedEnd,
+            Stz* aSeedCan,
             bool bResources,
             bool bDetached,
             bool bBuffer,

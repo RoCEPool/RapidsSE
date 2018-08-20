@@ -17,6 +17,8 @@ JobNote mJobNote_AnalyzeTable (
   "analyzeTable_req"_Stz,    // the _req task seed 
   nullptr,                   // the _rcv task seed
   "analyzeTable_node"_Stz,   // the _exe task seed
+  nullptr,                   // the _end task seed
+  nullptr,                   // the _can task seed
   true,                      // check resources?
   false,                     // detached job?
   false,                     // buffer attached?
