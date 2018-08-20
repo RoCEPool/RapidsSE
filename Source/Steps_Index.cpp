@@ -238,12 +238,7 @@ void Task::vIndexCompact(MP_Task mpTask)
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
-  if ( ! mpTask->m_pDataStack->bPop(iDetailed) )
-    THROW_INVALID_DSTACK("index.compact"_Stz);
-  
-  s48K sAnalysis;
-  sAnalysis = (Stz*)pIndex->pTable()->pCompactIndex(pIndex, iDetailed == 1 ? true : false);
-  mpTask->m_pDataStack->vPushS48K(sAnalysis);
+  pIndex->pTable()->vCompactIndex(pIndex);
   
   EXIT();
 }

@@ -36,6 +36,7 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.columnIsPartKey"_Stz,  &vJobColumnIsPartKey,  false);
   vAddPrimitive("job.columnName@"_Stz,      &vJobColumnNameFetch,  false);
   vAddPrimitive("job.columnType@"_Stz,      &vJobColumnTypeFetch,  false);
+  vAddPrimitive("job_compactIndex.tableName@"_Stz,&vJobCompactIndexTableNameFetch,  false);
   vAddPrimitive("job_createIndex.tableName@"_Stz, &vJobCreateIndexTableNameFetch, false);
   vAddPrimitive("job.decAcksRemaining"_Stz, &vJobDecAcksRemaining, false);
   vAddPrimitive("job.delete"_Stz,           &vJobDelete,           false);
@@ -372,6 +373,23 @@ void Task::vJobColumnTypeFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.columnType@"_Stz);
   
   mpTask->m_pDataStack->vPushInt(pJob_CreateTable->m_xColumns[iColumnNo].m_eColumnType);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_compactIndex.tableName@ -- fetch the compact index job table name      */
+/*----------------------------------------------------------------------------*/
+void Task::vJobCompactIndexTableNameFetch(MP_Task mpTask)
+{
+  ENTRY("vJobCompactIndexTableNameFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_compactIndex.tableName@"_Stz);
+  Job_CompactIndex* pJob = _pJob_CompactIndex(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushS32(pJob->m_sTableName);
   
   EXIT();
 }

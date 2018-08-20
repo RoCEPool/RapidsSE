@@ -236,25 +236,10 @@ Stz* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed, i8 &nRows)
 /*----------------------------------------------------------------------------*/
 /* compact index                                                              */
 /*----------------------------------------------------------------------------*/
-Stz* Table::pCompactIndex(Index* pIndex, bool bDetailed)
+void Table::vCompactIndex(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  i8 nEntriesTotal = 0;
-  i8 nBuffersTotal = 0;
-  s48K sAnalysis;
-  
-  if ( ! gpAttachMap->m_bMetadata  || bDetailed ) {
-    if (pIndex->bIsHidden())
-      sAnalysis.vCatSprint("N%lld: Compaction of table %s \n"_Stz,
-                           gpAttachMap->m_pGrid->iThisNode(),
-                           m_sTableName.aChar());
-    else
-      sAnalysis.vCatSprint("N%lld: Compaction of Index %s of table %s \n"_Stz,
-                           gpAttachMap->m_pGrid->iThisNode(),
-                           pIndex->aIndexName()->aChar(),
-                           m_sTableName.aChar());
-  }
   for (i8 iSlot = 0; iSlot < gpAttachMap->m_pGrid->m_nSlots; iSlot++) {
     
     i8 iPartition = TablePtn::iSlotToPartition(iSlot);
@@ -264,47 +249,6 @@ Stz* Table::pCompactIndex(Index* pIndex, bool bDetailed)
     pIndexTree->vCompact();
     
   }
-  
-  /*
-  for (i8 iSlot = 0; iSlot < gpAttachMap->m_pGrid->m_nSlots; iSlot++) {
-    
-    i8 iPartition = Partition::iSlotToPartition(iSlot);
-    
-    EntryBuffer *pIndexBuffer = pPartition(iSlot)->pIndexTree(pIndex->iIndexNo())->pRoot();
-    
-    i8 nBuffers = 0;
-    i8 nEntries = 0;
-    
-    if (pIndexBuffer)
-      pIndexBuffer->vAnalyze(sAnalysis, bDetailed, nBuffers, nEntries);
-    
-    nEntriesTotal += nEntries;
-    nBuffersTotal += nBuffers;
-    
-    if ( !gpAttachMap->m_bMetadata  || bDetailed ) {
-      sAnalysis.vCatSprint("partition %lld:  %3lld buffers; %5lld entries\n\n"_Stz,
-                           iPartition,
-                           nBuffers,
-                           nEntries);
-    } else {
-      sAnalysis.vCatSprint("row: ('%s',%lld,%lld,%lld)\n"_Stz,
-                           gpAttachMap->m_pGrid->pThisNode()->aNodeName(),
-                           iPartition,
-                           nBuffers,
-                           nEntries);
-      
-    }
-    
-  }
-  
-  if ( ! gpAttachMap->m_bMetadata   || bDetailed)
-    sAnalysis.vCatSprint(
-                         "        total: %3lld buffers; %5lld entries\n"_Stz,
-                         nBuffersTotal,
-                         nEntriesTotal);
-  */
-  
-  return sAnalysis;
 }
 
 /*----------------------------------------------------------------------------*/

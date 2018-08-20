@@ -5,7 +5,7 @@
 "job_SizeIndex.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* check if word is a valid table folder                                      */
+/* check if word is a valid index                                             */
 /*----------------------------------------------------------------------------*/
 : checkSizeIndex ( "<tableNm>" "<indexNm>" -- true | errorCode false )
 

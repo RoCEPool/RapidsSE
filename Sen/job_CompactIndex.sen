@@ -1,0 +1,169 @@
+/*============================================================================*/
+/* job_CompactIndex.sen -- Job Compact Index                                  */
+/*============================================================================*/
+
+"job_CompactIndex.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* check if word is a valid index                                             */
+/*----------------------------------------------------------------------------*/
+: checkCompactIndex ( "<tableNm>" "<indexNm>" -- true | errorCode false )
+
+  params| sIndexNm sTableNm |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check in tables folder
+  checkInTables not if false exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if tableNm is a word in tables folder
+  sTableNm checkIsWordR35 not if EC_NO_SUCH_TABLE false exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push table folder
+  sTableNm pushTable assert
+
+  sTableNm checkIsTableR35 not if popTable false exit then
+  sTableNm tableInUse if popTable EC_TABLE_IN_USE false exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push indexes folder
+  pushIndexes assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check it is an index we are dropping
+  sIndexNm checkIsIndex not if
+    popIndexes popTable assertInTables false exit
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop indexes and table folder
+  popIndexes
+  popTable
+
+  // assert in tables
+  assertInTables
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* size index request (on originating node)                                   */
+/*----------------------------------------------------------------------------*/
+: compactIndex_req ( -- <R> )
+
+  0 0 locals| pJob pTask |
+
+  tp: compactIndex
+  "compactIndex_req" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // distribute the job
+  pTask pJob "job::distribute" find execute
+
+  pJob <DONE_REQUEST>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_CompactIndex job on a node                                     */
+/*----------------------------------------------------------------------------*/
+: compactIndex_node ( Job_CompactIndex -- )
+
+  params| pJob_CompactIndex |
+
+  0 0 0 0 locals| pIndex iSize sTableNm sIndexNm |
+
+  tp: compactIndex_node
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // assert correct job
+  CN_JOB_COMPACTINDEX pJob_CompactIndex object.assertClass
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grad a ddl lock
+  ddlLock::grabWrite
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
+  pJob_CompactIndex getPathR35
+  dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the table and index names
+  pJob_CompactIndex job.objectName@ to sIndexNm
+  pJob_CompactIndex job_CompactIndex.tableName@ to sTableNm
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push table and indexes folder
+  sTableNm pushTable assert
+  pushIndexes assert
+
+  sIndexNm find execute to pIndex
+  pIndex index.compact
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop indexes and table folder
+  popIndexes
+  popTable
+
+  pJob_CompactIndex job.notice
+
+  pJob_CompactIndex send_job__executed
+
+  <DONE_NODE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_CompactIndex job check resources                               */
+/*----------------------------------------------------------------------------*/
+: compactIndex_checkResources ( Job_CompactIndex -- )
+
+  params| pJob_CompactIndex  |
+  0 0 locals| sIndexNm sTableNm |
+
+  tp: compactIndex_checkResources
+  "checkResources received" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab a ddl lock
+  ddlLock::grabWrite
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
+  pJob_CompactIndex getPathR35
+  dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get index and table name
+  pJob_CompactIndex job.objectName@ to sIndexNm
+  pJob_CompactIndex job_CompactIndex.tableName@ to sTableNm
+
+  sTableNm sIndexNm checkCompactIndex not if pJob_CompactIndex <ERROR_JOB> exit then
+
+  <DONE_NODE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_SizeTable job release resources                                */
+/*----------------------------------------------------------------------------*/
+: compactIndex_releaseResources ( Job_CompactIndex -- )
+
+  params| pJob_CompactIndex  |
+
+  tp: compactIndex_releaseResources
+  "releaseResources received" .
+
+  <DONE_NODE>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

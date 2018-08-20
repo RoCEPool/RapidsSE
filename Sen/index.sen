@@ -272,6 +272,7 @@ pResultBuffer pSeitf seitf.bufferQueue@ queue.append
 /*----------------------------------------------------------------------------*/
 /* compact an index of a table                                                */
 /*----------------------------------------------------------------------------*/
+/*
 : compactIndex allParticipants 2 returnResult ( detailed "<indexNm>" -- true n# true )
 
   tp: compactIndex
@@ -282,7 +283,7 @@ pResultBuffer pSeitf seitf.bufferQueue@ queue.append
 
   <SUCCESS_RESULT>
 ;
-
+*/
 /*----------------------------------------------------------------------------*/
 /* get index pointer and put into task.seitf.currentIndex                     */
 /*----------------------------------------------------------------------------*/

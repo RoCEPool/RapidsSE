@@ -207,6 +207,16 @@ print "=========================================";
 anidx j10 idx 1;
 
 print "\n=========================================";
+print "compact index idx of j10";
+print "=========================================";
+compactidx j10 idx;
+
+print "\n=========================================";
+print "detailed analysing index idx of j10 after compaction";
+print "=========================================";
+anidx j10 idx 1;
+
+print "\n=========================================";
 print "size of table j10";
 print "=========================================";
 sz j10;

@@ -902,6 +902,7 @@ namespace Tasks
     static void vJobColumnNameFetch(MP_Task mpTask);
     static void vJobColumnIsPartKey(MP_Task mpTask);
     static void vJobColumnTypeFetch(MP_Task mpTask);
+    static void vJobCompactIndexTableNameFetch(MP_Task mpTask);
     static void vJobCreateIndexTableNameFetch(MP_Task mpTask);
     static void vJobDecAcksRemaining(MP_Task mpTask);
     static void vJobDelete(MP_Task mpTask);
