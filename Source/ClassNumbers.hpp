@@ -113,6 +113,7 @@ enum eCN : u2 // Class Number
     /*    */ CN_JOB_DROPSCHEMA,
     /*    */ CN_JOB_DROPTABLE,
     /*    */ CN_JOB_DROPTENANT,
+    /*    */ CN_JOB_DUMPINDEX,
     /*    */ CN_JOB_G35,
     /*    */ CN_JOB_LF,
     /*    */ CN_JOB_LISTCATALOGS,
@@ -361,6 +362,7 @@ enum eCN : u2 // Class Number
     /*    */ "JOB_DROPSCHEMA"_Stz,     // CN_JOB_DROPSCHEMA
     /*    */ "JOB_DROPTABLE"_Stz,      // CN_JOB_DROPTABLE
     /*    */ "JOB_DROPTENANT"_Stz,     // CN_JOB_DROPTENANT
+    /*    */ "CJOB_DUMPINDEX"_Stz,     // CN_JOB_DUMPINDEX
     /*    */ "JOB_G35"_Stz,            // CN_JOB_G35
     /*    */ "JOB_LF"_Stz,             // CN_JOB_LF
     /*    */ "JOB_LISTCATALOGS"_Stz,   // CN_JOB_LISTCATALOGS

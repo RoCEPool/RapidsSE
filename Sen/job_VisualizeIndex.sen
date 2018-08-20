@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* check if word is a valid table folder                                      */
 /*----------------------------------------------------------------------------*/
-: checkVisualizeeIndex ( "<tableNm>" "<indexNm>" -- true | errorCode false )
+: checkVisualizeIndex ( "<tableNm>" "<indexNm>" -- true | errorCode false )
 
   params| sIndexNm sTableNm |
 
