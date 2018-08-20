@@ -17,8 +17,8 @@ JobNote mJobNote_DropTable (
   "dropTable_req"_Stz,   // the _req task seed
   nullptr,               // the _rcv task seed
   "dropTable_node"_Stz,  // the _exe task seed
-  nullptr,               // the _end task seed
-  nullptr,               // the _can task seed
+  "dropTable_end"_Stz,   // the _end task seed
+  "dropTable_can"_Stz,   // the _can task seed
   true,                  // check resources?
   false,                 // detached job?
   false,                 // buffer attached?

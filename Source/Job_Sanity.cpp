@@ -16,8 +16,8 @@ JobNote mJobNote_Sanity (
   "sanity_req"_Stz,  // the _req task seed
   nullptr,           // the _exe task seed
   "sanity_node"_Stz, // the _rcv task seed
-  nullptr,           // the _end task seed
-  nullptr,           // the _can task seed
+  "sanity_end"_Stz,  // the _end task seed
+  "sanity_can"_Stz,  // the _can task seed
   false,             // check resources?
   false,             // detached job?
   false,             // buffer attached?

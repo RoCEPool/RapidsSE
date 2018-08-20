@@ -17,8 +17,8 @@ JobNote mJobNote_CreateSchema (
   "createSchema_req"_Stz,   // the _req task seed
   nullptr,                  // the _rcv task seed
   "createSchema_node"_Stz,  // the _exe task seed
-  nullptr,                  // the _end task seed
-  nullptr,                  // the _can task seed
+  "createSchema_end"_Stz,   // the _end task seed
+  "createSchema_can"_Stz,   // the _can task seed
   true,                     // check resources?
   false,                    // detached job?
   false,                    // buffer attached?

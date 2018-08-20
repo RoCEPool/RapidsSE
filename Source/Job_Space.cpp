@@ -17,8 +17,8 @@ JobNote mJobNote_Space (
   "space_req"_Stz,  // the _req task seed
   nullptr,          // the _rcv task seed
   "space_node"_Stz, // the _exe task seed
-  nullptr,          // the _end task seed
-  nullptr,          // the _can task seed
+  "space_end"_Stz,  // the _end task seed
+  "space_can"_Stz,  // the _can task seed
   false,            // check resources?
   false,            // detached job?
   false,            // buffer attached?

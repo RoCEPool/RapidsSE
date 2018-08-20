@@ -17,8 +17,8 @@ JobNote mJobNote_Status (
   "status_req"_Stz,  // the _req task seed
   nullptr,           // the _rcv task seed
   "status_node"_Stz, // the _exe task seed
-  nullptr,           // the _end task seed
-  nullptr,           // the _can task seed
+  "status_end"_Stz,  // the _end task seed
+  "status_can"_Stz,  // the _can task seed
   false,             // check resources?
   false,             // detached job?
   false,             // buffer attached?
