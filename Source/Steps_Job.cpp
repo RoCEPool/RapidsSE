@@ -1900,7 +1900,9 @@ void Task::vJobTruncateTableSpawnSub(MP_Task mpTask)
   JobClass* pJobClass_SubTruncate = gxJobCatalog.pFindJob(CN_JOB_SUBTRUNCATE);
   
   Job_SubTruncate* pJob_SubTruncate =
-  static_cast<Job_SubTruncate*>(pJobClass_SubTruncate->pPreJob(pSEitf));
+    static_cast<Job_SubTruncate*>(pJobClass_SubTruncate->pPreJob(pSEitf));
+  
+  pJob_SubTruncate->m_sSeed = pJobClass_SubTruncate->m_aSeedRun;
   
   pJob_SubTruncate->m_iTruncateJobId = iTruncateJobId;
   pJob_SubTruncate->m_sObjectName = pJob_TruncateTable->m_sObjectName;
