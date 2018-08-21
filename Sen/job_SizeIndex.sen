@@ -181,8 +181,12 @@
 
   job::this locals| pJob_sizeIndex |
 
+  pJob_sizeIndex job.beginParticipant
+
   // check resources
   pJob_sizeIndex sizeIndex_chk
+
+  pJob_sizeIndex job.participantBegun
 ;
 
 /*----------------------------------------------------------------------------*/

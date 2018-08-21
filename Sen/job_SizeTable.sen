@@ -165,7 +165,11 @@
 
   job::this locals| pJob_sizeTable |
 
+  pJob_sizeTable job.beginParticipant
+
   pJob_sizeTable sizeTable_chk
+
+  pJob_sizeTable job.participantBegun
 ;
 
 /*----------------------------------------------------------------------------*/

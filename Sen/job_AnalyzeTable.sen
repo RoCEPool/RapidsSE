@@ -167,8 +167,12 @@
 
   job::this locals| pJob_analyzeTable |
 
+  pJob_analyzeTable job.beginParticipant
+
   // check resources
   pJob_analyzeTable analyzeTable_chk
+
+  pJob_analyzeTable job.participantBegun
 ;
 
 /*----------------------------------------------------------------------------*/

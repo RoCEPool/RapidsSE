@@ -252,7 +252,11 @@
 
   job::this locals| pJob_createIndex |
 
+  pJob_createIndex job.beginParticipant
+
   pJob_createIndex createIndex_chk
+
+  pJob_createIndex job.participantBegun
 ;
 
 /*----------------------------------------------------------------------------*/

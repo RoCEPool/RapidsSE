@@ -74,6 +74,9 @@
 
   job::this locals| pJob_space |
 
+  pJob_space job.beginParticipant
+
+  pJob_space job.participantBegun
 ;
 
 /*----------------------------------------------------------------------------*/

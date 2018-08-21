@@ -151,8 +151,12 @@
 
   job::this locals| pJob_truncateTable |
 
+  pJob_truncateTable job.beginParticipant
+
   // check resources
   pJob_truncateTable truncateTable_chk
+
+  pJob_truncateTable job.participantBegun
 ;
 
 /*----------------------------------------------------------------------------*/

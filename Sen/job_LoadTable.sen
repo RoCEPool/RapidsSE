@@ -187,7 +187,12 @@ task::this to pThisTask
 
   job::this locals| pJob_loadTable |
 
+  pJob_loadTable job.beginParticipant
+
+  // check resources
   pJob_loadTable loadTable_chk
+
+  pJob_loadTable job.participantBegun
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -140,7 +140,12 @@
 
   job::this locals| pJob_dropTenant |
 
+  pJob_dropTenant job.beginParticipant
+
+  // check resources
   pJob_dropTenant dropTenant_chk
+
+  pJob_dropTenant job.participantBegun
 ;
 
 /*----------------------------------------------------------------------------*/

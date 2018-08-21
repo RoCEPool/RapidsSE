@@ -140,8 +140,12 @@
 
   job::this locals| pJob_dropSchema |
 
+  pJob_dropSchema job.beginParticipant
+
   // check resources
   pJob_dropSchema dropSchema_chk
+
+  pJob_dropSchema job.participantBegun
 ;
 
 /*----------------------------------------------------------------------------*/

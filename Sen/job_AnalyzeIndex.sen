@@ -183,8 +183,12 @@
 
   job::this locals| pJob_analyzeIndex |
 
+  pJob_analyzeIndex job.beginParticipant
+
   // check resources
   pJob_analyzeIndex analyzeIndex_chk
+
+  pJob_analyzeIndex job.participantBegun
 ;
 
 /*----------------------------------------------------------------------------*/

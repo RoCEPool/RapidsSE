@@ -202,8 +202,12 @@
 
   job::this locals| pJob_dropTable |
 
+  pJob_dropTable job.beginParticipant
+
   // check resources
   pJob_dropTable dropTable_chk
+
+  pJob_dropTable job.participantBegun
 ;
 
 /*----------------------------------------------------------------------------*/

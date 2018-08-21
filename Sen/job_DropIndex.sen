@@ -205,8 +205,12 @@
 
   job::this locals| pJob_dropIndex |
 
+  pJob_dropIndex job.beginParticipant
+
   // check resources
   pJob_dropIndex dropIndex_chk
+
+  pJob_dropIndex job.participantBegun
 ;
 
 /*----------------------------------------------------------------------------*/

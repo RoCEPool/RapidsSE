@@ -153,8 +153,12 @@
 
   job::this locals| pJob_createTenant |
 
+  pJob_createTenant job.beginParticipant
+
   // check resources
   pJob_createTenant createTenant_chk
+
+  pJob_createTenant job.participantBegun
 ;
 
 /*----------------------------------------------------------------------------*/

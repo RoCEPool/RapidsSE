@@ -155,7 +155,13 @@
 
   job::this locals| pJob_tableSizes |
 
+  pJob_tableSizes job.beginParticipant
+
+  // check resources
   pJob_tableSizes tableSizes_chk
+
+  pJob_tableSizes job.participantBegun
+
 ;
 
 /*----------------------------------------------------------------------------*/

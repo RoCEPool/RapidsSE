@@ -171,8 +171,12 @@
 
   job::this locals| pJob_compactIndex |
 
+  pJob_compactIndex job.beginParticipant
+
   // check resources
   pJob_compactIndex compactIndex_chk
+
+  pJob_compactIndex job.participantBegun
 ;
 
 /*----------------------------------------------------------------------------*/
