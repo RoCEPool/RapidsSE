@@ -224,59 +224,6 @@ SePrompt* Prompt::_pSePrompt(void* aAddr)
 /*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
-/* execute an se request                                                      */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bExecuteRequest(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  Timer xTimer;
-  Stz* aResponse = nullptr;
-  
-  xTimer.vStart();
-  
-  pTknVec()->vSetTokens();
-  
-  //! make this part of verbose??
-  //m_pCommandProcessor->m_pTokeniser->vDumpTokens("Command : "_Stz,m_xTokenVec,C_TOKENS);
-  
-  TokenVec* pTokenVec = pTknVec();
-
-  bool bResult = RapidsSE_ExecuteRequest(m_pSEitf,*pTokenVec,&aResponse);
-  
-  if (pTknVec()->bDetachedRequest())
-    return bResult;
-  
-  if (bResult)
-    m_sResponse = aResponse ? (Stz*)aResponse : ""_Stz;
-  else
-    m_sResponse = aResponse ? (Stz*)aResponse : ""_Stz;
-  
-  xTimer.vUpdate();
-  
-  return bResult;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* return table                                                               */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bReturnTable(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  pTkn(0)->vCopy("rettbl"_Stz);
-  pTkn(1)->vCopy(""_Stz);
-  
-  if (!bExecuteRequest()) {
-    vTrace("bReturnTable: (%s) Return Table FAILED!!! : %s\n"_Stz, m_sResponse.aChar());
-    return false;
-  }
-  return true;
-}
-
-
-/*----------------------------------------------------------------------------*/
 /*-- Intercepted Commands ----------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -500,6 +447,7 @@ bool SePrompt::bCmd_EndInsert(void)
 /*----------------------------------------------------------------------------*/
 /* help                                                                       */
 /*----------------------------------------------------------------------------*/
+/*
 bool SePrompt::bCmd_Help(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
@@ -543,7 +491,7 @@ bool SePrompt::bCmd_Help(void)
   
   return true;
 }
-
+*/
 /*----------------------------------------------------------------------------*/
 /* insert a row                                                               */
 /*----------------------------------------------------------------------------*/
@@ -794,6 +742,7 @@ resetFormatter:
 /*----------------------------------------------------------------------------*/
 /* iterate entry buffers frim the seitf queue                                 */
 /*----------------------------------------------------------------------------*/
+/*
 void SePrompt::vIterateBuffers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
@@ -838,3 +787,4 @@ void SePrompt::vIterateBuffers(void)
   bReturnTable();
   
 }
+*/

@@ -55,14 +55,6 @@ namespace Prompt
   // to be removed
     Token* pTkn(i8 i_Token);
 
-  public:
-    bool bCmd_Help(void);
-  
-  private:
-    bool bReturnTable(void);
-    void vIterateBuffers(void);
-    bool bExecuteRequest(void);
-
   };
 
   SePrompt* _pSePrompt(void* aAddr);
