@@ -14,7 +14,7 @@ JobNote mJobNote_Boot (
   "system boot"_Stz, // comment about the job
   nullptr,           // the prompt command
   nullptr,           // the second word
-  "::dicCompile"_Stz,// the _run task seed
+  "boot_run"_Stz,// the _run task seed
   nullptr,           // the _req task seed
   nullptr,           // the _exe task seed
   nullptr,           // the _rcv task seed

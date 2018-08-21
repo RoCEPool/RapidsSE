@@ -10,7 +10,7 @@
 
 extern AttachMap*      gpAttachMap;
 extern Arguments       gxArguments;
-
+extern JobCatalog gxJobCatalog;
 /*----------------------------------------------------------------------------*/
 /* compare two tasks by their taskNo                                          */
 /*----------------------------------------------------------------------------*/
@@ -1346,19 +1346,19 @@ void Task::vAddRoutines(void)
   // Temporary ifdef till we get sen files embedded in the executable
 #ifdef __APPLE__
   sDefinition =
-  ": ::dicCompile"
-  "  \"::dicCompile\" .verbose"
+  ": boot_run"
+  "  \"boot_run\" .verbose"
   "  args.munged if \"compiling munged dictionary...\" . then"
   "  \"compile.sen\" include"
-  "  \"::dicCompile exit\" .verbose"
+  "  \"boot_run exit\" .verbose"
   "  ::task_exit"
   "  ;"_Stz;
 #else
   sDefinition =
-  ": ::dicCompile"
-  "  \"::dicCompile\" .verbose"
+  ": boot_run"
+  "  \"boot_run\" .verbose"
   "  \"compile.sen\" include"
-  "  \"::dicCompile exit\" .verbose"
+  "  \"boot_run exit\" .verbose"
   "  ::task_exit"
   "  ;"_Stz;
 #endif
@@ -1973,16 +1973,17 @@ void Task::vR35model(bool bR35model)
 }
 
 /*----------------------------------------------------------------------------*/
-/* seed task to run ::dicCompile                                              */
+/* seed boot task to compile dictionary                                       */
 /*----------------------------------------------------------------------------*/
 void Task::vSeedDicCompileSen(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if (gpAttachMap->m_bVerbose)
-    vTrace("[[mainThread]] Seeding Dic Compile...\n"_Stz);
+  JobClass* pJobClass_Boot = gxJobCatalog.pFindJob(CN_JOB_BOOT);
   
-  Word* pBootSen = gpAttachMap->m_xMainDic.pFindWord("::dicCompile"_Stz);
+  s32 sSeed(pJobClass_Boot->m_aSeedRun);
+  
+  Word* pBootSen = gpAttachMap->m_xMainDic.pFindWord(sSeed);
   ASSERT(pBootSen);
   
   IP.m_pCell = pBootSen->pFirstCell();

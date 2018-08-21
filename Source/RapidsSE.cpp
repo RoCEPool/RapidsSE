@@ -566,21 +566,18 @@ void RapidsSE::vCreateObjects(void)
 /* compile the main dictionary                                                */
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vDicCompile(NP_Task npBootTask)
-{
-  if (gpAttachMap->m_bVerbose)
-    vTrace("[[mainThread]] Initialise Main Dictionary...\n"_Stz);
-  
+{  
   npBootTask->vInitialiseMain();
   
   if (gpAttachMap->m_bVerbose)
-    vTrace("[[mainThread]] DicCompile...\n"_Stz);
+    vTrace("[[mainThread]] Compiling dictionaries...\n"_Stz);
   
   npBootTask->vSeedDicCompileSen();
   
-  if (gpAttachMap->m_bVerbose)
-    vTrace("[[mainThread]] RapidsSE::vDicCompile running [%s] %p\n"_Stz,
-           npBootTask->sName().aChar(),
-           *npBootTask);
+  //if (gpAttachMap->m_bVerbose)
+  //  vTrace("[[mainThread]] RapidsSE::vDicCompile running [%s] %p\n"_Stz,
+  //         npBootTask->sName().aChar(),
+  //         *npBootTask);
   
   npBootTask->vTaskLoop();
 }
