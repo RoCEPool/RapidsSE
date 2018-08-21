@@ -60,7 +60,7 @@ CommandProcessor::CommandProcessor(void)
   if (gxArguments.m_bCommand) {
     m_pTokeniser->vUseString(gxArguments.m_sCommand);
   }
-  else if (gxArguments.m_bPromptR35 || gxArguments.m_bPrompt || gxArguments.m_bScript) {
+  else if (gxArguments.m_bPrompt || gxArguments.m_bScript) {
      m_pTokeniser->vUseStdin();
   }
   
