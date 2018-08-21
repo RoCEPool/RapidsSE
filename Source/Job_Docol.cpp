@@ -10,7 +10,7 @@ extern AttachMap* gpAttachMap;
 JobNote mJobNote_Docol (
   "Job_Docol"_Stz,  // name of the job class
   CN_JOB_DOCOL,     // class enum
-  JK_SINGLENODE,    // job kind
+  JK_LOCAL,         // job kind
   "comment"_Stz,    // comment about the job
   "docol"_Stz,      // the prompt command
   nullptr,          // the second word

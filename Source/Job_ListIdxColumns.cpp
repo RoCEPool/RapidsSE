@@ -10,7 +10,7 @@ extern AttachMap* gpAttachMap;
 JobNote mJobNote_ListIdxColumns (
   "Job_ListIdxColumns"_Stz,  // name of the job class
   CN_JOB_LISTIDXCOLUMNS,     // class enum
-  JK_SINGLENODE,             // job kind
+  JK_LOCAL,                  // job kind
   "list index columns"_Stz,  // comment about the job
   "lsidxcol"_Stz,            // the prompt command
   nullptr,                   // the second word

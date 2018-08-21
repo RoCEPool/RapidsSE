@@ -10,7 +10,7 @@ extern AttachMap* gpAttachMap;
 JobNote mJobNote_ListTenants (
   "Job_ListTenants"_Stz,  // name of the job class
   CN_JOB_LISTTENANTS,     // class enum
-  JK_SINGLENODE,          // job kind
+  JK_LOCAL,               // job kind
   "list tenants"_Stz,     // comment about the job
   "lsten"_Stz,            // the prompt command
   nullptr,                // the second word

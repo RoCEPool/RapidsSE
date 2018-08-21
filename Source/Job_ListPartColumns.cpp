@@ -10,7 +10,7 @@ extern AttachMap* gpAttachMap;
 JobNote mJobNote_ListPartColumns (
   "Job_ListPartColumns"_Stz,        // name of the job class
   CN_JOB_LISTPARTCOLUMNS,           // class enum
-  JK_SINGLENODE,                    // job kind
+  JK_LOCAL,                         // job kind
   "list partition key"_Stz,         // comment about the job
   "lspartcol"_Stz,                  // the prompt command
   nullptr,                          // the second word

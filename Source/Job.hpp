@@ -17,8 +17,8 @@ namespace JobsModel
   /*  1 */ JK_CHILD,
   /*  2 */ JK_DIST2PC,
   /*  3 */ JK_GENERIC,
-  /*  4 */ JK_ONESHOT,
-  /*  5 */ JK_SINGLENODE,
+  /*  4 */ JK_LOCAL,
+  /*  5 */ JK_ONESHOT,
   /*  6 */ JK_SYSTEM,
   };
   
@@ -28,8 +28,8 @@ namespace JobsModel
   /*  1 */ "CHILD"_Stz,
   /*  2 */ "DIST2C"_Stz,
   /*  3 */ "GENERIC"_Stz,
-  /*  4 */ "ONESHOT"_Stz,
-  /*  5 */ "SINGLENODE"_Stz,
+  /*  4 */ "LOCAL"_Stz,
+  /*  5 */ "ONESHOT"_Stz,
   /*  6 */ "SYSTEM"_Stz,
   };
   

@@ -10,7 +10,7 @@ extern AttachMap* gpAttachMap;
 JobNote mJobNote_ListSchemas (
   "Job_ListSchemas"_Stz,  // name of the job class
   CN_JOB_LISTSCHEMAS,     // class enum
-  JK_SINGLENODE,          // job kind
+  JK_LOCAL,               // job kind
   "list schemas"_Stz,     // comment about the job
   "lssch"_Stz,            // the prompt command
   nullptr,                // the second word
