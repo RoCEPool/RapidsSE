@@ -47,6 +47,9 @@ namespace JobsModel
     void vSendJob(Job* pJob);
     void vRecvJob(Job* pJob);
     void vShowJob(Job* pJob);
+  
+    void vJobCat(void);
+    static void vJobCatHeader(void);
   };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

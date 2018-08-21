@@ -85,6 +85,62 @@ void JobClass::vShowJob(Job* pJob)
   (*m_fShow)(pJob);
 }
 
+/*----------------------------------------------------------------------------*/
+/* vtrace the job class for the jobcat prompt function                        */
+/*----------------------------------------------------------------------------*/
+void JobClass::vJobCat(void)
+{
+  vTrace("%20s %10s %20s : %10s %20s %20s %20s %20s %20s %20s\n"_Stz,
+         
+         m_aName,
+         aJK[m_eKind],
+         m_aComment,
+         
+         m_bResources ? "_chk/rel"_Stz : "-"_Stz,
+         
+         m_aSeedRun ? m_aSeedRun : "-"_Stz,
+         m_aSeedReq ? m_aSeedReq : "-"_Stz,
+         m_aSeedRcv ? m_aSeedRcv : "-"_Stz,
+         m_aSeedExe ? m_aSeedExe : "-"_Stz,
+         m_aSeedEnd ? m_aSeedEnd : "-"_Stz,
+         m_aSeedCan ? m_aSeedCan : "-"_Stz
+         );
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* vtrace the header for the jobcat prompt function                           */
+/*----------------------------------------------------------------------------*/
+void JobClass::vJobCatHeader(void)
+{
+  vTrace("%20s %10s %20s : %10s %20s %20s %20s %20s %20s %20s\n"_Stz,
+         
+         "Job Name"_Stz,
+         "Kind"_Stz,
+         "Comment"_Stz,
+         
+         "Resources"_Stz,
+         "Run Seed"_Stz,
+         "Req Seed"_Stz,
+         "Rcv Seed"_Stz,
+         "Exe Seed"_Stz,
+         "End Seed"_Stz,
+         "Can Seed"_Stz
+         );
+  
+  s32 sBar10 = "----------"_Stz;
+  s32 sBar20 = "--------------------"_Stz;
+  
+  vTrace("%20s %10s %20s : "
+         "%10s %20s %20s %20s %20s %20s %20s\n"_Stz,
+         
+         sBar20.aStr(),sBar10.aStr(),sBar20.aStr(),sBar10.aStr(),
+         
+         sBar20.aStr(),sBar20.aStr(),sBar20.aStr(),sBar20.aStr(),sBar20.aStr(),sBar20.aStr()
+         );
+  
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
