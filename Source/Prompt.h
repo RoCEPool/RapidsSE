@@ -26,6 +26,7 @@ using namespace Prompt;
 #include "Prompt_displayOff.hpp"
 #include "Prompt_displayOn.hpp"
 #include "Prompt_help.hpp"
+#include "Prompt_jobcat.hpp"
 #include "Prompt_ls.hpp"
 #include "Prompt_print.hpp"
 #include "Prompt_pwd.hpp"
