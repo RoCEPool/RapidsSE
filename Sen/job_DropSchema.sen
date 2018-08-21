@@ -140,6 +140,7 @@
 
   job::this locals| pJob_dropSchema |
 
+  // check resources
   pJob_dropSchema dropSchema_chk
 ;
 

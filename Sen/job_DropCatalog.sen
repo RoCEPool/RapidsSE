@@ -140,6 +140,7 @@
 
   job::this locals| pJob_dropCatalog |
 
+  // check resources
   pJob_dropCatalog dropCatalog_chk
 ;
 

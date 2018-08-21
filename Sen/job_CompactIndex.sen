@@ -171,6 +171,7 @@
 
   job::this locals| pJob_compactIndex |
 
+  // check resources
   pJob_compactIndex compactIndex_chk
 ;
 

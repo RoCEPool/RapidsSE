@@ -21,12 +21,13 @@ extern PromptCatalog gxPromptCatalog;
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
 {
-  vTrace("%20s %10s %20s : %20s %20s %20s %20s %20s\n"_Stz,
+  vTrace("%20s %10s %20s : %10s %20s %20s %20s %20s %20s\n"_Stz,
 
          "Job Name"_Stz,
          "Kind"_Stz,
          "Comment"_Stz,
 
+         "Resources"_Stz,
          "Req Seed"_Stz,
          "Rcv Seed"_Stz,
          "Exe Seed"_Stz,
@@ -37,23 +38,23 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   s32 sBar10 = "----------"_Stz;
   s32 sBar20 = "--------------------"_Stz;
   
-  vTrace("%20s %10s %20s : %20s %20s %20s %20s %20s\n"_Stz,
-         sBar20.aStr(),sBar10.aStr(),sBar20.aStr(),
+  vTrace("%20s %10s %20s : %10s %20s %20s %20s %20s %20s\n"_Stz,
+         sBar20.aStr(),sBar10.aStr(),sBar20.aStr(),sBar10.aStr(),
          sBar20.aStr(),sBar20.aStr(),sBar20.aStr(),sBar20.aStr(),sBar20.aStr());
   
   for (i8 i_Job = 0; i_Job < gxJobCatalog.m_nClasses; i_Job++) {
     
-    //if (! gxJobCatalog.m_xJobClass[i_Job].m_bEnabled)
-    //  continue;
+    if ( ! gxJobCatalog.m_xJobClass[i_Job].m_bResources )
+      continue;
     
-    //vTrace("%s\n"_Stz,gxJobCatalog.m_xJobClass[i_Job].m_aComment);
-
-    vTrace("%20s %10s %20s : %20s %20s %20s %20s %20s\n"_Stz,
+    vTrace("%20s %10s %20s : %10s %20s %20s %20s %20s %20s\n"_Stz,
            
            gxJobCatalog.m_xJobClass[i_Job].m_aName,
            aJK[gxJobCatalog.m_xJobClass[i_Job].m_eKind],
            gxJobCatalog.m_xJobClass[i_Job].m_aComment,
 
+           gxJobCatalog.m_xJobClass[i_Job].m_bResources
+             ? "_chk/rel"_Stz : "-"_Stz,
 
            gxJobCatalog.m_xJobClass[i_Job].m_aSeedReq
              ? gxJobCatalog.m_xJobClass[i_Job].m_aSeedReq : "-"_Stz,
@@ -74,16 +75,6 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   }
 
   vTrace("\n"_Stz);
-  
-  /*
-  for (i8 i_Fun = 0; i_Fun < gxPromptCatalog.m_nFunctions; i_Fun++) {
-    
-    if (! gxPromptCatalog.m_xPromptFun[i_Fun].m_bEnabled)
-      continue;
-
-    vTrace("%s\n"_Stz,gxPromptCatalog.m_xPromptFun[i_Fun].m_aComment);
-  }
-  */
   
   return true;
 }

@@ -151,6 +151,7 @@
 
   job::this locals| pJob_truncateTable |
 
+  // check resources
   pJob_truncateTable truncateTable_chk
 ;
 

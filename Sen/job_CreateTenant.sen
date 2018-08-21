@@ -153,6 +153,7 @@
 
   job::this locals| pJob_createTenant |
 
+  // check resources
   pJob_createTenant createTenant_chk
 ;
 

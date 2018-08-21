@@ -167,6 +167,7 @@
 
   job::this locals| pJob_analyzeTable |
 
+  // check resources
   pJob_analyzeTable analyzeTable_chk
 ;
 

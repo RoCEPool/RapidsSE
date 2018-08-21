@@ -197,6 +197,7 @@ task::this to pThisTask
 
   job::this locals| pJob_loadTable |
 
+  // check resources
   pJob_loadTable loadTable_rel
 ;
 

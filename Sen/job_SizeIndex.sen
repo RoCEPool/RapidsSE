@@ -181,6 +181,7 @@
 
   job::this locals| pJob_sizeIndex |
 
+  // check resources
   pJob_sizeIndex sizeIndex_chk
 ;
 

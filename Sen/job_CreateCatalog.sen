@@ -158,6 +158,7 @@
 
   job::this locals| pJob_createCatalog |
 
+  // check resources
   pJob_createCatalog createCatalog_chk
 ;
 

@@ -213,6 +213,7 @@
 
   job::this locals| pJob_createTable |
 
+  // check resources
   pJob_createTable createTable_chk
 ;
 

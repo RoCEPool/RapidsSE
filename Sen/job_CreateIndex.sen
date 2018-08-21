@@ -272,6 +272,7 @@
 
   job::this locals| pJob_createIndex |
 
+  // check resources
   pJob_createIndex createIndex_rel
 ;
 

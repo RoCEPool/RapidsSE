@@ -160,6 +160,7 @@
 
   job::this locals| pJob_dropTenant |
 
+  // check resources
   pJob_dropTenant dropTable_rel
 ;
 

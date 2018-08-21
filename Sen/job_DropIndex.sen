@@ -205,6 +205,7 @@
 
   job::this locals| pJob_dropIndex |
 
+  // check resources
   pJob_dropIndex dropIndex_chk
 ;
 

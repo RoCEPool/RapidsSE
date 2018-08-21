@@ -183,6 +183,7 @@
 
   job::this locals| pJob_analyzeIndex |
 
+  // check resources
   pJob_analyzeIndex analyzeIndex_chk
 ;
 
