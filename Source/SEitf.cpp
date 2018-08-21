@@ -174,7 +174,6 @@ SEitf::SEitf(i8 iPartition)
   
   //m_xPathStack;
   m_pBufferQueue    = nullptr;
-  m_pRequestQueue   = nullptr;
   m_pResponseQueue  = nullptr;
   m_eErrorCode      = EC_NONE;
   m_sErrorMsg       = aEC[m_eErrorCode];
@@ -323,9 +322,7 @@ void SEitf::vContentDump(void)
          Process::bTestPid(m_iPid) ? "exists"_Stz : "non-existant"_Stz
          );
   
-  vTrace("  RequestQueue %p  ResponseQueue %p\n"_Stz,
-         m_pRequestQueue,
-         m_pResponseQueue);
+  vTrace("  ResponseQueue %p\n"_Stz, m_pResponseQueue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -362,13 +359,12 @@ void SEitf::vDump(eCN eClass, Object* pObject, Stz* aTab)
   SEitf* pSEitf = reinterpret_cast<SEitf*>(pObject);
   
   vTrace("pid %lld %s partitions %lld partition %lld slot %lld"_Stz
-         " requestQ %p responseQ %p response '%s'\n"_Stz,
+         " responseQ %p response '%s'\n"_Stz,
          pSEitf->m_iPid,
          Process::bTestPid(pSEitf->m_iPid) ? "exists"_Stz : "non-existant"_Stz,
          pSEitf->m_iSlots,
          pSEitf->m_iPartition,
          pSEitf->iSlot(),
-         pSEitf->m_pRequestQueue,
          pSEitf->m_pResponseQueue,
          pSEitf->m_sResponse.aChar());
 }
@@ -616,11 +612,6 @@ i8 SEitf::iGetAcksRemaining(void)
 void SEitf::vInit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  // request queue
-  Word* pReqQueWord = gpAttachMap->m_xMainDic.pFindWord("requestQueue"_Stz);
-  ASSERT(pReqQueWord);
-  m_pRequestQueue = reinterpret_cast<Queue*>(pReqQueWord->aBodyArea());
   
   // response queue
   m_pResponseQueue = new Queue;
@@ -1328,26 +1319,6 @@ void SEitf::vPopBufferQueue(void)
   m_pEntryBuffer  = nullptr;  
   m_pEntry = nullptr;
   m_aRow   = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get request queue                                                          */
-/*----------------------------------------------------------------------------*/
-Queue* SEitf::pRequestQueue(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  return m_pRequestQueue;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set request queue                                                          */
-/*----------------------------------------------------------------------------*/
-void SEitf::vRequestQueue(Queue* pRequestQueue)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  m_pRequestQueue = pRequestQueue;
 }
 
 /*----------------------------------------------------------------------------*/
