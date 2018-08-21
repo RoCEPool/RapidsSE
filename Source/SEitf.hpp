@@ -130,7 +130,6 @@ namespace Interface
     void vEndTx(void);
     
     bool bDecode(TokenVec& xTokenVec);
-    bool bR35Request(TokenVec& xTokenVec, i8 iReqNo);
     
     bool bCheckpoint(TokenVec& xTokenVec, i8 iReqNo);
     
@@ -143,19 +142,6 @@ namespace Interface
     
     bool bReload(TokenVec& xTokenVec, i8 iReqNo);
     bool bRemoveFolder(TokenVec& xTokenVec, i8 iReqNo);
-    
-    bool bCreateTenant(TokenVec& xTokenVec, i8 iReqNo);
-    bool bListTenants(TokenVec& xTokenVec, i8 iReqNo);
-    bool bDropTenant(TokenVec& xTokenVec, i8 iReqNo);
-
-    bool bCreateCatalog(TokenVec& xTokenVec, i8 iReqNo);
-    bool bListCatalogs(TokenVec& xTokenVec, i8 iReqNo);
-    bool bDropCatalog(TokenVec& xTokenVec, i8 iReqNo);
-    
-    bool bCreateSchema(TokenVec& xTokenVec, i8 iReqNo);
-    bool bListSchemas(TokenVec& xTokenVec, i8 iReqNo);
-    bool bDropSchema(TokenVec& xTokenVec, i8 iReqNo);
-    bool bUseSchema(TokenVec& xTokenVec, i8 iReqNo);
     
     bool bCreateIndex(TokenVec& xTokenVec, i8 iReqNo);
     bool bDropIndex(TokenVec& xTokenVec, i8 iReqNo);

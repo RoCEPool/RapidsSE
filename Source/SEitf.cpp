@@ -22,19 +22,19 @@ ReqTable SeRequests[] =
  //{ "addpartcol"_Stz,     &SEitf::bAddPartitionColumn,   "addPartColumn_req"_Stz   },
  //{ "cf"_Stz,             &SEitf::bChangeFolder,         "cf_req"_Stz              },
  { "checkpoint"_Stz,     &SEitf::bCheckpoint,           "checkpoint_req"_Stz      },
- { "compactidx"_Stz,     &SEitf::bCompactIndex,         "compactIndex_req"_Stz    },
+ //{ "compactidx"_Stz,     &SEitf::bCompactIndex,         "compactIndex_req"_Stz    },
  //{ "connectCluster"_Stz, &SEitf::bConnectCluster,       "connectCluster_req"_Stz  },
  //{ "cp"_Stz,             &SEitf::bCopyTable,            "copyTable_req"_Stz       },
- { "danidx"_Stz,         &SEitf::bDanalyzeIndex,        "danalyzeIndex_req"_Stz   },
- { "dantbl"_Stz,         &SEitf::bDanalyzeTable,        "danalyzeTable_req"_Stz   },
+ //{ "danidx"_Stz,         &SEitf::bDanalyzeIndex,        "danalyzeIndex_req"_Stz   },
+ //{ "dantbl"_Stz,         &SEitf::bDanalyzeTable,        "danalyzeTable_req"_Stz   },
  { "dex"_Stz,            &SEitf::bDistExportTable,      "distExport_table"_Stz    },
  //{ "dfetch"_Stz,         &SEitf::bDistFetchRowsIndex,   "DistFetchRowsIndex_req"_Stz},
  //{ "docol"_Stz,          &SEitf::bDocol,                "docol_req"_Stz           },
  //{ "displayOff"_Stz,     &SEitf::bDisplayOff,           "displayOff_req"_Stz      },
  //{ "displayOn"_Stz,      &SEitf::bDisplayOn,            "displayOn_req"_Stz       },
  { "dpld"_Stz,           &SEitf::bDistParallelLoadTable,"distParallelLoadTable_req"_Stz},
- { "dumpidx"_Stz,        &SEitf::bDumpIndex,            "dumpIndex_req"_Stz       },
- { "dump"_Stz,           &SEitf::bDumpTable,            "dumpTable_req"_Stz       },
+ //{ "dumpidx"_Stz,        &SEitf::bDumpIndex,            "dumpIndex_req"_Stz       },
+ //{ "dump"_Stz,           &SEitf::bDumpTable,            "dumpTable_req"_Stz       },
  //{ "endmkidx"_Stz,       &SEitf::bEndCreateIndex,       "endCreateIndex_req"_Stz  },
  //{ "endmktbl"_Stz,       &SEitf::bEndCreateTable,       "endCreateTable_req"_Stz  },
  { "ex"_Stz,             &SEitf::bExportTable,          "exportTable_req"_Stz     },
@@ -42,18 +42,18 @@ ReqTable SeRequests[] =
  { "getAttachMap"_Stz,   &SEitf::bGetAttachMap,         "getAttachMap_req"_Stz    },
  //{ "getFreeSpace"_Stz,   &SEitf::bGetFreeSpace,         "getFreeSpace"_Stz        },
  //{ "getInUseSpace"_Stz,  &SEitf::bGetInUseSpace,        "getInUseSpace"_Stz       },
- { "getidx"_Stz,         &SEitf::bGetIndex,             "getIndex_req"_Stz        },
- { "gettbl"_Stz,         &SEitf::bGetTable,             "getTable_req"_Stz     },
+ //{ "getidx"_Stz,         &SEitf::bGetIndex,             "getIndex_req"_Stz        },
+ //{ "gettbl"_Stz,         &SEitf::bGetTable,             "getTable_req"_Stz     },
  //{ "gettsk"_Stz,         &SEitf::bGetTask,              "getTask_req"_Stz         },
  //{ "getTotalSpace"_Stz,  &SEitf::bGetTotalSpace,        "getTotalSpace"_Stz       },
  
- { "ld"_Stz,             &SEitf::bLoadTable,            "loadTable_req"_Stz       },
+ //{ "ld"_Stz,             &SEitf::bLoadTable,            "loadTable_req"_Stz       },
  //{ "lds"_Stz,            &SEitf::bLoadTableStream,      "loadTableStream_req"_Stz },
  //{ "lf"_Stz,             &SEitf::bListFolder,           "lf_req"_Stz              },
  //{ "lscat"_Stz,          &SEitf::bListCatalogs,         "listCatalogs_req"_Stz    },
  //{ "lscol"_Stz,          &SEitf::bListColumns,          "listColumns_req"_Stz     },
- { "lsidx"_Stz,          &SEitf::bListIndices,          "listIndexes_req"_Stz     },
- { "lsidxcol"_Stz,       &SEitf::bListIndexColumns,     "listIndexColumns_req"_Stz },
+ //{ "lsidx"_Stz,          &SEitf::bListIndices,          "listIndexes_req"_Stz     },
+ //{ "lsidxcol"_Stz,       &SEitf::bListIndexColumns,     "listIndexColumns_req"_Stz },
  //{ "lspartcol"_Stz,      &SEitf::bListPartitionColumns, "listPartitionColumns_req"_Stz },
  //{ "lssch"_Stz,          &SEitf::bListSchemas,          "listSchemas_req"_Stz     },
  //{ "lstbl"_Stz,          &SEitf::bListTables,           "listTables_req"_Stz      },
@@ -68,8 +68,8 @@ ReqTable SeRequests[] =
  //{ "print"_Stz,          &SEitf::bPrint,                nullptr                   },
  //{ "pwf"_Stz,            &SEitf::bPrintWorkingFolder,   "pwf_req"_Stz             },
  //{ "reload"_Stz,         &SEitf::bReload,               "reload_req"_Stz          },
- { "retidx"_Stz,         &SEitf::bRetIndex,             "returnIndex_req"_Stz     },
- { "rettbl"_Stz,         &SEitf::bRetTable,             "returnTable_req"_Stz     },
+ //{ "retidx"_Stz,         &SEitf::bRetIndex,             "returnIndex_req"_Stz     },
+ //{ "rettbl"_Stz,         &SEitf::bRetTable,             "returnTable_req"_Stz     },
  //{ "rettsk"_Stz,         &SEitf::bRetTask,              "returnTask_req"_Stz      },
  //{ "rf"_Stz,             &SEitf::bRemoveFolder,         "remove_folder"_Stz       },
  //{ "rmcat"_Stz,          &SEitf::bDropCatalog,          "dropCatalog_req"_Stz     },
@@ -82,16 +82,16 @@ ReqTable SeRequests[] =
  //{ "rmten"_Stz,          &SEitf::bDropTenant,           "dropTenant_req"_Stz      },
  //{ "sanity"_Stz,         &SEitf::bNodeSanity,           "nodeSanity_req"_Stz      },
  { "setAttachMap"_Stz,   &SEitf::bSetAttachMap,         "setAttachMap_req"_Stz    },
- { "setidxunique"_Stz,   &SEitf::bIndexSetUnique,       "indexSetUnique_req"_Stz  },
+ //{ "setidxunique"_Stz,   &SEitf::bIndexSetUnique,       "indexSetUnique_req"_Stz  },
  { "spnFetch"_Stz,       &SEitf::bSpawnFetchRows,       "spawnfetchRows_apiReq"_Stz },
  //{ "status"_Stz,         &SEitf::bNodeStatus,           "nodeStatus_req"_Stz      },
  
  { "seitf"_Stz,          &SEitf::bSeitfCount,           "seitfCount_req"_Stz      },
- { "szidx"_Stz,          &SEitf::bSizeIndex,            "sizeIndex_req"_Stz       },
- { "sz"_Stz,             &SEitf::bSizeTable,            "sizeTable_req"_Stz       },
- { "tableSizes"_Stz,     &SEitf::bSizeTables,           "sizeTables_req"_Stz      },
+ //{ "szidx"_Stz,          &SEitf::bSizeIndex,            "sizeIndex_req"_Stz       },
+ //{ "sz"_Stz,             &SEitf::bSizeTable,            "sizeTable_req"_Stz       },
+ //{ "tableSizes"_Stz,     &SEitf::bSizeTables,           "sizeTables_req"_Stz      },
  { "tblInUse"_Stz,       &SEitf::bInUseTable,           "tableInuse_req"_Stz      },
- { "tr"_Stz,             &SEitf::bTruncateTable,        "truncateTable_req"_Stz   },
+ //{ "tr"_Stz,             &SEitf::bTruncateTable,        "truncateTable_req"_Stz   },
 // { "txBeg"_Stz,          &SEitf::bTxBegin,              "txBegin_req"_Stz         },
 // { "txCmt"_Stz,          &SEitf::bTxCommit,             "txCommit_req"_Stz        },
 // { "txDmp"_Stz,          &SEitf::bTxDumpAll,            "txDumpAll_req"_Stz       },
@@ -100,7 +100,7 @@ ReqTable SeRequests[] =
  //{ "usesch"_Stz,         &SEitf::bUseSchema,            "useSchema_req"_Stz       },
  //{ "version"_Stz,        &SEitf::bGetVersion,           "getVersion_req"_Stz      },
  //{ "vfyidx"_Stz,         &SEitf::bVerifyIndex,          "verifyIndex_req"_Stz     },
- { "visidx"_Stz,         &SEitf::bVisualizeIndex,       "visualizeIndex_req"_Stz  },
+ //{ "visidx"_Stz,         &SEitf::bVisualizeIndex,       "visualizeIndex_req"_Stz  },
   
  { nullptr,              nullptr,                       nullptr                   }
   
@@ -1641,240 +1641,6 @@ bool SEitf::bRemoveFolder(TokenVec& xTokenVec, i8 iReqNo)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
-  
-  sRequest.vCopy("\""_Stz);
-  sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" "_Stz);
-  sRequest.vConcat(SeRequests[iReqNo].aRequest);
-  
-  return bAppendRequest(sRequest);
-}
-
-/*----------------------------------------------------------------------------*/
-/* create a tenant                                                            */
-/*----------------------------------------------------------------------------*/
-bool SEitf::bCreateTenant(TokenVec& xTokenVec, i8 iReqNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  s256 sRequest;
-  
-  if (xTokenVec.nTokens() != 2) {
-    vSetLastError(EC_INVALID_PARAMETERS);
-    return false;
-  }
-
-  sRequest.vCopy("\""_Stz);
-  sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" "_Stz);
-  sRequest.vConcat(SeRequests[iReqNo].aRequest);
-  
-  return bAppendRequest(sRequest);
-}
-
-/*----------------------------------------------------------------------------*/
-/* list tenants                                                               */
-/*----------------------------------------------------------------------------*/
-bool SEitf::bListTenants(TokenVec& xTokenVec, i8 iReqNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  s256 sRequest;
-  
-  if (xTokenVec.nTokens() != 1) {
-    vSetLastError(EC_INVALID_PARAMETERS);
-    return false;
-  }
-
-  ASSERT(xTokenVec[0]->bSame("lsten"_Stz));
-  
-  sRequest = SeRequests[iReqNo].aRequest;
-  
-  return bAppendRequest(sRequest);
-}
-
-/*----------------------------------------------------------------------------*/
-/* drop a tenant                                                              */
-/*----------------------------------------------------------------------------*/
-bool SEitf::bDropTenant(TokenVec& xTokenVec, i8 iReqNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  s256 sRequest;
-  
-  if (xTokenVec.nTokens() != 2) {
-    vSetLastError(EC_INVALID_PARAMETERS);
-    return false;
-  }
-  
-  sRequest.vCopy("\""_Stz);
-  sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" "_Stz);
-  sRequest.vConcat(SeRequests[iReqNo].aRequest);
-  
-  return bAppendRequest(sRequest);
-}
-
-/*----------------------------------------------------------------------------*/
-/* create a catalog                                                           */
-/*----------------------------------------------------------------------------*/
-bool SEitf::bCreateCatalog(TokenVec& xTokenVec, i8 iReqNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  s256 sRequest;
-  
-  if (xTokenVec.nTokens() != 2) {
-    vSetLastError(EC_INVALID_PARAMETERS);
-    return false;
-  }
-  
-  sRequest.vCopy("\""_Stz);
-  sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" "_Stz);
-  sRequest.vConcat(SeRequests[iReqNo].aRequest);
-  
-  return bAppendRequest(sRequest);
-}
-
-/*----------------------------------------------------------------------------*/
-/* list catalogs                                                              */
-/*----------------------------------------------------------------------------*/
-bool SEitf::bListCatalogs(TokenVec& xTokenVec, i8 iReqNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  s256 sRequest;
-    
-  if (xTokenVec.nTokens() != 1) {
-    vSetLastError(EC_INVALID_PARAMETERS);
-    return false;
-  }
-  
-  ASSERT(xTokenVec[0]->bSame("lscat"_Stz));
-  
-  sRequest = SeRequests[iReqNo].aRequest;
-  
-  return bAppendRequest(sRequest);
-}
-
-/*----------------------------------------------------------------------------*/
-/* drop a catalog                                                             */
-/*----------------------------------------------------------------------------*/
-bool SEitf::bDropCatalog(TokenVec& xTokenVec, i8 iReqNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  s256 sRequest;
-  
-  if (xTokenVec.nTokens() != 2) {
-    vSetLastError(EC_INVALID_PARAMETERS);
-    return false;
-  }
-
-  sRequest.vCopy("\""_Stz);
-  sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" "_Stz);
-  sRequest.vConcat(SeRequests[iReqNo].aRequest);
-  
-  return bAppendRequest(sRequest);
-}
-
-/*----------------------------------------------------------------------------*/
-/* create a schema                                                            */
-/*----------------------------------------------------------------------------*/
-bool SEitf::bCreateSchema(TokenVec& xTokenVec, i8 iReqNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  s256 sRequest;
-  
-  if (xTokenVec.nTokens() != 2) {
-    vSetLastError(EC_INVALID_PARAMETERS);
-    return false;
-  }
-  
-  sRequest.vCopy("\""_Stz);
-  sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" "_Stz);
-  sRequest.vConcat(SeRequests[iReqNo].aRequest);
-  
-  //! Hey Alka, this is odd!
-  return bAppendRequest(sRequest);
-  
-  return bAppendRequest(sRequest);
-}
-
-/*----------------------------------------------------------------------------*/
-/* list schemas                                                               */
-/*----------------------------------------------------------------------------*/
-bool SEitf::bListSchemas(TokenVec& xTokenVec, i8 iReqNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  s256 sRequest;
-  
-  if (xTokenVec.nTokens() != 1) {
-    vSetLastError(EC_INVALID_PARAMETERS);
-    return false;
-  }
-  
-  ASSERT(xTokenVec[0]->bSame("lssch"_Stz));
-
-  sRequest = SeRequests[iReqNo].aRequest;
-  
-  return bAppendRequest(sRequest);
-}
-
-/*----------------------------------------------------------------------------*/
-/* drop a schema                                                              */
-/*----------------------------------------------------------------------------*/
-bool SEitf::bDropSchema(TokenVec& xTokenVec, i8 iReqNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  s256 sRequest;
-  
-  if (xTokenVec.nTokens() != 2) {
-    vSetLastError(EC_INVALID_PARAMETERS);
-    return false;
-  }
-
-  sRequest.vCopy("\""_Stz);
-  sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" "_Stz);
-  sRequest.vConcat(SeRequests[iReqNo].aRequest);
-  
-  return bAppendRequest(sRequest);
-}
-
-/*----------------------------------------------------------------------------*/
-/* use a schema                                                               */
-/*----------------------------------------------------------------------------*/
-bool SEitf::bUseSchema(TokenVec& xTokenVec, i8 iReqNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  s256 sRequest;
-  
-  if (xTokenVec.nTokens() != 2) {
-    vSetLastError(EC_INVALID_PARAMETERS);
-    return false;
-  }
   
   sRequest.vCopy("\""_Stz);
   sRequest.vConcat(xTokenVec[1]->aText());
@@ -3839,64 +3605,3 @@ Footer* SEitf::aFooter(void)
 /* end                                                                        */
 /*============================================================================*/
 
-/*----------------------------------------------------------------------------*/
-/* check node sanity                                                          */
-/*----------------------------------------------------------------------------*/
-/*
-bool SEitf::bNodeSanityR35(TokenVec& xTokenVec, i8 iReqNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  s256 sRequest;
-  
-  // create the job
-  m_pJob = new Job_Sanity(this);
-  
-  ASSERT(xTokenVec[0]->bSame("sanityR35"_Stz));
-  ASSERT(m_pJob);
-  
-  sRequest = SeRequests[iReqNo].aRequest;
-  
-  return bAppendJob(sRequest,xTokenVec.bDetachedRequest(),(Job**)&m_pJob);
-}
-*/
-
-/*----------------------------------------------------------------------------*/
-/* get status                                                                 */
-/*----------------------------------------------------------------------------*/
-/*
-bool SEitf::bNodeStatusR35(TokenVec& xTokenVec, i8 iReqNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  s256 sRequest;
-  
-  // create the job
-  m_pJob = new Job_Status(this);
-  
-  ASSERT(xTokenVec[0]->bSame("statusR35"_Stz));
-  ASSERT(m_pJob);
-  
-  sRequest = SeRequests[iReqNo].aRequest;
-  
-  return bAppendJob(sRequest,xTokenVec.bDetachedRequest(),(Job**)&m_pJob);
-}
-*/
-
-/*----------------------------------------------------------------------------*/
-/* R35 request                                                                */
-/*----------------------------------------------------------------------------*/
-/*
-bool SEitf::bR35Request(TokenVec& xTokenVec, i8 iReqNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  s256 sRequest;
-  
-  ASSERT(m_pJob);
-  
-  sRequest = SeRequests[iReqNo].aRequest;
-  
-  return bAppendJob(sRequest,xTokenVec.bDetachedRequest(),(Job**)&m_pJob);
-}
-*/
