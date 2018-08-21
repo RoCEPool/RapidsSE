@@ -24,7 +24,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set metadata string in the job
   args.metadata if
-    "(nodeName VARCHAR, poolSize STRING, inUse VARCHAR, free VARCHAR)"
+    "(nodeName VARCHAR, poolSize VARCHAR, inUse VARCHAR, free VARCHAR)"
     pJob job.metadata!
   then
 

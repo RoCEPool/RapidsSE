@@ -177,7 +177,7 @@ void Job_VerifyIndex::vShow(void)
 /*----------------------------------------------------------------------------*/
 Footer* Job_VerifyIndex::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_VISUALIZEINDEX);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_VERIFYINDEX);
   
   return &m_xFooter;
 }
@@ -218,7 +218,18 @@ void JobsModel::vJob_VerifyIndex_post(Interface::SEitf* pSEitf, Job* pJob)
     for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
       vTrace("ERROR (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob_VerifyIndex->m_xNode[i_Node].m_eErrorCode]);
     }
+  }
+  else {
+    if (gpAttachMap->m_bMetadata) {
+      vTrace("metadata: %s\n"_Stz, pJob_VerifyIndex->m_sMetadata.aStr());
+    }
     
+    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+      vTrace("%s\n"_Stz, pJob_VerifyIndex->m_xNode[i_Node].m_sResponse.aChar());
+    }
+    if (gpAttachMap->m_bMetadata) {
+      vTrace("success: %lld rows affected\n"_Stz, gpAttachMap->m_pGrid->m_nNodes);
+    }
   }
 }
 

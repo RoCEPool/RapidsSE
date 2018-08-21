@@ -10,7 +10,7 @@ extern AttachMap* gpAttachMap;
 JobNote mJobNote_DumpIndex (
   "Job_DumpIndex"_Stz,   // name of the job class
   CN_JOB_DUMPINDEX,      // class enum
-  JK_DIST2PC,            // job kind
+  JK_LOCAL,              // job kind
   "dump index"_Stz,      // comment about the job
   "dumpidx"_Stz,         // the prompt command
   nullptr,               // the second word

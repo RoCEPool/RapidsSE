@@ -65,6 +65,7 @@
 
 "job_UseSchema.sen" include
 
+"job_VerifyIndex.sen" include
 "job_VisualizeIndex.sen" include
 
 /*============================================================================*/

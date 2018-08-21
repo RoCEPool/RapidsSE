@@ -1,0 +1,212 @@
+/*============================================================================*/
+/* job_VerifyIndex.sen -- Job Verify Index                                    */
+/*============================================================================*/
+
+"job_VisualizeIndex.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* check if word is a valid table folder                                      */
+/*----------------------------------------------------------------------------*/
+: checkVerifyIndex ( "<tableNm>" "<indexNm>" -- true | errorCode false )
+
+  params| sIndexNm sTableNm |
+
+  // check in tables folder
+  checkInTables not if false exit then
+
+  // check if tableNm is a word in tables folder
+  sTableNm checkIsWordR35 not if EC_NO_SUCH_TABLE false exit then
+
+  // push table folder
+  sTableNm pushTable assert
+
+  sTableNm checkIsTableR35 not if popTable false exit then
+  sTableNm tableInUse if popTable EC_TABLE_IN_USE false exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push indexes folder
+  pushIndexes assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check it is an index we are dropping
+  sIndexNm checkIsIndex not if
+    popIndexes popTable assertInTables false exit
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop indexes and table folder
+  popIndexes
+  popTable
+
+  // assert in tables
+  assertInTables
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* verify index request (on originating node)                                 */
+/*----------------------------------------------------------------------------*/
+: verifyIndex_req ( -- <R> )
+
+  0 0 locals| pJob pTask |
+
+  tp: verifyIndex
+  "verifyIndex_req" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set metadata string in the job
+  args.metadata if
+    "(nodeName VARCHAR, tableName VARCHAR, indexName VARCHAR, isValid VARCHAR)"
+    pJob job.metadata!
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // distribute the job
+  pTask pJob "job::distribute" find execute
+
+  pJob <DONE_REQUEST>
+;
+
+/*----------------------------------------------------------------------------*/
+/* verify index request on a node                                             */
+/*----------------------------------------------------------------------------*/
+: verifyIndex_node ( Job_VerifyIndex )
+
+  params| pJob_VerifyIndex |
+  0 0 0 0 locals| pTask pIndex sTableNm sIndexNm  |
+
+  tp: verifyIndex_node
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // assert correct job
+  CN_JOB_VERIFYINDEX pJob_VerifyIndex object.assertClass
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
+  pJob_VerifyIndex getPathR35
+  dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the table and index names
+  pJob_VerifyIndex job.indexName@ to sIndexNm
+  pJob_VerifyIndex job.objectName@ to sTableNm
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push table and indexes folder
+  sTableNm pushTable assert
+  pushIndexes assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab a ddl lock
+  ddlLock::grabRead
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // visualize
+  sIndexNm find execute index.verify
+  sTableNm sIndexNm grid::thisNodeName@
+  "row: ('%v', '%v', '%v', '%v')\n" str.format
+  grid::thisNode@ pJob_VerifyIndex job.response!
+  1 grid::thisNode@ pJob_VerifyIndex job.rowsProcessed!
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop indexes and table folder
+  popIndexes
+  popTable
+
+  pJob_VerifyIndex job.notice
+
+  pJob_VerifyIndex send_job__executed
+
+  <DONE_NODE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_VerifyIndex job check resources                                */
+/*----------------------------------------------------------------------------*/
+: verifyIndex_chk ( Job_VerifyIndex -- )
+
+  params| pJob_VerifyIndex  |
+  0 0 locals| sIndexNm sTableNm |
+
+  tp: verifyIndex_chk
+  "checkResources received" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab a ddl lock
+  ddlLock::grabRead
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
+  pJob_VerifyIndex getPathR35
+  dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get index and table name
+  pJob_VerifyIndex job.indexName@ to sIndexNm
+  pJob_VerifyIndex job.objectName@ to sTableNm
+
+  sTableNm sIndexNm checkVerifyIndex not if pJob_VerifyIndex <ERROR_JOB> exit then
+
+  <DONE_NODE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_VisualizeIndexTable job release resources                      */
+/*----------------------------------------------------------------------------*/
+: verifyIndex_rel ( Job_VerifyIndex -- )
+
+  params| pJob_VerifyIndex  |
+
+  tp: verifyIndex_rel
+  "releaseResources received" .
+
+  <DONE_NODE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* begin job                                                                  */
+/*----------------------------------------------------------------------------*/
+: verifyIndex_beg ( -- )
+
+  job::this locals| pJob_VerifyIndex |
+
+  pJob_VerifyIndex job.beginParticipant
+
+  // check resources
+  pJob_VerifyIndex verifyIndex_chk
+
+  pJob_VerifyIndex job.participantBegun
+;
+
+/*----------------------------------------------------------------------------*/
+/* end job                                                                    */
+/*----------------------------------------------------------------------------*/
+: verifyIndex_end ( -- )
+
+  job::this locals| pJob_VerifyIndex |
+
+  pJob_VerifyIndex verifyIndex_rel
+;
+
+/*----------------------------------------------------------------------------*/
+/* cancel job                                                                 */
+/*----------------------------------------------------------------------------*/
+: verifyIndex_can ( -- )
+
+  job::this locals| pJob_VerifyIndex |
+
+  pJob_VerifyIndex verifyIndex_rel
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

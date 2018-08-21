@@ -227,9 +227,14 @@ print "=========================================";
 dumpidx j10 idx;
 
 print "\n=========================================";
-print "visualizing index idx on table j10";
+print "verifying index idx on table j10";
 print "=========================================";
-visidx j10 idx;
+vfyidx j10 idx;
+
+//print "\n=========================================";
+//print "visualizing index idx on table j10";
+//print "=========================================";
+//visidx j10 idx;
 
 print "\n=========================================";
 print "size of table j10";
