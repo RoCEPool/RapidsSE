@@ -14,7 +14,7 @@ JobNote mJobNote_Receiver (
   "socket receiver"_Stz, // comment about the job
   nullptr,               // the prompt command
   nullptr,               // the second word
-  "Receiver_seed"_Stz,   // the _req task seed 
+  "receiver_seed"_Stz,   // the _req task seed 
   nullptr,               // the _rcv task seed 
   nullptr,               // the _exe task seed
   nullptr,               // the _end task seed

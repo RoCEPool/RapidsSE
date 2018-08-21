@@ -11,7 +11,7 @@ JobNote mJobNote_SubTruncate (
   "Job_SubTruncate"_Stz,     // name of the job class
   CN_JOB_SUBTRUNCATE,        // class enum
   JK_ONESHOT,                // job kind
-  "table subTruncate"_Stz,   // comment about the job
+  "table sub-truncate"_Stz,  // comment about the job
   nullptr,                   // the prompt command
   nullptr,                   // the second word
   "subTruncate_seed"_Stz,    // the _req task seed 

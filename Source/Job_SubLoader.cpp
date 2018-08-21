@@ -14,7 +14,7 @@ JobNote mJobNote_SubLoader (
   "table subloader"_Stz,  // comment about the job
   nullptr,                // the prompt command
   nullptr,                // the second word
-  "SubLoader_seed"_Stz,   // the _req task seed 
+  "subLoader_seed"_Stz,   // the _req task seed 
   nullptr,                // the _rcv task seed 
   nullptr,                // the _exe task seed
   nullptr,                // the _end task seed

@@ -11,7 +11,7 @@ JobNote mJobNote_Prompt (
   "SE prompt"_Stz,   // comment about the job
   nullptr,           // the prompt command
   nullptr,           // the second word
-  "Prompt_seed"_Stz, // the _req task seed
+  "prompt_req"_Stz,  // the _req task seed
   nullptr,           // the _exe task seed
   nullptr,           // the _rcv task seed
   nullptr,           // the _end task seed

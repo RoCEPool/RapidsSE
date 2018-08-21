@@ -47,8 +47,8 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
     //if ( ! gxJobCatalog.m_xJobClass[i_Job].m_bResources )
     //  continue;
 
-    if ( ! (JK_ONESHOT == gxJobCatalog.m_xJobClass[i_Job].m_eKind) )
-      continue;
+    //if ( ! (JK_ONESHOT == gxJobCatalog.m_xJobClass[i_Job].m_eKind) )
+    //  continue;
 
     vTrace("%20s %10s %20s : %10s %20s %20s %20s %20s %20s\n"_Stz,
            

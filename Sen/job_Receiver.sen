@@ -41,7 +41,7 @@
 
   // get the job from the task
   pThisTask task.job@ to pJob_Receiver
-  pJob_Receiver pThisTask "Receiver_seed task: %v job_Receiver %v" fmt.print
+  pJob_Receiver pThisTask "receiver_seed task: %v job_Receiver %v" fmt.print
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -52,7 +52,7 @@
   pSocket task::this task.socketR35!
 
   // set task comment (this should go, never really used it)
-  "Receiver_seed" task::this task.comment!
+  "receiver_seed" task::this task.comment!
 
   args.verbose if
     grid::thisNode@ "Receiver running on node %v" fmt.print
@@ -71,7 +71,7 @@
 
     assertStackDepthZero
 
-    "Receiver_seed recv" .
+    "receiver_seed recv" .
 
     socketObject> drop to pJob
 
@@ -85,7 +85,7 @@
 /*----------------------------------------------------------------------------*/
 /* receiver seed                                                              */
 /*----------------------------------------------------------------------------*/
-: Receiver_seed ( -- )
+: receiver_seed ( -- )
 
   // initialise
   Receiver_init

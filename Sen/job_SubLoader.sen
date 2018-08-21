@@ -79,7 +79,7 @@
 /*----------------------------------------------------------------------------*/
 /* SubLoader seed                                                             */
 /*----------------------------------------------------------------------------*/
-: SubLoader_seed ( -- )
+: subLoader_seed ( -- )
 
   0 locals| pThisTask |
   0 locals| pJob_SubLoader  |
@@ -90,7 +90,7 @@
 
   // get the task
   task::this to pThisTask
-  pThisTask "SubLoader_seed task: %v" fmt.print
+  pThisTask "subLoader_seed task: %v" fmt.print
 
   // get the sub-loader job from the task
   pThisTask task.job@ to pJob_SubLoader
