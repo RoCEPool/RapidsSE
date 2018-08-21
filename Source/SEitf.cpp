@@ -2191,7 +2191,7 @@ bool SEitf::bAppendJob(Job* pJob)
   //sRequest.vConcat("_req"_Stz);
   
   if (CN_JOB_PROMPT == pJob->eClass())
-    sRequest = "promptR35_Req"_Stz;
+    sRequest = pJob->m_pJobClass->m_aSeedRun;
   else
     sRequest = pJob->m_pJobClass->m_aSeedReq;
 

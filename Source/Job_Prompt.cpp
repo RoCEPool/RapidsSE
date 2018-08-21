@@ -11,8 +11,8 @@ JobNote mJobNote_Prompt (
   "SE prompt"_Stz,   // comment about the job
   nullptr,           // the prompt command
   nullptr,           // the second word
-  nullptr,           // the _run task seed
-  "prompt_req"_Stz,  // the _req task seed
+  "prompt_run"_Stz,  // the _run task seed
+  nullptr,           // the _req task seed
   nullptr,           // the _exe task seed
   nullptr,           // the _rcv task seed
   nullptr,           // the _end task seed
@@ -90,8 +90,6 @@ Job_Prompt::Job_Prompt(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PROMPT,_FOOTER_);
     
-  //m_sSeed = "Job_Prompt.execute"_Stz;
-  
   _checkInitialised_(CN_JOB_PROMPT);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_PROMPT,_FOOTER_);

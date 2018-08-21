@@ -5,25 +5,9 @@
 "job_Prompt.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_Prompt job                                                     */
+/* run the prompt                                                             */
 /*----------------------------------------------------------------------------*/
-: Job_Prompt.execute ( pJob_Prompt -- str t/f )
-
-  params| pJob_Prompt |
-
-  CN_JOB_PROMPT pJob_Prompt object.assertClass
-
-  "PromptR35" .
-
-  grid::thisNode@ pJob_Prompt job.response!
-
-  pJob_Prompt job.notice
-;
-
-/*----------------------------------------------------------------------------*/
-/* run the prompt request                                                     */
-/*----------------------------------------------------------------------------*/
-: promptR35_req ( -- <R> )
+: prompt_run ( -- <R> )
 
   0 locals| pPrompt |
   0 locals| pSEitf |
@@ -31,7 +15,7 @@
   0 locals| eCommand |
   0 locals| pJob |
 
-  "promptR35_req" .
+  "prompt_run" .
 
   prompt::new to pPrompt
   pPrompt prompt.SEitf to pSEitf
