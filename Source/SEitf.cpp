@@ -174,7 +174,6 @@ SEitf::SEitf(i8 iPartition)
   
   //m_xPathStack;
   m_pBufferQueue    = nullptr;
-  m_pResponseQueue  = nullptr;
   m_eErrorCode      = EC_NONE;
   m_sErrorMsg       = aEC[m_eErrorCode];
   m_sResponse       = ""_Stz;
@@ -235,9 +234,6 @@ SEitf::~SEitf(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
 
   SEitf* pSEitf = this;
-  
-  m_pResponseQueue->vFinalize();
-  delete m_pResponseQueue;
   
   gpAttachMap->m_pSEitfList->vRemove(pSEitf);
   
@@ -321,8 +317,6 @@ void SEitf::vContentDump(void)
          m_iPid,
          Process::bTestPid(m_iPid) ? "exists"_Stz : "non-existant"_Stz
          );
-  
-  vTrace("  ResponseQueue %p\n"_Stz, m_pResponseQueue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -359,13 +353,12 @@ void SEitf::vDump(eCN eClass, Object* pObject, Stz* aTab)
   SEitf* pSEitf = reinterpret_cast<SEitf*>(pObject);
   
   vTrace("pid %lld %s partitions %lld partition %lld slot %lld"_Stz
-         " responseQ %p response '%s'\n"_Stz,
+         " response '%s'\n"_Stz,
          pSEitf->m_iPid,
          Process::bTestPid(pSEitf->m_iPid) ? "exists"_Stz : "non-existant"_Stz,
          pSEitf->m_iSlots,
          pSEitf->m_iPartition,
          pSEitf->iSlot(),
-         pSEitf->m_pResponseQueue,
          pSEitf->m_sResponse.aChar());
 }
 
@@ -612,9 +605,6 @@ i8 SEitf::iGetAcksRemaining(void)
 void SEitf::vInit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  // response queue
-  m_pResponseQueue = new Queue;
   
   // set up initial default path
   
@@ -1319,26 +1309,6 @@ void SEitf::vPopBufferQueue(void)
   m_pEntryBuffer  = nullptr;  
   m_pEntry = nullptr;
   m_aRow   = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get response queue                                                         */
-/*----------------------------------------------------------------------------*/
-Queue* SEitf::pResponseQueue(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  return m_pResponseQueue;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set response queue                                                         */
-/*----------------------------------------------------------------------------*/
-void SEitf::vResponseQueue(Queue* pResponseQueue)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  m_pResponseQueue = pResponseQueue;
 }
 
 /*----------------------------------------------------------------------------*/

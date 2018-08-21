@@ -17,7 +17,6 @@ namespace Interface
     
     DicStack m_xPathStack;      // dictionary stack
     
-    Queue* m_pResponseQueue;   // response queue
     Queue* m_pBufferQueue;     // buffer queue
     s48K   m_sResponse;        // response
     
@@ -102,9 +101,6 @@ namespace Interface
     void   vLastBuffers(i8 nLastBuffer);
   
     DicStack* pPathStack(void);
-    
-    void   vResponseQueue(Queue* pResponseQueue);
-    Queue* pResponseQueue(void);
   
     void   vSetAcksRemaining(i8 iAcksRemaining);
     i8     iGetAcksRemaining(void);
