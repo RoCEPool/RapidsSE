@@ -1320,8 +1320,6 @@ namespace Tasks
     static void vSEitfPid(MP_Task mpTask);
     static void vSEitfPlannerFetch(MP_Task mpTask);
     static void vSEitfPlannerStore(MP_Task mpTask);
-    static void vSEitfReqFetch(MP_Task mpTask);
-    static void vSEitfReqStore(MP_Task mpTask);
     static void vSEitfRowsInvalidStore(MP_Task mpTask);
     static void vSEitfRowsProcessed(MP_Task mpTask);
     static void vSEitfRowsValidStore(MP_Task mpTask);

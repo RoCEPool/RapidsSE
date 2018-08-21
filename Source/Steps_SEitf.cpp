@@ -49,8 +49,6 @@ void Task::vAddPrimitives_SEitf(void)
   vAddPrimitive("seitf.pid"_Stz,              &vSEitfPid,              false);
   vAddPrimitive("seitf.planner@"_Stz,         &vSEitfPlannerFetch,     false);
   vAddPrimitive("seitf.planner!"_Stz,         &vSEitfPlannerStore,     false);
-  vAddPrimitive("seitf.req@"_Stz,             &vSEitfReqFetch,         false);
-  vAddPrimitive("seitf.req!"_Stz,             &vSEitfReqStore,         false);
   vAddPrimitive("seitf.rowsInvalid!"_Stz,     &vSEitfRowsInvalidStore, false);
   vAddPrimitive("seitf.rowsProcessed"_Stz,    &vSEitfRowsProcessed,    false);
   vAddPrimitive("seitf.rowsValid!"_Stz,       &vSEitfRowsValidStore,   false);
@@ -797,54 +795,6 @@ void Task::vSEitfPlannerStore(MP_Task mpTask)
   // if we have or phrases we'll need a RowOnce object
   if (pPlanner->nPhrases() > 1)
     pSEitf->vCreateRowOnce();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* seitf.req@ -- fetch SEitf request queue                                    */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfReqFetch(MP_Task mpTask)
-{
-ENTRY("vSEitfReqFetch"_Stz);
-  
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.req@"_Stz);
-  
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(CN_SEITF == pSEitf->eClass());
-  
-  Object* pPtrQueue = pSEitf->pRequestQueue();
-  
-  mpTask->m_pDataStack->vPushObject(pPtrQueue);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* seitf.req! -- store SEitf request queue                                    */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfReqStore(MP_Task mpTask)
-{
-ENTRY("vSEitfReqStore"_Stz);
-  
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.req!"_Stz);
-  
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(CN_SEITF == pSEitf->eClass());
-  
-  Object* pPtrQueue;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrQueue) )
-    THROW_INVALID_DSTACK("seitf.req!"_Stz);
-  
-  Queue* pQueue = _pQueue(pPtrQueue);
-  ASSERT(CN_QUEUE == pQueue->eClass());
-  
-  pSEitf->vRequestQueue(pQueue);
   
   EXIT();
 }
