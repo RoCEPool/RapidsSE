@@ -15,7 +15,7 @@ JobNote mJobNote_Start (
   nullptr,            // the prompt command
   nullptr,            // the second word
   "start_seed"_Stz,   // the _run task seed
-  "start_seed"_Stz,   // the _req task seed
+  nullptr,            // the _req task seed
   nullptr,            // the _rcv task seed 
   nullptr,            // the _exe task seed
   nullptr,            // the _end task seed
@@ -93,7 +93,7 @@ Job_Start::Job_Start(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_START,_FOOTER_);
   
-  m_sSeed = mJobNote_Start.pJobClass()->m_aSeedReq;
+  //m_sSeed = mJobNote_Start.pJobClass()->m_aSeedReq;
   
   _checkInitialised_(CN_JOB_START);
   

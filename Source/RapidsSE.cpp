@@ -747,6 +747,7 @@ void RapidsSE::vStartR35Tasks(void)
   s32 sName = "startR35Task"_Stz;
   
   JobClass* pJobClass_Start = gxJobCatalog.pFindJob(CN_JOB_START);
+  
   Job_Start* pJob_Start
     = static_cast<Job_Start*>(pJobClass_Start->pNewJob(nullptr));
   
@@ -754,7 +755,7 @@ void RapidsSE::vStartR35Tasks(void)
   
   pStartTask->vJob(pJob_Start);
   s32 sRequest;
-  sRequest = pJob_Start->sJobSeed();
+  sRequest = pJobClass_Start->m_aSeedRun;
   pStartTask->vSeedWord(sRequest);
 
   pStartTask->vState(TS_READY);

@@ -246,10 +246,10 @@ print "size of index idx on table j10";
 print "=========================================";
 szidx j10 idx;
 
-print "\n=========================================";
-print "table sizes";
-print "=========================================";
-tableSizes;
+//print "\n=========================================";
+//print "table sizes";
+//print "=========================================";
+//tableSizes;
 
 print "\n=========================================";
 print "truncating table j10";
