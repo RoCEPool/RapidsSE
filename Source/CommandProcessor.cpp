@@ -280,7 +280,6 @@ void CommandProcessor::vGetCommandInput(void)
   while (true) {
     
     pTknVec()->vReset();
-    pTknVec2()->vReset();
     
     for (;;) {
       
@@ -393,16 +392,6 @@ TokenVec* CommandProcessor::pTknVec(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
   
   return m_pTokeniser->pTknVec();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get token vector 2                                                         */
-/*----------------------------------------------------------------------------*/
-TokenVec* CommandProcessor::pTknVec2(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
-  
-  return &m_xTokenVec2;
 }
 
 /*----------------------------------------------------------------------------*/
