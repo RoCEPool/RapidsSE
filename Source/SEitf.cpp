@@ -188,7 +188,6 @@ SEitf::SEitf(i8 iPartition)
   m_pCurrentTable   = nullptr;
   m_pCurrentIndex   = nullptr;
   m_pTx             = nullptr;
-  m_sMetadata       = ""_Stz;
   m_bDisplay        = true;
   m_iRowsProcessed    = 0;
   m_iCurrentRequestId = 0;

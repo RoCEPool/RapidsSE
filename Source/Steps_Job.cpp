@@ -1085,7 +1085,7 @@ void Task::vJobMetadataStore(MP_Task mpTask)
   
   s4K sMetadata;
   if ( ! mpTask->m_pDataStack->bPop(sMetadata) )
-    THROW_INVALID_DSTACK("seitf.metadata@"_Stz);
+    THROW_INVALID_DSTACK("job.metadata!"_Stz);
   
   pJob->m_sMetadata = sMetadata;
   

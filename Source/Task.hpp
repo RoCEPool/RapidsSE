@@ -1313,8 +1313,6 @@ namespace Tasks
     static void vSEitfIsExiting(MP_Task mpTask);
     static void vSEitfLastBuffersFetch(MP_Task mpTask);
     static void vSEitfLastBuffersStore(MP_Task mpTask);
-    static void vSEitfMetadataFetch(MP_Task mpTask);
-    static void vSEitfMetadataStore(MP_Task mpTask);
     static void vSEitfPartitionFetch(MP_Task mpTask);
     static void vSEitfPartitionStore(MP_Task mpTask);
     static void vSEitfPid(MP_Task mpTask);

@@ -42,8 +42,6 @@ void Task::vAddPrimitives_SEitf(void)
   vAddPrimitive("seitf.isExiting"_Stz,        &vSEitfIsExiting,        false);
   vAddPrimitive("seitf.lastBuffers@"_Stz,     &vSEitfLastBuffersFetch, false);
   vAddPrimitive("seitf.lastBuffers!"_Stz,     &vSEitfLastBuffersStore, false);
-  vAddPrimitive("seitf.metadata@"_Stz,        &vSEitfMetadataFetch,    false);
-  vAddPrimitive("seitf.metadata!"_Stz,        &vSEitfMetadataStore,    false);
   vAddPrimitive("seitf.partition@"_Stz,       &vSEitfPartitionFetch,   false);
   vAddPrimitive("seitf.partition!"_Stz,       &vSEitfPartitionStore,   false);
   vAddPrimitive("seitf.pid"_Stz,              &vSEitfPid,              false);
@@ -637,51 +635,6 @@ void Task::vSEitfLastBuffersStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("seitf.lastBuffers!"_Stz);
   
   pSEitf->vLastBuffers(nLastBuffers);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* seitf.metadata@ -- fetch metadata in SE interface                          */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfMetadataFetch(MP_Task mpTask)
-{
-  ENTRY("vSEitfMetadataFetch"_Stz);
-  
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.metadata@"_Stz);
-  
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(CN_SEITF == pSEitf->eClass());
-  
-  s4K sMetadata;
-  
-  sMetadata = pSEitf->m_sMetadata;
-  mpTask->m_pDataStack->vPushS4K(sMetadata);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* seitf.metadata! -- store metadata in SE interface                          */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfMetadataStore(MP_Task mpTask)
-{
-  ENTRY("vSEitfMetadataStore"_Stz);
-  
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.metadata!"_Stz);
-  
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(CN_SEITF == pSEitf->eClass());
-  
-  s4K sMetadata;
-  if ( ! mpTask->m_pDataStack->bPop(sMetadata) )
-    THROW_INVALID_DSTACK("seitf.metadata@"_Stz);
-  
-  pSEitf->m_sMetadata = sMetadata;
   
   EXIT();
 }
