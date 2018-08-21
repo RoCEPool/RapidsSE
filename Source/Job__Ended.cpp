@@ -7,7 +7,7 @@
 JobNote mJobNote__Ended (
   "Job__Ended"_Stz,        // name of the job class
   CN_JOB__ENDED,           // class enum
-  JK_ONESHOT,              // job kind
+  JK_GENERIC,              // job kind
   "job ended"_Stz,         // comment about the job
   nullptr,                 // the prompt command
   nullptr,                 // the second word

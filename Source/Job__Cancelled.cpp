@@ -7,7 +7,7 @@
 JobNote mJobNote__Cancelled (
   "Job__Cancelled"_Stz,    // name of the job class
   CN_JOB__CANCELLED,       // class enum
-  JK_ONESHOT,              // job kind
+  JK_GENERIC,              // job kind
   "job cancelled"_Stz,     // comment about the job
   nullptr,                 // the prompt command
   nullptr,                 // the second word

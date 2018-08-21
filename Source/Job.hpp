@@ -14,19 +14,23 @@ namespace JobsModel
   enum eJK // job kind
   {
   /*  0 */ JK_NONE=0,
-  /*  1 */ JK_CHILD,
-  /*  2 */ JK_DIST2PC,
-  /*  3 */ JK_ONESHOT,
-  /*  4 */ JK_SINGLENODE,
+  /*  1 */ JK_AGENT,
+  /*  2 */ JK_CHILD,
+  /*  3 */ JK_DIST2PC,
+  /*  4 */ JK_GENERIC,
+  /*  5 */ JK_ONESHOT,
+  /*  6 */ JK_SINGLENODE,
   };
   
   static Stz* aJK[]
   {
   /*  0 */ "NONE"_Stz,
-  /*  1 */ "CHILD"_Stz,
-  /*  2 */ "DIST2C"_Stz,
-  /*  3 */ "ONESHOT"_Stz,
-  /*  4 */ "SINGLENODE"_Stz,
+  /*  1 */ "AGENT"_Stz,
+  /*  2 */ "CHILD"_Stz,
+  /*  3 */ "DIST2C"_Stz,
+  /*  4 */ "GENERIC"_Stz,
+  /*  5 */ "ONESHOT"_Stz,
+  /*  6 */ "SINGLENODE"_Stz,
   };
   
   enum eJS // job state
