@@ -11,7 +11,7 @@ JobNote mJobNote_Boot (
   "Job_Boot"_Stz,    // name of the job class
   CN_JOB_BOOT,       // class enum
   JK_SYSTEM,         // job kind
-  "System Boot"_Stz, // comment about the job
+  "system boot"_Stz, // comment about the job
   nullptr,           // the prompt command
   nullptr,           // the second word
   "Boot_seed"_Stz,   // the _req task seed 

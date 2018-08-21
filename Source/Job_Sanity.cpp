@@ -10,7 +10,7 @@ JobNote mJobNote_Sanity (
   "Job_Sanity"_Stz,  // name of the job class
   CN_JOB_SANITY,     // class enum
   JK_DIST2PC,        // job kind
-  "sanity"_Stz,      // comment about the job
+  "sanity check"_Stz,      // comment about the job
   "sanity"_Stz,      // the prompt command
   nullptr,           // the second word
   "sanity_req"_Stz,  // the _req task seed

@@ -11,7 +11,7 @@ JobNote mJobNote_Start (
   "Job_Start"_Stz,    // name of the job class
   CN_JOB_START,       // class enum
   JK_CHILD,           // job kind
-  "System Start"_Stz, // comment about the job
+  "system start"_Stz, // comment about the job
   nullptr,            // the prompt command
   nullptr,            // the second word
   "Start_seed"_Stz,   // the _req task seed 

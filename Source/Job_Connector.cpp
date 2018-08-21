@@ -11,7 +11,7 @@ JobNote mJobNote_Connector (
   "Job_Connector"_Stz,    // name of the job class
   CN_JOB_CONNECTOR,       // class enum
   JK_SYSTEM,              // job kind
-  "Socket Connector"_Stz, // comment about the job
+  "socket connector"_Stz, // comment about the job
   nullptr,                // the prompt command
   nullptr,                // the second word
   "Connector_seed"_Stz,   // the _req task seed 

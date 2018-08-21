@@ -8,7 +8,7 @@ JobNote mJobNote__Begun (
   "Job__Begun"_Stz,        // name of the job class
   CN_JOB__BEGUN,           // class enum
   JK_GENERIC,              // job kind
-  "job begun"_Stz,         // comment about the job
+  "job has begun"_Stz,     // comment about the job
   nullptr,                 // the prompt command
   nullptr,                 // the second word
   nullptr,                 // the _req task seed

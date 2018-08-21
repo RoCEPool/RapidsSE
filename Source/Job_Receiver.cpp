@@ -11,7 +11,7 @@ JobNote mJobNote_Receiver (
   "Job_Receiver"_Stz,    // name of the job class
   CN_JOB_RECEIVER,       // class enum
   JK_SYSTEM,             // job kind
-  "Socket Receiver"_Stz, // comment about the job
+  "socket receiver"_Stz, // comment about the job
   nullptr,               // the prompt command
   nullptr,               // the second word
   "Receiver_seed"_Stz,   // the _req task seed 

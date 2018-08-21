@@ -11,7 +11,7 @@ JobNote mJobNote_AnalyzeTable (
   "Job_AnalyzeTable"_Stz,    // name of the job class
   CN_JOB_ANALYZETABLE,       // class enum
   JK_DIST2PC,                // job kind
-  "antbl tableNm [0/1]"_Stz, // comment about the job
+  "analyze table"_Stz,       // comment about the job
   "antbl"_Stz,               // the prompt command
   nullptr,                   // the second word
   "analyzeTable_req"_Stz,    // the _req task seed 
@@ -31,7 +31,7 @@ JobNote mJobNote_AnalyzeTable (
   nullptr,                   // job post-receive function
   vJob_AnalyzeTable_show,    // job show function
   true,                      // job is enabled
-  "<help>"_Stz,              // help
+  "antbl tableNm [0/1]"_Stz,              // help
   "<example>"_Stz            // example
   );
 

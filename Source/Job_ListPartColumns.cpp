@@ -11,7 +11,7 @@ JobNote mJobNote_ListPartColumns (
   "Job_ListPartColumns"_Stz,        // name of the job class
   CN_JOB_LISTPARTCOLUMNS,           // class enum
   JK_SINGLENODE,                    // job kind
-  "list partition key columns"_Stz, // comment about the job
+  "list partition key"_Stz,         // comment about the job
   "lspartcol"_Stz,                  // the prompt command
   nullptr,                          // the second word
   "listPartColumns_req"_Stz,        // the _req task seed 

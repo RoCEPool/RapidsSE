@@ -11,7 +11,7 @@ JobNote mJobNote_AnalyzeIndex (
   "Job_AnalyzeIndex"_Stz,    // name of the job class
   CN_JOB_ANALYZEINDEX,       // class enum
   JK_DIST2PC,                // job kind
-  "anidx tableNm indexNm [0/1]"_Stz,   // comment about the job
+  "analyse index"_Stz,       // comment about the job
   "anidx"_Stz,               // the prompt command
   nullptr,                   // the second word
   "analyzeIndex_req"_Stz,    // the _req task seed
@@ -31,7 +31,7 @@ JobNote mJobNote_AnalyzeIndex (
   nullptr,                   // job post-receive function
   vJob_AnalyzeIndex_show,    // job show function
   true,                      // job is enabled
-  "<help>"_Stz,              // help
+  "anidx tableNm indexNm [0/1]"_Stz,              // help
   "<example>"_Stz            // example
 );
 

@@ -11,7 +11,7 @@ JobNote mJobNote_ListColumns (
   "Job_ListColumns"_Stz,  // name of the job class
   CN_JOB_LISTCOLUMNS,     // class enum
   JK_SINGLENODE,          // job kind
-  "list columns"_Stz,     // comment about the job
+  "list table columns"_Stz,     // comment about the job
   "lscol"_Stz,            // the prompt command
   nullptr,                // the second word
   "listColumns_req"_Stz,  // the _req task seed 

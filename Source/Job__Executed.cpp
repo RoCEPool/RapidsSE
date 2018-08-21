@@ -8,7 +8,7 @@ JobNote mJobNote__Executed (
   "Job__Executed"_Stz,     // name of the job class
   CN_JOB__EXECUTED,        // class enum
   JK_GENERIC,              // job kind
-  "job executed"_Stz,      // comment about the job
+  "job was executed"_Stz,  // comment about the job
   nullptr,                 // the prompt command
   nullptr,                 // the second word
   nullptr,                 // the _req task seed 

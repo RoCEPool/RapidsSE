@@ -11,7 +11,7 @@ JobNote mJobNote_TruncateTable (
   "Job_TruncateTable"_Stz,   // name of the job class
   CN_JOB_TRUNCATETABLE,      // class enum
   JK_DIST2PC,                // job kind
-  "tr tableNm"_Stz,          // comment about the job
+  "truncate table"_Stz,      // comment about the job
   "tr"_Stz,                  // the prompt command
   nullptr,                   // the second word
   "truncateTable_req"_Stz,   // the _req task seed
@@ -31,7 +31,7 @@ JobNote mJobNote_TruncateTable (
   nullptr,                   // job post-receive function
   vJob_TruncateTable_show,   // job show function
   true,                      // job is enabled
-  "<help>"_Stz,              // help
+  "tr <tableNm>"_Stz,        // help
   "<example>"_Stz            // example
 );
 

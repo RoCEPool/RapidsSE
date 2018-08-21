@@ -8,7 +8,7 @@ JobNote mJobNote__Cancel (
   "Job__Cancel"_Stz,       // name of the job class
   CN_JOB__CANCEL,          // class enum
   JK_GENERIC,              // job kind
-  "job to cancel"_Stz,     // comment about the job
+  "job to be cancelled"_Stz,     // comment about the job
   nullptr,                 // the prompt command
   nullptr,                 // the second word
   nullptr,                 // the _req task seed 
