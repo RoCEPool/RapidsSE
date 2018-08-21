@@ -15,7 +15,7 @@ JobNote mJobNote_LoadBuffer (
   nullptr,                 // the prompt command
   nullptr,                 // the second word
   "loadBuffer_seed"_Stz,   // the _run task seed
-  "loadBuffer_seed"_Stz,   // the _req task seed
+  nullptr,                 // the _req task seed
   nullptr,                 // the _rcv task seed
   "LoadBuffer_node"_Stz,   // the _exe task seed
   nullptr,                 // the _end task seed
@@ -93,7 +93,7 @@ Job_LoadBuffer::Job_LoadBuffer(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
   
-  m_sSeed = mJobNote_LoadBuffer.pJobClass()->m_aSeedReq;
+  //m_sSeed = mJobNote_LoadBuffer.pJobClass()->m_aSeedReq;
   
   m_nBuffersLoadable = C_UNKNOWN;
   m_iLoadJobId = -1;

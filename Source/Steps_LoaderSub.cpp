@@ -575,6 +575,8 @@ void Task::vLoaderSubSpawnLoadBuffer(MP_Task mpTask)
   Job_LoadBuffer* pJob_LoadBuffer =
     static_cast<Job_LoadBuffer*>(pJobClass_LoadBuffer->pPreJob(pSEitf));
 
+  pJob_LoadBuffer->m_sSeed = pJobClass_LoadBuffer->m_aSeedRun;
+  
   pJob_LoadBuffer->vLoadJobId(iLoadJobId);
   pJob_LoadBuffer->m_sObjectName = pJob_SubLoader->m_sObjectName;
   pJob_LoadBuffer->vPartition(iPartition);
