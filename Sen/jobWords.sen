@@ -4,6 +4,7 @@
 
 "jobWords.sen" .verbose
 
+0 constant SEED_RUN
 1 constant SEED_REQ
 2 constant SEED_RCV
 3 constant SEED_EXE

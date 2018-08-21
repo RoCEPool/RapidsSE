@@ -67,9 +67,12 @@ namespace JobsModel
   /*  3 */ "TASK"_Stz
   };
   
+  const i8 C_SEED_0 = 0;
   const i8 C_SEED_1 = 1;
   const i8 C_SEED_2 = 2;
   const i8 C_SEED_3 = 3;
+  const i8 C_SEED_4 = 4;
+  const i8 C_SEED_5 = 5;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job : public Object,

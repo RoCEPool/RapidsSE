@@ -1764,9 +1764,12 @@ void Task::vJobSpawn(MP_Task mpTask)
   s32 sSeed;
   
   switch (i_Seed) {
+    case C_SEED_0: sSeed = pJob->m_pJobClass->m_aSeedRun; break;
     case C_SEED_1: sSeed = pJob->m_pJobClass->m_aSeedReq; break;
     case C_SEED_2: sSeed = pJob->m_pJobClass->m_aSeedRcv; break;
     case C_SEED_3: sSeed = pJob->m_pJobClass->m_aSeedExe; break;
+    case C_SEED_4: sSeed = pJob->m_pJobClass->m_aSeedEnd; break;
+    case C_SEED_5: sSeed = pJob->m_pJobClass->m_aSeedCan; break;
     default: NEVER_REACH;
   }
   
