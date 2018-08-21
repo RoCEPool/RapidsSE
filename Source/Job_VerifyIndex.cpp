@@ -1,0 +1,247 @@
+/*============================================================================*/
+/* Job_VerifyIndex.cpp -- verify index Job                                    */
+/*============================================================================*/
+
+#include "JobModel.h"
+#include "StorageEngine.h"
+
+extern AttachMap* gpAttachMap;
+
+JobNote mJobNote_VerifyIndex (
+  "Job_VerifyIndex"_Stz,      // name of the job class
+  CN_JOB_VERIFYINDEX,         // class enum
+  JK_DIST2PC,                 // job kind
+  "verify index"_Stz,         // comment about the job
+  "vfyidx"_Stz,               // the prompt command
+  nullptr,                    // the second word
+  nullptr,                    // the _run task seed
+  "verifyIndex_req"_Stz,      // the _req task seed
+  "verifyIndex_beg"_Stz,      // the _rcv task seed
+  "verifyIndex_node"_Stz,     // the _exe task seed
+  "verifyIndex_end"_Stz,      // the _end task seed
+  "verifyIndex_can"_Stz,      // the _can task seed
+  true,                       // check resources?
+  false,                      // detached job?
+  false,                      // buffer attached?
+  JT_NONE,                    // job trace
+  pJob_VerifyIndex_pre,       // prompt pre-process function
+  vJob_VerifyIndex_post,      // prompt post-process function
+  nullptr,                    // job new function
+  vJob_VerifyIndex_delete,    // job delete function
+  nullptr,                    // job pre-send function
+  nullptr,                    // job post-receive function
+  vJob_VerifyIndex_show,      // job show function
+  true,                       // job is enabled
+  "<help>"_Stz,               // help
+  "<example>"_Stz             // example
+);
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+Job_VerifyIndex* JobsModel::_pJob_VerifyIndex(void* aAddress)
+{
+  Job_VerifyIndex* pJob_VerifyIndex = reinterpret_cast<Job_VerifyIndex*>(aAddress);
+  
+  RASSERT( !pJob_VerifyIndex || CN_JOB_VERIFYINDEX == pJob_VerifyIndex->eClass());
+  
+  return pJob_VerifyIndex;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allocate a new entry buffer from heap                                      */
+/*----------------------------------------------------------------------------*/
+void* Job_VerifyIndex::operator new(size_t iSize)
+{
+  RASSERT(iSize);
+  
+  Job_VerifyIndex* pJob_VerifyIndex =
+    static_cast<Job_VerifyIndex*>(Heap::pAllocate(CN_JOB_VERIFYINDEX));
+  
+  return pJob_VerifyIndex;
+}
+
+/*----------------------------------------------------------------------------*/
+/* perform new of entry buffer for given address                              */
+/*----------------------------------------------------------------------------*/
+void* Job_VerifyIndex::operator new(size_t iSize, void* aAddress)
+{
+  RASSERT(iSize);
+  
+  return aAddress;
+}
+
+/*----------------------------------------------------------------------------*/
+/* free an entry buffer back to the heap                                      */
+/*----------------------------------------------------------------------------*/
+void Job_VerifyIndex::operator delete(void* aAddress)
+{
+  Job_VerifyIndex* pJob_VerifyIndex = static_cast<Job_VerifyIndex*>(aAddress);
+  
+  Heap::vFree(pJob_VerifyIndex);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Job_VerifyIndex::Job_VerifyIndex(Interface::SEitf* pSEitf)
+: Job(CN_JOB_VERIFYINDEX, pSEitf)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_VERIFYINDEX,_FOOTER_);
+    
+  m_sSeed = mJobNote_VerifyIndex.pJobClass()->m_aSeedReq;
+  m_bCheckResources = true;
+  
+  _checkInitialised_(CN_JOB_VERIFYINDEX);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_VERIFYINDEX,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+Job_VerifyIndex::~Job_VerifyIndex(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_VERIFYINDEX,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Static Functions --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* dump                                                                       */
+/*----------------------------------------------------------------------------*/
+void Job_VerifyIndex::vDump(eCN eClass, Object* pObject, Stz* aTab)
+{
+  RASSERT(CN_JOB_VERIFYINDEX == eClass);
+  RASSERT(pObject->eClass() == CN_JOB_VERIFYINDEX);
+  
+  Job_VerifyIndex* pJob_VerifyIndex = _pJob_VerifyIndex(pObject);
+
+  pJob_VerifyIndex->vShow();
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Member Functions --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* populate the job                                                           */
+/*----------------------------------------------------------------------------*/
+bool Job_VerifyIndex::bPopulateJob(TokenVec* pTokenVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_VERIFYINDEX,_FOOTER_);
+  
+  i8 iNumTokens;
+  
+  ASSERT(pTokenVec->pGet(0)->bSame("vfyidx"_Stz));
+  
+  // get number of items in token vector
+  iNumTokens = pTokenVec->nItems();
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // there should be 3 tokens
+  if (iNumTokens != 3)
+    return false;
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // set the index name
+  m_sIndexName = pTokenVec->pGet(2)->aText();
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // set the table name
+  m_sObjectName = pTokenVec->pGet(1)->aText();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show                                                                       */
+/*----------------------------------------------------------------------------*/
+void Job_VerifyIndex::vShow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_VERIFYINDEX,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* Job_VerifyIndex::aFooter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_VISUALIZEINDEX);
+  
+  return &m_xFooter;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Catalog Functions -------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* prompt pre execute function                                                */
+/*----------------------------------------------------------------------------*/
+Job* JobsModel::pJob_VerifyIndex_pre(Interface::SEitf* pSEitf)
+{
+  Job_VerifyIndex* pJob_VerifyIndex = new Job_VerifyIndex(pSEitf);
+  
+  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
+  
+  bool bResult = pJob_VerifyIndex->bPopulateJob(pTokenVec);
+  
+  if ( !bResult) {
+    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
+    pJob_VerifyIndex->m_bHasError = true;
+    pJob_VerifyIndex->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+  }
+  
+  return pJob_VerifyIndex;
+}
+
+/*----------------------------------------------------------------------------*/
+/* prompt post execute function                                               */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_VerifyIndex_post(Interface::SEitf* pSEitf, Job* pJob)
+{
+  Job_VerifyIndex* pJob_VerifyIndex = _pJob_VerifyIndex(pJob);
+  
+  if ( pJob_VerifyIndex->m_bHasError ) {
+    
+    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+      vTrace("ERROR (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob_VerifyIndex->m_xNode[i_Node].m_eErrorCode]);
+    }
+    
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* job delete function                                                        */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_VerifyIndex_delete(Interface::SEitf* pSEitf, Job* pJob)
+{
+  Job_VerifyIndex* pJob_VerifyIndex = _pJob_VerifyIndex(pJob);
+  
+  delete pJob_VerifyIndex;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show job function                                                          */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_VerifyIndex_show(Job* pJob)
+{
+  Job_VerifyIndex* pJob_VerifyIndex = _pJob_VerifyIndex(pJob);
+
+  pJob_VerifyIndex->vShow();
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

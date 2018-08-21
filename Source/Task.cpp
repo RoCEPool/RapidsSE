@@ -642,6 +642,7 @@ void Task::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_TRUNCATETABLE"_Stz,  CN_JOB_TRUNCATETABLE);
   /*    */ vAddConstant("CN_JOB_USESCHEMA"_Stz,      CN_JOB_USESCHEMA);
   /*    */ vAddConstant("CN_JOB_VISUALIZEINDEX"_Stz, CN_JOB_VISUALIZEINDEX);
+  /*    */ vAddConstant("CN_JOB_VERIFYINDEX"_Stz,    CN_JOB_VERIFYINDEX);
   
   /*    */ vAddConstant("CN_JUMBOPERSISTENT"_Stz, CN_JUMBOPERSISTENT);
   /*    */ vAddConstant("CN_JUMBOTRANSIENT"_Stz,  CN_JUMBOTRANSIENT);

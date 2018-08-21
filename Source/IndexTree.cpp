@@ -1124,6 +1124,9 @@ void IndexTree::vVisualize(void)
   // start with the root buffer
   EntryBuffer* pEntryBuffer = m_pRoot;
   
+  if ( ! pEntryBuffer)
+    return;
+  
   // hidden index has all level 0 buffers
   if (m_pIndex->bIsHidden()) {
     

@@ -139,7 +139,7 @@ bool Job_VisualizeIndex::bPopulateJob(TokenVec* pTokenVec)
   
   i8 iNumTokens;
   
-  ASSERT(pTokenVec->pGet(0)->bSame("szidx"_Stz));
+  ASSERT(pTokenVec->pGet(0)->bSame("visidx"_Stz));
   
   // get number of items in token vector
   iNumTokens = pTokenVec->nItems();

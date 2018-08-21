@@ -139,6 +139,7 @@ enum eCN : u2 // Class Number
     /*    */ CN_JOB_TABLESIZES,
     /*    */ CN_JOB_TRUNCATETABLE,
     /*    */ CN_JOB_USESCHEMA,
+    /*    */ CN_JOB_VERIFYINDEX,
     /*    */ CN_JOB_VISUALIZEINDEX,
     
     /*    */ CN_JOBS,
@@ -388,6 +389,7 @@ enum eCN : u2 // Class Number
     /*    */ "JOB_TABLESIZES"_Stz,     // CN_JOB_TABLESIZES
     /*    */ "JOB_TRUNCATETABLE"_Stz,  // CN_JOB_TRUNCATETABLE
     /*    */ "JOB_USESCHEMA"_Stz,      // CN_JOB_USESCHEMA
+    /*    */ "JOB_VERIFYINDEX"_Stz,    // CN_JOB_VERIFYINDEX
     /*    */ "JOB_VISUALIZEINDEX"_Stz, // CN_JOB_VISUALIZEINDEX
     
     /*    */ "JOBS"_Stz,               // CN_JOBS
