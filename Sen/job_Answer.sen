@@ -24,7 +24,7 @@ int: nTotalConnections
 /*----------------------------------------------------------------------------*/
 /* answer loop: accept new sockets, spawn receiver task                       */
 /*----------------------------------------------------------------------------*/
-: answer_seed ( -- )
+: answer_run ( -- )
 
   assertStackDepthZero
 

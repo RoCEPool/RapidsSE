@@ -7,14 +7,14 @@
 /*----------------------------------------------------------------------------*/
 /* SubTruncate (on each node)                                                 */
 /*----------------------------------------------------------------------------*/
-: SubTruncate_seed ( -- <R> )
+: SubTruncate_run ( -- <R> )
 
   0 0 locals| pJob_SubTruncate pTask |
   0 0 0 locals| iSlot pTable sTableNm |
   0 0 0 locals| iTrucateJobId pJob_TruncateTable pTask_TruncateTable |
 
   tp: SubTruncate
-  "SubTruncate_seed" .
+  "SubTruncate_run" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the task

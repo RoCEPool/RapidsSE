@@ -17,12 +17,12 @@
 /*----------------------------------------------------------------------------*/
 /* start system                                                               */
 /*----------------------------------------------------------------------------*/
-: start_seed ( -- <R> )
+: start_run ( -- <R> )
 
   task::this           locals| pThisTask |
   pThisTask task.job@  locals| pThisJob  |
 
-  "start_seed" .
+  "start_run" .
 
   args.bgtasks if
 

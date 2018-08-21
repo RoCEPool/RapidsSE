@@ -75,17 +75,17 @@
 /*----------------------------------------------------------------------------*/
 /* LoadBuffer seed                                                            */
 /*----------------------------------------------------------------------------*/
-: loadBuffer_seed (  -- )
+: loadBuffer_run (  -- )
 
   job::this locals| pJob_LoadBuffer  |
 
-  "loadBuffer_seed :" .
+  "loadBuffer_run :" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pJob_LoadBuffer job_loadBuffer.partition@ locals| i_Partition |
   i_Partition grid::toNode locals| i_Node |
-  i_Partition i_Node "loadBuffer_seed : Node %v Partition %v" fmt.print
+  i_Partition i_Node "loadBuffer_run : Node %v Partition %v" fmt.print
 
   i_Node grid::node task::this task.sendNode!
 
