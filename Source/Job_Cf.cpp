@@ -8,7 +8,7 @@
 extern AttachMap* gpAttachMap;
 
 JobNote mJobNote_Cf (
-  "Job_f"_Stz,         // name of the job class
+  "Job_Cf"_Stz,        // name of the job class
   CN_JOB_CF,           // class enum
   JK_SINGLENODE,       // job kind
   "change folder"_Stz, // comment about the job
