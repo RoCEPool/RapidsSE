@@ -49,7 +49,6 @@ namespace Interface
 
     Token* pTkn(i8 i_Token);
     TokenVec* pTknVec(void);
-    TokenVec* pTknVec2(void);
   
     Footer* aFooter(void);
   };

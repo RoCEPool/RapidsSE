@@ -54,45 +54,13 @@ namespace Prompt
   //----------------------------------------------------------------------------
   // to be removed
     bool bTokenCheck(i8 nTokens);
-  
-    TokenVec* pTknVec2(void);
-  
     Token* pTkn(i8 i_Token);
-    Token* pTkn2(i8 i_Token);
 
   public:
-    bool bCmd_AnalyzeTable(void);
-    bool bCmd_BeginInsert(void);
-    bool bCmd_CreateCatalog(void);
-    bool bCmd_CreateIndex(void);
-    bool bCmd_CreateSchema(void);
-    bool bCmd_CreateTenant(void);
-    bool bCmd_CreateUnique(void);
-    bool bCmd_DanalyzeTable(void);
-    bool bCmd_Docol(void);
-    bool bCmd_DistParLoadTable(void);
-    bool bCmd_DropTenant(void);
-    bool bCmd_DropCatalog(void);
-    bool bCmd_DropIndex(void);
-    bool bCmd_DropSchema(void);
-    bool bCmd_EndInsert(void);
     bool bCmd_Help(void);
-    bool bCmd_InsertRow(void);
-    //bool bCmd_LoadTable(void);
-    bool bCmd_PrintDir(void);
-    bool bCmd_UseSchema(void);
   
   private:
-    i8   iCopyTokens(TokenVec* pFromTokenVec, TokenVec* pToTokenVec);
-    bool bDropReturnTable(Stz* aTableName);
-
-    bool bRemoveTable(Stz* pTableName);
-    bool bValidateCreateIndex(i8 iNumTokens);
-  
-    bool bValidateCreateIndexR35(i8 iNumTokens);
-  
     bool bReturnTable(void);
-    bool bIndexReturnTable(Stz* aTableName, Stz* aIndexName);
     void vIterateBuffers(void);
     bool bExecuteRequest(void);
 
