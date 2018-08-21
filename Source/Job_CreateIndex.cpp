@@ -15,7 +15,7 @@ JobNote mJobNote_CreateIndex (
   "create"_Stz,            // the prompt command
   "index"_Stz,             // the second word
   "createIndex_req"_Stz,   // the _req task seed 
-  nullptr,                 // the _rcv task seed
+  "createIndex_beg"_Stz,   // the _rcv task seed
   "createIndex_node"_Stz,  // the _exe task seed
   "createIndex_end"_Stz,   // the _end task seed
   "createIndex_can"_Stz,   // the _can task seed

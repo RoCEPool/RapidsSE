@@ -15,7 +15,7 @@ JobNote mJobNote_AnalyzeIndex (
   "anidx"_Stz,               // the prompt command
   nullptr,                   // the second word
   "analyzeIndex_req"_Stz,    // the _req task seed
-  nullptr,                   // the _rcv task seed
+  "analyzeIndex_beg"_Stz,    // the _rcv task seed
   "analyzeIndex_node"_Stz,   // the _exe task seed
   "analyzeIndex_end"_Stz,    // the _end task seed
   "analyzeIndex_can"_Stz,    // the _can task seed

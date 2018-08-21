@@ -16,7 +16,7 @@ JobNote mJobNote_DropSchema (
   "drop"_Stz,             // the prompt command
   "schema"_Stz,           // the second word
   "dropSchema_req"_Stz,   // the _req task seed
-  nullptr,                // the _rcv task seed
+  "dropSchema_beg"_Stz,   // the _rcv task seed
   "dropSchema_node"_Stz,  // the _exe task seed
   "dropSchema_end"_Stz,   // the _end task seed
   "dropSchema_can"_Stz,   // the _can task seed

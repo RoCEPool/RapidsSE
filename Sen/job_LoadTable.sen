@@ -183,31 +183,31 @@ task::this to pThisTask
 /*----------------------------------------------------------------------------*/
 /* begin job                                                                  */
 /*----------------------------------------------------------------------------*/
-: dropTable_beg ( -- )
+: loadTable_beg ( -- )
 
-  job::this locals| pJob_dropTable |
+  job::this locals| pJob_loadTable |
 
-  pJob_dropTable dropTable_chk
+  pJob_loadTable loadTable_chk
 ;
 
 /*----------------------------------------------------------------------------*/
 /* end job                                                                    */
 /*----------------------------------------------------------------------------*/
-: dropTable_end ( -- )
+: loadTable_end ( -- )
 
-  job::this locals| pJob_dropTable |
+  job::this locals| pJob_loadTable |
 
-  pJob_dropTable dropTable_rel
+  pJob_loadTable loadTable_rel
 ;
 
 /*----------------------------------------------------------------------------*/
 /* cancel job                                                                 */
 /*----------------------------------------------------------------------------*/
-: dropTable_can ( -- )
+: loadTable_can ( -- )
 
-  job::this locals| pJob_dropTable |
+  job::this locals| pJob_loadTable |
 
-  pJob_dropTable dropTable_rel
+  pJob_loadTable loadTable_rel
 ;
 
 /*============================================================================*/

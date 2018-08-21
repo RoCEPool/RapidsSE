@@ -151,7 +151,9 @@
 /*----------------------------------------------------------------------------*/
 /* begin job                                                                  */
 /*----------------------------------------------------------------------------*/
-: tableSizes_beg ( -- ) job::this locals| pJob_tableSizes |
+: tableSizes_beg ( -- )
+
+  job::this locals| pJob_tableSizes |
 
   pJob_tableSizes tableSizes_chk
 ;
@@ -159,7 +161,9 @@
 /*----------------------------------------------------------------------------*/
 /* end job                                                                    */
 /*----------------------------------------------------------------------------*/
-: tableSizes_end ( -- ) job::this locals| pJob_tableSizes |
+: tableSizes_end ( -- )
+
+  job::this locals| pJob_tableSizes |
 
   pJob_tableSizes tableSizes_rel
 ;
@@ -167,7 +171,9 @@
 /*----------------------------------------------------------------------------*/
 /* cancel job                                                                 */
 /*----------------------------------------------------------------------------*/
-: tableSizes_can ( -- ) job::this locals| pJob_tableSizes |
+: tableSizes_can ( -- )
+
+  job::this locals| pJob_tableSizes |
 
   pJob_tableSizes tableSizes_rel
 ;

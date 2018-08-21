@@ -209,6 +209,8 @@
 /*----------------------------------------------------------------------------*/
 : createTable_beg ( -- )
 
+  0 assert
+
   job::this locals| pJob_createTable |
 
   pJob_createTable createTable_chk

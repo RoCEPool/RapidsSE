@@ -15,7 +15,7 @@ JobNote mJobNote_SizeIndex (
   "szidx"_Stz,           // the prompt command
   nullptr,               // the second word
   "sizeIndex_req"_Stz,   // the _req task seed
-  nullptr,               // the _rcv task seed
+  "sizeIndex_beg"_Stz,   // the _rcv task seed
   "sizeIndex_node"_Stz,  // the _exe task seed
   "sizeIndex_end"_Stz,   // the _end task seed
   "sizeIndex_can"_Stz,   // the _can task seed

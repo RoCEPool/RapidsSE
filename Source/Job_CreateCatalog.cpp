@@ -15,7 +15,7 @@ JobNote mJobNote_CreateCatalog (
   "create"_Stz,             // the prompt command
   "catalog"_Stz,            // the second word
   "createCatalog_req"_Stz,  // the _req task seed
-  nullptr,                  // the _rcv task seed
+  "createCatalog_beg"_Stz,  // the _rcv task seed
   "createCatalog_node"_Stz, // the _exe task seed
   "createCatalog_end"_Stz,  // the _end task seed
   "createCatalog_can"_Stz,  // the _can task seed

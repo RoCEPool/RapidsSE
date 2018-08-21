@@ -15,7 +15,7 @@ JobNote mJobNote_CreateTenant (
   "create"_Stz,              // the prompt command
   "tenant"_Stz,              // the second word
   "createTenant_node"_Stz,   // the _rcv task seed
-  nullptr,                   // the _req task seed
+  "createTenant_beg"_Stz,    // the _req task seed
   "createTenant_req"_Stz,    // the _exe task seed
   "createTenant_end"_Stz,    // the _end task seed
   "createTenant_can"_Stz,    // the _can task seed

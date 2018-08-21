@@ -147,7 +147,9 @@
 /*----------------------------------------------------------------------------*/
 /* begin job                                                                  */
 /*----------------------------------------------------------------------------*/
-: truncateTable_beg ( -- ) job::this locals| pJob_truncateTable |
+: truncateTable_beg ( -- )
+
+  job::this locals| pJob_truncateTable |
 
   pJob_truncateTable truncateTable_chk
 ;
@@ -155,7 +157,9 @@
 /*----------------------------------------------------------------------------*/
 /* end job                                                                    */
 /*----------------------------------------------------------------------------*/
-: truncateTable_end ( -- ) job::this locals| pJob_truncateTable |
+: truncateTable_end ( -- )
+
+  job::this locals| pJob_truncateTable |
 
   pJob_truncateTable truncateTable_rel
 ;
@@ -163,7 +167,9 @@
 /*----------------------------------------------------------------------------*/
 /* cancel job                                                                 */
 /*----------------------------------------------------------------------------*/
-: truncateTable_can ( -- ) job::this locals| pJob_truncateTable |
+: truncateTable_can ( -- )
+
+  job::this locals| pJob_truncateTable |
 
   pJob_truncateTable truncateTable_rel
 ;

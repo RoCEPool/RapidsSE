@@ -15,7 +15,7 @@ JobNote mJobNote_Space (
   "space"_Stz,      // the prompt command
   nullptr,          // the second word
   "space_req"_Stz,  // the _req task seed
-  nullptr,          // the _rcv task seed
+  "space_beg"_Stz,  // the _rcv task seed
   "space_node"_Stz, // the _exe task seed
   "space_end"_Stz,  // the _end task seed
   "space_can"_Stz,  // the _can task seed

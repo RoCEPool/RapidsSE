@@ -177,7 +177,9 @@
 /*----------------------------------------------------------------------------*/
 /* begin job                                                                  */
 /*----------------------------------------------------------------------------*/
-: sizeIndex_beg ( -- ) job::this locals| pJob_sizeIndex |
+: sizeIndex_beg ( -- )
+
+  job::this locals| pJob_sizeIndex |
 
   pJob_sizeIndex sizeIndex_chk
 ;
@@ -185,7 +187,9 @@
 /*----------------------------------------------------------------------------*/
 /* end job                                                                    */
 /*----------------------------------------------------------------------------*/
-: sizeIndex_end ( -- ) job::this locals| pJob_sizeIndex |
+: sizeIndex_end ( -- )
+
+  job::this locals| pJob_sizeIndex |
 
   pJob_sizeIndex sizeIndex_rel
 ;
@@ -193,7 +197,9 @@
 /*----------------------------------------------------------------------------*/
 /* cancel job                                                                 */
 /*----------------------------------------------------------------------------*/
-: sizeIndex_can ( -- ) job::this locals| pJob_sizeIndex |
+: sizeIndex_can ( -- )
+
+  job::this locals| pJob_sizeIndex |
 
   pJob_sizeIndex sizeIndex_rel
 ;

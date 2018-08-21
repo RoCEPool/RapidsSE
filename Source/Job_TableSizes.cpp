@@ -15,7 +15,7 @@ JobNote mJobNote_TableSizes (
   "tableSizes"_Stz,      // the prompt command
   nullptr,               // the second word
   "tableSizes_req"_Stz,  // the _req task seed
-  nullptr,               // the _rcv task seed
+  "tableSizes_beg"_Stz,  // the _rcv task seed
   "tableSizes_node"_Stz, // the _exe task seed
   "tableSizes_end"_Stz,  // the _end task seed
   "tableSizes_can"_Stz,  // the _can task seed

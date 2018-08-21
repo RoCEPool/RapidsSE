@@ -15,7 +15,7 @@ JobNote mJobNote_DropCatalog (
   "drop"_Stz,              // the prompt command
   "catalog"_Stz,           // the second word
   "dropCatalog_req"_Stz,   // the _req task seed
-  nullptr,                 // the _rcv task seed
+  "dropCatalog_beg"_Stz,   // the _rcv task seed
   "dropCatalog_node"_Stz,  // the _exe task seed
   "dropCatalog_end"_Stz,   // the _end task seed
   "dropCatalog_can"_Stz,   // the _can task seed

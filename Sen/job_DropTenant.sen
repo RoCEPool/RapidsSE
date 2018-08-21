@@ -136,25 +136,31 @@
 /*----------------------------------------------------------------------------*/
 /* begin job                                                                  */
 /*----------------------------------------------------------------------------*/
-: dropTable_beg ( -- ) job::this locals| pJob_dropTable |
+: dropTenant_beg ( -- )
 
-  pJob_dropTable dropTable_chk
+  job::this locals| pJob_dropTenant |
+
+  pJob_dropTenant dropTenant_chk
 ;
 
 /*----------------------------------------------------------------------------*/
 /* end job                                                                    */
 /*----------------------------------------------------------------------------*/
-: dropTable_end ( -- ) job::this locals| pJob_dropTable |
+: dropTenant_end ( -- )
 
-  pJob_dropTable dropTable_rel
+  job::this locals| pJob_dropTenant |
+
+  pJob_dropTenant dropTenant_rel
 ;
 
 /*----------------------------------------------------------------------------*/
 /* cancel job                                                                 */
 /*----------------------------------------------------------------------------*/
-: dropTable_can ( -- ) job::this locals| pJob_dropTable |
+: dropTenant_can ( -- )
 
-  pJob_dropTable dropTable_rel
+  job::this locals| pJob_dropTenant |
+
+  pJob_dropTenant dropTable_rel
 ;
 
 /*============================================================================*/

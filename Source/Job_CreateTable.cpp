@@ -15,7 +15,7 @@ JobNote mJobNote_CreateTable (
   "create"_Stz,           // the prompt command
   "table"_Stz,            // the second word
   "createTable_req"_Stz,  // the _req task seed
-  nullptr,                // the _rcv task seed
+  "createTable_beg"_Stz,  // the _rcv task seed
   "createTable_node"_Stz, // the _exe task seed
   "createTable_end"_Stz,  // the _end task seed
   "createTable_can"_Stz,  // the _can task seed
