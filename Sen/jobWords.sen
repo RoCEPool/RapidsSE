@@ -13,24 +13,45 @@
 /*----------------------------------------------------------------------------*/
 /* begin a new job                                                            */
 /*----------------------------------------------------------------------------*/
-: job.begin ( pJob -- )
+: job.beginParticipant ( pJob -- )
 
-  locals| pJob |
+  params| pJob |
 
-  0 locals| sCheckResources |
-
-  pJob object.class@ class::name
-  grid::thisNode@
-  "Node %v Job %v Received"
+    grid::thisNode@
+    pJob object.class@ class::name
+    "Participant Job %v Received Node %v "
   fmt.print
-
-  " ++ a" .
 
   // set participant node in job
   grid::thisNode@ pJob job.participant!
 
   // add job as participant job
   pJob job.addParticipant
+;
+
+/*----------------------------------------------------------------------------*/
+/* begin a new job                                                            */
+/*----------------------------------------------------------------------------*/
+: job.participantBegun ( pJob -- )
+
+  params| pJob |
+
+  // send job__begun back to originating node
+  pJob job.id@ pJob "Job__Begun::send" find execute
+;
+
+/*----------------------------------------------------------------------------*/
+/* begin a new job                                                            */
+/*----------------------------------------------------------------------------*/
+: job.begin ( pJob -- )
+
+  locals| pJob |
+
+  0 locals| sCheckResources |
+
+  " ++ a" .
+
+  pJob job.beginParticipant
 
   " ++ b" .
 
@@ -45,10 +66,7 @@
 
   " ++ c" .
 
-  // send job__begun back to originating node
-  pJob job.id@ pJob "Job__Begun::send" find execute
-
-  " ++ d" .
+  pJob job.participantBegun
 
 ;
 
