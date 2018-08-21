@@ -10,7 +10,7 @@ extern AttachMap* gpAttachMap;
 JobNote mJobNote_SubTruncate (
   "Job_SubTruncate"_Stz,     // name of the job class
   CN_JOB_SUBTRUNCATE,        // class enum
-  JK_DIST2PC,                // job kind
+  JK_ONESHOT,                // job kind
   "table subTruncate"_Stz,   // comment about the job
   nullptr,                   // the prompt command
   nullptr,                   // the second word

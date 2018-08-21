@@ -26,7 +26,7 @@ namespace JobsModel
   {
   /*  0 */ "NONE"_Stz,
   /*  1 */ "CHILD"_Stz,
-  /*  2 */ "DIST2C"_Stz,
+  /*  2 */ "DIST2PC"_Stz,
   /*  3 */ "GENERIC"_Stz,
   /*  4 */ "LOCAL"_Stz,
   /*  5 */ "ONESHOT"_Stz,
