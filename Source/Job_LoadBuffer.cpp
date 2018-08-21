@@ -16,8 +16,8 @@ JobNote mJobNote_LoadBuffer (
   nullptr,                 // the second word
   "loadBuffer_run"_Stz,    // the _run task seed
   nullptr,                 // the _req task seed
-  nullptr,                 // the _rcv task seed
-  "LoadBuffer_node"_Stz,   // the _exe task seed
+  "LoadBuffer_node"_Stz,   // the _rcv task seed
+  nullptr,                 // the _exe task seed
   nullptr,                 // the _end task seed
   nullptr,                 // the _can task seed
   false,                   // check resources?
