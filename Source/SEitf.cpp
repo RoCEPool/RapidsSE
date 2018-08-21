@@ -216,7 +216,6 @@ SEitf::SEitf(i8 iPartition)
   //m_xFormatters
   
   m_pPerformanceTrace = nullptr;
-  m_pJob = nullptr;
   
   m_pCommandProcessor = new CommandProcessor;
 

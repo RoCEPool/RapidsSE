@@ -65,8 +65,6 @@ namespace Interface
   
     PerformanceTrace* m_pPerformanceTrace;
   
-    Job* m_pJob;  // job to be performed
-  
     CommandProcessor* m_pCommandProcessor;
   
     // must be last
@@ -132,7 +130,6 @@ namespace Interface
     bool bSetAttachMap(TokenVec& xTokenVec, i8 iReqNo);
     
     bool bReload(TokenVec& xTokenVec, i8 iReqNo);
-    bool bRemoveFolder(TokenVec& xTokenVec, i8 iReqNo);
     
     bool bCopyTable(TokenVec& xTokenVec, i8 iReqNo);
     bool bExportTable(TokenVec& xTokenVec, i8 iReqNo);
