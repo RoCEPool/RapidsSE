@@ -7,6 +7,8 @@
 1 constant SEED_REQ
 2 constant SEED_RCV
 3 constant SEED_EXE
+4 constant SEED_END
+5 constant SEED_CAN
 
 /*----------------------------------------------------------------------------*/
 /* begin a new job                                                            */
