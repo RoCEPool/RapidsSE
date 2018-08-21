@@ -58,16 +58,15 @@ Tokeniser::Tokeniser(void)
   m_sToken  = ""_Stz;
   m_eToken  = TN_NONE;
   
-  m_sPrompt.vSprint("[N%lld %lld] se %s%c%s> "_Stz,
+  m_sPrompt.vSprint("[N%lld %lld] se %s%c> "_Stz,
                     gxArguments.m_iThisNode,
                     Process::iGetPid(),
                     RAPIDSSE_VERSION_STRING,
 #ifdef _DEBUG
-                    'd',
+                    'd'
 #else
-                    'r',
+                    'r'
 #endif
-                    gxArguments.m_bPromptR35 ? " R35"_Stz : ""_Stz
                     );
 
   m_sContinue = "  > "_Stz;

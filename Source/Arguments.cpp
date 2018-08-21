@@ -50,7 +50,6 @@ Arguments::Arguments(void)
   m_bDocol      = false;
   m_bHelp       = false;
   m_bPrompt     = false;
-  m_bPromptR35  = false;
   m_bScript     = false;
   m_bStart      = false;
   m_bStatus     = false;
@@ -280,26 +279,6 @@ bool Arguments::bParse(int argc, Stz* argv[])
     }
     
     //~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-
-    if (argv[i_Arg]->bSame("--promptR35"_Stz)) {
-      
-      if (m_bStop) {
-        vError("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg]);
-        return false;
-      }
-      if (m_bStatus) {
-        vError("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg]);
-        return false;
-      }
-      if (m_bScript) {
-        vError("Incorrect argument: --script with %s\n"_Stz,argv[i_Arg]);
-        return false;
-      }
-      m_bPromptR35 = true;
-      continue;
-    }
-
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--size"_Stz)) {
       bool bResult = Magnitudes::bBytes((Stz*)argv[++i_Arg], m_iRegionSize);
       if (!bResult) {
@@ -353,10 +332,6 @@ bool Arguments::bParse(int argc, Stz* argv[])
         vError("Incorrect argument: --prompt with %s\n"_Stz,argv[i_Arg]);
         return false;
       }
-      if (m_bPromptR35) {
-        vError("Incorrect argument: --promptR35 with %s\n"_Stz,argv[i_Arg]);
-        return false;
-      }
 
       m_bStatus = true;
       continue;
@@ -375,10 +350,6 @@ bool Arguments::bParse(int argc, Stz* argv[])
       }
       if (m_bPrompt) {
         vError("Incorrect argument: --prompt with %s\n"_Stz,argv[i_Arg]);
-        return false;
-      }
-      if (m_bPromptR35) {
-        vError("Incorrect argument: --promptR35 with %s\n"_Stz,argv[i_Arg]);
         return false;
       }
 

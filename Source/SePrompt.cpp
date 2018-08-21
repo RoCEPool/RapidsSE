@@ -13,64 +13,6 @@ extern pthread_key_t giTLS_ThreadKey;
 PromptCatalog gxPromptCatalog;
 extern JobCatalog gxJobCatalog;
 
-//
-// list of commands which need intercept processing by SePrompt
-//
-const Stz* C_CMD_ANTBL      = "antbl"_Stz;
-const Stz* C_CMD_BEGIN      = "begin"_Stz;
-const Stz* C_CMD_CREATE     = "create"_Stz;
-const Stz* C_CMD_DANTBL     = "dantbl"_Stz;
-const Stz* C_CMD_DOCOL      = "docol"_Stz;
-const Stz* C_CMD_DISTPARLOAD = "dpld"_Stz;
-const Stz* C_CMD_DROP       = "drop"_Stz;
-const Stz* C_CMD_END        = "end"_Stz;
-const Stz* C_CMD_FIRST      = "first"_Stz;
-const Stz* C_CMD_INSERT     = "insert"_Stz;
-const Stz* C_CMD_LOAD       = "ld"_Stz;
-const Stz* C_CMD_NEXT       = "next"_Stz;
-const Stz* C_CMD_USE        = "use"_Stz;
-
-const Stz* C_ONE_CATALOG = "catalog"_Stz;
-const Stz* C_ONE_INDEX   = "index"_Stz;
-const Stz* C_ONE_INSERT  = "insert"_Stz;
-const Stz* C_ONE_ROW     = "row"_Stz;
-const Stz* C_ONE_SCHEMA  = "schema"_Stz;
-const Stz* C_ONE_TABLE   = "table"_Stz;
-const Stz* C_ONE_TENANT  = "tenant"_Stz;
-const Stz* C_ONE_UNIQUE  = "unique"_Stz;
-
-struct CmdTable {
-  const Stz* aCommand;
-  const Stz* aAlternate;
-  bool (SePrompt::*aFunc)(void);
-};
-
-CmdTable SePromptCommands[] =
-{
-  { C_CMD_ANTBL,      nullptr,       &SePrompt::bCmd_AnalyzeTable  },
-  { C_CMD_BEGIN,      C_ONE_INSERT,  &SePrompt::bCmd_BeginInsert   },
-  { C_CMD_CREATE,     C_ONE_CATALOG, &SePrompt::bCmd_CreateCatalog },
-  { C_CMD_CREATE,     C_ONE_INDEX,   &SePrompt::bCmd_CreateIndex   },
-  { C_CMD_CREATE,     C_ONE_SCHEMA,  &SePrompt::bCmd_CreateSchema  },
-  //{ C_CMD_CREATE,     C_ONE_TABLE,   &SePrompt::bCmd_CreateTable   },
-  { C_CMD_CREATE,     C_ONE_TENANT,  &SePrompt::bCmd_CreateTenant  },
-  { C_CMD_CREATE,     C_ONE_UNIQUE,  &SePrompt::bCmd_CreateUnique  },
-  { C_CMD_DANTBL,     nullptr,       &SePrompt::bCmd_DanalyzeTable },
-  //{ C_CMD_DOCOL,      nullptr,       &SePrompt::bCmd_Docol         },
-  { C_CMD_DISTPARLOAD,nullptr,       &SePrompt::bCmd_DistParLoadTable},
-  { C_CMD_DROP,       C_ONE_CATALOG, &SePrompt::bCmd_DropCatalog   },
-  { C_CMD_DROP,       C_ONE_INDEX,   &SePrompt::bCmd_DropIndex     },
-  { C_CMD_DROP,       C_ONE_SCHEMA,  &SePrompt::bCmd_DropSchema    },
-  //{ C_CMD_DROP,       C_ONE_TABLE,   &SePrompt::bCmd_DropTable     },
-  { C_CMD_DROP,       C_ONE_TENANT,  &SePrompt::bCmd_DropTenant    },
-  { C_CMD_END,        C_ONE_INSERT,  &SePrompt::bCmd_EndInsert     },
-  { C_CMD_INSERT,     C_ONE_ROW,     &SePrompt::bCmd_InsertRow     },
-  //{ C_CMD_LOAD,       nullptr,       &SePrompt::bCmd_LoadTable     },
-  { C_CMD_USE,        nullptr,       &SePrompt::bCmd_UseSchema     },
-  
-  { nullptr,          nullptr,       nullptr                              }
-};
-
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

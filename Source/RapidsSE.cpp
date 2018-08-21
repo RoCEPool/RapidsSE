@@ -228,44 +228,6 @@ bool RapidsSE::bRunUtilities(int argc, Stz* argv[])
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vRunPrompt(void)
 {
-  // optionally execute se> prompt
-  if (gxArguments.m_bPrompt || gxArguments.m_bScript) {
-    
-    if (gxArguments.m_bVerbose)
-      vInfo("\n*\n* Run Prompt\n*\n"_Stz);
-    
-    // if only prompt then cwd to Commands
-    // (with --start sen changes cwd)
-    //    if (!gxArguments.m_bStart) {
-    //      // change working directory to commands dir
-    //      bool bResult = xDir.bSetCurrent(gxArguments.m_sCommands);
-    //      // ignore error
-    
-    //     if (xDir.bGetCurrent(sCurrent))
-    //       vInfo("dir: %s\n"_Stz,sCurrent.aStr());
-    //    }
-    
-    // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-    // start prompt R35
-    
-    if (gxArguments.m_bPromptR35) {
-      PosixThread::vTlsSet(giTLS_ThreadKey,(void*)-1);
-      
-      i8 iTraceLevel = 0;
-      eEC eError = RapidsSE_Prompt(iTraceLevel);
-      ASSERT(EC_NONE == eError);
-      vTrace("RapidsSE_Prompt() called\n"_Stz);
-      
-      while (true)
-        PosixThread::vSleepSec(1000000000);
-    }
-    
-    // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-    
-    return;
-  }
-  
-  if (gxArguments.m_bPromptR35) {
     PosixThread::vTlsSet(giTLS_ThreadKey,(void*)-1);
     
     i8 iTraceLevel = 0;
@@ -275,7 +237,6 @@ void RapidsSE::vRunPrompt(void)
     
     while (true)
       PosixThread::vSleepSec(10000000);
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -395,9 +356,7 @@ void RapidsSE::vExecuteCmdLine(void)
         vRunDocol();
         vWaitFlag();
       }
-      else if (gxArguments.m_bPrompt
-               || gxArguments.m_bPromptR35
-               || gxArguments.m_bScript) {
+      else if (gxArguments.m_bPrompt || gxArguments.m_bScript) {
         ASSERT(gpBufferPool);
         return;
       }
