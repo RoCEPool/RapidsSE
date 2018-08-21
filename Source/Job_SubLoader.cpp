@@ -15,7 +15,7 @@ JobNote mJobNote_SubLoader (
   nullptr,                // the prompt command
   nullptr,                // the second word
   "subLoader_seed"_Stz,   // the _run task seed
-  "subLoader_seed"_Stz,   // the _req task seed
+  nullptr,                // the _req task seed
   nullptr,                // the _rcv task seed 
   nullptr,                // the _exe task seed
   nullptr,                // the _end task seed
@@ -93,7 +93,7 @@ Job_SubLoader::Job_SubLoader(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
   
-  m_sSeed = mJobNote_SubLoader.pJobClass()->m_aSeedReq;
+  //m_sSeed = mJobNote_SubLoader.pJobClass()->m_aSeedReq;
   
   m_pJob_LoadTable = nullptr;
   m_pLoaderSub = nullptr;
