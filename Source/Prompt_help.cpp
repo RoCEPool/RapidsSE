@@ -52,11 +52,21 @@ bool Prompt::bPrompt_help(SePrompt* pPrompt)
            gxJobCatalog.m_xJobClass[i_Job].m_aName,
            aJK[gxJobCatalog.m_xJobClass[i_Job].m_eKind],
 
-           gxJobCatalog.m_xJobClass[i_Job].m_aSeedReq,
-           gxJobCatalog.m_xJobClass[i_Job].m_aSeedRcv,
-           gxJobCatalog.m_xJobClass[i_Job].m_aSeedExe,
-           gxJobCatalog.m_xJobClass[i_Job].m_aSeedEnd,
+           gxJobCatalog.m_xJobClass[i_Job].m_aSeedReq
+             ? gxJobCatalog.m_xJobClass[i_Job].m_aSeedReq : "-"_Stz,
+           
+           gxJobCatalog.m_xJobClass[i_Job].m_aSeedRcv
+             ? gxJobCatalog.m_xJobClass[i_Job].m_aSeedRcv : "-"_Stz,
+
+           gxJobCatalog.m_xJobClass[i_Job].m_aSeedExe
+             ? gxJobCatalog.m_xJobClass[i_Job].m_aSeedExe : "-"_Stz,
+
+           gxJobCatalog.m_xJobClass[i_Job].m_aSeedEnd
+             ? gxJobCatalog.m_xJobClass[i_Job].m_aSeedEnd : "-"_Stz,
+
            gxJobCatalog.m_xJobClass[i_Job].m_aSeedCan
+             ? gxJobCatalog.m_xJobClass[i_Job].m_aSeedCan : "-"_Stz
+
     );
   }
 

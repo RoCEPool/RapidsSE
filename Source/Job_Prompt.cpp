@@ -4,6 +4,34 @@
 
 #include "JobModel.h"
 
+JobNote mJobNote_Prompt (
+  "Job_Prompt"_Stz,  // name of the job class
+  CN_JOB_PROMPT,     // class enum
+  JK_SYSTEM,         // job kind
+  "SE Prompt"_Stz,   // comment about the job
+  nullptr,           // the prompt command
+  nullptr,           // the second word
+  "Prompt_seed"_Stz, // the _req task seed
+  nullptr,           // the _exe task seed
+  nullptr,           // the _rcv task seed
+  nullptr,           // the _end task seed
+  nullptr,           // the _can task seed
+  false,             // check resources?
+  false,             // detached job?
+  false,             // buffer attached?
+  JT_NONE,           // job trace
+  nullptr,           // prompt pre-process function
+  nullptr,           // prompt post-process function
+  nullptr,           // job new function
+  nullptr,           // job delete function
+  nullptr,           // job pre-send function
+  nullptr,           // job post-receive function
+  nullptr,           // job show function
+  false,             // job is not prompt enabled
+  "<help>"_Stz,      // help
+  "<example>"_Stz    // example
+);
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
