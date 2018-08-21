@@ -15,7 +15,7 @@ JobNote mJobNote_Boot (
   nullptr,           // the prompt command
   nullptr,           // the second word
   "::dicCompile"_Stz,// the _run task seed
-  "::dicCompile"_Stz,// the _req task seed
+  nullptr,           // the _req task seed
   nullptr,           // the _exe task seed
   nullptr,           // the _rcv task seed
   nullptr,           // the _end task seed
@@ -93,7 +93,7 @@ Job_Boot::Job_Boot(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_BOOT,_FOOTER_);
   
-  m_sSeed = mJobNote_Boot.pJobClass()->m_aSeedReq;
+  //m_sSeed = mJobNote_Boot.pJobClass()->m_aSeedReq;
   
   _checkInitialised_(CN_JOB_BOOT);
   
