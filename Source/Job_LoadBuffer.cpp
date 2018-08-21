@@ -10,7 +10,7 @@ extern AttachMap* gpAttachMap;
 JobNote mJobNote_LoadBuffer (
   "Job_LoadBuffer"_Stz,    // name of the job class
   CN_JOB_LOADBUFFER,       // class enum
-  JK_ONESHOT,              // job kind
+  JK_GRANDKID,             // job kind
   "table load buffer"_Stz, // comment about the job
   nullptr,                 // the prompt command
   nullptr,                 // the second word

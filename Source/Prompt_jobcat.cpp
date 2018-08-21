@@ -44,7 +44,7 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
       gxJobCatalog.m_xJobClass[i_Job].vJobCat();
   
   for (i8 i_Job = 0; i_Job < gxJobCatalog.m_nClasses; i_Job++)
-    if (JK_ONESHOT == gxJobCatalog.m_xJobClass[i_Job].m_eKind)
+    if (JK_GRANDKID == gxJobCatalog.m_xJobClass[i_Job].m_eKind)
       gxJobCatalog.m_xJobClass[i_Job].vJobCat();
   
   vTrace("\n"_Stz);

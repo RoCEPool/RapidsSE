@@ -825,13 +825,13 @@ void Task::vAddConstants(void)
   /* 61 */ vAddConstant("EC_ENUMS"_Stz,              EC_ENUMS);
 
   // JK_ : job kind
-  /*  0 */ vAddConstant("JK_NONE"_Stz,    JK_NONE);
-  /*  1 */ vAddConstant("JK_CHILD"_Stz,   JK_CHILD);
-  /*  2 */ vAddConstant("JK_DIST2PC"_Stz, JK_DIST2PC);
-  /*  3 */ vAddConstant("JK_GENERIC"_Stz, JK_GENERIC);
-  /*  4 */ vAddConstant("JK_LOCAL"_Stz,   JK_LOCAL);
-  /*  5 */ vAddConstant("JK_ONESHOT"_Stz, JK_ONESHOT);
-  /*  6 */ vAddConstant("JK_SYSTEM"_Stz,  JK_SYSTEM);
+  /*  0 */ vAddConstant("JK_NONE"_Stz,     JK_NONE);
+  /*  1 */ vAddConstant("JK_CHILD"_Stz,    JK_CHILD);
+  /*  2 */ vAddConstant("JK_DIST2PC"_Stz,  JK_DIST2PC);
+  /*  3 */ vAddConstant("JK_GENERIC"_Stz,  JK_GENERIC);
+  /*  4 */ vAddConstant("JK_GRANDKID"_Stz, JK_GRANDKID);
+  /*  5 */ vAddConstant("JK_LOCAL"_Stz,    JK_LOCAL);
+  /*  6 */ vAddConstant("JK_SYSTEM"_Stz,   JK_SYSTEM);
 
   // JT_ : job trace
   /*  0 */ vAddConstant("JT_NONE"_Stz,    JT_NONE);
