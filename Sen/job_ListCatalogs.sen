@@ -37,7 +37,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // list tables folder contents
-  pJob_ListCatalogs listContentsR35
+  pJob_ListCatalogs listContents
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // return

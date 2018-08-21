@@ -22,7 +22,6 @@ namespace Prompt
   private:
     bool   m_bContinue;  // continue processing commands?
     SEitf* m_pSEitf;     // interface into rapidsse
-    s48K   m_sResponse;  // response from seitf TO BE DELETED
   
     // must be last
     Footer m_xFooter;

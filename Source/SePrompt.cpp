@@ -51,9 +51,7 @@ SePrompt::SePrompt(void)
 
   eEC eResult = RapidsSE_SEitfNew((void**)&m_pSEitf,iPartition, /*trace*/ 0);
   ASSERT(EC_NONE == eResult);
-  
-  m_sResponse  = ""_Stz;
-  
+   
   _checkInitialised_(CN_SEPROMPT);
 }
 

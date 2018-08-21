@@ -36,7 +36,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // list tables folder contents
-  pJob_ListTenants listContentsR35
+  pJob_ListTenants listContents
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // return

@@ -123,40 +123,7 @@
 /*----------------------------------------------------------------------------*/
 /* get all words in the current dictionary as a single string                 */
 /*----------------------------------------------------------------------------*/
-: listContents
-
-  0 locals| count |
-
-  args.metadata if
-    "(name VARCHAR)" metadata!
-    ""                              // initial contents string
-    0 pathPick dic.lastWord dup
-    iterate                         // setup iteration of words
-    1 count + to count
-    "row: ('" str.cat
-    object@ word.name str.cat       // add name of the word to contents string
-    // add word kind to ls string
-    "')\n" str.cat                     //
-    object@ word.prev object!       // step backwards thru words
-    next                            //
-    count task::this task.seitf@ seitf.rowsProcessed
-  else
-    ""                              // initial contents string
-    0 pathPick dic.lastWord dup
-    iterate                         // setup iteration of words
-      object@ word.name str.cat     // add name of the word to contents string
-      // add word kind to ls string
-      " " str.cat                   //
-      object@ word.prev object!     // step backwards thru words
-    next                            //
-  then
-
-;
-
-/*----------------------------------------------------------------------------*/
-/* get all words in the current dictionary as a single string                 */
-/*----------------------------------------------------------------------------*/
-: listContentsR35 ( job -- )
+: listContents ( job -- )
 
   params| pJob |
   0 locals| iCount |
@@ -190,6 +157,7 @@
 /*----------------------------------------------------------------------------*/
 /* get all words in the current dictionary as a single string (indexes)       */
 /*----------------------------------------------------------------------------*/
+/*
 : listIndexesContents ( -- )
 
   0 0 locals| iCount pIndexPtr |
@@ -263,7 +231,7 @@
   then
 
 ;
-
+*/
 /*----------------------------------------------------------------------------*/
 /* forget all words in given dictionary                                       */
 /*----------------------------------------------------------------------------*/

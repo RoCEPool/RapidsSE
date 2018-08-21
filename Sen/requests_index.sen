@@ -664,7 +664,8 @@ timer: pIdxSelectTimer
 
   // set the metadata string
   args.metadata if
-    pTable table.getColumnsAsString "(partition INTEGER,%v)" str.format metadata!
+    // commented line because removed metadata!
+    //pTable table.getColumnsAsString "(partition INTEGER,%v)" str.format metadata!
   then
 
   // get and inc table reference and put into task.seitf.currentTable
@@ -716,6 +717,7 @@ timer: pIdxSelectTimer
 /*----------------------------------------------------------------------------*/
 /* get list of indexes                                                        */
 /*----------------------------------------------------------------------------*/
+/*
 : listIndexes_req ( "<sTableNm>" -- <R> )
                                                                     // ../tables
   locals| sTableNm |
@@ -748,7 +750,7 @@ timer: pIdxSelectTimer
 
   <SUCCESS>
 ;
-
+*/
 /*----------------------------------------------------------------------------*/
 /* return an index                                                            */
 /*----------------------------------------------------------------------------*/
@@ -851,6 +853,7 @@ timer: pIdxSelectTimer
 /*----------------------------------------------------------------------------*/
 /* verify an index of a table                                                 */
 /*----------------------------------------------------------------------------*/
+/*
 : verifyIdx ( "<sIndexNm>" "<sTableNm>" -- <R> )
   // ../tables
   tp: verifyIdx
@@ -901,17 +904,19 @@ timer: pIdxSelectTimer
   not if <NIP+ERROR> else <SUCCESS> then
 ;
 
-
+*/
 /*----------------------------------------------------------------------------*/
 /* verify an index of a table                                                 */
 /*----------------------------------------------------------------------------*/
+/*
 : verifyIndex_req ( "<sIndexNm>" "<sTableNm>" -- <R> )
    verifyIdx
 ;
-
+*/
 /*----------------------------------------------------------------------------*/
 /* visualize index                                                            */
 /*----------------------------------------------------------------------------*/
+/*
 : visualizeIndex_req ( "<sIndexNm>" "<sTableNm" -- <R> )
   // ../tables
   locals| sTableNm sIndexNm |
@@ -952,7 +957,7 @@ timer: pIdxSelectTimer
 
   <OK>
 ;
-
+*/
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
