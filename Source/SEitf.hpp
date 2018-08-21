@@ -143,58 +143,13 @@ namespace Interface
     bool bReload(TokenVec& xTokenVec, i8 iReqNo);
     bool bRemoveFolder(TokenVec& xTokenVec, i8 iReqNo);
     
-    bool bCreateIndex(TokenVec& xTokenVec, i8 iReqNo);
-    bool bDropIndex(TokenVec& xTokenVec, i8 iReqNo);
-    bool bDumpIndex(TokenVec& xTokenVec, i8 iReqNo);
-    bool bEndCreateIndex(TokenVec& xTokenVec, i8 iReqNo);
-    bool bListIndices(TokenVec& xTokenVec, i8 iReqNo);
-    bool bIndexSetUnique(TokenVec& xTokenVec, i8 iReqNo);
-    bool bVisualizeIndex(TokenVec& xTokenVec, i8 iReqNo);
-  
-    bool bCreateTable(TokenVec& xTokenVec, i8 iReqNo);
-    bool bEndCreateTable(TokenVec& xTokenVec, i8 iReqNo);
-  
-    bool bListTables(TokenVec& xTokenVec, i8 iReqNo);
-    bool bDisplayOff(TokenVec& xTokenVec, i8 iReqNo);
-    bool bDisplayOn(TokenVec& xTokenVec, i8 iReqNo);
-    bool bDocol(TokenVec& xTokenVec, i8 iReqNo);
-    bool bDropTable(TokenVec& xTokenVec, i8 iReqNo);
-    bool bDumpTable(TokenVec& xTokenVec, i8 iReqNo);
-   
-    bool bAddColumn(TokenVec& xTokenVec, i8 iReqNo);
-    bool bAddIndexColumn(TokenVec& xTokenVec, i8 iReqNo);
-    bool bAddPartitionColumn(TokenVec& xTokenVec, i8 iReqNo);
-    bool bListColumns(TokenVec& xTokenVec, i8 iReqNo);
-    bool bListIndexColumns(TokenVec& xTokenVec, i8 iReqNo);
-    bool bListPartitionColumns(TokenVec& xTokenVec, i8 iReqNo);
-    
-    bool bAnalyzeIndex(TokenVec& xTokenVec, i8 iReqNo);
-    bool bCompactIndex(TokenVec& xTokenVec, i8 iReqNo);
-    bool bDanalyzeIndex(TokenVec& xTokenVec, i8 iReqNo);
-    bool bGetIndex(TokenVec& xTokenVec, i8 iReqNo);
-    bool bRetIndex(TokenVec& xTokenVec, i8 iReqNo);
-    bool bSizeIndex(TokenVec& xTokenVec, i8 iReqNo);
-    bool bVerifyIndex(TokenVec& xTokenVec, i8 iReqNo);
-
-    bool bAnalyzeTable(TokenVec& xTokenVec, i8 iReqNo);
     bool bCopyTable(TokenVec& xTokenVec, i8 iReqNo);
     bool bExportTable(TokenVec& xTokenVec, i8 iReqNo);
-    bool bDanalyzeTable(TokenVec& xTokenVec, i8 iReqNo);
     bool bDistExportTable(TokenVec& xTokenVec, i8 iReqNo);
     bool bDistFetchRowsIndex(TokenVec& xTokenVec, i8 iReqNo);
     bool bLoadTable(TokenVec& xTokenVec, i8 iReqNo);
     bool bLoadTableStream(TokenVec& xTokenVec, i8 iReqNo);
-    bool bGetTable(TokenVec& xTokenVec, i8 iReqNo);
-    bool bInUseTable(TokenVec& xTokenVec, i8 iReqNo);
-    bool bRetTable(TokenVec& xTokenVec, i8 iReqNo);
-    bool bNodeSanity(TokenVec& xTokenVec, i8 iReqNo);
-    bool bNodeSanityR35(TokenVec& xTokenVec, i8 iReqNo);
-    bool bNodeStatus(TokenVec& xTokenVec, i8 iReqNo);
-    bool bNodeStatusR35(TokenVec& xTokenVec, i8 iReqNo);
     bool bDistParallelLoadTable(TokenVec& xTokenVec, i8 iReqNo);
-    bool bSizeTable(TokenVec& xTokenVec, i8 iReqNo);
-    bool bSizeTables(TokenVec& xTokenVec, i8 iReqNo);
-    bool bTruncateTable(TokenVec& xTokenVec, i8 iReqNo);
     
     bool bFetchRows(TokenVec& xTokenVec, i8 iReqNo);
     bool bSpawnFetchRows(TokenVec& xTokenVec, i8 iReqNo);
@@ -210,24 +165,11 @@ namespace Interface
 
     bool bInsertEntriesTable(WorkingBuffer* pWorkingBuffer, i8 iPartition);
     bool bInsertEntriesTableSlot(WorkingBuffer* pWorkingBuffer, i8 iSlot);
-    
-    bool bChangeFolder(TokenVec& xTokenVec, i8 iReqNo);
-    bool bPrintWorkingFolder(TokenVec& xTokenVec, i8 iReqNo);
-    bool bListFolder(TokenVec& xTokenVec, i8 iReqNo);
 
     bool bGetMonitor(TokenVec& xTokenVec, i8 iReqNo);
-    bool bGetFreeSpace(TokenVec& xTokenVec, i8 iReqNo);
-    bool bGetInUseSpace(TokenVec& xTokenVec, i8 iReqNo);
-    bool bGetTotalSpace(TokenVec& xTokenVec, i8 iReqNo);
-    bool bGetVersion(TokenVec& xTokenVec, i8 iReqNo);
     bool bSeitfCount(TokenVec& xTokenVec, i8 iReqNo);
     
     bool bPing(TokenVec& xTokenVec, i8 iReqNo);
-    bool bN35(TokenVec& xTokenVec, i8 iReqNo);
-    bool bG35(TokenVec& xTokenVec, i8 iReqNo);
-    bool bP35(TokenVec& xTokenVec, i8 iReqNo);
-
-    bool bPrint(TokenVec& xTokenVec, i8 iReqNo);
  
     bool bTxBegin(TokenVec& xTokenVec, i8 iReqNo);
     bool bTxCommit(TokenVec& xTokenVec, i8 iReqNo);
