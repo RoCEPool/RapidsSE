@@ -1323,9 +1323,6 @@ namespace Tasks
     static void vSEitfRowsInvalidStore(MP_Task mpTask);
     static void vSEitfRowsProcessed(MP_Task mpTask);
     static void vSEitfRowsValidStore(MP_Task mpTask);
-    static void vSEitfRspFetch(MP_Task mpTask);
-    static void vSEitfRspStore(MP_Task mpTask);
-    static void vSEitfResponseQueue(MP_Task mpTask);
     static void vSEitfSlotFetch(MP_Task mpTask);
     static void vSEitfTableFetch(MP_Task mpTask);
     static void vSEitfTableRef(MP_Task mpTask);

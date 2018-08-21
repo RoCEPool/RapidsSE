@@ -52,9 +52,6 @@ void Task::vAddPrimitives_SEitf(void)
   vAddPrimitive("seitf.rowsInvalid!"_Stz,     &vSEitfRowsInvalidStore, false);
   vAddPrimitive("seitf.rowsProcessed"_Stz,    &vSEitfRowsProcessed,    false);
   vAddPrimitive("seitf.rowsValid!"_Stz,       &vSEitfRowsValidStore,   false);
-  vAddPrimitive("seitf.rsp@"_Stz,             &vSEitfRspFetch,         false);
-  vAddPrimitive("seitf.rsp!"_Stz,             &vSEitfRspStore,         false);
-  vAddPrimitive("seitf.responseQueue"_Stz,    &vSEitfResponseQueue,    false);
   vAddPrimitive("seitf.slot@"_Stz,            &vSEitfSlotFetch,        false);
   vAddPrimitive("seitf.table@"_Stz,           &vSEitfTableFetch,       false);
   vAddPrimitive("seitf.tableRef"_Stz,         &vSEitfTableRef,         false);
@@ -864,73 +861,6 @@ void Task::vSEitfRowsValidStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("seitf.rowsInvalid!"_Stz);
   
   pSEitf->m_iRowsValid = iRowsValid;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* seitf.rsp@ -- fetch SEitf response queue                                   */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfRspFetch(MP_Task mpTask)
-{
-ENTRY("vSEitfRspFetch"_Stz);
-  
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.rsp@"_Stz);
-  
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(CN_SEITF == pSEitf->eClass());
-  
-  Object* pPtrQueue = pSEitf->pResponseQueue();
-  
-  mpTask->m_pDataStack->vPushObject(pPtrQueue);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* seitf.rsp! -- store SEitf response queue                                   */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfRspStore(MP_Task mpTask)
-{
-ENTRY("vSEitfRspStore"_Stz);
-  
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.rsp!"_Stz);
-  
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(CN_SEITF == pSEitf->eClass());
-  
-  Object* pPtrQueue;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrQueue) )
-    THROW_INVALID_DSTACK("seitf.rsp!"_Stz);
-  
-  Queue* pQueue = _pQueue(pPtrQueue);
-  ASSERT(CN_QUEUE == pQueue->eClass());
-  
-  pSEitf->vResponseQueue(pQueue);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* seitf.responseQueue -- get SEitf response queue                            */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfResponseQueue(MP_Task mpTask)
-{
-  ENTRY("vSEitfeResponseQueue"_Stz);
-  
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.responseQueue"_Stz);
-  
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(CN_SEITF == pSEitf->eClass());
-  
-  mpTask->m_pDataStack->vPushObject(pSEitf->pResponseQueue());
   
   EXIT();
 }
