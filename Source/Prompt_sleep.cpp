@@ -22,9 +22,6 @@ bool Prompt::bPrompt_sleep(SePrompt* pPrompt)
 
   ASSERT((*pTokenVec)[0]->bSame("sleep"_Stz));
   
-  //if ( ! bTokenCheck(2) )
-  //  return false;
-  
   i8 nSeconds = (*pTokenVec)[1]->iToI8();
   
   PosixThread::vSleepSec(nSeconds);

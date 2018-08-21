@@ -53,7 +53,6 @@ namespace Prompt
   
   //----------------------------------------------------------------------------
   // to be removed
-    bool bTokenCheck(i8 nTokens);
     Token* pTkn(i8 i_Token);
 
   public:

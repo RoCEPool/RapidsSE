@@ -166,21 +166,6 @@ SEitf* SePrompt::pSEitf(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* check for a specific number of tokens                                      */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bTokenCheck(i8 nTokens)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  if (pTkn(nTokens)->bHasText()) {
-    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return false;
-  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get token vector                                                           */
 /*----------------------------------------------------------------------------*/
 TokenVec* SePrompt::pTknVec(void)
