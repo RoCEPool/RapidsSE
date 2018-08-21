@@ -15,7 +15,7 @@ JobNote mJobNote_Connector (
   nullptr,                // the prompt command
   nullptr,                // the second word
   "connector_seed"_Stz,   // the _run task seed
-  "connector_seed"_Stz,   // the _req task seed
+  nullptr,                // the _req task seed
   nullptr,                // the _rcv task seed 
   nullptr,                // the _exe task seed
   nullptr,                // the _end task seed
@@ -93,7 +93,7 @@ Job_Connector::Job_Connector(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CONNECTOR,_FOOTER_);
   
-  m_sSeed = mJobNote_Connector.pJobClass()->m_aSeedReq;
+  //m_sSeed = mJobNote_Connector.pJobClass()->m_aSeedReq;
   
   _checkInitialised_(CN_JOB_CONNECTOR);
   
