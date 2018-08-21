@@ -114,7 +114,6 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_DROPTABLE
   /*    */ &Dump::vDummy,           // CN_JOB_DROPTENANT
   /*    */ &Dump::vDummy,           // CN_JOB_DUMPINDEX
-  /*    */ &Dump::vDummy,           // CN_JOB_G35
   /*    */ &Dump::vDummy,           // CN_JOB_LF
   /*    */ &Dump::vDummy,           // CN_JOB_LISTCATALOGS
   /*    */ &Dump::vDummy,           // CN_JOB_LISTCOLUMNS
@@ -364,7 +363,6 @@ i8 giClassSize[]
   /*    */ sizeof(Job_DropTable),      // CN_JOB_DROPTABLE
   /*    */ sizeof(Job_DropTenant),     // CN_JOB_DROPTENANT
   /*    */ sizeof(Job_DumpIndex),      // CN_JOB_DUMPINDEX
-  /*    */ sizeof(Job_G35),            // CN_JOB_G35
   /*    */ sizeof(Job_Lf),             // CN_JOB_LF
   /*    */ sizeof(Job_ListCatalogs),   // CN_JOB_LISTCATALOGS
   /*    */ sizeof(Job_ListColumns),    // CN_JOB_LISTCOLUMNS
@@ -614,7 +612,6 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_DROPTABLE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_DROPTENANT
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_DUMPINDEX
-  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_G35
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LF
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LISTCATALOGS
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LISTCOLUMNS

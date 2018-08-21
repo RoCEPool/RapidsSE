@@ -109,7 +109,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_DROPTABLE
   /*    */ &Finalize::vUndefined,         // CN_JOB_DROPTENANT
   /*    */ &Finalize::vUndefined,         // CN_JOB_DUMPINDEX
-  /*    */ &Finalize::vUndefined,         // CN_JOB_G35
   /*    */ &Finalize::vUndefined,         // CN_JOB_LF
   /*    */ &Finalize::vUndefined,         // CN_JOB_LISTCATALOGS
   /*    */ &Finalize::vUndefined,         // CN_JOB_LISTCOLUMNS

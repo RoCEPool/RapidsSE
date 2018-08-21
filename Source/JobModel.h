@@ -73,8 +73,6 @@ using namespace JobsModel;
 #include "Job_DropTenant.hpp"
 #include "Job_DumpIndex.hpp"
 
-#include "Job_G35.hpp"
-
 #include "Job_Lf.hpp"
 #include "Job_ListColumns.hpp"
 #include "Job_ListCatalogs.hpp"
