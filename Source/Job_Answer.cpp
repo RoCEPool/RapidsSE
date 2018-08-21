@@ -10,7 +10,7 @@ extern AttachMap* gpAttachMap;
 JobNote mJobNote_Answer (
   "Job_Answer"_Stz,    // name of the job class
   CN_JOB_ANSWER,       // class enum
-  JK_CHILD,            // job kind
+  JK_SYSTEM,           // job kind
   "Socket Answer"_Stz, // comment about the job
   nullptr,             // the prompt command
   nullptr,             // the second word

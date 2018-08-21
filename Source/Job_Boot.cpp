@@ -10,7 +10,7 @@ extern AttachMap* gpAttachMap;
 JobNote mJobNote_Boot (
   "Job_Boot"_Stz,    // name of the job class
   CN_JOB_BOOT,       // class enum
-  JK_CHILD,          // job kind
+  JK_SYSTEM,         // job kind
   "System Boot"_Stz, // comment about the job
   nullptr,           // the prompt command
   nullptr,           // the second word
