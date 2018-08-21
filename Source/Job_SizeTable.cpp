@@ -14,6 +14,7 @@ JobNote mJobNote_SizeTable (
   "size table"_Stz,      // comment about the job
   "sz"_Stz,              // the prompt command
   nullptr,               // the second word
+  nullptr,               // the _run task seed
   "sizeTable_req"_Stz,   // the _req task seed
   "sizeTable_beg"_Stz,   // the _rcv task seed
   "sizeTable_node"_Stz,  // the _exe task seed

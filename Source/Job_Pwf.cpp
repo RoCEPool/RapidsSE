@@ -14,7 +14,8 @@ JobNote mJobNote_Pwf (
   "change folder"_Stz,   // comment about the job
   "pwf"_Stz,             // the prompt command
   nullptr,               // the second word
-  "pwf_req"_Stz,         // the _req task seed 
+  nullptr,               // the _run task seed
+  "pwf_req"_Stz,         // the _req task seed
   nullptr,               // the _rcv task seed 
   nullptr,               // the _exe task seed
   nullptr,               // the _end task seed

@@ -10,6 +10,7 @@ JobNote mJobNote__Execute (
   JK_GENERIC,              // job kind
   "job to execute"_Stz,    // comment about the job
   nullptr,                 // the prompt command
+  nullptr,                 // the _run task seed
   nullptr,                 // the second word
   nullptr,                 // the _req task seed 
   "Job__Execute_rcv"_Stz,  // the _rcv task seed 

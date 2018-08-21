@@ -14,6 +14,7 @@ JobNote mJobNote_CreateSchema (
   "create schema"_Stz,      // comment about the job
   "create"_Stz,             // the prompt command
   "schema"_Stz,             // the second word
+  nullptr,                  // the _run task seed
   "createSchema_req"_Stz,   // the _req task seed
   "createSchema_beg"_Stz,   // the _rcv task seed
   "createSchema_node"_Stz,  // the _exe task seed

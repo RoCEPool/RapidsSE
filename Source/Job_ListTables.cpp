@@ -14,7 +14,8 @@ JobNote mJobNote_ListTables (
   "list tables"_Stz,      // comment about the job
   "lstbl"_Stz,            // the prompt command
   nullptr,                // the second word
-  "listTables_req"_Stz,   // the _req task seed 
+  nullptr,                // the _run task seed
+  "listTables_req"_Stz,   // the _req task seed
   nullptr,                // the _rcv task seed 
   nullptr,                // the _exe task seed
   nullptr,                // the _end task seed

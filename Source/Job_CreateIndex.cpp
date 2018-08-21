@@ -14,7 +14,8 @@ JobNote mJobNote_CreateIndex (
   "create index"_Stz,      // comment about the job
   "create"_Stz,            // the prompt command
   "index"_Stz,             // the second word
-  "createIndex_req"_Stz,   // the _req task seed 
+  nullptr,                 // the _run task seed
+  "createIndex_req"_Stz,   // the _req task seed
   "createIndex_beg"_Stz,   // the _rcv task seed
   "createIndex_node"_Stz,  // the _exe task seed
   "createIndex_end"_Stz,   // the _end task seed
@@ -42,6 +43,7 @@ JobNote mJobNote_CreateIndex2 (
   "create unique"_Stz,     // comment about the job
   "create"_Stz,            // the prompt command
   "unique"_Stz,            // the second word
+  nullptr,                 // the _run task seed
   "createIndex_req"_Stz,   // the _req task seed
   nullptr,                 // the _rcv task seed 
   "createIndex_node"_Stz,  // the _exe task seed

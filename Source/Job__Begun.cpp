@@ -11,6 +11,7 @@ JobNote mJobNote__Begun (
   "job has begun"_Stz,     // comment about the job
   nullptr,                 // the prompt command
   nullptr,                 // the second word
+  nullptr,                 // the _run task seed
   nullptr,                 // the _req task seed
   "Job__Begun_rcv"_Stz,    // the _rcv task seed
   nullptr,                 // the _exe task seed

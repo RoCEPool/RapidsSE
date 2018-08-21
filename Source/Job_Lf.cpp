@@ -14,6 +14,7 @@ JobNote mJobNote_Lf (
   "list folder"_Stz, // comment about the job
   "lf"_Stz,          // the prompt command
   nullptr,           // the second word
+  nullptr,           // the _run task seed
   "lf_req"_Stz,      // the _req task seed
   nullptr,           // the _exe task seed
   nullptr,           // the _rcv task seed

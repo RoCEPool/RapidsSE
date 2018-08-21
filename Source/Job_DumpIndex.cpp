@@ -14,6 +14,7 @@ JobNote mJobNote_DumpIndex (
   "dump index"_Stz,      // comment about the job
   "dumpidx"_Stz,         // the prompt command
   nullptr,               // the second word
+  nullptr,               // the _run task seed
   "dumpIndex_req"_Stz,   // the _req task seed
   nullptr,               // the _rcv task seed
   "dumpIndex_node"_Stz,  // the _exe task seed

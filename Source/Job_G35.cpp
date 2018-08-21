@@ -11,7 +11,8 @@ JobNote mJobNote_G35 (
   "comment"_Stz,   // comment about the job
   "g35"_Stz,       // the prompt command
   nullptr,         // the second word
-  "g35_req_req"_Stz, // the _req task seed 
+  nullptr,         // the _run task seed
+  "g35_req_req"_Stz, // the _req task seed
   nullptr,         // the _exe task seed
   nullptr,         // the _rcv task seed
   nullptr,         // the _end task seed

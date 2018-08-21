@@ -14,6 +14,7 @@ JobNote mJobNote_CompactIndex (
   "compact index"_Stz,    // comment about the job
   "compactidx"_Stz,       // the prompt command
   nullptr,                // the second word
+  nullptr,                // the _run task seed
   "compactIndex_req"_Stz, // the _req task seed
   "compactIndex_beg"_Stz, // the _rcv task seed
   "compactIndex_node"_Stz,// the _exe task seed

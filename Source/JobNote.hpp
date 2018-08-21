@@ -18,6 +18,7 @@ namespace JobsModel
             Stz* aComment,
             Stz* aCommand1,
             Stz* aCommand2,
+            Stz* aSeedRun,
             Stz* aSeedReq,
             Stz* aSeedRcv,
             Stz* aSeedExe,

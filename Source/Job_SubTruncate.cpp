@@ -14,7 +14,8 @@ JobNote mJobNote_SubTruncate (
   "table sub-truncate"_Stz,  // comment about the job
   nullptr,                   // the prompt command
   nullptr,                   // the second word
-  "subTruncate_seed"_Stz,    // the _req task seed 
+  nullptr,                   // the _run task seed
+  "subTruncate_seed"_Stz,    // the _req task seed
   nullptr,                   // the _rcv task seed 
   nullptr,                   // the _exe task seed
   nullptr,                   // the _end task seed

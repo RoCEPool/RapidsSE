@@ -11,7 +11,8 @@ JobNote mJobNote__Ended (
   "job was ended"_Stz,     // comment about the job
   nullptr,                 // the prompt command
   nullptr,                 // the second word
-  nullptr,                 // the _req task seed 
+  nullptr,                 // the _run task seed
+  nullptr,                 // the _req task seed
   "Job__Ended_rcv"_Stz,    // the _rcv task seed 
   nullptr,                 // the _exe task seed
   nullptr,                 // the _end task seed

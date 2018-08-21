@@ -18,6 +18,7 @@ JobNote::JobNote(Stz* aName,
                  Stz* aComment,
                  Stz* aCommand1,
                  Stz* aCommand2,
+                 Stz* aSeedRun,
                  Stz* aSeedReq,
                  Stz* aSeedRcv,
                  Stz* aSeedExe,
@@ -52,6 +53,7 @@ JobNote::JobNote(Stz* aName,
   gxJobCatalog.m_xJobClass[i_Job].m_aCommand1   = aCommand1;
   if (aCommand2)
     gxJobCatalog.m_xJobClass[i_Job].m_aCommand2 = aCommand2;
+  gxJobCatalog.m_xJobClass[i_Job].m_aSeedRun    = aSeedRun;
   gxJobCatalog.m_xJobClass[i_Job].m_aSeedReq    = aSeedReq;
   gxJobCatalog.m_xJobClass[i_Job].m_aSeedRcv    = aSeedRcv;
   gxJobCatalog.m_xJobClass[i_Job].m_aSeedExe    = aSeedExe;

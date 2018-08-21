@@ -14,6 +14,7 @@ JobNote mJobNote_VisualizeIndex (
   "visualize index"_Stz,      // comment about the job
   "visidx"_Stz,               // the prompt command
   nullptr,                    // the second word
+  nullptr,                    // the _run task seed
   "visualizeIndex_req"_Stz,   // the _req task seed
   "visualizeIndex_beg"_Stz,   // the _rcv task seed
   "visualizeIndex_node"_Stz,  // the _exe task seed

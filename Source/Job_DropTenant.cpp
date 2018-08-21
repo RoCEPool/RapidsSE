@@ -14,6 +14,7 @@ JobNote mJobNote_DropTenant (
   "drop tenant"_Stz,      // comment about the job
   "drop"_Stz,             // the prompt command
   "tenant"_Stz,           // the second word
+  nullptr,                // the _run task seed
   "dropTenant_req"_Stz,   // the _req task seed
   "dropTenant_beg"_Stz,   // the _rcv task seed
   "dropTenant_node"_Stz,  // the _exe task seed
