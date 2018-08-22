@@ -22,8 +22,11 @@ bool Prompt::bPrompt_print(SePrompt* pPrompt)
 
   ASSERT((*pTokenVec)[0]->bSame("print"_Stz));
   
-  vInfo("%s\n"_Stz, pTokenVec->pGet(1)->aText());
-  
+  if (pTokenVec->nTokens() > 1)
+    vInfo("%s\n"_Stz,pTokenVec->pGet(1)->aText());
+  else
+    vInfo("\n"_Stz);
+
   return true;
 }
 
