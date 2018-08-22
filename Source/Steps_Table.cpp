@@ -31,6 +31,7 @@ void Task::vAddPrimitives_Table(void)
   vAddPrimitive("table.init"_Stz,               &vTableInit,             false);
   vAddPrimitive("table.insert"_Stz,             &vTableInsert,           false);
   vAddPrimitive("table.insertEntries"_Stz,      &vTableInsertEntries,    false);
+  vAddPrimitive("table.isValidIndexColumns"_Stz, &vTableIsValidIndexColumns, false);
   vAddPrimitive("table.lazyBuildIndexes"_Stz,   &vTableLazyBuildIndexes, false);
   vAddPrimitive("table.isLoading!"_Stz,         &vTableIsLoadingStore,   false);
   vAddPrimitive("table.name"_Stz,               &vTableName,             false);
@@ -136,6 +137,30 @@ void Task::vTableInsertEntries(MP_Task mpTask)
   
   // now delete the temporary buffer
   delete pWorkingBuffer;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.isValidIndexColumns -- validate index columns from job_createIndex  */
+/*----------------------------------------------------------------------------*/
+void Task::vTableIsValidIndexColumns(MP_Task mpTask)
+{
+  ENTRY("vTableIsValidIndexColumns"_Stz);
+  
+  Object* pPtrTable;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+    THROW_INVALID_DSTACK(" table.isValidateIndexColumns"_Stz);
+  Table* pTable = _pTable(pPtrTable);
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  Object* pPtrJob;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJob) )
+    THROW_INVALID_DSTACK(" table.isValidateIndexColumns"_Stz);
+  Job_CreateIndex* pJob_CreateIndex = _pJob_CreateIndex(pPtrJob);
+  ASSERT(CN_JOB_CREATEINDEX == pJob_CreateIndex->eClass());
+  
+  mpTask->m_pDataStack->vPushInt(pTable->bIsValidIndexColumns(pJob_CreateIndex));
   
   EXIT();
 }

@@ -69,6 +69,7 @@ namespace DBobjects
     IdxVec* pIdxVec(void);
     void  vIsLoading(bool bIsLoading);
     bool  bIsLoading(void);
+    bool  bIsValidIndexColumns(JobsModel::Job_CreateIndex* pJob);
     TablePtn* pPartition(i8 iSlot);
     bool bPopulateIndex(i8 iIndexNo);
     void vRefDec(void);
@@ -90,7 +91,7 @@ namespace DBobjects
     void vTruncateIndex(i8 iPartitionNo, i8 iIndexNo);
     bool bVerifyIndexes(void);
     bool bVerifyIndex(Index* pIndex);
-    
+   
     Footer* aFooter(void);
   
     i8 nHiddenEntryCount(EntryBuffer* pFirstL0Buffer);

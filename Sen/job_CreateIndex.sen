@@ -16,9 +16,15 @@
 /*----------------------------------------------------------------------------*/
 /* check if word is a makeable index                                          */
 /*----------------------------------------------------------------------------*/
-: checkMakeIndex ( "<indexNm>" "<tableNm>" --  true | errorCode false )
+: checkMakeIndex ( Job_CreateIndex --  true | errorCode false )
 
-  locals| tableNm indexNm |
+  params| pJob_CreateIndex |
+  0 0 0 locals| sTableNm sIndexNm pTable |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the table and index names
+  pJob_CreateIndex job.indexName@ to sIndexNm
+  pJob_CreateIndex job.objectName@ to sTableNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check in tables folder
@@ -26,15 +32,16 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check there is a table folder
-  tableNm checkIsTableFolder not if false exit then
+  sTableNm checkIsTableFolder not if false exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table
-  tableNm pushTable assert
+  sTableNm pushTable assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if max indexes already on table
-  tableNm find execute table.indexCount
+  sTableNm find execute to pTable
+  pTable table.indexCount
   C_INDEXES_PER_TABLE == if EC_MAX_INDEXES popTable assertInTables false exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -43,7 +50,14 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check index already exists
-  indexNm checkIsNotIndex not if popIndexes popTable assertInTables false exit then
+  sIndexNm checkIsNotIndex not if popIndexes popTable assertInTables false exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if index columns are valid
+  pJob_CreateIndex pTable table.isValidIndexColumns not if
+    popIndexes popTable assertInTables EC_INVALID_INDEX_COLUMN false
+    exit
+  then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop indexes
@@ -225,9 +239,7 @@
 
   //----------------------------------------------------------------------------
   // check ok to make index
-  pJob_CreateIndex job.indexName@ to sIndexNm
-  pJob_CreateIndex job.objectName@ to sTableNm
-  sIndexNm sTableNm checkMakeIndex  not if pJob_CreateIndex <ERROR_JOB> exit then
+  pJob_CreateIndex checkMakeIndex not if pJob_CreateIndex <ERROR_JOB> exit then
 
   <DONE_NODE>
 ;

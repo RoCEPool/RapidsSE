@@ -1440,6 +1440,7 @@ namespace Tasks
     static void vTableSubDic(MP_Task mpTask);
     static void vTableSubLoaders(MP_Task mpTask);
     static void vTableTruncate(MP_Task mpTask);
+    static void vTableIsValidIndexColumns(MP_Task mpTask);
     
     // table partition
     static void vTablePtnDump(MP_Task mpTask);
