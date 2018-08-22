@@ -40,7 +40,7 @@ JobNote mJobNote_CreateIndex2 (
   "Job_CreateIndex"_Stz,   // name of the job class
   CN_JOB_CREATEINDEX,      // class enum
   JK_DIST2PC,              // job kind
-  "create unique"_Stz,     // comment about the job
+  "create unique index"_Stz, // comment about the job
   "create"_Stz,            // the prompt command
   "unique"_Stz,            // the second word
   nullptr,                 // the _run task seed
