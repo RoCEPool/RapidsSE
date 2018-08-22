@@ -17,9 +17,9 @@ JobNote mJobNote_TruncateTable (
   nullptr,                   // the _run task seed
   "truncateTable_req"_Stz,   // the _req task seed
   "truncateTable_beg"_Stz,   // the _rcv task seed
-  "truncateTable_exe"_Stz,  // the _exe task seed
-  "truncateTabl_end"_Stz,    // the _end task seed
-  "truncateTabl_can"_Stz,    // the _can task seed
+  "truncateTable_exe"_Stz,   // the _exe task seed
+  "truncateTable_end"_Stz,   // the _end task seed
+  "truncateTable_can"_Stz,   // the _can task seed
   true,                      // check resources?
   false,                     // detached job?
   false,                     // buffer attached?

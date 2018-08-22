@@ -55,12 +55,22 @@
 
   0 locals| pJob |
   0 locals| pJobClass |
+  0 locals| sEndSeed |
 
   // find the job in the participating jobs
   iJobId job.findParticipant to pJob
+  pJob "Job %v" fmt.print
 
-  pJob job.class to pJobClass
-  
+  pJob job.jobClass to pJobClass
+
+  pJobClass jobClass.name pJobClass "JobClass %v %v" fmt.print
+
+  pJobClass jobClass.seedEnd to sEndSeed
+
+  "" sEndSeed str.equal not if
+    pJob sEndSeed find execute
+  then
+
   // remove the job from the participant jobs
   pJob job.removeParticipant
 
