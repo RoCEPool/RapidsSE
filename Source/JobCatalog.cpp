@@ -51,6 +51,16 @@ JobClass* JobCatalog::pFindJob(eCN eClass)
   return nullptr;
 }
 
+/*----------------------------------------------------------------------------*/
+/* trace the job for the given class                                          */
+/*----------------------------------------------------------------------------*/
+void JobCatalog::vTraceJobs(eCN eClass)
+{
+  for (i8 i_Job = 0; i_Job < m_nClasses; i_Job++)
+    if (m_xJobClass[i_Job].m_eClass == eClass)
+      m_xJobClass[i_Job].vJobCat();
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

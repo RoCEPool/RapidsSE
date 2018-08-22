@@ -15,6 +15,8 @@ namespace JobsModel
   public:
     JobClass* pFindJob(Stz* aCommand1, Stz* aCommand2);
     JobClass* pFindJob(eCN eClass);
+  
+    void vTraceJobs(eCN eClass);
   };
 }
 
