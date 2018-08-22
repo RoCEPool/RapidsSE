@@ -40,8 +40,8 @@ JobNote::JobNote(Stz* aName,
                  Stz* aExample
                  )
 {
-  vTrace("JobNote: %s %s %s %s\n"_Stz,
-         aName, aComment, aCommand1, aSeedReq);
+  //vTrace("JobNote: %s %s %s %s\n"_Stz,
+  //       aName, aComment, aCommand1, aSeedReq);
   
   // add the job class to the catalog
   i8 i_Job = gxJobCatalog.m_nClasses;

@@ -19,8 +19,8 @@ PromptNote::PromptNote(Stz* aName,
                        bool (*fPrompt)(SePrompt* pPrompt),
                        bool bEnabled)
 {
-  vTrace("PromptNote: %s %s %s\n"_Stz,
-         aName, aComment, aCommand1);
+  //vTrace("PromptNote: %s %s %s\n"_Stz,
+  //       aName, aComment, aCommand1);
   
   // add the prompt class to the catalog
   i8 i_Prompt = gxPromptCatalog.m_nFunctions;
