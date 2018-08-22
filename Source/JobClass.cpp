@@ -18,6 +18,16 @@ JobClass* JobsModel::_pJobClass(i8 iAddr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+JobClass* JobsModel::_pJobClass(void* aAddr)
+{
+  JobClass* pJobClass = reinterpret_cast<JobClass*>(aAddr);
+  
+  return pJobClass;
+}
+
+/*----------------------------------------------------------------------------*/
 /* create a new job by running the new-function                               */
 /*----------------------------------------------------------------------------*/
 Job* JobClass::pNewJob(Job* pArg)

@@ -92,6 +92,8 @@ task::this to pThisTask
   params| pJob_LoadTable |
   // job::this locals| pJob_LoadTable |
 
+  ">> loadTable_exe <<" .
+
   0 locals| pThisTask |
 
   // get the task
@@ -187,6 +189,8 @@ task::this to pThisTask
 
   job::this locals| pJob_LoadTable |
 
+  ">> loadTable_beg <<" .
+
   // add this job to the participants list
   pJob_LoadTable job.beginParticipant
 
@@ -204,8 +208,10 @@ task::this to pThisTask
 
   job::this locals| pJob_LoadTable |
 
+  ">> loadTable_end <<" .
+
   // release resources
-  pJob_loadTable pJob_LoadTable
+  pJob_loadTable loadTable_rel
 ;
 
 /*----------------------------------------------------------------------------*/

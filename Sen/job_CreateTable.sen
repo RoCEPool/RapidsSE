@@ -209,16 +209,18 @@
 /*----------------------------------------------------------------------------*/
 : createTable_beg ( -- )
 
-  0 assert
+  job::this locals| pJob_CreateTable |
 
-  job::this locals| pJob_createTable |
+  ">> createTable_beg <<" .
 
-  pJob_createTable job.beginParticipant
+  // add this job to the participants list
+  pJob_CreateTable job.beginParticipant
 
   // check resources
-  pJob_createTable createTable_chk
+  pJob_CreateTable createTable_chk
 
-  pJob_createTable job.participantBegun
+  // this job has begun
+  pJob_CreateTable job.participantBegun
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -226,9 +228,12 @@
 /*----------------------------------------------------------------------------*/
 : createTable_end ( -- )
 
-  job::this locals| pJob_createTable |
+  job::this locals| pJob_CreateTable |
 
-  pJob_createTable createTable_rel
+  ">> createTable_end <<" .
+
+  // release resources
+  pJob_CreateTable createTable_rel
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -236,9 +241,9 @@
 /*----------------------------------------------------------------------------*/
 : createTable_can ( -- )
 
-  job::this locals| pJob_createTable |
+  job::this locals| pJob_CreateTable |
 
-  pJob_createTable createTable_rel
+  pJob_CreateTable createTable_rel
 ;
 
 /*============================================================================*/

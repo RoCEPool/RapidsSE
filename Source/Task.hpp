@@ -979,6 +979,13 @@ namespace Tasks
     static void vJobClassFind(MP_Task mpTask);
     static void vJobClassNew(MP_Task mpTask);
 
+    static void vJobClassSeedRun(MP_Task mpTask);
+    static void vJobClassSeedReq(MP_Task mpTask);
+    static void vJobClassSeedRcv(MP_Task mpTask);
+    static void vJobClassSeedExe(MP_Task mpTask);
+    static void vJobClassSeedEnd(MP_Task mpTask);
+    static void vJobClassSeedCan(MP_Task mpTask);
+
     // loader
     static void vLoaderAddRecordsInvalid(MP_Task mpTask);
     static void vLoaderAddRecordsValid(MP_Task mpTask);

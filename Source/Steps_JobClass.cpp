@@ -16,10 +16,17 @@ extern JobCatalog gxJobCatalog;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_JobClass(void)
 {
-  vAddPrimitive("jobClass::find"_Stz,   &vJobClassFind,    false);
+  vAddPrimitive("jobClass::find"_Stz,   &vJobClassFind,     false);
   
-  vAddPrimitive("jobClass.buffer@"_Stz, &vJobClassBuffer,  false);
-  vAddPrimitive("jobClass.new"_Stz,     &vJobClassNew,     false);
+  vAddPrimitive("jobClass.buffer@"_Stz, &vJobClassBuffer,   false);
+  vAddPrimitive("jobClass.new"_Stz,     &vJobClassNew,      false);
+  
+  vAddPrimitive("jobClass.seedRun"_Stz, &vJobClassSeedRun,  false);
+  vAddPrimitive("jobClass.seedReq"_Stz, &vJobClassSeedReq,  false);
+  vAddPrimitive("jobClass.seedRcv"_Stz, &vJobClassSeedRcv,  false);
+  vAddPrimitive("jobClass.seedExe"_Stz, &vJobClassSeedExe,  false);
+  vAddPrimitive("jobClass.seedEnd"_Stz, &vJobClassSeedEnd,  false);
+  vAddPrimitive("jobClass.seedCan"_Stz, &vJobClassSeedCan,  false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -81,6 +88,120 @@ void Task::vJobClassNew(MP_Task mpTask)
   Job* pJob = pJobClass->pNewJob(pArg);
   
   mpTask->m_pDataStack->vPushObject(pJob);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* jobClass.seedRun -- get the run seed of the job class                      */
+/*----------------------------------------------------------------------------*/
+void Task::vJobClassSeedRun(MP_Task mpTask)
+{
+  ENTRY("vJobClassSeedRun"_Stz);
+  
+  Object* pJobClassPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobClassPtr) )
+    THROW_INVALID_DSTACK("jobClass.seedRun"_Stz);
+  JobClass* pJobClass = _pJobClass(pJobClassPtr);
+  
+  s256 sSeed(pJobClass->m_aSeedRun);
+  
+  mpTask->m_pDataStack->vPushS256(sSeed);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* jobClass.seedReq -- get the req seed of the job class                      */
+/*----------------------------------------------------------------------------*/
+void Task::vJobClassSeedReq(MP_Task mpTask)
+{
+  ENTRY("vJobClassSeedReq"_Stz);
+  
+  Object* pJobClassPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobClassPtr) )
+    THROW_INVALID_DSTACK("jobClass.seedReq"_Stz);
+  JobClass* pJobClass = _pJobClass(pJobClassPtr);
+  
+  s256 sSeed(pJobClass->m_aSeedReq);
+  
+  mpTask->m_pDataStack->vPushS256(sSeed);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* jobClass.seedRcv -- get the rcv seed of the job class                      */
+/*----------------------------------------------------------------------------*/
+void Task::vJobClassSeedRcv(MP_Task mpTask)
+{
+  ENTRY("vJobClassSeedRcv"_Stz);
+  
+  Object* pJobClassPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobClassPtr) )
+    THROW_INVALID_DSTACK("jobClass.seedRcv"_Stz);
+  JobClass* pJobClass = _pJobClass(pJobClassPtr);
+  
+  s256 sSeed(pJobClass->m_aSeedRcv);
+  
+  mpTask->m_pDataStack->vPushS256(sSeed);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* jobClass.seedExe -- get the exe seed of the job class                      */
+/*----------------------------------------------------------------------------*/
+void Task::vJobClassSeedExe(MP_Task mpTask)
+{
+  ENTRY("vJobClassSeedExe"_Stz);
+  
+  Object* pJobClassPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobClassPtr) )
+    THROW_INVALID_DSTACK("jobClass.seedExe"_Stz);
+  JobClass* pJobClass = _pJobClass(pJobClassPtr);
+  
+  s256 sSeed(pJobClass->m_aSeedExe);
+  
+  mpTask->m_pDataStack->vPushS256(sSeed);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* jobClass.seedEnd -- get the end seed of the job class                      */
+/*----------------------------------------------------------------------------*/
+void Task::vJobClassSeedEnd(MP_Task mpTask)
+{
+  ENTRY("vJobClassSeedEnd"_Stz);
+  
+  Object* pJobClassPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobClassPtr) )
+    THROW_INVALID_DSTACK("jobClass.seedEnd"_Stz);
+  JobClass* pJobClass = _pJobClass(pJobClassPtr);
+  
+  s256 sSeed(pJobClass->m_aSeedEnd);
+  
+  mpTask->m_pDataStack->vPushS256(sSeed);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* jobClass.seedCan -- get the can seed of the job class                      */
+/*----------------------------------------------------------------------------*/
+void Task::vJobClassSeedCan(MP_Task mpTask)
+{
+  ENTRY("vJobClassSeedCan"_Stz);
+  
+  Object* pJobClassPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobClassPtr) )
+    THROW_INVALID_DSTACK("jobClass.seedCan"_Stz);
+  JobClass* pJobClass = _pJobClass(pJobClassPtr);
+  
+  s256 sSeed(pJobClass->m_aSeedCan);
+  
+  mpTask->m_pDataStack->vPushS256(sSeed);
   
   EXIT();
 }

@@ -54,6 +54,7 @@ namespace JobsModel
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   JobClass* _pJobClass(i8 iAddr);
+  JobClass* _pJobClass(void* aAddr);
 
 }
 

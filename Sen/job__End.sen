@@ -54,10 +54,13 @@
   pJob__End job.id@ locals| iJobId |
 
   0 locals| pJob |
+  0 locals| pJobClass |
 
   // find the job in the participating jobs
   iJobId job.findParticipant to pJob
 
+  pJob job.class to pJobClass
+  
   // remove the job from the participant jobs
   pJob job.removeParticipant
 
