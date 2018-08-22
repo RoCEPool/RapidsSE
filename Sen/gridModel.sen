@@ -6,7 +6,6 @@ int:  queryCount
 
 "gridModel.sen" .verbose
 
-"node.sen" include
 "grid.sen" include
 
 /*============================================================================*/
