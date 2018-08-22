@@ -10,7 +10,7 @@ print "=========================================";
 _startClusterR35
 
 print "\n=========================================";
-print "sleeping for 5 secs...";
+print "sleeping for 10 secs...";
 print "=========================================";
 sleep 10;
 
@@ -50,6 +50,12 @@ print "change directory to ../..";
 print "======================================";
 cd ../;
 
+// change directory
+print "\n======================================";
+print "change directory to non-existent directory...";
+print "======================================";
+cd xyz;
+
 // change directory back
 print "\n======================================";
 print "change directory back to Commands...";
@@ -67,6 +73,12 @@ print "\n======================================";
 print "cf ..";
 print "======================================";
 cf ..;
+
+// change folder
+print "\n======================================";
+print "cf to non-existent folder...";
+print "======================================";
+cf xyz;
 
 // present working folder
 print "\n======================================";
@@ -100,6 +112,8 @@ print "getting status...";
 print "======================================";
 status;
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 // create a table with syntax error
 print "\n=========================================";
 print "creating table j10 with syntax error...";
@@ -108,6 +122,17 @@ create table j10 (
   j10_key   INTEGER NOT NULL,
   j10_name  V(32) NOT NULL
 );
+
+// create a table
+print "\n=========================================";
+print "creating table j10 when not in tables ...";
+print "=========================================";
+cf ..;
+create table j10 (
+j10_key   INTEGER NOT NULL,
+j10_name  VARCHAR(32) NOT NULL
+);
+cf tables;
 
 // create a table
 print "\n=========================================";
@@ -126,9 +151,37 @@ lf;
 
 // list columns
 print "\n======================================";
+print "lscol when not in tables..";
+print "======================================";
+cf ..;
+lscol j10;
+cf tables;
+
+// list columns
+print "\n======================================";
+print "lscol of non-existent table...";
+print "======================================";
+lscol k10;
+
+// list columns
+print "\n======================================";
 print "lscol";
 print "======================================";
 lscol j10;
+
+// list partition key columns when nt in tables
+print "\n======================================";
+print "lspartcol of table when not in tables";
+print "======================================";
+cf ..;
+lspartcol j10;
+cf tables;
+
+// list partition key columns
+print "\n======================================";
+print "lspartcol of non-existent table";
+print "======================================";
+lspartcol k10;
 
 // list partition key columns
 print "\n======================================";
@@ -147,13 +200,49 @@ create table j10 (
 
 // list tables
 print "\n=========================================";
+print "lstbl when not in tables...";
+print "=========================================";
+cf ..;
+lstbl;
+cf tables;
+
+// list tables
+print "\n=========================================";
 print "lstbl...";
 print "=========================================";
 lstbl;
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// create an index on the table when in incorrect folder
+print "\n=========================================";
+print "creating index idx when not in tables...";
+print "=========================================";
+cf ..;
+create index idx on j10 (j10_key);
+cf tables;
+
+// create an index on the table
+print "\n=========================================";
+print "creating index idx on non-existent table k10...";
+print "=========================================";
+create index idx on k10 (j10_key);
+
+// create an index on the table
+print "\n=========================================";
+print "creating index idx on table j10 with incorrect key...";
+print "=========================================";
+create index idx on j10 (l10_key);
+
 // create an index on the table
 print "\n=========================================";
 print "creating index idx on j10...";
+print "=========================================";
+create index idx on j10 (j10_key);
+
+// create an index on the table
+print "\n=========================================";
+print "creating index already existing idx on j10...";
 print "=========================================";
 create index idx on j10 (j10_key);
 
@@ -167,14 +256,44 @@ cf ..;
 cf ..;
 
 print "\n=========================================";
+print "list index columns when not in tables...";
+print "=========================================";
+cf ..;
+lsidxcol j10 idx;
+cf tables;
+
+print "\n=========================================";
+print "list index columns of non-existent table...";
+print "=========================================";
+lsidxcol k10 idx;
+
+print "\n=========================================";
+print "list index columns of non-existent index...";
+print "=========================================";
+lsidxcol j10 idx2;
+
+print "\n=========================================";
 print "list index columns...";
 print "=========================================";
 lsidxcol j10 idx;
+
 
 //print "\n=========================================";
 //print "loading table j10";
 //print "=========================================";
 //ld j10 "../JTEST/j10.csv" ;
+
+print "\n=========================================";
+print "analysing table j10 when not in tables...";
+print "=========================================";
+cf ..;
+antbl j10;
+cf tables;
+
+print "\n=========================================";
+print "analysing non-existent table k10";
+print "=========================================";
+antbl k10;
 
 print "\n=========================================";
 print "analysing table j10";
@@ -192,6 +311,23 @@ print "=========================================";
 antbl j10 1;
 
 print "\n=========================================";
+print "analysing index idx of j10 when not in tables...";
+print "=========================================";
+cf ..;
+anidx j10 idx;
+cf tables;
+
+print "\n=========================================";
+print "analysing index idx of non-existent table k10...";
+print "=========================================";
+anidx k10 idx;
+
+print "\n=========================================";
+print "analysing non-existent index idx2 of table k10...";
+print "=========================================";
+anidx j10 idx2;
+
+print "\n=========================================";
 print "analysing index idx of j10";
 print "=========================================";
 anidx j10 idx;
@@ -207,6 +343,23 @@ print "=========================================";
 anidx j10 idx 1;
 
 print "\n=========================================";
+print "compact index idx of j10 when not in tables...";
+print "=========================================";
+cf ..;
+compactidx j10 idx;
+cf tables;
+
+print "\n=========================================";
+print "compact index idx of non-exesitent table k10...";
+print "=========================================";
+compactidx k10 idx;
+
+print "\n=========================================";
+print "compact non-existent index idx2 of j10"...;
+print "=========================================";
+compactidx j10 idx2;
+
+print "\n=========================================";
 print "compact index idx of j10";
 print "=========================================";
 compactidx j10 idx;
@@ -217,9 +370,21 @@ print "=========================================";
 anidx j10 idx 1;
 
 print "\n=========================================";
-print "dumping index hidden on table j10";
+print "dumping index hidden on table j10 when not in tables...";
 print "=========================================";
+cf ..;
 dumpidx j10 hidden;
+cf tables;
+
+print "\n=========================================";
+print "dumping index hidden on non-existent table k10";
+print "=========================================";
+dumpidx k10 hidden;
+
+print "\n=========================================";
+print "dumping non-existent index idx2 on table j10...";
+print "=========================================";
+dumpidx j10 idx2;
 
 print "\n=========================================";
 print "dumping index idx on table j10";
@@ -227,14 +392,60 @@ print "=========================================";
 dumpidx j10 idx;
 
 print "\n=========================================";
+print "verifying index idx on table j10 when not in tables...";
+print "=========================================";
+cf ..;
+vfyidx j10 idx;
+cf tables;
+
+print "\n=========================================";
+print "verifying index idx on non-existent table k10 ...";
+print "=========================================";
+vfyidx k10 idx;
+
+print "\n=========================================";
+print "verifying non-existent index idx2 on table j10";
+print "=========================================";
+vfyidx j10 idx2;
+
+print "\n=========================================";
 print "verifying index idx on table j10";
 print "=========================================";
 vfyidx j10 idx;
 
-//print "\n=========================================";
-//print "visualizing index idx on table j10";
-//print "=========================================";
-//visidx j10 idx;
+print "\n=========================================";
+print "visualizing index idx on table j10 when not in tables...";
+print "=========================================";
+cf ..;
+visidx j10 idx;
+cf tables;
+
+print "\n=========================================";
+print "visualizing index idx on non-existent table k10...";
+print "=========================================";
+visidx k10 idx;
+
+print "\n=========================================";
+print "visualizing non-existent index idx2 on table j10...";
+print "=========================================";
+visidx j10 idx2;
+
+print "\n=========================================";
+print "visualizing index idx on table j10";
+print "=========================================";
+visidx j10 idx;
+
+print "\n=========================================";
+print "size of table j10 when not in tables...";
+print "=========================================";
+cf ..;
+sz j10;
+cf tables;
+
+print "\n=========================================";
+print "size of non-existent table k10...";
+print "=========================================";
+sz k10;
 
 print "\n=========================================";
 print "size of table j10";
@@ -242,25 +453,98 @@ print "=========================================";
 sz j10;
 
 print "\n=========================================";
+print "size of index idx on table j10 when not in tables...";
+print "=========================================";
+cf ..;
+szidx j10 idx;
+cf tables;
+
+print "\n=========================================";
+print "size of index idx on non-existent table k10...";
+print "=========================================";
+szidx k10 idx;
+
+print "\n=========================================";
+print "size of non-existent index idx2 on table j10...";
+print "=========================================";
+szidx j10 idx2;
+
+print "\n=========================================";
 print "size of index idx on table j10";
 print "=========================================";
 szidx j10 idx;
 
-//print "\n=========================================";
-//print "table sizes";
-//print "=========================================";
-//tableSizes;
+print "\n=========================================";
+print "table sizes when not in tables...";
+print "=========================================";
+cf ..;
+tableSizes;
+cf tables;
+
+print "\n=========================================";
+print "table sizes";
+print "=========================================";
+tableSizes;
+>>>>>>> Stashed changes
+
+print "\n=========================================";
+print "truncating table j10 when not in tables...";
+print "=========================================";
+cf ..;
+tr j10;
+cf tables;
+
+print "\n=========================================";
+print "truncating table non-existent table k10...";
+print "=========================================";
+tr k10;
 
 print "\n=========================================";
 print "truncating table j10";
 print "=========================================";
 tr j10;
 
+print "\n=========================================";
+print "truncating table j10 again";
+print "=========================================";
+tr j10;
+
 // drop the index
+print "\n=========================================";
+print "dropping index idx of j10 when not in tables...";
+print "=========================================";
+cf ..;
+drop index j10.idx;
+cf tables;
+
+print "\n=========================================";
+print "dropping index idx of non-existent table k10...";
+print "=========================================";
+drop index k10.idx;
+
+print "\n=========================================";
+print "dropping non-existent index idx2 of j10...";
+print "=========================================";
+drop index j10.idx2;
+
 print "\n=========================================";
 print "dropping index idx of j10...";
 print "=========================================";
 drop index j10.idx;
+
+// drop the table
+print "\n=========================================";
+print "dropping table j10 when not in tables...";
+print "=========================================";
+cf ..;
+drop table j10;
+cf tables;
+
+// drop the table
+print "\n=========================================";
+print "dropping non-existent table j10...";
+print "=========================================";
+drop table k10;
 
 // drop the table
 print "\n=========================================";
@@ -270,7 +554,7 @@ drop table j10;
 
 // drop the table again
 print "\n=========================================";
-print "dropping table j10 which doesn't exist...";
+print "dropping table j10 again...";
 print "=========================================";
 drop table j10;
 

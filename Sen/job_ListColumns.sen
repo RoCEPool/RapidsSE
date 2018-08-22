@@ -73,7 +73,7 @@
 
   //----------------------------------------------------------------------------
   // should be in the tables folder
-  checkInTables not if <ERROR_JOB> exit then
+  checkInTables not if pJob_ListColumns <ERROR_REQUEST> exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get table name from job

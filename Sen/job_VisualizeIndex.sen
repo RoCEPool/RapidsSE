@@ -15,7 +15,7 @@
   checkInTables not if false exit then
 
   // check if tableNm is a word in tables folder
-  sTableNm checkIsWordR35 not if EC_NO_SUCH_TABLE false exit then
+  sTableNm checkIsWordR35 not if false exit then
 
   // push table folder
   sTableNm pushTable assert
@@ -81,6 +81,10 @@
   pJob_VisualizeIndex job.objectName@ to sTableNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //check if we can visualize index
+  sTableNm sIndexNm checkVisualizeIndex not if pJob_VisualizeIndex <ERROR_REQUEST> exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table and indexes folder
   sTableNm pushTable assert
   pushIndexes assert
@@ -97,49 +101,6 @@
   pJob_VisualizeIndex job.notice
 
   pJob_VisualizeIndex <DONE_REQUEST>
-;
-
-/*----------------------------------------------------------------------------*/
-/* execute Job_VisualizeIndex job check resources                             */
-/*----------------------------------------------------------------------------*/
-: visualizeIndex_chk ( Job_VisualizeIndex -- )
-
-  params| pJob_VisualizeIndex  |
-  0 0 locals| sIndexNm sTableNm |
-
-  tp: visualizeIndex_chk
-  "checkResources received" .
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grab a ddl lock
-  ddlLock::grabRead
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set dictionary stack
-  pJob_VisualizeIndex getPathR35
-  dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get index and table name
-  pJob_VisualizeIndex job.indexName@ to sIndexNm
-  pJob_VisualizeIndex job.objectName@ to sTableNm
-
-  sTableNm sIndexNm checkVisualizeIndex not if pJob_VisualizeIndex <ERROR_JOB> exit then
-
-  <DONE_NODE>
-;
-
-/*----------------------------------------------------------------------------*/
-/* execute Job_VisualizeIndexTable job release resources                      */
-/*----------------------------------------------------------------------------*/
-: visualizeIndex_rel ( Job_VisualizeIndex -- )
-
-  params| pJob_VisualizeIndex  |
-
-  tp: visualizeIndex_rel
-  "releaseResources received" .
-
-  <DONE_NODE>
 ;
 
 /*============================================================================*/
