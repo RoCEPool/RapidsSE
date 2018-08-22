@@ -27,7 +27,7 @@
 
   sIndexNm checkIsIndex not if
     popIndexes popTable                                            // ../tables
-    assertInTables exit
+    assertInTables false exit
   then
 
   //pop indexes folder

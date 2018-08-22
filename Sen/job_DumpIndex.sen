@@ -81,6 +81,10 @@
   pJob_DumpIndex job.objectName@ to sTableNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //check if we can dump the index
+  sTableNm sIndexNm checkDumpIndex not if pJob_DumpIndex <ERROR_REQUEST> exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table and indexes folder
   sTableNm pushTable assert
   pushIndexes assert

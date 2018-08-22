@@ -49,7 +49,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert correct job
   CN_JOB_TABLESIZES pJob_TableSizes object.assertClass
-"t1" .
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grad a ddl lock
   ddlLock::grabRead
