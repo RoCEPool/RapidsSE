@@ -17,9 +17,9 @@ JobNote mJobNote_DumpIndex (
   nullptr,               // the _run task seed
   "dumpIndex_req"_Stz,   // the _req task seed
   nullptr,               // the _rcv task seed
-  "dumpIndex_node"_Stz,  // the _exe task seed
-  "dumpIndex_end"_Stz,   // the _end task seed
-  "dumpIndex_can"_Stz,   // the _can task seed
+  nullptr,               // the _exe task seed
+  nullptr,               // the _end task seed
+  nullptr,               // the _can task seed
   true,                  // check resources?
   false,                 // detached job?
   false,                 // buffer attached?

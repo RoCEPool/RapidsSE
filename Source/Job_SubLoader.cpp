@@ -11,7 +11,7 @@ JobNote mJobNote_SubLoader (
   "Job_SubLoader"_Stz,    // name of the job class
   CN_JOB_SUBLOADER,       // class enum
   JK_CHILD,               // job kind
-  "table subloader"_Stz,  // comment about the job
+  "table sub-loader"_Stz, // comment about the job
   nullptr,                // the prompt command
   nullptr,                // the second word
   "subLoader_run"_Stz,    // the _run task seed
