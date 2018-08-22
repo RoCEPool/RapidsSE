@@ -27,8 +27,8 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   gxJobCatalog.vTraceJobs(CN_JOB_BOOT);
   gxJobCatalog.vTraceJobs(CN_JOB_START);
   gxJobCatalog.vTraceJobs(CN_JOB_PROMPT);
-  gxJobCatalog.vTraceJobs(CN_JOB_ANSWER);
   gxJobCatalog.vTraceJobs(CN_JOB_CONNECTOR);
+  gxJobCatalog.vTraceJobs(CN_JOB_ANSWER);
   gxJobCatalog.vTraceJobs(CN_JOB_RECEIVER);
 
   // local
@@ -44,9 +44,9 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   gxJobCatalog.vTraceJobs(CN_JOB_LISTCOLUMNS);
   gxJobCatalog.vTraceJobs(CN_JOB_LISTIDXCOLUMNS);
   gxJobCatalog.vTraceJobs(CN_JOB_LISTPARTCOLUMNS);
+  gxJobCatalog.vTraceJobs(CN_JOB_USESCHEMA);
   gxJobCatalog.vTraceJobs(CN_JOB_DUMPINDEX);
   gxJobCatalog.vTraceJobs(CN_JOB_VISUALIZEINDEX);
-  gxJobCatalog.vTraceJobs(CN_JOB_USESCHEMA);
 
   // generic
   gxJobCatalog.vTraceJobs(CN_JOB__BEGUN);
