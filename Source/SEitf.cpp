@@ -180,11 +180,13 @@ SEitf::SEitf(i8 iPartition)
   m_aRowPtr         = nullptr;
   m_pEntryBuffer    = nullptr;
   m_pResultBuffer   = nullptr;
+  m_pFetchBuffer    = nullptr;
   m_pPlanner        = nullptr;
   m_pAccessPath     = nullptr;
   m_pEntry          = nullptr;
   m_pResultRow      = nullptr;
   m_aRow            = nullptr;
+  m_ppRow           = nullptr;
   m_pCurrentTable   = nullptr;
   m_pCurrentIndex   = nullptr;
   m_pTx             = nullptr;
@@ -924,8 +926,8 @@ bool SEitf::bNextBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
     
   // if we had an entry buffer delete it
-  if (m_pResultBuffer)
-    delete m_pResultBuffer;
+  if (m_pFetchBuffer)
+    delete m_pFetchBuffer;
   
   if (m_ziLastBuffersScanned == m_ziLastBuffers)
     return false;
@@ -938,9 +940,9 @@ bool SEitf::bNextBuffer(void)
   
   // get entry buffer
   PtrVal* pPtrVal = xValWrk.pNestedPtrVal();
-  m_pResultBuffer = (WorkingBuffer*)(pPtrVal->pPtr());
+  m_pFetchBuffer = (FetchBuffer*)(pPtrVal->pPtr());
   
-  if (m_pResultBuffer->bIsLast()) {
+  if (m_pFetchBuffer->bIsLast()) {
     m_ziLastBuffersScanned++;
     //vTrace("m_ziLastBuffersScanned: %lld\n"_Stz, pSEitf->m_ziLastBuffersScanned );
   }
@@ -1036,7 +1038,7 @@ bool SEitf::bNextRow2(i8& nPartition)
   
   while (true) {
   
-    while ( ! m_pResultBuffer ) {
+    while ( ! m_pFetchBuffer ) {
       
       // attempt to pop buffer off the buffer queue
       if ( ! m_pBufferQueue->bPop(&xValWrk) ) {
@@ -1044,23 +1046,23 @@ bool SEitf::bNextRow2(i8& nPartition)
         continue;
       }
       PtrVal* pPtrVal = xValWrk.pNestedPtrVal();
-      m_pResultBuffer = (WorkingBuffer*)(pPtrVal->pPtr());
+      m_pFetchBuffer = (FetchBuffer*)(pPtrVal->pPtr());
       
       // determine type of buffer
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       m_pEntryBuffer = nullptr;
       
-      m_pResultRow = m_pResultBuffer->pFirstRow();
+      m_ppRow = m_pFetchBuffer->pFirstRowPtr();
       
-      if (m_pResultBuffer->bIsLast()) {
+      if (m_pFetchBuffer->bIsLast()) {
         m_ziLastBuffersScanned++;
         //vTrace("m_ziLastBuffersScanned: %lld\n"_Stz, pSEitf->m_ziLastBuffersScanned );
       }
       
-      if ( ! m_pResultRow ) {
-        delete m_pResultBuffer;
-        m_pResultBuffer = nullptr;
+      if ( ! m_ppRow ) {
+        delete m_pFetchBuffer;
+        m_pFetchBuffer = nullptr;
         if (m_ziLastBuffersScanned == m_ziLastBuffers) {
           m_ziLastBuffersScanned = 0;
           return false;
@@ -1068,25 +1070,23 @@ bool SEitf::bNextRow2(i8& nPartition)
         continue;
       }
       
-      m_aRow = m_pResultRow->aRow();
-      nPartition = m_pResultBuffer->nPartitionNo();
+      nPartition = m_pFetchBuffer->nPartitionNo();
       return true;
       
     } // while ( ! m_pItemBuffer )
     
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    RASSERT(m_pResultBuffer);
+    RASSERT(m_pFetchBuffer);
       
-    m_pResultRow = m_pResultBuffer->pNextRow(m_pResultRow);
-    if (m_pResultRow) {
-      m_aRow = m_pResultRow->aRow();
-      nPartition = m_pResultBuffer->nPartitionNo();
+    m_ppRow = m_pFetchBuffer->pNextRowPtr(m_ppRow);
+    if (m_ppRow) {
+      nPartition = m_pFetchBuffer->nPartitionNo();
       return true;
     }
     
-    delete m_pResultBuffer;
-    m_pResultBuffer = nullptr;
+    delete m_pFetchBuffer;
+    m_pFetchBuffer = nullptr;
     
     if (m_ziLastBuffersScanned == m_ziLastBuffers) {
       m_ziLastBuffersScanned = 0;

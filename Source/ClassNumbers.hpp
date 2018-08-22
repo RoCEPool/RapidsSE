@@ -62,6 +62,7 @@ enum eCN : u2 // Class Number
     /* 36 */ CN_ENTRY,
     /* 37 */ CN_ENTRYBUFFER,
     /* 38 */ CN_ENTRYVEC,
+    /*    */ CN_FETCHBUFFER,
     
     /* 39 */ CN_FILE,
     /* 40 */ CN_FORMATTERS,
@@ -311,7 +312,8 @@ enum eCN : u2 // Class Number
     /* 36 */ "ENTRY"_Stz,              // CN_ENTRY
     /* 37 */ "ENTRYBUFFER"_Stz,        // CN_ENTRYBUFFER
     /* 38 */ "ENTRYVEC"_Stz,           // CN_ENTRYVEC
-  
+    
+    /* 38 */ "FETCHBUFFER"_Stz,        // CN_FETCHBUFFER
     /* 39 */ "FILE"_Stz,               // CN_FILE
     /* 40 */ "FORMATTERS"_Stz,         // CN_FORMATTERS
     /* 41 */ "FREEBUFFER"_Stz,         // CN_FREEBUFFER

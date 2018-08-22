@@ -56,6 +56,8 @@ typedef Array<CN_ROARRAY,eRO,1024> RelOpAry;
 #include "FreeEntry.hpp"
 #include "Wilderness.hpp"
 
+#include "FetchBuffer.hpp"
+
 #include "WorkingRow.hpp"
 #include "WorkingBuffer.hpp"
 

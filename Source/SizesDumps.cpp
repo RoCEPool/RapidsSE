@@ -63,6 +63,7 @@ pDUMPFUN *gpDump[]
   /* 37 */ &Dump::vDummy,           // CN_ENTRYBUFFER
   /* 38 */ &Dump::vInvalid,         // CN_ENTRYVEC
   
+  /* 38 */ &Dump::vInvalid,         // CN_FETCHBUFFER
   /* 39 */ &Dump::vInvalid,         // CN_FILE
   /* 40 */ &Dump::vDummy,           // CN_FORMATTERS
   /* 41 */ &Dump::vDummy,           // CN_FREEBUFFER
@@ -312,6 +313,7 @@ i8 giClassSize[]
   /* 37 */ sizeof(EntryBuffer),        // CN_ENTRYBUFFER
   /* 38 */ sizeof(EntryVec),           // CN_ENTRYVEC
   
+  /*    */ sizeof(FetchBuffer),        // CN_FETCHBUFFER
   /* 39 */ sizeof(File),               // CN_FILE
   /* 40 */ sizeof(Formatters),         // CN_FORMATTERS
   /* 41 */ sizeof(Buffer),             // CN_FREEBUFFER
@@ -561,6 +563,7 @@ eHT geWhichHeap[]
   /* 37 */ HT_TRANSIENT_LARGE,   // CN_ENTRYBUFFER
   /* 38 */ HT_INVALID,           // CN_ENTRYVEC
   
+  /* 38 */ HT_TRANSIENT_LARGE,   // CN_FETCHBUFFER
   /* 39 */ HT_TRANSIENT_SMALL,   // CN_FILE
   /* 40 */ HT_TRANSIENT_SMALL,   // CN_FORMATTERS
   /* 41 */ HT_INVALID,           // CN_FREEBUFFER

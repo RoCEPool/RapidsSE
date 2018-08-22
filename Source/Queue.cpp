@@ -266,7 +266,8 @@ void Queue::vDiscard(void)
   
   QueueBuffer* pQueueBufferTBD = m_pTopBuffer;
   
-  ASSERT(0 == pQueueBufferTBD->iCount());
+  // ALKA CHECK WHEN INTEGRATING WITH RDP
+  //ASSERT(0 == pQueueBufferTBD->iCount());
  
   m_pTopBuffer = m_pTopBuffer->pNext();
   if ( ! m_pTopBuffer )
