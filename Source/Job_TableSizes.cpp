@@ -20,7 +20,7 @@ JobNote mJobNote_TableSizes (
   "tableSizes_node"_Stz, // the _exe task seed
   "tableSizes_end"_Stz,  // the _end task seed
   "tableSizes_can"_Stz,  // the _can task seed
-  false,                 // check resources?
+  true,                  // check resources?
   false,                 // detached job?
   false,                 // buffer attached?
   JT_NONE,               // job trace
