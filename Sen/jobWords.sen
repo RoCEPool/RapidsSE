@@ -39,6 +39,10 @@
 
   // send job__begun back to originating node
   pJob job.id@ pJob "Job__Begun::send" find execute
+
+  // the job remains in the participant list
+  // the task exits and gets deleted
+  nullptr task::this task.job!
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -88,6 +92,11 @@
   eJobClass case
 
     // specific cases
+    CN_JOB__EXECUTE of
+      pJob "Job__Execute_rcv" find execute
+      pJob job.delete
+    endof
+
     CN_JOB__BEGUN     of pJob SEED_RCV job.spawn endof
     CN_JOB__CANCEL    of pJob SEED_RCV job.spawn endof
     CN_JOB__CANCELLED of pJob SEED_RCV job.spawn endof
@@ -95,13 +104,8 @@
     CN_JOB__ENDED     of pJob SEED_RCV job.spawn endof
     CN_JOB__EXECUTED  of pJob SEED_RCV job.spawn endof
 
-    CN_JOB__EXECUTE of
-      pJob "Job__Execute_rcv" find execute
-      pJob job.delete
-    endof
-
-    // load buffer
     CN_JOB_LOADBUFFER of pJob SEED_RCV job.spawn endof
+    CN_JOB_LOADTABLE  of pJob SEED_RCV job.spawn endof
 
     // default case
     pJob job.begin

@@ -185,14 +185,16 @@ task::this to pThisTask
 /*----------------------------------------------------------------------------*/
 : loadTable_beg ( -- )
 
-  job::this locals| pJob_loadTable |
+  job::this locals| pJob_LoadTable |
 
-  pJob_loadTable job.beginParticipant
+  // add this job to the participants list
+  pJob_LoadTable job.beginParticipant
 
   // check resources
-  pJob_loadTable loadTable_chk
+  pJob_LoadTable loadTable_chk
 
-  pJob_loadTable job.participantBegun
+  // this job has begun
+  pJob_LoadTable job.participantBegun
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -200,10 +202,10 @@ task::this to pThisTask
 /*----------------------------------------------------------------------------*/
 : loadTable_end ( -- )
 
-  job::this locals| pJob_loadTable |
+  job::this locals| pJob_LoadTable |
 
-  // check resources
-  pJob_loadTable loadTable_rel
+  // release resources
+  pJob_loadTable pJob_LoadTable
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -211,9 +213,9 @@ task::this to pThisTask
 /*----------------------------------------------------------------------------*/
 : loadTable_can ( -- )
 
-  job::this locals| pJob_loadTable |
+  job::this locals| pJob_LoadTable |
 
-  pJob_loadTable loadTable_rel
+  pJob_LoadTable loadTable_rel
 ;
 
 /*============================================================================*/

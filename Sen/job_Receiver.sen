@@ -28,7 +28,7 @@
 /*----------------------------------------------------------------------------*/
 /* receiver init                                                              */
 /*----------------------------------------------------------------------------*/
-: Receiver_init ( -- )
+: receiver_init ( -- )
 
   0 locals| pThisTask |
   0 locals| pJob_Receiver |.
@@ -62,7 +62,7 @@
 /*----------------------------------------------------------------------------*/
 /* receiver loop: receive a job, execute it                                   */
 /*----------------------------------------------------------------------------*/
-: Receiver_loop ( -- )
+: receiver_loop ( -- )
 
   0 locals| pJob |
   0 locals| eJobClass |
@@ -88,10 +88,10 @@
 : receiver_run ( -- )
 
   // initialise
-  Receiver_init
+  receiver_init
 
   // loop, receiving and executing jobs
-  Receiver_loop
+  receiver_loop
 
   // should never exit
   hazard
