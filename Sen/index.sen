@@ -688,9 +688,6 @@ tp: populateIndex
   // local variables
   0 0 0 0 0 0 0 locals| pIndex iSlots pSeitf pSelectTask nRowCount pIndexBuffer pEntry |
 
-  // increment query count
-  queryCount ++
-
   task::this task.seitf@ to pSeitf
 
   // push into indexes folder
@@ -889,9 +886,6 @@ tp: populateIndex
 
   // local variables
   0 0 0 0 0 0 0 locals| iSlots pSeitf pSelectTask nRowCount pIndexBuffer pEntry pIndex |
-
-  // increment query count
-  queryCount ++
 
   // push into indexes folder
   pushIndexes assert

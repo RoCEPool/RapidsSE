@@ -2,8 +2,6 @@
 /* actorModels.sen -- actor models group                                      */
 /*============================================================================*/
 
-int:  queryCount
-
 "actorModels.sen" .verbose
 
 "serverModel.sen" include
