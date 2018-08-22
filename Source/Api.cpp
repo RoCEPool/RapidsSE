@@ -1420,7 +1420,7 @@ eEC RapidsSE_GetColumns(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema,
     ColumnVec* pColumnVec = pSEitf->m_pCurrentTable->pColumnVec();
     i8 iColumns = pColumnVec->nItems();
     
-    s48K sColumns;
+    s16KB sColumns;
     
     sColumns.vCopy(""_Stz);
     s32 sValue;
@@ -1942,14 +1942,22 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel)
     // validate table
     VALIDATE_TABLE("c"_Stz);
     
-    s48K s;
+    s17KB s;
     i8 iRowLength;
     bool bBlankLine;
+    
+    i8 iRawDataLength = StrLib::iSize(pRow->aChar());
+    
+    if (iRawDataLength > C_16KB) {
+      pSEitf->vSetLastError(EC_MAX_ROW_LENGTH);
+      TRACE_ERROR("d"_Stz, pSEitf->m_eErrorCode);
+      return pSEitf->m_eErrorCode;
+    }
     
     // format the record into row format
     bool bValid = Row::bFormatRow(pSEitf->m_pCurrentTable->pColumnVec(),
                                   &pSEitf->m_xFormatters,
-                                  pRow, StrLib::iSize(pRow->aChar()),
+                                  pRow, iRawDataLength,
                                   s, iRowLength, bBlankLine,
                                   true /* allowNonPrintable */);
     if (! bValid) {
@@ -2028,14 +2036,22 @@ eEC RapidsSE_InsertRowPartition(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel)
     // validate table
     VALIDATE_TABLE("c"_Stz);
     
-    s48K sRecord;
+    s17KB sRecord;
     i8 iRowLength;
     bool bBlankLine;
     
+    i8 iRawDataLength = StrLib::iSize(pRow->aChar());
+    
+    if (iRawDataLength > C_16KB) {
+      pSEitf->vSetLastError(EC_MAX_ROW_LENGTH);
+      TRACE_ERROR("d"_Stz, pSEitf->m_eErrorCode);
+      return pSEitf->m_eErrorCode;
+    }
+
     // format the record into row format
     bool bValid = Row::bFormatRow(pSEitf->m_pCurrentTable->pColumnVec(),
                                   &pSEitf->m_xFormatters,
-                                  pRow, StrLib::iSize(pRow->aChar()),
+                                  pRow, iRawDataLength,
                                   sRecord, iRowLength, bBlankLine,
                                   true /* allowNonPrintable */);
     if (! bValid) {

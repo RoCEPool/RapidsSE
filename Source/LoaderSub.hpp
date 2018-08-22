@@ -14,7 +14,7 @@ namespace Utilities
     LoadMap* m_pLoadMap;   // load map
 
     Table*   m_pTable;     // table being loaded
-    s256     m_aRecord;    // formatted row
+    s48K     m_aRecord;    // formatted row
     i8       m_iLength;    // length of record
     i8       m_iPartition; // partition of record
     i8       m_iValidRecords;   // valid records

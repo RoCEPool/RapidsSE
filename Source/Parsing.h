@@ -11,7 +11,7 @@ namespace Parsing
 {
   void vCheckAssumptions(void);
   
-  static const i8 C_TOKENS = 256;
+  static const i8 C_TOKENS = 1024;
   
   typedef Array<CN_TOKENARY,Stz*,C_TOKENS> TokenAry;
 }

@@ -277,7 +277,7 @@ void Row::vAsBinaryString(s48K& sDataString, ColumnVec* pColVec)
     // move to offset
     aData = (Stz*)((unsigned char*)(this) + iOffset);
     
-    s256 s;
+    s17KB s;
     DtmLib::vSprintQuotes(pColumn->eDatumType(), s, aData, pColumn);
     if (i_Column == 0)
       sDataString.vCopy(s);
@@ -311,7 +311,7 @@ void Row::vAsBinaryStringVLQ(s48K& sDataString, ColumnVec* pColVec)
     // move to offset
     aData = (Stz*)((unsigned char*)(this) + iOffset);
     
-    s256 s;
+    s17KB s;
     DtmLib::vSprintQuotesVLQ(pColumn->eDatumType(), s, aData, pColumn);
     if (i_Column == 0)
       sDataString.vCopy(s);
@@ -347,7 +347,7 @@ void Row::vAsEscapedString(s48K& sDataString, ColumnVec* pColVec)
     // move to offset
     aData = (Stz*)((unsigned char*)(this) + iOffset);
     
-    s256 s;
+    s17KB s;
     DtmLib::vSprintEscapedVLQ(pColumn->eDatumType(), s, aData, pColumn);
     if (i_Column == 0)
       sDataString.vCopy(s);
@@ -378,7 +378,7 @@ void Row::vAsEscapedString(s48K& sDataString, ColumnVec* pColVec)
     // move to offset
     aData = (Stz*)((unsigned char*)(this) + iOffset);
     
-    s256 s;
+    s17KB s;
     DtmLib::vSprintEscaped(pColumn->eDatumType(), s, aData, pColumn);
     if (i_Column == 0)
       sDataString.vCopy(s);
@@ -446,7 +446,7 @@ void Row::vDump(ColumnVec* pColVec)
     aData = (Stz*)((char*)(this) + iOffset);
 
     // dump the column value
-    s256 s;
+    s17KB s;
     DtmLib::vSprintVLQ(pColumn->eDatumType(), s, aData, pColumn);
     vTrace("%s|"_Stz, s.aChar());
   }
@@ -492,7 +492,7 @@ void Row::vDump(ColumnVec* pColVec)
     aData = (Stz*)((unsigned char*)(this) + iOffset);
     
     // dump the column value
-    s256 s;
+    s17KB s;
     DtmLib::vSprint(pColumn->eDatumType(), s, aData, pColumn);
     vTrace("%s|"_Stz, s.aChar());
   }
@@ -522,7 +522,7 @@ void Row::vShow(ColumnVec* pColVec, bool bCompressed)
     // move to offset
     aData = (Stz*)((unsigned char*)(this) + iOffset);
     
-    s256 s;
+    s17KB s;
     if (bCompressed)
       DtmLib::vSprintVLQ(pColumn->eDatumType(), s, aData, pColumn);
     else

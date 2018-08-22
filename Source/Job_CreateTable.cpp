@@ -249,6 +249,10 @@ bool Job_CreateTable::bAddTableColumns(TokenVec* pTokenVec, i8& iCurrentToken)
       return false;
     }
     
+    if (iColumn == 150) {
+      return false;
+    }
+    
     // set column number
     m_xColumns[iColumn].m_iColumnNo = iColumn;
     
@@ -337,6 +341,7 @@ bool Job_CreateTable::bAddTableColumns(TokenVec* pTokenVec, i8& iCurrentToken)
     }
     
     iColumn++;
+
   }
   
   // set no of columns in the job
