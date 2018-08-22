@@ -5,9 +5,9 @@
 "job_LoadBuffer.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* LoadBuffer node                                                            */
+/* LoadBuffer kid                                                             */
 /*----------------------------------------------------------------------------*/
-: LoadBuffer_node ( pJob_LoadBuffer -- )
+: LoadBuffer_kid ( pJob_LoadBuffer -- )
 
   params| pJob_LoadBuffer |
   // job::this locals| pJob_LoadBuffer |
@@ -22,7 +22,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  "LoadBuffer_node :" .
+  "LoadBuffer_kid :" .
   pJob_LoadBuffer job.show
 
   // get the load table job (node)
@@ -90,7 +90,7 @@
   i_Node grid::node task::this task.sendNode!
 
   //pJob_LoadBuffer >socket
-  pJob_LoadBuffer LoadBuffer_node
+  pJob_LoadBuffer LoadBuffer_kid
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
