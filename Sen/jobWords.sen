@@ -218,6 +218,9 @@
 
   ddlLock::testDrop
 
+  // null the job in the task
+  nullptr task::this task.job!
+
   errorCode error.msg "Setting error '%v' in job" str.format .
   errorCode grid::thisNode@ pJob job.error!
 
