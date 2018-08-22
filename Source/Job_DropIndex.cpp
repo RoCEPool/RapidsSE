@@ -17,7 +17,7 @@ JobNote mJobNote_DropIndex (
   nullptr,               // the _run task seed
   "dropIndex_req"_Stz,   // the _req task seed
   "dropIndex_beg"_Stz,   // the _rcv task seed
-  "dropIndex_node"_Stz,  // the _exe task seed
+  "dropIndex_exe"_Stz,  // the _exe task seed
   "dropIndex_end"_Stz,   // the _end task seed
   "dropIndex_can"_Stz,   // the _can task seed
   true,                  // check resources?

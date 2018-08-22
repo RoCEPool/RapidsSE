@@ -79,12 +79,12 @@
 /*----------------------------------------------------------------------------*/
 /* verify index request on a node                                             */
 /*----------------------------------------------------------------------------*/
-: verifyIndex_node ( Job_VerifyIndex )
+: verifyIndex_exe ( Job_VerifyIndex )
 
   params| pJob_VerifyIndex |
   0 0 0 0 locals| pTask pIndex sTableNm sIndexNm  |
 
-  tp: verifyIndex_node
+  tp: verifyIndex_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert correct job

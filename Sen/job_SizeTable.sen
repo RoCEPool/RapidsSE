@@ -67,14 +67,14 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_SizeTable job on a node                                        */
 /*----------------------------------------------------------------------------*/
-: sizeTable_node ( Job_SizeTable -- )
+: sizeTable_exe ( Job_SizeTable -- )
 
   params| pJob_SizeTable |
   // job::this locals| pJob_SizeTable |
 
   0 0 0 locals| sTableNm pIndex iSize |
 
-  tp: sizeTable_node
+  tp: sizeTable_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert correct job

@@ -17,7 +17,7 @@ JobNote mJobNote_AnalyzeTable (
   nullptr,                   // the _run task seed
   "analyzeTable_req"_Stz,    // the _req task seed
   "analyzeTable_beg"_Stz,    // the _rcv task seed
-  "analyzeTable_node"_Stz,   // the _exe task seed
+  "analyzeTable_exe"_Stz,   // the _exe task seed
   "analyzeTable_end"_Stz,    // the _end task seed
   "analyzeTable_can"_Stz,    // the _can task seed
   true,                      // check resources?

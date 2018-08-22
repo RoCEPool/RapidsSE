@@ -16,7 +16,7 @@ JobNote mJobNote_Sanity (
   nullptr,           // the _run task seed
   "sanity_req"_Stz,  // the _req task seed
   "sanity_beg"_Stz,  // the _rcv task seed
-  "sanity_node"_Stz, // the _exe task seed
+  "sanity_exe"_Stz, // the _exe task seed
   "sanity_end"_Stz,  // the _end task seed
   "sanity_can"_Stz,  // the _can task seed
   false,             // check resources?

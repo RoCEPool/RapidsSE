@@ -32,14 +32,14 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_TruncateTable job on a node                                    */
 /*----------------------------------------------------------------------------*/
-: truncateTable_node ( Job_TruncateTable -- )
+: truncateTable_exe ( Job_TruncateTable -- )
 
   params| pJob_TruncateTable |
   // job::this locals| pJob_TruncateTable |
 
   0 0 locals| sTableNm pThisTask |
 
-  tp: truncateTable_node
+  tp: truncateTable_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert correct job
@@ -48,7 +48,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the task
   task::this to pThisTask
-  pJob_TruncateTable pThisTask "truncateTable_node task: %v Job_TruncateTable %v" fmt.print
+  pJob_TruncateTable pThisTask "truncateTable_exe task: %v Job_TruncateTable %v" fmt.print
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set dictionary stack

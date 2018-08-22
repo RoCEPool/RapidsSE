@@ -123,12 +123,12 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropTable job on a node                                        */
 /*----------------------------------------------------------------------------*/
-: dropTable_node ( pJob_DropTable -- )
+: dropTable_exe ( pJob_DropTable -- )
 
   params| pJob_DropTable |
   // job::this locals| pJob_DropTable |
 
-  tp: dropTable_node
+  tp: dropTable_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert correct job

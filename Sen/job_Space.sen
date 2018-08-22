@@ -38,7 +38,7 @@
 /*----------------------------------------------------------------------------*/
 /* get space in the pool (executed on all nodes)                              */
 /*----------------------------------------------------------------------------*/
-: space_node ( pJob_Space -- )
+: space_exe ( pJob_Space -- )
 
   params| pJob_Space |
   // job::this locals| pJob_Space |

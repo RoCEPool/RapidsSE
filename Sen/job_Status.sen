@@ -38,7 +38,7 @@
 /*----------------------------------------------------------------------------*/
 /* get status of a node (executed on all nodes)                               */
 /*----------------------------------------------------------------------------*/
-: status_node ( pJob_Status -- )
+: status_exe ( pJob_Status -- )
 
   params| pJob_Status |
   // job::this locals| pJob__Begun |

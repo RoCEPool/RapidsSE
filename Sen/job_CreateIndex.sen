@@ -176,14 +176,14 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_CreateIndex job on each node                                   */
 /*----------------------------------------------------------------------------*/
-: createIndex_node ( Job_CreateIndex -- )
+: createIndex_exe ( Job_CreateIndex -- )
 
   params| pJob_CreateIndex |
   // job::this locals| pJob_CreateIndex |
 
   0 0 locals| pTable sTableNm sIndexNm |
 
-  tp: createIndex_node
+  tp: createIndex_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert correct job

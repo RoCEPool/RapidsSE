@@ -17,7 +17,7 @@ JobNote mJobNote_TableSizes (
   nullptr,               // the _run task seed
   "tableSizes_req"_Stz,  // the _req task seed
   "tableSizes_beg"_Stz,  // the _rcv task seed
-  "tableSizes_node"_Stz, // the _exe task seed
+  "tableSizes_exe"_Stz, // the _exe task seed
   "tableSizes_end"_Stz,  // the _end task seed
   "tableSizes_can"_Stz,  // the _can task seed
   true,                  // check resources?

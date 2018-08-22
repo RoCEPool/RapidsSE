@@ -17,7 +17,7 @@ JobNote mJobNote_CreateSchema (
   nullptr,                  // the _run task seed
   "createSchema_req"_Stz,   // the _req task seed
   "createSchema_beg"_Stz,   // the _rcv task seed
-  "createSchema_node"_Stz,  // the _exe task seed
+  "createSchema_exe"_Stz,  // the _exe task seed
   "createSchema_end"_Stz,   // the _end task seed
   "createSchema_can"_Stz,   // the _can task seed
   true,                     // check resources?

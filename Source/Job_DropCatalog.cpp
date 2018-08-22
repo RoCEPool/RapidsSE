@@ -17,7 +17,7 @@ JobNote mJobNote_DropCatalog (
   nullptr,                 // the _run task seed
   "dropCatalog_req"_Stz,   // the _req task seed
   "dropCatalog_beg"_Stz,   // the _rcv task seed
-  "dropCatalog_node"_Stz,  // the _exe task seed
+  "dropCatalog_exe"_Stz,  // the _exe task seed
   "dropCatalog_end"_Stz,   // the _end task seed
   "dropCatalog_can"_Stz,   // the _can task seed
   true,                    // check resources?

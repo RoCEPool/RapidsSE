@@ -100,14 +100,14 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_CreateTable job on each node                                   */
 /*----------------------------------------------------------------------------*/
-: createTable_node ( pJob_CreateTable -- )
+: createTable_exe ( pJob_CreateTable -- )
 
   params| pJob_CreateTable |
   // job::this locals| pJob_CreateTable |
 
   0 0 locals| pTable sTableNm |
 
-  tp: createTable_node
+  tp: createTable_exe
 
   //----------------------------------------------------------------------------
   // assert correct job

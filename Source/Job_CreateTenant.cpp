@@ -17,7 +17,7 @@ JobNote mJobNote_CreateTenant (
   nullptr,                   // the _run task seed
   "createTenant_req"_Stz,    // the _req task seed
   "createTenant_beg"_Stz,    // the _rcv task seed
-  "createTenant_node"_Stz,   // the _exe task seed
+  "createTenant_exe"_Stz,   // the _exe task seed
   "createTenant_end"_Stz,    // the _end task seed
   "createTenant_can"_Stz,    // the _can task seed
   true,                      // check resources?

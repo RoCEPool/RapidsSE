@@ -17,7 +17,7 @@ JobNote mJobNote_DropTable (
   nullptr,               // the _run task seed
   "dropTable_req"_Stz,   // the _req task seed
   "dropTable_beg"_Stz,   // the _rcv task seed
-  "dropTable_node"_Stz,  // the _exe task seed
+  "dropTable_exe"_Stz,  // the _exe task seed
   "dropTable_end"_Stz,   // the _end task seed
   "dropTable_can"_Stz,   // the _can task seed
   true,                  // check resources?

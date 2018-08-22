@@ -74,14 +74,14 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_CreateCatalog job on a node                                    */
 /*----------------------------------------------------------------------------*/
-: createCatalog_node ( pJob_CreateCatalog -- )
+: createCatalog_exe ( pJob_CreateCatalog -- )
 
   params| pJob_CreateCatalog |
   // job::this locals| pJob_CreateCatalog |
 
   0 locals| sCatalogNm |
 
-  tp: createCatalog_node
+  tp: createCatalog_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock

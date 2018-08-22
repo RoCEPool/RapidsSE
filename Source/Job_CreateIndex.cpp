@@ -17,7 +17,7 @@ JobNote mJobNote_CreateIndex (
   nullptr,                 // the _run task seed
   "createIndex_req"_Stz,   // the _req task seed
   "createIndex_beg"_Stz,   // the _rcv task seed
-  "createIndex_node"_Stz,  // the _exe task seed
+  "createIndex_exe"_Stz,  // the _exe task seed
   "createIndex_end"_Stz,   // the _end task seed
   "createIndex_can"_Stz,   // the _can task seed
   true,                    // check resources?
@@ -46,7 +46,7 @@ JobNote mJobNote_CreateIndex2 (
   nullptr,                 // the _run task seed
   "createIndex_req"_Stz,   // the _req task seed
   "createIndex_beg"_Stz,   // the _rcv task seed 
-  "createIndex_node"_Stz,  // the _exe task seed
+  "createIndex_exe"_Stz,  // the _exe task seed
   "createIndex_end"_Stz,   // the _end task seed
   "createIndex_can"_Stz,   // the _can task seed
   true,                    // check resources?

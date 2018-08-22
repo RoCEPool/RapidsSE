@@ -17,7 +17,7 @@ JobNote mJobNote_Status (
   nullptr,           // the _run task seed
   "status_req"_Stz,  // the _req task seed
   "status_beg"_Stz,  // the _rcv task seed
-  "status_node"_Stz, // the _exe task seed
+  "status_exe"_Stz, // the _exe task seed
   "status_end"_Stz,  // the _end task seed
   "status_can"_Stz,  // the _can task seed
   false,             // check resources?

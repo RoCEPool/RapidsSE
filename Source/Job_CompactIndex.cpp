@@ -17,7 +17,7 @@ JobNote mJobNote_CompactIndex (
   nullptr,                // the _run task seed
   "compactIndex_req"_Stz, // the _req task seed
   "compactIndex_beg"_Stz, // the _rcv task seed
-  "compactIndex_node"_Stz,// the _exe task seed
+  "compactIndex_exe"_Stz,// the _exe task seed
   "compactIndex_end"_Stz, // the _end task seed
   "compactIndex_can"_Stz, // the _can task seed
   true,                   // check resources?

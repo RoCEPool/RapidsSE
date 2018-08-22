@@ -61,12 +61,12 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropSchema job on a node                                       */
 /*----------------------------------------------------------------------------*/
-: dropSchema_node ( pJob_DropSchema -- )
+: dropSchema_exe ( pJob_DropSchema -- )
 
   params| pJob_DropSchema |
   // job::this locals| pJob_DropSchema |
 
-  tp: dropSchema_node
+  tp: dropSchema_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert correct job

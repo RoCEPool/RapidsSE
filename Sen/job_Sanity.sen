@@ -38,7 +38,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_Sanity job                                                     */
 /*----------------------------------------------------------------------------*/
-: sanity_node ( pJob_Sanity -- )
+: sanity_exe ( pJob_Sanity -- )
 
   params| pJob_Sanity |
   // job::this locals| pJob_Sanity |

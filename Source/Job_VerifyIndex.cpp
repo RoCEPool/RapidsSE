@@ -17,7 +17,7 @@ JobNote mJobNote_VerifyIndex (
   nullptr,                    // the _run task seed
   "verifyIndex_req"_Stz,      // the _req task seed
   "verifyIndex_beg"_Stz,      // the _rcv task seed
-  "verifyIndex_node"_Stz,     // the _exe task seed
+  "verifyIndex_exe"_Stz,     // the _exe task seed
   "verifyIndex_end"_Stz,      // the _end task seed
   "verifyIndex_can"_Stz,      // the _can task seed
   true,                       // check resources?

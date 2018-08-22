@@ -61,12 +61,12 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropCataloge job on a node                                     */
 /*----------------------------------------------------------------------------*/
-: dropCatalog_node ( pJob_DropCatalog -- )
+: dropCatalog_exe ( pJob_DropCatalog -- )
 
   params| pJob_DropCatalog |
   // job::this locals| pJob_DropCatalog |
 
-  tp: dropCatalog_node
+  tp: dropCatalog_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert correct job

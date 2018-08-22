@@ -75,13 +75,13 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_CompactIndex job on a node                                     */
 /*----------------------------------------------------------------------------*/
-: compactIndex_node ( Job_CompactIndex -- )
+: compactIndex_exe ( Job_CompactIndex -- )
 
   params| pJob_CompactIndex |
 
   0 0 0 0 locals| pIndex iSize sTableNm sIndexNm |
 
-  tp: compactIndex_node
+  tp: compactIndex_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert correct job

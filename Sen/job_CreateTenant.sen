@@ -70,14 +70,14 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_CreateTenant job on a node                                     */
 /*----------------------------------------------------------------------------*/
-: createTenant_node ( pJob_CreateTenant -- )
+: createTenant_exe ( pJob_CreateTenant -- )
 
   params| pJob_CreateTenant |
   // job::this locals| pJob_CreateTenant |
 
   0 locals| sTenantNm |
 
-  tp: createTenant_node
+  tp: createTenant_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock

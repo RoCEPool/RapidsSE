@@ -87,7 +87,7 @@ task::this to pThisTask
 /*----------------------------------------------------------------------------*/
 /* execute Job_LoadTable job on each node                                     */
 /*----------------------------------------------------------------------------*/
-: loadTable_node ( pJob_LoadTable -- )
+: loadTable_exe ( pJob_LoadTable -- )
 
   params| pJob_LoadTable |
   // job::this locals| pJob_LoadTable |
@@ -96,7 +96,7 @@ task::this to pThisTask
 
   // get the task
   task::this to pThisTask
-  pJob_LoadTable pThisTask "LoadTable_node task: %v job_LoadTable %v" fmt.print
+  pJob_LoadTable pThisTask "LoadTable_exe task: %v job_LoadTable %v" fmt.print
 
   // store task into Job_LoadTable
   pThisTask pJob_LoadTable job_loadTable.task!

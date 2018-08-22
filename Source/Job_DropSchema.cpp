@@ -18,7 +18,7 @@ JobNote mJobNote_DropSchema (
   nullptr,                // the _run task seed
   "dropSchema_req"_Stz,   // the _req task seed
   "dropSchema_beg"_Stz,   // the _rcv task seed
-  "dropSchema_node"_Stz,  // the _exe task seed
+  "dropSchema_exe"_Stz,  // the _exe task seed
   "dropSchema_end"_Stz,   // the _end task seed
   "dropSchema_can"_Stz,   // the _can task seed
   true,                   // check resources?

@@ -17,7 +17,7 @@ JobNote mJobNote_LoadTable (
   nullptr,                // the _run task seed
   "loadTable_req"_Stz,    // the _req task seed
   "loadTable_beg"_Stz,    // the _rcv task seed
-  "loadTable_node"_Stz,   // the _exe task seed
+  "loadTable_exe"_Stz,   // the _exe task seed
   "loadTable_end"_Stz,    // the _end task seed
   "loadTable_can"_Stz,    // the _can task seed
   true,                   // check resources?

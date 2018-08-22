@@ -101,12 +101,12 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropIndex job on a node                                        */
 /*----------------------------------------------------------------------------*/
-: dropIndex_node ( Job_DropIndex -- )
+: dropIndex_exe ( Job_DropIndex -- )
 
   params| pJob_DropIndex |
   // job::this locals| pJob_DropIndex |
 
-  tp: dropIndex_node
+  tp: dropIndex_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert correct job

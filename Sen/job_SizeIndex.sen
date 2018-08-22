@@ -79,14 +79,14 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_SizeIndex job on a node                                        */
 /*----------------------------------------------------------------------------*/
-: sizeIndex_node ( Job_SizeIndex -- )
+: sizeIndex_exe ( Job_SizeIndex -- )
 
   params| pJob_SizeIndex |
   // job::this locals| pJob_SizeIndex |
 
   0 0 0 0 locals| pIndex iSize sTableNm sIndexNm |
 
-  tp: sizeIndex_node
+  tp: sizeIndex_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert correct job

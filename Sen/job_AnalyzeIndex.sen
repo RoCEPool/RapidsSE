@@ -81,14 +81,14 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_AnalyzeIndex job on a node                                     */
 /*----------------------------------------------------------------------------*/
-: analyzeIndex_node ( Job_AnalyzeIndex -- )
+: analyzeIndex_exe ( Job_AnalyzeIndex -- )
 
   params| pJob_AnalyzeIndex |
   // job::this locals| pJob_AnalyzeIndex |
 
   0 0 locals| sTableNm bIsDetailed |
 
-  tp: analyzeIndex_node
+  tp: analyzeIndex_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert correct job

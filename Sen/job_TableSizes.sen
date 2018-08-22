@@ -39,12 +39,12 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_TableSizes job on a node                                       */
 /*----------------------------------------------------------------------------*/
-: tableSizes_node ( Job_TableSizes -- )
+: tableSizes_exe ( Job_TableSizes -- )
 
   params| pJob_TableSizes |
   0 0 0 0 locals| pIndex iSize iCount sTableNm |
 
-  tp: tableSizes_node
+  tp: tableSizes_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert correct job

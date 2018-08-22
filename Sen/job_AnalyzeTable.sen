@@ -70,14 +70,14 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_AnalyzeTable job on a node                                     */
 /*----------------------------------------------------------------------------*/
-: analyzeTable_node ( Job_AnalyzeTable -- )
+: analyzeTable_exe ( Job_AnalyzeTable -- )
 
   params| pJob_AnalyzeTable |
   // job::this locals| pJob_AnalyzeTable |
 
   0 0 locals| sTableNm bIsDetailed |
 
-  tp: analyzeTable_node
+  tp: analyzeTable_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert correct job

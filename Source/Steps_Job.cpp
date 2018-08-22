@@ -689,7 +689,7 @@ void Task::vJobExecuteFetch(MP_Task mpTask)
       
     default:
       sExecute = pJob->m_pJobClass->m_aSeedExe;
-      //sExecute.vConcat("_node"_Stz);
+      //sExecute.vConcat("_exe"_Stz);
       break;
   }
   

@@ -61,12 +61,12 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropTenant job on a node                                       */
 /*----------------------------------------------------------------------------*/
-: dropTenant_node ( pJob_DropTenant -- )
+: dropTenant_exe ( pJob_DropTenant -- )
 
   params| pJob_DropTenant |
   // job::this locals| pJob_DropTenant |
 
-  tp: dropTenant_node
+  tp: dropTenant_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert correct job
