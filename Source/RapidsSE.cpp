@@ -734,14 +734,14 @@ void RapidsSE::vSystemInit(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* start the R35 tasks                                                        */
+/* start the system tasks                                                     */
 /*----------------------------------------------------------------------------*/
-void RapidsSE::vStartR35Tasks(void)
+void RapidsSE::vStartSystemTasks(void)
 {
   if (gxArguments.m_bVerbose)
-    vInfo("\n*\n* Start R35 Tasks\n*\n"_Stz);
+    vInfo("\n*\n* Start System Tasks\n*\n"_Stz);
   
-  s32 sName = "startR35Task"_Stz;
+  s32 sName = "startSystemTask"_Stz;
   
   JobClass* pJobClass_Start = gxJobCatalog.pFindJob(CN_JOB_START);
   

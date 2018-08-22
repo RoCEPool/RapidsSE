@@ -50,7 +50,7 @@ namespace StorageEngine
     static void vRunCommand(void);
     static void vRunDocol(void);
     static void vSignalHandler(int iSignal);
-    static void vStartR35Tasks(void);
+    static void vStartSystemTasks(void);
     static void vSystemInit(void);
     static void vSystemStatus(void);
     static void vSystemStop(void);
