@@ -829,7 +829,8 @@ void IndexTree::vAppendEntriesFromBuffer(i8 iTxId,
     
     xRowWrk.vTxId(iTxId);
     xRowWrk.vEmbedded((char*)pRow->aRow());
-    xRowWrk.vRowSize(pRow->nRowSize());
+    i8 nRowSize = pRow->nRowSize();
+    xRowWrk.vRowSize(nRowSize);
     //xRowWrk.vShow(m_pIndex->pTable()->pColumnVec());
     
     pNewEntry = m_pCurrentBuffer->pAppendRow(xRowWrk);
