@@ -11,7 +11,7 @@ JobNote mJobNote_SizeTable (
   "Job_SizeTable"_Stz,   // name of the job class
   CN_JOB_SIZETABLE,      // class enum
   JK_DIST2PC,            // job kind
-  "size table"_Stz,      // comment about the job
+  "size of table"_Stz,   // comment about the job
   "sz"_Stz,              // the prompt command
   nullptr,               // the second word
   nullptr,               // the _run task seed

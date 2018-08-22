@@ -11,7 +11,7 @@ JobNote mJobNote_SizeIndex (
   "Job_SizeIndex"_Stz,   // name of the job class
   CN_JOB_SIZEINDEX,      // class enum
   JK_DIST2PC,            // job kind
-  "size index"_Stz,      // comment about the job
+  "size of index"_Stz,   // comment about the job
   "szidx"_Stz,           // the prompt command
   nullptr,               // the second word
   nullptr,               // the _run task seed
