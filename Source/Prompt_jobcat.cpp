@@ -52,10 +52,10 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   gxJobCatalog.vTraceJobs(CN_JOB__BEGUN);
   gxJobCatalog.vTraceJobs(CN_JOB__EXECUTE);
   gxJobCatalog.vTraceJobs(CN_JOB__EXECUTED);
-  gxJobCatalog.vTraceJobs(CN_JOB__CANCELLED);
   gxJobCatalog.vTraceJobs(CN_JOB__END);
   gxJobCatalog.vTraceJobs(CN_JOB__ENDED);
   gxJobCatalog.vTraceJobs(CN_JOB__CANCEL);
+  gxJobCatalog.vTraceJobs(CN_JOB__CANCELLED);
 
   // dist2pc
   gxJobCatalog.vTraceJobs(CN_JOB_ANALYZEINDEX);

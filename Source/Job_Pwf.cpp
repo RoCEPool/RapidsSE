@@ -11,7 +11,7 @@ JobNote mJobNote_Pwf (
   "Job_Pwf"_Stz,         // name of the job class
   CN_JOB_PWF,            // class enum
   JK_LOCAL,              // job kind
-  "change folder"_Stz,   // comment about the job
+  "working folder"_Stz,  // comment about the job
   "pwf"_Stz,             // the prompt command
   nullptr,               // the second word
   nullptr,               // the _run task seed
