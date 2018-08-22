@@ -57,6 +57,7 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.id@"_Stz,              &vJobIdFetch,          false);
   vAddPrimitive("job.indexName@"_Stz,       &vJobIndexNameFetch,   false);
   vAddPrimitive("job.isPromptCommand"_Stz,  &vJobIsPromptCommand,  false);
+  vAddPrimitive("job.jobClass"_Stz,         &vJobJobClass,         false);
   vAddPrimitive("job_loadBuffer.insertRows"_Stz,   &vJobLoadBufferInsertRows,       false);
   vAddPrimitive("job_loadBuffer.loadJobId@"_Stz,   &vJobLoadBufferLoadJobIdFetch,   false);
   vAddPrimitive("job_loadBuffer.partition@"_Stz,   &vJobLoadBufferPartitionFetch,   false);
@@ -927,6 +928,25 @@ void Task::vJobIsPromptCommand(MP_Task mpTask)
   Job* pJob = _pJob(pJobPtr);
   
   mpTask->m_pDataStack->vPushInt(pJob->m_pPromptTask ? true : false);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.jobClass -- get the JobClass of the job                                */
+/*----------------------------------------------------------------------------*/
+void Task::vJobJobClass(MP_Task mpTask)
+{
+  ENTRY("vJobJobClass"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.jobClass"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  i8 iJobClass_p = (i8)pJob->m_pJobClass;
+  
+  mpTask->m_pDataStack->vPushInt(iJobClass_p);
   
   EXIT();
 }
