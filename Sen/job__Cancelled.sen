@@ -44,6 +44,8 @@
 /*----------------------------------------------------------------------------*/
 : Job__Cancelled_rcv ( -- )
 
+  ">> Job__Cancelled_rcv <<" .
+
   job::this locals| pJob__Cancelled |
   pJob__Cancelled job.id@ locals| iJobId |
 
@@ -75,9 +77,15 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  "received Job__Executed from all nodes" .
+  "received Job_Cancelled from all nodes" .
 
-  pJob Job__End::distribute
+  // remove the job from the originator jobs
+  pJob job.removeOriginator
+
+  // notify the originating task
+  pJob job.originatingTask@ ack
+
+  "All Done" .
 
   delete_completed_job
 ;

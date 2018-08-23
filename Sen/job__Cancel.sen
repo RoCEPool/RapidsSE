@@ -49,24 +49,20 @@
 /*----------------------------------------------------------------------------*/
 : Job__Cancel_rcv ( -- )
 
-  job::this locals| pJob__Cancel |
-  pJob__Cancel job.id@ locals| iJobId |
+  //
+  // where: on the participating node
+  //
 
-  0 0 0 locals| sReleaseResources pJobParticipant pJobCancelled |
+  job::this locals| pJob__End |
 
-  // find the job in the participating jobs
+  0 locals| pJobParticipant |
+
+  // find the job to be executed in the participating jobs
+  pJob__End job.id@ locals| iJobId |
   iJobId job.findParticipant to pJobParticipant
 
-  // execute the job's releaseResources command
-  pJobParticipant job.releaseResources@ to sReleaseResources
-  sReleaseResources "" str.equal not if 
-    pJobParticipant sReleaseResources find execute
-  else
-    0 assert
-  then
-
-  // send job__executed back to originating node
-  pJobParticipant Job__Cancelled::send
+  // execute the cancel seed of the job on this participating node
+  pJobParticipant SEED_CAN job.spawn
 
   delete_completed_job
 ;

@@ -49,40 +49,6 @@
 /*----------------------------------------------------------------------------*/
 : Job__End_rcv ( -- )
 
-  job::this locals| pJob__End |
-
-  0 locals| pJobParticipant |
-  0 locals| pJobClass |
-  0 locals| sEndSeed |
-
-  // find the job in the participating jobs
-  pJob__End job.id@ locals| iJobId |
-  iJobId job.findParticipant to pJobParticipant
-  pJobParticipant "Job %v" fmt.print
-
-  pJobParticipant job.jobClass to pJobClass
-  pJobClass jobClass.name pJobClass "JobClass %v %v" fmt.print
-
-  pJobClass jobClass.seedEnd to sEndSeed
-
-  "" sEndSeed str.equal not if
-    sEndSeed find execute
-  then
-
-  pJobParticipant Job__Ended::send
-
-  // remove the job from the participant jobs
-  pJobParticipant job.removeParticipant
-
-  // delete the job
-  pJobParticipant job.delete
-
-  delete_completed_job
-;
-
-/*----------------------------------------------------------------------------*/
-: Job__End_rcv2 ( -- )
-
   //
   // where: on the participating node
   //
@@ -95,8 +61,8 @@
   pJob__End job.id@ locals| iJobId |
   iJobId job.findParticipant to pJobParticipant
 
-  // execute the job on this participating node
-  pJobParticipant SEED_EXE job.spawn
+  // execute the end seed of the job on this participating node
+  pJobParticipant SEED_END job.spawn
 
   delete_completed_job
 ;

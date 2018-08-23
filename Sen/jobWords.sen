@@ -50,10 +50,6 @@
 /*----------------------------------------------------------------------------*/
 : job::participantEnded ( -- )
 
-;
-/*----------------------------------------------------------------------------*/
-: job::participantEnded2 ( -- )
-
   job::this locals| pJobParticipant |
 
   pJobParticipant "Job__Ended::send" find execute
@@ -62,7 +58,7 @@
   pJobParticipant job.removeParticipant
 
   // delete the job
-  pJobParticipant job.delete
+  "delete_completed_job" find execute
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -70,6 +66,15 @@
 /*----------------------------------------------------------------------------*/
 : job::participantCancelled ( -- )
 
+  job::this locals| pJobParticipant |
+
+  pJobParticipant "Job__Cancelled::send" find execute
+
+  // remove the job from the participant jobs
+  pJobParticipant job.removeParticipant
+
+  // delete the job
+  "delete_completed_job" find execute
 ;
 
 ////////////////////////////////////////////////////////////////////////////////

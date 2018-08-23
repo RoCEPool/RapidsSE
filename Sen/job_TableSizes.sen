@@ -172,7 +172,6 @@
   pJob_tableSizes tableSizes.checkResources
 
   job::participantBegun
-
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -195,6 +194,8 @@
   job::this locals| pJob_tableSizes |
 
   pJob_tableSizes tableSizes.releaseResources
+
+  job::participantCancelled
 ;
 
 /*============================================================================*/
