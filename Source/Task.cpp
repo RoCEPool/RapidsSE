@@ -620,6 +620,7 @@ void Task::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_DROPTABLE"_Stz,      CN_JOB_DROPTABLE);
   /*    */ vAddConstant("CN_JOB_DROPTENANT"_Stz,     CN_JOB_DROPTENANT);
   /*    */ vAddConstant("CN_JOB_DUMPINDEX"_Stz,      CN_JOB_DUMPINDEX);
+  /*    */ vAddConstant("CN_JOB_FETCHROWS"_Stz,      CN_JOB_FETCHROWS);
   /*    */ vAddConstant("CN_JOB_LF"_Stz,             CN_JOB_LF);
   /*    */ vAddConstant("CN_JOB_LISTCATALOGS"_Stz,   CN_JOB_LISTCATALOGS);
   /*    */ vAddConstant("CN_JOB_LISTCOLUMNS"_Stz,    CN_JOB_LISTCOLUMNS);
@@ -638,6 +639,9 @@ void Task::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_SIZETABLE"_Stz,      CN_JOB_SIZETABLE);
   /*    */ vAddConstant("CN_JOB_SPACE"_Stz,          CN_JOB_SPACE);
   /*    */ vAddConstant("CN_JOB_STATUS"_Stz,         CN_JOB_STATUS);
+  /*    */ vAddConstant("CN_JOB_SUBFETCH"_Stz,       CN_JOB_SUBFETCH);
+  /*    */ vAddConstant("CN_JOB_SUBLOADER"_Stz,      CN_JOB_SUBLOADER);
+  /*    */ vAddConstant("CN_JOB_SUBTRUNCATE"_Stz,    CN_JOB_SUBTRUNCATE);
   /*    */ vAddConstant("CN_JOB_TABLESIZES"_Stz,     CN_JOB_TABLESIZES);
   /*    */ vAddConstant("CN_JOB_TRUNCATETABLE"_Stz,  CN_JOB_TRUNCATETABLE);
   /*    */ vAddConstant("CN_JOB_USESCHEMA"_Stz,      CN_JOB_USESCHEMA);

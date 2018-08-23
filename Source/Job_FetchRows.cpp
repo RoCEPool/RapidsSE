@@ -1,0 +1,244 @@
+/*============================================================================*/
+/* Job_FetchRows.cpp -- Fetch Rows Job                                        */
+/*============================================================================*/
+
+#include "JobModel.h"
+#include "StorageEngine.h"
+
+extern AttachMap* gpAttachMap;
+
+JobNote mJobNote_FetchRows (
+  "Job_FetchRows"_Stz,       // name of the job class
+  CN_JOB_FETCHROWS,          // class enum
+  JK_DIST2PC,                // job kind
+  "fetch rows"_Stz,          // comment about the job
+  "fetch"_Stz,               // the prompt command
+  nullptr,                   // the second word
+  nullptr,                   // the _run task seed
+  "fetchRows_req"_Stz,       // the _req task seed
+  "fetchRows_beg"_Stz,       // the _rcv task seed
+  "fetchRows_exe"_Stz,       // the _exe task seed
+  "fetchRows_end"_Stz,       // the _end task seed
+  "fetchRows_can"_Stz,       // the _can task seed
+  true,                      // check resources?
+  false,                     // detached job?
+  false,                     // buffer attached?
+  JT_NONE,                   // job trace
+  pJob_FetchRows_pre,        // prompt pre-process function
+  vJob_FetchRows_post,       // prompt post-process function
+  nullptr,                   // job new function
+  vJob_FetchRows_delete,     // job delete function
+  nullptr,                   // job pre-send function
+  nullptr,                   // job post-receive function
+  vJob_FetchRows_show,       // job show function
+  true,                      // job is enabled
+  "feth <tableNm> <where>"_Stz,// help
+  "<example>"_Stz            // example
+);
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+Job_FetchRows* JobsModel::_pJob_FetchRows(void* aAddress)
+{
+  Job_FetchRows* pJob_FetchRows = reinterpret_cast<Job_FetchRows*>(aAddress);
+  
+  RASSERT( !pJob_FetchRows || CN_JOB_FETCHROWS == pJob_FetchRows->eClass());
+  
+  return pJob_FetchRows;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allocate a new entry buffer from heap                                      */
+/*----------------------------------------------------------------------------*/
+void* Job_FetchRows::operator new(size_t iSize)
+{
+  RASSERT(iSize);
+  
+  Job_FetchRows* pJob_FetchRows =
+    static_cast<Job_FetchRows*>(Heap::pAllocate(CN_JOB_FETCHROWS));
+  
+  return pJob_FetchRows;
+}
+
+/*----------------------------------------------------------------------------*/
+/* perform new of entry buffer for given address                              */
+/*----------------------------------------------------------------------------*/
+void* Job_FetchRows::operator new(size_t iSize, void* aAddress)
+{
+  RASSERT(iSize);
+  
+  return aAddress;
+}
+
+/*----------------------------------------------------------------------------*/
+/* free an entry buffer back to the heap                                      */
+/*----------------------------------------------------------------------------*/
+void Job_FetchRows::operator delete(void* aAddress)
+{
+  Job_FetchRows* pJob_FetchRows = static_cast<Job_FetchRows*>(aAddress);
+  
+  Heap::vFree(pJob_FetchRows);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Job_FetchRows::Job_FetchRows(Interface::SEitf* pSEitf)
+: Job(CN_JOB_TRUNCATETABLE, pSEitf)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_FETCHROWS,_FOOTER_);
+    
+  m_sSeed = mJobNote_FetchRows.pJobClass()->m_aSeedReq;
+  m_bCheckResources = true;
+  m_pTask           = nullptr;
+  
+  _checkInitialised_(CN_JOB_FETCHROWS);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_FETCHROWS,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+Job_FetchRows::~Job_FetchRows(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_FETCHROWS,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Static Functions --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* dump                                                                       */
+/*----------------------------------------------------------------------------*/
+void Job_FetchRows::vDump(eCN eClass, Object* pObject, Stz* aTab)
+{
+  RASSERT(CN_JOB_FETCHROWS == eClass);
+  RASSERT(pObject->eClass() == CN_JOB_FETCHROWS);
+  
+  Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pObject);
+
+  pJob_FetchRows->vShow();
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Member Functions --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* populate the job                                                           */
+/*----------------------------------------------------------------------------*/
+bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_FETCHROWS,_FOOTER_);
+  
+  i8 iNumTokens;
+  
+  ASSERT(pTokenVec->pGet(0)->bSame("tr"_Stz));
+  
+  // get number of items in token vector
+  iNumTokens = pTokenVec->nItems();
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // there should be 2 tokens
+  if (iNumTokens != 2)
+    return false;
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // set the table name
+  m_sObjectName = pTokenVec->pGet(1)->aText();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show                                                                       */
+/*----------------------------------------------------------------------------*/
+void Job_FetchRows::vShow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_FETCHROWS,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* Job_FetchRows::aFooter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_FETCHROWS);
+  
+  return &m_xFooter;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Catalog Functions -------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* prompt pre execute function                                                */
+/*----------------------------------------------------------------------------*/
+Job* JobsModel::pJob_FetchRows_pre(Interface::SEitf* pSEitf)
+{
+  Job_FetchRows* pJob_FetchRows = new Job_FetchRows(pSEitf);
+  
+  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
+  
+  bool bResult = pJob_FetchRows->bPopulateJob(pTokenVec);
+  
+  if ( !bResult) {
+    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
+    pJob_FetchRows->m_bHasError = true;
+    pJob_FetchRows->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+  }
+  
+  return pJob_FetchRows;
+}
+
+/*----------------------------------------------------------------------------*/
+/* prompt post execute function                                               */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_FetchRows_post(Interface::SEitf* pSEitf, Job* pJob)
+{
+  Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJob);
+  
+  if ( pJob_FetchRows->m_bHasError ) {
+    
+    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+      vTrace("ERROR (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob_FetchRows->m_xNode[i_Node].m_eErrorCode]);
+    }
+    
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* job delete function                                                        */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_FetchRows_delete(Interface::SEitf* pSEitf, Job* pJob)
+{
+  Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJob);
+  
+  delete pJob_FetchRows;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show job function                                                          */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_FetchRows_show(Job* pJob)
+{
+  Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJob);
+
+  pJob_FetchRows->vShow();
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

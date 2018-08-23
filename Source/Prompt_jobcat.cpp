@@ -37,6 +37,7 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   gxJobCatalog.vTraceJobs(CN_JOB_LF);
   gxJobCatalog.vTraceJobs(CN_JOB_PWF);
   
+  gxJobCatalog.vTraceJobs(CN_JOB_FETCHROWS);
   gxJobCatalog.vTraceJobs(CN_JOB_LISTTENANTS);
   gxJobCatalog.vTraceJobs(CN_JOB_LISTCATALOGS);
   gxJobCatalog.vTraceJobs(CN_JOB_LISTSCHEMAS);
@@ -82,8 +83,9 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   gxJobCatalog.vTraceJobs(CN_JOB_STATUS);
   
   // child
-  gxJobCatalog.vTraceJobs(CN_JOB_SUBTRUNCATE);
+  gxJobCatalog.vTraceJobs(CN_JOB_SUBFETCH);
   gxJobCatalog.vTraceJobs(CN_JOB_SUBLOADER);
+  gxJobCatalog.vTraceJobs(CN_JOB_SUBTRUNCATE);
   
   // grankid
   gxJobCatalog.vTraceJobs(CN_JOB_LOADBUFFER);

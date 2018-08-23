@@ -73,6 +73,8 @@ using namespace JobsModel;
 #include "Job_DropTenant.hpp"
 #include "Job_DumpIndex.hpp"
 
+#include "Job_FetchRows.hpp"
+
 #include "Job_Lf.hpp"
 #include "Job_ListColumns.hpp"
 #include "Job_ListCatalogs.hpp"
@@ -95,6 +97,7 @@ using namespace JobsModel;
 #include "Job_Space.hpp"
 #include "Job_Start.hpp"
 #include "Job_Status.hpp"
+#include "Job_SubFetch.hpp"
 #include "Job_SubLoader.hpp"
 #include "Job_SubTruncate.hpp"
 
