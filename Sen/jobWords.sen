@@ -59,36 +59,6 @@
 
 ;
 
-/*----------------------------------------------------------------------------*/
-/* begin a new job                                                            */
-/*----------------------------------------------------------------------------*/
-: job.begin ( pJob -- )
-
-  locals| pJob |
-
-  0 locals| sCheckResources |
-
-  " ++ a" .
-
-  pJob job.beginParticipant
-
-  " ++ b" .
-
-  // execute the job's checkResources command
-  pJob job.checkResources@ to sCheckResources
-  sCheckResources "" str.equal not if
-    " ++ b1" .
-    sCheckResources .
-    pJob sCheckResources find execute
-    " ++ b2" .
-  then
-
-  " ++ c" .
-
-  job::participantBegun
-
-;
-
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
