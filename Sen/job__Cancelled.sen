@@ -7,9 +7,11 @@
 /*----------------------------------------------------------------------------*/
 /* send Job__Cancelled back to originating node                               */
 /*----------------------------------------------------------------------------*/
-: Job__Cancelled::send ( iJobId pJobParticipant -- )
+: Job__Cancelled::send ( pJobParticipant -- )
 
   params| pJobParticipant iJobId |
+
+  pJobParticipant job.id@ locals| iJobId |
 
   0 0 0 locals| pJob pJob__Cancelled error |
 

@@ -70,13 +70,13 @@
     sEndSeed find execute
   then
 
+  pJobParticipant Job__Ended::send
+
   // remove the job from the participant jobs
   pJobParticipant job.removeParticipant
 
   // delete the job
   pJobParticipant job.delete
-
-  iJobId Job__Ended::send
 
   delete_completed_job
 ;
