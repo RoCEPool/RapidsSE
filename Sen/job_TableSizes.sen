@@ -63,8 +63,11 @@
   //pIndex index.space 0 swap number.magnitude to iSize
   //iSize grid::thisNodeName@ "row: ( %v %v )" str.format
 
-  ""
-  0 pathPick dic.lastWord dup iterate
+  //"STACK IS a:" . stk
+
+  //""
+  0 pathPick dic.lastWord dup
+  iterate
     1 iCount + to iCount
     grid::thisNodeName@ "row: ('%v', '" str.format
 
@@ -99,6 +102,8 @@
 
   next
 
+  //"STACK IS b:" . stk
+
   grid::thisNode@ pJob_TableSizes job.response!
   iCount grid::thisNode@ pJob_TableSizes job.rowsProcessed!
 
@@ -107,6 +112,8 @@
   pJob_TableSizes send_job__executed
 
   <DONE_NODE>
+
+  //"STACK IS c:" . stk
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -68,7 +68,7 @@
   pJobClass jobClass.seedEnd to sEndSeed
 
   "" sEndSeed str.equal not if
-    pJob sEndSeed find execute
+    sEndSeed find execute
   then
 
   // remove the job from the participant jobs
