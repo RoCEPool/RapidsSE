@@ -187,6 +187,8 @@
   job::this locals| pJob_compactIndex |
 
   pJob_compactIndex compactIndex_rel
+
+  job::participantEnded
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -197,6 +199,8 @@
   job::this locals| pJob_compactIndex |
 
   pJob_compactIndex compactIndex_rel
+
+  job::participantCancelled
 ;
 
 /*============================================================================*/

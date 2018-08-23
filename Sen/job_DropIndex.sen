@@ -221,6 +221,8 @@
   job::this locals| pJob_dropIndex |
 
   pJob_dropIndex dropIndex_rel
+
+  job::participantEnded
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -231,6 +233,8 @@
   job::this locals| pJob_dropIndex |
 
   pJob_dropIndex dropIndex_rel
+
+  job::participantCancelled
 ;
 
 /*============================================================================*/

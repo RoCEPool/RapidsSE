@@ -212,6 +212,8 @@ task::this to pThisTask
 
   // release resources
   pJob_loadTable loadTable_rel
+
+  job::participantEnded
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -222,6 +224,8 @@ task::this to pThisTask
   job::this locals| pJob_LoadTable |
 
   pJob_LoadTable loadTable_rel
+
+  job::participantCancelled
 ;
 
 /*============================================================================*/

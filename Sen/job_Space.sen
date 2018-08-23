@@ -85,6 +85,8 @@
 : space_end ( -- )
 
   job::this locals| pJob_space |
+
+  job::participantEnded
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -93,6 +95,8 @@
 : space_can ( -- )
 
   job::this locals| pJob_space |
+
+  job::participantCancelled
 ;
 
 /*============================================================================*/

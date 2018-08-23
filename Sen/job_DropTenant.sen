@@ -156,6 +156,8 @@
   job::this locals| pJob_dropTenant |
 
   pJob_dropTenant dropTenant_rel
+
+  job::participantEnded
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -167,6 +169,8 @@
 
   // check resources
   pJob_dropTenant dropTable_rel
+
+  job::participantCancelled
 ;
 
 /*============================================================================*/

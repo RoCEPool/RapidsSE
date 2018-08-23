@@ -197,6 +197,8 @@
   job::this locals| pJob_sizeIndex |
 
   pJob_sizeIndex sizeIndex_rel
+
+  job::participantEnded
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -207,6 +209,8 @@
   job::this locals| pJob_sizeIndex |
 
   pJob_sizeIndex sizeIndex_rel
+
+  job::participantCancelled
 ;
 
 /*============================================================================*/

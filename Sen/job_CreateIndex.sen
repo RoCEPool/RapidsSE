@@ -279,6 +279,8 @@
   job::this locals| pJob_createIndex |
 
   pJob_createIndex createIndex_rel
+
+  job::participantEnded
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -290,6 +292,8 @@
 
   // check resources
   pJob_createIndex createIndex_rel
+
+  job::participantCancelled
 ;
 
 /*============================================================================*/

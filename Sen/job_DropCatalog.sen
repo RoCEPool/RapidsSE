@@ -156,6 +156,8 @@
   job::this locals| pJob_dropCatalog |
 
   pJob_dropCatalog dropCatalog_rel
+
+  job::participantEnded
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -166,6 +168,8 @@
   job::this locals| pJob_dropCatalog |
 
   pJob_dropCatalog dropCatalog_rel
+
+  job::participantCancelled
 ;
 
 /*============================================================================*/

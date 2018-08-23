@@ -171,6 +171,8 @@
   job::this locals| pJob_createSchema |
 
   pJob_createSchema createSchema_rel
+
+  job::participantEnded
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -181,6 +183,8 @@
   job::this locals| pJob_createSchema |
 
   pJob_createSchema createSchema_rel
+
+  job::participantCancelled
 ;
 
 /*============================================================================*/

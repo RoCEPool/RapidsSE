@@ -180,6 +180,8 @@
   job::this locals| pJob_sizeTable |
 
   pJob_sizeTable sizeTable_rel
+
+  job::participantEnded
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -190,6 +192,8 @@
   job::this locals| pJob_sizeTable |
 
   pJob_sizeTable sizeTable_rel
+
+  job::participantCancelled
 ;
 
 /*============================================================================*/

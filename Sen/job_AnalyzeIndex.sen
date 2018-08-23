@@ -199,6 +199,8 @@
   job::this locals| pJob_analyzeIndex |
 
   pJob_analyzeIndex analyzeIndex_rel
+
+  job::participantEnded
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -209,6 +211,8 @@
   job::this locals| pJob_analyzeIndex |
 
   pJob_analyzeIndex analyzeIndex_rel
+
+  job::participantCancelled
 ;
 
 /*============================================================================*/

@@ -195,6 +195,8 @@
   job::this locals| pJob_VerifyIndex |
 
   pJob_VerifyIndex verifyIndex_rel
+
+  job::participantEnded
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -205,6 +207,8 @@
   job::this locals| pJob_VerifyIndex |
 
   pJob_VerifyIndex verifyIndex_rel
+
+  job::participantCancelled
 ;
 
 /*============================================================================*/

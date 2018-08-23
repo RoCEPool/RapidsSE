@@ -169,6 +169,8 @@
   job::this locals| pJob_createTenant |
 
   pJob_createTenant createTenant_rel
+
+  job::participantEnded
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -179,6 +181,8 @@
   job::this locals| pJob_createTenant |
 
   pJob_createTenant createTenant_rel
+
+  job::participantCancelled
 ;
 
 /*============================================================================*/

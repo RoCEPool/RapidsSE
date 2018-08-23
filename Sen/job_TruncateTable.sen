@@ -167,6 +167,8 @@
   job::this locals| pJob_truncateTable |
 
   pJob_truncateTable truncateTable_rel
+
+  job::participantEnded
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -177,6 +179,8 @@
   job::this locals| pJob_truncateTable |
 
   pJob_truncateTable truncateTable_rel
+
+  job::participantCancelled
 ;
 
 /*============================================================================*/

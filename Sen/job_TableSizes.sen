@@ -172,6 +172,8 @@
   job::this locals| pJob_tableSizes |
 
   pJob_tableSizes tableSizes_rel
+
+  job::participantEnded
 ;
 
 /*----------------------------------------------------------------------------*/

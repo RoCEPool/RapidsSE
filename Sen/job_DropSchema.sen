@@ -156,6 +156,8 @@
   job::this locals| pJob_dropSchema |
 
   pJob_dropSchema dropSchema_rel
+
+  job::participantEnded
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -166,6 +168,8 @@
   job::this locals| pJob_dropSchema |
 
   pJob_dropSchema dropSchema_rel
+
+  job::participantCancelled
 ;
 
 /*============================================================================*/
