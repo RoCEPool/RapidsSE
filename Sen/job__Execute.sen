@@ -53,7 +53,6 @@
   // where: on the participating node
   //
 
-  //params| pJob__Execute |
   job::this locals| pJob__Execute |
 
   0 locals| pJobToBeExe |

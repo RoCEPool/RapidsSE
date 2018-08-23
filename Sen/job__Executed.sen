@@ -51,9 +51,8 @@
 /*----------------------------------------------------------------------------*/
 /* run received Job__Executed on originating node                             */
 /*----------------------------------------------------------------------------*/
-: Job__Executed_rcv ( pJob__Executed -- )
+: Job__Executed_rcv ( -- )
 
-  //params| pJob__Executed |
   job::this locals| pJob__Executed |
   pJob__Executed job.id@ locals| iJobId |
 

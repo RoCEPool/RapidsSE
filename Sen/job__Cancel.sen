@@ -47,9 +47,8 @@
 /*----------------------------------------------------------------------------*/
 /* run received Job__Cancel on participating node                             */
 /*----------------------------------------------------------------------------*/
-: Job__Cancel_rcv ( pJob__Cancel -- )
+: Job__Cancel_rcv ( -- )
 
-  //params| pJob__Cancel |
   job::this locals| pJob__Cancel |
   pJob__Cancel job.id@ locals| iJobId |
 

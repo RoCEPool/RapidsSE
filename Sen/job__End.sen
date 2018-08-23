@@ -49,7 +49,6 @@
 /*----------------------------------------------------------------------------*/
 : Job__End_rcv ( -- )
 
-  //params| pJob__End |
   job::this locals| pJob__End |
   pJob__End job.id@ locals| iJobId |
 
