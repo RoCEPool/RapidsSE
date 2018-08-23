@@ -43,9 +43,8 @@
 /*----------------------------------------------------------------------------*/
 /* run recieved Job__Cancelled on originating node                            */
 /*----------------------------------------------------------------------------*/
-: Job__Cancelled_rcv ( pJob__Cancelled -- )
+: Job__Cancelled_rcv ( -- )
 
-  //params| pJob__Cancelled |
   job::this locals| pJob__Cancelled |
   pJob__Cancelled job.id@ locals| iJobId |
 

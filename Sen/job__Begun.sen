@@ -45,7 +45,7 @@
 /*----------------------------------------------------------------------------*/
 /* run received Job__Begun on originating node                                */
 /*----------------------------------------------------------------------------*/
-: Job__Begun_rcv ( Job__Begun -- )
+: Job__Begun_rcv ( -- )
 
   //
   // where:  On the originator node.
@@ -58,7 +58,6 @@
   //         3) if all acks received distribute Job_Execute
   //
 
-  //params| pJob__Begun |
   job::this locals| pJob__Begun |
   pJob__Begun job.id@ locals| iJobId |
 
