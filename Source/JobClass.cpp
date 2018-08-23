@@ -100,10 +100,21 @@ void JobClass::vShowJob(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void JobClass::vJobCat(void)
 {
-  vTrace("%20s %20s %10s %20s : %10s %20s %20s %20s %20s %20s %20s\n"_Stz,
+  s32 sFunctions(""_Stz);
+  
+  sFunctions.vConcat(m_fPre ?    "p"_Stz : " "_Stz);
+  sFunctions.vConcat(m_fPost ?   "P"_Stz : " "_Stz);
+  sFunctions.vConcat(m_fNew ?    "n"_Stz : " "_Stz);
+  sFunctions.vConcat(m_fDelete ? "d"_Stz : " "_Stz);
+  sFunctions.vConcat(m_fSend ?   "s"_Stz : " "_Stz);
+  sFunctions.vConcat(m_fRecv ?   "r"_Stz : " "_Stz);
+  sFunctions.vConcat(m_fShow ?   "."_Stz : " "_Stz);
+
+  vTrace("%20s %20s %10s %10s %20s : %10s %20s %20s %20s %20s %20s %20s\n"_Stz,
          
          aCN[m_eClass],
          m_aName,
+         sFunctions.aStr(),
          aJK[m_eKind],
          m_aComment,
          
@@ -124,10 +135,11 @@ void JobClass::vJobCat(void)
 /*----------------------------------------------------------------------------*/
 void JobClass::vJobCatHeader(void)
 {
-  vTrace("%20s %20s %10s %20s : %10s %20s %20s %20s %20s %20s %20s\n"_Stz,
+  vTrace("%20s %20s %10s %10s %20s : %10s %20s %20s %20s %20s %20s %20s\n"_Stz,
          
          "eClass"_Stz,
          "Job Name"_Stz,
+         "Functions"_Stz,
          "Kind"_Stz,
          "Comment"_Stz,
          
@@ -143,12 +155,14 @@ void JobClass::vJobCatHeader(void)
   s32 sBar10 = "----------"_Stz;
   s32 sBar20 = "--------------------"_Stz;
   
-  vTrace("%20s %20s %10s %20s : "
+  vTrace("%20s %20s %10s %10s %20s : "
          "%10s %20s %20s %20s %20s %20s %20s\n"_Stz,
          
-         sBar20.aStr(),sBar20.aStr(),sBar10.aStr(),sBar20.aStr(),sBar10.aStr(),
+         sBar20.aStr(),sBar20.aStr(),sBar10.aStr(),
+         sBar10.aStr(),sBar20.aStr(),sBar10.aStr(),
          
-         sBar20.aStr(),sBar20.aStr(),sBar20.aStr(),sBar20.aStr(),sBar20.aStr(),sBar20.aStr()
+         sBar20.aStr(),sBar20.aStr(),sBar20.aStr(),
+         sBar20.aStr(),sBar20.aStr(),sBar20.aStr()
          );
   
 }
