@@ -285,7 +285,7 @@ void Task::vJobCheckResourcesFetch(MP_Task mpTask)
   
   if (pJob->m_bCheckResources) {
     sExecute = pJob->m_pJobClass->m_aName + 4;// EEK! pJob->sJobSeed();
-    sExecute.vConcat("_chk"_Stz);
+    sExecute.vConcat(".checkResources"_Stz);
   }
   
   mpTask->m_pDataStack->vPushS256(sExecute);
@@ -1498,7 +1498,7 @@ void Task::vJobReleaseResourcesFetch(MP_Task mpTask)
     ASSERT(pJob->m_pJobClass->m_aSeedEnd);
     ASSERT(pJob->m_pJobClass->m_aSeedCan);
     sExecute = pJob->m_pJobClass->m_aName+4;//EEK! pJob->sJobSeed();
-    sExecute.vConcat("_rel"_Stz);
+    sExecute.vConcat(".releaseResources"_Stz);
   }
   
   mpTask->m_pDataStack->vPushS256(sExecute);

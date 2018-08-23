@@ -165,11 +165,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_CreateTable job check resources                                */
 /*----------------------------------------------------------------------------*/
-: createTable_chk ( pJob_CreateTable -- )
+: createTable.checkResources ( pJob_CreateTable -- )
 
   params| pJob_CreateTable  |
 
-  tp: createTable_chk
+  tp: createTable.checkResources
   "checkResources received" .
 
   //----------------------------------------------------------------------------
@@ -196,11 +196,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_CreateTable job release resources                              */
 /*----------------------------------------------------------------------------*/
-: createTable_rel ( pJob_CreateTable -- )
+: createTable.releaseResources ( pJob_CreateTable -- )
 
   params| pJob_CreateTable  |
 
-  tp: createTable_rel
+  tp: createTable.releaseResources
   "releaseResources received" .
 
   <DONE_NODE>
@@ -219,7 +219,7 @@
   pJob_CreateTable job.beginParticipant
 
   // check resources
-  pJob_CreateTable createTable_chk
+  pJob_CreateTable createTable.checkResources
 
   // this job has begun
   job::participantBegun
@@ -235,7 +235,7 @@
   ">> createTable_end <<" .
 
   // release resources
-  pJob_CreateTable createTable_rel
+  pJob_CreateTable createTable.releaseResources
 
   job::participantEnded
 ;
@@ -247,7 +247,7 @@
 
   job::this locals| pJob_CreateTable |
 
-  pJob_CreateTable createTable_rel
+  pJob_CreateTable createTable.releaseResources
 
   job::participantCancelled
 ;

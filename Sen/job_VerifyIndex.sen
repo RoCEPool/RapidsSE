@@ -136,12 +136,12 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_VerifyIndex job check resources                                */
 /*----------------------------------------------------------------------------*/
-: verifyIndex_chk ( Job_VerifyIndex -- )
+: verifyIndex.checkResources ( Job_VerifyIndex -- )
 
   params| pJob_VerifyIndex  |
   0 0 locals| sIndexNm sTableNm |
 
-  tp: verifyIndex_chk
+  tp: verifyIndex.checkResources
   "checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -166,11 +166,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_VisualizeIndexTable job release resources                      */
 /*----------------------------------------------------------------------------*/
-: verifyIndex_rel ( Job_VerifyIndex -- )
+: verifyIndex.releaseResources ( Job_VerifyIndex -- )
 
   params| pJob_VerifyIndex  |
 
-  tp: verifyIndex_rel
+  tp: verifyIndex.releaseResources
   "releaseResources received" .
 
   <DONE_NODE>
@@ -186,7 +186,7 @@
   pJob_VerifyIndex job.beginParticipant
 
   // check resources
-  pJob_VerifyIndex verifyIndex_chk
+  pJob_VerifyIndex verifyIndex.checkResources
 
   job::participantBegun
 ;
@@ -198,7 +198,7 @@
 
   job::this locals| pJob_VerifyIndex |
 
-  pJob_VerifyIndex verifyIndex_rel
+  pJob_VerifyIndex verifyIndex.releaseResources
 
   job::participantEnded
 ;
@@ -210,7 +210,7 @@
 
   job::this locals| pJob_VerifyIndex |
 
-  pJob_VerifyIndex verifyIndex_rel
+  pJob_VerifyIndex verifyIndex.releaseResources
 
   job::participantCancelled
 ;

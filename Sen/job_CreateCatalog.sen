@@ -111,11 +111,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_CreateCatalog job check resources                              */
 /*----------------------------------------------------------------------------*/
-: createCatalog_chk ( pJob_CreateCatalog -- )
+: createCatalog.checkResources ( pJob_CreateCatalog -- )
 
   params| pJob_CreateCatalog  |
 
-  tp: createCatalog_chk
+  tp: createCatalog.checkResources
   "checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -143,11 +143,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_CreateCatalog job release resources                            */
 /*----------------------------------------------------------------------------*/
-: createCatalog_rel ( pJob_CreateCatalog -- )
+: createCatalog.releaseResources ( pJob_CreateCatalog -- )
 
   params| pJob_CreateCatalog  |
 
-  tp: createCatalog_rel
+  tp: createCatalog.releaseResources
   "releaseResources received" .
 
   <DONE_NODE>
@@ -163,7 +163,7 @@
   pJob_createCatalog job.beginParticipant
 
   // check resources
-  pJob_createCatalog createCatalog_chk
+  pJob_createCatalog createCatalog.checkResources
 
   job::participantBegun
 ;
@@ -175,7 +175,7 @@
 
   job::this locals| pJob_createCatalog |
 
-  pJob_createCatalog createCatalog_rel
+  pJob_createCatalog createCatalog.releaseResources
 
   job::participantEnded
 ;
@@ -187,7 +187,7 @@
 
   job::this locals| pJob_createCatalog |
 
-  pJob_createCatalog createCatalog_rel
+  pJob_createCatalog createCatalog.releaseResources
 
   job::participantCancelled
 ;

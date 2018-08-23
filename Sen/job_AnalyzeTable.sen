@@ -125,11 +125,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_AnalyzeTable job check resources                               */
 /*----------------------------------------------------------------------------*/
-: analyzeTable_chk ( Job_AnalyzeTable -- )
+: analyzeTable.checkResources ( Job_AnalyzeTable -- )
 
   params| pJob_AnalyzeTable  |
 
-  tp: analyzeTable_chk
+  tp: analyzeTable.checkResources
   "checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -152,11 +152,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_AnalyzeTable job release resources                             */
 /*----------------------------------------------------------------------------*/
-: analyzeTable_rel ( Job_AnalyzeTable -- )
+: analyzeTable.releaseResources ( Job_AnalyzeTable -- )
 
   params| pJob_AnalyzeTable  |
 
-  tp: analyzeTable_rel
+  tp: analyzeTable.releaseResources
   "releaseResources received" .
 
   <DONE_NODE>
@@ -172,7 +172,7 @@
   pJob_analyzeTable job.beginParticipant
 
   // check resources
-  pJob_analyzeTable analyzeTable_chk
+  pJob_analyzeTable analyzeTable.checkResources
 
   job::participantBegun
 ;
@@ -184,7 +184,7 @@
 
   job::this locals| pJob_analyzeTable |
 
-  pJob_analyzeTable analyzeTable_rel
+  pJob_analyzeTable analyzeTable.releaseResources
 
   job::participantEnded
 ;
@@ -196,7 +196,7 @@
 
   job::this locals| pJob_analyzeTable |
 
-  pJob_analyzeTable analyzeTable_rel
+  pJob_analyzeTable analyzeTable.releaseResources
 
   job::participantCancelled
 ;

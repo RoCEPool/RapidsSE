@@ -107,11 +107,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_CreateTenant job check resources                               */
 /*----------------------------------------------------------------------------*/
-: createTenant_chk ( pJob_CreateTenant -- )
+: createTenant.checkResources ( pJob_CreateTenant -- )
 
   params| pJob_CreateTenant  |
 
-  tp: createTenant_chk
+  tp: createTenant.checkResources
   "checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -138,11 +138,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_CreateTenant job release resources                             */
 /*----------------------------------------------------------------------------*/
-: createTenant_rel ( pJob_CreateTenant -- )
+: createTenant.releaseResources ( pJob_CreateTenant -- )
 
   params| pJob_CreateTenant  |
 
-  tp: createTenant_rel
+  tp: createTenant.releaseResources
   "releaseResources received" .
 
   <DONE_NODE>
@@ -158,7 +158,7 @@
   pJob_createTenant job.beginParticipant
 
   // check resources
-  pJob_createTenant createTenant_chk
+  pJob_createTenant createTenant.checkResources
 
   job::participantBegun
 ;
@@ -170,7 +170,7 @@
 
   job::this locals| pJob_createTenant |
 
-  pJob_createTenant createTenant_rel
+  pJob_createTenant createTenant.releaseResources
 
   job::participantEnded
 ;
@@ -182,7 +182,7 @@
 
   job::this locals| pJob_createTenant |
 
-  pJob_createTenant createTenant_rel
+  pJob_createTenant createTenant.releaseResources
 
   job::participantCancelled
 ;

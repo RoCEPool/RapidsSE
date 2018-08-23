@@ -140,11 +140,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_AnalyzeIndex job check resources                               */
 /*----------------------------------------------------------------------------*/
-: analyzeIndex_chk ( Job_AnalyzeIndex -- )
+: analyzeIndex.checkResources ( Job_AnalyzeIndex -- )
 
   params| pJob_AnalyzeIndex  |
 
-  tp: analyzeIndex_chk
+  tp: analyzeIndex.checkResources
   "checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -168,11 +168,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_AnalyzeIndex job release resources                             */
 /*----------------------------------------------------------------------------*/
-: analyzeIndex_rel ( Job_AnalyzeIndex -- )
+: analyzeIndex.releaseResources ( Job_AnalyzeIndex -- )
 
   params| pJob_AnalyzeIndex  |
 
-  tp: analyzeIndex_rel
+  tp: analyzeIndex.releaseResources
   "releaseResources received" .
 
   <DONE_NODE>
@@ -188,7 +188,7 @@
   pJob_analyzeIndex job.beginParticipant
 
   // check resources
-  pJob_analyzeIndex analyzeIndex_chk
+  pJob_analyzeIndex analyzeIndex.checkResources
 
   job::participantBegun
 ;
@@ -200,7 +200,7 @@
 
   job::this locals| pJob_analyzeIndex |
 
-  pJob_analyzeIndex analyzeIndex_rel
+  pJob_analyzeIndex analyzeIndex.releaseResources
 
   job::participantEnded
 ;
@@ -212,7 +212,7 @@
 
   job::this locals| pJob_analyzeIndex |
 
-  pJob_analyzeIndex analyzeIndex_rel
+  pJob_analyzeIndex analyzeIndex.releaseResources
 
   job::participantCancelled
 ;

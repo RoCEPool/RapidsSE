@@ -108,11 +108,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_CreateSchema job check resources                              */
 /*----------------------------------------------------------------------------*/
-: createSchema_chk ( pJob_CreateSchema -- )
+: createSchema.checkResources ( pJob_CreateSchema -- )
 
   params| pJob_CreateSchema  |
 
-  tp: createSchema_chk
+  tp: createSchema.checkResources
   "checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -140,11 +140,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_CreateSchema job release resources                             */
 /*----------------------------------------------------------------------------*/
-: createSchema_rel ( pJob_CreateSchema -- )
+: createSchema.releaseResources ( pJob_CreateSchema -- )
 
   params| pJob_CreateSchema  |
 
-  tp: createSchema_rel
+  tp: createSchema.releaseResources
   "releaseResources received" .
 
   <DONE_NODE>
@@ -160,7 +160,7 @@
   pJob_createSchema job.beginParticipant
 
   // check resources
-  pJob_createSchema createSchema_chk
+  pJob_createSchema createSchema.checkResources
 
   job::participantBegun
 ;
@@ -172,7 +172,7 @@
 
   job::this locals| pJob_createSchema |
 
-  pJob_createSchema createSchema_rel
+  pJob_createSchema createSchema.releaseResources
 
   job::participantEnded
 ;
@@ -184,7 +184,7 @@
 
   job::this locals| pJob_createSchema |
 
-  pJob_createSchema createSchema_rel
+  pJob_createSchema createSchema.releaseResources
 
   job::participantCancelled
 ;

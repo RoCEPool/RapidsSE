@@ -136,12 +136,12 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_SizeIndex job check resources                                  */
 /*----------------------------------------------------------------------------*/
-: sizeIndex_chk ( Job_SizeIndex -- )
+: sizeIndex.checkResources ( Job_SizeIndex -- )
 
   params| pJob_SizeIndex  |
   0 0 locals| sIndexNm sTableNm |
 
-  tp: sizeIndex_chk
+  tp: sizeIndex.checkResources
   "checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -166,11 +166,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_SizeTable job release resources                                */
 /*----------------------------------------------------------------------------*/
-: sizeIndex_rel ( Job_SizeIndex -- )
+: sizeIndex.releaseResources ( Job_SizeIndex -- )
 
   params| pJob_SizeIndex  |
 
-  tp: sizeIndex_rel
+  tp: sizeIndex.releaseResources
   "releaseResources received" .
 
   <DONE_NODE>
@@ -186,7 +186,7 @@
   pJob_sizeIndex job.beginParticipant
 
   // check resources
-  pJob_sizeIndex sizeIndex_chk
+  pJob_sizeIndex sizeIndex.checkResources
 
   job::participantBegun
 ;
@@ -198,7 +198,7 @@
 
   job::this locals| pJob_sizeIndex |
 
-  pJob_sizeIndex sizeIndex_rel
+  pJob_sizeIndex sizeIndex.releaseResources
 
   job::participantEnded
 ;
@@ -210,7 +210,7 @@
 
   job::this locals| pJob_sizeIndex |
 
-  pJob_sizeIndex sizeIndex_rel
+  pJob_sizeIndex sizeIndex.releaseResources
 
   job::participantCancelled
 ;

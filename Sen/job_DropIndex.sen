@@ -138,12 +138,12 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropIndex job check resources                                  */
 /*----------------------------------------------------------------------------*/
-: dropIndex_chk ( Job_DropIndex -- )
+: dropIndex.checkResources ( Job_DropIndex -- )
 
   params| pJob_DropIndex  |
   0 0 locals| sIndexNm sTableNm |
 
-  tp: dropIndex_chk
+  tp: dropIndex.checkResources
   "checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -190,11 +190,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropIndex job release resources                                */
 /*----------------------------------------------------------------------------*/
-: dropIndex_rel ( Job_DropIndex -- )
+: dropIndex.releaseResources ( Job_DropIndex -- )
 
   params| pJob_DropIndex  |
 
-  tp: dropIndex_rel
+  tp: dropIndex.releaseResources
   "releaseResources received" .
 
   <DONE_NODE>
@@ -210,7 +210,7 @@
   pJob_dropIndex job.beginParticipant
 
   // check resources
-  pJob_dropIndex dropIndex_chk
+  pJob_dropIndex dropIndex.checkResources
 
   job::participantBegun
 ;
@@ -222,7 +222,7 @@
 
   job::this locals| pJob_dropIndex |
 
-  pJob_dropIndex dropIndex_rel
+  pJob_dropIndex dropIndex.releaseResources
 
   job::participantEnded
 ;
@@ -234,7 +234,7 @@
 
   job::this locals| pJob_dropIndex |
 
-  pJob_dropIndex dropIndex_rel
+  pJob_dropIndex dropIndex.releaseResources
 
   job::participantCancelled
 ;

@@ -218,12 +218,12 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_CreateIndex job check resources                                */
 /*----------------------------------------------------------------------------*/
-: createIndex_chk ( Job_CreateIndex -- )
+: createIndex.checkResources ( Job_CreateIndex -- )
 
   params| pJob_CreateIndex  |
   0 0 locals| sTableNm sIndexNm |
 
-  tp: createIndex_chk
+  tp: createIndex.checkResources
   "checkResources received" .
 
   //----------------------------------------------------------------------------
@@ -249,11 +249,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_CreateTable job release resources                              */
 /*----------------------------------------------------------------------------*/
-: createIndex_rel ( Job_CreateIndex -- )
+: createIndex.releaseResources ( Job_CreateIndex -- )
 
   params| pJob_CreateIndex  |
 
-  tp: createIndex_rel
+  tp: createIndex.releaseResources
   "releaseResources received" .
 
   <DONE_NODE>
@@ -268,7 +268,7 @@
 
   pJob_createIndex job.beginParticipant
 
-  pJob_createIndex createIndex_chk
+  pJob_createIndex createIndex.checkResources
 
   job::participantBegun
 ;
@@ -280,7 +280,7 @@
 
   job::this locals| pJob_createIndex |
 
-  pJob_createIndex createIndex_rel
+  pJob_createIndex createIndex.releaseResources
 
   job::participantEnded
 ;
@@ -293,7 +293,7 @@
   job::this locals| pJob_createIndex |
 
   // check resources
-  pJob_createIndex createIndex_rel
+  pJob_createIndex createIndex.releaseResources
 
   job::participantCancelled
 ;

@@ -127,12 +127,12 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_CompactIndex job check resources                               */
 /*----------------------------------------------------------------------------*/
-: compactIndex_chk ( Job_CompactIndex -- )
+: compactIndex.checkResources ( Job_CompactIndex -- )
 
   params| pJob_CompactIndex  |
   0 0 locals| sIndexNm sTableNm |
 
-  tp: compactIndex_chk
+  tp: compactIndex.checkResources
   "checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -157,11 +157,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_SizeTable job release resources                                */
 /*----------------------------------------------------------------------------*/
-: compactIndex_rel ( Job_CompactIndex -- )
+: compactIndex.releaseResources ( Job_CompactIndex -- )
 
   params| pJob_CompactIndex  |
 
-  tp: compactIndex_rel
+  tp: compactIndex.releaseResources
   "releaseResources received" .
 
   <DONE_NODE>
@@ -177,7 +177,7 @@
   pJob_compactIndex job.beginParticipant
 
   // check resources
-  pJob_compactIndex compactIndex_chk
+  pJob_compactIndex compactIndex.checkResources
 
   job::participantBegun
 ;
@@ -189,7 +189,7 @@
 
   job::this locals| pJob_compactIndex |
 
-  pJob_compactIndex compactIndex_rel
+  pJob_compactIndex compactIndex.releaseResources
 
   job::participantEnded
 ;
@@ -201,7 +201,7 @@
 
   job::this locals| pJob_compactIndex |
 
-  pJob_compactIndex compactIndex_rel
+  pJob_compactIndex compactIndex.releaseResources
 
   job::participantCancelled
 ;

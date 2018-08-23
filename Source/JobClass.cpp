@@ -118,7 +118,7 @@ void JobClass::vJobCat(void)
          aJK[m_eKind],
          m_aComment,
          
-         m_bResources ? "_chk/rel"_Stz : "-"_Stz,
+         m_bResources ? ".checkResources/rel"_Stz : "-"_Stz,
          
          m_aSeedRun ? m_aSeedRun : "-"_Stz,
          m_aSeedReq ? m_aSeedReq : "-"_Stz,

@@ -92,12 +92,12 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_AnalyzeIndex job check resources                               */
 /*----------------------------------------------------------------------------*/
-: truncateTable_chk ( Job_TruncateTable -- )
+: truncateTable.checkResources ( Job_TruncateTable -- )
 
   params| pJob_TruncateTable  |
   0 locals| sTableNm |
 
-  tp: truncateTable_chk
+  tp: truncateTable.checkResources
   "checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -136,11 +136,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_AnalyzeIndex job release resources                             */
 /*----------------------------------------------------------------------------*/
-: truncateTable_rel ( Job_TruncateTable -- )
+: truncateTable.releaseResources ( Job_TruncateTable -- )
 
   params| pJob_TruncateTable  |
 
-  tp: truncateTable_rel
+  tp: truncateTable.releaseResources
   "releaseResources received" .
 
   <DONE_NODE>
@@ -156,7 +156,7 @@
   pJob_truncateTable job.beginParticipant
 
   // check resources
-  pJob_truncateTable truncateTable_chk
+  pJob_truncateTable truncateTable.checkResources
 
   job::participantBegun
 ;
@@ -168,7 +168,7 @@
 
   job::this locals| pJob_truncateTable |
 
-  pJob_truncateTable truncateTable_rel
+  pJob_truncateTable truncateTable.releaseResources
 
   job::participantEnded
 ;
@@ -180,7 +180,7 @@
 
   job::this locals| pJob_truncateTable |
 
-  pJob_truncateTable truncateTable_rel
+  pJob_truncateTable truncateTable.releaseResources
 
   job::participantCancelled
 ;

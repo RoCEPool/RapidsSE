@@ -98,11 +98,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropCatalog job check resources                                */
 /*----------------------------------------------------------------------------*/
-: dropCatalog_chk ( Job_DropCatalog -- )
+: dropCatalog.checkResources ( Job_DropCatalog -- )
 
   params| pJob_DropCatalog  |
 
-  tp: dropCatalog_chk
+  tp: dropCatalog.checkResources
   "checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -125,11 +125,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropCatalog job release resources                              */
 /*----------------------------------------------------------------------------*/
-: dropCatalog_rel ( Job_DropCatalog -- )
+: dropCatalog.releaseResources ( Job_DropCatalog -- )
 
   params| pJob_DropCatalog  |
 
-  tp: dropCatalog_rel
+  tp: dropCatalog.releaseResources
   "releaseResources received" .
 
   <DONE_NODE>
@@ -145,7 +145,7 @@
   pJob_dropCatalog job.beginParticipant
 
   // check resources
-  pJob_dropCatalog dropCatalog_chk
+  pJob_dropCatalog dropCatalog.checkResources
 
   job::participantBegun
 ;
@@ -157,7 +157,7 @@
 
   job::this locals| pJob_dropCatalog |
 
-  pJob_dropCatalog dropCatalog_rel
+  pJob_dropCatalog dropCatalog.releaseResources
 
   job::participantEnded
 ;
@@ -169,7 +169,7 @@
 
   job::this locals| pJob_dropCatalog |
 
-  pJob_dropCatalog dropCatalog_rel
+  pJob_dropCatalog dropCatalog.releaseResources
 
   job::participantCancelled
 ;

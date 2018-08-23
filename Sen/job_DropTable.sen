@@ -160,11 +160,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropTable job check resources                                  */
 /*----------------------------------------------------------------------------*/
-: dropTable_chk ( Job_DropTable -- )
+: dropTable.checkResources ( Job_DropTable -- )
 
   params| pJob_DropTable  |
 
-  tp: dropTable_chk
+  tp: dropTable.checkResources
   "checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -187,11 +187,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropTable job release resources                                */
 /*----------------------------------------------------------------------------*/
-: dropTable_rel ( Job_DropTable -- )
+: dropTable.releaseResources ( Job_DropTable -- )
 
   params| pJob_DropTable  |
 
-  tp: dropTable_rel
+  tp: dropTable.releaseResources
   "releaseResources received" .
 
   <DONE_NODE>
@@ -207,7 +207,7 @@
   pJob_dropTable job.beginParticipant
 
   // check resources
-  pJob_dropTable dropTable_chk
+  pJob_dropTable dropTable.checkResources
 
   job::participantBegun
 ;
@@ -219,7 +219,7 @@
 
   job::this locals| pJob_dropTable |
 
-  pJob_dropTable dropTable_rel
+  pJob_dropTable dropTable.releaseResources
 
   job::participantEnded
 ;
@@ -231,7 +231,7 @@
 
   job::this locals| pJob_dropTable |
 
-  pJob_dropTable dropTable_rel
+  pJob_dropTable dropTable.releaseResources
 
   job::participantCancelled
 ;

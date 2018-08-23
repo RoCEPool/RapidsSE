@@ -98,11 +98,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropSchema job check resources                                 */
 /*----------------------------------------------------------------------------*/
-: dropSchema_chk ( Job_DropSchema -- )
+: dropSchema.checkResources ( Job_DropSchema -- )
 
   params| pJob_DropSchema  |
 
-  tp: dropSchema_chk
+  tp: dropSchema.checkResources
   "checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - --
@@ -125,11 +125,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropSchema job release resources                               */
 /*----------------------------------------------------------------------------*/
-: dropSchema_rel ( Job_DropSchema -- )
+: dropSchema.releaseResources ( Job_DropSchema -- )
 
   params| pJob_DropSchema  |
 
-  tp: dropSchema_rel
+  tp: dropSchema.releaseResources
   "releaseResources received" .
 
   <DONE_NODE>
@@ -145,7 +145,7 @@
   pJob_dropSchema job.beginParticipant
 
   // check resources
-  pJob_dropSchema dropSchema_chk
+  pJob_dropSchema dropSchema.checkResources
 
   job::participantBegun
 ;
@@ -157,7 +157,7 @@
 
   job::this locals| pJob_dropSchema |
 
-  pJob_dropSchema dropSchema_rel
+  pJob_dropSchema dropSchema.releaseResources
 
   job::participantEnded
 ;
@@ -169,7 +169,7 @@
 
   job::this locals| pJob_dropSchema |
 
-  pJob_dropSchema dropSchema_rel
+  pJob_dropSchema dropSchema.releaseResources
 
   job::participantCancelled
 ;
