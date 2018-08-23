@@ -97,18 +97,8 @@
       pJob job.delete
     endof
 
-    CN_JOB__BEGUN     of pJob SEED_RCV job.spawn endof
-    CN_JOB__CANCEL    of pJob SEED_RCV job.spawn endof
-    CN_JOB__CANCELLED of pJob SEED_RCV job.spawn endof
-    CN_JOB__END       of pJob SEED_RCV job.spawn endof
-    CN_JOB__ENDED     of pJob SEED_RCV job.spawn endof
-    CN_JOB__EXECUTED  of pJob SEED_RCV job.spawn endof
-
-    CN_JOB_LOADBUFFER of pJob SEED_RCV job.spawn endof
-    CN_JOB_LOADTABLE  of pJob SEED_RCV job.spawn endof
-
     // default case
-    pJob job.begin
+    pJob SEED_RCV job.spawn
 
   endcase
 ;
