@@ -82,6 +82,8 @@
 
   // null the job in the task
   nullptr pTask task.job!
+
+  ddlLock::testDrop
 ;
 
 /*============================================================================*/
