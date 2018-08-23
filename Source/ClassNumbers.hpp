@@ -115,6 +115,7 @@ enum eCN : u2 // Class Number
     /*    */ CN_JOB_DROPTABLE,
     /*    */ CN_JOB_DROPTENANT,
     /*    */ CN_JOB_DUMPINDEX,
+    /*    */ CN_JOB_FETCHROWS,
     /*    */ CN_JOB_LF,
     /*    */ CN_JOB_LISTCATALOGS,
     /*    */ CN_JOB_LISTCOLUMNS,
@@ -134,6 +135,7 @@ enum eCN : u2 // Class Number
     /*    */ CN_JOB_SPACE,
     /*    */ CN_JOB_START,
     /*    */ CN_JOB_STATUS,
+    /*    */ CN_JOB_SUBFETCH,
     /*    */ CN_JOB_SUBLOADER,
     /*    */ CN_JOB_SUBTRUNCATE,
     /*    */ CN_JOB_TABLESIZES,
@@ -365,6 +367,7 @@ enum eCN : u2 // Class Number
     /*    */ "JOB_DROPTABLE"_Stz,      // CN_JOB_DROPTABLE
     /*    */ "JOB_DROPTENANT"_Stz,     // CN_JOB_DROPTENANT
     /*    */ "JOB_DUMPINDEX"_Stz,      // CN_JOB_DUMPINDEX
+    /*    */ "CN_JOB_FETCHROWS"_Stz,   // CN_JOB_FETCHROWS
     /*    */ "JOB_LF"_Stz,             // CN_JOB_LF
     /*    */ "JOB_LISTCATALOGS"_Stz,   // CN_JOB_LISTCATALOGS
     /*    */ "JOB_LISTCOLUMNS"_Stz,    // CN_JOB_LISTCOLUMNS
@@ -384,6 +387,7 @@ enum eCN : u2 // Class Number
     /*    */ "JOB_SPACE"_Stz,          // CN_JOB_SPACE
     /*    */ "JOB_START"_Stz,          // CN_JOB_START
     /*    */ "JOB_STATUS"_Stz,         // CN_JOB_STATUS
+    /*    */ "JOB_SUBFETCH"_Stz,       // CN_JOB_SUBFETCH
     /*    */ "JOB_SUBLOADER"_Stz,      // CN_JOB_SUBLOADER
     /*    */ "JOB_SUBTRUNCATE"_Stz,    // CN_JOB_SUBTRUNCATE
     /*    */ "JOB_TABLESIZES"_Stz,     // CN_JOB_TABLESIZES

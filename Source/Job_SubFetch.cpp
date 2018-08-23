@@ -1,0 +1,208 @@
+/*============================================================================*/
+/* Job_SubFetch.cpp -- Sub Fetch Job                                          */
+/*============================================================================*/
+
+#include "JobModel.h"
+#include "StorageEngine.h"
+
+extern AttachMap* gpAttachMap;
+
+JobNote mJobNote_SubFetch (
+  "Job_SubFetch"_Stz,        // name of the job class
+  CN_JOB_SUBFETCH,           // class enum
+  JK_CHILD,                  // job kind
+  "sub-fetch rows"_Stz,      // comment about the job
+  nullptr,                   // the prompt command
+  nullptr,                   // the second word
+  "subFetch_run"_Stz,        // the _run task seed
+  nullptr,                   // the _req task seed
+  nullptr,                   // the _rcv task seed 
+  nullptr,                   // the _exe task seed
+  nullptr,                   // the _end task seed
+  nullptr,                   // the _can task seed
+  false,                     // check resources?
+  false,                     // detached job?
+  false,                     // buffer attached?
+  JT_NONE,                   // job trace
+  pJob_SubFetch_pre,         // prompt pre-process function
+  vJob_SubFetch_post,        // prompt post-process function
+  nullptr,                   // job new function
+  vJob_SubFetch_delete,      // job delete function
+  nullptr,                   // job pre-send function
+  nullptr,                   // job post-receive function
+  vJob_SubFetch_show,        // job show function
+  false,                     // job is enabled
+  "<help>"_Stz,              // help
+  "<example>"_Stz            // example
+);
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+Job_SubFetch* JobsModel::_pJob_SubFetch(void* aAddress)
+{
+  Job_SubFetch* pJob_SubFetch = reinterpret_cast<Job_SubFetch*>(aAddress);
+  
+  RASSERT( !pJob_SubFetch || CN_JOB_SUBFETCH == pJob_SubFetch->eClass());
+  
+  return pJob_SubFetch;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allocate a new entry buffer from heap                                      */
+/*----------------------------------------------------------------------------*/
+void* Job_SubFetch::operator new(size_t iSize)
+{
+  RASSERT(iSize);
+  
+  Job_SubFetch* pJob_SubFetch =
+    static_cast<Job_SubFetch*>(Heap::pAllocate(CN_JOB_SUBFETCH));
+  
+  return pJob_SubFetch;
+}
+
+/*----------------------------------------------------------------------------*/
+/* perform new of entry buffer for given address                              */
+/*----------------------------------------------------------------------------*/
+void* Job_SubFetch::operator new(size_t iSize, void* aAddress)
+{
+  RASSERT(iSize);
+  
+  return aAddress;
+}
+
+/*----------------------------------------------------------------------------*/
+/* free an entry buffer back to the heap                                      */
+/*----------------------------------------------------------------------------*/
+void Job_SubFetch::operator delete(void* aAddress)
+{
+  Job_SubFetch* pJob_SubFetch = static_cast<Job_SubFetch*>(aAddress);
+  
+  Heap::vFree(pJob_SubFetch);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Job_SubFetch::Job_SubFetch(Interface::SEitf* pSEitf)
+: Job(CN_JOB_SUBFETCH, pSEitf)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBFETCH,_FOOTER_);
+    
+  //m_sSeed = mJobNote_SubTruncate.pJobClass()->m_aSeedReq;
+  m_bCheckResources = false;
+  m_iSlot           = -1;
+  
+  _checkInitialised_(CN_JOB_SUBFETCH);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBFETCH,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+Job_SubFetch::~Job_SubFetch(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBFETCH,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Static Functions --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* dump                                                                       */
+/*----------------------------------------------------------------------------*/
+void Job_SubFetch::vDump(eCN eClass, Object* pObject, Stz* aTab)
+{
+  RASSERT(CN_JOB_SUBFETCH == eClass);
+  RASSERT(pObject->eClass() == CN_JOB_SUBFETCH);
+  
+  Job_SubFetch* pJob_SubFetch = _pJob_SubFetch(pObject);
+
+  pJob_SubFetch->vShow();
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Member Functions --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* show                                                                       */
+/*----------------------------------------------------------------------------*/
+void Job_SubFetch::vShow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBFETCH,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* Job_SubFetch::aFooter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBFETCH);
+  
+  return &m_xFooter;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Catalog Functions -------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* prompt pre execute function                                                */
+/*----------------------------------------------------------------------------*/
+Job* JobsModel::pJob_SubFetch_pre(Interface::SEitf* pSEitf)
+{
+  Job_SubFetch* pJob_SubFetch = new Job_SubFetch(pSEitf);
+  
+  return pJob_SubFetch;
+}
+
+/*----------------------------------------------------------------------------*/
+/* prompt post execute function                                               */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_SubFetch_post(Interface::SEitf* pSEitf, Job* pJob)
+{
+  Job_SubFetch* pJob_SubFetch = _pJob_SubFetch(pJob);
+  
+  if ( pJob_SubFetch->m_bHasError ) {
+    
+    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+      vTrace("ERROR (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob_SubFetch->m_xNode[i_Node].m_eErrorCode]);
+    }
+    
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* job delete function                                                        */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_SubFetch_delete(Interface::SEitf* pSEitf, Job* pJob)
+{
+  Job_SubFetch* pJob_SubFetch = _pJob_SubFetch(pJob);
+  
+  delete pJob_SubFetch;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show job function                                                          */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_SubFetch_show(Job* pJob)
+{
+  Job_SubFetch* pJob_SubFetch = _pJob_SubFetch(pJob);
+
+  pJob_SubFetch->vShow();
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
