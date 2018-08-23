@@ -38,7 +38,7 @@
   job::this locals| pJob |
 
   // send job__begun back to originating node
-  pJob job.id@ pJob "Job__Begun::send" find execute
+  pJob "Job__Begun::send" find execute
 
   // the job remains in the participant list
   // the task exits and gets deleted

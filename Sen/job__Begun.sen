@@ -7,9 +7,11 @@
 /*----------------------------------------------------------------------------*/
 /* send Job__Begun back to originating node                                   */
 /*----------------------------------------------------------------------------*/
-: Job__Begun::send ( iJobId pJobParticipant -- )
+: Job__Begun::send ( pJobParticipant -- )
 
-  params| pJobParticipant iJobId |
+  params| pJobParticipant |
+
+  pJobParticipant job.id@ locals| iJobId |
 
   0 0 locals| pJob__Begun error |
 
