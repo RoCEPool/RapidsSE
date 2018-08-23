@@ -22,11 +22,8 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.ancilliary@"_Stz,      &vJobAncilliaryFetch,  false);
   vAddPrimitive("jobAnalyzeIndex.isDetailed"_Stz, &vJobAnalyzeIndexIsDetailed, false);
   vAddPrimitive("jobAnalyzeTable.isDetailed"_Stz, &vJobAnalyzeTableIsDetailed, false);
-  vAddPrimitive("jobBegun.delete"_Stz,      &vJobBegunDelete,      false);
   vAddPrimitive("jobBegun.error@"_Stz,      &vJobBegunErrorFetch,  false);
   vAddPrimitive("jobBegun.error!"_Stz,      &vJobBegunErrorStore,  false);
-  vAddPrimitive("jobCancel.delete"_Stz,     &vJobCancelDelete,  false);
-  vAddPrimitive("jobCancelled.delete"_Stz,  &vJobCancelledDelete,  false);
   vAddPrimitive("jobCancelled.error@"_Stz,  &vJobCancelledErrorFetch, false);
   vAddPrimitive("jobCancelled.error!"_Stz,  &vJobCancelledErrorStore, false);
   vAddPrimitive("job.checkResources@"_Stz,  &vJobCheckResourcesFetch,false);
@@ -38,13 +35,9 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.decAcksRemaining"_Stz, &vJobDecAcksRemaining, false);
   vAddPrimitive("job.delete"_Stz,           &vJobDelete,           false);
   vAddPrimitive("job.dicPath"_Stz,          &vJobDicPath,          false);
-  vAddPrimitive("jobEnd.delete"_Stz,        &vJobEndDelete,  false);
-  vAddPrimitive("jobEnded.delete"_Stz,      &vJobEndedDelete,  false);
   vAddPrimitive("job.error!"_Stz,           &vJobErrorStore,       false);
   vAddPrimitive("job.error@"_Stz,           &vJobErrorFetch,       false);
   vAddPrimitive("job.execute@"_Stz,         &vJobExecuteFetch,     false);
-  vAddPrimitive("jobExecute.delete"_Stz,    &vJobExecuteDelete,    false);
-  vAddPrimitive("jobExecuted.delete"_Stz,   &vJobExecutedDelete,   false);
   vAddPrimitive("jobExecuted.error@"_Stz,   &vJobExecutedErrorFetch,   false);
   vAddPrimitive("jobExecuted.error!"_Stz,   &vJobExecutedErrorStore,   false);
   vAddPrimitive("jobExecuted.response@"_Stz,&vJobExecutedResponseFetch,false);
@@ -471,132 +464,6 @@ void Task::vJobAnalyzeTableIsDetailed(MP_Task mpTask)
   
   EXIT();
 }
-
-/*----------------------------------------------------------------------------*/
-/* jobBegun.delete -- delete the begun job                                    */
-/*----------------------------------------------------------------------------*/
-void Task::vJobBegunDelete(MP_Task mpTask)
-{
-  ENTRY("vJobDelete"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-  THROW_INVALID_DSTACK("jobBegun.delete"_Stz);
-  
-  Job__Begun* pJobBegun = _pJob__Begun(pJobPtr);
-  ASSERT(pJobBegun->eClass() == CN_JOB__BEGUN);
-  delete pJobBegun;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* jobCancel.delete -- delete the cancel job                                  */
-/*----------------------------------------------------------------------------*/
-void Task::vJobCancelDelete(MP_Task mpTask)
-{
-  ENTRY("vJobDelete"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("jobCancel.delete"_Stz);
-  
-  Job__Cancel* pJobCancel = _pJob__Cancel(pJobPtr);
-  ASSERT(pJobCancel->eClass() == CN_JOB__CANCEL);
-  delete pJobCancel;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* jobCancelled.delete -- delete the cancelled job                            */
-/*----------------------------------------------------------------------------*/
-void Task::vJobCancelledDelete(MP_Task mpTask)
-{
-  ENTRY("vJobCancelledDelete"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("jobCancelled.delete"_Stz);
-  Job__Cancelled* pJobCancelled = _pJob__Cancelled(pJobPtr);
-  ASSERT(pJobCancelled->eClass() == CN_JOB__CANCELLED);
-  delete pJobCancelled;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* jobEnd.delete -- delete the end job                                        */
-/*----------------------------------------------------------------------------*/
-void Task::vJobEndDelete(MP_Task mpTask)
-{
-  ENTRY("vJobEndDelete"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("jobEnd.delete"_Stz);
-  
-  Job__End* pJobEnd = _pJob__End(pJobPtr);
-  ASSERT(pJobEnd->eClass() == CN_JOB__END);
-  delete pJobEnd;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* jobEnded.delete -- delete the ended job                                    */
-/*----------------------------------------------------------------------------*/
-void Task::vJobEndedDelete(MP_Task mpTask)
-{
-  ENTRY("vJobEndedDelete"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("jobEnded.delete"_Stz);
-  
-  Job__Ended* pJobEnded = _pJob__Ended(pJobPtr);
-  ASSERT(pJobEnded->eClass() == CN_JOB__ENDED);
-  delete pJobEnded;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* jobExecute.delete -- delete the execute job                                */
-/*----------------------------------------------------------------------------*/
-void Task::vJobExecuteDelete(MP_Task mpTask)
-{
-  ENTRY("vJobExecuteDelete"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("jobExecute.delete"_Stz);
-  
-  Job__Execute* pJobExecute = _pJob__Execute(pJobPtr);
-  ASSERT(pJobExecute->eClass() == CN_JOB__EXECUTE);
-  delete pJobExecute;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* jobExecuted.delete -- delete the executed job                              */
-/*----------------------------------------------------------------------------*/
-void Task::vJobExecutedDelete(MP_Task mpTask)
-{
-  ENTRY("vJobExecutedDelete"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("jobExecuted.delete"_Stz);
-  
-  Job__Executed* pJobExecuted = _pJob__Executed(pJobPtr);
-  ASSERT(pJobExecuted->eClass() == CN_JOB__EXECUTED);
-  delete pJobExecuted;
-  
-  EXIT();
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* job.dicPath -- get job dic path                                            */

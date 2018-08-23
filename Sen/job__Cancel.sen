@@ -41,7 +41,7 @@
   loop
 
   // now delete the cancel job
-  pJob__Cancel jobCancel.delete
+  pJob__Cancel job.delete
 ;
 
 /*----------------------------------------------------------------------------*/

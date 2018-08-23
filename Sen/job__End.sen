@@ -41,7 +41,7 @@
   loop
 
   // now delete the end job
-  pJob__End jobEnd.delete
+  pJob__End job.delete
 ;
 
 /*----------------------------------------------------------------------------*/

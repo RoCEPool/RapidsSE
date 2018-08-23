@@ -41,7 +41,7 @@
   loop
 
   // now delete the execute job
-  pJob__Execute jobExecute.delete
+  pJob__Execute job.delete
 ;
 
 /*----------------------------------------------------------------------------*/
