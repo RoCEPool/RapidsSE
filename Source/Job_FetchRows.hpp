@@ -10,7 +10,13 @@ namespace JobsModel
   {
   public:
     
-    Tasks::Task* m_pTask; // task running this job
+    s256         m_sWhere;              // where clause string for the fetch
+    Queue*       m_pBufferQueue;        // buffer queue where fetch buffers are pushed
+    i8           m_nLastBuffers;        // expected last buffers
+    i8           m_nLastBuffersScanned; // scanned last buffers
+    FetchBuffer* m_pFetchBuffer;        // current fetch buffer
+    Row*         m_pRow;                // row fetched
+    Tasks::Task* m_pTask;               // task running this job
     
     // must be last
     Footer m_xFooter;
@@ -28,7 +34,7 @@ namespace JobsModel
   public:
     bool bPopulateJob(TokenVec* pTokenVec);
     void vShow(void);
-  
+    
   public:
     Footer* aFooter(void);
   

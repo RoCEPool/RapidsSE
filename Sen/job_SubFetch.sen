@@ -1,0 +1,89 @@
+/*============================================================================*/
+/* job_SubFetch.sen -- Job SubFetch                                           */
+/*============================================================================*/
+
+"job_SubFetch.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* SubFetch (on originating node)                                             */
+/*----------------------------------------------------------------------------*/
+: SubFetch_run ( -- <R> )
+
+  0 0 locals| pJob_SubFetch pTask |
+  0 0 locals| iSlot iPhrase |
+  0 0 0 0 0 locals| pPlanner pTable pBufferQueue pIndex sTableNm |
+
+  tp: SubFetch
+  "SubFetch_run" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob_SubFetch
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab a ddl lock
+  ddlLock::grabRead
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
+  pJob_SubFetch getPathR35
+  dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push table
+  pJob_SubFetch job.objectName@ to sTableNm
+  sTableNm pushTable assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // find the table
+  sTableNm find execute to pTable
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the planner, bufferQueue, phrase and slot this sub fetch is supposed to work on
+  pJob_SubFetch job_subFetch.planner@ to pPlanner
+  pJob_SubFetch job_subFetch.bufferQueue@ to pBufferQueue
+  pJob_SubFetch job_subFetch.phrase@ to iPhrase
+  pJob_SubFetch job_subFetch.slot@ to iSlot
+
+  iPhrase pPlanner Planner.fetchTechnique@
+  case
+
+  // full scan (no index)
+  AT_SCAN of
+    // push into indexes folder
+    pushIndexes assert
+
+    // find the index and put it in the seitf
+    "hidden" find execute to pIndex
+    iSlot pTable tablePtnGrabRead  //! partitionLock
+
+    // now scan the index
+    pBufferQueue iSlot pIndex index.scan
+
+    iSlot pTable tablePtnDropRead
+
+    // pop indexes
+    popIndexes
+
+    endof
+
+  endcase
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop table
+  popTable
+
+  // now delete the ended job
+  pJob_SubFetch job.delete
+
+  // null the job in the task
+  nullptr pTask task.job!
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

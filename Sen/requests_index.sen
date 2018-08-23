@@ -386,6 +386,7 @@ timer: pIdxSelectTimer
 /*----------------------------------------------------------------------------*/
 /* generate plan for the fetch                                                */
 /*----------------------------------------------------------------------------*/
+/*
 : generatePlan ( "<sWhere>" ^pTable -- ^pPlanner )
 
   0 0 locals| pPlanner pAccessPath pTable sWhere |
@@ -409,7 +410,7 @@ timer: pIdxSelectTimer
   // return planner
   pPlanner
 ;
-
+*/
 /*----------------------------------------------------------------------------*/
 /* fetch rows using an index for given phrase (this is request)               */
 /*----------------------------------------------------------------------------*/

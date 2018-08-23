@@ -911,6 +911,9 @@ namespace Tasks
     static void vJobExecutedResponseStore(MP_Task mpTask);
     static void vJobExecutedRowsProcessedFetch(MP_Task mpTask);
     static void vJobExecutedRowsProcessedStore(MP_Task mpTask);
+    static void vJobFetchRowsLastBuffersStore(MP_Task mpTask);
+    static void vJobFetchRowsSpawnSub(MP_Task mpTask);
+    static void vJobFetchRowsWhereFetch(MP_Task mpTask);
     static void vJobFindOriginator(MP_Task mpTask);
     static void vJobFindParticipant(MP_Task mpTask);
     static void vJobHasError(MP_Task mpTask);
@@ -957,6 +960,10 @@ namespace Tasks
     static void vJobShow(MP_Task mpTask);
     static void vJobSignalConnector(MP_Task mpTask);
     static void vJobSpawn(MP_Task mpTask);
+    static void vJobSubFetchBufferQueueFetch(MP_Task mpTask);
+    static void vJobSubFetchPhraseFetch(MP_Task mpTask);
+    static void vJobSubFetchPlannerFetch(MP_Task mpTask);
+    static void vJobSubFetchSlotFetch(MP_Task mpTask);
     static void vJobSubTruncateSlotFetch(MP_Task mpTask);
     static void vJobSubTruncateTruncateJobIdFetch(MP_Task mpTask);
     static void vJobThis(MP_Task mpTask);

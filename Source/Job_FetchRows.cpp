@@ -89,13 +89,19 @@ void Job_FetchRows::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_FetchRows::Job_FetchRows(Interface::SEitf* pSEitf)
-: Job(CN_JOB_TRUNCATETABLE, pSEitf)
+: Job(CN_JOB_FETCHROWS, pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_FETCHROWS,_FOOTER_);
     
-  m_sSeed = mJobNote_FetchRows.pJobClass()->m_aSeedReq;
-  m_bCheckResources = true;
-  m_pTask           = nullptr;
+  //m_sSeed = mJobNote_FetchRows.pJobClass()->m_aSeedReq;
+  m_sWhere       = ""_Stz;
+  m_pBufferQueue = new Queue;
+
+  m_nLastBuffers = -1;
+  m_nLastBuffersScanned = 0;
+  m_pFetchBuffer = nullptr;
+  m_pRow         = nullptr;
+  m_pTask        = nullptr;
   
   _checkInitialised_(CN_JOB_FETCHROWS);
   
@@ -140,19 +146,24 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
   
   i8 iNumTokens;
   
-  ASSERT(pTokenVec->pGet(0)->bSame("tr"_Stz));
+  ASSERT(pTokenVec->pGet(0)->bSame("fetch"_Stz));
   
   // get number of items in token vector
   iNumTokens = pTokenVec->nItems();
   
   // - - - - - - - - - - - - - - - - - - - - -
-  // there should be 2 tokens
-  if (iNumTokens != 2)
+  // there should be 2/3 tokens
+  if (iNumTokens != 2 && iNumTokens != 3)
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the table name
   m_sObjectName = pTokenVec->pGet(1)->aText();
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // set the where clause
+  if (iNumTokens == 3)
+    m_sWhere = pTokenVec->pGet(2)->aText();
   
   return true;
 }
@@ -209,6 +220,7 @@ Job* JobsModel::pJob_FetchRows_pre(Interface::SEitf* pSEitf)
 void JobsModel::vJob_FetchRows_post(Interface::SEitf* pSEitf, Job* pJob)
 {
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJob);
+  ValWrk xValWrk;
   
   if ( pJob_FetchRows->m_bHasError ) {
     
@@ -217,6 +229,31 @@ void JobsModel::vJob_FetchRows_post(Interface::SEitf* pSEitf, Job* pJob)
     }
     
   }
+  else {
+    
+    while ( pJob_FetchRows->m_nLastBuffersScanned != pJob_FetchRows->m_nLastBuffers ) {
+      
+      // attempt to pop buffer off the buffer queue
+      if ( ! pJob_FetchRows->m_pBufferQueue->bPop(&xValWrk) ) {
+        PosixThread::vSleepMilli(1);
+        continue;
+      }
+      PtrVal* pPtrVal = xValWrk.pNestedPtrVal();
+      pJob_FetchRows->m_pFetchBuffer = (FetchBuffer*)(pPtrVal->pPtr());
+      
+      pJob_FetchRows->m_pFetchBuffer->vShow(true);
+      
+      if (pJob_FetchRows->m_pFetchBuffer->bIsLast()) {
+        pJob_FetchRows->m_nLastBuffersScanned++;
+      }
+      
+      pJob_FetchRows->m_pFetchBuffer = nullptr;
+    }
+    
+  }
+  
+  // cleanup
+  // delete bufferQueue , planner etc
 }
 
 /*----------------------------------------------------------------------------*/

@@ -44,6 +44,9 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("jobExecuted.response!"_Stz,&vJobExecutedResponseStore,false);
   vAddPrimitive("jobExecuted.rowsProcessed@"_Stz,&vJobExecutedRowsProcessedFetch,false);
   vAddPrimitive("jobExecuted.rowsProcessed!"_Stz,&vJobExecutedRowsProcessedStore,false);
+  vAddPrimitive("Job_fetchRows.lastBuffers!"_Stz, &vJobFetchRowsLastBuffersStore, false);
+  vAddPrimitive("Job_fetchRows.spawnSub"_Stz, &vJobFetchRowsSpawnSub, false);
+  vAddPrimitive("Job_fetchRows.where@"_Stz, &vJobFetchRowsWhereFetch, false);
   vAddPrimitive("job.findOriginator"_Stz,   &vJobFindOriginator,   false);
   vAddPrimitive("job.findParticipant"_Stz,  &vJobFindParticipant,  false);
   vAddPrimitive("job.hasError"_Stz,         &vJobHasError,         false);
@@ -92,6 +95,10 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.show"_Stz,             &vJobShow,             false);
   vAddPrimitive("job.signalConnector"_Stz,  &vJobSignalConnector,  false);
   vAddPrimitive("job.spawn"_Stz,            &vJobSpawn,            false);
+  vAddPrimitive("Job_subFetch.bufferQueue@"_Stz, &vJobSubFetchBufferQueueFetch, false);
+  vAddPrimitive("Job_subFetch.phrase@"_Stz,  &vJobSubFetchPhraseFetch, false);
+  vAddPrimitive("Job_subFetch.Planner@"_Stz,  &vJobSubFetchPlannerFetch, false);
+  vAddPrimitive("Job_subFetch.slot@"_Stz,  &vJobSubFetchSlotFetch, false);
   vAddPrimitive("job_subTruncate.truncateJobId@"_Stz,&vJobSubTruncateTruncateJobIdFetch, false);
   vAddPrimitive("job_subTruncate.slot@"_Stz,&vJobSubTruncateSlotFetch, false);
   vAddPrimitive("job::this"_Stz,            &vJobThis,             false);
@@ -679,6 +686,93 @@ void Task::vJobExecutedResponseStore(MP_Task mpTask)
   pJob__Executed->m_sResponse = sResponse;
   
   EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Job_fetchRows.lastBuffers! -- set no of expected last buffers              */
+/*----------------------------------------------------------------------------*/
+void Task::vJobFetchRowsLastBuffersStore(MP_Task mpTask)
+{
+  ENTRY("vJobFetchRowsLastBuffersStore"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("Job_fetchRows.lastBuffers!"_Stz);
+  Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJobPtr);
+  
+  i8 nLastBuffers;
+  if ( ! mpTask->m_pDataStack->bPopAsInt(nLastBuffers) )
+    THROW_INVALID_DSTACK("Job_fetchRows.lastBuffers"_Stz);
+  
+  pJob_FetchRows->m_nLastBuffers = nLastBuffers;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Job_fetchRows.spawnSub -- spawn sub fetch job                              */
+/*----------------------------------------------------------------------------*/
+void Task::vJobFetchRowsSpawnSub(MP_Task mpTask)
+{
+  ENTRY("vJobFetchRowsSpawnSub"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("Job_fetchRows.spawnSub"_Stz);
+  Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJobPtr);
+
+  Object* pPlannerPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pPlannerPtr) )
+    THROW_INVALID_DSTACK("Job_fetchRows.spawnSub"_Stz);
+  Planner* pPlanner = _pPlanner(pPlannerPtr);
+  ASSERT(CN_PLANNER == pPlanner->eClass());
+  
+  i8 iPhrase;
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iPhrase) )
+    THROW_INVALID_DSTACK("Job_fetchRows.spawnSub"_Stz);
+  
+  i8 iSlot;
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iSlot) )
+    THROW_INVALID_DSTACK("Job_fetchRows.spawnSub"_Stz);
+  
+  SEitf* pSEitf = pJob_FetchRows->m_pSEitf;
+  i8 iFetchRowsJobId = pJob_FetchRows->m_iJobId;
+  
+  JobClass* pJobClass_SubFetch = gxJobCatalog.pFindJob(CN_JOB_SUBFETCH);
+  
+  Job_SubFetch* pJob_SubFetch =
+  static_cast<Job_SubFetch*>(pJobClass_SubFetch->pPreJob(pSEitf));
+  
+  pJob_SubFetch->m_sSeed = pJobClass_SubFetch->m_aSeedRun;
+  
+  pJob_SubFetch->m_iFetchJobId = iFetchRowsJobId;
+  pJob_SubFetch->m_sObjectName = pJob_FetchRows->m_sObjectName;
+  pJob_SubFetch->m_pPlanner = pPlanner;
+  pJob_SubFetch->m_iPhrase = iPhrase;
+  pJob_SubFetch->m_iSlot = iSlot;
+  pJob_SubFetch->m_pBufferQueue = pJob_FetchRows->m_pBufferQueue;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Task* pSubFetchTask = new Task;
+  pSubFetchTask->vParentTask(*mpTask);
+  
+  pSEitf->bAppendTask(pSubFetchTask,pJob_SubFetch);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Job_fetchRows.where@ -- fetch the where string from the job                */
+/*----------------------------------------------------------------------------*/
+void Task::vJobFetchRowsWhereFetch(MP_Task mpTask)
+{
+  ENTRY("vJobFetchRowsWhereFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("Job_fetchRows.where@!"_Stz);
+  Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushS256(pJob_FetchRows->m_sWhere);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1672,6 +1766,75 @@ void Task::vJobSpawn(MP_Task mpTask)
   
   Handlers::vSpawnedTaskHandler(pNewTask);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_subFetch.bufferQueue@ -- fetch the job buffer queue                    */
+/*----------------------------------------------------------------------------*/
+void Task::vJobSubFetchBufferQueueFetch(MP_Task mpTask)
+{
+  ENTRY("vJobSubFetchBufferQueueFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_subFetch.bufferQueue@"_Stz);
+  Job_SubFetch* pJob = _pJob_SubFetch(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushObject(pJob->m_pBufferQueue);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_subFetch.phrase@ -- fetch the job phrase                               */
+/*----------------------------------------------------------------------------*/
+void Task::vJobSubFetchPhraseFetch(MP_Task mpTask)
+{
+  ENTRY("vJobSubFetchPhraseFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_subFetch.phrase@"_Stz);
+  Job_SubFetch* pJob = _pJob_SubFetch(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushInt(pJob->m_iPhrase);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_subFetch.planner@ -- fetch the job planner                             */
+/*----------------------------------------------------------------------------*/
+void Task::vJobSubFetchPlannerFetch(MP_Task mpTask)
+{
+  ENTRY("vJobSubFetchPlannerFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_subFetch.planner@"_Stz);
+  Job_SubFetch* pJob = _pJob_SubFetch(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushObject(pJob->m_pPlanner);
+  
+  EXIT();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* job_subFetch.slot@ -- fetch the job slot                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vJobSubFetchSlotFetch(MP_Task mpTask)
+{
+  ENTRY("vJobSubFetchSlotFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_subFetch.slot@"_Stz);
+  Job_SubFetch* pJob = _pJob_SubFetch(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushInt(pJob->m_iSlot);
+  
   EXIT();
 }
 

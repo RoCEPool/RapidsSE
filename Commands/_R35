@@ -277,11 +277,15 @@ print "list index columns...";
 print "=========================================";
 lsidxcol j10 idx;
 
-
 print "\n=========================================";
 print "loading table j10";
 print "=========================================";
 ld j10 "../JTEST/j10.csv" ;
+
+print "\n=========================================";
+print "fetach rows from j10";
+print "=========================================";
+fetch j10;
 
 print "\n=========================================";
 print "analysing table j10 when not in tables...";
