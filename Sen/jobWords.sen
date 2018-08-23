@@ -77,8 +77,8 @@
 
     // specific cases
     CN_JOB__EXECUTE of
-      pJob "Job__Execute_rcv" find execute
-      pJob job.delete
+      //pJob "Job__Execute_rcv" find execute pJob job.delete
+      pJob SEED_RCV job.spawn
     endof
 
     // default case

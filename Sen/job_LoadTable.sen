@@ -14,16 +14,19 @@
 
   "Executing loader on this node" .
 
-task::this to pThisTask
+  task::this to pThisTask
 
   pJob_LoadTable loader::new locals| pLoader |
 
   // initialise table loader
   pJob_LoadTable job.objectName@ locals| sTableNm |
   sTableNm "TableNm: %v" fmt.print
+
   // push table dictionary
+  pJob_LoadTable getPathR35 dicStack.set
   sTableNm pushTable assert
   pathDump
+
   sTableNm find execute locals| pTable |
   pTable pLoader loader.table!
 
