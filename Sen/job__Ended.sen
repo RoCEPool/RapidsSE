@@ -27,7 +27,7 @@
   >socket
 
   // now delete the ended job
-  pJob__Ended jobEnded.delete
+  pJob__Ended job.delete
 ;
 
 /*----------------------------------------------------------------------------*/

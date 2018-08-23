@@ -37,7 +37,7 @@
   >socket
 
   // delete the pJob__Cancelled
-  pJob__Cancelled jobCancelled.delete
+  pJob__Cancelled job.delete
 ;
 
 /*----------------------------------------------------------------------------*/

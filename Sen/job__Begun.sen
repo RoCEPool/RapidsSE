@@ -39,7 +39,7 @@
   >socket
 
   // delete the Job__Executed
-  pJob__Begun jobBegun.delete
+  pJob__Begun job.delete
 ;
 
 /*----------------------------------------------------------------------------*/
