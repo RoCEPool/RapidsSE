@@ -63,31 +63,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* execute job                                                                */
-/*----------------------------------------------------------------------------*/
-: job.execute ( pJob -- )
-
-  params| pJob |
-
-  0 locals| eJobClass |
-
-  pJob job.class to eJobClass
-
-  eJobClass case
-
-    // specific cases
-    CN_JOB__EXECUTE of
-      //pJob "Job__Execute_rcv" find execute pJob job.delete
-      pJob SEED_RCV job.spawn
-    endof
-
-    // default case
-    pJob SEED_RCV job.spawn
-
-  endcase
-;
-
-/*----------------------------------------------------------------------------*/
 /* delete this task's job (it's completed)                                    */
 /*----------------------------------------------------------------------------*/
 : delete_completed_job ( -- )

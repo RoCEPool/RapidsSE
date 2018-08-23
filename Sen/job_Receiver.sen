@@ -65,7 +65,6 @@
 : receiver_loop ( -- )
 
   0 locals| pJob |
-  0 locals| eJobClass |
 
   begin
 
@@ -75,9 +74,7 @@
 
     socketObject> drop to pJob
 
-    pJob job.class to eJobClass
-
-    pJob job.execute
+    pJob SEED_RCV job.spawn
 
   again
 ;
