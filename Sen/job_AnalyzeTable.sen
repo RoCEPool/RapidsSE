@@ -72,8 +72,8 @@
 /*----------------------------------------------------------------------------*/
 : analyzeTable_exe ( Job_AnalyzeTable -- )
 
-  params| pJob_AnalyzeTable |
-  // job::this locals| pJob_AnalyzeTable |
+  //params| pJob_AnalyzeTable |
+  job::this locals| pJob_AnalyzeTable |
 
   0 0 locals| sTableNm bIsDetailed |
 
@@ -116,6 +116,8 @@
   pJob_AnalyzeTable job.notice
 
   pJob_AnalyzeTable send_job__executed
+
+  nullptr task::this task.job!
 
   <DONE_NODE>
 ;

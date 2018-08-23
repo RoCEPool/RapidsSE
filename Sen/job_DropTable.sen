@@ -125,8 +125,8 @@
 /*----------------------------------------------------------------------------*/
 : dropTable_exe ( pJob_DropTable -- )
 
-  params| pJob_DropTable |
-  // job::this locals| pJob_DropTable |
+  //params| pJob_DropTable |
+  job::this locals| pJob_DropTable |
 
   tp: dropTable_exe
 
@@ -151,6 +151,8 @@
   pJob_DropTable job.notice
 
   pJob_DropTable send_job__executed
+
+  nullptr task::this task.job!
 
   <DONE_NODE>
 ;

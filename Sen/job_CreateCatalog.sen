@@ -76,8 +76,8 @@
 /*----------------------------------------------------------------------------*/
 : createCatalog_exe ( pJob_CreateCatalog -- )
 
-  params| pJob_CreateCatalog |
-  // job::this locals| pJob_CreateCatalog |
+  //params| pJob_CreateCatalog |
+  job::this locals| pJob_CreateCatalog |
 
   0 locals| sCatalogNm |
 
@@ -102,6 +102,8 @@
   pJob_CreateCatalog job.notice
 
   pJob_CreateCatalog send_job__executed
+
+  nullptr task::this task.job!
 
   <DONE_NODE>
 ;

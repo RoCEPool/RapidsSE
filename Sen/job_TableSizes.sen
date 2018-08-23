@@ -41,7 +41,9 @@
 /*----------------------------------------------------------------------------*/
 : tableSizes_exe ( Job_TableSizes -- )
 
-  params| pJob_TableSizes |
+  //params| pJob_TableSizes |
+  job::this locals| pJob_TableSizes |
+
   0 0 0 0 locals| pIndex iSize iCount sTableNm |
 
   tp: tableSizes_exe
@@ -110,6 +112,8 @@
   pJob_TableSizes job.notice
 
   pJob_TableSizes send_job__executed
+
+  nullptr task::this task.job!
 
   <DONE_NODE>
 

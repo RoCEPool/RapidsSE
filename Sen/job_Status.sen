@@ -40,8 +40,8 @@
 /*----------------------------------------------------------------------------*/
 : status_exe ( pJob_Status -- )
 
-  params| pJob_Status |
-  // job::this locals| pJob__Begun |
+  //params| pJob_Status |
+  job::this locals| pJob_Status |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert its the status job
@@ -61,6 +61,10 @@
   pJob_Status job.notice
 
   pJob_Status send_job__executed
+
+  nullptr task::this task.job!
+
+  <DONE_NODE>
 ;
 
 /*----------------------------------------------------------------------------*/

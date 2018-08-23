@@ -63,8 +63,8 @@
 /*----------------------------------------------------------------------------*/
 : dropSchema_exe ( pJob_DropSchema -- )
 
-  params| pJob_DropSchema |
-  // job::this locals| pJob_DropSchema |
+  //params| pJob_DropSchema |
+  job::this locals| pJob_DropSchema |
 
   tp: dropSchema_exe
 
@@ -89,6 +89,8 @@
   pJob_DropSchema job.notice
 
   pJob_DropSchema send_job__executed
+
+  nullptr task::this task.job!
 
   <DONE_NODE>
 ;

@@ -73,8 +73,8 @@
 /*----------------------------------------------------------------------------*/
 : createSchema_exe ( pJob_CreateSchema -- )
 
-  params| pJob_CreateSchema |
-  // job::this locals| pJob_CreateSchema |
+  //params| pJob_CreateSchema |
+  job::this locals| pJob_CreateSchema |
 
   0 locals| sSchemaNm |
 
@@ -99,6 +99,8 @@
   pJob_CreateSchema job.notice
 
   pJob_CreateSchema send_job__executed
+
+  nullptr task::this task.job!
 
   <DONE_NODE>
 ;

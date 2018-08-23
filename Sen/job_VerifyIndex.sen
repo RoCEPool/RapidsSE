@@ -81,7 +81,9 @@
 /*----------------------------------------------------------------------------*/
 : verifyIndex_exe ( Job_VerifyIndex )
 
-  params| pJob_VerifyIndex |
+  //params| pJob_VerifyIndex |
+  job::this locals| pJob_VerifyIndex |
+
   0 0 0 0 locals| pTask pIndex sTableNm sIndexNm  |
 
   tp: verifyIndex_exe
@@ -125,6 +127,8 @@
   pJob_VerifyIndex job.notice
 
   pJob_VerifyIndex send_job__executed
+
+  nullptr task::this task.job!
 
   <DONE_NODE>
 ;

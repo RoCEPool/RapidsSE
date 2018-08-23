@@ -40,8 +40,8 @@
 /*----------------------------------------------------------------------------*/
 : space_exe ( pJob_Space -- )
 
-  params| pJob_Space |
-  // job::this locals| pJob_Space |
+  //params| pJob_Space |
+  job::this locals| pJob_Space |
 
   CN_JOB_SPACE pJob_Space object.assertClass
 
@@ -63,6 +63,8 @@
   pJob_Space job.notice
 
   pJob_Space send_job__executed
+
+  nullptr task::this task.job!
 
   <DONE_NODE>
 ;

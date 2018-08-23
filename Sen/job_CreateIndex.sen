@@ -178,8 +178,8 @@
 /*----------------------------------------------------------------------------*/
 : createIndex_exe ( Job_CreateIndex -- )
 
-  params| pJob_CreateIndex |
-  // job::this locals| pJob_CreateIndex |
+  //params| pJob_CreateIndex |
+  job::this locals| pJob_CreateIndex |
 
   0 0 locals| pTable sTableNm sIndexNm |
 
@@ -209,6 +209,8 @@
   pJob_CreateIndex job.notice
 
   pJob_CreateIndex send_job__executed
+
+  nullptr task::this task.job!
 
   <DONE_NODE>
 ;

@@ -69,8 +69,8 @@
 /*----------------------------------------------------------------------------*/
 : sizeTable_exe ( Job_SizeTable -- )
 
-  params| pJob_SizeTable |
-  // job::this locals| pJob_SizeTable |
+  //params| pJob_SizeTable |
+  job::this locals| pJob_SizeTable |
 
   0 0 0 locals| sTableNm pIndex iSize |
 
@@ -114,6 +114,8 @@
   pJob_SizeTable job.notice
 
   pJob_SizeTable send_job__executed
+
+  nullptr task::this task.job!
 
   <DONE_NODE>
 ;

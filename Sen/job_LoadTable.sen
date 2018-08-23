@@ -92,8 +92,8 @@
 /*----------------------------------------------------------------------------*/
 : loadTable_exe ( pJob_LoadTable -- )
 
-  params| pJob_LoadTable |
-  // job::this locals| pJob_LoadTable |
+  //params| pJob_LoadTable |
+  job::this locals| pJob_LoadTable |
 
   ">> loadTable_exe <<" .
 
@@ -120,6 +120,8 @@
   then
 
   pJob_LoadTable send_job__executed
+
+  nullptr task::this task.job!
 
   <DONE_NODE>
 ;

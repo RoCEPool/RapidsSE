@@ -102,8 +102,8 @@
 /*----------------------------------------------------------------------------*/
 : createTable_exe ( pJob_CreateTable -- )
 
-  params| pJob_CreateTable |
-  // job::this locals| pJob_CreateTable |
+  //params| pJob_CreateTable |
+  job::this locals| pJob_CreateTable |
 
   0 0 locals| pTable sTableNm |
 
@@ -156,6 +156,8 @@
   // delete_completed_job
 
   pJob_CreateTable send_job__executed
+
+  nullptr task::this task.job!
 
   <DONE_NODE>
 ;

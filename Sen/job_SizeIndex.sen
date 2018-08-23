@@ -81,8 +81,8 @@
 /*----------------------------------------------------------------------------*/
 : sizeIndex_exe ( Job_SizeIndex -- )
 
-  params| pJob_SizeIndex |
-  // job::this locals| pJob_SizeIndex |
+  //params| pJob_SizeIndex |
+  job::this locals| pJob_SizeIndex |
 
   0 0 0 0 locals| pIndex iSize sTableNm sIndexNm |
 
@@ -127,6 +127,8 @@
   pJob_SizeIndex job.notice
 
   pJob_SizeIndex send_job__executed
+
+  nullptr task::this task.job!
 
   <DONE_NODE>
 ;

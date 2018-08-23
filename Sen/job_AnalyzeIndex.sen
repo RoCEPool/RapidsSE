@@ -83,8 +83,8 @@
 /*----------------------------------------------------------------------------*/
 : analyzeIndex_exe ( Job_AnalyzeIndex -- )
 
-  params| pJob_AnalyzeIndex |
-  // job::this locals| pJob_AnalyzeIndex |
+  //params| pJob_AnalyzeIndex |
+  job::this locals| pJob_AnalyzeIndex |
 
   0 0 locals| sTableNm bIsDetailed |
 
@@ -131,6 +131,8 @@
   pJob_AnalyzeIndex job.notice
 
   pJob_AnalyzeIndex send_job__executed
+
+  nullptr task::this task.job!
 
   <DONE_NODE>
 ;

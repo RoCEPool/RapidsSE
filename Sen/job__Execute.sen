@@ -62,7 +62,9 @@
   iJobId job.findParticipant to pJobToBeExe
 
   // execute the job on this participating node
-  pJobToBeExe pJobToBeExe job.execute@ find execute
+  //pJobToBeExe pJobToBeExe job.execute@ find execute
+
+  pJobToBeExe SEED_EXE job.spawn
 
   delete_completed_job
 ;

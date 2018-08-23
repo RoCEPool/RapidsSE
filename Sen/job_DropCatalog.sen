@@ -63,8 +63,8 @@
 /*----------------------------------------------------------------------------*/
 : dropCatalog_exe ( pJob_DropCatalog -- )
 
-  params| pJob_DropCatalog |
-  // job::this locals| pJob_DropCatalog |
+  //params| pJob_DropCatalog |
+  job::this locals| pJob_DropCatalog |
 
   tp: dropCatalog_exe
 
@@ -89,6 +89,8 @@
   pJob_DropCatalog job.notice
 
   pJob_DropCatalog send_job__executed
+
+  nullptr task::this task.job!
 
   <DONE_NODE>
 ;

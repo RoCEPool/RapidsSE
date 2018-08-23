@@ -63,8 +63,8 @@
 /*----------------------------------------------------------------------------*/
 : dropTenant_exe ( pJob_DropTenant -- )
 
-  params| pJob_DropTenant |
-  // job::this locals| pJob_DropTenant |
+  //params| pJob_DropTenant |
+  job::this locals| pJob_DropTenant |
 
   tp: dropTenant_exe
 
@@ -89,6 +89,8 @@
   pJob_DropTenant job.notice
 
   pJob_DropTenant send_job__executed
+
+  nullptr task::this task.job!
 
   <DONE_NODE>
 ;

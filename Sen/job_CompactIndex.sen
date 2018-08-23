@@ -77,7 +77,8 @@
 /*----------------------------------------------------------------------------*/
 : compactIndex_exe ( Job_CompactIndex -- )
 
-  params| pJob_CompactIndex |
+  //params| pJob_CompactIndex |
+  job::this locals| pJob_CompactIndex |
 
   0 0 0 0 locals| pIndex iSize sTableNm sIndexNm |
 
@@ -117,6 +118,8 @@
   pJob_CompactIndex job.notice
 
   pJob_CompactIndex send_job__executed
+
+  nullptr task::this task.job!
 
   <DONE_NODE>
 ;

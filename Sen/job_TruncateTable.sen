@@ -34,8 +34,8 @@
 /*----------------------------------------------------------------------------*/
 : truncateTable_exe ( Job_TruncateTable -- )
 
-  params| pJob_TruncateTable |
-  // job::this locals| pJob_TruncateTable |
+  //params| pJob_TruncateTable |
+  job::this locals| pJob_TruncateTable |
 
   0 0 locals| sTableNm pThisTask |
 
@@ -83,6 +83,8 @@
   pJob_TruncateTable job.notice
 
   pJob_TruncateTable send_job__executed
+
+  nullptr task::this task.job!
 
   <DONE_NODE>
 ;
