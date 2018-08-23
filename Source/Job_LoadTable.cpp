@@ -26,7 +26,7 @@ JobNote mJobNote_LoadTable (
   JT_NONE,                // job trace
   pJob_LoadTable_pre,     // prompt pre-process function
   vJob_LoadTable_post,    // prompt post-process function
-  nullptr,                // job new function
+  pJob_LoadTable_new,     // job new function
   vJob_LoadTable_delete,  // job delete function
   nullptr,                // job pre-send function
   nullptr,                // job post-receive function
@@ -570,6 +570,16 @@ void JobsModel::vJob_LoadTable_post(Interface::SEitf* pSEitf, Job* pJob)
       vTrace("%s\n"_Stz, pJob_LoadTable->m_xNode[i_Node].m_sResponse.aChar());
     }
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* job new function                                                           */
+/*----------------------------------------------------------------------------*/
+Job* JobsModel::pJob_LoadTable_new(Job* pArg)
+{
+  Job_LoadTable* pJob_LoadTable = new Job_LoadTable(nullptr);
+  
+  return pJob_LoadTable;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -26,7 +26,7 @@ JobNote mJobNote_SubLoader (
   JT_NONE,                // job trace
   vJob_SubLoader_pre,     // prompt pre-process function
   nullptr,                // prompt post-process function
-  nullptr,                // job new function
+  pJob_SubLoader_new,     // job new function
   vJob_SubLoader_delete,  // job delete function
   nullptr,                // job pre-send function
   nullptr,                // job post-receive function
@@ -196,6 +196,16 @@ Footer* Job_SubLoader::aFooter(void)
 Job* JobsModel::vJob_SubLoader_pre(Interface::SEitf* pSEitf)
 {
   Job_SubLoader* pJob_SubLoader = new Job_SubLoader(pSEitf);
+  
+  return pJob_SubLoader;
+}
+
+/*----------------------------------------------------------------------------*/
+/* job new function                                                           */
+/*----------------------------------------------------------------------------*/
+Job* JobsModel::pJob_SubLoader_new(Job* pArg)
+{
+  Job_SubLoader* pJob_SubLoader = new Job_SubLoader(nullptr);
   
   return pJob_SubLoader;
 }
