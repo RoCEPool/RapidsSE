@@ -565,6 +565,9 @@ void Task::vLoaderSubSpawnLoadBuffer(MP_Task mpTask)
   WorkingBuffer* pWorkingBuffer = pLoaderSub->pWorkingBuffer();
   pLoaderSub->vWorkingBuffer(nullptr);
   SEitf* pSEitf = pJob_SubLoader->m_pSEitf;
+  
+  //ASSERT( (  pWorkingBuffer->bIsLast() && 0 == pWorkingBuffer->nWorkingRows()) ||
+  //        ( !pWorkingBuffer->bIsLast() && pWorkingBuffer->nWorkingRows()));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a load buffer job

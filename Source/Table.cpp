@@ -385,7 +385,7 @@ void Table::vInsertEntries(i8 iTxId, i8 iSlot, WorkingBuffer* pWorkingBuffer)
   
   // if buffer has 0 entries (only head) then should be last buffer
   if (pWorkingBuffer->nWorkingRows() == 0) {
-    ASSERT(pWorkingBuffer->bIsLast());
+    // ASSERT(pWorkingBuffer->bIsLast());
     return;
   }
   
