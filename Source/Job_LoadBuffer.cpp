@@ -26,7 +26,7 @@ JobNote mJobNote_LoadBuffer (
   JT_ALL,                  // job trace
   vJob_LoadBuffer_pre,     // prompt pre-process function
   nullptr,                 // prompt post-process function
-  nullptr,                 // job new function
+  pJob_LoadBuffer_new,     // job new function
   vJob_LoadBuffer_delete,  // job delete function
   nullptr,                 // job pre-send function
   nullptr,                 // job post-receive function
@@ -260,6 +260,16 @@ Footer* Job_LoadBuffer::aFooter(void)
 Job* JobsModel::vJob_LoadBuffer_pre(Interface::SEitf* pSEitf)
 {
   Job_LoadBuffer* pJob_LoadBuffer = new Job_LoadBuffer(pSEitf);
+  
+  return pJob_LoadBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* job new function                                                           */
+/*----------------------------------------------------------------------------*/
+Job* JobsModel::pJob_LoadBuffer_new(Job* pArg)
+{
+  Job_LoadBuffer* pJob_LoadBuffer = new Job_LoadBuffer(nullptr);
   
   return pJob_LoadBuffer;
 }
