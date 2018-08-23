@@ -21,6 +21,7 @@
   // set the originator node as the send target node
   iJobId job::originator@ grid::node task::this task.sendNode!
 
+  // get error if any
   grid::thisNode@ pJobParticipant job.error@ to error
 
   error EC_NONE != if
@@ -31,14 +32,10 @@
   // move this task through send state/queue
   task.send
 
-  // pack Job__Cancelled into a valset
-  pJob__Cancelled
-  //1 >valset
+  // send Job__Cancelled
+  pJob__Cancelled >socket
 
-  // send Job__Executed
-  >socket
-
-  // delete the pJob__Cancelled
+  // delete Job__Cancelled
   pJob__Cancelled job.delete
 ;
 

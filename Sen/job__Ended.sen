@@ -15,20 +15,17 @@
 
   0 locals| pJob__Ended |
 
-  // send ended to originating node
+  // new a temporary Job__Ended
   iJobId job.newEnded to pJob__Ended
 
-  // send job__end to originating node
+  // send Job__Ended to originating node
   iJobId job::originator@ grid::node task::this task.sendNode!
   task.send
 
-  // send the ended job
-  pJob__Ended
-  //1 >valset
+  // send Job__Ended
+  pJob__Ended >socket
 
-  >socket
-
-  // now delete the ended job
+  // delete Job__Ended
   pJob__Ended job.delete
 ;
 

@@ -33,14 +33,10 @@
   // move this task through send state/queue
   task.send
 
-  // pack Job__Executed into a valset
-  pJob__Begun
-  //1 >valset
-
   // send Job__Executed
-  >socket
+  pJob__Begun >socket
 
-  // delete the Job__Executed
+  // delete Job__Executed
   pJob__Begun job.delete
 ;
 
