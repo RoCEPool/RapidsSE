@@ -100,7 +100,7 @@
 
   pJob_sanity job.beginParticipant
 
-  pJob_sanity job.participantBegun
+  job::participantBegun
 ;
 
 /*----------------------------------------------------------------------------*/

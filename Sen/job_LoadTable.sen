@@ -198,7 +198,7 @@ task::this to pThisTask
   pJob_LoadTable loadTable_chk
 
   // this job has begun
-  pJob_LoadTable job.participantBegun
+  job::participantBegun
 ;
 
 /*----------------------------------------------------------------------------*/

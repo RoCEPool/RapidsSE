@@ -160,7 +160,7 @@
   // check resources
   pJob_createSchema createSchema_chk
 
-  pJob_createSchema job.participantBegun
+  job::participantBegun
 ;
 
 /*----------------------------------------------------------------------------*/

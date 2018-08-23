@@ -145,7 +145,7 @@
   // check resources
   pJob_dropCatalog dropCatalog_chk
 
-  pJob_dropCatalog job.participantBegun
+  job::participantBegun
 ;
 
 /*----------------------------------------------------------------------------*/

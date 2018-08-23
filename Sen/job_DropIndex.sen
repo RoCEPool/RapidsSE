@@ -210,7 +210,7 @@
   // check resources
   pJob_dropIndex dropIndex_chk
 
-  pJob_dropIndex job.participantBegun
+  job::participantBegun
 ;
 
 /*----------------------------------------------------------------------------*/

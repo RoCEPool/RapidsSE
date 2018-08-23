@@ -33,9 +33,9 @@
 /*----------------------------------------------------------------------------*/
 /* begun a job on participant node                                            */
 /*----------------------------------------------------------------------------*/
-: job.participantBegun ( pJob -- )
+: job::participantBegun ( -- )
 
-  params| pJob |
+  job::this locals| pJob |
 
   // send job__begun back to originating node
   pJob job.id@ pJob "Job__Begun::send" find execute
@@ -85,7 +85,7 @@
 
   " ++ c" .
 
-  pJob job.participantBegun
+  job::participantBegun
 
 ;
 

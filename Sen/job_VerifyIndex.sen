@@ -184,7 +184,7 @@
   // check resources
   pJob_VerifyIndex verifyIndex_chk
 
-  pJob_VerifyIndex job.participantBegun
+  job::participantBegun
 ;
 
 /*----------------------------------------------------------------------------*/

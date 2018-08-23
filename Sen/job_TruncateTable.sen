@@ -156,7 +156,7 @@
   // check resources
   pJob_truncateTable truncateTable_chk
 
-  pJob_truncateTable job.participantBegun
+  job::participantBegun
 ;
 
 /*----------------------------------------------------------------------------*/

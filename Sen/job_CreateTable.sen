@@ -220,7 +220,7 @@
   pJob_CreateTable createTable_chk
 
   // this job has begun
-  pJob_CreateTable job.participantBegun
+  job::participantBegun
 ;
 
 /*----------------------------------------------------------------------------*/

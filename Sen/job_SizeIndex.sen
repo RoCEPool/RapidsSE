@@ -186,7 +186,7 @@
   // check resources
   pJob_sizeIndex sizeIndex_chk
 
-  pJob_sizeIndex job.participantBegun
+  job::participantBegun
 ;
 
 /*----------------------------------------------------------------------------*/

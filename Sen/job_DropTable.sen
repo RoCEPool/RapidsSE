@@ -207,7 +207,7 @@
   // check resources
   pJob_dropTable dropTable_chk
 
-  pJob_dropTable job.participantBegun
+  job::participantBegun
 ;
 
 /*----------------------------------------------------------------------------*/

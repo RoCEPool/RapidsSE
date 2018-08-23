@@ -145,7 +145,7 @@
   // check resources
   pJob_dropTenant dropTenant_chk
 
-  pJob_dropTenant job.participantBegun
+  job::participantBegun
 ;
 
 /*----------------------------------------------------------------------------*/

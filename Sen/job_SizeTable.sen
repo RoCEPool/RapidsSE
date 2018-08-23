@@ -169,7 +169,7 @@
 
   pJob_sizeTable sizeTable_chk
 
-  pJob_sizeTable job.participantBegun
+  job::participantBegun
 ;
 
 /*----------------------------------------------------------------------------*/

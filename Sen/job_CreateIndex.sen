@@ -268,7 +268,7 @@
 
   pJob_createIndex createIndex_chk
 
-  pJob_createIndex job.participantBegun
+  job::participantBegun
 ;
 
 /*----------------------------------------------------------------------------*/

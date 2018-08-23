@@ -163,7 +163,7 @@
   // check resources
   pJob_createCatalog createCatalog_chk
 
-  pJob_createCatalog job.participantBegun
+  job::participantBegun
 ;
 
 /*----------------------------------------------------------------------------*/

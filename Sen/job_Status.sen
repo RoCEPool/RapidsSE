@@ -72,7 +72,7 @@
 
   pJob_status job.beginParticipant
 
-  pJob_status job.participantBegun
+  job::participantBegun
 ;
 
 /*----------------------------------------------------------------------------*/

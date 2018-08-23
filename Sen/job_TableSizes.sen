@@ -160,7 +160,7 @@
   // check resources
   pJob_tableSizes tableSizes_chk
 
-  pJob_tableSizes job.participantBegun
+  job::participantBegun
 
 ;
 

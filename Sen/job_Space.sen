@@ -76,7 +76,7 @@
 
   pJob_space job.beginParticipant
 
-  pJob_space job.participantBegun
+  job::participantBegun
 ;
 
 /*----------------------------------------------------------------------------*/

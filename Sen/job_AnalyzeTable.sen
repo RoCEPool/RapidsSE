@@ -172,7 +172,7 @@
   // check resources
   pJob_analyzeTable analyzeTable_chk
 
-  pJob_analyzeTable job.participantBegun
+  job::participantBegun
 ;
 
 /*----------------------------------------------------------------------------*/

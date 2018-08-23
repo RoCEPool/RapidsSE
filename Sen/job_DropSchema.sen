@@ -145,7 +145,7 @@
   // check resources
   pJob_dropSchema dropSchema_chk
 
-  pJob_dropSchema job.participantBegun
+  job::participantBegun
 ;
 
 /*----------------------------------------------------------------------------*/

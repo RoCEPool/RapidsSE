@@ -188,7 +188,7 @@
   // check resources
   pJob_analyzeIndex analyzeIndex_chk
 
-  pJob_analyzeIndex job.participantBegun
+  job::participantBegun
 ;
 
 /*----------------------------------------------------------------------------*/
