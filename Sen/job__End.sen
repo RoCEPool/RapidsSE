@@ -7,21 +7,21 @@
 /*----------------------------------------------------------------------------*/
 /* distribute Job__End to all participants                                    */
 /*----------------------------------------------------------------------------*/
-: Job__End::distribute ( pJob -- )
+: Job__End::distribute ( pJobOriginator -- )
 
   //
   // where:  On the originator node.
   //
 
-  params| pJob |
+  params| pJobOriginator |
 
   0 locals| pJob__End |
 
   // set the no of acks expected in originator job
-  grid::nodes pJob job.acksRemaining!
+  grid::nodes pJobOriginator job.acksRemaining!
 
   // new a temporary Job__End
-  pJob job.id@ job.newEnd to pJob__End
+  pJobOriginator job.id@ job.newEnd to pJob__End
 
   // send Job__End to all nodes
   grid::nodes 0
@@ -52,15 +52,15 @@
   job::this locals| pJob__End |
   pJob__End job.id@ locals| iJobId |
 
-  0 locals| pJob |
+  0 locals| pJobParticipant |
   0 locals| pJobClass |
   0 locals| sEndSeed |
 
   // find the job in the participating jobs
-  iJobId job.findParticipant to pJob
-  pJob "Job %v" fmt.print
+  iJobId job.findParticipant to pJobParticipant
+  pJobParticipant "Job %v" fmt.print
 
-  pJob job.jobClass to pJobClass
+  pJobParticipant job.jobClass to pJobClass
 
   pJobClass jobClass.name pJobClass "JobClass %v %v" fmt.print
 
@@ -71,10 +71,10 @@
   then
 
   // remove the job from the participant jobs
-  pJob job.removeParticipant
+  pJobParticipant job.removeParticipant
 
   // delete the job
-  pJob job.delete
+  pJobParticipant job.delete
 
   iJobId Job__Ended::send
 

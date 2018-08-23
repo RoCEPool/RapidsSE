@@ -7,21 +7,21 @@
 /*----------------------------------------------------------------------------*/
 /* distribute Job__Cancel to all participants                                 */
 /*----------------------------------------------------------------------------*/
-: Job__Cancel::distribute ( pJob -- )
+: Job__Cancel::distribute ( pJobOriginator -- )
 
   //
   // where:  On the originator node.
   //
 
-  params| pJob |
+  params| pJobOriginator |
 
   0 locals| pJob__Cancel |
 
   // set the no of acks expected in originator job
-  grid::nodes pJob job.acksRemaining!
+  grid::nodes pJobOriginator job.acksRemaining!
 
   // create a new Job__Cancel
-  pJob job.id@ job.newCancel to pJob__Cancel
+  pJobOriginator job.id@ job.newCancel to pJob__Cancel
 
   // send job__execute to all nodes
   grid::nodes 0
@@ -52,19 +52,21 @@
   job::this locals| pJob__Cancel |
   pJob__Cancel job.id@ locals| iJobId |
 
-  0 0 0 locals| sReleaseResources pJob pJobCancelled |
+  0 0 0 locals| sReleaseResources pJobParticipant pJobCancelled |
 
   // find the job in the participating jobs
-  iJobId job.findParticipant to pJob
+  iJobId job.findParticipant to pJobParticipant
 
   // execute the job's releaseResources command
-  pJob job.releaseResources@ to sReleaseResources
+  pJobParticipant job.releaseResources@ to sReleaseResources
   sReleaseResources "" str.equal not if 
-    pJob sReleaseResources find execute
+    pJobParticipant sReleaseResources find execute
+  else
+    0 assert
   then
 
   // send job__executed back to originating node
-  iJobId pJob Job__Cancelled::send
+  iJobId pJobParticipant Job__Cancelled::send
 
   delete_completed_job
 ;

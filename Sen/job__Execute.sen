@@ -7,21 +7,21 @@
 /*----------------------------------------------------------------------------*/
 /* distribute Job__Execute to all participants                                */
 /*----------------------------------------------------------------------------*/
-: Job__Execute::distribute ( pJob -- )
+: Job__Execute::distribute ( pJobOriginator -- )
 
   //
   // where: on the originator node
   //
 
-  params| pJob |
+  params| pJobOriginator |
 
   0 locals| pJob__Execute |
 
   // set the no of acks expected in originator job
-  grid::nodes pJob job.acksRemaining!
+  grid::nodes pJobOriginator job.acksRemaining!
 
   // create a new job__execute
-  pJob job.id@ job.newExecute to pJob__Execute
+  pJobOriginator job.id@ job.newExecute to pJob__Execute
 
   // send job__execute to all nodes
   grid::nodes 0
@@ -55,16 +55,14 @@
 
   job::this locals| pJob__Execute |
 
-  0 locals| pJobToBeExe |
+  0 locals| pJobParticipant |
 
   // find the job to be executed in the participating jobs
   pJob__Execute job.id@ locals| iJobId |
-  iJobId job.findParticipant to pJobToBeExe
+  iJobId job.findParticipant to pJobParticipant
 
   // execute the job on this participating node
-  //pJobToBeExe pJobToBeExe job.execute@ find execute
-
-  pJobToBeExe SEED_EXE job.spawn
+  pJobParticipant SEED_EXE job.spawn
 
   delete_completed_job
 ;
