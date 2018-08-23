@@ -51,6 +51,19 @@
 : job::participantEnded ( -- )
 
 ;
+/*----------------------------------------------------------------------------*/
+: job::participantEnded2 ( -- )
+
+  job::this locals| pJobParticipant |
+
+  pJobParticipant "Job__Ended::send" find execute
+
+  // remove the job from the participant jobs
+  pJobParticipant job.removeParticipant
+
+  // delete the job
+  pJobParticipant job.delete
+;
 
 /*----------------------------------------------------------------------------*/
 /* cancelled a job on participant node                                        */

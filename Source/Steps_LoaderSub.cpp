@@ -584,8 +584,10 @@ void Task::vLoaderSubSpawnLoadBuffer(MP_Task mpTask)
   pJob_LoadBuffer->m_sObjectName = pJob_SubLoader->m_sObjectName;
   pJob_LoadBuffer->vPartition(iPartition);
   pJob_LoadBuffer->m_pWorkingBuffer = pWorkingBuffer;
+  
   if (iFinal) {
     i8 nBuffersLoadable = pLoaderSub->nBuffersLoadable();
+    ASSERT(C_UNKNOWN != nBuffersLoadable);
     pJob_LoadBuffer->vBuffersLoadable(nBuffersLoadable);
   }
   
