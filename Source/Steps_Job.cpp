@@ -1754,7 +1754,7 @@ void Task::vJobSpawn(MP_Task mpTask)
     default: NEVER_REACH;
   }
   
-  pJobClass->m_bSeedsRun[i_Seed] = true;
+  pJobClass->m_bSeedsSpawned[i_Seed] = true;
   
   Task* pNewTask = new Task;
 

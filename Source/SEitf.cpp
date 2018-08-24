@@ -2190,11 +2190,15 @@ bool SEitf::bAppendJob(Job* pJob)
   //sRequest = pJob->sJobSeed();
   //sRequest.vConcat("_req"_Stz);
   
-  if (CN_JOB_PROMPT == pJob->eClass())
+  if (CN_JOB_PROMPT == pJob->eClass()) {
     sRequest = pJob->m_pJobClass->m_aSeedRun;
-  else
+    pJob->m_pJobClass->m_bSeedsSpawned[SS_SEED_RUN] = true;
+  }
+  else {
     sRequest = pJob->m_pJobClass->m_aSeedReq;
-
+    pJob->m_pJobClass->m_bSeedsSpawned[SS_SEED_REQ] = true;
+  }
+  
   pNewTask->vSeedWord(sRequest);
   pNewTask->vState(TS_READY);
   pNewTask->vR35model(true);
