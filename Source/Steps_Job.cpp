@@ -1739,18 +1739,22 @@ void Task::vJobSpawn(MP_Task mpTask)
   // there should not be a prompt task
   //ASSERT( ! pJob->m_pPromptTask);
  
+  JobClass* pJobClass = pJob->m_pJobClass;
+  
   // form the word to execute for the request
   s32 sSeed;
   
   switch (i_Seed) {
-    case SS_SEED_RUN: sSeed = pJob->m_pJobClass->m_aSeedRun; break;
-    case SS_SEED_REQ: sSeed = pJob->m_pJobClass->m_aSeedReq; break;
-    case SS_SEED_RCV: sSeed = pJob->m_pJobClass->m_aSeedRcv; break;
-    case SS_SEED_EXE: sSeed = pJob->m_pJobClass->m_aSeedExe; break;
-    case SS_SEED_END: sSeed = pJob->m_pJobClass->m_aSeedEnd; break;
-    case SS_SEED_CAN: sSeed = pJob->m_pJobClass->m_aSeedCan; break;
+    case SS_SEED_RUN: sSeed = pJobClass->m_aSeedRun; break;
+    case SS_SEED_REQ: sSeed = pJobClass->m_aSeedReq; break;
+    case SS_SEED_RCV: sSeed = pJobClass->m_aSeedRcv; break;
+    case SS_SEED_EXE: sSeed = pJobClass->m_aSeedExe; break;
+    case SS_SEED_END: sSeed = pJobClass->m_aSeedEnd; break;
+    case SS_SEED_CAN: sSeed = pJobClass->m_aSeedCan; break;
     default: NEVER_REACH;
   }
+  
+  pJobClass->m_bSeedsRun[i_Seed] = true;
   
   Task* pNewTask = new Task;
 

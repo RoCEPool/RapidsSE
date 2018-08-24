@@ -39,6 +39,8 @@ namespace JobsModel
     Stz* m_aHelp;     // help
     Stz* m_aExample;  // example
   
+    bool m_bSeedsRun[SS_ENUMS]; // which seeds where runs
+  
   public:
     Job* pNewJob(Job* pJob);
     void vDeleteJob(Interface::SEitf* pSEitf, Job* pJob);
