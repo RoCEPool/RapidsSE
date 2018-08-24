@@ -67,12 +67,17 @@ namespace JobsModel
   /*  3 */ "TASK"_Stz
   };
   
-  const i8 C_SEED_0 = 0;
-  const i8 C_SEED_1 = 1;
-  const i8 C_SEED_2 = 2;
-  const i8 C_SEED_3 = 3;
-  const i8 C_SEED_4 = 4;
-  const i8 C_SEED_5 = 5;
+  enum eSS // seed string
+  {
+    /*  0 */ SS_SEED_RUN=0,
+    /*  1 */ SS_SEED_REQ,
+    /*  2 */ SS_SEED_RCV,
+    /*  3 */ SS_SEED_EXE,
+    /*  4 */ SS_SEED_END,
+    /*  5 */ SS_SEED_CAN,
+    /*  6 */ SS_ENUMS
+
+  };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job : public Object,
