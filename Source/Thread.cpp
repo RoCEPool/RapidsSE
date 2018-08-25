@@ -80,7 +80,6 @@ Thread::Thread(void)
   m_iPartition   = -1;
   m_pPosixThread = new PosixThread;
   m_pSemaphore   = new Semaphore;
-  m_pScheduler   = gpAttachMap->m_pServerScheduler;
   m_pTaskFifo    = nullptr;
   m_npTask       = nullptr;
 

@@ -1523,8 +1523,6 @@ namespace Tasks
     static void vThreadPartitionStore(MP_Task mpTask);
     static void vThreadTaskQueueFetch(MP_Task mpTask);
     static void vThreadTaskQueueStore(MP_Task mpTask);
-    static void vThreadSchedulerFetch(MP_Task mpTask);
-    static void vThreadSchedulerStore(MP_Task mpTask);
     static void vThreadSleep_s(MP_Task mpTask);
     static void vThreadSleep_ms(MP_Task mpTask);
     static void vThreadSleep_us(MP_Task mpTask);

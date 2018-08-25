@@ -6,7 +6,6 @@
 
 #include "StorageEngine.h"
 #include "SePrompt.hpp"
-#include "Schedulers.h"
 
 extern AttachMap*      gpAttachMap;
 extern Arguments       gxArguments;
@@ -929,7 +928,6 @@ void Task::vAddConstants(void)
   /*    */ vAddConstant("SIZEOF_TASKFIFO"_Stz,     sizeof(TaskFifo));
   /* 60 */ vAddConstant("SIZEOF_TASKLIST"_Stz,     sizeof(TaskList));
   /*    */ //vAddConstant("SIZEOF_TASKQUEUE"_Stz,    sizeof(TaskQueue));
-  /* 61 */ vAddConstant("SIZEOF_SCHEDULER"_Stz,    sizeof(ServerScheduler));
   /* 62 */ vAddConstant("SIZEOF_THREAD"_Stz,       sizeof(Thread));
 
   /* 64 */ vAddConstant("SIZEOF_THREADLIST"_Stz,   sizeof(ThreadList));
@@ -1022,8 +1020,6 @@ void Task::vAddConstants(void)
   
   vAddConstant("senderWorkerPrint"_Stz,   (i8)0);
   
-  // c++ objects
-  vAddConstant("scheduler"_Stz, (i8)gpAttachMap->m_pServerScheduler);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1105,7 +1101,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_Object();
   vAddPrimitives_OpFrame();
   
-  vAddPrimitives_PartitionScheduler();
   vAddPrimitives_Persistence();
   vAddPrimitives_Plan();
   vAddPrimitives_PlanList();
@@ -1124,11 +1119,9 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_Reg();
   vAddPrimitives_Rstack();
   
-  vAddPrimitives_Scheduler();
   vAddPrimitives_SEitf();
   vAddPrimitives_SelCursor();
   vAddPrimitives_Semaphore();
-  vAddPrimitives_ServerScheduler();
   vAddPrimitives_Shell();
   vAddPrimitives_Slots();
   vAddPrimitives_Socket();

@@ -3,10 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-namespace Schedulers
-{
-  class Scheduler;
-}
 
 namespace Threads
 {
@@ -86,7 +82,6 @@ namespace Threads
     NP_Task      m_npTask;       // task current being executed
                                  //   note that while task is being exected
                                  //   its not in task set
-    Schedulers::Scheduler*  m_pScheduler; // scheduler
   
     bool         m_bGeneralThead;// is this a general thread
     i8           m_iLastRRqueue; // last round robin queue this thread

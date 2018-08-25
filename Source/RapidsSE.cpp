@@ -353,8 +353,8 @@ void RapidsSE::vExecuteCmdLine(void)
       
       //vSkipListTest();
       if (gxArguments.m_bDocol) {
-        vRunDocol();
-        vWaitFlag();
+        //vRunDocol();
+        //vWaitFlag();
       }
       else if (gxArguments.m_bPrompt || gxArguments.m_bScript) {
         ASSERT(gpBufferPool);
@@ -365,9 +365,9 @@ void RapidsSE::vExecuteCmdLine(void)
     }
     else if (gxArguments.m_bDocol) {
       ASSERT(gpBufferPool);
-      vSystemInit();
-      vRunDocol();
-      vWaitFlag();
+      //vSystemInit();
+      //vRunDocol();
+      //vWaitFlag();
     }
     else if (gxArguments.m_bPrompt || gxArguments.m_bScript) {
       ASSERT(gpBufferPool);
@@ -620,37 +620,6 @@ void RapidsSE::vInitJumboHeap(void)
   
 }
 
-/*----------------------------------------------------------------------------*/
-/* run command from command line                                              */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vRunCommand(void)
-{
-  // seed root task to run command using the docol interpreter
-  gpAttachMap->m_npBootTask->vSeedWord(gxArguments.m_sCommand);
- 
-  // append root task onto root thread's task set
-  // root thread will pop the root task and run it
-  gpAttachMap->m_pServerScheduler->vEnqueueTask_Mutex(*gpAttachMap->m_npBootTask);
-  
-  // the docol interpreter is now running the commandf in root task on root thread
-}
-
-/*----------------------------------------------------------------------------*/
-/* run the docol interpreter                                                  */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vRunDocol(void)
-{
-  vInfo("\n*\n* Run docol\n*\n"_Stz);
-  
-  // seed root task to run docol interpreter
-  gpAttachMap->m_npBootTask->vSeedDocol();
-  
-  // append root task onto root thread's task set
-  // root thread will pop the root task and run it
-  gpAttachMap->m_pServerScheduler->vEnqueueTask_Mutex(*gpAttachMap->m_npBootTask);
-  
-  // the docol interpreter is now running in root task on root thread
-}
 
 /*----------------------------------------------------------------------------*/
 /* signal handler                                                             */

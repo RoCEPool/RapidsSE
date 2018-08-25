@@ -83,7 +83,7 @@ args.regionSize nServerThreads constant N_SERVER_THREADS
   nArgs sSeedWord pParent AC_SERVER sTaskNm eTaskKind task::new to pTask
 
   // append task onto server task queue
-  pTask scheduler::server serverScheduler.enqueueTask
+  //pTask scheduler::server serverScheduler.enqueueTask
 
   pTask  // return the task
 ;

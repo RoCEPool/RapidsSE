@@ -422,7 +422,7 @@ i8 giClassSize[]
   /* 77 */ sizeof(Op),                 // CN_OP
   
   /* 78 */ sizeof(Parser),             // CN_PARSER
-  /* 80 */ sizeof(PartitionScheduler), // CN_PARTITIONSCHEDULER
+  /* 80 */ 0, // CN_PARTITIONSCHEDULER
   /* 82 */ sizeof(PathVec),            // CN_PATHVEC
   /* 83 */ sizeof(PerformanceBuffer),  // CN_PERFORMANCEBUFFER
   /* 84 */ sizeof(PerformanceEntry),   // CN_PERFORMANCEENTRY
@@ -481,7 +481,7 @@ i8 giClassSize[]
   /*    */ sizeof(TaskFifo),           // CN_TASKFIFO
   /*133 */ sizeof(TaskList),           // CN_TASKLIST
   /*134 */ sizeof(TaskQueue),          // CN_TASKQUEUE
-  /*135 */ sizeof(ServerScheduler),    // CN_SERVERSCHEDULER
+  /*135 */ 0,    // CN_SERVERSCHEDULER
 
   /*137 */ sizeof(Thread),             // CN_THREAD
 

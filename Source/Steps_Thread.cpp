@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "StorageEngine.h"
-#include "Schedulers.h"
 #include "SePrompt.hpp"
 
 extern AttachMap*      gpAttachMap;
@@ -32,8 +31,6 @@ void Task::vAddPrimitives_Thread(void)
   vAddPrimitive("thread.name!"_Stz,           &vThreadNameStore,       false);
   vAddPrimitive("thread.partition@"_Stz,      &vThreadPartitionFetch,  false);
   vAddPrimitive("thread.partition!"_Stz,      &vThreadPartitionStore,  false);
-  vAddPrimitive("thread.scheduler@"_Stz,      &vThreadSchedulerFetch,  false);
-  vAddPrimitive("thread.scheduler!"_Stz,      &vThreadSchedulerStore,  false);
   vAddPrimitive("thread.taskQueue@"_Stz,      &vThreadTaskQueueFetch,  false);
   vAddPrimitive("thread.taskQueue!"_Stz,      &vThreadTaskQueueStore,  false);
   vAddPrimitive("thread.sleep_s"_Stz,         &vThreadSleep_s,         false);
@@ -371,55 +368,6 @@ void Task::vThreadPartitionStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("thread.partition!"_Stz);
   
   pThread->m_iPartition = iPartition;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* thread.scheduler@ -- fetch scheduler from given thread on stack            */
-/*----------------------------------------------------------------------------*/
-void Task::vThreadSchedulerFetch(MP_Task mpTask)
-{
-  ENTRY("vThreadSchedulerFetch"_Stz);
-  
-  Object* pThreadEmb;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
-    THROW_INVALID_DSTACK("thread.scheduler@"_Stz);
-  Thread* pThread = _pThread(pThreadEmb);
-  
-  ServerScheduler* pServerScheduler = (ServerScheduler*)pThread->m_pScheduler;
-  
-  Object* pSchedulerEmb = static_cast<Object*>(pServerScheduler);
-  
-  mpTask->m_pDataStack->vPushObject(pSchedulerEmb);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* thread.scheduler! -- store scheduler into given thread                     */
-/*----------------------------------------------------------------------------*/
-void Task::vThreadSchedulerStore(MP_Task mpTask)
-{
-  ENTRY("vThreadSchedulerStore"_Stz);
-  
-  Object* pThreadEmb;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
-    THROW_INVALID_DSTACK("thread.scheduler!"_Stz);
-  
-  ASSERT(CN_THREAD == pThreadEmb->eClass());
-  
-  Thread* pThread = static_cast<Thread*>(pThreadEmb);
-  
-  Object* pSchedulerEmb;
-  if ( ! mpTask->m_pDataStack->bPop(pSchedulerEmb) )
-    THROW_INVALID_DSTACK("thread.scheduler!"_Stz);
-  
-  ServerScheduler* pServerScheduler = _pServerScheduler(pSchedulerEmb);
-  
-  pThread->m_pScheduler = pServerScheduler;
   
   EXIT();
 }

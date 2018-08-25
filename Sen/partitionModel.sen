@@ -81,8 +81,8 @@ nPartitionThreads constant N_PARTITION_THREADS
     // set the actor model
     AC_PARTITION pPartitionThread thread.actorModel!
 
-    pPartitionThread thread.taskqueue@ 
-      I scheduler::partition partitionScheduler.taskFifo!
+    //pPartitionThread thread.taskqueue@
+    //  I scheduler::partition partitionScheduler.taskFifo!
 
     // spawn os thread
     //pPartitionThread thread.spawn_partition
@@ -95,34 +95,6 @@ nPartitionThreads constant N_PARTITION_THREADS
 /*----------------------------------------------------------------------------*/
 : spawnPartitionTask ( ... nArgs sSeed iPtnNo sTaskNm eTaskKind )
 
-  locals| eTaskKind sTaskNm iPtnNo sSeed nArgs |
-
-  nArgs sSeed task::this AC_PARTITION sTaskNm eTaskKind task::new locals| pTask |
-
-/*
-  iPtnNo >partitionThreadNm findActorTaskSet locals| pTaskSet |
-  pTask pTaskSet taskSet.append
-*/
-  iPtnNo scheduler::partition locals| pPartitionScheduler |
-  attachMap::maxQueue@ locals| iMaxQueue |
-  true locals| notPrinted |
-
-
-  iMaxQueue 0 != if
-
-    begin
-      iPtnNo pPartitionScheduler partitionScheduler.queueLength@ iMaxQueue >=
-      while
-        //notPrinted if
-        //  iPtnNo "Partition %v stalling..." str.format .verbose
-        //  false to notPrinted
-        //then
-        10 thread.sleep_ms
-    repeat
-
-  then
-
-  pTask iPtnNo pPartitionScheduler partitionScheduler.enqueueTask
 ;
 
 /*============================================================================*/
