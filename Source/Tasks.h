@@ -34,7 +34,6 @@ using namespace Tasks;
 #include "TaskList.hpp"
 #include "TaskFifo.hpp"
 #include "TaskQueue.hpp"
-#include "TaskSet.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

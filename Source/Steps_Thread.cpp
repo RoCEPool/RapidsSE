@@ -17,7 +17,6 @@ void Task::vAddPrimitives_Thread(void)
 {
   vAddPrimitive("thread.actorModel@"_Stz,     &vThreadActorModelFetch, false);
   vAddPrimitive("thread.actorModel!"_Stz,     &vThreadActorModelStore, false);
-  vAddPrimitive("thread.append"_Stz,          &vThreadAppend,          false);
   vAddPrimitive("thread.bind"_Stz,            &vThreadBind,            false);
   vAddPrimitive("thread.condSignal"_Stz,      &vThreadCondSignal,      false);
   vAddPrimitive("thread.condWait"_Stz,        &vThreadCondWait,        false);
@@ -37,16 +36,10 @@ void Task::vAddPrimitives_Thread(void)
   vAddPrimitive("thread.scheduler!"_Stz,      &vThreadSchedulerStore,  false);
   vAddPrimitive("thread.taskQueue@"_Stz,      &vThreadTaskQueueFetch,  false);
   vAddPrimitive("thread.taskQueue!"_Stz,      &vThreadTaskQueueStore,  false);
-  vAddPrimitive("thread.taskSet@"_Stz,        &vThreadSfetch,          false);
-  vAddPrimitive("thread.taskSet!"_Stz,        &vThreadSstore,          false);
   vAddPrimitive("thread.sleep_s"_Stz,         &vThreadSleep_s,         false);
   vAddPrimitive("thread.sleep_ms"_Stz,        &vThreadSleep_ms,        false);
   vAddPrimitive("thread.sleep_us"_Stz,        &vThreadSleep_us,        false);
   vAddPrimitive("thread.sleep_ns"_Stz,        &vThreadSleep_ns,        false);
-  vAddPrimitive("thread.spawn_drone"_Stz,     &vThreadSpawn_Drone,     false);
-  vAddPrimitive("thread.spawn_partition"_Stz, &vThreadSpawn_Partition, false);
-  vAddPrimitive("thread.spawn_server"_Stz,    &vThreadSpawn_Server,    false);
-  vAddPrimitive("thread.spawn_worker"_Stz,    &vThreadSpawn_Worker,    false);
   vAddPrimitive("thread.task@"_Stz,           &vThreadTaskFetch,       false);
   vAddPrimitive("thread.task!"_Stz,           &vThreadTaskStore,       false);
 }
@@ -89,33 +82,6 @@ void Task::vThreadActorModelStore(MP_Task mpTask)
   EXIT();
 }
 
-/*----------------------------------------------------------------------------*/
-/* thread.append -- append task to threads taskset                            */
-/*----------------------------------------------------------------------------*/
-void Task::vThreadAppend(MP_Task mpTask)
-{
-ENTRY("vThreadAppend"_Stz);
-  
-  Object* pThreadEmb;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
-    THROW_INVALID_DSTACK("thread.append"_Stz);
-  
-  ASSERT(CN_THREAD == pThreadEmb->eClass());
-  
-  Thread* pThread = static_cast<Thread*>(pThreadEmb);
-  
-  TaskSet* pTaskSet = pThread->m_pTaskSet;
-  
-  Object* pTaskObject;
-  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
-    THROW_INVALID_DSTACK("task.dump"_Stz);
-  Task* pThatTask = _pTask(pTaskObject);
-  
-  pTaskSet->vAppend(pThatTask);
-  
-  EXIT();
-}
 
 /*----------------------------------------------------------------------------*/
 /* thread.bind -- bind this thread to a cpu                                   */
@@ -542,61 +508,6 @@ void Task::vThreadTaskQueueStore(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* thread.taskset@ -- fetch taskset from the thread which is on data stack    */
-/*----------------------------------------------------------------------------*/
-void Task::vThreadSfetch(MP_Task mpTask)
-{
-  ENTRY("vThreadSfetch"_Stz);
-  
-  Object* pThreadEmb;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
-    THROW_INVALID_DSTACK("thread.taskset@"_Stz);
-  
-  ASSERT(CN_THREAD == pThreadEmb->eClass());
-  
-  Thread* pThread = static_cast<Thread*>(pThreadEmb);
-  
-  TaskSet* pTaskSet = pThread->m_pTaskSet;
-  
-  Object* pTaskSetEmb = static_cast<Object*>(pTaskSet);;
-  
-  mpTask->m_pDataStack->vPushObject(pTaskSetEmb);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* thread.taskset! -- store taskset into the thread which is on data stack    */
-/*----------------------------------------------------------------------------*/
-void Task::vThreadSstore(MP_Task mpTask)
-{
-ENTRY("vThreadSstore"_Stz);
-  
-  Object* pThreadEmb;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
-    THROW_INVALID_DSTACK("thread.taskset!"_Stz);
-  
-  ASSERT(CN_THREAD == pThreadEmb->eClass());
-  
-  Thread* pThread = static_cast<Thread*>(pThreadEmb);
-  
-  Object* pTaskSetEmb;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pTaskSetEmb) )
-    THROW_INVALID_DSTACK("thread.taskset!"_Stz);
-  
-  ASSERT(CN_TASKSET == pTaskSetEmb->eClass());
-  
-  TaskSet* pTaskSet = static_cast<TaskSet*>(pTaskSetEmb);
-  
-  pThread->m_pTaskSet = pTaskSet;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* thread.sleep_s -- sleep for n seconds                                      */
 /*----------------------------------------------------------------------------*/
 void Task::vThreadSleep_s(MP_Task mpTask)
@@ -668,90 +579,6 @@ ENTRY("vThreadSleep_ns"_Stz);
   Thread* pThread = Thread::pThisTLSThread();
   
   pThread->m_pPosixThread->vSleepNano(nNanoseconds);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* thread.spawn_drone -- spawn os thread associated with this thread          */
-/*----------------------------------------------------------------------------*/
-void Task::vThreadSpawn_Drone(MP_Task mpTask)
-{
-  ENTRY("vThreadSpawn_Drone"_Stz);
-  
-  Object* pThreadEmb;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
-    THROW_INVALID_DSTACK("thread.spawn_actor"_Stz);
-  
-  ASSERT(CN_THREAD == pThreadEmb->eClass());
-  
-  Thread* pThread = static_cast<Thread*>(pThreadEmb);
-  
-  pThread->vSpawn_Drone();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* thread.spawn_partition -- spawn os thread associated with this thread      */
-/*----------------------------------------------------------------------------*/
-void Task::vThreadSpawn_Partition(MP_Task mpTask)
-{
-ENTRY("vThreadSpawn_Partition"_Stz);
-  
-  Object* pThreadEmb;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
-    THROW_INVALID_DSTACK("thread.spawn_partition"_Stz);
-  
-  ASSERT(CN_THREAD == pThreadEmb->eClass());
-  
-  Thread* pThread = static_cast<Thread*>(pThreadEmb);
-  
-  pThread->vSpawn_Partition();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* thread.spawn_server -- spawn os thread associated with this thread         */
-/*----------------------------------------------------------------------------*/
-void Task::vThreadSpawn_Server(MP_Task mpTask)
-{
-  ENTRY("vThreadSpawn_Server"_Stz);
-  
-  Object* pThreadEmb;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
-    THROW_INVALID_DSTACK("thread.spawn_server"_Stz);
-  
-  ASSERT(CN_THREAD == pThreadEmb->eClass());
-  
-  Thread* pThread = static_cast<Thread*>(pThreadEmb);
-  
-  pThread->vSpawn_Server();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* thread.spawn_worker -- spawn os thread associated with this thread         */
-/*----------------------------------------------------------------------------*/
-void Task::vThreadSpawn_Worker(MP_Task mpTask)
-{
-  ENTRY("vThreadSpawn_Worker"_Stz);
-  
-  Object* pThreadEmb;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
-    THROW_INVALID_DSTACK("thread.spawn_worker"_Stz);
-  
-  ASSERT(CN_THREAD == pThreadEmb->eClass());
-  
-  Thread* pThread = static_cast<Thread*>(pThreadEmb);
-  
-  pThread->vSpawn_Worker();
   
   EXIT();
 }

@@ -62,8 +62,6 @@ void Task::vAddPrimitives_Task(void)
   vAddPrimitive("task.socketR35!"_Stz,&vTaskSocketR35Store,false);
   vAddPrimitive("task.state@"_Stz,    &vTaskStateFetch,    false);
   vAddPrimitive("task.state!"_Stz,    &vTaskStateStore,    false);
-  vAddPrimitive("task.taskset@"_Stz,  &vTaskTaskSetFetch,  false);
-  vAddPrimitive("task.taskset!"_Stz,  &vTaskTaskSetStore,  false);
   vAddPrimitive("task::this"_Stz,     &vTaskThis,          false);
   vAddPrimitive("task.thread"_Stz,    &vTaskThread,        false);
   vAddPrimitive("task.wait"_Stz,      &vTaskWait,          false);
@@ -90,52 +88,54 @@ void Task::vTaskAck(MP_Task mpTask)
     return;
   }
   
-  i8 iMore = --pTaskBeingAcked->m_zAcks;
+  ASSERT(0);
   
-  if (iMore) {
-    //    vTrace("Task::vTaskSignal: task %p %s signalled task %p\\%lld %s\n"_Stz,
-    //           *mpTask,mpTask->m_sName.aChar(),
-    //           pThatTask,iMore,pThatTask->m_sName.aChar());
-    //    vTrace("[N%lld:%8s\\%lld %-11s] ack'd %s\\%lld\n"_Stz,
-    //           gpAttachMap->m_pGrid->iThisNode(),
-    //           mpTask->m_sName.aChar(),
-    //           *mpTask->m_zAcks,
-    //           mpTask->m_sComment.aChar(),
-    //
-    //           pThatTask->m_sName.aChar(),
-    //           iMore);
-    EXIT();
-    return;
-  }
-  
-  
-  //    vTrace("Task::vTaskSignal: task %p %s resuming task %p %s\n"_Stz,
-  //           *mpTask,mpTask->m_sName.aChar(),
-  //           pThatTask,pThatTask->m_sName.aChar());
-  if (gpAttachMap->m_bTracepoint)
-    vTrace("[N%lld:%8s\\%lld %-11s] ack resumes %s\\%lld\n"_Stz,
-           gpAttachMap->m_pGrid->iThisNode(),
-           mpTask->m_sName.aChar(),
-           *mpTask->m_zAcks,
-           mpTask->m_sComment.aChar(),
-           
-           pTaskBeingAcked->m_sName.aChar(),
-           *pTaskBeingAcked->m_zAcks);
-  
-  while (TS_WAITING_ACK != pTaskBeingAcked->m_eState)
-    PosixThread::vSleepMicro(10);
-  
-  if (pTaskBeingAcked->eActorModel() == AC_SERVER) {
-    gpAttachMap->m_pServerScheduler->vEnqueueTask_Mutex(pTaskBeingAcked);
-  }
-  else if (pTaskBeingAcked->eActorModel() == AC_PARTITION) {
-    gpAttachMap->m_pPartitionScheduler->vEnqueueTask_Mutex(pTaskBeingAcked->m_iPartition,pTaskBeingAcked);
-  }
-  else {
-    Thread* pThread = pTaskBeingAcked->pThread();
-    pThread->m_pTaskSet->vAppend(pTaskBeingAcked);
-  }
-
+//  i8 iMore = --pTaskBeingAcked->m_zAcks;
+//
+//  if (iMore) {
+//    //    vTrace("Task::vTaskSignal: task %p %s signalled task %p\\%lld %s\n"_Stz,
+//    //           *mpTask,mpTask->m_sName.aChar(),
+//    //           pThatTask,iMore,pThatTask->m_sName.aChar());
+//    //    vTrace("[N%lld:%8s\\%lld %-11s] ack'd %s\\%lld\n"_Stz,
+//    //           gpAttachMap->m_pGrid->iThisNode(),
+//    //           mpTask->m_sName.aChar(),
+//    //           *mpTask->m_zAcks,
+//    //           mpTask->m_sComment.aChar(),
+//    //
+//    //           pThatTask->m_sName.aChar(),
+//    //           iMore);
+//    EXIT();
+//    return;
+//  }
+//
+//
+//  //    vTrace("Task::vTaskSignal: task %p %s resuming task %p %s\n"_Stz,
+//  //           *mpTask,mpTask->m_sName.aChar(),
+//  //           pThatTask,pThatTask->m_sName.aChar());
+//  if (gpAttachMap->m_bTracepoint)
+//    vTrace("[N%lld:%8s\\%lld %-11s] ack resumes %s\\%lld\n"_Stz,
+//           gpAttachMap->m_pGrid->iThisNode(),
+//           mpTask->m_sName.aChar(),
+//           *mpTask->m_zAcks,
+//           mpTask->m_sComment.aChar(),
+//
+//           pTaskBeingAcked->m_sName.aChar(),
+//           *pTaskBeingAcked->m_zAcks);
+//
+//  while (TS_WAITING_ACK != pTaskBeingAcked->m_eState)
+//    PosixThread::vSleepMicro(10);
+//
+//  if (pTaskBeingAcked->eActorModel() == AC_SERVER) {
+//    gpAttachMap->m_pServerScheduler->vEnqueueTask_Mutex(pTaskBeingAcked);
+//  }
+//  else if (pTaskBeingAcked->eActorModel() == AC_PARTITION) {
+//    gpAttachMap->m_pPartitionScheduler->vEnqueueTask_Mutex(pTaskBeingAcked->m_iPartition,pTaskBeingAcked);
+//  }
+//  else {
+//    Thread* pThread = pTaskBeingAcked->pThread();
+//    pThread->m_pTaskSet->vAppend(pTaskBeingAcked);
+//  }
+//
   EXIT();
 }
 
@@ -1096,51 +1096,6 @@ ENTRY("vTaskStateStore"_Stz);
   }
   
   pThatTask->m_eState = (eTS)iState;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.taskset@ -- fetch taskset of task on data stack                       */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskTaskSetFetch(MP_Task mpTask)
-{
-  ENTRY("vTaskTaskSetFetch"_Stz);
-  
-  Object* pTaskObject;
-  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
-    THROW_INVALID_DSTACK("task.taskset@"_Stz);
-  Task* pThatTask = _pTask(pTaskObject);
-  
-  TaskSet* pTaskSet = pThatTask->m_pTaskSet;
-  
-  Object* pTaskSetEmb = static_cast<Object*>(pTaskSet);
-  
-  mpTask->m_pDataStack->vPushObject(pTaskSetEmb);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.taskset! -- store taskset on data stack into task                     */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskTaskSetStore(MP_Task mpTask)
-{
-  ENTRY("vTaskTaskSetStore"_Stz);
-  
-  Object* pTaskObject;
-  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
-    THROW_INVALID_DSTACK("task.taskset!"_Stz);
-  Task* pThatTask = _pTask(pTaskObject);
-  
-  Object* ptrTaskSet;
-  
-  if ( ! mpTask->m_pDataStack->bPop(ptrTaskSet) )
-    THROW_INVALID_DSTACK("task.taskset!"_Stz);
-  
-  TaskSet* pTaskSet = static_cast<TaskSet*>(ptrTaskSet);
-  
-  pThatTask->m_pTaskSet = pTaskSet;
   
   EXIT();
 }

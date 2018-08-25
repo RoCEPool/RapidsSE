@@ -482,7 +482,7 @@ i8 giClassSize[]
   /*133 */ sizeof(TaskList),           // CN_TASKLIST
   /*134 */ sizeof(TaskQueue),          // CN_TASKQUEUE
   /*135 */ sizeof(ServerScheduler),    // CN_SERVERSCHEDULER
-  /*136 */ sizeof(TaskSet),            // CN_TASKSET
+  /*136 */ 0,            // CN_TASKSET
   /*137 */ sizeof(Thread),             // CN_THREAD
   /*138 */ sizeof(ThreadCursor),       // CN_THREADCURSOR
   /*139 */ sizeof(ThreadList),         // CN_THREADLIST

@@ -1499,8 +1499,6 @@ namespace Tasks
     static void vTaskSocketR35Store(MP_Task mpTask);
     static void vTaskStateFetch(MP_Task mpTask);
     static void vTaskStateStore(MP_Task mpTask);
-    static void vTaskTaskSetFetch(MP_Task mpTask);
-    static void vTaskTaskSetStore(MP_Task mpTask);
     static void vTaskThread(MP_Task mpTask);
     static void vTaskWait(MP_Task mpTask);
     static void vTaskYield(MP_Task mpTask);
@@ -1526,7 +1524,6 @@ namespace Tasks
     // thread
     static void vThreadActorModelFetch(MP_Task mpTask);
     static void vThreadActorModelStore(MP_Task mpTask);
-    static void vThreadAppend(MP_Task mpTask);
     static void vThreadBind(MP_Task mpTask);
     static void vThreadCondSignal(MP_Task mpTask);
     static void vThreadCondWait(MP_Task mpTask);
@@ -1546,16 +1543,10 @@ namespace Tasks
     static void vThreadTaskQueueStore(MP_Task mpTask);
     static void vThreadSchedulerFetch(MP_Task mpTask);
     static void vThreadSchedulerStore(MP_Task mpTask);
-    static void vThreadSfetch(MP_Task mpTask);
-    static void vThreadSstore(MP_Task mpTask);
     static void vThreadSleep_s(MP_Task mpTask);
     static void vThreadSleep_ms(MP_Task mpTask);
     static void vThreadSleep_us(MP_Task mpTask);
     static void vThreadSleep_ns(MP_Task mpTask);
-    static void vThreadSpawn_Drone(MP_Task mpTask);
-    static void vThreadSpawn_Partition(MP_Task mpTask);
-    static void vThreadSpawn_Server(MP_Task mpTask);
-    static void vThreadSpawn_Worker(MP_Task mpTask);
     static void vThreadTaskFetch(MP_Task mpTask);
     static void vThreadTaskStore(MP_Task mpTask);
 

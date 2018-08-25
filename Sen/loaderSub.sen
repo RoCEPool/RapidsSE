@@ -101,8 +101,8 @@
   // needed when being resumed by coordinator
   0 0 0 0 0 0 locals| sFldDel iPartitionNo ploaderSub iTotalPartitions pLoaderSEitf iTxId |
 
-  task::this task.thread thread.taskset@
-  task::this task.taskset!
+  //task::this task.thread thread.taskset@
+  //task::this task.taskset!
 
   // expand dic stack valset and set
   valset> drop to sFldDel
@@ -289,8 +289,8 @@ tp: theIndirectResult
   // needed when being resumed by coordinator
   0 0 0 0 0 locals| iPartitionNo ploaderSub iTotalPartitions pLoaderSEitf iTxId |
 
-  task::this task.thread thread.taskset@
-  task::this task.taskset!
+  //task::this task.thread thread.taskset@
+  //task::this task.taskset!
 
   // expand dic stack valset and set
   valset> drop dicStack.set

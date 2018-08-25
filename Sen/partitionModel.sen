@@ -85,7 +85,7 @@ nPartitionThreads constant N_PARTITION_THREADS
       I scheduler::partition partitionScheduler.taskFifo!
 
     // spawn os thread
-    pPartitionThread thread.spawn_partition
+    //pPartitionThread thread.spawn_partition
 
   loop
 ;

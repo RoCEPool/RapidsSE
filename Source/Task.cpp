@@ -934,7 +934,6 @@ void Task::vAddConstants(void)
   /* 60 */ vAddConstant("SIZEOF_TASKLIST"_Stz,     sizeof(TaskList));
   /*    */ //vAddConstant("SIZEOF_TASKQUEUE"_Stz,    sizeof(TaskQueue));
   /* 61 */ vAddConstant("SIZEOF_SCHEDULER"_Stz,    sizeof(ServerScheduler));
-  /* 61 */ vAddConstant("SIZEOF_TASKSET"_Stz,      sizeof(TaskSet));
   /* 62 */ vAddConstant("SIZEOF_THREAD"_Stz,       sizeof(Thread));
   /* 63 */ vAddConstant("SIZEOF_THREADCURSOR"_Stz, sizeof(ThreadCursor));
   /* 64 */ vAddConstant("SIZEOF_THREADLIST"_Stz,   sizeof(ThreadList));
@@ -1145,7 +1144,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_Task();
   vAddPrimitives_TaskList();
   vAddPrimitives_TaskFifo();
-  vAddPrimitives_TaskSet();
   vAddPrimitives_Thread();
   vAddPrimitives_ThreadCursor();
   vAddPrimitives_ThreadList();

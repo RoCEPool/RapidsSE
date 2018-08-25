@@ -71,7 +71,7 @@
   jobNm findActorTask task.seed ( )
 
   // spawn the os thread
-  jobNm findActorThread thread.spawn_worker ( )
+  //jobNm findActorThread thread.spawn_worker ( )
 ;
 
 /*----------------------------------------------------------------------------*/

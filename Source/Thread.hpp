@@ -105,18 +105,12 @@ namespace Threads
     
     Thread(void);
     ~Thread(void);
-    
-    static void* vEntry_Drone(void* pArg);
-    static void* vEntry_Partition(void* pArg);
-    static void* vEntry_Server(void* pArg);
-    static void* vEntry_Worker(void* pArg);
   
     static void* pEntryPoint(void* pArg);
   
     static Thread* pThisTLSThread(void);
     static void vRunTask(MP_Task mpTask);
   
-    void vAppend(MP_Task mpTask);
     void vBind(i8 iCpu);
     i8   iCpu(void);
     void vContentDump(void) const;
@@ -130,11 +124,6 @@ namespace Threads
     i8   iLastRRqueue(void);
     void vLastRRqueue(i8 iLastRRqueue);
     void vLoop(void);
-    void vLoop_Drone(void);
-    void vLoop_Partition(void);
-    void vLoop_Partition2(void);
-    void vLoop_Server(void);
-    void vLoop_Worker(void);
     i8   iPartition(void);
     void vPartition(i8 iPartition);
     StrVal&   sName(void);
@@ -142,11 +131,7 @@ namespace Threads
     void vReExecuteTask(Task* pTask);
     bool bRRnext(void);
     void vRRstart(void);
-    void vSpawn_Drone(void);
-    void vSpawn_Partition(void);
-    void vSpawn_Server(void);
     void vSpawn_Thread(void);
-    void vSpawn_Worker(void);
     void vTask(Task* pTask);
     i8   iThreadNo(void);
     eTC  eThreadState(void);

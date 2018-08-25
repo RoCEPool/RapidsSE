@@ -67,7 +67,7 @@ args.regionSize nServerThreads constant N_SERVER_THREADS
     AC_SERVER pServerThread thread.actorModel!
 
     // spawn os thread
-    pServerThread thread.spawn_server
+    //pServerThread thread.spawn_server
 
   loop
 ;
