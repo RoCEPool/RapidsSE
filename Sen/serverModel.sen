@@ -66,9 +66,6 @@ args.regionSize nServerThreads constant N_SERVER_THREADS
     // set actor model in the thread
     AC_SERVER pServerThread thread.actorModel!
 
-    // give it a private taskset
-    taskset::new pServerThread thread.taskset!
-
     // spawn os thread
     pServerThread thread.spawn_server
 

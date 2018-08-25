@@ -81,10 +81,6 @@ nPartitionThreads constant N_PARTITION_THREADS
     // set the actor model
     AC_PARTITION pPartitionThread thread.actorModel!
 
-    // give it a public taskset
-    I >partitionThreadNm ".taskSet" str.cat :taskset execute
-      pPartitionThread thread.taskset!
-
     pPartitionThread thread.taskqueue@ 
       I scheduler::partition partitionScheduler.taskFifo!
 

@@ -21,32 +21,6 @@
 : _SENDER    reg4 ;
 
 /*----------------------------------------------------------------------------*/
-/* interlinkParts                                                             */
-/*----------------------------------------------------------------------------*/
-: interlinkParts ( -- )
-
-  // attach queue to task
-  _QUEUE ( queue )
-  _CALLER ( queue task )
-  task.jobQueue! ( )
-
-  // put task in taskset
-  _CALLER ( task )
-  _TASKSET ( task taskset )
-  taskset.append ( )
-
-  // attach taskset to thread
-  _TASKSET ( taskset )
-  _THREAD ( taskset thread )
-  thread.taskset! ( )
-
-  // record taskset in task
-  _TASKSET ( taskset )
-  _CALLER ( task )
-  task.taskset! ( )
-;
-
-/*----------------------------------------------------------------------------*/
 /* get queue of actor                                                         */
 /*----------------------------------------------------------------------------*/
 : findActorQueue ( "<workerNm>" -- queue )
@@ -114,13 +88,10 @@
 
   actorNm ".task"    str.cat :task    execute to_CALLER  // reg0 has task
   actorNm ".queue"   str.cat :queue   execute to_QUEUE   // reg1 has queue
-  actorNm ".taskset" str.cat :taskset execute to_TASKSET // reg2 has taskset
   actorNm ".thread"  str.cat :thread  execute to_THREAD  // reg3 has thread
 
   AC_WORKER reg0 task.actorModel!
   AC_WORKER reg3 thread.actorModel!
-
-  interlinkParts
 
   reg.pop
 ;
@@ -136,13 +107,10 @@
 
   actorNm ".task"    str.cat :task    execute to_CALLER  // reg0 has task
   actorNm ".queue"   str.cat :queue   execute to_QUEUE   // reg1 has queue
-  actorNm ".taskset" str.cat :taskset execute to_TASKSET // reg2 has taskset
   actorNm ".thread"  str.cat :thread  execute to_THREAD  // reg3 has thread
 
   AC_WORKER reg0 task.actorModel!
   AC_WORKER reg3 thread.actorModel!
-
-  interlinkParts
 
   reg.pop
 
