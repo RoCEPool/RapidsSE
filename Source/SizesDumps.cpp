@@ -182,7 +182,6 @@ pDUMPFUN *gpDump[]
   /* 89 */ &Dump::vUndefined,       // CN_PREDICATE
   /* 90 */ &Dump::vUndefined,       // CN_PREDVEC
   /* 91 */ &Dump::vUndefined,       // CN_POSIXTHREAD
-  /* 92 */ &Dump::vUndefined,       // CN_PROXY
 
   /* 94 */ &Dump::vDummy,           // CN_PTNCOLVEC
   
@@ -430,7 +429,6 @@ i8 giClassSize[]
   /* 89 */ sizeof(PosixThread),        // CN_POSIXTHREAD
   /* 90 */ sizeof(Predicate),          // CN_PREDICATE
   /* 91 */ sizeof(PredicateVec),       // CN_PREDICATEVEC
-  /* 92 */ sizeof(Proxy),              // CN_PROXY
   /* 94 */ sizeof(PtnColVec),          // CN_PTNCOLVEC
   
   /* 95 */ sizeof(Queue),              // CN_QUEUE
@@ -677,7 +675,6 @@ eHT geWhichHeap[]
   /* 89 */ HT_TRANSIENT_SMALL,   // CN_PREDICATE
   /* 90 */ HT_TRANSIENT_MEDIUM,  // CN_PREDICATEVEC
   /* 91 */ HT_TRANSIENT_SMALL,   // CN_POSIXTHREAD
-  /* 92 */ HT_INVALID,           // CN_PROXY
   /* 94 */ HT_TRANSIENT_MEDIUM,  // CN_PTNCOLVEC
 
   /* 95 */ HT_TRANSIENT_SMALL,   // CN_QUEUE

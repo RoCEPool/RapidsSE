@@ -177,7 +177,6 @@ pFINALIZE *gpFinalize[]
   /* 89 */ &Finalize::vUndefined,         // CN_POSIXTHREAD
   /* 90 */ &Finalize::vUndefined,         // CN_PREDICATE
   /* 91 */ &Finalize::vUndefined,         // CN_PREDICATEVEC
-  /* 92 */ &Finalize::vUndefined,         // CN_PROXY
   /* 94 */ &Finalize::vUndefined,         // CN_PTNCOLVEC
   
   /* 95 */ &Finalize::vUndefined,         // CN_QUEUE

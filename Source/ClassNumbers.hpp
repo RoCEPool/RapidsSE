@@ -182,7 +182,6 @@ enum eCN : u2 // Class Number
     /* 89 */ CN_POSIXTHREAD,
     /* 90 */ CN_PREDICATE,
     /* 91 */ CN_PREDICATEVEC,
-    /* 92 */ CN_PROXY,
     /* 94 */ CN_PTNCOLVEC,
   
     /* 95 */ CN_QUEUE,
@@ -429,7 +428,6 @@ enum eCN : u2 // Class Number
     /* 89 */ "POSIXTHREAD"_Stz,        // CN_POSIXTHREAD
     /* 90 */ "PREDICATE"_Stz,          // CN_PREDICATE
     /* 91 */ "PREDICATEVEC"_Stz,       // CN_PREDICATEVEC
-    /* 92 */ "PROXY"_Stz,              // CN_PROXY
     /* 94 */ "PTNCOLVEC"_Stz,          // CN_PTNCOLVEC
     
     /* 95 */ "QUEUE"_Stz,              // CN_QUEUE

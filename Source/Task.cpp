@@ -664,7 +664,6 @@ void Task::vAddConstants(void)
   /* 41 */ vAddConstant("CN_TABLEPTN"_Stz,     CN_TABLEPTN);
   /*    */ vAddConstant("CN_PLAN"_Stz,         CN_PLAN);
   /*    */ vAddConstant("CN_PLANLIST"_Stz,     CN_PLANLIST);
-  /* 43 */ vAddConstant("CN_PROXY"_Stz,        CN_PROXY);
   
   /* 45 */ vAddConstant("CN_QUEUE"_Stz,        CN_QUEUE);
   /* 46 */ vAddConstant("CN_QUEUEBUFFER"_Stz,  CN_QUEUEBUFFER);
@@ -893,7 +892,6 @@ void Task::vAddConstants(void)
 
   /* 28 */ vAddConstant("SIZEOF_PARSER"_Stz,       sizeof(Parser));
   /* 29 */ vAddConstant("SIZEOF_PARTITION"_Stz,    sizeof(TablePtn));
-  /*    */ vAddConstant("SIZEOF_PROXY"_Stz,        sizeof(Proxy));
   /* 33 */ vAddConstant("SIZEOF_QUEUE"_Stz,        sizeof(Queue));
   /* 34 */ vAddConstant("SIZEOF_QUEUEBUFFER"_Stz,  sizeof(QueueBuffer));
   /*    */ vAddConstant("SIZEOF_RBCURSOR"_Stz,     sizeof(RbCursor));
