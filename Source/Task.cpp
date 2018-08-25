@@ -709,7 +709,6 @@ void Task::vAddConstants(void)
   /* 74 */ vAddConstant("CN_TASKLIST"_Stz,     CN_TASKLIST);
   /*    */ vAddConstant("CN_TASKQUEUE"_Stz,    CN_TASKQUEUE);
   /* 75 */ vAddConstant("CN_SERVERSCHEDULER"_Stz,    CN_SERVERSCHEDULER);
-  /* 75 */ vAddConstant("CN_TASKSET"_Stz,      CN_TASKSET);
   /* 76 */ vAddConstant("CN_THREAD"_Stz,       CN_THREAD);
   /* 77 */ vAddConstant("CN_THREADCURSOR"_Stz, CN_THREADCURSOR);
   /* 78 */ vAddConstant("CN_THREADLIST"_Stz,   CN_THREADLIST);

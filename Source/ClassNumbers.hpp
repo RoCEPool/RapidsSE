@@ -232,7 +232,7 @@ enum eCN : u2 // Class Number
     /*133 */ CN_TASKLIST,
     /*134 */ CN_TASKQUEUE,
     /*135 */ CN_SERVERSCHEDULER,
-    /*136 */ CN_TASKSET,
+
     /*137 */ CN_THREAD,
     /*138 */ CN_THREADCURSOR,
     /*139 */ CN_THREADLIST,
@@ -478,7 +478,7 @@ enum eCN : u2 // Class Number
     /*133 */ "TASKLIST"_Stz,           // CN_TASKLIST
     /*134 */ "TASKQUEUE"_Stz,          // CN_TASKQUEUE
     /*135 */ "SERVERSCHEDULER"_Stz,    // CN_SERVERSCHEDULER
-    /*136 */ "TASKSET"_Stz,            // CN_TASKSET
+
     /*137 */ "THREAD"_Stz,             // CN_THREAD
     /*138 */ "THREADCURSOR"_Stz,       // CN_THREADCURSOR
     /*139 */ "THREADLIST"_Stz,         // CN_THREADLIST
