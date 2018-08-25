@@ -146,7 +146,6 @@ namespace Tasks
 
     i8      m_iTaskNo;      // task
     bool    m_bDestructorTrace;
-    bool    m_bR35model;    // task is running R3.5 model
     Job*    m_pJob;         // the job for this task
     Task*   m_pParentTask;  // parent of this task
 
@@ -290,8 +289,6 @@ namespace Tasks
     Value* pRequest(void);
     void vReset(void);
     void vRetry(void);
-    void vR35model(bool bR35model);
-    bool bR35model(void);
     void vSeedDicCompileSen(void);
     void vSeedDocol(void);
     Object* pSeedObject(void);

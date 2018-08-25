@@ -952,7 +952,6 @@ void Queues::vScheduleSpawnedTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  RASSERT(pTask->bR35model());
   RASSERT(TS_READY == pTask->eState());
   RASSERT(QR_NONE == pTask->eQueue());
   

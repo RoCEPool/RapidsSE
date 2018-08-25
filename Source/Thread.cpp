@@ -398,9 +398,6 @@ void Thread::vLoop(void)
   
   for (;;) {
    
-    // wont have a task
-    //ASSERT(! *m_npTask);
-    
     // get next task
     if (! *m_npTask && ! bQueuePeek()) {
       vHandlerWait();
@@ -411,18 +408,12 @@ void Thread::vLoop(void)
    
     // will have a task
     ASSERT(*m_npTask);
-    
-    // task will be running R3.5 model
-    ASSERT(m_npTask->bR35model());
 
     // call the task
     vTaskCall();
    
     // handle thread level event
     Handlers::vThreadLoopHandler(&m_npTask);
-
-    // wont have a task
-    //ASSERT(! *m_npTask);
   }
   
   NEVER_REACH;

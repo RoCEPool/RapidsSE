@@ -720,7 +720,6 @@ void RapidsSE::vStartSystemTasks(void)
   pStartTask->vSeedWord(sRequest);
 
   pStartTask->vState(TS_READY);
-  pStartTask->vR35model(true);
 
   pStartTask->vName(sName);
 
