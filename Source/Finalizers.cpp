@@ -223,7 +223,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_TABLEPTN
   /*    */ &Finalize::vUndefined,         // CN_TABLEPTNVEC
   /*131 */ &Finalize::vUndefined,         // CN_TASK
-  /*132 */ &Finalize::vUndefined,         // CN_TASKCURSOR
   /*    */ &Finalize::vUndefined,         // CN_TASKFIFO
   /*133 */ &Finalize::vUndefined,         // CN_TASKLIST
   /*134 */ &Finalize::vUndefined,         // CN_TASKQUEUE

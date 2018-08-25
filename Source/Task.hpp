@@ -1504,17 +1504,7 @@ namespace Tasks
     static void vTaskThread(MP_Task mpTask);
     static void vTaskWait(MP_Task mpTask);
     static void vTaskYield(MP_Task mpTask);
-    
-    // taskCursor
-    static void vTaskCursorBegin(MP_Task mpTask);
-    static void vTaskCursorDelete(MP_Task mpTask);
-    static void vTaskCursorEnd(MP_Task mpTask);
-    static void vTaskCursorFirst(MP_Task mpTask);
-    static void vTaskCursorGet(MP_Task mpTask);
-    static void vTaskCursorInit(MP_Task mpTask);
-    static void vTaskCursorNew(MP_Task mpTask);
-    static void vTaskCursorNext(MP_Task mpTask);
-    
+        
     // taskList
     static void vTaskList(MP_Task mpTask);
     static void vTaskListAppend(MP_Task mpTask);
