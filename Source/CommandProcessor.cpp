@@ -179,32 +179,6 @@ void CommandProcessor::vDeleteJob(SEitf* pSEitf)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dispatch job into SE                                                       */
-/*----------------------------------------------------------------------------*/
-bool CommandProcessor::bDispatchJob(SEitf* pSEitf)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
-  
-  Timer xTimer;
-  
-  xTimer.vStart();
-  
-  pTknVec()->vSetTokens();
-  
-  //! make this part of verbose??
-  //m_pCommandProcessor->m_pTokeniser->vDumpTokens("Command : "_Stz,m_xTokenVec,C_TOKENS);
-  
-  bool bResult = RapidsSE_SpawnJob(m_pJob,SS_SEED_REQ,pSEitf);
-  
-  if (pTknVec()->bDetachedRequest())
-    return bResult;
-  
-  xTimer.vUpdate();
-  
-  return bResult;
-}
-
-/*----------------------------------------------------------------------------*/
 /* attempt to find job class for command                                      */
 /*----------------------------------------------------------------------------*/
 bool CommandProcessor::bFindJobClass(void)
@@ -353,6 +327,32 @@ void CommandProcessor::vPreJob(SEitf* pSEitf)
   m_pJob = m_pJobClass->pPreJob(pSEitf);
   
   m_pJob->m_bDetached = pTknVec()->bDetachedRequest();
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn job in SE                                                            */
+/*----------------------------------------------------------------------------*/
+bool CommandProcessor::bSpawnJob(SEitf* pSEitf)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
+  
+  Timer xTimer;
+  
+  xTimer.vStart();
+  
+  pTknVec()->vSetTokens();
+  
+  //! make this part of verbose??
+  //m_pCommandProcessor->m_pTokeniser->vDumpTokens("Command : "_Stz,m_xTokenVec,C_TOKENS);
+  
+  bool bResult = RapidsSE_SpawnJob(m_pJob,SS_SEED_REQ,pSEitf);
+  
+  if (pTknVec()->bDetachedRequest())
+    return bResult;
+  
+  xTimer.vUpdate();
+  
+  return bResult;
 }
 
 /*----------------------------------------------------------------------------*/

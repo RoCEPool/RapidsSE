@@ -77,8 +77,8 @@
     // set 1 ack required from the job
     1 setAcks
 
-    // dispatch the job
-    pSEitf pCommandProcessor commandProcessor.dispatchJob
+    // spawn the job
+    pSEitf pCommandProcessor commandProcessor.spawnJob
 
     // wait for ack from job
     "prompt waiting for ack" .
