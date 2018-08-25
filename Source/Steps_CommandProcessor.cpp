@@ -21,7 +21,7 @@ void Task::vAddPrimitives_CommandProcessor(void)
   vAddPrimitive("commandProcessor.jobClass"_Stz,    &vCommandProcessorJobClass,   false);
   vAddPrimitive("commandProcessor.postJob"_Stz,     &vCommandProcessorPostJob,    false);
   vAddPrimitive("commandProcessor.preJob"_Stz,      &vCommandProcessorPreJob,     false);
-  vAddPrimitive("commandProcessor.dispatchJob"_Stz, &vCommandProcessorSpawnJob,   false);
+  vAddPrimitive("commandProcessor.spawnJob"_Stz,    &vCommandProcessorSpawnJob,   false);
 }
 
 /*----------------------------------------------------------------------------*/

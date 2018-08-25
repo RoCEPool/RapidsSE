@@ -1733,41 +1733,8 @@ void Task::vJobSpawn(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.spawn"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  // there should not be a prompt task
-  //ASSERT( ! pJob->m_pPromptTask);
- 
-//  JobClass* pJobClass = pJob->m_pJobClass;
-//
-//  // form the word to execute for the request
-//  s32 sSeed;
-//
-//  switch (i_Seed) {
-//    case SS_SEED_RUN: sSeed = pJobClass->m_aSeedRun; break;
-//    case SS_SEED_REQ: sSeed = pJobClass->m_aSeedReq; break;
-//    case SS_SEED_RCV: sSeed = pJobClass->m_aSeedRcv; break;
-//    case SS_SEED_EXE: sSeed = pJobClass->m_aSeedExe; break;
-//    case SS_SEED_END: sSeed = pJobClass->m_aSeedEnd; break;
-//    case SS_SEED_CAN: sSeed = pJobClass->m_aSeedCan; break;
-//    default: NEVER_REACH;
-//  }
-//
-//  pJobClass->m_bSeedsSpawned[i_Seed] = true;
-
-  pJob->vSeed((eSS)i_Seed);
-  //RapidsSE_SpawnJob(pJob, (eSS)i_Seed,nullptr);
+  RapidsSE_SpawnJob(pJob,(eSS)i_Seed,nullptr);
   
-  Task* pNewTask = new Task;
-
-  pNewTask->vSeedWord(pJob->m_sSeed);
-  pNewTask->vState(TS_READY);
-  pNewTask->vR35model(true);
-  pNewTask->vActorModel(AC_R35);
-//  pNewTask->vSEitf(pSEitf);
-
-  pNewTask->vJob(pJob);
-
-  Handlers::vSpawnedTaskHandler(pNewTask);
-
   EXIT();
 }
 

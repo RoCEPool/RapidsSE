@@ -2274,9 +2274,6 @@ eEC RapidsSE_SpawnPrompt(i8 iTraceLevel)
     
     Job_Prompt* pJob_Prompt = new Job_Prompt(pSEitf);
     pJob_Prompt->m_pJobClass = pJobClass_Prompt;
-    
-    pJob_Prompt->m_sSeed = pJobClass_Prompt->m_aSeedRun;
-    
     pJob_Prompt->m_bDetached = true;
     
     bool b = RapidsSE_SpawnJob(pJob_Prompt,SS_SEED_RUN,pSEitf);
@@ -2654,23 +2651,10 @@ bool RapidsSE_SpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf)
   //----------------------------------------------------------------------------
   
   // form the word to execute for the request
-  s32 sRequest;
+  pJob->vSeed(eSeed);
   
-  eCN eClass = pJob->eClass();
-  if (CN_JOB_PROMPT      == eClass ||
-      CN_JOB_SUBFETCH    == eClass ||
-      CN_JOB_SUBLOADER   == eClass ||
-      CN_JOB_SUBTRUNCATE == eClass ||
-      CN_JOB_LOADBUFFER  == eClass
-      ) {
-    sRequest = pJob->m_pJobClass->m_aSeedRun;
-    pJob->m_pJobClass->m_bSeedsSpawned[SS_SEED_RUN] = true;
-  }
-  else {
-    sRequest = pJob->m_pJobClass->m_aSeedReq;
-    pJob->m_pJobClass->m_bSeedsSpawned[SS_SEED_REQ] = true;
-  }
-  
+  s32 sRequest(pJob->m_sSeed);
+    
   Task* pNewTask = new Task;
   
   pNewTask->vSeedWord(sRequest);
