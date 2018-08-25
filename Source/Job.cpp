@@ -268,6 +268,26 @@ void Job::vJobTrace(eJT eJobTrace)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set the job seed                                                           */
+/*----------------------------------------------------------------------------*/
+void Job::vSeed(eSS eSeed)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  switch (eSeed) {
+    case SS_SEED_RUN: m_sSeed = m_pJobClass->m_aSeedRun; break;
+    case SS_SEED_REQ: m_sSeed = m_pJobClass->m_aSeedReq; break;
+    case SS_SEED_RCV: m_sSeed = m_pJobClass->m_aSeedRcv; break;
+    case SS_SEED_EXE: m_sSeed = m_pJobClass->m_aSeedExe; break;
+    case SS_SEED_END: m_sSeed = m_pJobClass->m_aSeedEnd; break;
+    case SS_SEED_CAN: m_sSeed = m_pJobClass->m_aSeedCan; break;
+    default: NEVER_REACH;
+  }
+  
+  m_pJobClass->m_bSeedsSpawned[eSeed] = true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set the job trace                                                          */
 /*----------------------------------------------------------------------------*/
 void Job::vShow(s48K& s)

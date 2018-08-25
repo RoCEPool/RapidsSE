@@ -2167,7 +2167,7 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
 /*----------------------------------------------------------------------------*/
 /* spawn job                                                                  */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bSpawnJob(Job* pJob)
+bool SEitf::bSpawnJob(Job* pJob, eSS eSeed)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   

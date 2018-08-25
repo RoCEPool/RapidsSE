@@ -117,6 +117,7 @@ namespace JobsModel
     static i8 iOriginatorNode(i8 iJobId);
     
     Stz* sJobSeed(void);
+    void vSeed(eSS eSeed);
     i8   iJobId(void);
     void vJobId(i8 iJobId);
     i8   iOriginatorNode(void);

@@ -194,7 +194,7 @@ bool CommandProcessor::bDispatchJob(SEitf* pSEitf)
   //! make this part of verbose??
   //m_pCommandProcessor->m_pTokeniser->vDumpTokens("Command : "_Stz,m_xTokenVec,C_TOKENS);
   
-  bool bResult = RapidsSE_DispatchJob(m_pJob,pSEitf);
+  bool bResult = RapidsSE_DispatchRequestJob(m_pJob,pSEitf);
   
   if (pTknVec()->bDetachedRequest())
     return bResult;

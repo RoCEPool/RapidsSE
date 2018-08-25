@@ -657,7 +657,7 @@ eEC RapidsSE_DropTable(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable, 
     //pSEitf->m_pJob = pJob_DropTable;
     Stz* aResponse = nullptr;
     
-    RapidsSE_DispatchJob(pJob_DropTable, pSEitf);
+    RapidsSE_DispatchRequestJob(pJob_DropTable, pSEitf);
     
     i8 rCode = pthread_mutex_lock(&pJob_DropTable->m_xThreadMutex);
     //vTrace("MutexLock %p\n"_Stz,this);
@@ -2279,7 +2279,7 @@ eEC RapidsSE_Prompt(i8 iTraceLevel)
     
     pJob_Prompt->m_bDetached = true;
     
-    bool b = pSEitf->bSpawnJob(pJob_Prompt);
+    bool b = pSEitf->bSpawnJob(pJob_Prompt,SS_SEED_RUN);
     
     return EC_NONE;
     
@@ -2510,7 +2510,7 @@ bool RapidsSE_ExecuteRequest(SEitf* pSEitf, TokenVec& xTokenVec, Stz** ppRespons
 /*----------------------------------------------------------------------------*/
 /* Execute a request                                                          */
 /*----------------------------------------------------------------------------*/
-bool RapidsSE_DispatchJob(Job* pJob, SEitf* pSEitf)
+bool RapidsSE_DispatchRequestJob(Job* pJob, SEitf* pSEitf)
 {
   bool bResult;
   
@@ -2518,7 +2518,7 @@ bool RapidsSE_DispatchJob(Job* pJob, SEitf* pSEitf)
   pSEitf->vClearLastError();
   
   // dispatch job to se
-  bResult = pSEitf->bSpawnJob(pJob);
+  bResult = pSEitf->bSpawnJob(pJob,SS_SEED_REQ);
   
   if (! bResult)
     return bResult;

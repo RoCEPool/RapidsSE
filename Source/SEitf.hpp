@@ -179,7 +179,7 @@ namespace Interface
     //--------------------------------------------------------------------------
     bool bAppendRequest(StrVal& sRequest);
 
-    bool bSpawnJob(Job* pJob);
+    bool bSpawnJob(Job* pJob, eSS eSeed);
 
     eEC  eGetResponse(void);
     
