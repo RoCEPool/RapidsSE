@@ -2259,9 +2259,9 @@ eEC RapidsSE_PoolOpen(Stz* pInstanceName, void** ppInstance, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* launch a prompt job                                                        */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_Prompt(i8 iTraceLevel)
+eEC RapidsSE_SpawnPrompt(i8 iTraceLevel)
 {
-  Stz*   aApiCall = "RapidsSE_Prompt"_Stz;
+  Stz*   aApiCall = "RapidsSE_SpawnPrompt"_Stz;
   SEitf* pSEitf = nullptr;
   s256   sRequest;
 

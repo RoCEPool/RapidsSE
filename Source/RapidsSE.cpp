@@ -71,7 +71,7 @@ void RapidsSE::vExecuteSystem(void)
   //  ResultBuffer* pRB = new ResultBuffer;
   //  delete pRB;
   
-  vRunPrompt();
+  vSpawnPrompt();
   
   RapidsSE::vPoolClose();
 }
@@ -226,17 +226,17 @@ bool RapidsSE::bRunUtilities(int argc, Stz* argv[])
 /*----------------------------------------------------------------------------*/
 /* run se prompt                                                              */
 /*----------------------------------------------------------------------------*/
-void RapidsSE::vRunPrompt(void)
+void RapidsSE::vSpawnPrompt(void)
 {
-    PosixThread::vTlsSet(giTLS_ThreadKey,(void*)-1);
-    
-    i8 iTraceLevel = 0;
-    eEC eError = RapidsSE_Prompt(iTraceLevel);
-    ASSERT(EC_NONE == eError);
-    vTrace("RapidsSE_Prompt() called\n"_Stz);
-    
-    while (true)
-      PosixThread::vSleepSec(10000000);
+  PosixThread::vTlsSet(giTLS_ThreadKey,(void*)-1);
+  
+  i8 iTraceLevel = 0;
+  eEC eError = RapidsSE_SpawnPrompt(iTraceLevel);
+  ASSERT(EC_NONE == eError);
+  vTrace("RapidsSE_SpawnPrompt() called\n"_Stz);
+  
+  while (true)
+    PosixThread::vSleepSec(10000000);
 }
 
 /*----------------------------------------------------------------------------*/
