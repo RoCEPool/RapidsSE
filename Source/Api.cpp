@@ -2665,6 +2665,56 @@ eEC eGetResponse(SEitf* pSEitf)
   return eError;
 }
 
+/*----------------------------------------------------------------------------*/
+/* spawn job                                                                  */
+/*----------------------------------------------------------------------------*/
+bool RapidsSE_SpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf)
+{
+  //----------------------------------------------------------------------------
+  // Before appending request for se, ensure that se is running
+  // get the se pid from the attachmap
+  i8 iPid = gpAttachMap->m_iPid;
+  if (!Process::bTestPid(iPid)) {
+    // SE is not running anymore!
+    vError("Cannot find pid %lld\n"_Stz, gpAttachMap->m_iPid);
+    return false;
+  }
+  
+  //----------------------------------------------------------------------------
+  
+  // form the word to execute for the request
+  s32 sRequest;
+  
+  eCN eClass = pJob->eClass();
+  if (CN_JOB_PROMPT      == eClass ||
+      CN_JOB_SUBFETCH    == eClass ||
+      CN_JOB_SUBLOADER   == eClass ||
+      CN_JOB_SUBTRUNCATE == eClass ||
+      CN_JOB_LOADBUFFER  == eClass
+      ) {
+    sRequest = pJob->m_pJobClass->m_aSeedRun;
+    pJob->m_pJobClass->m_bSeedsSpawned[SS_SEED_RUN] = true;
+  }
+  else {
+    sRequest = pJob->m_pJobClass->m_aSeedReq;
+    pJob->m_pJobClass->m_bSeedsSpawned[SS_SEED_REQ] = true;
+  }
+  
+  Task* pNewTask = new Task;
+  
+  pNewTask->vSeedWord(sRequest);
+  pNewTask->vState(TS_READY);
+  pNewTask->vR35model(true);
+  pNewTask->vActorModel(AC_R35);
+  pNewTask->vSEitf(pSEitf);
+  
+  pNewTask->vJob(pJob);
+  
+  Handlers::vSpawnedTaskHandler(pNewTask);
+  
+  return true;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

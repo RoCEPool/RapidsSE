@@ -66,6 +66,8 @@ bool RapidsSE_DispatchRequestJob(Job* pJob, SEitf* pSEitf);
 
 bool RapidsSE_ExecuteCommmand(SEitf* pSEitf, Stz* aCommand);
 
+bool RapidsSE_SpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf);
+
 
 // private calls
 eEC eExecuteRequest(SEitf* pSEitf, Stz* aCommand);
