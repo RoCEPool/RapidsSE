@@ -6,7 +6,6 @@
 
 "task.sen" include
 "taskList.sen" include
-"taskCursor.sen" include
 "ipc.sen" include
 
 /*============================================================================*/
