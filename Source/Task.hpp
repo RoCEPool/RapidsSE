@@ -429,7 +429,6 @@ namespace Tasks
     void vAddPrimitives_Task(void);
     void vAddPrimitives_TaskCursor(void);
     void vAddPrimitives_TaskList(void);
-    void vAddPrimitives_TaskFifo(void);
     void vAddPrimitives_Thread(void);
     void vAddPrimitives_Timer(void);
     void vAddPrimitives_To(void);
@@ -1493,8 +1492,6 @@ namespace Tasks
     static void vThreadNameStore(MP_Task mpTask);
     static void vThreadPartitionFetch(MP_Task mpTask);
     static void vThreadPartitionStore(MP_Task mpTask);
-    static void vThreadTaskQueueFetch(MP_Task mpTask);
-    static void vThreadTaskQueueStore(MP_Task mpTask);
     static void vThreadSleep_s(MP_Task mpTask);
     static void vThreadSleep_ms(MP_Task mpTask);
     static void vThreadSleep_us(MP_Task mpTask);

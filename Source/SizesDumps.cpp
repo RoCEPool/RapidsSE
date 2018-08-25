@@ -226,7 +226,7 @@ pDUMPFUN *gpDump[]
   /*    */ &TablePtn::vDump,        // CN_TABLEPTN
   /*    */ &Dump::vDummy,           // CN_TABLEPTNVEC
   /*131 */ &Task::vDump,            // CN_TASK
-  /*    */ &Dump::vUndefined,       // CN_TASKFIFO
+
   /*133 */ &TaskList::vDump,        // CN_TASKLIST
   /*134 */ &Dump::vUndefined,       // CN_TASKQUEUE
 
@@ -470,7 +470,7 @@ i8 giClassSize[]
   /*    */ sizeof(TablePtn),           // CN_TABLEPTN
   /*    */ sizeof(TablePtnVec),        // CN_TABLEPTNVEC
   /*131 */ sizeof(Task),               // CN_TASK
-  /*    */ sizeof(TaskFifo),           // CN_TASKFIFO
+
   /*133 */ sizeof(TaskList),           // CN_TASKLIST
   /*134 */ sizeof(TaskQueue),          // CN_TASKQUEUE
 
@@ -714,7 +714,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_SMALL,   // CN_TABLEPTN
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_TABLEPTNVEC
   /*131 */ HT_TRANSIENT_MEDIUM,  // CN_TASK
-  /*    */ HT_TRANSIENT_SMALL,   // CN_TASKFIFO
+
   /*133 */ HT_TRANSIENT_SMALL,   // CN_TASKLIST
   /*134 */ HT_TRANSIENT_SMALL,   // CN_TASKQUEUE
 

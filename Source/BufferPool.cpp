@@ -120,8 +120,7 @@ Buffer* BufferPool::pAllocBuffer(void)
     
     vWarn("BufferPool::nAllocs: %lld; nBuffers: %lld; AllocCount: %lld; nFreeHead: %p; iFreeCount: %lld\n"_Stz,
           nAllocs, m_nBuffers, m_iAllocCount, *m_nFreeHead, m_iFreeCount);
-    //vTrace("Partiton loopQ %lld, maxQ %lld\n"_Stz, gpAttachMap->m_pPartitionScheduler->iTaskFifoLength(0),
-    //       gpAttachMap->m_nMaxQueue);
+
     vTrace("   Transitent SmallHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
            sMagSmall.aChar(),
            gpAttachMap->m_pTransientSmallHeap->iBufferCount(),

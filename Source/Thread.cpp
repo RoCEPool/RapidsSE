@@ -78,7 +78,7 @@ Thread::Thread(void)
   m_iPartition   = -1;
   m_pPosixThread = new PosixThread;
   m_pSemaphore   = new Semaphore;
-  m_pTaskFifo    = nullptr;
+
   m_npTask       = nullptr;
 
   Thread* pThread = this;
@@ -614,26 +614,6 @@ void Thread::vTaskCall(void)
 
   // record time of return & calculate running total times
   // ...
-}
-
-/*----------------------------------------------------------------------------*/
-/* get this threads task fifo                                                 */
-/*----------------------------------------------------------------------------*/
-TaskFifo* Thread::pTaskFifo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
-  return m_pTaskFifo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get this threads task fifo                                                 */
-/*----------------------------------------------------------------------------*/
-void Thread::vTaskFifo(TaskFifo* pTaskFifo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
-  m_pTaskFifo = pTaskFifo;
 }
 
 

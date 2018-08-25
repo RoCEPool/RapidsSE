@@ -225,7 +225,7 @@ enum eCN : u2 // Class Number
     /*    */ CN_TABLEPTN,
     /*    */ CN_TABLEPTNVEC,
     /*131 */ CN_TASK,
-    /*    */ CN_TASKFIFO,
+
     /*133 */ CN_TASKLIST,
     /*134 */ CN_TASKQUEUE,
 
@@ -465,7 +465,7 @@ enum eCN : u2 // Class Number
   
     /*130 */ "TABLE"_Stz,              // CN_TABLE
     /*131 */ "TASK"_Stz,               // CN_TASK
-    /*    */ "TASKFIFO"_Stz,           // CN_TASKFIFO
+
     /*133 */ "TASKLIST"_Stz,           // CN_TASKLIST
     /*134 */ "TASKQUEUE"_Stz,          // CN_TASKQUEUE
 

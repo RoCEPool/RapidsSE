@@ -77,7 +77,6 @@ namespace Threads
     i8           m_iPartition;   // specific partition? 
     PosixThread* m_pPosixThread; // its posix structure
     Semaphore*   m_pSemaphore;   // this threads semaphore
-    TaskFifo*    m_pTaskFifo;    // this threads task fifo/list
     NP_Task      m_npTask;       // task current being executed
                                  //   note that while task is being exected
                                  //   its not in task set
@@ -146,8 +145,6 @@ namespace Threads
     bool  bQueuePeek(void);
 
     void  vTaskCall(void);
-    TaskFifo* pTaskFifo(void);
-    void  vTaskFifo(TaskFifo* pTaskFifo);
   
     Footer* aFooter(void);
   };

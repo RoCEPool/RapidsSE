@@ -699,7 +699,7 @@ void Task::vAddConstants(void)
   
   /* 71 */ vAddConstant("CN_TABLE"_Stz,        CN_TABLE);
   /* 72 */ vAddConstant("CN_TASK"_Stz,         CN_TASK);
-  /*    */ vAddConstant("CN_TASKFIFO"_Stz,     CN_TASKFIFO);
+
   /* 74 */ vAddConstant("CN_TASKLIST"_Stz,     CN_TASKLIST);
   /*    */ vAddConstant("CN_TASKQUEUE"_Stz,    CN_TASKQUEUE);
   /* 76 */ vAddConstant("CN_THREAD"_Stz,       CN_THREAD);
@@ -917,7 +917,7 @@ void Task::vAddConstants(void)
   /* 56 */ vAddConstant("SIZEOF_SYSCALL"_Stz,      sizeof(SysCall));
   /* 57 */ vAddConstant("SIZEOF_TABLE"_Stz,        sizeof(Table));
   /* 58 */ vAddConstant("SIZEOF_TASK"_Stz,         sizeof(Task));
-  /*    */ vAddConstant("SIZEOF_TASKFIFO"_Stz,     sizeof(TaskFifo));
+
   /* 60 */ vAddConstant("SIZEOF_TASKLIST"_Stz,     sizeof(TaskList));
   /*    */ //vAddConstant("SIZEOF_TASKQUEUE"_Stz,    sizeof(TaskQueue));
   /* 62 */ vAddConstant("SIZEOF_THREAD"_Stz,       sizeof(Thread));
@@ -1122,7 +1122,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_TablePartition();
   vAddPrimitives_Task();
   vAddPrimitives_TaskList();
-  vAddPrimitives_TaskFifo();
   vAddPrimitives_Thread();
   vAddPrimitives_Timer();
   vAddPrimitives_To();

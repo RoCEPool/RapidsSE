@@ -31,8 +31,6 @@ void Task::vAddPrimitives_Thread(void)
   vAddPrimitive("thread.name!"_Stz,           &vThreadNameStore,       false);
   vAddPrimitive("thread.partition@"_Stz,      &vThreadPartitionFetch,  false);
   vAddPrimitive("thread.partition!"_Stz,      &vThreadPartitionStore,  false);
-  vAddPrimitive("thread.taskQueue@"_Stz,      &vThreadTaskQueueFetch,  false);
-  vAddPrimitive("thread.taskQueue!"_Stz,      &vThreadTaskQueueStore,  false);
   vAddPrimitive("thread.sleep_s"_Stz,         &vThreadSleep_s,         false);
   vAddPrimitive("thread.sleep_ms"_Stz,        &vThreadSleep_ms,        false);
   vAddPrimitive("thread.sleep_us"_Stz,        &vThreadSleep_us,        false);
@@ -396,61 +394,6 @@ ENTRY("vThreadNameStore"_Stz);
   sName = _pStrVal(xNameWsp.pNestedValueSelf());
   
   pThread->vName(sName);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* thread.taskqueue@ -- fetch taskqueue from thread which is on data stack    */
-/*----------------------------------------------------------------------------*/
-void Task::vThreadTaskQueueFetch(MP_Task mpTask)
-{
-  ENTRY("vThreadTaskQueueFetch"_Stz);
-  
-  Object* pThreadEmb;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
-    THROW_INVALID_DSTACK("thread.taskqueue@"_Stz);
-  
-  ASSERT(CN_THREAD == pThreadEmb->eClass());
-  
-  Thread* pThread = static_cast<Thread*>(pThreadEmb);
-  
-  TaskFifo* pTaskFifo = pThread->m_pTaskFifo;
-  
-  Object* pTaskFifoEmb = static_cast<Object*>(pTaskFifo);
-  
-  mpTask->m_pDataStack->vPushObject(pTaskFifoEmb);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* thread.taskqueue! -- store taskqueue into thread which is on data stack    */
-/*----------------------------------------------------------------------------*/
-void Task::vThreadTaskQueueStore(MP_Task mpTask)
-{
-  ENTRY("vThreadTaskQueueStore"_Stz);
-  
-  Object* pThreadEmb;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
-    THROW_INVALID_DSTACK("thread.taskqueue!"_Stz);
-  
-  ASSERT(CN_THREAD == pThreadEmb->eClass());
-  
-  Thread* pThread = static_cast<Thread*>(pThreadEmb);
-  
-  Object* pTaskFifoEmb;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pTaskFifoEmb) )
-    THROW_INVALID_DSTACK("thread.taskqueue!"_Stz);
-  
-  ASSERT(CN_TASKFIFO == pTaskFifoEmb->eClass());
-  
-  TaskFifo* pTaskFifo = _pTaskFifo(pTaskFifoEmb);
-  
-  pThread->m_pTaskFifo = pTaskFifo;
   
   EXIT();
 }
