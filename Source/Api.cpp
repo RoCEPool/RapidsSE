@@ -657,7 +657,7 @@ eEC RapidsSE_DropTable(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable, 
     //pSEitf->m_pJob = pJob_DropTable;
     Stz* aResponse = nullptr;
     
-    RapidsSE_DispatchRequestJob(pJob_DropTable, pSEitf);
+    RapidsSE_SpawnJob(pJob_DropTable, SS_SEED_REQ, pSEitf);
     
     i8 rCode = pthread_mutex_lock(&pJob_DropTable->m_xThreadMutex);
     //vTrace("MutexLock %p\n"_Stz,this);
@@ -2508,42 +2508,6 @@ bool RapidsSE_ExecuteRequest(SEitf* pSEitf, TokenVec& xTokenVec, Stz** ppRespons
 }
 
 /*----------------------------------------------------------------------------*/
-/* Execute a request                                                          */
-/*----------------------------------------------------------------------------*/
-bool RapidsSE_DispatchRequestJob(Job* pJob, SEitf* pSEitf)
-{
-  bool bResult;
-  
-  // clear the last error
-  pSEitf->vClearLastError();
-  
-  // dispatch job to se
-  bResult = RapidsSE_SpawnJob(pJob,SS_SEED_REQ,pSEitf);
-  
-  if (! bResult)
-    return bResult;
-  
-  return true;
-  
-  /*
-  
-  if (pJob->m_bDetached)
-    return true;
-  
-  // get response from se
-  eEC eResult = eGetResponse(pSEitf);
-  
-  // put response into caller
-  *ppResponse = pSEitf->m_sResponse;
-  
-  if (eResult == EC_NONE)
-    return true;
-  else
-    return false;
-  */
-}
-
-/*----------------------------------------------------------------------------*/
 /* execute command                                                            */
 /*----------------------------------------------------------------------------*/
 eEC eExecuteRequest(SEitf* pSEitf, Stz* aCommand)
@@ -2670,12 +2634,19 @@ eEC eGetResponse(SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 bool RapidsSE_SpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf)
 {
+  
+  // clear the last error
+  if (pSEitf)
+    pSEitf->vClearLastError();
+
   //----------------------------------------------------------------------------
   // Before appending request for se, ensure that se is running
   // get the se pid from the attachmap
   i8 iPid = gpAttachMap->m_iPid;
   if (!Process::bTestPid(iPid)) {
     // SE is not running anymore!
+    if (pSEitf)
+      vError("Cannot find pid %lld\n"_Stz, gpAttachMap->m_iPid);
     vError("Cannot find pid %lld\n"_Stz, gpAttachMap->m_iPid);
     return false;
   }
