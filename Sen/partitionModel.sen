@@ -85,10 +85,6 @@ nPartitionThreads constant N_PARTITION_THREADS
     I >partitionThreadNm ".taskSet" str.cat :taskset execute
       pPartitionThread thread.taskset!
 
-    // give it a public taskqueue
-    I >partitionThreadNm ".taskQueue" str.cat :taskQueue execute
-      pPartitionThread thread.taskqueue!
-
     pPartitionThread thread.taskqueue@ 
       I scheduler::partition partitionScheduler.taskFifo!
 
