@@ -6,7 +6,6 @@
 
 "thread.sen" include
 "threadList.sen" include
-"threadCursor.sen" include
 
 ( tasklist will already exist )
 

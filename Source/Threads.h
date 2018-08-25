@@ -22,7 +22,6 @@ using namespace Threads;
 #include "Thread.hpp"
 #include "ThreadList.hpp"
 #include "ThreadQueue.hpp"
-#include "ThreadCursor.hpp"
 #include "ThreadVector.hpp"
 
 #include "Queues.hpp"

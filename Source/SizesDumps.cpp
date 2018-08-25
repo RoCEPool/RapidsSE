@@ -484,7 +484,7 @@ i8 giClassSize[]
   /*135 */ sizeof(ServerScheduler),    // CN_SERVERSCHEDULER
 
   /*137 */ sizeof(Thread),             // CN_THREAD
-  /*138 */ sizeof(ThreadCursor),       // CN_THREADCURSOR
+  /*138 */ 0,       // CN_THREADCURSOR
   /*139 */ sizeof(ThreadList),         // CN_THREADLIST
   /*140 */ sizeof(ThreadQueue),        // CN_THREADQUEUE
   /*    */ sizeof(ThreadVector),       // CN_THREADVECTOR

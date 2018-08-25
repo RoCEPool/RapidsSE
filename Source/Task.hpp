@@ -431,7 +431,6 @@ namespace Tasks
     void vAddPrimitives_TaskList(void);
     void vAddPrimitives_TaskFifo(void);
     void vAddPrimitives_Thread(void);
-    void vAddPrimitives_ThreadCursor(void);
     void vAddPrimitives_ThreadList(void);
     void vAddPrimitives_ThreadQueue(void);
     void vAddPrimitives_Timer(void);
