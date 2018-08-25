@@ -82,7 +82,6 @@ Thread::Thread(void)
   m_pSemaphore   = new Semaphore;
   m_pScheduler   = gpAttachMap->m_pServerScheduler;
   m_pTaskFifo    = nullptr;
-  m_pTaskSet     = nullptr;
   m_npTask       = nullptr;
 
   Thread* pThread = this;

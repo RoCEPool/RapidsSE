@@ -80,62 +80,8 @@ void Task::vTaskAck(MP_Task mpTask)
     THROW_INVALID_DSTACK("task.ack"_Stz);
   Task* pTaskBeingAcked = _pTask(pTaskObject);
   
-  if (pTaskBeingAcked->bR35model()) {
-    
-    Handlers::vAckTaskHandler(pTaskBeingAcked,*mpTask);
-    
-    EXIT();
-    return;
-  }
-  
-  ASSERT(0);
-  
-//  i8 iMore = --pTaskBeingAcked->m_zAcks;
-//
-//  if (iMore) {
-//    //    vTrace("Task::vTaskSignal: task %p %s signalled task %p\\%lld %s\n"_Stz,
-//    //           *mpTask,mpTask->m_sName.aChar(),
-//    //           pThatTask,iMore,pThatTask->m_sName.aChar());
-//    //    vTrace("[N%lld:%8s\\%lld %-11s] ack'd %s\\%lld\n"_Stz,
-//    //           gpAttachMap->m_pGrid->iThisNode(),
-//    //           mpTask->m_sName.aChar(),
-//    //           *mpTask->m_zAcks,
-//    //           mpTask->m_sComment.aChar(),
-//    //
-//    //           pThatTask->m_sName.aChar(),
-//    //           iMore);
-//    EXIT();
-//    return;
-//  }
-//
-//
-//  //    vTrace("Task::vTaskSignal: task %p %s resuming task %p %s\n"_Stz,
-//  //           *mpTask,mpTask->m_sName.aChar(),
-//  //           pThatTask,pThatTask->m_sName.aChar());
-//  if (gpAttachMap->m_bTracepoint)
-//    vTrace("[N%lld:%8s\\%lld %-11s] ack resumes %s\\%lld\n"_Stz,
-//           gpAttachMap->m_pGrid->iThisNode(),
-//           mpTask->m_sName.aChar(),
-//           *mpTask->m_zAcks,
-//           mpTask->m_sComment.aChar(),
-//
-//           pTaskBeingAcked->m_sName.aChar(),
-//           *pTaskBeingAcked->m_zAcks);
-//
-//  while (TS_WAITING_ACK != pTaskBeingAcked->m_eState)
-//    PosixThread::vSleepMicro(10);
-//
-//  if (pTaskBeingAcked->eActorModel() == AC_SERVER) {
-//    gpAttachMap->m_pServerScheduler->vEnqueueTask_Mutex(pTaskBeingAcked);
-//  }
-//  else if (pTaskBeingAcked->eActorModel() == AC_PARTITION) {
-//    gpAttachMap->m_pPartitionScheduler->vEnqueueTask_Mutex(pTaskBeingAcked->m_iPartition,pTaskBeingAcked);
-//  }
-//  else {
-//    Thread* pThread = pTaskBeingAcked->pThread();
-//    pThread->m_pTaskSet->vAppend(pTaskBeingAcked);
-//  }
-//
+  Handlers::vAckTaskHandler(pTaskBeingAcked,*mpTask);
+      
   EXIT();
 }
 

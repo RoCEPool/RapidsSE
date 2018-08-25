@@ -83,7 +83,6 @@ namespace Threads
     PosixThread* m_pPosixThread; // its posix structure
     Semaphore*   m_pSemaphore;   // this threads semaphore
     TaskFifo*    m_pTaskFifo;    // this threads task fifo/list
-    TaskSet*     m_pTaskSet;     // task set this thread serves
     NP_Task      m_npTask;       // task current being executed
                                  //   note that while task is being exected
                                  //   its not in task set

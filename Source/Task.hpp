@@ -132,8 +132,6 @@ namespace Tasks
   
   typedef NP<Task,CN_TASK> NP_Task;
   typedef MP<Task,CN_TASK> MP_Task;
-
-  class TaskSet;
   
   class Task : public Object,
                public ListNode_t<Task>
@@ -213,10 +211,6 @@ namespace Tasks
   
     i8      m_iTxId;       // transaction id
     i8      m_iWakeAt;     // time at which to wake this tx
-
-    TaskSet* m_pTaskSet;   // which set this task belongs to
-    NP_Task  m_npNextInSet; // next task in set
-    NP_Task  m_npPrevInSet; // prev task in set
   
     ValSet*    m_pRequest;   // request as a value set
     s256       m_sLambda;    // lambda input
@@ -279,10 +273,8 @@ namespace Tasks
     void vJob(Job* pJob);
     void vLocalsPop(void);
     void vLocalsPush(void);
-    NP_Task npNextInSet(void);
     StrVal&   sName(void);
     void vName(StrVal& sName);
-    void vNextInSet(NP_Task npNext);
     Task*  pParentTask(void);
     void vParentTask(Task* pParentTask);
     i8   iPartition(void);
@@ -291,8 +283,6 @@ namespace Tasks
     bool bPopInt(i8& iInt);
     bool bPopObject(Object*& pObject);
     bool bPopStr(s48K& sStr);
-    NP_Task npPrevInSet(void);
-    void vPrevInSet(NP_Task npPrev);
     void vPrimitive(Stz *aPrimitive);
     void vPushInt(i8 iInt);
     void vPushObject(Object* pObject);
@@ -440,7 +430,6 @@ namespace Tasks
     void vAddPrimitives_TaskCursor(void);
     void vAddPrimitives_TaskList(void);
     void vAddPrimitives_TaskFifo(void);
-    void vAddPrimitives_TaskSet(void);
     void vAddPrimitives_Thread(void);
     void vAddPrimitives_ThreadCursor(void);
     void vAddPrimitives_ThreadList(void);
@@ -1514,13 +1503,7 @@ namespace Tasks
     static void vTaskFifoDump(MP_Task mpTask);
     static void vTaskFifoInit(MP_Task mpTask);
     static void vTaskFifoNew(MP_Task mpTask);
-  
-    // taskSet
-    static void vTaskSetAppend(MP_Task mpTask); 
-    static void vTaskSetDump(MP_Task mpTask);
-    static void vTaskSetInit(MP_Task mpTask);   
-    static void vTaskSetNew(MP_Task mpTask);
-  
+    
     // thread
     static void vThreadActorModelFetch(MP_Task mpTask);
     static void vThreadActorModelStore(MP_Task mpTask);

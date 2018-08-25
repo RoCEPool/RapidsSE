@@ -260,13 +260,10 @@ void Task::vInit(Stz* aLambda)
   m_eState      = TS_NONE;
   m_eQueue      = QR_NONE;
   m_iTxId       = -1;
-  m_npNextInSet = nullptr;
-  m_npPrevInSet = nullptr;
   m_iWakeAt     = 0;
   m_pParentTask = nullptr;
   m_zAcks.vCheckInit();
   m_pThread     = nullptr;
-  m_pTaskSet    = nullptr;
   m_pSeedObject = nullptr;
   
   m_sComment    = ""_Stz;
@@ -1715,26 +1712,6 @@ void Task::vName(StrVal& sName)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next task in set                                                       */
-/*----------------------------------------------------------------------------*/
-NP_Task Task::npNextInSet(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  return m_npNextInSet;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set next task in set                                                       */
-/*----------------------------------------------------------------------------*/
-void Task::vNextInSet(NP_Task npNextInSet)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  m_npNextInSet = npNextInSet;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get parent task                                                            */
 /*----------------------------------------------------------------------------*/
 Task* Task::pParentTask(void)
@@ -1791,26 +1768,6 @@ bool Task::bPopStr(s48K& sStr)
     return false;
   
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get prev task in set                                                       */
-/*----------------------------------------------------------------------------*/
-NP_Task Task::npPrevInSet(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  return m_npPrevInSet;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set prev task in set                                                       */
-/*----------------------------------------------------------------------------*/
-void Task::vPrevInSet(NP_Task npPrevInSet)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  m_npPrevInSet = npPrevInSet;
 }
 
 /*----------------------------------------------------------------------------*/
