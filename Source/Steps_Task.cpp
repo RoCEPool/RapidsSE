@@ -39,7 +39,6 @@ void Task::vAddPrimitives_Task(void)
   vAddPrimitive("task.kind!"_Stz,     &vTaskKindStore,     false);
   vAddPrimitive("task.name@"_Stz,     &vTaskNameFetch,     false);
   vAddPrimitive("task.name!"_Stz,     &vTaskNameStore,     false);
-  vAddPrimitive("task::new"_Stz,      &vTaskNew,           false);
   vAddPrimitive("task.parent@"_Stz,   &vTaskParentFetch,   false);
   vAddPrimitive("task.parent!"_Stz,   &vTaskParentStore,   false);
   vAddPrimitive("task.partition@"_Stz,&vTaskPartitionFetch,false);
@@ -492,86 +491,6 @@ ENTRY("vTaskNameStore"_Stz);
     THROW_INVALID_DSTACK("task.name!"_Stz);
   
   pThatTask->m_sName = sName;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task::new -- create and seed a new task                                    */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskNew(MP_Task mpTask)                                   //! delete
-{
-ENTRY("vTaskNew"_Stz);
-
-  if ( ! mpTask->m_pDataStack->bGuard(4) )
-    THROW_INVALID_DSTACK("task::new"_Stz);
-  
-  i8 eKind;
-  if ( ! mpTask->m_pDataStack->bPop(eKind) )
-    THROW_INVALID_DSTACK("task::new"_Stz);  //ASSERT(! nTaskArgs);
-  
-  s32 sName;
-  if ( ! mpTask->m_pDataStack->bPop(sName) )
-    THROW_INVALID_DSTACK("task::new"_Stz);
-  
-  i8 eModel;
-  if ( ! mpTask->m_pDataStack->bPop(eModel) )
-    THROW_INVALID_DSTACK("task::new"_Stz);  //ASSERT(! nTaskArgs);
-  
-  Object* pParent;
-  if ( ! mpTask->m_pDataStack->bPop(pParent) )
-    THROW_INVALID_DSTACK("task::new"_Stz);
-  Task* pParentTask = _pTask(pParent);
-  ASSERT( ! pParentTask || CN_TASK == pParentTask->eClass());
-  
-  s32 sSeed;
-  if ( ! mpTask->m_pDataStack->bPop(sSeed) )
-    THROW_INVALID_DSTACK("task::new"_Stz);
-  
-  i8 nTaskArgs;
-  if ( ! mpTask->m_pDataStack->bPop(nTaskArgs) )
-    THROW_INVALID_DSTACK("task::new"_Stz);
-  //ASSERT(! nTaskArgs);
-
-  if ( ! mpTask->m_pDataStack->bGuard(nTaskArgs) )
-    THROW_INVALID_DSTACK("task::new"_Stz);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // verify spawn arguments
-  
-  // if we are a parent spawning a child there must be at least 1 ack remaining
-  if (AC_R35 == eModel && pParentTask) {
-    RASSERT(*pParentTask->m_zAcks);
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create new task (will be automatically appended to task list)
-  
-  MP_Task nnpNewTask = new Task;
-  
-  nnpNewTask->m_sName = sName;
-  nnpNewTask->m_eTaskKind = (eTK)eKind;
-
-  nnpNewTask->m_pParentTask = pParentTask;
-  nnpNewTask->vSeedWord(sSeed);
-  
-  // copy task arguments to new task (preserving stack order)
-  ValWrk xValWrk;
-  for (i8 iTaskArg = nTaskArgs - 1; iTaskArg >= 0; iTaskArg--) {
-    mpTask->m_pDataStack->vPeekValWrk(iTaskArg,xValWrk);
-    nnpNewTask->m_pDataStack->vPushValWrk(xValWrk);
-  }
-  
-  // discard original task arguments
-  for (i8 iTaskArg = nTaskArgs - 1; iTaskArg >= 0; iTaskArg--) {
-    bool bPopped = mpTask->m_pDataStack->bPop(xValWrk);
-    ASSERT(bPopped);
-  }
-  
-  Task* pNewTask = *nnpNewTask;
-  
-  Object* pTask = pNewTask;
-  mpTask->m_pDataStack->vPushObject(pTask);
   
   EXIT();
 }

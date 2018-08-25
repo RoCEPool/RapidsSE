@@ -1430,7 +1430,6 @@ namespace Tasks
     static void vTaskKindStore(MP_Task mpTask);
     static void vTaskNameFetch(MP_Task mpTask);
     static void vTaskNameStore(MP_Task mpTask);
-    static void vTaskNew(MP_Task mpTask);
     static void vTaskThis(MP_Task mpTask);
     static void vTaskParentFetch(MP_Task mpTask);
     static void vTaskParentStore(MP_Task mpTask);
