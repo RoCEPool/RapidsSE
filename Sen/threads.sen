@@ -5,13 +5,6 @@
 "threads.sen" .verbose
 
 "thread.sen" include
-"threadList.sen" include
-
-( tasklist will already exist )
-
-( threadList holds all threads )
-threadList: threadList
-"threadlist" find execute threadlist.global!
 
 /*============================================================================*/
 /* end                                                                        */

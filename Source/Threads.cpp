@@ -10,7 +10,6 @@
 void Threads::vCheckAssumptions(void)
 {
   ASSERT(sizeof(Thread)     < C_SIZE_SMALL_OBJECT);
-  ASSERT(sizeof(ThreadList) < C_SIZE_SMALL_OBJECT);
 }
 
 /*============================================================================*/

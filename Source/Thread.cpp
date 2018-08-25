@@ -66,8 +66,6 @@ Thread::Thread(void)
 : Object(CN_THREAD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-
-  ASSERT( gpAttachMap->m_pThreadList );
   
   static Atomic zThreadNo;
   
@@ -84,7 +82,6 @@ Thread::Thread(void)
   m_npTask       = nullptr;
 
   Thread* pThread = this;
-  //gpAttachMap->m_pThreadList->vAppend(pThread);
   
    m_bGeneralThead = false;
    m_iLastRRqueue  = QR_SLEEPING_QUEUE - 1;

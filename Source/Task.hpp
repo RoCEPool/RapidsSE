@@ -431,7 +431,6 @@ namespace Tasks
     void vAddPrimitives_TaskList(void);
     void vAddPrimitives_TaskFifo(void);
     void vAddPrimitives_Thread(void);
-    void vAddPrimitives_ThreadList(void);
     void vAddPrimitives_Timer(void);
     void vAddPrimitives_To(void);
     void vAddPrimitives_Trace(void);
@@ -1081,12 +1080,6 @@ namespace Tasks
     static void vOpFrameDic(MP_Task mpTask);
     static void vOpFrameName(MP_Task mpTask);
     
-    // partition scheduler
-    static void vPartitionSchedulerEnqueueTask(MP_Task mpTask);
-    static void vPartitionSchedulerQueueLengthFetch(MP_Task mpTask);
-    static void vPartitionSchedulerSemaphoreStore(MP_Task mpTask);
-    static void vPartitionSchedulerTaskFifoStore(MP_Task mpTask);
-    static void vPartitionSchedulerThreadQueueStore(MP_Task mpTask);
   
     // persistence
     static void vPersistenceCheckpoint(MP_Task mpTask);
@@ -1271,13 +1264,6 @@ namespace Tasks
     static void vRstack8(MP_Task mpTask);
     static void vRstack9(MP_Task mpTask);
     
-    // scheduler
-    static void vSchedulerList(MP_Task mpTask);
-    static void vSchedulerPartition(MP_Task mpTask);
-    static void vSchedulerQueuedTasks(MP_Task mpTask);
-    static void vSchedulerQueuedThreads(MP_Task mpTask);
-    static void vSchedulerReset(MP_Task mpTask);
-    static void vSchedulerServer(MP_Task mpTask);
   
     // seitf
     static void vSEitfAccessPathFetch(MP_Task mpTask);
@@ -1320,17 +1306,7 @@ namespace Tasks
     static void vSEitfTableDeref(MP_Task mpTask);
     static void vSEitfTxFetch(MP_Task mpTask);
     static void vSEitfTxStore(MP_Task mpTask);
-
-    // seitfCursor
-    static void vSEitfCursorBegin(MP_Task mpTask);
-    static void vSEitfCursorDelete(MP_Task mpTask);
-    static void vSEitfCursorEnd(MP_Task mpTask);
-    static void vSEitfCursorFirst(MP_Task mpTask);
-    static void vSEitfCursorGet(MP_Task mpTask);
-    static void vSEitfCursorInit(MP_Task mpTask);
-    static void vSEitfCursorNew(MP_Task mpTask);
-    static void vSEitfCursorNext(MP_Task mpTask);
-        
+  
     // selCursor
     static void vSelCursorBegin(MP_Task mpTask);
     static void vSelCursorDelete(MP_Task mpTask);
@@ -1347,9 +1323,6 @@ namespace Tasks
     
     // semaphore
     static void vSemaphoreInit(MP_Task mpTask);
-  
-    // server scheduler
-    static void vServerSchedulerEnqueueTask(MP_Task mpTask);
   
     // shell
     static void vShellExecute(MP_Task mpTask);
@@ -1528,24 +1501,6 @@ namespace Tasks
     static void vThreadSleep_ns(MP_Task mpTask);
     static void vThreadTaskFetch(MP_Task mpTask);
     static void vThreadTaskStore(MP_Task mpTask);
-
-    // threadCursor
-    static void vThreadCursorBegin(MP_Task mpTask);
-    static void vThreadCursorDelete(MP_Task mpTask);
-    static void vThreadCursorEnd(MP_Task mpTask);
-    static void vThreadCursorFirst(MP_Task mpTask);
-    static void vThreadCursorGet(MP_Task mpTask);
-    static void vThreadCursorInit(MP_Task mpTask);
-    static void vThreadCursorNew(MP_Task mpTask);
-    static void vThreadCursorNext(MP_Task mpTask);
-    
-    // threadList
-    static void vThreadListDump(MP_Task mpTask);
-    static void vThreadListGlobalStore(MP_Task mpTask);
-    static void vThreadListInit(MP_Task mpTask);
-  
-    // threadQueue
-    static void vThreadQueueInit(MP_Task mpTask);
   
     // timer
     static void vTimerDelete(MP_Task mpTask);

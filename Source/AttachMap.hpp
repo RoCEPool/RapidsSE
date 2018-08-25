@@ -53,9 +53,8 @@ namespace StorageEngine
     Word*         m_pWord;
     Word*         m_pTenants;
     NP_Task       m_npBootTask;
-      
+  
     TaskList*        m_pTaskList;
-    ThreadList*      m_pThreadList;
     Plans::PlanList* m_pPlanList;
     Atomic        m_ziR35Threads;
   

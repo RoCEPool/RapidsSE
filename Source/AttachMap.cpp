@@ -176,7 +176,7 @@ void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize, i8 iJumboSize)
     
   ASSERT(m_pWord);
   ASSERT(m_pTaskList);
-  ASSERT(m_pThreadList);
+
   ASSERT(m_pPlanList);  
   ASSERT(m_pStepArray);
   
