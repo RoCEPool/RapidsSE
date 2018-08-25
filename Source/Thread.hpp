@@ -63,8 +63,7 @@ namespace Threads
     /*  3 */ "ENUMS"_Stz,
   };
   
-  class Thread : public Object,
-                 public ListNode_t<Thread>
+  class Thread : public Object
   {
   private:
 
