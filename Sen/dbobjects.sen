@@ -16,7 +16,6 @@
 "schema.sen" include
 "catalog.sen" include
 "tenant.sen" include
-"user.sen" include
 
 "row.sen" include
 "rowBuffer.sen" include
