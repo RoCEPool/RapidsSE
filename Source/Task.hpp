@@ -425,8 +425,6 @@ namespace Tasks
   
     void vAddPrimitives_Scheduler(void);
     void vAddPrimitives_SEitf(void);
-    void vAddPrimitives_SEitfCursor(void);
-    void vAddPrimitives_SEitfList(void);
     void vAddPrimitives_SelCursor(void);
     void vAddPrimitives_Semaphore(void);
     void vAddPrimitives_ServerScheduler(void);
@@ -1303,7 +1301,6 @@ namespace Tasks
     static void vSEitfBufferQueueFetch(MP_Task mpTask);
     static void vSEitfBufferQueueStore(MP_Task mpTask);
     static void vSEitfCommandProcessor(MP_Task mpTask);
-    static void vSEitfCount(MP_Task mpTask);
     static void vSEitfDelete(MP_Task mpTask);
     static void vSEitfDicStack(MP_Task mpTask);
     static void vSEitfDisplayFetch(MP_Task mpTask);
@@ -1346,11 +1343,7 @@ namespace Tasks
     static void vSEitfCursorInit(MP_Task mpTask);
     static void vSEitfCursorNew(MP_Task mpTask);
     static void vSEitfCursorNext(MP_Task mpTask);
-    
-    // seitfList
-    static void vSEitfListDump(MP_Task mpTask);
-    static void vSEitfListInit(MP_Task mpTask);
-    
+        
     // selCursor
     static void vSelCursorBegin(MP_Task mpTask);
     static void vSelCursorDelete(MP_Task mpTask);

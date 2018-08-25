@@ -23,7 +23,6 @@ void Task::vAddPrimitives_SEitf(void)
   vAddPrimitive("seitf.bufferQueue@"_Stz,     &vSEitfBufferQueueFetch, false);
   vAddPrimitive("seitf.bufferQueue!"_Stz,     &vSEitfBufferQueueStore, false);
   vAddPrimitive("seitf.commandProcessor"_Stz, &vSEitfCommandProcessor, false);
-  vAddPrimitive("seitf.count"_Stz,            &vSEitfCount,            false);
   vAddPrimitive("seitf.delete"_Stz,           &vSEitfDelete,           false);
   vAddPrimitive("seitf.dicStack"_Stz,         &vSEitfDicStack,         false);
   vAddPrimitive("seitf.display@"_Stz,         &vSEitfDisplayFetch,     false);
@@ -225,20 +224,6 @@ void Task::vSEitfCommandProcessor(MP_Task mpTask)
   ASSERT(CN_SEITF == pSEitf->eClass());
   
   mpTask->m_pDataStack->vPushObject(pSEitf->m_pCommandProcessor);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* seitf.count -- get count of SE interface's                                 */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfCount(MP_Task mpTask)
-{
-  ENTRY("vSEitfCount"_Stz);
-  
-  Object* pPtrSEitf;
-  
-  mpTask->m_pDataStack->vPushInt(gpAttachMap->m_pSEitfList->iCount());
   
   EXIT();
 }

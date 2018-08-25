@@ -19,8 +19,6 @@ using namespace Interface;
 
 #include "CommandProcessor.hpp"
 #include "SEitf.hpp"
-#include "SEitfList.hpp"
-#include "SEitfCursor.hpp"
 #include "Api.hpp"
 
 /*============================================================================*/

@@ -205,8 +205,7 @@ enum eCN : u2 // Class Number
     /*108 */ CN_SCRATCH,
 
     /*110 */ CN_SEITF,
-    /*111 */ CN_SEITFCURSOR,
-    /*112 */ CN_SEITFLIST,
+
     /*113 */ CN_SELCURSOR,
     /*114 */ CN_SEMAPHORE,
     /*115 */ CN_SEPROMPT,
@@ -455,8 +454,7 @@ enum eCN : u2 // Class Number
     /*107 */ "SCANBUFFER"_Stz,         // CN_SCANBUFFER
     /*108 */ "SCRATCH"_Stz,            // CN_SCRATCH
     /*110 */ "SEITF"_Stz,              // CN_SEITF
-    /*111 */ "SEITFCURSOR"_Stz,        // CN_SEITFCURSOR
-    /*112 */ "SEITFLIST"_Stz,          // CN_SEITFLIST
+
     /*113 */ "SELCURSOR"_Stz,          // CN_SELCURSOR
     /*114 */ "SEMAPHORE"_Stz,          // CN_SEMAPHORE
     /*115 */ "SEPROMPT"_Stz,           // CN_SEPROMPT

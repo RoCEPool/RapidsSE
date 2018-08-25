@@ -686,8 +686,7 @@ void Task::vAddConstants(void)
   /* 55 */ vAddConstant("CN_SCRATCH"_Stz,      CN_SCRATCH);
 
   /* 57 */ vAddConstant("CN_SEITF"_Stz,        CN_SEITF);
-  /* 58 */ vAddConstant("CN_SEITFCURSOR"_Stz,  CN_SEITFCURSOR);
-  /* 59 */ vAddConstant("CN_SEITFLIST"_Stz,    CN_SEITFLIST);
+
   /*    */ vAddConstant("CN_SELCURSOR"_Stz,    CN_SELCURSOR);
   /* 60 */ vAddConstant("CN_SEMAPHORE"_Stz,    CN_SEMAPHORE);
   /* 60 */ vAddConstant("CN_SEPROMPT"_Stz,     CN_SEPROMPT);
@@ -915,8 +914,7 @@ void Task::vAddConstants(void)
   /* 41 */ vAddConstant("SIZEOF_SCANBUFFER"_Stz,   sizeof(ScanBuffer));
 
   /* 43 */ vAddConstant("SIZEOF_SEITF"_Stz,        sizeof(SEitf));
-  /* 44 */ vAddConstant("SIZEOF_SEITFCURSOR"_Stz,  sizeof(SEitfCursor));
-  /* 45 */ vAddConstant("SIZEOF_SEITFLIST"_Stz,    sizeof(SEitfList));
+
   /*    */ vAddConstant("SIZEOF_SELCURSOR"_Stz,    sizeof(SelCursor));
   /*    */ vAddConstant("SIZEOF_SEMAPHORE"_Stz,    sizeof(Semaphore));
   /* 46 */ vAddConstant("SIZEOF_SEPROMPT"_Stz,     sizeof(SePrompt));
@@ -1135,8 +1133,6 @@ void Task::vAddPrimitives(void)
   
   vAddPrimitives_Scheduler();
   vAddPrimitives_SEitf();
-  vAddPrimitives_SEitfCursor();
-  vAddPrimitives_SEitfList();
   vAddPrimitives_SelCursor();
   vAddPrimitives_Semaphore();
   vAddPrimitives_ServerScheduler();

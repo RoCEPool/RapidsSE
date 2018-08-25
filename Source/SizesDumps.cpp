@@ -205,8 +205,7 @@ pDUMPFUN *gpDump[]
   /*108 */ &Dump::vUndefined,       // CN_SCRATCH
 
   /*110 */ &SEitf::vDump,           // CN_SEITF
-  /*111 */ &Dump::vUndefined,       // CN_SEITFCURSOR
-  /*112 */ &Dump::vUndefined,       // CN_SEITFLIST
+
   /*113 */ &Dump::vUndefined,       // CN_SELCURSOR
   /*114 */ &Dump::vUndefined,       // CN_SEMAPHORE
   /*115 */ &SePrompt::vDump,        // CN_SEPROMPT
@@ -457,8 +456,7 @@ i8 giClassSize[]
   /*108 */ sizeof(Scratch),            // CN_SCRATCH
 
   /*110 */ sizeof(SEitf),              // CN_SEITF
-  /*111 */ sizeof(SEitfCursor),        // CN_SEITFCURSOR
-  /*112 */ sizeof(SEitfList),          // CN_SEITFLIST
+
   /*113 */ sizeof(SelCursor),          // CN_SELCURSOR
   /*114 */ sizeof(Semaphore),          // CN_SEMAPHORE
   /*115 */ sizeof(SePrompt),           // CN_SEPROMPT
@@ -709,8 +707,7 @@ eHT geWhichHeap[]
   /*108 */ HT_TRANSIENT_LARGE,   // CN_SCRATCH
 
   /*110 */ HT_TRANSIENT_MEDIUM,  // CN_SEITF
-  /*111 */ HT_TRANSIENT_SMALL,   // CN_SEITFCURSOR
-  /*112 */ HT_INVALID,           // CN_SEITFLIST
+
   /*113 */ HT_TRANSIENT_SMALL,   // CN_SELCURSOR
   /*114 */ HT_TRANSIENT_SMALL,   // CN_SEMAPHORE
   /*115 */ HT_TRANSIENT_LARGE,   // CN_SEPROMPT

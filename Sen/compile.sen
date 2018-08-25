@@ -13,7 +13,6 @@
 "structures.sen" include
 "tasks.sen" include
 "threads.sen" include
-"interface.sen" include
 "gridModel.sen" include
 "actorModels.sen" include
 "dbObjects.sen" include

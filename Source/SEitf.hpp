@@ -7,8 +7,7 @@
 
 namespace Interface
 {
-  class SEitf : public Object,
-                public ListNode_t<SEitf>
+  class SEitf : public Object
   {
   public:
     i8     m_iPid;             // process which created this seitf

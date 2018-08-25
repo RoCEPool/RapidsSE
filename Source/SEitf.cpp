@@ -204,10 +204,7 @@ SEitf::SEitf(i8 iPartition)
   m_bSeitfExiting     = false;
 
   m_ziAcksRemaining = 0;
-  
-  SEitf* pSEitf = this;
-  gpAttachMap->m_pSEitfList->vAppend(pSEitf);
-  
+    
   for (i8 i_Partition = 0; i_Partition < C_SLOTS_PER_NODE; i_Partition++) {
     m_pWorkingBuffer[i_Partition] = nullptr;
     m_pGroupBy[i_Partition]       = nullptr;
@@ -232,10 +229,6 @@ SEitf::SEitf(i8 iPartition)
 SEitf::~SEitf(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-
-  SEitf* pSEitf = this;
-  
-  gpAttachMap->m_pSEitfList->vRemove(pSEitf);
   
   RASSERT(*m_ziAcksRemaining == 0);
   

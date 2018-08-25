@@ -60,7 +60,6 @@ namespace StorageEngine
     TaskList*        m_pTaskList;
     ThreadList*      m_pThreadList;
     Plans::PlanList* m_pPlanList;
-    SEitfList*       m_pSEitfList;
     Atomic        m_ziR35Threads;
   
     Queues*       m_pQueues;
