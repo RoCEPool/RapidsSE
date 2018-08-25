@@ -665,7 +665,6 @@ void Task::vAddConstants(void)
   /*    */ vAddConstant("CN_PLAN"_Stz,         CN_PLAN);
   /*    */ vAddConstant("CN_PLANLIST"_Stz,     CN_PLANLIST);
   /* 43 */ vAddConstant("CN_PROXY"_Stz,        CN_PROXY);
-  /* 44 */ vAddConstant("CN_PROXYSET"_Stz,     CN_PROXYSET);
   
   /* 45 */ vAddConstant("CN_QUEUE"_Stz,        CN_QUEUE);
   /* 46 */ vAddConstant("CN_QUEUEBUFFER"_Stz,  CN_QUEUEBUFFER);
