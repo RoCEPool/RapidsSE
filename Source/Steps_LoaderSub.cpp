@@ -594,7 +594,7 @@ void Task::vLoaderSubSpawnLoadBuffer(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn the load buffer job
   
-  pSEitf->bAppendJob(pJob_LoadBuffer);
+  pSEitf->bSpawnJob(pJob_LoadBuffer);
 
   EXIT();
 }

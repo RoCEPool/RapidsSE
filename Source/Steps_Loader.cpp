@@ -384,7 +384,7 @@ void Task::vLoaderSpawnSubLoader(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pSEitf->bAppendJob(pJob_SubLoader);
+  pSEitf->bSpawnJob(pJob_SubLoader);
 
   EXIT();
 }

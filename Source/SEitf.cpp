@@ -2165,9 +2165,9 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append request to request queue (RDP R3.5)                                 */
+/* spawn job                                                                  */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bAppendJob(Job* pJob)
+bool SEitf::bSpawnJob(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
