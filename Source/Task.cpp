@@ -705,8 +705,7 @@ void Task::vAddConstants(void)
   /* 76 */ vAddConstant("CN_THREAD"_Stz,       CN_THREAD);
 
   /* 78 */ vAddConstant("CN_THREADLIST"_Stz,   CN_THREADLIST);
-  /*    */ vAddConstant("CN_THREADQUEUE"_Stz,  CN_THREADQUEUE);
-  /*    */ vAddConstant("CN_THREADVECTOR"_Stz, CN_THREADVECTOR);
+
   /* 79 */ vAddConstant("CN_TIME"_Stz,         CN_TIME);
   /* 80 */ vAddConstant("CN_TIMER"_Stz,        CN_TIMER);
   /* 81 */ vAddConstant("CN_TOKENISER"_Stz,    CN_TOKENISER);
@@ -926,7 +925,7 @@ void Task::vAddConstants(void)
   /* 62 */ vAddConstant("SIZEOF_THREAD"_Stz,       sizeof(Thread));
 
   /* 64 */ vAddConstant("SIZEOF_THREADLIST"_Stz,   sizeof(ThreadList));
-  /* 64 */ vAddConstant("SIZEOF_THREADQUEUE"_Stz,  sizeof(ThreadQueue));
+
   /* 65 */ vAddConstant("SIZEOF_TIME"_Stz,         sizeof(Time));
   /* 66 */ vAddConstant("SIZEOF_TIMER"_Stz,        sizeof(Timer));
   /* 67 */ vAddConstant("SIZEOF_TOKENISER"_Stz,    sizeof(Tokeniser));
@@ -1130,7 +1129,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_TaskFifo();
   vAddPrimitives_Thread();
   vAddPrimitives_ThreadList();
-  vAddPrimitives_ThreadQueue();
   vAddPrimitives_Timer();
   vAddPrimitives_To();
   vAddPrimitives_Trace();

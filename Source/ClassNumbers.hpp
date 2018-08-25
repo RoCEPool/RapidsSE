@@ -232,7 +232,6 @@ enum eCN : u2 // Class Number
     /*137 */ CN_THREAD,
 
     /*139 */ CN_THREADLIST,
-    /*140 */ CN_THREADQUEUE,
     /*    */ CN_THREADVECTOR,
     /*141 */ CN_TIME,
     /*142 */ CN_TIMER,
@@ -474,7 +473,6 @@ enum eCN : u2 // Class Number
     /*137 */ "THREAD"_Stz,             // CN_THREAD
 
     /*139 */ "THREADLIST"_Stz,         // CN_THREADLIST
-    /*140 */ "THREADQUEUE"_Stz,        // CN_THREADQUEUE
     /*    */ "THREADVECTOR"_Stz,       // CN_THREADVECTOR
     /*141 */ "TIME"_Stz,               // CN_TIME
     /*142 */ "TIMER"_Stz,              // CN_TIMER
