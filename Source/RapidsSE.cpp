@@ -662,7 +662,7 @@ void RapidsSE::vSystemInit(void)
   s32 sName;
   sName = "bootTask"_Stz;
   gpAttachMap->m_npBootTask->vName(sName);
-  gpAttachMap->m_npBootTask->vActorModel(AC_SERVER);
+
   
   gpAttachMap->m_xDdlLock.vInitLock(LK_DDL);
   gpAttachMap->m_xDicLock.vInitLock(LK_DIC);
@@ -721,7 +721,7 @@ void RapidsSE::vStartSystemTasks(void)
 
   pStartTask->vState(TS_READY);
   pStartTask->vR35model(true);
-  pStartTask->vActorModel(AC_R35);
+
   pStartTask->vName(sName);
 
   Handlers::vSpawnedTaskHandler(pStartTask);

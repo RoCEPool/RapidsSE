@@ -2660,7 +2660,6 @@ bool RapidsSE_SpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf)
   pNewTask->vSeedWord(sRequest);
   pNewTask->vState(TS_READY);
   pNewTask->vR35model(true);
-  pNewTask->vActorModel(AC_R35);
   pNewTask->vSEitf(pSEitf);
   
   pNewTask->vJob(pJob);

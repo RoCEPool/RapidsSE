@@ -204,7 +204,6 @@ namespace Tasks
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // remove
     eTK     m_eTaskKind;   // task kind
-    eAC     m_eActorModel; // actor model
   
     s32     m_sName;       // task name
     s32     m_sComment;    // comment
@@ -244,8 +243,6 @@ namespace Tasks
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
-    eAC  eActorModel(void);
-    void vActorModel(eAC eActorModel);
     void vAdjustNext(i8 iBytes);
     void vAddConstant(Stz* aName, i8 iVal);
     void vAddConstant(Stz* aName, Stz* aValue);
@@ -1414,8 +1411,6 @@ namespace Tasks
     static void vTaskAck(MP_Task mpTask);
     static void vTaskAcksFetch(MP_Task mpTask);
     static void vTaskAcksStore(MP_Task mpTask);
-    static void vTaskActorModelFetch(MP_Task mpTask);
-    static void vTaskActorModelStore(MP_Task mpTask);
     static void vTaskBreakPoint(MP_Task mpTask);
     static void vTaskCommentFetch(MP_Task mpTask);
     static void vTaskCommentStore(MP_Task mpTask);

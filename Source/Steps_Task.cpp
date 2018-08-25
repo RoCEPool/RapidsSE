@@ -18,8 +18,6 @@ void Task::vAddPrimitives_Task(void)
   vAddPrimitive("task.ack"_Stz,       &vTaskAck,           false);
   vAddPrimitive("task.acks@"_Stz,     &vTaskAcksFetch,     false);
   vAddPrimitive("task.acks!"_Stz,     &vTaskAcksStore,     false);
-  vAddPrimitive("task.actorModel@"_Stz, &vTaskActorModelFetch, false);
-  vAddPrimitive("task.actorModel!"_Stz, &vTaskActorModelStore, false);
   vAddPrimitive("task::breakPoint"_Stz, &vTaskBreakPoint,  false);
   vAddPrimitive("task.comment@"_Stz,  &vTaskCommentFetch,  false);
   vAddPrimitive("task.comment!"_Stz,  &vTaskCommentStore,  false);
@@ -126,44 +124,6 @@ void Task::vTaskAcksStore(MP_Task mpTask)
   
   pGivenTask->m_zAcks = nAcksRequired;
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.actorModel@ -- push actor model of given task                         */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskActorModelFetch(MP_Task mpTask)
-{
-  ENTRY("vTaskActorModelFetch"_Stz);
-  
-  Object* pPtrTask;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTask) )
-    THROW_INVALID_DSTACK("task.actorModel@"_Stz);
-  Task* pGivenTask = _pTask(pPtrTask);
-  
-  mpTask->m_pDataStack->vPushInt(pGivenTask->m_eActorModel);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.actorModel! -- store actor model into given task                      */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskActorModelStore(MP_Task mpTask)
-{
-  ENTRY("vTaskActorModelStore"_Stz);
-  
-  Object* pPtrTask;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTask) )
-    THROW_INVALID_DSTACK("task.actorModel!"_Stz);
-  Task* pGivenTask = _pTask(pPtrTask);
-  
-  i8 eActorModel;
-  if ( ! mpTask->m_pDataStack->bPop(eActorModel) )
-    THROW_INVALID_DSTACK("task.actorModel!"_Stz);
-  
-  pGivenTask->m_eActorModel = (eAC)eActorModel;
-  
   EXIT();
 }
 
@@ -591,7 +551,7 @@ ENTRY("vTaskNew"_Stz);
   
   nnpNewTask->m_sName = sName;
   nnpNewTask->m_eTaskKind = (eTK)eKind;
-  nnpNewTask->m_eActorModel = (eAC)eModel;
+
   nnpNewTask->m_pParentTask = pParentTask;
   nnpNewTask->vSeedWord(sSeed);
   

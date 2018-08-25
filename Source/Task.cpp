@@ -165,7 +165,6 @@ Task::Task(Value* pRequest)
   m_sName    = "req.task"_Stz;
   m_sComment = "requestLoop"_Stz;
   m_eTaskKind = TK_REQUEST_SERVER;
-  m_eActorModel = AC_SERVER;
   
   _checkInitialised_(CN_TASK);
   
@@ -236,7 +235,6 @@ void Task::vInit(Stz* aLambda)
   m_iTaskOrderNo = 0;
   
   m_eTaskKind   = TK_NONE;
-  m_eActorModel = AC_NONE;
   m_iPartition  = -1;
   m_sName       = "<no task name>"_Stz;
   m_eState      = TS_NONE;
@@ -321,26 +319,6 @@ void Task::vInitialiseMain(void)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get actor model                                                            */
-/*----------------------------------------------------------------------------*/
-eAC Task::eActorModel(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  return m_eActorModel;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set actor model                                                            */
-/*----------------------------------------------------------------------------*/
-void Task::vActorModel(eAC eActorModel)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  m_eActorModel = eActorModel;
-}
 
 /*----------------------------------------------------------------------------*/
 /* add constant to main dictionary                                            */
