@@ -14,8 +14,6 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Thread(void)
 {
-  vAddPrimitive("thread.actorModel@"_Stz,     &vThreadActorModelFetch, false);
-  vAddPrimitive("thread.actorModel!"_Stz,     &vThreadActorModelStore, false);
   vAddPrimitive("thread.bind"_Stz,            &vThreadBind,            false);
   vAddPrimitive("thread.condSignal"_Stz,      &vThreadCondSignal,      false);
   vAddPrimitive("thread.condWait"_Stz,        &vThreadCondWait,        false);
@@ -38,45 +36,6 @@ void Task::vAddPrimitives_Thread(void)
   vAddPrimitive("thread.task@"_Stz,           &vThreadTaskFetch,       false);
   vAddPrimitive("thread.task!"_Stz,           &vThreadTaskStore,       false);
 }
-
-/*----------------------------------------------------------------------------*/
-/* thread.actorModel@ -- fetch thread actor model from thread on stack        */
-/*----------------------------------------------------------------------------*/
-void Task::vThreadActorModelFetch(MP_Task mpTask)
-{
-  ENTRY("vThreadActorModelFetch"_Stz);
-  
-  Object* pThreadEmb;
-  if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
-    THROW_INVALID_DSTACK("thread.actorModel@"_Stz);
-  Thread* pThread = _pThread(pThreadEmb);
-  
-  mpTask->m_pDataStack->vPushInt(pThread->m_eActorModel);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* thread.actorModel! -- store thread kind into thread on stack               */
-/*----------------------------------------------------------------------------*/
-void Task::vThreadActorModelStore(MP_Task mpTask)
-{
-  ENTRY("vThreadActorModelStore"_Stz);
-  
-  Object* pThreadEmb;
-  if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
-    THROW_INVALID_DSTACK("thread.actorModel@"_Stz);
-  Thread* pThread = _pThread(pThreadEmb);
-  
-  i8 eActorModel;
-  if ( ! mpTask->m_pDataStack->bPop(eActorModel) )
-    THROW_INVALID_DSTACK("thread.actorModel!"_Stz);
-  
-  pThread->m_eActorModel = (eAC)eActorModel;
-  
-  EXIT();
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* thread.bind -- bind this thread to a cpu                                   */

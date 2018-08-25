@@ -64,7 +64,7 @@ args.regionSize nServerThreads constant N_SERVER_THREADS
     I >serverNm pServerThread thread.name!
 
     // set actor model in the thread
-    AC_SERVER pServerThread thread.actorModel!
+    //AC_SERVER pServerThread thread.actorModel!
 
     // spawn os thread
     //pServerThread thread.spawn_server

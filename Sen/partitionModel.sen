@@ -79,7 +79,7 @@ nPartitionThreads constant N_PARTITION_THREADS
     I pPartitionThread thread.partition!
 
     // set the actor model
-    AC_PARTITION pPartitionThread thread.actorModel!
+    //AC_PARTITION pPartitionThread thread.actorModel!
 
     //pPartitionThread thread.taskqueue@
     //  I scheduler::partition partitionScheduler.taskFifo!

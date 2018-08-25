@@ -90,8 +90,8 @@
   actorNm ".queue"   str.cat :queue   execute to_QUEUE   // reg1 has queue
   actorNm ".thread"  str.cat :thread  execute to_THREAD  // reg3 has thread
 
-  AC_WORKER reg0 task.actorModel!
-  AC_WORKER reg3 thread.actorModel!
+  //AC_WORKER reg0 task.actorModel!
+  //AC_WORKER reg3 thread.actorModel!
 
   reg.pop
 ;
@@ -109,8 +109,8 @@
   actorNm ".queue"   str.cat :queue   execute to_QUEUE   // reg1 has queue
   actorNm ".thread"  str.cat :thread  execute to_THREAD  // reg3 has thread
 
-  AC_WORKER reg0 task.actorModel!
-  AC_WORKER reg3 thread.actorModel!
+  //AC_WORKER reg0 task.actorModel!
+  //AC_WORKER reg3 thread.actorModel!
 
   reg.pop
 

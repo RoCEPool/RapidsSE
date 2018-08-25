@@ -71,7 +71,6 @@ namespace Threads
     i8           m_iThreadNo;    // our thread no
     s32          m_sName;        // thread name
     Lock         m_xLock;        // thread lock
-    eAC          m_eActorModel;  // actor model
     eTH          m_eThread;      // thread kind
     eTC          m_eThreadState; // thread state
     i8           m_iPartition;   // specific partition? 

@@ -72,7 +72,6 @@ Thread::Thread(void)
   m_iThreadNo    = ++zThreadNo;
   m_sName        = "<no thread name>"_Stz;
   m_xLock.vInitLock(LK_THREAD);
-  m_eActorModel  = AC_NONE;
   m_eThread      = TH_NONE;
   m_eThreadState = TC_NONE;
   m_iPartition   = -1;

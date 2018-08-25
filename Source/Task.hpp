@@ -1469,8 +1469,6 @@ namespace Tasks
     static void vTaskFifoNew(MP_Task mpTask);
     
     // thread
-    static void vThreadActorModelFetch(MP_Task mpTask);
-    static void vThreadActorModelStore(MP_Task mpTask);
     static void vThreadBind(MP_Task mpTask);
     static void vThreadCondSignal(MP_Task mpTask);
     static void vThreadCondWait(MP_Task mpTask);
