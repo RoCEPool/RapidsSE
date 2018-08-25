@@ -84,9 +84,6 @@ nPartitionThreads constant N_PARTITION_THREADS
     pPartitionThread thread.taskqueue@ 
       I scheduler::partition partitionScheduler.taskFifo!
 
-    I >partitionThreadNm ".threadQueue" str.cat :threadQueue execute
-      I scheduler::partition partitionScheduler.threadQueue!
-
     // spawn os thread
     pPartitionThread thread.spawn_partition
 
