@@ -2272,9 +2272,9 @@ eEC RapidsSE_SpawnPrompt(i8 iTraceLevel)
     
     JobClass* pJobClass_Prompt = gxJobCatalog.pFindJob(CN_JOB_PROMPT);
     
-    Job_Prompt* pJob_Prompt = new Job_Prompt(pSEitf);
-    pJob_Prompt->m_pJobClass = pJobClass_Prompt;
-    pJob_Prompt->m_bDetached = true;
+    Job_Prompt* pJob_Prompt = static_cast<Job_Prompt*>(pJobClass_Prompt->pNewJob(nullptr));
+    
+    pJob_Prompt->m_pSEitf = pSEitf;
     
     bool b = RapidsSE_SpawnJob(pJob_Prompt,SS_SEED_RUN,pSEitf);
     

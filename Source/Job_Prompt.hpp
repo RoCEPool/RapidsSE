@@ -33,6 +33,9 @@ namespace JobsModel
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Prompt* _pJob_Prompt(void* aAddr);
+  
+  Job* pJob_Prompt_new(Job* pArg);
+  void vJob_Prompt_delete(Interface::SEitf* pSEitf, Job* pJob);
 }
 
 /*============================================================================*/

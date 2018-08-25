@@ -23,8 +23,8 @@ JobNote mJobNote_Prompt (
   JT_NONE,           // job trace
   nullptr,           // prompt pre-process function
   nullptr,           // prompt post-process function
-  nullptr,           // job new function
-  nullptr,           // job delete function
+  pJob_Prompt_new,   // job new function
+  vJob_Prompt_delete,// job delete function
   nullptr,           // job pre-send function
   nullptr,           // job post-receive function
   nullptr,           // job show function
@@ -89,6 +89,8 @@ Job_Prompt::Job_Prompt(Interface::SEitf* pSEitf)
 : Job(CN_JOB_PROMPT, pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PROMPT,_FOOTER_);
+  
+  m_bDetached = true;
     
   _checkInitialised_(CN_JOB_PROMPT);
   
@@ -145,6 +147,26 @@ Footer* Job_Prompt::aFooter(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PROMPT);
   
   return &m_xFooter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* job new function                                                           */
+/*----------------------------------------------------------------------------*/
+Job* JobsModel::pJob_Prompt_new(Job* pArg)
+{
+  Job_Prompt* pJob_Prompt = new Job_Prompt(nullptr);
+  
+  return pJob_Prompt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* job delete function                                                        */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_Prompt_delete(Interface::SEitf* pSEitf, Job* pJob)
+{
+  Job_Prompt* pJob_Prompt = _pJob_Prompt(pJob);
+  
+  delete pJob_Prompt;
 }
 
 /*============================================================================*/
