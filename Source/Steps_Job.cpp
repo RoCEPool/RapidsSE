@@ -752,11 +752,8 @@ void Task::vJobFetchRowsSpawnSub(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Task* pSubFetchTask = new Task;
-  pSubFetchTask->vParentTask(*mpTask);
-  
-  pSEitf->bAppendTask(pSubFetchTask,pJob_SubFetch);
-  
+  pSEitf->bAppendJob(pJob_SubFetch);
+
   EXIT();
 }
 
@@ -1960,11 +1957,8 @@ void Task::vJobTruncateTableSpawnSub(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Task* pSubTruncateTask = new Task;
-  pSubTruncateTask->vParentTask(*mpTask);
-  
-  pSEitf->bAppendTask(pSubTruncateTask,pJob_SubTruncate);
-  
+  pSEitf->bAppendJob(pJob_SubTruncate);
+
   EXIT();
 }
 
