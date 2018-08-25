@@ -2167,7 +2167,7 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
 /*----------------------------------------------------------------------------*/
 /* spawn job                                                                  */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bSpawnJob(Job* pJob, eSS eSeed)
+bool SEitf::bSpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -2208,7 +2208,7 @@ bool SEitf::bSpawnJob(Job* pJob, eSS eSeed)
   pNewTask->vState(TS_READY);
   pNewTask->vR35model(true);
   pNewTask->vActorModel(AC_R35);
-  pNewTask->vSEitf(this);
+  pNewTask->vSEitf(pSEitf);
   
   pNewTask->vJob(pJob);
   

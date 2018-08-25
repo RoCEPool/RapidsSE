@@ -752,7 +752,7 @@ void Task::vJobFetchRowsSpawnSub(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pSEitf->bSpawnJob(pJob_SubFetch,SS_SEED_RUN);
+  pSEitf->bSpawnJob(pJob_SubFetch,SS_SEED_RUN,pSEitf);
 
   EXIT();
 }
@@ -1754,6 +1754,7 @@ void Task::vJobSpawn(MP_Task mpTask)
 //  pJobClass->m_bSeedsSpawned[i_Seed] = true;
 
   pJob->vSeed((eSS)i_Seed);
+  //mpTask->m_pSEitf->bSpawnJob(pJob, (eSS)i_Seed,nullptr);
   
   Task* pNewTask = new Task;
 
@@ -1762,9 +1763,9 @@ void Task::vJobSpawn(MP_Task mpTask)
   pNewTask->vR35model(true);
   pNewTask->vActorModel(AC_R35);
 //  pNewTask->vSEitf(pSEitf);
-  
+
   pNewTask->vJob(pJob);
-  
+
   Handlers::vSpawnedTaskHandler(pNewTask);
 
   EXIT();
@@ -1959,7 +1960,7 @@ void Task::vJobTruncateTableSpawnSub(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pSEitf->bSpawnJob(pJob_SubTruncate,SS_SEED_RUN);
+  pSEitf->bSpawnJob(pJob_SubTruncate,SS_SEED_RUN,pSEitf);
 
   EXIT();
 }
