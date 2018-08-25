@@ -895,7 +895,6 @@ void Task::vAddConstants(void)
   /* 28 */ vAddConstant("SIZEOF_PARSER"_Stz,       sizeof(Parser));
   /* 29 */ vAddConstant("SIZEOF_PARTITION"_Stz,    sizeof(TablePtn));
   /*    */ vAddConstant("SIZEOF_PROXY"_Stz,        sizeof(Proxy));
-  /* 32 */ vAddConstant("SIZEOF_PROXYSET"_Stz,     sizeof(ProxySet));
   /* 33 */ vAddConstant("SIZEOF_QUEUE"_Stz,        sizeof(Queue));
   /* 34 */ vAddConstant("SIZEOF_QUEUEBUFFER"_Stz,  sizeof(QueueBuffer));
   /*    */ vAddConstant("SIZEOF_RBCURSOR"_Stz,     sizeof(RbCursor));

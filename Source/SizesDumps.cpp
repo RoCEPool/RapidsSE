@@ -431,7 +431,7 @@ i8 giClassSize[]
   /* 90 */ sizeof(Predicate),          // CN_PREDICATE
   /* 91 */ sizeof(PredicateVec),       // CN_PREDICATEVEC
   /* 92 */ sizeof(Proxy),              // CN_PROXY
-  /* 93 */ sizeof(ProxySet),           // CN_PROXYSET
+  /* 93 */ 0,           // CN_PROXYSET
   /* 94 */ sizeof(PtnColVec),          // CN_PTNCOLVEC
   
   /* 95 */ sizeof(Queue),              // CN_QUEUE

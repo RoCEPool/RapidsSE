@@ -19,7 +19,6 @@ using namespace GridModel;
 
 #include "Node.hpp"
 #include "Proxy.hpp"
-#include "ProxySet.hpp"
 #include "Grid.hpp"
 
 /*============================================================================*/
