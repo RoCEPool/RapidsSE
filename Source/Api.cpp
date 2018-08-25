@@ -2279,7 +2279,7 @@ eEC RapidsSE_Prompt(i8 iTraceLevel)
     
     pJob_Prompt->m_bDetached = true;
     
-    bool b = pSEitf->bSpawnJob(pJob_Prompt,SS_SEED_RUN,pSEitf);
+    bool b = RapidsSE_SpawnJob(pJob_Prompt,SS_SEED_RUN,pSEitf);
     
     return EC_NONE;
     
@@ -2518,7 +2518,7 @@ bool RapidsSE_DispatchRequestJob(Job* pJob, SEitf* pSEitf)
   pSEitf->vClearLastError();
   
   // dispatch job to se
-  bResult = pSEitf->bSpawnJob(pJob,SS_SEED_REQ,pSEitf);
+  bResult = RapidsSE_SpawnJob(pJob,SS_SEED_REQ,pSEitf);
   
   if (! bResult)
     return bResult;
