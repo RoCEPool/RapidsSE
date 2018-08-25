@@ -167,7 +167,6 @@ pFINALIZE *gpFinalize[]
   /* 77 */ &Finalize::vUndefined,         // CN_OP
   
   /* 78 */ &Finalize::vUndefined,         // CN_PARSER
-  /* 80 */ &Finalize::vUndefined,         // CN_PARTITIONSCHEDULER
   /* 82 */ &Finalize::vUndefined,         // CN_PATHVEC
   /* 83 */ &Finalize::vUndefined,         // CN_PERFORMANCEBUFFER
   /* 84 */ &Finalize::vUndefined,         // CN_PERFORMANCEENTRY
@@ -226,7 +225,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_TASKFIFO
   /*133 */ &Finalize::vUndefined,         // CN_TASKLIST
   /*134 */ &Finalize::vUndefined,         // CN_TASKQUEUE
-  /*135 */ &Finalize::vUndefined,         // CN_SERVERSCHEDULER
 
   /*137 */ &Finalize::vUndefined,         // CN_THREAD
 

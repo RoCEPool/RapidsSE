@@ -171,7 +171,6 @@ enum eCN : u2 // Class Number
     /* 77 */ CN_OP,
 
     /* 78 */ CN_PARSER,
-    /* 80 */ CN_PARTITIONSCHEDULER,
 
     /* 82 */ CN_PATHVEC,
     /* 83 */ CN_PERFORMANCEBUFFER,
@@ -231,7 +230,6 @@ enum eCN : u2 // Class Number
     /*    */ CN_TASKFIFO,
     /*133 */ CN_TASKLIST,
     /*134 */ CN_TASKQUEUE,
-    /*135 */ CN_SERVERSCHEDULER,
 
     /*137 */ CN_THREAD,
 
@@ -421,7 +419,6 @@ enum eCN : u2 // Class Number
   
     /* 78 */ "PARSER"_Stz,             // CN_PARSER
     /* 79 */ "PARTITION"_Stz,          // CN_PARTITION
-    /* 80 */ "PARTITIONSCHEDULER"_Stz, // CN_PARTITIONSCHEDULER
     /* 81 */ "PARTITIONVEC"_Stz,       // CN_PARTITIONVEC
     /* 82 */ "PATHVEC"_Stz,            // CN_PATHVEC
     /* 83 */ "PERFORMANCEBUFFER"_Stz,  // CN_PERFORMANCEBUFFER
@@ -477,7 +474,6 @@ enum eCN : u2 // Class Number
     /*    */ "TASKFIFO"_Stz,           // CN_TASKFIFO
     /*133 */ "TASKLIST"_Stz,           // CN_TASKLIST
     /*134 */ "TASKQUEUE"_Stz,          // CN_TASKQUEUE
-    /*135 */ "SERVERSCHEDULER"_Stz,    // CN_SERVERSCHEDULER
 
     /*137 */ "THREAD"_Stz,             // CN_THREAD
 

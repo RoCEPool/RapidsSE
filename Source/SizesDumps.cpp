@@ -172,7 +172,6 @@ pDUMPFUN *gpDump[]
   /* 77 */ &Dump::vUndefined,       // CN_OP
   
   /* 78 */ &Parser::vDump,          // CN_PARSER
-  /* 80 */ &Dump::vDummy,           // CN_PARTITIONSCHEDULER
   /* 82 */ &Dump::vInvalid,         // CN_PATHVEC
   /* 83 */ &Dump::vInvalid,         // CN_PERFORMANCEBUFFER
   /* 84 */ &Dump::vInvalid,         // CN_PERFORMANCEENTRY
@@ -231,7 +230,6 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vUndefined,       // CN_TASKFIFO
   /*133 */ &TaskList::vDump,        // CN_TASKLIST
   /*134 */ &Dump::vUndefined,       // CN_TASKQUEUE
-  /*134 */ &Dump::vUndefined,       // CN_SERVERSCHEDULER
 
   /*137 */ &Dump::vUndefined,       // CN_THREAD
 
@@ -422,7 +420,6 @@ i8 giClassSize[]
   /* 77 */ sizeof(Op),                 // CN_OP
   
   /* 78 */ sizeof(Parser),             // CN_PARSER
-  /* 80 */ 0, // CN_PARTITIONSCHEDULER
   /* 82 */ sizeof(PathVec),            // CN_PATHVEC
   /* 83 */ sizeof(PerformanceBuffer),  // CN_PERFORMANCEBUFFER
   /* 84 */ sizeof(PerformanceEntry),   // CN_PERFORMANCEENTRY
@@ -481,7 +478,6 @@ i8 giClassSize[]
   /*    */ sizeof(TaskFifo),           // CN_TASKFIFO
   /*133 */ sizeof(TaskList),           // CN_TASKLIST
   /*134 */ sizeof(TaskQueue),          // CN_TASKQUEUE
-  /*135 */ 0,    // CN_SERVERSCHEDULER
 
   /*137 */ sizeof(Thread),             // CN_THREAD
 
@@ -672,7 +668,6 @@ eHT geWhichHeap[]
   /* 77 */ HT_TRANSIENT_SMALL,   // CN_OP
   
   /* 78 */ HT_TRANSIENT_MEDIUM,  // CN_PARSER
-  /* 80 */ HT_TRANSIENT_SMALL,   // CN_PARTITIONSCHEDULER
   /* 82 */ HT_TRANSIENT_MEDIUM,  // CN_PATHVEC
   /* 83 */ HT_TRANSIENT_LARGE,   // CN_PERFORMANCEBUFFER
   /* 84 */ HT_INVALID,           // CN_PERFORMANCEENTRY
@@ -731,7 +726,6 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_SMALL,   // CN_TASKFIFO
   /*133 */ HT_TRANSIENT_SMALL,   // CN_TASKLIST
   /*134 */ HT_TRANSIENT_SMALL,   // CN_TASKQUEUE
-  /*135 */ HT_TRANSIENT_MEDIUM,  // CN_SERVERSCHEDULER
 
   /*137 */ HT_TRANSIENT_SMALL,   // CN_THREAD
 
