@@ -428,7 +428,6 @@ namespace Tasks
     void vAddPrimitives_TablePartition(void);
     void vAddPrimitives_Task(void);
     void vAddPrimitives_TaskCursor(void);
-    void vAddPrimitives_TaskList(void);
     void vAddPrimitives_Thread(void);
     void vAddPrimitives_Timer(void);
     void vAddPrimitives_To(void);
@@ -1462,11 +1461,6 @@ namespace Tasks
     static void vTaskWait(MP_Task mpTask);
     static void vTaskYield(MP_Task mpTask);
         
-    // taskList
-    static void vTaskList(MP_Task mpTask);
-    static void vTaskListAppend(MP_Task mpTask);
-    static void vTaskListDump(MP_Task mpTask);
-    static void vTaskListInit(MP_Task mpTask);
     
     // taskQueue
     static void vTaskFifoAppend(MP_Task mpTask);

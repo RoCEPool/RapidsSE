@@ -652,11 +652,7 @@ void RapidsSE::vSystemInit(void)
   
   // create the plan list here
   gpAttachMap->m_pPlanList = new PlanList;
-  
-  // tasklist is new'd here as the exception-to-the-rule
-  // so as to be boot the system
-  gpAttachMap->m_pTaskList = new TaskList;
-  
+    
   gpAttachMap->m_npBootTask = new Task;
   
   Job_Boot* pJob_Boot = new Job_Boot(nullptr);

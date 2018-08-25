@@ -84,7 +84,6 @@ Task* Tasks::_pTask(i8 iAddr)
 void* Task::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  ASSERT(gpAttachMap->m_pTaskList);
   
   Task* pTask = reinterpret_cast<Task*>(Heap::pAllocate(CN_TASK));
   
@@ -97,7 +96,6 @@ void* Task::operator new(size_t iSize)
 void* Task::operator new(size_t iSize, Task* pTask)
 {
   RASSERT(iSize);
-  ASSERT(gpAttachMap->m_pTaskList);
   
   return pTask;
 }
@@ -119,16 +117,12 @@ Task::Task(void)
 : Object(CN_TASK)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-
-  ASSERT(gpAttachMap->m_pTaskList);
   
   vInit(""_Stz);
     
   _checkInitialised_(CN_TASK);
   
   Task* pTask = this;
-  //  gpAttachMap->m_pTaskList->vAppend(pTask);
-//  gpAttachMap->m_pTaskList->vDump();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 }
@@ -142,15 +136,12 @@ Task::Task(MP_Task mpTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   ASSERT(*mpTask);
-  ASSERT(gpAttachMap->m_pTaskList);
   
   vInit(""_Stz);
   
   _checkInitialised_(CN_TASK);
   
   Task* pTask = this;
-  //  gpAttachMap->m_pTaskList->vAppend(pTask);
-//  gpAttachMap->m_pTaskList->vDump();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 }
@@ -162,8 +153,6 @@ Task::Task(Value* pRequest)
 : Object(CN_TASK)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  ASSERT(gpAttachMap->m_pTaskList);
   
   vInit(""_Stz);
   
@@ -180,10 +169,6 @@ Task::Task(Value* pRequest)
   
   _checkInitialised_(CN_TASK);
   
-  Task* pTask = this;
-  //  gpAttachMap->m_pTaskList->vAppend(pTask);
-  //  gpAttachMap->m_pTaskList->vDump();
-  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 }
 
@@ -195,8 +180,6 @@ Task::Task(Stz* aLambdaInput)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  ASSERT(gpAttachMap->m_pTaskList);
-
   _class_(CN_TASK);
   
   vInit(aLambdaInput);
@@ -700,7 +683,6 @@ void Task::vAddConstants(void)
   /* 71 */ vAddConstant("CN_TABLE"_Stz,        CN_TABLE);
   /* 72 */ vAddConstant("CN_TASK"_Stz,         CN_TASK);
 
-  /* 74 */ vAddConstant("CN_TASKLIST"_Stz,     CN_TASKLIST);
   /*    */ vAddConstant("CN_TASKQUEUE"_Stz,    CN_TASKQUEUE);
   /* 76 */ vAddConstant("CN_THREAD"_Stz,       CN_THREAD);
 
@@ -918,8 +900,7 @@ void Task::vAddConstants(void)
   /* 57 */ vAddConstant("SIZEOF_TABLE"_Stz,        sizeof(Table));
   /* 58 */ vAddConstant("SIZEOF_TASK"_Stz,         sizeof(Task));
 
-  /* 60 */ vAddConstant("SIZEOF_TASKLIST"_Stz,     sizeof(TaskList));
-  /*    */ //vAddConstant("SIZEOF_TASKQUEUE"_Stz,    sizeof(TaskQueue));
+  /*    */ vAddConstant("SIZEOF_TASKQUEUE"_Stz,    sizeof(TaskQueue));
   /* 62 */ vAddConstant("SIZEOF_THREAD"_Stz,       sizeof(Thread));
 
   /* 65 */ vAddConstant("SIZEOF_TIME"_Stz,         sizeof(Time));
@@ -1121,7 +1102,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_Table();
   vAddPrimitives_TablePartition();
   vAddPrimitives_Task();
-  vAddPrimitives_TaskList();
   vAddPrimitives_Thread();
   vAddPrimitives_Timer();
   vAddPrimitives_To();
