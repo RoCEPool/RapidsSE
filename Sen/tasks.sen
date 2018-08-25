@@ -5,7 +5,6 @@
 "tasks.sen" .verbose
 
 "task.sen" include
-"taskList.sen" include
 "ipc.sen" include
 
 /*============================================================================*/
