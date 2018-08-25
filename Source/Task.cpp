@@ -707,7 +707,7 @@ void Task::vAddConstants(void)
   /*    */ vAddConstant("CN_TASKQUEUE"_Stz,    CN_TASKQUEUE);
   /* 75 */ vAddConstant("CN_SERVERSCHEDULER"_Stz,    CN_SERVERSCHEDULER);
   /* 76 */ vAddConstant("CN_THREAD"_Stz,       CN_THREAD);
-  /* 77 */ vAddConstant("CN_THREADCURSOR"_Stz, CN_THREADCURSOR);
+
   /* 78 */ vAddConstant("CN_THREADLIST"_Stz,   CN_THREADLIST);
   /*    */ vAddConstant("CN_THREADQUEUE"_Stz,  CN_THREADQUEUE);
   /*    */ vAddConstant("CN_THREADVECTOR"_Stz, CN_THREADVECTOR);

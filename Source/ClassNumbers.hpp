@@ -234,7 +234,7 @@ enum eCN : u2 // Class Number
     /*135 */ CN_SERVERSCHEDULER,
 
     /*137 */ CN_THREAD,
-    /*138 */ CN_THREADCURSOR,
+
     /*139 */ CN_THREADLIST,
     /*140 */ CN_THREADQUEUE,
     /*    */ CN_THREADVECTOR,
@@ -480,7 +480,7 @@ enum eCN : u2 // Class Number
     /*135 */ "SERVERSCHEDULER"_Stz,    // CN_SERVERSCHEDULER
 
     /*137 */ "THREAD"_Stz,             // CN_THREAD
-    /*138 */ "THREADCURSOR"_Stz,       // CN_THREADCURSOR
+
     /*139 */ "THREADLIST"_Stz,         // CN_THREADLIST
     /*140 */ "THREADQUEUE"_Stz,        // CN_THREADQUEUE
     /*    */ "THREADVECTOR"_Stz,       // CN_THREADVECTOR

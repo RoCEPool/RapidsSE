@@ -229,7 +229,7 @@ pFINALIZE *gpFinalize[]
   /*135 */ &Finalize::vUndefined,         // CN_SERVERSCHEDULER
 
   /*137 */ &Finalize::vUndefined,         // CN_THREAD
-  /*138 */ &Finalize::vUndefined,         // CN_THREADCURSOR
+
   /*139 */ &Finalize::vUndefined,         // CN_THREADLIST
   /*140 */ &Finalize::vUndefined,         // CN_THREADQUEUE
   /*    */ &Finalize::vUndefined,         // CN_THREADVECTOR
