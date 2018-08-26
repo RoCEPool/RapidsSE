@@ -28,6 +28,8 @@ namespace Interface
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
+    static bool bExecute(Stz* aCommand);
+  
     bool bExecuteFile(void);
 
     void vPushFile(Stz* aPath);
@@ -49,6 +51,8 @@ namespace Interface
 
     Token* pTkn(i8 i_Token);
     TokenVec* pTknVec(void);
+  
+    void vTokenise(Stz* aCommand);
   
     Footer* aFooter(void);
   };

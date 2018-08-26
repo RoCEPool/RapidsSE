@@ -395,6 +395,22 @@ TokenVec* CommandProcessor::pTknVec(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* tokenize string                                                            */
+/*----------------------------------------------------------------------------*/
+void CommandProcessor::vTokenise(Stz* aCommand)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
+  
+  s4K sCommand(aCommand);
+  
+  m_pTokeniser->vPush();
+  m_pTokeniser->vUseString(sCommand);
+  
+  vGetCommand();
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

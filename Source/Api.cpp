@@ -2673,6 +2673,18 @@ bool RapidsSE_SpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 bool RapidsSE_ExecuteCommmand(Stz* aCommand, SEitf* pSEitf)
 {
+  CommandProcessor* pCommandProcessor = pSEitf->m_pCommandProcessor;
+  
+  pCommandProcessor->vTokenise(aCommand);
+  
+  bool bFound = pCommandProcessor->bFindJobClass();
+  
+  pCommandProcessor->vPreJob(pSEitf);
+  
+  Job* pJob = pCommandProcessor->pJob();
+
+  RapidsSE_SpawnJob(pJob, SS_SEED_REQ, pSEitf);
+  
   return true;
 }
 

@@ -882,7 +882,7 @@ void Task::vJobIsPromptCommand(MP_Task mpTask)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.isPromptCpmmand"_Stz);
+    THROW_INVALID_DSTACK("job.isPromptCommand"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
   mpTask->m_pDataStack->vPushInt(pJob->m_pPromptTask ? true : false);

@@ -186,8 +186,7 @@ void Task::vCommandProcessorPreJob(MP_Task mpTask)
   Object* pSEitfObject;
   if ( ! mpTask->m_pDataStack->bPop(pSEitfObject) )
     THROW_INVALID_DSTACK("commandProcessor.postJob"_Stz);
-  SEitf*
-  pSEitf = _pSEitf(pSEitfObject);
+  SEitf* pSEitf = _pSEitf(pSEitfObject);
   
   pCommandProcessor->vPreJob(pSEitf);
   
