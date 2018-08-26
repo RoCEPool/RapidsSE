@@ -5,25 +5,25 @@
 "start.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* start R35 socket tasks                                                     */
+/* start socket tasks                                                         */
 /*----------------------------------------------------------------------------*/
-: startR35Sockets ( -- )
+: startSockets ( -- )
 
-  "startR35Sockets" .
+  "startSockets" .
 
   spawn_Answer
 ;
 
 /*----------------------------------------------------------------------------*/
-/* called by RapidsSE::vStartR35Tasks()                                       */
+/* called by RapidsSE::vStartTasks()                                          */
 /*----------------------------------------------------------------------------*/
-: startR35Tasks ( -- )
+: startTasks ( -- )
 
-  "startR35Tasks" .
+  "startTasks" .
 
   args.bgtasks if
 
-    snooze startR35Sockets
+    snooze startSockets
 
   then
 ;
