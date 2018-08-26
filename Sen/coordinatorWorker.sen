@@ -9,30 +9,6 @@
 /*----------------------------------------------------------------------------*/
 : cLoop
 
-  //"cLoop" task::this task.comment!
-
-  // push a register frame (holds CALLER etc)
-  reg.push
-
-  begin
-    depth 0 != if "stack of task has grown" . debug::trap then
-
-    // pop indirect call this tasks queue of indirect calls
-    jobQueue> ( valset )
-
-    // execute indirect call
-    exeAll
-
-    // pop indirect result from aux stack
-    a> ( valset )
-
-    // push indirect result onto aux stack of caller and signal
-    >callerAux ( )
-
-  again
-
-  // pop register frame
-  reg.pop
 ;
 
 /*----------------------------------------------------------------------------*/

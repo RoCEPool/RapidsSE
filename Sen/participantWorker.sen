@@ -9,44 +9,6 @@
 /*----------------------------------------------------------------------------*/
 : pLoop
 
-  //"pLoop" task::this task.comment!
-
-  // push a register frame
-  reg.push
-
-  begin
-
-    depth 0 != if "stack of task has grown" . debug::trap then
-
-    //grid::thisNode@ to_SENDER
-
-    // pop valset off job queue and push onto this stack
-    jobQueue> ( valset )
-
-    exeAll
-
-    // clear the participants dictionary stack
-    dicStack.clear
-
-    // convert indirect result into valset
-    >result ( valset )
-
-    _SENDER dup
-
-    grid::thisNode@ != if
-      _CALLER
-      >DStack ( )
-    else
-      drop
-    then
-
-    // put indirect result onto stack of caller and signal
-    >callerAux ( )
-
-  again
-
-  // pop a register frame
-  reg.pop
 ;
 
 /*============================================================================*/

@@ -9,34 +9,6 @@
 /*----------------------------------------------------------------------------*/
 : cpLoop ( actorNo forwardTask -- )
 
-  //"cpLoop" task::this task.comment!
-
-tp: coordinator
-
-  locals| forwardTask actorNo |
-  locals| sender |
-
-  begin
-
-    depth 0 != if "stack of task has grown" . debug::trap then
-
-    // pop valset off this tasks queue
-    jobQueue> ( valset )
-
-    addSetCaller ( << <<call*>> <<caller>> >> )
-
-    forwardTask >jobQueue;a> ( sender <<result>> )
-
-    swap  ( <<result>> sender )
-    to sender  ( <<result>> )
-
-    // have receiver pass indirect result onto participant proxy
-    addPassBackToPP ( << <<result>> <<passBackToPP>> >> )
-
-    sender                                                        //! NOT RIGHT
-    >sendQueue                                         //! MAYBE RIGHT NOW -alka
-
-  again
 ;
 
 /*============================================================================*/
