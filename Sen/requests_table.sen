@@ -107,111 +107,12 @@ ddlLock::grabRead
 /*----------------------------------------------------------------------------*/
 : insertBufferEntries$ ( pSEitf iNode workingBuffer bIsLast txId partitionNo "<tableNm>" -- true )
 
-tp: insertBufferEntries$
-  0 locals| pTable sTableNm iPartitionNo iTxId bIsLast pWorkingBuffer iNode pSEitf |
-
-  // why:
-  //   we have forwarded a full entryBuffer whose entries need to be
-  //   inserted to partition of table
-
-  // where:
-  //   in participant task running pLoop on participant thread;
-
-  // what:
-  //   find named table to get pointer to table
-  //   then append row buffer to partition of table
-
-  //1 task::this task.thread thread.name@ str.left "p" str.equal assert
-
-  args.tracepoint if
-    sTableNm "INSERTING WORKINGBUFFER ENTRIES " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
-  then
-
-  //"insertBufferEntries$" .
-  //iTxId .
-
-  // get ^table
-  sTableNm pushTable assert
-  sTableNm find execute ( rb ptn table )
-  to pTable
-  popTable
-
-  // is it the last buffer ?
-  bIsLast if
-    pWorkingBuffer workingBuffer.isLast!
-  then
-
-  // set the partition in the row buffer
-  //iPartitionNo pWorkingBuffer resultBuffer.partition!
-
-  pSEitf iTxId iNode pWorkingBuffer iPartitionNo pTable    ( rb ptn tablePtr )
-
-  6 "partitionInsertBufferEntries" iPartitionNo grid::toSlot dup >partitionTaskNm
-  TK_LOADSUB_PART
-
-  spawnPartitionTask
-
-  true <SUCCESS_RESULT>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* partition task inserts the entry buffer entries to the table               */
 /*----------------------------------------------------------------------------*/
 : partitionInsertBufferEntries ( pSEitf iTxId iNode workingBuffer partitionNo table^ -- )
-
-  tp: partitionInsertBufferEntries
-  0 locals| bIsLast pTable iPartitionNo pWorkingBuffer iNode iTxId pSEitf |
-
-  //"partitionInsertBufferEntries" .
-
-  //pEntryBuffer .
-
-  pWorkingBuffer workingBuffer.isLast@ to bIsLast
-  //"partitionInsertBufferEntries" .
-  //iTxId .
-
-  iPartitionNo pTable tablePtnGrabWrite  //! partitionLock
-
-  iTxId >str iPartitionNo grid::toSlot >str pWorkingBuffer >str pTable >str table.insertEntries ( )
-
-  bIsLast not if
-    iPartitionNo pTable tablePtnDropWrite
-    exit
-  then
-
-  //drop exit
-
-  //1 pTable table.dataLoaded!
-
-  //"sending got for last buffer..." .
-  //iPartitionNo grid::toSlot .
-
-  //----------------------------------------------------------------------------
-  // lazy build of index
-  iPartitionNo grid::toSlot >str pTable >str table.lazyBuildIndexes ( )
-
-  iPartitionNo pTable tablePtnDropWrite
-
-  <<
-  13
-  pSEitf >str       ( << pSEitf )
-  grid::thisNode@
-  "ackSEitf$"   ( << pSEitf "ackSEitf$" )
-
-  tp: theIndirectCall
-
-  >>            ( <<ackSEitf$>> )
-
-
-  // to which node/participant
-  iNode  ( <<ackSEitf$>> node )
-
-  //"forwarding ackSEitf$ to coordinator..." .
-  // forward to coordinator and wait
-  >>oneParticipant> ( bool )
-  //"got reply from ackSEitf$..." .
-
-  checkResult
 
 ;
 
@@ -220,28 +121,6 @@ tp: insertBufferEntries$
 /*----------------------------------------------------------------------------*/
 : partitionInsertBufferEntries2 ( iTxId workingBuffer partitionNo table^ -- )
 
-  tp: partitionInsertBufferEntries2
-  0 locals| bIsLast pTable iPartitionNo pWorkingBuffer iNode iTxId pSEitf |
-
-  pWorkingBuffer workingBuffer.isLast@ to bIsLast
-
-  iPartitionNo pTable tablePtnGrabWrite  //! partitionLock
-
-  iTxId >str iPartitionNo grid::toSlot >str pWorkingBuffer >str pTable >str table.insertEntries ( )
-
-  bIsLast not if
-    iPartitionNo pTable tablePtnDropWrite
-    exit
-  then
-
-  // lazy build of indexes
-  iPartitionNo "Building indexes on partition %v" str.format .verbose
-  iPartitionNo grid::toSlot >str pTable >str table.lazyBuildIndexes ( )
-
-  iPartitionNo pTable tablePtnDropWrite
-
-  iPartitionNo "Partition task on partition %v acking subLoader" str.format .verbose
-  task.parent@ ack
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -249,47 +128,6 @@ tp: insertBufferEntries$
 /*----------------------------------------------------------------------------*/
 : insertTableEntries_req ( txId, partition, workingBuffer, tableName -- <R> )
 
-  0 0 0 locals| pWorkingBuffer iPartitionNo iTxId pTableName sWorkingBuffer sPartitionNo sTxId |
-
-tp: insertTableEntries_req
-
-  sPartitionNo str.tailInt assert to iPartitionNo
-  sTxId str.tailInt assert to iTxId
-  sWorkingBuffer WorkingBuffer::toWorkingBuffer to pWorkingBuffer
-
-  //"insertTableEntries_req" .
-  //sTxId .
-
-  <<
-  task::this task.seitf@ 
-  grid::thisNode@
-  pWorkingBuffer
-  pWorkingBuffer workingBuffer.isLast@
-  iTxId
-  iPartitionNo                       ( << rb ptn )
-  pTableName                         ( << rb ptn "<tableNm>" )
-  "insertBufferEntries$"             ( << rb ptn "<tableNm>" "insertBufferEntries$" )
-
-  tp: theIndirectCall
-
-  >>                       ( <<insertBufferEntries$>> )
-
-  //
-  // b) <<insertBufferEntries$>> to be forwarded to one participant
-  //    via sendParticipant in the coordinatoor
-  //
-
-  // to which node/participant
-  iPartitionNo grid::toNode  ( <<insertBufferEntries$>> node )
-
-  // forward to coordinator and wait
-  >>oneParticipant> ( bool )
-
-  tp: theIndirectResult
-
-  checkResult
-
-  <OK>
 ;
 
 /*----------------------------------------------------------------------------*/

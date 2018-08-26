@@ -41,53 +41,6 @@
 /*----------------------------------------------------------------------------*/
 : ~loadInsertBufferEntries2 ( iTxId pLoaderSub -- )
 
-  tp: ~loadInsertBufferEntries2
-
-  0 0 0 0 locals| iPartitionNo sTableNm pTable pWorkingBuffer pLoaderSub iTxId |
-
-  // why:
-  //   loaderSub has a full workingBuffer which needs to be sent to participant
-  //   to be appended to partition of table
-
-  // where:
-  //   in loadSub task running loadSub on general thread;
-  //   parent task is req.task running tableLoader;
-  //   reg0 has ^loaderSub
-
-  // what:
-  //   we need to have the coordinator send the insertBufferEntries$ indirect call
-  //   to the participant via a sendParticipant call
-
-  //13 task::this task.thread thread.name@ str.left "generalThread" str.equal assert
-  //task.parent@ task.name@ "req.task" str.equal assert
-
-  //
-  // a) form the indirect call of loadAppendBuffer
-  //
-
-  // get ^table
-  pLoaderSub loaderSub.table table.name to sTableNm
-  sTableNm pushTable assert
-  sTableNm find execute ( rb ptn table )
-  to pTable
-  popTable
-
-  // get partition no
-  pLoaderSub loaderSub.partition@ to iPartitionNo
-
-  // get the working buffer
-  pLoaderSub loaderSub.workingBuffer@ to pWorkingBuffer
-
-  // pass 0 for TxId at this stage
-  iTxId pWorkingBuffer iPartitionNo pTable    ( rb ptn tablePtr )
-
-  4 "partitionInsertBufferEntries2" iPartitionNo grid::toSlot dup >partitionTaskNm
-  TK_LOADSUB_PART
-
-  spawnPartitionTask
-
-  nullPtr pLoaderSub loaderSub.workingBuffer!  // set working buffer to null
-
 ;
 
 /*----------------------------------------------------------------------------*/

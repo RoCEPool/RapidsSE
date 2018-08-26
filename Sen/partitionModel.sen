@@ -48,54 +48,6 @@
 /*----------------------------------------------------------------------------*/
 nPartitionThreads constant N_PARTITION_THREADS
 
-/*----------------------------------------------------------------------------*/
-/* create and start the partition processing threads                          */
-/*----------------------------------------------------------------------------*/
-: >partitionThreadNm ( i -- s ) >str "partitionThread" str.prepend ;
-
-: :partitionThread ( i -- w ) >partitionThreadNm :thread    ;
-
-: startPartitionThreads
-
-  0 locals| pPartitionThread |
-
-//args.progress if
-//  N_SERVER_THREADS "Partition threads: %v" str.format .
-//then
-
-  args.verbose if
-    "N_PARTITION_THREADS " .put N_PARTITION_THREADS .put .\n
-  then
-
-  N_PARTITION_THREADS 0 do
-
-    // create a thread called partitionThreadI
-    I :partitionThread execute to pPartitionThread
-
-    // set the threads name
-    //I >partitionThreadNm pPartitionThread thread.name!
-
-    // set the threads partition no
-    //I pPartitionThread thread.partition!
-
-    // set the actor model
-    //AC_PARTITION pPartitionThread thread.actorModel!
-
-    //pPartitionThread thread.taskqueue@
-    //  I scheduler::partition partitionScheduler.taskFifo!
-
-    // spawn os thread
-    //pPartitionThread thread.spawn_partition
-
-  loop
-;
-
-/*----------------------------------------------------------------------------*/
-/* create and dispatch task to partition for execution within given partition */
-/*----------------------------------------------------------------------------*/
-: spawnPartitionTask ( ... nArgs sSeed iPtnNo sTaskNm eTaskKind )
-
-;
 
 /*============================================================================*/
 /* end                                                                        */
