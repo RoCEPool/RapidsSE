@@ -73,7 +73,7 @@ nPartitionThreads constant N_PARTITION_THREADS
     I :partitionThread execute to pPartitionThread
 
     // set the threads name
-    I >partitionThreadNm pPartitionThread thread.name!
+    //I >partitionThreadNm pPartitionThread thread.name!
 
     // set the threads partition no
     I pPartitionThread thread.partition!

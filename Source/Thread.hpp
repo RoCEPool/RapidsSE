@@ -69,7 +69,6 @@ namespace Threads
 
   public:
     i8           m_iThreadNo;    // our thread no
-    s32          m_sName;        // thread name
     Lock         m_xLock;        // thread lock
     eTH          m_eThread;      // thread kind
     eTC          m_eThreadState; // thread state
@@ -117,8 +116,6 @@ namespace Threads
     void vLoop(void);
     i8   iPartition(void);
     void vPartition(i8 iPartition);
-    StrVal&   sName(void);
-    void vName(StrVal& sName);
     void vReExecuteTask(Task* pTask);
     bool bRRnext(void);
     void vRRstart(void);

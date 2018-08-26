@@ -1466,13 +1466,10 @@ namespace Tasks
     static void vThreadCpu(MP_Task mpTask);
     static void vThreadDump(MP_Task mpTask);
     static void vThreadId(MP_Task mpTask);
-    static void vThreadInit(MP_Task mpTask);
     static void vThreadKindFetch(MP_Task mpTask);
     static void vThreadKindStore(MP_Task mpTask);
     static void vThreadMutexLock(MP_Task mpTask);
     static void vThreadMutexUnlock(MP_Task mpTask);
-    static void vThreadNameFetch(MP_Task mpTask);
-    static void vThreadNameStore(MP_Task mpTask);
     static void vThreadPartitionFetch(MP_Task mpTask);
     static void vThreadPartitionStore(MP_Task mpTask);
     static void vThreadSleep_s(MP_Task mpTask);

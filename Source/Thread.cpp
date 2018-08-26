@@ -70,7 +70,6 @@ Thread::Thread(void)
   static Atomic zThreadNo;
   
   m_iThreadNo    = ++zThreadNo;
-  m_sName        = "<no thread name>"_Stz;
   m_xLock.vInitLock(LK_THREAD);
   m_eThread      = TH_NONE;
   m_eThreadState = TC_NONE;
@@ -123,7 +122,8 @@ void* Thread::pEntryPoint(void* pArg)
   gpAttachMap->m_pQueues->vAddThread(pThread);
   
   //if (gpAttachMap->m_bVerbose)
-    vTrace("\n[[%s]] Thread::vEntryPoint %p\n"_Stz,pThread->sName().aChar(),pThread);
+    vTrace("\nThread::vEntryPoint %p %lld\n"_Stz,
+           pThread,pThread->iThreadNo());
   
   try {
     pThread->vLoop();
@@ -149,8 +149,8 @@ void* Thread::pEntryPoint(void* pArg)
   }
   
   if (gpAttachMap->m_bVerbose)
-    vTrace("[[%s]] Thread::vEntry_Worker %p exiting\n"_Stz,
-           pThread->sName().aChar(),pThread);
+    vTrace("Thread::vEntryPoint %p %lld exiting\n"_Stz,
+           pThread,pThread->iThreadNo());
   
   gpAttachMap->m_pQueues->vRemoveThread(pThread);
   
@@ -451,26 +451,6 @@ bool Thread::bQueuePeek(void)
   
   m_npTask = pPoppedTask;
   return bPopped;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get name of this thread                                                    */
-/*----------------------------------------------------------------------------*/
-StrVal& Thread::sName(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
-  return m_sName;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set name of this thread                                                    */
-/*----------------------------------------------------------------------------*/
-void Thread::vName(StrVal& sName)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
-  m_sName = sName;
 }
 
 /*----------------------------------------------------------------------------*/

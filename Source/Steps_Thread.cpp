@@ -19,14 +19,11 @@ void Task::vAddPrimitives_Thread(void)
   vAddPrimitive("thread.condWait"_Stz,        &vThreadCondWait,        false);
   vAddPrimitive("thread.cpu"_Stz,             &vThreadCpu,             false);
   vAddPrimitive("thread.dump"_Stz,            &vThreadDump,            false);
-  vAddPrimitive("thread.init"_Stz,            &vThreadInit,            false);
   vAddPrimitive("thread.id"_Stz,              &vThreadId,              false);
   vAddPrimitive("thread.kind@"_Stz,           &vThreadKindFetch,       false);
   vAddPrimitive("thread.kind!"_Stz,           &vThreadKindStore,       false);
   vAddPrimitive("thread.mutexLock"_Stz,       &vThreadMutexLock,       false);
   vAddPrimitive("thread.mutexUnlock"_Stz,     &vThreadMutexUnlock,     false);
-  vAddPrimitive("thread.name@"_Stz,           &vThreadNameFetch,       false);
-  vAddPrimitive("thread.name!"_Stz,           &vThreadNameStore,       false);
   vAddPrimitive("thread.partition@"_Stz,      &vThreadPartitionFetch,  false);
   vAddPrimitive("thread.partition!"_Stz,      &vThreadPartitionStore,  false);
   vAddPrimitive("thread.sleep_s"_Stz,         &vThreadSleep_s,         false);
@@ -164,34 +161,6 @@ ENTRY("vThreadId"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* thread.init -- thread init                                                 */
-/*----------------------------------------------------------------------------*/
-void Task::vThreadInit(MP_Task mpTask)
-{
-ENTRY("vThreadInit"_Stz);
-  
-  Object* pObject;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("thread.init"_Stz);
-  
-  ASSERT(CN_THREAD == pObject->eClass());
-  
-  Thread* pThread = static_cast<Thread*>(pObject);
-  
-  new(pThread) Thread;
-  
-  Word* pWordThread = Word::pToWord(pThread);
-  
-  s32 sName;
-  sName = pWordThread->sName();
-  
-  pThread->vName(sName);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* thread.kind@ -- fetch thread kind from thread which is on stack            */
 /*----------------------------------------------------------------------------*/
 void Task::vThreadKindFetch(MP_Task mpTask)
@@ -268,30 +237,6 @@ ENTRY("vThreadMutexUnlock"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* thread.name@ -- fetch thread name                                          */
-/*----------------------------------------------------------------------------*/
-void Task::vThreadNameFetch(MP_Task mpTask)
-{
-ENTRY("vThreadNameFetch"_Stz);
-  
-  Object* pObject;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("thread.name@"_Stz);
-  
-  ASSERT(CN_THREAD == pObject->eClass());
-  
-  Thread* pThread = static_cast<Thread*>(pObject);
-  
-  s32 sName;
-  sName = pThread->sName();
-  
-  mpTask->m_pDataStack->vPushS32(sName);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* thread.partition@ -- fetch partition from thread which is on stack         */
 /*----------------------------------------------------------------------------*/
 void Task::vThreadPartitionFetch(MP_Task mpTask)
@@ -325,34 +270,6 @@ void Task::vThreadPartitionStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("thread.partition!"_Stz);
   
   pThread->m_iPartition = iPartition;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* thread.name! -- store thread name                                          */
-/*----------------------------------------------------------------------------*/
-void Task::vThreadNameStore(MP_Task mpTask)
-{
-ENTRY("vThreadNameStore"_Stz);
-  
-  Object* pObject;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("thread.name!"_Stz);
-  
-  ASSERT(CN_THREAD == pObject->eClass());
-  
-  Thread* pThread = static_cast<Thread*>(pObject);
-  
-  s32 sName;
-  ValWrk xNameWsp;
-  if ( ! mpTask->m_pDataStack->bPop(xNameWsp) )
-    THROW_INVALID_DSTACK("thread.name!"_Stz);
-  
-  sName = _pStrVal(xNameWsp.pNestedValueSelf());
-  
-  pThread->vName(sName);
   
   EXIT();
 }
