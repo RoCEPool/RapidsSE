@@ -1472,8 +1472,6 @@ namespace Tasks
     static void vThreadSleep_ms(MP_Task mpTask);
     static void vThreadSleep_us(MP_Task mpTask);
     static void vThreadSleep_ns(MP_Task mpTask);
-    static void vThreadTaskFetch(MP_Task mpTask);
-    static void vThreadTaskStore(MP_Task mpTask);
   
     // timer
     static void vTimerDelete(MP_Task mpTask);

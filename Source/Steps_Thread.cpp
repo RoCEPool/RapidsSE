@@ -26,8 +26,6 @@ void Task::vAddPrimitives_Thread(void)
   vAddPrimitive("thread.sleep_ms"_Stz,        &vThreadSleep_ms,        false);
   vAddPrimitive("thread.sleep_us"_Stz,        &vThreadSleep_us,        false);
   vAddPrimitive("thread.sleep_ns"_Stz,        &vThreadSleep_ns,        false);
-  vAddPrimitive("thread.task@"_Stz,           &vThreadTaskFetch,       false);
-  vAddPrimitive("thread.task!"_Stz,           &vThreadTaskStore,       false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -266,47 +264,6 @@ ENTRY("vThreadSleep_ns"_Stz);
   Thread* pThread = Thread::pThisTLSThread();
   
   pThread->m_pPosixThread->vSleepNano(nNanoseconds);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* thread.task@ -- fetch current task from the thread which is on data stack  */
-/*----------------------------------------------------------------------------*/
-void Task::vThreadTaskFetch(MP_Task mpTask)
-{
-  ENTRY("vThreadTaskFetch"_Stz);
-  
-  Object* pThreadEmb;
-  if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
-    THROW_INVALID_DSTACK("thread.task@"_Stz);
-  Thread* pThread = _pThread(pThreadEmb);
-  
-  Task* pTask = *pThread->m_npTask;
-  
-  mpTask->m_pDataStack->vPushObject(pTask);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* thread.task! -- store current task into the thread which is on data stack  */
-/*----------------------------------------------------------------------------*/
-void Task::vThreadTaskStore(MP_Task mpTask)
-{
-  ENTRY("vThreadTaskStore"_Stz);
-  
-  Object* pThreadEmb;
-  if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
-    THROW_INVALID_DSTACK("thread.task@"_Stz);
-  Thread* pThread = _pThread(pThreadEmb);
-  
-  Object* pTaskEmb;
-  if ( ! mpTask->m_pDataStack->bPop(pTaskEmb) )
-    THROW_INVALID_DSTACK("thread.task!"_Stz);
-  Task* pTask = _pTask(pTaskEmb);
-  
-  pThread->m_npTask = pTask;
   
   EXIT();
 }
