@@ -63,7 +63,7 @@ extern "C" eEC RapidsSE_TruncateTable(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema
 
 bool RapidsSE_ExecuteRequest(SEitf* pSEitf,TokenVec& xTokenVec, Stz** ppResponse);
 
-bool RapidsSE_ExecuteCommmand(SEitf* pSEitf, Stz* aCommand);
+bool RapidsSE_ExecuteCommmand(Stz* aCommand, SEitf* pSEitf );
 
 bool RapidsSE_SpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf);
 
