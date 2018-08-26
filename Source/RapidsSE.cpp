@@ -689,7 +689,6 @@ void RapidsSE::vSystemInit(void)
   // spawn v3.5 general threads
   for (i8 iThreads = 0; iThreads < gxArguments.m_nThreads; iThreads++) {
     Thread* pThread = new Thread;
-    pThread->vGeneralThread(true);
     pThread->vSpawn_Thread();
   }
 }

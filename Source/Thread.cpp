@@ -81,7 +81,6 @@ Thread::Thread(void)
 
   Thread* pThread = this;
   
-   m_bGeneralThead = false;
    m_iLastRRqueue  = QR_SLEEPING_QUEUE - 1;
    m_iStartRRqueue = QR_NONE;
   
@@ -252,26 +251,6 @@ void Thread::vExecuteTask(Task* pTask)
   
   // signal the thread
   vSignalThread();
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a general thread                                                   */
-/*----------------------------------------------------------------------------*/
-bool Thread::bGeneralThread(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
-  return m_bGeneralThead;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set general thread                                                         */
-/*----------------------------------------------------------------------------*/
-void Thread::vGeneralThread(bool bGeneralThread)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
-  m_bGeneralThead = bGeneralThread;
 }
 
 /*----------------------------------------------------------------------------*/

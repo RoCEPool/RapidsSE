@@ -990,32 +990,21 @@ void Queues::vScheduleYieldedTask(Task* pTask)
   
   if (pTask->bIsNonPartitioned()) {
     
-    if (pCallingThread->bGeneralThread()) {
+    // - A general thread has executed a task which retured TS_YIELDED.
+    //   If the ready queue is empty then this general thread can
+    //     continue to execute the yield task.
+    //   Otherwise we add the task to the ready queue
     
-      // - A general thread has executed a task which retured TS_YIELDED.
-      //   If the ready queue is empty then this general thread can
-      //     continue to execute the yield task.
-      //   Otherwise we add the task to the ready queue
-      
-      m_pReadyQueue->vGrabLock();
-      i8 iLengthReadyQueue = m_pReadyQueue->nTasks();
-      if (0 == iLengthReadyQueue) {
-        m_pReadyQueue->vDropLock();
-        pCallingThread->vReExecuteTask(pTask);
-      }
-      else {
-        pTask->vState(TS_READY);
-        vAddToReadyQueue_NL(pTask);
-        m_pReadyQueue->vDropLock();
-      }
+    m_pReadyQueue->vGrabLock();
+    i8 iLengthReadyQueue = m_pReadyQueue->nTasks();
+    if (0 == iLengthReadyQueue) {
+      m_pReadyQueue->vDropLock();
+      pCallingThread->vReExecuteTask(pTask);
     }
     else {
-      
-      // - case where task is spawned by non-general task in yield state
-      
-      //pTask->vState(TS_READY);
-      //vScheduleReadyTask(pTask);
-      NEVER_REACH;
+      pTask->vState(TS_READY);
+      vAddToReadyQueue_NL(pTask);
+      m_pReadyQueue->vDropLock();
     }
 
     return;
@@ -1024,58 +1013,48 @@ void Queues::vScheduleYieldedTask(Task* pTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // partitioned task yield
   
-  if (pCallingThread->bGeneralThread()) {
 
-    // - A general thread has executed a partition task which retured TS_YIELDED.
-    //   If the ready queue and ready slot queue is empty then this general thread can
-    //     continue to execute the yield task.
-    //   Otherwise we add the task to the ready slot queue
+  // - A general thread has executed a partition task which retured TS_YIELDED.
+  //   If the ready queue and ready slot queue is empty then this general thread can
+  //     continue to execute the yield task.
+  //   Otherwise we add the task to the ready slot queue
 
-    //for (i8 iSlot = 0; iSlot < gpAttachMap->m_pGrid->iSlots(); iSlot++)
+  //for (i8 iSlot = 0; iSlot < gpAttachMap->m_pGrid->iSlots(); iSlot++)
+  
+  i8 i_Slot = pTask->iSlot();
+
+  // first check if any tasks in ready queue
+  i8 iLengthReadyQueue = m_pReadyQueue->nTasks();
+  vTrace("ReadyQ %lld\n"_Stz, i_Slot, iLengthReadyQueue);
+  
+  if (0 == iLengthReadyQueue) {
     
-    i8 i_Slot = pTask->iSlot();
-
-    // first check if any tasks in ready queue
-    i8 iLengthReadyQueue = m_pReadyQueue->nTasks();
-    vTrace("ReadyQ %lld\n"_Stz, i_Slot, iLengthReadyQueue);
+    // now check if any ready tasks in ready slot queue
+    m_pReadySlotQueues[i_Slot]->vGrabLock();
+    i8 iLengthReadySlotQueue = m_pReadySlotQueues[i_Slot]->nTasks();
     
-    if (0 == iLengthReadyQueue) {
-      
-      // now check if any ready tasks in ready slot queue
-      m_pReadySlotQueues[i_Slot]->vGrabLock();
-      i8 iLengthReadySlotQueue = m_pReadySlotQueues[i_Slot]->nTasks();
-      
-      vTrace("SlotQ[%lld] %lld\n"_Stz, i_Slot, iLengthReadySlotQueue);
-      
-      if (0 == iLengthReadySlotQueue) {
-        m_pReadySlotQueues[i_Slot]->vDropLock();
-        pCallingThread->vReExecuteTask(pTask);
-        return;
-      }
-      
-      pTask->vState(TS_READY);
-      vAddToReadySlotQueue_NL(pTask);
+    vTrace("SlotQ[%lld] %lld\n"_Stz, i_Slot, iLengthReadySlotQueue);
+    
+    if (0 == iLengthReadySlotQueue) {
       m_pReadySlotQueues[i_Slot]->vDropLock();
+      pCallingThread->vReExecuteTask(pTask);
       return;
-    
     }
     
-    // just add task to ready slot queue
-    m_pReadySlotQueues[i_Slot]->vGrabLock();
     pTask->vState(TS_READY);
     vAddToReadySlotQueue_NL(pTask);
     m_pReadySlotQueues[i_Slot]->vDropLock();
-    
-  }
-  else {
-    
-    // - case where task is spawned by non-general task in yield state
-    
-    //pTask->vState(TS_READY);
-    //vScheduleReadyTask(pTask);
-    NEVER_REACH;
+    return;
+  
   }
   
+  // just add task to ready slot queue
+  m_pReadySlotQueues[i_Slot]->vGrabLock();
+  pTask->vState(TS_READY);
+  vAddToReadySlotQueue_NL(pTask);
+  m_pReadySlotQueues[i_Slot]->vDropLock();
+  
+
   return;
 }
 
