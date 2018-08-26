@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : pLoop
 
-  "pLoop" task::this task.comment!
+  //"pLoop" task::this task.comment!
 
   // push a register frame
   reg.push

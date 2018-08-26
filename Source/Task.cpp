@@ -163,7 +163,6 @@ Task::Task(Value* pRequest)
   MemLib::vCopy(m_pRequest,pRequest,nBytes,CN_TASK);
   
   m_sName    = "req.task"_Stz;
-  m_sComment = "requestLoop"_Stz;
   m_eTaskKind = TK_REQUEST_SERVER;
   
   _checkInitialised_(CN_TASK);
@@ -245,8 +244,6 @@ void Task::vInit(Stz* aLambda)
   m_zAcks.vCheckInit();
   m_pThread     = nullptr;
   m_pSeedObject = nullptr;
-  
-  m_sComment    = ""_Stz;
   
   m_pJobQueue   = nullptr;
   
@@ -2163,13 +2160,12 @@ void Task::vTracePoint(Stz* aMark)
   i8 iAuxValues    = m_pAuxStack->iValues();
   i8 iDataValues   = m_pDataStack->iValues();
   i8 iReturnValues = m_pReturnStack->iValues();
-  vTrace("[%s(N%d):%8s\\%lld %-11s] %-16s %-16s : a%2lld="_Stz,
+  vTrace("[%s(N%d):%8s\\%lld %-11s] %-16s : a%2lld="_Stz,
          
          gpAttachMap->m_pGrid->pThisNode()->aNodeName(),
          gpAttachMap->m_pGrid->iThisNode(),
          m_sName.aChar(),
          *m_zAcks,
-         m_sComment.aChar(),
          
          sRoutine.aChar(),
          aMark,

@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : ppLoop ( actorNo forwardTask -- )
 
-  "ppLoop" task::this task.comment!
+  //"ppLoop" task::this task.comment!
 
 tp: participantProxy
 

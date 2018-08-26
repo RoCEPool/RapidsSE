@@ -205,7 +205,6 @@ namespace Tasks
     eTK     m_eTaskKind;   // task kind
   
     s32     m_sName;       // task name
-    s32     m_sComment;    // comment
   
     i8      m_iTxId;       // transaction id
     i8      m_iWakeAt;     // time at which to wake this tx
@@ -1409,8 +1408,6 @@ namespace Tasks
     static void vTaskAcksFetch(MP_Task mpTask);
     static void vTaskAcksStore(MP_Task mpTask);
     static void vTaskBreakPoint(MP_Task mpTask);
-    static void vTaskCommentFetch(MP_Task mpTask);
-    static void vTaskCommentStore(MP_Task mpTask);
     static void vTaskDelete(MP_Task mpTask);
     static void vTaskDestructorTraceFetch(MP_Task mpTask);
     static void vTaskDestructorTraceStore(MP_Task mpTask);

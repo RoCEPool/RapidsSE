@@ -19,8 +19,6 @@ void Task::vAddPrimitives_Task(void)
   vAddPrimitive("task.acks@"_Stz,     &vTaskAcksFetch,     false);
   vAddPrimitive("task.acks!"_Stz,     &vTaskAcksStore,     false);
   vAddPrimitive("task::breakPoint"_Stz, &vTaskBreakPoint,  false);
-  vAddPrimitive("task.comment@"_Stz,  &vTaskCommentFetch,  false);
-  vAddPrimitive("task.comment!"_Stz,  &vTaskCommentStore,  false);
   vAddPrimitive("task.delete"_Stz,    &vTaskDelete,        false);
   
   vAddPrimitive("task.destructorTrace@"_Stz,  &vTaskDestructorTraceFetch, false);
@@ -131,44 +129,6 @@ void Task::vTaskBreakPoint(MP_Task mpTask)
 {
   ENTRY("vTaskBreakPoint"_Stz);
     
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.comment@ -- push comment of given task                                */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskCommentFetch(MP_Task mpTask)
-{
-  ENTRY("vTaskCommentFetch"_Stz);
-  
-  Object* pPtrTask;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTask) )
-    THROW_INVALID_DSTACK("task.comment@"_Stz);
-  Task* pGivenTask = _pTask(pPtrTask);
-  
-  mpTask->m_pDataStack->vPushS32(pGivenTask->m_sComment);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.comment! -- store comment into given task                             */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskCommentStore(MP_Task mpTask)
-{
-  ENTRY("vTaskCommentStore"_Stz);
-  
-  Object* pPtrTask;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTask) )
-    THROW_INVALID_DSTACK("task.comment!"_Stz);
-  Task* pGivenTask = _pTask(pPtrTask);
-  
-  s32 sComment;
-  if ( ! mpTask->m_pDataStack->bPop(sComment) )
-    THROW_INVALID_DSTACK("task.comment!"_Stz);
-  
-  pGivenTask->m_sComment = sComment;
-  
   EXIT();
 }
 

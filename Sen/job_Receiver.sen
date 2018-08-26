@@ -52,7 +52,7 @@
   pSocket task::this task.socketR35!
 
   // set task comment (this should go, never really used it)
-  "receiver_run" task::this task.comment!
+  //"receiver_run" task::this task.comment!
 
   args.verbose if
     grid::thisNode@ "Receiver running on node %v" fmt.print

@@ -328,11 +328,10 @@ void Task::vSocketRecvValSet(MP_Task mpTask)
   pSocket = reinterpret_cast<Socket*>(pObject);
   
   if (gpAttachMap->m_bTracepoint)
-    vTrace("[N%lld:%8s\\%lld %-11s] receiving on %lld\n"_Stz,
+    vTrace("[N%lld:%8s\\%lld ] receiving on %lld\n"_Stz,
            gpAttachMap->m_pGrid->iThisNode(),
            mpTask->m_sName.aChar(),
            *mpTask->m_zAcks,
-           mpTask->m_sComment.aChar(),
            
            pSocket->m_iSocketId);
   
