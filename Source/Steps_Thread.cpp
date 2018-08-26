@@ -20,8 +20,6 @@ void Task::vAddPrimitives_Thread(void)
   vAddPrimitive("thread.cpu"_Stz,             &vThreadCpu,             false);
   vAddPrimitive("thread.dump"_Stz,            &vThreadDump,            false);
   vAddPrimitive("thread.id"_Stz,              &vThreadId,              false);
-  vAddPrimitive("thread.kind@"_Stz,           &vThreadKindFetch,       false);
-  vAddPrimitive("thread.kind!"_Stz,           &vThreadKindStore,       false);
   vAddPrimitive("thread.mutexLock"_Stz,       &vThreadMutexLock,       false);
   vAddPrimitive("thread.mutexUnlock"_Stz,     &vThreadMutexUnlock,     false);
   vAddPrimitive("thread.sleep_s"_Stz,         &vThreadSleep_s,         false);
@@ -154,44 +152,6 @@ ENTRY("vThreadId"_Stz);
   Thread* pThread = static_cast<Thread*>(pObject);
   
   mpTask->m_pDataStack->vPushInt(pThread->m_pPosixThread->m_iOpSysThreadId);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* thread.kind@ -- fetch thread kind from thread which is on stack            */
-/*----------------------------------------------------------------------------*/
-void Task::vThreadKindFetch(MP_Task mpTask)
-{
-  ENTRY("vThreadKindFetch"_Stz);
-  
-  Object* pThreadEmb;
-  if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
-    THROW_INVALID_DSTACK("thread.kind@"_Stz);
-  Thread* pThread = _pThread(pThreadEmb);
-  
-  mpTask->m_pDataStack->vPushInt(pThread->m_eThread);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* thread.kind! -- store thread kind into thread which is on stack            */
-/*----------------------------------------------------------------------------*/
-void Task::vThreadKindStore(MP_Task mpTask)
-{
-  ENTRY("vThreadKindStore"_Stz);
-  
-  Object* pThreadEmb;
-  if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
-    THROW_INVALID_DSTACK("thread.kind@"_Stz);
-  Thread* pThread = _pThread(pThreadEmb);
-  
-  i8 eThread;
-  if ( ! mpTask->m_pDataStack->bPop(eThread) )
-    THROW_INVALID_DSTACK("thread.kind!"_Stz);
-  
-  pThread->m_eThread = (eTH)eThread;
   
   EXIT();
 }

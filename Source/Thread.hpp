@@ -70,7 +70,6 @@ namespace Threads
   public:
     i8           m_iThreadNo;    // our thread no
     Lock         m_xLock;        // thread lock
-    eTH          m_eThread;      // thread kind
     eTC          m_eThreadState; // thread state
     PosixThread* m_pPosixThread; // its posix structure
     Semaphore*   m_pSemaphore;   // this threads semaphore

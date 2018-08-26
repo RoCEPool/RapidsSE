@@ -71,7 +71,6 @@ Thread::Thread(void)
   
   m_iThreadNo    = ++zThreadNo;
   m_xLock.vInitLock(LK_THREAD);
-  m_eThread      = TH_NONE;
   m_eThreadState = TC_NONE;
   m_pPosixThread = new PosixThread;
   m_pSemaphore   = new Semaphore;
@@ -80,8 +79,8 @@ Thread::Thread(void)
 
   Thread* pThread = this;
   
-   m_iLastRRqueue  = QR_SLEEPING_QUEUE - 1;
-   m_iStartRRqueue = QR_NONE;
+  m_iLastRRqueue  = QR_SLEEPING_QUEUE - 1;
+  m_iStartRRqueue = QR_NONE;
   
   _checkInitialised_(CN_THREAD);
   
