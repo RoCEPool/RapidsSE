@@ -72,7 +72,6 @@ namespace Threads
     Lock         m_xLock;        // thread lock
     eTH          m_eThread;      // thread kind
     eTC          m_eThreadState; // thread state
-    i8           m_iPartition;   // specific partition? 
     PosixThread* m_pPosixThread; // its posix structure
     Semaphore*   m_pSemaphore;   // this threads semaphore
     NP_Task      m_npTask;       // task current being executed
@@ -112,8 +111,6 @@ namespace Threads
     i8   iLastRRqueue(void);
     void vLastRRqueue(i8 iLastRRqueue);
     void vLoop(void);
-    i8   iPartition(void);
-    void vPartition(i8 iPartition);
     void vReExecuteTask(Task* pTask);
     bool bRRnext(void);
     void vRRstart(void);

@@ -24,8 +24,6 @@ void Task::vAddPrimitives_Thread(void)
   vAddPrimitive("thread.kind!"_Stz,           &vThreadKindStore,       false);
   vAddPrimitive("thread.mutexLock"_Stz,       &vThreadMutexLock,       false);
   vAddPrimitive("thread.mutexUnlock"_Stz,     &vThreadMutexUnlock,     false);
-  vAddPrimitive("thread.partition@"_Stz,      &vThreadPartitionFetch,  false);
-  vAddPrimitive("thread.partition!"_Stz,      &vThreadPartitionStore,  false);
   vAddPrimitive("thread.sleep_s"_Stz,         &vThreadSleep_s,         false);
   vAddPrimitive("thread.sleep_ms"_Stz,        &vThreadSleep_ms,        false);
   vAddPrimitive("thread.sleep_us"_Stz,        &vThreadSleep_us,        false);
@@ -232,44 +230,6 @@ ENTRY("vThreadMutexUnlock"_Stz);
   ASSERT(CN_THREAD == pThread->eClass());
   
   pThread->m_pSemaphore->vMutexUnlock();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* thread.partition@ -- fetch partition from thread which is on stack         */
-/*----------------------------------------------------------------------------*/
-void Task::vThreadPartitionFetch(MP_Task mpTask)
-{
-  ENTRY("vThreadPartitionFetch"_Stz);
-  
-  Object* pThreadEmb;
-  if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
-    THROW_INVALID_DSTACK("thread.partition@"_Stz);
-  Thread* pThread = _pThread(pThreadEmb);
-  
-  mpTask->m_pDataStack->vPushInt(pThread->m_iPartition);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* thread.partition! -- store partition into thread which is on stack         */
-/*----------------------------------------------------------------------------*/
-void Task::vThreadPartitionStore(MP_Task mpTask)
-{
-  ENTRY("vThreadPartitionStore"_Stz);
-  
-  Object* pThreadEmb;
-  if ( ! mpTask->m_pDataStack->bPop(pThreadEmb) )
-    THROW_INVALID_DSTACK("thread.partition@"_Stz);
-  Thread* pThread = _pThread(pThreadEmb);
-  
-  i8 iPartition;
-  if ( ! mpTask->m_pDataStack->bPop(iPartition) )
-    THROW_INVALID_DSTACK("thread.partition!"_Stz);
-  
-  pThread->m_iPartition = iPartition;
   
   EXIT();
 }

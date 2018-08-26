@@ -1470,8 +1470,6 @@ namespace Tasks
     static void vThreadKindStore(MP_Task mpTask);
     static void vThreadMutexLock(MP_Task mpTask);
     static void vThreadMutexUnlock(MP_Task mpTask);
-    static void vThreadPartitionFetch(MP_Task mpTask);
-    static void vThreadPartitionStore(MP_Task mpTask);
     static void vThreadSleep_s(MP_Task mpTask);
     static void vThreadSleep_ms(MP_Task mpTask);
     static void vThreadSleep_us(MP_Task mpTask);

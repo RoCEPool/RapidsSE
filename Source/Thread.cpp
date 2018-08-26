@@ -73,7 +73,6 @@ Thread::Thread(void)
   m_xLock.vInitLock(LK_THREAD);
   m_eThread      = TH_NONE;
   m_eThreadState = TC_NONE;
-  m_iPartition   = -1;
   m_pPosixThread = new PosixThread;
   m_pSemaphore   = new Semaphore;
 
@@ -396,26 +395,6 @@ void Thread::vLoop(void)
   }
   
   NEVER_REACH;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get partition                                                              */
-/*----------------------------------------------------------------------------*/
-i8 Thread::iPartition(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
-  return m_iPartition;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set partition                                                              */
-/*----------------------------------------------------------------------------*/
-void Thread::vPartition(i8 iPartition)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
-  m_iPartition = iPartition;
 }
 
 /*----------------------------------------------------------------------------*/
