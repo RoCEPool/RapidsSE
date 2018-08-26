@@ -185,8 +185,10 @@ bool CommandProcessor::bFindJobClass(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
   
-  m_pJobClass =
-    gxJobCatalog.pFindJob(pTkn(0)->aText(), pTkn(1)->aText());
+  Stz* aCommand1 = pTkn(0)->aText();
+  Stz* aCommand2 = pTkn(1)->aText();
+  
+  m_pJobClass = gxJobCatalog.pFindJob(aCommand1, aCommand2);
   
   return m_pJobClass ? true : false;
 }

@@ -71,7 +71,7 @@ bool Prompt::bPrompt_se(SePrompt* pPrompt)
   vTrace("SE:: %s\n"_Stz,sCommand.aStr());
   
   // call se to execute command
-  bool b = RapidsSE_ExecuteCommmand(sCommand.aStr(),pPrompt->pSEitf());
+  bool b = RapidsSE_bExecuteCommmand(sCommand.aStr(),pPrompt->pSEitf());
   
   return b;
 }

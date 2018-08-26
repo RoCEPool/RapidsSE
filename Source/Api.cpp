@@ -2671,20 +2671,36 @@ bool RapidsSE_SpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* execute command                                                            */
 /*----------------------------------------------------------------------------*/
-bool RapidsSE_ExecuteCommmand(Stz* aCommand, SEitf* pSEitf)
+bool RapidsSE_bExecuteCommmand(Stz* aCommand, SEitf* pSEitf)
 {
   CommandProcessor* pCommandProcessor = pSEitf->m_pCommandProcessor;
   
   pCommandProcessor->vTokenise(aCommand);
   
   bool bFound = pCommandProcessor->bFindJobClass();
+  if (! bFound)
+    return false;
   
   pCommandProcessor->vPreJob(pSEitf);
   
   Job* pJob = pCommandProcessor->pJob();
+  if (!pJob)
+    return false;
+  
+  // lock this job's mutex
+  i8 rCode = pthread_mutex_lock(&pJob->m_xThreadMutex);
+  if (0 != rCode)
+    vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
 
+  // spawn the job
   RapidsSE_SpawnJob(pJob, SS_SEED_REQ, pSEitf);
   
+  // wait for condition
+  rCode = pthread_cond_wait(&pJob->m_xThreadCond,
+                            &pJob->m_xThreadMutex);
+  if (0 != rCode)
+    vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
+
   return true;
 }
 
