@@ -23,7 +23,7 @@
 "testing.sen" include
 "munge.sen" include
 
-"r35Start.sen" include
+"start.sen" include
 
 // last
 "requests.sen" include

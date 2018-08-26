@@ -6,7 +6,6 @@
 
 "serverModel.sen" include
 "workerModel.sen" include
-"partitionModel.sen" include
 
 "actorPrimitives.sen" include
 
