@@ -8,8 +8,6 @@ namespace DBobjects
   class Index;
   class EntWrk;
   
-  const i8 C_UNKNOWN = -1;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   class TablePtn : public Object

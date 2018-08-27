@@ -768,8 +768,8 @@ namespace Tasks
     static void vGridSlots(MP_Task mpTask);
     static void vGridStartedStore(MP_Task mpTask);
     static void vGridStartedFetch(MP_Task mpTask);
-    static void vGridstartNodeStore(MP_Task mpTask);
-    static void vGridstartNodeFetch(MP_Task mpTask);
+    static void vGridStartNodeStore(MP_Task mpTask);
+    static void vGridStartNodeFetch(MP_Task mpTask);
     static void vGridThisNodeStore(MP_Task mpTask);
     static void vGridThisNodeFetch(MP_Task mpTask);
     static void vGridThisNodeNameFetch(MP_Task mpTask);

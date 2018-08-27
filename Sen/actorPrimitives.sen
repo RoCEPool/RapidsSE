@@ -525,17 +525,17 @@ tp: addingPassOnToCP
 
   loop
 
-  //grid::thisNode@ grid::startNode!
-  grid::startNode@ "Cluster Start node: %v" str.format .
+  //grid::thisNode@ grid::StartNode!
+  grid::StartNode@ "Cluster Start node: %v" str.format .
 ;
 
 /*----------------------------------------------------------------------------*/
 /* set start node                                                             */
 /*----------------------------------------------------------------------------*/
-: setstartNode ( -- )
+: setStartNode ( -- )
 
   // set this node as the grid start node
-  grid::thisNode@ grid::startNode!
+  grid::thisNode@ grid::StartNode!
 ;
 
 /*============================================================================*/

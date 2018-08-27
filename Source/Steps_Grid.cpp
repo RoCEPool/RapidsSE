@@ -24,8 +24,8 @@ void Task::vAddPrimitives_Grid(void)
   vAddPrimitive("grid::slots"_Stz,        &vGridSlots,             false);
   vAddPrimitive("grid::started!"_Stz,     &vGridStartedStore,      false);
   vAddPrimitive("grid::started@"_Stz,     &vGridStartedFetch,      false);
-  vAddPrimitive("grid::startNode!"_Stz, &vGridstartNodeStore, false);
-  vAddPrimitive("grid::startNode@"_Stz, &vGridstartNodeFetch, false);
+  vAddPrimitive("grid::StartNode!"_Stz, &vGridStartNodeStore, false);
+  vAddPrimitive("grid::StartNode@"_Stz, &vGridStartNodeFetch, false);
   vAddPrimitive("grid::thisNode!"_Stz,    &vGridThisNodeStore,     false);
   vAddPrimitive("grid::thisNode@"_Stz,    &vGridThisNodeFetch,     false);
   vAddPrimitive("grid::thisNodeName@"_Stz,&vGridThisNodeNameFetch, false);
@@ -219,30 +219,30 @@ void Task::vGridStartedStore(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* grid::startNode@ -- get grid start node                                 */
+/* grid::StartNode@ -- get grid start node                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vGridstartNodeFetch(MP_Task mpTask)
+void Task::vGridStartNodeFetch(MP_Task mpTask)
 {
-  ENTRY("vGridstartNodeFetch"_Stz);
+  ENTRY("vGridStartNodeFetch"_Stz);
   
-  mpTask->m_pDataStack->vPushInt(gpAttachMap->m_pGrid->istartNode());
+  mpTask->m_pDataStack->vPushInt(gpAttachMap->m_pGrid->iStartNode());
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* grid::startNode! -- set grid start node                                 */
+/* grid::StartNode! -- set grid start node                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vGridstartNodeStore(MP_Task mpTask)
+void Task::vGridStartNodeStore(MP_Task mpTask)
 {
-  ENTRY("vGridstartNodeStore"_Stz);
+  ENTRY("vGridStartNodeStore"_Stz);
   
   i8 iStartNode;
   
   if ( ! mpTask->m_pDataStack->bPop(iStartNode) )
-    THROW_INVALID_DSTACK("grid::startNode!"_Stz);
+    THROW_INVALID_DSTACK("grid::StartNode!"_Stz);
   
-  gpAttachMap->m_pGrid->vstartNode(iStartNode);
+  gpAttachMap->m_pGrid->vStartNode(iStartNode);
   
   EXIT();
 }
