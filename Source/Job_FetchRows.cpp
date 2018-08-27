@@ -96,11 +96,10 @@ Job_FetchRows::Job_FetchRows(Interface::SEitf* pSEitf)
   //m_sSeed = mJobNote_FetchRows.pJobClass()->m_aSeedReq;
   m_sWhere       = ""_Stz;
   m_pBufferQueue = new Queue;
-
+  m_pTable       = nullptr;
+  m_pPlanner     = nullptr;
   m_nLastBuffers = -1;
-  m_nLastBuffersScanned = 0;
-  m_pFetchBuffer = nullptr;
-  m_pRow         = nullptr;
+ 
   m_pTask        = nullptr;
   
   _checkInitialised_(CN_JOB_FETCHROWS);
@@ -220,40 +219,55 @@ Job* JobsModel::pJob_FetchRows_pre(Interface::SEitf* pSEitf)
 void JobsModel::vJob_FetchRows_post(Interface::SEitf* pSEitf, Job* pJob)
 {
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJob);
+  
   ValWrk xValWrk;
+  i8 nRowsProcessed = 0;
+  i8 nLastBuffersScanned = 0;
+  
+  FetchBuffer* pFetchBuffer = nullptr;
   
   if ( pJob_FetchRows->m_bHasError ) {
     
     for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
       vTrace("ERROR (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob_FetchRows->m_xNode[i_Node].m_eErrorCode]);
     }
-    
+   
+    return;
   }
-  else {
     
-    while ( pJob_FetchRows->m_nLastBuffersScanned != pJob_FetchRows->m_nLastBuffers ) {
-      
-      // attempt to pop buffer off the buffer queue
-      if ( ! pJob_FetchRows->m_pBufferQueue->bPop(&xValWrk) ) {
-        PosixThread::vSleepMilli(1);
-        continue;
-      }
-      PtrVal* pPtrVal = xValWrk.pNestedPtrVal();
-      pJob_FetchRows->m_pFetchBuffer = (FetchBuffer*)(pPtrVal->pPtr());
-      
-      pJob_FetchRows->m_pFetchBuffer->vShow(true);
-      
-      if (pJob_FetchRows->m_pFetchBuffer->bIsLast()) {
-        pJob_FetchRows->m_nLastBuffersScanned++;
-      }
-      
-      pJob_FetchRows->m_pFetchBuffer = nullptr;
+  while ( nLastBuffersScanned != pJob_FetchRows->m_nLastBuffers ) {
+    
+    // attempt to pop buffer off the buffer queue
+    if ( ! pJob_FetchRows->m_pBufferQueue->bPop(&xValWrk) ) {
+      PosixThread::vSleepMilli(1);
+      continue;
+    }
+    PtrVal* pPtrVal = xValWrk.pNestedPtrVal();
+    pFetchBuffer = (FetchBuffer*)(pPtrVal->pPtr());
+    
+    if (pSEitf->m_bDisplay) {
+      vIterateBuffer(pJob_FetchRows, pFetchBuffer);      
     }
     
+    nRowsProcessed += pFetchBuffer->nFetchedRows();
+    
+    if (pFetchBuffer->bIsLast()) {
+      nLastBuffersScanned++;
+    }
+    delete pFetchBuffer;
+    pFetchBuffer = nullptr;
   }
+    
+  vTrace("success: %lld rows affected\n"_Stz, nRowsProcessed);
   
-  // cleanup
-  // delete bufferQueue , planner etc
+  // delete the planner
+  delete pJob_FetchRows->m_pPlanner;
+  pJob_FetchRows->m_pPlanner = nullptr;
+  
+  // delete the buffer queue
+  pJob_FetchRows->m_pBufferQueue->vFinalize();
+  delete pJob_FetchRows->m_pBufferQueue;
+  pJob_FetchRows->m_pBufferQueue = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -264,6 +278,23 @@ void JobsModel::vJob_FetchRows_delete(Interface::SEitf* pSEitf, Job* pJob)
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJob);
   
   delete pJob_FetchRows;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show job function                                                          */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vIterateBuffer(Job_FetchRows* pJob_FetchRows, FetchBuffer* pFetchBuffer) {
+  Row** ppRow = nullptr;
+  i8 nPartition = pFetchBuffer->nPartitionNo();
+  s48K sRowString;
+  
+  ppRow = pFetchBuffer->pFirstRowPtr();
+  while (ppRow) {
+    Row* pRow = *ppRow;
+    pRow->vAsBinaryStringVLQ(sRowString, pJob_FetchRows->m_pTable->pColumnVec());
+    vTrace("row: (%lld, %s)\n"_Stz, nPartition, sRowString.aChar());
+    ppRow = pFetchBuffer->pNextRowPtr(ppRow);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

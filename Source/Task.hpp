@@ -887,7 +887,9 @@ namespace Tasks
     static void vJobExecutedRowsProcessedFetch(MP_Task mpTask);
     static void vJobExecutedRowsProcessedStore(MP_Task mpTask);
     static void vJobFetchRowsLastBuffersStore(MP_Task mpTask);
+    static void vJobFetchRowsPlannerStore(MP_Task mpTask);
     static void vJobFetchRowsSpawnSub(MP_Task mpTask);
+    static void vJobFetchRowsTableStore(MP_Task mpTask);
     static void vJobFetchRowsWhereFetch(MP_Task mpTask);
     static void vJobFindOriginator(MP_Task mpTask);
     static void vJobFindParticipant(MP_Task mpTask);
