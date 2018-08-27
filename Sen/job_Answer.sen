@@ -86,7 +86,7 @@ int: nTotalConnections
     // if first socket on non-start node then start the connector task
 
     nTotalConnections @ 1 == if
-      grid::thisNode@ grid::startNodeR35@ != if
+      grid::thisNode@ grid::startNode@ != if
         spawn_Connector to pConnectorTask
       then
     then
