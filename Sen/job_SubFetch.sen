@@ -5,13 +5,135 @@
 "job_SubFetch.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* fetch rows                                                                 */
+/*----------------------------------------------------------------------------*/
+: fetchRows ( Job_SubFetch -- <R> )
+
+  params| pJob_SubFetch |
+  0 0 0 locals| sTableNm iPhrase iSlot |
+  0 0 0 0 locals| pPlanner pBufferQueue pIndex pTable |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the planner, bufferQueue, phrase and slot this sub fetch is supposed to work on
+  pJob_SubFetch job_subFetch.planner@ to pPlanner
+  pJob_SubFetch job_subFetch.bufferQueue@ to pBufferQueue
+  pJob_SubFetch job_subFetch.phrase@ to iPhrase
+  pJob_SubFetch job_subFetch.slot@ to iSlot
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push table
+  pJob_SubFetch job.objectName@ to sTableNm
+  sTableNm pushTable assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // find the table
+  sTableNm find execute to pTable
+
+  // push into indexes folder
+  pushIndexes assert
+
+  iPhrase pPlanner Planner.fetchTechnique@
+  case
+
+  // an exact select using index
+  AT_EXACT of
+    // find the index
+    iPhrase pPlanner Planner.indexNm@
+    find execute to pIndex
+
+    // now get excat key rows from index
+    iSlot pTable tablePtnGrabRead  //! partitionLock
+    iPhrase pPlanner Planner.key@
+    iPhrase
+    pPlanner
+    pBufferQueue
+    iSlot
+    pIndex index.exactKey
+    iSlot pTable tablePtnDropRead
+  endof
+
+  AT_LOWER of
+    // find the index
+    iPhrase pPlanner Planner.indexNm@
+    find execute to pIndex
+
+    // now get excat key rows from index
+    iSlot pTable tablePtnGrabRead  //! partitionLock
+    iPhrase pPlanner Planner.lowKey@
+    iPhrase
+    pPlanner
+    pBufferQueue
+    iSlot
+    pIndex index.lowerBound
+    iSlot pTable tablePtnDropRead
+  endof
+
+  // an upper bound select using index
+  AT_UPPER of
+
+    // find the index
+    iPhrase pPlanner Planner.indexNm@
+    find execute to pIndex
+
+    // now get excat key rows from index
+    iSlot pTable tablePtnGrabRead  //! partitionLock
+    iPhrase pPlanner Planner.highKey@
+    iPhrase
+    pPlanner
+    pBufferQueue
+    iSlot
+    pIndex index.upperBound
+    iSlot pTable tablePtnDropRead
+  endof
+
+  // a range select using index
+  AT_RANGE of
+
+    // find the index
+    iPhrase pPlanner Planner.indexNm@
+    find execute to pIndex
+
+    // now get excat key rows from index
+    iSlot pTable tablePtnGrabRead  //! partitionLock
+    iPhrase pPlanner Planner.highKey@
+    iPhrase pPlanner Planner.lowKey@
+    iPhrase
+    pPlanner
+    pBufferQueue
+    iSlot
+    pIndex index.range
+    iSlot pTable tablePtnDropRead
+  endof
+
+
+  // full scan (no index)
+  AT_SCAN of
+    // find the index
+    "hidden" find execute to pIndex
+
+    // now scan the index
+    iSlot pTable tablePtnGrabRead  //! partitionLock
+    pBufferQueue iSlot pIndex index.scan
+    iSlot pTable tablePtnDropRead
+
+  endof
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop table
+  popTable
+
+  // pop indexes
+  popIndexes
+
+  endcase
+;
+
+/*----------------------------------------------------------------------------*/
 /* SubFetch (on originating node)                                             */
 /*----------------------------------------------------------------------------*/
 : SubFetch_run ( -- <R> )
 
-  0 0 locals| pJob_SubFetch pTask |
-  0 0 locals| iSlot iPhrase |
-  0 0 0 0 0 locals| pPlanner pTable pBufferQueue pIndex sTableNm |
+  0 0 locals| pTask pJob_SubFetch |
 
   tp: SubFetch
   "SubFetch_run" .
@@ -34,48 +156,8 @@
   dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // push table
-  pJob_SubFetch job.objectName@ to sTableNm
-  sTableNm pushTable assert
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // find the table
-  sTableNm find execute to pTable
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the planner, bufferQueue, phrase and slot this sub fetch is supposed to work on
-  pJob_SubFetch job_subFetch.planner@ to pPlanner
-  pJob_SubFetch job_subFetch.bufferQueue@ to pBufferQueue
-  pJob_SubFetch job_subFetch.phrase@ to iPhrase
-  pJob_SubFetch job_subFetch.slot@ to iSlot
-
-  iPhrase pPlanner Planner.fetchTechnique@
-  case
-
-  // full scan (no index)
-  AT_SCAN of
-    // push into indexes folder
-    pushIndexes assert
-
-    // find the index and put it in the seitf
-    "hidden" find execute to pIndex
-    iSlot pTable tablePtnGrabRead  //! partitionLock
-
-    // now scan the index
-    pBufferQueue iSlot pIndex index.scan
-
-    iSlot pTable tablePtnDropRead
-
-    // pop indexes
-    popIndexes
-
-    endof
-
-  endcase
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pop table
-  popTable
+  // execute fetch depending on the fetchTechnique in the planner
+  pJob_SubFetch fetchRows
 
   // now delete the ended job
   pJob_SubFetch job.delete

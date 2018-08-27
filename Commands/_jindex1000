@@ -37,7 +37,6 @@ vfyidx j1000 idx;
 print "verifying index hidden..." ;
 vfyidx j1000 hidden;
 
-/*
 fetch j1000 "j1000_key 989 =";
 print "\n";
 fetch j1000 "j1000_key 125 =";
@@ -50,10 +49,12 @@ fetch j1000 "j1000_key 999 =";
 print "\n";
 fetch j1000 "j1000_key 999 =";
 print "\n";
-fetch j1000 "j1000_key 990 >= j1000_key <= 995 and";
+fetch j1000 "j1000_key 990 >= j1000_key 995 <= and";
 print "\n";
-*/
-
+fetch j1000 "j1000_key 990 >=";
+print "\n";
+fetch j1000 "j1000_key 995 <= ";
+print "\n";
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
