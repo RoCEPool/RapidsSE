@@ -96,6 +96,7 @@ using namespace JobsModel;
 #include "Job_SizeTable.hpp"
 #include "Job_Space.hpp"
 #include "Job_Start.hpp"
+#include "Job_StartCluster.hpp"
 #include "Job_Status.hpp"
 #include "Job_SubFetch.hpp"
 #include "Job_SubLoader.hpp"
