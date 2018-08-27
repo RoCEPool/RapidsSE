@@ -760,7 +760,6 @@ namespace Tasks
     
     // grid    
     static void vGridAddNodes(MP_Task mpTask);
-    static void vGridFindNode(MP_Task mpTask);
     static void vGridInit(MP_Task mpTask);
     static void vGridNode(MP_Task mpTask);
     static void vGridNodes(MP_Task mpTask);

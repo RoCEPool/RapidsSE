@@ -17,15 +17,14 @@ extern Arguments       gxArguments;
 void Task::vAddPrimitives_Grid(void)
 {
   vAddPrimitive("grid::addNodes"_Stz,     &vGridAddNodes,          false);
-  vAddPrimitive("grid::findNode"_Stz,     &vGridFindNode,          false);
   vAddPrimitive("grid::node"_Stz,         &vGridNode,              false);
   vAddPrimitive("grid::nodes"_Stz,        &vGridNodes,             false);
   vAddPrimitive("grid::partitions"_Stz,   &vGridPartitions,        false);
   vAddPrimitive("grid::slots"_Stz,        &vGridSlots,             false);
   vAddPrimitive("grid::started!"_Stz,     &vGridStartedStore,      false);
   vAddPrimitive("grid::started@"_Stz,     &vGridStartedFetch,      false);
-  vAddPrimitive("grid::StartNode!"_Stz, &vGridStartNodeStore, false);
-  vAddPrimitive("grid::StartNode@"_Stz, &vGridStartNodeFetch, false);
+  vAddPrimitive("grid::StartNode!"_Stz,   &vGridStartNodeStore,    false);
+  vAddPrimitive("grid::StartNode@"_Stz,   &vGridStartNodeFetch,    false);
   vAddPrimitive("grid::thisNode!"_Stz,    &vGridThisNodeStore,     false);
   vAddPrimitive("grid::thisNode@"_Stz,    &vGridThisNodeFetch,     false);
   vAddPrimitive("grid::thisNodeName@"_Stz,&vGridThisNodeNameFetch, false);
@@ -51,25 +50,6 @@ void Task::vGridAddNodes(MP_Task mpTask)
     ASSERT(CN_NODE == pNode->eClass());
     gpAttachMap->m_pGrid->vAddNode(pNode);
   }
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* grid::findNode -- find node in grid by name                                */
-/*----------------------------------------------------------------------------*/
-void Task::vGridFindNode(MP_Task mpTask)
-{
-  ENTRY("vGridFindNode"_Stz);
-  
-  s256 sPtrNodeName;
-  
-  if ( ! mpTask->m_pDataStack->bPop(sPtrNodeName) )
-    THROW_INVALID_DSTACK("grid::findNode"_Stz);
-  
-  Node* pNode = gpAttachMap->m_pGrid->pFindNode(sPtrNodeName);
-  
-  mpTask->m_pDataStack->vPushObject(pNode);
-  
   EXIT();
 }
 

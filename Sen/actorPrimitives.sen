@@ -226,17 +226,6 @@ tp: >callerAux
 /*----------------------------------------------------------------------------*/
 : setSender ( sender -- ; reg4 == sender )
 
-tp: setSender_name
-
-  grid::findNode
-
-  node.no
-
-tp: setSender_nodeNo
-
-  to_SENDER ( )                                   //! THIS DOESNT LOOK RIGHT -RAY
-
-  tp: reg4HasSender
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -254,21 +243,6 @@ tp: setSender_nodeNo
 /*----------------------------------------------------------------------------*/
 : passBackToPP ( <<result>> nodeName -- )
 
-  reg.push
-
-tp: passBackToPP_name
-
-  grid::findNode
-
-  node.no
-
-tp: passBackToPP_nodeNo
-
-  ppTasks @ to_CALLER
-
-  >callerAux
-
-  reg.pop
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
