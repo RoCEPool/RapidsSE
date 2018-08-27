@@ -134,6 +134,7 @@ enum eCN : u2 // Class Number
     /*    */ CN_JOB_SIZETABLE,
     /*    */ CN_JOB_SPACE,
     /*    */ CN_JOB_START,
+    /*    */ CN_JOB_STARTCLUSTER,
     /*    */ CN_JOB_STATUS,
     /*    */ CN_JOB_SUBFETCH,
     /*    */ CN_JOB_SUBLOADER,
@@ -378,6 +379,7 @@ enum eCN : u2 // Class Number
     /*    */ "JOB_SIZETABLE"_Stz,      // CN_JOB_SIZETABLE
     /*    */ "JOB_SPACE"_Stz,          // CN_JOB_SPACE
     /*    */ "JOB_START"_Stz,          // CN_JOB_START
+    /*    */ "JOB_STARTCLUSTER"_Stz,   // CN_JOB_STARTCLUSTER
     /*    */ "JOB_STATUS"_Stz,         // CN_JOB_STATUS
     /*    */ "JOB_SUBFETCH"_Stz,       // CN_JOB_SUBFETCH
     /*    */ "JOB_SUBLOADER"_Stz,      // CN_JOB_SUBLOADER

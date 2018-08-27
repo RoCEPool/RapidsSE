@@ -81,6 +81,7 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   gxJobCatalog.vTraceJobs(CN_JOB_SANITY);
   gxJobCatalog.vTraceJobs(CN_JOB_SPACE);
   gxJobCatalog.vTraceJobs(CN_JOB_STATUS);
+  gxJobCatalog.vTraceJobs(CN_JOB_STARTCLUSTER);
   gxJobCatalog.vTraceJobs(CN_JOB_WAITCLUSTER);
 
   // child
