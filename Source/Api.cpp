@@ -2393,7 +2393,7 @@ eEC RapidsSE_SEitfNew(void** ppSEitf, i8 iPartition, i8 iTraceLevel)
     
     SEitf* pSEitf = new SEitf(iPartition);
     
-    pSEitf->vInit();
+    pSEitf->vInit("rapidsse"_Stz, "public"_Stz);
     
     // validate the SEitf just created
     VALIDATE_SEITF("b"_Stz);
@@ -2666,6 +2666,24 @@ bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf)
   Handlers::vSpawnedTaskHandler(pNewTask);
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* execute command                                                            */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_ExecuteCommmand(Stz* aCommand, SEitf* pSEitf, bool bPostJob, void** ppJob)
+{
+  Job* pJob = RapidsSE_pExecuteCommmand(aCommand, pSEitf, bPostJob);
+  
+  if (pJob->m_bHasError) {
+    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+      if (pJob->m_xNode[i_Node].m_eErrorCode != EC_NONE)
+        return pJob->m_xNode[i_Node].m_eErrorCode;
+    }
+    ASSERT(0);
+  }
+  else
+    return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
