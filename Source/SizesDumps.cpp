@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "StorageEngine.h"
-#include "SePrompt.hpp"
 
 // Object's : Class::vDump
 // Object's with no vDump defined : Dump::vUndefined
@@ -388,7 +387,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_UseSchema),      // CN_JOB_USESCHEMA
   /*    */ sizeof(Job_VisualizeIndex), // CN_JOB_VERIFYINDEX
   /*    */ sizeof(Job_VisualizeIndex), // CN_JOB_VISUALIZEINDEX
-  /*    */ 0,                          // CN_JOB_WAITCLUSTER
+  /*    */ sizeof(Job_WaitCluster),    // CN_JOB_WAITCLUSTER
 
   /*    */ sizeof(Jobs),               // CN_JOBS
   

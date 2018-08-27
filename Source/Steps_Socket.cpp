@@ -241,9 +241,9 @@ void Task::vSocketRecvObject(MP_Task mpTask)
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // receive rest a job
+  // receive rest of job
   
-  if (eClass >= CN_JOB__BEGUN && eClass <= CN_JOB_VISUALIZEINDEX) {
+  if (eClass >= CN_JOB__BEGUN && eClass <= CN_JOB_WAITCLUSTER) {
     
     //JobClass* pJobClass = gxJobCatalog.pFindJob(eClass);
     //Job* pJob = pJobClass->pNewJob(nullptr);
