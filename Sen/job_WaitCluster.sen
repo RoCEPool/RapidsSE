@@ -1,0 +1,150 @@
+/*============================================================================*/
+/* job_WaitCluster.sen -- Job Wait CLuster                                    */
+/*============================================================================*/
+
+" job_Sanity.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: node.isConnected ( pNode -- t|f )
+
+  params| pNode |
+
+  pNode node.socket@ if
+    true
+  else
+    false
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: grid::connected ( -- t|f )
+
+  grid::nodes 0
+  do
+    I grid::node node.isConnected not if
+      I "Node %v not connected" fmt.print
+      unloop
+      false
+      exit
+    then
+  loop
+
+  "All nodes connected" .
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: grid::wait ( -- )
+
+  begin
+    grid::connected not
+  while
+    100 thread.sleep_ms
+  repeat
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: gridTest
+
+  grid::nodes 0
+  do
+    I grid::node node.isConnected
+    I "gridTest: node %v connected %v " fmt.print
+  loop
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: gridWait
+
+  grid::wait
+;
+
+/*----------------------------------------------------------------------------*/
+/* request to wait for cluster to start (on originating node)                 */
+/*----------------------------------------------------------------------------*/
+: waitCluster_req ( -- <R> )
+
+  0 0 locals| pJob pTask |
+
+  tp: space_req
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // distribute the job
+  pTask pJob "job::distribute" find execute
+
+  pJob <DONE_REQUEST>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute job_WaitCluster.sen job (on participating node)                    */
+/*----------------------------------------------------------------------------*/
+: waitCluster_exe ( pJob_WaitCluster -- )
+
+  //params| pJob_WaitCluster |
+  job::this locals| pJob_WaitCluster |
+
+  pJob_WaitCluster job.notice
+
+  pJob_WaitCluster send_job__executed
+
+  nullptr task::this task.job!
+
+  <DONE_NODE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* begin job                                                                  */
+/*----------------------------------------------------------------------------*/
+: waitCluster_beg ( -- )
+
+  job::this locals| pJob_WaitCluster |
+
+  pJob_WaitCluster job.beginParticipant
+
+  job::participantBegun
+;
+
+/*----------------------------------------------------------------------------*/
+/* end job                                                                    */
+/*----------------------------------------------------------------------------*/
+: waitCluster_end ( -- )
+
+  job::this locals| pJob_WaitCluster |
+
+  job::participantEnded
+;
+
+/*----------------------------------------------------------------------------*/
+/* cancel job                                                                 */
+/*----------------------------------------------------------------------------*/
+: waitCluster_can ( -- )
+
+  job::this locals| pJob_WaitCluster |
+
+  job::participantCancelled
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+
