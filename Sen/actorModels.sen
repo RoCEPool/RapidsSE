@@ -9,8 +9,6 @@
 
 "actorPrimitives.sen" include
 
-"requestServer.sen" include
-
 
 /*----------------------------------------------------------------------------*/
 /* queue an indirect call set to the coordinator and wait for indirect result */
