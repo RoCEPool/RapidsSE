@@ -14,7 +14,7 @@
   0 0 0 0 locals| pPlanner pBufferQueue pIndex pTable |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the planner, bufferQueue, phrase and slot this sub fetch is supposed to work on
+  // get the planner, bufferQueue, phrase and slot t
   pJob_SubFetch job_subFetch.planner@ to pPlanner
   pJob_SubFetch job_subFetch.bufferQueue@ to pBufferQueue
   pJob_SubFetch job_subFetch.phrase@ to iPhrase
@@ -29,103 +29,109 @@
   // find the table
   sTableNm find execute to pTable
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push into indexes folder
   pushIndexes assert
 
   iPhrase pPlanner Planner.fetchTechnique@
   case
 
-  // an exact select using index
-  AT_EXACT of
-    // find the index
-    iPhrase pPlanner Planner.indexNm@
-    find execute to pIndex
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // an exact select using index
+    AT_EXACT of
+      // find the index
+      iPhrase pPlanner Planner.indexNm@
+      find execute to pIndex
 
-    // now get excat key rows from index
-    iSlot pTable tablePtnGrabRead  //! partitionLock
-    iPhrase pPlanner Planner.key@
-    iPhrase
-    pPlanner
-    pBufferQueue
-    iSlot
-    pIndex index.exactKey
-    iSlot pTable tablePtnDropRead
-  endof
+      // now get excat key rows from index
+      iSlot pTable tablePtnGrabRead  //! partitionLock
+      iPhrase pPlanner Planner.key@
+      iPhrase
+      pPlanner
+      pBufferQueue
+      iSlot
+      pIndex index.exactKey
+      iSlot pTable tablePtnDropRead
+    endof
 
-  AT_LOWER of
-    // find the index
-    iPhrase pPlanner Planner.indexNm@
-    find execute to pIndex
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // lower bound select using index
+    AT_LOWER of
+      // find the index
+      iPhrase pPlanner Planner.indexNm@
+      find execute to pIndex
 
-    // now get excat key rows from index
-    iSlot pTable tablePtnGrabRead  //! partitionLock
-    iPhrase pPlanner Planner.lowKey@
-    iPhrase
-    pPlanner
-    pBufferQueue
-    iSlot
-    pIndex index.lowerBound
-    iSlot pTable tablePtnDropRead
-  endof
+      // now get excat key rows from index
+      iSlot pTable tablePtnGrabRead  //! partitionLock
+      iPhrase pPlanner Planner.lowKey@
+      iPhrase
+      pPlanner
+      pBufferQueue
+      iSlot
+      pIndex index.lowerBound
+      iSlot pTable tablePtnDropRead
+    endof
 
-  // an upper bound select using index
-  AT_UPPER of
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // an upper bound select using index
+    AT_UPPER of
 
-    // find the index
-    iPhrase pPlanner Planner.indexNm@
-    find execute to pIndex
+      // find the index
+      iPhrase pPlanner Planner.indexNm@
+      find execute to pIndex
 
-    // now get excat key rows from index
-    iSlot pTable tablePtnGrabRead  //! partitionLock
-    iPhrase pPlanner Planner.highKey@
-    iPhrase
-    pPlanner
-    pBufferQueue
-    iSlot
-    pIndex index.upperBound
-    iSlot pTable tablePtnDropRead
-  endof
+      // now get excat key rows from index
+      iSlot pTable tablePtnGrabRead  //! partitionLock
+      iPhrase pPlanner Planner.highKey@
+      iPhrase
+      pPlanner
+      pBufferQueue
+      iSlot
+      pIndex index.upperBound
+      iSlot pTable tablePtnDropRead
+    endof
 
-  // a range select using index
-  AT_RANGE of
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // a range select using index
+    AT_RANGE of
 
-    // find the index
-    iPhrase pPlanner Planner.indexNm@
-    find execute to pIndex
+      // find the index
+      iPhrase pPlanner Planner.indexNm@
+      find execute to pIndex
 
-    // now get excat key rows from index
-    iSlot pTable tablePtnGrabRead  //! partitionLock
-    iPhrase pPlanner Planner.highKey@
-    iPhrase pPlanner Planner.lowKey@
-    iPhrase
-    pPlanner
-    pBufferQueue
-    iSlot
-    pIndex index.range
-    iSlot pTable tablePtnDropRead
-  endof
+      // now get excat key rows from index
+      iSlot pTable tablePtnGrabRead  //! partitionLock
+      iPhrase pPlanner Planner.highKey@
+      iPhrase pPlanner Planner.lowKey@
+      iPhrase
+      pPlanner
+      pBufferQueue
+      iSlot
+      pIndex index.range
+      iSlot pTable tablePtnDropRead
+    endof
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // full scan (no index)
+    AT_SCAN of
+      // find the index
+      "hidden" find execute to pIndex
 
-  // full scan (no index)
-  AT_SCAN of
-    // find the index
-    "hidden" find execute to pIndex
+      // now scan the index
+      iSlot pTable tablePtnGrabRead  //! partitionLock
+      pBufferQueue iSlot pIndex index.scan
+      iSlot pTable tablePtnDropRead
+    endof
 
-    // now scan the index
-    iSlot pTable tablePtnGrabRead  //! partitionLock
-    pBufferQueue iSlot pIndex index.scan
-    iSlot pTable tablePtnDropRead
-
-  endof
+  endcase
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table
   popTable
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop indexes
   popIndexes
-
-  endcase
 ;
 
 /*----------------------------------------------------------------------------*/
