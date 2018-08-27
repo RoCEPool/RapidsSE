@@ -103,7 +103,7 @@ void AttachMap::vPrintAttachMap(void)
   
   vInfo("Cluster started  : %s \n"_Stz,  gpAttachMap->m_pGrid->m_bHasStarted ? "true"_Stz : "false"_Stz);
   if (gpAttachMap->m_pGrid->m_bHasStarted)
-    vInfo("Start node       : %lld \n"_Stz, gpAttachMap->m_pGrid->m_iStartNode);
+    vInfo("Start node       : %lld \n"_Stz, gpAttachMap->m_pGrid->m_iStartNodeR35);
   
   vInfo("Slots per node   : %lld \n"_Stz, gpAttachMap->m_pGrid->m_nSlots);
   vInfo("Total Partitions : %lld \n"_Stz, gpAttachMap->m_pGrid->m_nPartitions);

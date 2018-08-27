@@ -24,8 +24,6 @@ void Task::vAddPrimitives_Grid(void)
   vAddPrimitive("grid::slots"_Stz,        &vGridSlots,             false);
   vAddPrimitive("grid::started!"_Stz,     &vGridStartedStore,      false);
   vAddPrimitive("grid::started@"_Stz,     &vGridStartedFetch,      false);
-  vAddPrimitive("grid::startNode!"_Stz,   &vGridStartNodeStore,    false);
-  vAddPrimitive("grid::startNode@"_Stz,   &vGridStartNodeFetch,    false);
   vAddPrimitive("grid::startNodeR35!"_Stz, &vGridStartNodeR35Store, false);
   vAddPrimitive("grid::startNodeR35@"_Stz, &vGridStartNodeR35Fetch, false);
   vAddPrimitive("grid::thisNode!"_Stz,    &vGridThisNodeStore,     false);
@@ -216,35 +214,6 @@ void Task::vGridStartedStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("grid::started!"_Stz);
   
   gpAttachMap->m_pGrid->vHasStarted(iStarted == 1 ? true : false);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* grid::startNode@ -- get grid start node                                     */
-/*----------------------------------------------------------------------------*/
-void Task::vGridStartNodeFetch(MP_Task mpTask)
-{
-  ENTRY("vGridGetStarted"_Stz);
-  
-  mpTask->m_pDataStack->vPushInt(gpAttachMap->m_pGrid->iStartNode());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* grid::startNode! -- set grid start node                                     */
-/*----------------------------------------------------------------------------*/
-void Task::vGridStartNodeStore(MP_Task mpTask)
-{
-  ENTRY("vGridSetStarted"_Stz);
-  
-  i8 iStartNode;
-  
-  if ( ! mpTask->m_pDataStack->bPop(iStartNode) )
-    THROW_INVALID_DSTACK("grid::startNode!"_Stz);
-  
-  gpAttachMap->m_pGrid->vStartNode(iStartNode);
   
   EXIT();
 }
