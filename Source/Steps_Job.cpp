@@ -45,7 +45,9 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("jobExecuted.rowsProcessed@"_Stz,&vJobExecutedRowsProcessedFetch,false);
   vAddPrimitive("jobExecuted.rowsProcessed!"_Stz,&vJobExecutedRowsProcessedStore,false);
   vAddPrimitive("Job_fetchRows.lastBuffers!"_Stz, &vJobFetchRowsLastBuffersStore, false);
+  vAddPrimitive("Job_fetchRows.planner!"_Stz, &vJobFetchRowsPlannerStore,   false);
   vAddPrimitive("Job_fetchRows.spawnSub"_Stz, &vJobFetchRowsSpawnSub, false);
+  vAddPrimitive("Job_fetchRows.table!"_Stz,   &vJobFetchRowsTableStore,   false);
   vAddPrimitive("Job_fetchRows.where@"_Stz, &vJobFetchRowsWhereFetch, false);
   vAddPrimitive("job.findOriginator"_Stz,   &vJobFindOriginator,   false);
   vAddPrimitive("job.findParticipant"_Stz,  &vJobFindParticipant,  false);
@@ -708,6 +710,26 @@ void Task::vJobFetchRowsLastBuffersStore(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Job_fetchRows.planner! -- store planner in the job                         */
+/*----------------------------------------------------------------------------*/
+void Task::vJobFetchRowsPlannerStore(MP_Task mpTask)
+{
+  ENTRY("vJobFetchRowsPlannerStore"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("Job_fetchRows.planner!"_Stz);
+  Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJobPtr);
+  
+  Object* pPlannerPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pPlannerPtr) )
+    THROW_INVALID_DSTACK("Job_fetchRows.lastBuffers"_Stz);
+  Planner* pPlanner = _pPlanner(pPlannerPtr);
+  
+  pJob_FetchRows->m_pPlanner = pPlanner;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Job_fetchRows.spawnSub -- spawn sub fetch job                              */
 /*----------------------------------------------------------------------------*/
 void Task::vJobFetchRowsSpawnSub(MP_Task mpTask)
@@ -755,6 +777,26 @@ void Task::vJobFetchRowsSpawnSub(MP_Task mpTask)
   RapidsSE_SpawnJob(pJob_SubFetch,SS_SEED_RUN,pSEitf);
 
   EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Job_fetchRows.table! -- store table in the job                             */
+/*----------------------------------------------------------------------------*/
+void Task::vJobFetchRowsTableStore(MP_Task mpTask)
+{
+  ENTRY("vJobFetchRowsTableStore"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("Job_fetchRows.table!"_Stz);
+  Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJobPtr);
+  
+  Object* pTablePtr;
+  if ( ! mpTask->m_pDataStack->bPop(pTablePtr) )
+    THROW_INVALID_DSTACK("Job_fetchRows.table"_Stz);
+  Table* pTable = _pTable(pTablePtr);
+  
+  pJob_FetchRows->m_pTable = pTable;
 }
 
 /*----------------------------------------------------------------------------*/
