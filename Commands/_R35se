@@ -6,9 +6,10 @@ se docol epochTake;
 
 print "";
 print "=====================================================================";
-print "starting the R35 cluster...";
+print "starting the cluster...";
 print "=====================================================================";
-_startClusterR35
+_startCluster
+waitCluster;
 
 print "";
 print "=====================================================================";
