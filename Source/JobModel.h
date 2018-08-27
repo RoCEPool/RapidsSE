@@ -109,6 +109,8 @@ using namespace JobsModel;
 #include "Job_VerifyIndex.hpp"
 #include "Job_VisualizeIndex.hpp"
 
+#include "Job_WaitCluster.hpp"
+
 #include "Jobs.hpp"
 
 #include "JobClass.hpp"
