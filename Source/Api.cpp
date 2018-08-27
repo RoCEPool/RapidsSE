@@ -657,7 +657,7 @@ eEC RapidsSE_DropTable(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable, 
     //pSEitf->m_pJob = pJob_DropTable;
     Stz* aResponse = nullptr;
     
-    RapidsSE_SpawnJob(pJob_DropTable, SS_SEED_REQ, pSEitf);
+    RapidsSE_bSpawnJob(pJob_DropTable, SS_SEED_REQ, pSEitf);
     
     i8 rCode = pthread_mutex_lock(&pJob_DropTable->m_xThreadMutex);
     //vTrace("MutexLock %p\n"_Stz,this);
@@ -2276,7 +2276,7 @@ eEC RapidsSE_SpawnPrompt(i8 iTraceLevel)
     
     pJob_Prompt->m_pSEitf = pSEitf;
     
-    bool b = RapidsSE_SpawnJob(pJob_Prompt,SS_SEED_RUN,pSEitf);
+    bool b = RapidsSE_bSpawnJob(pJob_Prompt,SS_SEED_RUN,pSEitf);
     
     return EC_NONE;
     
@@ -2629,7 +2629,7 @@ eEC eGetResponse(SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* spawn job                                                                  */
 /*----------------------------------------------------------------------------*/
-bool RapidsSE_SpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf)
+bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf)
 {
   
   // clear the last error
@@ -2693,7 +2693,7 @@ Job* RapidsSE_pExecuteCommmand(Stz* aCommand, SEitf* pSEitf, bool bPostJob)
     vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
 
   // spawn the job
-  RapidsSE_SpawnJob(pJob, SS_SEED_REQ, pSEitf);
+  RapidsSE_bSpawnJob(pJob, SS_SEED_REQ, pSEitf);
   
   // wait for condition
   rCode = pthread_cond_wait(&pJob->m_xThreadCond,
