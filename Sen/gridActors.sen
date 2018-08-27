@@ -5,177 +5,21 @@
 " gridActors" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* spawn the grid actors C, PP, CP and P                                      */
-/*----------------------------------------------------------------------------*/
-: spawnGridActors
-
-  /*
-
-    r->C->PP->P<-CP
-       |
-       +->PP-> (snd ... rcv) ->CP->P
-       |
-       +->PP-> (snd ... rcv) ->CP->P
-
-  */
-
-  grid::nodes 0 do
-
-    //
-    // participant for node I
-    //
-
-    0 "pLoop"
-
-    "p" I >str str.cat :createWorkerActor
-    dup findActorQueue I pQueues !
-    dup findActorTask  I pTasks  !
-    spawnWorkerActor
-
-    //
-    // coordinator proxy for node I
-    //
-
-    I I pTasks @ 2 "cpLoop"
-    "cp" I >str str.cat :createWorkerActor
-    dup findActorQueue I cpQueues !
-    dup findActorTask  I cpTasks  !
-    spawnWorkerActor
-
-    //
-    // partitipant proxy for node I
-    //
-
-    I grid::thisNode@ == if
-      I I pTasks  @ 2 "ppLoop"
-    else
-      I I cpTasks @ 2 "ppLoop"
-    then
-
-    "pp" I >str str.cat :createWorkerActor
-    dup findActorQueue I ppQueues !
-    dup findActorTask  I ppTasks  !
-    spawnWorkerActor
-
-  loop
-
-  //
-  // coordinator for this node
-  //
-  0 "cLoop"
-  "c" :createWorkerActor  ( 0 "cLoop" "c" )
-
-  spawnWorkerActor
-
-  args.verbose if
-    cpQueuesDump
-  then
-;
-
-////////////////////////////////////////////////////////////////////////////////
-
-spawnGridActors
-
-////////////////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
 /* queue an indirect call set to the coordinator and wait for indirect result */
 /*----------------------------------------------------------------------------*/
 : >coordinator> ( <<call*>> -- <<result>> )
-
-tp: >coordinator>
-
-/*
-  // could be task such as req.task or ld#.task
-
-  addSetCaller ( << <<call*>> <<caller>> >> )
-*/
-
-  // target actor is coordinator
-  c.task >jobQueue;a> ( <<result>> )
-
-tp: resumedbyCoord
-
-  // we expect an indirect result
 ;
 
 /*----------------------------------------------------------------------------*/
 /* get coordinator to send indirect call to participant on a node to execute  */
 /*----------------------------------------------------------------------------*/
 : >>oneParticipant> ( <<call>> nodeNo -- bool )
-
-  // a) we are in loader sub task
-  // b) indirect call on stack is to be executed by participant on given nodeNo
-
-  tp: >>oneParticipant>
-
-  // check if grid has been started if number of nodes > 1
-  grid::nodes 1 > if
-    grid::started@ true != if
-      "GRID NOT STARTED ..." . false
-    then
-  then
-
-  // assert we are in loader subtask
-  //2 task::this task.name@ str.left "sl" str.equal assert
-
-  // save the node number
-  >r
-
-  // add call to setDicStack to be same as this req.task (run by participant)
-  addSetDicStack ( <<call>> )
-
-  // add indirect call to participant on given node
-  r> addSendParticipant ( <<call>> )
-
-  // add call to setCaller (to be run by coordinator)
-  addSetCaller ( <<call>> )
-
-  // queue on coordinator (which waits for a indirect result)
-  >coordinator> ( bool )
-
-  valset>
-
-  // drop number of values
-  drop
 ;
 
 /*----------------------------------------------------------------------------*/
 /* get coordinator to send indirect call to all participant to execute        */
 /*----------------------------------------------------------------------------*/
 : >>allParticipants> ( <<$$>> -- bool )
-
-  // a) we are in request task (req.task)
-  // b) indirect call on stack is to be executed by all participants
-
-tp: >>allParticipants>
-
-   // check if grid has been started if number of nodes > 1
-   grid::nodes 1 > if
-     grid::started@ true != if
-       drop ( ) // drop the valsetr
-       EC_CLUSTER_NOT_STARTED <FAILURE_RESULT> 1 false exit
-     then
-  then
-
-  task::this task.name@ "req.task" str.equal assert
-
-  // add call to setDicStack to be same as this req.task (run by participant)
-  addSetDicStack ( <<call>> )
-
-  // add indirect call to participants
-  addSendParticipants ( <<call>> )
-
-  // add call to setCaller (to be run by coordinator)
-  addSetCaller ( <<call>> )
-
-  // queue on coordinator (which waits for a indirect result)
-  >coordinator> ( bool )
-
-  valset>
-
-  // drop number of values
-  drop
 ;
 
 /*============================================================================*/
