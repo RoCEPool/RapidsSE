@@ -122,6 +122,7 @@
   // find the table
   sTableNm pushTable assert
   sTableNm find execute to pTable
+  pTable pJob_FetchRows job_fetchRows.table!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the metadata string
@@ -136,6 +137,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the plan for the fetch
   sWhere pTable generatePlan to pPlanner
+  pPlanner pJob_FetchRows job_fetchRows.planner!
 
   // assert we have a plan
   pPlanner assert
