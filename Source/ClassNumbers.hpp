@@ -143,7 +143,8 @@ enum eCN : u2 // Class Number
     /*    */ CN_JOB_USESCHEMA,
     /*    */ CN_JOB_VERIFYINDEX,
     /*    */ CN_JOB_VISUALIZEINDEX,
-    
+    /*    */ CN_JOB_WAITCLUSTER,
+
     /*    */ CN_JOBS,
     /* 59 */ CN_JUMBOPERSISTENT,
     /* 60 */ CN_JUMBOTRANSIENT,
@@ -386,7 +387,8 @@ enum eCN : u2 // Class Number
     /*    */ "JOB_USESCHEMA"_Stz,      // CN_JOB_USESCHEMA
     /*    */ "JOB_VERIFYINDEX"_Stz,    // CN_JOB_VERIFYINDEX
     /*    */ "JOB_VISUALIZEINDEX"_Stz, // CN_JOB_VISUALIZEINDEX
-    
+    /*    */ "JOB_WAITCLUSTER"_Stz,    // CN_JOB_WAITCLUSTER
+
     /*    */ "JOBS"_Stz,               // CN_JOBS
     /* 59 */ "JUMBOPERSISTENT"_Stz,    // CN_JUMBOPERSISTENT
     /* 60 */ "JUMBOTRANSIENT"_Stz,     // CN_JUMBOTRANSIENT

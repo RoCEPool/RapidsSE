@@ -138,7 +138,8 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_USESCHEMA
   /*    */ &Finalize::vUndefined,         // CN_JOB_VERIFYINDEX
   /*    */ &Finalize::vUndefined,         // CN_JOB_VISUALIZEINDEX
-  
+  /*    */ &Finalize::vUndefined,         // CN_JOB_WAITCLUSTER
+
   /*    */ &Finalize::vUndefined,         // CN_JOBS
   
   /* 59 */ &Finalize::vUndefined,         // CN_JUMBOPERSISTENT
