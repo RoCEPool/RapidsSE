@@ -11,11 +11,10 @@ namespace JobsModel
   public:
     
     s256         m_sWhere;              // where clause string for the fetch
+    Table*       m_pTable;              // table rows being fetched from
+    Planner*     m_pPlanner;            // fetch planner
     Queue*       m_pBufferQueue;        // buffer queue where fetch buffers are pushed
     i8           m_nLastBuffers;        // expected last buffers
-    i8           m_nLastBuffersScanned; // scanned last buffers
-    FetchBuffer* m_pFetchBuffer;        // current fetch buffer
-    Row*         m_pRow;                // row fetched
     Tasks::Task* m_pTask;               // task running this job
     
     // must be last
@@ -46,6 +45,7 @@ namespace JobsModel
   Job* pJob_FetchRows_pre(Interface::SEitf* pSEitf);
   void vJob_FetchRows_post(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_FetchRows_delete(Interface::SEitf* pSEitf, Job* pJob);
+  void vIterateBuffer(Job_FetchRows* pJob_FetchRows, FetchBuffer* pFetchBuffer);
   void vJob_FetchRows_show(Job* pJob);
 }
 
