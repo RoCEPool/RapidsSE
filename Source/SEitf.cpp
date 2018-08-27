@@ -595,7 +595,7 @@ i8 SEitf::iGetAcksRemaining(void)
 /*----------------------------------------------------------------------------*/
 /* initialise this seitf                                                      */
 /*----------------------------------------------------------------------------*/
-void SEitf::vInit(void)
+void SEitf::vInit(Stz* pCatalogName, Stz* pSchemaName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -621,7 +621,7 @@ void SEitf::vInit(void)
   m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
  
   // /tenants/boray/catalogs/rapidsse
-  Word* pCatalog = m_xPathStack.pFindInCurrent("rapidsse"_Stz);
+  Word* pCatalog = m_xPathStack.pFindInCurrent(pCatalogName);
   ASSERT(pCatalog);
   pCell = pCatalog->pFirstCell();
   m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
@@ -633,7 +633,7 @@ void SEitf::vInit(void)
   m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
   
   // /tenants/boray/catalogs/rapidsse/schemas/public
-  Word* pSchema = m_xPathStack.pFindInCurrent("public"_Stz);
+  Word* pSchema = m_xPathStack.pFindInCurrent(pSchemaName);
   ASSERT(pSchema);
   pCell = pSchema->pFirstCell();
   m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));

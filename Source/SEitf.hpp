@@ -92,7 +92,7 @@ namespace Interface
     
     void   vContentDump(void);
     
-    void   vInit(void);
+    void   vInit(Stz* pCatalogName, Stz* pSchemaName);
     
     i8     iPartition(void);
     i8     iSlot(void);
