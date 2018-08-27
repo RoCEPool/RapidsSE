@@ -2,7 +2,7 @@
 /* job_ListColumns.sen -- Job list Columns                                    */
 /*============================================================================*/
 
-"job_ListIdxColumns.sen" .verbose
+" job_ListIdxColumns.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* list columns of an index on a table                                        */

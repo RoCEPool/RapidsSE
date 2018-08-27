@@ -2,7 +2,7 @@
 /* requests_tenant.sen -- the set of tenant related requests                  */
 /*============================================================================*/
 
-"requests_tenant.sen" .verbose
+" requests_tenant.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* create a tenant                                                            */

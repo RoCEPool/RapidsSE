@@ -2,7 +2,7 @@
 /* utilities.sen -- the set of utilities used by requests                     */
 /*============================================================================*/
 
-"utilities.sen" .verbose
+"-utilities.sen" .verbose
 
 "copier.sen" include
 "distExporter.sen" include

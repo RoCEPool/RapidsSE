@@ -2,7 +2,7 @@
 /* job_Set.sen -- Job set                                                     */
 /*============================================================================*/
 
-"job_Set.sen" .verbose
+" job_Set.sen" .verbose
 
 "job__Ended.sen" include
 "job__End.sen" include

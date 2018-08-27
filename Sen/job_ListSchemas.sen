@@ -2,7 +2,7 @@
 /* job_ListSchemas.sen -- Job List Schemas                                    */
 /*============================================================================*/
 
-"job_ListSchemas.sen" .verbose
+" job_ListSchemas.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* List Schemas requests (on the originating node)                            */

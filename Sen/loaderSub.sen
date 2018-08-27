@@ -2,7 +2,7 @@
 /* loaderSub.sen -- Parallel Table Loader Sub                                 */
 /*============================================================================*/
 
-"loaderSub.sen" .verbose
+" loaderSub.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* create a sub loader using name on the stack (leaves loader on stack)       */
@@ -139,7 +139,7 @@
   loop
 
   // wait for ack when alst buffer is loaded
-  "sub loader waiting to hear from partitionTasks" .verbose
+  " sub loader waiting to hear from partitionTasks" .verbose
   ackWait
 
   // add the valid/invalid records to loader
@@ -150,7 +150,7 @@
   pLoaderSub loaderSub.end
 
   // this sub has completed, ack the parent loader
-  "subloader acking the parent" .verbose
+  " subloader acking the parent" .verbose
   task.parent@ ack
 ;
 

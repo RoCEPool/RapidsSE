@@ -2,7 +2,7 @@
 /* fetchOp.sen -- table fetch (by-key) select operator                        */
 /*============================================================================*/
 
-"fetchOp.sen" .verbose
+" fetchOp.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* table fetch (by key) select                                                */

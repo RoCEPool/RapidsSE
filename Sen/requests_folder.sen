@@ -2,7 +2,7 @@
 /* requests_folder.sen -- the set of folder related requests                  */
 /*============================================================================*/
 
-"requests_folder.sen" .verbose
+" requests_folder.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* remove a folder                                                            */

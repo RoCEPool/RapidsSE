@@ -2,7 +2,7 @@
 /* requests_column.sen -- the set of column related requests                  */
 /*============================================================================*/
 
-"requests_column.sen" .verbose
+" requests_column.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* add a column                                                               */

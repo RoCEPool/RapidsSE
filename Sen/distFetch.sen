@@ -2,7 +2,7 @@
 /* distFetch.sen -- distributed fetch from index                              */
 /*============================================================================*/
 
-"distFetch.sen" .verbose
+" distFetch.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* distributed fetch                                                          */

@@ -2,7 +2,7 @@
 /* job_VisualizeIndex.sen -- Job Visualize Index                              */
 /*============================================================================*/
 
-"job_VisualizeIndex.sen" .verbose
+" job_VisualizeIndex.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* check if word is a valid table folder                                      */

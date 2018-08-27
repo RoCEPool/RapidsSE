@@ -2,7 +2,7 @@
 /* prefetch.sen -- prefetch test                                              */
 /*============================================================================*/
 
-"prefetch.sen" .verbose
+" prefetch.sen" .verbose
 
 : prefetch ( )
 

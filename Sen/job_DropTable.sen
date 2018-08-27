@@ -2,7 +2,7 @@
 /* job_DropTable.sen -- Job Drop Table                                        */
 /*============================================================================*/
 
-"job_DropTable.sen" .verbose
+" job_DropTable.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* check if word is a removable table folder                                  */

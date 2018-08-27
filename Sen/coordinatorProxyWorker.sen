@@ -2,7 +2,7 @@
 /* coordinatorProxyWorker.sen -- coordinator proxy worker                     */
 /*============================================================================*/
 
-"coordinatorProxyWorker.sen" .verbose
+" coordinatorProxyWorker.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* coordinator proxy processing loop                                          */

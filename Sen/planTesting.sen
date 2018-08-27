@@ -2,7 +2,7 @@
 /* planTesting.sen -- plan tests                                              */
 /*============================================================================*/
 
-"planTest.sen" .verbose
+" planTest.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* distributed export plan test                                               */

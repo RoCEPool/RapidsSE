@@ -2,7 +2,7 @@
 /* requests_catalog.sen -- the set of catalog related requests                */
 /*============================================================================*/
 
-"requests_catalog.sen" .verbose
+" requests_catalog.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* create a catalog                                                           */

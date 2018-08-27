@@ -2,7 +2,7 @@
 /* job_Connector.sen -- connector job                                         */
 /*============================================================================*/
 
-"job_Connector.sen" .verbose
+" job_Connector.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* spawn the connector task                                                   */

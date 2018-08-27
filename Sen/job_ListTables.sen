@@ -2,7 +2,7 @@
 /* job_ListTables.sen -- Job List Tables                                      */
 /*============================================================================*/
 
-"job_ListTables.sen" .verbose
+" job_ListTables.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* List Tables requests (on the originating node)                             */

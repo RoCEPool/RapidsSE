@@ -2,7 +2,7 @@
 /* partition.sen -- partition related words                                   */
 /*============================================================================*/
 
-"partition.sen" .verbose
+" partition.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* make a partitions folder under given named table                           */

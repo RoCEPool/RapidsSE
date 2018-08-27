@@ -2,7 +2,7 @@
 /* requests_misc.sen -- the set of miscellaneous related requests             */
 /*============================================================================*/
 
-"requests_misc.sen" .verbose
+" requests_misc.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* get version                                                                */

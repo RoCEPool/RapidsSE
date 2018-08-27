@@ -2,7 +2,7 @@
 /* requests.sen -- the request set groups                                     */
 /*============================================================================*/
 
-"requests.sen" .verbose
+"-requests.sen" .verbose
 
 "requests_basics.sen"      include
 "requests_tenant.sen"      include

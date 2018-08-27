@@ -2,7 +2,7 @@
 /* requests_schema.sen -- the set of schema related requests                  */
 /*============================================================================*/
 
-"requests_schema.sen" .verbose
+" requests_schema.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* create a schema                                                            */

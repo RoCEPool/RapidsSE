@@ -2,7 +2,7 @@
 /* job_Sanity.sen -- Job Sanity                                               */
 /*============================================================================*/
 
-"job_Sanity.sen" .verbose
+" job_Sanity.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* request to get sanity of nodes in the grid (on originating node)           */

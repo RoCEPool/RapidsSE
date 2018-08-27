@@ -2,7 +2,7 @@
 /* job__Cancelled.sen -- generic job related words                            */
 /*============================================================================*/
 
-"job__Cancelled.sen" .verbose
+" job__Cancelled.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* send Job__Cancelled back to originating node                               */

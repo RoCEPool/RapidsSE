@@ -2,7 +2,7 @@
 /* dir.sen -- directory related words                                         */
 /*============================================================================*/
 
-"dir.sen" .verbose
+" dir.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* dir is use as a kind of word to identify directories                       */

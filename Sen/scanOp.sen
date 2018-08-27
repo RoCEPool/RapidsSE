@@ -2,7 +2,7 @@
 /* scanOp.sen -- table scan select operator                                   */
 /*============================================================================*/
 
-"scanOp.sen" .verbose
+" scanOp.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* frame-level variables for scan                                             */

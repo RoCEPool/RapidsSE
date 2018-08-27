@@ -2,7 +2,7 @@
 /* symbolicArgs.sen -- symbolic operator arguments                            */
 /*============================================================================*/
 
-"symbolicArgs.sen" .verbose
+" symbolicArgs.sen" .verbose
 
 //: $$tableNm "$$tableNm" find execute ;
 

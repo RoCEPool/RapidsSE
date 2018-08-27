@@ -2,7 +2,7 @@
 /* job_ListCatalogs.sen -- Job List Catalogs                                  */
 /*============================================================================*/
 
-"job_ListCatalogs.sen" .verbose
+" job_ListCatalogs.sen" .verbose
 
 
 /*----------------------------------------------------------------------------*/

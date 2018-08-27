@@ -2,7 +2,7 @@
 /* job_CreateTenant.sen -- Job Create Tenant                                  */
 /*============================================================================*/
 
-"job_CreateSchema.sen" .verbose
+" job_CreateSchema.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* check word is not already a tenant                                         */

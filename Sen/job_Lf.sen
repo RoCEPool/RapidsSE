@@ -2,7 +2,7 @@
 /* job_Lf.sen -- Job list folder                                              */
 /*============================================================================*/
 
-"job_Lf.sen" .verbose
+" job_Lf.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* list folders requests (on originating node)                                */

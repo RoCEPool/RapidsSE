@@ -2,7 +2,7 @@
 /* rangeOp.sen -- table range select operator                                 */
 /*============================================================================*/
 
-"rangeOp.sen" .verbose
+" rangeOp.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* frame-level variables for range                                            */

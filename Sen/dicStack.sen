@@ -2,7 +2,7 @@
 /* dicStack.sen -- dictionary stack related words                             */
 /*============================================================================*/
 
-"dicStack.sen" .verbose
+" dicStack.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* drop top dictionary from path                                              */

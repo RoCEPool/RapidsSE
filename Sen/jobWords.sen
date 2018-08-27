@@ -2,7 +2,7 @@
 /* jobWords.sen -- Job related words                                          */
 /*============================================================================*/
 
-"jobWords.sen" .verbose
+" jobWords.sen" .verbose
 
 0 constant SEED_RUN
 1 constant SEED_REQ

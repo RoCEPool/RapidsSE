@@ -2,7 +2,7 @@
 /* job_ListTenants.sen -- Job List Tenants                                    */
 /*============================================================================*/
 
-"job_ListTenants.sen" .verbose
+" job_ListTenants.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* List Tenants requests (on the originating node)                             */

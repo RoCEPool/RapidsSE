@@ -2,7 +2,7 @@
 /* unitTests.sen -- unit testing                                              */
 /*============================================================================*/
 
-"unitTests.sen" .verbose
+" unitTests.sen" .verbose
 
 "arithmeticTests.sen" include
 

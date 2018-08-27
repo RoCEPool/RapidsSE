@@ -2,7 +2,7 @@
 /* deciderOp.sen -- flow decider operator                                     */
 /*============================================================================*/
 
-"deciderOp.sen" .verbose
+" deciderOp.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* flow decider operator                                                      */

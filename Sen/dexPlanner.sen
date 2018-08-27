@@ -2,7 +2,7 @@
 /* dexPlanner.sen -- distributed export planner                               */
 /*============================================================================*/
 
-"dexPlanner.sen" .verbose
+" dexPlanner.sen" .verbose
 
 1 constant distDexPlan
 

@@ -2,7 +2,7 @@
 /* job_SizeTable.sen -- Job Size Table                                        */
 /*============================================================================*/
 
-"job_SizeTable.sen" .verbose
+" job_SizeTable.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* check if word is a valid table folder                                      */

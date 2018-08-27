@@ -2,7 +2,7 @@
 /* job__Ended.sen -- generic job related words                                */
 /*============================================================================*/
 
-"job__Ended.sen" .verbose
+" job__Ended.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* send Job__Ended back to originating node                                   */

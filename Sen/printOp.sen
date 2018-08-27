@@ -2,7 +2,7 @@
 /* printOp.sen -- print rows on console                                       */
 /*============================================================================*/
 
-"printOp.sen" .verbose
+" printOp.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* frame common variables for write                                           */

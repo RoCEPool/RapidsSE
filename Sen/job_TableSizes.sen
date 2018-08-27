@@ -2,7 +2,7 @@
 /* job_TableSizes.sen -- Job Table Sizes                                      */
 /*============================================================================*/
 
-"job_TableSizes.sen" .verbose
+" job_TableSizes.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* tableSizes request (on originating node)                                   */

@@ -2,7 +2,7 @@
 /* job_DropSchema.sen -- Job Drop Schama                                      */
 /*============================================================================*/
 
-"job_DropSchema.sen" .verbose
+" job_DropSchema.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* check if word is a removable schema folder                                 */

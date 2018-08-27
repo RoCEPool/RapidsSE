@@ -2,7 +2,7 @@
 /* job_AnalyzeIndex.sen -- Job Analyze Index                                  */
 /*============================================================================*/
 
-"job_AnalyzeIndex.sen" .verbose
+" job_AnalyzeIndex.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* check if word is a analyzable table folder                                 */

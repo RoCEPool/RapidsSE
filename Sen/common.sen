@@ -2,7 +2,7 @@
 /* common.sen -- common related words                                         */
 /*============================================================================*/
 
-"common.sen" .verbose
+"-common.sen" .verbose
 
 "dir.sen" include
 "file.sen" include

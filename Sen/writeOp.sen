@@ -2,7 +2,7 @@
 /* writeOp.sen -- write rows to file operator                                 */
 /*============================================================================*/
 
-"writeOp.sen" .verbose
+" writeOp.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* frame common variables for write                                           */

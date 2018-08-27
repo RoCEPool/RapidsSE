@@ -2,7 +2,7 @@
 /* job__End.sen -- generic job related words                                  */
 /*============================================================================*/
 
-"job__End.sen" .verbose
+" job__End.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* distribute Job__End to all participants                                    */

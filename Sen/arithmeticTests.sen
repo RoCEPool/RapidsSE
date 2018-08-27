@@ -2,7 +2,7 @@
 /* arithemeticTests.sen -- arethmetic unit testing                            */
 /*============================================================================*/
 
-"arithmeticTests.sen" .verbose
+" arithmeticTests.sen" .verbose
 
 : arithmeticTests
 

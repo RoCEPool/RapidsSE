@@ -2,7 +2,7 @@
 /* job_Status.sen -- Job Status                                               */
 /*============================================================================*/
 
-"job_Status.sen" .verbose
+" job_Status.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* request to get status of all the nodes (on originating node)               */

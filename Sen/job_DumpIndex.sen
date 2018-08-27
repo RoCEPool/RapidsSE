@@ -2,7 +2,7 @@
 /* job_DumpIndex.sen -- Job Dump Table                                        */
 /*============================================================================*/
 
-"job_DumpIndex.sen" .verbose
+" job_DumpIndex.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* check if word is a valid table folder                                      */

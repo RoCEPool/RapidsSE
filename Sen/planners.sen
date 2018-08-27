@@ -2,7 +2,7 @@
 /* planners.sen -- the planners                                               */
 /*============================================================================*/
 
-"planners.sen" .verbose
+"-planners.sen" .verbose
 
 "dexPlanner.sen" include
 "dfetchPlanner.sen" include

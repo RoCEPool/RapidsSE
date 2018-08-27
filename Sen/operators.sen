@@ -2,7 +2,7 @@
 /* operators.sen -- the operators                                             */
 /*============================================================================*/
 
-"operators.sen" .verbose
+"-operators.sen" .verbose
 
 "operator.sen" include
 

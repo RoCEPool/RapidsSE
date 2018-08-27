@@ -2,7 +2,7 @@
 /* var.sen -- variable related words                                          */
 /*============================================================================*/
 
-"var.sen" .verbose
+" var.sen" .verbose
 
 : emptyDoes:
 

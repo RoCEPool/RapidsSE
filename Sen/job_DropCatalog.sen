@@ -2,7 +2,7 @@
 /* job_DropCatalog.sen -- Job Drop Catalog                                    */
 /*============================================================================*/
 
-"job_DropCatalog.sen" .verbose
+" job_DropCatalog.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* check if word is a removable catalog folder                                */

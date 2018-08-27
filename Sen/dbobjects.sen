@@ -2,7 +2,7 @@
 /* dbObjects.sen -- dbObjects group                                           */
 /*============================================================================*/
 
-"dbObjects.sen" .verbose
+"-dbObjects.sen" .verbose
 
 "distFetch.sen" include
 "selCursor.sen" include

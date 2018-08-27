@@ -2,7 +2,7 @@
 /* requests_table.sen -- the set of table related requests                    */
 /*============================================================================*/
 
-"requests.sen" .verbose
+" requests.sen" .verbose
 
 timer: selectTimer
 

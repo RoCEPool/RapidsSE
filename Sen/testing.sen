@@ -2,7 +2,7 @@
 /* testing.sen -- testing related words                                       */
 /*============================================================================*/
 
-"testing.sen" .verbose
+"-testing.sen" .verbose
 
 "jData.sen" include
 "miscTesting.sen" include

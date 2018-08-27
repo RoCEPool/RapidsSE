@@ -2,7 +2,7 @@
 /* gridModel.sen -- grid model group                                          */
 /*============================================================================*/
 
-"gridModel.sen" .verbose
+"-gridModel.sen" .verbose
 
 "grid.sen" include
 

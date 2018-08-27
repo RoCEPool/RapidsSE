@@ -2,7 +2,7 @@
 /* loader.sen -- Parallel Table Loader                                        */
 /*============================================================================*/
 
-"loader.sen" .verbose
+" loader.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* loading timer                                                              */
@@ -126,14 +126,14 @@ tp: parallelTableLoader
   // chunk the file
   pTblLoader loader.chunkFile
 
-  "Load file has been chunked.." .verbose
+  " Load file has been chunked.." .verbose
 
   // now wait for sub loaders to complete (drops mutex for duration)
   ackWait
 
   // at this point all sub loaders have completed and mutex was regrabbed
 
-  sTableNm "Table %v and its indexes loaded" str.format .verbose
+  sTableNm " Table %v and its indexes loaded" .verbose
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // send ack to seitf of the distParallel loader task on initiating node
@@ -180,7 +180,7 @@ tp: parallelTableLoader
   tp: distParallelTableLoader
 
   pSeitf iNode sFldDel sCat sSch sTableNm sSameMachine sPath 8 "parallelTableLoader" task::this "distLoader" TK_LOADSUB_SERVER  spawnServerTask to tableLoader
-  "distLoad done" .verbose
+  " distLoad done" .verbose
 
   true <SUCCESS_RESULT>
 ;
@@ -272,7 +272,7 @@ tp: parallelTableLoader
   // chunk the file
   pTblLoader loader.chunkFile
 
-  "Load file has been chunked" .verbose
+  " Load file has been chunked" .verbose
 
   // now wait for sub loaders to complete (drops mutex for duration)
   ackWait
@@ -282,7 +282,7 @@ tp: parallelTableLoader
   // drop mutex
   //task::this dropMutex
 
-  sTableNm "Table %v and its indexes loaded" str.format .verbose
+  sTableNm " Table %v and its indexes loaded" .verbose
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // wait for all last buffer acks to come
@@ -317,9 +317,9 @@ tp: parallelTableLoader
   pTblLoader loader.recordsInvalid@ pSEitf seitf.rowsInvalid!
   pTblLoader loader.recordsValid@ pSEitf seitf.rowsValid!
 
-  pTblLoader loader.recordsInvalid@ pTblLoader loader.recordsValid@ "loaded %v rows (%v invalid)" str.format .verbose
+  pTblLoader loader.recordsInvalid@ pTblLoader loader.recordsValid@ " loaded %v rows (%v invalid)" .verbose
 
-  "ms\n" loadTimer timer.millisecs "Load time" "%v %v %v" str.format .verbose
+  " ms\n" loadTimer timer.millisecs "Load time" "%v %v %v" .verbose
 
   true
 ;

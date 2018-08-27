@@ -2,7 +2,7 @@
 /* dfetchPlanner.sen -- distributed fetch planner                             */
 /*============================================================================*/
 
-"dfetchPlanner.sen" .verbose
+" dfetchPlanner.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* distributed fetch planner (multi-node version)                             */

@@ -2,7 +2,7 @@
 /* job_CreateTable.sen -- Job Create Table                                    */
 /*============================================================================*/
 
-"job_CreateTable.sen" .verbose
+" job_CreateTable.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* check word is not a table                                                  */

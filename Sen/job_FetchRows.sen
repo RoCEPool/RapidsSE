@@ -2,7 +2,7 @@
 /* job_FetchRows.sen -- Job Fetch Rows                                        */
 /*============================================================================*/
 
-"job_FetchRows.sen" .verbose
+" job_FetchRows.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* generate plan for the fetch                                                */

@@ -2,7 +2,7 @@
 /* threads.sen -- threads group                                               */
 /*============================================================================*/
 
-"threads.sen" .verbose
+"-threads.sen" .verbose
 
 "thread.sen" include
 

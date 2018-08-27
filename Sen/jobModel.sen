@@ -2,7 +2,7 @@
 /* jobModel.sen -- Job model                                                  */
 /*============================================================================*/
 
-"jobModel.sen" .verbose
+"-jobModel.sen" .verbose
 
 "jobWords.sen" include
 

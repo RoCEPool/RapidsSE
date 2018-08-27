@@ -2,7 +2,7 @@
 /* job_SubTruncate.sen -- Job SubTruncate                                     */
 /*============================================================================*/
 
-"job_SubTruncate.sen" .verbose
+" job_SubTruncate.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* SubTruncate (on each node)                                                 */

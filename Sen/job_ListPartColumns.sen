@@ -2,7 +2,7 @@
 /* job_ListPartColumns.sen -- Job list Partition Key Columns                  */
 /*============================================================================*/
 
-"job_ListPartColumns.sen" .verbose
+" job_ListPartColumns.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* list columns of table partitioning                                         */

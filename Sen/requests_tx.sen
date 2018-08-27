@@ -2,7 +2,7 @@
 /* requests_tx.sen -- the set of transaction related requests                 */
 /*============================================================================*/
 
-"requests_tx.sen" .verbose
+" requests_tx.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* begin a transaction                                                        */

@@ -2,7 +2,7 @@
 /* aggregateOp.sen -- row aggregate by operator                               */
 /*============================================================================*/
 
-"aggregateOp.sen" .verbose
+" aggregateOp.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* row aggregate operator                                                     */

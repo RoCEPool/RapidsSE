@@ -2,7 +2,7 @@
 /* triggerRangeOp.sen -- flow trigger operator                                */
 /*============================================================================*/
 
-"triggerRangeOp.sen" .verbose
+" triggerRangeOp.sen" .verbose
 common/ triggerRange rbCrs /
 /*----------------------------------------------------------------------------*/
 /* trigger                                                                    */

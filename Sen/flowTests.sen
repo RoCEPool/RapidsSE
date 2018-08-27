@@ -2,7 +2,7 @@
 /* flowTests.sen -- flow control unit testing                                 */
 /*============================================================================*/
 
-"flowTests.sen" .verbose
+" flowTests.sen" .verbose
 
 : flowTests
 

@@ -2,7 +2,7 @@
 /* structures.sen -- structures group                                         */
 /*============================================================================*/
 
-"structures.sen" .verbose
+"-structures.sen" .verbose
 
 "queue.sen" include
 

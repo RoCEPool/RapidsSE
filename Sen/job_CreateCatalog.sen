@@ -2,7 +2,7 @@
 /* job_CreateCatalog.sen -- Job Create Catalog                                */
 /*============================================================================*/
 
-"job_CreateCatalog.sen" .verbose
+" job_CreateCatalog.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* check if word is not a catalog                                             */

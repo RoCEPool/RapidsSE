@@ -2,7 +2,7 @@
 /* triggerScanOp.sen -- flow trigger operator                                 */
 /*============================================================================*/
 
-"triggerScanOp.sen" .verbose
+" triggerScanOp.sen" .verbose
 common/ triggerScan rbCrs /
 /*----------------------------------------------------------------------------*/
 /* trigger                                                                    */

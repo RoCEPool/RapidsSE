@@ -2,7 +2,7 @@
 /* job_LoadBuffer.sen -- Load Buffer Job                                      */
 /*============================================================================*/
 
-"job_LoadBuffer.sen" .verbose
+" job_LoadBuffer.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* LoadBuffer kid                                                             */

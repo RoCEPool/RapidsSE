@@ -2,7 +2,7 @@
 /* job_Space.sen -- Job Space                                                 */
 /*============================================================================*/
 
-"job_Space.sen" .verbose
+" job_Space.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* request to get space in the pool (on originating node)                     */

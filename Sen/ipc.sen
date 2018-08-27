@@ -2,7 +2,7 @@
 /* ipc.sen -- ipc primitives                                                  */
 /*============================================================================*/
 
-"ipc.sen" .verbose
+" ipc.sen" .verbose
 
 : isRunning   ( task -- ) task.state@ TS_EXECUTING == ;
 

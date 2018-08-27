@@ -2,7 +2,7 @@
 /* job__Cancel.sen -- generic job related words                               */
 /*============================================================================*/
 
-"job__Cancel.sen" .verbose
+" job__Cancel.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* distribute Job__Cancel to all participants                                 */

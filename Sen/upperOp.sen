@@ -2,7 +2,7 @@
 /* upperOp.sen -- table upper bound select operator                           */
 /*============================================================================*/
 
-"rangeOp.sen" .verbose
+" rangeOp.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* table upper bound select                                                   */

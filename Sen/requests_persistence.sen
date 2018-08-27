@@ -2,7 +2,7 @@
 /* requests_persistence.sen -- persistence related requests                   */
 /*============================================================================*/
 
-"requests_persistence.sen" .verbose
+" requests_persistence.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* checkpoint                                                                 */

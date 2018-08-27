@@ -2,7 +2,7 @@
 /* selCursor.sen -- select cursor                                             */
 /*============================================================================*/
 
-"selCursor.sen" .verbose
+" selCursor.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* create a selCursor using name from input stream                            */

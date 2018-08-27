@@ -2,7 +2,7 @@
 /* job_UseSchema.sen -- Job Use Schema                                        */
 /*============================================================================*/
 
-"job_UseSchema.sen" .verbose
+" job_UseSchema.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* use given schema                                                           */

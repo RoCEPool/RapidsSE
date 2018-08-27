@@ -2,7 +2,7 @@
 /* requests_basics.sen -- the set of requests supported by requestTask        */
 /*============================================================================*/
 
-"requests_basics.sen" .verbose
+" requests_basics.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* return an error response                                                   */

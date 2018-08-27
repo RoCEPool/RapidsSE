@@ -2,7 +2,7 @@
 /* job_DropIndex.sen -- Job Index Table                                       */
 /*============================================================================*/
 
-"job_DropIndex.sen" .verbose
+" job_DropIndex.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* tidy up of the index                                                       */

@@ -2,7 +2,7 @@
 /* job_CreateSchema.sen -- Job Create Schema                                  */
 /*============================================================================*/
 
-"job_CreateSchema.sen" .verbose
+" job_CreateSchema.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* check if word is not a schema                                              */

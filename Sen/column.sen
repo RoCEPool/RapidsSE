@@ -2,7 +2,7 @@
 /* column.sen -- column related words                                         */
 /*============================================================================*/
 
-"column.sen" .verbose
+" column.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* column is used as a kind of word to identify index columns                 */

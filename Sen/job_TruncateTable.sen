@@ -2,7 +2,7 @@
 /* job_TruncateTable.sen -- Job Truncate Table                                */
 /*============================================================================*/
 
-"job_TruncateTable.sen" .verbose
+" job_TruncateTable.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* truncate table request (on originating node)                               */

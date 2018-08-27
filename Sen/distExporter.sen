@@ -2,7 +2,7 @@
 /* distExporter.sen -- distributed table exporter                             */
 /*============================================================================*/
 
-"distExporter.sen" .verbose
+" distExporter.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* distributed export                                                         */

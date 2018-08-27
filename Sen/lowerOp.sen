@@ -2,7 +2,7 @@
 /* lowerOp.sen -- table lower bound select operator                           */
 /*============================================================================*/
 
-"lowerOp.sen" .verbose
+" lowerOp.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* table lower bound select                                                   */

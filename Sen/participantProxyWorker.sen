@@ -2,7 +2,7 @@
 /* participantProxyWorker.sen -- participant proxy worker                     */
 /*============================================================================*/
 
-"participantProxyWorker.sen" .verbose
+" participantProxyWorker.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* participant proxy processing loop                                          */

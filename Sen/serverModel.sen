@@ -2,7 +2,7 @@
 /* serverModel.sen -- server actor model                                      */
 /*============================================================================*/
 
-"serverModel.sen" .verbose
+" serverModel.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* compute the number of server processing threads to be created              */

@@ -2,7 +2,7 @@
 /* job_CreateIndex.sen -- Job Create Index                                    */
 /*============================================================================*/
 
-"job_CreateIndex.sen" .verbose
+" job_CreateIndex.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* check in indexes folder                                                    */

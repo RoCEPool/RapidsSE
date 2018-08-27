@@ -108,7 +108,7 @@ pResultBuffer pGroupby groupBy.applyBuffer
 pResultBuffer pSeitf seitf.bufferQueue@ queue.append
 ;
 */
-"index.sen" .verbose
+" index.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* index is used as a kind of word to identify indexes                        */

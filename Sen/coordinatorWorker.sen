@@ -2,7 +2,7 @@
 /* coordinatorWorker.sen -- coordinator worker                                */
 /*============================================================================*/
 
-"coordinatorWorker.sen" .verbose
+" coordinatorWorker.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* coordinator loop                                                           */

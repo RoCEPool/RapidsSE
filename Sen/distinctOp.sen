@@ -2,7 +2,7 @@
 /* distinctOp.sen -- row distinct operator                                    */
 /*============================================================================*/
 
-"distinctOp.sen" .verbose
+" distinctOp.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* row distinct operator                                                      */

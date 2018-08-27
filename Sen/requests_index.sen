@@ -2,7 +2,7 @@
 /* requests_index.sen -- the set of index related requests                    */
 /*============================================================================*/
 
-"requests_index.sen" .verbose
+" requests_index.sen" .verbose
 
 timer: pIdxSelectTimer
 

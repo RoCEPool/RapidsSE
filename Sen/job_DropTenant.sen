@@ -2,7 +2,7 @@
 /* job_DropTenant.sen -- Job Drop Tenant                                      */
 /*============================================================================*/
 
-"job_DropTenant.sen" .verbose
+" job_DropTenant.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* check if word is a removable tenant folder                                 */

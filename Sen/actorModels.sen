@@ -2,7 +2,7 @@
 /* actorModels.sen -- actor models group                                      */
 /*============================================================================*/
 
-"actorModels.sen" .verbose
+"-actorModels.sen" .verbose
 
 "serverModel.sen" include
 "workerModel.sen" include

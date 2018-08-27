@@ -2,7 +2,7 @@
 /* object.sen -- object words                                                 */
 /*============================================================================*/
 
-"object.send" .verbose
+" object.send" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* create a node using name on the stack (leaves node word on stack)          */

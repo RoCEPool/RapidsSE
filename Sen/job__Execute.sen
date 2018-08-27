@@ -2,7 +2,7 @@
 /* job__Execute.sen -- generic job related words                              */
 /*============================================================================*/
 
-"job__Execute.sen" .verbose
+" job__Execute.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* distribute Job__Execute to all participants                                */

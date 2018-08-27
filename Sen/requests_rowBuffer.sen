@@ -2,7 +2,7 @@
 /* requests_rowBuffer.sen -- the set of row buffer related requests           */
 /*============================================================================*/
 
-"requests_rowBuffer.sen" .verbose
+" requests_rowBuffer.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* print contents of a row buffer on each node                                */

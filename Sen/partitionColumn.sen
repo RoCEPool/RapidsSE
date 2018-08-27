@@ -2,7 +2,7 @@
 /* partitionColumn.sen -- partition column related words                      */
 /*============================================================================*/
 
-"partitionColumn.sen" .verbose
+" partitionColumn.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* partitionColumn is used as a kind of word to identify partition columns    */

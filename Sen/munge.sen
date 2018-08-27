@@ -2,7 +2,7 @@
 /* munge.sen -- create the .cpp from .sen                                     */
 /*============================================================================*/
 
-"munge.sen" .verbose
+"-munge.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* write the .cpp header portion of the file                                  */
@@ -55,7 +55,7 @@
 
   "    \"\\\\\\\"munged " cppFile file.write
   senFile file.path@ cppFile file.write
-  "\\\\\\\" .verbose \\n\"\n" cppFile file.write    // change this to verbose
+  " \\\\\\\" .verbose \\n\"\n" cppFile file.write    // change this to verbose
 
   begin senFile file.read while
 
