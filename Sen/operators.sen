@@ -8,32 +8,32 @@
 
 "symbolicArgs.sen" include
 
-"aggregateOp.sen" include
-"deciderOp.sen" include
-"distinctOp.sen" include
-"emitOp.sen" include
-"fanOp.sen" include
-"fetchOp.sen" include
-"filterOp.sen" include
-"joinOp.sen" include
-"limitOp.sen" include
-"markOp.sen" include
-"mergeOp.sen" include
-"nextOp.sen" include
-"printOp.sen" include
-"projectOp.sen" include
-"rangeOp.sen" include
-"readOp.sen" include
-"recvOp.sen" include
-"responseOp.sen" include
-"scanOp.sen" include
-"sendOp.sen" include
-"sinkOp.sen" include
-"sortOp.sen" include
-"teeOp.sen" include
-"triggerRangeOp.sen" include
-"triggerScanOp.sen" include
-"writeOp.sen" include
+"Op_aggregate.sen" include
+"Op_decider.sen" include
+"Op_distinct.sen" include
+"Op_emit.sen" include
+"Op_fan.sen" include
+"Op_fetch.sen" include
+"Op_filter.sen" include
+"Op_join.sen" include
+"Op_limit.sen" include
+"Op_mark.sen" include
+"Op_merge.sen" include
+"Op_next.sen" include
+"Op_print.sen" include
+"Op_project.sen" include
+"Op_range.sen" include
+"Op_read.sen" include
+"Op_recv.sen" include
+"Op_response.sen" include
+"Op_scan.sen" include
+"Op_send.sen" include
+"Op_sink.sen" include
+"Op_sort.sen" include
+"Op_tee.sen" include
+"Op_triggerRange.sen" include
+"Op_triggerScan.sen" include
+"Op_write.sen" include
 
 /*----------------------------------------------------------------------------*/
 /* create the operator actors                                                 */
