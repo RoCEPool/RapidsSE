@@ -594,7 +594,7 @@ void Task::vLoaderSubSpawnLoadBuffer(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn the load buffer job
   
-  RapidsSE_SpawnJob(pJob_LoadBuffer,SS_SEED_RUN,pSEitf);
+  RapidsSE_bSpawnJob(pJob_LoadBuffer,SS_SEED_RUN,pSEitf);
 
   EXIT();
 }

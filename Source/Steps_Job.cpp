@@ -752,7 +752,7 @@ void Task::vJobFetchRowsSpawnSub(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  RapidsSE_SpawnJob(pJob_SubFetch,SS_SEED_RUN,pSEitf);
+  RapidsSE_bSpawnJob(pJob_SubFetch,SS_SEED_RUN,pSEitf);
 
   EXIT();
 }
@@ -1733,7 +1733,7 @@ void Task::vJobSpawn(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.spawn"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  RapidsSE_SpawnJob(pJob,(eSS)i_Seed,nullptr);
+  RapidsSE_bSpawnJob(pJob,(eSS)i_Seed,nullptr);
   
   EXIT();
 }
@@ -1927,7 +1927,7 @@ void Task::vJobTruncateTableSpawnSub(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  RapidsSE_SpawnJob(pJob_SubTruncate,SS_SEED_RUN,pSEitf);
+  RapidsSE_bSpawnJob(pJob_SubTruncate,SS_SEED_RUN,pSEitf);
 
   EXIT();
 }

@@ -347,7 +347,7 @@ bool CommandProcessor::bSpawnJob(SEitf* pSEitf)
   //! make this part of verbose??
   //m_pCommandProcessor->m_pTokeniser->vDumpTokens("Command : "_Stz,m_xTokenVec,C_TOKENS);
   
-  bool bResult = RapidsSE_SpawnJob(m_pJob,SS_SEED_REQ,pSEitf);
+  bool bResult = RapidsSE_bSpawnJob(m_pJob,SS_SEED_REQ,pSEitf);
   
   if (pTknVec()->bDetachedRequest())
     return bResult;

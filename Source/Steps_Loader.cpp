@@ -384,7 +384,7 @@ void Task::vLoaderSpawnSubLoader(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  RapidsSE_SpawnJob(pJob_SubLoader,SS_SEED_RUN,pSEitf);
+  RapidsSE_bSpawnJob(pJob_SubLoader,SS_SEED_RUN,pSEitf);
 
   EXIT();
 }
