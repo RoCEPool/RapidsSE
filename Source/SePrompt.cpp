@@ -49,7 +49,11 @@ SePrompt::SePrompt(void)
   i8 iPartition = 0;
   m_bContinue = true;
 
-  eEC eResult = RapidsSE_SEitfNew((void**)&m_pSEitf,iPartition, /*trace*/ 0);
+  eEC eResult = RapidsSE_SEitfNew((void**)&m_pSEitf,
+                                  "rapidsse"_Stz,
+                                  "public"_Stz,
+                                  iPartition,
+                                  /*trace*/ 0);
   ASSERT(EC_NONE == eResult);
    
   _checkInitialised_(CN_SEPROMPT);

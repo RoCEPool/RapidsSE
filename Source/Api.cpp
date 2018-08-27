@@ -2267,7 +2267,7 @@ eEC RapidsSE_SpawnPrompt(i8 iTraceLevel)
 
   try {
     
-    eEC eError = RapidsSE_SEitfNew((void**)&pSEitf, 0, 0);
+    eEC eError = RapidsSE_SEitfNew((void**)&pSEitf, "rapidsse"_Stz, "public"_Stz, 0, 0);
     ASSERT(EC_NONE == eError);
     
     JobClass* pJobClass_Prompt = gxJobCatalog.pFindJob(CN_JOB_PROMPT);
@@ -2375,7 +2375,7 @@ bool RapidsSE_SEitfInvalid(int iError, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* create a new seitf instance                                                */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_SEitfNew(void** ppSEitf, i8 iPartition, i8 iTraceLevel)
+eEC RapidsSE_SEitfNew(void** ppSEitf, Stz* sCatalogName, Stz* sSchemaName, i8 iPartition, i8 iTraceLevel)
 {
   eEC eResult;
   Stz* aApiCall = "RapidsSE_SEitfNew"_Stz;
@@ -2393,7 +2393,7 @@ eEC RapidsSE_SEitfNew(void** ppSEitf, i8 iPartition, i8 iTraceLevel)
     
     SEitf* pSEitf = new SEitf(iPartition);
     
-    pSEitf->vInit("rapidsse"_Stz, "public"_Stz);
+    pSEitf->vInit(sCatalogName, sSchemaName);
     
     // validate the SEitf just created
     VALIDATE_SEITF("b"_Stz);
