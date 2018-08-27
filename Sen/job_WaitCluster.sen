@@ -87,6 +87,9 @@
   // get the job from the task
   pTask task.job@ to pJob
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // wait till all nodes connected
+  grid::wait
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // distribute the job
@@ -96,7 +99,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute job_WaitCluster.sen job (on participating node)                    */
+/* execute job_WaitCluster (on participating node)                            */
 /*----------------------------------------------------------------------------*/
 : waitCluster_exe ( pJob_WaitCluster -- )
 
@@ -104,6 +107,10 @@
   job::this locals| pJob_WaitCluster |
 
   pJob_WaitCluster job.notice
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // wait till all nodes connected
+  grid::wait
 
   pJob_WaitCluster send_job__executed
 
