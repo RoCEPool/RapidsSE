@@ -33,6 +33,7 @@ using namespace Prompt;
 #include "Prompt_question.hpp"
 #include "Prompt_se.hpp"
 #include "Prompt_sleep.hpp"
+#include "Prompt_time.hpp"
 #include "Prompt_timerEnd.hpp"
 #include "Prompt_timerStart.hpp"
 #include "Prompt_version.hpp"
