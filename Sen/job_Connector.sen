@@ -64,7 +64,7 @@
 
     // print connection message
     args.verbose if
-      grid::thisNode@ I "R35 Node%v connected to node%v" fmt.print
+      grid::thisNode@ I "Node%v connected to node%v" fmt.print
     then
 
   loop
@@ -75,7 +75,7 @@
   true grid::started!
 
   // print started message
-  grid::thisNodeName@ "Node %v : SE R35 cluster started" fmt.print
+  grid::thisNodeName@ "Node %v : SE cluster started" fmt.print
 
   assertStackDepthZero
 
