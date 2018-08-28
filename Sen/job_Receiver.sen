@@ -31,7 +31,7 @@
 : receiver_init ( -- )
 
   0 locals| pThisTask |
-  0 locals| pJob_Receiver |.
+  0 locals| pJob_Receiver |
   0 locals| pSocket |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -55,7 +55,7 @@
   //"receiver_run" task::this task.comment!
 
   args.verbose if
-    grid::thisNode@ "Receiver running on node %v" fmt.print
+    grid::thisNode@ "receiver running on node %v" fmt.print
   then
 ;
 
