@@ -492,7 +492,7 @@ tp: loadIndexes
   0 0 0 locals| entry tempEntryBuffer indexBuffer |
 
   // task is a select participant running on server thread
-  task::this task.kind@ TK_SELECT_PART == assert
+  //task::this task.kind@ TK_SELECT_PART == assert
   //task::this task.thread thread.actorModel@ AC_SERVER == assert
 
   pSeitf task::this task.seitf!
@@ -514,7 +514,7 @@ tp: loadIndexes
   0 0 0 locals| entry tempEntryBuffer indexBuffer |
 
   // task is a select participant running on server thread
-  task::this task.kind@ TK_SELECT_PART == assert
+  //task::this task.kind@ TK_SELECT_PART == assert
   //task::this task.thread thread.actorModel@ AC_SERVER == assert
 
   pSeitf task::this task.seitf!
@@ -617,7 +617,7 @@ tp: populateIndex
   tp: scanSelectIdxTask
 
   // task is a select participant running on server thread
-  task::this task.kind@ TK_SELECT_PART == assert
+  //task::this task.kind@ TK_SELECT_PART == assert
   //task::this task.thread thread.actorModel@ AC_SERVER == assert
 
   pSeitf task::this task.seitf!
@@ -751,7 +751,7 @@ tp: populateIndex
   0 0 0 locals| entry tempEntryBuffer indexBuffer |
 
   // task is a select participant running on server thread
-  task::this task.kind@ TK_SELECT_PART == assert
+  //task::this task.kind@ TK_SELECT_PART == assert
   //task::this task.thread thread.actorModel@ AC_SERVER == assert
 
   pSeitf task::this task.seitf!
@@ -871,7 +871,7 @@ tp: populateIndex
   //debug::trap
 
   // task is a request server
-  task::this task.kind@ TK_REQUEST_SERVER == assert
+  //task::this task.kind@ TK_REQUEST_SERVER == assert
   //task::this task.thread thread.actorModel@ AC_SERVER == assert
 
   //
@@ -945,7 +945,7 @@ tp: populateIndex
   //debug::trap
 
   // task is a select participant running on server thread
-  task::this task.kind@ TK_SELECT_PART == assert
+  //task::this task.kind@ TK_SELECT_PART == assert
   //task::this task.thread thread.actorModel@ AC_SERVER == assert
 
   // save seitf into this task

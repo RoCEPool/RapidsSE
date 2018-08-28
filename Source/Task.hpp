@@ -1417,8 +1417,6 @@ namespace Tasks
     static void vTaskJobStore(MP_Task mpTask);
     static void vTaskJobQueueFetch(MP_Task mpTask);
     static void vTaskJobQueueStore(MP_Task mpTask);
-    static void vTaskKindFetch(MP_Task mpTask);
-    static void vTaskKindStore(MP_Task mpTask);
     static void vTaskNameFetch(MP_Task mpTask);
     static void vTaskNameStore(MP_Task mpTask);
     static void vTaskThis(MP_Task mpTask);

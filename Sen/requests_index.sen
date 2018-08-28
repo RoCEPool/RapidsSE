@@ -521,7 +521,7 @@ timer: pIdxSelectTimer
   //"fetchRowsIndex_req" .
 
   // task is a request server
-  task::this task.kind@ TK_REQUEST_SERVER == assert
+  //task::this task.kind@ TK_REQUEST_SERVER == assert
 
   assert::stack_3
   CN_STRVAL assert::class_0
@@ -623,7 +623,7 @@ timer: pIdxSelectTimer
   //pp: beginning
 
   // task is a request server
-  task::this task.kind@ TK_REQUEST_SERVER == assert
+  //task::this task.kind@ TK_REQUEST_SERVER == assert
 
   assert::stack_3
   CN_STRVAL assert::class_0
