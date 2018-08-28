@@ -74,6 +74,8 @@
 
     socketObject> drop to pJob
 
+    pJob job.postRecv
+
     pJob SEED_RCV job.spawn
 
   again

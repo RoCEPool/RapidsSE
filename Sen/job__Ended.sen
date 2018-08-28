@@ -22,7 +22,7 @@
   iJobId job::originator@ grid::node task::this task.sendNode!
   task.send
 
-  // send Job__Ended
+  // send the ended job
   pJob__Ended >socket
 
   // delete Job__Ended

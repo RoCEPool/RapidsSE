@@ -89,7 +89,6 @@
 
   i_Node grid::node task::this task.sendNode!
 
-  //pJob_LoadBuffer >socket
   pJob_LoadBuffer LoadBuffer_kid
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

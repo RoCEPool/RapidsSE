@@ -33,7 +33,7 @@
   // move this task through send state/queue
   task.send
 
-  // send Job__Executed
+  // send the begun job
   pJob__Begun >socket
 
   // delete Job__Executed

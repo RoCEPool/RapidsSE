@@ -32,12 +32,8 @@
     // move this task through send state/queue
     task.send
 
-    // pack Job__Execute into a valset
-    pJob__Execute
-    //1 >valset
-
     // send the execute job
-    >socket
+    pJob__Execute >socket
   loop
 
   // now delete the execute job

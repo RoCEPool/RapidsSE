@@ -32,7 +32,7 @@
   // move this task through send state/queue
   task.send
 
-  // send Job__Cancelled
+  // send the cancelled job
   pJob__Cancelled >socket
 
   // delete Job__Cancelled
