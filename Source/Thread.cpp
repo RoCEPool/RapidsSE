@@ -630,7 +630,7 @@ bool Thread::bMutexLock(void)
 /*----------------------------------------------------------------------------*/
 void Thread::vMutexUnlock(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   ASSERT(m_pSemaphore->bMutexIsLocked());
   

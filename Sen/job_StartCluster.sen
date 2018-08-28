@@ -26,7 +26,7 @@
   grid::nodes 0
   do
     I grid::node node.isConnected not if
-      I "Node %v not connected" fmt.print
+      I "Node no %v not connected" fmt.print
       unloop
       false
       exit
@@ -58,7 +58,7 @@
   grid::nodes 0
   do
     I grid::node node.isConnected
-    I "gridTest: node %v connected %v " fmt.print
+    I "gridTest: node no %v connected %v " fmt.print
   loop
 ;
 
