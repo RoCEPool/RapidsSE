@@ -5,11 +5,11 @@
 " job_Start.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* start R35 socket tasks                                                     */
+/* start socket tasks                                                         */
 /*----------------------------------------------------------------------------*/
-: Start_Sockets ( -- )
+: start_sockets ( -- )
 
-  "Start_Sockets" .
+  "start_sockets" .
 
   spawn_Answer
 ;
@@ -26,7 +26,7 @@
 
   args.bgtasks if
 
-   snooze Start_Sockets
+   snooze start_sockets
 
   then
 
