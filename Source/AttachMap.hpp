@@ -55,7 +55,7 @@ namespace StorageEngine
     NP_Task       m_npBootTask;
   
     Plans::PlanList* m_pPlanList;
-    Atomic        m_ziR35Threads;
+    Atomic        m_ziThreads;
   
     Queues*       m_pQueues;
     Jobs*         m_pOriginatingJobs;

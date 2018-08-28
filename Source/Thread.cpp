@@ -357,7 +357,7 @@ void Thread::vLoop(void)
   
   vMutexLock();
 
-  if (++gpAttachMap->m_ziR35Threads == gxArguments.m_nThreads) {
+  if (++gpAttachMap->m_ziThreads == gxArguments.m_nThreads) {
     RapidsSE::vStartSystemTasks();
   }
   
