@@ -62,7 +62,7 @@
   pTask task.job@ to pJob_CreateTenant
 
   // distribute the job
-  pTask pJob_CreateTenant "job::distribute" find execute
+  pJob_CreateTenant "job.distribute" find execute
 
   pJob_CreateTenant <DONE_REQUEST>
 ;

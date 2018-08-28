@@ -63,7 +63,7 @@
   pTask task.job@ to pJob_CreateSchema
 
   // distribute the job
-  pTask pJob_CreateSchema "job::distribute" find execute
+  pJob_CreateSchema "job.distribute" find execute
 
   pJob_CreateSchema <DONE_REQUEST>
 ;

@@ -298,13 +298,12 @@
 /*----------------------------------------------------------------------------*/
 /* distribute the job to all the nodes                                        */
 /*----------------------------------------------------------------------------*/
-: Job::distribute ( pTask pJob -- )
+: job.distribute ( pJob -- )
 
   params| pJob |
-  params| pTask |
 
   // set originating task
-  pTask pJob job.originatingTask!
+  task::this pJob job.originatingTask!
 
   // add job to originator jobs
   pJob job.addOriginator
@@ -322,7 +321,7 @@
   grid::nodes 0 do
 
     // set the send node
-    I grid::node pTask task.sendNode!
+    I grid::node task::this task.sendNode!
 
     task.send
 

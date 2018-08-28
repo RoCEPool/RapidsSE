@@ -73,7 +73,7 @@
   then
 
   // distribute the job
-  pTask pJob "job::distribute" find execute
+  pJob "job.distribute" find execute
 
   pJob <DONE_REQUEST>
 ;
