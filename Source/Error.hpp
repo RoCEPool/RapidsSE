@@ -61,7 +61,8 @@ namespace Debugging
   /* 38 */ EC_NOT_A_TABLE,
   /* 39 */ EC_NOT_A_TENANT,
   
-  /* 39 */ EC_NOT_IN_A_TENANT,
+  /*    */ EC_NOT_IN_A_CATALOG,
+  /*    */ EC_NOT_IN_A_TENANT,
   /* 40 */ EC_NOT_IN_CATALOGS,
   /* 41 */ EC_NOT_IN_COLUMNS,
   /* 42 */ EC_NOT_IN_INDEXES,
@@ -149,6 +150,7 @@ namespace Debugging
   /* 38 */ "not a table"_Stz,
   /* 39 */ "not a tenant"_Stz,
   
+  /* 40 */ "not in a catalog"_Stz,
   /* 40 */ "not in a tenant"_Stz,
   /* 40 */ "not in catalogs"_Stz,
   /* 41 */ "not in columns"_Stz,

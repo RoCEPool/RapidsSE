@@ -5,6 +5,36 @@
 " job_ListSchemas.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* find the schemas folder and push it onto task dictionary                   */
+/*----------------------------------------------------------------------------*/
+: pushSchemas ( -- )
+  "schemas" find execute pathPush
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* pop the scehams folder                                                     */
+/*----------------------------------------------------------------------------*/
+: popSchemas
+  pathDrop
+;
+
+/*----------------------------------------------------------------------------*/
+/* within a catalog folder ?                                                  */
+/*----------------------------------------------------------------------------*/
+: withinCatalog
+  1 pathPick dic.name "catalogs" str.equal
+;
+
+/*----------------------------------------------------------------------------*/
+/* check if in a catalog folder ?                                             */
+/*----------------------------------------------------------------------------*/
+: checkInCatalog
+  withinCatalog if true exit then
+  EC_NOT_IN_A_CATALOG false
+;
+
+/*----------------------------------------------------------------------------*/
 /* List Schemas requests (on the originating node)                            */
 /*----------------------------------------------------------------------------*/
 : listSchemas_req ( -- <R> )
@@ -32,11 +62,13 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in the schemas folder
-  checkInSchemas not if pJob_ListSchemas <ERROR_REQUEST> exit then
+  checkInCatalog not if pJob_ListSchemas <ERROR_REQUEST> exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // list tables folder contents
+  pushSchemas
   pJob_ListSchemas listContents
+  popSchemas
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // return
