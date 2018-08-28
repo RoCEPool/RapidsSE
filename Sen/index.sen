@@ -19,7 +19,7 @@ tp: rangeSelectIdxTask
 
 // task is a select participant running on server thread
 //task::this task.kind@ TK_SELECT_PART == assert
-task::this task.thread thread.actorModel@ AC_SERVER == assert
+//task::this task.thread thread.actorModel@ AC_SERVER == assert
 
 // save seitf into this task
 pSeitf task::this task.seitf!

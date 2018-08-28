@@ -21,31 +21,7 @@ namespace Threads
 }
 
 namespace Tasks
-{
-  enum eAC // actor models
-  {
-    /*  0 */ AC_NONE=0,
-    /*  1 */ AC_DRONE,
-    /*  2 */ AC_PARTITION,
-    /*  3 */ AC_SERVER,
-    /*  4 */ AC_WORKER,
-
-    /*  5 */ AC_R35,
-  
-    /*  6 */ AC_ENUMS
-  };
-  
-  static Stz* aAC[]
-  {
-    /*  0 */ "NONE"_Stz,
-    /*  1 */ "DRONE"_Stz,
-    /*  2 */ "PARTITION"_Stz,
-    /*  3 */ "SERVER"_Stz,
-    /*  4 */ "WORKER"_Stz,
-    /*  5 */ "R35"_Stz,
-    /*  6 */ "ENUMS"_Stz
-  };
-    
+{  
   enum eTS // Task State
   {
   /* 0 */ TS_NONE=0,

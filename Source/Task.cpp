@@ -478,15 +478,6 @@ void Task::vAddConstants(void)
   vAddConstant("C_MAX_NODES"_Stz,         C_MAX_NODES);
   vAddConstant("C_MAX_PARTITIONS"_Stz,    C_MAX_PARTITIONS);
   
-  // AC_ : actor models
-  /*  0 */ vAddConstant("AC_NONE"_Stz,         AC_NONE);
-  /*  1 */ vAddConstant("AC_DRONE"_Stz,        AC_DRONE);
-  /*  2 */ vAddConstant("AC_PARTITION"_Stz,    AC_PARTITION);
-  /*  3 */ vAddConstant("AC_SERVER"_Stz,       AC_SERVER);
-  /*  4 */ vAddConstant("AC_WORKER"_Stz,       AC_WORKER);
-  /*  5 */ vAddConstant("AC_R35"_Stz,          AC_R35);
-  /*  6 */ vAddConstant("AC_ENUMS"_Stz,        AC_ENUMS);
-
   // AM_ : attach map numbers
   /*  0 */ vAddConstant("AM_NONE"_Stz,         AM_NONE);
   /*  1 */ vAddConstant("AM_INDEXENTRIES"_Stz, AM_INDEXENTRIES);
