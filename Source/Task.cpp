@@ -2357,9 +2357,9 @@ eQR Task::eWhichQueue(void)  //! RAY TO FINISH
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* task loop (R3.5 model)                                                     */
+/* task loop                                                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskLoop_R35(void)
+void Task::vTaskLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   

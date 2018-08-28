@@ -525,7 +525,7 @@ void Thread::vTaskCall(void)
   // record time of call
   // ...
   
-  m_npTask->vTaskLoop_R35();
+  m_npTask->vTaskLoop();
 
   // record time of return & calculate running total times
   // ...

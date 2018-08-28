@@ -304,7 +304,7 @@ namespace Tasks
     void vState(eTS eState);
     eTK  eTaskKind(void);
     void vTaskKind(eTK eTaskKind);
-    void vTaskLoop_R35(void);
+    void vTaskLoop(void);
     i8   iTaskNo(void);
     void vTaskOrderNo(i8 iTaskOrder);
     i8   iTaskOrderNo(void);
