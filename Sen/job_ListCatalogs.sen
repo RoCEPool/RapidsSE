@@ -4,35 +4,6 @@
 
 " job_ListCatalogs.sen" .verbose
 
-/*----------------------------------------------------------------------------*/
-/* find the catalogs folder and push it onto task dictionary                  */
-/*----------------------------------------------------------------------------*/
-: pushCatalogs ( -- )
-  "catalogs" find execute pathPush
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* pop the catalogs folder                                                    */
-/*----------------------------------------------------------------------------*/
-: popCatalogs
-  pathDrop
-;
-
-/*----------------------------------------------------------------------------*/
-/* within a teanant folder ?                                                  */
-/*----------------------------------------------------------------------------*/
-: withinTenant
-  1 pathPick dic.name "tenants" str.equal
-;
-
-/*----------------------------------------------------------------------------*/
-/* check if in a teanant folder ?                                             */
-/*----------------------------------------------------------------------------*/
-: checkInTenant
-  withinTenant if true exit then
-  EC_NOT_IN_A_TENANT false
-;
 
 /*----------------------------------------------------------------------------*/
 /* List Catalogs requests (on the originating node)                           */
@@ -62,13 +33,11 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in the catalogs folder
-  checkInTenant not if pJob_ListCatalogs <ERROR_REQUEST> exit then
+  checkInCatalogs not if pJob_ListCatalogs <ERROR_REQUEST> exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // list tables folder contents
-  pushCatalogs
   pJob_ListCatalogs listContents
-  popCatalogs
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // return
