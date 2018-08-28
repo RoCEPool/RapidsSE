@@ -163,7 +163,6 @@ Task::Task(Value* pRequest)
   MemLib::vCopy(m_pRequest,pRequest,nBytes,CN_TASK);
   
   m_sName    = "req.task"_Stz;
-  m_eTaskKind = TK_REQUEST_SERVER;
   
   _checkInitialised_(CN_TASK);
   
@@ -233,7 +232,6 @@ void Task::vInit(Stz* aLambda)
   m_iTaskNo      = iTaskNo++;
   m_iTaskOrderNo = 0;
   
-  m_eTaskKind   = TK_NONE;
   m_iPartition  = -1;
   m_sName       = "<no task name>"_Stz;
   m_eState      = TS_NONE;
@@ -2095,26 +2093,6 @@ void Task::vState(eTS eState)
   //m_xLock.vGrabWrite();
   m_eState = eState;
   //m_xLock.vDropWrite();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get task kind                                                              */
-/*----------------------------------------------------------------------------*/
-eTK Task::eTaskKind(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  return m_eTaskKind;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set task kind                                                              */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskKind(eTK eTaskKind)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  m_eTaskKind = eTaskKind;
 }
 
 /*----------------------------------------------------------------------------*/
