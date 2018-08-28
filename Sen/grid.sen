@@ -7,9 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* grid is use as a kind of word to identify grids                            */
 /*----------------------------------------------------------------------------*/
-: grid ;
-
-: isGrid word.kind@ tick grid eql ;
+//: grid ;
 
 : <SUCCESS_RESULT> grid::thisNode@ true ( v n# true ) ;
 
