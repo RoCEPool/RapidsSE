@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Job_PresentWorkingFolder.cpp -- Present Working Folder Job                 */
+/* Job_Pwf.cpp -- Present Working Folder Job                                  */
 /*============================================================================*/
 
 #include "JobModel.h"
