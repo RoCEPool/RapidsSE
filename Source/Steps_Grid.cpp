@@ -19,6 +19,7 @@ void Task::vAddPrimitives_Grid(void)
   vAddPrimitive("grid::node"_Stz,         &vGridNode,              false);
   vAddPrimitive("grid::nodes"_Stz,        &vGridNodes,             false);
   vAddPrimitive("grid::partitions"_Stz,   &vGridPartitions,        false);
+  vAddPrimitive("grid::show"_Stz,         &vGridShow,              false);
   vAddPrimitive("grid::slots"_Stz,        &vGridSlots,             false);
   vAddPrimitive("grid::started!"_Stz,     &vGridStartedStore,      false);
   vAddPrimitive("grid::started@"_Stz,     &vGridStartedFetch,      false);
@@ -29,28 +30,6 @@ void Task::vAddPrimitives_Grid(void)
   vAddPrimitive("grid::toNode"_Stz,       &vGridToNode,            false);
   vAddPrimitive("grid::toPartition"_Stz,  &vGridToPartition,       false);
   vAddPrimitive("grid::toSlot"_Stz,       &vGridToSlot,            false);
-
-  vAddPrimitive("grid.init"_Stz,          &vGridInit,              false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* grid.init -- initialise a grid                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vGridInit(MP_Task mpTask)
-{
-ENTRY("vGridInit"_Stz);
-  
-  Object* pPtrGrid;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrGrid) )
-    THROW_INVALID_DSTACK("grid.init"_Stz);
-  
-  Grid* pGrid = _pGrid(pPtrGrid);
-  ASSERT(CN_GRID == pGrid->eClass());
-  
-  //gpAttachMap->m_pGrid = new Grid(gxArguments.m_nNodes, gxArguments.m_nSlots);
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -72,7 +51,7 @@ void Task::vGridNode(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* grid::nodes -- get number of nodes in the grid                              */
+/* grid::nodes -- get number of nodes in the grid                             */
 /*----------------------------------------------------------------------------*/
 void Task::vGridNodes(MP_Task mpTask)
 {
@@ -84,13 +63,23 @@ void Task::vGridNodes(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* grid::partitions -- get number of partitions in the grid                    */
+/* grid::partitions -- get number of partitions in the grid                   */
 /*----------------------------------------------------------------------------*/
 void Task::vGridPartitions(MP_Task mpTask)
 {
   ENTRY("vGridNode"_Stz);
   
   mpTask->m_pDataStack->vPushInt(gpAttachMap->m_pGrid->m_nPartitions);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grid::show -- show the status of the grid                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vGridShow(MP_Task mpTask)
+{
+  ENTRY("vGridShow"_Stz);
   
   EXIT();
 }
