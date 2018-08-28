@@ -17,7 +17,7 @@ JobNote mJobNote_CreateCatalog (
   nullptr,                  // the _run task seed
   "createCatalog_req"_Stz,  // the _req task seed
   "createCatalog_beg"_Stz,  // the _rcv task seed
-  "createCatalog_exe"_Stz, // the _exe task seed
+  "createCatalog_exe"_Stz,  // the _exe task seed
   "createCatalog_end"_Stz,  // the _end task seed
   "createCatalog_can"_Stz,  // the _can task seed
   true,                     // check resources?
@@ -28,7 +28,7 @@ JobNote mJobNote_CreateCatalog (
   vJob_CreateCatalog_post,  // prompt post-process function
   nullptr,                  // job new function
   vJob_CreateCatalog_delete,// job delete function
-  nullptr,                  // job pre-send function
+  vJob_send,                // job pre-send function
   vJob_recv,                // job post-receive function
   vJob_CreateCatalog_show,  // job show function
   true,                     // job is enabled

@@ -911,6 +911,8 @@ namespace Tasks
     static void vJobOriginatorFetch(MP_Task mpTask);
     static void vJobParticipantFetch(MP_Task mpTask);
     static void vJobParticipantStore(MP_Task mpTask);
+    static void vJobPostRecv(MP_Task mpTask);
+    static void vJobPreSend(MP_Task mpTask);
     static void vJobPromptTaskFetch(MP_Task mpTask);
     static void vJobRecv(MP_Task mpTask);
     static void vJobReleaseResourcesFetch(MP_Task mpTask);

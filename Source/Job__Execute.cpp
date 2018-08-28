@@ -25,7 +25,7 @@ JobNote mJobNote__Execute (
   nullptr,                 // prompt post-process function
   nullptr,                 // job new function
   vJob__Execute_delete,    // job delete function
-  nullptr,                 // job pre-send function
+  vJob_send,               // job pre-send function
   vJob_recv,               // job post-receive function
   nullptr,                 // job show function
   false,                   // job is not prompt enabled

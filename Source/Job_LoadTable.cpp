@@ -28,7 +28,7 @@ JobNote mJobNote_LoadTable (
   vJob_LoadTable_post,    // prompt post-process function
   pJob_LoadTable_new,     // job new function
   vJob_LoadTable_delete,  // job delete function
-  nullptr,                // job pre-send function
+  vJob_send,              // job pre-send function
   vJob_recv,              // job post-receive function
   vJob_LoadTable_show,    // job show function
   true,                   // job is enabled

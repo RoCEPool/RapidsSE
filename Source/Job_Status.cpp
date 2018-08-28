@@ -28,7 +28,7 @@ JobNote mJobNote_Status (
   vJob_Status_post,  // prompt post-process function
   nullptr,           // job new function
   vJob_Status_delete,// job delete function
-  nullptr,           // job pre-send function
+  vJob_send,         // job pre-send function
   vJob_recv,         // job post-receive function
   vJob_Status_show,  // job status function
   true,              // job is enabled

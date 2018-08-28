@@ -28,7 +28,7 @@ JobNote mJobNote_CreateTable (
   vJob_CreateTable_post,  // prompt post-process function
   pJob_CreateTable_new,   // job new function
   vJob_CreateTable_delete,// job delete function
-  nullptr,                // job pre-send function
+  vJob_send,              // job pre-send function
   vJob_recv,              // job post-receive function
   vJob_CreateTable_show,  // job show function
   true,                   // job is enabled

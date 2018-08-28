@@ -77,6 +77,8 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.participant@"_Stz,     &vJobParticipantFetch, false);
   vAddPrimitive("job.participant!"_Stz,     &vJobParticipantStore, false);
   vAddPrimitive("job.partitions@"_Stz,      &vJobPartitionsFetch,  false);
+  vAddPrimitive("job.postRecv"_Stz,         &vJobPostRecv,         false);
+  vAddPrimitive("job.preSend"_Stz,          &vJobPreSend,          false);
   vAddPrimitive("job.promptTask@"_Stz,      &vJobPromptTaskFetch,  false);
   
   vAddPrimitive("job_receiver.connNo@"_Stz, &vJobReceiverConnNoFetch,   false);
@@ -1396,6 +1398,54 @@ void Task::vJobPartitionsFetch(MP_Task mpTask)
   Job_Sanity* pJob_Sanity = _pJob_Sanity(pJobPtr);
   
   mpTask->m_pDataStack->vPushInt(pJob_Sanity->m_iPartitions);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.postRecv -- run the post-receive function of the job                   */
+/*----------------------------------------------------------------------------*/
+void Task::vJobPostRecv(MP_Task mpTask)
+{
+  ENTRY("vJobPostRecv"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.postRecv"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  // find the job class on this node
+  eCN eClass = pJob->eClass();
+  JobClass* pJobClass = gxJobCatalog.pFindJob(eClass);
+  
+  pJob->m_pJobClass = pJobClass;
+
+  if (pJobClass->m_fRecv)
+    (*pJobClass->m_fRecv)(pJob);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.preSend -- run the pre-send function of the job                        */
+/*----------------------------------------------------------------------------*/
+void Task::vJobPreSend(MP_Task mpTask)
+{
+  ENTRY("vJobPreSend"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.preSend"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  // find the job class on this node
+  eCN eClass = pJob->eClass();
+  JobClass* pJobClass = gxJobCatalog.pFindJob(eClass);
+  
+  pJob->m_pJobClass = pJobClass;
+  
+  if (pJobClass->m_fSend)
+    (*pJobClass->m_fSend)(pJob);
   
   EXIT();
 }

@@ -28,7 +28,7 @@ JobNote mJobNote_TruncateTable (
   vJob_TruncateTable_post,   // prompt post-process function
   nullptr,                   // job new function
   vJob_TruncateTable_delete, // job delete function
-  nullptr,                   // job pre-send function
+  vJob_send,                 // job pre-send function
   vJob_recv,                 // job post-receive function
   vJob_TruncateTable_show,   // job show function
   true,                      // job is enabled

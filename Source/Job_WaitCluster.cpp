@@ -27,7 +27,7 @@ JobNote mJobNote_WaitCluster (
   vJob_WaitCluster_post,  // prompt post-process function
   nullptr,                // job new function
   vJob_WaitCluster_delete,// job delete function
-  nullptr,                // job pre-send function
+  vJob_send,              // job pre-send function
   vJob_recv,              // job post-receive function
   vJob_WaitCluster_show,  // job show function
   true,                   // job is enabled

@@ -28,7 +28,7 @@ JobNote mJobNote_TableSizes (
   vJob_TableSizes_post,  // prompt post-process function
   nullptr,               // job new function
   vJob_TableSizes_delete,// job delete function
-  nullptr,               // job pre-send function
+  vJob_send,             // job pre-send function
   vJob_recv,             // job pre-receive function
   vJob_TableSizes_show,  // job show function
   true,                  // job is enabled

@@ -28,7 +28,7 @@ JobNote mJobNote_StartCluster (
   vJob_StartCluster_post,  // prompt post-process function
   nullptr,                 // job new function
   vJob_StartCluster_delete,// job delete function
-  nullptr,                 // job pre-send function
+  vJob_send,               // job pre-send function
   vJob_recv,               // job post-receive function
   vJob_StartCluster_show,  // job status function
   true,                    // job is enabled

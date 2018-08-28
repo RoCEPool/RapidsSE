@@ -138,6 +138,7 @@ namespace JobsModel
   Job* _pJob(void* aAddr);
   
   void vJob_recv(Job* pJob);
+  void vJob_send(Job* pJob);
 }
 
 bool bJobCompare(void* pObjectInsert, void* pObjectScan, bool& bMatch);

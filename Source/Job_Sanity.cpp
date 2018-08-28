@@ -27,7 +27,7 @@ JobNote mJobNote_Sanity (
   vJob_Sanity_post,  // prompt post-process function
   nullptr,           // job new function
   vJob_Sanity_delete,// job delete function
-  nullptr,           // job pre-send function
+  vJob_send,         // job pre-send function
   vJob_recv,         // job post-receive function
   vJob_Sanity_show,  // job show function
   true,              // job is enabled

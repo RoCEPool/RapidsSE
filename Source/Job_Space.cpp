@@ -28,7 +28,7 @@ JobNote mJobNote_Space (
   vJob_Space_post,  // prompt post-process function
   nullptr,          // job new function
   vJob_Space_delete,// job delete function
-  nullptr,          // job pre-send function
+  vJob_send,        // job pre-send function
   vJob_recv,        // job post-receive function
   vJob_Space_show,  // job show function
   true,             // job is enabled
