@@ -73,7 +73,7 @@
   then
 
   // distribute the job
-  pJob "job.distribute" find execute
+  pJob job.distribute
 
   pJob <DONE_REQUEST>
 ;

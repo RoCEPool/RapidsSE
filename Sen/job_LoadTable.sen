@@ -82,7 +82,7 @@
   pJob_LoadTable pThisTask "LoadTable_req task: %v job_LoadTable %v" fmt.print
 
   // distribute the job
-  pJob_LoadTable "job.distribute" find execute
+  pJob_LoadTable job.distribute
 
   pJob_LoadTable <DONE_REQUEST>
 ;
