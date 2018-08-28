@@ -130,6 +130,7 @@ enum eCN : u2 // Class Number
     /*    */ CN_JOB_PWF,
     /*    */ CN_JOB_RECEIVER,
     /*    */ CN_JOB_SANITY,
+    /*    */ CN_JOB_SHOWCLUSTER,
     /*    */ CN_JOB_SIZEINDEX,
     /*    */ CN_JOB_SIZETABLE,
     /*    */ CN_JOB_SPACE,
@@ -375,6 +376,7 @@ enum eCN : u2 // Class Number
     /*    */ "JOB_PWF"_Stz,            // CN_JOB_PWF
     /*    */ "JOB_RECEIVER"_Stz,       // CN_JOB_RECEIVER
     /*    */ "JOB_SANITY"_Stz,         // CN_JOB_SANITY
+    /*    */ "JOB_SHOWCLUSTER"_Stz,    // CN_JOB_SHOWCLUSTER
     /*    */ "JOB_SIZEINDEX"_Stz,      // CN_JOB_SIZEINDEX
     /*    */ "JOB_SIZETABLE"_Stz,      // CN_JOB_SIZETABLE
     /*    */ "JOB_SPACE"_Stz,          // CN_JOB_SPACE
