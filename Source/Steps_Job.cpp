@@ -1438,11 +1438,7 @@ void Task::vJobPreSend(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.preSend"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  // find the job class on this node
-  eCN eClass = pJob->eClass();
-  JobClass* pJobClass = gxJobCatalog.pFindJob(eClass);
-  
-  pJob->m_pJobClass = pJobClass;
+  JobClass* pJobClass = pJob->m_pJobClass;
   
   if (pJobClass->m_fSend)
     (*pJobClass->m_fSend)(pJob);
