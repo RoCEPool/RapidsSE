@@ -599,7 +599,12 @@ void SEitf::vInit(Stz* pCatalogName, Stz* pSchemaName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
+  // first discard whatever is there on the DicStack
+  if (m_xPathStack.iCount())
+    m_xPathStack.vDiscard();
+  
   // set up initial default path
+  vTrace("%s %s\n"_Stz, pCatalogName, pSchemaName);
   
   // /tenants
   //Word* pTenants = gpAttachMap->m_xMainDic.pFindWord("tenants"_Stz);
@@ -614,15 +619,15 @@ void SEitf::vInit(Stz* pCatalogName, Stz* pSchemaName)
   pCell = pTenant->pFirstCell();
   m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
   
-  if ( ! pCatalogName)
-    return;
-  
   // /tenants/boray/catalogs
   Word* pCatalogs = m_xPathStack.pFindInCurrent("catalogs"_Stz);
   ASSERT(pCatalogs);
   pCell = pCatalogs->pFirstCell();
   m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
  
+  if ( ! pCatalogName)
+    return;
+  
   // /tenants/boray/catalogs/rapidsse
   Word* pCatalog = m_xPathStack.pFindInCurrent(pCatalogName);
   ASSERT(pCatalog);
@@ -630,13 +635,13 @@ void SEitf::vInit(Stz* pCatalogName, Stz* pSchemaName)
   m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
   
   // /tenants/boray/catalogs/rapidsse/schemas
-  if ( ! pSchemaName )
-    return;
-  
   Word* pSchemas = m_xPathStack.pFindInCurrent("schemas"_Stz);
   ASSERT(pSchemas);
   pCell = pSchemas->pFirstCell();
   m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
+  
+  if ( ! pSchemaName )
+    return;
   
   // /tenants/boray/catalogs/rapidsse/schemas/public
   Word* pSchema = m_xPathStack.pFindInCurrent(pSchemaName);
