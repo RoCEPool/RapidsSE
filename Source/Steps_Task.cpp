@@ -51,8 +51,8 @@ void Task::vAddPrimitives_Task(void)
   vAddPrimitive("task.send"_Stz,      &vTaskSend,          false);
   vAddPrimitive("task.sendNode@"_Stz, &vTaskSendNodeFetch, false);
   vAddPrimitive("task.sendNode!"_Stz, &vTaskSendNodeStore, false);
-  vAddPrimitive("task.socketR35@"_Stz,&vTaskSocketR35Fetch,false);
-  vAddPrimitive("task.socketR35!"_Stz,&vTaskSocketR35Store,false);
+  vAddPrimitive("task.socket@"_Stz,   &vTaskSocketFetch,   false);
+  vAddPrimitive("task.socket!"_Stz,   &vTaskSocketStore,   false);
   vAddPrimitive("task.state@"_Stz,    &vTaskStateFetch,    false);
   vAddPrimitive("task.state!"_Stz,    &vTaskStateStore,    false);
   vAddPrimitive("task::this"_Stz,     &vTaskThis,          false);
@@ -746,18 +746,18 @@ void Task::vTaskSleep(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.socketR35@ -- fetch socket of task on data stack                      */
+/* task.socket@ -- fetch socket of task on data stack                      */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskSocketR35Fetch(MP_Task mpTask)
+void Task::vTaskSocketFetch(MP_Task mpTask)
 {
-  ENTRY("vTaskSocketR35Fetch"_Stz);
+  ENTRY("vTaskSocketFetch"_Stz);
   
   Object* pTaskObject;
   if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
-    THROW_INVALID_DSTACK("task.socketR35@"_Stz);
+    THROW_INVALID_DSTACK("task.socket@"_Stz);
   Task* pThatTask = _pTask(pTaskObject);
   
-  Socket* pSocket = pThatTask->m_pSocketR35;
+  Socket* pSocket = pThatTask->m_pSocket;
   
   Object* pSocketEmb = static_cast<Object*>(pSocket);
   
@@ -767,25 +767,25 @@ void Task::vTaskSocketR35Fetch(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.socketR35! -- store socket on data stack into task                    */
+/* task.socket! -- store socket on data stack into task                    */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskSocketR35Store(MP_Task mpTask)
+void Task::vTaskSocketStore(MP_Task mpTask)
 {
   ENTRY("vTaskSocketStoreR35"_Stz);
   
   Object* pTaskObject;
   if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
-    THROW_INVALID_DSTACK("task.socketR35!"_Stz);
+    THROW_INVALID_DSTACK("task.socket!"_Stz);
   Task* pThatTask = _pTask(pTaskObject);
   
   Object* ptrSocket;
   
   if ( ! mpTask->m_pDataStack->bPop(ptrSocket) )
-    THROW_INVALID_DSTACK("task.socketR35!"_Stz);
+    THROW_INVALID_DSTACK("task.socket!"_Stz);
   
   Socket* pSocket = static_cast<Socket*>(ptrSocket);
   
-  pThatTask->m_pSocketR35 = pSocket;
+  pThatTask->m_pSocket = pSocket;
   
   EXIT();
 }

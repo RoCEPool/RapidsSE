@@ -256,7 +256,7 @@
 /*----------------------------------------------------------------------------*/
 : socketObject> ( -- pObject )
 
-  task::this task.socketR35@
+  task::this task.socket@
 
   tp: receiving
 
@@ -270,7 +270,7 @@
 /*----------------------------------------------------------------------------*/
 : socketValSet> ( -- valset )
 
-  task::this task.socketR35@
+  task::this task.socket@
 
   tp: receiving
 

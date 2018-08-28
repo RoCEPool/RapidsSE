@@ -159,7 +159,7 @@ namespace Tasks
   
     Object* m_pSeedObject;   // seed object
  
-    Socket* m_pSocketR35;       // R35 socket associated with task
+    Socket* m_pSocket;       // R35 socket associated with task
 
     Threads::Thread* m_pThread; // current thread
 
@@ -1436,8 +1436,8 @@ namespace Tasks
     static void vTaskSendNodeFetch(MP_Task mpTask);
     static void vTaskSendNodeStore(MP_Task mpTask);
     static void vTaskSleep(MP_Task mpTask);
-    static void vTaskSocketR35Fetch(MP_Task mpTask);
-    static void vTaskSocketR35Store(MP_Task mpTask);
+    static void vTaskSocketFetch(MP_Task mpTask);
+    static void vTaskSocketStore(MP_Task mpTask);
     static void vTaskStateFetch(MP_Task mpTask);
     static void vTaskStateStore(MP_Task mpTask);
     static void vTaskThread(MP_Task mpTask);

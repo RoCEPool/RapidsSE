@@ -49,7 +49,7 @@
   pJob_Receiver job_receiver.socket@ to pSocket
 
   // set socket in task (task socket should go)
-  pSocket task::this task.socketR35!
+  pSocket task::this task.socket!
 
   // set task comment (this should go, never really used it)
   //"receiver_run" task::this task.comment!
