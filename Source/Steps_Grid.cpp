@@ -81,6 +81,23 @@ void Task::vGridShow(MP_Task mpTask)
 {
   ENTRY("vGridShow"_Stz);
   
+  vTrace("Grid::\n"_Stz);
+  vTrace("  %lld nodes\n"_Stz,gpAttachMap->m_pGrid->m_nNodes);
+  vTrace("  %lld slots per node\n"_Stz,gpAttachMap->m_pGrid->m_nSlots);
+  vTrace("  %lld total partitions\n"_Stz,gpAttachMap->m_pGrid->m_nPartitions);
+  
+  for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+    Node* pNode = gpAttachMap->m_pGrid->m_pNodes[i_Node];
+    vTrace("  Node %lld : %s IP %s port %lld %s\n"_Stz,
+           pNode->iNodeNo(),
+           pNode->aNodeName(),
+           pNode->aNodeIP(),
+           pNode->iNodePortNo(),
+           pNode->pSocket() ? "connected" : "not connected");
+  }
+  
+  vTrace("\n"_Stz);
+
   EXIT();
 }
 
