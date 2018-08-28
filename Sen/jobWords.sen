@@ -298,9 +298,10 @@
 /*----------------------------------------------------------------------------*/
 /* distribute the job to all the nodes                                        */
 /*----------------------------------------------------------------------------*/
-: Job::distribute ( ^task ^job -- )
+: Job::distribute ( pTask pJob -- )
 
-  locals| pJob pTask |
+  params| pJob |
+  params| pTask |
 
   // set originating task
   pTask pJob job.originatingTask!
@@ -322,14 +323,13 @@
 
     // set the send node
     I grid::node pTask task.sendNode!
+
     task.send
 
-    // add job to valset
-    pJob
-    //1 >valset
+    pJob job.preSend
 
     // send job
-    >socket
+    pJob >socket
 
   loop
 
