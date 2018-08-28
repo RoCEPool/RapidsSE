@@ -18,7 +18,7 @@ JobNote mJobNote_Prompt (
   nullptr,           // the _end task seed
   nullptr,           // the _can task seed
   false,             // check resources?
-  false,             // detached job?
+  true,              // detached job?
   false,             // buffer attached?
   JT_NONE,           // job trace
   nullptr,           // prompt pre-process function
@@ -89,8 +89,6 @@ Job_Prompt::Job_Prompt(Interface::SEitf* pSEitf)
 : Job(CN_JOB_PROMPT, pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PROMPT,_FOOTER_);
-  
-  m_bDetached = true;
     
   _checkInitialised_(CN_JOB_PROMPT);
   

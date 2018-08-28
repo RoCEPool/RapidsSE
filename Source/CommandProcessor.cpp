@@ -327,8 +327,6 @@ void CommandProcessor::vPreJob(SEitf* pSEitf)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
   
   m_pJob = m_pJobClass->pPreJob(pSEitf);
-  
-  m_pJob->m_bDetached = pTknVec()->bDetachedRequest();
 }
 
 /*----------------------------------------------------------------------------*/

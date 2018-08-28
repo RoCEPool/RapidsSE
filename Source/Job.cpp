@@ -112,7 +112,6 @@ void Job::vInit(void)
   m_eState   = JS_NONE;
   m_sSeed    = ""_Stz;
   m_bCheckResources   = false;
-  m_bDetached         = false;
   m_eJobTrace   = JT_NONE;
   m_iParticipantNode  = -1;
   m_ziAcksRemaining   = 0;
