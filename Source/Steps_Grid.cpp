@@ -16,7 +16,6 @@ extern Arguments       gxArguments;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Grid(void)
 {
-  vAddPrimitive("grid::addNodes"_Stz,     &vGridAddNodes,          false);
   vAddPrimitive("grid::node"_Stz,         &vGridNode,              false);
   vAddPrimitive("grid::nodes"_Stz,        &vGridNodes,             false);
   vAddPrimitive("grid::partitions"_Stz,   &vGridPartitions,        false);
@@ -25,7 +24,6 @@ void Task::vAddPrimitives_Grid(void)
   vAddPrimitive("grid::started@"_Stz,     &vGridStartedFetch,      false);
   vAddPrimitive("grid::StartNode!"_Stz,   &vGridStartNodeStore,    false);
   vAddPrimitive("grid::StartNode@"_Stz,   &vGridStartNodeFetch,    false);
-  vAddPrimitive("grid::thisNode!"_Stz,    &vGridThisNodeStore,     false);
   vAddPrimitive("grid::thisNode@"_Stz,    &vGridThisNodeFetch,     false);
   vAddPrimitive("grid::thisNodeName@"_Stz,&vGridThisNodeNameFetch, false);
   vAddPrimitive("grid::toNode"_Stz,       &vGridToNode,            false);
@@ -33,24 +31,6 @@ void Task::vAddPrimitives_Grid(void)
   vAddPrimitive("grid::toSlot"_Stz,       &vGridToSlot,            false);
 
   vAddPrimitive("grid.init"_Stz,          &vGridInit,              false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* grid::addNodes -- add nodes into the grid                                  */
-/*----------------------------------------------------------------------------*/
-void Task::vGridAddNodes(MP_Task mpTask)
-{
-  ENTRY("vGridAddNodes"_Stz);
-  
-  for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-    Node* pNode = new Node(i_Node,
-                           gxArguments.m_xNodes[i_Node].m_sNodeName,
-                           gxArguments.m_xNodes[i_Node].m_sIPAddress,
-                           gxArguments.m_xNodes[i_Node].m_iPortNo);
-    ASSERT(CN_NODE == pNode->eClass());
-    gpAttachMap->m_pGrid->vAddNode(pNode);
-  }
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -123,29 +103,6 @@ void Task::vGridSlots(MP_Task mpTask)
   ENTRY("vGridNode"_Stz);
   
   mpTask->m_pDataStack->vPushInt(gpAttachMap->m_pGrid->m_nSlots);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* grid::thisNode! -- set this node  in the grid                               */
-/*----------------------------------------------------------------------------*/
-void Task::vGridThisNodeStore(MP_Task mpTask)
-{
-  ENTRY("vGridThisNodeStore"_Stz);
-  
-  s256 sPtrNodeName;
-  i8 iNode;
-  
-  Node* pThisNode = gpAttachMap->m_pGrid->pFindNode(gxArguments.m_sNodeName);
-  if ( ! pThisNode ) {
-    THROW("Cannot fine Node %s in the cluster"_Stz,
-          gxArguments.m_sNodeName.aChar());
-  }
-  
-  i8 iNodeNo = pThisNode->iNodeNo();
-  
-  gpAttachMap->m_pGrid->vThisNode(iNodeNo);
   
   EXIT();
 }

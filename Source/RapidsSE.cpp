@@ -670,6 +670,28 @@ void RapidsSE::vSystemInit(void)
   //--------------------------------------------------------------------------
   
   gpAttachMap->m_pGrid = new Grid(gxArguments.m_nNodes, gxArguments.m_nSlots);
+  
+  for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+    Node* pNode = new Node(i_Node,
+                           gxArguments.m_xNodes[i_Node].m_sNodeName,
+                           gxArguments.m_xNodes[i_Node].m_sIPAddress,
+                           gxArguments.m_xNodes[i_Node].m_iPortNo);
+    ASSERT(CN_NODE == pNode->eClass());
+    gpAttachMap->m_pGrid->vAddNode(pNode);
+  }
+  
+  Node* pThisNode = gpAttachMap->m_pGrid->pFindNode(gxArguments.m_sNodeName);
+  if ( ! pThisNode ) {
+    THROW("Cannot fine Node %s in the cluster"_Stz,
+          gxArguments.m_sNodeName.aChar());
+  }
+  
+  i8 iNodeNo = pThisNode->iNodeNo();
+  
+  gpAttachMap->m_pGrid->vThisNode(iNodeNo);
+
+  //--------------------------------------------------------------------------
+
 
   vDicCompile(gpAttachMap->m_npBootTask);
   

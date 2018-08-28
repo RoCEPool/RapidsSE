@@ -757,7 +757,6 @@ namespace Tasks
     static void vFlowThrow(MP_Task mpTask);
     
     // grid    
-    static void vGridAddNodes(MP_Task mpTask);
     static void vGridInit(MP_Task mpTask);
     static void vGridNode(MP_Task mpTask);
     static void vGridNodes(MP_Task mpTask);
@@ -767,7 +766,6 @@ namespace Tasks
     static void vGridStartedFetch(MP_Task mpTask);
     static void vGridStartNodeStore(MP_Task mpTask);
     static void vGridStartNodeFetch(MP_Task mpTask);
-    static void vGridThisNodeStore(MP_Task mpTask);
     static void vGridThisNodeFetch(MP_Task mpTask);
     static void vGridThisNodeNameFetch(MP_Task mpTask);
     static void vGridToNode(MP_Task mpTask);
