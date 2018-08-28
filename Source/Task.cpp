@@ -883,28 +883,6 @@ void Task::vAddConstants(void)
   /*  0 */ vAddConstant("SIZEOF_S32"_Stz,          sizeof(s32));
   /*  1 */ vAddConstant("SIZEOF_S256"_Stz,         sizeof(s256));
   /*  2 */ vAddConstant("SIZEOF_S16K"_Stz,         sizeof(s48K));
-
-  // TK_ : task kind
-  /*  0 */ vAddConstant("TK_NONE"_Stz,                    TK_NONE);
-  /*  1 */ vAddConstant("TK_ANSWER_DRONE"_Stz,            TK_ANSWER_DRONE);
-  /*  2 */ vAddConstant("TK_LISTER_DRONE"_Stz,            TK_LISTER_DRONE);
-  /*  3 */ vAddConstant("TK_CONNECTOR_DRONE"_Stz,         TK_CONNECTOR_DRONE);
-  /*  4 */ vAddConstant("TK_MONITOR_DRONE"_Stz,           TK_MONITOR_DRONE);
-  /*  5 */ vAddConstant("TK_RECLAIM_DRONE"_Stz,           TK_RECLAIM_DRONE);
-  /*  6 */ vAddConstant("TK_RECEIVER_DRONE"_Stz,          TK_RECEIVER_DRONE );
-  /*  7 */ vAddConstant("TK_REQUEST_SERVER"_Stz,          TK_REQUEST_SERVER);
-  /*  8 */ vAddConstant("TK_LOADSUB_SERVER"_Stz,          TK_LOADSUB_SERVER);
-  /*  9 */ vAddConstant("TK_COORDINATOR_WORKER"_Stz,      TK_COORDINATOR_WORKER);
-  /* 10 */ vAddConstant("TK_COORDINATOR_PROXY_WORKER"_Stz,TK_COORDINATOR_PROXY_WORKER);
-  /* 11 */ vAddConstant("TK_PARTICIPANT_WORKER"_Stz,      TK_PARTICIPANT_WORKER);
-  /* 12 */ vAddConstant("TK_PARTICIPANT_PROXY_WORKER"_Stz,TK_PARTICIPANT_PROXY_WORKER);
-  /* 13 */ vAddConstant("TK_SENDER_WORKER"_Stz,           TK_SENDER_WORKER);
-  /* 14 */ vAddConstant("TK_LOADSUB_PART"_Stz,            TK_LOADSUB_PART);
-  /* 15 */ vAddConstant("TK_SELECT_PART"_Stz,             TK_SELECT_PART);
-  /* 16 */ vAddConstant("TK_TRUNCATE_PART"_Stz,           TK_TRUNCATE_PART);
-  /* 17 */ vAddConstant("TK_R35_COMMAND"_Stz,             TK_R35_COMMAND);
-  /* 18 */ vAddConstant("TK_R35_CHILD"_Stz,               TK_R35_CHILD);
-  /* 19 */ vAddConstant("TK_ENUMS"_Stz,                   TK_ENUMS );
   
   // TS_ : task state
   /*  0 */ vAddConstant("TS_NONE"_Stz,           TS_NONE);

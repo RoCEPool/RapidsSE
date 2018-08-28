@@ -45,58 +45,7 @@ namespace Tasks
     /*  5 */ "R35"_Stz,
     /*  6 */ "ENUMS"_Stz
   };
-  
-  enum eTK // task kind
-  {
-  /*  0 */ TK_NONE=0,
-  /*  1 */ TK_ANSWER_DRONE,
-  /*  2 */ TK_LISTER_DRONE,
-  /*  3 */ TK_CONNECTOR_DRONE,
-  /*  4 */ TK_MONITOR_DRONE,
-  /*  5 */ TK_RECLAIM_DRONE,
-  /*  6 */ TK_RECEIVER_DRONE,
-  /*  7 */ TK_REQUEST_SERVER,
-  /*  8 */ TK_LOADSUB_SERVER,
-  /*  9 */ TK_COORDINATOR_WORKER,
-  /* 10 */ TK_COORDINATOR_PROXY_WORKER,
-  /* 11 */ TK_PARTICIPANT_WORKER,
-  /* 12 */ TK_PARTICIPANT_PROXY_WORKER,
-  /* 13 */ TK_SENDER_WORKER,
-  /* 14 */ TK_LOADSUB_PART,
-  /* 15 */ TK_SELECT_PART,
-  /* 16 */ TK_TRUNCATE_PART,
-  
-  /* 17 */ TK_R35_COMMAND,
-  /* 18 */ TK_R35_CHILD,
-  
-  /* 19 */ TK_ENUMS
-  };
-  
-  static Stz* aTK[]
-  {
-  /*  0 */ "NONE"_Stz,
-  /*  1 */ "ANSWER_DRONE"_Stz,
-  /*  2 */ "LISTER_DRONE"_Stz,
-  /*  3 */ "CONNECTOR_DRONE"_Stz,
-  /*  4 */ "MONITOR_DRONE"_Stz,
-  /*  5 */ "RECLAIM_DRONE"_Stz,
-  /*  6 */ "RECEIVER_DRONE"_Stz,
-  /*  7 */ "REQUEST_SERVER"_Stz,
-  /*  8 */ "LOADSUB_SERVER"_Stz,
-  /*  9 */ "COORDINATOR_WORKER"_Stz,
-  /* 10 */ "COORDINATOR_PROXY_WORKER"_Stz,
-  /* 11 */ "PARTICIPANT_WORKER"_Stz,
-  /* 12 */ "PARTICIPANT_PROXY_WORKER"_Stz,
-  /* 13 */ "SENDER_WORKER"_Stz,
-  /* 14 */ "LOADSUB_PART"_Stz,
-  /* 15 */ "SELECT_PART"_Stz,
-  /* 16 */ "TRUNCATE_PART"_Stz,
-
-  /* 17 */ "R35_COMMAND"_Stz,
-  /* 18 */ "R35_CHILD"_Stz,
-  
-  /* 19 */ "ENUMS"_Stz
-  };
+    
   enum eTS // Task State
   {
   /* 0 */ TS_NONE=0,

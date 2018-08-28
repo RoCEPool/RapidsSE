@@ -116,7 +116,7 @@ tp: parallelTableLoader
     << pTblLoader loader.newSub >>
     pathGet sFldDel >>
 
-    1 "distLoadSub" task::this I >loadSubNm TK_LOADSUB_SERVER spawnServerTask to pSubTask
+    //1 "distLoadSub" task::this I >loadSubNm TK_LOADSUB_SERVER spawnServerTask to pSubTask
 
   loop
 
@@ -179,7 +179,7 @@ tp: parallelTableLoader
 
   tp: distParallelTableLoader
 
-  pSeitf iNode sFldDel sCat sSch sTableNm sSameMachine sPath 8 "parallelTableLoader" task::this "distLoader" TK_LOADSUB_SERVER  spawnServerTask to tableLoader
+  //pSeitf iNode sFldDel sCat sSch sTableNm sSameMachine sPath 8 "parallelTableLoader" task::this "distLoader" TK_LOADSUB_SERVER  spawnServerTask to tableLoader
   " distLoad done" .verbose
 
   true <SUCCESS_RESULT>
@@ -262,7 +262,7 @@ tp: parallelTableLoader
 
   pathGet >>
 
-  1 "loadSub" task::this I >loadSubNm TK_LOADSUB_SERVER spawnServerTask to pSubTask
+  //1 "loadSub" task::this I >loadSubNm TK_LOADSUB_SERVER spawnServerTask to pSubTask
 
   loop
 

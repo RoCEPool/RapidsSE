@@ -18,7 +18,7 @@ tp: rangeSelectIdxTask
 //debug::trap
 
 // task is a select participant running on server thread
-task::this task.kind@ TK_SELECT_PART == assert
+//task::this task.kind@ TK_SELECT_PART == assert
 task::this task.thread thread.actorModel@ AC_SERVER == assert
 
 // save seitf into this task
@@ -716,7 +716,7 @@ tp: populateIndex
 
   // create a selectTask to execute the key select on the index for the partition
   i_Phrase pPlanner sExactKey sLowerKey sUpperKey pBufferQueue pIndex pSeitf iSlot 9
-  sSelectTaskSeed nullptr "selectTask" TK_SELECT_PART spawnServerTask
+  //sSelectTaskSeed nullptr "selectTask" TK_SELECT_PART spawnServerTask
   to pSelectTask
 ;
 
@@ -923,7 +923,7 @@ tp: populateIndex
 
     // create a selectTask to execute the key select on the index for the partition
     sExactKey sLowerKey sUpperKey pSeitf I 5
-    sSelectTaskSeed nullptr "selectTask" TK_SELECT_PART spawnServerTask
+    //sSelectTaskSeed nullptr "selectTask" TK_SELECT_PART spawnServerTask
     to pSelectTask
 
   loop
