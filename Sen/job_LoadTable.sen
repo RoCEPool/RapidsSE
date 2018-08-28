@@ -23,7 +23,7 @@
   sTableNm "TableNm: %v" fmt.print
 
   // push table dictionary
-  pJob_LoadTable getPathR35 dicStack.set
+  pJob_LoadTable getPath dicStack.set
   sTableNm pushTable assert
   pathDump
 
@@ -147,7 +147,7 @@
   // path checks
 
   // set dictionary stack
-  pJob_LoadTable getPathR35 dicStack.set
+  pJob_LoadTable getPath dicStack.set
   pathDump
 
   // there should be a table folder

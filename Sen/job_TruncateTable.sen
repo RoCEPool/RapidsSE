@@ -52,7 +52,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set dictionary stack
-  pJob_TruncateTable getPathR35
+  pJob_TruncateTable getPath
   dicStack.set
 
   // store task into Job_LoadTable
@@ -106,7 +106,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set dictionary stack
-  pJob_TruncateTable getPathR35
+  pJob_TruncateTable getPath
   dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

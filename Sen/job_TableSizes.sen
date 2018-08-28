@@ -58,7 +58,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set dictionary stack
-  pJob_TableSizes getPathR35
+  pJob_TableSizes getPath
   dicStack.set
 
   //"hidden" find execute to pIndex
@@ -136,7 +136,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set dictionary stack
-  pJob_TableSizes getPathR35
+  pJob_TableSizes getPath
   dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

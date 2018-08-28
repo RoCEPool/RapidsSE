@@ -38,7 +38,7 @@
   pJob_LoadBuffer job.objectName@ to sTableNm
 
   // push table dictionary
-  pJob_LoadBuffer getPathR35 dicStack.set
+  pJob_LoadBuffer getPath dicStack.set
   sTableNm pushTable assert
   //pathDump
 

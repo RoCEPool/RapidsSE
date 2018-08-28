@@ -61,7 +61,7 @@
 
   //----------------------------------------------------------------------------
   // set dictionary stack
-  pJob_ListIdxColumns getPathR35
+  pJob_ListIdxColumns getPath
   dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

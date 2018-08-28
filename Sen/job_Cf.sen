@@ -27,7 +27,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set dictionary stack
-  pJob_Cf getPathR35
+  pJob_Cf getPath
   dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -36,7 +36,7 @@
   // pop up one folder, but not into tenants
   sFolderNm ".." str.equal if
     0 pathPick dic.name "tenants" str.equal not if pathDrop then
-    savePathR35
+    savePath
     pJob_Cf <DONE_REQUEST>
     exit
   then
@@ -47,7 +47,7 @@
   // pop up to tenants
   sFolderNm "~" str.equal if
     begin 0 pathPick dic.name "tenants" str.equal not while pathDrop repeat
-    savePathR35
+    savePath
     pJob_Cf <DONE_REQUEST>
     exit
   then
@@ -59,7 +59,7 @@
   sFolderNm "tenants" str.equal if
     pathDropAll
     attachmap::tenants@ execute pathPush
-    savePathR35
+    savePath
     pJob_Cf <DONE_REQUEST>
     exit
   then
@@ -70,7 +70,7 @@
   sFolderNm findInCurrent to pCurrentFolder
   pCurrentFolder checkIsDicR35 not if pJob_Cf <ERROR_REQUEST> exit then
   pCurrentFolder execute pathPush
-  savePathR35
+  savePath
 
   pJob_Cf <DONE_REQUEST>
 ;

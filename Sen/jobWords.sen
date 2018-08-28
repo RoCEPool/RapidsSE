@@ -340,7 +340,7 @@
 /*----------------------------------------------------------------------------*/
 /* copy dictionary path from job to datastack                                 */
 /*----------------------------------------------------------------------------*/
-: getPathR35 ( pJob -- )
+: getPath ( pJob -- )
 
   0 0 locals| pDicPathJob pDicStackTask pJob |
 
@@ -361,7 +361,7 @@
 /*----------------------------------------------------------------------------*/
 /* set dictionary path of this task back into seitf                           */
 /*----------------------------------------------------------------------------*/
-: savePathR35 ( -- )
+: savePath ( -- )
 
   0 0 locals| pDicStackSEitf pDicStackTask |
 

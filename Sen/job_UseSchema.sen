@@ -48,7 +48,7 @@
   execute pathPush
 
   // save the path
-  savePathR35
+  savePath
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -70,7 +70,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set dictionary stack
-  pJob_UseSchema getPathR35
+  pJob_UseSchema getPath
   dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
