@@ -558,14 +558,14 @@ void KeyTest::vTestB(void)
   
   nnpExternalTask->vSeedWord(sSeed);
   
-  Thread::vRunTask(nnpExternalTask);
+  //Thread::vRunTask(nnpExternalTask);
 
   sSeed = "printArg"_Stz;
   s48K sArg = "boo!"_Stz;
   nnpExternalTask->vSeedWord(sSeed);
   nnpExternalTask->vPushStr(sArg);
   
-  Thread::vRunTask(nnpExternalTask);
+  //Thread::vRunTask(nnpExternalTask);
 
   delete *nnpExternalTask;
 

@@ -167,18 +167,6 @@ Thread* Thread::pThisTLSThread(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* run given task                                                             */
-/*----------------------------------------------------------------------------*/
-void Thread::vRunTask(MP_Task mpTask)
-{
-  PosixThread::vTlsSet(giTLS_TaskKey,*mpTask);
-  ASSERT(PosixThread::pTlsGet(giTLS_TaskKey));
-  mpTask->vState(TS_EXECUTING);
-  mpTask->vThread(nullptr);
-  mpTask->vTaskLoop();
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

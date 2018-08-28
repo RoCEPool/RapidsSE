@@ -579,7 +579,7 @@ void RapidsSE::vDicCompile(NP_Task npBootTask)
   //         npBootTask->sName().aChar(),
   //         *npBootTask);
   
-  npBootTask->vTaskLoop();
+  npBootTask->vTaskLoop_R35();
 }
 
 /*----------------------------------------------------------------------------*/

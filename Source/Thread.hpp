@@ -96,7 +96,6 @@ namespace Threads
     static void* pEntryPoint(void* pArg);
   
     static Thread* pThisTLSThread(void);
-    static void vRunTask(MP_Task mpTask);
   
     void vBind(i8 iCpu);
     i8   iCpu(void);
