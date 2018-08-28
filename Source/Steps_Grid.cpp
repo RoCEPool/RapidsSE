@@ -68,7 +68,7 @@ ENTRY("vGridInit"_Stz);
   Grid* pGrid = _pGrid(pPtrGrid);
   ASSERT(CN_GRID == pGrid->eClass());
   
-  new(pGrid) Grid(gxArguments.m_nNodes, gxArguments.m_nSlots);
+  //gpAttachMap->m_pGrid = new Grid(gxArguments.m_nNodes, gxArguments.m_nSlots);
   
   EXIT();
 }

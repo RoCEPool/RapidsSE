@@ -31,18 +31,9 @@ void* Grid::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  Grid* pGrid = reinterpret_cast<Grid*>(Heap::pAllocate(CN_GRID));
+  void* pObject = Heap::pAllocate(CN_GRID);
   
-  return pGrid;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* Grid::operator new(size_t iSize, Grid* pGrid)
-{
-  RASSERT(iSize);
-  return pGrid;
+  return pObject;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -63,8 +54,6 @@ Grid::Grid(i8 nNodes, i8 nSlots)
 : Object(CN_GRID)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  
-  gpAttachMap->m_pGrid = this;
   
   vInit(nNodes, nSlots);
   

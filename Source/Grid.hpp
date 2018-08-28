@@ -26,7 +26,6 @@ namespace GridModel
     
   public:
     void* operator new(size_t);
-    void* operator new(size_t, Grid* pGrid);
     void  operator delete(void*);
     
     Grid(i8 nNodes, i8 nSlots);

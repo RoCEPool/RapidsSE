@@ -159,7 +159,7 @@ namespace Tasks
   
     Object* m_pSeedObject;   // seed object
  
-    Socket* m_pSocket;       // R35 socket associated with task
+    Socket* m_pSocket;       // socket associated with task
 
     Threads::Thread* m_pThread; // current thread
 
