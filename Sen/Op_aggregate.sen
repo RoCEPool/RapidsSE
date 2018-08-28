@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* aggregateOp.sen -- row aggregate by operator                               */
+/* Op_aggregate.sen -- row aggregate by operator                              */
 /*============================================================================*/
 
-" aggregateOp.sen" .verbose
+" Op_aggregate.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* row aggregate operator                                                     */

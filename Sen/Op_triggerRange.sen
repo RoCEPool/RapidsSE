@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* triggerRangeOp.sen -- flow trigger operator                                */
+/* Op_triggerRange.sen -- flow trigger operator                                */
 /*============================================================================*/
 
-" triggerRangeOp.sen" .verbose
+" Op_triggerRange.sen" .verbose
 common/ triggerRange rbCrs /
 /*----------------------------------------------------------------------------*/
 /* trigger                                                                    */

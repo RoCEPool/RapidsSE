@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* upperOp.sen -- table upper bound select operator                           */
+/* Op_upper.sen -- table upper bound select operator                           */
 /*============================================================================*/
 
-" rangeOp.sen" .verbose
+" Op_range.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* table upper bound select                                                   */

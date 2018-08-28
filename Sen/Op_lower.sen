@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* lowerOp.sen -- table lower bound select operator                           */
+/* Op_lower.sen -- table lower bound select operator                           */
 /*============================================================================*/
 
-" lowerOp.sen" .verbose
+" Op_lower.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* table lower bound select                                                   */

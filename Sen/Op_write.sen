@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* writeOp.sen -- write rows to file operator                                 */
+/* Op_write.sen -- write rows to file operator                                 */
 /*============================================================================*/
 
-" writeOp.sen" .verbose
+" Op_write.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* frame common variables for write                                           */

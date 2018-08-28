@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* distinctOp.sen -- row distinct operator                                    */
+/* Op_distinct.sen -- row distinct operator                                    */
 /*============================================================================*/
 
-" distinctOp.sen" .verbose
+" Op_distinct.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* row distinct operator                                                      */
