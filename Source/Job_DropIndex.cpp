@@ -17,7 +17,7 @@ JobNote mJobNote_DropIndex (
   nullptr,               // the _run task seed
   "dropIndex_req"_Stz,   // the _req task seed
   "dropIndex_beg"_Stz,   // the _rcv task seed
-  "dropIndex_exe"_Stz,  // the _exe task seed
+  "dropIndex_exe"_Stz,   // the _exe task seed
   "dropIndex_end"_Stz,   // the _end task seed
   "dropIndex_can"_Stz,   // the _can task seed
   true,                  // check resources?
@@ -29,7 +29,7 @@ JobNote mJobNote_DropIndex (
   nullptr,               // job new function
   vJob_DropIndex_delete, // job delete function
   nullptr,               // job pre-send function
-  nullptr,               // job post-receive function
+  vJob_recv,             // job post-receive function
   vJob_DropIndex_show,   // job show function
   true,                  // job is enabled
   "<help>"_Stz,          // help

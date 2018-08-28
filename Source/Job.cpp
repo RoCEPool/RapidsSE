@@ -6,6 +6,7 @@
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
+extern JobCatalog gxJobCatalog;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -297,6 +298,16 @@ void Job::vShow(s48K& s)
   vTrace("%s: %s"_Stz,
          m_pJobClass ? m_pJobClass->m_aName : "<no jobClass>"_Stz,
          s.aStr());
+}
+
+/*----------------------------------------------------------------------------*/
+/* post-recv job function                                                     */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_recv(Job* pJob)
+{
+  // find the job class on this node
+  eCN eClass = pJob->eClass();
+  pJob->m_pJobClass = gxJobCatalog.pFindJob(eClass);
 }
 
 /*============================================================================*/

@@ -17,7 +17,7 @@ JobNote mJobNote_SizeIndex (
   nullptr,               // the _run task seed
   "sizeIndex_req"_Stz,   // the _req task seed
   "sizeIndex_beg"_Stz,   // the _rcv task seed
-  "sizeIndex_exe"_Stz,  // the _exe task seed
+  "sizeIndex_exe"_Stz,   // the _exe task seed
   "sizeIndex_end"_Stz,   // the _end task seed
   "sizeIndex_can"_Stz,   // the _can task seed
   true,                  // check resources?
@@ -29,7 +29,7 @@ JobNote mJobNote_SizeIndex (
   nullptr,               // job new function
   vJob_SizeIndex_delete, // job delete function
   nullptr,               // job pre-send function
-  nullptr,               // job post-receive function
+  vJob_recv,             // job post-receive function
   vJob_SizeIndex_show,   // job show function
   true,                  // job is enabled
   "<help>"_Stz,          // help

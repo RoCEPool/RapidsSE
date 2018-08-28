@@ -29,7 +29,7 @@ JobNote mJobNote_AnalyzeTable (
   nullptr,                   // job new function
   vJob_AnalyzeTable_delete,  // job delete function
   nullptr,                   // job pre-send function
-  nullptr,                   // job post-receive function
+  vJob_recv,                 // job post-receive function
   vJob_AnalyzeTable_show,    // job show function
   true,                      // job is enabled
   "antbl tableNm [0/1]"_Stz,              // help

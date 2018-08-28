@@ -17,7 +17,7 @@ JobNote mJobNote_TableSizes (
   nullptr,               // the _run task seed
   "tableSizes_req"_Stz,  // the _req task seed
   "tableSizes_beg"_Stz,  // the _rcv task seed
-  "tableSizes_exe"_Stz, // the _exe task seed
+  "tableSizes_exe"_Stz,  // the _exe task seed
   "tableSizes_end"_Stz,  // the _end task seed
   "tableSizes_can"_Stz,  // the _can task seed
   true,                  // check resources?
@@ -29,7 +29,7 @@ JobNote mJobNote_TableSizes (
   nullptr,               // job new function
   vJob_TableSizes_delete,// job delete function
   nullptr,               // job pre-send function
-  nullptr,               // job pre-receive function
+  vJob_recv,             // job pre-receive function
   vJob_TableSizes_show,  // job show function
   true,                  // job is enabled
   "<help>"_Stz,          // help

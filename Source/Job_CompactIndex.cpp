@@ -29,7 +29,7 @@ JobNote mJobNote_CompactIndex (
   nullptr,                // job new function
   vJob_CompactIndex_delete, // job delete function
   nullptr,                // job pre-send function
-  nullptr,                // job post-receive function
+  vJob_recv,              // job post-receive function
   vJob_CompactIndex_show, // job show function
   true,                   // job is enabled
   "<help>"_Stz,           // help

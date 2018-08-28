@@ -29,7 +29,7 @@ JobNote mJobNote_AnalyzeIndex (
   nullptr,                   // job new function
   vJob_AnalyzeIndex_delete,  // job delete function
   nullptr,                   // job pre-send function
-  nullptr,                   // job post-receive function
+  vJob_recv,                 // job post-receive function
   vJob_AnalyzeIndex_show,    // job show function
   true,                      // job is enabled
   "anidx tableNm indexNm [0/1]"_Stz,              // help

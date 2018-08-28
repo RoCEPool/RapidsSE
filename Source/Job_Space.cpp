@@ -17,7 +17,7 @@ JobNote mJobNote_Space (
   nullptr,          // the _run task seed
   "space_req"_Stz,  // the _req task seed
   "space_beg"_Stz,  // the _rcv task seed
-  "space_exe"_Stz, // the _exe task seed
+  "space_exe"_Stz,  // the _exe task seed
   "space_end"_Stz,  // the _end task seed
   "space_can"_Stz,  // the _can task seed
   false,            // check resources?
@@ -29,7 +29,7 @@ JobNote mJobNote_Space (
   nullptr,          // job new function
   vJob_Space_delete,// job delete function
   nullptr,          // job pre-send function
-  nullptr,          // job post-receive function
+  vJob_recv,        // job post-receive function
   vJob_Space_show,  // job show function
   true,             // job is enabled
   "<help>"_Stz,     // help

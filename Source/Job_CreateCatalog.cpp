@@ -29,7 +29,7 @@ JobNote mJobNote_CreateCatalog (
   nullptr,                  // job new function
   vJob_CreateCatalog_delete,// job delete function
   nullptr,                  // job pre-send function
-  nullptr,                  // job post-receive function
+  vJob_recv,                // job post-receive function
   vJob_CreateCatalog_show,  // job show function
   true,                     // job is enabled
   "<help>"_Stz,             // help

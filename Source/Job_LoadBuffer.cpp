@@ -29,7 +29,7 @@ JobNote mJobNote_LoadBuffer (
   pJob_LoadBuffer_new,     // job new function
   vJob_LoadBuffer_delete,  // job delete function
   nullptr,                 // job pre-send function
-  nullptr,                 // job post-receive function
+  vJob_recv,               // job post-receive function
   vJob_LoadBuffer_show,    // job show function
   false,                   // job is not prompt enabled
   "<help>"_Stz,            // help

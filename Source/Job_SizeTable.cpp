@@ -17,7 +17,7 @@ JobNote mJobNote_SizeTable (
   nullptr,               // the _run task seed
   "sizeTable_req"_Stz,   // the _req task seed
   "sizeTable_beg"_Stz,   // the _rcv task seed
-  "sizeTable_exe"_Stz,  // the _exe task seed
+  "sizeTable_exe"_Stz,   // the _exe task seed
   "sizeTable_end"_Stz,   // the _end task seed
   "sizeTable_can"_Stz,   // the _can task seed
   true,                  // check resources?
@@ -29,7 +29,7 @@ JobNote mJobNote_SizeTable (
   nullptr,               // job new function
   vJob_SizeTable_delete, // job delete function
   nullptr,               // job pre-send function
-  nullptr,               // job post-receive function
+  vJob_recv,             // job post-receive function
   vJob_SizeTable_show,   // job show function
   true,                  // job is enabled
   "<help>"_Stz,          // help

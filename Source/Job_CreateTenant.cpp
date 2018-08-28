@@ -17,7 +17,7 @@ JobNote mJobNote_CreateTenant (
   nullptr,                   // the _run task seed
   "createTenant_req"_Stz,    // the _req task seed
   "createTenant_beg"_Stz,    // the _rcv task seed
-  "createTenant_exe"_Stz,   // the _exe task seed
+  "createTenant_exe"_Stz,    // the _exe task seed
   "createTenant_end"_Stz,    // the _end task seed
   "createTenant_can"_Stz,    // the _can task seed
   true,                      // check resources?
@@ -29,7 +29,7 @@ JobNote mJobNote_CreateTenant (
   nullptr,                   // job new function
   vJob_CreateTenant_delete,  // job delete function
   nullptr,                   // job pre-send function
-  nullptr,                   // job post-receive function
+  vJob_recv,                 // job post-receive function
   vJob_CreateTenant_show,    // job show function
   true,                      // job is enabled
   "<help>"_Stz,              // help

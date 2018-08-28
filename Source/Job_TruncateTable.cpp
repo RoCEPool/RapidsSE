@@ -29,7 +29,7 @@ JobNote mJobNote_TruncateTable (
   nullptr,                   // job new function
   vJob_TruncateTable_delete, // job delete function
   nullptr,                   // job pre-send function
-  nullptr,                   // job post-receive function
+  vJob_recv,                 // job post-receive function
   vJob_TruncateTable_show,   // job show function
   true,                      // job is enabled
   "tr <tableNm>"_Stz,        // help

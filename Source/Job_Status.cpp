@@ -29,7 +29,7 @@ JobNote mJobNote_Status (
   nullptr,           // job new function
   vJob_Status_delete,// job delete function
   nullptr,           // job pre-send function
-  nullptr,           // job post-receive function
+  vJob_recv,         // job post-receive function
   vJob_Status_show,  // job status function
   true,              // job is enabled
   "<help>"_Stz,      // help

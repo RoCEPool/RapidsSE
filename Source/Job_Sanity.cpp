@@ -10,13 +10,13 @@ JobNote mJobNote_Sanity (
   "Job_Sanity"_Stz,  // name of the job class
   CN_JOB_SANITY,     // class enum
   JK_DIST2PC,        // job kind
-  "sanity check"_Stz,      // comment about the job
+  "sanity check"_Stz,// comment about the job
   "sanity"_Stz,      // the prompt command
   nullptr,           // the second word
   nullptr,           // the _run task seed
   "sanity_req"_Stz,  // the _req task seed
   "sanity_beg"_Stz,  // the _rcv task seed
-  "sanity_exe"_Stz, // the _exe task seed
+  "sanity_exe"_Stz,  // the _exe task seed
   "sanity_end"_Stz,  // the _end task seed
   "sanity_can"_Stz,  // the _can task seed
   false,             // check resources?
@@ -28,7 +28,7 @@ JobNote mJobNote_Sanity (
   nullptr,           // job new function
   vJob_Sanity_delete,// job delete function
   nullptr,           // job pre-send function
-  nullptr,           // job post-receive function
+  vJob_recv,         // job post-receive function
   vJob_Sanity_show,  // job show function
   true,              // job is enabled
   "<help>"_Stz,      // help

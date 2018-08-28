@@ -18,7 +18,7 @@ JobNote mJobNote_DropSchema (
   nullptr,                // the _run task seed
   "dropSchema_req"_Stz,   // the _req task seed
   "dropSchema_beg"_Stz,   // the _rcv task seed
-  "dropSchema_exe"_Stz,  // the _exe task seed
+  "dropSchema_exe"_Stz,   // the _exe task seed
   "dropSchema_end"_Stz,   // the _end task seed
   "dropSchema_can"_Stz,   // the _can task seed
   true,                   // check resources?
@@ -30,7 +30,7 @@ JobNote mJobNote_DropSchema (
   nullptr,                // job new function
   vJob_DropSchema_delete, // job delete function
   nullptr,                // job pre-send function
-  nullptr,                // job post-receive function
+  vJob_recv,              // job post-receive function
   vJob_DropSchema_show,   // job show function
   true,                   // job is enabled
   "<help>"_Stz,           // help

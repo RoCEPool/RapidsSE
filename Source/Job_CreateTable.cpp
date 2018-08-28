@@ -17,7 +17,7 @@ JobNote mJobNote_CreateTable (
   nullptr,                // the _run task seed
   "createTable_req"_Stz,  // the _req task seed
   "createTable_beg"_Stz,  // the _rcv task seed
-  "createTable_exe"_Stz, // the _exe task seed
+  "createTable_exe"_Stz,  // the _exe task seed
   "createTable_end"_Stz,  // the _end task seed
   "createTable_can"_Stz,  // the _can task seed
   true,                   // check resources?
@@ -29,7 +29,7 @@ JobNote mJobNote_CreateTable (
   pJob_CreateTable_new,   // job new function
   vJob_CreateTable_delete,// job delete function
   nullptr,                // job pre-send function
-  nullptr,                // job post-receive function
+  vJob_recv,              // job post-receive function
   vJob_CreateTable_show,  // job show function
   true,                   // job is enabled
   "<help>"_Stz,           // help

@@ -29,10 +29,10 @@ JobNote mJobNote_FetchRows (
   nullptr,                   // job new function
   vJob_FetchRows_delete,     // job delete function
   nullptr,                   // job pre-send function
-  nullptr,                   // job post-receive function
+  vJob_recv,                 // job post-receive function
   vJob_FetchRows_show,       // job show function
   true,                      // job is enabled
-  "feth <tableNm> <where>"_Stz,// help
+  "fetch <tableNm> <where>"_Stz,// help
   "<example>"_Stz            // example
 );
 

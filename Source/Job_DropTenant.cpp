@@ -17,7 +17,7 @@ JobNote mJobNote_DropTenant (
   nullptr,                // the _run task seed
   "dropTenant_req"_Stz,   // the _req task seed
   "dropTenant_beg"_Stz,   // the _rcv task seed
-  "dropTenant_exe"_Stz,  // the _exe task seed
+  "dropTenant_exe"_Stz,   // the _exe task seed
   "dropTenant_end"_Stz,   // the _end task seed
   "dropTenant_can"_Stz,   // the _can task seed
   true,                   // check resources?
@@ -29,7 +29,7 @@ JobNote mJobNote_DropTenant (
   nullptr,                // job new function
   vJob_DropTenant_delete, // job delete function
   nullptr,                // job pre-send function
-  nullptr,                // job post-receive function
+  vJob_recv,              // job post-receive function
   vJob_DropTenant_show,   // job show function
   true,                   // job is enabled
   "<help>"_Stz,           // help

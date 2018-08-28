@@ -17,7 +17,7 @@ JobNote mJobNote_DropTable (
   nullptr,               // the _run task seed
   "dropTable_req"_Stz,   // the _req task seed
   "dropTable_beg"_Stz,   // the _rcv task seed
-  "dropTable_exe"_Stz,  // the _exe task seed
+  "dropTable_exe"_Stz,   // the _exe task seed
   "dropTable_end"_Stz,   // the _end task seed
   "dropTable_can"_Stz,   // the _can task seed
   true,                  // check resources?
@@ -29,7 +29,7 @@ JobNote mJobNote_DropTable (
   nullptr,               // job new function
   vJob_DropTable_delete, // job delete function
   nullptr,               // job pre-send function
-  nullptr,               // job post-receive function
+  vJob_recv,             // job post-receive function
   vJob_DropTable_show,   // job show function
   true,                  // job is enabled
   "<help>"_Stz,          // help
