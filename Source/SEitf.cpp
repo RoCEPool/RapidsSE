@@ -614,6 +614,9 @@ void SEitf::vInit(Stz* pCatalogName, Stz* pSchemaName)
   pCell = pTenant->pFirstCell();
   m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
   
+  if ( ! pCatalogName)
+    return;
+  
   // /tenants/boray/catalogs
   Word* pCatalogs = m_xPathStack.pFindInCurrent("catalogs"_Stz);
   ASSERT(pCatalogs);
@@ -627,6 +630,9 @@ void SEitf::vInit(Stz* pCatalogName, Stz* pSchemaName)
   m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
   
   // /tenants/boray/catalogs/rapidsse/schemas
+  if ( ! pSchemaName )
+    return;
+  
   Word* pSchemas = m_xPathStack.pFindInCurrent("schemas"_Stz);
   ASSERT(pSchemas);
   pCell = pSchemas->pFirstCell();

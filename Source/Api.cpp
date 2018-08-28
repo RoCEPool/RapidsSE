@@ -2671,9 +2671,9 @@ bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* execute command                                                            */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_ExecuteCommmand(Stz* aCommand, SEitf* pSEitf, bool bPostJob, void** ppJob)
+eEC RapidsSE_ExecuteCommand(SEitf* pSEitf, Stz* aCommand, bool bPostJob, void** ppJob, i8 iTraceLevel)
 {
-  Job* pJob = RapidsSE_pExecuteCommmand(aCommand, pSEitf, bPostJob);
+  Job* pJob = RapidsSE_pExecuteCommand(aCommand, pSEitf, bPostJob);
   
   if (pJob->m_bHasError) {
     for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
@@ -2689,7 +2689,32 @@ eEC RapidsSE_ExecuteCommmand(Stz* aCommand, SEitf* pSEitf, bool bPostJob, void**
 /*----------------------------------------------------------------------------*/
 /* execute command                                                            */
 /*----------------------------------------------------------------------------*/
-Job* RapidsSE_pExecuteCommmand(Stz* aCommand, SEitf* pSEitf, bool bPostJob)
+eEC RapidsSE_ExecuteCommandPath(SEitf* pSEitf, Stz* aCommand,
+                             Stz* sCatalogName, Stz* sSchemaName,
+                             bool bPostJob, void** ppJob, i8 iTraceLevel)
+{
+  // set the catalog and schema in the SEitf
+  pSEitf->vInit(sCatalogName, sSchemaName);
+  
+  Job* pJob = RapidsSE_pExecuteCommand(aCommand, pSEitf, bPostJob);
+  vTrace("pJob = %p\n"_Stz, pJob);
+  *ppJob = pJob;
+  
+  if (pJob->m_bHasError) {
+    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+      if (pJob->m_xNode[i_Node].m_eErrorCode != EC_NONE)
+        return pJob->m_xNode[i_Node].m_eErrorCode;
+    }
+    ASSERT(0);
+  }
+  else
+    return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* execute command                                                            */
+/*----------------------------------------------------------------------------*/
+Job* RapidsSE_pExecuteCommand(Stz* aCommand, SEitf* pSEitf, bool bPostJob)
 {
   CommandProcessor* pCommandProcessor = pSEitf->m_pCommandProcessor;
   
@@ -2718,11 +2743,52 @@ Job* RapidsSE_pExecuteCommmand(Stz* aCommand, SEitf* pSEitf, bool bPostJob)
                             &pJob->m_xThreadMutex);
   if (0 != rCode)
     vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
-
+  
+  TokenVec* pTknVec = Tokeniser::pTokenise(pJob->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_sResponse);
+  
+  i8 iRows = -1;
+  i8 iToken = 0;
+  
   if (bPostJob)
     pCommandProcessor->vPostJob(pSEitf);
   
   return pJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* execute command                                                            */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_GetRowCount(SEitf* pSEitf, Job* pJob, void** ppRowCount, i8 iTraceLevel)
+{
+  vTrace("Job = %p\n"_Stz, pJob);
+  *ppRowCount = &(pJob->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_iRowsProcessed);
+  vTrace("RowCount = %lld\n"_Stz, (pJob)->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_iRowsProcessed);
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* execute command                                                            */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_GetRow(SEitf* pSEitf, Job* pJob, i8 iRow, void** ppRow, i8 iTraceLevel)
+{
+  TokenVec* pTknVec = Tokeniser::pTokenise(pJob->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_sResponse);
+  
+  i8 iRows = -1;
+  i8 iToken = 0;
+  while (iRows != iRow) {
+    vTrace("%s\n"_Stz, pTknVec->pGet(iToken)->aText());
+    ASSERT(pTknVec->pGet(iToken++)->aText()->bSame("row:"_Stz));
+    vTrace("%s\n"_Stz, pTknVec->pGet(iToken)->aText());
+    ASSERT(pTknVec->pGet(iToken++)->aText()->bSame("("_Stz));
+    vTrace("%s\n"_Stz, pTknVec->pGet(iToken)->aText());
+    pSEitf->m_sResponse.vCopy(pTknVec->pGet(iToken++)->aText());
+    vTrace("row found %s\n"_Stz, pSEitf->m_sResponse.aChar());
+    vTrace("%s\n"_Stz, pTknVec->pGet(iToken)->aText());
+    ASSERT(pTknVec->pGet(iToken++)->aText()->bSame(")"_Stz));
+    iRows++;
+  }
+  *ppRow = pSEitf->m_sResponse.aChar();
+  return EC_NONE;
 }
 
 /*============================================================================*/

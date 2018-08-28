@@ -63,9 +63,12 @@ extern "C" eEC RapidsSE_TruncateTable(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema
 
 bool RapidsSE_ExecuteRequest(SEitf* pSEitf,TokenVec& xTokenVec, Stz** ppResponse);
 
-extern "C" eEC RapidsSE_ExecuteCommmand(Stz* aCommand, SEitf* pSEitf, bool bPostJob, void** ppJob);
-
-Job* RapidsSE_pExecuteCommmand(Stz* aCommand, SEitf* pSEitf, bool bPostJob);
+extern "C" eEC RapidsSE_GetRowCount(SEitf* pSEitf, Job* pJob, void** ppRowCount, i8 iTraceLevel);
+extern "C" eEC RapidsSE_GetRow(SEitf* pSEitf, Job* pJob, i8 iRow, void** ppRow, i8 iTraceLevel);
+extern "C" eEC RapidsSE_ExecuteCommand(SEitf* pSEitf, Stz* aCommand, bool bPostJob, void** ppJob, i8 iTraceLevel);
+extern "C" eEC RapidsSE_ExecuteCommandPath(SEitf* pSEitf, Stz* aCommand, Stz* sCatalogName, Stz* sSchemaName,
+                                        bool bPostJob, void** ppJob, i8 iTraceLevel);
+Job* RapidsSE_pExecuteCommand(Stz* aCommand, SEitf* pSEitf, bool bPostJob);
 
 bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf);
 
