@@ -47,7 +47,6 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   gxJobCatalog.vTraceJobs(CN_JOB_USESCHEMA);
   gxJobCatalog.vTraceJobs(CN_JOB_DUMPINDEX);
   gxJobCatalog.vTraceJobs(CN_JOB_VISUALIZEINDEX);
-  gxJobCatalog.vTraceJobs(CN_JOB_STARTCLUSTER);
 
   // generic
   gxJobCatalog.vTraceJobs(CN_JOB__BEGUN);
@@ -82,6 +81,7 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   gxJobCatalog.vTraceJobs(CN_JOB_SANITY);
   gxJobCatalog.vTraceJobs(CN_JOB_SPACE);
   gxJobCatalog.vTraceJobs(CN_JOB_STATUS);
+  gxJobCatalog.vTraceJobs(CN_JOB_STARTCLUSTER);
   gxJobCatalog.vTraceJobs(CN_JOB_WAITCLUSTER);
 
   // child

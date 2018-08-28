@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* job_WaitCluster.sen -- Job Wait CLuster                                    */
+/* job_StartCluster.sen -- Job Start Cluster                                  */
 /*============================================================================*/
 
-" job_Sanity.sen" .verbose
+" job_StartCluster.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -73,7 +73,7 @@
 /*----------------------------------------------------------------------------*/
 /* request to wait for cluster to start (on originating node)                 */
 /*----------------------------------------------------------------------------*/
-: waitCluster_req ( -- <R> )
+: startCluster_req ( -- <R> )
 
   0 0 locals| pJob pTask |
 
@@ -87,7 +87,75 @@
   // get the job from the task
   pTask task.job@ to pJob
 
+  "spawnNodes..." .
+  spawnNodes
+
+  "setStartNode..." .
+  setStartNode
+
+  "spawn_Connector..." .
+  spawn_Connector
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // wait till all nodes connected
+  grid::wait
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // distribute the job
+  pTask pJob "job::distribute" find execute
+
   pJob <DONE_REQUEST>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute job_StartCluster (on participating node)                           */
+/*----------------------------------------------------------------------------*/
+: startCluster_exe ( pJob_StartCluster -- )
+
+  //params| pJob_StartCluster |
+  job::this locals| pJob_StartCluster |
+
+  pJob_StartCluster job.notice
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // wait till all nodes connected
+  grid::wait
+
+  pJob_StartCluster send_job__executed
+
+  nullptr task::this task.job!
+
+  <DONE_NODE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* begin job                                                                  */
+/*----------------------------------------------------------------------------*/
+: startCluster_beg ( -- )
+
+job::this locals| pJob_status |
+
+pJob_status job.beginParticipant
+
+job::participantBegun
+;
+
+/*----------------------------------------------------------------------------*/
+/* end job                                                                    */
+/*----------------------------------------------------------------------------*/
+: startCluster_end ( -- )
+
+job::this locals| pJob_status |
+
+job::participantEnded
+;
+
+/*----------------------------------------------------------------------------*/
+/* cancel job                                                                 */
+/*----------------------------------------------------------------------------*/
+: startCluster_can ( -- )
+
+job::this locals| pJob_status |
 ;
 
 /*============================================================================*/

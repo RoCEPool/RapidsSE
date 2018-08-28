@@ -10,16 +10,16 @@ extern AttachMap* gpAttachMap;
 JobNote mJobNote_StartCluster (
   "Job_StartCluster"_Stz,  // name of the job class
   CN_JOB_STARTCLUSTER,     // class enum
-  JK_LOCAL,                // job kind
+  JK_DIST2PC,              // job kind
   "start cluster"_Stz,     // comment about the job
   "startCluster"_Stz,      // the prompt command
   nullptr,                 // the second word
   nullptr,                 // the _run task seed
   "startCluster_req"_Stz,  // the _req task seed
-  nullptr,                 // the _rcv task seed
-  nullptr,                 // the _exe task seed
-  nullptr,                 // the _end task seed
-  nullptr,                 // the _can task seed
+  "startCluster_beg"_Stz,  // the _rcv task seed
+  "startCluster_exe"_Stz,  // the _exe task seed
+  "startCluster_end"_Stz,  // the _end task seed
+  "startCluster_can"_Stz,  // the _can task seed
   false,                   // check resources?
   false,                   // detached job?
   false,                   // buffer attached?
