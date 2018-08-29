@@ -338,7 +338,6 @@ void Task::vAddConstants(void)
   vAddConstant("args.config"_Stz,            gxArguments.m_bConfig);
   vAddConstant("args.docol"_Stz,             gxArguments.m_bDocol);
   vAddConstant("args.dontFree"_Stz,          gxArguments.m_bDontFree);
-  vAddConstant("args.folder"_Stz,            gxArguments.m_sFolder);
   vAddConstant("args.freeRB"_Stz,            gxArguments.m_bFreeRB);
   vAddConstant("args.help"_Stz,              gxArguments.m_bHelp);
   vAddConstant("args.hugePages"_Stz,         gxArguments.m_bHugePages);

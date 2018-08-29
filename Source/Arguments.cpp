@@ -54,7 +54,6 @@ Arguments::Arguments(void)
 
   m_bBgTasks       = true;
   m_bConfig        = true;
-  m_sFolder        = ""_Stz;
   m_bHugePages     = false;
   m_bProgress      = false;
   m_bRestart       = true;
@@ -109,10 +108,6 @@ void Arguments::vEnvironmentVariables(void)
   sVarName = "SE_PARTITIONS"_Stz;
   if (Env::bGet(sVarName,sPartitions))
     m_nSlots = sPartitions.iToI8();
-  
-  sVarName = "SE_WORKING_FOLDER"_Stz;
-  if (Env::bGet(sVarName,sFolder))
-    m_sFolder = sFolder;
 }
 
 /*----------------------------------------------------------------------------*/
