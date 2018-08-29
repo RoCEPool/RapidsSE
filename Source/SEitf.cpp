@@ -599,12 +599,13 @@ void SEitf::vInit(Stz* pCatalogName, Stz* pSchemaName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
+  m_xPathStack.vContentDump();
+  
   // first discard whatever is there on the DicStack
-  if (m_xPathStack.iCount())
+  for (i8 iCount = m_xPathStack.iCount(); iCount; iCount--)
     m_xPathStack.vDiscard();
   
   // set up initial default path
-  vTrace("%s %s\n"_Stz, pCatalogName, pSchemaName);
   
   // /tenants
   //Word* pTenants = gpAttachMap->m_xMainDic.pFindWord("tenants"_Stz);
@@ -612,7 +613,7 @@ void SEitf::vInit(Stz* pCatalogName, Stz* pSchemaName)
   ASSERT(pTenants);
   Cell* pCell = pTenants->pFirstCell();
   m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
-  
+
   // /tenants/boray
   Word* pTenant = m_xPathStack.pFindInCurrent("boray"_Stz);
   ASSERT(pTenant);
@@ -624,7 +625,7 @@ void SEitf::vInit(Stz* pCatalogName, Stz* pSchemaName)
   ASSERT(pCatalogs);
   pCell = pCatalogs->pFirstCell();
   m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
- 
+
   if ( ! pCatalogName)
     return;
   
