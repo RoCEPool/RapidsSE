@@ -9,20 +9,23 @@ namespace StorageEngine
   {
   public:
     // configuration
-    void* m_aRegionAddr; // use this address for region
-    s256  m_sRegionName; // name of shared memory region
+    s256  m_sCommands;     // commands dir
+    s256  m_sNodeName;     // this node name
+    void* m_aRegionAddr;   // use this address for region
+    s256  m_sRegionName;   // name of shared memory region
     s256  m_sRegionPrefix; // prefix of the shared memory region name
-    i8    m_iRegionSize; // size of region in bytes
-    i8    m_nSlots;      // partitions per node
-    s256  m_sNodeName;   // this node name
-    i8    m_nNodes;      // out of this number of nodes
-    i8    m_iThisNode;   // this node no in the m_xNode list
-    i8    m_nThreads;    // number of general threads
-    bool  m_bTracepoint; // print tracepoint
-    s256  m_sCommands;   // commands dir
-    s256  m_sSen;        // sen dir
-    i8    m_nSubLoaders; // number of subloaders
-    
+    i8    m_iRegionSize;   // size of region in bytes
+    s256  m_sSen;          // sen dir
+    i8    m_nSlots;        // partitions per node
+  
+    i8    m_nNodes;        // nodes
+    struct {
+      s256 m_sNodeName;
+      s256 m_sIPAddress;
+      i8   m_iPortNo;
+    } m_xNodes[C_MAX_NODES];
+  
+
     // commands
   
     bool m_bDocol;      // run the docol> interpreter
@@ -35,6 +38,10 @@ namespace StorageEngine
     bool m_bLock;       // lock shared memory pages in memory
 
     // options
+    i8   m_nSubLoaders; // number of subloaders
+    i8   m_nThreads;    // number of general threads
+    i8   m_iThisNode;   // this node no in the m_xNode list
+    bool m_bTracepoint; // print tracepoint
     bool m_bBgTasks;    // start background tasks
     bool m_bConfig;     // print configuration information
     bool m_bHugePages;  // to use huge pages
@@ -44,28 +51,22 @@ namespace StorageEngine
     bool m_bTracing;    // tracing
     bool m_bVerbose;    // print extra stuff
     bool m_bWelcome;    // print banner
-    bool  m_bMetadata;  // print metadata information
-    bool  m_bMunged;    // load munged words
-    bool  m_bKillPrev;  // kill previous se's (temporary)
-    bool  m_bDontFree;  // dont actually free objects back to heap
-    bool  m_bFreeRB;    // but free RowBuffers back to heap
-    bool  m_bReload;    // relaod from checkpoint files
-    i8    m_nEntries;   // no of entries per buffer
-    i8    m_nSplitRatio; // split ratio of indexes
-    i8    m_nMaxQueue;   // max queue partition thread can build up
+    bool m_bMetadata;   // print metadata information
+    bool m_bMunged;     // load munged words
+    bool m_bKillPrev;   // kill previous se's (temporary)
+    bool m_bDontFree;   // dont actually free objects back to heap
+    bool m_bFreeRB;     // but free RowBuffers back to heap
+    bool m_bReload;     // relaod from checkpoint files
+    i8   m_nEntries;    // no of entries per buffer
+    i8   m_nSplitRatio; // split ratio of indexes
+    i8   m_nMaxQueue;   // max queue partition thread can build up
   
-    bool  m_bStrictMode;// are we in strict (or relaxed mode)?
+    bool m_bStrictMode; // are we in strict (or relaxed mode)?
   
     // working
     i8   m_nJumboBuffers; // number of jumbo buffers
     i8   m_nJumboTook;    // number of pool buffers taken by jumbo buffers
     i8   m_iJumboSize;    // size of the jumbo heap
-    
-    struct {
-      s256 m_sNodeName;
-      s256 m_sIPAddress;
-      i8   m_iPortNo;
-    } m_xNodes[C_MAX_NODES];
     
     // must be last
     Footer m_xFooter;
