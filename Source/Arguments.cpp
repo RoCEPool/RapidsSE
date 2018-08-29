@@ -43,7 +43,6 @@ Arguments::Arguments(void)
   
   m_nSubLoaders = m_nThreads - 2;
   
-  m_bDocol      = false;
   m_bHelp       = false;
   m_bPrompt     = false;
   m_bStart      = false;
@@ -135,12 +134,6 @@ bool Arguments::bParse(int argc, Stz* argv[])
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--sen"_Stz)) {
       m_sSen = (Stz*)argv[++i_Arg];
-      continue;
-    }
-    
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--docol"_Stz)) {
-      m_bDocol = true;
       continue;
     }
     
@@ -536,7 +529,6 @@ void Arguments::vPrintStartupInfo(void)
   
 #ifdef __DEBUG
   if (m_bCommand)  vTrace("  --command\n"_Stz);
-  if (m_bDocol)    vTrace("  --docol\n"_Stz);
   if (m_bHelp)     vTrace("  --help\n"_Stz);
   if (m_bProgress) vTrace("  --progress\n"_Stz);
   if (m_bPrompt)   vTrace("  --seprompt\n"_Stz);

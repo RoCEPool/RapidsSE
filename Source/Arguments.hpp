@@ -28,7 +28,6 @@ namespace StorageEngine
 
     // commands
   
-    bool m_bDocol;      // run the docol> interpreter
     bool m_bHelp;       // display help
     bool m_bPrompt;     // run the se> prompt
     bool m_bStart;      // start system (shm not exist, shm create, root thread & task)

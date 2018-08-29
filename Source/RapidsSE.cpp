@@ -345,23 +345,12 @@ void RapidsSE::vExecuteCmdLine(void)
         gpAttachMap->m_pGrid->vDumpPartitioning();
       }
       
-      //vSkipListTest();
-      if (gxArguments.m_bDocol) {
-        //vRunDocol();
-        //vWaitFlag();
-      }
-      else if (gxArguments.m_bPrompt) {
+      if (gxArguments.m_bPrompt) {
         ASSERT(gpBufferPool);
         return;
       }
       else
         vWaitFlag();
-    }
-    else if (gxArguments.m_bDocol) {
-      ASSERT(gpBufferPool);
-      //vSystemInit();
-      //vRunDocol();
-      //vWaitFlag();
     }
     else if (gxArguments.m_bPrompt) {
       ASSERT(gpBufferPool);
@@ -412,7 +401,7 @@ void RapidsSE::vPoolOpen(void)
     return;
   }
   
-  if (gxArguments.m_bStart || gxArguments.m_bDocol) {
+  if (gxArguments.m_bStart) {
         
     if (! gxArguments.m_bRestart && Region::bTest(gxArguments.m_sRegionName)) {
       vFatal("Error: RapidsSE instance %s already started\n"_Stz,gxArguments.m_sRegionName.aChar());
