@@ -340,7 +340,6 @@ void Task::vAddConstants(void)
   vAddConstant("args.dontFree"_Stz,          gxArguments.m_bDontFree);
   vAddConstant("args.folder"_Stz,            gxArguments.m_sFolder);
   vAddConstant("args.freeRB"_Stz,            gxArguments.m_bFreeRB);
-  vAddConstant("args.frequency"_Stz,         gxArguments.m_iFrequency);
   vAddConstant("args.help"_Stz,              gxArguments.m_bHelp);
   vAddConstant("args.hugePages"_Stz,         gxArguments.m_bHugePages);
   vAddConstant("args.jumboBuffers"_Stz,      gxArguments.m_nJumboBuffers);

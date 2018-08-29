@@ -248,20 +248,6 @@ void vTest5(void)
 /*----------------------------------------------------------------------------*/
 void vTest6(void)
 {
-  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  /*
-   i8 iLevels[gxArguments.m_iLevels];
-   for (i8 i_Level = 0; i_Level < gxArguments.m_iLevels; i_Level++)
-   iLevels[i_Level] = 0;
-   
-   for (i8 i = 0; i < 5; i++) {
-   u8 iLevel = Random::iLogLevel(gxArguments.m_iLevels, gxArguments.m_iFrequency);
-   iLevels[iLevel]++;
-   }
-   for (i8 u_Level = 0; u_Level < gxArguments.m_uLevels; u_Level++)
-   printf("%llu: %llu\n",u_Level,iLevels[uLevel]);
-   */
-  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 }
 
 /*----------------------------------------------------------------------------*/
