@@ -11,7 +11,6 @@ namespace StorageEngine
   
   class RapidsSE
   {
-  
   private:
 
     // must be last
@@ -19,35 +18,27 @@ namespace StorageEngine
 
   public:
   
-    // from main.cpp
-    static void vChangeDirectory(void);
-    static void vExecuteSystem(void);
-    static void vKillPrev(void);
-    static void vPrintSizes(void);
-    static void vPrintExit(void);
-    static void vPrintWelcome(void);
-    static void vSpawnPrompt(void);
-    static bool bRunUtilities(int argc, Stz* argv[]);
-    static void vSetGlobals(void);
-    static void vWriteRegionName(void);
-
-    //--------------------------------------------------------------------------
-  
-    static void vExecuteCmdLine(void);
-    static void vCheckPort(void);
-    static void vPoolClose(void);
-    static void vPoolOpen(void);
-    static bool bPoolOpen(StrVal& sPoolName);
-    static void vSEitfDelete(SEitf* pSEitf);
-
-    //--------------------------------------------------------------------------
-    
     static void vAttachObjects(void);
+    static void vChangeDirectory(void);
+    static void vCheckPort(void);
     static void vCreateObjects(void);
     static void vDicCompile(NP_Task npBootTask);
     static void vErrorHandler(Error* pError);
+    static void vExecuteCmdLine(void);
+    static void vExecuteSystem(void);
     static void vInitJumboHeap(void);
+    static void vKillPrev(void);
+    static void vPoolClose(void);
+    static void vPoolOpen(void);
+    static bool bPoolOpen(StrVal& sPoolName);
+    static void vPrintExit(void);
+    static void vPrintSizes(void);
+    static void vPrintWelcome(void);
+    static bool bRunUtilities(int argc, Stz* argv[]);
+    static void vSEitfDelete(SEitf* pSEitf);
+    static void vSetGlobals(void);
     static void vSignalHandler(int iSignal);
+    static void vSpawnPrompt(void);
     static void vStartSystemTasks(void);
     static void vSystemInit(void);
     static void vSystemPrompt(void);
@@ -56,6 +47,7 @@ namespace StorageEngine
     static void vSystemStop(void);
     static void vSystemUnlink(void);
     static void vWaitFlag(void);
+    static void vWriteRegionName(void);
 
     Footer* aFooter(void);
   };
