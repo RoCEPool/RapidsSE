@@ -367,7 +367,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_ListCatalogs),   // CN_JOB_LISTCATALOGS
   /*    */ sizeof(Job_ListColumns),    // CN_JOB_LISTCOLUMNS
   /*    */ sizeof(Job_ListIdxColumns), // CN_JOB_LISTIDXCOLUMNS
-  /*    */ sizeof(Job_ListIdxColumns), // CN_JOB_LISTINDEXES
+  /*    */ sizeof(Job_ListIndexes),    // CN_JOB_LISTINDEXES
   /*    */ sizeof(Job_ListPartColumns),// CN_JOB_LISTPARTCOLUMNS
   /*    */ sizeof(Job_ListSchemas),    // CN_JOB_LISTSCHEMAS
   /*    */ sizeof(Job_ListTables),     // CN_JOB_LISTTABLES

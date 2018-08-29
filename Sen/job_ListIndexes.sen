@@ -1,0 +1,128 @@
+/*============================================================================*/
+/* job_ListIndexes.sen -- Job list Indexes                                    */
+/*============================================================================*/
+
+" job_ListIndexes.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* list indexes of a table                                                    */
+/*----------------------------------------------------------------------------*/
+: listIndexes ( Job_ListIndexes -- )
+
+  params| pJob_ListIndexes |
+
+  0 0 0 0 locals| iCount pIndex iColumns pTable |
+
+  ""   // initial contents of the string
+  0 pathPick dic.lastWord dup
+  iterate                         // setup iteration of words
+
+    // get the index ptr
+    object@ word.name findInCurrent execute to pIndex
+
+    // skip hidden index
+    pIndex index.isHidden@ not if
+
+    // increment count
+    1 iCount + to iCount
+
+    // index a primary key ?
+    pIndex index.isPrimaryKey@
+    if "true" else "false" then
+
+    // index is unique ?
+    pIndex index.isUnique@
+    if "true" else "false" then
+
+      // add word kind to ls string
+      object@ word.name
+
+      "row: ('%v',%v,%v)\n" str.format
+      str.cat
+    then
+
+    object@ word.prev object!       // step backwards thru words
+  next
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set response in the job
+  grid::thisNode@ pJob_ListIndexes job.response!
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // sent rows Processed in the job
+  iCount grid::thisNode@ pJob_ListIndexes job.rowsProcessed!
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* List Indexes requests (on the originating node)                            */
+/*----------------------------------------------------------------------------*/
+: listIndexes_req ( -- <R> )
+
+  0 0 0 0 locals| sTableNm iCount pJob_ListIndexes pTask |
+
+  tp: listIndexes_req
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob_ListIndexes
+
+  //----------------------------------------------------------------------------
+  // set dictionary stack
+  pJob_ListIndexes getPath
+  dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab ddl read lock
+  ddlLock::grabRead
+
+  //----------------------------------------------------------------------------
+  // should be in the tables folder
+  checkInTables not if pJob_ListIndexes <ERROR_REQUEST> exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get table name from job
+  pJob_ListIndexes job.objectName@ to sTableNm
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // there should be a table folder
+  sTableNm checkIsTableFolder not if pJob_ListIndexes <ERROR_REQUEST> exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push table dictionary
+  sTableNm pushTable assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check it is a table
+  sTableNm checkIsTableR35 not if popTable pJob_ListIndexes <ERROR_REQUEST> exit then
+
+  args.metadata if
+    "(name VARCHAR, isUnique BOOLEAN, isPrimaryKey BOOLEAN)"
+       pJob_ListIndexes job.metadata!
+  then
+
+  // push indexes folder
+  pushIndexes assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // list table columns
+  pJob_ListIndexes listIndexes
+
+  // pop indexes folder
+  popIndexes
+
+  //----------------------------------------------------------------------------
+  // pop table dictionary
+  popTable
+  assertInTables
+
+  pJob_ListIndexes <DONE_REQUEST>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -12,7 +12,7 @@ JobNote mJobNote_ListIndexes (
   CN_JOB_LISTINDEXES,     // class enum
   JK_LOCAL,               // job kind
   "list table indexes"_Stz,     // comment about the job
-  "lscol"_Stz,            // the prompt command
+  "lsidx"_Stz,            // the prompt command
   nullptr,                // the second word
   nullptr,                // the _run task seed
   "listIndexes_req"_Stz,  // the _req task seed
@@ -89,7 +89,7 @@ void Job_ListIndexes::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_ListIndexes::Job_ListIndexes(Interface::SEitf* pSEitf)
-: Job(CN_JOB_LISTCOLUMNS, pSEitf)
+: Job(CN_JOB_LISTINDEXES, pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTINDEXES,_FOOTER_);
   
@@ -121,9 +121,9 @@ void Job_ListIndexes::vDump(eCN eClass, Object* pObject, Stz* aTab)
   RASSERT(CN_JOB_LISTINDEXES == eClass);
   RASSERT(pObject->eClass() == CN_JOB_LISTINDEXES);
   
-  Job_ListIndexes* pJob_ListColumns = _pJob_ListIndexes(pObject);
+  Job_ListIndexes* pJob_ListIndexes = _pJob_ListIndexes(pObject);
 
-  pJob_ListColumns->vShow();
+  pJob_ListIndexes->vShow();
 }
 
 /*----------------------------------------------------------------------------*/

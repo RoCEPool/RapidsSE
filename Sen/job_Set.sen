@@ -41,6 +41,7 @@
 "Job_ListColumns.sen" include
 "Job_ListCatalogs.sen" include
 "Job_ListIdxColumns.sen" include
+"Job_ListIndexes.sen" include
 "Job_ListPartColumns.sen" include
 "Job_ListSchemas.sen" include
 "Job_ListTables.sen" include
