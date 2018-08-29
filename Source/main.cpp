@@ -6,11 +6,18 @@
 
 extern Arguments  gxArguments;
 
+extern int    gi_argc;
+extern char** gi_argv;
+
 /*----------------------------------------------------------------------------*/
 /* main                                                                       */
 /*----------------------------------------------------------------------------*/
 int main(int argc, const char* argv[])
 {
+  // save the command line arguments
+  gi_argc = argc;
+  gi_argv = (char**)argv;
+  
   // parse the command line arguments
   if ( ! gxArguments.bParse(argc,(Stz**)argv) )
     exit(EXIT_FAILURE);
