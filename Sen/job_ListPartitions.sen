@@ -1,0 +1,48 @@
+/*============================================================================*/
+/* job_ListPartitions.sen -- Job list partitions                              */
+/*============================================================================*/
+
+" job_ListPartitions.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* list partitions requests (on originating node)                             */
+/*----------------------------------------------------------------------------*/
+: listPartitions_req ( -- <R> )
+
+  0 0 locals| pJob_ListPartitions pTask |
+
+  tp: listPartitions_req
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob_ListPartitions
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set metadata string in the job
+  args.metadata if
+    "(partitonCount INTEGER, partitionNumber INTEGER, ...)"
+    pJob_ListPartitions job.metadata!
+  then
+
+  grid::slots "rows: ( %v" str.format
+  grid::slots 0 do
+    I grid::toPartition ", %v" str.format str.cat
+  loop
+  " )" str.format str.cat
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set response in job
+  grid::thisNode@ pJob_ListPartitions job.response!
+  1 grid::thisNode@ pJob_ListPartitions job.rowsProcessed!
+
+  pJob_ListPartitions <DONE_REQUEST>
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

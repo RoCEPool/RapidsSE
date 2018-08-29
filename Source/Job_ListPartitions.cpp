@@ -159,7 +159,7 @@ bool Job_ListPartitions::bPopulateJob(TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 void Job_ListPartitions::vShow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTPARTITIONS,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -171,7 +171,7 @@ void Job_ListPartitions::vShow(void)
 /*----------------------------------------------------------------------------*/
 Footer* Job_ListPartitions::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LF);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTPARTITIONS);
   
   return &m_xFooter;
 }
