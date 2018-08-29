@@ -141,9 +141,6 @@ Task::~Task(void)
   
   delete m_pTokeniser;
   
-  if (m_pRequest)
-    delete m_pRequest;
-  
   if (m_bDestructorTrace)
     vTrace("task being deleted: %p\n"_Stz, this);
   
@@ -200,8 +197,6 @@ void Task::vInit(Stz* aLambda)
   m_nVariables   = 0;
   m_pCurrentWord = nullptr;
   m_nSubDic      = 0;
-  
-  m_pRequest     = nullptr;
   
   m_pTokeniser = new Tokeniser;
   m_pTokeniser->vPush();
@@ -1669,16 +1664,6 @@ void Task::vQueue(eQR eQueue)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   m_eQueue = eQueue;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the request of the task                                                */
-/*----------------------------------------------------------------------------*/
-Value* Task::pRequest(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  return m_pRequest;
 }
 
 /*----------------------------------------------------------------------------*/

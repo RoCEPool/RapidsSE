@@ -131,7 +131,6 @@ namespace Tasks
     i8      m_iTxId;       // transaction id
     i8      m_iWakeAt;     // time at which to wake this tx
   
-    ValSet*    m_pRequest;   // request as a value set
     Tokeniser* m_pTokeniser; // input stream tokenizer
   
     Interface::SEitf* m_pSEitf; // the seitf for this task
@@ -199,7 +198,6 @@ namespace Tasks
     void vPushStr(s48K& sStr);
     eQR  eQueue(void);
     void vQueue(eQR eQueue);
-    Value* pRequest(void);
     void vReset(void);
     void vRetry(void);
     void vSeedDicCompileSen(void);
@@ -1338,7 +1336,6 @@ namespace Tasks
     static void vTaskPartitionStore(MP_Task mpTask);
     static void vTaskPlanFetch(MP_Task mpTask);
     static void vTaskPlanStore(MP_Task mpTask);
-    static void vTaskRequest(MP_Task mpTask);
     static void vTaskSeed(MP_Task mpTask);
     static void vTaskSeitfFetch(MP_Task mpTask);
     static void vTaskSeitfStore(MP_Task mpTask);
