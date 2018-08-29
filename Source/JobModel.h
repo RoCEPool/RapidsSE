@@ -79,6 +79,7 @@ using namespace JobsModel;
 #include "Job_ListColumns.hpp"
 #include "Job_ListCatalogs.hpp"
 #include "Job_ListIdxColumns.hpp"
+#include "Job_ListIndexes.hpp"
 #include "Job_ListPartColumns.hpp"
 #include "Job_ListSchemas.hpp"
 #include "Job_ListTables.hpp"

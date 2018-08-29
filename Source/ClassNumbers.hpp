@@ -120,6 +120,7 @@ enum eCN : u2 // Class Number
     /*    */ CN_JOB_LISTCATALOGS,
     /*    */ CN_JOB_LISTCOLUMNS,
     /*    */ CN_JOB_LISTIDXCOLUMNS,
+    /*    */ CN_JOB_LISTINDEXES,
     /*    */ CN_JOB_LISTPARTCOLUMNS,
     /*    */ CN_JOB_LISTSCHEMAS,
     /*    */ CN_JOB_LISTTABLES,
@@ -366,6 +367,7 @@ enum eCN : u2 // Class Number
     /*    */ "JOB_LISTCATALOGS"_Stz,   // CN_JOB_LISTCATALOGS
     /*    */ "JOB_LISTCOLUMNS"_Stz,    // CN_JOB_LISTCOLUMNS
     /*    */ "JOB_LISTIDXCOLUMNS"_Stz, // CN_JOB_LISTIDXCOLUMNS
+    /*    */ "JOB_LISTINDEXES"_Stz,    // CN_JOB_LISTINDEXES
     /*    */ "JOB_LISTPARTCOLUMNS"_Stz,// CN_JOB_LISTPARTCOLUMNS
     /*    */ "JOB_LISTSCHEMAS"_Stz,    // CN_JOB_LISTSCHEMAS
     /*    */ "JOB_LISTTABLES"_Stz,     // CN_JOB_LISTTABLES
