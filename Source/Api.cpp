@@ -2775,15 +2775,18 @@ eEC RapidsSE_GetRow(SEitf* pSEitf, Job* pJob, i8 iRow, void** ppRow, i8 iTraceLe
   
   i8 iRows = -1;
   i8 iToken = 0;
+  pSEitf->m_sResponse.vCopy(""_Stz);
+  
   while (iRows != iRow) {
-    vTrace("%s\n"_Stz, pTknVec->pGet(iToken)->aText());
+  
     ASSERT(pTknVec->pGet(iToken++)->aText()->bSame("row:"_Stz));
-    vTrace("%s\n"_Stz, pTknVec->pGet(iToken)->aText());
     ASSERT(pTknVec->pGet(iToken++)->aText()->bSame("("_Stz));
-    vTrace("%s\n"_Stz, pTknVec->pGet(iToken)->aText());
-    pSEitf->m_sResponse.vCopy(pTknVec->pGet(iToken++)->aText());
+    
+    while ( ! pTknVec->pGet(iToken)->aText()->bSame(")"_Stz)) {
+      pSEitf->m_sResponse.vConcat(pTknVec->pGet(iToken++)->aText());
+    }
+    
     vTrace("row found %s\n"_Stz, pSEitf->m_sResponse.aChar());
-    vTrace("%s\n"_Stz, pTknVec->pGet(iToken)->aText());
     ASSERT(pTknVec->pGet(iToken++)->aText()->bSame(")"_Stz));
     iRows++;
   }
