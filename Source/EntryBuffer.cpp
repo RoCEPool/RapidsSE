@@ -3577,6 +3577,8 @@ EntryBuffer* EntryBuffer::pSplit2(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+  i8 iSplitRatio = 50;
+  
   static i8 nSplit = 0;
   //vTrace("pSplit2 %lld (%lld items)\n"_Stz,++nSplit,nItems());
   
@@ -3599,7 +3601,7 @@ EntryBuffer* EntryBuffer::pSplit2(void)
   
   Entry* pPriorEntry;
   //i8 iSplitAtEntry = m_nItems/2;
-  i8 iSplitAtEntry = m_nItems*gpAttachMap->m_nSplitRatio/100;
+  i8 iSplitAtEntry = m_nItems * (iSplitRatio / 100);
   Entry* pSplitEntry = pGetEntrySplit(iSplitAtEntry,&pPriorEntry);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

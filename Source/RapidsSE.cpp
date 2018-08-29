@@ -253,7 +253,6 @@ void RapidsSE::vSetGlobals(void)
   gpAttachMap->m_bProgress     = gxArguments.m_bProgress;
   gpAttachMap->m_bMetadata     = gxArguments.m_bMetadata;
   gpAttachMap->m_nIndexEntries = gxArguments.m_nEntries;
-  gpAttachMap->m_nSplitRatio   = gxArguments.m_nSplitRatio;
   gpAttachMap->m_nMaxQueue     = gxArguments.m_nMaxQueue;
 }
 

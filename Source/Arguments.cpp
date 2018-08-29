@@ -67,7 +67,6 @@ Arguments::Arguments(void)
   m_bFreeRB        = false;
   m_bReload        = false;
   m_nEntries       = 0;
-  m_nSplitRatio    = 50;
   m_nMaxQueue      = 0;
   
   m_bStrictMode    = false;
@@ -453,12 +452,7 @@ bool Arguments::bParse(int argc, Stz* argv[])
       m_nMaxQueue = argv[++i_Arg]->iToI8();
       continue;
     }
-    
-    if (argv[i_Arg]->bSame("--splitRatio"_Stz)) {
-      m_nSplitRatio = argv[++i_Arg]->iToI8();
-      continue;
-    }
-    
+        
     vError("Unrecognized command argument: %s\n"_Stz,argv[i_Arg]);
     return false;
   }

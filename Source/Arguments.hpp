@@ -27,14 +27,13 @@ namespace StorageEngine
   
 
     // commands
-  
     bool m_bHelp;       // display help
+    bool m_bLock;       // lock shared memory pages in memory
     bool m_bPrompt;     // run the se> prompt
     bool m_bStart;      // start system (shm not exist, shm create, root thread & task)
     bool m_bStatus;     // get status
     bool m_bStop;       // force stop system (kill tasks & threads, shm unmap & unlink)
     bool m_bUnlink;     // unlink shm region only
-    bool m_bLock;       // lock shared memory pages in memory
 
     // options
     i8   m_nSubLoaders; // number of subloaders
@@ -57,7 +56,6 @@ namespace StorageEngine
     bool m_bFreeRB;     // but free RowBuffers back to heap
     bool m_bReload;     // relaod from checkpoint files
     i8   m_nEntries;    // no of entries per buffer
-    i8   m_nSplitRatio; // split ratio of indexes
     i8   m_nMaxQueue;   // max queue partition thread can build up
   
     bool m_bStrictMode; // are we in strict (or relaxed mode)?
