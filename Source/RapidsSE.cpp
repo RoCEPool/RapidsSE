@@ -49,31 +49,28 @@ void RapidsSE::vExecuteSystem(void)
   StorageEngine::vCheckAllAssumptions();
   
   vWriteRegionName();
+  
   vChangeDirectory();
+  
   vKillPrev();
   
-  RapidsSE::vPoolOpen();
+  vPoolOpen();
   
   if (gxArguments.m_bStart)
     vSetGlobals();
   
-  RapidsSE::vCheckPort();
+  vCheckPort();
   
   if (gxArguments.m_bPrompt && !gxArguments.m_bStart)
     gpAttachMap->vPrintStartupInfo();
   
-  RapidsSE::vExecuteCmdLine();
+  vExecuteCmdLine();
   
   //gpAttachMap->vPrintAttachMap();
   
-  //vSkipListTest();
-  
-  //  ResultBuffer* pRB = new ResultBuffer;
-  //  delete pRB;
-  
   vSpawnPrompt();
   
-  RapidsSE::vPoolClose();
+  vPoolClose();
 }
 
 /*----------------------------------------------------------------------------*/
