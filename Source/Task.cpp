@@ -203,13 +203,10 @@ void Task::vInit(Stz* aLambda)
   
   m_pRequest     = nullptr;
   
-  m_sLambda = aLambda;
-  if (m_sLambda.iLength())
-    m_sLambda.vConcat(" exit"_Stz);
-  
   m_pTokeniser = new Tokeniser;
   m_pTokeniser->vPush();
-  m_pTokeniser->vUseString(m_sLambda);
+  s32 sString(""_Stz);
+  m_pTokeniser->vUseString(sString);
   
   m_pSEitf   = nullptr;
 
@@ -1734,10 +1731,6 @@ void Task::vSeedDicCompileSen(void)
   
   m_pDataStack->vReset();
   m_pReturnStack->vReset();
-  
-  m_sLambda = ""_Stz;
-  
-  m_pTokeniser->vUseString(m_sLambda);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1776,11 +1769,11 @@ void Task::vSeedWord(Stz* aLambda)
   m_pDataStack->vReset();
   m_pReturnStack->vReset();
   
-  m_sLambda = aLambda;
-  if (m_sLambda.iLength())
-    m_sLambda.vConcat(" ::task_exit"_Stz);
+  s256 sLambda(aLambda);
+  if (sLambda.iLength())
+    sLambda.vConcat(" ::task_exit"_Stz);
   
-  m_pTokeniser->vUseString(m_sLambda);
+  m_pTokeniser->vUseString(sLambda);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1799,12 +1792,12 @@ void Task::vSeedDocol(void)
   m_pDataStack->vReset();
   m_pReturnStack->vReset();
   
-  m_sLambda = ""_Stz;
+  s256 sLambda(""_Stz);
   
   s32 sPrompt("docol> "_Stz);
   m_pTokeniser->vPrompt(sPrompt);
   
-  m_pTokeniser->vUseString(m_sLambda);
+  m_pTokeniser->vUseString(sLambda);
   m_pTokeniser->vLineMode(false);
 }
 

@@ -132,7 +132,6 @@ namespace Tasks
     i8      m_iWakeAt;     // time at which to wake this tx
   
     ValSet*    m_pRequest;   // request as a value set
-    s256       m_sLambda;    // lambda input
     Tokeniser* m_pTokeniser; // input stream tokenizer
   
     Interface::SEitf* m_pSEitf; // the seitf for this task
