@@ -9,6 +9,9 @@ i8 C_MEMORY_PERCENT = 95;
 
 extern bool gbSHM;
 
+extern int    gi_argc;
+extern char** gi_argv;
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
@@ -118,6 +121,10 @@ void Arguments::vEnvironmentVariables(void)
 bool Arguments::bParse(int argc, Stz* argv[])
 {
   _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
+  
+  // save the command line arguments
+  gi_argc = argc;
+  gi_argv = (char**)argv;
   
   if (argv[1]->bSame("shm"_Stz)) {
     gbSHM = true;

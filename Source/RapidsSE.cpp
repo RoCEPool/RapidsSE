@@ -41,6 +41,8 @@ void RapidsSE::vExecuteSystem(void)
   //OpSys::vGetInfo();
   // OpSys::vTraceInfo();
   
+  vPrintWelcome();
+  
   if (gxArguments.m_bVerbose)
     vPrintSizes();
   
@@ -61,8 +63,6 @@ void RapidsSE::vExecuteSystem(void)
   
   vCheckPort();
   
-  if (gxArguments.m_bPrompt && !gxArguments.m_bStart)
-    gpAttachMap->vPrintStartupInfo();
   
   vExecuteCmdLine();
   
@@ -71,6 +71,8 @@ void RapidsSE::vExecuteSystem(void)
   vSpawnPrompt();
   
   vPoolClose();
+  
+  vPrintExit();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -690,6 +692,7 @@ void RapidsSE::vSystemPrompt(void)
 {
   ASSERT(gpBufferPool);
 
+  gpAttachMap->vPrintStartupInfo();
 }
 
 /*----------------------------------------------------------------------------*/
