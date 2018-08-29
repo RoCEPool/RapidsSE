@@ -346,7 +346,6 @@ void Task::vAddConstants(void)
   vAddConstant("args.jumboSize"_Stz,         gxArguments.m_iJumboSize);
   vAddConstant("args.jumboTook"_Stz,         gxArguments.m_nJumboTook);
   vAddConstant("args.killPrev"_Stz,          gxArguments.m_bKillPrev);
-  vAddConstant("args.levels"_Stz,            gxArguments.m_iLevels);
   vAddConstant("args.lock"_Stz,              gxArguments.m_bLock);
   vAddConstant("args.metadata"_Stz,          gxArguments.m_bMetadata);
   vAddConstant("args.munged"_Stz,            gxArguments.m_bMunged);

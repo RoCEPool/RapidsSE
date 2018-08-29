@@ -51,7 +51,6 @@ Arguments::Arguments(void)
   m_bStop       = false;
   m_bUnlink     = false;
   m_bLock       = false;
-  m_iLevels     = 6;
 
   m_bBgTasks       = true;
   m_bConfig        = true;
@@ -366,10 +365,6 @@ bool Arguments::bParse(int argc, Stz* argv[])
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--levels"_Stz)) {
-      m_iLevels = argv[++i_Arg]->iToI8();
-      continue;
-    }
         
     // lock shared memory pages in memory
     if (argv[i_Arg]->bSame("--lock"_Stz)) {
