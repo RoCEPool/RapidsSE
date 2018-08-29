@@ -17,55 +17,63 @@ Arguments::Arguments(void)
 {
   _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
   
+  
   // calc the number of pool buffers taken by jumbo buffers
   m_nJumboBuffers = C_JUMBO_COEFFICIENT * Hardware::iCoreCount();
   m_nJumboTook    = C_JUMBO_RATIO * m_nJumboBuffers;
   m_iJumboSize    = m_nJumboTook * C_SIZE_POOL_BUFFER;
-  
-  m_aRegionAddr = C_ADDR_POOL;
-  m_sRegionName = ""_Stz;
-  m_sRegionPrefix = "/SE"_Stz;
-  m_iRegionSize = 1_GB * 4 + m_iJumboSize;
-  m_nSlots      = 4;
-  m_sNodeName   = "node"_Stz;
-  m_nNodes      = 0;
-  m_nThreads    = 6;
-  m_iThisNode   = -1;
-  m_bTracepoint = false;
-  
-#ifdef __APPLE__
-  m_sCommands   = "../../../../Commands"_Stz;
-  m_sSen        = "../Sen/"_Stz;
-#else
-  m_sCommands   = "../../Commands"_Stz;
-  m_sSen        = "../Sen/"_Stz;
-#endif
-  
-  m_nSubLoaders = m_nThreads - 2;
-  
-  m_bHelp       = false;
-  m_bPrompt     = false;
-  m_bStart      = false;
-  m_bStatus     = false;
-  m_bStop       = false;
-  m_bUnlink     = false;
-  m_bLock       = false;
 
-  m_bConfig        = true;
-  m_bHugePages     = false;
-  m_bProgress      = false;
-  m_bRestart       = true;
-  m_bTouch         = false;
-  m_bTracing       = false;
-  m_bVerbose       = false;
-  m_bWelcome       = true;
-  m_bMetadata      = false;
-  m_bMunged        = false;
-  m_bKillPrev      = false;
-  m_bDontFree      = false;
-  m_bFreeRB        = false;
-  m_bReload        = false;
-  m_nEntries       = 0;
+  // configuration
+#ifdef __APPLE__
+  m_sCommands     = "../../../../Commands"_Stz;
+#else
+  m_sCommands     = "../../Commands"_Stz;
+#endif
+  m_sNodeName     = "node"_Stz;
+  m_aRegionAddr   = C_ADDR_POOL;
+  m_sRegionName   = ""_Stz;
+  m_sRegionPrefix = "/SE"_Stz;
+  m_iRegionSize   = (4 * 1_GB) + m_iJumboSize;
+#ifdef __APPLE__
+  m_sSen          = "../Sen/"_Stz;
+#else
+  m_sSen          = "../Sen/"_Stz;
+#endif
+  m_nSlots        = 4;
+
+  // node configuration
+  m_nNodes = 0;
+  
+  // commands
+  m_bHelp   = false;
+  m_bPrompt = false;
+  m_bStart  = false;
+  m_bStatus = false;
+  m_bStop   = false;
+  m_bUnlink = false;
+
+  // options
+  m_bConfig     = true;
+  m_bDontFree   = false;
+  m_nEntries    = 0;
+  m_bFreeRB     = false;
+  m_bLock       = false;
+  m_bHugePages  = false;
+  m_bKillPrev   = false;
+  m_bMetadata   = false;
+  m_bMunged     = false;
+  m_bProgress   = false;
+  m_bReload     = false;
+  m_bRestart    = true;
+  m_nSubLoaders = 4;
+  m_iThisNode   = -1;
+  m_nThreads    = 6;
+  m_bTouch      = false;
+  m_bTracepoint = false;
+  m_bTracing    = false;
+  m_bVerbose    = false;
+  m_bWelcome    = true;
+
   
   _checkInitialised_(CN_ARGUMENTS);
   

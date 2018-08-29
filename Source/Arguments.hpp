@@ -11,6 +11,7 @@ namespace StorageEngine
   
     // configuration
     s256  m_sCommands;     // commands dir
+    i8    m_nJumboBuffers; // number of jumbo buffers
     s256  m_sNodeName;     // this node name
     void* m_aRegionAddr;   // use this address for region
     s256  m_sRegionName;   // name of shared memory region
@@ -19,11 +20,12 @@ namespace StorageEngine
     s256  m_sSen;          // sen dir
     i8    m_nSlots;        // partitions per node
   
-    i8    m_nNodes;        // nodes
+    // node configuration
+    i8    m_nNodes;
     struct {
-      s256 m_sNodeName;
-      s256 m_sIPAddress;
-      i8   m_iPortNo;
+      s256 m_sNodeName;    // name of node
+      s256 m_sIPAddress;   // ip address of node
+      i8   m_iPortNo;      // port number
     } m_xNodes[C_MAX_NODES];
   
     // commands
@@ -35,32 +37,30 @@ namespace StorageEngine
     bool m_bUnlink;     // unlink shm region only
 
     // options
-  
-    bool m_bLock;       // lock shared memory pages in memory
-    i8   m_nSubLoaders; // number of subloaders
-    i8   m_nThreads;    // number of general threads
-    i8   m_iThisNode;   // this node no in the m_xNode list
-    bool m_bTracepoint; // print tracepoint
     bool m_bConfig;     // print configuration information
+    bool m_bDontFree;   // dont actually free objects back to heap
+    i8   m_nEntries;    // no of entries per buffer
+    bool m_bFreeRB;     // but free RowBuffers back to heap
+    bool m_bLock;       // lock shared memory pages in memory
     bool m_bHugePages;  // to use huge pages
+    bool m_bKillPrev;   // kill previous se's (temporary)
+    bool m_bMetadata;   // print metadata information
+    bool m_bMunged;     // load munged words
     bool m_bProgress;   // print initialisation progress
+    bool m_bReload;     // relaod from checkpoint files
     bool m_bRestart;    // restart if system already started
-    bool m_bTouch;      // touch all shm pages during region create 
+    i8   m_nSubLoaders; // number of subloaders
+    i8   m_iThisNode;   // this node no in the m_xNode list              //! FIX
+    i8   m_nThreads;    // number of general threads
+    bool m_bTouch;      // touch all shm pages during region create
+    bool m_bTracepoint; // print tracepoint
     bool m_bTracing;    // tracing
     bool m_bVerbose;    // print extra stuff
     bool m_bWelcome;    // print banner
-    bool m_bMetadata;   // print metadata information
-    bool m_bMunged;     // load munged words
-    bool m_bKillPrev;   // kill previous se's (temporary)
-    bool m_bDontFree;   // dont actually free objects back to heap
-    bool m_bFreeRB;     // but free RowBuffers back to heap
-    bool m_bReload;     // relaod from checkpoint files
-    i8   m_nEntries;    // no of entries per buffer
   
     // working
-    i8   m_nJumboBuffers; // number of jumbo buffers
-    i8   m_nJumboTook;    // number of pool buffers taken by jumbo buffers
-    i8   m_iJumboSize;    // size of the jumbo heap
+    i8   m_nJumboTook;  // number of pool buffers taken by jumbo buffers
+    i8   m_iJumboSize;  // size of the jumbo heap
     
     // must be last
     Footer m_xFooter;
