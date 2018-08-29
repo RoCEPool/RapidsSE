@@ -29,7 +29,7 @@
     pColumn column.type@
     pColumn column.name@
     I
-    "row: (%v,'%v',%v,%v,%v,%v,%v)\n" str.format
+    "row: ( %v,'%v',%v,%v,%v,%v,%v )\n" str.format
     str.cat
   loop
 
