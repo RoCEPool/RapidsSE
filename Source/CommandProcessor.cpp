@@ -57,10 +57,7 @@ CommandProcessor::CommandProcessor(void)
   m_pTokeniser->vMalloc(false);
   m_pTokeniser->vPush();
   
-  if (gxArguments.m_bCommand) {
-    m_pTokeniser->vUseString(gxArguments.m_sCommand);
-  }
-  else if (gxArguments.m_bPrompt || gxArguments.m_bScript) {
+  if (gxArguments.m_bPrompt || gxArguments.m_bScript) {
      m_pTokeniser->vUseStdin();
   }
   
@@ -200,31 +197,27 @@ void CommandProcessor::vGetCommand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
   
-  if (gxArguments.m_bCommand)
-    vGetCommandArgument();
-  else {
-    vGetCommandInput();
+  vGetCommandInput();
     
-    // if empty line just return
-    if ( ! pTkn(0)->bHasText() )
-      return;
-    
-    // if its a command file just return
-    if (bTestFile(pTkn(0)->aText()))
-      return;
-    
-    // collect till ;
-    m_pTokeniser->vCollectStatement();
-    
-    // stip off ;
-    pTknVec()->vStripSemicolon();
-    
-    // stip off &
-    pTknVec()->vStripAmpersand();
-    
-    // set no of tokens in token vector
-    pTknVec()->vSetTokens();
-  }
+  // if empty line just return
+  if ( ! pTkn(0)->bHasText() )
+    return;
+  
+  // if its a command file just return
+  if (bTestFile(pTkn(0)->aText()))
+    return;
+  
+  // collect till ;
+  m_pTokeniser->vCollectStatement();
+  
+  // stip off ;
+  pTknVec()->vStripSemicolon();
+  
+  // stip off &
+  pTknVec()->vStripAmpersand();
+  
+  // set no of tokens in token vector
+  pTknVec()->vSetTokens();
 }
 
 /*----------------------------------------------------------------------------*/

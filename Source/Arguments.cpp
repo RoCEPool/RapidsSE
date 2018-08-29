@@ -43,10 +43,6 @@ Arguments::Arguments(void)
   
   m_nSubLoaders = m_nThreads - 2;
   
-  
-  m_sCommand    = ""_Stz;
-  
-  m_bCommand    = false;
   m_bDocol      = false;
   m_bHelp       = false;
   m_bPrompt     = false;
@@ -138,15 +134,6 @@ bool Arguments::bParse(int argc, Stz* argv[])
   i8 iNode = 0;
   
   for (i8 i_Arg = 1; i_Arg < argc; i_Arg++) {
-    
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--command"_Stz)) {
-      m_sCommand = (Stz*)argv[++i_Arg];
-      m_bCommand = true;
-      m_bPrompt  = true;
-      m_bWelcome = false;
-      continue;
-    }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--commands"_Stz)) {

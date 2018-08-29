@@ -337,13 +337,7 @@ void RapidsSE::vExecuteCmdLine(void)
 //  gpAttachMap->m_xDicLock.vInitLock(LK_DIC);
   
   try {
-    if (gxArguments.m_bCommand) {
-      ASSERT(gpBufferPool);
-      //vSystemInit();
-      //vRunCommand();
-      //vWaitFlag();
-    }
-    else if (gxArguments.m_bStart) {
+    if (gxArguments.m_bStart) {
       ASSERT(gpBufferPool);
       vSystemInit();
       if (gxArguments.m_bVerbose) {

@@ -335,8 +335,6 @@ void Task::vAddConstants(void)
   
   // Arguments
   vAddConstant("args.bgtasks"_Stz,           gxArguments.m_bBgTasks);
-  vAddConstant("args.command"_Stz,           gxArguments.m_sCommand);
-  vAddConstant("args.commands"_Stz,          gxArguments.m_sCommands);
   vAddConstant("args.config"_Stz,            gxArguments.m_bConfig);
   vAddConstant("args.docol"_Stz,             gxArguments.m_bDocol);
   vAddConstant("args.dontFree"_Stz,          gxArguments.m_bDontFree);

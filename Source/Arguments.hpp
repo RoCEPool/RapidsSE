@@ -24,9 +24,7 @@ namespace StorageEngine
     i8    m_nSubLoaders; // number of subloaders
     
     // commands
-    s256 m_sCommand;    // command to run
-    
-    bool m_bCommand;    // run command
+  
     bool m_bDocol;      // run the docol> interpreter
     bool m_bHelp;       // display help
     bool m_bPrompt;     // run the se> prompt
