@@ -659,10 +659,6 @@ void RapidsSE::vSystemInit(void)
   
   gpAttachMap->m_npBootTask->vJob(pJob_Boot);
   
-  s32 sName;
-  sName = "bootTask"_Stz;
-  gpAttachMap->m_npBootTask->vName(sName);
-
   
   gpAttachMap->m_xDdlLock.vInitLock(LK_DDL);
   gpAttachMap->m_xDicLock.vInitLock(LK_DIC);
@@ -724,8 +720,6 @@ void RapidsSE::vStartSystemTasks(void)
   if (gxArguments.m_bVerbose)
     vInfo("\n*\n* Start System Tasks\n*\n"_Stz);
   
-  s32 sName = "startSystemTask"_Stz;
-  
   JobClass* pJobClass_Start = gxJobCatalog.pFindJob(CN_JOB_START);
   
   Job_Start* pJob_Start
@@ -739,8 +733,6 @@ void RapidsSE::vStartSystemTasks(void)
   pStartTask->vSeedWord(sRequest);
 
   pStartTask->vState(TS_READY);
-
-  pStartTask->vName(sName);
 
   Handlers::vSpawnedTaskHandler(pStartTask);
 }

@@ -128,7 +128,7 @@ namespace Tasks
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // remove
   
-    s32     m_sName;       // task name
+    //s32     m_sName;       // task name
   
     i8      m_iTxId;       // transaction id
     i8      m_iWakeAt;     // time at which to wake this tx
@@ -184,15 +184,12 @@ namespace Tasks
     void vGrabLock(void);
     void vInitialiseMain(void);
     bool bIsLocked(void);
-    bool bIsName(StrVal& sName);
     bool bIsNonPartitioned(void);
     bool bIsPartitioned(void);
     Job* pJob(void);
     void vJob(Job* pJob);
     void vLocalsPop(void);
     void vLocalsPush(void);
-    StrVal&   sName(void);
-    void vName(StrVal& sName);
     Task*  pParentTask(void);
     void vParentTask(Task* pParentTask);
     i8   iPartition(void);
@@ -1340,7 +1337,6 @@ namespace Tasks
     static void vTaskJobQueueFetch(MP_Task mpTask);
     static void vTaskJobQueueStore(MP_Task mpTask);
     static void vTaskNameFetch(MP_Task mpTask);
-    static void vTaskNameStore(MP_Task mpTask);
     static void vTaskThis(MP_Task mpTask);
     static void vTaskParentFetch(MP_Task mpTask);
     static void vTaskParentStore(MP_Task mpTask);

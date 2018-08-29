@@ -34,7 +34,6 @@ void Task::vAddPrimitives_Task(void)
   vAddPrimitive("task.jobQueue@"_Stz, &vTaskJobQueueFetch, false);
   vAddPrimitive("task.jobQueue!"_Stz, &vTaskJobQueueStore, false);
   vAddPrimitive("task.name@"_Stz,     &vTaskNameFetch,     false);
-  vAddPrimitive("task.name!"_Stz,     &vTaskNameStore,     false);
   vAddPrimitive("task.parent@"_Stz,   &vTaskParentFetch,   false);
   vAddPrimitive("task.parent!"_Stz,   &vTaskParentStore,   false);
   vAddPrimitive("task.partition@"_Stz,&vTaskPartitionFetch,false);
@@ -279,11 +278,6 @@ ENTRY("vTaskInit"_Stz);
   
   Word* pWordThread = Word::pToWord(pThatTask);
   
-  s32 sName;
-  sName = pWordThread->sName();
-  
-  pThatTask->vName(sName);
-  
   EXIT();
 }
 
@@ -385,28 +379,9 @@ ENTRY("vTaskNameFetch"_Stz);
     THROW_INVALID_DSTACK("task.name@"_Stz);
   Task* pThatTask = _pTask(pTaskObject);
   
-  mpTask->m_pDataStack->vPushS32(pThatTask->m_sName);
+  s256 sName(pThatTask->m_pJob->m_pJobClass->m_aName);
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.name! -- store task name                                              */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskNameStore(MP_Task mpTask)
-{
-ENTRY("vTaskNameStore"_Stz);
-  
-  Object* pTaskObject;
-  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
-    THROW_INVALID_DSTACK("task.name!"_Stz);
-  Task* pThatTask = _pTask(pTaskObject);
-  
-  s32 sName;
-  if ( ! mpTask->m_pDataStack->bPop(sName) )
-    THROW_INVALID_DSTACK("task.name!"_Stz);
-  
-  pThatTask->m_sName = sName;
+  mpTask->m_pDataStack->vPushS256(sName);
   
   EXIT();
 }

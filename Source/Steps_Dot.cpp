@@ -104,7 +104,7 @@ void Task::vDotVerbose(MP_Task mpTask)
     ValLib::vToString(xValWrk.pNestedValueSelf(),sWorkspace);
     vTrace("[%p %s] %s\n"_Stz,
            *mpTask,
-           mpTask->m_sName.aChar(),
+           mpTask->m_pJob->m_pJobClass->m_aName,
            sWorkspace.aChar());
   }
   

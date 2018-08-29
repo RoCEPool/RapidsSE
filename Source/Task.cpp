@@ -162,8 +162,6 @@ Task::Task(Value* pRequest)
   i8 nBytes = ValLib::iSize(pRequest);
   MemLib::vCopy(m_pRequest,pRequest,nBytes,CN_TASK);
   
-  m_sName    = "req.task"_Stz;
-  
   _checkInitialised_(CN_TASK);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
@@ -233,7 +231,6 @@ void Task::vInit(Stz* aLambda)
   m_iTaskOrderNo = 0;
   
   m_iPartition  = -1;
-  m_sName       = "<no task name>"_Stz;
   m_eState      = TS_NONE;
   m_eQueue      = QR_NONE;
   m_iTxId       = -1;
@@ -1411,7 +1408,7 @@ void Task::vDump(eCN eClass, Object* pObject, Stz* aTab)
   Task* pTask = reinterpret_cast<Task*>(pObject);
   
   vTrace("%s TaskNo %lld state %s txId %lld\n"_Stz,
-         pTask->m_sName.aChar(),
+         pTask->m_pJob->m_pJobClass->m_aName,
          pTask->m_iTaskNo,
          aTS[pTask->m_eState]->aChar(),
          pTask->m_iTxId);
@@ -1428,7 +1425,7 @@ void Task::vContentDump(void)
          aDoubleTab(),
          m_iTaskNo,
          this,
-         m_sName.aChar(),
+         m_pJob->m_pJobClass->m_aName,
          aTS[m_eState]->aChar(),
          m_iTxId);
 }
@@ -1514,18 +1511,6 @@ bool Task::bIsLocked(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is given name?                                                             */
-/*----------------------------------------------------------------------------*/
-bool Task::bIsName(StrVal& sName)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  bool b = m_sName.bIsEqual(sName,C_NO_CASE);
-  
-  return b;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this a non-partitioned task?                                            */
 /*----------------------------------------------------------------------------*/
 bool Task::bIsNonPartitioned(void)
@@ -1595,26 +1580,6 @@ void Task::vLocalsPush(void)
   pLocalsframe->vNext(m_pLocalsFrame);
   
   m_pLocalsFrame = pLocalsframe;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get name of this task                                                      */
-/*----------------------------------------------------------------------------*/
-StrVal& Task::sName(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  return m_sName;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set name of this task                                                      */
-/*----------------------------------------------------------------------------*/
-void Task::vName(StrVal& sName)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  m_sName = sName;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1821,6 +1786,7 @@ void Task::vSeedDicCompileSen(void)
   
   JobClass* pJobClass_Boot = gxJobCatalog.pFindJob(CN_JOB_BOOT);
   
+  m_pJob->m_pJobClass = pJobClass_Boot;
   s32 sSeed(pJobClass_Boot->m_aSeedRun);
   
   Word* pBootSen = gpAttachMap->m_xMainDic.pFindWord(sSeed);
@@ -2010,7 +1976,7 @@ void Task::vStackContents(Stack* pStack, StrVal& sStackContents)
           sStackContents.vCatSprint("^%s=%p:%s"_Stz,
                                     aCN[ePtrClass],
                                     pPtr,
-                                    pTask->sName().aChar());
+                                    pTask->m_pJob->m_pJobClass->m_aName);
         }
         else {
           if (pPtr->iMagic() == C_MAGIC && pPtr->eClass() < CN_ENUMS)
@@ -2118,7 +2084,7 @@ void Task::vTracePoint(Stz* aMark)
          
          gpAttachMap->m_pGrid->pThisNode()->aNodeName(),
          gpAttachMap->m_pGrid->iThisNode(),
-         m_sName.aChar(),
+         m_pJob->m_pJobClass->m_aName,
          *m_zAcks,
          
          sRoutine.aChar(),
@@ -2353,7 +2319,7 @@ void Task::vTaskLoop(void)
         StrLib::vCopy(wFileName, m_sFile.aChar());
       }
       vError("[%s] %s : line %lld in %s\n"_Stz,
-             m_sName.aChar(),
+             m_pJob->m_pJobClass->m_aName,
              m_sException.aChar(),
              iException,
              wFileName);
@@ -2369,7 +2335,7 @@ void Task::vTaskLoop(void)
       StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');
       StrLib::vCopy(wFileName,ps+1);
       vError("[%s] %s: line %lld in %s\n"_Stz,
-             m_sName.aChar(),
+             m_pJob->m_pJobClass->m_aName,
              pError->aErrorMsg(),
              pError->iLineNo(),
              wFileName);
