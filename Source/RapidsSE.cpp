@@ -652,16 +652,14 @@ void RapidsSE::vSystemInit(void)
   
   // create the plan list here
   gpAttachMap->m_pPlanList = new PlanList;
-    
-  gpAttachMap->m_npBootTask = new Task;
+
   
   JobClass* pJobClass_Boot = gxJobCatalog.pFindJob(CN_JOB_BOOT);
-
+  
   Job_Boot* pJob_Boot
     = static_cast<Job_Boot*>(pJobClass_Boot->pNewJob(nullptr));
-  
-  gpAttachMap->m_npBootTask->vJob(pJob_Boot);
-  
+
+  gpAttachMap->m_npBootTask = new Task(pJob_Boot);
   
   gpAttachMap->m_xDdlLock.vInitLock(LK_DDL);
   gpAttachMap->m_xDicLock.vInitLock(LK_DIC);
@@ -730,9 +728,8 @@ void RapidsSE::vStartSystemTasks(void)
   
   pJob_Start->vSeed(SS_SEED_RUN);
   
-  Task* pStartTask = new Task;
+  Task* pStartTask = new Task(pJob_Start);
   
-  pStartTask->vJob(pJob_Start);
   pStartTask->vSeedWord(pJob_Start->m_sSeed);
 
   pStartTask->vState(TS_READY);

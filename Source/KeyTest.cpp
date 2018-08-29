@@ -545,33 +545,6 @@ void KeyTest::vTestA(void)
   vTrace("\n\nEnd KeyTest A++++++++++++++++++++++++++++++++++++++++++++\n"_Stz);
 }
 
-/*----------------------------------------------------------------------------*/
-/* key testing                                                                */
-/*----------------------------------------------------------------------------*/
-void KeyTest::vTestB(void)
-{
-  vTrace("\n\nKeyTest B:%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"_Stz);
-  
-  s32 sSeed = "helloWorld"_Stz;
-  
-  MP_Task nnpExternalTask = new Task;
-  
-  nnpExternalTask->vSeedWord(sSeed);
-  
-  //Thread::vRunTask(nnpExternalTask);
-
-  sSeed = "printArg"_Stz;
-  s48K sArg = "boo!"_Stz;
-  nnpExternalTask->vSeedWord(sSeed);
-  nnpExternalTask->vPushStr(sArg);
-  
-  //Thread::vRunTask(nnpExternalTask);
-
-  delete *nnpExternalTask;
-
-  vTrace("\n\nEnd KeyTest B%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"_Stz);
-}
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

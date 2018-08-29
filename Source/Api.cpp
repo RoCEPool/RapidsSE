@@ -2655,13 +2655,11 @@ bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf)
   
   s32 sRequest(pJob->m_sSeed);
     
-  Task* pNewTask = new Task;
+  Task* pNewTask = new Task(pJob);
   
   pNewTask->vSeedWord(sRequest);
   pNewTask->vState(TS_READY);
   pNewTask->vSEitf(pSEitf);
-  
-  pNewTask->vJob(pJob);
   
   Handlers::vSpawnedTaskHandler(pNewTask);
   

@@ -271,7 +271,7 @@ ENTRY("vTaskInit"_Stz);
   Task* pThatTask = _pTask(pPtrTask);
   ASSERT(CN_TASK == pThatTask->eClass());
   
-  new(pThatTask) Task;
+  new(pThatTask) Task(nullptr);
   
   Word* pWordThread = Word::pToWord(pThatTask);
   
@@ -480,7 +480,7 @@ ENTRY("vTaskSeed"_Stz);
   if ( ! mpTask->m_pDataStack->bGuard(nTaskArgs) )
     THROW_INVALID_DSTACK("task.seed"_Stz);
   
-  // copy task arguments to new task (preserving stack order)
+  // copy task arguments to given task (preserving stack order)
   ValWrk xValWrk;
   for (i8 iTaskArg = nTaskArgs - 1; iTaskArg >= 0; iTaskArg--) {
     mpTask->m_pDataStack->vPeekValWrk(iTaskArg,xValWrk);

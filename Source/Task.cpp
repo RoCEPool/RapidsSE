@@ -113,13 +113,13 @@ void Task::operator delete(void* pTaskAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Task::Task(void)
+Task::Task(Job* pJob)
 : Object(CN_TASK)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   vInit(""_Stz);
-    
+  m_pJob = pJob;
   _checkInitialised_(CN_TASK);
   
   Task* pTask = this;

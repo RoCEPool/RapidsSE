@@ -79,7 +79,7 @@ args.regionSize nServerThreads constant N_SERVER_THREADS
 
   nullptr locals| pTask eTaskKind sTaskNm pParent sSeedWord nArgs |
 
-  // create a new task
+  // create a task
   //nArgs sSeedWord pParent AC_SERVER sTaskNm eTaskKind task::new to pTask
 
   // append task onto server task queue

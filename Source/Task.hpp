@@ -134,7 +134,7 @@ namespace Tasks
     Tokeniser* m_pTokeniser; // input stream tokenizer
   
     Interface::SEitf* m_pSEitf; // the seitf for this task
-    
+  
     GridModel::Node* m_pSendNode; // node to send to
     Plan*   m_pPlan;            // the plan associated with task
 
@@ -148,7 +148,7 @@ namespace Tasks
     void* operator new(size_t, Task* pTask);
     void  operator delete(void*);
     
-    Task(void);
+    Task(Job* pJob);
     void vInit(Stz* aLambda);
     ~Task(void);
     
