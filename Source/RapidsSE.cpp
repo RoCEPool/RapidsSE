@@ -328,43 +328,17 @@ void RapidsSE::vExecuteCmdLine(void)
   if (gxArguments.m_bVerbose)
     vInfo("\n*\n* Execute Command Line\n*\n"_Stz);
   
-//  gpAttachMap->m_xDdlLock.vInitLock(LK_DDL);
-//  gpAttachMap->m_xDicLock.vInitLock(LK_DIC);
-  
   try {
-    if (gxArguments.m_bStart) {
-      ASSERT(gpBufferPool);
-      vSystemInit();
-      if (gxArguments.m_bVerbose) {
-        vInfo("RapidsSE instance %s started\n"_Stz,gxArguments.m_sRegionName.aChar());
-        gpAttachMap->m_pGrid->vDumpPartitioning();
-      }
-      
-      if (gxArguments.m_bPrompt) {
-        ASSERT(gpBufferPool);
-        return;
-      }
-      else
-        vWaitFlag();
-    }
-    else if (gxArguments.m_bPrompt) {
-      vSystemPrompt();
-    }
-    else if (gxArguments.m_bStatus) {
-      vSystemStatus();
-    }
-    else if (gxArguments.m_bStop) {
-      vSystemStop();
-    }
-    else if (gxArguments.m_bUnlink) {
-      vSystemUnlink();
-    }
+         if (gxArguments.m_bStart)   vSystemStart();
+    else if (gxArguments.m_bPrompt)  vSystemPrompt();
+    else if (gxArguments.m_bStatus)  vSystemStatus();
+    else if (gxArguments.m_bStop)    vSystemStop();
+    else if (gxArguments.m_bUnlink)  vSystemUnlink();
     else {
       vError("Unknown command line argument\n"_Stz);
       vFatal("RapidsSE exits\n"_Stz);
       exit(EXIT_FAILURE);
     }
-
   }
   catch (Error* pError) {
     vErrorHandler(pError);
