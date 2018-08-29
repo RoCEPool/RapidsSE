@@ -175,9 +175,7 @@ void Task::vInit(Stz* aLambda)
   m_zAcks.vCheckInit();
   m_pThread     = nullptr;
   m_pSeedObject = nullptr;
-  
-  m_pJobQueue   = nullptr;
-  
+    
   m_pDataStack   = new Stack;
   m_pReturnStack = new Stack;
   m_pAuxStack    = new Stack;

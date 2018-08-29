@@ -31,8 +31,6 @@ void Task::vAddPrimitives_Task(void)
   vAddPrimitive("task.init"_Stz,      &vTaskInit,          false);
   vAddPrimitive("task.job@"_Stz,      &vTaskJobFetch,      false);
   vAddPrimitive("task.job!"_Stz,      &vTaskJobStore,      false);
-  vAddPrimitive("task.jobQueue@"_Stz, &vTaskJobQueueFetch, false);
-  vAddPrimitive("task.jobQueue!"_Stz, &vTaskJobQueueStore, false);
   vAddPrimitive("task.name@"_Stz,     &vTaskNameFetch,     false);
   vAddPrimitive("task.parent@"_Stz,   &vTaskParentFetch,   false);
   vAddPrimitive("task.parent!"_Stz,   &vTaskParentStore,   false);
@@ -317,51 +315,6 @@ void Task::vTaskJobStore(MP_Task mpTask)
   Job* pJob = _pJob(pJobObject);
   
   pThatTask->m_pJob = pJob;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.jobQueue@ -- push job queue of given task                             */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskJobQueueFetch(MP_Task mpTask)
-{
-  ENTRY("vTaskJobQueueFetch"_Stz);
-  
-  Object* pTaskObject;
-  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
-    THROW_INVALID_DSTACK("task.jobQueue@"_Stz);
-  Task* pThatTask = _pTask(pTaskObject);
-  
-  Queue* pQueue = pThatTask->m_pJobQueue;
-  
-  Object* pQueueEmb = static_cast<Object*>(pQueue);
-  
-  mpTask->m_pDataStack->vPushObject(pQueueEmb);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.jobQueue! -- store job queue into given task                          */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskJobQueueStore(MP_Task mpTask)
-{
-  ENTRY("vTaskJobQueueStore"_Stz);
-  
-  Object* pTaskObject;
-  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
-    THROW_INVALID_DSTACK("task.jobQueue!"_Stz);
-  Task* pThatTask = _pTask(pTaskObject);
-  
-  Object* pQueueEmb;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pQueueEmb) )
-    THROW_INVALID_DSTACK("task.jobQueue!"_Stz);
-  
-  Queue* pQueue = static_cast<Queue*>(pQueueEmb);
-  
-  pThatTask->m_pJobQueue = pQueue;
   
   EXIT();
 }

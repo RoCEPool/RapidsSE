@@ -134,10 +134,7 @@ namespace Tasks
     Tokeniser* m_pTokeniser; // input stream tokenizer
   
     Interface::SEitf* m_pSEitf; // the seitf for this task
-  
-    Queue*  m_pJobQueue;        // job queue that this task serves
-                                //   may or may not be shared
-  
+    
     GridModel::Node* m_pSendNode; // node to send to
     Plan*   m_pPlan;            // the plan associated with task
 
@@ -1326,8 +1323,6 @@ namespace Tasks
     static void vTaskInit(MP_Task mpTask);
     static void vTaskJobFetch(MP_Task mpTask);
     static void vTaskJobStore(MP_Task mpTask);
-    static void vTaskJobQueueFetch(MP_Task mpTask);
-    static void vTaskJobQueueStore(MP_Task mpTask);
     static void vTaskNameFetch(MP_Task mpTask);
     static void vTaskThis(MP_Task mpTask);
     static void vTaskParentFetch(MP_Task mpTask);
