@@ -27,7 +27,7 @@ JobNote mJobNote_Prompt (
   vJob_Prompt_delete,// job delete function
   nullptr,           // job pre-send function
   nullptr,           // job post-receive function
-  nullptr,           // job show function
+  vJob_Prompt_show,  // job show function
   false,             // job is not prompt enabled
   "<help>"_Stz,      // help
   "<example>"_Stz    // example
@@ -165,6 +165,16 @@ void JobsModel::vJob_Prompt_delete(Interface::SEitf* pSEitf, Job* pJob)
   Job_Prompt* pJob_Prompt = _pJob_Prompt(pJob);
   
   delete pJob_Prompt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show job function                                                          */
+/*----------------------------------------------------------------------------*/
+void JobsModel::vJob_Prompt_show(Job* pJob)
+{
+  Job_Prompt* pJob_Prompt = _pJob_Prompt(pJob);
+  
+  pJob_Prompt->vShow();
 }
 
 /*============================================================================*/

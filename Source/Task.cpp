@@ -1786,7 +1786,6 @@ void Task::vSeedDicCompileSen(void)
   
   JobClass* pJobClass_Boot = gxJobCatalog.pFindJob(CN_JOB_BOOT);
   
-  m_pJob->m_pJobClass = pJobClass_Boot;
   s32 sSeed(pJobClass_Boot->m_aSeedRun);
   
   Word* pBootSen = gpAttachMap->m_xMainDic.pFindWord(sSeed);

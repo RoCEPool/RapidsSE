@@ -655,7 +655,10 @@ void RapidsSE::vSystemInit(void)
     
   gpAttachMap->m_npBootTask = new Task;
   
-  Job_Boot* pJob_Boot = new Job_Boot(nullptr);
+  JobClass* pJobClass_Boot = gxJobCatalog.pFindJob(CN_JOB_BOOT);
+
+  Job_Boot* pJob_Boot
+    = static_cast<Job_Boot*>(pJobClass_Boot->pNewJob(nullptr));
   
   gpAttachMap->m_npBootTask->vJob(pJob_Boot);
   
