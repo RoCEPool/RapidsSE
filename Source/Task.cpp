@@ -1783,12 +1783,10 @@ void Task::vRetry(void)
 void Task::vSeedDicCompileSen(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  JobClass* pJobClass_Boot = gxJobCatalog.pFindJob(CN_JOB_BOOT);
-  
-  s32 sSeed(pJobClass_Boot->m_aSeedRun);
-  
-  Word* pBootSen = gpAttachMap->m_xMainDic.pFindWord(sSeed);
+
+  m_pJob->vSeed(SS_SEED_RUN);
+
+  Word* pBootSen = gpAttachMap->m_xMainDic.pFindWord(m_pJob->m_sSeed);
   ASSERT(pBootSen);
   
   IP.m_pCell = pBootSen->pFirstCell();

@@ -728,12 +728,12 @@ void RapidsSE::vStartSystemTasks(void)
   Job_Start* pJob_Start
     = static_cast<Job_Start*>(pJobClass_Start->pNewJob(nullptr));
   
+  pJob_Start->vSeed(SS_SEED_RUN);
+  
   Task* pStartTask = new Task;
   
   pStartTask->vJob(pJob_Start);
-  s32 sRequest;
-  sRequest = pJobClass_Start->m_aSeedRun;
-  pStartTask->vSeedWord(sRequest);
+  pStartTask->vSeedWord(pJob_Start->m_sSeed);
 
   pStartTask->vState(TS_READY);
 
