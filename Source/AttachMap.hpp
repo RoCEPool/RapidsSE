@@ -71,9 +71,7 @@ namespace StorageEngine
     i8            m_nIndexEntries;  // no of entries per buffer
     i8            m_nIndexLevels;   // no of levels per index buffer entry
     i8            m_nIndexOffsets;  // no of offsets per index buffer entry
-    
-    i8            m_nMaxQueue;
-    
+        
     i8            m_iQuit;
     i8            m_iStop;
     

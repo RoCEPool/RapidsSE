@@ -15,7 +15,6 @@ void Task::vAddPrimitives_AttachMap(void)
 {
   vAddPrimitive("attachmap::attachmap@"_Stz,   &vAttachMapFetch,         false);
   vAddPrimitive("attachmap::attachmap!"_Stz,   &vAttachMapStore,         false);
-  vAddPrimitive("attachmap::maxQueue@"_Stz,    &vAttachMapMaxQueueFetch, false);
   vAddPrimitive("attachmap::tenants@"_Stz,     &vAttachMapTenantsFetch,  false);
 }
 
@@ -46,16 +45,6 @@ void Task::vAttachMapFetch(MP_Task mpTask)
   }
   
   EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* attachmap::maxQueue@ -- fetch maxQueue from attachmap                      */
-/*----------------------------------------------------------------------------*/
-void Task::vAttachMapMaxQueueFetch(MP_Task mpTask)
-{
-  ENTRY("vAttachMapTenantsFetch"_Stz);
-  
-  mpTask->m_pDataStack->vPushInt(gpAttachMap->m_nMaxQueue);
 }
 
 /*----------------------------------------------------------------------------*/

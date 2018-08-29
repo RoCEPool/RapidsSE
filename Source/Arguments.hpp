@@ -56,7 +56,6 @@ namespace StorageEngine
     bool m_bFreeRB;     // but free RowBuffers back to heap
     bool m_bReload;     // relaod from checkpoint files
     i8   m_nEntries;    // no of entries per buffer
-    i8   m_nMaxQueue;   // max queue partition thread can build up
   
     bool m_bStrictMode; // are we in strict (or relaxed mode)?
   

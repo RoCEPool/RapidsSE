@@ -426,7 +426,6 @@ namespace Tasks
     // attachmap
     static void vAttachMapFetch(MP_Task mpTask);
     static void vAttachMapStore(MP_Task mpTask);
-    static void vAttachMapMaxQueueFetch(MP_Task mpTask);
     static void vAttachMapTenantsFetch(MP_Task mpTask);
     
     // bp

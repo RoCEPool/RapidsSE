@@ -82,7 +82,6 @@ void AttachMap::vPrintAttachMap(void)
   vInfo("IndexEntries   : %lld \n"_Stz, gpAttachMap->m_nIndexEntries);
   vInfo("IndexLevels    : %lld \n"_Stz, gpAttachMap->m_nIndexLevels);
   vInfo("IndexOffsets   : %lld \n"_Stz, gpAttachMap->m_nIndexOffsets);
-  vInfo("MaxQueue       : %lld \n"_Stz, gpAttachMap->m_nMaxQueue);
   
   vInfo("Verbose        : %s \n"_Stz, gpAttachMap->m_bVerbose ? "true"_Stz : "false"_Stz);
   vInfo("Tracepoint     : %s \n"_Stz, gpAttachMap->m_bTracepoint ? "true"_Stz : "false"_Stz);
@@ -179,8 +178,7 @@ void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize, i8 iJumboSize)
   ASSERT(m_pPlanList);  
   ASSERT(m_pStepArray);
   
-  //m_nMaxQueue = 0;
-  m_nIndexLevels  = 3;
+   m_nIndexLevels  = 3;
   m_nIndexOffsets = 3;
   //m_nBuffersPending;
   
