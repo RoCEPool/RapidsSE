@@ -67,9 +67,7 @@ Arguments::Arguments(void)
   m_bFreeRB        = false;
   m_bReload        = false;
   m_nEntries       = 0;
-  
-  m_bStrictMode    = false;
-  
+    
   _checkInitialised_(CN_ARGUMENTS);
   
   vEnvironmentVariables();
@@ -434,11 +432,6 @@ bool Arguments::bParse(int argc, Stz* argv[])
     
     if (argv[i_Arg]->bSame("--reload"_Stz)) {
       m_bReload = true;
-      continue;
-    }
-    
-    if (argv[i_Arg]->bSame("--strict"_Stz)) {
-      m_bStrictMode = true;
       continue;
     }
     

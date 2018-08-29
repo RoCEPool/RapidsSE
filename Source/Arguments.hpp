@@ -8,6 +8,7 @@ namespace StorageEngine
   class Arguments : public Object
   {
   public:
+  
     // configuration
     s256  m_sCommands;     // commands dir
     s256  m_sNodeName;     // this node name
@@ -25,10 +26,8 @@ namespace StorageEngine
       i8   m_iPortNo;
     } m_xNodes[C_MAX_NODES];
   
-
     // commands
     bool m_bHelp;       // display help
-    bool m_bLock;       // lock shared memory pages in memory
     bool m_bPrompt;     // run the se> prompt
     bool m_bStart;      // start system (shm not exist, shm create, root thread & task)
     bool m_bStatus;     // get status
@@ -36,6 +35,7 @@ namespace StorageEngine
     bool m_bUnlink;     // unlink shm region only
 
     // options
+    bool m_bLock;       // lock shared memory pages in memory
     i8   m_nSubLoaders; // number of subloaders
     i8   m_nThreads;    // number of general threads
     i8   m_iThisNode;   // this node no in the m_xNode list
@@ -56,8 +56,6 @@ namespace StorageEngine
     bool m_bFreeRB;     // but free RowBuffers back to heap
     bool m_bReload;     // relaod from checkpoint files
     i8   m_nEntries;    // no of entries per buffer
-  
-    bool m_bStrictMode; // are we in strict (or relaxed mode)?
   
     // working
     i8   m_nJumboBuffers; // number of jumbo buffers
