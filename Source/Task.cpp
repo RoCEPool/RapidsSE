@@ -568,6 +568,7 @@ void Task::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_LISTIDXCOLUMNS"_Stz, CN_JOB_LISTIDXCOLUMNS);
   /*    */ vAddConstant("CN_JOB_LISTINDEXES"_Stz,    CN_JOB_LISTINDEXES);
   /*    */ vAddConstant("CN_JOB_LISTPARTCOLUMNS"_Stz,CN_JOB_LISTPARTCOLUMNS);
+  /*    */ vAddConstant("CN_JOB_LISTPARTITIONS"_Stz, CN_JOB_LISTPARTITIONS);
   /*    */ vAddConstant("CN_JOB_LISTSCHEMAS"_Stz,    CN_JOB_LISTSCHEMAS);
   /*    */ vAddConstant("CN_JOB_LISTTABLES"_Stz,     CN_JOB_LISTTABLES);
   /*    */ vAddConstant("CN_JOB_LISTTENANTS"_Stz,    CN_JOB_LISTTENANTS);

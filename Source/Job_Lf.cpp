@@ -118,7 +118,7 @@ Job_Lf::~Job_Lf(void)
 /*----------------------------------------------------------------------------*/
 void Job_Lf::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_DOCOL == eClass);
+  RASSERT(CN_JOB_LF == eClass);
   RASSERT(pObject->eClass() == CN_JOB_LF);
   
   Job_Lf* pJob_Lf = _pJob_Lf(pObject);

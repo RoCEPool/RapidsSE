@@ -43,7 +43,9 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   gxJobCatalog.vTraceJobs(CN_JOB_LISTTABLES);
   gxJobCatalog.vTraceJobs(CN_JOB_LISTCOLUMNS);
   gxJobCatalog.vTraceJobs(CN_JOB_LISTIDXCOLUMNS);
+  gxJobCatalog.vTraceJobs(CN_JOB_LISTINDEXES);
   gxJobCatalog.vTraceJobs(CN_JOB_LISTPARTCOLUMNS);
+  gxJobCatalog.vTraceJobs(CN_JOB_LISTPARTITIONS);
   gxJobCatalog.vTraceJobs(CN_JOB_USESCHEMA);
   gxJobCatalog.vTraceJobs(CN_JOB_SHOWCLUSTER);
   gxJobCatalog.vTraceJobs(CN_JOB_DUMPINDEX);

@@ -117,6 +117,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_LISTIDXCOLUMNS
   /*    */ &Finalize::vUndefined,         // CN_JOB_LISTINDEXES
   /*    */ &Finalize::vUndefined,         // CN_JOB_LISTPARTCOLUMNS
+  /*    */ &Finalize::vUndefined,         // CN_JOB_LISTPARTITIONS
   /*    */ &Finalize::vUndefined,         // CN_JOB_LISTSCHEMAS
   /*    */ &Finalize::vUndefined,         // CN_JOB_LISTTABLES
   /*    */ &Finalize::vUndefined,         // CN_JOB_LISTTENANTS
