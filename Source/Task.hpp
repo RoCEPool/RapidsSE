@@ -149,7 +149,7 @@ namespace Tasks
     void  operator delete(void*);
     
     Task(Job* pJob);
-    void vInit(Stz* aLambda);
+    void vInit(void);
     ~Task(void);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

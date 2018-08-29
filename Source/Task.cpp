@@ -118,7 +118,7 @@ Task::Task(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  vInit(""_Stz);
+  vInit();
   m_pJob = pJob;
   _checkInitialised_(CN_TASK);
   
@@ -154,7 +154,7 @@ Task::~Task(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-void Task::vInit(Stz* aLambda)
+void Task::vInit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
