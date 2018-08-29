@@ -334,7 +334,6 @@ void Task::vAddConstants(void)
   vAddConstant("magic"_Stz,            C_MAGIC);
   
   // Arguments
-  vAddConstant("args.bgtasks"_Stz,           gxArguments.m_bBgTasks);
   vAddConstant("args.config"_Stz,            gxArguments.m_bConfig);
   vAddConstant("args.dontFree"_Stz,          gxArguments.m_bDontFree);
   vAddConstant("args.freeRB"_Stz,            gxArguments.m_bFreeRB);

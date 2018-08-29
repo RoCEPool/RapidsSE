@@ -51,7 +51,6 @@ Arguments::Arguments(void)
   m_bUnlink     = false;
   m_bLock       = false;
 
-  m_bBgTasks       = true;
   m_bConfig        = true;
   m_bHugePages     = false;
   m_bProgress      = false;
@@ -67,7 +66,7 @@ Arguments::Arguments(void)
   m_bFreeRB        = false;
   m_bReload        = false;
   m_nEntries       = 0;
-    
+  
   _checkInitialised_(CN_ARGUMENTS);
   
   vEnvironmentVariables();
@@ -331,11 +330,6 @@ bool Arguments::bParse(int argc, Stz* argv[])
     // options -----------------------------------------------------------------
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    if (argv[i_Arg]->bSame("--bgtasks"_Stz)) {
-      m_bBgTasks = true;
-      continue;
-    }
     
     if (argv[i_Arg]->bSame("--config"_Stz)) {
       m_bConfig = true;

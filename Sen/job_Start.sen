@@ -24,11 +24,7 @@
 
   "start_run" .
 
-  args.bgtasks if
-
-   snooze start_sockets
-
-  then
+  snooze start_sockets
 
   nullptr pThisTask task.job!
   pThisJob job.delete

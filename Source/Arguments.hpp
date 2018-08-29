@@ -35,12 +35,12 @@ namespace StorageEngine
     bool m_bUnlink;     // unlink shm region only
 
     // options
+  
     bool m_bLock;       // lock shared memory pages in memory
     i8   m_nSubLoaders; // number of subloaders
     i8   m_nThreads;    // number of general threads
     i8   m_iThisNode;   // this node no in the m_xNode list
     bool m_bTracepoint; // print tracepoint
-    bool m_bBgTasks;    // start background tasks
     bool m_bConfig;     // print configuration information
     bool m_bHugePages;  // to use huge pages
     bool m_bProgress;   // print initialisation progress
