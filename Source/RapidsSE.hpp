@@ -50,8 +50,11 @@ namespace StorageEngine
     static void vSignalHandler(int iSignal);
     static void vStartSystemTasks(void);
     static void vSystemInit(void);
+    static void vSystemPrompt(void);
+    static void vSystemStart(void);
     static void vSystemStatus(void);
     static void vSystemStop(void);
+    static void vSystemUnlink(void);
     static void vWaitFlag(void);
 
     Footer* aFooter(void);

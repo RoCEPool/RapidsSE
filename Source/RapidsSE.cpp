@@ -348,18 +348,16 @@ void RapidsSE::vExecuteCmdLine(void)
         vWaitFlag();
     }
     else if (gxArguments.m_bPrompt) {
-      ASSERT(gpBufferPool);
-      return;
+      vSystemPrompt();
     }
     else if (gxArguments.m_bStatus) {
       vSystemStatus();
     }
     else if (gxArguments.m_bStop) {
-      ASSERT(gpBufferPool);
       vSystemStop();
     }
     else if (gxArguments.m_bUnlink) {
-      Region::vUnlink(gxArguments.m_sRegionName);
+      vSystemUnlink();
     }
     else {
       vError("Unknown command line argument\n"_Stz);
@@ -712,6 +710,37 @@ void RapidsSE::vStartSystemTasks(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* start a prompt                                                             */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vSystemPrompt(void)
+{
+  ASSERT(gpBufferPool);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* start the system                                                            */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vSystemStart(void)
+{
+  ASSERT(gpBufferPool);
+  
+  vSystemInit();
+  
+  if (gxArguments.m_bVerbose) {
+    vInfo("RapidsSE instance %s started\n"_Stz,gxArguments.m_sRegionName.aChar());
+    gpAttachMap->m_pGrid->vDumpPartitioning();
+  }
+  
+  if (gxArguments.m_bPrompt) {
+    ASSERT(gpBufferPool);
+    return;
+  }
+  else
+    vWaitFlag();
+}
+
+/*----------------------------------------------------------------------------*/
 /* status of the system                                                       */
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vSystemStatus(void)
@@ -743,6 +772,8 @@ void RapidsSE::vSystemStatus(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vSystemStop(void)
 {
+  ASSERT(gpBufferPool);
+
   Region::vUnlink(gxArguments.m_sRegionName);
   
   gpAttachMap->m_iStop = 1;
@@ -751,6 +782,14 @@ void RapidsSE::vSystemStop(void)
          gxArguments.m_sRegionName.aChar());
   
   // the system is now stopped
+}
+
+/*----------------------------------------------------------------------------*/
+/* unlink the system                                                          */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vSystemUnlink(void)
+{
+   Region::vUnlink(gxArguments.m_sRegionName);
 }
 
 /*----------------------------------------------------------------------------*/
