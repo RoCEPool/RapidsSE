@@ -168,27 +168,6 @@ Task::Task(Value* pRequest)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Task::Task(Stz* aLambdaInput)
-: Object(CN_TASK)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  _class_(CN_TASK);
-  
-  vInit(aLambdaInput);
-  
-  _checkInitialised_(CN_TASK);
-  
-  Task* pTask = this;
-  //  gpAttachMap->m_pTaskList->vAppend(pTask);
-  //  gpAttachMap->m_pTaskList->vDump();
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Task::~Task(void)

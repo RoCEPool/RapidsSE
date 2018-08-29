@@ -128,8 +128,6 @@ namespace Tasks
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // remove
   
-    //s32     m_sName;       // task name
-  
     i8      m_iTxId;       // transaction id
     i8      m_iWakeAt;     // time at which to wake this tx
   
@@ -158,7 +156,6 @@ namespace Tasks
     Task(void);
     Task(Value* pRequest);
     Task(MP_Task mpTask);
-    Task(Stz* aLambda);
     void vInit(Stz* aLambda);
     ~Task(void);
     
