@@ -155,7 +155,6 @@ namespace Tasks
     
     Task(void);
     Task(Value* pRequest);
-    Task(MP_Task mpTask);
     void vInit(Stz* aLambda);
     ~Task(void);
     

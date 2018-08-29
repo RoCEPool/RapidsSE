@@ -128,25 +128,6 @@ Task::Task(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Task::Task(MP_Task mpTask)
-: Object(CN_TASK)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  ASSERT(*mpTask);
-  
-  vInit(""_Stz);
-  
-  _checkInitialised_(CN_TASK);
-  
-  Task* pTask = this;
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* constructor  (for the request task)                                        */
 /*----------------------------------------------------------------------------*/
 Task::Task(Value* pRequest)
