@@ -128,27 +128,6 @@ Task::Task(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor  (for the request task)                                        */
-/*----------------------------------------------------------------------------*/
-Task::Task(Value* pRequest)
-: Object(CN_TASK)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  vInit(""_Stz);
-  
-  m_pRequest = new ValSet;
-  
-  // copy the request
-  i8 nBytes = ValLib::iSize(pRequest);
-  MemLib::vCopy(m_pRequest,pRequest,nBytes,CN_TASK);
-  
-  _checkInitialised_(CN_TASK);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Task::~Task(void)

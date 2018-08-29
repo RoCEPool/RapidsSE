@@ -154,7 +154,6 @@ namespace Tasks
     void  operator delete(void*);
     
     Task(void);
-    Task(Value* pRequest);
     void vInit(Stz* aLambda);
     ~Task(void);
     
