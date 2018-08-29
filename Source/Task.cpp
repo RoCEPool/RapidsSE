@@ -361,7 +361,6 @@ void Task::vAddConstants(void)
   vAddConstant("args.reload"_Stz,            gxArguments.m_bReload);
   vAddConstant("args.restart"_Stz,           gxArguments.m_bRestart);
   vAddConstant("args.sen"_Stz,               gxArguments.m_sSen);
-  vAddConstant("args.sleep"_Stz,             gxArguments.m_iSleep);
   vAddConstant("args.slots"_Stz,             gxArguments.m_nSlots);
   vAddConstant("args.start"_Stz,             gxArguments.m_bStart);
   vAddConstant("args.status"_Stz,            gxArguments.m_bStatus);

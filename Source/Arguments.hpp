@@ -33,7 +33,6 @@ namespace StorageEngine
     bool m_bStop;       // force stop system (kill tasks & threads, shm unmap & unlink)
     bool m_bUnlink;     // unlink shm region only
     bool m_bLock;       // lock shared memory pages in memory
-    i8   m_iLevels;     // index levels
 
     // options
     bool m_bBgTasks;    // start background tasks
@@ -46,7 +45,6 @@ namespace StorageEngine
     bool m_bTracing;    // tracing
     bool m_bVerbose;    // print extra stuff
     bool m_bWelcome;    // print banner
-    i8   m_iSleep;      // sleep period for yield (temporary)
     bool  m_bMetadata;  // print metadata information
     bool  m_bMunged;    // load munged words
     bool  m_bKillPrev;  // kill previous se's (temporary)

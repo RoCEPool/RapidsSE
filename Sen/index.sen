@@ -579,7 +579,7 @@ tp: loadIndexes
       //REQUST_LOOP2
       //task.yield
       //"waiting".
-      args.sleep thread.sleep_ms
+      1 thread.sleep_ms
   repeat
 ;
 

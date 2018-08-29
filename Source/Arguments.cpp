@@ -62,7 +62,6 @@ Arguments::Arguments(void)
   m_bTracing       = false;
   m_bVerbose       = false;
   m_bWelcome       = true;
-  m_iSleep         = 1;
   m_bMetadata      = false;
   m_bMunged        = false;
   m_bKillPrev      = false;
@@ -421,10 +420,6 @@ bool Arguments::bParse(int argc, Stz* argv[])
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--sleep"_Stz)) {
-      m_iSleep = argv[++i_Arg]->iToI8();
-      continue;
-    }
     
     if (argv[i_Arg]->bSame("--metadata"_Stz)) {
       m_bMetadata = true;
