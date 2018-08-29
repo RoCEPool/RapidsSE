@@ -46,7 +46,6 @@ Arguments::Arguments(void)
   m_bDocol      = false;
   m_bHelp       = false;
   m_bPrompt     = false;
-  m_bScript     = false;
   m_bStart      = false;
   m_bStatus     = false;
   m_bStop       = false;
@@ -253,14 +252,12 @@ bool Arguments::bParse(int argc, Stz* argv[])
         vError("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg]);
         return false;
       }
+      
       if (m_bStatus) {
         vError("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg]);
         return false;
       }
-      if (m_bScript) {
-        vError("Incorrect argument: --script with %s\n"_Stz,argv[i_Arg]);
-        return false;
-      }
+
       m_bPrompt = true;
       continue;
     }
@@ -353,23 +350,6 @@ bool Arguments::bParse(int argc, Stz* argv[])
     // options -----------------------------------------------------------------
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--script"_Stz)) {
-      if (m_bStop) {
-        vError("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg]);
-        return false;
-      }
-      if (m_bStatus) {
-        vError("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg]);
-        return false;
-      }
-      if (m_bPrompt) {
-        vError("Incorrect argument: --script with %s\n"_Stz,argv[i_Arg]);
-        return false;
-      }
-      m_bScript = true;
-      m_bWelcome = false;
-      continue;
-    }
 
     if (argv[i_Arg]->bSame("--bgtasks"_Stz)) {
       m_bBgTasks = true;
@@ -580,7 +560,6 @@ void Arguments::vPrintStartupInfo(void)
   if (m_bHelp)     vTrace("  --help\n"_Stz);
   if (m_bProgress) vTrace("  --progress\n"_Stz);
   if (m_bPrompt)   vTrace("  --seprompt\n"_Stz);
-  if (m_bScript)   vTrace("  --script\n"_Stz);
   if (m_bStart)    vTrace("  --start\n"_Stz);
   if (m_bStatus)   vTrace("  --status\n"_Stz);
   if (m_bStop)     vTrace("  --stop\n"_Stz);

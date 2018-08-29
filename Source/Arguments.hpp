@@ -28,7 +28,6 @@ namespace StorageEngine
     bool m_bDocol;      // run the docol> interpreter
     bool m_bHelp;       // display help
     bool m_bPrompt;     // run the se> prompt
-    bool m_bScript;     // run in scripting mode (like prompt but no prompt)
     bool m_bStart;      // start system (shm not exist, shm create, root thread & task)
     bool m_bStatus;     // get status
     bool m_bStop;       // force stop system (kill tasks & threads, shm unmap & unlink)

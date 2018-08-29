@@ -57,9 +57,8 @@ CommandProcessor::CommandProcessor(void)
   m_pTokeniser->vMalloc(false);
   m_pTokeniser->vPush();
   
-  if (gxArguments.m_bPrompt || gxArguments.m_bScript) {
+  if (gxArguments.m_bPrompt)
      m_pTokeniser->vUseStdin();
-  }
   
   m_pTokeniser->vLineMode(true);
   m_pTokeniser->vNormal(true);
