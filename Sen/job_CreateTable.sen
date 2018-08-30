@@ -159,7 +159,7 @@
 
   nullptr task::this task.job!
 
-  <DONE_NODE>
+  <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -190,7 +190,7 @@
   pJob_CreateTable job.objectName@
   checkMakeTable not if pJob_CreateTable <ERROR_JOB> exit then
 
-  <DONE_NODE>
+  <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -203,7 +203,7 @@
   tp: createTable.releaseResources
   "releaseResources received" .
 
-  <DONE_NODE>
+  <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/

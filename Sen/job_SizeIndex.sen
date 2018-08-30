@@ -130,7 +130,7 @@
 
   nullptr task::this task.job!
 
-  <DONE_NODE>
+  <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -160,7 +160,7 @@
 
   sTableNm sIndexNm checkSizeIndex not if pJob_SizeIndex <ERROR_JOB> exit then
 
-  <DONE_NODE>
+  <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -173,7 +173,7 @@
   tp: sizeIndex.releaseResources
   "releaseResources received" .
 
-  <DONE_NODE>
+  <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/

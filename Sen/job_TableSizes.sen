@@ -115,7 +115,7 @@
 
   nullptr task::this task.job!
 
-  <DONE_NODE>
+  <DONE_EXE>
 
   //"STACK IS c:" . stk
 ;
@@ -143,7 +143,7 @@
   // should be in the tables folder
   checkInTables not if pJob_TableSizes <ERROR_JOB> exit then
 
-  <DONE_NODE>
+  <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -156,7 +156,7 @@
   tp: sizeTable.releaseResources
   "releaseResources received" .
 
-  <DONE_NODE>
+  <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/

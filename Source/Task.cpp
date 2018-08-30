@@ -1706,9 +1706,9 @@ void Task::vSeedJob(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* seed task to run given lambda                                              */
+/* seed task to run given word                                                */
 /*----------------------------------------------------------------------------*/
-void Task::vSeedWord(Stz* aLambda)
+void Task::vSeedWord(Stz* aWord)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -1721,7 +1721,7 @@ void Task::vSeedWord(Stz* aLambda)
   m_pDataStack->vReset();
   m_pReturnStack->vReset();
   
-  s256 sLambda(aLambda);
+  s256 sLambda(aWord);
   if (sLambda.iLength())
     sLambda.vConcat(" ::task_exit"_Stz);
   

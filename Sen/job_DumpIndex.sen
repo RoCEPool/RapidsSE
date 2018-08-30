@@ -130,7 +130,7 @@
 
   sTableNm sIndexNm checkDumpIndex not if pJob_DumpIndex <ERROR_JOB> exit then
 
-  <DONE_NODE>
+  <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -143,7 +143,7 @@
   tp: dumpIndex.releaseResources
   "releaseResources received" .
 
-  <DONE_NODE>
+  <DONE_EXE>
 ;
 
 /*============================================================================*/

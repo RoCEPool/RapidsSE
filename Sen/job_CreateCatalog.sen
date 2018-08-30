@@ -105,7 +105,7 @@
 
   nullptr task::this task.job!
 
-  <DONE_NODE>
+  <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -137,7 +137,7 @@
   pJob_CreateCatalog job.objectName@
   checkMakeCatalog not if pJob_CreateCatalog <ERROR_JOB> exit then
 
-  <DONE_NODE>
+  <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -150,7 +150,7 @@
   tp: createCatalog.releaseResources
   "releaseResources received" .
 
-  <DONE_NODE>
+  <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -132,7 +132,7 @@
 
   nullptr task::this task.job!
 
-  <DONE_NODE>
+  <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -184,7 +184,7 @@
     popIndexes popTable assertInTables EC_NO_SUCH_INDEX pJob_DropIndex <ERROR_JOB> exit
   then
 
-  <DONE_NODE>
+  <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -197,7 +197,7 @@
   tp: dropIndex.releaseResources
   "releaseResources received" .
 
-  <DONE_NODE>
+  <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
