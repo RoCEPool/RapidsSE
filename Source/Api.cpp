@@ -2653,8 +2653,7 @@ bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf)
   // form the word to execute for the request
   pJob->vSeed(eSeed);
   
-  s32 sRequest(pJob->m_sSeed);
-    
+
   Task* pNewTask = new Task(pJob);
   
   pNewTask->vSeedJob();
