@@ -35,24 +35,6 @@ namespace JobsModel
   /*  7 */ "THREAD"_Stz,
   };
   
-  enum eJS // job state
-  {
-  /*  0 */ JS_NONE=0,
-  /*  1 */ JS_BEGUN,
-  /*  2 */ JS_EXECUTED,
-  /*  3 */ JS_ENDED,
-  /*  4 */ JS_ENUMS
-  };
-  
-  static Stz* aJS[]
-  {
-  /*  0 */ "NONE"_Stz,
-  /*  1 */ "BEGUN"_Stz,
-  /*  2 */ "EXECUTED"_Stz,
-  /*  3 */ "ENDED"_Stz,
-  /*  4 */ "ENUMS"_Stz
-  };
-  
   enum eJT // job trace
   {
   /*  0 */ JT_NONE=0,
@@ -80,6 +62,17 @@ namespace JobsModel
   /*  6 */ SS_ENUMS
   };
 
+  static Stz* aSS[]
+  {
+  /*  0 */ "SS_SEED_RUN"_Stz,
+  /*  1 */ "SS_SEED_REQ"_Stz,
+  /*  2 */ "SS_SEED_RCV"_Stz,
+  /*  3 */ "SS_SEED_EXE"_Stz,
+  /*  4 */ "SS_SEED_END"_Stz,
+  /*  5 */ "SS_SEED_CAN"_Stz,
+  /*  6 */ "SS_ENUMS"_Stz,
+  };
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job : public Object,
               public JobDicPath,
@@ -89,7 +82,7 @@ namespace JobsModel
   public:
     i8  m_iJobId;              // job id
     JobClass* m_pJobClass;     // job class
-    eJS m_eState;              // job state
+    //eJS m_eState;              // job state
     s32 m_sSeed;               // task seed (to be merged with above)
     eJT  m_eJobTrace;          // job trace
   
@@ -122,8 +115,6 @@ namespace JobsModel
     i8   iOriginatorNode(void);
     i8   iParticipantNode(void);
     void vParticipantNode(i8 iNode);
-    eJS  eJobState(void);
-    void vJobState(eJS eJobState);
     eJT  eJobTrace(void);
     void vJobTrace(eJT eJobTrace);
   

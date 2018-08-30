@@ -109,7 +109,6 @@ void Job::vInit(void)
 {
   m_iJobId   = -1;
   m_pJobClass = nullptr;
-  m_eState   = JS_NONE;
   m_sSeed    = ""_Stz;
   m_eJobTrace   = JT_NONE;
   m_iParticipantNode  = -1;
@@ -224,26 +223,6 @@ i8 Job::iParticipantNode(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   return m_iParticipantNode;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the job state                                                          */
-/*----------------------------------------------------------------------------*/
-eJS Job::eJobState(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_eState;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the job state                                                          */
-/*----------------------------------------------------------------------------*/
-void Job::vJobState(eJS eState)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_eState = eState;
 }
 
 /*----------------------------------------------------------------------------*/
