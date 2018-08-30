@@ -120,7 +120,7 @@
   popTable
   assertInTables
 
-  pJob_ListIndexes <DONE_REQUEST>
+  pJob_ListIndexes <DONE_REQ>
 ;
 
 /*============================================================================*/

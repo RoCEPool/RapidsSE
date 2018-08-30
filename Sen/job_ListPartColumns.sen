@@ -95,7 +95,7 @@
   popTable
   assertInTables
 
-  pJob_ListPartColumns <DONE_REQUEST>
+  pJob_ListPartColumns <DONE_REQ>
 ;
 
 /*============================================================================*/

@@ -39,7 +39,7 @@
   grid::thisNode@ pJob_ListPartitions job.response!
   1 grid::thisNode@ pJob_ListPartitions job.rowsProcessed!
 
-  pJob_ListPartitions <DONE_REQUEST>
+  pJob_ListPartitions <DONE_REQ>
 
 ;
 

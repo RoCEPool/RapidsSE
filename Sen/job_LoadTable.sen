@@ -84,7 +84,7 @@
   // distribute the job
   pJob_LoadTable job.distribute
 
-  pJob_LoadTable <DONE_REQUEST>
+  pJob_LoadTable <DONE_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/

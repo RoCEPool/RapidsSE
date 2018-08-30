@@ -100,7 +100,7 @@
 
   pJob_DumpIndex job.notice
 
-  pJob_DumpIndex <DONE_REQUEST>
+  pJob_DumpIndex <DONE_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/

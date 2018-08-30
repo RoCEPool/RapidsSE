@@ -52,7 +52,7 @@
   grid::thisNode@ pJob_Pwf job.response!
   1 grid::thisNode@ pJob_Pwf job.rowsProcessed!
 
-  pJob_Pwf <DONE_REQUEST>
+  pJob_Pwf <DONE_REQ>
 ;
 
 /*============================================================================*/

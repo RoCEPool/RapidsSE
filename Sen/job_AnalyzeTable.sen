@@ -64,7 +64,7 @@
   // distribute the job
   pJob job.distribute
 
-  pJob <DONE_REQUEST>
+  pJob <DONE_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/
