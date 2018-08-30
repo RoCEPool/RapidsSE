@@ -1707,29 +1707,6 @@ void Task::vSeedJob(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* seed task to run given word                                                */
-/*----------------------------------------------------------------------------*/
-void Task::vSeedWord(Stz* aWord)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  Word* pWord = gpAttachMap->m_xMainDic.pFindWord("::docmd"_Stz);
-  
-  IP.m_pCell = pWord->pFirstCell();
-  
-  m_eState = TS_YIELDED;
-  
-  m_pDataStack->vReset();
-  m_pReturnStack->vReset();
-  
-  s256 sLambda(aWord);
-  if (sLambda.iLength())
-    sLambda.vConcat(" ::task_exit"_Stz);
-  
-  m_pTokeniser->vUseString(sLambda);
-}
-
-/*----------------------------------------------------------------------------*/
 /* seed task to run ::enter                                                   */
 /*----------------------------------------------------------------------------*/
 GridModel::Node* Task::pSendNode(void)

@@ -196,7 +196,6 @@ namespace Tasks
     void vReset(void);
     void vRetry(void);
     void vSeedJob(void);
-    void vSeedWord(Stz *aWord);
     GridModel::Node* pSendNode(void);
     Interface::SEitf* pSEitf(void);
     void vSEitf(Interface::SEitf* pSEitf);
