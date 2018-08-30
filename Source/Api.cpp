@@ -2657,7 +2657,9 @@ bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf)
     
   Task* pNewTask = new Task(pJob);
   
-  pNewTask->vSeedWord(sRequest);
+  //pNewTask->vSeedWord(sRequest);
+  pNewTask->vSeedJob();
+
   pNewTask->vState(TS_READY);
   pNewTask->vSEitf(pSEitf);
   

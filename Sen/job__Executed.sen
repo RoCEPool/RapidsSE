@@ -88,6 +88,7 @@
   // if there are acks remaining just exit
   iAcksRemaining 0 != if
     delete_completed_job
+    <DONE_RCV>
     exit                                                         // *EARLY EXIT*
   then
 
