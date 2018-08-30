@@ -70,7 +70,6 @@ namespace Tasks
     // keep
 
     i8      m_iTaskNo;      // task
-    bool    m_bDestructorTrace;
     Job*    m_pJob;         // the job for this task
     Task*   m_pParentTask;  // parent of this task
 
@@ -165,8 +164,6 @@ namespace Tasks
     static void vDebug(void);
     void vContentDump(void);
     bool bDecAck(i8& iRemaining);
-    void vDestructorTrace(bool bDestructorTrace);
-    bool bDestructorTrace(void);
     void vDropLock(void);
     void vException(StrVal& sFile, StrVal& eException);
     void vGrabLock(void);

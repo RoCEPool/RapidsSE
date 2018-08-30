@@ -20,10 +20,6 @@ void Task::vAddPrimitives_Task(void)
   vAddPrimitive("task.acks!"_Stz,     &vTaskAcksStore,     false);
   vAddPrimitive("task::breakPoint"_Stz, &vTaskBreakPoint,  false);
   vAddPrimitive("task.delete"_Stz,    &vTaskDelete,        false);
-  
-  vAddPrimitive("task.destructorTrace@"_Stz,  &vTaskDestructorTraceFetch, false);
-  vAddPrimitive("task.destructorTrace!"_Stz,  &vTaskDestructorTraceStore, false);
-  
   vAddPrimitive("task.dicStack"_Stz,  &vTaskDicStack,      false);
   vAddPrimitive("task.dump"_Stz,      &vTaskDump,          false);
   vAddPrimitive("task.dropLock"_Stz,  &vTaskDropLock,      false);
@@ -139,48 +135,6 @@ void Task::vTaskDelete(MP_Task mpTask)
   ASSERT(CN_TASK == pThatTask->eClass());
   
   delete pThatTask;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.destructorTrace@ -- fetch destructor trace                            */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskDestructorTraceFetch(MP_Task mpTask)
-{
-  ENTRY("vTaskDestructorTraceFetch"_Stz);
-  
-  Object* pPtrTask;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTask) )
-    THROW_INVALID_DSTACK("task.destructorTrace@"_Stz);
-  
-  Task* pThatTask = _pTask(pPtrTask);
-  ASSERT(CN_TASK == pThatTask->eClass());
-  
-  mpTask->m_pDataStack->vPushInt(pThatTask->bDestructorTrace());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.destructorTrace! -- store destructor trace                            */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskDestructorTraceStore(MP_Task mpTask)
-{
-  ENTRY("vTaskDestructorTraceStore"_Stz);
-  
-  Object* pPtrTask;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTask) )
-    THROW_INVALID_DSTACK("task.destructorTrace!"_Stz);
-  
-  Task* pThatTask = _pTask(pPtrTask);
-  ASSERT(CN_TASK == pThatTask->eClass());
-  
-  i8 iDestructorTrace;
-  if ( ! mpTask->m_pDataStack->bPop(iDestructorTrace) )
-    THROW_INVALID_DSTACK("task.destructorTrace!"_Stz);
-  
-  pThatTask->vDestructorTrace(iDestructorTrace);
   
   EXIT();
 }
