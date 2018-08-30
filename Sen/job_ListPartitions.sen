@@ -28,7 +28,7 @@
     pJob_ListPartitions job.metadata!
   then
 
-  grid::slots "rows: ( %v" str.format
+  grid::slots "row: ( %v" str.format
   grid::slots 0 do
     I grid::toPartition ", %v" str.format str.cat
   loop
