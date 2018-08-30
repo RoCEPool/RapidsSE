@@ -1587,13 +1587,8 @@ void Task::vSeedJob(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
   Word* pWord = gpAttachMap->m_xMainDic.pFindWord(m_pJob->m_sSeed);
-  ASSERT(pWord);
   
   IP.m_pCell = pWord->pFirstCell();
-
-  
-  m_pDataStack->vReset();
-  m_pReturnStack->vReset();
 }
 
 /*----------------------------------------------------------------------------*/
