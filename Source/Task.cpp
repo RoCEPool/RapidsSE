@@ -5,54 +5,14 @@
 //#define MUNGED
 
 #include "StorageEngine.h"
-#include "SePrompt.hpp"
 
-extern AttachMap*      gpAttachMap;
-extern Arguments       gxArguments;
+extern AttachMap* gpAttachMap;
+extern Arguments  gxArguments;
 extern JobCatalog gxJobCatalog;
-/*----------------------------------------------------------------------------*/
-/* compare two tasks by their taskNo                                          */
-/*----------------------------------------------------------------------------*/
-bool bTaskCompareQueueOrder(void* pObjectInsert, void* pObjectScan, bool& bMatch)
-{
-  Task* pInsertEntry = _pTask(pObjectInsert);
-  Task* pScanEntry   = _pTask(pObjectScan);
-  
-  if ( ! pObjectScan )
-    return false;
-  
-  if (pInsertEntry->iQueueOrder() == pScanEntry->iQueueOrder())
-    bMatch = true;
-  else
-    bMatch = false;
-  
-  if (pInsertEntry->iQueueOrder() > pScanEntry->iQueueOrder())
-    return true;
-  else
-    return false;
-}
 
 /*----------------------------------------------------------------------------*/
-/* compare two tasks by their wakeuptime                                      */
+/*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-bool bTaskCompareWakeupTime(void* pObjectInsert, void* pObjectScan, bool& bMatch)
-{
-  Task* pInsertEntry = _pTask(pObjectInsert);
-  Task* pScanEntry   = _pTask(pObjectScan);
-  
-  if ( ! pObjectScan )
-    return false;
-  
-  if (pInsertEntry->iWakeupTime() == pScanEntry->iWakeupTime())
-    bMatch = true;
-  else
-    bMatch = false;
-  
-  if (pInsertEntry->iWakeupTime() > pScanEntry->iWakeupTime())
-    return true;
-  else
-    return false;
-}
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -201,6 +161,10 @@ void Task::vInit(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* add initial set of words in main dictionary                                */
 /*----------------------------------------------------------------------------*/
 void Task::vAddBaseWords(void)
@@ -219,10 +183,6 @@ void Task::vAddBaseWords(void)
   vAddMunged(mpTask);
 #endif
 }
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* add constant to main dictionary                                            */
@@ -2091,6 +2051,55 @@ Footer* Task::aFooter(void)
   
   return &m_xFooter;
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Compare -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* compare two tasks by their taskNo                                          */
+/*----------------------------------------------------------------------------*/
+bool bTaskCompareQueueOrder(void* pObjectInsert, void* pObjectScan, bool& bMatch)
+{
+  Task* pInsertEntry = _pTask(pObjectInsert);
+  Task* pScanEntry   = _pTask(pObjectScan);
+  
+  if ( ! pObjectScan )
+    return false;
+  
+  if (pInsertEntry->iQueueOrder() == pScanEntry->iQueueOrder())
+    bMatch = true;
+  else
+    bMatch = false;
+  
+  if (pInsertEntry->iQueueOrder() > pScanEntry->iQueueOrder())
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* compare two tasks by their wakeuptime                                      */
+/*----------------------------------------------------------------------------*/
+bool bTaskCompareWakeupTime(void* pObjectInsert, void* pObjectScan, bool& bMatch)
+{
+  Task* pInsertEntry = _pTask(pObjectInsert);
+  Task* pScanEntry   = _pTask(pObjectScan);
+  
+  if ( ! pObjectScan )
+    return false;
+  
+  if (pInsertEntry->iWakeupTime() == pScanEntry->iWakeupTime())
+    bMatch = true;
+  else
+    bMatch = false;
+  
+  if (pInsertEntry->iWakeupTime() > pScanEntry->iWakeupTime())
+    return true;
+  else
+    return false;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */
