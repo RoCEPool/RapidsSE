@@ -59,6 +59,8 @@
   pJobParticipant SEED_CAN job.spawn
 
   delete_completed_job
+
+  <DONE_RCV>
 ;
 
 /*============================================================================*/

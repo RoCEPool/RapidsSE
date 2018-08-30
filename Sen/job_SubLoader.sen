@@ -104,13 +104,13 @@
 
   pLoaderSub loaderSub.end
 
-  //pJob_SubLoader <DONE_CHILD>
-
   // now delete the ended job
   pJob_SubLoader job.delete
 
   // null the job in the task
   nullptr pThisTask task.job!
+
+  <DONE_RUN>
 ;
 
 /*============================================================================*/

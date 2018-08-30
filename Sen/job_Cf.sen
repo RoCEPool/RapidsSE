@@ -71,7 +71,6 @@
   pCurrentFolder checkIsDicR35 not if pJob_Cf <ERROR_REQUEST> exit then
   pCurrentFolder execute pathPush
   savePath
-
   <DONE_REQ>
 ;
 
