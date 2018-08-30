@@ -62,6 +62,7 @@ namespace StorageEngine
     Jobs*         m_pParticipatingJobs;
   
     StepArray*    m_pStepArray;
+    //JobCatalog    m_xJobCatalog;
     
     bool          m_bVerbose;
     bool          m_bTracepoint;

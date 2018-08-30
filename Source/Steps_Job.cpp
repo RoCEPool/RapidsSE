@@ -540,7 +540,7 @@ void Task::vJobExecuteFetch(MP_Task mpTask)
       break;
       
     default:
-      sExecute = pJob->m_pJobClass->m_aSeedExe;
+      StrLib::vCopy(sExecute.aChar(),pJob->m_pJobClass->m_aSeedExe);
       //sExecute.vConcat("_exe"_Stz);
       break;
   }
@@ -738,7 +738,7 @@ void Task::vJobFetchRowsSpawnSub(MP_Task mpTask)
   Job_SubFetch* pJob_SubFetch =
   static_cast<Job_SubFetch*>(pJobClass_SubFetch->pPreJob(pSEitf));
   
-  pJob_SubFetch->m_sSeed = pJobClass_SubFetch->m_aSeedRun;
+  pJob_SubFetch->vSeed(SS_SEED_RUN);
   
   pJob_SubFetch->m_iFetchJobId = iFetchRowsJobId;
   pJob_SubFetch->m_sObjectName = pJob_FetchRows->m_sObjectName;
@@ -1953,7 +1953,7 @@ void Task::vJobTruncateTableSpawnSub(MP_Task mpTask)
   Job_SubTruncate* pJob_SubTruncate =
     static_cast<Job_SubTruncate*>(pJobClass_SubTruncate->pPreJob(pSEitf));
   
-  pJob_SubTruncate->m_sSeed = pJobClass_SubTruncate->m_aSeedRun;
+  pJob_SubTruncate->vSeed(SS_SEED_RUN);
   
   pJob_SubTruncate->m_iTruncateJobId = iTruncateJobId;
   pJob_SubTruncate->m_sObjectName = pJob_TruncateTable->m_sObjectName;

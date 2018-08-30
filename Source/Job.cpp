@@ -274,12 +274,12 @@ void Job::vSeed(eSS eSeed)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   switch (eSeed) {
-    case SS_SEED_RUN: m_sSeed = m_pJobClass->m_aSeedRun; break;
-    case SS_SEED_REQ: m_sSeed = m_pJobClass->m_aSeedReq; break;
-    case SS_SEED_RCV: m_sSeed = m_pJobClass->m_aSeedRcv; break;
-    case SS_SEED_EXE: m_sSeed = m_pJobClass->m_aSeedExe; break;
-    case SS_SEED_END: m_sSeed = m_pJobClass->m_aSeedEnd; break;
-    case SS_SEED_CAN: m_sSeed = m_pJobClass->m_aSeedCan; break;
+    case SS_SEED_RUN: StrLib::vCopy(m_sSeed.aChar(),m_pJobClass->m_aSeedRun); break;
+    case SS_SEED_REQ: StrLib::vCopy(m_sSeed.aChar(),m_pJobClass->m_aSeedReq); break;
+    case SS_SEED_RCV: StrLib::vCopy(m_sSeed.aChar(),m_pJobClass->m_aSeedRcv); break;
+    case SS_SEED_EXE: StrLib::vCopy(m_sSeed.aChar(),m_pJobClass->m_aSeedExe); break;
+    case SS_SEED_END: StrLib::vCopy(m_sSeed.aChar(),m_pJobClass->m_aSeedEnd); break;
+    case SS_SEED_CAN: StrLib::vCopy(m_sSeed.aChar(),m_pJobClass->m_aSeedCan); break;
     default: NEVER_REACH;
   }
   
@@ -294,7 +294,7 @@ void Job::vShow(s48K& s)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   vTrace("%s: %s"_Stz,
-         m_pJobClass ? m_pJobClass->m_aName : "<no jobClass>"_Stz,
+         m_pJobClass ? (Stz*)m_pJobClass->m_aName : "<no jobClass>"_Stz,
          s.aStr());
 }
 

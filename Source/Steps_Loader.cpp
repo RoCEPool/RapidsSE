@@ -374,7 +374,7 @@ void Task::vLoaderSpawnSubLoader(MP_Task mpTask)
   Job_SubLoader* pJob_SubLoader =
     static_cast<Job_SubLoader*>(pJobClass_SubLoader->pPreJob(pSEitf));
   
-  pJob_SubLoader->m_sSeed = pJobClass_SubLoader->m_aSeedRun;
+  pJob_SubLoader->vSeed(SS_SEED_RUN);
 
   pJob_SubLoader->m_sObjectName = pJob_LoadTable->m_sObjectName;
   pJob_SubLoader->vJob_LoadTable(pJob_LoadTable);

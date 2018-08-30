@@ -81,7 +81,7 @@ void Task::vJobClassName(MP_Task mpTask)
     THROW_INVALID_DSTACK("jobClass.name"_Stz);
   JobClass* pJobClass = _pJobClass(iJobClass_p);
   
-  s256 sName(pJobClass->m_aName);
+  s256 sName((Stz*)&pJobClass->m_aName);
   
   mpTask->m_pDataStack->vPushS256(sName);
   
@@ -124,7 +124,7 @@ void Task::vJobClassSeedRun(MP_Task mpTask)
     THROW_INVALID_DSTACK("jobClass.seedRun"_Stz);
   JobClass* pJobClass = _pJobClass(iJobClass_p);
   
-  s256 sSeed(pJobClass->m_aSeedRun);
+  s256 sSeed((Stz*)pJobClass->m_aSeedRun);
   
   mpTask->m_pDataStack->vPushS256(sSeed);
   
@@ -143,7 +143,7 @@ void Task::vJobClassSeedReq(MP_Task mpTask)
     THROW_INVALID_DSTACK("jobClass.seedReq"_Stz);
   JobClass* pJobClass = _pJobClass(iJobClass_p);
   
-  s256 sSeed(pJobClass->m_aSeedReq);
+  s256 sSeed((Stz*)&pJobClass->m_aSeedReq);
   
   mpTask->m_pDataStack->vPushS256(sSeed);
   
@@ -162,7 +162,7 @@ void Task::vJobClassSeedRcv(MP_Task mpTask)
     THROW_INVALID_DSTACK("jobClass.seedRcv"_Stz);
   JobClass* pJobClass = _pJobClass(iJobClass_p);
   
-  s256 sSeed(pJobClass->m_aSeedRcv);
+  s256 sSeed((Stz*)&pJobClass->m_aSeedRcv);
   
   mpTask->m_pDataStack->vPushS256(sSeed);
   
@@ -181,7 +181,7 @@ void Task::vJobClassSeedExe(MP_Task mpTask)
     THROW_INVALID_DSTACK("jobClass.seedExe"_Stz);
   JobClass* pJobClass = _pJobClass(iJobClass_p);
   
-  s256 sSeed(pJobClass->m_aSeedExe);
+  s256 sSeed((Stz*)&pJobClass->m_aSeedExe);
   
   mpTask->m_pDataStack->vPushS256(sSeed);
   
@@ -200,7 +200,7 @@ void Task::vJobClassSeedEnd(MP_Task mpTask)
     THROW_INVALID_DSTACK("jobClass.seedEnd"_Stz);
   JobClass* pJobClass = _pJobClass(iJobClass_p);
   
-  s256 sSeed(pJobClass->m_aSeedEnd);
+  s256 sSeed((Stz*)&pJobClass->m_aSeedEnd);
   
   mpTask->m_pDataStack->vPushS256(sSeed);
   
@@ -219,7 +219,7 @@ void Task::vJobClassSeedCan(MP_Task mpTask)
     THROW_INVALID_DSTACK("jobClass.seedCan"_Stz);
   JobClass* pJobClass = _pJobClass(iJobClass_p);
   
-  s256 sSeed(pJobClass->m_aSeedCan);
+  s256 sSeed((Stz*)&pJobClass->m_aSeedCan);
   
   mpTask->m_pDataStack->vPushS256(sSeed);
   

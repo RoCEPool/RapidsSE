@@ -48,7 +48,7 @@ void Task::vDot(MP_Task mpTask)
   */
   vTrace("[%s %s] %s\n"_Stz,
          gpAttachMap->m_pGrid->pThisNode()->aNodeName(),
-         mpTask->m_pJob ? mpTask->m_pJob->m_pJobClass->m_aName : "<no job>"_Stz,
+         mpTask->m_pJob ? (Stz*)mpTask->m_pJob->m_pJobClass->m_aName : "<no job>"_Stz,
          sWorkspace.aChar()
          );
 

@@ -436,7 +436,7 @@ void Task::vDstackStk(MP_Task mpTask)
   ENTRY("vDstackStk"_Stz);
   
   mpTask->m_pDataStack->vContentDump(
-    mpTask->m_pJob->m_pJobClass->m_aName,
+    (Stz*)mpTask->m_pJob->m_pJobClass->m_aName,
     "DataStack:"_Stz);
   
   EXIT();

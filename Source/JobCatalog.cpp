@@ -18,15 +18,15 @@ JobClass* JobCatalog::pFindJob(Stz* aCommand1, Stz* aCommand2)
   
   for (i8 i_Job = 0; i_Job < m_nClasses; i_Job++) {
     
-    if ( ! m_xJobClass[i_Job].m_aCommand1 ||
-         ! m_xJobClass[i_Job].m_aCommand1->bSame(aCommand1) )
+    if ( ! m_xJobClass[i_Job].m_aCommand1[0] ||
+        ! StrLib::bSame(m_xJobClass[i_Job].m_aCommand1,aCommand1->aChar()) )
       continue;
     
     //if (aCommand2->iLength()) {
-    if (m_xJobClass[i_Job].m_aCommand2) {
-      if ( ! m_xJobClass[i_Job].m_aCommand2->iLength() )
+    if (m_xJobClass[i_Job].m_aCommand2[0]) {
+      if ( ! StrLib::iLength(m_xJobClass[i_Job].m_aCommand2) )
         continue;
-      if ( ! m_xJobClass[i_Job].m_aCommand2->bSame(aCommand2) )
+    if ( ! StrLib::bSame(m_xJobClass[i_Job].m_aCommand2,aCommand2->aChar()) )
         continue;
     }
     

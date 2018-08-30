@@ -46,19 +46,39 @@ JobNote::JobNote(Stz* aName,
   // add the job class to the catalog
   i8 i_Job = gxJobCatalog.m_nClasses;
   
-  gxJobCatalog.m_xJobClass[i_Job].m_aName       = aName;
+  if (aName)
+    StrLib::vCopy(gxJobCatalog.m_xJobClass[i_Job].m_aName,aName->aChar());
+  
   gxJobCatalog.m_xJobClass[i_Job].m_eClass      = eClass;
   gxJobCatalog.m_xJobClass[i_Job].m_eKind       = eKind;
-  gxJobCatalog.m_xJobClass[i_Job].m_aComment    = aComment;
-  gxJobCatalog.m_xJobClass[i_Job].m_aCommand1   = aCommand1;
+  
+  if (aComment)
+    StrLib::vCopy(gxJobCatalog.m_xJobClass[i_Job].m_aComment,aComment->aChar());
+  
+  if (aCommand1)
+    StrLib::vCopy(gxJobCatalog.m_xJobClass[i_Job].m_aCommand1,aCommand1->aChar());
+  
   if (aCommand2)
-    gxJobCatalog.m_xJobClass[i_Job].m_aCommand2 = aCommand2;
-  gxJobCatalog.m_xJobClass[i_Job].m_aSeedRun    = aSeedRun;
-  gxJobCatalog.m_xJobClass[i_Job].m_aSeedReq    = aSeedReq;
-  gxJobCatalog.m_xJobClass[i_Job].m_aSeedRcv    = aSeedRcv;
-  gxJobCatalog.m_xJobClass[i_Job].m_aSeedExe    = aSeedExe;
-  gxJobCatalog.m_xJobClass[i_Job].m_aSeedEnd    = aSeedEnd;
-  gxJobCatalog.m_xJobClass[i_Job].m_aSeedCan    = aSeedCan;
+    StrLib::vCopy(gxJobCatalog.m_xJobClass[i_Job].m_aCommand2,aCommand2->aChar());
+  
+  if (aSeedRun)
+    StrLib::vCopy(gxJobCatalog.m_xJobClass[i_Job].m_aSeedRun,aSeedRun->aChar());
+  
+  if (aSeedReq)
+    StrLib::vCopy(gxJobCatalog.m_xJobClass[i_Job].m_aSeedReq,aSeedReq->aChar());
+  
+  if (aSeedRcv)
+    StrLib::vCopy(gxJobCatalog.m_xJobClass[i_Job].m_aSeedRcv,aSeedRcv->aChar());
+  
+  if (aSeedExe)
+    StrLib::vCopy(gxJobCatalog.m_xJobClass[i_Job].m_aSeedExe,aSeedExe->aChar());
+  
+  if (aSeedEnd)
+    StrLib::vCopy(gxJobCatalog.m_xJobClass[i_Job].m_aSeedEnd,aSeedEnd->aChar());
+  
+  if (aSeedCan)
+    StrLib::vCopy(gxJobCatalog.m_xJobClass[i_Job].m_aSeedCan,aSeedCan->aChar());
+  
   gxJobCatalog.m_xJobClass[i_Job].m_bResources  = bResources;
   gxJobCatalog.m_xJobClass[i_Job].m_bDetached   = bDetached;
   gxJobCatalog.m_xJobClass[i_Job].m_bBuffer     = bBuffer;
@@ -71,6 +91,12 @@ JobNote::JobNote(Stz* aName,
   gxJobCatalog.m_xJobClass[i_Job].m_fRecv       = fRecv;
   gxJobCatalog.m_xJobClass[i_Job].m_fShow       = fShow;
   gxJobCatalog.m_xJobClass[i_Job].m_bEnabled    = bEnabled;
+  
+  if (aHelp)
+    StrLib::vCopy(gxJobCatalog.m_xJobClass[i_Job].m_aHelp,aHelp->aChar());
+  
+  if (aExample)
+    StrLib::vCopy(gxJobCatalog.m_xJobClass[i_Job].m_aExample,aExample->aChar());
   
   // record the job class
   m_pJobClass = &gxJobCatalog.m_xJobClass[i_Job];
