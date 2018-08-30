@@ -122,8 +122,6 @@ Job_CreateIndex::Job_CreateIndex(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATEINDEX,_FOOTER_);
   
-  m_bCheckResources   = true;
-  
   m_bIsUnique  = false;
   m_iColumns   = 0;
   

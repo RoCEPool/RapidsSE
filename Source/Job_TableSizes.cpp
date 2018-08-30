@@ -93,8 +93,6 @@ Job_TableSizes::Job_TableSizes(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_TABLESIZES,_FOOTER_);
     
-  m_bCheckResources   = true;
-  
   _checkInitialised_(CN_JOB_TABLESIZES);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_TABLESIZES,_FOOTER_);

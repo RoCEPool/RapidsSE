@@ -93,7 +93,6 @@ Job_TruncateTable::Job_TruncateTable(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_TRUNCATETABLE,_FOOTER_);
     
-  m_bCheckResources = true;
   m_pTask           = nullptr;
   
   _checkInitialised_(CN_JOB_TRUNCATETABLE);

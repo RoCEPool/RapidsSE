@@ -93,8 +93,6 @@ Job_VisualizeIndex::Job_VisualizeIndex(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_VISUALIZEINDEX,_FOOTER_);
     
-  m_bCheckResources = true;
-  
   _checkInitialised_(CN_JOB_VISUALIZEINDEX);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_VISUALIZEINDEX,_FOOTER_);

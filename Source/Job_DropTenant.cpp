@@ -93,8 +93,6 @@ Job_DropTenant::Job_DropTenant(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPTENANT,_FOOTER_);
     
-  m_bCheckResources   = true;
-  
   _checkInitialised_(CN_JOB_DROPTENANT);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPTENANT,_FOOTER_);
