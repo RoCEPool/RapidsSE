@@ -1097,18 +1097,7 @@ void Task::vAddRoutines(void)
   "  ;"_Stz;
   
   pCompileColon(sDefinition);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  sDefinition =
-  ": ::docmd"
-  //  "  input.text"
-  "  docol"
-  " \"AFTER DOCOL!!!\" . "
-  "  ::task_exit"
-  "  ;"_Stz;
-  
-  pCompileColon(sDefinition);
-  
+    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   sDefinition =
   ": ::enter"
