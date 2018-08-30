@@ -762,7 +762,6 @@ namespace Tasks
     static void vJobBegunErrorStore(MP_Task mpTask);
     static void vJobCancelledErrorFetch(MP_Task mpTask);
     static void vJobCancelledErrorStore(MP_Task mpTask);
-    static void vJobCheckResourcesFetch(MP_Task mpTask);
     static void vJobClass(MP_Task mpTask);
     static void vJobColumnCountFetch(MP_Task mpTask);
     static void vJobColumnNameFetch(MP_Task mpTask);
@@ -817,7 +816,6 @@ namespace Tasks
     static void vJobPreSend(MP_Task mpTask);
     static void vJobPromptTaskFetch(MP_Task mpTask);
     static void vJobRecv(MP_Task mpTask);
-    static void vJobReleaseResourcesFetch(MP_Task mpTask);
     static void vJobPartitionsFetch(MP_Task mpTask);
     static void vJobReceiverConnNoFetch(MP_Task mpTask);
     static void vJobReceiverConnNoStore(MP_Task mpTask);

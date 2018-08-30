@@ -26,7 +26,6 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("jobBegun.error!"_Stz,      &vJobBegunErrorStore,  false);
   vAddPrimitive("jobCancelled.error@"_Stz,  &vJobCancelledErrorFetch, false);
   vAddPrimitive("jobCancelled.error!"_Stz,  &vJobCancelledErrorStore, false);
-  vAddPrimitive("job.checkResources@"_Stz,  &vJobCheckResourcesFetch,false);
   vAddPrimitive("job.class"_Stz,            &vJobClass,            false);
   vAddPrimitive("job.columnCount@"_Stz,     &vJobColumnCountFetch, false);
   vAddPrimitive("job.columnIsPartKey"_Stz,  &vJobColumnIsPartKey,  false);
@@ -88,7 +87,6 @@ void Task::vAddPrimitives_Job(void)
   
   vAddPrimitive("job.recv"_Stz,             &vJobRecv,             false);
   vAddPrimitive("job.regionSize@"_Stz,      &vJobRegionSizeFetch,  false);
-  vAddPrimitive("job.releaseResources@"_Stz,&vJobReleaseResourcesFetch,false);
   vAddPrimitive("job.removeOriginator"_Stz, &vJobRemoveOriginator, false);
   vAddPrimitive("job.removeParticipant"_Stz,&vJobRemoveParticipant,false);
   vAddPrimitive("job.response@"_Stz,        &vJobResponseFetch,    false);
@@ -272,31 +270,6 @@ void Task::vJobCancelledErrorStore(MP_Task mpTask)
   EXIT();
 }
 
-/*----------------------------------------------------------------------------*/
-/* job.checkResources@ -- fetch the word to be executed for checking resources*/
-/*----------------------------------------------------------------------------*/
-void Task::vJobCheckResourcesFetch(MP_Task mpTask)
-{
-  ENTRY("vJobCheckResourcesFetch"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.checkResources@"_Stz);
-  Job* pJob = _pJob(pJobPtr);
-  
-  s256 sExecute;
-  sExecute = ""_Stz;
-  
-  if (pJob->m_bCheckResources) {
-    sExecute = pJob->m_pJobClass->m_aName + 4;// EEK! pJob->sJobSeed();
-    sExecute.vConcat(".checkResources"_Stz);
-  }
-  
-  mpTask->m_pDataStack->vPushS256(sExecute);
-  
-  EXIT();
-}
-  
 /*----------------------------------------------------------------------------*/
 /* job.columnCount@ -- fetch the no of columns of the create table job        */
 /*----------------------------------------------------------------------------*/
@@ -1560,33 +1533,6 @@ void Task::vJobRecv(MP_Task mpTask)
   
   // call the job post-receive function
   pJobClass->vRecvJob(pJob);  // come back to this, remove seitf as parameter to delete
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.releaseResources@ -- fetch the word to execute for releasing resources */
-/*----------------------------------------------------------------------------*/
-void Task::vJobReleaseResourcesFetch(MP_Task mpTask)
-{
-  ENTRY("vJobReleaseResourcesFetch"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.releaseResources@"_Stz);
-  Job* pJob = _pJob(pJobPtr);
-  
-  s256 sExecute;
-  sExecute = ""_Stz;
-  
-  if (pJob->m_bCheckResources) {
-    ASSERT(pJob->m_pJobClass->m_aSeedEnd);
-    ASSERT(pJob->m_pJobClass->m_aSeedCan);
-    sExecute = pJob->m_pJobClass->m_aName+4;//EEK! pJob->sJobSeed();
-    sExecute.vConcat(".releaseResources"_Stz);
-  }
-  
-  mpTask->m_pDataStack->vPushS256(sExecute);
   
   EXIT();
 }
