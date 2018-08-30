@@ -34,6 +34,7 @@ namespace StorageEngine
     static void vPrintExit(void);
     static void vPrintSizes(void);
     static void vPrintWelcome(void);
+    static void vRunImmmediate(Task* pTask);
     static bool bRunUtilities(int argc, Stz* argv[]);
     static void vSEitfDelete(SEitf* pSEitf);
     static void vSetGlobals(void);

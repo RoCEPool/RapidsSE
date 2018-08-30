@@ -206,6 +206,18 @@ void RapidsSE::vPrintWelcome(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* run task immediately                                                       */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vRunImmmediate(Task* pTask)
+{
+  pTask->vSeedJob();
+  
+  pTask->vState(TS_EXECUTING);
+  
+  pTask->vTaskLoop();
+}
+
+/*----------------------------------------------------------------------------*/
 /* run utilities                                                              */
 /*----------------------------------------------------------------------------*/
 bool RapidsSE::bRunUtilities(int argc, Stz* argv[])
@@ -523,11 +535,7 @@ void RapidsSE::vBootDictionary(void)
   if (gpAttachMap->m_bVerbose)
     vTrace("[[mainThread]] Compiling dictionaries...\n"_Stz);
   
-  pBootTask->vSeedJob();
-  
-  pBootTask->vState(TS_EXECUTING);
-  
-  pBootTask->vTaskLoop();
+  vRunImmmediate(pBootTask);
   
   pBootTask->vJob(nullptr);
   delete pJob_Boot;
