@@ -470,7 +470,7 @@ ENTRY("vTaskSeed"_Stz);
   s32 sSeed;
   if ( ! mpTask->m_pDataStack->bPop(sSeed) )
     THROW_INVALID_DSTACK("task.seed"_Stz);
-  pThatTask->vSeedWord(sSeed);
+
 
   i8 nTaskArgs;
   if ( ! mpTask->m_pDataStack->bPop(nTaskArgs) )
