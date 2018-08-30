@@ -77,6 +77,8 @@
 /*----------------------------------------------------------------------------*/
 : loadBuffer_run (  -- )
 
+  <SEED_RUN>
+
   job::this locals| pJob_LoadBuffer  |
 
   "loadBuffer_run :" .

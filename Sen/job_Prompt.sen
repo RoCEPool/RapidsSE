@@ -9,6 +9,8 @@
 /*----------------------------------------------------------------------------*/
 : prompt_run ( -- <R> )
 
+  <SEED_RUN>
+
   0 locals| pPrompt |
   0 locals| pSEitf |
   0 locals| pCommandProcessor |

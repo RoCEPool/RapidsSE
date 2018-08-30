@@ -26,6 +26,8 @@ int: nTotalConnections
 /*----------------------------------------------------------------------------*/
 : answer_run ( -- )
 
+  <SEED_RUN>
+
   assertStackDepthZero
 
   0 locals| iPort |

@@ -24,6 +24,8 @@
 /*----------------------------------------------------------------------------*/
 : connector_run ( -- )
 
+  <SEED_RUN>
+
   assertStackDepthZero
 
   0 locals| pThisTask |
