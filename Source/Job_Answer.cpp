@@ -92,9 +92,7 @@ Job_Answer::Job_Answer(Interface::SEitf* pSEitf)
 : Job(CN_JOB_ANSWER, pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_ANSWER,_FOOTER_);
-  
-  //m_sSeed = mJobNote_Answer.pJobClass()->m_aSeedReq;
-  
+    
   _checkInitialised_(CN_JOB_ANSWER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_ANSWER,_FOOTER_);

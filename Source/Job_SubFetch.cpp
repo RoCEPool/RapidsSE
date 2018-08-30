@@ -93,13 +93,11 @@ Job_SubFetch::Job_SubFetch(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBFETCH,_FOOTER_);
     
-  //m_sSeed = mJobNote_SubTruncate.pJobClass()->m_aSeedReq;
   m_pBufferQueue = nullptr;
   m_pPlanner     = nullptr;
   m_iFetchJobId  = -1;
   m_iSlot        = -1;
   m_iPhrase      = -1;
-  
   
   _checkInitialised_(CN_JOB_SUBFETCH);
   

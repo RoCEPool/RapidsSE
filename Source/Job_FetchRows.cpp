@@ -93,7 +93,6 @@ Job_FetchRows::Job_FetchRows(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_FETCHROWS,_FOOTER_);
     
-  //m_sSeed = mJobNote_FetchRows.pJobClass()->m_aSeedReq;
   m_sWhere       = ""_Stz;
   m_pBufferQueue = new Queue;
   m_pTable       = nullptr;

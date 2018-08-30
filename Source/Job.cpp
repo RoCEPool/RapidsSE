@@ -109,7 +109,6 @@ void Job::vInit(void)
 {
   m_iJobId   = -1;
   m_pJobClass = nullptr;
-  m_sSeed    = ""_Stz;
   m_eSeed    = SS_ENUMS;
   m_eJobTrace   = JT_NONE;
   m_iParticipantNode  = -1;
@@ -256,17 +255,7 @@ void Job::vSeed(eSS eSeed)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_eSeed = eSeed;
-  
-  switch (eSeed) {
-    case SS_SEED_RUN: StrLib::vCopy(m_sSeed.aChar(),m_pJobClass->m_aSeedRun); break;
-    case SS_SEED_REQ: StrLib::vCopy(m_sSeed.aChar(),m_pJobClass->m_aSeedReq); break;
-    case SS_SEED_RCV: StrLib::vCopy(m_sSeed.aChar(),m_pJobClass->m_aSeedRcv); break;
-    case SS_SEED_EXE: StrLib::vCopy(m_sSeed.aChar(),m_pJobClass->m_aSeedExe); break;
-    case SS_SEED_END: StrLib::vCopy(m_sSeed.aChar(),m_pJobClass->m_aSeedEnd); break;
-    case SS_SEED_CAN: StrLib::vCopy(m_sSeed.aChar(),m_pJobClass->m_aSeedCan); break;
-    default: NEVER_REACH;
-  }
-  
+    
   m_pJobClass->m_bSeedsSpawned[eSeed] = true;
 }
 

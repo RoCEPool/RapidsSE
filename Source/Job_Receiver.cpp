@@ -92,9 +92,7 @@ Job_Receiver::Job_Receiver(Interface::SEitf* pSEitf)
 : Job(CN_JOB_RECEIVER, pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_RECEIVER,_FOOTER_);
-  
-  //m_sSeed = mJobNote_Receiver.pJobClass()->m_aSeedReq;
-  
+    
   m_iConnNo = -1;
   m_pSocket = nullptr;
 
