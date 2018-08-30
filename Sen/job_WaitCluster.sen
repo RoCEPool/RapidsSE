@@ -58,6 +58,8 @@
 /*----------------------------------------------------------------------------*/
 : waitCluster_beg ( -- )
 
+  <SEED_BEG>
+
   job::this locals| pJob_WaitCluster |
 
   pJob_WaitCluster job.beginParticipant
@@ -71,6 +73,8 @@
 /* end job                                                                    */
 /*----------------------------------------------------------------------------*/
 : waitCluster_end ( -- )
+
+  <SEED_END>
 
   job::this locals| pJob_WaitCluster |
 

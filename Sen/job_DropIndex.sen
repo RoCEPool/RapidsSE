@@ -203,6 +203,8 @@
 /*----------------------------------------------------------------------------*/
 : dropIndex_beg ( -- )
 
+  <SEED_BEG>
+
   job::this locals| pJob_dropIndex |
 
   pJob_dropIndex job.beginParticipant
@@ -219,6 +221,8 @@
 /* end job                                                                    */
 /*----------------------------------------------------------------------------*/
 : dropIndex_end ( -- )
+
+  <SEED_END>
 
   job::this locals| pJob_dropIndex |
 

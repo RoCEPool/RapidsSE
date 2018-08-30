@@ -133,6 +133,8 @@
 /*----------------------------------------------------------------------------*/
 : startCluster_beg ( -- )
 
+  <SEED_BEG>
+
   job::this locals| pJob_status |
 
   pJob_status job.beginParticipant
@@ -146,6 +148,8 @@
 /* end job                                                                    */
 /*----------------------------------------------------------------------------*/
 : startCluster_end ( -- )
+
+  <SEED_END>
 
   job::this locals| pJob_status |
 

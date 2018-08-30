@@ -163,7 +163,9 @@
 /*----------------------------------------------------------------------------*/
 : sizeTable_beg ( -- )
 
-  job::this locals| pJob_sizeTable |
+  <SEED_BEG>
+
+ job::this locals| pJob_sizeTable |
 
   pJob_sizeTable job.beginParticipant
 
@@ -178,6 +180,8 @@
 /* end job                                                                    */
 /*----------------------------------------------------------------------------*/
 : sizeTable_end ( -- )
+
+  <SEED_END>
 
   job::this locals| pJob_sizeTable |
 

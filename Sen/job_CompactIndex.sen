@@ -170,6 +170,8 @@
 /*----------------------------------------------------------------------------*/
 : compactIndex_beg ( -- )
 
+  <SEED_BEG>
+
   job::this locals| pJob_compactIndex |
 
   pJob_compactIndex job.beginParticipant
@@ -186,6 +188,8 @@
 /* end job                                                                    */
 /*----------------------------------------------------------------------------*/
 : compactIndex_end ( -- )
+
+  <SEED_END>
 
   job::this locals| pJob_compactIndex |
 

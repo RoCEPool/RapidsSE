@@ -200,6 +200,8 @@
 /*----------------------------------------------------------------------------*/
 : dropTable_beg ( -- )
 
+  <SEED_BEG>
+
   job::this locals| pJob_dropTable |
 
   pJob_dropTable job.beginParticipant
@@ -216,6 +218,8 @@
 /* end job                                                                    */
 /*----------------------------------------------------------------------------*/
 : dropTable_end ( -- )
+
+  <SEED_END>
 
   job::this locals| pJob_dropTable |
 

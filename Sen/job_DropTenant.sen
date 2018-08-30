@@ -138,6 +138,8 @@
 /*----------------------------------------------------------------------------*/
 : dropTenant_beg ( -- )
 
+  <SEED_BEG>
+
   job::this locals| pJob_dropTenant |
 
   pJob_dropTenant job.beginParticipant
@@ -154,6 +156,8 @@
 /* end job                                                                    */
 /*----------------------------------------------------------------------------*/
 : dropTenant_end ( -- )
+
+  <SEED_END>
 
   job::this locals| pJob_dropTenant |
 

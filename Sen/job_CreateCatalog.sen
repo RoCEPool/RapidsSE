@@ -156,6 +156,8 @@
 /*----------------------------------------------------------------------------*/
 : createCatalog_beg ( -- )
 
+  <SEED_BEG>
+
   job::this locals| pJob_createCatalog |
 
   pJob_createCatalog job.beginParticipant
@@ -172,6 +174,8 @@
 /* end job                                                                    */
 /*----------------------------------------------------------------------------*/
 : createCatalog_end ( -- )
+
+  <SEED_END>
 
   job::this locals| pJob_createCatalog |
 

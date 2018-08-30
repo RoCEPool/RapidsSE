@@ -151,6 +151,8 @@
 /*----------------------------------------------------------------------------*/
 : createTenant_beg ( -- )
 
+  <SEED_BEG>
+
   job::this locals| pJob_createTenant |
 
   pJob_createTenant job.beginParticipant
@@ -167,6 +169,8 @@
 /* end job                                                                    */
 /*----------------------------------------------------------------------------*/
 : createTenant_end ( -- )
+
+  <SEED_END>
 
   job::this locals| pJob_createTenant |
 

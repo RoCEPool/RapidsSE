@@ -165,6 +165,8 @@
 /*----------------------------------------------------------------------------*/
 : analyzeTable_beg ( -- )
 
+  <SEED_BEG>
+
   job::this locals| pJob_analyzeTable |
 
   pJob_analyzeTable job.beginParticipant
@@ -182,7 +184,9 @@
 /*----------------------------------------------------------------------------*/
 : analyzeTable_end ( -- )
 
-  job::this locals| pJob_analyzeTable |
+  <SEED_END>
+
+ job::this locals| pJob_analyzeTable |
 
   pJob_analyzeTable analyzeTable.releaseResources
 

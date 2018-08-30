@@ -138,6 +138,8 @@
 /*----------------------------------------------------------------------------*/
 : dropSchema_beg ( -- )
 
+  <SEED_BEG>
+
   job::this locals| pJob_dropSchema |
 
   pJob_dropSchema job.beginParticipant
@@ -154,6 +156,8 @@
 /* end job                                                                    */
 /*----------------------------------------------------------------------------*/
 : dropSchema_end ( -- )
+
+  <SEED_END>
 
   job::this locals| pJob_dropSchema |
 

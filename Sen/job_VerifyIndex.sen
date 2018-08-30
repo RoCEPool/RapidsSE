@@ -179,6 +179,8 @@
 /*----------------------------------------------------------------------------*/
 : verifyIndex_beg ( -- )
 
+  <SEED_BEG>
+
   job::this locals| pJob_VerifyIndex |
 
   pJob_VerifyIndex job.beginParticipant
@@ -195,6 +197,8 @@
 /* end job                                                                    */
 /*----------------------------------------------------------------------------*/
 : verifyIndex_end ( -- )
+
+  <SEED_END>
 
   job::this locals| pJob_VerifyIndex |
 

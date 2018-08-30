@@ -98,6 +98,8 @@
 /*----------------------------------------------------------------------------*/
 : sanity__beg ( -- )
 
+  <SEED_BEG>
+
   job::this locals| pJob_sanity |
 
   pJob_sanity job.beginParticipant
@@ -111,6 +113,8 @@
 /* end job                                                                    */
 /*----------------------------------------------------------------------------*/
 : sanity_end ( -- )
+
+  <SEED_END>
 
   job::this locals| pJob_sanity |
 

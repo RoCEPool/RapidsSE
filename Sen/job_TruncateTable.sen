@@ -149,6 +149,8 @@
 /*----------------------------------------------------------------------------*/
 : truncateTable_beg ( -- )
 
+  <SEED_BEG>
+
   job::this locals| pJob_truncateTable |
 
   pJob_truncateTable job.beginParticipant
@@ -165,6 +167,8 @@
 /* end job                                                                    */
 /*----------------------------------------------------------------------------*/
 : truncateTable_end ( -- )
+
+  <SEED_END>
 
   job::this locals| pJob_truncateTable |
 

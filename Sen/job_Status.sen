@@ -72,6 +72,8 @@
 /*----------------------------------------------------------------------------*/
 : status_beg ( -- )
 
+  <SEED_BEG>
+
   job::this locals| pJob_status |
 
   pJob_status job.beginParticipant
@@ -86,7 +88,9 @@
 /*----------------------------------------------------------------------------*/
 : status_end ( -- )
 
-  job::this locals| pJob_status |
+ <SEED_END>
+
+ job::this locals| pJob_status |
 
   job::participantEnded
 

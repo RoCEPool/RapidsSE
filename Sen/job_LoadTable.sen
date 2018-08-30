@@ -190,6 +190,8 @@
 /*----------------------------------------------------------------------------*/
 : loadTable_beg ( -- )
 
+  <SEED_BEG>
+
   job::this locals| pJob_LoadTable |
 
   ">> loadTable_beg <<" .
@@ -210,6 +212,8 @@
 /* end job                                                                    */
 /*----------------------------------------------------------------------------*/
 : loadTable_end ( -- )
+
+  <SEED_END>
 
   job::this locals| pJob_LoadTable |
 

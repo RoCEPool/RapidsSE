@@ -153,6 +153,8 @@
 /*----------------------------------------------------------------------------*/
 : createSchema_beg ( -- )
 
+  <SEED_BEG>
+
   job::this locals| pJob_createSchema |
 
   pJob_createSchema job.beginParticipant
@@ -169,6 +171,8 @@
 /* end job                                                                    */
 /*----------------------------------------------------------------------------*/
 : createSchema_end ( -- )
+
+  <SEED_END>
 
   job::this locals| pJob_createSchema |
 

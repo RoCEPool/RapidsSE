@@ -45,6 +45,8 @@
 /*----------------------------------------------------------------------------*/
 : Job__Begun_rcv ( -- )
 
+  <SEED_RCV>
+
   //
   // where:  On the originator node.
   // event:  A Job__Begun has been received from a participating node

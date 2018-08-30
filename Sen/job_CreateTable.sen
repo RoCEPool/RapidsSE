@@ -209,6 +209,8 @@
 /*----------------------------------------------------------------------------*/
 : createTable_beg ( -- )
 
+  <SEED_BEG>
+
   job::this locals| pJob_CreateTable |
 
   ">> createTable_beg <<" .
@@ -229,6 +231,8 @@
 /* end job                                                                    */
 /*----------------------------------------------------------------------------*/
 : createTable_end ( -- )
+
+  <SEED_END>
 
   job::this locals| pJob_CreateTable |
 

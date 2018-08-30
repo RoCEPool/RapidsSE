@@ -162,6 +162,8 @@
 /*----------------------------------------------------------------------------*/
 : tableSizes_beg ( -- )
 
+  <SEED_BEG>
+
   job::this locals| pJob_tableSizes |
 
   pJob_tableSizes job.beginParticipant
@@ -178,6 +180,8 @@
 /* end job                                                                    */
 /*----------------------------------------------------------------------------*/
 : tableSizes_end ( -- )
+
+  <SEED_END>
 
   job::this locals| pJob_tableSizes |
 

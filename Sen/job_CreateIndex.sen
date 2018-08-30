@@ -262,6 +262,8 @@
 /*----------------------------------------------------------------------------*/
 : createIndex_beg ( -- )
 
+  <SEED_BEG>
+
   job::this locals| pJob_createIndex |
 
   pJob_createIndex job.beginParticipant
@@ -277,6 +279,8 @@
 /* end job                                                                    */
 /*----------------------------------------------------------------------------*/
 : createIndex_end ( -- )
+
+  <SEED_END>
 
   job::this locals| pJob_createIndex |
 
