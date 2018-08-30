@@ -155,7 +155,6 @@ void Task::vInit(void)
   m_xLock.vInitLock(LK_TASK);
   
   m_pJob         = nullptr;
-  m_pParentTask  = nullptr;
 
   m_iTaskOrderNo = C_UNKNOWN;
   m_iPartition   = C_UNKNOWN;
@@ -1455,26 +1454,6 @@ void Task::vLocalsPush(void)
   pLocalsframe->vNext(m_pLocalsFrame);
   
   m_pLocalsFrame = pLocalsframe;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get parent task                                                            */
-/*----------------------------------------------------------------------------*/
-Task* Task::pParentTask(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  return m_pParentTask;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set parent task                                                            */
-/*----------------------------------------------------------------------------*/
-void Task::vParentTask(Task* pParentTask)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  m_pParentTask = pParentTask;
 }
 
 /*----------------------------------------------------------------------------*/

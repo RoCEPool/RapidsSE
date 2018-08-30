@@ -71,7 +71,6 @@ namespace Tasks
     // keep
 
     Job*    m_pJob;         // the job for this task
-    Task*   m_pParentTask;  // parent of this task
 
     i8      m_iTaskOrderNo; // task order no. (ready queue)
     i8      m_iPartition;   // which partition if a partition task
@@ -175,8 +174,6 @@ namespace Tasks
     void vJob(Job* pJob);
     void vLocalsPop(void);
     void vLocalsPush(void);
-    Task*  pParentTask(void);
-    void vParentTask(Task* pParentTask);
     i8   iPartition(void);
     void vPerformancePoint(Stz* aWordName, Stz* aPointNote);
     void vPerformancePrint(void);
