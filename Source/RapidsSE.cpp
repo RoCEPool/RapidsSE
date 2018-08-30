@@ -679,7 +679,7 @@ void RapidsSE::vStartSystemTasks(void)
   
   Task* pStartTask = new Task(pJob_Start);
   
-  pStartTask->vSeedWord(pJob_Start->m_sSeed);
+  pStartTask->vSeedJob();
 
   pStartTask->vState(TS_READY);
 
