@@ -62,7 +62,8 @@ namespace Tasks
                public ListNode_t<Task>
   {
   private:
-    
+  
+    // tracing masks
     static const i8 C_TRACE_NONE     = 0x0;
     static const i8 C_TRACE_STEPS    = 0x1;
     static const i8 C_TRACE_ROUTINES = 0x2;
@@ -97,13 +98,19 @@ namespace Tasks
     RegFrame* m_pLocalsFrame; // local register frame chain
     RegFrame* m_pOpFrame;     // op frame chain
 
-    union {
+    union {                 // instruction pointer
       Cell*   m_pCell;      // points to cell inside a word
       Value*  m_pValue;     // points to an embedded value within a word
       Object* m_pObject;    // points to an embedded object within a word
-      //Header* m_pHeader;    // points to an embbeded header within a word
     } IP;
     TaskStep* m_pEntryCell; // points to does arg (entry cell of word)
+  
+    // exception
+    s256  m_sFile;
+    s256  m_sException;
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // can these be removed ?
   
     Cell* m_pResetIP;
     Cell* m_pBeginIP;
@@ -112,29 +119,16 @@ namespace Tasks
     i8    m_nVariables;      // number of variables
     Word* m_pCurrentWord;
     i8    m_nSubDic;
-    
-    // exception
-    s256  m_sFile;
-    s256  m_sException;
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // goes somewhere else
   
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // questionable
-
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // remove
   
     Tokeniser* m_pTokeniser; // input stream tokenizer
-  
     Interface::SEitf* m_pSEitf; // the seitf for this task
-  
     Plan*   m_pPlan;            // the plan associated with task
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // always last
-  
     Footer m_xFooter;
 
   public:
