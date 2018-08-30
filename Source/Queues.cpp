@@ -952,8 +952,9 @@ void Queues::vScheduleSpawnedTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  RASSERT(TS_READY == pTask->eState());
   RASSERT(QR_NONE == pTask->eQueue());
+  
+  pTask->vState(TS_READY);
   
   eQR eQueue = pTask->eWhichQueue();
   RASSERT(eQueue >= QR_READY_QUEUE  || eQueue < gpAttachMap->m_pGrid->m_nSlots);

@@ -682,8 +682,6 @@ void RapidsSE::vStartSystemTasks(void)
   
   pStartTask->vSeedJob();
 
-  pStartTask->vState(TS_READY);
-
   Handlers::vSpawnedTaskHandler(pStartTask);
 }
 
