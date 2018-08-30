@@ -317,6 +317,8 @@ void RapidsSE::vExecuteCmdLine(void)
       vSystemStart();
       if (gxArguments.m_bPrompt)
         vSystemPrompt();
+      else
+        vWaitFlag();
     }
     
     else if (gxArguments.m_bPrompt)  vSystemPrompt();
@@ -573,7 +575,7 @@ void RapidsSE::vSignalHandler(int iSignal)
 /*----------------------------------------------------------------------------*/
 /* init a new system                                                          */
 /*----------------------------------------------------------------------------*/
-void RapidsSE::vSystemInit(void)
+void RapidsSE::vSystemStart(void)
 {
   if (gxArguments.m_bVerbose)
     vInfo("\n*\n* System Init\n*\n"_Stz);
@@ -649,6 +651,12 @@ void RapidsSE::vSystemInit(void)
     Thread* pThread = new Thread;
     pThread->vSpawn_Thread();
   }
+  
+  if (gxArguments.m_bVerbose) {
+    vInfo("RapidsSE instance %s started\n"_Stz,gxArguments.m_sRegionName.aChar());
+    gpAttachMap->m_pGrid->vDumpPartitioning();
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -693,28 +701,6 @@ void RapidsSE::vSystemPrompt(void)
   
   while (true)
     PosixThread::vSleepSec(10000000);
-}
-
-/*----------------------------------------------------------------------------*/
-/* start the system                                                            */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vSystemStart(void)
-{
-  ASSERT(gpBufferPool);
-  
-  vSystemInit();
-  
-  if (gxArguments.m_bVerbose) {
-    vInfo("RapidsSE instance %s started\n"_Stz,gxArguments.m_sRegionName.aChar());
-    gpAttachMap->m_pGrid->vDumpPartitioning();
-  }
-  
-  if (gxArguments.m_bPrompt) {
-    ASSERT(gpBufferPool);
-    return;
-  }
-  
-  vWaitFlag();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -39,7 +39,6 @@ namespace StorageEngine
     static void vSetGlobals(void);
     static void vSignalHandler(int iSignal);
     static void vStartSystemTasks(void);
-    static void vSystemInit(void);
     static void vSystemPrompt(void);
     static void vSystemStart(void);
     static void vSystemStatus(void);
