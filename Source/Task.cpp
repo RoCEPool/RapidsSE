@@ -162,7 +162,6 @@ void Task::vInit(void)
   m_eState       = TS_NONE;
   m_eQueue       = QR_NONE;
   m_iTxId        = C_UNKNOWN;
-  m_iWakeAt      = 0;
   m_zAcks.vCheckInit();
   m_pThread      = nullptr;
   

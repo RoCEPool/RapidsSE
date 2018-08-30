@@ -127,7 +127,6 @@ namespace Tasks
     // remove
   
     i8      m_iTxId;       // transaction id
-    i8      m_iWakeAt;     // time at which to wake this tx
   
     Tokeniser* m_pTokeniser; // input stream tokenizer
   
