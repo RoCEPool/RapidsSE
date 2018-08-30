@@ -126,8 +126,6 @@ namespace Tasks
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // remove
   
-    i8      m_iTxId;       // transaction id
-  
     Tokeniser* m_pTokeniser; // input stream tokenizer
   
     Interface::SEitf* m_pSEitf; // the seitf for this task
@@ -205,8 +203,6 @@ namespace Tasks
     Threads::Thread* pThread(void);
     void vThread(Threads::Thread* pThread);
     void vTracePoint(Stz* aMark);
-    i8   iTxId(void);
-    void vTxId(i8 iTxId);
     bool bWakeupNow(void);
     i8   iWakeupTime(void);
     void vWakeupTask(void);

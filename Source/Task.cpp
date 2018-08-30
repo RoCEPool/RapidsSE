@@ -161,7 +161,6 @@ void Task::vInit(void)
   
   m_eState       = TS_NONE;
   m_eQueue       = QR_NONE;
-  m_iTxId        = C_UNKNOWN;
   m_zAcks.vCheckInit();
   m_pThread      = nullptr;
   
@@ -1306,8 +1305,8 @@ void Task::vDump(eCN eClass, Object* pObject, Stz* aTab)
   vTrace("%s %p state %s txId %lld\n"_Stz,
          pTask->m_pJob->m_pJobClass->m_aName,
          pTask,
-         aTS[pTask->m_eState]->aChar(),
-         pTask->m_iTxId);
+         aTS[pTask->m_eState]->aChar()
+         );
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1321,8 +1320,8 @@ void Task::vContentDump(void)
          aDoubleTab(),
          this,
          m_pJob->m_pJobClass->m_aName,
-         aTS[m_eState]->aChar(),
-         m_iTxId);
+         aTS[m_eState]->aChar()
+         );
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1909,26 +1908,6 @@ void Task::vPerformancePrint(void)
   pPerformanceTrace->vPrint();
   
   pPerformanceTrace->vReset();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get transaction id                                                         */
-/*----------------------------------------------------------------------------*/
-i8 Task::iTxId(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  return m_iTxId;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the tx id                                                              */
-/*----------------------------------------------------------------------------*/
-void Task::vTxId(i8 iTxId)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  m_iTxId = iTxId;
 }
 
 /*----------------------------------------------------------------------------*/
