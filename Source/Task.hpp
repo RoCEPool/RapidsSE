@@ -63,13 +63,13 @@ namespace Tasks
   {
   private:
     
+    static const i8 C_TRACE_NONE     = 0x0;
     static const i8 C_TRACE_STEPS    = 0x1;
     static const i8 C_TRACE_ROUTINES = 0x2;
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // keep
 
-    i8      m_iTaskNo;      // task
     Job*    m_pJob;         // the job for this task
     Task*   m_pParentTask;  // parent of this task
 
@@ -80,7 +80,8 @@ namespace Tasks
     Atomic  m_zAcks;        // number of acks still waiting for
     Since   m_xWakeupTime;  // wakeup time
     i8      m_iDdlLocked;   // ? has the ddl lock?
-  
+    i8      m_iTracing;     // tracing mask
+
     Socket* m_pSocket;       // socket associated with task
 
     Threads::Thread* m_pThread; // current thread
@@ -106,8 +107,7 @@ namespace Tasks
     Cell* m_pBeginIP;
     Word* m_pWord;
     bool  m_bCompiling;
-    i8    m_iTracing;
-    i8    m_nVariables;      // number of variables 
+    i8    m_nVariables;      // number of variables
     Word* m_pCurrentWord;
     i8    m_nSubDic;
     
@@ -203,7 +203,6 @@ namespace Tasks
     eTS  eState(void);
     void vState(eTS eState);
     void vTaskLoop(void);
-    i8   iTaskNo(void);
     void vTaskOrderNo(i8 iTaskOrder);
     i8   iTaskOrderNo(void);
     Threads::Thread* pThread(void);

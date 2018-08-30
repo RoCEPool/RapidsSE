@@ -150,23 +150,22 @@ Task::~Task(void)
 void Task::vInit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  static i8 iTaskNo = 0;
-  
+    
   // basic state
   m_xLock.vInitLock(LK_TASK);
   
-  m_iTaskNo      = iTaskNo++;
-  m_iTaskOrderNo = 0;
+  m_pJob         = nullptr;
+  m_pParentTask  = nullptr;
+
+  m_iTaskOrderNo = C_UNKNOWN;
+  m_iPartition   = C_UNKNOWN;
   
-  m_iPartition  = -1;
-  m_eState      = TS_NONE;
-  m_eQueue      = QR_NONE;
-  m_iTxId       = -1;
-  m_iWakeAt     = 0;
-  m_pParentTask = nullptr;
+  m_eState       = TS_NONE;
+  m_eQueue       = QR_NONE;
+  m_iTxId        = C_UNKNOWN;
+  m_iWakeAt      = 0;
   m_zAcks.vCheckInit();
-  m_pThread     = nullptr;
+  m_pThread      = nullptr;
   
   m_pDataStack   = new Stack;
   m_pReturnStack = new Stack;
@@ -183,7 +182,7 @@ void Task::vInit(void)
   m_pBeginIP     = nullptr;
   m_pWord        = nullptr;
   m_bCompiling   = false;
-  m_iTracing     = 0;
+  m_iTracing     = C_TRACE_NONE;
   m_nVariables   = 0;
   m_pCurrentWord = nullptr;
   m_nSubDic      = 0;
@@ -200,7 +199,6 @@ void Task::vInit(void)
   
   m_iDdlLocked = 0;
   
-  m_pJob = nullptr;
   
   m_pSendNode = nullptr;
 }
@@ -1308,9 +1306,9 @@ void Task::vDump(eCN eClass, Object* pObject, Stz* aTab)
   
   Task* pTask = reinterpret_cast<Task*>(pObject);
   
-  vTrace("%s TaskNo %lld state %s txId %lld\n"_Stz,
+  vTrace("%s %p state %s txId %lld\n"_Stz,
          pTask->m_pJob->m_pJobClass->m_aName,
-         pTask->m_iTaskNo,
+         pTask,
          aTS[pTask->m_eState]->aChar(),
          pTask->m_iTxId);
 }
@@ -1322,9 +1320,8 @@ void Task::vContentDump(void)
 {
   _poolAddress_(this);
   
-  vTrace("%sTask %02lld %p: %16s state %8s txId %lld\n"_Stz,
+  vTrace("%sTask %p: %16s state %8s txId %lld\n"_Stz,
          aDoubleTab(),
-         m_iTaskNo,
          this,
          m_pJob->m_pJobClass->m_aName,
          aTS[m_eState]->aChar(),
@@ -1958,16 +1955,6 @@ void Task::vTxId(i8 iTxId)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get task no                                                                */
-/*----------------------------------------------------------------------------*/
-i8 Task::iTaskNo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  return m_iTaskNo;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get task order no                                                          */
 /*----------------------------------------------------------------------------*/
 i8 Task::iTaskOrderNo(void)
@@ -2081,8 +2068,6 @@ void Task::vTaskLoop(void)
   }
   
   while (TS_EXECUTING == m_eState) {
-    
-    //assert(0 == m_iTaskNo || m_pThread);
     
     TaskStep pTaskStep = *IP.m_pCell->m_ppEntryStep;
     
