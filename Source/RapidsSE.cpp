@@ -314,11 +314,13 @@ void RapidsSE::vExecuteCmdLine(void)
   try {
     
     if (gxArguments.m_bStart) {
+      
       vSystemStart();
+      
       if (gxArguments.m_bPrompt)
         vSystemPrompt();
       else
-        vWaitFlag();
+        vSystemWait();
     }
     
     else if (gxArguments.m_bPrompt)  vSystemPrompt();
@@ -504,7 +506,7 @@ void RapidsSE::vCreateObjects(void)
 /*----------------------------------------------------------------------------*/
 /* compile the main dictionary                                                */
 /*----------------------------------------------------------------------------*/
-void RapidsSE::vDicCompile(NP_Task npBootTask)
+void RapidsSE::vBootDictionary(NP_Task npBootTask)
 {  
   npBootTask->vAddBaseWords();
   
@@ -514,7 +516,7 @@ void RapidsSE::vDicCompile(NP_Task npBootTask)
   npBootTask->vSeedJob();
   
   //if (gpAttachMap->m_bVerbose)
-  //  vTrace("[[mainThread]] RapidsSE::vDicCompile running [%s] %p\n"_Stz,
+  //  vTrace("[[mainThread]] RapidsSE::vBootDictionary running [%s] %p\n"_Stz,
   //         npBootTask->sName().aChar(),
   //         *npBootTask);
   
@@ -593,13 +595,6 @@ void RapidsSE::vSystemStart(void)
   gpAttachMap->m_pPlanList = new PlanList;
 
   
-  JobClass* pJobClass_Boot = gxJobCatalog.pFindJob(CN_JOB_BOOT);
-  
-  Job_Boot* pJob_Boot
-    = static_cast<Job_Boot*>(pJobClass_Boot->pNewJob(nullptr));
-  pJob_Boot->vSeed(SS_SEED_RUN);
-  
-  gpAttachMap->m_npBootTask = new Task(pJob_Boot);
   
   gpAttachMap->m_xDdlLock.vInitLock(LK_DDL);
   gpAttachMap->m_xDicLock.vInitLock(LK_DIC);
@@ -629,9 +624,18 @@ void RapidsSE::vSystemStart(void)
 
   //--------------------------------------------------------------------------
 
-
-  vDicCompile(gpAttachMap->m_npBootTask);
+  JobClass* pJobClass_Boot = gxJobCatalog.pFindJob(CN_JOB_BOOT);
   
+  Job_Boot* pJob_Boot
+  = static_cast<Job_Boot*>(pJobClass_Boot->pNewJob(nullptr));
+  pJob_Boot->vSeed(SS_SEED_RUN);
+  
+  gpAttachMap->m_npBootTask = new Task(pJob_Boot);
+
+  vBootDictionary(gpAttachMap->m_npBootTask);
+
+  //--------------------------------------------------------------------------
+
   gpAttachMap->m_pOriginatingJobs   = new Jobs(bJobCompare);
   gpAttachMap->m_pParticipatingJobs = new Jobs(bJobCompare);
   
@@ -758,7 +762,7 @@ void RapidsSE::vSystemUnlink(void)
 /*----------------------------------------------------------------------------*/
 /* wait for quit or stop                                                      */
 /*----------------------------------------------------------------------------*/
-void RapidsSE::vWaitFlag(void)
+void RapidsSE::vSystemWait(void)
 {
   if (gpAttachMap->m_bVerbose)
     vTrace("[[mainThread]] Waiting on stop %s\n"_Stz,"..."_Stz);

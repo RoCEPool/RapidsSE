@@ -22,7 +22,7 @@ namespace StorageEngine
     static void vChangeDirectory(void);
     static void vCheckPort(void);
     static void vCreateObjects(void);
-    static void vDicCompile(NP_Task npBootTask);
+    static void vBootDictionary(NP_Task npBootTask);
     static void vErrorHandler(Error* pError);
     static void vExecuteCmdLine(void);
     static void vExecuteSystem(void);
@@ -44,7 +44,7 @@ namespace StorageEngine
     static void vSystemStatus(void);
     static void vSystemStop(void);
     static void vSystemUnlink(void);
-    static void vWaitFlag(void);
+    static void vSystemWait(void);
     static void vWriteRegionName(void);
 
     Footer* aFooter(void);
