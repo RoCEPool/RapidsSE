@@ -103,6 +103,8 @@
   pJob_sanity job.beginParticipant
 
   job::participantBegun
+
+  <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/

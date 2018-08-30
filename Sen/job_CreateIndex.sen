@@ -269,6 +269,8 @@
   pJob_createIndex createIndex.checkResources
 
   job::participantBegun
+
+  <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -161,6 +161,8 @@
   pJob_createSchema createSchema.checkResources
 
   job::participantBegun
+
+  <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/

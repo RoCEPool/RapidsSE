@@ -146,6 +146,8 @@
   pJob_dropTenant dropTenant.checkResources
 
   job::participantBegun
+
+  <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/

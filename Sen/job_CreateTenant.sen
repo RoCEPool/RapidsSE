@@ -159,6 +159,8 @@
   pJob_createTenant createTenant.checkResources
 
   job::participantBegun
+
+  <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/

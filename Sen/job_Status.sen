@@ -77,6 +77,8 @@
   pJob_status job.beginParticipant
 
   job::participantBegun
+
+  <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/

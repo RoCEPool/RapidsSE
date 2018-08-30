@@ -164,6 +164,8 @@
   pJob_createCatalog createCatalog.checkResources
 
   job::participantBegun
+
+  <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/

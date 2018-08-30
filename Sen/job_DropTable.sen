@@ -208,6 +208,8 @@
   pJob_dropTable dropTable.checkResources
 
   job::participantBegun
+
+  <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/

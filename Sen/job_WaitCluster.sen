@@ -63,6 +63,8 @@
   pJob_WaitCluster job.beginParticipant
 
   job::participantBegun
+
+  <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/

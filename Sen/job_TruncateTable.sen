@@ -157,6 +157,8 @@
   pJob_truncateTable truncateTable.checkResources
 
   job::participantBegun
+
+  <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/

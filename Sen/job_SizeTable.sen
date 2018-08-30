@@ -170,6 +170,8 @@
   pJob_sizeTable sizeTable.checkResources
 
   job::participantBegun
+
+  <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/

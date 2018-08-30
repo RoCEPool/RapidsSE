@@ -211,6 +211,8 @@
   pJob_dropIndex dropIndex.checkResources
 
   job::participantBegun
+
+  <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/

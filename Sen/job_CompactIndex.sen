@@ -178,6 +178,8 @@
   pJob_compactIndex compactIndex.checkResources
 
   job::participantBegun
+
+  <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/

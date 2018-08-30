@@ -173,6 +173,8 @@
   pJob_analyzeTable analyzeTable.checkResources
 
   job::participantBegun
+
+  <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/

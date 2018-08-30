@@ -189,6 +189,8 @@
   pJob_analyzeIndex analyzeIndex.checkResources
 
   job::participantBegun
+
+  <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/

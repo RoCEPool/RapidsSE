@@ -79,6 +79,8 @@
   pJob_space job.beginParticipant
 
   job::participantBegun
+
+  <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/
