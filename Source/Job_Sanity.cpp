@@ -91,9 +91,7 @@ Job_Sanity::Job_Sanity(Interface::SEitf* pSEitf)
 : Job(CN_JOB_SANITY, pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SANITY,_FOOTER_);
-    
-  m_sSeed    = mJobNote_Sanity.pJobClass()->m_aSeedReq;
-  
+      
   m_iRegionSize = gpAttachMap->m_iRegionSize;
   m_iPartitions = gpAttachMap->m_pGrid->m_nSlots;
   

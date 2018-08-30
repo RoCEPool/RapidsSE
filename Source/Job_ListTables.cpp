@@ -93,8 +93,6 @@ Job_ListTables::Job_ListTables(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTTABLES,_FOOTER_);
   
-  m_sSeed    = mJobNote_ListTables.pJobClass()->m_aSeedReq;
-
   _checkInitialised_(CN_JOB_LF);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTTABLES,_FOOTER_);

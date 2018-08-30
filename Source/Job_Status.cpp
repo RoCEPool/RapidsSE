@@ -93,9 +93,7 @@ Job_Status::Job_Status(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_STATUS,_FOOTER_);
     
-   m_sSeed    = mJobNote_Status.pJobClass()->m_aSeedReq;
-  
-  _checkInitialised_(CN_JOB_STATUS);
+   _checkInitialised_(CN_JOB_STATUS);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_STATUS,_FOOTER_);
 }

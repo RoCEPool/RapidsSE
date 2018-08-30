@@ -89,9 +89,7 @@ Job__Cancel::Job__Cancel(void)
 : Job(CN_JOB__CANCEL)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__CANCEL,_FOOTER_);
-  
-  m_sSeed = "Job__Cancel_rcv"_Stz;
-  
+    
   _checkInitialised_(CN_JOB__EXECUTE);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB__CANCEL,_FOOTER_);

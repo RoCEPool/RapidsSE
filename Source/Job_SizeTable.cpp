@@ -93,7 +93,6 @@ Job_SizeTable::Job_SizeTable(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SIZETABLE,_FOOTER_);
     
-  m_sSeed = mJobNote_SizeTable.pJobClass()->m_aSeedReq;
   m_bCheckResources   = true;
   
   _checkInitialised_(CN_JOB_SIZETABLE);

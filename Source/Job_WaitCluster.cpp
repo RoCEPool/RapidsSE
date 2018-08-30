@@ -92,8 +92,6 @@ Job_WaitCluster::Job_WaitCluster(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WAITCLUSTER,_FOOTER_);
     
-  m_sSeed    = mJobNote_WaitCluster.pJobClass()->m_aSeedReq;
-  
   _checkInitialised_(CN_JOB_WAITCLUSTER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_WAITCLUSTER,_FOOTER_);

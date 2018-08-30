@@ -90,7 +90,6 @@ Job__Cancelled::Job__Cancelled(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__CANCELLED,_FOOTER_);
   
-  m_sSeed = "Job__Cancelled_rcv"_Stz;
   m_eErrorCode = EC_NONE;
   
   _checkInitialised_(CN_JOB__CANCELLED);

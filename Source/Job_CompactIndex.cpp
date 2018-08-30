@@ -93,7 +93,6 @@ Job_CompactIndex::Job_CompactIndex(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_COMPACTINDEX,_FOOTER_);
     
-  m_sSeed = mJobNote_CompactIndex.pJobClass()->m_aSeedReq;
   m_bCheckResources = true;
   
   _checkInitialised_(CN_JOB_COMPACTINDEX);

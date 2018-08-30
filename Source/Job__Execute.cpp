@@ -90,8 +90,6 @@ Job__Execute::Job__Execute(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__EXECUTE,_FOOTER_);
   
-  m_sSeed = "Job__Execute_rcv"_Stz;
-  
   _checkInitialised_(CN_JOB__EXECUTE);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB__EXECUTE,_FOOTER_);

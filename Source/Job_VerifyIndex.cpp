@@ -93,7 +93,6 @@ Job_VerifyIndex::Job_VerifyIndex(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_VERIFYINDEX,_FOOTER_);
     
-  m_sSeed = mJobNote_VerifyIndex.pJobClass()->m_aSeedReq;
   m_bCheckResources = true;
   
   _checkInitialised_(CN_JOB_VERIFYINDEX);

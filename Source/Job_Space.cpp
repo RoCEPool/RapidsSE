@@ -93,8 +93,6 @@ Job_Space::Job_Space(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SPACE,_FOOTER_);
   
-  m_sSeed    = mJobNote_Space.pJobClass()->m_aSeedReq;
-
   _checkInitialised_(CN_JOB_SPACE);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_SPACE,_FOOTER_);

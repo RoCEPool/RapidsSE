@@ -93,7 +93,6 @@ Job_AnalyzeTable::Job_AnalyzeTable(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_ANALYZETABLE,_FOOTER_);
     
-  m_sSeed = mJobNote_AnalyzeTable.pJobClass()->m_aSeedReq;
   m_bCheckResources   = true;
   m_bIsDetailed = false;
   

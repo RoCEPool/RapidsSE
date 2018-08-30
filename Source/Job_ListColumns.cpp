@@ -93,8 +93,6 @@ Job_ListColumns::Job_ListColumns(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTCOLUMNS,_FOOTER_);
   
-  m_sSeed    = mJobNote_ListColumns.pJobClass()->m_aSeedReq;
-
   _checkInitialised_(CN_JOB_LISTCOLUMNS);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTCOLUMNS,_FOOTER_);

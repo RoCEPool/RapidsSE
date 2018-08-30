@@ -93,8 +93,6 @@ Job_ListPartitions::Job_ListPartitions(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTPARTITIONS,_FOOTER_);
   
-  m_sSeed    = mJobNote_ListPartitions.pJobClass()->m_aSeedReq;
-
   _checkInitialised_(CN_JOB_LISTPARTITIONS);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTPARTITIONS,_FOOTER_);

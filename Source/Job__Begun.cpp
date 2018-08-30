@@ -90,7 +90,6 @@ Job__Begun::Job__Begun(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__BEGUN,_FOOTER_);
   
-  m_sSeed = "Job__Begun_rcv"_Stz;
   m_eErrorCode = EC_NONE;
   
   _checkInitialised_(CN_JOB__BEGUN);
