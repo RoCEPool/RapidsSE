@@ -38,7 +38,6 @@ namespace StorageEngine
     static void vSEitfDelete(SEitf* pSEitf);
     static void vSetGlobals(void);
     static void vSignalHandler(int iSignal);
-    static void vSpawnPrompt(void);
     static void vStartSystemTasks(void);
     static void vSystemInit(void);
     static void vSystemPrompt(void);

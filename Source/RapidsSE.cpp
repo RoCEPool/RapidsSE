@@ -62,13 +62,10 @@ void RapidsSE::vExecuteSystem(void)
     vSetGlobals();
   
   vCheckPort();
-  
-  
-  vExecuteCmdLine();
-  
+
   //gpAttachMap->vPrintAttachMap();
-  
-  vSpawnPrompt();
+
+  vExecuteCmdLine();
   
   vPoolClose();
   
@@ -223,22 +220,6 @@ bool RapidsSE::bRunUtilities(int argc, Stz* argv[])
 }
 
 /*----------------------------------------------------------------------------*/
-/* run se prompt                                                              */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vSpawnPrompt(void)
-{
-  PosixThread::vTlsSet(giTLS_ThreadKey,(void*)-1);
-  
-  i8 iTraceLevel = 0;
-  eEC eError = RapidsSE_SpawnPrompt(iTraceLevel);
-  ASSERT(EC_NONE == eError);
-  vTrace("RapidsSE_SpawnPrompt() called\n"_Stz);
-  
-  while (true)
-    PosixThread::vSleepSec(10000000);
-}
-
-/*----------------------------------------------------------------------------*/
 /* set globals                                                                */
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vSetGlobals(void)
@@ -331,7 +312,13 @@ void RapidsSE::vExecuteCmdLine(void)
     vInfo("\n*\n* Execute Command Line\n*\n"_Stz);
   
   try {
-         if (gxArguments.m_bStart)   vSystemStart();
+    
+    if (gxArguments.m_bStart) {
+      vSystemStart();
+      if (gxArguments.m_bPrompt)
+        vSystemPrompt();
+    }
+    
     else if (gxArguments.m_bPrompt)  vSystemPrompt();
     else if (gxArguments.m_bStatus)  vSystemStatus();
     else if (gxArguments.m_bStop)    vSystemStop();
@@ -341,7 +328,9 @@ void RapidsSE::vExecuteCmdLine(void)
       vFatal("RapidsSE exits\n"_Stz);
       exit(EXIT_FAILURE);
     }
+    
   }
+  
   catch (Error* pError) {
     vErrorHandler(pError);
   }
@@ -694,6 +683,16 @@ void RapidsSE::vSystemPrompt(void)
   ASSERT(gpBufferPool);
 
   gpAttachMap->vPrintStartupInfo();
+
+  PosixThread::vTlsSet(giTLS_ThreadKey,(void*)-1);
+  
+  i8 iTraceLevel = 0;
+  eEC eError = RapidsSE_SpawnPrompt(iTraceLevel);
+  ASSERT(EC_NONE == eError);
+  vTrace("RapidsSE_SpawnPrompt() called\n"_Stz);
+  
+  while (true)
+    PosixThread::vSleepSec(10000000);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -714,8 +713,8 @@ void RapidsSE::vSystemStart(void)
     ASSERT(gpBufferPool);
     return;
   }
-  else
-    vWaitFlag();
+  
+  vWaitFlag();
 }
 
 /*----------------------------------------------------------------------------*/
