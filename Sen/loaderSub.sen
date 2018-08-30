@@ -151,7 +151,7 @@
 
   // this sub has completed, ack the parent loader
   " subloader acking the parent" .verbose
-  task.parent@ ack
+  //task.parent@ ack
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -332,7 +332,7 @@ tp: theIndirectResult
 
   // this sub has completed, ack the parent loader
   //task::this task.name@ "%v acking parent" str.format .
-  task.parent@ ack
+  //task.parent@ ack
 ;
 
 /*----------------------------------------------------------------------------*/

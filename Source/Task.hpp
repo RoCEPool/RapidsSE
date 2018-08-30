@@ -1310,8 +1310,6 @@ namespace Tasks
     static void vTaskJobStore(MP_Task mpTask);
     static void vTaskNameFetch(MP_Task mpTask);
     static void vTaskThis(MP_Task mpTask);
-    static void vTaskParentFetch(MP_Task mpTask);
-    static void vTaskParentStore(MP_Task mpTask);
     static void vTaskPartitionFetch(MP_Task mpTask);
     static void vTaskPartitionStore(MP_Task mpTask);
     static void vTaskPlanFetch(MP_Task mpTask);

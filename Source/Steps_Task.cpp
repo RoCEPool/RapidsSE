@@ -28,8 +28,6 @@ void Task::vAddPrimitives_Task(void)
   vAddPrimitive("task.job@"_Stz,      &vTaskJobFetch,      false);
   vAddPrimitive("task.job!"_Stz,      &vTaskJobStore,      false);
   vAddPrimitive("task.name@"_Stz,     &vTaskNameFetch,     false);
-  vAddPrimitive("task.parent@"_Stz,   &vTaskParentFetch,   false);
-  vAddPrimitive("task.parent!"_Stz,   &vTaskParentStore,   false);
   vAddPrimitive("task.partition@"_Stz,&vTaskPartitionFetch,false);
   vAddPrimitive("task.partition!"_Stz,&vTaskPartitionStore,false);
   vAddPrimitive("task.plan@"_Stz,     &vTaskPlanFetch,     false);
@@ -288,36 +286,6 @@ ENTRY("vTaskNameFetch"_Stz);
   s256 sName((Stz*)pThatTask->m_pJob->m_pJobClass->m_aName);
   
   mpTask->m_pDataStack->vPushS256(sName);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.parent@ -- fetch parent of task on data stack                         */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskParentFetch(MP_Task mpTask)
-{
-  ENTRY("vTaskParentFetch"_Stz);
-  
-  mpTask->m_pDataStack->vPushObject(mpTask->m_pParentTask);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.parent! -- store parent task into this task                           */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskParentStore(MP_Task mpTask)
-{
-  ENTRY("vTaskParentStore"_Stz);
-  
-  Object* pParent;
-  if ( ! mpTask->m_pDataStack->bPop(pParent) )
-    THROW_INVALID_DSTACK("task.parent!"_Stz);
-  Task* pParentTask = _pTask(pParent);
-  ASSERT( ! pParentTask || CN_TASK == pParentTask->eClass());
-  
-  mpTask->m_pParentTask = pParentTask;
   
   EXIT();
 }
