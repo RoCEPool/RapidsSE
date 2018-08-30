@@ -82,8 +82,8 @@ namespace JobsModel
   public:
     i8  m_iJobId;              // job id
     JobClass* m_pJobClass;     // job class
-    //eJS m_eState;              // job state
-    s32 m_sSeed;               // task seed (to be merged with above)
+    s32  m_sSeed;              // task seed (to be merged with above)
+    eSS  m_eSeed;              // task seed
     eJT  m_eJobTrace;          // job trace
   
     i8  m_iParticipantNode;    // participant node no

@@ -110,6 +110,7 @@ void Job::vInit(void)
   m_iJobId   = -1;
   m_pJobClass = nullptr;
   m_sSeed    = ""_Stz;
+  m_eSeed    = SS_ENUMS;
   m_eJobTrace   = JT_NONE;
   m_iParticipantNode  = -1;
   m_ziAcksRemaining   = 0;
@@ -251,6 +252,8 @@ void Job::vJobTrace(eJT eJobTrace)
 void Job::vSeed(eSS eSeed)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_eSeed = eSeed;
   
   switch (eSeed) {
     case SS_SEED_RUN: StrLib::vCopy(m_sSeed.aChar(),m_pJobClass->m_aSeedRun); break;
