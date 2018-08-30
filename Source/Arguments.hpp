@@ -79,6 +79,8 @@ namespace StorageEngine
   
     void vScribble(void);
   
+    void vPrint(void);
+  
     Footer* aFooter(void);
   };
 }

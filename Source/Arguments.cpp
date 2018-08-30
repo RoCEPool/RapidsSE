@@ -9,8 +9,8 @@ i8 C_MEMORY_PERCENT = 95;
 
 extern bool gbSHM;
 
-extern int    gi_argc;
-extern char** gi_argv;
+int    gi_argc;
+char** gi_argv;
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -593,6 +593,31 @@ void Arguments::vScribble(void)
   i8 nBytes = sizeof(Arguments) - sizeof(Object) - sizeof(Footer);
   
   MemLib::vSet(aDst,0xFF,nBytes,CN_ARGUMENTS);
+}
+
+/*----------------------------------------------------------------------------*/
+/* print arguments                                                            */
+/*----------------------------------------------------------------------------*/
+void Arguments::vPrint(void)
+{
+  vTrace("\nArgs:"_Stz);
+  
+  for (i8 i_Arg = 1; i_Arg < gi_argc; i_Arg++) {
+    if ('-' == *gi_argv[i_Arg])
+      vTrace("\n"_Stz);
+    vTrace(" %s"_Stz,gi_argv[i_Arg]);
+  }
+  vTrace("\n\n"_Stz);
+
+  vTrace("  ./SE "_Stz);
+  for (i8 i_Arg = 1; i_Arg < gi_argc; i_Arg++) {
+    vTrace("%s "_Stz,gi_argv[i_Arg]);
+  }
+  
+  //vTrace("--region %s"_Stz,m_sRegionName.aStr());
+  
+  vTrace("\n"_Stz);
+
 }
 
 /*----------------------------------------------------------------------------*/

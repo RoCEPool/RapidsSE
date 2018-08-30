@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "Prompt.h"
+#include "StorageEngine.h"
 
 PromptNote mPromptNote_args (
   "Prompt_args"_Stz, // name of the prompt function
@@ -13,18 +14,14 @@ PromptNote mPromptNote_args (
   true               // enabled
 );
 
-int    gi_argc;
-char** gi_argv;
+extern Arguments gxArguments;
 
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_args(SePrompt* pPrompt)
 {
-  vTrace("\nArgs:\n"_Stz);
-  for (i8 i_Arg = 0; i_Arg < gi_argc; i_Arg++) {
-    vTrace("  %s\n"_Stz,gi_argv[i_Arg]);
-  }
+  gxArguments.vPrint();
   
   return true;
 }
