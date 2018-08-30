@@ -97,12 +97,12 @@ void Task::vJobClassNew(MP_Task mpTask)
   
   i8 iJobClass_p;
   if ( ! mpTask->m_pDataStack->bPop(iJobClass_p) )
-    THROW_INVALID_DSTACK("jobClass::find"_Stz);
+    THROW_INVALID_DSTACK("jobClass.new"_Stz);
   JobClass* pJobClass = _pJobClass(iJobClass_p);
 
   Object* pArgPtr;
   if ( ! mpTask->m_pDataStack->bPop(pArgPtr) )
-    THROW_INVALID_DSTACK("job.acksRemaining!"_Stz);
+    THROW_INVALID_DSTACK("jobClass.new"_Stz);
   Job* pArg = _pJob(pArgPtr);
 
   Job* pJob = pJobClass->pNewJob(pArg);
