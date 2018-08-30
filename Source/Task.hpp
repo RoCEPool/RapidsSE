@@ -72,22 +72,25 @@ namespace Tasks
 
     Job*    m_pJob;         // the job for this task
 
-    i8      m_iTaskOrderNo; // task order no. (ready queue)
-    i8      m_iPartition;   // which partition if a partition task
+    Threads::Thread* m_pThread; // current thread
+  
     eTS     m_eState;       // state (running, sleeping, ...)
     eQR     m_eQueue;       // which queue the task is in
+    i8      m_iQueueOrder;  // queue ordering number
+    Lock    m_xLock;        // lock for this task
     Atomic  m_zAcks;        // number of acks still waiting for
     Since   m_xWakeupTime;  // wakeup time
+
+    i8      m_iPartition;   // which partition if a partition task
     i8      m_iDdlLocked;   // ? has the ddl lock?
     i8      m_iTracing;     // tracing mask
 
     Socket* m_pSocket;       // socket associated with task
+    GridModel::Node* m_pSendNode; // node to send to
 
-    Threads::Thread* m_pThread; // current thread
-
-    Stack*  m_pDataStack;   // data stack
-    Stack*  m_pReturnStack; // return stack
-    Stack*  m_pAuxStack;    // auxiliary stack
+    Stack*   m_pDataStack;   // data stack
+    Stack*   m_pReturnStack; // return stack
+    Stack*   m_pAuxStack;    // auxiliary stack
     DicStack m_xPathStack;   // dictionary stack
     
     RegFrame* m_pRegFrame;    // register frame chain
@@ -119,7 +122,6 @@ namespace Tasks
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // questionable
-    Lock    m_xLock;       // lock for this task
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // remove
@@ -131,7 +133,6 @@ namespace Tasks
   
     Interface::SEitf* m_pSEitf; // the seitf for this task
   
-    GridModel::Node* m_pSendNode; // node to send to
     Plan*   m_pPlan;            // the plan associated with task
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -200,8 +201,8 @@ namespace Tasks
     eTS  eState(void);
     void vState(eTS eState);
     void vTaskLoop(void);
-    void vTaskOrderNo(i8 iTaskOrder);
-    i8   iTaskOrderNo(void);
+    void vQueueOrder(i8 iTaskOrder);
+    i8   iQueueOrder(void);
     Threads::Thread* pThread(void);
     void vThread(Threads::Thread* pThread);
     void vTracePoint(Stz* aMark);
@@ -1580,7 +1581,7 @@ namespace Tasks
   Task* _pTask(i8 iAddr);
 }
 
-bool bTaskCompareTaskOrderNo(void* pObjectInsert, void* pObjectScan, bool& bMatch);
+bool bTaskCompareQueueOrder(void* pObjectInsert, void* pObjectScan, bool& bMatch);
 bool bTaskCompareWakeupTime(void* pObjectInsert, void* pObjectScan, bool& bMatch);
 
 /*============================================================================*/

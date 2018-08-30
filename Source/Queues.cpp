@@ -55,25 +55,25 @@ Queues::Queues(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
   m_pThreadVector  = new ThreadVector;
-  m_ziTaskOrderNo  = 0;
+  m_ziQueueOrder  = 0;
   
   m_pSleepingQueue = new TaskQueue(bTaskCompareWakeupTime);
   
-  m_pReadyQueue    = new TaskQueue(bTaskCompareTaskOrderNo);
+  m_pReadyQueue    = new TaskQueue(bTaskCompareQueueOrder);
   
   for (i8 i_Slot = 0; i_Slot < C_SLOTS_PER_NODE; i_Slot++)
     m_pReadySlotQueues[i_Slot] = nullptr;
   for (i8 i_Slot = 0; i_Slot < gxArguments.m_nSlots; i_Slot++)
-    m_pReadySlotQueues[i_Slot] = new TaskQueue(bTaskCompareTaskOrderNo);
+    m_pReadySlotQueues[i_Slot] = new TaskQueue(bTaskCompareQueueOrder);
   
   for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++)
     m_pReadySendQueues[i_Node] = nullptr;
   for (i8 i_Node = 0; i_Node < gxArguments.m_nNodes; i_Node++)
-    m_pReadySendQueues[i_Node] = new TaskQueue(bTaskCompareTaskOrderNo);
+    m_pReadySendQueues[i_Node] = new TaskQueue(bTaskCompareQueueOrder);
   
-  m_pExecutingQueue = new TaskQueue(bTaskCompareTaskOrderNo);
+  m_pExecutingQueue = new TaskQueue(bTaskCompareQueueOrder);
   
-  m_pWaitingQueue   = new TaskQueue(bTaskCompareTaskOrderNo);
+  m_pWaitingQueue   = new TaskQueue(bTaskCompareQueueOrder);
   
   _checkInitialised_(CN_QUEUES);
   
@@ -197,7 +197,7 @@ void Queues::vAddToExecutingQueue_NL(Task* pTask)
   RASSERT(TS_EXECUTING == pTask->eState());
   
   pTask->vQueue(QR_EXECUTING_QUEUE);
-  pTask->vTaskOrderNo(++m_ziTaskOrderNo);
+  pTask->vQueueOrder(++m_ziQueueOrder);
   
   m_pExecutingQueue->vAddTask(pTask);
 }
@@ -213,7 +213,7 @@ void Queues::vAddToReadyQueue_NL(Task* pTask)
   RASSERT( ! pTask->bIsPartitioned());
   
   pTask->vQueue(QR_READY_QUEUE);
-  pTask->vTaskOrderNo(++m_ziTaskOrderNo);
+  pTask->vQueueOrder(++m_ziQueueOrder);
   
   m_pReadyQueue->vAddTask(pTask);
   //vTrace("vAddToReadyQueue_NL: ReadyQ %lld\n"_Stz, m_pReadyQueue->nTasks());
@@ -236,7 +236,7 @@ void Queues::vAddToReadySlotQueue_NL(Task* pTask)
   i8 iSlot = TablePtn::iPartitionToSlot(pTask->iPartition());
   
   pTask->vQueue((eQR)iSlot);
-  pTask->vTaskOrderNo(++m_ziTaskOrderNo);
+  pTask->vQueueOrder(++m_ziQueueOrder);
   
   m_pReadySlotQueues[iSlot]->vAddTask(pTask);
 }
@@ -255,7 +255,7 @@ void Queues::vAddToSendQueue_NL(Task* pTask)
   i8 iSendNode = pTask->pSendNode()->iNodeNo();
   
   pTask->vQueue((eQR)(C_SLOTS_PER_NODE + iSendNode));
-  pTask->vTaskOrderNo(++m_ziTaskOrderNo);
+  pTask->vQueueOrder(++m_ziQueueOrder);
   
   m_pReadySendQueues[iSendNode]->vAddTask(pTask);
 }
@@ -293,7 +293,7 @@ void Queues::vAddToWaitingQueue_NL(Task* pTask)
   
   // mark task as being in the waiting queue
   pTask->vQueue(QR_WAITING_QUEUE);
-  pTask->vTaskOrderNo(++m_ziTaskOrderNo);
+  pTask->vQueueOrder(++m_ziQueueOrder);
   
   // put task inyo the waiting queue
   m_pWaitingQueue->vAddTask(pTask);

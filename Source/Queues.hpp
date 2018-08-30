@@ -17,7 +17,7 @@ namespace Threads
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // tasks
 
-    Atomic m_ziTaskOrderNo;        // task ordering no
+    Atomic m_ziQueueOrder;        // task ordering no
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // queues which are checked in round robin fashion

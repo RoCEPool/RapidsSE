@@ -13,7 +13,7 @@ extern JobCatalog gxJobCatalog;
 /*----------------------------------------------------------------------------*/
 /* compare two tasks by their taskNo                                          */
 /*----------------------------------------------------------------------------*/
-bool bTaskCompareTaskOrderNo(void* pObjectInsert, void* pObjectScan, bool& bMatch)
+bool bTaskCompareQueueOrder(void* pObjectInsert, void* pObjectScan, bool& bMatch)
 {
   Task* pInsertEntry = _pTask(pObjectInsert);
   Task* pScanEntry   = _pTask(pObjectScan);
@@ -21,12 +21,12 @@ bool bTaskCompareTaskOrderNo(void* pObjectInsert, void* pObjectScan, bool& bMatc
   if ( ! pObjectScan )
     return false;
   
-  if (pInsertEntry->iTaskOrderNo() == pScanEntry->iTaskOrderNo())
+  if (pInsertEntry->iQueueOrder() == pScanEntry->iQueueOrder())
     bMatch = true;
   else
     bMatch = false;
   
-  if (pInsertEntry->iTaskOrderNo() > pScanEntry->iTaskOrderNo())
+  if (pInsertEntry->iQueueOrder() > pScanEntry->iQueueOrder())
     return true;
   else
     return false;
@@ -156,7 +156,7 @@ void Task::vInit(void)
   
   m_pJob         = nullptr;
 
-  m_iTaskOrderNo = C_UNKNOWN;
+  m_iQueueOrder = C_UNKNOWN;
   m_iPartition   = C_UNKNOWN;
   
   m_eState       = TS_NONE;
@@ -1935,21 +1935,21 @@ void Task::vTxId(i8 iTxId)
 /*----------------------------------------------------------------------------*/
 /* get task order no                                                          */
 /*----------------------------------------------------------------------------*/
-i8 Task::iTaskOrderNo(void)
+i8 Task::iQueueOrder(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  return m_iTaskOrderNo;
+  return m_iQueueOrder;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set task order no                                                          */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskOrderNo(i8 iTaskOrderNo)
+void Task::vQueueOrder(i8 iQueueOrder)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_iTaskOrderNo = iTaskOrderNo;
+  m_iQueueOrder = iQueueOrder;
 }
 
 /*----------------------------------------------------------------------------*/
