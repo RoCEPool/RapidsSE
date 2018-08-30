@@ -1103,6 +1103,7 @@ void Task::vAddRoutines(void)
   ": ::docmd"
   //  "  input.text"
   "  docol"
+  " \"AFTER DOCOL!!!\" . "
   "  ::task_exit"
   "  ;"_Stz;
   
