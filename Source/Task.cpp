@@ -891,7 +891,6 @@ void Task::vAddPrimitives(void)
   
   vAddPrimitives_Encode();
   vAddPrimitives_Enter();
-  vAddPrimitives_Entry();
   vAddPrimitives_EntryBuffer();
   vAddPrimitives_Env();
   vAddPrimitives_Error();

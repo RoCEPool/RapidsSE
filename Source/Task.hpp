@@ -247,7 +247,6 @@ namespace Tasks
     void vAddPrimitives_Dstack(void);
   
     void vAddPrimitives_Encode(void);
-    void vAddPrimitives_Entry(void);
     void vAddPrimitives_EntryBuffer(void);
     void vAddPrimitives_Enter(void);
     void vAddPrimitives_Env(void);
