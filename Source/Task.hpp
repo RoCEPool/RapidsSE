@@ -166,6 +166,7 @@ namespace Tasks
     void vJob(Job* pJob);
     void vLocalsPop(void);
     void vLocalsPush(void);
+  void vNewStacks(void);
     i8   iPartition(void);
     void vPerformancePoint(Stz* aWordName, Stz* aPointNote);
     void vPerformancePrint(void);
@@ -202,6 +203,10 @@ namespace Tasks
     void vWakeupTask(void);
     eQR  eWhichQueue(void);
   
+    /*------------------------------------------------------------------------*/
+    /*------------------------------------------------------------------------*/
+    /*------------------------------------------------------------------------*/
+
     void vAddPrimitives(void);
     void vAddPrimitives_AccessPath(void);
     void vAddPrimitives_Accum(void);

@@ -124,9 +124,9 @@ void Task::vInit(void)
   m_zAcks.vCheckInit();
   m_pThread      = nullptr;
   
-  m_pDataStack   = new Stack;
-  m_pReturnStack = new Stack;
-  m_pAuxStack    = new Stack;
+  m_pDataStack   = nullptr;
+  m_pReturnStack = nullptr;
+  m_pAuxStack    = nullptr;
   
   m_pRegFrame    = nullptr;
   m_pLocalsFrame = nullptr;
@@ -1415,6 +1415,19 @@ void Task::vLocalsPush(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* new the stacks                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vNewStacks(void)
+{
+  if (m_pDataStack)
+    return;
+  
+  m_pDataStack   = new Stack;
+  m_pReturnStack = new Stack;
+  m_pAuxStack    = new Stack;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop int                                                                    */
 /*----------------------------------------------------------------------------*/
 bool Task::bPopInt(i8& iInt)
@@ -1976,6 +1989,9 @@ void Task::vTaskLoop(void)
     int iDebug = 1;
     //m_iTracing = 1;
   }
+
+  if (! m_pDataStack )
+    vNewStacks();
   
   while (TS_EXECUTING == m_eState) {
     

@@ -516,6 +516,7 @@ void RapidsSE::vBootDictionary(void)
   pJob_Boot->vSeed(SS_SEED_RUN);
   
   Task* pBootTask = new Task(pJob_Boot);
+  pBootTask->vNewStacks();
 
   pBootTask->vAddBaseWords();
   
