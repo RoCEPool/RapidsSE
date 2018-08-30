@@ -238,6 +238,8 @@
   pJob_CreateTable createTable.releaseResources
 
   job::participantEnded
+
+  <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -250,6 +252,8 @@
   pJob_CreateTable createTable.releaseResources
 
   job::participantCancelled
+
+  <DONE_CAN>
 ;
 
 /*============================================================================*/

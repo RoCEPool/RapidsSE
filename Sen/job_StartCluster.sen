@@ -147,9 +147,11 @@
 /*----------------------------------------------------------------------------*/
 : startCluster_end ( -- )
 
-job::this locals| pJob_status |
+  job::this locals| pJob_status |
 
-job::participantEnded
+  job::participantEnded
+
+  <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -157,7 +159,9 @@ job::participantEnded
 /*----------------------------------------------------------------------------*/
 : startCluster_can ( -- )
 
-job::this locals| pJob_status |
+  job::this locals| pJob_status |
+
+  <DONE_CAN>
 ;
 
 /*============================================================================*/

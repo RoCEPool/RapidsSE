@@ -222,6 +222,8 @@
   pJob_dropTable dropTable.releaseResources
 
   job::participantEnded
+
+  <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -234,6 +236,8 @@
   pJob_dropTable dropTable.releaseResources
 
   job::participantCancelled
+
+  <DONE_CAN>
 ;
 
 /*============================================================================*/

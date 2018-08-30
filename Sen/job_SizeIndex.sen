@@ -201,6 +201,8 @@
   pJob_sizeIndex sizeIndex.releaseResources
 
   job::participantEnded
+
+  <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -213,6 +215,8 @@
   pJob_sizeIndex sizeIndex.releaseResources
 
   job::participantCancelled
+
+  <DONE_CAN>
 ;
 
 /*============================================================================*/

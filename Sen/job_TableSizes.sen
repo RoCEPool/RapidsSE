@@ -184,6 +184,8 @@
   pJob_tableSizes tableSizes.releaseResources
 
   job::participantEnded
+
+  <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -196,6 +198,8 @@
   pJob_tableSizes tableSizes.releaseResources
 
   job::participantCancelled
+
+  <DONE_CAN>
 ;
 
 /*============================================================================*/

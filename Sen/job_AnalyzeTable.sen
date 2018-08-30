@@ -187,6 +187,8 @@
   pJob_analyzeTable analyzeTable.releaseResources
 
   job::participantEnded
+
+  <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -199,6 +201,8 @@
   pJob_analyzeTable analyzeTable.releaseResources
 
   job::participantCancelled
+
+  <DONE_CAN>
 ;
 
 /*============================================================================*/

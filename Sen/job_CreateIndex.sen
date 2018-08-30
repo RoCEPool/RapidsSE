@@ -283,6 +283,8 @@
   pJob_createIndex createIndex.releaseResources
 
   job::participantEnded
+
+  <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -296,6 +298,8 @@
   pJob_createIndex createIndex.releaseResources
 
   job::participantCancelled
+
+  <DONE_CAN>
 ;
 
 /*============================================================================*/

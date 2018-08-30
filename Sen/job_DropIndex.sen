@@ -225,6 +225,8 @@
   pJob_dropIndex dropIndex.releaseResources
 
   job::participantEnded
+
+  <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -237,6 +239,8 @@
   pJob_dropIndex dropIndex.releaseResources
 
   job::participantCancelled
+
+  <DONE_CAN>
 ;
 
 /*============================================================================*/

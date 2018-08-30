@@ -219,6 +219,8 @@
   pJob_loadTable loadTable.releaseResources
 
   job::participantEnded
+
+  <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -231,6 +233,8 @@
   pJob_LoadTable loadTable.releaseResources
 
   job::participantCancelled
+
+  <DONE_CAN>
 ;
 
 /*============================================================================*/

@@ -201,6 +201,8 @@
   pJob_VerifyIndex verifyIndex.releaseResources
 
   job::participantEnded
+
+  <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -213,6 +215,8 @@
   pJob_VerifyIndex verifyIndex.releaseResources
 
   job::participantCancelled
+
+  <DONE_CAN>
 ;
 
 /*============================================================================*/

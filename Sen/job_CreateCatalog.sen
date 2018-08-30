@@ -178,6 +178,8 @@
   pJob_createCatalog createCatalog.releaseResources
 
   job::participantEnded
+
+  <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -190,6 +192,8 @@
   pJob_createCatalog createCatalog.releaseResources
 
   job::participantCancelled
+
+  <DONE_CAN>
 ;
 
 /*============================================================================*/

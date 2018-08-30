@@ -183,6 +183,8 @@
   pJob_truncateTable truncateTable.releaseResources
 
   job::participantCancelled
+
+  <DONE_CAN>
 ;
 
 /*============================================================================*/

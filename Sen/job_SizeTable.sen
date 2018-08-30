@@ -184,6 +184,8 @@
   pJob_sizeTable sizeTable.releaseResources
 
   job::participantEnded
+
+  <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -196,6 +198,8 @@
   pJob_sizeTable sizeTable.releaseResources
 
   job::participantCancelled
+
+  <DONE_CAN>
 ;
 
 /*============================================================================*/

@@ -160,6 +160,8 @@
   pJob_dropTenant dropTenant.releaseResources
 
   job::participantEnded
+
+  <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -173,6 +175,8 @@
   pJob_dropTenant dropTable.releaseResources
 
   job::participantCancelled
+
+  <DONE_CAN>
 ;
 
 /*============================================================================*/

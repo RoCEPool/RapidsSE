@@ -175,6 +175,8 @@
   pJob_createSchema createSchema.releaseResources
 
   job::participantEnded
+
+  <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -187,6 +189,8 @@
   pJob_createSchema createSchema.releaseResources
 
   job::participantCancelled
+
+  <DONE_CAN>
 ;
 
 /*============================================================================*/

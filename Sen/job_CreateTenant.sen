@@ -173,6 +173,8 @@
   pJob_createTenant createTenant.releaseResources
 
   job::participantEnded
+
+  <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -185,6 +187,8 @@
   pJob_createTenant createTenant.releaseResources
 
   job::participantCancelled
+
+  <DONE_CAN>
 ;
 
 /*============================================================================*/

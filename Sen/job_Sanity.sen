@@ -115,6 +115,8 @@
   job::this locals| pJob_sanity |
 
   job::participantEnded
+
+  <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -125,6 +127,8 @@
   job::this locals| pJob_sanity |
 
   job::participantCancelled
+
+  <DONE_CAN>
 ;
 
 /*============================================================================*/

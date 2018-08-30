@@ -192,6 +192,8 @@
   pJob_compactIndex compactIndex.releaseResources
 
   job::participantEnded
+
+  <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -204,6 +206,8 @@
   pJob_compactIndex compactIndex.releaseResources
 
   job::participantCancelled
+
+  <DONE_CAN>
 ;
 
 /*============================================================================*/

@@ -75,6 +75,8 @@
   job::this locals| pJob_WaitCluster |
 
   job::participantEnded
+
+  <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -85,6 +87,8 @@
   job::this locals| pJob_WaitCluster |
 
   job::participantCancelled
+
+  <DONE_CAN>
 ;
 
 /*============================================================================*/

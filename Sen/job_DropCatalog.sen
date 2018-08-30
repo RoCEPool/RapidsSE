@@ -160,6 +160,8 @@
   pJob_dropCatalog dropCatalog.releaseResources
 
   job::participantEnded
+
+  <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -172,6 +174,8 @@
   pJob_dropCatalog dropCatalog.releaseResources
 
   job::participantCancelled
+
+  <DONE_CAN>
 ;
 
 /*============================================================================*/
