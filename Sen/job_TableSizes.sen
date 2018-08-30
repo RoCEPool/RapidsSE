@@ -193,6 +193,8 @@
 /*----------------------------------------------------------------------------*/
 : tableSizes_can ( -- )
 
+  <SEED_CAN>
+
   job::this locals| pJob_tableSizes |
 
   pJob_tableSizes tableSizes.releaseResources

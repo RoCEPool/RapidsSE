@@ -198,6 +198,7 @@
 ;
 
 : <SEED_BEG> ;
+: <SEED_CAN> ;
 : <SEED_END> ;
 : <SEED_EXE> ;
 : <SEED_RCV> ;

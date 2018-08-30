@@ -178,6 +178,8 @@
 /*----------------------------------------------------------------------------*/
 : truncateTable_can ( -- )
 
+  <SEED_CAN>
+
   job::this locals| pJob_truncateTable |
 
   pJob_truncateTable truncateTable.releaseResources

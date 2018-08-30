@@ -169,6 +169,8 @@
 /*----------------------------------------------------------------------------*/
 : dropTenant_can ( -- )
 
+  <SEED_CAN>
+
   job::this locals| pJob_dropTenant |
 
   // check resources

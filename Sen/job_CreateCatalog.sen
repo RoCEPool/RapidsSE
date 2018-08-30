@@ -187,6 +187,8 @@
 /*----------------------------------------------------------------------------*/
 : createCatalog_can ( -- )
 
+  <SEED_CAN>
+
   job::this locals| pJob_createCatalog |
 
   pJob_createCatalog createCatalog.releaseResources

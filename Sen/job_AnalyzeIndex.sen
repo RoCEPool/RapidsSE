@@ -212,6 +212,8 @@
 /*----------------------------------------------------------------------------*/
 : analyzeIndex_can ( -- )
 
+  <SEED_CAN>
+
   job::this locals| pJob_analyzeIndex |
 
   pJob_analyzeIndex analyzeIndex.releaseResources

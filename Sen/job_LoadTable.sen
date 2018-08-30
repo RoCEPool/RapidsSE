@@ -228,6 +228,8 @@
 /*----------------------------------------------------------------------------*/
 : loadTable_can ( -- )
 
+  <SEED_CAN>
+
   job::this locals| pJob_LoadTable |
 
   pJob_LoadTable loadTable.releaseResources

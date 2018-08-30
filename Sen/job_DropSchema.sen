@@ -169,6 +169,8 @@
 /*----------------------------------------------------------------------------*/
 : dropSchema_can ( -- )
 
+  <SEED_CAN>
+
   job::this locals| pJob_dropSchema |
 
   pJob_dropSchema dropSchema.releaseResources

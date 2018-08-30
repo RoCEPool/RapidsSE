@@ -196,6 +196,8 @@
 /*----------------------------------------------------------------------------*/
 : analyzeTable_can ( -- )
 
+  <SEED_CAN>
+
   job::this locals| pJob_analyzeTable |
 
   pJob_analyzeTable analyzeTable.releaseResources

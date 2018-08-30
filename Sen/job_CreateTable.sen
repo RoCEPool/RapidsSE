@@ -247,6 +247,8 @@
 /*----------------------------------------------------------------------------*/
 : createTable_can ( -- )
 
+  <SEED_CAN>
+
   job::this locals| pJob_CreateTable |
 
   pJob_CreateTable createTable.releaseResources

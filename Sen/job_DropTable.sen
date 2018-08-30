@@ -231,6 +231,8 @@
 /*----------------------------------------------------------------------------*/
 : dropTable_can ( -- )
 
+  <SEED_CAN>
+
   job::this locals| pJob_dropTable |
 
   pJob_dropTable dropTable.releaseResources
