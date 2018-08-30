@@ -46,8 +46,6 @@
 
   <SEED_RCV>
 
- ">> Job__Cancelled_rcv <<" .
-
   job::this locals| pJob__Cancelled |
   pJob__Cancelled job.id@ locals| iJobId |
 

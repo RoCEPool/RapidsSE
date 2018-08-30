@@ -77,24 +77,6 @@ Job::~Job(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  if (m_pJobClass)
-    vTrace("***** deleting Job %p %s\n"_Stz,
-           this,
-           m_pJobClass->m_aName
-           );
-  else
-  if (eClass() == CN_JOB__CANCELLED) {
-    
-  }
-  else
-    vTrace("***** deleting Job %p %s (%lld %s)\n"_Stz,
-           this,
-           "<no jobClass>"_Stz,
-           eClass(),
-           aCN[eClass()]
-           );
-
-  
   pthread_mutex_destroy(&m_xThreadMutex);
   pthread_mutexattr_destroy(&m_xThreadMutexAttr);
   

@@ -68,17 +68,11 @@
   iJobId job.findParticipant to pJobParticipant
   pJob__Begun job.participant@ to iParticipantNode
 
-  "-- a" .
-
   // find the job in the originator jobs
   iJobId job.findOriginator to pJobOriginator
 
-  "-- b" .
-
   // get the error code from job__executed
   pJob__Begun jobBegun.error@ to error
-
-  "-- c" .
 
   error EC_NONE != if
     // set the error code in pJobOriginator
@@ -86,7 +80,6 @@
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  "-- d" .
 
   // decrement the acks remaining
   pJobOriginator job.decAcksRemaining to iAcksRemaining
@@ -105,8 +98,6 @@
   // received job__begun from all nodes
   // this is the decider job.
 
-  "-- e" .
-
   // check if any node returned an error
   grid::nodes 0 do
     I pJobOriginator job.error@ EC_NONE != if
@@ -118,8 +109,6 @@
       exit                                                       // *EARLY EXIT*
     then
   loop
-
-  "-- f" .
 
   // distribute Job__Execute to all participants
   pJobOriginator Job__Execute::distribute
