@@ -7,7 +7,7 @@
 JobNote mJobNote_Prompt (
   "Job_Prompt"_Stz,  // name of the job class
   CN_JOB_PROMPT,     // class enum
-  JK_SYSTEM,         // job kind
+  JK_THREAD,         // job kind
   "SE prompt"_Stz,   // comment about the job
   nullptr,           // the prompt command
   nullptr,           // the second word

@@ -20,6 +20,7 @@ namespace JobsModel
   /*  4 */ JK_GRANDKID,
   /*  5 */ JK_LOCAL,
   /*  6 */ JK_SYSTEM,
+  /*  7 */ JK_THREAD,
   };
   
   static Stz* aJK[]
@@ -31,6 +32,7 @@ namespace JobsModel
   /*  4 */ "GRANDKID"_Stz,
   /*  4 */ "LOCAL"_Stz,
   /*  6 */ "SYSTEM"_Stz,
+  /*  7 */ "THREAD"_Stz,
   };
   
   enum eJS // job state
@@ -44,11 +46,11 @@ namespace JobsModel
   
   static Stz* aJS[]
   {
-    /*  0 */ "NONE"_Stz,
-    /*  1 */ "BEGUN"_Stz,
-    /*  2 */ "EXECUTED"_Stz,
-    /*  3 */ "ENDED"_Stz,
-    /*  4 */ "ENUMS"_Stz
+  /*  0 */ "NONE"_Stz,
+  /*  1 */ "BEGUN"_Stz,
+  /*  2 */ "EXECUTED"_Stz,
+  /*  3 */ "ENDED"_Stz,
+  /*  4 */ "ENUMS"_Stz
   };
   
   enum eJT // job trace
@@ -69,14 +71,13 @@ namespace JobsModel
   
   enum eSS // seed string
   {
-    /*  0 */ SS_SEED_RUN=0,
-    /*  1 */ SS_SEED_REQ,
-    /*  2 */ SS_SEED_RCV,
-    /*  3 */ SS_SEED_EXE,
-    /*  4 */ SS_SEED_END,
-    /*  5 */ SS_SEED_CAN,
-    /*  6 */ SS_ENUMS
-
+  /*  0 */ SS_SEED_RUN=0,
+  /*  1 */ SS_SEED_REQ,
+  /*  2 */ SS_SEED_RCV,
+  /*  3 */ SS_SEED_EXE,
+  /*  4 */ SS_SEED_END,
+  /*  5 */ SS_SEED_CAN,
+  /*  6 */ SS_ENUMS
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

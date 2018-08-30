@@ -23,80 +23,87 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
 {
   JobClass::vJobCatHeader();
   
+  i8 nJobs = 0;
+  
+  // thread
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_BOOT);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_PROMPT);
+
   // system
-  gxJobCatalog.vTraceJobs(CN_JOB_BOOT);
-  gxJobCatalog.vTraceJobs(CN_JOB_START);
-  gxJobCatalog.vTraceJobs(CN_JOB_PROMPT);
-  gxJobCatalog.vTraceJobs(CN_JOB_CONNECTOR);
-  gxJobCatalog.vTraceJobs(CN_JOB_ANSWER);
-  gxJobCatalog.vTraceJobs(CN_JOB_RECEIVER);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_START);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_CONNECTOR);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_ANSWER);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_RECEIVER);
 
   // local
-  gxJobCatalog.vTraceJobs(CN_JOB_DOCOL);
-  gxJobCatalog.vTraceJobs(CN_JOB_CF);
-  gxJobCatalog.vTraceJobs(CN_JOB_LF);
-  gxJobCatalog.vTraceJobs(CN_JOB_PWF);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_DOCOL);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_CF);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_LF);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_PWF);
   
-  gxJobCatalog.vTraceJobs(CN_JOB_LISTTENANTS);
-  gxJobCatalog.vTraceJobs(CN_JOB_LISTCATALOGS);
-  gxJobCatalog.vTraceJobs(CN_JOB_LISTSCHEMAS);
-  gxJobCatalog.vTraceJobs(CN_JOB_LISTTABLES);
-  gxJobCatalog.vTraceJobs(CN_JOB_LISTCOLUMNS);
-  gxJobCatalog.vTraceJobs(CN_JOB_LISTIDXCOLUMNS);
-  gxJobCatalog.vTraceJobs(CN_JOB_LISTINDEXES);
-  gxJobCatalog.vTraceJobs(CN_JOB_LISTPARTCOLUMNS);
-  gxJobCatalog.vTraceJobs(CN_JOB_LISTPARTITIONS);
-  gxJobCatalog.vTraceJobs(CN_JOB_USESCHEMA);
-  gxJobCatalog.vTraceJobs(CN_JOB_SHOWCLUSTER);
-  gxJobCatalog.vTraceJobs(CN_JOB_DUMPINDEX);
-  gxJobCatalog.vTraceJobs(CN_JOB_VISUALIZEINDEX);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_LISTTENANTS);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_LISTCATALOGS);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_LISTSCHEMAS);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_LISTTABLES);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_LISTCOLUMNS);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_LISTIDXCOLUMNS);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_LISTINDEXES);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_LISTPARTCOLUMNS);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_LISTPARTITIONS);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_USESCHEMA);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_SHOWCLUSTER);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_DUMPINDEX);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_VISUALIZEINDEX);
 
   // generic
-  gxJobCatalog.vTraceJobs(CN_JOB__BEGUN);
-  gxJobCatalog.vTraceJobs(CN_JOB__EXECUTE);
-  gxJobCatalog.vTraceJobs(CN_JOB__EXECUTED);
-  gxJobCatalog.vTraceJobs(CN_JOB__END);
-  gxJobCatalog.vTraceJobs(CN_JOB__ENDED);
-  gxJobCatalog.vTraceJobs(CN_JOB__CANCEL);
-  gxJobCatalog.vTraceJobs(CN_JOB__CANCELLED);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB__BEGUN);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB__EXECUTE);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB__EXECUTED);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB__END);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB__ENDED);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB__CANCEL);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB__CANCELLED);
 
   // dist2pc
-  gxJobCatalog.vTraceJobs(CN_JOB_ANALYZEINDEX);
-  gxJobCatalog.vTraceJobs(CN_JOB_ANALYZETABLE);
-  gxJobCatalog.vTraceJobs(CN_JOB_COMPACTINDEX);
-  gxJobCatalog.vTraceJobs(CN_JOB_CREATECATALOG);
-  gxJobCatalog.vTraceJobs(CN_JOB_CREATEINDEX);
-  gxJobCatalog.vTraceJobs(CN_JOB_CREATESCHEMA);
-  gxJobCatalog.vTraceJobs(CN_JOB_CREATETABLE);
-  gxJobCatalog.vTraceJobs(CN_JOB_CREATETENANT);
-  gxJobCatalog.vTraceJobs(CN_JOB_DROPCATALOG);
-  gxJobCatalog.vTraceJobs(CN_JOB_DROPINDEX);
-  gxJobCatalog.vTraceJobs(CN_JOB_DROPSCHEMA);
-  gxJobCatalog.vTraceJobs(CN_JOB_DROPTABLE);
-  gxJobCatalog.vTraceJobs(CN_JOB_DROPTENANT);
-  gxJobCatalog.vTraceJobs(CN_JOB_LOADTABLE);
-  gxJobCatalog.vTraceJobs(CN_JOB_FETCHROWS);
-  gxJobCatalog.vTraceJobs(CN_JOB_SIZEINDEX);
-  gxJobCatalog.vTraceJobs(CN_JOB_SIZETABLE);
-  gxJobCatalog.vTraceJobs(CN_JOB_TABLESIZES);
-  gxJobCatalog.vTraceJobs(CN_JOB_TRUNCATETABLE);
-  gxJobCatalog.vTraceJobs(CN_JOB_VERIFYINDEX);
-  gxJobCatalog.vTraceJobs(CN_JOB_SANITY);
-  gxJobCatalog.vTraceJobs(CN_JOB_SPACE);
-  gxJobCatalog.vTraceJobs(CN_JOB_STATUS);
-  gxJobCatalog.vTraceJobs(CN_JOB_STARTCLUSTER);
-  gxJobCatalog.vTraceJobs(CN_JOB_WAITCLUSTER);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_ANALYZEINDEX);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_ANALYZETABLE);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_COMPACTINDEX);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_CREATECATALOG);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_CREATEINDEX);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_CREATESCHEMA);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_CREATETABLE);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_CREATETENANT);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_DROPCATALOG);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_DROPINDEX);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_DROPSCHEMA);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_DROPTABLE);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_DROPTENANT);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_LOADTABLE);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_FETCHROWS);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_SIZEINDEX);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_SIZETABLE);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_TABLESIZES);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_TRUNCATETABLE);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_VERIFYINDEX);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_SANITY);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_SPACE);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_STATUS);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_STARTCLUSTER);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_WAITCLUSTER);
 
   // child
-  gxJobCatalog.vTraceJobs(CN_JOB_SUBLOADER);
-  gxJobCatalog.vTraceJobs(CN_JOB_SUBFETCH);
-  gxJobCatalog.vTraceJobs(CN_JOB_SUBTRUNCATE);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_SUBLOADER);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_SUBFETCH);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_SUBTRUNCATE);
   
   // grankid
-  gxJobCatalog.vTraceJobs(CN_JOB_LOADBUFFER);
+  nJobs++; gxJobCatalog.vTraceJobs(CN_JOB_LOADBUFFER);
 
   vTrace("\n"_Stz);
   
+  if (nJobs != CN_JOB_WAITCLUSTER - CN_JOB__BEGUN + 1)
+    vTrace("\nWarning: Missing Jobs\n\n"_Stz);
+
   return true;
 }
 /*----------------------------------------------------------------------------*/
