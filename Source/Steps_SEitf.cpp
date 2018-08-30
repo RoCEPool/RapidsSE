@@ -23,7 +23,6 @@ void Task::vAddPrimitives_SEitf(void)
   vAddPrimitive("seitf.bufferQueue@"_Stz,     &vSEitfBufferQueueFetch, false);
   vAddPrimitive("seitf.bufferQueue!"_Stz,     &vSEitfBufferQueueStore, false);
   vAddPrimitive("seitf.commandProcessor"_Stz, &vSEitfCommandProcessor, false);
-  vAddPrimitive("seitf.delete"_Stz,           &vSEitfDelete,           false);
   vAddPrimitive("seitf.dicStack"_Stz,         &vSEitfDicStack,         false);
   vAddPrimitive("seitf.display@"_Stz,         &vSEitfDisplayFetch,     false);
   vAddPrimitive("seitf.display!"_Stz,         &vSEitfDisplayStore,     false);
@@ -224,26 +223,6 @@ void Task::vSEitfCommandProcessor(MP_Task mpTask)
   ASSERT(CN_SEITF == pSEitf->eClass());
   
   mpTask->m_pDataStack->vPushObject(pSEitf->m_pCommandProcessor);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* seitf.delete -- delete SE interface                                        */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfDelete(MP_Task mpTask)
-{
-ENTRY("vSEitfDelete"_Stz);
-  
-  Object* pPtrSEitf;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.delete"_Stz);
-
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(CN_SEITF == pSEitf->eClass());
-  
-  delete pSEitf;
   
   EXIT();
 }

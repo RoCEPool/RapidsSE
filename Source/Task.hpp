@@ -1169,7 +1169,6 @@ namespace Tasks
     static void vSEitfBufferQueueFetch(MP_Task mpTask);
     static void vSEitfBufferQueueStore(MP_Task mpTask);
     static void vSEitfCommandProcessor(MP_Task mpTask);
-    static void vSEitfDelete(MP_Task mpTask);
     static void vSEitfDicStack(MP_Task mpTask);
     static void vSEitfDisplayFetch(MP_Task mpTask);
     static void vSEitfDisplayStore(MP_Task mpTask);
