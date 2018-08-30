@@ -515,20 +515,22 @@ void RapidsSE::vBootDictionary(void)
   
   pJob_Boot->vSeed(SS_SEED_RUN);
   
-  Task* pTask_Boot = new Task(pJob_Boot);
+  Task* pBootTask = new Task(pJob_Boot);
 
-  pTask_Boot->vAddBaseWords();
+  pBootTask->vAddBaseWords();
   
   if (gpAttachMap->m_bVerbose)
     vTrace("[[mainThread]] Compiling dictionaries...\n"_Stz);
   
-  pTask_Boot->vSeedJob();
+  pBootTask->vSeedJob();
   
-  pTask_Boot->vTaskLoop();
+  pBootTask->vState(TS_EXECUTING);
   
-  pTask_Boot->vJob(nullptr);
+  pBootTask->vTaskLoop();
+  
+  pBootTask->vJob(nullptr);
   delete pJob_Boot;
-  delete pTask_Boot;
+  delete pBootTask;
 }
 
 /*----------------------------------------------------------------------------*/

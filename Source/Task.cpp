@@ -1590,8 +1590,7 @@ void Task::vSeedJob(void)
   ASSERT(pWord);
   
   IP.m_pCell = pWord->pFirstCell();
-  
-  m_eState = TS_EXECUTING;
+
   
   m_pDataStack->vReset();
   m_pReturnStack->vReset();
