@@ -102,6 +102,8 @@
 /*----------------------------------------------------------------------------*/
 : createTable_exe ( pJob_CreateTable -- )
 
+  <SEED_EXE>
+
   //params| pJob_CreateTable |
   job::this locals| pJob_CreateTable |
 

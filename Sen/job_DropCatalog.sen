@@ -63,6 +63,8 @@
 /*----------------------------------------------------------------------------*/
 : dropCatalog_exe ( pJob_DropCatalog -- )
 
+  <SEED_EXE>
+
   //params| pJob_DropCatalog |
   job::this locals| pJob_DropCatalog |
 

@@ -40,6 +40,8 @@
 /*----------------------------------------------------------------------------*/
 : space_exe ( pJob_Space -- )
 
+  <SEED_EXE>
+
   //params| pJob_Space |
   job::this locals| pJob_Space |
 

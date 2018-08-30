@@ -77,6 +77,8 @@
 /*----------------------------------------------------------------------------*/
 : compactIndex_exe ( Job_CompactIndex -- )
 
+  <SEED_EXE>
+
   //params| pJob_CompactIndex |
   job::this locals| pJob_CompactIndex |
 

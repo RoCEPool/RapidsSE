@@ -103,6 +103,8 @@
 /*----------------------------------------------------------------------------*/
 : dropIndex_exe ( Job_DropIndex -- )
 
+  <SEED_EXE>
+
   //params| pJob_DropIndex |
   job::this locals| pJob_DropIndex |
 

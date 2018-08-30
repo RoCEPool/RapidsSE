@@ -40,6 +40,8 @@
 /*----------------------------------------------------------------------------*/
 : status_exe ( pJob_Status -- )
 
+  <SEED_EXE>
+
   //params| pJob_Status |
   job::this locals| pJob_Status |
 

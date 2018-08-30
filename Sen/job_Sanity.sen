@@ -40,6 +40,8 @@
 /*----------------------------------------------------------------------------*/
 : sanity_exe ( pJob_Sanity -- )
 
+  <SEED_EXE>
+
   //params| pJob_Sanity |
   job::this locals| pJob_Sanity |
 

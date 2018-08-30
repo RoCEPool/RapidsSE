@@ -83,6 +83,8 @@
 /*----------------------------------------------------------------------------*/
 : analyzeIndex_exe ( Job_AnalyzeIndex -- )
 
+  <SEED_EXE>
+
   //params| pJob_AnalyzeIndex |
   job::this locals| pJob_AnalyzeIndex |
 

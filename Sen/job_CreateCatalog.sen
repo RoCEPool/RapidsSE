@@ -76,6 +76,8 @@
 /*----------------------------------------------------------------------------*/
 : createCatalog_exe ( pJob_CreateCatalog -- )
 
+  <SEED_EXE>
+
   //params| pJob_CreateCatalog |
   job::this locals| pJob_CreateCatalog |
 

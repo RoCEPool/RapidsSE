@@ -37,6 +37,8 @@
 /*----------------------------------------------------------------------------*/
 : waitCluster_exe ( pJob_WaitCluster -- )
 
+  <SEED_EXE>
+
   //params| pJob_WaitCluster |
   job::this locals| pJob_WaitCluster |
 

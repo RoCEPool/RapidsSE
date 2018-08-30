@@ -73,6 +73,8 @@
 /*----------------------------------------------------------------------------*/
 : createSchema_exe ( pJob_CreateSchema -- )
 
+  <SEED_EXE>
+
   //params| pJob_CreateSchema |
   job::this locals| pJob_CreateSchema |
 

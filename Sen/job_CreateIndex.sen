@@ -178,6 +178,8 @@
 /*----------------------------------------------------------------------------*/
 : createIndex_exe ( Job_CreateIndex -- )
 
+  <SEED_EXE>
+
   //params| pJob_CreateIndex |
   job::this locals| pJob_CreateIndex |
 

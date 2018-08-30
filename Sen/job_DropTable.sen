@@ -125,6 +125,8 @@
 /*----------------------------------------------------------------------------*/
 : dropTable_exe ( pJob_DropTable -- )
 
+  <SEED_EXE>
+
   //params| pJob_DropTable |
   job::this locals| pJob_DropTable |
 

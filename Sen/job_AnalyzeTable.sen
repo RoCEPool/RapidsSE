@@ -72,6 +72,8 @@
 /*----------------------------------------------------------------------------*/
 : analyzeTable_exe ( Job_AnalyzeTable -- )
 
+  <SEED_EXE>
+
   //params| pJob_AnalyzeTable |
   job::this locals| pJob_AnalyzeTable |
 

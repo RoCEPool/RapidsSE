@@ -81,6 +81,8 @@
 /*----------------------------------------------------------------------------*/
 : verifyIndex_exe ( Job_VerifyIndex )
 
+  <SEED_EXE>
+
   //params| pJob_VerifyIndex |
   job::this locals| pJob_VerifyIndex |
 

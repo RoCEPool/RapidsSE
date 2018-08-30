@@ -72,6 +72,8 @@
 /*----------------------------------------------------------------------------*/
 : createTenant_exe ( pJob_CreateTenant -- )
 
+  <SEED_EXE>
+
   //params| pJob_CreateTenant |
   job::this locals| pJob_CreateTenant |
 

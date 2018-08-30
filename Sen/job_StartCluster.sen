@@ -112,6 +112,8 @@
 /*----------------------------------------------------------------------------*/
 : startCluster_exe ( pJob_StartCluster -- )
 
+  <SEED_EXE>
+
   //params| pJob_StartCluster |
   job::this locals| pJob_StartCluster |
 

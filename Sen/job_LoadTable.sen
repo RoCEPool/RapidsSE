@@ -92,6 +92,8 @@
 /*----------------------------------------------------------------------------*/
 : loadTable_exe ( pJob_LoadTable -- )
 
+  <SEED_EXE>
+
   //params| pJob_LoadTable |
   job::this locals| pJob_LoadTable |
 

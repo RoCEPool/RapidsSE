@@ -69,6 +69,8 @@
 /*----------------------------------------------------------------------------*/
 : sizeTable_exe ( Job_SizeTable -- )
 
+  <SEED_EXE>
+
   //params| pJob_SizeTable |
   job::this locals| pJob_SizeTable |
 
