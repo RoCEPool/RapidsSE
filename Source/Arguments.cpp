@@ -604,8 +604,9 @@ void Arguments::vPrint(void)
   
   for (i8 i_Arg = 1; i_Arg < gi_argc; i_Arg++) {
     if ('-' == *gi_argv[i_Arg])
-      vTrace("\n"_Stz);
-    vTrace(" %s"_Stz,gi_argv[i_Arg]);
+      vTrace("\n  %s"_Stz,gi_argv[i_Arg]);
+    else
+      vTrace(" %s"_Stz,gi_argv[i_Arg]);
   }
   vTrace("\n\n"_Stz);
 

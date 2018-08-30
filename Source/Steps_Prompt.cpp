@@ -4,7 +4,8 @@
 
 #include "StorageEngine.h"
 
-extern AttachMap*      gpAttachMap;
+extern AttachMap* gpAttachMap;
+extern JobCatalog gxJobCatalog;
 
 // prompt: /////////////////////////////////////////////////////////////////////
 
@@ -81,6 +82,8 @@ void Task::vPromptGetCommand(MP_Task mpTask)
 void Task::vPromptNew(MP_Task mpTask)
 {
   ENTRY("vPromptNew"_Stz);
+  
+  mpTask->m_pJob->m_pJobClass = gxJobCatalog.pFindJob(CN_JOB_PROMPT);
   
   SePrompt* pSePrompt = new SePrompt;
   

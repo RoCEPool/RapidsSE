@@ -15,9 +15,10 @@
   0 locals| eCommand |
   0 locals| pJob |
 
+  prompt::new to pPrompt
+
   "prompt_run" .
 
-  prompt::new to pPrompt
   pPrompt prompt.SEitf to pSEitf
   pSEitf seitf.commandProcessor to pCommandProcessor
 
