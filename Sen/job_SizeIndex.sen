@@ -160,7 +160,7 @@
 
   sTableNm sIndexNm checkSizeIndex not if pJob_SizeIndex <ERROR_JOB> exit then
 
-  <DONE_EXE>
+  ddlLock::dropWrite
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -172,8 +172,6 @@
 
   tp: sizeIndex.releaseResources
   "releaseResources received" .
-
-  <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/

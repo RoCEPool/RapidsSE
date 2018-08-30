@@ -134,7 +134,7 @@
   pJob_CreateSchema job.objectName@
   checkMakeSchema not if pJob_CreateSchema <ERROR_JOB> exit then
 
-  <DONE_EXE>
+  ddlLock::dropWrite
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -146,8 +146,6 @@
 
   tp: createSchema.releaseResources
   "releaseResources received" .
-
-  <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/

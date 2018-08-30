@@ -100,7 +100,9 @@
 
   pJob_VisualizeIndex job.notice
 
-  pJob_VisualizeIndex <DONE_REQUEST>
+  pJob_VisualizeIndex
+
+  <DONE_REQUEST>
 ;
 
 /*============================================================================*/

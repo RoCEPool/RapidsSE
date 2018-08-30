@@ -184,7 +184,7 @@
     popIndexes popTable assertInTables EC_NO_SUCH_INDEX pJob_DropIndex <ERROR_JOB> exit
   then
 
-  <DONE_EXE>
+  ddlLock::dropWrite
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -196,8 +196,6 @@
 
   tp: dropIndex.releaseResources
   "releaseResources received" .
-
-  <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/

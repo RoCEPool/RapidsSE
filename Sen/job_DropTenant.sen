@@ -119,7 +119,7 @@
   pJob_DropTenant job.objectName@
   checkRemoveTenant not if pJob_DropTenant <ERROR_JOB> exit then
 
-  <DONE_EXE>
+  ddlLock::dropWrite
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -131,8 +131,6 @@
 
   tp: dropTenant.releaseResources
   "releaseResources received" .
-
-  <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/

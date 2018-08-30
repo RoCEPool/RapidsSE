@@ -132,7 +132,7 @@
   pJob_CreateTenant job.objectName@
   checkMakeTenant not if pJob_CreateTenant <ERROR_JOB> exit then
 
-  <DONE_EXE>
+  ddlLock::dropWrite
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -144,8 +144,6 @@
 
   tp: createTenant.releaseResources
   "releaseResources received" .
-
-  <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -160,7 +160,7 @@
 
   sTableNm sIndexNm checkVerifyIndex not if pJob_VerifyIndex <ERROR_JOB> exit then
 
-  <DONE_EXE>
+  ddlLock::dropRead
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -172,8 +172,6 @@
 
   tp: verifyIndex.releaseResources
   "releaseResources received" .
-
-  <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/

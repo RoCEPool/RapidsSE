@@ -146,7 +146,7 @@
   pJob_AnalyzeTable job.objectName@
   checkAnalyzeTable not if pJob_AnalyzeTable <ERROR_JOB> exit then
 
-  <DONE_EXE>
+  ddlLock::dropWrite
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -158,8 +158,6 @@
 
   tp: analyzeTable.releaseResources
   "releaseResources received" .
-
-  <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/

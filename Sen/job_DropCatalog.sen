@@ -119,7 +119,7 @@
   pJob_DropCatalog job.objectName@
   checkRemoveCatalog not if pJob_DropCatalog <ERROR_JOB> exit then
 
-  <DONE_EXE>
+  ddlLock::dropWrite
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -131,8 +131,6 @@
 
   tp: dropCatalog.releaseResources
   "releaseResources received" .
-
-  <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/

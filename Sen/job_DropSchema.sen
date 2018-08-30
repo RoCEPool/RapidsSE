@@ -119,7 +119,7 @@
   pJob_DropSchema job.objectName@
   checkRemoveSchema not if pJob_DropSchema <ERROR_JOB> exit then
 
-  <DONE_EXE>
+  ddlLock::dropWrite
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -131,8 +131,6 @@
 
   tp: dropSchema.releaseResources
   "releaseResources received" .
-
-  <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/

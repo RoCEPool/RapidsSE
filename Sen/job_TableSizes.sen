@@ -143,7 +143,7 @@
   // should be in the tables folder
   checkInTables not if pJob_TableSizes <ERROR_JOB> exit then
 
-  <DONE_EXE>
+  ddlLock::dropWrite
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -155,8 +155,6 @@
 
   tp: sizeTable.releaseResources
   "releaseResources received" .
-
-  <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/

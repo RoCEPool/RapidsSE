@@ -130,7 +130,7 @@
 
   sTableNm sIndexNm checkDumpIndex not if pJob_DumpIndex <ERROR_JOB> exit then
 
-  <DONE_EXE>
+  ddlLock::dropWrite
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -142,8 +142,6 @@
 
   tp: dumpIndex.releaseResources
   "releaseResources received" .
-
-  <DONE_EXE>
 ;
 
 /*============================================================================*/

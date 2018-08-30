@@ -144,7 +144,7 @@
   pJob_SizeTable job.objectName@
   checkSizeTable not if pJob_SizeTable <ERROR_JOB> exit then
 
-  <DONE_EXE>
+  ddlLock::dropWrite
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -156,8 +156,6 @@
 
   tp: sizeTable.releaseResources
   "releaseResources received" .
-
-  <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/

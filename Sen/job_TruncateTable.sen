@@ -130,7 +130,7 @@
   // pop table dictionary
   popTable
 
-  <DONE_EXE>
+  ddlLock::dropWrite
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -142,8 +142,6 @@
 
   tp: truncateTable.releaseResources
   "releaseResources received" .
-
-  <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
