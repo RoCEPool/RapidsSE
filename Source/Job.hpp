@@ -14,13 +14,13 @@ namespace JobsModel
   enum eJK // job kind
   {
   /*  0 */ JK_NONE=0,
-  /*  1 */ JK_CHILD,
-  /*  2 */ JK_DIST2PC,
-  /*  3 */ JK_GENERIC,
-  /*  4 */ JK_GRANDKID,
-  /*  5 */ JK_LOCAL,
-  /*  6 */ JK_SYSTEM,
-  /*  7 */ JK_THREAD,
+  /*  1 */ JK_CHILD,     // subordinate helper run on originator
+  /*  2 */ JK_DIST2PC,   // distributed two-phase jobs
+  /*  3 */ JK_GENERIC,   // the generic jobs for two-phase messaging
+  /*  4 */ JK_GRANDKID,  // subordinate helper run on participant
+  /*  5 */ JK_LOCAL,     // task is run on the local node
+  /*  6 */ JK_SYSTEM,    // system task (such as socket receiver)
+  /*  7 */ JK_THREAD,    // task is run by calling thread
   };
   
   static Stz* aJK[]
