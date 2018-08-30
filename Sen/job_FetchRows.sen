@@ -83,6 +83,8 @@
 /*----------------------------------------------------------------------------*/
 : fetchRows_req ( -- <R> )
 
+  <SEED_REQ>
+
   0 0 0 locals| iPhrases sTableNm sWhere |
   0 0 0 0 locals| pJob_FetchRows pTask pPlanner pTable |
 

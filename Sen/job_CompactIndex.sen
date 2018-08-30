@@ -52,6 +52,8 @@
 /*----------------------------------------------------------------------------*/
 : compactIndex_req ( -- <R> )
 
+  <SEED_REQ>
+
   0 0 locals| pJob pTask |
 
   tp: compactIndex

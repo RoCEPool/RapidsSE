@@ -69,6 +69,8 @@
 /*----------------------------------------------------------------------------*/
 : LoadTable_req (  -- <R> )
 
+  <SEED_REQ>
+
   0 locals| pThisTask |
   0 locals| pJob_LoadTable  |
 

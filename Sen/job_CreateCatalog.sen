@@ -52,6 +52,8 @@
 /*----------------------------------------------------------------------------*/
 : createCatalog_req ( -- )
 
+  <SEED_REQ>
+
   0 0 locals| pJob_CreateCatalog pTask |
 
   tp: createCatalog_req

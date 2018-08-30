@@ -9,6 +9,8 @@
 /*----------------------------------------------------------------------------*/
 : checkVisualizeIndex ( "<tableNm>" "<indexNm>" -- true | errorCode false )
 
+  <SEED_REQ>
+
   params| sIndexNm sTableNm |
 
   // check in tables folder

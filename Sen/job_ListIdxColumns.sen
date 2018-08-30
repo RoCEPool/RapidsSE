@@ -47,6 +47,8 @@
 /*----------------------------------------------------------------------------*/
 : listIdxColumns_req ( -- <R> )
 
+  <SEED_REQ>
+
   0 0 0 0 locals| sTableNm sIndexNm pJob_ListIdxColumns pTask |
 
   tp: listIdxColumns_req

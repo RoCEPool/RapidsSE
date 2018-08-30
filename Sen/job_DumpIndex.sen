@@ -49,6 +49,8 @@
 /*----------------------------------------------------------------------------*/
 : dumpIndex_req ( -- <R> )
 
+  <SEED_REQ>
+
   0 0 0 0 0 locals| pTask pIndex sTableNm sIndexNm pJob_DumpIndex |
 
   tp: dumpIndex

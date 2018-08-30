@@ -9,6 +9,8 @@
 /*----------------------------------------------------------------------------*/
 : listTables_req ( -- <R> )
 
+  <SEED_REQ>
+
   0 0 locals| pJob_ListTables pTask |
 
   tp: listTables_req

@@ -9,6 +9,8 @@
 /*----------------------------------------------------------------------------*/
 : cf_req ( -- <R> )
 
+  <SEED_REQ>
+
   0 0 0 0 locals| pCurrentFolder sFolderNm pJob_Cf pTask |
 
   tp: cf_req

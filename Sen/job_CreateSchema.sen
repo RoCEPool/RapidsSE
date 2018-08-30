@@ -52,6 +52,8 @@
 /*----------------------------------------------------------------------------*/
 : createSchema_req ( -- )
 
+  <SEED_REQ>
+
   0 0 locals| pJob_CreateSchema pTask |
 
   tp: createSchema_req

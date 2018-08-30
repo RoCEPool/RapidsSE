@@ -51,6 +51,8 @@
 /*----------------------------------------------------------------------------*/
 : createTenant_req ( -- )
 
+  <SEED_REQ>
+
   0 0 locals| pJob_CreateTenant pTask |
 
   tp: createTenant_req
