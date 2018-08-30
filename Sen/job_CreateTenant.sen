@@ -64,7 +64,7 @@
   // distribute the job
   pJob_CreateTenant job.distribute
 
-  pJob_CreateTenant <DONE_REQ>
+  <DONE_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/

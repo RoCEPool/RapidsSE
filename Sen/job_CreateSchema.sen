@@ -65,7 +65,7 @@
   // distribute the job
   pJob_CreateSchema job.distribute
 
-  pJob_CreateSchema <DONE_REQ>
+  <DONE_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/

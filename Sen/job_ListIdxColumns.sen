@@ -121,7 +121,7 @@
   popTable
   assertInTables
 
-  pJob_ListIdxColumns <DONE_REQ>
+  <DONE_REQ>
 ;
 
 /*============================================================================*/

@@ -68,7 +68,7 @@
   // distribute the job
   pJob_CreateCatalog job.distribute
 
-  pJob_CreateCatalog <DONE_REQ>
+  <DONE_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/

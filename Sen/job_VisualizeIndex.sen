@@ -100,8 +100,6 @@
 
   pJob_VisualizeIndex job.notice
 
-  pJob_VisualizeIndex
-
   <DONE_REQ>
 ;
 

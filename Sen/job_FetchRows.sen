@@ -155,7 +155,7 @@
 
   pJob_FetchRows job.notice
 
-  pJob_FetchRows <DONE_REQ>
+  <DONE_REQ>
 ;
 
 /*============================================================================*/

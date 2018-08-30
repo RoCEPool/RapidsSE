@@ -25,10 +25,10 @@
   >:
 
   begin
-  depth while drop
+    depth while drop
   repeat
 
-  pJob_Docol <DONE_REQ>
+  <DONE_REQ>
 ;
 
 /*============================================================================*/
