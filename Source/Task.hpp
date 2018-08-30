@@ -170,7 +170,7 @@ namespace Tasks
     void vDropLock(void);
     void vException(StrVal& sFile, StrVal& eException);
     void vGrabLock(void);
-    void vInitialiseMain(void);
+    void vAddBaseWords(void);
     bool bIsLocked(void);
     bool bIsNonPartitioned(void);
     bool bIsPartitioned(void);
@@ -195,7 +195,7 @@ namespace Tasks
     void vQueue(eQR eQueue);
     void vReset(void);
     void vRetry(void);
-    void vSeedDicCompileSen(void);
+    void vSeedJob(void);
     void vSeedWord(Stz *aWord);
     GridModel::Node* pSendNode(void);
     Interface::SEitf* pSEitf(void);

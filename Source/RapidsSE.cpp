@@ -515,12 +515,12 @@ void RapidsSE::vCreateObjects(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vDicCompile(NP_Task npBootTask)
 {  
-  npBootTask->vInitialiseMain();
+  npBootTask->vAddBaseWords();
   
   if (gpAttachMap->m_bVerbose)
     vTrace("[[mainThread]] Compiling dictionaries...\n"_Stz);
   
-  npBootTask->vSeedDicCompileSen();
+  npBootTask->vSeedJob();
   
   //if (gpAttachMap->m_bVerbose)
   //  vTrace("[[mainThread]] RapidsSE::vDicCompile running [%s] %p\n"_Stz,
@@ -606,7 +606,8 @@ void RapidsSE::vSystemInit(void)
   
   Job_Boot* pJob_Boot
     = static_cast<Job_Boot*>(pJobClass_Boot->pNewJob(nullptr));
-
+  pJob_Boot->vSeed(SS_SEED_RUN);
+  
   gpAttachMap->m_npBootTask = new Task(pJob_Boot);
   
   gpAttachMap->m_xDdlLock.vInitLock(LK_DDL);

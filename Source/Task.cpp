@@ -217,7 +217,7 @@ void Task::vInit(void)
 /*----------------------------------------------------------------------------*/
 /* add initial set of words in main dictionary                                */
 /*----------------------------------------------------------------------------*/
-void Task::vInitialiseMain(void)
+void Task::vAddBaseWords(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -1688,18 +1688,16 @@ void Task::vRetry(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* seed boot task to compile dictionary                                       */
+/* seed boot run job                                                          */
 /*----------------------------------------------------------------------------*/
-void Task::vSeedDicCompileSen(void)
+void Task::vSeedJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
-  m_pJob->vSeed(SS_SEED_RUN);
-
-  Word* pBootSen = gpAttachMap->m_xMainDic.pFindWord(m_pJob->m_sSeed);
-  ASSERT(pBootSen);
+  Word* pWord = gpAttachMap->m_xMainDic.pFindWord(m_pJob->m_sSeed);
+  ASSERT(pWord);
   
-  IP.m_pCell = pBootSen->pFirstCell();
+  IP.m_pCell = pWord->pFirstCell();
   
   m_eState = TS_EXECUTING;
   
@@ -1714,9 +1712,9 @@ void Task::vSeedWord(Stz* aLambda)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Word* pShellEnter = gpAttachMap->m_xMainDic.pFindWord("::docmd"_Stz);
+  Word* pWord = gpAttachMap->m_xMainDic.pFindWord("::docmd"_Stz);
   
-  IP.m_pCell = pShellEnter->pFirstCell();
+  IP.m_pCell = pWord->pFirstCell();
   
   m_eState = TS_YIELDED;
   
