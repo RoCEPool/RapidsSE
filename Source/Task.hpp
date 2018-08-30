@@ -82,8 +82,6 @@ namespace Tasks
     Since   m_xWakeupTime;  // wakeup time
     i8      m_iDdlLocked;   // ? has the ddl lock?
   
-    Object* m_pSeedObject;   // seed object
- 
     Socket* m_pSocket;       // socket associated with task
 
     Threads::Thread* m_pThread; // current thread
@@ -198,9 +196,6 @@ namespace Tasks
     void vReset(void);
     void vRetry(void);
     void vSeedDicCompileSen(void);
-    void vSeedDocol(void);
-    Object* pSeedObject(void);
-    void vSeedObject(Object* pSeedObject);
     void vSeedWord(Stz *aWord);
     GridModel::Node* pSendNode(void);
     Interface::SEitf* pSEitf(void);

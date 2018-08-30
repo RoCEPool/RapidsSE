@@ -174,8 +174,7 @@ void Task::vInit(void)
   m_pParentTask = nullptr;
   m_zAcks.vCheckInit();
   m_pThread     = nullptr;
-  m_pSeedObject = nullptr;
-    
+  
   m_pDataStack   = new Stack;
   m_pReturnStack = new Stack;
   m_pAuxStack    = new Stack;
@@ -1709,26 +1708,6 @@ void Task::vSeedDicCompileSen(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get seed object                                                            */
-/*----------------------------------------------------------------------------*/
-Object* Task::pSeedObject(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  return m_pSeedObject;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set seed object                                                            */
-/*----------------------------------------------------------------------------*/
-void Task::vSeedObject(Object* pSeedObject)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  m_pSeedObject = pSeedObject;
-}
-
-/*----------------------------------------------------------------------------*/
 /* seed task to run given lambda                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vSeedWord(Stz* aLambda)
@@ -1749,31 +1728,6 @@ void Task::vSeedWord(Stz* aLambda)
     sLambda.vConcat(" ::task_exit"_Stz);
   
   m_pTokeniser->vUseString(sLambda);
-}
-
-/*----------------------------------------------------------------------------*/
-/* seed task to run ::enter                                                   */
-/*----------------------------------------------------------------------------*/
-void Task::vSeedDocol(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  Word* pShellEnter = gpAttachMap->m_xMainDic.pFindWord("::enter"_Stz);
-  
-  IP.m_pCell = pShellEnter->pFirstCell();
-  
-  m_eState = TS_YIELDED;
-  
-  m_pDataStack->vReset();
-  m_pReturnStack->vReset();
-  
-  s256 sLambda(""_Stz);
-  
-  s32 sPrompt("docol> "_Stz);
-  m_pTokeniser->vPrompt(sPrompt);
-  
-  m_pTokeniser->vUseString(sLambda);
-  m_pTokeniser->vLineMode(false);
 }
 
 /*----------------------------------------------------------------------------*/
