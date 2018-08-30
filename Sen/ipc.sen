@@ -4,8 +4,6 @@
 
 " ipc.sen" .verbose
 
-: isRunning   ( task -- ) task.state@ TS_EXECUTING == ;
-
 : getState    ( -- ) task::this task.state@ ;
 : setState    ( -- ) task::this task.state! ;
 
