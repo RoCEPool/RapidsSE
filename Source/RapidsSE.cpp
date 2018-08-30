@@ -517,8 +517,6 @@ void RapidsSE::vBootDictionary(void)
   
   Task* pTask_Boot = new Task(pJob_Boot);
 
-  gpAttachMap->m_npBootTask = pTask_Boot;
-
   pTask_Boot->vAddBaseWords();
   
   if (gpAttachMap->m_bVerbose)
@@ -527,6 +525,10 @@ void RapidsSE::vBootDictionary(void)
   pTask_Boot->vSeedJob();
   
   pTask_Boot->vTaskLoop();
+  
+  pTask_Boot->vJob(nullptr);
+  delete pJob_Boot;
+  delete pTask_Boot;
 }
 
 /*----------------------------------------------------------------------------*/

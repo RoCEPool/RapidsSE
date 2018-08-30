@@ -859,7 +859,7 @@ void Queues::vScheduleExitedTask(Task* pTask)
 
   RASSERT(TS_EXITED == pTask->eState());
   
-  ASSERT( (*gpAttachMap->m_npBootTask != pTask) && (! pTask->bWordBody()) );
+  ASSERT( ! pTask->bWordBody() );
   
   //vTrace("Exited Task %p\n"_Stz,pTask);
   
