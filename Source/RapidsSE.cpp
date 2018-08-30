@@ -506,21 +506,27 @@ void RapidsSE::vCreateObjects(void)
 /*----------------------------------------------------------------------------*/
 /* compile the main dictionary                                                */
 /*----------------------------------------------------------------------------*/
-void RapidsSE::vBootDictionary(NP_Task npBootTask)
-{  
-  npBootTask->vAddBaseWords();
+void RapidsSE::vBootDictionary(void)
+{
+  JobClass* pJobClass_Boot = gxJobCatalog.pFindJob(CN_JOB_BOOT);
+  
+  Job_Boot* pJob_Boot
+    = static_cast<Job_Boot*>(pJobClass_Boot->pNewJob(nullptr));
+  
+  pJob_Boot->vSeed(SS_SEED_RUN);
+  
+  Task* pTask_Boot = new Task(pJob_Boot);
+
+  gpAttachMap->m_npBootTask = pTask_Boot;
+
+  pTask_Boot->vAddBaseWords();
   
   if (gpAttachMap->m_bVerbose)
     vTrace("[[mainThread]] Compiling dictionaries...\n"_Stz);
   
-  npBootTask->vSeedJob();
+  pTask_Boot->vSeedJob();
   
-  //if (gpAttachMap->m_bVerbose)
-  //  vTrace("[[mainThread]] RapidsSE::vBootDictionary running [%s] %p\n"_Stz,
-  //         npBootTask->sName().aChar(),
-  //         *npBootTask);
-  
-  npBootTask->vTaskLoop();
+  pTask_Boot->vTaskLoop();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -624,15 +630,7 @@ void RapidsSE::vSystemStart(void)
 
   //--------------------------------------------------------------------------
 
-  JobClass* pJobClass_Boot = gxJobCatalog.pFindJob(CN_JOB_BOOT);
-  
-  Job_Boot* pJob_Boot
-  = static_cast<Job_Boot*>(pJobClass_Boot->pNewJob(nullptr));
-  pJob_Boot->vSeed(SS_SEED_RUN);
-  
-  gpAttachMap->m_npBootTask = new Task(pJob_Boot);
-
-  vBootDictionary(gpAttachMap->m_npBootTask);
+  vBootDictionary();
 
   //--------------------------------------------------------------------------
 
