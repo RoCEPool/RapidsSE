@@ -1598,7 +1598,7 @@ void Task::vRetry(void)
 void Task::vSeedJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-
+  
   Word* pWord = gpAttachMap->m_xMainDic.pFindWord(m_pJob->m_sSeed);
   
   IP.m_pCell = pWord->pFirstCell();

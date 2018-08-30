@@ -155,7 +155,9 @@ Stz* Job::sJobSeed(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_sSeed;
+  Stz* sSeed = m_pJobClass->sSeed(m_eSeed);
+  
+  return sSeed;
 }
 
 /*----------------------------------------------------------------------------*/
