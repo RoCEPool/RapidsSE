@@ -28,6 +28,8 @@
 
   nullptr pThisTask task.job!
   pThisJob job.delete
+
+  <DONE_RUN>
 ;
 
 /*============================================================================*/

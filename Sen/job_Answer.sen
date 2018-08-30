@@ -97,6 +97,8 @@ int: nTotalConnections
 
   // should never exit
   hazard
+
+  <DONE_RUN>
 ;
 
 /*============================================================================*/
