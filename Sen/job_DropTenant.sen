@@ -12,7 +12,7 @@
   params| sTenantNm |
 
   checkInTenants  not if false exit then ( "<tenantNm>" word )
-  sTenantNm checkIsWordR35  not if EC_NO_SUCH_Tenant false exit then ( "<tenantNm>" word )
+  sTenantNm checkIsWord  not if EC_NO_SUCH_Tenant false exit then ( "<tenantNm>" word )
   checkIsTenant   not if false exit then ( "<tenantNm>" word )
   checkIsEmpty    not if false exit then ( "<tenantNm>" word )
   checkNotUsed    not if false exit then ( "<tenantNm>" word )

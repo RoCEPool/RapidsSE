@@ -319,7 +319,7 @@ true tick CASE word.immediate!
 /*----------------------------------------------------------------------------*/
 /* check for known word                                                       */
 /*----------------------------------------------------------------------------*/
-: checkIsWordR35 ( <"wordNm"> )
+: checkIsWord ( <"wordNm"> )
   find
   not if EC_NO_SUCH_WORD false exit then
   true

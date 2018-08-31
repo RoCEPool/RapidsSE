@@ -12,7 +12,7 @@
   params| sCatalogNm |
 
   checkInCatalogs not if false exit then
-  sCatalogNm checkIsWordR35 not if EC_NO_SUCH_CATALOG false exit then
+  sCatalogNm checkIsWord not if EC_NO_SUCH_CATALOG false exit then
   checkIsCatalog  not if false exit then
   checkIsEmpty    not if false exit then
   checkNotUsed    not if false exit then

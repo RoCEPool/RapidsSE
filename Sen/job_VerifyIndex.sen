@@ -17,7 +17,7 @@
   checkInTables not if false exit then
 
   // check if tableNm is a word in tables folder
-  sTableNm checkIsWordR35 not if EC_NO_SUCH_TABLE false exit then
+  sTableNm checkIsWord not if EC_NO_SUCH_TABLE false exit then
 
   // push table folder
   sTableNm pushTable assert
