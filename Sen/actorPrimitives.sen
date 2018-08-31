@@ -44,55 +44,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-/*----------------------------------------------------------------------------*/
-/* append valset onto queue of given task and signal if its waiting           */
-/*----------------------------------------------------------------------------*/
-: >jobQueue ( valset task -- )
-
-tp: >jobQueue
-
-  locals| pTargetTask | ( valset )
-
-  // grab mutex of target task
-  pTargetTask grabMutex ( valset )
-
-  // append valset onto queue of target task
-  pTargetTask appendJobQueue ( )
-
-  // signal the target task if it is waiting for a valset to be queued
-  pTargetTask isSignalWaiting if
-    pTargetTask signal ( )
-  then
-
-  // drop mutex of target task
-  pTargetTask dropMutex ( )
-;
-
-/*----------------------------------------------------------------------------*/
-/* append indirect call onto queue of given task, wait for ack, move a to p   */
-/*----------------------------------------------------------------------------*/
-: >jobQueue;a> ( <<call>> task -- <<result>> )
-
-  // set this task to wait for 1 ack
-  1 setAcks ( <<call>> task )
-
-  // append indirect call onto queue of given task
-  >jobQueue ( )
-
-  tp: ackWait
-
-  // this task waits till ack'd
-  ackWait ( )
-
-  tp: running
-
-  // move indirect result from aux to data stack
-  a> ( <<result>> )
-
-tp: haveResultSet
-;
-
-
 
 
 /*============================================================================*/

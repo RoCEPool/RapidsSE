@@ -21,7 +21,7 @@
   //"DONE" .
 
   // << profile plan >> -->> nextOp
-  << pSeitf $$nextProfile thePlan plan.id@ $$nextOp >>jobqueue
+  //<< pSeitf $$nextProfile thePlan plan.id@ $$nextOp >>jobqueue
 
   opFrame.drop
 

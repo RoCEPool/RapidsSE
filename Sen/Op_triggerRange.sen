@@ -19,7 +19,7 @@ common/ triggerRange rbCrs /
   grid::partitions 0 do
 
     // << profile plan >> -->> nextOp
-    << I "rangeOp#%v" str.format thePlan plan.id@ "rangeOp.task" >>jobQueue
+    //<< I "rangeOp#%v" str.format thePlan plan.id@ "rangeOp.task" >>jobQueue
   loop
 ;
 
@@ -37,7 +37,7 @@ common/ triggerRange rbCrs /
   grid::partitions 0 do
 
     // << profile plan >> -->> nextOp
-    << pSeitf I "rangeOp#%v" str.format thePlan plan.id@ "rangeOp.task" >>jobQueue
+    //<< pSeitf I "rangeOp#%v" str.format thePlan plan.id@ "rangeOp.task" >>jobQueue
     //<< I "rangeOp#%v" str.format thePlan plan.id@ "rangeOp.task" >>jobQueue
   loop
 ;

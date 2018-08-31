@@ -36,11 +36,11 @@ common/ range rbCrs /
         0 nLastBuffers == if
           // send the index buffer to next printOp indicating last buffer
           
-          <<   1 pIndexBuffer true pSeitf sNextOp planId sProfile >>jobQueue
+          //<<   1 pIndexBuffer true pSeitf sNextOp planId sProfile >>jobQueue
           false
         else
           // send the index buffer to next printOp
-          <<   0 pIndexBuffer true pSeitf sNextOp planId sProfile >>jobQueue
+          //<<   0 pIndexBuffer true pSeitf sNextOp planId sProfile >>jobQueue
           true
         then
     else
@@ -51,7 +51,7 @@ common/ range rbCrs /
 
   repeat
 
-  <<  false pSeitf sNextOp planId sProfile >>jobQueue
+  //<<  false pSeitf sNextOp planId sProfile >>jobQueue
 
   // delete the buffer queue
   pBufferQueue queue.delete

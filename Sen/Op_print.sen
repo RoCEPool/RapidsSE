@@ -70,7 +70,7 @@ common/ print nFetchPartitions /
      nFetchPartitions 0 == if
 
        // << $$nextProfile thePlan >> -->> $$nextOp
-       << pSeitf $$nextProfile thePlan plan.id@ $$nextOp >>jobqueue
+       //<< pSeitf $$nextProfile thePlan plan.id@ $$nextOp >>jobqueue
 
        // mark fetch as not started so next fetch can execute
        0 to bFetchStarted

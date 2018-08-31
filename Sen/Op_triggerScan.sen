@@ -21,7 +21,7 @@ common/ triggerScan rbCrs /
     I grid::toPartition to partitionid
 
     // << profile plan >> -->> nextOp
-    << pSeitf partitionid "scanOp#%v" str.format thePlan plan.id@ "scanOp.task" >>jobQueue
+    //<< pSeitf partitionid "scanOp#%v" str.format thePlan plan.id@ "scanOp.task" >>jobQueue
   loop
 ;
 
@@ -39,7 +39,7 @@ common/ triggerScan rbCrs /
   grid::partitions 0 do
 
   // << profile plan >> -->> nextOp
-  << pSeitf I "scanOp#%v" str.format thePlan plan.id@ "scanOp.task" >>jobQueue
+  //<< pSeitf I "scanOp#%v" str.format thePlan plan.id@ "scanOp.task" >>jobQueue
   //<< I "rangeOp#%v" str.format thePlan plan.id@ "rangeOp.task" >>jobQueue
   loop
 ;

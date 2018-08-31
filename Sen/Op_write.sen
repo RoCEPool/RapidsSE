@@ -178,7 +178,7 @@ common/ write nStreams    /
       drop
     else
       //thePlan writePipeSink
-      << pSeitf $$nextProfile thePlan plan.id@ $$nextOp >>jobqueue
+      //<< pSeitf $$nextProfile thePlan plan.id@ $$nextOp >>jobqueue
     then
 
   else
@@ -193,7 +193,7 @@ common/ write nStreams    /
       writeCloseFile
       if
         // << $$nextProfile thePlan >> -->> $$nextOp
-        << pSeitf $$nextProfile thePlan plan.id@ $$nextOp >>jobqueue
+        //<< pSeitf $$nextProfile thePlan plan.id@ $$nextOp >>jobqueue
       then
     then
 

@@ -14,7 +14,7 @@ tp: enqueOnOp
   locals| op.task | ( <<job>> )
 
   // find task and put job onto its jobQueue
-  op.task find execute >jobQueue
+  //op.task find execute >jobQueue
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -45,7 +45,7 @@ tp: addingEnqueOnOp
 
   // find task and put onto it's job queue
 
-  op.task find execute >jobQueue
+  //op.task find execute >jobQueue
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -73,7 +73,7 @@ tp: >>jobQueue_otherNode
   // get sender task
 
   // put on senders job queue
-  >jobQueue
+  //>jobQueue
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -161,7 +161,7 @@ tp: >>jobQueue_otherNode
   //"triggerOp.task" find execute >jobQueue
 
   task::this task.seitf@ to pSeitf
-  << pSeitf "triggerScanOp" thePlan plan.id@ "triggerScanOp.task" >>jobQueue
+  //<< pSeitf "triggerScanOp" thePlan plan.id@ "triggerScanOp.task" >>jobQueue
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -184,7 +184,7 @@ tp: executeDfetchPlan
   //grid::partitions >str "setting nLastBuffers to %v" str.format .
   grid::partitions pSeitf seitf.lastBuffers!
 
-  << pSeitf "triggerRangeOp" thePlan plan.id@ "triggerRangeOp.task" >>jobQueue
+  //<< pSeitf "triggerRangeOp" thePlan plan.id@ "triggerRangeOp.task" >>jobQueue
 ;
 
 /*----------------------------------------------------------------------------*/
