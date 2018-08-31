@@ -56,7 +56,7 @@ namespace JobsModel
   void vJob_LoadBuffer_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_LoadBuffer_show(Job* pJob);
   
-  Job* pJob_LoadBuffer_next(void** aaArg);
+  pNEXTJOBFUN* pJob_LoadBuffer_next(void** aaArg);
 }
 
 /*============================================================================*/

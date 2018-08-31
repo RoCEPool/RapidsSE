@@ -40,7 +40,7 @@ namespace JobsModel
   void vJob_WaitCluster_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_WaitCluster_show(Job* pJob);
   
-  Job* pJob__next(void** aaArg);
+  pNEXTJOBFUN* pJob__next(void** aaArg);
 }
 
 /*============================================================================*/

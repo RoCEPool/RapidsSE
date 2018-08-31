@@ -38,7 +38,7 @@ namespace JobsModel
   void vJob_Answer_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_Answer_show(Job* pJob);
   
-  Job* pJob_Answer_next(void** aaArg);
+  pNEXTJOBFUN* pJob_Answer_next(void** aaArg);
 }
 
 /*============================================================================*/

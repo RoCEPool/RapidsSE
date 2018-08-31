@@ -44,7 +44,7 @@ namespace JobsModel
   void vJob_SubLoader_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_SubLoader_show(Job* pJob);
   
-  Job* pJob_SuubLoader_next(void** aaArg);
+  pNEXTJOBFUN* pJob_SuubLoader_next(void** aaArg);
 }
 
 /*============================================================================*/

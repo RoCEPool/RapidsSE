@@ -40,7 +40,7 @@ namespace JobsModel
   void vJob_Docol_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_Docol_show(Job* pJob);
   
-  Job* pJob_Docol_next(void** aaArg);
+  pNEXTJOBFUN* pJob_Docol_next(void** aaArg);
 }
 
 /*============================================================================*/
