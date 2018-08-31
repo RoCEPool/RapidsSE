@@ -6,7 +6,6 @@
 
 "requests_basics.sen"      include
 "requests_folder.sen"      include
-"requests_misc.sen"        include
 
 // create the root /tenants dictionary
 dicTenants: tenants
