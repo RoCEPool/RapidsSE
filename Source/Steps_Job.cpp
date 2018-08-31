@@ -48,8 +48,8 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("Job_fetchRows.spawnSub"_Stz, &vJobFetchRowsSpawnSub, false);
   vAddPrimitive("Job_fetchRows.table!"_Stz,   &vJobFetchRowsTableStore,   false);
   vAddPrimitive("Job_fetchRows.where@"_Stz, &vJobFetchRowsWhereFetch, false);
-  vAddPrimitive("job.findOriginator"_Stz,   &vJobFindOriginator,   false);
-  vAddPrimitive("job.findParticipant"_Stz,  &vJobFindParticipant,  false);
+  vAddPrimitive("job::findOriginator"_Stz,   &vJobFindOriginator,   false);
+  vAddPrimitive("job::findParticipant"_Stz,  &vJobFindParticipant,  false);
   vAddPrimitive("job.hasError"_Stz,         &vJobHasError,         false);
   vAddPrimitive("job.id@"_Stz,              &vJobIdFetch,          false);
   vAddPrimitive("job.indexName@"_Stz,       &vJobIndexNameFetch,   false);
@@ -790,7 +790,7 @@ void Task::vJobFetchRowsWhereFetch(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.findOriginator -- find job from originator job set                     */
+/* job::findOriginator -- find job from originator job set                     */
 /*----------------------------------------------------------------------------*/
 void Task::vJobFindOriginator(MP_Task mpTask)
 {
@@ -798,7 +798,7 @@ void Task::vJobFindOriginator(MP_Task mpTask)
   
   i8 iJobId;
   if ( ! mpTask->m_pDataStack->bPopAsInt(iJobId) )
-    THROW_INVALID_DSTACK("job.findOriginator"_Stz);
+    THROW_INVALID_DSTACK("job::findOriginator"_Stz);
   
   Job__Cancelled* pFindJob = new Job__Cancelled;
   pFindJob->m_iJobId = iJobId;
@@ -815,7 +815,7 @@ void Task::vJobFindOriginator(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.findParticipant -- find job from participant job set                   */
+/* job::findParticipant -- find job from participant job set                   */
 /*----------------------------------------------------------------------------*/
 void Task::vJobFindParticipant(MP_Task mpTask)
 {
@@ -823,7 +823,7 @@ void Task::vJobFindParticipant(MP_Task mpTask)
   
   i8 iJobId;
   if ( ! mpTask->m_pDataStack->bPopAsInt(iJobId) )
-    THROW_INVALID_DSTACK("job.findPartcipant"_Stz);
+    THROW_INVALID_DSTACK("job::findPartcipant"_Stz);
   
   Job__Cancelled* pFindJob = new Job__Cancelled;
   pFindJob->m_iJobId = iJobId;

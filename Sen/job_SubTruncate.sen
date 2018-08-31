@@ -59,7 +59,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // notify the truncate job
   pJob_SubTruncate job_SubTruncate.truncateJobId@ to iTrucateJobId
-  iTrucateJobId job.findParticipant to pJob_TruncateTable
+  iTrucateJobId job::findParticipant to pJob_TruncateTable
   pJob_TruncateTable job_truncateTable.task@ to pTask_TruncateTable
   pTask_TruncateTable ack
 

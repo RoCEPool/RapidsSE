@@ -52,11 +52,11 @@
   0 0 0 0 0 locals| pJobParticipant iParticipantNode error pJob iAcksRemaining |
 
   // get participant node that executed the job
-  iJobId job.findParticipant to pJobParticipant
+  iJobId job::findParticipant to pJobParticipant
   pJob__Cancelled job.participant@ to iParticipantNode
 
   // find the job in the originator jobs
-  iJobId job.findOriginator to pJob
+  iJobId job::findOriginator to pJob
 
   // get the error code from job__executed
   pJob__Cancelled jobCancelled.error@ to error

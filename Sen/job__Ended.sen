@@ -42,7 +42,7 @@
   0 0 locals| pJob iAcksRemaining |
 
   // find the job in the originator jobs
-  iJobId job.findOriginator to pJob
+  iJobId job::findOriginator to pJob
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
