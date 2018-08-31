@@ -32,19 +32,6 @@
   does>
 ;
 
-timer: testTimer
-
-: timerTest
-
-  testTimer timer.start
-  1 thread.sleep_s
-  testTimer timer.update
-  testTimer timer.millisecs .
-  testTimer timer.microsecs .
-  testTimer timer.nanosecs .
-  testTimer timer.ticks .
-;
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

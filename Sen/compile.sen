@@ -19,7 +19,6 @@
 "operators.sen" include
 "planners.sen" include
 "jobModel.sen" include
-"utilities.sen" include
 "testing.sen" include
 "munge.sen" include
 
