@@ -215,22 +215,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* find the table sub folder and push it onto task dictionary                 */
-/*----------------------------------------------------------------------------*/
-: pushTableSub ( "<tableName>" -- )
-  checkIsTable not if EC_NO_SUCH_TABLE false exit then
-  find execute table.subDic pathPush
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* pop the table sub folder                                                   */
-/*----------------------------------------------------------------------------*/
-: popTableSub
-    pathDrop
-;
-
-/*----------------------------------------------------------------------------*/
 /* get and inc table reference and put into task.seitf.currentTable           */
 /*----------------------------------------------------------------------------*/
 : getTableRef ( "<tableNm>" -- <R> )
