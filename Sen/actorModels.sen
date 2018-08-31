@@ -4,28 +4,9 @@
 
 "-actorModels.sen" .verbose
 
-"workerModel.sen" include
-
 "actorPrimitives.sen" include
 
 
-/*----------------------------------------------------------------------------*/
-/* queue an indirect call set to the coordinator and wait for indirect result */
-/*----------------------------------------------------------------------------*/
-: >coordinator> ( <<call*>> -- <<result>> )
-;
-
-/*----------------------------------------------------------------------------*/
-/* get coordinator to send indirect call to participant on a node to execute  */
-/*----------------------------------------------------------------------------*/
-: >>oneParticipant> ( <<call>> nodeNo -- bool )
-;
-
-/*----------------------------------------------------------------------------*/
-/* get coordinator to send indirect call to all participant to execute        */
-/*----------------------------------------------------------------------------*/
-: >>allParticipants> ( <<$$>> -- bool )
-;
 
 /*============================================================================*/
 /* end                                                                        */
