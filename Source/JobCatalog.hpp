@@ -20,7 +20,7 @@ namespace JobsModel
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-    static pNEXTJOBFUN pFirstFun(void);
+    static pJOBCLASSFUN pFirstFun(void);
   
     static JobClass_s* pFindJob_JC2(eCN eClass);
     static JobClass_s* pFindJob_JC2(Stz* aCommand1, Stz* aCommand2);

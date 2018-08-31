@@ -71,9 +71,9 @@ void JobCatalog::vTraceJobs(eCN eClass)
 /*----------------------------------------------------------------------------*/
 /* find job class given class number                                          */
 /*----------------------------------------------------------------------------*/
-pNEXTJOBFUN JobCatalog::pFirstFun(void)
+pJOBCLASSFUN JobCatalog::pFirstFun(void)
 {
-  return (pNEXTJOBFUN)pJob__Begun_class;
+  return (pJOBCLASSFUN)pJob__Begun_class;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -83,7 +83,7 @@ JobClass_s* JobCatalog::pFindJob_JC2(eCN eClass)
 {
   JobClass_s* pJobClass_s = nullptr;
   
-  for (pNEXTJOBFUN pfJobClass = (pNEXTJOBFUN)pJob__Begun_class; pfJobClass; ) {
+  for (pJOBCLASSFUN pfJobClass = (pJOBCLASSFUN)pJob__Begun_class; pfJobClass; ) {
     
     pJobClass_s = pfJobClass((pFUN**)&pfJobClass);
 
@@ -103,7 +103,7 @@ JobClass_s* JobCatalog::pFindJob_JC2(Stz* aCommand1, Stz* aCommand2)
   
   JobClass_s* pJobClass_s = nullptr;
   
-  for (pNEXTJOBFUN pfJobClass = (pNEXTJOBFUN)pJob__Begun_class; pfJobClass; ) {
+  for (pJOBCLASSFUN pfJobClass = (pJOBCLASSFUN)pJob__Begun_class; pfJobClass; ) {
   
     pJobClass_s = pfJobClass((pFUN**)&pfJobClass);
 
@@ -136,7 +136,7 @@ void JobCatalog::vTraceJobs_JC2(eCN eClass)
 {
   JobClass_s* pJobClass_s = nullptr;
 
-  for (pNEXTJOBFUN pfJobClass = pFirstFun(); pfJobClass; ) {
+  for (pJOBCLASSFUN pfJobClass = pFirstFun(); pfJobClass; ) {
     
     pJobClass_s = pfJobClass((pFUN**)&pfJobClass);
 
