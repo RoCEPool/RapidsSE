@@ -68,6 +68,24 @@ void RapidsSE::vCallImmmediate(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* call the prompt task                                                       */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vCallPrompt(void)
+{
+  JobClass* pJobClass_Prompt = gxJobCatalog.pFindJob(CN_JOB_PROMPT);
+  
+  Job_Prompt* pJob_Prompt = static_cast<Job_Prompt*>(pJobClass_Prompt->pNewJob(nullptr));
+  
+  pJob_Prompt->vSeed(SS_SEED_RUN);
+  
+  Task* pPromptTask = new Task(pJob_Prompt);
+
+  vCallImmmediate(pPromptTask);
+  
+  vDeleteImmmediate(&pPromptTask);
+}
+
+/*----------------------------------------------------------------------------*/
 /* change current directory                                                   */
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vChangeDirectory(void)
@@ -490,6 +508,7 @@ void RapidsSE::vRunCmdLine(void)
       
       if (gxArguments.m_bPrompt)
         vSpawnJobPrompt();
+        //vCallPrompt();
       else
         vWaitStop();
     }

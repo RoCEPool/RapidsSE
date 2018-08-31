@@ -21,6 +21,7 @@ namespace StorageEngine
     static void vAttachRegion(void);
     static void vCallBoot(void);
     static void vCallImmmediate(Task* pTask);
+    static void vCallPrompt(void);
     static void vChangeDirectory(void);
     static void vCheckPort(void);
     static void vClosePool(void);
