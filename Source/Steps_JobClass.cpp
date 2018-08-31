@@ -43,7 +43,7 @@ void Task::vJobClassFind(MP_Task mpTask)
   
   eCN eClass = (eCN)iJobClass;
   
-  JobClass* pJobClass = gxJobCatalog.pFindJob(eClass);
+  JobClass* pJobClass = gxJobCatalog.pFindJobClass(eClass);
   
   mpTask->m_pDataStack->vPushInt((i8)pJobClass);
 

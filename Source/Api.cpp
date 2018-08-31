@@ -2270,7 +2270,7 @@ eEC RapidsSE_SpawnPrompt(i8 iTraceLevel)
     eEC eError = RapidsSE_SEitfNew((void**)&pSEitf, "rapidsse"_Stz, "public"_Stz, 0, 0);
     ASSERT(EC_NONE == eError);
     
-    JobClass* pJobClass_Prompt = gxJobCatalog.pFindJob(CN_JOB_PROMPT);
+    JobClass* pJobClass_Prompt = gxJobCatalog.pFindJobClass(CN_JOB_PROMPT);
     
     Job_Prompt* pJob_Prompt = static_cast<Job_Prompt*>(pJobClass_Prompt->pNewJob(nullptr));
     

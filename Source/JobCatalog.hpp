@@ -14,16 +14,16 @@ namespace JobsModel
   
   public:
   
-    JobClass* pFindJob(Stz* aCommand1, Stz* aCommand2);
-    JobClass* pFindJob(eCN eClass);
+    JobClass* pFindJobClass(Stz* aCommand1, Stz* aCommand2);
+    JobClass* pFindJobClass(eCN eClass);
     void vTraceJobs(eCN eClass);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
     static pJOBCLASSFUN pFirstFun(void);
   
-    static JobClass_s* pFindJob_JC2(eCN eClass);
-    static JobClass_s* pFindJob_JC2(Stz* aCommand1, Stz* aCommand2);
+    static JobClass_s* pFindJobClass_JC2(eCN eClass);
+    static JobClass_s* pFindJobClass_JC2(Stz* aCommand1, Stz* aCommand2);
     static void vTraceJobs_JC2(eCN eClass);
   };
 }
