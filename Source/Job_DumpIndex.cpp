@@ -75,7 +75,7 @@ JobClass_s xJobClass_DumpIndex =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob_DumpIndex_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob_FetchRows_class;
   
   return &xJobClass_DumpIndex;
 }

@@ -75,7 +75,7 @@ JobClass_s xJobClass_DropTable =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob_DropTable_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob_DropTenant_class;
   
   return &xJobClass_DropTable;
 }

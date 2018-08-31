@@ -75,7 +75,7 @@ JobClass_s xJobClass_Docol =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob_Docol_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob_DropCatalog_class;
   
   return &xJobClass_Docol;
 }

@@ -75,7 +75,7 @@ JobClass_s xJobClass_Answer =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob_Answer_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob_Boot_class;
   
   return &xJobClass_Answer;
 }

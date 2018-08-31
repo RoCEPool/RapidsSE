@@ -75,7 +75,7 @@ JobClass_s xJobClass_TableSizes =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob_TableSizes_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob_TruncateTable_class;
   
   return &xJobClass_TableSizes;
 }

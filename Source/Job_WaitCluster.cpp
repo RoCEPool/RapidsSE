@@ -73,7 +73,7 @@ JobClass_s xJobClass_WaitCluster =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass_s* JobsModel::pJob_WaitCluster_next(pFUN** pNextFun)
+JobClass_s* JobsModel::pJob_WaitCluster_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)nullptr;
   

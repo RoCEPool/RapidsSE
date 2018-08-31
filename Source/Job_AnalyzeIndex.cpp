@@ -75,7 +75,7 @@ JobClass_s xJobClass_AnalyzeIndex =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob_AnalyzeIndex_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob_AnalyzeTable_class;
   
   return &xJobClass_AnalyzeIndex;
 }

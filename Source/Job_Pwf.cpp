@@ -75,7 +75,7 @@ JobClass_s xJobClass_Pwf =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob_Pwf_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob_Receiver_class;
   
   return &xJobClass_Pwf;
 }

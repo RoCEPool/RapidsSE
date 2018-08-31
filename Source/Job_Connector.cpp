@@ -75,7 +75,7 @@ JobClass_s xJobClass_Connector =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob_Connector_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob_CreateCatalog_class;
   
   return &xJobClass_Connector;
 }

@@ -75,7 +75,7 @@ JobClass_s xJobClass_SubTruncate =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob_SubTruncate_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob_TableSizes_class;
   
   return &xJobClass_SubTruncate;
 }

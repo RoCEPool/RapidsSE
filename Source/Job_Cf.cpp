@@ -75,7 +75,7 @@ JobClass_s xJobClass_Cf =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob_Cf_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob_CompactIndex_class;
   
   return &xJobClass_Cf;
 }

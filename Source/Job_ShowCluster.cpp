@@ -75,7 +75,7 @@ JobClass_s xJobClass_ShowCluster =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob_ShowCluster_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob_SizeIndex_class;
   
   return &xJobClass_ShowCluster;
 }

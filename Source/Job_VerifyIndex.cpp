@@ -75,7 +75,7 @@ JobClass_s xJobClass_VerifyIndex =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob_VerifyIndex_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob_VisualizeIndex_class;
   
   return &xJobClass_VerifyIndex;
 }

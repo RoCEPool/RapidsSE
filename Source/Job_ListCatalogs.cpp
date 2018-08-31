@@ -75,7 +75,7 @@ JobClass_s xJobClass_ListCatalogs =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob_ListCatalogs_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob_ListColumns_class;
   
   return &xJobClass_ListCatalogs;
 }

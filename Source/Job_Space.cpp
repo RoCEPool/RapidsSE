@@ -75,7 +75,7 @@ JobClass_s xJobClass_Space =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob_Space_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob_Start_class;
   
   return &xJobClass_Space;
 }

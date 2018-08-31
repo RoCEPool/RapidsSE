@@ -75,7 +75,7 @@ JobClass_s xJobClass_DropTenant =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob_DropTenant_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob_DumpIndex_class;
   
   return &xJobClass_DropTenant;
 }

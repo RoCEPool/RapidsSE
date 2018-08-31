@@ -72,7 +72,7 @@ JobClass_s xJobClass__Ended =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob__Ended_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob__Execute_class;
   
   return &xJobClass__Ended;
 }

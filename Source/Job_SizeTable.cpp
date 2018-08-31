@@ -75,7 +75,7 @@ JobClass_s xJobClass_SizeTable =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob_SizeTable_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob_Space_class;
   
   return &xJobClass_SizeTable;
 }

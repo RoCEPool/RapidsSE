@@ -75,7 +75,7 @@ JobClass_s xJobClass_VisualizeIndex =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob_VisualizeIndex_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob_WaitCluster_class;
   
   return &xJobClass_VisualizeIndex;
 }

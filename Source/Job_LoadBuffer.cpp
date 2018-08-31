@@ -75,7 +75,7 @@ JobClass_s xJobClass_LoadBuffer =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob_LoadBuffer_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob_LoadTable_class;
   
   return &xJobClass_LoadBuffer;
 }

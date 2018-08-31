@@ -75,7 +75,7 @@ JobClass_s xJobClass_FetchRows =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob_FetchRows_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob_Lf_class;
   
   return &xJobClass_FetchRows;
 }

@@ -72,7 +72,7 @@ JobClass_s xJobClass_Prompt =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob_Prompt_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob_Pwf_class;
   
   return &xJobClass_Prompt;
 }

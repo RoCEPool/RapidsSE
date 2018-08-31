@@ -75,7 +75,7 @@ JobClass_s xJobClass_CreateCatalog =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob_CreateCatalog_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob_CreateIndex_class;
   
   return &xJobClass_CreateCatalog;
 }

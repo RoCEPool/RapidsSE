@@ -75,7 +75,7 @@ JobClass_s xJobClass_CompactIndex =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob_CompactIndex_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob_Connector_class;
   
   return &xJobClass_CompactIndex;
 }

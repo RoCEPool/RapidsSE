@@ -75,7 +75,7 @@ JobClass_s xJobClass_StartCluster =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob_StartCluster_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob_Status_class;
   
   return &xJobClass_StartCluster;
 }

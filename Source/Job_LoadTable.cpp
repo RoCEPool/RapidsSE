@@ -81,7 +81,7 @@ JobClass_s xJobClass_LoadTable =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob_LoadTable_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob_Prompt_class;
   
   return &xJobClass_LoadTable;
 }

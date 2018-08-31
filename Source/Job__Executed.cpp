@@ -72,7 +72,7 @@ JobClass_s xJobClass__Executed =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob__Executed_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob_AnalyzeIndex_class;
   
   return &xJobClass__Executed;
 }

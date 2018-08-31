@@ -75,7 +75,7 @@ JobClass_s xJobClass_SubLoader =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob_SubLoader_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob_SubTruncate_class;
   
   return &xJobClass_SubLoader;
 }

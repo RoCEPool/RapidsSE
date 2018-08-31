@@ -75,7 +75,7 @@ JobClass_s xJobClass_Boot =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob_Boot_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob_Cf_class;
   
   return &xJobClass_Boot;
 }

@@ -75,7 +75,7 @@ JobClass_s xJobClass_CreateSchema =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob_CreateSchema_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob_CreateTable_class;
   
   return &xJobClass_CreateSchema;
 }

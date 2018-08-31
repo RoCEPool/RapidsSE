@@ -75,7 +75,7 @@ JobClass_s xJobClass_ListSchemas =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob_ListSchemas_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob_ListTables_class;
   
   return &xJobClass_ListSchemas;
 }

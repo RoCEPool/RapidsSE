@@ -72,7 +72,7 @@ JobClass_s xJobClass__Cancel =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob__Cancel_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob__Cancelled_class;
   
   return &xJobClass__Cancel;
 }

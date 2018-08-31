@@ -75,7 +75,7 @@ JobClass_s xJobClass_ListIdxColumns =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob_ListIdxColumns_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob_ListIndexes_class;
   
   return &xJobClass_ListIdxColumns;
 }

@@ -75,7 +75,7 @@ JobClass_s xJobClass_ListTenants =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob_ListTenants_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob_LoadBuffer_class;
   
   return &xJobClass_ListTenants;
 }

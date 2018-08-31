@@ -75,7 +75,7 @@ JobClass_s xJobClass_DropIndex =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob_DropIndex_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob_DropSchema_class;
   
   return &xJobClass_DropIndex;
 }

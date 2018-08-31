@@ -75,7 +75,7 @@ JobClass_s xJobClass_Status =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob_Status_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob_SubFetch_class;
   
   return &xJobClass_Status;
 }

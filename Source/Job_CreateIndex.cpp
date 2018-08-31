@@ -104,7 +104,7 @@ JobClass_s xJobClass_CreateIndex =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob_CreateIndex_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob_CreateSchema_class;
   
   return &xJobClass_CreateIndex;
 }

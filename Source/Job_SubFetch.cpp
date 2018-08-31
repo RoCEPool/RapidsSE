@@ -75,7 +75,7 @@ JobClass_s xJobClass_SubFetch =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob_SubFetch_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob_SubLoader_class;
   
   return &xJobClass_SubFetch;
 }

@@ -75,7 +75,7 @@ JobClass_s xJobClass_Sanity =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob_Sanity_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob_ShowCluster_class;
   
   return &xJobClass_Sanity;
 }

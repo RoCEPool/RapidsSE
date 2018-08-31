@@ -75,7 +75,7 @@ JobClass_s xJobClass_ListPartColumns =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob_ListPartColumns_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob_ListPartitions_class;
   
   return &xJobClass_ListPartColumns;
 }

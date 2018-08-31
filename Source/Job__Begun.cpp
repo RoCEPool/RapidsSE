@@ -72,7 +72,7 @@ JobClass_s xJobClass__Begun =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob__Begun_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob__Cancel_class;
   
   return &xJobClass__Begun;
 }

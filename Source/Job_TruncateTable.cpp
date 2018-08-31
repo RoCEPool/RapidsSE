@@ -75,7 +75,7 @@ JobClass_s xJobClass_TruncateTable =
 /*----------------------------------------------------------------------------*/
 JobClass_s* JobsModel::pJob_TruncateTable_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  *pNextFun = (pFUN*)pJob_UseSchema_class;
   
   return &xJobClass_TruncateTable;
 }
