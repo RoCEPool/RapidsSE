@@ -202,9 +202,117 @@ void JobClass::vJobCatHeader(void)
 }
 
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 
 
+/*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+JobClass_s* JobsModel::_pJobClass_s(i8 iAddr)
+{
+  JobClass_s* pJobClass_s = reinterpret_cast<JobClass_s*>(iAddr);
+  
+  return pJobClass_s;
+}
+
+/*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+JobClass_s* JobsModel::_pJobClass_s(void* aAddr)
+{
+  JobClass_s* pJobClass_s = reinterpret_cast<JobClass_s*>(aAddr);
+  
+  return pJobClass_s;
+}
+
+/*----------------------------------------------------------------------------*/
+/* create a new job by running the new-function                               */
+/*----------------------------------------------------------------------------*/
+Job* JobClass_s::pNewJob(Job* pArg)
+{
+  Job* pNewJob = (*m_fNew)(pArg);
+  
+  pNewJob->m_pJobClass_s = this;
+  pNewJob->m_eJobTrace = m_eTrace;
+  
+  return pNewJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete the job by running the delete-function                              */
+/*----------------------------------------------------------------------------*/
+void JobClass_s::vDeleteJob(Interface::SEitf* pSEitf, Job* pJob)
+{
+  (*m_fDelete)(pSEitf, pJob);
+}
+
+/*----------------------------------------------------------------------------*/
+/* end the job by running the post-function                                   */
+/*----------------------------------------------------------------------------*/
+void JobClass_s::vPostJob(Interface::SEitf* pSEitf, Job* pJob)
+{
+  (*m_fPost)(pSEitf, pJob);
+}
+
+/*----------------------------------------------------------------------------*/
+/* create a new job by running the pre-function                                */
+/*----------------------------------------------------------------------------*/
+Job* JobClass_s::pPreJob(Interface::SEitf* pSEitf)
+{
+  Job* pJob = (*m_fPre)(pSEitf);
+  
+  pJob->m_pJobClass_s = this;
+  pJob->m_eJobTrace = m_eTrace;
+  
+  return pJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get seed                                                                   */
+/*----------------------------------------------------------------------------*/
+Stz* JobClass_s::sSeed(eSS eSeed)
+{
+  switch (eSeed) {
+    case SS_SEED_RUN: return (Stz*)m_aSeedRun; break;
+    case SS_SEED_REQ: return (Stz*)m_aSeedReq; break;
+    case SS_SEED_RCV: return (Stz*)m_aSeedRcv; break;
+    case SS_SEED_EXE: return (Stz*)m_aSeedExe; break;
+    case SS_SEED_END: return (Stz*)m_aSeedEnd; break;
+    case SS_SEED_CAN: return (Stz*)m_aSeedCan; break;
+    default: NEVER_REACH;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* pre-send function                                                          */
+/*----------------------------------------------------------------------------*/
+void JobClass_s::vSendJob(Job* pJob)
+{
+  if (m_fSend)
+    (*m_fSend)(pJob);
+}
+
+/*----------------------------------------------------------------------------*/
+/* post-receive fucntion                                                      */
+/*----------------------------------------------------------------------------*/
+void JobClass_s::vRecvJob(Job* pJob)
+{
+  if (m_fRecv)
+    (*m_fRecv)(pJob);
+}
+
+/*----------------------------------------------------------------------------*/
+/* show the job                                                               */
+/*----------------------------------------------------------------------------*/
+void JobClass_s::vShowJob(Job* pJob)
+{
+  (*m_fShow)(pJob);
+}
 
 /*----------------------------------------------------------------------------*/
 /* vtrace the job class for the jobcat prompt function                        */
@@ -255,6 +363,43 @@ void JobClass_s::vJobCat(void)
          sSeedExe.aStr(),
          sSeedEnd.aStr(),
          sSeedCan.aStr()
+         );
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* vtrace the header for the jobcat prompt function                           */
+/*----------------------------------------------------------------------------*/
+void JobClass_s::vJobCatHeader(void)
+{
+  vTrace("%20s %20s %10s %10s %20s : %10s %20s %20s %20s %20s %20s %20s\n"_Stz,
+         
+         "eClass"_Stz,
+         "Job Name"_Stz,
+         "Functions"_Stz,
+         "Kind"_Stz,
+         "Comment"_Stz,
+         
+         "Resources"_Stz,
+         "Run Seed"_Stz,
+         "Req Seed"_Stz,
+         "Rcv Seed"_Stz,
+         "Exe Seed"_Stz,
+         "End Seed"_Stz,
+         "Can Seed"_Stz
+         );
+  
+  s32 sBar10 = "----------"_Stz;
+  s32 sBar20 = "--------------------"_Stz;
+  
+  vTrace("%20s %20s %10s %10s %20s : "
+         "%10s %20s %20s %20s %20s %20s %20s\n"_Stz,
+         
+         sBar20.aStr(),sBar20.aStr(),sBar10.aStr(),
+         sBar10.aStr(),sBar20.aStr(),sBar10.aStr(),
+         
+         sBar20.aStr(),sBar20.aStr(),sBar20.aStr(),
+         sBar20.aStr(),sBar20.aStr(),sBar20.aStr()
          );
   
 }

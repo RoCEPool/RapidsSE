@@ -91,6 +91,7 @@ void Job::vInit(void)
 {
   m_iJobId   = -1;
   m_pJobClass = nullptr;
+  m_pJobClass_s = nullptr;
   m_eSeed    = SS_ENUMS;
   m_eJobTrace   = JT_NONE;
   m_iParticipantNode  = -1;
