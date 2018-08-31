@@ -40,7 +40,7 @@ namespace JobsModel
   void vJob_ListPartitions_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_ListPartitions_show(Job* pJob);
   
-  pNEXTJOBFUN* pJob_ListPartitions_next(void** aaArg);
+  pNEXTJOBFUN* pJob_ListPartitions_next(JobClass_s** aaJobClass);
 }
 
 /*============================================================================*/

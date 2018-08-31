@@ -39,7 +39,7 @@ namespace JobsModel
   void vJob_StartCluster_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_StartCluster_show(Job* pJob);
   
-  pNEXTJOBFUN* pJob_StartCluster_next(void** aaArg);
+  pNEXTJOBFUN* pJob_StartCluster_next(JobClass_s** aaJobClass);
 }
 
 /*============================================================================*/

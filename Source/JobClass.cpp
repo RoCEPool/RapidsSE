@@ -201,6 +201,65 @@ void JobClass::vJobCatHeader(void)
   
 }
 
+
+
+
+
+
+/*----------------------------------------------------------------------------*/
+/* vtrace the job class for the jobcat prompt function                        */
+/*----------------------------------------------------------------------------*/
+void JobClass_s::vJobCat(void)
+{
+  s32 sFunctions(""_Stz);
+  
+  sFunctions.vConcat(m_fPre ?    "p"_Stz : " "_Stz);
+  sFunctions.vConcat(m_fPost ?   "P"_Stz : " "_Stz);
+  sFunctions.vConcat(m_fNew ?    "n"_Stz : " "_Stz);
+  sFunctions.vConcat(m_fDelete ? "d"_Stz : " "_Stz);
+  sFunctions.vConcat(m_fSend ?   "s"_Stz : " "_Stz);
+  sFunctions.vConcat(m_fRecv ?   "r"_Stz : " "_Stz);
+  sFunctions.vConcat(m_fShow ?   "."_Stz : " "_Stz);
+  
+  s32 sSeedRun(m_aSeedRun ? m_aSeedRun : "-"_Stz);
+  sSeedRun.vConcat(m_bSeedsSpawned[SS_SEED_RUN] ? "+"_Stz : " "_Stz);
+  
+  s32 sSeedReq(m_aSeedReq ? m_aSeedReq : "-"_Stz);
+  sSeedReq.vConcat(m_bSeedsSpawned[SS_SEED_REQ] ? "+"_Stz : " "_Stz);
+  
+  s32 sSeedRcv(m_aSeedRcv ? m_aSeedRcv : "-"_Stz);
+  sSeedRcv.vConcat(m_bSeedsSpawned[SS_SEED_RCV] ? "+"_Stz : " "_Stz);
+  
+  s32 sSeedExe(m_aSeedExe ? m_aSeedExe : "-"_Stz);
+  sSeedExe.vConcat(m_bSeedsSpawned[SS_SEED_EXE] ? "+"_Stz : " "_Stz);
+  
+  s32 sSeedEnd(m_aSeedEnd ? m_aSeedEnd : "-"_Stz);
+  sSeedEnd.vConcat(m_bSeedsSpawned[SS_SEED_END] ? "+"_Stz : " "_Stz);
+  
+  s32 sSeedCan(m_aSeedCan ? m_aSeedCan : "-"_Stz);
+  sSeedCan.vConcat(m_bSeedsSpawned[SS_SEED_CAN] ? "+"_Stz : " "_Stz);
+  
+  vTrace("%20s %20s %10s %10s %20s : %10s %20s %20s %20s %20s %20s %20s\n"_Stz,
+         
+         aCN[m_eClass],
+         m_aName,
+         sFunctions.aStr(),
+         aJK[m_eKind],
+         m_aComment,
+         
+         m_bResources ? "chk/rel"_Stz : "-"_Stz,
+         
+         sSeedRun.aStr(),
+         sSeedReq.aStr(),
+         sSeedRcv.aStr(),
+         sSeedExe.aStr(),
+         sSeedEnd.aStr(),
+         sSeedCan.aStr()
+         );
+  
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

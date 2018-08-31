@@ -63,6 +63,76 @@ void JobCatalog::vTraceJobs(eCN eClass)
       m_xJobClass[i_Job].vJobCat();
 }
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* find job class given class number                                          */
+/*----------------------------------------------------------------------------*/
+JobClass_s* JobCatalog::pFindJob_JC2(eCN eClass)
+{
+  JobClass_s* pJobClass_s = nullptr;
+  
+  for (pNEXTJOBFUN pFun = (pNEXTJOBFUN)pJob__Begun_next; pFun; ) {
+    pFun = (pNEXTJOBFUN)pFun(&pJobClass_s);
+
+    if (pJobClass_s->m_eClass == eClass)
+      return pJobClass_s;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find job class given command                                               */
+/*----------------------------------------------------------------------------*/
+JobClass_s* JobCatalog::pFindJob_JC2(Stz* aCommand1, Stz* aCommand2)
+{
+  //vTrace("FindJob: %s %s\n"_Stz, aCommand1, aCommand2);
+  
+  JobClass_s* pJobClass_s = nullptr;
+  
+  for (pNEXTJOBFUN pFun = (pNEXTJOBFUN)pJob__Begun_next; pFun; ) {
+    pFun = (pNEXTJOBFUN)pFun(&pJobClass_s);
+
+    if ( ! pJobClass_s->m_aCommand1 ||
+        ! StrLib::bSame(pJobClass_s->m_aCommand1->aChar(),aCommand1->aChar()) )
+      continue;
+    
+    //if (aCommand2->iLength()) {
+    if (pJobClass_s->m_aCommand2) {
+      if ( ! StrLib::iLength(pJobClass_s->m_aCommand2->aChar()) )
+        continue;
+      if ( ! StrLib::bSame(pJobClass_s->m_aCommand2->aChar(),aCommand2->aChar()) )
+        continue;
+    }
+    
+    if (pJobClass_s->m_bEnabled)
+      return pJobClass_s;
+    else
+      return nullptr;
+    
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* trace the job for the given class                                          */
+/*----------------------------------------------------------------------------*/
+void JobCatalog::vTraceJobs_JC2(eCN eClass)
+{
+  JobClass_s* pJobClass_s = nullptr;
+
+  for (pNEXTJOBFUN pFun = (pNEXTJOBFUN)pJob__Begun_next; pFun; ) {
+    pFun = (pNEXTJOBFUN)pFun(&pJobClass_s);
+    
+    pJobClass_s->vJobCat();
+  }
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

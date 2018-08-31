@@ -62,14 +62,18 @@ JobClass_s xJobClass_WaitCluster =
   vJob_WaitCluster_show,  // job show function
   true,                   // job is enabled
   "<help>"_Stz,           // help
-  "<example>"_Stz         // example
+  "<example>"_Stz,        // example
+  
+  { 0, 0, 0, 0 ,0, 0 }    // seeds spawned
 };
 
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-pNEXTJOBFUN JobsModel::pJob_WaitCluster_next(void** aaArg)
+pNEXTJOBFUN JobsModel::pJob_WaitCluster_next(JobClass_s** aaJobClass)
 {
+  *aaJobClass = &xJobClass_WaitCluster;
+  
   return (pNEXTJOBFUN)nullptr;
 }
 

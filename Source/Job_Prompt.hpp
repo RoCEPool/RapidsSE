@@ -38,7 +38,7 @@ namespace JobsModel
   void vJob_Prompt_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_Prompt_show(Job* pJob);
   
-  pNEXTJOBFUN* pJob_Prompt_next(void** aaArg);
+  pNEXTJOBFUN* pJob_Prompt_next(JobClass_s** aaJobClass);
 }
 
 /*============================================================================*/

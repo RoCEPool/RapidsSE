@@ -40,7 +40,7 @@ namespace JobsModel
   void vJob_DumpIndex_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_DumpIndex_show(Job* pJob);
   
-  pNEXTJOBFUN* pJob_DumpIndex_next(void** aaArg);
+  pNEXTJOBFUN* pJob_DumpIndex_next(JobClass_s** aaJobClass);
 }
 
 /*============================================================================*/

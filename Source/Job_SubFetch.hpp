@@ -44,7 +44,7 @@ namespace JobsModel
   void vJob_SubFetch_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_SubFetch_show(Job* pJob);
   
-  pNEXTJOBFUN* pJob_SubFetch_next(void** aaArg);
+  pNEXTJOBFUN* pJob_SubFetch_next(JobClass_s** aaJobClass);
 }
 
 /*============================================================================*/

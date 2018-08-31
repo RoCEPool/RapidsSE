@@ -40,7 +40,7 @@ namespace JobsModel
   void vJob_VerifyIndex_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_VerifyIndex_show(Job* pJob);
   
-  pNEXTJOBFUN* pJob_VerifyIndex_next(void** aaArg);
+  pNEXTJOBFUN* pJob_VerifyIndex_next(JobClass_s** aaJobClass);
 }
 
 /*============================================================================*/

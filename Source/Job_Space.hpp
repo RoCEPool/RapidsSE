@@ -40,7 +40,7 @@ namespace JobsModel
   void vJob_Space_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_Space_show(Job* pJob);
   
-  pNEXTJOBFUN* pJob_Space_next(void** aaArg);
+  pNEXTJOBFUN* pJob_Space_next(JobClass_s** aaJobClass);
 }
 
 /*============================================================================*/

@@ -5,8 +5,9 @@
 
 namespace JobsModel
 {
-  class JobClass; // forward definition
-  
+  class JobClass;    // forward definition
+  struct JobClass_s; // forward definition
+
   class Job;
   
   static const i8 C_MAX_COLUMNS = 128;
@@ -133,7 +134,8 @@ namespace JobsModel
 
 bool bJobCompare(void* pObjectInsert, void* pObjectScan, bool& bMatch);
 
-typedef void (*pNEXTJOBFUN)(void** );
+typedef void* (*pFUN)(void*);
+typedef pFUN (*pNEXTJOBFUN)(JobClass_s** );
 
 /*============================================================================*/
 /* end                                                                        */

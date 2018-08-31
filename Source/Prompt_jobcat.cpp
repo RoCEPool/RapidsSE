@@ -103,6 +103,11 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   
   if (nJobs != CN_JOB_WAITCLUSTER - CN_JOB__BEGUN + 1)
     vTrace("\nWarning: Missing Jobs\n\n"_Stz);
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  JobCatalog::vTraceJobs_JC2(CN_JOB__BEGUN);
 
   return true;
 }
