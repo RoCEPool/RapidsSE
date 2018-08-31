@@ -19,8 +19,6 @@
 
   prompt::new to pPrompt
 
-  "prompt_run" .
-
   pPrompt prompt.SEitf to pSEitf
   pSEitf seitf.commandProcessor to pCommandProcessor
 
@@ -90,7 +88,6 @@
     // post process and delete the job
     pSEitf pCommandProcessor commandProcessor.postJob
     pSEitf pCommandProcessor commandProcessor.deleteJob
-    nullptr task::this task.job!
 
   repeat
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -1384,7 +1384,7 @@ Job* Task::pJob(void)
 void Task::vJob(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
+    
   m_pJob = pJob;
 }
 
