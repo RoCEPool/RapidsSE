@@ -262,77 +262,7 @@
 
 ;
 
-////////////////////////////////////////////////////////////////////////////////
 
-: dumpTable ( "<tableNm>" )
-
-  find execute ( table )
-
-  "__row_cursor" find dup
-  if
-  else
-    drop
-    "__row_cursor" :selCursor
-  then
-  execute
-
-  >r
-  // r0 ^selCursor
-
-  r0 selCursor.table!
-  grid::slots 0
-  do
-    // r2 ^selCursor
-    I r2 selCursor.begin
-    r2 selCursor.first
-
-    begin
-
-      while
-
-      r2 selCursor.get
-      .
-      r2 selCursor.next
-
-      repeat
-
-      r2 selCursor.end
-  loop
-
-  rdrop
-
-  "__row_cursor" find word.forget
-;
-
-/*----------------------------------------------------------------------------*/
-/* analyze a table (detail analysis)                                          */
-/*----------------------------------------------------------------------------*/
-: danalyzeTable allParticipants 1 returnResult ( "<tableNm>" -- true n# true )
-
-  tp: danalyzeTable
-
-  find execute
-  1 // detailed
-  swap
-  table.analyze
-
-  <SUCCESS_RESULT>
-;
-
-
-/*----------------------------------------------------------------------------*/
-/* set no of subloaders in table on each participant                          */
-/*----------------------------------------------------------------------------*/
-: setSubLoaders allParticipants 2 checkResult ( "<tableNm" subLoaders -- true n# true )
-
-  locals| sTableNm iSubLoaders |
-
-  iSubLoaders
-  sTableNm find execute
-  table.subLoaders
-
-  true <SUCCESS_RESULT>
-;
 
 /*============================================================================*/
 /* end                                                                        */

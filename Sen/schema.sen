@@ -49,32 +49,6 @@
 ;
 
 
-////////////////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
-/* make a schema folder (run by participant)                                  */
-/*----------------------------------------------------------------------------*/
-/*
-: makeSchema allParticipants 1 checkResult ( "<schemaNm>" -- true n# true )
-
-tp: makingSchema
-
-  args.tracepoint if
-    dup "MAKING SCHEMA " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
-  then
-
-  dup ( "<schemaNm>" )
-
-  :schema ( "<schemaNm>" ^schema )
-
-  drop ( "<schemaNm>" )
-
-  makeTables ( )
-
-  true <SUCCESS_RESULT>
-;
-*/
-
 
 /*============================================================================*/
 /* end                                                                        */

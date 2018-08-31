@@ -187,43 +187,6 @@ tp: executeDfetchPlan
   //<< pSeitf "triggerRangeOp" thePlan plan.id@ "triggerRangeOp.task" >>jobQueue
 ;
 
-/*----------------------------------------------------------------------------*/
-/* distribute plan (multi-node version)                                       */
-/*----------------------------------------------------------------------------*/
-: distributePlan allParticipants 1 checkResult ( plan -- true n# true )
-
-tp: distributePlan
-
-  locals| thePlan |
-
-  // add plan to plan list
-  thePlan planList::addPlan
-
-tp: distPlanDone
-
-  //"NODE %V" grid::thisNodeName@ str.format .
-
-  //planList::show
-
-  // compile the plan
-  thePlan compilePlan
-
-tp: cplPlanDone
-
-  true <SUCCESS_RESULT>
-;
-
-/*----------------------------------------------------------------------------*/
-/* reap plan on all nodes                                                     */
-/*----------------------------------------------------------------------------*/
-: reapPlan allParticipants 1 checkResult ( ??? -- true n# true )
-
-tp: reapPlan
-
-  ": reapPlan" .
-
-  true <SUCCESS_RESULT>
-;
 
 /*============================================================================*/
 /* end                                                                        */
