@@ -2227,7 +2227,7 @@ eEC RapidsSE_PoolOpen(Stz* pInstanceName, void** ppInstance, i8 iTraceLevel)
     s256 sPoolName;
     
     sPoolName = (Stz*)pInstanceName;
-    bool bResult = RapidsSE::bPoolOpen(sPoolName);
+    bool bResult = RapidsSE::bOpenPool(sPoolName);
     
     if (!bResult) {
       TRACE_ERROR("a"_Stz, EC_INVALID_INSTANCE);
@@ -2312,7 +2312,7 @@ eEC RapidsSE_SEitfDelete(SEitf* pSEitf, i8 iTraceLevel)
     CLEAR_LASTERROR();
     
     // delete the SEitf
-    RapidsSE::vSEitfDelete(pSEitf);
+    RapidsSE::vDeleteSEitf(pSEitf);
     
     // set SEitf to nullptr so trace knows not to look at it
     pSEitf = nullptr;

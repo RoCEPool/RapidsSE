@@ -123,12 +123,28 @@ void RapidsSE::vCheckPort(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* close the shm region                                                       */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vClosePool(void)
+{
+  //delete gpBufferPool;
+}
+
+/*----------------------------------------------------------------------------*/
 /* create new shm region                                                      */
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vCreateAttachMap(void)
 {
   // create the attach map (which records global pointers)
   new AttachMap;
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete an seitf instance                                                   */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vDeleteSEitf(SEitf* pSEitf)
+{
+  delete pSEitf;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -223,7 +239,7 @@ void RapidsSE::vMainEntry(void)
   
   vKillPrev();
   
-  vPoolOpen();
+  vOpenPool();
   
   if (gxArguments.m_bStart)
     vSetGlobals();
@@ -234,23 +250,15 @@ void RapidsSE::vMainEntry(void)
   
   vRunCmdLine();
   
-  vPoolClose();
+  vClosePool();
   
   vPrintExit();
 }
 
 /*----------------------------------------------------------------------------*/
-/* close the shm region                                                       */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vPoolClose(void)
-{
-  //delete gpBufferPool;
-}
-
-/*----------------------------------------------------------------------------*/
 /* attach or create the shm region                                            */
 /*----------------------------------------------------------------------------*/
-void RapidsSE::vPoolOpen(void)
+void RapidsSE::vOpenPool(void)
 {
   if (gxArguments.m_bVerbose)
     vInfo("\n*\n* Pool Open\n*\n"_Stz);
@@ -332,7 +340,7 @@ void RapidsSE::vPoolOpen(void)
 /*----------------------------------------------------------------------------*/
 /* attach or create the shm region                                            */
 /*----------------------------------------------------------------------------*/
-bool RapidsSE::bPoolOpen(StrVal& sPoolName)
+bool RapidsSE::bOpenPool(StrVal& sPoolName)
 {
   bool bResult = Region::bAttach(sPoolName, gxArguments.m_bWelcome);
   if (!bResult)
@@ -475,14 +483,6 @@ bool RapidsSE::bRunUtilities(int argc, Stz* argv[])
   }
 
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete an seitf instance                                                   */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vSEitfDelete(SEitf* pSEitf)
-{
-  delete pSEitf;
 }
 
 /*----------------------------------------------------------------------------*/
