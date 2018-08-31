@@ -8,7 +8,6 @@
 "miscTesting.sen" include
 "unitTests.sen" include
 "1m.sen" include
-"planTesting.sen" include
 
 /*============================================================================*/
 /* end                                                                        */

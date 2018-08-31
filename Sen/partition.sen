@@ -66,30 +66,6 @@
   pathDrop
 ;
 
-/*----------------------------------------------------------------------------*/
-/* check table can be partitioned                                             */
-/*----------------------------------------------------------------------------*/
-/*
-: checkPartitionTable ( "<tableNm>" --  true | errorCode false )
-
-  locals| sTableNm |
-tp: checkPartitionTable
-  checkInTables not if false exit then
-
-  sTableNm checkIsTableFolder not if false exit then
-
-  sTableNm pushTable assert
-  sTableNm find execute table.space
-  if EC_TABLE_NOT_EMPTY false popTable exit then
-
-tp: checkPartitionTable4
-  popTable
-
-  assertInTables
-tp: checkPartitionTable1
-  true
-;
-*/
 
 /*----------------------------------------------------------------------------*/
 /* assert top of task dictionary stack is partitions                          */
@@ -168,32 +144,6 @@ tp: checkPartitionTable1
 ;
 
 
-////////////////////////////////////////////////////////////////////////////////
-
-
-/*----------------------------------------------------------------------------*/
-/* make partition (run by participant)                                        */
-/*----------------------------------------------------------------------------*/
-: partitionTable allParticipants 1 checkResult ( "<tableNm>" -- true n# true )
-
-tp: partitioningTable
-
-  locals| tableNm |
-
-  args.tracepoint if
-  "MAKING PARTITIONS on NODE " grid::thisNode@ >str str.cat .
-  then
-
-  tableNm ( "<tableNm>" )
-  find execute pathPush
-
-  "partitions" find execute pathPush
-
-  // make partition columns
-  tableNm "makePartitionColumns" find execute
-
-  true <SUCCESS_RESULT>
-;
 
 /*============================================================================*/
 /* end                                                                        */
