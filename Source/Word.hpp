@@ -30,26 +30,6 @@ namespace Dictionaries
     /*  5 */ "ENUMS"_Stz,
   };
   
-  enum eDT // distributed type
-  {
-    /*  0 */ DT_NONE=0,          // none
-    /*  1 */ DT_ALLPARTICIPANTS, // word is distributed to all participants
-    /*  2 */ DT_ONEPARTICIPANT,  // word is distributed to one participants
-    /*  3 */ DT_NOPARTICIPANT,   // word is not distributed to any participants
-    /*  4 */ DT_LOCALCALLS,      // word only issues local calls
-    /*  5 */ DT_ENUMS
-  };
-  
-  static Stz* aDT[]
-  {
-    /*  0 */ "NONE"_Stz,
-    /*  1 */ "ALLPARTICIPANTS"_Stz,
-    /*  2 */ "ONEPARTICIPANT"_Stz,
-    /*  3 */ "NOPARTICIPANT"_Stz,
-    /*  4 */ "LOCALCALLS"_Stz,
-    /*  5 */ "ENUMS"_Stz,
-  };
-  
   class Word : public Object
   {
     friend class Dic;
@@ -58,7 +38,6 @@ namespace Dictionaries
     s32      m_sName;        // the name of this word
     eWT      m_eWordType;    // type of word
     bool     m_bPersistent;  // is on persistent heap
-    eDT      m_eDistributed; // distributed
     i8       m_iTrace;       // trace level
     i8       m_iEpoch;       // epoch no. used by bp analyzer
     Dic*     m_pDic;         // which dictionary this word in
@@ -110,8 +89,6 @@ namespace Dictionaries
     i8    nBodyUsed(void);
   
     Dic*  pDic(void);
-    void  vDistributed(eDT eDistributed);
-    eDT   eDistributed(void);
     i8    iEpoch(void);
     void  vEntryCell(Cell* pCell);
     Cell* pEntryCell(void);

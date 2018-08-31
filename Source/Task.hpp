@@ -1442,8 +1442,7 @@ namespace Tasks
     static void vHashHashColon(MP_Task mpTask);
     static void vIndirect(MP_Task mpTask);
     static void vImmediate(MP_Task mpTask);
-    static void vLocalCalls(MP_Task mpTask);
-    static void vLocate(MP_Task mpTask);
+   static void vLocate(MP_Task mpTask);
     static void vOpDic(MP_Task mpTask);
     static void vPlanDicTask(MP_Task mpTask);
     static void vPostpone(MP_Task mpTask);

@@ -74,7 +74,6 @@ Word::Word(Stz* sName)
   m_sName         = sName;
   m_eWordType     = WT_ROUTINE;
   //m_bPersistent   = false;
-  m_eDistributed  = DT_NOPARTICIPANT;
   m_iTrace        = 0;
   //m_pDic        = pDic;
   m_pKind         = gpAttachMap->m_pWord ? gpAttachMap->m_pWord : this;
@@ -406,26 +405,6 @@ TaskStep* Word::ppEntryStep(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   return &m_pEntryStep;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get distributed type                                                       */
-/*----------------------------------------------------------------------------*/
-eDT Word::eDistributed(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  return m_eDistributed;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set distributed type                                                       */
-/*----------------------------------------------------------------------------*/
-void Word::vDistributed(eDT eDistributed)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  m_eDistributed = eDistributed;
 }
 
 /*----------------------------------------------------------------------------*/

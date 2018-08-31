@@ -222,7 +222,7 @@ void Job_CreateTable::vShow(void)
     vTrace("  m_xColumns[%lld].m_bIsNullable = %s\n"_Stz, i_Column, m_xColumns[i_Column].m_bIsNullable ? "true" : "false");
     vTrace("  m_xColumns[%lld].m_bIsUnique = %s\n"_Stz, i_Column, m_xColumns[i_Column].m_bIsUnique ? "true" : "false");
     vTrace("  m_xColumns[%lld].m_bIsPartitionKey = %s\n"_Stz, i_Column, m_xColumns[i_Column].m_bIsPartitionKey ? "true" : "false");
-    vTrace("  m_xColumns[%lld].m_eDatumType = %s\n"_Stz, i_Column, aDT[m_xColumns[i_Column].m_eDatumType]);
+    vTrace("  m_xColumns[%lld].m_eDatumType = %s\n"_Stz, i_Column, aDM[m_xColumns[i_Column].m_eDatumType]);
   }
 }
 

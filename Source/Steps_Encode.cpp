@@ -107,18 +107,7 @@ void Task::vEncodeCallRoutine(MP_Task mpTask)
   Word* pCurrentWord = mpTask->m_pCurrentWord;
   
   TaskStep* ppCalledEntryStep;
-  if (DT_NOPARTICIPANT == pCalledWord->eDistributed() ||
-      DT_LOCALCALLS    == pCurrentWord->eDistributed()) {
-    ppCalledEntryStep = pCalledWord->ppEntryStep();
-  }
-  else {
-    s32 sTildeName;
-    sTildeName = "~"_Stz;
-    sTildeName.vConcat(pCalledWord->sName());
-    
-    Word* pWordTilde = mpTask->m_xPathStack.pFindWord(sTildeName);
-    ppCalledEntryStep = pWordTilde->ppEntryStep();
-  }
+  ppCalledEntryStep = pCalledWord->ppEntryStep();
   
   pCurrentWord->vEncode(ppCalledEntryStep);
   

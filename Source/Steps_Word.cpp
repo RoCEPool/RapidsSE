@@ -35,7 +35,6 @@ void Task::vAddPrimitives_Word(void)
   vAddPrimitive("##:"_Stz,             &vHashHashColon,    true );
   vAddPrimitive("indirect"_Stz,        &vIndirect,         true );
   vAddPrimitive("immediate"_Stz,       &vImmediate,        true );
-  vAddPrimitive("localCalls"_Stz,      &vLocalCalls,       true );
   vAddPrimitive("locate"_Stz,          &vLocate,           false);
 
   vAddPrimitive("opDic"_Stz,           &vOpDic,            true );
@@ -545,20 +544,6 @@ void Task::vImmediate(MP_Task mpTask)
   //vTrace("Task::vImmediate: %s\n"_Stz,pCurrentWord->sName().aChar());
   
   pCurrentWord->vImmediate(true);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* localCalls -- set current word as a locals calls only word       immediate */
-/*----------------------------------------------------------------------------*/
-void Task::vLocalCalls(MP_Task mpTask)
-{
-  ENTRY("vLocalCalls"_Stz);
-  
-  Word* pCurrentWord = mpTask->m_pCurrentWord;
-  
-  pCurrentWord->vDistributed(DT_LOCALCALLS);
   
   EXIT();
 }
