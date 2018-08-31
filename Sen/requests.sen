@@ -4,19 +4,6 @@
 
 "-requests.sen" .verbose
 
-"requests_folder.sen"      include
-
-// create the root /tenants dictionary
-dicTenants: tenants
-
-// create /tenants/boray/catalogs/rapidsse/schemas/public
-
-// create the default folder hierarchy if not reloading
-// args.reload not if
-//   createDefaultFolders
-// then
-
-createDefaultFolders
 
 
 /*============================================================================*/

@@ -23,7 +23,6 @@
 "munge.sen" include
 
 // last
-"requests.sen" include
 "se.sen" include
 
 assert::stack_0
