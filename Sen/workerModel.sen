@@ -29,41 +29,6 @@
   ".task" str.cat find execute
 ;
 
-/*----------------------------------------------------------------------------*/
-/* spawn worker by seeding its task and spawning the os thread for it         */
-/*----------------------------------------------------------------------------*/
-: spawnWorkerActor ( ... nArgs "<loopNm>" "<jobNm>" -- )
-
-  locals| jobNm | ( ... nArgs "<loopNm>" )
-
-  // seed the task
-  jobNm findActorTask task.seed ( )
-
-  //jobNm findActorThread thread.spawn_worker ( )
-;
-
-
-/*----------------------------------------------------------------------------*/
-/* create a worker (but don't spawn thread)                                   */
-/*----------------------------------------------------------------------------*/
-: :createWorkerActor ( "<actorNm>" -- "<actorNm>" )
-
-  locals| actorNm |
-
-  reg.push
-
-  actorNm ".task"    str.cat :task    execute to_CALLER  // reg0 has task
-  actorNm ".queue"   str.cat :queue   execute to_QUEUE   // reg1 has queue
-  actorNm ".thread"  str.cat :thread  execute to_THREAD  // reg3 has thread
-
-  //AC_WORKER reg0 task.actorModel!
-  //AC_WORKER reg3 thread.actorModel!
-
-  reg.pop
-
-  actorNm
-;
-
 
 /*============================================================================*/
 /* end                                                                        */
