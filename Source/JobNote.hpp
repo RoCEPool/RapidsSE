@@ -9,7 +9,7 @@ namespace JobsModel
   class JobNote
   {
   public:
-    JobClass* m_pJobClass; // the job class created by this note
+    JobClass_o* m_pJobClass_o; // the job class created by this note
   
   public:
     JobNote(Stz* aName,
@@ -42,7 +42,7 @@ namespace JobsModel
             Stz* aExample
             );
   
-    JobClass* pJobClass(void);
+    JobClass_o* pJobClass(void);
   };
 }
 

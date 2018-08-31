@@ -245,7 +245,7 @@ void Task::vSocketRecvObject(MP_Task mpTask)
   
   if (eClass >= CN_JOB__BEGUN && eClass <= CN_JOB_WAITCLUSTER) {
     
-    //JobClass* pJobClass = gxJobCatalog.pFindJobClass(eClass);
+    //JobClass_o* pJobClass = gxJobCatalog.pFindJobClass(eClass);
     //Job* pJob = pJobClass->pNewJob(nullptr);
     
     //! temp. to be fixed

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* JobClass.cpp -- a description of a job class                               */
+/* JobClass_o.cpp -- a description of a job class                               */
 /*============================================================================*/
 
 #include "JobModel.h"
@@ -10,9 +10,9 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::_pJobClass(i8 iAddr)
+JobClass_o* JobsModel::_pJobClass(i8 iAddr)
 {
-  JobClass* pJobClass = reinterpret_cast<JobClass*>(iAddr);
+  JobClass_o* pJobClass = reinterpret_cast<JobClass_o*>(iAddr);
   
   return pJobClass;
 }
@@ -20,9 +20,9 @@ JobClass* JobsModel::_pJobClass(i8 iAddr)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::_pJobClass(void* aAddr)
+JobClass_o* JobsModel::_pJobClass(void* aAddr)
 {
-  JobClass* pJobClass = reinterpret_cast<JobClass*>(aAddr);
+  JobClass_o* pJobClass = reinterpret_cast<JobClass_o*>(aAddr);
   
   return pJobClass;
 }
@@ -30,11 +30,11 @@ JobClass* JobsModel::_pJobClass(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* create a new job by running the new-function                               */
 /*----------------------------------------------------------------------------*/
-Job* JobClass::pNewJob(Job* pArg)
+Job* JobClass_o::pNewJob(Job* pArg)
 {
   Job* pNewJob = (*m_fNew)(pArg);
   
-  pNewJob->m_pJobClass = this;
+  pNewJob->m_pJobClass_o = this;
   pNewJob->m_eJobTrace = m_eTrace;
 
   return pNewJob;
@@ -43,7 +43,7 @@ Job* JobClass::pNewJob(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* delete the job by running the delete-function                              */
 /*----------------------------------------------------------------------------*/
-void JobClass::vDeleteJob(Interface::SEitf* pSEitf, Job* pJob)
+void JobClass_o::vDeleteJob(Interface::SEitf* pSEitf, Job* pJob)
 {
   (*m_fDelete)(pSEitf, pJob);
 }
@@ -51,7 +51,7 @@ void JobClass::vDeleteJob(Interface::SEitf* pSEitf, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* end the job by running the post-function                                   */
 /*----------------------------------------------------------------------------*/
-void JobClass::vPostJob(Interface::SEitf* pSEitf, Job* pJob)
+void JobClass_o::vPostJob(Interface::SEitf* pSEitf, Job* pJob)
 {
   (*m_fPost)(pSEitf, pJob);
 }
@@ -59,11 +59,11 @@ void JobClass::vPostJob(Interface::SEitf* pSEitf, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* create a new job by running the pre-function                                */
 /*----------------------------------------------------------------------------*/
-Job* JobClass::pPreJob(Interface::SEitf* pSEitf)
+Job* JobClass_o::pPreJob(Interface::SEitf* pSEitf)
 {
   Job* pJob = (*m_fPre)(pSEitf);
 
-  pJob->m_pJobClass = this;
+  pJob->m_pJobClass_o = this;
   pJob->m_eJobTrace = m_eTrace;
   
   return pJob;
@@ -72,7 +72,7 @@ Job* JobClass::pPreJob(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* get seed                                                                   */
 /*----------------------------------------------------------------------------*/
-Stz* JobClass::sSeed(eSS eSeed)
+Stz* JobClass_o::sSeed(eSS eSeed)
 {
   switch (eSeed) {
     case SS_SEED_RUN: return (Stz*)m_aSeedRun; break;
@@ -88,7 +88,7 @@ Stz* JobClass::sSeed(eSS eSeed)
 /*----------------------------------------------------------------------------*/
 /* pre-send function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobClass::vSendJob(Job* pJob)
+void JobClass_o::vSendJob(Job* pJob)
 {
   if (m_fSend)
     (*m_fSend)(pJob);
@@ -97,7 +97,7 @@ void JobClass::vSendJob(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* post-receive fucntion                                                      */
 /*----------------------------------------------------------------------------*/
-void JobClass::vRecvJob(Job* pJob)
+void JobClass_o::vRecvJob(Job* pJob)
 {
   if (m_fRecv)
     (*m_fRecv)(pJob);
@@ -106,7 +106,7 @@ void JobClass::vRecvJob(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show the job                                                               */
 /*----------------------------------------------------------------------------*/
-void JobClass::vShowJob(Job* pJob)
+void JobClass_o::vShowJob(Job* pJob)
 {
   (*m_fShow)(pJob);
 }
@@ -114,7 +114,7 @@ void JobClass::vShowJob(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* vtrace the job class for the jobcat prompt function                        */
 /*----------------------------------------------------------------------------*/
-void JobClass::vJobCat(void)
+void JobClass_o::vJobCat(void)
 {
   s32 sFunctions(""_Stz);
   
@@ -167,7 +167,7 @@ void JobClass::vJobCat(void)
 /*----------------------------------------------------------------------------*/
 /* vtrace the header for the jobcat prompt function                           */
 /*----------------------------------------------------------------------------*/
-void JobClass::vJobCatHeader(void)
+void JobClass_o::vJobCatHeader(void)
 {
   vTrace("%20s %20s %10s %10s %20s : %10s %20s %20s %20s %20s %20s %20s\n"_Stz,
          

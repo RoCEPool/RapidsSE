@@ -10,12 +10,12 @@ namespace JobsModel
   {
   public:
     i8       m_nClasses;       // number of job classes
-    JobClass m_xJobClass[128]; // array of job class descriptions
+    JobClass_o m_xJobClass[128]; // array of job class descriptions
   
   public:
   
-    JobClass* pFindJobClass(Stz* aCommand1, Stz* aCommand2);
-    JobClass* pFindJobClass(eCN eClass);
+    JobClass_o* pFindJobClass(Stz* aCommand1, Stz* aCommand2);
+    JobClass_o* pFindJobClass(eCN eClass);
     void vTraceJobs(eCN eClass);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* JobClass.hpp -- a description of a job class                               */
+/* JobClass_o.hpp -- a description of a job class                               */
 /*============================================================================*/
 #pragma once
 
 namespace JobsModel
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class JobClass
+  class JobClass_o
   {
   public:
     char m_aName[32];     // name of the job class
@@ -56,8 +56,8 @@ namespace JobsModel
   };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  JobClass* _pJobClass(i8 iAddr);
-  JobClass* _pJobClass(void* aAddr);
+  JobClass_o* _pJobClass(i8 iAddr);
+  JobClass_o* _pJobClass(void* aAddr);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   struct JobClass_s

@@ -99,7 +99,7 @@ JobNote::JobNote(Stz* aName,
     StrLib::vCopy(gxJobCatalog.m_xJobClass[i_Job].m_aExample,aExample->aChar());
   
   // record the job class
-  m_pJobClass = &gxJobCatalog.m_xJobClass[i_Job];
+  m_pJobClass_o = &gxJobCatalog.m_xJobClass[i_Job];
 
   // we have one more class in the job catalog
   gxJobCatalog.m_nClasses++;
@@ -108,9 +108,9 @@ JobNote::JobNote(Stz* aName,
 /*----------------------------------------------------------------------------*/
 /* get job class                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobNote::pJobClass(void)
+JobClass_o* JobNote::pJobClass(void)
 {
-  return m_pJobClass;
+  return m_pJobClass_o;
 }
 
 /*============================================================================*/

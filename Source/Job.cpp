@@ -90,7 +90,7 @@ Job::~Job(void)
 void Job::vInit(void)
 {
   m_iJobId   = -1;
-  m_pJobClass = nullptr;
+  m_pJobClass_o = nullptr;
   m_pJobClass_s = nullptr;
   m_eSeed    = SS_ENUMS;
   m_eJobTrace   = JT_NONE;
@@ -137,7 +137,7 @@ Stz* Job::sJobSeed(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  Stz* sSeed = m_pJobClass->sSeed(m_eSeed);
+  Stz* sSeed = m_pJobClass_o->sSeed(m_eSeed);
   
   return sSeed;
 }
@@ -239,7 +239,7 @@ void Job::vSeed(eSS eSeed)
   
   m_eSeed = eSeed;
     
-  m_pJobClass->m_bSeedsSpawned[eSeed] = true;
+  m_pJobClass_o->m_bSeedsSpawned[eSeed] = true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -250,7 +250,7 @@ void Job::vShow(s48K& s)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   vTrace("%s: %s"_Stz,
-         m_pJobClass ? (Stz*)m_pJobClass->m_aName : "<no jobClass>"_Stz,
+         m_pJobClass_o ? (Stz*)m_pJobClass_o->m_aName : "<no jobClass>"_Stz,
          s.aStr());
 }
 

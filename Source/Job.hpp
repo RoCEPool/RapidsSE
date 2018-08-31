@@ -5,7 +5,7 @@
 
 namespace JobsModel
 {
-  class JobClass;    // forward definition
+  class JobClass_o;    // forward definition
   struct JobClass_s; // forward definition
 
   class Job;
@@ -82,7 +82,7 @@ namespace JobsModel
   {
   public:
     i8  m_iJobId;              // job id
-    JobClass* m_pJobClass;     // job class
+    JobClass_o* m_pJobClass_o; // job class
     JobClass_s* m_pJobClass_s; // job class
     eSS  m_eSeed;              // task seed
     eJT  m_eJobTrace;          // job trace

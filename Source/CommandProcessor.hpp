@@ -11,7 +11,7 @@ namespace Interface
   {
   private:
     Tokeniser* m_pTokeniser; // input stream tokeniser
-    JobClass*  m_pJobClass;  // job class
+    JobClass_o*  m_pJobClass_o;  // job class
     Job*       m_pJob;       // job
   
     TokenVec   m_xTokenVec2; // another token vector TO BE DELETED
@@ -43,7 +43,7 @@ namespace Interface
     void vGetCommandArgument(void);
     void vGetCommandInput(void);
     Job* pJob(void);
-    JobClass* pJobClass(void);
+    JobClass_o* pJobClass(void);
     void vPostJob(SEitf* pSEitf);
     void vPreJob(SEitf* pSEitf);
     bool bSpawnJob(SEitf* pSEitf);

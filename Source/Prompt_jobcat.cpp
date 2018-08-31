@@ -21,7 +21,7 @@ extern PromptCatalog gxPromptCatalog;
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
 {
-  JobClass::vJobCatHeader();
+  JobClass_o::vJobCatHeader();
   
   i8 nJobs = 0;
   
@@ -114,7 +114,7 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
 /*----------------------------------------------------------------------------*/
 //bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
 //{
-//  JobClass::vJobCatHeader();
+//  JobClass_o::vJobCatHeader();
 //
 //  for (i8 i_Job = 0; i_Job < gxJobCatalog.m_nClasses; i_Job++)
 //    if (JK_SYSTEM == gxJobCatalog.m_xJobClass[i_Job].m_eKind)

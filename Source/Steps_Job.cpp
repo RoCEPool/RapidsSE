@@ -383,7 +383,7 @@ void Task::vJobDelete(MP_Task mpTask)
   
   // find the job in the catalog
   eCN eClass = pJob->eClass();
-  JobClass* pJobClass = gxJobCatalog.pFindJobClass(eClass);
+  JobClass_o* pJobClass = gxJobCatalog.pFindJobClass(eClass);
   
   // call the job delete function
   pJobClass->vDeleteJob(nullptr, pJob);  // come back to this, remove seitf as parameter to delete
@@ -540,7 +540,7 @@ void Task::vJobExecuteFetch(MP_Task mpTask)
       break;
       
     default:
-      StrLib::vCopy(sExecute.aChar(),pJob->m_pJobClass->m_aSeedExe);
+      StrLib::vCopy(sExecute.aChar(),pJob->m_pJobClass_o->m_aSeedExe);
       //sExecute.vConcat("_exe"_Stz);
       break;
   }
@@ -733,7 +733,7 @@ void Task::vJobFetchRowsSpawnSub(MP_Task mpTask)
   SEitf* pSEitf = pJob_FetchRows->m_pSEitf;
   i8 iFetchRowsJobId = pJob_FetchRows->m_iJobId;
   
-  JobClass* pJobClass_SubFetch = gxJobCatalog.pFindJobClass(CN_JOB_SUBFETCH);
+  JobClass_o* pJobClass_SubFetch = gxJobCatalog.pFindJobClass(CN_JOB_SUBFETCH);
   
   Job_SubFetch* pJob_SubFetch =
   static_cast<Job_SubFetch*>(pJobClass_SubFetch->pPreJob(pSEitf));
@@ -908,7 +908,7 @@ void Task::vJobIsPromptCommand(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.jobClass -- get the JobClass of the job                                */
+/* job.jobClass -- get the JobClass_o of the job                                */
 /*----------------------------------------------------------------------------*/
 void Task::vJobJobClass(MP_Task mpTask)
 {
@@ -919,7 +919,7 @@ void Task::vJobJobClass(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.jobClass"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  i8 iJobClass_p = (i8)pJob->m_pJobClass;
+  i8 iJobClass_p = (i8)pJob->m_pJobClass_o;
   
   mpTask->m_pDataStack->vPushInt(iJobClass_p);
   
@@ -1100,8 +1100,8 @@ void Task::vJobNewBegun(MP_Task mpTask)
   pJobBegun->m_iJobId = iJobId;
   pJobBegun->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
   
-  JobClass* pJobClass__Begun = gxJobCatalog.pFindJobClass(CN_JOB__BEGUN);
-  pJobBegun->m_pJobClass = pJobClass__Begun;
+  JobClass_o* pJobClass__Begun = gxJobCatalog.pFindJobClass(CN_JOB__BEGUN);
+  pJobBegun->m_pJobClass_o = pJobClass__Begun;
   
   mpTask->m_pDataStack->vPushObject(pJobBegun);
   
@@ -1123,8 +1123,8 @@ void Task::vJobNewCancel(MP_Task mpTask)
   pJobCancel->m_iJobId = iJobId;
   pJobCancel->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
   
-  JobClass* pJobClass__Cancel = gxJobCatalog.pFindJobClass(CN_JOB__CANCEL);
-  pJobCancel->m_pJobClass = pJobClass__Cancel;
+  JobClass_o* pJobClass__Cancel = gxJobCatalog.pFindJobClass(CN_JOB__CANCEL);
+  pJobCancel->m_pJobClass_o = pJobClass__Cancel;
   
   mpTask->m_pDataStack->vPushObject(pJobCancel);
   
@@ -1146,8 +1146,8 @@ void Task::vJobNewCancelled(MP_Task mpTask)
   pJobCancelled->m_iJobId = iJobId;
   pJobCancelled->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
   
-  JobClass* pJobClass__Cancelled = gxJobCatalog.pFindJobClass(CN_JOB__CANCELLED);
-  pJobCancelled->m_pJobClass = pJobClass__Cancelled;
+  JobClass_o* pJobClass__Cancelled = gxJobCatalog.pFindJobClass(CN_JOB__CANCELLED);
+  pJobCancelled->m_pJobClass_o = pJobClass__Cancelled;
   
   mpTask->m_pDataStack->vPushObject(pJobCancelled);
   
@@ -1169,8 +1169,8 @@ void Task::vJobNewEnd(MP_Task mpTask)
   pJobEnd->m_iJobId = iJobId;
   pJobEnd->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
   
-  JobClass* pJobClass__End = gxJobCatalog.pFindJobClass(CN_JOB__END);
-  pJobEnd->m_pJobClass = pJobClass__End;
+  JobClass_o* pJobClass__End = gxJobCatalog.pFindJobClass(CN_JOB__END);
+  pJobEnd->m_pJobClass_o = pJobClass__End;
   
   mpTask->m_pDataStack->vPushObject(pJobEnd);
   
@@ -1192,8 +1192,8 @@ void Task::vJobNewEnded(MP_Task mpTask)
   pJobEnded->m_iJobId = iJobId;
   pJobEnded->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
   
-  JobClass* pJobClass__Ended = gxJobCatalog.pFindJobClass(CN_JOB__ENDED);
-  pJobEnded->m_pJobClass = pJobClass__Ended;
+  JobClass_o* pJobClass__Ended = gxJobCatalog.pFindJobClass(CN_JOB__ENDED);
+  pJobEnded->m_pJobClass_o = pJobClass__Ended;
   
   mpTask->m_pDataStack->vPushObject(pJobEnded);
   
@@ -1215,8 +1215,8 @@ void Task::vJobNewExecute(MP_Task mpTask)
   pJobExecute->m_iJobId = iJobId;
   pJobExecute->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
   
-  JobClass* pJobClass__Execute = gxJobCatalog.pFindJobClass(CN_JOB__EXECUTE);
-  pJobExecute->m_pJobClass = pJobClass__Execute;
+  JobClass_o* pJobClass__Execute = gxJobCatalog.pFindJobClass(CN_JOB__EXECUTE);
+  pJobExecute->m_pJobClass_o = pJobClass__Execute;
   
   mpTask->m_pDataStack->vPushObject(pJobExecute);
   
@@ -1239,8 +1239,8 @@ void Task::vJobNewExecuted(MP_Task mpTask)
   
   pJobExecuted->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
   
-  JobClass* pJobClass__Executed = gxJobCatalog.pFindJobClass(CN_JOB__EXECUTED);
-  pJobExecuted->m_pJobClass = pJobClass__Executed;
+  JobClass_o* pJobClass__Executed = gxJobCatalog.pFindJobClass(CN_JOB__EXECUTED);
+  pJobExecuted->m_pJobClass_o = pJobClass__Executed;
   
   mpTask->m_pDataStack->vPushObject(pJobExecuted);
   
@@ -1389,9 +1389,9 @@ void Task::vJobPostRecv(MP_Task mpTask)
   
   // find the job class on this node
   eCN eClass = pJob->eClass();
-  JobClass* pJobClass = gxJobCatalog.pFindJobClass(eClass);
+  JobClass_o* pJobClass = gxJobCatalog.pFindJobClass(eClass);
   
-  pJob->m_pJobClass = pJobClass;
+  pJob->m_pJobClass_o = pJobClass;
 
   if (pJobClass->m_fRecv)
     (*pJobClass->m_fRecv)(pJob);
@@ -1411,7 +1411,7 @@ void Task::vJobPreSend(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.preSend"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  JobClass* pJobClass = pJob->m_pJobClass;
+  JobClass_o* pJobClass = pJob->m_pJobClass_o;
   
   if (pJobClass->m_fSend)
     (*pJobClass->m_fSend)(pJob);
@@ -1529,7 +1529,7 @@ void Task::vJobRecv(MP_Task mpTask)
   
   // find the job in the catalog
   eCN eClass = pJob->eClass();
-  JobClass* pJobClass = gxJobCatalog.pFindJobClass(eClass);
+  JobClass_o* pJobClass = gxJobCatalog.pFindJobClass(eClass);
   
   // call the job post-receive function
   pJobClass->vRecvJob(pJob);  // come back to this, remove seitf as parameter to delete
@@ -1698,7 +1698,7 @@ void Task::vJobSend(MP_Task mpTask)
   
   // find the job in the catalog
   eCN eClass = pJob->eClass();
-  JobClass* pJobClass = gxJobCatalog.pFindJobClass(eClass);
+  JobClass_o* pJobClass = gxJobCatalog.pFindJobClass(eClass);
   
   // call the job pre-send function
   pJobClass->vSendJob(pJob);  // come back to this, remove seitf as parameter to delete
@@ -1719,7 +1719,7 @@ void Task::vJobShow(MP_Task mpTask)
   
   // find the job in the catalog
   eCN eClass = pJob->eClass();
-  JobClass* pJobClass = gxJobCatalog.pFindJobClass(eClass);
+  JobClass_o* pJobClass = gxJobCatalog.pFindJobClass(eClass);
   
   // call the job delete function
   pJobClass->vShowJob(pJob);
@@ -1948,7 +1948,7 @@ void Task::vJobTruncateTableSpawnSub(MP_Task mpTask)
   SEitf* pSEitf = pJob_TruncateTable->m_pSEitf;
   i8 iTruncateJobId = pJob_TruncateTable->m_iJobId;
   
-  JobClass* pJobClass_SubTruncate = gxJobCatalog.pFindJobClass(CN_JOB_SUBTRUNCATE);
+  JobClass_o* pJobClass_SubTruncate = gxJobCatalog.pFindJobClass(CN_JOB_SUBTRUNCATE);
   
   Job_SubTruncate* pJob_SubTruncate =
     static_cast<Job_SubTruncate*>(pJobClass_SubTruncate->pPreJob(pSEitf));
