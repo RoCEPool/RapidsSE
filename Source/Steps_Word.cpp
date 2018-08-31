@@ -15,7 +15,6 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Word(void)
 {
-  vAddPrimitive("allParticipants"_Stz, &vAllParticipants,  true );
   vAddPrimitive("allot"_Stz,           &vAllot,            false);
   vAddPrimitive("cell"_Stz,            &vCell,             false);
   vAddPrimitive(":"_Stz,               &vColon,            false);
@@ -38,7 +37,7 @@ void Task::vAddPrimitives_Word(void)
   vAddPrimitive("immediate"_Stz,       &vImmediate,        true );
   vAddPrimitive("localCalls"_Stz,      &vLocalCalls,       true );
   vAddPrimitive("locate"_Stz,          &vLocate,           false);
-  vAddPrimitive("oneParticipant"_Stz,  &vOneParticipant,   true );
+
   vAddPrimitive("opDic"_Stz,           &vOpDic,            true );
   vAddPrimitive("planDic"_Stz,         &vPlanDicTask,      true );
   vAddPrimitive("postpone"_Stz,        &vPostpone,         true );
@@ -59,39 +58,6 @@ void Task::vAddPrimitives_Word(void)
   vAddPrimitive("word.this"_Stz,       &vWordThis,         false);
   vAddPrimitive("word.type@"_Stz,      &vWordTypeGet,      false);
   vAddPrimitive("word.type!"_Stz,      &vWordTypeSet,      false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* allParticipants -- create an allParticipant word                 immediate */
-/*----------------------------------------------------------------------------*/
-void Task::vAllParticipants(MP_Task mpTask)
-{
-  ENTRY("vAllParticipants"_Stz);
-  
-  Word* pCurrentWord = mpTask->m_pCurrentWord;
-  
-  //vTrace("Task::vImmediate: %s\n"_Stz,pCurrentWord->sName().aChar());
-  
-  pCurrentWord->vDistributed(DT_ALLPARTICIPANTS);
-  
-  // get number of parameters
-  mpTask->m_pTokeniser->vNextToken();
-  
-  // convert string to integer
-  Stz* aToken = mpTask->m_pTokeniser->sToken();
-  i8 iParams = aToken->iToI8();
-  
-  // set the number of parameters in the current word
-  pCurrentWord->vParams(iParams);
-  
-  // get result routine name to be called after all participants have responded
-  mpTask->m_pTokeniser->vNextToken();
-  aToken = mpTask->m_pTokeniser->sToken();
-  
-  // set the distributed result routine name in the word
-  pCurrentWord->vFinalRoutine(aToken);
-
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -627,31 +593,6 @@ void Task::vLocate(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* oneParticipant -- create a oneParticipant word                   immediate */
-/*----------------------------------------------------------------------------*/
-void Task::vOneParticipant(MP_Task mpTask)
-{
-  ENTRY("vAllParticipants"_Stz);
-  
-  Word* pCurrentWord = mpTask->m_pCurrentWord;
-  
-  //vTrace("Task::vImmediate: %s\n"_Stz,pCurrentWord->sName().aChar());
-  
-  pCurrentWord->vDistributed(DT_ONEPARTICIPANT);
-  
-  // get number of parameters
-  mpTask->m_pTokeniser->vNextToken();
-  
-  // convert token to integer
-  i8 iParams = mpTask->m_pTokeniser->sToken().iToI8();
-  
-  // set the number of parameters in the current word
-  pCurrentWord->vParams(iParams);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* opDic -- search for named op frame and push op dictionary onto path stack  */
 /*----------------------------------------------------------------------------*/
 void Task::vOpDic(MP_Task mpTask)
@@ -863,57 +804,7 @@ void Task::vSemicolon(MP_Task mpTask)
   pCurrentWord->vEncode("exit"_Stz);
   
   mpTask->m_bCompiling = false;
-  
-  if (DT_ALLPARTICIPANTS == pCurrentWord->eDistributed() ||
-      DT_ONEPARTICIPANT  == pCurrentWord->eDistributed()) {
-    
-    s32 sTildeName;
-    sTildeName = "~"_Stz;
-    sTildeName.vConcat(pCurrentWord->sName());
-    
-    // create new word for tilde of current word
-    Dic* pDic;
-    if (mpTask->m_xPathStack.iCount())
-      pDic = mpTask->m_xPathStack.pTop();
-    else
-      pDic = &gpAttachMap->m_xMainDic;
-    Word* pWordTilde = new(pDic) Word(sTildeName);
-    // ** do not set as current word **
-    
-    // encode the word
-    ValWrk xValWrk;
-    
-    xValWrk = sTildeName;
-    pWordTilde->vEncode("pushValue"_Stz,&xValWrk);
-    pWordTilde->vEncode("tracePoint"_Stz);
-    
-    xValWrk = pCurrentWord->iParams();
-    pWordTilde->vEncode("pushValue"_Stz,&xValWrk);
-    pWordTilde->vEncode("put$$"_Stz);
-    
-    xValWrk = pCurrentWord->sName();
-    pWordTilde->vEncode("pushValue"_Stz,&xValWrk);
-    
-    xValWrk = "theIndirectCall"_Stz;
-    pWordTilde->vEncode("pushValue"_Stz,&xValWrk);
-    pWordTilde->vEncode("tracePoint"_Stz);
-    
-    pWordTilde->vEncode(">>"_Stz);
-    
-    if (DT_ALLPARTICIPANTS == pCurrentWord->eDistributed())
-      pWordTilde->vEncode(">>allParticipants>"_Stz);
-    else
-      pWordTilde->vEncode(">>oneParticipant>"_Stz);
-    
-    xValWrk = sTildeName;
-    pWordTilde->vEncode("pushValue"_Stz,&xValWrk);
-    pWordTilde->vEncode("tracePoint"_Stz);
-    
-    pWordTilde->vEncode((Stz*)pCurrentWord->pFinalRoutine());
-    
-    pWordTilde->vEncode("exit"_Stz);
-  }
-    
+      
   // discard subDic use
   for ( ; mpTask->m_nSubDic; mpTask->m_nSubDic--)
     mpTask->m_xPathStack.vDiscard();

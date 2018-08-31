@@ -1422,7 +1422,6 @@ namespace Tasks
     static void vVectorDifference(MP_Task mpTask);
     
     // word
-    static void vAllParticipants(MP_Task mpTask);
     static void vAllot(MP_Task mpTask);
     static void vCell(MP_Task mpTask);
     static void vColon(MP_Task mpTask);
@@ -1445,7 +1444,6 @@ namespace Tasks
     static void vImmediate(MP_Task mpTask);
     static void vLocalCalls(MP_Task mpTask);
     static void vLocate(MP_Task mpTask);
-    static void vOneParticipant(MP_Task mpTask);
     static void vOpDic(MP_Task mpTask);
     static void vPlanDicTask(MP_Task mpTask);
     static void vPostpone(MP_Task mpTask);
