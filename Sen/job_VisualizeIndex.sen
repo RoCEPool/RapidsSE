@@ -9,8 +9,6 @@
 /*----------------------------------------------------------------------------*/
 : checkVisualizeIndex ( "<tableNm>" "<indexNm>" -- true | errorCode false )
 
-  <SEED_REQ>
-
   params| sIndexNm sTableNm |
 
   // check in tables folder
@@ -50,6 +48,8 @@
 /* visualize index request (on originating node)                              */
 /*----------------------------------------------------------------------------*/
 : visualizeIndex_req ( -- <R> )
+
+  <SEED_REQ>
 
   0 0 0 0 0 locals| pTask pIndex sTableNm sIndexNm pJob_VisualizeIndex |
 
