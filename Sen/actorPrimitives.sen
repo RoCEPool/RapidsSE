@@ -38,71 +38,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-/*----------------------------------------------------------------------------*/
-/* task and queue arrays                                                      */
-/*----------------------------------------------------------------------------*/
-grid::nodes ptrArray: ppTasks
-grid::nodes ptrArray: cpTasks
-grid::nodes ptrArray: pTasks
-grid::nodes ptrArray: senderTasks
-
-grid::nodes ptrArray: ppQueues
-grid::nodes ptrArray: cpQueues
-grid::nodes ptrArray: pQueues
-grid::nodes ptrArray: senderQueues
 
 
-/*----------------------------------------------------------------------------*/
-/* dump the ppQueues array                                                    */
-/*----------------------------------------------------------------------------*/
-: ppQueuesDump
-
-  "{ " .put
-  grid::nodes 0 do
-    I ppQueues @ .put " " .put
-  loop
-
-  "}" .put .\n
-;
-
-/*----------------------------------------------------------------------------*/
-/* dump the cpQueues array                                                    */
-/*----------------------------------------------------------------------------*/
-: cpQueuesDump
-
-  "{ " .put
-  grid::nodes 0 do
-    I cpQueues @ .put " " .put
-  loop
-
-  "}" .put .\n
-;
-
-/*----------------------------------------------------------------------------*/
-/* dump the pQueues array                                                     */
-/*----------------------------------------------------------------------------*/
-: pQueuesDump
-
-  "{ " .put
-  grid::nodes 0 do
-    I pQueues @ .put " " .put
-  loop
-
-  "}" .put .\n
-;
-
-/*----------------------------------------------------------------------------*/
-/* dump the senderQueues array                                                */
-/*----------------------------------------------------------------------------*/
-: senderQDump
-
-  "{ " .put
-  grid::nodes 0 do
-    I senderQueues tp: @ .put " " .put
-  loop
-
-  "}" .put .\n
-;
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -150,47 +87,6 @@ tp: >jobQueue
   tp: running
 
   // move indirect result from aux to data stack
-  a> ( <<result>> )
-
-tp: haveResultSet
-;
-
-/*----------------------------------------------------------------------------*/
-/* put indirect call onto queue of sender task                                */
-/*----------------------------------------------------------------------------*/
-: >sendQueue ( <<call>> nodeNo -- )
-
-  // get sender task
-  senderTasks @ ( <<call>> task )
-
-  tp: sendingViaTask
-
-  // enqueue valset onto queue of task
-  >jobQueue ( )
-;
-
-/*----------------------------------------------------------------------------*/
-/* put indirect call onto queue of sender task, suspend, move from a to p     */
-/*----------------------------------------------------------------------------*/
-: >sendQueue;a> ( <<call>> nodeNo -- )
-
-  // this task to wait for 1 ack
-  1 setAcks ( ... wordName #values queue )
-
-  // get sender task
-  senderTasks @ ( <<call>> task )
-
-tp: sendingViaTask
-
-  // enqueue valset onto queue of task
-  >jobQueue
-
-  // this task waits till ack'd
-  ackWait ( )
-
-tp: running
-
-  // move indirect result from aux to data stack 
   a> ( <<result>> )
 
 tp: haveResultSet
@@ -264,8 +160,7 @@ tp: >callerAux
 /*----------------------------------------------------------------------------*/
 : passOnToCP ( valset nodeNo -- )
 
-  cpTasks @ ( valset task )
-
+ 
   >jobQueue ( )
 ;
 

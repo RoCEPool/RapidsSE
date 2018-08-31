@@ -71,7 +71,6 @@ tp: >>jobQueue_otherNode
   op.task addEnqueOnOp ( <<call>> )
 
   // get sender task
-  nodeNo senderTasks @ ( <<call>> task )
 
   // put on senders job queue
   >jobQueue
