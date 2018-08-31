@@ -52,7 +52,7 @@ namespace JobsModel
   void vJob_LoadTable_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_LoadTable_show(Job* pJob);
   
-  pNEXTJOBFUN* pJob_LoadTable_next(JobClass_s** aaJobClass);
+  JobClass_s* pJob_LoadTable_class(pFUN** aaFun);
 }
 
 /*============================================================================*/

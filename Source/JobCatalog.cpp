@@ -71,13 +71,21 @@ void JobCatalog::vTraceJobs(eCN eClass)
 /*----------------------------------------------------------------------------*/
 /* find job class given class number                                          */
 /*----------------------------------------------------------------------------*/
+pNEXTJOBFUN JobCatalog::pFirstFun(void)
+{
+  return (pNEXTJOBFUN)pJob__Begun_class;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find job class given class number                                          */
+/*----------------------------------------------------------------------------*/
 JobClass_s* JobCatalog::pFindJob_JC2(eCN eClass)
 {
   JobClass_s* pJobClass_s = nullptr;
   
-  for (pNEXTJOBFUN pFun = (pNEXTJOBFUN)pJob__Begun_next; pFun; ) {
+  for (pNEXTJOBFUN pfJobClass = (pNEXTJOBFUN)pJob__Begun_class; pfJobClass; ) {
     
-    pJobClass_s = pFun((pFUN**)&pFun);
+    pJobClass_s = pfJobClass((pFUN**)&pfJobClass);
 
     if (pJobClass_s->m_eClass == eClass)
       return pJobClass_s;
@@ -95,9 +103,9 @@ JobClass_s* JobCatalog::pFindJob_JC2(Stz* aCommand1, Stz* aCommand2)
   
   JobClass_s* pJobClass_s = nullptr;
   
-  for (pNEXTJOBFUN pFun = (pNEXTJOBFUN)pJob__Begun_next; pFun; ) {
+  for (pNEXTJOBFUN pfJobClass = (pNEXTJOBFUN)pJob__Begun_class; pfJobClass; ) {
   
-    pJobClass_s = pFun((pFUN**)&pFun);
+    pJobClass_s = pfJobClass((pFUN**)&pfJobClass);
 
     if ( ! pJobClass_s->m_aCommand1 ||
         ! StrLib::bSame(pJobClass_s->m_aCommand1->aChar(),aCommand1->aChar()) )
@@ -128,9 +136,9 @@ void JobCatalog::vTraceJobs_JC2(eCN eClass)
 {
   JobClass_s* pJobClass_s = nullptr;
 
-  for (pNEXTJOBFUN pFun = (pNEXTJOBFUN)pJob__Begun_next; pFun; ) {
+  for (pNEXTJOBFUN pfJobClass = pFirstFun(); pfJobClass; ) {
     
-    pJobClass_s = pFun((pFUN**)&pFun);
+    pJobClass_s = pfJobClass((pFUN**)&pfJobClass);
 
     pJobClass_s->vJobCat();
   }

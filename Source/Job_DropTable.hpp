@@ -40,7 +40,7 @@ namespace JobsModel
   void vJob_DropTable_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_DropTable_show(Job* pJob);
   
-  pNEXTJOBFUN* pJob_DropTable_next(JobClass_s** aaJobClass);
+  JobClass_s* pJob_DropTable_class(pFUN** aaFun);
 }
 
 /*============================================================================*/

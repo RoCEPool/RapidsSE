@@ -65,7 +65,7 @@ namespace JobsModel
   void vJob_CreateTable_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_CreateTable_show(Job* pJob);
   
-  pNEXTJOBFUN* pJob_CreateTable_next(JobClass_s** aaJobClass);
+  JobClass_s* pJob_CreateTable_class(pFUN** aaFun);
 }
 
 /*============================================================================*/
