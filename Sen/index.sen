@@ -151,34 +151,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* analyze an index of a table                                                */
-/*----------------------------------------------------------------------------*/
-: analyzeIndex allParticipants 2 returnResult ( detailed "<indexNm>" -- true n# true )
-
-  tp: analyzeIndex
-
-  find execute
-  index.analyze
-
-  <SUCCESS_RESULT>
-;
-
-/*----------------------------------------------------------------------------*/
-/* compact an index of a table                                                */
-/*----------------------------------------------------------------------------*/
-/*
-: compactIndex allParticipants 2 returnResult ( detailed "<indexNm>" -- true n# true )
-
-  tp: compactIndex
-
-  find execute
-
-  index.compact
-
-  <SUCCESS_RESULT>
-;
-*/
-/*----------------------------------------------------------------------------*/
 /* get index pointer and put into task.seitf.currentIndex                     */
 /*----------------------------------------------------------------------------*/
 : getIndex ( "<indexNm>" "<tableNm>" -- <R> )
@@ -300,30 +272,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* make an index (run by participant)                                         */
-/*----------------------------------------------------------------------------*/
-/*
-: makeIndex allParticipants 2 checkResult ( "<tableNm>" "<indexNm>"  -- true n# true )
-
-tp: makingIndex
-
-  locals| indexNm tableNm |
-
-  args.tracepoint if
-  "MAKING INDEX " indexNm str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
-  then
-
-  tableNm
-  pushTable assert
-
-  tableNm indexNm make_index
-
-  popTable
-
-  true <SUCCESS_RESULT>
-;
-*/
-/*----------------------------------------------------------------------------*/
 /* position key select cursor for table (called by keySelectIndex request)    */
 /*----------------------------------------------------------------------------*/
 : exactSelectIdxTask ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf i_Ptn -- )
@@ -347,35 +295,6 @@ tp: keySelectIdx
   i_Ptn pIndex index.table@ tablePtnDropRead
 ;
 
-/*----------------------------------------------------------------------------*/
-/* make an index (run by participant)                                         */
-/*----------------------------------------------------------------------------*/
-: loadIndexes allParticipants 0 checkResult ( -- true n# true )
-
-tp: loadIndexes
-
-  args.tracepoint if
-    "LOADING INDEXES on NODE " grid::thisNode@ >str str.cat .
-  then
-
-  "indexes"
-  find execute pathPush
-
-  0 pathPick dic.lastWord dup
-    iterate
-    object@ word.name
-    find execute ( ^index )
-
-    // populate only non-hidden indexes
-    dup index.isHidden@ not if
-      index.populate
-    then
-
-    object@ word.prev object!
-  next
-
-  true <SUCCESS_RESULT>
-;
 
 /*----------------------------------------------------------------------------*/
 /* position key select cursor for table (called by selectIndex request)       */
@@ -478,29 +397,6 @@ tp: loadIndexes
 ;
 
 /*----------------------------------------------------------------------------*/
-/* populate the index with data                                               */
-/*----------------------------------------------------------------------------*/
-/*
-: populateIndex allParticipants 1 returnFinalResult ( "<indexNm>" -- true n# true )
-
-tp: populateIndex
-
-  0 locals| pIndex sIndexNm |
-
-  // get index ptr
-  sIndexNm findInCurrent execute to pIndex
-
-  pIndex index.populate
-
-  if
-    true <SUCCESS_RESULT>
-  else
-    // return final result returns error code
-    EC_DUPLICATE_KEY <FAILURE_RESULT>
-  then
-;
-*/
-/*----------------------------------------------------------------------------*/
 /* position key select cursor for table (called by selectIndex request)       */
 /*----------------------------------------------------------------------------*/
 : scanSelectIdxTask ( i_Phrase pPlanner "<key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf i_Ptn -- )
@@ -524,26 +420,7 @@ tp: populateIndex
   i_Ptn pIndex index.table@ tablePtnDropRead
 ;
 
-/*----------------------------------------------------------------------------*/
-/* set isUnique property of index                                             */
-/*----------------------------------------------------------------------------*/
-: setIndexIsUnique allParticipants 2 checkResult ( "<indexNm>" true/false -- )
 
-  assert::stack_2
-
-  locals| sIndexNm bIsUnique |
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  bIsUnique ( bIsUnique )
-
-  sIndexNm find execute ( bIsUnique index^ )
-
-  index.isUnique! ( )
-
-  assert::stack_0
-
-  true <SUCCESS_RESULT>
-;
 
 /*----------------------------------------------------------------------------*/
 /* get size of index                                                          */
@@ -615,28 +492,6 @@ tp: populateIndex
 ;
 
 /*----------------------------------------------------------------------------*/
-/* remove an index                                                            */
-/*----------------------------------------------------------------------------*/
-/*
-: removeIndex allParticipants 1 checkResult ( "<indexNm>" -- true n# true )
-
-  tp: removeIndex
-  0 locals| pIndexPtr sIndexNm |
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // remove the index from the table
-  sIndexNm find execute to pIndexPtr
-  pIndexPtr pIndexPtr index.table@ table.removeIndex
-
-  // forward reference :-(
-  sIndexNm "indexTidyUp" find execute
-
-  sIndexNm :forget
-
-  true <SUCCESS_RESULT>
-;
-*/
-/*----------------------------------------------------------------------------*/
 /* upper bound select task (c++)                                              */
 /*----------------------------------------------------------------------------*/
 : upperSelectIdxTask ( i_Phrase pPlanner <"key>" "<lower>" "<upper>" pBufferQueue pIndex pSeitf i_Ptn -- )
@@ -659,20 +514,6 @@ tp: populateIndex
 ;
 
 
-/*----------------------------------------------------------------------------*/
-/* verify an index of a table                                                 */
-/*----------------------------------------------------------------------------*/
-/*
-: verifyIndex allParticipants 1 returnResult ( "<indexNm>" -- true n# true )
-
-  tp: verifyIndex
-
-  find execute
-  index.verify
-
-  <SUCCESS_RESULT>
-;
-*/
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
