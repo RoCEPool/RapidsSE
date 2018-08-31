@@ -5,7 +5,6 @@
 "-requests.sen" .verbose
 
 "requests_basics.sen"      include
-"requests_schema.sen"      include
 "requests_folder.sen"      include
 "requests_misc.sen"        include
 
