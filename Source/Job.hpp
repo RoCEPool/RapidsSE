@@ -133,6 +133,8 @@ namespace JobsModel
 
 bool bJobCompare(void* pObjectInsert, void* pObjectScan, bool& bMatch);
 
+typedef void (pNEXTJOBFUN)(void** aaArg);
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
