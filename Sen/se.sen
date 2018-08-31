@@ -4,6 +4,8 @@
 
 "-se.sen" .verbose
 
+"munge.sen" include
+
 "se_folder.sen" include
 
 // create the root /tenants dictionary

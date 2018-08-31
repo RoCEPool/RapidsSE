@@ -10914,42 +10914,6 @@ void Task::vAddMunged(MP_Task mpTask)
 
   vCompileConstant(sDefinition);
 
-  // munge of actorModels.sen
-  sDefinition =
-    "\""
-    "\\\"munged actorModels.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* actorModels.sen -- actor models group                                      */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\"-actorModels.sen\\\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* queue an indirect call set to the coordinator and wait for indirect result */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": >coordinator> ( <<call*>> -- <<result>> ) ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* get coordinator to send indirect call to participant on a node to execute  */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": >>oneParticipant> ( <<call>> nodeNo -- bool ) ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* get coordinator to send indirect call to all participant to execute        */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": >>allParticipants> ( <<$$>> -- bool ) ;\n"
-    "\n"
-    "\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT actorModels.sen"_Stz
-  ;
-
-  vCompileConstant(sDefinition);
-
   // munge of job_ListTables.sen
   sDefinition =
     "\""
@@ -14949,7 +14913,6 @@ void Task::vAddMunged(MP_Task mpTask)
     "\\\"tasks.sen\\\" include\n"
     "\\\"threads.sen\\\" include\n"
     "\\\"gridModel.sen\\\" include\n"
-    "\\\"actorModels.sen\\\" include\n"
     "\\\"dbObjects.sen\\\" include\n"
     "\\\"operators.sen\\\" include\n"
     "\\\"planners.sen\\\" include\n"
