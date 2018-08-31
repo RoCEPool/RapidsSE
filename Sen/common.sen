@@ -7,7 +7,6 @@
 "dir.sen" include
 "file.sen" include
 "lock.sen" include
-"timer.sen" include
 
 "trace.sen" include
 
