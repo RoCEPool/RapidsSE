@@ -10,7 +10,6 @@
 "requests_table.sen"       include
 "requests_index.sen"       include
 "requests_folder.sen"      include
-"requests_rowBuffer.sen"   include
 "requests_misc.sen"        include
 
 // create the root /tenants dictionary
