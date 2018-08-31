@@ -9,7 +9,6 @@
 "table.sen" include
 "partition.sen" include
 "index.sen" include
-"partitionColumn.sen" include
 
 "schema.sen" include
 "catalog.sen" include
