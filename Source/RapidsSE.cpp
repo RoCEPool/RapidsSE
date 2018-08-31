@@ -120,6 +120,30 @@ void RapidsSE::vCreateAttachMap(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* start the system tasks                                                     */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vDispatchJobStart(void)
+{
+  if (gxArguments.m_bVerbose)
+    vInfo("\n*\n* Start System Tasks\n*\n"_Stz);
+  
+  PosixThread::vTlsSet(giTLS_ThreadKey,(void*)-1);
+  
+  JobClass* pJobClass_Start = gxJobCatalog.pFindJob(CN_JOB_START);
+  
+  Job_Start* pJob_Start
+  = static_cast<Job_Start*>(pJobClass_Start->pNewJob(nullptr));
+  
+  pJob_Start->vSeed(SS_SEED_RUN);
+  
+  Task* pStartTask = new Task(pJob_Start);
+  
+  pStartTask->vSeedJob();
+  
+  Handlers::vSpawnedTaskHandler(pStartTask);
+}
+
+/*----------------------------------------------------------------------------*/
 /* error handler                                                              */
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vErrorHandler(Error* pError)
@@ -514,30 +538,6 @@ void RapidsSE::vSignalHandler(int iSignal)
 }
 
 /*----------------------------------------------------------------------------*/
-/* start the system tasks                                                     */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vStartSystemTasks(void)
-{
-  if (gxArguments.m_bVerbose)
-    vInfo("\n*\n* Start System Tasks\n*\n"_Stz);
-  
-  PosixThread::vTlsSet(giTLS_ThreadKey,(void*)-1);
-  
-  JobClass* pJobClass_Start = gxJobCatalog.pFindJob(CN_JOB_START);
-  
-  Job_Start* pJob_Start
-  = static_cast<Job_Start*>(pJobClass_Start->pNewJob(nullptr));
-  
-  pJob_Start->vSeed(SS_SEED_RUN);
-  
-  Task* pStartTask = new Task(pJob_Start);
-  
-  pStartTask->vSeedJob();
-  
-  Handlers::vSpawnedTaskHandler(pStartTask);
-}
-
-/*----------------------------------------------------------------------------*/
 /* init a new system                                                          */
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vSystemStart(void)
@@ -614,7 +614,7 @@ void RapidsSE::vSystemStart(void)
   while (*gpAttachMap->m_ziThreads != gxArguments.m_nThreads)
     PosixThread::vSleepMilli(10);
   
-  vStartSystemTasks();
+  vDispatchJobStart();
   
   if (gxArguments.m_bVerbose) {
     vInfo("RapidsSE instance %s started\n"_Stz,gxArguments.m_sRegionName.aChar());

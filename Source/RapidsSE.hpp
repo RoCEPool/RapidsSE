@@ -23,6 +23,7 @@ namespace StorageEngine
     static void vChangeDirectory(void);
     static void vCheckPort(void);
     static void vCreateAttachMap(void);
+    static void vDispatchJobStart(void);
     static void vErrorHandler(Error* pError);
     static void vExecuteCmdLine(void);
     static void vExecuteSystem(void);
@@ -38,7 +39,6 @@ namespace StorageEngine
     static void vSEitfDelete(SEitf* pSEitf);
     static void vSetGlobals(void);
     static void vSignalHandler(int iSignal);
-    static void vStartSystemTasks(void);
     static void vSystemPrompt(void);
     static void vSystemStart(void);
     static void vSystemStatus(void);
