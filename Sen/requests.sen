@@ -4,7 +4,6 @@
 
 "-requests.sen" .verbose
 
-"requests_basics.sen"      include
 "requests_folder.sen"      include
 
 // create the root /tenants dictionary
