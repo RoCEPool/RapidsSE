@@ -40,7 +40,7 @@ namespace JobsModel
   void vJob_ShowCluster_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_ShowCluster_show(Job* pJob);
   
-  JobClass_s* pJob_ShowCLuster_class(pFUN** aaFun);
+  JobClass_s* pJob_ShowCluster_class(pFUN** aaFun);
 }
 
 /*============================================================================*/

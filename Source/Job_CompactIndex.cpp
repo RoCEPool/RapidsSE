@@ -1,6 +1,8 @@
 /*============================================================================*/
-/* Job_CompactIndex.cpp -- size index Job                                        */
+/* Job_CompactIndex.cpp -- compact index Job                                  */
 /*============================================================================*/
+
+// Job Short: CompactIndex
 
 #include "JobModel.h"
 #include "StorageEngine.h"
@@ -35,6 +37,49 @@ JobNote mJobNote_CompactIndex (
   "<help>"_Stz,           // help
   "<example>"_Stz         // example
 );
+
+JobClass_s xJobClass_CompactIndex =
+{
+  "Job_CompactIndex"_Stz, // name of the job class
+  CN_JOB_COMPACTINDEX,    // class enum
+  JK_DIST2PC,             // job kind
+  "compact index"_Stz,    // comment about the job
+  "compactidx"_Stz,       // the prompt command
+  nullptr,                // the second word
+  nullptr,                // the _run task seed
+  "compactIndex_req"_Stz, // the _req task seed
+  "compactIndex_beg"_Stz, // the _rcv task seed
+  "compactIndex_exe"_Stz, // the _exe task seed
+  "compactIndex_end"_Stz, // the _end task seed
+  "compactIndex_can"_Stz, // the _can task seed
+  true,                   // check resources?
+  false,                  // detached job?
+  false,                  // buffer attached?
+  JT_NONE,                // job trace
+  pJob_CompactIndex_pre,  // prompt pre-process function
+  vJob_CompactIndex_post, // prompt post-process function
+  nullptr,                // job new function
+  vJob_CompactIndex_delete, // job delete function
+  vJob_send,              // job pre-send function
+  vJob_recv,              // job post-receive function
+  vJob_CompactIndex_show, // job show function
+  true,                   // job is enabled
+  "<help>"_Stz,           // help
+  "<example>"_Stz,        // example
+
+  { 0, 0, 0, 0 ,0, 0 }    // seeds spawned
+};
+
+/*----------------------------------------------------------------------------*/
+/* next function                                                              */
+/*----------------------------------------------------------------------------*/
+JobClass_s* JobsModel::pJob_CompactIndex_class(pFUN** pNextFun)
+{
+  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  
+  return &xJobClass_CompactIndex;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

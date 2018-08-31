@@ -2,6 +2,8 @@
 /* Job_Receiver.cpp -- Socket Receiver Job                                    */
 /*============================================================================*/
 
+// Job Short: Receiver
+
 #include "JobModel.h"
 #include "StorageEngine.h"
 
@@ -35,6 +37,49 @@ JobNote mJobNote_Receiver (
   "<help>"_Stz,          // help
   "<example>"_Stz        // example
 );
+
+JobClass_s xJobClass_Receiver =
+{
+  "Job_Receiver"_Stz,    // name of the job class
+  CN_JOB_RECEIVER,       // class enum
+  JK_SYSTEM,             // job kind
+  "socket receiver"_Stz, // comment about the job
+  nullptr,               // the prompt command
+  nullptr,               // the second word
+  "receiver_run"_Stz,    // the _run task seed
+  nullptr,               // the _req task seed
+  nullptr,               // the _rcv task seed
+  nullptr,               // the _exe task seed
+  nullptr,               // the _end task seed
+  nullptr,               // the _can task seed
+  false,                 // check resources?
+  false,                 // detached job?
+  false,                 // buffer attached?
+  JT_NONE,               // job trace
+  nullptr,               // prompt pre-process function
+  nullptr,               // prompt post-process function
+  pJob_Receiver_new,     // job new function
+  vJob_Receiver_delete,  // job delete function
+  nullptr,               // job pre-send function
+  nullptr,               // job post-receive function
+  vJob_Receiver_show,    // job show function
+  false,                 // job is not prompt enabled
+  "<help>"_Stz,          // help
+  "<example>"_Stz,       // example
+
+  { 0, 0, 0, 0 ,0, 0 }    // seeds spawned
+};
+
+/*----------------------------------------------------------------------------*/
+/* next function                                                              */
+/*----------------------------------------------------------------------------*/
+JobClass_s* JobsModel::pJob_Receiver_class(pFUN** pNextFun)
+{
+  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  
+  return &xJobClass_Receiver;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

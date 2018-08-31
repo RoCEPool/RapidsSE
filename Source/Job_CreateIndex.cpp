@@ -2,6 +2,8 @@
 /* Job_CreateIndex.cpp -- Create Index Job                                    */
 /*============================================================================*/
 
+// Job Short: CreateIndex
+
 #include "JobModel.h"
 #include "StorageEngine.h"
 
@@ -64,6 +66,49 @@ JobNote mJobNote_CreateIndex2 (
   "<help>"_Stz,            // help
   "<example>"_Stz          // example
 );
+
+JobClass_s xJobClass_CreateIndex =
+{
+  "Job_CreateIndex"_Stz,   // name of the job class
+  CN_JOB_CREATEINDEX,      // class enum
+  JK_DIST2PC,              // job kind
+  "create unique index"_Stz, // comment about the job
+  "create"_Stz,            // the prompt command
+  "unique"_Stz,            // the second word
+  nullptr,                 // the _run task seed
+  "createIndex_req"_Stz,   // the _req task seed
+  "createIndex_beg"_Stz,   // the _rcv task seed
+  "createIndex_exe"_Stz,   // the _exe task seed
+  "createIndex_end"_Stz,   // the _end task seed
+  "createIndex_can"_Stz,   // the _can task seed
+  true,                    // check resources?
+  false,                   // detached job?
+  false,                   // buffer attached?
+  JT_NONE,                 // job trace
+  pJob_CreateIndex_pre,    // prompt pre-process function
+  vJob_CreateIndex_post,   // prompt post-process function
+  nullptr,                 // job new function
+  vJob_CreateIndex_delete, // job delete function
+  vJob_send,               // job pre-send function
+  vJob_recv,               // job post-receive function
+  vJob_CreateIndex_show,   // job show function
+  true,                    // job is enabled
+  "<help>"_Stz,            // help
+  "<example>"_Stz,         // example
+
+  { 0, 0, 0, 0 ,0, 0 }     // seeds spawned
+};
+
+/*----------------------------------------------------------------------------*/
+/* next function                                                              */
+/*----------------------------------------------------------------------------*/
+JobClass_s* JobsModel::pJob_CreateIndex_class(pFUN** pNextFun)
+{
+  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  
+  return &xJobClass_CreateIndex;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

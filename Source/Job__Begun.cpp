@@ -2,6 +2,8 @@
 /* Job__Begun.cpp -- Job Begun                                                */
 /*============================================================================*/
 
+// Job Short: _Begun
+
 #include "JobModel.h"
 
 JobNote mJobNote__Begun (
@@ -60,7 +62,9 @@ JobClass_s xJobClass__Begun =
   nullptr,                 // job show function
   false,                   // job is not prompt enabled
   "<help>"_Stz,            // help
-  "<example>"_Stz          // example
+  "<example>"_Stz,         // example
+  
+  { 0, 0, 0, 0 ,0, 0 }     // seeds spawned
 };
 
 /*----------------------------------------------------------------------------*/

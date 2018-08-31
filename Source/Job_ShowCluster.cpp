@@ -2,6 +2,8 @@
 /* Job_ShowCluster.cpp -- Show Cluster Job                                    */
 /*============================================================================*/
 
+// Job Short: ShowCluster
+
 #include "JobModel.h"
 #include "StorageEngine.h"
 
@@ -35,6 +37,49 @@ JobNote mJobNote_ShowCluster (
   "<help>"_Stz,          // help
   "<example>"_Stz        // example
 );
+
+JobClass_s xJobClass_ShowCluster =
+{
+  "Job_ShowCluster"_Stz, // name of the job class
+  CN_JOB_SHOWCLUSTER,    // class enum
+  JK_LOCAL,              // job kind
+  "show cluster"_Stz,    // comment about the job
+  "showCluster"_Stz,     // the prompt command
+  nullptr,               // the second word
+  nullptr,               // the _run task seed
+  "showCluster_req"_Stz, // the _req task seed
+  nullptr,               // the _rcv task seed
+  nullptr,               // the _exe task seed
+  nullptr,               // the _end task seed
+  nullptr,               // the _can task seed
+  false,                 // check resources?
+  false,                 // detached job?
+  false,                 // buffer attached?
+  JT_NONE,               // job trace
+  pJob_ShowCluster_pre,  // prompt pre-process function
+  vJob_ShowCluster_post, // prompt post-process function
+  nullptr,               // job new function
+  vJob_ShowCluster_delete,  // job delete function
+  nullptr,               // job pre-send function
+  nullptr,               // job post-receive function
+  vJob_ShowCluster_show, // job show function
+  true,                  // job is enabled
+  "<help>"_Stz,          // help
+  "<example>"_Stz,       // example
+
+  { 0, 0, 0, 0 ,0, 0 }    // seeds spawned
+};
+
+/*----------------------------------------------------------------------------*/
+/* next function                                                              */
+/*----------------------------------------------------------------------------*/
+JobClass_s* JobsModel::pJob_ShowCluster_class(pFUN** pNextFun)
+{
+  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  
+  return &xJobClass_ShowCluster;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

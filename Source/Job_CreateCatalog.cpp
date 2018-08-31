@@ -2,6 +2,8 @@
 /* Job_CreateCatalog.cpp -- Create Catalog Job                                */
 /*============================================================================*/
 
+// Job Short: CreateCatalog
+
 #include "JobModel.h"
 #include "StorageEngine.h"
 
@@ -35,6 +37,49 @@ JobNote mJobNote_CreateCatalog (
   "<help>"_Stz,             // help
   "<example>"_Stz           // example
 );
+
+JobClass_s xJobClass_CreateCatalog =
+{
+  "Job_CreateCatalog"_Stz,  // name of the job class
+  CN_JOB_CREATECATALOG,     // class enum
+  JK_DIST2PC,               // job kind
+  "create catalog"_Stz,     // comment about the job
+  "create"_Stz,             // the prompt command
+  "catalog"_Stz,            // the second word
+  nullptr,                  // the _run task seed
+  "createCatalog_req"_Stz,  // the _req task seed
+  "createCatalog_beg"_Stz,  // the _rcv task seed
+  "createCatalog_exe"_Stz,  // the _exe task seed
+  "createCatalog_end"_Stz,  // the _end task seed
+  "createCatalog_can"_Stz,  // the _can task seed
+  true,                     // check resources?
+  false,                    // detached job?
+  false,                    // buffer attached?
+  JT_NONE,                  // job trace
+  pJob_CreateCatalog_pre,   // prompt pre-process function
+  vJob_CreateCatalog_post,  // prompt post-process function
+  nullptr,                  // job new function
+  vJob_CreateCatalog_delete,// job delete function
+  vJob_send,                // job pre-send function
+  vJob_recv,                // job post-receive function
+  vJob_CreateCatalog_show,  // job show function
+  true,                     // job is enabled
+  "<help>"_Stz,             // help
+  "<example>"_Stz,          // example
+
+  { 0, 0, 0, 0 ,0, 0 }      // seeds spawned
+};
+
+/*----------------------------------------------------------------------------*/
+/* next function                                                              */
+/*----------------------------------------------------------------------------*/
+JobClass_s* JobsModel::pJob_CreateCatalog_class(pFUN** pNextFun)
+{
+  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  
+  return &xJobClass_CreateCatalog;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

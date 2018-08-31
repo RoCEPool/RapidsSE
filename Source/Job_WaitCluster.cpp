@@ -1,6 +1,9 @@
 /*============================================================================*/
 /* Job_WaitCluster.cpp -- Wait for cluster to start                           */
 /*============================================================================*/
+
+// Job Short: WaitCluster
+
 #include "StorageEngine.h"
 #include "JobModel.h"
 

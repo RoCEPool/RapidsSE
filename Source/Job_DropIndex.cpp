@@ -2,6 +2,8 @@
 /* Job_DropIndex.cpp -- drop index Job                                        */
 /*============================================================================*/
 
+// Job Short: DropIndex
+
 #include "JobModel.h"
 #include "StorageEngine.h"
 
@@ -35,6 +37,49 @@ JobNote mJobNote_DropIndex (
   "<help>"_Stz,          // help
   "<example>"_Stz        // example
 );
+
+JobClass_s xJobClass_DropIndex =
+{
+  "Job_DropIndex"_Stz,   // name of the job class
+  CN_JOB_DROPINDEX,      // class enum
+  JK_DIST2PC,            // job kind
+  "drop index"_Stz,      // comment about the job
+  "drop"_Stz,            // the prompt command
+  "index"_Stz,           // the second word
+  nullptr,               // the _run task seed
+  "dropIndex_req"_Stz,   // the _req task seed
+  "dropIndex_beg"_Stz,   // the _rcv task seed
+  "dropIndex_exe"_Stz,   // the _exe task seed
+  "dropIndex_end"_Stz,   // the _end task seed
+  "dropIndex_can"_Stz,   // the _can task seed
+  true,                  // check resources?
+  false,                 // detached job?
+  false,                 // buffer attached?
+  JT_NONE,               // job trace
+  pJob_DropIndex_pre,    // prompt pre-process function
+  vJob_DropIndex_post,   // prompt post-process function
+  nullptr,               // job new function
+  vJob_DropIndex_delete, // job delete function
+  vJob_send,             // job pre-send function
+  vJob_recv,             // job post-receive function
+  vJob_DropIndex_show,   // job show function
+  true,                  // job is enabled
+  "<help>"_Stz,          // help
+  "<example>"_Stz,       // example
+
+  { 0, 0, 0, 0 ,0, 0 }   // seeds spawned
+};
+
+/*----------------------------------------------------------------------------*/
+/* next function                                                              */
+/*----------------------------------------------------------------------------*/
+JobClass_s* JobsModel::pJob_DropIndex_class(pFUN** pNextFun)
+{
+  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  
+  return &xJobClass_DropIndex;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

@@ -2,6 +2,8 @@
 /* Job_CreateTable.cpp -- Create Table Job                                    */
 /*============================================================================*/
 
+// Job Short: CreateTable
+
 #include "JobModel.h"
 #include "StorageEngine.h"
 
@@ -35,6 +37,49 @@ JobNote mJobNote_CreateTable (
   "<help>"_Stz,           // help
   "<example>"_Stz         // example
 );
+
+JobClass_s xJobClass_CreateTable =
+{
+  "Job_CreateTable"_Stz,  // name of the job class
+  CN_JOB_CREATETABLE,     // class enum
+  JK_DIST2PC,             // job kind
+  "create table"_Stz,     // comment about the job
+  "create"_Stz,           // the prompt command
+  "table"_Stz,            // the second word
+  nullptr,                // the _run task seed
+  "createTable_req"_Stz,  // the _req task seed
+  "createTable_beg"_Stz,  // the _rcv task seed
+  "createTable_exe"_Stz,  // the _exe task seed
+  "createTable_end"_Stz,  // the _end task seed
+  "createTable_can"_Stz,  // the _can task seed
+  true,                   // check resources?
+  false,                  // detached job?
+  false,                  // buffer attached?
+  JT_NONE,                // job trace
+  pJob_CreateTable_pre,   // prompt pre-process function
+  vJob_CreateTable_post,  // prompt post-process function
+  pJob_CreateTable_new,   // job new function
+  vJob_CreateTable_delete,// job delete function
+  vJob_send,              // job pre-send function
+  vJob_recv,              // job post-receive function
+  vJob_CreateTable_show,  // job show function
+  true,                   // job is enabled
+  "<help>"_Stz,           // help
+  "<example>"_Stz,        // example
+
+  { 0, 0, 0, 0 ,0, 0 }    // seeds spawned
+};
+
+/*----------------------------------------------------------------------------*/
+/* next function                                                              */
+/*----------------------------------------------------------------------------*/
+JobClass_s* JobsModel::pJob_CreateTable_class(pFUN** pNextFun)
+{
+  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  
+  return &xJobClass_CreateTable;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

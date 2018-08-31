@@ -2,6 +2,8 @@
 /* Job_AnalyzeTable.cpp -- analyze table Job                                  */
 /*============================================================================*/
 
+// Job Short: AnalyzeTable
+
 #include "JobModel.h"
 #include "StorageEngine.h"
 
@@ -35,6 +37,49 @@ JobNote mJobNote_AnalyzeTable (
   "antbl tableNm [0/1]"_Stz,              // help
   "<example>"_Stz            // example
   );
+
+JobClass_s xJobClass_AnalyzeTable =
+{
+  "Job_AnalyzeTable"_Stz,    // name of the job class
+  CN_JOB_ANALYZETABLE,       // class enum
+  JK_DIST2PC,                // job kind
+  "analyze table"_Stz,       // comment about the job
+  "antbl"_Stz,               // the prompt command
+  nullptr,                   // the second word
+  nullptr,                   // the _run task seed
+  "analyzeTable_req"_Stz,    // the _req task seed
+  "analyzeTable_beg"_Stz,    // the _rcv task seed
+  "analyzeTable_exe"_Stz,    // the _exe task seed
+  "analyzeTable_end"_Stz,    // the _end task seed
+  "analyzeTable_can"_Stz,    // the _can task seed
+  true,                      // check resources?
+  false,                     // detached job?
+  false,                     // buffer attached?
+  JT_NONE,                   // job trace
+  pJob_AnalyzeTable_pre,     // prompt pre-process function
+  vJob_AnalyzeTable_post,    // prompt post-process function
+  nullptr,                   // job new function
+  vJob_AnalyzeTable_delete,  // job delete function
+  vJob_send,                 // job pre-send function
+  vJob_recv,                 // job post-receive function
+  vJob_AnalyzeTable_show,    // job show function
+  true,                      // job is enabled
+  "antbl tableNm [0/1]"_Stz, // help
+  "<example>"_Stz,           // example
+
+  { 0, 0, 0, 0 ,0, 0 }       // seeds spawned
+};
+
+/*----------------------------------------------------------------------------*/
+/* next function                                                              */
+/*----------------------------------------------------------------------------*/
+JobClass_s* JobsModel::pJob_AnalyzeTable_class(pFUN** pNextFun)
+{
+  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  
+  return &xJobClass_AnalyzeTable;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

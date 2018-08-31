@@ -2,6 +2,8 @@
 /* Job_VisualizeIndex.cpp -- visualize index Job                              */
 /*============================================================================*/
 
+// Job Short: VisualizeIndex
+
 #include "JobModel.h"
 #include "StorageEngine.h"
 
@@ -35,6 +37,49 @@ JobNote mJobNote_VisualizeIndex (
   "<help>"_Stz,               // help
   "<example>"_Stz             // example
 );
+
+JobClass_s xJobClass_VisualizeIndex =
+{
+  "Job_VisualizeIndex"_Stz,   // name of the job class
+  CN_JOB_VISUALIZEINDEX,      // class enum
+  JK_LOCAL,                   // job kind
+  "visualize index"_Stz,      // comment about the job
+  "visidx"_Stz,               // the prompt command
+  nullptr,                    // the second word
+  nullptr,                    // the _run task seed
+  "visualizeIndex_req"_Stz,   // the _req task seed
+  nullptr,                    // the _rcv task seed
+  nullptr,                    // the _exe task seed
+  nullptr,                    // the _end task seed
+  nullptr,                    // the _can task seed
+  true,                       // check resources?
+  false,                      // detached job?
+  false,                      // buffer attached?
+  JT_NONE,                    // job trace
+  pJob_VisualizeIndex_pre,    // prompt pre-process function
+  vJob_VisualizeIndex_post,   // prompt post-process function
+  nullptr,                    // job new function
+  vJob_VisualizeIndex_delete, // job delete function
+  nullptr,                    // job pre-send function
+  nullptr,                    // job post-receive function
+  vJob_VisualizeIndex_show,   // job show function
+  true,                       // job is enabled
+  "<help>"_Stz,               // help
+  "<example>"_Stz,            // example
+
+  { 0, 0, 0, 0 ,0, 0 }    // seeds spawned
+};
+
+/*----------------------------------------------------------------------------*/
+/* next function                                                              */
+/*----------------------------------------------------------------------------*/
+JobClass_s* JobsModel::pJob_VisualizeIndex_class(pFUN** pNextFun)
+{
+  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  
+  return &xJobClass_VisualizeIndex;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

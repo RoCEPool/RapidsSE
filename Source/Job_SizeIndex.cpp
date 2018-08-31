@@ -2,6 +2,8 @@
 /* Job_SizeIndex.cpp -- size index Job                                        */
 /*============================================================================*/
 
+// Job Short: SizeIndex
+
 #include "JobModel.h"
 #include "StorageEngine.h"
 
@@ -35,6 +37,49 @@ JobNote mJobNote_SizeIndex (
   "<help>"_Stz,          // help
   "<example>"_Stz        // example
 );
+
+JobClass_s xJobClass_SizeIndex =
+{
+  "Job_SizeIndex"_Stz,   // name of the job class
+  CN_JOB_SIZEINDEX,      // class enum
+  JK_DIST2PC,            // job kind
+  "size of index"_Stz,   // comment about the job
+  "szidx"_Stz,           // the prompt command
+  nullptr,               // the second word
+  nullptr,               // the _run task seed
+  "sizeIndex_req"_Stz,   // the _req task seed
+  "sizeIndex_beg"_Stz,   // the _rcv task seed
+  "sizeIndex_exe"_Stz,   // the _exe task seed
+  "sizeIndex_end"_Stz,   // the _end task seed
+  "sizeIndex_can"_Stz,   // the _can task seed
+  true,                  // check resources?
+  false,                 // detached job?
+  false,                 // buffer attached?
+  JT_NONE,               // job trace
+  pJob_SizeIndex_pre,    // prompt pre-process function
+  vJob_SizeIndex_post,   // prompt post-process function
+  nullptr,               // job new function
+  vJob_SizeIndex_delete, // job delete function
+  vJob_send,             // job pre-send function
+  vJob_recv,             // job post-receive function
+  vJob_SizeIndex_show,   // job show function
+  true,                  // job is enabled
+  "<help>"_Stz,          // help
+  "<example>"_Stz,       // example
+
+  { 0, 0, 0, 0 ,0, 0 }    // seeds spawned
+};
+
+/*----------------------------------------------------------------------------*/
+/* next function                                                              */
+/*----------------------------------------------------------------------------*/
+JobClass_s* JobsModel::pJob_SizeIndex_class(pFUN** pNextFun)
+{
+  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  
+  return &xJobClass_SizeIndex;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

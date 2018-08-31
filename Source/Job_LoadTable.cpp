@@ -1,6 +1,8 @@
 /*============================================================================*/
-/* Job_ListTable.cpp -- List Table Job                                        */
+/* Job_LoadTable.cpp -- Load Table Job                                        */
 /*============================================================================*/
+
+// Job Short: LoadTable
 
 #include "JobModel.h"
 #include "StorageEngine.h"
@@ -41,6 +43,49 @@ JobNote mJobNote_LoadTable (
  ld lineitem "/tpch/lineitem.tbl" ;
  
  */
+
+JobClass_s xJobClass_LoadTable =
+{
+  "Job_LoadTable"_Stz,    // name of the job class
+  CN_JOB_LOADTABLE,       // class enum
+  JK_DIST2PC,             // job kind
+  "load table"_Stz,       // comment about the job
+  "ld"_Stz,               // the prompt command
+  nullptr,                // the second word
+  nullptr,                // the _run task seed
+  "loadTable_req"_Stz,    // the _req task seed
+  "loadTable_beg"_Stz,    // the _rcv task seed
+  "loadTable_exe"_Stz,    // the _exe task seed
+  "loadTable_end"_Stz,    // the _end task seed
+  "loadTable_can"_Stz,    // the _can task seed
+  true,                   // check resources?
+  false,                  // detached job?
+  false,                  // buffer attached?
+  JT_NONE,                // job trace
+  pJob_LoadTable_pre,     // prompt pre-process function
+  vJob_LoadTable_post,    // prompt post-process function
+  pJob_LoadTable_new,     // job new function
+  vJob_LoadTable_delete,  // job delete function
+  vJob_send,              // job pre-send function
+  vJob_recv,              // job post-receive function
+  vJob_LoadTable_show,    // job show function
+  true,                   // job is enabled
+  "<help>"_Stz,           // help
+  "<example>"_Stz,        // example
+
+  { 0, 0, 0, 0 ,0, 0 }    // seeds spawned
+};
+
+/*----------------------------------------------------------------------------*/
+/* next function                                                              */
+/*----------------------------------------------------------------------------*/
+JobClass_s* JobsModel::pJob_LoadTable_class(pFUN** pNextFun)
+{
+  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  
+  return &xJobClass_LoadTable;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

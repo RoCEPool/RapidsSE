@@ -2,6 +2,8 @@
 /* Job_Boot.cpp -- System Boot Job                                            */
 /*============================================================================*/
 
+// Job Short: Boot
+
 #include "JobModel.h"
 #include "StorageEngine.h"
 
@@ -14,7 +16,7 @@ JobNote mJobNote_Boot (
   "system boot"_Stz, // comment about the job
   nullptr,           // the prompt command
   nullptr,           // the second word
-  "boot_run"_Stz,// the _run task seed
+  "boot_run"_Stz,    // the _run task seed
   nullptr,           // the _req task seed
   nullptr,           // the _exe task seed
   nullptr,           // the _rcv task seed
@@ -35,6 +37,49 @@ JobNote mJobNote_Boot (
   "<help>"_Stz,      // help
   "<example>"_Stz    // example
 );
+
+JobClass_s xJobClass_Boot =
+{
+  "Job_Boot"_Stz,    // name of the job class
+  CN_JOB_BOOT,       // class enum
+  JK_THREAD,         // job kind
+  "system boot"_Stz, // comment about the job
+  nullptr,           // the prompt command
+  nullptr,           // the second word
+  "boot_run"_Stz,    // the _run task seed
+  nullptr,           // the _req task seed
+  nullptr,           // the _exe task seed
+  nullptr,           // the _rcv task seed
+  nullptr,           // the _end task seed
+  nullptr,           // the _can task seed
+  false,             // check resources?
+  false,             // detached job?
+  false,             // buffer attached?
+  JT_NONE,           // job trace
+  nullptr,           // prompt pre-process function
+  nullptr,           // prompt post-process function
+  pJob_Boot_new,     // job new function
+  vJob_Boot_delete,  // job delete function
+  nullptr,           // job pre-send function
+  nullptr,           // job post-receive function
+  vJob_Boot_show,    // job show function
+  false,             // job is not prompt enabled
+  "<help>"_Stz,      // help
+  "<example>"_Stz,   // example
+
+  { 0, 0, 0, 0 ,0, 0 } // seeds spawned
+};
+
+/*----------------------------------------------------------------------------*/
+/* next function                                                              */
+/*----------------------------------------------------------------------------*/
+JobClass_s* JobsModel::pJob_Boot_class(pFUN** pNextFun)
+{
+  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  
+  return &xJobClass_Boot;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

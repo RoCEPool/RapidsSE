@@ -2,6 +2,8 @@
 /* Job_VerifyIndex.cpp -- verify index Job                                    */
 /*============================================================================*/
 
+// Job Short: VerifyIndex
+
 #include "JobModel.h"
 #include "StorageEngine.h"
 
@@ -35,6 +37,49 @@ JobNote mJobNote_VerifyIndex (
   "<help>"_Stz,               // help
   "<example>"_Stz             // example
 );
+
+JobClass_s xJobClass_VerifyIndex =
+{
+  "Job_VerifyIndex"_Stz,      // name of the job class
+  CN_JOB_VERIFYINDEX,         // class enum
+  JK_DIST2PC,                 // job kind
+  "verify index"_Stz,         // comment about the job
+  "vfyidx"_Stz,               // the prompt command
+  nullptr,                    // the second word
+  nullptr,                    // the _run task seed
+  "verifyIndex_req"_Stz,      // the _req task seed
+  "verifyIndex_beg"_Stz,      // the _rcv task seed
+  "verifyIndex_exe"_Stz,      // the _exe task seed
+  "verifyIndex_end"_Stz,      // the _end task seed
+  "verifyIndex_can"_Stz,      // the _can task seed
+  true,                       // check resources?
+  false,                      // detached job?
+  false,                      // buffer attached?
+  JT_NONE,                    // job trace
+  pJob_VerifyIndex_pre,       // prompt pre-process function
+  vJob_VerifyIndex_post,      // prompt post-process function
+  nullptr,                    // job new function
+  vJob_VerifyIndex_delete,    // job delete function
+  vJob_send,                  // job pre-send function
+  vJob_recv,                  // job post-receive function
+  vJob_VerifyIndex_show,      // job show function
+  true,                       // job is enabled
+  "<help>"_Stz,               // help
+  "<example>"_Stz,            // example
+
+  { 0, 0, 0, 0 ,0, 0 }    // seeds spawned
+};
+
+/*----------------------------------------------------------------------------*/
+/* next function                                                              */
+/*----------------------------------------------------------------------------*/
+JobClass_s* JobsModel::pJob_VerifyIndex_class(pFUN** pNextFun)
+{
+  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  
+  return &xJobClass_VerifyIndex;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

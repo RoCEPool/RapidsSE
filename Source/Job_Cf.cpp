@@ -2,6 +2,8 @@
 /* Job_Cf.cpp -- Change Folder Job                                            */
 /*============================================================================*/
 
+// Job Short: Cf
+
 #include "JobModel.h"
 #include "StorageEngine.h"
 
@@ -35,6 +37,49 @@ JobNote mJobNote_Cf (
   "<help>"_Stz,        // help
   "<example>"_Stz      // example
 );
+
+JobClass_s xJobClass_Cf =
+{
+  "Job_Cf"_Stz,        // name of the job class
+  CN_JOB_CF,           // class enum
+  JK_LOCAL,            // job kind
+  "change folder"_Stz, // comment about the job
+  "cf"_Stz,            // the prompt command
+  nullptr,             // the second word
+  nullptr,             // the _run task seed
+  "cf_req"_Stz,        // the _req task seed
+  nullptr,             // the _rcv task seed
+  nullptr,             // the _exe task seed
+  nullptr,             // the _end task seed
+  nullptr,             // the _can task seed
+  false,               // check resources?
+  false,               // detached job?
+  false,               // buffer attached?
+  JT_NONE,             // job trace
+  pJob_Cf_pre,         // prompt pre-process function
+  vJob_Cf_post,        // prompt post-process function
+  nullptr,             // job new function
+  vJob_Cf_delete,      // job delete function
+  nullptr,             // job pre-send function
+  nullptr,             // job post-receive function
+  vJob_Cf_show,        // job show function
+  true,                // job is enabled
+  "<help>"_Stz,        // help
+  "<example>"_Stz,     // example
+
+  { 0, 0, 0, 0 ,0, 0 } // seeds spawned
+};
+
+/*----------------------------------------------------------------------------*/
+/* next function                                                              */
+/*----------------------------------------------------------------------------*/
+JobClass_s* JobsModel::pJob_Cf_class(pFUN** pNextFun)
+{
+  *pNextFun = (pFUN*)pJob_WaitCluster_next;
+  
+  return &xJobClass_Cf;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
