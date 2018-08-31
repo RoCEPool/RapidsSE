@@ -13,7 +13,6 @@
 "requests_rowBuffer.sen"   include
 "requests_misc.sen"        include
 "requests_tx.sen"          include
-"requests_persistence.sen" include
 
 // create the root /tenants dictionary
 dicTenants: tenants
