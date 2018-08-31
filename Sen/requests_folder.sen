@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* create /tenants/boray/catalogs/rapidsse                                    */
 /*----------------------------------------------------------------------------*/
-: createDefaultFolders localCalls ( )
+: createDefaultFolders ( )
 
   assert::stack_0
 
