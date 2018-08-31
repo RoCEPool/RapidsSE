@@ -4,7 +4,6 @@
 
 "-actorModels.sen" .verbose
 
-"serverModel.sen" include
 "workerModel.sen" include
 
 "actorPrimitives.sen" include
