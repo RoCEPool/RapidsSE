@@ -21,7 +21,7 @@ int main(int argc, const char* argv[])
     exit(EXIT_SUCCESS);
   
   // execute
-  RapidsSE::vExecuteSystem();
+  RapidsSE::vMainEntry();
 
   return EXIT_SUCCESS;
 }

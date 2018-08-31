@@ -19,7 +19,7 @@ bool          gbSHM          = false;
 /*----------------------------------------------------------------------------*/
 /* attach to an existing shm region                                           */
 /*----------------------------------------------------------------------------*/
-void RapidsSE::vAttachObjects(void)
+void RapidsSE::vAttachRegion(void)
 {
   gpAttachMap = pAdd<AttachMap*>(mpRegion,C_SIZE_POOL_BUFFER);
   
@@ -164,82 +164,6 @@ void RapidsSE::vErrorHandler(Error* pError)
 }
 
 /*----------------------------------------------------------------------------*/
-/* execute command line                                                       */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vExecuteCmdLine(void)
-{
-  if (gxArguments.m_bVerbose)
-    vInfo("\n*\n* Execute Command Line\n*\n"_Stz);
-  
-  try {
-    
-    if (gxArguments.m_bStart) {
-      
-      vSystemStart();
-      
-      if (gxArguments.m_bPrompt)
-        vSystemPrompt();
-      else
-        vSystemWait();
-    }
-    
-    else if (gxArguments.m_bPrompt)  vSystemPrompt();
-    else if (gxArguments.m_bStatus)  vSystemStatus();
-    else if (gxArguments.m_bStop)    vSystemStop();
-    else if (gxArguments.m_bUnlink)  vSystemUnlink();
-    else {
-      vError("Unknown command line argument\n"_Stz);
-      vFatal("RapidsSE exits\n"_Stz);
-      exit(EXIT_FAILURE);
-    }
-    
-  }
-  
-  catch (Error* pError) {
-    vErrorHandler(pError);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* execute system                                                             */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vExecuteSystem(void)
-{
-  //OpSys::vGetInfo();
-  // OpSys::vTraceInfo();
-  
-  vPrintWelcome();
-  
-  if (gxArguments.m_bVerbose)
-    vPrintSizes();
-  
-  vSetSignalHandlers();
-  
-  StorageEngine::vCheckAllAssumptions();
-  
-  vWriteRegionName();
-  
-  vChangeDirectory();
-  
-  vKillPrev();
-  
-  vPoolOpen();
-  
-  if (gxArguments.m_bStart)
-    vSetGlobals();
-  
-  vCheckPort();
-
-  //gpAttachMap->vPrintAttachMap();
-
-  vExecuteCmdLine();
-  
-  vPoolClose();
-  
-  vPrintExit();
-}
-
-/*----------------------------------------------------------------------------*/
 /* kill previous node instances                                               */
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vKillPrev(void)
@@ -286,6 +210,45 @@ void RapidsSE::vKillPrev(void)
     
     Region::vUnlink(sRegionName);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* main entry                                                                 */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vMainEntry(void)
+{
+  //OpSys::vGetInfo();
+  // OpSys::vTraceInfo();
+  
+  vPrintWelcome();
+  
+  if (gxArguments.m_bVerbose)
+    vPrintSizes();
+  
+  vSetSignalHandlers();
+  
+  StorageEngine::vCheckAllAssumptions();
+  
+  vWriteRegionName();
+  
+  vChangeDirectory();
+  
+  vKillPrev();
+  
+  vPoolOpen();
+  
+  if (gxArguments.m_bStart)
+    vSetGlobals();
+  
+  vCheckPort();
+  
+  //gpAttachMap->vPrintAttachMap();
+  
+  vRunCmdLine();
+  
+  vPoolClose();
+  
+  vPrintExit();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -350,7 +313,7 @@ void RapidsSE::vPoolOpen(void)
     }
     bResult = Region::bAttach(gxArguments.m_sRegionName, gxArguments.m_bWelcome);
     ASSERT(bResult);
-    vAttachObjects();
+    vAttachRegion();
     return;
   }
   
@@ -367,13 +330,13 @@ void RapidsSE::vPoolOpen(void)
       return;
       
     }
-    vAttachObjects();
+    vAttachRegion();
     return;
   }
   
   bResult = Region::bAttach(gxArguments.m_sRegionName, gxArguments.m_bWelcome);
   ASSERT(bResult);
-  vAttachObjects();
+  vAttachRegion();
   //vFatal("Error: RapidsSE missing arguments\n"_Stz);
   //exit(EXIT_FAILURE);
 }
@@ -387,7 +350,7 @@ bool RapidsSE::bPoolOpen(StrVal& sPoolName)
   if (!bResult)
     return bResult;
   
-  vAttachObjects();
+  vAttachRegion();
   return true;
 }
 
@@ -473,6 +436,43 @@ void RapidsSE::vPrintWelcome(void)
   // print startup information
   if (gxArguments.m_bWelcome && gxArguments.m_bStart)
     gxArguments.vPrintStartupInfo();
+}
+
+/*----------------------------------------------------------------------------*/
+/* run command line                                                           */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vRunCmdLine(void)
+{
+  if (gxArguments.m_bVerbose)
+    vInfo("\n*\n* Execute Command Line\n*\n"_Stz);
+  
+  try {
+    
+    if (gxArguments.m_bStart) {
+      
+      vSystemStart();
+      
+      if (gxArguments.m_bPrompt)
+        vSystemPrompt();
+      else
+        vSystemWait();
+    }
+    
+    else if (gxArguments.m_bPrompt)  vSystemPrompt();
+    else if (gxArguments.m_bStatus)  vSystemStatus();
+    else if (gxArguments.m_bStop)    vSystemStop();
+    else if (gxArguments.m_bUnlink)  vSystemUnlink();
+    else {
+      vError("Unknown command line argument\n"_Stz);
+      vFatal("RapidsSE exits\n"_Stz);
+      exit(EXIT_FAILURE);
+    }
+    
+  }
+  
+  catch (Error* pError) {
+    vErrorHandler(pError);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -655,7 +655,7 @@ void RapidsSE::vSystemStatus(void)
     ASSERT(bResult);
     
     // get globals
-    vAttachObjects();
+    vAttachRegion();
     
     // check if the Pid in the shm is still alive
     if ( Process::bTestPid(gpAttachMap->m_iPid) ) {
