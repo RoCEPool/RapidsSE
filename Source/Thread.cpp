@@ -357,10 +357,11 @@ void Thread::vLoop(void)
   
   vMutexLock();
 
-  if (++gpAttachMap->m_ziThreads == gxArguments.m_nThreads) {
-    RapidsSE::vStartSystemTasks();
-  }
+  //if (++gpAttachMap->m_ziThreads == gxArguments.m_nThreads)
+  //  RapidsSE::vStartSystemTasks();
   
+  ++gpAttachMap->m_ziThreads;
+
   for (;;) {
    
     // get next task

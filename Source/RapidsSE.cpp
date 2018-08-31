@@ -521,6 +521,8 @@ void RapidsSE::vStartSystemTasks(void)
   if (gxArguments.m_bVerbose)
     vInfo("\n*\n* Start System Tasks\n*\n"_Stz);
   
+  PosixThread::vTlsSet(giTLS_ThreadKey,(void*)-1);
+  
   JobClass* pJobClass_Start = gxJobCatalog.pFindJob(CN_JOB_START);
   
   Job_Start* pJob_Start
@@ -608,6 +610,11 @@ void RapidsSE::vSystemStart(void)
     Thread* pThread = new Thread;
     pThread->vSpawn_Thread();
   }
+  
+  while (*gpAttachMap->m_ziThreads != gxArguments.m_nThreads)
+    PosixThread::vSleepMilli(10);
+  
+  vStartSystemTasks();
   
   if (gxArguments.m_bVerbose) {
     vInfo("RapidsSE instance %s started\n"_Stz,gxArguments.m_sRegionName.aChar());
@@ -700,6 +707,7 @@ void RapidsSE::vSystemWait(void)
   while ( ! gpAttachMap->m_iQuit && ! gpAttachMap->m_iStop )
     PosixThread::vSleepMilli(10);
 }
+
 /*----------------------------------------------------------------------------*/
 /* write region name                                                          */
 /*----------------------------------------------------------------------------*/
