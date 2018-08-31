@@ -76,7 +76,8 @@ JobClass_s* JobCatalog::pFindJob_JC2(eCN eClass)
   JobClass_s* pJobClass_s = nullptr;
   
   for (pNEXTJOBFUN pFun = (pNEXTJOBFUN)pJob__Begun_next; pFun; ) {
-    pFun = (pNEXTJOBFUN)pFun(&pJobClass_s);
+    
+    pJobClass_s = pFun((pFUN**)&pFun);
 
     if (pJobClass_s->m_eClass == eClass)
       return pJobClass_s;
@@ -95,7 +96,8 @@ JobClass_s* JobCatalog::pFindJob_JC2(Stz* aCommand1, Stz* aCommand2)
   JobClass_s* pJobClass_s = nullptr;
   
   for (pNEXTJOBFUN pFun = (pNEXTJOBFUN)pJob__Begun_next; pFun; ) {
-    pFun = (pNEXTJOBFUN)pFun(&pJobClass_s);
+  
+    pJobClass_s = pFun((pFUN**)&pFun);
 
     if ( ! pJobClass_s->m_aCommand1 ||
         ! StrLib::bSame(pJobClass_s->m_aCommand1->aChar(),aCommand1->aChar()) )
@@ -127,8 +129,9 @@ void JobCatalog::vTraceJobs_JC2(eCN eClass)
   JobClass_s* pJobClass_s = nullptr;
 
   for (pNEXTJOBFUN pFun = (pNEXTJOBFUN)pJob__Begun_next; pFun; ) {
-    pFun = (pNEXTJOBFUN)pFun(&pJobClass_s);
     
+    pJobClass_s = pFun((pFUN**)&pFun);
+
     pJobClass_s->vJobCat();
   }
 }

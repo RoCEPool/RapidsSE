@@ -66,11 +66,11 @@ JobClass_s xJobClass__Begun =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-pNEXTJOBFUN JobsModel::pJob__Begun_next(JobClass_s** aaJobClass)
+JobClass_s* JobsModel::pJob__Begun_next(pFUN** pNextFun)
 {
-  *aaJobClass = &xJobClass__Begun;
+  *pNextFun = (pFUN*)pJob_WaitCluster_next;
   
-  return (pNEXTJOBFUN)pJob_WaitCluster_next;
+  return &xJobClass__Begun;
 }
 
 
