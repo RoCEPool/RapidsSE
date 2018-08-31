@@ -1,0 +1,54 @@
+/*============================================================================*/
+/* se_folder.sen -- the set of folder related requests                        */
+/*============================================================================*/
+
+" se_folder.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* create /tenants/boray/catalogs/rapidsse                                    */
+/*----------------------------------------------------------------------------*/
+: createDefaultFolders ( )
+
+  assert::stack_0
+
+  // push tenants folder
+  //"tenants" find execute
+  attachmap::tenants@ execute
+  pathPush
+
+    // create tenant boray (and catalogs sub-folder)
+    "boray" "makeTenant" find execute
+
+    // push boray folder
+    "boray" findInCurrent execute
+    pathPush
+
+      // push catalogs folder
+      "catalogs" findInCurrent execute
+      pathPush
+
+        // create catalog rapidsse (and schemas sub-folder)
+        "rapidsse" "makeCatalog" find execute
+
+          // push rapidsse folder
+          "rapidsse" findInCurrent execute
+          pathPush
+
+          // push schemas folder
+          "schemas" findInCurrent execute
+          pathPush
+
+          // create schema public (and tables sub-folder)
+          "public" "makeSchema" find execute
+
+          pathDrop
+      pathDrop
+    pathDrop
+  pathDrop
+
+  assert::stack_0
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

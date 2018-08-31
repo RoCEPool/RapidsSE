@@ -4,7 +4,7 @@
 
 "-se.sen" .verbose
 
-"requests_folder.sen"      include
+"se_folder.sen" include
 
 // create the root /tenants dictionary
 dicTenants: tenants
