@@ -164,9 +164,10 @@ namespace Tasks
     bool bIsPartitioned(void);
     Job* pJob(void);
     void vJob(Job* pJob);
+    Stz* aJobName(void);
     void vLocalsPop(void);
     void vLocalsPush(void);
-  void vNewStacks(void);
+    void vNewStacks(void);
     i8   iPartition(void);
     void vPerformancePoint(Stz* aWordName, Stz* aPointNote);
     void vPerformancePrint(void);

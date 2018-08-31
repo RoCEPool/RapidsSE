@@ -200,7 +200,7 @@ void Task::vDstackDump(MP_Task mpTask)
     Object* pObject = pPtrVal->pPtr();
     eCN ePtdClass   = pObject->eClass();
     vTrace("[%s] %s (%s %s)\n"_Stz,
-           mpTask->m_pJob->m_pJobClass->m_aName,
+           mpTask->aJobName(),
            sWorkspace.aChar(),
            aClass,
            aCN[ePtdClass]);
@@ -209,11 +209,11 @@ void Task::vDstackDump(MP_Task mpTask)
     IpVal* pIpVal = _pIpVal(&xValWrk);
     Cell* pCell = pIpVal->pIpPtr();
     vTrace("[%s] nullptr\n"_Stz,
-           mpTask->m_pJob->m_pJobClass->m_aName);    //RAY: should trace pIpVal
+           mpTask->aJobName());    //RAY: should trace pIpVal
   }
   else {
     vTrace("[%s] %s (%s)\n"_Stz,
-           mpTask->m_pJob->m_pJobClass->m_aName,
+           mpTask->aJobName(),
            sWorkspace.aChar(),
            aClass);
   }
@@ -436,7 +436,7 @@ void Task::vDstackStk(MP_Task mpTask)
   ENTRY("vDstackStk"_Stz);
   
   mpTask->m_pDataStack->vContentDump(
-    (Stz*)mpTask->m_pJob->m_pJobClass->m_aName,
+    (Stz*)mpTask->aJobName(),
     "DataStack:"_Stz);
   
   EXIT();

@@ -214,7 +214,7 @@ void Task::vAstackStk(MP_Task mpTask)
   ENTRY("vAstackStk"_Stz);
   
   mpTask->m_pAuxStack->vContentDump(
-    (Stz*)mpTask->m_pJob->m_pJobClass->m_aName,
+    (Stz*)mpTask->aJobName(),
     "AuxStack:"_Stz);
   
   EXIT();

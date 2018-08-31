@@ -48,7 +48,7 @@ void Task::vDot(MP_Task mpTask)
   */
   vTrace("[%s %s] %s\n"_Stz,
          gpAttachMap->m_pGrid->pThisNode()->aNodeName(),
-         mpTask->m_pJob ? (Stz*)mpTask->m_pJob->m_pJobClass->m_aName : "<no job>"_Stz,
+         mpTask->m_pJob ? (Stz*)mpTask->aJobName() : "<no job>"_Stz,
          sWorkspace.aChar()
          );
 
@@ -104,7 +104,7 @@ void Task::vDotVerbose(MP_Task mpTask)
     ValLib::vToString(xValWrk.pNestedValueSelf(),sWorkspace);
     vTrace("[%p %s] %s\n"_Stz,
            *mpTask,
-           mpTask->m_pJob->m_pJobClass->m_aName,
+           mpTask->aJobName(),
            sWorkspace.aChar());
   }
   

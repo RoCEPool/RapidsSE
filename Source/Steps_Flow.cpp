@@ -235,7 +235,7 @@ void Task::vFlowTest(MP_Task mpTask)
 {
   ENTRY("vFlowTest"_Stz);
   
-  vTrace("[%s] Test\n"_Stz,mpTask->m_pJob->m_pJobClass->m_aName);
+  vTrace("[%s] Test\n"_Stz,mpTask->aJobName());
   
   EXIT();
 }

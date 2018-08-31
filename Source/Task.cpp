@@ -1263,7 +1263,7 @@ void Task::vDump(eCN eClass, Object* pObject, Stz* aTab)
   Task* pTask = reinterpret_cast<Task*>(pObject);
   
   vTrace("%s %p state %s txId %lld\n"_Stz,
-         pTask->m_pJob->m_pJobClass->m_aName,
+         pTask->aJobName(),
          pTask,
          aTS[pTask->m_eState]->aChar()
          );
@@ -1279,7 +1279,7 @@ void Task::vContentDump(void)
   vTrace("%sTask %p: %16s state %8s txId %lld\n"_Stz,
          aDoubleTab(),
          this,
-         m_pJob->m_pJobClass->m_aName,
+         aJobName(),
          aTS[m_eState]->aChar()
          );
 }
@@ -1386,6 +1386,21 @@ void Task::vJob(Job* pJob)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
     
   m_pJob = pJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the job name of this task                                              */
+/*----------------------------------------------------------------------------*/
+Stz* Task::aJobName(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  if (m_pJob && m_pJob->m_pJobClass)
+    return (Stz*)&m_pJob -> m_pJobClass->m_aName[0];
+  else if (! m_pJob)
+    return "<no job>"_Stz;
+  else
+    return "<no jobClass>"_Stz;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1710,7 +1725,7 @@ void Task::vStackContents(Stack* pStack, StrVal& sStackContents)
           sStackContents.vCatSprint("^%s=%p:%s"_Stz,
                                     aCN[ePtrClass],
                                     pPtr,
-                                    pTask->m_pJob->m_pJobClass->m_aName);
+                                    pTask->aJobName());
         }
         else {
           if (pPtr->iMagic() == C_MAGIC && pPtr->eClass() < CN_ENUMS)
@@ -1818,7 +1833,7 @@ void Task::vTracePoint(Stz* aMark)
          
          gpAttachMap->m_pGrid->pThisNode()->aNodeName(),
          gpAttachMap->m_pGrid->iThisNode(),
-         m_pJob->m_pJobClass->m_aName,
+         aJobName(),
          *m_zAcks,
          
          sRoutine.aChar(),
@@ -2024,7 +2039,7 @@ void Task::vTaskLoop(void)
         StrLib::vCopy(wFileName, m_sFile.aChar());
       }
       vError("[%s] %s : line %lld in %s\n"_Stz,
-             m_pJob->m_pJobClass->m_aName,
+             aJobName(),
              m_sException.aChar(),
              iException,
              wFileName);
@@ -2040,7 +2055,7 @@ void Task::vTaskLoop(void)
       StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');
       StrLib::vCopy(wFileName,ps+1);
       vError("[%s] %s: line %lld in %s\n"_Stz,
-             m_pJob->m_pJobClass->m_aName,
+             aJobName(),
              pError->aErrorMsg(),
              pError->iLineNo(),
              wFileName);

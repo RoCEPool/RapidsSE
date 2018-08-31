@@ -330,7 +330,7 @@ void Task::vSocketRecvValSet(MP_Task mpTask)
   if (gpAttachMap->m_bTracepoint)
     vTrace("[N%lld:%8s\\%lld ] receiving on %lld\n"_Stz,
            gpAttachMap->m_pGrid->iThisNode(),
-           mpTask->m_pJob->m_pJobClass->m_aName,
+           mpTask->aJobName(),
            *mpTask->m_zAcks,
            
            pSocket->m_iSocketId);

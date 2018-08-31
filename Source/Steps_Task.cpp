@@ -283,7 +283,7 @@ ENTRY("vTaskNameFetch"_Stz);
     THROW_INVALID_DSTACK("task.name@"_Stz);
   Task* pThatTask = _pTask(pTaskObject);
   
-  s256 sName((Stz*)pThatTask->m_pJob->m_pJobClass->m_aName);
+  s256 sName((Stz*)pThatTask->aJobName());
   
   mpTask->m_pDataStack->vPushS256(sName);
   
