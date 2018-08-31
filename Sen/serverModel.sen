@@ -43,50 +43,6 @@ args.regionSize nServerThreads constant N_SERVER_THREADS
 
 : :serverThread ( i -- w ) >serverNm :thread    ;
 
-: startServerThreads
-
-  0 locals| pServerThread |
-
-  args.progress if
-    N_SERVER_THREADS "Server threads: %v" str.format .
-  then
-
-  args.verbose if
-    "N_SERVER_THREADS " .put N_SERVER_THREADS .put .\n
-  then
-
-  N_SERVER_THREADS 0 do
-
-    // create a thread
-    I :serverThread execute to pServerThread
-
-    // set the threads name
-    //I >serverNm pServerThread thread.name!
-
-    // set actor model in the thread
-    //AC_SERVER pServerThread thread.actorModel!
-
-    // spawn os thread
-    //pServerThread thread.spawn_server
-
-  loop
-;
-
-/*----------------------------------------------------------------------------*/
-/* create a task using given arguments and append to server task queue        */
-/*----------------------------------------------------------------------------*/
-: spawnServerTask ( ... nArgs sSeedWord pParentTask sTaskNm eTaskKind -- pTask )
-
-  nullptr locals| pTask eTaskKind sTaskNm pParent sSeedWord nArgs |
-
-  // create a task
-  //nArgs sSeedWord pParent AC_SERVER sTaskNm eTaskKind task::new to pTask
-
-  // append task onto server task queue
-  //pTask scheduler::server serverScheduler.enqueueTask
-
-  pTask  // return the task
-;
 
 /*============================================================================*/
 /* end                                                                        */
