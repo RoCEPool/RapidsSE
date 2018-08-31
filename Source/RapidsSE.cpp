@@ -113,35 +113,10 @@ void RapidsSE::vCheckPort(void)
 /*----------------------------------------------------------------------------*/
 /* create new shm region                                                      */
 /*----------------------------------------------------------------------------*/
-void RapidsSE::vCreateObjects(void)
+void RapidsSE::vCreateAttachMap(void)
 {
   // create the attach map (which records global pointers)
-  gpAttachMap = new AttachMap;
-  
-  // create the carry over (which records global pointers restored on restart)
-  gpAttachMap->m_pCarryOver = new CarryOver;
-  
-  // create the transient heaps
-  gpAttachMap->m_pTransientJumboHeap  =
-  new Heap(CN_JUMBOTRANSIENT,  C_SIZE_JUMBO_OBJECT);
-  gpAttachMap->m_pTransientLargeHeap  =
-  new Heap(CN_LARGETRANSIENT,  C_SIZE_LARGE_OBJECT);
-  gpAttachMap->m_pTransientMediumHeap =
-  new Heap(CN_MEDIUMTRANSIENT, C_SIZE_MEDIUM_OBJECT);
-  gpAttachMap->m_pTransientSmallHeap  =
-  new Heap(CN_SMALLTRANSIENT,  C_SIZE_SMALL_OBJECT);
-  
-  // craete the persistent heaps
-  gpAttachMap->m_pCarryOver->m_pPersistentJumboHeap  =
-  new Heap(CN_JUMBOPERSISTENT,  C_SIZE_JUMBO_OBJECT);
-  gpAttachMap->m_pCarryOver->m_pPersistentLargeHeap  =
-  new Heap(CN_LARGEPERSISTENT,  C_SIZE_LARGE_OBJECT);
-  gpAttachMap->m_pCarryOver->m_pPersistentMediumHeap =
-  new Heap(CN_MEDIUMPERSISTENT, C_SIZE_MEDIUM_OBJECT);
-  gpAttachMap->m_pCarryOver->m_pPersistentSmallHeap  =
-  new Heap(CN_SMALLPERSISTENT,  C_SIZE_SMALL_OBJECT);
-  
-  vInitJumboHeap();
+  new AttachMap;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -241,23 +216,6 @@ void RapidsSE::vExecuteSystem(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* init jumbo heap                                                            */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vInitJumboHeap(void)
-{
-  gpAttachMap->m_pTransientJumboHeap->vFixedHeap(true);
-  
-  Buffer* pJumbo = nullptr;
-  while ( (pJumbo = gpBufferPool->pNextJumbo(pJumbo)) ) {
-    
-    pJumbo->vSetMagic();
-    pJumbo->vSetClass(CN_FREECHUNK);
-    
-    gpAttachMap->m_pTransientJumboHeap->vAddFree((FreeChunk*)pJumbo);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* kill previous node instances                                               */
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vKillPrev(void)
@@ -350,8 +308,8 @@ void RapidsSE::vPoolOpen(void)
                     gxArguments.m_bFreeRB);
     
     if (gxArguments.m_bVerbose)
-      vInfo("\n*\n* Create Global Objects\n*\n"_Stz);
-    vCreateObjects();
+      vInfo("\n*\n* Create AttachMap\n*\n"_Stz);
+    vCreateAttachMap();
     
     return;
   }

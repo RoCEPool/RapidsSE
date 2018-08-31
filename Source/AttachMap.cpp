@@ -38,12 +38,45 @@ AttachMap::AttachMap(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP);
   
+  gpAttachMap = this;
+  
   // the attach map must always be the first buffer in the buffer pool
   ASSERT(nBufferNo() == 1_bn);
   
   m_xMainDic.vName("<main>"_Stz);
   
+  // create the carry over (which records global pointers restored on restart)
+  m_pCarryOver = new CarryOver;
+  
+  // create the transient heaps
+  m_pTransientJumboHeap  = new Heap(CN_JUMBOTRANSIENT,  C_SIZE_JUMBO_OBJECT);
+  m_pTransientLargeHeap  = new Heap(CN_LARGETRANSIENT,  C_SIZE_LARGE_OBJECT);
+  m_pTransientMediumHeap = new Heap(CN_MEDIUMTRANSIENT, C_SIZE_MEDIUM_OBJECT);
+  m_pTransientSmallHeap  = new Heap(CN_SMALLTRANSIENT,  C_SIZE_SMALL_OBJECT);
+  
+  // craete the persistent heaps
+  m_pCarryOver->m_pPersistentJumboHeap  =
+  new Heap(CN_JUMBOPERSISTENT,  C_SIZE_JUMBO_OBJECT);
+  m_pCarryOver->m_pPersistentLargeHeap  =
+  new Heap(CN_LARGEPERSISTENT,  C_SIZE_LARGE_OBJECT);
+  m_pCarryOver->m_pPersistentMediumHeap =
+  new Heap(CN_MEDIUMPERSISTENT, C_SIZE_MEDIUM_OBJECT);
+  m_pCarryOver->m_pPersistentSmallHeap  =
+  new Heap(CN_SMALLPERSISTENT,  C_SIZE_SMALL_OBJECT);
+
   _checkInitialised_(CN_ATTACHMAP);
+  
+  m_pTransientJumboHeap->vFixedHeap(true);
+  
+  Buffer* pJumbo = nullptr;
+  while ( (pJumbo = gpBufferPool->pNextJumbo(pJumbo)) ) {
+    
+    pJumbo->vSetMagic();
+    pJumbo->vSetClass(CN_FREECHUNK);
+    
+    m_pTransientJumboHeap->vAddFree((FreeChunk*)pJumbo);
+  }
+
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
 }

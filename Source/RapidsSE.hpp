@@ -22,11 +22,10 @@ namespace StorageEngine
     static void vBootDictionary(void);
     static void vChangeDirectory(void);
     static void vCheckPort(void);
-    static void vCreateObjects(void);
+    static void vCreateAttachMap(void);
     static void vErrorHandler(Error* pError);
     static void vExecuteCmdLine(void);
     static void vExecuteSystem(void);
-    static void vInitJumboHeap(void);
     static void vKillPrev(void);
     static void vPoolClose(void);
     static void vPoolOpen(void);
