@@ -40,7 +40,7 @@ using namespace JobsModel;
 #include "JobResult.hpp"
 #include "Job.hpp"
 
-#include "JobAbs.hpp"
+//#include "JobAbs.hpp"
 
 #include "Job__Begun.hpp"
 #include "Job__Cancel.hpp"
