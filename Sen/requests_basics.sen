@@ -30,44 +30,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* return a success response                                                  */
-/*----------------------------------------------------------------------------*/
-: <SUCCESS> ( str -- str 0 2 )
-
-  // a string as a return value should be on stack
-  assert::stack_1
-  CN_STRVAL assert::class
-
-  // push 0 to indicate success / no error
-  0
-
-  // there are two return arguments
-  2
-
-  ddlLock::testDrop
-;
-
-/*----------------------------------------------------------------------------*/
-/* return an OK response                                                      */
-/*----------------------------------------------------------------------------*/
-: <OK> ( -- "<ok>" 0 2 )
-
-  // the stack should be empty
-  assert::stack_0
-
-  // push "<ok>" as the return str
-  "<ok>"
-
-  // push 0 to indicate success / no error
-  0
-
-  // there are two return arguments
-  2
-
-  ddlLock::testDrop
-;
-
-/*----------------------------------------------------------------------------*/
 /* print class counts (helper for snapshot)                                   */
 /*----------------------------------------------------------------------------*/
 : printClassCounts

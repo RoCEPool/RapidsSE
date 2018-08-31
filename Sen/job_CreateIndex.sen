@@ -141,10 +141,6 @@
   popIndexes
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // return the table reference
-  //returnTableRef not if <NIP+ERROR> popTable exit then
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table folder
   popTable
 ;

@@ -125,9 +125,6 @@ tp: rangePartition
 
   tableNm find execute to pTable
 
-  // get and inc table reference and put into task.seitf.currentTable
-  //getTableRef not if <NIP+ERROR> exit then
-  //task::this task.seitf@ seitf.table@ assert
 
   sWhere $$partition "Generating plan for partition %v ( %v )..." str.format .
 
