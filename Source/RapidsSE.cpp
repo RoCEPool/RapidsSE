@@ -52,9 +52,7 @@ void RapidsSE::vCallBoot(void)
   
   vCallImmmediate(pBootTask);
   
-  pBootTask->vJob(nullptr);
-  delete pJob_Boot;
-  delete pBootTask;
+  vDeleteImmmediate(&pBootTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -137,6 +135,21 @@ void RapidsSE::vCreateAttachMap(void)
 {
   // create the attach map (which records global pointers)
   new AttachMap;
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete task immediate                                                      */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vDeleteImmmediate(Task** ppTask)
+{
+  Task* pTask = *ppTask;
+  *ppTask = nullptr;
+
+  Job* pJob = pTask->pJob();
+  pTask->vJob(nullptr);
+  delete pJob;
+  
+  delete pTask;
 }
 
 /*----------------------------------------------------------------------------*/

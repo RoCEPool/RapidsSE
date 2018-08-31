@@ -25,6 +25,7 @@ namespace StorageEngine
     static void vCheckPort(void);
     static void vClosePool(void);
     static void vCreateAttachMap(void);
+    static void vDeleteImmmediate(Task** ppTask);
     static void vDeleteSEitf(SEitf* pSEitf);
     static void vErrorHandler(Error* pError);
     static void vKillPrev(void);
