@@ -23,7 +23,7 @@
 /*----------------------------------------------------------------------------*/
 /* remove a schema folder                                                     */
 /*----------------------------------------------------------------------------*/
-: removeSchema allParticipants 1 checkResult ( "<schemaNm>" --  )
+: removeSchema 1 checkResult ( "<schemaNm>" --  )
 
   tp: removeSchema
 

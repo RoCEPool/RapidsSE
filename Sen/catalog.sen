@@ -42,50 +42,6 @@
   :folder      ( )
 ;
 
-////////////////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
-/* make a named catalog folder (run by participant)                           */
-/*----------------------------------------------------------------------------*/
-/*
-: makeCatalog allParticipants 1 checkResult ( "<catalogNm>" -- true n# true )
-
-tp: makeCatalog
-
-  args.tracepoint if
-    dup "MAKING CATALOG " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
-  then
-
-  dup ( "<catalogNm>" "<catalogNm>" )
-
-  :catalog ( "<catalogNm>" ^catalog )
-
-  drop ( "<catalogNm>" )
-
-  makeSchemas ( )
-
-  true <SUCCESS_RESULT>
-;
-*/
-
-
-/*----------------------------------------------------------------------------*/
-/* remove a catalog folder                                                    */
-/*----------------------------------------------------------------------------*/
-/*
-: removeCatalog allParticipants 1 checkResult ( "<catalogNm>" -- true n# true )
-
-tp: removeCatalog
-
-  args.tracepoint if
-    dup "REMOVING CATALOG " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
-  then
-
-  :forget ( )
-
-  true <SUCCESS_RESULT>
-;
-*/
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
