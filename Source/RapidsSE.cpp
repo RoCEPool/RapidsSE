@@ -31,6 +31,45 @@ void RapidsSE::vAttachRegion(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* call the boot task to compile the main dictionary                          */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vCallBoot(void)
+{
+  JobClass* pJobClass_Boot = gxJobCatalog.pFindJob(CN_JOB_BOOT);
+  
+  Job_Boot* pJob_Boot
+  = static_cast<Job_Boot*>(pJobClass_Boot->pNewJob(nullptr));
+  
+  pJob_Boot->vSeed(SS_SEED_RUN);
+  
+  Task* pBootTask = new Task(pJob_Boot);
+  pBootTask->vNewStacks();
+  
+  pBootTask->vAddBaseWords();
+  
+  if (gpAttachMap->m_bVerbose)
+    vTrace("[[mainThread]] Compiling dictionaries...\n"_Stz);
+  
+  vCallImmmediate(pBootTask);
+  
+  pBootTask->vJob(nullptr);
+  delete pJob_Boot;
+  delete pBootTask;
+}
+
+/*----------------------------------------------------------------------------*/
+/* run task immediately                                                       */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vCallImmmediate(Task* pTask)
+{
+  pTask->vSeedJob();
+  
+  pTask->vState(TS_EXECUTING);
+  
+  pTask->vTaskLoop();
+}
+
+/*----------------------------------------------------------------------------*/
 /* change current directory                                                   */
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vChangeDirectory(void)
@@ -90,30 +129,6 @@ void RapidsSE::vCreateAttachMap(void)
 {
   // create the attach map (which records global pointers)
   new AttachMap;
-}
-
-/*----------------------------------------------------------------------------*/
-/* start the system tasks                                                     */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vDispatchJobStart(void)
-{
-  if (gxArguments.m_bVerbose)
-    vInfo("\n*\n* Start System Tasks\n*\n"_Stz);
-  
-  PosixThread::vTlsSet(giTLS_ThreadKey,(void*)-1);
-  
-  JobClass* pJobClass_Start = gxJobCatalog.pFindJob(CN_JOB_START);
-  
-  Job_Start* pJob_Start
-  = static_cast<Job_Start*>(pJobClass_Start->pNewJob(nullptr));
-  
-  pJob_Start->vSeed(SS_SEED_RUN);
-  
-  Task* pStartTask = new Task(pJob_Start);
-  
-  pStartTask->vSeedJob();
-  
-  Handlers::vSpawnedTaskHandler(pStartTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -412,33 +427,6 @@ void RapidsSE::vPrintWelcome(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compile the main dictionary                                                */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vRunBoot(void)
-{
-  JobClass* pJobClass_Boot = gxJobCatalog.pFindJob(CN_JOB_BOOT);
-  
-  Job_Boot* pJob_Boot
-  = static_cast<Job_Boot*>(pJobClass_Boot->pNewJob(nullptr));
-  
-  pJob_Boot->vSeed(SS_SEED_RUN);
-  
-  Task* pBootTask = new Task(pJob_Boot);
-  pBootTask->vNewStacks();
-  
-  pBootTask->vAddBaseWords();
-  
-  if (gpAttachMap->m_bVerbose)
-    vTrace("[[mainThread]] Compiling dictionaries...\n"_Stz);
-  
-  vRunImmmediate(pBootTask);
-  
-  pBootTask->vJob(nullptr);
-  delete pJob_Boot;
-  delete pBootTask;
-}
-
-/*----------------------------------------------------------------------------*/
 /* run command line                                                           */
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vRunCmdLine(void)
@@ -453,12 +441,12 @@ void RapidsSE::vRunCmdLine(void)
       vSystemStart();
       
       if (gxArguments.m_bPrompt)
-        vRunPrompt();
+        vSpawnJobPrompt();
       else
         vSystemWait();
     }
     
-    else if (gxArguments.m_bPrompt)  vRunPrompt();
+    else if (gxArguments.m_bPrompt)  vSpawnJobPrompt();
     else if (gxArguments.m_bStatus)  vSystemStatus();
     else if (gxArguments.m_bStop)    vSystemStop();
     else if (gxArguments.m_bUnlink)  vSystemUnlink();
@@ -473,38 +461,6 @@ void RapidsSE::vRunCmdLine(void)
   catch (Error* pError) {
     vErrorHandler(pError);
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* run task immediately                                                       */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vRunImmmediate(Task* pTask)
-{
-  pTask->vSeedJob();
-  
-  pTask->vState(TS_EXECUTING);
-  
-  pTask->vTaskLoop();
-}
-
-/*----------------------------------------------------------------------------*/
-/* start a prompt                                                             */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vRunPrompt(void)
-{
-  ASSERT(gpBufferPool);
-  
-  gpAttachMap->vPrintStartupInfo();
-  
-  PosixThread::vTlsSet(giTLS_ThreadKey,(void*)-1);
-  
-  i8 iTraceLevel = 0;
-  eEC eError = RapidsSE_SpawnPrompt(iTraceLevel);
-  ASSERT(EC_NONE == eError);
-  vTrace("RapidsSE_SpawnPrompt() called\n"_Stz);
-  
-  while (true)
-    PosixThread::vSleepSec(10000000);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -558,6 +514,50 @@ void RapidsSE::vSignalHandler(int iSignal)
 }
 
 /*----------------------------------------------------------------------------*/
+/* start a prompt                                                             */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vSpawnJobPrompt(void)
+{
+  ASSERT(gpBufferPool);
+  
+  gpAttachMap->vPrintStartupInfo();
+  
+  PosixThread::vTlsSet(giTLS_ThreadKey,(void*)-1);
+  
+  i8 iTraceLevel = 0;
+  eEC eError = RapidsSE_SpawnPrompt(iTraceLevel);
+  ASSERT(EC_NONE == eError);
+  vTrace("RapidsSE_SpawnPrompt() called\n"_Stz);
+  
+  while (true)
+    PosixThread::vSleepSec(10000000);
+}
+
+/*----------------------------------------------------------------------------*/
+/* start the system tasks                                                     */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vSpawnJobStart(void)
+{
+  if (gxArguments.m_bVerbose)
+    vInfo("\n*\n* Start System Tasks\n*\n"_Stz);
+  
+  PosixThread::vTlsSet(giTLS_ThreadKey,(void*)-1);
+  
+  JobClass* pJobClass_Start = gxJobCatalog.pFindJob(CN_JOB_START);
+  
+  Job_Start* pJob_Start
+  = static_cast<Job_Start*>(pJobClass_Start->pNewJob(nullptr));
+  
+  pJob_Start->vSeed(SS_SEED_RUN);
+  
+  Task* pStartTask = new Task(pJob_Start);
+  
+  pStartTask->vSeedJob();
+  
+  Handlers::vSpawnedTaskHandler(pStartTask);
+}
+
+/*----------------------------------------------------------------------------*/
 /* init a new system                                                          */
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vSystemStart(void)
@@ -607,7 +607,7 @@ void RapidsSE::vSystemStart(void)
   
   //--------------------------------------------------------------------------
   
-  vRunBoot();
+  vCallBoot();
   
   //--------------------------------------------------------------------------
   
@@ -634,7 +634,7 @@ void RapidsSE::vSystemStart(void)
   while (*gpAttachMap->m_ziThreads != gxArguments.m_nThreads)
     PosixThread::vSleepMilli(10);
   
-  vDispatchJobStart();
+  vSpawnJobStart();
   
   if (gxArguments.m_bVerbose) {
     vInfo("RapidsSE instance %s started\n"_Stz,gxArguments.m_sRegionName.aChar());

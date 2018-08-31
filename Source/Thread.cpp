@@ -358,7 +358,7 @@ void Thread::vLoop(void)
   vMutexLock();
 
   //if (++gpAttachMap->m_ziThreads == gxArguments.m_nThreads)
-  //  RapidsSE::vDispatchJobStart();
+  //  RapidsSE::vSpawnJobStart();
   
   ++gpAttachMap->m_ziThreads;
 

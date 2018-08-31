@@ -19,10 +19,11 @@ namespace StorageEngine
   public:
   
     static void vAttachRegion(void);
+    static void vCallBoot(void);
+    static void vCallImmmediate(Task* pTask);
     static void vChangeDirectory(void);
     static void vCheckPort(void);
     static void vCreateAttachMap(void);
-    static void vDispatchJobStart(void);
     static void vErrorHandler(Error* pError);
     static void vKillPrev(void);
     static void vMainEntry(void);
@@ -32,14 +33,13 @@ namespace StorageEngine
     static void vPrintExit(void);
     static void vPrintSizes(void);
     static void vPrintWelcome(void);
-    static void vRunBoot(void);
     static void vRunCmdLine(void);
-    static void vRunImmmediate(Task* pTask);
-    static void vRunPrompt(void);
     static bool bRunUtilities(int argc, Stz* argv[]);
     static void vSEitfDelete(SEitf* pSEitf);
     static void vSetGlobals(void);
     static void vSignalHandler(int iSignal);
+    static void vSpawnJobPrompt(void);
+    static void vSpawnJobStart(void);
     static void vSystemStart(void);
     static void vSystemStatus(void);
     static void vSystemStop(void);
