@@ -54,7 +54,6 @@
   0 0 0 0 0 locals| pTask pIndex sTableNm sIndexNm pJob_DumpIndex |
 
   tp: dumpIndex
-  "dumpIndex_req" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the task

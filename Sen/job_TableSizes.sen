@@ -14,7 +14,6 @@
   0 0 locals| pJob pTask |
 
   tp: tableSizes
-  "tableSizes_req" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the task

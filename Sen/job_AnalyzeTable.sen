@@ -41,7 +41,6 @@
   0 0 0 locals| pJob pTask bIsDetailed |
 
   tp: analyzeTable
-  "analyzeTable_req" .
 
   // get the task
   task::this to pTask

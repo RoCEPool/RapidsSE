@@ -517,8 +517,6 @@ timer: pIdxSelectTimer
 /* spawn fetch rows task (this is request)                                    */
 /*----------------------------------------------------------------------------*/
 : spawnFetchRows_apiReq ( "groupBy" "<sWhere>" "<sTableNm>" -- <R> )
-  // ../tables
-  //"fetchRowsIndex_req" .
 
   // task is a request server
   //task::this task.kind@ TK_REQUEST_SERVER == assert
@@ -618,8 +616,6 @@ timer: pIdxSelectTimer
 /*----------------------------------------------------------------------------*/
 : fetchRowsIndex_req ( "groupBy" "<sWhere>" "<sTableNm>" -- <R> )
                                                                     // ../tables
-//"fetchRowsIndex_req" .
-
   //pp: beginning
 
   // task is a request server

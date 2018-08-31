@@ -108,7 +108,6 @@
   0 0 locals| pJob pTask |
 
   tp: dropTable
-  "dropTable_req" .
 
   // get the task
   task::this to pTask

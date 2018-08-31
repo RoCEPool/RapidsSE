@@ -259,8 +259,6 @@ ddlLock::grabWrite
   // check it is a table
   checkIsTable  not if <NIP+ERROR> popTable exit then
 
-  //"endCreateTable_req" .
-
   // create column vector of table and partition
   columnVecTable
 

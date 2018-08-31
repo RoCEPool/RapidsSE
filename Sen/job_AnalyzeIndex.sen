@@ -52,7 +52,6 @@
   0 0 0 locals| pJob pTask bIsDetailed |
 
   tp: analyzeIndex
-  "analyzeIndex_req" .
 
   // get the task
   task::this to pTask

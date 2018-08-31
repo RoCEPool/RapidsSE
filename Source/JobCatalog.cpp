@@ -14,7 +14,7 @@ JobCatalog gxJobCatalog;
 /*----------------------------------------------------------------------------*/
 JobClass* JobCatalog::pFindJob(Stz* aCommand1, Stz* aCommand2)
 {
-  vTrace("FindJob: %s %s\n"_Stz, aCommand1, aCommand2);
+  //vTrace("FindJob: %s %s\n"_Stz, aCommand1, aCommand2);
   
   for (i8 i_Job = 0; i_Job < m_nClasses; i_Job++) {
     

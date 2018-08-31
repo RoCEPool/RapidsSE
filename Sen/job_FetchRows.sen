@@ -89,7 +89,6 @@
   0 0 0 0 locals| pJob_FetchRows pTask pPlanner pTable |
 
   tp: fetchRows
-  "fetchRows_req" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the task
