@@ -31,33 +31,6 @@ void RapidsSE::vAttachRegion(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compile the main dictionary                                                */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vBootDictionary(void)
-{
-  JobClass* pJobClass_Boot = gxJobCatalog.pFindJob(CN_JOB_BOOT);
-  
-  Job_Boot* pJob_Boot
-  = static_cast<Job_Boot*>(pJobClass_Boot->pNewJob(nullptr));
-  
-  pJob_Boot->vSeed(SS_SEED_RUN);
-  
-  Task* pBootTask = new Task(pJob_Boot);
-  pBootTask->vNewStacks();
-  
-  pBootTask->vAddBaseWords();
-  
-  if (gpAttachMap->m_bVerbose)
-    vTrace("[[mainThread]] Compiling dictionaries...\n"_Stz);
-  
-  vRunImmmediate(pBootTask);
-  
-  pBootTask->vJob(nullptr);
-  delete pJob_Boot;
-  delete pBootTask;
-}
-
-/*----------------------------------------------------------------------------*/
 /* change current directory                                                   */
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vChangeDirectory(void)
@@ -439,6 +412,33 @@ void RapidsSE::vPrintWelcome(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* compile the main dictionary                                                */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vRunBoot(void)
+{
+  JobClass* pJobClass_Boot = gxJobCatalog.pFindJob(CN_JOB_BOOT);
+  
+  Job_Boot* pJob_Boot
+  = static_cast<Job_Boot*>(pJobClass_Boot->pNewJob(nullptr));
+  
+  pJob_Boot->vSeed(SS_SEED_RUN);
+  
+  Task* pBootTask = new Task(pJob_Boot);
+  pBootTask->vNewStacks();
+  
+  pBootTask->vAddBaseWords();
+  
+  if (gpAttachMap->m_bVerbose)
+    vTrace("[[mainThread]] Compiling dictionaries...\n"_Stz);
+  
+  vRunImmmediate(pBootTask);
+  
+  pBootTask->vJob(nullptr);
+  delete pJob_Boot;
+  delete pBootTask;
+}
+
+/*----------------------------------------------------------------------------*/
 /* run command line                                                           */
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vRunCmdLine(void)
@@ -453,12 +453,12 @@ void RapidsSE::vRunCmdLine(void)
       vSystemStart();
       
       if (gxArguments.m_bPrompt)
-        vSystemPrompt();
+        vRunPrompt();
       else
         vSystemWait();
     }
     
-    else if (gxArguments.m_bPrompt)  vSystemPrompt();
+    else if (gxArguments.m_bPrompt)  vRunPrompt();
     else if (gxArguments.m_bStatus)  vSystemStatus();
     else if (gxArguments.m_bStop)    vSystemStop();
     else if (gxArguments.m_bUnlink)  vSystemUnlink();
@@ -485,6 +485,26 @@ void RapidsSE::vRunImmmediate(Task* pTask)
   pTask->vState(TS_EXECUTING);
   
   pTask->vTaskLoop();
+}
+
+/*----------------------------------------------------------------------------*/
+/* start a prompt                                                             */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vRunPrompt(void)
+{
+  ASSERT(gpBufferPool);
+  
+  gpAttachMap->vPrintStartupInfo();
+  
+  PosixThread::vTlsSet(giTLS_ThreadKey,(void*)-1);
+  
+  i8 iTraceLevel = 0;
+  eEC eError = RapidsSE_SpawnPrompt(iTraceLevel);
+  ASSERT(EC_NONE == eError);
+  vTrace("RapidsSE_SpawnPrompt() called\n"_Stz);
+  
+  while (true)
+    PosixThread::vSleepSec(10000000);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -587,7 +607,7 @@ void RapidsSE::vSystemStart(void)
   
   //--------------------------------------------------------------------------
   
-  vBootDictionary();
+  vRunBoot();
   
   //--------------------------------------------------------------------------
   
@@ -621,26 +641,6 @@ void RapidsSE::vSystemStart(void)
     gpAttachMap->m_pGrid->vDumpPartitioning();
   }
   
-}
-
-/*----------------------------------------------------------------------------*/
-/* start a prompt                                                             */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vSystemPrompt(void)
-{
-  ASSERT(gpBufferPool);
-  
-  gpAttachMap->vPrintStartupInfo();
-  
-  PosixThread::vTlsSet(giTLS_ThreadKey,(void*)-1);
-  
-  i8 iTraceLevel = 0;
-  eEC eError = RapidsSE_SpawnPrompt(iTraceLevel);
-  ASSERT(EC_NONE == eError);
-  vTrace("RapidsSE_SpawnPrompt() called\n"_Stz);
-  
-  while (true)
-    PosixThread::vSleepSec(10000000);
 }
 
 /*----------------------------------------------------------------------------*/
