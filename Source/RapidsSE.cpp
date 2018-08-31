@@ -115,7 +115,7 @@ void RapidsSE::vCheckPort(void)
       vError("Unable to listen for connections (port: %lld): Errno %d!\n"_Stz,
              iPort, xSysCall.iError());
     }
-    //RapidsSE::vSystemStop();
+    //RapidsSE::vStopSystem();
     exit(EXIT_FAILURE);
   }
   
@@ -409,6 +409,33 @@ void RapidsSE::vPrintSizes(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print status of the system                                                 */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vPrintStatus(void)
+{
+  if (Region::bTest(gxArguments.m_sRegionName)) {
+    
+    // attach to the region
+    bool bResult = Region::bAttach(gxArguments.m_sRegionName, gxArguments.m_bWelcome);
+    ASSERT(bResult);
+    
+    // get globals
+    vAttachRegion();
+    
+    // check if the Pid in the shm is still alive
+    if ( Process::bTestPid(gpAttachMap->m_iPid) ) {
+      vTrace("RapidsSE instance %s running\n"_Stz,
+             gxArguments.m_sRegionName.aChar());
+      return;
+    }
+  }
+  
+  vTrace("RapidsSE instance %s not running\n"_Stz,
+         gxArguments.m_sRegionName.aChar());
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* print welcome                                                              */
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vPrintWelcome(void)
@@ -446,18 +473,18 @@ void RapidsSE::vRunCmdLine(void)
     
     if (gxArguments.m_bStart) {
       
-      vSystemStart();
+      vStartSystem();
       
       if (gxArguments.m_bPrompt)
         vSpawnJobPrompt();
       else
-        vSystemWait();
+        vWaitStop();
     }
     
     else if (gxArguments.m_bPrompt)  vSpawnJobPrompt();
-    else if (gxArguments.m_bStatus)  vSystemStatus();
-    else if (gxArguments.m_bStop)    vSystemStop();
-    else if (gxArguments.m_bUnlink)  vSystemUnlink();
+    else if (gxArguments.m_bStatus)  vPrintStatus();
+    else if (gxArguments.m_bStop)    vStopSystem();
+    else if (gxArguments.m_bUnlink)  vUnlinkSystem();
     else {
       vError("Unknown command line argument\n"_Stz);
       vFatal("RapidsSE exits\n"_Stz);
@@ -558,9 +585,9 @@ void RapidsSE::vSpawnJobStart(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* init a new system                                                          */
+/* start a new system                                                         */
 /*----------------------------------------------------------------------------*/
-void RapidsSE::vSystemStart(void)
+void RapidsSE::vStartSystem(void)
 {
   if (gxArguments.m_bVerbose)
     vInfo("\n*\n* System Init\n*\n"_Stz);
@@ -644,36 +671,9 @@ void RapidsSE::vSystemStart(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* status of the system                                                       */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vSystemStatus(void)
-{
-  if (Region::bTest(gxArguments.m_sRegionName)) {
-    
-    // attach to the region
-    bool bResult = Region::bAttach(gxArguments.m_sRegionName, gxArguments.m_bWelcome);
-    ASSERT(bResult);
-    
-    // get globals
-    vAttachRegion();
-    
-    // check if the Pid in the shm is still alive
-    if ( Process::bTestPid(gpAttachMap->m_iPid) ) {
-      vTrace("RapidsSE instance %s running\n"_Stz,
-             gxArguments.m_sRegionName.aChar());
-      return;
-    }
-  }
-  
-  vTrace("RapidsSE instance %s not running\n"_Stz,
-         gxArguments.m_sRegionName.aChar());
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /* stop the system                                                            */
 /*----------------------------------------------------------------------------*/
-void RapidsSE::vSystemStop(void)
+void RapidsSE::vStopSystem(void)
 {
   ASSERT(gpBufferPool);
   
@@ -690,7 +690,7 @@ void RapidsSE::vSystemStop(void)
 /*----------------------------------------------------------------------------*/
 /* unlink the system                                                          */
 /*----------------------------------------------------------------------------*/
-void RapidsSE::vSystemUnlink(void)
+void RapidsSE::vUnlinkSystem(void)
 {
   Region::vUnlink(gxArguments.m_sRegionName);
 }
@@ -698,7 +698,7 @@ void RapidsSE::vSystemUnlink(void)
 /*----------------------------------------------------------------------------*/
 /* wait for quit or stop                                                      */
 /*----------------------------------------------------------------------------*/
-void RapidsSE::vSystemWait(void)
+void RapidsSE::vWaitStop(void)
 {
   if (gpAttachMap->m_bVerbose)
     vTrace("[[mainThread]] Waiting on stop %s\n"_Stz,"..."_Stz);

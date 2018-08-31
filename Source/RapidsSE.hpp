@@ -33,6 +33,7 @@ namespace StorageEngine
     static bool bOpenPool(StrVal& sPoolName);
     static void vPrintExit(void);
     static void vPrintSizes(void);
+    static void vPrintStatus(void);
     static void vPrintWelcome(void);
     static void vRunCmdLine(void);
     static bool bRunUtilities(int argc, Stz* argv[]);
@@ -40,11 +41,10 @@ namespace StorageEngine
     static void vSignalHandler(int iSignal);
     static void vSpawnJobPrompt(void);
     static void vSpawnJobStart(void);
-    static void vSystemStart(void);
-    static void vSystemStatus(void);
-    static void vSystemStop(void);
-    static void vSystemUnlink(void);
-    static void vSystemWait(void);
+    static void vStartSystem(void);
+    static void vStopSystem(void);
+    static void vUnlinkSystem(void);
+    static void vWaitStop(void);
     static void vWriteRegionName(void);
 
     Footer* aFooter(void);
