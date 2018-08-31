@@ -41,6 +41,8 @@ namespace JobsModel
   void vJob_TruncateTable_post(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_TruncateTable_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_TruncateTable_show(Job* pJob);
+  
+  Job* pJob_TruncateTable_next(void** aaArg);
 }
 
 /*============================================================================*/

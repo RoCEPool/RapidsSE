@@ -39,6 +39,8 @@ namespace JobsModel
   void vJob_SizeTable_post(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_SizeTable_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_SizeTable_show(Job* pJob);
+  
+  Job* pJob_SizeTable_next(void** aaArg);
 }
 
 /*============================================================================*/

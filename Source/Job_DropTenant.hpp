@@ -39,6 +39,8 @@ namespace JobsModel
   void vJob_DropTenant_post(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_DropTenant_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_DropTenant_show(Job* pJob);
+  
+  Job* pJob_DropTenant_next(void** aaArg);
 }
 
 /*============================================================================*/

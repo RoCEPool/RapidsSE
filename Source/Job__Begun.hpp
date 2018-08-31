@@ -36,6 +36,8 @@ namespace JobsModel
   Job__Begun* _pJob__Begun(void* aAddr);
   
   void vJob__Begun_delete(Interface::SEitf* pSEitf, Job* pJob);
+  
+  Job* pJob__Begun_next(void** aaArg);
 }
 
 /*============================================================================*/

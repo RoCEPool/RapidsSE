@@ -39,6 +39,8 @@ namespace JobsModel
   void vJob_Status_post(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_Status_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_Status_show(Job* pJob);
+  
+  Job* pJob_Status_next(void** aaArg);
 }
 
 /*============================================================================*/

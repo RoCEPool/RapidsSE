@@ -37,6 +37,8 @@ namespace JobsModel
   Job* pJob_Start_new(Job* pArg);
   void vJob_Start_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_Start_show(Job* pJob);
+  
+  Job* pJob_Start_next(void** aaArg);
 }
 
 /*============================================================================*/

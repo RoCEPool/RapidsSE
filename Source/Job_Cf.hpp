@@ -39,6 +39,8 @@ namespace JobsModel
   void vJob_Cf_post(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_Cf_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_Cf_show(Job* pJob);
+  
+  Job* pJob_Cf_next(void** aaArg);
 }
 
 /*============================================================================*/

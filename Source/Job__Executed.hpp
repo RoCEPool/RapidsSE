@@ -38,6 +38,8 @@ namespace JobsModel
   Job__Executed* _pJob__Executed(void* aAddr);
   
   void vJob__Executed_delete(Interface::SEitf* pSEitf, Job* pJob);
+  
+  Job* pJob__Executed_next(void** aaArg);
 }
 
 /*============================================================================*/

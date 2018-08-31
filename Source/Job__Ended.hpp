@@ -33,6 +33,8 @@ namespace JobsModel
   Job__Ended* _pJob__Ended(void* aAddr);
   
   void vJob__Ended_delete(Interface::SEitf* pSEitf, Job* pJob);
+  
+  Job* pJob__Ended_next(void** aaArg);
 }
 
 /*============================================================================*/

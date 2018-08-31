@@ -47,6 +47,8 @@ namespace JobsModel
   void vJob_FetchRows_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vIterateBuffer(Job_FetchRows* pJob_FetchRows, FetchBuffer* pFetchBuffer);
   void vJob_FetchRows_show(Job* pJob);
+  
+  Job* pJob_FetchRows_next(void** aaArg);
 }
 
 /*============================================================================*/

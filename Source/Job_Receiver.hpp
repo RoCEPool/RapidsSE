@@ -44,6 +44,8 @@ namespace JobsModel
   Job* pJob_Receiver_new(Job* pArg);
   void vJob_Receiver_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_Receiver_show(Job* pJob);
+  
+  Job* pJob_Receiver_next(void** aaArg);
 }
 
 /*============================================================================*/

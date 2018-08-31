@@ -51,6 +51,8 @@ namespace JobsModel
   Job* pJob_LoadTable_new(Job* pArg);
   void vJob_LoadTable_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_LoadTable_show(Job* pJob);
+  
+  Job* pJob_LoadTable_next(void** aaArg);
 }
 
 /*============================================================================*/

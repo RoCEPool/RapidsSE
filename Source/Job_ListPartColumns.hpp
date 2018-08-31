@@ -39,6 +39,8 @@ namespace JobsModel
   void vJob_ListPartColumns_post(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_ListPartColumns_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_ListPartColumns_show(Job* pJob);
+  
+  Job* pJob_ListPartColumns_next(void** aaArg);
 }
 
 /*============================================================================*/

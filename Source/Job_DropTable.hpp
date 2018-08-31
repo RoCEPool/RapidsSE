@@ -39,6 +39,8 @@ namespace JobsModel
   void vJob_DropTable_post(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_DropTable_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_DropTable_show(Job* pJob);
+  
+  Job* pJob_DropTable_next(void** aaArg);
 }
 
 /*============================================================================*/

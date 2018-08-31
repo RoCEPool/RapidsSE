@@ -39,6 +39,8 @@ namespace JobsModel
   void vJob_ListIndexes_post(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_ListIndexes_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_ListIndexes_show(Job* pJob);
+  
+  Job* pJob_ListIndexes_next(void** aaArg);
 }
 
 /*============================================================================*/

@@ -39,6 +39,8 @@ namespace JobsModel
   void vJob_CreateSchema_post(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_CreateSchema_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_CreateSchema_show(Job* pJob);
+  
+  Job* pJob_CreateSchema_next(void** aaArg);
 }
 
 /*============================================================================*/
