@@ -35,26 +35,6 @@
 "Op_triggerScan.sen" include
 "Op_write.sen" include
 
-/*----------------------------------------------------------------------------*/
-/* create the operator actors                                                 */
-/*----------------------------------------------------------------------------*/
-: createOpActors
-
-  // "createOpActors" .
-
-  0 "printOp"        dup :createWorkerActor spawnWorkerActor
-  0 "responseOp"     dup :createWorkerActor spawnWorkerActor
-  0 "rangeOp"        dup :createWorkerActor spawnWorkerActor
-  0 "scanOp"         dup :createWorkerActor spawnWorkerActor
-  0 "sinkOp"         dup :createWorkerActor spawnWorkerActor
-  0 "triggerRangeOp" dup :createWorkerActor spawnWorkerActor
-  0 "triggerScanOp"  dup :createWorkerActor spawnWorkerActor
-  0 "writeOp"        dup :createWorkerActor spawnWorkerActor
-;
-
-////////////////////////////////////////////////////////////////////////////////
-
-createOpActors
 
 /*============================================================================*/
 /* end                                                                        */
