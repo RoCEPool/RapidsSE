@@ -19,10 +19,10 @@ namespace StorageEngine
   public:
   
     static void vAttachObjects(void);
+    static void vBootDictionary(void);
     static void vChangeDirectory(void);
     static void vCheckPort(void);
     static void vCreateObjects(void);
-    static void vBootDictionary(void);
     static void vErrorHandler(Error* pError);
     static void vExecuteCmdLine(void);
     static void vExecuteSystem(void);
