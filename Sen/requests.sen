@@ -9,7 +9,6 @@
 "requests_schema.sen"      include
 "requests_table.sen"       include
 "requests_index.sen"       include
-"requests_column.sen"      include
 "requests_folder.sen"      include
 "requests_rowBuffer.sen"   include
 "requests_misc.sen"        include
@@ -28,123 +27,6 @@ dicTenants: tenants
 
 createDefaultFolders
 
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
----------------------
-Connection Requests:
----------------------
-connectCluster  connectCluster_req
-
-------------------
-Tenant Requests:
------------------
-lsten   listTenants_req
-mkten   createTenant_req
-rmten   dropTenant_req
-
------------------
-Catalog Requests:
------------------
-mkcat   createCatalog_req
-lscat   listCatalogs_req
-rmcat   dropCatalog_req
-
------------------
-Schema Requests:
------------------
-lssch   listSchemas_req
-mksch   createSchema_req
-rmsch   dropSchema_req
-usesch  useSchema_req
-
------------------
-Table Requests:
------------------
-antbl   analyzeTable_req
-cp      copyTable_req
-dantbl  danalyzeTable_req
-dex     distExport_table
-dump    dumpTable_req
-endmktbl endCreateTable_req
-ex      exportTable_req
-gettbl getTable_req
-ld      loadTable_req
-lstbl   listTables_req
-mktbl   createTable_req
-dpld     distParallelLoadTable_req
-rettbl  returnTable_req
-rmtbl   dropTable_req
-sz      sizeTable_req
-tableSizes sizeTables_req
-tblInUse  tableInuse_req
-tr      truncateTable_req
-
------------------
-Index Requests:
------------------
-anidx     analyzeIndex_req
-dumpidx   dumpIndex_req
-fetch     fetchRowsIndex_req
-dfetch    DistFetchRowsIndex_req
-getidx    getIndex_req
-mkidx     createIndex_req
-lsidx     listIndexes_req
-retidx    returnIndex_req
-rmidx     dropIndex_req
-setidxunique indexSetUnique_req
-spnFetch  spawnFetchRows_apiReq
-szidx     sizeIndex_req
-vfyidx    verifyIndex_req
- 
------------------
-Column Requests:
------------------
-addcol      addColumn_req
-addidxcol   addIdxColumn_req
-addpartcol  addPartColumn_req
-lscol       listColumns_req
-lsidxcol    listIndexColumns_req
- 
----------------------
-Dictionary Requests:
----------------------
-cf      cf_req ..
-cf ~    cf_req ..
-cf      cf_req
-pwf     pwf_req
-lf      lf_req
-rf      remove_folder
-
------------------------
-Persistence Requests:
------------------------
-checkpoint checkpoint_req
-reload     reload_req
- 
----------------------
-System Requests:
----------------------
-space   poolSpace_req
-status  nodeStatus_req
-sanity  sanity_req
- 
- 
----------------------
-Transaction Requests:
----------------------
-txDmp  txDumpAll_req
- 
------------------
-Misc Requests:
------------------
-displayOn  displayOn_req
-displayOff displayOff_req
-mon        getMonitor_req
-object     object_req
-ping       ping_req
-seitf      seitfCount_req
-
-* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /*============================================================================*/
 /* end                                                                        */
