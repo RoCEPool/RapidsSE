@@ -122,7 +122,7 @@ common/ scan rbCrs /
     depth 0 != if "stack of task has grown" . debug::trap then
 
     // wait for next job
-    jobQueue> ( valset )
+    //jobQueue> ( valset )
 
     //grid::thisNode@ "SCANOP: NODE %V" str.format .
 
