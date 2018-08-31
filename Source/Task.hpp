@@ -1322,13 +1322,6 @@ namespace Tasks
     static void vTaskWait(MP_Task mpTask);
     static void vTaskYield(MP_Task mpTask);
         
-    
-    // taskQueue
-    static void vTaskFifoAppend(MP_Task mpTask);
-    static void vTaskFifoDump(MP_Task mpTask);
-    static void vTaskFifoInit(MP_Task mpTask);
-    static void vTaskFifoNew(MP_Task mpTask);
-    
     // thread
     static void vThreadBind(MP_Task mpTask);
     static void vThreadCondSignal(MP_Task mpTask);
