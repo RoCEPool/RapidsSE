@@ -20,21 +20,6 @@
 : _THREAD    reg3 ;
 : _SENDER    reg4 ;
 
-/*----------------------------------------------------------------------------*/
-/* get queue of actor                                                         */
-/*----------------------------------------------------------------------------*/
-: findActorQueue ( "<workerNm>" -- queue )
-
-  ".queue" str.cat find execute
-;
-
-/*----------------------------------------------------------------------------*/
-/* get queue of actor                                                         */
-/*----------------------------------------------------------------------------*/
-: findActorTaskQueue ( "<workerNm>" -- pTaskQueue )
-
-  ".taskQueue" str.cat find execute
-;
 
 /*----------------------------------------------------------------------------*/
 /* get task of actor                                                          */
@@ -42,22 +27,6 @@
 : findActorTask ( "<workerNm>" -- task )
 
   ".task" str.cat find execute
-;
-
-/*----------------------------------------------------------------------------*/
-/* get taskset of actor                                                       */
-/*----------------------------------------------------------------------------*/
-: findActorTaskSet ( "<workerNm>" -- task )
-
-  ".taskset" str.cat find execute
-;
-
-/*----------------------------------------------------------------------------*/
-/* get thread of actor                                                        */
-/*----------------------------------------------------------------------------*/
-: findActorThread ( "<workerNm>" -- taskset )
-
-  ".thread" str.cat find execute
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -70,31 +39,9 @@
   // seed the task
   jobNm findActorTask task.seed ( )
 
-  // spawn the os thread
   //jobNm findActorThread thread.spawn_worker ( )
 ;
 
-/*----------------------------------------------------------------------------*/
-/* create a worker but don't spawn thread                                     */
-/*----------------------------------------------------------------------------*/
-: createWorkerActor: ( -- )
-
-  // get token from compile stream
-  token: ( s )
-
-  locals| actorNm |
-
-  reg.push
-
-  actorNm ".task"    str.cat :task    execute to_CALLER  // reg0 has task
-  actorNm ".queue"   str.cat :queue   execute to_QUEUE   // reg1 has queue
-  actorNm ".thread"  str.cat :thread  execute to_THREAD  // reg3 has thread
-
-  //AC_WORKER reg0 task.actorModel!
-  //AC_WORKER reg3 thread.actorModel!
-
-  reg.pop
-;
 
 /*----------------------------------------------------------------------------*/
 /* create a worker (but don't spawn thread)                                   */
