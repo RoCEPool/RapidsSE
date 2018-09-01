@@ -13271,7 +13271,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "\n"
     "  //----------------------------------------------------------------------------\n"
     "  // add table columns\n"
-    "  pJob_CreateTable pTable table.createColumnVecR35\n"
+    "  pJob_CreateTable pTable table.createColumnVec\n"
     "\n"
     "  //----------------------------------------------------------------------------\n"
     "  // add partition columns\n"

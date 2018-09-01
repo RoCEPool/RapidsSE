@@ -18,7 +18,7 @@ void Task::vAddPrimitives_Table(void)
   vAddPrimitive("table.appendBuffer"_Stz,       &vTableAppendBuffer,     false);
   vAddPrimitive("table.columnCount@"_Stz,       &vTableColumnCountFetch, false);
   vAddPrimitive("table.column@"_Stz,            &vTableColumnFetch,      false);
-  vAddPrimitive("table.createColumnVecR35"_Stz, &vTableCreateColumnVecR35, false);
+  vAddPrimitive("table.createColumnVec"_Stz,    &vTableCreateColumnVec, false);
   vAddPrimitive("table.drop"_Stz,               &vTableDrop,             false);
   vAddPrimitive("table.dump"_Stz,               &vTableDump,             false);
   vAddPrimitive("table.getColumnsAsString"_Stz, &vTableGetColumnsAsString, false);
@@ -30,7 +30,7 @@ void Task::vAddPrimitives_Table(void)
   vAddPrimitive("table.init"_Stz,               &vTableInit,             false);
   vAddPrimitive("table.insert"_Stz,             &vTableInsert,           false);
   vAddPrimitive("table.insertEntries"_Stz,      &vTableInsertEntries,    false);
-  vAddPrimitive("table.isValidIndexColumns"_Stz, &vTableIsValidIndexColumns, false);
+  vAddPrimitive("table.isValidIndexColumns"_Stz,&vTableIsValidIndexColumns, false);
   vAddPrimitive("table.lazyBuildIndexes"_Stz,   &vTableLazyBuildIndexes, false);
   vAddPrimitive("table.isLoading!"_Stz,         &vTableIsLoadingStore,   false);
   vAddPrimitive("table.name"_Stz,               &vTableName,             false);
@@ -299,21 +299,21 @@ void Task::vTableColumnCountFetch(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table.createColumnVecR35 -- create column vector from job_createTable     */
+/* table.createColumnVec -- create column vector from job_createTable     */
 /*----------------------------------------------------------------------------*/
-void Task::vTableCreateColumnVecR35(MP_Task mpTask)
+void Task::vTableCreateColumnVec(MP_Task mpTask)
 {
-  ENTRY("vTableCreateColumnVecR35"_Stz);
+  ENTRY("vTableCreateColumnVec"_Stz);
   
   Object* pPtrTable;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.createColumnVecR35"_Stz);
+    THROW_INVALID_DSTACK("table.createColumnVec"_Stz);
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
   Object* pPtrJob;
   if ( ! mpTask->m_pDataStack->bPop(pPtrJob) )
-    THROW_INVALID_DSTACK("table.createColumnVecR35"_Stz);
+    THROW_INVALID_DSTACK("table.createColumnVec"_Stz);
   Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pPtrJob);
   ASSERT(CN_JOB_CREATETABLE == pJob_CreateTable->eClass());
   
