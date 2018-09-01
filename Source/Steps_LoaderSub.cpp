@@ -572,7 +572,7 @@ void Task::vLoaderSubSpawnLoadBuffer(MP_Task mpTask)
   // create a load buffer job
   
   //! this needs to be optimised
-  JobClass* pJobClass_LoadBuffer = JobClass::pFindJobClass_s(CN_JOB_LOADBUFFER);
+  JobClass* pJobClass_LoadBuffer = JobClass::pFind(CN_JOB_LOADBUFFER);
   
   Job_LoadBuffer* pJob_LoadBuffer =
     static_cast<Job_LoadBuffer*>(pJobClass_LoadBuffer->pPreJob(pSEitf));

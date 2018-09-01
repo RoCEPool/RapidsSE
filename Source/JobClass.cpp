@@ -10,7 +10,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::_pJobClass_s(i8 iAddr)
+JobClass* JobsModel::_pJobClass(i8 iAddr)
 {
   JobClass* pJobClass_s = reinterpret_cast<JobClass*>(iAddr);
   
@@ -20,7 +20,7 @@ JobClass* JobsModel::_pJobClass_s(i8 iAddr)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::_pJobClass_s(void* aAddr)
+JobClass* JobsModel::_pJobClass(void* aAddr)
 {
   JobClass* pJobClass_s = reinterpret_cast<JobClass*>(aAddr);
   
@@ -212,7 +212,7 @@ pJOBCLASSFUN JobClass::pFirstFun(void)
 /*----------------------------------------------------------------------------*/
 /* find job class given class number                                          */
 /*----------------------------------------------------------------------------*/
-JobClass* JobClass::pFindJobClass_s(eCN eClass)
+JobClass* JobClass::pFind(eCN eClass)
 {
   JobClass* pJobClass_s = nullptr;
   
@@ -230,7 +230,7 @@ JobClass* JobClass::pFindJobClass_s(eCN eClass)
 /*----------------------------------------------------------------------------*/
 /* find job class given command                                               */
 /*----------------------------------------------------------------------------*/
-JobClass* JobClass::pFindJobClass_s(Stz* aCommand1, Stz* aCommand2)
+JobClass* JobClass::pFind(Stz* aCommand1, Stz* aCommand2)
 {
   //vTrace("FindJob: %s %s\n"_Stz, aCommand1, aCommand2);
   
@@ -265,7 +265,7 @@ JobClass* JobClass::pFindJobClass_s(Stz* aCommand1, Stz* aCommand2)
 /*----------------------------------------------------------------------------*/
 /* trace the job for the given class                                          */
 /*----------------------------------------------------------------------------*/
-void JobClass::vTraceJobs_s(eCN eClass)
+void JobClass::vTraceJobs(eCN eClass)
 {
   JobClass* pJobClass_s = nullptr;
   

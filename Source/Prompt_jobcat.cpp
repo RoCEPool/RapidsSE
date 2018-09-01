@@ -25,78 +25,78 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   i8 nJobs = 0;
   
   // thread
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_BOOT);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_PROMPT);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_BOOT);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_PROMPT);
 
   // system
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_START);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_CONNECTOR);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_ANSWER);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_RECEIVER);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_START);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_CONNECTOR);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_ANSWER);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_RECEIVER);
 
   // local
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_DOCOL);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_CF);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_LF);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_PWF);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_DOCOL);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_CF);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_LF);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_PWF);
   
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_LISTTENANTS);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_LISTCATALOGS);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_LISTSCHEMAS);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_LISTTABLES);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_LISTCOLUMNS);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_LISTIDXCOLUMNS);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_LISTINDEXES);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_LISTPARTCOLUMNS);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_LISTPARTITIONS);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_USESCHEMA);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_SHOWCLUSTER);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_DUMPINDEX);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_VISUALIZEINDEX);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_LISTTENANTS);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_LISTCATALOGS);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_LISTSCHEMAS);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_LISTTABLES);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_LISTCOLUMNS);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_LISTIDXCOLUMNS);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_LISTINDEXES);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_LISTPARTCOLUMNS);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_LISTPARTITIONS);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_USESCHEMA);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_SHOWCLUSTER);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_DUMPINDEX);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_VISUALIZEINDEX);
 
   // generic
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB__BEGUN);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB__EXECUTE);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB__EXECUTED);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB__END);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB__ENDED);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB__CANCEL);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB__CANCELLED);
+  nJobs++; JobClass::vTraceJobs(CN_JOB__BEGUN);
+  nJobs++; JobClass::vTraceJobs(CN_JOB__EXECUTE);
+  nJobs++; JobClass::vTraceJobs(CN_JOB__EXECUTED);
+  nJobs++; JobClass::vTraceJobs(CN_JOB__END);
+  nJobs++; JobClass::vTraceJobs(CN_JOB__ENDED);
+  nJobs++; JobClass::vTraceJobs(CN_JOB__CANCEL);
+  nJobs++; JobClass::vTraceJobs(CN_JOB__CANCELLED);
 
   // dist2pc
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_ANALYZEINDEX);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_ANALYZETABLE);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_COMPACTINDEX);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_CREATECATALOG);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_CREATEINDEX);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_CREATESCHEMA);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_CREATETABLE);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_CREATETENANT);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_DROPCATALOG);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_DROPINDEX);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_DROPSCHEMA);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_DROPTABLE);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_DROPTENANT);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_LOADTABLE);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_FETCHROWS);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_SIZEINDEX);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_SIZETABLE);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_TABLESIZES);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_TRUNCATETABLE);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_VERIFYINDEX);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_SANITY);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_SPACE);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_STATUS);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_STARTCLUSTER);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_WAITCLUSTER);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_ANALYZEINDEX);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_ANALYZETABLE);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_COMPACTINDEX);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_CREATECATALOG);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_CREATEINDEX);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_CREATESCHEMA);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_CREATETABLE);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_CREATETENANT);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_DROPCATALOG);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_DROPINDEX);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_DROPSCHEMA);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_DROPTABLE);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_DROPTENANT);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_LOADTABLE);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_FETCHROWS);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_SIZEINDEX);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_SIZETABLE);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_TABLESIZES);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_TRUNCATETABLE);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_VERIFYINDEX);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_SANITY);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_SPACE);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_STATUS);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_STARTCLUSTER);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_WAITCLUSTER);
 
   // child
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_SUBLOADER);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_SUBFETCH);
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_SUBTRUNCATE);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_SUBLOADER);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_SUBFETCH);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_SUBTRUNCATE);
   
   // grankid
-  nJobs++; JobClass::vTraceJobs_s(CN_JOB_LOADBUFFER);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_LOADBUFFER);
 
   vTrace("\n"_Stz);
   
