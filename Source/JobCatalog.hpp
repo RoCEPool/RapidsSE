@@ -14,6 +14,10 @@ namespace JobsModel
   
   public:
   
+    static JobClass_o* pFindJobClass_o_(Stz* aCommand1, Stz* aCommand2);
+    static JobClass_o* pFindJobClass_o_(eCN eClass);
+    static void vTraceJobs_(eCN eClass);
+
     JobClass_o* pFindJobClass_o(Stz* aCommand1, Stz* aCommand2);
     JobClass_o* pFindJobClass_o(eCN eClass);
     void vTraceJobs(eCN eClass);

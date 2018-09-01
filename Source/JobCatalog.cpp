@@ -12,6 +12,30 @@ JobCatalog gxJobCatalog;
 /*----------------------------------------------------------------------------*/
 /* find job class given command                                               */
 /*----------------------------------------------------------------------------*/
+JobClass_o* JobCatalog::pFindJobClass_o_(Stz* aCommand1, Stz* aCommand2)
+{
+  return gxJobCatalog.pFindJobClass_o(aCommand1,aCommand2);
+}
+
+/*----------------------------------------------------------------------------*/
+/* find job class given command                                               */
+/*----------------------------------------------------------------------------*/
+JobClass_o* JobCatalog::pFindJobClass_o_(eCN eClass)
+{
+  return gxJobCatalog.pFindJobClass_o(eClass);
+}
+
+/*----------------------------------------------------------------------------*/
+/* trace the job for the given class                                          */
+/*----------------------------------------------------------------------------*/
+void JobCatalog::vTraceJobs_(eCN eClass)
+{
+  gxJobCatalog.vTraceJobs(eClass);
+}
+
+/*----------------------------------------------------------------------------*/
+/* find job class given command                                               */
+/*----------------------------------------------------------------------------*/
 JobClass_o* JobCatalog::pFindJobClass_o(Stz* aCommand1, Stz* aCommand2)
 {
   //vTrace("FindJob: %s %s\n"_Stz, aCommand1, aCommand2);
