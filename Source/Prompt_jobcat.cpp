@@ -20,7 +20,7 @@ extern PromptCatalog gxPromptCatalog;
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
 {
-  JobClass_o::vJobCatHeader();
+  JobClass_s::vJobCatHeader();
   
   i8 nJobs = 0;
   
