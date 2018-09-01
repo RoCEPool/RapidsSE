@@ -187,7 +187,7 @@
 
   //----------------------------------------------------------------------------
   // check if we have enough buffers
-  checkEnoughBuffersR35 not if pJob_CreateTable <ERROR_JOB> exit then
+  checkEnoughBuffers not if pJob_CreateTable <ERROR_JOB> exit then
 
   //----------------------------------------------------------------------------
   // check if we can make the table

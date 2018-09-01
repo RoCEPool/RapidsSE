@@ -237,7 +237,7 @@
 
   //----------------------------------------------------------------------------
   // check if we have enough buffers
-  checkEnoughBuffersR35 not if pJob_CreateIndex <ERROR_JOB> exit then
+  checkEnoughBuffers not if pJob_CreateIndex <ERROR_JOB> exit then
 
   //----------------------------------------------------------------------------
   // check ok to make index

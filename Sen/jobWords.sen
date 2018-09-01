@@ -248,7 +248,7 @@
 /*----------------------------------------------------------------------------*/
 /* check system has enough buffers                                            */
 /*----------------------------------------------------------------------------*/
-: checkEnoughBuffersR35
+: checkEnoughBuffers
 
   // return true if enough buffers, others return error code
   bp::freeBuffers 100 >

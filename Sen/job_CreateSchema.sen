@@ -130,7 +130,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we have enough buffers
-  checkEnoughBuffersR35 not if pJob_CreateSchema <ERROR_JOB> exit then
+  checkEnoughBuffers not if pJob_CreateSchema <ERROR_JOB> exit then
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
