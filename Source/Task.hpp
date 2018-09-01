@@ -183,6 +183,7 @@ namespace Tasks
     void vQueue(eQR eQueue);
     void vReset(void);
     void vRetry(void);
+    bool bSeeded(void);
     void vSeedJob(void);
     GridModel::Node* pSendNode(void);
     Interface::SEitf* pSEitf(void);
@@ -1440,7 +1441,7 @@ namespace Tasks
     static void vHashHashColon(MP_Task mpTask);
     static void vIndirect(MP_Task mpTask);
     static void vImmediate(MP_Task mpTask);
-   static void vLocate(MP_Task mpTask);
+    static void vLocate(MP_Task mpTask);
     static void vOpDic(MP_Task mpTask);
     static void vPlanDicTask(MP_Task mpTask);
     static void vPostpone(MP_Task mpTask);

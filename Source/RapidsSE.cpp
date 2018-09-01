@@ -57,13 +57,13 @@ void RapidsSE::vCallBoot(void)
 /*----------------------------------------------------------------------------*/
 /* run task immediately                                                       */
 /*----------------------------------------------------------------------------*/
-void RapidsSE::vCallImmmediate(Task* pTask)
+void RapidsSE::vCallImmmediate(Task* pImmediateTask)
 {
-  pTask->vSeedJob();
+  pImmediateTask->vSeedJob();
   
-  pTask->vState(TS_EXECUTING);
+  pImmediateTask->vState(TS_EXECUTING);
   
-  pTask->vTaskLoop();
+  pImmediateTask->vTaskLoop();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -610,7 +610,6 @@ void RapidsSE::vSpawnJobStart(void)
   
   Task* pStartTask = new Task(pJob_Start);
   
-  pStartTask->vSeedJob();
   
   Handlers::vSpawnedTaskHandler(pStartTask);
 }

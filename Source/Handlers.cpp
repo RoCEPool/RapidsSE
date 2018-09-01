@@ -51,6 +51,8 @@ void Handlers::vSpawnedTaskHandler(Task* pTask)
   // we want to run given task. task should be ready to run
   //
   
+  pTask->vSeedJob();
+  
   Queues* pQueues = gpAttachMap->m_pQueues;
 
   pQueues->vScheduleSpawnedTask(pTask);

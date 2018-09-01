@@ -2655,8 +2655,6 @@ bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf)
 
   Task* pNewTask = new Task(pJob);
   
-  pNewTask->vSeedJob();
-
   pNewTask->vSEitf(pSEitf);
   
   Handlers::vSpawnedTaskHandler(pNewTask);
