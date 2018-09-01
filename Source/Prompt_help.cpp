@@ -22,7 +22,7 @@ bool Prompt::bPrompt_help(SePrompt* pPrompt)
 {
   JobClass_s* pJobClass_s = nullptr;
   
-  for (pJOBCLASSFUN pfJobClass = JobCatalog::pFirstFun(); pfJobClass; ) {
+  for (pJOBCLASSFUN pfJobClass = JobClass_s::pFirstFun(); pfJobClass; ) {
     
     pJobClass_s = pfJobClass((pFUN**)&pfJobClass);
     

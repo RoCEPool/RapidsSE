@@ -42,7 +42,7 @@ void Task::vJobClassFind(MP_Task mpTask)
   
   eCN eClass = (eCN)iJobClass;
   
-  JobClass_s* pJobClass = JobCatalog::pFindJobClass_s(eClass);
+  JobClass_s* pJobClass = JobClass_s::pFindJobClass_s(eClass);
   
   mpTask->m_pDataStack->vPushInt((i8)pJobClass);
 
@@ -50,7 +50,7 @@ void Task::vJobClassFind(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* jobClass.buffer@ -- get JobClass::m_bBuffer                                */
+/* jobClass.buffer@ -- get JobClass_s::m_bBuffer                                */
 /*----------------------------------------------------------------------------*/
 void Task::vJobClassBuffer(MP_Task mpTask)
 {

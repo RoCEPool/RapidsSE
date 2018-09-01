@@ -183,7 +183,7 @@ bool CommandProcessor::bFindJobClass(void)
   Stz* aCommand1 = pTkn(0)->aText();
   Stz* aCommand2 = pTkn(1)->aText();
   
-  m_pJobClass_s = JobCatalog::pFindJobClass_s(aCommand1, aCommand2);
+  m_pJobClass_s = JobClass_s::pFindJobClass_s(aCommand1, aCommand2);
   
   return m_pJobClass_s ? true : false;
 }

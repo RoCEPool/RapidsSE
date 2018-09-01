@@ -368,7 +368,7 @@ void Task::vLoaderSpawnSubLoader(MP_Task mpTask)
   SEitf* pSEitf = pJob_LoadTable->m_pSEitf;
     
   //! this needs to be optimised
-  JobClass_s* pJobClass_SubLoader = JobCatalog::pFindJobClass_s(CN_JOB_SUBLOADER);
+  JobClass_s* pJobClass_SubLoader = JobClass_s::pFindJobClass_s(CN_JOB_SUBLOADER);
   
   Job_SubLoader* pJob_SubLoader =
     static_cast<Job_SubLoader*>(pJobClass_SubLoader->pPreJob(pSEitf));

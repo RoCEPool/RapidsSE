@@ -34,7 +34,7 @@ void RapidsSE::vAttachRegion(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vCallBoot(void)
 {
-  JobClass_s* pJobClass_Boot = JobCatalog::pFindJobClass_s(CN_JOB_BOOT);
+  JobClass_s* pJobClass_Boot = JobClass_s::pFindJobClass_s(CN_JOB_BOOT);
   
   Job_Boot* pJob_Boot
   = static_cast<Job_Boot*>(pJobClass_Boot->pNewJob(nullptr));
@@ -71,7 +71,7 @@ void RapidsSE::vCallImmmediate(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vCallPrompt(void)
 {
-  JobClass_s* pJobClass_Prompt = JobCatalog::pFindJobClass_s(CN_JOB_PROMPT);
+  JobClass_s* pJobClass_Prompt = JobClass_s::pFindJobClass_s(CN_JOB_PROMPT);
   
   Job_Prompt* pJob_Prompt = static_cast<Job_Prompt*>(pJobClass_Prompt->pNewJob(nullptr));
   
@@ -601,7 +601,7 @@ void RapidsSE::vSpawnJobStart(void)
   
   PosixThread::vTlsSet(giTLS_ThreadKey,(void*)-1);
   
-  JobClass_s* pJobClass_Start = JobCatalog::pFindJobClass_s(CN_JOB_START);
+  JobClass_s* pJobClass_Start = JobClass_s::pFindJobClass_s(CN_JOB_START);
   
   Job_Start* pJob_Start
   = static_cast<Job_Start*>(pJobClass_Start->pNewJob(nullptr));
