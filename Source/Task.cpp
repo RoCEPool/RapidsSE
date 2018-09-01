@@ -1394,8 +1394,8 @@ Stz* Task::aJobName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if (m_pJob && m_pJob->m_pJobClass_o)
-    return (Stz*)&m_pJob -> m_pJobClass_o->m_aName[0];
+  if (m_pJob && m_pJob->m_pJobClass_s)
+    return (Stz*)m_pJob -> m_pJobClass_s->m_aName;
   else if (! m_pJob)
     return "<no job>"_Stz;
   else

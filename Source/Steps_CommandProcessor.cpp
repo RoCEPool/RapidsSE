@@ -139,7 +139,7 @@ void Task::vCommandProcessorJobClass(MP_Task mpTask)
   CommandProcessor*
     pCommandProcessor = _pCommandProcessor(pCommandProcessorObject);
 
-  JobClass_o* pJobClass = pCommandProcessor->pJobClass();
+  JobClass_s* pJobClass = pCommandProcessor->pJobClass_s();
   
   mpTask->m_pDataStack->vPushInt((i8)pJobClass);
   

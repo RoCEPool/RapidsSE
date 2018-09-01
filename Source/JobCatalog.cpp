@@ -103,7 +103,7 @@ pJOBCLASSFUN JobCatalog::pFirstFun(void)
 /*----------------------------------------------------------------------------*/
 /* find job class given class number                                          */
 /*----------------------------------------------------------------------------*/
-JobClass_s* JobCatalog::pFindJobClass_JC2(eCN eClass)
+JobClass_s* JobCatalog::pFindJobClass_s(eCN eClass)
 {
   JobClass_s* pJobClass_s = nullptr;
   
@@ -121,7 +121,7 @@ JobClass_s* JobCatalog::pFindJobClass_JC2(eCN eClass)
 /*----------------------------------------------------------------------------*/
 /* find job class given command                                               */
 /*----------------------------------------------------------------------------*/
-JobClass_s* JobCatalog::pFindJobClass_JC2(Stz* aCommand1, Stz* aCommand2)
+JobClass_s* JobCatalog::pFindJobClass_s(Stz* aCommand1, Stz* aCommand2)
 {
   //vTrace("FindJob: %s %s\n"_Stz, aCommand1, aCommand2);
   

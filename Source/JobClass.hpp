@@ -56,8 +56,8 @@ namespace JobsModel
   };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  JobClass_o* _pJobClass(i8 iAddr);
-  JobClass_o* _pJobClass(void* aAddr);
+  JobClass_o* _pJobClass_o(i8 iAddr);
+  JobClass_o* _pJobClass_o(void* aAddr);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   struct JobClass_s

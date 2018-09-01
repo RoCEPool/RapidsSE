@@ -29,9 +29,9 @@ void Handlers::vAckTaskHandler(Task* pTaskBeingAcked, Task* pTaskAcking)
   if ( (pJobBeingAcked && JT_NONE != pJobBeingAcked->eJobTrace()) ||
        (pJobAcking && JT_NONE != pJobAcking->eJobTrace())  ) {
     vTrace("Ack of %s task %p by %s task %p acks remaining %lld (%s)\n"_Stz,
-           pJobBeingAcked ? (Stz*)pJobBeingAcked->m_pJobClass_o->m_aName : "<no job>"_Stz,
+           pJobBeingAcked ? (Stz*)pJobBeingAcked->m_pJobClass_s->m_aName : "<no job>"_Stz,
            pTaskBeingAcked,
-           pJobAcking ? (Stz*)pJobAcking->m_pJobClass_o->m_aName : "<no job>"_Stz,
+           pJobAcking ? (Stz*)pJobAcking->m_pJobClass_s->m_aName : "<no job>"_Stz,
            pJobAcking,
            iRemaining,
            bDecider ? "decider" : "not decider");

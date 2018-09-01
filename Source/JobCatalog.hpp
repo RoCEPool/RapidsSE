@@ -30,8 +30,8 @@ namespace JobsModel
   
     static pJOBCLASSFUN pFirstFun(void);
   
-    static JobClass_s* pFindJobClass_JC2(eCN eClass);
-    static JobClass_s* pFindJobClass_JC2(Stz* aCommand1, Stz* aCommand2);
+    static JobClass_s* pFindJobClass_s(eCN eClass);
+    static JobClass_s* pFindJobClass_s(Stz* aCommand1, Stz* aCommand2);
     static void vTraceJobs_JC2(eCN eClass);
   };
 }

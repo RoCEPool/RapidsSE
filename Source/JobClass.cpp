@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* JobClass_o.cpp -- a description of a job class                               */
+/* JobClass.cpp -- a description of a job class                               */
 /*============================================================================*/
 
 #include "JobModel.h"
@@ -10,7 +10,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-JobClass_o* JobsModel::_pJobClass(i8 iAddr)
+JobClass_o* JobsModel::_pJobClass_o(i8 iAddr)
 {
   JobClass_o* pJobClass = reinterpret_cast<JobClass_o*>(iAddr);
   
@@ -20,7 +20,7 @@ JobClass_o* JobsModel::_pJobClass(i8 iAddr)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-JobClass_o* JobsModel::_pJobClass(void* aAddr)
+JobClass_o* JobsModel::_pJobClass_o(void* aAddr)
 {
   JobClass_o* pJobClass = reinterpret_cast<JobClass_o*>(aAddr);
   
@@ -34,7 +34,7 @@ Job* JobClass_o::pNewJob(Job* pArg)
 {
   Job* pNewJob = (*m_fNew)(pArg);
   
-  pNewJob->m_pJobClass_o = this;
+  //pNewJob->m_pJobClass_o = this;
   pNewJob->m_eJobTrace = m_eTrace;
 
   return pNewJob;
@@ -63,7 +63,7 @@ Job* JobClass_o::pPreJob(Interface::SEitf* pSEitf)
 {
   Job* pJob = (*m_fPre)(pSEitf);
 
-  pJob->m_pJobClass_o = this;
+  //pJob->m_pJobClass_o = this;
   pJob->m_eJobTrace = m_eTrace;
   
   return pJob;

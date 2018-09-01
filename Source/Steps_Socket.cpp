@@ -243,10 +243,7 @@ void Task::vSocketRecvObject(MP_Task mpTask)
   // receive rest of job
   
   if (eClass >= CN_JOB__BEGUN && eClass <= CN_JOB_WAITCLUSTER) {
-    
-    //JobClass_o* pJobClass = JobCatalog::pFindJobClass_o_(eClass);
-    //Job* pJob = pJobClass->pNewJob(nullptr);
-    
+        
     //! temp. to be fixed
     Job* pJob = static_cast<Job*>(Heap::pAllocate(CN_JOB_CREATETABLE));
 
