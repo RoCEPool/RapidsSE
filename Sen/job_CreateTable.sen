@@ -141,7 +141,7 @@
 
   //----------------------------------------------------------------------------
   // add partition columns
-  pTable table.slots slots.createColumnVecR35
+  pTable table.slots slots.createColumnVec
 
   //----------------------------------------------------------------------------
   // move back to tables
