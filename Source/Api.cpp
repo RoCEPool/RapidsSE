@@ -7,7 +7,6 @@
 
 extern BufferPool* gpBufferPool;
 extern AttachMap*  gpAttachMap;
-extern JobCatalog gxJobCatalog;
 
 /*----------------------------------------------------------------------------*/
 /* add a column to an index                                                    */
@@ -2270,7 +2269,7 @@ eEC RapidsSE_SpawnPrompt(i8 iTraceLevel)
     eEC eError = RapidsSE_SEitfNew((void**)&pSEitf, "rapidsse"_Stz, "public"_Stz, 0, 0);
     ASSERT(EC_NONE == eError);
     
-    JobClass_o* pJobClass_Prompt = gxJobCatalog.pFindJobClass_o(CN_JOB_PROMPT);
+    JobClass_o* pJobClass_Prompt = JobCatalog::pFindJobClass_o_(CN_JOB_PROMPT);
     
     Job_Prompt* pJob_Prompt = static_cast<Job_Prompt*>(pJobClass_Prompt->pNewJob(nullptr));
     

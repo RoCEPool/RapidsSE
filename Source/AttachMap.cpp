@@ -6,7 +6,6 @@
 
 extern AttachMap*  gpAttachMap;
 extern BufferPool* gpBufferPool;
-extern JobCatalog  gxJobCatalog;
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */

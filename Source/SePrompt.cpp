@@ -11,7 +11,6 @@ extern Arguments     gxArguments;
 extern pthread_key_t giTLS_ThreadKey;
 
 PromptCatalog gxPromptCatalog;
-extern JobCatalog gxJobCatalog;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

@@ -7,7 +7,6 @@
 #include "SePrompt.hpp"
 
 extern AttachMap*      gpAttachMap;
-extern JobCatalog gxJobCatalog;
 
 // socket: /////////////////////////////////////////////////////////////////////
 
@@ -245,7 +244,7 @@ void Task::vSocketRecvObject(MP_Task mpTask)
   
   if (eClass >= CN_JOB__BEGUN && eClass <= CN_JOB_WAITCLUSTER) {
     
-    //JobClass_o* pJobClass = gxJobCatalog.pFindJobClass_o(eClass);
+    //JobClass_o* pJobClass = JobCatalog::pFindJobClass_o_(eClass);
     //Job* pJob = pJobClass->pNewJob(nullptr);
     
     //! temp. to be fixed

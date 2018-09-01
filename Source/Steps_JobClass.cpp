@@ -7,7 +7,6 @@
 #include "SePrompt.hpp"
 
 extern AttachMap* gpAttachMap;
-extern JobCatalog gxJobCatalog;
 
 // job: ////////////////////////////////////////////////////////////////////////
 
@@ -43,7 +42,7 @@ void Task::vJobClassFind(MP_Task mpTask)
   
   eCN eClass = (eCN)iJobClass;
   
-  JobClass_o* pJobClass = gxJobCatalog.pFindJobClass_o(eClass);
+  JobClass_o* pJobClass = JobCatalog::pFindJobClass_o_(eClass);
   
   mpTask->m_pDataStack->vPushInt((i8)pJobClass);
 

@@ -8,7 +8,6 @@
 
 extern AttachMap* gpAttachMap;
 extern Arguments  gxArguments;
-extern JobCatalog gxJobCatalog;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

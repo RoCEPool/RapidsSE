@@ -7,7 +7,6 @@
 #include "SePrompt.hpp"
 
 extern AttachMap*  gpAttachMap;
-extern JobCatalog  gxJobCatalog;
 
 // loaderSub: //////////////////////////////////////////////////////////////////
 
@@ -573,7 +572,7 @@ void Task::vLoaderSubSpawnLoadBuffer(MP_Task mpTask)
   // create a load buffer job
   
   //! this needs to be optimised
-  JobClass_o* pJobClass_LoadBuffer = gxJobCatalog.pFindJobClass_o(CN_JOB_LOADBUFFER);
+  JobClass_o* pJobClass_LoadBuffer = JobCatalog::pFindJobClass_o_(CN_JOB_LOADBUFFER);
   
   Job_LoadBuffer* pJob_LoadBuffer =
     static_cast<Job_LoadBuffer*>(pJobClass_LoadBuffer->pPreJob(pSEitf));
