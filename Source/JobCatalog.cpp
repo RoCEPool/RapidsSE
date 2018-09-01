@@ -12,7 +12,7 @@ JobCatalog gxJobCatalog;
 /*----------------------------------------------------------------------------*/
 /* find job class given command                                               */
 /*----------------------------------------------------------------------------*/
-JobClass_o* JobCatalog::pFindJobClass(Stz* aCommand1, Stz* aCommand2)
+JobClass_o* JobCatalog::pFindJobClass_o(Stz* aCommand1, Stz* aCommand2)
 {
   //vTrace("FindJob: %s %s\n"_Stz, aCommand1, aCommand2);
   
@@ -42,7 +42,7 @@ JobClass_o* JobCatalog::pFindJobClass(Stz* aCommand1, Stz* aCommand2)
 /*----------------------------------------------------------------------------*/
 /* find job class given command                                               */
 /*----------------------------------------------------------------------------*/
-JobClass_o* JobCatalog::pFindJobClass(eCN eClass)
+JobClass_o* JobCatalog::pFindJobClass_o(eCN eClass)
 {
   for (i8 i_Job = 0; i_Job < m_nClasses; i_Job++) {
     

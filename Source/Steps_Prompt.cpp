@@ -83,7 +83,7 @@ void Task::vPromptNew(MP_Task mpTask)
 {
   ENTRY("vPromptNew"_Stz);
   
-  mpTask->m_pJob->m_pJobClass_o = gxJobCatalog.pFindJobClass(CN_JOB_PROMPT);
+  mpTask->m_pJob->m_pJobClass_o = gxJobCatalog.pFindJobClass_o(CN_JOB_PROMPT);
   
   SePrompt* pSePrompt = new SePrompt;
   
