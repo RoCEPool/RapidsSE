@@ -53,7 +53,7 @@
 
   //----------------------------------------------------------------------------
   // create the hidden index for the row data
-  sTableNm "hidden" "make_indexR35" find execute
+  sTableNm "hidden" "make_index" find execute
 
   //----------------------------------------------------------------------------
   // make the index as hidden

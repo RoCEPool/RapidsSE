@@ -192,7 +192,7 @@
 /*----------------------------------------------------------------------------*/
 /* make_index (invoked from makeIndex)                                        */
 /*----------------------------------------------------------------------------*/
-: make_indexR35 ( "<tableNm>" "<indexNm>" -- )
+: make_index ( "<tableNm>" "<indexNm>" -- )
 
   0 0 locals| indexPtr tablePtr indexNm tableNm |
 
