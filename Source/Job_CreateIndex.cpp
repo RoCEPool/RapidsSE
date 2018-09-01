@@ -38,7 +38,7 @@ JobClass xJobClass_CreateIndex =
   "<help>"_Stz,            // help
   "<example>"_Stz,         // example
 
-  { 0, 0, 0, 0 ,0, 0 }     // seeds spawned
+  { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };
 
 JobClass xJobClass_CreateIndexUnique =
@@ -70,7 +70,7 @@ JobClass xJobClass_CreateIndexUnique =
   "<help>"_Stz,            // help
   "<example>"_Stz,         // example
 
-  { 0, 0, 0, 0 ,0, 0 }     // seeds spawned
+  { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };
 
 /*----------------------------------------------------------------------------*/

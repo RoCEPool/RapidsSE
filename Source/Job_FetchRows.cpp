@@ -38,7 +38,7 @@ JobClass xJobClass_FetchRows =
   "fetch <tableNm> <where>"_Stz,// help
   "<example>"_Stz,           // example
 
-  { 0, 0, 0, 0 ,0, 0 }    // seeds spawned
+  { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };
 
 /*----------------------------------------------------------------------------*/

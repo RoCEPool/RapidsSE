@@ -35,7 +35,7 @@ JobClass xJobClass__Ended =
   "<help>"_Stz,            // help
   "<example>"_Stz,         // example
 
-  { 0, 0, 0, 0 ,0, 0 }     // seeds spawned
+  { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };
 
 /*----------------------------------------------------------------------------*/

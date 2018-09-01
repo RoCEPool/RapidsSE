@@ -38,7 +38,7 @@ JobClass xJobClass_AnalyzeTable =
   "antbl tableNm [0/1]"_Stz, // help
   "<example>"_Stz,           // example
 
-  { 0, 0, 0, 0 ,0, 0 }       // seeds spawned
+  { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };
 
 /*----------------------------------------------------------------------------*/
