@@ -156,7 +156,7 @@ JobClass_s* JobCatalog::pFindJobClass_s(Stz* aCommand1, Stz* aCommand2)
 /*----------------------------------------------------------------------------*/
 /* trace the job for the given class                                          */
 /*----------------------------------------------------------------------------*/
-void JobCatalog::vTraceJobs_JC2(eCN eClass)
+void JobCatalog::vTraceJobs_s(eCN eClass)
 {
   JobClass_s* pJobClass_s = nullptr;
 
@@ -164,7 +164,8 @@ void JobCatalog::vTraceJobs_JC2(eCN eClass)
     
     pJobClass_s = pfJobClass((pFUN**)&pfJobClass);
 
-    pJobClass_s->vJobCat();
+    if (pJobClass_s->m_eClass == eClass)
+      pJobClass_s->vJobCat();
   }
 }
 
