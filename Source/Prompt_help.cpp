@@ -13,7 +13,6 @@ PromptNote mPromptNote_help (
   true               // enabled
 );
 
-extern JobCatalog    gxJobCatalog;
 extern PromptCatalog gxPromptCatalog;
 
 /*----------------------------------------------------------------------------*/

@@ -210,11 +210,7 @@ void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize, i8 iJumboSize)
 
   ASSERT(m_pPlanList);  
   ASSERT(m_pStepArray);
-  
-  //gxCatalog.vCopyCatalog(&m_xJobCatalog);
-  //i8 iCatalogSize = sizeof(gxJobCatalog);
-  //MemLib::vCopy(&m_xJobCatalog, &gxJobCatalog, iCatalogSize, CN_ATTACHMAP);
-  
+    
   m_nIndexLevels  = 3;
   m_nIndexOffsets = 3;
   //m_nBuffersPending;
