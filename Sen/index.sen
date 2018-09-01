@@ -192,47 +192,6 @@
 /*----------------------------------------------------------------------------*/
 /* make_index (invoked from makeIndex)                                        */
 /*----------------------------------------------------------------------------*/
-: make_index ( "<tableNm>" "<indexNm>" -- )
-
-  0 0 locals| indexPtr tablePtr indexNm tableNm |
-
-  pushIndexes assert
-
-  // create the index
-  indexNm ( "<indexNm>" )
-  :index ( ^index )
-
-  // drop the index word
-  drop (  )
-
-  // make index columns
-  indexNm "makeIndexColumns" find execute
-
-  indexNm ( "<indexNm>" )
-
-  // find the index
-  find execute ( ^index )
-  to indexPtr
-
-  // find the table
-  tableNm find execute
-  to tablePtr
-
-  // push the table and index
-  tablePtr indexPtr ( ^index ^table )
-
-  // set the table in the index
-  index.table! (  )
-
-  // add the index in the table
-  indexPtr tablePtr table.addIndex
-
-  popIndexes
-;
-
-/*----------------------------------------------------------------------------*/
-/* make_index (invoked from makeIndex)                                        */
-/*----------------------------------------------------------------------------*/
 : make_indexR35 ( "<tableNm>" "<indexNm>" -- )
 
   0 0 locals| indexPtr tablePtr indexNm tableNm |
