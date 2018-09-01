@@ -9,35 +9,6 @@
 
 extern AttachMap* gpAttachMap;
 
-JobNote mJobNote_ListCatalogs (
-  "Job_ListCatalogs"_Stz,  // name of the job class
-  CN_JOB_LISTCATALOGS,     // class enum
-  JK_LOCAL,                // job kind
-  "list catalogs"_Stz,     // comment about the job
-  "lscat"_Stz,             // the prompt command
-  nullptr,                 // the second word
-  nullptr,                 // the _run task seed
-  "listCatalogs_req"_Stz,  // the _req task seed
-  nullptr,                 // the _rcv task seed 
-  nullptr,                 // the _exe task seed
-  nullptr,                 // the _end task seed
-  nullptr,                 // the _can task seed
-  false,                   // check resources?
-  false,                   // detached job?
-  false,                   // buffer attached?
-  JT_NONE,                 // job trace
-  pJob_ListCatalogs_pre,   // prompt pre-process function
-  vJob_ListCatalogs_post,  // prompt post-process function
-  nullptr,                 // job new function
-  vJob_ListCatalogs_delete,// job delete function
-  nullptr,                 // job pre-send function
-  nullptr,                 // job post-receive function
-  vJob_ListCatalogs_show,  // job show function
-  true,                    // job is enabled
-  "<help>"_Stz,            // help
-  "<example>"_Stz          // example
-);
-
 JobClass_s xJobClass_ListCatalogs =
 {
   "Job_ListCatalogs"_Stz,  // name of the job class

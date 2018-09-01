@@ -9,35 +9,6 @@
 
 extern AttachMap* gpAttachMap;
 
-JobNote mJobNote_ListTables (
-  "Job_ListTables"_Stz,   // name of the job class
-  CN_JOB_LISTTABLES,      // class enum
-  JK_LOCAL,               // job kind
-  "list tables"_Stz,      // comment about the job
-  "lstbl"_Stz,            // the prompt command
-  nullptr,                // the second word
-  nullptr,                // the _run task seed
-  "listTables_req"_Stz,   // the _req task seed
-  nullptr,                // the _rcv task seed 
-  nullptr,                // the _exe task seed
-  nullptr,                // the _end task seed
-  nullptr,                // the _can task seed
-  false,                  // check resources?
-  false,                  // detached job?
-  false,                  // buffer attached?
-  JT_NONE,                // job trace
-  pJob_ListTables_pre,    // prompt pre-process function
-  vJob_ListTables_post,   // prompt post-process function
-  nullptr,                // job new function
-  vJob_ListTables_delete, // job delete function
-  nullptr,                // job pre-send function
-  nullptr,                // job post-receive function
-  vJob_ListTables_show,   // job show function
-  true,                   // job is enabled
-  "<help>"_Stz,           // help
-  "<example>"_Stz         // example
-);
-
 JobClass_s xJobClass_ListTables =
 {
   "Job_ListTables"_Stz,   // name of the job class

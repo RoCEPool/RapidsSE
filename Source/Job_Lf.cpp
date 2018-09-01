@@ -9,35 +9,6 @@
 
 extern AttachMap* gpAttachMap;
 
-JobNote mJobNote_Lf (
-  "Job_Lf"_Stz,      // name of the job class
-  CN_JOB_LF,         // class enum
-  JK_LOCAL,          // job kind
-  "list folder"_Stz, // comment about the job
-  "lf"_Stz,          // the prompt command
-  nullptr,           // the second word
-  nullptr,           // the _run task seed
-  "lf_req"_Stz,      // the _req task seed
-  nullptr,           // the _exe task seed
-  nullptr,           // the _rcv task seed
-  nullptr,           // the _end task seed
-  nullptr,           // the _can task seed
-  false,             // check resources?
-  false,             // detached job?
-  false,             // buffer attached?
-  JT_NONE,           // job trace
-  pJob_Lf_pre,       // prompt pre-process function
-  vJob_Lf_post,      // prompt post-process function
-  nullptr,           // job new function
-  vJob_Lf_delete,    // job delete function
-  nullptr,           // job pre-send function
-  nullptr,           // job post-receive function
-  vJob_Lf_show,      // job show function
-  true,              // job is enabled
-  "<help>"_Stz,      // help
-  "<example>"_Stz    // example
-);
-
 JobClass_s xJobClass_Lf =
 {
   "Job_Lf"_Stz,      // name of the job class

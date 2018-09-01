@@ -6,35 +6,6 @@
 
 #include "JobModel.h"
 
-JobNote mJobNote__End (
-  "Job__End"_Stz,          // name of the job class
-  CN_JOB__END,             // class enum
-  JK_GENERIC,              // job kind
-  "job to end"_Stz,        // comment about the job
-  nullptr,                 // the prompt command
-  nullptr,                 // the second word
-  nullptr,                 // the _run task seed
-  nullptr,                 // the _req task seed
-  "Job__End_rcv"_Stz,      // the _rcv task seed 
-  nullptr,                 // the _exe task seed
-  nullptr,                 // the _end task seed
-  nullptr,                 // the _can task seed
-  false,                   // check resources?
-  false,                   // detached job?
-  false,                   // buffer attached?
-  JT_NONE,                 // job trace
-  nullptr,                 // prompt pre-process function
-  nullptr,                 // prompt post-process function
-  nullptr,                 // job new function
-  vJob__End_delete,        // job delete function
-  vJob_send,               // job pre-send function
-  vJob_recv,               // job post-receive function
-  nullptr,                 // job show function
-  false,                   // job is not prompt enabled
-  "<help>"_Stz,            // help
-  "<example>"_Stz          // example
-);
-
 JobClass_s xJobClass__End =
 {
   "Job__End"_Stz,          // name of the job class

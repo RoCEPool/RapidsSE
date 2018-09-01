@@ -9,35 +9,6 @@
 
 extern AttachMap* gpAttachMap;
 
-JobNote mJobNote_LoadBuffer (
-  "Job_LoadBuffer"_Stz,    // name of the job class
-  CN_JOB_LOADBUFFER,       // class enum
-  JK_GRANDKID,             // job kind
-  "table load buffer"_Stz, // comment about the job
-  nullptr,                 // the prompt command
-  nullptr,                 // the second word
-  "loadBuffer_run"_Stz,    // the _run task seed
-  nullptr,                 // the _req task seed
-  "loadBuffer_kid"_Stz,    // the _rcv task seed
-  nullptr,                 // the _exe task seed
-  nullptr,                 // the _end task seed
-  nullptr,                 // the _can task seed
-  false,                   // check resources?
-  false,                   // detached job?
-  true,                    // buffer attached?
-  JT_ALL,                  // job trace
-  vJob_LoadBuffer_pre,     // prompt pre-process function
-  nullptr,                 // prompt post-process function
-  pJob_LoadBuffer_new,     // job new function
-  vJob_LoadBuffer_delete,  // job delete function
-  vJob_send,               // job pre-send function
-  vJob_recv,               // job post-receive function
-  vJob_LoadBuffer_show,    // job show function
-  false,                   // job is not prompt enabled
-  "<help>"_Stz,            // help
-  "<example>"_Stz          // example
-);
-
 JobClass_s xJobClass_LoadBuffer =
 {
   "Job_LoadBuffer"_Stz,    // name of the job class

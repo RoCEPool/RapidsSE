@@ -9,35 +9,6 @@
 
 extern AttachMap*      gpAttachMap;
 
-JobNote mJobNote_WaitCluster (
-  "Job_WaitCluster"_Stz,  // name of the job class
-  CN_JOB_WAITCLUSTER,     // class enum
-  JK_DIST2PC,             // job kind
-  "wait cluster"_Stz,     // comment about the job
-  "waitCluster"_Stz,      // the prompt command
-  nullptr,                // the second word
-  nullptr,                // the _run task seed
-  "waitCluster_req"_Stz,  // the _req task seed
-  "waitCluster_beg"_Stz,  // the _rcv task seed
-  "waitCluster_exe"_Stz,  // the _exe task seed
-  "waitCluster_end"_Stz,  // the _end task seed
-  "waitCluster_can"_Stz,  // the _can task seed
-  false,                  // check resources?
-  false,                  // detached job?
-  false,                  // buffer attached?
-  JT_NONE,                // job trace
-  pJob_WaitCluster_pre,   // prompt pre-process function
-  vJob_WaitCluster_post,  // prompt post-process function
-  nullptr,                // job new function
-  vJob_WaitCluster_delete,// job delete function
-  vJob_send,              // job pre-send function
-  vJob_recv,              // job post-receive function
-  vJob_WaitCluster_show,  // job show function
-  true,                   // job is enabled
-  "<help>"_Stz,           // help
-  "<example>"_Stz         // example
-);
-
 JobClass_s xJobClass_WaitCluster =
 {
   "Job_WaitCluster"_Stz,  // name of the job class

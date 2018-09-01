@@ -9,35 +9,6 @@
 
 extern AttachMap* gpAttachMap;
 
-JobNote mJobNote_CreateSchema (
-  "Job_CreateSchema"_Stz,   // name of the job class
-  CN_JOB_CREATESCHEMA,      // class enum
-  JK_DIST2PC,               // job kind
-  "create schema"_Stz,      // comment about the job
-  "create"_Stz,             // the prompt command
-  "schema"_Stz,             // the second word
-  nullptr,                  // the _run task seed
-  "createSchema_req"_Stz,   // the _req task seed
-  "createSchema_beg"_Stz,   // the _rcv task seed
-  "createSchema_exe"_Stz,   // the _exe task seed
-  "createSchema_end"_Stz,   // the _end task seed
-  "createSchema_can"_Stz,   // the _can task seed
-  true,                     // check resources?
-  false,                    // detached job?
-  false,                    // buffer attached?
-  JT_NONE,                  // job trace
-  pJob_CreateSchema_pre,    // prompt pre-process function
-  vJob_CreateSchema_post,   // prompt post-process function
-  nullptr,                  // job new function
-  vJob_CreateSchema_delete, // job delete function
-  vJob_send,                // job pre-send function
-  vJob_recv,                // job post-receive function
-  vJob_CreateSchema_show,   // job show function
-  true,                     // job is enabled
-  "<help>"_Stz,             // help
-  "<example>"_Stz           // example
-);
-
 JobClass_s xJobClass_CreateSchema =
 {
   "Job_CreateSchema"_Stz,   // name of the job class

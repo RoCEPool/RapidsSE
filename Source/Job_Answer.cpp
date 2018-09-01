@@ -9,35 +9,6 @@
 
 extern AttachMap* gpAttachMap;
 
-JobNote mJobNote_Answer (
-  "Job_Answer"_Stz,    // name of the job class
-  CN_JOB_ANSWER,       // class enum
-  JK_SYSTEM,           // job kind
-  "socket answer"_Stz, // comment about the job
-  nullptr,             // the prompt command
-  nullptr,             // the second word
-  "answer_run"_Stz,    // the _run task seed
-  nullptr,             // the _req task seed
-  nullptr,             // the _rcv task seed 
-  nullptr,             // the _exe task seed
-  nullptr,             // the _end task seed
-  nullptr,             // the _can task seed
-  false,               // check resources?
-  false,               // detached job?
-  false,               // buffer attached?
-  JT_NONE,             // job trace
-  nullptr,             // prompt pre-process function
-  nullptr,             // prompt post-process function
-  pJob_Answer_new,     // job new function
-  vJob_Answer_delete,  // job delete function
-  nullptr,             // job pre-send function
-  nullptr,             // job post-receive function
-  vJob_Answer_show,    // job show function
-  false,               // job is not prompt enabled
-  "<help>"_Stz,        // help
-  "<example>"_Stz      // example
-);
-
 JobClass_s xJobClass_Answer =
 {
   "Job_Answer"_Stz,    // name of the job class

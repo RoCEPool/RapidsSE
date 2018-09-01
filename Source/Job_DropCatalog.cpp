@@ -9,35 +9,6 @@
 
 extern AttachMap* gpAttachMap;
 
-JobNote mJobNote_DropCatalog (
-  "Job_DropCatalog"_Stz,   // name of the job class
-  CN_JOB_DROPCATALOG,      // class enum
-  JK_DIST2PC,              // job kind
-  "drop catalog"_Stz,      // comment about the job
-  "drop"_Stz,              // the prompt command
-  "catalog"_Stz,           // the second word
-  nullptr,                 // the _run task seed
-  "dropCatalog_req"_Stz,   // the _req task seed
-  "dropCatalog_beg"_Stz,   // the _rcv task seed
-  "dropCatalog_exe"_Stz,   // the _exe task seed
-  "dropCatalog_end"_Stz,   // the _end task seed
-  "dropCatalog_can"_Stz,   // the _can task seed
-  true,                    // check resources?
-  false,                   // detached job?
-  false,                   // buffer attached?
-  JT_NONE,                 // job trace
-  pJob_DropCatalog_pre,    // prompt pre-process function
-  vJob_DropCatalog_post,   // prompt post-process function
-  nullptr,                 // job new function
-  vJob_DropCatalog_delete, // job delete function
-  vJob_send,               // job pre-send function
-  vJob_recv,               // job post-receive function
-  vJob_DropCatalog_show,   // job show function
-  true,                    // job is enabled
-  "<help>"_Stz,            // help
-  "<example>"_Stz          // example
-);
-
 JobClass_s xJobClass_DropCatalog =
 {
   "Job_DropCatalog"_Stz,   // name of the job class

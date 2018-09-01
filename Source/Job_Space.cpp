@@ -9,35 +9,6 @@
 
 extern AttachMap* gpAttachMap;
 
-JobNote mJobNote_Space (
-  "Job_Space"_Stz,  // name of the job class
-  CN_JOB_SPACE,     // class enum
-  JK_DIST2PC,       // job kind
-  "space"_Stz,      // comment about the job
-  "space"_Stz,      // the prompt command
-  nullptr,          // the second word
-  nullptr,          // the _run task seed
-  "space_req"_Stz,  // the _req task seed
-  "space_beg"_Stz,  // the _rcv task seed
-  "space_exe"_Stz,  // the _exe task seed
-  "space_end"_Stz,  // the _end task seed
-  "space_can"_Stz,  // the _can task seed
-  false,            // check resources?
-  false,            // detached job?
-  false,            // buffer attached?
-  JT_NONE,          // job trace
-  pJob_Space_pre,   // prompt pre-process function
-  vJob_Space_post,  // prompt post-process function
-  nullptr,          // job new function
-  vJob_Space_delete,// job delete function
-  vJob_send,        // job pre-send function
-  vJob_recv,        // job post-receive function
-  vJob_Space_show,  // job show function
-  true,             // job is enabled
-  "<help>"_Stz,     // help
-  "<example>"_Stz   // example
-);
-
 JobClass_s xJobClass_Space =
 {
   "Job_Space"_Stz,  // name of the job class

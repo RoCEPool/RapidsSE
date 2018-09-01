@@ -9,35 +9,6 @@
 
 extern AttachMap* gpAttachMap;
 
-JobNote mJobNote_ListPartColumns (
-  "Job_ListPartColumns"_Stz,        // name of the job class
-  CN_JOB_LISTPARTCOLUMNS,           // class enum
-  JK_LOCAL,                         // job kind
-  "list partition key"_Stz,         // comment about the job
-  "lspartcol"_Stz,                  // the prompt command
-  nullptr,                          // the second word
-  nullptr,                          // the _run task seed
-  "listPartColumns_req"_Stz,        // the _req task seed
-  nullptr,                          // the _rcv task seed 
-  nullptr,                          // the _exe task seed
-  nullptr,                          // the _end task seed
-  nullptr,                          // the _can task seed
-  false,                            // check resources?
-  false,                            // detached job?
-  false,                            // buffer attached?
-  JT_NONE,                          // job trace
-  pJob_ListPartColumns_pre,         // prompt pre-process function
-  vJob_ListPartColumns_post,        // prompt post-process function
-  nullptr,                          // job new function
-  vJob_ListPartColumns_delete,      // job delete function
-  nullptr,                          // job pre-send function
-  nullptr,                          // job post-receive function
-  vJob_ListPartColumns_show,        // job show function
-  true,                             // job is enabled
-  "<help>"_Stz,                     // help
-  "<example>"_Stz                   // example
-);
-
 JobClass_s xJobClass_ListPartColumns =
 {
   "Job_ListPartColumns"_Stz,        // name of the job class

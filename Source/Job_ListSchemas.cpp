@@ -9,35 +9,6 @@
 
 extern AttachMap* gpAttachMap;
 
-JobNote mJobNote_ListSchemas (
-  "Job_ListSchemas"_Stz,  // name of the job class
-  CN_JOB_LISTSCHEMAS,     // class enum
-  JK_LOCAL,               // job kind
-  "list schemas"_Stz,     // comment about the job
-  "lssch"_Stz,            // the prompt command
-  nullptr,                // the second word
-  nullptr,                // the _run task seed
-  "listSchemas_req"_Stz,  // the _req task seed
-  nullptr,                // the _rcv task seed 
-  nullptr,                // the _exe task seed
-  nullptr,                // the _end task seed
-  nullptr,                // the _can task seed
-  false,                  // check resources?
-  false,                  // detached job?
-  false,                  // buffer attached?
-  JT_NONE,                // job trace
-  pJob_ListSchemas_pre,   // prompt pre-process function
-  vJob_ListSchemas_post,  // prompt post-process function
-  nullptr,                // job new function
-  vJob_ListSchemas_delete,// job delete function
-  nullptr,                // job pre-send function
-  nullptr,                // job post-receive function
-  vJob_ListSchemas_show,  // job show function
-  true,                   // job is enabled
-  "<help>"_Stz,           // help
-  "<example>"_Stz         // example
-);
-
 JobClass_s xJobClass_ListSchemas =
 {
   "Job_ListSchemas"_Stz,  // name of the job class

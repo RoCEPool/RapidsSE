@@ -117,7 +117,6 @@ using namespace JobsModel;
 
 #include "JobClass.hpp"
 #include "JobCatalog.hpp"
-#include "JobNote.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

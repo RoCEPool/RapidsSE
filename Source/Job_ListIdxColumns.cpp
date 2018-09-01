@@ -9,35 +9,6 @@
 
 extern AttachMap* gpAttachMap;
 
-JobNote mJobNote_ListIdxColumns (
-  "Job_ListIdxColumns"_Stz,  // name of the job class
-  CN_JOB_LISTIDXCOLUMNS,     // class enum
-  JK_LOCAL,                  // job kind
-  "list index columns"_Stz,  // comment about the job
-  "lsidxcol"_Stz,            // the prompt command
-  nullptr,                   // the second word
-  nullptr,                   // the _run task seed
-  "listIdxColumns_req"_Stz,  // the _req task seed
-  nullptr,                   // the _rcv task seed 
-  nullptr,                   // the _exe task seed
-  nullptr,                   // the _end task seed
-  nullptr,                   // the _can task seed
-  false,                     // check resources?
-  false,                     // detached job?
-  false,                     // buffer attached?
-  JT_NONE,                   // job trace
-  pJob_ListIdxColumns_pre,   // prompt pre-process function
-  vJob_ListIdxColumns_post,  // prompt post-process function
-  nullptr,                   // job new function
-  vJob_ListIdxColumns_delete,// job delete function
-  nullptr,                   // job pre-send function
-  nullptr,                   // job post-receive function
-  vJob_ListIdxColumns_show,  // job show function
-  true,                      // job is enabled
-  "<help>"_Stz,              // help
-  "<example>"_Stz            // example
-);
-
 JobClass_s xJobClass_ListIdxColumns =
 {
   "Job_ListIdxColumns"_Stz,  // name of the job class
