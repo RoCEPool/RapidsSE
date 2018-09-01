@@ -13,21 +13,7 @@ namespace JobsModel
     JobClass_o m_xJobClass[128]; // array of job class descriptions
   
   public:
-  
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-    static JobClass_o* pFindJobClass_o_(Stz* aCommand1, Stz* aCommand2);
-    static JobClass_o* pFindJobClass_o_(eCN eClass);
-    static void vTraceJobs_(eCN eClass);
-
-    // - -
-  
-    JobClass_o* pFindJobClass_o(Stz* aCommand1, Stz* aCommand2);
-    JobClass_o* pFindJobClass_o(eCN eClass);
-    void vTraceJobs(eCN eClass);
-  
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+    
     static pJOBCLASSFUN pFirstFun(void);
   
     static JobClass_s* pFindJobClass_s(eCN eClass);
