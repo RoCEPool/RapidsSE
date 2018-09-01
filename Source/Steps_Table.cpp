@@ -18,7 +18,6 @@ void Task::vAddPrimitives_Table(void)
   vAddPrimitive("table.appendBuffer"_Stz,       &vTableAppendBuffer,     false);
   vAddPrimitive("table.columnCount@"_Stz,       &vTableColumnCountFetch, false);
   vAddPrimitive("table.column@"_Stz,            &vTableColumnFetch,      false);
-  vAddPrimitive("table.createColumnVec"_Stz,    &vTableCreateColumnVec,  false);
   vAddPrimitive("table.createColumnVecR35"_Stz, &vTableCreateColumnVecR35, false);
   vAddPrimitive("table.drop"_Stz,               &vTableDrop,             false);
   vAddPrimitive("table.dump"_Stz,               &vTableDump,             false);
@@ -295,32 +294,6 @@ void Task::vTableColumnCountFetch(MP_Task mpTask)
   i8 nColumns = pColVec->nItems();
   
   mpTask->m_pDataStack->vPushInt(nColumns);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.createColumnVec -- create column vector from sub dictionary          */
-/*----------------------------------------------------------------------------*/
-void Task::vTableCreateColumnVec(MP_Task mpTask)
-{
-  ENTRY("vTableCreateColumnVec"_Stz);
-  
-  Object* pPtrTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.createColumnVec"_Stz);
-  Table* pTable = _pTable(pPtrTable);
-  ASSERT(CN_TABLE == pTable->eClass());
-  
-  s32 sColumnNm;
-  if ( ! mpTask->m_pDataStack->bPop(sColumnNm) )
-    THROW_INVALID_DSTACK("table.createColumnVec"_Stz);
-
-  s48K sColumnDef;
-  if ( ! mpTask->m_pDataStack->bPop(sColumnDef) )
-    THROW_INVALID_DSTACK("table.createColumnVec"_Stz);
-  
-  pTable->vCreateColumnVec(sColumnNm,sColumnDef);
   
   EXIT();
 }
