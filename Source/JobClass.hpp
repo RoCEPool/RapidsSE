@@ -107,11 +107,19 @@ namespace JobsModel
   
       void vJobCat(void);
       static void vJobCatHeader(void);
+  
+      // - -
+  
+      static pJOBCLASSFUN pFirstFun(void);
+  
+      static JobClass_s* pFindJobClass_s(eCN eClass);
+      static JobClass_s* pFindJobClass_s(Stz* aCommand1, Stz* aCommand2);
+      static void vTraceJobs_s(eCN eClass);
   };
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   JobClass_s* _pJobClass_s(i8 iAddr);
   JobClass_s* _pJobClass_s(void* aAddr);
-
 }
 
 /*============================================================================*/

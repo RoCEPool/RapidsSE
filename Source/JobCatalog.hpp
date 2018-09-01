@@ -13,7 +13,7 @@ namespace JobsModel
     JobClass_o m_xJobClass[128]; // array of job class descriptions
   
   public:
-    
+  
     static pJOBCLASSFUN pFirstFun(void);
   
     static JobClass_s* pFindJobClass_s(eCN eClass);
