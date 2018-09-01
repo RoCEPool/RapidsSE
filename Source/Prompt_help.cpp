@@ -20,14 +20,17 @@ extern PromptCatalog gxPromptCatalog;
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_help(SePrompt* pPrompt)
-{  
-  for (i8 i_Job = 0; i_Job < gxJobCatalog.m_nClasses; i_Job++) {
+{
+  JobClass_s* pJobClass_s = nullptr;
+  
+  for (pJOBCLASSFUN pfJobClass = JobCatalog::pFirstFun(); pfJobClass; ) {
     
-    if (! gxJobCatalog.m_xJobClass[i_Job].m_bEnabled)
+    pJobClass_s = pfJobClass((pFUN**)&pfJobClass);
+    
+    if ( ! pJobClass_s->m_bEnabled )
       continue;
-    
-    vTrace("%s\n"_Stz,gxJobCatalog.m_xJobClass[i_Job].m_aComment);
 
+    vTrace("%s\n"_Stz,pJobClass_s->m_aComment);
   }
 
   vTrace("\n"_Stz);
