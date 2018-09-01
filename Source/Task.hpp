@@ -1204,7 +1204,6 @@ namespace Tasks
     // slots
     static void vSlotsColumnCount(MP_Task mpTask);
     static void vSlotsColumnName(MP_Task mpTask);
-    static void vSlotsCreateColumnVec(MP_Task mpTask);
     static void vSlotsCreateColumnVecR35(MP_Task mpTask);
     static void vSlotsSubDic(MP_Task mpTask);
     
